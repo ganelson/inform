@@ -78,6 +78,7 @@ to say that |is.type| is |"kit"|.
 	text_stream *required_text = I"<unknown";
 	if (C->edition->work->genre == kit_genre) required_text = I"kit";
 	if (C->edition->work->genre == extension_genre) required_text = I"extension";
+	if (C->edition->work->genre == extension_bundle_genre) required_text = I"extension";
 	if (C->edition->work->genre == language_genre) required_text = I"language";
 	if (C->edition->work->genre == project_file_genre) required_text = I"project";
 	if (C->edition->work->genre == project_bundle_genre) required_text = I"project";

@@ -236,12 +236,12 @@ void ExtensionDictionary::load_helper(text_stream *line_entry,
 			Requirements::any_version_of(Works::new(extension_genre, title, author));
 		inbuild_search_result *R =
 			Nests::search_for_best(req, Supervisor::shared_nest_list());
-		if (R) ExtensionDictionary::new_ede(ExtensionManager::from_copy(R->copy),
+		if (R) ExtensionDictionary::new_ede(Extensions::from_copy(R->copy),
 			category, author, title, headword);
 	} else {
 		filename *F = Filenames::from_text(at);
 		inbuild_copy *C = ExtensionManager::claim_file_as_copy(F, NULL);
-		if (C) ExtensionDictionary::new_ede(ExtensionManager::from_copy(C),
+		if (C) ExtensionDictionary::new_ede(Extensions::from_copy(C),
 			category, author, title, headword);
 	}
 }

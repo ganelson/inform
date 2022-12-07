@@ -165,10 +165,10 @@ clear. Here, if a node has no build script attached, it must be because it
 needs no action taken.
 
 @<Build this node if necessary, setting rv to its success or failure@> =
-	if ((V->as_copy) && (V->as_copy->edition->work->genre == project_bundle_genre))
-		search_list = Projects::nest_list(ProjectBundleManager::from_copy(V->as_copy));
-	if ((V->as_copy) && (V->as_copy->edition->work->genre == project_file_genre))
-		search_list = Projects::nest_list(ProjectFileManager::from_copy(V->as_copy));
+	if (V->as_copy) {
+		inform_project *proj = Projects::from_copy(V->as_copy);
+		if (proj) search_list = Projects::nest_list(proj);
+	}
 	
 	if (T) STREAM_INDENT(T);
 	if (gb & BUILD_DEPENDENCIES_MATTER_GB) @<Build the build dependencies of the node@>;

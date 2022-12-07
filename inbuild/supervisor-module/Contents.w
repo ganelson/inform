@@ -35,6 +35,7 @@ Chapter 3: Incremental Builds
 
 Chapter 4: Genre Management
 	Extension Manager
+	Extension Bundle Manager
 	Kit Manager
 	Language Manager
 	Pipeline Manager

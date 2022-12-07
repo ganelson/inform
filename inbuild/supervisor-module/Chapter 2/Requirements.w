@@ -175,7 +175,7 @@ int Requirements::meets(inbuild_edition *edition, inbuild_requirement *req) {
 	if (req == NULL) return TRUE;
 	if (req->work) {
 		if (req->work->genre)
-			if (req->work->genre != edition->work->genre)
+			if (Genres::equivalent(req->work->genre, edition->work->genre) == FALSE)
 				return FALSE;
 		if (Str::len(req->work->title) > 0)
 			if (Str::ne_insensitive(req->work->title, edition->work->title))

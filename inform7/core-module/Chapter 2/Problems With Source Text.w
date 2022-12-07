@@ -237,37 +237,37 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 
 					case ExtNoBeginsHere_SYNERROR:
 						StandardProblems::extension_problem(_p_(PM_ExtNoBeginsHere),
-							ExtensionManager::from_copy(C),
+							Extensions::from_copy(C),
 							"has no 'begins here' sentence");
 						break;
 					case ExtNoEndsHere_SYNERROR:
 						StandardProblems::extension_problem(_p_(PM_ExtNoEndsHere),
-							ExtensionManager::from_copy(C),
+							Extensions::from_copy(C),
 							"has no 'ends here' sentence");
 						break;
 					case ExtSpuriouslyContinues_SYNERROR:
 						StandardProblems::extension_problem(_p_(PM_ExtSpuriouslyContinues),
-							ExtensionManager::from_copy(C),
+							Extensions::from_copy(C),
 							"continues after the 'ends here' sentence");
 						break;
 					case ExtMultipleEndsHere_SYNERROR:
 						StandardProblems::extension_problem(_p_(PM_ExtMultipleEndsHere),
-							ExtensionManager::from_copy(C),
+							Extensions::from_copy(C),
 							"has more than one 'ends here' sentence");
 						break;
 					case ExtMultipleBeginsHere_SYNERROR:
 						StandardProblems::extension_problem(_p_(PM_ExtMultipleBeginsHere),
-							ExtensionManager::from_copy(C),
+							Extensions::from_copy(C),
 							"has more than one 'begins here' sentence");
 						break;
 					case ExtBeginsAfterEndsHere_SYNERROR:
 						StandardProblems::extension_problem(_p_(PM_ExtBeginsAfterEndsHere),
-							ExtensionManager::from_copy(C),
+							Extensions::from_copy(C),
 							"has a further 'begins here' after an 'ends here'");
 						break;
 					case ExtEndsWithoutBegins_SYNERROR:
 						StandardProblems::extension_problem(_p_(BelievedImpossible),
-							ExtensionManager::from_copy(C),
+							Extensions::from_copy(C),
 							"has an 'ends here' with nothing having begun");
 						break;
 					case BadTitleSentence_SYNERROR:
@@ -355,7 +355,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						break;
 					case ExtMisidentifiedEnds_SYNERROR:
 						current_sentence = CE->details_node;
-						Problems::quote_extension(1, ExtensionManager::from_copy(C));
+						Problems::quote_extension(1, Extensions::from_copy(C));
 						Problems::quote_wording(2, CE->details_W);
 						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ExtMisidentifiedEnds));
 						Problems::issue_problem_segment(

@@ -543,7 +543,7 @@ the first and last word and just look at what is in between:
 	}
 
 @<Print column 4 of the census line@> =
-	inform_extension *E = ExtensionManager::from_copy(ecd->found_as->copy);
+	inform_extension *E = Extensions::from_copy(ecd->found_as->copy);
 	HTML::begin_span(OUT, I"smaller");
 	if ((d == SORT_CE_BY_DATE) || (d == SORT_CE_BY_INSTALL)) {
 		WRITE("%S", Extensions::get_usage_date(E));

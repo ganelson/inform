@@ -19,8 +19,7 @@ inform_project *inclusions_for_project = NULL;
 void Inclusions::traverse(inbuild_copy *C, parse_node_tree *T) {
 	inclusions_errors_to = C;
 	int no_copy_errors = LinkedLists::len(C->errors_reading_source_text);
-	inform_project *project = ProjectBundleManager::from_copy(C);
-	if (project == NULL) project = ProjectFileManager::from_copy(C);
+	inform_project *project = Projects::from_copy(C);
 	inclusions_for_project = project;
 	int includes_cleared;
 	do {
@@ -243,7 +242,7 @@ inform_extension *Inclusions::load(parse_node *last_H0, parse_node *at,
 	inbuild_search_result *search_result =
 		Nests::search_for_best(req, Projects::nest_list(for_project));
 	if (search_result) {
-		E = ExtensionManager::from_copy(search_result->copy);
+		E = Extensions::from_copy(search_result->copy);
 		Extensions::set_inclusion_sentence(E, at);
 		Extensions::set_associated_project(E, for_project);
 		if (Nests::get_tag(search_result->nest) == INTERNAL_NEST_TAG)

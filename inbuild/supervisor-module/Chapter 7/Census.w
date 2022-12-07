@@ -64,7 +64,7 @@ since the //inbuild_search_result// found that.
 
 =
 text_stream *ExtensionCensus::ecd_rubric(extension_census_datum *ecd) {
-	return Extensions::get_rubric(ExtensionManager::from_copy(ecd->found_as->copy));
+	return Extensions::get_rubric(Extensions::from_copy(ecd->found_as->copy));
 }
 
 int ExtensionCensus::installation_region(extension_census_datum *ecd) {
@@ -75,7 +75,7 @@ int ExtensionCensus::installation_region(extension_census_datum *ecd) {
 }
 
 int ExtensionCensus::ecd_used(extension_census_datum *ecd) {
-	inform_extension *E = ExtensionManager::from_copy(ecd->found_as->copy);
+	inform_extension *E = Extensions::from_copy(ecd->found_as->copy);
 	return E->has_historically_been_used;
 }
 
@@ -86,16 +86,16 @@ handed to |qsort|.
 int ExtensionCensus::compare_ecd_by_title(const void *ecd1, const void *ecd2) {
 	extension_census_datum *e1 = *((extension_census_datum **) ecd1);
 	extension_census_datum *e2 = *((extension_census_datum **) ecd2);
-	inform_extension *E1 = ExtensionManager::from_copy(e1->found_as->copy);
-	inform_extension *E2 = ExtensionManager::from_copy(e2->found_as->copy);
+	inform_extension *E1 = Extensions::from_copy(e1->found_as->copy);
+	inform_extension *E2 = Extensions::from_copy(e2->found_as->copy);
 	return Extensions::compare_by_title(E2, E1);
 }
 
 int ExtensionCensus::compare_ecd_by_author(const void *ecd1, const void *ecd2) {
 	extension_census_datum *e1 = *((extension_census_datum **) ecd1);
 	extension_census_datum *e2 = *((extension_census_datum **) ecd2);
-	inform_extension *E1 = ExtensionManager::from_copy(e1->found_as->copy);
-	inform_extension *E2 = ExtensionManager::from_copy(e2->found_as->copy);
+	inform_extension *E1 = Extensions::from_copy(e1->found_as->copy);
+	inform_extension *E2 = Extensions::from_copy(e2->found_as->copy);
 	return Extensions::compare_by_author(E2, E1);
 }
 
@@ -105,24 +105,24 @@ int ExtensionCensus::compare_ecd_by_installation(const void *ecd1, const void *e
 	int d = ExtensionCensus::installation_region(e1) -
 		ExtensionCensus::installation_region(e2);
 	if (d != 0) return d;
-	inform_extension *E1 = ExtensionManager::from_copy(e1->found_as->copy);
-	inform_extension *E2 = ExtensionManager::from_copy(e2->found_as->copy);
+	inform_extension *E1 = Extensions::from_copy(e1->found_as->copy);
+	inform_extension *E2 = Extensions::from_copy(e2->found_as->copy);
 	return Extensions::compare_by_edition(E1, E2);
 }
 
 int ExtensionCensus::compare_ecd_by_date(const void *ecd1, const void *ecd2) {
 	extension_census_datum *e1 = *((extension_census_datum **) ecd1);
 	extension_census_datum *e2 = *((extension_census_datum **) ecd2);
-	inform_extension *E1 = ExtensionManager::from_copy(e1->found_as->copy);
-	inform_extension *E2 = ExtensionManager::from_copy(e2->found_as->copy);
+	inform_extension *E1 = Extensions::from_copy(e1->found_as->copy);
+	inform_extension *E2 = Extensions::from_copy(e2->found_as->copy);
 	return Extensions::compare_by_date(E1, E2);
 }
 
 int ExtensionCensus::compare_ecd_by_length(const void *ecd1, const void *ecd2) {
 	extension_census_datum *e1 = *((extension_census_datum **) ecd1);
 	extension_census_datum *e2 = *((extension_census_datum **) ecd2);
-	inform_extension *E1 = ExtensionManager::from_copy(e1->found_as->copy);
-	inform_extension *E2 = ExtensionManager::from_copy(e2->found_as->copy);
+	inform_extension *E1 = Extensions::from_copy(e1->found_as->copy);
+	inform_extension *E2 = Extensions::from_copy(e2->found_as->copy);
 	return Extensions::compare_by_length(E1, E2);
 }
 

@@ -80,7 +80,7 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 @<Convert ECD to a text-only E@> =
 	if ((page_exists_already == FALSE) || (force_update)) {
 		Feeds::feed_C_string(L"This sentence provides a firebreak, no more. ");
-		E = ExtensionManager::from_copy(ecd->found_as->copy);
+		E = Extensions::from_copy(ecd->found_as->copy);
 		if (E == NULL) return 0; /* but shouldn't happen: it was there only moments ago */
 		Copies::get_source_text(E->as_copy);
 		ExtensionPages::write_page(NULL, E, force_update, proj);

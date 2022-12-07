@@ -238,6 +238,15 @@ linked_list *Projects::nest_list(inform_project *proj) {
 	return proj->search_list;
 }
 
+@ Since there are two ways projects can be stored:
+
+=
+inform_project *Projects::from_copy(inbuild_copy *C) {
+	inform_project *project = ProjectBundleManager::from_copy(C);
+	if (project == NULL) project = ProjectFileManager::from_copy(C);
+	return project;
+}
+
 @h Files of source text.
 A project can have multiple files of I7 source text, but more usually it
 has a single, "primary", one.
@@ -606,6 +615,10 @@ void Projects::activate_elements(inform_project *project) {
 	kit_dependency *kd;
 	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
 		Kits::activate_elements(kd->kit);
+	inform_extension *ext;
+	LOOP_OVER_LINKED_LIST(ext, inform_extension, project->extensions_included)
+		Extensions::activate_elements(ext);
+	
 	LOG("Included: "); Features::list(DL, TRUE, NULL);
 	LOG("\n");
 	LOG("Excluded: "); Features::list(DL, FALSE, NULL);
@@ -889,7 +902,7 @@ void Projects::check_extension_versions(inform_project *proj) {
 
 void Projects::check_extension_versions_d(inform_project *proj, build_vertex *V) {
 	if ((V->as_copy) && (V->as_copy->edition->work->genre == extension_genre)) {
-		inform_extension *E = ExtensionManager::from_copy(V->as_copy);
+		inform_extension *E = Extensions::from_copy(V->as_copy);
 		if (Extensions::satisfies(E) == FALSE) {
 			copy_error *CE = CopyErrors::new_T(SYNTAX_CE, ExtVersionTooLow_SYNERROR,
 				I"two incompatible versions");

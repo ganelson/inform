@@ -19,6 +19,7 @@ later on, as needed, just for extensions of interest: see below.
 @ =
 void ExtensionManager::start(void) {
 	extension_genre = Genres::new(I"extension", TRUE);
+	Genres::place_in_class(extension_genre, 1);
 	METHOD_ADD(extension_genre, GENRE_WRITE_WORK_MTID, ExtensionManager::write_work);
 	METHOD_ADD(extension_genre, GENRE_CLAIM_AS_COPY_MTID, ExtensionManager::claim_as_copy);
 	METHOD_ADD(extension_genre, GENRE_SEARCH_NEST_FOR_MTID, ExtensionManager::search_nest_for);
@@ -119,7 +120,8 @@ with leafnames beginning |.|, so we reject those too.
 =
 void ExtensionManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 	inbuild_requirement *req, linked_list *search_results) {
-	if ((req->work->genre) && (req->work->genre != extension_genre)) return;
+	if ((req->work->genre) && (Genres::equivalent(req->work->genre, extension_genre) == FALSE))
+		return;
 	pathname *P = ExtensionManager::path_within_nest(N);
 	if (Str::len(req->work->author_name) > 0) {
 		linked_list *L = Directories::listing(P);
@@ -130,25 +132,25 @@ void ExtensionManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 				if ((Str::ne(entry, I"Reserved")) &&
 					(Str::eq_insensitive(entry, req->work->author_name))) {
 					pathname *Q = Pathnames::down(P, entry);
-					ExtensionManager::search_nest_for_r(Q, N, req, search_results);
+					ExtensionManager::search_nest_for_r(Q, N, req, search_results, FALSE);
 				}
 			}
 		}
 	} else {
-		ExtensionManager::search_nest_for_r(P, N, req, search_results);
+		ExtensionManager::search_nest_for_r(P, N, req, search_results, TRUE);
 	}
 }
 
 void ExtensionManager::search_nest_for_r(pathname *P, inbuild_nest *N,
-	inbuild_requirement *req, linked_list *search_results) {
+	inbuild_requirement *req, linked_list *search_results, int recurse) {
 	linked_list *L = Directories::listing(P);
 	text_stream *entry;
 	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
 		if (Platform::is_folder_separator(Str::get_last_char(entry))) {
 			Str::delete_last_character(entry);
-			if (Str::ne(entry, I"Reserved")) {
+			if ((recurse) && (Str::ne(entry, I"Reserved"))) {
 				pathname *Q = Pathnames::down(P, entry);
-				ExtensionManager::search_nest_for_r(Q, N, req, search_results);
+				ExtensionManager::search_nest_for_r(Q, N, req, search_results, TRUE);
 			}
 		} else {
 			filename *F = Filenames::in(P, entry);

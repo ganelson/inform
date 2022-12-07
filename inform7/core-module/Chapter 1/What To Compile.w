@@ -60,12 +60,12 @@ compile_task_data *inform7_task = NULL;
 parse_node_tree *latest_syntax_tree = NULL;
 
 int Task::carry_out(build_step *S) {
-	int project_exists = TRUE;
+	int project_bundle_exists = TRUE;
 	Time::stop_stopwatch(supervisor_timer);
 	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);
 	if (project == NULL) {
 		project = ProjectFileManager::from_copy(S->associated_copy);
-		project_exists = FALSE;
+		project_bundle_exists = FALSE;
 	}
 	if (project == NULL) internal_error("no project");
 	latest_syntax_tree = project->syntax_tree;
@@ -92,7 +92,7 @@ int Task::carry_out(build_step *S) {
 	inform7_task->next_resource_number = 3;
 	
 	DefaultLanguage::set(Projects::get_language_of_syntax(project));
-	if (project_exists) Gitignoring::automatic(project);
+	if (project_bundle_exists) Gitignoring::automatic(project);
 
 	int rv = Sequence::carry_out(TargetVMs::debug_enabled(inform7_task->task->for_vm));
 	return rv;

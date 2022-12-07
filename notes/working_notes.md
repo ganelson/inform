@@ -12,6 +12,60 @@ releases on 10.1: we're currently at 10.1.2.
 
 ## News items
 
+### Breaking ground on IE-0001 (7 December 2022)
+
+Implementations are now mainly in place for the first round of evolution proposals,
+with the conspicuous exception of
+[IE-0001 Directory format for extensions with resources](https://github.com/ganelson/inform-evolution/blob/main/proposals/0001-extensions-with-resources.md).
+This requires significant updates to the build manager, and belongs to the
+measure-twice-cut-once category of changes: IE-0001 will likely be heavily
+revised as we go along. Still, eventually it's time to implement, and the first
+facilitating work is done.
+
+At present nothing useful is really achieved by this, but an extension `Sample`
+by `Example User` can now be stored as the directory
+
+	Example User
+		Sample
+			extension-metadata.json
+			Source
+				Sample.i7x
+
+instead of the single file
+
+	Example User
+		Sample.i7x
+
+The extension metadata is required to give title, authorship and version data
+exactly matching that given by the extension file itself, so if the extension
+opens with
+
+	Version 2 of Sample by Example User begins here.
+
+...then the JSON metadata file must contain exactly this `is` object:
+
+	{
+		"is": {
+			"type": "extension",
+			"title": "Sample",
+			"author": "Example User",
+			"version": "2"
+		}
+	}
+
+The build manager now has a new `inbuild_genre`, called `extension_bundle_genre`,
+to represent extensions stored in this way; thus, just as Inform projects have
+two different genres, `project_bundle_genre` and `project_file_genre`, so
+extensions have also. A new concept of "genre class" allows us to regard
+the two sorts of project as interchangeable, and similarly the two sorts of
+extension: see the function `Genres::equivalent`. This is important because
+it means that when the build manager searches for an extension, setting the
+genre in the `inbuild_requirement` to `extension_genre`, it will return matches
+of either `extension_genre` or `extension_bundle_genre`. (This issue had not
+arisen for projects, which similarly have two different genres, because inbuild
+never needs to search for those as dependent parts of other projects. Well:
+if it ever does, it will now get that right.)
+
 ### First evolution proposals implemented (9 October 2022)
 
 Quite a few evolution proposals have now been stacked up, but the first few

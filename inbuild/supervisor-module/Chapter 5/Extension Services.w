@@ -31,6 +31,9 @@ typedef struct inform_extension {
 	struct text_stream *last_usage_date; /* perhaps on a previous run */
 	struct text_stream *sort_usage_date; /* used temporarily when sorting */	
 	int has_historically_been_used;
+	struct linked_list *activations; /* of |element_activation| */
+	struct linked_list *extensions; /* of |inbuild_requirement| */
+	struct linked_list *kits; /* of |inbuild_requirement| */
 	CLASS_DEFINITION
 } inform_extension;
 
@@ -54,9 +57,11 @@ void Extensions::scan(inbuild_copy *C) {
 	DISCARD_TEXT(claimed_author_name)
 	DISCARD_TEXT(claimed_title)
 	DISCARD_TEXT(reqs)
-
 	if (Works::is_basic_inform(C->edition->work)) E->standard = TRUE;
 	if (Works::is_standard_rules(C->edition->work)) E->standard = TRUE;
+
+	@<Scan the metadata file, if there is one@>;
+	@<Check that the version numbers agree@>;
 }
 
 @<Initialise the extension docket@> =
@@ -79,7 +84,10 @@ void Extensions::scan(inbuild_copy *C) {
 	E->word_count = 0;
 	E->last_usage_date = Str::new();
 	E->sort_usage_date = Str::new();
-	
+	E->activations = NEW_LINKED_LIST(element_activation);
+	E->extensions = NEW_LINKED_LIST(inbuild_requirement);
+	E->kits = NEW_LINKED_LIST(inbuild_requirement);
+
 @ The following scans a potential extension file. If it seems malformed, a
 suitable error is written to the stream |error_text|. If not, this is left
 alone, and the version number is returned.
@@ -88,7 +96,7 @@ alone, and the version number is returned.
 @<Scan the file@> =
 	TEMPORARY_TEXT(titling_line)
 	TEMPORARY_TEXT(version_text)
-	filename *F = C->location_if_file;
+	filename *F = Extensions::main_source_file(C);
 	FILE *EXTF = Filenames::fopen_caseless(F, "r");
 	if (EXTF == NULL) {
 		Copies::attach_error(C, CopyErrors::new_F(OPEN_FAILED_CE, -1, F));
@@ -232,6 +240,163 @@ are immutable, and need to be for the extensions dictionary to work.
 		}
 	}
 
+@<Scan the metadata file, if there is one@> =
+	if (C->location_if_path) {
+		filename *F = Filenames::in(C->location_if_path, I"extension_metadata.json");
+		JSONMetadata::read_metadata_file(C, F);
+		if (C->metadata_record) {
+			@<Extract activations@>;
+			JSON_value *extension_details =
+				JSON::look_up_object(C->metadata_record, I"extension-details");
+			if (extension_details) @<Extract the extension details@>;
+			JSON_value *needs = JSON::look_up_object(C->metadata_record, I"needs");
+			if (needs) {
+				JSON_value *V;
+				LOOP_OVER_LINKED_LIST(V, JSON_value, needs->if_list)
+					@<Extract this possibly conditional requirement@>;
+			}
+		}
+	}
+
+@<Extract activations@> =
+	JSON_value *activates = JSON::look_up_object(C->metadata_record, I"activates");
+	if (activates) {
+		JSON_value *V;
+		LOOP_OVER_LINKED_LIST(V, JSON_value, activates->if_list)
+			Extensions::activation(E, V->if_string, TRUE);
+	}
+	JSON_value *deactivates = JSON::look_up_object(C->metadata_record, I"deactivates");
+	if (deactivates) {
+		JSON_value *V;
+		LOOP_OVER_LINKED_LIST(V, JSON_value, deactivates->if_list)
+			Extensions::activation(E, V->if_string, FALSE);
+	}
+
+@<Extract the extension details@> =
+	;
+
+@<Extract this possibly conditional requirement@> =
+	int parity = TRUE;
+	JSON_value *if_clause = JSON::look_up_object(V, I"if");
+	JSON_value *unless_clause = JSON::look_up_object(V, I"unless");
+	if (unless_clause) {
+		if_clause = unless_clause; parity = FALSE;
+	}
+	if (if_clause) {
+		TEMPORARY_TEXT(err)
+		WRITE_TO(err, "extension dependencies must be unconditional");
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+		DISCARD_TEXT(err)	
+	}
+	JSON_value *need_clause = JSON::look_up_object(V, I"need");
+	if (need_clause) {
+		JSON_value *need_type = JSON::look_up_object(need_clause, I"type");
+		JSON_value *need_title = JSON::look_up_object(need_clause, I"title");
+		JSON_value *need_author = JSON::look_up_object(need_clause, I"author");
+		JSON_value *need_version = JSON::look_up_object(need_clause, I"version");
+		if (Str::eq(need_type->if_string, I"extension"))
+			@<Deal with an extension dependency@>
+		else if (Str::eq(need_type->if_string, I"kit"))
+			@<Deal with a kit dependency@>
+		else {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err, "a kit can only have extensions and kits as dependencies");
+			Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+			DISCARD_TEXT(err)	
+		}
+	}
+
+@<Deal with an extension dependency@> =
+	text_stream *extension_title = need_title->if_string;
+	text_stream *extension_author = need_author?(need_author->if_string):NULL;
+	inbuild_work *work = Works::new(extension_genre, extension_title, extension_author);
+	if (need_version) @<Add versioned extension@>
+	else @<Add unversioned extension@>;
+
+@<Add versioned extension@> =
+	semantic_version_number V = VersionNumbers::from_text(need_version->if_string);
+	if (VersionNumbers::is_null(V)) {
+		TEMPORARY_TEXT(err)
+		WRITE_TO(err, "cannot read version number '%S'", need_version->if_string);
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+		DISCARD_TEXT(err)
+	} else {
+		inbuild_requirement *req = Requirements::new(work,
+			VersionNumberRanges::compatibility_range(V));
+		ADD_TO_LINKED_LIST(req, inbuild_requirement, E->extensions);
+	}
+
+@<Add unversioned extension@> =
+	inbuild_requirement *req = Requirements::any_version_of(work);
+	ADD_TO_LINKED_LIST(req, inbuild_requirement, E->extensions);
+
+@<Deal with a kit dependency@> =
+	text_stream *kit_title = need_title->if_string;
+	text_stream *kit_author = need_author?(need_author->if_string):NULL;
+	inbuild_work *work = Works::new(kit_genre, kit_title, kit_author);
+	if (need_version) @<Add versioned kit@>
+	else @<Add unversioned kit@>;
+
+@<Add versioned kit@> =
+	semantic_version_number V = VersionNumbers::from_text(need_version->if_string);
+	if (VersionNumbers::is_null(V)) {
+		TEMPORARY_TEXT(err)
+		WRITE_TO(err, "cannot read version number '%S'", need_version->if_string);
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+		DISCARD_TEXT(err)
+	} else {
+		inbuild_requirement *req = Requirements::new(work,
+			VersionNumberRanges::compatibility_range(V));
+		ADD_TO_LINKED_LIST(req, inbuild_requirement, E->kits);
+	}
+
+@<Add unversioned kit@> =
+	inbuild_requirement *req = Requirements::any_version_of(work);
+	ADD_TO_LINKED_LIST(req, inbuild_requirement, E->kits);
+
+@<Check that the version numbers agree@> =
+	semantic_version_number V2 = C->edition->version;
+	if (VersionNumbers::ne(V, V2)) {
+		TEMPORARY_TEXT(error_text)
+		WRITE_TO(error_text, "the extension itself gives version number '%v', "
+			"but the metadata file says '%v': these need to match", &V, &V2);
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, error_text));
+		DISCARD_TEXT(error_text)
+	}
+
+@ Language elements can be activated or deactivated:
+
+=
+void Extensions::activation(inform_extension *E, text_stream *name, int act) {
+	element_activation *EA = CREATE(element_activation);
+	EA->element_name = Str::duplicate(name);
+	EA->activate = act;
+	ADD_TO_LINKED_LIST(EA, element_activation, E->activations);
+}
+
+@ Since there are two ways extensions can be stored:
+
+=
+inform_extension *Extensions::from_copy(inbuild_copy *C) {
+	inform_extension *ext = ExtensionBundleManager::from_copy(C);
+	if (ext == NULL) ext = ExtensionManager::from_copy(C);
+	return ext;
+}
+
+filename *Extensions::main_source_file(inbuild_copy *C) {
+	filename *F = C->location_if_file;
+	if (F == NULL) {
+		pathname *P = C->location_if_path;
+		if (P) {
+			TEMPORARY_TEXT(leaf)
+			WRITE_TO(leaf, "%S.i7x", Pathnames::directory_name(P));
+			F = Filenames::in(Pathnames::down(P, I"Source"), leaf);
+			DISCARD_TEXT(leaf)
+		}
+	}
+	return F;
+}
+
 @h Cached metadata.
 The following data hides between runs in the //Dictionary//.
 
@@ -335,6 +500,34 @@ linked_list *Extensions::nest_list(inform_extension *E) {
 	return E->search_list;
 }
 
+@h Language element activation.
+Note that this function is meaningful only when this module is part of the
+|inform7| executable, and it invites us to activate or deactivate language
+features as |E| would like.
+
+=
+void Extensions::activate_elements(inform_extension *E) {
+	element_activation *EA;
+	LOOP_OVER_LINKED_LIST(EA, element_activation, E->activations) {
+		compiler_feature *P = Features::from_name(EA->element_name);
+		if (P == NULL) {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err, "extension metadata refers to unknown compiler feature '%S'", EA->element_name);
+			Copies::attach_error(E->as_copy, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+			DISCARD_TEXT(err)	
+		} else {
+			if (EA->activate) Features::activate(P);
+			else if (Features::deactivate(P) == FALSE) {
+				TEMPORARY_TEXT(err)
+				WRITE_TO(err, "extension metadata asks to deactivate mandatory compiler feature '%S'",
+					EA->element_name);
+				Copies::attach_error(E->as_copy, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+				DISCARD_TEXT(err)	
+			}
+		}
+	}
+}
+
 @h Graph.
 The dependency graph is not so much constructed as discovered; dependencies
 are made to each other extension as it's Included in this one, during the
@@ -365,7 +558,7 @@ At present all extensions are assumed to have English as the language of syntax.
 void Extensions::read_source_text_for(inform_extension *E) {
 	inform_language *L = Languages::find_for(I"English", Extensions::nest_list(E));
 	Languages::read_Preform_definition(L, Extensions::nest_list(E));
-	filename *F = E->as_copy->location_if_file;
+	filename *F = Extensions::main_source_file(E->as_copy);
 	int doc_only = FALSE;
 	if (census_mode) doc_only = TRUE;
 	TEMPORARY_TEXT(synopsis)
@@ -441,7 +634,7 @@ inform_extension *Extensions::corresponding_to(source_file *sf) {
 	inbuild_copy *C = RETRIEVE_POINTER_inbuild_copy(sf->your_ref);
 	if (C == NULL) return NULL;
 	if (C->edition->work->genre != extension_genre) return NULL;
-	return ExtensionManager::from_copy(C);
+	return Extensions::from_copy(C);
 }
 
 @h Miscellaneous.

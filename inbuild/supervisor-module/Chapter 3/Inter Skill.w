@@ -125,8 +125,7 @@ int interskill_debugging_flag = FALSE;
 
 int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 	build_methodology *BM, linked_list *search_list) {
-	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);
-	if (project == NULL) project = ProjectFileManager::from_copy(S->associated_copy);
+	inform_project *project = Projects::from_copy(S->associated_copy);
 	if (project == NULL) internal_error("no project");
 	#ifdef PIPELINE_MODULE
 	clock_t back_end = clock();

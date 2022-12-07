@@ -46,6 +46,7 @@ The following is called when the //supervisor// module starts up.
 
 =
 inbuild_genre *extension_genre = NULL;
+inbuild_genre *extension_bundle_genre = NULL;
 inbuild_genre *kit_genre = NULL;
 inbuild_genre *language_genre = NULL;
 inbuild_genre *pipeline_genre = NULL;
@@ -55,6 +56,7 @@ inbuild_genre *template_genre = NULL;
 
 void Supervisor::start(void) {
 	ExtensionManager::start();
+	ExtensionBundleManager::start();
 	KitManager::start();
 	LanguageManager::start();
 	PipelineManager::start();
@@ -566,12 +568,8 @@ void Supervisor::make_project_from_command_line(inbuild_copy *C) {
 		}
 	}
 	if (C) {
-		inform_project *proj = NULL;
-		if (C->edition->work->genre == project_bundle_genre)
-			proj = ProjectBundleManager::from_copy(C);
-		else if (C->edition->work->genre == project_file_genre)
-			proj = ProjectFileManager::from_copy(C);
-		else internal_error("chosen project is not a project");
+		inform_project *proj = Projects::from_copy(C);
+		if (proj == NULL) internal_error("chosen project is not a project");
 		if (F) {
 			Projects::set_primary_source(proj, F);
 			Projects::set_primary_output(proj, transpiled_output_file);

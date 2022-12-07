@@ -285,7 +285,7 @@ of an extension.
 
 =
 void SourceText::new_beginend(parse_node *pn, inbuild_copy *C) {
-	inform_extension *E = ExtensionManager::from_copy(C);
+	inform_extension *E = Extensions::from_copy(C);
 	if (Node::get_type(pn) == BEGINHERE_NT) Inclusions::check_begins_here(pn, E);
 	if (Node::get_type(pn) == ENDHERE_NT) Inclusions::check_ends_here(pn, E);
 }
