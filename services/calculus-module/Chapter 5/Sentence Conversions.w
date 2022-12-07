@@ -91,7 +91,7 @@ pcalc_prop *SentencePropositions::S_subtree(int SV_not_SN, wording W,
 	conv_log_depth--;
 
 @ The English verb "to be" has the syntactic quirk that it likes to have
-both SP and OP, even when only when thing is being discussed. We say "it is
+both SP and OP, even when only one thing is being discussed. We say "it is
 raining" and "there are seven continents", inserting "it" and "there"
 even though they refer to nothing at all, because we don't like to say
 "raining is" or "seven continents are".
