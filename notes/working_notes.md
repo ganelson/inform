@@ -98,7 +98,7 @@ More usefully, the extension can include its own private kits.
 				"type": "kit",
 				"title": "SoftFruitKit"
 			}
-		}
+		} ]
 	}
 
 Here, the kit `SoftFruitKit` is automatically merged into the build whenever
