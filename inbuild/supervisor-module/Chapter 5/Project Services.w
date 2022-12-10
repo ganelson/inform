@@ -452,9 +452,10 @@ typedef struct kit_dependency {
 @ =
 void Projects::add_kit_dependency(inform_project *project, text_stream *kit_name,
 	inform_language *because_of_language, inform_kit *because_of_kit,
-	inbuild_requirement *req) {
+	inbuild_requirement *req, linked_list *nests) {
 	if (Projects::uses_kit(project, kit_name)) return;
-	inform_kit *K = Kits::find_by_name(kit_name, Projects::nest_list(project), req);
+	if (nests == NULL) nests = Projects::nest_list(project);
+	inform_kit *K = Kits::find_by_name(kit_name, nests, req);
 	if (K) {
 		kit_dependency *kd = CREATE(kit_dependency);
 		kd->kit = K;
@@ -514,15 +515,15 @@ on //WorldModelKit//, through the if-this-then-that mechanism.
 					VersionNumbers::from_text(need_version->if_string)));
 		else
 			req = Requirements::any_version_of(work);
-		Projects::add_kit_dependency(project, need_title->if_string, NULL, NULL, req);
+		Projects::add_kit_dependency(project, need_title->if_string, NULL, NULL, req, NULL);
 	}
 	if (LinkedLists::len(project->kits_to_include) > 0) no_word_from_JSON = FALSE;
-	Projects::add_kit_dependency(project, I"BasicInformKit", NULL, NULL, NULL);
+	Projects::add_kit_dependency(project, I"BasicInformKit", NULL, NULL, NULL, NULL);
 	inform_language *L = project->language_of_play;
 	if (L) Languages::add_kit_dependencies_to_project(L, project);
 	else internal_error("no language of play");
 	if ((no_word_from_JSON) && (forcible_basic_mode == FALSE))
-		Projects::add_kit_dependency(project, I"CommandParserKit", NULL, NULL, NULL);
+		Projects::add_kit_dependency(project, I"CommandParserKit", NULL, NULL, NULL, NULL);
 
 @ We perform this first with |parity| being |TRUE|, then |FALSE|.
 
@@ -615,11 +616,19 @@ void Projects::activate_elements(inform_project *project) {
 	kit_dependency *kd;
 	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
 		Kits::activate_elements(kd->kit);
+	LOG("Included by the end of the kit stage: "); Features::list(DL, TRUE, NULL);
+	LOG("\n");
+}
+
+void Projects::activate_extension_elements(inform_project *project) {
 	inform_extension *ext;
 	LOOP_OVER_LINKED_LIST(ext, inform_extension, project->extensions_included)
-		Extensions::activate_elements(ext);
+		Extensions::activate_elements(ext, project);
+	kit_dependency *kd;
+	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
+		Kits::activate_elements(kd->kit);
 	
-	LOG("Included: "); Features::list(DL, TRUE, NULL);
+	LOG("Included by the end of the extension stage: "); Features::list(DL, TRUE, NULL);
 	LOG("\n");
 	LOG("Excluded: "); Features::list(DL, FALSE, NULL);
 	LOG("\n");
@@ -716,7 +725,7 @@ done by having the //syntax// module call the following:
 inform_project *project_being_scanned = NULL;
 void Projects::dialogue_present(void) {
 	if (project_being_scanned) {
-		Projects::add_kit_dependency(project_being_scanned, I"DialogueKit", NULL, NULL, NULL);
+		Projects::add_kit_dependency(project_being_scanned, I"DialogueKit", NULL, NULL, NULL, NULL);
 		Projects::activate_elements(project_being_scanned);
 	}
 }
@@ -1046,6 +1055,7 @@ place of... instructions after the sweep for inclusions.
 	Projects::activate_elements(proj);
 	Inclusions::traverse(proj->as_copy, proj->syntax_tree);
 	Headings::satisfy_dependencies(proj, proj->syntax_tree, proj->as_copy);
+	Projects::activate_extension_elements(proj);
 
 @h The bibliographic sentence.
 It might seem sensible to parse the opening sentence of the source text,

@@ -244,7 +244,7 @@ int Kits::perform_ittt(inform_kit *K, inform_project *project, int parity) {
 		if ((ITTT->if_included == parity) &&
 			(Projects::uses_kit(project, ITTT->then_name) == FALSE) &&
 			(Projects::uses_kit(project, ITTT->if_name) == ITTT->if_included)) {
-			Projects::add_kit_dependency(project, ITTT->then_name, NULL, K, NULL);
+			Projects::add_kit_dependency(project, ITTT->then_name, NULL, K, NULL, NULL);
 			changes_made = TRUE;
 		}
 	return changes_made;

@@ -12,7 +12,7 @@ releases on 10.1: we're currently at 10.1.2.
 
 ## News items
 
-### Breaking ground on IE-0001 (7 December 2022)
+### Breaking ground on IE-0001 (7-10 December 2022)
 
 Implementations are now mainly in place for the first round of evolution proposals,
 with the conspicuous exception of
@@ -22,8 +22,7 @@ measure-twice-cut-once category of changes: IE-0001 will likely be heavily
 revised as we go along. Still, eventually it's time to implement, and the first
 facilitating work is done.
 
-At present nothing useful is really achieved by this, but an extension `Sample`
-by `Example User` can now be stored as the directory
+An extension `Sample` by `Example User` can now be stored as the directory:
 
 	Example User
 		Sample
@@ -65,6 +64,72 @@ of either `extension_genre` or `extension_bundle_genre`. (This issue had not
 arisen for projects, which similarly have two different genres, because inbuild
 never needs to search for those as dependent parts of other projects. Well:
 if it ever does, it will now get that right.)
+
+Two further pieces of metadata are now meaningful. First, the extension can
+activate or deactivate language features. For example, this activates the
+feature `performance styles`:
+
+	{
+		"is": {
+			"type": "extension",
+			"title": "Bananas",
+			"author": "Graham Nelson",
+			"version": "2"
+		},
+		"activates": [ "performance styles" ]
+	}
+
+Note that if the language feature is one which drastically affects the way
+source text is broken up into sentences, this will not work as hoped, because
+the source text has already had to be broken up in order to find out which
+extensions are needed: so it's too late.
+
+More usefully, the extension can include its own private kits.
+
+	{
+		"is": {
+			"type": "extension",
+			"title": "Bananas",
+			"author": "Graham Nelson",
+			"version": "2"
+		},
+		"needs": [ {
+			"need": {
+				"type": "kit",
+				"title": "SoftFruitKit"
+			}
+		}
+	}
+
+Here, the kit `SoftFruitKit` is automatically merged into the build whenever
+the extension is included. Note that the search path used by Inform to find the
+definition of `SoftFruitKit` is limited to the extension directory itself: in
+other words, this feature can only be used to include private kits belonging
+to the extension. For example:
+
+	Graham Nelson
+		Bananas
+			extension-metadata.json
+			Inter
+				SoftFruitKit
+					...
+			Source
+				Bananas.i7x
+
+`SoftFruitKit` is then a kit like another, except that it cannot include further
+extensions, or (again) activate language features which affect how source text
+is broken into sentences.
+
+An extension can have multiple kits built in, or of course can have none. Note
+that merely placing a kit into the `Inter` subdirectory is not enough: the
+instruction that it is needed must appear in the JSON metadata as well.
+
+Inform automatically rebuilds private kits for extensions as needed if their
+compiled Inter binaries are out of date (or missing), as compared with their
+Inform 6-syntax source code. So in practice you can simply edit the source
+for an extension's private kit, click Go in the Inform app, and the kit will
+silently (assuming no errors occur) be rebuilt before the project goes on to
+be compiled.
 
 ### First evolution proposals implemented (9 October 2022)
 

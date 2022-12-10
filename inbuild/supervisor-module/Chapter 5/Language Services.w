@@ -183,7 +183,7 @@ void Languages::add_kit_dependencies_to_project(inform_language *L, inform_proje
 				if (need_version) req = Requirements::new(work,
 					VersionNumberRanges::compatibility_range(VersionNumbers::from_text(need_version->if_string)));
 				else req = Requirements::any_version_of(work);
-				Projects::add_kit_dependency(project, need_title->if_string, L, NULL, req);
+				Projects::add_kit_dependency(project, need_title->if_string, L, NULL, req, NULL);
 			}
 		}
 	}

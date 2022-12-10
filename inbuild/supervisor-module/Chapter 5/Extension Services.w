@@ -506,7 +506,7 @@ Note that this function is meaningful only when this module is part of the
 features as |E| would like.
 
 =
-void Extensions::activate_elements(inform_extension *E) {
+void Extensions::activate_elements(inform_extension *E, inform_project *proj) {
 	element_activation *EA;
 	LOOP_OVER_LINKED_LIST(EA, element_activation, E->activations) {
 		compiler_feature *P = Features::from_name(EA->element_name);
@@ -525,6 +525,14 @@ void Extensions::activate_elements(inform_extension *E) {
 				DISCARD_TEXT(err)	
 			}
 		}
+	}
+	linked_list *L = NEW_LINKED_LIST(inbuild_nest);
+	inbuild_nest *N = Nests::new(E->as_copy->location_if_path);
+	N->tag_value = EXTENSION_NEST_TAG;
+	ADD_TO_LINKED_LIST(N, inbuild_nest, L);
+	inbuild_requirement *req;
+	LOOP_OVER_LINKED_LIST(req, inbuild_requirement, E->kits) {
+		Projects::add_kit_dependency(proj, req->work->title, NULL, NULL, NULL, L);
 	}
 }
 

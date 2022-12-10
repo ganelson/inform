@@ -233,8 +233,9 @@ inform_extension *Inclusions::load(parse_node *last_H0, parse_node *at,
 			return E;
 		}
 	@<Read the extension file into the lexer, and break it into body and documentation@>;
-	if ((for_project) && (E))
+	if ((for_project) && (E)) {
 		ADD_TO_LINKED_LIST(E, inform_extension, for_project->extensions_included);
+	}
 	return E;
 }
 

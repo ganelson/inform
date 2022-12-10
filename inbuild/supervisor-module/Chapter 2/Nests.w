@@ -35,6 +35,7 @@ see below for why. Lower-tag-numbered origins are better than later ones.
 @e EXTERNAL_NEST_TAG
 @e GENERIC_NEST_TAG
 @e INTERNAL_NEST_TAG
+@e EXTENSION_NEST_TAG
 
 =
 int Nests::get_tag(inbuild_nest *N) {
