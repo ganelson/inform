@@ -1,6 +1,6 @@
 # Version history
 
-See [versions](versions.md) for details of Inform's version numbering.
+See [versioning](versioning.md) for details of Inform's version numbering.
 
 Links in the following table are to the archive of release notes. This
 is in chronological order, with the current release at the bottom.
