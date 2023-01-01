@@ -27,4 +27,7 @@ These will be added to release notes when the release is made.
 - Fix for a "very old quirk of I7 where it generates a `story.gblorb.js` file for
 	the interpreter website, but the filename is a lie. It's the base64-encoding
 	of the `story.ulx` file, not the `story.gblorb`." (Andrew Plotkin, not from Jira)
+- Fix for Jira bug [I7-2269](https://inform7.atlassian.net/browse/I7-2269)
+	"Output of I6 floating point literals strips the '+', resulting in uncompilable I6"
+	([commit 8155d40](https://github.com/ganelson/inform/commit/46349cb85c56116602c9245ee47e67ea08155d40))
 - Cosmetic fixes not worth linking to (I7-2270, I7-2268)
