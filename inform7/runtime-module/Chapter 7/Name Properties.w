@@ -60,8 +60,6 @@ ways in which I7-generated code does not mimic I6 practice in command parsing.[1
 We take special care to ensure that something called "your ..." in the source text
 -- "your nose", say -- is altered to "my ..." for purposes of parsing during play.
 
-The test case |PM_PluralsFromKind| may be helpful here.
-
 [1] This is because we do not want to imitate the unusual feature of I6 which
 makes |name| an "additive" property, i.e., in which arrays accumulate as objects
 inherit from classes. The concept of additive properties does not exist in Inter.
