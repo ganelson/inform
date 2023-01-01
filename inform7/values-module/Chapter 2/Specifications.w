@@ -237,7 +237,7 @@ int Specifications::compare_specificity(parse_node *spec1, parse_node *spec2, in
 }
 
 @ Whether or not, as Bertrand Russell thought in 1894, existence is itself a good
-("Great God in Boots! Ð- the ontological argument is sound!"), a specification
+("Great God in Boots! -- the ontological argument is sound!"), a specification
 which exists is certainly more significant than one which does not; and there
 is nothing to choose between two specifications, neither of which exists.
 
