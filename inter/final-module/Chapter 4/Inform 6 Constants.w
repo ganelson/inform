@@ -300,7 +300,10 @@ void I6TargetConstants::compile_literal_number(code_generator *gtr,
 void I6TargetConstants::compile_literal_real(code_generator *gtr,
 	code_generation *gen, text_stream *textual) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("$%S", textual);
+	if ((Str::get_first_char(textual) != '-') && (Str::get_first_char(textual) != '+'))
+		WRITE("$+%S", textual);
+	else
+		WRITE("$%S", textual);
 }
 
 @ Dictionary words -- those used in the command parser grammar -- are written in
