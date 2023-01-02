@@ -1253,7 +1253,10 @@ int Ramification::break_for_statements(inter_schema_node *par, inter_schema_node
 					if (bl == 0) @<End a for loop header clause@>;
 				} else if (bl == 1) {
 					if (n->ist_type == COLON_ISTT) @<End a for loop header clause@>
-					else {
+					else if (n->ist_type == DCOLON_ISTT) {
+						@<End a for loop header clause@>;
+						@<End a for loop header clause@>;
+					} else {
 						if (from[cw] == NULL) from[cw] = n;
 					}
 				}
@@ -1897,6 +1900,8 @@ int Ramification::sanity_check(inter_schema_node *par, inter_schema_node *isn) {
 						break;
 					}
 					case COLON_ISTT:		InterSchemas::throw_error(isn, I"unexpected ':'"); break;
+					case DCOLON_ISTT:		InterSchemas::throw_error(isn,
+												I"the Inform 6 '::' operator is unsupported"); break;
 					case OPERATOR_ISTT:		InterSchemas::throw_error(isn, I"unexpected operator"); break;
 				}
 				if ((t->ist_type == NUMBER_ISTT) && (t->next) &&

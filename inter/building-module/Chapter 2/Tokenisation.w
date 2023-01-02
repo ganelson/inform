@@ -611,6 +611,7 @@ language opcodes such as |@pull|.
 	if ((c1 == '&') && (c2 == '&')) digraph = TRUE;
 	if ((c1 == '|') && (c2 == '|')) digraph = TRUE;
 	if ((c1 == '>') && (c2 == '>')) digraph = TRUE;
+	if ((c1 == ':') && (c2 == ':')) digraph = TRUE;
 
 	if ((c1 == '-') && (c2 == '-') && (c3 == '>')) trigraph = TRUE;
 
@@ -783,6 +784,8 @@ but speed is not quite important enough to make it worthwhile.
 	if (Str::eq(T, I"{")) is = OPEN_BRACE_ISTT;
 	if (Str::eq(T, I"}")) is = CLOSE_BRACE_ISTT;
 	if (Str::eq(T, I";")) is = DIVIDER_ISTT;
+
+	if (Str::eq(T, I"::")) is = DCOLON_ISTT;
 
 	inter_ti x = I6Operators::notation_to_BIP(T);
 	if (x > 0) { is = OPERATOR_ISTT; which = x; }
