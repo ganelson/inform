@@ -38,9 +38,12 @@ These will be added to release notes when the release is made.
 	([commit 3ebcac0](https://github.com/ganelson/inform/commit/3ebcac0b5dc58e9754de6b2c8dd85fad719e4629))
 - Fix for Jira bug [I7-2235](https://inform7.atlassian.net/browse/I7-2235)
 	"List of action names ending with 23 bonus instances of waiting (i.e., action name 0)"
-	([commit ](https://github.com/ganelson/inform/commit/)): in fact those were
+	([commit b5c35fb](https://github.com/ganelson/inform/commit/b5c35fb98e6603d2f49c95e8031189a7dda1f0c8)): in fact those were
 	anonymous debugging actions from WorldModelKit, which are valid instances of
 	`action name` (and need to be for type safety reasons), but which were not
 	properly looped through or described. They now print as, e.g.,
-	`performing kit action ##ShowRelations`.
+	`performing kit action ##ShowRelations`. As a fringe benefit, of sorts, such
+	actions now appear in the logging output of the ACTIONS command (except for
+	the actions needed to switch ACTIONS on and off, which are deliberately
+	excluded from this since they only add confusion to the story transcript).
 - Cosmetic fixes not worth linking to (I7-2270, I7-2268)
