@@ -577,6 +577,10 @@ in other compilation units. So we create |action_id| equal just to 0 for now.
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	Produce::guard(ConstantInstruction::new(IBM, action_s,
 		InterTypes::unchecked(), InterValuePairs::number(10000), B, NULL));
+	inter_symbol *metadata_s = InterSymbolsTable::create_with_unique_name(
+		InterBookmark::scope(IBM), I"^double_sharp");
+	Produce::guard(ConstantInstruction::new(IBM, metadata_s,
+		InterTypes::unchecked(), InterValuePairs::symbolic(IBM, action_s), B, NULL));
 
 @ The Inter convention is that an action package should contain a function
 to carry it out; for |##ScriptOn|, this would be called |ScriptOnSub|. In fact

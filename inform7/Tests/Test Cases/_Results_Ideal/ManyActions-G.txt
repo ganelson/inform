@@ -14,13 +14,17 @@ Atom Furnace
 Actions listing on.
 
 >[2] rules
+[performing kit action ##RulesOn]
 Rules tracing now switched on. Type "rules off" to switch it off again, or "rules all" to include even rules which do not apply.
+[performing kit action ##RulesOn - ended without result]
 
 [Rule "parse command rule" applies.]
 >[3] trace 2
 [Rule "declare everything initially unmentioned rule" applies.]
 [Rule "generate action rule" applies.]
+[performing kit action ##TraceLevel]
 [Parser tracing set to level 2.]
+[performing kit action ##TraceLevel - ended without result]
 
 [Rule "parse command rule" applies.]
 >[4] x20

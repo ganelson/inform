@@ -25,7 +25,9 @@
   [pointing at the left coconut half - ended without result]
   
   >[4] rules all
+  [performing kit action ##RulesAll]
   Rules tracing now switched to "all". Type "rules off" to switch it off again.
+  [performing kit action ##RulesAll - ended without result]
   
   [Rule "parse command rule" applies.]
   >[5] point at middle half

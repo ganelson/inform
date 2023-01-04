@@ -36,4 +36,11 @@ These will be added to release notes when the release is made.
 - Fix for Jira bug [I7-2247](https://inform7.atlassian.net/browse/I7-2247)
 	"Internal error 'unowned' when using 'Understand'"
 	([commit 3ebcac0](https://github.com/ganelson/inform/commit/3ebcac0b5dc58e9754de6b2c8dd85fad719e4629))
+- Fix for Jira bug [I7-2235](https://inform7.atlassian.net/browse/I7-2235)
+	"List of action names ending with 23 bonus instances of waiting (i.e., action name 0)"
+	([commit ](https://github.com/ganelson/inform/commit/)): in fact those were
+	anonymous debugging actions from WorldModelKit, which are valid instances of
+	`action name` (and need to be for type safety reasons), but which were not
+	properly looped through or described. They now print as, e.g.,
+	`performing kit action ##ShowRelations`.
 - Cosmetic fixes not worth linking to (I7-2270, I7-2268)
