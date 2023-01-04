@@ -9381,7 +9381,7 @@
         <action-pattern-past-negated> 
           (hits 0/978) constraint DS = {18} extremes [4, infinity)
 
-<action-pattern> hits 558/21394 nti 6 constraint (none) extremes [1, infinity)
+<action-pattern> hits 558/21424 nti 6 constraint (none) extremes [1, infinity)
     English:
         asking <s-ap-parameter> to try <ap-three-present> 
           (hits 0/1005) constraint DS = {6} extremes [5, infinity)
@@ -9394,9 +9394,9 @@
         trying <ap-three-present> 
           (hits 0/2266) constraint DS = {6} extremes [2, infinity)
         <ap-three-present> 
-          (hits 60/10264) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 60/10279) (matched long text) constraint (none) extremes [1, infinity)
         <actor-description> <ap-three-present> 
-          (hits 65/5437) (matched long text) constraint (none) extremes [2, infinity)
+          (hits 65/5439) (matched long text) constraint (none) extremes [2, infinity)
 
 <we-are-action-pattern> hits 27/2756 nti 19 constraint (none) extremes [1, infinity)
     English:
@@ -9474,9 +9474,9 @@
         we have not <ap-three-past> 
           (hits 0/978) constraint DS = {18} extremes [4, infinity)
 
-<actor-description> internal hits 94/13126 nti 9 constraint (none) extremes [1, infinity)
+<actor-description> internal hits 94/13130 nti 9 constraint (none) extremes [1, infinity)
 
-<ap-three-present> internal hits 585/24338 nti 10 constraint (none) extremes [1, infinity)
+<ap-three-present> internal hits 585/24368 nti 10 constraint (none) extremes [1, infinity)
 
 <ap-three-past> internal nti 11 constraint (none) extremes [1, infinity)
 
@@ -9692,6 +9692,8 @@
     English:
         <action-name> 
           (hits 150/165) (matched: 'requesting the story file version') constraint (none) extremes [1, infinity)
+        <action-pattern> 
+          (hits 0/15) constraint (none) extremes [1, infinity)
         <s-descriptive-type-expression> 
           (hits 15/15) (matched: 'the statue') constraint (none) extremes [1, infinity)
         <s-variable> 
