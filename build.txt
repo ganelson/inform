@@ -1,3 +1,3 @@
 Prerelease: beta
-Build Date: 4 January 2023
-Build Number: 6W06
+Build Date: 5 January 2023
+Build Number: 6W07

@@ -113,7 +113,8 @@ regular users: it would be quite slow to read in.
 	}
 	if (override == TRUE) @<Override the new definition with the existing one@>
 	else if (override == FALSE) @<Override the existing definition with the new one@>
-	else @<Throw an error for the duplication@>;
+	else if (InterSymbol::get_flag(rival_end, MAKE_NAME_UNIQUE_ISYMF) == FALSE)
+		@<Throw an error for the duplication@>;
 
 @ The following (unfortunately) has to do something subtle. We need the definition
 of |defn_name| to be the one in the main tree; that means |sidecar_end| has to have
@@ -168,6 +169,8 @@ the symbols table dictionary.
 		rival_end, Wiring::cable_end(rival_end));
 
 @<Throw an error for the duplication@> =
+	LOG("Rival definitions of '%S':\ntree: $3\nkit: $3\n",
+		defn_name, rival_end, Wiring::cable_end(S));
 	TEMPORARY_TEXT(E)
 	WRITE_TO(E,
 		"found a second definition of the name '%S' when loading '%S'",
