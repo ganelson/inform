@@ -156,7 +156,8 @@ compile a |Story_Author|.
 		new_line;
 		TEXT_TY_Say(Headline);
 		if (KIT_CONFIGURATION_BITMAP & STORY_AUTHOR_TCBIT) {
-			print " by "; TEXT_TY_Say(Story_Author);
+			print " ", (address) BY__WD, " ";
+			TEXT_TY_Say(Story_Author);
 		}
 		new_line;
 		VM_Describe_Release();

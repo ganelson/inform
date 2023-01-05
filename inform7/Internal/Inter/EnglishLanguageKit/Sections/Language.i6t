@@ -33,6 +33,7 @@ Constant AND3__WD       = 'and';
 Constant BUT1__WD       = 'but';
 Constant BUT2__WD       = 'except';
 Constant BUT3__WD       = 'but';
+Constant BY__WD         = 'by';
 Constant ME1__WD        = 'me';
 Constant ME2__WD        = 'myself';
 Constant ME3__WD        = 'self';
