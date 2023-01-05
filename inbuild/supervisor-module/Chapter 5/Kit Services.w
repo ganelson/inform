@@ -336,7 +336,7 @@ out I6T template files tidily.
 	int at_start = TRUE;
 	while (TRUE) {
 		@<Read next character from I6T stream@>;
-		if ((cr == 10) || (cr == 13)) break;
+		if ((cr == 10) || (cr == 13) || (cr == EOF)) break;
 		if ((at_start) && (Characters::is_space_or_tab(cr))) continue;
 		PUT_TO(argument, cr); at_start = FALSE;
 	}

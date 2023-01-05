@@ -37,9 +37,9 @@ These will be added to release notes when the release is made.
 - Fix for Jira bug [I7-2247](https://inform7.atlassian.net/browse/I7-2247)
 	"Internal error 'unowned' when using 'Understand'"
 	([commit 3ebcac0](https://github.com/ganelson/inform/commit/3ebcac0b5dc58e9754de6b2c8dd85fad719e4629))
-- Fix for Jira bug [I7-2139](https://inform7.atlassian.net/browse/I7-2139)
-	"Articles become part of relation name"
-	([commit 85110a9](https://github.com/ganelson/inform/commit/85110a981a3d2419b3778eb383408de122c301a8))
+- Fix for Jira bug [I7-2237](https://inform7.atlassian.net/browse/I7-2237)
+	"Inform hangs when reading a Neptune file in a kit with no final newline"
+	([commit ](https://github.com/ganelson/inform/commit/))
 - Fix for Jira bug [I7-2235](https://inform7.atlassian.net/browse/I7-2235)
 	"List of action names ending with 23 bonus instances of waiting (i.e., action name 0)"
 	([commit b5c35fb](https://github.com/ganelson/inform/commit/b5c35fb98e6603d2f49c95e8031189a7dda1f0c8)): in fact those were
@@ -53,6 +53,9 @@ These will be added to release notes when the release is made.
 - Fix for Jira bug [I7-2234](https://inform7.atlassian.net/browse/I7-2234)
 	"Non-heading @ sections not supported in template files"
 	(Inweb: [commit f2aaa32](https://github.com/ganelson/inweb/commit/f2aaa32479e14187679828e3e5696f5951b43b38))
+- Fix for Jira bug [I7-2139](https://inform7.atlassian.net/browse/I7-2139)
+	"Articles become part of relation name"
+	([commit 85110a9](https://github.com/ganelson/inform/commit/85110a981a3d2419b3778eb383408de122c301a8))
 - Fix for a "very old quirk of I7 where it generates a `story.gblorb.js` file for
 	the interpreter website, but the filename is a lie. It's the base64-encoding
 	of the `story.ulx` file, not the `story.gblorb`." (Andrew Plotkin, not from Jira)
