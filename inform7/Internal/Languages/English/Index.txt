@@ -157,11 +157,14 @@
 	SIX, and "[open door]" matches the name of any nearby door which is
 	currently open.
 %Index.Elements.To.Explanation2 = 
-	Names of objects are normally understood only when they are within sight,
-	but writing "any" lifts this restriction. So "[any person]" allows
-	every name of a person, wherever they happen to be.
+	Names of objects are normally understood only when they are in scope
+	(which roughly means: within sight), but writing "any" lifts this restriction.
+	So "[any person]" allows every name of a person, wherever they happen to be,
+	even if they are out of play and not found in any room.
 %Index.Elements.To.SameAs = same as "*1"
 %Index.Elements.To.Reversed = reversed
+%Index.Elements.To.Something =
+	an object which is in scope, which is almost always a thing but does not have to be
 
 %Index.Pages.Kinds.Title = Kinds Index
 %Index.Pages.Kinds.Caption = All the different sorts of value
