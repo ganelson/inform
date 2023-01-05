@@ -30,7 +30,7 @@ These will be added to release notes when the release is made.
 	actually a linker issue if multiple kits do this
 - Fix for Jira bug [I7-2255](https://inform7.atlassian.net/browse/I7-2255)
 	"Localization detail in Banner routine (uses preposition 'by' in English)"
-	([commit ](https://github.com/ganelson/inform/commit/)): the English word
+	([commit ce2b7ba](https://github.com/ganelson/inform/commit/ce2b7ba15b0431caf295316ee6c9fa4843c7251f)): the English word
 	`by` had been hard-wired, but is now printed using `BY__WD` instead, which
 	in English is declared as `'by'` but in Spanish could be `'por'`, or in
 	French `'par'`, for example
