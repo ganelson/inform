@@ -39,7 +39,7 @@ These will be added to release notes when the release is made.
 	([commit 3ebcac0](https://github.com/ganelson/inform/commit/3ebcac0b5dc58e9754de6b2c8dd85fad719e4629))
 - Fix for Jira bug [I7-2237](https://inform7.atlassian.net/browse/I7-2237)
 	"Inform hangs when reading a Neptune file in a kit with no final newline"
-	([commit ](https://github.com/ganelson/inform/commit/))
+	([commit 1cd75d8](https://github.com/ganelson/inform/commit/1cd75d8a4946ba10636a8ec474aded9716fffe9b))
 - Fix for Jira bug [I7-2235](https://inform7.atlassian.net/browse/I7-2235)
 	"List of action names ending with 23 bonus instances of waiting (i.e., action name 0)"
 	([commit b5c35fb](https://github.com/ganelson/inform/commit/b5c35fb98e6603d2f49c95e8031189a7dda1f0c8)): in fact those were
