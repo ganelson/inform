@@ -51,11 +51,15 @@ which holds I6 annotations in the sense of Inform evolution proposal IE-0006.
 Note that these are not Inter annotations, which apply to symbols: these apply
 to directives.
 
+4.0.0 (7 January 2023) added new type constructor codes to make it possible to
+represent new data structures with custom kind constructors from Neptune files
+in Inform kits.
+
 @ Anyway, the implementation, such as it is:
 
 =
 semantic_version_number InterVersion::current(void) {
-	semantic_version_number V = VersionNumbers::from_text(I"3.0.0");
+	semantic_version_number V = VersionNumbers::from_text(I"4.0.0");
 	if (VersionNumbers::is_null(V)) internal_error("malformed version number");
 	return V;
 }

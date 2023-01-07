@@ -160,14 +160,37 @@ void RTKindDeclarations::declare_constructed_kind(cached_kind_declaration *dec) 
 	int arity = 0;
 	kind *operands[MAX_KIND_ARITY];
 	inter_ti icon = 0;
-	if (Kinds::get_construct(K) == CON_description)       @<Run out inter kind for description@>
-	else if (Kinds::get_construct(K) == CON_list_of)      @<Run out inter kind for list@>
-	else if (Kinds::get_construct(K) == CON_phrase)       @<Run out inter kind for phrase@>
-	else if (Kinds::get_construct(K) == CON_rule)         @<Run out inter kind for rule@>
-	else if (Kinds::get_construct(K) == CON_rulebook)     @<Run out inter kind for rulebook@>
-	else if (Kinds::get_construct(K) == CON_table_column) @<Run out inter kind for column@>
-	else if (Kinds::get_construct(K) == CON_relation)     @<Run out inter kind for relation@>
-	else if (Kinds::get_construct(K) == CON_activity)     @<Run out inter kind for activity@>
+	kind_constructor *kc = Kinds::get_construct(K);
+	if (kc == CON_description)       @<Run out inter kind for description@>
+	else if (kc == CON_list_of)      @<Run out inter kind for list@>
+	else if (kc == CON_phrase)       @<Run out inter kind for phrase@>
+	else if (kc == CON_rule)         @<Run out inter kind for rule@>
+	else if (kc == CON_rulebook)     @<Run out inter kind for rulebook@>
+	else if (kc == CON_table_column) @<Run out inter kind for column@>
+	else if (kc == CON_relation)     @<Run out inter kind for relation@>
+	else if (kc == CON_activity)     @<Run out inter kind for activity@>
+	else if ((KindConstructors::arity(kc) == 1)
+			 && (KindConstructors::variance(kc, 0) == COVARIANT))
+                                     @<Run out inter kind for generic covariant unary@>
+	else if ((KindConstructors::arity(kc) == 1)
+			 && (KindConstructors::variance(kc, 0) == CONTRAVARIANT))
+                                     @<Run out inter kind for generic contravariant unary@>
+	else if ((KindConstructors::arity(kc) == 2)
+			 && (KindConstructors::variance(kc, 0) == COVARIANT)
+			 && (KindConstructors::variance(kc, 1) == COVARIANT))
+                                     @<Run out inter kind for generic cov-cov binary@>
+	else if ((KindConstructors::arity(kc) == 2)
+			 && (KindConstructors::variance(kc, 0) == COVARIANT)
+			 && (KindConstructors::variance(kc, 1) == CONTRAVARIANT))
+                                     @<Run out inter kind for generic cov-con binary@>
+	else if ((KindConstructors::arity(kc) == 2)
+			 && (KindConstructors::variance(kc, 0) == CONTRAVARIANT)
+			 && (KindConstructors::variance(kc, 1) == COVARIANT))
+                                     @<Run out inter kind for generic con-cov binary@>
+	else if ((KindConstructors::arity(kc) == 2)
+			 && (KindConstructors::variance(kc, 0) == CONTRAVARIANT)
+			 && (KindConstructors::variance(kc, 1) == CONTRAVARIANT))
+                                     @<Run out inter kind for generic con-con binary@>
 	else {
 		LOG("Unfortunate kind is: %u\n", K);
 		internal_error("unable to represent kind in inter");
@@ -226,3 +249,33 @@ void RTKindDeclarations::declare_constructed_kind(cached_kind_declaration *dec) 
 	Kinds::binary_construction_material(K, &X, &Y);
 	operands[0] = Kinds::binary_con(CON_phrase, X, Y);
 	icon = RULEBOOK_ITCONC;
+
+@<Run out inter kind for generic covariant unary@> =
+	arity = 1;
+	operands[0] = Kinds::unary_construction_material(K);
+	icon = UNARY_COV_ITCONC;
+
+@<Run out inter kind for generic contravariant unary@> =
+	arity = 1;
+	operands[0] = Kinds::unary_construction_material(K);
+	icon = UNARY_CON_ITCONC;
+
+@<Run out inter kind for generic cov-cov binary@> =
+	arity = 2;
+	Kinds::binary_construction_material(K, &operands[0], &operands[1]);
+	icon = BINARY_COV_COV_ITCONC;
+
+@<Run out inter kind for generic cov-con binary@> =
+	arity = 2;
+	Kinds::binary_construction_material(K, &operands[0], &operands[1]);
+	icon = BINARY_COV_CON_ITCONC;
+
+@<Run out inter kind for generic con-cov binary@> =
+	arity = 2;
+	Kinds::binary_construction_material(K, &operands[0], &operands[1]);
+	icon = BINARY_CON_COV_ITCONC;
+
+@<Run out inter kind for generic con-con binary@> =
+	arity = 2;
+	Kinds::binary_construction_material(K, &operands[0], &operands[1]);
+	icon = BINARY_CON_CON_ITCONC;

@@ -34,6 +34,14 @@ invalidate existing Inter binary files, necessitating a bump of //The Inter Vers
 @e RULE_ITCONC
 @e RULEBOOK_ITCONC
 @e EQUATED_ITCONC
+
+@e UNARY_COV_ITCONC
+@e UNARY_CON_ITCONC
+@e BINARY_COV_COV_ITCONC
+@e BINARY_COV_CON_ITCONC
+@e BINARY_CON_COV_ITCONC
+@e BINARY_CON_CON_ITCONC
+
 @e VOID_ITCONC
 
 @d MIN_INTER_TYPE_CONSTRUCTOR UNCHECKED_ITCONC
@@ -87,6 +95,12 @@ void InterTypes::initialise_constructors(void) {
 	InterTypes::init_con(RULE_ITCONC,        I"rule",        -2147483648, 2147483647, FALSE, FALSE, 2);
 	InterTypes::init_con(RULEBOOK_ITCONC,    I"rulebook",    -2147483648, 2147483647, FALSE, FALSE, 1);
 	InterTypes::init_con(EQUATED_ITCONC,     I"",            -2147483648, 2147483647, FALSE, FALSE, 1);
+	InterTypes::init_con(UNARY_COV_ITCONC,   I"unary-cov",   -2147483648, 2147483647, FALSE, FALSE, 1);
+	InterTypes::init_con(UNARY_CON_ITCONC,   I"unary-con",   -2147483648, 2147483647, FALSE, FALSE, 1);
+	InterTypes::init_con(BINARY_COV_COV_ITCONC, I"binary-cov-cov", -2147483648, 2147483647, FALSE, FALSE, 2);
+	InterTypes::init_con(BINARY_COV_CON_ITCONC, I"binary-cov-con", -2147483648, 2147483647, FALSE, FALSE, 2);
+	InterTypes::init_con(BINARY_CON_COV_ITCONC, I"binary-con-cov", -2147483648, 2147483647, FALSE, FALSE, 2);
+	InterTypes::init_con(BINARY_CON_CON_ITCONC, I"binary-con-con", -2147483648, 2147483647, FALSE, FALSE, 2);
 	InterTypes::init_con(VOID_ITCONC,        I"void",                  1,          0, FALSE,  TRUE, 0);
 }
 
@@ -385,6 +399,7 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 	@<Parse relation syntax@>;
 	@<Parse rule or function syntax@>;
 	@<Parse struct syntax@>;
+	@<Parse generic unary or binary syntax@>;
 	@<Parse bare constructor-name syntax@>;
 	@<Parse bare typename syntax@>;
 
@@ -507,6 +522,74 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 		}
 		Regexp::dispose_of(&mr);
 		return returned_E;
+	}
+
+@<Parse generic unary or binary syntax@> =
+	if (Regexp::match(&mr, text, L"unary-cov (%C+)")) {
+		results->constructor_code = UNARY_COV_ITCONC;
+		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
+		InterTypes::add_operand_to_isstd(results, T, conts_type);
+		Regexp::dispose_of(&mr);
+		return E;
+	}
+	if (Regexp::match(&mr, text, L"unary-con (%C+)")) {
+		results->constructor_code = UNARY_CON_ITCONC;
+		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
+		InterTypes::add_operand_to_isstd(results, T, conts_type);
+		Regexp::dispose_of(&mr);
+		return E;
+	}
+	if (Regexp::match(&mr, text, L"binary-cov-cov (%C+) and (%C+)")) {
+		results->constructor_code = BINARY_COV_COV_ITCONC;
+		inter_type X_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
+		InterTypes::add_operand_to_isstd(results, T, X_type);
+		if (E == NULL) {
+			inter_type Y_type = InterTypes::parse_simple(T, eloc, mr.exp[1], &E);
+			InterTypes::add_operand_to_isstd(results, T, Y_type);
+		} else {
+			InterTypes::add_operand_to_isstd(results, T, InterTypes::unchecked());
+		}
+		Regexp::dispose_of(&mr);
+		return E;
+	}
+	if (Regexp::match(&mr, text, L"binary-cov-con (%C+) and (%C+)")) {
+		results->constructor_code = BINARY_COV_CON_ITCONC;
+		inter_type X_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
+		InterTypes::add_operand_to_isstd(results, T, X_type);
+		if (E == NULL) {
+			inter_type Y_type = InterTypes::parse_simple(T, eloc, mr.exp[1], &E);
+			InterTypes::add_operand_to_isstd(results, T, Y_type);
+		} else {
+			InterTypes::add_operand_to_isstd(results, T, InterTypes::unchecked());
+		}
+		Regexp::dispose_of(&mr);
+		return E;
+	}
+	if (Regexp::match(&mr, text, L"binary-con-cov (%C+) and (%C+)")) {
+		results->constructor_code = BINARY_CON_COV_ITCONC;
+		inter_type X_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
+		InterTypes::add_operand_to_isstd(results, T, X_type);
+		if (E == NULL) {
+			inter_type Y_type = InterTypes::parse_simple(T, eloc, mr.exp[1], &E);
+			InterTypes::add_operand_to_isstd(results, T, Y_type);
+		} else {
+			InterTypes::add_operand_to_isstd(results, T, InterTypes::unchecked());
+		}
+		Regexp::dispose_of(&mr);
+		return E;
+	}
+	if (Regexp::match(&mr, text, L"binary-con-con (%C+) and (%C+)")) {
+		results->constructor_code = BINARY_CON_CON_ITCONC;
+		inter_type X_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
+		InterTypes::add_operand_to_isstd(results, T, X_type);
+		if (E == NULL) {
+			inter_type Y_type = InterTypes::parse_simple(T, eloc, mr.exp[1], &E);
+			InterTypes::add_operand_to_isstd(results, T, Y_type);
+		} else {
+			InterTypes::add_operand_to_isstd(results, T, InterTypes::unchecked());
+		}
+		Regexp::dispose_of(&mr);
+		return E;
 	}
 
 @<Parse bare constructor-name syntax@> =
@@ -637,6 +720,18 @@ void InterTypes::write_type_longhand(OUTPUT_STREAM, inter_type type) {
 			}
 			break;
 		}
+		case UNARY_COV_ITCONC:
+		case UNARY_CON_ITCONC:
+			InterTypes::write_type(OUT, InterTypes::type_operand(type, 0));
+			break;
+		case BINARY_COV_COV_ITCONC:
+		case BINARY_CON_COV_ITCONC:
+		case BINARY_COV_CON_ITCONC:
+		case BINARY_CON_CON_ITCONC:
+			InterTypes::write_type(OUT, InterTypes::type_operand(type, 0));
+			WRITE(" and ");
+			InterTypes::write_type(OUT, InterTypes::type_operand(type, 0));
+			break;
 	}
 }
 
@@ -741,7 +836,13 @@ function arguments are contravariant.
 	inter_error_message *operand_E = NULL;
 	switch (A_itc->constructor_ID) {
 		case STRUCT_ITCONC:
-		case FUNCTION_ITCONC: {			
+		case FUNCTION_ITCONC:
+		case UNARY_COV_ITCONC:
+		case UNARY_CON_ITCONC:
+		case BINARY_COV_COV_ITCONC:
+		case BINARY_COV_CON_ITCONC:
+		case BINARY_CON_COV_ITCONC:
+		case BINARY_CON_CON_ITCONC: {			
 			inter_symbol *typename_A = A.type_name;
 			inter_symbol *typename_B = B.type_name;
 			if ((typename_A) && (typename_B)) {
@@ -751,6 +852,14 @@ function arguments are contravariant.
 				for (int i=0; i<arity; i++) {
 					int covariant = TRUE;
 					if ((A_itc->constructor_ID == FUNCTION_ITCONC) && (i<arity-1))
+						covariant = FALSE;
+					if (A_itc->constructor_ID == UNARY_CON_ITCONC)
+						covariant = FALSE;
+					if ((A_itc->constructor_ID == BINARY_CON_COV_ITCONC) && (i == 0))
+						covariant = FALSE;
+					if ((A_itc->constructor_ID == BINARY_COV_CON_ITCONC) && (i == 1))
+						covariant = FALSE;
+					if (A_itc->constructor_ID == BINARY_CON_CON_ITCONC)
 						covariant = FALSE;
 					if (covariant)
 						operand_E = InterTypes::can_be_used_as(InterTypes::type_operand(A, i),
