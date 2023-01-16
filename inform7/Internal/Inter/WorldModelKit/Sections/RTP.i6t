@@ -69,5 +69,8 @@ To issue run-time problem messages arising from the world model.
 		RTP_SCENEHASNTENDED:
 			print "The scene ", (PrintSceneName) par1,
 				" hasn't ended, so you can't ask when it did.^";
+		RTP_HOLDINGISFORTHINGS:
+			print "Attempted to move ", (the) par1, " to ", (the) par2,
+				" but holding, wearing and carrying are for things only.^";
 	}
 ];

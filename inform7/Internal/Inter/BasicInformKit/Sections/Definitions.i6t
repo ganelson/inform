@@ -291,6 +291,7 @@ Constant RTP_RELATIONCHANGEIMPOSSIBLE = 66;
 Constant RTP_RELMINIMAL              = 67;
 Constant RTP_LISTSIZENEGATIVE        = 68;
 Constant RTP_REGIONSNOTADJACENT      = 69;
+Constant RTP_HOLDINGISFORTHINGS      = 70;
 
 @h Scope Searching Reasons.
 The parser makes use of a mechanism for searching through the objects currently

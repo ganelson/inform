@@ -85,16 +85,16 @@ a union of the others, and therefore includes incorporation.)
 				Calculus::Schemas::new("CarrierOf(*1)")),
 			BPTerms::new(infs_thing),
 			I"carries", I"is-carried-by",
-			Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
+			Calculus::Schemas::new("MakeHolderOf(*2,*1)"), NULL,
 			PreformUtilities::wording(<relation-names>, CARRYING_RELATION_NAME));
 	R_carrying->loop_parent_optimisation_proviso = "CarrierOf";
 	R_holding =
 		BinaryPredicates::make_pair(spatial_bp_family,
-			BPTerms::new_full(infs_person, NULL, EMPTY_WORDING,
-				Calculus::Schemas::new("HolderOf(*1)")),
+			BPTerms::new_full(infs_thing, NULL, EMPTY_WORDING,
+				Calculus::Schemas::new("RelationalHolderOf(*1)")),
 			BPTerms::new(infs_thing),
 			I"holds", I"is-held-by",
-			Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
+			Calculus::Schemas::new("MakeHolderOf(*2,*1)"), NULL,
 			PreformUtilities::wording(<relation-names>, HOLDING_RELATION_NAME));
 	/* can't be optimised, because parts are also held */
 	R_wearing =
@@ -202,6 +202,8 @@ int SpatialRelations::assert(bp_family *self, binary_predicate *bp,
 		@<Draw inferences using only the standard Spatial conventions@>;
 		if (bp == R_wearing)
 			@<Assert the worn and wearable properties@>;
+		if (bp == R_holding)
+			@<Assert the kind of the holder@>;
 		return TRUE;
 	}
 	if (I1 == NULL) {
@@ -274,6 +276,17 @@ special to make it work, so this doesn't seem worth the trouble.)
 		P_worn = EitherOrProperties::new_nameless(I"worn");
 	}
 	PropertyInferences::draw(item, P_worn, NULL);
+
+@ This unusual deduction is part of a mitigation for Jira issue I7-2220,
+which analysed inconsistencies in the implementation of the holding relation.
+Prior to this change, the terms of "X holds Y" were given the kinds thing and
+person respectively: i.e., Y was assumed to be a person. But this was in
+practice not always true. However, without that assumption, sentences like
+"Mr Smith holds the coin" do not automatically deduce that Mr Smith is a person.
+So the following hand-coded rule makes that deduction.
+
+@<Assert the kind of the holder@> =
+	Propositions::Abstract::assert_kind_of_instance(I0, K_person);
 
 @h Cursory description.
 

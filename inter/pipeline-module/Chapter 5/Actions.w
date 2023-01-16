@@ -31,7 +31,6 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	for (int i=0; i<InterNodeList::array_len(inv->action_nodes); i++) {
 		inter_package *pack =
 			PackageInstruction::at_this_head(inv->action_nodes->list[i].node);
-LOG("Spotted %d: $6\n", i, pack);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"action_id");
 		ConstantInstruction::set_constant(D, InterValuePairs::number((inter_ti) i));
 		D = Synoptic::get_optional_definition(pack, I"var_id");

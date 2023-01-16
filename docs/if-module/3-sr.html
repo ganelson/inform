@@ -164,16 +164,16 @@ a union of the others, and therefore includes incorporation.)
 <span class="plain-syntax">                </span><span class="identifier-syntax">Calculus::Schemas::new</span><span class="plain-syntax">(</span><span class="string-syntax">"CarrierOf(*1)"</span><span class="plain-syntax">)),</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">BPTerms::new</span><span class="plain-syntax">(</span><span class="identifier-syntax">infs_thing</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">I</span><span class="string-syntax">"carries"</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"is-carried-by"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Calculus::Schemas::new</span><span class="plain-syntax">(</span><span class="string-syntax">"MoveObject(*2,*1)"</span><span class="plain-syntax">), </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Calculus::Schemas::new</span><span class="plain-syntax">(</span><span class="string-syntax">"MakeHolderOf(*2,*1)"</span><span class="plain-syntax">), </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">PreformUtilities::wording</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;relation-names&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">CARRYING_RELATION_NAME</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">R_carrying</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">loop_parent_optimisation_proviso</span><span class="plain-syntax"> = </span><span class="string-syntax">"CarrierOf"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">R_holding</span><span class="plain-syntax"> =</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">BinaryPredicates::make_pair</span><span class="plain-syntax">(</span><span class="identifier-syntax">spatial_bp_family</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">BPTerms::new_full</span><span class="plain-syntax">(</span><span class="identifier-syntax">infs_person</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">Calculus::Schemas::new</span><span class="plain-syntax">(</span><span class="string-syntax">"HolderOf(*1)"</span><span class="plain-syntax">)),</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">BPTerms::new_full</span><span class="plain-syntax">(</span><span class="identifier-syntax">infs_thing</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">Calculus::Schemas::new</span><span class="plain-syntax">(</span><span class="string-syntax">"RelationalHolderOf(*1)"</span><span class="plain-syntax">)),</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">BPTerms::new</span><span class="plain-syntax">(</span><span class="identifier-syntax">infs_thing</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">I</span><span class="string-syntax">"holds"</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"is-held-by"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Calculus::Schemas::new</span><span class="plain-syntax">(</span><span class="string-syntax">"MoveObject(*2,*1)"</span><span class="plain-syntax">), </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Calculus::Schemas::new</span><span class="plain-syntax">(</span><span class="string-syntax">"MakeHolderOf(*2,*1)"</span><span class="plain-syntax">), </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">PreformUtilities::wording</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;relation-names&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">HOLDING_RELATION_NAME</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="comment-syntax"> can't be optimised, because parts are also held</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">R_wearing</span><span class="plain-syntax"> =</span>
@@ -289,6 +289,8 @@ same object in a container, a room or a region respectively.
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sr.html#SP4_4" class="named-paragraph-link"><span class="named-paragraph">Draw inferences using only the standard Spatial conventions</span><span class="named-paragraph-number">4.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">bp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">R_wearing</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-sr.html#SP4_5" class="named-paragraph-link"><span class="named-paragraph">Assert the worn and wearable properties</span><span class="named-paragraph-number">4.5</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">bp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">R_holding</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-sr.html#SP4_6" class="named-paragraph-link"><span class="named-paragraph">Assert the kind of the holder</span><span class="named-paragraph-number">4.6</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">I1</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
@@ -385,6 +387,22 @@ special to make it work, so this doesn't seem worth the trouble.)
 <span class="plain-syntax">        </span><span class="identifier-syntax">P_worn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EitherOrProperties::new_nameless</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"worn"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PropertyInferences::draw</span><span class="plain-syntax">(</span><span class="identifier-syntax">item</span><span class="plain-syntax">, </span><span class="identifier-syntax">P_worn</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sr.html#SP4">&#167;4</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4_6" class="paragraph-anchor"></a><b>&#167;4.6.  </b>This unusual deduction is part of a mitigation for Jira issue I7-2220,
+which analysed inconsistencies in the implementation of the holding relation.
+Prior to this change, the terms of "X holds Y" were given the kinds thing and
+person respectively: i.e., Y was assumed to be a person. But this was in
+practice not always true. However, without that assumption, sentences like
+"Mr Smith holds the coin" do not automatically deduce that Mr Smith is a person.
+So the following hand-coded rule makes that deduction.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert the kind of the holder</span><span class="named-paragraph-number">4.6</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">Propositions::Abstract::assert_kind_of_instance</span><span class="plain-syntax">(</span><span class="identifier-syntax">I0</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_person</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sr.html#SP4">&#167;4</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Cursory description. </b></p>

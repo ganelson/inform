@@ -60,6 +60,28 @@ case. So we return |thedark| as a typesafe but impossible value here.
 	return o;
 ];
 
+@h The holding relation.
+The following are essentially wrappers for |HolderOf| and |MoveObject|
+used by the relation "holding". The difficulty with using |HolderOf| in the
+definition of "holding" is that it allows the holder to be a room, whereas
+"X holds Y" requires both to be things. Similarly, |MoveObject| would fail
+to enforce this requirement.
+
+=
+[ RelationalHolderOf o;
+	o = HolderOf(o);
+	if (o ofclass K2_thing) return o;
+	return nothing;
+];
+
+[ MakeHolderOf F H;
+	if ((F ofclass K2_thing) &&
+		((H ofclass K5_container) || (H ofclass K8_person) || (H ofclass K6_supporter))) 
+		MoveObject(F, H);
+	else
+		RunTimeProblem(RTP_HOLDINGISFORTHINGS, F, H);
+];
+
 @h Climbing the Core Tree.
 |LocationOf| returns the room in which an object can be found, or |nothing|
 if it is out of play. Directions and regions are always out of play. Doors
@@ -203,13 +225,22 @@ Only people may carry, and something worn is not in this sense carried.
 	return nothing;
 ];
 
+[ MakeCarrierOf F H;
+	if ((F ofclass K2_thing) && (H ofclass K8_person)) {
+		give H ~worn;
+		MoveObject(F, H);
+	} else {
+		RunTimeProblem(RTP_HOLDINGISFORTHINGS, F, H);
+	}
+];
+
 @h Wearing Relation.
 Only people may wear.
 
 =
 [ WearerOf obj p;
 	p = parent(obj);
-	if (p && (p ofclass K8_person) && (obj has worn)) return p;
+	if (p && (p ofclass K8_person) && (obj ofclass K2_thing) && (obj has worn)) return p;
 	return nothing;
 ];
 
@@ -569,9 +600,13 @@ from play, then |worn| is removed.
 
 =
 [ WearObject X P opt;
-	if (X == false) rfalse;
-	if (X notin P) MoveObject(X, P, opt);
-	give X worn;
+	if (X == nothing) rfalse;
+	if ((X ofclass K2_thing) && (P ofclass K8_person)) {
+		if (X notin P) MoveObject(X, P, opt);
+		give X worn;
+	} else {
+		RunTimeProblem(RTP_HOLDINGISFORTHINGS, X, P);
+	}
 ];
 
 @h Map Connections.

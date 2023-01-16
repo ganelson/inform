@@ -344,7 +344,7 @@
             spatial&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            person&nbsp;&nbsp;&nbsp;&nbsp;
+            thing&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             thing

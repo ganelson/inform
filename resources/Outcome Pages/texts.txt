@@ -239,8 +239,8 @@ A list can only have 0 or more items, so writing something like 'change L to hav
 --> P69 - You can't test whether something is adjacent to a region
 The adjacency relation can only be tested for rooms, not whole regions at a time.
 
-# And now the pages which the application shows in response to various
-# contingencies.
+--> P70 - Holding, wearing and carrying are for things only
+Only objects which are things can take part in holding or carrying. For example, 'now the Viper Pit Room holds the snake' is incorrect because the Viper Pit Room, being a room, is not a thing. The eventual holder or wearer has to be not only a thing, but a special kind of thing: either a person, or a supporter, or a container.
 
 --> Error0 - Failed
 The application ran your source text through the Inform 7 compiler, as usual, but the compiler unexpectedly failed. This should not happen even if your source text is gibberish, so you may have uncovered a bug in the program.
