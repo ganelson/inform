@@ -240,7 +240,7 @@ A list can only have 0 or more items, so writing something like 'change L to hav
 The adjacency relation can only be tested for rooms, not whole regions at a time.
 
 --> P70 - Holding, wearing and carrying are for things only
-Only objects which are things can take part in holding or carrying. For example, 'now the Viper Pit Room holds the snake' is incorrect because the Viper Pit Room, being a room, is not a thing. The eventual holder or wearer has to be not only a thing, but a special kind of thing: either a person, or a supporter, or a container.
+Only things can be made to be held, carried or worn using 'now'; and in the case of wearing or carrying, the new wearer or carrier must be a person, while for holding, the new holder must be a room, a container, a supporter, or a person.
 
 --> Error0 - Failed
 The application ran your source text through the Inform 7 compiler, as usual, but the compiler unexpectedly failed. This should not happen even if your source text is gibberish, so you may have uncovered a bug in the program.

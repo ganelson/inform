@@ -344,10 +344,10 @@
             spatial&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            thing&nbsp;&nbsp;&nbsp;&nbsp;
+            --&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            thing
+            --
         </td>
     </tr>
     <tr>

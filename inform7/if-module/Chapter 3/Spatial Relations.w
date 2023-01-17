@@ -90,9 +90,10 @@ a union of the others, and therefore includes incorporation.)
 	R_carrying->loop_parent_optimisation_proviso = "CarrierOf";
 	R_holding =
 		BinaryPredicates::make_pair(spatial_bp_family,
-			BPTerms::new_full(infs_thing, NULL, EMPTY_WORDING,
-				Calculus::Schemas::new("RelationalHolderOf(*1)")),
-			BPTerms::new(infs_thing),
+			BPTerms::new_full(NULL, K_object, EMPTY_WORDING,
+				Calculus::Schemas::new("HolderOf(*1)")),
+			BPTerms::new_full(NULL, K_object, EMPTY_WORDING,
+				NULL),
 			I"holds", I"is-held-by",
 			Calculus::Schemas::new("MakeHolderOf(*2,*1)"), NULL,
 			PreformUtilities::wording(<relation-names>, HOLDING_RELATION_NAME));
@@ -287,6 +288,7 @@ So the following hand-coded rule makes that deduction.
 
 @<Assert the kind of the holder@> =
 	Propositions::Abstract::assert_kind_of_instance(I0, K_person);
+	Propositions::Abstract::assert_kind_of_instance(I1, K_thing);
 
 @h Cursory description.
 

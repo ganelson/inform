@@ -61,25 +61,21 @@ case. So we return |thedark| as a typesafe but impossible value here.
 ];
 
 @h The holding relation.
-The following are essentially wrappers for |HolderOf| and |MoveObject|
-used by the relation "holding". The difficulty with using |HolderOf| in the
-definition of "holding" is that it allows the holder to be a room, whereas
-"X holds Y" requires both to be things. Similarly, |MoveObject| would fail
-to enforce this requirement.
+The following is essentially a wrapper for |MoveObject| used by the relation
+"holding".
 
 =
-[ RelationalHolderOf o;
-	o = HolderOf(o);
-	if (o ofclass K2_thing) return o;
-	return nothing;
-];
-
 [ MakeHolderOf F H;
 	if ((F ofclass K2_thing) &&
-		((H ofclass K5_container) || (H ofclass K8_person) || (H ofclass K6_supporter))) 
+		(H ofclass K1_room or K5_container or K6_supporter or K8_person)) {
 		MoveObject(F, H);
-	else
+	} else if ((F ofclass K2_thing or K1_room or K3_direction or K9_region) || 
+		(H ofclass K2_thing or K1_room or K3_direction or K9_region)) {
 		RunTimeProblem(RTP_HOLDINGISFORTHINGS, F, H);
+	} else {
+		DetachPart(F);
+		move F to H;
+	}
 ];
 
 @h Climbing the Core Tree.
