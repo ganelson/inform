@@ -2,7 +2,7 @@
     "is": {
         "type": "kit",
         "title": "BasicInformKit",
-        "version": "10.2.0-beta+6W10"
+        "version": "10.2.0-beta+6W11"
     },
     "needs": [ {
         "unless": {

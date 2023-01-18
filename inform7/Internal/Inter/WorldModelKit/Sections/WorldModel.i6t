@@ -38,6 +38,7 @@ case. So we return |thedark| as a typesafe but impossible value here.
 =
 [ HolderOf o;
 	if (InitialSituation-->DONE_INIS == false) return thedark;
+	if (o ofclass K3_direction) return nothing;
 	if (o && (o.component_parent)) return o.component_parent;
 	if (o && (parent(o))) return parent(o);
 	return nothing;
