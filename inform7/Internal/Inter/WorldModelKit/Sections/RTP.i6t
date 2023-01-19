@@ -72,5 +72,8 @@ To issue run-time problem messages arising from the world model.
 		RTP_HOLDINGISFORTHINGS:
 			print "Attempted to move ", (the) par1, " to ", (the) par2,
 				" but holding, wearing and carrying are for things only.^";
+		RTP_DISALLOWEDREGIONCHANGE:
+			print "Attempted to move ", (the) par1, " to ", (the) par2,
+				" but only rooms and regions can change region.^";
 	}
 ];

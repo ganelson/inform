@@ -242,6 +242,9 @@ The adjacency relation can only be tested for rooms, not whole regions at a time
 --> P70 - Holding, wearing and carrying are for things only
 Only things can be made to be held, carried or worn using 'now'; and in the case of wearing or carrying, the new wearer or carrier must be a person, while for holding, the new holder must be a room, a container, a supporter, or a person.
 
+--> P71 - Only rooms and regions can change region
+If 'R' is the name of a region, then 'now X is in R' is only allowed in cases where 'X' is a room or another region. It's otherwise too vague where things are to move.
+
 --> Error0 - Failed
 The application ran your source text through the Inform 7 compiler, as usual, but the compiler unexpectedly failed. This should not happen even if your source text is gibberish, so you may have uncovered a bug in the program.
 <p>

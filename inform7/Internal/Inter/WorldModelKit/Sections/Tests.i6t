@@ -239,6 +239,9 @@ current room, or a named item.
  	if (t_0 ofclass K2_thing) {
  		print "location:"; ShowRLocation(noun, true); print "^";
  	}
+ 	if (t_0 ofclass K9_region) {
+ 		if (parent(t_0)) print "sub-region of: ", (the) parent(t_0), "^";
+ 	}
  	na = ShowMeKindDetails(false, na, t_0);
  	na = ShowMeInstanceDetails(false, na, t_0);
  	na = ShowMeKindDetails(true, na, t_0);

@@ -333,6 +333,7 @@ when moved.
 	if (F == nothing) return RunTimeProblem(RTP_CANTREMOVENOTHING);
 	if (F == player) return RunTimeProblem(RTP_CANTREMOVEPLAYER);
 	if (F ofclass K4_door) return RunTimeProblem(RTP_CANTREMOVEDOORS);
+	if (F ofclass K1_room) { SetRegionalContainment(F, nothing); return; }
 	if (IndirectlyContains(F, player)) return RunTimeProblem(RTP_CANTBEOFFSTAGE);
 	give F ~worn; DetachPart(F);
 	if (F ofclass K7_backdrop) give F absent;
@@ -721,7 +722,7 @@ must either completely contain another region, or else have no overlap with it.)
 		rfalse;
 	}
 	if (obj ofclass K9_region) {
-		o = obj;
+		o = parent(obj);
 	} else {
 		if (~~(obj ofclass K1_room)) obj = LocationOf(obj);
 		if (obj == nothing) rfalse;
@@ -732,6 +733,22 @@ must either completely contain another region, or else have no overlap with it.)
 		o = parent(o);
 	}
 	rfalse;
+];
+
+[ SetRegionalContainment obj region o;
+	if ((obj ofclass K1_room) && ((region ofclass K9_region) || (region == nothing))) {
+		obj.map_region = region;
+	} else if ((obj ofclass K9_region) &&
+		((region ofclass K9_region) || (region == nothing))) {
+		o = region;
+		while (o) {
+			if (o == obj) return RunTimeProblem(RTP_DISALLOWEDREGIONCHANGE, obj, region);
+			o = parent(o);
+		}
+		move obj to region;
+	} else if (TestRegionalContainment(obj, region) == false) {
+		RunTimeProblem(RTP_DISALLOWEDREGIONCHANGE, obj, region);
+	}
 ];
 
 @h Doors.
