@@ -374,9 +374,9 @@ is irregular because it differs from "something" and "someone".)
 	#ifdef IF_MODULE
 	pcalc_prop *k_atom = Propositions::composited_kind(object_phrase_prop);
 	if ((k_atom) && (Kinds::eq(KindPredicates::get_kind(k_atom), K_room)) &&
-		(verb_phrase_relation == R_equality) && (room_containment_predicate)) {
+		(verb_phrase_relation == R_equality) && (R_room_containment)) {
 		KindPredicates::set_composited(k_atom, FALSE);
-		verb_phrase_relation = BinaryPredicates::get_reversal(room_containment_predicate);
+		verb_phrase_relation = BinaryPredicates::get_reversal(R_room_containment);
 		LOGIF(PREDICATE_CALCULUS, "[%d] Decompositing object: $D\n",
 			conv_log_depth, object_phrase_prop);
 	}

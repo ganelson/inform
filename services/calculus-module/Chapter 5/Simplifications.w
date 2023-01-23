@@ -1187,7 +1187,7 @@ pcalc_prop *Simplifications::everywhere_and_nowhere(pcalc_prop *prop, int *chang
 			(bp_atom->arity == 2)) {
 			binary_predicate *bp = RETRIEVE_POINTER_binary_predicate(bp_atom->predicate);
 			if (((Atoms::is_nonexistence_quantifier(q_atom) == FALSE) && (bp == R_containment)) ||
-				(bp == room_containment_predicate)) {
+				(bp == R_room_containment)) {
 				int j, v = k_atom->terms[0].variable;
 				for (j=0; j<2; j++) {
 					if ((bp_atom->terms[1-j].variable == v) && (v >= 0)) {

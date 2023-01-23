@@ -88,6 +88,14 @@ The following is essentially a wrapper for |MoveObject| used by the relation
 	}
 ];
 
+[ MakeRoomContainerOf F H;
+	if ((F ofclass K2_thing) && (H ofclass K1_room)) {
+		MoveObject(F, H);
+	} else {
+		RunTimeProblem(RTP_HOLDINGISFORTHINGS, F, H);
+	}
+];
+
 @h Climbing the Core Tree.
 |LocationOf| returns the room in which an object can be found, or |nothing|
 if it is out of play. Directions and regions are always out of play. Doors
@@ -283,13 +291,17 @@ attaching it: it cannot, of course, be the core of the resulting object.
 ];
 
 [ MakePart P Of First;
-	if (P == player) return RunTimeProblem(RTP_CANTMAKEPART, Of);
-	if (parent(P)) remove P; give P ~worn;
-	if (Of == nothing) { DetachPart(P); return; }
-	if (P.component_parent) DetachPart(P);
-	P.component_parent = Of;
-	First = Of.component_child;
-	Of.component_child = P; P.component_sibling = First;
+	if ((P ofclass K2_thing) && ((Of == nothing) || (Of ofclass K2_thing))) {
+		if (P == player) return RunTimeProblem(RTP_CANTMAKEPART, Of);
+		if (parent(P)) remove P; give P ~worn;
+		if (Of == nothing) { DetachPart(P); return; }
+		if (P.component_parent) DetachPart(P);
+		P.component_parent = Of;
+		First = Of.component_child;
+		Of.component_child = P; P.component_sibling = First;
+	} else {
+		RunTimeProblem(RTP_HOLDINGISFORTHINGS, P, Of);
+	}
 ];
 
 [ DetachPart P From Daddy O;

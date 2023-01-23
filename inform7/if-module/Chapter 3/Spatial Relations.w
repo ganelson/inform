@@ -12,7 +12,7 @@ binary_predicate *R_incorporation = NULL;
 binary_predicate *R_carrying = NULL;
 binary_predicate *R_holding = NULL;
 binary_predicate *R_wearing = NULL;
-binary_predicate *room_containment_predicate = NULL;
+binary_predicate *R_room_containment = NULL;
 
 /* indirect spatial relationships */
 binary_predicate *R_visibility = NULL;
@@ -92,8 +92,7 @@ a union of the others, and therefore includes incorporation.)
 		BinaryPredicates::make_pair(spatial_bp_family,
 			BPTerms::new_full(NULL, K_object, EMPTY_WORDING,
 				Calculus::Schemas::new("HolderOf(*1)")),
-			BPTerms::new_full(NULL, K_object, EMPTY_WORDING,
-				NULL),
+			BPTerms::new_full(NULL, K_object, EMPTY_WORDING, NULL),
 			I"holds", I"is-held-by",
 			Calculus::Schemas::new("MakeHolderOf(*2,*1)"), NULL,
 			PreformUtilities::wording(<relation-names>, HOLDING_RELATION_NAME));
@@ -117,15 +116,15 @@ a union of the others, and therefore includes incorporation.)
 			PreformUtilities::wording(<relation-names>, POSSESSION_RELATION_NAME));
 	a_has_b_predicate->loop_parent_optimisation_proviso = "OwnerOf";
 	BinaryPredicates::set_index_details(a_has_b_predicate, "person", "thing");
-	room_containment_predicate =
+	R_room_containment =
 		BinaryPredicates::make_pair(spatial_bp_family,
 			BPTerms::new_full(infs_room, NULL, EMPTY_WORDING,
 				Calculus::Schemas::new("LocationOf(*1)")),
-			BPTerms::new(infs_thing),
+			BPTerms::new_full(NULL, K_object, EMPTY_WORDING, NULL),
 			I"is-room-of", I"is-in-room",
-			Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
+			Calculus::Schemas::new("MakeRoomContainerOf(*2,*1)"), NULL,
 			PreformUtilities::wording(<relation-names>, ROOM_CONTAINMENT_RELATION_NAME));
-	room_containment_predicate->loop_parent_optimisation_proviso = "LocationOf";
+	R_room_containment->loop_parent_optimisation_proviso = "LocationOf";
 
 @ Visibility, touchability, concealment and enclosure: all relations which
 can be tested at run-time, but which can't be asserted or made true or false.
