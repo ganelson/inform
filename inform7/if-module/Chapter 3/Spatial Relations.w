@@ -68,7 +68,7 @@ a union of the others, and therefore includes incorporation.)
 				Calculus::Schemas::new("SupporterOf(*1)")),
 			BPTerms::new(infs_thing),
 			I"supports", I"is-on",
-			Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
+			Calculus::Schemas::new("MakeSupporterOf(*2,*1)"), NULL,
 			PreformUtilities::wording(<relation-names>, SUPPORT_RELATION_NAME));
 	R_support->loop_parent_optimisation_proviso = "SupporterOf";
 	R_incorporation =
@@ -85,7 +85,7 @@ a union of the others, and therefore includes incorporation.)
 				Calculus::Schemas::new("CarrierOf(*1)")),
 			BPTerms::new(infs_thing),
 			I"carries", I"is-carried-by",
-			Calculus::Schemas::new("MakeHolderOf(*2,*1)"), NULL,
+			Calculus::Schemas::new("MakeCarrierOf(*2,*1)"), NULL,
 			PreformUtilities::wording(<relation-names>, CARRYING_RELATION_NAME));
 	R_carrying->loop_parent_optimisation_proviso = "CarrierOf";
 	R_holding =

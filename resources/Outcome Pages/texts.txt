@@ -245,6 +245,9 @@ Only things can be made to be held, carried or worn using 'now'; and in the case
 --> P71 - Only rooms and regions can change region
 If 'R' is the name of a region, then 'now X is in R' is only allowed in cases where 'X' is a room or another region. It's otherwise too vague where things are to move.
 
+--> P72 - Not a supporter
+'now X is on S', or 'now S supports X', is only allowed in cases where 'X' is a thing and 'S' is a supporter.
+
 --> Error0 - Failed
 The application ran your source text through the Inform 7 compiler, as usual, but the compiler unexpectedly failed. This should not happen even if your source text is gibberish, so you may have uncovered a bug in the program.
 <p>

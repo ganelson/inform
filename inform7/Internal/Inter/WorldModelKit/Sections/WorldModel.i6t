@@ -33,14 +33,22 @@ because that would make it true that
 =
 and similar conditions -- thus, it would appear that in the immediate past
 the player had been on the holder of the player, which is not in fact the
-case. So we return |thedark| as a typesafe but impossible value here.
+case.
 
 =
 [ HolderOf o;
-	if (InitialSituation-->DONE_INIS == false) return thedark;
-	if (o ofclass K3_direction) return nothing;
-	if (o && (o.component_parent)) return o.component_parent;
-	if (o && (parent(o))) return parent(o);
+	if (InitialSituation-->DONE_INIS == false) {
+		if (o == InitialSituation-->PLAYER_OBJECT_INIS) {
+			if (InitialSituation-->START_OBJECT_INIS)
+				return InitialSituation-->START_OBJECT_INIS;
+			return InitialSituation-->START_ROOM_INIS;
+		}
+	}
+	if (o) {
+		if (o ofclass K3_direction) return nothing;
+		if ((o provides component_parent) && (o.component_parent)) return o.component_parent;
+		return parent(o);
+	}
 	return nothing;
 ];
 
@@ -121,14 +129,18 @@ of |CommonAncestor| from the I6 library, adapted to work on the core tree.)
 ];
 
 [ IndirectlyContains o1 o2;
-	if ((o1 == nothing) || (o2 == nothing)) rfalse;
-	if ((o1 ofclass K1_room) && (o2 ofclass K4_door)) {
-		if (o1 == FrontSideOfDoor(o2)) rtrue;
-		if (o1 == BackSideOfDoor(o2)) rtrue;
-		rfalse;
+	if (o1) {
+		while (o2) {
+			if ((o1 ofclass K1_room) && (o2 ofclass K4_door)) {
+				if (o1 == FrontSideOfDoor(o2)) rtrue;
+				if (o1 == BackSideOfDoor(o2)) rtrue;
+				rfalse;
+			}
+			if (o2 ofclass K7_backdrop) rfalse;
+			o2 = HolderOf(o2);
+			if (o2 == o1) rtrue;
+		}
 	}
-	if (o2 ofclass K7_backdrop) rfalse;
-	for (o2 = HolderOf(o2) : o2 && o2 ~= thedark : o2 = HolderOf(o2)) if (o2 == o1) rtrue;
 	rfalse;
 ];
 
@@ -210,6 +222,14 @@ This then is simpler, with no need for an iterator governing searches.
 	if (p == nothing) return nothing;
 	if (p ofclass K6_supporter) return p;
 	return nothing;
+];
+
+[ MakeSupporterOf F H;
+	if ((F ofclass K2_thing) && (H ofclass K6_supporter)) {
+		MoveObject(F, H);
+	} else {
+		RunTimeProblem(RTP_HOLDINGISFORTHINGS, F, H);
+	}
 ];
 
 @h Carrying Relation.
@@ -713,21 +733,25 @@ must either completely contain another region, or else have no overlap with it.)
 =
 [ TestRegionalContainment obj region o;
 	if ((obj == nothing) || (region == nothing)) rfalse;
-	if (obj ofclass K7_backdrop or K4_door) {
-		if (obj has absent) rfalse;
-		objectloop (o ofclass K1_room)
-			if (TestRegionalContainment(o, region))
-				if (BackdropLocation(obj, o))
-					rtrue;
-		rfalse;
-	}
+	! Set o to the region of the room containing obj
 	if (obj ofclass K9_region) {
 		o = parent(obj);
 	} else {
-		if (~~(obj ofclass K1_room)) obj = LocationOf(obj);
-		if (obj == nothing) rfalse;
+		while (~~(obj ofclass K1_room)) {
+			if (obj == nothing) rfalse;
+			if (obj ofclass K7_backdrop or K4_door) {
+				if (obj has absent) rfalse;
+				objectloop (o ofclass K1_room)
+					if (TestRegionalContainment(o, region))
+						if (BackdropLocation(obj, o))
+							rtrue;
+				rfalse;
+			}
+			obj = HolderOf(obj);
+		}
 		o = obj.map_region;
 	}
+	! Test whether region is, or indirectly contains, o
 	while (o) {
 		if (o == region) rtrue;
 		o = parent(o);

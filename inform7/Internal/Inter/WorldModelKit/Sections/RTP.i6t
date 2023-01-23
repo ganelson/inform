@@ -75,5 +75,8 @@ To issue run-time problem messages arising from the world model.
 		RTP_DISALLOWEDREGIONCHANGE:
 			print "Attempted to move ", (the) par1, " to ", (the) par2,
 				" but only rooms and regions can change region.^";
+		RTP_NOTASUPPORTER:
+			print "Attempted to put ", (the) par1, " on ", (the) par2,
+				" but that is not a supporter.^";
 	}
 ];

@@ -184,8 +184,8 @@ to behave predictably and without type-unsafe values entering code.)
 
 	if (player_to_be ~= player) { remove selfobj; ChangePlayer(player_to_be); }
 	else { real_location = location; SilentlyConsiderLight(); }
-
-	NOTE_OBJECT_ACQUISITIONS_R(); MoveFloatingObjects();
+	NOTE_OBJECT_ACQUISITIONS_R();
+	MoveFloatingObjects();
 
 	actor = player; act_requester = nothing; actors_location = real_location; action = ##Wait;
 
