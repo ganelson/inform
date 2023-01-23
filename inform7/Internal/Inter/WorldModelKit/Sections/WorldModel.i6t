@@ -78,11 +78,12 @@ The following is essentially a wrapper for |MoveObject| used by the relation
 	if ((F ofclass K2_thing) &&
 		(H ofclass K1_room or K5_container or K6_supporter or K8_person)) {
 		MoveObject(F, H);
+	} else if ((F ofclass K9_region) && (H ofclass K9_region)) {
+		MoveObject(F, H);	
 	} else if ((F ofclass K2_thing or K1_room or K3_direction or K9_region) || 
 		(H ofclass K2_thing or K1_room or K3_direction or K9_region)) {
 		RunTimeProblem(RTP_HOLDINGISFORTHINGS, F, H);
 	} else {
-		DetachPart(F);
 		move F to H;
 	}
 ];
