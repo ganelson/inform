@@ -88,6 +88,8 @@ a union of the others, and therefore includes incorporation.)
 			Calculus::Schemas::new("MakeCarrierOf(*2,*1)"), NULL,
 			PreformUtilities::wording(<relation-names>, CARRYING_RELATION_NAME));
 	R_carrying->loop_parent_optimisation_proviso = "CarrierOf";
+	R_carrying->task_functions[NOW_ATOM_FALSE_TASK] =
+		Calculus::Schemas::new("UncarryObject(*2,*1)");
 	R_holding =
 		BinaryPredicates::make_pair(spatial_bp_family,
 			BPTerms::new_full(NULL, K_object, EMPTY_WORDING,
@@ -106,6 +108,9 @@ a union of the others, and therefore includes incorporation.)
 			Calculus::Schemas::new("WearObject(*2,*1)"), NULL,
 			PreformUtilities::wording(<relation-names>, WEARING_RELATION_NAME));
 	R_wearing->loop_parent_optimisation_proviso = "WearerOf";
+	R_wearing->task_functions[NOW_ATOM_FALSE_TASK] =
+		Calculus::Schemas::new("UnwearObject(*2,*1)");
+
 	a_has_b_predicate =
 		BinaryPredicates::make_pair(spatial_bp_family,
 			BPTerms::new_full(NULL, NULL, EMPTY_WORDING,

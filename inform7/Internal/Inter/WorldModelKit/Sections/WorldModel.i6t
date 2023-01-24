@@ -260,10 +260,40 @@ Only people may carry, and something worn is not in this sense carried.
 	}
 ];
 
-@h Wearing Relation.
-Only people may wear.
+[ UncarryObject X P Q;
+	if (CarrierOf(X) == P) {
+		give X ~worn;
+		Q = HolderOf(P);
+		if (Q) {
+			move X to Q;
+		} else {
+			remove Q;
+		}
+	}
+];
+
+@h Wearing Clothes.
+An object X is worn by a person P if and only if (i) the object tree |parent|
+of X is P, and (ii) X has the |worn| attribute. In fact for I7 purposes we
+are careful to ensure that (ii) happens only when (i) does in any case:
+if X is moved in the object tree, or made a part of something, or removed
+from play, then |worn| is removed.
 
 =
+[ WearObject X P opt;
+	if (X == nothing) rfalse;
+	if ((X ofclass K2_thing) && (P ofclass K8_person)) {
+		if (X notin P) MoveObject(X, P, opt);
+		give X worn;
+	} else {
+		RunTimeProblem(RTP_HOLDINGISFORTHINGS, X, P);
+	}
+];
+
+[ UnwearObject X P;
+	if (WearerOf(X) == P) give X ~worn;
+];
+
 [ WearerOf obj p;
 	p = parent(obj);
 	if (p && (p ofclass K8_person) && (obj ofclass K2_thing) && (obj has worn)) return p;
@@ -620,24 +650,6 @@ that this routine also works for two-sided doors, despite its name.
 		}
 	}
 	return nothing;
-];
-
-@h Wearing Clothes.
-An object X is worn by a person P if and only if (i) the object tree |parent|
-of X is P, and (ii) X has the |worn| attribute. In fact for I7 purposes we
-are careful to ensure that (ii) happens only when (i) does in any case:
-if X is moved in the object tree, or made a part of something, or removed
-from play, then |worn| is removed.
-
-=
-[ WearObject X P opt;
-	if (X == nothing) rfalse;
-	if ((X ofclass K2_thing) && (P ofclass K8_person)) {
-		if (X notin P) MoveObject(X, P, opt);
-		give X worn;
-	} else {
-		RunTimeProblem(RTP_HOLDINGISFORTHINGS, X, P);
-	}
 ];
 
 @h Map Connections.

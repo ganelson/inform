@@ -65,7 +65,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">WorldModelKit</a></li><li><b>WorldModel Template</b></li></ul></div>
 <p class="purpose">Testing and changing the fundamental spatial relations.</p>
 
-<ul class="toc"><li><a href="S-wrl.html#SP1">&#167;1. The Core Tree</a></li><li><a href="S-wrl.html#SP2">&#167;2. The holding relation</a></li><li><a href="S-wrl.html#SP3">&#167;3. Climbing the Core Tree</a></li><li><a href="S-wrl.html#SP4">&#167;4. To Decide Whether In</a></li><li><a href="S-wrl.html#SP5">&#167;5. Containment Relation</a></li><li><a href="S-wrl.html#SP6">&#167;6. Support Relation</a></li><li><a href="S-wrl.html#SP7">&#167;7. Carrying Relation</a></li><li><a href="S-wrl.html#SP8">&#167;8. Wearing Relation</a></li><li><a href="S-wrl.html#SP9">&#167;9. Having Relation</a></li><li><a href="S-wrl.html#SP10">&#167;10. Making Parts</a></li><li><a href="S-wrl.html#SP11">&#167;11. Movements</a></li><li><a href="S-wrl.html#SP12">&#167;12. On Stage</a></li><li><a href="S-wrl.html#SP13">&#167;13. Moving the Player</a></li><li><a href="S-wrl.html#SP14">&#167;14. Move During Going</a></li><li><a href="S-wrl.html#SP15">&#167;15. Being Everywhere</a></li><li><a href="S-wrl.html#SP16">&#167;16. Testing Everywhere</a></li><li><a href="S-wrl.html#SP17">&#167;17. Changing the Player</a></li><li><a href="S-wrl.html#SP18">&#167;18. Floating Objects</a></li><li><a href="S-wrl.html#SP19">&#167;19. Backdrop Location</a></li><li><a href="S-wrl.html#SP20">&#167;20. Wearing Clothes</a></li><li><a href="S-wrl.html#SP21">&#167;21. Map Connections</a></li><li><a href="S-wrl.html#SP22">&#167;22. Adjacency Relation</a></li><li><a href="S-wrl.html#SP23">&#167;23. Regional Containment Relation</a></li><li><a href="S-wrl.html#SP24">&#167;24. Doors</a></li><li><a href="S-wrl.html#SP25">&#167;25. Visibility Relation</a></li><li><a href="S-wrl.html#SP26">&#167;26. Audibility Relation</a></li><li><a href="S-wrl.html#SP27">&#167;27. Touchability Relation</a></li><li><a href="S-wrl.html#SP28">&#167;28. Concealment Relation</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-wrl.html#SP1">&#167;1. The Core Tree</a></li><li><a href="S-wrl.html#SP2">&#167;2. The holding relation</a></li><li><a href="S-wrl.html#SP3">&#167;3. Climbing the Core Tree</a></li><li><a href="S-wrl.html#SP4">&#167;4. To Decide Whether In</a></li><li><a href="S-wrl.html#SP5">&#167;5. Containment Relation</a></li><li><a href="S-wrl.html#SP6">&#167;6. Support Relation</a></li><li><a href="S-wrl.html#SP7">&#167;7. Carrying Relation</a></li><li><a href="S-wrl.html#SP8">&#167;8. Wearing Clothes</a></li><li><a href="S-wrl.html#SP9">&#167;9. Having Relation</a></li><li><a href="S-wrl.html#SP10">&#167;10. Making Parts</a></li><li><a href="S-wrl.html#SP11">&#167;11. Movements</a></li><li><a href="S-wrl.html#SP12">&#167;12. On Stage</a></li><li><a href="S-wrl.html#SP13">&#167;13. Moving the Player</a></li><li><a href="S-wrl.html#SP14">&#167;14. Move During Going</a></li><li><a href="S-wrl.html#SP15">&#167;15. Being Everywhere</a></li><li><a href="S-wrl.html#SP16">&#167;16. Testing Everywhere</a></li><li><a href="S-wrl.html#SP17">&#167;17. Changing the Player</a></li><li><a href="S-wrl.html#SP18">&#167;18. Floating Objects</a></li><li><a href="S-wrl.html#SP19">&#167;19. Backdrop Location</a></li><li><a href="S-wrl.html#SP20">&#167;20. Map Connections</a></li><li><a href="S-wrl.html#SP21">&#167;21. Adjacency Relation</a></li><li><a href="S-wrl.html#SP22">&#167;22. Regional Containment Relation</a></li><li><a href="S-wrl.html#SP23">&#167;23. Doors</a></li><li><a href="S-wrl.html#SP24">&#167;24. Visibility Relation</a></li><li><a href="S-wrl.html#SP25">&#167;25. Audibility Relation</a></li><li><a href="S-wrl.html#SP26">&#167;26. Touchability Relation</a></li><li><a href="S-wrl.html#SP27">&#167;27. Concealment Relation</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. The Core Tree. </b>Whereas I6 traditionally has a simple object tree hierarchy for containment,
 support, carrying and so on, the I7 template also uses the <span class="extract"><span class="extract-syntax">component_*</span></span>
@@ -333,11 +333,41 @@ would get the wrong result when B is a region.
 <span class="plain-syntax">        </span><span class="identifier-syntax">RunTimeProblem</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTP_HOLDINGISFORTHINGS</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">H</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">UncarryObject</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">CarrierOf</span><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">) == </span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">give</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> ~</span><span class="identifier-syntax">worn</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> = </span><span class="identifier-syntax">HolderOf</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Q</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">move</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="reserved-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">remove</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Wearing Relation. </b>Only people may wear.
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Wearing Clothes. </b>An object X is worn by a person P if and only if (i) the object tree <span class="extract"><span class="extract-syntax">parent</span></span>
+of X is P, and (ii) X has the <span class="extract"><span class="extract-syntax">worn</span></span> attribute. In fact for I7 purposes we
+are careful to ensure that (ii) happens only when (i) does in any case:
+if X is moved in the object tree, or made a part of something, or removed
+from play, then <span class="extract"><span class="extract-syntax">worn</span></span> is removed.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">[ </span><span class="identifier-syntax">WearObject</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax"> </span><span class="identifier-syntax">opt</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">X</span><span class="plain-syntax"> == </span><span class="reserved-syntax">nothing</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="reserved-syntax">ofclass</span><span class="plain-syntax"> </span><span class="identifier-syntax">K2_thing</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">P</span><span class="plain-syntax"> </span><span class="reserved-syntax">ofclass</span><span class="plain-syntax"> </span><span class="identifier-syntax">K8_person</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="reserved-syntax">notin</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">) </span><span class="identifier-syntax">MoveObject</span><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">opt</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">give</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="identifier-syntax">worn</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">RunTimeProblem</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTP_HOLDINGISFORTHINGS</span><span class="plain-syntax">, </span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">UnwearObject</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WearerOf</span><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">) == </span><span class="identifier-syntax">P</span><span class="plain-syntax">) </span><span class="reserved-syntax">give</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> ~</span><span class="identifier-syntax">worn</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+
 <span class="plain-syntax">[ </span><span class="identifier-syntax">WearerOf</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> </span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="reserved-syntax">parent</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p</span><span class="plain-syntax"> &amp;&amp; (</span><span class="identifier-syntax">p</span><span class="plain-syntax"> </span><span class="reserved-syntax">ofclass</span><span class="plain-syntax"> </span><span class="identifier-syntax">K8_person</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">obj</span><span class="plain-syntax"> </span><span class="reserved-syntax">ofclass</span><span class="plain-syntax"> </span><span class="identifier-syntax">K2_thing</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">obj</span><span class="plain-syntax"> </span><span class="reserved-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">worn</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
@@ -701,25 +731,7 @@ that this routine also works for two-sided doors, despite its name.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="reserved-syntax">nothing</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Wearing Clothes. </b>An object X is worn by a person P if and only if (i) the object tree <span class="extract"><span class="extract-syntax">parent</span></span>
-of X is P, and (ii) X has the <span class="extract"><span class="extract-syntax">worn</span></span> attribute. In fact for I7 purposes we
-are careful to ensure that (ii) happens only when (i) does in any case:
-if X is moved in the object tree, or made a part of something, or removed
-from play, then <span class="extract"><span class="extract-syntax">worn</span></span> is removed.
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">WearObject</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax"> </span><span class="identifier-syntax">opt</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">X</span><span class="plain-syntax"> == </span><span class="reserved-syntax">nothing</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="reserved-syntax">ofclass</span><span class="plain-syntax"> </span><span class="identifier-syntax">K2_thing</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">P</span><span class="plain-syntax"> </span><span class="reserved-syntax">ofclass</span><span class="plain-syntax"> </span><span class="identifier-syntax">K8_person</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="reserved-syntax">notin</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">) </span><span class="identifier-syntax">MoveObject</span><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">opt</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">give</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="identifier-syntax">worn</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">RunTimeProblem</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTP_HOLDINGISFORTHINGS</span><span class="plain-syntax">, </span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">];</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Map Connections. </b><span class="extract"><span class="extract-syntax">MapConnection</span></span> returns the room which is in the given direction (as an object)
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Map Connections. </b><span class="extract"><span class="extract-syntax">MapConnection</span></span> returns the room which is in the given direction (as an object)
 from the given room: it is used, among other things, to test the "mapped east
 of" and similar relations. (The same relations are asserted true with
 <span class="extract"><span class="extract-syntax">AssertMapConnection</span></span> and false with <span class="extract"><span class="extract-syntax">AssertMapUnconnection</span></span>.)
@@ -800,7 +812,7 @@ but <span class="extract"><span class="extract-syntax">nothing</span></span> is 
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Adjacency Relation. </b>A relation between two rooms which, note, does not see connections through
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Adjacency Relation. </b>A relation between two rooms which, note, does not see connections through
 doors.
 </p>
 
@@ -815,7 +827,7 @@ doors.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Regional Containment Relation. </b>This tests whether an object with a definite physical location is in a
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Regional Containment Relation. </b>This tests whether an object with a definite physical location is in a
 given region. (For a two-sided door which straddles regions, the front side
 is what counts; for a backdrop, a direction or another region, the answer
 is always no.) We rely on the fact that every room object has a <span class="extract"><span class="extract-syntax">map_region</span></span>
@@ -870,7 +882,7 @@ must either completely contain another region, or else have no overlap with it.)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Doors. </b>There are two sorts of door: one-sided and two-sided.
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Doors. </b>There are two sorts of door: one-sided and two-sided.
 </p>
 
 <p class="commentary">A two-sided door is in two rooms at once: one is called the front side, the
@@ -917,7 +929,7 @@ I7's template it returns the direction object (<span class="extract"><span class
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Visibility Relation. </b>We use <span class="extract"><span class="extract-syntax">TestScope</span></span> to decide whether there is a line of sight from A to B;
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Visibility Relation. </b>We use <span class="extract"><span class="extract-syntax">TestScope</span></span> to decide whether there is a line of sight from A to B;
 it's a relation which cannot be asserted true or false.
 </p>
 
@@ -928,7 +940,7 @@ it's a relation which cannot be asserted true or false.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TestScope</span><span class="plain-syntax">(</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Audibility Relation. </b>For now, this is the same test as visibility except that it does not require
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Audibility Relation. </b>For now, this is the same test as visibility except that it does not require
 light to see by.
 </p>
 
@@ -941,7 +953,7 @@ light to see by.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">res</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. Touchability Relation. </b>We use <span class="extract"><span class="extract-syntax">ObjectIsUntouchable</span></span> to decide whether there is physical access from
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Touchability Relation. </b>We use <span class="extract"><span class="extract-syntax">ObjectIsUntouchable</span></span> to decide whether there is physical access from
 A to B; it's a relation which cannot be asserted true or false.
 </p>
 
@@ -956,7 +968,7 @@ A to B; it's a relation which cannot be asserted true or false.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. Concealment Relation. </b>An activity determines whether one object conceals another; it's a relation
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. Concealment Relation. </b>An activity determines whether one object conceals another; it's a relation
 which cannot be asserted true or false.
 </p>
 
