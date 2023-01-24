@@ -1,5 +1,5 @@
 :root {
-    color-scheme: light;
+    color-scheme: light dark;
     --element-banner-background-colour: #eeeeee;
     --heading-panel-background-colour: #eeeeee;
     --heading-panel-text-colour: #222222;
@@ -20,6 +20,30 @@
     --index-activity-contents-background-colour: #e8e0c0;
     --registry-contents-link-colour: #202020;
 
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --element-banner-background-colour: #444444;
+    --heading-panel-background-colour: #444444;
+    --heading-panel-text-colour: #ffffff;
+    --heading-panel-succeeded-background-colour: #738073;
+    --heading-panel-failed-background-colour: #7b4e53;
+
+    --heading-row-background-colour: #707070;
+    --stripe-one-background-colour: #7f7f7f;
+    --stripe-two-background-colour: #797b7d;
+
+    --index-dull-red-colour: #c00000;
+    --periodic-table-sidebar-colour: #555;
+    --periodic-table-sidebar-hover-colour: #222;
+    --leaders-background-colour: black;
+    --library-card-title-colour: #a05050;
+    --library-card-other-colour: #505050;
+    --index-more-box-background-colour: #444444;
+    --index-activity-contents-background-colour: #727060;
+    --registry-contents-link-colour: #ffffff;
+    }
 }
 
 /* The default font (family) and size */
