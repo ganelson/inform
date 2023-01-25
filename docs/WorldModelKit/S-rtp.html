@@ -100,7 +100,7 @@
 <span class="plain-syntax">        </span><span class="identifier-syntax">RTP_CANTBEOFFSTAGE</span><span class="plain-syntax">:</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"Attempt to move the player off-stage.^"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">RTP_CANTREMOVEDOORS</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"Attempt to remove a door from play.^"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"Attempt to move or remove a door.^"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">RTP_CANTCHANGEOFFSTAGE</span><span class="plain-syntax">:</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"Attempt to change the player to a person off-stage.^"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">RTP_BACKDROPONLY</span><span class="plain-syntax">:</span>
@@ -129,6 +129,8 @@
 <span class="plain-syntax">        </span><span class="identifier-syntax">RTP_NOTASUPPORTER</span><span class="plain-syntax">:</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"Attempted to put "</span><span class="plain-syntax">, (</span><span class="identifier-syntax">the</span><span class="plain-syntax">) </span><span class="identifier-syntax">par1</span><span class="plain-syntax">, </span><span class="string-syntax">" on "</span><span class="plain-syntax">, (</span><span class="identifier-syntax">the</span><span class="plain-syntax">) </span><span class="identifier-syntax">par2</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="string-syntax">" but that is not a supporter.^"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">RTP_BADCONTAINMENT</span><span class="plain-syntax">:</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"Attempted to put "</span><span class="plain-syntax">, (</span><span class="identifier-syntax">the</span><span class="plain-syntax">) </span><span class="identifier-syntax">par1</span><span class="plain-syntax">, </span><span class="string-syntax">" in "</span><span class="plain-syntax">, (</span><span class="identifier-syntax">the</span><span class="plain-syntax">) </span><span class="identifier-syntax">par2</span><span class="plain-syntax">, </span><span class="string-syntax">".^"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>

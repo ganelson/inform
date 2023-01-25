@@ -222,31 +222,34 @@ For example, if you defined "Application relates various devices to one thing. T
 The player is not allowed to be joined to other physical objects by being "part of" them, so it's not legal to try something like "now the player is part of the Oak Tree" or "now the player is the branch" (if the branch is indeed a person which is part of the Oak Tree).
 
 --> P64 - This use of '[text]' is too complicated
-The '[text]' token in Inform's grammar for 'Understand' has limitations. It has to be followed by a fixed wording, or be at the end of the line, in order to match. If you're seeing this as a run-time problem, you've probably done something cunningly indirect, but you've run into the problem all the same.
+The "[text]" token in Inform's grammar for "Understand" has limitations. It has to be followed by a fixed wording, or be at the end of the line, in order to match. If you're seeing this as a run-time problem, you've probably done something cunningly indirect, but you've run into the problem all the same.
 
 --> P65 - Attempt to access an entry from a non-existent table
 At present, no table row is selected, so it makes no sense to talk about any of its entries.
 
 --> P66 - This change of the relation's nature is impossible in play
-When a relation is created during play, it is usually created with a specific nature - for example, 'let R be a one-to-one relation of vehicles'. If none is given, it will be 'various-to-various'. This can't usually be changed once set, so this problem probably means you've tried to set the nature of the same relation more than once.
+When a relation is created during play, it is usually created with a specific nature - for example, "let R be a one-to-one relation of vehicles". If none is given, it will be "various-to-various". This can't usually be changed once set, so this problem probably means you've tried to set the nature of the same relation more than once.
 
 --> P67 - This operation can't be done with the relation
 Some of the built-in relations are so general in their scope that it's not practical to use techniques like searching through possible relationships, or changing relationships, with them. This is one such relation.
 
 --> P68 - Attempt to resize list to negative size
-A list can only have 0 or more items, so writing something like 'change L to have -2 entries' doesn't make any sense.
+A list can only have 0 or more items, so writing something like "change L to have -2 entries" doesn't make any sense.
 
 --> P69 - You can't test whether something is adjacent to a region
 The adjacency relation can only be tested for rooms, not whole regions at a time.
 
 --> P70 - Holding, wearing and carrying are for things only
-Only things can be made to be held, carried or worn using 'now'; and in the case of wearing or carrying, the new wearer or carrier must be a person, while for holding, the new holder must be a room, a container, a supporter, or a person.
+Only things can be made to be held, carried or worn using "now"; and in the case of wearing or carrying, the new wearer or carrier must be a person, while for holding, the new holder must be a room, a container, a supporter, or a person.
 
 --> P71 - Only rooms and regions can change region
-If 'R' is the name of a region, then 'now X is in R' is only allowed in cases where 'X' is a room or another region. It's otherwise too vague where things are to move.
+If "R" is the name of a region, then "now X is in R" is only allowed in cases where "X" is a room or another region. It's otherwise too vague where things are to move.
 
 --> P72 - Not a supporter
-'now X is on S', or 'now S supports X', is only allowed in cases where 'X' is a thing and 'S' is a supporter.
+"now X is on S", or "now S supports X", is only allowed in cases where "X" is a thing and "S" is a supporter.
+
+--> P73 - Bad containment
+When "now X is in Y" is used, "X" has to be a thing, and "Y" has to be a container or a room. Sometimes this problem is triggered when an overly broad phrase has been used such as "now X is in the holder of Y", which would be fine if "Y' is in a room or container, but not if it's a supporter or a person. (Things can be "on" a supporter, but not "in" it. Equally, it can't be a person: people can "carry" or "wear" things, but not contain them.) The safe way to avoid that is to write "now X is held by the holder of Y". Whatever holds "Y", if it can hold "Y" then it can hold "X".
 
 --> Error0 - Failed
 The application ran your source text through the Inform 7 compiler, as usual, but the compiler unexpectedly failed. This should not happen even if your source text is gibberish, so you may have uncovered a bug in the program.

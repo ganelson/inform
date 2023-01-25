@@ -317,7 +317,7 @@ Check an actor dropping (this is the can't drop if this exceeds carrying
 
 =
 Carry out an actor dropping (this is the standard dropping rule):
-	now the noun is in the holder of the actor.
+	now the noun is held by the holder of the actor.
 
 @ Report.
 
