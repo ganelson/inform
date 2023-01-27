@@ -57,7 +57,7 @@ a union of the others, and therefore includes incorporation.)
 				Calculus::Schemas::new("ContainerOf(*1)")),
 			BPTerms::new(NULL),
 			I"contains", I"is-in",
-			Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
+			Calculus::Schemas::new("MakeContainerOf(*2,*1)"), NULL,
 			PreformUtilities::wording(<relation-names>, CONTAINMENT_RELATION_NAME));
 	R_containment->loop_parent_optimisation_proviso = "ContainerOf";
 	R_containment->loop_parent_optimisation_ranger = "TestContainmentRange";

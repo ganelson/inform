@@ -18,7 +18,7 @@ Suppose we want to have a machine in our game that can transmute one item into a
 
 	The bag of jelly beans is an edible thing. 
 
-	The machine is fixed in place in the workshop. 
+	The machine is fixed in place in the workshop.
 	
 	The can't insert into what's not a container rule does nothing when inserting something into the machine.
 
@@ -33,7 +33,8 @@ Suppose we want to have a machine in our game that can transmute one item into a
 
 	Carry out inserting something into the machine: 
 		now the noun is nowhere; 
-		now the player carries the new form of the noun. 
+		now the player carries the new form of the noun;
+		rule succeeds.
 	
 	Report inserting something edible into the machine: 
 		say "The machine clicks, whirrs, and spits out [a new form of the noun]. You're rich!"; 
@@ -47,7 +48,7 @@ Suppose we want to have a machine in our game that can transmute one item into a
 		say "The machine clicks, whirrs, and with a violent roar, spits out [a new form of the noun]."; 
 		rule succeeds. 
 
-		Test me with "i / put jewels in machine / i / put gunpowder in machine / i / put beans in machine". 
+	Test me with "i / put jewels in machine / i / put gunpowder in machine / i / put beans in machine". 
 	
 In this example we have only defined a single set of transmutable objects, but we could easily expand to include other groups.
 

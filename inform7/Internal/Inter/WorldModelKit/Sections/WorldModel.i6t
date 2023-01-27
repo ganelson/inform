@@ -200,13 +200,29 @@ would get the wrong result when B is a region.
 
 =
 [ ContainerOf A p;
-	if (A ofclass K1_room) return A.map_region;
-	p = parent(A);
-	if (p == nothing) return nothing;
-	if (p ofclass K5_container) return p;
-	if (p ofclass K1_room) return p;
-	if (p ofclass K9_region) return p;
+	if (A ofclass K1_room) {
+		return A.map_region;
+	}
+	if (A ofclass K2_thing or K9_region) {
+		p = parent(A);
+		if (p == nothing) return nothing;
+		if (p ofclass K5_container) return p;
+		if (p ofclass K1_room) return p;
+		if (p ofclass K9_region) return p;
+	}
 	return nothing;
+];
+
+[ MakeContainerOf F T;
+	if ((F ofclass K1_room) && (T ofclass K9_region))
+		F.map_region = T;
+	else if ((F ofclass K2_thing) && (T ofclass K5_container or K1_room or K9_region))
+		MoveObject(F, T);
+	else if ((F ofclass K9_region) && (T ofclass K9_region))
+		MoveObject(F, T);
+	else {
+		RunTimeProblem(RTP_BADCONTAINMENT, F, T);
+	}
 ];
 
 [ TestContainmentRange obj e f;
@@ -367,6 +383,7 @@ when moved.
 		}
 		return RunTimeProblem(RTP_BACKDROP, F, T);
 	}
+	if (F ofclass K4_door) return RunTimeProblem(RTP_CANTREMOVEDOORS);
 	if (T ofclass K9_region) return RunTimeProblem(RTP_NOTBACKDROP, F, T);
 	if (T == FoundEverywhere) return RunTimeProblem(RTP_BACKDROPONLY, F);
 	if (~~(F ofclass K2_thing)) return RunTimeProblem(RTP_NOTTHING, F, T);
@@ -851,9 +868,12 @@ it's a relation which cannot be asserted true or false.
 
 =
 [ TestVisibility A B;
-	if (~~OffersLight(parent(CoreOf(A)))) rfalse;
-	if (suppress_scope_loops) rtrue;
-	return TestScope(B, A);
+	if ((A ofclass K2_thing) && (B ofclass K2_thing)) {
+		if (~~OffersLight(parent(CoreOf(A)))) rfalse;
+		if (suppress_scope_loops) rtrue;
+		return TestScope(B, A);
+	}
+	rfalse;
 ];
 
 @h Audibility Relation.
@@ -863,10 +883,13 @@ light to see by.
 =
 [ TestAudibility A B res saved;
 	if (suppress_scope_loops) rtrue;
-	saved = location; if (location == thedark) location = real_location;
-	res = TestScope(B, A);
-	location = saved;
-	return res;
+	if ((A ofclass K2_thing) && (B ofclass K2_thing)) {
+		saved = location; if (location == thedark) location = real_location;
+		res = TestScope(B, A);
+		location = saved;
+		return res;
+	}
+	rfalse;
 ];
 
 @h Touchability Relation.
@@ -875,6 +898,7 @@ A to B; it's a relation which cannot be asserted true or false.
 
 =
 [ TestTouchability A B rv;
+	if (~~((A ofclass K2_thing) && (B ofclass K2_thing))) rfalse;
 	if (A ofclass K4_door or K7_backdrop) MoveFloatingObjects(LocationOf(B));
 	if (B ofclass K4_door or K7_backdrop) MoveFloatingObjects(LocationOf(A));
 	if (TestScope(B,A) == false) rv = true;
