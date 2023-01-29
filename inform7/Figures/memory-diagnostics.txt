@@ -1,10 +1,10 @@
-Total memory consumption was 121430K = 119 MB
+Total memory consumption was 121432K = 119 MB
 
- ---- was used for 2058101 objects, in 366635 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2058107 objects, in 366641 frames in 0 x 800K = 0K = 0 MB:
 
     33.6%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
     21.0%  text_stream_array                        4649 x 100 = 464900 objects, 26183168 bytes
-    19.8%  linked_list                              44170 objects, 24735200 bytes
+    19.8%  linked_list                              44171 objects, 24735760 bytes
     11.3%  inter_symbol_array                       133 x 1024 = 136192 objects, 14168224 bytes
     10.7%  inter_error_stash_array                  102 x 1024 = 104448 objects, 13372608 bytes
      8.3%  parse_node                               130355 objects, 10428400 bytes
@@ -20,9 +20,9 @@ Total memory consumption was 121430K = 119 MB
      1.4%  vocabulary_entry_array                   164 x 100 = 16400 objects, 1842048 bytes
      1.2%  dict_entry_array                         477 x 100 = 47700 objects, 1541664 bytes
      1.2%  match_trie_array                         11 x 1000 = 11000 objects, 1496352 bytes
-     1.1%  inter_symbols_table                      26635 objects, 1491560 bytes
+     1.1%  inter_symbols_table                      26637 objects, 1491672 bytes
      1.1%  i6_schema_array                          23 x 100 = 2300 objects, 1380736 bytes
-     1.0%  inter_package                            26635 objects, 1278480 bytes
+     1.0%  inter_package                            26637 objects, 1278576 bytes
      0.9%  map_data                                 677 objects, 1137360 bytes
      0.8%  id_body                                  947 objects, 1083368 bytes
      0.8%  adjective_meaning                        202 objects, 1000304 bytes
@@ -42,7 +42,7 @@ Total memory consumption was 121430K = 119 MB
      0.2%  compilation_subtask                      3367 objects, 269360 bytes
      0.2%  inference_subject                        672 objects, 263424 bytes
      0.2%  inter_annotation_array                   2 x 8192 = 16384 objects, 262208 bytes
-     0.1%  vanilla_function                         3715 objects, 237760 bytes
+     0.1%  vanilla_function                         3716 objects, 237824 bytes
      0.1%  binary_predicate                         326 objects, 172128 bytes
      0.1%  hierarchy_location                       1178 objects, 169632 bytes
      0.1%  linguistic_stock_item                    3329 objects, 159792 bytes
@@ -247,7 +247,7 @@ Total memory consumption was 121430K = 119 MB
 
 100.0% was used for memory not allocated for objects:
 
-    56.9%  text stream storage                      70761016 bytes in 482106 claims
+    56.9%  text stream storage                      70762508 bytes in 482116 claims
      4.2%  dictionary storage                       5335040 bytes in 7661 claims
      ----  sorting                                  1696 bytes in 183 claims
      5.7%  source text                              7200000 bytes in 3 claims
@@ -255,7 +255,7 @@ Total memory consumption was 121430K = 119 MB
      0.2%  documentation fragments                  262144 bytes in 1 claim
      ----  linguistic stock array                   81920 bytes in 2 claims
      ----  small word set array                     105600 bytes in 22 claims
-     3.6%  inter symbols storage                    4561984 bytes in 28002 claims
+     3.6%  inter symbols storage                    4562240 bytes in 28004 claims
     13.4%  inter bytecode storage                   16767540 bytes in 14 claims
      5.0%  inter links storage                      6222976 bytes in 11 claims
      0.1%  inter tree location list storage         191232 bytes in 32 claims
@@ -265,5 +265,5 @@ Total memory consumption was 121430K = 119 MB
      ----  code generation workspace for objects    3480 bytes in 19 claims
      0.2%  emitter array storage                    280544 bytes in 2001 claims
 
--150.-4% was overhead - -187097272 bytes = -182712K = -178 MB
+-150.-4% was overhead - -187098104 bytes = -182712K = -178 MB
 

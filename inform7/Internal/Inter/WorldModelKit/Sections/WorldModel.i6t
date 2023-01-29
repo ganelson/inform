@@ -88,6 +88,10 @@ The following is essentially a wrapper for |MoveObject| used by the relation
 	}
 ];
 
+[ RoomContainerOf obj;
+	return LocationOf(obj);
+];
+
 [ MakeRoomContainerOf F H;
 	if ((F ofclass K2_thing) && (H ofclass K1_room)) {
 		MoveObject(F, H);
@@ -145,7 +149,10 @@ of |CommonAncestor| from the I6 library, adapted to work on the core tree.)
 				if (o1 == BackSideOfDoor(o2)) rtrue;
 				rfalse;
 			}
-			if (o2 ofclass K7_backdrop) rfalse;
+			if (o2 ofclass K7_backdrop) {
+				if (o1 ofclass K1_room) return BackdropLocation(o2, o1);
+				rfalse;
+			}
 			o2 = HolderOf(o2);
 			if (o2 == o1) rtrue;
 		}
