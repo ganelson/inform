@@ -397,6 +397,12 @@ filename *Extensions::main_source_file(inbuild_copy *C) {
 	return F;
 }
 
+pathname *Extensions::materials_path(inform_extension *E) {
+	pathname *P = E->as_copy->location_if_path;
+	if (P) P = Pathnames::down(P, I"Materials");
+	return P;
+}
+
 @h Cached metadata.
 The following data hides between runs in the //Dictionary//.
 
@@ -527,12 +533,20 @@ void Extensions::activate_elements(inform_extension *E, inform_project *proj) {
 		}
 	}
 	linked_list *L = NEW_LINKED_LIST(inbuild_nest);
-	inbuild_nest *N = Nests::new(E->as_copy->location_if_path);
+	inbuild_nest *N = Nests::new(Extensions::materials_path(E));
 	N->tag_value = EXTENSION_NEST_TAG;
 	ADD_TO_LINKED_LIST(N, inbuild_nest, L);
 	inbuild_requirement *req;
 	LOOP_OVER_LINKED_LIST(req, inbuild_requirement, E->kits) {
-		Projects::add_kit_dependency(proj, req->work->title, NULL, NULL, NULL, L);
+		if (Projects::add_kit_dependency(proj,
+			req->work->raw_title, NULL, NULL, NULL, L) == FALSE) {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err,
+				"extension metadata says that the extension contains the kit '%S', but it doesn't",
+				req->work->raw_title);
+			Copies::attach_error(E->as_copy, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+			DISCARD_TEXT(err)	
+		}
 	}
 }
 

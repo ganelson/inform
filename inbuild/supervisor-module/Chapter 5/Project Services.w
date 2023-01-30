@@ -450,10 +450,10 @@ typedef struct kit_dependency {
 } kit_dependency;
 
 @ =
-void Projects::add_kit_dependency(inform_project *project, text_stream *kit_name,
+int Projects::add_kit_dependency(inform_project *project, text_stream *kit_name,
 	inform_language *because_of_language, inform_kit *because_of_kit,
 	inbuild_requirement *req, linked_list *nests) {
-	if (Projects::uses_kit(project, kit_name)) return;
+	if (Projects::uses_kit(project, kit_name)) return TRUE;
 	if (nests == NULL) nests = Projects::nest_list(project);
 	inform_kit *K = Kits::find_by_name(kit_name, nests, req);
 	if (K) {
@@ -462,10 +462,13 @@ void Projects::add_kit_dependency(inform_project *project, text_stream *kit_name
 		kd->because_of_language = because_of_language;
 		kd->because_of_kit = because_of_kit;
 		ADD_TO_LINKED_LIST(kd, kit_dependency, project->kits_to_include);
+		return TRUE;
 	} else {
 		build_vertex *RV = Graphs::req_vertex(
 			Requirements::any_version_of(Works::new_raw(kit_genre, kit_name, I"")));
 		Graphs::need_this_to_build(project->as_copy->vertex, RV);
+		LOG("Required but could not find kit %S\n", kit_name);
+		return FALSE;
 	}
 }
 
