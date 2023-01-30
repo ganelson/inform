@@ -124,7 +124,7 @@ a union of the others, and therefore includes incorporation.)
 	R_room_containment =
 		BinaryPredicates::make_pair(spatial_bp_family,
 			BPTerms::new_full(infs_room, NULL, EMPTY_WORDING,
-				Calculus::Schemas::new("LocationOf(*1)")),
+				Calculus::Schemas::new("RoomContainerOf(*1)")),
 			BPTerms::new_full(NULL, K_object, EMPTY_WORDING, NULL),
 			I"is-room-of", I"is-in-room",
 			Calculus::Schemas::new("MakeRoomContainerOf(*2,*1)"), NULL,
