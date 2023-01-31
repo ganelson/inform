@@ -445,9 +445,11 @@ internal nest shouldn't be written to even on other platforms.
 @<Add build edges to the binaries for each architecture@> =
 	inter_architecture *A;
 	LOOP_OVER(A, inter_architecture) {
-		build_vertex *BV = Graphs::file_vertex(Architectures::canonical_binary(P, A));
+		filename *F = Architectures::canonical_binary(P, A);
+		build_vertex *BV = Graphs::file_vertex(F);
 		if ((C->nest_of_origin) && (Nests::is_protected(C->nest_of_origin)))
 			BV->never_build_this = TRUE;
+		else @<Check the Inter version used any already-existing binary file@>;
 		Graphs::need_this_to_build(KV, BV);
 		BuildSteps::attach(BV, build_kit_using_inter_skill, FALSE, NULL, A, K->as_copy);
 		ADD_TO_LINKED_LIST(BV, build_vertex, BVL);
@@ -470,6 +472,26 @@ internal nest shouldn't be written to even on other platforms.
 				Graphs::need_this_to_build(BV, SV);
 		}
 	}
+
+@ Suppose the user has an old kit lying around, and it has been pre-built but
+back in the days of Inter version 17.1 when we're now in the brave new world of
+Inter 19.3. Because the source files for the kit are even older than its
+old binary form, the datestamps will not cause the kit to be rebuilt. Inform
+will then try to load the binary, and fail because its version is out of date.
+We want to avoid all that by forcing a rebuild, regardless of the source
+datestamps, if (a) the binary exists but (b) it uses an obsolete Inter version.
+
+@<Check the Inter version used any already-existing binary file@> =
+	#ifdef BYTECODE_MODULE
+	semantic_version_number V = BinaryInter::test_file_version(F);
+	if ((VersionNumbers::is_null(V) == FALSE) &&
+		(InterVersion::check_readable(V) == FALSE)) {
+		semantic_version_number current_version = InterVersion::current();
+		LOG("Forcing rebuild of '%f' because it uses Inter v%v, and we want %v\n",
+			F, &V, &current_version);
+		BV->always_build_this = TRUE;
+	}
+	#endif
 
 @ Suppose our kit wants to include Locksmith by Emily Short. If that's an
 extension we have already read in, we can place a use edge to its existing
