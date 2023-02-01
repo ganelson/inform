@@ -102,11 +102,13 @@ void Sounds::register_sound(wording W, wording FN) {
 				"because it is either empty or contains only spaces.");
 			return;
 		}
-		filename *sound_file = Filenames::in(Task::sounds_path(), leaf);
+		filename *sound_file = ResourceFinder::find_resource(Task::sounds_department(), leaf, FN);
 		DISCARD_TEXT(leaf)
-		Sounds::sounds_create(W, id, sound_file, <<alttext>>);
-		LOGIF(MULTIMEDIA_CREATIONS,
-			"Created sound effect <%W> = filename '%N' = resource ID %d\n", W, wn, id);
+		if (sound_file) {
+			Sounds::sounds_create(W, id, sound_file, <<alttext>>);
+			LOGIF(MULTIMEDIA_CREATIONS,
+				"Created sound effect <%W> = filename '%N' = resource ID %d\n", W, wn, id);
+		}
 	}
 }
 

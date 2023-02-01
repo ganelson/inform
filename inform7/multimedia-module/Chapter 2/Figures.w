@@ -110,11 +110,15 @@ void Figures::register_figure(wording W, wording FN) {
 			return;
 		}
 		filename *figure_file = NULL;
-		if (wn >= 0) figure_file = Filenames::in(Task::figures_path(), leaf);
+		if (wn >= 0) {
+			figure_file = ResourceFinder::find_resource(Task::figures_department(), leaf, FN);
+		}
 		DISCARD_TEXT(leaf)
-		Figures::figures_create(W, id, figure_file, <<alttext>>);
-		LOGIF(MULTIMEDIA_CREATIONS, "Created figure <%W> = filename '%f' = resource ID %d\n",
-			W, figure_file, id);
+		if ((wn < 0) || (figure_file)) {
+			Figures::figures_create(W, id, figure_file, <<alttext>>);
+			LOGIF(MULTIMEDIA_CREATIONS, "Created figure <%W> = filename '%f' = resource ID %d\n",
+				W, figure_file, id);
+		}
 	}
 }
 

@@ -387,9 +387,6 @@ though at most one will actually work. This is also where we generate the EPS
 file of the map, if so requested; a bit anomalously, it's the only file in
 Materials but outside Release which we write to.
 
-This is also where the originals (not the released copies) of the Figures
-and Sounds, if any, live: in their own subfolders.
-
 =
 filename *Task::large_cover_art_file(int JPEG) {
 	if (inform7_task == NULL) internal_error("there is no current task");
@@ -401,17 +398,23 @@ filename *Task::epsmap_file(void) {
 	return Filenames::in(inform7_task->materials, I"Inform Map.eps");
 }
 
-pathname *Task::figures_path(void) {
+@ This is also where the originals (not the released copies) of the Figures
+and Sounds, if any, live: in their own subfolders, or "departments".
+
+=
+pathname *Task::resources_path(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
-	return Pathnames::down(inform7_task->materials, I"Figures");
+	return inform7_task->materials;
 }
-pathname *Task::sounds_path(void) {
-	if (inform7_task == NULL) internal_error("there is no current task");
-	return Pathnames::down(inform7_task->materials, I"Sounds");
+
+text_stream *Task::figures_department(void) {
+	return I"Figures";
 }
-pathname *Task::data_path(void) {
-	if (inform7_task == NULL) internal_error("there is no current task");
-	return Pathnames::down(inform7_task->materials, I"Data");
+text_stream *Task::sounds_department(void) {
+	return I"Sounds";
+}
+text_stream *Task::data_department(void) {
+	return I"Data";
 }
 
 @ On a release run, Inblorb will populate the Release subfolder of Materials;

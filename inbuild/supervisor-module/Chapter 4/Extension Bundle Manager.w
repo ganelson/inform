@@ -49,7 +49,8 @@ inform_extension *ExtensionBundleManager::from_copy(inbuild_copy *C) {
 }
 
 dictionary *eb_copy_cache = NULL;
-inbuild_copy *ExtensionBundleManager::new_copy(text_stream *name, pathname *P, inbuild_nest *N) {
+inbuild_copy *ExtensionBundleManager::new_copy(text_stream *name, pathname *P,
+	inbuild_nest *N, semantic_version_number apparent_V) {
 	if (eb_copy_cache == NULL) eb_copy_cache = Dictionaries::new(16, FALSE);
 	TEMPORARY_TEXT(key)
 	WRITE_TO(key, "%p", P);
@@ -58,13 +59,29 @@ inbuild_copy *ExtensionBundleManager::new_copy(text_stream *name, pathname *P, i
 		C = Dictionaries::read_value(eb_copy_cache, key);
 	if (C == NULL) {
 		inbuild_work *work = Works::new_raw(extension_bundle_genre,
-			Str::duplicate(Pathnames::directory_name(P)),
+			Str::duplicate(name),
 			Str::duplicate(Pathnames::directory_name(Pathnames::up(P))));
 		inbuild_edition *edition = Editions::new(work, VersionNumbers::null());
 		C = Copies::new_in_path(edition, P, N);
 		Extensions::scan(C);
 		Dictionaries::create(eb_copy_cache, key);
 		Dictionaries::write_value(eb_copy_cache, key, C);
+		if (VersionNumbers::is_null(apparent_V)) {
+			TEMPORARY_TEXT(error_text)
+			WRITE_TO(error_text,
+				"an extension in directory format must have a directory name ending "
+				"'-vN', giving the version number: for example, 'Advanced Algebra-v2_3_6'");
+			Copies::attach_error(C, CopyErrors::new_T(EXT_BAD_DIRNAME_CE, -1, error_text));
+			DISCARD_TEXT(error_text)
+		} else if (VersionNumbers::ne(apparent_V, C->edition->version)) {
+			TEMPORARY_TEXT(error_text)
+			WRITE_TO(error_text,
+				"the version number '%v' is not the one implied by the directory "
+				"name '%S', which would be '%v'",
+				&(C->edition->version), Pathnames::directory_name(P), &apparent_V);
+			Copies::attach_error(C, CopyErrors::new_T(EXT_BAD_DIRNAME_CE, -1, error_text));
+			DISCARD_TEXT(error_text)
+		}
 	}
 	DISCARD_TEXT(key)
 	return C;
@@ -95,7 +112,13 @@ inbuild_copy *ExtensionBundleManager::claim_folder_as_copy(pathname *P, inbuild_
 	filename *canary = Filenames::in(P, I"extension_metadata.json");
 	if (TextFiles::exists(canary)) {
 		text_stream *name = Str::duplicate(Pathnames::directory_name(P));
-		return ExtensionBundleManager::new_copy(name, P, N);
+		semantic_version_number V = VersionNumbers::null();
+		match_results mr = Regexp::create_mr();
+		if (Regexp::match(&mr, name, L"(%c+)-v([0-9_]+)")) {
+			name = Str::duplicate(mr.exp[0]);
+			V = VersionNumbers::from_text(mr.exp[1]);
+		}
+		return ExtensionBundleManager::new_copy(name, P, N, V);
 	}
 	return NULL;
 }
