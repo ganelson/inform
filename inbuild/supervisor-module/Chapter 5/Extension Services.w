@@ -34,6 +34,7 @@ typedef struct inform_extension {
 	struct linked_list *activations; /* of |element_activation| */
 	struct linked_list *extensions; /* of |inbuild_requirement| */
 	struct linked_list *kits; /* of |inbuild_requirement| */
+	struct inbuild_nest *materials_nest;
 	CLASS_DEFINITION
 } inform_extension;
 
@@ -87,6 +88,7 @@ void Extensions::scan(inbuild_copy *C) {
 	E->activations = NEW_LINKED_LIST(element_activation);
 	E->extensions = NEW_LINKED_LIST(inbuild_requirement);
 	E->kits = NEW_LINKED_LIST(inbuild_requirement);
+	E->materials_nest = NULL;
 
 @ The following scans a potential extension file. If it seems malformed, a
 suitable error is written to the stream |error_text|. If not, this is left
@@ -403,6 +405,15 @@ pathname *Extensions::materials_path(inform_extension *E) {
 	return P;
 }
 
+inbuild_nest *Extensions::materials_nest(inform_extension *E) {
+	pathname *P = Extensions::materials_path(E);
+	if ((E->materials_nest == NULL) && (P)) {
+		E->materials_nest = Nests::new(P);
+		Nests::set_tag(E->materials_nest, EXTENSION_NEST_TAG);
+	}
+	return E->materials_nest;
+}
+
 @h Cached metadata.
 The following data hides between runs in the //Dictionary//.
 
@@ -533,8 +544,7 @@ void Extensions::activate_elements(inform_extension *E, inform_project *proj) {
 		}
 	}
 	linked_list *L = NEW_LINKED_LIST(inbuild_nest);
-	inbuild_nest *N = Nests::new(Extensions::materials_path(E));
-	N->tag_value = EXTENSION_NEST_TAG;
+	inbuild_nest *N = Extensions::materials_nest(E);
 	ADD_TO_LINKED_LIST(N, inbuild_nest, L);
 	inbuild_requirement *req;
 	LOOP_OVER_LINKED_LIST(req, inbuild_requirement, E->kits) {

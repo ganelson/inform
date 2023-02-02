@@ -242,13 +242,25 @@ file online.
 	WRITE("website \"%w\"\n", rel->website_template_leafname);
 
 @ The order here is significant, since Inblorb searches the folders in order,
-with the earliest quoted searched first.
+with the earliest quoted searched first. We want first the materials folder for
+a project, then the |Templates| directory in the materials for extensions
+included by the project, and then the external area, and finally the internal.
 
 @<Tell Inblorb where to find the website templates@> =
 	inbuild_nest *N;
 	linked_list *L = Projects::nest_list(Task::project());
-	LOOP_OVER_LINKED_LIST(N, inbuild_nest, L)
+	LOOP_OVER_LINKED_LIST(N, inbuild_nest, L) {
 		WRITE("template path \"%p\"\n", TemplateManager::path_within_nest(N));
+		if (Nests::get_tag(N) == MATERIALS_NEST_TAG) {
+			inform_extension *E;
+			LOOP_OVER_LINKED_LIST(E, inform_extension, Task::project()->extensions_included) {
+				pathname *P = Extensions::materials_path(E);
+				if (P) {
+					WRITE("template path \"%p\"\n", TemplateManager::path_within_nest(Nests::new(P)));
+				}
+			}
+		}
+	}
 
 @ Inblorb reports its progress, or lack of it, with an HTML page, just as we do.
 This page however includes some hints on what the user might have chosen

@@ -16,6 +16,7 @@ typedef struct inform_language {
 	struct text_stream *iso_code; /* e.g., "fr" or "de" */
 	struct text_stream *translated_name; /* e.g., "Français" or "Deutsch" */
 	struct text_stream *native_cue; /* e.g., "en français" or "in deutscher Sprache" */
+	struct inform_extension *belongs_to; /* if it does belong to an extension */
 	int adaptive_person; /* which person text substitutions are written from */
 	int Preform_loaded; /* has a Preform syntax definition been read for this? */
 	CLASS_DEFINITION
@@ -41,6 +42,7 @@ void Languages::scan(inbuild_copy *C) {
 	L->translated_name = I"English";
 	/* but not this one */
 	L->native_cue = NULL;
+	L->belongs_to = NULL;
 
 	filename *about_file = Filenames::in(Languages::path_to_bundle(L), I"about.txt");
 	if (TextFiles::exists(about_file)) {
@@ -170,6 +172,7 @@ void Languages::add_kit_dependencies_to_project(inform_language *L, inform_proje
 	if (md == NULL) return; /* should never happen, but fail safe */
 	JSON_value *needs = JSON::look_up_object(md, I"needs");
 	if (needs == NULL) return; /* should never happen, but fail safe */
+WRITE_TO(STDERR, "add_kit_dependencies_to_project on %S\n", L->as_copy->edition->work->title);
 	JSON_value *E;
 	LOOP_OVER_LINKED_LIST(E, JSON_value, needs->if_list) {
 		JSON_value *need_clause = JSON::look_up_object(E, I"need");
@@ -179,6 +182,7 @@ void Languages::add_kit_dependencies_to_project(inform_language *L, inform_proje
 			JSON_value *need_version = JSON::look_up_object(need_clause, I"version");
 			if (Str::eq(need_type->if_string, I"kit")) {
 				inbuild_work *work = Works::new_raw(kit_genre, need_title->if_string, I"");
+WRITE_TO(STDERR, "and it needs %X\n", work);
 				inbuild_requirement *req;
 				if (need_version) req = Requirements::new(work,
 					VersionNumberRanges::compatibility_range(VersionNumbers::from_text(need_version->if_string)));
@@ -221,9 +225,42 @@ inform_language *Languages::Preform_find(text_stream *name) {
 
 =
 inform_language *Languages::find_for(text_stream *name, linked_list *search) {
+	text_stream *author = NULL;
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, name, L"(%c+) [Ll]anguage by (%c+)")) {
+		name = mr.exp[0]; author = mr.exp[1];
+	} else if (Regexp::match(&mr, name, L"(%c+) by (%c+)")) {
+		name = mr.exp[0]; author = mr.exp[1];
+	} else if (Regexp::match(&mr, name, L"(%c+) [Ll]anguage")) {
+		name = mr.exp[0];
+	}
+	TEMPORARY_TEXT(title)
+	WRITE_TO(title, "%S Language", name);
+	inbuild_requirement *extension_req =
+		Requirements::any_version_of(Works::new(extension_bundle_genre, title, author));
+	inbuild_search_result *extension_R = Nests::search_for_best(extension_req, search);
+	DISCARD_TEXT(title)
+	if (extension_R) {
+		inform_extension *E = Extensions::from_copy(extension_R->copy);
+		inbuild_nest *N = Extensions::materials_nest(E);
+		if (N) {
+			linked_list *longer = NEW_LINKED_LIST(inbuild_nest);
+			ADD_TO_LINKED_LIST(N, inbuild_nest, longer);
+			inbuild_requirement *req =
+				Requirements::any_version_of(Works::new(language_genre, name, I""));
+			inbuild_search_result *R = Nests::search_for_best(req, longer);
+			if (R) {
+				inform_language *L = LanguageManager::from_copy(R->copy);
+				L->belongs_to = E;
+				Regexp::dispose_of(&mr);
+				return L;
+			}
+		}
+	}
 	inbuild_requirement *req =
 		Requirements::any_version_of(Works::new(language_genre, name, I""));
 	inbuild_search_result *R = Nests::search_for_best(req, search);
+	Regexp::dispose_of(&mr);
 	if (R) return LanguageManager::from_copy(R->copy);
 	return NULL;
 }

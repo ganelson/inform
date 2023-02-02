@@ -47,7 +47,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 				if (CE->copy->found_by) {
 					Problems::quote_work(1, CE->copy->found_by->work);
 					Problems::quote_stream(2, CE->details);
-					Problems::quote_stream(3, CE->copy->edition->work->genre->genre_name);
+					SourceProblems::quote_genre(3, CE);
 					StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
 					Problems::issue_problem_segment(
 						"The %3 %1, which your source text makes use of, seems to have "
@@ -56,12 +56,22 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 				} else {
 					Problems::quote_work(1, CE->copy->edition->work);
 					Problems::quote_stream(2, CE->details);
-					Problems::quote_stream(3, CE->copy->edition->work->genre->genre_name);
+					SourceProblems::quote_genre(3, CE);
 					StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
 					Problems::issue_problem_segment(
 						"The %3 %1 seems to have metadata problems. Specifically: %2.");
 					Problems::issue_problem_end();
 				}
+				break;
+			case LANGUAGE_UNAVAILABLE_CE:
+				Problems::quote_work(1, CE->copy->edition->work);
+				Problems::quote_stream(2, CE->details);
+				SourceProblems::quote_genre(3, CE);
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+				Problems::issue_problem_segment(
+					"The %3 %1 seems to need me to know about a non-English language, '%2'. "
+					"I can't find any definition for this language.");
+				Problems::issue_problem_end();
 				break;
 			case EXT_TITLE_TOO_LONG_CE: {
 				int max = MAX_EXTENSION_TITLE_LENGTH;
@@ -546,4 +556,12 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 			default: internal_error("an unknown error occurred");
 		}
 	}
+}
+
+void SourceProblems::quote_genre(int N, copy_error *CE) {
+	text_stream *name = CE->copy->edition->work->genre->genre_name;
+	if (Str::eq(name, I"projectbundle")) name = I"project";
+	if (Str::eq(name, I"projectfile")) name = I"project";
+	if (Str::eq(name, I"extensionbundle")) name = I"extension";
+	Problems::quote_stream(N, name);
 }
