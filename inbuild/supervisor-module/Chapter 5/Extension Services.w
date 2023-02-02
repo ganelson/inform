@@ -389,7 +389,7 @@ filename *Extensions::main_source_file(inbuild_copy *C) {
 		pathname *P = C->location_if_path;
 		if (P) {
 			TEMPORARY_TEXT(leaf)
-			WRITE_TO(leaf, "%S.i7x", Pathnames::directory_name(P));
+			WRITE_TO(leaf, "%S.i7x", C->edition->work->title);
 			F = Filenames::in(Pathnames::down(P, I"Source"), leaf);
 			DISCARD_TEXT(leaf)
 		}

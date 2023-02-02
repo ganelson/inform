@@ -233,15 +233,15 @@ to match this width, preserving the aspect ratio.
 	WRITE_TO(description, "<br>");
 	TEMPORARY_TEXT(sample)
 	WRITE_TO(sample, "%d.%01dkHz", pSampleRate/1000, (pSampleRate%1000)/100);
-	Localisation::roman_t(OUT, LD, I"Index.Elements.Fi.Sampled", sample);
+	Localisation::roman_t(description, LD, I"Index.Elements.Fi.Sampled", sample);
 	DISCARD_TEXT(sample)
 	WRITE_TO(description, " ");
 	if (pChannels == 1) Localisation::roman(OUT, LD, I"Index.Elements.Fi.Mono");
-	else Localisation::roman(OUT, LD, I"Index.Elements.Fi.Stereo");
+	else Localisation::roman(description, LD, I"Index.Elements.Fi.Stereo");
 	WRITE_TO(description, " (");
 	TEMPORARY_TEXT(bitrate)
 	WRITE_TO(bitrate, "%d.%01d", pBitsPerSecond/1000, (pSampleRate%1000)/100);
-	Localisation::roman_t(OUT, LD, I"Index.Elements.Fi.BitRate", bitrate);
+	Localisation::roman_t(description, LD, I"Index.Elements.Fi.BitRate", bitrate);
 	DISCARD_TEXT(bitrate)
 	WRITE_TO(description, ")");
 

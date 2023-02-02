@@ -71,7 +71,7 @@ instance *InternalFiles::files_create(int format, wording W, wording FN) {
 	TEMPORARY_TEXT(leaf)
 	Word::dequote(Wordings::first_wn(FN));
 	WRITE_TO(leaf, "%N", Wordings::first_wn(FN));
-	ifd->local_filename = Filenames::in(Task::data_path(), leaf);
+	ifd->local_filename = ResourceFinder::find_resource(Task::data_department(), leaf, FN);
 	DISCARD_TEXT(leaf)
 	return I;
 }

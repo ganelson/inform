@@ -97,9 +97,9 @@
 	mkdir: $PATH/_Results_Ideal
 
 	if: $CASE PM_Map%c*
-		set: $I7OPTIONS = -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-census-update -internal $INTERNAL
+		set: $I7OPTIONS = -format=$FORMAT -no-progress -no-resource-checking -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-census-update -internal $INTERNAL
 	else
-		set: $I7OPTIONS = -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
+		set: $I7OPTIONS = -format=$FORMAT -no-progress -no-resource-checking -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
 	endif
 
 	set: $PIPELINE = 
@@ -261,9 +261,9 @@
 	mkdir: $PATH/_Results_Ideal
 
 	if: $CASE PM_Map%c*
-		set: $I7OPTIONS = -basic -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -internal $INTERNAL
+		set: $I7OPTIONS = -basic -format=$FORMAT -no-progress -no-resource-checking -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -internal $INTERNAL
 	else
-		set: $I7OPTIONS = -basic -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
+		set: $I7OPTIONS = -basic -format=$FORMAT -no-progress -no-resource-checking -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
 	endif
 
 	set: $PIPELINE = 
@@ -294,7 +294,7 @@
 		mkdir: $PATH/_Textual
 		mkdir: $PATH/_C
 
-		set: $I7OPTIONS = -basic -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
+		set: $I7OPTIONS = -basic -format=$FORMAT -no-progress -no-resource-checking -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
 		set: $I7CLIB = inform7/Internal/Miscellany
 	
 		set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
@@ -408,7 +408,7 @@
 	mkdir: $PATH/_Results_Actual
 	mkdir: $PATH/_Results_Ideal
 
-	set: $I7OPTIONS = -basic -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
+	set: $I7OPTIONS = -basic -format=$FORMAT -no-progress -no-resource-checking -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
 
 	set: $PIPELINE = 
 
@@ -416,7 +416,7 @@
 		mkdir: $PATH/_Textual
 		mkdir: $PATH/_C
 
-		set: $I7OPTIONS = -basic -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
+		set: $I7OPTIONS = -basic -format=$FORMAT -no-progress -no-resource-checking -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
 		set: $I7CLIB = inform7/Internal/Miscellany
 	
 		set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
@@ -525,9 +525,9 @@
 
 	set: $PIPELINE = 
 	if: $CASE %c*-BIP
-		set: $I7OPTIONS = -basic -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
+		set: $I7OPTIONS = -basic -format=$FORMAT -no-progress -no-resource-checking -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
 	else
-		set: $I7OPTIONS = -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
+		set: $I7OPTIONS = -format=$FORMAT -no-progress -no-resource-checking -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
 	endif
 
 	set: $A = $PATH/_Results_Actual/$CASE.txt
@@ -580,7 +580,7 @@
 		copy: $WORKSPACE/Samples/Powermac.aiff $WORK/Example.materials/Sounds/Powermac.aiff
 	endif
 
-	set: $I7OPTIONS = -fixtime -format=$FORMAT -no-progress -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL -release
+	set: $I7OPTIONS = -fixtime -format=$FORMAT -no-progress -no-resource-checking -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL -release
 
 	mkdir: $WORK/Transient
 	step: find $WORK/Transient -mindepth 1 -delete
@@ -625,7 +625,7 @@
 		set: $FORMAT		= Inform6/16
 		set: $EXT           = z8
 	endif
-	set: $I7OPTIONS = -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
+	set: $I7OPTIONS = -format=$FORMAT -no-progress -no-resource-checking -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
 
 	! Now we extract the source text from whatever file originated the test
 	! case: this is a non-trivial operation when the file is an Extension or

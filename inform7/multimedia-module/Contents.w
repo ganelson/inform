@@ -11,6 +11,7 @@ Chapter 1: Starting Up
 	Multimedia Module
 
 Chapter 2: Multimedia Features
+	Resource Finder
 	Figures
 	Sound Effects
 	External Files
