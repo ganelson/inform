@@ -31,6 +31,7 @@ int Inform7Skill::inform7_via_shell(build_skill *skill, build_step *S,
 	LOOP_OVER_LINKED_LIST(N, inbuild_nest, L) {
 		switch (Nests::get_tag(N)) {
 			case MATERIALS_NEST_TAG: continue;
+			case EXTENSION_NEST_TAG: continue;
 			case EXTERNAL_NEST_TAG: WRITE_TO(command, "-external "); break;
 			case GENERIC_NEST_TAG: WRITE_TO(command, "-nest "); break;
 			case INTERNAL_NEST_TAG: WRITE_TO(command, "-internal "); break;

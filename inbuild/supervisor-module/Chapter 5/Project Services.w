@@ -238,6 +238,14 @@ linked_list *Projects::nest_list(inform_project *proj) {
 	return proj->search_list;
 }
 
+void Projects::add_language_extension_nest(inform_project *proj) {
+	if ((proj->language_of_play) && (proj->language_of_play->belongs_to)) {
+		inform_extension *E = proj->language_of_play->belongs_to;
+		inbuild_nest *N = Extensions::materials_nest(E);
+		if (N) ADD_TO_LINKED_LIST(N, inbuild_nest, proj->search_list);
+	}
+}
+
 @ Since there are two ways projects can be stored:
 
 =
@@ -405,6 +413,7 @@ void Projects::set_languages(inform_project *proj) {
 		inform_language *L = Languages::find_for(name, Projects::nest_list(proj));
 		if (L) {
 			proj->language_of_play = L;
+			Projects::add_language_extension_nest(proj);
 		} else {
 			build_vertex *RV = Graphs::req_vertex(
 				Requirements::any_version_of(Works::new(language_genre, name, I"")));
@@ -523,8 +532,13 @@ on //WorldModelKit//, through the if-this-then-that mechanism.
 	if (LinkedLists::len(project->kits_to_include) > 0) no_word_from_JSON = FALSE;
 	Projects::add_kit_dependency(project, I"BasicInformKit", NULL, NULL, NULL, NULL);
 	inform_language *L = project->language_of_play;
-	if (L) Languages::add_kit_dependencies_to_project(L, project);
-	else internal_error("no language of play");
+	if (L) {
+		Languages::add_kit_dependencies_to_project(L, project);
+	} else {
+		Copies::attach_error(project->as_copy,
+			CopyErrors::new_T(LANGUAGE_UNAVAILABLE_CE, -1,
+				project->name_of_language_of_play));
+	}
 	if ((no_word_from_JSON) && (forcible_basic_mode == FALSE))
 		Projects::add_kit_dependency(project, I"CommandParserKit", NULL, NULL, NULL, NULL);
 
@@ -1183,7 +1197,7 @@ But not always:
 		Regexp::dispose_of(&mr);
 	}
 
-@<Set language of play@> =	
+@<Set language of play@> =
 	text_stream *language_name = mr.exp[0];
 	proj->name_of_language_of_play = Str::duplicate(language_name);
 
