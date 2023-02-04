@@ -385,6 +385,42 @@ a message which diagnoses the problem rather better.
 <span class="plain-syntax">            </span><span class="string-syntax">"in the Penalty Zone, say \"An alarm sounds.\")"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b></p>
+
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PREFORM_ERROR_INFLECTIONS_CALLBACK</span><span class="plain-syntax"> </span><a href="2-up.html#SP7" class="function-link"><span class="function-syntax">UsingProblems::inflections_problem</span></a>
+</pre>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">UsingProblems::inflections_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">nonterminal</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nt</span><span class="plain-syntax">, </span><span class="identifier-syntax">inform_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nl</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">err</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">nl</span><span class="plain-syntax">) </span><span class="identifier-syntax">Problems::quote_wording</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">nl</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">instance_name</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_stream</span><span class="plain-syntax">(2, </span><span class="identifier-syntax">err</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">NT</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::new</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">nt</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">NT</span><span class="plain-syntax">, </span><span class="string-syntax">"%V"</span><span class="plain-syntax">, </span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">nonterminal_id</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="identifier-syntax">NT</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::get</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) == </span><span class="character-syntax">'&lt;'</span><span class="plain-syntax">) </span><span class="identifier-syntax">Str::put</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="character-syntax">'\''</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::get</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) == </span><span class="character-syntax">'&gt;'</span><span class="plain-syntax">) </span><span class="identifier-syntax">Str::put</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="character-syntax">'\''</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_stream</span><span class="plain-syntax">(3, </span><span class="identifier-syntax">NT</span><span class="plain-syntax">);</span>
+
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_begin</span><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="string-syntax">"preform-problem"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"An error occurred with the Preform syntax used to specify the grammar "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"of source text. If this occurs with English, that's a bug in the compiler, "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"and should be reported. But if it occurs with languages other than English, "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"there's an issue with the language definition, which should be reported "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"to its maintainer. At any rate, this compilation can't go further. "</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">nt</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"%PThe nonterminal causing problems is %3. "</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">nl</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"%PThe natural language affected is '%1'. "</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"%PThe problem as reported by Preform is: %2."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">}</span>
+</pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="1-gtg.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-cm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresscurrent">up</li><li class="progresssection"><a href="2-sq.html">sq</a></li><li class="progresssection"><a href="2-si.html">si</a></li><li class="progresssection"><a href="2-pwst.html">pwst</a></li><li class="progresssection"><a href="2-cp.html">cp</a></li><li class="progresssection"><a href="2-kp.html">kp</a></li><li class="progresschapter"><a href="3-pc.html">3</a></li><li class="progressnext"><a href="2-sq.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

@@ -61,7 +61,7 @@ package_request *RTVerbs::modal_package(parse_node *where) {
 @h Compilation data for conjugations.
 Each |verb_conjugation| object contains this data:
 
-@d VC_COMPILATION_LINGUISTICS_CALLBACK RTVerbs::initialise_vc
+@d VC_COMPILATION_INFLECTIONS_CALLBACK RTVerbs::initialise_vc
 
 =
 typedef struct verb_conjugation_compilation_data {

@@ -31,11 +31,11 @@ int Declensions::no_cases(NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 			int c = 0;
 			for (production *pr = pl->first_pr; pr; pr = pr->next_pr) c++;
 			if (c >= MAX_GRAMMATICAL_CASES)
-				internal_error("<grammatical-case-names> lists too many cases");
+				Declensions::error(nt, nl, I"too many cases");
 			return c;
 		}
 	}
-	internal_error("<grammatical-case-names> not provided for this language");
+	Declensions::error(nt, nl, I"not provided for this language");
 	return -1;
 }
 
@@ -53,7 +53,7 @@ void Declensions::writer(OUTPUT_STREAM, declension *D, declension *AD) {
 				if ((pr->first_pt == NULL) ||
 					(pr->first_pt->ptoken_category != FIXED_WORD_PTC) ||
 					(pr->first_pt->next_pt != NULL))
-					internal_error("<grammatical-case-names> too complex");
+					Declensions::error(nt, D->within_language, I"too complex");
 				if (c > 0) WRITE(", ");
 				WRITE("%w: %W %W", Vocabulary::get_exemplar(pr->first_pt->ve_pt, TRUE),
 					AD->wording_cased[c], D->wording_cased[c]);
@@ -64,7 +64,7 @@ void Declensions::writer(OUTPUT_STREAM, declension *D, declension *AD) {
 			return;
 		}
 	}
-	internal_error("<grammatical-case-names> not provided for this language");
+	Declensions::error(nt, D->within_language, I"not provided for this language");
 }
 
 @ And this function extracts the right form for a given case |c|:
@@ -113,14 +113,16 @@ declension Declensions::decline_inner(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl
 	nl = DefaultLanguage::get(nl);
 	declension D;
 	D.within_language = nl;
+	int count = 0;
 	for (production_list *pl = nt->first_pl; pl; pl = pl->next_pl) {
 		if ((pl->definition_language == NULL) || (pl->definition_language == nl)) {
+			count++;
 			for (production *pr = pl->first_pr; pr; pr = pr->next_pr) {
 				if ((pr->first_pt == NULL) ||
 					(pr->first_pt->ptoken_category != FIXED_WORD_PTC) ||
 					(pr->first_pt->next_pt == NULL) ||
 					(pr->first_pt->next_pt->ptoken_category != NONTERMINAL_PTC))
-					internal_error("line in <noun-declension> malformed");
+					Declensions::error(nt, nl, I"line malformed");
 				wchar_t *gender_letter = Vocabulary::get_exemplar(pr->first_pt->ve_pt, FALSE);
 				if ((gender_letter[0] == '*') ||
 					((gender_letter[0] == 'm') && (gen == MASCULINE_GENDER)) ||
@@ -130,7 +132,10 @@ declension Declensions::decline_inner(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl
 			}
 		}
 	}
-	internal_error("no declension table terminated");
+	if (count == 0) Declensions::error(nt, nl,
+		I"noun declensions seem not to be provided for this language");
+	else Declensions::error(nt, nl,
+		I"noun declension table exists but was unterminated");
 	return D;
 }
 
@@ -142,7 +147,7 @@ declension Declensions::decline_inner(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl
 	} else {
 		if ((pr->first_pt->next_pt->next_pt->ptoken_category != NONTERMINAL_PTC) ||
 			(pr->first_pt->next_pt->next_pt->next_pt != NULL))
-			internal_error("this line must end with two nonterminals");
+			Declensions::error(nt, nl, I"line must end with two nonterminals");
 		nonterminal *tnt = pr->first_pt->next_pt->next_pt->nt_pt;
 		D = Declensions::decline_from_groups(W, nl, gnt, tnt, gen, num, &found);
 	}
@@ -166,7 +171,8 @@ declension Declensions::decline_from_irregulars(wording W, NATURAL_LANGUAGE_WORD
 						int c = 0, nc = Declensions::no_cases(nl);
 						for (ptoken *pt = pr->first_pt->next_pt; pt; pt = pt->next_pt) {
 							if (pt->ptoken_category != FIXED_WORD_PTC)
-								internal_error("NTs are not allowed in irregular decs");
+								Declensions::error(gnt, nl,
+									I"nonterminals are not allowed in irregular declensions");
 							if (((num == SINGULAR_NUMBER) && (c < nc)) || ((num == PLURAL_NUMBER) && (c >= nc))) {
 								TEMPORARY_TEXT(stem)
 								TEMPORARY_TEXT(result)
@@ -180,8 +186,10 @@ declension Declensions::decline_from_irregulars(wording W, NATURAL_LANGUAGE_WORD
 							}
 							c++;
 						}
-						if (c < 2*nc) internal_error("too few cases in irregular ded");
-						if (c > 2*nc) internal_error("too many cases in irregular dec");
+						if (c < 2*nc) Declensions::error(gnt, nl,
+							I"too few cases in irregular declension");
+						if (c > 2*nc) Declensions::error(gnt, nl,
+							I"too many cases in irregular declension");
 						return D;
 					}
 				}
@@ -282,4 +290,19 @@ lcon_ti Declensions::lcon(int gen, int num, int c) {
 	l = Lcon::set_gender(l, gen);
 	l = Lcon::set_case(l, c);
 	return l;
+}
+
+@
+
+=
+void Declensions::error(nonterminal *nt, NATURAL_LANGUAGE_WORDS_TYPE *nl, text_stream *err) {
+	#ifdef PREFORM_ERROR_INFLECTIONS_CALLBACK
+	PREFORM_ERROR_INFLECTIONS_CALLBACK(nt, nl, err);
+	#endif
+	#ifndef PREFORM_ERROR_INFLECTIONS_CALLBACK
+	WRITE_TO(STDERR, "Declension error in Preform syntax ");
+	if (nt) WRITE_TO(STDERR, "in the nonterminal '%V'", nt->nonterminal_id);
+	WRITE_TO(STDERR, ": %S\n", err);
+	internal_error("halted with Preform syntax error");
+	#endif
 }

@@ -1,16 +1,16 @@
-Total memory consumption was 121647K = 119 MB
+Total memory consumption was 121729K = 119 MB
 
- ---- was used for 2061120 objects, in 368367 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2061500 objects, in 368450 frames in 0 x 800K = 0K = 0 MB:
 
     33.5%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
-    21.0%  text_stream_array                        4662 x 100 = 466200 objects, 26256384 bytes
-    20.0%  linked_list                              44493 objects, 24916080 bytes
+    21.0%  text_stream_array                        4665 x 100 = 466500 objects, 26273280 bytes
+    20.0%  linked_list                              44533 objects, 24938480 bytes
     11.3%  inter_symbol_array                       133 x 1024 = 136192 objects, 14168224 bytes
     10.7%  inter_error_stash_array                  102 x 1024 = 104448 objects, 13372608 bytes
      8.3%  parse_node                               130371 objects, 10429680 bytes
      6.1%  verb_conjugation                         164 objects, 7610912 bytes
      4.4%  parse_node_annotation_array              348 x 500 = 174000 objects, 5579136 bytes
-     3.5%  scan_directory                           1076 objects, 4441728 bytes
+     3.6%  scan_directory                           1116 objects, 4606848 bytes
      2.7%  pcalc_prop_array                         25 x 1000 = 25000 objects, 3400800 bytes
      2.5%  inter_name_array                         67 x 1000 = 67000 objects, 3218144 bytes
      2.1%  kind_array                               67 x 1000 = 67000 objects, 2682144 bytes
@@ -217,8 +217,8 @@ Total memory consumption was 121647K = 119 MB
      ----  contents_entry                           7 objects, 280 bytes
      ----  explicit_bp_data                         5 objects, 280 bytes
      ----  verb_usage_tier                          5 objects, 240 bytes
+     ----  inform_project                           1 object, 232 bytes
      ----  adjective_meaning_family                 7 objects, 224 bytes
-     ----  inform_project                           1 object, 224 bytes
      ----  test_scenario                            1 object, 216 bytes
      ----  release_instructions                     1 object, 208 bytes
      ----  code_generator                           5 objects, 200 bytes
@@ -248,9 +248,9 @@ Total memory consumption was 121647K = 119 MB
 
 100.0% was used for memory not allocated for objects:
 
-    56.9%  text stream storage                      70981100 bytes in 483534 claims
+    57.0%  text stream storage                      71063892 bytes in 483914 claims
      4.2%  dictionary storage                       5335552 bytes in 7662 claims
-     ----  sorting                                  2720 bytes in 351 claims
+     ----  sorting                                  3488 bytes in 415 claims
      5.7%  source text                              7200000 bytes in 3 claims
      8.6%  source text details                      10800000 bytes in 2 claims
      0.2%  documentation fragments                  262144 bytes in 1 claim
@@ -266,5 +266,5 @@ Total memory consumption was 121647K = 119 MB
      ----  code generation workspace for objects    3480 bytes in 19 claims
      0.2%  emitter array storage                    280544 bytes in 2001 claims
 
--152.-2% was overhead - -189592632 bytes = -185149K = -180 MB
+-152.-2% was overhead - -189797056 bytes = -185348K = -181 MB
 

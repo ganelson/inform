@@ -19,8 +19,9 @@ typedef struct inform_project {
 	struct linked_list *kits_to_include; /* of |kit_dependency| */
 	struct text_stream *name_of_language_of_play;
 	struct inform_language *language_of_play;
-	struct text_stream *clue_for_language_of_syntax;
+	struct text_stream *name_of_language_of_syntax;
 	struct inform_language *language_of_syntax;
+	struct text_stream *name_of_language_of_index;
 	struct inform_language *language_of_index;
 	struct build_vertex *unblorbed_vertex;
 	struct build_vertex *blorbed_vertex;
@@ -52,8 +53,9 @@ void Projects::scan(inbuild_copy *C) {
 	proj->kits_to_include = NEW_LINKED_LIST(kit_dependency);
 	proj->name_of_language_of_play = I"English";
 	proj->language_of_play = NULL;
-	proj->clue_for_language_of_syntax = NULL;
+	proj->name_of_language_of_syntax = I"English";
 	proj->language_of_syntax = NULL;
+	proj->name_of_language_of_index = NULL;
 	proj->language_of_index = NULL;
 	proj->chosen_build_target = NULL;
 	proj->unblorbed_vertex = NULL;
@@ -390,29 +392,36 @@ are set only once, and can't be changed after that.
 =
 void Projects::set_languages(inform_project *proj) {
 	if (proj == NULL) internal_error("no project");
-	text_stream *S_name = I"English";
-	text_stream *S_clue = proj->clue_for_language_of_syntax;
-	if (Str::len(S_clue) > 0)
-		S_name = Languages::find_by_native_cue(S_clue, Projects::nest_list(proj));
-	if (Str::len(S_name) == 0) proj->language_of_syntax = NULL;
-	else proj->language_of_syntax = Languages::find_for(S_name, Projects::nest_list(proj));
-	if (proj->language_of_syntax == NULL) {
-		text_stream *bad_language = Str::duplicate(S_name);
-		if (Str::len(S_clue) > 0) {
-			Str::clear(bad_language);
-			WRITE_TO(bad_language, "language meant by '%S'", S_clue);
-		}
+
+	text_stream *name = proj->name_of_language_of_syntax;
+	inform_language *L = Languages::find_for(name, Projects::nest_list(proj));
+	if (L) {
+		proj->language_of_syntax = L;
+		Projects::add_language_extension_nest(proj);
+	} else {
 		build_vertex *RV = Graphs::req_vertex(
-			Requirements::any_version_of(Works::new(language_genre, bad_language, I"")));
+			Requirements::any_version_of(Works::new(language_genre, name, I"")));
 		Graphs::need_this_to_build(proj->as_copy->vertex, RV);
 	}
-	if (Str::len(proj->name_of_language_of_play) == 0) {
-		proj->language_of_play = proj->language_of_syntax;
+
+	name = proj->name_of_language_of_play;
+	L = Languages::find_for(name, Projects::nest_list(proj));
+	if (L) {
+		proj->language_of_play = L;
+		Projects::add_language_extension_nest(proj);
 	} else {
-		text_stream *name = proj->name_of_language_of_play;
-		inform_language *L = Languages::find_for(name, Projects::nest_list(proj));
+		build_vertex *RV = Graphs::req_vertex(
+			Requirements::any_version_of(Works::new(language_genre, name, I"")));
+		Graphs::need_this_to_build(proj->as_copy->vertex, RV);
+	}
+
+	if (Str::len(proj->name_of_language_of_index) == 0)
+		proj->language_of_index = proj->language_of_syntax;
+	else {
+		name = proj->name_of_language_of_index;
+		L = Languages::find_for(name, Projects::nest_list(proj));
 		if (L) {
-			proj->language_of_play = L;
+			proj->language_of_index = L;
 			Projects::add_language_extension_nest(proj);
 		} else {
 			build_vertex *RV = Graphs::req_vertex(
@@ -420,7 +429,6 @@ void Projects::set_languages(inform_project *proj) {
 			Graphs::need_this_to_build(proj->as_copy->vertex, RV);
 		}
 	}
-	proj->language_of_index = proj->language_of_syntax;
 }
 
 @h Miscellaneous metadata.
@@ -1190,16 +1198,17 @@ But not always:
 		@<Flag bad bibliographic sentence@>;
 	}
 	Regexp::dispose_of(&mr);
-	if (Str::len(bracketed) > 0) {	
-		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, bracketed, L"in (%c+)")) @<Set language of play@>
-		else proj->clue_for_language_of_syntax = Str::duplicate(bracketed);
-		Regexp::dispose_of(&mr);
+	if (Str::len(bracketed) > 0) {
+		int okay = TRUE;
+		match_results mr2 = Regexp::create_mr();
+		while (Regexp::match(&mr2, bracketed, L"(%c+?),(%c+)")) {
+			okay = (okay && (Projects::parse_language_clauses(proj, mr2.exp[0])));
+			bracketed = Str::duplicate(mr2.exp[1]);
+		}
+		okay = (okay && (Projects::parse_language_clauses(proj, bracketed)));
+		if (okay == FALSE) @<Flag bad bibliographic sentence@>;
+		Regexp::dispose_of(&mr2);
 	}
-
-@<Set language of play@> =
-	text_stream *language_name = mr.exp[0];
-	proj->name_of_language_of_play = Str::duplicate(language_name);
 
 @<Set title and author@> =
 	if (Str::len(title) > 0) {
@@ -1218,3 +1227,60 @@ But not always:
 @<Flag bad bibliographic sentence@> =
 	copy_error *CE = CopyErrors::new(SYNTAX_CE, BadTitleSentence_SYNERROR);
 	Copies::attach_error(proj->as_copy, CE);
+
+@
+
+=
+int Projects::parse_language_clauses(inform_project *proj, text_stream *clause) {
+	int verdict = FALSE;
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, clause, L"(%c+?) in (%c+)")) {
+		text_stream *what = mr.exp[0];
+		text_stream *language_name = mr.exp[1];
+		verdict = Projects::parse_language_clause(proj, what, language_name);
+	} else if (Regexp::match(&mr, clause, L" *in (%c+)")) {
+		text_stream *what = I"played";
+		text_stream *language_name = mr.exp[0];
+		verdict = Projects::parse_language_clause(proj, what, language_name);
+	} else if (Regexp::match(&mr, clause, L" *")) {
+		verdict = TRUE;
+	}
+	Regexp::dispose_of(&mr);
+	return verdict;
+}
+
+int Projects::parse_language_clause(inform_project *proj, text_stream *what, text_stream *language_name) {
+	match_results mr = Regexp::create_mr();
+	int verdict = FALSE;
+	if (Regexp::match(&mr, what, L"(%c+?), and (%c+)")) {
+		verdict = ((Projects::parse_language_clause(proj, mr.exp[0], language_name)) &&
+					(Projects::parse_language_clause(proj, mr.exp[1], language_name)));
+	} else if (Regexp::match(&mr, what, L"(%c+?), (%c+)")) {
+		verdict = ((Projects::parse_language_clause(proj, mr.exp[0], language_name)) &&
+					(Projects::parse_language_clause(proj, mr.exp[1], language_name)));
+	} else if (Regexp::match(&mr, what, L"(%c+?) and (%c+)")) {
+		verdict = ((Projects::parse_language_clause(proj, mr.exp[0], language_name)) &&
+					(Projects::parse_language_clause(proj, mr.exp[1], language_name)));
+	} else {
+		if (Regexp::match(&mr, what, L" *written *")) @<Set language of syntax@>
+		else if (Regexp::match(&mr, what, L" *played *")) @<Set language of play@>
+		else if (Regexp::match(&mr, what, L" *indexed *")) @<Set language of index@>
+	}
+	Regexp::dispose_of(&mr);
+	return verdict;
+}
+
+@<Set language of play@> =
+	proj->name_of_language_of_play = Str::duplicate(language_name);
+	Str::trim_white_space(proj->name_of_language_of_play);
+	verdict = TRUE;
+
+@<Set language of syntax@> =
+	proj->name_of_language_of_syntax = Str::duplicate(language_name);
+	Str::trim_white_space(proj->name_of_language_of_syntax);
+	verdict = TRUE;
+
+@<Set language of index@> =
+	proj->name_of_language_of_index = Str::duplicate(language_name);
+	Str::trim_white_space(proj->name_of_language_of_index);
+	verdict = TRUE;

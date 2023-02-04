@@ -305,3 +305,39 @@ void UsingProblems::diagnose_further(void) {
 			"what circumstances apply - for example 'Every turn: if the player is "
 			"in the Penalty Zone, say \"An alarm sounds.\")");
 }
+
+@
+
+@d PREFORM_ERROR_INFLECTIONS_CALLBACK UsingProblems::inflections_problem
+
+=
+void UsingProblems::inflections_problem(nonterminal *nt, inform_language *nl, text_stream *err) {
+	if (nl) Problems::quote_wording(1, nl->instance_name);
+	Problems::quote_stream(2, err);
+	text_stream *NT = Str::new();
+	if (nt) WRITE_TO(NT, "%V", nt->nonterminal_id);
+	LOOP_THROUGH_TEXT(pos, NT) {
+		if (Str::get(pos) == '<') Str::put(pos, '\'');
+		if (Str::get(pos) == '>') Str::put(pos, '\'');
+	}
+	Problems::quote_stream(3, NT);
+
+	Problems::issue_problem_begin(NULL, "preform-problem");
+	Problems::issue_problem_segment(
+		"An error occurred with the Preform syntax used to specify the grammar "
+		"of source text. If this occurs with English, that's a bug in the compiler, "
+		"and should be reported. But if it occurs with languages other than English, "
+		"there's an issue with the language definition, which should be reported "
+		"to its maintainer. At any rate, this compilation can't go further. ");
+	if (nt) {
+		Problems::issue_problem_segment(
+			"%PThe nonterminal causing problems is %3. ");
+	}
+	if (nl) {
+		Problems::issue_problem_segment(
+			"%PThe natural language affected is '%1'. ");
+	}
+	Problems::issue_problem_segment(
+		"%PThe problem as reported by Preform is: %2.");
+	Problems::issue_problem_end();
+}

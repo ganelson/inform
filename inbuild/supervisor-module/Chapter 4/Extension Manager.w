@@ -148,7 +148,7 @@ void ExtensionManager::search_nest_for_r(pathname *P, inbuild_nest *N,
 	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
 		if (Platform::is_folder_separator(Str::get_last_char(entry))) {
 			Str::delete_last_character(entry);
-			if ((recurse) && (Str::ne(entry, I"Reserved"))) {
+			if ((recurse) && (Str::ne(entry, I"Reserved")) && (Str::ne(entry, I"Source"))) {
 				pathname *Q = Pathnames::down(P, entry);
 				ExtensionManager::search_nest_for_r(Q, N, req, search_results, TRUE);
 			}

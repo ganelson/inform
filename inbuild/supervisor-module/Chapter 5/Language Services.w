@@ -172,7 +172,6 @@ void Languages::add_kit_dependencies_to_project(inform_language *L, inform_proje
 	if (md == NULL) return; /* should never happen, but fail safe */
 	JSON_value *needs = JSON::look_up_object(md, I"needs");
 	if (needs == NULL) return; /* should never happen, but fail safe */
-WRITE_TO(STDERR, "add_kit_dependencies_to_project on %S\n", L->as_copy->edition->work->title);
 	JSON_value *E;
 	LOOP_OVER_LINKED_LIST(E, JSON_value, needs->if_list) {
 		JSON_value *need_clause = JSON::look_up_object(E, I"need");
@@ -182,7 +181,6 @@ WRITE_TO(STDERR, "add_kit_dependencies_to_project on %S\n", L->as_copy->edition-
 			JSON_value *need_version = JSON::look_up_object(need_clause, I"version");
 			if (Str::eq(need_type->if_string, I"kit")) {
 				inbuild_work *work = Works::new_raw(kit_genre, need_title->if_string, I"");
-WRITE_TO(STDERR, "and it needs %X\n", work);
 				inbuild_requirement *req;
 				if (need_version) req = Requirements::new(work,
 					VersionNumberRanges::compatibility_range(VersionNumbers::from_text(need_version->if_string)));

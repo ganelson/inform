@@ -90,11 +90,14 @@ normally calling the module, but then the module calls the parent back to
 ask for data or action.
 </p>
 
-<p class="commentary">This module has only one callbacks and it is optional:
+<p class="commentary">This module has only two callbacks and both are optional:
 </p>
 
-<ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">VC_COMPILATION_LINGUISTICS_CALLBACK</span></span>, if provided, allows the <span class="extract"><span class="extract-syntax">compilation_data</span></span>
+<ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">VC_COMPILATION_INFLECTIONS_CALLBACK</span></span>, if provided, allows the <span class="extract"><span class="extract-syntax">compilation_data</span></span>
 part of a <span class="extract"><span class="extract-syntax">verb_conjugation</span></span> to be initialised. See <a href="3-vc.html#SP6" class="internal">Conjugation::conjugate</a>.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">PREFORM_ERROR_INFLECTIONS_CALLBACK</span></span>, if provided, allows for more civilised
+error messages than fatal halts if the Preform syntax for inflections turns out
+to be defective, as can happen when non-English language bundles are being tested.
 </li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="P-wtmd.html">&#10094;</a></li><li class="progresscurrentchapter">P</li><li class="progresssection"><a href="P-wtmd.html">wtmd</a></li><li class="progresscurrent">htitm</li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresschapter"><a href="2-tai.html">2</a></li><li class="progresschapter"><a href="3-lc.html">3</a></li><li class="progresschapter"><a href="4-dl.html">4</a></li><li class="progressnext"><a href="1-im.html">&#10095;</a></li></ul></div>
