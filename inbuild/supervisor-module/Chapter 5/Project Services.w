@@ -396,7 +396,7 @@ void Projects::set_languages(inform_project *proj) {
 	text_stream *name = proj->name_of_language_of_syntax;
 	inform_language *L = Languages::find_for(name, Projects::nest_list(proj));
 	if (L) {
-		if (Languages::supports(L, SYNTAX_LSUPPORT)) {
+		if (Languages::supports(L, WRITTEN_LSUPPORT)) {
 			proj->language_of_syntax = L;
 			Projects::add_language_extension_nest(proj);
 		} else {
@@ -416,7 +416,7 @@ void Projects::set_languages(inform_project *proj) {
 	name = proj->name_of_language_of_play;
 	L = Languages::find_for(name, Projects::nest_list(proj));
 	if (L) {
-		if (Languages::supports(L, PLAY_LSUPPORT)) {
+		if (Languages::supports(L, PLAYED_LSUPPORT)) {
 			proj->language_of_play = L;
 			Projects::add_language_extension_nest(proj);
 		} else {
@@ -439,7 +439,7 @@ void Projects::set_languages(inform_project *proj) {
 		name = proj->name_of_language_of_index;
 		L = Languages::find_for(name, Projects::nest_list(proj));
 		if (L) {
-			if (Languages::supports(L, INDEXING_LSUPPORT)) {
+			if (Languages::supports(L, INDEXED_LSUPPORT)) {
 				proj->language_of_index = L;
 				Projects::add_language_extension_nest(proj);
 			} else {

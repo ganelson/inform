@@ -1353,8 +1353,12 @@ For example, property names can't be unsuitable, but they can be unfortunate.
 </pre>
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. The natural language kind. </b>Inform has a kind built in called "natural language", whose values are
 enumerated names: English language, French language, German language and so on.
-When the kind is created, the following routine makes these instances. We do
-this exactly as we would to create any other instance &mdash; we write a logical
+When the kind is created, the following function makes instances for whichever
+languages we might need to print in at runtime: which will be English, perhaps
+with one other, if the language of play is not English.
+</p>
+
+<p class="commentary">We do this exactly as we would to create any other instance &mdash; we write a logical
 proposition claiming its existence, then assert it to be true.
 </p>
 
@@ -1362,13 +1366,17 @@ proposition claiming its existence, then assert it to be true.
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Assertions::Creator::stock_nl_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">inform_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="identifier-syntax">inform_language</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax"> =</span>
-<span class="plain-syntax">            </span><a href="8-cu.html#SP1" class="function-link"><span class="function-syntax">Propositions::Abstract::to_create_something</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">instance_name</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Assert::true</span><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">CERTAIN_CE</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">nl_instance</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Instances::latest</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inform_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax"> = </span><span class="identifier-syntax">primary_Preform_language</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><a href="4-tc.html#SP11" class="function-link"><span class="function-syntax">Assertions::Creator::stock_nl_kind_with_one</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inform_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">LOP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Projects::get_language_of_play</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::project</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">LOP</span><span class="plain-syntax"> != </span><span class="identifier-syntax">E</span><span class="plain-syntax">) </span><a href="4-tc.html#SP11" class="function-link"><span class="function-syntax">Assertions::Creator::stock_nl_kind_with_one</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">LOP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Assertions::Creator::stock_nl_kind_with_one</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">inform_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax"> =</span>
+<span class="plain-syntax">        </span><a href="8-cu.html#SP1" class="function-link"><span class="function-syntax">Propositions::Abstract::to_create_something</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">instance_name</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Assert::true</span><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">CERTAIN_CE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">nl_instance</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Instances::latest</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">

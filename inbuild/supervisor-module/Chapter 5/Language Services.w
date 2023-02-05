@@ -8,10 +8,10 @@ Inform can read and write text in multiple natural languages, though it
 needs help to do so: each natural language known to Inform comes from a
 small resource folder called its "bundle". (This includes English.)
 
-@e PLAY_LSUPPORT from 1
-@e SYNTAX_LSUPPORT
-@e INDEXING_LSUPPORT
-@e PROBLEMS_LSUPPORT
+@e PLAYED_LSUPPORT from 1
+@e WRITTEN_LSUPPORT
+@e INDEXED_LSUPPORT
+@e REPORTED_LSUPPORT
 
 @d MAX_LSUPPORTS 5
 
@@ -105,10 +105,10 @@ void Languages::scan(inbuild_copy *C) {
 		JSON_value *E;
 		LOOP_OVER_LINKED_LIST(E, JSON_value, supports->if_list) {
 			text_stream *key = E->if_string;
-			if (Str::eq(key, I"play")) L->supports[PLAY_LSUPPORT] = TRUE;
-			if (Str::eq(key, I"syntax")) L->supports[SYNTAX_LSUPPORT] = TRUE;
-			if (Str::eq(key, I"indexing")) L->supports[INDEXING_LSUPPORT] = TRUE;
-			if (Str::eq(key, I"problems")) L->supports[PROBLEMS_LSUPPORT] = TRUE;
+			if (Str::eq(key, I"played")) L->supports[PLAYED_LSUPPORT] = TRUE;
+			if (Str::eq(key, I"written")) L->supports[WRITTEN_LSUPPORT] = TRUE;
+			if (Str::eq(key, I"indexed")) L->supports[INDEXED_LSUPPORT] = TRUE;
+			if (Str::eq(key, I"reported")) L->supports[REPORTED_LSUPPORT] = TRUE;
 		}
 	}
 
@@ -237,7 +237,9 @@ inform_language *Languages::find_for(text_stream *name, linked_list *search) {
 	return NULL;
 }
 
-@ Or we can convert the native cue, |en français|, to the name, |French|:
+@ Or we can convert the native cue, |en français|, to the name, |French|,
+though this will not work for language bundles inside of extensions, and
+so the function is now deprecated:
 
 =
 text_stream *Languages::find_by_native_cue(text_stream *cue, linked_list *search) {

@@ -24,7 +24,7 @@
 <language-metadata> ::= {
 	"translated-name": string,
 	"iso-639-1-code": string,
-	"supports": [ ( "play" | "syntax" | "indexing" | "problems" )* ],
+	"supports": [ ( "played" | "written" | "indexed" | "reported" )* ],
 	?"translated-syntax-cue": string
 }
 
