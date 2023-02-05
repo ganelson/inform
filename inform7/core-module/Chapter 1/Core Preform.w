@@ -28,10 +28,7 @@ void CorePreform::preform_error(word_assemblage base_text, nonterminal *nt,
 		LOG("The production at fault is:\n");
 		Instrumentation::log_production(pr, FALSE); LOG("\n");
 	}
-	if (nt == NULL)
-		Problems::quote_text(1, "(no nonterminal)");
-	else
-		Problems::quote_wide_text(1, Vocabulary::get_exemplar(nt->nonterminal_id, FALSE));
+	Problems::quote_nonterminal(1, nt);
 	Problems::quote_text(2, message);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
 	if (WordAssemblages::nonempty(base_text)) {
@@ -61,6 +58,36 @@ void CorePreform::preform_error(word_assemblage base_text, nonterminal *nt,
 	}
 	Problems::issue_problem_end();
 	DISCARD_TEXT(TEMP)
+}
+
+@ And similarly for inflections.
+
+@d PREFORM_ERROR_INFLECTIONS_CALLBACK CorePreform::inflections_problem
+
+=
+void CorePreform::inflections_problem(nonterminal *nt, inform_language *nl,
+	text_stream *err) {
+	if (nl) Problems::quote_wording(1, nl->instance_name);
+	Problems::quote_stream(2, err);
+	Problems::quote_nonterminal(3, nt);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+	Problems::issue_problem_segment(
+		"An error occurred with the Preform syntax used to specify the grammar "
+		"of source text. If this occurs with English, that's a bug in the compiler, "
+		"and should be reported. But if it occurs with languages other than English, "
+		"there's an issue with the language definition, which should be reported "
+		"to its maintainer. At any rate, this compilation can't go further. ");
+	if (nt) {
+		Problems::issue_problem_segment(
+			"%PThe nonterminal causing problems is %3. ");
+	}
+	if (nl) {
+		Problems::issue_problem_segment(
+			"%PThe natural language affected is '%1'. ");
+	}
+	Problems::issue_problem_segment(
+		"%PThe problem as reported by Preform is: %2.");
+	Problems::issue_problem_end();
 }
 
 @h Optimisation.

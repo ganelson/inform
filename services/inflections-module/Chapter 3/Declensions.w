@@ -221,11 +221,11 @@ declension Declensions::decline_from_groups(wording W, NATURAL_LANGUAGE_WORDS_TY
 					if ((pr->first_pt == NULL) ||
 						(pr->first_pt->ptoken_category != NONTERMINAL_PTC) ||
 						(pr->first_pt->next_pt != NULL))
-						internal_error("noun declension nonterminal malformed");
+						Declensions::error(nt, nl, I"noun declension nonterminal malformed");
 					if (--group == 0)
 						return Declensions::decline_from(W, nl, pr->first_pt->nt_pt, gen, num);
 				}
-		internal_error("noun declension nonterminal has too few groups");
+		Declensions::error(nt, nl, I"noun declension nonterminal has too few groups");
 	}
 	return D;
 }
@@ -233,13 +233,14 @@ declension Declensions::decline_from_groups(wording W, NATURAL_LANGUAGE_WORDS_TY
 @<Set the group number@> =
 	group = result[0] - '0';
 	if ((group <= 0) || (group > 9))
-		internal_error("noun declension grouper result not a group number");
+		Declensions::error(nt, nl, I"noun declension grouper result not a group number");
 	if (result[1]) {
 		int u = result[1] - '0';
 		if ((u < 0) || (u > 9))
-			internal_error("noun declension grouper result not a group number");
+			Declensions::error(nt, nl, I"noun declension grouper result not a group number");
 		group = group*10 + u;
-		if (result[2]) internal_error("noun declension grouper result too high");
+		if (result[2])
+			Declensions::error(nt, nl, I"noun declension grouper result too high");
 	}
 
 @ We have now found the actual declension table NT; if there are $N$ cases
@@ -258,7 +259,7 @@ declension Declensions::decline_from(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl,
 				if ((pr->first_pt == NULL) ||
 					(pr->first_pt->ptoken_category != FIXED_WORD_PTC) ||
 					(pr->first_pt->next_pt != NULL))
-					internal_error("<noun-declension> too complex");
+					Declensions::error(nt, nl, I"declension too complex");
 				if (((c < nc) && (num == SINGULAR_NUMBER)) || ((c >= nc) && (num == PLURAL_NUMBER))) {
 					TEMPORARY_TEXT(stem)
 					TEMPORARY_TEXT(result)
@@ -272,12 +273,12 @@ declension Declensions::decline_from(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl,
 				}
 				c++;
 			}
-			if (c < 2*nc) internal_error("too few cases in declension");
-			if (c > 2*nc) internal_error("too many cases in declension");
+			if (c < 2*nc) Declensions::error(nt, nl, I"too few cases in declension");
+			if (c > 2*nc) Declensions::error(nt, nl, I"too many cases in declension");
 			return D;
 		}
 	}
-	internal_error("declination unavailable");
+	Declensions::error(nt, nl, I"declension unavailable");
 	return D;
 }
 

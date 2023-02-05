@@ -396,8 +396,17 @@ void Projects::set_languages(inform_project *proj) {
 	text_stream *name = proj->name_of_language_of_syntax;
 	inform_language *L = Languages::find_for(name, Projects::nest_list(proj));
 	if (L) {
-		proj->language_of_syntax = L;
-		Projects::add_language_extension_nest(proj);
+		if (Languages::supports(L, SYNTAX_LSUPPORT)) {
+			proj->language_of_syntax = L;
+			Projects::add_language_extension_nest(proj);
+		} else {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err,
+				"this project asks to be 'written in' a language which does not support that");
+			Copies::attach_error(proj->as_copy,
+				CopyErrors::new_T(LANGUAGE_DEFICIENT_CE, -1, err));
+			DISCARD_TEXT(err)
+		}
 	} else {
 		build_vertex *RV = Graphs::req_vertex(
 			Requirements::any_version_of(Works::new(language_genre, name, I"")));
@@ -407,8 +416,17 @@ void Projects::set_languages(inform_project *proj) {
 	name = proj->name_of_language_of_play;
 	L = Languages::find_for(name, Projects::nest_list(proj));
 	if (L) {
-		proj->language_of_play = L;
-		Projects::add_language_extension_nest(proj);
+		if (Languages::supports(L, PLAY_LSUPPORT)) {
+			proj->language_of_play = L;
+			Projects::add_language_extension_nest(proj);
+		} else {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err,
+				"this project asks to be 'played in' a language which does not support that");
+			Copies::attach_error(proj->as_copy,
+				CopyErrors::new_T(LANGUAGE_DEFICIENT_CE, -1, err));
+			DISCARD_TEXT(err)
+		}
 	} else {
 		build_vertex *RV = Graphs::req_vertex(
 			Requirements::any_version_of(Works::new(language_genre, name, I"")));
@@ -421,8 +439,17 @@ void Projects::set_languages(inform_project *proj) {
 		name = proj->name_of_language_of_index;
 		L = Languages::find_for(name, Projects::nest_list(proj));
 		if (L) {
-			proj->language_of_index = L;
-			Projects::add_language_extension_nest(proj);
+			if (Languages::supports(L, INDEXING_LSUPPORT)) {
+				proj->language_of_index = L;
+				Projects::add_language_extension_nest(proj);
+			} else {
+				TEMPORARY_TEXT(err)
+				WRITE_TO(err,
+					"this project asks to be 'indexed in' a language which does not support that");
+				Copies::attach_error(proj->as_copy,
+					CopyErrors::new_T(LANGUAGE_DEFICIENT_CE, -1, err));
+				DISCARD_TEXT(err)
+			}
 		} else {
 			build_vertex *RV = Graphs::req_vertex(
 				Requirements::any_version_of(Works::new(language_genre, name, I"")));
