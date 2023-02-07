@@ -81,7 +81,7 @@ English it looks wasteful, since so many forms are the same, but for French
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">LINGUISTICS_MODULE</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vc_conjugates</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">VC_COMPILATION_LINGUISTICS_CALLBACK</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">VC_COMPILATION_INFLECTIONS_CALLBACK</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb_conjugation_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">auxiliary_only</span><span class="plain-syntax">; </span><span class="comment-syntax"> used only as an auxiliary, e.g. the "have" in "I have gone"</span>
@@ -271,8 +271,8 @@ anybody else try this one on.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">vc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">defined_in</span><span class="plain-syntax"> = </span><span class="identifier-syntax">nl</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">vc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">auxiliary_only</span><span class="plain-syntax"> = </span><span class="identifier-syntax">avo_flag</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">vc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">instance_of_verb</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">niv_flag</span><span class="plain-syntax">)?</span><span class="identifier-syntax">FALSE:TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">VC_COMPILATION_LINGUISTICS_CALLBACK</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">VC_COMPILATION_LINGUISTICS_CALLBACK</span><span class="plain-syntax">(</span><span class="identifier-syntax">vc</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">VC_COMPILATION_INFLECTIONS_CALLBACK</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">VC_COMPILATION_INFLECTIONS_CALLBACK</span><span class="plain-syntax">(</span><span class="identifier-syntax">vc</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-vc.html#SP6_3_1" class="named-paragraph-link"><span class="named-paragraph">Start by blanking out all the passive and active slots</span><span class="named-paragraph-number">6.3.1</span></a></span><span class="plain-syntax">;</span>

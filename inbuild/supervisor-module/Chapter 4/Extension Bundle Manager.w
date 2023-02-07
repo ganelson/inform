@@ -142,17 +142,17 @@ void ExtensionBundleManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N
 				if ((Str::ne(entry, I"Reserved")) &&
 					(Str::eq_insensitive(entry, req->work->author_name))) {
 					pathname *Q = Pathnames::down(P, entry);
-					ExtensionBundleManager::search_nest_for_r(Q, N, req, search_results);
+					ExtensionBundleManager::search_nest_for_r(Q, N, req, search_results, FALSE);
 				}
 			}
 		}
 	} else {
-		ExtensionBundleManager::search_nest_for_r(P, N, req, search_results);
+		ExtensionBundleManager::search_nest_for_r(P, N, req, search_results, TRUE);
 	}
 }
 
 void ExtensionBundleManager::search_nest_for_r(pathname *P, inbuild_nest *N,
-	inbuild_requirement *req, linked_list *search_results) {
+	inbuild_requirement *req, linked_list *search_results, int recurse) {
 	linked_list *L = Directories::listing(P);
 	text_stream *entry;
 	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
@@ -162,6 +162,8 @@ void ExtensionBundleManager::search_nest_for_r(pathname *P, inbuild_nest *N,
 			inbuild_copy *C = ExtensionBundleManager::claim_folder_as_copy(Q, N);
 			if ((C) && (Requirements::meets(C->edition, req))) {
 				Nests::add_search_result(search_results, N, C, req);
+			} else if ((recurse) && (Str::ne(entry, I"Reserved")) && (Str::ne(entry, I"Source"))) {
+				ExtensionBundleManager::search_nest_for_r(Q, N, req, search_results, TRUE);
 			}
 		}
 	}

@@ -693,7 +693,7 @@ forcetransferpreform:
 # -----------------------------------------------------------------------------
 # Copying the indexing structure and localisation files into the app
 
-{set name: LOCALISEDINDEXES value: English, French}
+{set name: LOCALISEDINDEXES value: English}
 
 .PHONY: transferindext
 transferindext: forcetransferindext

@@ -49,7 +49,13 @@ sense once kinds and instances exist.
 	wording OP = Node::get_text(V->next->next);
 	inform_language *L = Node::get_defn_language(V->next->next);
 	int g = Annotations::read_int(V->next->next, explicit_gender_marker_ANNOT);
-	if (L == NULL) internal_error("No such NL");
+	if (L == NULL) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_CantTranslateValue),
+			"you can only translate into a language used by the current project",
+			"such as the language it is played, written or indexed in.");
+		return FALSE;
+	}
 	if (L == DefaultLanguage::get(NULL)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(),
 			_p_(PM_CantTranslateIntoEnglish),
@@ -60,7 +66,7 @@ sense once kinds and instances exist.
 
 	if ((<translates-into-language-sentence-subject>(SP)) == FALSE) {
 		StandardProblems::sentence_problem(Task::syntax_tree(),
-			_p_(PM_CantTranslateValue),
+			_p_(Untestable),
 			"this isn't something which can be translated",
 			"that is, it isn't a kind or instance.");
 		return FALSE;

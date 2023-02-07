@@ -1030,19 +1030,26 @@ int Assertions::Creator::vet_name_for_noun(wording W) {
 @h The natural language kind.
 Inform has a kind built in called "natural language", whose values are
 enumerated names: English language, French language, German language and so on.
-When the kind is created, the following routine makes these instances. We do
-this exactly as we would to create any other instance -- we write a logical
+When the kind is created, the following function makes instances for whichever
+languages we might need to print in at runtime: which will be English, perhaps
+with one other, if the language of play is not English.
+
+We do this exactly as we would to create any other instance -- we write a logical
 proposition claiming its existence, then assert it to be true.
 
 @d NOTIFY_NATURAL_LANGUAGE_KINDS_CALLBACK Assertions::Creator::stock_nl_kind
 
 =
 void Assertions::Creator::stock_nl_kind(kind *K) {
-	inform_language *L;
-	LOOP_OVER(L, inform_language) {
-		pcalc_prop *prop =
-			Propositions::Abstract::to_create_something(K, L->instance_name);
-		Assert::true(prop, CERTAIN_CE);
-		L->nl_instance = Instances::latest();
-	}
+	inform_language *E = primary_Preform_language;
+	Assertions::Creator::stock_nl_kind_with_one(K, E);
+	inform_language *LOP = Projects::get_language_of_play(Task::project());
+	if (LOP != E) Assertions::Creator::stock_nl_kind_with_one(K, LOP);
+}
+
+void Assertions::Creator::stock_nl_kind_with_one(kind *K, inform_language *L) {
+	pcalc_prop *prop =
+		Propositions::Abstract::to_create_something(K, L->instance_name);
+	Assert::true(prop, CERTAIN_CE);
+	L->nl_instance = Instances::latest();
 }

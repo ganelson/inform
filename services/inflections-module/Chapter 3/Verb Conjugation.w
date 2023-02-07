@@ -19,7 +19,7 @@ typedef struct verb_conjugation {
 	#ifdef LINGUISTICS_MODULE
 	struct verb *vc_conjugates;
 	#endif
-	#ifdef VC_COMPILATION_LINGUISTICS_CALLBACK
+	#ifdef VC_COMPILATION_INFLECTIONS_CALLBACK
 	struct verb_conjugation_compilation_data compilation_data;
 	#endif
 	int auxiliary_only; /* used only as an auxiliary, e.g. the "have" in "I have gone" */
@@ -188,8 +188,8 @@ Note that verb form 0 can't be overridden: that was the base text.
 	vc->defined_in = nl;
 	vc->auxiliary_only = avo_flag;
 	vc->instance_of_verb = (niv_flag)?FALSE:TRUE;
-	#ifdef VC_COMPILATION_LINGUISTICS_CALLBACK
-	VC_COMPILATION_LINGUISTICS_CALLBACK(vc);
+	#ifdef VC_COMPILATION_INFLECTIONS_CALLBACK
+	VC_COMPILATION_INFLECTIONS_CALLBACK(vc);
 	#endif
 
 	@<Start by blanking out all the passive and active slots@>;

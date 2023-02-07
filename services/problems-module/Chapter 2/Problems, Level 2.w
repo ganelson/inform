@@ -212,6 +212,21 @@ void Problems::quote_wide_text(int t, wchar_t *p) {
 void Problems::expand_wide_text(OUTPUT_STREAM, void *p) {
 	WRITE("%w", (wchar_t *) p);
 }
+void Problems::quote_nonterminal(int t, nonterminal *nt) {
+	Problems::problem_quote(t, (void *) nt, Problems::expand_nonterminal);
+}
+void Problems::expand_nonterminal(OUTPUT_STREAM, void *p) {
+	nonterminal *nt = (nonterminal *) p;
+	if (nt == NULL) { WRITE("(no nonterminal)"); return; }
+	TEMPORARY_TEXT(name)
+	WRITE_TO(name, "%w", Vocabulary::get_exemplar(nt->nonterminal_id, FALSE));
+	LOOP_THROUGH_TEXT(pos, name) {
+		wchar_t c = Str::get(pos);
+		if ((c == '<') || (c == '>')) c = '\'';
+		PUT(c);
+	}
+	DISCARD_TEXT(name);
+}
 void Problems::quote_stream(int t, text_stream *p) {
 	Problems::problem_quote(t, (void *) p, Problems::expand_stream);
 }

@@ -8,6 +8,13 @@ Inform can read and write text in multiple natural languages, though it
 needs help to do so: each natural language known to Inform comes from a
 small resource folder called its "bundle". (This includes English.)
 
+@e PLAYED_LSUPPORT from 1
+@e WRITTEN_LSUPPORT
+@e INDEXED_LSUPPORT
+@e REPORTED_LSUPPORT
+
+@d MAX_LSUPPORTS 5
+
 =
 typedef struct inform_language {
 	struct inbuild_copy *as_copy;
@@ -19,6 +26,7 @@ typedef struct inform_language {
 	struct inform_extension *belongs_to; /* if it does belong to an extension */
 	int adaptive_person; /* which person text substitutions are written from */
 	int Preform_loaded; /* has a Preform syntax definition been read for this? */
+	int supports[MAX_LSUPPORTS];
 	CLASS_DEFINITION
 } inform_language;
 
@@ -43,6 +51,7 @@ void Languages::scan(inbuild_copy *C) {
 	/* but not this one */
 	L->native_cue = NULL;
 	L->belongs_to = NULL;
+	for (int i=0; i<MAX_LSUPPORTS; i++) L->supports[i] = FALSE;
 
 	filename *about_file = Filenames::in(Languages::path_to_bundle(L), I"about.txt");
 	if (TextFiles::exists(about_file)) {
@@ -67,22 +76,8 @@ void Languages::scan(inbuild_copy *C) {
 			}
 			JSON_value *needs = JSON::look_up_object(C->metadata_record, I"needs");
 			if (needs) {
-				TEMPORARY_TEXT(expected)
-				WRITE_TO(expected, "%SLanguageKit", C->edition->work->title);
-				int found_expected = FALSE;
-				JSON_value *E;
-				LOOP_OVER_LINKED_LIST(E, JSON_value, needs->if_list)
-					@<Extract this requirement@>;
-				if (found_expected == FALSE) {
-					TEMPORARY_TEXT(err)
-					WRITE_TO(err, "language bundle must have dependency on '%S'", expected);
-					Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
-					DISCARD_TEXT(err)	
-				}
-				DISCARD_TEXT(expected)
-			} else {
 				TEMPORARY_TEXT(err)
-				WRITE_TO(err, "'language_metadata.json' must contain a \"needs\" field");
+				WRITE_TO(err, "language bundle is not allowed to have 'needs'");
 				Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
 				DISCARD_TEXT(err)	
 			}
@@ -104,34 +99,16 @@ void Languages::scan(inbuild_copy *C) {
 	
 	JSON_value *translated_syntax_cue = JSON::look_up_object(language_details, I"translated-syntax-cue");
 	if (translated_syntax_cue) L->native_cue = Str::duplicate(translated_syntax_cue->if_string);
-
-@<Extract this requirement@> =
-	JSON_value *if_clause = JSON::look_up_object(E, I"if");
-	JSON_value *unless_clause = JSON::look_up_object(E, I"unless");
-	if ((if_clause) || (unless_clause)) {
-		TEMPORARY_TEXT(err)
-		WRITE_TO(err, "a language bundle's needs must be unconditional");
-		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
-		DISCARD_TEXT(err)	
-	}
-	JSON_value *need_clause = JSON::look_up_object(E, I"need");
-	if (need_clause) {
-		JSON_value *need_type = JSON::look_up_object(need_clause, I"type");
-		JSON_value *need_title = JSON::look_up_object(need_clause, I"title");
-		JSON_value *need_version_range = JSON::look_up_object(need_clause, I"version-range");
-		if (Str::eq(need_type->if_string, I"kit")) {
-			if (Str::eq(expected, need_title->if_string)) found_expected = TRUE;
-			if (need_version_range) {
-				TEMPORARY_TEXT(err)
-				WRITE_TO(err, "version ranges on kit dependencies are not yet implemented");
-				Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
-				DISCARD_TEXT(err)
-			}
-		} else {
-			TEMPORARY_TEXT(err)
-			WRITE_TO(err, "a language can only have kits as dependencies");
-			Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
-			DISCARD_TEXT(err)
+	
+	JSON_value *supports = JSON::look_up_object(language_details, I"supports");
+	if (supports) {
+		JSON_value *E;
+		LOOP_OVER_LINKED_LIST(E, JSON_value, supports->if_list) {
+			text_stream *key = E->if_string;
+			if (Str::eq(key, I"played")) L->supports[PLAYED_LSUPPORT] = TRUE;
+			if (Str::eq(key, I"written")) L->supports[WRITTEN_LSUPPORT] = TRUE;
+			if (Str::eq(key, I"indexed")) L->supports[INDEXED_LSUPPORT] = TRUE;
+			if (Str::eq(key, I"reported")) L->supports[REPORTED_LSUPPORT] = TRUE;
 		}
 	}
 
@@ -162,35 +139,30 @@ void Languages::write_ISO_code(OUTPUT_STREAM, inform_language *L) {
 	WRITE("%S", L->iso_code);
 }
 
+@h Support.
+Different languages support different levels of translation.
+
+=
+int Languages::supports(inform_language *L, int S) {
+	if ((S<1) || (S>=MAX_LSUPPORTS)) internal_error("support out of range");
+	if (L == NULL) return FALSE;
+	return L->supports[S];
+}
+
 @h Kit.
-Each language needs its own kit(s) of Inter code, given in the dependencies:
+Each language needs its own kit of Inter code, if it is going to be used as
+a language of play. The following is called only when `L` is the language of
+play for `project`:
 
 =
 void Languages::add_kit_dependencies_to_project(inform_language *L, inform_project *project) {
 	if (L == NULL) internal_error("no language");
-	JSON_value *md = L->as_copy->metadata_record;
-	if (md == NULL) return; /* should never happen, but fail safe */
-	JSON_value *needs = JSON::look_up_object(md, I"needs");
-	if (needs == NULL) return; /* should never happen, but fail safe */
-WRITE_TO(STDERR, "add_kit_dependencies_to_project on %S\n", L->as_copy->edition->work->title);
-	JSON_value *E;
-	LOOP_OVER_LINKED_LIST(E, JSON_value, needs->if_list) {
-		JSON_value *need_clause = JSON::look_up_object(E, I"need");
-		if (need_clause) {
-			JSON_value *need_type = JSON::look_up_object(need_clause, I"type");
-			JSON_value *need_title = JSON::look_up_object(need_clause, I"title");
-			JSON_value *need_version = JSON::look_up_object(need_clause, I"version");
-			if (Str::eq(need_type->if_string, I"kit")) {
-				inbuild_work *work = Works::new_raw(kit_genre, need_title->if_string, I"");
-WRITE_TO(STDERR, "and it needs %X\n", work);
-				inbuild_requirement *req;
-				if (need_version) req = Requirements::new(work,
-					VersionNumberRanges::compatibility_range(VersionNumbers::from_text(need_version->if_string)));
-				else req = Requirements::any_version_of(work);
-				Projects::add_kit_dependency(project, need_title->if_string, L, NULL, req, NULL);
-			}
-		}
-	}
+	TEMPORARY_TEXT(kitname)
+	WRITE_TO(kitname, "%SLanguageKit", L->as_copy->edition->work->title);
+	inbuild_work *work = Works::new_raw(kit_genre, kitname, I"");
+	inbuild_requirement *req = Requirements::any_version_of(work);
+	Projects::add_kit_dependency(project, kitname, L, NULL, req, NULL);
+	DISCARD_TEXT(kitname)
 }
 
 @h Finding by name.
@@ -265,7 +237,9 @@ inform_language *Languages::find_for(text_stream *name, linked_list *search) {
 	return NULL;
 }
 
-@ Or we can convert the native cue, |en français|, to the name, |French|:
+@ Or we can convert the native cue, |en français|, to the name, |French|,
+though this will not work for language bundles inside of extensions, and
+so the function is now deprecated:
 
 =
 text_stream *Languages::find_by_native_cue(text_stream *cue, linked_list *search) {
