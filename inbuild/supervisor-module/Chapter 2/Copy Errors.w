@@ -16,6 +16,7 @@ fields are blank.
 @e METADATA_MALFORMED_CE
 @e EXT_MISWORDED_CE
 @e EXT_BAD_DIRNAME_CE
+@e EXT_BAD_FILENAME_CE
 @e EXT_TITLE_TOO_LONG_CE
 @e EXT_AUTHOR_TOO_LONG_CE
 @e LANGUAGE_UNAVAILABLE_CE
@@ -131,6 +132,7 @@ void CopyErrors::write(OUTPUT_STREAM, copy_error *CE) {
 		case OPEN_FAILED_CE: WRITE("unable to open file %f", CE->details_file); break;
 		case EXT_MISWORDED_CE: WRITE("extension misworded: %S", CE->details); break;
 		case EXT_BAD_DIRNAME_CE: WRITE("extension directory name wrong: %S", CE->details); break;
+		case EXT_BAD_FILENAME_CE: WRITE("extension filename wrong: %S", CE->details); break;
 		case METADATA_MALFORMED_CE: WRITE("%S has incorrect metadata: %S",
 			CE->copy->edition->work->genre->genre_name, CE->details); break;
 		case EXT_TITLE_TOO_LONG_CE: WRITE("title too long: %d characters (max is %d)",

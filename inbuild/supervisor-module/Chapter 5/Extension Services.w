@@ -53,8 +53,12 @@ void Extensions::scan(inbuild_copy *C) {
 	TEMPORARY_TEXT(claimed_title)
 	TEMPORARY_TEXT(reqs)
 	semantic_version_number V = VersionNumbers::null();
+	filename *extension_source_filename = NULL;
 	@<Scan the file@>;
 	@<Change the edition of the copy in light of the metadata found in the scan@>;
+if (C->location_if_path) {
+WRITE_TO(STDERR, "Okay %p: %S\n", C->location_if_path, C->edition->work->title);
+}
 	DISCARD_TEXT(claimed_author_name)
 	DISCARD_TEXT(claimed_title)
 	DISCARD_TEXT(reqs)
@@ -62,6 +66,9 @@ void Extensions::scan(inbuild_copy *C) {
 	if (Works::is_standard_rules(C->edition->work)) E->standard = TRUE;
 
 	@<Scan the metadata file, if there is one@>;
+if (C->location_if_path) {
+WRITE_TO(STDERR, "Now %S\n", C->edition->work->title);
+}
 	@<Check that the version numbers agree@>;
 }
 
@@ -101,24 +108,55 @@ alone, and the version number is returned.
 	filename *F = Extensions::main_source_file(C);
 	FILE *EXTF = Filenames::fopen_caseless(F, "r");
 	if (EXTF == NULL) {
-		Copies::attach_error(C, CopyErrors::new_F(OPEN_FAILED_CE, -1, F));
+		filename *A = Extensions::alternative_source_file(C);
+		if (A) {
+			EXTF = Filenames::fopen_caseless(A, "r");
+			if (EXTF) {
+				extension_source_filename = A;
+				@<Look inside the file@>;
+				fclose(EXTF);
+			} else Copies::attach_error(C, CopyErrors::new_F(OPEN_FAILED_CE, -1, F));
+		} else Copies::attach_error(C, CopyErrors::new_F(OPEN_FAILED_CE, -1, F));
 	} else {
-		@<Read the titling line of the extension and normalise its casing@>;
-		@<Read the rubric text, if any is present@>;
-		@<Parse the version, title, author and VM requirements from the titling line@>;
+		extension_source_filename = F;
+		@<Look inside the file@>;
 		fclose(EXTF);
-		if (Str::len(version_text) > 0) {
-			V = VersionNumbers::from_text(version_text);
-			if (VersionNumbers::is_null(V)) {
+	}
+	if (C->location_if_path) {
+		WRITE_TO(STDERR, "Read from %f\n", extension_source_filename);
+		TEMPORARY_TEXT(correct_leafname)
+		WRITE_TO(correct_leafname, "%S.i7x", claimed_title);
+		if (Str::ne_insensitive(correct_leafname, Filenames::get_leafname(extension_source_filename))) {
+			int allow = FALSE;
+			if ((C->nest_of_origin) && (Nests::get_tag(C->nest_of_origin) == MATERIALS_NEST_TAG) &&
+				(Extensions::rename_file(extension_source_filename, correct_leafname)))
+				allow = TRUE;
+			if (allow == FALSE) {
 				TEMPORARY_TEXT(error_text)
-				WRITE_TO(error_text, "the version number '%S' is malformed", version_text);
-				Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1, error_text));
+				WRITE_TO(error_text,
+					"the source file in the extension is called '%S' but should be '%S' to match the contents",
+					Filenames::get_leafname(extension_source_filename), correct_leafname);
+				Copies::attach_error(C, CopyErrors::new_T(EXT_BAD_FILENAME_CE, -1, error_text));
 				DISCARD_TEXT(error_text)
 			}
 		}
 	}
 	DISCARD_TEXT(titling_line)
 	DISCARD_TEXT(version_text)
+
+@<Look inside the file@> =
+	@<Read the titling line of the extension and normalise its casing@>;
+	@<Read the rubric text, if any is present@>;
+	@<Parse the version, title, author and VM requirements from the titling line@>;
+	if (Str::len(version_text) > 0) {
+		V = VersionNumbers::from_text(version_text);
+		if (VersionNumbers::is_null(V)) {
+			TEMPORARY_TEXT(error_text)
+			WRITE_TO(error_text, "the version number '%S' is malformed", version_text);
+			Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1, error_text));
+			DISCARD_TEXT(error_text)
+		}
+	}
 
 @ The titling line is terminated by any of |0A|, |0D|, |0A 0D| or |0D 0A|, or
 by the local |\n| for good measure.
@@ -397,6 +435,28 @@ filename *Extensions::main_source_file(inbuild_copy *C) {
 		}
 	}
 	return F;
+}
+
+filename *Extensions::alternative_source_file(inbuild_copy *C) {
+	pathname *P = C->location_if_path;
+	if (P) {
+		P = Pathnames::down(P, I"Source");
+		linked_list *L = Directories::listing(P);
+		filename *A = NULL; int c = 0;
+		text_stream *entry;
+		LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+			if (Platform::is_folder_separator(Str::get_last_char(entry)) == FALSE) {
+				filename *F = Filenames::in(P, entry);
+				TEMPORARY_TEXT(fext)
+				Filenames::write_extension(fext, F);
+				if (Str::eq_insensitive(fext, I".i7x")) {
+					A = F; c++;
+				}
+			}
+		}
+		if (c == 1) return A;
+	}
+	return NULL;
 }
 
 pathname *Extensions::materials_path(inform_extension *E) {
@@ -772,4 +832,23 @@ its requirements (even though it did when first loaded). This tests for that:
 int Extensions::satisfies(inform_extension *E) {
 	if (E == NULL) return FALSE;
 	return Requirements::meets(E->as_copy->edition, E->must_satisfy);
+}
+
+@h File hierarchy tidying.
+
+=
+int Extensions::rename_directory(pathname *P, text_stream *new_name) {
+	TEMPORARY_TEXT(task)
+	WRITE_TO(task, "(Changing directory name '%p' to '%S')\n", P, new_name);
+	int rv = Directories::rename(P, new_name);
+	if (rv) WRITE_TO(STDOUT, "%S", task);
+	return rv;
+}
+
+int Extensions::rename_file(filename *F, text_stream *new_name) {
+	TEMPORARY_TEXT(task)
+	WRITE_TO(task, "(Changing file name '%f' to '%S')\n", F, new_name);
+	int rv = Filenames::rename(F, new_name);
+	if (rv) WRITE_TO(STDOUT, "%S", task);
+	return rv;
 }

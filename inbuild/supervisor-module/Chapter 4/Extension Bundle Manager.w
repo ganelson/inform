@@ -69,6 +69,10 @@ inbuild_copy *ExtensionBundleManager::new_copy(text_stream *name, pathname *P,
 			(VersionNumbers::ne(apparent_V, C->edition->version)))
 			force_renaming = TRUE;
 
+		if ((force_renaming == FALSE) &&
+			(Str::ne(name, C->edition->work->title)))
+			force_renaming = TRUE;
+
 		if (force_renaming == TRUE) {
 			TEMPORARY_TEXT(new_name)
 			TEMPORARY_TEXT(new_version)
@@ -76,12 +80,12 @@ inbuild_copy *ExtensionBundleManager::new_copy(text_stream *name, pathname *P,
 			LOOP_THROUGH_TEXT(pos, new_version)
 				if (Str::get(pos) == '.')
 					Str::put(pos, '_');
-			WRITE_TO(new_name, "%S-v%S.i7xd", name, new_version);
-			if (Directories::rename(P, new_name)) {
-				WRITE_TO(STDOUT, "(Renaming '%p' as '%S')\n", P, new_name);
+			WRITE_TO(new_name, "%S-v%S.i7xd", C->edition->work->title, new_version);
+			if (Extensions::rename_directory(P, new_name)) {
 				Str::clear(key);
 				WRITE_TO(key, "%p", P);
 				apparent_V = C->edition->version;
+				name = C->edition->work->title;
 			}
 			DISCARD_TEXT(new_name)
 			DISCARD_TEXT(new_version)
@@ -176,7 +180,6 @@ inbuild_copy *ExtensionBundleManager::claim_folder_as_copy(pathname *P, inbuild_
 	ExtensionBundleManager::dismantle_name(Pathnames::directory_name(P), title, ext, &V);
 	inbuild_copy *C = NULL;
 	if ((Str::eq_insensitive(ext, I"i7xd")) || (TextFiles::exists(canary))) {
-		//	WRITE_TO(STDERR, "<%S> <%S> v=%v n=%d\n", ext, title, &V, Nests::get_tag(N));
 		int force_renaming = NOT_APPLICABLE;
 		if (Nests::get_tag(N) == MATERIALS_NEST_TAG) force_renaming = FALSE;
 		if (Str::eq_insensitive(ext, I"i7xd") == FALSE) {
