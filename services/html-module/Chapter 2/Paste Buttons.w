@@ -199,7 +199,7 @@ void PasteButtons::open_file(OUTPUT_STREAM, pathname *P, text_stream *leaf, char
 	if (leaf) WRITE_TO(fn, "%f", Filenames::in(P, leaf));
 	else WRITE_TO(fn, "%p", P);
 
-	#ifdef WINDOWS_JAVASCRIPT
+	#ifdef PLATFORM_WINDOWS
 	LOOP_THROUGH_TEXT(pos, fn) if (Str::get(pos) == '\\') Str::put(pos, '/');
 	#endif
 
