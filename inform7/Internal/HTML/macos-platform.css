@@ -160,7 +160,7 @@ span.extensioncensusentry {
 }
 
 span.extensionindexentry {
-    color: #404040;
+    color: var(--extension-index-entry-colour);
 }
 
 span.extensionindexerror {
