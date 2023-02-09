@@ -11,6 +11,7 @@ values here aren't actually correct for any platform as they stand: in the
 
 =
 wchar_t *FONT_TAG = L"size=2"; /* contents of a |<font>| tag */
+wchar_t *JAVASCRIPT_PRELUDE = L"javascript:window.Project."; /* calling prefix */
 int escape_openUrl = FALSE, escape_fileUrl = FALSE;
 int reverse_slash_openUrl = FALSE, reverse_slash_fileUrl = FALSE;
 
@@ -158,11 +159,11 @@ slashes -- useful if the separation character is a backslash, as on Windows,
 since backslashes are escape characters in Javascript literals.
 
 @<Set platform-dependent HTML and Javascript variables@> =
-	#ifndef WINDOWS_JAVASCRIPT
+	#ifndef PLATFORM_WINDOWS
 		FONT_TAG = L"face=\"lucida grande,geneva,arial,tahoma,verdana,helvetica,helv\" size=2";
 		escape_openUrl = TRUE; /* we want |openUrl| to escape, and |fileUrl| not to */
 	#endif
-	#ifdef WINDOWS_JAVASCRIPT
+	#ifdef PLATFORM_WINDOWS
 		reverse_slash_openUrl = TRUE; reverse_slash_fileUrl = TRUE;
 	#endif
 
