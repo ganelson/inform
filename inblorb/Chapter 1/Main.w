@@ -227,6 +227,11 @@ void Main::print_report(void) {
 	if (status_template) Websites::web_copy(status_template, status_file);
 }
 
+void Main::read_css_line(text_stream *line, text_file_position *tfp, void *X) {
+	text_stream *str = (text_stream *) X;
+	WRITE_TO(str, "%S\n", line);
+}
+
 @ If it isn't apparent what these placeholders do, take a look at
 the template file called |CblorbModel.html| in the Inform application --
 that's where they're used.
@@ -234,6 +239,7 @@ that's where they're used.
 @<Set a whole pile of placeholders which will be needed to generate the status page@> =
 	if (error_count > 0) {
 		Placeholders::set_to(I"CBLORBSTATUS", I"Failed", 0);
+		Placeholders::set_to(I"CBLORBSTATUSLOW", I"failed", 0);
 		Placeholders::set_to(I"CBLORBSTATUSIMAGE", I"inform:/outcome_images/cblorb_failed.png", 0);
 		Placeholders::set_to(I"CBLORBSTATUSTEXT",
 			Str::literal(L"Inform translated your source text as usual, to manufacture a 'story "
@@ -243,6 +249,7 @@ that's where they're used.
 	} else {
 		Placeholders::set_to(I"CBLORBERRORS", I"No problems occurred", 0);
 		Placeholders::set_to(I"CBLORBSTATUS", I"Succeeded", 0);
+		Placeholders::set_to(I"CBLORBSTATUSLOW", I"succeeded", 0);
 		Placeholders::set_to(I"CBLORBSTATUSIMAGE", I"file://[SMALLCOVER]", 0);
 		Placeholders::set_to(I"CBLORBSTATUSTEXT",
 			Str::literal(L"All went well. I've put the released material into the 'Release' subfolder "
@@ -268,4 +275,20 @@ that's where they're used.
 		Placeholders::set_to_number(I"BLORBFILESOUNDS", 0);
 		Placeholders::set_to_number(I"BLORBFILEDATAFILES", 0);
 		PRINT("! Completed: no blorb output requested\n");
+	}
+	if (status_template) {
+		filename *css_filename = NULL;
+		pathname *css_path = Filenames::up(status_template);
+		TEMPORARY_TEXT(platform_variation)
+		WRITE_TO(platform_variation, "%s-platform.css", PLATFORM_STRING);
+		css_filename = Filenames::in(css_path, platform_variation);
+		if (TextFiles::exists(css_filename) == FALSE) {
+			css_filename = Filenames::in(css_path, I"platform.css");
+		}
+		if (TextFiles::exists(css_filename)) {
+			TEMPORARY_TEXT(css)
+			TextFiles::read(css_filename, FALSE, "can't open css file",
+				TRUE, Main::read_css_line, NULL, css);
+			Placeholders::set_to(I"PLATFORMCSS", css, 0);
+		}
 	}
