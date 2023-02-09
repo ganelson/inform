@@ -11,6 +11,7 @@
     --stripe-two-background-colour: #f3f6fa;
 
     --index-dull-red-colour: #800000;
+    --index-dull-blue-colour: #000080;
     --periodic-table-sidebar-colour: #888;
     --periodic-table-sidebar-hover-colour: #222;
     --leaders-background-colour: white;
@@ -19,7 +20,7 @@
     --index-more-box-background-colour: #e0e0e0;
     --index-activity-contents-background-colour: #e8e0c0;
     --registry-contents-link-colour: #202020;
-
+    --extension-index-entry-colour: #404040;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -31,10 +32,11 @@
     --heading-panel-failed-background-colour: #7b4e53;
 
     --heading-row-background-colour: #707070;
-    --stripe-one-background-colour: #7f7f7f;
-    --stripe-two-background-colour: #797b7d;
+    --stripe-one-background-colour: #000000;
+    --stripe-two-background-colour: #090b0d;
 
     --index-dull-red-colour: #c00000;
+    --index-dull-blue-colour: #4040c0;
     --periodic-table-sidebar-colour: #555;
     --periodic-table-sidebar-hover-colour: #222;
     --leaders-background-colour: black;
@@ -43,6 +45,7 @@
     --index-more-box-background-colour: #444444;
     --index-activity-contents-background-colour: #727060;
     --registry-contents-link-colour: #ffffff;
+    --extension-index-entry-colour: #c0c0c0;
     }
 }
 
@@ -304,7 +307,7 @@ span.indexdullgreen {
 }
 
 span.indexdullblue {
-    color: #000080;
+    color: var(--index-dull-blue-colour);
 }
 
 /* Used in the numbering of levels of the World map in the Index */
