@@ -43,6 +43,15 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 					"what that directory is called (which is not fine). Specifically, %2.");
 				Problems::issue_problem_end();
 				break;
+			case EXT_BAD_FILENAME_CE:
+				Problems::quote_work(1, CE->copy->found_by->work);
+				Problems::quote_stream(2, CE->details);
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+				Problems::issue_problem_segment(
+					"The extension %1, which your source text makes use of, has the wrong "
+					"filename for its source text. Specifically, %2.");
+				Problems::issue_problem_end();
+				break;
 			case METADATA_MALFORMED_CE:
 				if (CE->copy->found_by) {
 					Problems::quote_work(1, CE->copy->found_by->work);

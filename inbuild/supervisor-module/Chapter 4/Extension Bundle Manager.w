@@ -50,7 +50,7 @@ inform_extension *ExtensionBundleManager::from_copy(inbuild_copy *C) {
 
 dictionary *eb_copy_cache = NULL;
 inbuild_copy *ExtensionBundleManager::new_copy(text_stream *name, pathname *P,
-	inbuild_nest *N, semantic_version_number apparent_V) {
+	inbuild_nest *N, semantic_version_number apparent_V, int force_renaming) {
 	if (eb_copy_cache == NULL) eb_copy_cache = Dictionaries::new(16, FALSE);
 	TEMPORARY_TEXT(key)
 	WRITE_TO(key, "%p", P);
@@ -64,13 +64,41 @@ inbuild_copy *ExtensionBundleManager::new_copy(text_stream *name, pathname *P,
 		inbuild_edition *edition = Editions::new(work, VersionNumbers::null());
 		C = Copies::new_in_path(edition, P, N);
 		Extensions::scan(C);
+		
+		if ((force_renaming == FALSE) &&
+			(VersionNumbers::ne(apparent_V, C->edition->version)))
+			force_renaming = TRUE;
+
+		if ((force_renaming == FALSE) &&
+			(Str::ne(name, C->edition->work->title)))
+			force_renaming = TRUE;
+
+		if (force_renaming == TRUE) {
+			TEMPORARY_TEXT(new_name)
+			TEMPORARY_TEXT(new_version)
+			WRITE_TO(new_version, "%v", &(C->edition->version));
+			LOOP_THROUGH_TEXT(pos, new_version)
+				if (Str::get(pos) == '.')
+					Str::put(pos, '_');
+			WRITE_TO(new_name, "%S-v%S.i7xd", C->edition->work->title, new_version);
+			if (Extensions::rename_directory(P, new_name)) {
+				Str::clear(key);
+				WRITE_TO(key, "%p", P);
+				apparent_V = C->edition->version;
+				name = C->edition->work->title;
+			}
+			DISCARD_TEXT(new_name)
+			DISCARD_TEXT(new_version)
+		}
+
 		Dictionaries::create(eb_copy_cache, key);
 		Dictionaries::write_value(eb_copy_cache, key, C);
 		if (VersionNumbers::is_null(apparent_V)) {
 			TEMPORARY_TEXT(error_text)
 			WRITE_TO(error_text,
 				"an extension in directory format must have a directory name ending "
-				"'-vN', giving the version number: for example, 'Advanced Algebra-v2_3_6'");
+				"'-vN.i7xd', giving the version number: for example, "
+				"'Advanced Algebra-v2_3_6.i7xd'");
 			Copies::attach_error(C, CopyErrors::new_T(EXT_BAD_DIRNAME_CE, -1, error_text));
 			DISCARD_TEXT(error_text)
 		} else if (VersionNumbers::ne(apparent_V, C->edition->version)) {
@@ -108,19 +136,69 @@ void ExtensionBundleManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 copy name.
 
 =
+
+void ExtensionBundleManager::dismantle_name(text_stream *name,
+	text_stream *to_title, text_stream *to_ext, semantic_version_number *to_V) {
+	TEMPORARY_TEXT(ext)
+	TEMPORARY_TEXT(title)
+	int pos = Str::len(name) - 1, dotpos = -1;
+	while (pos >= 0) {
+		wchar_t c = Str::get_at(name, pos);
+		if (Platform::is_folder_separator(c)) break;
+		if (c == '.') dotpos = pos;
+		pos--;
+	}
+	if (dotpos >= 0) {
+		Str::substr(ext, Str::at(name, dotpos+1), Str::end(name));
+		Str::substr(title, Str::start(name), Str::at(name, dotpos));
+	} else {
+		WRITE_TO(title, "%S", name);		
+	}
+	semantic_version_number V = VersionNumbers::null();
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, title, L"(%c+)-v([0-9_]+)")) {
+		Str::clear(title);
+		WRITE_TO(title, "%S", mr.exp[0]);
+		LOOP_THROUGH_TEXT(pos, mr.exp[1])
+			if (Str::get(pos) == '_')
+				Str::put(pos, '.');		
+		V = VersionNumbers::from_text(mr.exp[1]);
+	}
+	Regexp::dispose_of(&mr);
+	Str::copy(to_title, title);
+	Str::copy(to_ext, ext);
+	if (to_V) *to_V = V;
+	DISCARD_TEXT(ext)
+	DISCARD_TEXT(title)
+}
+
 inbuild_copy *ExtensionBundleManager::claim_folder_as_copy(pathname *P, inbuild_nest *N) {
 	filename *canary = Filenames::in(P, I"extension_metadata.json");
-	if (TextFiles::exists(canary)) {
-		text_stream *name = Str::duplicate(Pathnames::directory_name(P));
-		semantic_version_number V = VersionNumbers::null();
-		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, name, L"(%c+)-v([0-9_]+)")) {
-			name = Str::duplicate(mr.exp[0]);
-			V = VersionNumbers::from_text(mr.exp[1]);
+	TEMPORARY_TEXT(ext)
+	TEMPORARY_TEXT(title)
+	semantic_version_number V = VersionNumbers::null();
+	ExtensionBundleManager::dismantle_name(Pathnames::directory_name(P), title, ext, &V);
+	inbuild_copy *C = NULL;
+	if ((Str::eq_insensitive(ext, I"i7xd")) || (TextFiles::exists(canary))) {
+		int force_renaming = NOT_APPLICABLE;
+		if (Nests::get_tag(N) == MATERIALS_NEST_TAG) force_renaming = FALSE;
+		if (Str::eq_insensitive(ext, I"i7xd") == FALSE) {
+			if (Nests::get_tag(N) == MATERIALS_NEST_TAG) {
+				force_renaming = TRUE;
+			} else {
+				TEMPORARY_TEXT(error_text)
+				WRITE_TO(error_text,
+					"the extension directory '%S' needs to have the extension '.i7xd' added to its name",
+					Pathnames::directory_name(P));
+				Copies::attach_error(C, CopyErrors::new_T(EXT_BAD_DIRNAME_CE, -1, error_text));
+				DISCARD_TEXT(error_text)				
+			}
 		}
-		return ExtensionBundleManager::new_copy(name, P, N, V);
+		C = ExtensionBundleManager::new_copy(title, P, N, V, force_renaming);
 	}
-	return NULL;
+	DISCARD_TEXT(ext)
+	DISCARD_TEXT(title)
+	return C;
 }
 
 @h Searching.
