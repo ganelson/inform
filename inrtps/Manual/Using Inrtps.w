@@ -53,7 +53,7 @@ from the next. For instance:
 	A number cannot be divided by 0: similarly, we cannot take the remainder
 	after dividing something by 0.
 =
-The model file is a standard HTML file, except that it can contain four
+The model file is a standard HTML file, except that it can contain five
 escape codes, which Inrtps expands. Thus:
 
 (a) |*1| expands to the code number of the message.
@@ -61,3 +61,5 @@ escape codes, which Inrtps expands. Thus:
 (c) |*3| expands to a short title for the message.
 (d) |*4| expands to font settings inside a |<font ...>| tag. (This will be
 blank if |nofont| is set, or will choose a Helvetica-like font if |font| is set.)
+(e) |*5| expands to the contents of the appropriate per-platform CSS file, which
+is read from the Internal/HTML/ directory of the Inform installation.

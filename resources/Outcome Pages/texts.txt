@@ -328,22 +328,13 @@ The application ran your source text through the Inform 7 compiler, as usual, an
 <p>
 Inform can produce story files for several different virtual computers, and the one used by the current project can be selected using the Settings panel. If you are currently using the "Z-machine" format, try switching the project to "Glulx" format (you can make this change at the Settings panel), and limits like this will probably not bother you again. Although Z-machine story files used to be much more widely playable than Glulx ones, these days Glulx interpreters are widely available, so it's probably not worth making big sacrifices to stay within the Z-machine memory size.
 
-# And finally the pages showing the result of cblorb, on a Release run.
+# And finally the pages showing the result of inblorb, on a Release run.
 
 model = released.html
 
 --> ErrorCblorb - Failed
-The application ran your source text through the Inform 7 compiler, as usual, and then manufactured the final story file using Inform 6: all of this worked fine. However, the &quot;cblorb&quot; packaging tool then failed to make the actual release of the data out of your project. Its errors are written out on the Console tab.
+The application ran your source text through the Inform 7 compiler, as usual, and then manufactured the final story file using Inform 6: all of this worked fine. However, the &quot;inblorb&quot; packaging tool then failed to make the actual release of the data out of your project. Its errors are written out on the Console tab.
 <p>
 <center><img src='inform:/cblorb_failed.png' border=0></center>
 <p>
 This almost never happens in normal usage, and is almost certainly the result of a &quot;Release along with...&quot; sentence in the source having asked to do something impossible. For instance, an attempt to release along with cover art will fail if there's no cover art provided, or it has the wrong filename or is in the wrong place. So the best thing to do is probably to look carefully at any Release instructions in the source, and check them against the documentation.
-
---> GoodCblorb - Succeeded
-The source text was successfully translated to produce the story file, and the &quot;cblorb&quot; packaging tool was then used to wrap it up into a Blorb archive, the standard run-time format produced by Inform.
-<p>
-<center><img src='inform:/cblorb_succeeded.png' border=0></center>
-<p>
-In the same way that books in many different languages nevertheless have the same kind of binding, the Blorb wrapper can contain story files of several different story file formats (for instance, versions of Glulx or the Z-machine): see Chapter 2 of the Inform documentation.
-<p>
-Many modern interpreters can play Blorbed story files, but a few older ones cannot; besides, you might need a raw story file for use on a small portable device with very little memory. If you do need to avoid Blorbing, go to the Settings panel for the project and untick the &quot;Create a Blorb archive for release&quot; box, then release again. The result will be just a bare story file, and none of the advanced release options (solutions, website, cover art, etc.) will be possible. The bibliographic data will also be lost.

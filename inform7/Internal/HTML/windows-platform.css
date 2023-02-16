@@ -106,14 +106,14 @@ span.headingpaneltext {
     color: var(--heading-panel-text-colour);
     font-family: sans-serif;
     -webkit-font-smoothing: antialiased;
-    font-size: 1.333rem; /* 20/12 * 100/125 */
+    font-size: 1.2rem; /* 18/12 * 100/125 */
     font-weight: bold;
 }
 span.headingpaneltextalt {
     color: #ffffff;
     font-family: sans-serif;
     -webkit-font-smoothing: antialiased;
-    font-size: 1.333rem; /* 20/12 * 100/125 */
+    font-size: 1.2rem; /* 18/12 * 100/125 */
     font-weight: bold;
 }
 
