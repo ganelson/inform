@@ -56,9 +56,9 @@ inference_subject *InferenceSubjects::new_fundamental(inference_subject *from,
 
 @h Hierarchy.
 An "inference subject" is anything about which an inference can be drawn.
-These subjects form a hierarchy.[1] I "inherits from" J if a fact about I
-is necessarily also a fact about J, unless directly contradicted by specific
-information about J. For example,
+These subjects form a hierarchy.[1] I "inherits from" J if a fact about J
+is necessarily also a fact about I, unless directly contradicted by specific
+information about I. For example,
 
 >> The plastic bag is a container. A container is usually opaque. The bag is transparent.
 
