@@ -48,7 +48,6 @@ void Extensions::scan(inbuild_copy *C) {
 	E->as_copy = C;
 	Copies::set_metadata(C, STORE_POINTER_inform_extension(E));
 	@<Initialise the extension docket@>;
-
 	TEMPORARY_TEXT(claimed_author_name)
 	TEMPORARY_TEXT(claimed_title)
 	TEMPORARY_TEXT(reqs)
@@ -56,20 +55,21 @@ void Extensions::scan(inbuild_copy *C) {
 	filename *extension_source_filename = NULL;
 	@<Scan the file@>;
 	@<Change the edition of the copy in light of the metadata found in the scan@>;
-if (C->location_if_path) {
-WRITE_TO(STDERR, "Okay %p: %S\n", C->location_if_path, C->edition->work->title);
-}
+	if (Works::is_basic_inform(C->edition->work)) E->standard = TRUE;
+	if (Works::is_standard_rules(C->edition->work)) E->standard = TRUE;
+	if (C->location_if_path) {
+		text_stream *force_JSON_write = NULL;
+		TEMPORARY_TEXT(JSON_author_name)
+		TEMPORARY_TEXT(JSON_title)
+		@<Scan the metadata file, if there is one@>;
+		@<Check that the JSON metadata agrees@>;
+		if (force_JSON_write) @<Write a corrected JSON metadata file@>;
+		DISCARD_TEXT(JSON_author_name)
+		DISCARD_TEXT(JSON_title)
+	}
 	DISCARD_TEXT(claimed_author_name)
 	DISCARD_TEXT(claimed_title)
 	DISCARD_TEXT(reqs)
-	if (Works::is_basic_inform(C->edition->work)) E->standard = TRUE;
-	if (Works::is_standard_rules(C->edition->work)) E->standard = TRUE;
-
-	@<Scan the metadata file, if there is one@>;
-if (C->location_if_path) {
-WRITE_TO(STDERR, "Now %S\n", C->edition->work->title);
-}
-	@<Check that the version numbers agree@>;
 }
 
 @<Initialise the extension docket@> =
@@ -108,7 +108,7 @@ alone, and the version number is returned.
 	filename *F = Extensions::main_source_file(C);
 	FILE *EXTF = Filenames::fopen_caseless(F, "r");
 	if (EXTF == NULL) {
-		filename *A = Extensions::alternative_source_file(C);
+		filename *A = Extensions::alternative_source_file(C->location_if_path);
 		if (A) {
 			EXTF = Filenames::fopen_caseless(A, "r");
 			if (EXTF) {
@@ -123,12 +123,11 @@ alone, and the version number is returned.
 		fclose(EXTF);
 	}
 	if (C->location_if_path) {
-		WRITE_TO(STDERR, "Read from %f\n", extension_source_filename);
 		TEMPORARY_TEXT(correct_leafname)
 		WRITE_TO(correct_leafname, "%S.i7x", claimed_title);
 		if (Str::ne_insensitive(correct_leafname, Filenames::get_leafname(extension_source_filename))) {
 			int allow = FALSE;
-			if ((C->nest_of_origin) && (Nests::get_tag(C->nest_of_origin) == MATERIALS_NEST_TAG) &&
+			if ((repair_mode) &&
 				(Extensions::rename_file(extension_source_filename, correct_leafname)))
 				allow = TRUE;
 			if (allow == FALSE) {
@@ -156,6 +155,13 @@ alone, and the version number is returned.
 			Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1, error_text));
 			DISCARD_TEXT(error_text)
 		}
+	}
+	if ((Str::len(version_text) == 0) && (C->location_if_path)) {
+		TEMPORARY_TEXT(error_text)
+		WRITE_TO(error_text, "an extension stored in a directory must have a version number");
+		Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1, error_text));
+		DISCARD_TEXT(error_text)
+		V = VersionNumbers::from_text(I"1");
 	}
 
 @ The titling line is terminated by any of |0A|, |0D|, |0A 0D| or |0D 0A|, or
@@ -281,9 +287,9 @@ are immutable, and need to be for the extensions dictionary to work.
 	}
 
 @<Scan the metadata file, if there is one@> =
-	if (C->location_if_path) {
-		filename *F = Filenames::in(C->location_if_path, I"extension_metadata.json");
-		JSONMetadata::read_metadata_file(C, F);
+	filename *F = Filenames::in(C->location_if_path, I"extension_metadata.json");
+	if (TextFiles::exists(F)) {
+		JSONMetadata::read_metadata_file(C, F, JSON_title, JSON_author_name);
 		if (C->metadata_record) {
 			@<Extract activations@>;
 			JSON_value *extension_details =
@@ -295,6 +301,15 @@ are immutable, and need to be for the extensions dictionary to work.
 				LOOP_OVER_LINKED_LIST(V, JSON_value, needs->if_list)
 					@<Extract this possibly conditional requirement@>;
 			}
+		}
+	} else {
+		if (repair_mode) {
+			force_JSON_write = I"the JSON file is currently missing";
+		} else {
+			TEMPORARY_TEXT(error_text)
+			WRITE_TO(error_text, "the extension directory contains no 'extension_metadata.json' file");
+			Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, error_text));
+			DISCARD_TEXT(error_text)
 		}
 	}
 
@@ -340,7 +355,7 @@ are immutable, and need to be for the extensions dictionary to work.
 			@<Deal with a kit dependency@>
 		else {
 			TEMPORARY_TEXT(err)
-			WRITE_TO(err, "a kit can only have extensions and kits as dependencies");
+			WRITE_TO(err, "an extension can only have extensions and kits as dependencies");
 			Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
 			DISCARD_TEXT(err)	
 		}
@@ -394,14 +409,94 @@ are immutable, and need to be for the extensions dictionary to work.
 	inbuild_requirement *req = Requirements::any_version_of(work);
 	ADD_TO_LINKED_LIST(req, inbuild_requirement, E->kits);
 
-@<Check that the version numbers agree@> =
+@ If the JSON file disagrees with the source of the extension about any one of the
+version number, the title, or the author name, or indeed is simply absent, then we
+need to detect that and either flag an error, or force a repair.
+
+@<Check that the JSON metadata agrees@> =
 	semantic_version_number V2 = C->edition->version;
 	if (VersionNumbers::ne(V, V2)) {
+		if (repair_mode) {
+			force_JSON_write = I"the JSON file gives the wrong version number";
+			C->edition->version = V;
+		} else {
+			TEMPORARY_TEXT(error_text)
+			WRITE_TO(error_text, "the extension itself gives version number '%v', "
+				"but the metadata file says '%v': these need to match", &V, &V2);
+			Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, error_text));
+			DISCARD_TEXT(error_text)
+		}
+	}
+	if (Str::ne(JSON_title, C->edition->work->title)) {
+		if (repair_mode) {
+			force_JSON_write = I"the JSON file gives the wrong title";
+		} else {
+			TEMPORARY_TEXT(error_text)
+			WRITE_TO(error_text, "the extension itself gives title '%S', "
+				"but the metadata file says '%S': these need to match",
+				C->edition->work->title, JSON_title);
+			Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, error_text));
+			DISCARD_TEXT(error_text)
+		}
+	}
+	if (Str::ne(JSON_author_name, C->edition->work->author_name)) {
+		if (repair_mode) {
+			force_JSON_write = I"the JSON file gives the wrong author name";
+		} else {
+			TEMPORARY_TEXT(error_text)
+			WRITE_TO(error_text, "the extension itself gives author name '%S', "
+				"but the metadata file says '%S': these need to match",
+				C->edition->work->author_name, JSON_author_name);
+			Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, error_text));
+			DISCARD_TEXT(error_text)
+		}
+	}
+
+@ This is where incorrect or missing JSON metadata is repaired. If there was metadata
+at all, we rewrite it with the correct author, title and version. If not, we create it
+in a minimal sort of way, with just an |is| object.
+
+@<Write a corrected JSON metadata file@> =
+	if (repair_mode == FALSE)
+		internal_error("should not try to write JSON except in repair mode");
+	if (C->location_if_path == NULL)
+		internal_error("should not try to write JSON except for a directory extension");
+	JSON_value *is_object = NULL;
+	@<Find or create the is-object@>;
+	@<Populate the is-object with correct values@>;
+	@<Write the JSON metadata back to the filing system@>;
+
+@<Find or create the is-object@> =
+	if (C->metadata_record) is_object = JSON::look_up_object(C->metadata_record, I"is");
+	if (is_object == NULL) {	
+		is_object = JSON::new_object();
+		C->metadata_record = JSON::new_object();
+		JSON::add_to_object(C->metadata_record, I"is", is_object);
+	}
+
+@<Populate the is-object with correct values@> =
+	JSON::change_object(is_object, I"type", JSON::new_string(I"extension"));
+	JSON::change_object(is_object, I"title", JSON::new_string(C->edition->work->title));
+	JSON::change_object(is_object, I"author", JSON::new_string(C->edition->work->author_name));
+	TEMPORARY_TEXT(v)
+	WRITE_TO(v, "%v", &(C->edition->version));
+	JSON::change_object(is_object, I"version", JSON::new_string(v));
+	DISCARD_TEXT(v)
+
+@<Write the JSON metadata back to the filing system@> =
+	filename *F = Filenames::in(C->location_if_path, I"extension_metadata.json");
+	text_stream JSONF_struct;
+	text_stream *OUT = &JSONF_struct;
+	if (STREAM_OPEN_TO_FILE(OUT, F, UTF8_ENC) == FALSE) {
 		TEMPORARY_TEXT(error_text)
-		WRITE_TO(error_text, "the extension itself gives version number '%v', "
-			"but the metadata file says '%v': these need to match", &V, &V2);
+		WRITE_TO(error_text, "extension metadata file 'extension_metadata.json' was missing "
+			"or incorrect, and I was unable to write a better one");
 		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, error_text));
 		DISCARD_TEXT(error_text)
+	} else {
+		JSON::encode(OUT, C->metadata_record);
+		STREAM_CLOSE(OUT);
+		WRITE_TO(STDERR, "(Writing JSON metadata file to %f, because %S)\n", F, force_JSON_write);
 	}
 
 @ Language elements can be activated or deactivated:
@@ -437,24 +532,23 @@ filename *Extensions::main_source_file(inbuild_copy *C) {
 	return F;
 }
 
-filename *Extensions::alternative_source_file(inbuild_copy *C) {
-	pathname *P = C->location_if_path;
+filename *Extensions::alternative_source_file(pathname *P) {
 	if (P) {
 		P = Pathnames::down(P, I"Source");
 		linked_list *L = Directories::listing(P);
-		filename *A = NULL; int c = 0;
+		filename *A = NULL;
 		text_stream *entry;
 		LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
 			if (Platform::is_folder_separator(Str::get_last_char(entry)) == FALSE) {
 				filename *F = Filenames::in(P, entry);
 				TEMPORARY_TEXT(fext)
 				Filenames::write_extension(fext, F);
-				if (Str::eq_insensitive(fext, I".i7x")) {
-					A = F; c++;
-				}
+				if (Str::eq_insensitive(fext, I".i7x")) A = F;
+				DISCARD_TEXT(fext)
+				if (A) break;
 			}
 		}
-		if (c == 1) return A;
+		return A;
 	}
 	return NULL;
 }

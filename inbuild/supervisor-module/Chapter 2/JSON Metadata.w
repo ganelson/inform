@@ -11,7 +11,8 @@ identifying the copy which it purports to identify.
 In practice, (a) and (b) are delegated to the //foundation: JSON// library.
 
 =
-void JSONMetadata::read_metadata_file(inbuild_copy *C, filename *F) {
+void JSONMetadata::read_metadata_file(inbuild_copy *C, filename *F,
+	text_stream *repairing_title, text_stream *repairing_author) {
 	JSON_requirement *req = JSONMetadata::requirements();
 	TEMPORARY_TEXT(contents)
 	TextFiles::read(F, FALSE, "unable to read file of JSON metadata", TRUE,
@@ -119,29 +120,39 @@ to say that |is.type| is |"kit"|.
 	}
 
 @<Make sure the title is correct@> =
+	WRITE_TO(repairing_title, "%S", title->if_string);
 	if (Str::ne(title->if_string, C->edition->work->title)) {
-		TEMPORARY_TEXT(err)
-		if (Str::len(C->edition->work->title) > 0)
-			WRITE_TO(err, "the metadata says the title is '%S' when it should be '%S'",
-				title->if_string, C->edition->work->title);
-		else
-			WRITE_TO(err, "the metadata says the title is '%S' but it is untitled",
-				title->if_string);
-		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
-		DISCARD_TEXT(err)	
+		if (repairing_title) {
+			;
+		} else {
+			TEMPORARY_TEXT(err)
+			if (Str::len(C->edition->work->title) > 0)
+				WRITE_TO(err, "the metadata says the title is '%S' when it should be '%S'",
+					title->if_string, C->edition->work->title);
+			else
+				WRITE_TO(err, "the metadata says the title is '%S' but it is untitled",
+					title->if_string);
+			Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+			DISCARD_TEXT(err)
+		}
 	}
 
 @<Make sure the author is correct@> =
+	WRITE_TO(repairing_author, "%S", author->if_string);
 	if (Str::ne(author->if_string, C->edition->work->author_name)) {
-		TEMPORARY_TEXT(err)
-		if (Str::len(C->edition->work->author_name) > 0)
-			WRITE_TO(err, "the metadata says the author is '%S' when it should be '%S'",
-				author->if_string, C->edition->work->author_name);
-		else
-			WRITE_TO(err, "the metadata says the author is '%S', but it has no author",
-				author->if_string);
-		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
-		DISCARD_TEXT(err)	
+		if (repairing_author) {
+			;
+		} else {
+			TEMPORARY_TEXT(err)
+			if (Str::len(C->edition->work->author_name) > 0)
+				WRITE_TO(err, "the metadata says the author is '%S' when it should be '%S'",
+					author->if_string, C->edition->work->author_name);
+			else
+				WRITE_TO(err, "the metadata says the author is '%S', but it has no author",
+					author->if_string);
+			Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+			DISCARD_TEXT(err)
+		}
 	}
 
 @ Unlike those tests, here we simply trust the metadata to be correctly supplying

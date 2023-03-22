@@ -63,7 +63,7 @@ void Languages::scan(inbuild_copy *C) {
 	
 	filename *F = Filenames::in(C->location_if_path, I"language_metadata.json");
 	if (TextFiles::exists(F)) {
-		JSONMetadata::read_metadata_file(C, F);
+		JSONMetadata::read_metadata_file(C, F, NULL, NULL);
 		if (C->metadata_record) {
 			JSON_value *language_details =
 				JSON::look_up_object(C->metadata_record, I"language-details");

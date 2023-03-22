@@ -4772,19 +4772,19 @@
         {...} 
           constraint (none) extremes [1, infinity)
 
-<optional-article> hits 83130/166260 nti 28 constraint (none) extremes [1, infinity)
+<optional-article> hits 83129/166258 nti 28 constraint (none) extremes [1, infinity)
     English:
         <article> {...} 
-          (hits 16076/47539) (matched long text) constraint (none) extremes [2, infinity)
+          (hits 16076/47538) (matched long text) constraint (none) extremes [2, infinity)
         {...} 
-          (hits 67054/67054) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 67053/67053) (matched long text) constraint (none) extremes [1, infinity)
 
 <compulsory-article> nti 29 constraint (none) extremes [2, infinity)
     English:
         <article> {...} 
           constraint (none) extremes [2, infinity)
 
-<article> internal hits 16533/99148 nti r2 constraint (none) extremes [1, 1]
+<article> internal hits 16533/99146 nti r2 constraint (none) extremes [1, 1]
 
 <definite-article> internal hits 20440/236748 nti r2 constraint (none) extremes [1, 1]
 
@@ -8824,7 +8824,7 @@
         time of day 
           (hits 1/1) (matched: 'time of day') constraint CS = {11} extremes [3, 3]
 
-<notable-player-instances> hits 1/334 nti 12 constraint CS = {12} extremes [1, 1]
+<notable-player-instances> hits 1/324 nti 12 constraint CS = {12} extremes [1, 1]
     English:
         yourself 
           (hits 1/13) (matched: 'yourself') constraint CS = {12} extremes [1, 1]

@@ -71,7 +71,7 @@ void Kits::scan(inbuild_copy *C) {
 	K->supports_nl = FALSE;
 
 	filename *F = Filenames::in(C->location_if_path, I"kit_metadata.json");
-	JSONMetadata::read_metadata_file(C, F);
+	JSONMetadata::read_metadata_file(C, F, NULL, NULL);
 	
 	if (C->metadata_record) {
 		@<Extract activations@>;

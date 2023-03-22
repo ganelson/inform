@@ -79,7 +79,7 @@ void Projects::scan(inbuild_copy *C) {
 	Projects::scan_bibliographic_data(proj);
 	filename *F = Filenames::in(M, I"project_metadata.json");
 	if (TextFiles::exists(F)) {
-		JSONMetadata::read_metadata_file(C, F);
+		JSONMetadata::read_metadata_file(C, F, NULL, NULL);
 		if (C->metadata_record) {
 			JSON_value *is = JSON::look_up_object(C->metadata_record, I"is");
 			if (is) {

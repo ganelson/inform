@@ -4,14 +4,7 @@ Claiming and creating copies of the kit genre: used for kits of precompiled
 Inter code.
 
 @h Genre definition.
-The |extension_bundle_genre| can be summarised as follows. Kits consist of directories,
-containing metadata in |D/kit_metadata.json|, but which are also valid Inweb
-webs of Inform 6 source text. They are recognised by having directory names
-ending in |Kit|, and by having a metadata file in place. They are stored in
-nests, in |N/Inter/Title-vVersion|. Their build graphs are quite extensive,
-with build edges to Inter binaries for each architecture with which they
-are compatible, and use edges to extensions or other kits as laid out in
-the metadata file.
+The |extension_bundle_genre| can be summarised as follows.
 
 =
 void ExtensionBundleManager::start(void) {
@@ -136,7 +129,6 @@ void ExtensionBundleManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 copy name.
 
 =
-
 void ExtensionBundleManager::dismantle_name(text_stream *name,
 	text_stream *to_title, text_stream *to_ext, semantic_version_number *to_V) {
 	TEMPORARY_TEXT(ext)
@@ -173,33 +165,202 @@ void ExtensionBundleManager::dismantle_name(text_stream *name,
 }
 
 inbuild_copy *ExtensionBundleManager::claim_folder_as_copy(pathname *P, inbuild_nest *N) {
-	filename *canary = Filenames::in(P, I"extension_metadata.json");
-	TEMPORARY_TEXT(ext)
-	TEMPORARY_TEXT(title)
-	semantic_version_number V = VersionNumbers::null();
-	ExtensionBundleManager::dismantle_name(Pathnames::directory_name(P), title, ext, &V);
 	inbuild_copy *C = NULL;
-	if ((Str::eq_insensitive(ext, I"i7xd")) || (TextFiles::exists(canary))) {
-		int force_renaming = NOT_APPLICABLE;
-		if (Nests::get_tag(N) == MATERIALS_NEST_TAG) force_renaming = FALSE;
-		if (Str::eq_insensitive(ext, I"i7xd") == FALSE) {
-			if (Nests::get_tag(N) == MATERIALS_NEST_TAG) {
-				force_renaming = TRUE;
-			} else {
+	if (Directories::exists(P)) {
+		filename *canary = Filenames::in(P, I"extension_metadata.json");
+		TEMPORARY_TEXT(ext)
+		TEMPORARY_TEXT(title)
+		semantic_version_number V = VersionNumbers::null();
+		ExtensionBundleManager::dismantle_name(Pathnames::directory_name(P), title, ext, &V);
+		if ((Str::eq_insensitive(ext, I"i7xd")) || (TextFiles::exists(canary))) {
+			if (Extensions::alternative_source_file(P) == NULL) {
 				TEMPORARY_TEXT(error_text)
 				WRITE_TO(error_text,
-					"the extension directory '%S' needs to have the extension '.i7xd' added to its name",
+					"the extension directory '%S' does not contain any source text "
+					"(which should be in a '.i7x' file inside a 'Source' subdirectory)",
 					Pathnames::directory_name(P));
 				Copies::attach_error(C, CopyErrors::new_T(EXT_BAD_DIRNAME_CE, -1, error_text));
 				DISCARD_TEXT(error_text)				
+			} else {
+				int force_renaming = NOT_APPLICABLE;
+				int save_repair_mode = repair_mode;
+				if (Nests::get_tag(N) == MATERIALS_NEST_TAG) repair_mode = TRUE;
+				if (repair_mode) force_renaming = FALSE;
+				if (Str::eq_insensitive(ext, I"i7xd") == FALSE) {
+					if (Nests::get_tag(N) == MATERIALS_NEST_TAG) {
+						force_renaming = TRUE;
+					} else {
+						TEMPORARY_TEXT(error_text)
+						WRITE_TO(error_text,
+							"the extension directory '%S' needs to have the extension '.i7xd' added to its name",
+							Pathnames::directory_name(P));
+						Copies::attach_error(C, CopyErrors::new_T(EXT_BAD_DIRNAME_CE, -1, error_text));
+						DISCARD_TEXT(error_text)				
+					}
+				}
+				C = ExtensionBundleManager::new_copy(title, P, N, V, force_renaming);
+				@<Police extraneous contents@>;
+				repair_mode = save_repair_mode;
 			}
 		}
-		C = ExtensionBundleManager::new_copy(title, P, N, V, force_renaming);
+		DISCARD_TEXT(ext)
+		DISCARD_TEXT(title)
 	}
-	DISCARD_TEXT(ext)
-	DISCARD_TEXT(title)
 	return C;
 }
+
+@<Police extraneous contents@> =
+	linked_list *L = Directories::listing(P);
+	text_stream *entry;
+	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+		if (Platform::is_folder_separator(Str::get_last_char(entry))) {
+			TEMPORARY_TEXT(subdir)
+			WRITE_TO(subdir, "%S", entry);
+			Str::delete_last_character(subdir);
+			if (Str::eq(subdir, I"Source")) {
+				@<Police Source contents@>;
+			} else if (Str::eq(subdir, I"Materials")) {
+				@<Police Materials contents@>;
+			} else if (Str::eq(subdir, I"Documentation")) {
+				@<Police Documentation contents@>;
+			} else {
+				TEMPORARY_TEXT(error_text)
+				WRITE_TO(error_text,
+					"the extension directory '%S' contains a subdirectory called '%S', "
+					"which I don't recognise",
+					Pathnames::directory_name(P), subdir);
+				Copies::attach_error(C, CopyErrors::new_T(EXT_RANEOUS_CE, -1, error_text));
+				DISCARD_TEXT(error_text)				
+			}
+			DISCARD_TEXT(subdir)
+		} else {
+			if (Str::eq(entry, I"extension_metadata.json")) continue;
+			TEMPORARY_TEXT(error_text)
+			WRITE_TO(error_text,
+				"the extension directory '%S' contains a file called '%S', "
+				"which I don't recognise",
+				Pathnames::directory_name(P), entry);
+			Copies::attach_error(C, CopyErrors::new_T(EXT_RANEOUS_CE, -1, error_text));
+			DISCARD_TEXT(error_text)				
+		}
+	}
+
+@<Police Source contents@> =
+	filename *canonical = Extensions::main_source_file(C);
+	pathname *Q = Pathnames::down(P, subdir);
+	linked_list *L = Directories::listing(Q);
+	text_stream *entry;
+	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+		if (Platform::is_folder_separator(Str::get_last_char(entry))) {
+			TEMPORARY_TEXT(subdir)
+			WRITE_TO(subdir, "%S", entry);
+			Str::delete_last_character(subdir);
+			TEMPORARY_TEXT(error_text)
+			WRITE_TO(error_text,
+				"the 'Source' subdirectory of the extension directory '%S' contains a "
+				"further subdirectory called '%S', but should not have further subdirectories",
+				Pathnames::directory_name(P), subdir);
+			Copies::attach_error(C, CopyErrors::new_T(EXT_RANEOUS_CE, -1, error_text));
+			DISCARD_TEXT(error_text)
+			DISCARD_TEXT(subdir)
+		} else {
+			if (Str::eq(entry, Filenames::get_leafname(canonical))) continue;
+			TEMPORARY_TEXT(error_text)
+			WRITE_TO(error_text,
+				"the 'Source' subdirectory of the extension directory '%S' contains a "
+				"file called '%S', but should only contain the source text file '%S'",
+				Pathnames::directory_name(P), entry, Filenames::get_leafname(canonical));
+			Copies::attach_error(C, CopyErrors::new_T(EXT_RANEOUS_CE, -1, error_text));
+			DISCARD_TEXT(error_text)				
+		}
+	}
+
+@<Police Materials contents@> =
+	pathname *Q = Pathnames::down(P, subdir);
+	linked_list *L = Directories::listing(Q);
+	text_stream *entry;
+	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+		if (Platform::is_folder_separator(Str::get_last_char(entry))) {
+			TEMPORARY_TEXT(subdir)
+			WRITE_TO(subdir, "%S", entry);
+			Str::delete_last_character(subdir);
+			if (Str::eq(subdir, I"Data")) {
+				;
+			} else if (Str::eq(subdir, I"Figures")) {
+				;
+			} else if (Str::eq(subdir, I"Inter")) {
+				;
+			} else if (Str::eq(subdir, I"Sounds")) {
+				;
+			} else if (Str::eq(subdir, I"Templates")) {
+				;
+			} else {
+				TEMPORARY_TEXT(error_text)
+				WRITE_TO(error_text,
+					"the 'Materials' subdirectory of the extension directory '%S' contains a "
+					"further subdirectory called '%S', but this is not one of the possibilities "
+					"allowed",
+					Pathnames::directory_name(P), subdir);
+				Copies::attach_error(C, CopyErrors::new_T(EXT_RANEOUS_CE, -1, error_text));
+				DISCARD_TEXT(error_text)
+			}
+			DISCARD_TEXT(subdir)
+		} else {
+			TEMPORARY_TEXT(error_text)
+			WRITE_TO(error_text,
+				"the 'Materials' subdirectory of the extension directory '%S' contains a "
+				"file called '%S', but should not contain any files, only further subdirectories",
+				Pathnames::directory_name(P), entry);
+			Copies::attach_error(C, CopyErrors::new_T(EXT_RANEOUS_CE, -1, error_text));
+			DISCARD_TEXT(error_text)				
+		}
+	}
+
+@<Police Documentation contents@> =
+	int doc_found = FALSE;
+	pathname *Q = Pathnames::down(P, subdir);
+	linked_list *L = Directories::listing(Q);
+	text_stream *entry;
+	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+		if (Platform::is_folder_separator(Str::get_last_char(entry))) {
+			TEMPORARY_TEXT(subdir)
+			WRITE_TO(subdir, "%S", entry);
+			Str::delete_last_character(subdir);
+			if (Str::eq(subdir, I"Examples")) {
+				;
+			} else if (Str::eq(subdir, I"Images")) {
+				;
+			} else {
+				TEMPORARY_TEXT(error_text)
+				WRITE_TO(error_text,
+					"the 'Documentation' subdirectory of the extension directory '%S' contains a "
+					"further subdirectory called '%S', but this is not one of the possibilities "
+					"allowed",
+					Pathnames::directory_name(P), subdir);
+				Copies::attach_error(C, CopyErrors::new_T(EXT_RANEOUS_CE, -1, error_text));
+				DISCARD_TEXT(error_text)
+			}
+			DISCARD_TEXT(subdir)
+		} else {
+			if (Str::eq(entry, I"Documentation.txt")) { doc_found = TRUE; continue; }
+			TEMPORARY_TEXT(error_text)
+			WRITE_TO(error_text,
+				"the 'Documentation' subdirectory of the extension directory '%S' contains a "
+				"file called '%S', but I don't know what this would mean",
+				Pathnames::directory_name(P), entry);
+			Copies::attach_error(C, CopyErrors::new_T(EXT_RANEOUS_CE, -1, error_text));
+			DISCARD_TEXT(error_text)				
+		}
+	}
+	if (doc_found == FALSE) {
+		TEMPORARY_TEXT(error_text)
+		WRITE_TO(error_text,
+			"the 'Documentation' subdirectory of the extension directory '%S' is optional, "
+			"but if it does exist then it needs to contain a file called 'Documentation.txt'",
+			Pathnames::directory_name(P));
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, error_text));
+		DISCARD_TEXT(error_text)				
+	}
 
 @h Searching.
 Here we look through a nest to find all extension bundles:

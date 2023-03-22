@@ -186,6 +186,7 @@ int this_is_a_debug_compile = FALSE; /* Destined to be compiled with debug featu
 int this_is_a_release_compile = FALSE; /* Omit sections of source text marked not for release */
 text_stream *output_format = NULL; /* What story file we will eventually have */
 int census_mode = FALSE; /* Running only to update extension documentation */
+int repair_mode = FALSE; /* Automatically fix missing or damaged extension metadata */
 int rng_seed_at_start_of_play = 0; /* The seed value, or 0 if not seeded */
 
 void Supervisor::set_defaults(void) {

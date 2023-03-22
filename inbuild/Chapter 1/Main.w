@@ -319,6 +319,7 @@ other options to the selection defined here.
 @e PREPROCESS_HTML_CLSW
 @e PREPROCESS_HTML_TO_CLSW
 @e PREPROCESS_APP_CLSW
+@e REPAIR_CLSW
 
 @<Read the command line@> =	
 	CommandLine::declare_heading(
@@ -374,6 +375,8 @@ other options to the selection defined here.
 		L"set destination for -preprocess-html to be X");
 	CommandLine::declare_switch(PREPROCESS_APP_CLSW, L"preprocess-app", 2,
 		L"use CSS suitable for app platform X (macos, windows, linux)");
+	CommandLine::declare_boolean_switch(REPAIR_CLSW, L"repair", 1,
+		L"quietly fix missing or incorrect extension metadata", TRUE);
 	Supervisor::declare_options();
 
 	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
@@ -434,6 +437,7 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 			filename *T = Filenames::in(preprocess_HTML_destination, Filenames::get_leafname(F));
 			Registries::preprocess_HTML(T, F, preprocess_HTML_app);
 			break;
+		case REPAIR_CLSW: repair_mode = val; break;
 	}
 	Supervisor::option(id, val, arg, state);
 }
