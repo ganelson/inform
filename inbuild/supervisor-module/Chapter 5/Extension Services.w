@@ -15,6 +15,7 @@ typedef struct inform_extension {
 	struct wording body_text; /* Body of source text supplied in extension, if any */
 	int body_text_unbroken; /* Does this contain text waiting to be sentence-broken? */
 	struct wording documentation_text; /* Documentation supplied in extension, if any */
+	int documentation_sought; /* Has it yet been looked for? */
 	int standard; /* the (or perhaps just a) Standard Rules extension */
 	int authorial_modesty; /* Do not credit in the compiled game */
 	struct text_stream *rubric_as_lexed; /* brief description found in opening lines */
@@ -76,6 +77,7 @@ void Extensions::scan(inbuild_copy *C) {
 	E->body_text = EMPTY_WORDING;
 	E->body_text_unbroken = FALSE;
 	E->documentation_text = EMPTY_WORDING;
+	E->documentation_sought = FALSE;
 	E->standard = FALSE;
 	E->authorial_modesty = FALSE;
 	E->read_into_file = NULL;
@@ -809,6 +811,35 @@ and no documentation.
 	E->body_text = GET_RW(<extension-body>, 1);
 	if (<<r>>) E->documentation_text = GET_RW(<extension-body>, 2);
 	E->body_text_unbroken = TRUE; /* mark this to be sentence-broken */
+
+@ In directory extensions, documentation can be stored separately:
+
+=
+wording Extensions::get_documentation_text(inform_extension *E) {
+	if (E == NULL) return EMPTY_WORDING;
+	Copies::get_source_text(E->as_copy); /* in the unlikely event this has not happened yet */
+	if (E->documentation_sought == FALSE) {
+		if (E->as_copy->location_if_path) {
+			pathname *D = Pathnames::down(E->as_copy->location_if_path, I"Documentation");
+			filename *F = Filenames::in(D, I"Documentation.txt");
+			if (TextFiles::exists(F)) @<Fetch wording from stand-alone file@>;
+		}
+		E->documentation_sought = TRUE;
+	}
+	return E->documentation_text;
+}
+
+@<Fetch wording from stand-alone file@> =
+	if (Wordings::nonempty(E->documentation_text)) {
+		TEMPORARY_TEXT(error_text)
+		WRITE_TO(error_text,
+			"this extension provides documentation both as a file and in its source");
+		Copies::attach_error(E->as_copy, CopyErrors::new_T(EXT_MISWORDED_CE, -1, error_text));
+		DISCARD_TEXT(error_text)					
+	} else {
+		source_file *sf = SourceText::read_file(E->as_copy, F, NULL, TRUE, FALSE);
+		if (sf) E->documentation_text = sf->text_read;
+	}
 
 @ When the extension source text was read from its |source_file|, we
 attached a reference to say which |inform_extension| it was, and here we

@@ -159,16 +159,17 @@ If the TOC were directly at the top of the supplied documentation, it might
 easily be scrolled down off screen when the user first visits the page.
 
 @<Write up the table of contents for the supplied documentation, if any@> =
-	if (Wordings::nonempty(E->documentation_text)) {
+	wording DW = Extensions::get_documentation_text(E);
+	if (Wordings::nonempty(DW)) {
 		HTML_OPEN("p");
-		DocumentationRenderer::table_of_contents(E->documentation_text, OUT, leaf);
+		DocumentationRenderer::table_of_contents(DW, OUT, leaf);
 		HTML_CLOSE("p");
 	}
 
 @<Write up the supplied documentation, if any@> =
-	if (Wordings::nonempty(E->documentation_text))
-		no_egs = DocumentationRenderer::set_body_text(E->documentation_text, OUT,
-			eg_number, leaf);
+	wording DW = Extensions::get_documentation_text(E);
+	if (Wordings::nonempty(DW))
+		no_egs = DocumentationRenderer::set_body_text(DW, OUT, eg_number, leaf);
 	else {
 		HTML_OPEN("p");
 		WRITE("The extension provides no documentation.");
