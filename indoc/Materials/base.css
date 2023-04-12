@@ -132,6 +132,12 @@ td.quotedtablecell {
 	right-margin: 24px;
 }
 
+/* remove gap between table name and body */
+
+table.codetable {
+	margin-top: -1em;
+}
+
 /* ------------------------------------------------------------------------ */
 /* Example cues */
 
