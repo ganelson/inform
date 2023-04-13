@@ -65,3 +65,4 @@ Chapter 7: Extension Indexing
 	Census
 	Index Pages
 	Individual Pages
+	The Report

@@ -107,7 +107,7 @@ HTML, they are dealt with elsewhere.
 =
 int problem_count_at_last_in = 1;
 text_stream problems_file_struct; /* The actual report of Problems file */
-text_stream *problems_file = &problems_file_struct; /* As a |text_sream *| */
+text_stream *problems_file = &problems_file_struct; /* As a |text_stream *| */
 int problems_file_active = FALSE; /* Currently in use */
 
 #ifndef PROBLEMS_HTML_EMITTER

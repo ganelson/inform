@@ -21,6 +21,8 @@ usage: inbuild [-TASK] TARGET1 TARGET2 ...
 -preprocess-html-to X          set destination for -preprocess-html to be X
 -rebuild                       completely rebuild target(s)
 -no-repair                     don't quietly fix missing or incorrect extension metadata (default is -repair)
+-report-on                     report on target(s) within the Inform GUI apps
+-results X                     write HTML report file to X (for use within Inform GUI apps)
 -sync-to X                     forcibly copy target(s) to nest X, even if prior version already there
 -tools X                       make X the directory of intools executables, and exit developer mode
 -use-locate                    show file paths of all the extensions, kits and so on needed to use

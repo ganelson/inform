@@ -98,6 +98,18 @@ void Copies::list_attached_errors(OUTPUT_STREAM, inbuild_copy *C) {
 	}
 }
 
+void Copies::list_attached_errors_to_HTML(OUTPUT_STREAM, inbuild_copy *C) {
+	if (C == NULL) return;
+	HTML_OPEN("ul"); WRITE("\n");
+	copy_error *CE;
+	LOOP_OVER_LINKED_LIST(CE, copy_error, C->errors_reading_source_text) {
+		HTML_OPEN("li");
+		CopyErrors::write(OUT, CE);
+		HTML_CLOSE("li"); WRITE("\n");
+	}
+	HTML_CLOSE("ul"); WRITE("\n");
+}
+
 @h Writing.
 
 =
@@ -263,3 +275,48 @@ void Copies::overwrite_error(inbuild_copy *C, inbuild_nest *N) {
 	WRITE_TO(ext, "%X", C->edition->work);
 	Errors::with_text("already present (to overwrite, use -sync-to not -copy-to): '%S'", ext);
 }
+
+@ This is used to display HTML within Inform GUI apps, but it does more or less
+the same thing as |-inspect| at the command line.
+
+=
+void Copies::report_on(inbuild_copy *C) {
+	text_stream *OUT = NULL;
+	if ((C->edition->work->genre == extension_genre) ||
+		(C->edition->work->genre == extension_bundle_genre)) {
+		int N = LinkedLists::len(C->errors_reading_source_text);
+		if (N > 0) @<Report on a damaged extension@>
+		else @<Report on a valid extension@>;
+	} else {
+		@<Report on something else@>;
+	}
+	if (OUT) InbuildReport::end();
+}
+
+@<Report on a valid extension@> =
+	TEMPORARY_TEXT(desc)
+	Editions::inspect(desc, C->edition);
+	OUT = InbuildReport::begin(desc, I"An extension for use in Inform projects");
+	if (OUT) {
+		HTML_OPEN("p");
+		WRITE("This looks like a valid Inform 7 extension.");
+		HTML_CLOSE("p");
+		InbuildReport::end();
+	}
+
+@<Report on a damaged extension@> =
+	TEMPORARY_TEXT(desc)
+	WRITE_TO(desc, "This may be: ");
+	Editions::inspect(desc, C->edition);
+	OUT = InbuildReport::begin(I"Warning: Damaged extension", desc);
+	if (OUT) {
+		HTML_OPEN("p");
+		WRITE("This extension is broken, and needs repair before it can be used. ");
+		WRITE("Specifically:");
+		HTML_CLOSE("p");
+		Copies::list_attached_errors_to_HTML(OUT, C);
+		InbuildReport::end();
+	}
+
+@<Report on something else@> =
+	OUT = InbuildReport::begin(I"Not an extension...", Genres::name(C->edition->work->genre));
