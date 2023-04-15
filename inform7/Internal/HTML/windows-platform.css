@@ -21,6 +21,10 @@
     --index-activity-contents-background-colour: #e8e0c0;
     --registry-contents-link-colour: #202020;
     --extension-index-entry-colour: #404040;
+    
+    --safe-button-background-colour: rgb(31, 136, 61);
+    --dangerous-button-background-colour: rgb(136, 31, 61);
+	--button-text-background-colour: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -46,6 +50,10 @@
     --index-activity-contents-background-colour: #727060;
     --registry-contents-link-colour: #ffffff;
     --extension-index-entry-colour: #c0c0c0;
+    
+    --safe-button-background-colour: rgb(31, 136, 61);
+    --dangerous-button-background-colour: rgb(136, 31, 61);
+	--button-text-background-colour: #ffffff;
     }
 }
 
@@ -479,4 +487,32 @@ a.registrycontentslink:hover {
 a.registrycontentslink:active {
 	text-decoration: none;
 	color: #D00000;
+}
+
+/* Buttons for use on inbuild results pages */
+
+button.safebutton {
+	background-color: var(--safe-button-background-colour);
+	border: none;
+	color: var(--button-text-background-colour);
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
+}
+
+button.dangerousbutton {
+	background-color: var(--dangerous-button-background-colour);
+	border: none;
+	color: var(--button-text-background-colour);
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
 }

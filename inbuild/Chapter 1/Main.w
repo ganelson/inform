@@ -343,8 +343,8 @@ other options to the selection defined here.
 		L"completely rebuild target(s)");
 	CommandLine::declare_switch(INSPECT_CLSW, L"inspect", 1,
 		L"show target(s) but take no action");
-	CommandLine::declare_switch(INSTALL_CLSW, L"report-on", 1,
-		L"report on target(s) within the Inform GUI apps");
+	CommandLine::declare_switch(INSTALL_CLSW, L"install", 1,
+		L"install extension within the Inform GUI apps");
 	CommandLine::declare_switch(GRAPH_CLSW, L"graph", 1,
 		L"show dependency graph of target(s) but take no action");
 	CommandLine::declare_switch(USE_NEEDS_CLSW, L"use-needs", 1,

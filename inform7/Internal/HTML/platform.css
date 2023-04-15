@@ -423,3 +423,31 @@ a.registrycontentslink:active {
 	text-decoration: none;
 	color: #D00000;
 }
+
+/* Buttons for use on inbuild results pages */
+
+button.safebutton {
+	background-color: #00ff00;
+	border: none;
+	color: #ffffff;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
+}
+
+button.dangerousbutton {
+	background-color: #ff0000;
+	border: none;
+	color: #ffffff;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
+}
