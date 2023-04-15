@@ -11,7 +11,7 @@ pathname *path_to_inbuild = NULL;
 
 int inbuild_task = INSPECT_TTASK;
 pathname *path_to_tools = NULL;
-int dry_run_mode = FALSE, build_trace_mode = FALSE;
+int dry_run_mode = FALSE, build_trace_mode = FALSE, confirmed = FALSE;
 inbuild_nest *destination_nest = NULL;
 inbuild_registry *selected_registry = NULL;
 text_stream *filter_text = NULL;
@@ -133,7 +133,7 @@ utility functions in the //supervisor// module, which we call.
 @e REBUILD_TTASK
 @e COPY_TO_TTASK
 @e SYNC_TO_TTASK
-@e REPORT_ON_TTASK
+@e INSTALL_TTASK
 
 @<Carry out the required task on the copy C@> =
 	text_stream *OUT = STDOUT;
@@ -166,7 +166,7 @@ utility functions in the //supervisor// module, which we call.
 		case REBUILD_TTASK: Copies::rebuild(OUT, C, BM); break;
 		case COPY_TO_TTASK: Copies::copy_to(C, destination_nest, FALSE, BM); break;
 		case SYNC_TO_TTASK: Copies::copy_to(C, destination_nest, TRUE, BM); break;
-		case REPORT_ON_TTASK: Copies::report_on(C); break;
+		case INSTALL_TTASK: InbuildReport::install(C, confirmed); break;
 	}
 
 @<Shut down the modules@> =
@@ -324,7 +324,8 @@ other options to the selection defined here.
 @e PREPROCESS_APP_CLSW
 @e REPAIR_CLSW
 @e RESULTS_CLSW
-@e REPORT_ON_CLSW
+@e INSTALL_CLSW
+@e CONFIRMED_CLSW
 
 @<Read the command line@> =	
 	CommandLine::declare_heading(
@@ -342,7 +343,7 @@ other options to the selection defined here.
 		L"completely rebuild target(s)");
 	CommandLine::declare_switch(INSPECT_CLSW, L"inspect", 1,
 		L"show target(s) but take no action");
-	CommandLine::declare_switch(REPORT_ON_CLSW, L"report-on", 1,
+	CommandLine::declare_switch(INSTALL_CLSW, L"report-on", 1,
 		L"report on target(s) within the Inform GUI apps");
 	CommandLine::declare_switch(GRAPH_CLSW, L"graph", 1,
 		L"show dependency graph of target(s) but take no action");
@@ -386,6 +387,8 @@ other options to the selection defined here.
 		L"quietly fix missing or incorrect extension metadata", TRUE);
 	CommandLine::declare_switch(RESULTS_CLSW, L"results", 2,
 		L"write HTML report file to X (for use within Inform GUI apps)");
+	CommandLine::declare_boolean_switch(CONFIRMED_CLSW, L"confirmed", 1,
+		L"confirm installation in the Inform GUI apps", TRUE);
 	Supervisor::declare_options();
 
 	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
@@ -400,7 +403,7 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case BUILD_CLSW: inbuild_task = BUILD_TTASK; break;
 		case REBUILD_CLSW: inbuild_task = REBUILD_TTASK; break;
 		case INSPECT_CLSW: inbuild_task = INSPECT_TTASK; break;
-		case REPORT_ON_CLSW: inbuild_task = REPORT_ON_TTASK; break;
+		case INSTALL_CLSW: inbuild_task = INSTALL_TTASK; break;
 		case GRAPH_CLSW: inbuild_task = GRAPH_TTASK; break;
 		case USE_NEEDS_CLSW: inbuild_task = USE_NEEDS_TTASK; break;
 		case BUILD_NEEDS_CLSW: inbuild_task = BUILD_NEEDS_TTASK; break;
@@ -449,6 +452,7 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 			break;
 		case REPAIR_CLSW: repair_mode = val; break;
 		case RESULTS_CLSW: InbuildReport::set_filename(Filenames::from_text(arg)); break;
+		case CONFIRMED_CLSW: confirmed = val; break;
 	}
 	Supervisor::option(id, val, arg, state);
 }

@@ -294,6 +294,8 @@ inbuild_copy *ExtensionBundleManager::claim_folder_as_copy(pathname *P, inbuild_
 				;
 			} else if (Str::eq(subdir, I"Templates")) {
 				;
+			} else if (Str::eq(subdir, I"Languages")) {
+				;
 			} else {
 				TEMPORARY_TEXT(error_text)
 				WRITE_TO(error_text,

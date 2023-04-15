@@ -10,6 +10,7 @@ usage: inbuild [-TASK] TARGET1 TARGET2 ...
 -build-needs                   show all the extensions, kits and so on needed to build
 -build-registry X              construct HTML menu pages for registry in the directory X
 -build-trace                   show verbose reasoning during -build (default is -no-build-trace)
+-no-confirmed                  don't confirm installation in the Inform GUI apps (default is -confirmed)
 -contents-of X                 apply to all targets in the directory X
 -copy-to X                     copy target(s) to nest X
 -dry                           make this a dry run (print but do not execute shell commands) (default is -no-dry)
