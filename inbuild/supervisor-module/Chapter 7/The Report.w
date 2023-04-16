@@ -62,6 +62,10 @@ the same thing as |-inspect| at the command line.
 
 =
 void InbuildReport::install(inbuild_copy *C, int confirmed) {
+	inform_project *project = Supervisor::project_set_at_command_line();
+	if (project == NULL) Errors::fatal("-project not set at command line");
+	TEMPORARY_TEXT(pname)
+	WRITE_TO(pname, "'%S'", project->as_copy->edition->work->title);
 	text_stream *OUT = NULL;
 	if ((C->edition->work->genre == extension_genre) ||
 		(C->edition->work->genre == extension_bundle_genre)) {
@@ -74,6 +78,7 @@ void InbuildReport::install(inbuild_copy *C, int confirmed) {
 	if (OUT) {
 		InbuildReport::end();
 	}
+	DISCARD_TEXT(pname)
 }
 
 @<Report on a valid extension@> =
@@ -82,14 +87,32 @@ void InbuildReport::install(inbuild_copy *C, int confirmed) {
 	OUT = InbuildReport::begin(desc, I"An extension for use in Inform projects");
 	if (OUT) {
 		HTML_OPEN("p");
-		WRITE("This looks like a valid extension.");
-		HTML_CLOSE("p");
+		WRITE("This looks like a valid extension");
+		text_stream *rubric = Extensions::get_rubric(Extensions::from_copy(C));
+		if (Str::len(rubric) > 0) {
+			WRITE(", and says this about itself:");
+			HTML_CLOSE("p");
+			HTML_OPEN("blockquote");
+			WRITE("%S", rubric);
+			HTML_CLOSE("blockquote");
+		} else {
+			WRITE(", but does not say what it is for.");
+			HTML_CLOSE("p");
+		}
 		if (confirmed) {
 			WRITE("<p>CONFIRMED - no action implemented yet, though</p>");
 		} else {
+			HTML_OPEN("p");
+			WRITE("The project '%S' currently needs the following extensions (on the ", pname);
+			WRITE("basis of what it Includes, and what they in turn Include):");
+			HTML_CLOSE("p");
+			HTML_OPEN("ul");
+			build_vertex *V = Copies::construct_project_graph(project->as_copy);
+			InbuildReport::show_extensions(OUT, V, Graphs::get_unique_graph_scan_count());
+			HTML_CLOSE("ul");
 			HTML_OPEN_WITH("a", "href='javascript:project().confirmAction()'");
 			HTML_OPEN_WITH("button", "class=\"safebutton\"");
-			WRITE("Click to install to the current project");
+			WRITE("Click to install to %S", pname);
 			HTML_CLOSE("button");
 			HTML_CLOSE("a");
 		}
@@ -119,3 +142,42 @@ void InbuildReport::install(inbuild_copy *C, int confirmed) {
 	WRITE("Despite its file/directory name, this doesn't seem to be an extension, ");
 	WRITE("and it can't be installed.");
 	HTML_CLOSE("p");
+
+@
+
+=
+void InbuildReport::show_extensions(OUTPUT_STREAM, build_vertex *V, int scan_count) {
+	if (V->type == COPY_VERTEX) {
+		inbuild_copy *C = V->as_copy;
+		if ((C->edition->work->genre == extension_genre) ||
+			(C->edition->work->genre == extension_bundle_genre)) {
+			if (C->last_scanned != scan_count) {
+				C->last_scanned = scan_count;
+				HTML_OPEN("li");
+				Copies::write_copy(OUT, C);
+				HTML_CLOSE("li");
+			}
+		}
+	}
+	if (V->type == REQUIREMENT_VERTEX) {
+		if ((V->as_requirement->work->genre == extension_genre) ||
+			(V->as_requirement->work->genre == extension_bundle_genre)) {
+			HTML_OPEN("li");
+			WRITE("missing: ");
+			Works::write(OUT, V->as_requirement->work);
+			if (VersionNumberRanges::is_any_range(V->as_requirement->version_range) == FALSE) {
+				WRITE(" (need version in range ");
+				VersionNumberRanges::write_range(OUT, V->as_requirement->version_range);
+				WRITE(")");
+			} else {
+				WRITE(" (any version will do)");
+			}
+			HTML_CLOSE("li");
+		}
+	}
+	build_vertex *W;
+		LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
+			InbuildReport::show_extensions(OUT, W, scan_count);
+		LOOP_OVER_LINKED_LIST(W, build_vertex, V->use_edges)
+			InbuildReport::show_extensions(OUT, W, scan_count);
+}

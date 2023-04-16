@@ -552,6 +552,8 @@ location. If it hasn't, we create a project using |-project| if possible,
 |-source| if not, and in either case apply |-source| to the result.
 
 =
+inform_project *chosen_project = NULL;
+
 void Supervisor::make_project_from_command_line(inbuild_copy *C) {
 	RUN_ONLY_IN_PHASE(PRETINKERING_INBUILD_PHASE)
 
@@ -575,5 +577,10 @@ void Supervisor::make_project_from_command_line(inbuild_copy *C) {
 			Projects::set_primary_source(proj, F);
 			Projects::set_primary_output(proj, transpiled_output_file);
 		}
+		chosen_project = proj;
 	}
+}
+
+inform_project *Supervisor::project_set_at_command_line(void) {
+	return chosen_project;
 }
