@@ -102,17 +102,56 @@ void InbuildReport::install(inbuild_copy *C, int confirmed) {
 		if (confirmed) {
 			WRITE("<p>CONFIRMED - no action implemented yet, though</p>");
 		} else {
-			HTML_OPEN("p");
-			WRITE("The project '%S' currently needs the following extensions (on the ", pname);
-			WRITE("basis of what it Includes, and what they in turn Include):");
-			HTML_CLOSE("p");
-			HTML_OPEN("ul");
+			int rc = 0, bic = 0, ic = 0;
 			build_vertex *V = Copies::construct_project_graph(project->as_copy);
-			InbuildReport::show_extensions(OUT, V, Graphs::get_unique_graph_scan_count());
-			HTML_CLOSE("ul");
+			InbuildReport::show_extensions(OUT, V, Graphs::get_unique_graph_scan_count(),
+				FALSE, &bic, FALSE, &ic, FALSE, &rc);
+			if (ic > 0) {
+				HTML_OPEN("p");
+				WRITE("The project '%S' uses the following extensions (on the ", pname);
+				WRITE("basis of what it Includes, and what they in turn Include), which it has installed:");
+				HTML_CLOSE("p");
+				HTML_OPEN("ul");
+				InbuildReport::show_extensions(OUT, V, Graphs::get_unique_graph_scan_count(),
+					FALSE, &bic, TRUE, &ic, FALSE, &rc);
+				HTML_CLOSE("ul");
+				if (bic > 0) {
+					HTML_OPEN("p");
+					WRITE("not counting extensions built in to every copy of Inform:");
+					HTML_OPEN("p");
+					HTML_OPEN("ul");
+					InbuildReport::show_extensions(OUT, V, Graphs::get_unique_graph_scan_count(),
+						TRUE, &bic, FALSE, &ic, FALSE, &rc);
+					HTML_CLOSE("ul");
+				}
+			} else {
+				HTML_OPEN("p");
+				WRITE("The project '%S' uses only extensions ", pname);
+				WRITE("built in to every copy of Inform:");
+				HTML_OPEN("p");
+				HTML_OPEN("ul");
+				InbuildReport::show_extensions(OUT, V, Graphs::get_unique_graph_scan_count(),
+					TRUE, &bic, FALSE, &ic, FALSE, &rc);
+				HTML_CLOSE("ul");
+			}
+			if (rc > 0) {
+				HTML_OPEN("p");
+				WRITE("The project needs the following, not yet installed:");
+				HTML_CLOSE("p");
+				HTML_OPEN("ul");
+				InbuildReport::show_extensions(OUT, V, Graphs::get_unique_graph_scan_count(),
+					FALSE, &bic, FALSE, &ic, TRUE, &rc);
+				HTML_CLOSE("ul");
+			}
+			HTML_OPEN("p");
+			WRITE("Extensions are installed to a project by being put in the 'Extensions' ");
+			WRITE("subfolder of its '.materials' folder, which for '%S' is here: ", pname);
+			pathname *area = Projects::materials_path(project);
+			PasteButtons::open_file(OUT, area, NULL, "border=\"0\" src=\"inform:/doc_images/folder.png\"");
+			HTML_CLOSE("p");		
 			HTML_OPEN_WITH("a", "href='javascript:project().confirmAction()'");
 			HTML_OPEN_WITH("button", "class=\"safebutton\"");
-			WRITE("Click to install to %S", pname);
+			WRITE("Click to install %S to %S", C->edition->work->title, pname);
 			HTML_CLOSE("button");
 			HTML_CLOSE("a");
 		}
@@ -146,38 +185,59 @@ void InbuildReport::install(inbuild_copy *C, int confirmed) {
 @
 
 =
-void InbuildReport::show_extensions(OUTPUT_STREAM, build_vertex *V, int scan_count) {
+void InbuildReport::show_extensions(OUTPUT_STREAM, build_vertex *V, int scan_count,
+	int built_in, int *built_in_count, int installed, int *installed_count,
+	int required, int *requirements_count) {
 	if (V->type == COPY_VERTEX) {
 		inbuild_copy *C = V->as_copy;
 		if ((C->edition->work->genre == extension_genre) ||
 			(C->edition->work->genre == extension_bundle_genre)) {
 			if (C->last_scanned != scan_count) {
-				C->last_scanned = scan_count;
-				HTML_OPEN("li");
-				Copies::write_copy(OUT, C);
-				HTML_CLOSE("li");
+				if (required == FALSE) {
+					C->last_scanned = scan_count;
+					if ((C->nest_of_origin) &&
+						(Nests::get_tag(C->nest_of_origin) == INTERNAL_NEST_TAG)) {
+						(*built_in_count)++;
+						if (built_in) {
+							HTML_OPEN("li");
+							Copies::write_copy(OUT, C);
+							HTML_CLOSE("li");
+						}
+					} else {
+						(*installed_count)++;
+						if (installed) {
+							HTML_OPEN("li");
+							Copies::write_copy(OUT, C);
+							HTML_CLOSE("li");
+						}
+					}
+				}
 			}
 		}
 	}
 	if (V->type == REQUIREMENT_VERTEX) {
 		if ((V->as_requirement->work->genre == extension_genre) ||
 			(V->as_requirement->work->genre == extension_bundle_genre)) {
-			HTML_OPEN("li");
-			WRITE("missing: ");
-			Works::write(OUT, V->as_requirement->work);
-			if (VersionNumberRanges::is_any_range(V->as_requirement->version_range) == FALSE) {
-				WRITE(" (need version in range ");
-				VersionNumberRanges::write_range(OUT, V->as_requirement->version_range);
-				WRITE(")");
-			} else {
-				WRITE(" (any version will do)");
+			(*requirements_count)++;
+			if (required) {
+				HTML_OPEN("li");
+				Works::write(OUT, V->as_requirement->work);
+				if (VersionNumberRanges::is_any_range(V->as_requirement->version_range) == FALSE) {
+					WRITE(" (need version in range ");
+					VersionNumberRanges::write_range(OUT, V->as_requirement->version_range);
+					WRITE(")");
+				} else {
+					WRITE(" (any version will do)");
+				}
+				HTML_CLOSE("li");
 			}
-			HTML_CLOSE("li");
 		}
 	}
 	build_vertex *W;
 		LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
-			InbuildReport::show_extensions(OUT, W, scan_count);
+			InbuildReport::show_extensions(OUT, W, scan_count, built_in, built_in_count,
+				installed, installed_count, required, requirements_count);
 		LOOP_OVER_LINKED_LIST(W, build_vertex, V->use_edges)
-			InbuildReport::show_extensions(OUT, W, scan_count);
+			InbuildReport::show_extensions(OUT, W, scan_count, built_in, built_in_count,
+				installed, installed_count, required, requirements_count);
 }
