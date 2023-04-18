@@ -92,6 +92,16 @@ The verb to conceal (he conceals, they conceal, he concealed, it is concealed,
 he is concealing) means the concealment relation.
 Definition: Something is concealed rather than unconcealed if the holder of it conceals it.
 
+@ Something is obviously not empty if it has at least one obvious (unconcealed) thing in it.
+  Something is apparently empty if it's either truly empty or everything in it is concealed.
+
+=
+Definition: a container is clearly non-empty rather than possibly empty if I6 routine "HasEvidentContent" says so (it contains at least one unconcealed thing).
+Definition: a supporter is clearly non-empty rather than possibly empty if I6 routine "HasEvidentContent" says so (it supports at least one unconcealed thing).
+
+Definition: a container is falsely empty if I6 condition "(child(*1) && (~~HasEvidentContent(*1)))" says so (it contains at least one thing and everything in it is concealed).
+Definition: a supporter is falsely empty if I6 condition "(child(*1) && (~~HasEvidentContent(*1)))" says so (it supports at least one thing and everything in it is concealed).
+
 @ A final sort of pseudo-containment: does the entire world contain
 something, or not? (For things destroyed during play, or not yet created, the
 answer would be no.)

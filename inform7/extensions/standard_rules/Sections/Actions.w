@@ -65,8 +65,9 @@ Carry out taking inventory (this is the print empty inventory rule):
 
 Carry out taking inventory (this is the print standard inventory rule):
 	say "[We] [are] carrying:[line break]" (A);
-	list the contents of the player, with newlines, indented, including contents,
-		giving inventory information, with extra indentation.
+	now all things enclosed by the player are unmarked for listing;
+	now all things held by the player are marked for listing;
+	list the contents of the player, with newlines, indented, giving inventory information, with extra indentation, listing marked items only, not listing concealed items, including contents.
 
 @ Report.
 
@@ -1183,7 +1184,10 @@ Carry out examining (this is the examine directions rule):
 
 Carry out examining (this is the examine containers rule):
 	if the noun is a container:
-		if the noun is open or the noun is transparent:
+		if the noun is falsely empty:
+			say "[The noun] [are] empty." (C);
+			now examine text printed is true;
+		else if the noun is open or the noun is transparent:
 			if something described which is not scenery is in the noun and something which
 				is not the player is in the noun:
 				say "In [the noun] " (A);
@@ -1198,7 +1202,7 @@ Carry out examining (this is the examine containers rule):
 				now examine text printed is true;
 
 Carry out examining (this is the examine supporters rule):
-	if the noun is a supporter:
+	if the noun is a supporter and the noun is not falsely empty:
 		if something described which is not scenery is on the noun and something which is
 			not the player is on the noun:
 			say "On [the noun] " (A);
@@ -1657,7 +1661,7 @@ Carry out an actor opening (this is the standard opening rule):
 Report an actor opening (this is the reveal any newly visible interior rule):
 	if the actor is the player and
 		the noun is an opaque container and
-		the first thing held by the noun is not nothing and
+		the noun is clearly non-empty and
 		the noun does not enclose the actor:
 		if the action is not silent:
 			if the actor is the player:
