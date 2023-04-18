@@ -33,6 +33,7 @@ meaningful only for works of IF and are inert for Basic Inform projects.
 @e VERBOSE_ROOM_DESCRIPTIONS_UO
 @e BRIEF_ROOM_DESCRIPTIONS_UO
 @e SUPERBRIEF_ROOM_DESCRIPTIONS_UO
+@e NO_AUTOMATIC_PLURAL_SYNONYMS_UO
 
 @ Note that Inform recognises these by their English names, so there would be no
 need to translate this to other languages.
@@ -59,7 +60,8 @@ need to translate this to other languages.
 	abbreviated room descriptions | ==> { ABBREVIATED_ROOM_DESCRIPTIONS_UO, - }
 	verbose room descriptions |     ==> { VERBOSE_ROOM_DESCRIPTIONS_UO, - }
 	brief room descriptions |       ==> { BRIEF_ROOM_DESCRIPTIONS_UO, - }
-	superbrief room descriptions    ==> { SUPERBRIEF_ROOM_DESCRIPTIONS_UO, - }
+	superbrief room descriptions |  ==> { SUPERBRIEF_ROOM_DESCRIPTIONS_UO, - }
+	no kind name plurals            ==> { NO_AUTOMATIC_PLURAL_SYNONYMS_UO, - }
 
 @ Some of the pragma-like settings are stored here:
 
@@ -82,6 +84,7 @@ typedef struct compilation_settings {
 	int undo_prevention;
 	int use_exact_parsing_option;
 	int dict_word_size;
+        int no_automatic_plural_synonyms;
 } compilation_settings;
 
 compilation_settings global_compilation_settings;
@@ -107,6 +110,7 @@ void CompilationSettings::initialise_gcs(void) {
 	global_compilation_settings.undo_prevention = FALSE;
 	global_compilation_settings.use_exact_parsing_option = FALSE;
 	global_compilation_settings.dict_word_size = -1;
+       	global_compilation_settings.no_automatic_plural_synonyms = FALSE;
 }
 
 @ And when (for example) a "Use..." sentence triggers one of these, the
@@ -141,6 +145,7 @@ void CompilationSettings::set(int U, int N, source_file *from) {
 		case UNABBREVIATED_OBJECT_NAMES_UO:    g->use_exact_parsing_option = TRUE; break;
 		case UNDO_PREVENTION_UO:               g->undo_prevention = TRUE; break;
 		case VERBOSE_ROOM_DESCRIPTIONS_UO:     g->room_description_level = 2; break;
+                case NO_AUTOMATIC_PLURAL_SYNONYMS_UO:          g->no_automatic_plural_synonyms = TRUE; break; 
 	}
 	if (N > 0) {
 		switch (U) {

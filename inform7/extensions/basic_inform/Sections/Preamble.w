@@ -131,6 +131,7 @@ Use telemetry recordings translates as (- Constant TELEMETRY_ON; -).
 Use no deprecated features translates as (- Constant NO_DEPRECATED_FEATURES; -).
 Use gn testing version translates as (- Constant GN_TESTING_VERSION; -).
 Use authorial modesty translates as (- Constant AUTHORIAL_MODESTY; -).
+Use no automatic plural synonyms translates as (- Constant NO_AUTOMATIC_PLURAL_SYNONYMS; -).
 
 @ These, on the other hand, are settings used by the dynamic memory management
 code, which runs in I6 as part of the template layer. Each setting translates
