@@ -192,8 +192,12 @@ void Graphs::describe_vertex(OUTPUT_STREAM, build_vertex *V) {
 
 =
 int unique_graph_scan_count = 1;
+int Graphs::get_unique_graph_scan_count(void) {
+	return unique_graph_scan_count++;
+}
+
 void Graphs::show_needs(OUTPUT_STREAM, build_vertex *V, int uses_only, int paths) {
-	Graphs::show_needs_r(OUT, V, 0, 0, uses_only, paths, unique_graph_scan_count++);
+	Graphs::show_needs_r(OUT, V, 0, 0, uses_only, paths, Graphs::get_unique_graph_scan_count());
 }
 
 void Graphs::show_needs_r(OUTPUT_STREAM, build_vertex *V,

@@ -77,7 +77,7 @@ void Editions::inspect(OUTPUT_STREAM, inbuild_edition *E) {
 @ For sorting search results:
 
 =
-int Editions::cmp(inbuild_edition *E1,  inbuild_edition *E2) {
+int Editions::cmp(inbuild_edition *E1, inbuild_edition *E2) {
 	int r = Works::cmp(E1->work, E2->work);
 	if (r == 0) r = VersionNumbers::cmp(E1->version, E2->version);
 	return r;
