@@ -63,7 +63,7 @@ the Installer is called again, with |confirmed| true. It takes action and also
 produces a second report.
 
 =
-void InbuildReport::install(inbuild_copy *C, int confirmed) {
+void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 	inform_project *project = Supervisor::project_set_at_command_line();
 	if (project == NULL) Errors::fatal("-project not set at command line");
 	TEMPORARY_TEXT(pname)
@@ -209,15 +209,15 @@ void InbuildReport::install(inbuild_copy *C, int confirmed) {
 	ADD_TO_LINKED_LIST(Projects::materials_nest(project), inbuild_nest, search_list);
 	Nests::search_for(req, search_list, L);
 	inbuild_search_result *search_result;
-	int unbroken = 0, broken = 0;
+	int unused = 0, broken = 0;
 	LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L) {
 		if (LinkedLists::len(search_result->copy->errors_reading_source_text) > 0)
 			broken++;
 		else if (InbuildReport::seek_extension_in_graph(search_result->copy, V) == FALSE)
-			unbroken++;
+			unused++;
 	}
-	if (unbroken + broken > 0) {
-		if (unbroken > 0) {
+	if (unused + broken > 0) {
+		if (unused > 0) {
 			HTML_OPEN("p");
 			WRITE("The following are currently installed for %S, but not (yet) Included and so not used:", pname);
 			HTML_CLOSE("p");
@@ -235,21 +235,6 @@ void InbuildReport::install(inbuild_copy *C, int confirmed) {
 						WRITE("&nbsp;<i>Paste 'Include' sentence into Source</i>");
 						HTML_CLOSE("li");
 					}
-				}
-			}
-			HTML_CLOSE("ul");
-		}
-		if (broken > 0) {
-			HTML_OPEN("p");
-			WRITE("Note that the following are installed but are not working:");
-			HTML_CLOSE("p");
-			HTML_OPEN("ul");
-			LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L) {
-				if (LinkedLists::len(search_result->copy->errors_reading_source_text) > 0) {
-					HTML_OPEN("li");
-					Copies::write_copy(OUT, search_result->copy);
-					Copies::list_attached_errors_to_HTML(OUT, search_result->copy);
-					HTML_CLOSE("li");
 				}
 			}
 			HTML_CLOSE("ul");
@@ -322,7 +307,58 @@ void InbuildReport::install(inbuild_copy *C, int confirmed) {
 	}
 
 @<Make confirmed report@> =
-	WRITE("<p>CONFIRMED - no action implemented yet, though</p>");
+	HTML_OPEN("p");
+	WRITE("This extension has now been installed in the materials folder for %S, as:", pname);
+	HTML_CLOSE("p");
+	HTML_OPEN("ul");
+	HTML_OPEN("li");
+	int use = DRY_RUN_METHODOLOGY;
+	build_methodology *BM = BuildMethodology::new(Pathnames::up(to_tool), TRUE, use);
+	Copies::copy_to(C, Projects::materials_nest(project), TRUE, BM);
+	HTML_OPEN("p");
+	if (C->edition->work->genre == extension_bundle_genre) {
+		pathname *P = ExtensionBundleManager::pathname_in_nest(Projects::materials_nest(project), C->edition);
+		WRITE("the folder ");
+		HTML_OPEN("b");
+		Pathnames::relative_URL(OUT, Pathnames::up(Projects::materials_path(project)), P);
+		HTML_CLOSE("b");
+	} else {
+		filename *F = ExtensionManager::filename_in_nest(Projects::materials_nest(project), C->edition);
+		WRITE("the file ");
+		HTML_OPEN("b");
+		Filenames::to_text_relative(OUT, F, Pathnames::up(Projects::materials_path(project)));
+		HTML_CLOSE("b");
+	}
+	HTML_CLOSE("li");
+	HTML_CLOSE("ul");
+	HTML_OPEN("p");
+	WRITE("(Well, actually, nothing was done, but you can see the commands which would have been issued on stdout)\n");
+	HTML_CLOSE("p");
+	HTML_TAG("hr");
+	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
+	@<List the extensions currently Included by the project@>;
+	@<List the extensions currently installed in the project@>;
+	inbuild_search_result *search_result;
+	int broken = 0;
+	LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L)
+		if (LinkedLists::len(search_result->copy->errors_reading_source_text) > 0)
+			broken++;
+	if (broken > 0) {
+		HTML_TAG("hr");
+		HTML_OPEN("p");
+		WRITE("Note that the following are installed but are not working:");
+		HTML_CLOSE("p");
+		HTML_OPEN("ul");
+		LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L) {
+			if (LinkedLists::len(search_result->copy->errors_reading_source_text) > 0) {
+				HTML_OPEN("li");
+				Copies::write_copy(OUT, search_result->copy);
+				Copies::list_attached_errors_to_HTML(OUT, search_result->copy);
+				HTML_CLOSE("li");
+			}
+		}
+		HTML_CLOSE("ul");
+	}
 
 @
 

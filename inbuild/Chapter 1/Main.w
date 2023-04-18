@@ -104,7 +104,7 @@ error in this case.
 
 @<Perform an extension installation@> =
 	Supervisor::go_operational();
-	InbuildReport::install(to_install, confirmed);
+	InbuildReport::install(to_install, confirmed, path_to_inbuild);
 
 @ We make the function call |Supervisor::go_operational| to signal to |inbuild|
 that we want to start work now.
