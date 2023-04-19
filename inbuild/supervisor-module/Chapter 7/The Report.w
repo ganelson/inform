@@ -109,6 +109,7 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 @<Make unconfirmed report@> =
 	if (N > 0) @<Report on damage to extension@>
 	else @<Report that extension seems valid@>;
+	HTML_TAG("hr");
 	@<Explain what installation and Inclusion mean@>;
 	@<List the extensions currently Included by the project@>;
 
@@ -116,7 +117,7 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 	int same = 0, earlier = 0, later = 0;
 	@<List the extensions currently installed in the project@>;
 	@<Count how many versions of the same extension are already installed@>;
-	
+		
 	HTML_TAG("hr");
 	@<Come to the point@>;
 	@<Finish up with a big red or green button@>;
@@ -150,6 +151,7 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 		WRITE(", but does not say what it is for.");
 		HTML_CLOSE("p");
 	}
+	@<Make documentation@>;
 
 @<Explain what installation and Inclusion mean@> =
 	HTML_OPEN("p");
@@ -251,6 +253,22 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 			else if (c < 0) later++;
 		}
 
+@<Make documentation@> =
+	ExtensionPages::write_page(NULL, Extensions::from_copy(C), FALSE, project);
+	HTML_OPEN("p");
+	WRITE("Documentation about %S ", C->edition->work->title);
+	TEMPORARY_TEXT(link)
+	TEMPORARY_TEXT(URL)
+	WRITE_TO(URL, "%f", ExtensionWebsite::page_URL(project, C->edition, 0));
+	WRITE_TO(link, "href='");
+	Works::escape_apostrophes(link, URL);
+	WRITE_TO(link, "' style=\"text-decoration: none\"");
+	HTML_OPEN_WITH("a", "%S", link);
+	DISCARD_TEXT(link)
+	WRITE("can be read here.");
+	HTML_CLOSE("a");
+	HTML_CLOSE("p");
+	
 @<Come to the point@> =
 	HTML_OPEN("p");
 	WRITE("So, then, click the button below to install %S to the Materials folder of %S. ",
@@ -335,6 +353,9 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 	WRITE("(Well, actually, nothing was done, but you can see the commands which would have been issued on stdout)\n");
 	HTML_CLOSE("p");
 	HTML_TAG("hr");
+
+	ExtensionWebsite::index_after_compilation(project);
+
 	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
 	@<List the extensions currently Included by the project@>;
 	@<List the extensions currently installed in the project@>;

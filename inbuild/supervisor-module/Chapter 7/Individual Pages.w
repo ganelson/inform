@@ -42,12 +42,13 @@ is any, as well as the correct identifying headings and requirements.
 =
 int ExtensionPages::write_page_inner(extension_census_datum *ecd,
 	inform_extension *E, int eg_number, int force_update, inform_project *proj) {
-	inbuild_work *work = NULL;
-	if (ecd) work = ecd->found_as->copy->edition->work;
-	else if (E) work = E->as_copy->edition->work;
+	inbuild_edition *edition = NULL;
+	if (ecd) edition = ecd->found_as->copy->edition;
+	else if (E) edition = E->as_copy->edition;
 	else internal_error("write_page incorrectly called");
+	inbuild_work *work = edition->work;
 
-	filename *F = ExtensionWebsite::page_URL(work, eg_number);
+	filename *F = ExtensionWebsite::page_URL(proj, edition, eg_number);
 	if (F == NULL) return 0;
 	int page_exists_already = TextFiles::exists(F);
 	LOGIF(EXTENSIONS_CENSUS, "Write %s (%X)/%d %s: %f\n",
@@ -109,7 +110,7 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 	HTML::end_span(OUT);
 	HTML_CLOSE("p");
 	if (E) {
-		filename *B = ExtensionWebsite::page_URL(work, -1);
+		filename *B = ExtensionWebsite::page_URL(proj, edition, -1);
 		TEMPORARY_TEXT(leaf)
 		Filenames::write_unextended_leafname(leaf, B);
 		@<Write up the rubric, if any@>;
