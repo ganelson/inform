@@ -18,6 +18,11 @@ These will be added to release notes when the release is made.
 
 ## Bug fixes
 
+- Fix for Jira bug [I7-2284](https://inform7.atlassian.net/browse/I7-2284)
+	"Inter error" - arising from a sentence trying to use an either-or property
+	in a way which would make it unheld by default, when an existing sentence
+	already makes it held by default
+	([commit 4620312](https://github.com/ganelson/inform/commit/1fc505507b52be19a09cc3898326952954620312))
 - Fix for Jira bug [I7-2269](https://inform7.atlassian.net/browse/I7-2269)
 	"Output of I6 floating point literals strips the '+', resulting in uncompilable I6"
 	([commit 8155d40](https://github.com/ganelson/inform/commit/46349cb85c56116602c9245ee47e67ea08155d40))
@@ -60,3 +65,12 @@ These will be added to release notes when the release is made.
 	the interpreter website, but the filename is a lie. It's the base64-encoding
 	of the `story.ulx` file, not the `story.gblorb`." (Andrew Plotkin, not from Jira)
 - Cosmetic fixes not worth linking to (I7-2270, I7-2268, I7-2221)
+
+## Note about intest
+
+- On MacOS, `intest` is supplied inside the app for testing examples in the
+	documentation of extension projects: a bug has been fixed which caused the
+	test scripts in such examples to be wrongly extracted if characters appeared
+	after the final double-quote of the test script (for example, any redundant
+	white space). This isn't strictly speaking a core Inform bug fix, but it
+	affects some users.
