@@ -287,20 +287,23 @@ differently as a result.
 "miscellaneous" problem message.
 
 @<Be very wary about nameclashes among either/or properties like these@> =
+	property *already = NULL, *alreadybar = NULL;
+
 	char *error_text = NULL;
 
 	wording EW = FW;
-	property *already = NULL;
 	if (<property-name>(FW)) already = <<rp>>;
 	@<See if the first option already means something incompatible with this@>;
 
 	if ((count == 2) && (error_text == NULL)) {
 		EW = SW;
 		@<See if the second option is "not" plus an existing property@>;
-		property *alreadybar = NULL;
 		if (<property-name>(EW)) alreadybar = <<rp>>;
 		@<See if the second option already means something incompatible with this@>;
 	}
+
+	if ((count == 1) && (already))
+		EitherOrProperties::vet_use_as_non_default_property(already);
 
 	if (error_text) {
 		Problems::quote_source(1, current_sentence);
@@ -356,7 +359,7 @@ differently as a result.
 				error_text = "this already has a meaning";
 		}
 	}
-
+	
 @<Create the property and have the new owner provide it@> =
 	if (count <= 2) {
 		prn = EitherOrProperties::obtain(FW, owner_infs);
