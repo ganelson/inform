@@ -1,0 +1,50 @@
+Lab is a room.
+
+A thing can be occulted.
+
+For deciding the concealed possessions of a thing when the particular possession is occulted: rule succeeds.
+
+The table is a scenery supporter in the lab.
+The plans are an occulted thing. The plans are on the table.
+The journal is an occulted thing. The journal is on the table.
+
+The desk is a scenery supporter in the lab.
+The letter is an occulted thing. The letter is on the desk.
+
+The settee is a scenery supporter in the lab.
+The postcard is an occulted thing. The postcard is on the settee.
+The cushion is on the settee.
+
+The stool is a scenery supporter in the lab.
+The shoe is on the stool.
+
+The lava floor is a scenery supporter in the lab.
+
+The cardboard box is a closed openable container. The limited edition She-Ra action figure is an occulted thing in the cardboard box. The Power of Greyskull is an occulted thing in the cardboard box. The cardboard box is in the lab.
+
+The pouch is a closed openable container. The love letter is an occulted thing in the pouch. The pouch is in the lab.
+
+The gift box is a closed openable container. The card is an occulted thing. The card is in the gift box. The ball is in the gift box. The gift box is in the lab.
+
+The jar is a closed openable container. The cookie is a thing. The jar contains the cookie. The jar is in the lab.
+
+The crate is a closed openable enterable container. The crate is in the lab.
+
+The tray is a portable supporter. The wine glass is an occulted thing on the tray. The player carries the tray.
+
+The platform is an enterable supporter. It is in the Lab.
+
+The deck is an enterable supporter. It is in the Lab.
+The invisible jet is an occulted thing.
+The invisible jet is on the deck.
+
+The stage is an enterable supporter. It is in the Lab.
+The mask is on the stage.
+
+The beam is an enterable supporter. It is in the Lab.
+The wrench is on the beam.
+The tape is an occulted thing.
+The tape is on the beam.
+
+Test me with "x table / x desk / x settee / x stool / x lava floor / open cardboard box / open pouch / open gift box / open jar / open crate / x cardboard box / x pouch / x gift box / x jar / x crate / l / i / x tray / get glass / x deck / stand on deck / x deck / l / exit / x platform / stand on platform / x platform / l / exit / x stage / stand on stage / x stage / l / exit / x beam / stand on beam / x beam / l / exit".
+

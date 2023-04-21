@@ -1184,10 +1184,8 @@ Carry out examining (this is the examine directions rule):
 
 Carry out examining (this is the examine containers rule):
 	if the noun is a container:
-		if the noun is falsely empty:
-			say "[The noun] [are] empty." (C);
-			now examine text printed is true;
-		else if the noun is open or the noun is transparent:
+		if the noun is closed and the noun is opaque, make no decision;       
+		if the noun is not falsely-unoccupied:
 			if something described which is not scenery is in the noun and something which
 				is not the player is in the noun:
 				say "In [the noun] " (A);
@@ -1202,7 +1200,7 @@ Carry out examining (this is the examine containers rule):
 				now examine text printed is true;
 
 Carry out examining (this is the examine supporters rule):
-	if the noun is a supporter and the noun is not falsely empty:
+	if the noun is a supporter and the noun is not falsely-unoccupied:
 		if something described which is not scenery is on the noun and something which is
 			not the player is on the noun:
 			say "On [the noun] " (A);
@@ -1661,7 +1659,7 @@ Carry out an actor opening (this is the standard opening rule):
 Report an actor opening (this is the reveal any newly visible interior rule):
 	if the actor is the player and
 		the noun is an opaque container and
-		the noun is clearly non-empty and
+		the noun is obviously-occupied and
 		the noun does not enclose the actor:
 		if the action is not silent:
 			if the actor is the player:

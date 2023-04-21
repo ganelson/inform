@@ -66,7 +66,7 @@ supplemented by details:
 Printing room description details of something (documented at act_details) is an activity.
 The printing room description details activity is accessible to Inter as "PRINTING_ROOM_DESC_DETAILS_ACT".
 
-For printing room description details of a container (called the box) when the box is falsely empty (this is the falsely empty container room description details rule):
+For printing room description details of a container (called the box) when the box is falsely-unoccupied (this is the falsely-unoccupied container room description details rule):
   say text of list writer internal rule response (A); [ " (" ]
   if the box is lit and the location is unlit begin;
     if the box is closed, say text of list writer internal rule response (J); [ "closed, empty[if serial comma option is active],[end if] and providing light" ]
@@ -111,7 +111,7 @@ To say the deceitfully empty inventory details of (box - a container):
     end if;
   end if;
 
-For printing inventory details of a container (called the box) when the box is falsely empty (this is the falsely empty container inventory details rule):
+For printing inventory details of a container (called the box) when the box is falsely-unoccupied (this is the falsely-unoccupied container inventory details rule):
     say text of list writer internal rule response (A); [ "(" ]
     say the deceitfully empty inventory details of box;
     say text of list writer internal rule response (B); [ ")" ]
@@ -559,6 +559,7 @@ For printing the locale description (this is the interesting locale paragraphs r
 For printing the locale description (this is the you-can-also-see rule):
 	let the domain be the parameter-object;
 	let the mentionable count be 0;
+	if the domain is a thing and the domain holds the player and the domain is falsely-unoccupied, continue the activity;
 	repeat with item running through things:
 		now the item is not marked for listing;
 	repeat through the Table of Locale Priorities:
