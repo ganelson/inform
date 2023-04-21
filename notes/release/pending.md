@@ -18,17 +18,20 @@ These will be added to release notes when the release is made.
 
 ## Bug fixes
 
+- Fix for Jira bug [I7-2329](https://inform7.atlassian.net/browse/I7-2329)
+	"Colons in story title are not sanitised in release filenames"
+	([commit f50a043](https://github.com/ganelson/inform/commit/f50a043fabf558ad3396bc1b97dfb13b93619305))
 - Fix for Jira bug [I7-2284](https://inform7.atlassian.net/browse/I7-2284)
 	"Inter error" - arising from a sentence trying to use an either-or property
 	in a way which would make it unheld by default, when an existing sentence
 	already makes it held by default
-	([commit 4620312](https://github.com/ganelson/inform/commit/1fc505507b52be19a09cc3898326952954620312))
+	([commit 1fc5055](https://github.com/ganelson/inform/commit/1fc505507b52be19a09cc3898326952954620312))
 - Fix for Jira bug [I7-2269](https://inform7.atlassian.net/browse/I7-2269)
 	"Output of I6 floating point literals strips the '+', resulting in uncompilable I6"
-	([commit 8155d40](https://github.com/ganelson/inform/commit/46349cb85c56116602c9245ee47e67ea08155d40))
+	([commit 46349cb](https://github.com/ganelson/inform/commit/46349cb85c56116602c9245ee47e67ea08155d40))
 - Fix for Jira bug [I7-2267](https://inform7.atlassian.net/browse/I7-2267)
 	"I6 inclusion for which compiler hangs (using '::' operator)"
-	([commit 8155d40](https://github.com/ganelson/inform/commit/f46433c22cfd9d414b7c337f8ee58220fb9286cc))
+	([commit f46433c](https://github.com/ganelson/inform/commit/f46433c22cfd9d414b7c337f8ee58220fb9286cc))
 - Fix for Jira bug [I7-2264](https://inform7.atlassian.net/browse/I7-2264)
 	"Cannot compile 'Verb meta' directive inside a kit"
 	([commit cbe7012](https://github.com/ganelson/inform/commit/cbe7012fb6950932ebf2a4b9290f80bcd5970ad1)):
