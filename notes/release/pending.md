@@ -67,7 +67,7 @@ These will be added to release notes when the release is made.
 - Fix for a "very old quirk of I7 where it generates a `story.gblorb.js` file for
 	the interpreter website, but the filename is a lie. It's the base64-encoding
 	of the `story.ulx` file, not the `story.gblorb`." (Andrew Plotkin, not from Jira)
-- Cosmetic fixes not worth linking to (I7-2270, I7-2268, I7-2221)
+- Cosmetic fixes not worth linking to (I7-2319, I7-2316, I7-2315, I7-2270, I7-2268, I7-2221)
 
 ## Note about intest
 
