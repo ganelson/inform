@@ -272,7 +272,7 @@ it corresponds directly to the |or| keyword of Inform 6, so generating it is tri
 @<Basic arithmetic and logical operations@> =
 	case PLUS_BIP:			WRITE("("); VNODE_1C; WRITE(" + "); VNODE_2C; WRITE(")"); break;
 	case MINUS_BIP:			WRITE("("); VNODE_1C; WRITE(" - "); VNODE_2C; WRITE(")"); break;
-	case UNARYMINUS_BIP:	WRITE("(-("); VNODE_1C; WRITE("))"); break;
+	case UNARYMINUS_BIP:	@<Handle unary minus@>; break;
 	case TIMES_BIP:			WRITE("("); VNODE_1C; WRITE("*"); VNODE_2C; WRITE(")"); break;
 	case DIVIDE_BIP:		WRITE("("); VNODE_1C; WRITE("/"); VNODE_2C; WRITE(")"); break;
 	case MODULO_BIP:		WRITE("("); VNODE_1C; WRITE("%%"); VNODE_2C; WRITE(")"); break;
@@ -297,6 +297,21 @@ it corresponds directly to the |or| keyword of Inform 6, so generating it is tri
 	case SEQUENTIAL_BIP:    WRITE("("); VNODE_1C; WRITE(","); VNODE_2C; WRITE(")"); break;
 	case TERNARYSEQUENTIAL_BIP: @<Generate primitive for ternarysequential@>; break;
 	case RANDOM_BIP:        WRITE("random("); VNODE_1C; WRITE(")"); break;
+
+@ In general, Inform 6 is able to constant-fold, that is, to evaluate expressions
+between constants at compile time: for example, |5+6| will be compiled as |11|,
+not as code to add |5| to |6|. But in just a few contexts, notably as case values
+in |switch| statements, constants won't fold. This in particular affects unary
+minus, so that |(-(23))| is not syntactically valid as a switch case. So we
+omit the brackets for applications of unary minus which are simple enough to
+do so. (See Jira bug I7-2304.)
+
+@<Handle unary minus@> =
+	if (Inode::get_construct_ID(InterTree::first_child(P)) == VAL_IST) {
+		WRITE("-"); VNODE_1C;
+	} else {
+		WRITE("(-("); VNODE_1C; WRITE("))");
+	}
 
 @ But the unfortunate |!ternarysequential a b c| needs some gymnastics. It
 would be trivial to generate to C with the serial comma operator: |(a, b, c)|
