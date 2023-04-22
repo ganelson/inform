@@ -344,10 +344,10 @@ account.
 @h Having Evident Content
 This is true when something has at least one unconcealed thing in it.
 It's false when something is truly empty or when all the things in
-it are concealed, and is used to ensure that output is consistent
-in both those cases. The player shouldn't count for these purposes,
-but since the player has the concealed attribute, the player gets
-excluded anyway.
+it are concealed or undescribed, and is used to ensure that output
+is consistent in both those cases. The player shouldn't count for
+these purposes, but since the player is undescribed, they're excluded
+anyway.
 
 =
 [ ObviouslyOccupied o x;

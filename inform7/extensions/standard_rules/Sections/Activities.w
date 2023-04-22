@@ -112,9 +112,12 @@ To say the deceitfully empty inventory details of (box - a container):
   end if;
 
 For printing inventory details of a container (called the box) when the box is falsely-unoccupied (this is the falsely-unoccupied container inventory details rule):
-    say text of list writer internal rule response (A); [ "(" ]
-    say the deceitfully empty inventory details of box;
-    say text of list writer internal rule response (B); [ ")" ]
+    let the tag be "[the deceitfully empty inventory details of box]";
+    if tag is not empty begin;
+      say text of list writer internal rule response (A); [ "(" ]
+      say tag;
+      say text of list writer internal rule response (B); [ ")" ]
+    end if;
 
 @ Names of things are often formed up into lists, in which they are sometimes
 grouped together:
@@ -126,6 +129,7 @@ The standard contents listing rule is listed last in the for listing contents ru
 The standard contents listing rule is defined by Inter as "STANDARD_CONTENTS_LISTING_R".
 Grouping together something (documented at act_gt) is an activity.
 The grouping together activity is accessible to Inter as "GROUPING_TOGETHER_ACT".
+
 
 @ And such lists of names are formed up in turn into room descriptions.
 Something which is visible in a room can either have a paragraph of its own

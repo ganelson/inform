@@ -1193,11 +1193,11 @@ Carry out examining (this is the examine containers rule):
 					concealed items, prefacing with is/are;
 				say ".";
 				now examine text printed is true;
-			otherwise if examine text printed is false:
-				if the player is in the noun:
-					make no decision;
-				say "[The noun] [are] empty." (B);
-				now examine text printed is true;
+		otherwise if examine text printed is false and the first thing held by the noun is nothing:
+			if the player is in the noun:
+				make no decision;
+			say "[The noun] [are] empty." (B);
+			now examine text printed is true;
 
 Carry out examining (this is the examine supporters rule):
 	if the noun is a supporter and the noun is not falsely-unoccupied:
