@@ -117,6 +117,14 @@ reimplements some of the veneer functions in "hardware". If it weren't here,
 or if the Gestalt said that the VM didn't support this after all, no harm would
 be done except for a slight slowdown.
 
+At the suggestion of Adrian Welcker, the code below uses the new accelerated
+function numbers 8 to 13 in place of the previously valid 2 to 7, which are new
+in Glulx 3.1.3. This is a trade-off: it means they behave correctly if the
+Inform 6 constant |NUM_ATTR_BYTES| is altered -- in effect, it's getting around
+a bug in the previous Glulx spec -- but on the other hand, these accelerated
+functions do not exist in earlier Glulx implementations. However, takeup of
+3.1.3 has been swift. (See Jira bug I7-2328 and I7-1162.)
+
 @<Inject code at the top of FINAL_CODE_STARTUP_R@> =
 	WRITE("#ifdef TARGET_GLULX;\n");
 	WRITE("@gestalt 9 0 res;\n");
@@ -134,12 +142,12 @@ be done except for a slight slowdown.
 	WRITE("addr = #cpv__start;\n");
 	WRITE("@accelparam 8 addr;\n");
 	WRITE("@accelfunc 1 Z__Region;\n");
-	WRITE("@accelfunc 2 CP__Tab;\n");
-	WRITE("@accelfunc 3 RA__Pr;\n");
-	WRITE("@accelfunc 4 RL__Pr;\n");
-	WRITE("@accelfunc 5 OC__Cl;\n");
-	WRITE("@accelfunc 6 RV__Pr;\n");
-	WRITE("@accelfunc 7 OP__Pr;\n");
+	WRITE("@accelfunc 8 CP__Tab;\n");
+	WRITE("@accelfunc 9 RA__Pr;\n");
+	WRITE("@accelfunc 10 RL__Pr;\n");
+	WRITE("@accelfunc 11 OC__Cl;\n");
+	WRITE("@accelfunc 12 RV__Pr;\n");
+	WRITE("@accelfunc 13 OP__Pr;\n");
 	WRITE("#endif;\n");
 	WRITE("rfalse;\n");
 
