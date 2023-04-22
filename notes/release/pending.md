@@ -18,6 +18,9 @@ These will be added to release notes when the release is made.
 
 ## Bug fixes
 
+- Fix for Jira bug [I7-2334](https://inform7.atlassian.net/browse/I7-2334)
+	"imbalanced parentheses in Definition by I6 Condition causes abject failure"
+	([commit 5d45863](https://github.com/ganelson/inform/commit/5d4586387c6b7405cd45e43f04c984583cd76bb3))
 - Fix for Jira bug [I7-2329](https://inform7.atlassian.net/browse/I7-2329)
 	"Colons in story title are not sanitised in release filenames"
 	([commit f50a043](https://github.com/ganelson/inform/commit/f50a043fabf558ad3396bc1b97dfb13b93619305))
