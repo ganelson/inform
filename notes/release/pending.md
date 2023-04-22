@@ -21,6 +21,9 @@ These will be added to release notes when the release is made.
 - Fix for Jira bug [I7-2329](https://inform7.atlassian.net/browse/I7-2329)
 	"Colons in story title are not sanitised in release filenames"
 	([commit f50a043](https://github.com/ganelson/inform/commit/f50a043fabf558ad3396bc1b97dfb13b93619305))
+- Fix for Jira bug [I7-2304](https://inform7.atlassian.net/browse/I7-2304)
+	"switch(): first branch can't start with negative number"
+	([commit 1c18007](https://github.com/ganelson/inform/commit/1c18007326bf6fb15c74a1d5742827a4d76a0c20))
 - Fix for Jira bug [I7-2284](https://inform7.atlassian.net/browse/I7-2284)
 	"Inter error" - arising from a sentence trying to use an either-or property
 	in a way which would make it unheld by default, when an existing sentence
