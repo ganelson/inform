@@ -165,21 +165,21 @@ meaningfully have a value, even though a third token is present.
 @<Parse text of splat for identifier and value@> =
 	text_stream *S = SplatInstruction::splatter(P);
 	if (directive == VERB_PLM) {
-		if (Regexp::match(&mr, S, L" *%C+ (%c*?) *;%c*")) {
+		if (Regexp::match(&mr, S, L" *%C+ (%c*?) *; *")) {
 			raw_identifier = I"assim_gv"; value = mr.exp[0];
 		} else {
 			LOG("Unable to parse start of VERB_PLM: '%S'\n", S); proceed = FALSE;
 		}
 	} else {
-		if (Regexp::match(&mr, S, L" *%C+ *(%C+?)(--> *%c*?) *;%c*")) {
+		if (Regexp::match(&mr, S, L" *%C+ *(%C+?)(--> *%c*?) *; *")) {
 			raw_identifier = mr.exp[0]; value = mr.exp[1];
-		} else if (Regexp::match(&mr, S, L" *%C+ *(%C+?)(-> *%c*?) *;%c*")) {
+		} else if (Regexp::match(&mr, S, L" *%C+ *(%C+?)(-> *%c*?) *; *")) {
 			raw_identifier = mr.exp[0]; value = mr.exp[1];
-		} else if (Regexp::match(&mr, S, L" *%C+ (%C*?) *;%c*")) {
+		} else if (Regexp::match(&mr, S, L" *%C+ (%C*?) *; *")) {
 			raw_identifier = mr.exp[0];
-		} else if (Regexp::match(&mr, S, L" *%C+ (%C*) *= *(%c*?) *;%c*")) {
+		} else if (Regexp::match(&mr, S, L" *%C+ (%C*) *= *(%c*?) *; *")) {
 			raw_identifier = mr.exp[0]; value = mr.exp[1];
-		} else if (Regexp::match(&mr, S, L" *%C+ (%C*) (%c*?) *;%c*")) {
+		} else if (Regexp::match(&mr, S, L" *%C+ (%C*) (%c*?) *; *")) {
 			raw_identifier = mr.exp[0]; value = mr.exp[1];
 		} else {
 			LOG("Unable to parse start of constant: '%S'\n", S); proceed = FALSE;
@@ -431,6 +431,9 @@ first to work out which of the several array formats this is, then the contents
 			conts = mr.exp[0]; bounded = TRUE;
 		} else if (Regexp::match(&mr, value, L" *buffer *(%c*?) *")) {
 			conts = mr.exp[0]; as_bytes = TRUE; bounded = TRUE;
+		} else if (Regexp::match(&mr, value, L" *string *(%c*?) *")) {
+			LOG("Identifier = <%S>, Value = <%S>", identifier, value);
+			PipelineErrors::kit_error("Inform 6 'string' arrays are unsupported", NULL);
 		} else {
 			LOG("Identifier = <%S>, Value = <%S>", identifier, value);
 			PipelineErrors::kit_error("invalid Inform 6 array declaration", NULL);
@@ -450,31 +453,79 @@ support that here: the standard Inform kits do not need it, and it's hard to
 see why other kits would, either.
 
 @<Compile the string of array contents into the pile of values@> =
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, conts, L" *%[ *(%c*?) *%] *"))
+		@<Parse the new-style I6 array entry notation@>
+	else
+		@<Parse the old-style I6 array entry notation@>;
+	Regexp::dispose_of(&mr);
+
+@<Parse the new-style I6 array entry notation@> =
+	text_stream *entries = mr.exp[0];
+	int sq = FALSE, dq = FALSE, from = 0;
+	for (int i=0; i<Str::len(entries); i++) {
+		wchar_t c = Str::get_at(entries, i);
+		if ((c == ';') && (sq == FALSE) && (dq == FALSE)) {
+			int to = i-1;
+			@<Eat off a chunk@>;
+			from = i+1;
+		}
+		if ((c == '\'') && (dq == FALSE)) {
+			if (sq == FALSE) sq = TRUE;
+			else if ((sq) && (Str::get_at(entries, i-1) != '\\')) sq = FALSE;
+		}
+		if ((c == '\"') && (sq == FALSE)) {
+			if (dq == FALSE) dq = TRUE;
+			else dq = FALSE;
+		}
+	}
+	if (Str::len(entries) > from) {
+		int to = Str::len(entries) - 1;
+		@<Eat off a chunk@>;
+	}
+
+@<Eat off a chunk@> =
+	text_stream *full_conts = entries;
+	if (from > to) {
+		PipelineErrors::kit_error("Inform 6 array contains empty entry", NULL);
+	} else {
+		int count_before = no_assimilated_array_entries;
+		TEMPORARY_TEXT(conts)
+		for (int j=from; j<=to; j++) PUT_TO(conts, Str::get_at(full_conts, j));
+		@<Parse the old-style I6 array entry notation@>		
+		DISCARD_TEXT(conts)
+		if (no_assimilated_array_entries > count_before+1)
+			PipelineErrors::kit_error(
+				"Multiple entries between ';' markers in a '[ ...; ...; ... ]' array", NULL);
+	}
+
+@<Parse the old-style I6 array entry notation@> =
 	string_position spos = Str::start(conts);
 	int finished = FALSE;
 	while (finished == FALSE) {
 		TEMPORARY_TEXT(value)
 		@<Extract a token@>;
-		if (Str::eq(value, I"+"))
-			PipelineErrors::kit_error("Inform 6 array declaration using operator '+' "
-				"(use brackets '(' ... ')' around the size for a calculated array size)", NULL);
-		else if (Str::eq(value, I"-"))
-			PipelineErrors::kit_error("Inform 6 array declaration using operator '-' "
-				"(use brackets '(' ... ')' around the size for a calculated array size)", NULL);
-		else if (Str::eq(value, I"*"))
-			PipelineErrors::kit_error("Inform 6 array declaration using operator '*' "
-				"(use brackets '(' ... ')' around the size for a calculated array size)", NULL);
-		else if (Str::eq(value, I"/"))
-			PipelineErrors::kit_error("Inform 6 array declaration using operator '/' "
-				"(use brackets '(' ... ')' around the size for a calculated array size)", NULL);
-		else {
-			if (Str::len(value) > 0) {
-				inter_pair val = InterValuePairs::undef();
-				@<Assimilate a value@>;
-				@<Add value to the entry pile@>;
-			} else finished = TRUE;
-		}
+		if (Str::len(value) > 0) @<Process the token@> else finished = TRUE;
 		DISCARD_TEXT(value)
+	}
+
+@<Process the token@> =
+	if (Str::eq(value, I"+"))
+		PipelineErrors::kit_error("Inform 6 array declaration using operator '+' "
+			"(use brackets '(' ... ')' around the size for a calculated array size)", NULL);
+	else if (Str::eq(value, I"-"))
+		PipelineErrors::kit_error("Inform 6 array declaration using operator '-' "
+			"(use brackets '(' ... ')' around the size for a calculated array size)", NULL);
+	else if (Str::eq(value, I"*"))
+		PipelineErrors::kit_error("Inform 6 array declaration using operator '*' "
+			"(use brackets '(' ... ')' around the size for a calculated array size)", NULL);
+	else if (Str::eq(value, I"/"))
+		PipelineErrors::kit_error("Inform 6 array declaration using operator '/' "
+			"(use brackets '(' ... ')' around the size for a calculated array size)", NULL);
+	else {	
+		inter_pair val = InterValuePairs::undef();
+		@<Assimilate a value@>;
+		@<Add value to the entry pile@>;
 	}
 
 @ In command grammar introduced by |Verb|, the tokens |*| and |/| can occur
@@ -1117,8 +1168,9 @@ before they are needed.
 
 @<Parse this as a possibly computed value@> =
 	inter_schema *sch = ParsingSchemas::from_text(S);
+	int excess_tokens = FALSE;
 	inter_symbol *result_s =
-		CompileSplatsStage::compute_r(step, IBM, sch->node_tree);
+		CompileSplatsStage::compute_r(step, IBM, sch->node_tree, &excess_tokens);
 	if (result_s == NULL) {
 		PipelineErrors::kit_error("Inform 6 constant too complex", S);
 		return InterValuePairs::number(1);
@@ -1130,9 +1182,10 @@ reducing unary subtraction to a case of binary subtraction.
 
 =
 inter_symbol *CompileSplatsStage::compute_r(pipeline_step *step,
-	inter_bookmark *IBM, inter_schema_node *isn) {
+	inter_bookmark *IBM, inter_schema_node *isn, int *excess_tokens) {
+	if (isn == NULL) return NULL;
 	if (isn->isn_type == SUBEXPRESSION_ISNT) 
-		return CompileSplatsStage::compute_r(step, IBM, isn->child_node);
+		return CompileSplatsStage::compute_r(step, IBM, isn->child_node, excess_tokens);
 	if (isn->isn_type == OPERATION_ISNT) {
 		inter_ti op = 0;
 		if (isn->isn_clarifier == PLUS_BIP) op = CONST_LIST_FORMAT_SUM;
@@ -1145,20 +1198,20 @@ inter_symbol *CompileSplatsStage::compute_r(pipeline_step *step,
 	}
 	if (isn->isn_type == EXPRESSION_ISNT) {
 		inter_schema_token *t = isn->expression_tokens;
-		if ((t == NULL) || (t->next)) internal_error("malformed EXPRESSION_ISNT");
+		if ((t == NULL) || (t->next)) { *excess_tokens = TRUE; return NULL; }
 		return CompileSplatsStage::compute_eval(step, IBM, t);
 	}
 	return NULL;
 }
 
 @<Calculate binary operation@> =
-	inter_symbol *i1 = CompileSplatsStage::compute_r(step, IBM, isn->child_node);
-	inter_symbol *i2 = CompileSplatsStage::compute_r(step, IBM, isn->child_node->next_node);
+	inter_symbol *i1 = CompileSplatsStage::compute_r(step, IBM, isn->child_node, excess_tokens);
+	inter_symbol *i2 = CompileSplatsStage::compute_r(step, IBM, isn->child_node->next_node, excess_tokens);
 	if ((i1 == NULL) || (i2 == NULL)) return NULL;
 	return CompileSplatsStage::compute_binary_op(op, step, IBM, i1, i2);
 
 @<Calculate unary minus@> =
-	inter_symbol *i2 = CompileSplatsStage::compute_r(step, IBM, isn->child_node);
+	inter_symbol *i2 = CompileSplatsStage::compute_r(step, IBM, isn->child_node, excess_tokens);
 	if (i2 == NULL) return NULL;
 	return CompileSplatsStage::compute_binary_op(CONST_LIST_FORMAT_DIFFERENCE, step, IBM, NULL, i2);
 
