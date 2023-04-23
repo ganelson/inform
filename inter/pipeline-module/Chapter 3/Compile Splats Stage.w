@@ -757,6 +757,18 @@ These have package types |_function| and |_code| respectively.
 		TEMPORARY_TEXT(value)
 		@<Extract a token@>;
 		if (Str::len(value) == 0) break;
+		int invalid = FALSE;
+		for (int i=0; i<Str::len(value); i++) {
+			wchar_t c = Str::get_at(value, i);
+			if ((c != '_') && (Characters::isalnum(c) == FALSE) &&
+				((i > 0) || (Characters::isdigit(c) == FALSE)))
+				invalid = TRUE;
+		}
+		if (invalid) {
+			text_stream *err = Str::new();
+			WRITE_TO(err, "'%S' in function '%S'", value, identifier);
+			PipelineErrors::kit_error("invalid Inform 6 local variable name: %S", err);
+		}
 		inter_symbol *loc_name =
 			InterSymbolsTable::create_with_unique_name(InterPackage::scope(IP), value);
 		InterSymbol::make_local(loc_name);
