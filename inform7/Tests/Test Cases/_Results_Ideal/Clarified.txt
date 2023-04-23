@@ -30,4 +30,10 @@
   You are carrying:
     a red box
   
+  >[7] get blue box
+  Taken.
+  
+  >[8] drop box
+  Which do you mean, the blue box or the red box?
+  
 > >

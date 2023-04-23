@@ -12,4 +12,8 @@ After dropping:
  now no-clarifications is true;
  continue the action.
 
-Test me with "get box / red / drop box / l / get box / i".
+After taking the blue box:
+ now no-clarifications is false;
+ continue the action.
+
+Test me with "get box / red / drop box / l / get box / i / get blue box / drop box".
