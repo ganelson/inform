@@ -1641,13 +1641,11 @@ For an explanation of the use of the word "blob", see "Text.i6t".
 	ilen = TEXT_TY_CharacterLength(txt);
 
 	TEXT_TY_RE_Err = 0;
-	if (ftxtype == CHR_BLOB) {
-		match0_idx = 0;
-		match0_idx2 = 0;
-	}
 	switch (ftxtype) {
 		REGEXP_BLOB: i = TEXT_TY_RE_CompileTree(ftxt, exactly);
 		CHR_BLOB: i = TEXT_TY_CHR_CompileTree(ftxt, exactly);
+       			  match0_idx = -1;
+			  match0_idx2 = -1;
 		default: "*** bad ftxtype ***";
 	}
 
@@ -1679,8 +1677,10 @@ For an explanation of the use of the word "blob", see "Text.i6t".
 			}
 			print " ***^";
 		}
-                match0_idx = RE_PACKET_space-->RE_DATA1 + 1;
-                match0_idx2 = RE_PACKET_space-->RE_DATA2 + 1;
+		if (ftxtype == CHR_BLOB) {
+			match0_idx = RE_PACKET_space-->RE_DATA1;
+			match0_idx2 = RE_PACKET_space-->RE_DATA2;
+		}
 		if (rtxt == 0) break; ! Accept only one match, replace nothing
 
 		if (rtxt ~= 0 or 1) {

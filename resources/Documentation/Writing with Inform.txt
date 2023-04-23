@@ -13774,6 +13774,12 @@ tests whether the digit 3 occurs anywhere in the score, as printed out; and
 tests to see whether "the" can be found anywhere in the current room's name. Note that the location "Smotheringly Hot Jungle" would pass this test - it's there if you look. On the other hand, "The Orangery" would not, because "The" does not match against "the". We can get around this in a variety of ways, one of which is to tell Inform to be insensitive to the case (upper or lower) of letters:
 
 	if the printed name of the location matches the text "the", case insensitively: ...
+
+Every text matches the empty text, thus
+
+	if t matches the text "", ...
+
+is always true.
 {end}
 
 {defn ph_exactlymatches}if (text) exactly matches the text (text):
@@ -13788,7 +13794,32 @@ is true if the score and best score currently print out as the same text, which 
 is never true - these are different texts, even if they sometimes look the same.
 {end}
 
-In the next section we shall see that "matches" and "exactly matches" can do much more than the simple text matching demonstrated above.
+We can also find exactly where in the text the match occurred. If you're interested
+in these results, get and store them immediately after the match: the values will
+be overwritten when the next match operation happens.
+
+{defn ph_textstartindex}start index of text match ... number
+Following a successful text match, this produces the character number of the start of the match.
+
+	start index of "cat" in "vacation"
+
+results in 3. Following a failed text match, this will produce 0.
+{end}
+{defn ph_textfinalindex}final index of text match ... number
+Similarly, we can find the character number of the final character in the match.
+
+	final index of "cat" in "vacation"
+
+produces 5, but a failed text match will produce -1.
+{end}
+
+{defn ph_textlength}length of text match ... number
+Finally, we can get the length of the match, i.e., 3 for the "cat" example,
+or 0 for a failed text match.
+{end}
+
+As noted above, everything matches the empty text "". In that case, the length is 0,
+the start index is 1, and the final index is... 0.
 
 We can also see how many times something matches:
 
@@ -13800,6 +13831,8 @@ This produces the number of times the second text occurs within the first. The m
 	number of times "xyzzy" matches the text "Z", case insensitively = 2
 	number of times "aaaaaaaa" matches the text "aaaa" = 2
 {end}
+In the next section we shall see that "matches" and "exactly matches" can do much more than the simple text matching demonstrated above.
+
 ^^{XYZZY}
 
 There's no "number of times WHATEVER exactly matches the text FIND" phrase since this is by definition going to have to be 0 or 1. 
@@ -14017,6 +14050,26 @@ Finally, conditionals can also use lookaheads or lookbehinds as their conditions
 	"(?(?=\d)\d\d\d\d|AY-\d\d\d\d)"
 
 means if you start with a digit, match four digits; otherwise match "AY-" followed by four digits. There are easier ways to do this, of course, but the really juicy uses of conditionals are only borderline legible and make poor examples - perhaps this is telling us something.
+
+{defn ph_restartindex}start index of subexpression ... number
+Following a text match, this produces the character number of the start of the match.
+
+	start index of "cat" in "vacation"
+
+results in 3. 
+{end}
+
+{defn ph_refinalindex}final index of subexpression ... number
+Similarly, we can find the character number of the final character in the match.
+
+	final index of "cat" in "vacation"
+
+produces 5.
+{end}
+
+{defn ph_relength}length of subexpression ... number
+Finally, we can get the length of the match, i.e., 3 for the "cat" example.
+{end}
 
 [x] Making new text with text substitutions
 
