@@ -647,7 +647,7 @@ forceintegration: \
 # The UI apps do not contain all of the intools: for example, they do not need
 # indoc or inpolicy, which are run only at the command line. They do have these:
 
-{set name: TOOLSINAPPS value: INBLORB, INFORM6, INFORM7, INTEST}
+{set name: TOOLSINAPPS value: INBLORB, INFORM6, INFORM7, INTEST, INBUILD}
 
 # The make-integration-settings.mk file is expected to have defined the symbols
 # INBLORBNAME, INFORM6NAME, etc., as the leafnames these executables should be

@@ -178,15 +178,20 @@ Now the task is to copy an extension into place in a nest. This is easy,
 since an extension is a single file; to sync, we just overwrite.
 
 =
-void ExtensionManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
-	int syncing, build_methodology *meth) {
-	pathname *E = ExtensionManager::path_within_nest(N);
+filename *ExtensionManager::filename_in_nest(inbuild_nest *N, inbuild_edition *E) {
+	pathname *EX = ExtensionManager::path_within_nest(N);
 	TEMPORARY_TEXT(leaf)
-	Editions::write_canonical_leaf(leaf, C->edition);
+	Editions::write_canonical_leaf(leaf, E);
 	WRITE_TO(leaf, ".i7x");
 	filename *F = Filenames::in(
-		Pathnames::down(E, C->edition->work->author_name), leaf);
+		Pathnames::down(EX, E->work->author_name), leaf);
 	DISCARD_TEXT(leaf)
+	return F;
+}
+
+void ExtensionManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
+	int syncing, build_methodology *meth) {
+	filename *F = ExtensionManager::filename_in_nest(N, C->edition);
 
 	if (TextFiles::exists(F)) {
 		if (syncing == FALSE) { Copies::overwrite_error(C, N); return; }

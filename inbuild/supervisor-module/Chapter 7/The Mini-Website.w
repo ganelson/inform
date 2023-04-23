@@ -70,8 +70,9 @@ documentation as used today until the next run, for obscure timing reasons.
 	}
 
 @<Write index pages@> =
-	ExtensionIndex::write(ExtensionWebsite::index_URL(I"Extensions.html"), HOME_EXTPAGE, C);
-	ExtensionIndex::write(ExtensionWebsite::index_URL(I"ExtIndex.html"), INDEX_EXTPAGE, C);
+	ExtensionIndex::write(ExtensionWebsite::index_URL(proj, I"Extensions.html"), HOME_EXTPAGE, C);
+	if (proj == NULL)
+		ExtensionIndex::write(ExtensionWebsite::index_URL(proj, I"ExtIndex.html"), INDEX_EXTPAGE, C);
 
 @ Each extension gets its own page in the external documentation area, but
 this page can have two forms:
@@ -113,20 +114,32 @@ And see also the function //ExtensionDictionary::filename//, which uses a file
 in the same area but not as part of the site.
 
 =
-pathname *ExtensionWebsite::home_URL(void) {
-	pathname *P = Supervisor::transient();
-	if (P == NULL) return NULL;
-	if (Pathnames::create_in_file_system(P) == 0) return NULL;
-	P = Pathnames::down(P, I"Documentation");
-	if (Pathnames::create_in_file_system(P) == 0) return NULL;
-	return P;
+pathname *ExtensionWebsite::home_URL(inform_project *proj) {
+	if (proj == NULL) {
+		pathname *P = Supervisor::transient();
+		if (P == NULL) return NULL;
+		if (Pathnames::create_in_file_system(P) == 0) return NULL;
+		P = Pathnames::down(P, I"Documentation");
+		if (Pathnames::create_in_file_system(P) == 0) return NULL;
+		return P;
+	} else {
+		pathname *P = Projects::materials_path(proj);
+		if (P == NULL) return NULL;
+		P = Pathnames::down(P, I"Extensions");
+		if (Pathnames::create_in_file_system(P) == 0) return NULL;
+		P = Pathnames::down(P, I"Reserved");
+		if (Pathnames::create_in_file_system(P) == 0) return NULL;
+		P = Pathnames::down(P, I"Documentation");
+		if (Pathnames::create_in_file_system(P) == 0) return NULL;
+		return P;
+	}
 }
 
 @ The top-level files |Extensions.html| and |ExtIndex.html| go here:
 
 =
-filename *ExtensionWebsite::index_URL(text_stream *leaf) {
-	pathname *P = ExtensionWebsite::home_URL();
+filename *ExtensionWebsite::index_URL(inform_project *proj, text_stream *leaf) {
+	pathname *P = ExtensionWebsite::home_URL(proj);
 	if (P == NULL) return NULL;
 	return Filenames::in(P, leaf);
 }
@@ -144,16 +157,40 @@ documentation: so for instance we might actually see --
 The following supplies the necessary filenames.
 
 =
-filename *ExtensionWebsite::page_URL(inbuild_work *work, int eg_number) {
+filename *ExtensionWebsite::page_URL(inform_project *proj, inbuild_edition *edition, int eg_number) {
 	TEMPORARY_TEXT(leaf)
-	Str::copy(leaf, work->title);
-	if (eg_number > 0) WRITE_TO(leaf, "-eg%d", eg_number);
-	WRITE_TO(leaf, ".html");
-	pathname *P = ExtensionWebsite::home_URL();
-	if (P == NULL) return NULL;
-	P = Pathnames::down(P, I"Extensions");
+	Editions::write_canonical_leaf(leaf, edition);
+	
+	pathname *P;
+	if (proj) {
+		P = Projects::materials_path(proj);
+		if (P == NULL) return NULL;
+		P = Pathnames::down(P, I"Extensions");
+		if (Pathnames::create_in_file_system(P) == 0) return NULL;
+		P = Pathnames::down(P, I"Reserved");
+		if (Pathnames::create_in_file_system(P) == 0) return NULL;
+		P = Pathnames::down(P, I"Documentation");
+	} else {
+		P = ExtensionWebsite::home_URL(NULL);
+		if (P == NULL) return NULL;
+		P = Pathnames::down(P, I"Extensions");
+	}
 	if (Pathnames::create_in_file_system(P) == 0) return NULL;
-	filename *F = Filenames::in(Pathnames::down(P, work->author_name), leaf);
+	P = Pathnames::down(P, edition->work->author_name);
+	if (Pathnames::create_in_file_system(P) == 0) return NULL;
+
+	if (proj) {
+		P = Pathnames::down(P, leaf);
+		if (Pathnames::create_in_file_system(P) == 0) return NULL;
+		Str::clear(leaf);
+		if (eg_number > 0) WRITE_TO(leaf, "eg%d.html", eg_number);
+		else WRITE_TO(leaf, "index.html");
+	} else {
+		if (eg_number > 0) WRITE_TO(leaf, "-eg%d", eg_number);
+		WRITE_TO(leaf, ".html");
+	}
+
+	filename *F = Filenames::in(P, leaf);
 	DISCARD_TEXT(leaf)
 	return F;
 }

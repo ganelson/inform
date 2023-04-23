@@ -134,8 +134,6 @@ we are allowed to write a text literal instead, and it is automatically converte
 
 @ The "operands" of an action pattern are the nouns to which it applies: for
 example, in "Kevin taking or dropping something", the operand is "something".
-We treat words like "something" specially to avoid them being read as
-"some thing" and thus forcing the kind of the operand to be "thing".
 
 =
 <action-operand> ::=

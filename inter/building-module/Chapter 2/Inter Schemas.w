@@ -658,11 +658,16 @@ void InterSchemas::throw_error(inter_schema_node *at, text_stream *message) {
 =
 void InterSchemas::internal_error_on_schema_errors(inter_schema *sch) {
 	if (LinkedLists::len(sch->parsing_errors) > 0) {
+		#ifdef CORE_MODULE
+		SourceProblems::inter_schema_errors(sch);
+		#endif
+		#ifndef CORE_MODULE
 		WRITE_TO(STDERR, "Parsing error(s) in the internal schema '%S':\n",
 			sch->converted_from);
 		schema_parsing_error *err;
 		LOOP_OVER_LINKED_LIST(err, schema_parsing_error, sch->parsing_errors)
 			WRITE_TO(STDERR, "- %S\n", err->message);
 		internal_error("malformed schema");
+		#endif
 	}
 }

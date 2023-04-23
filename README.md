@@ -1,6 +1,6 @@
 # Inform 7
 
-[Version](notes/versioning.md): 10.2.0-beta+6W27 'Krypton' (13 April 2023)
+[Version](notes/versioning.md): 10.2.0-beta+6W35 'Krypton' (22 April 2023)
 
 ## About Inform
 
@@ -67,6 +67,14 @@ Make a directory in which to work: let's call this `work`. Then:
 * Run a single test case: `../intest/Tangled/intest inform7 -show Acidity`.
 * If you have time (between 5 mins and 2 hours, depending on your system), `make check`
 to run the full suite of 2500 test cases.
+
+**Caution again**: `inform7` is written in standard C99, but is a challengingly
+large task for a C compiler, and we have now seen two different cases where `gcc`
+generates incorrect code
+(see Jira bugs [I7-2108](https://inform7.atlassian.net/browse/I7-2108) and
+[I7-2282](https://inform7.atlassian.net/jira/software/c/projects/I7/issues/I7-2282)).
+In each case, recent versions of `clang` compile correct code.
+We recommend compiling the core Inform tools with `clang` rather than `gcc` if possible.
 
 ## Issues and Contributions
 

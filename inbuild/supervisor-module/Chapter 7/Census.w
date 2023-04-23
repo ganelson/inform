@@ -20,7 +20,18 @@ compiled in case (b).
 =
 extension_census *ExtensionCensus::new(inform_project *proj) {
 	extension_census *C = CREATE(extension_census);
-	C->search_list = Projects::nest_list(proj);
+	
+	if (proj == NULL) {
+		C->search_list = Projects::nest_list(proj);
+	} else {
+		C->search_list = NEW_LINKED_LIST(inbuild_nest);
+		ADD_TO_LINKED_LIST(C->search_list, inbuild_nest, proj->search_list);
+		inbuild_nest *N;
+		linked_list *L = Supervisor::shared_nest_list();
+		LOOP_OVER_LINKED_LIST(N, inbuild_nest, L)
+			if (Nests::get_tag(N) == INTERNAL_NEST_TAG)
+				ADD_TO_LINKED_LIST(N, inbuild_nest, C->search_list);
+	}
 	C->census_data = NEW_LINKED_LIST(extension_census_datum);
 	C->raw_data = NEW_LINKED_LIST(inbuild_search_result);
 	C->no_census_errors = 0;

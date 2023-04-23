@@ -228,7 +228,7 @@ Note the use of //Produce::down// and //Produce::up// to step up and down the
 hierarchy: these functions are always called in matching ways.
 
 @ The //pipeline// module makes heavy use of the Produce API. Surprising,
-//inform7// calls it in only a few places -- but in fact that it is because
+//inform7// calls it in only a few places -- but in fact that is because
 it provides still another middleware layer on top. See //runtime: Emit//.
 But it's really only a very thin layer, allowing the caller not to have to
 pass the |I| argument to every call (because it will always be the Inter tree
