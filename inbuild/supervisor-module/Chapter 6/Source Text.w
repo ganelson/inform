@@ -148,6 +148,8 @@ add to those generated in //syntax//.
 @e ExtVersionMalformed_SYNERROR
 @e ExtInadequateVM_SYNERROR
 @e ExtMisidentifiedEnds_SYNERROR
+@e UnavailableLOS_SYNERROR
+@e DialogueOnSectionsOnly_SYNERROR
 
 @ The next tweak to //syntax// is to give it some node metadata. //syntax//
 itself places nodes of a small number of basic types into the syntax tree;
@@ -209,6 +211,8 @@ and here goes:
 	book ... |                          ==> { 2, - }
 	part ... |                          ==> { 3, - }
 	chapter ... |                       ==> { 4, - }
+	section ... ( dialog ) |            ==> { 6, - }
+	section ... ( dialogue ) |          ==> { 6, - }
 	section ...                         ==> { 5, - }
 
 <extension-end-marker-sentence> ::=
@@ -281,10 +285,15 @@ of an extension.
 
 =
 void SourceText::new_beginend(parse_node *pn, inbuild_copy *C) {
-	inform_extension *E = ExtensionManager::from_copy(C);
+	inform_extension *E = Extensions::from_copy(C);
 	if (Node::get_type(pn) == BEGINHERE_NT) Inclusions::check_begins_here(pn, E);
 	if (Node::get_type(pn) == ENDHERE_NT) Inclusions::check_ends_here(pn, E);
 }
+
+@ This callback is called by //syntax// when it first reaches a dialogue line
+or beat.
+
+@d DIALOGUE_WARNING_SYNTAX_CALLBACK Projects::dialogue_present
 
 @ Lastly, this callback is called by //syntax// when it hits a sentence like:
 

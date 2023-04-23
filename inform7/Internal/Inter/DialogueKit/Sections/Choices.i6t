@@ -1,0 +1,140 @@
+Choices Template.
+
+Runtime support for dialogue choices.
+
+@h Runtime representation.
+Values representing choices are enumerated from 1 to |NO_DIALOGUE_CHOICES|. Choices
+have certain properties stored by Inform just as it would for any other
+enumerated kind, and which this kit deals with by calls to |GProperty| and
+|WriteGProperty|: in particular, |performed| and |recurring|.
+
+In addition, though, the compiler (or more accurately the linker) generates
+a table called |TableOfDialogueChoices|. If |dc| is an enumerated value then
+|TableOfDialogueChoices-->dc| is the address of the metadata table for |dc|.
+(And |TableOfDialogueChoices-->0| is set to |NO_DIALOGUE_CHOICES|.)
+
+These choice data arrays occupy 3 words each, with fields as follows:
+
+(*) |TYPE_DCMETADATA| must be one of the |*_DSEL| values, which in turn
+determines the meaning of the |CONTENT_DCMETADATA| field.
+
+(*) |AVAILABILITY_DCMETADATA| is a function to test whether any |if| or |unless|
+conditions attached to the choice are met; this returns |true| if the choice is
+available, |false| if not. If the |AVAILABILITY_DCMETADATA| is 0, the choice is
+always available.
+
+(*) What's held in |CONTENT_DCMETADATA| depends on the |TYPE_DCMETADATA|:
+
+(a) For |TEXTUAL_DSEL| it's an Inform 7 |text| value for what is being offered
+to the player (say, "Run out of the room screaming").
+
+(b) For |ENDING_DSEL| and the other ending types, it's the value of |deadflag|
+to set, which will sometimes be a |text| and sometimes just the value 3: see
+WorldModelKit for why this is.
+
+(c) For |PERFORM_DSEL| it's the dialogue beat to perform.
+
+(d) For |INSTEAD_OF_DSEL|, |AFTER_DSEL| and |BEFORE_DSEL|, it's a function which
+looks to see if the current action matches the given action pattern.
+
+(e) For everything else, it's 0 and meaningless.
+
+All of this must of course match what is compiled in //runtime: Dialogue Choice Instances//.
+
+=
+Constant TYPE_DCMETADATA = 0;
+Constant AVAILABILITY_DCMETADATA = 1;
+Constant CONTENT_DCMETADATA = 2;
+
+                                         ! Flow markers:
+Constant AGAIN_DSEL = 1;                 ! <-
+Constant ANOTHER_CHOICE_DSEL = 2;        ! -> another choice
+Constant PERFORM_DSEL = 3;               ! -> perform the falling beat
+Constant STOP_DSEL = 4;                  ! -> stop
+Constant ENDING_DSEL = 5;                ! -> end the story
+Constant ENDING_SAYING_DSEL = 6;         ! -> end the story saying "You have succeeded"
+Constant ENDING_FINALLY_DSEL = 7;        ! -> end the story finally
+Constant ENDING_FINALLY_SAYING_DSEL = 8; ! -> end the story finally saying "You have failed"
+
+                                         ! Offered choices:
+Constant TEXTUAL_DSEL = 9;               ! -- "Run out of the room screaming"
+Constant INSTEAD_OF_DSEL = 10;           ! -- instead of taking something
+Constant AFTER_DSEL = 11;                ! -- after examining the rabbit hole
+Constant BEFORE_DSEL = 12;               ! -- before taking the pocket watch
+Constant OTHERWISE_DSEL = 13;            ! -- otherwise
+
+@h Extracting choice data.
+
+=
+[ DirectorChoiceStoryEnding dc chdata;
+	if ((dc <= 0) || (dc > NO_DIALOGUE_CHOICES)) rfalse;
+	chdata = TableOfDialogueChoices-->dc;
+	if (chdata-->TYPE_DCMETADATA == ENDING_DSEL or ENDING_SAYING_DSEL or
+		ENDING_FINALLY_DSEL or ENDING_FINALLY_SAYING_DSEL)
+		rtrue;
+	rfalse;
+];
+
+[ DirectorChoiceTextContent dc text chdata;
+	if ((dc <= 0) || (dc > NO_DIALOGUE_CHOICES)) return text;
+	chdata = TableOfDialogueChoices-->dc;
+	BlkValueCopy(text, chdata-->CONTENT_DCMETADATA);
+	return text;
+];
+
+[ DirectorChoiceType dc chdata;
+	if ((dc <= 0) || (dc > NO_DIALOGUE_CHOICES)) return 0;
+	chdata = TableOfDialogueChoices-->dc;
+	return chdata-->TYPE_DCMETADATA;
+];
+
+[ DirectorChoiceRawContent dc chdata;
+	if ((dc <= 0) || (dc > NO_DIALOGUE_CHOICES)) return 0;
+	chdata = TableOfDialogueChoices-->dc;
+	return chdata-->CONTENT_DCMETADATA;
+];
+
+[ DirectorChoiceFlowing dc chdata type;
+	if ((dc <= 0) || (dc > NO_DIALOGUE_CHOICES)) rfalse;
+	chdata = TableOfDialogueChoices-->dc;
+	type = chdata-->TYPE_DCMETADATA;
+	if (type == ANOTHER_CHOICE_DSEL or AGAIN_DSEL or STOP_DSEL or PERFORM_DSEL
+		 or ENDING_DSEL or ENDING_SAYING_DSEL or ENDING_FINALLY_DSEL
+		 or ENDING_FINALLY_SAYING_DSEL)
+		rtrue;
+	rfalse;
+];
+
+[ DirectorChoiceAvailable dc chdata fn;
+	if ((dc <= 0) || (dc > NO_DIALOGUE_CHOICES)) rfalse;
+	chdata = TableOfDialogueChoices-->dc;
+	fn = chdata-->AVAILABILITY_DCMETADATA;
+	if (fn) return fn();
+	rtrue;
+];
+
+[ DirectorFollowFlowMarker dc chdata;
+	if ((dc <= 0) || (dc > NO_DIALOGUE_CHOICES)) rfalse;
+	WriteGProperty(DIALOGUE_CHOICE_TY, dc, performed, true);
+	chdata = TableOfDialogueChoices-->dc;
+	switch (chdata-->TYPE_DCMETADATA) {
+		AGAIN_DSEL:
+			if (debug_dialogue >= 2) { print "-- again^"; }
+			DirectorAgain();
+			rtrue;
+		STOP_DSEL:
+			if (debug_dialogue >= 2) { print "-- stop at: "; DirectorTraceStack(); }
+			DirectorStop();
+			if (debug_dialogue >= 2) { print "-- after stop: "; DirectorTraceStack(); }
+			rtrue;
+		ENDING_DSEL, ENDING_SAYING_DSEL, ENDING_FINALLY_DSEL, ENDING_FINALLY_SAYING_DSEL:
+			if (debug_dialogue >= 2) { print "-- ending at: "; DirectorTraceStack(); }
+			deadflag = chdata-->CONTENT_DCMETADATA;
+			if (chdata-->TYPE_DCMETADATA == ENDING_FINALLY_DSEL or ENDING_FINALLY_SAYING_DSEL)
+				story_complete = true;
+			rtrue;
+		PERFORM_DSEL: DirectorPerformBeat(chdata-->CONTENT_DCMETADATA); rtrue;
+		default: print "*** Unimplemented choice ***^"; rfalse;
+	}
+	rtrue;
+];

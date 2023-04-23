@@ -153,6 +153,7 @@ INFORM6WEB = inform6
 {component type: web symbol: COMMANDPARSERKIT     webname: CommandParserKit     path: inform7/Internal/Inter/CommandParserKit     set: kits}
 {component type: web symbol: BASICINFORMEXTRASKIT webname: BasicInformExtrasKit path: inform7/Internal/Inter/BasicInformExtrasKit set: kits}
 {component type: web symbol: ENGLISHLANGUAGEKIT   webname: EnglishLanguageKit   path: inform7/Internal/Inter/EnglishLanguageKit   set: kits}
+{component type: web symbol: DIALOGUEKIT          webname: DialogueKit          path: inform7/Internal/Inter/DialogueKit          set: kits}
 
 {component type: web symbol: STANDARDRULES        webname: standard_rules       path: inform7/extensions/standard_rules           set: extensions}
 {component type: web symbol: BASICINFORM          webname: basic_inform         path: inform7/extensions/basic_inform             set: extensions}
@@ -369,6 +370,7 @@ check:
 .PHONY: commit
 commit:
 	$(INWEBX) -advance-build-file build.txt
+	$(INPOLICYX) -sync-kit-versions
 	{update-readme}
 	git commit -a
 
@@ -645,7 +647,7 @@ forceintegration: \
 # The UI apps do not contain all of the intools: for example, they do not need
 # indoc or inpolicy, which are run only at the command line. They do have these:
 
-{set name: TOOLSINAPPS value: INBLORB, INFORM6, INFORM7, INTEST}
+{set name: TOOLSINAPPS value: INBLORB, INFORM6, INFORM7, INTEST, INBUILD}
 
 # The make-integration-settings.mk file is expected to have defined the symbols
 # INBLORBNAME, INFORM6NAME, etc., as the leafnames these executables should be
@@ -691,7 +693,7 @@ forcetransferpreform:
 # -----------------------------------------------------------------------------
 # Copying the indexing structure and localisation files into the app
 
-{set name: LOCALISEDINDEXES value: English, French}
+{set name: LOCALISEDINDEXES value: English}
 
 .PHONY: transferindext
 transferindext: forcetransferindext
@@ -719,8 +721,8 @@ transferkits: forcetransferkits
 
 .PHONY: forcetransferkits
 forcetransferkits:
-	$(INBUILDX) -sync-to $(INTERNAL) -contents-of $(INFORM7WEB)/Internal/Inter
-	$(INBUILDX) -sync-to $(INTERNAL) -contents-of $(INFORM7WEB)/Internal/Pipelines
+	$(INBUILDX) -no-versions-in-filenames -sync-to $(INTERNAL) -contents-of $(INFORM7WEB)/Internal/Inter
+	$(INBUILDX) -no-versions-in-filenames -sync-to $(INTERNAL) -contents-of $(INFORM7WEB)/Internal/Pipelines
 
 # -----------------------------------------------------------------------------
 # Copying extensions into the app
@@ -751,6 +753,7 @@ forcetransferextensions:
 {define: transfer-languages}
 	mkdir -p "$(INTERNAL)/Languages"
 	cp -R -f $(INFORM7WEB)/Internal/Languages $(INTERNAL)/Languages/..
+	rm -f $(INTERNAL)/Languages/*/about.txt
 {end-define}
 
 .PHONY: forcetransferlanguages
@@ -799,6 +802,7 @@ forcetransferotherinternals:
 {define: transfer-images}
 	mkdir -p $(BUILTINHTML)
 	cp -f resources/Imagery/app_images/Welcome*Background.png $(BUILTINHTML)
+	cp -f resources/Imagery/app_images/Welcome*Banner.png $(BUILTINHTML)
 	{repeat with: SET in: {IMAGESETLIST}}
 	mkdir -p $(BUILTINHTML)/{SET}
 	rm -f $(BUILTINHTML)/{SET}/*
@@ -834,7 +838,7 @@ $(INTERNALEXEMPLUM): \
 		$(INFORM7WEB)/Internal/Extensions/Eric\ Eve/[A-Za-z]* \
 		$(INFORM7WEB)/Internal/Extensions/Emily\ Short/[A-Za-z]* \
 		$(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/[A-Za-z]* \
-		$(INFORM7WEB)/Internal/Languages/*/about.txt \
+		$(INFORM7WEB)/Internal/Languages/*/*.* \
 		$(INFORM7WEB)/Internal/Templates/*/*.* \
 		$(INFORM7WEB)/Internal/HTML/[A-Za-z]*.* \
 		{repeat with: INTERPRETER in: {TEMPLATENAMES}}
@@ -861,19 +865,39 @@ $(INTERNALEXEMPLUM): \
 # the relation between the two, the indoc settings for the platform will need to
 # agree with that.
 
+{define: compile-inapp-advice}
+ifdef ADVICEHTML
+	mkdir -p $(ADVICEHTML)
+	$(INBUILDX) -preprocess-html-to $(ADVICEHTML) -preprocess-app $(HTMLPLATFORM) -preprocess-html resources/Documentation/Advice/AdviceCredits.html
+	$(INBUILDX) -preprocess-html-to $(ADVICEHTML) -preprocess-app $(HTMLPLATFORM) -preprocess-html resources/Documentation/Advice/AdviceKeyboardShortcuts.html
+	$(INBUILDX) -preprocess-html-to $(ADVICEHTML) -preprocess-app $(HTMLPLATFORM) -preprocess-html resources/Documentation/Advice/AdviceMaterialsFolder.html
+	$(INBUILDX) -preprocess-html-to $(ADVICEHTML) -preprocess-app $(HTMLPLATFORM) -preprocess-html resources/Documentation/Advice/AdviceNewToInform.html
+	$(INBUILDX) -preprocess-html-to $(ADVICEHTML) -preprocess-app $(HTMLPLATFORM) -preprocess-html resources/Documentation/Advice/AdviceUpgrading.html
+	$(INBUILDX) -preprocess-html-to $(ADVICEHTML) -preprocess-app $(HTMLPLATFORM) -preprocess-html resources/Documentation/Advice/TestingTemplate.html
+	cp -f 'resources/Documentation/Advice/MaterialsDiagram.png' $(ADVICEHTML)
+endif
+{end-define}
+
+.PHONY: forcetransferadvice
+forcetransferadvice:
+	{compile-inapp-advice}
+
 {define: compile-inapp-documentation}
 	mkdir -p $(BUILTINHTMLINNER)
 	$(INDOCX) -from resources/Documentation -xrefs '$(INFORM7WEB)/Internal/HTML/xrefs.txt' $(INDOCOPTS)
+	cp -f $(INFORM7WEB)/Internal/HTML/xrefs.txt "$(INTERNAL)/HTML"
 {end-define}
 
 .PHONY: transferdocumentation
 transferdocumentation: $(BUILTINHTMLINNER)/index.html
 
 $(BUILTINHTMLINNER)/index.html: resources/Documentation/*.txt resources/Documentation/Examples/*.txt
+	{compile-inapp-advice}
 	{compile-inapp-documentation}
 
 .PHONY: forcetransferdocumentation
 forcetransferdocumentation:
+	{compile-inapp-advice}
 	{compile-inapp-documentation}
 
 # -----------------------------------------------------------------------------

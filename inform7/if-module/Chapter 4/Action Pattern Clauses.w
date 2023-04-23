@@ -206,7 +206,7 @@ void APClauses::write(OUTPUT_STREAM, action_pattern *ap) {
 Two options are used with the actor clause (only), reflecting the unusual ways
 it can be used. 
 
-First, the following is for action patterns like "an actor taking the medallion".
+First, the following is for action patterns like "someone taking the medallion".
 Here the requirement on the actor is not ${\it person}(c_a)$ but instead forces
 $c_a$ not to be the player. The principled thing might be to set the |clause_spec|
 to the proposition ${\it person}(c_a)\land c_a\neq {\it player}$, but that would

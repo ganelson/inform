@@ -18,6 +18,8 @@
 #define gestulx_Acceleration (9)
 #define gestulx_AccelFunc (10)
 #define gestulx_Float (11)
+#define gestulx_ExtUndo (12)
+#define gestulx_Double (13)
 
 #endif /* _GESTALT_H */
 

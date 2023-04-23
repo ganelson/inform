@@ -262,7 +262,7 @@ now absolutely any non-empty word range is accepted as the property name.
 @ So we can now use the above grammar to understand the definition of the verb.
 Note that it is legal, but does nothing, to request a built-in meaning which
 does not exist: this allows for Basic Inform to mention built-in meanings
-which exist only when certain plugins are active.
+which exist only when certain features are active.
 
 @<Find the verb meaning and priority@> =
 	<verb-definition>(Node::get_text(V->next->next));

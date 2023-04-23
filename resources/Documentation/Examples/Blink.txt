@@ -9,7 +9,7 @@ Suppose we are writing a game in which the mood of the piece changes, and we wou
 	Atmosphere is a kind of value. The atmospheres are normal, melancholy, and creepy.
 
 	The current atmosphere is an atmosphere that varies.
-	The current atmosphere variable translates into I6 as "current_atmosphere".
+	The current atmosphere variable is defined by Inter as "current_atmosphere".
 	
 	To say by atmosphere -- ending say_one_of with marker I7_SOO_ATM:
 		(- {-close-brace} -). 

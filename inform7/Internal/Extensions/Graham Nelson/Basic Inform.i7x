@@ -13,6 +13,8 @@ The verb to be means the built-in new-activity meaning.
 The verb to be means the built-in new-action meaning.
 The verb to be means the built-in new-adjective meaning.
 The verb to be means the built-in new-either-or meaning.
+The verb to be means the built-in accessible-to-inter meaning.
+The verb to be means the built-in defined-by-inter meaning.
 The verb to be means the built-in defined-by-table meaning.
 The verb to be means the built-in rule-listed-in meaning.
 The verb to be means the built-in new-figure meaning.
@@ -117,37 +119,42 @@ An object can be plural-named or singular-named. An object is usually singular-n
 An object can be proper-named or improper-named. An object is usually improper-named.
 An object can be ambiguously plural.
 
-The indefinite article property translates into Inter as "article".
-The printed plural name property translates into Inter as "plural".
-The printed name property translates into Inter as "short_name".
-The plural-named property translates into Inter as "pluralname".
-The ambiguously plural property translates into Inter as "ambigpluralname".
-The proper-named property translates into Inter as "proper".
+The indefinite article property is defined by Inter as "article".
+The printed plural name property is defined by Inter as "plural".
+The printed name property is defined by Inter as "short_name".
+The plural-named property is defined by Inter as "pluralname".
+The ambiguously plural property is defined by Inter as "ambigpluralname".
+The proper-named property is defined by Inter as "proper".
 
 A natural language is a kind of value.
 The language of play is a natural language that varies.
 
 The parameter-object is an object that varies.
-The parameter-object variable translates into Inter as "parameter_value".
+The parameter-object variable is defined by Inter as "parameter_value".
 
 Startup rules is a rulebook.
+The startup rulebook is accessible to Inter as "STARTUP_RB".
 Startup rules have outcomes allow startup (success) and deny startup (failure).
 Shutdown rules is a rulebook.
+The shutdown rulebook is accessible to Inter as "SHUTDOWN_RB".
 
 Starting the virtual machine (documented at act_startvm) is an activity.
+The starting the virtual machine activity is accessible to Inter as "STARTING_VIRTUAL_MACHINE_ACT".
 The final code startup rule is listed first in for starting the virtual machine.
-The final code startup rule translates into Inter as "FINAL_CODE_STARTUP_R".
+The final code startup rule is defined by Inter as "FINAL_CODE_STARTUP_R".
 
 Printing the name of something (documented at act_pn) is an activity.
+The printing the name activity is accessible to Inter as "PRINTING_THE_NAME_ACT".
 
 The standard name printing rule is listed last in the for printing the name rulebook.
-The standard name printing rule translates into Inter as "STANDARD_NAME_PRINTING_R".
+The standard name printing rule is defined by Inter as "STANDARD_NAME_PRINTING_R".
 
 Printing the plural name of something (documented at act_ppn) is an activity.
+The printing the plural name activity is accessible to Inter as "PRINTING_THE_PLURAL_NAME_ACT".
 
 The standard printing the plural name rule is listed last in the for printing the
 plural name rulebook.
-The standard printing the plural name rule translates into Inter as
+The standard printing the plural name rule is defined by Inter as
 "STANDARD_PLURAL_NAME_PRINTING_R".
 
 
@@ -689,6 +696,14 @@ To repeat through (T - table name) in reverse (TC - table column) order begin --
 		@pull {-my:ct_1}; @pull {-my:ct_0};
 	-).
 
+To repeat with (loopvar - nonexisting text variable)
+	running through (F - internal file) begin -- end loop:
+	(-
+		for ({-my:1} = InternalFileIO_Line({-by-reference:loopvar}, {F}): {-my:1}:
+			{-my:1} = InternalFileIO_Line({-by-reference:loopvar}, {F}))
+			{-block}
+	-).
+
 Section 4 - Loop Flow
 
 To break -- in loop
@@ -1008,7 +1023,7 @@ To add (new entry - K) to (L - list of values of kind K), if absent
 	(documented at ph_addtolist):
 	(- LIST_OF_TY_InsertItem({-lvalue-by-reference:L}, {new entry}, 0, 0, {phrase options}); -).
 
-To add (new entry - K) at entry (E - number) in (L - list of values of kind K), if absent
+To add (new entry - K) at entry (E - number) in/from (L - list of values of kind K), if absent
 	(documented at ph_addatentry):
 	(- LIST_OF_TY_InsertItem({-lvalue-by-reference:L}, {new entry}, 1, {E}, {phrase options}); -).
 
@@ -1016,23 +1031,23 @@ To add (LX - list of Ks) to (L - list of values of kind K), if absent
 	(documented at ph_addlisttolist):
 	(- LIST_OF_TY_AppendList({-lvalue-by-reference:L}, {-by-reference:LX}, 0, 0, {phrase options}); -).
 
-To add (LX - list of Ks) at entry (E - number) in (L - list of values of kind K)
+To add (LX - list of Ks) at entry (E - number) in/from (L - list of values of kind K)
 	(documented at ph_addlistatentry):
 	(- LIST_OF_TY_AppendList({-lvalue-by-reference:L}, {-by-reference:LX}, 1, {E}, 0); -).
 
-To remove (existing entry - K) from (L - list of values of kind K), if present
+To remove (existing entry - K) in/from (L - list of values of kind K), if present
 	(documented at ph_remfromlist):
 	(- LIST_OF_TY_RemoveValue({-lvalue-by-reference:L}, {existing entry}, {phrase options}); -).
 
-To remove (N - list of Ks) from (L - list of values of kind K), if present
+To remove (N - list of Ks) in/from (L - list of values of kind K), if present
 	(documented at ph_remlistfromlist):
 	(- LIST_OF_TY_Remove_List({-lvalue-by-reference:L}, {-by-reference:N}, {phrase options}); -).
 
-To remove entry (N - number) from (L - list of values), if present
+To remove entry (N - number) in/from (L - list of values), if present
 	(documented at ph_rementry):
 	(- LIST_OF_TY_RemoveItemRange({-lvalue-by-reference:L}, {N}, {N}, {phrase options}); -).
 
-To remove entries (N - number) to (N2 - number) from (L - list of values), if present
+To remove entries (N - number) to (N2 - number) in/from (L - list of values), if present
 	(documented at ph_rementries):
 	(- LIST_OF_TY_RemoveItemRange({-lvalue-by-reference:L}, {N}, {N2}, {phrase options}); -).
 
@@ -1050,7 +1065,7 @@ To decide what list of Ks is the list of (D - description of values of kind K)
 
 Section 4 - Length of lists
 
-To decide what number is the number of entries in/of (L - a list of values)
+To decide what number is the number of entries in/of/from (L - a list of values)
 	(documented at ph_numberentries):
 	(- LIST_OF_TY_GetLength({-by-reference:L}) -).
 To truncate (L - a list of values) to (N - a number) entries/entry
@@ -1325,7 +1340,7 @@ To rule fails
 	(- RulebookFails(); rtrue; -) - in to only.
 To rule succeeds with result (val - a value)
 	(documented at ph_succeedswith):
-	(- RulebookSucceeds({-weak-kind:rule-return-kind},{-return-value-from-rule:val}); rtrue; -) - in to only.
+	(- RulebookSucceeds({-strong-kind:rule-return-kind},{-return-value-from-rule:val}); rtrue; -) - in to only.
 To decide if rule succeeded
 	(documented at ph_succeeded):
 	(- (RulebookSucceeded()) -).

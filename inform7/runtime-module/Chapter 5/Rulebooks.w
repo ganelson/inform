@@ -8,8 +8,11 @@ Each |rulebook| object contains this data:
 
 =
 typedef struct rulebook_compilation_data {
+	int translated;
+	struct text_stream *translated_name;
 	struct package_request *rb_package;
 	struct inter_name *rb_id_iname;
+	struct inter_name *rb_translated_iname;
 	struct inter_name *vars_creator_fn_iname;
 	struct linked_list *placement_list; /* of |parse_node| */
 	struct parse_node *where_declared;
@@ -22,9 +25,12 @@ packages, so they are not always in the rulebooks submodule.
 rulebook_compilation_data RTRulebooks::new_compilation_data(rulebook *B,
 	package_request *P) {
 	rulebook_compilation_data rcd;
+	rcd.translated = FALSE;
+	rcd.translated_name = NULL;
 	rcd.rb_package = P;
 	rcd.vars_creator_fn_iname = NULL;
 	rcd.rb_id_iname = NULL;
+	rcd.rb_translated_iname = NULL;
 	rcd.placement_list = NEW_LINKED_LIST(parse_node);
 	rcd.where_declared = current_sentence;
 	return rcd;
@@ -48,6 +54,16 @@ inter_name *RTRulebooks::id_iname(rulebook *B) {
 	return B->compilation_data.rb_id_iname;
 }
 
+inter_name *RTRulebooks::id_translated(rulebook *B) {
+	if (Str::len(B->compilation_data.translated_name) == 0) return NULL;
+	if (B->compilation_data.rb_translated_iname == NULL) {
+		B->compilation_data.rb_translated_iname = InterNames::explicitly_named(
+			B->compilation_data.translated_name, RTRulebooks::package(B));
+		Hierarchy::make_available(B->compilation_data.rb_translated_iname);
+	}
+	return B->compilation_data.rb_translated_iname;
+}
+
 @ The following function creates and initialises any shared variables for the
 rulebook:
 
@@ -62,6 +78,20 @@ inter_name *RTRulebooks::get_vars_creator_iname(rulebook *B) {
 @ =
 void RTRulebooks::affected_by_placement(rulebook *rb, parse_node *where) {
 	ADD_TO_LINKED_LIST(where, parse_node, rb->compilation_data.placement_list);
+}
+
+@ =
+void RTRulebooks::translate(rulebook *rb, wording W) {
+	if (rb->compilation_data.translated) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_TranslatesRulebookAlready),
+			"this rulebook has already been translated",
+			"so there must be some duplication somewhere.");
+		return;
+	}
+	rb->compilation_data.translated = TRUE;
+	rb->compilation_data.translated_name = Str::new();
+	WRITE_TO(rb->compilation_data.translated_name, "%N", Wordings::first_wn(W));
 }
 
 @h Compilation.
@@ -85,7 +115,7 @@ void RTRulebooks::compilation_agent(compilation_subtask *t) {
 	
 	inter_name *run_fn_iname = Hierarchy::make_iname_in(RUN_FN_HL, P);
 	inter_name *vars_creator_iname = NULL;
-	if (SharedVariables::set_empty(B->my_variables) == FALSE)
+	if (SharedVariables::set_empty(Rulebooks::variables(B)) == FALSE)
 		vars_creator_iname = RTRulebooks::get_vars_creator_iname(B);
 	@<Compile rulebook metadata@>;
 	@<Compile rulebook ID constant@>;
@@ -102,33 +132,8 @@ void RTRulebooks::compilation_agent(compilation_subtask *t) {
 	Hierarchy::apply_metadata_from_iname(P, RULEBOOK_RUN_FN_MD_HL, run_fn_iname);
 	if (vars_creator_iname)
 		Hierarchy::apply_metadata_from_iname(P, RULEBOOK_VARC_MD_HL, vars_creator_iname);
-	text_stream *marker = NULL;
-	if (B == Rulebooks::std(SCENE_CHANGING_RB)) marker = I"scene_changing";
-	if (B == Rulebooks::std(WHEN_SCENE_BEGINS_RB)) marker = I"when_scene_begins";
-	if (B == Rulebooks::std(WHEN_SCENE_ENDS_RB)) marker = I"when_scene_ends";
-	if (B == Rulebooks::std(STARTUP_RB)) marker = I"startup";
-	if (B == Rulebooks::std(TURN_SEQUENCE_RB)) marker = I"turn_sequence";
-	if (B == Rulebooks::std(SHUTDOWN_RB)) marker = I"shutdown";
-	if (B == Rulebooks::std(WHEN_PLAY_BEGINS_RB)) marker = I"when_play_begins";
-	if (B == Rulebooks::std(EVERY_TURN_RB)) marker = I"every_turn";
-	if (B == Rulebooks::std(WHEN_PLAY_ENDS_RB)) marker = I"when_play_ends";
-	if (B == Rulebooks::std(DOES_THE_PLAYER_MEAN_RB)) marker = I"does_the_player_mean";
-	if (B == Rulebooks::std(PERSUASION_RB)) marker = I"persuasion";
-	if (B == Rulebooks::std(UNSUCCESSFUL_ATTEMPT_BY_RB)) marker = I"unsuccessful_attempt_by";
-	if (B == Rulebooks::std(SETTING_ACTION_VARIABLES_RB)) marker = I"setting_action_variables";
-	if (B == Rulebooks::std(BEFORE_RB)) marker = I"before";
-	if (B == Rulebooks::std(INSTEAD_RB)) marker = I"instead";
-	if (B == Rulebooks::std(AFTER_RB)) marker = I"after";
-	if (B == Rulebooks::std(CHECK_RB)) marker = I"check";
-	if (B == Rulebooks::std(CARRY_OUT_RB)) marker = I"carry_out";
-	if (B == Rulebooks::std(REPORT_RB)) marker = I"report";
-	if (B == Rulebooks::std(ACTION_PROCESSING_RB)) marker = I"action_processing";
-	if (B == Rulebooks::std(SPECIFIC_ACTION_PROCESSING_RB)) marker = I"specific_action_processing";
-	if (B == Rulebooks::std(PLAYERS_ACTION_AWARENESS_RB)) marker = I"players_action_awareness";
-	if (B == Rulebooks::std(REACHING_INSIDE_RB)) marker = I"reaching_inside";
-	if (B == Rulebooks::std(REACHING_OUTSIDE_RB)) marker = I"reaching_outside";
-	if (B == Rulebooks::std(VISIBILITY_RB)) marker = I"visibility";
-	if (marker) Hierarchy::apply_metadata(P, RULEBOOK_INDEX_ID_MD_HL, marker);
+	text_stream *marker = B->compilation_data.translated_name;
+	if (Str::len(marker) > 0) Hierarchy::apply_metadata(P, RULEBOOK_INDEX_ID_MD_HL, marker);
 	TEMPORARY_TEXT(FOCUS)
 	if ((Rulebooks::get_focus_kind(B)) &&
 		(Kinds::eq(Rulebooks::get_focus_kind(B), K_action_name) == FALSE)) {
@@ -231,13 +236,13 @@ void RTRulebooks::compilation_agent(compilation_subtask *t) {
 			Hierarchy::apply_metadata_from_number(P, RULEBOOK_DEFAULT_FAILS_MD_HL, 1);
 	}
 
-
-
 @<Compile rulebook ID constant@> =
 	Emit::numeric_constant(RTRulebooks::id_iname(B), 0); /* placeholder */
+	inter_name *translated = RTRulebooks::id_translated(B);
+	if (translated) Emit::iname_constant(translated, K_value, RTRulebooks::id_iname(B));
 
 @<Compile shared variables creator function@> =
-	RTSharedVariables::compile_creator_fn(B->my_variables, vars_creator_iname);
+	RTSharedVariables::compile_creator_fn(Rulebooks::variables(B), vars_creator_iname);
 
 @<Compile run function@> =
 	int action_based = FALSE;

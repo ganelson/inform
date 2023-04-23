@@ -4,7 +4,7 @@ Version 1 of Inanimate Listeners by Emily Short begins here.
 
 Use authorial modesty.
 
-A thing can be addressable. The addressable property translates into I6 as "talkable".
+A thing can be addressable. The addressable property is defined by Inter as "talkable".
 
 Persuasion rule for asking an addressable thing (called the target) to try doing something (this is the unsuccessful persuasion of inanimate objects rule):
 	if the target is a person or the target is not addressable:

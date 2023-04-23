@@ -1,6 +1,6 @@
 AbbrevTest: Not a game.
-Release 1 / Serial number 220306 / Inform v6.36, compiler options S
-Interpreter version 0.5.4 / VM 3.1.2 / game file format 3.0.0
+Release 1 / Serial number 220724 / Inform v6.41, compiler options S
+Interpreter version 0.6.0 / VM 3.1.3 / game file format 3.0.0
 
 Unset strings: 0='   ', 1='   ', 16='   ', 31='   '.
 Set strings: 0='zero', 1='one', 16='sixteen', 31='thirtyone'.

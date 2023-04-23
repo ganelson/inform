@@ -11,13 +11,14 @@ typedef struct translator_state {
 	struct text_stream *current_title;
 	struct text_stream *current_pcode;
 	struct text_stream *font;
+	struct text_stream *css;
 	struct filename *model_to_follow;
 	struct pathname *destination_folder;
 	struct text_stream *write_to;
 	int counter;
 } translator_state;
 
-void Translator::go(pathname *from_folder, pathname *to_folder, text_stream *font_setting) {
+void Translator::go(pathname *from_folder, pathname *to_folder, text_stream *font_setting, text_stream *css) {
 	filename *texts = Filenames::in(from_folder, I"texts.txt");
 	translator_state ts;
 	ts.current_text = Str::new();
@@ -27,6 +28,7 @@ void Translator::go(pathname *from_folder, pathname *to_folder, text_stream *fon
 	ts.destination_folder = to_folder;
 	ts.model_to_follow = NULL;
 	ts.font = font_setting;
+	ts.css = css;
 	ts.counter = 0;
 	TextFiles::read(texts, FALSE, "unable to read file of source text", TRUE,
 		&Translator::go_helper, NULL, &ts);
@@ -85,7 +87,7 @@ void Translator::flush(translator_state *ts) {
 	match_results mr = Regexp::create_mr();
 	while (Regexp::match(&mr, ts->current_text, L"(%c*?)\"(%c*?)\"(%c*)")) {
 		Str::clear(ts->current_text);
-		WRITE_TO(ts->current_text, "%S<font color=_QUOTE_#000080_QUOTE_><b>%S</b></font>%S",
+		WRITE_TO(ts->current_text, "%S<span class=_QUOTE_indexdullblue_QUOTE_><b>%S</b></span>%S",
 			mr.exp[0], mr.exp[1], mr.exp[2]);
 	}
 	while (Regexp::match(&mr, ts->current_text, L"(%c*?)_QUOTE_(%c*)")) {
@@ -128,5 +130,9 @@ void Translator::flush_helper(text_stream *text, text_file_position *tfp, void *
 	while (Regexp::match(&mr, text, L"(%c*?)%*4(%c*)")) {
 		Str::clear(text);
 		WRITE_TO(text, "%S%S%S", mr.exp[0], ts->font, mr.exp[1]);
+	}
+	while (Regexp::match(&mr, text, L"(%c*?)%*5(%c*)")) {
+		Str::clear(text);
+		WRITE_TO(text, "%S%S%S", mr.exp[0], ts->css, mr.exp[1]);
 	}
 	Regexp::dispose_of(&mr);

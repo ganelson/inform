@@ -11,6 +11,7 @@ values here aren't actually correct for any platform as they stand: in the
 
 =
 wchar_t *FONT_TAG = L"size=2"; /* contents of a |<font>| tag */
+wchar_t *JAVASCRIPT_PRELUDE = L"javascript:window.Project."; /* calling prefix */
 int escape_openUrl = FALSE, escape_fileUrl = FALSE;
 int reverse_slash_openUrl = FALSE, reverse_slash_fileUrl = FALSE;
 
@@ -25,10 +26,12 @@ int current_year_AD = 0; /* e.g., 2008 */
 int blorb_file_size = 0; /* size in bytes of the blorb file written */
 int no_pictures_included = 0; /* number of picture resources included in the blorb */
 int no_sounds_included = 0; /* number of sound resources included in the blorb */
+int no_data_files_included = 0; /* number of data resources included in the blorb */
 int HTML_pages_created = 0; /* number of pages created in the website, if any */
 int source_HTML_pages_created = 0; /* number of those holding source */
 int sound_resource_num = 3; /* current sound resource number we're working on */
 int picture_resource_num = 1; /* current picture resource number we're working on */
+int data_file_resource_num = 1; /* current data resource number we're working on */
 
 int use_css_code_styles = FALSE; /* use |<span class="X">| markings when setting code */
 pathname *project_folder = NULL; /* pathname of I7 project folder, if any */
@@ -156,11 +159,11 @@ slashes -- useful if the separation character is a backslash, as on Windows,
 since backslashes are escape characters in Javascript literals.
 
 @<Set platform-dependent HTML and Javascript variables@> =
-	#ifndef WINDOWS_JAVASCRIPT
+	#ifndef PLATFORM_WINDOWS
 		FONT_TAG = L"face=\"lucida grande,geneva,arial,tahoma,verdana,helvetica,helv\" size=2";
 		escape_openUrl = TRUE; /* we want |openUrl| to escape, and |fileUrl| not to */
 	#endif
-	#ifdef WINDOWS_JAVASCRIPT
+	#ifdef PLATFORM_WINDOWS
 		reverse_slash_openUrl = TRUE; reverse_slash_fileUrl = TRUE;
 	#endif
 
@@ -224,6 +227,11 @@ void Main::print_report(void) {
 	if (status_template) Websites::web_copy(status_template, status_file);
 }
 
+void Main::read_css_line(text_stream *line, text_file_position *tfp, void *X) {
+	text_stream *str = (text_stream *) X;
+	WRITE_TO(str, "%S\n", line);
+}
+
 @ If it isn't apparent what these placeholders do, take a look at
 the template file called |CblorbModel.html| in the Inform application --
 that's where they're used.
@@ -231,6 +239,7 @@ that's where they're used.
 @<Set a whole pile of placeholders which will be needed to generate the status page@> =
 	if (error_count > 0) {
 		Placeholders::set_to(I"CBLORBSTATUS", I"Failed", 0);
+		Placeholders::set_to(I"CBLORBSTATUSLOW", I"failed", 0);
 		Placeholders::set_to(I"CBLORBSTATUSIMAGE", I"inform:/outcome_images/cblorb_failed.png", 0);
 		Placeholders::set_to(I"CBLORBSTATUSTEXT",
 			Str::literal(L"Inform translated your source text as usual, to manufacture a 'story "
@@ -240,6 +249,7 @@ that's where they're used.
 	} else {
 		Placeholders::set_to(I"CBLORBERRORS", I"No problems occurred", 0);
 		Placeholders::set_to(I"CBLORBSTATUS", I"Succeeded", 0);
+		Placeholders::set_to(I"CBLORBSTATUSLOW", I"succeeded", 0);
 		Placeholders::set_to(I"CBLORBSTATUSIMAGE", I"file://[SMALLCOVER]", 0);
 		Placeholders::set_to(I"CBLORBSTATUSTEXT",
 			Str::literal(L"All went well. I've put the released material into the 'Release' subfolder "
@@ -255,11 +265,30 @@ that's where they're used.
 		Placeholders::set_to_number(I"BLORBFILESIZE", blorb_file_size/1024);
 		Placeholders::set_to_number(I"BLORBFILEPICTURES", no_pictures_included);
 		Placeholders::set_to_number(I"BLORBFILESOUNDS", no_sounds_included);
+		Placeholders::set_to_number(I"BLORBFILEDATAFILES", no_data_files_included);
 		PRINT("! Completed: wrote blorb file with ");
-		PRINT("%d picture(s), %d sound(s)\n", no_pictures_included, no_sounds_included);
+		PRINT("%d picture(s), %d sound(s), %d data file(s)\n",
+			no_pictures_included, no_sounds_included, no_data_files_included);
 	} else {
 		Placeholders::set_to_number(I"BLORBFILESIZE", 0);
 		Placeholders::set_to_number(I"BLORBFILEPICTURES", 0);
 		Placeholders::set_to_number(I"BLORBFILESOUNDS", 0);
+		Placeholders::set_to_number(I"BLORBFILEDATAFILES", 0);
 		PRINT("! Completed: no blorb output requested\n");
+	}
+	if (status_template) {
+		filename *css_filename = NULL;
+		pathname *css_path = Filenames::up(status_template);
+		TEMPORARY_TEXT(platform_variation)
+		WRITE_TO(platform_variation, "%s-platform.css", PLATFORM_STRING);
+		css_filename = Filenames::in(css_path, platform_variation);
+		if (TextFiles::exists(css_filename) == FALSE) {
+			css_filename = Filenames::in(css_path, I"platform.css");
+		}
+		if (TextFiles::exists(css_filename)) {
+			TEMPORARY_TEXT(css)
+			TextFiles::read(css_filename, FALSE, "can't open css file",
+				TRUE, Main::read_css_line, NULL, css);
+			Placeholders::set_to(I"PLATFORMCSS", css, 0);
+		}
 	}

@@ -7,6 +7,7 @@ What shall we test?
 @d PROGRAM_NAME "syntax-test"
 
 @e TEST_TREE_CLSW
+@e TEST_DIALOGUE_CLSW
 
 =
 int main(int argc, char **argv) {
@@ -18,6 +19,8 @@ int main(int argc, char **argv) {
 
 	CommandLine::declare_switch(TEST_TREE_CLSW, L"test-tree", 2,
 		L"test the syntax tree (from text in X)");
+	CommandLine::declare_switch(TEST_DIALOGUE_CLSW, L"test-dialogue", 2,
+		L"test a syntax tree with dialogue (from text in X)");
 
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::ignore);
 
@@ -30,6 +33,7 @@ int main(int argc, char **argv) {
 void Main::respond(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
 		case TEST_TREE_CLSW: Main::load(I"Syntax.preform"); Unit::test_tree(arg); break;
+		case TEST_DIALOGUE_CLSW: Main::load(I"Syntax.preform"); Unit::test_tree(arg); break;
 	}
 }
 

@@ -6,36 +6,36 @@ parameter-object - <i>object</i><br>
 </p>
 <p><b>Situation</b><br>
 player - <i>person</i><br>
-location&nbsp;<a href=inform:/doc63.html><img border=0 src=inform:/doc_images/help.png></a> - <i>object</i><br>
-score&nbsp;<a href=inform:/doc136.html><img border=0 src=inform:/doc_images/help.png></a> - <i>number</i><br>
+location&nbsp;<a href=inform:/doc61.html><img border=0 src=inform:/doc_images/help.png></a> - <i>object</i><br>
+score&nbsp;<a href=inform:/doc134.html><img border=0 src=inform:/doc_images/help.png></a> - <i>number</i><br>
 last notified score - <i>number</i><br>
 maximum score - <i>number</i><br>
 turn count - <i>number</i><br>
-time of day&nbsp;<a href=inform:/doc140.html><img border=0 src=inform:/doc_images/help.png></a> - <i>time</i><br>
+time of day&nbsp;<a href=inform:/doc138.html><img border=0 src=inform:/doc_images/help.png></a> - <i>time</i><br>
 darkness witnessed - <i>truth state</i><br>
 </p>
 <p><b>Current action</b><br>
-noun&nbsp;<a href=inform:/doc107.html><img border=0 src=inform:/doc_images/help.png></a> - <i>object</i><br>
+noun&nbsp;<a href=inform:/doc105.html><img border=0 src=inform:/doc_images/help.png></a> - <i>object</i><br>
 second noun - <i>object</i><br>
-person asked&nbsp;<a href=inform:/doc179.html><img border=0 src=inform:/doc_images/help.png></a> - <i>object</i><br>
-reason the action failed&nbsp;<a href=inform:/doc181.html><img border=0 src=inform:/doc_images/help.png></a> - <i>rule</i><br>
+person asked&nbsp;<a href=inform:/doc177.html><img border=0 src=inform:/doc_images/help.png></a> - <i>object</i><br>
+reason the action failed&nbsp;<a href=inform:/doc179.html><img border=0 src=inform:/doc_images/help.png></a> - <i>rule</i><br>
 item described - <i>object</i><br>
 </p>
 <p><b>Used when ruling on accessibility</b><br>
-person reaching&nbsp;<a href=inform:/doc194.html><img border=0 src=inform:/doc_images/help.png></a> - <i>object</i><br>
+person reaching&nbsp;<a href=inform:/doc192.html><img border=0 src=inform:/doc_images/help.png></a> - <i>object</i><br>
 container in question - <i>object</i><br>
 supporter in question - <i>object</i><br>
-particular possession&nbsp;<a href=inform:/doc295.html><img border=0 src=inform:/doc_images/help.png></a> - <i>thing</i><br>
+particular possession&nbsp;<a href=inform:/doc293.html><img border=0 src=inform:/doc_images/help.png></a> - <i>thing</i><br>
 </p>
 <p><b>Used when understanding typed commands</b><br>
-player's command&nbsp;<a href=inform:/doc319.html><img border=0 src=inform:/doc_images/help.png></a> - <i>snippet</i><br>
+player's command&nbsp;<a href=inform:/doc317.html><img border=0 src=inform:/doc_images/help.png></a> - <i>snippet</i><br>
 matched text - <i>snippet</i><br>
 <i>kind</i> understood - <i>value</i><br>
 current item from the multiple object list - <i>object</i><br>
 </p>
 <p><b>Presentation on screen</b><br>
-command prompt&nbsp;<a href=inform:/doc117.html><img border=0 src=inform:/doc_images/help.png></a> - <i>text</i><br>
-left hand status line&nbsp;<a href=inform:/doc118.html><img border=0 src=inform:/doc_images/help.png></a> - <i>text</i><br>
+command prompt&nbsp;<a href=inform:/doc115.html><img border=0 src=inform:/doc_images/help.png></a> - <i>text</i><br>
+left hand status line&nbsp;<a href=inform:/doc116.html><img border=0 src=inform:/doc_images/help.png></a> - <i>text</i><br>
 right hand status line - <i>text</i><br>
 listing group size - <i>number</i><br>
 </p>
@@ -52,7 +52,7 @@ story viewpoint&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/Eng
 <p><b></b><br>
 royal family&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a> - <i>dynasty</i><br>
 </p>
-<p><b>List of Named or Numbered Equations</b> (<i>About equations&nbsp;&nbsp;<a href=inform:/doc243.html><img border=0 src=inform:/doc_images/help.png></a></i>)</p>
+<p><b>List of Named or Numbered Equations</b> (<i>About equations&nbsp;&nbsp;<a href=inform:/doc241.html><img border=0 src=inform:/doc_images/help.png></a></i>)</p>
 <p>Equation - Newton's Second Law&nbsp;<a href="source:story.ni#line8"><img border=0 src=inform:/doc_images/Reveal.png></a> (F=ma)<br>
 </p>
 

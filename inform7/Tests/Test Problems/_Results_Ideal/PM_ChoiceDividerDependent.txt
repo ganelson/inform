@@ -1,0 +1,14 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 30 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32551 words long.
+Problem__ PM_ChoiceDividerDependent
+In Section 1 - Meeting:
+  >--> You wrote '<-' (source text, line 7): but this choice can't have
+    dependent material, that is, can't have lines or other choices indented
+    below it.
+Problem__ PM_ChoiceDividerDependent
+  >--> You wrote '-> another choice' (source text, line 11): again, this choice
+    can't have dependent material.
+Inform 7 has finished.

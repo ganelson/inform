@@ -6,7 +6,7 @@
 /*                    checks syntax and translates such directives into      */
 /*                    specifications for the object-maker.                   */
 /*                                                                           */
-/*   Part of Inform 6.36                                                     */
+/*   Part of Inform 6.41                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -83,13 +83,19 @@ int no_attributes,                 /* Number of attributes defined so far    */
                                       others itself, so the variable begins
                                       the compilation pass set to 4)         */
 
+/* Print a PROPS trace line. The f flag is 0 for an attribute, 1 for
+   a common property, 2 for an individual property. */
 static void trace_s(char *name, int32 number, int f)
 {   if (!printprops_switch) return;
-    printf("%s  %02ld  ",(f==0)?"Attr":"Prop",(long int) number);
-    if (f==0) printf("  ");
+    char *stype = "";
+    if (f == 0) stype = "Attr";
+    else if (f == 1) stype = "Prop";
+    else if (f == 2) stype = "Indiv";
+    printf("%-5s  %02ld  ", stype, (long int) number);
+    if (f != 1) printf("  ");
     else      printf("%s%s",(commonprops[number].is_long)?"L":" ",
                             (commonprops[number].is_additive)?"A":" ");
-    printf("  %s\n",name);
+    printf("  %s\n", name);
 }
 
 extern void make_attribute(void)
@@ -279,6 +285,7 @@ extern void make_property(void)
                 ("<value>%d</value>", this_identifier_number);
             debug_file_printf("</property>");
         }
+        trace_s(name, symbols[i].value, 2);
         return;        
     }
 
@@ -459,10 +466,24 @@ memory_list   class_info_memlist;
 
 extern void list_object_tree(void)
 {   int i;
-    printf("obj   par nxt chl   Object tree:\n");
-    for (i=0; i<no_objects; i++)
-        printf("%3d   %3d %3d %3d\n",
-            i+1,objectsz[i].parent,objectsz[i].next, objectsz[i].child);
+    printf("Object tree:\n");
+    printf("obj name                             par nxt chl:\n");
+    for (i=0; i<no_objects; i++) {
+        if (!glulx_mode) {
+            int sym = objectsz[i].symbol;
+            char *symname = ((sym > 0) ? symbols[sym].name : "...");
+            printf("%3d %-32s %3d %3d %3d\n",
+                i+1, symname,
+                objectsz[i].parent, objectsz[i].next, objectsz[i].child);
+        }
+        else {
+            int sym = objectsg[i].symbol;
+            char *symname = ((sym > 0) ? symbols[sym].name : "...");
+            printf("%3d %-32s %3d %3d %3d\n",
+                i+1, symname,
+                objectsg[i].parent, objectsg[i].next, objectsg[i].child);
+        }
+    }
 }
 
 /* ------------------------------------------------------------------------- */
@@ -595,9 +616,7 @@ so many values that the list has overflowed the maximum 32 entries");
                                 {   already_present = TRUE; break;
                                 }
                             if (already_present == FALSE)
-                            {   if (module_switch)
-                                    backpatch_zmachine(IDENT_MV,
-                                        INDIVIDUAL_PROP_ZA, i_m);
+                            {
                                 ensure_memory_list_available(&individuals_table_memlist, i_m+3+individuals_table[z+2]);
                                 individuals_table[i_m++] = individuals_table[z];
                                 individuals_table[i_m++] = individuals_table[z+1];
@@ -658,8 +677,7 @@ so many values that the list has overflowed the maximum 32 entries");
 
                     z = class_block_offset;
                     while ((individuals_table[z]!=0)||(individuals_table[z+1]!=0))
-                    {   if (module_switch)
-                        backpatch_zmachine(IDENT_MV, INDIVIDUAL_PROP_ZA, i_m);
+                    {
                         ensure_memory_list_available(&individuals_table_memlist, i_m+3+individuals_table[z+2]);
                         individuals_table[i_m++] = individuals_table[z];
                         individuals_table[i_m++] = individuals_table[z+1];
@@ -1002,6 +1020,8 @@ static void manufacture_object_z(void)
     directives.enabled = TRUE;
 
     ensure_memory_list_available(&objectsz_memlist, no_objects+1);
+
+    objectsz[no_objects].symbol = full_object.symbol;
     
     property_inheritance_z();
 
@@ -1044,6 +1064,8 @@ static void manufacture_object_g(void)
 
     ensure_memory_list_available(&objectsg_memlist, no_objects+1);
     ensure_memory_list_available(&objectatts_memlist, no_objects+1);
+    
+    objectsg[no_objects].symbol = full_object_g.symbol;
     
     property_inheritance_g();
 
@@ -1147,6 +1169,7 @@ static void properties_segment_z(int this_segment)
                     debug_file_printf("</property>");
                 }
 
+                trace_s(token_text, symbols[token_value].value, 2);
             }
             else
             {   if (symbols[token_value].type==INDIVIDUAL_PROPERTY_T)
@@ -1178,8 +1201,6 @@ static void properties_segment_z(int this_segment)
             if (this_segment == PRIVATE_SEGMENT)
                 individuals_table[i_m] |= 0x80;
             individuals_table[i_m+1] = this_identifier_number%256;
-            if (module_switch)
-                backpatch_zmachine(IDENT_MV, INDIVIDUAL_PROP_ZA, i_m);
             individuals_table[i_m+2] = 0;
         }
         else
@@ -1421,6 +1442,7 @@ static void properties_segment_g(int this_segment)
                     debug_file_printf("</property>");
                 }
 
+                trace_s(token_text, symbols[token_value].value, 2);
             }
             else
             {   if (symbols[token_value].type==INDIVIDUAL_PROPERTY_T)
@@ -1811,6 +1833,7 @@ static void initialise_full_object(void)
 {
   int i;
   if (!glulx_mode) {
+    full_object.symbol = 0;
     full_object.l = 0;
     full_object.atts[0] = 0;
     full_object.atts[1] = 0;
@@ -1820,6 +1843,7 @@ static void initialise_full_object(void)
     full_object.atts[5] = 0;
   }
   else {
+    full_object_g.symbol = 0;
     full_object_g.numprops = 0;
     full_object_g.propdatasize = 0;
     for (i=0; i<NUM_ATTR_BYTES; i++)
@@ -1883,13 +1907,14 @@ inconvenience, please contact the maintainers.");
     }
 
     /*  "Class" (object 1) has no parent, whereas all other classes are
-        the children of "Class".  Since "Class" is not present in a module,
-        a special value is used which is corrected to 1 by the linker.       */
+        the children of "Class".                                             */
 
     if (metaclass_flag) parent_of_this_obj = 0;
-    else parent_of_this_obj = (module_switch)?MAXINTWORD:1;
+    else parent_of_this_obj = 1;
 
     class_info[no_classes].object_number = class_number;
+    class_info[no_classes].symbol = current_classname_symbol;
+    class_info[no_classes].begins_at = 0;
 
     initialise_full_object();
 
@@ -1899,6 +1924,7 @@ inconvenience, please contact the maintainers.");
         since property 2 is always set to "additive" -- see below)           */
 
     if (!glulx_mode) {
+      full_object.symbol = current_classname_symbol;
       full_object.l = 1;
       full_object.pp[0].num = 2;
       full_object.pp[0].l = 1;
@@ -1906,6 +1932,7 @@ inconvenience, please contact the maintainers.");
       full_object.pp[0].ao[0].marker = OBJECT_MV;
     }
     else {
+      full_object_g.symbol = current_classname_symbol;
       full_object_g.numprops = 1;
       ensure_memory_list_available(&full_object_g.props_memlist, 1);
       full_object_g.props[0].num = 2;
@@ -2124,9 +2151,6 @@ extern void make_object(int nearby_flag,
     if (internal_name_symbol > 0)
         assign_symbol(internal_name_symbol, no_objects + 1, OBJECT_T);
 
-    if (listobjects_switch)
-        printf("%3d \"%s\"\n", no_objects+1,
-            (textual_name==NULL)?"(with no short name)":textual_name);
     if (textual_name == NULL)
     {   if (internal_name_symbol > 0)
             sprintf(shortname_buffer, "(%s)",
@@ -2160,7 +2184,7 @@ extern void make_object(int nearby_flag,
             {   int j = i, k = 0;
 
                 /*  Metaclass or class objects cannot be '->' parents:  */
-                if ((!module_switch) && (i<4))
+                if (i<4)
                     continue;
 
                 if (!glulx_mode) {
@@ -2191,6 +2215,11 @@ extern void make_object(int nearby_flag,
     }
 
     initialise_full_object();
+    if (!glulx_mode)
+        full_object.symbol = internal_name_symbol;
+    else
+        full_object_g.symbol = internal_name_symbol;
+
     if (instance_of != -1) add_class_to_inheritance_list(instance_of);
 
     if (specified_class == -1) parse_body_of_definition();

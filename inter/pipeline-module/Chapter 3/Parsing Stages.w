@@ -32,9 +32,11 @@ int ParsingStages::run_load_kit_source(pipeline_step *step) {
 	inter_tree *I = step->ephemera.tree;
 	inter_package *main_package = LargeScale::main_package(I);
 	@<Create a module to hold the Inter read in from this kit@>;
+	TEMPORARY_TEXT(namespacename)
 	simple_tangle_docket docket;
 	@<Make a suitable simple tangler docket@>;
 	SimpleTangler::tangle_web(&docket);
+	DISCARD_TEXT(namespacename)
 	return TRUE;
 }
 
@@ -74,12 +76,14 @@ typedef struct rpi_state {
 
 int ParsingStages::run_parse_insertions(pipeline_step *step) {
 	inter_tree *I = step->ephemera.tree;
+	TEMPORARY_TEXT(namespacename)
 	simple_tangle_docket docket;
 	@<Make a suitable simple tangler docket@>;
 	rpi_state rpis;
 	rpis.docket = &docket;
 	rpis.step = step;
 	InterTree::traverse(I, ParsingStages::visit_insertions, &rpis, NULL, INSERT_IST);
+	DISCARD_TEXT(namespacename)
 	return TRUE;
 }
 
@@ -88,7 +92,8 @@ void ParsingStages::visit_insertions(inter_tree *I, inter_tree_node *P, void *st
 	rpi_state *rpis = (rpi_state *) state;
 	simple_tangle_docket *docket = rpis->docket;
 	inter_bookmark here = InterBookmark::after_this_node(P);
-	docket->state = (void *) &here;
+	rpi_docket_state *docket_state = (rpi_docket_state *) docket->state;
+	docket_state->assimilation_point = &here;
 	SimpleTangler::tangle_text(docket, insertion);
 	text_stream *replacing = InsertInstruction::replacing(P);
 	if (Str::len(replacing) > 0) {
@@ -97,7 +102,7 @@ void ParsingStages::visit_insertions(inter_tree *I, inter_tree_node *P, void *st
 	}
 }
 
-@ So, then, both of those stages rely on making something called an simple
+@ So, then, both of those stages rely on making something called a simple
 tangler docket, which is really just a collection of settings for the
 simple tangler. That comes down to:
 
@@ -110,18 +115,27 @@ than raw text in memory.
 For (c), note that if a kit is in directory |K| then its source files are
 in |K/Sections|.
 
+@ =
+typedef struct rpi_docket_state {
+	struct inter_bookmark *assimilation_point;
+	struct text_stream *namespace;
+} rpi_docket_state;
+
 @<Make a suitable simple tangler docket@> =
 	inter_package *assimilation_package =
 		step->pipeline->ephemera.assimilation_modules[step->tree_argument];
 	if (assimilation_package == NULL) assimilation_package = LargeScale::main_package(I);
 	inter_bookmark assimilation_point =
 		InterBookmark::at_end_of_this_package(assimilation_package);
+	rpi_docket_state state;
+	state.assimilation_point = &assimilation_point;
+	state.namespace = namespacename;
 	docket = SimpleTangler::new_docket(
 		&(ParsingStages::receive_raw),
 		&(ParsingStages::receive_command),
 		&(ParsingStages::receive_bplus),
 		&(PipelineErrors::kit_error),
-		step->ephemera.the_kit, &assimilation_point);
+		step->ephemera.the_kit, &state);
 
 @ Once the I6T reader has unpacked the literate-programming notation, it will
 reduce the I6T code to pure Inform 6 source together with (perhaps) a handful of
@@ -271,17 +285,81 @@ Note that this function empties the splat buffer |R| before exiting.
 =
 void ParsingStages::splat(text_stream *R, simple_tangle_docket *docket) {
 	if (Str::len(R) > 0) {
+		TEMPORARY_TEXT(A)
+		@<Find annotation, if any@>;
 		inter_ti I6_dir = 0;
+
 		@<Find directive@>;
 		if (I6_dir != WHITESPACE_PLM) {
-			inter_bookmark *IBM = (inter_bookmark *) docket->state;
+			rpi_docket_state *state = (rpi_docket_state *) docket->state;
+			inter_bookmark *IBM = state->assimilation_point;
 			PUT_TO(R, '\n');
-			Produce::guard(SplatInstruction::new(IBM, R, I6_dir,
+			Produce::guard(SplatInstruction::new(IBM, R, I6_dir, A, state->namespace,
 				(inter_ti) (InterBookmark::baseline(IBM) + 1), NULL));
+		} else if (A) {
+			I6_annotation *IA = I6Annotations::parse(A);
+			if ((IA) && (Str::eq_insensitive(IA->identifier, I"namespace"))) {
+				rpi_docket_state *state = (rpi_docket_state *) docket->state;
+				Str::clear(state->namespace);
+				int private = NOT_APPLICABLE;
+				I6_annotation_term *term;
+				LOOP_OVER_LINKED_LIST(term, I6_annotation_term, IA->terms) {
+					if (Str::eq_insensitive(term->key, I"_")) {
+						WRITE_TO(state->namespace, "%S", term->value);
+					} else if (Str::eq_insensitive(term->key, I"access")) {
+						if (Str::eq_insensitive(term->value, I"private")) private = TRUE;
+						else if (Str::eq_insensitive(term->value, I"public")) private = FALSE;
+						else PipelineErrors::kit_error(
+							"the 'access' must be 'private' or 'public', not '%S'", term->value);
+					} else {
+						PipelineErrors::kit_error(
+							"the +namespace annotation does not take the term '%S'", term->key);
+					}
+				}
+				int bad_name = FALSE;
+				for (int i=0; i<Str::len(state->namespace); i++) {
+					wchar_t c = Str::get_at(state->namespace, i);
+					if (i == 0) {
+						if (Characters::isalpha(c) == FALSE) bad_name = TRUE;
+					} else {
+						if ((Characters::isalnum(c) == FALSE) && (c != '_')) bad_name = TRUE;
+					}
+				}
+				if (bad_name)
+					 PipelineErrors::kit_error(
+						"a namespace name should begin with a letter and contain "
+						"only alphanumeric characters or '_'", NULL);
+				if (Str::len(state->namespace) == 0)
+					 PipelineErrors::kit_error(
+						"use '+namespace(main);' to return to the global namespace", NULL);
+				if (Str::eq(state->namespace, I"main")) Str::clear(state->namespace);
+				if (Str::eq(state->namespace, I"replaced")) {
+					 PipelineErrors::kit_error(
+						"the namespace 'replaced' is reserved, and cannot be used directly", NULL);
+					Str::clear(state->namespace);
+				}
+				if (private == TRUE) PUT_TO(state->namespace, '-');
+				if (private == FALSE) PUT_TO(state->namespace, '+');
+			} else {
+				(*(docket->error_callback))(
+					"this annotation seems not to apply to any directive: '%S'", A);
+			}
 		}
 		Str::clear(R);
+		DISCARD_TEXT(A)
 	}
 }
+
+@<Find annotation, if any@> =
+	int verdict = I6Annotations::check(R);
+	if (verdict == -1) {
+		(*(docket->error_callback))(
+			"this Inform 6 annotation is malformed: '%S'", R);
+	} else {
+		for (int i=0; i<verdict; i++) PUT_TO(A, Str::get_at(R, i));
+		Str::trim_white_space(A);
+		Str::delete_n_characters(R, verdict);
+	}
 
 @ A |SPLAT_IST| node should record which sort of Inform 6 directive it contains,
 assuming we know that. We will recognise only the following set, and use |MYSTERY_PLM|
@@ -313,7 +391,8 @@ the directive type as 0.
 	} else {
 		I6_dir = WHITESPACE_PLM;
 		LOOP_THROUGH_TEXT(pos, R)
-			if (Characters::is_whitespace(Str::get(pos)) == FALSE)
+			if ((Characters::is_whitespace(Str::get(pos)) == FALSE) &&
+				(Str::get(pos) != ';'))
 				I6_dir = MYSTERY_PLM;
 	}
 	if (I6_dir == MYSTERY_PLM)

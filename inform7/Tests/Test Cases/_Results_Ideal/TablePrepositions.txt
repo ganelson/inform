@@ -1,0 +1,17 @@
+   Plateau
+  red snapper.
+  coelocanth.
+  neon tetra.
+  5.
+  17.
+  40.
+  ore tenant.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
+  
+  Plateau
+  
+> >   Plateau
+> Are you sure you want to quit? 

@@ -204,3 +204,36 @@ shared_variable *SharedVariables::parse_from_access_list(shared_variable_access_
 		}
 	return NULL;
 }
+
+@ Logging lists of lists:
+
+=
+void SharedVariables::log_access_list(shared_variable_access_list *list) {
+	if (list) {
+		LOG("Shared access list %d = { ", list->allocation_id);
+		int n = 1;
+		shared_variable_set *set;
+		LOOP_OVER_LINKED_LIST(set, shared_variable_set, list->sets) {
+			if (n++ > 1) LOG(", ");
+			SharedVariables::log_set(set);
+		}
+		LOG(" }\n");
+	} else {
+		LOG("No access list\n");
+	}
+}
+
+void SharedVariables::log_set(shared_variable_set *set) {
+	if (set) {
+		LOG("{ ");
+		int n = 1;
+		shared_variable *shv;
+		LOOP_OVER_LINKED_LIST(shv, shared_variable, set->variables) {
+			if (n++ > 1) LOG(", ");
+			LOG("%W", shv->name);
+		}
+		LOG(" }");
+	} else {
+		LOG("null");
+	}
+}

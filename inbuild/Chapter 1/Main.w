@@ -11,9 +11,13 @@ pathname *path_to_inbuild = NULL;
 
 int inbuild_task = INSPECT_TTASK;
 pathname *path_to_tools = NULL;
-int dry_run_mode = FALSE, build_trace_mode = FALSE;
+int dry_run_mode = FALSE, build_trace_mode = FALSE, confirmed = FALSE;
 inbuild_nest *destination_nest = NULL;
+inbuild_registry *selected_registry = NULL;
 text_stream *filter_text = NULL;
+pathname *preprocess_HTML_destination = NULL;
+text_stream *preprocess_HTML_app = NULL;
+inbuild_copy *to_install = NULL;
 
 @h Main routine.
 When Inbuild is called at the command line, it begins at |main|, like all C
@@ -31,7 +35,8 @@ int main(int argc, char **argv) {
 	@<Read the command line@>;
 	CommandLine::play_back_log();
 	@<Complete the list of targets@>;
-	@<Act on the targets@>;
+	if (to_install) @<Perform an extension installation@>
+	else @<Act on the targets@>;
 	@<Shut down the modules@>;
 	if (Errors::have_occurred()) return 1;
 	return 0;
@@ -97,6 +102,10 @@ error in this case.
 		Errors::with_text("can only work on one project bundle at a time", NULL);
 	if (Str::len(filter_text) > 0) Main::add_search_results_as_targets(filter_text);
 
+@<Perform an extension installation@> =
+	Supervisor::go_operational();
+	InbuildReport::install(to_install, confirmed, path_to_inbuild);
+
 @ We make the function call |Supervisor::go_operational| to signal to |inbuild|
 that we want to start work now.
 
@@ -132,13 +141,14 @@ utility functions in the //supervisor// module, which we call.
 @e SYNC_TO_TTASK
 
 @<Carry out the required task on the copy C@> =
+	text_stream *OUT = STDOUT;
 	switch (inbuild_task) {
-		case INSPECT_TTASK: Copies::inspect(STDOUT, C); break;
-		case GRAPH_TTASK: Copies::show_graph(STDOUT, C); break;
-		case USE_NEEDS_TTASK: Copies::show_needs(STDOUT, C, TRUE, FALSE); break;
-		case BUILD_NEEDS_TTASK: Copies::show_needs(STDOUT, C, FALSE, FALSE); break;
-		case USE_LOCATE_TTASK: Copies::show_needs(STDOUT, C, TRUE, TRUE); break;
-		case BUILD_LOCATE_TTASK: Copies::show_needs(STDOUT, C, FALSE, TRUE); break;
+		case INSPECT_TTASK: Copies::inspect(OUT, C); break;
+		case GRAPH_TTASK: Copies::show_graph(OUT, C); break;
+		case USE_NEEDS_TTASK: Copies::show_needs(OUT, C, TRUE, FALSE); break;
+		case BUILD_NEEDS_TTASK: Copies::show_needs(OUT, C, FALSE, FALSE); break;
+		case USE_LOCATE_TTASK: Copies::show_needs(OUT, C, TRUE, TRUE); break;
+		case BUILD_LOCATE_TTASK: Copies::show_needs(OUT, C, FALSE, TRUE); break;
 		case ARCHIVE_TTASK: {
 			inform_project *proj;
 			int c = 0;
@@ -151,14 +161,14 @@ utility functions in the //supervisor// module, which we call.
 			else if (c > 1)
 				Errors::with_text("multiple projects in use, so ignoring -archive", NULL);
 			else 
-				Copies::archive(STDOUT, C, destination_nest, BM);
+				Copies::archive(OUT, C, destination_nest, BM);
 			break;
 		}
-		case ARCHIVE_TO_TTASK: Copies::archive(STDOUT, C, destination_nest, BM); break;
-		case USE_MISSING_TTASK: Copies::show_missing(STDOUT, C, TRUE); break;
-		case BUILD_MISSING_TTASK: Copies::show_missing(STDOUT, C, FALSE); break;
-		case BUILD_TTASK: Copies::build(STDOUT, C, BM); break;
-		case REBUILD_TTASK: Copies::rebuild(STDOUT, C, BM); break;
+		case ARCHIVE_TO_TTASK: Copies::archive(OUT, C, destination_nest, BM); break;
+		case USE_MISSING_TTASK: Copies::show_missing(OUT, C, TRUE); break;
+		case BUILD_MISSING_TTASK: Copies::show_missing(OUT, C, FALSE); break;
+		case BUILD_TTASK: Copies::build(OUT, C, BM); break;
+		case REBUILD_TTASK: Copies::rebuild(OUT, C, BM); break;
 		case COPY_TO_TTASK: Copies::copy_to(C, destination_nest, FALSE, BM); break;
 		case SYNC_TO_TTASK: Copies::copy_to(C, destination_nest, TRUE, BM); break;
 	}
@@ -181,10 +191,10 @@ which we are installed) already. Once the following is run, Preform is ready
 for use.
 
 =
-void Main::load_preform(inform_language *L) {
+int Main::load_preform(inform_language *L) {
 	pathname *P = Pathnames::down(path_to_inbuild, I"Tangled");
 	filename *S = Filenames::in(P, I"Syntax.preform");
-	LoadPreform::load(S, NULL);
+	return LoadPreform::load(S, NULL);
 }
 
 @h Target list.
@@ -256,7 +266,7 @@ void Main::add_directory_contents_targets(pathname *P) {
 	}
 }
 
-void Main::add_file_or_path_as_target(text_stream *arg, int throwing_error) {
+inbuild_copy *Main::file_or_path_to_copy(text_stream *arg, int throwing_error) {
 	TEMPORARY_TEXT(ext)
 	int pos = Str::len(arg) - 1, dotpos = -1;
 	while (pos >= 0) {
@@ -280,9 +290,14 @@ void Main::add_file_or_path_as_target(text_stream *arg, int throwing_error) {
 	DISCARD_TEXT(ext)
 	if (C == NULL) {
 		if (throwing_error) Errors::with_text("unable to identify '%S'", arg);
-		return;
+		return NULL;
 	}
-	Main::add_target(C);
+	return C;
+}
+
+void Main::add_file_or_path_as_target(text_stream *arg, int throwing_error) {
+	inbuild_copy *C = Main::file_or_path_to_copy(arg, throwing_error);
+	if (C) Main::add_target(C);
 }
 
 @h Command line.
@@ -310,6 +325,16 @@ other options to the selection defined here.
 @e MATCHING_CLSW
 @e COPY_TO_CLSW
 @e SYNC_TO_CLSW
+@e VERSIONS_IN_FILENAMES_CLSW
+@e VERIFY_REGISTRY_CLSW
+@e BUILD_REGISTRY_CLSW
+@e PREPROCESS_HTML_CLSW
+@e PREPROCESS_HTML_TO_CLSW
+@e PREPROCESS_APP_CLSW
+@e REPAIR_CLSW
+@e RESULTS_CLSW
+@e INSTALL_CLSW
+@e CONFIRMED_CLSW
 
 @<Read the command line@> =	
 	CommandLine::declare_heading(
@@ -319,12 +344,16 @@ other options to the selection defined here.
 		L"copy target(s) to nest X");
 	CommandLine::declare_switch(SYNC_TO_CLSW, L"sync-to", 2,
 		L"forcibly copy target(s) to nest X, even if prior version already there");
+	CommandLine::declare_boolean_switch(VERSIONS_IN_FILENAMES_CLSW, L"versions-in-filenames", 1,
+		L"append _v number to destination filenames on -copy-to or -sync-to", TRUE);
 	CommandLine::declare_switch(BUILD_CLSW, L"build", 1,
 		L"incrementally build target(s)");
 	CommandLine::declare_switch(REBUILD_CLSW, L"rebuild", 1,
 		L"completely rebuild target(s)");
 	CommandLine::declare_switch(INSPECT_CLSW, L"inspect", 1,
 		L"show target(s) but take no action");
+	CommandLine::declare_switch(INSTALL_CLSW, L"install", 1,
+		L"install extension within the Inform GUI apps");
 	CommandLine::declare_switch(GRAPH_CLSW, L"graph", 1,
 		L"show dependency graph of target(s) but take no action");
 	CommandLine::declare_switch(USE_NEEDS_CLSW, L"use-needs", 1,
@@ -353,6 +382,22 @@ other options to the selection defined here.
 		L"apply to all works in nest(s) matching requirement X");
 	CommandLine::declare_switch(CONTENTS_OF_CLSW, L"contents-of", 2,
 		L"apply to all targets in the directory X");
+	CommandLine::declare_switch(VERIFY_REGISTRY_CLSW, L"verify-registry", 2,
+		L"verify roster.json metadata of registry in the directory X");
+	CommandLine::declare_switch(BUILD_REGISTRY_CLSW, L"build-registry", 2,
+		L"construct HTML menu pages for registry in the directory X");
+	CommandLine::declare_switch(PREPROCESS_HTML_CLSW, L"preprocess-html", 2,
+		L"construct HTML page based on X");
+	CommandLine::declare_switch(PREPROCESS_HTML_TO_CLSW, L"preprocess-html-to", 2,
+		L"set destination for -preprocess-html to be X");
+	CommandLine::declare_switch(PREPROCESS_APP_CLSW, L"preprocess-app", 2,
+		L"use CSS suitable for app platform X (macos, windows, linux)");
+	CommandLine::declare_boolean_switch(REPAIR_CLSW, L"repair", 1,
+		L"quietly fix missing or incorrect extension metadata", TRUE);
+	CommandLine::declare_switch(RESULTS_CLSW, L"results", 2,
+		L"write HTML report file to X (for use within Inform GUI apps)");
+	CommandLine::declare_boolean_switch(CONFIRMED_CLSW, L"confirmed", 1,
+		L"confirm installation in the Inform GUI apps", TRUE);
 	Supervisor::declare_options();
 
 	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
@@ -391,6 +436,32 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case SYNC_TO_CLSW: inbuild_task = SYNC_TO_TTASK;
 			destination_nest = Nests::new(Pathnames::from_text(arg));
 			break;
+		case VERSIONS_IN_FILENAMES_CLSW:
+			Editions::set_canonical_leaves_have_versions(val); break;
+		case VERIFY_REGISTRY_CLSW:
+		case BUILD_REGISTRY_CLSW:
+			selected_registry = Registries::new(Pathnames::from_text(arg));
+			if (Registries::read_roster(selected_registry) == FALSE) exit(1);
+			if (id == BUILD_REGISTRY_CLSW)
+				Registries::build(selected_registry);
+			break;
+		case PREPROCESS_HTML_TO_CLSW:
+			preprocess_HTML_destination = Pathnames::from_text(arg);
+			break;
+		case PREPROCESS_APP_CLSW:
+			preprocess_HTML_app = Str::duplicate(arg);
+			break;
+		case PREPROCESS_HTML_CLSW:
+			if (preprocess_HTML_destination == NULL)
+				Errors::fatal("must specify -preprocess-html-to P to give destination path P first");
+			filename *F = Filenames::from_text(arg);
+			filename *T = Filenames::in(preprocess_HTML_destination, Filenames::get_leafname(F));
+			Registries::preprocess_HTML(T, F, preprocess_HTML_app);
+			break;
+		case REPAIR_CLSW: repair_mode = val; break;
+		case INSTALL_CLSW: to_install = Main::file_or_path_to_copy(arg, TRUE); break;
+		case RESULTS_CLSW: InbuildReport::set_filename(Filenames::from_text(arg)); break;
+		case CONFIRMED_CLSW: confirmed = val; break;
 	}
 	Supervisor::option(id, val, arg, state);
 }

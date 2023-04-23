@@ -28,6 +28,7 @@ void Assertions::PropertyKnowledge::assert_property_value_from_property_subtree_
 	inference_subject *owner, parse_node *val_subtree) {
 	pcalc_prop *prop = Propositions::Abstract::from_property_subtree(prn, val_subtree);
 	if (owner == NULL) @<Issue a problem for an unrecognised property owner@>;
+	if (prevailing_mood < UNKNOWN_CE) @<Issue a problem for a negative certainty@>;
 	Assert::true_about(prop, owner, prevailing_mood);
 }
 
@@ -98,6 +99,17 @@ are typechecked at run-time rather than compile-time in that domain.)
 	Problems::issue_problem_segment(
 		"The sentence %1 looked to me as if it might be trying to assign certain properties "
 		"to something which is not allowed to have them.");
+	Problems::issue_problem_end();
+	return;
+
+@<Issue a problem for a negative certainty@> =
+	Problems::quote_source(1, current_sentence);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PropWithNegativeCertainty));
+	Problems::issue_problem_segment(
+		"The sentence %1 looked to me as if it might be trying to say what a "
+		"property value is not, rather than what it is, by using 'never', or "
+		"'seldom'. You can only say what it is, or for properties of kinds, what "
+		"it 'usually' is.");
 	Problems::issue_problem_end();
 	return;
 

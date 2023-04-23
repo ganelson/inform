@@ -51,7 +51,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">WorldModelKit</a></li><li><b>Tests Template</b></li></ul></div>
 <p class="purpose">The command grammar and I6 implementation for testing commands such as TEST, ACTIONS and PURLOIN.</p>
 
-<ul class="toc"><li><a href="S-tst.html#SP1">&#167;1. All testy</a></li><li><a href="S-tst.html#SP2">&#167;2. Abstract Command</a></li><li><a href="S-tst.html#SP3">&#167;3. Actions Command</a></li><li><a href="S-tst.html#SP4">&#167;4. Gonear Command</a></li><li><a href="S-tst.html#SP5">&#167;5. Purloin Command</a></li><li><a href="S-tst.html#SP6">&#167;6. Random Command</a></li><li><a href="S-tst.html#SP7">&#167;7. Relations Command</a></li><li><a href="S-tst.html#SP8">&#167;8. Responses Command</a></li><li><a href="S-tst.html#SP9">&#167;9. Rules Command</a></li><li><a href="S-tst.html#SP10">&#167;10. Scenes Command</a></li><li><a href="S-tst.html#SP11">&#167;11. Scope Command</a></li><li><a href="S-tst.html#SP12">&#167;12. Showheap Command</a></li><li><a href="S-tst.html#SP13">&#167;13. ShowMe Command</a></li><li><a href="S-tst.html#SP14">&#167;14. Showverb Command</a></li><li><a href="S-tst.html#SP15">&#167;15. Test Command</a></li><li><a href="S-tst.html#SP16">&#167;16. Trace Command</a></li><li><a href="S-tst.html#SP17">&#167;17. Tree Command</a></li><li><a href="S-tst.html#SP18">&#167;18. Grammar</a></li><li><a href="S-tst.html#SP19">&#167;19. End testy</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-tst.html#SP1">&#167;1. All testy</a></li><li><a href="S-tst.html#SP2">&#167;2. Abstract Command</a></li><li><a href="S-tst.html#SP3">&#167;3. Actions Command</a></li><li><a href="S-tst.html#SP4">&#167;4. Gonear Command</a></li><li><a href="S-tst.html#SP5">&#167;5. Purloin Command</a></li><li><a href="S-tst.html#SP6">&#167;6. Random Command</a></li><li><a href="S-tst.html#SP7">&#167;7. Relations Command</a></li><li><a href="S-tst.html#SP8">&#167;8. Responses Command</a></li><li><a href="S-tst.html#SP9">&#167;9. Rules Command</a></li><li><a href="S-tst.html#SP10">&#167;10. Dialogue Command</a></li><li><a href="S-tst.html#SP11">&#167;11. Scenes Command</a></li><li><a href="S-tst.html#SP12">&#167;12. Scope Command</a></li><li><a href="S-tst.html#SP13">&#167;13. Showheap Command</a></li><li><a href="S-tst.html#SP14">&#167;14. ShowMe Command</a></li><li><a href="S-tst.html#SP15">&#167;15. Showverb Command</a></li><li><a href="S-tst.html#SP16">&#167;16. Test Command</a></li><li><a href="S-tst.html#SP17">&#167;17. Trace Command</a></li><li><a href="S-tst.html#SP18">&#167;18. Tree Command</a></li><li><a href="S-tst.html#SP19">&#167;19. Grammar</a></li><li><a href="S-tst.html#SP20">&#167;20. End testy</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. All testy. </b></p>
 
@@ -223,7 +223,25 @@ moves an object to a new position in the object tree.
 <span class="plain-syntax">    </span><span class="string-syntax">"Rules tracing now switched off. Type ~rules~ to switch it on again."</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Scenes Command. </b>SCENES switches scene-change tracing on or off, and also shows the current position.
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Dialogue Command. </b>DIALOGUE changes the level of dialogue tracing.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">[ </span><span class="identifier-syntax">DialogueOnSub</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">debug_dialogue</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="identifier-syntax">say__p</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="string-syntax">"Dialogue tracing now switched on. Type ~dialogue off~ to switch it off again,</span>
+<span class="string-syntax">     or ~dialogue all~ to include even dialogue which do not apply."</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">DialogueAllSub</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">debug_dialogue</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">; </span><span class="identifier-syntax">say__p</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="string-syntax">"Dialogue tracing now switched to ~all~. Type ~dialogue off~ to switch it off again."</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">DialogueOffSub</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">debug_dialogue</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">say__p</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="string-syntax">"Dialogue tracing now switched off. Type ~dialogue~ to switch it on again."</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Scenes Command. </b>SCENES switches scene-change tracing on or off, and also shows the current position.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -237,7 +255,7 @@ moves an object to a new position in the object tree.
 <span class="plain-syntax">    </span><span class="string-syntax">"(Scene monitoring now switched off. Type ~scenes~ to switch it on again.)"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Scope Command. </b>SCOPE prints a numbered list of all objects in scope to the player.
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Scope Command. </b>SCOPE prints a numbered list of all objects in scope to the player.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -249,7 +267,7 @@ moves an object to a new position in the object tree.
 <span class="plain-syntax">];</span>
 <span class="plain-syntax">[ </span><span class="identifier-syntax">Print_ScL</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax">; </span><span class="reserved-syntax">print_ret</span><span class="plain-syntax"> ++</span><span class="identifier-syntax">x_scope_count</span><span class="plain-syntax">, </span><span class="string-syntax">": "</span><span class="plain-syntax">, (</span><span class="identifier-syntax">a</span><span class="plain-syntax">) </span><span class="identifier-syntax">obj</span><span class="plain-syntax">, </span><span class="string-syntax">" ("</span><span class="plain-syntax">, </span><span class="identifier-syntax">obj</span><span class="plain-syntax">, </span><span class="string-syntax">")"</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Showheap Command. </b>SHOWHEAP is for debugging the memory heap, and is intended for Inform
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Showheap Command. </b>SHOWHEAP is for debugging the memory heap, and is intended for Inform
 maintainers rather than users.
 </p>
 
@@ -258,7 +276,7 @@ maintainers rather than users.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HeapDebug</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. ShowMe Command. </b>SHOWME is probably the most useful testing command: it shows the state of the
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. ShowMe Command. </b>SHOWME is probably the most useful testing command: it shows the state of the
 current room, or a named item.
 </p>
 
@@ -272,6 +290,9 @@ current room, or a named item.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">t_0</span><span class="plain-syntax"> </span><span class="reserved-syntax">ofclass</span><span class="plain-syntax"> </span><span class="identifier-syntax">K2_thing</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"location:"</span><span class="plain-syntax">; </span><span class="identifier-syntax">ShowRLocation</span><span class="plain-syntax">(</span><span class="identifier-syntax">noun</span><span class="plain-syntax">, </span><span class="reserved-syntax">true</span><span class="plain-syntax">); </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"^"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">t_0</span><span class="plain-syntax"> </span><span class="reserved-syntax">ofclass</span><span class="plain-syntax"> </span><span class="identifier-syntax">K9_region</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="reserved-syntax">parent</span><span class="plain-syntax">(</span><span class="identifier-syntax">t_0</span><span class="plain-syntax">)) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"sub-region of: "</span><span class="plain-syntax">, (</span><span class="identifier-syntax">the</span><span class="plain-syntax">) </span><span class="reserved-syntax">parent</span><span class="plain-syntax">(</span><span class="identifier-syntax">t_0</span><span class="plain-syntax">), </span><span class="string-syntax">"^"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">na</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ShowMeKindDetails</span><span class="plain-syntax">(</span><span class="reserved-syntax">false</span><span class="plain-syntax">, </span><span class="identifier-syntax">na</span><span class="plain-syntax">, </span><span class="identifier-syntax">t_0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">na</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ShowMeInstanceDetails</span><span class="plain-syntax">(</span><span class="reserved-syntax">false</span><span class="plain-syntax">, </span><span class="identifier-syntax">na</span><span class="plain-syntax">, </span><span class="identifier-syntax">t_0</span><span class="plain-syntax">);</span>
@@ -324,10 +345,10 @@ current room, or a named item.
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"^"</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">obj</span><span class="plain-syntax">.</span><span class="identifier-syntax">component_child</span><span class="plain-syntax">) </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="identifier-syntax">c</span><span class="plain-syntax"> | </span><span class="identifier-syntax">ShowMeRecursively</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">.</span><span class="identifier-syntax">component_child</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">+2, </span><span class="identifier-syntax">f</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">obj</span><span class="plain-syntax">.</span><span class="identifier-syntax">component_child</span><span class="plain-syntax">) </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="identifier-syntax">c</span><span class="plain-syntax"> | </span><span class="identifier-syntax">ShowMeRecursively</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">.</span><span class="identifier-syntax">component_child</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">+2, </span><span class="identifier-syntax">f</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="reserved-syntax">child</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">)) </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="identifier-syntax">c</span><span class="plain-syntax"> | </span><span class="identifier-syntax">ShowMeRecursively</span><span class="plain-syntax">(</span><span class="reserved-syntax">child</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">), </span><span class="identifier-syntax">depth</span><span class="plain-syntax">+2, </span><span class="identifier-syntax">f</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">depth</span><span class="plain-syntax">&gt;0) &amp;&amp; (</span><span class="identifier-syntax">obj</span><span class="plain-syntax">.</span><span class="identifier-syntax">component_sibling</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="identifier-syntax">c</span><span class="plain-syntax"> | </span><span class="identifier-syntax">ShowMeRecursively</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">.</span><span class="identifier-syntax">component_sibling</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">, </span><span class="identifier-syntax">f</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="reserved-syntax">child</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">)) </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="identifier-syntax">c</span><span class="plain-syntax"> | </span><span class="identifier-syntax">ShowMeRecursively</span><span class="plain-syntax">(</span><span class="reserved-syntax">child</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">), </span><span class="identifier-syntax">depth</span><span class="plain-syntax">+2, </span><span class="identifier-syntax">f</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">depth</span><span class="plain-syntax">&gt;0) &amp;&amp; (</span><span class="reserved-syntax">sibling</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">))) </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="identifier-syntax">c</span><span class="plain-syntax"> | </span><span class="identifier-syntax">ShowMeRecursively</span><span class="plain-syntax">(</span><span class="reserved-syntax">sibling</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">), </span><span class="identifier-syntax">depth</span><span class="plain-syntax">, </span><span class="identifier-syntax">f</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
@@ -337,7 +358,7 @@ current room, or a named item.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Showverb Command. </b>SHOWVERB is a holdover from old I6 days, but still quite useful. It writes
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Showverb Command. </b>SHOWVERB is a holdover from old I6 days, but still quite useful. It writes
 out the I6 command verb grammar for the supplied command.
 </p>
 
@@ -405,7 +426,7 @@ out the I6 command verb grammar for the supplied command.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Test Command. </b>TEST runs a short script of commands from the source text.
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Test Command. </b>TEST runs a short script of commands from the source text.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -482,7 +503,7 @@ out the I6 command verb grammar for the supplied command.
 
 <span class="plain-syntax">#</span><span class="identifier-syntax">ENDIF</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Trace Command. </b>Another holdover from I6: TRACE sets the level of parser tracing, on a scale
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Trace Command. </b>Another holdover from I6: TRACE sets the level of parser tracing, on a scale
 of 0 (off, the default) to 5.
 </p>
 
@@ -496,7 +517,7 @@ of 0 (off, the default) to 5.
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">TraceOffSub</span><span class="plain-syntax">; </span><span class="identifier-syntax">parser_trace</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">say__p</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="string-syntax">"Trace off."</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Tree Command. </b>TREE prints out the I6 object tree, though this is not always very helpful
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Tree Command. </b>TREE prints out the I6 object tree, though this is not always very helpful
 in I7 terms. It should arguably be withdrawn, but doesn't seem to do any harm.
 </p>
 
@@ -522,7 +543,7 @@ in I7 terms. It should arguably be withdrawn, but doesn't seem to do any harm.
 <span class="plain-syntax">        </span><span class="identifier-syntax">WriteListFrom</span><span class="plain-syntax">(</span><span class="reserved-syntax">child</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">), </span><span class="identifier-syntax">NEWLINE_BIT</span><span class="plain-syntax">+</span><span class="identifier-syntax">INDENT_BIT</span><span class="plain-syntax">+</span><span class="identifier-syntax">ALWAYS_BIT</span><span class="plain-syntax">+</span><span class="identifier-syntax">FULLINV_BIT</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Grammar. </b>In the old I6 parser, testing commands had their own scope hardwired in to the
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Grammar. </b>In the old I6 parser, testing commands had their own scope hardwired in to the
 code: this worked by comparing the verb command word directly against <span class="extract"><span class="extract-syntax">'scope'</span></span>
 and the like. That would go wrong if the testing commands were translated into
 other languages, and was a crude design at best. The following scope token is
@@ -566,6 +587,11 @@ not picked up) and able to accept multiple objects.
 <span class="plain-syntax">    * </span><span class="character-syntax">'all'</span><span class="plain-syntax">                                     -&gt; </span><span class="identifier-syntax">RulesAll</span>
 <span class="plain-syntax">    * </span><span class="character-syntax">'on'</span><span class="plain-syntax">                                      -&gt; </span><span class="identifier-syntax">RulesOn</span>
 <span class="plain-syntax">    * </span><span class="character-syntax">'off'</span><span class="plain-syntax">                                     -&gt; </span><span class="identifier-syntax">RulesOff</span><span class="plain-syntax">;</span>
+<span class="identifier-syntax">Verb</span><span class="plain-syntax"> </span><span class="identifier-syntax">meta</span><span class="plain-syntax"> </span><span class="character-syntax">'dialogue'</span>
+<span class="plain-syntax">    *                                           -&gt; </span><span class="identifier-syntax">DialogueOn</span>
+<span class="plain-syntax">    * </span><span class="character-syntax">'all'</span><span class="plain-syntax">                                     -&gt; </span><span class="identifier-syntax">DialogueAll</span>
+<span class="plain-syntax">    * </span><span class="character-syntax">'on'</span><span class="plain-syntax">                                      -&gt; </span><span class="identifier-syntax">DialogueOn</span>
+<span class="plain-syntax">    * </span><span class="character-syntax">'off'</span><span class="plain-syntax">                                     -&gt; </span><span class="identifier-syntax">DialogueOff</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Verb</span><span class="plain-syntax"> </span><span class="identifier-syntax">meta</span><span class="plain-syntax"> </span><span class="character-syntax">'scenes'</span>
 <span class="plain-syntax">    *                                           -&gt; </span><span class="identifier-syntax">ScenesOn</span>
 <span class="plain-syntax">    * </span><span class="character-syntax">'on'</span><span class="plain-syntax">                                      -&gt; </span><span class="identifier-syntax">ScenesOn</span>
@@ -592,7 +618,7 @@ not picked up) and able to accept multiple objects.
 <span class="plain-syntax">    *                                           -&gt; </span><span class="identifier-syntax">XTree</span>
 <span class="plain-syntax">    * </span><span class="identifier-syntax">scope</span><span class="plain-syntax">=</span><span class="identifier-syntax">testcommandnoun</span><span class="plain-syntax">                     -&gt; </span><span class="identifier-syntax">XTree</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. End testy. </b></p>
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. End testy. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>

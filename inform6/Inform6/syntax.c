@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
 /*   "syntax" : Syntax analyser and compiler                                 */
 /*                                                                           */
-/*   Part of Inform 6.36                                                     */
+/*   Part of Inform 6.41                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -599,17 +599,34 @@ extern int32 parse_routine(char *source, int embedded_flag, char *name,
     return packed_address;
 }
 
+/* Parse one block of code (a statement or brace-delimited stanza).
+   This is used by the IF, DO, FOR, OBJECTLOOP, SWITCH, and WHILE
+   statements.
+   (Note that this is *not* called by the top-level parse_routine() 
+   handler.)
+   The break_label and continue_label arguments are the labels in
+   the calling block to jump to on "break" or "continue". -1 means
+   we can't "break"/"continue" here (because we're not in a loop/switch).
+   If switch_rule is true, we're in a switch block; case labels are
+   accepted.
+*/
 extern void parse_code_block(int break_label, int continue_label,
     int switch_rule)
-{   int switch_clause_made = FALSE, default_clause_made = FALSE, switch_label = 0,
-        unary_minus_flag;
+{   int switch_clause_made = FALSE, default_clause_made = FALSE, switch_label = 0;
+    int unary_minus_flag, saved_entire_flag;
+
+    saved_entire_flag = (execution_never_reaches_here & EXECSTATE_ENTIRE);
+    if (execution_never_reaches_here)
+        execution_never_reaches_here |= EXECSTATE_ENTIRE;
 
     begin_syntax_line(TRUE);
     release_token_texts();
     get_next_token();
 
     if (token_type == SEP_TT && token_value == OPEN_BRACE_SEP)
-    {   do
+    {
+        /* Parse a braced stanza of statements. */
+        do
         {   begin_syntax_line(TRUE);
             release_token_texts();
             get_next_token();
@@ -621,10 +638,12 @@ extern void parse_code_block(int break_label, int continue_label,
             if (token_type == SEP_TT && token_value == CLOSE_BRACE_SEP)
             {   if (switch_clause_made && (!default_clause_made))
                     assemble_label_no(switch_label);
-                return;
+                break;
             }
             if (token_type == EOF_TT)
-            {   ebf_error("'}'", token_text); return; }
+            {   ebf_error("'}'", token_text);
+                break;
+            }
 
             if (switch_rule != 0)
             {
@@ -707,12 +726,18 @@ extern void parse_code_block(int break_label, int continue_label,
         }
         while(TRUE);
     }
+    else {
+        if (switch_rule != 0)
+            ebf_error("braced code block after 'switch'", token_text);
+        
+        /* Parse a single statement. */
+        parse_statement(break_label, continue_label);
+    }
 
-    if (switch_rule != 0)
-        ebf_error("braced code block after 'switch'", token_text);
-
-    parse_statement(break_label, continue_label);
-    return;
+    if (saved_entire_flag)
+        execution_never_reaches_here |= EXECSTATE_ENTIRE;
+    else
+        execution_never_reaches_here &= ~EXECSTATE_ENTIRE;
 }
 
 /* ========================================================================= */

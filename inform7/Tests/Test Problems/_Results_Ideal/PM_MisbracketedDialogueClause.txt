@@ -1,0 +1,29 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 24 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32187 words long.
+Problem__ PM_MisbracketedDialogueClause
+  >--> The text 'About (ghosts .' (source text, line 5) appears to be a
+    bracketed clause to do with dialogue, but the punctuation looks wrong
+    because it uses brackets '(' and ')' in a way which doesn't match. There
+    should be just one outer pair of brackets, and inside they can only be used
+    to clarify clauses, if necessary.
+Problem__ PM_MisbracketedDialogueClause
+  >--> The text 'slowly, quickly) (erroneously' (source text, line 7) appears
+    to be a bracketed clause to do with dialogue, but the punctuation looks
+    wrong because it uses brackets '(' and ')' in a way which doesn't match.
+    There should be just one outer pair of brackets, and inside they can only
+    be used to clarify clauses, if necessary.
+Problem__ PM_MisbracketedDialogueClause
+  >--> The text 'going (doolally' (source text, line 9) appears to be a
+    bracketed clause to do with dialogue, but the punctuation looks wrong
+    because it uses brackets '(' and ')' in a way which doesn't match. There
+    should be just one outer pair of brackets, and inside they can only be used
+    to clarify clauses, if necessary.
+Problem__ PM_UnexpectedDialogue
+  >--> The text 'Horatio blindly): "That!"' (source text, line 11) appears
+    under a section heading marked as dialogue, so it needs to be either a cue
+    in brackets '(like this.)', or else a line of dialogue 'Speaker: "Something
+    to say!"'. It doesn't seem to be either of those.
+Inform 7 has finished.

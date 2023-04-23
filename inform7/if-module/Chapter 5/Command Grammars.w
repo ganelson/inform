@@ -13,7 +13,7 @@ concept or object, is gathered into a "command grammar".
 @d CG_IS_PROPERTY_NAME  6  /* for ways to refer to property values used adjectivally */
 
 @ Fixed maxima are generally a bad idea in a compiler (what seems excessive in
-one decade becomes limiting in the next), but in this plugin we have to
+one decade becomes limiting in the next), but in this feature we have to
 make data tables in formats which can be handled by the Inform 6 compiler.
 And that does have two maxima which cannot easily be avoided, so we need to
 respect those here as well.

@@ -28,8 +28,8 @@ GLKMAKEFILE = Make.cheapglk
 #GLKMAKEFILE = ../Make.gtkglk
 
 # Pick a C compiler.
-#CC = cc
-CC = gcc
+CC = cc
+#CC = gcc
 
 OPTIONS = -g -Wall -Wmissing-prototypes -Wstrict-prototypes -Wno-unused -DOS_UNIX
 
@@ -49,13 +49,13 @@ OBJS = main.o files.o vm.o exec.o funcs.o operand.o string.o glkop.o \
 
 all: glulxe
 
-glulxe: $(OBJS) unixstrt.o
-	$(CC) $(OPTIONS) -o glulxe $(OBJS) unixstrt.o $(LIBS)
+glulxe: $(OBJS) unixstrt.o unixautosave.o
+	$(CC) $(OPTIONS) -o glulxe $(OBJS) unixstrt.o unixautosave.o $(LIBS)
 
 glulxdump: glulxdump.o
 	$(CC) -o glulxdump glulxdump.o
 
-$(OBJS) unixstrt.o: glulxe.h
+$(OBJS) unixstrt.o unixautosave.o: glulxe.h unixstrt.h
 
 exec.o operand.o: opcodes.h
 gestalt.o: gestalt.h

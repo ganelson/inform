@@ -49,7 +49,7 @@ Rules, which of course are always present. So these are hidden by default.
 			HTML_CLOSE("p");
 			first_ext = FALSE;
 		}
-		IndexUtilities::extra_div_open(OUT, 2, 1, "e0e0e0");		
+		IndexUtilities::extra_div_open(OUT, 2, 1, I"indexmorebox");		
 		HTML_OPEN("p");
 		WRITE("<i>%S</i>", Metadata::required_textual(mod, I"^title"));
 		HTML_CLOSE("p");
@@ -60,7 +60,7 @@ Rules, which of course are always present. So these are hidden by default.
 @<Close block of tables@> =
 	if (mc > 0) {
 		HTML::end_html_table(OUT);
-		if (open_cat > 1) IndexUtilities::extra_div_close(OUT, "e0e0e0");
+		if (open_cat > 1) IndexUtilities::extra_div_close(OUT, I"indexmorebox");
 	}
 
 @<Index this table@> =
@@ -96,7 +96,7 @@ Rules, which of course are always present. So these are hidden by default.
 	text_stream *for_each = Metadata::optional_textual(table_pack, I"^blank_rows_for_each");
 
 	WRITE("<i>");
-	HTML_OPEN_WITH("span", "class=\"smaller\"");
+	HTML::begin_span(OUT, I"smaller");
 	if (defines) {
 		if (nr == 1) Localisation::roman_i(OUT, LD, I"Index.Elements.Tb.Definition", nr);
 		else Localisation::roman_i(OUT, LD, I"Index.Elements.Tb.Definitions", nr);
@@ -116,7 +116,7 @@ Rules, which of course are always present. So these are hidden by default.
 		}
 		WRITE(")");
 	}
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	WRITE("</i>");
 
 @<Produce a row for this table usage@> =

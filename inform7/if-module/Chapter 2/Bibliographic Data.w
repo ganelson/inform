@@ -4,8 +4,8 @@ To manage the special variables providing bibliographic data on the
 work of IF being generated (title, author's name and so forth), and to write
 the Library Card in the index.
 
-@h Enter the plugin.
-This chapter defines the "bibliographic data" plugin, whose activation
+@h Enter the feature.
+This chapter defines the "bibliographic data" feature, whose activation
 function follows.
 
 Much of this chapter is best understood by reference to the Treaty of
@@ -15,11 +15,11 @@ fully with the Treaty and the code below should be maintained as such.
 
 =
 void BibliographicData::start(void) {
-	PluginManager::plug(PRODUCTION_LINE_PLUG,
+	PluginCalls::plug(PRODUCTION_LINE_PLUG,
 		BibliographicData::production_line);
-	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG,
+	PluginCalls::plug(MAKE_SPECIAL_MEANINGS_PLUG,
 		BibliographicData::make_special_meanings);
-	PluginManager::plug(NEW_VARIABLE_NOTIFY_PLUG,
+	PluginCalls::plug(NEW_VARIABLE_NOTIFY_PLUG,
 		BibliographicData::bibliographic_new_variable_notify);
 }
 
@@ -159,7 +159,20 @@ int BibliographicData::bibliographic_new_variable_notify(nonlocal_variable *q) {
 			case STORY_GENRE_BIBV: story_genre_VAR = q; break;
 			case STORY_DESCRIPTION_BIBV: story_description_VAR = q; break;
 			case STORY_CREATION_YEAR_BIBV: story_creation_year_VAR = q; break;
-			case RELEASE_NUMBER_BIBV: story_release_number_VAR = q; break;
+			case RELEASE_NUMBER_BIBV:
+				story_release_number_VAR = q;
+				semantic_version_number V = Projects::get_version(Task::project());
+				if (VersionNumbers::is_null(V) == FALSE) {
+					if (P_variable_initial_value == NULL) internal_error("too soon");
+					int M = V.version_numbers[0];
+					parse_node *save = current_sentence;
+					current_sentence = NULL;
+					PropertyInferences::draw_from_metadata(
+						NonlocalVariables::to_subject(q), P_variable_initial_value,
+							Rvalues::from_int(M, EMPTY_WORDING));
+					current_sentence = save;
+				}
+				break;
 		}
 		NonlocalVariables::make_constant(q, TRUE);
 	}

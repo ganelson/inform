@@ -1,0 +1,154 @@
+"Leg Before Wicket" by Ian Fleming
+
+Use command line echoing.
+
+The Cricket History Museum is a room. The bat, the ball and some pads are here. The trophy case is in the Museum. The urn and the scoring pencil are in the case. Honey Maiden is a woman. James Bond is a man in the Museum. The player is Bond.
+
+Honey can be honest or disingenuous.
+
+A dialogue beat can be dramatic, quiet or subdued.
+
+Spoken rapidly is a performance style.
+
+Test one with "get bat / x bat / 4 / 1 / 1 / x ball / get bat / kiss honey".
+
+Test two with "get bat / x bat / 3 / 2 / x ball / get bat / jump / get ball".
+
+Test three with "get bat / 5 / 1 / 1 / 2 / 1".
+
+Check an actor taking the bat:
+	if the player is the actor:
+		say "Magical glue holds the bat down!" instead;
+	otherwise:
+		say "[The actor] tries to pick up the bat, but it's magically glued down!" instead;
+
+Before doing anything other than looking:
+	if Honey is not in the museum:
+		perform the arrival beat instead.
+
+When play ends:
+	say "You took [list of performed dialogue choices], and heard [list of performed dialogue lines] in the beats [list of performed dialogue beats]."
+
+Section 1 - Arrival (dialogue)
+
+(This is the arrival scene.)
+
+Narration (now Honey is in the Museum): "You're interrupted in your mission by the sudden arrival of a tour guide named [Honey]."
+
+Honey: "So, Mr Bond, we meet at last. Welcome to the foremost sporting museum in New South Wales. It was founded by Ernst Stavro Blofeld's brother Henry. Here you can admire [the list of things which are not people]."
+
+-- (this is the Sean Connery choice) "Fix Honey with your Scottish stare."
+
+	Narration (now Honey is honest): "Honey looks suddenly abashed and resolves to tell the truth."
+
+	<-
+
+-- "Listen politely."
+
+	Honey (rapidly): "The first ever cricket match is thought to have taken place in [if Honey is honest]18th-century Hampshire[otherwise]stone-age Dresden[end if]."
+
+-- "Enquire about the bat and ball."
+
+	Honey (after taking the bat; before dropping the bat): "Made of willow, the cricket bat is sprung to provide a good drive."
+	
+	Honey (after taking the ball; before dropping the ball): "Now this one really does throw well."
+	
+	<-
+
+-- (recurring) "Look at the watch Q gave you."
+
+	Narration: "The watch says it is now [time of day] in Melbourne."
+
+	<-
+
+-- "Make feeble wordplay, light of it, and an escape."
+
+	Bond: "Sorry, Honey, it's time for a 'run out'."
+	
+	-> perform the escape attempt beat
+
+-> perform the closer examination beat
+
+Honey (if Honey is honest; this is the admission line): "Really, [the bat] is too heavy for me."
+
+Honey: "That concludes our tour. And frankly, Mr Bond, I expected a little more personal attention from Universal Export's most notorious womanizer."
+
+	-> end the story saying "She flounced out!"
+
+Section 2 - Closer Examination (dialogue)
+
+(This is the closer examination beat.)
+
+Honey: "And now, Mr Bond, it is time for you to consider our exhibits!"
+
+-- instead of examining the ball
+
+	Honey: "See the proud seam. It's a Kookaburra, and it swings more than your English Dukes."
+	
+	<-
+
+-- after taking the ball
+
+	Honey: "Goodness! You're only supposed to look."
+
+-- before taking the bat
+
+	Honey: "No! It's MINE!"
+
+	<-
+
+-- instead of kissing Honey
+
+	Honey: "Oh, James... Ever since we met eighty seconds ago I have wanted you..."
+
+	-> end the story saying "James Bond will Return"
+
+-- after looking
+
+	<-
+
+-- otherwise
+
+	Honey: "Try again, Mr Bond."
+	
+	<-
+
+Honey: "Oh my god, Blofeld has put a bomb on the trophy case! I'm now a damsel in distress!"
+
+Narration (before the player examining the case): "You can't help doing as she says."
+
+Section 3 - Escape? (dialogue)
+
+(This is the escape attempt beat.)
+
+-- "Hurl myself at the window."
+
+	Honey: "That glass is strong enough to withstand a six from a full toss at a distance of ten feet! You wouldn't stand a chance."
+	
+	<-
+
+-- "Use my rocket-pack."
+
+	Narration: "Is this supposed to be like the cold open of Thunderball, where you're suddenly carrying a huge jet-pack even though you came into the room in a regular dinner suit?"
+	
+	-- "Yes."
+	
+		Honey: "Spectre has a long memory, Mr Bond!"
+		
+		-> end the story saying "Vrooom!"
+
+	-- "No."
+	
+		Narration: "Then find some other way out of here."
+
+	<-
+
+-- (if Bond has the pencil) "Tunnel my way out with the pencil."
+
+	Narration: "Honey watches with interest as you scrabble at the walls with the pencil."
+
+	<-
+
+-- (if the current choice list is empty) "Admit to being out of ideas."
+
+	Honey: "I have permitted this charade for one reason only, Mr Bond, to demonstrate its futility."

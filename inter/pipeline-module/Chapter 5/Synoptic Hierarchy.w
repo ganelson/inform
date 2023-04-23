@@ -21,6 +21,7 @@ void SynopticHierarchy::establish(inter_tree *I) {
 	@<Resources for activities@>;
 	@<Resources for chronology@>;
 	@<Resources for conjugations@>;
+	@<Resources for dialogue@>;
 	@<Resources for extensions@>;
 	@<Resources for instances@>;
 	@<Resources for kinds@>;
@@ -117,6 +118,25 @@ The |/main/synoptic/conjugations| submodule.
 	SYN_SUBMD(I"conjugations")
 		SYN_CONST(TABLEOFVERBS_HL,                I"TableOfVerbs")
 
+@h Dialogue.
+The |/main/synoptic/dialogue| submodule.
+
+@e DIALOGUEBEATS_HL
+@e DIALOGUELINES_HL
+@e DIALOGUECHOICES_HL
+@e NO_DIALOGUE_BEATS_HL
+@e NO_DIALOGUE_LINES_HL
+@e NO_DIALOGUE_CHOICES_HL
+
+@<Resources for dialogue@> =
+	SYN_SUBMD(I"dialogue")
+		SYN_CONST(DIALOGUEBEATS_HL,               I"TableOfDialogueBeats")
+		SYN_CONST(DIALOGUELINES_HL,               I"TableOfDialogueLines")
+		SYN_CONST(DIALOGUECHOICES_HL,             I"TableOfDialogueChoices")
+		SYN_CONST(NO_DIALOGUE_BEATS_HL,           I"NO_DIALOGUE_BEATS")
+		SYN_CONST(NO_DIALOGUE_LINES_HL,           I"NO_DIALOGUE_LINES")
+		SYN_CONST(NO_DIALOGUE_CHOICES_HL,         I"NO_DIALOGUE_CHOICES")
+
 @h Extensions.
 The |/main/synoptic/extensions| submodule.
 
@@ -176,14 +196,18 @@ The |/main/synoptic/multimedia| submodule.
 @e RESOURCEIDSOFFIGURES_HL
 @e RESOURCEIDSOFSOUNDS_HL
 @e NO_EXTERNAL_FILES_HL
+@e NO_INTERNAL_FILES_HL
 @e TABLEOFEXTERNALFILES_HL
+@e TABLEOFINTERNALFILES_HL
 
 @<Resources for multimedia@> =
 	SYN_SUBMD(I"multimedia")
 		SYN_CONST(RESOURCEIDSOFFIGURES_HL,        I"ResourceIDsOfFigures")
 		SYN_CONST(RESOURCEIDSOFSOUNDS_HL,         I"ResourceIDsOfSounds")
 		SYN_CONST(NO_EXTERNAL_FILES_HL,           I"NO_EXTERNAL_FILES")
+		SYN_CONST(NO_INTERNAL_FILES_HL,           I"NO_INTERNAL_FILES")
 		SYN_CONST(TABLEOFEXTERNALFILES_HL,        I"TableOfExternalFiles")
+		SYN_CONST(TABLEOFINTERNALFILES_HL,        I"TableOfInternalFiles")
 
 @h Properties.
 The |/main/synoptic/properties| submodule.

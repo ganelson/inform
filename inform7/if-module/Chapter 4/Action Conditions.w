@@ -2,7 +2,7 @@
 
 A special condition for testing against action patterns.
 
-@ The actions plugin introduces a special form of condition: authors can
+@ The actions feature introduces a special form of condition: authors can
 write "if taking or dropping something", for example, and this is implicitly
 a test of what the current action is.
 

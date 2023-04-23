@@ -194,7 +194,6 @@ DECLARE_CLASS(local_block_value)
 @e label_namespace_CLASS
 @e group_together_function_CLASS
 @e nascent_array_CLASS
-@e plugin_CLASS
 @e runtime_kind_structure_CLASS
 @e slash_gpr_CLASS
 @e test_scenario_CLASS
@@ -214,7 +213,6 @@ DECLARE_CLASS(cached_kind_declaration)
 DECLARE_CLASS(label_namespace)
 DECLARE_CLASS(group_together_function)
 DECLARE_CLASS(nascent_array)
-DECLARE_CLASS(plugin)
 DECLARE_CLASS(runtime_kind_structure)
 DECLARE_CLASS(slash_gpr)
 DECLARE_CLASS(test_scenario)
@@ -233,6 +231,11 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(activity_crossref, 100)
 @e actions_rcd_data_CLASS
 @e auxiliary_file_CLASS
 @e cached_understanding_CLASS
+@e dialogue_beat_CLASS
+@e dialogue_choice_CLASS
+@e dialogue_decision_CLASS
+@e dialogue_line_CLASS
+@e dialogue_node_CLASS
 @e direction_inference_data_CLASS
 @e explicit_action_CLASS
 @e found_in_inference_data_CLASS
@@ -249,6 +252,7 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(activity_crossref, 100)
 @e parsing_data_CLASS
 @e parsing_pp_data_CLASS
 @e part_of_inference_data_CLASS
+@e performance_style_CLASS
 @e regions_data_CLASS
 @e release_instructions_CLASS
 @e scene_CLASS
@@ -270,6 +274,11 @@ DECLARE_CLASS(action_name)
 DECLARE_CLASS(actions_rcd_data)
 DECLARE_CLASS(auxiliary_file)
 DECLARE_CLASS(cached_understanding)
+DECLARE_CLASS(dialogue_beat)
+DECLARE_CLASS(dialogue_choice)
+DECLARE_CLASS(dialogue_decision)
+DECLARE_CLASS(dialogue_line)
+DECLARE_CLASS(dialogue_node)
 DECLARE_CLASS(direction_inference_data)
 DECLARE_CLASS(found_in_inference_data)
 DECLARE_CLASS(cg_line)
@@ -285,6 +294,7 @@ DECLARE_CLASS(parentage_inference_data)
 DECLARE_CLASS(parsing_data)
 DECLARE_CLASS(parsing_pp_data)
 DECLARE_CLASS(part_of_inference_data)
+DECLARE_CLASS(performance_style)
 DECLARE_CLASS(regions_data)
 DECLARE_CLASS(release_instructions)
 DECLARE_CLASS(scene)
@@ -307,8 +317,10 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(understanding_reference, 100)
 @e figures_data_CLASS
 @e sounds_data_CLASS
 @e files_data_CLASS
+@e internal_files_data_CLASS
 
 =
 DECLARE_CLASS(figures_data)
 DECLARE_CLASS(sounds_data)
 DECLARE_CLASS(files_data)
+DECLARE_CLASS(internal_files_data)

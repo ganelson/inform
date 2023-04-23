@@ -91,7 +91,7 @@ pcalc_prop *SentencePropositions::S_subtree(int SV_not_SN, wording W,
 	conv_log_depth--;
 
 @ The English verb "to be" has the syntactic quirk that it likes to have
-both SP and OP, even when only when thing is being discussed. We say "it is
+both SP and OP, even when only one thing is being discussed. We say "it is
 raining" and "there are seven continents", inserting "it" and "there"
 even though they refer to nothing at all, because we don't like to say
 "raining is" or "seven continents are".
@@ -374,9 +374,9 @@ is irregular because it differs from "something" and "someone".)
 	#ifdef IF_MODULE
 	pcalc_prop *k_atom = Propositions::composited_kind(object_phrase_prop);
 	if ((k_atom) && (Kinds::eq(KindPredicates::get_kind(k_atom), K_room)) &&
-		(verb_phrase_relation == R_equality) && (room_containment_predicate)) {
+		(verb_phrase_relation == R_equality) && (R_room_containment)) {
 		KindPredicates::set_composited(k_atom, FALSE);
-		verb_phrase_relation = BinaryPredicates::get_reversal(room_containment_predicate);
+		verb_phrase_relation = BinaryPredicates::get_reversal(R_room_containment);
 		LOGIF(PREDICATE_CALCULUS, "[%d] Decompositing object: $D\n",
 			conv_log_depth, object_phrase_prop);
 	}

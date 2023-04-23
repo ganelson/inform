@@ -42,12 +42,13 @@ is any, as well as the correct identifying headings and requirements.
 =
 int ExtensionPages::write_page_inner(extension_census_datum *ecd,
 	inform_extension *E, int eg_number, int force_update, inform_project *proj) {
-	inbuild_work *work = NULL;
-	if (ecd) work = ecd->found_as->copy->edition->work;
-	else if (E) work = E->as_copy->edition->work;
+	inbuild_edition *edition = NULL;
+	if (ecd) edition = ecd->found_as->copy->edition;
+	else if (E) edition = E->as_copy->edition;
 	else internal_error("write_page incorrectly called");
+	inbuild_work *work = edition->work;
 
-	filename *F = ExtensionWebsite::page_URL(work, eg_number);
+	filename *F = ExtensionWebsite::page_URL(proj, edition, eg_number);
 	if (F == NULL) return 0;
 	int page_exists_already = TextFiles::exists(F);
 	LOGIF(EXTENSIONS_CENSUS, "Write %s (%X)/%d %s: %f\n",
@@ -80,7 +81,7 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 @<Convert ECD to a text-only E@> =
 	if ((page_exists_already == FALSE) || (force_update)) {
 		Feeds::feed_C_string(L"This sentence provides a firebreak, no more. ");
-		E = ExtensionManager::from_copy(ecd->found_as->copy);
+		E = Extensions::from_copy(ecd->found_as->copy);
 		if (E == NULL) return 0; /* but shouldn't happen: it was there only moments ago */
 		Copies::get_source_text(E->as_copy);
 		ExtensionPages::write_page(NULL, E, force_update, proj);
@@ -103,13 +104,13 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 	WRITE("</b>");
 	HTML_CLOSE("p");
 	HTML_OPEN("p");
-	HTML_OPEN_WITH("span", "class=\"smaller\"");
+	HTML::begin_span(OUT, I"smaller");
 	@<Write up any restrictions on VM usage@>;
 	if (E) @<Write up the version number, if any, and location@>;
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	HTML_CLOSE("p");
 	if (E) {
-		filename *B = ExtensionWebsite::page_URL(work, -1);
+		filename *B = ExtensionWebsite::page_URL(proj, edition, -1);
 		TEMPORARY_TEXT(leaf)
 		Filenames::write_unextended_leafname(leaf, B);
 		@<Write up the rubric, if any@>;
@@ -159,16 +160,17 @@ If the TOC were directly at the top of the supplied documentation, it might
 easily be scrolled down off screen when the user first visits the page.
 
 @<Write up the table of contents for the supplied documentation, if any@> =
-	if (Wordings::nonempty(E->documentation_text)) {
+	wording DW = Extensions::get_documentation_text(E);
+	if (Wordings::nonempty(DW)) {
 		HTML_OPEN("p");
-		DocumentationRenderer::table_of_contents(E->documentation_text, OUT, leaf);
+		DocumentationRenderer::table_of_contents(DW, OUT, leaf);
 		HTML_CLOSE("p");
 	}
 
 @<Write up the supplied documentation, if any@> =
-	if (Wordings::nonempty(E->documentation_text))
-		no_egs = DocumentationRenderer::set_body_text(E->documentation_text, OUT,
-			eg_number, leaf);
+	wording DW = Extensions::get_documentation_text(E);
+	if (Wordings::nonempty(DW))
+		no_egs = DocumentationRenderer::set_body_text(DW, OUT, eg_number, leaf);
 	else {
 		HTML_OPEN("p");
 		WRITE("The extension provides no documentation.");

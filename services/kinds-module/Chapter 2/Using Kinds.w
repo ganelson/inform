@@ -218,6 +218,15 @@ int Kinds::Behaviour::has_named_constant_values(kind *K) {
 	return FALSE;
 }
 
+@ And some kinds have values which are implicit in the source text, but never
+spelled out with direct assertions -- dialogue beats, for example.
+
+=
+int Kinds::Behaviour::forbid_assertion_creation(kind *K) {
+	if (K == NULL) return FALSE;
+	return K->construct->forbid_assertion_creation;
+}
+
 @ The following returns the compilation method (a constant in the form |*_CCM|,
 defined in "Data Types.w") used when compiling an actual constant value
 specification of this kind: in other words, when compiling an I6

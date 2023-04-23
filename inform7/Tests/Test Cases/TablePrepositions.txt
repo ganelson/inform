@@ -1,0 +1,17 @@
+The Plateau is a room.
+
+Table of Fish
+fish-text	fish-num
+"red snapper"	5
+"coelocanth"	17
+"neon tetra"	40
+
+When play begins:
+  say "[the fish-text corresponding to fish-num of 5 in Table of Fish].";
+  say "[the fish-text corresponding to fish-num of 17 from Table of Fish].";
+  say "[the fish-text corresponding to fish-num of 40 in Table of Fish].";
+  say "[the fish-num in row 1 in the Table of Fish].";
+  say "[the fish-num in row 2 from the Table of Fish].";
+  say "[the fish-num in row 3 of the Table of Fish].";
+  if there is a fish-text of "clownfish" in the Table of Fish, say "Who sent in the clowns?";
+  if there is a fish-text of "neon tetra" from the Table of Fish, say "ore tenant.";

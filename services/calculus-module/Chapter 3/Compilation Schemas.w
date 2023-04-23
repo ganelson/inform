@@ -23,7 +23,7 @@ module is used outside of Inform, of course, no |inter_schema| will exist.
 
 A simple example of an |i6_schema| might use the notation |*1 == *2|; this
 will ultimately compile to a test that two quantities are numerically equal.
-As this example shows, |*| is an escape character. See //building: Inter Schemas//;
+As this example shows, |*| is an escape character. See //building: Parsing Inter Schemas//;
 |*1| is an example of what is called an "abbreviated command" there.
 
 @ The //i6_schema// structure is very simple, then. Schemas can be of unlimited

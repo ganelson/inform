@@ -248,8 +248,33 @@ inter_name *RTKindConstructors::get_iname(kind *K) {
 		Hierarchy::make_available(K->construct->compilation_data.pr_iname);
 		return K->construct->compilation_data.pr_iname;
 	}
+	if (Kinds::eq(K, K_internal_file))  {
+		K->construct->compilation_data.pr_iname = Hierarchy::find(PRINT_INTERNAL_FILE_NAME_HL);
+		Hierarchy::make_available(K->construct->compilation_data.pr_iname);
+		return K->construct->compilation_data.pr_iname;
+	}
 	if (Kinds::eq(K, K_scene))  {
 		K->construct->compilation_data.pr_iname = Hierarchy::find(PRINT_SCENE_HL);
+		Hierarchy::make_available(K->construct->compilation_data.pr_iname);
+		return K->construct->compilation_data.pr_iname;
+	}
+	if (Kinds::eq(K, K_dialogue_beat))  {
+		K->construct->compilation_data.pr_iname = Hierarchy::find(PRINT_DIALOGUE_BEAT_HL);
+		Hierarchy::make_available(K->construct->compilation_data.pr_iname);
+		return K->construct->compilation_data.pr_iname;
+	}
+	if (Kinds::eq(K, K_dialogue_line))  {
+		K->construct->compilation_data.pr_iname = Hierarchy::find(PRINT_DIALOGUE_LINE_HL);
+		Hierarchy::make_available(K->construct->compilation_data.pr_iname);
+		return K->construct->compilation_data.pr_iname;
+	}
+	if (Kinds::eq(K, K_dialogue_choice))  {
+		K->construct->compilation_data.pr_iname = Hierarchy::find(PRINT_DIALOGUE_CHOICE_HL);
+		Hierarchy::make_available(K->construct->compilation_data.pr_iname);
+		return K->construct->compilation_data.pr_iname;
+	}
+	if (Kinds::eq(K, K_performance_style))  {
+		K->construct->compilation_data.pr_iname = Hierarchy::find(PRINT_PERFORMANCE_STYLE_HL);
 		Hierarchy::make_available(K->construct->compilation_data.pr_iname);
 		return K->construct->compilation_data.pr_iname;
 	}
@@ -275,7 +300,10 @@ inter_name *RTKindConstructors::get_iname(kind *K) {
 			K->construct->compilation_data.pr_iname = Hierarchy::make_iname_in(PRINT_FN_HL, R);
 			inter_name *actual_iname = HierarchyLocations::find_by_name(Emit::tree(), X);
 			Emit::iname_constant(K->construct->compilation_data.pr_iname, K_value, actual_iname);
-		} else internal_error("internal but unknown kind printing routine");
+		} else {
+			WRITE_TO(STDERR, "identifier: '%S'\n", X);
+			internal_error("internal but unknown kind printing routine");
+		}
 	} else {
 		if (external) K->construct->compilation_data.pr_iname = HierarchyLocations::find_by_name(Emit::tree(), X);
 		else internal_error("internal but unpackaged kind printing routine");
@@ -839,20 +867,20 @@ void RTKindConstructors::index_name(OUTPUT_STREAM, kind *K, int plural) {
 	}
 	int from = 0, to = length-1;
 	if (last_stroke >= 0) from = last_stroke+1; else tinted = FALSE;
-	if (tinted) HTML::begin_colour(OUT, I"808080");
+	if (tinted) HTML::begin_span(OUT, I"indexgrey");
 	for (i=from; i<=to; i++) {
 		int j, untinted = FALSE;
 		for (j=0; j<first_stroke; j++)
 			if (Lexer::word(w1+j) == Lexer::word(w1+i))
 				untinted = TRUE;
-		if (untinted) HTML::end_colour(OUT);
+		if (untinted) HTML::end_span(OUT);
 		if (i>from) WRITE(" ");
 		if (Lexer::word(w1+i) == CAPITAL_K_V) WRITE("K");
 		else if (Lexer::word(w1+i) == CAPITAL_L_V) WRITE("L");
 		else WRITE("%V", Lexer::word(w1+i));
-		if (untinted) HTML::begin_colour(OUT, I"808080");
+		if (untinted) HTML::begin_span(OUT, I"indexgrey");
 	}
-	if (tinted) HTML::end_colour(OUT);
+	if (tinted) HTML::end_span(OUT);
 
 @
 

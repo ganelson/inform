@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
 /*   "text" : Text translation, the abbreviations optimiser, the dictionary  */
 /*                                                                           */
-/*   Part of Inform 6.36                                                     */
+/*   Part of Inform 6.41                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -14,8 +14,8 @@ static memory_list low_strings_memlist;
 
 int32 static_strings_extent;           /* Number of bytes of static strings
                                           made so far */
-uchar *static_strings_area;            /* Used if (!temporary_files_switch) to
-                                          hold the static strings area so far
+uchar *static_strings_area;            /* Used to hold the static strings
+                                          area so far
                                           Allocated to static_strings_extent */
 memory_list static_strings_area_memlist;
 
@@ -120,8 +120,7 @@ static int zchars_out_buffer[3],       /* During text translation, a buffer of
            zob_index;                  /* Index (0 to 2) into it             */
 
 uchar *translated_text;                /* Area holding translated strings
-                                          until they are moved into either
-                                          a temporary file, or the
+                                          until they are moved into the
                                           static_strings_area below */
 static memory_list translated_text_memlist;
 
@@ -212,6 +211,10 @@ static int try_abbreviations_from(unsigned char *text, int i, int from)
 
 extern void make_abbreviation(char *text)
 {
+    /* If -e mode is off, we won't waste space creating an abbreviation entry. */
+    if (!economy_switch)
+        return;
+    
     ensure_memory_list_available(&abbreviations_memlist, no_abbreviations+1);
     ensure_memory_list_available(&abbreviations_at_memlist, no_abbreviations+1);
     
@@ -243,11 +246,22 @@ extern void make_abbreviation(char *text)
 extern int32 compile_string(char *b, int strctx)
 {   int32 i, j, k;
     uchar *c;
- 
+    int in_low_memory;
+
+    if (execution_never_reaches_here) {
+        /* No need to put strings into gametext.txt or the static/low
+           strings areas. */
+        if (strctx == STRCTX_GAME || strctx == STRCTX_GAMEOPC || strctx == STRCTX_LOWSTRING || strctx == STRCTX_INFIX) {
+            /* VENEER and VENEEROPC are only used at the translate_text level,
+               so we don't have to catch them here. */
+            return 0;
+        }
+    }
+    
     /* In Z-code, abbreviations go in the low memory pool (0x100). So
        do strings explicitly defined with the Lowstring directive.
        (In Glulx, the in_low_memory flag is ignored.) */
-    int in_low_memory = (strctx == STRCTX_ABBREV || strctx == STRCTX_LOWSTRING);
+    in_low_memory = (strctx == STRCTX_ABBREV || strctx == STRCTX_LOWSTRING);
 
     if (!glulx_mode && in_low_memory)
     {
@@ -291,17 +305,10 @@ extern int32 compile_string(char *b, int strctx)
 
     j = static_strings_extent;
 
-    if (temporary_files_switch) {
-        for (c=translated_text; c<translated_text+i;
-             c++, static_strings_extent++)
-            fputc(*c,Temp1_fp);
-    }
-    else {
-        ensure_memory_list_available(&static_strings_area_memlist, static_strings_extent+i);
-        for (c=translated_text; c<translated_text+i;
-             c++, static_strings_extent++)
-            static_strings_area[static_strings_extent] = *c;
-    }
+    ensure_memory_list_available(&static_strings_area_memlist, static_strings_extent+i);
+    for (c=translated_text; c<translated_text+i;
+         c++, static_strings_extent++)
+        static_strings_area[static_strings_extent] = *c;
 
     if (!glulx_mode) {
         return(j/scale_factor);
@@ -610,12 +617,11 @@ advance as part of 'Zcharacter table':", unicode);
         /*  '@' is the escape character in Inform string notation: the various
             possibilities are:
 
-                (printing only)
                 @@decimalnumber  :  write this ZSCII char (0 to 1023)
-                @twodigits       :  write the abbreviation string with this
-                                    decimal number
-
-                (any string context)
+                @twodigits or    :  write the abbreviation string with this
+                @(digits)           decimal number
+                @(symbol)        :  write the abbreviation string with this
+                                    (constant) value
                 @accentcode      :  this accented character: e.g.,
                                         for @'e write an E-acute
                 @{...}           :  this Unicode char (in hex)              */
@@ -623,7 +629,7 @@ advance as part of 'Zcharacter table':", unicode);
         if (text_in[i]=='@')
         {   if (text_in[i+1]=='@')
             {
-                /*   @@...   */
+                /*   @@... (ascii value)  */
 
                 i+=2; j=atoi((char *) (text_in+i));
                 switch(j)
@@ -641,6 +647,55 @@ advance as part of 'Zcharacter table':", unicode);
                 }
                 while (isdigit(text_in[i])) i++; i--;
             }
+            else if (text_in[i+1]=='(')
+            {
+                /*   @(...) (dynamic string)   */
+                char dsymbol[MAX_IDENTIFIER_LENGTH+1];
+                int len = 0, digits = 0;
+                i += 2;
+                /* This accepts "12xyz" as a symbol, which it really isn't,
+                   but that just means it won't be found. */
+                while ((text_in[i] == '_' || isalnum(text_in[i])) && len < MAX_IDENTIFIER_LENGTH) {
+                    char ch = text_in[i++];
+                    if (isdigit(ch)) digits++;
+                    dsymbol[len++] = ch;
+                }
+                dsymbol[len] = '\0';
+                j = -1;
+                /* We would like to parse dsymbol as *either* a decimal
+                   number or a constant symbol. */
+                if (text_in[i] != ')' || len == 0) {
+                    error("'@(...)' abbreviation must contain a symbol");
+                }
+                else if (digits == len) {
+                    /* all digits; parse as decimal */
+                    j = atoi(dsymbol);
+                }
+                else {
+                    int sym = symbol_index(dsymbol, -1);
+                    if ((symbols[sym].flags & UNKNOWN_SFLAG) || symbols[sym].type != CONSTANT_T || symbols[sym].marker) {
+                        error_named("'@(...)' abbreviation expected a known constant value, but contained", dsymbol);
+                    }
+                    else {
+                        symbols[sym].flags |= USED_SFLAG;
+                        j = symbols[sym].value;
+                    }
+                }
+                if (!glulx_mode && j >= 96) {
+                    error_max_dynamic_strings(j);
+                    j = -1;
+                }
+                if (j >= MAX_DYNAMIC_STRINGS) {
+                    error_max_dynamic_strings(j);
+                    j = -1;
+                }
+                if (j >= 0) {
+                    write_z_char_z(j/32+1); write_z_char_z(j%32);
+                }
+                else {
+                    write_z_char_z(' '); /* error fallback */
+                }
+            }
             else if (isdigit(text_in[i+1])!=0)
             {   int d1, d2;
 
@@ -655,15 +710,20 @@ advance as part of 'Zcharacter table':", unicode);
                     j = d1*10 + d2;
                     if (!glulx_mode && j >= 96) {
                         error_max_dynamic_strings(j);
-                        j = 0;
+                        j = -1;
                     }
                     if (j >= MAX_DYNAMIC_STRINGS) {
                         /* Shouldn't get here with two digits */
                         error_max_dynamic_strings(j);
-                        j = 0;
+                        j = -1;
                     }
                     i+=2;
-                    write_z_char_z(j/32+1); write_z_char_z(j%32);
+                    if (j >= 0) {
+                        write_z_char_z(j/32+1); write_z_char_z(j%32);
+                    }
+                    else {
+                        write_z_char_z(' '); /* error fallback */
+                    }
                 }
             }
             else
@@ -788,6 +848,56 @@ string.");
           write_z_char_g(j);
           while (isdigit(text_in[i])) i++; i--;
         }
+        else if (text_in[i+1]=='(') {
+            char dsymbol[MAX_IDENTIFIER_LENGTH+1];
+            int len = 0, digits = 0;
+            i += 2;
+            /* This accepts "12xyz" as a symbol, which it really isn't,
+               but that just means it won't be found. */
+            while ((text_in[i] == '_' || isalnum(text_in[i])) && len < MAX_IDENTIFIER_LENGTH) {
+                char ch = text_in[i++];
+                if (isdigit(ch)) digits++;
+                dsymbol[len++] = ch;
+            }
+            dsymbol[len] = '\0';
+            j = -1;
+            /* We would like to parse dsymbol as *either* a decimal
+               number or a constant symbol. */
+            if (text_in[i] != ')' || len == 0) {
+                error("'@(...)' abbreviation must contain a symbol");
+            }
+            else if (digits == len) {
+                /* all digits; parse as decimal */
+                j = atoi(dsymbol);
+            }
+            else {
+                int sym = symbol_index(dsymbol, -1);
+                if ((symbols[sym].flags & UNKNOWN_SFLAG) || symbols[sym].type != CONSTANT_T || symbols[sym].marker) {
+                    error_named("'@(...)' abbreviation expected a known constant value, but contained", dsymbol);
+                }
+                else {
+                    symbols[sym].flags |= USED_SFLAG;
+                    j = symbols[sym].value;
+                }
+            }
+            if (j >= MAX_DYNAMIC_STRINGS) {
+                error_max_dynamic_strings(j);
+                j = -1;
+            }
+            if (j+1 >= no_dynamic_strings)
+                no_dynamic_strings = j+1;
+            if (j >= 0) {
+                write_z_char_g('@');
+                write_z_char_g('D');
+                write_z_char_g('A' + ((j >>12) & 0x0F));
+                write_z_char_g('A' + ((j >> 8) & 0x0F));
+                write_z_char_g('A' + ((j >> 4) & 0x0F));
+                write_z_char_g('A' + ((j     ) & 0x0F));
+            }
+            else {
+                write_z_char_g(' '); /* error fallback */
+            }
+        }
         else if (isdigit(text_in[i+1])) {
           int d1, d2;
           d1 = character_digit_value[text_in[i+1]];
@@ -803,16 +913,21 @@ string; substituting '   '.");
             j = d1*10 + d2;
             if (j >= MAX_DYNAMIC_STRINGS) {
               error_max_dynamic_strings(j);
-              j = 0;
+              j = -1;
             }
             if (j+1 >= no_dynamic_strings)
               no_dynamic_strings = j+1;
-            write_z_char_g('@');
-            write_z_char_g('D');
-            write_z_char_g('A' + ((j >>12) & 0x0F));
-            write_z_char_g('A' + ((j >> 8) & 0x0F));
-            write_z_char_g('A' + ((j >> 4) & 0x0F));
-            write_z_char_g('A' + ((j     ) & 0x0F));
+            if (j >= 0) {
+                write_z_char_g('@');
+                write_z_char_g('D');
+                write_z_char_g('A' + ((j >>12) & 0x0F));
+                write_z_char_g('A' + ((j >> 8) & 0x0F));
+                write_z_char_g('A' + ((j >> 4) & 0x0F));
+                write_z_char_g('A' + ((j     ) & 0x0F));
+            }
+            else {
+                write_z_char_g(' '); /* error fallback */
+            }
           }
         }
         else {
@@ -899,6 +1014,7 @@ string; substituting '?'.");
       }
     }
     write_z_char_g(0);
+    zchars_trans_in_last_string=total_zchars_trans-zchars_trans_in_last_string;
 
   }
 
@@ -1008,13 +1124,6 @@ void compress_game_text()
     compression_table_size = 0;
   }
 
-  if (temporary_files_switch) {
-    fclose(Temp1_fp);
-    Temp1_fp=fopen(Temp1_Name,"rb");
-    if (Temp1_fp==NULL)
-      fatalerror("I/O failure: couldn't reopen temporary file 1");
-  }
-
   if (compression_switch) {
 
     for (lx=0, ix=0; lx<no_strings; lx++) {
@@ -1022,10 +1131,7 @@ void compress_game_text()
       int done=FALSE;
       int32 escapeval=0;
       while (!done) {
-        if (temporary_files_switch)
-          ch = fgetc(Temp1_fp);
-        else
-          ch = static_strings_area[ix];
+        ch = static_strings_area[ix];
         ix++;
         if (ix > static_strings_extent || ch < 0)
           compiler_error("Read too much not-yet-compressed text.");
@@ -1150,10 +1256,6 @@ void compress_game_text()
      without actually doing the compression. */
   compression_string_size = 0;
 
-  if (temporary_files_switch) {
-    fseek(Temp1_fp, 0, SEEK_SET);
-  }
-
   ensure_memory_list_available(&compressed_offsets_memlist, no_strings);
 
   for (lx=0, ix=0; lx<no_strings; lx++) {
@@ -1164,10 +1266,7 @@ void compress_game_text()
     compressed_offsets[lx] = compression_table_size + compression_string_size;
     compression_string_size++; /* for the type byte */
     while (!done) {
-      if (temporary_files_switch)
-        ch = fgetc(Temp1_fp);
-      else
-        ch = static_strings_area[ix];
+      ch = static_strings_area[ix];
       ix++;
       if (ix > static_strings_extent || ch < 0)
         compiler_error("Read too much not-yet-compressed text.");
@@ -1338,9 +1437,11 @@ static void optimise_pass(void)
                 }
             }
 #endif
-            printf("Pass %d, %4ld/%ld '%s' (%ld occurrences) ",
-                pass_no, (long int) i, (long int) no_occs, tlbtab[i].text,
-                (long int) tlbtab[i].occurrences);
+            if (optabbrevs_trace_setting >= 2) {
+                printf("Pass %d, %4ld/%ld '%s' (%ld occurrences) ",
+                    pass_no, (long int) i, (long int) no_occs, tlbtab[i].text,
+                    (long int) tlbtab[i].occurrences);
+            }
             TIMEVALUE_NOW(&t1);
             for (j=0; j<tlbtab[i].occurrences; j++)
             {   for (j2=0; j2<tlbtab[i].occurrences; j2++) grandflags[j2]=1;
@@ -1398,9 +1499,11 @@ static void optimise_pass(void)
                 }
                 FinishEarly: ;
             }
-            TIMEVALUE_NOW(&t2);
-            duration = TIMEVALUE_DIFFERENCE(&t1, &t2);
-            printf(" (%.4f seconds)\n", duration);
+            if (optabbrevs_trace_setting >= 2) {
+                TIMEVALUE_NOW(&t2);
+                duration = TIMEVALUE_DIFFERENCE(&t1, &t2);
+                printf(" (%.4f seconds)\n", duration);
+            }
         }
     }
 }
@@ -1534,8 +1637,10 @@ extern void optimise_abbreviations(void)
     grandflags=my_calloc(sizeof(int), max, "grandflags");
 
 
-    printf("Cross-reference table (%ld entries) built...\n",
-        (long int) no_occs);
+    if (optabbrevs_trace_setting >= 1) {
+        printf("Cross-reference table (%ld entries) built...\n",
+            (long int) no_occs);
+    }
     /*  for (i=0; i<no_occs; i++)
             printf("%4d %4d '%s' %d\n",i,tlbtab[i].intab,tlbtab[i].text,
                 tlbtab[i].occurrences);
@@ -1544,8 +1649,12 @@ extern void optimise_abbreviations(void)
     for (i=0; i<MAX_ABBREVS; i++) bestyet2[i].length=0;
     available=MAX_BESTYET;
     while ((available>0)&&(selected<MAX_ABBREVS))
-    {   printf("Pass %d\n", ++pass_no);
-
+    {
+        pass_no++;
+        if (optabbrevs_trace_setting >= 1) {
+            printf("Pass %d\n", pass_no);
+        }
+        
         optimise_pass();
         available=0;
         for (i=0; i<MAX_BESTYET; i++)
@@ -1578,11 +1687,13 @@ extern void optimise_abbreviations(void)
                 char testtext[4];
                 bestyet2[selected++]=bestyet[maxat];
 
-                printf(
-                    "Selection %2ld: '%s' (repeated %ld times, scoring %ld)\n",
-                    (long int) selected,bestyet[maxat].text,
-                    (long int) bestyet[maxat].popularity,
-                    (long int) bestyet[maxat].score);
+                if (optabbrevs_trace_setting >= 1) {
+                    printf(
+                        "Selection %2ld: '%s' (repeated %ld times, scoring %ld)\n",
+                        (long int) selected,bestyet[maxat].text,
+                        (long int) bestyet[maxat].popularity,
+                        (long int) bestyet[maxat].score);
+                }
 
                 testtext[0]=bestyet[maxat].text[0];
                 testtext[1]=bestyet[maxat].text[1];
@@ -1974,16 +2085,9 @@ static void recursively_sort(int node)
 }
 
 extern void sort_dictionary(void)
-{   int i;
-    
+{    
     final_dict_order = my_calloc(sizeof(int), dict_entries, "final dictionary ordering table");
     
-    if (module_switch)
-    {   for (i=0; i<dict_entries; i++)
-            final_dict_order[i] = i;
-        return;
-    }
-
     if (root != VACANT)
     {   fdo_count = 0; recursively_sort(root);
     }
@@ -2153,7 +2257,8 @@ extern int dictionary_add(char *dword, int x, int y, int z)
         p[2]=prepared_sort[2]; p[3]=prepared_sort[3];
         if (version_number > 3)
           {   p[4]=prepared_sort[4]; p[5]=prepared_sort[5]; }
-        p[res]=x; p[res+1]=y; p[res+2]=z;
+        p[res]=x; p[res+1]=y;
+        if (!ZCODE_LESS_DICT_DATA) p[res+2]=z;
         if (x & 128) p[res] = (p[res])|number_and_case;
 
         dictionary_top += DICT_ENTRY_BYTE_LENGTH;
@@ -2209,9 +2314,8 @@ extern void dictionary_set_verb_number(char *dword, int to)
 }
 
 /* ------------------------------------------------------------------------- */
-/*   Tracing code for the dictionary: used not only by "trace" and text      */
-/*   transcription, but also (in the case of "word_to_ascii") in a vital     */
-/*   by the linker.                                                          */
+/*   Tracing code for the dictionary: used by "trace" and text               */
+/*   transcription.                                                          */
 /* ------------------------------------------------------------------------- */
 
 /* In the dictionary-showing code, if d_show_buf is NULL, the text is
@@ -2369,13 +2473,13 @@ void print_dict_word(int node)
     }
 }
 
-static void recursively_show_z(int node)
+static void recursively_show_z(int node, int level)
 {   int i, cprinted, flags; uchar *p;
     char textual_form[32];
     int res = (version_number == 3)?4:6; /* byte length of encoded text */
 
     if (dtree[node].branch[0] != VACANT)
-        recursively_show_z(dtree[node].branch[0]);
+        recursively_show_z(dtree[node].branch[0], level);
 
     p = (uchar *)dictionary + 7 + DICT_ENTRY_BYTE_LENGTH*node;
 
@@ -2386,8 +2490,12 @@ static void recursively_show_z(int node)
     for (; cprinted < 4 + ((version_number==3)?6:9); cprinted++)
         show_char(' ');
 
-    if (d_show_buf == NULL)
-    {   for (i=0; i<DICT_ENTRY_BYTE_LENGTH; i++) printf("%02x ",p[i]);
+    /* The level-1 info can only be printfed (d_show_buf must be null). */
+    if (d_show_buf == NULL && level >= 1)
+    {
+        if (level >= 2) {
+            for (i=0; i<DICT_ENTRY_BYTE_LENGTH; i++) printf("%02x ",p[i]);
+        }
 
         flags = (int) p[res];
         if (flags & 128)
@@ -2415,15 +2523,15 @@ static void recursively_show_z(int node)
     }
 
     if (dtree[node].branch[1] != VACANT)
-        recursively_show_z(dtree[node].branch[1]);
+        recursively_show_z(dtree[node].branch[1], level);
 }
 
-static void recursively_show_g(int node)
+static void recursively_show_g(int node, int level)
 {   int i, cprinted;
     uchar *p;
 
     if (dtree[node].branch[0] != VACANT)
-        recursively_show_g(dtree[node].branch[0]);
+        recursively_show_g(dtree[node].branch[0], level);
 
     p = (uchar *)dictionary + 4 + DICT_ENTRY_BYTE_LENGTH*node;
 
@@ -2441,11 +2549,14 @@ static void recursively_show_g(int node)
     for (; cprinted<DICT_WORD_SIZE+4; cprinted++)
         show_char(' ');
 
-    if (d_show_buf == NULL)
+    /* The level-1 info can only be printfed (d_show_buf must be null). */
+    if (d_show_buf == NULL && level >= 1)
     {   int flagpos = (DICT_CHAR_SIZE == 1) ? (DICT_WORD_SIZE+1) : (DICT_WORD_BYTES+4);
         int flags = (p[flagpos+0] << 8) | (p[flagpos+1]);
         int verbnum = (p[flagpos+2] << 8) | (p[flagpos+3]);
-        for (i=0; i<DICT_ENTRY_BYTE_LENGTH; i++) printf("%02x ",p[i]);
+        if (level >= 2) {
+            for (i=0; i<DICT_ENTRY_BYTE_LENGTH; i++) printf("%02x ",p[i]);
+        }
         if (flags & 128)
         {   printf("noun ");
             if (flags & 4)  printf("p"); else printf(" ");
@@ -2468,7 +2579,7 @@ static void recursively_show_g(int node)
     }
 
     if (dtree[node].branch[1] != VACANT)
-        recursively_show_g(dtree[node].branch[1]);
+        recursively_show_g(dtree[node].branch[1], level);
 }
 
 static void show_alphabet(int i)
@@ -2487,14 +2598,17 @@ static void show_alphabet(int i)
     printf("\n");
 }
 
-extern void show_dictionary(void)
-{   printf("Dictionary contains %d entries:\n",dict_entries);
+extern void show_dictionary(int level)
+{
+    /* Level 0: show words only. Level 1: show words and flags.
+       Level 2: also show bytes.*/
+    printf("Dictionary contains %d entries:\n",dict_entries);
     if (dict_entries != 0)
     {   d_show_len = 0; d_show_buf = NULL; 
         if (!glulx_mode)    
-            recursively_show_z(root);
+            recursively_show_z(root, level);
         else
-            recursively_show_g(root);
+            recursively_show_g(root, level);
     }
     if (!glulx_mode)
     {
@@ -2519,9 +2633,9 @@ extern void write_dictionary_to_transcript(void)
     if (dict_entries != 0)
     {
         if (!glulx_mode)    
-            recursively_show_z(root);
+            recursively_show_z(root, 0);
         else
-            recursively_show_g(root);
+            recursively_show_g(root, 0);
     }
     if (d_show_len != 0) write_to_transcript_file(d_show_buf, STRCTX_DICT);
 

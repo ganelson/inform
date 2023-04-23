@@ -208,9 +208,16 @@ glui32 accel_get_param(glui32 index)
 
 static void accel_error(char *msg)
 {
-    glk_put_char('\n');
-    glk_put_string(msg);
-    glk_put_char('\n');
+    glui32 mode, rock;
+    stream_get_iosys(&mode, &rock);
+    if (mode == 2) { /* iosys_Glk */
+        glk_put_char('\n');
+        glk_put_string(msg);
+        glk_put_char('\n');
+    }
+    /* If we're in iosys_Filter, there's no way to validly call the filter
+       function, and the Glk printing path might throw a fatal error.
+       Just give up. */
 }
 
 static int obj_in_class(glui32 obj)

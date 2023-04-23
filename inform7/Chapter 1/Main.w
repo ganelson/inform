@@ -34,7 +34,7 @@ pathname *diagnostics_path = NULL;
 int Main::deputy(int argc, char *argv[]) {
 	@<Start up@>;
 	int proceed = Main::read_command_line(argc, argv);
-	PluginManager::start();
+	PluginCalls::start();
 	if (proceed) {
 		if (silence_is_golden == FALSE)
 			PRINT("Inform 7 v[[Version Number]] has started.\n", FALSE, TRUE);
@@ -175,6 +175,7 @@ compilation.
 @<Build the project@> =
 	Supervisor::go_operational();
 	if (proj) {
+		InterSkill::echo_kit_building();
 		Copies::build(STDOUT, proj->as_copy, BuildMethodology::stay_in_current_process());
 		Task::stop_timers();
 	}
@@ -306,6 +307,7 @@ compiler via Delia scripts in |intest|.
 @e SIGILS_CLSW
 @e TEST_OUTPUT_CLSW
 @e SILENCE_CLSW
+@e CHECK_RESOURCES_CLSW
 
 @<Register command-line arguments@> =
 	CommandLine::begin_group(INFORM_TESTING_CLSG, I"for testing and debugging inform7");
@@ -321,6 +323,8 @@ compiler via Delia scripts in |intest|.
 		L"display progress percentages", TRUE);
 	CommandLine::declare_boolean_switch(SIGILS_CLSW, L"sigils", 1,
 		L"print Problem message sigils", FALSE);
+	CommandLine::declare_boolean_switch(CHECK_RESOURCES_CLSW, L"resource-checking", 1,
+		L"check that figures, sounds and similar resources exist at compile-time", TRUE);
 	CommandLine::declare_boolean_switch(DIAGNOSTICS_CLSW, L"diagnostics", 2,
 		L"if no problems occur, write diagnostics files to directory X", FALSE);
 	CommandLine::declare_switch(REQUIRE_PROBLEM_CLSW, L"require-problem", 2,
@@ -348,6 +352,7 @@ void Main::switch(int id, int val, text_stream *arg, void *state) {
 		case SIGILS_CLSW: ProblemSigils::echo_sigils(val); break;
 		case REQUIRE_PROBLEM_CLSW: ProblemSigils::require(arg); break;
 		case DIAGNOSTICS_CLSW: diagnostics_path = Pathnames::from_text(arg); break;
+		case CHECK_RESOURCES_CLSW: ResourceFinder::set_mode(val); break;
 		case TEST_OUTPUT_CLSW: InternalTests::set_file(Filenames::from_text(arg)); break;
 		case SILENCE_CLSW: silence_is_golden = TRUE; break;
 	}

@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
 /*   "expressp" :  The expression parser                                     */
 /*                                                                           */
-/*   Part of Inform 6.36                                                     */
+/*   Part of Inform 6.41                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -132,7 +132,6 @@ but not used as a value:", unicode);
                        because there could be another definition coming. */
                     if (symbols[symbol].flags & REPLACE_SFLAG)
                     {   current_token.marker = SYMBOL_MV;
-                        if (module_switch) import_symbol(symbol);
                         v = symbol;
                         break;
                     }
@@ -144,7 +143,7 @@ but not used as a value:", unicode);
                 case OBJECT_T:
                 case CLASS_T:
                     /* All objects must be backpatched in Glulx. */
-                    if (module_switch || glulx_mode)
+                    if (glulx_mode)
                         current_token.marker = OBJECT_MV;
                     break;
                 case ARRAY_T:
@@ -154,12 +153,10 @@ but not used as a value:", unicode);
                     current_token.marker = STATIC_ARRAY_MV;
                     break;
                 case INDIVIDUAL_PROPERTY_T:
-                    if (module_switch) current_token.marker = IDENT_MV;
                     break;
                 case CONSTANT_T:
                     if (symbols[symbol].flags & (UNKNOWN_SFLAG + CHANGE_SFLAG))
                     {   current_token.marker = SYMBOL_MV;
-                        if (module_switch) import_symbol(symbol);
                         v = symbol;
                     }
                     else current_token.marker = 0;
@@ -547,7 +544,8 @@ static int find_prec(const token_data *a, const token_data *b)
 
 /* --- Converting token to operand ----------------------------------------- */
 
-/* Must match the switch statement below */
+/* List used to generate gameinfo.dbg.
+   Must match the switch statement below. */
 int z_system_constant_list[] =
     { adjectives_table_SC,
       actions_table_SC,
@@ -591,6 +589,8 @@ int z_system_constant_list[] =
       highest_class_number_SC,
       class_objects_array_SC,
       highest_object_number_SC,
+      dictionary_table_SC,
+      grammar_table_SC,
       -1 };
 
 static int32 value_of_system_constant_z(int t)
@@ -630,6 +630,10 @@ static int32 value_of_system_constant_z(int t)
         case array__start_SC:
             return variables_offset + (MAX_ZCODE_GLOBAL_VARS*WORDSIZE);
         case array__end_SC:
+            return static_memory_offset;
+        case dictionary_table_SC:
+            return dictionary_offset;
+        case grammar_table_SC:
             return static_memory_offset;
 
         case highest_attribute_number_SC:
@@ -692,7 +696,8 @@ static int32 value_of_system_constant_z(int t)
     return(0);
 }
 
-/* Must match the switch statement below */
+/* List used to generate gameinfo.dbg.
+   Must match the switch statement below. */
 int glulx_system_constant_list[] =
     { classes_table_SC,
       identifiers_table_SC,
@@ -1295,6 +1300,26 @@ static void emit_token(const token_data *t)
                 }
 
             }
+
+            /* We can also fold logical operations if they are certain
+               to short-circuit. The right-hand argument is skipped even
+               if it's non-constant or has side effects. */
+            
+            if ((o1.marker == 0)
+                && is_constant_ot(o1.type)) {
+                
+                if (t->value == LOGAND_OP && o1.value == 0)
+                {
+                    x = 0;
+                    goto FoldConstant;
+                }
+
+                if (t->value == LOGOR_OP && o1.value != 0)
+                {
+                    x = 1;
+                    goto FoldConstant;
+                }
+            }
     }
 
     ensure_memory_list_available(&ET_memlist, ET_used+1);
@@ -1471,7 +1496,6 @@ static void check_property_operator(int from_node)
                 && ((ET[n].value.type == LONG_CONSTANT_OT)
                     || (ET[n].value.type == SHORT_CONSTANT_OT))
                 && ((ET[n].value.value > 0) && (ET[n].value.value < 64))
-                && (!module_switch)
                 && (ET[n].value.marker == 0))
             flag = TRUE;
 

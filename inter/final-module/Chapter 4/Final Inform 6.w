@@ -85,11 +85,30 @@ manage the process.
 
 =
 int I6Target::begin_generation(code_generator *gtr, code_generation *gen) {
+	int omit_ur = TRUE;
 	CodeGen::create_segments(gen, I6Target::new_data(), I6_target_segments);
+	@<Parse the Inform compilation options@>;
 	@<Compile some I6 oddities@>;
 	@<Compile some veneer replacement code@>;
 	return FALSE;
 }
+
+@<Parse the Inform compilation options@> =
+	linked_list *opts = TargetVMs::option_list(gen->for_VM);
+	text_stream *opt;
+	LOOP_OVER_LINKED_LIST(opt, text_stream, opts) {
+		if (Str::eq_insensitive(opt, I"omit-unused-routines")) omit_ur = TRUE;
+		else if (Str::eq_insensitive(opt, I"no-omit-unused-routines")) omit_ur = FALSE;
+		else {
+			#ifdef PROBLEMS_MODULE
+			Problems::fatal("Unknown compilation format option");
+			#endif
+			#ifndef PROBLEMS_MODULE
+			Errors::fatal("Unknown compilation format option");
+			exit(1);
+			#endif
+		}
+	}
 
 @ Defining a constant called |Grammar__Version| tells Inform 6 which storage
 layout to use for command parser grammar. 2 is the shiny, modern one -- 1995
@@ -110,6 +129,11 @@ See the Inform 6 Technical Manual for more on these oddities.
 	WRITE("Constant Grammar__Version 2;\n");
 	WRITE("Global debug_flag;\n");
 	WRITE("Global or_tmp_var;\n");
+	CodeGen::deselect(gen, saved);
+	saved = CodeGen::select(gen, ICL_directives_I7CGS);
+	OUT = CodeGen::current(gen);
+	WRITE("!%% $ZCODE_LESS_DICT_DATA=1;\n");
+	if (omit_ur) WRITE("!%% $OMIT_UNUSED_ROUTINES=1;\n");
 	CodeGen::deselect(gen, saved);
 
 @ As noted above, I6 will add a veneer of code to what we compile. That veneer

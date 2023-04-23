@@ -1,0 +1,54 @@
+new base DIALOGUE_BEAT_TY {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: dialogue beat
+	plural: dialogue beats
+
+	default-value: 1
+	constant-compilation-method: quantitative
+	forbid-assertion-creation: yes
+
+	printing-routine: PrintDialogueBeatName
+
+	specification-text: A beat of dialogue occurring in a section of dialogue.
+}
+
+new base DIALOGUE_LINE_TY {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: dialogue line
+	plural: dialogue lines
+
+	default-value: 1
+	constant-compilation-method: quantitative
+	forbid-assertion-creation: yes
+
+	printing-routine: PrintDialogueLineName
+
+	specification-text: A line of dialogue occurring in a section of dialogue.
+}
+
+new base DIALOGUE_CHOICE_TY {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: dialogue choice
+	plural: dialogue choices
+
+	default-value: 1
+	constant-compilation-method: quantitative
+	forbid-assertion-creation: yes
+
+	printing-routine: PrintDialogueChoiceName
+
+	specification-text: A line of dialogue occurring in a section of dialogue.
+}
+
+new base PERFORMANCE_STYLE_TY {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: performance style
+	plural: performance styles
+
+	default-value: 1
+	constant-compilation-method: quantitative
+
+	printing-routine: PrintPerformanceStyleName
+
+	specification-text: A way to perform a given dialogue line.
+}

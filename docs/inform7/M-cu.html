@@ -186,8 +186,8 @@ general-purpose programming language. For examples of Basic Inform programs,
 see the test cases in <span class="extract"><span class="ConsoleText-extract-syntax">inform7/Tests/Test Basic</span></span>.
 </p>
 
-<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">-basic</span></span> is actually just an abbreviation for <span class="extract"><span class="ConsoleText-extract-syntax">-kit BasicInformKit</span></span>, and
-other kits can also be included. See <a href="../inbuild/index.html" class="internal">inbuild</a> for more on kits.
+<p class="commentary">Non-standard kits for an Inform 7 project can be specified using a metadata
+file: see the <a href="../inbuild/index.html" class="internal">inbuild</a> documentation for more.
 </p>
 
 <p class="commentary">The three commands <span class="extract"><span class="ConsoleText-extract-syntax">-pipeline</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">-pipeline-file</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">-variable</span></span> control
@@ -338,13 +338,7 @@ pane. But that's the exception.
 for an optional file called <span class="extract"><span class="ConsoleText-extract-syntax">inform7-settings.txt</span></span>. This is a sort of expert
 settings file, and consists of a list of additional command-line arguments
 (one per line): those are read exactly as if they had been passed on the
-command line. In particular, you could write:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    -kit BasicInformKit</span>
-</pre>
-<p class="commentary">and then the project will be Basic Inform, not regular Inform.
+command line.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Prehistory. </b>Build 1A01 was the first rough draft of a completed compiler: but it did
@@ -364,8 +358,8 @@ avoid blind alleys. A time trial of 2D52 against 1V59 on the same, very
 large, source text showed a speed increase of a factor of four. A second
 stage of rewriting, to generalise binary predicates and improve grammatical
 accuracy, began with 2D70. By the time of the first public beta release,
-3K27, the testing tool <span class="extract"><span class="extract-syntax">inform-test</span></span> had been written (it subsequently
-evolved into today's <span class="extract"><span class="extract-syntax">intest</span></span>), and Emily Short's extensive suite of Examples
+3K27, the testing tool <span class="extract"><span class="ConsoleText-extract-syntax">inform-test</span></span> had been written (it subsequently
+evolved into today's <span class="extract"><span class="ConsoleText-extract-syntax">intest</span></span>), and Emily Short's extensive suite of Examples
 had been worked into the verification process for builds. The history since
 3K27 is recorded in the published change log.
 </p>

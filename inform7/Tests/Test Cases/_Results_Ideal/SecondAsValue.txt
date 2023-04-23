@@ -1,7 +1,7 @@
    Shoe Store
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Shoe Store
   
@@ -12,7 +12,9 @@
   Actions listing on.
   
   >[2] rules all
+  [performing kit action ##RulesAll]
   Rules tracing now switched to "all". Type "rules off" to switch it off again.
+  [performing kit action ##RulesAll - ended without result]
   
   [Rule "parse command rule" applies.]
   >[3] dye shoe white
@@ -40,13 +42,13 @@
   You have dyes, but not bleach.
   [dyeing the satin shoe to white - failed the Check dyeing something to the color understood when the color understood is white]
   
-  [Rule "A first turn sequence rule" applies.]
+  [Rule "early scene changing stage rule" applies.]
   [Rule "scene change machinery rule" applies.]
   [Rule "every turn stage rule" applies.]
   [Rule "timed events rule" applies.]
   [Rule "advance time rule" applies.]
   [Rule "update chronological records rule" applies.]
-  [Rule "A last turn sequence rule" applies.]
+  [Rule "late scene changing stage rule" applies.]
   [Rule "scene change machinery rule" applies.]
   [Rule "adjust light rule" applies.]
   [Rule "note object acquisitions rule" applies.]
@@ -78,13 +80,13 @@
   The dress is already dyed white.
   [dyeing the dress to lilac - failed the Check dyeing something to the color understood]
   
-  [Rule "A first turn sequence rule" applies.]
+  [Rule "early scene changing stage rule" applies.]
   [Rule "scene change machinery rule" applies.]
   [Rule "every turn stage rule" applies.]
   [Rule "timed events rule" applies.]
   [Rule "advance time rule" applies.]
   [Rule "update chronological records rule" applies.]
-  [Rule "A last turn sequence rule" applies.]
+  [Rule "late scene changing stage rule" applies.]
   [Rule "scene change machinery rule" applies.]
   [Rule "adjust light rule" applies.]
   [Rule "note object acquisitions rule" applies.]
@@ -116,13 +118,13 @@
   The satin shoe is already dyed white.
   [dyeing the satin shoe to light purple - failed the Check dyeing something to the color understood]
   
-  [Rule "A first turn sequence rule" applies.]
+  [Rule "early scene changing stage rule" applies.]
   [Rule "scene change machinery rule" applies.]
   [Rule "every turn stage rule" applies.]
   [Rule "timed events rule" applies.]
   [Rule "advance time rule" applies.]
   [Rule "update chronological records rule" applies.]
-  [Rule "A last turn sequence rule" applies.]
+  [Rule "late scene changing stage rule" applies.]
   [Rule "scene change machinery rule" applies.]
   [Rule "adjust light rule" applies.]
   [Rule "note object acquisitions rule" applies.]
@@ -154,13 +156,13 @@
   The satin shoe is already dyed white.
   [dyeing the satin shoe to light purple - failed the Check dyeing something to the color understood]
   
-  [Rule "A first turn sequence rule" applies.]
+  [Rule "early scene changing stage rule" applies.]
   [Rule "scene change machinery rule" applies.]
   [Rule "every turn stage rule" applies.]
   [Rule "timed events rule" applies.]
   [Rule "advance time rule" applies.]
   [Rule "update chronological records rule" applies.]
-  [Rule "A last turn sequence rule" applies.]
+  [Rule "late scene changing stage rule" applies.]
   [Rule "scene change machinery rule" applies.]
   [Rule "adjust light rule" applies.]
   [Rule "note object acquisitions rule" applies.]

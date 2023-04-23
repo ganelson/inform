@@ -19,6 +19,7 @@ later on, as needed, just for extensions of interest: see below.
 @ =
 void ExtensionManager::start(void) {
 	extension_genre = Genres::new(I"extension", TRUE);
+	Genres::place_in_class(extension_genre, 1);
 	METHOD_ADD(extension_genre, GENRE_WRITE_WORK_MTID, ExtensionManager::write_work);
 	METHOD_ADD(extension_genre, GENRE_CLAIM_AS_COPY_MTID, ExtensionManager::claim_as_copy);
 	METHOD_ADD(extension_genre, GENRE_SEARCH_NEST_FOR_MTID, ExtensionManager::search_nest_for);
@@ -51,7 +52,7 @@ inform_extension *ExtensionManager::from_copy(inbuild_copy *C) {
 }
 
 dictionary *ext_copy_cache = NULL;
-inbuild_copy *ExtensionManager::new_copy(filename *F) {
+inbuild_copy *ExtensionManager::new_copy(filename *F, inbuild_nest *N) {
 	if (ext_copy_cache == NULL) ext_copy_cache = Dictionaries::new(16, FALSE);
 	TEMPORARY_TEXT(key)
 	WRITE_TO(key, "%f", F);
@@ -63,7 +64,7 @@ inbuild_copy *ExtensionManager::new_copy(filename *F) {
 				Editions::new(
 					Works::new(extension_genre, I"Untitled", I"Anonymous"),
 					VersionNumbers::null()),
-				F);
+				F, N);
 		Extensions::scan(C);
 		Dictionaries::create(ext_copy_cache, key);
 		Dictionaries::write_value(ext_copy_cache, key, C);
@@ -89,13 +90,13 @@ void ExtensionManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 	if (directory_status == TRUE) return;
 	if (Str::eq_insensitive(ext, I"i7x")) {
 		filename *F = Filenames::from_text(arg);
-		*C = ExtensionManager::claim_file_as_copy(F);
+		*C = ExtensionManager::claim_file_as_copy(F, NULL);
 	}
 }
 
-inbuild_copy *ExtensionManager::claim_file_as_copy(filename *F) {
+inbuild_copy *ExtensionManager::claim_file_as_copy(filename *F, inbuild_nest *N) {
 	if (TextFiles::exists(F) == FALSE) return NULL;
-	return ExtensionManager::new_copy(F);
+	return ExtensionManager::new_copy(F, N);
 }
 
 @h Searching.
@@ -119,7 +120,8 @@ with leafnames beginning |.|, so we reject those too.
 =
 void ExtensionManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 	inbuild_requirement *req, linked_list *search_results) {
-	if ((req->work->genre) && (req->work->genre != extension_genre)) return;
+	if ((req->work->genre) && (Genres::equivalent(req->work->genre, extension_genre) == FALSE))
+		return;
 	pathname *P = ExtensionManager::path_within_nest(N);
 	if (Str::len(req->work->author_name) > 0) {
 		linked_list *L = Directories::listing(P);
@@ -130,25 +132,25 @@ void ExtensionManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 				if ((Str::ne(entry, I"Reserved")) &&
 					(Str::eq_insensitive(entry, req->work->author_name))) {
 					pathname *Q = Pathnames::down(P, entry);
-					ExtensionManager::search_nest_for_r(Q, N, req, search_results);
+					ExtensionManager::search_nest_for_r(Q, N, req, search_results, FALSE);
 				}
 			}
 		}
 	} else {
-		ExtensionManager::search_nest_for_r(P, N, req, search_results);
+		ExtensionManager::search_nest_for_r(P, N, req, search_results, TRUE);
 	}
 }
 
 void ExtensionManager::search_nest_for_r(pathname *P, inbuild_nest *N,
-	inbuild_requirement *req, linked_list *search_results) {
+	inbuild_requirement *req, linked_list *search_results, int recurse) {
 	linked_list *L = Directories::listing(P);
 	text_stream *entry;
 	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
 		if (Platform::is_folder_separator(Str::get_last_char(entry))) {
 			Str::delete_last_character(entry);
-			if (Str::ne(entry, I"Reserved")) {
+			if ((recurse) && (Str::ne(entry, I"Reserved")) && (Str::ne(entry, I"Source"))) {
 				pathname *Q = Pathnames::down(P, entry);
-				ExtensionManager::search_nest_for_r(Q, N, req, search_results);
+				ExtensionManager::search_nest_for_r(Q, N, req, search_results, TRUE);
 			}
 		} else {
 			filename *F = Filenames::in(P, entry);
@@ -163,7 +165,7 @@ void ExtensionManager::search_nest_for_single_file(filename *F, inbuild_nest *N,
 	Filenames::write_extension(fext, F);
 	if ((Str::eq_insensitive(fext, I".i7x")) &&
 		(Str::get_first_char(Filenames::get_leafname(F)) != '.')) {
-		inbuild_copy *C = ExtensionManager::claim_file_as_copy(F);
+		inbuild_copy *C = ExtensionManager::claim_file_as_copy(F, N);
 		if ((C) && (Requirements::meets(C->edition, req))) {
 			Nests::add_search_result(search_results, N, C, req);
 		}
@@ -176,15 +178,20 @@ Now the task is to copy an extension into place in a nest. This is easy,
 since an extension is a single file; to sync, we just overwrite.
 
 =
-void ExtensionManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
-	int syncing, build_methodology *meth) {
-	pathname *E = ExtensionManager::path_within_nest(N);
+filename *ExtensionManager::filename_in_nest(inbuild_nest *N, inbuild_edition *E) {
+	pathname *EX = ExtensionManager::path_within_nest(N);
 	TEMPORARY_TEXT(leaf)
-	Editions::write_canonical_leaf(leaf, C->edition);
+	Editions::write_canonical_leaf(leaf, E);
 	WRITE_TO(leaf, ".i7x");
 	filename *F = Filenames::in(
-		Pathnames::down(E, C->edition->work->author_name), leaf);
+		Pathnames::down(EX, E->work->author_name), leaf);
 	DISCARD_TEXT(leaf)
+	return F;
+}
+
+void ExtensionManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
+	int syncing, build_methodology *meth) {
+	filename *F = ExtensionManager::filename_in_nest(N, C->edition);
 
 	if (TextFiles::exists(F)) {
 		if (syncing == FALSE) { Copies::overwrite_error(C, N); return; }

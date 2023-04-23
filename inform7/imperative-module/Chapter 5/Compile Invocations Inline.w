@@ -547,7 +547,7 @@ problem messages are phrased differently if something goes wrong.
 @<Inline annotation "try-action"@> =
 	if (Rvalues::is_CONSTANT_of_kind(supplied, K_stored_action)) {
 		explicit_action *ea = Node::get_constant_explicit_action(supplied);
-		CompileRvalues::compile_explicit_action(ea, FALSE);
+		CSIInline::compile_try_action(ea, FALSE);
 	} else {
 		EmitCode::call(Hierarchy::find(STORED_ACTION_TY_TRY_HL));
 		EmitCode::down();
@@ -560,42 +560,7 @@ problem messages are phrased differently if something goes wrong.
 @<Inline annotation "try-action-silently"@> =
 	if (Rvalues::is_CONSTANT_of_kind(supplied, K_stored_action)) {
 		explicit_action *ea = Node::get_constant_explicit_action(supplied);
-		EmitCode::inv(PUSH_BIP);
-		EmitCode::down();
-			EmitCode::val_iname(K_value, Hierarchy::find(KEEP_SILENT_HL));
-		EmitCode::up();
-		EmitCode::inv(STORE_BIP);
-		EmitCode::down();
-			EmitCode::ref_iname(K_value, Hierarchy::find(KEEP_SILENT_HL));
-			EmitCode::val_number(1);
-		EmitCode::up();
-		EmitCode::inv(PUSH_BIP);
-		EmitCode::down();
-			EmitCode::val_iname(K_value, Hierarchy::find(SAY__P_HL));
-		EmitCode::up();
-		EmitCode::inv(PUSH_BIP);
-		EmitCode::down();
-			EmitCode::val_iname(K_value, Hierarchy::find(SAY__PC_HL));
-		EmitCode::up();
-		EmitCode::call(Hierarchy::find(CLEARPARAGRAPHING_HL));
-		EmitCode::down();
-			EmitCode::val_true();
-		EmitCode::up();
-		CompileRvalues::compile_explicit_action(ea, FALSE);
-		EmitCode::call(Hierarchy::find(DIVIDEPARAGRAPHPOINT_HL));
-		EmitCode::inv(PULL_BIP);
-		EmitCode::down();
-			EmitCode::ref_iname(K_value, Hierarchy::find(SAY__PC_HL));
-		EmitCode::up();
-		EmitCode::inv(PULL_BIP);
-		EmitCode::down();
-			EmitCode::ref_iname(K_value, Hierarchy::find(SAY__P_HL));
-		EmitCode::up();
-		EmitCode::call(Hierarchy::find(ADJUSTPARAGRAPHPOINT_HL));
-		EmitCode::inv(PULL_BIP);
-		EmitCode::down();
-			EmitCode::ref_iname(K_value, Hierarchy::find(KEEP_SILENT_HL));
-		EmitCode::up();
+		CSIInline::compile_try_action(ea, TRUE);
 	} else {
 		EmitCode::call(Hierarchy::find(STORED_ACTION_TY_TRY_HL));
 		EmitCode::down();
@@ -639,6 +604,52 @@ that would be "property name". Instead:
 		"invalid annotation '%2'.");
 	Problems::issue_problem_end();
 	return;
+
+@h Try and try silently.
+
+=
+void CSIInline::compile_try_action(explicit_action *ea, int silently) {
+	if (silently) {
+		EmitCode::inv(PUSH_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, Hierarchy::find(KEEP_SILENT_HL));
+		EmitCode::up();
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_iname(K_value, Hierarchy::find(KEEP_SILENT_HL));
+			EmitCode::val_number(1);
+		EmitCode::up();
+		EmitCode::inv(PUSH_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, Hierarchy::find(SAY__P_HL));
+		EmitCode::up();
+		EmitCode::inv(PUSH_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_value, Hierarchy::find(SAY__PC_HL));
+		EmitCode::up();
+		EmitCode::call(Hierarchy::find(CLEARPARAGRAPHING_HL));
+		EmitCode::down();
+			EmitCode::val_true();
+		EmitCode::up();
+	}
+	CompileRvalues::compile_explicit_action(ea, FALSE);
+	if (silently) {
+		EmitCode::call(Hierarchy::find(DIVIDEPARAGRAPHPOINT_HL));
+		EmitCode::inv(PULL_BIP);
+		EmitCode::down();
+			EmitCode::ref_iname(K_value, Hierarchy::find(SAY__PC_HL));
+		EmitCode::up();
+		EmitCode::inv(PULL_BIP);
+		EmitCode::down();
+			EmitCode::ref_iname(K_value, Hierarchy::find(SAY__P_HL));
+		EmitCode::up();
+		EmitCode::call(Hierarchy::find(ADJUSTPARAGRAPHPOINT_HL));
+		EmitCode::inv(PULL_BIP);
+		EmitCode::down();
+			EmitCode::ref_iname(K_value, Hierarchy::find(KEEP_SILENT_HL));
+		EmitCode::up();
+	}
+}
 
 @h Commands about kinds.
 And that's it for the general machinery, but in another sense we're only just

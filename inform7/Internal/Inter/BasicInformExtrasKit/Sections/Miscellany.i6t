@@ -16,6 +16,8 @@ before it is known how they will be used.
 @h Miscellany.
 
 =
+Constant ACTION_PROCESSING_RB = -1; ! Identifier needs to exist even when the rulebook does not
+
 [ DefaultTopic; return 0; ];
 [ PrintSnippet x; ];
 [ LIST_WRITER_INTERNAL_RM x;

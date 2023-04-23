@@ -4,7 +4,7 @@
 
 Welcome
 An Interactive Fiction
-Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
 
 Atom Furnace
 
@@ -14,13 +14,17 @@ Atom Furnace
 Actions listing on.
 
 >[2] rules
+[performing kit action ##RulesOn]
 Rules tracing now switched on. Type "rules off" to switch it off again, or "rules all" to include even rules which do not apply.
+[performing kit action ##RulesOn - ended without result]
 
 [Rule "parse command rule" applies.]
 >[3] trace 2
 [Rule "declare everything initially unmentioned rule" applies.]
 [Rule "generate action rule" applies.]
+[performing kit action ##TraceLevel]
 [Parser tracing set to level 2.]
+[performing kit action ##TraceLevel - ended without result]
 
 [Rule "parse command rule" applies.]
 >[4] x20
@@ -52,16 +56,16 @@ Rules tracing now switched on. Type "rules off" to switch it off again, or "rule
 [Rule "after stage rule" applies.]
 [Rule "investigate player's awareness after action rule" applies.]
 [Rule "report stage rule" applies.]
-[Rule "last specific action-processing rule" applies.]
+[Rule "default action success rule" applies.]
 [action20ing - succeeded]
 
-[Rule "A first turn sequence rule" applies.]
+[Rule "early scene changing stage rule" applies.]
 [Rule "scene change machinery rule" applies.]
 [Rule "every turn stage rule" applies.]
 [Rule "timed events rule" applies.]
 [Rule "advance time rule" applies.]
 [Rule "update chronological records rule" applies.]
-[Rule "A last turn sequence rule" applies.]
+[Rule "late scene changing stage rule" applies.]
 [Rule "scene change machinery rule" applies.]
 [Rule "adjust light rule" applies.]
 [Rule "note object acquisitions rule" applies.]
@@ -96,16 +100,16 @@ Rules tracing now switched on. Type "rules off" to switch it off again, or "rule
 [Rule "after stage rule" applies.]
 [Rule "investigate player's awareness after action rule" applies.]
 [Rule "report stage rule" applies.]
-[Rule "last specific action-processing rule" applies.]
+[Rule "default action success rule" applies.]
 [action110ing - succeeded]
 
-[Rule "A first turn sequence rule" applies.]
+[Rule "early scene changing stage rule" applies.]
 [Rule "scene change machinery rule" applies.]
 [Rule "every turn stage rule" applies.]
 [Rule "timed events rule" applies.]
 [Rule "advance time rule" applies.]
 [Rule "update chronological records rule" applies.]
-[Rule "A last turn sequence rule" applies.]
+[Rule "late scene changing stage rule" applies.]
 [Rule "scene change machinery rule" applies.]
 [Rule "adjust light rule" applies.]
 [Rule "note object acquisitions rule" applies.]
@@ -140,16 +144,16 @@ Rules tracing now switched on. Type "rules off" to switch it off again, or "rule
 [Rule "after stage rule" applies.]
 [Rule "investigate player's awareness after action rule" applies.]
 [Rule "report stage rule" applies.]
-[Rule "last specific action-processing rule" applies.]
+[Rule "default action success rule" applies.]
 [action220ing - succeeded]
 
-[Rule "A first turn sequence rule" applies.]
+[Rule "early scene changing stage rule" applies.]
 [Rule "scene change machinery rule" applies.]
 [Rule "every turn stage rule" applies.]
 [Rule "timed events rule" applies.]
 [Rule "advance time rule" applies.]
 [Rule "update chronological records rule" applies.]
-[Rule "A last turn sequence rule" applies.]
+[Rule "late scene changing stage rule" applies.]
 [Rule "scene change machinery rule" applies.]
 [Rule "adjust light rule" applies.]
 [Rule "note object acquisitions rule" applies.]
@@ -184,16 +188,16 @@ Rules tracing now switched on. Type "rules off" to switch it off again, or "rule
 [Rule "after stage rule" applies.]
 [Rule "investigate player's awareness after action rule" applies.]
 [Rule "report stage rule" applies.]
-[Rule "last specific action-processing rule" applies.]
+[Rule "default action success rule" applies.]
 [action230ing - succeeded]
 
-[Rule "A first turn sequence rule" applies.]
+[Rule "early scene changing stage rule" applies.]
 [Rule "scene change machinery rule" applies.]
 [Rule "every turn stage rule" applies.]
 [Rule "timed events rule" applies.]
 [Rule "advance time rule" applies.]
 [Rule "update chronological records rule" applies.]
-[Rule "A last turn sequence rule" applies.]
+[Rule "late scene changing stage rule" applies.]
 [Rule "scene change machinery rule" applies.]
 [Rule "adjust light rule" applies.]
 [Rule "note object acquisitions rule" applies.]
@@ -228,16 +232,16 @@ Rules tracing now switched on. Type "rules off" to switch it off again, or "rule
 [Rule "after stage rule" applies.]
 [Rule "investigate player's awareness after action rule" applies.]
 [Rule "report stage rule" applies.]
-[Rule "last specific action-processing rule" applies.]
+[Rule "default action success rule" applies.]
 [action240ing - succeeded]
 
-[Rule "A first turn sequence rule" applies.]
+[Rule "early scene changing stage rule" applies.]
 [Rule "scene change machinery rule" applies.]
 [Rule "every turn stage rule" applies.]
 [Rule "timed events rule" applies.]
 [Rule "advance time rule" applies.]
 [Rule "update chronological records rule" applies.]
-[Rule "A last turn sequence rule" applies.]
+[Rule "late scene changing stage rule" applies.]
 [Rule "scene change machinery rule" applies.]
 [Rule "adjust light rule" applies.]
 [Rule "note object acquisitions rule" applies.]

@@ -399,7 +399,7 @@ fractions: so for instance,
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    picture "backdrop/png" scale min 1/10 max 8/1</span>
 </pre>
-<p class="commentary">means"you can display this anywhere between one tenth normal size and
+<p class="commentary">means "you can display this anywhere between one tenth normal size and
 eight times normal size, but if possible it ought to be just its normal
 size".
 </p>
@@ -418,7 +418,27 @@ of a typical desktop of 2001.
 <span class="extract"><span class="extract-syntax">picture</span></span> command in the usual way, and must have picture ID 1.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Three commands help us to specify locations.
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Fourth, a command for adding static internal data files:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    data &lt;id&gt; &lt;filename&gt; format &lt;format&gt;</span>
+</pre>
+<p class="commentary">Tells us to take the given data file and embed it into the blorb so that its
+contents can be read whenever the story is played. The "format" here can be
+either <span class="extract"><span class="extract-syntax">TEXT</span></span> or <span class="extract"><span class="extract-syntax">BINA</span></span>, meaning plain text or binary data.
+</p>
+
+<p class="commentary">Exactly what <span class="extract"><span class="extract-syntax">TEXT</span></span> means will depend on how the story file wants to read
+the file, but the convention used by Inform is that it should be UTF-8 plaib
+text with Unix line breaks.
+</p>
+
+<p class="commentary">Similarly, by <span class="extract"><span class="extract-syntax">BINA</span></span> Inform understands a sequence of big-endian four-byte
+data words.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Three commands help us to specify locations.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -448,7 +468,7 @@ can be any number of template paths set, and Inblorb checks them in order
 of declaration (i.e., most important first).
 </p>
 
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Next we come to commands for specifying what Inblorb should release.
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Next we come to commands for specifying what Inblorb should release.
 At present it has seven forms of output: Blorb file, solution file, source
 text, iFiction record, miscellaneous file, website and interpreter.
 </p>
@@ -496,7 +516,7 @@ original.
 the named file is placed in the release folder.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Finally we come to web pages.
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>Finally we come to web pages.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -544,7 +564,7 @@ specified in the template's "(extras.txt)" are released as well. See
 "Writing with Inform" for more.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>An optional addition for a website is to incorporate a playable-in-browser
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>An optional addition for a website is to incorporate a playable-in-browser
 form of the story, by base64-encoding the story file within a Javascript
 wrapper, then calling an interpreter such as Parchment.
 </p>
@@ -579,7 +599,7 @@ interpreter with a Glulx story file, it's Inblorb which issues the error,
 not Inform itself.)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>Finally (really finally this time), three commands to do with the
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>Finally (really finally this time), three commands to do with the
 "status" page, an HTML page written by Inblorb to report back on
 what it has done. If requested, this is constructed for reading within
 the Inform application &mdash; it is not a valid HTML page in other

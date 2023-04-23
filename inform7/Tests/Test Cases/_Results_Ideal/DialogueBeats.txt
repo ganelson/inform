@@ -1,0 +1,74 @@
+   Cricket History Museum
+  == The stock...
+  "list of dialogue beats" = list of dialogue beats: {alpha beat, beta beat, gamma beat, delta beat, epsilon beat, nu beat, mu beat, eta beat}
+  "list of dialogue lines" = list of dialogue lines: {line-1, line-2, line-3, line-4, line-5, line-6, disgruntled ball line, line-8, line-9, line-10}
+  "list of dialogue choices" = list of dialogue choices: {}
+  == Dual scene and beat naming...
+  scene: alpha scene
+  dialogue beat: alpha beat
+  == Properties...
+  "list of dramatic dialogue beats" = list of dialogue beats: {alpha beat, beta beat, gamma beat, nu beat, mu beat, eta beat}
+  "list of subdued dialogue beats" = list of dialogue beats: {epsilon beat}
+  == Performance...
+  "list of unperformed dialogue beats" = list of dialogue beats: {alpha beat, beta beat, gamma beat, delta beat, epsilon beat, nu beat, mu beat, eta beat}
+  
+  Daphne: "Welcome to the Museum of Cricket."
+  
+  "list of unperformed dialogue beats" = list of dialogue beats: {beta beat, gamma beat, delta beat, epsilon beat, nu beat, mu beat, eta beat}
+  == The live conversational subject list...
+  "live conversational subject list" = list of objects: {}
+  "live conversational subject list" = list of objects: {ball, bat}
+  "live conversational subject list" = list of objects: {ball}
+  "live conversational subject list" = list of objects: {}
+  "live conversational subject list" = list of objects: {}
+  "live conversational subject list" = list of objects: {Daphne, pads}
+  == Relevance...
+  "live conversational subject list" = list of objects: {bat}
+  "list of relevant dialogue beats" = list of dialogue beats: {beta beat, gamma beat}
+  "live conversational subject list" = list of objects: {ball}
+  "list of relevant dialogue beats" = list of dialogue beats: {gamma beat}
+  "live conversational subject list" = list of objects: {bat, scoring pencil}
+  "list of relevant dialogue beats" = list of dialogue beats: {beta beat, gamma beat}
+  == Availability...
+  "list of available dialogue beats" = list of dialogue beats: {alpha beat, beta beat, gamma beat, nu beat, eta beat}
+  
+  Daphne: "A cricket ball is made with a core of cork, which is layered with tightly wound string, and covered by a leather case with a slightly raised sewn seam."
+  
+  "list of available dialogue beats" = list of dialogue beats: {alpha beat, beta beat, gamma beat, delta beat, epsilon beat, nu beat, eta beat}
+  Daphne: "Cricket's kind of dull, when you think about it."
+  
+  The ball: "I disagree!"
+  
+  The bat: "I especially enjoy it."
+  
+  "list of available dialogue beats" = list of dialogue beats: {alpha beat, beta beat, gamma beat, epsilon beat, nu beat}
+  "list of available dialogue beats" = list of dialogue beats: {alpha beat, beta beat, gamma beat, epsilon beat, nu beat, mu beat}
+  == Structure...
+  alpha beat (available, irrelevant, accessible, unperformed, non-recurring, unspontaneous):
+    LINE line-1
+  beta beat (available, relevant, accessible, unperformed, non-recurring, unspontaneous):
+    LINE line-2
+  gamma beat (available, relevant, inaccessible, performed, non-recurring, unspontaneous):
+    LINE line-3
+  delta beat (unavailable, irrelevant, accessible, unperformed, non-recurring, unspontaneous):
+    LINE line-4
+  epsilon beat (available, irrelevant, accessible, unperformed, non-recurring, unspontaneous):
+    LINE line-5
+  nu beat (available, irrelevant, inaccessible, performed, non-recurring, unspontaneous):
+    LINE line-6
+      LINE disgruntled ball line
+      LINE line-8
+  mu beat (available, irrelevant, accessible, unperformed, non-recurring, unspontaneous):
+    LINE line-9
+  eta beat (unavailable, irrelevant, accessible, unperformed, non-recurring, unspontaneous):
+    LINE line-10
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Cricket History Museum
+  You can see a bat, a ball, a pads, Daphne and a trophy case (in which are an urn and a scoring pencil) here.
+  
+> >   Cricket History Museum
+> Are you sure you want to quit? 

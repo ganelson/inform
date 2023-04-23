@@ -291,104 +291,10 @@ Constant RTP_RELATIONCHANGEIMPOSSIBLE = 66;
 Constant RTP_RELMINIMAL              = 67;
 Constant RTP_LISTSIZENEGATIVE        = 68;
 Constant RTP_REGIONSNOTADJACENT      = 69;
-
-
-@h Template Activities.
-These are the activities defined in the Standard Rules. Most, though not
-all, are carried out by explicit function calls in the template layer,
-which is why we need their ID numbers: note that Inform assigns each activity a
-unique ID number on creation, counting upwards from 0, and that it
-processes the Standard Rules before any other source text. (These numbers
-must correspond {\it both} to those in the source of Inform, {\it and} to the
-creation sequence in the Standard Rules.)
-
-=
-Constant STARTING_VIRTUAL_MACHINE_ACT    = 0;
-Constant PRINTING_THE_NAME_ACT           = 1;
-Constant PRINTING_THE_PLURAL_NAME_ACT    = 2;
-
-Constant PRINTING_RESPONSE_ACT           = 3;
-
-Constant PRINTING_A_NUMBER_OF_ACT        = 4;
-Constant PRINTING_ROOM_DESC_DETAILS_ACT  = 5;
-Constant PRINTING_INVENTORY_DETAILS_ACT  = 6;
-Constant LISTING_CONTENTS_ACT            = 7;
-Constant GROUPING_TOGETHER_ACT           = 8;
-Constant WRITING_A_PARAGRAPH_ABOUT_ACT   = 9;
-Constant LISTING_NONDESCRIPT_ITEMS_ACT   = 10;
-
-Constant PRINTING_NAME_OF_DARK_ROOM_ACT  = 11;
-Constant PRINTING_DESC_OF_DARK_ROOM_ACT  = 12;
-Constant PRINTING_NEWS_OF_DARKNESS_ACT   = 13;
-Constant PRINTING_NEWS_OF_LIGHT_ACT      = 14;
-Constant REFUSAL_TO_ACT_IN_DARK_ACT      = 15;
-
-Constant CONSTRUCTING_STATUS_LINE_ACT    = 16;
-Constant PRINTING_BANNER_TEXT_ACT        = 17;
-
-Constant READING_A_COMMAND_ACT           = 18;
-Constant DECIDING_SCOPE_ACT              = 19;
-Constant DECIDING_CONCEALED_POSSESS_ACT  = 20;
-Constant DECIDING_WHETHER_ALL_INC_ACT    = 21;
-Constant CLARIFYING_PARSERS_CHOICE_ACT   = 22;
-Constant ASKING_WHICH_DO_YOU_MEAN_ACT    = 23;
-Constant PRINTING_A_PARSER_ERROR_ACT     = 24;
-Constant SUPPLYING_A_MISSING_NOUN_ACT    = 25;
-Constant SUPPLYING_A_MISSING_SECOND_ACT  = 26;
-Constant IMPLICITLY_TAKING_ACT           = 27;
-
-Constant AMUSING_A_VICTORIOUS_PLAYER_ACT = 28;
-Constant PRINTING_PLAYERS_OBITUARY_ACT   = 29;
-Constant DEALING_WITH_FINAL_QUESTION_ACT = 30;
-
-Constant PRINTING_LOCALE_DESCRIPTION_ACT = 31;
-Constant CHOOSING_NOTABLE_LOCALE_OBJ_ACT = 32;
-Constant PRINTING_LOCALE_PARAGRAPH_ACT   = 33;
-
-@h Template Rulebooks.
-Rulebooks are created in a similar way, and again are numbered upwards from
-0 in order of creation. These are the ones used in the template layer.
-(These numbers must correspond {\it both} to those in the source of Inform,
-{\it and} to the creation sequence in the Standard Rules.)
-
-=
-Constant STARTUP_RB                      = 0;
-Constant SHUTDOWN_RB                     = 1;
-
-! 2, 3, 4 are used by the "Printing the name of something" activity
-! 5, 6, 7 are used by the "Printing the plural name of something" activity
-
-Constant TURN_SEQUENCE_RB                = 11;
-
-! 9 is the Scene changing rules
-
-Constant WHEN_PLAY_BEGINS_RB             = 13;
-Constant WHEN_PLAY_ENDS_RB               = 14;
-Constant WHEN_SCENE_BEGINS_RB            = 15;
-Constant WHEN_SCENE_ENDS_RB              = 16;
-
-! 14 is Every turn
-
-Constant ACTION_PROCESSING_RB            = 18;
-Constant SETTING_ACTION_VARIABLES_RB     = 19;
-Constant SPECIFIC_ACTION_PROCESSING_RB   = 20;
-
-! 18 is player's action awareness rules
-
-Constant ACCESSIBILITY_RB                = 22;
-Constant REACHING_INSIDE_RB              = 23;
-Constant REACHING_OUTSIDE_RB             = 24;
-Constant VISIBLE_RB                      = 25;
-
-Constant PERSUADE_RB                     = 26;
-Constant UNSUCCESSFUL_ATTEMPT_RB         = 27;
-
-! 25 is before, 26 is instead, 27 is check, 28 is carry out
-
-Constant AFTER_RB                        = 32;
-Constant REPORT_RB                       = 33;
-Constant DOES_THE_PLAYER_MEAN_RB		 = 34;
-Constant MULTIPLE_ACTION_PROCESSING_RB   = 35;
+Constant RTP_HOLDINGISFORTHINGS      = 70;
+Constant RTP_DISALLOWEDREGIONCHANGE  = 71;
+Constant RTP_NOTASUPPORTER           = 72;
+Constant RTP_BADCONTAINMENT          = 73;
 
 @h Scope Searching Reasons.
 The parser makes use of a mechanism for searching through the objects currently

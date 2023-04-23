@@ -35,12 +35,12 @@ An object can be ambiguously plural.
 @ These are Inter identifier names.
 
 =
-The indefinite article property translates into Inter as "article".
-The printed plural name property translates into Inter as "plural".
-The printed name property translates into Inter as "short_name".
-The plural-named property translates into Inter as "pluralname".
-The ambiguously plural property translates into Inter as "ambigpluralname".
-The proper-named property translates into Inter as "proper".
+The indefinite article property is defined by Inter as "article".
+The printed plural name property is defined by Inter as "plural".
+The printed name property is defined by Inter as "short_name".
+The plural-named property is defined by Inter as "pluralname".
+The ambiguously plural property is defined by Inter as "ambigpluralname".
+The proper-named property is defined by Inter as "proper".
 
 @h Variables.
 Most of the built-in kinds and kind constructors, such as "number" and
@@ -63,7 +63,7 @@ despite the definition below, it is not necessarily an object.)
 
 =
 The parameter-object is an object that varies.
-The parameter-object variable translates into Inter as "parameter_value".
+The parameter-object variable is defined by Inter as "parameter_value".
 
 @h Rulebooks.
 The Standard Rules (for interactive fiction) create a wealth of rulebooks
@@ -80,26 +80,31 @@ template libraries. (Remember that creating an activity creates three rulebooks.
 
 =
 Startup rules is a rulebook.
+The startup rulebook is accessible to Inter as "STARTUP_RB".
 Startup rules have outcomes allow startup (success) and deny startup (failure).
 Shutdown rules is a rulebook.
+The shutdown rulebook is accessible to Inter as "SHUTDOWN_RB".
 
 Starting the virtual machine (documented at act_startvm) is an activity.
+The starting the virtual machine activity is accessible to Inter as "STARTING_VIRTUAL_MACHINE_ACT".
 The final code startup rule is listed first in for starting the virtual machine.
-The final code startup rule translates into Inter as "FINAL_CODE_STARTUP_R".
+The final code startup rule is defined by Inter as "FINAL_CODE_STARTUP_R".
 
 @ However, the two activities for printing names of objects are indeed
 functional in Basic Inform.
 
 =
 Printing the name of something (documented at act_pn) is an activity.
+The printing the name activity is accessible to Inter as "PRINTING_THE_NAME_ACT".
 
 The standard name printing rule is listed last in the for printing the name rulebook.
-The standard name printing rule translates into Inter as "STANDARD_NAME_PRINTING_R".
+The standard name printing rule is defined by Inter as "STANDARD_NAME_PRINTING_R".
 
 Printing the plural name of something (documented at act_ppn) is an activity.
+The printing the plural name activity is accessible to Inter as "PRINTING_THE_PLURAL_NAME_ACT".
 
 The standard printing the plural name rule is listed last in the for printing the
 plural name rulebook.
-The standard printing the plural name rule translates into Inter as
+The standard printing the plural name rule is defined by Inter as
 "STANDARD_PLURAL_NAME_PRINTING_R".
 

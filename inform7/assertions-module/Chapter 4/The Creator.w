@@ -352,7 +352,10 @@ from the tree.
 
 @<Perform creation on a CREATED node@> =
 	wording W = Node::get_text(p);
-	if (Wordings::empty(W)) internal_error("CREATED node without name");
+	if (Wordings::empty(W)) {
+		if (problem_count > 0) return; /* to recover from PM_TableDefiningNothing */
+		internal_error("CREATED node without name");
+	}
 	if (<grammatical-gender-marker>(W)) {
 		W = GET_RW(<grammatical-gender-marker>, 1);
 		Annotations::write_int(p, explicit_gender_marker_ANNOT, <<r>> + 1);
@@ -635,6 +638,8 @@ to abbreviated forms of object names are normally allowed.
 	val = Lvalues::new_actual_NONLOCAL_VARIABLE(NonlocalVariables::get_latest());
 
 @<Create an instance of an enumerated kind@> =
+	if (Kinds::Behaviour::forbid_assertion_creation(create_as))
+		@<Issue a problem for certain forbidden kinds@>;
 	pcalc_prop *prop = Propositions::Abstract::to_create_something(create_as, W);
 	pcalc_prop *such_that = Node::get_creation_proposition(governor);
 	if (such_that) prop = Propositions::concatenate(prop, such_that);
@@ -740,6 +745,12 @@ if nothing has already been said:
 			"number 8, it doesn't invent a new number.");
 		Problems::issue_problem_end();
 	}
+
+@<Issue a problem for certain forbidden kinds@> =
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_InstancesExplicit),
+		"this kind of value cannot be made with direct sentences like this",
+		"because the instances of this kind are made by the compiler itself, "
+		"using other notation in the source text to deduce them.");
 
 @ It turns out to be useful to have the same policing rules elsewhere:
 
@@ -1019,19 +1030,26 @@ int Assertions::Creator::vet_name_for_noun(wording W) {
 @h The natural language kind.
 Inform has a kind built in called "natural language", whose values are
 enumerated names: English language, French language, German language and so on.
-When the kind is created, the following routine makes these instances. We do
-this exactly as we would to create any other instance -- we write a logical
+When the kind is created, the following function makes instances for whichever
+languages we might need to print in at runtime: which will be English, perhaps
+with one other, if the language of play is not English.
+
+We do this exactly as we would to create any other instance -- we write a logical
 proposition claiming its existence, then assert it to be true.
 
 @d NOTIFY_NATURAL_LANGUAGE_KINDS_CALLBACK Assertions::Creator::stock_nl_kind
 
 =
 void Assertions::Creator::stock_nl_kind(kind *K) {
-	inform_language *L;
-	LOOP_OVER(L, inform_language) {
-		pcalc_prop *prop =
-			Propositions::Abstract::to_create_something(K, L->instance_name);
-		Assert::true(prop, CERTAIN_CE);
-		L->nl_instance = Instances::latest();
-	}
+	inform_language *E = primary_Preform_language;
+	Assertions::Creator::stock_nl_kind_with_one(K, E);
+	inform_language *LOP = Projects::get_language_of_play(Task::project());
+	if (LOP != E) Assertions::Creator::stock_nl_kind_with_one(K, LOP);
+}
+
+void Assertions::Creator::stock_nl_kind_with_one(kind *K, inform_language *L) {
+	pcalc_prop *prop =
+		Propositions::Abstract::to_create_something(K, L->instance_name);
+	Assert::true(prop, CERTAIN_CE);
+	L->nl_instance = Instances::latest();
 }

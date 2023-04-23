@@ -363,7 +363,7 @@ we expect here?" and "is this an equation?" respectively.
 	else
 		@<Parse any other token@>;
 
-@ This awkward manoeuvre just means that if the actions plugin is active, and
+@ This awkward manoeuvre just means that if the actions feature is active, and
 therefore |K_stored_action| exists, and if we need to be parsing something to
 match that, then we need to parse action patterns in a different context from
 the usual one. (The syntax to describe the action used in "if taking a book"

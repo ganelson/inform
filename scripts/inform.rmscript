@@ -1,100 +1,89 @@
 # Inform 7
 
-v{bibliographic datum: Semantic Version Number of: inform7} '{bibliographic datum: Version Name of: inform7}' ({bibliographic datum: Build Date of: inform7})
+[Version](notes/versioning.md): {bibliographic datum: Semantic Version Number of: inform7} '{bibliographic datum: Version Name of: inform7}' ({bibliographic datum: Build Date of: inform7})
 
-## About Inform 7
+## About Inform
 
-Inform 7 (April 2006-) is a programming language for creating interactive
-fiction, using natural language syntax. Using natural language and drawing on
-ideas from linguistics and from literate programming, Inform is widely
-used as a medium for literary writing, as a prototyping tool in the games
-industry, and in education, both at school and university level (where
-Inform is often assigned material for courses on digital narrative).
-It has several times ranked in the top 100 most influential programming
-languages according to the TIOBE index.
+Inform is a programming language for creating interactive fiction, using natural
+language syntax. Using natural language and drawing on ideas from linguistics
+and from literate programming, Inform is widely used as a medium for literary
+writing, as a prototyping tool in the games industry, and in education, both at
+school and university level (where Inform is often assigned material for courses
+on digital narrative). It has several times ranked in the top 100 most
+influential programming languages according to the TIOBE index. Created in April
+2006, it was open-sourced in April 2022.
 
 {set name: GITHUBPAGESLINK value: https://ganelson.github.io/inform}
 {set name: WEBICON value: &#9733;}
 {set name: DOCICON value: &#9654;}
 
-Inform is itself a literate program, one of the largest in the world. This
-means that a complete presentation of the code, in human-readable form, is
-continuously maintained alongside the code itself. So to read this, along with
-technical documentation and other useful resources, turn to the companion
-web page to this repository: {WEBICON} [Inform: The Program]({GITHUBPAGESLINK})
+Inform is itself a literate program ([written with inweb](https://github.com/ganelson/inweb)),
+one of the largest in the world. This means that a human-readable form of the
+code is continuously maintained alongside it: see {WEBICON} [Inform: The Program]({GITHUBPAGESLINK})
 
-Writing and presenting Inform as a literate program was beyond the capabilities
-of existing LP software, so a new system for LP called Inweb
-has been spun off from Inform, and that has [its own repository](https://github.com/ganelson/inweb).
+Software in this repository is [copyright Graham Nelson 2006-2022](notes/copyright.md)
+except where otherwise stated, and available under the [Artistic License 2.0](https://opensource.org/licenses/Artistic-2.0).
 
-## Licence and copyright
-
-Except as noted, copyright in material in this repository (the "Package") is
-held by Graham Nelson (the "Author"), who retains copyright so that there is
-a single point of reference. As from the first date of this repository
-becoming public, 28 April 2022, the Package is placed under the
-[Artistic License 2.0](https://opensource.org/licenses/Artistic-2.0).
-This is a highly permissive licence, used by Perl among other notable projects,
-recognised by the Open Source Initiative as open and by the Free Software
-Foundation as free in both senses.
-
-For the avoidance of doubt, the Author makes the further grant that users of
-the Package may make unlimited use of story files produced by the Package:
-such story files are not derivative works of Inform and do not inherit the
-Artistic License 2.0 as an obligation. (This further grant follows the
-practice of projects like bison, which also copy substantial code into
-their outputs.)
-
-A condition of any pull-request being made (i.e., to make suggested amendments
-to this software) is that, if the request is accepted, copyright on any contribution
-made by it immediately transfers to the project's copyright-holder, Graham Nelson.
-This is in order that there can be clear ownership. It does not apply to the
-programs duplicated here from other repositories (such as dumb-frotz) or to the
-Inform GUI apps: those have their own copyrights and licences.
+To consult...                     | Turn to...
+--------------------------------- | -----------------------------------------
+Brief news about ongoing work     | [notes/working_notes.md](notes/working_notes.md)
+Licencing and copyright policy    | [notes/copyright.md](notes/copyright.md)
+Branching and versioning policy   | [notes/versioning.md](notes/versioning.md)
+Language evolution policy         | [https://github.com/ganelson/inform-evolution](https://github.com/ganelson/inform-evolution)
+Version history and release notes | [notes/version_history.md](notes/version_history.md)
+Pending changes not yet released  | [notes/release/pending.md](notes/release/pending.md)
 
 ## Repositories
 
-This is the "core repository", holding source code for the compiler, and
+This is the "core Inform" repository, holding source code for the compiler, and
 for everything needed to run it on the command line. However:
 
-* To build and test the compiler you also need Inweb and Intest, programs
-spun out from the Inform project. These are __not included in the core
-repository either as submodules or copies__, and have their own repositories.
-	* [https://github.com/ganelson/inweb](https://github.com/ganelson/inweb), maintained by [Graham Nelson](https://github.com/ganelson)
-	* [https://github.com/ganelson/intest](https://github.com/ganelson/intest), maintained by [Graham Nelson](https://github.com/ganelson)
-* Most Inform authors use Inform as an app: for example, it is available
-on the Mac App Store. While much of the UI design is the same across all
-platforms, each app has its own code in its own repository. See:
+* To build and test the compiler on the command line you also need Inweb and
+Intest, programs spun out from the Inform project, with their own repositories:
+	* [https://github.com/ganelson/inweb](https://github.com/ganelson/inweb)
+	* [https://github.com/ganelson/intest](https://github.com/ganelson/intest)
+* Most Inform authors use Inform as an app, not at the command line. While
+the UI looks similar on each platform, they are independent code-bases and each
+has its own repository:
 	* [https://github.com/TobyLobster/Inform](https://github.com/TobyLobster/Inform) for MacOS, maintained by [Toby Nelson](https://github.com/TobyLobster)
 	* [https://github.com/DavidKinder/Windows-Inform7](https://github.com/DavidKinder/Windows-Inform7) for Windows, maintained by [David Kinder](https://github.com/DavidKinder)
 	* [https://github.com/ptomato/inform7-ide](https://github.com/ptomato/inform7-ide) for Linux, maintained by [Philip Chimento](https://github.com/ptomato)
+* Proposals for changes to Inform are at the repository:
+	* [https://github.com/ganelson/inform-evolution](https://github.com/ganelson/inform-evolution)
+* The server-side content for the Inform Public Library (a selection of downloadable
+extensions displayed within the apps) is here:
+	* [https://github.com/ganelson/inform-public-library](https://github.com/ganelson/inform-public-library)
 
 ## Build Instructions
 
-Make a directory in which to work: let's call this "work". Then:
+**Caution**: The `main` branch of this repository generally holds "unstable", that is,
+unreleased work-in-progress versions of Inform. See [notes/versioning.md](notes/versioning.md).
 
-* Change the current directory to "work": "cd work"
-* Build Inweb as "work/inweb": see its repository [here](https://github.com/ganelson/inweb)
-* Build Intest as "work/intest": see its repository [here](https://github.com/ganelson/intest)
-* Clone Inform as "work/inform": "git clone https://github.com/ganelson/inform.git"
-* Change the current directory to this: "cd inform"
-* Run a first-build script: "bash scripts/first.sh"
-* Check executables have compiled: "inblorb/Tangled/inblorb -help"
-* Run a single test case: "../intest/Tangled/intest inform7 -show Acidity".
+Make a directory in which to work: let's call this `work`. Then:
 
-If that passes, probably all is well. The definitive test is "make check",
-which runs nearly 2500 cases through the executables, but takes 10 minutes
-on an 8-core desktop and half an hour on a 4-core laptop (which will sound
-something like a helicopter taking off).
+* Change the current directory to `work`: `cd work`
+* Build Inweb as `work/inweb`: see its repository [here](https://github.com/ganelson/inweb)
+* Build Intest as `work/intest`: see its repository [here](https://github.com/ganelson/intest)
+* Clone Inform as `work/inform`: `git clone https://github.com/ganelson/inform.git`
+* Change the current directory to this: `cd inform`
+* Run a first-build script: `bash scripts/first.sh`
+* Check executables have compiled: `inblorb/Tangled/inblorb -help`
+* Run a single test case: `../intest/Tangled/intest inform7 -show Acidity`.
+* If you have time (between 5 mins and 2 hours, depending on your system), `make check`
+to run the full suite of 2500 test cases.
 
-Current status: All tests should pass on Linux, MacOS and Windows.
+**Caution again**: `inform7` is written in standard C99, but is a challengingly
+large task for a C compiler, and we have now seen two different cases where `gcc`
+generates incorrect code
+(see Jira bugs [I7-2108](https://inform7.atlassian.net/browse/I7-2108) and
+[I7-2282](https://inform7.atlassian.net/jira/software/c/projects/I7/issues/I7-2282)).
+In each case, recent versions of `clang` compile correct code.
+We recommend compiling the core Inform tools with `clang` rather than `gcc` if possible.
 
-## Reporting Issues
+## Issues and Contributions
 
-The old Inform bug tracker, powered by Mantis, has now closed, and its issues
-and comments have been migrated to the new one, powered by Jira and hosted
-[at the Atlassian website](https://inform7.atlassian.net/jira/software/c/projects/I7/issues).
-
+The 2006-2021 Inform bug tracker, powered by Mantis, has now closed, and its issues
+and comments have been migrated to a [a Jira tracker](https://inform7.atlassian.net/jira/software/c/projects/I7/issues).
 The curator of the bug tracker is Brian Rushton, and the administrator is
 Hugo Labrande.
 
@@ -103,27 +92,13 @@ Note that Inweb and Intest have their own bug trackers
 and [here](https://inform7.atlassian.net/jira/software/c/projects/INTEST/issues)).
 Please do not report bugs on those to the Inform tracker, or vice versa.
 
-## Pull Requests and Adding Features
+Members of the Inform community are welcome to open pull requests on this
+repository to address minor issues - for example, to fix bugs at the tracker,
+or to correct clear-cut typos or other errors. Contributions of this sort do
+not need [an Inform Evolution proposal](https://github.com/ganelson/inform-evolution),
+but anything on a larger scale is likely to.
 
-Inform is only just emerging into the light of being open-source, but it is not
-new software. It has a mature and well-used feature set, so that new or changed
-functionality requires careful thought. For the moment, its future direction
-remains in the hands of the original author. At some point a more formal process
-may emerge, but for now community discussion of possible features is best kept
-to the IF forum. In particular, please do not use the bug trackers to propose
-new features.
-
-Pull requests adding functionality or making any significant changes are therefore
-not likely to be accepted from non-members of the Inform team without prior
-agreement, unless they are clear-cut bug fixes or corrections of typos, broken
-links, or similar. See also the note about copyright above.
-
-The Inform licence is highly permissive, and forks which develop in quite different
-ways are entirely within the rules. (But one of the few requirements of the
-Artistic Licence is that such forks be given a name which is not simply "Inform 7",
-to avoid confusion.)
-
-## Inventory
+## Inventory of this Repository
 
 **"I can't help feeling that if someone had asked me before the universe began
 how it would turn out, I should have guessed something a bit less like an old
@@ -164,6 +139,7 @@ The following webs are the source for kits of Inter code shipped with Inform (at
 {kit name: EnglishLanguageKit   purpose: Support for English as the natural language used}
 {kit name: CommandParserKit     purpose: Support for parsing turn-by-turn commands in interactive fiction}
 {kit name: BasicInformExtrasKit purpose: Additional support needed only if the Standard Rules are not used}
+{kit name: DialogueKit          purpose: Additional support for dialogue (under construction)}
 
 ### Extensions shipped with Inform
 
@@ -186,7 +162,6 @@ Other extensions shipped with Inform are not presented as webs, but as single fi
 {extension author: Emily Short   title: Basic Help Menu}
 {extension author: Emily Short   title: Basic Screen Effects}
 {extension author: Emily Short   title: Complex Listing}
-{extension author: Emily Short   title: Glulx Entry Points}
 {extension author: Emily Short   title: Glulx Image Centering}
 {extension author: Emily Short   title: Glulx Text Effects}
 {extension author: Emily Short   title: Inanimate Listeners}
@@ -199,15 +174,13 @@ Other extensions shipped with Inform are not presented as webs, but as single fi
 {extension author: Graham Nelson title: English Language}
 {extension author: Graham Nelson title: Metric Units}
 {extension author: Graham Nelson title: Rideable Vehicles}
-{extension author: Graham Nelson title: Unicode Character Names}
-{extension author: Graham Nelson title: Unicode Full Character Names}
 
 ### Website templates and interpreters shipped with Inform
 
 These are templates used by Inform to release story files within a website:
 
 {define: websitetemplate name: NAME purpose: PURPOSE}
-{set name: PATH value: inform7/Internal/Templates/{NAME}.i7x}
+{set name: PATH value: inform7/Internal/Templates/{NAME}}
 * [{NAME}]({PATH}) - {PURPOSE}
 {end-define}
 {websitetemplate name: Classic  purpose: An older, plainer website}

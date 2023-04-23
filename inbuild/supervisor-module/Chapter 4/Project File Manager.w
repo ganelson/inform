@@ -44,7 +44,7 @@ inform_project *ProjectFileManager::from_copy(inbuild_copy *C) {
 inbuild_copy *ProjectFileManager::new_copy(text_stream *name, filename *F) {
 	inbuild_work *work = Works::new(project_file_genre, Str::duplicate(name), NULL);
 	inbuild_edition *edition = Editions::new(work, VersionNumbers::null());
-	inbuild_copy *C = Copies::new_in_file(edition, F);
+	inbuild_copy *C = Copies::new_in_file(edition, F, NULL);
 	Projects::scan(C);
 	return C;
 }

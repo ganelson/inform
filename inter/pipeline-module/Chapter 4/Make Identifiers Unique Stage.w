@@ -35,6 +35,11 @@ symbols (or whatever) may occur in multiple compilation units; it would be no
 good to uniquely number them within each kit, for example, because then each
 kit would have its own |call_U1|, causing a collision.
 
+The same operation is performed on identifiers marked as |+private|, because
+we might have a situation where two kits each contain a function called (say)
+|Start|, each of them private. When compiled, both functions must exist, and
+must have different names.
+
 =
 void MakeIdentifiersUniqueStage::create_pipeline_stage(void) {
 	ParsingPipelines::new_stage(I"make-identifiers-unique",
@@ -71,17 +76,36 @@ void MakeIdentifiersUniqueStage::visitor(inter_tree *I, inter_tree_node *P, void
 		inter_package *Q = PackageInstruction::at_this_head(P);
 		inter_symbols_table *ST = InterPackage::scope(Q);
 		LOOP_OVER_SYMBOLS_TABLE(S, ST) {
-			if ((Wiring::is_wired(S) == FALSE) &&
-				(InterSymbol::get_flag(S, MAKE_NAME_UNIQUE_ISYMF))) {
-				@<Give this symbol a unique translation@>;
-				InterSymbol::clear_flag(S, MAKE_NAME_UNIQUE_ISYMF);
+			if (Wiring::is_wired(S) == FALSE) {
+				if (Str::len(InterSymbol::get_translate(S)) == 0) {
+					text_stream *N = InterSymbol::identifier(S);
+					int last_tick = -1;
+					for (int i=0; i<Str::len(N); i++)
+						if (Str::get_at(N, i) == '`')
+							last_tick = i;
+					if (last_tick >= 0) {
+						TEMPORARY_TEXT(T)
+						WRITE_TO(T, "NS_");
+						for (int i=last_tick+1; i<Str::len(N); i++)
+							PUT_TO(T, Str::get_at(N, i));
+						InterSymbol::set_translate(S, T);
+						DISCARD_TEXT(T)
+						InterSymbol::set_flag(S, MAKE_NAME_UNIQUE_ISYMF);
+					}
+				}
+				if (InterSymbol::get_flag(S, MAKE_NAME_UNIQUE_ISYMF)) {
+					@<Give this symbol a unique translation@>;
+					InterSymbol::clear_flag(S, MAKE_NAME_UNIQUE_ISYMF);
+				} else if (SymbolAnnotation::get_b(S, PRIVATE_IANN)) {
+					@<Give this symbol a unique translation@>;
+				}
 			}
 		}
 	}
 }
 
 @<Give this symbol a unique translation@> =
-	text_stream *N = InterSymbol::identifier(S);
+	text_stream *N = InterSymbol::trans(S);
 	uniqueness_count *U = NULL;
 	dict_entry *de = Dictionaries::find(D, N);
 	if (de) {

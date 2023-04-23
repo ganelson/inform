@@ -157,12 +157,24 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 	if ((K_sound_name) && (Kinds::eq(K, K_sound_name)))
 		Hierarchy::apply_metadata_from_number(pack,
 			INSTANCE_IS_SOUND_MD_HL, 1);
+	if ((K_dialogue_beat) && (Kinds::eq(K, K_dialogue_beat)))
+		Hierarchy::apply_metadata_from_number(pack,
+			INSTANCE_IS_DB_MD_HL, 1);
+	if ((K_dialogue_line) && (Kinds::eq(K, K_dialogue_line)))
+		Hierarchy::apply_metadata_from_number(pack,
+			INSTANCE_IS_DL_MD_HL, 1);
+	if ((K_dialogue_choice) && (Kinds::eq(K, K_dialogue_choice)))
+		Hierarchy::apply_metadata_from_number(pack,
+			INSTANCE_IS_DC_MD_HL, 1);
 	if ((K_figure_name) && (Kinds::eq(K, K_figure_name)))
 		Hierarchy::apply_metadata_from_number(pack,
 			INSTANCE_IS_FIGURE_MD_HL, 1);
 	if ((K_external_file) && (Kinds::eq(K, K_external_file)))
 		Hierarchy::apply_metadata_from_number(pack,
 			INSTANCE_IS_EXF_MD_HL, 1);
+	if ((K_internal_file) && (Kinds::eq(K, K_internal_file)))
+		Hierarchy::apply_metadata_from_number(pack,
+			INSTANCE_IS_INF_MD_HL, 1);
 	if (Instances::of_kind(I, K_thing))
 		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_THING_MD_HL, 1);
 	if (Instances::of_kind(I, K_supporter))
@@ -200,7 +212,7 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_BACKDROP_MD_HL, 1);
 
 	RTInstances::xref_metadata(I, INSTANCE_REGION_ENCLOSING_MD_HL, Regions::enclosing(I));
-	if (PluginManager::active(spatial_plugin)) {
+	if (FEATURE_ACTIVE(spatial)) {
 		RTInstances::xref_metadata(I, INSTANCE_SIBLING_MD_HL, SPATIAL_DATA(I)->object_tree_sibling);
 		RTInstances::xref_metadata(I, INSTANCE_CHILD_MD_HL, SPATIAL_DATA(I)->object_tree_child);
 		RTInstances::xref_metadata(I, INSTANCE_PROGENITOR_MD_HL, Spatial::progenitor(I));
@@ -254,7 +266,7 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 	}
 	RTInferences::index(pack, INSTANCE_BRIEF_INFERENCES_MD_HL, Instances::as_subject(I), TRUE);
 	RTInferences::index_specific(pack, INSTANCE_SPECIFIC_INFERENCES_MD_HL, Instances::as_subject(I));
-	if (PluginManager::active(spatial_plugin)) {
+	if (FEATURE_ACTIVE(spatial)) {
 		if (SPATIAL_DATA(I)->part_flag)
 			Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_A_PART_MD_HL, 1);
 	}

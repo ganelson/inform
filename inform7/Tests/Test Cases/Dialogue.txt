@@ -1,0 +1,299 @@
+Use command line echoing.
+
+Laboratory is a room.
+
+Alice, Belle and Camilla are women in the Laboratory.
+
+East of the Laboratory is the Annexe. Diego and Eric are men in the Annexe. The Annexe is dark.
+
+South of the Laboratory is the Garden. Some stumps, the bat and the ball are in the Garden.
+Fiona is a woman in the Garden.
+
+West of the Laboratory is the Experimental Zone. Gharlane and Helmuth are men
+in the Zone.
+
+North of the Zone is the Strongroom. In the Strongroom are a diamond, an emerald
+and a ruby.
+
+When play begins:
+	showme audibility relation;
+	showme visibility relation;
+	showme the list of people who can see Alice;
+	showme the list of people who can hear Alice;
+	showme the list of people who can see Diego;
+	showme the list of people who can hear Diego;
+	showme the list of dialogue choices in the nested decisions beat;
+	showme the list of dialogue lines in the test only present speakers beat;
+	showme the going active scene;
+	showme the going active beat;	
+
+Instead of jumping:
+	if dialogue about Alice intervenes:
+		stop the action.
+
+Instead of listening:
+	showme the list of people who can hear the player;
+	showme the list of people who can be heard by the player;
+
+After going south to the Garden:
+	make the dialogue director active;
+	clear conversational subjects;
+	perform the going active beat.
+
+After going north from the Garden:
+	make the dialog director passive;
+	perform the going inactive beat.
+
+Before examining something (called the objet d'art) in the Garden:
+	make the objet d'art a live conversational subject.
+
+Every turn when the player is in the Garden or the player is in the Lake:
+	showme the live conversational subject list.
+
+The Lake is east of the Garden. The sea monster and the mermaid are in the Lake.
+
+Every turn when the player is in the Garden:
+	showme whether or not the bails beat is available;
+	showme whether or not the bails beat is relevant.
+
+After going to the Lake:
+	alter the live conversational subject list to { sea monster, mermaid }.
+
+To say report on (D - a dialogue beat):
+	say "Report on completion of [D].";
+	repeat with L running through dialogue lines in D:
+		say "[L] is [if L is unperformed]un[end if]performed; [if L is non-recurring]non-[end if]recurring; [if L is unnarrated]un[end if]narrated; [if L is unelaborated]un[end if]elaborated; [if L is unavailable]un[end if]available; [if L is non-verbal]non-[end if]verbal.";
+	repeat with C running through dialogue choices in D:
+		say "[C] is [if C is unperformed]un[end if]performed; [if C is non-recurring]non-[end if]recurring; [if C is flowing]flowing[otherwise]offered[end if][if C is story-ending]; story-ending[end if].";
+
+Before performing the one-time line:
+	say "**** ";
+
+For performing the one-time line:
+	say "[speaker] languidly (well, in a [style] way) says: '[textual content of the one-time line]'.";
+
+After performing the one-time line:
+	say "(Which I think is only to be expected.)";
+
+Before offering a list of dialogue choices (called L):
+	say "(Okay, select from [L] here.)"
+
+First rule for offering a list of dialogue choices (called L):
+	let N be 1;
+	repeat with C running through L:
+		say "(Option [N]) [textual content of C][line break]";
+		increase N by 1.
+
+Spoken angrily and spoken softly are performance styles.
+
+After going to the Zone:
+	perform the Boskone beat.
+
+After going to the Strongroom:
+	perform the jewellery beat.
+
+Section A (dialog)
+
+(This is the starting beat.)
+
+-> perform the test only present speakers beat
+
+-> perform the test repeated speech beat
+
+-> perform the test repeated speech beat
+
+-> perform the nested decisions beat
+
+(This is the test only present speakers beat.)
+
+Diego (this is the d1 line): "I am Diego, though you'll never hear this."
+
+Alice (this is the a1 line; to Belle): "I am [speaker], talking to [interlocutor]."
+
+	Belle (this is the b1 line; recurring): "I am Belle."
+	
+		Diego (this is the d2 line; if 1 is 2): "I am always 'Diego' you know."
+	
+	Eric (to Alice; without speaking; this is the e1 line): "Eric points insulting at Alice."
+
+		Alice (this is the a2 line): "Still Alice."
+
+Narration (this is the reporting narration line): "[report on the test only present speakers beat]"
+
+Section B (dialogue)
+
+(This is the test repeated speech beat.)
+
+Alice (this is the one-time line; angrily): "I tell you just once, I am Alice."
+
+Belle (recurring): "I tell you as often as necessary, I am Alice."
+
+(This is the nested decisions beat.)
+
+-- (this is the gouda choice) "My favourite cheese is vintage gouda."
+
+	-- (this is the white seedless choice) "My preferred grapes are white seedless."
+
+	-- (this is the red choice) "My preferred grapes are red."
+	
+	-> another choice
+	
+	-- (this is the rioja choice) "My preferred wine is Rioja."
+
+	-- (this is the shiraz choice) "My preferred wine is Shiraz."
+
+-- (this is the camembert choice) "My favourite cheese is camembert."
+
+	-- (this is the white seeded choice) "My preferred grapes are white yet seeded."
+
+	-- (this is the black choice) "My preferred grapes are black."
+
+	-- (this is the poison choice) "My preferred grapes are arsenic-laced."
+	
+		-> end the story saying "Then you deserve all you get"
+
+Narration: "You would appear to have selected: [list of performed dialogue choices in the nested decisions beat]."
+
+Narration: "[report on the nested decisions beat]"
+
+(This is the going active scene.)
+
+Narration: "Bong! The director activity chime goes off."
+
+(This is the going inactive beat.)
+
+Narration: "Gnob! The director activity chime sounds in reverse."
+
+Section C (dialogue)
+
+(About Alice; recurring; requiring nothing.)
+
+Alice: "I am self-explanatory."
+
+	-> stop
+
+Diego: "Alice is kind of exhausting."
+
+(About the bat and ball.)
+
+Fiona (after taking the bat): "The bat is willow and the ball is cork, I think."
+
+(About the ball.)
+
+Fiona (mentioning the bat and the stumps):
+	"The idea's to use the bat to defend the stumps."
+
+(About the stumps.)
+
+Fiona (before the player taking the stumps): "There are three of them, for some reason."
+
+(Next; about the stumps. This is the bails beat.)
+
+Fiona: "I suppose that's what you need to hold up two bails."
+
+(Spontaneous. Recurring. Requiring Fiona.)
+
+Narration (recurring): "There is an awkward pause."
+
+A woman: "Sometimes I just wanna talk, you know?"
+
+(About the mermaid.)
+
+Sea monster: "Blubbble."
+
+(Later; about the mermaid.)
+
+Sea monster: "Splish."
+
+Section C (dialogue)
+
+(This is the alien landing scene. If the apple is off-stage.)
+
+Alice: "I see an alien landed today."
+
+-- before looking
+
+	Alice: "No, I couldn't see it either."
+
+-- otherwise
+
+	Alice (softly): "Aren't you curious?"
+
+(This is the fourth wall breaker beat.)
+
+Narration: "This is all just fiction."
+
+Section D
+
+An alien-summoning apple is in the Laboratory. The apple is edible.
+
+The alien landing scene begins when the apple is off-stage.
+
+A status board is in the Laboratory.
+
+Instead of examining the status board:
+	repeat with B running through dialogue beats:
+		say "[B] is [if B is unperformed]un[end if]performed;
+			[if B is non-recurring]non-[end if]recurring;
+			[if B is unspontaneous]un[end if]spontaneous;
+			[if B is unavailable]un[end if]available;
+			[if B is irrelevant]ir[end if]relevant
+			[if B is being performed]; being performed[end if]
+			- [list of speakers required by B][line break]";
+
+Section E
+
+Performing is an action out of world applying to one dialogue beat.
+
+Carry out performing:
+	perform the dialogue beat understood.
+
+Understand "perform [dialogue beat]" as performing.
+
+Section F (dialogue)
+
+(This is the Boskone beat.)
+
+Helmuth: "Are you, or are you in league with, Star A Star of the Galactic Patrol?"
+
+-- "No."
+
+	Gharlane: "A likely story."
+	
+	<-
+
+-- "I don't know who that is."
+
+	Gharlane: "A mere worm."
+
+	<-
+	
+-- (if the current choice list is empty) "Admit frankly that you've run out of answers."
+
+	Gharlane: "Well, I've always respected honesty."
+
+	Narration (now Gharlane is nowhere; now Helmuth is nowhere): "The Boskonians vanish."
+
+Section G (dialogue)
+
+(This is the jewellery beat.)
+
+Narration: "Now try taking these three baubles."
+
+-- before taking the diamond
+
+	Narration: "I think not."
+
+	<-
+
+-- instead of taking the emerald
+
+	Narration (now the player has the emerald): "You somehow filch it."
+
+	<-
+
+-- after taking the ruby
+
+	Narration: "Very good."
+
+	<-

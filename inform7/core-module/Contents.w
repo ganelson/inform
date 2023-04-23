@@ -18,6 +18,7 @@ Chapter 1: Control
 	Compilation Settings
 	Inform-Only Nodes and Annotations
 	Internal Test Cases
+	Gitignoring
 
 Chapter 2: Problem Messages
 "The issuing of Problem messages."
@@ -30,5 +31,4 @@ Chapter 2: Problem Messages
 
 Chapter 3: Plugins
 "Extensions to the main compiler, which can be either active or inactive."
-	Plugin Manager
 	Plugin Calls

@@ -1,5 +1,5 @@
 '****','Current','With this option set, Inform always uses the latest version of the language to compile your project.'
-'10.1.0', 'Inform 10.1.0, April 2022','With this option set, Inform always compiles your project using version 10.1.0. While largely the same language to users, this version has a completely rewritten compiler tool-chain, in preparation for future development.'
+'10.1', 'Inform 10.1, August 2022','With this option set, Inform always compiles your project using version 10.1. While largely the same language to users, this version has a completely rewritten compiler tool-chain, in preparation for future development.'
 '6M62','Inform 9.3 (6M62), December 2015','With this option set, Inform always compiles your project using version 9.3. It was most notable for many bug fixes.'
 '6L38','Inform 9.2 (6L38), August 2014','With this option set, Inform always compiles your project using version 9.2. Though mostly a maintenance update, it also made a few minor clarifications to the language.'
 '6L02','Inform 9.1 (6L02), May 2014','With this option set, Inform always compiles your project using version 9.1. That was a major new version of the Inform language, with improvements across the board. First public release in which indexed text and text were unified into a single kind.'

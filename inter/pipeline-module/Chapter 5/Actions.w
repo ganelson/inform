@@ -80,9 +80,10 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	for (int i=0; i<InterNodeList::array_len(inv->action_nodes); i++) {
 		inter_package *pack = PackageInstruction::at_this_head(inv->action_nodes->list[i].node);
 		inter_symbol *double_sharp_s = Metadata::optional_symbol(pack, I"^double_sharp");
-		if (double_sharp_s == NULL) {
-			Synoptic::numeric_entry(0);
-			Synoptic::numeric_entry(0);
+		if (Metadata::read_optional_numeric(pack, I"^action_assimilated")) {
+			if (double_sharp_s) Synoptic::symbol_entry(double_sharp_s);
+			else Synoptic::numeric_entry(0);
+			Synoptic::numeric_entry(0x38); /* out of world, can have noun, can have second */
 			Synoptic::numeric_entry(0);
 			Synoptic::numeric_entry(0);
 			Synoptic::numeric_entry(0);
@@ -133,20 +134,31 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 
 	for (int i=0; i<InterNodeList::array_len(inv->action_nodes); i++) {
 		inter_package *pack = PackageInstruction::at_this_head(inv->action_nodes->list[i].node);
+		inter_symbol *debug_fn_s = Metadata::optional_symbol(pack, I"^debug_fn");
 		inter_symbol *double_sharp_s = Metadata::optional_symbol(pack, I"^double_sharp");
 		if (double_sharp_s) {
-			inter_symbol *debug_fn_s = Metadata::required_symbol(pack, I"^debug_fn");
 			Produce::inv_primitive(I, CASE_BIP);
 			Produce::down(I);
 				Produce::val_symbol(I, K_value, double_sharp_s);
 				Produce::code(I);
 				Produce::down(I);
-					Produce::inv_call_symbol(I, debug_fn_s);
-					Produce::down(I);
-						Produce::val_symbol(I, K_value, n_s);
-						Produce::val_symbol(I, K_value, s_s);
-						Produce::val_symbol(I, K_value, for_say_s);					
-					Produce::up(I);
+					if (debug_fn_s) {
+						Produce::inv_call_symbol(I, debug_fn_s);
+						Produce::down(I);
+							Produce::val_symbol(I, K_value, n_s);
+							Produce::val_symbol(I, K_value, s_s);
+							Produce::val_symbol(I, K_value, for_say_s);					
+						Produce::up(I);
+					} else {
+						Produce::inv_primitive(I, PRINT_BIP);
+						Produce::down(I);
+							TEMPORARY_TEXT(S)
+							WRITE_TO(S, "performing kit action %S",
+								InterSymbol::identifier(double_sharp_s));
+							Produce::val_text(I, S);
+							DISCARD_TEXT(S)						
+						Produce::up(I);
+					}
 				Produce::up(I);
 			Produce::up(I);
 		}

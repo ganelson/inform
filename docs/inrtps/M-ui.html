@@ -41,8 +41,8 @@
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
-<li><a href="../../../inweb/docs/index.html">inweb</a></li>
-<li><a href="../../../intest/docs/index.html">intest</a></li>
+<li><a href="../../../inweb/index.html">inweb</a></li>
+<li><a href="../../../intest/index.html">intest</a></li>
 
 </ul>
 		</nav>
@@ -117,7 +117,7 @@ from the next. For instance:
 <span class="plain-syntax">    A number cannot be divided by 0: similarly, we cannot take the remainder</span>
 <span class="plain-syntax">    after dividing something by 0.</span>
 </pre>
-<p class="commentary">The model file is a standard HTML file, except that it can contain four
+<p class="commentary">The model file is a standard HTML file, except that it can contain five
 escape codes, which Inrtps expands. Thus:
 </p>
 
@@ -126,6 +126,8 @@ escape codes, which Inrtps expands. Thus:
 </li><li>(c) <span class="extract"><span class="extract-syntax">*3</span></span> expands to a short title for the message.
 </li><li>(d) <span class="extract"><span class="extract-syntax">*4</span></span> expands to font settings inside a <span class="extract"><span class="extract-syntax">&lt;font ...&gt;</span></span> tag. (This will be
 blank if <span class="extract"><span class="extract-syntax">nofont</span></span> is set, or will choose a Helvetica-like font if <span class="extract"><span class="extract-syntax">font</span></span> is set.)
+</li><li>(e) <span class="extract"><span class="extract-syntax">*5</span></span> expands to the contents of the appropriate per-platform CSS file, which
+is read from the Internal/HTML/ directory of the Inform installation.
 </li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">M</li><li class="progresscurrent">ui</li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progressnext"><a href="M-rc.html">&#10095;</a></li></ul></div>

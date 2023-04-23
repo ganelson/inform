@@ -281,8 +281,12 @@ void CoreSyntax::grant_unit_permissions(void) {
 
 @h Annotations of Level 2 nodes.
 
+@e beat_defined_here_ANNOT /* |dialogue_beat|: for nodes of beat cues */
 @e classified_ANNOT /* |int|: this sentence has been classified */
 @e clears_pronouns_ANNOT /* |int|: this sentence erases the current value of "it" */
+@e dialogue_beat_clause_ANNOT /* |int|: for clauses of dialogue cues introducing beats */
+@e dialogue_choice_clause_ANNOT /* |int|: for clauses of dialogue choice points */
+@e dialogue_line_clause_ANNOT /* |int|: for clauses of dialogue lines */
 @e impdef_ANNOT /* |imperative_defn|: for blocks of imperative code */
 @e implicit_in_creation_of_ANNOT /* |inference_subject|: for assemblies */
 @e implicitness_count_ANNOT /* int: keeping track of recursive assemblies */
@@ -291,11 +295,13 @@ void CoreSyntax::grant_unit_permissions(void) {
 @e you_can_ignore_ANNOT /* |int|: for assertions now drained of meaning */
 
 = (early code)
+DECLARE_ANNOTATION_FUNCTIONS(beat_defined_here, dialogue_beat)
 DECLARE_ANNOTATION_FUNCTIONS(impdef, imperative_defn)
 DECLARE_ANNOTATION_FUNCTIONS(implicit_in_creation_of, inference_subject)
 DECLARE_ANNOTATION_FUNCTIONS(interpretation_of_subject, inference_subject)
 
 @ =
+MAKE_ANNOTATION_FUNCTIONS(beat_defined_here, dialogue_beat)
 MAKE_ANNOTATION_FUNCTIONS(impdef, imperative_defn)
 MAKE_ANNOTATION_FUNCTIONS(implicit_in_creation_of, inference_subject)
 MAKE_ANNOTATION_FUNCTIONS(interpretation_of_subject, inference_subject)
@@ -303,9 +309,17 @@ MAKE_ANNOTATION_FUNCTIONS(interpretation_of_subject, inference_subject)
 @ =
 void CoreSyntax::declare_L2_annotations(void) {
 	Annotations::declare_type(
+		beat_defined_here_ANNOT, CoreSyntax::write_beat_defined_here_ANNOT);
+	Annotations::declare_type(
 		classified_ANNOT, CoreSyntax::write_classified_ANNOT);
 	Annotations::declare_type(
 		clears_pronouns_ANNOT, CoreSyntax::write_clears_pronouns_ANNOT);
+	Annotations::declare_type(
+		dialogue_beat_clause_ANNOT, CoreSyntax::write_dialogue_beat_clause_ANNOT);
+	Annotations::declare_type(
+		dialogue_line_clause_ANNOT, CoreSyntax::write_dialogue_line_clause_ANNOT);
+	Annotations::declare_type(
+		dialogue_choice_clause_ANNOT, CoreSyntax::write_dialogue_choice_clause_ANNOT);
 	Annotations::declare_type(
 		impdef_ANNOT, CoreSyntax::write_impdef_ANNOT);
 	Annotations::declare_type(
@@ -319,6 +333,10 @@ void CoreSyntax::declare_L2_annotations(void) {
 	Annotations::declare_type(
 		you_can_ignore_ANNOT, CoreSyntax::write_you_can_ignore_ANNOT);
 }
+void CoreSyntax::write_beat_defined_here_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_beat_defined_here(p))
+		WRITE(" {defines beat: %d}", Node::get_beat_defined_here(p)->allocation_id);
+}
 void CoreSyntax::write_classified_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Annotations::read_int(p, classified_ANNOT))
 		WRITE(" {classified}");
@@ -326,6 +344,27 @@ void CoreSyntax::write_classified_ANNOT(text_stream *OUT, parse_node *p) {
 void CoreSyntax::write_clears_pronouns_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Annotations::read_int(p, clears_pronouns_ANNOT))
 		WRITE(" {clears pronouns}");
+}
+void CoreSyntax::write_dialogue_beat_clause_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Annotations::read_int(p, dialogue_beat_clause_ANNOT) > 0) {
+		WRITE(" {beat clause: ");
+		DialogueBeats::write_dbc(OUT, Annotations::read_int(p, dialogue_beat_clause_ANNOT));
+		WRITE("}");
+	}
+}
+void CoreSyntax::write_dialogue_line_clause_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Annotations::read_int(p, dialogue_line_clause_ANNOT) > 0) {
+		WRITE(" {line clause: ");
+		DialogueLines::write_dlc(OUT, Annotations::read_int(p, dialogue_line_clause_ANNOT));
+		WRITE("}");
+	}
+}
+void CoreSyntax::write_dialogue_choice_clause_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Annotations::read_int(p, dialogue_choice_clause_ANNOT) > 0) {
+		WRITE(" {choice clause: ");
+		DialogueChoices::write_dcc(OUT, Annotations::read_int(p, dialogue_choice_clause_ANNOT));
+		WRITE("}");
+	}
 }
 void CoreSyntax::write_impdef_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_impdef(p))
@@ -356,12 +395,16 @@ void CoreSyntax::grant_L2_permissions(void) {
 	Annotations::allow_for_category(L2_NCAT, clears_pronouns_ANNOT);
 	Annotations::allow_for_category(L2_NCAT, interpretation_of_subject_ANNOT);
 	Annotations::allow_for_category(L2_NCAT, verb_problem_issued_ANNOT);
+	Annotations::allow(DIALOGUE_CUE_NT, beat_defined_here_ANNOT);
 	Annotations::allow(IMPERATIVE_NT, impdef_ANNOT);
 	Annotations::allow(IMPERATIVE_NT, indentation_level_ANNOT);
 	Annotations::allow(SENTENCE_NT, implicit_in_creation_of_ANNOT);
 	Annotations::allow(SENTENCE_NT, implicitness_count_ANNOT);
 	Annotations::allow(SENTENCE_NT, you_can_ignore_ANNOT);
 	Annotations::allow(SENTENCE_NT, classified_ANNOT);
+	Annotations::allow(DIALOGUE_CLAUSE_NT, dialogue_beat_clause_ANNOT);
+	Annotations::allow(DIALOGUE_CLAUSE_NT, dialogue_line_clause_ANNOT);
+	Annotations::allow(DIALOGUE_CLAUSE_NT, dialogue_choice_clause_ANNOT);
 }
 
 @h Annotations of Level 3 nodes.
@@ -375,7 +418,7 @@ void CoreSyntax::grant_L2_permissions(void) {
 @e lpe_options_ANNOT /* |int|: options set for a literal pattern part */
 @e multiplicity_ANNOT /* |int|: e.g., 5 for "five gold rings" */
 @e new_relation_here_ANNOT /* |binary_predicate|: new relation as subject of "relates" sentence */
-@e nowhere_ANNOT /* |int|: used by the spatial plugin to show this represents "nowhere" */
+@e nowhere_ANNOT /* |int|: used by the spatial feature to show this represents "nowhere" */
 @e predicate_ANNOT /* |unary_predicate|: which adjective is asserted */
 @e quant_ANNOT /* |quantifier|: for quantified excerpts like "three baskets" */
 @e quantification_parameter_ANNOT /* |int|: e.g., 3 for "three baskets" */

@@ -1,37 +1,23 @@
 1. In
 <a name=STORYFILE></a><p>Story file format: <img border=0 src=inform:/doc_images/vm_z8.png>&nbsp;Inform6/16d/v8</p>
 <p>The following use options are in force:</p>
-<p class="tightin2"><span style='color:#808080'>Set from the Options.txt configuration file, or automatically&nbsp;<a href=inform:/doc22.html><img border=0 src=inform:/doc_images/help.png></a>:</span></p>
+<p class="tightin2"><span class="indexgrey">Set from the Options.txt configuration file, or automatically&nbsp;<a href=inform:/doc20.html><img border=0 src=inform:/doc_images/help.png></a>:</span></p>
 <p class="tightin3">Use maximum text length of at least 1024&nbsp;<a href="javascript:pasteCode('Use maximum text length of at least 2048.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;<i>Double this</i></p>
 <p class="tightin3">Use index figure thumbnails of at least 50&nbsp;<a href="javascript:pasteCode('Use index figure thumbnails of at least 100.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;<i>Double this</i></p>
-<p class="tightin2"><span style='color:#808080'>Set from Basic Inform version 1 by Graham Nelson:</span></p>
+<p class="tightin2"><span class="indexgrey">Set from Basic Inform version 1 by Graham Nelson:</span></p>
 <p class="tightin3">Use dynamic memory allocation of at least 8192&nbsp;<a href="javascript:pasteCode('Use dynamic memory allocation of at least 16384.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;<i>Double this</i></p>
-<p class="tightin2"><span style='color:#808080'>Set from Standard Rules version 6 by Graham Nelson:</span></p>
+<p class="tightin2"><span class="indexgrey">Set from Standard Rules version 6 by Graham Nelson:</span></p>
 <p class="tightin3">Use maximum things understood at once of at least 100&nbsp;<a href="javascript:pasteCode('Use maximum things understood at once of at least 200.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;<i>Double this</i></p>
 <p>Whereas these are not in force:</p>
 <p class="tightin2"><span style="white-space:nowrap";><a href="javascript:pasteCode('Use ineffectual.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;ineffectual</span><span style="white-space:nowrap";><a href="javascript:pasteCode('Use American dialect.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;American dialect</span>, <span style="white-space:nowrap";><a href="javascript:pasteCode('Use serial comma.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;serial comma</span>, <span style="white-space:nowrap";><a href="javascript:pasteCode('Use memory economy.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;memory economy</span>, <span style="white-space:nowrap";><a href="javascript:pasteCode('Use engineering notation.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;engineering notation</span>, <span style="white-space:nowrap";><a href="javascript:pasteCode('Use unabbreviated object names.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;unabbreviated object names</span>, <span style="white-space:nowrap";><a href="javascript:pasteCode('Use predictable randomisation.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;predictable randomisation</span>, <span style="white-space:nowrap";><a href="javascript:pasteCode('Use fast route-finding.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;fast route-finding</span>, <span style="white-space:nowrap";><a href="javascript:pasteCode('Use slow route-finding.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;slow route-finding</span>, <span style="white-space:nowrap";><a href="javascript:pasteCode('Use numbered rules.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;numbered rules</span>, <span style="white-space:nowrap";><a href="javascript:pasteCode('Use telemetry recordings.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;telemetry recordings</span>, <span style="white-space:nowrap";><a href="javascript:pasteCode('Use no deprecated features.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;no deprecated features</span>, <span style="white-space:nowrap";><a href="javascript:pasteCode('Use gn testing version.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;gn testing version</span>, <span style="white-space:nowrap";><a href="javascript:pasteCode('Use command line echoing.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;command line echoing</span>, <span style="white-space:nowrap";><a href="javascript:pasteCode('Use full-length room descriptions.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;full-length room descriptions</span>, <span style="white-space:nowrap";><a href="javascript:pasteCode('Use abbreviated room descriptions.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;abbreviated room descriptions</span>, <span style="white-space:nowrap";><a href="javascript:pasteCode('Use scoring.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;scoring</span>, <span style="white-space:nowrap";><a href="javascript:pasteCode('Use no scoring.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;no scoring</span>, <span style="white-space:nowrap";><a href="javascript:pasteCode('Use manual pronouns.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;manual pronouns</span>, <span style="white-space:nowrap";><a href="javascript:pasteCode('Use undo prevention.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;undo prevention</span>, <span style="white-space:nowrap";><a href="javascript:pasteCode('Use VERBOSE room descriptions.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;VERBOSE room descriptions</span>, <span style="white-space:nowrap";><a href="javascript:pasteCode('Use BRIEF room descriptions.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;BRIEF room descriptions</span>, <span style="white-space:nowrap";><a href="javascript:pasteCode('Use SUPERBRIEF room descriptions.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;SUPERBRIEF room descriptions</span>, </p>
 <p><a href="#" onclick="showExtra('extra3', 'plus3'); return false;"><img border=0 id="plus3" src=inform:/doc_images/extra.png></a>&nbsp;See some technicalities for Inform maintainers only</p>
 <div id="extra3" style="display: none;">
-    <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+    <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
         <tr>
-            <td width="8">
-                <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-            </td>
-            <td>
-
-            </td>
-            <td width="8">
-                <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-            </td>
-        </tr>
-        <tr>
-            <td width="8">
-
-            </td>
             <td>
                 <p><a name=CONFIG></a></p>
                 <p>Inform language definition:</p>
-                <p>Included: core, naming, instance counting, interactive fiction, spatial model, backdrops, bibliographic data, chronology, devices, mapping, persons, player, regions, scenes, scoring, timed rules, times of day, actions, going, command, showme, multimedia, figures, sounds, glulx external files</p>
+                <p>Included: core, naming, instance counting, interactive fiction, spatial model, backdrops, bibliographic data, chronology, devices, mapping, persons, player, regions, scenes, scoring, timed rules, times of day, actions, going, command, showme, multimedia, figures, sounds, glulx external files, glulx internal files</p>
                 <p>Debugging log:</p>
                 <p><a href="javascript:pasteCode('Include debugging log inclusions in the debugging log.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;Include debugging log inclusions in the debugging log.&nbsp;<img border=0 src=inform:/doc_images/tick.png><br>
                 <a href="javascript:pasteCode('Include shell usage in the debugging log.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;Include shell usage in the debugging log.&nbsp;<img border=0 src=inform:/doc_images/cross.png><br>
@@ -111,20 +97,6 @@
                 <a href="javascript:pasteCode('Include spatial map workings in the debugging log.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;Include spatial map workings in the debugging log.&nbsp;<img border=0 src=inform:/doc_images/cross.png><br>
                 </p>
 
-            </td>
-            <td width="8">
-
-            </td>
-        </tr>
-        <tr>
-            <td width="8">
-                <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-            </td>
-            <td>
-
-            </td>
-            <td width="8">
-                <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
             </td>
         </tr>
     </table>

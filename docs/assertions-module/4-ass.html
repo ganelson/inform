@@ -889,7 +889,7 @@ further sub-cases later.
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ass.html#SP6_3">&#167;6.3</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP6_3_17" class="paragraph-anchor"></a><b>&#167;6.3.17. Case 17. </b>In fact one sentence like this can make sense &mdash; "The mist is
-everywhere", or similar &mdash; but is handled by the spatial plugin, if active.
+everywhere", or similar &mdash; but is handled by the spatial feature, if active.
 Even then, of course, "everywhere" implicitly means "in every room",
 not "every room".
 </p>
@@ -1118,7 +1118,7 @@ but not in this context.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">av</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"failed to extract activity structure"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">global_pass_state</span><span class="plain-syntax">.</span><span class="element-syntax">pass</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;activity-name-formal&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">px</span><span class="plain-syntax">)))</span>
-<span class="plain-syntax">            </span><a href="6-act.html#SP8" class="function-link"><span class="function-syntax">Activities::add_variable</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">av</span><span class="plain-syntax">, </span><span class="identifier-syntax">py</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="6-act.html#SP9" class="function-link"><span class="function-syntax">Activities::add_variable</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">av</span><span class="plain-syntax">, </span><span class="identifier-syntax">py</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">UsingProblems::assertion_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_BadActivityRef</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"an activity has to be formally referred to in a way making clear that "</span>
@@ -1144,7 +1144,7 @@ but not in this context.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rb</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"failed to extract rulebook structure"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">global_pass_state</span><span class="plain-syntax">.</span><span class="element-syntax">pass</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;rulebook-name-formal&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">px</span><span class="plain-syntax">)))</span>
-<span class="plain-syntax">            </span><a href="6-rlb.html#SP10" class="function-link"><span class="function-syntax">Rulebooks::add_variable</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rb</span><span class="plain-syntax">, </span><span class="identifier-syntax">py</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="6-rlb.html#SP11" class="function-link"><span class="function-syntax">Rulebooks::add_variable</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rb</span><span class="plain-syntax">, </span><span class="identifier-syntax">py</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">UsingProblems::assertion_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_BadRulebookRef</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"a rulebook has to be formally referred to in a way making clear that "</span>
@@ -2057,7 +2057,7 @@ these sentences falls into case 41.
     <p>East is the Pavilion.</p>
 </blockquote>
 
-<p class="commentary">(Of course this will only be true if the map plugin is active.)
+<p class="commentary">(Of course this will only be true if the map feature is active.)
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Case 41 - PROPER NOUN on both sides</span><span class="named-paragraph-number">6.3.41</span></span><span class="comment-syntax"> =</span>

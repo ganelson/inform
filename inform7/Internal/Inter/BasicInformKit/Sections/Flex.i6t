@@ -140,7 +140,7 @@ smaller blocks are needed, and to rejoin from the back when blocks are
 freed and added to the free space object.
 
 =
-Array Flex_Heap -> (MEMORY_HEAP_SIZE + 16); ! Plus 16 to allow room for head-free-block
+Array Flex_Heap -> (MEMORY_HEAP_SIZE + BLK_DATA_MULTI_OFFSET); ! allow room for head-free-block
 
 @h Initialisation.
 To recap: the constant |MEMORY_HEAP_SIZE| has been predefined by the Inform compiler,
@@ -151,7 +151,7 @@ a $2^n$-sized block exactly containing the whole of the rest of the heap.
 
 =
 [ HeapInitialise n bsize blk2;
-	blk2 = Flex_Heap + 16;
+	blk2 = Flex_Heap + BLK_DATA_MULTI_OFFSET;
 	Flex_Heap->BLK_HEADER_N = 4;
 	Flex_Heap-->BLK_HEADER_KOV = 0;
 	Flex_Heap-->BLK_HEADER_RCOUNT = MAX_POSITIVE_NUMBER;
@@ -207,17 +207,18 @@ which handles non-multiple blocks better.)
 =
 Constant SMALLEST_BLK_WORTH_ALLOCATING = 12; ! i.e. 2^12 = 4096 bytes
 
-[ HeapMakeSpace size multiple  newblocksize newblock B n;
+[ HeapMakeSpace size multiple  newblocksize newblock B n hsize;
 	for (::) {
 		if (multiple) {
+			hsize = BLK_DATA_MULTI_OFFSET;
 			if (HeapNetFreeSpace(multiple) >= size) rtrue;
 		} else {
+			hsize = BLK_DATA_OFFSET;
 			if (HeapLargestFreeBlock(0) >= size) rtrue;
 		}
 		newblocksize = 1;
-		for (n=0: (n<SMALLEST_BLK_WORTH_ALLOCATING) || (newblocksize<size): n++)
+		for (n=0: (n<SMALLEST_BLK_WORTH_ALLOCATING) || (newblocksize<(size+hsize)): n++)
 			newblocksize = newblocksize*2;
-		while (newblocksize < size+16) newblocksize = newblocksize*2;
 		newblock = VM_AllocateMemory(newblocksize);
 		if (newblock == 0) rfalse;
 		newblock->BLK_HEADER_N = n;

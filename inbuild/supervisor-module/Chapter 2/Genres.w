@@ -19,6 +19,7 @@ the instance |kit_genre| and provides its method functions.
 typedef struct inbuild_genre {
 	text_stream *genre_name;
 	int stored_in_nests;
+	int genre_class;
 	struct method_set *methods;
 	CLASS_DEFINITION
 } inbuild_genre;
@@ -27,6 +28,7 @@ inbuild_genre *Genres::new(text_stream *name, int nested) {
 	inbuild_genre *gen = CREATE(inbuild_genre);
 	gen->genre_name = Str::duplicate(name);
 	gen->stored_in_nests = nested;
+	gen->genre_class = 0;
 	gen->methods = Methods::new_set();
 	return gen;
 }
@@ -55,6 +57,19 @@ inbuild_genre *Genres::by_name(text_stream *name) {
 		if (Str::eq_insensitive(G->genre_name, name))
 			return G;
 	return NULL;
+}
+
+@ When searching, treat these as equivalently good:
+
+=
+int Genres::equivalent(inbuild_genre *G1, inbuild_genre *G2) {
+	if (G1 == G2) return TRUE;
+	if ((G1->genre_class != 0) && (G1->genre_class == G2->genre_class)) return TRUE;
+	return FALSE;
+}
+
+void Genres::place_in_class(inbuild_genre *G, int c) {
+	G->genre_class = c;
 }
 
 @ For sorting of search results:

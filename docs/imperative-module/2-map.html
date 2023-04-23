@@ -84,14 +84,14 @@ testing that the action is "going", that the origin is the Casino, and that
 Le Chiffre is there &mdash; three CPMC clauses.
 </p>
 
-<p class="commentary">The basic roster of CPMC clauses is here, but plugins can add more. In
+<p class="commentary">The basic roster of CPMC clauses is here, but features can add more. In
 particular, see <a href="2-mgap.html" class="internal">Matching Going Action Patterns</a>.
 </p>
 
 <p class="commentary">Do not rearrange this without first reading the code below: the ordering is
 very significant. The CPMCs are grouped into "ranges", and it is intentional
 that those ranges are numbered 0, 1, 3, 2; we need the additional CPMCs from
-plugins to fall into range 2.
+features to fall into range 2.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">ACTOR_CPMCRANGE</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
@@ -648,7 +648,7 @@ and otherwise we do our own thing.
 
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACTION_MATCHES_CPMC:</span><span class="plain-syntax">           </span><span class="named-paragraph-container code-font"><a href="2-map.html#SP3_5_1_1_1_6" class="named-paragraph-link"><span class="named-paragraph">Compile ACTION_MATCHES_CPMC test</span><span class="named-paragraph-number">3.5.1.1.1.6</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">        </span><span class="comment-syntax"> The DETAILS range (but see plugins for extra ones)</span>
+<span class="plain-syntax">        </span><span class="comment-syntax"> The DETAILS range (but see features for extra ones)</span>
 
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOUN_EXISTS_CPMC:</span><span class="plain-syntax">              </span><span class="named-paragraph-container code-font"><a href="2-map.html#SP3_5_1_1_1_7" class="named-paragraph-link"><span class="named-paragraph">Compile NOUN_EXISTS_CPMC test</span><span class="named-paragraph-number">3.5.1.1.1.7</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOUN_IS_INP1_CPMC:</span><span class="plain-syntax">             </span><span class="named-paragraph-container code-font"><a href="2-map.html#SP3_5_1_1_1_8" class="named-paragraph-link"><span class="named-paragraph">Compile NOUN_IS_INP1_CPMC test</span><span class="named-paragraph-number">3.5.1.1.1.8</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>

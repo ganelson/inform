@@ -189,9 +189,9 @@ code for the box.
 	HTML_CLOSE("p");
 
 	if (run_end == idb) {
-		IndexUtilities::extra_div_open(OUT, idb->allocation_id, 3, "e0e0e0");
+		IndexUtilities::extra_div_open(OUT, idb->allocation_id, 3, I"indexmorebox");
 		RTPhrasebook::write_reveal_box(OUT, &(run_begin->type_data), run_begin);
-		IndexUtilities::extra_div_close(OUT, "e0e0e0");
+		IndexUtilities::extra_div_close(OUT, I"indexmorebox");
 	}
 	package_request *entry =
 				Hierarchy::package_within(PHRASEBOOK_ENTRY_HAP, last_heading_package);

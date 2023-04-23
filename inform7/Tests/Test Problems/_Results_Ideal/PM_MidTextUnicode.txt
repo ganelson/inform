@@ -1,20 +1,18 @@
-Inform 7 build 6L26 has started.
-I've now read your source text, which is 33 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
-I've also read Unicode Character Names by Graham Nelson, which is 28382 words long.
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 26 words long.
+I've also read Basic Inform by Graham Nelson, which is 7772 words long.
+I've also read English Language by Graham Nelson, which is 2330 words long.
+I've also read Standard Rules by Graham Nelson, which is 34310 words long.
 Problem__ PM_MidTextUnicode
   >--> In the sentence 'admire unicode Greek capital letter lambda' (source
-    text, line 11), I was expecting to read a unicode character, but instead
+    text, line 9), I was expecting to read a unicode character, but instead
     found some text that I couldn't understand - 'unicode Greek capital letter
     lambda'. Maybe you intended this to produce a Unicode character? Unicode
     characters can be written either using their decimal numbers - for
     instance, 'Unicode 2041' - or with their standard names - 'Unicode Latin
-    small ligature oe'. For efficiency reasons these names are only available
-    if you ask for them; to make them available, you need to 'Include Unicode
-    Character Names by Graham Nelson' or, if you really need more, 'Include
-    Unicode Full Character Names by Graham Nelson'.
+    small ligature oe'. For the full list of those names, see the Unicode
+    standard version 15.0.0.
     I was trying to match this phrase:
       admire (unicode greek capital letter lambda - unicode character) 
     But I didn't recognise 'unicode greek capital letter lambda'.
-Inform 7 has finished: 68 centiseconds used.
+Inform 7 has finished.

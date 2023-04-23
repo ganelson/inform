@@ -59,3 +59,9 @@ attempts to match these up. It prints out a report, and concludes with either
 	All is well.
 =
 As this example report shows, small sins are forgiven.
+
+@ |-kit-versions| reports the version numbers of the five kits built in to an
+Inform installation. The policy here is that these should always have version
+numbers exactly matching that of the core |inform7| version number; so the
+option |-sync-kit-versions| is provided to enforce this, by changing the
+version numbers of the kits accordingly.

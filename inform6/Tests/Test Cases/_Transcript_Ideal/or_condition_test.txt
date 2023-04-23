@@ -1,5 +1,5 @@
   OrConditionTest: Not a game.
-  Release 1 / Serial number 220306 / Inform v6.36, compiler options S
+  Release 1 / Serial number 220724 / Inform v6.41, compiler options S
   
   5 == 1 or 3: false
   5 == 5 or 3: true

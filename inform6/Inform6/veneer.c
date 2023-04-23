@@ -3,7 +3,7 @@
 /*              by the compiler (e.g. DefArt) which the program doesn't      */
 /*              provide                                                      */
 /*                                                                           */
-/*   Part of Inform 6.36                                                     */
+/*   Part of Inform 6.41                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -2331,8 +2331,6 @@ static void compile_symbol_table_routine(void)
 extern void compile_veneer(void)
 {   int i, j, try_veneer_again;
     VeneerRoutine *VRs; 
-
-    if (module_switch) return;
 
     VRs = (!glulx_mode) ? VRs_z : VRs_g;
 

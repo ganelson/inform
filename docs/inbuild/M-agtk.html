@@ -57,7 +57,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">inbuild</a></li><li><a href="index.html#M">Manual</a></li><li><b>A Guide to Kits</b></li></ul></div>
 <p class="purpose">Provisional documentation on how to make and build new kits.</p>
 
-<ul class="toc"><li><a href="M-agtk.html#SP1">&#167;1. Historical note</a></li><li><a href="M-agtk.html#SP2">&#167;2. Exactly how kit dependencies are worked out</a></li><li><a href="M-agtk.html#SP12">&#167;12. Full specification of the kit metadata file</a></li><li><a href="M-agtk.html#SP24">&#167;24. Future directions</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-agtk.html#SP1">&#167;1. Historical note</a></li><li><a href="M-agtk.html#SP2">&#167;2. Exactly how kit dependencies are worked out</a></li><li><a href="M-agtk.html#SP14">&#167;14. Other ingredients of the kit metadata file</a></li><li><a href="M-agtk.html#SP17">&#167;17. Future directions</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Historical note. </b>Inform 7 projects have always needed an underpinning of low-level code, in the
 same way that all C programs can use standard library functions like <span class="extract"><span class="extract-syntax">printf</span></span>.
@@ -108,10 +108,7 @@ Inbuild therefore makes every Inform project have BasicInformKit as a dependency
 </p>
 
 <p class="commentary">Inbuild also makes each project dependent on the language kit for whatever language
-bundle it is using. The name of the necessary kit can be specified in the language
-bundle's <span class="extract"><span class="extract-syntax">about.txt</span></span> file &mdash; see <a href="../supervisor-module/5-ls.html" class="internal">Language Services (in supervisor)</a> &mdash; or, if the
-<span class="extract"><span class="extract-syntax">about.txt</span></span> doesn't specify one, it's made by adding <span class="extract"><span class="extract-syntax">LanguageKit</span></span> to the language's
-name. So if the French language bundle is used, then the default configurations
+bundle it is using. So if French is the language of play, the default configurations
 become:
 </p>
 
@@ -119,55 +116,73 @@ become:
 <span class="plain-syntax">BasicInformKit + FrenchLanguageKit + WorldModelKit + CommandParserKit</span>
 <span class="plain-syntax">BasicInformKit + FrenchLanguageKit + BasicInformExtrasKit</span>
 </pre>
-<p class="commentary">Next, Inbuild adds a dependency on any kit which is named at the command line
-using the <span class="extract"><span class="extract-syntax">-kit</span></span> switch. Note that this exists as a command-line switch for
-both <span class="extract"><span class="extract-syntax">inbuild</span></span> and <span class="extract"><span class="extract-syntax">inform7</span></span>.
+<p class="commentary">Projects can specify their own unusual choices of kits using a project_metadata.json
+file: see <a href="M-agtpm.html" class="internal">A Guide to Project Metadata</a> for more on this. But assuming they
+don't do this, Inbuild will always go for one of these defaults. By default it
+assumes it is making an interactive fiction of some kind and therefore goes
+for the non-Basic default, unless explicitly told not to &mdash; by using <span class="extract"><span class="extract-syntax">-basic</span></span> on
+the command line, or by checking the "Basic Inform" checkbox in the apps.
 </p>
 
-<p class="commentary">Finally, Inbuild adds an automatic dependency on CommandParserKit if neither
-the <span class="extract"><span class="extract-syntax">-kit</span></span> nor <span class="extract"><span class="extract-syntax">-basic</span></span> switches have been used. The practical effect of that
-rule is that Inform by default assumes it is making an interactive fiction
-of some kind, unless explicitly told not to &mdash; by using <span class="extract"><span class="extract-syntax">-basic</span></span> or <span class="extract"><span class="extract-syntax">-kit</span></span>,
-or by checking the "Basic Inform" checkbox in the apps.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
-</p>
-
-<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Checking this box equates to <span class="extract"><span class="extract-syntax">-basic</span></span>, which in turn is equivalent
-to specifying <span class="extract"><span class="extract-syntax">-kit BasicInformKit</span></span>.
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Kits have the ability to specify that other kits are automatically added to
 the project in an ITTT, "if-this-then-that", way. As we shall see, every kit
-contains a file called <span class="extract"><span class="extract-syntax">kit_metadata.txt</span></span> describing its needs. The metadata
+contains a file called <span class="extract"><span class="extract-syntax">kit_metadata.json</span></span> describing its needs. The metadata
 for CommandParserKit includes:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">dependency: if CommandParserKit then WorldModelKit</span>
+<span class="plain-syntax">    {</span>
+<span class="plain-syntax">        "need": {</span>
+<span class="plain-syntax">            "type": "kit",</span>
+<span class="plain-syntax">            "title": "WorldModelKit"</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
 </pre>
-<p class="commentary">This means that any project depending on CommandParserKit automatically depends
+<p class="commentary">Never mind the JSON syntax (all that punctuation) for now: what this is saying
+is that CommandParserKit always needs WorldModelKit in order to function.
+This means that any project depending on CommandParserKit automatically depends
 on WorldModelKit too. BasicInformKit uses this facility as well, but in a
-negative way. Its own metadata file says:
+conditional way. Its own metadata file includes:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">dependency: if not WorldModelKit then BasicInformExtrasKit</span>
+<span class="plain-syntax">    {</span>
+<span class="plain-syntax">        "unless": {</span>
+<span class="plain-syntax">            "type": "kit",</span>
+<span class="plain-syntax">            "title": "WorldModelKit"</span>
+<span class="plain-syntax">        },</span>
+<span class="plain-syntax">        "need": {</span>
+<span class="plain-syntax">            "type": "kit",</span>
+<span class="plain-syntax">            "title": "BasicInformExtrasKit"</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
 </pre>
-<p class="commentary">It follows that if WorldModelKit is not present, then BasicInformExtrasKit is
-automatically added instead.
+<p class="commentary">Inbuild acts on this by checking to see if WorldModelKit is not present, and
+in that case BasicInformExtrasKit is automatically added instead. (Positive
+conditions can also be made, with "if" instead of "unless".)
 </p>
 
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Kits can also use their metadata to specify that associated extensions should
-automatically be loaded into the project.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> For example, the <span class="extract"><span class="extract-syntax">kit_metadata.txt</span></span>
+automatically be loaded into the project.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> For example, the <span class="extract"><span class="extract-syntax">kit_metadata.json</span></span>
 for BasicInformKit includes the lines:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">extension: Basic Inform by Graham Nelson</span>
-<span class="plain-syntax">extension: English Language by Graham Nelson</span>
+<span class="plain-syntax">    {</span>
+<span class="plain-syntax">        "need": {</span>
+<span class="plain-syntax">            "type": "extension",</span>
+<span class="plain-syntax">            "title": "Basic Inform",</span>
+<span class="plain-syntax">            "author": "Graham Nelson"</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
 </pre>
-<ul class="footnotetexts"><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> This in fact is the mechanism by which Inform decides which extensions
+<p class="commentary">...and similarly for another extension called English Language.
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> This in fact is the mechanism by which Inform decides which extensions
 should be implicitly included in a project. Other extensions are included only
 because of explicit "Include..." sentences in the source text.
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li></ul>
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>As an example, suppose we have a minimal Inform story called "French Laundry",
 whose source text reads just "The French Laundry is a room." Running Inbuild
 with the <span class="extract"><span class="extract-syntax">-build-needs</span></span> option shows what is needed to build this project:
@@ -198,51 +213,24 @@ Standard Rules.
 But it is only included once, of course.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>At the command line, either for Inbuild or Inform7, the <span class="extract"><span class="ConsoleText-extract-syntax">-kit</span></span> switch
-can specify alternative kit(s) to use. Note that if any use is made of <span class="extract"><span class="ConsoleText-extract-syntax">-kit</span></span>
-then CommandParserKit and (in consequence) WorldModelKit are no longer auto-included.
-For example, if <span class="extract"><span class="ConsoleText-extract-syntax">-kit BalloonKit</span></span> is specified, then we will end up with:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Using project metadata (see <a href="M-agtpm.html" class="internal">A Guide to Project Metadata</a>) alternative
+or additional kits can be required. Note that if this is done then CommandParserKit
+and (in consequence) WorldModelKit are no longer auto-included.
+</p>
+
+<p class="commentary">For example, if BalloonKit is specified, then we will end up with:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">BasicInformKit + EnglishLanguageKit + BalloonKit + BasicInformExtrasKit</span>
 </pre>
-<p class="commentary">But if <span class="extract"><span class="extract-syntax">-kit CommandParserKit -kit BalloonKit</span></span> is specified, then:
+<p class="commentary">But if CommandParserKit and BalloonKit are both specified, then:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">BasicInformKit + EnglishLanguageKit + WorldModelKit + CommandParserKit + BalloonKit</span>
 </pre>
-<p class="commentary">It may seem that if Inform is being used inside the apps, then there is no way to
-specify non-standard kits. Since the user isn't using the command line, how can
-the user specify a <span class="extract"><span class="extract-syntax">-kit</span></span>? However, a feature of Inform new in 2022 gets around
-this. Additional command-line switches for <span class="extract"><span class="extract-syntax">inbuild</span></span> or for <span class="extract"><span class="extract-syntax">inform7</span></span> can be
-placed in the Materials directory for an Inform project, in files called
-<span class="extract"><span class="extract-syntax">inbuild-setting.txt</span></span> and <span class="extract"><span class="extract-syntax">inform7-settings.txt</span></span>.
-</p>
-
-<p class="commentary">For example, suppose we set both<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> of these files to be:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">-kit CommandParserKit</span>
-<span class="plain-syntax">-kit BalloonKit</span>
-</pre>
-<p class="commentary">And put the following into place:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">Exotic.inform</span>
-<span class="plain-syntax">Exotic.materials</span>
-<span class="plain-syntax">    inbuild-settings.txt</span>
-<span class="plain-syntax">    inform7-settings.txt</span>
-<span class="plain-syntax">    Inter</span>
-<span class="plain-syntax">        BalloonKit</span>
-<span class="plain-syntax">            ...</span>
-<span class="plain-syntax">    ...</span>
-</pre>
-<p class="commentary">BalloonKit has to be a properly set up kit &mdash; see below; but if so, then when
-we next look at the build requirements for the project, we see:
+<p class="commentary">If so, then when we next look at the build requirements for the project, we see:
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
@@ -263,13 +251,6 @@ we next look at the build requirements for the project, we see:
 <p class="commentary">So now BalloonKit is indeed a dependency.
 </p>
 
-<p class="commentary">See <a href="M-ui.html" class="internal">Manual (in inbuild)</a> for the full story on where the compiler expects to
-find kits, but basically, they're managed much the way extensions are.
-</p>
-
-<ul class="footnotetexts"><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> Both, so that whether the executable looking at the project is inbuild or
-inform7, it will use the same set of kits. You want this.
-<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>So, then, what actually is a kit? It is stored as a directory whose name is
 the name of the kit: in the case of our example, that will be <span class="extract"><span class="ConsoleText-extract-syntax">BalloonKit</span></span>.
 This directory contains:
@@ -281,14 +262,14 @@ since it means it can be woven into website form. See <a href="../BasicInformKit
 an example of the result.) It is simple because it provides only a <span class="extract"><span class="ConsoleText-extract-syntax">Contents.w</span></span>
 page and a <span class="extract"><span class="ConsoleText-extract-syntax">Sections</span></span> subdirectory &mdash; it has no manual, chapters, figures,
 sounds or other paraphernalia.
-</li><li>&#9679; A file called <span class="extract"><span class="ConsoleText-extract-syntax">kit_metadata.txt</span></span> describing the kit, its version and its
+</li><li>&#9679; A file called <span class="extract"><span class="ConsoleText-extract-syntax">kit_metadata.json</span></span> describing the kit, its version and its
 dependencies.
 </li><li>&#9679; Compiled binary Inter files &mdash; but only once the kit has been built. These
 always have filenames in the shape <span class="extract"><span class="ConsoleText-extract-syntax">arch-A.interb</span></span>, where <span class="extract"><span class="ConsoleText-extract-syntax">A</span></span> is an architecture;
 in that way, a kit can contain binary Inter to suit several different architectures.
 For example, <span class="extract"><span class="ConsoleText-extract-syntax">arch-16d.interb</span></span> or <span class="extract"><span class="ConsoleText-extract-syntax">arch-32.interb</span></span>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>The source code is written in Inform 6 syntax.<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> This means that to create or
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>The source code is written in Inform 6 syntax.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> This means that to create or
 edit kits, you need to be able to write Inform 6 code, but it's a very simple
 language to learn if all you're doing is writing functions, variables and arrays.
 </p>
@@ -329,23 +310,135 @@ will read:
 <p class="commentary">Note the very simple Inweb-style markup here. We do not use any of the fancier
 features of literate programming (definitions, paragraph macros, and so on),
 because the kit assimilator can only perform very simple tangling, and is not
-nearly as strong as the full Inweb tangler.<sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup>
+nearly as strong as the full Inweb tangler.<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup>
 </p>
 
-<ul class="footnotetexts"><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> It would have been conceivable to write such code directly as textual Inter,
+<ul class="footnotetexts"><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> It would have been conceivable to write such code directly as textual Inter,
 but the experience would have been painful. Even in its textual form, Inter is not
 very legible, and it is highly verbose.
-<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> At some point it may be developed out a little, but there's no great need.
-<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>The metadata file at <span class="extract"><span class="extract-syntax">BalloonKit/kit_metadata.txt</span></span> is going to be simple:
+<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> At some point it may be developed out a little, but there's no great need.
+<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>The metadata file at <span class="extract"><span class="extract-syntax">BalloonKit/kit_metadata.json</span></span> is required to exist in
+order for Inbuild to recognise this as being a kit at all; even if it doesn't
+say very much, as in this example. This is (almost) minimal:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">extension: Party Balloons by Joseph-Michel Montgolfier</span>
+<span class="plain-syntax">{</span>
+<span class="plain-syntax">    "is": {</span>
+<span class="plain-syntax">        "type": "kit",</span>
+<span class="plain-syntax">        "title": "BalloonKit",</span>
+<span class="plain-syntax">        "author": "Jacques-Étienne Montgolfier"</span>
+<span class="plain-syntax">        "version": "3.2.7"</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
 </pre>
-<p class="commentary">In fact we don't really need this line at all (a kit does not need to have any
-associated extensions), but it makes for a more interesting demonstration. We
-can see an effect at once:
+<p class="commentary">This is a JSON-format file: JSON, standing for Javascript Object Notation, is
+now nothing really to do with the language Javascript and has instead become
+an Internet standard for small packets of descriptive data, like ours. Many
+full descriptions of JSON are available, but here are some brief notes:
+</p>
+
+<ul class="items"><li>&#9679; This is a UTF-8 plain text file. The acute accent in "Jacques-Étienne Montgolfier"
+causes no problems, but quoted text is well advised to confine itself to the Unicode
+Basic Multilingual Plane characters (with code-points 0 to 65535). Inside
+quotation marks, <span class="extract"><span class="extract-syntax">\n</span></span> and <span class="extract"><span class="extract-syntax">\t</span></span> can be used for newlines and tabs, but a kit
+shouldn't ever need them. <span class="extract"><span class="extract-syntax">\uDDDD</span></span> can be used to mean "the Unicode character
+whose code is <span class="extract"><span class="extract-syntax">DDDD</span></span> in hexadecimal".
+</li><li>&#9679; Braces <span class="extract"><span class="extract-syntax">{</span></span> and <span class="extract"><span class="extract-syntax">}</span></span> begin and end "objects". The whole set of metadata on
+the kit is such an object, so the file has to open and close with <span class="extract"><span class="extract-syntax">{</span></span> and <span class="extract"><span class="extract-syntax">}</span></span>.
+Inside such braces, we have a list of named values, divided by commas. Each
+entry takes the form <span class="extract"><span class="extract-syntax">"name": value</span></span>. The name is in quotes, but the value
+will only be quoted if it happens to be a string.
+</li><li>&#9679; Square brackets <span class="extract"><span class="extract-syntax">[</span></span> and <span class="extract"><span class="extract-syntax">]</span></span> begin and end lists, with the entries in the
+list divided by commas. For example, <span class="extract"><span class="extract-syntax">[ 1, 2, 17 ]</span></span> is a valid list of three
+numbers.
+</li><li>&#9679; Numbers are written in decimal, possibly with a minus sign: for example,
+<span class="extract"><span class="extract-syntax">24</span></span> or <span class="extract"><span class="extract-syntax">-120</span></span>. (JSON also allows floating-point numbers, which Inbuild does
+read, and stores to double precision, but kit metadata never needs these.)
+</li><li>&#9679; The special notations <span class="extract"><span class="extract-syntax">true</span></span> and <span class="extract"><span class="extract-syntax">false</span></span> are used for so-called boolean
+values, i.e., those which are either true or false.
+</li><li>&#9679; The special notation <span class="extract"><span class="extract-syntax">null</span></span> is used to mean "I am not saying what this is",
+but kit metadata never needs this.
+</li><li>&#9679; JSON files are forbidden to contain comments, and Inbuild is very strict
+about what hierarchies of objects it will read without errors.
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Looking again at the minimal example, what do we have?
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">{</span>
+<span class="plain-syntax">    "is": {</span>
+<span class="plain-syntax">        "type": "kit",</span>
+<span class="plain-syntax">        "title": "BalloonKit",</span>
+<span class="plain-syntax">        "author": "Jacques-Étienne Montgolfier"</span>
+<span class="plain-syntax">        "version": "3.2.7"</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary">The metadata is one big object. That object has a single named value, <span class="extract"><span class="extract-syntax">"is"</span></span>.
+</p>
+
+<p class="commentary">The value of <span class="extract"><span class="extract-syntax">"is"</span></span> is another object &mdash; hence the second pair of <span class="extract"><span class="extract-syntax">{</span></span> ... <span class="extract"><span class="extract-syntax">}</span></span> after
+the colon. This second object gives the identity of the kit &mdash; says what it is,
+in other words. That has four values:
+</p>
+
+<ul class="items"><li>(1) <span class="extract"><span class="extract-syntax">"type"</span></span>, which has to be <span class="extract"><span class="extract-syntax">"kit"</span></span>;
+</li><li>(2) <span class="extract"><span class="extract-syntax">"title"</span></span>, which has to match the kit's name &mdash; Inbuild will throw an error
+if BalloonKit's metadata file claims that its title is actually <span class="extract"><span class="extract-syntax">"AerostatiqueKit"</span></span>;
+</li><li>(3) <span class="extract"><span class="extract-syntax">"author"</span></span>, which is optional, but which if given should follow the usual
+conventions for author names of Inform extensions; and
+</li><li>(4) <span class="extract"><span class="extract-syntax">"version"</span></span>, which is also optional, but whose use is strongly recommended.
+This has to be a semantic version number. This follows Inbuild's usual semantic
+version numbering conventions, so for example <span class="extract"><span class="extract-syntax">"5"</span></span> and <span class="extract"><span class="extract-syntax">"1.5.6-alpha.12"</span></span> would
+both be valid. Note that in JSON terms it's a string, despite the word "number"
+in the phrase "semantic version number", so it goes in double-quotes. This is
+the version number which Inbuild will use to resolve dependencies. If a project
+needs v1.7 or better, for example, Inbuild will not allow it to use
+version 1.5.6-alpha.12 of a kit.
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>To make for a more interesting demonstration, now suppose that the kit
+wants to require the use of an associated extension. We extend the metadata file to:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">{</span>
+<span class="plain-syntax">    "is": {</span>
+<span class="plain-syntax">        "type": "kit",</span>
+<span class="plain-syntax">        "title": "BalloonKit",</span>
+<span class="plain-syntax">        "author": "Jacques-Étienne Montgolfier"</span>
+<span class="plain-syntax">        "version": "3.2.7"</span>
+<span class="plain-syntax">    },</span>
+<span class="plain-syntax">    "needs": [</span>
+<span class="plain-syntax">        {</span>
+<span class="plain-syntax">            "need": {</span>
+<span class="plain-syntax">                "type": "extension",</span>
+<span class="plain-syntax">                "title": "Party Balloons",</span>
+<span class="plain-syntax">                "author": "Joseph-Michel Montgolfier"</span>
+<span class="plain-syntax">            }</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    ]</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary">Now our metadata object has a second named value, <span class="extract"><span class="extract-syntax">"needs"</span></span>. This has to be
+a list, which in JSON is written in square brackets <span class="extract"><span class="extract-syntax">[ X, Y, Z, ... ]</span></span>. Here
+the list has just one entry, in fact. The entries in the list all have to be
+objects, which can have three possible values:
+</p>
+
+<ul class="items"><li>(1) <span class="extract"><span class="extract-syntax">"if"</span></span>, saying that the dependency is conditional on another kit being used &mdash;
+see above for examples;
+</li><li>(2) <span class="extract"><span class="extract-syntax">"unless"</span></span>, similarly but making the condition on another kit not being used;
+</li><li>(3) <span class="extract"><span class="extract-syntax">"need"</span></span>, which says what the dependency is on.
+</li></ul>
+<p class="commentary">The <span class="extract"><span class="extract-syntax">"if"</span></span> and <span class="extract"><span class="extract-syntax">"unless"</span></span> clauses are optional. (And only one can be given.)
+The <span class="extract"><span class="extract-syntax">"need"</span></span> clause is compulsory. This can say that the kit needs another
+kit (there are examples above), but in this case it says the kit needs a
+particular extension to be present.
+</p>
+
+<p class="commentary">We can see an effect at once:
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
@@ -383,7 +476,12 @@ it has not got. So suppose we provide one:
 <span class="identifier-syntax">When</span><span class="plain-syntax"> </span><span class="identifier-syntax">play</span><span class="plain-syntax"> </span><span class="identifier-syntax">begins</span><span class="plain-syntax">:</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">perform</span><span class="plain-syntax"> </span><span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">inflation</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="identifier-syntax">puffs</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary">Now Inbuild is happier:
+<p class="commentary">Note that this text does not explicitly say "Include Party Balloons by Joseph-Michel
+Montgolfier" &mdash; it doesn't need to: the extension is automatically included by
+the kit.
+</p>
+
+<p class="commentary">And now Inbuild is happier:
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
@@ -394,7 +492,7 @@ it has not got. So suppose we provide one:
 <span class="ConsoleText-plain-syntax">        extension: Party Balloons by Joseph-Michel Montgolfier v2</span>
 <span class="ConsoleText-plain-syntax">      ...</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>The whole point of a kit is to be precompiled code, so we had better compile it.
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>The whole point of a kit is to be precompiled code, so we had better compile it.
 There are several ways to do this. One is to tell Inbuild directly:
 </p>
 
@@ -424,152 +522,101 @@ project is compiled in the Inform apps, by clicking "Go" in the usual way. Any
 of its kits which need rebuilding are automatically rebuilt as part of the process.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Full specification of the kit metadata file. </b>This is a UTF-8 encoded Unicode text file, consisting of a sequence of commands
-in any order, one per line. No commands are compulsory. An empty file is legal.
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Other ingredients of the kit metadata file. </b>As noted above, <span class="extract"><span class="ConsoleText-extract-syntax">kit_metadata.json</span></span> must be a valid JSON file which encodes a
+single object. The following are the legal member names; only <span class="extract"><span class="ConsoleText-extract-syntax">"is"</span></span> is mandatory,
+and the rest sensibly default if not given.
 </p>
 
-<p class="commentary">Blank lines are ignored, as are lines whose first non-white-space character is <span class="extract"><span class="ConsoleText-extract-syntax">#</span></span>,
-which are considered comments.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b><span class="extract"><span class="ConsoleText-extract-syntax">version: V</span></span> gives the kit's version number. This follows Inbuild's usual semantic
-version numbering conventions, so for example:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    version: 5</span>
-<span class="plain-syntax">    version: 1.5.6-alpha.12</span>
-</pre>
-<p class="commentary">This is the version number which Inbuild will use to resolve dependencies. If a
-project needs v1.7 or better, for example, Inbuild will not allow it to use
-version 1.5.6-alpha.12 of a kit.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b><span class="extract"><span class="extract-syntax">compatibility: C</span></span> allows us to say which architectures or final targets
+<ul class="items"><li>&#9679; <span class="extract"><span class="ConsoleText-extract-syntax">"is"</span></span>, an object identifying what kit this is. See above.
+</li><li>&#9679; <span class="extract"><span class="ConsoleText-extract-syntax">"needs"</span></span>, a list of objects each of which specifies a possibly conditional
+dependency on other resources. See above.
+</li><li>&#9679; <span class="extract"><span class="ConsoleText-extract-syntax">"compatibility"</span></span>, a string which describes which architectures or final targets
 the kit is compatible with. By default, Inbuild assumes it will work with anything,
-equivalent to <span class="extract"><span class="extract-syntax">compatibility: all</span></span>. But for example:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    compatibility: for 16-bit with debugging only</span>
-<span class="plain-syntax">    compatibility: not for 32-bit</span>
-<span class="plain-syntax">    compatibility: for Inform6 version 8</span>
-<span class="plain-syntax">    compatibility: not for C</span>
-</pre>
-<p class="commentary">In general, it's best to stick to architectural constraints (i.e. 16 or 32 bit,
-with or without debugging support) and not to constrain the final target unless
-really necessary.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b><span class="extract"><span class="extract-syntax">defines Main: yes</span></span> or <span class="extract"><span class="extract-syntax">defines Main: no</span></span>. The default is <span class="extract"><span class="extract-syntax">no</span></span>, so use this
-only to specify that the kit contains within it a definition of the <span class="extract"><span class="extract-syntax">Main</span></span>
-function. But only the shipped-with-Inform kits should ever do this.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b><span class="extract"><span class="extract-syntax">natural language: yes</span></span> or <span class="extract"><span class="extract-syntax">natural language: no</span></span>. The default is <span class="extract"><span class="extract-syntax">no</span></span>; use
-this only to say that the kit is a language support kit, like EnglishLanguageKit.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b><span class="extract"><span class="extract-syntax">insert: X</span></span>. This sneakily allows a sentence of Inform 7 source text to be
-inserted into any project using the kit. For example:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    insert: Use maximum inflation level of 20.</span>
-</pre>
-<p class="commentary">But in general it's better not to use this at all, and to put any such material
-in an associated extension which is automatically included.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b><span class="extract"><span class="extract-syntax">kinds: F</span></span>, where <span class="extract"><span class="extract-syntax">F</span></span> is the name of a Neptune file. Neptune is a mini-language
-for setting up kinds and kind constructors inside the compiler: see
-<a href="../kinds-module/4-abgtn.html" class="internal">A Brief Guide to Neptune (in kinds)</a> for much more on this. The file <span class="extract"><span class="extract-syntax">F</span></span> should
-be placed as <span class="extract"><span class="extract-syntax">BalloonKit/kinds/F</span></span>. For example:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">kinds: Protocols.neptune</span>
-<span class="plain-syntax">kinds: Core.neptune</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b><span class="extract"><span class="extract-syntax">extension: E</span></span>, where <span class="extract"><span class="extract-syntax">E</span></span> is the name of an extension. A version number
-can optionally be given, too. For example:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">extension: Party Balloons by Joseph-Michel Montgolfier</span>
-<span class="plain-syntax">extension: version 2.1 of Party Balloons by Joseph-Michel Montgolfier</span>
-</pre>
-<p class="commentary">Inbuild will now automatically include this extension if it can find it; if
-not, the build will halt. Compatibility with the version number is done by
-semantic version numbering rules, so v2.1.67 would be fine, but not v2.2, v1,
-v3, and so forth. Note that kits can mandate multiple extensions, not just one.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b><span class="extract"><span class="extract-syntax">activate: F</span></span> and <span class="extract"><span class="extract-syntax">deactivate: F</span></span>. This says that if the kit is present, then
-a given feature inside the compiler <span class="extract"><span class="extract-syntax">F</span></span> should be switched on or off. For
-example, the metadata for CommandParserKit includes:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">activate: command</span>
-</pre>
-<p class="commentary">which enables command grammar to be part of the Inform language. WorldModelKit
-more ambitiously says:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">activate: interactive fiction</span>
-<span class="plain-syntax">activate: multimedia</span>
-</pre>
-<p class="commentary">It is these activation lines, in WorldModelKit and CommandParserKit, which cause
-the Inform language to have IF-specific features during a compilation. Without
-them, the language would just be Basic Inform.
-</p>
-
-<p class="commentary">The feature names <span class="extract"><span class="extract-syntax">F</span></span> are the names of plugins inside the compiler, and this is
-not the place to document that. See the implementation at <a href="../core-module/3-pm.html" class="internal">Chapter 3: Plugins (in core)</a>.
-But in general, unless you are performing wild experiments with new language
-features inside the compiler, never use <span class="extract"><span class="extract-syntax">activate</span></span> or <span class="extract"><span class="extract-syntax">deactivate</span></span>.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b><span class="extract"><span class="extract-syntax">dependency: if X then Y</span></span> and <span class="extract"><span class="extract-syntax">dependency: if not X then Y</span></span>. This specifies
-dependencies between kits; often <span class="extract"><span class="extract-syntax">X</span></span> or <span class="extract"><span class="extract-syntax">Y</span></span> will be the kit you are currently
-defining, but not necessarily. Rules are considered for all kits currently loaded.
-For example, this is part of the metadata for CommandParserKit:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">dependency: if CommandParserKit then WorldModelKit</span>
-</pre>
-<p class="commentary">A few points to note:
-</p>
-
-<ul class="items"><li>&#9679; Rules are considered only for kits which are loaded. There is no way to
-make BalloonKit parasitically attach to all projects by giving it the rule
-<span class="extract"><span class="extract-syntax">if not BalloonKit then BalloonKit</span></span>, because this rule will only be looked at
-if BalloonKit has already loaded.
-</li><li>&#9679; The outcome cannot be <span class="extract"><span class="extract-syntax">... then not Y</span></span>; once loaded, a kit cannot be
-unloaded. So these dependency rules can only cause extra kits to be added.
-</li><li>&#9679; Positive rules <span class="extract"><span class="extract-syntax">if ...</span></span> are considered first, and only then negative ones
-<span class="extract"><span class="extract-syntax">if not ...</span></span>. Within each category, kits have their rules looked at in order
-of their priority (see below).
-</li><li>&#9679; Version number requirements cannot be specified for either <span class="extract"><span class="extract-syntax">X</span></span> or <span class="extract"><span class="extract-syntax">Y</span></span>
-at present.
+equivalent to <span class="extract"><span class="ConsoleText-extract-syntax">"compatibility": "all"</span></span>. In general, it's best to stick to purely
+architectural constraints (i.e. 16 or 32 bit, with or without debugging support)
+and not to constrain the final target unless really necessary. But the following
+are all legal:
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b><span class="extract"><span class="extract-syntax">priority: N</span></span>, where <span class="extract"><span class="extract-syntax">N</span></span> is a number from 0 to 100. This is used only to
-decide whose wishes get priority when Inbuild is performing if-this-then-that
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    "compatibility": "for 16-bit with debugging only"</span>
+<span class="plain-syntax">    "compatibility": "not for 32-bit"</span>
+<span class="plain-syntax">    "compatibility": "for Inform6 version 8"</span>
+<span class="plain-syntax">    "compatibility": "not for C"</span>
+</pre>
+<ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">"activates"</span></span> is a list of strings describing optional features of the Inform
+compiler to switch on if this kit is being used. The feature names are the names
+of features inside the compiler, and this is not the place to document that. See
+the implementation at <a href="../arch-module/3-fm.html" class="internal">Feature Manager (in arch)</a>. But in general, unless you are
+performing wild experiments with new features inside the compiler, you will never
+need <span class="extract"><span class="extract-syntax">"activates"</span></span>. It really exists for the benefit of the built-in kits. For
+example, WorldModelKit does the following:
+</li></ul>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    "activates": [ "interactive fiction", "multimedia" ]</span>
+</pre>
+<ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">"deactivates"</span></span> is a similar list describing what to turn off.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">"kit-details"</span></span> is a set of oddball settings which make sense only for kits.
+The reason these are hived off in their own sub-object is so that the same
+basic file format can be used for JSON describing other resources, too.
+<span class="extract"><span class="extract-syntax">"kit-details"</span></span> can only legally be used if the <span class="extract"><span class="extract-syntax">"type"</span></span> in the <span class="extract"><span class="extract-syntax">"is"</span></span> object
+is set to <span class="extract"><span class="extract-syntax">"kit"</span></span>.
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>The <span class="extract"><span class="extract-syntax">"kit-details"</span></span> object can contain the following, all of which are
+optional. Only the first is likely to be useful for a kit other than one of
+those built in to the Inform installation.
+</p>
+
+<ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">"provides-kinds"</span></span> is a list of strings. These are the names of Neptune
+files to read in. Neptune is a mini-language for setting up kinds and kind
+constructors inside the Inform compiler: see <a href="../kinds-module/4-abgtn.html" class="internal">A Brief Guide to Neptune (in kinds)</a>
+for much more on this. Each named file <span class="extract"><span class="extract-syntax">F</span></span> should be placed as <span class="extract"><span class="extract-syntax">BalloonKit/kinds/F</span></span>.
+For example, WorldModelKit does this:
+</li></ul>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">"provides-kinds": [ "Actions.neptune", "Times.neptune", "Scenes.neptune", "Figures.neptune", "Sounds.neptune" ]</span>
+</pre>
+<ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">"has-priority"</span></span> is a number, from 0 to 100. This is used only to decide
+whose wishes get priority when Inbuild is performing if-this-then-that
 decisions to sort out which kits are present in a project. The default is 10,
 and for almost all kits it should stay that way. Lower-numbered kits have
 "more important" wishes than higher-numbered ones.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">"defines-Main"</span></span> is a boolean, so its value has to be <span class="extract"><span class="extract-syntax">true</span></span> or <span class="extract"><span class="extract-syntax">false</span></span>.
+If it isn't given, the value will be <span class="extract"><span class="extract-syntax">false</span></span>. This is useful only for the
+built-in kits supplied with Inform, and indicates whether or not they define
+a <span class="extract"><span class="extract-syntax">Main</span></span> function in Inter.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">"indexes-with-structure"</span></span> is a string. This is useful only for the
+built-in kits supplied with Inform, and indicates which structure file should
+be used to generate the Index of a project. (There are two versions of the
+index, one for Basic Inform projects, the other for interactive-fiction ones.)
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">"inserts-source-text"</span></span> is a string. This sneakily allows a sentence of
+Inform 7 source text to be inserted into any project using the kit. Its use
+is very much a last resort: if at all possible, put such material in an
+associated extension, and then auto-include that extension using a <span class="extract"><span class="extract-syntax">"needs"</span></span>
+dependency (see above). But, for example:
+</li></ul>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    "inserts-source-text": "Use maximum inflation level of 20."</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>Here are a few footnotes on how Inbuild resolves the "needs" requirements
+of multiple kits, which may clarify what happens in apparently ambiguous
+situations.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b><span class="extract"><span class="extract-syntax">index from: C</span></span> can change the structure of the Index for a project using
-this kit, but in practice this should be done only by BasicInformKit or by
-WorldModelKit. (There are two versions of the index, one for Basic Inform
-projects, the other for interactive-fiction ones.)
-</p>
-
-<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Future directions. </b>It will be noted that a kit can include an extension automatically, but not
+<ul class="items"><li>&#9679; Needs are considered only for kits which are loaded. There is no way to
+make BalloonKit parasitically attach to all projects by giving it a rule
+saying in effect "unless you have BalloonKit then you need BalloonKit",
+because although you could write such a rule, it would only be processed
+when BalloonKit had already loaded &mdash; and would then have no effect.
+</li><li>&#9679; A kit cannot be unloaded once loaded. So "needs" rules can only cause
+extra kits to be added. It follows that there can never be a loop caused
+by kits repeatedly loading and unloading each other through irresolvable
+constraints. But it also follows that the outcome in such a case can depend
+on the order in which rules are considered.
+</li><li>&#9679; Positive needs using "if" (or unconditional needs) are considered first,
+and only then negative ones using "unless". Within each category, kits have
+their needs looked at in order of their priority numbers (see above).
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Future directions. </b>It will be noted that a kit can include an extension automatically, but not
 vice versa. Indeed, at present there is no way for Inform 7 source text to ask
 for a kit to be included. This limitation is intentional for now.
 </p>
@@ -584,7 +631,7 @@ In the mean time, it seems premature to commit to any model.
 </p>
 
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="M-ui.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-ui.html">ui</a></li><li class="progresscurrent">agtk</li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progressnext"><a href="M-rc.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="M-ui.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-ui.html">ui</a></li><li class="progresscurrent">agtk</li><li class="progresssection"><a href="M-agtlb.html">agtlb</a></li><li class="progresssection"><a href="M-agtpm.html">agtpm</a></li><li class="progresssection"><a href="M-agtr.html">agtr</a></li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progressnext"><a href="M-agtlb.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

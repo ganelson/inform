@@ -19,6 +19,8 @@ Chapter 2: Conceptual Framework
 	Copy Errors
 	Requirements
 	Nests
+	Registries
+	JSON Metadata
 
 Chapter 3: Incremental Builds
 	Build Graphs
@@ -33,6 +35,7 @@ Chapter 3: Incremental Builds
 
 Chapter 4: Genre Management
 	Extension Manager
+	Extension Bundle Manager
 	Kit Manager
 	Language Manager
 	Pipeline Manager
@@ -51,7 +54,6 @@ Chapter 5: Genre Services
 Chapter 6: Inform Source Text
 	Source Text
 	Headings
-	The Bibliographic Sentence
 	The Options File
 	Inclusions
 	Control Structures
@@ -63,3 +65,4 @@ Chapter 7: Extension Indexing
 	Census
 	Index Pages
 	Individual Pages
+	The Report

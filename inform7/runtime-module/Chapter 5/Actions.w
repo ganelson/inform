@@ -418,13 +418,13 @@ void RTActions::print_noun_or_second(action_name *an, int n, inter_symbol *n_s, 
 
 void RTActions::print_something(OUTPUT_STREAM, action_name *an, int argc) {
 	kind *K = NULL; /* redundant assignment to appease |gcc -O2| */
-	HTML::begin_colour(OUT, I"000080");
+	HTML::begin_span(OUT, I"indexdullblue");
 	if (argc == 0) K = ActionSemantics::kind_of_noun(an);
 	if (argc == 1) K = ActionSemantics::kind_of_second(an);
 	if (Kinds::Behaviour::is_object(K)) WRITE("something");
 	else if ((K_understanding) && (Kinds::eq(K, K_understanding))) WRITE("some text");
 	else Kinds::Textual::write(OUT, K);
-	HTML::end_colour(OUT);
+	HTML::end_span(OUT);
 	WRITE(" ");
 }
 

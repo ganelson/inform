@@ -1,0 +1,23 @@
+   Home
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Home
+  
+> >   Home
+  (Testing.)
+  
+  >[1] consider zero
+  Okay. You consider 0.
+  
+  >[2] consider nought
+  Okay. You consider 0.
+  
+  >[3] time noonish
+  Okay. You set your mental clock to 12:00 pm.
+  
+  >[4] time middling
+  Okay. You set your mental clock to 12:00 pm.
+  
+> >

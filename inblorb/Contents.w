@@ -3,7 +3,7 @@ Author: Graham Nelson
 Purpose: The packaging stage of the Inform 7 system, which releases a story file in the blorbed format.
 Language: InC
 Licence: This is a free, open-source program published under the Artistic License 2.0.
-Version Number: 4
+Version Number: 4.1
 Version Name: Duralumin
 
 Import: foundation

@@ -1,0 +1,968 @@
+
+Glulxercise: A Glulx interpreter unit test
+Release 9 / Serial number 161114 / Inform v6.41, compiler options S
+Interpreter version 0.6.0 / VM 3.1.3 / game file format 3.1.2
+
+A voice booooms out: Welcome to the test chamber.
+
+Type "help" to repeat this message, "quit" to exit, "all" to run all tests, or one of the following test options: "operand", "arith", "bigmul", "comvar", "comarith", "bitwise", "shift", "trunc", "extend", "aload", "astore", "arraybit", "call", "callstack", "jump", "jumpform", "compare", "stack", "gestalt", "throw", "streamnum", "strings", "ramstring", "iosys", "iosys2", "filter", "nullio", "glk", "gidispa", "random", "nonrandom", "search", "mzero", "mcopy", "undo", "multiundo", "restore", "verify", "protect", "memsize", "undomemsize", "undorestart", "heap", "undoheap", "acceleration", "floatconv", "floatarith", "floatmod", "floatround", "floatexp", "floattrig", "floatatan2", "fjumpform", "fjump", "fcompare", "fprint", "safari5".
+
+>All tests:
+
+Basic operand access:
+
+stkcount=0
+Constants: zero=0, -1=-1, 16=16, -$81=$FFFFFF7F, $100=$100, -$8000=$FFFF8000, $10000=$10000, $7FFFFFFF=$7FFFFFFF, $80000000=$80000000, $CDEF1234=$CDEF1234
+Constants: zero=0, -1=-1, 16=16, -$81=$FFFFFF7F, $100=$100, -$8000=$FFFF8000, $10000=$10000, $7FFFFFFF=$7FFFFFFF, $80000000=$80000000, $CDEF1234=$CDEF1234
+Global to local 123=123=123, local to global 321=321=321
+Stack: 456=456, Stack: 933=933
+Global to stack: 123=123
+Stack to stack: 789=789, Stack to stack: 1234=1234
+
+Passed.
+
+Integer arithmetic:
+
+2+2=4, -2+-3=-5, 3+-4=-1, -4+5=1, $7FFFFFFF+$7FFFFFFE=-3, $80000000+$80000000=0
+Globals 6+8=14
+2-2=0, -2-3=-5, 3-4=-1, -4-(-5)=1, $7FFFFFFF-$7FFFFFFE=1, $80000000-$80000001=-1, $7FFFFFFF-$80000001=-2
+Globals 6-8=-2
+2*2=4, -2*-3=6, 3*-4=-12, -4*5=-20, $10000*$10000 (trunc)=0, 311537*335117 (trunc)=$4ECE193D
+Globals -6*-8=48
+12/3=4, 11/2=5, -11/2=-5, 11/-2=-5, -11/-2=5, $7fffffff/2=$3FFFFFFF, $7fffffff/-2=$C0000001, -$7fffffff/2=$C0000001, -$7fffffff/-2=$3FFFFFFF, $80000000/2=$C0000000, $80000000/(-2)=$40000000, $80000000/1=$80000000
+Globals -48/-8=6, 48/7=6, 48/-7=-6, -48/7=-6, -48/-7=6
+12%3=0, 13%5=3, -13%5=-3, 13%-5=3, -13%-5=-3, $7fffffff%7=1, -$7fffffff%7=-1, $7fffffff%-7=1, -$7fffffff%-7=-1, $80000000%7=-2, $80000000%-7=-2, $80000000%2=0, $80000000%-2=0, $80000000%1=0
+Globals 49%8=1, 49%-8=1, -49%8=-1, -49%-8=-1
+-(0)=0, -(5)=-5, -(-5)=5, -($7FFFFFFF)=-2147483647, -($80000001)=2147483647, -($80000000)=$80000000
+global -($80000001)=2147483647
+
+Passed.
+
+Large integer multiplication:
+
+51537*35117=$6BDFBC3D
+-51539*35117=$941F3169
+51537*-35119=$941EB121
+-51539*-35119=$6BE2613D
+51537*35117 (loc)=$6BDFBC3D
+51537*35117 (glob)=$6BDFBC3D
+$5432FEDB*-1 (loc)=$ABCD0125
+$1C10FF9E*-3 (glob,loc)=$ABCD0126
+
+$7654321*1=$7654321
+$7654321*2=$ECA8642
+$7654321*4=$1D950C84
+$7654321*5=$24FA4FA5
+$7654321*8=$3B2A1908
+$7654321*16=$76543210
+$7654321*32=$ECA86420
+$7654321*64=$D950C840
+$7654321*128=$B2A19080
+$7654321*256=$65432100
+$7654321*1024=$950C8400
+$7654321*32768=$A1908000
+$7654321*65536=$43210000
+
+1*$7654321=$7654321
+2*$7654321=$ECA8642
+4*$7654321=$1D950C84
+5*$7654321=$24FA4FA5
+8*$7654321=$3B2A1908
+16*$7654321=$76543210
+32*$7654321=$ECA86420
+64*$7654321=$D950C840
+128*$7654321=$B2A19080
+256*$7654321=$65432100
+1024*$7654321=$950C8400
+32768*$7654321=$A1908000
+65536*$7654321=$43210000
+
+$7FFFFFFF*$7FFFFFFF (trunc)=$1
+$7FFFFFFF*$7FFFFFFE (glob,trunc)=$80000002
+-$7FFFFFFE*$7FFFFFFE (loc,trunc)=$FFFFFFFC
+$10000003*$10000007 (trunc)=$A0000015
+$10000001*$10000003 (glob,trunc)=$40000003
+-$10000005*$10000007 (loc,trunc)=$3FFFFFDD
+
+Passed.
+
+Compound variable juggling:
+
+6=6, 5=5
+12=12, 16=16, 36=36, 32=32
+7=7, 6=6, 6=6
+7=7, 7=7
+8=8, 8=8
+
+Passed.
+
+Compound arithmetic expressions:
+
+(7+2)*-4=-36, (7+2)*-4=-36
+($10000*$10000)/16+1=1, ($10000*$10000)/16+1=1
+($7FFFFFFF+2)/16=-134217727, ($7FFFFFFF+2)/16=-134217727
+(-$7FFFFFFF-2)/16=134217727, (-$7FFFFFFF-2)/16=134217727
+
+Passed.
+
+Bitwise arithmetic:
+
+0&0=$0, $FFFFFFFF&0=$0, $FFFFFFFF&$FFFFFFFF=$FFFFFFFF, $0137FFFF&$FFFF7310=$1377310, $35&56=$14
+0|0=$0, $FFFFFFFF|0=$FFFFFFFF, $FFFFFFFF|$FFFFFFFF=$FFFFFFFF, $01370000|$00007310=$1377310, $35|56=$77
+0^0=$0, $FFFFFFFF^0=$FFFFFFFF, $FFFFFFFF^$FFFFFFFF=$0, $0137FFFF^$00007310=$1378CEF, $35^56=$63
+!0=$FFFFFFFF, !1=$FFFFFFFE, !$F=$FFFFFFF0, !$80000000=$7FFFFFFF
+
+Passed.
+
+Bit shifts:
+
+$1001<<0=$1001, $1001<<1=$2002, $1001<<4=$10010, $1001<<10=$400400, $1001<<16=$10010000, $1001<<24=$1000000, $1001<<31=$80000000, $1001<<32=$0, $1001<<-1=$0
+-2<<0=-2, -2<<1=-4, -2<<7=-256, -2<<31=0
+1<<0=$1, 1<<1=$2, 1<<2=$4, 1<<3=$8, 1<<4=$10, 1<<5=$20, 1<<6=$40, 1<<7=$80, 1<<8=$100, 1<<9=$200, 1<<10=$400, 1<<11=$800, 1<<12=$1000, 1<<13=$2000, 1<<14=$4000, 1<<15=$8000, 1<<16=$10000, 1<<17=$20000, 1<<18=$40000, 1<<19=$80000, 1<<20=$100000, 1<<21=$200000, 1<<22=$400000, 1<<23=$800000, 1<<24=$1000000, 1<<25=$2000000, 1<<26=$4000000, 1<<27=$8000000, 1<<28=$10000000, 1<<29=$20000000, 1<<30=$40000000, 1<<31=$80000000, 1<<32=0, 1<<-1=0
+$1001u>>0=$1001, $1001u>>1=$800, $1001u>>2=$400, $1001u>>6=$40, $1001u>>12=$1, $1001u>>13=$0, $1001u>>31=$0, $1001u>>32=$0
+$7FFFFFFFu>>0=$7FFFFFFF, $7FFFFFFFu>>1=$3FFFFFFF, $7FFFFFFFu>>2=$1FFFFFFF, $7FFFFFFFu>>6=$1FFFFFF, $7FFFFFFFu>>12=$7FFFF, $7FFFFFFFu>>13=$3FFFF, $7FFFFFFFu>>30=$1, $7FFFFFFFu>>31=$0, $7FFFFFFFu>>32=$0
+-1u>>0=$FFFFFFFF, -1u>>1=$7FFFFFFF, -1u>>2=$3FFFFFFF, -1u>>6=$3FFFFFF, -1u>>12=$FFFFF, -1u>>13=$7FFFF, -1u>>30=$3, -1u>>31=$1, -1u>>32=$0, -1u>>33=$0, -1u>>-1=$0
+-1u>>1=$7FFFFFFF, -1u>>2=$3FFFFFFF, -1u>>3=$1FFFFFFF, -1u>>4=$FFFFFFF, -1u>>5=$7FFFFFF, -1u>>6=$3FFFFFF, -1u>>7=$1FFFFFF, -1u>>8=$FFFFFF, -1u>>9=$7FFFFF, -1u>>10=$3FFFFF, -1u>>11=$1FFFFF, -1u>>12=$FFFFF, -1u>>13=$7FFFF, -1u>>14=$3FFFF, -1u>>15=$1FFFF, -1u>>16=$FFFF, -1u>>17=$7FFF, -1u>>18=$3FFF, -1u>>19=$1FFF, -1u>>20=$FFF, -1u>>21=$7FF, -1u>>22=$3FF, -1u>>23=$1FF, -1u>>24=$FF, -1u>>25=$7F, -1u>>26=$3F, -1u>>27=$1F, -1u>>28=$F, -1u>>29=$7, -1u>>30=$3, -1u>>31=$1, -1u>>32=0, -1u>>-1=0
+$1001s>>0=$1001, $1001s>>1=$800, $1001s>>2=$400, $1001s>>6=$40, $1001s>>12=$1, $1001s>>13=$0, $1001s>>31=$0, $1001s>>32=$0
+$7FFFFFFFs>>0=$7FFFFFFF, $7FFFFFFFs>>1=$3FFFFFFF, $7FFFFFFFs>>2=$1FFFFFFF, $7FFFFFFFs>>6=$1FFFFFF, $7FFFFFFFs>>12=$7FFFF, $7FFFFFFFs>>13=$3FFFF, $7FFFFFFFs>>30=$1, $7FFFFFFFs>>31=$0, $7FFFFFFFs>>32=$0
+-1s>>0=-1, -1s>>1=-1, -1s>>31=-1, -1s>>32=-1, -1s>>33=-1, -1s>>-1=-1
+-1000s>>0=-1000, -1000s>>1=-500, -1000s>>2=-250, -1000s>>4=-63, -1000s>>6=-16, -1000s>>9=-2, -1000s>>31=-1, -1000s>>32=-1, -1000s>>33=-1, -1000s>>-1=-1
+-1s>>0=-1, -1s>>1=-1, -1s>>2=-1, -1s>>3=-1, -1s>>4=-1, -1s>>5=-1, -1s>>6=-1, -1s>>7=-1, -1s>>8=-1, -1s>>9=-1, -1s>>10=-1, -1s>>11=-1, -1s>>12=-1, -1s>>13=-1, -1s>>14=-1, -1s>>15=-1, -1s>>16=-1, -1s>>17=-1, -1s>>18=-1, -1s>>19=-1, -1s>>20=-1, -1s>>21=-1, -1s>>22=-1, -1s>>23=-1, -1s>>24=-1, -1s>>25=-1, -1s>>26=-1, -1s>>27=-1, -1s>>28=-1, -1s>>29=-1, -1s>>30=-1, -1s>>31=-1, -1s>>32=-1, -1s>>-1=-1
+
+Passed.
+
+Truncating copies:
+
+$12345678 s:> glob $01020304=$56780304, $80818283 s:> stack=$8283, glob $fedcba98 s:> glob $02030405=$FEDC0405, glob $fedcba98 s:> stack=$FEDC, stack $7654321f s:> glob $03040506=$321F0506, stack $654321fe s:> glob $04050607=$21FE0607, stack $674523f1 s:> stack=$23F1, stack $67452301 s:> stack=$2301
+$12345678 b:> glob $01020304=$78020304, $80818283 b:> stack=$83, glob $fedcba98 b:> glob $02030405=$FE030405, glob $fedcba98 b:> stack=$FE, stack $7654321f b:> glob $03040506=$1F040506, stack $654321fe b:> glob $04050607=$FE050607, stack $674523f1 b:> stack=$F1, stack $67452301 b:> stack=$1
+
+Passed.
+
+Sign-extend:
+
+sexb($00)=$0, sexb($01)=$1, sexb($7f)=$7F, sexb($80)=$FFFFFF80, sexb($fe)=$FFFFFFFE, sexb($ff)=$FFFFFFFF, sexb($100)=$0, sexb($ffffff01)=$1, sexb($7f0f0ff0)=$FFFFFFF0
+sexb($02)=$2, sexb($0f)=$F, sexb($ff)=$FFFFFFFF, sexb($100)=$0, sexb($ffffff01)=$1, sexb($7f1f1ff1)=$FFFFFFF1
+sexs($00)=$0, sexs($01)=$1, sexs($7fff)=$7FFF, sexs($8000)=$FFFF8000, sexs($fffe)=$FFFFFFFE, sexs($ffff)=$FFFFFFFF, sexs($10000)=$0, sexs($ffff0001)=$1, sexs($7f0ff00f)=$FFFFF00F
+sexs($102)=$102, sexs($0fffff)=$FFFFFFFF, sexs($fffe)=$FFFFFFFE, sexs($10000)=$0, sexs($ffff0001)=$1, sexs($7f1ffff1)=$FFFFFFF1
+
+Passed.
+
+Array loads:
+
+Array sequence: $C
+arr-->0=$1020304, arr-->1=$FFFEFDFC, arr-->2=$F
+arr+1-->0=$20304FF, arr+1-->1=$FEFDFC00, arr+2-->0=$304FFFE, arr+2-->1=$FDFC0000, arr+3-->0=$4FFFEFD, arr+3-->1=$FC000000, arr+4-->-1=$1020304, arr+4-->0=$FFFEFDFC, arr+4-->1=$F
+arr2-->-1=$F, arr2-->-1=$F, arr2-->-1=$F, arr2-->-1=$F, arr2-->-1=$F, arr2-->-1=$F, arr2-->-1=$F, arr2-->-1=$F
+arr2-->0=$7F008002, arr2-->0=$7F008002, arr2-->0=$7F008002, arr2-->0=$7F008002, arr2-->0=$7F008002, arr2-->0=$7F008002, arr2-->0=$7F008002, arr2-->0=$7F008002
+arr2-->1=$100FFFF, arr2-->1=$100FFFF, arr2-->1=$100FFFF, arr2-->1=$100FFFF, arr2-->1=$100FFFF, arr2-->1=$100FFFF, arr2-->1=$100FFFF, arr2-->1=$100FFFF
+arr=>0=$102, arr=>1=$304, arr=>2=$FFFE, arr=>3=$FDFC, arr=>4=$0, arr=>5=$F
+arr+1=>0=$203, arr+1=>1=$4FF, arr+2=>0=$304, arr+2=>1=$FFFE, arr+3=>0=$4FF, arr+3=>1=$FEFD, arr+4=>-1=$304, arr+4=>0=$FFFE, arr+4=>1=$FDFC
+arr2=>-1=$F, arr2=>-1=$F, arr2=>-1=$F, arr2=>-1=$F, arr2=>-1=$F, arr2=>-1=$F, arr2=>-1=$F, arr2=>-1=$F
+arr2=>0=$7F00, arr2=>0=$7F00, arr2=>0=$7F00, arr2=>0=$7F00, arr2=>0=$7F00, arr2=>0=$7F00, arr2=>0=$7F00, arr2=>0=$7F00
+arr2=>1=$8002, arr2=>1=$8002, arr2=>1=$8002, arr2=>1=$8002, arr2=>1=$8002, arr2=>1=$8002, arr2=>1=$8002, arr2=>1=$8002
+arr->0=$1, arr->1=$2, arr->4=$FF, arr->5=$FE, arr->11=$F
+arr+1->0=$2, arr+1->1=$3, arr+2->0=$3, arr+2->1=$4, arr+3->0=$4, arr+3->1=$FF, arr+4->-1=$4, arr+4->0=$FF, arr+4->1=$FE
+arr2->-1=$F, arr2->-1=$F, arr2->-1=$F, arr2->-1=$F, arr2->-1=$F, arr2->-1=$F, arr2->-1=$F, arr2->-1=$F
+arr2->0=$7F, arr2->0=$7F, arr2->0=$7F, arr2->0=$7F, arr2->0=$7F, arr2->0=$7F, arr2->0=$7F, arr2->0=$7F
+arr2->2=$80, arr2->2=$80, arr2->2=$80, arr2->2=$80, arr2->2=$80, arr2->2=$80, arr2->2=$80, arr2->2=$80
+
+Passed.
+
+Array stores:
+
+Array sequence: $C
+arr-->0=$2030405, arr-->1=$FEFDFCDB, arr-->2=$E0F
+arr+1-->0=$12131415, $2121314/$15FDFCDB, arr+1-->1=$E0E1E2E3, $2121314/$15E0E1E2/$E3000E0F, arr+2-->0=$12345678, $2121234/$5678E1E2, arr+2-->1=$FEDCBA99, arr+3-->0=$44556677, $2121244/$556677DC, arr+3-->1=$51413121, $2121244/$55667751/$4131210F, arr+4-->-1=$21436587, arr+4-->0=$31425364, arr+4-->1=$41526374, $21436587/$31425364/$41526374
+arr2-->-1=$D0000001, arr2-->-1=$D1000002, arr2-->-1=$D2000003, arr2-->-1=$D3000004, arr2-->-1=$E0000001, arr2-->-1=$E1000011, arr2-->-1=$E2000021, arr2-->-1=$E3000031
+arr2-->0=$F1223310, arr2-->0=$F2223311, arr2-->0=$F3223312, arr2-->0=$F4223313, arr2-->0=$F5223315, arr2-->0=$F6223316, arr2-->0=$F7223317, arr2-->0=$F8223318
+arr2-->1=$1, arr2-->1=$2, arr2-->1=$3, arr2-->1=$4, arr2-->1=$5, arr2-->1=$6, arr2-->1=$7, arr2-->1=$8
+arr=>0=$4050000, arr=>1=$405FCDB, arr=>2=$E0F0000
+arr+1=>0=$1415, $41415DB/$E0F0000, arr+1=>1=$E2E3, $41415E2/$E30F0000, arr+2=>0=$5678, $4145678/$E30F0000, arr+2=>1=$BA99, $4145678/$BA990000, arr+3=>0=$6677, $4145666/$77990000, arr+3=>1=$3121, $4145666/$77312100, arr+4=>-1=$6587, arr+4=>0=$5364, arr+4=>1=$6374, $4146587/$53646374
+arr2=>-1=$F001, arr2=>-1=$E002, arr2=>-1=$D003, arr2=>-1=$C004, arr2=>-1=$F001, arr2=>-1=$E011, arr2=>-1=$D021, arr2=>-1=$C031
+pre-guard=$9999C031, post-guard=$98979695
+arr2=>0=$3310, arr2=>0=$3311, arr2=>0=$3312, arr2=>0=$3313, arr2=>0=$3315, arr2=>0=$3316, arr2=>0=$3317, arr2=>0=$3318
+post-guard=$33189695
+arr2=>2=$1, arr2=>2=$2, arr2=>2=$3, arr2=>2=$4, arr2=>2=$5, arr2=>2=$6, arr2=>2=$7, arr2=>2=$8
+post-guard=$89695
+arr=>0=$5000000, arr=>1=$5DB0000, arr=>2=$5DB0F00, arr=>3=$5DB0F63
+arr+1=>0=$15, $5150F63/$0, arr+1=>1=$E3, $515E363/$0, arr+2=>0=$78, $5157863/$0, arr+2=>1=$99, $5157899/$0, arr+3=>0=$77, $5157877/$0, arr+3=>1=$21, $5157877/$21000000, arr+4=>-1=$87, arr+4=>0=$64, arr+4=>1=$74, $5157887/$64740000
+arr2=>-1=$1, arr2=>-1=$2, arr2=>-1=$3, arr2=>-1=$4, arr2=>-1=$1, arr2=>-1=$11, arr2=>-1=$21, arr2=>-1=$31
+pre-guard=$99999931, post-guard=$98979695
+arr2=>0=$10, arr2=>0=$11, arr2=>0=$12, arr2=>0=$13, arr2=>0=$15, arr2=>0=$16, arr2=>0=$17, arr2=>0=$18
+post-guard=$18979695
+arr2=>2=$1, arr2=>2=$2, arr2=>2=$3, arr2=>2=$4, arr2=>2=$5, arr2=>2=$6, arr2=>2=$7, arr2=>2=$8
+post-guard=$8979695
+
+Passed.
+
+Aloadbit and astorebit:
+
+bit 0=1, bit 1=0, bit 2=0, bit 3=0, bit 4=0, bit 5=0, bit 6=0, bit 7=0, bit 8=0, bit 9=1, bit 10=0, bit 11=0, bit 12=0, bit 13=0, bit 14=0, bit 15=0, 
+bit -8=1, bit -7=1, bit -6=1, bit -5=1, bit -4=0, bit -3=0, bit -2=0, bit -1=0, bit 0=1, bit 1=1, bit 2=1, bit 3=1, bit 4=1, bit 5=1, bit 6=1, bit 7=0, bit 8=0, bit 9=0, bit 10=0, bit 11=0, bit 12=0, bit 13=0, bit 14=0, bit 15=0, 
+bit -8=1, bit -7=1, bit -6=1, bit -5=1, bit -4=0, bit -3=0, bit -2=0, bit -1=0, bit 0=1, bit 1=1, bit 2=1, bit 3=1, bit 4=1, bit 5=1, bit 6=1, bit 7=0, bit 8=0, bit 9=0, bit 10=0, bit 11=0, bit 12=0, bit 13=0, bit 14=0, bit 15=0, 
+bit 22=0, bit 23=1, bit 24=0, bit 25=1
+bit -31=0, bit -32=0, bit -33=1, bit -34=1
+bit 22=0, bit 23=1, bit 24=0, bit 25=1
+bit -31=0, bit -32=0, bit -33=1, bit -34=1
+bit 1 on=$2, bit 6 on=$42, bit 3 on=$4A, bit 0 off=$4A, bit 6 off=$A
+bit 15 off=$7F, bit 12 on=$7F, bit 8 off=$7E
+bit -1 on=$80, bit -8 on=$81
+$1000000, $3000000, $7000000, $F000000, $1F000000, $3F000000, $7F000000, $FF000000, $FF010000, $FF030000, $FF070000, $FF0F0000, $FF1F0000, $FF3F0000, $FF7F0000, $FFFF0000, $FFFF0100, $FFFF0300, $FFFF0700, $FFFF0F00, $FFFF1F00, $FFFF3F00, $FFFF7F00, $FFFFFF00, $FFFFFF01, $FFFFFF03, $FFFFFF07, $FFFFFF0F, $FFFFFF1F, $FFFFFF3F, $FFFFFF7F, $FFFFFFFF, 
+$FEFFFFFF, $FCFFFFFF, $F8FFFFFF, $F0FFFFFF, $E0FFFFFF, $C0FFFFFF, $80FFFFFF, $FFFFFF, $FEFFFF, $FCFFFF, $F8FFFF, $F0FFFF, $E0FFFF, $C0FFFF, $80FFFF, $FFFF, $FEFF, $FCFF, $F8FF, $F0FF, $E0FF, $C0FF, $80FF, $FF, $FE, $FC, $F8, $F0, $E0, $C0, $80, $0, 
+
+Passed.
+
+Call and tailcall:
+
+arg2adder()=0, arg2adder(4)=4, arg2adder(4,6)=10, arg2adder(4,6,1)=10
+hash(4,6,1)=19
+tailcalltest(2,3,4)=18, testglobal=2
+
+Passed.
+
+Call with various stack arrangements:
+
+hash(6,3,5,4,2)=53
+hash(4,5,2,3,1)=37, guard value=99
+hash(6,3,5,4,2)=53, guard value=98
+hash(4,5,2,3,1)=37
+hash(6,3,5,4,2)=53
+hash()=0
+hash(7)=7, hash(8)=8
+hash(9)=9, guard value=99
+guard value=98
+hash(6,7)=20, hash(5,7,2)=25
+hash(4,5,2,3,1)=37, guard value=99
+hash(6,3,5,4,2)=53, guard value=98
+hash(4,5,2,3,1)=37
+hash(6,3,5,4,2)=53
+hash()=0
+hash(7)=7, hash(8)=8
+hash(9)=9, guard value=99
+guard value=98
+
+Passed.
+
+Jumps and branches:
+
+Jump loop 5=5
+jz 0=1, jz 1=0, jz -1=0
+jnz 0=0, jnz $1000000=1, jnz 1=1, jnz -1=1
+jumpabs test=33, 44
+
+Passed.
+
+Jump with various operand forms:
+
+Test A0=2
+Test A1=5, guard val=91
+Test B0=0, B1=1
+Test C0=0, C1=1
+Test D0=0, D1=1
+Test E0=2, E1=3, E2=4, E3=5, E4=6
+Test F0=2, F1=3, F2=9
+
+Jump-if-zero with various operand forms:
+
+Test B0=0, B1=1, B2=99, B3=99
+Test F0=2, F1=3, F2=9, F3=5, F4=2, F5=0, F6=1
+
+Jump-if-equal with various operand forms:
+
+Test B0=0, B1=1, B2=99
+Test F0=2, F1=3, F2=9, F3=5, F4=2, F5=1, F6=0
+
+Passed.
+
+Compare branches:
+
+jgt 2: 1, 1, 1, 0, 0, 0, 1
+jgt -2: 1, 0, 0, 0, 0, 0, 0, 1
+jge 2: 1, 1, 1, 1, 0, 0, 1
+jge -2: 1, 1, 0, 0, 0, 0, 0, 1
+jlt 2: 0, 0, 0, 0, 1, 1, 0
+jlt -2: 0, 0, 1, 1, 1, 1, 1, 0
+jle 2: 0, 0, 0, 1, 1, 1, 0
+jle -2: 0, 1, 1, 1, 1, 1, 1, 0
+jgtu 2: 0, 1, 1, 0, 0, 0, 0
+jgtu -2: 1, 0, 0, 1, 1, 1, 1, 1
+jgeu 2: 0, 1, 1, 1, 0, 0, 0
+jgeu -2: 1, 1, 0, 1, 1, 1, 1, 1
+jltu 2: 1, 0, 0, 0, 1, 1, 1
+jltu -2: 0, 0, 1, 0, 0, 0, 0, 0
+jleu 2: 1, 0, 0, 1, 1, 1, 1
+jleu -2: 0, 1, 1, 0, 0, 0, 0, 0
+
+Passed.
+
+Stack operations:
+
+stkcount=0, stkcount=1, stkcount=2, stkcount=3, stkcount=3, stkcount=3, stkcount=3
+sp-sp=-1, sp-sp=3, sp-sp=1
+peek 0=9, peek 1=8, peek 2=7, peek 0=9, peek 1=8, peek 2=7, peek 0=9, peek 1=8, peek 2=7
+count=0
+peek 0=9, peek 1=8, peek 2=7, peek 0=9, peek 1=8, peek 2=7, peek 0=9, peek 1=8, peek 2=7
+count=0
+peek 0=9, peek 1=8, peek 2=7, peek 0=9, peek 1=8, peek 2=7, peek 0=9, peek 1=8, peek 2=7
+count=0
+peek 0=9, peek 1=8, peek 2=7, peek 0=9, peek 1=8, peek 2=7, peek 0=9, peek 1=8, peek 2=7
+count=0
+peek 1=8, peek 1=8, peek 1=8, peek 0=9, peek 0=9, peek 0=9, peek 2=7, peek 2=7, peek 2=7
+count=0
+hash(4,3,2)=16, hash(5,3,2,5,3,2)=64, hash(4,3,2,4,3,2)=59, hash(5,3,2,5,3,2)=64
+stkcount=0
+hash(5,3,2,5,3,2)=64, hash(4,3,2,4,3,2)=59, hash(5,3,2,5,3,2)=64
+stkcount=0
+hash(3,4,3,4,5)=61, hash(3,4,3,4,5)=61, hash(3,4,3,4,5)=61, hash(3,4,3,4,5)=61
+stkcount=0
+hash(6,4,3,2,1)=36, hash(6,4,3,2,1)=36, hash(6,4,3,2,1)=36, hash(4,3,6,2,1)=41, hash(3,6,4,2,1)=40, hash(4,3,6,2,1)=41, hash(3,6,4,2,1)=40, hash(6,4,3,2,1)=36, hash(6,4,3,2,1)=36
+hash(4,3,2,6,1)=45, hash(2,6,4,3,1)=43
+hash(4,3,2,6,1)=45, hash(2,6,4,3,1)=43
+
+Passed.
+
+Gestalt:
+
+gestalt(4,0)=1, gestalt(4,1)=1, gestalt(4,99)=0
+gestalt(1234,5678)=0
+gestalt(4,1)=1
+gestalt(4,1)=1
+guard=99
+
+Passed.
+
+Catch/throw:
+
+catch 0=0, token=396
+catch 1=1, token=396
+catch 1 sp=1, token=396
+catch discard=100, token=400, guard=77
+catch computed=99, thrown=97, token=404
+global catch=105, token=368, guard=88
+global catch=106, token=368, guard=87
+global catch=107, token=368, guard=86
+local catch=105, token=368, guard=88
+local catch=104, token=368, count=1, guard=87
+
+Passed.
+
+Printing integers:
+
+"0" len 1
+"1" len 1
+"-1" len 2
+"9999" len 4
+"-9999" len 5
+"1234579" len 7
+"-97654321" len 9
+"2147483647" len 10
+"-2147483647" len 11
+"-2147483648" len 11
+
+Passed.
+
+String table decoding:
+
+Basic strings: "hello" len 5 is len 5, "bye" len 3, "" len 0, "abcdefghijklmnopqrstuvwxyz" len 26, "àèìòù" len 5, "
+" len 1, "This contains several node types.
+" len 34
+Unicode strings: "hello" len 5, "abcdefghijklmnopqrstuvwxyz" len 26, "aàαォ" len 4
+C-style strings: "C string." len 9
+"C Ünïcoδe “ォ”" len 13
+Substrings: ""substring"" len 11, ""substring"" len 11
+References: "[hello]" len 7, "[hello]" len 7, "[]" len 2, "[1]" len 3, "[1 2]" len 5, "[foo bar]" len 9
+Indirect references: "{0:bye:0}" len 9, "{0:"substring":0}" len 17, "{1:{0:hello:0}:1}" len 17, "{1:{0:bye hello:0}:1}" len 21, "{0:1:0}" len 7, "{1:2 3:1}" len 9, "{2:hello bye:2}" len 15, "{"'``'"}" len 8
+Multiple references: "{hello...bye...C string.}" len 25, "{{1:+0:1}...+1...bye hello}" len 27, counter=2
+Indirect references with unicode: "{2:aàαォ:2}" len 10
+
+Passed.
+
+String table decoding in RAM:
+
+"Decode test." len 12
+"Another test." len 13
+"Third test." len 11
+"" len 0
+
+Passed.
+
+I/O mode switching:
+
+"" len 0, "static glk" len 10, "=s=t=a=t=i=c= =f=i=l=t=e=r" len 26
+"=C= =Ü=n=ï=c=o=δ=e= =“=ォ=”" len 26
+"" len 0, guard=99
+"string, chr 0, -100 -2" len 22, guard=99
+"<s><t><r><i><n><g><,>< ><c><h><r>< ><0><,>< ><-><1><0><0>< ><-><2>" len 66, guard=99
+"<s><t><r><i><n><g><,>< ><c><h><r>< ><0><,>< ><-><1><0><0>< ><-><2>" len 66, guard=99
+current=2, 0
+current=1, 41399
+Changing in mid-string: current=2, 0, "<#>." len 4, current=2, 0, "<a>bcde" len 7, current=2, 0, "<1>23" len 5
+
+Passed.
+
+I/O mode with different store operands:
+This tests for a bug in older Glulxe (version 0.4.5 and earlier). Calling @getiosys with two different store operands (e.g., a local variable and a global variable) did the wrong thing in those releases. Because the bug has been around for so long, the spec recommends not doing what this test does.
+
+current=2, 0
+
+Passed.
+
+Filter iosys mode:
+
+Basic strings: "=h=e=l=l=o" len 10, "b=y=e=" len 6, "=T=h=i=s= =c=o=n=t=a=i=n=s= =s=e=v=e=r=a=l= =n=o=d=e= =t=y=p=e=s=.=
+" len 68, "=C= =Ü=n=ï=c=o=´=e= ==©=" len 26
+References: "=[=h=e=l=l=o=]" len 14, "=[=1= =2=]" len 10, "=[=f=o=o= =b=a=r=]" len 18
+Multiple references: "={=h=e=l=l=o=.=.=.=b=y=e=.=.=.=C= =s=t=r=i=n=g=.=}" len 50, "={<.><.><.><[><h><e><l><l><o><]><.><.><.><[><1>< ><2><]><}>" len 59, "={={=1=:=+=0=:=1=}=.=.=.=+=1=.=.=.=b=y=e= =h=e=l=l=o=}" len 54, counter=2, "={=C= =s=t=r=i=n=g=.=.=.=.=+=0=.=.=.=C= =Ü=n=ï=c=o=´=e= ==©==}" len 64, counter=1
+
+Passed.
+
+Null iosys mode:
+
+Basic strings: "" len 0, "" len 0, "" len 0, "" len 0
+References: "" len 0, "" len 0, "" len 0
+Multiple references: "" len 0, "<.><.><.><[><1>< ><2><]><}>" len 27, "" len 0, counter=2, "" len 0, counter=1
+
+Passed.
+
+Glk opcode:
+
+lowercase 'A'=97, lowercase 'B'=98, lowercase 'C'=99
+lowercase 'A'=97, lowercase 'B'=98, lowercase 'C'=99
+lowercase 'D'=100, lowercase 'E'=101, lowercase 'F'=102
+lowercase 'D'=100, lowercase 'E'=101, lowercase 'F'=102
+lowercase 'G'=103, lowercase 'H'=104, lowercase 'I'=105
+guard=999
+window=19, rock=201
+window=19, rock=201
+window=19, rock=201
+window=19, rock=201
+select_poll=0, result=0000
+select_poll=0, result=0000
+guard=999
+len=14 "up-case ãäδεд." len 14
+Passed.
+
+Glk dispatch layer:
+
+"XYZЯ C string. C Ünïcoδe “ォ” 123 ⅕⅖⅗." len 37
+length: 37
+
+Passed.
+
+Random-number generator:
+NOTE: Tests may, very occasionally, fail through sheer bad luck. If so, try this test again.
+
+Random 4: 0=52, 1=60, 2=59, 3=69, 
+Random -5: 0=51, 1=46, 2=50, 3=45, 4=48, 
+Random 0: 0=61, 1=53, 2=68, 3=58, lobit=116, hibit=124, 
+Random 4 global: 0=64, 1=65, 2=58, 3=53, 
+Random -5 global: 0=45, 1=52, 2=43, 3=50, 4=50, 
+Random 0 global: 0=63, 1=59, 2=65, 3=53, lobit=121, hibit=119, 
+Accumulated bits: hi=-1, lo=0, 
+
+Passed.
+
+Random numbers in deterministic mode:
+
+setrandom 1: 1998332870, -27637645, -988259073, -165717780, 1505852621, 147117995, 4529915, -593043130, 1538024130, 1172645880, 1007544808, -1425521779, 1009001818, -188517789, -639838305, -1348401254, 
+setrandom 100: -1497299323, 998300668, -123749705, -1065869994, 1833946595, 258186548, 1294232083, -954940499, 1607822530, 718846615, -887487123, 554424831, -1060607475, 5795857, -1734502948, 731348220, 
+Sequences different: 1
+
+Passed.
+
+Search opcodes:
+
+Linear:
+got 165154, got 13, got 0, got -1
+got 165154, got 13
+got 165156, got 15, guard=999
+got 165154, got 13, got 0, got -1
+got 0, got -1, got 165158, got 17
+got 0, got -1, got 165151, got 10
+got 165153, got 6, got 6, got -1, got 165153, got 3
+got 165153, got 6, got 165153, got 3
+got 165165, got 6, got 0, got -1
+got 165145, got 1, got 0, got -1
+got 165149, got 2, got 0, got -1
+got 165166, got 5, got 165166, got 5
+got 165165, got 3, got 0, got -1, got 0, got -1, got 0, got -1
+got 165141, got 0, got 0, got -1, got 165141, got 0
+Binary:
+got 165186, got 13, got 0, got -1
+got 165186, got 13
+got 165188, got 15, guard=999
+got 165173, 165174, 165175, 165176, 165177, 165178, 165179, 165180, 165181, 165182, 165183, 165184, 165185, 165186, 165187, 165188, 165189, 165190, 165191, 165192, 165193, 165194, 165195, 165196, 165197, 165198, 165199, 165200, 165201, 165202, 165203, 165204, 
+got 165173, 165174, 165175, 165176, 165177, 165178, 165179, 165180, 165181, 165182, 165183, 165184, 165185, 165186, 165187, 165188, 165189, 165190, 165191, 165192, 165193, 165194, 165195, 165196, 165197, 165198, 165199, 165200, 165201, 165202, 165203, 
+got 165186, got 13, got 0, got -1
+got 165185, got 6, got 6, got -1, got 165185, got 3
+got 165185, got 6, got 165185, got 3
+got 165197, got 6
+got 165177, got 1, got 0, got -1
+got 165181, got 2, got 0, got -1
+got 165198, got 5, got 165198, got 5
+got 165197, got 3, got 0, got -1, got 0, got -1, got 0, got -1
+got 165173, got 0, got 0, got -1, got 165173, got 0
+Linked:
+got 165205, got 165205, got 165253, got 165261, got 165213, got 0
+got 165205, got 0, got 165261, got 0, got 0
+got 165205, got 165205, got 165253, got 165261, got 165213, got 0, got 0, got 0
+got 165205, got 0, got 165261, got 0, got 0
+got 165205, got 165261, got 165253, got 165229, got 0
+got 165205, got 165261, got 165253, got 0, got 0
+got 165205, got 165253, got 165261, got 165213, got 0
+got 165205, got 165253, got 165261, got 165213, got 0
+got 165205, got 165205, got 165253, got 165261, got 165213, got 0
+got 165205, got 0, got 165261, got 0, got 0
+got 165205, got 165205, got 165253, got 165261, got 165213, got 0, got 0, got 0
+got 165205, got 0, got 165261, got 0, got 0
+got 165205, got 165261, got 165253, got 165229, got 0
+got 165205, got 165261, got 165253, got 0, got 0
+got 165205, got 165253, got 165261, got 165213, got 0
+got 165205, got 165253, got 165261, got 165213, got 0
+got 165253, got 165213, guard=999
+
+Passed.
+
+mzero opcode:
+
+0, arr+4: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+1, arr+4: 1, 2, 3, 4, 0, 6, 7, 8, 9, 10, 11, 12
+6, arr+0: 0, 0, 0, 0, 0, 0, 7, 8, 9, 10, 11, 12
+3, arr+2: 1, 2, 0, 0, 0, 6, 7, 8, 9, 10, 11, 12
+4, arr+3: 1, 2, 3, 0, 0, 0, 0, 8, 9, 10, 11, 12
+
+Passed.
+
+mcopy opcode:
+
+0, arr+4, arr+6: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+0, arr+8, arr+6: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+4, arr+4, arr+4: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+5, arr+4, arr+6: 1, 2, 3, 4, 5, 6, 5, 6, 7, 8, 9, 12
+5, arr+6, arr+4: 1, 2, 3, 4, 7, 8, 9, 10, 11, 10, 11, 12
+3, arr+1, arr+8: 1, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 12
+3, arr+8, arr+1: 1, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 12
+2, arr+8, arr+1: 1, 9, 10, 4, 5, 6, 7, 8, 9, 10, 11, 12
+
+Passed.
+
+Undo:
+
+Interpreter claims to support undo.
+
+Restore without saveundo: 1
+Restore without saveundo: 1
+Restore without saveundo: 1
+Undo saved...
+Restoring undo...
+Undo succeeded, return value -1.
+loc=99 glob=999
+Undo saved...
+Restoring undo...
+Undo succeeded, return value -1.
+loc=98 glob=998
+Undo saved...
+Restoring undo...
+Undo succeeded, return value -1.
+loc=97 glob=997
+Undo saved...
+Restoring undo...
+Undo succeeded, return value -1.
+loc=98 glob=998
+Undo saved...
+guard=9
+Restoring undo...
+Undo succeeded, return value -1.
+loc=99 glob=999 glob2=-999
+guard=9
+
+Passed.
+
+Multi-level undo:
+
+Interpreter claims to support undo.
+
+Undo 1 saved...
+Undo 2 saved...
+Restoring undo 2...
+Undo 2 succeeded, return value -1.
+loc=77 glob=777
+Restoring undo 1...
+Undo 1 succeeded, return value -1.
+loc=99 glob=999
+
+Passed.
+
+Restore:
+
+Simple restore.
+Saving...
+Saved.
+Restoring...
+Restore succeeded!
+loc1=111 loc2=222 glob=333
+Restore with stack.
+Saving...
+Saved.
+Restoring...
+Restore succeeded!
+*sp=888888
+loc1=55555 loc2=6666 glob=777
+Restore nested.
+Saving...
+Saved.
+Restoring...
+locx=10 locy=41
+Restore succeeded!
+loc1=1 loc2=2 glob=3
+Done.
+Cleaning up fileref.
+(Deleting existing save file)
+
+Passed.
+
+Verify:
+
+verify=0
+verify=0
+verify=0
+
+Passed.
+
+Protect:
+
+Undo saved...
+Restoring undo...
+Undo succeeded, return value -1.
+Protected 3,6: 1, 2, 3, 99, 99, 99, 99, 99, 99, 10, 11, 12
+Undo saved...
+Restoring undo...
+Undo succeeded, return value -1.
+Protected 6,1: 1, 2, 3, 4, 5, 6, 99, 8, 9, 10, 11, 12
+Undo saved...
+Restoring undo...
+Undo succeeded, return value -1.
+Unprotected: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+
+Passed.
+
+Memory-size extension:
+
+ExtStart=$2AC00; EndMem=$2AD00
+Initial memsize=$2AD00
+Value at $2ACFE=0
+Write/read at $2ACFF=75
+@setmemsize=0
+New memsize=$2AE00
+Write/read at $2ACFF=75
+Write/read at $2ADFF=234
+@setmemsize=0
+Restored memsize=$2AD00
+@setmemsize=0
+New memsize=$2AE00
+Write/read at $2ADFF=0
+@setmemsize=0
+Restored memsize=$2AD00
+
+Passed.
+
+Undo of memory-size extension:
+
+ExtStart=$2AC00; EndMem=$2AD00
+Original memsize=$2AD00
+@setmemsize=0
+New memsize=$2AE00
+Wrote: $2AD80: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+Undo saved...
+@setmemsize=0
+Shrunk memsize=$2AD00
+Restoring undo...
+Undo succeeded, return value -1.
+Restored memsize=$2AE00
+Restored: $2AD80: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+Undo saved...
+@setmemsize=0
+Shrunk memsize=$2AD00
+Restoring undo...
+Undo succeeded, return value -1.
+Restored memsize=$2AE00
+Restored: $2AD80: 1, 0, 0, 0, 0, 0, 7, 8, 9, 10, 11, 12
+@setmemsize=0
+Restored memsize=$2AD00
+
+Passed.
+
+Undo of restart:
+
+Undo saved...
+
+A voice booooms out: You've been here before!
+
+Restoring undo...
+Undo succeeded, return value -1.
+Magic number 1234, 3, 1
+
+Passed.
+
+Heap:
+
+Original memsize=$2AD00
+Current heap: $0
+Allocating 16...
+Heap starts at $2AD00, ends at $2AE00
+Allocating 512...
+Heap starts at $2AD00, ends at $2B000
+Freeing 16...
+Heap ends at $2B000
+Freeing 512...
+Final heap: $0
+Final memsize=$2AD00
+blk1(19)=$2AD00, blk2(23)=$2AD13, blk3(17)=$2AD2A
+free blk2, blk2(23)=$2AD13
+free blk1, blk1(19)=$2AD00
+free blk2, blk2(23)=$2AD13
+free blk1, free blk2
+blk1(25)=$2AD00, blk2(17)=$2AD19
+free blk2, blk2(41)=$2AD3B
+free blk1, free blk2, free blk3
+Final heap: $0
+Final memsize=$2AD00
+
+Passed.
+
+Heap:
+
+Original memsize=$2AD00
+Current heap: $0
+Allocating 16...
+Allocating 512...
+Heap starts at $2AD00, ends at $2B000
+Undo saved...
+Freeing 16...
+Freeing 512...
+Final heap: $0
+Restoring undo...
+Undo succeeded, return value -1.
+Heap starts at $2AD00, ends at $2B000
+Freeing 16...
+Freeing 512...
+Final heap: $0
+Final memsize=$2AD00
+
+Passed.
+
+Acceleration:
+(This tests only the operands. For a complete test of the accelfunc and accelparam opcodes, see accelfunctest.ulx.)
+
+guard=987
+
+Passed.
+
+Floating-point conversion:
+
+0=$0, -0=$80000000, 1=$3F800000, 9.2e-41=$10000, 2.9e-39=$200001, 1.2e-38=$7FFFFF, 1.2e-38=$800000, 3.8e-34=$8000000, 3.4e+38=$7F7FFFFF, Inf=$7F800000, -Inf=$FF800000
+
+numtof 0=$0, numtof 1=$3F800000, numtof -1=$BF800000, numtof 2=$40000000, numtof -2=$C0000000, numtof 33=$42040000, numtof -33=$C2040000, numtof 100=$42C80000, numtof -100=$C2C80000, numtof 12345=$4640E400, numtof -12345=$C640E400, numtof 9876543=$4B16B43F, numtof -9876543=$CB16B43F, numtof $1000000=$4B800000, numtof -$1000000=$CB800000, numtof $1000001=$4B800000, numtof -$1000001=$CB800000, numtof $1234CDEF=$4D91A66F, numtof -$1234CDEF=$CD91A66F, numtof $7FFFFFFF=$4F000000, numtof -$7FFFFFFF=$CF000000, numtof $80000000=$CF000000
+numtof 0=$0, numtof 1=$3F800000, numtof -1=$BF800000, numtof 2=$40000000, numtof -2=$C0000000, numtof 33=$42040000, numtof -33=$C2040000, numtof 100=$42C80000, numtof -100=$C2C80000, numtof 12345=$4640E400, numtof -12345=$C640E400, numtof 9876543=$4B16B43F, numtof -9876543=$CB16B43F, numtof $1000000=$4B800000, numtof -$1000000=$CB800000, numtof $1000001=$4B800000, numtof -$1000001=$CB800000, numtof $1234CDEF=$4D91A66F, numtof -$1234CDEF=$CD91A66F, numtof $7FFFFFFF=$4F000000, numtof -$7FFFFFFF=$CF000000, numtof $80000000=$CF000000
+numtof 0=$0, numtof 1=$3F800000, numtof -1=$BF800000, numtof 2=$40000000, numtof -2=$C0000000, numtof 33=$42040000, numtof -33=$C2040000, numtof 100=$42C80000, numtof -100=$C2C80000, numtof 12345=$4640E400, numtof -12345=$C640E400, numtof 9876543=$4B16B43F, numtof -9876543=$CB16B43F, numtof $1000000=$4B800000, numtof -$1000000=$CB800000, numtof $1000001=$4B800000, numtof -$1000001=$CB800000, numtof $1234CDEF=$4D91A66F, numtof -$1234CDEF=$CD91A66F, numtof $7FFFFFFF=$4F000000, numtof -$7FFFFFFF=$CF000000, numtof $80000000=$CF000000
+numtof 0=$0, numtof 1=$3F800000, numtof -1=$BF800000, numtof 2=$40000000, numtof -2=$C0000000, numtof 33=$42040000, numtof -33=$C2040000, numtof 100=$42C80000, numtof -100=$C2C80000, numtof 12345=$4640E400, numtof -12345=$C640E400, numtof 9876543=$4B16B43F, numtof -9876543=$CB16B43F, numtof $1000000=$4B800000, numtof -$1000000=$CB800000, numtof $1000001=$4B800000, numtof -$1000001=$CB800000, numtof $1234CDEF=$4D91A66F, numtof -$1234CDEF=$CD91A66F, numtof $7FFFFFFF=$4F000000, numtof -$7FFFFFFF=$CF000000, numtof $80000000=$CF000000
+
+ftonumz 0.0=$0, ftonumz -0.0=$0, ftonumz 0.9=$0, ftonumz -0.9=$0, ftonumz 1.0=$1, ftonumz -1.0=$FFFFFFFF, ftonumz 1.75=$1, ftonumz -1.75=$FFFFFFFF, ftonumz 2.0=$2, ftonumz -2.0=$FFFFFFFE, ftonumz 10.1=$A, ftonumz -10.1=$FFFFFFF6, ftonumz 999.99995=$3E7, ftonumz -999.99995=$FFFFFC19, ftonumz $1000000=$1000000, ftonumz -$1000000=$FF000000, ftonumz $7FFFFF00=$7FFFFF00, ftonumz -$7FFFFF00=$80000100, ftonumz $80000000=$7FFFFFFF, ftonumz -$80000000=$80000000, ftonumz $90000000=$7FFFFFFF, ftonumz -$90000000=$80000000, ftonumz $C1234500=$7FFFFFFF, ftonumz -$C1234500=$80000000, ftonumz $100000000=$7FFFFFFF, ftonumz -$100000000=$80000000, ftonumz 3.4e+34=$7FFFFFFF, ftonumz -3.4e+34=$80000000, ftonumz +Inf=$7FFFFFFF, ftonumz -Inf=$80000000, ftonumz +NaN=$7FFFFFFF, ftonumz -NaN=$80000000
+ftonumz 0.0=$0, ftonumz -0.0=$0, ftonumz 0.9=$0, ftonumz -0.9=$0, ftonumz 1.0=$1, ftonumz -1.0=$FFFFFFFF, ftonumz 1.75=$1, ftonumz -1.75=$FFFFFFFF, ftonumz 2.0=$2, ftonumz -2.0=$FFFFFFFE, ftonumz 10.1=$A, ftonumz -10.1=$FFFFFFF6, ftonumz 999.99995=$3E7, ftonumz -999.99995=$FFFFFC19, ftonumz $1000000=$1000000, ftonumz -$1000000=$FF000000, ftonumz $7FFFFF00=$7FFFFF00, ftonumz -$7FFFFF00=$80000100, ftonumz $80000000=$7FFFFFFF, ftonumz -$80000000=$80000000, ftonumz $90000000=$7FFFFFFF, ftonumz -$90000000=$80000000, ftonumz $C1234500=$7FFFFFFF, ftonumz -$C1234500=$80000000, ftonumz $100000000=$7FFFFFFF, ftonumz -$100000000=$80000000, ftonumz 3.4e+34=$7FFFFFFF, ftonumz -3.4e+34=$80000000, ftonumz +Inf=$7FFFFFFF, ftonumz -Inf=$80000000, ftonumz +NaN=$7FFFFFFF, ftonumz -NaN=$80000000
+ftonumz 0.0=$0, ftonumz -0.0=$0, ftonumz 0.9=$0, ftonumz -0.9=$0, ftonumz 1.0=$1, ftonumz -1.0=$FFFFFFFF, ftonumz 1.75=$1, ftonumz -1.75=$FFFFFFFF, ftonumz 2.0=$2, ftonumz -2.0=$FFFFFFFE, ftonumz 10.1=$A, ftonumz -10.1=$FFFFFFF6, ftonumz 999.99995=$3E7, ftonumz -999.99995=$FFFFFC19, ftonumz $1000000=$1000000, ftonumz -$1000000=$FF000000, ftonumz $7FFFFF00=$7FFFFF00, ftonumz -$7FFFFF00=$80000100, ftonumz $80000000=$7FFFFFFF, ftonumz -$80000000=$80000000, ftonumz $90000000=$7FFFFFFF, ftonumz -$90000000=$80000000, ftonumz $C1234500=$7FFFFFFF, ftonumz -$C1234500=$80000000, ftonumz $100000000=$7FFFFFFF, ftonumz -$100000000=$80000000, ftonumz 3.4e+34=$7FFFFFFF, ftonumz -3.4e+34=$80000000, ftonumz +Inf=$7FFFFFFF, ftonumz -Inf=$80000000, ftonumz +NaN=$7FFFFFFF, ftonumz -NaN=$80000000
+ftonumz 0.0=$0, ftonumz -0.0=$0, ftonumz 0.9=$0, ftonumz -0.9=$0, ftonumz 1.0=$1, ftonumz -1.0=$FFFFFFFF, ftonumz 1.75=$1, ftonumz -1.75=$FFFFFFFF, ftonumz 2.0=$2, ftonumz -2.0=$FFFFFFFE, ftonumz 10.1=$A, ftonumz -10.1=$FFFFFFF6, ftonumz 999.99995=$3E7, ftonumz -999.99995=$FFFFFC19, ftonumz $1000000=$1000000, ftonumz -$1000000=$FF000000, ftonumz $7FFFFF00=$7FFFFF00, ftonumz -$7FFFFF00=$80000100, ftonumz $80000000=$7FFFFFFF, ftonumz -$80000000=$80000000, ftonumz $90000000=$7FFFFFFF, ftonumz -$90000000=$80000000, ftonumz $C1234500=$7FFFFFFF, ftonumz -$C1234500=$80000000, ftonumz $100000000=$7FFFFFFF, ftonumz -$100000000=$80000000, ftonumz 3.4e+34=$7FFFFFFF, ftonumz -3.4e+34=$80000000, ftonumz +Inf=$7FFFFFFF, ftonumz -Inf=$80000000, ftonumz +NaN=$7FFFFFFF, ftonumz -NaN=$80000000
+
+ftonumn 0.0=$0, ftonumn -0.0=$0, ftonumn 0.9=$1, ftonumn -0.9=$FFFFFFFF, ftonumn 1.0=$1, ftonumn -1.0=$FFFFFFFF, ftonumn 1.75=$2, ftonumn -1.75=$FFFFFFFE, ftonumn 2.0=$2, ftonumn -2.0=$FFFFFFFE, ftonumn 10.1=$A, ftonumn -10.1=$FFFFFFF6, ftonumn 999.99995=$3E8, ftonumn -999.99995=$FFFFFC18, ftonumn $1000000=$1000000, ftonumn -$1000000=$FF000000, ftonumn $7FFFFF00=$7FFFFF00, ftonumn -$7FFFFF00=$80000100, ftonumn $80000000=$7FFFFFFF, ftonumn -$80000000=$80000000, ftonumn $90000000=$7FFFFFFF, ftonumn -$90000000=$80000000, ftonumn $C1234500=$7FFFFFFF, ftonumn -$C1234500=$80000000, ftonumn $100000000=$7FFFFFFF, ftonumn -$100000000=$80000000, ftonumn 3.4e+34=$7FFFFFFF, ftonumn -3.4e+34=$80000000, ftonumn +Inf=$7FFFFFFF, ftonumn -Inf=$80000000, ftonumn +NaN=$7FFFFFFF, ftonumn -NaN=$80000000
+ftonumn 0.0=$0, ftonumn -0.0=$0, ftonumn 0.9=$1, ftonumn -0.9=$FFFFFFFF, ftonumn 1.0=$1, ftonumn -1.0=$FFFFFFFF, ftonumn 1.75=$2, ftonumn -1.75=$FFFFFFFE, ftonumn 2.0=$2, ftonumn -2.0=$FFFFFFFE, ftonumn 10.1=$A, ftonumn -10.1=$FFFFFFF6, ftonumn 999.99995=$3E8, ftonumn -999.99995=$FFFFFC18, ftonumn $1000000=$1000000, ftonumn -$1000000=$FF000000, ftonumn $7FFFFF00=$7FFFFF00, ftonumn -$7FFFFF00=$80000100, ftonumn $80000000=$7FFFFFFF, ftonumn -$80000000=$80000000, ftonumn -$90000000=$80000000, ftonumn $C1234500=$7FFFFFFF, ftonumn -$C1234500=$80000000, ftonumn $100000000=$7FFFFFFF, ftonumn -$100000000=$80000000, ftonumn 3.4e+34=$7FFFFFFF, ftonumn -3.4e+34=$80000000, ftonumn +Inf=$7FFFFFFF, ftonumn -Inf=$80000000, ftonumn +NaN=$7FFFFFFF, ftonumn -NaN=$80000000
+ftonumn 0.0=$0, ftonumn -0.0=$0, ftonumn 0.9=$1, ftonumn -0.9=$FFFFFFFF, ftonumn 1.0=$1, ftonumn -1.0=$FFFFFFFF, ftonumn 1.75=$2, ftonumn -1.75=$FFFFFFFE, ftonumn 2.0=$2, ftonumn -2.0=$FFFFFFFE, ftonumn 10.1=$A, ftonumn -10.1=$FFFFFFF6, ftonumn 999.99995=$3E8, ftonumn -999.99995=$FFFFFC18, ftonumn $1000000=$1000000, ftonumn -$1000000=$FF000000, ftonumn $7FFFFF00=$7FFFFF00, ftonumn -$7FFFFF00=$80000100, ftonumn $80000000=$7FFFFFFF, ftonumn -$80000000=$80000000, ftonumn $90000000=$7FFFFFFF, ftonumn -$90000000=$80000000, ftonumn $C1234500=$7FFFFFFF, ftonumn -$C1234500=$80000000, ftonumn $100000000=$7FFFFFFF, ftonumn -$100000000=$80000000, ftonumn 3.4e+34=$7FFFFFFF, ftonumn -3.4e+34=$80000000, ftonumn +Inf=$7FFFFFFF, ftonumn -Inf=$80000000, ftonumn +NaN=$7FFFFFFF, ftonumn -NaN=$80000000
+ftonumn 0.0=$0, ftonumn -0.0=$0, ftonumn 0.9=$1, ftonumn -0.9=$FFFFFFFF, ftonumn 1.0=$1, ftonumn -1.0=$FFFFFFFF, ftonumn 1.75=$2, ftonumn -1.75=$FFFFFFFE, ftonumn 2.0=$2, ftonumn -2.0=$FFFFFFFE, ftonumn 10.1=$A, ftonumn -10.1=$FFFFFFF6, ftonumn 999.99995=$3E8, ftonumn -999.99995=$FFFFFC18, ftonumn $1000000=$1000000, ftonumn -$1000000=$FF000000, ftonumn $7FFFFF00=$7FFFFF00, ftonumn -$7FFFFF00=$80000100, ftonumn $80000000=$7FFFFFFF, ftonumn -$80000000=$80000000, ftonumn $90000000=$7FFFFFFF, ftonumn -$90000000=$80000000, ftonumn $C1234500=$7FFFFFFF, ftonumn -$C1234500=$80000000, ftonumn $100000000=$7FFFFFFF, ftonumn -$100000000=$80000000, ftonumn 3.4e+34=$7FFFFFFF, ftonumn -3.4e+34=$80000000, ftonumn +Inf=$7FFFFFFF, ftonumn -Inf=$80000000, ftonumn +NaN=$7FFFFFFF, ftonumn -NaN=$80000000
+
+Passed.
+
+Floating-point arithmetic:
+
+add(1,1.5)=2.50000, add(0.5,-1.5)=-1.00000, add(-0.5,-1.5)=-2.00000, add(-0.5,1.5)=1.00000, add(0,2.5)=2.50000
+sub(1,1.5)=-0.50000, sub(0.5,-1.5)=2.00000, sub(-0.5,-1.5)=1.00000, sub(-0.5,1.5)=-2.00000, sub(0,2.5)=-2.50000
+mul(1.25,1.5)=1.87500, mul(0.5,-1.5)=-0.75000, mul(-0.75,-1.5)=1.12500, mul(-0.5,2)=-1.00000, mul(4,2.5)=10.00000
+div(1.25,1.5)=0.83333, div(0.5,-1.5)=-0.33333, div(-0.75,-1.5)=0.50000, div(-0.5,2)=-0.25000, div(4,2.5)=1.60000
+
+add(1,1)=2.00000, add(-1,1)=0.00000, add(-1,-1)=-2.00000, add(1,0)=1.00000, add(-0,1)=1.00000, add(-0,0)=0.00000, add(123,-0)=123.00000, add(0,123)=123.00000, add(1.0000001,-1)=1.19209e-07, add(3.4e38,3.4e38)=Inf, add(-3.4e38,-3.4e38)=-Inf, add(3.4e38,-3.4e38)=0.00000, add(Inf,123)=Inf, add(-Inf,123)=-Inf, add(Inf,Inf)=Inf, add(-Inf,Inf)=-NaN
+add(1,NaN)=NaN, add(NaN,-0)=NaN, add(Inf,NaN)=NaN, add(-Inf,NaN)=NaN, add(NaN,NaN)=NaN
+
+sub(1,1)=0.00000, sub(-1,1)=-2.00000, sub(-1,-1)=0.00000, sub(1,0)=1.00000, sub(-0,1)=-1.00000, sub(123,-0)=123.00000, sub(0,123)=-123.00000, sub(1.0000001,1)=1.19209e-07, sub(3.4e38,3.4e38)=0.00000, sub(-3.4e38,-3.4e38)=0.00000, sub(3.4e38,-3.4e38)=Inf, sub(-3.4e38,3.4e38)=-Inf, sub(Inf,123)=Inf, sub(-Inf,123)=-Inf, sub(123,Inf)=-Inf, sub(123,-Inf)=Inf, sub(Inf,-Inf)=Inf, sub(-Inf,Inf)=-Inf, sub(-Inf,-Inf)=-NaN, sub(Inf,Inf)=-NaN
+sub(1,NaN)=NaN, sub(NaN,-0)=NaN, sub(Inf,NaN)=NaN, sub(-Inf,NaN)=NaN, sub(NaN,NaN)=NaN
+
+mul(1,1)=1.00000, mul(-1,1)=-1.00000, mul(-1,-1)=1.00000, mul(1,0)=0.00000, mul(-0,1)=-0.00000, mul(-0,-1)=0.00000, mul(123,-1)=-123.00000, mul(1,123)=123.00000, mul(3.4e38,2.9e-39)=1.00000, mul(2.9e-39,2.9e-39)=0.00000, mul(-2.9e-39,2.9e-39)=-0.00000, mul(1e20,1e20)=Inf, mul(1e20,-1e20)=-Inf, mul(-1e20,-1e20)=Inf, mul(Inf,0.0001)=Inf, mul(-Inf,0.0001)=-Inf, mul(Inf,Inf)=Inf, mul(-Inf,Inf)=-Inf, mul(-Inf,-Inf)=Inf, mul(Inf,0)=-NaN, mul(-0,Inf)=-NaN
+mul(1,NaN)=NaN, mul(NaN,-0)=NaN, mul(Inf,NaN)=NaN, mul(-Inf,NaN)=NaN, mul(NaN,NaN)=NaN
+
+div(1,1)=1.00000, div(-1,1)=-1.00000, div(-1,-1)=1.00000, div(1,0)=Inf, div(1,-0)=-Inf, div(-0,1)=-0.00000, div(-0,-1)=0.00000, div(123,-1)=-123.00000, div(123,1)=123.00000, div(3.4e38,2.9e-39)=Inf, div(2.9e-39,2.9e-39)=1.00000, div(-2.9e-39,2.9e-39)=-1.00000, div(1e20,1e20)=1.00000, div(1e20,-1e20)=-1.00000, div(Inf,10000)=Inf, div(-Inf,10000)=-Inf, div(Inf,0)=Inf, div(Inf,-0)=-Inf, div(Inf,Inf)=-NaN, div(-Inf,Inf)=-NaN, div(0,0)=-NaN, div(-0,0)=-NaN
+div(1,NaN)=NaN, div(NaN,-0)=NaN, div(Inf,NaN)=NaN, div(-Inf,NaN)=NaN, div(NaN,NaN)=NaN
+
+Passed.
+
+Floating-point modulo:
+
+mod(4.125,2)=rem 0.12500 quo 2.00000, mod(5,1.5)=rem 0.50000 quo 3.00000, mod(7.125,1)=rem 0.12500 quo 7.00000, mod(6,1.75)=rem 0.75000 quo 3.00000, mod(5.125,0.5)=rem 0.12500 quo 10.00000, mod(4,0.75)=rem 0.25000 quo 5.00000
+
+mod(2.5,1)=rem 0.50000 quo 2.00000, mod(2.5,-1)=rem 0.50000 quo -2.00000, mod(-2.5,1)=rem -0.50000 quo -2.00000, mod(-2.5,-1)=rem -0.50000 quo 2.00000, mod(0,1)=rem 0.00000 quo 0.00000, mod(0,-1)=rem 0.00000 quo -0.00000, mod(-0,1)=rem -0.00000 quo -0.00000, mod(-0,-1)=rem -0.00000 quo 0.00000
+
+mod(5.125,2)=rem 1.12500 quo 2.00000, mod(5.125,-2)=rem 1.12500 quo -2.00000, mod(-5.125,2)=rem -1.12500 quo -2.00000, mod(-5.125,-2)=rem -1.12500 quo 2.00000
+mod(5.125,1)=rem 0.12500 quo 5.00000, mod(5.125,-1)=rem 0.12500 quo -5.00000, mod(-5.125,1)=rem -0.12500 quo -5.00000, mod(-5.125,-1)=rem -0.12500 quo 5.00000
+mod(1.5,0.75)=rem 0.00000 quo 2.00000, mod(1.5,-0.75)=rem 0.00000 quo -2.00000, mod(-1.5,0.75)=rem -0.00000 quo -2.00000, mod(-1.5,-0.75)=rem -0.00000 quo 2.00000
+
+mod(1e-20,1)=rem 1.00000e-20 quo 0.00000, mod(1e20,1)=rem 0.00000 quo 1.00000e+20, mod(8388607.5,1)=rem 0.50000 quo 8.38861e+06, mod(-8388607.5,1)=rem -0.50000 quo -8.38861e+06
+mod(2.5e11,1e10)=rem 15360.00000 quo 25.00000, mod(2.5e10,1e10)=rem 5.00000e+09 quo 2.00000, mod(2.5e10,0.0123)=rem 0.00301 quo 2.03252e+12
+
+mod(0,0)=rem NaN quo NaN, mod(-0,0)=rem NaN quo NaN, mod(1,0)=rem NaN quo NaN, mod(Inf,1)=rem NaN quo NaN, mod(-Inf,1)=rem NaN quo NaN, mod(Inf,Inf)=rem NaN quo NaN, mod(Inf,-Inf)=rem NaN quo NaN, mod(-Inf,Inf)=rem NaN quo NaN, mod(0,1)=rem 0.00000 quo 0.00000, mod(-0,1)=rem -0.00000 quo -0.00000, mod(0,-1)=rem 0.00000 quo -0.00000, mod(-0,-1)=rem -0.00000 quo 0.00000, mod(1,Inf)=rem 1.00000 quo 0.00000, mod(1,-Inf)=rem 1.00000 quo -0.00000, mod(-2,Inf)=rem -2.00000 quo -0.00000, mod(-0.125,Inf)=rem -0.12500 quo -0.00000
+
+mod(1,NaN)=NaN quo NaN, mod(NaN,-1)=NaN quo NaN, mod(0,NaN)=NaN quo NaN, mod(N0,NaN)=NaN quo NaN, mod(Inf,NaN)=NaN quo NaN, mod(NaN,Inf)=NaN quo NaN, mod(NaN,-Inf)=NaN quo NaN, mod(-Inf,NaN)=NaN quo NaN, mod(NaN,NaN)=NaN quo NaN
+
+Passed.
+
+Floating-point rounding:
+
+floor 3.5=3.00000, floor -3.5=-4.00000, floor 3.5=3.00000, floor -3.5=-4.00000, floor 3.5=3.00000, floor -3.5=-4.00000, floor 3.5=3.00000, floor -3.5=-4.00000, floor 3.5=3.00000, floor -3.5=-4.00000
+
+ceil 3.5=4.00000, ceil -3.5=-3.00000, ceil 3.5=4.00000, ceil -3.5=-3.00000, ceil 3.5=4.00000, ceil -3.5=-3.00000, ceil 3.5=4.00000, ceil -3.5=-3.00000, ceil 3.5=4.00000, ceil -3.5=-3.00000
+
+floor 0.0=0.00000, floor -0.0=-0.00000, floor 0.9=0.00000, floor -0.9=-1.00000, floor 1.0=1.00000, floor -1.0=-1.00000, floor 1.75=1.00000, floor -1.75=-2.00000, floor 2.0=2.00000, floor -2.0=-2.00000, floor 10.1=10.00000, floor -10.1=-11.00000, floor 999.99995=999.00000, floor -999.99995=-1000.00000, floor $1000000=1.67772e+07, floor -$1000000=-1.67772e+07, floor $7FFFFF00=2.14748e+09, floor -$7FFFFF00=-2.14748e+09, floor $80000000=2.14748e+09, floor -$80000000=-2.14748e+09, floor +Inf=Inf, floor -Inf=-Inf, floor +NaN=NaN, floor -NaN=-NaN
+
+ceil 0.0=0.00000, ceil -0.0=-0.00000, ceil 0.9=1.00000, ceil -0.9=-0.00000, ceil 1.0=1.00000, ceil -1.0=-1.00000, ceil 1.75=2.00000, ceil -1.75=-1.00000, ceil 2.0=2.00000, ceil -2.0=-2.00000, ceil 10.1=11.00000, ceil -10.1=-10.00000, ceil 999.99995=1000.00000, ceil -999.99995=-999.00000, ceil $1000000=1.67772e+07, ceil -$1000000=-1.67772e+07, ceil $7FFFFF00=2.14748e+09, ceil -$7FFFFF00=-2.14748e+09, ceil $80000000=2.14748e+09, ceil -$80000000=-2.14748e+09, ceil +Inf=Inf, ceil -Inf=-Inf, ceil +NaN=NaN, ceil -NaN=-NaN
+
+Passed.
+
+Floating-point exponent functions:
+
+sqrt 2.25=1.50000, sqrt -2.25=-NaN, sqrt 2.25=1.50000, sqrt -2.25=-NaN, sqrt 2.25=1.50000, sqrt -2.25=-NaN, sqrt 2.25=1.50000, sqrt -2.25=-NaN
+
+log e^2=2.00000, log -1.0=-NaN, log e^2=2.00000, log -1.0=-NaN, log e^2=2.00000, log -1.0=-NaN, log e^2=2.00000, log -1.0=-NaN
+
+exp 2.0=7.38906, exp -2.0=0.13534, exp 2.0=7.38906, exp -2.0=0.13534, exp 2.0=7.38906, exp -2.0=0.13534, exp 2.0=7.38906, exp -2.0=0.13534
+
+pow(1.75,1.5)=2.31503, pow(1.75,-1.5)=0.43196, pow(-1.75,2)=3.06250, pow(-1.75,1.5)=-NaN
+pow(2.25,2.0)=5.06250, pow(2.25,-2.0)=0.19753, pow(-2.25,3.0)=-11.39063, pow(-2.25,-3.0)=-0.08779
+
+sqrt 0=0.00000, sqrt -0=-0.00000, sqrt 1=1.00000, sqrt -1=-NaN, sqrt 0.6=0.77460, sqrt 100.0000076=10.00000, sqrt 123456789.0=11111.11133, sqrt 9.8765e+35=9.93805e+17, sqrt Inf=Inf, sqrt -Inf=-NaN, sqrt +NaN=NaN, sqrt -NaN=-NaN
+
+exp 0=1.00000, exp -0=1.00000, exp 1=2.71828, exp -1=0.36788, exp 0.6=1.82212, exp -0.6=0.54881, exp 88.0=1.65164e+38, exp 100.0=Inf, exp -100.0=3.78352e-44, exp -104.0=0.00000, exp Inf=Inf, exp -Inf=0.00000, exp +NaN=NaN, exp -NaN=-NaN
+
+log 0=-Inf, log -0=-Inf, log 1=0.00000, log -1=-NaN, log e=~0.99999, log 0.6=~-0.51083, log 65536=~11.09035, log 123456789.0=~18.63140, log 9.8765e+37=~87.48581, log Inf=Inf, log -Inf=-NaN, log +NaN=NaN, log -NaN=-NaN
+
+pow(-1,1)=-1.00000, pow(-1,-1)=-1.00000, pow(-1,1.5)=-NaN, pow(0,1)=0.00000, pow(-0,1)=-0.00000, pow(2,127)=1.70141e+38, pow(2,128)=Inf, pow(2,-149)=1.40130e-45, pow(2,-150)=0.00000, pow(2,NaN)=NaN, pow(NaN,2)=NaN, pow(NaN,NaN)=NaN
+pow(0,-1)=Inf, pow(-0,-1)=-Inf, pow(0,-2)=Inf, pow(-0,-2)=Inf, pow(0,-1.5)=Inf, pow(-0,-1.5)=Inf, pow(0,1)=0.00000, pow(-0,1)=-0.00000, pow(0,2)=0.00000, pow(-0,2)=0.00000, pow(0,1.5)=0.00000, pow(-0,1.5)=0.00000
+pow(-1,Inf)=1.00000, pow(-1,-Inf)=1.00000, pow(1,1)=1.00000, pow(1,-1)=1.00000, pow(1,0)=1.00000, pow(1,Inf)=1.00000, pow(1,-Inf)=1.00000, pow(1,NaN)=1.00000, pow(1,-NaN)=1.00000
+pow(4,0)=1.00000, pow(-4,0)=1.00000, pow(0,0)=1.00000, pow(-0,0)=1.00000, pow(Inf,0)=1.00000, pow(-Inf,0)=1.00000, pow(NaN,0)=1.00000, pow(-NaN,0)=1.00000
+pow(-1,1.5)=-NaN, pow(0.5,-Inf)=Inf, pow(-0.5,-Inf)=Inf, pow(1.5,-Inf)=0.00000, pow(-1.5,-Inf)=0.00000, pow(0.5,Inf)=0.00000, pow(-0.5,Inf)=0.00000, pow(1.5,Inf)=Inf, pow(-1.5,Inf)=Inf, pow(-Inf,-1)=-0.00000, pow(-Inf,-2)=0.00000, pow(-Inf,-1.5)=0.00000, pow(-Inf,1)=-Inf, pow(-Inf,2)=Inf, pow(-Inf,1.5)=Inf, pow(Inf,2)=Inf, pow(Inf,1.5)=Inf, pow(Inf,-2)=0.00000, pow(Inf,-1.5)=0.00000
+
+Passed.
+
+Floating-point trig functions:
+
+sin(pi/6)=~0.50000, sin(-pi/3)=~-0.86603, sin(pi/4)=~0.70711
+cos(pi/6)=~0.86603, cos(-pi/3)=~0.50000, cos(pi/4)=~0.70711
+tan(pi/6)=~0.57735, tan(-pi/3)=~-1.73205, tan(pi/4)=1.00000
+asin(1/2)=~0.52360, asin(-sqrt(3)/2)=~-1.04720, asin(sqrt(2)/2)=~0.78540
+acos(sqrt(3)/2)=~0.52360, acos(-0.5)=~2.09440, acos(sqrt(2)/2)=~0.78540
+atan(sqrt(3)/3)=~0.52360, atan(-sqrt(3))=~-1.04720, atan(1)=~0.78540
+
+sin(0)=0.00000, sin(-0)=-0.00000, sin(pi)=~-8.74228e-08, sin(2pi)=~1.74846e-07, sin(Inf)=-NaN, sin(-Inf)=-NaN, sin(NaN)=NaN
+cos(0)=1.00000, cos(-0)=1.00000, cos(pi)=~-1.00000, cos(2pi)=~1.00000, cos(Inf)=-NaN, cos(-Inf)=-NaN, cos(NaN)=NaN
+tan(0)=0.00000, tan(-0)=-0.00000, tan(pi)=~8.74228e-08, tan(2pi)=~1.74846e-07, tan(Inf)=-NaN, tan(-Inf)=-NaN, tan(NaN)=NaN
+asin(0)=0.00000, asin(-0)=-0.00000, asin(1)=~1.57080, asin(-1)=~-1.57080, asin(2)=-NaN, asin(-2)=-NaN, asin(Inf)=-NaN, asin(-Inf)=-NaN, asin(NaN)=NaN
+acos(1)=0.00000, acos(-1)=~3.14159, acos(0)=~1.57080, acos(-0)=~1.57080, acos(2)=-NaN, acos(-2)=-NaN, acos(Inf)=-NaN, acos(-Inf)=-NaN, acos(NaN)=NaN
+atan(0)=0.00000, atan(-0)=-0.00000, atan(1)=~0.78540, atan(-1)=~-0.78540, atan(Inf)=~1.57080, atan(-Inf)=~-1.57080, atan(NaN)=NaN
+
+Passed.
+
+Floating-point atan2 function:
+
+atan2(1,1)=~0.78540, atan2(1,-1)=~2.35619, atan2(-1,-1)=~-2.35619, atan2(-1,1)=~-0.78540
+
+atan2(1,2)=~0.46365, atan2(2,-0.5)=~1.81578, atan2(-0.125,-8)=~-3.12597, atan2(-2,3)=~-0.58800
+
+atan2(0,0)=0.00000, atan2(-0,0)=-0.00000, atan2(0,-0)=~3.14159, atan2(-0,-0)=~-3.14159, atan2(0,1)=0.00000, atan2(-0,1)=-0.00000, atan2(0,-1)=~3.14159, atan2(-0,-1)=~-3.14159, atan2(1,0)=~1.57080, atan2(1,-0)=~1.57080, atan2(-1,0)=~-1.57080, atan2(-1,-0)=~-1.57080
+atan2(1,Inf)=0.00000, atan2(-1,Inf)=-0.00000, atan2(1,-Inf)=~3.14159, atan2(-1,-Inf)=~-3.14159, atan2(Inf,Inf)=~0.78540, atan2(-Inf,Inf)=~-0.78540, atan2(Inf,-Inf)=~2.35619, atan2(-Inf,-Inf)=~-2.35619
+atan2(1,NaN)=NaN, atan2(NaN,-0)=NaN, atan2(Inf,NaN)=NaN, atan2(-Inf,NaN)=NaN, atan2(NaN,NaN)=NaN
+
+Passed.
+
+Floating-point jump with various operand forms:
+
+Test A0=33, Test A1=44, Test A2=33, Test A3=44, Test A4=33, Test A5=44
+Test B0=11, Test B1=22, Test B2=11, Test B3=22, Test B4=11, Test B5=22
+Test C0=55, Test C1=66, Test C2=55, Test C3=66, Test C4=55, Test C5=66
+Test E0=0, E1=1, E2=99
+Test F0=2, F1=3, F2=9, F3=5, F4=2, F5=1, F6=0
+
+Passed.
+
+Floating-point equality comparisons:
+
+jisnan(0)=0, jisnan(-0)=0, jisnan(1)=0, jisnan(3.4e38)=0, jisnan(Inf)=0, jisnan(-Inf)=0, jisnan(NaN)=1, jisnan(-NaN)=1, jisnan(other NaN)=1, jisnan(other -NaN)=1
+jisinf(0)=0, jisinf(-0)=0, jisinf(1)=0, jisinf(3.4e+38)=0, jisinf(Inf)=1, jisinf(-Inf)=1, jisinf(NaN)=0, jisinf(-NaN)=0, jisinf(other NaN)=0, jisinf(other -NaN)=0
+jfeq(0,0,0)=1, jfeq(0,-0,0)=1, jfeq(0,0,-0)=1, jfeq(0,1.4e-45,0)=0, jfeq(0,-1.4e-45,0)=0, jfeq(3.4e+38,3.4e+38,0)=1, jfeq(3.4e+38,3.4e+38,0)=0, jfeq(Inf,Inf,0)=1, jfeq(-Inf,-Inf,0)=1, jfeq(Inf,-Inf,0)=0
+jfeq(0,0,1.4e-45)=1, jfeq(0,-0,1.4e-45)=1, jfeq(0,0,-1.4e-45)=1, jfeq(0,1.4e-45,1.4e-45)=1, jfeq(0,-1.4e-45,1.4e-45)=1, jfeq(0,1.4e-45,-1.4e-45)=1, jfeq(0,2.8e-45,1.4e-45)=0, jfeq(3.4e+38,3.4e+38,1.4e-45)=1, jfeq(3.4e+38,3.4e+38,1.4e-45)=0, jfeq(Inf,Inf,1.4e-45)=1, jfeq(-Inf,-Inf,1.4e-45)=1, jfeq(Inf,-Inf,1.4e-45)=0
+jfeq(0,0,1)=1, jfeq(0,-2,1)=0, jfeq(0,-2,1.5)=0, jfeq(0,-2,2)=1, jfeq(0,-2,-2)=1, jfeq(1.5,2,1.5)=1, jfeq(1.5,3,1.5)=1, jfeq(1.5,3+,1.5)=0
+jfeq(0,3.4e+38,3.4e+38-)=0, jfeq(0,3.4e+38,3.4e+38)=1, jfeq(-1,3.4e+38,3.4e+38)=1, jfeq(-3.4e+38,3.4e+38,3.4e+38)=0,jfeq(Inf,3.4e+38,3.4e+38)=0, jfeq(-Inf,-3.4e+38,3.4e+38)=0, jfeq(Inf,Inf,3.4e+38)=1, jfeq(-Inf,Inf,3.4e+38)=0
+jfeq(0,0,Inf)=1, jfeq(0,3.4e+38,Inf)=1, jfeq(0,3.4e+38,-Inf)=1, jfeq(0,-3.4e+38,-Inf)=1, jfeq(-3.4e+38,3.4e+38,Inf)=1, jfeq(-3.4e+38,3.4e+38,-Inf)=1, jfeq(0,Inf,Inf)=1, jfeq(-3.4e+38,-Inf,Inf)=1, jfeq(0,-Inf,Inf)=1, jfeq(-Inf,-Inf,Inf)=1, jfeq(Inf,-Inf,Inf)=0
+jfeq(NaN,0,0)=0, jfeq(0,NaN,0)=0, jfeq(0,0,NaN)=0, jfeq(0,NaN,NAN)=0, jfeq(NaN,0,NaN)=0, jfeq(NaN,NaN,0)=0, jfeq(NaN,NaN,NaN)=0, jfeq(Inf,Inf,NaN)=0, jfeq(Inf,-Inf,NaN)=0, jfeq(Inf,0,NaN)=0, jfeq(0,NaN,Inf)=0, jfeq(NaN,NaN,Inf)=0
+jfne(0,0,0)=0, jfne(0,-0,0)=0, jfne(0,0,-0)=0, jfne(0,1.4e-45,0)=1, jfne(0,-1.4e-45,0)=1, jfne(3.4e+38,3.4e+38,0)=0, jfne(3.4e+38,3.4e+38,0)=1, jfne(Inf,Inf,0)=0, jfne(-Inf,-Inf,0)=0, jfne(Inf,-Inf,0)=1
+jfne(0,0,1.4e-45)=0, jfne(0,-0,1.4e-45)=0, jfne(0,0,-1.4e-45)=0, jfne(0,1.4e-45,1.4e-45)=0, jfne(0,-1.4e-45,1.4e-45)=0, jfne(0,1.4e-45,-1.4e-45)=0, jfne(0,2.8e-45,1.4e-45)=1, jfne(3.4e+38,3.4e+38,1.4e-45)=0, jfne(3.4e+38,3.4e+38,1.4e-45)=1, jfne(Inf,Inf,1.4e-45)=0, jfne(-Inf,-Inf,1.4e-45)=0, jfne(Inf,-Inf,1.4e-45)=1
+jfne(0,0,1)=0, jfne(0,-2,1)=1, jfne(0,-2,1.5)=1, jfne(0,-2,2)=0, jfne(0,-2,-2)=0, jfne(1.5,2,1.5)=0, jfne(1.5,3,1.5)=0, jfne(1.5,3+,1.5)=1
+jfne(0,3.4e+38,3.4e+38-)=1, jfne(0,3.4e+38,3.4e+38)=0, jfne(-1,3.4e+38,3.4e+38)=0, jfne(-3.4e+38,3.4e+38,3.4e+38)=1,jfne(Inf,3.4e+38,3.4e+38)=1, jfne(-Inf,-3.4e+38,3.4e+38)=1, jfne(Inf,Inf,3.4e+38)=0, jfne(-Inf,Inf,3.4e+38)=1
+jfne(0,0,Inf)=0, jfne(0,3.4e+38,Inf)=0, jfne(0,3.4e+38,-Inf)=0, jfne(0,-3.4e+38,-Inf)=0, jfne(-3.4e+38,3.4e+38,Inf)=0, jfne(-3.4e+38,3.4e+38,-Inf)=0, jfne(0,Inf,Inf)=0, jfne(-3.4e+38,-Inf,Inf)=0, jfne(0,-Inf,Inf)=0, jfne(-Inf,-Inf,Inf)=0, jfne(Inf,-Inf,Inf)=1
+jfne(NaN,0,0)=1, jfne(0,NaN,0)=1, jfne(0,0,NaN)=1, jfne(0,NaN,NAN)=1, jfne(NaN,0,NaN)=1, jfne(NaN,NaN,0)=1, jfne(NaN,NaN,NaN)=1, jfne(Inf,Inf,NaN)=1, jfne(Inf,-Inf,NaN)=1, jfne(Inf,0,NaN)=1, jfne(0,NaN,Inf)=1, jfne(NaN,NaN,Inf)=1
+
+Passed.
+
+Floating-point inequality comparisons:
+
+jflt(0,0)=0, jflt(0,1)=1, jflt(0,-1)=0, jflt(-0,0)=0, jflt(-0,1)=1, jflt(-0,-1)=0, jflt(-0,-0)=0, jflt(1,1)=0, jflt(pi,pi)=0, jflt(0,1.4e-45)=1, jflt(0,-1.4e-45)=0, jflt(-1.4e-45,-0)=1, jflt(1.4e-45,3.4e+38)=1, jflt(1.4e-45,-3.4e+38)=0
+jflt(0,Inf)=1, jflt(0,-Inf)=0, jflt(3.4e+38,Inf)=1, jflt(3.4e+38,-Inf)=0, jflt(-Inf,-3.4e+38)=1, jflt(-Inf,Inf)=1, jflt(Inf,-Inf)=0, jflt(Inf,Inf)=0, jflt(-Inf,-Inf)=0
+jflt(0,NaN)=0, jflt(NaN,0)=0, jflt(Inf,NaN)=0, jflt(-Inf,NaN)=0, jflt(NaN,Inf)=0, jflt(NaN,-Inf)=0, jflt(NaN,NaN)=0, jflt(-NaN,NaN)=0
+jfle(0,0)=1, jfle(0,1)=1, jfle(0,-1)=0, jfle(-0,0)=1, jfle(-0,1)=1, jfle(-0,-1)=0, jfle(-0,-0)=1, jfle(1,1)=1, jfle(pi,pi)=1, jfle(0,1.4e-45)=1, jfle(0,-1.4e-45)=0, jfle(-1.4e-45,-0)=1, jfle(1.4e-45,3.4e+38)=1, jfle(1.4e-45,-3.4e+38)=0
+jfle(0,Inf)=1, jfle(0,-Inf)=0, jfle(3.4e+38,Inf)=1, jfle(3.4e+38,-Inf)=0, jfle(-Inf,-3.4e+38)=1, jfle(-Inf,Inf)=1, jfle(Inf,-Inf)=0, jfle(Inf,Inf)=1, jfle(-Inf,-Inf)=1
+jfle(0,NaN)=0, jfle(NaN,0)=0, jfle(Inf,NaN)=0, jfle(-Inf,NaN)=0, jfle(NaN,Inf)=0, jfle(NaN,-Inf)=0, jfle(NaN,NaN)=0, jfle(-NaN,NaN)=0
+jfgt(0,0)=0, jfgt(0,1)=0, jfgt(0,-1)=1, jfgt(-0,0)=0, jfgt(-0,1)=0, jfgt(-0,-1)=1, jfgt(-0,-0)=0, jfgt(1,1)=0, jfgt(pi,pi)=0, jfgt(0,1.4e-45)=0, jfgt(0,-1.4e-45)=1, jfgt(-1.4e-45,-0)=0, jfgt(1.4e-45,3.4e+38)=0, jfgt(1.4e-45,-3.4e+38)=1
+jfgt(0,Inf)=0, jfgt(0,-Inf)=1, jfgt(3.4e+38,Inf)=0, jfgt(3.4e+38,-Inf)=1, jfgt(-Inf,-3.4e+38)=0, jfgt(-Inf,Inf)=0, jfgt(Inf,-Inf)=1, jfgt(Inf,Inf)=0, jfgt(-Inf,-Inf)=0
+jfgt(0,NaN)=0, jfgt(NaN,0)=0, jfgt(Inf,NaN)=0, jfgt(-Inf,NaN)=0, jfgt(NaN,Inf)=0, jfgt(NaN,-Inf)=0, jfgt(NaN,NaN)=0, jfgt(-NaN,NaN)=0
+jfge(0,0)=1, jfge(0,1)=0, jfge(0,-1)=1, jfge(-0,0)=1, jfge(-0,1)=0, jfge(-0,-1)=1, jfge(-0,-0)=1, jfge(1,1)=1, jfge(pi,pi)=1, jfge(0,1.4e-45)=0, jfge(0,-1.4e-45)=1, jfge(-1.4e-45,-0)=0, jfge(1.4e-45,3.4e+38)=0, jfge(1.4e-45,-3.4e+38)=1
+jfge(0,Inf)=0, jfge(0,-Inf)=1, jfge(3.4e+38,Inf)=0, jfge(3.4e+38,-Inf)=1, jfge(-Inf,-3.4e+38)=0, jfge(-Inf,Inf)=0, jfge(Inf,-Inf)=1, jfge(Inf,Inf)=1, jfge(-Inf,-Inf)=1
+jfge(0,NaN)=0, jfge(NaN,0)=0, jfge(Inf,NaN)=0, jfge(-Inf,NaN)=0, jfge(NaN,Inf)=0, jfge(NaN,-Inf)=0, jfge(NaN,NaN)=0, jfge(-NaN,NaN)=0
+
+Passed.
+
+Print floating-point numbers:
+Note: this does not test an opcode. It tests the FloatExp function, which is included in this test suite. You are welcome to use that function in your Glulx program or library.
+
+"0.00000e+00" len 11, "-0.00000e+00" len 12, "1.00000e+00" len 11, "-1.00000e+00" len 12
+"1.00000e-01" len 11, "3.33333e-02" len 11, "2.00000e+00" len 11, "1.00000e+02" len 11, "1.00000e+02" len 11, "1.00000e+02" len 11, "9.99999e+01" len 11, "1.25000e+02" len 11
+"3.00000e-30" len 11, "6.99998e+30" len 11, "3.00004e-40" len 11, "6.99998e+34" len 11
+"1.0e+00" len 7, "1.0000e+00" len 10, "1.00000024e+00" len 14, "6.8e+00" len 7, "6.7898e+00" len 10, "6.78979520e+00" len 14
+"Inf" len 3, "-Inf" len 4, "NaN" len 3, "-NaN" len 4
+
+"0.00000" len 7, "-0.00000" len 8, "1.00000" len 7, "-1.00000" len 8
+"0.10000" len 7, "0.02000" len 7, "0.03333" len 7, "12.34568" len 8, "-120.34568" len 10, "100000.34375" len 12, "1000000.37500" len 13, "10000000.00000" len 14
+"0.00000" len 7, "-0.00000" len 8, "4294965440.00000" len 16, "1000000240000000000000000000000.00000" len 37
+"1.0" len 3, "1.0000" len 6, "1.00000000" len 10, "6.8" len 3, "6.7898" len 6, "6.78978832" len 10
+"Inf" len 3, "-Inf" len 4, "NaN" len 3, "-NaN" len 4
+
+"1.00" len 4, "1.00000" len 7, "999999.00000" len 12, "-999999.00000" len 13, "1.00001e+06" len 11, "-1.00001e+06" len 12, "0.00010" len 7, "-0.00010" len 8, "9.0000e-05" len 10, "-9.0000e-05" len 11
+
+Passed.
+
+Safari 5 bug:
+This tests for a known Javascript bug in Safari 5, MacOS 10.5.8, Intel (not PPC). You should only see this fail on Quixe on that browser setup. This failure does not represent a Glulx error. I just want to be able to track it.
+
+Folded: $FFFFFF
+Stack: $FFFFFF
+Locals: $FFFFFF
+
+Passed.
+
+All tests passed.
+
+>
+Exiting via return. (Try "opquit" for @quit, "glkquit" for glk_exit().)
+
+Goodbye.

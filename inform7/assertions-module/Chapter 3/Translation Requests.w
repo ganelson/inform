@@ -49,7 +49,13 @@ sense once kinds and instances exist.
 	wording OP = Node::get_text(V->next->next);
 	inform_language *L = Node::get_defn_language(V->next->next);
 	int g = Annotations::read_int(V->next->next, explicit_gender_marker_ANNOT);
-	if (L == NULL) internal_error("No such NL");
+	if (L == NULL) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_CantTranslateValue),
+			"you can only translate into a language used by the current project",
+			"such as the language it is played, written or indexed in.");
+		return FALSE;
+	}
 	if (L == DefaultLanguage::get(NULL)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(),
 			_p_(PM_CantTranslateIntoEnglish),
@@ -60,7 +66,7 @@ sense once kinds and instances exist.
 
 	if ((<translates-into-language-sentence-subject>(SP)) == FALSE) {
 		StandardProblems::sentence_problem(Task::syntax_tree(),
-			_p_(PM_CantTranslateValue),
+			_p_(Untestable),
 			"this isn't something which can be translated",
 			"that is, it isn't a kind or instance.");
 		return FALSE;
@@ -88,14 +94,12 @@ sense once kinds and instances exist.
 	}
 
 @h Translation into Unicode.
-The following handles sentences like:
+The following sentence form is now deprecated:
 
 >> leftwards harpoon with barb upwards translates into Unicode as 8636.
 
-The subject "leftwards harpoon with barb upwards" is parsed against the
-Unicode character names known already to make sure that this new translation
-doesn't disagree with an existing one (that is, doesn't translate to a
-different code number).
+Until Inform 10.1, this equated a Unicode name to its code point value; see
+IE-0005 and //values: Unicode Literals// for what now happens instead.
 
 The sentence "X translates into Y as Z" has this sense provided Y matches:
 
@@ -104,6 +108,7 @@ The sentence "X translates into Y as Z" has this sense provided Y matches:
 	unicode
 
 @ =
+int PM_UnicodeDeprecated_thrown = FALSE;
 int Translations::translates_into_unicode_as_SMF(int task, parse_node *V, wording *NPs) {
 	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
@@ -119,57 +124,31 @@ int Translations::translates_into_unicode_as_SMF(int task, parse_node *V, wordin
 			}
 			break;
 		case PASS_2_SMFT:
-			@<Create the Unicode character name@>;
+			if (PM_UnicodeDeprecated_thrown == FALSE) {
+				PM_UnicodeDeprecated_thrown = TRUE;
+				StandardProblems::sentence_problem(Task::syntax_tree(),
+					_p_(PM_UnicodeDeprecated),
+					"the sentence 'X translates into Unicode as Y' has been removed "
+					"from the Inform language",
+					"because it is now redundant. Inform already knows all the names "
+					"in the Unicode standard. If you're getting this problem message "
+					"because you included the extension 'Unicode Full Character Names' "
+					"or 'Unicode Character Names', all you need do is to not include it.");
+			}
 			break;
 	}
 	return FALSE;
 }
 
-@ And this parses the noun phrases of such sentences. Note that the numeric
-values has to be given in decimal -- I was tempted to allow hexadecimal here,
-but life's too short. Unicode translation sentences are really only
-technicalities needed by the built-in extensions, and those are mechanically
-generated anyway; Inform authors never type them.
-
-=
-<translates-into-unicode-sentence-subject> ::=
-	( ... ) |
-	...
-
-<translates-into-unicode-sentence-object> ::=
-	<cardinal-number-unlimited> |  ==> { UnicodeLiterals::max(R[1]), - }
-	...                            ==> @<Issue PM_UnicodeNonLiteral problem@>
-
-@<Issue PM_UnicodeNonLiteral problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnicodeNonLiteral),
-		"a Unicode character name must be translated into a literal decimal "
-		"number written out in digits",
-		"which this seems not to be.");
-	return FALSE;
-
-@ And here the name is created as a miscellaneous excerpt meaning.
-
-@<Create the Unicode character name@> =
-	wording SP = Node::get_text(V->next);
-	wording OP = Node::get_text(V->next->next);
-	if (<translates-into-unicode-sentence-object>(OP) == FALSE) return FALSE;
-	int cc = <<r>>;
-
-	<translates-into-unicode-sentence-subject>(SP);
-	wording CN = GET_RW(<translates-into-unicode-sentence-subject>, 1);
-	if ((<unicode-character-name>(CN)) && (<<r>> != cc)) {
-		StandardProblems::sentence_problem(Task::syntax_tree(),
-			_p_(PM_UnicodeAlready),
-			"this Unicode character name has already been translated",
-			"so there must be some duplication somewhere.");
-		return FALSE;
-	}
-
-	Nouns::new_proper_noun(CN, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT, MISCELLANEOUS_MC,
-		Diagrams::new_PROPER_NOUN(OP), Task::language_of_syntax());
-
 @h Translation into Inter.
-The sentence "X translates into Y as Z" has this sense provided Y matches the
+There are three sentences here, but the first is now deprecated: it has split
+off into two different meanings, each with its own wording for clarity.
+
+@d TRANSLATION_DEPRECATED_FORM 1
+@d TRANSLATION_DEFINED_BY_FORM 2
+@d TRANSLATION_ACCESSIBLE_TO_FORM 3
+
+@ The sentence "X translates into Y as Z" has this sense provided Y matches the
 following. Before the coming of Inter code, the only conceivable compilation
 target was Inform 6, but these now set Inter identifiers, so really the first
 wording is to be preferred.
@@ -196,6 +175,7 @@ void Translations::visit_to_name(parse_node *p) {
 
 @ =
 int Translations::translates_into_Inter_as_SMF(int task, parse_node *V, wording *NPs) {
+	int translates_into_verb = TRANSLATION_DEPRECATED_FORM;
 	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
 	wording O2W = (NPs)?(NPs[2]):EMPTY_WORDING;
@@ -220,21 +200,95 @@ int Translations::translates_into_Inter_as_SMF(int task, parse_node *V, wording 
 	return FALSE;
 }
 
+@
+
+=
+<defined-by-inter-sentence-object> ::=
+	defined by inter as ...
+
+@
+
+=
+int Translations::defined_by_Inter_as_SMF(int task, parse_node *V, wording *NPs) {
+	int translates_into_verb = TRANSLATION_DEFINED_BY_FORM;
+	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
+	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
+	switch (task) { /* The seed random number generator rule is defined by Inter as "SEED_RANDOM_NUMBER_GENERATOR_R". */
+		case ACCEPT_SMFT:
+			if (<defined-by-inter-sentence-object>(OW)) {
+				OW = GET_RW(<defined-by-inter-sentence-object>, 1);
+				<np-articled>(SW);
+				V->next = <<rp>>;
+				<np-articled>(OW);
+				V->next->next = <<rp>>;
+				return TRUE;
+			}
+			break;
+		case PASS_1_SMFT:
+		case PASS_2_SMFT:
+			@<Act on the Inter translation@>;
+			break;
+		case INTER_NAMING_SMFT:
+			@<Act on late naming@>;
+			break;
+	}
+	return FALSE;
+}
+
+@
+
+=
+<accessible-to-inter-sentence-object> ::=
+	accessible to inter as ...
+
+@
+
+=
+int Translations::accessible_to_Inter_as_SMF(int task, parse_node *V, wording *NPs) {
+	int translates_into_verb = TRANSLATION_ACCESSIBLE_TO_FORM;
+	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
+	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
+	switch (task) { /* The time advancing rule is accessible to Inter as "TIME_ADV_RULE". */
+		case ACCEPT_SMFT:
+			if (<accessible-to-inter-sentence-object>(OW)) {
+				OW = GET_RW(<accessible-to-inter-sentence-object>, 1);
+				<np-articled>(SW);
+				V->next = <<rp>>;
+				<np-articled>(OW);
+				V->next->next = <<rp>>;
+				return TRUE;
+			}
+			break;
+		case PASS_1_SMFT:
+		case PASS_2_SMFT:
+			@<Act on the Inter translation@>;
+			break;
+		case INTER_NAMING_SMFT:
+			@<Act on late naming@>;
+			break;
+	}
+	return FALSE;
+}
+
 @ Translations can be made in a number of contexts:
 
 @d INVALID_I6TR -1
 @d PROPERTY_I6TR 0      /* "The open property translates into I6 as "open"." */
 @d NOUN_I6TR 1          /* "The north object translates into I6 as "n_obj"." */
 @d RULE_I6TR 2          /* "The baffling rule translates into I6 as "BAFFLING_R"." */
-@d VARIABLE_I6TR 3      /* "The sludge count variable translates into I6 as "sldgc". */
-@d ACTION_I6TR 4        /* "The taking action translates into I6 as "Take". */
-@d GRAMMAR_TOKEN_I6TR 5 /* "The grammar token "[whatever]" translates into I6 as "WHATEVER". */
+@d RULEBOOK_I6TR 3      /* "The high security rules translates into I6 as "SECURITY_RULEBOOK". */
+@d ACTIVITY_I6TR 4      /* "The draining something activity translates into I6 as "DRAINING_ACTIVITY". */
+@d VARIABLE_I6TR 5      /* "The sludge count variable translates into I6 as "sldgc". */
+@d ACTION_I6TR 6        /* "The taking action translates into I6 as "Take". */
+@d GRAMMAR_TOKEN_I6TR 7 /* "The grammar token "[whatever]" translates into I6 as "WHATEVER". */
 
 =
 <translates-into-i6-sentence-subject> ::=
 	... property |          ==> { PROPERTY_I6TR, - }
 	... object/kind |       ==> { NOUN_I6TR, - }
 	{... rule} |            ==> { RULE_I6TR, - }
+	{... rules/rulebook} |  ==> { RULEBOOK_I6TR, - }
+	{... activity} |        ==> { ACTIVITY_I6TR, - }
 	... variable |          ==> { VARIABLE_I6TR, - }
 	... action |            ==> { ACTION_I6TR, - }
 	understand token ... |  ==> { GRAMMAR_TOKEN_I6TR, - }
@@ -307,27 +361,85 @@ will be required to pass |<extra-response>|.
 @<Take action in pass 1 or 2 where possible@> =
 	switch(category) {
 		case PROPERTY_I6TR:
-			Properties::translates(W, p2);
-			Annotations::write_int(V, category_of_I6_translation_ANNOT, INVALID_I6TR);
+			if (translates_into_verb == TRANSLATION_DEPRECATED_FORM)
+				translates_into_verb = TRANSLATION_DEFINED_BY_FORM;
+			@<Do not use the translates-into form@>;
+			if (translates_into_verb == TRANSLATION_ACCESSIBLE_TO_FORM) {
+				if (global_pass_state.pass == 2) Properties::accessible_as(W, p2);
+			} else {
+				Properties::translates(W, p2);
+				Annotations::write_int(V, category_of_I6_translation_ANNOT, INVALID_I6TR);
+			}
 			break;
 		case NOUN_I6TR: break;
 		case RULE_I6TR:
+			if (translates_into_verb == TRANSLATION_DEPRECATED_FORM)
+				translates_into_verb = TRANSLATION_DEFINED_BY_FORM;
+			@<Require the defined-by form@>;
 			if (global_pass_state.pass == 1)
 				Rules::declare_Inter_rule(W, Node::get_text(p2));
 			if ((global_pass_state.pass == 2) && (p2->down) && (<rule-name>(W)))
 				Translations::plus_responses(p2->down, <<rp>>);
 			break;
+		case RULEBOOK_I6TR:
+			@<Require the accessible-to form@>;
+			if (global_pass_state.pass == 2) Rulebooks::translates(W, p2);
+			break;
+		case ACTIVITY_I6TR:
+			@<Require the accessible-to form@>;
+			if (global_pass_state.pass == 2) Activities::translates(W, p2);
+			break;
 		case VARIABLE_I6TR:
+			if (translates_into_verb == TRANSLATION_DEPRECATED_FORM)
+				translates_into_verb = TRANSLATION_DEFINED_BY_FORM;
+			@<Require the defined-by form@>;
 			if (global_pass_state.pass == 2) NonlocalVariables::translates(W, p2);
 			break;
-		#ifdef IF_MODULE
 		case ACTION_I6TR:
+			if (translates_into_verb == TRANSLATION_DEPRECATED_FORM)
+				translates_into_verb = TRANSLATION_ACCESSIBLE_TO_FORM;
+			@<Require the accessible-to form@>;
 			if (global_pass_state.pass == 2) Actions::translates(W, p2);
 			break;
 		case GRAMMAR_TOKEN_I6TR:
+			if (translates_into_verb == TRANSLATION_DEPRECATED_FORM)
+				translates_into_verb = TRANSLATION_DEFINED_BY_FORM;
+			@<Require the defined-by form@>;
 			if (global_pass_state.pass == 2) CommandGrammars::new_translated_token(W, p2);
 			break;
-		#endif
+	}
+
+@<Require the accessible-to form@> =
+	if (translates_into_verb != TRANSLATION_ACCESSIBLE_TO_FORM) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(...),
+			"this is a language construct which cannot be defined in Inter code",
+			"so although you can say 'X is accessible to Inter as Y' to give it "
+			"an Inter identifier, you cannot say 'X translates into Inter as Y' or "
+			"'X is defined by Inter as Y'.");
+	}
+
+@<Require the defined-by form@> =
+	if (translates_into_verb != TRANSLATION_DEFINED_BY_FORM) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(...),
+			"this is a language construct which cannot be given an Inter name "
+			"except by defining it from Inter",
+			"so although you can say 'X is defined by Inter as Y' to make "
+			"this available to source text, you cannot say 'X translates into "
+			"Inter as Y' or 'X is accessible to Inter as Y'.");
+	}
+
+@<Do not use the translates-into form@> =
+	if (translates_into_verb == TRANSLATION_DEPRECATED_FORM) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(...),
+			"the verb 'X translates into Inter as Y' (or '... into I6...') "
+			"has been removed from Inform",
+			"and should either be 'X is defined by Inter as Y' if Y is something "
+			"whose definition is given in Inter - for example, for a rule defined in "
+			"a kit - or else 'X is accessible to Inter as Y', if you just want a "
+			"a name you can use from Inter code to refer to an X created by Inform.");
 	}
 
 @ Extra responses look just as they would in running code.
@@ -366,6 +478,9 @@ void Translations::plus_responses(parse_node *p, rule *R) {
 			wording W = Wordings::trim_last_word(SP);
 			parse_node *res = Lexicon::retrieve(NOUN_MC, W);
 			if (res) {
+				if (translates_into_verb == TRANSLATION_DEPRECATED_FORM)
+					translates_into_verb = TRANSLATION_ACCESSIBLE_TO_FORM;
+				@<Require the accessible-to form@>;
 				noun_usage *nu = Nouns::disambiguate(res, FALSE);
 				noun *nt = (nu)?(nu->noun_used):NULL;
 				if (nt) {

@@ -1,0 +1,11 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 26 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32551 words long.
+Problem__ PM_ChoicePerformsUnknown
+In Section 1 - Meeting:
+  >--> The dialogue choice offered by '-> perform the avant-garde beat' (source
+    text, line 9) asks to perform the beat 'avant-garde beat', but I don't
+    recognise that as the name of any beat in the story.
+Inform 7 has finished.

@@ -3,7 +3,7 @@
 Command parser grammar is laid out in special Understand... sentences.
 
 @h Traversing.
-When the "parser" plugin is active, any sentence in the form "Understand...
+When the "parser" feature is active, any sentence in the form "Understand...
 as..." is considered to be an instruction about the command grammar, which
 is a special data structure created by Inform for the use of the command
 parser at run-time.
@@ -278,6 +278,7 @@ integer result is 0 if no problems were thrown, or -1 if they were.
 
 <understand-ref> ::=
 	<action-name> |                             ==> { 0, - }; @<Add action reference@>
+	<action-pattern> |                          ==> @<Issue PM_UnderstandActionPattern problem@>
 	<s-descriptive-type-expression> |           ==> { 0, - }; @<Add specification reference@>
 	<s-variable> |                              ==> @<Issue PM_UnderstandVariable problem@>
 	...                                         ==> @<Issue PM_UnderstandVague problem@>
@@ -299,9 +300,8 @@ integer result is 0 if no problems were thrown, or -1 if they were.
 
 @<Make into a token@> =
 	ur_being_parsed.cg_result = CG_IS_TOKEN;
-	ur_being_parsed.token_text = Feeds::feed_C_string_full(
-		Lexer::word_text(Wordings::first_wn(ur_being_parsed.reference_text)),
-		TRUE, GRAMMAR_PUNCTUATION_MARKS);
+	ur_being_parsed.token_text = CGTokens::break(
+		Lexer::word_text(Wordings::first_wn(ur_being_parsed.reference_text)), TRUE);
 
 @<Reverse@> =
 	ur_being_parsed.reversed_reference = TRUE;
@@ -336,6 +336,18 @@ integer result is 0 if no problems were thrown, or -1 if they were.
 		"that something should be understood as 'the player', which is actually a "
 		"variable, because the perspective of play can change. Writing 'yourself' "
 		"instead will usually do.)");
+	==> { -1, - };
+
+@<Issue PM_UnderstandActionPattern problem@> =
+	LOG("Offending pseudo-meaning is: %W\n", W);
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandActionPattern),
+		"this meaning looks like a form of action",
+		"but needs to be written more simply, just as the action itself and without "
+		"any details about what is acted on. For example, 'Understand ... as examining' "
+		"is fine, but 'Understand ... as examining a door' is not. (What will be "
+		"examined depends on what is in the actual command this 'Understand' "
+		"instruction will try to work on - we cannot know yet whether it will be "
+		"a door.)");
 	==> { -1, - };
 
 @<Issue PM_UnderstandVague problem@> =
@@ -884,9 +896,15 @@ void Understand::text_block(wording W, understanding_reference *ur) {
 				kind *K = Specifications::to_kind(spec);
 				if (K) cg_owner = KindSubjects::from_kind(K);
 			}
-			if (cg_owner == NULL) internal_error("unowned");
-			LOGIF(GRAMMAR_CONSTRUCTION, "Add to command grammar of subject $j: ", cg_owner);
-			cg = CommandGrammars::for_subject(cg_owner);
+			if (cg_owner == NULL) {
+				StandardProblems::sentence_problem(Task::syntax_tree(),
+					_p_(BelievedImpossible),
+					"that's not something I can 'Understand ... as ...'",
+					"and should normally be an action or a thing.");
+			} else {
+				LOGIF(GRAMMAR_CONSTRUCTION, "Add to command grammar of subject $j: ", cg_owner);
+				cg = CommandGrammars::for_subject(cg_owner);
+			}
 			break;
 		}
 		case CG_IS_VALUE:

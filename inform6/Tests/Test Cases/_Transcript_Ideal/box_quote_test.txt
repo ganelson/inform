@@ -1,5 +1,5 @@
    Starting Point                                                                                                                                                                                              Score: 0     Moves: 0
-  Release 1 / Serial number 220306 / Inform v6.36 Library 6/11 S
+  Release 1 / Serial number 220724 / Inform v6.41 Library 6/11 S
   
   Starting Point
   An uninteresting room.

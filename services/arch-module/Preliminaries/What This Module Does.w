@@ -84,3 +84,9 @@ and //Compatibility::from_text//. Typically, such text might read "for 32d only"
 Lastly, //Compatibility::all// returns a specification meaning "works with
 anything". This should be the default; //Compatibility::test_universal// tests
 whether a specification is equivalent to this.
+
+@h Features.
+The last service provided by this module is to manage which named features of
+the compiler are switched on or off: see //Feature Manager//. At one time
+this functionality was part of the core Inform compiler, but having it here
+means that all of the compiler tools can make use of it.

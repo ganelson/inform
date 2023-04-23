@@ -449,6 +449,26 @@ The current S-grammar has the following verb and preposition usages:
  {verb 'be able to see' s/p 3p pass WAS_TENSE -ve}
  {verb 'be able to see' s/p 3p pass IS_TENSE +ve}
  {verb 'be able to see' s/p 3p pass WAS_TENSE +ve}
+ {verb 'be able to hear' 3p s act HASBEEN_TENSE -ve}
+ {verb 'be able to hear' 3p p act HASBEEN_TENSE -ve}
+ {verb 'be able to hear' s/p 3p act HADBEEN_TENSE -ve}
+ {verb 'be able to hear' 3p s act HASBEEN_TENSE +ve}
+ {verb 'be able to hear' 3p p act HASBEEN_TENSE +ve}
+ {verb 'be able to hear' s/p 3p act HADBEEN_TENSE +ve}
+ {verb 'be able to hear' s/p 3p act IS_TENSE -ve}
+ {verb 'be able to hear' s/p 3p act WAS_TENSE -ve}
+ {verb 'be able to hear' s/p 3p act IS_TENSE +ve}
+ {verb 'be able to hear' s/p 3p act WAS_TENSE +ve}
+ {verb 'be able to hear' 3p s pass HASBEEN_TENSE -ve}
+ {verb 'be able to hear' 3p p pass HASBEEN_TENSE -ve}
+ {verb 'be able to hear' s/p 3p pass HADBEEN_TENSE -ve}
+ {verb 'be able to hear' 3p s pass HASBEEN_TENSE +ve}
+ {verb 'be able to hear' 3p p pass HASBEEN_TENSE +ve}
+ {verb 'be able to hear' s/p 3p pass HADBEEN_TENSE +ve}
+ {verb 'be able to hear' s/p 3p pass IS_TENSE -ve}
+ {verb 'be able to hear' s/p 3p pass WAS_TENSE -ve}
+ {verb 'be able to hear' s/p 3p pass IS_TENSE +ve}
+ {verb 'be able to hear' s/p 3p pass WAS_TENSE +ve}
  {verb 'be able to touch' 3p s act HASBEEN_TENSE -ve}
  {verb 'be able to touch' 3p p act HASBEEN_TENSE -ve}
  {verb 'be able to touch' s/p 3p act HADBEEN_TENSE -ve}
@@ -1224,6 +1244,7 @@ holding
 worn by
 wearing
 being able to see
+being able to hear
 being able to touch
 concealed by
 concealing

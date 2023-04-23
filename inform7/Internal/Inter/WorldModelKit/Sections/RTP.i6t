@@ -49,7 +49,7 @@ To issue run-time problem messages arising from the world model.
 		RTP_CANTBEOFFSTAGE:
 			print "Attempt to move the player off-stage.^";
 		RTP_CANTREMOVEDOORS:
-			print "Attempt to remove a door from play.^";
+			print "Attempt to move or remove a door.^";
 		RTP_CANTCHANGEOFFSTAGE:
 			print "Attempt to change the player to a person off-stage.^";
 		RTP_BACKDROPONLY:
@@ -69,5 +69,16 @@ To issue run-time problem messages arising from the world model.
 		RTP_SCENEHASNTENDED:
 			print "The scene ", (PrintSceneName) par1,
 				" hasn't ended, so you can't ask when it did.^";
+		RTP_HOLDINGISFORTHINGS:
+			print "Attempted to move ", (the) par1, " to ", (the) par2,
+				" but holding, wearing and carrying are for things only.^";
+		RTP_DISALLOWEDREGIONCHANGE:
+			print "Attempted to move ", (the) par1, " to ", (the) par2,
+				" but only rooms and regions can change region.^";
+		RTP_NOTASUPPORTER:
+			print "Attempted to put ", (the) par1, " on ", (the) par2,
+				" but that is not a supporter.^";
+		RTP_BADCONTAINMENT:
+			print "Attempted to put ", (the) par1, " in ", (the) par2, ".^";
 	}
 ];

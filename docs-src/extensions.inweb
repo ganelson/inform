@@ -10,7 +10,7 @@ The standard Inform installation comes with several optional-use extensions,
 "Locksmith" being one of them, in fact, but most are straightforward files
 of Inform 7 text and they are not presented here as literate programs.
 
-(*) They can be found instead at: //https://github.com/ganelson/inform/inform7/Internal/Extensions/
+(*) They can be found instead at: //https://github.com/ganelson/inform/tree/master/inform7/Internal/Extensions
 
 @ Two extensions are fundamental to Inform, in the sense that it cannot function
 without them. Every project always includes Basic Inform, which sets up the

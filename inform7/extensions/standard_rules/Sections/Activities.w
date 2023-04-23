@@ -27,11 +27,12 @@ Section 1 - Responses
 
 Issuing the response text of something -- documented at act_resp -- is an
 activity on responses.
+The issuing the response text activity is accessible to Inter as "PRINTING_RESPONSE_ACT".
 
 The standard issuing the response text rule is listed last in for issuing the
 response text.
 
-The standard issuing the response text rule translates into Inter as
+The standard issuing the response text rule is defined by Inter as
 "STANDARD_RESPONSE_ISSUING_R".
 
 @h Naming and listing.
@@ -49,6 +50,7 @@ Before printing the name of a thing (called the item being printed)
 	now the item being printed is mentioned.
 
 Printing a number of something (documented at act_pan) is an activity.
+The printing a number activity is accessible to Inter as "PRINTING_A_NUMBER_OF_ACT".
 
 Rule for printing a number of something (called the item) (this is the standard
 	printing a number of something rule):
@@ -62,16 +64,20 @@ supplemented by details:
 
 =
 Printing room description details of something (documented at act_details) is an activity.
+The printing room description details activity is accessible to Inter as "PRINTING_ROOM_DESC_DETAILS_ACT".
 Printing inventory details of something (documented at act_idetails) is an activity.
+The printing inventory details activity is accessible to Inter as "PRINTING_INVENTORY_DETAILS_ACT".
 
 @ Names of things are often formed up into lists, in which they are sometimes
 grouped together:
 
 =
 Listing contents of something (documented at act_lc) is an activity.
+The listing contents activity is accessible to Inter as "LISTING_CONTENTS_ACT".
 The standard contents listing rule is listed last in the for listing contents rulebook.
-The standard contents listing rule translates into Inter as "STANDARD_CONTENTS_LISTING_R".
+The standard contents listing rule is defined by Inter as "STANDARD_CONTENTS_LISTING_R".
 Grouping together something (documented at act_gt) is an activity.
+The grouping together activity is accessible to Inter as "GROUPING_TOGETHER_ACT".
 
 @ And such lists of names are formed up in turn into room descriptions.
 Something which is visible in a room can either have a paragraph of its own
@@ -79,6 +85,7 @@ or can be relegated to the list of "nondescript" items at the end.
 
 =
 Writing a paragraph about something (documented at act_wpa) is an activity.
+The writing a paragraph about activity is accessible to Inter as "WRITING_A_PARAGRAPH_ABOUT_ACT".
 
 @ When these paragraphs have all gone by, the nondescript items left over are
 more briefly listed: the following activity gets the chance to change how
@@ -86,6 +93,7 @@ this is done.
 
 =
 Listing nondescript items of something (documented at act_lni) is an activity.
+The listing nondescript items activity is accessible to Inter as "LISTING_NONDESCRIPT_ITEMS_ACT".
 
 @ Darkness behaves, for room description purposes, a little as if it were a
 room in its own right. Until the 1990s that was almost always how darkness
@@ -94,10 +102,15 @@ existence of a room-which-is-not-a-room would break type safety.
 
 =
 Printing the name of a dark room (documented at act_darkname) is an activity.
+The printing the name of a dark room activity is accessible to Inter as "PRINTING_NAME_OF_DARK_ROOM_ACT".
 Printing the description of a dark room (documented at act_darkdesc) is an activity.
+The printing the description of a dark room activity is accessible to Inter as "PRINTING_DESC_OF_DARK_ROOM_ACT".
 Printing the announcement of darkness (documented at act_nowdark) is an activity.
+The printing the announcement of darkness activity is accessible to Inter as "PRINTING_NEWS_OF_DARKNESS_ACT".
 Printing the announcement of light (documented at act_nowlight) is an activity.
+The printing the announcement of light activity is accessible to Inter as "PRINTING_NEWS_OF_LIGHT_ACT".
 Printing a refusal to act in the dark (documented at act_toodark) is an activity.
+The printing a refusal to act in the dark activity is accessible to Inter as "REFUSAL_TO_ACT_IN_DARK_ACT".
 
 The look around once light available rule is listed last in for printing the
 announcement of light.
@@ -111,7 +124,9 @@ to the start of play:
 
 =
 Constructing the status line (documented at act_csl) is an activity.
+The constructing the status line activity is accessible to Inter as "CONSTRUCTING_STATUS_LINE_ACT".
 Printing the banner text (documented at act_banner) is an activity.
+The printing the banner text activity is accessible to Inter as "PRINTING_BANNER_TEXT_ACT".
 
 @h Parsing activites.
 Now a brace of activities to intervene in how the command parser does its
@@ -129,19 +144,29 @@ what it might be.
 Section 3 - Command parsing
 
 Reading a command (documented at act_reading) is an activity.
+The reading a command activity is accessible to Inter as "READING_A_COMMAND_ACT".
 Deciding the scope of something (future action) (documented at act_ds) is an activity.
+The deciding the scope activity is accessible to Inter as "DECIDING_SCOPE_ACT".
 Deciding the concealed possessions of something (documented at act_con) is an activity.
+The deciding the concealed possessions activity is accessible to Inter as "DECIDING_CONCEALED_POSSESS_ACT".
 Deciding whether all includes something (future action) (documented at act_all)
 	is an activity.
+The deciding whether all includes activity is accessible to Inter as "DECIDING_WHETHER_ALL_INC_ACT".
 The for deciding whether all includes rules have outcomes it does not (failure) and
 	it does (success).
 Clarifying the parser's choice of something (future action) (documented at act_clarify)
 	is an activity.
+The clarifying the parser's choice activity is accessible to Inter as "CLARIFYING_PARSERS_CHOICE_ACT".
 Asking which do you mean (future action) (documented at act_which) is an activity.
+The asking which do you mean activity is accessible to Inter as "ASKING_WHICH_DO_YOU_MEAN_ACT".
 Printing a parser error (documented at act_parsererror) is an activity.
+The printing a parser error activity is accessible to Inter as "PRINTING_A_PARSER_ERROR_ACT".
 Supplying a missing noun (documented at act_smn) is an activity.
+The supplying a missing noun activity is accessible to Inter as "SUPPLYING_A_MISSING_NOUN_ACT".
 Supplying a missing second noun (documented at act_smn) is an activity.
+The supplying a missing second noun activity is accessible to Inter as "SUPPLYING_A_MISSING_SECOND_ACT".
 Implicitly taking something (documented at act_implicitly) is an activity.
+The implicitly taking activity is accessible to Inter as "IMPLICITLY_TAKING_ACT".
 
 @ Here are the default rules for the behaviour of ALL:
 
@@ -195,7 +220,7 @@ Rule for supplying a missing noun while an actor going (this is the block vaguel
 =
 The standard implicit taking rule is listed last in for implicitly taking.
 
-The standard implicit taking rule translates into Inter as "STANDARD_IMPLICIT_TAKING_R" with
+The standard implicit taking rule is defined by Inter as "STANDARD_IMPLICIT_TAKING_R" with
 	"(first taking [the noun])[command clarification break]" (A),
 	"([the second noun] first taking [the noun])[command clarification break]" (B).
 
@@ -209,18 +234,20 @@ several unconnected things happen in succession.
 Section 4 - Posthumous activities
 
 Amusing a victorious player (documented at act_amuse) is an activity.
+The amusing a victorious player activity is accessible to Inter as "AMUSING_A_VICTORIOUS_PLAYER_ACT".
 
 Printing the player's obituary (documented at act_obit) is an activity.
+The printing the player's obituary activity is accessible to Inter as "PRINTING_PLAYERS_OBITUARY_ACT".
 The print obituary headline rule is listed last in for printing the player's obituary.
 The print final score rule is listed last in for printing the player's obituary.
 The display final status line rule is listed last in for printing the player's obituary.
 
-The print obituary headline rule translates into Inter as "PRINT_OBITUARY_HEADLINE_R"
+The print obituary headline rule is defined by Inter as "PRINT_OBITUARY_HEADLINE_R"
 	with " You have died " (A),
 		" You have won " (B),
 		" The End " (C).
-The print final score rule translates into Inter as "PRINT_FINAL_SCORE_R".
-The display final status line rule translates into Inter as "DISPLAY_FINAL_STATUS_LINE_R".
+The print final score rule is defined by Inter as "PRINT_FINAL_SCORE_R".
+The display final status line rule is defined by Inter as "DISPLAY_FINAL_STATUS_LINE_R".
 
 @ There is one last question: the one which usually reads "Would you like to
 RESTART, RESTORE a saved game, or QUIT?", but which sometimes provides other
@@ -229,6 +256,7 @@ by repeatedly calling the following activity:
 
 =
 Handling the final question is an activity.
+The handling the final question activity is accessible to Inter as "DEALING_WITH_FINAL_QUESTION_ACT".
 
 @ It follows that this activity must at least sometimes do something dramatic
 to the execution state: perform a quit, for instance. Four primitive rules are
@@ -238,10 +266,10 @@ who wants to call them. (In the default implementation below, we put
 references to them into a table.)
 
 =
-The immediately restart the VM rule translates into Inter as "IMMEDIATELY_RESTART_VM_R".
-The immediately restore saved game rule translates into Inter as "IMMEDIATELY_RESTORE_SAVED_R".
-The immediately quit rule translates into Inter as "IMMEDIATELY_QUIT_R".
-The immediately undo rule translates into Inter as "IMMEDIATELY_UNDO_R" with
+The immediately restart the VM rule is defined by Inter as "IMMEDIATELY_RESTART_VM_R".
+The immediately restore saved game rule is defined by Inter as "IMMEDIATELY_RESTORE_SAVED_R".
+The immediately quit rule is defined by Inter as "IMMEDIATELY_QUIT_R".
+The immediately undo rule is defined by Inter as "IMMEDIATELY_UNDO_R" with
 	"The use of 'undo' is forbidden in this story." (A),
 	"You can't 'undo' what hasn't been done!" (B),
 	"Your interpreter does not provide 'undo'. Sorry!" (C),
@@ -264,7 +292,7 @@ The standard respond to final question rule is listed last in for handling the f
 
 This is the print the final prompt rule: say "> [run paragraph on]" (A).
 
-The read the final answer rule translates into Inter as "READ_FINAL_ANSWER_R".
+The read the final answer rule is defined by Inter as "READ_FINAL_ANSWER_R".
 
 @ That clears away the underbrush and reduces us to two matching tasks: (i)
 to print the question, (ii) to parse the answer, given that we want to be
@@ -458,6 +486,9 @@ list is not in fact a list of the contents of anything.
 =
 Printing the locale description of something (documented at act_pld) is an activity.
 
+The printing the locale description activity is accessible to Inter as
+"PRINTING_LOCALE_DESCRIPTION_ACT".
+
 The locale paragraph count is a number that varies.
 
 Before printing the locale description (this is the initialise locale description rule):
@@ -534,6 +565,7 @@ table, which in turn is the object-tree traversal order.
 
 =
 Choosing notable locale objects of something (documented at act_cnlo) is an activity.
+The choosing notable locale objects activity is accessible to Inter as "CHOOSING_NOTABLE_LOCALE_OBJ_ACT".
 
 For choosing notable locale objects (this is the standard notable locale objects rule):
 	let the domain be the parameter-object;
@@ -609,6 +641,7 @@ in March 2008.
 
 =
 Printing a locale paragraph about something (documented at act_plp) is an activity.
+The printing a locale paragraph about activity is accessible to Inter as "PRINTING_LOCALE_PARAGRAPH_ACT".
 
 For printing a locale paragraph about a thing (called the item)
 	(this is the don't mention player's supporter in room descriptions rule):
@@ -712,3 +745,42 @@ For printing a locale paragraph about a thing (called the item)
 				concealed items, prefacing with is/are, listing marked items only;
 			say ".[paragraph break]";
 	continue the activity.
+
+@h Dialogue support.
+
+=
+Section 8 - Dialogue (for dialogue language element only)
+
+Offering something is an activity on lists of dialogue choices.
+The offering activity is accessible to Inter as "OFFERING_A_DIALOGUE_CHOICE".
+
+For offering a list of dialogue choices (called L)
+	(this is the default offering dialogue choices rule):
+	let N be 1;
+	repeat with C running through L:
+		say "([N]) [textual content of C][line break]";
+		increase N by 1.
+
+Performing something is an activity on dialogue lines.
+The performing activity is accessible to Inter as "PERFORMING_DIALOGUE".
+
+The performing activity has an object called the speaker.
+
+The performing activity has an object called the interlocutor.
+
+The performing activity has a performance style called the style.
+
+Before performing a dialogue line:
+	now the speaker is the current dialogue line speaker;
+	now the interlocutor is the current dialogue line interlocutor;
+	now the style is the current dialogue line style.
+
+For performing a dialogue line (called L)
+	(this is the default dialogue performance rule):
+	if L is narrated or L is elaborated or L is non-verbal:
+		say "[textual content of L][line break]";
+	otherwise:
+		say "[The speaker]";
+		if the interlocutor is something:
+			say " (to [the interlocutor])";
+		say ": '[textual content of L]'[line break]".

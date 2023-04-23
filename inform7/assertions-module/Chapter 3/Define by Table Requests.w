@@ -244,7 +244,8 @@ have occurred, but if it does then the creation has worked.
 			@<Issue a problem for trying to create an existing kind as a new instance@>;
 		if ((evaluation) && (Node::is(evaluation, UNKNOWN_NT) == FALSE))
 			@<Issue a problem for trying to create any existing meaning as a new instance@>;
-
+		if ((K_direction) && (<notable-map-noun-phrases>(NW)))
+			@<Issue a problem for trying to create above or below as a new instance@>;
 		Assertions::Creator::tabular_definitions(t);
 		NounPhrases::annotate_by_articles(name_entry);
 		ProblemBuffer::redirect_problem_sentence(current_sentence, name_entry, V->next);
@@ -304,6 +305,20 @@ of the contents.)
 		"You wrote %1, and row %5 of the first column of that table is %2, which "
 		"I ought to create as a new value of %4. But I can't do that: it already "
 		"has a meaning (as %3).");
+	Problems::issue_problem_end();
+	objections++; continue;
+
+@<Issue a problem for trying to create above or below as a new instance@> =
+	Problems::quote_source(1, current_sentence);
+	Problems::quote_source(2, name_entry);
+	Problems::quote_kind_of(3, evaluation);
+	Problems::quote_kind(4, K);
+	Problems::quote_number(5, &row_count);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableCreatedMapClash));
+	Problems::issue_problem_segment(
+		"You wrote %1, and row %5 of the first column of that table is %2, which "
+		"I ought to create as a new value of %4. But I can't do that: it already "
+		"has a meaning (it refers to a map direction).");
 	Problems::issue_problem_end();
 	objections++; continue;
 

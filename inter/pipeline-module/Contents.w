@@ -41,6 +41,7 @@ Chapter 5: Synoptic Module
 	Activities
 	Actions
 	Instances
+	Dialogue
 	Kinds
 	Properties
 	Relations

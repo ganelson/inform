@@ -1,0 +1,213 @@
+Beats Template.
+
+Runtime support for dialogue beats.
+
+@h Runtime representation.
+Values representing beats are enumerated from 1 to |NO_DIALOGUE_BEATS|. Beats
+have certain properties stored by Inform just as it would for any other
+enumerated kind, and which this kit deals with by calls to |GProperty| and
+|WriteGProperty|: in particular, |performed| and |recurring|.
+
+In addition, though, the compiler (or more accurately the linker) generates
+a table called |TableOfDialogueBeats|. If |db| is an enumerated value then
+|TableOfDialogueBeats-->db| is the address of the metadata table for |db|.
+(And |TableOfDialogueBeats-->0| is set to |NO_DIALOGUE_BEATS|.)
+
+These beat data arrays are of variable length (at least 4) and have fields as follows:
+
+(*) |AVAILABILITY_DCMETADATA| is a function to test whether any |if| or |unless|
+conditions attached to the choice are met, and whether any constraints on
+sequencing of beats ("after", "before", "later", "next", "immediately after")
+are met. The function returns |true| if the choice is available, |false| if not.
+If the |AVAILABILITY_DCMETADATA| is 0, the choice is always available.
+
+(*) |RELEVANCE_DBMETADATA| is a function |R| which has two purposes: |R(pool, false)|
+tests whether the "about..." descriptions for the beat match any of the subjects
+in the null-terminated array |pool|. The function returns |true| if so, |false|
+if not. If |RELEVANCE_DBMETADATA| is 0, the beat is never "relevant".
+
+|R(pool, true)| in fact ignores |pool|, and instead makes a series of calls to
+|DirectorAddLiveSubjectList(A)|, one for each subject |A| which the beat is about.
+Vague descriptions such as "about a woman in the Dining Room" do not result in
+a call: only explicit ones such as "about the marble-top table". There is no
+meaningful return value. If |RELEVANCE_DBMETADATA| is 0, the beat has no explicit
+about values, so the call (which of course cannot be made) would do nothing anyway.
+
+(*) |PROGRAM_DBMETADATA| points to the D-code program for the beat, which is
+too complex to explain here: see //Programs Template//.
+
+(*) |TIED_SCENE_DBMETADATA| is either 0 or a valid scene instance value. (Scenes
+are enumerated from 1, so 0 cannot be a scene.) This is the scene to which the
+beat is tied, if any, and is caused by naming it "This is the finale scene"
+instead of "This is the finale beat" (or not naming it at all).
+
+(*) |REQUIRING_DBMETADATA| is not a single field. The beat data array is of
+variable length, and from this point onwards, it is a null-terminated list of
+speakers who must be accessible for the beat to be performed. That list can
+of course be empty, in which case there will just be a 0 at this position.
+
+All of this must of course match what is compiled in //runtime: Dialogue Beat Instances//.
+
+=
+Constant AVAILABILITY_DBMETADATA = 0;
+Constant RELEVANCE_DBMETADATA = 1;
+Constant PROGRAM_DBMETADATA = 2;
+Constant TIED_SCENE_DBMETADATA = 3;
+Constant REQUIRING_DBMETADATA = 4;
+
+@h Extracting beat data.
+
+=
+[ DirectorBeatGetScene db beatdata;
+	if ((db <= 0) || (db > NO_DIALOGUE_BEATS)) return 0;
+	beatdata = TableOfDialogueBeats-->db;
+	return beatdata-->TIED_SCENE_DBMETADATA;
+];
+
+[ DirectorBeatGetProgram db beatdata;
+	if ((db <= 0) || (db > NO_DIALOGUE_BEATS)) return 0;
+	beatdata = TableOfDialogueBeats-->db;
+	return beatdata-->PROGRAM_DBMETADATA;
+];
+
+[ DirectorBeatRequiredList list db len i beatdata speaker;
+	if ((db <= 0) || (db > NO_DIALOGUE_BEATS)) return list;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
+	len = 0;
+	beatdata = TableOfDialogueBeats-->db;
+	i = REQUIRING_DBMETADATA;
+	while (true) {
+		speaker = beatdata-->i;
+		if (speaker == nothing) break;
+		len++;
+		i++;
+	}
+	LIST_OF_TY_SetLength(list, len);
+	for (i=0: i<len: i++) {
+		speaker = beatdata-->(i+REQUIRING_DBMETADATA);
+		if (speaker == PLAYER_CONVERSATIONALIST) speaker = player;
+		LIST_OF_TY_PutItem(list, i+1, speaker);
+	}
+	return list;
+];
+
+[ DirectorBeatFirstSpeaker db speaker;
+	if ((db <= 0) || (db > NO_DIALOGUE_BEATS)) return nothing;
+	speaker = (TableOfDialogueBeats-->db)-->REQUIRING_DBMETADATA;
+	if (speaker == PLAYER_CONVERSATIONALIST) return player;
+	return speaker;
+];
+
+@h Accessibility.
+A beat is "accessible" to somebody if it is unperformed, or else recurring,
+and if that person can currently hear all the speakers on its requiring list.
+
+=
+[ DirectorBeatAccessible db to_whom beatdata i speaker;
+	if ((db <= 0) || (db > NO_DIALOGUE_BEATS)) rfalse;
+	if ((GProperty(DIALOGUE_BEAT_TY, db, performed) == 0) ||
+		(GProperty(DIALOGUE_BEAT_TY, db, recurring))) {
+		beatdata = TableOfDialogueBeats-->db;
+		i = REQUIRING_DBMETADATA;
+		while (true) {
+			speaker = beatdata-->i;
+			if (speaker == PLAYER_CONVERSATIONALIST) speaker = player;
+			if (speaker == nothing) rtrue;
+			if (TestAudibility(to_whom, speaker) == false) rfalse;
+			i++;
+		}
+	}
+	rfalse;
+];
+
+@h Availability.
+A beat is "available" if its "if" and "unless" conditions, together with any
+sequencing conditions about other beats having been performed or not performed
+prior to now, are all met.
+
+=
+Global latest_performed_beat = 0;
+
+[ DirectorBeatAvailable db fn beatdata;
+	if ((db <= 0) || (db > NO_DIALOGUE_BEATS)) rfalse;
+	beatdata = TableOfDialogueBeats-->db;
+	fn = beatdata-->AVAILABILITY_DBMETADATA;
+	if (fn) return (fn)(latest_performed_beat);
+	rtrue;
+];
+
+@h Relevance.
+A beat is "relevant" if at least one of its "about" subject descriptions
+matches something in the current subject list.
+
+A two-word array is used as a sort of temporary live subject list in order
+to test relevance to a single subject.
+
+=
+[ DirectorBeatRelevant db;
+	return DirectorBeatRelevantTo(db, DialogueTopicPool);
+];
+[ DirectorBeatRelevantTo db pool fn beatdata;
+	if ((db <= 0) || (db > NO_DIALOGUE_BEATS)) rfalse;
+	beatdata = TableOfDialogueBeats-->db;
+	fn = beatdata-->RELEVANCE_DBMETADATA;
+	if (fn) return (fn)(pool);
+	rfalse;
+];
+[ DirectorBeatMakeRelevant db beatdata fn;
+	if ((db <= 0) || (db > NO_DIALOGUE_BEATS)) rfalse;
+	beatdata = TableOfDialogueBeats-->db;
+	fn = beatdata-->RELEVANCE_DBMETADATA;
+	if (fn) (fn)(DialogueTopicPool, true);
+];
+Array DirectorMiniPool --> 0 0;
+[ DirectorBeatAbout db subject;
+	DirectorMiniPool-->0 = subject;
+	return DirectorBeatRelevantTo(db, DirectorMiniPool);
+];
+
+@h Performing beats.
+Note that calls to |DirectorPerformBeat| can be nested, and even with the same beat.
+This is why |DirectorBeatBeingPerformed| is careful to avoid the possibility of
+a scene being started by its tied beat, then starting the beat in turn, which...
+and so on.
+
+=
+[ DirectorPerformBeat db without_detecting;
+	if ((db <= 0) || (db > NO_DIALOGUE_BEATS)) rfalse;
+	if (debug_dialogue) {
+		print "-- Performing ", (PrintDialogueBeatName) db, "^";
+	}
+	WriteGProperty(DIALOGUE_BEAT_TY, db, performed, 1);
+	latest_performed_beat = db;
+	DirectorPush(db);
+	if ((DirectorBeatGetScene(db)) && (without_detecting == false)) DetectSceneChange();
+	DirectorBeatMakeRelevant(db);
+	DirectorRun(0);
+	if ((DirectorBeatGetScene(db)) && (without_detecting == false)) DetectSceneChange();
+	if (debug_dialogue) {
+		print "-- Performance of ", (PrintDialogueBeatName) db, " ended^";
+	}
+];
+
+[ DirectorBeatBeingPerformed db x;
+	if ((db >= 1) && (db <= NO_DIALOGUE_BEATS))
+		for (x=0: x<director_sp: x++)
+			if (DirectorStackBeat-->x == db)
+				rtrue;
+	rfalse;
+];
+
+[ DirectorPerformBeatIfUnperformed db;
+	if (DirectorBeatBeingPerformed(db) == false)
+		DirectorPerformBeat(db, true);
+];
+
+@h Perform opening beat rule.
+
+=
+[ PERFORM_OPENING_BEAT_R db;
+	db = InitialSituation-->START_BEAT_INIS;
+	if (db) DirectorPerformBeat(db);
+	rfalse;
+];

@@ -1,5 +1,5 @@
   AbbrevTest: Not a game.
-  Release 1 / Serial number 220306 / Inform v6.36, compiler options S
+  Release 1 / Serial number 220724 / Inform v6.41, compiler options S
   
   Unset strings: 0='   ', 1='   ', 16='   ', 31='   '.
   Set strings: 0='zero', 1='one', 16='sixteen', 31='thirtyone'.

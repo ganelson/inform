@@ -290,7 +290,7 @@ means "always display three times its normal size", whereas
 = (text as Blurb)
 	picture "backdrop/png" scale min 1/10 max 8/1
 =
-means"you can display this anywhere between one tenth normal size and
+means "you can display this anywhere between one tenth normal size and
 eight times normal size, but if possible it ought to be just its normal
 size".
 
@@ -304,6 +304,21 @@ of a typical desktop of 2001.
 =
 specifies that this is the cover art; it must also be declared with a
 |picture| command in the usual way, and must have picture ID 1.
+
+@ Fourth, a command for adding static internal data files:
+= (text as Blurb)
+	data <id> <filename> format <format>
+=
+Tells us to take the given data file and embed it into the blorb so that its
+contents can be read whenever the story is played. The "format" here can be
+either |TEXT| or |BINA|, meaning plain text or binary data.
+
+Exactly what |TEXT| means will depend on how the story file wants to read
+the file, but the convention used by Inform is that it should be UTF-8 plaib
+text with Unix line breaks.
+
+Similarly, by |BINA| Inform understands a sequence of big-endian four-byte
+data words.
 
 @ Three commands help us to specify locations.
 = (text as Blurb)

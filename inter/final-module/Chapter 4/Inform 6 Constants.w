@@ -88,6 +88,7 @@ for example.
 		(Str::eq(const_name, I"TARGET_ZCODE")) ||
 		(Str::eq(const_name, I"TARGET_GLULX")) ||
 		(Str::eq(const_name, I"DICT_WORD_SIZE")) ||
+		(Str::eq(const_name, I"DICT_ENTRY_BYTES")) ||
 		(Str::eq(const_name, I"DEBUG")) ||
 		(Str::eq(const_name, I"cap_short_name"))) {
 		ifndef_me = TRUE;
@@ -299,7 +300,10 @@ void I6TargetConstants::compile_literal_number(code_generator *gtr,
 void I6TargetConstants::compile_literal_real(code_generator *gtr,
 	code_generation *gen, text_stream *textual) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("$%S", textual);
+	if ((Str::get_first_char(textual) != '-') && (Str::get_first_char(textual) != '+'))
+		WRITE("$+%S", textual);
+	else
+		WRITE("$%S", textual);
 }
 
 @ Dictionary words -- those used in the command parser grammar -- are written in
@@ -317,13 +321,16 @@ void I6TargetConstants::compile_dictionary_word(code_generator *gtr, code_genera
 	WRITE("'");
 	LOOP_THROUGH_TEXT(pos, S) {
 		wchar_t c = Str::get(pos);
-		switch(c) {
-			case '/': if (Str::len(S) == 1) WRITE("@{2F}"); else WRITE("/"); break;
-			case '\'': WRITE("^"); break;
-			case '^': WRITE("@{5E}"); break;
-			case '~': WRITE("@{7E}"); break;
-			case '@': WRITE("@{40}"); break;
-			default: PUT(c);
+		if (c >= 0x100) WRITE("@{%04x}", c);
+		else {
+			switch(c) {
+				case '/': if (Str::len(S) == 1) WRITE("@{2F}"); else WRITE("/"); break;
+				case '\'': WRITE("^"); break;
+				case '^': WRITE("@{5E}"); break;
+				case '~': WRITE("@{7E}"); break;
+				case '@': WRITE("@{40}"); break;
+				default: PUT(c);
+			}
 		}
 		if (n++ > 32) break;
 	}
@@ -368,32 +375,38 @@ characters being written.
 @<Compile literal text in box mode@> =
 	LOOP_THROUGH_TEXT(pos, S) {
 		wchar_t c = Str::get(pos);
-		switch(c) {
-			case '@': WRITE("@{40}"); break;
-			case '"': WRITE("~"); break;
-			case '^': WRITE("@{5E}"); break;
-			case '~': WRITE("@{7E}"); break;
-			case '\\': WRITE("@{5C}"); break;
-			case '\t': WRITE(" "); break;
-			case '\n': WRITE("\"\n\""); break;
-			case NEWLINE_IN_STRING: WRITE("\"\n\""); break;
-			default: PUT(c);
+		if (c >= 0x100) WRITE("@{%04x}", c);
+		else {
+			switch(c) {
+				case '@': WRITE("@{40}"); break;
+				case '"': WRITE("~"); break;
+				case '^': WRITE("@{5E}"); break;
+				case '~': WRITE("@{7E}"); break;
+				case '\\': WRITE("@{5C}"); break;
+				case '\t': WRITE(" "); break;
+				case '\n': WRITE("\"\n\""); break;
+				case NEWLINE_IN_STRING: WRITE("\"\n\""); break;
+				default: PUT(c);
+			}
 		}
 	}
 
 @<Compile literal text in value mode@> =
 	LOOP_THROUGH_TEXT(pos, S) {
 		wchar_t c = Str::get(pos);
-		switch(c) {
-			case '@': WRITE("@{40}"); break;
-			case '"': WRITE("~"); break;
-			case '^': WRITE("@{5E}"); break;
-			case '~': WRITE("@{7E}"); break;
-			case '\\': WRITE("@{5C}"); break;
-			case '\t': WRITE(" "); break;
-			case '\n': WRITE("^"); break;
-			case NEWLINE_IN_STRING: WRITE("^"); break;
-			default: PUT(c);
+		if (c >= 0x100) WRITE("@{%04x}", c);
+		else {
+			switch(c) {
+				case '@': WRITE("@{40}"); break;
+				case '"': WRITE("~"); break;
+				case '^': WRITE("@{5E}"); break;
+				case '~': WRITE("@{7E}"); break;
+				case '\\': WRITE("@{5C}"); break;
+				case '\t': WRITE(" "); break;
+				case '\n': WRITE("^"); break;
+				case NEWLINE_IN_STRING: WRITE("^"); break;
+				default: PUT(c);
+			}
 		}
 	}
 
@@ -410,18 +423,21 @@ hexadecimal.
 	int esc_char = FALSE;
 	LOOP_THROUGH_TEXT(pos, S) {
 		wchar_t c = Str::get(pos);
-		switch(c) {
-			case '@': WRITE("@@64"); esc_char = TRUE; continue;
-			case '"': WRITE("~"); break;
-			case '^': WRITE("@@94"); esc_char = TRUE; continue;
-			case '~': WRITE("@@126"); esc_char = TRUE; continue;
-			case '\\': WRITE("@{5C}"); break;
-			case '\t': WRITE(" "); break;
-			case '\n': WRITE("^"); break;
-			case NEWLINE_IN_STRING: WRITE("^"); break;
-			default: {
-				if (esc_char) WRITE("@{%02x}", c);
-				else PUT(c);
+		if (c >= 0x100) WRITE("@{%04x}", c);
+		else {
+			switch(c) {
+				case '@': WRITE("@@64"); esc_char = TRUE; continue;
+				case '"': WRITE("~"); break;
+				case '^': WRITE("@@94"); esc_char = TRUE; continue;
+				case '~': WRITE("@@126"); esc_char = TRUE; continue;
+				case '\\': WRITE("@{5C}"); break;
+				case '\t': WRITE(" "); break;
+				case '\n': WRITE("^"); break;
+				case NEWLINE_IN_STRING: WRITE("^"); break;
+				default: {
+					if (esc_char) WRITE("@{%02x}", c);
+					else PUT(c);
+				}
 			}
 		}
 		esc_char = FALSE;

@@ -48,6 +48,11 @@ in the |inter| installation. But those two files are in fact the same, or
 should be, so the effect is the same.
 
 =
+int echo_kit_building = FALSE;
+void InterSkill::echo_kit_building(void) {
+	echo_kit_building = TRUE;
+}
+
 int InterSkill::build_kit_internally(build_skill *skill, build_step *S,
 	build_methodology *BM, linked_list *search_list) {
 	#ifdef PIPELINE_MODULE
@@ -80,6 +85,10 @@ int InterSkill::build_kit_internally(build_skill *skill, build_step *S,
 	if (SS) {
 		inter_architecture *saved_A = PipelineModule::get_architecture();
 		PipelineModule::set_architecture_to(A);
+		if (echo_kit_building)
+			WRITE_TO(STDOUT, "(Building %S for architecture %S)\n",
+				S->associated_copy->edition->work->title,
+				Architectures::to_codename(A));
 		linked_list *requirements_list = NEW_LINKED_LIST(attachment_instruction);
 		RunningPipelines::run(NULL, SS, NULL, S->associated_copy->location_if_path,
 			requirements_list, S->for_vm, FALSE);
@@ -116,8 +125,7 @@ int interskill_debugging_flag = FALSE;
 
 int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 	build_methodology *BM, linked_list *search_list) {
-	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);
-	if (project == NULL) project = ProjectFileManager::from_copy(S->associated_copy);
+	inform_project *project = Projects::from_copy(S->associated_copy);
 	if (project == NULL) internal_error("no project");
 	#ifdef PIPELINE_MODULE
 	clock_t back_end = clock();

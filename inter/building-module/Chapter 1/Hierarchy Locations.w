@@ -534,3 +534,17 @@ inter_name *HierarchyLocations::find_by_name(inter_tree *I, text_stream *name) {
 	}
 	return try;
 }
+
+inter_name *HierarchyLocations::find_by_implied_name(inter_tree *I, text_stream *name,
+	text_stream *from_namespace) {
+	if (Str::len(name) == 0) internal_error("empty extern");
+	inter_name *try = HierarchyLocations::name_to_iname(I, name);
+	if (try == NULL) {
+		TEMPORARY_TEXT(N)
+		WRITE_TO(N, "implied`%S`%S", from_namespace, name);
+		HierarchyLocations::con(I, -1, N, LocationRequirements::plug());
+		try = HierarchyLocations::name_to_iname(I, N);
+		DISCARD_TEXT(N)
+	}
+	return try;
+}

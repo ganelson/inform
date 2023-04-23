@@ -12,10 +12,11 @@ binary_predicate *R_incorporation = NULL;
 binary_predicate *R_carrying = NULL;
 binary_predicate *R_holding = NULL;
 binary_predicate *R_wearing = NULL;
-binary_predicate *room_containment_predicate = NULL;
+binary_predicate *R_room_containment = NULL;
 
 /* indirect spatial relationships */
 binary_predicate *R_visibility = NULL;
+binary_predicate *R_audibility = NULL;
 binary_predicate *R_touchability = NULL;
 binary_predicate *R_concealment = NULL;
 binary_predicate *R_enclosure = NULL;
@@ -56,7 +57,7 @@ a union of the others, and therefore includes incorporation.)
 				Calculus::Schemas::new("ContainerOf(*1)")),
 			BPTerms::new(NULL),
 			I"contains", I"is-in",
-			Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
+			Calculus::Schemas::new("MakeContainerOf(*2,*1)"), NULL,
 			PreformUtilities::wording(<relation-names>, CONTAINMENT_RELATION_NAME));
 	R_containment->loop_parent_optimisation_proviso = "ContainerOf";
 	R_containment->loop_parent_optimisation_ranger = "TestContainmentRange";
@@ -67,7 +68,7 @@ a union of the others, and therefore includes incorporation.)
 				Calculus::Schemas::new("SupporterOf(*1)")),
 			BPTerms::new(infs_thing),
 			I"supports", I"is-on",
-			Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
+			Calculus::Schemas::new("MakeSupporterOf(*2,*1)"), NULL,
 			PreformUtilities::wording(<relation-names>, SUPPORT_RELATION_NAME));
 	R_support->loop_parent_optimisation_proviso = "SupporterOf";
 	R_incorporation =
@@ -84,16 +85,18 @@ a union of the others, and therefore includes incorporation.)
 				Calculus::Schemas::new("CarrierOf(*1)")),
 			BPTerms::new(infs_thing),
 			I"carries", I"is-carried-by",
-			Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
+			Calculus::Schemas::new("MakeCarrierOf(*2,*1)"), NULL,
 			PreformUtilities::wording(<relation-names>, CARRYING_RELATION_NAME));
 	R_carrying->loop_parent_optimisation_proviso = "CarrierOf";
+	R_carrying->task_functions[NOW_ATOM_FALSE_TASK] =
+		Calculus::Schemas::new("UncarryObject(*2,*1)");
 	R_holding =
 		BinaryPredicates::make_pair(spatial_bp_family,
-			BPTerms::new_full(infs_person, NULL, EMPTY_WORDING,
+			BPTerms::new_full(NULL, K_object, EMPTY_WORDING,
 				Calculus::Schemas::new("HolderOf(*1)")),
-			BPTerms::new(infs_thing),
+			BPTerms::new_full(NULL, K_object, EMPTY_WORDING, NULL),
 			I"holds", I"is-held-by",
-			Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
+			Calculus::Schemas::new("MakeHolderOf(*2,*1)"), NULL,
 			PreformUtilities::wording(<relation-names>, HOLDING_RELATION_NAME));
 	/* can't be optimised, because parts are also held */
 	R_wearing =
@@ -105,6 +108,9 @@ a union of the others, and therefore includes incorporation.)
 			Calculus::Schemas::new("WearObject(*2,*1)"), NULL,
 			PreformUtilities::wording(<relation-names>, WEARING_RELATION_NAME));
 	R_wearing->loop_parent_optimisation_proviso = "WearerOf";
+	R_wearing->task_functions[NOW_ATOM_FALSE_TASK] =
+		Calculus::Schemas::new("UnwearObject(*2,*1)");
+
 	a_has_b_predicate =
 		BinaryPredicates::make_pair(spatial_bp_family,
 			BPTerms::new_full(NULL, NULL, EMPTY_WORDING,
@@ -115,15 +121,15 @@ a union of the others, and therefore includes incorporation.)
 			PreformUtilities::wording(<relation-names>, POSSESSION_RELATION_NAME));
 	a_has_b_predicate->loop_parent_optimisation_proviso = "OwnerOf";
 	BinaryPredicates::set_index_details(a_has_b_predicate, "person", "thing");
-	room_containment_predicate =
+	R_room_containment =
 		BinaryPredicates::make_pair(spatial_bp_family,
 			BPTerms::new_full(infs_room, NULL, EMPTY_WORDING,
-				Calculus::Schemas::new("LocationOf(*1)")),
-			BPTerms::new(infs_thing),
+				Calculus::Schemas::new("RoomContainerOf(*1)")),
+			BPTerms::new_full(NULL, K_object, EMPTY_WORDING, NULL),
 			I"is-room-of", I"is-in-room",
-			Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
+			Calculus::Schemas::new("MakeRoomContainerOf(*2,*1)"), NULL,
 			PreformUtilities::wording(<relation-names>, ROOM_CONTAINMENT_RELATION_NAME));
-	room_containment_predicate->loop_parent_optimisation_proviso = "LocationOf";
+	R_room_containment->loop_parent_optimisation_proviso = "LocationOf";
 
 @ Visibility, touchability, concealment and enclosure: all relations which
 can be tested at run-time, but which can't be asserted or made true or false.
@@ -136,6 +142,13 @@ can be tested at run-time, but which can't be asserted or made true or false.
 			I"can-see", I"can-be-seen-by",
 			NULL, Calculus::Schemas::new("TestVisibility(*1,*2)"),
 			PreformUtilities::wording(<relation-names>, VISIBILITY_RELATION_NAME));
+	R_audibility =
+		BinaryPredicates::make_pair(spatial_bp_family,
+			BPTerms::new(infs_thing),
+			BPTerms::new(infs_thing),
+			I"can-hear", I"can-be-heard-by",
+			NULL, Calculus::Schemas::new("TestAudibility(*1,*2)"),
+			PreformUtilities::wording(<relation-names>, AUDIBILITY_RELATION_NAME));
 	R_touchability =
 		BinaryPredicates::make_pair(spatial_bp_family,
 			BPTerms::new(infs_thing),
@@ -184,7 +197,7 @@ int SpatialRelations::assert(bp_family *self, binary_predicate *bp,
 				"like saying 'the bottle is in the bottle'.");
 			return TRUE;
 		}
-		@<Offer our dependent plugins a chance to assert the relation instead@>;
+		@<Offer our dependent features a chance to assert the relation instead@>;
 
 		if (BinaryPredicates::can_be_made_true_at_runtime(bp) == FALSE)
 			@<Issue a problem message for an unassertable indirect spatial relation@>;
@@ -194,6 +207,8 @@ int SpatialRelations::assert(bp_family *self, binary_predicate *bp,
 		@<Draw inferences using only the standard Spatial conventions@>;
 		if (bp == R_wearing)
 			@<Assert the worn and wearable properties@>;
+		if (bp == R_holding)
+			@<Assert the kind of the holder@>;
 		return TRUE;
 	}
 	if (I1 == NULL) {
@@ -218,7 +233,7 @@ int SpatialRelations::assert(bp_family *self, binary_predicate *bp,
 putting a backdrop inside a region clearly has to be implemented in some
 way which isn't symmetrical between the two, and this way round is cleanest.
 
-@<Offer our dependent plugins a chance to assert the relation instead@> =
+@<Offer our dependent features a chance to assert the relation instead@> =
 	if (Backdrops::assert_relations(bp, I0, I1)) return TRUE;
 	if (Regions::assert_relations(bp, I0, I1)) return TRUE;
 
@@ -255,7 +270,7 @@ way which isn't symmetrical between the two, and this way round is cleanest.
 
 @ If something is being worn, it needs to have the I7 either/or property
 "wearable" and also the I6-only attribute |worn|. (Arguably Clothing ought
-to be a plugin of its own, but the compiler needs to do hardly anything
+to be a feature of its own, but the compiler needs to do hardly anything
 special to make it work, so this doesn't seem worth the trouble.)
 
 @<Assert the worn and wearable properties@> =
@@ -266,6 +281,18 @@ special to make it work, so this doesn't seem worth the trouble.)
 		P_worn = EitherOrProperties::new_nameless(I"worn");
 	}
 	PropertyInferences::draw(item, P_worn, NULL);
+
+@ This unusual deduction is part of a mitigation for Jira issue I7-2220,
+which analysed inconsistencies in the implementation of the holding relation.
+Prior to this change, the terms of "X holds Y" were given the kinds thing and
+person respectively: i.e., Y was assumed to be a person. But this was in
+practice not always true. However, without that assumption, sentences like
+"Mr Smith holds the coin" do not automatically deduce that Mr Smith is a person.
+So the following hand-coded rule makes that deduction.
+
+@<Assert the kind of the holder@> =
+	Propositions::Abstract::assert_kind_of_instance(I0, K_person);
+	Propositions::Abstract::assert_kind_of_instance(I1, K_thing);
 
 @h Cursory description.
 

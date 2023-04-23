@@ -242,12 +242,15 @@ strid_t glk_stream_open_file(fileref_t *fref, glui32 fmode,
         
     fl = fopen(fref->filename, modestr);
     if (!fl) {
-        gli_strict_warning("stream_open_file: unable to open file.");
+        /* According to recent spec discussion, we only display an error on missing files for write/append mode. In read mode, we return silently. */
+        if (fmode != filemode_Read) {
+            gli_strict_warning("stream_open_file: unable to open file.");
+        }
         return NULL;
     }
     
     if (fmode == filemode_WriteAppend) {
-        fseek(fl, 0, 2); /* ...to the end. */
+        fseek(fl, 0, SEEK_END); /* ...to the end. */
     }
 
     str = gli_new_stream(strtype_File, 
@@ -313,6 +316,8 @@ strid_t glk_stream_open_file_uni(fileref_t *fref, glui32 fmode,
     glui32 rock)
 {
     strid_t str = glk_stream_open_file(fref, fmode, rock);
+    if (!str)
+        return NULL;
     /* Unlovely, but it works in this library */
     str->unicode = TRUE;
     return str;
@@ -328,13 +333,33 @@ strid_t glk_stream_open_resource(glui32 filenum, glui32 rock)
     int isbinary;
     giblorb_err_t err;
     giblorb_result_t res;
-    giblorb_map_t *map = giblorb_get_resource_map();
-    if (!map)
-        return 0; /* Not running from a blorb file */
 
-    err = giblorb_load_resource(map, giblorb_method_Memory, &res, giblorb_ID_Data, filenum);
-    if (err)
-        return 0; /* Not found, or some other error */
+    if (gli_get_dataresource_info(filenum, &res.data.ptr, &res.length, &isbinary)) {
+        /* Success! */
+    }
+    else {
+        /* No command-line pathname; check blorb. */
+        
+        giblorb_map_t *map = giblorb_get_resource_map();
+        if (!map)
+            return 0; /* Not running from a blorb file */
+        
+        err = giblorb_load_resource(map, giblorb_method_Memory, &res, giblorb_ID_Data, filenum);
+        if (err)
+            return 0; /* Not found, or some other error */
+
+        /* Note that binary chunks are normally type BINA, but FORM
+           chunks also count as binary. (This allows us to embed AIFF
+           files as readable resources, for example.) */
+        
+        if (res.chunktype == giblorb_ID_TEXT)
+            isbinary = FALSE;
+        else if (res.chunktype == giblorb_ID_BINA
+            || res.chunktype == giblorb_make_id('F', 'O', 'R', 'M'))
+            isbinary = TRUE;
+        else
+            return 0; /* Unknown chunk type */
+    }
 
     /* We'll use the in-memory copy of the chunk data as the basis for
        our new stream. It's important to not call chunk_unload() until
@@ -345,18 +370,7 @@ strid_t glk_stream_open_resource(glui32 filenum, glui32 rock)
        would be to use the file on disk, but this requires some hacking
        into the file stream code (we'd need to open a new FILE*) and
        I don't feel like doing that.
-
-       Note that binary chunks are normally type BINA, but FORM
-       chunks also count as binary. (This allows us to embed AIFF
-       files as readable resources, for example.) */
-
-    if (res.chunktype == giblorb_ID_TEXT)
-        isbinary = FALSE;
-    else if (res.chunktype == giblorb_ID_BINA
-        || res.chunktype == giblorb_make_id('F', 'O', 'R', 'M'))
-        isbinary = TRUE;
-    else
-        return 0; /* Unknown chunk type */
+    */
 
     str = gli_new_stream(strtype_Resource,
         TRUE, FALSE, rock);
@@ -384,22 +398,30 @@ strid_t glk_stream_open_resource_uni(glui32 filenum, glui32 rock)
     int isbinary;
     giblorb_err_t err;
     giblorb_result_t res;
-    giblorb_map_t *map = giblorb_get_resource_map();
-    if (!map)
-        return 0; /* Not running from a blorb file */
 
-    err = giblorb_load_resource(map, giblorb_method_Memory, &res, giblorb_ID_Data, filenum);
-    if (err)
-        return 0; /* Not found, or some other error */
-
-    if (res.chunktype == giblorb_ID_TEXT)
-        isbinary = FALSE;
-    else if (res.chunktype == giblorb_ID_BINA
-        || res.chunktype == giblorb_make_id('F', 'O', 'R', 'M'))
-        isbinary = TRUE;
-    else
-        return 0; /* Unknown chunk type */
-
+    if (gli_get_dataresource_info(filenum, &res.data.ptr, &res.length, &isbinary)) {
+        /* Success! */
+    }
+    else {
+        /* No explicit path; check blorb. */
+        
+        giblorb_map_t *map = giblorb_get_resource_map();
+        if (!map)
+            return 0; /* Not running from a blorb file */
+        
+        err = giblorb_load_resource(map, giblorb_method_Memory, &res, giblorb_ID_Data, filenum);
+        if (err)
+            return 0; /* Not found, or some other error */
+        
+        if (res.chunktype == giblorb_ID_TEXT)
+            isbinary = FALSE;
+        else if (res.chunktype == giblorb_ID_BINA
+            || res.chunktype == giblorb_make_id('F', 'O', 'R', 'M'))
+            isbinary = TRUE;
+        else
+            return 0; /* Unknown chunk type */
+    }
+    
     str = gli_new_stream(strtype_Resource, 
         TRUE, FALSE, rock);
     if (!str) {

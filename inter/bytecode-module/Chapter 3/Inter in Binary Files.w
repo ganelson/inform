@@ -32,6 +32,32 @@ int BinaryInter::test_file(filename *F) {
 	return verdict;
 }
 
+@ And this is a version which returns either the semver of Inter used in the
+file, or else a null semver if the file isn't binary Inter:
+
+=
+semantic_version_number BinaryInter::test_file_version(filename *F) {
+	FILE *fh = BinaryFiles::open_for_reading(F);
+	unsigned int X = 0;
+	if ((BinaryFiles::read_int32(fh, &X) == FALSE) ||
+		((inter_ti) X != INTER_SHIBBOLETH) ||
+		(BinaryFiles::read_int32(fh, &X) == FALSE) ||
+		((inter_ti) X != 0)) {
+		BinaryFiles::close(fh);
+		return VersionNumbers::null();
+	}
+	unsigned int v1 = 0, v2 = 0, v3 = 0;
+	if ((BinaryFiles::read_int32(fh, &v1) == FALSE) ||
+		(BinaryFiles::read_int32(fh, &v2) == FALSE) ||
+		(BinaryFiles::read_int32(fh, &v3) == FALSE)) {
+		BinaryFiles::close(fh);
+		return VersionNumbers::null();
+	}
+	semantic_version_number V = InterVersion::from_three_words(v1, v2, v3);
+	BinaryFiles::close(fh);
+	return V;
+}
+
 @ Once past the header, the data is a flat series of 32-bit values, but many
 of those are in practice low values: small integers, ASCII character codes and
 the like. Given the Inform GUI apps need to store quite a lot of precompiled

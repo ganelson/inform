@@ -344,10 +344,10 @@
             spatial&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            person&nbsp;&nbsp;&nbsp;&nbsp;
+            --&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            thing
+            --
         </td>
     </tr>
     <tr>
@@ -367,6 +367,20 @@
     <tr>
         <td align="left" valign="top">
             visibility&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            spatial&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            thing&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            thing
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            audibility&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             spatial&nbsp;&nbsp;&nbsp;&nbsp;
@@ -431,7 +445,7 @@
             room&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            thing
+            --
         </td>
     </tr>
     <tr>
@@ -460,6 +474,20 @@
         </td>
         <td align="left" valign="top">
             room/region
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            dialogue-containment&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            spatial&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            --&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            dialogue line
         </td>
     </tr>
     <tr>

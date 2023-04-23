@@ -146,14 +146,19 @@ typedef struct heading {
 	int for_release; /* include this material in a release version? */
 	int omit_material; /* if set, simply ignore all of this */
 	int use_with_or_without; /* if TRUE, use with the extension; if FALSE, without */
+	int holds_dialogue; /* if TRUE, contains dialogue in a different format */
 	struct inbuild_work *for_use_with; /* e.g. "for use with ... by ..." */
 	struct wording in_place_of_text; /* e.g. "in place of ... in ... by ..." */
 	struct wording heading_text; /* once provisos have been stripped away */
+	struct wording external_file; /* e.g. "see ..." */
+	struct source_file *external_file_read;
+	int external_file_loaded;
 	struct noun *list_of_contents; /* tagged names defined under this */
 	struct noun *last_in_list_of_contents;
 	struct heading *parent_heading;
 	struct heading *child_heading;
 	struct heading *next_heading;
+	int omit_from_tree;
 	#ifdef CORE_MODULE
 	struct heading_compilation_data compilation_data;
 	#endif
@@ -168,13 +173,18 @@ heading *Headings::new(parse_node_tree *T, parse_node *pn, int level, source_loc
 	heading *h = CREATE(heading);
 	h->owning_tree = T->headings;
 	h->parent_heading = NULL; h->child_heading = NULL; h->next_heading = NULL;
+	h->omit_from_tree = FALSE;
 	h->list_of_contents = NULL; h->last_in_list_of_contents = NULL;
 	h->for_release = NOT_APPLICABLE; h->omit_material = FALSE;
 	h->index_definitions_made_under_this = TRUE;
 	h->use_with_or_without = NOT_APPLICABLE;
 	h->in_place_of_text = EMPTY_WORDING;
+	h->external_file = EMPTY_WORDING;
+	h->external_file_read = NULL;
+	h->external_file_loaded = FALSE;
 	h->for_use_with = NULL;
 	h->sentence_declaring = pn;
+	h->holds_dialogue = FALSE;
 	h->start_location = sl;
 	h->level = level;
 	h->heading_text = EMPTY_WORDING;
@@ -198,7 +208,7 @@ included if the target virtual machine on this run of Inform is the Z-machine.)
 
 =
 int Headings::place(parse_node_tree *T, parse_node *pn, inform_project *proj) {
-	heading *h = Headings::attach(T, pn);
+	heading *h = Headings::attach(T, pn, (proj)?(proj->as_copy):NULL);
 	int are_we_releasing = Projects::currently_releasing(proj);
 	if ((h->for_release == TRUE) && (are_we_releasing == FALSE)) return FALSE;
 	if ((h->for_release == FALSE) && (are_we_releasing == TRUE)) return FALSE;
@@ -211,8 +221,8 @@ which do not originate in the sentence-breaker, and which therefore need a
 different way in. (These are never skipped.)
 
 =
-void Headings::place_implied_level_0(parse_node_tree *T, parse_node *pn) {
-	Headings::attach(T, pn);
+void Headings::place_implied_level_0(parse_node_tree *T, parse_node *pn, inbuild_copy *for_copy) {
+	Headings::attach(T, pn, for_copy);
 	Annotations::write_int(pn, heading_level_ANNOT, 0);
 	Annotations::write_int(pn, implied_heading_ANNOT, TRUE);
 }
@@ -231,7 +241,7 @@ with the result of parsing any caveats in its wording.
 =
 inbuild_work *work_identified = NULL; /* temporary variable during parsing below */
 
-heading *Headings::attach(parse_node_tree *T, parse_node *pn) {
+heading *Headings::attach(parse_node_tree *T, parse_node *pn, inbuild_copy *for_copy) {
 	if ((pn == NULL) || (Wordings::empty(Node::get_text(pn))))
 		internal_error("heading at textless node");
 	if (Node::get_type(pn) != HEADING_NT) 
@@ -248,7 +258,7 @@ heading *Headings::attach(parse_node_tree *T, parse_node *pn) {
 		Node::get_text(pn), h->level, h->indentation);
 
 	if (T->headings->assembled_at_least_once)
-		Headings::assemble_tree(T); /* to include new heading: unlikely but possible */
+		Headings::assemble_tree(T, for_copy); /* to include new heading: unlikely but possible */
 	return h;
 }
 
@@ -262,6 +272,8 @@ heading *Headings::attach(parse_node_tree *T, parse_node *pn) {
 @d USE_WITH_HQ 5
 @d USE_WITHOUT_HQ 6
 @d IN_PLACE_OF_HQ 7
+@d DIALOGUE_HQ 8
+@d EXTERNAL_HQ 9
 
 @<Parse heading text for release or other stipulations@> =
 	current_sentence = pn;
@@ -275,9 +287,28 @@ heading *Headings::attach(parse_node_tree *T, parse_node *pn) {
 			case UNINDEXED_HQ: h->index_definitions_made_under_this = FALSE; break;
 			case USE_WITH_HQ: h->use_with_or_without = TRUE; break;
 			case USE_WITHOUT_HQ: h->use_with_or_without = FALSE; break;
+			case DIALOGUE_HQ:
+				if (h->level != 5) {
+					copy_error *CE = CopyErrors::new(SYNTAX_CE, DialogueOnSectionsOnly_SYNERROR);
+					CopyErrors::supply_node(CE, current_sentence);
+					Copies::attach_error(sfsm->ref, CE);
+				}
+				h->holds_dialogue = TRUE;
+				break;
 			case IN_PLACE_OF_HQ:
 				h->use_with_or_without = TRUE;
 				h->in_place_of_text = GET_RW(<extension-qualifier>, 1);
+				break;
+			case EXTERNAL_HQ:
+				h->external_file = GET_RW(<bracketed-heading-qualifier>, 1);
+				Word::dequote(Wordings::first_wn(h->external_file));
+				inform_project *proj = ProjectBundleManager::from_copy(for_copy);
+				if (proj) {
+					TEMPORARY_TEXT(leaf)
+					WRITE_TO(leaf, "%W", h->external_file);
+					Projects::add_heading_source(proj, leaf);
+					DISCARD_TEXT(leaf)
+				}
 				break;
 		}
 		W = GET_RW(<heading-qualifier>, 1);
@@ -296,6 +327,11 @@ would match twice, first registering the VM requirement, then the unindexedness.
 It's an unfortunate historical quirk that the unbracketed qualifiers are
 allowed; they should probably be withdrawn.
 
+Properly speaking the annotation "(dialogue)" should be recognised only if
+the dialogue feature is active, but there are timing reasons not to do this:
+headings are parsed before the set of active compiler features for a project
+is determined.
+
 =
 <heading-qualifier> ::=
 	... ( <bracketed-heading-qualifier> ) |  ==> { pass 1 }
@@ -307,6 +343,9 @@ allowed; they should probably be withdrawn.
 	not for release |                        ==> { NOT_FOR_RELEASE_HQ, - }
 	for release only |                       ==> { FOR_RELEASE_ONLY_HQ, - }
 	unindexed |                              ==> { UNINDEXED_HQ, - }
+	dialogue |                               ==> { DIALOGUE_HQ, - }
+	dialog |                                 ==> { DIALOGUE_HQ, - }
+	see { <quoted-text> } |                  ==> { EXTERNAL_HQ, - }
 	<platform-qualifier> |                   ==> { pass 1 }
 	<extension-qualifier>                    ==> { pass 1 }
 
@@ -374,15 +413,24 @@ Until //Headings::assemble_tree// runs, the //heading// nodes listed as belongin
 to the heading tree are not in fact formed up into a tree structure.
 
 =
-void Headings::assemble_tree(parse_node_tree *T) {
+void Headings::assemble_tree(parse_node_tree *T, inbuild_copy *for_copy) {
 	heading *h;
 	@<Disassemble the whole heading tree to a pile of twigs@>;
 	LOOP_OVER_LINKED_LIST(h, heading, T->headings->subordinates) {
-		@<If h is outside the tree, make it a child of the pseudo-heading@>;
-		@<Run through subsequent equal or subordinate headings to move them downward@>;
+		if (h->omit_from_tree == FALSE) {
+			@<If h is outside the tree, make it a child of the pseudo-heading@>;
+			@<If h is held in an external file, move those headings to it@>;
+			@<Run through subsequent equal or subordinate headings to move them downward@>;
+		}
 	}
 	T->headings->assembled_at_least_once = TRUE;
 	Headings::verify_heading_tree(T);
+	#ifndef CORE_MODULE
+	Copies::list_attached_errors(STDERR, for_copy);
+	#endif
+	#ifdef CORE_MODULE
+	SourceProblems::issue_problems_arising(for_copy);
+	#endif
 }
 
 @ It's possible to call //Headings::assemble_tree// more than once, to allow
@@ -399,6 +447,7 @@ of subordinates. Everything else is.
 	heading *h;
 	LOOP_OVER_LINKED_LIST(h, heading, T->headings->subordinates) {
 		h->parent_heading = NULL; h->child_heading = NULL; h->next_heading = NULL;
+		h->omit_from_tree = FALSE;
 	}
 
 @ The idea of the heading loop is that when we place a heading, we also place
@@ -408,8 +457,43 @@ subordinate to no earlier heading: thus, it must be attached to the pseudo-headi
 at the top of the tree.
 
 @<If h is outside the tree, make it a child of the pseudo-heading@> =
-	if (h->parent_heading == NULL)
+	if ((h->parent_heading == NULL) && (h->omit_from_tree == FALSE))
 		Headings::move_below(h, &(T->headings->heading_root));
+
+@ A complication is that the source text is read out of conceptual sequence
+when headings referring to external files are run into. Because of that, if
+we have a heading:
+= (text as Inform 7)
+	Chapter 7 - Into the Woods (see "woods.i7")
+=
+and if we then have further headings inside the file |woods.i7|, those
+further headings |h2| won't be adjacent to the original heading |h| in
+the list. So we fix this up here.
+
+There is a nameless level zero heading marking the change of source file:
+we remove that. We also have to throw problems if we find, say, a Book
+heading inside a file which is supposed to contain a Chapter.
+
+@e HeadingTooGreat_SYNERROR
+
+@<If h is held in an external file, move those headings to it@> =
+	if (h->external_file_read) {
+		heading *h2;
+		LOOP_OVER_LINKED_LIST(h2, heading, T->headings->subordinates)
+			if (h2->start_location.file_of_origin == h->external_file_read) {
+				if (h2->level == 0) {
+					h2->omit_from_tree = TRUE;
+				} else if (h2->level <= h->level) {
+					copy_error *CE = CopyErrors::new(SYNTAX_CE, HeadingTooGreat_SYNERROR);
+					CopyErrors::supply_node(CE, h2->sentence_declaring);
+					Copies::attach_error(for_copy, CE);
+					h2->omit_from_tree = TRUE;
+				} else {
+					Headings::move_below(h2, h);
+					h2->indentation++;
+				}
+			}
+	}
 
 @ Note that the following could be summed up as "move subsequent headings as
 deep in the tree as we can see they need to be from h's perspective alone".

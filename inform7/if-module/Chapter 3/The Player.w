@@ -1,6 +1,6 @@
 [Player::] The Player.
 
-A plugin to give a special role to a person who is the protagonist.
+A feature to give a special role to a person who is the protagonist.
 
 @h Introduction.
 The player is, in some ways, just another instance of the "person" kind, so
@@ -16,14 +16,14 @@ has highly unusual semantics, even though an Inform user is barely aware of that
 
 =
 void Player::start(void) {
-	PluginManager::plug(PRODUCTION_LINE_PLUG, Player::production_line);
-	PluginManager::plug(NEW_VARIABLE_NOTIFY_PLUG, Player::new_variable_notify);
-	PluginManager::plug(VARIABLE_VALUE_NOTIFY_PLUG, Player::variable_set_warning);
-	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, Player::new_instance_notify);
-	PluginManager::plug(IRREGULAR_GENITIVE_IN_ASSEMBLY_PLUG, Player::irregular_genitive);
-	PluginManager::plug(COMPLETE_MODEL_PLUG, Player::complete_model);
-	PluginManager::plug(REFINE_IMPLICIT_NOUN_PLUG, Player::refine_implicit_noun);
-	PluginManager::plug(DETECT_BODYSNATCHING_PLUG, Player::detect_bodysnatching);
+	PluginCalls::plug(PRODUCTION_LINE_PLUG, Player::production_line);
+	PluginCalls::plug(NEW_VARIABLE_NOTIFY_PLUG, Player::new_variable_notify);
+	PluginCalls::plug(VARIABLE_VALUE_NOTIFY_PLUG, Player::variable_set_warning);
+	PluginCalls::plug(NEW_INSTANCE_NOTIFY_PLUG, Player::new_instance_notify);
+	PluginCalls::plug(IRREGULAR_GENITIVE_IN_ASSEMBLY_PLUG, Player::irregular_genitive);
+	PluginCalls::plug(COMPLETE_MODEL_PLUG, Player::complete_model);
+	PluginCalls::plug(REFINE_IMPLICIT_NOUN_PLUG, Player::refine_implicit_noun);
+	PluginCalls::plug(DETECT_BODYSNATCHING_PLUG, Player::detect_bodysnatching);
 }
 
 int Player::production_line(int stage, int debugging,

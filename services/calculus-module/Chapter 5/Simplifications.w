@@ -699,19 +699,30 @@ pcalc_prop *Simplifications::region_containment(pcalc_prop *prop, int *changed) 
 			int j;
 			for (j=0; j<2; j++) {
 				int regionality = FALSE, backdropping = FALSE;
+				int beaten = FALSE, lined = FALSE;
 				if (pl->terms[j].constant) {
 					kind *KR = Specifications::to_kind(pl->terms[j].constant);
 					if (Kinds::Behaviour::is_object_of_kind(KR, K_region)) {
 						regionality = TRUE;
 					}
+					if ((K_dialogue_beat) && (Kinds::eq(KR, K_dialogue_beat)))
+						beaten = TRUE;
 				}
 				if (pl->terms[1-j].constant) {
 					kind *KB = Specifications::to_kind(pl->terms[1-j].constant);
 					if (Kinds::Behaviour::is_object_of_kind(KB, K_backdrop))
 						backdropping = TRUE;
+					if ((K_dialogue_beat) && (Kinds::eq(KB, K_dialogue_line)))
+						lined = TRUE;
+					if ((K_dialogue_choice) && (Kinds::eq(KB, K_dialogue_choice)))
+						lined = TRUE;
 				}
 				if ((regionality) && (!backdropping)) {
 					pl->predicate = STORE_POINTER_binary_predicate(R_regional_containment);
+					PROPOSITION_EDITED(pl, prop);
+				}
+				if ((beaten) || (lined)) {
+					pl->predicate = STORE_POINTER_binary_predicate(R_dialogue_containment);
 					PROPOSITION_EDITED(pl, prop);
 				}
 			}
@@ -1176,7 +1187,7 @@ pcalc_prop *Simplifications::everywhere_and_nowhere(pcalc_prop *prop, int *chang
 			(bp_atom->arity == 2)) {
 			binary_predicate *bp = RETRIEVE_POINTER_binary_predicate(bp_atom->predicate);
 			if (((Atoms::is_nonexistence_quantifier(q_atom) == FALSE) && (bp == R_containment)) ||
-				(bp == room_containment_predicate)) {
+				(bp == R_room_containment)) {
 				int j, v = k_atom->terms[0].variable;
 				for (j=0; j<2; j++) {
 					if ((bp_atom->terms[1-j].variable == v) && (v >= 0)) {

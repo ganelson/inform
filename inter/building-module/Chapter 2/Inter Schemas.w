@@ -186,6 +186,7 @@ compilation process, and never survive into the final schema:
 @e CLOSE_BRACE_ISTT			/* close brace bracket */
 @e COMMA_ISTT				/* comma */
 @e COLON_ISTT				/* colon */
+@e DCOLON_ISTT				/* double-colon */
 
 @ Whereas these token types do make it into the compiled schema:
 
@@ -546,6 +547,7 @@ void InterSchemas::log_ist(inter_schema_token *t) {
 		case CLOSE_BRACE_ISTT:	LOG("CLOSE_BRACE "); break;
 		case COMMA_ISTT:		LOG("COMMA       "); break;
 		case COLON_ISTT:		LOG("COLON       "); break;
+		case DCOLON_ISTT:		LOG("DCOLON      "); break;
 		case I7_ISTT:			LOG("I7          "); break;
 		case INLINE_ISTT:		LOG("INLINE      "); break;
 		case ASM_ARROW_ISTT:	LOG("ASM_ARROW   "); break;
@@ -599,6 +601,7 @@ text_stream *InterSchemas::lint_isn(inter_schema_node *isn, int depth) {
 					case DIVIDER_ISTT:		return I"contains divider node";
 					case RESERVED_ISTT:		return I"contains reserved word node";
 					case COLON_ISTT:		return I"contains colon node";
+					case DCOLON_ISTT:		return I"contains double-colon node";
 					case OPERATOR_ISTT:		return I"contains operator node";
 				}
 				if ((t->ist_type == INLINE_ISTT) && (t->inline_command == open_brace_ISINC))
@@ -655,11 +658,16 @@ void InterSchemas::throw_error(inter_schema_node *at, text_stream *message) {
 =
 void InterSchemas::internal_error_on_schema_errors(inter_schema *sch) {
 	if (LinkedLists::len(sch->parsing_errors) > 0) {
+		#ifdef CORE_MODULE
+		SourceProblems::inter_schema_errors(sch);
+		#endif
+		#ifndef CORE_MODULE
 		WRITE_TO(STDERR, "Parsing error(s) in the internal schema '%S':\n",
 			sch->converted_from);
 		schema_parsing_error *err;
 		LOOP_OVER_LINKED_LIST(err, schema_parsing_error, sch->parsing_errors)
 			WRITE_TO(STDERR, "- %S\n", err->message);
 		internal_error("malformed schema");
+		#endif
 	}
 }

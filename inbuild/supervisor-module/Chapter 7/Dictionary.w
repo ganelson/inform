@@ -236,12 +236,12 @@ void ExtensionDictionary::load_helper(text_stream *line_entry,
 			Requirements::any_version_of(Works::new(extension_genre, title, author));
 		inbuild_search_result *R =
 			Nests::search_for_best(req, Supervisor::shared_nest_list());
-		if (R) ExtensionDictionary::new_ede(ExtensionManager::from_copy(R->copy),
+		if (R) ExtensionDictionary::new_ede(Extensions::from_copy(R->copy),
 			category, author, title, headword);
 	} else {
 		filename *F = Filenames::from_text(at);
-		inbuild_copy *C = ExtensionManager::claim_file_as_copy(F);
-		if (C) ExtensionDictionary::new_ede(ExtensionManager::from_copy(C),
+		inbuild_copy *C = ExtensionManager::claim_file_as_copy(F, NULL);
+		if (C) ExtensionDictionary::new_ede(Extensions::from_copy(C),
 			category, author, title, headword);
 	}
 }
@@ -437,13 +437,13 @@ to the word "frog", we would be in some trouble here. Let's take the risk.
 		next_ede = next_ede->next_in_sorted_dictionary;
 	}
 	HTML_OPEN_WITH("p", "style='margin:0px; padding:0px;'");
-	if (tint) HTML::begin_colour(OUT, I"FF8080");
+	if (tint) HTML::begin_span(OUT, I"extensionindexerror");
 	WRITE("%S", ede->entry_text);
-	if (tint) HTML::end_colour(OUT);
+	if (tint) HTML::end_span(OUT);
 	WRITE(" - <i>%S</i>&nbsp;&nbsp;&nbsp;", ede->type);
-	HTML_OPEN_WITH("span", "class=\"smaller\"");
+	HTML::begin_span(OUT, I"smaller");
 	Works::write_link_to_HTML_file(OUT, ede->ede_work);
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	HTML_CLOSE("p");
 
 @ So, then, "clashes". These occur if, say, two extensions define "chopper" as

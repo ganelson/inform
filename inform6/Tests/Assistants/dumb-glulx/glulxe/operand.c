@@ -15,7 +15,7 @@
    It stores the operandlists for the first 128 opcodes, which are
    the ones used most frequently.
 */
-operandlist_t *fast_operandlist[0x80];
+const operandlist_t *fast_operandlist[0x80];
 
 /* The actual immutable structures which lookup_operandlist()
    returns. */
@@ -48,12 +48,22 @@ static operandlist_t list_2LS = { 2, 2, array_LS };
 static operandlist_t list_1LS = { 2, 1, array_LS };
 static int array_LLLL[4] = { modeform_Load, modeform_Load, modeform_Load, modeform_Load };
 static operandlist_t list_LLLL = { 4, 4, array_LLLL };
+static int array_LLLLL[5] = { modeform_Load, modeform_Load, modeform_Load, modeform_Load, modeform_Load };
+static operandlist_t list_LLLLL = { 5, 4, array_LLLLL };
+static int array_LLLLLL[6] = { modeform_Load, modeform_Load, modeform_Load, modeform_Load, modeform_Load, modeform_Load };
+static operandlist_t list_LLLLLL = { 6, 4, array_LLLLLL };
+static int array_LLLLLLL[7] = { modeform_Load, modeform_Load, modeform_Load, modeform_Load, modeform_Load, modeform_Load, modeform_Load };
+static operandlist_t list_LLLLLLL = { 7, 4, array_LLLLLLL };
 static int array_SL[2] = { modeform_Store, modeform_Load };
 static operandlist_t list_SL = { 2, 4, array_SL };
 static int array_SS[2] = { modeform_Store, modeform_Store };
 static operandlist_t list_SS = { 2, 4, array_SS };
+static int array_LSS[3] = { modeform_Load, modeform_Store, modeform_Store };
+static operandlist_t list_LSS = { 3, 4, array_LSS };
 static int array_LLSS[4] = { modeform_Load, modeform_Load, modeform_Store, modeform_Store };
 static operandlist_t list_LLSS = { 4, 4, array_LLSS };
+static int array_LLLLSS[6] = { modeform_Load, modeform_Load, modeform_Load, modeform_Load, modeform_Store, modeform_Store };
+static operandlist_t list_LLLLSS = { 6, 4, array_LLLLSS };
 
 /* init_operands():
    Set up the fast-lookup array of operandlists. This is called just
@@ -70,7 +80,7 @@ void init_operands()
    Return the operandlist for a given opcode. For opcodes in the range
    00..7F, it's faster to use the array fast_operandlist[]. 
 */
-operandlist_t *lookup_operandlist(glui32 opcode)
+const operandlist_t *lookup_operandlist(glui32 opcode)
 {
   switch (opcode) {
   case op_nop: 
@@ -182,7 +192,10 @@ operandlist_t *lookup_operandlist(glui32 opcode)
     return &list_LS;
   case op_saveundo:
   case op_restoreundo:
+  case op_hasundo:
     return &list_S;
+  case op_discardundo:
+    return &list_none;
   case op_protect:
     return &list_LL;
 
@@ -273,6 +286,52 @@ operandlist_t *lookup_operandlist(glui32 opcode)
 
 #endif /* FLOAT_SUPPORT */
 
+#ifdef DOUBLE_SUPPORT
+
+  case op_numtod:
+  case op_ftod:
+    return &list_LSS;
+  case op_dtonumz:
+  case op_dtonumn:
+  case op_dtof:
+    return &list_LLS;
+  case op_dceil:
+  case op_dfloor:
+  case op_dsqrt:
+  case op_dexp:
+  case op_dlog:
+    return &list_LLSS;
+  case op_dadd:
+  case op_dsub:
+  case op_dmul:
+  case op_ddiv:
+  case op_dpow:
+  case op_datan2:
+    return &list_LLLLSS;
+  case op_dmodr:
+  case op_dmodq:
+    return &list_LLLLSS;
+  case op_dsin:
+  case op_dcos:
+  case op_dtan:
+  case op_dasin:
+  case op_dacos:
+  case op_datan:
+    return &list_LLSS;
+  case op_jdeq:
+  case op_jdne:
+    return &list_LLLLLLL;
+  case op_jdlt:
+  case op_jdle:
+  case op_jdgt:
+  case op_jdge:
+    return &list_LLLLL;
+  case op_jdisnan:
+  case op_jdisinf:
+    return &list_LLL;
+
+#endif /* DOUBLE_SUPPORT */
+
 #ifdef GLULX_EXTEND_OPERANDS
   GLULX_EXTEND_OPERANDS
 #endif /* GLULX_EXTEND_OPERANDS */
@@ -291,14 +350,14 @@ operandlist_t *lookup_operandlist(glui32 opcode)
    This also assumes that args points at an allocated array of 
    MAX_OPERANDS oparg_t structures.
 */
-void parse_operands(oparg_t *args, operandlist_t *oplist)
+void parse_operands(oparg_t *args, const operandlist_t *oplist)
 {
   int ix;
   oparg_t *curarg;
   int numops = oplist->num_ops;
   int argsize = oplist->arg_size;
   glui32 modeaddr = pc;
-  int modeval;
+  int modeval = 0;
 
   pc += (numops+1) / 2;
 

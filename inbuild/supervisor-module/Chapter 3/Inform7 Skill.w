@@ -19,15 +19,10 @@ void Inform7Skill::create(void) {
 
 int Inform7Skill::inform7_via_shell(build_skill *skill, build_step *S,
 	text_stream *command, build_methodology *BM, linked_list *search_list) {
-	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);
-	if (project == NULL) project = ProjectFileManager::from_copy(S->associated_copy);
+	inform_project *project = Projects::from_copy(S->associated_copy);
 	if (project == NULL) internal_error("no project");
 
 	Shell::quote_file(command, BM->to_inform7);
-
-	kit_dependency *kd;
-	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
-		WRITE_TO(command, "-kit %S ", kd->kit->as_copy->edition->work->title);
 
 	WRITE_TO(command, "-format=%S ", TargetVMs::get_full_format_text(S->for_vm));
 
@@ -36,6 +31,7 @@ int Inform7Skill::inform7_via_shell(build_skill *skill, build_step *S,
 	LOOP_OVER_LINKED_LIST(N, inbuild_nest, L) {
 		switch (Nests::get_tag(N)) {
 			case MATERIALS_NEST_TAG: continue;
+			case EXTENSION_NEST_TAG: continue;
 			case EXTERNAL_NEST_TAG: WRITE_TO(command, "-external "); break;
 			case GENERIC_NEST_TAG: WRITE_TO(command, "-nest "); break;
 			case INTERNAL_NEST_TAG: WRITE_TO(command, "-internal "); break;
@@ -59,9 +55,9 @@ folders anyway; maybe we should leave well be.)
 =
 int Inform7Skill::inform7_internally(build_skill *skill, build_step *S,
 	build_methodology *BM, linked_list *search_list) {
-	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);
-	if (project == NULL) project = ProjectFileManager::from_copy(S->associated_copy);
+	inform_project *project = Projects::from_copy(S->associated_copy);
 	if (project == NULL) internal_error("no project");
+
 	if (S->associated_copy->edition->work->genre == project_bundle_genre)
 		Pathnames::create_in_file_system(Projects::materials_path(project));
 	#ifdef CORE_MODULE

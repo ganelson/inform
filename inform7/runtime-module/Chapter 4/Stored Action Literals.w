@@ -7,7 +7,7 @@ Literal stored actions arise from source text such as:
 = (text as Inform 7)
 	let Q be examining the harmonium;
 =
-This is called only from the actions plugin; in Basic Inform no stored actions
+This is called only from the actions feature; in Basic Inform no stored actions
 exist, so if the function is called then an internal error will be thrown.
 
 Stored actions are stored in small blocks, always of size 6. There are no

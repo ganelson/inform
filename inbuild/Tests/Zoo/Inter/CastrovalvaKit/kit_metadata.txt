@@ -1,3 +1,0 @@
-version: 2.7.1
-compatibility: not for 32-bit
-priority: 1

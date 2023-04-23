@@ -3,7 +3,7 @@
 Some additions to an _instance package for instances of the kind "backdrop".
 
 @h Compilation data.
-This additional data is present only if the "backdrops" plugin is active:
+This additional data is present only if the "backdrops" feature is active:
 
 =
 inter_name *RTBackdropInstances::found_in_val(instance *I, int many) {

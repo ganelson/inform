@@ -1,8 +1,8 @@
 [ActionsPlugin::] Actions Plugin.
 
-A plugin for actions, by which animate characters change the world model.
+A feature for actions, by which animate characters change the world model.
 
-@ Support for actions is contained in the "actions" plugin, which occupies this
+@ Support for actions is contained in the "actions" feature, which occupies this
 entire chapter. The test group |:actions| may be helpful in trouble-shooting here.
 
 It may be helpful to distinguish these ideas right from the outset:
@@ -31,23 +31,23 @@ description of an action which may have happened in the past: for example,
 void ActionsPlugin::start(void) {
 	ActionsNodes::nodes_and_annotations();
 
-	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, ActionsPlugin::make_special_meanings);
-	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, ARvalues::new_base_kind_notify);
-	PluginManager::plug(COMPARE_CONSTANT_PLUG, ARvalues::compare_CONSTANT);
-	PluginManager::plug(COMPILE_CONSTANT_PLUG, CompileRvalues::action_kinds);
-	PluginManager::plug(COMPILE_CONDITION_PLUG, AConditions::compile_condition);
-	PluginManager::plug(CREATION_PLUG, ActionsNodes::creation);
-	PluginManager::plug(UNUSUAL_PROPERTY_VALUE_PLUG, ActionsNodes::unusual_property_value_node);
-	PluginManager::plug(OFFERED_PROPERTY_PLUG, ActionVariables::actions_offered_property);
-	PluginManager::plug(OFFERED_SPECIFICATION_PLUG, ActionsPlugin::actions_offered_specification);
-	PluginManager::plug(TYPECHECK_EQUALITY_PLUG, ARvalues::actions_typecheck_equality);
-	PluginManager::plug(PLACE_RULE_PLUG, Actions::place_rule);
-	PluginManager::plug(RULE_PLACEMENT_NOTIFY_PLUG, Actions::rule_placement_notify);
-	PluginManager::plug(PRODUCTION_LINE_PLUG, ActionsPlugin::production_line);
-	PluginManager::plug(COMPLETE_MODEL_PLUG, ActionsPlugin::complete_model);
-	PluginManager::plug(COMPILE_TEST_HEAD_PLUG, RTRules::actions_compile_test_head);
-	PluginManager::plug(COMPILE_TEST_TAIL_PLUG, RTRules::actions_compile_test_tail);
-	PluginManager::plug(NEW_RCD_NOTIFY_PLUG, ActionRules::new_rcd);
+	PluginCalls::plug(MAKE_SPECIAL_MEANINGS_PLUG, ActionsPlugin::make_special_meanings);
+	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, ARvalues::new_base_kind_notify);
+	PluginCalls::plug(COMPARE_CONSTANT_PLUG, ARvalues::compare_CONSTANT);
+	PluginCalls::plug(COMPILE_CONSTANT_PLUG, CompileRvalues::action_kinds);
+	PluginCalls::plug(COMPILE_CONDITION_PLUG, AConditions::compile_condition);
+	PluginCalls::plug(CREATION_PLUG, ActionsNodes::creation);
+	PluginCalls::plug(UNUSUAL_PROPERTY_VALUE_PLUG, ActionsNodes::unusual_property_value_node);
+	PluginCalls::plug(OFFERED_PROPERTY_PLUG, ActionVariables::actions_offered_property);
+	PluginCalls::plug(OFFERED_SPECIFICATION_PLUG, ActionsPlugin::actions_offered_specification);
+	PluginCalls::plug(TYPECHECK_EQUALITY_PLUG, ARvalues::actions_typecheck_equality);
+	PluginCalls::plug(PLACE_RULE_PLUG, Actions::place_rule);
+	PluginCalls::plug(RULE_PLACEMENT_NOTIFY_PLUG, Actions::rule_placement_notify);
+	PluginCalls::plug(PRODUCTION_LINE_PLUG, ActionsPlugin::production_line);
+	PluginCalls::plug(COMPLETE_MODEL_PLUG, ActionsPlugin::complete_model);
+	PluginCalls::plug(COMPILE_TEST_HEAD_PLUG, RTRules::actions_compile_test_head);
+	PluginCalls::plug(COMPILE_TEST_TAIL_PLUG, RTRules::actions_compile_test_tail);
+	PluginCalls::plug(NEW_RCD_NOTIFY_PLUG, ActionRules::new_rcd);
 
 	Vocabulary::set_flags(Vocabulary::entry_for_text(L"doing"), ACTION_PARTICIPLE_MC);
 	Vocabulary::set_flags(Vocabulary::entry_for_text(L"asking"), ACTION_PARTICIPLE_MC);
@@ -323,7 +323,7 @@ the initial text "applying to one thing" would be valid as it stands.
 @<Issue PM_ActionMisapplied problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(),
 		_p_(PM_ActionMisapplied),
-		"an action can only apply to things or to kinds of value",
+		"an action cannot apply to specific kinds of things, only to 'things'",
 		"for instance: 'photographing is an action applying to "
 		"one visible thing'.");
 	==> { REQUIRES_ACCESS, K_thing };
@@ -333,7 +333,8 @@ the initial text "applying to one thing" would be valid as it stands.
 	if (Kinds::eq(K, K_thing)) {
 		if (A == UNRESTRICTED_ACCESS) A = REQUIRES_ACCESS;
 		==> { A, K_object };
-	} else if (Kinds::Behaviour::is_subkind_of_object(K)) {
+	} else if ((Kinds::Behaviour::is_subkind_of_object(K)) &&
+		 (Latticework::super(K) != K_object)) {
 		@<Issue PM_ActionMisapplied problem@>;
 	} else if (A != UNRESTRICTED_ACCESS) {
 		@<Issue PM_ActionMisapplied problem@>;

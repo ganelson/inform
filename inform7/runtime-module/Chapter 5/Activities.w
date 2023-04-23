@@ -8,8 +8,11 @@ Each |activity| object contains this data:
 
 =
 typedef struct activity_compilation_data {
+	int translated;
+	struct text_stream *translated_name;
 	struct package_request *av_package; /* its |_activity| package */
 	struct inter_name *value_iname;     /* an identifier for a constant identifying this */
+	struct inter_name *translated_iname; /* an alias useful for linking purposes */
 	struct inter_name *variables_id;    /* ID for the shared variables set, if any */
 	struct wording av_documentation_symbol; /* cross-reference to HTML documentation, if any */
 	struct activity_crossref *cross_references;
@@ -25,8 +28,11 @@ typedef struct activity_crossref {
 =
 activity_compilation_data RTActivities::new_compilation_data(activity *av, wording doc) {
 	activity_compilation_data acd;
+	acd.translated = FALSE;
+	acd.translated_name = NULL;
 	acd.av_package = Hierarchy::local_package(ACTIVITIES_HAP);
 	acd.value_iname = Hierarchy::make_iname_with_memo(ACTIVITY_VALUE_HL, acd.av_package, av->name);
+	acd.translated_iname = NULL;
 	acd.variables_id = Hierarchy::make_iname_in(ACTIVITY_SHV_ID_HL, acd.av_package);
 	acd.av_documentation_symbol = doc;
 	acd.cross_references = NULL;
@@ -38,6 +44,16 @@ activity_compilation_data RTActivities::new_compilation_data(activity *av, wordi
 =
 inter_name *RTActivities::iname(activity *av) {
 	return av->compilation_data.value_iname;
+}
+
+inter_name *RTActivities::id_translated(activity *av) {
+	if (Str::len(av->compilation_data.translated_name) == 0) return NULL;
+	if (av->compilation_data.translated_iname == NULL) {
+		av->compilation_data.translated_iname = InterNames::explicitly_named(
+			av->compilation_data.translated_name, av->compilation_data.av_package);
+		Hierarchy::make_available(av->compilation_data.translated_iname);
+	}
+	return av->compilation_data.translated_iname;
 }
 
 @ Three subpackages contain its three rulebooks, requested here:
@@ -66,6 +82,20 @@ void RTActivities::annotate_list_for_cross_references(activity_list *avl, id_bod
 		}
 }
 
+@ =
+void RTActivities::translate(activity *av, wording W) {
+	if (av->compilation_data.translated) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_TranslatesActivityAlready),
+			"this activity has already been translated",
+			"so there must be some duplication somewhere.");
+		return;
+	}
+	av->compilation_data.translated = TRUE;
+	av->compilation_data.translated_name = Str::new();
+	WRITE_TO(av->compilation_data.translated_name, "%N", Wordings::first_wn(W));
+}
+
 @h Compilation.
 
 =
@@ -91,6 +121,8 @@ void RTActivities::compilation_agent(compilation_subtask *t) {
 	package_request *pack = av->compilation_data.av_package;
 	inter_name *iname = Hierarchy::make_iname_in(ACTIVITY_ID_HL, pack);
 	Emit::numeric_constant(iname, 0); /* a placeholder: see above */
+	inter_name *translated = RTActivities::id_translated(av);
+	if (translated) Emit::iname_constant(translated, K_value, iname);
 
 	Emit::iname_constant(av->compilation_data.value_iname, K_value, iname);
 
@@ -138,40 +170,6 @@ void RTActivities::compilation_agent(compilation_subtask *t) {
 		}
 	}
 
-	text_stream *marker = NULL;
-	if (av == Activities::std(AMUSING_A_VICTORIOUS_PLAYER_ACT)) marker = I"amusing_a_victorious_player";
-	if (av == Activities::std(ASKING_WHICH_DO_YOU_MEAN_ACT)) marker = I"asking_which_do_you_mean";
-	if (av == Activities::std(CHOOSING_NOTABLE_LOCALE_OBJ_ACT)) marker = I"choosing_notable_locale_obj";
-	if (av == Activities::std(CLARIFYING_PARSERS_CHOICE_ACT)) marker = I"clarifying_parsers_choice";
-	if (av == Activities::std(CONSTRUCTING_STATUS_LINE_ACT)) marker = I"constructing_status_line";
-	if (av == Activities::std(DEALING_WITH_FINAL_QUESTION_ACT)) marker = I"dealing_with_final_question";
-	if (av == Activities::std(DECIDING_CONCEALED_POSSESS_ACT)) marker = I"deciding_concealed_possess";
-	if (av == Activities::std(DECIDING_SCOPE_ACT)) marker = I"deciding_scope";
-	if (av == Activities::std(DECIDING_WHETHER_ALL_INC_ACT)) marker = I"deciding_whether_all_inc";
-	if (av == Activities::std(GROUPING_TOGETHER_ACT)) marker = I"grouping_together";
-	if (av == Activities::std(IMPLICITLY_TAKING_ACT)) marker = I"implicitly_taking";
-	if (av == Activities::std(LISTING_CONTENTS_ACT)) marker = I"listing_contents";
-	if (av == Activities::std(LISTING_NONDESCRIPT_ITEMS_ACT)) marker = I"listing_nondescript_items";
-	if (av == Activities::std(PRINTING_A_NUMBER_OF_ACT)) marker = I"printing_a_number_of";
-	if (av == Activities::std(PRINTING_A_PARSER_ERROR_ACT)) marker = I"printing_a_parser_error";
-	if (av == Activities::std(PRINTING_BANNER_TEXT_ACT)) marker = I"printing_banner_text";
-	if (av == Activities::std(PRINTING_DESC_OF_DARK_ROOM_ACT)) marker = I"printing_desc_of_dark_room";
-	if (av == Activities::std(PRINTING_INVENTORY_DETAILS_ACT)) marker = I"printing_inventory_details";
-	if (av == Activities::std(PRINTING_LOCALE_DESCRIPTION_ACT)) marker = I"printing_locale_description";
-	if (av == Activities::std(PRINTING_LOCALE_PARAGRAPH_ACT)) marker = I"printing_locale_paragraph";
-	if (av == Activities::std(PRINTING_NAME_OF_DARK_ROOM_ACT)) marker = I"printing_name_of_dark_room";
-	if (av == Activities::std(PRINTING_NEWS_OF_DARKNESS_ACT)) marker = I"printing_news_of_darkness";
-	if (av == Activities::std(PRINTING_NEWS_OF_LIGHT_ACT)) marker = I"printing_news_of_light";
-	if (av == Activities::std(PRINTING_PLAYERS_OBITUARY_ACT)) marker = I"printing_players_obituary";
-	if (av == Activities::std(PRINTING_RESPONSE_ACT)) marker = I"printing_response";
-	if (av == Activities::std(PRINTING_ROOM_DESC_DETAILS_ACT)) marker = I"printing_room_desc_details";
-	if (av == Activities::std(PRINTING_THE_NAME_ACT)) marker = I"printing_the_name";
-	if (av == Activities::std(PRINTING_THE_PLURAL_NAME_ACT)) marker = I"printing_the_plural_name";
-	if (av == Activities::std(READING_A_COMMAND_ACT)) marker = I"reading_a_command";
-	if (av == Activities::std(REFUSAL_TO_ACT_IN_DARK_ACT)) marker = I"refusal_to_act_in_dark";
-	if (av == Activities::std(STARTING_VIRTUAL_MACHINE_ACT)) marker = I"starting_virtual_machine";
-	if (av == Activities::std(SUPPLYING_A_MISSING_NOUN_ACT)) marker = I"supplying_a_missing_noun";
-	if (av == Activities::std(SUPPLYING_A_MISSING_SECOND_ACT)) marker = I"supplying_a_missing_second";
-	if (av == Activities::std(WRITING_A_PARAGRAPH_ABOUT_ACT)) marker = I"writing_a_paragraph_about";
-	if (marker) Hierarchy::apply_metadata(pack, ACTIVITY_INDEX_ID_MD_HL, marker);
+	text_stream *marker = av->compilation_data.translated_name;
+	if (Str::len(marker) > 0) Hierarchy::apply_metadata(pack, ACTIVITY_INDEX_ID_MD_HL, marker);
 }

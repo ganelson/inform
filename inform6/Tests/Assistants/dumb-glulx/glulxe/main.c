@@ -22,7 +22,7 @@ static void (*library_start_hook)(void) = NULL;
 /* The library_autorestore_hook is called right after the VM's initial
    setup. This is an appropriate time to autorestore an initial game
    state, if the library has that capability. (Currently, only iosglk
-   does.) */
+   and remglk do.) */
 static void (*library_autorestore_hook)(void) = NULL;
 
 static winid_t get_error_win(void);
@@ -118,12 +118,14 @@ static winid_t get_error_win()
 */
 void fatal_error_handler(char *str, char *arg, int useval, glsi32 val)
 {
+  winid_t win;
+
   /* If the debugger is compiled in, send the error message to the debug
      console. This may also block for debug commands, depending on 
      preferences. */
   debugger_handle_crash(str);
 
-  winid_t win = get_error_win();
+  win = get_error_win();
   if (win) {
     glk_set_window(win);
     glk_put_string("Glulxe fatal error: ");

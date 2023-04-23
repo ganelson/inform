@@ -1,0 +1,11 @@
+  IndivPropTest: Not a game.
+  Release 1 / Serial number 220724 / Inform v6.41, compiler options S
+  
+  obj1 provides long: 1.
+  obj1.#long: 8.
+  obj1 provides individual: 0.
+  obj1.individual: 11.
+  obj1.additive: 12.
+  obj2.iprop: 7.
+  
+  All passed.

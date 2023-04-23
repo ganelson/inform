@@ -1,0 +1,25 @@
+<registry-holding> ::= {
+	"author": string,
+	"title": string,
+	?"standard-installation": boolean,
+	?"visible": boolean,
+	?"forum-thread": number,
+	"version": string,
+	"summary": string,
+	"time": string
+}
+
+<registry-subsection> ::= {
+	"title": string,
+	"holdings": [ <registry-holding>* ]
+}
+
+<registry-section> ::= {
+	"title": string,
+	"leafname": string,
+	"subsections": [ <registry-subsection>* ]
+}
+
+<registry-metadata> ::= {
+	"sections": [ <registry-section>* ]
+}

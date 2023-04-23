@@ -1,0 +1,11 @@
+  summon in main where Alpha`EXAMPLE = 20
+  greet in Alpha
+  ponder in Alpha
+  ponder in main
+  dismiss in Alpha, where EXAMPLE = 20
+  dismiss in Beta
+  Here are the dismiss functions:
+  dismiss in Alpha, where EXAMPLE = 20
+  dismiss in Beta
+  dismiss in main
+  The value of EXAMPLE here is 10

@@ -1,8 +1,8 @@
 [TimedRules::] Timed Rules.
 
-A plugin to support rules like "At 12:03AM: ...".
+A feature to support rules like "At 12:03AM: ...".
 
-@ This plugin makes a special set of rules for timed events; the |:timedrules|
+@ This feature makes a special set of rules for timed events; the |:timedrules|
 test group may be useful in testing it.
 
 Each such rule has a time at which it should spontaneously happen. This is
@@ -16,9 +16,9 @@ special significance:
 
 =
 void TimedRules::start(void) {
-	PluginManager::plug(NEW_RULE_DEFN_NOTIFY_PLUG, TimedRules::new_rule_defn_notify);
-	PluginManager::plug(INLINE_ANNOTATION_PLUG, TimedRules::inline_annotation);
-	PluginManager::plug(PRODUCTION_LINE_PLUG, TimedRules::production_line);
+	PluginCalls::plug(NEW_RULE_DEFN_NOTIFY_PLUG, TimedRules::new_rule_defn_notify);
+	PluginCalls::plug(INLINE_ANNOTATION_PLUG, TimedRules::inline_annotation);
+	PluginCalls::plug(PRODUCTION_LINE_PLUG, TimedRules::production_line);
 }
 
 int TimedRules::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
@@ -56,17 +56,17 @@ int TimedRules::production_line(int stage, int debugging, stopwatch_timer *seque
 
 @ =
 int TimedRules::new_rule_defn_notify(imperative_defn *id, rule_family_data *rfd) {
-	CREATE_PLUGIN_RFD_DATA(timed_rules, rfd, TimedRules::new_rfd_data);
+	CREATE_RFD_FEATURE_DATA(timed_rules, rfd, TimedRules::new_rfd_data);
 	wording W = rfd->usage_preamble;
 	if (<event-rule-preamble>(W)) {
 		int t = <<r>>;
 		rfd->usage_preamble = EMPTY_WORDING;
 		rfd->not_in_rulebook = TRUE;
-		RFD_PLUGIN_DATA(timed_rules, rfd)->event_time = t;
+		RFD_FEATURE_DATA(timed_rules, rfd)->event_time = t;
 		if (t == NO_FIXED_TIME) {
 			wording EW = GET_RW(<event-rule-preamble>, 1);
 			EW = Articles::remove_the(EW);
-			RFD_PLUGIN_DATA(timed_rules, rfd)->event_name = EW;
+			RFD_FEATURE_DATA(timed_rules, rfd)->event_name = EW;
 			rfd->constant_name = EW;
 		}
 	}
@@ -97,20 +97,20 @@ timed_rules_rfd_data *TimedRules::new_rfd_data(rule_family_data *rfd) {
 linked_list *TimedRules::get_uses_as_event(imperative_defn *id) {
 	if (id->family != rule_idf) return NULL;
 	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
-	return RFD_PLUGIN_DATA(timed_rules, rfd)->uses_as_event;
+	return RFD_FEATURE_DATA(timed_rules, rfd)->uses_as_event;
 }
 
 int TimedRules::get_timing_of_event(imperative_defn *id) {
 	if (id->family != rule_idf) return NOT_A_TIMED_EVENT;
 	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
-	if (RFD_PLUGIN_DATA(timed_rules, rfd) == NULL) return NOT_A_TIMED_EVENT;
-	return RFD_PLUGIN_DATA(timed_rules, rfd)->event_time;
+	if (RFD_FEATURE_DATA(timed_rules, rfd) == NULL) return NOT_A_TIMED_EVENT;
+	return RFD_FEATURE_DATA(timed_rules, rfd)->event_time;
 }
 
 wording TimedRules::get_wording_of_event(imperative_defn *id) {
 	if (id->family != rule_idf) return EMPTY_WORDING;
 	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
-	return RFD_PLUGIN_DATA(timed_rules, rfd)->event_name;
+	return RFD_FEATURE_DATA(timed_rules, rfd)->event_name;
 }
 
 @ When a rule has no explicit timing, it needs to be triggered by a phrase

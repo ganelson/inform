@@ -19,8 +19,7 @@ inform_project *inclusions_for_project = NULL;
 void Inclusions::traverse(inbuild_copy *C, parse_node_tree *T) {
 	inclusions_errors_to = C;
 	int no_copy_errors = LinkedLists::len(C->errors_reading_source_text);
-	inform_project *project = ProjectBundleManager::from_copy(C);
-	if (project == NULL) project = ProjectFileManager::from_copy(C);
+	inform_project *project = Projects::from_copy(C);
 	inclusions_for_project = project;
 	int includes_cleared;
 	do {
@@ -40,11 +39,26 @@ build_vertex *Inclusions::spawned_from_vertex(parse_node *H0) {
 	return inclusions_errors_to->vertex;
 }
 
+@
+
+@e MissingSourceFile_SYNERROR
+@e HeadingWithFileNonempty_SYNERROR
+@e MisheadedSourceFile_SYNERROR
+
+=
 void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node *last_H0,
 	int *includes_cleared) {
 	if (Node::get_type(pn) == INCLUDE_NT) {
 		@<Replace INCLUDE node with sentence nodes for any extensions required@>;
 		*includes_cleared = FALSE;
+	}
+	if (Node::get_type(pn) == HEADING_NT) {
+		heading *h = Node::get_embodying_heading(pn);
+		if ((h) && (Wordings::nonempty(h->external_file)) && (h->external_file_loaded == FALSE)) {
+			inform_project *proj = ProjectBundleManager::from_copy(inclusions_errors_to);
+			if ((proj) && (proj->as_copy->location_if_path))
+				@<Include the contents of the external file under the heading@>;
+		}
 	}
 }
 
@@ -73,6 +87,57 @@ void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node *last_H0,
 			else
 				Graphs::need_this_to_build(V, EV);
 		}
+	}
+
+@ Here we're at a HEADING node which is annotated |(see "source-file")|, and
+we need to read that file in: it will be considered as the contents of the
+HEADING.
+
+@<Include the contents of the external file under the heading@> =
+	pathname *P = Pathnames::down(Projects::materials_path(proj), I"Source");
+	text_stream *leaf = Str::new();
+	WRITE_TO(leaf, "%W", h->external_file);
+	h->external_file_loaded = TRUE;
+	if (pn->down) {
+		copy_error *CE = CopyErrors::new_T(SYNTAX_CE, HeadingWithFileNonempty_SYNERROR, leaf);
+		CopyErrors::supply_node(CE, pn);
+		Copies::attach_error(inclusions_errors_to, CE);
+	} else {
+		filename *F = Filenames::in(P, leaf);
+		if (TextFiles::exists(F) == FALSE) {
+			copy_error *CE = CopyErrors::new_T(SYNTAX_CE, MissingSourceFile_SYNERROR, leaf);
+			CopyErrors::supply_node(CE, pn);
+			Copies::attach_error(inclusions_errors_to, CE);					
+		} else {
+			int l = SyntaxTree::push_bud(T, pn);
+			source_file *S = SourceText::read_file(inclusions_errors_to, F, leaf, FALSE, FALSE);
+			if (S) @<Sentence-break the contents of S under the heading node@>;
+			SyntaxTree::pop_bud(T, l);
+			*includes_cleared = FALSE;
+		}
+	}
+
+@ Note that the opening words of the external file, here |TOPW|, must match
+exactly the heading which called for the file, except for the annotation in
+brackets. (It's to prevent that that we look for a round bracket at the
+start of |RESTW| as a sign that the user has accidentally included this.)
+
+Provided a match is made, the |TOPW| words are then thrown away. Their purpose
+was just to identify the file sensibly.
+
+@<Sentence-break the contents of S under the heading node@> =
+	h->external_file_read = S;
+	wording SW = S->text_read;
+	int N = Wordings::length(h->heading_text);
+	wording TOPW = Wordings::up_to(SW, Wordings::first_wn(SW) + N - 1);
+	wording RESTW = Wordings::from(SW, Wordings::first_wn(SW) + N);
+	if ((Wordings::match(h->heading_text, TOPW) == FALSE) ||
+		(compare_word(Wordings::first_wn(RESTW), OPENBRACKET_V))) {
+		copy_error *CE = CopyErrors::new_T(SYNTAX_CE, MisheadedSourceFile_SYNERROR, leaf);
+		CopyErrors::supply_node(CE, pn);
+		Copies::attach_error(inclusions_errors_to, CE);					
+	} else if (Wordings::nonempty(RESTW)) {
+		Sentences::break_into_project_copy(T, RESTW, inclusions_errors_to, proj);
 	}
 
 @ Here we parse the content of an Include sentence: i.e., what comes after the
@@ -168,8 +233,9 @@ inform_extension *Inclusions::load(parse_node *last_H0, parse_node *at,
 			return E;
 		}
 	@<Read the extension file into the lexer, and break it into body and documentation@>;
-	if ((for_project) && (E))
+	if ((for_project) && (E)) {
 		ADD_TO_LINKED_LIST(E, inform_extension, for_project->extensions_included);
+	}
 	return E;
 }
 
@@ -177,7 +243,7 @@ inform_extension *Inclusions::load(parse_node *last_H0, parse_node *at,
 	inbuild_search_result *search_result =
 		Nests::search_for_best(req, Projects::nest_list(for_project));
 	if (search_result) {
-		E = ExtensionManager::from_copy(search_result->copy);
+		E = Extensions::from_copy(search_result->copy);
 		Extensions::set_inclusion_sentence(E, at);
 		Extensions::set_associated_project(E, for_project);
 		if (Nests::get_tag(search_result->nest) == INTERNAL_NEST_TAG)

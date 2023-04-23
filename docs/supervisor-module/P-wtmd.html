@@ -111,7 +111,7 @@ The Supervisor is now ready for use!
 <p class="commentary">There is no single "go" button: instead, the Supervisor provides a suite
 of functions to call, each acting on a "copy" &mdash; an instance of some software
 at a given filing system location. When <a href="../inform7/index.html" class="internal">inform7</a> is the parent, it follows
-the call to <a href="1-ic.html#SP10" class="internal">Supervisor::go_operational</a> with a single call to <a href="2-cps.html#SP11" class="internal">Copies::build</a>
+the call to <a href="1-ic.html#SP10" class="internal">Supervisor::go_operational</a> with a single call to <a href="2-cps.html#SP12" class="internal">Copies::build</a>
 on the copy representing the current Inform 7 project. But when <a href="../inbuild/index.html" class="internal">inbuild</a>
 is the parent, a variety of other functions may be made.
 </p>
@@ -223,7 +223,7 @@ right where the user said it would be, or by a search.
 
 <p class="commentary">When the search engine wants to look for, say, kits in a given nest, it will
 ask the kit genre how to do this, by a method call: and this will be handled
-by <a href="4-km.html#SP5" class="internal">KitManager::search_nest_for</a>. That enables kits to be looked for in
+by <a href="4-km.html#SP7" class="internal">KitManager::search_nest_for</a>. That enables kits to be looked for in
 a different part of a nest than extensions, for example. Similarly, each
 genre scans and generally vets a copy differently, attaching copy errors
 for different reasons. But in general, a function like <a href="4-km.html#SP3" class="internal">KitManager::new_copy</a>
@@ -294,8 +294,8 @@ placeholder.
 
 <p class="commentary">The answer in fact depends on genre. For pipelines, languages and website
 templates, there are no dependencies, so there's nothing to build. For kits,
-extensions and projects, the task is performed by <a href="5-ks.html#SP14" class="internal">Kits::construct_graph</a>,
-<a href="5-es.html#SP6" class="internal">Extensions::construct_graph</a> and <a href="5-ps2.html#SP26" class="internal">Projects::construct_graph</a>. Kits are
+extensions and projects, the task is performed by <a href="5-ks.html#SP13" class="internal">Kits::construct_graph</a>,
+<a href="5-es.html#SP9" class="internal">Extensions::construct_graph</a> and <a href="5-ps2.html#SP31" class="internal">Projects::construct_graph</a>. Kits are
 graphed when the Supervisor "goes operational", because
 <a href="1-ic.html#SP10" class="internal">Supervisor::go_operational</a> calls <a href="2-cps.html#SP8" class="internal">Copies::construct_graph</a> for
 every extant copy.
@@ -323,8 +323,8 @@ at most once, and is cached so that a second read produces the same result
 as the first.
 </p>
 
-<p class="commentary">Reading is performed by <a href="5-ps2.html#SP29" class="internal">Projects::read_source_text_for</a> and
-<a href="5-es.html#SP7" class="internal">Extensions::read_source_text_for</a>. For extensions this involves reading
+<p class="commentary">Reading is performed by <a href="5-ps2.html#SP34" class="internal">Projects::read_source_text_for</a> and
+<a href="5-es.html#SP10" class="internal">Extensions::read_source_text_for</a>. For extensions this involves reading
 only a single file, but for projects it can involve multiple files. Each
 such is read by a call to <a href="6-st.html#SP3" class="internal">SourceText::read_file</a>, which then sends out
 to the <a href="../words-module/index.html" class="internal">words</a> module to break the text file into a stream of words:
@@ -408,7 +408,7 @@ the inclusion and there's no dependency; and similarly:
     <p>Section 1 - Figures (for figures language element only)</p>
 </blockquote>
 
-<p class="commentary">Because of this, we make sure to call <a href="5-ps2.html#SP20" class="internal">Projects::activate_elements</a> before
+<p class="commentary">Because of this, we make sure to call <a href="5-ps2.html#SP24" class="internal">Projects::activate_elements</a> before
 looking for inclusion sentences, in order to know whether or not, e.g., the
 figures language element is present.
 </p>
@@ -428,15 +428,15 @@ which of those states actually happens.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>At any rate, when <a href="6-inc.html#SP1" class="internal">Inclusions::traverse</a> finds an Include sentence which
-it decides is valid, it calls <a href="6-inc.html#SP4" class="internal">Inclusions::fulfill_request_to_include_extension</a>.
+it decides is valid, it calls <a href="6-inc.html#SP5" class="internal">Inclusions::fulfill_request_to_include_extension</a>.
 This performs a search for the best compatible copy of the extension named &mdash;
-see above &mdash; and, once such a copy is found, calls <a href="6-inc.html#SP5" class="internal">Inclusions::load</a> to
+see above &mdash; and, once such a copy is found, calls <a href="6-inc.html#SP6" class="internal">Inclusions::load</a> to
 merge its text into the current syntax tree. (Note: it doesn't form an
 isolated syntax tree of its own.) This is why Inform reads the text of an
 extension as if it appeared at the same position as the Include sentence.
 </p>
 
-<p class="commentary">When a valid Include is found, <a href="6-inc.html#SP4" class="internal">Inclusions::fulfill_request_to_include_extension</a>
+<p class="commentary">When a valid Include is found, <a href="6-inc.html#SP5" class="internal">Inclusions::fulfill_request_to_include_extension</a>
 also puts a dependency edge in between the vertex for our copy and the vertex
 for the new extension's copy. That will be a use edge if our copy is also an
 extension &mdash; i.e., you can't use Existing Extension unless you also have
@@ -480,18 +480,18 @@ dependencies on other extensions. If we were reading an extension, we now have
 its complete graph made, because it can only be dependent on other extensions.
 But a project also depends on kits of Inter codes, on a language definition,
 and so forth: and also on the files it draws its source text from. See
-<a href="5-ps2.html#SP26" class="internal">Projects::construct_graph</a> for the details.
+<a href="5-ps2.html#SP31" class="internal">Projects::construct_graph</a> for the details.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Incremental builds. </b>So, then, at this point we can determine the complete build graph for any copy.
 The parent can do several things:
 </p>
 
-<ul class="items"><li>(a) Call <a href="2-cps.html#SP12" class="internal">Copies::show_graph</a>, or <a href="2-cps.html#SP12" class="internal">Copies::show_needs</a>, or <a href="2-cps.html#SP12" class="internal">Copies::show_missing</a>,
+<ul class="items"><li>(a) Call <a href="2-cps.html#SP13" class="internal">Copies::show_graph</a>, or <a href="2-cps.html#SP13" class="internal">Copies::show_needs</a>, or <a href="2-cps.html#SP13" class="internal">Copies::show_missing</a>,
 to print out the graph, show what a project needs in order to be built, or
 show what it needs but doesn't currently have;
-</li><li>(b) Call <a href="2-cps.html#SP13" class="internal">Copies::archive</a> to make archived copies of all dependent resources;
-</li><li>(c) Or, the big one, call <a href="2-cps.html#SP11" class="internal">Copies::build</a> or <a href="2-cps.html#SP11" class="internal">Copies::rebuild</a> to perform
+</li><li>(b) Call <a href="2-cps.html#SP14" class="internal">Copies::archive</a> to make archived copies of all dependent resources;
+</li><li>(c) Or, the big one, call <a href="2-cps.html#SP12" class="internal">Copies::build</a> or <a href="2-cps.html#SP12" class="internal">Copies::rebuild</a> to perform
 a build.
 </li></ul>
 <p class="commentary">A "build" is incremental, and uses time-stamps of files to avoid unnecessary

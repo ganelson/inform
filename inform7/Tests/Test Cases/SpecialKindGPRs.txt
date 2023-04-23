@@ -1,0 +1,15 @@
+Home is a room.
+
+Considering is an action applying to one number. Understand "consider [number]" as considering.
+
+Carry out considering: say "Okay. You consider [the number understood]."
+
+Timing is an action applying to one time. Understand "time [time]" as timing.
+
+Carry out timing: say "Okay. You set your mental clock to [the time understood]."
+
+Understand "zero" or "nought" as 0.
+
+Understand "noonish/middling" as 12:00 PM.
+
+Test me with "consider zero / consider nought / time noonish / time middling".

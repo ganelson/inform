@@ -1,0 +1,13 @@
+Laboratory is a room.
+
+Mr Bojangles is an animal. [Not a problem.]
+The erroneous beat is a dialogue beat.
+The erroneous line is a dialogue line.
+The erroneous choice is a dialogue choice.
+The dragon dance is a scene. [Not a problem.]
+
+Section 1 (dialogue)
+
+(about the Laboratory)
+
+Mr Bojangles: "Woof!"

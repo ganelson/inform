@@ -1,0 +1,40 @@
+2
+1
+scenes
+examine status
+listen
+jump
+e
+listen
+jump
+w
+s
+examine ball
+z
+z
+z
+z
+e
+z
+z
+z
+z
+w
+n
+eat apple
+look
+examine status
+perform fourth wall breaker beat
+w
+1
+1
+1
+n
+get diamond
+get emerald
+get ruby
+i
+s
+e
+quit
+y

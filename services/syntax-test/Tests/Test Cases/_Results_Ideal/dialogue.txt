@@ -1,0 +1,47 @@
+Read 111 words
+ROOT_NT
+    HEADING_NT'elsinore is a room' {heading 0}
+        SENTENCE_NT'elsinore is a room'
+        HEADING_NT'section 1 - on the battlements ( dialogue )' {heading 5}
+            DIALOGUE_CUE_NT'( about the paranormal . )' {level 0}
+                DIALOGUE_CLAUSE_NT'about the paranormal'
+            DIALOGUE_LINE_NT'marcellus : "What, has this thing appear'd again to-night?"' {level 0}
+                DIALOGUE_SPEAKER_NT'marcellus'
+                DIALOGUE_SPEECH_NT'"What, has this thing appear'd again to-night?"'
+            DIALOGUE_CUE_NT'( about the thing )' {level 1}
+                DIALOGUE_CLAUSE_NT'about the thing'
+            DIALOGUE_LINE_NT'bernardo ( after looking ) : "I have seen naught but [list o' {level 0}
+                DIALOGUE_SPEAKER_NT'bernardo'
+                DIALOGUE_SPEECH_NT'"I have seen naught but [list of things in the Battlements].'
+                DIALOGUE_CLAUSE_NT'after looking'
+            DIALOGUE_CHOICE_NT'--' {level 0}
+            DIALOGUE_CHOICE_NT'-- ( one thing ; another thing )' {level 0}
+                DIALOGUE_CLAUSE_NT'one thing'
+                DIALOGUE_CLAUSE_NT'another thing'
+            DIALOGUE_CHOICE_NT'-- "Try this!"' {level 0}
+                DIALOGUE_SELECTION_NT'"Try this!"'
+            DIALOGUE_CHOICE_NT'-- instead of examining something' {level 0}
+                DIALOGUE_SELECTION_NT'instead of examining something'
+            DIALOGUE_CHOICE_NT'-- ( frank ) "Try something else!"' {level 0}
+                DIALOGUE_SELECTION_NT'"Try something else!"'
+                DIALOGUE_CLAUSE_NT'frank'
+            DIALOGUE_CUE_NT'( about horatio , about battlements . ( about fantasy ) . ( ' {level 0}
+                DIALOGUE_CLAUSE_NT'about horatio , about battlements'
+                DIALOGUE_CLAUSE_NT'about fantasy'
+                DIALOGUE_CLAUSE_NT'about gravedigging'
+            DIALOGUE_LINE_NT'marcellus : "Horatio says 'tis but our fantasy."' {level 0}
+                DIALOGUE_SPEAKER_NT'marcellus'
+                DIALOGUE_SPEECH_NT'"Horatio says 'tis but our fantasy."'
+            DIALOGUE_LINE_NT'hamlet : "I'm here too!"' {level 1}
+                DIALOGUE_SPEAKER_NT'hamlet'
+                DIALOGUE_SPEECH_NT'"I'm here too!"'
+            DIALOGUE_CHOICE_NT'-- "Me too!"' {level 1}
+                DIALOGUE_SELECTION_NT'"Me too!"'
+            DIALOGUE_CHOICE_NT'-- "Not me."' {level 1}
+                DIALOGUE_SELECTION_NT'"Not me."'
+            DIALOGUE_LINE_NT'horatio : "So you are."' {level 1}
+                DIALOGUE_SPEAKER_NT'horatio'
+                DIALOGUE_SPEECH_NT'"So you are."'
+            DIALOGUE_LINE_NT'osric : "Palpably."' {level 2}
+                DIALOGUE_SPEAKER_NT'osric'
+                DIALOGUE_SPEECH_NT'"Palpably."'

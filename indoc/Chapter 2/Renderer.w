@@ -446,7 +446,7 @@ see below.
 	    {*}A ball is in the bag.
 	    The bag is on the kitchen table.
 	
-	This single sentence doesn"t make much of a simulation. Let"s add:
+	This single sentence doesn't make much of a simulation. Let's add:
 	
 	    {**}The stitched seam is part of the ball.
 =

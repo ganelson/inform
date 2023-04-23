@@ -1,0 +1,45 @@
+<resource> ::= {
+	"type": ( "kit" | "extension" | "language" | "project" ),
+	"title": string,
+	?"author": string,
+	?"version": string,
+	?"version-range": string
+}
+
+<kit-metadata> ::= {
+	?"has-priority": number,
+	?"provides-kinds": [ string* ],
+	?"defines-Main": boolean,
+	?"indexes-with-structure": string,
+	?"inserts-source-text": string
+}
+
+<extension-metadata> ::= {
+}
+
+<project-metadata> ::= {
+	?"default-target": string
+}
+
+<language-metadata> ::= {
+	"translated-name": string,
+	"iso-639-1-code": string,
+	"supports": [ ( "played" | "written" | "indexed" | "reported" )* ],
+	?"translated-syntax-cue": string
+}
+
+<resource-metadata> ::= {
+	"is": <resource>,
+	?"compatibility": string,
+	?"activates": [ string* ],
+	?"deactivates": [ string* ],
+	?"needs": [ {
+		?"if": <resource>,
+		?"unless": <resource>,
+		"need": <resource>
+	}* ],
+	?"kit-details": <kit-metadata>,
+	?"extension-details": <extension-metadata>,
+	?"language-details": <language-metadata>,
+	?"project-details": <project-metadata>
+}

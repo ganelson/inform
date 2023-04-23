@@ -1,30 +1,30 @@
 [GoingPlugin::] Going.
 
-A plugin to provide a little extra support for the "going" action.
+A feature to provide a little extra support for the "going" action.
 
 @ The "going" action, allowing actors to move from room to room in the spatial
 map of the world model, is by far the most intricately implemented. Reflecting
 that, we provide quite a lot of hard-wired compiler support for it, in the form
-of this plugin.
+of this feature.
 
-Note that if the actions plugin is not also active, none of the functions
+Note that if the actions feature is not also active, none of the functions
 below will ever be called.
 
 =
 void GoingPlugin::start(void) {
-	PluginManager::plug(NEW_ACTION_NOTIFY_PLUG, GoingPlugin::new_action_notify);
-	PluginManager::plug(WRITE_AP_CLAUSE_ID_PLUG, GoingPlugin::write_clause_ID);
-	PluginManager::plug(ASPECT_OF_AP_CLAUSE_ID_PLUG, GoingPlugin::aspect);
-	PluginManager::plug(DIVERT_AP_CLAUSE_PLUG, GoingPlugin::divert_clause_ID);
-	PluginManager::plug(PARSE_AP_CLAUSE_PLUG, GoingPlugin::parse_clause);
-	PluginManager::plug(VALIDATE_AP_CLAUSE_PLUG, GoingPlugin::validate);
-	PluginManager::plug(NEW_AP_CLAUSE_PLUG, GoingPlugin::new_clause);
-	PluginManager::plug(ACT_ON_ANL_ENTRY_OPTIONS_PLUG, GoingPlugin::act_on_options);
-	PluginManager::plug(COMPARE_AP_SPECIFICITY_PLUG, GoingPlugin::compare_specificity);
+	PluginCalls::plug(NEW_ACTION_NOTIFY_PLUG, GoingPlugin::new_action_notify);
+	PluginCalls::plug(WRITE_AP_CLAUSE_ID_PLUG, GoingPlugin::write_clause_ID);
+	PluginCalls::plug(ASPECT_OF_AP_CLAUSE_ID_PLUG, GoingPlugin::aspect);
+	PluginCalls::plug(DIVERT_AP_CLAUSE_PLUG, GoingPlugin::divert_clause_ID);
+	PluginCalls::plug(PARSE_AP_CLAUSE_PLUG, GoingPlugin::parse_clause);
+	PluginCalls::plug(VALIDATE_AP_CLAUSE_PLUG, GoingPlugin::validate);
+	PluginCalls::plug(NEW_AP_CLAUSE_PLUG, GoingPlugin::new_clause);
+	PluginCalls::plug(ACT_ON_ANL_ENTRY_OPTIONS_PLUG, GoingPlugin::act_on_options);
+	PluginCalls::plug(COMPARE_AP_SPECIFICITY_PLUG, GoingPlugin::compare_specificity);
 
-	PluginManager::plug(SET_PATTERN_MATCH_REQUIREMENTS_PLUG,
+	PluginCalls::plug(SET_PATTERN_MATCH_REQUIREMENTS_PLUG,
 		RTGoing::set_pattern_match_requirements);
-	PluginManager::plug(COMPILE_PATTERN_MATCH_CLAUSE_PLUG,
+	PluginCalls::plug(COMPILE_PATTERN_MATCH_CLAUSE_PLUG,
 		RTGoing::compile_pattern_match_clause);
 }
 

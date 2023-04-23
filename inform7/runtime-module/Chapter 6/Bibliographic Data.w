@@ -85,6 +85,14 @@ void RTBibliographicData::compile_constants(void) {
 	}
 	Emit::initial_value_as_constant(Hierarchy::find(RELEASE_MD_HL),
 		story_release_number_VAR);
+	semantic_version_number V = Projects::get_version(Task::project());
+	if (VersionNumbers::is_null(V) == FALSE) {
+		inter_name *iname = Hierarchy::find(STORY_VERSION_MD_HL);
+		TEMPORARY_TEXT(v)
+		WRITE_TO(v, "%v", &V);
+		Emit::text_constant(iname, v);
+		DISCARD_TEXT(v)
+	}
 
 @ This innocuous code -- if Inform runs on 25 June 2013, we compile the serial
 number "130625" -- is actually controversial: quite a few users feel they
@@ -96,7 +104,7 @@ should be able to fake the date-stamp with dates of their own choosing.
 	int year_digits = (the_present->tm_year) % 100;
 	WRITE_TO(SN, "%02d%02d%02d",
 		year_digits, (the_present->tm_mon)+1, the_present->tm_mday);
-	Emit::text_constant(Hierarchy::find(SERIAL_MD_HL), BibliographicData::read_uuid());
+	Emit::text_constant(Hierarchy::find(SERIAL_MD_HL), SN);
 	Emit::serial_number(iname, SN);
 	DISCARD_TEXT(SN)
 	Hierarchy::make_available(iname);

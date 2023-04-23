@@ -171,6 +171,24 @@ RULES changes the level of rule tracing.
 	"Rules tracing now switched off. Type ~rules~ to switch it on again.";
 ];
 
+@h Dialogue Command.
+DIALOGUE changes the level of dialogue tracing.
+
+=
+[ DialogueOnSub;
+	debug_dialogue = 1; say__p = 1;
+	"Dialogue tracing now switched on. Type ~dialogue off~ to switch it off again,
+	 or ~dialogue all~ to include even dialogue which do not apply.";
+];
+[ DialogueAllSub;
+	debug_dialogue = 2; say__p = 1;
+	"Dialogue tracing now switched to ~all~. Type ~dialogue off~ to switch it off again.";
+];
+[ DialogueOffSub;
+	debug_dialogue = 0; say__p = 1;
+	"Dialogue tracing now switched off. Type ~dialogue~ to switch it on again.";
+];
+
 @h Scenes Command.
 SCENES switches scene-change tracing on or off, and also shows the current position.
 
@@ -220,6 +238,9 @@ current room, or a named item.
 	}
  	if (t_0 ofclass K2_thing) {
  		print "location:"; ShowRLocation(noun, true); print "^";
+ 	}
+ 	if (t_0 ofclass K9_region) {
+ 		if (parent(t_0)) print "sub-region of: ", (the) parent(t_0), "^";
  	}
  	na = ShowMeKindDetails(false, na, t_0);
  	na = ShowMeInstanceDetails(false, na, t_0);
@@ -514,6 +535,11 @@ Verb meta 'rules'
 	* 'all'                                     -> RulesAll
 	* 'on'                                      -> RulesOn
 	* 'off'                                     -> RulesOff;
+Verb meta 'dialogue'
+	*                                           -> DialogueOn
+	* 'all'                                     -> DialogueAll
+	* 'on'                                      -> DialogueOn
+	* 'off'                                     -> DialogueOff;
 Verb meta 'scenes'
 	*                                           -> ScenesOn
 	* 'on'                                      -> ScenesOn

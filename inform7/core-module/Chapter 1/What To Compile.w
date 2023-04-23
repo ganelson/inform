@@ -60,15 +60,20 @@ compile_task_data *inform7_task = NULL;
 parse_node_tree *latest_syntax_tree = NULL;
 
 int Task::carry_out(build_step *S) {
+	int project_bundle_exists = TRUE;
 	Time::stop_stopwatch(supervisor_timer);
 	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);
-	if (project == NULL) project = ProjectFileManager::from_copy(S->associated_copy);
+	if (project == NULL) {
+		project = ProjectFileManager::from_copy(S->associated_copy);
+		project_bundle_exists = FALSE;
+	}
 	if (project == NULL) internal_error("no project");
 	latest_syntax_tree = project->syntax_tree;
 
 	DocReferences::read_xrefs();
 	Task::issue_problems_arising(project->as_copy->vertex);
-	PluginManager::start_plugins();
+	Features::allow_activation_functions();
+	Features::run_activation_functions();
 
 	if (problem_count > 0) return FALSE;
 
@@ -87,6 +92,7 @@ int Task::carry_out(build_step *S) {
 	inform7_task->next_resource_number = 3;
 	
 	DefaultLanguage::set(Projects::get_language_of_syntax(project));
+	if (project_bundle_exists) Gitignoring::automatic(project);
 
 	int rv = Sequence::carry_out(TargetVMs::debug_enabled(inform7_task->task->for_vm));
 	return rv;
@@ -301,13 +307,16 @@ filename *Task::parse_tree_file(void) {
 }
 
 @ The name of the unblorbed story file is chosen for us by Inbuild, so
-we have to extract it from the build graph:
+we have to extract it from the build graph.
+
+Note that this will return |NULL| if the current run of Inform is to
+produce, say, a C program rather than a Glulx or Z-machine story file.
 
 =
 filename *Task::storyfile_file(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	build_vertex *V = inform7_task->project->unblorbed_vertex;
-	if (V == NULL) internal_error("project graph not ready");
+	if (V == NULL) return NULL;
 	return V->as_file;
 }
 
@@ -378,9 +387,6 @@ though at most one will actually work. This is also where we generate the EPS
 file of the map, if so requested; a bit anomalously, it's the only file in
 Materials but outside Release which we write to.
 
-This is also where the originals (not the released copies) of the Figures
-and Sounds, if any, live: in their own subfolders.
-
 =
 filename *Task::large_cover_art_file(int JPEG) {
 	if (inform7_task == NULL) internal_error("there is no current task");
@@ -392,13 +398,23 @@ filename *Task::epsmap_file(void) {
 	return Filenames::in(inform7_task->materials, I"Inform Map.eps");
 }
 
-pathname *Task::figures_path(void) {
+@ This is also where the originals (not the released copies) of the Figures
+and Sounds, if any, live: in their own subfolders, or "departments".
+
+=
+pathname *Task::resources_path(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
-	return Pathnames::down(inform7_task->materials, I"Figures");
+	return inform7_task->materials;
 }
-pathname *Task::sounds_path(void) {
-	if (inform7_task == NULL) internal_error("there is no current task");
-	return Pathnames::down(inform7_task->materials, I"Sounds");
+
+text_stream *Task::figures_department(void) {
+	return I"Figures";
+}
+text_stream *Task::sounds_department(void) {
+	return I"Sounds";
+}
+text_stream *Task::data_department(void) {
+	return I"Data";
 }
 
 @ On a release run, Inblorb will populate the Release subfolder of Materials;

@@ -28,6 +28,8 @@ Each either-or property has the following small block of data attached:
 =
 typedef struct either_or_property_data {
 	struct property *negation; /* see above: the other, if it's one of a pair */
+	int is_default; /* |TRUE| if this is a negation and was declared second */
+	struct parse_node *where_negated; /* the sentence making these antonyms */
 	struct adjective *as_adjective; /* if it is adjectivally used */
 	#ifdef IF_MODULE
 	struct command_grammar *eo_parsing_grammar; /* exotic forms used in parsing */
@@ -38,6 +40,8 @@ typedef struct either_or_property_data {
 either_or_property_data *EitherOrProperties::new_eo_data(property *prn) {
 	either_or_property_data *eod = CREATE(either_or_property_data);
 	eod->negation = NULL;
+	eod->is_default = FALSE;
+	eod->where_negated = NULL;
 	eod->as_adjective = NULL;
 	#ifdef IF_MODULE
 	eod->eo_parsing_grammar = NULL;
@@ -70,7 +74,7 @@ property *EitherOrProperties::obtain(wording W, inference_subject *subj) {
 
 @h Requesting new nameless properties.
 These are properties needed for implementation reasons by //runtime//, or by
-plugins in //if//, but which have no existence at the Inform 7 source text level --
+features in //if//, but which have no existence at the Inform 7 source text level --
 and hence have no names. An author cannot refer to them, knows nothing of them.
 
 Setting them up as adjectives may seem a little over the top, since they cannot
@@ -120,11 +124,55 @@ void EitherOrProperties::make_pair(property *prn, property *neg) {
 			Problems::issue_problem_end();
 			return;
 		}
+		if (prn->either_or_data->is_default) {
+			Problems::quote_source(1, current_sentence);
+			Problems::quote_property(2, prn);
+			Problems::quote_property(3, neg);
+			Problems::quote_source(4, prn->either_or_data->where_negated);
+			StandardProblems::handmade_problem(Task::syntax_tree(),
+				_p_(PM_TransposedNegationPair));
+			Problems::issue_problem_segment(
+				"In %1, you proposed to set up the properties '%2' and '%3' as "
+				"opposites of each other. But I can't allow that, because they "
+				"are already set up as opposites, but the other way around. "
+				"(This matters because it affects whether things not explicitly "
+				"said to be either should be %2 or %3. Here you imply %3 is the "
+				"default, but in the previous declaration %4, %2 was.) Putting these "
+				"two property names the other way around should fix it.");
+			Problems::issue_problem_end();
+			return;
+		}
 		return;
 	}
 
-	prn->either_or_data->negation = neg; neg->either_or_data->negation = prn;
+	prn->either_or_data->negation = neg;
+	neg->either_or_data->negation = prn;
+	prn->either_or_data->is_default = FALSE;
+	neg->either_or_data->is_default = TRUE;
+	prn->either_or_data->where_negated = current_sentence;
+	neg->either_or_data->where_negated = current_sentence;
 	RTProperties::store_in_negation(neg);
+}
+
+void EitherOrProperties::vet_use_as_non_default_property(property *prn) {
+	if ((prn == NULL) || (prn->either_or_data == NULL)) return;
+	if (prn->either_or_data->is_default) {
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_property(2, prn);
+		Problems::quote_property(3, EitherOrProperties::get_negation(prn));
+		Problems::quote_source(4, prn->either_or_data->where_negated);
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_TransposedNegationPair2));
+		Problems::issue_problem_segment(
+			"In %1, you proposed to set up the property '%2' as something which "
+			"is sometimes held and sometimes not, but by default is not. However, "
+			"that clashes with the existing declaration %4, which establishes "
+			"that %2 is the opposite of %3, and is held by default. (The "
+			"simplest way to fix this is just to change '%2' to '%3' in your "
+			"sentence here.)");
+		Problems::issue_problem_end();
+		return;
+	}
 }
 
 @ =

@@ -1,6 +1,6 @@
 [Spatial::] Spatial Model.
 
-A plugin which constructs the fundamental spatial model used by
+A feature which constructs the fundamental spatial model used by
 IF, to represent containment, support, carrying, wearing, and incorporation.
 
 @h Introduction.
@@ -16,18 +16,18 @@ regions, and so on.
 void Spatial::start(void) {
 	SpatialInferences::create();
 
-	PluginManager::plug(CREATE_INFERENCE_SUBJECTS_PLUG, Spatial::create_inference_subjects);
-	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, Spatial::new_base_kind_notify);
-	PluginManager::plug(ACT_ON_SPECIAL_NPS_PLUG, Spatial::act_on_special_NPs);
-	PluginManager::plug(COMPLETE_MODEL_PLUG, Spatial::IF_complete_model);
-	PluginManager::plug(DEFAULT_APPEARANCE_PLUG, Spatial::default_appearance);
-	PluginManager::plug(NAME_TO_EARLY_INFS_PLUG, Spatial::name_to_early_infs);
-	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, Spatial::new_subject_notify);
-	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, Spatial::new_property_notify);
-	PluginManager::plug(PARSE_COMPOSITE_NQS_PLUG, Spatial::parse_composite_NQs);
-	PluginManager::plug(SET_KIND_NOTIFY_PLUG, Spatial::set_kind_notify);
-	PluginManager::plug(SET_SUBKIND_NOTIFY_PLUG, Spatial::set_subkind_notify);
-	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, Spatial::intervene_in_assertion);
+	PluginCalls::plug(CREATE_INFERENCE_SUBJECTS_PLUG, Spatial::create_inference_subjects);
+	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, Spatial::new_base_kind_notify);
+	PluginCalls::plug(ACT_ON_SPECIAL_NPS_PLUG, Spatial::act_on_special_NPs);
+	PluginCalls::plug(COMPLETE_MODEL_PLUG, Spatial::IF_complete_model);
+	PluginCalls::plug(DEFAULT_APPEARANCE_PLUG, Spatial::default_appearance);
+	PluginCalls::plug(NAME_TO_EARLY_INFS_PLUG, Spatial::name_to_early_infs);
+	PluginCalls::plug(NEW_SUBJECT_NOTIFY_PLUG, Spatial::new_subject_notify);
+	PluginCalls::plug(NEW_PROPERTY_NOTIFY_PLUG, Spatial::new_property_notify);
+	PluginCalls::plug(PARSE_COMPOSITE_NQS_PLUG, Spatial::parse_composite_NQs);
+	PluginCalls::plug(SET_KIND_NOTIFY_PLUG, Spatial::set_kind_notify);
+	PluginCalls::plug(SET_SUBKIND_NOTIFY_PLUG, Spatial::set_subkind_notify);
+	PluginCalls::plug(INTERVENE_IN_ASSERTION_PLUG, Spatial::intervene_in_assertion);
 }
 
 @h Kinds of interest.
@@ -235,7 +235,7 @@ An important concept here is the "progenitor" of something in the model,
 which may be |NULL|: the "progenitor" is the object which immediately contains,
 carries, wears, supports or incorporates it.
 
-@d SPATIAL_DATA(I) PLUGIN_DATA_ON_INSTANCE(spatial, I)
+@d SPATIAL_DATA(I) FEATURE_DATA_ON_INSTANCE(spatial, I)
 
 =
 typedef struct spatial_data {
@@ -267,7 +267,7 @@ int Spatial::new_subject_notify(inference_subject *subj) {
 	sd->object_tree_parent = NULL; sd->object_tree_child = NULL; sd->object_tree_sibling = NULL;
 	sd->incorp_tree_child = NULL; sd->incorp_tree_sibling = NULL; sd->incorp_tree_parent = NULL;
 	sd->definition_depth = 0;
-	ATTACH_PLUGIN_DATA_TO_SUBJECT(spatial, subj, sd);
+	ATTACH_FEATURE_DATA_TO_SUBJECT(spatial, subj, sd);
 	return FALSE;
 }
 
@@ -632,25 +632,25 @@ immediately contains, carries, wears, supports or incorporates it.
 
 Clearly if we know every object's progenitor, then we know the whole spatial
 layout -- it's all just elaboration from there. (See Stage III below.) But
-since other plugins can decide on this, not just Spatial, we had better
+since other features can decide on this, not just Spatial, we had better
 provide access routines to read and write:
 
 =
 instance *Spatial::progenitor(instance *I) {
 	if (I == NULL) return NULL;
-	if (PluginManager::active(spatial_plugin) == FALSE) return NULL;
+	if (FEATURE_INACTIVE(spatial)) return NULL;
 	return SPATIAL_DATA(I)->progenitor;
 }
 
 parse_node *Spatial::progenitor_set_at(instance *I) {
 	if (I == NULL) return NULL;
-	if (PluginManager::active(spatial_plugin) == FALSE) return NULL;
+	if (FEATURE_INACTIVE(spatial)) return NULL;
 	return SPATIAL_DATA(I)->progenitor_set_at;
 }
 
 void Spatial::set_progenitor(instance *of, instance *to, inference *reason) {
-	if (PluginManager::active(spatial_plugin) == FALSE)
-		internal_error("spatial plugin inactive");
+	if (FEATURE_INACTIVE(spatial))
+		internal_error("spatial feature inactive");
 	if (to == NULL) internal_error("set progenitor of nothing");
 	SPATIAL_DATA(of)->progenitor = to;
 	SPATIAL_DATA(of)->progenitor_set_at =
@@ -661,8 +661,8 @@ void Spatial::set_progenitor(instance *of, instance *to, inference *reason) {
 
 =
 void Spatial::void_progenitor(instance *of) {
-	if (PluginManager::active(spatial_plugin) == FALSE)
-		internal_error("spatial plugin inactive");
+	if (FEATURE_INACTIVE(spatial))
+		internal_error("spatial feature inactive");
 	SPATIAL_DATA(of)->progenitor = NULL;
 	SPATIAL_DATA(of)->progenitor_set_at = NULL;
 }
@@ -912,7 +912,7 @@ void Spatial::part_object(instance *orphan) {
 	}
 	SPATIAL_DATA(orphan)->incorp_tree_parent = former_parent;
 
-@ What will we use the trees for? Well, one use is to tell other plugins
+@ What will we use the trees for? Well, one use is to tell other features
 which depend on Spatial whether or not one object spatially contains another:
 
 =
@@ -942,7 +942,7 @@ int Spatial::spatial_stage_III(void) {
 
 @ The following verifies, in a brute-force way, that there are no cycles in
 the directed graph formed by the objects and progeniture. (We're doing this
-now, rather than at Stage II above, because other plugins may also have
+now, rather than at Stage II above, because other features may also have
 changed progenitors at Stage II.)
 
 @<Check the well-foundedness of the hierarchy of the set of progenitors@> =
@@ -986,7 +986,7 @@ changed progenitors at Stage II.)
 ask what's wrong with simply making the trees as we go along, rather than
 storing all of those progenitors and then converting them into the trees.
 We don't do that because (for reasons to do with "here" and with how work
-is shared among the plugins) the progenitors are determined in an undefined
+is shared among the features) the progenitors are determined in an undefined
 order; if we made the object tree as we went along, the spatial model would
 be perfectly correct, but siblings -- say, the three things on the grass in
 the Croquet Lawn -- would be compiled in the Inter code in some undefined
@@ -1159,7 +1159,7 @@ void Spatial::add_to_object_sequence(instance *I, int depth) {
 
 =
 int Spatial::get_definition_depth(instance *I) {
-	if (PluginManager::active(spatial_plugin))
+	if (FEATURE_ACTIVE(spatial))
 		return SPATIAL_DATA(I)->definition_depth;
 	return 0;
 }

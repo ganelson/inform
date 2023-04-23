@@ -45,7 +45,15 @@ the Blorb-file's filename won't be too long for the file system.
 	if ((story_title_VAR != NULL) &&
 		(VariableSubjects::has_initial_value_set(story_title_VAR))) {
 		BlurbFile::write_var_to_text(TEMP, story_title_VAR, TRUNCATE_BIBTEXT_MODE);
-	} else WRITE_TO(TEMP, "story");
+		LOOP_THROUGH_TEXT(pos, TEMP) {
+			wchar_t c = Str::get(pos);
+			if ((c == ':') || (c == '/') || (c == '\\') || (c == '.') ||
+				(c == '*') || (c == '#'))
+				Str::put(pos, '-');
+		}
+	} else {
+		WRITE_TO(TEMP, "story");
+	}
 	WRITE_TO(TEMP, ".%S", TargetVMs::get_blorbed_extension(Task::vm()));
 
 @<Write the body of the Blurb file@> =
@@ -57,6 +65,7 @@ the Blorb-file's filename won't be too long for the file system.
 	@<Give instructions about the cover image@>;
 	Figures::write_blurb_commands(OUT);
 	Sounds::write_blurb_commands(OUT);
+	InternalFiles::write_blurb_commands(OUT);
 	WRITE("\n! Placeholder variables\n\n");
 	@<Write numerous placeholder variables@>;
 	WRITE("\n! Other material to release\n\n");
@@ -77,10 +86,12 @@ the Blorb-file's filename won't be too long for the file system.
 
 @<Tell Inblorb where the story file and iFiction files are@> =
 	WRITE("storyfile leafname \""); STREAM_COPY(OUT, TEMP); WRITE("\"\n");
-	if (Task::wraps_existing_storyfile())
+	if (Task::wraps_existing_storyfile()) {
 		WRITE("storyfile \"%f\" include\n", Task::existing_storyfile_file());
-	else
-		WRITE("storyfile \"%f\" include\n", Task::storyfile_file());
+	} else {
+		filename *SF = Task::storyfile_file();
+		if (SF) WRITE("storyfile \"%f\" include\n", SF);
+	}
 	WRITE("ifiction \"%f\" include\n", Task::ifiction_record_file());
 
 @ A controversial point here is that if the author supplies no cover art, we
@@ -222,8 +233,13 @@ file online.
 	WRITE("\"\n");
 	WRITE("interpreter \"%S\" \"%c\"\n", rel->interpreter_template_leafname,
 		Str::get_first_char(ext));
-	WRITE("base64 \"%f\" to \"%p%c",
-		Task::storyfile_file(), Task::released_interpreter_path(), FOLDER_SEPARATOR);
+
+	filename *SF = Task::storyfile_file();
+	if (SF) {
+		WRITE("base64 \"%p%c%S\" to \"%p%c", Task::release_path(),
+			FOLDER_SEPARATOR, TEMP, Task::released_interpreter_path(),
+			FOLDER_SEPARATOR);
+	}
 	STREAM_COPY(OUT, TEMP);
 	WRITE(".js\"\n");
 
@@ -234,13 +250,25 @@ file online.
 	WRITE("website \"%w\"\n", rel->website_template_leafname);
 
 @ The order here is significant, since Inblorb searches the folders in order,
-with the earliest quoted searched first.
+with the earliest quoted searched first. We want first the materials folder for
+a project, then the |Templates| directory in the materials for extensions
+included by the project, and then the external area, and finally the internal.
 
 @<Tell Inblorb where to find the website templates@> =
 	inbuild_nest *N;
 	linked_list *L = Projects::nest_list(Task::project());
-	LOOP_OVER_LINKED_LIST(N, inbuild_nest, L)
+	LOOP_OVER_LINKED_LIST(N, inbuild_nest, L) {
 		WRITE("template path \"%p\"\n", TemplateManager::path_within_nest(N));
+		if (Nests::get_tag(N) == MATERIALS_NEST_TAG) {
+			inform_extension *E;
+			LOOP_OVER_LINKED_LIST(E, inform_extension, Task::project()->extensions_included) {
+				pathname *P = Extensions::materials_path(E);
+				if (P) {
+					WRITE("template path \"%p\"\n", TemplateManager::path_within_nest(Nests::new(P)));
+				}
+			}
+		}
+	}
 
 @ Inblorb reports its progress, or lack of it, with an HTML page, just as we do.
 This page however includes some hints on what the user might have chosen

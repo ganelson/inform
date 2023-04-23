@@ -55,9 +55,9 @@ A grammatical gender is a kind of value. The grammatical genders are
 neuter gender, masculine gender, feminine gender.
 
 The story tense is a grammatical tense that varies.
-The story tense variable translates into I6 as "story_tense".
+The story tense variable is defined by Inter as "story_tense".
 The story viewpoint is a narrative viewpoint that varies.
-The story viewpoint variable translates into I6 as "story_viewpoint".
+The story viewpoint variable is defined by Inter as "story_viewpoint".
 
 To say regarding (item - an object): (- RegardingSingleObject({item}); -).
 

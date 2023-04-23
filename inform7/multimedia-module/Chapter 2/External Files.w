@@ -3,16 +3,16 @@
 To register the names associated with external files, and build
 the small I6 arrays associated with each.
 
-@ The test group |:files| exercises the features in this plugin.
+@ The test group |:files| exercises the features in this feature.
 
-The following is called to activate the plugin:
+The following is called to activate the feature:
 
 =
 void ExternalFiles::start(void) {
-	PluginManager::plug(PRODUCTION_LINE_PLUG, ExternalFiles::production_line);
-	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, ExternalFiles::make_special_meanings);
-	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, ExternalFiles::files_new_base_kind_notify);
-	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, ExternalFiles::files_new_named_instance_notify);
+	PluginCalls::plug(PRODUCTION_LINE_PLUG, ExternalFiles::production_line);
+	PluginCalls::plug(MAKE_SPECIAL_MEANINGS_PLUG, ExternalFiles::make_special_meanings);
+	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, ExternalFiles::files_new_base_kind_notify);
+	PluginCalls::plug(NEW_INSTANCE_NOTIFY_PLUG, ExternalFiles::files_new_named_instance_notify);
 }
 
 int ExternalFiles::production_line(int stage, int debugging,
@@ -59,9 +59,11 @@ int ExternalFiles::new_file_SMF(int task, parse_node *V, wording *NPs) {
 =
 <external-file-sentence-subject> ::=
 	<definite-article> <external-file-sentence-subject> |  ==> { pass 2 }
-	text <external-file-name> |                            ==> { FALSE, -, <<ownership>> = R[1] }
-	binary <external-file-name> |                          ==> { TRUE, -, <<ownership>> = R[1] }
-	<external-file-name>                                   ==> { FALSE, -, <<ownership>> = R[1] }
+	internal data/binary <external-file-name> |            ==> { INTERNAL_BINARY_FILE_NFSMF, -, <<ownership>> = R[1] }
+	internal text <external-file-name> |                   ==> { INTERNAL_TEXT_FILE_NFSMF, -, <<ownership>> = R[1] }
+	text <external-file-name> |                            ==> { EXTERNAL_TEXT_FILE_NFSMF, -, <<ownership>> = R[1] }
+	binary <external-file-name> |                          ==> { EXTERNAL_BINARY_FILE_NFSMF, -, <<ownership>> = R[1] }
+	<external-file-name>                                   ==> { EXTERNAL_TEXT_FILE_NFSMF, -, <<ownership>> = R[1] }
 
 <external-file-name> ::=
 	{file ...} ( owned by <external-file-owner> ) |        ==> { pass 1 }
@@ -120,16 +122,29 @@ void ExternalFiles::register_file(wording W, wording FN) {
 	FN = Wordings::from(FN, <<r>>);
 	if (Wordings::empty(FN)) return;
 	wchar_t *p = Lexer::word_text(Wordings::first_wn(FN));
+	if (<external-file-sentence-subject>(W) == FALSE) internal_error("bad ef grammar");
+	wording NW = GET_RW(<external-file-name>, 1);
+	int format = <<r>>;
 	@<Vet the filename@>;
 	int binary = FALSE;
 	int ownership = OWNED_BY_THIS_PROJECT;
-	TEMPORARY_TEXT(ifid_of_file)
-	@<Determine the ownership@>;
-
-	ExternalFiles::files_create(W, binary, ownership, ifid_of_file, FN);
-
-	LOGIF(MULTIMEDIA_CREATIONS, "Created external file <%W> = filename '%N'\n", W, FN);
-	DISCARD_TEXT(ifid_of_file)
+	switch (format) {
+		case EXTERNAL_TEXT_FILE_NFSMF:
+		case EXTERNAL_BINARY_FILE_NFSMF: {
+			if (format == EXTERNAL_BINARY_FILE_NFSMF) binary = TRUE;
+			TEMPORARY_TEXT(ifid_of_file)
+			@<Determine the ownership@>;
+			ExternalFiles::files_create(W, binary, ownership, ifid_of_file, FN);
+			LOGIF(MULTIMEDIA_CREATIONS, "Created external file <%W> = filename '%N'\n", W, FN);
+			DISCARD_TEXT(ifid_of_file)
+			break;
+		}
+		case INTERNAL_TEXT_FILE_NFSMF:
+		case INTERNAL_BINARY_FILE_NFSMF:
+			InternalFiles::files_create(<<r>>, NW, FN);
+			LOGIF(MULTIMEDIA_CREATIONS, "Created internal file <%W> = filename '%N'\n", NW, FN);
+			break;
+	}
 }
 
 @ The restrictions here are really very conservative.
@@ -144,6 +159,9 @@ void ExternalFiles::register_file(wording W, wording FN) {
 		}
 		if (i>24) bad_filename = TRUE;
 		if ((isalpha(p[i])) || (Characters::isdigit(p[i]))) continue;
+		if ((format == INTERNAL_TEXT_FILE_NFSMF) ||
+			(format == INTERNAL_BINARY_FILE_NFSMF))
+			if ((p[i] == '.') || (p[i] == '_') || (p[i] == ' ')) continue;
 		LOG("Objected to character %c\n", p[i]);
 		bad_filename = TRUE;
 	}
@@ -167,8 +185,6 @@ by an unspecified other project, or by a project identified by its IFID.
 @d OWNED_BY_SPECIFIC_PROJECT 3
 
 @<Determine the ownership@> =
-	if (<external-file-sentence-subject>(W) == FALSE) internal_error("bad ef grammar");
-	binary = <<r>>;
 	W = GET_RW(<external-file-name>, 1);
 	@<Make sure W can be the name of a new file anyway@>;
 	if (<<ownership>> == TRUE) {
@@ -247,7 +263,7 @@ instance *ExternalFiles::files_create(wording W, int binary, int ownership,
 	Assert::true(Propositions::Abstract::to_create_something(K_external_file, W), CERTAIN_CE);
 	allow_exf_creations = FALSE;
 	instance *I = Instances::latest();
-	files_data *fd = PLUGIN_DATA_ON_INSTANCE(files, I);
+	files_data *fd = FEATURE_DATA_ON_INSTANCE(files, I);
 	fd->name = W;
 	fd->unextended_filename = Wordings::first_wn(FN);
 	fd->file_is_binary = binary;
@@ -268,7 +284,7 @@ int ExternalFiles::files_new_named_instance_notify(instance *I) {
 				"this is not the way to create a new external file",
 				"which should be done with a special 'The File ... is called ...' "
 				"sentence.");
-		ATTACH_PLUGIN_DATA_TO_SUBJECT(files, I->as_subject, CREATE(files_data));
+		ATTACH_FEATURE_DATA_TO_SUBJECT(files, I->as_subject, CREATE(files_data));
 		return TRUE;
 	}
 	return FALSE;

@@ -1,0 +1,103 @@
+Test: parse annotation from:
+	junk
+
+Residue: junk
+=========
+Test: parse annotation from:
+	+simple
+
+Annotation: simple
+=========
+Test: parse annotation from:
+	+simple+complex(3)
+
+Annotation: simple
+Annotation: complex
+0: _ = <3>
+=========
+Test: parse annotation from:
+	+simple  +  also Global fish = 1;
+
+Malformed
+=========
+Test: parse annotation from:
+	+simple [ Function x y z;
+
+Annotation: simple
+Residue: [ Function x y z;
+=========
+Test: parse annotation from:
+	+  simple [ Function x y z;
+
+Malformed
+=========
+Test: parse annotation from:
+	+simple(with stuff, and other stuff)
+
+Annotation: simple
+0: with = <stuff>
+1: and = <other stuff>
+=========
+Test: parse annotation from:
+	+simple(with)
+
+Annotation: simple
+0: _ = <with>
+=========
+Test: parse annotation from:
+	+simple(with(  x ))
+
+Annotation: simple
+0: with = <(  x )>
+=========
+Test: parse annotation from:
+	+simple(a,b,c,d,e,f,g,h)
+
+Annotation: simple
+0: _ = <a>
+1: _ = <b>
+2: _ = <c>
+3: _ = <d>
+4: _ = <e>
+5: _ = <f>
+6: _ = <g>
+7: _ = <h>
+=========
+Test: parse annotation from:
+	+simple(a,b,c,d,e,f,g,h,i)
+
+Annotation: simple
+0: _ = <a>
+1: _ = <b>
+2: _ = <c>
+3: _ = <d>
+4: _ = <e>
+5: _ = <f>
+6: _ = <g>
+7: _ = <h>
+8: _ = <i>
+=========
+Test: parse annotation from:
+	+simple(with 'This text')
+
+Annotation: simple
+0: with = <This text>
+=========
+Test: parse annotation from:
+	+simple(with 'This \'text\'')
+
+Annotation: simple
+0: with = <This 'text'>
+=========
+Test: parse annotation from:
+	+simple(with 'This text',also 67)
+
+Annotation: simple
+0: with = <This text>
+1: also = <67>
+=========
+Test: parse annotation from:
+	+simple()
+
+Annotation: simple
+=========

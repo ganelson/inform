@@ -33,6 +33,8 @@ The verb to be means the built-in new-activity meaning.
 The verb to be means the built-in new-action meaning.
 The verb to be means the built-in new-adjective meaning.
 The verb to be means the built-in new-either-or meaning.
+The verb to be means the built-in accessible-to-inter meaning.
+The verb to be means the built-in defined-by-inter meaning.
 The verb to be means the built-in defined-by-table meaning.
 The verb to be means the built-in rule-listed-in meaning.
 The verb to be means the built-in new-figure meaning.

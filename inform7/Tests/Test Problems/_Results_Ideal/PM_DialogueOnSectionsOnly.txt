@@ -1,0 +1,10 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 15 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32187 words long.
+Problem__ PM_DialogueOnSectionsOnly
+  >--> In the heading 'Book 1 - Meeting (dialogue)' (source text, line 3),
+    you've marked for '(dialogue)', but only Sections can be so marked - not
+    Chapters, Books, and so on.
+Inform 7 has finished.

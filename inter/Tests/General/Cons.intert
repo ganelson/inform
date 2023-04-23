@@ -1,8 +1,8 @@
 package main _plain
 	package resources _plain
 		constant Bidger = 20
-		splat CONSTANT "Constant Badger =     12;\n"
-		splat CONSTANT "Constant Bodger $$10011101;\n"
-		splat CONSTANT "Constant Budger $7fe2  ;\n"
+		splat CONSTANT "" "" "Constant Badger =     12;\n"
+		splat CONSTANT "" "" "Constant Bodger $$10011101;\n"
+		splat CONSTANT "" "" "Constant Budger $7fe2  ;\n"
 		constant Danza = sum{ 2, 34 }
 		constant Sahara = sum{ Danza, Bidger, 1 }

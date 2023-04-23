@@ -8,14 +8,25 @@ Inform can read and write text in multiple natural languages, though it
 needs help to do so: each natural language known to Inform comes from a
 small resource folder called its "bundle". (This includes English.)
 
+@e PLAYED_LSUPPORT from 1
+@e WRITTEN_LSUPPORT
+@e INDEXED_LSUPPORT
+@e REPORTED_LSUPPORT
+
+@d MAX_LSUPPORTS 5
+
 =
 typedef struct inform_language {
 	struct inbuild_copy *as_copy;
 	struct wording instance_name; /* instance name, e.g., "German language" */
 	struct instance *nl_instance; /* instance, e.g., "German language" */
-	struct wording language_field[MAX_LANGUAGE_FIELDS]; /* contents of the |about.txt| fields */
-	int adaptive_person; /* which person (one of constants below) text subs are written from */
+	struct text_stream *iso_code; /* e.g., "fr" or "de" */
+	struct text_stream *translated_name; /* e.g., "Français" or "Deutsch" */
+	struct text_stream *native_cue; /* e.g., "en français" or "in deutscher Sprache" */
+	struct inform_extension *belongs_to; /* if it does belong to an extension */
+	int adaptive_person; /* which person text substitutions are written from */
 	int Preform_loaded; /* has a Preform syntax definition been read for this? */
+	int supports[MAX_LSUPPORTS];
 	CLASS_DEFINITION
 } inform_language;
 
@@ -27,7 +38,6 @@ void Languages::scan(inbuild_copy *C) {
 	L->as_copy = C;
 	if (C == NULL) internal_error("no copy to scan");
 	Copies::set_metadata(C, STORE_POINTER_inform_language(L));
-
 	TEMPORARY_TEXT(sentence_format)
 	WRITE_TO(sentence_format, "%S language", C->edition->work->title);
 	L->instance_name = Feeds::feed_text(sentence_format);
@@ -35,61 +45,78 @@ void Languages::scan(inbuild_copy *C) {
 	L->nl_instance = NULL;
 	L->Preform_loaded = FALSE;
 	L->adaptive_person = -1; /* i.e., none yet specified */
-	for (int n=0; n<MAX_LANGUAGE_FIELDS; n++) L->language_field[n] = EMPTY_WORDING;
-	@<Read the about.txt file for the bundle@>;
-	LOG("Found language bundle '%S' (%p)\n", C->edition->work->title,
-		Languages::path_to_bundle(L));
-}
+	/* these defaults should always be overwritten */
+	L->iso_code = I"en";
+	L->translated_name = I"English";
+	/* but not this one */
+	L->native_cue = NULL;
+	L->belongs_to = NULL;
+	for (int i=0; i<MAX_LSUPPORTS; i++) L->supports[i] = FALSE;
 
-@ Within the bundle folder is a file called |about.txt|, which sets numbered
-fields to excerpts of text. The following are the field numbers:
-
-@d NAME_IN_ENGLISH_LFIELD 1		/* e.g. "German" */
-@d NAME_NATIVE_LFIELD 2			/* e.g. "Deutsch" */
-@d CUE_NATIVE_LFIELD 3			/* e.g. "in deutscher Sprache" */
-@d ISO_639_CODE_LFIELD 4		/* e.g. "de": an ISO 639-1 code */
-@d TRANSLATOR_LFIELD 5			/* e.g. "Team GerX" */
-@d KIT_LFIELD 6					/* e.g. "GermanLanguageKit" */
-@d MAX_LANGUAGE_FIELDS 7		/* one more than the highest number above */
-
-@ If we can't find the file, it doesn't matter except that all of the excerpts
-remain empty. But we may as well tell the debugging log.
-
-@d MAX_BUNDLE_ABOUT_LINE_LENGTH 256  /* which is far more than necessary, really */
-
-@<Read the about.txt file for the bundle@> =
 	filename *about_file = Filenames::in(Languages::path_to_bundle(L), I"about.txt");
-
-	if (TextFiles::read(about_file, FALSE,
-		NULL, FALSE, Languages::read_metadata, NULL, L) == FALSE)
-		LOG("Can't find about file: %f\n", about_file);
-
-@ The format of the file is very simple. Each line is introduced by a number
-from 1 to |MAX_LANGUAGE_FIELDS| minus one, and then contains text which
-extends for the rest of the line.
-
-=
-void Languages::read_metadata(text_stream *item_name,
-	text_file_position *tfp, void *vnl) {
-	inform_language *L = (inform_language *) vnl;
-	wording W = Feeds::feed_text(item_name);
-	if (Wordings::nonempty(W)) {
-		vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
-		int field = -1;
-		if ((ve) && (Vocabulary::test_vflags(ve, NUMBER_MC)))
-			field = Vocabulary::get_literal_number_value(ve);
-		if ((field >= 1) && (field < MAX_LANGUAGE_FIELDS)) {
-			L->language_field[field] =
-				Wordings::new(Wordings::first_wn(W)+1, Wordings::last_wn(W));
-		} else LOG("Warning: couldn't read about.txt line: %S\n", item_name);
+	if (TextFiles::exists(about_file)) {
+		TEMPORARY_TEXT(err)
+		WRITE_TO(err, "a language bundle should no longer use an 'about.txt' file");
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+		DISCARD_TEXT(err)	
+	}
+	
+	filename *F = Filenames::in(C->location_if_path, I"language_metadata.json");
+	if (TextFiles::exists(F)) {
+		JSONMetadata::read_metadata_file(C, F, NULL, NULL);
+		if (C->metadata_record) {
+			JSON_value *language_details =
+				JSON::look_up_object(C->metadata_record, I"language-details");
+			if (language_details) @<Extract the language details@>
+			else {
+				TEMPORARY_TEXT(err)
+				WRITE_TO(err, "'language_metadata.json' must contain a \"language-details\" field");
+				Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+				DISCARD_TEXT(err)	
+			}
+			JSON_value *needs = JSON::look_up_object(C->metadata_record, I"needs");
+			if (needs) {
+				TEMPORARY_TEXT(err)
+				WRITE_TO(err, "language bundle is not allowed to have 'needs'");
+				Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+				DISCARD_TEXT(err)	
+			}
+		}
+	} else {
+		TEMPORARY_TEXT(err)
+		WRITE_TO(err, "a language bundle must now provide a 'language_metadata.json' file");
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+		DISCARD_TEXT(err)	
 	}
 }
+
+@<Extract the language details@> =
+	JSON_value *translated_name = JSON::look_up_object(language_details, I"translated-name");
+	if (translated_name) L->translated_name = Str::duplicate(translated_name->if_string);
+	
+	JSON_value *iso_code = JSON::look_up_object(language_details, I"iso-639-1-code");
+	if (iso_code) L->iso_code = Str::duplicate(iso_code->if_string);
+	
+	JSON_value *translated_syntax_cue = JSON::look_up_object(language_details, I"translated-syntax-cue");
+	if (translated_syntax_cue) L->native_cue = Str::duplicate(translated_syntax_cue->if_string);
+	
+	JSON_value *supports = JSON::look_up_object(language_details, I"supports");
+	if (supports) {
+		JSON_value *E;
+		LOOP_OVER_LINKED_LIST(E, JSON_value, supports->if_list) {
+			text_stream *key = E->if_string;
+			if (Str::eq(key, I"played")) L->supports[PLAYED_LSUPPORT] = TRUE;
+			if (Str::eq(key, I"written")) L->supports[WRITTEN_LSUPPORT] = TRUE;
+			if (Str::eq(key, I"indexed")) L->supports[INDEXED_LSUPPORT] = TRUE;
+			if (Str::eq(key, I"reported")) L->supports[REPORTED_LSUPPORT] = TRUE;
+		}
+	}
 
 @ =
 pathname *Languages::path_to_bundle(inform_language *L) {
 	return L->as_copy->location_if_path;
 }
-
+	
 @h Logging.
 
 =
@@ -109,22 +136,33 @@ void Languages::write_ISO_code(OUTPUT_STREAM, inform_language *L) {
 	#ifdef CORE_MODULE
 	if (L == NULL) L = DefaultLanguage::get(NULL);
 	#endif
-	if (Wordings::nonempty(L->language_field[ISO_639_CODE_LFIELD]))
-		WRITE("%+W", L->language_field[ISO_639_CODE_LFIELD]);
-	else WRITE("en");
+	WRITE("%S", L->iso_code);
+}
+
+@h Support.
+Different languages support different levels of translation.
+
+=
+int Languages::supports(inform_language *L, int S) {
+	if ((S<1) || (S>=MAX_LSUPPORTS)) internal_error("support out of range");
+	if (L == NULL) return FALSE;
+	return L->supports[S];
 }
 
 @h Kit.
-Each language needs its own kit of Inter code, named as follows:
+Each language needs its own kit of Inter code, if it is going to be used as
+a language of play. The following is called only when `L` is the language of
+play for `project`:
 
 =
-text_stream *Languages::kit_name(inform_language *L) {
-	text_stream *T = Str::new();
-	if (Wordings::nonempty(L->language_field[KIT_LFIELD]))
-		WRITE_TO(T, "%+W", L->language_field[KIT_LFIELD]);
-	else
-		WRITE_TO(T, "%+WLanguageKit", L->language_field[NAME_IN_ENGLISH_LFIELD]);
-	return T;
+void Languages::add_kit_dependencies_to_project(inform_language *L, inform_project *project) {
+	if (L == NULL) internal_error("no language");
+	TEMPORARY_TEXT(kitname)
+	WRITE_TO(kitname, "%SLanguageKit", L->as_copy->edition->work->title);
+	inbuild_work *work = Works::new_raw(kit_genre, kitname, I"");
+	inbuild_requirement *req = Requirements::any_version_of(work);
+	Projects::add_kit_dependency(project, kitname, L, NULL, req, NULL);
+	DISCARD_TEXT(kitname)
 }
 
 @h Finding by name.
@@ -135,13 +173,15 @@ include the Materials folder for any relevant project.
 
 =
 linked_list *search_list_for_Preform_callback = NULL;
-void Languages::read_Preform_definition(inform_language *L, linked_list *S) {
+int Languages::read_Preform_definition(inform_language *L, linked_list *S) {
 	if (L == NULL) internal_error("no language");
 	if (L->Preform_loaded == FALSE) {
 		L->Preform_loaded = TRUE;
 		search_list_for_Preform_callback = S;
-		(*shared_preform_callback)(L);
+		int n = (*shared_preform_callback)(L);
+		if (n == 0) return FALSE;
 	}
+	return TRUE;
 }
 
 @ This function is called only from Preform...
@@ -157,10 +197,60 @@ inform_language *Languages::Preform_find(text_stream *name) {
 
 =
 inform_language *Languages::find_for(text_stream *name, linked_list *search) {
+	text_stream *author = NULL;
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, name, L"(%c+) [Ll]anguage by (%c+)")) {
+		name = mr.exp[0]; author = mr.exp[1];
+	} else if (Regexp::match(&mr, name, L"(%c+) by (%c+)")) {
+		name = mr.exp[0]; author = mr.exp[1];
+	} else if (Regexp::match(&mr, name, L"(%c+) [Ll]anguage")) {
+		name = mr.exp[0];
+	}
+	TEMPORARY_TEXT(title)
+	WRITE_TO(title, "%S Language", name);
+	inbuild_requirement *extension_req =
+		Requirements::any_version_of(Works::new(extension_bundle_genre, title, author));
+	inbuild_search_result *extension_R = Nests::search_for_best(extension_req, search);
+	DISCARD_TEXT(title)
+	if (extension_R) {
+		inform_extension *E = Extensions::from_copy(extension_R->copy);
+		inbuild_nest *N = Extensions::materials_nest(E);
+		if (N) {
+			linked_list *longer = NEW_LINKED_LIST(inbuild_nest);
+			ADD_TO_LINKED_LIST(N, inbuild_nest, longer);
+			inbuild_requirement *req =
+				Requirements::any_version_of(Works::new(language_genre, name, I""));
+			inbuild_search_result *R = Nests::search_for_best(req, longer);
+			if (R) {
+				inform_language *L = LanguageManager::from_copy(R->copy);
+				L->belongs_to = E;
+				Regexp::dispose_of(&mr);
+				return L;
+			}
+		}
+	}
 	inbuild_requirement *req =
 		Requirements::any_version_of(Works::new(language_genre, name, I""));
 	inbuild_search_result *R = Nests::search_for_best(req, search);
+	Regexp::dispose_of(&mr);
 	if (R) return LanguageManager::from_copy(R->copy);
+	return NULL;
+}
+
+@ Or we can convert the native cue, |en français|, to the name, |French|,
+though this will not work for language bundles inside of extensions, and
+so the function is now deprecated:
+
+=
+text_stream *Languages::find_by_native_cue(text_stream *cue, linked_list *search) {
+	linked_list *results = NEW_LINKED_LIST(inbuild_search_result);
+	Nests::search_for(Requirements::anything_of_genre(language_genre), search, results);
+	inbuild_search_result *search_result;
+	LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, results) {
+		inform_language *L = LanguageManager::from_copy(search_result->copy);
+		if (Str::eq_insensitive(cue, L->native_cue))
+			return L->as_copy->edition->work->title;
+	}
 	return NULL;
 }
 

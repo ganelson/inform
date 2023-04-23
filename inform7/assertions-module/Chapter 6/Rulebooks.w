@@ -43,12 +43,12 @@ typedef struct rulebook {
 =
 rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
 	rulebook *B = CREATE(rulebook);
-	Rulebooks::set_std(B);
 
 	<new-rulebook-name>(W);
 	B->primary_name = GET_RW(<new-rulebook-name>, 1);
 	B->alternative_name = EMPTY_WORDING;
 	B->action_stem_length = 0;
+	Rulebooks::detect_notable(B);
 
 	B->contents = BookingLists::new();
 
@@ -122,9 +122,9 @@ rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
 	FocusAndOutcome::initialise_focus(&(B->my_focus), parameter_kind);
 
 	int def = NO_OUTCOME;
-	if (B == Rulebooks::std(INSTEAD_RB)) def = FAILURE_OUTCOME;
-	if (B == Rulebooks::std(AFTER_RB)) def = SUCCESS_OUTCOME;
-	if (B == Rulebooks::std(UNSUCCESSFUL_ATTEMPT_BY_RB)) def = SUCCESS_OUTCOME;
+	if (B == RB_instead) def = FAILURE_OUTCOME;
+	if (B == RB_after) def = SUCCESS_OUTCOME;
+	if (B == RB_unsuccessful_attempt) def = SUCCESS_OUTCOME;
 	FocusAndOutcome::initialise_outcomes(&(B->my_outcomes), producing_kind, def);
 
 @ Focus and outcome are roughly the $X$ and $Y$ if we think of a rulebook as
@@ -251,6 +251,23 @@ rulebook *Rulebooks::new_automatic(wording W, kind *basis,
 	return B;
 }
 
+@ The author can demand with a "translates as" sentence that a given
+rulebook should have an identifier given to it which is accessible to Inter:
+
+=
+void Rulebooks::translates(wording W, parse_node *p2) {
+	if (<rulebook-name>(W)) {
+		rulebook *B = (rulebook *) <<rp>>;
+		RTRulebooks::translate(B, Node::get_text(p2));
+	} else {
+		LOG("Tried %W\n", W);
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_TranslatesNonRulebook),
+			"this is not the name of a rulebook",
+			"so cannot be translated.");
+	}
+}
+
 @h Access.
 
 =
@@ -259,9 +276,9 @@ int Rulebooks::used_by_future_actions(rulebook *B) {
 }
 
 int Rulebooks::requires_specific_action(rulebook *B) {
-	if (B == Rulebooks::std(CHECK_RB)) return TRUE;
-	if (B == Rulebooks::std(CARRY_OUT_RB)) return TRUE;
-	if (B == Rulebooks::std(REPORT_RB)) return TRUE;
+	if (B == RB_check) return TRUE;
+	if (B == RB_carry_out) return TRUE;
+	if (B == RB_report) return TRUE;
 	if (B->action_stem_length > 0) return TRUE;
 	return FALSE;
 }
@@ -327,6 +344,14 @@ This function is called in response to a sentence like "The consideration rulebo
 has a D called W":
 
 =
+shared_variable_set *Rulebooks::variables(rulebook *B) {
+	return B->my_variables;
+}
+
+shared_variable_access_list *Rulebooks::accessible_variables(rulebook *B) {
+	return B->accessible_variables;
+}
+
 void Rulebooks::add_variable(rulebook *B, parse_node *cnode) {
 	@<The variable has to have a name@>;
 	wording D = Node::get_text(cnode->down);
@@ -345,10 +370,11 @@ void Rulebooks::add_variable(rulebook *B, parse_node *cnode) {
 	@<And a definite one at that@>;
 
 	int is_actor = FALSE;
-	if ((B->allocation_id == ACTION_PROCESSING_RB) &&
-		(SharedVariables::set_empty(B->my_variables)))
+	shared_variable_set *vars = Rulebooks::variables(B);
+	if ((B == RB_action_processing) &&
+		(SharedVariables::set_empty(vars)))
 		is_actor = TRUE;
-	SharedVariables::new(B->my_variables, W, K, is_actor);
+	SharedVariables::new(vars, W, K, is_actor);
 }
 
 @<The variable has to have a name@> =
@@ -446,7 +472,7 @@ go into |B->my_variables|.
 
 =
 void Rulebooks::grant_access_to_variables(rulebook *B, shared_variable_set *set) {
-	SharedVariables::add_set_to_access_list(B->accessible_variables, set);
+	SharedVariables::add_set_to_access_list(Rulebooks::accessible_variables(B), set);
 }
 
 @h Attaching and detaching rules.
@@ -481,11 +507,11 @@ void Rulebooks::attach_rule(rulebook *B, booking *br,
 
 	PluginCalls::rule_placement_notify(R, B, side, ref_rule);
 
-	Rules::put_variables_in_scope(R, B->accessible_variables);
+	Rules::put_variables_in_scope(R, Rulebooks::accessible_variables(B));
 	if (side == INSTEAD_SIDE) {
 		LOGIF(RULE_ATTACHMENTS,
 			"Copying former rulebook's variable permissions to displaced rule\n");
-		Rules::put_variables_in_scope(ref_rule, B->accessible_variables);
+		Rules::put_variables_in_scope(ref_rule, Rulebooks::accessible_variables(B));
 	}
 
 	RuntimeContextData::ensure_avl(R);
@@ -591,12 +617,12 @@ that <rulebook-stem-name> matches "printing the name of something".
 	...                                      ==> { -, - }
 
 @<Match the when scene begins exception@> =
-	parsed_scene_stem_B = Rulebooks::std(WHEN_SCENE_BEGINS_RB);
+	parsed_scene_stem_B = RB_when_scene_begins;
 	parsed_scene_stem_len = 2;
 	==> { -, - };
 
 @<Match the when scene ends exception@> =
-	parsed_scene_stem_B = Rulebooks::std(WHEN_SCENE_ENDS_RB);
+	parsed_scene_stem_B = RB_when_scene_ends;
 	parsed_scene_stem_len = 2;
 	==> { -, - };
 
@@ -660,73 +686,54 @@ one for taking, where the "or dropping" part would never have effect.
 			rm->match_length = rm->matched_rulebook->action_stem_length;
 	}
 
-@h Standard rulebooks.
-A few rulebooks are special to Inform, in that they have built-in support either
-from the compiler, or from one of the kits, or both. The list below looks long,
-but actually most of these are special only in that they are shown in their
-own part of the Index; it's not that the compiler treats them differently from
-other rulebooks.
-
-These are recognised by the order in which they are declared, which makes it
-crucial not to change that order in //basic_inform: Miscellaneous Definitions//
-and //standard_rules: Physical World Model// without making matching changes
-both here and in //BasicInformKit// and //WorldModelKit//. So: don't casually
-change the following numbers.
-
-Note that in the world of Basic Inform only, none of these will exist except
-for the first two.
-
-@d STARTUP_RB                     0 /* Startup rules */
-@d SHUTDOWN_RB                    1 /* Shutdown rules */
-
-@d TURN_SEQUENCE_RB              11 /* Turn sequence rules */
-@d SCENE_CHANGING_RB             12 /* Scene changing rules */
-@d WHEN_PLAY_BEGINS_RB           13 /* When play begins */
-@d WHEN_PLAY_ENDS_RB             14 /* When play ends */
-@d WHEN_SCENE_BEGINS_RB          15 /* When scene begins */
-@d WHEN_SCENE_ENDS_RB            16 /* When scene ends */
-@d EVERY_TURN_RB                 17 /* Every turn */
-@d ACTION_PROCESSING_RB          18 /* Action-processing rules */
-@d SETTING_ACTION_VARIABLES_RB   19 /* Setting action variables rules */
-@d SPECIFIC_ACTION_PROCESSING_RB 20 /* Specific action-processing rules */
-@d PLAYERS_ACTION_AWARENESS_RB   21 /* Player's action awareness rules */
-@d ACCESSIBILITY_RB              22 /* Accessibility rules */
-@d REACHING_INSIDE_RB            23 /* Reaching inside rules */
-@d REACHING_OUTSIDE_RB           24 /* Reaching outside rules */
-@d VISIBILITY_RB                 25 /* Visibility rules */
-@d PERSUASION_RB                 26 /* Persuasion rules */
-@d UNSUCCESSFUL_ATTEMPT_BY_RB    27 /* Unsuccessful attempt by */
-@d BEFORE_RB                     28 /* Before rules */
-@d INSTEAD_RB                    29 /* Instead rules */
-@d CHECK_RB                      30 /* Check */
-@d CARRY_OUT_RB                  31 /* Carry out rules */
-@d AFTER_RB                      32 /* After rules */
-@d REPORT_RB                     33 /* Report */
-@d DOES_THE_PLAYER_MEAN_RB       34 /* Does the player mean...? rules */
-@d MULTIPLE_ACTION_PROCESSING_RB 35 /* For changing or reordering multiple actions */
-
-@ The rest of the compiler should call |Rulebooks::std(N)| to obtain rulebook |N|.
-
-@d MAX_BUILT_IN_RULEBOOKS 64
+@h Notable rulebooks.
+A few rulebooks are special to Inform: we recognise them by their English names,
+as used when they are created by the Standard Rules extension.
 
 =
-int built_in_rulebooks_initialised = FALSE;
-rulebook *built_in_rulebooks[MAX_BUILT_IN_RULEBOOKS];
+<notable-rulebooks> ::=
+	action-processing |
+	after |
+	before |
+	carry out |
+	check |
+	instead |
+	report |
+	setting action variables |
+	unsuccessful attempt by |
+	when scene begins |
+	when scene ends
 
-rulebook *Rulebooks::std(int rb) {
-	if ((rb < 0) || (rb >= MAX_BUILT_IN_RULEBOOKS)) internal_error("rb out of range");
-	if (built_in_rulebooks_initialised == FALSE) {
-		built_in_rulebooks_initialised = TRUE;
-		for (int i=0; i<MAX_BUILT_IN_RULEBOOKS; i++) built_in_rulebooks[i] = NULL;
-	}
-	return built_in_rulebooks[rb];
-}
+@
 
-void Rulebooks::set_std(rulebook *B) {
-	if (built_in_rulebooks_initialised == FALSE) {
-		built_in_rulebooks_initialised = TRUE;
-		for (int i=0; i<MAX_BUILT_IN_RULEBOOKS; i++) built_in_rulebooks[i] = NULL;
+= (early code)
+rulebook *RB_action_processing = NULL;
+rulebook *RB_after = NULL;
+rulebook *RB_before = NULL;
+rulebook *RB_carry_out = NULL;
+rulebook *RB_check = NULL;
+rulebook *RB_instead = NULL;
+rulebook *RB_report = NULL;
+rulebook *RB_setting_action_variables = NULL;
+rulebook *RB_unsuccessful_attempt = NULL;
+rulebook *RB_when_scene_begins = NULL;
+rulebook *RB_when_scene_ends = NULL;
+
+@ =
+void Rulebooks::detect_notable(rulebook *B) {
+	if (<notable-rulebooks>(B->primary_name)) {
+		switch (<<r>>) {
+			case 0: RB_action_processing = B; break;
+			case 1: RB_after = B; break;
+			case 2: RB_before = B; break;
+			case 3: RB_carry_out = B; break;
+			case 4: RB_check = B; break;
+			case 5: RB_instead = B; break;
+			case 6: RB_report = B; break;
+			case 7: RB_setting_action_variables = B; break;
+			case 8: RB_unsuccessful_attempt = B; break;
+			case 9: RB_when_scene_begins = B; break;
+			case 10: RB_when_scene_ends = B; break;
+		}
 	}
-	if (B->allocation_id < MAX_BUILT_IN_RULEBOOKS)
-		built_in_rulebooks[B->allocation_id] = B;
 }

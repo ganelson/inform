@@ -74,7 +74,7 @@ void MapElement::render(OUTPUT_STREAM, index_session *session, int test_only) {
 
 @ By this point we've accounted for rooms (and their contents and any parts
 thereof), directions (which we excluded), regions (ditto), and the player
-object (which the Player plugin put in the right place). The only remainder
+object (which the Player feature put in the right place). The only remainder
 will be things which are offstage (and their contents and any parts thereof):
 
 @<Give details of everything still unmentioned in the World index@> =
@@ -121,11 +121,11 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details,
 	@<End the object citation line@>;
 	if (details) @<Add a subsidiary paragraph of details about this object@>;
 	if (xtra >= 0) {
-		IndexUtilities::extra_div_open(OUT, xtra, depth+1, "e0e0e0");
+		IndexUtilities::extra_div_open(OUT, xtra, depth+1, I"indexmorebox");
 		@<Add the chain of kinds@>;
 		@<Add the catalogue of specific properties@>;
 		@<Add details depending on the kind@>;
-		IndexUtilities::extra_div_close(OUT, "e0e0e0");
+		IndexUtilities::extra_div_close(OUT, I"indexmorebox");
 	}
 	@<Recurse the index citation for the object as necessary@>;
 }

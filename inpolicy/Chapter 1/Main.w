@@ -8,6 +8,8 @@ this plan out.
 @e SILENCE_CLSW
 @e VERBOSE_CLSW
 @e PROBLEMS_CLSW
+@e KIT_VERSIONS_CLSW
+@e SYNC_KIT_VERSIONS_CLSW
 
 =
 pathname *path_to_inpolicy = NULL; /* where we are installed */
@@ -23,6 +25,10 @@ int main(int argc, char **argv) {
 
 	CommandLine::declare_switch(PROBLEMS_CLSW, L"check-problems", 1,
 		L"check problem test case coverage");
+	CommandLine::declare_switch(KIT_VERSIONS_CLSW, L"kit-versions", 1,
+		L"show version numbers of the built-in kits");
+	CommandLine::declare_switch(SYNC_KIT_VERSIONS_CLSW, L"sync-kit-versions", 1,
+		L"fix version numbers of the built-in kits to match core inform7 version");
 
 	CommandLine::declare_boolean_switch(SILENCE_CLSW, L"silence", 1,
 		L"print nothing unless there's something wrong", FALSE);
@@ -58,6 +64,8 @@ void Main::disallow(int id, text_stream *arg, void *state) {
 void Main::respond(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
 		case PROBLEMS_CLSW: RUNTEST(Coverage::check); break;
+		case KIT_VERSIONS_CLSW: KitVersioning::show_versions(); break;
+		case SYNC_KIT_VERSIONS_CLSW: KitVersioning::sync_versions(); break;
 		case SILENCE_CLSW: silence_mode = val; break;
 		case VERBOSE_CLSW: verbose_mode = val; break;
 	}

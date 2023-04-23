@@ -25,13 +25,13 @@ for example, "going from the Casino in the presence of Le Chiffre" means
 testing that the action is "going", that the origin is the Casino, and that
 Le Chiffre is there -- three CPMC clauses.
 
-The basic roster of CPMC clauses is here, but plugins can add more. In
+The basic roster of CPMC clauses is here, but features can add more. In
 particular, see //Matching Going Action Patterns//.
 
 Do not rearrange this without first reading the code below: the ordering is
 very significant. The CPMCs are grouped into "ranges", and it is intentional
 that those ranges are numbered 0, 1, 3, 2; we need the additional CPMCs from
-plugins to fall into range 2.
+features to fall into range 2.
 
 @d ACTOR_CPMCRANGE 0
 
@@ -488,7 +488,7 @@ and otherwise we do our own thing.
 		
 		case ACTION_MATCHES_CPMC:           @<Compile ACTION_MATCHES_CPMC test@>; break;
 
-		/* The DETAILS range (but see plugins for extra ones) */
+		/* The DETAILS range (but see features for extra ones) */
 		
 		case NOUN_EXISTS_CPMC:              @<Compile NOUN_EXISTS_CPMC test@>; break;
 		case NOUN_IS_INP1_CPMC:             @<Compile NOUN_IS_INP1_CPMC test@>; break;

@@ -580,6 +580,7 @@ Constant ACCEPTEDPN_BRM = 6;
 	cp1 = txt-->0; p1 = TEXT_TY_Temporarily_Transmute(txt);
 	cp2 = rtxt-->0; p2 = TEXT_TY_Temporarily_Transmute(rtxt);
 	TEXT_TY_Transmute(ctxt);
+	if (ctxt) BlkMakeMutable(ctxt);
 	r = TEXT_TY_BlobAccessI(txt, blobtype, ctxt, wanted, rtxt);
 	TEXT_TY_Untransmute(txt, p1, cp1);
 	TEXT_TY_Untransmute(rtxt, p2, cp2);

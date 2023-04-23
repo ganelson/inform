@@ -9,6 +9,13 @@
 
 #ifdef FLOAT_SUPPORT
 #include <math.h>
+
+#ifdef DOUBLE_SUPPORT   /* Inside FLOAT_SUPPORT! */
+/* A couple of macros which test a pair of glui32 words as a double */
+#define DOUBLE_PAIR_ISINF(vhi, vlo) (((vhi) == 0x7FF00000 || (vhi) == 0xFFF00000) && (vlo) == 0)
+#define DOUBLE_PAIR_ISNAN(vhi, vlo) (((vhi) & 0x7FF00000) == 0x7FF00000 && (((vhi) & 0xFFFFF) != 0 || (vlo) != 0))
+#endif /* DOUBLE_SUPPORT */
+
 #endif /* FLOAT_SUPPORT */
 
 /* execute_loop():
@@ -19,14 +26,19 @@ void execute_loop()
   int done_executing = FALSE;
   int ix;
   glui32 opcode;
-  operandlist_t *oplist;
+  const operandlist_t *oplist;
   oparg_t inst[MAX_OPERANDS];
   glui32 value, addr, val0, val1;
   glsi32 vals0, vals1;
   glui32 *arglist;
   glui32 arglistfix[3];
+  
 #ifdef FLOAT_SUPPORT
   gfloat32 valf, valf1, valf2;
+#ifdef DOUBLE_SUPPORT   /* Inside FLOAT_SUPPORT! */
+  glui32 val0hi, val0lo, val1hi, val1lo;
+  gfloat64 vald, vald1, vald2;
+#endif /* DOUBLE_SUPPORT */
 #endif /* FLOAT_SUPPORT */
 
   while (!done_executing) {
@@ -721,6 +733,15 @@ void execute_loop()
         }
         break;
 
+      case op_hasundo:
+        value = has_undo();
+        store_operand(inst[0].desttype, inst[0].value, value);
+        break;
+
+      case op_discardundo:
+        discard_undo();
+        break;
+
       case op_quit:
         done_executing = TRUE;
         break;
@@ -975,7 +996,7 @@ void execute_loop()
         }
         else {
           valf1 = decode_float(inst[1].value) - decode_float(inst[0].value);
-          valf2 = fabs(decode_float(inst[2].value));
+          valf2 = fabsf(decode_float(inst[2].value));
           val0 = (valf1 <= valf2 && valf1 >= -valf2);
         }
         if (val0) {
@@ -996,7 +1017,7 @@ void execute_loop()
         }
         else {
           valf1 = decode_float(inst[1].value) - decode_float(inst[0].value);
-          valf2 = fabs(decode_float(inst[2].value));
+          valf2 = fabsf(decode_float(inst[2].value));
           val0 = (valf1 <= valf2 && valf1 >= -valf2);
         }
         if (!val0) {
@@ -1038,6 +1059,298 @@ void execute_loop()
         }
         break;
 
+#ifdef DOUBLE_SUPPORT   /* Inside FLOAT_SUPPORT! */
+        
+      case op_numtod:
+        vals0 = inst[0].value;
+        encode_double((gfloat64)vals0, &val0hi, &val0lo);
+        store_operand(inst[1].desttype, inst[1].value, val0lo);
+        store_operand(inst[2].desttype, inst[2].value, val0hi);
+        break;
+      case op_dtonumz:
+        vald = decode_double(inst[0].value, inst[1].value);
+        if (!signbit(vald)) {
+          if (isnan(vald) || isinf(vald) || (vald > 2147483647.0))
+            vals0 = 0x7FFFFFFF;
+          else
+            vals0 = (glsi32)(trunc(vald));
+        }
+        else {
+          if (isnan(vald) || isinf(vald) || (vald < -2147483647.0))
+            vals0 = 0x80000000;
+          else
+            vals0 = (glsi32)(trunc(vald));
+        }
+        store_operand(inst[2].desttype, inst[2].value, vals0);
+        break;
+      case op_dtonumn:
+        vald = decode_double(inst[0].value, inst[1].value);
+        if (!signbit(vald)) {
+          if (isnan(vald) || isinf(vald) || (vald > 2147483647.0))
+            vals0 = 0x7FFFFFFF;
+          else
+            vals0 = (glsi32)(round(vald));
+        }
+        else {
+          if (isnan(vald) || isinf(vald) || (vald < -2147483647.0))
+            vals0 = 0x80000000;
+          else
+            vals0 = (glsi32)(round(vald));
+        }
+        store_operand(inst[2].desttype, inst[2].value, vals0);
+        break;
+      case op_ftod:
+        valf = decode_float(inst[0].value);
+        encode_double((gfloat64)valf, &val0hi, &val0lo);
+        store_operand(inst[1].desttype, inst[1].value, val0lo);
+        store_operand(inst[2].desttype, inst[2].value, val0hi);
+        break;
+      case op_dtof:
+        vald = decode_double(inst[0].value, inst[1].value);
+        value = encode_float((gfloat32)vald);
+        store_operand(inst[2].desttype, inst[2].value, value);
+        break;
+        
+      case op_dadd:
+        vald1 = decode_double(inst[0].value, inst[1].value);
+        vald2 = decode_double(inst[2].value, inst[3].value);
+        encode_double(vald1 + vald2, &val0hi, &val0lo);
+        store_operand(inst[4].desttype, inst[4].value, val0lo);
+        store_operand(inst[5].desttype, inst[5].value, val0hi);
+        break;
+      case op_dsub:
+        vald1 = decode_double(inst[0].value, inst[1].value);
+        vald2 = decode_double(inst[2].value, inst[3].value);
+        encode_double(vald1 - vald2, &val0hi, &val0lo);
+        store_operand(inst[4].desttype, inst[4].value, val0lo);
+        store_operand(inst[5].desttype, inst[5].value, val0hi);
+        break;
+      case op_dmul:
+        vald1 = decode_double(inst[0].value, inst[1].value);
+        vald2 = decode_double(inst[2].value, inst[3].value);
+        encode_double(vald1 * vald2, &val0hi, &val0lo);
+        store_operand(inst[4].desttype, inst[4].value, val0lo);
+        store_operand(inst[5].desttype, inst[5].value, val0hi);
+        break;
+      case op_ddiv:
+        vald1 = decode_double(inst[0].value, inst[1].value);
+        vald2 = decode_double(inst[2].value, inst[3].value);
+        encode_double(vald1 / vald2, &val0hi, &val0lo);
+        store_operand(inst[4].desttype, inst[4].value, val0lo);
+        store_operand(inst[5].desttype, inst[5].value, val0hi);
+        break;
+        
+      case op_dmodr:
+        vald1 = decode_double(inst[0].value, inst[1].value);
+        vald2 = decode_double(inst[2].value, inst[3].value);
+        vald = fmod(vald1, vald2);
+        encode_double(vald, &val0hi, &val0lo);
+        store_operand(inst[4].desttype, inst[4].value, val0lo);
+        store_operand(inst[5].desttype, inst[5].value, val0hi);
+        break;
+      case op_dmodq:
+        vald1 = decode_double(inst[0].value, inst[1].value);
+        vald2 = decode_double(inst[2].value, inst[3].value);
+        vald = fmod(vald1, vald2);
+        vald = (vald1-vald) / vald2;
+        encode_double(vald, &val0hi, &val0lo);
+        if ((val0hi == 0x0 || val0hi == 0x80000000) && val0lo == 0x0) {
+          /* When the quotient is zero, the sign has been lost in the
+             shuffle. We'll set that by hand, based on the original
+             arguments. */
+          val0hi = (inst[0].value ^ inst[2].value) & 0x80000000;
+        }
+        store_operand(inst[4].desttype, inst[4].value, val0lo);
+        store_operand(inst[5].desttype, inst[5].value, val0hi);
+        break;
+        
+      case op_dfloor:
+        vald = decode_double(inst[0].value, inst[1].value);
+        encode_double(floor(vald), &val0hi, &val0lo);
+        store_operand(inst[2].desttype, inst[2].value, val0lo);
+        store_operand(inst[3].desttype, inst[3].value, val0hi);
+        break;
+      case op_dceil:
+        vald = decode_double(inst[0].value, inst[1].value);
+        encode_double(ceil(vald), &val0hi, &val0lo);
+        store_operand(inst[2].desttype, inst[2].value, val0lo);
+        store_operand(inst[3].desttype, inst[3].value, val0hi);
+        break;
+        
+      case op_dsqrt:
+        vald = decode_double(inst[0].value, inst[1].value);
+        encode_double(sqrt(vald), &val0hi, &val0lo);
+        store_operand(inst[2].desttype, inst[2].value, val0lo);
+        store_operand(inst[3].desttype, inst[3].value, val0hi);
+        break;
+      case op_dlog:
+        vald = decode_double(inst[0].value, inst[1].value);
+        encode_double(log(vald), &val0hi, &val0lo);
+        store_operand(inst[2].desttype, inst[2].value, val0lo);
+        store_operand(inst[3].desttype, inst[3].value, val0hi);
+        break;
+      case op_dexp:
+        vald = decode_double(inst[0].value, inst[1].value);
+        encode_double(exp(vald), &val0hi, &val0lo);
+        store_operand(inst[2].desttype, inst[2].value, val0lo);
+        store_operand(inst[3].desttype, inst[3].value, val0hi);
+        break;
+      case op_dpow:
+        vald1 = decode_double(inst[0].value, inst[1].value);
+        vald2 = decode_double(inst[2].value, inst[3].value);
+        encode_double(pow(vald1, vald2), &val0hi, &val0lo);
+        store_operand(inst[4].desttype, inst[4].value, val0lo);
+        store_operand(inst[5].desttype, inst[5].value, val0hi);
+        break;
+
+      case op_dsin:
+        vald = decode_double(inst[0].value, inst[1].value);
+        encode_double(sin(vald), &val0hi, &val0lo);
+        store_operand(inst[2].desttype, inst[2].value, val0lo);
+        store_operand(inst[3].desttype, inst[3].value, val0hi);
+        break;
+      case op_dcos:
+        vald = decode_double(inst[0].value, inst[1].value);
+        encode_double(cos(vald), &val0hi, &val0lo);
+        store_operand(inst[2].desttype, inst[2].value, val0lo);
+        store_operand(inst[3].desttype, inst[3].value, val0hi);
+        break;
+      case op_dtan:
+        vald = decode_double(inst[0].value, inst[1].value);
+        encode_double(tan(vald), &val0hi, &val0lo);
+        store_operand(inst[2].desttype, inst[2].value, val0lo);
+        store_operand(inst[3].desttype, inst[3].value, val0hi);
+        break;
+      case op_dasin:
+        vald = decode_double(inst[0].value, inst[1].value);
+        encode_double(asin(vald), &val0hi, &val0lo);
+        store_operand(inst[2].desttype, inst[2].value, val0lo);
+        store_operand(inst[3].desttype, inst[3].value, val0hi);
+        break;
+      case op_dacos:
+        vald = decode_double(inst[0].value, inst[1].value);
+        encode_double(acos(vald), &val0hi, &val0lo);
+        store_operand(inst[2].desttype, inst[2].value, val0lo);
+        store_operand(inst[3].desttype, inst[3].value, val0hi);
+        break;
+      case op_datan:
+        vald = decode_double(inst[0].value, inst[1].value);
+        encode_double(atan(vald), &val0hi, &val0lo);
+        store_operand(inst[2].desttype, inst[2].value, val0lo);
+        store_operand(inst[3].desttype, inst[3].value, val0hi);
+        break;
+      case op_datan2:
+        vald1 = decode_double(inst[0].value, inst[1].value);
+        vald2 = decode_double(inst[2].value, inst[3].value);
+        vald = atan2(vald1, vald2);
+        encode_double(vald, &val0hi, &val0lo);
+        store_operand(inst[4].desttype, inst[4].value, val0lo);
+        store_operand(inst[5].desttype, inst[5].value, val0hi);
+        break;
+        
+      case op_jdisinf:
+        /* Infinity is well-defined, so we don't bother to convert to
+           float. */
+        val0 = inst[0].value;
+        val1 = inst[1].value;
+        if (DOUBLE_PAIR_ISINF(val0, val1)) {
+          value = inst[2].value;
+          goto PerformJump;
+        }
+        break;
+      case op_jdisnan:
+        /* NaN is well-defined, so we don't bother to convert to
+           float. */
+        val0 = inst[0].value;
+        val1 = inst[1].value;
+        if (DOUBLE_PAIR_ISNAN(val0, val1)) {
+          value = inst[2].value;
+          goto PerformJump;
+        }
+        break;
+
+      case op_jdeq:
+        if (DOUBLE_PAIR_ISNAN(inst[4].value, inst[5].value)) {
+          /* The delta is NaN, which can never match. */
+          val0 = 0;
+        }
+        else if (DOUBLE_PAIR_ISINF(inst[0].value, inst[1].value)
+          && DOUBLE_PAIR_ISINF(inst[2].value, inst[3].value)) {
+          /* Both are infinite. Opposite infinities are never equal,
+             even if the difference is infinite, so this is easy.
+             (We only need to compare the high words, because the low
+             word of both INF and -INF is zero.) */
+          val0 = (inst[0].value == inst[2].value);
+        }
+        else {
+          vald1 = decode_double(inst[2].value, inst[3].value) - decode_double(inst[0].value, inst[1].value);
+          vald2 = fabs(decode_double(inst[4].value, inst[5].value));
+          val0 = (vald1 <= vald2 && vald1 >= -vald2);
+        }
+        if (val0) {
+          value = inst[6].value;
+          goto PerformJump;
+        }
+        break;
+      case op_jdne:
+        if (DOUBLE_PAIR_ISNAN(inst[4].value, inst[5].value)) {
+          /* The delta is NaN, which can never match. */
+          val0 = 0;
+        }
+        else if (DOUBLE_PAIR_ISINF(inst[0].value, inst[1].value)
+          && DOUBLE_PAIR_ISINF(inst[2].value, inst[3].value)) {
+          /* Both are infinite. Opposite infinities are never equal,
+             even if the difference is infinite, so this is easy.
+             (We only need to compare the high words, because the low
+             word of both INF and -INF is zero.) */
+          val0 = (inst[0].value == inst[2].value);
+        }
+        else {
+          vald1 = decode_double(inst[2].value, inst[3].value) - decode_double(inst[0].value, inst[1].value);
+          vald2 = fabs(decode_double(inst[4].value, inst[5].value));
+          val0 = (vald1 <= vald2 && vald1 >= -vald2);
+        }
+        if (!val0) {
+          value = inst[6].value;
+          goto PerformJump;
+        }
+        break;
+        
+      case op_jdlt:
+        vald1 = decode_double(inst[0].value, inst[1].value);
+        vald2 = decode_double(inst[2].value, inst[3].value);
+        if (vald1 < vald2) {
+          value = inst[4].value;
+          goto PerformJump;
+        }
+        break;
+      case op_jdgt:
+        vald1 = decode_double(inst[0].value, inst[1].value);
+        vald2 = decode_double(inst[2].value, inst[3].value);
+        if (vald1 > vald2) {
+          value = inst[4].value;
+          goto PerformJump;
+        }
+        break;
+      case op_jdle:
+        vald1 = decode_double(inst[0].value, inst[1].value);
+        vald2 = decode_double(inst[2].value, inst[3].value);
+        if (vald1 <= vald2) {
+          value = inst[4].value;
+          goto PerformJump;
+        }
+        break;
+      case op_jdge:
+        vald1 = decode_double(inst[0].value, inst[1].value);
+        vald2 = decode_double(inst[2].value, inst[3].value);
+        if (vald1 >= vald2) {
+          value = inst[4].value;
+          goto PerformJump;
+        }
+        break;
+
+#endif /* DOUBLE_SUPPORT */
+        
 #endif /* FLOAT_SUPPORT */
 
 #ifdef GLULX_EXTEND_OPCODES

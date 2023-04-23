@@ -1,7 +1,7 @@
    Parlor
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Parlor
   A sparsely furnished room.
@@ -25,7 +25,9 @@
   [pointing at the left coconut half - ended without result]
   
   >[4] rules all
+  [performing kit action ##RulesAll]
   Rules tracing now switched to "all". Type "rules off" to switch it off again.
+  [performing kit action ##RulesAll - ended without result]
   
   [Rule "parse command rule" applies.]
   >[5] point at middle half
@@ -44,13 +46,13 @@
   You have pointed gloriously at the center coconut half.
   [pointing at the center coconut half - ended without result]
   
-  [Rule "A first turn sequence rule" applies.]
+  [Rule "early scene changing stage rule" applies.]
   [Rule "scene change machinery rule" applies.]
   [Rule "every turn stage rule" applies.]
   [Rule "timed events rule" applies.]
   [Rule "advance time rule" applies.]
   [Rule "update chronological records rule" applies.]
-  [Rule "A last turn sequence rule" applies.]
+  [Rule "late scene changing stage rule" applies.]
   [Rule "scene change machinery rule" applies.]
   [Rule "adjust light rule" applies.]
   [Rule "note object acquisitions rule" applies.]

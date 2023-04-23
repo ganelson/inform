@@ -35,7 +35,11 @@ on behalf of the module: it's a callback in the sense that the parent is
 normally calling the module, but then the module calls the parent back to
 ask for data or action.
 
-This module has only one callbacks and it is optional:
+This module has only two callbacks and both are optional:
 
-(*) |VC_COMPILATION_LINGUISTICS_CALLBACK|, if provided, allows the |compilation_data|
+(*) |VC_COMPILATION_INFLECTIONS_CALLBACK|, if provided, allows the |compilation_data|
 part of a |verb_conjugation| to be initialised. See //Conjugation::conjugate//.
+
+(*) |PREFORM_ERROR_INFLECTIONS_CALLBACK|, if provided, allows for more civilised
+error messages than fatal halts if the Preform syntax for inflections turns out
+to be defective, as can happen when non-English language bundles are being tested.

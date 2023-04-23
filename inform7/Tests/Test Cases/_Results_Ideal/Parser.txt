@@ -23,4 +23,18 @@
 > >   Discard UNDO Testing Place
   It's broken.
   
+> >   Pea-green Boat
+  Pea-green Boat
+  You can see an owl and a pussycat here.
+  
+> >   Pea-green Boat
+  You can't see any such thing.
+  
+> >   Shore
+  Shore
+  You can see six cubes here.
+  
+> >   Shore
+  Only six of those are available.
+  
 > >

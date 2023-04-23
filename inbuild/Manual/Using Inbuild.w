@@ -448,6 +448,15 @@ would like to execute but doesn't execute them.
 The command |-sync-to N| is similar, but will overwrite any existing copy
 already in |N|, rather than producing an error if a collision occurs.
 
+@ If the version numbers are not wanted in the filenames which |-copy-to|
+and |-sync-to| write to, set |-no-versions-in-filenames|:
+= (text as ConsoleText)
+	$ inbuild/Tangled/inbuild -inspect junk/Mystery.i7x
+	extension: Complex Listing by Emily Short v9 in directory junk.
+	$ inbuild/Tangled/inbuild -no-versions-in-filenames -copy-to MyNest junk/Mystery.i7x
+	cp -f 'junk/Mystery.i7x' 'MyNest/Extensions/Emily Short/Complex Listing.i7x'
+=
+
 @ The |-archive-to N| command performs |-sync-to N| on any resource needed
 to build the copy it is working on (with one exception, for technical reasons:
 the configuration file telling Inform how to use the English natural language).

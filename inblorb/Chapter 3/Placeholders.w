@@ -52,6 +52,7 @@ void Placeholders::initialise(void) {
 	Placeholders::set_to(I"GENERATOR", V, 0);
 	Placeholders::set_to(I"BASE64_TOP", I"", 0);
 	Placeholders::set_to(I"BASE64_TAIL", I"", 0);
+	Placeholders::set_to(I"JAVASCRIPTPRELUDE", Str::literal(JAVASCRIPT_PRELUDE), 0);
 	Placeholders::set_to(I"FONTTAG", Str::literal(FONT_TAG), 0);
 	Placeholders::set_to(I"MATERIALSFOLDERPATHOPEN", I"", 0);
 	Placeholders::set_to(I"MATERIALSFOLDERPATHFILE", I"", 0);

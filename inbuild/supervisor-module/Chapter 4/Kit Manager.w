@@ -5,7 +5,7 @@ Inter code.
 
 @h Genre definition.
 The |kit_genre| can be summarised as follows. Kits consist of directories,
-containing metadata in |D/kit_metadata.txt|, but which are also valid Inweb
+containing metadata in |D/kit_metadata.json|, but which are also valid Inweb
 webs of Inform 6 source text. They are recognised by having directory names
 ending in |Kit|, and by having a metadata file in place. They are stored in
 nests, in |N/Inter/Title-vVersion|. Their build graphs are quite extensive,
@@ -48,7 +48,7 @@ inform_kit *KitManager::from_copy(inbuild_copy *C) {
 }
 
 dictionary *kit_copy_cache = NULL;
-inbuild_copy *KitManager::new_copy(text_stream *name, pathname *P) {
+inbuild_copy *KitManager::new_copy(text_stream *name, pathname *P, inbuild_nest *N) {
 	if (kit_copy_cache == NULL) kit_copy_cache = Dictionaries::new(16, FALSE);
 	TEMPORARY_TEXT(key)
 	WRITE_TO(key, "%p", P);
@@ -58,7 +58,7 @@ inbuild_copy *KitManager::new_copy(text_stream *name, pathname *P) {
 	if (C == NULL) {
 		inbuild_work *work = Works::new_raw(kit_genre, Str::duplicate(name), NULL);
 		inbuild_edition *edition = Editions::new(work, VersionNumbers::null());
-		C = Copies::new_in_path(edition, P);
+		C = Copies::new_in_path(edition, P, N);
 		Kits::scan(C);
 		Dictionaries::create(kit_copy_cache, key);
 		Dictionaries::write_value(kit_copy_cache, key, C);
@@ -74,26 +74,48 @@ supplied at the command line; |ext| is a substring of it, and is its extension
 |directory_status| is true if we know for some reason that this is a directory
 not a file, false if we know the reverse, and otherwise not applicable.
 
-A kit needs to be a directory whose name ends in |Kit|, and which contains
-a valid metadata file.
+A kit needs to be a directory whose name ends in |Kit|, perhaps with a semver
+appended to it, and which contains a valid metadata file.
 
 =
 void KitManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 	text_stream *arg, text_stream *ext, int directory_status) {
 	if (directory_status == FALSE) return;
-		int kitpos = Str::len(arg) - 3;
-	if ((kitpos >= 0) && (Str::get_at(arg, kitpos) == 'K') &&
-		(Str::get_at(arg, kitpos+1) == 'i') &&
-		(Str::get_at(arg, kitpos+2) == 't')) {
+	if (KitManager::name_len(arg) > 0) {
 		pathname *P = Pathnames::from_text(arg);
-		*C = KitManager::claim_folder_as_copy(P);
+		*C = KitManager::claim_folder_as_copy(P, NULL);
 	}
 }
 
-inbuild_copy *KitManager::claim_folder_as_copy(pathname *P) {
-	filename *canary = Filenames::in(P, I"kit_metadata.txt");
-	if (TextFiles::exists(canary))
-		return KitManager::new_copy(Pathnames::directory_name(P), P);
+@ So, for example, given |BasicInformExtrasKit-v10_1_0-beta+6V20| this returns
+20, the length of the actual name part |BasicInformExtrasKit|.
+
+=
+int KitManager::name_len(text_stream *arg) {
+	for (int i=0; i<Str::len(arg); i++)
+		if ((Str::get_at(arg, i) == 'K') &&
+			(Str::get_at(arg, i+1) == 'i') &&
+			(Str::get_at(arg, i+2) == 't'))
+			if ((Str::get_at(arg, i+3) == 0) ||
+				((Str::get_at(arg, i+3) == '-') &&
+				(Str::get_at(arg, i+4) == 'v') &&
+				(Characters::isdigit(Str::get_at(arg, i+5)))))
+				return i+3;
+	return -1;
+}
+
+@ And so we truncate to that length when turning the directory name into the
+copy name.
+
+=
+inbuild_copy *KitManager::claim_folder_as_copy(pathname *P, inbuild_nest *N) {
+	filename *canary = Filenames::in(P, I"kit_metadata.json");
+	if (TextFiles::exists(canary)) {
+		text_stream *name = Str::duplicate(Pathnames::directory_name(P));
+		int L = KitManager::name_len(name);
+		if (L > 0) Str::truncate(name, L);
+		return KitManager::new_copy(name, P, N);
+	}
 	return NULL;
 }
 
@@ -112,7 +134,7 @@ void KitManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 		if (Platform::is_folder_separator(Str::get_last_char(entry))) {
 			Str::delete_last_character(entry);
 			pathname *Q = Pathnames::down(P, entry);
-			inbuild_copy *C = KitManager::claim_folder_as_copy(Q);
+			inbuild_copy *C = KitManager::claim_folder_as_copy(Q, N);
 			if ((C) && (Requirements::meets(C->edition, req))) {
 				Nests::add_search_result(search_results, N, C, req);
 			}
@@ -136,7 +158,7 @@ pathname *KitManager::pathname_in_nest(inbuild_nest *N, inbuild_edition *E) {
 void KitManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
 	int syncing, build_methodology *meth) {
 	pathname *dest_kit = KitManager::pathname_in_nest(N, C->edition);
-	filename *dest_kit_metadata = Filenames::in(dest_kit, I"kit_metadata.txt");
+	filename *dest_kit_metadata = Filenames::in(dest_kit, I"kit_metadata.json");
 	if (TextFiles::exists(dest_kit_metadata)) {
 		if (syncing == FALSE) { Copies::overwrite_error(C, N); return; }
 	} else {

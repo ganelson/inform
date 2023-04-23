@@ -1,5 +1,7 @@
 [Chapter: Introduction] Preface
 
+Note (added in August 2022): This book describes changes to the Inform language up to the end of its period as a closed-source project. Developments after that point are logged in release notes on the Inform source code repository, and most of the content below has been migrated there, too. This ebook is therefore now only of historical use.
+
 Inform is a project under active development, both by its original authors and by users who contribute extensions. Besides that, it belongs to an ecosystem of related tools and projects, and they develop, too.
 
 So Inform is periodically reissued in new versions, or "builds". Builds of Inform are identified by four-character codes: number, letter, number, number. Builds are always accompanied by a detailed if sometimes technical "change log", laying out what's new. You're now reading a collection of these change logs, going backwards in time to build 4S08, which was really the first version of Inform 7 considered solid enough for regular rather than experimental use.

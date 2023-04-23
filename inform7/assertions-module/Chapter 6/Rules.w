@@ -208,7 +208,7 @@ nothing.
 kind *Rules::to_kind(rule *R) {
 	kind *K = R->kind_of_rule;
 	if (K == NULL) {
-		if (PluginManager::active(actions_plugin))
+		if (FEATURE_ACTIVE(actions))
 			K = Kinds::binary_con(CON_rule, K_action_name, K_void);
 		else
 			K = Kinds::binary_con(CON_rule, K_void, K_void);
@@ -251,8 +251,8 @@ struct shared_variable_access_list *all_action_processing_vars = NULL;
 shared_variable_access_list *Rules::all_action_processing_variables(void) {
 	if (all_action_processing_vars == NULL) {
 		all_action_processing_vars = SharedVariables::new_access_list();
-		rulebook *B = Rulebooks::std(ACTION_PROCESSING_RB);
-		if (B) SharedVariables::add_set_to_access_list(all_action_processing_vars, B->my_variables);
+		rulebook *B = RB_action_processing;
+		if (B) SharedVariables::add_set_to_access_list(all_action_processing_vars, Rulebooks::variables(B));
 	}
 	return all_action_processing_vars;
 }

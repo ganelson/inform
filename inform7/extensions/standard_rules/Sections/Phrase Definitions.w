@@ -720,7 +720,7 @@ To say pronoun dictionary word:
 To say recap of command:
 	(- PrintCommand(); -).
 The pronoun reference object is an object that varies.
-The pronoun reference object variable translates into Inter as "pronoun_obj".
+The pronoun reference object variable is defined by Inter as "pronoun_obj".
 
 To say pronoun i6 dictionary word:
 	(- print (address) pronoun_word; -).
@@ -804,6 +804,8 @@ Section 3 - Action conversion - Unindexed
 
 To convert to (AN - an action name) on (O - an object):
 	(- return GVS_Convert({AN},{O},0); -) - in to only.
+To convert to (AN - an action name) on (O - an object) with (T - a snippet):
+	(- return GVS_Convert({AN},{O},{T}); -) - in to only.
 To convert to request of (X - object) to perform (AN - action name) with
 	(Y - object) and (Z - object):
 	(- return ConvertToRequest({X}, {AN}, {Y}, {Z}); -).

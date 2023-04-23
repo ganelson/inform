@@ -15,7 +15,7 @@ void RulesForScenesElement::render(OUTPUT_STREAM, index_session *session) {
 	HTML_CLOSE("p");
 
 	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.RS.SceneChanging", NULL,
-		IndexRules::find_rulebook(inv, I"scene_changing"), NULL, 1, FALSE, session);
+		IndexRules::find_rulebook(inv, I"SCENE_CHANGING_RB"), NULL, 1, FALSE, session);
 
 	HTML_OPEN("p");
 	IndexUtilities::anchor(OUT, I"SRULES");
@@ -23,7 +23,7 @@ void RulesForScenesElement::render(OUTPUT_STREAM, index_session *session) {
 	HTML_CLOSE("p");
 
 	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.RS.SceneBegins", NULL,
-		IndexRules::find_rulebook(inv, I"when_scene_begins"), NULL, 1, FALSE, session);
+		IndexRules::find_rulebook(inv, I"WHEN_SCENE_BEGINS_RB"), NULL, 1, FALSE, session);
 	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.RS.SceneEnds", NULL,
-		IndexRules::find_rulebook(inv, I"when_scene_ends"), NULL, 1, FALSE, session);
+		IndexRules::find_rulebook(inv, I"WHEN_SCENE_ENDS_RB"), NULL, 1, FALSE, session);
 }

@@ -18,7 +18,7 @@ COMPILE_WRITER(anl_entry *, ActionNameLists::log_entry)
 COMPILE_WRITER(action_name *, ActionNameNames::log)
 
 void IFModule::start(void) {
-	IFModule::create_plugins();
+	IFModule::create_features();
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
 	@<Register this module's direct memory usage@>;
@@ -27,6 +27,7 @@ void IFModule::start(void) {
 	ReleaseInstructions::start();
 	WherePredicates::start();
 	SpatialRelations::start();
+	DialogueRelations::start();
 	MapRelations::start();
 }
 
@@ -69,39 +70,42 @@ void IFModule::end(void) {
 
 @h Plugins.
 Except for the current minimal section of code, the //if// module is comprised
-of the following plugins. They all belong to an "if" plugin, but that does
+of the following features. They all belong to an "if" feature, but that does
 nothing except to be a parent to them; it has no activation function.
 
 = (early code)
-plugin *actions_plugin, *going_plugin,
-	*backdrops_plugin, *bibliographic_plugin, *chronology_plugin,
-	*devices_plugin, *map_plugin, *parsing_plugin, *persons_plugin, *player_plugin,
-	*regions_plugin, *scenes_plugin, *scoring_plugin, *showme_plugin, *spatial_plugin,
-	*timed_rules_plugin, *times_plugin;
+compiler_feature *actions_feature, *going_feature,
+	*backdrops_feature, *bibliographic_feature, *chronology_feature,
+	*devices_feature, *map_feature, *parsing_feature, *persons_feature, *player_feature,
+	*regions_feature, *scenes_feature, *scoring_feature, *showme_feature, *spatial_feature,
+	*timed_rules_feature, *times_feature;
+compiler_feature *performance_styles_feature = NULL;
 
 @ =
-void IFModule::create_plugins(void) {
-	plugin *ifp = PluginManager::new(NULL, I"interactive fiction", NULL);
+void IFModule::create_features(void) {
+	compiler_feature *ifp = Features::new(NULL, I"interactive fiction", NULL);
 
-	/* must be created before the other world model plugins */
-	spatial_plugin = PluginManager::new(&Spatial::start, I"spatial model", ifp);
+	/* must be created before the other world model features */
+	spatial_feature = Features::new(&Spatial::start, I"spatial model", ifp);
 
-	backdrops_plugin = PluginManager::new(&Backdrops::start, I"backdrops", ifp);
-	bibliographic_plugin = PluginManager::new(&BibliographicData::start, I"bibliographic data", ifp);
-	chronology_plugin = PluginManager::new(&Chronology::start_plugin, I"chronology", ifp);
-	devices_plugin = PluginManager::new(&PL::Devices::start, I"devices", ifp);
-	map_plugin = PluginManager::new(&Map::start, I"mapping", ifp);
-	persons_plugin = PluginManager::new(&PL::Persons::start, I"persons", ifp);
-	player_plugin = PluginManager::new(&Player::start, I"player", ifp);
-	regions_plugin = PluginManager::new(&Regions::start, I"regions", ifp);
-	scenes_plugin = PluginManager::new(&Scenes::start, I"scenes", ifp);
-	scoring_plugin = PluginManager::new(&TheScore::start, I"scoring", ifp);
-	timed_rules_plugin = PluginManager::new(TimedRules::start, I"timed rules", ifp);
-	times_plugin = PluginManager::new(TimesOfDay::start, I"times of day", ifp);
+	backdrops_feature = Features::new(&Backdrops::start, I"backdrops", ifp);
+	bibliographic_feature = Features::new(&BibliographicData::start, I"bibliographic data", ifp);
+	chronology_feature = Features::new(&Chronology::start_feature, I"chronology", ifp);
+	devices_feature = Features::new(&PL::Devices::start, I"devices", ifp);
+	map_feature = Features::new(&Map::start, I"mapping", ifp);
+	persons_feature = Features::new(&PL::Persons::start, I"persons", ifp);
+	player_feature = Features::new(&Player::start, I"player", ifp);
+	regions_feature = Features::new(&Regions::start, I"regions", ifp);
+	scenes_feature = Features::new(&Scenes::start, I"scenes", ifp);
+	scoring_feature = Features::new(&TheScore::start, I"scoring", ifp);
+	timed_rules_feature = Features::new(TimedRules::start, I"timed rules", ifp);
+	times_feature = Features::new(TimesOfDay::start, I"times of day", ifp);
 
-	actions_plugin = PluginManager::new(&ActionsPlugin::start, I"actions", ifp);
-	going_plugin = PluginManager::new(&GoingPlugin::start, I"going", actions_plugin);
+	actions_feature = Features::new(&ActionsPlugin::start, I"actions", ifp);
+	going_feature = Features::new(&GoingPlugin::start, I"going", actions_feature);
 
-	parsing_plugin = PluginManager::new(&ParsingPlugin::start, I"command", ifp);
-	showme_plugin = PluginManager::new(&RTShowmeCommand::start, I"showme", parsing_plugin);
+	parsing_feature = Features::new(&ParsingPlugin::start, I"command", ifp);
+	showme_feature = Features::new(&RTShowmeCommand::start, I"showme", parsing_feature);
+	performance_styles_feature = Features::new(&PerformanceStyles::start,
+		I"performance styles", dialogue_feature);
 }

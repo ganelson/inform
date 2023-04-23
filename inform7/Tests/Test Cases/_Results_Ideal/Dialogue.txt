@@ -1,0 +1,347 @@
+  
+  relation of things: audibility relation
+  relation of things: visibility relation
+  "list of people who can see Alice" = list of people: {yourself, Alice, Belle, Camilla}
+  "list of people who can hear Alice" = list of people: {yourself, Alice, Belle, Camilla}
+  "list of people who can see Diego" = list of people: {}
+  "list of people who can hear Diego" = list of people: {Diego, Eric}
+  "list of dialogue choices in the nested decisions beat" = list of dialogue choices: {gouda choice, white seedless choice, red choice, flow-8, rioja choice, shiraz choice, camembert choice, white seeded choice, black choice, poison choice, flow-15}
+  "list of dialogue lines in the test only present speakers beat" = list of dialogue lines: {d1 line, a1 line, b1 line, d2 line, e1 line, a2 line, reporting narration line}
+  scene: going active scene
+  dialogue beat: going active beat
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Laboratory
+  You can see Alice, Belle, Camilla, an alien-summoning apple and a status board here.
+  
+  Alice (to Belle): "I am Alice, talking to Belle."
+  
+  Belle: "I am Belle."
+  
+  Report on completion of test only present speakers beat.
+  d1 line is unperformed; non-recurring; unnarrated; unelaborated; available; verbal.
+  a1 line is performed; non-recurring; unnarrated; unelaborated; available; verbal.
+  b1 line is performed; recurring; unnarrated; unelaborated; available; verbal.
+  d2 line is unperformed; non-recurring; unnarrated; elaborated; unavailable; verbal.
+  e1 line is unperformed; non-recurring; unnarrated; unelaborated; available; non-verbal.
+  a2 line is unperformed; non-recurring; unnarrated; unelaborated; available; verbal.
+  reporting narration line is unperformed; non-recurring; narrated; unelaborated; available; verbal.
+  
+  
+  **** Alice languidly (well, in a Spoken angrily way) says: "I tell you just once, I am Alice.".
+  (Which I think is only to be expected.)
+  
+  Belle: "I tell you as often as necessary, I am Alice."
+  
+  Belle: "I tell you as often as necessary, I am Alice."
+  
+  (Okay, select from gouda choice and camembert choice here.)
+  (Option 1) My favourite cheese is vintage gouda.
+  (Option 2) My favourite cheese is camembert.
+  
+> >  
+  My favourite cheese is camembert.
+  
+  (Okay, select from white seeded choice, black choice and poison choice here.)
+  (Option 1) My preferred grapes are white yet seeded.
+  (Option 2) My preferred grapes are black.
+  (Option 3) My preferred grapes are arsenic-laced.
+  
+> >   Laboratory
+  My preferred grapes are white yet seeded.
+  
+  You would appear to have selected: camembert choice and white seeded choice.
+  
+  Report on completion of nested decisions beat.
+  line-10 is performed; non-recurring; narrated; unelaborated; available; verbal.
+  line-11 is unperformed; non-recurring; narrated; unelaborated; available; verbal.
+  gouda choice is unperformed; non-recurring; offered.
+  white seedless choice is unperformed; non-recurring; offered.
+  red choice is unperformed; non-recurring; offered.
+  flow-8 is unperformed; non-recurring; flowing.
+  rioja choice is unperformed; non-recurring; offered.
+  shiraz choice is unperformed; non-recurring; offered.
+  camembert choice is performed; non-recurring; offered.
+  white seeded choice is performed; non-recurring; offered.
+  black choice is unperformed; non-recurring; offered.
+  poison choice is unperformed; non-recurring; offered.
+  flow-15 is unperformed; non-recurring; flowing; story-ending.
+  
+  
+> >   Laboratory
+  ** scenes
+  Scene 'Entire Game' playing (for 0 mins now)
+  (Scene monitoring now switched on. Type "scenes off" to switch it off again.)
+  
+> >   Laboratory
+  ** examine status
+  starting beat is performed; non-recurring; unspontaneous; available; irrelevant  -
+  test only present speakers beat is performed; non-recurring; unspontaneous; available; irrelevant  - Diego, Alice, Belle and Eric
+  test repeated speech beat is performed; non-recurring; unspontaneous; available; irrelevant  - Alice and Belle
+  nested decisions beat is performed; non-recurring; unspontaneous; available; irrelevant  -
+  going active beat is unperformed; non-recurring; unspontaneous; available; irrelevant  -
+  going inactive beat is unperformed; non-recurring; unspontaneous; available; irrelevant  -
+  beat-7 is unperformed; recurring; unspontaneous; available; irrelevant  -
+  beat-8 is unperformed; non-recurring; unspontaneous; available; irrelevant  - Fiona
+  beat-9 is unperformed; non-recurring; unspontaneous; available; irrelevant  - Fiona
+  beat-10 is unperformed; non-recurring; unspontaneous; available; irrelevant  - Fiona
+  bails beat is unperformed; non-recurring; unspontaneous; unavailable; irrelevant  - Fiona
+  beat-12 is unperformed; recurring; spontaneous; available; irrelevant  - Fiona
+  beat-13 is unperformed; non-recurring; unspontaneous; available; irrelevant  - sea monster
+  beat-14 is unperformed; non-recurring; unspontaneous; unavailable; irrelevant  - sea monster
+  alien landing beat is unperformed; non-recurring; unspontaneous; unavailable; irrelevant  - Alice
+  fourth wall breaker beat is unperformed; non-recurring; unspontaneous; available; irrelevant  -
+  Boskone beat is unperformed; non-recurring; unspontaneous; available; irrelevant  - Helmuth and Gharlane
+  jewellery beat is unperformed; non-recurring; unspontaneous; available; irrelevant  -
+  
+> >   Laboratory
+  ** listen
+  "list of people who can hear the player" = list of people: {yourself, Alice, Belle, Camilla}
+  "list of people who can be heard by the player" = list of people: {yourself, Alice, Belle, Camilla}
+  
+> >   Laboratory
+  ** jump
+  Alice: "I am self-explanatory."
+  
+> >   Darkness
+  ** e
+  
+  Darkness
+  It is pitch dark, and you can't see a thing.
+  
+> >   Darkness
+  ** listen
+  "list of people who can hear the player" = list of people: {yourself, Diego, Eric}
+  "list of people who can be heard by the player" = list of people: {yourself, Diego, Eric}
+  
+> >   Darkness
+  ** jump
+  Diego: "Alice is kind of exhausting."
+  
+> >   Laboratory
+  ** w
+  
+  Laboratory
+  You can see Alice, Belle, Camilla, an alien-summoning apple and a status board here.
+  
+> >   Garden
+  ** s
+  [Scene 'going active scene' begins]
+  Bong! The director activity chime goes off.
+  
+  [Scene 'going active scene' ends]
+  "live conversational subject list" = list of objects: {}
+  "whether or not the bails beat is available" = truth state: false
+  "whether or not the bails beat is relevant" = truth state: false
+> >   Garden
+  ** examine ball
+  You see nothing special about the ball.
+  
+  "live conversational subject list" = list of objects: {ball}
+  
+  "whether or not the bails beat is available" = truth state: false
+  "whether or not the bails beat is relevant" = truth state: false
+  Fiona picks up the bat.
+  
+  Fiona: "The bat is willow and the ball is cork, I think."
+  
+> >   Garden
+  ** z
+  Time passes.
+  
+  "live conversational subject list" = list of objects: {bat, ball}
+  
+  "whether or not the bails beat is available" = truth state: false
+  "whether or not the bails beat is relevant" = truth state: false
+  Fiona: "The idea's to use the bat to defend the stumps."
+  
+> >   Garden
+  ** z
+  Time passes.
+  
+  "live conversational subject list" = list of objects: {stumps, bat, ball}
+  
+  "whether or not the bails beat is available" = truth state: false
+  "whether or not the bails beat is relevant" = truth state: true
+  Fiona: "There are three of them, for some reason."
+  
+  Taken.
+  
+> >   Garden
+  ** z
+  Time passes.
+  
+  "live conversational subject list" = list of objects: {stumps, bat, ball}
+  
+  "whether or not the bails beat is available" = truth state: true
+  "whether or not the bails beat is relevant" = truth state: true
+  Fiona: "I suppose that's what you need to hold up two bails."
+  
+> >   Garden
+  ** z
+  Time passes.
+  
+  "live conversational subject list" = list of objects: {stumps, bat, ball}
+  
+  "whether or not the bails beat is available" = truth state: false
+  "whether or not the bails beat is relevant" = truth state: true
+  There is an awkward pause.
+  
+  Fiona: "Sometimes I just wanna talk, you know?"
+  
+> >   Lake
+  ** e
+  "live conversational subject list" = list of objects: {sea monster, mermaid}
+  
+  The sea monster: "Blubbble."
+  
+> >   Lake
+  ** z
+  Time passes.
+  
+  "live conversational subject list" = list of objects: {sea monster, mermaid}
+  
+  The sea monster: "Splish."
+  
+> >   Lake
+  ** z
+  Time passes.
+  
+  "live conversational subject list" = list of objects: {sea monster, mermaid}
+  
+> >   Lake
+  ** z
+  Time passes.
+  
+  "live conversational subject list" = list of objects: {sea monster, mermaid}
+  
+> >   Lake
+  ** z
+  Time passes.
+  
+  "live conversational subject list" = list of objects: {sea monster, mermaid}
+  
+> >   Garden
+  ** w
+  
+  Garden
+  You can see a ball and Fiona here.
+  
+  "live conversational subject list" = list of objects: {sea monster, mermaid}
+  
+  "whether or not the bails beat is available" = truth state: false
+  "whether or not the bails beat is relevant" = truth state: false
+  There is an awkward pause.
+  
+> >   Laboratory
+  ** n
+  Gnob! The director activity chime sounds in reverse.
+  
+> >   Laboratory
+  ** eat apple
+  (first taking the alien-summoning apple)
+  You eat the alien-summoning apple. Not bad.
+  
+  [Scene 'alien landing scene' begins]
+  Alice: "I see an alien landed today."
+  
+> >   Laboratory
+  ** look
+  Alice: "No, I couldn't see it either."
+  
+  [Scene 'alien landing scene' ends]
+> >   Laboratory
+  ** examine status
+  starting beat is performed; non-recurring; unspontaneous; available; irrelevant  -
+  test only present speakers beat is performed; non-recurring; unspontaneous; available; irrelevant  - Diego, Alice, Belle and Eric
+  test repeated speech beat is performed; non-recurring; unspontaneous; available; irrelevant  - Alice and Belle
+  nested decisions beat is performed; non-recurring; unspontaneous; available; irrelevant  -
+  going active beat is performed; non-recurring; unspontaneous; available; irrelevant  -
+  going inactive beat is performed; non-recurring; unspontaneous; available; irrelevant  -
+  beat-7 is performed; recurring; unspontaneous; available; irrelevant  -
+  beat-8 is performed; non-recurring; unspontaneous; available; irrelevant  - Fiona
+  beat-9 is performed; non-recurring; unspontaneous; available; irrelevant  - Fiona
+  beat-10 is performed; non-recurring; unspontaneous; available; irrelevant  - Fiona
+  bails beat is performed; non-recurring; unspontaneous; unavailable; irrelevant  - Fiona
+  beat-12 is performed; recurring; spontaneous; available; irrelevant  - Fiona
+  beat-13 is performed; non-recurring; unspontaneous; available; irrelevant  - sea monster
+  beat-14 is performed; non-recurring; unspontaneous; available; irrelevant  - sea monster
+  alien landing beat is performed; non-recurring; unspontaneous; available; irrelevant  - Alice
+  fourth wall breaker beat is unperformed; non-recurring; unspontaneous; available; irrelevant  -
+  Boskone beat is unperformed; non-recurring; unspontaneous; available; irrelevant  - Helmuth and Gharlane
+  jewellery beat is unperformed; non-recurring; unspontaneous; available; irrelevant  -
+  
+> >   Laboratory
+  ** perform fourth wall breaker beat
+  This is all just fiction.
+  
+> >   Laboratory
+  ** w
+  Helmuth: "Are you, or are you in league with, Star A Star of the Galactic Patrol?"
+  
+  (Okay, select from choice-19 and choice-21 here.)
+  (Option 1) No.
+  (Option 2) I don't know who that is.
+  
+> >   Laboratory
+  No.
+  
+  Gharlane: "A likely story."
+  
+  (Okay, select from choice-21 here.)
+  (Option 1) I don't know who that is.
+  
+> >   Laboratory
+  I don't know who that is.
+  
+  Gharlane: "A mere worm."
+  
+  (Okay, select from choice-23 here.)
+  (Option 1) Admit frankly that you've run out of answers.
+  
+> >   Experimental Zone
+  Admit frankly that you've run out of answers.
+  
+  Gharlane: "Well, I've always respected honesty."
+  
+  The Boskonians vanish.
+  
+> >   Strongroom
+  ** n
+  Now try taking these three baubles.
+  
+> >   Strongroom
+  ** get diamond
+  I think not.
+  
+> >   Strongroom
+  ** get emerald
+  You somehow filch it.
+  
+> >   Strongroom
+  ** get ruby
+  Taken.
+  
+  Very good.
+  
+> >   Strongroom
+  ** i
+  You are carrying:
+    a ruby
+    an emerald
+    some stumps
+  
+> >   Experimental Zone
+  ** s
+> >   Laboratory
+  ** e
+  
+  Laboratory
+  You can see Alice, Belle, Camilla and a status board here.
+  
+> >   Laboratory
+  ** quit
+> Are you sure you want to quit? 

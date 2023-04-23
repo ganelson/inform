@@ -602,7 +602,17 @@ would like to execute but doesn't execute them.
 already in <span class="extract"><span class="ConsoleText-extract-syntax">N</span></span>, rather than producing an error if a collision occurs.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>The <span class="extract"><span class="ConsoleText-extract-syntax">-archive-to N</span></span> command performs <span class="extract"><span class="ConsoleText-extract-syntax">-sync-to N</span></span> on any resource needed
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>If the version numbers are not wanted in the filenames which <span class="extract"><span class="ConsoleText-extract-syntax">-copy-to</span></span>
+and <span class="extract"><span class="ConsoleText-extract-syntax">-sync-to</span></span> write to, set <span class="extract"><span class="ConsoleText-extract-syntax">-no-versions-in-filenames</span></span>:
+</p>
+
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inbuild/Tangled/inbuild</span><span class="ConsoleText-identifier-syntax"> -inspect</span><span class="ConsoleText-plain-syntax"> junk/Mystery.i7x</span>
+<span class="ConsoleText-plain-syntax">    extension: Complex Listing by Emily Short v9 in directory junk.</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inbuild/Tangled/inbuild</span><span class="ConsoleText-identifier-syntax"> -no-versions-in-filenames -copy-to</span><span class="ConsoleText-plain-syntax"> MyNest junk/Mystery.i7x</span>
+<span class="ConsoleText-plain-syntax">    cp -f 'junk/Mystery.i7x' 'MyNest/Extensions/Emily Short/Complex Listing.i7x'</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>The <span class="extract"><span class="ConsoleText-extract-syntax">-archive-to N</span></span> command performs <span class="extract"><span class="ConsoleText-extract-syntax">-sync-to N</span></span> on any resource needed
 to build the copy it is working on (with one exception, for technical reasons:
 the configuration file telling Inform how to use the English natural language).
 </p>
@@ -617,7 +627,7 @@ the project will still work exactly as it originally did.
 </p>
 
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">M</li><li class="progresscurrent">ui</li><li class="progresssection"><a href="M-agtk.html">agtk</a></li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progressnext"><a href="M-agtk.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">M</li><li class="progresscurrent">ui</li><li class="progresssection"><a href="M-agtk.html">agtk</a></li><li class="progresssection"><a href="M-agtlb.html">agtlb</a></li><li class="progresssection"><a href="M-agtpm.html">agtpm</a></li><li class="progresssection"><a href="M-agtr.html">agtr</a></li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progressnext"><a href="M-agtk.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

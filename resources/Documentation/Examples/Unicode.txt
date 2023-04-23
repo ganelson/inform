@@ -8,8 +8,6 @@ The following example puts Inform's support for exotic lettering through its pac
 	
 	The story headline is "Pushing the Limits of Unicode in IF". The story description is "This is a demanding test for Unicode compliance by Z-machine interpreters."
 	
-	Include Unicode Character Names by Graham Nelson.
-	
 	Include Basic Screen Effects by Emily Short.
 	
 	The Château Bibliothèque Français is east of the Deutsche Universität Bücherei. "From this Borgesian construction, doorways lead into anterooms in each of the four cardinal directions." South of the Bibliothèque is the Miscellany Mañana. North of the Bibliothèque is the Íslendingabók. East of the Bibliothèque is Alphabet Soup.

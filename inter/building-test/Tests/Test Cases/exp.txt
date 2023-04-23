@@ -141,3 +141,7 @@ schema
 				outcome = true;
 		}
 end
+schema
+	print (char) 'a';
+	print (char) ''';
+end

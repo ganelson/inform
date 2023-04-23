@@ -1,0 +1,12 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 20 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32205 words long.
+Problem__ PM_ChoiceSelectionMissing
+In Section 1 - Meeting:
+  >--> The dialogue choice offered by '-- (if 1 is 1)' (source text, line 7)
+    doesn't say what the option actually is, which is allowed only if it is a
+    simple '--' used as a divider. Here, it seems to have some bracketed
+    annotations as well. That must be wrong.
+Inform 7 has finished.

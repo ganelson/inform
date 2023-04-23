@@ -63,6 +63,7 @@ web: "EnglishLanguageKit" at "inform7/Internal/Inter/EnglishLanguageKit" in "doc
 web: "CommandParserKit" at "inform7/Internal/Inter/CommandParserKit" in "docs/CommandParserKit"
 web: "BasicInformKit" at "inform7/Internal/Inter/BasicInformKit" in "docs/BasicInformKit"
 web: "BasicInformExtrasKit" at "inform7/Internal/Inter/BasicInformExtrasKit" in "docs/BasicInformExtrasKit"
+web: "DialogueKit" at "inform7/Internal/Inter/DialogueKit" in "docs/DialogueKit"
 
 breadcrumbs: "Home: //overview//"
 web: "inblorb" at "inblorb" in "docs/inblorb"

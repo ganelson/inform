@@ -1,7 +1,7 @@
    Garden
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 160118 / Inform 7 build 6M62 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
   
   Garden
   You can see a wheelbarrow (in which is a pile of dirt), a flower plot and three marbles here.
@@ -54,7 +54,7 @@
   marble: Taken.
   
   >[14] get three marbles
-  "What, you seeing double? There ain't enough of those to go around."
+  What do you want to get those things from?
   
   >[15]
   "Come again?"

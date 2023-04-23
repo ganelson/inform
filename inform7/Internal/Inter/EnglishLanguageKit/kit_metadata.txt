@@ -1,3 +1,0 @@
-priority: 1
-extension: English Language by Graham Nelson
-natural language: yes

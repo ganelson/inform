@@ -13,7 +13,7 @@ on typical browser views embedded in apps on Windows, MacOS and Linux.)
 =
 void IndexUtilities::banner_line(OUTPUT_STREAM, index_page *page, int N, text_stream *sym,
 	text_stream *name, text_stream *exp, char *link, localisation_dictionary *D) {
-	HTML_OPEN_WITH("table", "cellspacing=\"3\" border=\"0\" style=\"background:#eeeeee;\"");
+	HTML_OPEN_WITH("table", "cellspacing=\"3\" border=\"0\" class=\"elementbanner\"");
 	HTML_OPEN("tr");
 	@<Write the banner mini-element-box@>;
 	@<Write the row titling element@>;
@@ -32,14 +32,14 @@ void IndexUtilities::banner_line(OUTPUT_STREAM, index_page *page, int N, text_st
 	else WRITE_TO(dets, "href=\"#\" onclick=\"click_element_box('segment%d'); return false;\"", N);
 	HTML_OPEN_WITH("a", "%S", dets);
 	DISCARD_TEXT(dets)
-	HTML_OPEN_WITH("span", "class=\"elementtext\"");
+	HTML::begin_span(OUT, I"elementtext");
 	WRITE("%S", sym);
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	HTML_CLOSE("a");
 	HTML_OPEN_WITH("div", "class=\"elementnumber\"");
-	HTML_OPEN_WITH("span", "class=\"elementnumbertext\"");
+	HTML::begin_span(OUT, I"elementnumbertext");
 	WRITE("%d\n", N);
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	HTML_CLOSE("div");
 	HTML_CLOSE("div");
 	HTML_CLOSE("td");
@@ -188,13 +188,13 @@ void IndexUtilities::noextra_link(OUTPUT_STREAM) {
 @ These open up divisions:
 
 =
-void IndexUtilities::extra_div_open(OUTPUT_STREAM, int id, int indent, char *colour) {
+void IndexUtilities::extra_div_open(OUTPUT_STREAM, int id, int indent, text_stream *colour) {
 	HTML_OPEN_WITH("div", "id=\"extra%d\" style=\"display: none;\"", id);
 	HTML::open_indented_p(OUT, indent, "");
 	HTML::open_coloured_box(OUT, colour, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
 }
 
-void IndexUtilities::extra_div_close(OUTPUT_STREAM, char *colour) {
+void IndexUtilities::extra_div_close(OUTPUT_STREAM, text_stream *colour) {
 	HTML::close_coloured_box(OUT, colour, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
 	HTML_CLOSE("p");
 	HTML_CLOSE("div");

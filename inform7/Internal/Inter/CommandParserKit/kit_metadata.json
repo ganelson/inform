@@ -1,0 +1,24 @@
+{
+    "is": {
+        "type": "kit",
+        "title": "CommandParserKit",
+        "version": "10.2.0-beta+6W35"
+    },
+    "needs": [ {
+        "need": {
+            "type": "kit",
+            "title": "WorldModelKit"
+        }
+    }, {
+        "need": {
+            "type": "extension",
+            "title": "Standard Rules",
+            "author": "Graham Nelson"
+        }
+    } ],
+    "activates": [ "command" ],
+    "kit-details": {
+        "has-priority": 3,
+        "provides-kinds": [ "Parsing.neptune" ]
+    }
+}

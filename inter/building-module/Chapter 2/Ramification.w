@@ -943,10 +943,8 @@ respectively.
 	}
 	if (uses_printing_rule_in_brackets_notation == FALSE) {
 		inter_schema_token *n = InterSchemas::second_dark_token(cons);
-		if ((n) && (n->ist_type == DQUOTED_ISTT)) {
+		if ((n) && (n->ist_type == DQUOTED_ISTT))
 			which_statement = PRINT_BIP;
-			Tokenisation::de_escape_text(n->material);
-		}
 	}
 	if (InterSchemas::opening_reserved_word(cons) == PRINTRET_I6RW)
 		@<Add printing a newline and returning true to the schema@>;
@@ -1148,7 +1146,6 @@ they cannot both apply.)
 	if (Str::len(dangle_text) > 0) {
 		first_child->expression_tokens = InterSchemas::new_token(DQUOTED_ISTT, dangle_text, 0, 0, -1);
 		first_child->expression_tokens->owner = first_child;
-		Tokenisation::de_escape_text(first_child->expression_tokens->material);
 	}
 
 @ There is often no second child. But when there is:
@@ -1256,7 +1253,10 @@ int Ramification::break_for_statements(inter_schema_node *par, inter_schema_node
 					if (bl == 0) @<End a for loop header clause@>;
 				} else if (bl == 1) {
 					if (n->ist_type == COLON_ISTT) @<End a for loop header clause@>
-					else {
+					else if (n->ist_type == DCOLON_ISTT) {
+						@<End a for loop header clause@>;
+						@<End a for loop header clause@>;
+					} else {
 						if (from[cw] == NULL) from[cw] = n;
 					}
 				}
@@ -1900,6 +1900,8 @@ int Ramification::sanity_check(inter_schema_node *par, inter_schema_node *isn) {
 						break;
 					}
 					case COLON_ISTT:		InterSchemas::throw_error(isn, I"unexpected ':'"); break;
+					case DCOLON_ISTT:		InterSchemas::throw_error(isn,
+												I"the Inform 6 '::' operator is unsupported"); break;
 					case OPERATOR_ISTT:		InterSchemas::throw_error(isn, I"unexpected operator"); break;
 				}
 				if ((t->ist_type == NUMBER_ISTT) && (t->next) &&

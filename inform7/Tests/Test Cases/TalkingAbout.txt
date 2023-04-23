@@ -1,0 +1,62 @@
+Use command line echoing.
+
+Philosophy and haute cuisine are concepts.
+
+Laboratory is a room. Liza is a person in the Laboratory. A gong is in the Laboratory.
+
+Instead of attacking the gong:
+	say "Bong! This seems to summon Liza's attention to the deep issues.";
+	try Liza talking about philosophy.
+
+First carry out an actor talking about an object (called T):
+	if the leading beats is not empty:
+		let N be the number of entries in the leading beats;
+		if N is 1:
+			perform entry 1 of the leading beats;
+		if N is greater than 1:
+			say "Choose...";
+			say "[conditional paragraph break]";
+			let X be 0;
+			repeat with B running through the leading beats:
+				increase X by 1;
+				say "([X]). [textual content of opening line of B][line break]";
+			say "[conditional paragraph break]";
+			let Y be the chosen dialogue number up to X; 
+			perform entry Y of the leading beats;
+		stop the action;
+	if the other beats is not empty:
+		let N be the number of entries in the other beats;
+		let R be a random number from 1 to N;
+		perform entry R of the other beats;
+		stop the action;
+	if the player is the actor:
+		say "There is no reply.";
+	otherwise:
+		say "[The actor] [talk] about [T].";
+	stop the action.
+
+Section A (dialog)
+
+(This is the going active scene.)
+
+Narration: "Bong! The director activity chime goes off."
+
+(About philosophy.)
+
+Liza: "I favour Cartesian dualism. Well, half of me does."
+
+(About philosophy. Later.)
+
+Liza: "Existentialism might work for me. If it's real."
+
+(About philosophy.)
+
+Player: "I do wonder what it's all about."
+
+Liza: "And therefore you are."
+
+(About philosophy.)
+
+Player: "Any view on whether science is a social construct?"
+
+Liza: "Only that it's not a falsifiable hypothesis."

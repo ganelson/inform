@@ -3,14 +3,14 @@
 To register the names associated with sound resource numbers, which are defined
 to allow the final story file to play sound effects.
 
-@ The following is called to activate the plugin:
+@ The following is called to activate the feature:
 
 =
 void Sounds::start(void) {
-	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, Sounds::make_special_meanings);
-	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, Sounds::new_base_kind_notify);
-	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, Sounds::new_named_instance_notify);
-	PluginManager::plug(PRODUCTION_LINE_PLUG, Sounds::production_line);
+	PluginCalls::plug(MAKE_SPECIAL_MEANINGS_PLUG, Sounds::make_special_meanings);
+	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, Sounds::new_base_kind_notify);
+	PluginCalls::plug(NEW_INSTANCE_NOTIFY_PLUG, Sounds::new_named_instance_notify);
+	PluginCalls::plug(PRODUCTION_LINE_PLUG, Sounds::production_line);
 }
 
 int Sounds::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
@@ -102,11 +102,13 @@ void Sounds::register_sound(wording W, wording FN) {
 				"because it is either empty or contains only spaces.");
 			return;
 		}
-		filename *sound_file = Filenames::in(Task::sounds_path(), leaf);
+		filename *sound_file = ResourceFinder::find_resource(Task::sounds_department(), leaf, FN);
 		DISCARD_TEXT(leaf)
-		Sounds::sounds_create(W, id, sound_file, <<alttext>>);
-		LOGIF(MULTIMEDIA_CREATIONS,
-			"Created sound effect <%W> = filename '%N' = resource ID %d\n", W, wn, id);
+		if (sound_file) {
+			Sounds::sounds_create(W, id, sound_file, <<alttext>>);
+			LOGIF(MULTIMEDIA_CREATIONS,
+				"Created sound effect <%W> = filename '%N' = resource ID %d\n", W, wn, id);
+		}
 	}
 }
 
@@ -161,7 +163,7 @@ instance *Sounds::sounds_create(wording W, int id, filename *sound_file, int alt
 	Assert::true(Propositions::Abstract::to_create_something(K_sound_name, W), CERTAIN_CE);
 	allow_sound_creations = FALSE;
 	instance *I = Instances::latest();
-	sounds_data *sd = PLUGIN_DATA_ON_INSTANCE(sounds, I);
+	sounds_data *sd = FEATURE_DATA_ON_INSTANCE(sounds, I);
 	sd->filename_of_sound_file = sound_file;
 	sd->name = W;
 	sd->sound_number = id;
@@ -178,7 +180,7 @@ int Sounds::new_named_instance_notify(instance *I) {
 				"this is not the way to create a new sound name",
 				"which should be done with a special 'Sound ... is the file ...' "
 				"sentence.");
-		ATTACH_PLUGIN_DATA_TO_SUBJECT(sounds, I->as_subject, CREATE(sounds_data));
+		ATTACH_FEATURE_DATA_TO_SUBJECT(sounds, I->as_subject, CREATE(sounds_data));
 		return TRUE;
 	}
 	return FALSE;
@@ -192,7 +194,7 @@ created from |Figures.w|.)
 
 =
 void Sounds::write_sounds_manifest(OUTPUT_STREAM) {
-	if (PluginManager::active(sounds_plugin) == FALSE) return;
+	if (FEATURE_INACTIVE(sounds)) return;
 	sounds_data *sd;
 	if (NUMBER_CREATED(sounds_data) == 0) return;
 	WRITE("<key>Sounds</key>\n");
@@ -212,7 +214,7 @@ void Sounds::write_sounds_manifest(OUTPUT_STREAM) {
 
 =
 void Sounds::write_blurb_commands(OUTPUT_STREAM) {
-	if (PluginManager::active(sounds_plugin) == FALSE) return;
+	if (FEATURE_INACTIVE(sounds)) return;
 	sounds_data *sd;
 	LOOP_OVER(sd, sounds_data) {
 		wchar_t *desc = L"";
@@ -230,7 +232,7 @@ void Sounds::write_blurb_commands(OUTPUT_STREAM) {
 
 =
 void Sounds::write_copy_commands(release_instructions *rel) {
-	if (PluginManager::active(sounds_plugin) == FALSE) return;
+	if (FEATURE_INACTIVE(sounds)) return;
 	sounds_data *sd;
 	LOOP_OVER(sd, sounds_data)
 		ReleaseInstructions::add_aux_file(rel, 

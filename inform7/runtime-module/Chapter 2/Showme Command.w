@@ -1,6 +1,6 @@
 [RTShowmeCommand::] Showme Command.
 
-A plugin to provide some support for the SHOWME testing command.
+A feature to provide some support for the SHOWME testing command.
 
 @h Initialising.
 This doesn't in fact do anything, except to provide one service when it's

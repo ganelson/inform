@@ -1,0 +1,13 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 31 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32187 words long.
+Problem__ PM_BeatNamedTwice
+In Section 1 - Meeting:
+  >--> You wrote '(About the paranormal . This is the quaintly done scene .
+    This is the doubled beat .)' (source text, line 5): but this dialogue beat
+    seems to be named more than once, which is not allowed. It can be
+    anonymous, but otherwise can only have one name (either as a beat or as a
+    scene, and not both).
+Inform 7 has finished.

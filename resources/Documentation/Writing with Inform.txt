@@ -12,11 +12,11 @@ Interactive fiction is a literary form which involves programming a computer so 
 
 These notes are arranged so that the reader can, in principle, write whole works of fiction as early as the end of Chapter 3. Each subsequent chapter then extends the range of techniques available to make livelier and more intriguing situations.
 
-This new release of Inform ("Inform 7", the seventh major version since 1993) is a radical departure from most previous approaches to interactive fiction. In particular, it is very different from Inform 6, which newcomers will not need to know anything about. Inform 6 sits inside Inform 7, and is part of the inner workings, but is not visible from the outside. For information about Inform 6, see <b>www.inform-fiction.org</b>.
+Today's Inform language (sometimes called "Inform 7") is very different from its 20th-century predecessor, which was called Inform 6. A few advanced sections of this book show how unusual effects can be achieved by mixing low-level coding in Inform 6 notation with more usual Inform text. However, most users will never need this. For information about Inform 6, see <b>www.inform-fiction.org</b>.
+
+This book is also a guide to the Inform language, rather than a manual on how to use its supporting tools. Those tools, when used at the command line rather than inside the Inform app, have numerous features not covered here. Manuals for them are all available online: see <b>github.com/ganelson/inform</b>.
 
 	Programming is best regarded as the process of creating works of literature, which are meant to be read... so we ought to address them to people, not to machines. (^{@Donald Knuth}, "Literate Programming", 1981)
-
-(See Acknowledgements for a chance to try out the cross-referencing links in <i>Writing with Inform</i> - click on the red asterisk or the name of the destination to go there.)
 
 [x] Acknowledgements
 
@@ -24,15 +24,13 @@ Inform 7 is dedicated to ^{@Emily Short} and ^{@Andrew Plotkin}, whose shrewd an
 
 From the outset, I have thought of Inform 7 as no longer being a command-line compiler, but a compiler in combination with a humanising user interface. All credit for the reference implementation under Mac OS X belongs to ^{@Andrew Hunter}. How simple the metaphor of an interactive book with facing pages may seem, but the coding was an enormous challenge. In 2014 ^{@Toby Nelson}, my brother, put months of time into the project by rewriting and modernising the Mac OS X application: sandboxing it for the Mac App Store, giving it a more contemporary design, and much more. He continues to maintain it today.
 
-Though ^{@David Kinder}'s Windows application does indeed visually follow the OS X original, the two programs were coded independently, and the programming task taken up by David was formidable indeed. ^{@Philip Chimento}'s Gnome-based user interface for Linux became officially part of the project in November 2007, when the first easy-to-install packages for Ubuntu and Fedora were offered. Philip's efforts were particularly generous since the early stages of Inform-for-Linux were so tentative: for many months, we weren't sure how to go about the project, and during that time Philip quietly wrote us a solution. ^{@Adam Thornton} continues to support Inform at the command line on Unix-like systems.
+Though ^{@David Kinder}'s Windows application does indeed visually follow the OS X original, the two programs were coded independently, and the programming task taken up by David was formidable indeed. ^{@Philip Chimento}'s Gnome-based user interface for Linux became officially part of the project in November 2007, when the first easy-to-install packages for Ubuntu and Fedora were offered. ^{@Adam Thornton} gave invaluable assistance in the closed-source age of Inform to make generic Unix binaries available, too.
 
-Inform in its widest sense incorporates work by so many people that it's simply impossible to thank all of them, but ^{@Erik Temple}, ^{@Dannii Willis}, ^{@Ron Newcomb}, ^{@Eric Eve} and ^{@Juhana Leinonen} all deserve special mention. Many hundreds of users have filed patient and careful bug reports, keeping us on the straight and narrow. They're contributors, too.
+While Inform is not strictly speaking a project of the Interactive Fiction Technology Foundation (IFTF), it benefits enormously from the Foundation's good work. In particular, the Narrascope conferences were invaluable in the period 2017-2022, and I thank ^{@Judith Pintar} and ^{@Andrew Plotkin} for arranging speaking slots at them.
 
-It's perhaps surprising that the Inform application gained its first online component only in 2014, but the Public Library of Extensions, and its discussion forum, make a brave step into the modern age. ^{@Mark Musante}, our Extensions librarian, Dannii Willis and ^{@Justin de Vesine} have been a great help in setting this up.
+Inform in its widest sense incorporates work by so many people that it's simply impossible to thank all of them, but ^{@Zed Lopez}, ^{@Dannii Willis}, ^{@Mark Musante}, ^{@Brian Rushton}, ^{@Dan Fabulich}, ^{@Hugo Labrande}, ^{@Erik Temple}, ^{@Ron Newcomb}, ^{@Eric Eve}, ^{@Justin de Vesine} and ^{@Juhana Leinonen} all deserve special mention. Many hundreds of users have filed patient and careful bug reports, keeping us on the straight and narrow. They're contributors, too.
 
-The Inform bug tracker, now hosted on Jira, was set up by ^{@Hugo Labrande}, who migrated a large back database of issues from its Mantis predecessor, and the curator is ^{@Brian Rushton}.
-
-The original development of Inform 7 was a long haul, and I would particularly like to thank ^{@Sonja Kesserich}, ^{@David Cornelson} and other volunteers for their early testing of a then-fragile system. The final months before the Public Beta release of Inform 7 were made more enjoyable, as well as more productive, by fruitful discussions leading to a cross-platform standard for bibliographic data and cover art. ^{@L. Ross Raszewski}, who wrote frighteningly efficient reference software in frighteningly little time; the librarians of the IF-Archive, Andrew Plotkin, David Kinder and ^{@Paul Mazaitis}; and my fellow authors of IF design systems - ^{@Mike Roberts} (of the Text Adventure Development System); ^{@Kent Tessman} (of Hugo); and ^{@Campbell Wild} (of ADRIFT).
+The original development of Inform 7 was a long haul, and I would particularly like to thank ^{@Sonja Kesserich}, ^{@David Cornelson} and other volunteers for their early testing of a then-fragile system. The final months before the Public Beta release of Inform 7 were made more enjoyable, as well as more productive, by fruitful discussions leading to a cross-platform standard for bibliographic data and cover art. Special mentions to ^{@L. Ross Raszewski}, who wrote frighteningly efficient reference software in frighteningly little time; the librarians of the IF-Archive, Andrew Plotkin, David Kinder and ^{@Paul Mazaitis}; and my fellow authors of IF design systems - ^{@Mike Roberts} (of the Text Adventure Development System); ^{@Kent Tessman} (of Hugo); and ^{@Campbell Wild} (of ADRIFT).
 
 {EPUB:}This EPUB edition of the documentation was greatly assisted by excellent advice published by ^{@Liza Daly}, an old friend of Inform's.
 
@@ -125,113 +123,7 @@ Inform's Skein panel is just such a table, built automatically. If we think of t
 
 Double-clicking on a command translates the source afresh and replays the story from <b>start</b> down to that command, and then stops. We are then free to continue play by typing commands into the Story panel, of course, and these commands will automatically be recorded in the Skein as a new variation of play, diverging from the previous threads.
 
-{Linux:}The Skein is not implemented in the Linux version.
-
-[x] A short Skein tutorial
-
-^^{user interface: Skein panel} ^^{Skein panel+ui+}
-^^{user interface: Transcript panel} ^^{Transcript panel+ui+}
-^^{transcripts: in the Skein <-- blessed transcripts}
-
-In the following example, we will see how the Skein is woven as different commands are tried. As it happens, the story being played is the example "Witnessed", from Chapter 11, but the details do not matter. When the project has never been played at all, if we switch to the Skein panel (or open it opposite the Story panel) we will only find this:
-
-///bordered:skt1.png///
-
-Suppose we click Go for the first time and type two commands in: TURN ON ALARM and then LOOK. Now the Skein shows:
-
-///bordered:skt2.png///
-
-Only one line of play is known to Inform, and it runs downwards in a thread from the special "- start -" knot, which represents the situation before any command has been tried. The useful thing about having past histories recorded like this is that we can revisit them. Suppose we want to go back to the situation after typing only TURN ON ALARM. We could click Go again and type that first command in once more, but now we have an easier method: we simply double-click on the TURN ON ALARM knot. The story restarts by itself, and commands are automatically keyed in to regain the position of play represented by the knot we clicked on - in this example that only keys a single command in, but it might have been hundreds. The Skein now looks like this:
-
-///bordered:skt3.png///
-
-All knots are displayed either as yellow or green. Yellow knot are the ones in the history of the story currently playing. The LOOK knot is green because it hasn't happened in the current story yet - and in fact, it won't happen in the current story, because instead we play TURN ON METER. Now the Skein changes again:
-
-///bordered:skt4.png///
-
-Inform now knows about two ways to play the current project: one consisting of TURN ON ALARM and then TURN ON METER, the other of TURN ON ALARM and then LOOK. Since these only differ after the first turn, Inform displays them as a thread which divides into two after the first turn. Again, LOOK remains green because it hasn't been played in the current story.
-
-Note also that one of the two possible threads here is drawn more thickly (here it is shown with thick dashes rather than thin). Only one thread is ever drawn thickly -- the one currently being shown in the Transcript panel, which we will come to later on. (That often corresponds to the current line of play, as now, because the Transcript follows what we do unless we choose otherwise.)
-
-After a little more exploration, we reach the following:
-
-///bordered:skt5.png///
-
-{OSX:}At this point we decide that we want to preserve the thread leading to EXAMINE CHIMES - perhaps it's a sequence we are going to want to test often. The Skein can be edited very easily, in several ways (for instance clicking and holding on a command allows us to edit the text of the command): control-clicking (or right-clicking) on a knot brings up a contextual menu. On Mac OS X, some popular knot controls appear whenever the mouse hovers over the knot, like so:
-{OSX:}///bordered:skt6.png///
-{^OSX:}At this point we decide that we want to preserve the thread leading to EXAMINE CHIMES - perhaps it's a sequence we are going to want to test often. The Skein can be edited very easily: right-clicking on a knot brings up a contextual menu.
-
-{OSX:}We click on the padlock button (or choose Lock This Branch from the contextual menu), and this makes the thread through to here "locked". That means the knots can't be deleted (unless we unlock them again) - either by our own mistake, or by Inform trimming back no-longer-needed threads of the Skein to keep it manageable in size.
-{^OSX:}We choose Lock This Thread from the contextual menu, and this makes the thread through to here "locked". That means the knots can't be deleted (unless we unlock them again) - either by our own mistake, or by Inform trimming back no-longer-needed threads of the Skein to keep it manageable in size.
-
-///bordered:skt7.png///
-
-Note that this locked history is now drawn as a solid thread, whereas all the others are unlocked and drawn as dashes.
-
-Now we have a securely remembered piece of standard play: it means we can try out the sequence TURN ON ALARM / TURN ON METER / WAIT / EXAMINE CHIMES any time we want to with a double-click on the final knot. This is convenient for testing - but so far it only runs the test: to see whether the test came out well or badly, we have to look through what happened, perhaps by scrolling back in the Story panel to look at the text. And that means that we need to remember what the text should have been like.
-
-In fact, though, Inform can remember for us, using the Transcript panel. This is closely joined to the Skein panel, and it's often convenient to flip between the two. Turning to the Transcript now, we find a two-column view of the story currently being played. The left-hand column shows the text which has been displayed on each turn so far; the right-hand column is empty. The bottom of the Transcript looks like so:
-
-///bordered:skt8.png///
-
-The empty right-hand column displays the "blessed" transcript - one which the author has approved as being correct. This can be done for each individual knot, using the Bless button joining the columns, but in this case we will bless the whole transcript of this story, using the Bless All button. Now there's text in both columns, and of course the two columns match. (Note that the blessed transcript is in a brighter colour.)
-
-///bordered:skt9.png///
-
-Back in the Skein, we find that the knots which have transcripts have lit up, and are brighter than the others. If we Go, to start a new story, and then look at the Skein:
-
-///bordered:skt10.png///
-
-we see that the knots for which we have blessed a transcript are in a brighter green (or a brighter yellow, if they're in the current story being played).
-
-Now suppose we change the source text for the project, so that we make it behave differently. The details don't matter, but suppose we do something which changes the result of the TURN ON METER command, and then run the test again. Now we find:
-
-///bordered:skt11.png///
-
-The red warning badge on the TURN ON METER knot alerts us that the last time this knot was tried (just now, as it happens), the resulting text didn't agree with its blessed transcript. (Red badges can only be seen on bright-coloured knots which have transcripts - for other knots, there's nothing to compare with.) On the other hand, the rest of the yellow current line of play worked out exactly the same as we expected - so no badges. Clicking on the red badge takes us into the Transcript panel at the right place, where the corresponding turn's transcript has also turned red:
-
-///bordered:skt12.png///
-
-{OSX:}Again, what actually happened is on the left; what should have happened is on the right. The change is shown with underlining - we added the text "quivers, then". If we approve this change, by clicking on the Bless button for the red turn, the amended text will become the correct text to compare against in future runs, and the turn will become green to show that once again all is well. (We can also edit the blessed transcript directly, by clicking in the text and typing.) Clicking on the Show knot button takes us back in the skein, at the right place: where we will see that the red warning badge has disappeared.
-{^OSX:}Again, what actually happened is on the left; what should have happened is on the right. The change is shown with underlining - we added the text "quivers, then". If we approve this change, by clicking on the Bless button for the red turn, the amended text will become the correct text to compare against in future runs, and the turn will become green to show that once again all is well. (We can also edit the blessed transcript directly, by double-clicking in the text and typing.) Clicking on the Show knot button takes us back in the skein, at the right place: where we will see that the red warning badge has disappeared.
-
-Some writers of IF like to work backwards from a transcript of the story they want to produce, and for them, the Skein and Transcript combination will be helpful as a running picture of what works so far. Other authors may not use the Skein/Transcript feature at all until right at the end of a project, in testing before publication, when it becomes very important to be able to make small changes in one area without upsetting everything else. Either way, the Skein and Transcript together make a very powerful testing aid.
-
-{OSX:}This tutorial has shown only a short line of play, to keep the pictures small, but for a large project the Skein might run to thousands of knots. It then becomes important to be able quickly to find key knots corresponding to plot developments. To help with that, we can annotate certain knots with any label we choose (using one of the mouseover buttons, for instance):
-{^OSX:}This tutorial has shown only a short line of play, to keep the pictures small, but for a large project the Skein might run to thousands of knots. It then becomes important to be able quickly to find key knots corresponding to plot developments. To help with that, we can annotate certain knots with any label we choose (by selecting Add Label from the contextual menu):
-
-///bordered:skt13.png///
-
-And this is where the "Labels" gadget at the top of the Skein comes into its own:
-
-///bordered:skt14.png///
-
-since it offers a menu of all the labels in the Skein, and if selected will jump to the one chosen.
-
-{OSX:}The Skein has other abilities too, best explored by experimenting. For instance, we can edit the commands by clicking and holding on the command text in a knot. We can add new knots in the middle of existing lines using the "add knot" mouseover button. The Play All Blessed option (on the Build menu in OS X) is especially powerful: it tests each possible blessed history in turn, trying all of them, and can therefore test very complicated multiple endings and the like in a single click.
-{^OSX:}The Skein has other abilities too, best explored by experimenting. For instance, we can edit the commands by selecting Edit Knot from the contextual menu, and we can add new knots in the middle of existing lines using the Insert Knot item on that menu. The Play All Blessed option (on the Game menu) is especially powerful: it tests each possible blessed history in turn, trying all of them, and can therefore test very complicated multiple endings and the like in a single click.
-
-{Linux:}The Skein and Transcript are not implemented in the Linux version.
-
-[x] Summary of the Skein and Transcript
-
-^^{user interface: Skein panel} ^^{Skein panel+ui+}
-^^{user interface: Transcript panel} ^^{Transcript panel+ui+}
-^^{transcripts: in the Skein}
-
-The Skein records the history of different plays through the current project, and the Transcript records the text of each response, comparing it with a "blessed" or correct version if one is available.
-
-In the Skein each typed command is a "knot". The threads hanging down from the top "- start -" knot are possible histories. Double-click on a knot to play through to there.
-
-Yellow knots are commands played so far in the current story: green knots are possible lines not taken, or not taken yet.
-
-A solid thread is "locked" and protected from deletion (by accident or when Inform trims away loose ends): a dashed thread has no such protection.
-
-A bright knot has a blessed transcript: a darker knot is one which has no blessed transcript. When a bright knot shows a red badge, this means that when last tested its command produced a textual reply which wasn't the same as the blessed transcript. Clicking on the badge shows exactly how.
-
-The thicker thread in the Skein shows the history currently being displayed in the Transcript panel.
-
-{Linux:}The Skein and Transcript are not implemented in the Linux version.
+The user interface for the Skein looks slightly different on different versions of the Inform apps (that is, the MacOS version is not quite the same as the Windows version, and so on), so this manual is not the best place to describe it. In any case, the best way to find out about it is probably to experiment.
 
 [Chapter: The Source Text] Creating the world {PM_NoSuchVerb} {PM_NoSuchVerbComma} {PM_NegatedVerb1} {PM_TwoLikelihoods} {PM_CantAssertAdjective} {PM_CantAssertNegatedEverywhere} {PM_CantAssertNegatedRelations} {PM_CantAssertNonKind} {PM_CantAssertQuantifier}
 
@@ -298,9 +190,7 @@ Every one of the built-in phrases has a definition somewhere in this book. The f
 ^^{punctuation: apostrophe, meaning quotation mark <-- apostrophe} ^^{('), meaning (")+sourcepart+}
 ^^^{punctuation: quotation marks <-- quotation marks}
 ^^{punctuation: quotation marks: defining texts} ^^{`": defining texts}
-^^{punctuation: vertical stroke, for paragraph break <-- vertical stroke} ^^{(|), for paragraph break+sourcepart+}
 ^^{comments: in source text}
-^^{paragraph breaks: with vertical stroke}
 ^^{line breaks: produced by sentence-ending punctuation}
 
 An example rule from the previous section demonstrates one of Inform's conventions about punctuation, and is worth pausing to look at again.
@@ -358,7 +248,7 @@ would come out quite differently - this doesn't affect the appearance of the tex
 
 These three punctuation rules for texts feel very natural with practice, and Inform users sometimes don't realise the third rule is even there, because it just seems the right thing to happen. But occasionally the rules get in the way of what we want to do. (For instance, how do we get a literal [ or ]? What if we want a single quote mark where Inform thinks we want a double, or vice versa?) So we'll come back to these rules in more detail in the chapter on Text.
 
-Inform also reads other punctuation marks. Colon ":" and semicolon ";" turned up in the previous section, in the writing of rules. It also has the more exotic "|" (not a capital I, a vertical stroke) for paragraph breaks outside of quoted text, but people hardly ever need this.
+Inform also reads other punctuation marks. Colon ":" and semicolon ";" turned up in the previous section, in the writing of rules.
 
 As these examples begin to show, Inform source imitates the conventions of printed books and newspapers whenever there is a question of how to write something not easily fitting into words. The first example of this is how Inform handles headings, but to see why these are so useful we first look at Problems.
 
@@ -719,24 +609,11 @@ Inform is a system for translating textual descriptions of interactive fiction i
 	- how large they are, that is, how much play they can express;
 	- what extra-textual effects they can bring off.
 
-Inform can write to two different formats. Neither of these is proprietary, and neither was created by the authors of Inform: each format is a community property, defined by published standards documents. An individual Inform project can make its own choice of story file format, using that project's Settings panel.
+Inform can write to two different formats. Neither of these is proprietary, and neither was created by the authors of Inform: each format is a community property, defined by published standards documents. An individual Inform project can make its own choice of story file format, using that project's Settings panel. Outside the Inform app, Inform can even be used at the command line to generate C programs rather than story files, and those can be compiled to run on almost any computer.
 
 Newly created projects are set up with the Glulx format. This has largely taken over from an earlier format called the Z-machine, but Inform can still generate a version 8 Z-machine file (a so-called "z8") if required. The Z-machine is of historic importance, and may continue to be useful for certain tasks where Glulx support is not yet available, but most users will want to keep the Glulx format set all of the time.
 
-Internally, the Inform application uses a tool called Inform 6 (which was once the entire Inform system) to manufacture the story file. There are therefore two ways that large projects can run out of space:
-
-	(a) By exceeding some maximum in Inform 6, or
-	(b) By exceeding some fundamental limitation of the current story file format.
-
-In both cases, the Inform application will display a Problems page explaining that the Inform 6 tool has failed to work as intended, and refer us to the "console output" - the text produced by Inform 6 - which is normally ignored, but can be found on the Console tab of the Results panel.
-
-In case (a), Inform 6 will say that a memory setting has been exceeded: it will say what this setting is called (for instance "MAX_ZCODE_SIZE") and what its current value is (for instance 50000). We can then avoid the problem by adding the following use option into the source text:
-
-	Use MAX_ZCODE_SIZE of 60000.
-
-And similarly for every other Inform 6 memory setting. (If the source tries to specify the same setting more than once - which is quite possible if extensions are included, with rival ideas - then the highest value is used.)
-
-Case (b) is only likely to happen with the Z-machine format, since Glulx has a huge capacity; so the cure here is to switch to Glulx in the Settings. But if that's not possible for some reason - say, if we want a story file playable on a tiny handheld computer unable to manage Glulx - we still have a few options. Unless the story is very large (in which case there is little we can do), the "z8" format is most likely to be exhausted for lack of what is called "readable memory", with a message like so:
+Internally, the Inform application uses a tool called Inform 6 (which was once the entire Inform system) as the final stage in manufacturing the story file. Inevitably, though, this can go wrong if the story is so large or complex that it exceeds some fundamental limitation of the current story file format. This is only likely to happen with the Z-machine format, since Glulx has a huge capacity; so the cure here is to switch to Glulx in the Settings. But if that's not possible for some reason - say, if we want a story file playable on a tiny handheld computer unable to manage Glulx - we still have a few options. Unless the story is very large (in which case there is little we can do), the "z8" format is most likely to be exhausted for lack of what is called "readable memory", with a message like so:
 
 	This program has overflowed the maximum readable-memory size of the Z-machine format. See the memory map below: the start of the area marked "above readable memory" must be brought down to $10000 or less.
 
@@ -760,11 +637,11 @@ All software has bugs, and Inform is no exception. The most obvious bugs are the
 
 It is very helpful for users to report faults, so that the program can be improved for everyone else. To report a fault, please first check with the Inform home page to make sure that the version of Inform you have used to detect the fault is the latest version available. You can find the latest versions at
 
-	http://inform7.com/download/
+	http://inform7.com/downloads/
 
-If the bug is still present in the latest version, please report the bug using Inform's bug tracking database, found at
+If the bug is still present in the latest version, please report the bug using Inform's bug tracking database. Links for this can be found from the Inform source code page:
 
-	https://inform7.atlassian.net/jira/software/c/projects/I7/issues
+	https://github.com/ganelson/inform
 
 It may be that someone else has already identified the bug and even that a workaround for users is suggested. If not, please make an account at the bug tracking system and submit the requested information to help Inform's maintainers track and fix the fault.
 
@@ -1519,6 +1396,7 @@ Note that rooms and regions are not allowed to have parts. (Rooms are already pa
 Though realism can become tiresome in interactive fiction, there are times when we cannot go along with Inform's normal assumption that all of a person's possessions are visible to everybody else. People are not like containers, which either show all of their holdings or not, according to whether they are open or transparent. If a man is carrying a fishing rod and a wallet, one will be on open show, the other not. Some clothing is outwardly visible, but not all.
 
 Whether or not something is concealed is not like the either/or properties we have seen so far - such as being "open" or "closed" - because it is not really a property of the thing itself, but depends on the habitual behaviour of its current owner. To talk about behaviour we have to use sentences of a kind not seen so far, and which will not fully be explained for some chapters to come.
+
 But straightforward cases are easy to write, if only by imitating the following examples.
 
 Here we make the Cloaked Villain invariably conceal anything she is holding or wearing:
@@ -2990,10 +2868,8 @@ Moreover, the player is not allowed to type these characters in commands during 
 
 (d) <b>Characters which might work in quoted text, or might not</b>. The Arabic and Hebrew alphabets are fairly likely to be available; miscellaneous symbols are sometimes legible to the player, sometimes not. Other alphabets are chancier still. (If a work of IF depends on these being visible, it may be necessary to instruct players to use specific interpreters, or to provide a way for the player to test that all will be well.)
 
-[x] Unicode characters {PM_SayUnicode} {PM_MidTextUnicode}
+[x] Unicode characters {PM_SayUnicode} {PM_MidTextUnicode} {PM_UnicodeOutOfRange}
 
-^^{Unicode Character Names / Full Character Names+ext+} ^^{extensions: specific extensions: Unicode Character Names}
-^^{extensions: specific extensions: Unicode Full Character Names}
 ^^{characters (letters): Unicode (arbitrary symbols)}
 ^^{characters (letters) <-- Unicode}
 ^^^{+tosay+"[(unicode character)]" --> unicode character}
@@ -3004,30 +2880,35 @@ Unicode characters can be named (or numbered) directly in text. For example:
 
 	"[unicode 321]odz Churchyard"
 
-produces a Polish slashed L. If the Unicode Character Names or Unicode Full Character Names extensions are included, characters can also be named as well as numbered:
+produces a Polish slashed L. Characters can also be named as well as numbered:
 
 	"[unicode Latin capital letter L with stroke]odz Churchyard"
 
-The Unicode standard assigns character numbers to essentially every marking used in text from any human language: its full range is enormous. (Note that Inform writes these numbers in decimal: many reference charts show them in hexadecimal, or base 16, which can cause confusion.) Inform can only handle codes [unicode 32] up to [unicode 65535], so it is not quite so catholic, but the range is still enormous enough that code numbers are unfamiliar to the eye. Inform therefore allows us to use the official Unicode 4.1 names for characters, instead of their decimal numbers, <i>provided</i> we have Included the necessary extension like so:
+The Unicode standard assigns character numbers to essentially every marking used in text from any human language: its full range is enormous. (Note that Inform writes these numbers in decimal: many reference charts show them in hexadecimal, or base 16, which can cause confusion.)
 
-	{*}Include Unicode Character Names by Graham Nelson.
-
-This extension provides names for some 2900 of the most commonly used characters. It means, for instance, that we can write text such as:
+This means, for instance, that we can write text such as:
 
 	"Dr Zarkov unveils the new [unicode Hebrew letter alef] Nought drive."
 	"Omar plays 4[unicode black spade suit] with an air of triumph."
 
-Admittedly, these can get a little verbose:
+Admittedly, character names can get a little verbose:
 
 	"[unicode Greek small letter omega with psili and perispomeni and ypogegrammeni]"
 
+Inform can "only" handle codes [unicode 32] up to [unicode 131071], and note that if the story settings are to compile to the Z-machine, this range stops at 65535: thus many emoji characters - say, [unicode fish cake with swirl design] - can only be used if the story will compile to Glulx or another modern target. But by default, stories are compiled the modern way, so this should not be a problem in practice.
+
+There are far too many possible names to list here: formally, any character name in the Basic Multilingual Plane or the Supplementary Multilingual Plane of version 15.0.0 of the Unicode standard can be used. See:
+
+	https://en.wikipedia.org/wiki/Plane_(Unicode)
+
 But before getting carried away, we should remember the hazards: Inform allows us to type, say, "[unicode Saturn]" (an astrological sign) but it appears only as a black square if the resulting story is played by an interpreter using a font which lacks the relevant sign. For instance, Zoom for OS X uses the Lucida Grande and Apple Symbol fonts by default, and this combination does contain the Saturn sign: but Windows Frotz tends to use the Tahoma font by default, which does not. (Another issue is that the fixed letter spacing font, such as used in the status line, may not contain all the characters that the font of the main text contains.) To write something with truly outré characters is therefore a little chancy: users would have to be told quite carefully what interpreter and font to use to play it.
 
-The "Unicode Character Names" extension, which is pre-installed in the standard distribution of Inform, defines names for the Latin, Greek, Cyrillic, Hebrew and Braille alphabets, together with currency and miscellaneous other symbols, including some for drawing boxes and arrows. It is only optionally installed because even this is quite large: but in case it should still prove inadequate, an alternative can be used:
+At one time, Inform could only use named Unicode values in a story which had first included an extension:
 
-	{*}Include Unicode Full Character Names by Graham Nelson.
+	Include Unicode Character Names by Graham Nelson.
+	Include Unicode Full Character Names by Graham Nelson.
 
-This includes all 12,997 named characters in the 16-bit range of the Unicode 4.1 standard: it is the size of a small novel and its inclusion will slow Inform down. But if you want to experiment with Arabic, ecclesiastical Georgian, Cherokee, Tibetan, Syriac, the International Phonetic Alphabet, hexagrams or the unified Canadian aboriginal syllabics, "Unicode Full Character Names" (again built into Inform) is the extension for you.
+This is no longer the case: no such inclusion need now be made, and indeed, those extensions have been removed from Inform as redundant.
 
 [x] Displaying quotations
 
@@ -9084,7 +8965,7 @@ doesn't throw a run-time problem the way that
 
 	showme 1 divided by 0;
 
-does. Instead, it produces "plus infinity". Infinity behaves roughly the way we might expect - for example, "2 divided by plus infinity" produces 0 - but once it comes into a calculation the result probably lies on some extreme and won't be very useful. Amusingly, the following is correct Inform syntax:
+does. Instead, it produces "plus infinity". Infinity behaves roughly the way we might expect - for example, "2 divided by plus infinity" produces 0.0 - but once it comes into a calculation the result probably lies on some extreme and won't be very useful. Amusingly, the following is correct Inform syntax:
 
 	plus infinity to the nearest whole number
 
@@ -9229,8 +9110,7 @@ This phrase produces an approximate square root, to the nearest integer, of the 
 
 Trying to take the square root of a negative number will cause a run-time problem, because then we can't even nearly solve it. 
 
-(Warning: this is slow to compute if the Z-machine setting is used. For
-best performance, use Glulx.)
+(Warning: this is slow to compute if the Z-machine setting is used. For best performance, use Glulx.)
 {end}
 
 {defn ph_realsquareroot}real square root of (arithmetic value) ... value
@@ -9247,8 +9127,7 @@ This phrase produces an approximate cube root, to the nearest integer, of the gi
 	cube root of 27 = 3
 	cube root of -27 = -3
 
-(Warning: this is not very accurate if the Z-machine setting is used. For
-best performance, use Glulx.)
+(Warning: this is not very accurate if the Z-machine setting is used. For best performance, use Glulx.)
 {end}
 
 We can compare numbers using either the traditional computer-programming symbols, or using words:
@@ -14683,7 +14562,7 @@ results in L being {2, 3, 5, 7, 11, 13, 17, 19}.
 
 If we don't want to add new entries at the end, we can instead say where they should go:
 
-{defn ph_addatentry}add (value) at entry (number) in (list of values)
+{defn ph_addatentry}add (value) at entry (number) in/from (list of values)
 This phrase adds the given value so that it becomes the entry with that index number in the list. Example:
 
 	let L be {1, 2, 3, 4, 8, 24};
@@ -14692,7 +14571,7 @@ This phrase adds the given value so that it becomes the entry with that index nu
 sets L to {1, 2, 3, 4, 8, 12, 24}. If there are N entries in L, then we can add at any of entries 1 up to N+1: adding at entry N+1 means adding at the end. The phrase option "if absent" makes the phrase do nothing if the value already exists anywhere in L.
 {end}
 
-{defn ph_addlistatentry}add (list of values) at entry (number) in (list of values)
+{defn ph_addlistatentry}add (list of values) at entry (number) in/from (list of values)
 This phrase adds the first list to the second so that it begins at the given position. Example:
 
 	let L be {1, 2, 3, 4};
@@ -14713,7 +14592,7 @@ even though L and M have the same values, repeated the same number of times - fo
 
 We can also strike out values:
 
-{defn ph_remfromlist}remove (value) from (list of values)
+{defn ph_remfromlist}remove (value) in/from (list of values)
 This phrase removes every instance of the given value from the list. Example:
 
 	let L be {3, 1, 4, 1, 5, 9, 2, 6, 5, 3};
@@ -14722,7 +14601,7 @@ This phrase removes every instance of the given value from the list. Example:
 results in L being {3, 4, 5, 9, 2, 6, 5, 3}. Ordinarily "remove 7 from L" would produce a run-time problem, since L does not contain the value 7, but using the "if present" option lets us off this: the phrase then does nothing if L does not contain the value to be removed.
 {end}
 
-{defn ph_remlistfromlist}remove (list of values) from (list of values)
+{defn ph_remlistfromlist}remove (list of values) in/from (list of values)
 This phrase removes every instance of any value in the first list from the second. Example:
 
 	let L be {3, 1, 4, 1, 5, 9, 2, 6, 5, 3};
@@ -14733,7 +14612,7 @@ results in L being {3, 1, 1, 5, 9, 5, 3}. If both lists are large, this can be a
 
 Again, we can also remove from specific positions:
 
-{defn ph_rementry}remove entry (number) from (list of values)
+{defn ph_rementry}remove entry (number) in/from (list of values)
 This phrase removes the entry at the given position, counting from 1 as the first entry. (Once it is removed, the other entries shuffle down.) Example:
 
 	let L be {3, 1, 4, 1, 5, 9, 2, 6, 5, 3};
@@ -14742,7 +14621,7 @@ This phrase removes the entry at the given position, counting from 1 as the firs
 results in L being {3, 1, 1, 5, 9, 2, 6, 5, 3}.
 {end}
 
-{defn ph_rementries}remove entries (number) to (number) from (list of values)
+{defn ph_rementries}remove entries (number) to (number) in/from (list of values)
 This phrase removes the entries at the given range of positions, counting from 1 as the first entry. (Once they are removed, the other entries shuffle down.) Example:
 
 	let L be {3, 1, 4, 1, 5, 9, 2, 6, 5, 3};
@@ -14903,7 +14782,7 @@ results in L being { "heifer", "bullock", "cow"}. (This achieves the same effect
 
 The length of a list can change as values are added or removed, and can in principle be any number from 0 upwards. A list with 0 entries is empty. We can find the length with:
 
-{defn ph_numberentries}number of entries in/of (list of values) ... number
+{defn ph_numberentries}number of entries in/of/from (list of values) ... number
 This phrase produces the number of positions in the list. Example:
 
 	the number of entries in {1, 1, 1, 3, 1}
@@ -15137,8 +15016,6 @@ produces:
 
 	{ 2, 4, 6, 7 }
 
-(This may seem surprising since Inform's built-in phrases to adjust lists, like "add ... to ...", don't work this way. But those are written using Inform 6 code; see the phrase definitions in the Standard Rules for more.)
-
 [Chapter: Advanced Phrases] A review of kinds
 
 ^^{kinds}
@@ -15316,8 +15193,7 @@ But how are we to get at these values? The answer is that we need to give a phra
 	To decide what number is double (N - a number) (this is doubling):
 		decide on N plus N.
 
-This is the same syntax used to name rules, and the idea is the same. If we
-try "showme doubling", the result is
+This is the same syntax used to name rules, and the idea is the same. If we try "showme doubling", the result is
 
 	phrase number -> number: doubling
 
@@ -15798,7 +15674,7 @@ The sound files provided must have one of two formats: AIFF or Ogg Vorbis. <b>AI
 
 Except for very short sound effects, we recommend using <b>Ogg Vorbis</b> instead. This is a compressed format whose file sizes will typically be more like 1 MB per minute. Inform uses Ogg Vorbis as the only format safe from licencing and patent disputes. (We would very much have liked to provide MP3 support, but this is no longer legally possible for free software.)
 
-Support for Ogg Vorbis is not built in to either Windows or Mac OS X, and any sound recording you make will probably have to be made first to another format (perhaps AIFF or WAV), and then converted. See <b>www.vorbis.com</b> for encoding software which can convert from other sound formats to Vorbis.
+Support for Ogg Vorbis is not built in to either Windows or Mac OS X, and any sound recording you make will probably have to be made first to another format (perhaps AIFF or WAV), and then converted. See <b>xiph.org/vorbis</b> for encoding software which can convert from other sound formats to Vorbis.
 
 Lastly, it must be remembered that recording industry bodies are very hostile to established copyright law covering fair use, parody, quotation of insubstantial passages, etc., when it comes to mixing or using commercially released music. They are well-resourced and highly litigious. If you use sound effects not originated by yourself, you do so at your own risk, even if what you do is perfectly legal on any reading of the statutes.
 
@@ -16219,7 +16095,7 @@ If, however, we want a rapid overview of all the responses provided by a given e
 ^^{TRACE+testcmd+} ^^{testing commands: >TRACE}
 ^^{magic words}
 
-In addition to the commands designed around Inform 7's data model, there are several debugging commands that have persisted since the days of Inform 6. These are generally less useful or necessary with Inform 7's features, but there are still times when they can come in handy for a quick and dirty resolution of a problem during gameplay. They are as follow.
+There are also several debugging commands going back to the early days of interactive fiction, and relating in a simple way to objects and places. These can still come in handy for a quick and dirty resolution of a problem during gameplay, and are as follows.
 
 PURLOIN moves an object to your possession, no matter where it is on the map, like so:
 
@@ -16354,7 +16230,7 @@ Fortunately, Inform has a lively and helpful community of users who are often wi
 
 	https://intfiction.org/
 
-and in particular to post Inform-related problems under the topic Inform 6 and 7 Development. Where possible, it's a good idea to post the example source that is causing trouble, and to make it as short as possible so that prospective helpers will not have to read any more than necessary in order to pinpoint the problem.
+and in particular to post Inform-related problems under the topic Inform 7 Development. Where possible, it's a good idea to post the example source that is causing trouble, and to make it as short as possible so that prospective helpers will not have to read any more than necessary in order to pinpoint the problem.
 
 The user community is also a good place to find beta-testers who can try out our work and give feedback. 
 
@@ -16554,7 +16430,7 @@ Accompanying files are not the only things which can be included in a "release a
 
 	Release along with cover art ("A stone gargoyle"), a file of "Collegio magazine" called "Collegio.pdf" and a file of "The mating call of the green wyvern" called "Mating Wyverns.mp3".
 
-Cover art can not only be used to advertise a work of IF, it is also displayed to players by certain interpreters, such as Zoom or Spatterlight for OS X, or Windows Frotz for Windows. It is also used on the IFDB (ifdb.tads.org), and by browsing applications. If Zoom is installed, then on Mac OS X Leopard, the Finder shows cover art directly:
+Cover art can not only be used to advertise a work of IF, it is also displayed to players by certain interpreters, such as Zoom or Spatterlight for OS X, or Windows Frotz for Windows. It is also used on the IFDB (ifdb.org), and by browsing applications. If Zoom is installed, then on Mac OS X Leopard, the Finder shows cover art directly:
 
 ///coverflow.png///
 
@@ -16661,7 +16537,7 @@ Inform ships with the "Parchment" and "Quixe" interpreters built in. By default 
 
 Vorple has seen rapid development. In its early days it was included as part of the Inform app, but it has now evolved into a dynamic project which is better served by its own website than from here:
 
-	http://vorple-if.com
+	https://vorple-if.com
 
 [x] Website templates
 
@@ -17265,11 +17141,11 @@ The Archive is very much a library, for long-term archiving, rather than a book-
 
 Uploading a work to the IF Archive is not too difficult, and can be done in two ways. One way is to use the archive's web form at:
 
-	http://www.ifarchive.org/cgi-bin/upload.py 
+	https://upload.ifarchive.org/cgi-bin/upload.py
 
 The other is to create a new page at the Interactive Fiction Database, at:
 
-	http://ifdb.tads.org/
+	https://ifdb.org/
 
 It's then possible to upload the story file to the IF Archive from IFDB. This is easiest all round, since it allows both IFDB and IF Archive to be updated at once.
 
@@ -17288,7 +17164,7 @@ Committing a story to the Archive is meant to be permanent. While the maintainer
 
 Once the story file has a home online, and a URL (that is, a web address) at which it can be found, it needs to be registered with IFDB:
 
-	http://ifdb.tads.org/
+	https://ifdb.org/
 
 the Interactive Fiction Database. Just as the IF Archive is a repository for stories themselves, IFDB is a database containing information about them - titles, authors, locations, solutions, reviews, recommendation lists and more.
 
@@ -17317,7 +17193,7 @@ Some awards for interactive fiction, such as the annual XYZZY Awards, require a 
 
 One very common way to get players for IF is to enter the story into an IF competition. The annual IF Competition, often just called IFComp, is the most prestigious and has the widest field, but the Spring Thing, ParserComp, EctoComp, and other events also catch people's attention. Entering a competition is a path of least effort for authors promoting their new work, because the competition organizer usually takes care of hosting and archiving submitted stories, promoting the competition as a whole, collecting votes, and encouraging players to post reviews. Different contests have different arrangements. The <b>ifwiki</b> usually posts a list of current and upcoming competitions, as well as lists of results for those recently past, on the front page:
 
-	http://www.ifwiki.org
+	https://www.ifwiki.org
 
 Some competitions also have their own websites, at least at the relevant times of year.
 
@@ -17363,7 +17239,7 @@ So it's wise (if difficult) not to judge a story's success entirely by its immed
 
 The range of simulation offered by Inform's model world is intentionally limited to a core of basic essentials. We could argue at the margins, and the choice of what's in and what's out is partly traditional, but most people find the model reasonable as far as it goes.
 
-Between 1993 and 2006, quite a range of "library extensions" for Inform 6 was written. Most of these extensions aimed to fill out the model by simulating other aspects of life, too: money, clothing, pourable liquids. None of these extensions was official and all of them were: it was a free-for-all, and in several cases different authors wrote rival extensions to model the same basic ideas. The development of Inform 7 was strongly influenced by this history and by the recognition that the base of rules and grammar inside a typical modern story are seldom written by a single author. They combine the standard Inform material with extensions by several third parties, together with anything specific to the story in question.
+Between 1993 and 2006, quite a range of "library extensions" for Inform's predecessor language (Inform 6) was written. Most of these extensions aimed to fill out the model by simulating other aspects of life, too: money, clothing, pourable liquids. None of these extensions was official and all of them were: it was a free-for-all, and in several cases different authors wrote rival extensions to model the same basic ideas. The development of Inform 7 was strongly influenced by this history and by the recognition that the base of rules and grammar inside a typical modern story are seldom written by a single author. They combine the standard Inform material with extensions by several third parties, together with anything specific to the story in question.
 
 Inform 7 has a more organised idea of extensions, as we shall see. But anyone is free to write an extension on any terms or for any reason. Writers may wish to use the techniques in this chapter to develop private extensions of their own, used in several projects, or to share them with associates but not more widely.
 
@@ -17978,7 +17854,7 @@ Here "the tartan rucksack" is translated into "O18_tartan_rucksack", or somethin
 
 The material between "(+" and "+)" is generally treated as a value, and thus compiles to the I6 form of that value. But it could also be a property name, which compiles to the I6 form in question, or a defined adjective, which compiles to the name of the routine to call which tests whether that adjective is true.
 
-<b>Three warnings.</b> The material in "(-" and "-)" is called template code, and it is not quite treated as literal. That means certain characters cause Inform to react:
+<b>Three warnings.</b> The material in "(-" and "-)" is not quite treated as literal. Certain characters cause Inform to react:
 
 1. Beware of accidental "(+" usage - for instance,
 
@@ -18012,6 +17888,26 @@ looks as if it will work, but doesn't, for reference-counting reasons we needn't
 	-).
 
 But it's far better to avoid initialising text variables from I6 entirely. The same problems arise with constant lists.
+
+It should also be noted that the I6 syntax recognised inside "Include (- ... -)" is slightly restricted compared to the full range recognised by the stand-alone Inform 6 compiler. In particular:
+
+1. Only new-style "for" loops with colons in the header are allowed, so that "for (i=0: i<10: i++)" is okay but "for (i=0; i<10; i++)" is not. Moreover, "for" loops cannot contain empty clauses.
+
+2. Local variable names are not allowed to be the same as an I6 statement keyword: for example, "style" and "spaces" are not allowed.
+
+3. The (undocumented) Inform 6 function "indirect()" is not supported. But since "indirect(A)" is equivalent to "A()", which does work, this is no real loss. Similarly, the "glk()" function is not supported: function calls to BasicInformKit should be used instead.
+
+4. Conditional compilation cannot be placed around cases in a "switch" statement.
+
+5. Compile-time constant expression evaluation can be used with arithmetic operations, so "Constant FOO = BAR + 1;" is okay, but not with bitwise or logical operations, so "Constant FOO = (BAR | 1);" does not work.
+
+6. Calculated values cannot occur as assembly-language operands.
+
+7. Calculated values can be used for array extents, but need to be put in brackets. For example:
+
+	Include (-
+	Array unit_captured_text --> (UNIT_CAPTURE_BUFFER_LEN + 1);
+	-).
 
 [x] Primitive Inform 6 declarations of rules
 
@@ -18165,20 +18061,20 @@ A third way to define an adjective, which should be used only if speed is except
 
 The escape "*1" is expanded to the value on which the adjective is being tested. (This is usually faster than calling a routine, but in case of side-effects, the "*1" should occur only once in the condition, just as with a C macro.) To repeat: if in doubt, use the I6 routine method above.
 
-[x] Naming Unicode characters {PM_UnicodeAlready} {PM_UnicodeNonLiteral} {PM_UnicodeOutOfRange}
+[x] Naming Unicode characters
 
 ^^{characters (letters): Unicode (arbitrary symbols): defining new names for}
 ^^{translates as...+assert+: Unicode characters}
 ^^{Unicode Character Names / Full Character Names+ext+} ^^{extensions: specific extensions: Unicode Character Names}
 ^^{extensions: specific extensions: Unicode Full Character Names}
 
-Inform allows the Unicode characters to be identified either with a decimal number or by name, but it has none of the character names built-in, and for efficiency reasons it only learns them when necessary.
-
-Users normally teach these names to Inform by including one of the extensions "Unicode Character Names" or "Unicode Full Character Names", which consist of many hundreds of sentences like so:
+At one time Inform allowed names to be given to Unicode character values with
+sentences like so:
 
 	anticlockwise open circle arrow translates into Unicode as 8634.
 
-Nothing restricts this usage to those extensions.
+These sentences now throw problem messages, and instead Inform allows exactly
+those names in the Unicode standard.
 
 [x] Overriding definitions in kits {PM_BadI6Inclusion} {PM_BeforeTheLibrary} {PM_WhenDefiningUnknown} {PM_IncludeInsteadOf}
 

@@ -70,76 +70,103 @@ void Kits::scan(inbuild_copy *C) {
 	K->defines_Main = FALSE;
 	K->supports_nl = FALSE;
 
-	filename *F = Filenames::in(C->location_if_path, I"kit_metadata.txt");
-	TextFiles::read(F, FALSE,
-		NULL, FALSE, Kits::read_metadata, NULL, (void *) C);
+	filename *F = Filenames::in(C->location_if_path, I"kit_metadata.json");
+	JSONMetadata::read_metadata_file(C, F, NULL, NULL);
+	
+	if (C->metadata_record) {
+		@<Extract activations@>;
+		JSON_value *kit_details =
+			JSON::look_up_object(C->metadata_record, I"kit-details");
+		if (kit_details) @<Extract the kit details@>;
+		JSON_value *needs = JSON::look_up_object(C->metadata_record, I"needs");
+		if (needs) {
+			JSON_value *E;
+			LOOP_OVER_LINKED_LIST(E, JSON_value, needs->if_list)
+				@<Extract this possibly conditional requirement@>;
+		}
+	}
 }
 
-@ The following reads line by line through the |kit_metadata.txt| file:
+@<Extract activations@> =
+	JSON_value *activates = JSON::look_up_object(C->metadata_record, I"activates");
+	if (activates) {
+		JSON_value *E;
+		LOOP_OVER_LINKED_LIST(E, JSON_value, activates->if_list)
+			Kits::activation(K, E->if_string, TRUE);
+	}
+	JSON_value *deactivates = JSON::look_up_object(C->metadata_record, I"deactivates");
+	if (deactivates) {
+		JSON_value *E;
+		LOOP_OVER_LINKED_LIST(E, JSON_value, deactivates->if_list)
+			Kits::activation(K, E->if_string, FALSE);
+	}
 
-=
-void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state) {
-	inbuild_copy *C = (inbuild_copy *) state;
-	inform_kit *K = KitManager::from_copy(C);
-	match_results mr = Regexp::create_mr();
-	if ((Str::is_whitespace(text)) || (Regexp::match(&mr, text, L" *#%c*"))) {
-		;
-	} else if (Regexp::match(&mr, text, L"version: (%C+)"))
-		C->edition->version = VersionNumbers::from_text(mr.exp[0]);
-	else if (Regexp::match(&mr, text, L"compatibility: (%c+)")) @<Add compatibility@>
-	else if (Regexp::match(&mr, text, L"defines Main: yes")) K->defines_Main = TRUE;
-	else if (Regexp::match(&mr, text, L"defines Main: no")) K->defines_Main = FALSE;
-	else if (Regexp::match(&mr, text, L"natural language: yes")) K->supports_nl = TRUE;
-	else if (Regexp::match(&mr, text, L"natural language: no")) K->supports_nl = FALSE;
-	else if (Regexp::match(&mr, text, L"insert: (%c*)")) @<Add early source@>
-	else if (Regexp::match(&mr, text, L"priority: (%d*)"))
-		K->priority = Str::atoi(mr.exp[0], 0);
-	else if (Regexp::match(&mr, text, L"kinds: (%C+)"))
-		ADD_TO_LINKED_LIST(Str::duplicate(mr.exp[0]), text_stream, K->kind_definitions);
-	else if (Regexp::match(&mr, text, L"extension: version (%c+?) of (%c+) by (%c+)"))
-		@<Add versioned extension@>
-	else if (Regexp::match(&mr, text, L"extension: (%c+) by (%c+)"))
-		@<Add unversioned extension@>
-	else if (Regexp::match(&mr, text, L"activate: (%c+)"))
-		Kits::activation(K, mr.exp[0], TRUE);
-	else if (Regexp::match(&mr, text, L"deactivate: (%c+)"))
-		Kits::activation(K, mr.exp[0], FALSE);
-	else if (Regexp::match(&mr, text, L"dependency: if (%C+) then (%C+)"))
-		Kits::dependency(K, mr.exp[0], TRUE, mr.exp[1]);
-	else if (Regexp::match(&mr, text, L"dependency: if not (%C+) then (%C+)"))
-		Kits::dependency(K, mr.exp[0], FALSE, mr.exp[1]);
-	else if (Regexp::match(&mr, text, L"index from: (%c*)"))
-		K->index_structure = Str::duplicate(mr.exp[0]);
-	else {
+@<Extract the kit details@> =
+	JSON_value *has_priority = JSON::look_up_object(kit_details, I"has-priority");
+	if (has_priority) K->priority = has_priority->if_integer;
+	JSON_value *defines_Main = JSON::look_up_object(kit_details, I"defines-Main");
+	if (defines_Main) K->defines_Main = defines_Main->if_boolean;
+	JSON_value *is_language_kit = JSON::look_up_object(kit_details, I"is-language-kit");
+	if (is_language_kit) K->supports_nl = is_language_kit->if_boolean;
+	JSON_value *indexes_with_structure =
+		JSON::look_up_object(kit_details, I"indexes-with-structure");
+	if (indexes_with_structure) K->index_structure = indexes_with_structure->if_string;
+	JSON_value *provides_kinds = JSON::look_up_object(kit_details, I"provides-kinds");
+	if (provides_kinds) {
+		JSON_value *E;
+		LOOP_OVER_LINKED_LIST(E, JSON_value, provides_kinds->if_list)
+			ADD_TO_LINKED_LIST(E->if_string, text_stream, K->kind_definitions);
+	}
+	JSON_value *inserts_source_text = JSON::look_up_object(kit_details, I"inserts-source-text");
+	if (inserts_source_text) {
+		K->early_source = Str::duplicate(inserts_source_text->if_string);
+		WRITE_TO(K->early_source, "\n\n");
+	}
+
+@<Extract this possibly conditional requirement@> =
+	int parity = TRUE;
+	JSON_value *if_clause = JSON::look_up_object(E, I"if");
+	JSON_value *unless_clause = JSON::look_up_object(E, I"unless");
+	if (unless_clause) {
+		if_clause = unless_clause; parity = FALSE;
+	}
+	JSON_value *need_clause = JSON::look_up_object(E, I"need");
+	if (need_clause) {
+		JSON_value *need_type = JSON::look_up_object(need_clause, I"type");
+		JSON_value *need_title = JSON::look_up_object(need_clause, I"title");
+		JSON_value *need_author = JSON::look_up_object(need_clause, I"author");
+		JSON_value *need_version = JSON::look_up_object(need_clause, I"version");
+		if (Str::eq(need_type->if_string, I"extension"))
+			@<Deal with an extension dependency@>
+		else if (Str::eq(need_type->if_string, I"kit"))
+			@<Deal with a kit dependency@>
+		else {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err, "a kit can only have extensions and kits as dependencies");
+			Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+			DISCARD_TEXT(err)	
+		}
+	}
+
+@<Deal with an extension dependency@> =
+	if (if_clause) {
 		TEMPORARY_TEXT(err)
-		WRITE_TO(err, "unreadable instruction '%S'", text);
-		Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
+		WRITE_TO(err, "a kit can only have an extension as a dependency unconditionally");
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
 		DISCARD_TEXT(err)	
 	}
-	Regexp::dispose_of(&mr);
-}
-
-@<Add compatibility@> =
-	compatibility_specification *CS = Compatibility::from_text(mr.exp[0]);
-	if (CS) C->edition->compatibility = CS;
-	else {
-		TEMPORARY_TEXT(err)
-		WRITE_TO(err, "cannot read compatibility '%S'", mr.exp[0]);
-		Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
-		DISCARD_TEXT(err)
-	}
-
-@<Add early source@> =
-	K->early_source = Str::duplicate(mr.exp[0]);
-	WRITE_TO(K->early_source, "\n\n");
+	text_stream *extension_title = need_title->if_string;
+	text_stream *extension_author = need_author?(need_author->if_string):NULL;
+	inbuild_work *work = Works::new(extension_genre, extension_title, extension_author);
+	if (need_version) @<Add versioned extension@>
+	else @<Add unversioned extension@>;
 
 @<Add versioned extension@> =
-	inbuild_work *work = Works::new(extension_genre, mr.exp[1], mr.exp[2]);
-	semantic_version_number V = VersionNumbers::from_text(mr.exp[0]);
+	semantic_version_number V = VersionNumbers::from_text(need_version->if_string);
 	if (VersionNumbers::is_null(V)) {
 		TEMPORARY_TEXT(err)
-		WRITE_TO(err, "cannot read version number '%S'", mr.exp[0]);
-		Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
+		WRITE_TO(err, "cannot read version number '%S'", need_version->if_string);
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
 		DISCARD_TEXT(err)
 	} else {
 		inbuild_requirement *req = Requirements::new(work,
@@ -148,9 +175,24 @@ void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state
 	}
 
 @<Add unversioned extension@> =
-	inbuild_work *work = Works::new(extension_genre, mr.exp[0], mr.exp[1]);
 	inbuild_requirement *req = Requirements::any_version_of(work);
 	ADD_TO_LINKED_LIST(req, inbuild_requirement, K->extensions);
+
+@<Deal with a kit dependency@> =
+	text_stream *if_kit = C->edition->work->title;
+	if (if_clause) {
+		JSON_value *if_type = JSON::look_up_object(if_clause, I"type");
+		if (Str::eq(if_type->if_string, I"kit") == FALSE) {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err, "a kit dependency can only be conditional on other kits");
+			Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+			DISCARD_TEXT(err)
+		} else {
+			JSON_value *if_title = JSON::look_up_object(if_clause, I"title");
+			if (if_title) if_kit = if_title->if_string; /* a line for IF fans */
+		}
+	}
+	Kits::dependency(K, if_kit, parity, need_title->if_string);
 
 @ We provide if this then that, where |inc| is true, and if this then not that,
 where it's false.
@@ -180,11 +222,11 @@ A project can call this to obtain the |inform_kit| structure for the copy of
 a kit, going only on a name such as |BasicInformKit|:
 
 =
-inform_kit *Kits::find_by_name(text_stream *name, linked_list *nest_list) {
-	inbuild_requirement *req =
-		Requirements::any_version_of(Works::new(kit_genre, name, I""));
+inform_kit *Kits::find_by_name(text_stream *name, linked_list *nest_list,
+	inbuild_requirement *req) {
+	if (req == NULL) req = Requirements::any_version_of(Works::new(kit_genre, name, I""));
 	inbuild_search_result *R = Nests::search_for_best(req, nest_list);
-	if (R == NULL) Errors::fatal_with_text("cannot find kit '%S'", name);
+	if (R == NULL) return NULL;
 	inbuild_copy *C = R->copy;
 	return KitManager::from_copy(C);
 }
@@ -202,7 +244,7 @@ int Kits::perform_ittt(inform_kit *K, inform_project *project, int parity) {
 		if ((ITTT->if_included == parity) &&
 			(Projects::uses_kit(project, ITTT->then_name) == FALSE) &&
 			(Projects::uses_kit(project, ITTT->if_name) == ITTT->if_included)) {
-			Projects::add_kit_dependency(project, ITTT->then_name, NULL, K);
+			Projects::add_kit_dependency(project, ITTT->then_name, NULL, K, NULL, NULL);
 			changes_made = TRUE;
 		}
 	return changes_made;
@@ -294,7 +336,7 @@ out I6T template files tidily.
 	int at_start = TRUE;
 	while (TRUE) {
 		@<Read next character from I6T stream@>;
-		if ((cr == 10) || (cr == 13)) break;
+		if ((cr == 10) || (cr == 13) || (cr == EOF)) break;
 		if ((at_start) && (Characters::is_space_or_tab(cr))) continue;
 		PUT_TO(argument, cr); at_start = FALSE;
 	}
@@ -307,24 +349,27 @@ Note that this function is meaningful only when this module is part of the
 features as |K| would like.
 
 =
-#ifdef CORE_MODULE
 void Kits::activate_elements(inform_kit *K) {
 	element_activation *EA;
 	LOOP_OVER_LINKED_LIST(EA, element_activation, K->activations) {
-		plugin *P = PluginManager::parse(EA->element_name);
+		compiler_feature *P = Features::from_name(EA->element_name);
 		if (P == NULL) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(Untestable),
-				"one of the Inform kits made reference to a language segment "
-				"which does not exist",
-				"which suggests that Inform is not properly installed, unless "
-				"you are experimenting with new kits.");
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err, "kit metadata refers to unknown compiler feature '%S'", EA->element_name);
+			Copies::attach_error(K->as_copy, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+			DISCARD_TEXT(err)	
 		} else {
-			if (EA->activate) PluginManager::activate(P);
-			else PluginManager::deactivate(P);
+			if (EA->activate) Features::activate(P);
+			else if (Features::deactivate(P) == FALSE) {
+				TEMPORARY_TEXT(err)
+				WRITE_TO(err, "kit metadata asks to deactivate mandatory compiler feature '%S'",
+					EA->element_name);
+				Copies::attach_error(K->as_copy, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+				DISCARD_TEXT(err)	
+			}
 		}
 	}
 }
-#endif
 
 @h Early source.
 As we have seen, kits can ask for extensions to be included.
@@ -370,7 +415,7 @@ not ours.
 
 =
 void Kits::construct_graph(inform_kit *K) {
-	RUN_ONLY_IN_PHASE(GRAPH_CONSTRUCTION_INBUILD_PHASE)
+	RUN_ONLY_FROM_PHASE(GRAPH_CONSTRUCTION_INBUILD_PHASE)
 	if (K == NULL) return;
 	inbuild_copy *C = K->as_copy;
 	pathname *P = C->location_if_path;
@@ -390,10 +435,21 @@ void Kits::construct_graph(inform_kit *K) {
 		Kits::add_extension_dependency(KV, req);
 }
 
+@ The test for nest protection here ensures that a kit in an internal nest
+will never be incrementally rebuilt in a normal Inform build process, even if
+the timestamps on the files look as if it should be. This is important because
+of the way Linux apps are sandboxed, because a security feature on Linux means
+that timestamps are deliberately reported incorrectly. In any case, the
+internal nest shouldn't be written to even on other platforms.
+
 @<Add build edges to the binaries for each architecture@> =
 	inter_architecture *A;
 	LOOP_OVER(A, inter_architecture) {
-		build_vertex *BV = Graphs::file_vertex(Architectures::canonical_binary(P, A));
+		filename *F = Architectures::canonical_binary(P, A);
+		build_vertex *BV = Graphs::file_vertex(F);
+		if ((C->nest_of_origin) && (Nests::is_protected(C->nest_of_origin)))
+			BV->never_build_this = TRUE;
+		else @<Check the Inter version used any already-existing binary file@>;
 		Graphs::need_this_to_build(KV, BV);
 		BuildSteps::attach(BV, build_kit_using_inter_skill, FALSE, NULL, A, K->as_copy);
 		ADD_TO_LINKED_LIST(BV, build_vertex, BVL);
@@ -416,6 +472,26 @@ void Kits::construct_graph(inform_kit *K) {
 				Graphs::need_this_to_build(BV, SV);
 		}
 	}
+
+@ Suppose the user has an old kit lying around, and it has been pre-built but
+back in the days of Inter version 17.1 when we're now in the brave new world of
+Inter 19.3. Because the source files for the kit are even older than its
+old binary form, the datestamps will not cause the kit to be rebuilt. Inform
+will then try to load the binary, and fail because its version is out of date.
+We want to avoid all that by forcing a rebuild, regardless of the source
+datestamps, if (a) the binary exists but (b) it uses an obsolete Inter version.
+
+@<Check the Inter version used any already-existing binary file@> =
+	#ifdef BYTECODE_MODULE
+	semantic_version_number V = BinaryInter::test_file_version(F);
+	if ((VersionNumbers::is_null(V) == FALSE) &&
+		(InterVersion::check_readable(V) == FALSE)) {
+		semantic_version_number current_version = InterVersion::current();
+		LOG("Forcing rebuild of '%f' because it uses Inter v%v, and we want %v\n",
+			F, &V, &current_version);
+		BV->always_build_this = TRUE;
+	}
+	#endif
 
 @ Suppose our kit wants to include Locksmith by Emily Short. If that's an
 extension we have already read in, we can place a use edge to its existing

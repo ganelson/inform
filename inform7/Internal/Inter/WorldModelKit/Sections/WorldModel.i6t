@@ -33,13 +33,22 @@ because that would make it true that
 =
 and similar conditions -- thus, it would appear that in the immediate past
 the player had been on the holder of the player, which is not in fact the
-case. So we return |thedark| as a typesafe but impossible value here.
+case.
 
 =
 [ HolderOf o;
-	if (InitialSituation-->DONE_INIS == false) return thedark;
-	if (o && (o.component_parent)) return o.component_parent;
-	if (o && (parent(o))) return parent(o);
+	if (InitialSituation-->DONE_INIS == false) {
+		if (o == InitialSituation-->PLAYER_OBJECT_INIS) {
+			if (InitialSituation-->START_OBJECT_INIS)
+				return InitialSituation-->START_OBJECT_INIS;
+			return InitialSituation-->START_ROOM_INIS;
+		}
+	}
+	if (o) {
+		if (o ofclass K3_direction) return nothing;
+		if ((o provides component_parent) && (o.component_parent)) return o.component_parent;
+		return parent(o);
+	}
 	return nothing;
 ];
 
@@ -58,6 +67,37 @@ case. So we return |thedark| as a typesafe but impossible value here.
 	if (o) o = parent(o);
 	while (o && (o provides component_parent) && (o.component_parent)) o = o.component_parent;
 	return o;
+];
+
+@h The holding relation.
+The following is essentially a wrapper for |MoveObject| used by the relation
+"holding".
+
+=
+[ MakeHolderOf F H;
+	if ((F ofclass K2_thing) &&
+		(H ofclass K1_room or K5_container or K6_supporter or K8_person)) {
+		MoveObject(F, H);
+	} else if ((F ofclass K9_region) && (H ofclass K9_region)) {
+		MoveObject(F, H);	
+	} else if ((F ofclass K2_thing or K1_room or K3_direction or K9_region) || 
+		(H ofclass K2_thing or K1_room or K3_direction or K9_region)) {
+		RunTimeProblem(RTP_HOLDINGISFORTHINGS, F, H);
+	} else {
+		move F to H;
+	}
+];
+
+[ RoomContainerOf obj;
+	return LocationOf(obj);
+];
+
+[ MakeRoomContainerOf F H;
+	if ((F ofclass K2_thing) && (H ofclass K1_room)) {
+		MoveObject(F, H);
+	} else {
+		RunTimeProblem(RTP_HOLDINGISFORTHINGS, F, H);
+	}
 ];
 
 @h Climbing the Core Tree.
@@ -102,14 +142,21 @@ of |CommonAncestor| from the I6 library, adapted to work on the core tree.)
 ];
 
 [ IndirectlyContains o1 o2;
-	if ((o1 == nothing) || (o2 == nothing)) rfalse;
-	if ((o1 ofclass K1_room) && (o2 ofclass K4_door)) {
-		if (o1 == FrontSideOfDoor(o2)) rtrue;
-		if (o1 == BackSideOfDoor(o2)) rtrue;
-		rfalse;
+	if (o1) {
+		while (o2) {
+			if ((o1 ofclass K1_room) && (o2 ofclass K4_door)) {
+				if (o1 == FrontSideOfDoor(o2)) rtrue;
+				if (o1 == BackSideOfDoor(o2)) rtrue;
+				rfalse;
+			}
+			if (o2 ofclass K7_backdrop) {
+				if (o1 ofclass K1_room) return BackdropLocation(o2, o1);
+				rfalse;
+			}
+			o2 = HolderOf(o2);
+			if (o2 == o1) rtrue;
+		}
 	}
-	if (o2 ofclass K7_backdrop) rfalse;
-	for (o2 = HolderOf(o2) : o2 && o2 ~= thedark : o2 = HolderOf(o2)) if (o2 == o1) rtrue;
 	rfalse;
 ];
 
@@ -160,13 +207,29 @@ would get the wrong result when B is a region.
 
 =
 [ ContainerOf A p;
-	if (A ofclass K1_room) return A.map_region;
-	p = parent(A);
-	if (p == nothing) return nothing;
-	if (p ofclass K5_container) return p;
-	if (p ofclass K1_room) return p;
-	if (p ofclass K9_region) return p;
+	if (A ofclass K1_room) {
+		return A.map_region;
+	}
+	if (A ofclass K2_thing or K9_region) {
+		p = parent(A);
+		if (p == nothing) return nothing;
+		if (p ofclass K5_container) return p;
+		if (p ofclass K1_room) return p;
+		if (p ofclass K9_region) return p;
+	}
 	return nothing;
+];
+
+[ MakeContainerOf F T;
+	if ((F ofclass K1_room) && (T ofclass K9_region))
+		F.map_region = T;
+	else if ((F ofclass K2_thing) && (T ofclass K5_container or K1_room or K9_region))
+		MoveObject(F, T);
+	else if ((F ofclass K9_region) && (T ofclass K9_region))
+		MoveObject(F, T);
+	else {
+		RunTimeProblem(RTP_BADCONTAINMENT, F, T);
+	}
 ];
 
 [ TestContainmentRange obj e f;
@@ -193,6 +256,14 @@ This then is simpler, with no need for an iterator governing searches.
 	return nothing;
 ];
 
+[ MakeSupporterOf F H;
+	if ((F ofclass K2_thing) && (H ofclass K6_supporter)) {
+		MoveObject(F, H);
+	} else {
+		RunTimeProblem(RTP_HOLDINGISFORTHINGS, F, H);
+	}
+];
+
 @h Carrying Relation.
 Only people may carry, and something worn is not in this sense carried.
 
@@ -203,13 +274,52 @@ Only people may carry, and something worn is not in this sense carried.
 	return nothing;
 ];
 
-@h Wearing Relation.
-Only people may wear.
+[ MakeCarrierOf F H;
+	if ((F ofclass K2_thing) && (H ofclass K8_person)) {
+		give H ~worn;
+		MoveObject(F, H);
+	} else {
+		RunTimeProblem(RTP_HOLDINGISFORTHINGS, F, H);
+	}
+];
+
+[ UncarryObject X P Q;
+	if (CarrierOf(X) == P) {
+		give X ~worn;
+		Q = HolderOf(P);
+		if (Q) {
+			move X to Q;
+		} else {
+			remove Q;
+		}
+	}
+];
+
+@h Wearing Clothes.
+An object X is worn by a person P if and only if (i) the object tree |parent|
+of X is P, and (ii) X has the |worn| attribute. In fact for I7 purposes we
+are careful to ensure that (ii) happens only when (i) does in any case:
+if X is moved in the object tree, or made a part of something, or removed
+from play, then |worn| is removed.
 
 =
+[ WearObject X P opt;
+	if (X == nothing) rfalse;
+	if ((X ofclass K2_thing) && (P ofclass K8_person)) {
+		if (X notin P) MoveObject(X, P, opt);
+		give X worn;
+	} else {
+		RunTimeProblem(RTP_HOLDINGISFORTHINGS, X, P);
+	}
+];
+
+[ UnwearObject X P;
+	if (WearerOf(X) == P) give X ~worn;
+];
+
 [ WearerOf obj p;
 	p = parent(obj);
-	if (p && (p ofclass K8_person) && (obj has worn)) return p;
+	if (p && (p ofclass K8_person) && (obj ofclass K2_thing) && (obj has worn)) return p;
 	return nothing;
 ];
 
@@ -234,13 +344,17 @@ attaching it: it cannot, of course, be the core of the resulting object.
 ];
 
 [ MakePart P Of First;
-	if (P == player) return RunTimeProblem(RTP_CANTMAKEPART, Of);
-	if (parent(P)) remove P; give P ~worn;
-	if (Of == nothing) { DetachPart(P); return; }
-	if (P.component_parent) DetachPart(P);
-	P.component_parent = Of;
-	First = Of.component_child;
-	Of.component_child = P; P.component_sibling = First;
+	if ((P ofclass K2_thing) && ((Of == nothing) || (Of ofclass K2_thing))) {
+		if (P == player) return RunTimeProblem(RTP_CANTMAKEPART, Of);
+		if (parent(P)) remove P; give P ~worn;
+		if (Of == nothing) { DetachPart(P); return; }
+		if (P.component_parent) DetachPart(P);
+		P.component_parent = Of;
+		First = Of.component_child;
+		Of.component_child = P; P.component_sibling = First;
+	} else {
+		RunTimeProblem(RTP_HOLDINGISFORTHINGS, P, Of);
+	}
 ];
 
 [ DetachPart P From Daddy O;
@@ -276,6 +390,7 @@ when moved.
 		}
 		return RunTimeProblem(RTP_BACKDROP, F, T);
 	}
+	if (F ofclass K4_door) return RunTimeProblem(RTP_CANTREMOVEDOORS);
 	if (T ofclass K9_region) return RunTimeProblem(RTP_NOTBACKDROP, F, T);
 	if (T == FoundEverywhere) return RunTimeProblem(RTP_BACKDROPONLY, F);
 	if (~~(F ofclass K2_thing)) return RunTimeProblem(RTP_NOTTHING, F, T);
@@ -305,6 +420,7 @@ when moved.
 	if (F == nothing) return RunTimeProblem(RTP_CANTREMOVENOTHING);
 	if (F == player) return RunTimeProblem(RTP_CANTREMOVEPLAYER);
 	if (F ofclass K4_door) return RunTimeProblem(RTP_CANTREMOVEDOORS);
+	if (F ofclass K1_room) { SetRegionalContainment(F, nothing); return; }
 	if (IndirectlyContains(F, player)) return RunTimeProblem(RTP_CANTBEOFFSTAGE);
 	give F ~worn; DetachPart(F);
 	if (F ofclass K7_backdrop) give F absent;
@@ -560,20 +676,6 @@ that this routine also works for two-sided doors, despite its name.
 	return nothing;
 ];
 
-@h Wearing Clothes.
-An object X is worn by a person P if and only if (i) the object tree |parent|
-of X is P, and (ii) X has the |worn| attribute. In fact for I7 purposes we
-are careful to ensure that (ii) happens only when (i) does in any case:
-if X is moved in the object tree, or made a part of something, or removed
-from play, then |worn| is removed.
-
-=
-[ WearObject X P opt;
-	if (X == false) rfalse;
-	if (X notin P) MoveObject(X, P, opt);
-	give X worn;
-];
-
 @h Map Connections.
 |MapConnection| returns the room which is in the given direction (as an object)
 from the given room: it is used, among other things, to test the "mapped east
@@ -680,26 +782,46 @@ must either completely contain another region, or else have no overlap with it.)
 =
 [ TestRegionalContainment obj region o;
 	if ((obj == nothing) || (region == nothing)) rfalse;
-	if (obj ofclass K7_backdrop or K4_door) {
-		if (obj has absent) rfalse;
-		objectloop (o ofclass K1_room)
-			if (TestRegionalContainment(o, region))
-				if (BackdropLocation(obj, o))
-					rtrue;
-		rfalse;
-	}
+	! Set o to the region of the room containing obj
 	if (obj ofclass K9_region) {
-		o = obj;
+		o = parent(obj);
 	} else {
-		if (~~(obj ofclass K1_room)) obj = LocationOf(obj);
-		if (obj == nothing) rfalse;
+		while (~~(obj ofclass K1_room)) {
+			if (obj == nothing) rfalse;
+			if (obj ofclass K7_backdrop or K4_door) {
+				if (obj has absent) rfalse;
+				objectloop (o ofclass K1_room)
+					if (TestRegionalContainment(o, region))
+						if (BackdropLocation(obj, o))
+							rtrue;
+				rfalse;
+			}
+			obj = HolderOf(obj);
+		}
 		o = obj.map_region;
 	}
+	! Test whether region is, or indirectly contains, o
 	while (o) {
 		if (o == region) rtrue;
 		o = parent(o);
 	}
 	rfalse;
+];
+
+[ SetRegionalContainment obj region o;
+	if ((obj ofclass K1_room) && ((region ofclass K9_region) || (region == nothing))) {
+		obj.map_region = region;
+	} else if ((obj ofclass K9_region) &&
+		((region ofclass K9_region) || (region == nothing))) {
+		o = region;
+		while (o) {
+			if (o == obj) return RunTimeProblem(RTP_DISALLOWEDREGIONCHANGE, obj, region);
+			o = parent(o);
+		}
+		move obj to region;
+	} else if (TestRegionalContainment(obj, region) == false) {
+		RunTimeProblem(RTP_DISALLOWEDREGIONCHANGE, obj, region);
+	}
 ];
 
 @h Doors.
@@ -753,9 +875,28 @@ it's a relation which cannot be asserted true or false.
 
 =
 [ TestVisibility A B;
-	if (~~OffersLight(parent(CoreOf(A)))) rfalse;
+	if ((A ofclass K2_thing) && (B ofclass K2_thing)) {
+		if (~~OffersLight(parent(CoreOf(A)))) rfalse;
+		if (suppress_scope_loops) rtrue;
+		return TestScope(B, A);
+	}
+	rfalse;
+];
+
+@h Audibility Relation.
+For now, this is the same test as visibility except that it does not require
+light to see by.
+
+=
+[ TestAudibility A B res saved;
 	if (suppress_scope_loops) rtrue;
-	return TestScope(B, A);
+	if ((A ofclass K2_thing) && (B ofclass K2_thing)) {
+		saved = location; if (location == thedark) location = real_location;
+		res = TestScope(B, A);
+		location = saved;
+		return res;
+	}
+	rfalse;
 ];
 
 @h Touchability Relation.
@@ -764,6 +905,7 @@ A to B; it's a relation which cannot be asserted true or false.
 
 =
 [ TestTouchability A B rv;
+	if (~~((A ofclass K2_thing) && (B ofclass K2_thing))) rfalse;
 	if (A ofclass K4_door or K7_backdrop) MoveFloatingObjects(LocationOf(B));
 	if (B ofclass K4_door or K7_backdrop) MoveFloatingObjects(LocationOf(A));
 	if (TestScope(B,A) == false) rv = true;

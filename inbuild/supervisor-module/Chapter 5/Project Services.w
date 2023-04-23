@@ -3,8 +3,7 @@
 Behaviour specific to copies of either the projectbundle or projectfile genres.
 
 @h Scanning metadata.
-Metadata for pipelines -- or rather, the complete lack of same -- is stored
-in the following structure.
+Metadata for projects is stored in the following structure.
 
 =
 typedef struct inform_project {
@@ -16,15 +15,20 @@ typedef struct inform_project {
 	struct filename *primary_output;
 	struct semantic_version_number version;
 	struct linked_list *source_vertices; /* of |build_vertex| */
+	struct linked_list *kit_names_to_include; /* of |JSON_value| */
 	struct linked_list *kits_to_include; /* of |kit_dependency| */
+	struct text_stream *name_of_language_of_play;
 	struct inform_language *language_of_play;
+	struct text_stream *name_of_language_of_syntax;
 	struct inform_language *language_of_syntax;
+	struct text_stream *name_of_language_of_index;
 	struct inform_language *language_of_index;
 	struct build_vertex *unblorbed_vertex;
 	struct build_vertex *blorbed_vertex;
 	struct build_vertex *chosen_build_target;
 	struct parse_node_tree *syntax_tree;
 	struct linked_list *extensions_included; /* of |inform_extension| */
+	struct linked_list *activations; /* of |element_activation| */
 	int fix_rng;
 	int compile_for_release;
 	int compile_only;
@@ -45,9 +49,13 @@ void Projects::scan(inbuild_copy *C) {
 	proj->stand_alone = FALSE;
 	proj->version = VersionNumbers::null();
 	proj->source_vertices = NEW_LINKED_LIST(build_vertex);
+	proj->kit_names_to_include = NEW_LINKED_LIST(JSON_value);
 	proj->kits_to_include = NEW_LINKED_LIST(kit_dependency);
+	proj->name_of_language_of_play = I"English";
 	proj->language_of_play = NULL;
+	proj->name_of_language_of_syntax = I"English";
 	proj->language_of_syntax = NULL;
+	proj->name_of_language_of_index = NULL;
 	proj->language_of_index = NULL;
 	proj->chosen_build_target = NULL;
 	proj->unblorbed_vertex = NULL;
@@ -67,6 +75,92 @@ void Projects::scan(inbuild_copy *C) {
 	proj->search_list = NEW_LINKED_LIST(inbuild_nest);
 	proj->primary_source = NULL;
 	proj->extensions_included = NEW_LINKED_LIST(inform_extension);
+	proj->activations = NEW_LINKED_LIST(element_activation);
+	Projects::scan_bibliographic_data(proj);
+	filename *F = Filenames::in(M, I"project_metadata.json");
+	if (TextFiles::exists(F)) {
+		JSONMetadata::read_metadata_file(C, F, NULL, NULL);
+		if (C->metadata_record) {
+			JSON_value *is = JSON::look_up_object(C->metadata_record, I"is");
+			if (is) {
+				JSON_value *version = JSON::look_up_object(is, I"version");
+				if (version) {
+					proj->version = VersionNumbers::from_text(version->if_string);
+				}
+			}
+			@<Extract activations@>;
+			JSON_value *project_details =
+				JSON::look_up_object(C->metadata_record, I"project-details");
+			if (project_details) {
+				@<Extract the project details@>;
+			}
+			JSON_value *needs = JSON::look_up_object(C->metadata_record, I"needs");
+			if (needs) {
+				JSON_value *E;
+				LOOP_OVER_LINKED_LIST(E, JSON_value, needs->if_list)
+					@<Extract this requirement@>;
+			}
+		}
+	}
+}
+
+@<Extract activations@> =
+	JSON_value *activates = JSON::look_up_object(C->metadata_record, I"activates");
+	if (activates) {
+		JSON_value *E;
+		LOOP_OVER_LINKED_LIST(E, JSON_value, activates->if_list)
+			Projects::activation(proj, E->if_string, TRUE);
+	}
+	JSON_value *deactivates = JSON::look_up_object(C->metadata_record, I"deactivates");
+	if (deactivates) {
+		JSON_value *E;
+		LOOP_OVER_LINKED_LIST(E, JSON_value, deactivates->if_list)
+			Projects::activation(proj, E->if_string, FALSE);
+	}
+
+@<Extract the project details@> =
+	;
+
+@<Extract this requirement@> =
+	JSON_value *if_clause = JSON::look_up_object(E, I"if");
+	JSON_value *unless_clause = JSON::look_up_object(E, I"unless");
+	if ((if_clause) || (unless_clause)) {
+		TEMPORARY_TEXT(err)
+		WRITE_TO(err, "a project's needs must be unconditional");
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+		DISCARD_TEXT(err)	
+	}
+	JSON_value *need_clause = JSON::look_up_object(E, I"need");
+	if (need_clause) {
+		JSON_value *need_type = JSON::look_up_object(need_clause, I"type");
+		JSON_value *need_version_range = JSON::look_up_object(need_clause, I"version-range");
+		if (need_version_range) {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err, "version ranges on project dependencies are not yet implemented");
+			Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+			DISCARD_TEXT(err)
+		}
+		if (Str::eq(need_type->if_string, I"kit")) {
+			ADD_TO_LINKED_LIST(need_clause, JSON_value, proj->kit_names_to_include);
+		} else if (Str::eq(need_type->if_string, I"extension")) {
+			;
+		} else {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err, "a project can only have kits or extensions as dependencies");
+			Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+			DISCARD_TEXT(err)
+		}
+	}
+
+@ Language elements can similarly be activated or deactivated, though the
+latter may not be useful in practice:
+
+=
+void Projects::activation(inform_project *proj, text_stream *name, int act) {
+	element_activation *EA = CREATE(element_activation);
+	EA->element_name = Str::duplicate(name);
+	EA->activate = act;
+	ADD_TO_LINKED_LIST(EA, element_activation, proj->activations);
 }
 
 @ The materials folder sits alongside the project and has the same name,
@@ -146,6 +240,23 @@ linked_list *Projects::nest_list(inform_project *proj) {
 	return proj->search_list;
 }
 
+void Projects::add_language_extension_nest(inform_project *proj) {
+	if ((proj->language_of_play) && (proj->language_of_play->belongs_to)) {
+		inform_extension *E = proj->language_of_play->belongs_to;
+		inbuild_nest *N = Extensions::materials_nest(E);
+		if (N) ADD_TO_LINKED_LIST(N, inbuild_nest, proj->search_list);
+	}
+}
+
+@ Since there are two ways projects can be stored:
+
+=
+inform_project *Projects::from_copy(inbuild_copy *C) {
+	inform_project *project = ProjectBundleManager::from_copy(C);
+	if (project == NULL) project = ProjectFileManager::from_copy(C);
+	return project;
+}
+
 @h Files of source text.
 A project can have multiple files of I7 source text, but more usually it
 has a single, "primary", one.
@@ -169,38 +280,10 @@ the outcome.
 linked_list *Projects::source(inform_project *proj) {
 	if (proj == NULL) return NULL;
 	if (LinkedLists::len(proj->source_vertices) == 0)
-		@<Try a set of source files from the Source subdirectory of Materials@>;
-	if (LinkedLists::len(proj->source_vertices) == 0)
 		@<Try the source file set at the command line, if any was@>;
 	if (LinkedLists::len(proj->source_vertices) == 0)
 		@<Fall back on the traditional choice@>;
 	return proj->source_vertices;
-}
-
-@<Try a set of source files from the Source subdirectory of Materials@> =
-	pathname *P = NULL;
-	if (proj->as_copy->location_if_path)
-		P = Pathnames::down(Projects::materials_path(proj), I"Source");
-	if (P) {
-		filename *manifest = Filenames::in(P, I"Contents.txt");
-		linked_list *L = NEW_LINKED_LIST(text_stream);
-		TextFiles::read(manifest, FALSE,
-			NULL, FALSE, Projects::manifest_helper, NULL, (void *) L);
-		text_stream *leafname;
-		LOOP_OVER_LINKED_LIST(leafname, text_stream, L) {
-			build_vertex *S = Graphs::file_vertex(Filenames::in(P, leafname));
-			S->source_source = leafname;
-			ADD_TO_LINKED_LIST(S, build_vertex, proj->source_vertices);
-		}
-	}
-
-@ =
-void Projects::manifest_helper(text_stream *text, text_file_position *tfp, void *state) {
-	linked_list *L = (linked_list *) state;
-	Str::trim_white_space(text);
-	wchar_t c = Str::get_first_char(text);
-	if ((c == 0) || (c == '#')) return;
-	ADD_TO_LINKED_LIST(Str::duplicate(text), text_stream, L);
 }
 
 @<Try the source file set at the command line, if any was@> =
@@ -224,6 +307,24 @@ void Projects::manifest_helper(text_stream *text, text_file_position *tfp, void 
 	S->source_source = I"your source text";
 	ADD_TO_LINKED_LIST(S, build_vertex, proj->source_vertices);
 
+@ Further source files may become apparent when headings are read in the
+source text we already have, and which refer to specific files in the |Source|
+subdirectory of the materials directory; so those are added here. (This happens
+safely before the full graph for the project is made, so they do appear in
+that dependency graph.)
+
+=
+void Projects::add_heading_source(inform_project *proj, text_stream *path) {
+	pathname *P = NULL;
+	if (proj->as_copy->location_if_path)
+		P = Pathnames::down(Projects::materials_path(proj), I"Source");
+	if (P) {
+		build_vertex *S = Graphs::file_vertex(Filenames::in(P, path));
+		S->source_source = Str::duplicate(path);
+		ADD_TO_LINKED_LIST(S, build_vertex, proj->source_vertices);
+	}
+}
+
 @ The //inform7// compiler sometimes wants to know whether a particular
 source file belongs to the project or not, so:
 
@@ -239,6 +340,14 @@ int Projects::draws_from_source_file(inform_project *proj, source_file *sf) {
 	return FALSE;
 }
 
+@h Version.
+
+=
+semantic_version_number Projects::get_version(inform_project *proj) {
+	if (proj == NULL) return VersionNumbers::null();
+	return proj->version;
+}
+
 @h The project's languages.
 Inform's ability to work outside of English is limited, at present, but for
 the sake of future improvements we want to distinguish three uses of natural
@@ -249,10 +358,6 @@ First, the "language of play" is the one in which dialogue is printed and parsed
 at run-time.
 
 =
-void Projects::set_language_of_play(inform_project *proj, inform_language *L) {
-	if (proj == NULL) internal_error("no project");
-	proj->language_of_play = L;
-}
 inform_language *Projects::get_language_of_play(inform_project *proj) {
 	if (proj == NULL) return NULL;
 	return proj->language_of_play;
@@ -275,26 +380,82 @@ inform_language *Projects::get_language_of_index(inform_project *proj) {
 project is written. For the Basic Inform extension, for example, it is English.
 
 =
-void Projects::set_language_of_syntax(inform_project *proj, inform_language *L) {
-	if (proj == NULL) internal_error("no project");
-	proj->language_of_syntax = L;
-}
 inform_language *Projects::get_language_of_syntax(inform_project *proj) {
 	if (proj == NULL) return NULL;
 	return proj->language_of_syntax;
 }
 
-@ And this is where these are decided.
+@ And this is where the languages of play and syntax are set, using metadata
+previously extracted by //Projects::scan_bibliographic_data//. Note that they
+are set only once, and can't be changed after that.
 
 =
 void Projects::set_languages(inform_project *proj) {
 	if (proj == NULL) internal_error("no project");
-	inform_language *E = Languages::find_for(I"English", Projects::nest_list(proj));
-	if (E) {
-		proj->language_of_play = E;
-		proj->language_of_syntax = E;
-		proj->language_of_index = E;
-	} else internal_error("built-in English language definition can't be found");
+
+	text_stream *name = proj->name_of_language_of_syntax;
+	inform_language *L = Languages::find_for(name, Projects::nest_list(proj));
+	if (L) {
+		if (Languages::supports(L, WRITTEN_LSUPPORT)) {
+			proj->language_of_syntax = L;
+			Projects::add_language_extension_nest(proj);
+		} else {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err,
+				"this project asks to be 'written in' a language which does not support that");
+			Copies::attach_error(proj->as_copy,
+				CopyErrors::new_T(LANGUAGE_DEFICIENT_CE, -1, err));
+			DISCARD_TEXT(err)
+		}
+	} else {
+		build_vertex *RV = Graphs::req_vertex(
+			Requirements::any_version_of(Works::new(language_genre, name, I"")));
+		Graphs::need_this_to_build(proj->as_copy->vertex, RV);
+	}
+
+	name = proj->name_of_language_of_play;
+	L = Languages::find_for(name, Projects::nest_list(proj));
+	if (L) {
+		if (Languages::supports(L, PLAYED_LSUPPORT)) {
+			proj->language_of_play = L;
+			Projects::add_language_extension_nest(proj);
+		} else {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err,
+				"this project asks to be 'played in' a language which does not support that");
+			Copies::attach_error(proj->as_copy,
+				CopyErrors::new_T(LANGUAGE_DEFICIENT_CE, -1, err));
+			DISCARD_TEXT(err)
+		}
+	} else {
+		build_vertex *RV = Graphs::req_vertex(
+			Requirements::any_version_of(Works::new(language_genre, name, I"")));
+		Graphs::need_this_to_build(proj->as_copy->vertex, RV);
+	}
+
+	if (Str::len(proj->name_of_language_of_index) == 0)
+		proj->language_of_index = proj->language_of_syntax;
+	else {
+		name = proj->name_of_language_of_index;
+		L = Languages::find_for(name, Projects::nest_list(proj));
+		if (L) {
+			if (Languages::supports(L, INDEXED_LSUPPORT)) {
+				proj->language_of_index = L;
+				Projects::add_language_extension_nest(proj);
+			} else {
+				TEMPORARY_TEXT(err)
+				WRITE_TO(err,
+					"this project asks to be 'indexed in' a language which does not support that");
+				Copies::attach_error(proj->as_copy,
+					CopyErrors::new_T(LANGUAGE_DEFICIENT_CE, -1, err));
+				DISCARD_TEXT(err)
+			}
+		} else {
+			build_vertex *RV = Graphs::req_vertex(
+				Requirements::any_version_of(Works::new(language_genre, name, I"")));
+			Graphs::need_this_to_build(proj->as_copy->vertex, RV);
+		}
+	}
 }
 
 @h Miscellaneous metadata.
@@ -312,7 +473,6 @@ void Projects::set_compilation_options(inform_project *proj, int r, int co, int 
 	proj->compile_only = co;
 	proj->fix_rng = rng;
 	Projects::set_languages(proj);
-	Supervisor::pass_kit_requests(proj);
 }
 
 int Projects::currently_releasing(inform_project *proj) {
@@ -334,14 +494,26 @@ typedef struct kit_dependency {
 } kit_dependency;
 
 @ =
-void Projects::add_kit_dependency(inform_project *project, text_stream *kit_name,
-	inform_language *because_of_language, inform_kit *because_of_kit) {
-	if (Projects::uses_kit(project, kit_name)) return;
-	kit_dependency *kd = CREATE(kit_dependency);
-	kd->kit = Kits::find_by_name(kit_name, Projects::nest_list(project));
-	kd->because_of_language = because_of_language;
-	kd->because_of_kit = because_of_kit;
-	ADD_TO_LINKED_LIST(kd, kit_dependency, project->kits_to_include);
+int Projects::add_kit_dependency(inform_project *project, text_stream *kit_name,
+	inform_language *because_of_language, inform_kit *because_of_kit,
+	inbuild_requirement *req, linked_list *nests) {
+	if (Projects::uses_kit(project, kit_name)) return TRUE;
+	if (nests == NULL) nests = Projects::nest_list(project);
+	inform_kit *K = Kits::find_by_name(kit_name, nests, req);
+	if (K) {
+		kit_dependency *kd = CREATE(kit_dependency);
+		kd->kit = K;
+		kd->because_of_language = because_of_language;
+		kd->because_of_kit = because_of_kit;
+		ADD_TO_LINKED_LIST(kd, kit_dependency, project->kits_to_include);
+		return TRUE;
+	} else {
+		build_vertex *RV = Graphs::req_vertex(
+			Requirements::any_version_of(Works::new_raw(kit_genre, kit_name, I"")));
+		Graphs::need_this_to_build(project->as_copy->vertex, RV);
+		LOG("Required but could not find kit %S\n", kit_name);
+		return FALSE;
+	}
 }
 
 @ This can also be used to test on the fly:
@@ -358,32 +530,52 @@ int Projects::uses_kit(inform_project *project, text_stream *name) {
 @ Here's where we decide which kits are included.
 
 =
+int forcible_basic_mode = FALSE;
+
+void Projects::enter_forcible_basic_mode(void) {
+	forcible_basic_mode = TRUE;
+}
+
 void Projects::finalise_kit_dependencies(inform_project *project) {
 	@<Add dependencies for the standard kits@>;
 	int parity = TRUE; @<Perform if-this-then-that@>;
 	parity = FALSE; @<Perform if-this-then-that@>;
 	@<Sort the kit dependency list into priority order@>;
 	@<Log what the dependencies actually were@>;
+	@<Police forcible basic mode@>;
 }
 
-@ At this point //Inbuild Control// has called //Projects::add_kit_dependency//
-for any |-kit| options used at the command line, but otherwise no kits have been
-depended.
-
-Note that //CommandParserKit//, if depended, will cause a further dependency
+@ Note that //CommandParserKit//, if depended, will cause a further dependency
 on //WorldModelKit//, through the if-this-then-that mechanism.
 
 @<Add dependencies for the standard kits@> =
-	int no_word_from_user = TRUE;
-	if (LinkedLists::len(project->kits_to_include) > 0) no_word_from_user = FALSE;
-	Projects::add_kit_dependency(project, I"BasicInformKit", NULL, NULL);
+	int no_word_from_JSON = TRUE;
+	JSON_value *need;
+	LOOP_OVER_LINKED_LIST(need, JSON_value, project->kit_names_to_include) {
+		JSON_value *need_title = JSON::look_up_object(need, I"title");
+		inbuild_work *work = Works::new_raw(kit_genre, need_title->if_string, I"");
+		JSON_value *need_version = JSON::look_up_object(need, I"version");
+		inbuild_requirement *req;
+		if (need_version)
+			req = Requirements::new(work,
+				VersionNumberRanges::compatibility_range(
+					VersionNumbers::from_text(need_version->if_string)));
+		else
+			req = Requirements::any_version_of(work);
+		Projects::add_kit_dependency(project, need_title->if_string, NULL, NULL, req, NULL);
+	}
+	if (LinkedLists::len(project->kits_to_include) > 0) no_word_from_JSON = FALSE;
+	Projects::add_kit_dependency(project, I"BasicInformKit", NULL, NULL, NULL, NULL);
 	inform_language *L = project->language_of_play;
 	if (L) {
-		text_stream *kit_name = Languages::kit_name(L);
-		Projects::add_kit_dependency(project, kit_name, L, NULL);
+		Languages::add_kit_dependencies_to_project(L, project);
+	} else {
+		Copies::attach_error(project->as_copy,
+			CopyErrors::new_T(LANGUAGE_UNAVAILABLE_CE, -1,
+				project->name_of_language_of_play));
 	}
-	if (no_word_from_user)
-		Projects::add_kit_dependency(project, I"CommandParserKit", NULL, NULL);
+	if ((no_word_from_JSON) && (forcible_basic_mode == FALSE))
+		Projects::add_kit_dependency(project, I"CommandParserKit", NULL, NULL, NULL, NULL);
 
 @ We perform this first with |parity| being |TRUE|, then |FALSE|.
 
@@ -416,6 +608,25 @@ because of the following sort:
 		LOG("Using Inform kit '%S' (priority %d).\n",
 			kd->kit->as_copy->edition->work->title, kd->kit->priority);
 
+@<Police forcible basic mode@> =
+	if (forcible_basic_mode) {
+		int basic = TRUE;
+		kit_dependency *kd;
+		LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
+			if ((Str::eq(kd->kit->as_copy->edition->work->title, I"CommandParserKit")) ||
+				(Str::eq(kd->kit->as_copy->edition->work->title, I"WorldModelKit")) ||
+				(Str::eq(kd->kit->as_copy->edition->work->title, I"DialogueKit")))
+				basic = FALSE;
+		if (basic == FALSE) {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err,
+				"the project_metadata.json file shows this cannot be built in basic mode");
+			Copies::attach_error(project->as_copy,
+				CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+			DISCARD_TEXT(err)
+		}
+	}
+
 @h Things to do with kits.
 First up: these internal configuration files set up what "text" and "real number"
 mean, for example, and are optionally included in kits. The following
@@ -433,18 +644,47 @@ void Projects::load_built_in_kind_constructors(inform_project *project) {
 @ Next, language element activation: this too is decided by kits.
 
 =
-#ifdef CORE_MODULE
 void Projects::activate_elements(inform_project *project) {
-	PluginManager::activate_bare_minimum();
+	Features::activate_bare_minimum();
+	element_activation *EA;
+	LOOP_OVER_LINKED_LIST(EA, element_activation, project->activations) {
+		compiler_feature *P = Features::from_name(EA->element_name);
+		if (P == NULL) {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err, "project metadata refers to unknown compiler feature '%S'", EA->element_name);
+			Copies::attach_error(project->as_copy, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+			DISCARD_TEXT(err)	
+		} else {
+			if (EA->activate) Features::activate(P);
+			else if (Features::deactivate(P) == FALSE) {
+				TEMPORARY_TEXT(err)
+				WRITE_TO(err, "project metadata asks to deactivate mandatory compiler feature '%S'",
+					EA->element_name);
+				Copies::attach_error(project->as_copy, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+				DISCARD_TEXT(err)	
+			}
+		}
+	}
 	kit_dependency *kd;
 	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
 		Kits::activate_elements(kd->kit);
-	LOG("Included: "); PluginManager::list_plugins(DL, TRUE);
-	LOG("\n");
-	LOG("Excluded: "); PluginManager::list_plugins(DL, FALSE);
+	LOG("Included by the end of the kit stage: "); Features::list(DL, TRUE, NULL);
 	LOG("\n");
 }
-#endif
+
+void Projects::activate_extension_elements(inform_project *project) {
+	inform_extension *ext;
+	LOOP_OVER_LINKED_LIST(ext, inform_extension, project->extensions_included)
+		Extensions::activate_elements(ext, project);
+	kit_dependency *kd;
+	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
+		Kits::activate_elements(kd->kit);
+	
+	LOG("Included by the end of the extension stage: "); Features::list(DL, TRUE, NULL);
+	LOG("\n");
+	LOG("Excluded: "); Features::list(DL, FALSE, NULL);
+	LOG("\n");
+}
 
 @ And so is the question of whether the compiler is expected to compile a
 |Main| function, or whether one has already been included in one of the kits.
@@ -523,6 +763,25 @@ filename *Projects::get_primary_output(inform_project *proj) {
 	}
 }
 
+@h Detecting dialogue.
+There's an awkward timing issue with detecting dialogue in the source text.
+The rule is that an Inform project should depend on DialogueKit if it contains
+content under a dialogue section, but not otherwise. That in turn activates
+the "dialogue" compiler feature. On the other hand, the source text also has
+material placed under headings which are for use with dialogue only. So we
+can't read the entire source text first and then decide: we have to switch
+on the dialogue feature the moment any dialogue matter is found. This is
+done by having the //syntax// module call the following:
+
+=
+inform_project *project_being_scanned = NULL;
+void Projects::dialogue_present(void) {
+	if (project_being_scanned) {
+		Projects::add_kit_dependency(project_being_scanned, I"DialogueKit", NULL, NULL, NULL, NULL);
+		Projects::activate_elements(project_being_scanned);
+	}
+}
+
 @h The full graph.
 This can be quite grandiose even though most of it will never come to anything,
 rather like a family tree for a minor European royal family.
@@ -532,7 +791,9 @@ void Projects::construct_graph(inform_project *proj) {
 	if (proj == NULL) return;
 	if (proj->chosen_build_target == NULL) {
 		Projects::finalise_kit_dependencies(proj);
+		project_being_scanned = proj;
 		Copies::get_source_text(proj->as_copy);
+		project_being_scanned = NULL;
 		build_vertex *V = proj->as_copy->vertex;
 		@<Construct the graph upstream of V@>;
 		@<Construct the graph downstream of V@>;
@@ -702,7 +963,7 @@ void Projects::check_extension_versions(inform_project *proj) {
 
 void Projects::check_extension_versions_d(inform_project *proj, build_vertex *V) {
 	if ((V->as_copy) && (V->as_copy->edition->work->genre == extension_genre)) {
-		inform_extension *E = ExtensionManager::from_copy(V->as_copy);
+		inform_extension *E = Extensions::from_copy(V->as_copy);
 		if (Extensions::satisfies(E) == FALSE) {
 			copy_error *CE = CopyErrors::new_T(SYNTAX_CE, ExtVersionTooLow_SYNERROR,
 				I"two incompatible versions");
@@ -743,7 +1004,17 @@ For a real-world example of the result, see //inform7: Performance Metrics//.
 
 =
 void Projects::read_source_text_for(inform_project *proj) {
-	Languages::read_Preform_definition(proj->language_of_syntax, proj->search_list);
+	inform_language *E = Languages::find_for(I"English", Projects::nest_list(proj));
+	if (E == NULL) return;
+	Languages::read_Preform_definition(E, proj->search_list);
+	if ((proj->language_of_syntax) && (proj->language_of_syntax != E)) {
+		if (Languages::read_Preform_definition(
+			proj->language_of_syntax, proj->search_list) == FALSE) {
+			copy_error *CE = CopyErrors::new_T(SYNTAX_CE, UnavailableLOS_SYNERROR,
+				proj->language_of_syntax->as_copy->edition->work->title);
+			Copies::attach_error(proj->as_copy, CE);
+		}
+	}
 	Sentences::set_start_of_source(sfsm, -1);
 
 	parse_node *inclusions_heading, *implicit_heading;
@@ -767,7 +1038,7 @@ like Basic Inform or Standard Rules; and also any sentences in the
 	Node::set_text(inclusions_heading,
 		Feeds::feed_C_string_expanding_strings(L"Implied inclusions"));
 	SyntaxTree::graft_sentence(proj->syntax_tree, inclusions_heading);
-	Headings::place_implied_level_0(proj->syntax_tree, inclusions_heading);
+	Headings::place_implied_level_0(proj->syntax_tree, inclusions_heading, proj->as_copy);
 
 	int wc = lexer_wordcount;
 	TEMPORARY_TEXT(early)
@@ -822,7 +1093,7 @@ ready for those inventions (if in fact there are any).
 	Node::set_text(implicit_heading,
 		Feeds::feed_C_string_expanding_strings(L"Invented sentences"));
 	SyntaxTree::graft_sentence(proj->syntax_tree, implicit_heading);
-	Headings::place_implied_level_0(proj->syntax_tree, implicit_heading);
+	Headings::place_implied_level_0(proj->syntax_tree, implicit_heading, proj->as_copy);
 	SyntaxTree::pop_bud(proj->syntax_tree, l);
 	SyntaxTree::push_bud(proj->syntax_tree, implicit_heading); /* never popped */
 
@@ -833,8 +1104,210 @@ on that. We have to perform the tree surgery asked for by Include... in
 place of... instructions after the sweep for inclusions.
 
 @<Post-process the syntax tree@> =
-	#ifdef CORE_MODULE
 	Projects::activate_elements(proj);
-	#endif
 	Inclusions::traverse(proj->as_copy, proj->syntax_tree);
 	Headings::satisfy_dependencies(proj, proj->syntax_tree, proj->as_copy);
+	Projects::activate_extension_elements(proj);
+
+@h The bibliographic sentence.
+It might seem sensible to parse the opening sentence of the source text,
+the bibliographic sentence giving title and author, by looking at the result
+of sentence-breaking: in other words, to wait until the syntax tree for a
+project has been read in.
+
+But this isn't fast enough, because the sentence also specifies the language
+of syntax, and we need to know of any non-English choice immediately. We
+don't even want to use Preform to parse the sentence, either, because we might
+want to load a different Preform file depending on that non-English choice.
+
+So the following rapid scan catches just the first sentence of the first
+source file of the project.
+
+@e BadTitleSentence_SYNERROR
+
+=
+void Projects::scan_bibliographic_data(inform_project *proj) {
+	linked_list *L = Projects::source(proj);
+	build_vertex *N;
+	LOOP_OVER_LINKED_LIST(N, build_vertex, L) {
+		filename *F = N->as_file;
+		FILE *SF = Filenames::fopen_caseless(F, "r");
+		if (SF == NULL) break; /* no source means no bibliographic data */
+		@<Read the opening sentence@>;
+		fclose(SF);
+		break; /* so that we look only at the first source file */
+	}
+}
+
+@<Read the opening sentence@> =
+	TEMPORARY_TEXT(bibliographic_sentence)
+	TEMPORARY_TEXT(bracketed)
+	@<Capture the opening sentence and its bracketed part@>;
+	if ((Str::len(bibliographic_sentence) > 0) &&
+		(Str::get_first_char(bibliographic_sentence) == '"'))
+		@<The opening sentence is bibliographic, so scan it@>;
+	DISCARD_TEXT(bibliographic_sentence)
+	DISCARD_TEXT(bracketed)
+
+@ A bibliographic sentence can optionally give a language, by use of "(in ...)":
+
+>> "Bonjour Albertine" by Marcel Proust (in French)
+
+If so, the following writes |"Bonjour Albertine" by Marcel Proust| to the
+text |bibliographic_sentence| and |in French| to the text |bracketed|. If not,
+the whole thing goes into |bibliographic_sentence| and |bracketed| is empty.
+
+@<Capture the opening sentence and its bracketed part@> =
+	int c, commented = FALSE, quoted = FALSE, rounded = FALSE, content_found = FALSE;
+	while ((c = TextFiles::utf8_fgetc(SF, NULL, FALSE, NULL)) != EOF) {
+		if (c == 0xFEFF) continue; /* skip the optional Unicode BOM pseudo-character */
+		if (commented) {
+			if (c == ']') commented = FALSE;
+		} else {
+			if (quoted) {
+				if (rounded) PUT_TO(bracketed, c);
+				else PUT_TO(bibliographic_sentence, c);
+				if (c == '"') quoted = FALSE;
+			} else {
+				if (c == '[') commented = TRUE;
+				else {
+					if (Characters::is_whitespace(c) == FALSE) content_found = TRUE;
+					if (rounded) {
+						if (c == '"') quoted = TRUE;
+						if ((c == '\x0a') || (c == '\x0d') || (c == '\n')) c = ' ';
+						if (c == ')') rounded = FALSE;
+						else PUT_TO(bracketed, c);
+					} else {
+						if (c == '(') rounded = TRUE;
+						else {
+							if ((c == '\x0a') || (c == '\x0d') || (c == '\n')) {
+								if (content_found) break;
+								c = ' ';
+								PUT_TO(bibliographic_sentence, c);
+							} else {
+								PUT_TO(bibliographic_sentence, c);
+							}
+							if (c == '"') quoted = TRUE;
+						}
+					}
+				}
+			}
+		}
+	}
+	Str::trim_white_space(bibliographic_sentence);			
+	Str::trim_white_space(bracketed);			
+	if (Str::get_last_char(bibliographic_sentence) == '.')
+		Str::delete_last_character(bibliographic_sentence);
+
+@ The author is sometimes given outside of quotation marks:
+
+>> "The Large Scale Structure of Space-Time" by Lindsay Lohan
+
+But not always:
+
+>> "Greek Rural Postmen and Their Cancellation Numbers" by "will.i.am"
+
+@<The opening sentence is bibliographic, so scan it@> =
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, bibliographic_sentence, L"\"([^\"]+)\" by \"([^\"]+)\"")) {
+		text_stream *title = mr.exp[0];
+		text_stream *author = mr.exp[1];
+		@<Set title and author@>;
+	} else if (Regexp::match(&mr, bibliographic_sentence, L"\"([^\"]+)\" by ([^\"]+)")) {
+		text_stream *title = mr.exp[0];
+		text_stream *author = mr.exp[1];
+		@<Set title and author@>;
+	} else if (Regexp::match(&mr, bibliographic_sentence, L"\"([^\"]+)\"")) {
+		text_stream *title = mr.exp[0];
+		text_stream *author = NULL;
+		@<Set title and author@>;
+	} else {
+		@<Flag bad bibliographic sentence@>;
+	}
+	Regexp::dispose_of(&mr);
+	if (Str::len(bracketed) > 0) {
+		int okay = TRUE;
+		match_results mr2 = Regexp::create_mr();
+		while (Regexp::match(&mr2, bracketed, L"(%c+?),(%c+)")) {
+			okay = (okay && (Projects::parse_language_clauses(proj, mr2.exp[0])));
+			bracketed = Str::duplicate(mr2.exp[1]);
+		}
+		okay = (okay && (Projects::parse_language_clauses(proj, bracketed)));
+		if (okay == FALSE) @<Flag bad bibliographic sentence@>;
+		Regexp::dispose_of(&mr2);
+	}
+
+@<Set title and author@> =
+	if (Str::len(title) > 0) {
+		text_stream *T = proj->as_copy->edition->work->title;
+		Str::clear(T);
+		WRITE_TO(T, "%S", title);
+	}
+	if (Str::len(author) > 0) {
+		if (proj->as_copy->edition->work->author_name == NULL)
+			proj->as_copy->edition->work->author_name = Str::new();
+		text_stream *A = proj->as_copy->edition->work->author_name;
+		Str::clear(A);
+		WRITE_TO(A, "%S", author);
+	}
+
+@<Flag bad bibliographic sentence@> =
+	copy_error *CE = CopyErrors::new(SYNTAX_CE, BadTitleSentence_SYNERROR);
+	Copies::attach_error(proj->as_copy, CE);
+
+@
+
+=
+int Projects::parse_language_clauses(inform_project *proj, text_stream *clause) {
+	int verdict = FALSE;
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, clause, L"(%c+?) in (%c+)")) {
+		text_stream *what = mr.exp[0];
+		text_stream *language_name = mr.exp[1];
+		verdict = Projects::parse_language_clause(proj, what, language_name);
+	} else if (Regexp::match(&mr, clause, L" *in (%c+)")) {
+		text_stream *what = I"played";
+		text_stream *language_name = mr.exp[0];
+		verdict = Projects::parse_language_clause(proj, what, language_name);
+	} else if (Regexp::match(&mr, clause, L" *")) {
+		verdict = TRUE;
+	}
+	Regexp::dispose_of(&mr);
+	return verdict;
+}
+
+int Projects::parse_language_clause(inform_project *proj, text_stream *what, text_stream *language_name) {
+	match_results mr = Regexp::create_mr();
+	int verdict = FALSE;
+	if (Regexp::match(&mr, what, L"(%c+?), and (%c+)")) {
+		verdict = ((Projects::parse_language_clause(proj, mr.exp[0], language_name)) &&
+					(Projects::parse_language_clause(proj, mr.exp[1], language_name)));
+	} else if (Regexp::match(&mr, what, L"(%c+?), (%c+)")) {
+		verdict = ((Projects::parse_language_clause(proj, mr.exp[0], language_name)) &&
+					(Projects::parse_language_clause(proj, mr.exp[1], language_name)));
+	} else if (Regexp::match(&mr, what, L"(%c+?) and (%c+)")) {
+		verdict = ((Projects::parse_language_clause(proj, mr.exp[0], language_name)) &&
+					(Projects::parse_language_clause(proj, mr.exp[1], language_name)));
+	} else {
+		if (Regexp::match(&mr, what, L" *written *")) @<Set language of syntax@>
+		else if (Regexp::match(&mr, what, L" *played *")) @<Set language of play@>
+		else if (Regexp::match(&mr, what, L" *indexed *")) @<Set language of index@>
+	}
+	Regexp::dispose_of(&mr);
+	return verdict;
+}
+
+@<Set language of play@> =
+	proj->name_of_language_of_play = Str::duplicate(language_name);
+	Str::trim_white_space(proj->name_of_language_of_play);
+	verdict = TRUE;
+
+@<Set language of syntax@> =
+	proj->name_of_language_of_syntax = Str::duplicate(language_name);
+	Str::trim_white_space(proj->name_of_language_of_syntax);
+	verdict = TRUE;
+
+@<Set language of index@> =
+	proj->name_of_language_of_index = Str::duplicate(language_name);
+	Str::trim_white_space(proj->name_of_language_of_index);
+	verdict = TRUE;

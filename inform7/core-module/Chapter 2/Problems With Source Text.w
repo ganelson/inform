@@ -33,14 +33,72 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 					"Specifically, %2.");
 				Problems::issue_problem_end();
 				break;
-			case KIT_MISWORDED_CE:
+			case EXT_BAD_DIRNAME_CE:
 				Problems::quote_work(1, CE->copy->found_by->work);
 				Problems::quote_stream(2, CE->details);
 				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
 				Problems::issue_problem_segment(
-					"The kit %1, which your source text makes use of, seems to be "
-					"damaged or incorrect: its identifying opening line is wrong. "
-					"Specifically, %2.");
+					"The extension %1, which your source text makes use of, is stored "
+					"in a directory (which is fine), but does not follow the rules for "
+					"what that directory is called (which is not fine). Specifically, %2.");
+				Problems::issue_problem_end();
+				break;
+			case EXT_BAD_FILENAME_CE:
+				Problems::quote_work(1, CE->copy->found_by->work);
+				Problems::quote_stream(2, CE->details);
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+				Problems::issue_problem_segment(
+					"The extension %1, which your source text makes use of, has the wrong "
+					"filename for its source text. Specifically, %2.");
+				Problems::issue_problem_end();
+				break;
+			case EXT_RANEOUS_CE:
+				Problems::quote_work(1, CE->copy->found_by->work);
+				Problems::quote_stream(2, CE->details);
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+				Problems::issue_problem_segment(
+					"The extension %1, which your source text makes use of, is stored "
+					"in a directory (which is fine), but contains files or subdirectories "
+					"which I don't recognise (which is not fine). Specifically, %2.");
+				Problems::issue_problem_end();
+				break;
+			case METADATA_MALFORMED_CE:
+				if (CE->copy->found_by) {
+					Problems::quote_work(1, CE->copy->found_by->work);
+					Problems::quote_stream(2, CE->details);
+					SourceProblems::quote_genre(3, CE);
+					StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+					Problems::issue_problem_segment(
+						"The %3 %1, which your source text makes use of, seems to have "
+						"metadata problems. Specifically: %2.");
+					Problems::issue_problem_end();
+				} else {
+					Problems::quote_work(1, CE->copy->edition->work);
+					Problems::quote_stream(2, CE->details);
+					SourceProblems::quote_genre(3, CE);
+					StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+					Problems::issue_problem_segment(
+						"The %3 %1 seems to have metadata problems. Specifically: %2.");
+					Problems::issue_problem_end();
+				}
+				break;
+			case LANGUAGE_UNAVAILABLE_CE:
+				Problems::quote_work(1, CE->copy->edition->work);
+				Problems::quote_stream(2, CE->details);
+				SourceProblems::quote_genre(3, CE);
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+				Problems::issue_problem_segment(
+					"The %3 %1 seems to need me to know about a non-English language, '%2'. "
+					"I can't find any definition for this language.");
+				Problems::issue_problem_end();
+				break;
+			case LANGUAGE_DEFICIENT_CE:
+				Problems::quote_work(1, CE->copy->edition->work);
+				Problems::quote_stream(2, CE->details);
+				SourceProblems::quote_genre(3, CE);
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+				Problems::issue_problem_segment(
+					"The %3 %1 seems to need me to work with a non-English language, but '%2'.");
 				Problems::issue_problem_end();
 				break;
 			case EXT_TITLE_TOO_LONG_CE: {
@@ -227,44 +285,46 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 
 					case ExtNoBeginsHere_SYNERROR:
 						StandardProblems::extension_problem(_p_(PM_ExtNoBeginsHere),
-							ExtensionManager::from_copy(C),
+							Extensions::from_copy(C),
 							"has no 'begins here' sentence");
 						break;
 					case ExtNoEndsHere_SYNERROR:
 						StandardProblems::extension_problem(_p_(PM_ExtNoEndsHere),
-							ExtensionManager::from_copy(C),
+							Extensions::from_copy(C),
 							"has no 'ends here' sentence");
 						break;
 					case ExtSpuriouslyContinues_SYNERROR:
 						StandardProblems::extension_problem(_p_(PM_ExtSpuriouslyContinues),
-							ExtensionManager::from_copy(C),
+							Extensions::from_copy(C),
 							"continues after the 'ends here' sentence");
 						break;
 					case ExtMultipleEndsHere_SYNERROR:
 						StandardProblems::extension_problem(_p_(PM_ExtMultipleEndsHere),
-							ExtensionManager::from_copy(C),
+							Extensions::from_copy(C),
 							"has more than one 'ends here' sentence");
 						break;
 					case ExtMultipleBeginsHere_SYNERROR:
 						StandardProblems::extension_problem(_p_(PM_ExtMultipleBeginsHere),
-							ExtensionManager::from_copy(C),
+							Extensions::from_copy(C),
 							"has more than one 'begins here' sentence");
 						break;
 					case ExtBeginsAfterEndsHere_SYNERROR:
 						StandardProblems::extension_problem(_p_(PM_ExtBeginsAfterEndsHere),
-							ExtensionManager::from_copy(C),
+							Extensions::from_copy(C),
 							"has a further 'begins here' after an 'ends here'");
 						break;
 					case ExtEndsWithoutBegins_SYNERROR:
 						StandardProblems::extension_problem(_p_(BelievedImpossible),
-							ExtensionManager::from_copy(C),
+							Extensions::from_copy(C),
 							"has an 'ends here' with nothing having begun");
 						break;
 					case BadTitleSentence_SYNERROR:
-						current_sentence = CE->details_node;
-						StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadTitleSentence),
-							"the initial bibliographic sentence can only be a title in double-quotes",
-							"possibly followed with 'by' and the name of the author.");
+						current_sentence = NULL;
+						StandardProblems::unlocated_problem(Task::syntax_tree(),
+							_p_(PM_BadTitleSentence),
+							"The opening bibliographic sentence can only be a title in "
+							"double-quotes, possibly followed with 'by' and the name of "
+							"the author.");
 						break;
 					case UnknownLanguageElement_SYNERROR:
 						current_sentence = CE->details_node;
@@ -343,7 +403,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						break;
 					case ExtMisidentifiedEnds_SYNERROR:
 						current_sentence = CE->details_node;
-						Problems::quote_extension(1, ExtensionManager::from_copy(C));
+						Problems::quote_extension(1, Extensions::from_copy(C));
 						Problems::quote_wording(2, CE->details_W);
 						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ExtMisidentifiedEnds));
 						Problems::issue_problem_segment(
@@ -405,6 +465,118 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 							"was %4.)");
 						Problems::issue_problem_end();
 						break;
+					case UnavailableLOS_SYNERROR:
+						current_sentence = NULL;
+						Problems::quote_stream(1, CE->details);
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+						Problems::issue_problem_segment(
+							"The project says that its syntax is written in a language "
+							"other than English (specifically, %1), but the language bundle "
+							"for that language does not provide a file of Preform definitions.");
+						Problems::issue_problem_end();
+						break;
+					case DialogueOnSectionsOnly_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::quote_source(1, current_sentence);
+						StandardProblems::handmade_problem(Task::syntax_tree(),
+							_p_(PM_DialogueOnSectionsOnly));
+						Problems::issue_problem_segment(
+							"In the heading %1, you've marked for '(dialogue)', but only "
+							"Sections can be so marked - not Chapters, Books, and so on.");
+						Problems::issue_problem_end();
+						break;
+					case UnexpectedDialogue_SYNERROR:
+						Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(CE->details_W));
+						StandardProblems::handmade_problem(Task::syntax_tree(),
+							_p_(PM_UnexpectedDialogue));
+						Problems::issue_problem_segment(
+							"The text %1 appears under a section heading marked as dialogue, "
+							"so it needs to be either a cue in brackets '(like this.)', or "
+							"else a line of dialogue 'Speaker: \"Something to say!\"'. It "
+							"doesn't seem to be either of those.");
+						Problems::issue_problem_end();
+						break;
+					case UnquotedDialogue_SYNERROR:
+						Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(CE->details_W));
+						StandardProblems::handmade_problem(Task::syntax_tree(),
+							 _p_(PM_UnquotedDialogue));
+						Problems::issue_problem_segment(
+							"The text %1 appears to be a line of dialogue, but after the "
+							"colon ':' there should only be a single double-quoted text.");
+						Problems::issue_problem_end();
+						break;
+					case EmptyDialogueClause_SYNERROR:
+						Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(CE->details_W));
+						StandardProblems::handmade_problem(Task::syntax_tree(),
+							_p_(PM_EmptyDialogueClause));
+						Problems::issue_problem_segment(
+							"The text %1 appears to be a bracketed clause to do with "
+							"dialogue, but the punctuation looks wrong because it includes "
+							"an empty part.");
+						Problems::issue_problem_end();
+						break;
+					case MisbracketedDialogueClause_SYNERROR:
+						Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(CE->details_W));
+						StandardProblems::handmade_problem(Task::syntax_tree(),
+							_p_(PM_MisbracketedDialogueClause));
+						Problems::issue_problem_segment(
+							"The text %1 appears to be a bracketed clause to do with "
+							"dialogue, but the punctuation looks wrong because it uses "
+							"brackets '(' and ')' in a way which doesn't match. There "
+							"should be just one outer pair of brackets, and inside they "
+							"can only be used to clarify clauses, if necessary.");
+						Problems::issue_problem_end();
+						break;
+					case MissingSourceFile_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::quote_source(1, current_sentence);
+						Problems::quote_stream(2, CE->details);
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+						Problems::issue_problem_segment(
+							"I can't find the source file holding the content of the heading %1 - "
+							"it should be '%2' in the 'Source' subdirectory of the materials "
+							"for this project.");
+						Problems::issue_problem_end();
+						break;
+					case HeadingWithFileNonempty_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::quote_source(1, current_sentence);
+						Problems::quote_stream(2, CE->details);
+						Problems::quote_source(3, current_sentence->down);
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+						Problems::issue_problem_segment(
+							"The heading %1 should refer only to the contents of the file "
+							"'%2' (in the 'Source' subdirectory of the materials for this "
+							"project) but in fact goes on to contain other material too. "
+							"That other material (see %3) needs to be put under a new "
+							"heading of equal or greater priority (or else moved to the file).");
+						Problems::issue_problem_end();
+						break;
+					case MisheadedSourceFile_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::quote_source(1, current_sentence);
+						Problems::quote_stream(2, CE->details);
+						heading *h = Node::get_embodying_heading(current_sentence);
+						if (h) Problems::quote_wording(3, h->heading_text);
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+						Problems::issue_problem_segment(
+							"The heading %1 says that its contents are in the file "
+							"'%2' (in the 'Source' subdirectory of the materials for this "
+							"project). If so, then that file needs to start with a matching "
+							"opening line, giving the same heading name '%3'; and it doesn't.");
+						Problems::issue_problem_end();
+						break;
+					case HeadingTooGreat_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::quote_source(1, current_sentence);
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+						Problems::issue_problem_segment(
+							"The heading %1 is too high a level to appear in this source "
+							"file. For example, if a source file contains the contents of "
+							"a Chapter, then it cannot contain a Book heading - "
+							"a Chapter can be part of a Book, but not vice versa.");
+						Problems::issue_problem_end();
+						break;
 					default:
 						internal_error("unknown syntax error");
 				}
@@ -412,4 +584,36 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 			default: internal_error("an unknown error occurred");
 		}
 	}
+}
+
+void SourceProblems::quote_genre(int N, copy_error *CE) {
+	text_stream *name = CE->copy->edition->work->genre->genre_name;
+	if (Str::eq(name, I"projectbundle")) name = I"project";
+	if (Str::eq(name, I"projectfile")) name = I"project";
+	if (Str::eq(name, I"extensionbundle")) name = I"extension";
+	Problems::quote_stream(N, name);
+}
+
+@ These are errors generated by the //building// module, but which we want to
+tidy up and present in the usual Inform 7 way.
+
+=
+void SourceProblems::inter_schema_errors(inter_schema *sch) {
+	Problems::quote_source(1, current_sentence);
+	Problems::quote_stream(2, sch->converted_from);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_InterSchemaErrors));
+	Problems::issue_problem_segment(
+		"In the sentence %1, you use a fragment of code written in Inform 6 "
+		"syntax which seems to be malformed in some way. I delegate all that "
+		"work to a lesser compiler: I gave it '%2' to compile, and it came "
+		"back with this: ");
+	schema_parsing_error *err;
+	int c = 1;
+	LOOP_OVER_LINKED_LIST(err, schema_parsing_error, sch->parsing_errors) {
+		Problems::quote_stream(1, err->message);
+		Problems::quote_number(2, &c);
+		Problems::issue_problem_segment("%P%2. %1 ");
+		c++;
+	}
+	Problems::issue_problem_end();
 }

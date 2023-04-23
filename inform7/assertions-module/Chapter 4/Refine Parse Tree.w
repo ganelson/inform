@@ -50,7 +50,7 @@ void Refiner::apply_description(parse_node *p, parse_node *desc) {
 
 @ It's useful to have a safe way of transferring the complete noun details
 from one node to another, without breaking the above invariant. (The
-|nowhere| annotation is used by the spatial model plugin, if active, and
+|nowhere| annotation is used by the spatial feature, if active, and
 it probably never needs to be copied, but we do so for safety's sake.)
 
 =
@@ -488,7 +488,7 @@ complicated description is as follows:
 	if (creation_rule != FORBID_CREATION) Node::set_type(p, CREATED_NT);
 	else Node::set_subject(p, NULL);
 
-@ For example, "above" and "below" become significant if the mapping plugin
+@ For example, "above" and "below" become significant if the mapping feature
 is active, and "nowhere" if the spatial one is.
 
 @<Act on any special noun phrases significant to plugins@> =

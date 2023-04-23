@@ -30,14 +30,14 @@ void ExtensionIndex::write(filename *F, int content, extension_census *C) {
 
 	HTML_OPEN_WITH("div", "class=\"headingpanellayout headingpanelalt\"");
 	HTML_OPEN_WITH("div", "class=\"headingtext\"");
-	HTML_OPEN_WITH("span", "class=\"headingpaneltextalt\"");
+	HTML::begin_span(OUT, I"headingpaneltextalt");
 	WRITE("Installed Extensions");
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	HTML_CLOSE("div");
 	HTML_OPEN_WITH("div", "class=\"headingrubric\"");
-	HTML_OPEN_WITH("span", "class=\"headingpanelrubricalt\"");
+	HTML::begin_span(OUT, I"headingpanelrubricalt");
 	WRITE("Bundles of extra rules or phrases to extend what Inform can do");
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	HTML_CLOSE("div");
 	HTML_CLOSE("div");
 	@<Write the heading details text for the page@>;
@@ -317,11 +317,8 @@ until they put matters right.
 @ Standard rows have black text on striped background colours, these being
 the usual ones seen in Mac OS X applications such as iTunes.
 
-@d FIRST_STRIPE_COLOUR "#ffffff"
-@d SECOND_STRIPE_COLOUR "#f3f6fa"
-
 @<Display the sorted version of the census@> =
-	HTML::begin_html_table(OUT, FIRST_STRIPE_COLOUR, TRUE, 0, 0, 2, 0, 0);
+	HTML::begin_html_table(OUT, I"stripeone", TRUE, 0, 0, 2, 0, 0);
 	@<Show a titling row explaining the census sorting, if necessary@>;
 	int stripe = 0;
 	TEMPORARY_TEXT(current_author_name)
@@ -331,9 +328,9 @@ the usual ones seen in Mac OS X applications such as iTunes.
 		@<Insert a subtitling row in the census sorting, if necessary@>;
 		stripe = 1 - stripe;
 		if (stripe == 0)
-			HTML::first_html_column_coloured(OUT, 0, SECOND_STRIPE_COLOUR, 0);
+			HTML::first_html_column_coloured(OUT, 0, I"stripetwo", 0);
 		else
-			HTML::first_html_column_coloured(OUT, 0, FIRST_STRIPE_COLOUR, 0);
+			HTML::first_html_column_coloured(OUT, 0, I"stripeone", 0);
 		@<Print the census line for this extension@>;
 		HTML::end_html_row(OUT);
 	}
@@ -380,24 +377,22 @@ the usual ones seen in Mac OS X applications such as iTunes.
 
 @<Show a final titling row closing the census sorting@> =
 	@<Begin a tinted census line@>;
-	HTML_OPEN_WITH("span", "class=\"smaller\"");
+	HTML::begin_span(OUT, I"smaller");
 	WRITE("%d extensions installed", no_entries);
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	@<End a tinted census line@>;
 
-@ Black text on a grey background.
-
-@d CENSUS_TITLING_BG "#808080"
+@ Usually white text on a grey background.
 
 @<Begin a tinted census line@> =
 	int span = 4;
 	if (d == SORT_CE_BY_TITLE) span = 3;
-	HTML::first_html_column_coloured(OUT, 0, CENSUS_TITLING_BG, span);
-	HTML::begin_colour(OUT, I"ffffff");
+	HTML::first_html_column_coloured(OUT, 0, I"tintedrow", span);
+	HTML::begin_span(OUT, I"extensioncensusentry");
 	WRITE("&nbsp;");
 
 @<End a tinted census line@> =
-	HTML::end_colour(OUT);
+	HTML::end_span(OUT);
 	HTML::end_html_row(OUT);
 
 @ Used only in "by author".
@@ -415,7 +410,7 @@ the usual ones seen in Mac OS X applications such as iTunes.
 		else cn++;
 	}
 	WRITE("&nbsp;&nbsp;");
-	HTML_OPEN_WITH("span", "class=\"smaller\"");
+	HTML::begin_span(OUT, I"smaller");
 	WRITE("(%d extension%s", cu+cn, (cu+cn==1)?"":"s");
 	if ((cu == 0) && (cn == 1)) WRITE(", unused");
 	else if ((cu == 0) && (cn == 2)) WRITE(", both unused");
@@ -425,7 +420,7 @@ the usual ones seen in Mac OS X applications such as iTunes.
 	else if ((cn == 0) && (cu > 2)) WRITE(", all used");
 	else if (cn+cu > 0) WRITE(", %d used, %d unused", cu, cn);
 	WRITE(")");
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 
 @ Used only in "by installation".
 
@@ -433,16 +428,16 @@ the usual ones seen in Mac OS X applications such as iTunes.
 	switch (current_installation) {
 		case 0:
 			WRITE("Supplied in the .materials folder&nbsp;&nbsp;");
-			HTML_OPEN_WITH("span", "class=\"smaller\"");
+			HTML::begin_span(OUT, I"smaller");
 			WRITE("%p", ExtensionCensus::internal_path(C));
-			HTML_CLOSE("span"); break;
+			HTML::end_span(OUT); break;
 		case 1: WRITE("Built in to Inform"); break;
 		case 2: WRITE("User installed but overriding a built-in extension"); break;
 		case 3:
 			WRITE("User installed&nbsp;&nbsp;");
-			HTML_OPEN_WITH("span", "class=\"smaller\"");
+			HTML::begin_span(OUT, I"smaller");
 			WRITE("%p", ExtensionCensus::external_path(C));
-			HTML_CLOSE("span"); break;
+			HTML::end_span(OUT); break;
 	}
 
 @
@@ -477,22 +472,21 @@ where all is optional except the title part.
 
 	Works::begin_extension_link(OUT,
 		ecd->found_as->copy->edition->work, ExtensionCensus::ecd_rubric(ecd));
+	HTML::begin_span(OUT, I"extensionindexentry");
 	if (d != SORT_CE_BY_AUTHOR) {
-		HTML::begin_colour(OUT, I"404040");
 		WRITE("%S", ecd->found_as->copy->edition->work->raw_title);
 		if (Str::len(ecd->found_as->copy->edition->work->raw_title) +
 			Str::len(ecd->found_as->copy->edition->work->raw_author_name) > 45) {
 			HTML_TAG("br");
 			WRITE("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-		} else
+		} else {
 			WRITE(" ");
+		}
 		WRITE("by %S", ecd->found_as->copy->edition->work->raw_author_name);
-		HTML::end_colour(OUT);
 	} else {
-		HTML::begin_colour(OUT, I"404040");
 		WRITE("%S", ecd->found_as->copy->edition->work->raw_title);
-		HTML::end_colour(OUT);
 	}
+	HTML::end_span(OUT);
 	Works::end_extension_link(OUT, ecd->found_as->copy->edition->work);
 
 	compatibility_specification *C = ecd->found_as->copy->edition->compatibility;
@@ -514,12 +508,12 @@ the first and last word and just look at what is in between:
 	#endif
 
 @<Print column 2 of the census line@> =
-	HTML_OPEN_WITH("span", "class=\"smaller\"");
+	HTML::begin_span(OUT, I"smaller");
 	if (VersionNumbers::is_null(ecd->found_as->copy->edition->version) == FALSE)
 		WRITE("v&nbsp;%v", &(ecd->found_as->copy->edition->version));
 	else
 		WRITE("--");
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 
 @
 
@@ -549,8 +543,8 @@ the first and last word and just look at what is in between:
 	}
 
 @<Print column 4 of the census line@> =
-	inform_extension *E = ExtensionManager::from_copy(ecd->found_as->copy);
-	HTML_OPEN_WITH("span", "class=\"smaller\"");
+	inform_extension *E = Extensions::from_copy(ecd->found_as->copy);
+	HTML::begin_span(OUT, I"smaller");
 	if ((d == SORT_CE_BY_DATE) || (d == SORT_CE_BY_INSTALL)) {
 		WRITE("%S", Extensions::get_usage_date(E));
 	} else if (d == SORT_CE_BY_LENGTH) {
@@ -564,7 +558,7 @@ the first and last word and just look at what is in between:
 		else
 			WRITE("--");
 	}
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 
 @h Icons for virtual machines.
 And everything else is cosmetic: printing, or showing icons to signify,

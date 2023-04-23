@@ -7,38 +7,10 @@
     <table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td>
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+            <table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                 <tr>
-                    <td width="8">
-                        <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-                        <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-
-                    </td>
                     <td>
                         <i>Map</i>
-                    </td>
-                    <td width="8">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-
                     </td>
                 </tr>
             </table>
@@ -115,10 +87,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="2" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Alpha">
+                                    <table border="2" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Alpha">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'><a href=#wo_13 style="text-decoration: none"><span style='color:#000000'><b>Al</b></span></a></span>
+                                                <span class="indexblack"><a href=#wo_13 style="text-decoration: none"><span class="indexblack"><b>Al</b></span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -217,10 +189,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Beta">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Beta">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'><a href=#wo_14 style="text-decoration: none"><span style='color:#000000'>Bt</span></a></span>
+                                                <span class="indexblack"><a href=#wo_14 style="text-decoration: none"><span class="indexblack">Bt</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -403,10 +375,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Epsilon">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Epsilon">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'><a href=#wo_17 style="text-decoration: none"><span style='color:#000000'>Ep</span></a></span>
+                                                <span class="indexblack"><a href=#wo_17 style="text-decoration: none"><span class="indexblack">Ep</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -589,10 +561,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Gamma">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Gamma">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'><a href=#wo_15 style="text-decoration: none"><span style='color:#000000'>Gm</span></a></span>
+                                                <span class="indexblack"><a href=#wo_15 style="text-decoration: none"><span class="indexblack">Gm</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -691,10 +663,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Delta">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Delta">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'><a href=#wo_16 style="text-decoration: none"><span style='color:#000000'>Dl</span></a></span>
+                                                <span class="indexblack"><a href=#wo_16 style="text-decoration: none"><span class="indexblack">Dl</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -775,38 +747,10 @@
 
     <tr>
         <td>
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+            <table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                 <tr>
-                    <td width="8">
-
-                    </td>
                     <td>
 
-                    </td>
-                    <td width="8">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-                        <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-                        <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
                     </td>
                 </tr>
             </table>
@@ -865,10 +809,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Alpha">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Alpha">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'>Al</span>
+                                                <span class="indexblack">Al</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -923,88 +867,32 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <a href="#" onclick="showExtra('extra0', 'plus0'); return false;"><img border=0 id="plus0" src=inform:/doc_images/extra.png></a>&nbsp;<b>Alpha</b> - <i>room where play begins</i>&nbsp;<a href=inform:/doc135.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra0" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+            <a href="#" onclick="showExtra('extra0', 'plus0'); return false;"><img border=0 id="plus0" src=inform:/doc_images/extra.png></a>&nbsp;<b>Alpha</b> - <i>room where play begins</i>&nbsp;<a href=inform:/doc133.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra0" style="display: none;">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Alpha</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style='color:#000080'>"Alpha"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span class="indexdullblue">"Alpha"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;south to Gamma&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;east to Beta&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Alpha is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Alpha is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Alpha is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('Southeast from Alpha is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Alpha is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('West from Alpha is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Alpha is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Alpha is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Alpha is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Alpha is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra1', 'plus1'); return false;"><img border=0 id="plus1" src=inform:/doc_images/extra.png></a>&nbsp;yourself - <i>person</i><div id="extra1" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; person &gt; <b>yourself</b></p>
                             <p class="hangingin1">proper-named; undescribed</p>
-                            <p class="hangingin1">printed name: <span style='color:#000080'>"yourself"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">description: <span style='color:#000080'>"As good-looking as ever."</span></p>
+                            <p class="hangingin1">printed name: <span class="indexdullblue">"yourself"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">description: <span class="indexdullblue">"As good-looking as ever."</span></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -1063,10 +951,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Beta">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Beta">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'>Bt</span>
+                                                <span class="indexblack">Bt</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1122,44 +1010,16 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra2', 'plus2'); return false;"><img border=0 id="plus2" src=inform:/doc_images/extra.png></a>&nbsp;<b>Beta</b>&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra2" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Beta</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style='color:#000080'>"Beta"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span class="indexdullblue">"Beta"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;south to Delta&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;west to Alpha&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Beta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Beta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Beta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('Southeast from Beta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Beta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Beta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('Up from Beta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Beta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Beta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Beta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -1218,10 +1078,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Gamma">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Gamma">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'>Gm</span>
+                                                <span class="indexblack">Gm</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1277,44 +1137,16 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra3', 'plus3'); return false;"><img border=0 id="plus3" src=inform:/doc_images/extra.png></a>&nbsp;<b>Gamma</b>&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra3" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Gamma</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style='color:#000080'>"Gamma"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span class="indexdullblue">"Gamma"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;north to Alpha&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;east to Delta&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('Northeast from Gamma is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Gamma is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Gamma is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Gamma is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Gamma is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('West from Gamma is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Gamma is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Gamma is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Gamma is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Gamma is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -1373,10 +1205,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Delta">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Delta">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'>Dl</span>
+                                                <span class="indexblack">Dl</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1432,45 +1264,17 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra4', 'plus4'); return false;"><img border=0 id="plus4" src=inform:/doc_images/extra.png></a>&nbsp;<b>Delta</b>&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra4" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Delta</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style='color:#000080'>"Delta"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span class="indexdullblue">"Delta"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;north to Beta&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;northwest to Epsilon&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;west to Gamma&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('Northeast from Delta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('South from Delta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Delta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Delta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Delta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('Up from Delta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Delta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Delta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Delta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -1529,10 +1333,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Epsilon">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Epsilon">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'>Ep</span>
+                                                <span class="indexblack">Ep</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1588,43 +1392,15 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra5', 'plus5'); return false;"><img border=0 id="plus5" src=inform:/doc_images/extra.png></a>&nbsp;<b>Epsilon</b>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra5" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Epsilon</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style='color:#000080'>"Epsilon"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span class="indexdullblue">"Epsilon"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;southeast to Delta&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southwest from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('West from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>

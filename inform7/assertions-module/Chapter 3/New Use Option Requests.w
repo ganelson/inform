@@ -168,6 +168,8 @@ void NewUseOptions::memory_setting(text_stream *identifier, int n) {
 	LOOP_OVER(ms, i6_memory_setting)
 		if (Str::eq(identifier, ms->ICL_identifier)) {
 			if (ms->number < n) ms->number = n;
+			if (Str::eq(identifier, I"DICT_WORD_SIZE"))
+				global_compilation_settings.dict_word_size = n;
 			return;
 		}
 	ms = CREATE(i6_memory_setting);

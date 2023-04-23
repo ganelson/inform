@@ -1,0 +1,17 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 39 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32643 words long.
+Problem__ PM_NotASpeaker
+In Section 1 - Arrival:
+  >--> The dialogue beat '(This is the starting beat . Requiring Felicity
+    Dumplings and Mike Atherton .)' (source text, line 5) apparently requires a
+    speaker (other than the player) called 'Felicity Dumplings' to be present
+    in order for it to be performed, but there's nobody of that name.
+Problem__ PM_NotASpeaker
+  >--> The dialogue beat '(This is the starting beat . Requiring Felicity
+    Dumplings and Mike Atherton .)' (source text, line 5) apparently requires a
+    speaker (other than the player) called 'Mike Atherton' to be present in
+    order for it to be performed, but there's nobody of that name.
+Inform 7 has finished.

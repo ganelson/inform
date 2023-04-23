@@ -1,0 +1,149 @@
+Director Template.
+
+Top-level control for the Director, and how beats are selected for performance.
+
+@h Active versus inactive.
+The most important question about the director: is it currently running in
+active or inactive mode?
+
+=
+Global director_is_active = false;
+Global line_performance_count = 0;
+
+[ DirectorActivate;
+	director_is_active = true;
+	line_performance_count = 0;
+];
+[ DirectorDeactivate;
+	director_is_active = false;
+];
+
+@h The live subject list.
+This is stored as a null-terminated array, capped at |DIALOGUE_MAX_LIVE_SUBJECTS|
+items.
+
+=
+Constant DIALOGUE_MAX_LIVE_SUBJECTS = 19;
+Array DialogueTopicPool --> (DIALOGUE_MAX_LIVE_SUBJECTS+1);
+
+[ DirectorEmptyLiveSubjectList;
+	DialogueTopicPool-->0 = 0;
+];
+
+[ DirectorAddLiveSubjectList obj i o2;
+	for (i=0:i<DIALOGUE_MAX_LIVE_SUBJECTS:i++) {
+		o2 = DialogueTopicPool-->i;
+		if (o2 == obj) return;
+		if (o2 == 0) break;
+	}	
+	for (i=DIALOGUE_MAX_LIVE_SUBJECTS-1:i>0:i--) DialogueTopicPool-->i = DialogueTopicPool-->(i-1);
+	DialogueTopicPool-->0 = obj;
+	DialogueTopicPool-->DIALOGUE_MAX_LIVE_SUBJECTS = 0;
+];
+
+[ DirectorRemoveLiveSubjectList obj i j;
+	for (i=0:i<=DIALOGUE_MAX_LIVE_SUBJECTS:i++) {
+		if (DialogueTopicPool-->i == 0) return;
+		if (DialogueTopicPool-->i == obj)
+			for (j=i:j<DIALOGUE_MAX_LIVE_SUBJECTS:j++)
+				DialogueTopicPool-->j = DialogueTopicPool-->(j+1);
+	}
+	DialogueTopicPool-->DIALOGUE_MAX_LIVE_SUBJECTS = 0;
+];
+
+@h Access as an Inform list.
+This copies our null-terminated array into, or out of, an Inform list.
+The reason we don't keep it in an Inform list all the time is that we get
+very slightly faster access by not doing so, and we don't need the main
+virtue of Inform lists, that is, their flexible size.
+
+=
+[ DirectorLiveSubjectList list len i;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
+	len = 0;
+	while (DialogueTopicPool-->len) len++;
+	LIST_OF_TY_SetLength(list, len);
+	for (i=0: i<len: i++)
+		LIST_OF_TY_PutItem(list, i+1, DialogueTopicPool-->i);
+	return list;
+];
+
+[ DirectorAlterLiveSubjectList list len i;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
+	len = BlkValueRead(list, LIST_LENGTH_F);
+	if (len > DIALOGUE_MAX_LIVE_SUBJECTS) len = DIALOGUE_MAX_LIVE_SUBJECTS;
+	for (i=0: i<len: i++)
+		DialogueTopicPool-->i = BlkValueRead(list, LIST_ITEM_BASE+i);
+	DialogueTopicPool-->len = 0;
+	DialogueTopicPool-->DIALOGUE_MAX_LIVE_SUBJECTS = 0;
+];
+
+@h Dialogue intervening.
+|DirectorIntervenes(subj, speaker)| tries to find a beat of dialogue we can perform
+which is relevant to the subject |subj|, and returns |true| if it did in fact
+perform something, or |false| if not (in which case it printed nothing).
+If |speaker| is not |nothing|, then prefer beats in which that person is the
+first to speak. (Note that |speaker| will often be the player.)
+
+=
+[ DirectorIntervenes obj speaker fn db;
+	if (speaker ~= nothing) {
+		for (db=1: db<=NO_DIALOGUE_BEATS: db++)
+			if (DirectorBeatFirstSpeaker(db) == speaker)
+				if ((DirectorBeatAccessible(db, player)) &&
+					(DirectorBeatAvailable(db)) &&
+					(DirectorBeatAbout(db, obj))) {
+					DirectorPerformBeat(db);
+					rtrue;
+				}
+		for (db=1: db<=NO_DIALOGUE_BEATS: db++)
+			if (DirectorBeatFirstSpeaker(db) ~= speaker)
+				if ((DirectorBeatAccessible(db, player)) &&
+					(DirectorBeatAvailable(db)) &&
+					(DirectorBeatAbout(db, obj))) {
+					DirectorPerformBeat(db);
+					rtrue;
+				}
+	} else {
+		for (db=1: db<=NO_DIALOGUE_BEATS: db++)
+			if ((DirectorBeatAccessible(db, player)) &&
+				(DirectorBeatAvailable(db)) &&
+				(DirectorBeatAbout(db, obj))) {
+				DirectorPerformBeat(db);
+				rtrue;
+			}
+	}
+	rfalse;
+];
+
+@h Active dialogue.
+In active mode only, the Director sometimes initiates conversation itself,
+and this is the rule doing that. In passive mode the rule does nothing.
+In stories with a lot of dialogue, this will be run quite slowly: on the
+other hand, it only has to run once in every turn, so that may not matter.
+
+=
+[ DIALOGUE_DIRECTION_R db;
+	if (director_is_active) {
+		if ((director_sp == 0) && (line_performance_count == 0)) {
+			for (db=1: db<=NO_DIALOGUE_BEATS: db++)
+				if ((DirectorBeatAccessible(db, player)) &&
+					(DirectorBeatAvailable(db)) &&
+					(DirectorBeatRelevant(db))) {
+					DirectorPerformBeat(db);
+					line_performance_count = 0;
+					rfalse;
+				}
+			for (db=1: db<=NO_DIALOGUE_BEATS: db++)
+				if ((GProperty(DIALOGUE_BEAT_TY, db, spontaneous)) &&
+					(DirectorBeatAccessible(db, player))) {
+					DirectorEmptyLiveSubjectList();
+					DirectorPerformBeat(db);
+					line_performance_count = 0;
+					rfalse;
+				}
+		}
+	}
+	line_performance_count = 0;
+	rfalse;
+];

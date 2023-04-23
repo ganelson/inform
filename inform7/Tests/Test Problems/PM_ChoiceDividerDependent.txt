@@ -1,0 +1,15 @@
+Elsinore is a room. Marcellus is here.
+
+Section 1 - Meeting (dialogue)
+
+(This is the quaintly done beat.)
+
+<-
+
+	Marcellus: "This is weird."
+
+-> another choice
+
+	Marcellus: "Really weird."
+
+<-

@@ -1,0 +1,651 @@
+Programs Template.
+
+How dialogue beat programs are stored and interpreted.
+
+@h D-code.
+Each dialogue beat contains a program which lays out the structure of its lines
+and choices. This program is stored in a simple bytecode which we'll call "D-code",
+for the sake of giving it a name, though it is very rudimentary and would not
+even be Turing-complete except for the ability to apply conditions and state
+changes by "now" and "if" side-effects.
+
+A program consists of a sequence of 0 or more two-word instructions terminated
+by the word 0. Each instruction has an opcode word followed by an operand word.
+The opcode word is encoded as |100*I + D|, where |I| is an instruction code
+ranging from 1 upwards, and |D| is the depth within the dialogue tree, ranging
+from 0 upwards. Finding 0 in the opcode word position therefore unambiguously
+marks the end, since |I| cannot be 0 even though |D| can.
+
+Depth levels correspond to the tree structure in the original dialogue. This
+is not quite the same as the number of tab stops in the source code because
+Inform regroups choice nodes under decision nodes (one for each decision to
+be taken), which are implicit in the source text, and therefore don't appear
+in the tab indentation. This effectively pushes all choice nodes out by 1
+in depth, compared to the tab indentation level, each time a nested decision
+is reached.
+
+|D| begins at 0, is never negative, and is never more than 1 greater than the
+previous instruction. The Inform compiler never generates |D| values greater
+than about 25 (see //if: Dialogue Nodes//), so there is no danger of |D|
+reaching 100 and corrupting the |I| value.
+
+There are only three instruction codes:
+
+|LINE_DCODEI| means a dialogue line, and the operand then represents the
+enumerated value for the dialogue line.
+
+|CHOICE_DCODEI| similarly represents a choice. All such instructions are
+immediate children of a |DECISION_DCODEI| instruction.
+
+|DECISION_DCODEI| is a decision point, and the operand is the "decision type",
+one of the |*_DCODEDT| values. All immediate children of a |DECISION_DCODEI|
+instruction are |CHOICE_DCODEI|s.
+
+(*) |BLANK_DCODEDT| should never appear in compiled D-code, and is only used
+in the Inform compiler.
+(*) |TEXTUAL_DCODEDT| is a decision point offering textual choices for the
+player to pick.
+(*) |PARSED_COMMAND_DCODEDT| is a decision point requiring us to wait for the
+next typed command and see what action it produced.
+(*) |FLOW_DCODEDT| is a flow control choice, |->| or |<-|.
+
+=
+Constant LINE_DCODEI = 1;
+Constant CHOICE_DCODEI = 2;
+Constant DECISION_DCODEI = 3;
+
+Constant BLANK_DCODEDT = 1;
+Constant TEXTUAL_DCODEDT = 2;
+Constant PARSED_COMMAND_DCODEDT = 3;
+Constant FLOW_DCODEDT = 4;
+
+@h Containment.
+This enables us to implement the test for whether a given line or choice
+occurs in a beat, because we need only look to see whether it occurs as
+operand in the instructions for the beat's program.
+
+|DirectorTestContainment(dl, db, DIALOGUE_LINE_TY, DIALOGUE_BEAT_TY)| tests
+whether the line |dl| occurs in the beat |db|, returning |true| or |false|.
+
+|DirectorTestContainment(dc, db, DIALOGUE_CHOICE_TY, DIALOGUE_BEAT_TY)| tests
+whether the choice |dc| occurs in the beat |db|, returning |true| or |false|.
+
+=
+[ DirectorTestContainment X db tX tb program pc instruction wanted;
+	if (tb ~= DIALOGUE_BEAT_TY) { print "*** Not a db ***"; rfalse; }
+	if (tX ~= DIALOGUE_LINE_TY or DIALOGUE_CHOICE_TY) { print "*** Not a dl/dc ***"; rfalse; }
+	if ((db < 1) || (db > NO_DIALOGUE_BEATS)) rfalse;
+	if (tX == DIALOGUE_LINE_TY) {
+		if ((X < 1) || (X > NO_DIALOGUE_LINES)) rfalse;
+		wanted = LINE_DCODEI;
+	} else {
+		if ((X < 1) || (X > NO_DIALOGUE_CHOICES)) rfalse;
+		wanted = CHOICE_DCODEI;
+	}
+	program = DirectorBeatGetProgram(db);
+	pc = 0;
+	instruction = (program-->pc)/100;
+	while (instruction) {
+		if ((instruction == wanted) && (program-->(pc+1) == X)) rtrue;
+		pc = pc + 2;
+		instruction = (program-->pc)/100;
+	}
+	rfalse;
+];
+
+[ DirectorBeatOpeningLine db program pc instruction;
+	if ((db <= 0) || (db > NO_DIALOGUE_BEATS)) "*** no beat ***";
+	program = DirectorBeatGetProgram(db);
+	pc = 0;
+	instruction = (program-->pc)/100;
+	while (instruction) {
+		if (instruction == LINE_DCODEI) return program-->(pc+1);
+		pc = pc + 2;
+		instruction = (program-->pc)/100;
+	}
+	"*** no line ***";
+];
+
+@h Disassembly.
+Purely for debugging purposes:
+
+=
+[ DirectorDisassemble db pc which depth i program operand;
+	if ((db <= 0) || (db > NO_DIALOGUE_BEATS)) return;
+	print (PrintDialogueBeatName) db;
+	print " (";
+	if (DirectorBeatAvailable(db)) print "available"; else print "unavailable";
+	print ", ";
+	if (DirectorBeatRelevant(db)) print "relevant"; else print "irrelevant";
+	print ", ";
+	if (DirectorBeatAccessible(db, player)) print "accessible"; else print "inaccessible";
+	print ", ";
+	if (GProperty(DIALOGUE_BEAT_TY, db, performed)) print "performed"; else print "unperformed";
+	print ", ";
+	if (GProperty(DIALOGUE_BEAT_TY, db, recurring)) print "recurring"; else print "non-recurring";
+	print ", ";
+	if (GProperty(DIALOGUE_BEAT_TY, db, spontaneous)) print "spontaneous"; else print "unspontaneous";
+	print "):^";
+	program = DirectorBeatGetProgram(db);
+	if (program) {
+		pc = 0;
+		while (program-->pc) {
+			which = (program-->pc)/100;
+			depth = (program-->pc)%100;
+			operand = (program-->(pc+1));
+			for (i=0: i<depth: i++) print "  ";
+			DirectorDisassembleInstruction(which, operand);
+			pc = pc + 2;
+		}		
+	}
+];
+[ DirectorDisassembleInstruction which operand;
+	switch (which) {
+		LINE_DCODEI: print "LINE ", (PrintDialogueLineName) operand, "^";
+		CHOICE_DCODEI: print "CHOICE ", (PrintDialogueChoiceName) operand, "^";
+		DECISION_DCODEI: print "DECISION of type ", operand, "^";
+		default: print "*** Unimplemented ***^";
+	}
+];
+
+@h The D-stack.
+The interpreter for D-code has to perform beats (and therefore their programs)
+in a way which can easily nest, since one beat can call for another to be
+performed and then continue. Moreover, it also sometimes calls itself to
+interpret just a subtree from a full program. Either way, it needs to keep
+its state on a stack so that it can safely interrupt what it's doing, call
+itself, and then resume where it left off. The stack consists of a suite of
+arrays, as follows:
+
+|DirectorStackBeat| holds the beat whose program is being interpreted.
+
+|DirectorStackPC| holds the current PC ("program counter"), which counts in
+words from the start of the program, which is position 0. It therefore
+increases by 2 to advance by one instruction.
+
+|DirectorStackMin| holds the minimum instruction level for the subtree
+being interpreted. If the whole tree is being interpreted, this is 0.
+
+|DirectorStackStart| is a flag which is true if and only if the current
+subtree was the entire tree, so that execution began from PC 0. 
+
+|DirectorStackDecisionPC| holds the PC position of the last instruction
+node of |DECISION_DCODEI| type, that is, the last decision; or -1 if no
+decision node has been reached in this subtree yet.
+
+|DirectorStackLastPC| holds the PC position before the most recent
+instruction was executed, or 0 if none has yet been executed.
+
+|DirectorStackChoices| holds a valid Inform list, which in turn holds the
+set of choices in the current decision. If no decision has been reached in
+the execution of the subtree, the list is empty.
+
+|DirectorStackLastSpeaker| holds the identity of the last person/object to
+be the speaker in a line which was actually performed (and note that not
+all |LINE_DCODEI| instructions result in a performance). It is |nothing|
+if no line has been performed in (this performance of) the current beat,
+except perhaps for narration.
+
+|DirectorStackLastInterlocutor| similarly holds the identity of the interlocutor
+for that line. It is |nothing| if no line has been performed in (this performance
+of) the current beat, except perhaps for narration, or if the most recently
+performed line had no interlocutor.
+
+=
+Constant MAX_BEAT_PERFORMANCE_NESTING = 20;
+
+Global director_sp = 0;
+Array DirectorStackBeat --> MAX_BEAT_PERFORMANCE_NESTING;
+Array DirectorStackPC --> MAX_BEAT_PERFORMANCE_NESTING;
+Array DirectorStackMin --> MAX_BEAT_PERFORMANCE_NESTING;
+Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
+Array DirectorStackDecisionPC --> MAX_BEAT_PERFORMANCE_NESTING;
+Array DirectorStackLastPC --> MAX_BEAT_PERFORMANCE_NESTING;
+Array DirectorStackChoices --> MAX_BEAT_PERFORMANCE_NESTING;
+Array DirectorStackLastSpeaker --> MAX_BEAT_PERFORMANCE_NESTING;
+Array DirectorStackLastInterlocutor --> MAX_BEAT_PERFORMANCE_NESTING;
+
+@h Reading the current choice list.
+The stack begins empty, except that we arrange for there always to be a
+valid Inform list in |DirectorStackChoices-->0|, so that if the phrase
+"current choice list" is used at a time when no dialogue has ever run, it will
+still produce an empty list in a typesafe way.
+
+=
+[ DirectorCurrentChoiceList i L;
+	if (director_sp == 0) {
+		if (DirectorStackChoices-->0 == 0) {
+			DirectorStackChoices-->0 = BlkValueCreate(LIST_OF_TY);
+			BlkValueWrite(DirectorStackChoices-->0, LIST_ITEM_KOV_F, DIALOGUE_CHOICE_TY);
+		}
+		return DirectorStackChoices-->0;
+	}
+	return DirectorStackChoices-->(director_sp-1);
+];
+
+@h Tracing the stack.
+For debugging only, of course.
+
+=
+[ DirectorTraceStack j program pc instruction depth;
+	if (director_sp > 0) {
+		print "[";
+		for (j=0: j<director_sp: j++) {
+			if (j > 0) print " --> ";
+			if (DirectorStackStart-->j) print "$";
+			print (PrintDialogueBeatName) DirectorStackBeat-->j;
+			pc = DirectorStackPC-->j;
+			if (pc == -1) print "+return";
+			else {
+				program = DirectorBeatGetProgram(DirectorStackBeat-->j);
+				instruction = (program-->pc)/100;
+				depth = (program-->pc)%100;
+				if (DirectorStackDecisionPC-->j >= 0)
+					print "[*", DirectorStackDecisionPC-->j, "]";
+				print "+", pc, " ", "L", depth, "/", DirectorStackMin-->j, " ";
+				DirectorDisassembleInstruction(instruction, program-->(pc+1));
+			}
+			if (LIST_OF_TY_GetLength(DirectorStackChoices-->j) > 0) {
+				print " {";
+				LIST_OF_TY_Say(DirectorStackChoices-->j);
+				print "}";
+			}
+		}
+		print "]^";
+	} else {
+		print "[Director stack empty]^";
+	}
+];
+
+@h Pushing and popping.
+Two functions exist to create a new "subtree stack frame", pushing, or to destroy
+an existing one, popping the stack.
+
+|DirectorPush| must specify the beat, the minimum instruction level to
+execute (by default 0), and the initial pc (position in the program) to execute
+from (by default 0). Within such a subtree, the D-code interpreter will run
+from the PC position until it hits an instruction of too low a level, or until
+it hits the end of the program. Thus, it can execute either the entire
+dialogue tree, or any well-formed subtree of it.
+
+=
+[ DirectorPush db min pc start_flag;
+	if (director_sp >= MAX_BEAT_PERFORMANCE_NESTING)
+		"*** Director stack overflow: too many open beats ***";
+	DirectorStackBeat-->director_sp = db;
+	DirectorStackDecisionPC-->director_sp = -1;
+	DirectorStackLastPC-->director_sp = 0;
+	DirectorStackPC-->director_sp = pc;
+	DirectorStackMin-->director_sp = min;
+	if (pc == 0) DirectorStackStart-->director_sp = true;
+	else DirectorStackStart-->director_sp = false;
+	DirectorStackLastSpeaker-->director_sp = nothing;
+	DirectorStackLastInterlocutor-->director_sp = nothing;
+	if (DirectorStackChoices-->director_sp == 0) {
+		DirectorStackChoices-->director_sp = BlkValueCreate(LIST_OF_TY);
+		BlkValueWrite(DirectorStackChoices-->director_sp, LIST_ITEM_KOV_F, DIALOGUE_CHOICE_TY);
+	} else {
+		LIST_OF_TY_SetLength(DirectorStackChoices-->director_sp, 0);
+	}
+	director_sp++;
+	if (debug_dialogue >= 2) { print "-- Push to: "; DirectorTraceStack(); }
+];
+
+[ DirectorPop;
+	director_sp--;
+	if (debug_dialogue >= 2) { print "-- Pop to: "; DirectorTraceStack(); }
+];
+
+@h Flow operations.
+|DirectorAgain| implements the flow marker |<-|; |DirectorStop| implements |-> stop|.
+Both involve popping, either back to the last decision point (which means adjusting
+the PC as well) or to the last time a new beat began.
+
+=
+[ DirectorAgain;
+	while (director_sp > 0) {
+		if (debug_dialogue >= 2) { print "-- again at: "; DirectorTraceStack(); }
+		DirectorPop();
+		if (DirectorStackDecisionPC-->(director_sp-1) >= 0) {
+			DirectorStackPC-->(director_sp-1) = DirectorStackDecisionPC-->(director_sp-1);
+			break;
+		}
+	}
+];
+
+[ DirectorStop enough;
+	while (director_sp > 0) {
+		enough = false;
+		if (DirectorStackStart-->(director_sp-1)) enough = true;
+		DirectorPop();
+		if (enough) break;
+	}
+];
+
+@h Main interpreter loop.
+Calling |DirectorRun()| lets the interpreter rip, running until the end of the
+current subtree, or some catastrophe happened, or we need to wait for the player
+to enter a command into the command parser. (In the latter case we can resume
+where we left off with just by calling |DirectorRun()| again.)
+
+Note that this loop should never hit a |CHOICE_DCODEI| instruction, because
+those are always underneath |DECISION_DCODEI| instructions -- which it does hit.
+
+=
+[ DirectorRun program pc last_pc instruction operand depth next_instruction sc;
+	while (true) {
+		! There must be a program
+		if (director_sp == 0) return;
+		
+		! The story must not have finished
+		if (deadflag) { director_sp = 0; return; }
+		
+		! If there are choices to be made, we have to wait for the command
+		! input loop and some sort of action to be generated, so return for now
+		if (LIST_OF_TY_GetLength(DirectorStackChoices-->(director_sp-1)) > 0) return;
+
+		! If the beat is tied to a scene and the scene has itself finished for
+		! unrelated reasons, end the beat now
+		sc = DirectorBeatGetScene(DirectorStackBeat-->(director_sp-1));
+		if ((sc) && (scene_status-->(sc - 1) == 0)) { DirectorStop(); return; }
+
+		pc = DirectorStackPC-->(director_sp-1);
+		if (pc == -1) { DirectorPop(); return; }
+		last_pc = pc;
+		DirectorStackLastPC-->(director_sp-1) = last_pc;
+
+		! Fetch and decode the next instruction
+		program = DirectorBeatGetProgram(DirectorStackBeat-->(director_sp-1));
+		instruction = (program-->pc)/100;
+		depth = (program-->pc)%100;
+		operand = program-->(pc+1);
+
+		if (instruction == 0) { DirectorPop(); return; }
+		if (depth < DirectorStackMin-->(director_sp-1)) { DirectorPop(); return; }
+
+		! Advance the PC to the next instruction to be read after this one, or
+		! to -1 if there is no next instruction in the current subtree
+		pc = pc + 2;
+		while ((program-->pc)%100 > depth) pc = pc + 2;
+		if (program-->pc == 0) pc = -1;
+		else if (((program-->pc)%100) < DirectorStackMin-->(director_sp-1)) pc = -1;
+
+		if (debug_dialogue >= 2) {
+			print "-- Instruction (";
+			if (pc >= 0) print "next is ", pc; else print "last";
+			print "): "; DirectorTraceStack();
+		}
+	
+		! Store the next PC position
+		DirectorStackPC-->(director_sp-1) = pc;
+	
+		switch (instruction) {
+			LINE_DCODEI:
+				line_performance_count++;
+				DirectorExecuteLine(operand);
+			DECISION_DCODEI:
+				DirectorStackDecisionPC-->(director_sp-1) = last_pc;
+				DirectorExecuteDecision(operand);
+			CHOICE_DCODEI:
+				print "*** Encountered CHOICE_DCODEI ***^";
+			default: "*** Bad D-code instruction ***";
+		}
+	}
+];
+
+@h The line instruction.
+This tries to perform the given line, and if it succeeds, then executes the
+subtree beneath it; the first node of which will be the next instruction in
+the program if and only if that has depth greater by 1 than the current node.
+
+=
+[ DirectorExecuteLine dl last_pc program depth next_instruction;
+	if (director_sp == 0) rfalse;
+	last_pc = DirectorStackLastPC-->(director_sp-1);
+	program = DirectorBeatGetProgram(DirectorStackBeat-->(director_sp-1));
+	depth = (program-->last_pc)%100;
+	if (DirectorPerformLine(dl)) {
+		next_instruction = program-->(last_pc+2);
+		if ((next_instruction) && (next_instruction % 100 == depth+1)) {
+			DirectorPush(DirectorStackBeat-->(director_sp-1), depth+1, last_pc+2);
+			DirectorRun();
+		}
+		rtrue;
+	}
+	rfalse;
+];
+
+@h The decision instruction.
+The immediate children of the instruction will all be choice instructions, and
+the first task is to obtain them. If there are none, there's nothing to decide
+and we silently return.
+
+We deal with |TEXTUAL_DCODEDT| and |FLOW_DCODEDT| decisions immediately, and
+empty the choices list as soon as we can. Perhaps surprisingly, we do nothing
+at all about a |PARSED_COMMAND_DCODEDT|. This function call nevertheless has
+an effect because it leaves the choices list on the stack, where it will cause
+the D-code interpreter to halt waiting for a command, to be re-entered later
+on when actions are processed.
+
+=
+[ DirectorExecuteDecision decision dc count n spc list;
+	if (director_sp == 0) return;
+	list = DirectorStackChoices-->(director_sp-1);
+	DirectorListChoices(list);
+	count = LIST_OF_TY_GetLength(list);
+	if (debug_dialogue >= 2) {
+		if (count == 0) {
+			print "-- no available options^";
+		} else if (decision == 2 or 3) {
+			print "-- available options: "; LIST_OF_TY_Say(list); print "^";
+		}
+	}
+	if (count == 0) return;
+
+	switch (decision) {
+		TEXTUAL_DCODEDT: 
+			DivideParagraphPoint();
+			if (OFFERING_A_DIALOGUE_CHOICE == 0) "*** no activity ***";
+			else {
+				BeginActivity(OFFERING_A_DIALOGUE_CHOICE, list);
+				if ((ForActivity(OFFERING_A_DIALOGUE_CHOICE, list)) &&
+					(RulebookFailed())) rfalse;
+				EndActivity(OFFERING_A_DIALOGUE_CHOICE, list);
+			}
+			DivideParagraphPoint();
+			n = DirectorPickANumber(count);
+			dc = LIST_OF_TY_GetItem(list, n);
+			LIST_OF_TY_SetLength(list, 0);
+			style bold;
+			TEXT_TY_Say(DirectorChoiceRawContent(dc));
+			style roman;
+			print "^";
+			say__p = 1;
+			DivideParagraphPoint();
+			DirectorExerciseChoice(dc);
+		PARSED_COMMAND_DCODEDT:
+			break;
+		FLOW_DCODEDT:
+			dc = LIST_OF_TY_GetItem(list, 1);
+			LIST_OF_TY_SetLength(list, 0);
+			DirectorFollowFlowMarker(dc);
+		default: "*** unimplemented dtd ***";
+	}
+];
+
+@h Listing choices for a decision.
+This finds all of the unperformed or recurring choices which are currently
+available to a given decision node, making them the content of an Inform list.
+
+=
+[ DirectorListChoices list program depth dc pc fn;
+	LIST_OF_TY_SetLength(list, 0);
+	program = DirectorBeatGetProgram(DirectorStackBeat-->(director_sp-1));
+	pc = DirectorStackLastPC-->(director_sp-1);
+	depth = (program-->pc)%100;
+	pc = pc + 2;
+	while ((program-->pc)%100 > depth) {
+		if (((program-->pc)%100 == depth+1) && ((program-->pc)/100 == CHOICE_DCODEI)) {
+			dc = program-->(pc+1);
+			if (((GProperty(DIALOGUE_CHOICE_TY, dc, performed) == 0) ||
+					(GProperty(DIALOGUE_CHOICE_TY, dc, recurring))) &&
+				(DirectorChoiceAvailable(dc)))
+				LIST_OF_TY_InsertItem(list, dc);
+		}
+		pc = pc + 2;
+	}
+	return list;
+];
+
+@h Dealing with action choices.
+At various stages in action processing, the main story loop calls the following
+three functions, which in turn call |DirectorDetectActionChoice|. That looks
+for a match of the current action against one of the choices in the list on
+the stack: it then re-enters the D-code interpreter if it makes a match, and
+eventually comes back with |true| to halt action processing. If it makes no
+match, it returns |false|.
+
+Note that if we do make a match, and try to resume dialogue, we may still not
+be able to complete it and empty the D-stack, because it may pause again for
+a further action choice. But that's okay, because action processing is nested
+too, even if the VM stack does for a while have a surprising state.
+
+=
+[ DirectorBeforeAction;  return DirectorDetectActionChoice(BEFORE_DSEL);     ];
+[ DirectorInsteadAction; return DirectorDetectActionChoice(INSTEAD_OF_DSEL); ];
+[ DirectorAfterAction;   return DirectorDetectActionChoice(AFTER_DSEL);      ];
+
+[ DirectorDetectActionChoice stage N list was dc i fn chose suppress_otherwise;
+	if (director_sp == 0) rfalse;
+	list = DirectorStackChoices-->(director_sp-1);
+	N = LIST_OF_TY_GetLength(list);
+	if (N == 0) rfalse;
+
+	if (debug_dialogue >= 2) { print "-- found: "; DirectorTraceStack(); }
+
+	for (i=1: i<=N: i++) {
+		dc = LIST_OF_TY_GetItem(list, i);
+		if ((DirectorChoiceType(dc) == OTHERWISE_DSEL) && (suppress_otherwise == false)) {
+			chose = dc; break;
+		} else {
+			fn = DirectorChoiceRawContent(dc);
+			if ((fn) && (fn())) {
+				if (DirectorChoiceType(dc) == stage) {
+					chose = dc; break;	
+				} else {
+					suppress_otherwise = true;
+				}
+			}
+		}
+	}
+	if (debug_dialogue >= 2) {
+		if (chose) {
+			print "-- selected ", (PrintDialogueChoiceName) chose, " at stage ", stage, "^";
+		} else {
+			print "-- no selection at stage ", stage, "^";
+		}
+	}
+	if (chose == false) {
+		if (debug_dialogue >= 2) { print "-- gave up: "; DirectorTraceStack(); }
+		rfalse;
+	}
+
+	LIST_OF_TY_SetLength(list, 0);
+	DirectorExerciseChoice(chose);
+	while (director_sp > 0) {
+		was = director_sp;
+		if (debug_dialogue) {
+			print "-- Resuming ", (PrintDialogueBeatName) DirectorStackBeat-->(director_sp-1), "^";
+		}
+		DirectorRun();
+		if (was == director_sp) break;
+	}
+	rtrue;
+];
+
+@h Exercising a choice.
+By whatever means, then, a choice |dc| has been made in either the textual or
+action-based sense, and the following function runs the D-code interpreter
+on the subtree underneath it:
+
+=
+[ DirectorExerciseChoice dc program pc spc;
+	WriteGProperty(DIALOGUE_CHOICE_TY, dc, performed, 1);
+	program = DirectorBeatGetProgram(DirectorStackBeat-->(director_sp-1));
+	pc = DirectorStackLastPC-->(director_sp-1);
+	spc = pc + 2;
+	while (((program-->spc)/100 ~= CHOICE_DCODEI) || (program-->(spc+1) ~= dc)) spc = spc + 2;
+	spc = spc + 2;
+	DirectorPush(DirectorStackBeat-->(director_sp-1), (program-->pc) % 100 + 2, spc);
+	DirectorRun();
+];
+
+@h Numerical choice at the keyboard.
+This crude function prompts the player for a number from 1 to |max|, waits for
+this to be typed at the keyboard, then returns the choice made.
+
+=
+[ DirectorPickANumber max i j wa wl sign base digit_count n digit;
+    for (::) {
+    	print ">";
+        #Ifdef TARGET_ZCODE;
+        if (location == nothing || parent(player) == nothing) read buffer2 parse2;
+        else read buffer2 parse2 DrawStatusLine;
+        j = parse2->1;
+		wa = buffer2 + parse2->5;
+		wl = parse2->4;
+        #Ifnot; ! TARGET_GLULX;
+        if (location ~= nothing && parent(player) ~= nothing) DrawStatusLine();
+        KeyboardPrimitive(buffer2, parse2);
+        j = parse2-->0;
+ 		wa = buffer2 + parse2-->3;
+		wl = parse2-->2;
+        #Endif; ! TARGET_
+        if (j) { ! at least one word entered
+            sign = 1; base = 10; digit_count = 0;
+			if (wa->0 ~= '-' or '$' or '0' or '1' or '2' or '3' or '4'
+				or '5' or '6' or '7' or '8' or '9')
+				jump Retry;
+			if (wa->0 == '-') { sign = -1; wl--; wa++; }
+			if (wl == 0) jump Retry;
+			n = 0;
+			while (wl > 0) {
+				if (wa->0 >= 'a') digit = wa->0 - 'a' + 10;
+				else digit = wa->0 - '0';
+				digit_count++;
+				switch (base) {
+					2:  if (digit_count == 17) jump Retry;
+					10:
+						#Iftrue (WORDSIZE == 2);
+						if (digit_count == 6) jump Retry;
+						if (digit_count == 5) {
+							if (n > 3276) jump Retry;
+							if (n == 3276) {
+								if (sign == 1 && digit > 7) jump Retry;
+								if (sign == -1 && digit > 8) jump Retry;
+							}
+						}
+						#Ifnot; ! i.e., if (WORDSIZE == 4)
+						if (digit_count == 11) jump Retry;
+						if (digit_count == 10) {
+							if (n > 214748364) jump Retry;
+							if (n == 214748364) {
+								if (sign == 1 && digit > 7) jump Retry;
+								if (sign == -1 && digit > 8) jump Retry;
+							}
+						}
+						#Endif;
+					16: if (digit_count == 5) jump Retry;
+				}
+				if (digit >= 0 && digit < base) n = base*n + digit;
+				else jump Retry;
+				wl--; wa++;
+			}
+			n = n*sign;
+			if ((n < 1) || (n > max)) jump Retry;
+			return n;
+        }
+		.Retry;
+		print "(Please type an option in the range 1 to ", max, " and press return.)^^";
+    }
+];

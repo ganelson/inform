@@ -20,7 +20,7 @@ Thanks to Jesse McGrew for the initial design of this example.
 			say "[The person asked] look[s] confused. Maybe a demonstration would help.";
 			persuasion fails.
 
-	The action requester is an object that varies. The action requester variable translates into I6 as "act_requester". 
+	The action requester is an object that varies. The action requester variable is defined by Inter as "act_requester". 
 
 	To decide which action is the current action with no specific actor: 
 		let old actor be the person asked; 

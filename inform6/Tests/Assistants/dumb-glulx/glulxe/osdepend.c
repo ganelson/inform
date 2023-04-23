@@ -127,19 +127,25 @@ void glulx_free(void *ptr)
   free(ptr);
 }
 
-/* Set the random-number seed; zero means use as random a source as
-   possible. */
-void glulx_setrandom(glui32 seed)
-{
-  if (seed == 0)
-    seed = time(NULL);
-  srand(seed);
-}
+#define COMPILE_RANDOM_CODE
+static glui32 lo_random(void);
+static void lo_seed_random(glui32 seed);
 
 /* Return a random number in the range 0 to 2^32-1. */
 glui32 glulx_random()
 {
-  return (rand() << 24) ^ (rand() << 12) ^ rand();
+  return (lo_random() << 16) ^ lo_random();
+}
+
+__declspec(dllimport) unsigned long __stdcall GetTickCount(void);
+
+/* Set the random-number seed; zero means use as random a source as
+possible. */
+void glulx_setrandom(glui32 seed)
+{
+  if (seed == 0)
+    seed = GetTickCount() ^ time(NULL);
+  lo_seed_random(seed);
 }
 
 #endif /* WIN32 */

@@ -171,7 +171,8 @@ to be socketed.
 		LOOP_OVER_SYMBOLS_TABLE(S, T) {
 			if (InterSymbol::is_socket(S)) {
 				inter_symbol *target = Wiring::cable_end(S);
-				if (InterSymbol::defined_inside(target, migrant))
+				if ((SymbolAnnotation::get_b(target, PRIVATE_IANN) == FALSE) &&
+					(InterSymbol::defined_inside(target, migrant)))
 					@<S is a socket wired to a definition in the migrant@>;
 			}
 		}
@@ -193,8 +194,10 @@ will end up meaning the same thing, though, so it's fine to keep using the
 existing socket here.)
 
 @<S is a socket wired to a definition in the migrant@> =
+	TEMPORARY_TEXT(identifier)
+	WRITE_TO(identifier, "%S", InterSymbol::identifier(S));
 	LOGIF(INTER_CONNECTORS, "Origin offers socket $3 ~~> $3 in migrant\n", S, target);
-	inter_symbol *equivalent = Wiring::find_socket(det.destination_tree, InterSymbol::identifier(S));
+	inter_symbol *equivalent = Wiring::find_socket(det.destination_tree, identifier);
 	if (equivalent) {
 		inter_symbol *e_target = Wiring::cable_end(equivalent);
 		if (InterSymbol::is_defined(e_target) == FALSE) {
@@ -206,11 +209,12 @@ existing socket here.)
 			LOGIF(INTER_CONNECTORS,
 				"There is already a socket %S ~~> $3\n"
 				"We use this rather than continue with %S ~~> $3\n",
-				InterSymbol::identifier(S), e_target, InterSymbol::identifier(S), target);
+				identifier, e_target, identifier, target);
 		}
 	} else {
-		Wiring::socket(det.destination_tree, InterSymbol::identifier(S), S);
+		Wiring::socket(det.destination_tree, identifier, S);
 	}
+	DISCARD_TEXT(identifier)
 
 @ Okay, so now for the first cross-referencing fix. The following function traverses
 every node inside the |migrant| tree. The first thing to do is to correct |P->tree|,

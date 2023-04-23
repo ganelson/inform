@@ -53,6 +53,7 @@ Tests/Test Makes/Eg?-C/build_log.txt
 Tests/Test Makes/Eg?-C/inform7_symbols.h
 Tests/Test Maps/_Maps_Actual/
 Tests/Test Problems/_Results_Actual/
+Tests/Test Filings/_Results_Actual/
 Tests/Documentation/
 
 Internal/Inter/BasicInformKit/*.interb

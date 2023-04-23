@@ -43,7 +43,7 @@ inform_language *LanguageManager::from_copy(inbuild_copy *C) {
 }
 
 dictionary *language_copy_cache = NULL;
-inbuild_copy *LanguageManager::new_copy(text_stream *name, pathname *P) {
+inbuild_copy *LanguageManager::new_copy(text_stream *name, pathname *P, inbuild_nest *N) {
 	if (language_copy_cache == NULL) language_copy_cache = Dictionaries::new(16, FALSE);
 	TEMPORARY_TEXT(key)
 	WRITE_TO(key, "%p", P);
@@ -53,7 +53,7 @@ inbuild_copy *LanguageManager::new_copy(text_stream *name, pathname *P) {
 	if (C == NULL) {
 		inbuild_work *work = Works::new(language_genre, Str::duplicate(name), NULL);
 		inbuild_edition *edition = Editions::new(work, VersionNumbers::null());
-		C = Copies::new_in_path(edition, P);
+		C = Copies::new_in_path(edition, P, N);
 		Languages::scan(C);
 		Dictionaries::create(language_copy_cache, key);
 		Dictionaries::write_value(language_copy_cache, key, C);
@@ -86,14 +86,17 @@ void LanguageManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 	}
 	if (Str::len(name) == 0) acceptable = FALSE; /* i.e., an empty text */
 	if (acceptable) {
-		*C = LanguageManager::claim_folder_as_copy(P);
+		*C = LanguageManager::claim_folder_as_copy(P, NULL);
 	}
 }
 
-inbuild_copy *LanguageManager::claim_folder_as_copy(pathname *P) {
+inbuild_copy *LanguageManager::claim_folder_as_copy(pathname *P, inbuild_nest *N) {
 	filename *canary = Filenames::in(P, I"about.txt");
 	if (TextFiles::exists(canary))
-		return LanguageManager::new_copy(Pathnames::directory_name(P), P);
+		return LanguageManager::new_copy(Pathnames::directory_name(P), P, N);
+	canary = Filenames::in(P, I"language_metadata.json");
+	if (TextFiles::exists(canary))
+		return LanguageManager::new_copy(Pathnames::directory_name(P), P, N);
 	return NULL;
 }
 
@@ -111,7 +114,7 @@ void LanguageManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 		if (Platform::is_folder_separator(Str::get_last_char(entry))) {
 			Str::delete_last_character(entry);
 			pathname *Q = Pathnames::down(P, entry);
-			inbuild_copy *C = LanguageManager::claim_folder_as_copy(Q);
+			inbuild_copy *C = LanguageManager::claim_folder_as_copy(Q, N);
 			if ((C) && (Requirements::meets(C->edition, req))) {
 				Nests::add_search_result(search_results, N, C, req);
 			}

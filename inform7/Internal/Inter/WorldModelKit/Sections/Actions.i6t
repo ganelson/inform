@@ -331,6 +331,7 @@ and then call |ActionPrimitive|.
 	@pull multiple_object_item; @pull self; @pull second; @pull noun; @pull action;
 
 	if (notrack == false) TrackActions(true, meta);
+	if ((AfterActionHook) && (meta == false) && (rv) && (indirect(AfterActionHook))) rtrue;
 	return rv;
 ];
 
@@ -352,9 +353,8 @@ protects them from before and instead rules: see the Standard Rules for
 more discussion of this.
 
 =
-[ ActionPrimitive  rv p1 p2 p3 p4 p5 frame_id;
+[ ActionPrimitive rv p1 p2 p3 p4 p5 frame_id;
 	MStack_CreateRBVars(ACTION_PROCESSING_RB);
-
 	if ((keep_silent == false) && (multiflag == false)) DivideParagraphPoint();
 	reason_the_action_failed = 0;
 
@@ -375,7 +375,7 @@ more discussion of this.
 	FollowRulebook(SETTING_ACTION_VARIABLES_RB);
 
 	#IFDEF DEBUG;
-	if ((trace_actions) && (FindAction(-1))) {
+	if ((trace_actions) && (FindAction(-1)) && (action ~= ##ActionsOn) && (action ~= ##ActionsOff)) {
 		print "["; p1=actor; p2=act_requester; p3=action; p4=noun; p5=second;
 		DB_Action(p1,p2,p3,p4,p5);
 		print "]^"; ClearParagraphing(5);
@@ -389,16 +389,14 @@ more discussion of this.
 	else { FollowRulebook(ACTION_PROCESSING_RB); rv = RulebookOutcome(); }
 	#IFDEF DEBUG;
 	--debug_rule_nesting;
-	if ((trace_actions) && (FindAction(-1))) {
+	if ((trace_actions) && (FindAction(-1)) && (action ~= ##ActionsOn) && (action ~= ##ActionsOff)) {
 		print "["; DB_Action(p1,p2,p3,p4,p5); print " - ";
 		switch (rv) {
 			RS_SUCCEEDS: print "succeeded";
 			RS_FAILS: print "failed";
-				#IFNDEF MEMORY_ECONOMY;
 				if (reason_the_action_failed)
 					print " the ",
 						(RulePrintingRule) reason_the_action_failed;
-			    #ENDIF;
 			default: print "ended without result";
 		}
 		print "]^"; say__p = 1;

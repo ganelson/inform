@@ -4,7 +4,7 @@
 
 Welcome
 An Interactive Fiction
-Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
 
 Sound Stage
 Clark is here, carrying the swagger stick, the briefcase and the tray and wearing the fedora, the pair of pants and the chocolate underwear.
@@ -358,6 +358,7 @@ You see nothing special about Clark Gable.
 [examining Clark Gable - succeeded]
 
 >** showme
+[performing kit action ##ShowMe]
 Sound Stage - room
     Clark Gable - man
         Clark Gable's hand (part of Clark Gable) - hand
@@ -397,6 +398,7 @@ Sound Stage - room
         canvas deckchair - supporter
         rubber mat
     boom microphone
+[performing kit action ##ShowMe - ended without result]
 
 >** look
 [looking]

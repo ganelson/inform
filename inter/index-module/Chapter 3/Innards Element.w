@@ -19,13 +19,13 @@ void InnardsElement::render(OUTPUT_STREAM, index_session *session) {
 	IndexUtilities::extra_link(OUT, 3);
 	Localisation::roman(OUT, LD, I"Index.Elements.In.Technicalities");
 	HTML_CLOSE("p");
-	IndexUtilities::extra_div_open(OUT, 3, 2, "e0e0e0");
+	IndexUtilities::extra_div_open(OUT, 3, 2, I"indexmorebox");
 	HTML_OPEN("p");
 	IndexUtilities::anchor(OUT, I"CONFIG");
 	HTML_CLOSE("p");
 	@<Show the language elements used@>;
 	@<Add some paste buttons for the debugging log@>;
-	IndexUtilities::extra_div_close(OUT, "e0e0e0");
+	IndexUtilities::extra_div_close(OUT, I"indexmorebox");
 }
 
 @<Show the virtual machine compiled for@> =
@@ -170,7 +170,7 @@ void InnardsElement::index_options_in_force_from(OUTPUT_STREAM, tree_inventory *
 
 @<Write in the use option subheading@> =
 	HTML::open_indented_p(OUT, 2, "tight");
-	HTML::begin_colour(OUT, I"808080");
+	HTML::begin_span(OUT, I"indexgrey");
 	switch (way) {
 		case MAIN_TEXT_UO_ORIGIN:
 			Localisation::roman(OUT, LD, I"Index.Elements.In.SetFromSource");
@@ -184,7 +184,7 @@ void InnardsElement::index_options_in_force_from(OUTPUT_STREAM, tree_inventory *
 			break;
 	}
 	WRITE(":");
-	HTML::end_colour(OUT);
+	HTML::end_span(OUT);
 	HTML_CLOSE("p");
 
 @<Write in the index line for a use option taken@> =

@@ -44,7 +44,7 @@ static void (*glkio_unichar_han_ptr)(glui32 val) = NULL;
 
 static void dropcache(cacheblock_t *cablist);
 static void buildcache(cacheblock_t *cablist, glui32 nodeaddr, int depth,
-  int mask);
+  int mask, int recdepth);
 static void dumpcache(cacheblock_t *cablist, int count, int indent);
 
 void stream_get_iosys(glui32 *mode, glui32 *rock)
@@ -704,7 +704,7 @@ void stream_set_table(glui32 addr)
     /* cache_stringtable = TRUE; ...for testing only */
     /* cache_stringtable = FALSE; ...for testing only */
     if (cache_stringtable) {
-      buildcache(&tablecache, rootaddr, CACHEBITS, 0);
+      buildcache(&tablecache, rootaddr, CACHEBITS, 0, 0);
       /* dumpcache(&tablecache, 1, 0); */
       tablecache_valid = TRUE;
     }
@@ -712,16 +712,21 @@ void stream_set_table(glui32 addr)
 }
 
 static void buildcache(cacheblock_t *cablist, glui32 nodeaddr, int depth,
-  int mask)
+  int mask, int recdepth)
 {
   int ix, type;
 
+  /* This gets up to 24 in large games, so I think 48 is a generous
+     maximum. If it's not, we might need a command-line parameter. */
+  if (recdepth >= 48)
+    fatal_error("Apparent infinite recursion in buildcache");
+  
   type = Mem1(nodeaddr);
 
   if (type == 0 && depth == CACHEBITS) {
     cacheblock_t *list, *cab;
     list = (cacheblock_t *)glulx_malloc(sizeof(cacheblock_t) * CACHESIZE);
-    buildcache(list, nodeaddr, 0, 0);
+    buildcache(list, nodeaddr, 0, 0, recdepth+1);
     cab = &(cablist[mask]);
     cab->type = 0;
     cab->depth = CACHEBITS;
@@ -732,8 +737,8 @@ static void buildcache(cacheblock_t *cablist, glui32 nodeaddr, int depth,
   if (type == 0) {
     glui32 leftaddr  = Mem4(nodeaddr+1);
     glui32 rightaddr = Mem4(nodeaddr+5);
-    buildcache(cablist, leftaddr, depth+1, mask);
-    buildcache(cablist, rightaddr, depth+1, (mask | (1 << depth)));
+    buildcache(cablist, leftaddr, depth+1, mask, recdepth+1);
+    buildcache(cablist, rightaddr, depth+1, (mask | (1 << depth)), recdepth+1);
     return;
   }
 

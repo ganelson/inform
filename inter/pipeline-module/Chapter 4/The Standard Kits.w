@@ -39,7 +39,8 @@ comprehensive list of what is there.)
 	@<Establish resources offered by WorldModelKit@>;
 	@<Establish resources offered by CommandParserKit@>;
 	@<Establish resources offered by either WorldModelKit or BasicInformExtrasKit@>;
-	@<Establish resources offered by either EnglishLanguageKit@>;
+	@<Establish resources offered by EnglishLanguageKit@>;
+	@<Establish resources offered by DialogueKit@>;
 
 @h Offered by BasicInformKit.
 
@@ -54,6 +55,7 @@ comprehensive list of what is there.)
 @e BLKVALUEERROR_HL
 @e BLKVALUEFREE_HL
 @e BLKVALUEFREEONSTACK_HL
+@e BLKVALUEINCREFCOUNTPRIMITIVE_HL
 @e BLKVALUEWRITE_HL
 @e CHECKKINDRETURNED_HL
 @e CLEARPARAGRAPHING_HL
@@ -66,6 +68,7 @@ comprehensive list of what is there.)
 @e DECIMALNUMBER_HL
 @e DIGITTOVALUE_HL
 @e DIVIDEPARAGRAPHPOINT_HL
+@e DO_NOTHING_HL
 @e DOUBLEHASHSETRELATIONHANDLER_HL
 @e EMPTY_RULEBOOK_INAME_HL
 @e EMPTY_TABLE_HL
@@ -195,6 +198,7 @@ comprehensive list of what is there.)
 	KIT_PROVIDED(BLKVALUEERROR_HL,                    I"BlkValueError")
 	KIT_PROVIDED(BLKVALUEFREE_HL,                     I"BlkValueFree")
 	KIT_PROVIDED(BLKVALUEFREEONSTACK_HL,              I"BlkValueFreeOnStack")
+	KIT_PROVIDED(BLKVALUEINCREFCOUNTPRIMITIVE_HL,     I"BlkValueIncRefCountPrimitive")
 	KIT_PROVIDED(BLKVALUEWRITE_HL,                    I"BlkValueWrite")
 	KIT_PROVIDED(CHECKKINDRETURNED_HL,                I"CheckKindReturned")
 	KIT_PROVIDED(CLEARPARAGRAPHING_HL,                I"ClearParagraphing")
@@ -207,6 +211,7 @@ comprehensive list of what is there.)
 	KIT_PROVIDED(DECIMALNUMBER_HL,                    I"DecimalNumber")
 	KIT_PROVIDED(DIGITTOVALUE_HL,                     I"DigitToValue")
 	KIT_PROVIDED(DIVIDEPARAGRAPHPOINT_HL,             I"DivideParagraphPoint")
+	KIT_PROVIDED(DO_NOTHING_HL,                       I"DoNothing")
 	KIT_PROVIDED(DOUBLEHASHSETRELATIONHANDLER_HL,     I"DoubleHashSetRelationHandler")
 	KIT_PROVIDED(EMPTY_RULEBOOK_INAME_HL,             I"EMPTY_RULEBOOK")
 	KIT_PROVIDED(EMPTY_TABLE_HL,                      I"TheEmptyTable")
@@ -419,6 +424,7 @@ comprehensive list of what is there.)
 @e SPECIAL_WORD_HL
 @e STORED_ACTION_TY_CURRENT_HL
 @e STORED_ACTION_TY_TRY_HL
+@e STORY_COMPLETE_HL
 @e STORY_TENSE_HL
 @e SUPPORTER_HL
 @e SUPPRESS_SCOPE_LOOPS_HL
@@ -508,6 +514,7 @@ comprehensive list of what is there.)
 	KIT_PROVIDED(SPECIAL_WORD_HL,                     I"special_word")
 	KIT_PROVIDED(STORED_ACTION_TY_CURRENT_HL,         I"STORED_ACTION_TY_Current")
 	KIT_PROVIDED(STORED_ACTION_TY_TRY_HL,             I"STORED_ACTION_TY_Try")
+	KIT_PROVIDED(STORY_COMPLETE_HL,                   I"story_complete")
 	KIT_PROVIDED(STORY_TENSE_HL,                      I"story_tense")
 	KIT_PROVIDED(SUPPORTER_HL,                        I"supporter")
 	KIT_PROVIDED(SUPPRESS_SCOPE_LOOPS_HL,             I"suppress_scope_loops")
@@ -541,5 +548,18 @@ comprehensive list of what is there.)
 
 @e THEN1__WD_HL
 
-@<Establish resources offered by either EnglishLanguageKit@> =
+@<Establish resources offered by EnglishLanguageKit@> =
 	KIT_PROVIDED(THEN1__WD_HL,                        I"THEN1__WD")
+
+@
+
+@e DIRECTOR_ADD_LIVE_SUBJECT_LIST_HL
+@e DIRECTOR_AFTER_ACTION_HL
+@e DIRECTOR_BEAT_BEING_PERFORMED_HL
+@e DIRECTOR_PERFORM_TIED_BEAT_HL
+
+@<Establish resources offered by DialogueKit@> =
+	KIT_PROVIDED(DIRECTOR_ADD_LIVE_SUBJECT_LIST_HL,   I"DirectorAddLiveSubjectList")
+	KIT_PROVIDED(DIRECTOR_AFTER_ACTION_HL,            I"DirectorAfterAction")
+	KIT_PROVIDED(DIRECTOR_BEAT_BEING_PERFORMED_HL,    I"DirectorBeatBeingPerformed")
+	KIT_PROVIDED(DIRECTOR_PERFORM_TIED_BEAT_HL,       I"DirectorPerformBeatIfUnperformed")

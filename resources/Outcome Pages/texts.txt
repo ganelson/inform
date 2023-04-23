@@ -222,25 +222,34 @@ For example, if you defined "Application relates various devices to one thing. T
 The player is not allowed to be joined to other physical objects by being "part of" them, so it's not legal to try something like "now the player is part of the Oak Tree" or "now the player is the branch" (if the branch is indeed a person which is part of the Oak Tree).
 
 --> P64 - This use of '[text]' is too complicated
-The '[text]' token in Inform's grammar for 'Understand' has limitations. It has to be followed by a fixed wording, or be at the end of the line, in order to match. If you're seeing this as a run-time problem, you've probably done something cunningly indirect, but you've run into the problem all the same.
+The "[text]" token in Inform's grammar for "Understand" has limitations. It has to be followed by a fixed wording, or be at the end of the line, in order to match. If you're seeing this as a run-time problem, you've probably done something cunningly indirect, but you've run into the problem all the same.
 
 --> P65 - Attempt to access an entry from a non-existent table
 At present, no table row is selected, so it makes no sense to talk about any of its entries.
 
 --> P66 - This change of the relation's nature is impossible in play
-When a relation is created during play, it is usually created with a specific nature - for example, 'let R be a one-to-one relation of vehicles'. If none is given, it will be 'various-to-various'. This can't usually be changed once set, so this problem probably means you've tried to set the nature of the same relation more than once.
+When a relation is created during play, it is usually created with a specific nature - for example, "let R be a one-to-one relation of vehicles". If none is given, it will be "various-to-various". This can't usually be changed once set, so this problem probably means you've tried to set the nature of the same relation more than once.
 
 --> P67 - This operation can't be done with the relation
 Some of the built-in relations are so general in their scope that it's not practical to use techniques like searching through possible relationships, or changing relationships, with them. This is one such relation.
 
 --> P68 - Attempt to resize list to negative size
-A list can only have 0 or more items, so writing something like 'change L to have -2 entries' doesn't make any sense.
+A list can only have 0 or more items, so writing something like "change L to have -2 entries" doesn't make any sense.
 
 --> P69 - You can't test whether something is adjacent to a region
 The adjacency relation can only be tested for rooms, not whole regions at a time.
 
-# And now the pages which the application shows in response to various
-# contingencies.
+--> P70 - Holding, wearing and carrying are for things only
+Only things can be made to be held, carried or worn using "now"; and in the case of wearing or carrying, the new wearer or carrier must be a person, while for holding, the new holder must be a room, a container, a supporter, or a person.
+
+--> P71 - Only rooms and regions can change region
+If "R" is the name of a region, then "now X is in R" is only allowed in cases where "X" is a room or another region. It's otherwise too vague where things are to move.
+
+--> P72 - Not a supporter
+"now X is on S", or "now S supports X", is only allowed in cases where "X" is a thing and "S" is a supporter.
+
+--> P73 - Bad containment
+When "now X is in Y" is used, "X" has to be a thing, and "Y" has to be a container or a room. Sometimes this problem is triggered when an overly broad phrase has been used such as "now X is in the holder of Y", which would be fine if "Y' is in a room or container, but not if it's a supporter or a person. (Things can be "on" a supporter, but not "in" it. Equally, it can't be a person: people can "carry" or "wear" things, but not contain them.) The safe way to avoid that is to write "now X is held by the holder of Y". Whatever holds "Y", if it can hold "Y" then it can hold "X".
 
 --> Error0 - Failed
 The application ran your source text through the Inform 7 compiler, as usual, but the compiler unexpectedly failed. This should not happen even if your source text is gibberish, so you may have uncovered a bug in the program.
@@ -319,22 +328,13 @@ The application ran your source text through the Inform 7 compiler, as usual, an
 <p>
 Inform can produce story files for several different virtual computers, and the one used by the current project can be selected using the Settings panel. If you are currently using the "Z-machine" format, try switching the project to "Glulx" format (you can make this change at the Settings panel), and limits like this will probably not bother you again. Although Z-machine story files used to be much more widely playable than Glulx ones, these days Glulx interpreters are widely available, so it's probably not worth making big sacrifices to stay within the Z-machine memory size.
 
-# And finally the pages showing the result of cblorb, on a Release run.
+# And finally the pages showing the result of inblorb, on a Release run.
 
 model = released.html
 
 --> ErrorCblorb - Failed
-The application ran your source text through the Inform 7 compiler, as usual, and then manufactured the final story file using Inform 6: all of this worked fine. However, the &quot;cblorb&quot; packaging tool then failed to make the actual release of the data out of your project. Its errors are written out on the Console tab.
+The application ran your source text through the Inform 7 compiler, as usual, and then manufactured the final story file using Inform 6: all of this worked fine. However, the &quot;inblorb&quot; packaging tool then failed to make the actual release of the data out of your project. Its errors are written out on the Console tab.
 <p>
 <center><img src='inform:/cblorb_failed.png' border=0></center>
 <p>
 This almost never happens in normal usage, and is almost certainly the result of a &quot;Release along with...&quot; sentence in the source having asked to do something impossible. For instance, an attempt to release along with cover art will fail if there's no cover art provided, or it has the wrong filename or is in the wrong place. So the best thing to do is probably to look carefully at any Release instructions in the source, and check them against the documentation.
-
---> GoodCblorb - Succeeded
-The source text was successfully translated to produce the story file, and the &quot;cblorb&quot; packaging tool was then used to wrap it up into a Blorb archive, the standard run-time format produced by Inform.
-<p>
-<center><img src='inform:/cblorb_succeeded.png' border=0></center>
-<p>
-In the same way that books in many different languages nevertheless have the same kind of binding, the Blorb wrapper can contain story files of several different story file formats (for instance, versions of Glulx or the Z-machine): see Chapter 2 of the Inform documentation.
-<p>
-Many modern interpreters can play Blorbed story files, but a few older ones cannot; besides, you might need a raw story file for use on a small portable device with very little memory. If you do need to avoid Blorbing, go to the Settings panel for the project and untick the &quot;Create a Blorb archive for release&quot; box, then release again. The result will be just a bare story file, and none of the advanced release options (solutions, website, cover art, etc.) will be possible. The bibliographic data will also be lost.

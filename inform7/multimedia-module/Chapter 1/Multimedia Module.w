@@ -10,22 +10,25 @@ which use this module:
 
 @ Like all modules, this one must define a |start| and |end| function.
 
-Note that the "multimedia" plugin itself does nothing except to be a parent
+Note that the "multimedia" feature itself does nothing except to be a parent
 to the other three; it doesn't even have an activation function.
 
 @e MULTIMEDIA_CREATIONS_DA
 
 =
-plugin *multimedia_plugin, *figures_plugin, *sounds_plugin, *files_plugin;
+compiler_feature *multimedia_feature, *figures_feature, *sounds_feature,
+	*files_feature, *internal_files_feature;
 
 void MultimediaModule::start(void) {
-	multimedia_plugin = PluginManager::new(NULL, I"multimedia", NULL);
-	figures_plugin = PluginManager::new(&Figures::start, I"figures",
-		multimedia_plugin);
-	sounds_plugin = PluginManager::new(&Sounds::start, I"sounds",
-		multimedia_plugin);
-	files_plugin = PluginManager::new(&ExternalFiles::start, I"glulx external files",
-		multimedia_plugin);
+	multimedia_feature = Features::new(NULL, I"multimedia", NULL);
+	figures_feature = Features::new(&Figures::start, I"figures",
+		multimedia_feature);
+	sounds_feature = Features::new(&Sounds::start, I"sounds",
+		multimedia_feature);
+	files_feature = Features::new(&ExternalFiles::start, I"glulx external files",
+		multimedia_feature);
+	internal_files_feature = Features::new(&InternalFiles::start, I"glulx internal files",
+		multimedia_feature);
 
 	Log::declare_aspect(MULTIMEDIA_CREATIONS_DA, L"figure creations", FALSE, FALSE);
 }

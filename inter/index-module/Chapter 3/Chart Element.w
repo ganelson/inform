@@ -59,7 +59,7 @@ higher up, but kinds with priority 0 do not appear in the index at all.
 @ An atypical row:
 
 @<Add a titling row to the chart of kinds@> =
-	HTML::first_html_column_nowrap(OUT, 0, "#e0e0e0");
+	HTML::first_html_column_nowrap(OUT, 0, I"headingrow");
 	WRITE("<b>");
 	Localisation::roman(OUT, D, I"Index.Elements.Ch.BasicKinds");
 	WRITE("</b>");
@@ -72,7 +72,7 @@ higher up, but kinds with priority 0 do not appear in the index at all.
 @ And another:
 
 @<Add a second titling row to the chart of kinds@> =
-	HTML::first_html_column_nowrap(OUT, 0, "#e0e0e0");
+	HTML::first_html_column_nowrap(OUT, 0, I"headingrow");
 	WRITE("<b>");
 	Localisation::roman(OUT, D, I"Index.Elements.Ch.NewKinds");
 	WRITE("</b>");
@@ -85,7 +85,7 @@ higher up, but kinds with priority 0 do not appear in the index at all.
 @ A dotty row:
 
 @<Add a dotty row to the chart of kinds@> =
-	HTML_OPEN_WITH("tr", "bgcolor=\"#888\"");
+	HTML_OPEN_WITH("tr", "class=\"tintedrow\"");
 	HTML_OPEN_WITH("td", "height=\"1\" colspan=\"5\" cellpadding=\"0\"");
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
@@ -203,9 +203,9 @@ or as paragraph of text in pass 2:
 @<Explain about covariance and contravariance@> =
 	HTML_OPEN("p");
 	HTML_TAG_WITH("a", "name=contra");
-	HTML_OPEN_WITH("span", "class=\"smaller\"");
+	HTML::begin_span(OUT, I"smaller");
 	Localisation::roman(OUT, D, I"Index.Elements.Ch.CovarianceGloss");
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	HTML_CLOSE("p");
 
 @h Kind table construction.
@@ -231,8 +231,8 @@ is called --
 
 =
 void ChartElement::begin_chart_row(OUTPUT_STREAM, index_session *session) {
-	char *col = NULL;
-	if (IndexUtilities::stripe(session) == FALSE) col = "#f0f0ff";
+	text_stream *col = I"stripeone";
+	if (IndexUtilities::stripe(session) == FALSE) col = I"stripetwo";
 	HTML::first_html_column_nowrap(OUT, 0, col);
 }
 
@@ -242,7 +242,7 @@ sound effects row is shaded if there are none.
 
 =
 int ChartElement::index_kind_name_cell(OUTPUT_STREAM, int shaded, inter_package *pack) {
-	if (shaded) HTML::begin_colour(OUT, I"808080");
+	if (shaded) HTML::begin_span(OUT, I"indexgrey");
 	IndexUtilities::kind_name(OUT, pack, FALSE, TRUE);
 	if (Metadata::read_optional_numeric(pack, I"^is_quasinumerical")) {
 		WRITE("&nbsp;");
@@ -254,7 +254,7 @@ int ChartElement::index_kind_name_cell(OUTPUT_STREAM, int shaded, inter_package 
 	int i = (int) Metadata::read_optional_numeric(pack, I"^instance_count");
 	if (i >= 1) WRITE(" [%d]", i);
 	IndexUtilities::below_link_numbered(OUT, pack->allocation_id);
-	if (shaded) HTML::end_colour(OUT);
+	if (shaded) HTML::end_span(OUT);
 	return shaded;
 }
 
@@ -266,9 +266,9 @@ void ChartElement::end_chart_row(OUTPUT_STREAM, int shaded, inter_package *pack,
 	char *tick1, char *tick2, char *tick3) {
 	if (tick1) HTML::next_html_column(OUT, 0);
 	else HTML::next_html_column_spanning(OUT, 0, 4);
-	if (shaded) HTML::begin_colour(OUT, I"808080");
+	if (shaded) HTML::begin_span(OUT, I"indexgrey");
 	WRITE("%S", Metadata::optional_textual(pack, I"^index_default"));
-	if (shaded) HTML::end_colour(OUT);
+	if (shaded) HTML::end_span(OUT);
 	if (tick1) {
 		HTML::next_html_column_centred(OUT, 0);
 		if (tick1)
@@ -339,9 +339,9 @@ void ChartElement::index_object_kind(OUTPUT_STREAM, tree_inventory *inv,
 	if (pass == 1) {
 		int c = (int) Metadata::read_optional_numeric(pack, I"^instance_count");
 		if ((c == 0) && (pass == 1)) shaded = TRUE;
-		if (shaded) HTML::begin_colour(OUT, I"808080");
+		if (shaded) HTML::begin_span(OUT, I"indexgrey");
 		@<Quote the name of the object being indexed@>;
-		if (shaded) HTML::end_colour(OUT);
+		if (shaded) HTML::end_span(OUT);
 		if ((pass == 1) && (c > 0)) WRITE(" [%d]", c);
 	} else {
 		@<Quote the name of the object being indexed@>;
@@ -378,14 +378,14 @@ void ChartElement::index_instances(OUTPUT_STREAM, tree_inventory *inv, inter_pac
 	if (c >= 10) {
 		int xtra = IndexUtilities::extra_ID(session);
 		IndexUtilities::extra_link(OUT, xtra);
-		HTML::begin_colour(OUT, I"808080");
+		HTML::begin_span(OUT, I"indexgrey");
 		WRITE("%d ", c);
 		IndexUtilities::kind_name(OUT, pack, TRUE, FALSE);
-		HTML::end_colour(OUT);
+		HTML::end_span(OUT);
 		HTML_CLOSE("p");
-		IndexUtilities::extra_div_open(OUT, xtra, depth+1, "e0e0e0");
+		IndexUtilities::extra_div_open(OUT, xtra, depth+1, I"indexmorebox");
 		@<Itemise the instances@>;
-		IndexUtilities::extra_div_close(OUT, "e0e0e0");
+		IndexUtilities::extra_div_close(OUT, I"indexmorebox");
 	} else {
 		@<Itemise the instances@>;
 		HTML_CLOSE("p");
@@ -399,9 +399,9 @@ void ChartElement::index_instances(OUTPUT_STREAM, tree_inventory *inv, inter_pac
 		inter_symbol *strong_kind_ID = Metadata::optional_symbol(I_pack, I"^kind_xref");
 		if ((strong_kind_ID) && (InterPackage::container(strong_kind_ID->definition) == pack)) {
 			if (c > 0) WRITE(", "); c++;
-			HTML::begin_colour(OUT, I"808080");
+			HTML::begin_span(OUT, I"indexgrey");
 			WRITE("%S", Metadata::optional_textual(I_pack, I"^name"));
-			HTML::end_colour(OUT);
+			HTML::end_span(OUT);
 			IndexUtilities::link_package(OUT, I_pack);
 		}
 	}

@@ -8,8 +8,13 @@ any text but then fail.
 
 =
 <dividing-sentence> ::=
-	chapter ... |  ==> { 1, - }
-	section ...    ==> { 2, - }
+	volume ... |                        ==> { 1, - }
+	book ... |                          ==> { 2, - }
+	part ... |                          ==> { 3, - }
+	chapter ... |                       ==> { 4, - }
+	section ... ( dialog ) |            ==> { 6, - }
+	section ... ( dialogue ) |          ==> { 6, - }
+	section ...                         ==> { 5, - }
 
 <structural-sentence> ::=
 	... ==> { fail }

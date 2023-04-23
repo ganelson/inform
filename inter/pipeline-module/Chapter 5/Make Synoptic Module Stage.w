@@ -28,6 +28,7 @@ int MakeSynopticModuleStage::run(pipeline_step *step) {
 	SynopticChronology::compile(I, step, inv);
 	SynopticExtensions::compile(I, step, inv);
 	SynopticInstances::compile(I, step, inv);
+	SynopticDialogue::compile(I, step, inv);
 	SynopticKinds::compile(I, step, inv);
 	SynopticMultimedia::compile(I, step, inv);
 	SynopticProperties::compile(I, step, inv);
@@ -69,6 +70,7 @@ typedef struct tree_inventory {
 	inter_node_array *instance_nodes;
 	inter_node_array *scene_nodes;
 	inter_node_array *file_nodes;
+	inter_node_array *internal_file_nodes;
 	inter_node_array *figure_nodes;
 	inter_node_array *sound_nodes;
 	inter_node_array *use_option_nodes;
@@ -136,6 +138,7 @@ tree_inventory *MakeSynopticModuleStage::new_inventory(inter_tree *I) {
 	inv->extension_nodes = InterNodeList::new_array();
 	inv->scene_nodes = InterNodeList::new_array();
 	inv->file_nodes = InterNodeList::new_array();
+	inv->internal_file_nodes = InterNodeList::new_array();
 	inv->figure_nodes = InterNodeList::new_array();
 	inv->sound_nodes = InterNodeList::new_array();
 	return inv;
@@ -167,6 +170,8 @@ tree_inventory *MakeSynopticModuleStage::take_inventory(inter_tree *I) {
 			InterNodeList::array_add(inv->scene_nodes, inv->instance_nodes->list[i].node);
 		if (Metadata::exists(pack, I"^is_file"))
 			InterNodeList::array_add(inv->file_nodes, inv->instance_nodes->list[i].node);
+		if (Metadata::exists(pack, I"^is_internal_file"))
+			InterNodeList::array_add(inv->internal_file_nodes, inv->instance_nodes->list[i].node);
 		if (Metadata::exists(pack, I"^is_figure"))
 			InterNodeList::array_add(inv->figure_nodes, inv->instance_nodes->list[i].node);
 		if (Metadata::exists(pack, I"^is_sound"))

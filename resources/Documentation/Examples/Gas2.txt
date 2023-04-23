@@ -75,8 +75,6 @@ And just for fun, this time we'll make the grid prettier, too; but this will wor
 		say "[state of room 2A][state of room 2B][state of room 2C][state of room 2D][state of room 2E]   downstairs[line break]";
 		say "[unicode box drawings light up and right][bottom bar][unicode box drawings light up and left][variable letter spacing][line break]"
 	
-	Include Unicode Character Names by Graham Nelson.
-
 	To say top bar:
 		repeat with N running from 1 to 9:
 			if the remainder after dividing N by 2 is 0, say "[unicode box drawings light down and horizontal]";

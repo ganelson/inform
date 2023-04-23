@@ -60,48 +60,49 @@
 <span class="plain-syntax">Usage: inform7 [OPTIONS]</span>
 
 <span class="plain-syntax">for translating Inform source text to Inter:</span>
-<span class="plain-syntax">  -basic               use Basic Inform language (same as -kit BasicInformKit)</span>
-<span class="plain-syntax">  -case X              make any source links refer to the source in extension example X</span>
-<span class="plain-syntax">  -census              perform an extensions census (default is -no-census)</span>
-<span class="plain-syntax">  -debug               compile with debugging features even on a Release (default is -no-debug)</span>
-<span class="plain-syntax">  -format=X            compile to the format X (default is Inform6/32)</span>
-<span class="plain-syntax">  -o X                 use file X as the compiled output (not for use with -project)</span>
-<span class="plain-syntax">  -project X           work within the Inform project X</span>
-<span class="plain-syntax">  -release             compile a version suitable for a Release build (default is -no-release)</span>
-<span class="plain-syntax">  -rng                 fix the random number generator of the story file (for testing) (default is -no-rng)</span>
-<span class="plain-syntax">  -source X            use file X as the Inform source text</span>
+<span class="plain-syntax">  -basic                   use Basic Inform language</span>
+<span class="plain-syntax">  -case X                  make any source links refer to the source in extension example X</span>
+<span class="plain-syntax">  -census                  perform an extensions census (default is -no-census)</span>
+<span class="plain-syntax">  -debug                   compile with debugging features even on a Release (default is -no-debug)</span>
+<span class="plain-syntax">  -format=X                compile to the format X (default is Inform6/32)</span>
+<span class="plain-syntax">  -o X                     use file X as the compiled output (not for use with -project)</span>
+<span class="plain-syntax">  -project X               work within the Inform project X</span>
+<span class="plain-syntax">  -release                 compile a version suitable for a Release build (default is -no-release)</span>
+<span class="plain-syntax">  -rng                     fix the random number generator of the story file (for testing) (default is -no-rng)</span>
+<span class="plain-syntax">  -source X                use file X as the Inform source text</span>
 
 <span class="plain-syntax">for locating resources in the file system:</span>
-<span class="plain-syntax">  -external X          use X as the user's home for installed material such as extensions</span>
-<span class="plain-syntax">  -internal X          use X as the location of built-in material such as the Standard Rules</span>
-<span class="plain-syntax">  -nest X              add the nest at pathname X to the search list</span>
-<span class="plain-syntax">  -transient X         use X for transient data such as the extensions census</span>
+<span class="plain-syntax">  -external X              use X as the user's home for installed material such as extensions</span>
+<span class="plain-syntax">  -internal X              use X as the location of built-in material such as the Standard Rules</span>
+<span class="plain-syntax">  -nest X                  add the nest at pathname X to the search list</span>
+<span class="plain-syntax">  -transient X             use X for transient data such as the extensions census</span>
 
 <span class="plain-syntax">for tweaking code generation from Inter:</span>
-<span class="plain-syntax">  -kit X               include Inter code from the kit called X</span>
-<span class="plain-syntax">  -pipeline X          specify code-generation pipeline by name (default is "compile")</span>
-<span class="plain-syntax">  -pipeline-file X     specify code-generation pipeline as file X</span>
-<span class="plain-syntax">  -variable X          set pipeline variable X (in form name=value)</span>
+<span class="plain-syntax">  -kit X                   include Inter code from the kit called X</span>
+<span class="plain-syntax">  -pipeline X              specify code-generation pipeline by name (default is "compile")</span>
+<span class="plain-syntax">  -pipeline-file X         specify code-generation pipeline as file X</span>
+<span class="plain-syntax">  -variable X              set pipeline variable X (in form name=value)</span>
 
 <span class="plain-syntax">for testing and debugging inform7:</span>
-<span class="plain-syntax">  -no-census-update    don't update the extensions census (default is -census-update)</span>
-<span class="plain-syntax">  -crash-all           intentionally crash on Problem messages, for backtracing (default is -no-crash-all)</span>
-<span class="plain-syntax">  -diagnostics X       if no problems occur, write diagnostics files to directory X (default is -no-diagnostics)</span>
-<span class="plain-syntax">  -no-index            don't produce an Index (default is -index)</span>
-<span class="plain-syntax">  -no-problems         don't produce (an HTML) Problems report page (default is -problems)</span>
-<span class="plain-syntax">  -no-progress         don't display progress percentages (default is -progress)</span>
-<span class="plain-syntax">  -require-problem X   return 0 unless exactly this Problem message is generated</span>
-<span class="plain-syntax">  -sigils              print Problem message sigils (default is -no-sigils)</span>
-<span class="plain-syntax">  -silence             practice 'silence is golden': print only Unix-style errors (default is -no-silence)</span>
-<span class="plain-syntax">  -test-output X       write output of internal tests to file X</span>
+<span class="plain-syntax">  -no-census-update        don't update the extensions census (default is -census-update)</span>
+<span class="plain-syntax">  -crash-all               intentionally crash on Problem messages, for backtracing (default is -no-crash-all)</span>
+<span class="plain-syntax">  -diagnostics X           if no problems occur, write diagnostics files to directory X (default is -no-diagnostics)</span>
+<span class="plain-syntax">  -no-index                don't produce an Index (default is -index)</span>
+<span class="plain-syntax">  -no-problems             don't produce (an HTML) Problems report page (default is -problems)</span>
+<span class="plain-syntax">  -no-progress             don't display progress percentages (default is -progress)</span>
+<span class="plain-syntax">  -require-problem X       return 0 unless exactly this Problem message is generated</span>
+<span class="plain-syntax">  -no-resource-checking    don't check that figures, sounds and similar resources exist at compile-time (default is -resource-checking)</span>
+<span class="plain-syntax">  -sigils                  print Problem message sigils (default is -no-sigils)</span>
+<span class="plain-syntax">  -silence                 practice 'silence is golden': print only Unix-style errors (default is -no-silence)</span>
+<span class="plain-syntax">  -test-output X           write output of internal tests to file X</span>
 
-<span class="plain-syntax">-at X                  specify that this tool is installed at X</span>
-<span class="plain-syntax">-crash                 intentionally crash on internal errors, for backtracing (default is -no-crash)</span>
-<span class="plain-syntax">-fixtime               pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)</span>
-<span class="plain-syntax">-help                  print this help information</span>
-<span class="plain-syntax">-locale X              set locales as 'L=E', L being shell or console, E platform, utf-8 or iso-latin1</span>
-<span class="plain-syntax">-log X                 write the debugging log to include diagnostics on X</span>
-<span class="plain-syntax">-version               print out version number</span>
+<span class="plain-syntax">-at X                      specify that this tool is installed at X</span>
+<span class="plain-syntax">-crash                     intentionally crash on internal errors, for backtracing (default is -no-crash)</span>
+<span class="plain-syntax">-fixtime                   pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)</span>
+<span class="plain-syntax">-help                      print this help information</span>
+<span class="plain-syntax">-locale X                  set locales as 'L=E', L being shell or console, E platform, utf-8 or iso-latin1</span>
+<span class="plain-syntax">-log X                     write the debugging log to include diagnostics on X</span>
+<span class="plain-syntax">-version                   print out version number</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="M-cifc.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-cu.html">cu</a></li><li class="progresssection"><a href="M-iwtg.html">iwtg</a></li><li class="progresssection"><a href="M-cifc.html">cifc</a></li><li class="progresscurrent">rc</li><li class="progresssection"><a href="M-pm.html">pm</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progressnext"><a href="M-pm.html">&#10095;</a></li></ul></div>

@@ -17,9 +17,12 @@ typedef struct inbuild_copy {
 	struct inbuild_edition *edition; /* what is this a copy of? */
 	struct pathname *location_if_path; /* exactly one of these must be non-|NULL| */
 	struct filename *location_if_file;
+	struct inbuild_nest *nest_of_origin; /* note that copies do not always come from nests */
 
 	general_pointer metadata; /* the type of which depends on the work's genre */
+	struct JSON_value *metadata_record; /* where read in from a JSON file */
 	struct build_vertex *vertex; /* head vertex of build graph for this copy */
+	int graph_constructed;
 	int source_text_read; /* have we attempted to read Inform source text from this? */
 	struct wording source_text; /* the source text we read, if so */
 	struct inbuild_requirement *found_by; /* if this was claimed in a search */
@@ -37,8 +40,11 @@ inbuild_copy *Copies::new_p(inbuild_edition *edition) {
 	copy->edition = edition;
 	copy->location_if_path = NULL;
 	copy->location_if_file = NULL;
+	copy->nest_of_origin = NULL;
 	copy->metadata = NULL_GENERAL_POINTER;
+	copy->metadata_record = NULL;
 	copy->vertex = Graphs::copy_vertex(copy);
+	copy->graph_constructed = FALSE;
 	copy->source_text_read = FALSE;
 	copy->source_text = EMPTY_WORDING;
 	copy->found_by = NULL;
@@ -50,15 +56,17 @@ inbuild_copy *Copies::new_p(inbuild_edition *edition) {
 @ ...call one of these:
 
 =
-inbuild_copy *Copies::new_in_file(inbuild_edition *edition, filename *F) {
+inbuild_copy *Copies::new_in_file(inbuild_edition *edition, filename *F, inbuild_nest *N) {
 	inbuild_copy *copy = Copies::new_p(edition);
 	copy->location_if_file = F;
+	copy->nest_of_origin = N;
 	return copy;
 }
 
-inbuild_copy *Copies::new_in_path(inbuild_edition *edition, pathname *P) {
+inbuild_copy *Copies::new_in_path(inbuild_edition *edition, pathname *P, inbuild_nest *N) {
 	inbuild_copy *copy = Copies::new_p(edition);
 	copy->location_if_path = P;
+	copy->nest_of_origin = N;
 	return copy;
 }
 
@@ -88,6 +96,18 @@ void Copies::list_attached_errors(OUTPUT_STREAM, inbuild_copy *C) {
 	LOOP_OVER_LINKED_LIST(CE, copy_error, C->errors_reading_source_text) {
 		WRITE("%d. ", c++); CopyErrors::write(OUT, CE); WRITE("\n");
 	}
+}
+
+void Copies::list_attached_errors_to_HTML(OUTPUT_STREAM, inbuild_copy *C) {
+	if (C == NULL) return;
+	HTML_OPEN("ul"); WRITE("\n");
+	copy_error *CE;
+	LOOP_OVER_LINKED_LIST(CE, copy_error, C->errors_reading_source_text) {
+		HTML_OPEN("li");
+		CopyErrors::write(OUT, CE);
+		HTML_CLOSE("li"); WRITE("\n");
+	}
+	HTML_CLOSE("ul"); WRITE("\n");
 }
 
 @h Writing.
@@ -124,7 +144,31 @@ wording Copies::get_source_text(inbuild_copy *C) {
 
 =
 void Copies::construct_graph(inbuild_copy *C) {
-	VOID_METHOD_CALL(C->edition->work->genre, GENRE_CONSTRUCT_GRAPH_MTID, C);
+	if (C->graph_constructed == FALSE) {
+		C->graph_constructed = TRUE;
+		VOID_METHOD_CALL(C->edition->work->genre, GENRE_CONSTRUCT_GRAPH_MTID, C);
+	}
+}
+
+@ Some copies, such as projects, are not fully graphed by //Copies::construct_graph//
+because this would be too slow when inbuild is scanning a directory; a project
+is only graphed when we are interested in building or analysing it.
+
+This process of full graphing can cause new copies to come into existence (for
+example, for kits which the project depends on), and we need to ensure that any
+such newcomers are graphed too.
+
+=
+build_vertex *Copies::construct_project_graph(inbuild_copy *C) {
+	build_vertex *V = C->vertex;
+	VOID_METHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
+	Copies::graph_everything();
+	return V;
+}
+
+void Copies::graph_everything(void) {
+	inbuild_copy *C;
+	LOOP_OVER(C, inbuild_copy) Copies::construct_graph(C);
 }
 
 @h Sorting.
@@ -180,13 +224,11 @@ its main task: building an Inform project.
 
 =
 void Copies::build(OUTPUT_STREAM, inbuild_copy *C, build_methodology *BM) {
-	build_vertex *V = C->vertex;
-	VOID_METHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
+	build_vertex *V = Copies::construct_project_graph(C);
 	IncrementalBuild::build(OUT, V, BM);
 }
 void Copies::rebuild(OUTPUT_STREAM, inbuild_copy *C, build_methodology *BM) {
-	build_vertex *V = C->vertex;
-	VOID_METHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
+	build_vertex *V = Copies::construct_project_graph(C);
 	IncrementalBuild::rebuild(OUT, V, BM);
 }
 
@@ -195,18 +237,15 @@ void Copies::rebuild(OUTPUT_STREAM, inbuild_copy *C, build_methodology *BM) {
 
 =
 void Copies::show_graph(OUTPUT_STREAM, inbuild_copy *C) {
-	build_vertex *V = C->vertex;
-	VOID_METHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
+	build_vertex *V = Copies::construct_project_graph(C);
 	Graphs::describe(OUT, V, TRUE);
 }
 void Copies::show_needs(OUTPUT_STREAM, inbuild_copy *C, int uses_only, int paths) {
-	build_vertex *V = C->vertex;
-	VOID_METHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
+	Copies::construct_project_graph(C);
 	Graphs::show_needs(OUT, C->vertex, uses_only, paths);
 }
 void Copies::show_missing(OUTPUT_STREAM, inbuild_copy *C, int uses_only) {
-	build_vertex *V = C->vertex;
-	VOID_METHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
+	Copies::construct_project_graph(C);
 	int N = Graphs::show_missing(OUT, C->vertex, uses_only);
 	if (N == 0) WRITE("Nothing is missing\n");
 }
@@ -215,8 +254,7 @@ void Copies::show_missing(OUTPUT_STREAM, inbuild_copy *C, int uses_only) {
 
 =
 void Copies::archive(OUTPUT_STREAM, inbuild_copy *C, inbuild_nest *N, build_methodology *BM) {
-	build_vertex *V = C->vertex;
-	VOID_METHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
+	Copies::construct_project_graph(C);
 	int NM = Graphs::show_missing(OUT, C->vertex, FALSE);
 	if (NM > 0) WRITE("Because there are missing resources, -archive is cancelled\n");
 	else if (N) Graphs::archive(OUT, C->vertex, N, BM);

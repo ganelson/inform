@@ -1,6 +1,6 @@
 [TheScore::] The Score.
 
-A plugin to support the score variables.
+A feature to support the score variables.
 
 @ At one time, all interactive fiction had a scoring system, because that's
 what computers did for our entertainment: they rewarded us with points. Having
@@ -9,8 +9,8 @@ a little compiler support, and this is where.
 
 =
 void TheScore::start(void) {
-	PluginManager::plug(PRODUCTION_LINE_PLUG, TheScore::production_line);
-	PluginManager::plug(NEW_VARIABLE_NOTIFY_PLUG, TheScore::new_variable_notify);
+	PluginCalls::plug(PRODUCTION_LINE_PLUG, TheScore::production_line);
+	PluginCalls::plug(NEW_VARIABLE_NOTIFY_PLUG, TheScore::new_variable_notify);
 }
 
 int TheScore::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {

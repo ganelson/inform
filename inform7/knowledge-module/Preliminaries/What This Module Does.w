@@ -79,4 +79,4 @@ respectively), but //Instances// and //Nonlocal Variables// are new.
 
 Finally, //Chapter 5// deals with the actual inferences, and with how the
 model world is constructed. The core of Inform does nothing very interesting
-here, but plugins from the //if// module add some domain-specific savvy.
+here, but features from the //if// module add some domain-specific savvy.

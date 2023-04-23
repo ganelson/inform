@@ -46,6 +46,7 @@ The following is called when the //supervisor// module starts up.
 
 =
 inbuild_genre *extension_genre = NULL;
+inbuild_genre *extension_bundle_genre = NULL;
 inbuild_genre *kit_genre = NULL;
 inbuild_genre *language_genre = NULL;
 inbuild_genre *pipeline_genre = NULL;
@@ -55,6 +56,7 @@ inbuild_genre *template_genre = NULL;
 
 void Supervisor::start(void) {
 	ExtensionManager::start();
+	ExtensionBundleManager::start();
 	KitManager::start();
 	LanguageManager::start();
 	PipelineManager::start();
@@ -110,7 +112,7 @@ better way to choose a virtual machine to compile to.
 	CommandLine::declare_switch(PROJECT_CLSW, L"project", 2,
 		L"work within the Inform project X");
 	CommandLine::declare_switch(BASIC_CLSW, L"basic", 1,
-		L"use Basic Inform language (same as -kit BasicInformKit)");
+		L"use Basic Inform language");
 	CommandLine::declare_boolean_switch(DEBUG_CLSW, L"debug", 1,
 		L"compile with debugging features even on a Release", FALSE);
 	CommandLine::declare_boolean_switch(RELEASE_CLSW, L"release", 1,
@@ -184,6 +186,7 @@ int this_is_a_debug_compile = FALSE; /* Destined to be compiled with debug featu
 int this_is_a_release_compile = FALSE; /* Omit sections of source text marked not for release */
 text_stream *output_format = NULL; /* What story file we will eventually have */
 int census_mode = FALSE; /* Running only to update extension documentation */
+int repair_mode = FALSE; /* Automatically fix missing or damaged extension metadata */
 int rng_seed_at_start_of_play = 0; /* The seed value, or 0 if not seeded */
 
 void Supervisor::set_defaults(void) {
@@ -227,8 +230,10 @@ void Supervisor::option(int id, int val, text_stream *arg, void *state) {
 			Supervisor::add_nest(Pathnames::from_text(arg), EXTERNAL_NEST_TAG); break;
 		case TRANSIENT_CLSW:
 			shared_transient_resources = Pathnames::from_text(arg); break;
-		case BASIC_CLSW: Supervisor::request_kit(I"BasicInformKit"); break;
-		case KIT_CLSW: Supervisor::request_kit(arg); break;
+		case BASIC_CLSW: Projects::enter_forcible_basic_mode(); break;
+		case KIT_CLSW:
+			Errors::fatal("the -kit option has been withdrawn");
+			break;
 		case PROJECT_CLSW: {
 			pathname *P = Pathnames::from_text(arg);
 			if (Supervisor::set_I7_bundle(P) == FALSE)
@@ -291,10 +296,10 @@ When this call returns to the parent, |inbuild| is in the Targeted phase,
 which continues until the parent calls |Supervisor::go_operational| (see below).
 
 =
-void (*shared_preform_callback)(inform_language *);
+int (*shared_preform_callback)(inform_language *);
 
 void Supervisor::optioneering_complete(inbuild_copy *C, int compile_only,
-	void (*preform_callback)(inform_language *)) {
+	int (*preform_callback)(inform_language *)) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
 	inbuild_phase = PRETINKERING_INBUILD_PHASE;
 	shared_preform_callback = preform_callback;
@@ -355,8 +360,7 @@ We do that copy by copy.
 void Supervisor::go_operational(void) {
 	RUN_ONLY_IN_PHASE(TARGETED_INBUILD_PHASE)
 	inbuild_phase = GRAPH_CONSTRUCTION_INBUILD_PHASE;
-	inbuild_copy *C;
-	LOOP_OVER(C, inbuild_copy) Copies::construct_graph(C);
+	Copies::graph_everything();
 	inbuild_phase = OPERATIONAL_INBUILD_PHASE;
 	if (census_mode) ExtensionWebsite::handle_census_mode();
 }
@@ -479,9 +483,8 @@ just plain old files.
 
 =
 pathname *Supervisor::installed_files(void) {
-	inbuild_nest *I = Supervisor::internal();
-	if (I == NULL) Errors::fatal("Did not set -internal when calling");
-	return I->location;
+	if (shared_internal_nest) return shared_internal_nest->location;
+	return Pathnames::from_text(I"inform7/Internal");
 }
 
 @ As noted above, the transient area is used for ephemera such as dynamically
@@ -549,6 +552,8 @@ location. If it hasn't, we create a project using |-project| if possible,
 |-source| if not, and in either case apply |-source| to the result.
 
 =
+inform_project *chosen_project = NULL;
+
 void Supervisor::make_project_from_command_line(inbuild_copy *C) {
 	RUN_ONLY_IN_PHASE(PRETINKERING_INBUILD_PHASE)
 
@@ -566,42 +571,16 @@ void Supervisor::make_project_from_command_line(inbuild_copy *C) {
 		}
 	}
 	if (C) {
-		inform_project *proj = NULL;
-		if (C->edition->work->genre == project_bundle_genre)
-			proj = ProjectBundleManager::from_copy(C);
-		else if (C->edition->work->genre == project_file_genre)
-			proj = ProjectFileManager::from_copy(C);
-		else internal_error("chosen project is not a project");
+		inform_project *proj = Projects::from_copy(C);
+		if (proj == NULL) internal_error("chosen project is not a project");
 		if (F) {
 			Projects::set_primary_source(proj, F);
 			Projects::set_primary_output(proj, transpiled_output_file);
 		}
+		chosen_project = proj;
 	}
 }
 
-@h Kit requests.
-These are triggered by, for example, |-kit MyFancyKit| at the command line.
-For timing reasons, we store those up in the configuration phase and then
-add them as dependencies only when a project exists.
-
-=
-linked_list *kits_requested_at_command_line = NULL;
-void Supervisor::request_kit(text_stream *name) {
-	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
-	if (kits_requested_at_command_line == NULL)
-		kits_requested_at_command_line = NEW_LINKED_LIST(text_stream);
-	text_stream *kit_name;
-	LOOP_OVER_LINKED_LIST(kit_name, text_stream, kits_requested_at_command_line)
-		if (Str::eq(kit_name, name))
-			return;
-	ADD_TO_LINKED_LIST(Str::duplicate(name), text_stream, kits_requested_at_command_line);
-}
-
-void Supervisor::pass_kit_requests(inform_project *proj) {
-	RUN_ONLY_IN_PHASE(NESTED_INBUILD_PHASE)
-	if ((proj) && (kits_requested_at_command_line)) {
-		text_stream *kit_name;
-		LOOP_OVER_LINKED_LIST(kit_name, text_stream, kits_requested_at_command_line)
-			Projects::add_kit_dependency(proj, kit_name, NULL, NULL);
-	}
+inform_project *Supervisor::project_set_at_command_line(void) {
+	return chosen_project;
 }

@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
 /*   "lexer" : Lexical analyser                                              */
 /*                                                                           */
-/*   Part of Inform 6.36                                                     */
+/*   Part of Inform 6.41                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -382,7 +382,7 @@ extern void describe_token_triple(const char *text, int32 value, int type)
 }
 
 /* ------------------------------------------------------------------------- */
-/*   All but one of the 280 Inform keywords (118 of them opcode names used   */
+/*   All but one of the Inform keywords (most of them opcode names used      */
 /*   only by the assembler).  (The one left over is "sp", a keyword used in  */
 /*   assembly language only.)                                                */
 /*                                                                           */
@@ -394,7 +394,9 @@ extern void describe_token_triple(const char *text, int32 value, int type)
 /*   "header.h" but is otherwise not significant.                            */
 /* ------------------------------------------------------------------------- */
 
-#define MAX_KEYWORDS 350
+/* This must exceed the total number of keywords across all groups, 
+   including opcodes. */
+#define MAX_KEYWORDS (500)
 
 /* The values will be filled in at compile time, when we know
    which opcode set to use. */
@@ -448,11 +450,17 @@ static char *opcode_list_g[] = {
     "streamunichar",
     "mzero", "mcopy", "malloc", "mfree",
     "accelfunc", "accelparam",
+    "hasundo", "discardundo",
     "numtof", "ftonumz", "ftonumn", "ceil", "floor",
     "fadd", "fsub", "fmul", "fdiv", "fmod",
     "sqrt", "exp", "log", "pow",
     "sin", "cos", "tan", "asin", "acos", "atan", "atan2",
     "jfeq", "jfne", "jflt", "jfle", "jfgt", "jfge", "jisnan", "jisinf",
+    "numtod", "dtonumz", "dtonumn", "ftod", "dtof", "dceil", "dfloor",
+    "dadd", "dsub", "dmul", "ddiv", "dmodr", "dmodq",
+    "dsqrt", "dexp", "dlog", "dpow",
+    "dsin", "dcos", "dtan", "dasin", "dacos", "datan", "datan2",
+    "jdeq", "jdne", "jdlt", "jdle", "jdgt", "jdge", "jdisnan", "jdisinf",
     ""
 };
 
@@ -464,7 +472,7 @@ keyword_group opcode_macros =
 static char *opmacro_list_z[] = { "" };
 
 static char *opmacro_list_g[] = {
-    "pull", "push",
+    "pull", "push", "dload", "dstore",
     ""
 };
 
@@ -661,11 +669,21 @@ static void make_keywords_tables(void)
     }
 
     for (j=0; *(oplist[j]); j++) {
+        if (j >= MAX_KEYWORD_GROUP_SIZE) {
+            /* Gotta increase MAX_KEYWORD_GROUP_SIZE */
+            compiler_error("opcode_list has overflowed opcode_names.keywords");
+            break;
+        }
         opcode_names.keywords[j] = oplist[j];
     }
     opcode_names.keywords[j] = "";
     
     for (j=0; *(maclist[j]); j++) {
+        if (j >= MAX_KEYWORD_GROUP_SIZE) {
+            /* Gotta increase MAX_KEYWORD_GROUP_SIZE */
+            compiler_error("opmacro_list has overflowed opcode_macros.keywords");
+            break;
+        }
         opcode_macros.keywords[j] = maclist[j];
     }
     opcode_macros.keywords[j] = "";
@@ -678,7 +696,13 @@ static void make_keywords_tables(void)
     for (i=1; i<=11; i++)
     {   keyword_group *kg = keyword_groups[i];
         for (j=0; *(kg->keywords[j]) != 0; j++)
-        {   h = hash_code_from_string(kg->keywords[j]);
+        {
+            if (tp >= MAX_KEYWORDS) {
+                /* Gotta increase MAX_KEYWORDS */
+                compiler_error("keywords_data_table has overflowed MAX_KEYWORDS");
+                break;
+            }
+            h = hash_code_from_string(kg->keywords[j]);
             if (keywords_hash_table[h] == -1)
                 keywords_hash_table[h] = tp;
             else
@@ -1118,8 +1142,6 @@ static void reached_new_line(void)
         if (g_proc != true)
         {   free_arrays();
             close_all_source();
-            if (temporary_files_switch)
-                remove_temp_files();
             abort_transcript_file();
             longjmp (g_fallback, 1);
         }
@@ -1182,9 +1204,10 @@ static double pow10_cheap(int expo)
  * lexer should never do that).
  *
  * Note that using a float constant does *not* set the uses_float_features
- * flag (which would cause the game file to be labelled 3.1.2). There's
- * no VM feature here, just an integer. Of course, any use of the float
- * *opcodes* will set the flag.
+ * flag (which would cause the game file to be labelled 3.1.2). Same with 
+ * double constants and the uses_double_features flag. There's no VM
+ * feature here, just an integer. Of course, any use of the float *opcodes*
+ * will set the flag.
  *
  * The math functions in this routine require #including <math.h>, but
  * they should not require linking the math library (-lm). At least,
@@ -1242,7 +1265,91 @@ static int32 construct_float(int signbit, double intv, double fracv, int expo)
         }
     }
 
+    /* At this point, expo is less than 2^8; fbits is less than 2^23; neither is negative. */
     return (sign) | ((int32)(expo << 23)) | (fbits);
+}
+
+/* Same as the above, but we return *half* of a 64-bit double, depending on whether wanthigh is true (high half) or false (low half).
+ */
+static int32 construct_double(int wanthigh, int signbit, double intv, double fracv, int expo)
+{
+    double absval = (intv + fracv) * pow10_cheap(expo);
+    int32 sign = (signbit ? 0x80000000 : 0x0);
+    double mant;
+    uint32 fhi, flo;
+ 
+    if (isinf(absval)) {
+        goto Infinity;
+    }
+    if (isnan(absval)) {
+        goto NotANumber;
+    }
+
+    mant = frexp(absval, &expo);
+
+    /* Normalize mantissa to be in the range [1.0, 2.0) */
+    if (0.5 <= mant && mant < 1.0) {
+        mant *= 2.0;
+        expo--;
+    }
+    else if (mant == 0.0) {
+        expo = 0;
+    }
+    else {
+        goto Infinity;
+    }
+
+    if (expo >= 1024) {
+        goto Infinity;
+    }
+    else if (expo < -1022) {
+        /* Denormalized (very small) number */
+        mant = ldexp(mant, 1022 + expo);
+        expo = 0;
+    }
+    else if (!(expo == 0 && mant == 0.0)) {
+        expo += 1023;
+        mant -= 1.0; /* Get rid of leading 1 */
+    }
+
+    /* fhi receives the high 28 bits; flo the low 24 bits (total 52 bits) */
+    mant *= 268435456.0;          /* 2^28 */
+    fhi = (uint32)mant;           /* Truncate */
+    mant -= (double)fhi;
+    mant *= 16777216.0;           /* 2^24 */
+    flo = (uint32)(mant+0.5);     /* Round */
+    
+    if (flo >> 24) {
+        /* The carry propagated out of a string of 24 1 bits. */
+        flo = 0;
+        fhi++;
+        if (fhi >> 28) {
+            /* And it also propagated out of the next 28 bits. */
+            fhi = 0;
+            expo++;
+            if (expo >= 2047) {
+                goto Infinity;
+            }
+        }
+    }
+
+    /* At this point, expo is less than 2^11; fhi is less than 2^28; flo is less than 2^24; none are negative. */
+    if (wanthigh)
+        return (sign) | ((int32)(expo << 20)) | ((int32)(fhi >> 8));
+    else
+        return (int32)((fhi & 0xFF) << 24) | (int32)(flo);
+
+ Infinity:
+    if (wanthigh)
+        return sign | 0x7FF00000;
+    else
+        return 0x00000000;
+    
+ NotANumber:
+    if (wanthigh)
+        return sign | 0x7FF80000;
+    else
+        return 0x00000001;
 }
 
 /* ------------------------------------------------------------------------- */
@@ -1319,6 +1426,8 @@ static void begin_buffering_file(int i, int file_no)
     FileStack[i].file_no = file_no;
     FileStack[i].size = file_load_chars(file_no,
         (char *) p, SOURCE_BUFFER_SIZE);
+    /* If the file is shorter than SOURCE_BUFFER_SIZE, it's now closed already. We still need to set up the file entry though. */
+    
     lookahead  = source_to_iso_grid[p[0]];
     lookahead2 = source_to_iso_grid[p[1]];
     lookahead3 = source_to_iso_grid[p[2]];
@@ -1338,6 +1447,8 @@ static void begin_buffering_file(int i, int file_no)
     FileStack[i].LB.orig_source = NULL; FileStack[i].LB.orig_file = 0; 
     FileStack[i].LB.orig_line = 0; FileStack[i].LB.orig_char = 0;
 
+    InputFiles[file_no-1].initial_buffering = FALSE;
+    
     CurrentLB = &(FileStack[i].LB);
     CF = &(FileStack[i]);
 
@@ -1572,6 +1683,7 @@ static void lexadds(char *str)
 
 extern void get_next_token(void)
 {   int d, i, j, k, quoted_size, e, radix, context; int32 n; char *r;
+    int floatend;
     int returning_a_put_back_token = TRUE;
     
     context = lexical_context();
@@ -1658,6 +1770,9 @@ extern void get_next_token(void)
             break;
 
             FloatNumber:
+            /* When we reach here, d is the sign bit ('+' or '-').
+               If we're constructing a 32-bit float, floatend is 0;
+               for a 64-bit double, floatend is '>' for high, '<' for low. */
             {   int expo=0; double intv=0, fracv=0;
                 int expocount=0, intcount=0, fraccount=0;
                 int signbit = (d == '-');
@@ -1701,7 +1816,12 @@ extern void get_next_token(void)
                 }
                 if (intcount + fraccount == 0)
                     error("Floating-point literal must have digits");
-                n = construct_float(signbit, intv, fracv, expo);
+                if (floatend == '>')
+                    n = construct_double(TRUE, signbit, intv, fracv, expo);
+                else if (floatend == '<')
+                    n = construct_double(FALSE, signbit, intv, fracv, expo);
+                else                    
+                    n = construct_float(signbit, intv, fracv, expo);
             }
             lexaddc(0);
             circle[circle_position].type = NUMBER_TT;
@@ -1711,7 +1831,18 @@ extern void get_next_token(void)
 
         case RADIX_CODE:
             radix = 16; d = (*get_next_char)();
-            if (d == '-' || d == '+') { goto FloatNumber; }
+            if (d == '-' || d == '+') {
+                floatend = 0;
+                goto FloatNumber;
+            }
+            if (d == '<' || d == '>') {
+                floatend = d;
+                d = (*get_next_char)();
+                if (d == '-' || d == '+') {
+                    goto FloatNumber;
+                }
+                error("Signed number expected after '$<' or '$>'");
+            }
             if (d == '$') { d = (*get_next_char)(); radix = 2; }
             if (character_digit_value[d] >= radix)
             {   if (radix == 2)
@@ -1908,8 +2039,10 @@ extern void get_next_token(void)
     }
 
     if (tokens_trace_level > 0)
-    {   if (tokens_trace_level == 1)
+    {   if (tokens_trace_level == 1) {
             printf("'%s' ", circle[i].text);
+            if (circle[i].type == EOF_TT) printf("\n");
+        }
         else
         {   printf("-> "); describe_token(&circle[i]);
             printf(" ");

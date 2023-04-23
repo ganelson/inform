@@ -39,7 +39,7 @@ We now have the mechanisms in place to do some fairly sophisticated renaming of 
 
 	Instead of cutting something when something is part of the noun:
 		say "You cut up [the noun], snipping off [a list of things which are part of the noun].";
-		now every thing which is part of the noun is in the holder of the noun.
+		now every thing which is part of the noun is held by the holder of the noun.
 	
 	Instead of cutting something which is part of something:
 		say "You carefully snip [the noun] free.";

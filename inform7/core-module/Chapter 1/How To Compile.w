@@ -97,8 +97,8 @@ as possible.
 
 @ Here, then, are the steps in the production line, presented without
 commentary. For what they do, see the relevant sections. Note that at the
-end of each stage, plugins are allowed to add further steps; see
-//Task::advance_stage_to//.
+end of each stage, plugins made by compiler features are allowed to add
+further steps; see //Task::advance_stage_to//.
 
 Before anything else can be done, we must create an empty Inter hierarchy
 into which we will "emit" an Inter program. No actual code will be emitted for
@@ -140,9 +140,11 @@ so on. Those absolute basics are made here.
 		2, debugging, sequence_timer);
 	BENCH(MajorNodes::pass_1)
 	BENCH(Tables::traverse_to_stock)
+	BENCH(Dialogue::after_pass_1)
 	Task::advance_stage_to(ASSERTIONS_PASS_2_CSEQ, I"Second pass through major nodes",
 		-1, debugging, sequence_timer);
 	BENCH(MajorNodes::pass_2)
+	BENCH(DialogueBeats::decide_cue_topics)
 
 @<Make the model world@> =
 	Task::advance_stage_to(MODEL_CSEQ, I"Making the model world",
@@ -192,6 +194,7 @@ here, which only happens when special runs are made for compiler testing.
 	Task::advance_stage_to(INTER1_CSEQ, I"Generating inter (1)",
 		4, debugging, sequence_timer);
 	BENCH(RTUseOptions::compile)
+	BENCH(RTCommandGrammars::compile_non_generic_constants)
 	BENCH(Interventions::make_all)
 	BENCH(RTKindConstructors::compile)
 	BENCH(RTLiteralPatterns::compile)
@@ -208,6 +211,9 @@ here, which only happens when special runs are made for compiler testing.
 	BENCH(RTTableColumns::compile)
 	BENCH(RTEquations::compile)
 	BENCH(ImperativeDefinitions::compile_first_block)
+	BENCH(RTDialogueBeats::compile)
+	BENCH(RTDialogueLines::compile)
+	BENCH(RTDialogueChoices::compile)
 	BENCH(RTRules::compile)
 	BENCH(RTRulebooks::compile)
 	BENCH(RTRulebooks::compile_nros)

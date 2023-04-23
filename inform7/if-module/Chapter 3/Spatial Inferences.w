@@ -1,6 +1,6 @@
 [SpatialInferences::] Spatial Inferences.
 
-Six families of inference used by the spatial plugin.
+Six families of inference used by the spatial feature.
 
 @ Spatial has no fewer than six of its own inference families, needed to store vague
 indications of spatial structure:

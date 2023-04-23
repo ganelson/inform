@@ -28,7 +28,7 @@ little sense. We also need two different notations for time -- compare the
 command parser tokens "[a time]", recognising, say, "4:12 AM" and "[a
 time period]", for "3 HOURS".
 
-@ This section of code is a plugin: that is, it can be deactivated, removing
+@ This section of code is a feature: that is, it can be deactivated, removing
 support for times of day from the Inform language. If so, |K_time| remains null.
 
 = (early code)
@@ -38,7 +38,7 @@ kind *K_time = NULL;
 
 =
 void TimesOfDay::start(void) {
-	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, TimesOfDay::times_new_base_kind_notify);
+	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, TimesOfDay::times_new_base_kind_notify);
 }
 
 int TimesOfDay::times_new_base_kind_notify(kind *new_base, text_stream *name, wording W) {

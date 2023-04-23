@@ -48,6 +48,7 @@ typedef struct syntax_fsm_state {
 	node_type_t nt;
 	int inside_rule_mode;
 	int inside_table_mode;
+	int inside_dialogue_mode;
 	PROBLEM_REF_SYNTAX_TYPE *ref;
 	PROJECT_REF_SYNTAX_TYPE *project_ref;
 } syntax_fsm_state;
@@ -69,6 +70,8 @@ void Sentences::reset(syntax_fsm_state *sfsm, int is_extension,
 	PROBLEM_REF_SYNTAX_TYPE *ref, PROJECT_REF_SYNTAX_TYPE *project_ref) {
 	sfsm->sf = NULL;
 	sfsm->inside_rule_mode = FALSE;
+	sfsm->inside_table_mode = FALSE;
+	sfsm->inside_dialogue_mode = FALSE;
 	sfsm->skipping_material_at_level = -1;
 	sfsm->ref = ref;
 	sfsm->project_ref = project_ref;
@@ -89,6 +92,10 @@ void Sentences::reset(syntax_fsm_state *sfsm, int is_extension,
 @e ExtNoEndsHere_SYNERROR
 @e HeadingOverLine_SYNERROR
 @e HeadingStopsBeforeEndOfLine_SYNERROR
+@e UnexpectedDialogue_SYNERROR
+@e UnquotedDialogue_SYNERROR
+@e EmptyDialogueClause_SYNERROR
+@e MisbracketedDialogueClause_SYNERROR
 
 @ Now for the function itself. We break into bite-sized chunks, each of which is
 despatched to the |Sentences::make_node| function with a note of the punctuation
@@ -208,19 +215,22 @@ sentence divisions. The other cases are more complicated: see below.
 			if (stop_character == ':') @<Issue problem for colon at end of paragraph@>;
 			stop_character = '|'; stopped = TRUE;
 		}
-		if (Lexer::word(at) == FULLSTOP_V) {
-			if (stop_character == ':') @<Issue problem for colon at end of sentence@>;
-			if (stop_character == ';') @<Issue problem for semicolon at end of sentence@>;
-			stop_character = '.'; stopped = TRUE;
-		}
-		if (Lexer::word(at) == SEMICOLON_V) {
-			if (stop_character == ':') @<Issue problem for semicolon after colon@>;
-			if (stop_character == '.') @<Issue problem for semicolon after full stop@>;
-			stop_character = ';'; stopped = TRUE;
-		}
+		
+		if (sfsm->inside_dialogue_mode == FALSE) {
+			if (Lexer::word(at) == FULLSTOP_V) {
+				if (stop_character == ':') @<Issue problem for colon at end of sentence@>;
+				if (stop_character == ';') @<Issue problem for semicolon at end of sentence@>;
+				stop_character = '.'; stopped = TRUE;
+			}
+			if (Lexer::word(at) == SEMICOLON_V) {
+				if (stop_character == ':') @<Issue problem for semicolon after colon@>;
+				if (stop_character == '.') @<Issue problem for semicolon after full stop@>;
+				stop_character = ';'; stopped = TRUE;
+			}
 
-		@<Consider if a colon divides a sentence@>;
-		@<Consider if punctuation within a preceding quoted text divides a sentence, making an X break@>;
+			@<Consider if a colon divides a sentence@>;
+			@<Consider if punctuation within a preceding quoted text divides a sentence, making an X break@>;
+		}
 
 		if (stopped == FALSE) break;
 		no_stop_words++; at++;
@@ -325,7 +335,7 @@ or until reaching the end of the text: whichever comes first.
 
 =
 void Sentences::make_node(parse_node_tree *T, wording W, int stop_character) {
-	int heading_level = 0;
+	int heading_level = 0, entering_dialogue = FALSE;
 	int begins_or_ends = 0; /* 1 for "begins here", -1 for "ends here" */
 	parse_node *new;
 
@@ -343,6 +353,7 @@ void Sentences::make_node(parse_node_tree *T, wording W, int stop_character) {
 	if (sfsm->skipping_material_at_level >= 0) return;
 
 	if (heading_level > 0) {
+		sfsm->inside_dialogue_mode = entering_dialogue;
 		@<Issue a problem message if the heading incorporates a line break@>;
 		@<Issue a problem message if the heading does not end with a line break@>;
 		@<Make a new HEADING node, possibly beginning to skip material@>;
@@ -386,7 +397,15 @@ important), or |-1| to mean that the sentence begins an extension, or
 		switch (<<r>>) {
 			case -1: if (sfsm->ext_pos != NO_EXTENSION_POS) begins_or_ends = 1; break;
 			case -2: if (sfsm->ext_pos != NO_EXTENSION_POS) begins_or_ends = -1; break;
-			default: heading_level = <<r>>; break;
+			default:
+				if (<<r>> == 6) {
+					heading_level = 5;
+					entering_dialogue = TRUE;
+				} else {
+					heading_level = <<r>>;
+					entering_dialogue = FALSE;
+				}
+				break;
 		}
 	}
 
@@ -492,6 +511,7 @@ sentences and options-file sentences may have been read already.)
 }
 
 @<Accept the new sentence as one or more nodes in the parse tree@> =
+	if (sfsm->inside_dialogue_mode) @<Make a DIALOGUE node@>;
 	@<Convert comma-divided rule into two sentences, if this is allowed@>;
 	@<Otherwise, make a SENTENCE node@>;
 
@@ -512,10 +532,6 @@ sentences and options-file sentences may have been read already.)
 			Node::set_type(new, sfsm->nt); return;
 		} else {
 			Node::set_type(new, sfsm->nt);
-			#ifdef SUPERVISOR_MODULE
-			if (sfsm->nt == BIBLIOGRAPHIC_NT)
-				BiblioSentence::notify(sfsm->project_ref, new);
-			#endif
 			return;
 		}
 	}
@@ -684,6 +700,211 @@ it would be too late.
 	WRITE_TO(wd, "%+W", Wordings::one_word(Wordings::first_wn(W)));
 	LoadPreform::parse_text(wd);
 	DISCARD_TEXT(wd)
+
+@ Dialogue sections have their own syntactic conventions, which are enforced
+here. This hand-tooled parser is annoyingly long to write out, but only in
+order to catch improbable unmatched-bracket errors with tidy error messages.
+
+@<Make a DIALOGUE node@> =
+	#ifdef DIALOGUE_WARNING_SYNTAX_CALLBACK
+	if (T->contains_dialogue == FALSE) {
+		DIALOGUE_WARNING_SYNTAX_CALLBACK();
+	}
+	#endif
+	T->contains_dialogue = TRUE;
+	vocabulary_entry *opening_word = Lexer::word(Wordings::first_wn(W));
+	if ((opening_word == OPENBRACKET_V) &&
+		(Lexer::word(Wordings::last_wn(W)) == CLOSEBRACKET_V))
+		@<This is a dialogue cue@>;
+	if ((opening_word == DOUBLEDASH_V) ||
+		(opening_word == LEFTARROW_V) ||
+		(opening_word == RIGHTARROW_V))
+		@<This is a dialogue choice@>;
+	@<Otherwise this has to be a dialogue line@>;
+
+@ Here we are trying to match |(Cue notes.)|.
+
+@<This is a dialogue cue@> =
+	wording CW = Wordings::new(Wordings::first_wn(W)+1, Wordings::last_wn(W)-1);
+	new = Node::new(DIALOGUE_CUE_NT);
+	Node::set_text(new, W);
+	Annotations::write_int(new, dialogue_level_ANNOT,
+		Lexer::indentation_level(Wordings::first_wn(W)));
+	SyntaxTree::graft_sentence(T, new);
+	Sentences::add_dialogue_clauses(CW, T, new);
+	return;
+
+@<This is a dialogue choice@> =
+	int clauses_from = Wordings::first_wn(W) + 1, clauses_to = clauses_from - 1;
+	int speech_from = clauses_from, speech_to = Wordings::last_wn(W);
+	if (Lexer::word(speech_from) == OPENBRACKET_V) {
+		for (int bl = 0, i=Wordings::first_wn(W); i<=Wordings::last_wn(W); i++) {
+			if (Lexer::word(i) == OPENBRACKET_V) bl++;
+			if (Lexer::word(i) == CLOSEBRACKET_V) {
+				bl--;
+				if (bl == 0) { clauses_to = i; speech_from = i+1; break; }
+			}
+		}
+	}
+
+	wording CW = Wordings::new(clauses_from+1, clauses_to-1);
+	wording TW = Wordings::new(speech_from, speech_to);
+
+	new = Node::new(DIALOGUE_CHOICE_NT);
+	Node::set_text(new, W);
+	Annotations::write_int(new, dialogue_level_ANNOT,
+		Lexer::indentation_level(Wordings::first_wn(W)));
+	SyntaxTree::graft_sentence(T, new);
+	if (Wordings::nonempty(TW)) {
+		parse_node *selection = Node::new(DIALOGUE_SELECTION_NT);
+		Node::set_text(selection, TW);
+		SyntaxTree::graft(T, selection, new);
+	}
+	if (Wordings::nonempty(CW))
+		Sentences::add_dialogue_clauses(CW, T, new);
+	return;
+
+@ Here we are trying to match |Speaker (notes): "Speech."|.
+
+@<Otherwise this has to be a dialogue line@> =
+	int colon_at = -1;
+	@<Find the colon position@>;
+
+	int speaker_from = Wordings::first_wn(W), speaker_to = colon_at - 1;
+	int clauses_from = colon_at, clauses_to = colon_at - 1;
+	int speech_from = colon_at + 1, speech_to = Wordings::last_wn(W);
+	
+	@<Trim away bracketed clauses after the speaker name@>;
+
+	wording SW = Wordings::new(speaker_from, speaker_to);
+	wording CW = Wordings::new(clauses_from+1, clauses_to-1);
+	wording TW = Wordings::new(speech_from, speech_to);
+
+	if (<quoted-text>(TW) == FALSE) @<Dialogue speech not in double-quotes@>;
+
+	new = Node::new(DIALOGUE_LINE_NT);
+	Node::set_text(new, W);
+	Annotations::write_int(new, dialogue_level_ANNOT,
+		Lexer::indentation_level(Wordings::first_wn(W)));
+	SyntaxTree::graft_sentence(T, new);
+	parse_node *speaker = Node::new(DIALOGUE_SPEAKER_NT);
+	Node::set_text(speaker, SW);
+	parse_node *speech = Node::new(DIALOGUE_SPEECH_NT);
+	Node::set_text(speech, TW);
+	SyntaxTree::graft(T, speaker, new);
+	SyntaxTree::graft(T, speech, new);
+	if (Wordings::nonempty(CW))
+		Sentences::add_dialogue_clauses(CW, T, new);
+	return;
+
+@ The colon should always occur outside of parentheses, but if we can't find
+one in that happy condition, we just find the first one that's there (for the
+sake of issuing better problem messages: it won't lead to valid syntax).
+
+@<Find the colon position@> =
+	int bl = 0;
+	for (int i=Wordings::first_wn(W); i<=Wordings::last_wn(W); i++) {
+		if (Lexer::word(i) == OPENBRACKET_V) bl++;
+		if (Lexer::word(i) == CLOSEBRACKET_V) bl--;
+		if ((bl == 0) && (Lexer::word(i) == COLON_V)) colon_at = i;
+	}
+	if (colon_at == -1)
+		for (int i=Wordings::first_wn(W); i<=Wordings::last_wn(W); i++) {
+			if (Lexer::word(i) == COLON_V) { colon_at = i; break; }
+		}
+	if (colon_at == -1) @<Not a dialogue line after all@>;
+
+@ Similarly, we want to trim away bracketed clauses in a way which respects
+bracket nesting, and if we can't do that then the text is certainly erroneous:
+but we trim away the best we can for the sake of reporting a good problem.
+
+@<Trim away bracketed clauses after the speaker name@> =
+	while (Lexer::word(speaker_to) == CLOSEBRACKET_V) {
+		int bl = 0, cut = FALSE;
+		for (int i=speaker_to; i>=speaker_from; i--) {
+			if (Lexer::word(i) == OPENBRACKET_V) {
+				bl--;
+				if (bl == 0) { clauses_from = i; speaker_to = i-1; cut = TRUE; }
+			}
+			if (Lexer::word(i) == CLOSEBRACKET_V) bl++;
+		}
+		if (cut == FALSE) {
+			for (int i=speaker_to; i>=speaker_from; i--)
+				if (Lexer::word(i) == OPENBRACKET_V) {
+					clauses_from = i; speaker_to = i-1; cut = TRUE; break;
+				}
+		}
+		if (cut == FALSE) @<Not a dialogue line after all@>;
+	}
+	int bl = 0;
+	for (int i=speaker_from; i<=speaker_to; i++) {
+		if (Lexer::word(i) == OPENBRACKET_V) bl++;
+		if (Lexer::word(i) == CLOSEBRACKET_V) bl--;
+		if (bl < 0) break;
+	}
+	if (bl != 0) {
+		for (int i=speaker_from; i<=speaker_to; i++)
+			if (Lexer::word(i) == OPENBRACKET_V) {
+				clauses_from = i; speaker_to = i-1; break;
+			}
+	}
+
+@<Not a dialogue line after all@> =
+	Sentences::syntax_problem(UnexpectedDialogue_SYNERROR, W, sfsm->ref, 0);
+	new = Node::new(UNKNOWN_NT);
+	Node::set_text(new, W);
+	SyntaxTree::graft_sentence(T, new);
+	return;
+
+@<Dialogue speech not in double-quotes@> =
+	Sentences::syntax_problem(UnquotedDialogue_SYNERROR, W, sfsm->ref, 0);
+	new = Node::new(UNKNOWN_NT);
+	Node::set_text(new, W);
+	SyntaxTree::graft_sentence(T, new);
+	return;
+
+@ This is shared by both cues and lines, each of which can have multiple
+clauses in brackets. Punctuation divides these only outside of brackets, so
+|(hello, there), (and. here.)| divides only at the central comma, and results
+in two |DIALOGUE_CLAUSE_NT| nodes: one for |hello, there| and the other for
+|and. here|.
+
+=
+void Sentences::add_dialogue_clauses(wording CW, parse_node_tree *T, parse_node *new) {
+	int start = Wordings::first_wn(CW), bl = 0;
+	for (int i=Wordings::first_wn(CW); i<=Wordings::last_wn(CW); i++) {
+		if (Lexer::word(i) == OPENBRACKET_V) bl++;
+		if (Lexer::word(i) == CLOSEBRACKET_V) bl--;
+		if ((bl == 0) &&
+			((Lexer::word(i) == FULLSTOP_V) || (Lexer::word(i) == SEMICOLON_V))) {
+			int a = start, b = i-1;
+			@<Add a clause@>;
+			start = i+1;
+		}
+		if (bl < 0) break;
+	}
+	if (bl != 0)
+		Sentences::syntax_problem(MisbracketedDialogueClause_SYNERROR, CW, sfsm->ref, 0);
+	else if (start <= Wordings::last_wn(CW)) {
+		int a = start, b = Wordings::last_wn(CW);
+		@<Add a clause@>;
+	}
+}
+
+@<Add a clause@> =
+	while ((a<b) &&
+		(Lexer::word(a) == OPENBRACKET_V) && (Lexer::word(b) == CLOSEBRACKET_V))
+		a++, b--;
+	if ((Lexer::word(b) == FULLSTOP_V) || (Lexer::word(b) == SEMICOLON_V)) b--;
+	if (b < a) {
+		Sentences::syntax_problem(EmptyDialogueClause_SYNERROR, CW, sfsm->ref, 0);
+		return;
+	} else {
+		wording W = Wordings::new(a, b);
+		parse_node *clause = Node::new(DIALOGUE_CLAUSE_NT);
+		Node::set_text(clause, W);
+		SyntaxTree::graft(T, clause, new);
+	}
 
 @ Some tools using this module will want to push simple error messages out to
 the command line; others will want to translate them into elaborate problem

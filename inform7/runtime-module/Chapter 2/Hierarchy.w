@@ -184,6 +184,7 @@ void Hierarchy::establish(void) {
 	@<Establish grammar@>;
 	@<Establish instances@>;
 	@<Establish int-fiction@>;
+	@<Establish internal files@>;
 	@<Establish kinds@>;
 	@<Establish literal patterns@>;
 	@<Establish mapping hints@>;
@@ -221,6 +222,7 @@ void Hierarchy::establish(void) {
 @e RNG_SEED_AT_START_OF_PLAY_HL
 @e MAX_FRAME_SIZE_NEEDED_HL
 @e SUBMAIN_HL
+@e AFTER_ACTION_HOOK_HL
 @e HEADINGS_HAP
 @e HEADING_INDEXABLE_MD_HL
 @e HEADING_TEXT_MD_HL
@@ -257,6 +259,7 @@ void Hierarchy::establish(void) {
 		H_C_T(MAX_INDEXED_FIGURES_HL,         I"^max_indexed_figures")
 		H_C_T(MAX_FRAME_SIZE_NEEDED_HL,       I"MAX_FRAME_SIZE_NEEDED")
 		H_F_T(SUBMAIN_HL,                     I"Submain_fn", I"Submain")
+		H_C_T(AFTER_ACTION_HOOK_HL,           I"AfterActionHook")
 		H_BEGIN_AP(HEADINGS_HAP,              I"heading", I"_heading")
 			H_C_U(HEADING_INDEXABLE_MD_HL,    I"^indexable")
 			H_C_U(HEADING_TEXT_MD_HL,         I"^text")
@@ -535,6 +538,7 @@ void Hierarchy::establish(void) {
 @e GENRE_MD_HL
 @e AUTHOR_MD_HL
 @e RELEASE_MD_HL
+@e STORY_VERSION_MD_HL
 @e SERIAL_MD_HL
 @e LANGUAGE_MD_HL
 @e DESCRIPTION_MD_HL
@@ -558,6 +562,7 @@ void Hierarchy::establish(void) {
 		H_C_T(GENRE_MD_HL,                    I"^genre")
 		H_C_T(AUTHOR_MD_HL,                   I"^author")
 		H_C_T(RELEASE_MD_HL,                  I"^release")
+		H_C_T(STORY_VERSION_MD_HL,            I"^version")
 		H_C_T(SERIAL_MD_HL,                   I"^serial")
 		H_C_T(LANGUAGE_MD_HL,                 I"^language")
 		H_C_T(DESCRIPTION_MD_HL,              I"^description")
@@ -724,6 +729,7 @@ void Hierarchy::establish(void) {
 @e SLASH_FN_HL
 
 @e REPARSE_CODE_HL
+@e DICT_ENTRY_BYTES_HL
 @e DICT_WORD_SIZE_HL
 @e VERB_DIRECTIVE_META_HL
 @e VERB_DIRECTIVE_NOUN_FILTER_HL
@@ -780,6 +786,7 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(LocationRequirements::generic_submodule(I, grammar))
 		H_C_T(REPARSE_CODE_HL,                I"REPARSE_CODE")
+		H_C_T(DICT_ENTRY_BYTES_HL,            I"DICT_ENTRY_BYTES")
 		H_C_T(DICT_WORD_SIZE_HL,              I"DICT_WORD_SIZE")
 		H_C_T(VERB_DIRECTIVE_META_HL,         I"VERB_DIRECTIVE_META")
 		H_C_T(VERB_DIRECTIVE_NOUN_FILTER_HL,  I"VERB_DIRECTIVE_NOUN_FILTER")
@@ -885,10 +892,15 @@ void Hierarchy::establish(void) {
 @e INSTANCE_IS_ENTIRE_GAME_MD_HL
 @e INSTANCE_SCENE_STARTS_MD_HL
 @e INSTANCE_SCENE_STARTS_ON_CONDITION_MD_HL
+@e INSTANCE_SCENE_STARTS_ON_BEAT_MD_HL
+@e INSTANCE_SCENE_ENDS_ON_BEAT_MD_HL
 @e INSTANCE_SCENE_RECURS_MD_HL
 @e INSTANCE_SCENE_NEVER_ENDS_MD_HL
 @e INSTANCE_IS_EXF_MD_HL
+@e INSTANCE_IS_INF_MD_HL
 @e INSTANCE_FILE_VALUE_MD_HL
+@e INSTANCE_INTERNAL_FILE_FORMAT_MD_HL
+@e INSTANCE_INTERNAL_FILE_ID_MD_HL
 @e INSTANCE_FILE_IS_BINARY_MD_HL
 @e INSTANCE_FILE_OWNED_MD_HL
 @e INSTANCE_FILE_OWNED_BY_OTHER_MD_HL
@@ -955,6 +967,26 @@ void Hierarchy::establish(void) {
 @e INLINE_PROPERTIES_HAP
 @e INLINE_PROPERTY_HL
 @e DIRECTION_HL
+@e INSTANCE_IS_DB_MD_HL
+@e INSTANCE_IS_DL_MD_HL
+@e INSTANCE_IS_DC_MD_HL
+@e BEAT_ARRAY_MD_HL
+@e BEAT_ARRAY_HL
+@e BEAT_AVAILABLE_FN_HL
+@e BEAT_RELEVANT_FN_HL
+@e BEAT_STRUCTURE_HL
+@e BEAT_SPEAKERS_HL
+@e LINE_ARRAY_MD_HL
+@e LINE_ARRAY_HL
+@e LINE_AVAILABLE_FN_HL
+@e LINE_SPEAKER_FN_HL
+@e LINE_INTERLOCUTOR_FN_HL
+@e LINE_MENTIONING_FN_HL
+@e LINE_ACTION_FN_HL
+@e CHOICE_ARRAY_MD_HL
+@e CHOICE_ARRAY_HL
+@e CHOICE_AVAILABLE_FN_HL
+@e CHOICE_ACTION_MATCH_FN_HL
 
 @<Establish instances@> =
 	submodule_identity *instances = LargeScale::register_submodule_identity(I"instances");
@@ -985,6 +1017,8 @@ void Hierarchy::establish(void) {
 			H_C_U(INSTANCE_IS_ENTIRE_GAME_MD_HL,            I"^is_entire_game")
 			H_C_U(INSTANCE_SCENE_STARTS_MD_HL,              I"^starts")
 			H_C_U(INSTANCE_SCENE_STARTS_ON_CONDITION_MD_HL, I"^starts_on_condition")
+			H_C_U(INSTANCE_SCENE_STARTS_ON_BEAT_MD_HL,      I"^starts_on_beat")
+			H_C_U(INSTANCE_SCENE_ENDS_ON_BEAT_MD_HL,        I"^ends_on_beat")
 			H_C_U(INSTANCE_SCENE_RECURS_MD_HL,              I"^recurs")
 			H_C_U(INSTANCE_SCENE_NEVER_ENDS_MD_HL,          I"^never_ends")
 			H_C_U(INSTANCE_SSF_MD_HL,                       I"^scene_status_fn")
@@ -1001,12 +1035,15 @@ void Hierarchy::establish(void) {
 				H_END
 			H_END
 			H_C_U(INSTANCE_IS_EXF_MD_HL,                    I"^is_file")
+			H_C_U(INSTANCE_IS_INF_MD_HL,                    I"^is_internal_file")
 			H_C_U(INSTANCE_FILE_VALUE_MD_HL,                I"^file_value")
 			H_C_U(INSTANCE_FILE_OWNED_MD_HL,                I"^file_owned")
 			H_C_U(INSTANCE_FILE_OWNED_BY_OTHER_MD_HL,       I"^file_owned_by_other")
 			H_C_U(INSTANCE_FILE_OWNER_MD_HL,                I"^file_owner")
+			H_C_U(INSTANCE_INTERNAL_FILE_FORMAT_MD_HL,      I"^internal_file_format")
+			H_C_U(INSTANCE_INTERNAL_FILE_ID_MD_HL,          I"^resource_id")
 			H_C_U(INSTANCE_FILE_IS_BINARY_MD_HL,            I"^is_binary")
-			H_C_U(INSTANCE_LEAFNAME_MD_HL,                  I"^leafname")
+			H_C_U(INSTANCE_LEAFNAME_MD_HL,                  I"^filename")
 			H_C_U(INSTANCE_IS_FIGURE_MD_HL,                 I"^is_figure")
 			H_C_U(INSTANCE_FIGURE_FILENAME_MD_HL,           I"^filename")
 			H_C_U(INSTANCE_FIGURE_ID_MD_HL,                 I"^resource_id")
@@ -1047,6 +1084,26 @@ void Hierarchy::establish(void) {
 			H_F_G(REGION_FOUND_IN_FN_HL,                    I"region_found_in_fn", I"RFI_for_I")
 			H_F_G(TSD_DOOR_DIR_FN_HL,                       I"tsd_door_dir_fn", I"TSD_door_dir_value")
 			H_F_G(TSD_DOOR_TO_FN_HL,                        I"tsd_door_to_fn", I"TSD_door_to_value")
+			H_C_U(INSTANCE_IS_DB_MD_HL,                     I"^is_dialogue_beat")
+			H_C_U(INSTANCE_IS_DL_MD_HL,                     I"^is_dialogue_line")
+			H_C_U(INSTANCE_IS_DC_MD_HL,                     I"^is_dialogue_choice")
+			H_C_U(BEAT_ARRAY_MD_HL,                         I"^beat_data")
+			H_C_U(BEAT_ARRAY_HL,                            I"beat_data")
+			H_F_U(BEAT_AVAILABLE_FN_HL,                     I"available_fn")
+			H_F_U(BEAT_RELEVANT_FN_HL,                      I"relevant_fn")
+			H_C_U(BEAT_STRUCTURE_HL,                        I"structure")
+			H_C_U(BEAT_SPEAKERS_HL,                         I"speakers")
+			H_C_U(LINE_ARRAY_MD_HL,                         I"^line_data")
+			H_C_U(LINE_ARRAY_HL,                            I"line_data")
+			H_F_U(LINE_AVAILABLE_FN_HL,                     I"available_fn")
+			H_F_U(LINE_SPEAKER_FN_HL,                       I"speaker_fn")
+			H_F_U(LINE_INTERLOCUTOR_FN_HL,                  I"interlocutor_fn")
+			H_F_U(LINE_MENTIONING_FN_HL,                    I"mentioning_fn")
+			H_F_U(LINE_ACTION_FN_HL,                        I"action_fn")
+			H_C_U(CHOICE_ARRAY_MD_HL,                       I"^choice_data")
+			H_C_U(CHOICE_ARRAY_HL,                          I"choice_data")
+			H_F_U(CHOICE_AVAILABLE_FN_HL,                   I"available_fn")
+			H_F_U(CHOICE_ACTION_MATCH_FN_HL,                I"action_match_fn")
 			H_F_U(INST_SHOWME_FN_HL,                        I"showme_fn")
 			H_BEGIN_AP(INLINE_PROPERTIES_HAP,               I"inline_property", I"_inline_property")
 				H_C_U(INLINE_PROPERTY_HL,                   I"inline")
@@ -1061,6 +1118,7 @@ void Hierarchy::establish(void) {
 @e START_OBJECT_INIS_HL
 @e START_ROOM_INIS_HL
 @e START_TIME_INIS_HL
+@e START_BEAT_INIS_HL
 @e DONE_INIS_HL
 
 @e NO_DIRECTIONS_HL
@@ -1075,6 +1133,7 @@ void Hierarchy::establish(void) {
 		H_C_T(START_OBJECT_INIS_HL,           I"START_OBJECT_INIS")
 		H_C_T(START_ROOM_INIS_HL,             I"START_ROOM_INIS")
 		H_C_T(START_TIME_INIS_HL,             I"START_TIME_INIS")
+		H_C_T(START_BEAT_INIS_HL,             I"START_BEAT_INIS")
 		H_C_T(DONE_INIS_HL,                   I"DONE_INIS")
 	H_END
 
@@ -1082,6 +1141,20 @@ void Hierarchy::establish(void) {
 		H_C_T(NO_DIRECTIONS_HL,               I"No_Directions")
 		H_C_T(MAP_STORAGE_HL,                 I"Map_Storage")
 		H_C_T(INITIALSITUATION_HL,            I"InitialSituation")
+	H_END
+
+@h Internal files.
+
+@e INTERNAL_FILES_HAP
+@e INTERNAL_FILE_HL
+
+@<Establish internal files@> =
+	submodule_identity *internal_files = LargeScale::register_submodule_identity(I"internal_files");
+
+	H_BEGIN(LocationRequirements::local_submodule(internal_files))
+		H_BEGIN_AP(INTERNAL_FILES_HAP,        I"internal_file", I"_internal_file")
+			H_C_U(INTERNAL_FILE_HL,           I"file")
+		H_END
 	H_END
 
 @h Kinds.
@@ -1542,6 +1615,7 @@ void Hierarchy::establish(void) {
 @e RULEBOOK_INDEX_ID_MD_HL
 @e RULEBOOK_RUN_FN_MD_HL
 @e RULEBOOK_ID_HL
+@e RULEBOOK_TRANS_ID_HL
 @e RULEBOOK_FOCUS_MD_HL
 @e RUN_FN_HL
 @e RULEBOOK_STV_CREATOR_FN_HL
@@ -1593,6 +1667,7 @@ void Hierarchy::establish(void) {
 			H_C_U(RULEBOOK_INDEX_ID_MD_HL,             I"^index_id")
 			H_C_U(RULEBOOK_FOCUS_MD_HL,                I"^focus")
 			H_C_U(RULEBOOK_ID_HL,                      I"rulebook_id")
+			H_C_U(RULEBOOK_TRANS_ID_HL,                I"translated_rulebook_id")
 			H_F_U(RUN_FN_HL,                           I"run_fn")
 			H_F_U(RULEBOOK_STV_CREATOR_FN_HL,          I"stv_creator_fn")
 			H_BEGIN_AP(RULEBOOK_ENTRIES_HAP,           I"entry", I"_rulebook_entry")
@@ -1888,9 +1963,14 @@ void Hierarchy::establish(void) {
 @e K_SOUND_NAME_XPACKAGE
 @e K_USE_OPTION_XPACKAGE
 @e K_EXTERNAL_FILE_XPACKAGE
+@e K_INTERNAL_FILE_XPACKAGE
 @e K_RULEBOOK_OUTCOME_XPACKAGE
 @e K_RESPONSE_XPACKAGE
 @e K_SCENE_XPACKAGE
+@e K_DIALOGUE_BEAT_XPACKAGE
+@e K_DIALOGUE_LINE_XPACKAGE
+@e K_DIALOGUE_CHOICE_XPACKAGE
+@e K_PERFORMANCE_STYLE_XPACKAGE
 
 @e CAPSHORTNAME_HL
 @e DECIMAL_TOKEN_INNER_HL
@@ -1901,7 +1981,12 @@ void Hierarchy::establish(void) {
 @e PRINT_FIGURE_NAME_HL
 @e PRINT_SOUND_NAME_HL
 @e PRINT_EXTERNAL_FILE_NAME_HL
+@e PRINT_INTERNAL_FILE_NAME_HL
 @e PRINT_SCENE_HL
+@e PRINT_DIALOGUE_BEAT_HL
+@e PRINT_DIALOGUE_LINE_HL
+@e PRINT_DIALOGUE_CHOICE_HL
+@e PRINT_PERFORMANCE_STYLE_HL
 
 @<The rest@> =
 	H_BEGIN(LocationRequirements::this_exotic_package(K_OBJECT_XPACKAGE))
@@ -1932,12 +2017,32 @@ void Hierarchy::establish(void) {
 		H_F_T(PRINT_EXTERNAL_FILE_NAME_HL,    I"print_fn", I"PrintExternalFileName")
 	H_END
 
+	H_BEGIN(LocationRequirements::this_exotic_package(K_INTERNAL_FILE_XPACKAGE))
+		H_F_T(PRINT_INTERNAL_FILE_NAME_HL,    I"print_fn", I"PrintInternalFileName")
+	H_END
+
 	H_BEGIN(LocationRequirements::this_exotic_package(K_RULEBOOK_OUTCOME_XPACKAGE))
 		H_F_T(PRINT_RULEBOOK_OUTCOME_HL,      I"print_fn", I"RulebookOutcomePrintingRule")
 	H_END
 
 	H_BEGIN(LocationRequirements::this_exotic_package(K_SCENE_XPACKAGE))
 		H_F_T(PRINT_SCENE_HL,                 I"print_fn", I"PrintSceneName")
+	H_END
+
+	H_BEGIN(LocationRequirements::this_exotic_package(K_DIALOGUE_BEAT_XPACKAGE))
+		H_F_T(PRINT_DIALOGUE_BEAT_HL,         I"print_fn", I"PrintDialogueBeatName")
+	H_END
+
+	H_BEGIN(LocationRequirements::this_exotic_package(K_DIALOGUE_LINE_XPACKAGE))
+		H_F_T(PRINT_DIALOGUE_LINE_HL,         I"print_fn", I"PrintDialogueLineName")
+	H_END
+
+	H_BEGIN(LocationRequirements::this_exotic_package(K_DIALOGUE_CHOICE_XPACKAGE))
+		H_F_T(PRINT_DIALOGUE_CHOICE_HL,       I"print_fn", I"PrintDialogueChoiceName")
+	H_END
+
+	H_BEGIN(LocationRequirements::this_exotic_package(K_PERFORMANCE_STYLE_XPACKAGE))
+		H_F_T(PRINT_PERFORMANCE_STYLE_HL,     I"print_fn", I"PrintPerformanceStyleName")
 	H_END
 
 @h Architectural symbols.
@@ -2029,18 +2134,23 @@ exotic, but which are locations not easily falling into patterns. Here they are:
 =
 package_request *Hierarchy::exotic_package(int x) {
 	switch (x) {
-		case K_OBJECT_XPACKAGE:           return RTKindConstructors::kind_package(K_object);
-		case K_NUMBER_XPACKAGE:           return RTKindConstructors::kind_package(K_number);
-		case K_TIME_XPACKAGE:             return RTKindConstructors::kind_package(K_time);
-		case K_TRUTH_STATE_XPACKAGE:      return RTKindConstructors::kind_package(K_truth_state);
-		case K_TABLE_XPACKAGE:            return RTKindConstructors::kind_package(K_table);
-		case K_FIGURE_NAME_XPACKAGE:      return RTKindConstructors::kind_package(K_figure_name);
-		case K_SOUND_NAME_XPACKAGE:       return RTKindConstructors::kind_package(K_sound_name);
-		case K_USE_OPTION_XPACKAGE:       return RTKindConstructors::kind_package(K_use_option);
-		case K_EXTERNAL_FILE_XPACKAGE:    return RTKindConstructors::kind_package(K_external_file);
-		case K_RULEBOOK_OUTCOME_XPACKAGE: return RTKindConstructors::kind_package(K_rulebook_outcome);
-		case K_RESPONSE_XPACKAGE:         return RTKindConstructors::kind_package(K_response);
-		case K_SCENE_XPACKAGE:            return RTKindConstructors::kind_package(K_scene);
+		case K_OBJECT_XPACKAGE:            return RTKindConstructors::kind_package(K_object);
+		case K_NUMBER_XPACKAGE:            return RTKindConstructors::kind_package(K_number);
+		case K_TIME_XPACKAGE:              return RTKindConstructors::kind_package(K_time);
+		case K_TRUTH_STATE_XPACKAGE:       return RTKindConstructors::kind_package(K_truth_state);
+		case K_TABLE_XPACKAGE:             return RTKindConstructors::kind_package(K_table);
+		case K_FIGURE_NAME_XPACKAGE:       return RTKindConstructors::kind_package(K_figure_name);
+		case K_SOUND_NAME_XPACKAGE:        return RTKindConstructors::kind_package(K_sound_name);
+		case K_USE_OPTION_XPACKAGE:        return RTKindConstructors::kind_package(K_use_option);
+		case K_EXTERNAL_FILE_XPACKAGE:     return RTKindConstructors::kind_package(K_external_file);
+		case K_INTERNAL_FILE_XPACKAGE:     return RTKindConstructors::kind_package(K_internal_file);
+		case K_RULEBOOK_OUTCOME_XPACKAGE:  return RTKindConstructors::kind_package(K_rulebook_outcome);
+		case K_RESPONSE_XPACKAGE:          return RTKindConstructors::kind_package(K_response);
+		case K_SCENE_XPACKAGE:             return RTKindConstructors::kind_package(K_scene);
+		case K_DIALOGUE_BEAT_XPACKAGE:     return RTKindConstructors::kind_package(K_dialogue_beat);
+		case K_DIALOGUE_LINE_XPACKAGE:     return RTKindConstructors::kind_package(K_dialogue_line);
+		case K_DIALOGUE_CHOICE_XPACKAGE:   return RTKindConstructors::kind_package(K_dialogue_choice);
+		case K_PERFORMANCE_STYLE_XPACKAGE: return RTKindConstructors::kind_package(K_performance_style);
 	}
 	internal_error("unknown exotic package");
 	return NULL;

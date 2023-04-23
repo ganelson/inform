@@ -49,7 +49,6 @@ define make-me
 	{compile-indulgently from: $(SANDBOX)/files.c    to: $(SANDBOX)/files.o    options: -D$(INFORM6OS)}
 	{compile-indulgently from: $(SANDBOX)/inform.c   to: $(SANDBOX)/inform.o   options: -D$(INFORM6OS)}
 	{compile-indulgently from: $(SANDBOX)/lexer.c    to: $(SANDBOX)/lexer.o    options: -D$(INFORM6OS)}
-	{compile-indulgently from: $(SANDBOX)/linker.c   to: $(SANDBOX)/linker.o   options: -D$(INFORM6OS)}
 	{compile-indulgently from: $(SANDBOX)/memory.c   to: $(SANDBOX)/memory.o   options: -D$(INFORM6OS)}
 	{compile-indulgently from: $(SANDBOX)/objects.c  to: $(SANDBOX)/objects.o  options: -D$(INFORM6OS)}
 	{compile-indulgently from: $(SANDBOX)/states.c   to: $(SANDBOX)/states.o   options: -D$(INFORM6OS)}
@@ -125,7 +124,9 @@ $(INTERPRETERS)/dumb-glulx/glulxe/glulxe: \
 	$(INTERPRETERS)/dumb-glulx/cheapglk/*.h \
 	$(INTERPRETERS)/dumb-glulx/glulxe/*.c \
 	$(INTERPRETERS)/dumb-glulx/glulxe/*.h
+	cd $(INTERPRETERS)/dumb-glulx/cheapglk; make clean
 	cd $(INTERPRETERS)/dumb-glulx/cheapglk; make
+	cd $(INTERPRETERS)/dumb-glulx/glulxe; make clean
 	cd $(INTERPRETERS)/dumb-glulx/glulxe; make
 
 # Cleaning up:

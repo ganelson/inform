@@ -16,9 +16,9 @@ uses a module of utility functions called //foundation//.
 For more, see //foundation: A Brief Guide to Foundation//.
 
 @h Now in glorious Technicolor.
-This module consists only of three independent plugins, and even those are
+This module consists only of three independent features, and even those are
 very similar to each other:
 
-(*) //External Files// is a plugin for reading and writing files;
+(*) //External Files// is a feature for reading and writing files;
 (*) //Figures// for displaying images; and
 (*) //Sound Effects// for playing music or other sounds.

@@ -1,4 +1,4 @@
-Version 8 of Basic Screen Effects by Emily Short begins here.
+Version 9 of Basic Screen Effects by Emily Short begins here.
 
 "Waiting for a keypress; clearing the screen. Also provides facilities for 
 changing the foreground and background colors of text, when using the z-machine.
@@ -208,9 +208,7 @@ To fill the/-- status bar/line with (selected table - a table-name):
 		increase __index by 1;
 
 Right alignment depth is a number that varies.
-The right alignment depth variable translates into Inter as "right_alignment_depth".
-
-
+The right alignment depth variable is defined by Inter as "right_alignment_depth".
 
 Section - Color effects (for Z-machine only)
 
@@ -266,8 +264,6 @@ To turn the/-- background white:
 	(- @set_colour 0 9; -);
 
 Basic Screen Effects ends here.
-
-
 
 ---- DOCUMENTATION ----
 

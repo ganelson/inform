@@ -1,0 +1,19 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 17 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32164 words long.
+Problem__ PM_SlashCutsDigits
+  >--> You wrote 'Understand "new/-- br80/08/-- camera" as the camera' (source
+    text, line 5): but 'understand' uses a slash '/' here in a way which cuts
+    off something which contains only digits, and this will not do anything
+    good. (Note that a slash in grammar like this means an alternative choice
+    of word.)
+Problem__ PM_UnderstandEmptyText
+  >--> You wrote 'Understand "new/-- br80/08/-- camera" as the camera' (source
+    text, line 5): but 'understand' should be followed by text which contains
+    at least one word or square-bracketed token, so for instance 'understand
+    "take [something]" as taking' is fine, but 'understand "" as the fog' is
+    not. The same applies to the contents of 'topic' columns in tables, since
+    those are also instructions for understanding.
+Inform 7 has finished.

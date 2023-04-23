@@ -4,16 +4,16 @@ Inform has a thicket of properties to do with names: not just the
 name itself, but whether it is a plural, a proper name, and so on. Here we
 look after these properties, and give them their initial states.
 
-@h As a plugin.
+@h As a feature.
 This section of code is used even in Basic Inform, but it is structured
-as a plugin called "naming", even though it is permanently active, as a way
+as a feature called "naming", even though it is permanently active, as a way
 to contain its complexity.
 
 =
 void Naming::start(void) {
-	PluginManager::plug(PRODUCTION_LINE_PLUG, Naming::production_line);
-	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, Naming::naming_new_property_notify);
-	PluginManager::plug(COMPLETE_MODEL_PLUG, Naming::naming_complete_model);
+	PluginCalls::plug(PRODUCTION_LINE_PLUG, Naming::production_line);
+	PluginCalls::plug(NEW_PROPERTY_NOTIFY_PLUG, Naming::naming_new_property_notify);
+	PluginCalls::plug(COMPLETE_MODEL_PLUG, Naming::naming_complete_model);
 }
 
 int Naming::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
@@ -286,7 +286,7 @@ source text description, so that "Mr Beebe" will not be flattened to "mr
 beebe"; but that we take care to reduce the case of "Your nose" (etc.)
 to "your nose", unless it occurs in the name of a room, like "Your Bedroom".
 
-If the "spatial" plugin is inactive, |this_is_a_room| is always |FALSE|.
+If the "spatial" feature is inactive, |this_is_a_room| is always |FALSE|.
 
 @<Compose the I6 short-name as a piece of text@> =
 	Naming::compose_words_to_I6_naming_text(textual_value, W, FALSE,

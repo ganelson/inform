@@ -47,8 +47,10 @@
 %Index.Elements.Fi.NoFigures = There are no figures, or illustrations, in this project.
 %Index.Elements.Fi.NoSounds = There are no sound effects in this project.
 %Index.Elements.Fi.NoFiles = This project doesn't read or write external files.
+%Index.Elements.Fi.NoInternalFiles = This project doesn't read internal files.
 %Index.Elements.Fi.ListOfFigures = List of Figures
 %Index.Elements.Fi.ListOfSounds = List of Sounds
+%Index.Elements.Fi.ListOfInternalFiles = List of Internal Files
 %Index.Elements.Fi.ListOfFiles = List of External Files
 
 %Index.Elements.Fi.Format = Format *1
@@ -70,6 +72,8 @@
 %Index.Elements.Fi.Mono = Mono
 %Index.Elements.Fi.Stereo = Stereo
 %Index.Elements.Fi.BitRate = *1 kilobits/sec
+
+%Index.Elements.Fi.MissingInternalFile = Missing from the Data folder
 
 %Index.Elements.Fi.BinaryFile = Binary file "*1"
 %Index.Elements.Fi.TextFile = File "*1"
@@ -153,11 +157,14 @@
 	SIX, and "[open door]" matches the name of any nearby door which is
 	currently open.
 %Index.Elements.To.Explanation2 = 
-	Names of objects are normally understood only when they are within sight,
-	but writing "any" lifts this restriction. So "[any person]" allows
-	every name of a person, wherever they happen to be.
+	Names of objects are normally understood only when they are in scope
+	(which roughly means: within sight), but writing "any" lifts this restriction.
+	So "[any person]" allows every name of a person, wherever they happen to be,
+	even if they are out of play and not found in any room.
 %Index.Elements.To.SameAs = same as "*1"
 %Index.Elements.To.Reversed = reversed
+%Index.Elements.To.Something =
+	an object which is in scope, which is almost always a thing but does not have to be
 
 %Index.Pages.Kinds.Title = Kinds Index
 %Index.Pages.Kinds.Caption = All the different sorts of value

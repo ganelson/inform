@@ -81,7 +81,7 @@ store partial results when finding routes through maps, but |vector| is
 nameless in the source text, unrecorded in the Index, and generally invisible
 to the end user.
 
-Core Inform creates no such properties, but many of the plugins do.
+Core Inform creates no such properties, but many of the features do.
 
 The function comes in two forms: one where we already have an iname we want
 the property to have, and one where we just have the text of such a name.

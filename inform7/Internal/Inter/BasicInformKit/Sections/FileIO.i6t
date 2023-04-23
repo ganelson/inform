@@ -20,11 +20,13 @@ Constant AUXF_STATUS = 1; ! One of the following:
 	Constant AUXF_STATUS_IS_OPEN_FOR_READ = 2;
 	Constant AUXF_STATUS_IS_OPEN_FOR_WRITE = 3;
 	Constant AUXF_STATUS_IS_OPEN_FOR_APPEND = 4;
+	Constant AUXF_STATUS_IS_ERRONEOUS = 5;
 Constant AUXF_BINARY = 2; ! False for text files (I7 default), true for binary
 Constant AUXF_STREAM = 3; ! Stream for an open file (meaningless otherwise)
 Constant AUXF_FILENAME = 4; ! Packed address of constant string
 Constant AUXF_IFID_OF_OWNER = 5; ! UUID_ARRAY if owned by this project, or
 	! string array of IFID of owner, or NULL to leave open
+Constant AUXF_RESOURCE_ID = 6; ! Only for internal files, identified by Blorb resource
 
 @h Instances.
 These structures are not dynamically created: they are precompiled by the Inform
@@ -378,6 +380,108 @@ actual translations are in "Tables.i6t".
 	TableRead(tab, extf);
 	FileIO_Close(extf);
 	rtrue;
+];
+
+@h Internal file support.
+Internal files (new in Inform with IE-0004) are handled very similarly to
+external, though they are read-only, and there are no issues with ownership,
+making everything much simpler.
+
+Support so far is rudimentary, but this is a start.
+
+File IDs are instance values for the enumerative kind "internal file", so
+they range from 1 to NO_INTERNAL_FILES inclusive. Note that this is a different
+kind from "external file", and Inform's typechecker does not allow either to
+cast implicitly to the other. All the same the metadata structure for an
+internal file is laid out very similarly to an external one, except that it
+has an additional field AUXF_RESOURCE_ID holding the blorb resource ID for
+the file; files are opened using resource IDs rather than filenames.
+
+InternalFileReadChar(F, N) reads the data at position N in file F.
+
+=
+[ InternalFileIO_Error file_id err_text  struc;
+	if ((file_id < 1) || (file_id > NO_INTERNAL_FILES)) {
+		print "^*** Error on unknown file: ", (string) err_text, " ***^";
+	} else {
+		struc = TableOfInternalFiles-->file_id;
+		print "^*** Error on file '",
+			(string) struc-->AUXF_FILENAME, "': ",
+			(string) err_text, " ***^";
+		struc-->AUXF_STATUS = AUXF_STATUS_IS_ERRONEOUS;
+	}
+	RunTimeProblem(RTP_FILEIOERROR);
+	return 0;
+];
+
+[ InternalFileReadChar file_id at resource_id stream_id struc now_at;
+	if ((file_id < 1) || (file_id > NO_INTERNAL_FILES)) {
+		InternalFileIO_Error(file_id, "file ID out of range");
+		return -1;
+	}
+	struc = TableOfInternalFiles-->file_id;
+	if (struc-->AUXF_STATUS == AUXF_STATUS_IS_CLOSED) {
+		resource_id = struc-->AUXF_RESOURCE_ID;
+		stream_id = glk_stream_open_resource_uni(resource_id, 0);
+		if (stream_id) {
+			struc-->AUXF_STREAM = stream_id;
+			struc-->AUXF_STATUS = AUXF_STATUS_IS_OPEN_FOR_READ;
+		} else {
+			InternalFileIO_Error(file_id, "unable to open for reading");
+			return -1;
+		}
+	}
+	if (struc-->AUXF_STATUS == AUXF_STATUS_IS_ERRONEOUS) {
+		return -1;
+	}
+	stream_id = struc-->AUXF_STREAM;
+	if (at >= 0) glk_stream_set_position(stream_id, at, seekmode_Start);
+	return glk_get_char_stream_uni(stream_id);
+];
+
+[ InternalFileIO_Line txt file_id file_id pos tsize c;
+	TEXT_TY_Transmute(txt);
+	TEXT_TY_Empty(txt);
+	tsize = BlkValueLBCapacity(txt);
+	while (true) {
+		c = InternalFileReadChar(file_id, -1);
+		if (c == 10) { BlkValueWrite(txt, pos, 0); rtrue; }
+		if (c == -1) break;
+		if (pos+1 >= tsize) {
+			if (BlkValueSetLBCapacity(txt, 2*pos) == false) rfalse;
+			tsize = BlkValueLBCapacity(txt);
+		}
+		BlkValueWrite(txt, pos++, c);
+	}
+	BlkValueWrite(txt, pos, 0);
+	if (pos > 0) rtrue;
+	rfalse;
+];
+
+[ InternalFileReadWords file_id at len buffer resource_id stream_id struc now_at x;
+	if ((file_id < 1) || (file_id > NO_INTERNAL_FILES)) {
+		InternalFileIO_Error(file_id, "file ID out of range");
+		return -1;
+	}
+	struc = TableOfInternalFiles-->file_id;
+	if (struc-->AUXF_STATUS == AUXF_STATUS_IS_CLOSED) {
+		resource_id = struc-->AUXF_RESOURCE_ID;
+		stream_id = glk_stream_open_resource_uni(resource_id, 0);
+		if (stream_id) {
+			struc-->AUXF_STREAM = stream_id;
+			struc-->AUXF_STATUS = AUXF_STATUS_IS_OPEN_FOR_READ;
+		} else {
+			InternalFileIO_Error(file_id, "unable to open for reading");
+			return -1;
+		}
+	}
+	if (struc-->AUXF_STATUS == AUXF_STATUS_IS_ERRONEOUS) {
+		return -1;
+	}
+	stream_id = struc-->AUXF_STREAM;
+	if (at >= 0) glk_stream_set_position(stream_id, at, seekmode_Start);
+	if (glk_get_buffer_stream_uni(stream_id, buffer, len) == len) rtrue;
+	rfalse;
 ];
 
 @h Z-Machine Stubs.

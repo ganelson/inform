@@ -212,6 +212,21 @@ void Problems::quote_wide_text(int t, wchar_t *p) {
 void Problems::expand_wide_text(OUTPUT_STREAM, void *p) {
 	WRITE("%w", (wchar_t *) p);
 }
+void Problems::quote_nonterminal(int t, nonterminal *nt) {
+	Problems::problem_quote(t, (void *) nt, Problems::expand_nonterminal);
+}
+void Problems::expand_nonterminal(OUTPUT_STREAM, void *p) {
+	nonterminal *nt = (nonterminal *) p;
+	if (nt == NULL) { WRITE("(no nonterminal)"); return; }
+	TEMPORARY_TEXT(name)
+	WRITE_TO(name, "%w", Vocabulary::get_exemplar(nt->nonterminal_id, FALSE));
+	LOOP_THROUGH_TEXT(pos, name) {
+		wchar_t c = Str::get(pos);
+		if ((c == '<') || (c == '>')) c = '\'';
+		PUT(c);
+	}
+	DISCARD_TEXT(name);
+}
 void Problems::quote_stream(int t, text_stream *p) {
 	Problems::problem_quote(t, (void *) p, Problems::expand_stream);
 }
@@ -422,9 +437,9 @@ its type, stored internally as a single character.
 
 @<Quote a red-tinted word range in a problem message@> =
 	TEMPORARY_TEXT(OUT)
-	HTML::begin_colour(OUT, I"800000");
+	HTML::begin_span(OUT, I"problemred");
 	WRITE("%W", problem_quotations[t].text_quoted);
-	HTML::end_colour(OUT);
+	HTML::end_span(OUT);
 	@<Spool temporary stream text to the problem buffer@>;
 	DISCARD_TEXT(OUT)
 
@@ -432,9 +447,9 @@ its type, stored internally as a single character.
 
 @<Quote a green-tinted word range in a problem message@> =
 	TEMPORARY_TEXT(OUT)
-	HTML::begin_colour(OUT, I"008000");
+	HTML::begin_span(OUT, I"problemgreen");
 	WRITE("%W", problem_quotations[t].text_quoted);
-	HTML::end_colour(OUT);
+	HTML::end_span(OUT);
 	@<Spool temporary stream text to the problem buffer@>;
 	DISCARD_TEXT(OUT)
 
@@ -444,11 +459,11 @@ ourselves, and must delegate to:
 @<Expand structure-based escape@> =
 	Problems::append_source(EMPTY_WORDING);
 	TEMPORARY_TEXT(OUT)
-	if (problem_quotations[t].quotation_type == 'r') HTML::begin_colour(OUT, I"800000");
-	if (problem_quotations[t].quotation_type == 'g') HTML::begin_colour(OUT, I"008000");
+	if (problem_quotations[t].quotation_type == 'r') HTML::begin_span(OUT, I"problemred");
+	if (problem_quotations[t].quotation_type == 'g') HTML::begin_span(OUT, I"problemgreen");
 	(problem_quotations[t].expander)(OUT, problem_quotations[t].structure_quoted);
-	if (problem_quotations[t].quotation_type == 'r') HTML::end_colour(OUT);
-	if (problem_quotations[t].quotation_type == 'g') HTML::end_colour(OUT);
+	if (problem_quotations[t].quotation_type == 'r') HTML::end_span(OUT);
+	if (problem_quotations[t].quotation_type == 'g') HTML::end_span(OUT);
 	@<Spool temporary stream text to the problem buffer@>;
 	DISCARD_TEXT(OUT)
 	Problems::transcribe_appended_source();
@@ -458,6 +473,7 @@ ourselves, and must delegate to:
 		wchar_t c = Str::get(pos);
 		if (c == '<') c = PROTECTED_LT_CHAR;
 		if (c == '>') c = PROTECTED_GT_CHAR;
+		if (c == '"') c = PROTECTED_QUOT_CHAR;
 		PUT_TO(PBUFF, c);
 	}
 

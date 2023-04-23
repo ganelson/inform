@@ -1,0 +1,9 @@
+Elsinore is a room.
+
+Section 1 - Meeting (dialogue)
+
+(This is the quaintly done beat.)
+
+-- "Again?"
+
+-- perform the quaintly done beat.

@@ -1,5 +1,5 @@
   DefineOptTest: Not a game.
-  Release 1 / Serial number 220306 / Inform v6.36, compiler options S
+  Release 1 / Serial number 220724 / Inform v6.41, compiler options S
   
   HEADDEF: 5
   FOO: 26

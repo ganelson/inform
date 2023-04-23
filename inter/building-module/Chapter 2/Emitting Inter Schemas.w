@@ -421,7 +421,10 @@ changed back again very soon after.
 		at = at->next_node;
 	} else if (Str::eq(tok->material, I"indirect")) { 
 		at = at->next_node;
-	} else {
+	} else if (Str::eq(tok->material, I"glk")) {
+		InterSchemas::throw_error(node, I"the glk() function is now unsupported");
+		return;
+	} else {	
 		to_call = IdentifierFinders::find_token(I, tok, finder);
 		if (InterSymbol::is_local(to_call)) to_call = NULL;
 		if (to_call) {
@@ -460,7 +463,7 @@ somewhere (in fact, always in a property value).
 			InterSchemas::throw_error(node, I"too many arguments for call-message");
 			return;
 		}
-		inter_ti BIP = Primitives::BIP_for_indirect_call_returning_value(argc);
+		inter_ti BIP = Primitives::BIP_for_indirect_call_returning_value(argc-1);
 		Produce::inv_primitive(I, BIP);
 		Produce::down(I);
 		for (; at; at=at->next_node) EIS_RECURSE(at, VAL_PRIM_CAT);

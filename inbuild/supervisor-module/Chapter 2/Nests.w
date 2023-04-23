@@ -35,6 +35,7 @@ see below for why. Lower-tag-numbered origins are better than later ones.
 @e EXTERNAL_NEST_TAG
 @e GENERIC_NEST_TAG
 @e INTERNAL_NEST_TAG
+@e EXTENSION_NEST_TAG
 
 =
 int Nests::get_tag(inbuild_nest *N) {
@@ -50,6 +51,11 @@ void Nests::set_tag(inbuild_nest *N, int t) {
 @ =
 void Nests::protect(inbuild_nest *N) {
 	N->read_only = TRUE;
+}
+
+int Nests::is_protected(inbuild_nest *N) {
+	if (N == NULL) return FALSE;
+	return N->read_only;
 }
 
 @h Search list.

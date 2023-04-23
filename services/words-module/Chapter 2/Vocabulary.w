@@ -59,11 +59,13 @@ vocabulary_entry *COMMA_V = NULL;
 vocabulary_entry *DOUBLEDASH_V = NULL;
 vocabulary_entry *FORWARDSLASH_V = NULL;
 vocabulary_entry *FULLSTOP_V = NULL;
+vocabulary_entry *LEFTARROW_V = NULL;
 vocabulary_entry *OPENBRACE_V = NULL;
 vocabulary_entry *OPENBRACKET_V = NULL;
 vocabulary_entry *OPENI6_V = NULL;
 vocabulary_entry *PARBREAK_V = NULL;
 vocabulary_entry *PLUS_V = NULL;
+vocabulary_entry *RIGHTARROW_V = NULL;
 vocabulary_entry *SEMICOLON_V = NULL;
 vocabulary_entry *STROKE_V = NULL;
 
@@ -75,11 +77,13 @@ void Vocabulary::create_punctuation(void) {
 	DOUBLEDASH_V     = Vocabulary::entry_for_text(L"--");
 	FORWARDSLASH_V   = Vocabulary::entry_for_text(L"/");
 	FULLSTOP_V       = Vocabulary::entry_for_text(L".");
+	LEFTARROW_V      = Vocabulary::entry_for_text(L"<-");
 	OPENBRACE_V      = Vocabulary::entry_for_text(L"{");
 	OPENBRACKET_V    = Vocabulary::entry_for_text(L"(");
 	OPENI6_V         = Vocabulary::entry_for_text(L"(-");
 	PARBREAK_V       = Vocabulary::entry_for_text(PARAGRAPH_BREAK);
 	PLUS_V      	 = Vocabulary::entry_for_text(L"+");
+	RIGHTARROW_V     = Vocabulary::entry_for_text(L"->");
 	SEMICOLON_V      = Vocabulary::entry_for_text(L";");
 	STROKE_V         = Vocabulary::entry_for_text(L"|");
 }

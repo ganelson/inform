@@ -1,0 +1,13 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 7 words long.
+I've also read Basic Inform by Graham Nelson, which is 7772 words long.
+I've also read English Language by Graham Nelson, which is 2330 words long.
+I've also read Standard Rules by Graham Nelson, which is 34310 words long.
+Problem__ PM_UnicodeDeprecated
+  >--> You wrote 'At sigil translates into Unicode as 64' (source text, line 1):
+    but the sentence 'X translates into Unicode as Y' has been removed from the
+    Inform language, because it is now redundant. Inform already knows all the
+    names in the Unicode standard. If you're getting this problem message
+    because you included the extension 'Unicode Full Character Names' or
+    'Unicode Character Names', all you need do is to not include it.
+Inform 7 has finished.

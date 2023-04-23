@@ -17,9 +17,11 @@ but definitely without line breaks before:
 
 >> Version 2 of Locksmith Extra by Emily Short begins here.
 
->> Version 060430 of Locksmith Extra by Emily Short begins here.
+>> Version 2.7 of Locksmith Extra by Emily Short begins here.
 
->> Version 2/060430 of Locksmith Extra by Emily Short begins here.
+>> Version 2.1.32 of Locksmith Extra by Emily Short begins here.
+
+>> Version 2/081121 of Locksmith Extra by Emily Short begins here.
 
 If the name of the extension finishes with a bracketed clause, that
 should be disregarded. Such clauses are used to specify virtual machine
@@ -31,7 +33,11 @@ later, so let's reserve them now.
 The application should reject (that is, politely refuse to install) any
 purported extension file whose first line does not conform to the above.
 
-Ignoring any version number given, the Inform application should then
+(Note that the inbuild command-line tool can be used to verify that an
+extension is properly formatted, and extract its identity and version. See
+the //inbuild// manual.)
+
+@ Ignoring any version number given, the Inform application should then
 store the file in the external extensions area. For instance,
 
 	|~/Library/Inform/Extensions/Emily Short/Glulx Text Effects| (OS X)

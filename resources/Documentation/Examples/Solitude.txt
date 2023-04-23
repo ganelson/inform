@@ -12,7 +12,7 @@ This is divided into several parts. The first part is the system of rules for ge
 	
 	When play begins:
 		say "Have you played interactive fiction before? >";
-		now novice mode is whether or not the player consents.
+		if the player consents, now novice mode is false.
 
 The rationale for asking the question this way, and not another, is that novices asked whether they would like instructions very often say no, even if they need them.
 

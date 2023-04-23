@@ -1,16 +1,16 @@
 [PL::Devices::] Devices.
 
-A plugin giving minimal support for switchable devices.
+A feature giving minimal support for switchable devices.
 
-@ The Devices plugin does just one thing: it applies an indicator property
+@ The Devices feature does just one thing: it applies an indicator property
 to things of the kind "device". This used to be accomplished by the Standard
 Rules in a clumsy sort of way (with a direct I6 code injection), but in the
 age of Inter we want to avoid that sort of tomfoolery.
 
 =
 void PL::Devices::start(void) {
-	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Devices::new_base_kind_notify);
-	PluginManager::plug(COMPLETE_MODEL_PLUG, PL::Devices::IF_complete_model);
+	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Devices::new_base_kind_notify);
+	PluginCalls::plug(COMPLETE_MODEL_PLUG, PL::Devices::IF_complete_model);
 }
 
 @ As usual with notable kinds, this is recognised by its English name, so there
