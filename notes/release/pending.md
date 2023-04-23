@@ -18,6 +18,9 @@ These will be added to release notes when the release is made.
 
 ## Bug fixes
 
+- Fix for Jira bug [I7-2335](https://inform7.atlassian.net/browse/I7-2335)
+	"Several previously-legal forms of the Array directive no longer work in I6 inclusions in 10.1.2"
+	([commit 4d97b49](https://github.com/ganelson/inform/commit/4d97b499cfd3e15650d1bba1e6e8c70c24a01fb2))
 - Fix for Jira bug [I7-2334](https://inform7.atlassian.net/browse/I7-2334)
 	"imbalanced parentheses in Definition by I6 Condition causes abject failure"
 	([commit 5d45863](https://github.com/ganelson/inform/commit/5d4586387c6b7405cd45e43f04c984583cd76bb3))
