@@ -10,7 +10,7 @@
   (Testing.)
   
   >[1] x jar
-  You see nothing special about the glass jar.
+  The glass jar is empty.
   
   >[2] x hidden object
   You see nothing special about the hidden object.
@@ -102,7 +102,7 @@
   Dropped.
   
   >[23] x glass jar
-  You see nothing special about the glass jar.
+  The glass jar is empty.
   
   >[24] search glass jar
   The glass jar is empty.

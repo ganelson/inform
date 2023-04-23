@@ -1184,16 +1184,15 @@ Carry out examining (this is the examine directions rule):
 
 Carry out examining (this is the examine containers rule):
 	if the noun is a container:
-		if the noun is closed and the noun is opaque, make no decision;       
-		if the noun is not falsely-unoccupied:
-			if something described which is not scenery is in the noun and something which
-				is not the player is in the noun:
-				say "In [the noun] " (A);
-				list the contents of the noun, as a sentence, tersely, not listing
-					concealed items, prefacing with is/are;
-				say ".";
-				now examine text printed is true;
-		otherwise if examine text printed is false and the first thing held by the noun is nothing:
+		if the noun is closed and the noun is opaque, make no decision;
+		if something described which is not scenery is in the noun and something which
+			is not the player is in the noun and the noun is not falsely-unoccupied:
+			say "In [the noun] " (A);
+			list the contents of the noun, as a sentence, tersely, not listing
+				concealed items, prefacing with is/are;
+			say ".";
+			now examine text printed is true;
+		otherwise if examine text printed is false:
 			if the player is in the noun:
 				make no decision;
 			say "[The noun] [are] empty." (B);
