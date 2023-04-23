@@ -80,6 +80,7 @@ Use telemetry recordings translates as (- Constant TELEMETRY_ON; -).
 Use no deprecated features translates as (- Constant NO_DEPRECATED_FEATURES; -).
 Use gn testing version translates as (- Constant GN_TESTING_VERSION; -).
 Use authorial modesty translates as (- Constant AUTHORIAL_MODESTY; -).
+Use no automatic plural synonyms translates as (- Constant NO_AUTOMATIC_PLURAL_SYNONYMS; -).
 
 Use dynamic memory allocation of at least 8192 translates as
 	(- Constant DynamicMemoryAllocation = {N}; -).

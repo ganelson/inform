@@ -61,7 +61,7 @@ need to translate this to other languages.
 	verbose room descriptions |     ==> { VERBOSE_ROOM_DESCRIPTIONS_UO, - }
 	brief room descriptions |       ==> { BRIEF_ROOM_DESCRIPTIONS_UO, - }
 	superbrief room descriptions |  ==> { SUPERBRIEF_ROOM_DESCRIPTIONS_UO, - }
-	no kind name plurals            ==> { NO_AUTOMATIC_PLURAL_SYNONYMS_UO, - }
+	no automatic plural synonyms    ==> { NO_AUTOMATIC_PLURAL_SYNONYMS_UO, - }
 
 @ Some of the pragma-like settings are stored here:
 
@@ -145,7 +145,7 @@ void CompilationSettings::set(int U, int N, source_file *from) {
 		case UNABBREVIATED_OBJECT_NAMES_UO:    g->use_exact_parsing_option = TRUE; break;
 		case UNDO_PREVENTION_UO:               g->undo_prevention = TRUE; break;
 		case VERBOSE_ROOM_DESCRIPTIONS_UO:     g->room_description_level = 2; break;
-                case NO_AUTOMATIC_PLURAL_SYNONYMS_UO:          g->no_automatic_plural_synonyms = TRUE; break; 
+                case NO_AUTOMATIC_PLURAL_SYNONYMS_UO:  g->no_automatic_plural_synonyms = TRUE; break; 
 	}
 	if (N > 0) {
 		switch (U) {
