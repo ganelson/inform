@@ -15,3 +15,12 @@
   The redacted text: potato capture of Triton may explain a number of features of potato Neptunian frog, including potato extremely eccentric orbit of Neptune's moon Nereid and potato scarcity of moons as compared to potato other gas giants.
   The original text: The capture of Triton may explain a number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants.
   The redacted text: The capture of Triton may explain a number of features of the Neptunian toad including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants!
+  matched "capture" from 5 to 11: 7 characters.
+  "capture" did not match long string. 0 to -1: 0 characters.
+  "capture" matched empty string. 1 to 0: 0 characters.
+  Neptune did not match "giants.." 0 to -1: 0 characters.
+  Neptune insensitively matched "t" 1 to 1: 1 characters.
+  subexpression 0: from 27 to 107, length 81 explain a number of features of the Neptunian system, including the extremely ecc.
+  subexpression 1: from 35 to 35, length 1 a.
+  subexpression 2: from 37 to 42, length 6 number.
+  subexpression 3: from 106 to 107, length 2 cc.

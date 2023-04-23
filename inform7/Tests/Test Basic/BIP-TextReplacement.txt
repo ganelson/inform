@@ -9,6 +9,8 @@ To begin:
 	run test B;
 	run test C;
 	run test D;
+	run test E;
+	run test F;        
 
 To run test A:
 	let Neptune be text;
@@ -46,3 +48,26 @@ To run test D:
 	replace the punctuated word "system," in Neptune with "toad";
 	replace the punctuated word "." in Neptune with "!"; 
 	say "The redacted text: [Neptune][line break]".
+
+To run test E:
+	let Neptune be text;
+	let Neptune be "The capture of Triton may explain a number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants.";
+	let cap be "capture";
+	if Neptune matches the text cap:
+		say "matched '[cap]' from [start index of text match] to [final index of text match]: [length of text match] characters.";
+	unless cap matches the text Neptune:
+		say "'[cap]' did not match long string. [start index of text match] to [final index of text match]: [length of text match] characters.";
+	if cap matches the text "":
+		say "'[cap]' matched empty string. [start index of text match] to [final index of text match]: [length of text match] characters.";
+	unless Neptune matches the text "giants..":
+		say "Neptune did not match 'giants..' [start index of text match] to [final index of text match]: [length of text match] characters.";
+	if Neptune matches the text "t", case insensitively:
+		say "Neptune insensitively matched 't' [start index of text match] to [final index of text match]: [length of text match] characters.";
+
+To run test F:
+	let Neptune be text;
+	let Neptune be "The capture of Triton may explain a number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants.";
+	if Neptune matches the regular expression "explain\s+(<a-d>+)\s*(num<^\s>+).+e(c+)":
+		repeat with i running from 0 to 3:
+			 say "subexpression [i]: from [start index of subexpression i] to [final index of subexpression i], length [length of subexpression i] [text matching subexpression i].";                
+
