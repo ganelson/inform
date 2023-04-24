@@ -13798,14 +13798,15 @@ We can also find exactly where in the text the match occurred. If you're interes
 in these results, get and store them immediately after the match: the values will
 be overwritten when the next match operation happens.
 
-{defn ph_textstartindex}start index of text match ... number
+{defn ph_textstartindex}start index of the/-- text match ... number
 Following a successful text match, this produces the character number of the start of the match.
 
-	start index of "cat" in "vacation"
+	if "vacation" matches the text "cat":
+	        let x be the start index of the text match;
 
-results in 3. Following a failed text match, this will produce 0.
+assigns 3 to x. (Following a failed text match, this phrase would result in 0.)
 {end}
-{defn ph_textfinalindex}final index of text match ... number
+{defn ph_textfinalindex}final index of the/-- text match ... number
 Similarly, we can find the character number of the final character in the match.
 
 	final index of "cat" in "vacation"
@@ -13813,7 +13814,7 @@ Similarly, we can find the character number of the final character in the match.
 produces 5, but a failed text match will produce -1.
 {end}
 
-{defn ph_textlength}length of text match ... number
+{defn ph_textlength}length of the/-- text match ... number
 Finally, we can get the length of the match, i.e., 3 for the "cat" example,
 or 0 for a failed text match.
 {end}
@@ -14015,6 +14016,33 @@ For instance:
 
 matches any run of two or more word-characters, subject to the restriction that the last one has to be the same as the first - so it matches "xerox" but not "alphabet". When Inform matches this against "xerox", first it matches the initial "x" against the group "(\w)". It then matches "\w*" ("any number of word-characters") against "ero", so that the "*" runs up to 3 repetitions. It then matches "\1" against the final "x", because "\1" requires it to match against whatever last matched in sub-expression 1 - which was an "x".
 
+Similar to the situation with text matches, we can find the starting and ending character numbers of where a given subexpression occurred in the original text, as well as the length.
+
+{defn ph_restartindex}start index of subexpression (number) ... number
+Following a regular expression match, this produces the character number in the original text of the beginning of a given subexpression.
+
+	if "ham sandwich" matches the regular expression "(.+)\b(.+)":
+		let x be the start index of subexpression 2;
+
+would set x to 5. After a failed match, the phrase would result in 0.
+{end}
+
+{defn ph_refinalindex}final index of subexpression (number) ... number
+Similarly, we can find the character number of the final character in the subexpression. For the "ham sandwich" example above:
+
+	final index of subexpression 1
+
+would be 3. After a failed match, the result would be -1.
+{end}
+
+{defn ph_relength}length of subexpression  (number) ... number
+Finally, we can get the length of the match, e.g., for the above,
+
+	length of subexpression 2
+
+would be 8.
+{end}
+
 Numbered groups allow wicked tricks in matching, it's true, but really come into their own when it comes to replacing - as we shall see.
 
 <b>13. Switching case sensitivity on and off.</b> The special notations "(?i)" and "(?-i)" switch sensitivity to upper vs. lower case off and on, mid-expression. Thus "a(?i)bcd(?-i)e" matches "abcde", "aBcDe", etc., but not "Abcde" or "abcdE".
@@ -14050,26 +14078,6 @@ Finally, conditionals can also use lookaheads or lookbehinds as their conditions
 	"(?(?=\d)\d\d\d\d|AY-\d\d\d\d)"
 
 means if you start with a digit, match four digits; otherwise match "AY-" followed by four digits. There are easier ways to do this, of course, but the really juicy uses of conditionals are only borderline legible and make poor examples - perhaps this is telling us something.
-
-{defn ph_restartindex}start index of subexpression ... number
-Following a text match, this produces the character number of the start of the match.
-
-	start index of "cat" in "vacation"
-
-results in 3. 
-{end}
-
-{defn ph_refinalindex}final index of subexpression ... number
-Similarly, we can find the character number of the final character in the match.
-
-	final index of "cat" in "vacation"
-
-produces 5.
-{end}
-
-{defn ph_relength}length of subexpression ... number
-Finally, we can get the length of the match, i.e., 3 for the "cat" example.
-{end}
 
 [x] Making new text with text substitutions
 
