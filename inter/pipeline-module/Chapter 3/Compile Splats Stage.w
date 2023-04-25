@@ -31,14 +31,17 @@ void CompileSplatsStage::create_pipeline_stage(void) {
 =
 int CompileSplatsStage::run(pipeline_step *step) {
 	PipelineErrors::reset_errors();
+	PipelineErrors::set_kit_error_location(NULL, 0);
 	compile_splats_state css;
 	@<Initialise the CS state@>;
 	inter_tree *I = step->ephemera.tree;
 	InterTree::traverse(I, CompileSplatsStage::visitor1, &css, NULL, SPLAT_IST);
 	InterTree::traverse(I, CompileSplatsStage::visitor2, &css, NULL, 0);
+	PipelineErrors::set_kit_error_location(NULL, 0);
 	int errors_found = CompileSplatsStage::function_bodies(step, &css, I);
 	if (errors_found) return FALSE;
 	InterTree::traverse(I, CompileSplatsStage::visitor3, &css, NULL, SPLAT_IST);
+	PipelineErrors::set_kit_error_location(NULL, 0);
 	if (PipelineErrors::errors_occurred()) return FALSE;
 	return TRUE;
 }
@@ -134,6 +137,11 @@ void CompileSplatsStage::visitor3(inter_tree *I, inter_tree_node *P, void *state
 @h How definitions are assimilated.
 
 @<Assimilate definition@> =
+	if (SplatInstruction::line_provenance(P) > 0)
+		PipelineErrors::set_kit_error_location(
+			SplatInstruction::file_provenance(P), SplatInstruction::line_provenance(P));
+	else
+		PipelineErrors::set_kit_error_location(NULL, 0);
 	match_results mr = Regexp::create_mr();
 	text_stream *raw_identifier = NULL, *value = NULL;
 	int proceed = TRUE;
@@ -702,6 +710,11 @@ We are concerned more with the surround than with the contents of the function
 in this section.
 
 @<Assimilate routine@> =
+	if (SplatInstruction::line_provenance(P) > 0)
+		PipelineErrors::set_kit_error_location(
+			SplatInstruction::file_provenance(P), SplatInstruction::line_provenance(P));
+	else
+		PipelineErrors::set_kit_error_location(NULL, 0);
 	text_stream *raw_identifier = NULL, *local_var_names = NULL, *body = NULL;
 	match_results mr = Regexp::create_mr();
 	if (SplatInstruction::plm(P) == ROUTINE_PLM) @<Parse the routine header@>;

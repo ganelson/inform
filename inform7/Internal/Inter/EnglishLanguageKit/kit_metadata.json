@@ -2,7 +2,7 @@
     "is": {
         "type": "kit",
         "title": "EnglishLanguageKit",
-        "version": "10.2.0-beta+6W36"
+        "version": "10.2.0-beta+6W37"
     },
     "needs": [ {
         "need": {

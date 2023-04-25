@@ -9,7 +9,7 @@ For what this does and why it is used, see //inter: Textual Inter//.
 void SplatInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(SPLAT_IST, I"splat");
 	InterInstruction::specify_syntax(IC, I"splat OPTIONALIDENTIFIER TEXT TEXT TEXT");
-	InterInstruction::data_extent_always(IC, 4);
+	InterInstruction::data_extent_always(IC, 6);
 	InterInstruction::allow_in_depth_range(IC, 0, INFINITELY_DEEP);
 	InterInstruction::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
@@ -24,23 +24,31 @@ void SplatInstruction::define_construct(void) {
 In bytecode, the frame of a |splat| instruction is laid out with the
 compulsory words -- see //Inter Nodes// -- followed by:
 
-@d MATTER_SPLAT_IFLD       (DATA_IFLD + 0)
-@d PLM_SPLAT_IFLD          (DATA_IFLD + 1)
-@d I6ANNOTATION_SPLAT_IFLD (DATA_IFLD + 2)
-@d NAMESPACE_SPLAT_IFLD    (DATA_IFLD + 3)
+@d MATTER_SPLAT_IFLD         (DATA_IFLD + 0)
+@d PLM_SPLAT_IFLD            (DATA_IFLD + 1)
+@d I6ANNOTATION_SPLAT_IFLD   (DATA_IFLD + 2)
+@d NAMESPACE_SPLAT_IFLD      (DATA_IFLD + 3)
+@d PROVENANCEFILE_SPLAT_IFLD (DATA_IFLD + 4)
+@d PROVENANCELINE_SPLAT_IFLD (DATA_IFLD + 5)
 
 =
 inter_error_message *SplatInstruction::new(inter_bookmark *IBM, text_stream *splatter,
-	inter_ti plm, text_stream *annotation, text_stream *namespace, inter_ti level,
-	inter_error_location *eloc) {
-	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, SPLAT_IST,
+	inter_ti plm, text_stream *annotation, text_stream *namespace,
+	filename *file, inter_ti line_number, inter_ti level, inter_error_location *eloc) {
+	TEMPORARY_TEXT(file_as_text)
+	if (file) WRITE_TO(file_as_text, "%f", file);
+	inter_tree_node *P = Inode::new_with_6_data_fields(IBM, SPLAT_IST,
 		/* MATTER_SPLAT_IFLD: */       InterWarehouse::create_text_at(IBM, splatter),
 		/* PLM_SPLAT_IFLD: */          plm,
 		/* I6ANNOTATION_SPLAT_IFLD: */
 			(Str::len(annotation) > 0)?(InterWarehouse::create_text_at(IBM, annotation)):0,
 		/* NAMESPACE_SPLAT_IFLD: */
 			(Str::len(namespace) > 0)?(InterWarehouse::create_text_at(IBM, namespace)):0,
+		/* PROVENANCEFILE_SPLAT_IFLD: */
+			(Str::len(file_as_text) > 0)?(InterWarehouse::create_text_at(IBM, file_as_text)):0,
+		/* PROVENANCELINE_SPLAT_IFLD: */ line_number,
 		eloc, level);
+	DISCARD_TEXT(file_as_text)
 	inter_error_message *E = VerifyingInter::instruction(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
@@ -93,7 +101,14 @@ void SplatInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 		if (*E == NULL) {
 			*E = TextualInter::parse_literal_text(raw_ns, namespace_text, 0, Str::len(annot_text), eloc);
 			if (*E == NULL) {
-				*E = SplatInstruction::new(IBM, raw, plm, raw_annot, raw_ns, (inter_ti) ilp->indent_level, eloc);
+				filename *F = NULL;
+				inter_ti lc = 0;
+				if (eloc) {
+					F = eloc->error_tfp->text_file_filename;
+					lc = (inter_ti) eloc->error_tfp->line_count;
+				}
+				*E = SplatInstruction::new(IBM, raw, plm, raw_annot, raw_ns, F, lc,
+					(inter_ti) ilp->indent_level, eloc);
 			}
 		}
 	}
@@ -140,6 +155,18 @@ text_stream *SplatInstruction::namespace(inter_tree_node *P) {
 	if (P == NULL) return NULL;
 	if (Inode::isnt(P, SPLAT_IST)) return NULL;
 	return Inode::ID_to_text(P, P->W.instruction[NAMESPACE_SPLAT_IFLD]);
+}
+
+text_stream *SplatInstruction::file_provenance(inter_tree_node *P) {
+	if (P == NULL) return NULL;
+	if (Inode::isnt(P, SPLAT_IST)) return NULL;
+	return Inode::ID_to_text(P, P->W.instruction[PROVENANCEFILE_SPLAT_IFLD]);
+}
+
+inter_ti SplatInstruction::line_provenance(inter_tree_node *P) {
+	if (P == NULL) return 0;
+	if (Inode::isnt(P, SPLAT_IST)) return 0;
+	return P->W.instruction[PROVENANCELINE_SPLAT_IFLD];
 }
 
 @h PLMs.

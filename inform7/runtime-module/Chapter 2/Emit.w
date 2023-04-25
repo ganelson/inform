@@ -322,8 +322,17 @@ assimilating during linking.
 
 =
 void Emit::intervention(text_stream *raw_matter, text_stream *replacing) {
+	filename *F = NULL;
+	inter_ti lc = 0;
+	if (current_sentence) {
+		wording W = current_sentence->text_parsed;
+		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(W));
+		if (sf) F = TextFromFiles::get_filename(sf);
+		lc = (inter_ti) Lexer::line_of_origin(Wordings::first_wn(W));
+	}
 	Produce::guard(
-		InsertInstruction::new(Emit::at(), raw_matter, replacing, Emit::baseline(), NULL));
+		InsertInstruction::new(Emit::at(), raw_matter, replacing, F, lc,
+		Emit::baseline(), NULL));
 }
 
 @ And this is a similarly inelegant construction:

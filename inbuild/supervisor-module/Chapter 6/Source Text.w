@@ -86,7 +86,21 @@ source files.
 text_stream *SourceText::describe_source_file(text_stream *paraphrase,
 	source_file *referred, text_stream *file) {
 	paraphrase = I"source text";
-	inform_extension *E = Extensions::corresponding_to(referred);
+	inform_extension *E = NULL;
+	if (referred) {
+		E = Extensions::corresponding_to(referred);
+	} else {
+		TEMPORARY_TEXT(matched_filename)
+		inform_extension *F;
+		LOOP_OVER(F, inform_extension) {
+			if (F->read_into_file) {
+				Str::clear(matched_filename);
+				WRITE_TO(matched_filename, "%f",
+					TextFromFiles::get_filename(F->read_into_file));
+				if (Str::eq(matched_filename, file)) E = F;
+			}
+		}
+	}
 	if (E) {
 		inbuild_work *work = E->as_copy->edition->work;
 		if ((work) && (Works::is_standard_rules(work)))

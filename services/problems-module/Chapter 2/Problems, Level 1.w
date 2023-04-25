@@ -94,6 +94,31 @@ void ProblemBuffer::copy_source_reference(wording W) {
 	DISCARD_TEXT(file)
 }
 
+void ProblemBuffer::copy_file_reference(text_stream *file_ref, int line) {
+	TEMPORARY_TEXT(file)
+	WRITE_TO(file, "%S", file_ref);
+	pathname *proj = HTML::get_link_abbreviation_path();
+	if (proj) {
+		TEMPORARY_TEXT(project_prefix)
+		WRITE_TO(project_prefix, "%p", proj);
+		if (Str::prefix_eq(file, project_prefix, Str::len(project_prefix)))
+			Str::delete_n_characters(file, Str::len(project_prefix));
+		DISCARD_TEXT(project_prefix)
+	} else {
+		WRITE_TO(file, "(no file)");
+	}
+	text_stream *paraphrase = file;
+	#ifdef DESCRIBE_SOURCE_FILE_PROBLEMS_CALLBACK
+	paraphrase = DESCRIBE_SOURCE_FILE_PROBLEMS_CALLBACK(paraphrase, NULL, file);
+	#endif
+	WRITE_TO(PBUFF, " %c%S%c%S%c%d%c",
+		SOURCE_REF_CHAR, paraphrase,
+		SOURCE_REF_CHAR, file,
+		SOURCE_REF_CHAR, line,
+		SOURCE_REF_CHAR);
+	DISCARD_TEXT(file)
+}
+
 @ Once the error message is fully constructed, we will want to output it
 to a file: in fact, by default it will go in three directions, to
 |stderr|, to the debugging log and of course to the problems file. The main

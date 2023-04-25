@@ -139,33 +139,39 @@ power tools just lying around, people will eventually pick them up and wonder
 what the red button marked "danger" does.
 
 =
-int pipeline_error_count = 0;
+int kit_error_count = 0;
+text_stream *kit_error_filename = NULL;
+int kit_error_line_number = 0;
+
+void PipelineErrors::set_kit_error_location(text_stream *file, inter_ti line) {
+	kit_error_filename = file;
+	kit_error_line_number = (int) line;
+}
 
 void PipelineErrors::kit_error(char *message, text_stream *quote) {
-	#ifdef PROBLEMS_MODULE
-	TEMPORARY_TEXT(M)
-	WRITE_TO(M, message, quote);
-	Problems::quote_stream(1, M);
-	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
-	Problems::issue_problem_segment(
-		"My low-level reader of source code reported a mistake - \"%1\". "
-		"%PLow-level material written in Inform 6 syntax occurs either in kits or "
-		"in matter written inside 'Include (- ... -)' in source text, either in "
-		"the main source or in an extension used by it.");
-	Problems::issue_problem_end();
-	DISCARD_TEXT(M)
+	#ifdef CORE_MODULE
+	SourceProblems::I6_level_error(message, quote, kit_error_filename,
+		kit_error_line_number);
 	#endif
-	#ifndef PROBLEMS_MODULE
-	Errors::with_text(message, quote);
+	#ifndef CORE_MODULE
+	if (Str::len(kit_error_filename) > 0) {
+		filename *F = Filenames::from_text(kit_error_filename);
+		TEMPORARY_TEXT(M)
+		WRITE_TO(M, message, quote);
+		Errors::at_position_S(M, F, kit_error_line_number);
+		DISCARD_TEXT(M)
+	} else {
+		Errors::with_text(message, quote);
+	}
 	#endif
-	pipeline_error_count++;
+	kit_error_count++;
 }
 
 void PipelineErrors::reset_errors(void) {
-	pipeline_error_count = 0;
+	kit_error_count = 0;
 }
 
 int PipelineErrors::errors_occurred(void) {
-	if (pipeline_error_count != 0) return TRUE;
+	if (kit_error_count != 0) return TRUE;
 	return FALSE;
 }

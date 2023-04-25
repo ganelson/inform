@@ -94,6 +94,8 @@ void ParsingStages::visit_insertions(inter_tree *I, inter_tree_node *P, void *st
 	inter_bookmark here = InterBookmark::after_this_node(P);
 	rpi_docket_state *docket_state = (rpi_docket_state *) docket->state;
 	docket_state->assimilation_point = &here;
+	docket_state->file_provenance = InsertInstruction::file_provenance(P);
+	docket_state->line_provenance = InsertInstruction::line_provenance(P);
 	SimpleTangler::tangle_text(docket, insertion);
 	text_stream *replacing = InsertInstruction::replacing(P);
 	if (Str::len(replacing) > 0) {
@@ -119,6 +121,8 @@ in |K/Sections|.
 typedef struct rpi_docket_state {
 	struct inter_bookmark *assimilation_point;
 	struct text_stream *namespace;
+	struct text_stream *file_provenance;
+	inter_ti line_provenance;
 } rpi_docket_state;
 
 @<Make a suitable simple tangler docket@> =
@@ -130,10 +134,13 @@ typedef struct rpi_docket_state {
 	rpi_docket_state state;
 	state.assimilation_point = &assimilation_point;
 	state.namespace = namespacename;
+	state.file_provenance = NULL;
+	state.line_provenance = 0;
 	docket = SimpleTangler::new_docket(
 		&(ParsingStages::receive_raw),
 		&(ParsingStages::receive_command),
 		&(ParsingStages::receive_bplus),
+		&(ParsingStages::line_marker),
 		&(PipelineErrors::kit_error),
 		step->ephemera.the_kit, &state);
 
@@ -191,6 +198,13 @@ void ParsingStages::receive_bplus(text_stream *material, simple_tangle_docket *d
 		"use of (+ ... +) in kit source has been withdrawn: '%S'", material);
 }
 
+@ This is used to place I6 comments showing the provenance of the tangled text:
+
+=
+void ParsingStages::line_marker(text_stream *material, simple_tangle_docket *docket) {
+	WRITE_TO(material, "! LINEMARKER %d %f\n", docket->current_start_line, docket->current_filename);
+}
+
 @ We very much do not ignore the raw I6 code read in, though. When the reader
 gives us a chunk of this, we parse through it with a simple finite-state machine.
 This can be summarised as "divide the code up at |;| boundaries, sending each
@@ -227,9 +241,29 @@ and
 void ParsingStages::receive_raw(text_stream *S, simple_tangle_docket *docket) {
 	text_stream *R = Str::new();
 	int mode = IGNORE_WS_I6TBIT;
-	LOOP_THROUGH_TEXT(pos, S) {
-		wchar_t c = Str::get(pos);
-		if ((c == 10) || (c == 13)) c = '\n';
+	rpi_docket_state *state = (rpi_docket_state *) docket->state;
+	inter_ti lc = state->line_provenance;
+	for (int pos = 0; pos < Str::len(S); pos++) {
+		wchar_t c = Str::get_at(S, pos);
+		if ((c == 10) || (c == 13)) { c = '\n'; lc++; }
+		if ((c == '!') && (Str::includes_at(S, pos, I"! LINEMARKER "))) {
+			text_stream *file_text = Str::new();
+			TEMPORARY_TEXT(number_text)
+			int in_number = TRUE;
+			for (pos = pos + 13; pos < Str::len(S); pos++) {
+				wchar_t c = Str::get_at(S, pos);
+				if ((c == 10) || (c == 13)) break;
+				if ((c == ' ') && (in_number)) { in_number = FALSE; continue; }
+				if (in_number) PUT_TO(number_text, c);
+				else PUT_TO(file_text, c);
+			}
+			state->line_provenance = (inter_ti) Str::atoi(number_text, 0);
+			lc = state->line_provenance;
+			state->file_provenance = file_text;
+			LOG("Spotted %d and <%S>\n", state->line_provenance, state->file_provenance);
+			DISCARD_TEXT(number_text)
+			continue;
+		}
 		if (mode & IGNORE_WS_I6TBIT) {
 			if ((c == '\n') || (Characters::is_whitespace(c))) continue;
 			mode -= IGNORE_WS_I6TBIT;
@@ -269,10 +303,12 @@ void ParsingStages::receive_raw(text_stream *S, simple_tangle_docket *docket) {
 		PUT_TO(R, c);
 		if ((c == ';') && (!(mode & SUBORDINATE_I6TBITS))) {
 			ParsingStages::splat(R, docket);
+			state->line_provenance = lc;
 			mode = IGNORE_WS_I6TBIT;
 		}
 	}
 	ParsingStages::splat(R, docket);
+	state->line_provenance = lc;
 	Str::clear(S);
 }
 
@@ -294,8 +330,17 @@ void ParsingStages::splat(text_stream *R, simple_tangle_docket *docket) {
 			rpi_docket_state *state = (rpi_docket_state *) docket->state;
 			inter_bookmark *IBM = state->assimilation_point;
 			PUT_TO(R, '\n');
+			filename *F = NULL;
+			inter_ti lc = 0;
+			if (Str::len(state->file_provenance) > 0) {
+				F = Filenames::from_text(state->file_provenance);
+				lc = state->line_provenance + 1;
+			} else if (docket->current_filename) {
+				F = docket->current_filename;
+				lc = 25;
+			}
 			Produce::guard(SplatInstruction::new(IBM, R, I6_dir, A, state->namespace,
-				(inter_ti) (InterBookmark::baseline(IBM) + 1), NULL));
+				F, lc, (inter_ti) (InterBookmark::baseline(IBM) + 1), NULL));
 		} else if (A) {
 			I6_annotation *IA = I6Annotations::parse(A);
 			if ((IA) && (Str::eq_insensitive(IA->identifier, I"namespace"))) {
