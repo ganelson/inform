@@ -215,7 +215,8 @@ inter_schema *CompileImperativeDefn::get_back_schema(id_body *idb) {
 			ParsingSchemas::from_inline_phrase_definition(
 				CompileImperativeDefn::get_inline_definition(idb),
 				&(idb->compilation_data.inline_front_schema),
-				&(idb->compilation_data.inline_back_schema));
+				&(idb->compilation_data.inline_back_schema),
+				Provenance::nowhere());
 			CompileImperativeDefn::issue_schema_errors(current_sentence,
 				idb->compilation_data.inline_front_schema,
 				idb->compilation_data.inline_back_schema);

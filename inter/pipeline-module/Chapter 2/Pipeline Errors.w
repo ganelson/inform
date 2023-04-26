@@ -139,26 +139,40 @@ power tools just lying around, people will eventually pick them up and wonder
 what the red button marked "danger" does.
 
 =
+text_provenance kit_error_location;
+int kit_error_location_set = FALSE;
 int kit_error_count = 0;
-text_stream *kit_error_filename = NULL;
-int kit_error_line_number = 0;
 
-void PipelineErrors::set_kit_error_location(text_stream *file, inter_ti line) {
-	kit_error_filename = file;
-	kit_error_line_number = (int) line;
+text_provenance PipelineErrors::get_kit_error_location(void) {
+	if (kit_error_location_set == FALSE)
+		PipelineErrors::clear_kit_error_location();
+	return kit_error_location;
+}
+void PipelineErrors::clear_kit_error_location(void) {
+	PipelineErrors::set_kit_error_location(Provenance::nowhere());
+}
+void PipelineErrors::set_kit_error_location(text_provenance where) {
+	kit_error_location_set = TRUE;
+	kit_error_location = where;
+}
+
+void PipelineErrors::set_kit_error_location_near_splat(inter_tree_node *P) {
+	PipelineErrors::clear_kit_error_location();
+	if ((P) && (Inode::is(P, SPLAT_IST)))
+		PipelineErrors::set_kit_error_location(SplatInstruction::provenance(P));
 }
 
 void PipelineErrors::kit_error(char *message, text_stream *quote) {
+	text_provenance at = PipelineErrors::get_kit_error_location();
 	#ifdef CORE_MODULE
-	SourceProblems::I6_level_error(message, quote, kit_error_filename,
-		kit_error_line_number);
+	SourceProblems::I6_level_error(message, quote, at);
 	#endif
 	#ifndef CORE_MODULE
-	if (Str::len(kit_error_filename) > 0) {
-		filename *F = Filenames::from_text(kit_error_filename);
+	if (Provenance::is_somewhere(at)) {
+		filename *F = Provenance::get_filename(at);
 		TEMPORARY_TEXT(M)
 		WRITE_TO(M, message, quote);
-		Errors::at_position_S(M, F, kit_error_line_number);
+		Errors::at_position_S(M, F, Provenance::get_line(at));
 		DISCARD_TEXT(M)
 	} else {
 		Errors::with_text(message, quote);
@@ -168,6 +182,7 @@ void PipelineErrors::kit_error(char *message, text_stream *quote) {
 }
 
 void PipelineErrors::reset_errors(void) {
+	PipelineErrors::clear_kit_error_location();
 	kit_error_count = 0;
 }
 

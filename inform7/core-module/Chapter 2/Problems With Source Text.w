@@ -635,24 +635,27 @@ void SourceProblems::kit_notification(text_stream *kit_name, text_stream *archit
 }
 
 void SourceProblems::I6_level_error(char *message, text_stream *quote,
-	text_stream *file_ref, int line) {
+	text_provenance at) {
+	filename *F = Provenance::get_filename(at);
+	int line = Provenance::get_line(at);
 	TEMPORARY_TEXT(file)
-	WRITE_TO(file, "%S", file_ref);
+	if (F) WRITE_TO(file, "%f", F);
 	TEMPORARY_TEXT(kit)
 	TEMPORARY_TEXT(M)
 	WRITE_TO(M, message, quote);
-	filename *F = Filenames::from_text(file);
-	TEMPORARY_TEXT(EX)
-	Filenames::write_extension(EX, F);
-	if (Str::eq_insensitive(EX, I".i6t")) {
-		pathname *P = Filenames::up(F);
-		if (Str::eq_insensitive(Pathnames::directory_name(P), I"Sections"))
-			P = Pathnames::up(P);
-		WRITE_TO(kit, "%S", Pathnames::directory_name(P));
-		Str::clear(file);
-		WRITE_TO(file, "%S", Filenames::get_leafname(F));
+	if (Provenance::is_somewhere(at)) {
+		TEMPORARY_TEXT(EX)
+		Filenames::write_extension(EX, F);
+		if (Str::eq_insensitive(EX, I".i6t")) {
+			pathname *P = Filenames::up(F);
+			if (Str::eq_insensitive(Pathnames::directory_name(P), I"Sections"))
+				P = Pathnames::up(P);
+			WRITE_TO(kit, "%S", Pathnames::directory_name(P));
+			Str::clear(file);
+			WRITE_TO(file, "%S", Filenames::get_leafname(F));
+		}
+		DISCARD_TEXT(EX)
 	}
-	DISCARD_TEXT(EX)
 	if (trigger_kit_notice) {
 		if (general_kit_notice_issued == FALSE) {
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
@@ -679,7 +682,7 @@ void SourceProblems::I6_level_error(char *message, text_stream *quote,
 		Problems::quote_stream(4, kit);
 		if (general_kit_notice_issued) Problems::issue_problem_segment("%2, near line %3: %1.");
 		else Problems::issue_problem_segment("Near line %3 of file %2 in %4: %1.");
-	} else if (Str::len(file) > 0) {
+	} else if (Provenance::is_somewhere(at)) {
 		LOG("%S, line %d:\n", file, line);
 		Problems::problem_quote_file(2, file, line);
 		Problems::issue_problem_segment(

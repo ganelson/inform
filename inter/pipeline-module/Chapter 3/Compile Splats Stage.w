@@ -31,17 +31,16 @@ void CompileSplatsStage::create_pipeline_stage(void) {
 =
 int CompileSplatsStage::run(pipeline_step *step) {
 	PipelineErrors::reset_errors();
-	PipelineErrors::set_kit_error_location(NULL, 0);
 	compile_splats_state css;
 	@<Initialise the CS state@>;
 	inter_tree *I = step->ephemera.tree;
 	InterTree::traverse(I, CompileSplatsStage::visitor1, &css, NULL, SPLAT_IST);
 	InterTree::traverse(I, CompileSplatsStage::visitor2, &css, NULL, 0);
-	PipelineErrors::set_kit_error_location(NULL, 0);
+	PipelineErrors::clear_kit_error_location();
 	int errors_found = CompileSplatsStage::function_bodies(step, &css, I);
 	if (errors_found) return FALSE;
 	InterTree::traverse(I, CompileSplatsStage::visitor3, &css, NULL, SPLAT_IST);
-	PipelineErrors::set_kit_error_location(NULL, 0);
+	PipelineErrors::clear_kit_error_location();
 	if (PipelineErrors::errors_occurred()) return FALSE;
 	return TRUE;
 }
@@ -137,11 +136,7 @@ void CompileSplatsStage::visitor3(inter_tree *I, inter_tree_node *P, void *state
 @h How definitions are assimilated.
 
 @<Assimilate definition@> =
-	if (SplatInstruction::line_provenance(P) > 0)
-		PipelineErrors::set_kit_error_location(
-			SplatInstruction::file_provenance(P), SplatInstruction::line_provenance(P));
-	else
-		PipelineErrors::set_kit_error_location(NULL, 0);
+	PipelineErrors::set_kit_error_location_near_splat(P);
 	match_results mr = Regexp::create_mr();
 	text_stream *raw_identifier = NULL, *value = NULL;
 	int proceed = TRUE;
@@ -710,11 +705,7 @@ We are concerned more with the surround than with the contents of the function
 in this section.
 
 @<Assimilate routine@> =
-	if (SplatInstruction::line_provenance(P) > 0)
-		PipelineErrors::set_kit_error_location(
-			SplatInstruction::file_provenance(P), SplatInstruction::line_provenance(P));
-	else
-		PipelineErrors::set_kit_error_location(NULL, 0);
+	PipelineErrors::set_kit_error_location_near_splat(P);
 	text_stream *raw_identifier = NULL, *local_var_names = NULL, *body = NULL;
 	match_results mr = Regexp::create_mr();
 	if (SplatInstruction::plm(P) == ROUTINE_PLM) @<Parse the routine header@>;
@@ -852,7 +843,7 @@ These have package types |_function| and |_code| respectively.
 	Str::truncate(body, L);
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	CompileSplatsStage::function_body(css, IBM, IP, B, body, block_bookmark, identifier,
-		SplatInstruction::namespace(P));
+		SplatInstruction::namespace(P), PipelineErrors::get_kit_error_location());
 
 @h Inform 6 annotations.
 
@@ -1180,7 +1171,8 @@ answer. Since we recurse depth-first, the subsidiary results are always made
 before they are needed.
 
 @<Parse this as a possibly computed value@> =
-	inter_schema *sch = ParsingSchemas::from_text(S);
+	inter_schema *sch =
+		ParsingSchemas::from_text(S, PipelineErrors::get_kit_error_location());
 	int excess_tokens = FALSE;
 	inter_symbol *result_s =
 		CompileSplatsStage::compute_r(step, IBM, sch->node_tree, &excess_tokens);
@@ -1352,12 +1344,13 @@ typedef struct function_body_request {
 	struct text_stream *body;
 	struct text_stream *identifier;
 	struct text_stream *namespace;
+	struct text_provenance provenance;
 	CLASS_DEFINITION
 } function_body_request;
 
 int CompileSplatsStage::function_body(compile_splats_state *css, inter_bookmark *IBM,
 	inter_package *block_package, inter_ti offset, text_stream *body, inter_bookmark bb,
-	text_stream *identifier, text_stream *namespace) {
+	text_stream *identifier, text_stream *namespace, text_provenance provenance) {
 	if (Str::is_whitespace(body)) return FALSE;
 	function_body_request *req = CREATE(function_body_request);
 	req->block_bookmark = bb;
@@ -1368,6 +1361,7 @@ int CompileSplatsStage::function_body(compile_splats_state *css, inter_bookmark 
 	req->body = Str::duplicate(body);
 	req->identifier = Str::duplicate(identifier);
 	req->namespace = Str::duplicate(namespace);
+	req->provenance = provenance;
 	ADD_TO_LINKED_LIST(req, function_body_request, css->function_bodies_to_compile);
 	return TRUE;
 }
@@ -1384,7 +1378,7 @@ int CompileSplatsStage::function_bodies(pipeline_step *step, compile_splats_stat
 	LOOP_OVER_LINKED_LIST(req, function_body_request, css->function_bodies_to_compile) {
 		LOGIF(SCHEMA_COMPILATION, "=======\n\nFunction (%S) len %d: '%S'\n\n",
 			InterPackage::name(req->block_package), Str::len(req->body), req->body);
-		inter_schema *sch = ParsingSchemas::from_text(req->body);
+		inter_schema *sch = ParsingSchemas::from_text(req->body, req->provenance);
 		if (LinkedLists::len(sch->parsing_errors) > 0) {
 			CompileSplatsStage::report_kit_errors(sch, req);
 		} else {
@@ -1423,10 +1417,12 @@ void CompileSplatsStage::report_kit_errors(inter_schema *sch, function_body_requ
 	if (LinkedLists::len(sch->parsing_errors) > 0) {
 		schema_parsing_error *err;
 		LOOP_OVER_LINKED_LIST(err, schema_parsing_error, sch->parsing_errors) {
+			PipelineErrors::set_kit_error_location(err->provenance);
 			TEMPORARY_TEXT(msg)
 			WRITE_TO(msg, "in function '%S': %S", req->identifier, err->message);
-			PipelineErrors::kit_error("inform 6 syntax error %S", msg);
+			PipelineErrors::kit_error("Inform 6 syntax error %S", msg);
 			DISCARD_TEXT(msg)
 		}
+		PipelineErrors::clear_kit_error_location();
 	}
 }

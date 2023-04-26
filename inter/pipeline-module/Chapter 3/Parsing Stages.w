@@ -94,8 +94,7 @@ void ParsingStages::visit_insertions(inter_tree *I, inter_tree_node *P, void *st
 	inter_bookmark here = InterBookmark::after_this_node(P);
 	rpi_docket_state *docket_state = (rpi_docket_state *) docket->state;
 	docket_state->assimilation_point = &here;
-	docket_state->file_provenance = InsertInstruction::file_provenance(P);
-	docket_state->line_provenance = InsertInstruction::line_provenance(P);
+	docket_state->provenance = InsertInstruction::provenance(P);
 	SimpleTangler::tangle_text(docket, insertion);
 	text_stream *replacing = InsertInstruction::replacing(P);
 	if (Str::len(replacing) > 0) {
@@ -121,8 +120,7 @@ in |K/Sections|.
 typedef struct rpi_docket_state {
 	struct inter_bookmark *assimilation_point;
 	struct text_stream *namespace;
-	struct text_stream *file_provenance;
-	inter_ti line_provenance;
+	struct text_provenance provenance;
 } rpi_docket_state;
 
 @<Make a suitable simple tangler docket@> =
@@ -134,8 +132,7 @@ typedef struct rpi_docket_state {
 	rpi_docket_state state;
 	state.assimilation_point = &assimilation_point;
 	state.namespace = namespacename;
-	state.file_provenance = NULL;
-	state.line_provenance = 0;
+	state.provenance = Provenance::nowhere();
 	docket = SimpleTangler::new_docket(
 		&(ParsingStages::receive_raw),
 		&(ParsingStages::receive_command),
@@ -233,6 +230,7 @@ and
 @d COMMENTED_I6TBIT 8
 @d ROUTINED_I6TBIT 16
 @d CONTENT_ON_LINE_I6TBIT 32
+@d NOTE_LINES_I6TBIT 64
 
 @d SUBORDINATE_I6TBITS
 	(COMMENTED_I6TBIT + SQUOTED_I6TBIT + DQUOTED_I6TBIT + ROUTINED_I6TBIT)
@@ -240,9 +238,9 @@ and
 =
 void ParsingStages::receive_raw(text_stream *S, simple_tangle_docket *docket) {
 	text_stream *R = Str::new();
-	int mode = IGNORE_WS_I6TBIT;
+	int mode = IGNORE_WS_I6TBIT + NOTE_LINES_I6TBIT;
 	rpi_docket_state *state = (rpi_docket_state *) docket->state;
-	inter_ti lc = state->line_provenance;
+	int lc = Provenance::get_line(state->provenance);
 	for (int pos = 0; pos < Str::len(S); pos++) {
 		wchar_t c = Str::get_at(S, pos);
 		if ((c == 10) || (c == 13)) { c = '\n'; lc++; }
@@ -257,16 +255,18 @@ void ParsingStages::receive_raw(text_stream *S, simple_tangle_docket *docket) {
 				if (in_number) PUT_TO(number_text, c);
 				else PUT_TO(file_text, c);
 			}
-			state->line_provenance = (inter_ti) Str::atoi(number_text, 0);
-			lc = state->line_provenance;
-			state->file_provenance = file_text;
-			LOG("Spotted %d and <%S>\n", state->line_provenance, state->file_provenance);
+			lc = Str::atoi(number_text, 0);
+			state->provenance = Provenance::at_file_and_line(file_text, lc);
 			DISCARD_TEXT(number_text)
 			continue;
 		}
 		if (mode & IGNORE_WS_I6TBIT) {
 			if ((c == '\n') || (Characters::is_whitespace(c))) continue;
 			mode -= IGNORE_WS_I6TBIT;
+			if (mode & NOTE_LINES_I6TBIT) {
+				mode -= NOTE_LINES_I6TBIT;
+				Provenance::set_line(&(state->provenance), lc);
+			}
 		}
 		if ((c == '!') && (!(mode & (DQUOTED_I6TBIT + SQUOTED_I6TBIT)))) {
 			mode = mode | COMMENTED_I6TBIT;
@@ -303,12 +303,12 @@ void ParsingStages::receive_raw(text_stream *S, simple_tangle_docket *docket) {
 		PUT_TO(R, c);
 		if ((c == ';') && (!(mode & SUBORDINATE_I6TBITS))) {
 			ParsingStages::splat(R, docket);
-			state->line_provenance = lc;
-			mode = IGNORE_WS_I6TBIT;
+			Provenance::set_line(&(state->provenance), lc);
+			mode = IGNORE_WS_I6TBIT + NOTE_LINES_I6TBIT;
 		}
 	}
 	ParsingStages::splat(R, docket);
-	state->line_provenance = lc;
+	Provenance::set_line(&(state->provenance), lc);
 	Str::clear(S);
 }
 
@@ -332,12 +332,9 @@ void ParsingStages::splat(text_stream *R, simple_tangle_docket *docket) {
 			PUT_TO(R, '\n');
 			filename *F = NULL;
 			inter_ti lc = 0;
-			if (Str::len(state->file_provenance) > 0) {
-				F = Filenames::from_text(state->file_provenance);
-				lc = state->line_provenance + 1;
-			} else if (docket->current_filename) {
-				F = docket->current_filename;
-				lc = 25;
+			if (Provenance::is_somewhere(state->provenance)) {
+				F = Provenance::get_filename(state->provenance);
+				lc = (inter_ti) Provenance::get_line(state->provenance);
 			}
 			Produce::guard(SplatInstruction::new(IBM, R, I6_dir, A, state->namespace,
 				F, lc, (inter_ti) (InterBookmark::baseline(IBM) + 1), NULL));

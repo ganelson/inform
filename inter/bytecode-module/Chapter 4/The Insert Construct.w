@@ -112,8 +112,7 @@ void InsertInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_nod
 	WRITE(" ");
 	TextualInter::write_text(OUT, replacing);
 	WRITE(" ");
-	TextualInter::write_text(OUT, InsertInstruction::file_provenance(P));
-	WRITE(" %d", InsertInstruction::line_provenance(P));
+	Provenance::write(OUT, InsertInstruction::provenance(P));
 }
 
 @h Access functions.
@@ -131,14 +130,10 @@ text_stream *InsertInstruction::replacing(inter_tree_node *P) {
 	return Inode::ID_to_text(P, P->W.instruction[REPLACING_INSERT_IFLD]);
 }
 
-text_stream *InsertInstruction::file_provenance(inter_tree_node *P) {
-	if (P == NULL) return NULL;
-	if (Inode::isnt(P, INSERT_IST)) return NULL;
-	return Inode::ID_to_text(P, P->W.instruction[PROVENANCEFILE_INSERT_IFLD]);
-}
-
-inter_ti InsertInstruction::line_provenance(inter_tree_node *P) {
-	if (P == NULL) return 0;
-	if (Inode::isnt(P, INSERT_IST)) return 0;
-	return P->W.instruction[PROVENANCELINE_INSERT_IFLD];
+text_provenance InsertInstruction::provenance(inter_tree_node *P) {
+	if (P == NULL) return Provenance::nowhere();
+	if (Inode::isnt(P, INSERT_IST)) return Provenance::nowhere();
+	return Provenance::at_file_and_line(
+		Inode::ID_to_text(P, P->W.instruction[PROVENANCEFILE_INSERT_IFLD]),
+		(int) P->W.instruction[PROVENANCELINE_INSERT_IFLD]);
 }
