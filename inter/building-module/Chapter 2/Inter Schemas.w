@@ -97,9 +97,7 @@ inter_schema_node *InterSchemas::new_node(inter_schema *sch, int isnt,
 	isn->blocked_by_conditional = FALSE;
 
 	isn->provenance = (sch)?(sch->provenance):(Provenance::nowhere());
-	if ((near_here) && (Provenance::is_somewhere(isn->provenance)))
-		Provenance::set_line(&(isn->provenance),
-			Provenance::get_line(isn->provenance) + near_here->line_offset);
+	if (near_here) Provenance::advance_line(&(isn->provenance), near_here->line_offset);
 	return isn;
 }
 
@@ -679,6 +677,10 @@ void InterSchemas::throw_error(inter_schema_node *at, text_stream *message) {
 	}
 	ADD_TO_LINKED_LIST(err, schema_parsing_error, at->parent_schema->parsing_errors);
 	LOG("Schema error: %S\n", message);
+	if ((at->parent_schema) && (Provenance::is_somewhere(at->parent_schema->provenance)))
+		LOG("Schema provenance %f, line %d\n",
+			Provenance::get_filename(at->parent_schema->provenance),
+			Provenance::get_line(at->parent_schema->provenance));
 	LOG("$1\n", at->parent_schema);
 }
 

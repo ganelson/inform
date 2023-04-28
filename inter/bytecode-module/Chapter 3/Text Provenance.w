@@ -64,6 +64,11 @@ void Provenance::set_line(text_provenance *where, int lc) {
 		where->line_number = lc;
 }
 
+void Provenance::advance_line(text_provenance *where, int by) {
+	if ((where) && (Provenance::is_somewhere(*where)))
+		where->line_number += by;
+}
+
 @ Writing to text:
 
 =

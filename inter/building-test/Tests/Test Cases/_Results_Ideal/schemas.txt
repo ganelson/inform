@@ -4522,3 +4522,22 @@ Test: parse schema from:
 0003       * (expr)
         NUMBER      1
 =========
+Test: parse schema from:
+
+
+
+	print BasicInformKit`stuff();
+
+
+	DialogueKit`temp = 1;
+
+0004   * (statement) !printnumber
+0004       * (call)
+0005           * (expr)
+            IDENTIFIER  BasicInformKit`stuff
+0005   * (operation) !store
+0007       * (expr)
+        IDENTIFIER  DialogueKit`temp
+0008       * (expr)
+        NUMBER      1
+=========

@@ -127,6 +127,11 @@ value:
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">where</span><span class="plain-syntax">) &amp;&amp; (</span><a href="3-tp.html#SP2" class="function-link"><span class="function-syntax">Provenance::is_somewhere</span></a><span class="plain-syntax">(*</span><span class="identifier-syntax">where</span><span class="plain-syntax">)))</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">where</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">line_number</span><span class="plain-syntax"> = </span><span class="identifier-syntax">lc</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Provenance::advance_line</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_provenance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">where</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">where</span><span class="plain-syntax">) &amp;&amp; (</span><a href="3-tp.html#SP2" class="function-link"><span class="function-syntax">Provenance::is_somewhere</span></a><span class="plain-syntax">(*</span><span class="identifier-syntax">where</span><span class="plain-syntax">)))</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">where</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">line_number</span><span class="plain-syntax"> += </span><span class="identifier-syntax">by</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Writing to text:
 </p>

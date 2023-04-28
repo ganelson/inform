@@ -159,6 +159,10 @@ inter_schema *ParsingSchemas::back_end(text_stream *from, int abbreviated,
 		sch->dereference_mode = TRUE; pos = 3;
 	}
 	Tokenisation::go(sch, from, pos, abbreviated, no_quoted_inames, quoted_inames);
+	if ((Log::aspect_switched_on(SCHEMA_COMPILATION_DA)) ||
+		(Log::aspect_switched_on(SCHEMA_COMPILATION_DETAILS_DA)))
+		LOG("Tokenised inter schema:\n$1", sch);
+	
 	Ramification::go(sch);
 	InterSchemas::lint(sch);
 

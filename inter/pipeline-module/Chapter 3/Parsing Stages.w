@@ -272,10 +272,7 @@ void ParsingStages::receive_raw(text_stream *S, simple_tangle_docket *docket) {
 			mode = mode | COMMENTED_I6TBIT;
 		}
 		if (mode & COMMENTED_I6TBIT) {
-			if (c == '\n') {
-				mode -= COMMENTED_I6TBIT;
-				if (!(mode & CONTENT_ON_LINE_I6TBIT)) continue;
-			}
+			if (c == '\n') mode -= COMMENTED_I6TBIT;
 			else continue;
 		}
 		if ((c == '[') && (!(mode & SUBORDINATE_I6TBITS))) {

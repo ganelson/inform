@@ -1637,3 +1637,13 @@ schema
 	print BasicInformKit`stuff();
 	DialogueKit`temp = 1;
 end
+
+schema
+
+
+
+	print BasicInformKit`stuff();
+
+
+	DialogueKit`temp = 1;
+end

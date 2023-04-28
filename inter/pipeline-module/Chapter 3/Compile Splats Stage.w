@@ -708,6 +708,7 @@ in this section.
 	PipelineErrors::set_kit_error_location_near_splat(P);
 	text_stream *raw_identifier = NULL, *local_var_names = NULL, *body = NULL;
 	match_results mr = Regexp::create_mr();
+	int line_offset = 0;
 	if (SplatInstruction::plm(P) == ROUTINE_PLM) @<Parse the routine header@>;
 	if (SplatInstruction::plm(P) == STUB_PLM) @<Parse the stub directive@>;
 	if (raw_identifier) {
@@ -722,13 +723,17 @@ in this section.
 
 @<Parse the routine header@> =
 	text_stream *S = SplatInstruction::splatter(P);
+	int pos = 0;
 	if (Regexp::match(&mr, S, L" *%[ *([A-Za-z0-9_`]+) *; *(%c*)")) {
-		raw_identifier = mr.exp[0]; body = mr.exp[1];
+		raw_identifier = mr.exp[0]; body = mr.exp[1]; pos = mr.exp_at[1];
 	} else if (Regexp::match(&mr, S, L" *%[ *([A-Za-z0-9_`]+) *(%c*?); *(%c*)")) {
-		raw_identifier = mr.exp[0]; local_var_names = mr.exp[1]; body = mr.exp[2];
+		raw_identifier = mr.exp[0]; local_var_names = mr.exp[1]; body = mr.exp[2]; pos = mr.exp_at[2];
 	} else {
 		PipelineErrors::kit_error("invalid Inform 6 routine declaration", NULL);
 	}
+	for (int i=0; i<pos; i++)
+		if (Str::get_at(S, i) == '\n')
+			line_offset++;
 
 @ Another of Inform 6's shabby notations for conditional compilation in disguise
 is the |Stub| directive, which looks like so:
@@ -842,8 +847,10 @@ These have package types |_function| and |_code| respectively.
 	while ((L>0) && (Characters::is_whitespace(Str::get_at(body, L-1)))) L--;
 	Str::truncate(body, L);
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
+	text_provenance prov = PipelineErrors::get_kit_error_location();
+	Provenance::advance_line(&prov, line_offset);
 	CompileSplatsStage::function_body(css, IBM, IP, B, body, block_bookmark, identifier,
-		SplatInstruction::namespace(P), PipelineErrors::get_kit_error_location());
+		SplatInstruction::namespace(P), prov);
 
 @h Inform 6 annotations.
 
@@ -1378,6 +1385,10 @@ int CompileSplatsStage::function_bodies(pipeline_step *step, compile_splats_stat
 	LOOP_OVER_LINKED_LIST(req, function_body_request, css->function_bodies_to_compile) {
 		LOGIF(SCHEMA_COMPILATION, "=======\n\nFunction (%S) len %d: '%S'\n\n",
 			InterPackage::name(req->block_package), Str::len(req->body), req->body);
+		if (Provenance::is_somewhere(req->provenance))
+			LOGIF(SCHEMA_COMPILATION, "Function provenance %f, line %d\n\n",
+				Provenance::get_filename(req->provenance),
+				Provenance::get_line(req->provenance));
 		inter_schema *sch = ParsingSchemas::from_text(req->body, req->provenance);
 		if (LinkedLists::len(sch->parsing_errors) > 0) {
 			CompileSplatsStage::report_kit_errors(sch, req);
