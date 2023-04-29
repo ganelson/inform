@@ -828,7 +828,7 @@ nodes, which we want to fold into just one:
 		operand1 = InterSchemas::second_dark_token(until_node);
 		cons->next_node = until_node->next_node;
 	} else {
-		InterSchemas::throw_error(cons, I"do without until");
+		I6Errors::issue_at_node(cons, I"do without until");
 		return FALSE;
 	}
 
@@ -841,7 +841,7 @@ nodes, which we want to fold into just one:
 		TEMPORARY_TEXT(msg)
 		WRITE_TO(msg, "expected 'on' or 'off' after 'font', not '%S'",
 			n->material);
-		InterSchemas::throw_error(cons, msg);
+		I6Errors::issue_at_node(cons, msg);
 		DISCARD_TEXT(msg)
 		return FALSE;
 	}
@@ -891,7 +891,7 @@ clause at all. We split these possibilities into two different statement nodes.
 		to = InterSchemas::next_dark_token(to);
 	}
 	if (to == NULL) {
-		InterSchemas::throw_error(cons, I"move without to");
+		I6Errors::issue_at_node(cons, I"move without to");
 		return FALSE;
 	}
 	operand2 = InterSchemas::next_dark_token(to);
@@ -1239,7 +1239,7 @@ int Ramification::break_for_statements(inter_schema_node *par, inter_schema_node
 			(isn->node_marked == FALSE)) {
 			inter_schema_node *predicates = isn->child_node;
 			if ((predicates == NULL) || (predicates->isn_type != EXPRESSION_ISNT)) {
-				InterSchemas::throw_error(isn, I"malformed 'for' loop");
+				I6Errors::issue_at_node(isn, I"malformed 'for' loop");
 				return FALSE;
 			}
 			inter_schema_token *n = predicates->expression_tokens;
@@ -1267,7 +1267,7 @@ int Ramification::break_for_statements(inter_schema_node *par, inter_schema_node
 				n = n->next;
 			}
 			if (cw != 3) {
-				InterSchemas::throw_error(isn, I"'for' header with too few clauses");
+				I6Errors::issue_at_node(isn, I"'for' header with too few clauses");
 				return FALSE;
 			}
 			for (int i=0; i<3; i++) {
@@ -1308,7 +1308,7 @@ int Ramification::break_for_statements(inter_schema_node *par, inter_schema_node
 
 @<End a for loop header clause@> =
 	if (cw >= 3) {
-		InterSchemas::throw_error(isn, I"'for' header with too many clauses");
+		I6Errors::issue_at_node(isn, I"'for' header with too many clauses");
 		return FALSE;
 	}
 	if (from[cw] == NULL) to[cw] = NULL;
@@ -1336,7 +1336,7 @@ int Ramification::add_missing_bodies(inter_schema_node *par, inter_schema_node *
 			int actual = 0;
 			for (inter_schema_node *ch = isn->child_node; ch; ch=ch->next_node) actual++;
 			if ((actual < req-1) || (actual > req)) {
-				InterSchemas::throw_error(isn, I"malformed statement");
+				I6Errors::issue_at_node(isn, I"malformed statement");
 				return FALSE;
 			}
 			if (actual == req-1) {
@@ -1718,7 +1718,7 @@ operation |a.b|.
 			WRITE_TO(msg, "operator '%S' used with %d not %d operand(s)",
 				I6Operators::I6_notation_for(isn->isn_clarifier),
 				a, I6Operators::arity(isn->isn_clarifier));
-			InterSchemas::throw_error(isn, msg);
+			I6Errors::issue_at_node(isn, msg);
 			DISCARD_TEXT(msg)
 			return FALSE;
 		}
@@ -1894,32 +1894,32 @@ int Ramification::sanity_check(inter_schema_node *par, inter_schema_node *isn) {
 			for (inter_schema_token *t = isn->expression_tokens; t; t=t->next) {
 				switch (t->ist_type) {
 					case OPCODE_ISTT:		asm = TRUE; break;
-					case RAW_ISTT:			InterSchemas::throw_error(isn, I"malformed expression"); break;
-					case OPEN_BRACE_ISTT:	InterSchemas::throw_error(isn, I"unexpected '{'"); break;
-					case CLOSE_BRACE_ISTT:	InterSchemas::throw_error(isn, I"unexpected '}'"); break;
-					case OPEN_ROUND_ISTT:	InterSchemas::throw_error(isn, I"unexpected '('"); break;
-					case CLOSE_ROUND_ISTT:	InterSchemas::throw_error(isn, I"unexpected ')'"); break;
-					case COMMA_ISTT:		InterSchemas::throw_error(isn, I"unexpected ','"); break;
-					case DIVIDER_ISTT:		InterSchemas::throw_error(isn, I"malformed expression"); break;
+					case RAW_ISTT:			I6Errors::issue_at_node(isn, I"malformed expression"); break;
+					case OPEN_BRACE_ISTT:	I6Errors::issue_at_node(isn, I"unexpected '{'"); break;
+					case CLOSE_BRACE_ISTT:	I6Errors::issue_at_node(isn, I"unexpected '}'"); break;
+					case OPEN_ROUND_ISTT:	I6Errors::issue_at_node(isn, I"unexpected '('"); break;
+					case CLOSE_ROUND_ISTT:	I6Errors::issue_at_node(isn, I"unexpected ')'"); break;
+					case COMMA_ISTT:		I6Errors::issue_at_node(isn, I"unexpected ','"); break;
+					case DIVIDER_ISTT:		I6Errors::issue_at_node(isn, I"malformed expression"); break;
 					case RESERVED_ISTT: {
 						TEMPORARY_TEXT(msg)
 						WRITE_TO(msg, "unexpected use of reserved word '%S'", t->material);
-						InterSchemas::throw_error(isn, msg);
+						I6Errors::issue_at_node(isn, msg);
 						DISCARD_TEXT(msg)
 						break;
 					}
-					case COLON_ISTT:		InterSchemas::throw_error(isn, I"unexpected ':'"); break;
-					case DCOLON_ISTT:		InterSchemas::throw_error(isn,
+					case COLON_ISTT:		I6Errors::issue_at_node(isn, I"unexpected ':'"); break;
+					case DCOLON_ISTT:		I6Errors::issue_at_node(isn,
 												I"the Inform 6 '::' operator is unsupported"); break;
-					case OPERATOR_ISTT:		InterSchemas::throw_error(isn, I"unexpected operator"); break;
+					case OPERATOR_ISTT:		I6Errors::issue_at_node(isn, I"unexpected operator"); break;
 				}
 				if ((t->ist_type == NUMBER_ISTT) && (t->next) &&
 					(t->next->ist_type == NUMBER_ISTT) && (asm == FALSE))
-					InterSchemas::throw_error(isn, I"two consecutive numbers");
+					I6Errors::issue_at_node(isn, I"two consecutive numbers");
 			}
-			if (isn->child_node) InterSchemas::throw_error(isn, I"malformed expression");
+			if (isn->child_node) I6Errors::issue_at_node(isn, I"malformed expression");
 		} else {
-			if (isn->expression_tokens) InterSchemas::throw_error(isn, I"syntax error");
+			if (isn->expression_tokens) I6Errors::issue_at_node(isn, I"syntax error");
 		}
 		Ramification::sanity_check(isn, isn->child_node);
 	}

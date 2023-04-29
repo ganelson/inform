@@ -1,0 +1,125 @@
+"Disasterama"
+
+The Scene of the Crime is a room.
+
+Include (- 
+
+Array supposed string "Banana";
+Array supposed2 struct { 2, 3, 4 };
+Array helium -> ['H'  'e'];
+Array lithium -> ['L';; ; 'i'];
+Array manganese -> 'M' 'n';
+Array molybdenum -> ['M'; 'b'];
+Array sizeplus --> 2 + 7;
+Array sizeplusok --> (2 + 7);
+Array sizeminus --> 2 - 7;
+Array sizeminusok --> (2 - 7);
+Array sizetimes --> 2 * 7;
+Array sizetimesok --> (2 * 7);
+Array sizedivide --> 2 / 7;
+Array sizedivideok --> (2 / 7);
+Array passwordok -> ['X'; 'y'; 'z'; 'z'; 'y'];
+Array password -> 'H' 'e' 'l' 'l' 'o';
+
+Hypothetical 10;
+Link;
+
++namespace(Whatever) [ Banana; ];
+
+[ "hello" ];
+#Stub X "banana";
+[ Routine 12 1aa "semolina" _ok ok ok123 OK_456; ];
+
++silly [ Stuff; ];
++private(23) [ Alpha; ];
++public(quietly) [ Beta; ];
++namespace(MammalKit, access whimsical);
++namespace(BirdKit, level 4);
++namespace("This");
++namespace(10);
++namespace(Main);
++namespace(replaced);
++private();
++namespace(AmphibianKit, access private);
++private [ FrogMonitor; ];
++namespace();
++namespace(ReptileKit, access public);
++public [ CloudLizardMonitor; ];
++namespace();
++replacing(sideways) [ This; ];
++replacing(route=sideways) [ This; ];
+
+Verb "grab" * scope=Bogus noun=JustAsBogus;
+
+Constant STUFF = 200;
+#iftrue STUFF == 201;
+#endif;
+#ifnot;
+#endif;
+[ Dud1 x y;
+	x = @mul 12 12 -> y;
+];
+[ Dud2;
+	#ifdef STUFF;
+];
+[ Dud3;
+	#endif;
+];
+[ Dud4;
+	#ifdef;
+	#endif;
+];
+[ Dud4;
+	#iftrue;
+	#endif;
+];
+[ Dud5 x y;
+	if (x == @mul 12 12 -> y) print "Ok!";
+];
+[ Dud6;
+	glk(14, 2, 3);
+];
+[ Dud7 x;
+	x.call(1, 2, 3, 4, 5);
+];
+[ Dud8;
+	print $f05g;
+];
+[ Dud9;
+	print .Label;
+];
+[ Dud10;
+	.1534;
+];
+[ Dud11;
+	print print "Hello";
+];
+[ Dud12;
+	objectloop(12) print "Yes.";
+];
+[ Dud13;
+	do print "X";
+];
+[ Dud14;
+	font "Times New Roman";
+];
+[ Dud15 x y;
+	move x y;
+];
+[ Dud16;
+	for;
+];
+[ Dud17;
+	for ();
+];
+[ Dud18;
+	for (:::::);
+];
+[ Dud19;
+	print 3 + + 17;
+];
+
+#ifdef Tosh;
+[ WontBeCompiled; ];
+
+-).

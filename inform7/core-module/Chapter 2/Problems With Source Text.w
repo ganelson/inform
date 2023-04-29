@@ -674,7 +674,7 @@ void SourceProblems::I6_level_error(char *message, text_stream *quote,
 			notified_kit_name, notified_architecture_name);
 		trigger_kit_notice = FALSE;
 	}
-	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_I6SyntaxError));
 	Problems::quote_stream(1, M);
 	if (Str::len(kit) > 0) {
 		Problems::quote_stream(2, file);
@@ -686,7 +686,7 @@ void SourceProblems::I6_level_error(char *message, text_stream *quote,
 		LOG("%S, line %d:\n", file, line);
 		Problems::problem_quote_file(2, file, line);
 		Problems::issue_problem_segment(
-			"A mistake was found in the Inform 6-syntax code near here %2: %1.");
+			"Inform 6 syntax error near here %2: %1.");
 	} else {
 		Problems::issue_problem_segment(
 			"My low-level reader of source code reported a mistake - \"%1\". "

@@ -82,7 +82,7 @@ void CompileSchemas::sch_emit_inner(i6_schema *sch, pcalc_term *pt1, pcalc_term 
 	EmitInterSchemas::emit(Emit::tree(), &VH, sch->compiled,
 		IdentifierFinders::common_names_only(),
 		&CompileSchemas::from_schema_token, NULL, &ems);
-	InterSchemas::internal_error_on_schema_errors(sch->compiled);
+	I6Errors::internal_error_on_schema_errors(sch->compiled);
 }
 
 @ So, then, this is called on each token in turn from the original schema. Note

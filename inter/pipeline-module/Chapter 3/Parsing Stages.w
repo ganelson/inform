@@ -138,7 +138,7 @@ typedef struct rpi_docket_state {
 		&(ParsingStages::receive_command),
 		&(ParsingStages::receive_bplus),
 		&(ParsingStages::line_marker),
-		&(PipelineErrors::kit_error),
+		&(I6Errors::issue),
 		step->ephemera.the_kit, &state);
 
 @ Once the I6T reader has unpacked the literate-programming notation, it will
@@ -318,71 +318,25 @@ Note that this function empties the splat buffer |R| before exiting.
 =
 void ParsingStages::splat(text_stream *R, simple_tangle_docket *docket) {
 	if (Str::len(R) > 0) {
+		rpi_docket_state *state = (rpi_docket_state *) docket->state;
+		I6Errors::set_current_location(state->provenance);
+
 		TEMPORARY_TEXT(A)
 		@<Find annotation, if any@>;
 		inter_ti I6_dir = 0;
 
 		@<Find directive@>;
-		if (I6_dir != WHITESPACE_PLM) {
-			rpi_docket_state *state = (rpi_docket_state *) docket->state;
-			inter_bookmark *IBM = state->assimilation_point;
-			PUT_TO(R, '\n');
-			filename *F = NULL;
-			inter_ti lc = 0;
-			if (Provenance::is_somewhere(state->provenance)) {
-				F = Provenance::get_filename(state->provenance);
-				lc = (inter_ti) Provenance::get_line(state->provenance);
-			}
-			Produce::guard(SplatInstruction::new(IBM, R, I6_dir, A, state->namespace,
-				F, lc, (inter_ti) (InterBookmark::baseline(IBM) + 1), NULL));
-		} else if (A) {
+		if (I6_dir != WHITESPACE_PLM) @<Splat the directive@>
+		else if (A) {
 			I6_annotation *IA = I6Annotations::parse(A);
 			if ((IA) && (Str::eq_insensitive(IA->identifier, I"namespace"))) {
-				rpi_docket_state *state = (rpi_docket_state *) docket->state;
-				Str::clear(state->namespace);
-				int private = NOT_APPLICABLE;
-				I6_annotation_term *term;
-				LOOP_OVER_LINKED_LIST(term, I6_annotation_term, IA->terms) {
-					if (Str::eq_insensitive(term->key, I"_")) {
-						WRITE_TO(state->namespace, "%S", term->value);
-					} else if (Str::eq_insensitive(term->key, I"access")) {
-						if (Str::eq_insensitive(term->value, I"private")) private = TRUE;
-						else if (Str::eq_insensitive(term->value, I"public")) private = FALSE;
-						else PipelineErrors::kit_error(
-							"the 'access' must be 'private' or 'public', not '%S'", term->value);
-					} else {
-						PipelineErrors::kit_error(
-							"the +namespace annotation does not take the term '%S'", term->key);
-					}
-				}
-				int bad_name = FALSE;
-				for (int i=0; i<Str::len(state->namespace); i++) {
-					wchar_t c = Str::get_at(state->namespace, i);
-					if (i == 0) {
-						if (Characters::isalpha(c) == FALSE) bad_name = TRUE;
-					} else {
-						if ((Characters::isalnum(c) == FALSE) && (c != '_')) bad_name = TRUE;
-					}
-				}
-				if (bad_name)
-					 PipelineErrors::kit_error(
-						"a namespace name should begin with a letter and contain "
-						"only alphanumeric characters or '_'", NULL);
-				if (Str::len(state->namespace) == 0)
-					 PipelineErrors::kit_error(
-						"use '+namespace(main);' to return to the global namespace", NULL);
-				if (Str::eq(state->namespace, I"main")) Str::clear(state->namespace);
-				if (Str::eq(state->namespace, I"replaced")) {
-					 PipelineErrors::kit_error(
-						"the namespace 'replaced' is reserved, and cannot be used directly", NULL);
-					Str::clear(state->namespace);
-				}
-				if (private == TRUE) PUT_TO(state->namespace, '-');
-				if (private == FALSE) PUT_TO(state->namespace, '+');
+				@<Respond to a change of namespace@>;
 			} else {
-				(*(docket->error_callback))(
-					"this annotation seems not to apply to any directive: '%S'", A);
+				 I6Errors::issue(
+					"the annotation '%S' seems not to apply to any directive: "
+					"only '+namespace' can do that", A);
 			}
+			I6Errors::clear_current_location();
 		}
 		Str::clear(R);
 		DISCARD_TEXT(A)
@@ -392,8 +346,7 @@ void ParsingStages::splat(text_stream *R, simple_tangle_docket *docket) {
 @<Find annotation, if any@> =
 	int verdict = I6Annotations::check(R);
 	if (verdict == -1) {
-		(*(docket->error_callback))(
-			"this Inform 6 annotation is malformed: '%S'", R);
+		I6Errors::issue("this +annotation is malformed: '%S'", R);
 	} else {
 		for (int i=0; i<verdict; i++) PUT_TO(A, Str::get_at(R, i));
 		Str::trim_white_space(A);
@@ -409,13 +362,13 @@ the directive type as 0.
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, R, L" *(%[) *(%c*);%c*")) {
 		I6_dir = ROUTINE_PLM;
-	} else if (Regexp::match(&mr, R, L" *(%C+) *(%c*);%c*")) {
-		     if (Str::eq_insensitive(mr.exp[0], I"#ifdef"))      I6_dir = IFDEF_PLM;
-		else if (Str::eq_insensitive(mr.exp[0], I"#ifndef"))     I6_dir = IFNDEF_PLM;
-		else if (Str::eq_insensitive(mr.exp[0], I"#iftrue"))     I6_dir = IFTRUE_PLM;
-		else if (Str::eq_insensitive(mr.exp[0], I"#ifnot"))      I6_dir = IFNOT_PLM;
-		else if (Str::eq_insensitive(mr.exp[0], I"#endif"))      I6_dir = ENDIF_PLM;
-		else if (Str::eq_insensitive(mr.exp[0], I"#stub"))       I6_dir = STUB_PLM;
+	} else if (Regexp::match(&mr, R, L" *#*(%C+) *(%c*);%c*")) {
+		     if (Str::eq_insensitive(mr.exp[0], I"Ifdef"))      I6_dir = IFDEF_PLM;
+		else if (Str::eq_insensitive(mr.exp[0], I"Ifndef"))     I6_dir = IFNDEF_PLM;
+		else if (Str::eq_insensitive(mr.exp[0], I"Iftrue"))     I6_dir = IFTRUE_PLM;
+		else if (Str::eq_insensitive(mr.exp[0], I"Ifnot"))      I6_dir = IFNOT_PLM;
+		else if (Str::eq_insensitive(mr.exp[0], I"Endif"))      I6_dir = ENDIF_PLM;
+		else if (Str::eq_insensitive(mr.exp[0], I"Stub"))       I6_dir = STUB_PLM;
 		else if (Str::eq_insensitive(mr.exp[0], I"Constant"))    I6_dir = CONSTANT_PLM;
 		else if (Str::eq_insensitive(mr.exp[0], I"Global"))      I6_dir = GLOBAL_PLM;
 		else if (Str::eq_insensitive(mr.exp[0], I"Array"))       I6_dir = ARRAY_PLM;
@@ -434,10 +387,99 @@ the directive type as 0.
 				(Str::get(pos) != ';'))
 				I6_dir = MYSTERY_PLM;
 	}
-	if (I6_dir == MYSTERY_PLM)
-		(*(docket->error_callback))(
-			"this Inform 6 directive is not supported in kits or '(-' inclusions: '%S'", R);
+	if (I6_dir == MYSTERY_PLM) {
+		int known = FALSE;
+		     if (Str::eq_insensitive(mr.exp[0], I"Ifv3"))        known = TRUE;
+		else if (Str::eq_insensitive(mr.exp[0], I"Ifv5"))        known = TRUE;
+		else if (Str::eq_insensitive(mr.exp[0], I"Iffalse"))     known = TRUE;
+		else if (Str::eq_insensitive(mr.exp[0], I"Abbreviate"))  known = TRUE;
+		else if (Str::eq_insensitive(mr.exp[0], I"Dictionary"))  known = TRUE;
+		else if (Str::eq_insensitive(mr.exp[0], I"Import"))      known = TRUE;
+		else if (Str::eq_insensitive(mr.exp[0], I"Link"))        known = TRUE;
+		else if (Str::eq_insensitive(mr.exp[0], I"Lowstring"))   known = TRUE;
+		else if (Str::eq_insensitive(mr.exp[0], I"Origsource"))  known = TRUE;
+		else if (Str::eq_insensitive(mr.exp[0], I"Replace"))     known = TRUE;
+		else if (Str::eq_insensitive(mr.exp[0], I"Switches"))    known = TRUE;
+		else if (Str::eq_insensitive(mr.exp[0], I"Trace"))       known = TRUE;
+		else if (Str::eq_insensitive(mr.exp[0], I"Undef"))       known = TRUE;
+		else if (Str::eq_insensitive(mr.exp[0], I"Version"))     known = TRUE;
+		if (known)
+			I6Errors::issue(
+				"this Inform 6 directive is not supported in kits or '(-' inclusions: '%S' "
+				"(only #Ifdef, #Ifndef, #Iftrue, #Ifnot, #Endif, #Stub, Constant, Global, "
+				"Array, Attribute, Property, Verb, Fake_action, Object, Default are "
+				"supported)", R);
+		else
+			I6Errors::issue("this is not an Inform 6 directive", R);
+	}
 	Regexp::dispose_of(&mr);
+
+@<Splat the directive@> =
+	inter_bookmark *IBM = state->assimilation_point;
+	PUT_TO(R, '\n');
+	filename *F = NULL;
+	inter_ti lc = 0;
+	if (Provenance::is_somewhere(state->provenance)) {
+		F = Provenance::get_filename(state->provenance);
+		lc = (inter_ti) Provenance::get_line(state->provenance);
+	}
+	Produce::guard(SplatInstruction::new(IBM, R, I6_dir, A, state->namespace,
+		F, lc, (inter_ti) (InterBookmark::baseline(IBM) + 1), NULL));
+
+@ So the following picks up |+namespace(Whatever)| annotations, which do not
+apply to any directive.
+
+@<Respond to a change of namespace@> =
+	Str::clear(state->namespace);
+	int private = NOT_APPLICABLE;
+	I6_annotation_term *term;
+	LOOP_OVER_LINKED_LIST(term, I6_annotation_term, IA->terms) {
+		if (Str::eq_insensitive(term->key, I"_")) {
+			WRITE_TO(state->namespace, "%S", term->value);
+		} else if (Str::eq_insensitive(term->key, I"access")) {
+			if (Str::eq_insensitive(term->value, I"private")) private = TRUE;
+			else if (Str::eq_insensitive(term->value, I"public")) private = FALSE;
+			else I6Errors::issue(
+				"in a +namespace annotation, the 'access' must be 'private' or "
+				"'public', not '%S'", term->value);
+		} else {
+			I6Errors::issue(
+				"the +namespace annotation does not take the term '%S'", term->key);
+		}
+	}
+	@<Vet the new namespace name@>;
+	if (private == TRUE) PUT_TO(state->namespace, '-');
+	if (private == FALSE) PUT_TO(state->namespace, '+');
+
+@<Vet the new namespace name@> =
+	int bad_name = FALSE;
+	for (int i=0; i<Str::len(state->namespace); i++) {
+		wchar_t c = Str::get_at(state->namespace, i);
+		if (i == 0) {
+			if (Characters::isalpha(c) == FALSE) bad_name = TRUE;
+		} else {
+			if ((Characters::isalnum(c) == FALSE) && (c != '_')) bad_name = TRUE;
+		}
+	}
+	if (bad_name)
+		 I6Errors::issue(
+			"the namespace '%S' is not allowed: namespace names should begin "
+			"with a letter and contain only alphanumeric characters or '_'",
+			state->namespace);
+	if (Str::len(state->namespace) == 0)
+		 I6Errors::issue(
+			"'+namespace()' is not allowed: use '+namespace(main);' to return "
+			"to the global namespace", NULL);
+	if (Str::eq(state->namespace, I"main")) Str::clear(state->namespace);
+	else if (Str::eq_insensitive(state->namespace, I"main"))
+		 I6Errors::issue(
+			"'+namespace(...)' names are case-sensitive: use 'main', not '%S', "
+			"to return to the global namespace", state->namespace);
+	if (Str::eq(state->namespace, I"replaced")) {
+		 I6Errors::issue(
+			"the namespace 'replaced' is reserved, and cannot be used directly", NULL);
+		Str::clear(state->namespace);
+	}
 
 @ And that's it: the result of these stages is just to break the I6T source they
 found up into individual directives, and put them into the tree as |SPLAT_IST| nodes.

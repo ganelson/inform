@@ -50,7 +50,7 @@ inter_schema *ParsingSchemas::from_i6s(text_stream *from,
 	Dictionaries::create(i6s_inter_schema_cache, from);
 	Dictionaries::write_value(i6s_inter_schema_cache, from, (void *) result);
 
-	InterSchemas::internal_error_on_schema_errors(result);
+	I6Errors::internal_error_on_schema_errors(result);
 	return result;
 }
 

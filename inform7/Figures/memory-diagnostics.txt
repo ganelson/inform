@@ -1,9 +1,9 @@
-Total memory consumption was 123104K = 120 MB
+Total memory consumption was 123110K = 120 MB
 
  ---- was used for 2061850 objects, in 367513 frames in 0 x 800K = 0K = 0 MB:
 
     33.1%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
-    20.9%  text_stream_array                        4678 x 100 = 467800 objects, 26346496 bytes
+    20.8%  text_stream_array                        4678 x 100 = 467800 objects, 26346496 bytes
     19.7%  linked_list                              44435 objects, 24883600 bytes
     11.2%  inter_symbol_array                       133 x 1024 = 136192 objects, 14168224 bytes
     10.6%  inter_error_stash_array                  102 x 1024 = 104448 objects, 13372608 bytes
@@ -248,7 +248,7 @@ Total memory consumption was 123104K = 120 MB
 
 100.0% was used for memory not allocated for objects:
 
-    57.5%  text stream storage                      72515996 bytes in 487440 claims
+    57.5%  text stream storage                      72522576 bytes in 487482 claims
      4.2%  dictionary storage                       5315584 bytes in 7623 claims
      ----  sorting                                  2720 bytes in 387 claims
      5.7%  source text                              7200000 bytes in 3 claims

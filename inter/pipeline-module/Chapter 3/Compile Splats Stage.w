@@ -30,18 +30,18 @@ void CompileSplatsStage::create_pipeline_stage(void) {
 
 =
 int CompileSplatsStage::run(pipeline_step *step) {
-	PipelineErrors::reset_errors();
+	I6Errors::reset_count();
 	compile_splats_state css;
 	@<Initialise the CS state@>;
 	inter_tree *I = step->ephemera.tree;
 	InterTree::traverse(I, CompileSplatsStage::visitor1, &css, NULL, SPLAT_IST);
 	InterTree::traverse(I, CompileSplatsStage::visitor2, &css, NULL, 0);
-	PipelineErrors::clear_kit_error_location();
+	I6Errors::clear_current_location();
 	int errors_found = CompileSplatsStage::function_bodies(step, &css, I);
 	if (errors_found) return FALSE;
 	InterTree::traverse(I, CompileSplatsStage::visitor3, &css, NULL, SPLAT_IST);
-	PipelineErrors::clear_kit_error_location();
-	if (PipelineErrors::errors_occurred()) return FALSE;
+	I6Errors::clear_current_location();
+	if (I6Errors::errors_occurred()) return FALSE;
 	return TRUE;
 }
 
@@ -136,7 +136,7 @@ void CompileSplatsStage::visitor3(inter_tree *I, inter_tree_node *P, void *state
 @h How definitions are assimilated.
 
 @<Assimilate definition@> =
-	PipelineErrors::set_kit_error_location_near_splat(P);
+	I6Errors::set_current_location_near_splat(P);
 	match_results mr = Regexp::create_mr();
 	text_stream *raw_identifier = NULL, *value = NULL;
 	int proceed = TRUE;
@@ -435,11 +435,13 @@ first to work out which of the several array formats this is, then the contents
 		} else if (Regexp::match(&mr, value, L" *buffer *(%c*?) *")) {
 			conts = mr.exp[0]; as_bytes = TRUE; bounded = TRUE;
 		} else if (Regexp::match(&mr, value, L" *string *(%c*?) *")) {
-			LOG("Identifier = <%S>, Value = <%S>", identifier, value);
-			PipelineErrors::kit_error("Inform 6 'string' arrays are unsupported", NULL);
+			I6Errors::issue(
+				"cannot make array '%S': the 'string' initialiser is unsupported",
+				identifier);
 		} else {
-			LOG("Identifier = <%S>, Value = <%S>", identifier, value);
-			PipelineErrors::kit_error("invalid Inform 6 array declaration", NULL);
+			I6Errors::issue(
+				"cannot make array '%S': the initial value syntax is unrecognised",
+				identifier);
 		}
 	} else {
 		conts = value; grammatical = TRUE;
@@ -489,18 +491,16 @@ see why other kits would, either.
 
 @<Eat off a chunk@> =
 	text_stream *full_conts = entries;
-	if (from > to) {
-		PipelineErrors::kit_error("Inform 6 array contains empty entry", NULL);
-	} else {
-		int count_before = no_assimilated_array_entries;
-		TEMPORARY_TEXT(conts)
-		for (int j=from; j<=to; j++) PUT_TO(conts, Str::get_at(full_conts, j));
-		@<Parse the old-style I6 array entry notation@>		
-		DISCARD_TEXT(conts)
-		if (no_assimilated_array_entries > count_before+1)
-			PipelineErrors::kit_error(
-				"Multiple entries between ';' markers in a '[ ...; ...; ... ]' array", NULL);
-	}
+	int count_before = no_assimilated_array_entries;
+	TEMPORARY_TEXT(conts)
+	for (int j=from; j<=to; j++) PUT_TO(conts, Str::get_at(full_conts, j));
+	@<Parse the old-style I6 array entry notation@>		
+	DISCARD_TEXT(conts)
+	if (no_assimilated_array_entries == count_before)
+		I6Errors::issue("array '%S' contains empty entry", identifier);
+	if (no_assimilated_array_entries > count_before+1)
+		I6Errors::issue(
+			"multiple entries between ';' markers in array '%S'", identifier);
 
 @<Parse the old-style I6 array entry notation@> =
 	string_position spos = Str::start(conts);
@@ -514,17 +514,21 @@ see why other kits would, either.
 
 @<Process the token@> =
 	if (Str::eq(value, I"+"))
-		PipelineErrors::kit_error("Inform 6 array declaration using operator '+' "
-			"(use brackets '(' ... ')' around the size for a calculated array size)", NULL);
+		I6Errors::issue("array '%S' gives its size using operator '+' "
+			"(use brackets '(' ... ')' around the size for a calculated array size)",
+			identifier);
 	else if (Str::eq(value, I"-"))
-		PipelineErrors::kit_error("Inform 6 array declaration using operator '-' "
-			"(use brackets '(' ... ')' around the size for a calculated array size)", NULL);
+		I6Errors::issue("array '%S' gives its size using operator '-' "
+			"(use brackets '(' ... ')' around the size for a calculated array size)",
+			identifier);
 	else if (Str::eq(value, I"*"))
-		PipelineErrors::kit_error("Inform 6 array declaration using operator '*' "
-			"(use brackets '(' ... ')' around the size for a calculated array size)", NULL);
+		I6Errors::issue("array '%S' gives its size using operator '*' "
+			"(use brackets '(' ... ')' around the size for a calculated array size)",
+			identifier);
 	else if (Str::eq(value, I"/"))
-		PipelineErrors::kit_error("Inform 6 array declaration using operator '/' "
-			"(use brackets '(' ... ')' around the size for a calculated array size)", NULL);
+		I6Errors::issue("array '%S' gives its size using operator '/' "
+			"(use brackets '(' ... ')' around the size for a calculated array size)",
+			identifier);
 	else {	
 		inter_pair val = InterValuePairs::undef();
 		@<Assimilate a value@>;
@@ -671,7 +675,7 @@ equating it to a function definition elsewhere.
 
 @<Add value to the entry pile@> =
 	if (no_assimilated_array_entries >= MAX_ASSIMILATED_ARRAY_ENTRIES) {
-		PipelineErrors::kit_error("excessively long Verb or Extend", NULL);
+		I6Errors::issue("excessively long Verb or Extend", NULL);
 		break;
 	}
 	val_pile[no_assimilated_array_entries] = val;
@@ -705,7 +709,7 @@ We are concerned more with the surround than with the contents of the function
 in this section.
 
 @<Assimilate routine@> =
-	PipelineErrors::set_kit_error_location_near_splat(P);
+	I6Errors::set_current_location_near_splat(P);
 	text_stream *raw_identifier = NULL, *local_var_names = NULL, *body = NULL;
 	match_results mr = Regexp::create_mr();
 	int line_offset = 0;
@@ -728,8 +732,12 @@ in this section.
 		raw_identifier = mr.exp[0]; body = mr.exp[1]; pos = mr.exp_at[1];
 	} else if (Regexp::match(&mr, S, L" *%[ *([A-Za-z0-9_`]+) *(%c*?); *(%c*)")) {
 		raw_identifier = mr.exp[0]; local_var_names = mr.exp[1]; body = mr.exp[2]; pos = mr.exp_at[2];
+	} else if (Regexp::match(&mr, S, L" *%[ *(%c+?) *; *(%c*)")) {
+		I6Errors::issue("invalid Inform 6 routine declaration: '%S'", mr.exp[0]);
 	} else {
-		PipelineErrors::kit_error("invalid Inform 6 routine declaration", NULL);
+		text_stream *start = Str::duplicate(S);
+		Str::truncate(start, 50);
+		I6Errors::issue("invalid Inform 6 routine declaration: '%S'", start);
 	}
 	for (int i=0; i<pos; i++)
 		if (Str::get_at(S, i) == '\n')
@@ -763,7 +771,11 @@ supported only to avoid throwing errors.
 		if ((N<0) || (N>15)) N = 1;
 		for (int i=1; i<=N; i++) WRITE_TO(local_var_names, "x%d ", i);
 		body = Str::duplicate(I"rfalse; ];");
-	} else PipelineErrors::kit_error("invalid Inform 6 Stub declaration", NULL);
+	} else {
+		text_stream *start = Str::duplicate(S);
+		Str::truncate(start, 50);
+		I6Errors::issue("invalid #Stub declaration: '%S'", start);
+	}
 
 @ Function packages have a standardised shape in Inter, and though this is a
 matter of convention rather than a requirement, we will follow it here. So
@@ -820,14 +832,14 @@ These have package types |_function| and |_code| respectively.
 		int invalid = FALSE;
 		for (int i=0; i<Str::len(value); i++) {
 			wchar_t c = Str::get_at(value, i);
+			if ((i == 0) && (Characters::isdigit(c))) invalid = TRUE;
 			if ((c != '_') && (Characters::isalnum(c) == FALSE) &&
-				((i > 0) || (Characters::isdigit(c) == FALSE)))
-				invalid = TRUE;
+				(Characters::isdigit(c) == FALSE)) invalid = TRUE;
 		}
 		if (invalid) {
 			text_stream *err = Str::new();
 			WRITE_TO(err, "'%S' in function '%S'", value, identifier);
-			PipelineErrors::kit_error("invalid Inform 6 local variable name: %S", err);
+			I6Errors::issue("invalid Inform 6 local variable name: %S", err);
 		}
 		inter_symbol *loc_name =
 			InterSymbolsTable::create_with_unique_name(InterPackage::scope(IP), value);
@@ -847,7 +859,7 @@ These have package types |_function| and |_code| respectively.
 	while ((L>0) && (Characters::is_whitespace(Str::get_at(body, L-1)))) L--;
 	Str::truncate(body, L);
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
-	text_provenance prov = PipelineErrors::get_kit_error_location();
+	text_provenance prov = I6Errors::get_current_location();
 	Provenance::advance_line(&prov, line_offset);
 	CompileSplatsStage::function_body(css, IBM, IP, B, body, block_bookmark, identifier,
 		SplatInstruction::namespace(P), prov);
@@ -860,12 +872,11 @@ void CompileSplatsStage::apply_annotations(text_stream *A, text_stream *NS, inte
 	if (Str::get_last_char(NS) == '+') apply_private = FALSE;
 	if (Str::get_last_char(NS) == '-') apply_private = TRUE;
 	if (apply_private != NOT_APPLICABLE) L--;
+	TEMPORARY_TEXT(N)
 	if (L > 0) {
-		TEMPORARY_TEXT(N)
 		for (int i=0; i<L; i++) PUT_TO(N, Str::get_at(NS, i));
 		LOGIF(INTER_CONNECTORS, "Assign namespace '%S' to $3\n", N, S);
 		InterSymbol::set_namespace(S, N);
-		DISCARD_TEXT(N)
 	}
 	if (Str::len(A) > 0) {
 		LOGIF(INTER_CONNECTORS, "Trying to apply '%S' to $3\n", A, S);
@@ -873,18 +884,20 @@ void CompileSplatsStage::apply_annotations(text_stream *A, text_stream *NS, inte
 			if (Str::eq_insensitive(IA->identifier, I"private")) {
 				if ((IA->terms == NULL) || (LinkedLists::len(IA->terms) == 0)) {
 					if (apply_private == TRUE) 
-						PipelineErrors::kit_error("the +private annotation is redundant here", NULL);
+						I6Errors::issue("the +private annotation is redundant in namespace '%S'", N);
 					apply_private = TRUE;
 				} else {
-					PipelineErrors::kit_error("the +private annotation does not take any terms", NULL);
+					I6Errors::issue(
+						"the +private annotation does not take any terms", NULL);
 				}
 			} else if (Str::eq_insensitive(IA->identifier, I"public")) {
 				if ((IA->terms == NULL) || (LinkedLists::len(IA->terms) == 0)) {
 					if (apply_private == FALSE) 
-						PipelineErrors::kit_error("the +public annotation is redundant here", NULL);
+						I6Errors::issue("the +public annotation is redundant in namespace '%S'", N);
 					apply_private = FALSE;
 				} else {
-					PipelineErrors::kit_error("the +public annotation does not take any terms", NULL);
+					I6Errors::issue(
+						"the +public annotation does not take any terms", NULL);
 				}
 			} else if (Str::eq_insensitive(IA->identifier, I"replacing")) {
 				text_stream *from = I"_"; int keeping = FALSE;
@@ -896,21 +909,28 @@ void CompileSplatsStage::apply_annotations(text_stream *A, text_stream *NS, inte
 						} else if (Str::eq_insensitive(term->key, I"_")) {
 							if (Str::eq(term->value, I"keeping")) keeping = TRUE;
 							else {
-								PipelineErrors::kit_error("expected 'from K' or 'keeping', not '%S'", term->value);
+								I6Errors::issue(
+									"expected 'from K' or 'keeping' in '+replacing(...)', not '%S'",
+									term->value);
 							}
 						} else
-							PipelineErrors::kit_error(
-								"the +replacing annotation does not take the term '%S'", term->key);
+							I6Errors::issue(
+								"the +replacing annotation does not take the term '%S'",
+								term->key);
 				}
 				InterSymbol::set_replacement(S, from);
 				if (keeping) SymbolAnnotation::set_b(S, KEEPING_IANN, TRUE);
+			} else if (Str::eq_insensitive(IA->identifier, I"namespace")) {
+				I6Errors::issue(
+					"the annotation '%S' must be followed by a ';'", A);
 			} else {
-				PipelineErrors::kit_error(
-					"annotation '%S' not recognised", IA->identifier);
+				I6Errors::issue(
+					"the annotation '+%S' is not one of those allowed", IA->identifier);
 			}
 		}
 	}
 	if (apply_private == TRUE) SymbolAnnotation::set_b(S, PRIVATE_IANN, TRUE);
+	DISCARD_TEXT(N)
 }
 
 @h Plumbing.
@@ -1135,7 +1155,7 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM,
 			if (marker) *marker = FALSE;
 			return InterValuePairs::symbolic(IBM, symb);
 		} else {
-			PipelineErrors::kit_error("unknown scope routine", S);
+			I6Errors::issue("can't find any scope routine called '%S'", mr.exp[0]);
 			return InterValuePairs::number(1);
 		}
 	}
@@ -1145,7 +1165,7 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM,
 			if (marker) *marker = TRUE;
 			return InterValuePairs::symbolic(IBM, symb);
 		} else {
-			PipelineErrors::kit_error("unknown noun routine", S);
+			I6Errors::issue("can't find any noun routine called '%S'", mr.exp[0]);
 			return InterValuePairs::number(1);
 		}
 	}
@@ -1179,12 +1199,12 @@ before they are needed.
 
 @<Parse this as a possibly computed value@> =
 	inter_schema *sch =
-		ParsingSchemas::from_text(S, PipelineErrors::get_kit_error_location());
+		ParsingSchemas::from_text(S, I6Errors::get_current_location());
 	int excess_tokens = FALSE;
 	inter_symbol *result_s =
 		CompileSplatsStage::compute_r(step, IBM, sch->node_tree, &excess_tokens);
-	if (result_s == NULL) {
-		PipelineErrors::kit_error("Inform 6 constant too complex", S);
+	if (result_s == NULL) { /* a precaution, but should no longer happen */
+		I6Errors::issue("Inform 6 constant too complex", S);
 		return InterValuePairs::number(1);
 	}
 	return InterValuePairs::symbolic(IBM, result_s);
@@ -1428,12 +1448,12 @@ void CompileSplatsStage::report_kit_errors(inter_schema *sch, function_body_requ
 	if (LinkedLists::len(sch->parsing_errors) > 0) {
 		schema_parsing_error *err;
 		LOOP_OVER_LINKED_LIST(err, schema_parsing_error, sch->parsing_errors) {
-			PipelineErrors::set_kit_error_location(err->provenance);
+			I6Errors::set_current_location(err->provenance);
 			TEMPORARY_TEXT(msg)
 			WRITE_TO(msg, "in function '%S': %S", req->identifier, err->message);
-			PipelineErrors::kit_error("Inform 6 syntax error %S", msg);
+			I6Errors::issue("Inform 6 syntax error %S", msg);
 			DISCARD_TEXT(msg)
 		}
-		PipelineErrors::clear_kit_error_location();
+		I6Errors::clear_current_location();
 	}
 }
