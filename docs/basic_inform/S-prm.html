@@ -225,6 +225,14 @@ the highest <span class="extract"><span class="extract-syntax">MAX_VERBS</span><
 to the Z-machine, because it's only legal in I6 when compiling to Glulx.
 </p>
 
+<p class="commentary">Note that these settings are unnecessary (and do nothing) if the version of
+the I6 compiler eventually used to compile this code is 6.36 or better: in
+modern times, the I6 compiler flexibly manages memory so that it doesn't have
+these maxima. If that's the case, these lines are simply ignored. For the
+moment, they remain here just in case somebody is still using an early I6
+compiler for some reason.
+</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">Use</span><span class="plain-syntax"> </span><span class="identifier-syntax">ALLOC_CHUNK_SIZE</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="constant-syntax">32000</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">Use</span><span class="plain-syntax"> </span><span class="identifier-syntax">MAX_ARRAYS</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="constant-syntax">10000</span><span class="plain-syntax">.</span>

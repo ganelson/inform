@@ -165,6 +165,13 @@ the highest |MAX_VERBS| setting we can safely make here.
 The |MAX_LOCAL_VARIABLES| setting is suppressed by I7 if we're compiling
 to the Z-machine, because it's only legal in I6 when compiling to Glulx.
 
+Note that these settings are unnecessary (and do nothing) if the version of
+the I6 compiler eventually used to compile this code is 6.36 or better: in
+modern times, the I6 compiler flexibly manages memory so that it doesn't have
+these maxima. If that's the case, these lines are simply ignored. For the 
+moment, they remain here just in case somebody is still using an early I6
+compiler for some reason.
+
 =
 Use ALLOC_CHUNK_SIZE of 32000.
 Use MAX_ARRAYS of 10000.

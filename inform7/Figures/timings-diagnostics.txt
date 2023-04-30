@@ -1,33 +1,33 @@
 100.0% in inform7 run
-     69.8% in compilation to Inter
+     70.2% in compilation to Inter
          49.4% in //Sequence::undertake_queued_tasks//
-          4.8% in //MajorNodes::pre_pass//
+          5.0% in //MajorNodes::pre_pass//
           3.4% in //MajorNodes::pass_1//
           1.8% in //ImperativeDefinitions::assess_all//
-          1.6% in //RTPhrasebook::compile_entries//
           1.4% in //RTKindConstructors::compile//
-          1.2% in //Sequence::lint_inter//
-          0.6% in //Sequence::undertake_queued_tasks//
+          1.4% in //RTPhrasebook::compile_entries//
+          1.0% in //Sequence::lint_inter//
           0.6% in //World::stage_V//
           0.4% in //ImperativeDefinitions::compile_first_block//
           0.4% in //MajorNodes::pass_2//
           0.4% in //Sequence::undertake_queued_tasks//
+          0.4% in //Sequence::undertake_queued_tasks//
+          0.2% in //Closures::compile_closures//
           0.2% in //CompletionModule::compile//
           0.2% in //InferenceSubjects::emit_all//
           0.2% in //RTKindConstructors::compile_permissions//
           0.2% in //Task::make_built_in_kind_constructors//
-          0.2% in //World::stages_II_and_III//
-          2.6% not specifically accounted for
-     26.5% in running Inter pipeline
-         10.0% in step 14/15: generate inform6 -> auto.inf
-          6.0% in step 5/15: load-binary-kits
-          5.4% in step 6/15: make-synoptic-module
+          3.2% not specifically accounted for
+     26.2% in running Inter pipeline
+          9.9% in step 14/15: generate inform6 -> auto.inf
+          5.9% in step 5/15: load-binary-kits
+          5.2% in step 6/15: make-synoptic-module
           1.8% in step 9/15: make-identifiers-unique
+          0.6% in step 4/15: compile-splats
           0.4% in step 12/15: eliminate-redundant-operations
-          0.4% in step 4/15: compile-splats
           0.4% in step 7/15: shorten-wiring
           0.4% in step 8/15: detect-indirect-calls
           0.2% in step 11/15: eliminate-redundant-labels
-          1.4% not specifically accounted for
+          1.2% not specifically accounted for
       3.0% in supervisor
-      0.7% not specifically accounted for
+      0.5% not specifically accounted for
