@@ -2,7 +2,7 @@
 
 These will be added to release notes when the release is made.
 
-## Features
+## Featurettes arising from bug reports, but too small for Inform Evolution proposals
 
 - This was reported as Jira bug [I7-2087](https://inform7.atlassian.net/browse/I7-2087)
 	"three anonymous standard rules", but is arguably a feature request: that three
@@ -15,6 +15,10 @@ These will be added to release notes when the release is made.
 	late scene changing stage
 	default action success rule
 	```
+- Errors occurring in I6-syntax code, either in `(- ... -)` inclusions into I7
+	source text or in kit source code, are now reported more fully, with source
+	references and links provided. (A feature request for this was filed as
+	Jira bug [I7-2232](https://inform7.atlassian.net/browse/I7-2232).)
 
 ## Bug fixes
 
@@ -33,6 +37,9 @@ These will be added to release notes when the release is made.
 - Fix for Jira bug [I7-2304](https://inform7.atlassian.net/browse/I7-2304)
 	"switch(): first branch can't start with negative number"
 	([commit 1c18007](https://github.com/ganelson/inform/commit/1c18007326bf6fb15c74a1d5742827a4d76a0c20))
+- Fix for Jira bug [I7-2298](https://inform7.atlassian.net/browse/I7-2298)
+	""to" in I6 switch statement is not recognized"
+	([commit 04e526f](https://github.com/ganelson/inform/commit/04e526f0a676b89fa032d6c886a146499d5e7ae5))
 - Fix for Jira bug [I7-2297](https://inform7.atlassian.net/browse/I7-2297)
 	"Missing semicolon after I6 routine crashed compiler without explanation"
 	([commit 4fb6e57](https://github.com/ganelson/inform/commit/4fb6e57b866eacd84d27e4752c7d0147fc982ac0))
