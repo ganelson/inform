@@ -533,6 +533,11 @@ void InterSchemas::log_just(inter_schema_node *isn, int depth) {
 			if (isn->expression_tokens == NULL) LOG(" - empty");
 			LOG("\n");
 			for (inter_schema_token *t = isn->expression_tokens; t; t=t->next) {
+				if (Provenance::is_somewhere(isn->provenance)) {
+					LOG("%04d ", Provenance::get_line(isn->provenance));
+				} else {
+					LOG(".... ");
+				}
 				for (int d = 0; d < depth + 1; d++) LOG("    ");
 				InterSchemas::log_ist(t);
 				if (isn != t->owner) LOG(" !!! ownership incorrect here");

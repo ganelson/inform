@@ -3,29 +3,29 @@ Test: parse schema from:
 
 0002   * (message)
 0002       * (expr)
-        IDENTIFIER  alpha
+0002         IDENTIFIER  alpha
 0002       * (expr)
-        IDENTIFIER  beta
+0002         IDENTIFIER  beta
 =========
 Test: parse schema from:
 	alpha.beta(x)
 
 0002   * (message)
 0002       * (expr)
-        IDENTIFIER  alpha
+0002         IDENTIFIER  alpha
 0002       * (expr)
-        IDENTIFIER  beta
+0002         IDENTIFIER  beta
 0002       * (expr)
-        IDENTIFIER  x
+0002         IDENTIFIER  x
 =========
 Test: parse schema from:
 	routine.call(x)
 
 0002   * (call-message)
 0002       * (expr)
-        IDENTIFIER  routine
+0002         IDENTIFIER  routine
 0002       * (expr)
-        IDENTIFIER  x
+0002         IDENTIFIER  x
 =========
 Test: parse schema from:
 	(alpha.beta)(x)
@@ -34,11 +34,11 @@ Test: parse schema from:
 0002       * (subexpression)
 0002           * (operation) !propertyvalue
 0002               * (expr)
-                IDENTIFIER  alpha
+0002                 IDENTIFIER  alpha
 0002               * (expr)
-                IDENTIFIER  beta
+0002                 IDENTIFIER  beta
 0002       * (expr)
-        IDENTIFIER  x
+0002         IDENTIFIER  x
 =========
 Test: parse schema from:
 	debug_rules = 2; say__p = 1;
@@ -46,25 +46,25 @@ Test: parse schema from:
 
 0001   * (operation) !store
 0001       * (expr)
-        IDENTIFIER  debug_rules
+0001         IDENTIFIER  debug_rules
 0001       * (expr)
-        NUMBER      2
+0001         NUMBER      2
 0001   * (operation) !store
 0001       * (expr)
-        IDENTIFIER  say__p
+0001         IDENTIFIER  say__p
 0002       * (expr)
-        NUMBER      1
+0002         NUMBER      1
 0002   * (expr) ;
-    DQUOTED     Rules tracing now switched to "all". Type "rules off" to switch it off again.
+0002     DQUOTED     Rules tracing now switched to "all". Type "rules off" to switch it off again.
 =========
 Test: parse schema from:
 	@erase_window -1;
 
 0001   * (assembly)
 0001       * (expr)
-        OPCODE      @erase_window
+0001         OPCODE      @erase_window
 0002       * (expr)
-        NUMBER      -1
+0002         NUMBER      -1
 =========
 Test: parse schema from:
 	restore Somewhere;
@@ -72,20 +72,20 @@ Test: parse schema from:
 
 0001   * (statement) !restore
 0001       * (expr)
-        IDENTIFIER  Somewhere
+0001         IDENTIFIER  Somewhere
 0002   * (label)
 0002       * (expr)
-        IDENTIFIER  Somewhere
+0002         IDENTIFIER  Somewhere
 0002   * (statement) !print
 0002       * (expr)
-        DQUOTED     Here!
+0002         DQUOTED     Here!
 =========
 Test: parse schema from:
 	"Hello, this
 	is a multiline string literal";
 
 0002   * (expr) ;
-    DQUOTED     Hello, this is a multiline string literal
+0002     DQUOTED     Hello, this is a multiline string literal
 =========
 Test: parse schema from:
 	for (n=0:((n<RE_Subexpressions-->10) && (n<10)): n++)
@@ -95,35 +95,35 @@ Test: parse schema from:
 0001       * (eval)
 0001           * (operation) !store
 0001               * (expr)
-                IDENTIFIER  n
+0001                 IDENTIFIER  n
 0001               * (expr)
-                NUMBER      0
+0001                 NUMBER      0
 0001       * (eval)
 0001           * (subexpression)
 0001               * (operation) !and
 0001                   * (subexpression)
 0001                       * (operation) !lt
 0001                           * (expr)
-                            IDENTIFIER  n
+0001                             IDENTIFIER  n
 0001                           * (operation) !lookup
 0001                               * (expr)
-                                IDENTIFIER  RE_Subexpressions
+0001                                 IDENTIFIER  RE_Subexpressions
 0001                               * (expr)
-                                NUMBER      10
+0001                                 NUMBER      10
 0001                   * (subexpression)
 0001                       * (operation) !lt
 0001                           * (expr)
-                            IDENTIFIER  n
+0001                             IDENTIFIER  n
 0001                           * (expr)
-                            NUMBER      10
+0001                             NUMBER      10
 0001       * (eval)
 0001           * (operation) !postincrement
 0002               * (expr)
-                IDENTIFIER  n
+0002                 IDENTIFIER  n
 0002       * (code)
 0002           * (statement) !printnumber
 0002               * (expr)
-                IDENTIFIER  n
+0002                 IDENTIFIER  n
 =========
 Test: parse schema from:
 	spaces j;
@@ -131,12 +131,12 @@ Test: parse schema from:
 
 0001   * (statement) !spaces
 0001       * (expr)
-        IDENTIFIER  j
+0001         IDENTIFIER  j
 0002   * (call)
 0002       * (expr)
-        IDENTIFIER  I7_String
+0002         IDENTIFIER  I7_String
 0002       * (expr)
-        IDENTIFIER  str
+0002         IDENTIFIER  str
 =========
 Test: parse schema from:
 	if (i == 1) print "Okay";
@@ -146,25 +146,25 @@ Test: parse schema from:
 0001       * (subexpression)
 0001           * (operation) !eq
 0001               * (expr)
-                IDENTIFIER  i
+0001                 IDENTIFIER  i
 0001               * (expr)
-                NUMBER      1
+0001                 NUMBER      1
 0001       * (code)
 0001           * (statement) !print
 0001               * (expr)
-                DQUOTED     Okay
+0001                 DQUOTED     Okay
 0002       * (code)
 0002           * (expr) ;
-            DQUOTED     *** Arrcpy doesn't support this ***
+0002             DQUOTED     *** Arrcpy doesn't support this ***
 =========
 Test: parse schema from:
 	a-1
 
 0002   * (operation) !minus
 0002       * (expr)
-        IDENTIFIER  a
+0002         IDENTIFIER  a
 0002       * (expr)
-        NUMBER      1
+0002         NUMBER      1
 =========
 Test: parse schema from:
 	do {
@@ -174,11 +174,11 @@ Test: parse schema from:
 0001   * (statement) !do
 0001       * (subexpression)
 0004           * (expr)
-            IDENTIFIER  x
+0004             IDENTIFIER  x
 0002       * (code)
 0002           * (statement) !print
 0002               * (expr)
-                DQUOTED     Hi!
+0002                 DQUOTED     Hi!
 =========
 Test: parse schema from:
     do {
@@ -188,16 +188,16 @@ Test: parse schema from:
 0001   * (statement) !do
 0001       * (subexpression)
 0004           * (expr)
-            IDENTIFIER  a
+0004             IDENTIFIER  a
 0002       * (code)
 0002           * (statement) !if
 0002               * (subexpression)
 0002                   * (expr)
-                    IDENTIFIER  a
+0002                     IDENTIFIER  a
 0002               * (code)
 0002                   * (statement) !return
 0002                       * (expr)
-                        IDENTIFIER  wd
+0002                         IDENTIFIER  wd
 =========
 Test: parse schema from:
     do {
@@ -212,11 +212,11 @@ Test: parse schema from:
 0004                   * (operation) !eq
 0004                       * (operation) !lookup
 0004                           * (expr)
-                            IDENTIFIER  line_token
+0004                             IDENTIFIER  line_token
 0004                           * (expr)
-                            IDENTIFIER  index
+0004                             IDENTIFIER  index
 0004                       * (expr)
-                        IDENTIFIER  ENDIT_TOKEN
+0004                         IDENTIFIER  ENDIT_TOKEN
 0004               * (subexpression)
 0004                   * (operation) !eq
 0004                       * (subexpression)
@@ -225,46 +225,46 @@ Test: parse schema from:
 0004                                   * (subexpression)
 0004                                       * (operation) !lookup
 0004                                           * (expr)
-                                            IDENTIFIER  line_token
+0004                                             IDENTIFIER  line_token
 0004                                           * (expr)
-                                            IDENTIFIER  index
+0004                                             IDENTIFIER  index
 0004                                   * (expr)
-                                    NUMBER      0
+0004                                     NUMBER      0
 0004                               * (expr)
-                                HEX_NUMBER  $10
+0004                                 HEX_NUMBER  $10
 0005                       * (expr)
-                        NUMBER      0
+0005                         NUMBER      0
 0002       * (code)
 0002           * (statement) !if
 0002               * (subexpression)
 0002                   * (operation) !eq
 0002                       * (operation) !lookup
 0002                           * (expr)
-                            IDENTIFIER  line_tdata
+0002                             IDENTIFIER  line_tdata
 0002                           * (expr)
-                            IDENTIFIER  index
+0002                             IDENTIFIER  index
 0002                       * (expr)
-                        IDENTIFIER  wd
+0002                         IDENTIFIER  wd
 0002               * (code)
 0002                   * (statement) !return
 0002                       * (expr)
-                        IDENTIFIER  wd
+0002                         IDENTIFIER  wd
 0002           * (operation) !postincrement
 0004               * (expr)
-                IDENTIFIER  index
+0004                 IDENTIFIER  index
 =========
 Test: parse schema from:
     print "<string ~", (string) o, "~>"; 
 
 0001   * (statement) !print
 0001       * (expr)
-        DQUOTED     <string "
+0001         DQUOTED     <string "
 0001   * (statement) !printstring
 0001       * (expr)
-        IDENTIFIER  o
+0001         IDENTIFIER  o
 0001   * (statement) !print
 0001       * (expr)
-        DQUOTED     ">
+0001         DQUOTED     ">
 =========
 Test: parse schema from:
     switch (Y) {
@@ -274,18 +274,18 @@ Test: parse schema from:
 0001   * (statement) !switch
 0001       * (subexpression)
 0001           * (expr)
-            IDENTIFIER  Y
+0001             IDENTIFIER  Y
 0002       * (code)
 0002           * (statement) !case
 0002               * (expr)
-                IDENTIFIER  X
+0002                 IDENTIFIER  X
 0002               * (code)
 0002                   * (statement) !print
 0002                       * (expr)
-                        DQUOTED     A 
+0002                         DQUOTED     A 
 0002                   * (statement) !printstring
 0002                       * (expr)
-                        IDENTIFIER  o
+0002                         IDENTIFIER  o
 =========
 Test: parse schema from:
 	#ifdef RANKING_TABLE;
@@ -302,77 +302,77 @@ Test: parse schema from:
 
 0001   * (directive) #ifdef
 0001       * (expr)
-        IDENTIFIER  RANKING_TABLE
+0001         IDENTIFIER  RANKING_TABLE
 0002   * (call)
 0002       * (expr)
-        IDENTIFIER  ANNOUNCE_SCORE_RM
+0002         IDENTIFIER  ANNOUNCE_SCORE_RM
 0002       * (expr)
-        SQUOTED     B
+0002         SQUOTED     B
 0003   * (operation) !store
 0003       * (expr)
-        IDENTIFIER  j
+0003         IDENTIFIER  j
 0004       * (call)
 0004           * (expr)
-            IDENTIFIER  TableRows
+0004             IDENTIFIER  TableRows
 0004           * (expr)
-            IDENTIFIER  RANKING_TABLE
+0004             IDENTIFIER  RANKING_TABLE
 0004   * (statement) !for
 0005       * (eval)
 0005           * (operation) !store
 0005               * (expr)
-                IDENTIFIER  i
+0005                 IDENTIFIER  i
 0005               * (expr)
-                IDENTIFIER  j
+0005                 IDENTIFIER  j
 0005       * (eval)
 0005           * (operation) !ge
 0005               * (expr)
-                IDENTIFIER  i
+0005                 IDENTIFIER  i
 0005               * (expr)
-                NUMBER      1
+0005                 NUMBER      1
 0005       * (eval)
 0005           * (operation) !postdecrement
 0005               * (expr)
-                IDENTIFIER  i
+0005                 IDENTIFIER  i
 0005       * (code)
 0005           * (statement) !if
 0005               * (subexpression)
 0005                   * (operation) !ge
 0005                       * (expr)
-                        IDENTIFIER  score
+0005                         IDENTIFIER  score
 0005                       * (call)
 0005                           * (expr)
-                            IDENTIFIER  TableLookUpEntry
+0005                             IDENTIFIER  TableLookUpEntry
 0005                           * (expr)
-                            IDENTIFIER  RANKING_TABLE
+0005                             IDENTIFIER  RANKING_TABLE
 0005                           * (expr)
-                            NUMBER      1
+0005                             NUMBER      1
 0005                           * (expr)
-                            IDENTIFIER  i
+0005                             IDENTIFIER  i
 0006               * (code)
 0006                   * (operation) !store
 0006                       * (expr)
-                        IDENTIFIER  v
+0006                         IDENTIFIER  v
 0006                       * (call)
 0006                           * (expr)
-                            IDENTIFIER  TableLookUpEntry
+0006                             IDENTIFIER  TableLookUpEntry
 0006                           * (expr)
-                            IDENTIFIER  RANKING_TABLE
+0006                             IDENTIFIER  RANKING_TABLE
 0006                           * (expr)
-                            NUMBER      2
+0006                             NUMBER      2
 0007                           * (expr)
-                            IDENTIFIER  i
+0007                             IDENTIFIER  i
 0007                   * (call)
 0008                       * (expr)
-                        IDENTIFIER  TEXT_TY_Say
+0008                         IDENTIFIER  TEXT_TY_Say
 0008                       * (expr)
-                        IDENTIFIER  v
+0008                         IDENTIFIER  v
 0008                   * (expr) ;
-                    DQUOTED     .
+0008                     DQUOTED     .
 0005   * (directive) #endif
 0011   * (expr) ;
-    DQUOTED     .
+0011     DQUOTED     .
 0011   * (expr)
-    SQUOTED     
+0011     SQUOTED     
 
 =========
 Test: parse schema from:
@@ -382,19 +382,19 @@ Test: parse schema from:
 0001   * (statement) !if
 0001       * (subexpression)
 0001           * (expr)
-            IDENTIFIER  B
+0001             IDENTIFIER  B
 0001       * (code)
 0001           * (statement) !if
 0001               * (subexpression)
 0001                   * (expr)
-                    IDENTIFIER  A
+0001                     IDENTIFIER  A
 0001               * (code)
 0001                   * (statement) !print
 0001                       * (expr)
-                        DQUOTED     Yes
+0001                         DQUOTED     Yes
 0001   * (statement) !print
 0002       * (expr)
-        DQUOTED     No
+0002         DQUOTED     No
 =========
 Test: parse schema from:
 	switch (scope_stage) {
@@ -405,24 +405,24 @@ Test: parse schema from:
 0001   * (statement) !switch
 0001       * (subexpression)
 0001           * (expr)
-            IDENTIFIER  scope_stage
+0001             IDENTIFIER  scope_stage
 0002       * (code) <
 0002           * (statement) !case
 0002               * (expr)
-                NUMBER      2
+0002                 NUMBER      2
 0002               * (code) <
 0002                   * (statement) !objectloop
 0002                       * (subexpression)
 0003                           * (expr)
-                            IDENTIFIER  obj
+0003                             IDENTIFIER  obj
 0003                       * (code)
 0003                           * (call)
 0003                               * (expr)
-                                IDENTIFIER  PlaceInScope
+0003                                 IDENTIFIER  PlaceInScope
 0003                               * (expr)
-                                IDENTIFIER  obj
+0003                                 IDENTIFIER  obj
 0004                               * (expr)
-                                NUMBER      true
+0004                                 NUMBER      true
 =========
 Test: parse schema from:
 	while (token ~= NULL) {
@@ -438,66 +438,66 @@ Test: parse schema from:
 0001       * (subexpression)
 0001           * (operation) !ne
 0001               * (expr)
-                IDENTIFIER  token
+0001                 IDENTIFIER  token
 0001               * (expr)
-                IDENTIFIER  NULL
+0001                 IDENTIFIER  NULL
 0002       * (code)
 0002           * (statement) !switch
 0002               * (subexpression)
 0002                   * (operation) !lookup
 0002                       * (expr)
-                        IDENTIFIER  token
+0002                         IDENTIFIER  token
 0002                       * (expr)
-                        IDENTIFIER  RE_CCLASS
+0002                         IDENTIFIER  RE_CCLASS
 0003               * (code)
 0003                   * (statement) !case
 0003                       * (expr)
-                        IDENTIFIER  DISJUNCTION_RE_CC
+0003                         IDENTIFIER  DISJUNCTION_RE_CC
 0003                       * (code)
 0003                           * (operation) !store
 0003                               * (operation) !lookup
 0003                                   * (expr)
-                                    IDENTIFIER  token
+0003                                     IDENTIFIER  token
 0003                                   * (expr)
-                                    IDENTIFIER  RE_CONSTRAINT
+0003                                     IDENTIFIER  RE_CONSTRAINT
 0004                               * (expr)
-                                NUMBER      -1
+0004                                 NUMBER      -1
 0004                   * (statement) !case
 0004                       * (expr)
-                        IDENTIFIER  QUANTIFIER_RE_CC
+0004                         IDENTIFIER  QUANTIFIER_RE_CC
 0004                       * (code)
 0004                           * (operation) !store
 0004                               * (operation) !lookup
 0004                                   * (expr)
-                                    IDENTIFIER  token
+0004                                     IDENTIFIER  token
 0004                                   * (expr)
-                                    IDENTIFIER  RE_CONSTRAINT
+0004                                     IDENTIFIER  RE_CONSTRAINT
 0005                               * (expr)
-                                NUMBER      -1
+0005                                 NUMBER      -1
 0003           * (statement) !if
 0006               * (subexpression)
 0006                   * (operation) !lookup
 0006                       * (expr)
-                        IDENTIFIER  token
+0006                         IDENTIFIER  token
 0006                       * (expr)
-                        IDENTIFIER  RE_DOWN
+0006                         IDENTIFIER  RE_DOWN
 0007               * (code)
 0007                   * (call)
 0007                       * (expr)
-                        IDENTIFIER  TEXT_TY_RE_EraseConstraints
+0007                         IDENTIFIER  TEXT_TY_RE_EraseConstraints
 0007                       * (operation) !lookup
 0007                           * (expr)
-                            IDENTIFIER  token
+0007                             IDENTIFIER  token
 0007                           * (expr)
-                            IDENTIFIER  RE_DOWN
+0007                             IDENTIFIER  RE_DOWN
 0007           * (operation) !store
 0007               * (expr)
-                IDENTIFIER  token
+0007                 IDENTIFIER  token
 0008               * (operation) !lookup
 0008                   * (expr)
-                    IDENTIFIER  token
+0008                     IDENTIFIER  token
 0008                   * (expr)
-                    IDENTIFIER  RE_NEXT
+0008                     IDENTIFIER  RE_NEXT
 =========
 Test: parse schema from:
 		if (b) print 1; else print 2;
@@ -505,55 +505,55 @@ Test: parse schema from:
 0001   * (statement) !ifelse
 0001       * (subexpression)
 0001           * (expr)
-            IDENTIFIER  b
+0001             IDENTIFIER  b
 0001       * (code)
 0001           * (statement) !printnumber
 0001               * (expr)
-                NUMBER      1
+0001                 NUMBER      1
 0001       * (code)
 0001           * (statement) !printnumber
 0001               * (expr)
-                NUMBER      2
+0001                 NUMBER      2
 =========
 Test: parse schema from:
 		a: if (b) print 1; else print 2;
 
 0001   * (statement) !case
 0001       * (expr)
-        IDENTIFIER  a
+0001         IDENTIFIER  a
 0001       * (code) <
 0001           * (statement) !ifelse
 0001               * (subexpression)
 0001                   * (expr)
-                    IDENTIFIER  b
+0001                     IDENTIFIER  b
 0001               * (code)
 0001                   * (statement) !printnumber
 0001                       * (expr)
-                        NUMBER      1
+0001                         NUMBER      1
 0001               * (code)
 0001                   * (statement) !printnumber
 0001                       * (expr)
-                        NUMBER      2
+0001                         NUMBER      2
 =========
 Test: parse schema from:
 	print_ret "This is ", (char) X, ".";
 
 0001   * (statement) !print
 0001       * (expr)
-        DQUOTED     This is 
+0001         DQUOTED     This is 
 0001   * (statement) !printchar
 0001       * (expr)
-        IDENTIFIER  X
+0001         IDENTIFIER  X
 0001   * (statement) !print
 0001       * (expr)
-        DQUOTED     .
+0001         DQUOTED     .
 0001   * (statement) !print
 0001       * (expr)
-        DQUOTED     
+0001         DQUOTED     
 
 0001   * (statement) !return
 0001       * (expr)
-        NUMBER      1
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	@jl y 0 ?X;
@@ -565,58 +565,58 @@ Test: parse schema from:
 
 0001   * (assembly)
 0001       * (expr)
-        OPCODE      @jl
+0001         OPCODE      @jl
 0001       * (expr)
-        IDENTIFIER  y
+0001         IDENTIFIER  y
 0001       * (expr)
-        NUMBER      0
+0001         NUMBER      0
 0002       * (expr)
-        ASM_LABEL   X
+0002         ASM_LABEL   X
 0002   * (assembly)
 0002       * (expr)
-        OPCODE      @jl
+0002         OPCODE      @jl
 0002       * (expr)
-        IDENTIFIER  y
+0002         IDENTIFIER  y
 0002       * (expr)
-        NUMBER      0
+0002         NUMBER      0
 0003       * (expr)
-        NEGASM_LABEL X
+0003         NEGASM_LABEL X
 0003   * (assembly)
 0003       * (expr)
-        OPCODE      @jl
+0003         OPCODE      @jl
 0003       * (expr)
-        IDENTIFIER  y
+0003         IDENTIFIER  y
 0003       * (expr)
-        NUMBER      0
+0003         NUMBER      0
 0004       * (expr)
-        ASM_LABEL   rtrue
+0004         ASM_LABEL   rtrue
 0004   * (assembly)
 0004       * (expr)
-        OPCODE      @jl
+0004         OPCODE      @jl
 0004       * (expr)
-        IDENTIFIER  y
+0004         IDENTIFIER  y
 0004       * (expr)
-        NUMBER      0
+0004         NUMBER      0
 0005       * (expr)
-        ASM_LABEL   rfalse
+0005         ASM_LABEL   rfalse
 0005   * (assembly)
 0005       * (expr)
-        OPCODE      @jl
+0005         OPCODE      @jl
 0005       * (expr)
-        IDENTIFIER  y
+0005         IDENTIFIER  y
 0005       * (expr)
-        NUMBER      0
+0005         NUMBER      0
 0006       * (expr)
-        NEGASM_LABEL rtrue
+0006         NEGASM_LABEL rtrue
 0006   * (assembly)
 0006       * (expr)
-        OPCODE      @jl
+0006         OPCODE      @jl
 0006       * (expr)
-        IDENTIFIER  y
+0006         IDENTIFIER  y
 0006       * (expr)
-        NUMBER      0
+0006         NUMBER      0
 0007       * (expr)
-        NEGASM_LABEL rfalse
+0007         NEGASM_LABEL rfalse
 =========
 Test: parse schema from:
 		switch (token-->RE_CCLASS) {
@@ -649,114 +649,114 @@ Test: parse schema from:
 0001       * (subexpression)
 0001           * (operation) !lookup
 0001               * (expr)
-                IDENTIFIER  token
+0001                 IDENTIFIER  token
 0001               * (expr)
-                IDENTIFIER  RE_CCLASS
+0001                 IDENTIFIER  RE_CCLASS
 0002       * (code)
 0002           * (statement) !case
 0005               * (expr)
-                IDENTIFIER  CHOICE_RE_CC
+0005                 IDENTIFIER  CHOICE_RE_CC
 0005               * (code)
 0005                   * (statement) !return
 0005                       * (expr)
-                        DQUOTED     internal error
+0005                         DQUOTED     internal error
 0006           * (statement) !case
 0010               * (expr)
-                IDENTIFIER  SENSITIVITY_RE_CC
+0010                 IDENTIFIER  SENSITIVITY_RE_CC
 0010               * (code)
 0010                   * (statement) !ifelse
 0010                       * (subexpression)
 0010                           * (operation) !lookup
 0010                               * (expr)
-                                IDENTIFIER  token
+0010                                 IDENTIFIER  token
 0010                               * (expr)
-                                IDENTIFIER  RE_PAR1
+0010                                 IDENTIFIER  RE_PAR1
 0010                       * (code)
 0010                           * (operation) !store
 0010                               * (expr)
-                                IDENTIFIER  mode_flags
+0010                                 IDENTIFIER  mode_flags
 0010                               * (operation) !bitwiseor
 0010                                   * (expr)
-                                    IDENTIFIER  mode_flags
+0010                                     IDENTIFIER  mode_flags
 0011                                   * (expr)
-                                    IDENTIFIER  CIS_MFLAG
+0011                                     IDENTIFIER  CIS_MFLAG
 0011                       * (code)
 0011                           * (operation) !store
 0011                               * (expr)
-                                IDENTIFIER  mode_flags
+0011                                 IDENTIFIER  mode_flags
 0011                               * (operation) !bitwiseand
 0011                                   * (expr)
-                                    IDENTIFIER  mode_flags
+0011                                     IDENTIFIER  mode_flags
 0012                                   * (subexpression)
 0012                                       * (operation) !bitwisenot
 0012                                           * (expr)
-                                            IDENTIFIER  CIS_MFLAG
+0012                                             IDENTIFIER  CIS_MFLAG
 0011                   * (operation) !store
 0012                       * (expr)
-                        IDENTIFIER  outcome
+0012                         IDENTIFIER  outcome
 0013                       * (expr)
-                        NUMBER      true
+0013                         NUMBER      true
 0013           * (statement) !case
 0017               * (expr)
-                IDENTIFIER  ALWAYS_RE_CC
+0017                 IDENTIFIER  ALWAYS_RE_CC
 0017               * (code)
 0017                   * (operation) !store
 0017                       * (expr)
-                        IDENTIFIER  outcome
+0017                         IDENTIFIER  outcome
 0018                       * (expr)
-                        NUMBER      true
+0018                         NUMBER      true
 0018           * (statement) !case
 0019               * (expr)
-                IDENTIFIER  NEVER_RE_CC
+0019                 IDENTIFIER  NEVER_RE_CC
 0019               * (code)
 0019                   * (statement) !case
 0020                       * (expr)
-                        IDENTIFIER  START_RE_CC
+0020                         IDENTIFIER  START_RE_CC
 0020                       * (code)
 0020                           * (statement) !if
 0020                               * (subexpression)
 0020                                   * (operation) !eq
 0020                                       * (expr)
-                                        IDENTIFIER  ipos
+0020                                         IDENTIFIER  ipos
 0020                                       * (expr)
-                                        NUMBER      0
+0020                                         NUMBER      0
 0020                               * (code)
 0020                                   * (operation) !store
 0020                                       * (expr)
-                                        IDENTIFIER  outcome
+0020                                         IDENTIFIER  outcome
 0021                                       * (expr)
-                                        NUMBER      true
+0021                                         NUMBER      true
 0020           * (statement) !case
 0022               * (expr)
-                IDENTIFIER  END_RE_CC
+0022                 IDENTIFIER  END_RE_CC
 0022               * (code)
 0022                   * (statement) !if
 0022                       * (subexpression)
 0022                           * (operation) !eq
 0022                               * (call)
 0022                                   * (expr)
-                                    IDENTIFIER  BlkValueRead
+0022                                     IDENTIFIER  BlkValueRead
 0022                                   * (expr)
-                                    IDENTIFIER  txt
+0022                                     IDENTIFIER  txt
 0022                                   * (expr)
-                                    IDENTIFIER  ipos
+0022                                     IDENTIFIER  ipos
 0022                               * (expr)
-                                NUMBER      0
+0022                                 NUMBER      0
 0022                       * (code)
 0022                           * (operation) !store
 0022                               * (expr)
-                                IDENTIFIER  outcome
+0022                                 IDENTIFIER  outcome
 0023                               * (expr)
-                                NUMBER      true
+0023                                 NUMBER      true
 0022           * (statement) !case
 0024               * (expr)
-                IDENTIFIER  SOMETIMES_RE_CC
+0024                 IDENTIFIER  SOMETIMES_RE_CC
 0024               * (code)
 0024                   * (operation) !store
 0024                       * (expr)
-                        IDENTIFIER  outcome
+0024                         IDENTIFIER  outcome
 0025                       * (expr)
-                        NUMBER      true
+0025                         NUMBER      true
 =========
 Test: parse schema from:
 	print (char) 'a';
@@ -764,8 +764,8 @@ Test: parse schema from:
 
 0001   * (statement) !printchar
 0001       * (expr)
-        SQUOTED     a
+0001         SQUOTED     a
 0002   * (statement) !printchar
 0002       * (expr)
-        SQUOTED     '
+0002         SQUOTED     '
 =========

@@ -1921,7 +1921,24 @@ int Ramification::sanity_check(inter_schema_node *par, inter_schema_node *isn) {
 		} else {
 			if (isn->expression_tokens) I6Errors::issue_at_node(isn, I"syntax error");
 		}
+		if ((isn->isn_type == STATEMENT_ISNT) && (isn->isn_clarifier == CASE_BIP)) {		
+			if ((isn->child_node) && (isn->child_node->isn_type == EXPRESSION_ISNT))
+				Ramification::check_for_to(isn, isn->child_node);
+		}
+		if ((isn->isn_type == OPERATION_ISNT) && (isn->isn_clarifier == ALTERNATIVECASE_BIP)) {
+			if ((isn->child_node) && (isn->child_node->isn_type == EXPRESSION_ISNT))
+				Ramification::check_for_to(isn, isn->child_node);
+			if ((isn->child_node) && (isn->child_node->next_node) &&
+				(isn->child_node->next_node->isn_type == EXPRESSION_ISNT))
+				Ramification::check_for_to(isn, isn->child_node->next_node);
+		}
 		Ramification::sanity_check(isn, isn->child_node);
 	}
 	return FALSE;
+}
+
+int Ramification::check_for_to(inter_schema_node *par, inter_schema_node *isn) {
+	for (inter_schema_token *t = isn->expression_tokens; t; t=t->next)
+		if ((t->ist_type == IDENTIFIER_ISTT) && (Str::eq(t->material, I"to")))
+			I6Errors::issue_at_node(isn, I"'to' ranges are unsupported in switch cases");
 }
