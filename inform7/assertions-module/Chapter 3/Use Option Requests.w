@@ -159,6 +159,8 @@ See //runtime: Use Options// for what happens to these.
 	int n = <<r>>, w1 = Wordings::first_wn(S);
 	TEMPORARY_TEXT(icl_identifier)
 	WRITE_TO(icl_identifier, "%+W", Wordings::one_word(w1));
+	LOOP_THROUGH_TEXT(pos, icl_identifier)
+		Str::put(pos, Characters::toupper(Str::get(pos)));
 	if (Str::len(icl_identifier) > 63) {
 		StandardProblems::sentence_problem(Task::syntax_tree(),
 			_p_(PM_BadICLIdentifier),

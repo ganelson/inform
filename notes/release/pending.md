@@ -1,6 +1,8 @@
 # Pending
 
-These will be added to release notes when the release is made.
+These will be added to release notes when the release is made. This page
+only hold bug fixes and other minor tweaks: anything larger is covered by
+[Inform evolution](https://github.com/ganelson/inform-evolution) proposals.
 
 ## Featurettes arising from bug reports, but too small for Inform Evolution proposals
 
@@ -22,6 +24,10 @@ These will be added to release notes when the release is made.
 
 ## Bug fixes
 
+- Fix for Jira bug [I7-2341](https://inform7.atlassian.net/browse/I7-2341)
+	"You can `use dict_word_size of 12` and I7's ok with it, but then passes it
+	on to I6 in lower case"
+	([commit ](https://github.com/ganelson/inform/commit/))
 - Fix for Jira bug [I7-2335](https://inform7.atlassian.net/browse/I7-2335)
 	"Several previously-legal forms of the Array directive no longer work in I6 inclusions in 10.1.2"
 	([commit 4d97b49](https://github.com/ganelson/inform/commit/4d97b499cfd3e15650d1bba1e6e8c70c24a01fb2))
@@ -34,6 +40,12 @@ These will be added to release notes when the release is made.
 - Fix for Jira bug [I7-2329](https://inform7.atlassian.net/browse/I7-2329)
 	"Colons in story title are not sanitised in release filenames"
 	([commit f50a043](https://github.com/ganelson/inform/commit/f50a043fabf558ad3396bc1b97dfb13b93619305))
+- Fix for Jira bug [I7-2306](https://inform7.atlassian.net/browse/I7-2306)
+	"remaining arbitary ifdefs in kit code": also fixes an unreported bug in
+	which the use options "Use numbered rules", "Use manual pronouns",
+	"Use fast route-finding" and "Use slow route-finding" had ceased to have
+	any effect; all taken care of in the implementation of IE-0018
+	([commit 95e613c](https://github.com/ganelson/inform/commit/95e613cd6a2d4341823f16f1635e59136710090a))
 - Fix for Jira bug [I7-2304](https://inform7.atlassian.net/browse/I7-2304)
 	"switch(): first branch can't start with negative number"
 	([commit 1c18007](https://github.com/ganelson/inform/commit/1c18007326bf6fb15c74a1d5742827a4d76a0c20))
