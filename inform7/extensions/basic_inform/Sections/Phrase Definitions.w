@@ -1751,3 +1751,21 @@ To mark (filename - external file) as ready to read
 To mark (filename - external file) as not ready to read
 	(documented at ph_markfilenotready):
 	(- FileIO_MarkReady({filename}, false); -).
+
+@h Use Options.
+
+=
+Chapter 10 - Use Options
+
+Section 1 - Being Chosen
+
+Definition: a use option is chosen if I6 condition "(USE_OPTION_CHOSEN-->(*1))"
+says so (it has been explicitly selected).
+
+Definition: a use option is unchosen if I6 condition "(USE_OPTION_CHOSEN-->(*1) == 0)"
+says so (it remains in its default state not having been explicitly selected).
+
+Section 2 - Numerical Value
+
+To decide what number is the numerical value of (U - a use option):
+	(- USE_OPTION_VALUES-->({U}) -).

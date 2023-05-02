@@ -65,28 +65,34 @@ The operator < means the numerically-less-than relation.
 The operator >= means the numerically-greater-than-or-equal-to relation.
 The operator <= means the numerically-less-than-or-equal-to relation.
 
-Use ineffectual translates as (- ! Use ineffectual does nothing. -).
+Use ineffectual translates as a compiler feature.
 
-Use American dialect translates as (- Constant DIALECT_US; -).
-Use the serial comma translates as (- Constant SERIAL_COMMA; -).
-Use memory economy translates as (- Constant MEMORY_ECONOMY; -).
-Use engineering notation translates as (- Constant USE_E_NOTATION = 0; -).
-Use unabbreviated object names translates as (- Constant UNABBREVIATED_OBJECT_NAMES = 0; -).
-Use predictable randomisation translates as (- Constant FIX_RNG; -).
-Use fast route-finding translates as (- Constant FAST_ROUTE_FINDING; -).
-Use slow route-finding translates as (- Constant SLOW_ROUTE_FINDING; -).
-Use numbered rules translates as (- Constant NUMBERED_RULES; -).
-Use telemetry recordings translates as (- Constant TELEMETRY_ON; -).
-Use no deprecated features translates as (- Constant NO_DEPRECATED_FEATURES; -).
-Use gn testing version translates as (- Constant GN_TESTING_VERSION; -).
-Use authorial modesty translates as (- Constant AUTHORIAL_MODESTY; -).
+Use American dialect translates as the configuration flag AMERICAN_DIALECT
+	in BasicInformKit.
+Use the serial comma translates as the configuration flag SERIAL_COMMA
+	in BasicInformKit.
+Use memory economy translates as the configuration flag MEMORY_ECONOMY
+	in BasicInformKit.
+Use engineering notation translates as a compiler feature.
+Use printed engineering notation translates as the configuration flag
+	PRINT_ENGINEER_EXPS in BasicInformKit.
+Use predictable randomisation translates as the configuration flag FIX_RNG
+	in BasicInformKit.
+Use numbered rules translates as the configuration flag NUMBERED_RULES
+	in BasicInformKit.
+Use telemetry recordings translates as a compiler feature.
+Use no deprecated features translates as the configuration flag NO_DEPRECATED
+	in BasicInformKit.
+Use authorial modesty translates as the configuration flag AUTHORIAL_MODESTY
+	in BasicInformKit.
+Use command line echoing translates as the configuration flag ECHO_COMMANDS
+	in BasicInformKit.
 
-Use dynamic memory allocation of at least 8192 translates as
-	(- Constant DynamicMemoryAllocation = {N}; -).
-Use maximum text length of at least 1024 translates as
-	(- Constant TEXT_TY_BufferSize = {N}+3; -).
-Use index figure thumbnails of at least 50 translates as
-	(- Constant MAX_FIGURE_THUMBNAILS_IN_INDEX = {N}; -).
+Use dynamic memory allocation of at least 8192 translates as the configuration
+	value STACK_FRAME_CAPACITY in BasicInformKit.
+Use maximum text length of at least 1024 translates as the configuration
+	value TEXT_BUFFER_SIZE in BasicInformKit.
+Use index figure thumbnails of at least 50 translates as a compiler feature.
 
 Use dynamic memory allocation of at least 8192.
 
@@ -1388,6 +1394,21 @@ To mark (filename - external file) as ready to read
 To mark (filename - external file) as not ready to read
 	(documented at ph_markfilenotready):
 	(- FileIO_MarkReady({filename}, false); -).
+
+Chapter 10 - Use Options
+
+Section 1 - Being Chosen
+
+Definition: a use option is chosen if I6 condition "(USE_OPTION_CHOSEN-->(*1))"
+says so (it has been explicitly selected).
+
+Definition: a use option is unchosen if I6 condition "(USE_OPTION_CHOSEN-->(*1) == 0)"
+says so (it remains in its default state not having been explicitly selected).
+
+Section 2 - Numerical Value
+
+To decide what number is the numerical value of (U - a use option):
+	(- USE_OPTION_VALUES-->({U}) -).
 
 Part Four - Adjectival Definitions
 

@@ -149,6 +149,7 @@ and we don't of course know which object or objects are meant. We store the
 possibilities (up to |MATCH_LIST_WORDS|, anyway) in a data structure called the match list.
 
 =
+Constant MATCH_LIST_WORDS = WorldModelKit`MULTI_OBJ_LIST_SIZE_CFGV;
 Array  match_list --> MATCH_LIST_WORDS;    ! An array of matched objects so far
 Array  match_classes --> MATCH_LIST_WORDS; ! An array of equivalence classes for them
 Array  match_scores --> MATCH_LIST_WORDS;  ! An array of match scores for them
@@ -485,7 +486,7 @@ The return value is the number of words typed.
 			continue;
 		}
 		i = VM_Save_Undo();
-		if (KIT_CONFIGURATION_BITMAP & PREVENT_UNDO_TCBIT) undo_flag = 0;
+		if (CommandParserKit`UNDO_PREVENTION_CFGF) undo_flag = 0;
 		else undo_flag = 2;
 		if (i == -1) undo_flag = 0;
 		if (i == 0) undo_flag = 1;
@@ -2275,7 +2276,7 @@ because we want to allow duplicates).
 
         if (i < j-1)  print ", ";
         if (i == j-1) {
-			if (KIT_CONFIGURATION_BITMAP & SERIAL_COMMA_TCBIT) {
+			if (BasicInformKit`SERIAL_COMMA_CFGF) {
 				if (j ~= 2) print ",";
         	}
         	PARSER_CLARIF_INTERNAL_RM('H');
@@ -2372,11 +2373,9 @@ because we want to allow duplicates).
 
 	num_words = WordCount(); players_command = 100 + num_words;
     wn = 1;
-    #Ifdef LanguageToInformese;
     LanguageToInformese();
     ! Re-tokenise:
     VM_Tokenise(buffer,parse);
-    #Endif; ! LanguageToInformese
 	num_words = WordCount(); players_command = 100 + num_words;
     actors_location = ScopeCeiling(player);
 	FollowRulebook(Activity_after_rulebooks-->READING_A_COMMAND_ACT);
@@ -2890,7 +2889,6 @@ Constant SCORE__NOTACTOR = 5;
 Constant SCORE__GNA = 1;
 Constant SCORE__DIVISOR = 20;
 
-Constant PREFER_HELD;
 [ ScoreMatchL context its_owner its_score obj i j threshold met a_s l_s;
 !   if (indef_type & OTHER_BIT ~= 0) threshold++;
     if (indef_type & MY_BIT ~= 0)    threshold++;
@@ -2904,18 +2902,11 @@ Constant PREFER_HELD;
       indef_type, ", satisfying ", threshold, " requirements:^";
     #Endif; ! DEBUG
 
-    #ifdef PREFER_HELD;
     a_s = SCORE__BESTLOC; l_s = SCORE__NEXTBESTLOC;
     if (action_to_be == ##Take or ##Remove) {
         a_s = SCORE__NEXTBESTLOC; l_s = SCORE__BESTLOC;
     }
     context = context;  ! silence warning
-    #ifnot;
-    a_s = SCORE__NEXTBESTLOC; l_s = SCORE__BESTLOC;
-    if (context == HELD_TOKEN or MULTIHELD_TOKEN or MULTIEXCEPT_TOKEN) {
-        a_s = SCORE__BESTLOC; l_s = SCORE__NEXTBESTLOC;
-    }
-    #endif; ! PREFER_HELD
 
     for (i=0 : i<number_matched : i++) {
         obj = match_list-->i; its_owner = parent(obj); its_score=0; met=0;
@@ -3659,9 +3650,7 @@ complex in languages other than English.
 [ Refers obj wnum   wd k l m;
     if (obj == 0) rfalse;
 
-    #Ifdef LanguageRefers;
     k = LanguageRefers(obj,wnum); if (k >= 0) return k;
-    #Endif; ! LanguageRefers
 
     k = wn; wn = wnum; wd = NextWordStopped(); wn = k;
 
@@ -3847,10 +3836,9 @@ Manual}, 4th edition.
 ];
 
 [ PronounNoticeHeldObjects x;
-#IFNDEF MANUAL_PRONOUNS;
-	objectloop(x in player) PronounNotice(x);
-#ENDIF;
-	x = 0; ! To prevent a "not used" error
+	if (CommandParserKit`MANUAL_PRONOUNS_CFGF == 0)
+		objectloop(x in player)
+			PronounNotice(x);
 	rfalse;
 ];
 
@@ -3891,6 +3879,14 @@ words (single words) and their numeric equivalents.
     return 0;
 ];
 
+@h Tracing.
+Uncomment this line and rebuild the kit to enable tracing of what the algorithm
+below is doing. (This constant should not be used anywhere except in this file,
+where |#Ifdef| on it will have the expected effect: elsewhere, it might not.)
+
+=
+! Constant LKTRACE_CHOOSE_OBJECTS;
+
 @h Choose Objects.
 This material, the final body of code in the parser, is an I7 addition.
 The I6 parser leaves it to the user to provide a |ChooseObjects| routine
@@ -3901,8 +3897,6 @@ code below because it is hidden in the |CheckDPMR| routine -- which
 is defined in the Standard Rules, not here.
 
 =
-!Constant COBJ_DEBUG;
-
 ! the highest value returned by CheckDPMR (see the Standard Rules)
 Constant HIGHEST_DPMR_SCORE = 4;
 
@@ -3941,12 +3935,12 @@ Array alt_match_list --> (MATCH_LIST_WORDS+1);
 	if (cobj_flag == 1) {
 		.CodeOne;
 		if (parameters > 0) {
-			#ifdef COBJ_DEBUG;
+			#ifdef LKTRACE_CHOOSE_OBJECTS;
 			print "[scoring ", (the) obj, " (second)]^";
 			#endif;
 			return ScoreDabCombo(parser_results-->INP1_PRES, obj);
 		} else {
-			#ifdef COBJ_DEBUG;
+			#ifdef LKTRACE_CHOOSE_OBJECTS;
 			print "[scoring ", (the) obj, " (first) in ",
 				alt_match_list-->0, " combinations]^";
 			#endif;
@@ -3954,7 +3948,7 @@ Array alt_match_list --> (MATCH_LIST_WORDS+1);
 			for (i=1: i<=alt_match_list-->0: i++) {
 				spcount = ScoreDabCombo(obj, alt_match_list-->i);
 				if (spcount == HIGHEST_DPMR_SCORE) {
-					#ifdef COBJ_DEBUG;
+					#ifdef LKTRACE_CHOOSE_OBJECTS;
 					print "[scored ", spcount, " - best possible]^";
 					#endif;
 					return spcount;
@@ -3966,7 +3960,7 @@ Array alt_match_list --> (MATCH_LIST_WORDS+1);
 	}
 	if (cobj_flag == 2) {
 		.CodeTwo;
-		#ifdef COBJ_DEBUG;
+		#ifdef LKTRACE_CHOOSE_OBJECTS;
 		print "[scoring ", (the) obj, " (simple); parameters = ", parameters,
 			" aw = ", advance_warning, "]^";
 		#endif;
@@ -3983,7 +3977,7 @@ Array alt_match_list --> (MATCH_LIST_WORDS+1);
 		return l;
 	}
 
-	#ifdef COBJ_DEBUG;
+	#ifdef LKTRACE_CHOOSE_OBJECTS;
 	print "[choosing a cobj strategy: ";
 	#endif;
 	swn = wn;
@@ -4008,7 +4002,7 @@ Array alt_match_list --> (MATCH_LIST_WORDS+1);
 			match_length = 0; number_matched = 0; match_from = wn;
 			token_filter = 0;
 			SearchScope(actor, actors_location, line_tdata-->pcount);
-			#ifdef COBJ_DEBUG;
+			#ifdef LKTRACE_CHOOSE_OBJECTS;
 			print number_matched, " possible second nouns]^";
 			#endif;
 			wn = swn;
@@ -4023,7 +4017,7 @@ Array alt_match_list --> (MATCH_LIST_WORDS+1);
 	pcount = spcount;
 	wn = swn;
 
-	#ifdef COBJ_DEBUG;
+	#ifdef LKTRACE_CHOOSE_OBJECTS;
 	print "nothing interesting]^";
 	#endif;
 	cobj_flag = 2;
@@ -4038,7 +4032,7 @@ Array alt_match_list --> (MATCH_LIST_WORDS+1);
 	else { noun = a; second = b; }
 	result = CheckDPMR();
 	@pull second; @pull noun; @pull act_requester; @pull action;
-	#ifdef COBJ_DEBUG;
+	#ifdef LKTRACE_CHOOSE_OBJECTS;
 	print "[", (the) a, " / ", (the) b, " => ", result, "]^";
 	#endif;
 	return result;

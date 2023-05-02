@@ -217,6 +217,7 @@ does handle overruns safely, and indeed allows us to dynamically allocate
 memory as necessary so that we can always avoid overruns entirely.
 
 =
+Constant TEXT_TY_BufferSize = BasicInformKit`TEXT_BUFFER_SIZE_CFGV + 3;
 Constant TEXT_TY_NoBuffers = 2;
 
 #ifdef TARGET_ZCODE;

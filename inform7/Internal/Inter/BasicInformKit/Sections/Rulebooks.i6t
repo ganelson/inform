@@ -240,7 +240,7 @@ occur, in so far as memory economy allows this.
 [ DB_Rule R N blocked;
 	if (R==0) return;
 	print "[Rule ~", (RulePrintingRule) R, "~ ";
-	#ifdef NUMBERED_RULES; print "(", N, ") "; #endif;
+	if (BasicInformKit`NUMBERED_RULES_CFGF) print "(", N, ") ";
 	if (blocked == false) "applies.]";
 	print "does not apply (wrong ";
 	if (blocked == 1) print "scene";

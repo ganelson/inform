@@ -79,7 +79,7 @@ to document all of that.
 
 [ VM_ReadKeyboard  a_buffer a_table i;
     read a_buffer a_table;
-    if (KIT_CONFIGURATION_BITMAP & ECHO_COMMANDS_TCBIT) {
+    if (BasicInformKit`ECHO_COMMANDS_CFGF) {
 	    print "** ";
 	    for (i=2: i<=(a_buffer->1)+1: i++) print (char) a_buffer->i;
 	    print "^";

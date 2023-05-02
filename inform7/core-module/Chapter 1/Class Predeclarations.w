@@ -39,6 +39,7 @@ DECLARE_CLASS(compile_task_data)
 @e imperative_defn_family_CLASS
 @e implication_CLASS
 @e named_rulebook_outcome_CLASS
+@e parsed_use_option_setting_CLASS
 @e phrase_option_CLASS
 @e relation_guard_CLASS
 @e rule_CLASS
@@ -72,6 +73,7 @@ DECLARE_CLASS(imperative_defn_family)
 DECLARE_CLASS(imperative_defn)
 DECLARE_CLASS(implication)
 DECLARE_CLASS(named_rulebook_outcome)
+DECLARE_CLASS(parsed_use_option_setting)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(phrase_option, 100)
 DECLARE_CLASS(relation_guard)
 DECLARE_CLASS(rule_family_data)

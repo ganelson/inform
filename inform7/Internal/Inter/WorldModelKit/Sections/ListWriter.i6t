@@ -291,7 +291,13 @@ Constant ADVANCE_ITF = 1;
 Constant COALESCE_ITF = 2;
 Constant START_ITF = 3;
 
-! Constant DBLW; ! Uncomment this to provide debugging information at run-time
+@h Tracing.
+Uncomment this line and rebuild the kit to enable tracing of what the algorithm
+below is doing. (This constant should not be used anywhere except in this file,
+where |#Ifdef| on it will have the expected effect: elsewhere, it might not.)
+
+=
+! Constant LKTRACE_LIST_WRITER;
 
 @h Marked List Iterator.
 Here the raw list is provided by the |MarkedObjectArray|, which is convenient
@@ -403,7 +409,7 @@ Again, the return value is the new first entry in the raw list.
 
 =
 [ ObjectTreeCoalesce obj memb lt later;
-	#Ifdef DBLW; print "^^Sorting out: "; DiagnoseSortList(obj); #Endif;
+	#Ifdef LKTRACE_LIST_WRITER; print "^^Sorting out: "; DiagnoseSortList(obj); #Endif;
 	.StartAgain;
 	memb = obj;
 	while (memb ~= nothing) {
@@ -425,7 +431,7 @@ Again, the return value is the new first entry in the raw list.
 			if (LT_Compare(later.list_together, lt) == 0) {
 				! Yes, they do: so we perform a regrouping of the list and start again:
 				obj = GroupChildren(parent(obj), lt);
-				#Ifdef DBLW; print "^^Sorted to: "; DiagnoseSortList(obj); #Endif;
+				#Ifdef LKTRACE_LIST_WRITER; print "^^Sorted to: "; DiagnoseSortList(obj); #Endif;
 				jump StartAgain;
 			}
 		}
@@ -456,7 +462,7 @@ objects which in all other circumstances never have children in the tree.
     return child(par);
 ];
 
-#Ifdef DBLW;
+#Ifdef LKTRACE_LIST_WRITER;
 [ DiagnoseSortList obj memb;
     for (memb=obj: memb~=nothing: memb=sibling(memb)) print memb, " --> "; new_line;
 ];
@@ -529,7 +535,7 @@ equivalence class number $c$, |partition_class_sizes->c| is the number of
 objects in this class.
 
 =
-#Ifdef DBLW;
+#Ifdef LKTRACE_LIST_WRITER;
 Global DBLW_no_classes; Global DBLW_no_objs;
 [ DebugPartition partition_class_sizes partition_classes first depth i k o;
 	print "[Length of list is ", DBLW_no_objs, " with ", k, " plural.]^";
@@ -567,7 +573,7 @@ accordingly. We return $n$, the number of classes.
             if (n < 255) n++;
         }
     n--;
-	#Ifdef DBLW;
+	#Ifdef LKTRACE_LIST_WRITER;
 	DBLW_no_classes = n; DBLW_no_objs = no_objs;
 	DebugPartition(partition_class_sizes, partition_classes, first, depth);
 	#Endif;
@@ -672,7 +678,7 @@ in the above sense.
             current_lt = lt;
         }
     }
- 	#Ifdef DBLW; print "[There are ", no_groups, " groups.]^"; #Endif;
+ 	#Ifdef LKTRACE_LIST_WRITER; print "[There are ", no_groups, " groups.]^"; #Endif;
 	return no_groups;
 ];
 
@@ -734,7 +740,7 @@ The big one: |WriteListR| is the heart of the list-writer.
             if (memb==0) { print "*** Error in list-writer ***^"; return; }
         }
 
-    	#Ifdef DBLW;
+    	#Ifdef LKTRACE_LIST_WRITER;
 		! DebugPartition(partition_class_sizes, partition_classes, o, depth);
 		print "^[Class ", cl, " of ", no_classes, ": first object ", memb,
 			" (", memb.list_together, "); groups_to_do ", groups_to_do, ",
@@ -776,7 +782,7 @@ The big one: |WriteListR| is the heart of the list-writer.
 		groups_to_do--;
         if (c_style & ENGLISH_BIT ~= 0) {
             if (groups_to_do == 1) {
-            	if (KIT_CONFIGURATION_BITMAP & SERIAL_COMMA_TCBIT) {
+            	if (BasicInformKit`SERIAL_COMMA_CFGF) {
             		if (cl > 1) print ",";
             	}
             	LIST_WRITER_INTERNAL_RM('C');
@@ -833,10 +839,10 @@ below, and {\it that} is where they are printed.
 		@push lt_value; @push listing_together; @push listing_size;
 
 		lt_value = memb.list_together; listing_together = memb;
-		#Ifdef DBLW; print "^^DOWN lt_value = ", lt_value, " listing_together = ", memb, "^^";
+		#Ifdef LKTRACE_LIST_WRITER; print "^^DOWN lt_value = ", lt_value, " listing_together = ", memb, "^^";
 		@push DBLW_no_classes; @push DBLW_no_objs; #Endif;
 		WriteListR(memb, depth, false);
-		#Ifdef DBLW; print "^^UP^^"; @pull DBLW_no_objs; @pull DBLW_no_classes; #Endif;
+		#Ifdef LKTRACE_LIST_WRITER; print "^^UP^^"; @pull DBLW_no_objs; @pull DBLW_no_classes; #Endif;
 
 		@pull listing_size; @pull listing_together; @pull lt_value;
 		c_margin--;
@@ -947,7 +953,7 @@ the iterator used at the top level) and increasing the depth by 1.
 			if (o has container) {
 				if (o has openable) {
 					if (parenth_flag) {
-						if (KIT_CONFIGURATION_BITMAP & SERIAL_COMMA_TCBIT)
+						if (BasicInformKit`SERIAL_COMMA_CFGF)
 							print ",";
 						LIST_WRITER_INTERNAL_RM('C');
 					} else            LIST_WRITER_INTERNAL_RM('A', o);

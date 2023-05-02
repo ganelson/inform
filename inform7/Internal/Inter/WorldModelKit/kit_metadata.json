@@ -2,7 +2,7 @@
     "is": {
         "type": "kit",
         "title": "WorldModelKit",
-        "version": "10.2.0-beta+6W41"
+        "version": "10.2.0-beta+6W42"
     },
     "needs": [ {
         "need": {
@@ -16,6 +16,7 @@
         "has-priority": 2,
         "defines-Main": true,
         "provides-kinds": [ "Actions.neptune", "Times.neptune", "Scenes.neptune", "Figures.neptune", "Sounds.neptune" ],
-        "indexes-with-structure": "Standard.indext"
+        "indexes-with-structure": "Standard.indext",
+        "configuration-values": [ "MULTI_OBJ_LIST_SIZE", "ROOM_DESC_DETAIL", "ROUTE_FINDING", "SCORING" ]
     }
 }

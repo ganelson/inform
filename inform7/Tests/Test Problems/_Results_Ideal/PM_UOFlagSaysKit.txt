@@ -1,0 +1,12 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 21 words long.
+I've also read Basic Inform by Graham Nelson, which is 7826 words long.
+I've also read English Language by Graham Nelson, which is 2330 words long.
+I've also read Standard Rules by Graham Nelson, which is 34398 words long.
+Problem__ PM_UOFlagSaysKit
+  >--> In 'Use banana bread translates as configuration value SERIAL_COMMA = 6
+    in BasicInformKit' (source text, line 3), you set up a use option used to
+    configure the kit 'BasicInformKit' by setting the value of 'SERIAL_COMMA',
+    but the JSON metadata for that kit says that SERIAL_COMMA is a flag, and
+    here we seem to want to set it to the value 6, which is clearly not 0 or 1.
+Inform 7 has finished.

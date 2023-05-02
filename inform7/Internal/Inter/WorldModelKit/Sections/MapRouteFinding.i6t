@@ -46,15 +46,17 @@ Z-machine. If both use options are explicitly set -- which might happen
 due to a disagreement between extensions -- "fast" wins.
 
 =
-#ifndef FAST_ROUTE_FINDING;
-#ifndef SLOW_ROUTE_FINDING;
-#ifdef TARGET_GLULX;
-Constant FAST_ROUTE_FINDING;
-#ifnot;
-Constant SLOW_ROUTE_FINDING;
-#endif;
-#endif;
-#endif;
+[ UseFastRouteFinding;
+	if (WorldModelKit`ROUTE_FINDING_CFGV == 0) {
+		#ifdef TARGET_ZCODE;
+		rfalse;
+		#ifnot;
+		rtrue;
+		#endif;
+	}
+	if (WorldModelKit`ROUTE_FINDING_CFGV == 1) rtrue;
+	rfalse;
+];
 
 @h Cache Control.
 We provide code to enable our route-finding algorithms to cache their partial
@@ -116,17 +118,31 @@ Global last_filter; Global last_use_doors;
 		oyi++;
 	}
 	if (map_has_changed) {
-		#ifdef FAST_ROUTE_FINDING; ComputeFWMatrix(filter, use_doors); #endif;
+		if (UseFastRouteFinding()) ComputeFWMatrix(filter, use_doors);
 		map_has_changed = false; last_filter = filter; last_use_doors = use_doors;
 	}
-	#ifdef FAST_ROUTE_FINDING;
-	if (count) return FastCountRouteTo(from, to, filter, use_doors);
-	return FastRouteTo(from, to, filter, use_doors);
-	#ifnot;
-	if (count) return SlowCountRouteTo(from, to, filter, use_doors);
-	return SlowRouteTo(from, to, filter, use_doors);
-	#endif;
+	if (UseFastRouteFinding()) {
+		if (count) return FastCountRouteTo(from, to, filter, use_doors);
+		return FastRouteTo(from, to, filter, use_doors);
+	} else {
+		if (count) return SlowCountRouteTo(from, to, filter, use_doors);	
+		return SlowRouteTo(from, to, filter, use_doors);
+	}
 ];
+
+@ When this code became part of |WorldModelKit|, and thus needed to be linked
+at the Inter level rather than mixed in as raw I6 code as in the pre-2020 days,
+the mechanism for selecting the route-finding algorithm needed to change.
+Previously, if the constant |FAST_ROUTE_FINDING| was defined, the matrix
+|FW_Matrix| and its functions would be compiled, and otherwise the functions
+with names beginning |Slow...| would be compiled.
+
+To avoid having to make two different linkable binaries of |WorldModelKit|,
+one in which fast route finding is used and one in which it isn't, we now
+instead compile the functions either way (they are not large) and the Inform
+compiler defines the constant |FWMATRIX_SIZE| to be 2 for slow route-finding
+(wasting only a negligible number of words for an unused array) and $R^2$,
+where $R$ is the number of rooms, for fast route-finding.
 
 @h Fast Route-Finding.
 The following is a form of Floyd's adaptation of Warshall's algorithm for
@@ -173,8 +189,7 @@ for every time the state of doors and map connections changes), and the
 cache is useful for all future routes whatever their endpoints.
 
 =
-#ifdef FAST_ROUTE_FINDING;
-Array FWMatrix --> NUM_ROOMS*NUM_ROOMS;
+Array FWMatrix --> FWMATRIX_SIZE;
 
 [ FastRouteTo from to filter use_doors diri i dir oy;
 	if (from == to) return nothing;
@@ -243,7 +258,6 @@ Array FWMatrix --> NUM_ROOMS*NUM_ROOMS;
 				}
 		}
 ];
-#ENDIF;
 
 @h Slow Route-Finding.
 The alternative algorithm, used when only $O(n)$ memory is available,
@@ -293,7 +307,6 @@ length $n$, and that every |vector| points to a room having a |vector| in
 the direction of the shortest path from there to $R_y$.
 
 =
-#ifndef FAST_ROUTE_FINDING;
 [ SlowRouteTo from to filter use_doors  obj dir in_direction progressed sl through_door;
 	if (from == nothing) return nothing;
 	if (to == nothing) return nothing;
@@ -358,5 +371,3 @@ the direction of the shortest path from there to $R_y$.
 	}
 	return -1;
 ];
-#ENDIF;
-

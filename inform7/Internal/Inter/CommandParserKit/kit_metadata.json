@@ -2,7 +2,7 @@
     "is": {
         "type": "kit",
         "title": "CommandParserKit",
-        "version": "10.2.0-beta+6W41"
+        "version": "10.2.0-beta+6W42"
     },
     "needs": [ {
         "need": {
@@ -19,6 +19,7 @@
     "activates": [ "command" ],
     "kit-details": {
         "has-priority": 3,
-        "provides-kinds": [ "Parsing.neptune" ]
+        "provides-kinds": [ "Parsing.neptune" ],
+        "configuration-flags": [ "MANUAL_PRONOUNS", "UNDO_PREVENTION", "UNABBREVIATED_NAMES", "SECRET_SAUCE" ]
     }
 }

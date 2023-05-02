@@ -48,7 +48,7 @@ Constant ACTION_PROCESSING_RB = -1; ! Identifier needs to exist even when the ru
 
 [ INITIALISE_MEMORY_R;
 	#ifdef TARGET_GLULX; VM_PreInitialise(); #Endif;
-	#Ifdef LanguageInitialise; LanguageInitialise(); #Endif;
+	LanguageInitialise();
 
 	HeapInitialise(); ! Create a completely unused memory allocation heap
 	StackFramingInitialise(); ! Create an empty stack
@@ -67,7 +67,7 @@ Constant ACTION_PROCESSING_RB = -1; ! Identifier needs to exist even when the ru
 [ VM_Initialise i;
 	standard_interpreter = HDR_TERPSTANDARD-->0;
 
-	if (KIT_CONFIGURATION_BITMAP & FIX_RNG_TCBIT) {
+	if (BasicInformKit`FIX_RNG_CFGF) {
 		@random 10000 -> i;
 		i = -i-2000;
 		print "[Random number generator seed is ", i, "]^";
@@ -153,9 +153,7 @@ Global caps_mode = false;
 		String:   print "<string ~", (string) obj, "~>"; return;
 		nothing:  print "<illegal object number ", obj, ">"; return;
     }
-    #Ifdef LanguagePrintShortName;
     if (LanguagePrintShortName(obj)) return;
-    #Endif; ! LanguagePrintShortName
     if (indef_mode && obj provides short_name_indef &&
     	PrintOrRun(obj, short_name_indef, true) ~= 0) return;
     if (caps_mode &&

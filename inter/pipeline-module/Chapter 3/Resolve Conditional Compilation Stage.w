@@ -139,6 +139,8 @@ But here it is not:
 	@<Extract rest of text into ident@>;
 	int result = FALSE;
 	text_stream *symbol_name = ident;
+	text_stream *identifier = ident;
+	@<Throw an error for what looks like a configuration identifier@>;
 	@<Decide whether symbol defined@>;
 	@<Stack up the result@>;
 	compile_this = FALSE;
@@ -149,6 +151,8 @@ But here it is not:
 	@<Extract rest of text into ident@>;
 	int result = FALSE;
 	text_stream *symbol_name = ident;
+	text_stream *identifier = ident;
+	@<Throw an error for what looks like a configuration identifier@>;
 	@<Decide whether symbol defined@>;
 	result = (result)?FALSE:TRUE;
 	@<Stack up the result@>;
@@ -178,6 +182,7 @@ Inform kits use this only to test |#Iftrue WORDSIZE == 4| or |#Iftrue WORDSIZE =
 	match_results mr2 = Regexp::create_mr();
 	if (Regexp::match(&mr2, cond, L" *(%C+?) *== *(%d+) *")) {
 		text_stream *identifier = mr2.exp[0];
+		@<Throw an error for what looks like a configuration identifier@>;
 		inter_symbol *symbol = LargeScale::architectural_symbol(I, identifier);
 		if (symbol) {
 			int V = InterSymbol::evaluate_to_int(symbol);
@@ -187,6 +192,7 @@ Inform kits use this only to test |#Iftrue WORDSIZE == 4| or |#Iftrue WORDSIZE =
 	}
 	if (Regexp::match(&mr2, cond, L" *(%C+?) *>= *(%d+) *")) {
 		text_stream *identifier = mr2.exp[0];
+		@<Throw an error for what looks like a configuration identifier@>;
 		inter_symbol *symbol = LargeScale::architectural_symbol(I, identifier);
 		if (symbol) {
 			int V = InterSymbol::evaluate_to_int(symbol);
@@ -196,6 +202,7 @@ Inform kits use this only to test |#Iftrue WORDSIZE == 4| or |#Iftrue WORDSIZE =
 	}
 	if (Regexp::match(&mr2, cond, L" *(%C+?) *> *(%d+) *")) {
 		text_stream *identifier = mr2.exp[0];
+		@<Throw an error for what looks like a configuration identifier@>;
 		inter_symbol *symbol = LargeScale::architectural_symbol(I, identifier);
 		if (symbol) {
 			int V = InterSymbol::evaluate_to_int(symbol);
@@ -205,6 +212,7 @@ Inform kits use this only to test |#Iftrue WORDSIZE == 4| or |#Iftrue WORDSIZE =
 	}
 	if (Regexp::match(&mr2, cond, L" *(%C+?) *<= *(%d+) *")) {
 		text_stream *identifier = mr2.exp[0];
+		@<Throw an error for what looks like a configuration identifier@>;
 		inter_symbol *symbol = LargeScale::architectural_symbol(I, identifier);
 		if (symbol) {
 			int V = InterSymbol::evaluate_to_int(symbol);
@@ -214,6 +222,7 @@ Inform kits use this only to test |#Iftrue WORDSIZE == 4| or |#Iftrue WORDSIZE =
 	}
 	if (Regexp::match(&mr2, cond, L" *(%C+?) *< *(%d+) *")) {
 		text_stream *identifier = mr2.exp[0];
+		@<Throw an error for what looks like a configuration identifier@>;
 		inter_symbol *symbol = LargeScale::architectural_symbol(I, identifier);
 		if (symbol) {
 			int V = InterSymbol::evaluate_to_int(symbol);
@@ -235,6 +244,19 @@ Inform kits use this only to test |#Iftrue WORDSIZE == 4| or |#Iftrue WORDSIZE =
 	@<Stack up the result@>;
 	compile_this = FALSE;
 	DISCARD_TEXT(ident)
+
+@<Throw an error for what looks like a configuration identifier@> =
+	LOOP_THROUGH_TEXT(pos, identifier)
+		if (Str::get(pos) == '`') {
+			if ((Str::suffix_eq(identifier, I"_CFGF", 5)) ||
+				(Str::suffix_eq(identifier, I"_CFGV", 5)))
+				I6Errors::issue(
+					"#iftrue, #iffalse, #ifdef and #ifndef should not be used with kit "
+					"configuration values such as '%S', since those values are not known "
+					"when the kit is being compiled: use regular 'if (S)' or 'if (S == V)'",
+					identifier);
+			break;
+		}
 
 @<Stack up the result@> =
 	if (state->cc_sp >= MAX_CC_STACK_SIZE) {

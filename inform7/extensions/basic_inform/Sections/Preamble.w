@@ -110,7 +110,7 @@ The following has no effect, and exists only to be a default non-value for
 "use option" variables, should anyone ever create them:
 
 =
-Use ineffectual translates as (- ! Use ineffectual does nothing. -).
+Use ineffectual translates as a compiler feature.
 
 @ We can now make definitions of miscellaneous options: none are used by default,
 but all translate into I6 constant definitions if used. (These are constants
@@ -118,19 +118,26 @@ whose values are used in the I6 library or in the template layer, which is
 how they have effect.)
 
 =
-Use American dialect translates as (- Constant DIALECT_US; -).
-Use the serial comma translates as (- Constant SERIAL_COMMA; -).
-Use memory economy translates as (- Constant MEMORY_ECONOMY; -).
-Use engineering notation translates as (- Constant USE_E_NOTATION = 0; -).
-Use unabbreviated object names translates as (- Constant UNABBREVIATED_OBJECT_NAMES = 0; -).
-Use predictable randomisation translates as (- Constant FIX_RNG; -).
-Use fast route-finding translates as (- Constant FAST_ROUTE_FINDING; -).
-Use slow route-finding translates as (- Constant SLOW_ROUTE_FINDING; -).
-Use numbered rules translates as (- Constant NUMBERED_RULES; -).
-Use telemetry recordings translates as (- Constant TELEMETRY_ON; -).
-Use no deprecated features translates as (- Constant NO_DEPRECATED_FEATURES; -).
-Use gn testing version translates as (- Constant GN_TESTING_VERSION; -).
-Use authorial modesty translates as (- Constant AUTHORIAL_MODESTY; -).
+Use American dialect translates as the configuration flag AMERICAN_DIALECT
+	in BasicInformKit.
+Use the serial comma translates as the configuration flag SERIAL_COMMA
+	in BasicInformKit.
+Use memory economy translates as the configuration flag MEMORY_ECONOMY
+	in BasicInformKit.
+Use engineering notation translates as a compiler feature.
+Use printed engineering notation translates as the configuration flag
+	PRINT_ENGINEER_EXPS in BasicInformKit.
+Use predictable randomisation translates as the configuration flag FIX_RNG
+	in BasicInformKit.
+Use numbered rules translates as the configuration flag NUMBERED_RULES
+	in BasicInformKit.
+Use telemetry recordings translates as a compiler feature.
+Use no deprecated features translates as the configuration flag NO_DEPRECATED
+	in BasicInformKit.
+Use authorial modesty translates as the configuration flag AUTHORIAL_MODESTY
+	in BasicInformKit.
+Use command line echoing translates as the configuration flag ECHO_COMMANDS
+	in BasicInformKit.
 
 @ These, on the other hand, are settings used by the dynamic memory management
 code, which runs in I6 as part of the template layer. Each setting translates
@@ -145,12 +152,11 @@ tight array space of the Z-machine it's quite a large commitment, and we
 want to avoid it whenever possible.)
 
 =
-Use dynamic memory allocation of at least 8192 translates as
-	(- Constant DynamicMemoryAllocation = {N}; -).
-Use maximum text length of at least 1024 translates as
-	(- Constant TEXT_TY_BufferSize = {N}+3; -).
-Use index figure thumbnails of at least 50 translates as
-	(- Constant MAX_FIGURE_THUMBNAILS_IN_INDEX = {N}; -).
+Use dynamic memory allocation of at least 8192 translates as the configuration
+	value STACK_FRAME_CAPACITY in BasicInformKit.
+Use maximum text length of at least 1024 translates as the configuration
+	value TEXT_BUFFER_SIZE in BasicInformKit.
+Use index figure thumbnails of at least 50 translates as a compiler feature.
 
 Use dynamic memory allocation of at least 8192.
 

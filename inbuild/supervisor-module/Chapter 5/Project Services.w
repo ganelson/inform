@@ -711,6 +711,34 @@ text_stream *Projects::index_structure(inform_project *project) {
 	return I;
 }
 
+@ We can find a kit as used by a project:
+
+=
+inform_kit *Projects::get_linked_kit(inform_project *project, text_stream *name) {
+	kit_dependency *kd;
+	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include) {
+		inform_kit *kit = kd->kit;
+		if (Str::eq_insensitive(kit->as_copy->edition->work->title, name))
+			return kit;
+	}
+	return NULL;
+}
+
+@ And find an exhaustive collection:
+
+=
+linked_list *Projects::list_of_kit_configurations(inform_project *project) {
+	linked_list *L = NEW_LINKED_LIST(kit_configuration);
+	kit_dependency *kd;
+	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include) {
+		inform_kit *kit = kd->kit;
+		kit_configuration *kc;
+		LOOP_OVER_LINKED_LIST(kc, kit_configuration, kit->configurations)
+			ADD_TO_LINKED_LIST(kc, kit_configuration, L);
+	}
+	return L;
+}
+
 @ Every source text read into Inform is automatically prefixed by a few words
 loading the fundamental "extensions" -- text such as "Include Basic Inform by
 Graham Nelson." If Inform were a computer, this would be the BIOS which boots

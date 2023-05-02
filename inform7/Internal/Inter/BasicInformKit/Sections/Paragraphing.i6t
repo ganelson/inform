@@ -122,6 +122,14 @@ is highly prone to behaving unexpectedly if changes are made, simply because
 of the huge number of circumstances in which paragraphs are printed: so change
 nothing without very careful testing.
 
+@h Tracing.
+Uncomment this line and rebuild the kit to enable tracing of what the algorithm
+below is doing. (This constant should not be used anywhere except in this file,
+where |#Ifdef| on it will have the expected effect: elsewhere, it might not.)
+
+=
+!Constant LKTRACE_SPACING;
+
 @h State.
 The current state is stored in a combination of two global variables:
 
@@ -161,27 +169,25 @@ In no other case should any code alter |say__pc| except via the routines
 below.
 
 =
-!Constant TRACE_I7_SPACING;
-
 [ ClearParagraphing r;
 	say__p = 0; say__pc = 0;
 ];
 
 [ DivideParagraphPoint;
-	#ifdef TRACE_I7_SPACING; print "[DPP", say__p, say__pc, "]"; #endif;
+	#ifdef LKTRACE_SPACING; print "[DPP", say__p, say__pc, "]"; #endif;
 	if (say__p) {
 		new_line; say__p = 0; say__pc = say__pc | PARA_COMPLETED;
 		say__pc_save = true;
 		if (say__pc & PARA_PROMPTSKIP) say__pc = say__pc - PARA_PROMPTSKIP;
 		if (say__pc & PARA_SUPPRESSPROMPTSKIP) say__pc = say__pc - PARA_SUPPRESSPROMPTSKIP;
 	}
-	#ifdef TRACE_I7_SPACING; print "[-->", say__p, say__pc, "]"; #endif;
+	#ifdef LKTRACE_SPACING; print "[-->", say__p, say__pc, "]"; #endif;
 	say__pc = say__pc | PARA_CONTENTEXPECTED;
 	say__pc_save = (say__pc & PARA_COMPLETED);
 ];
 
 [ AdjustParagraphPoint;
-	#ifdef TRACE_I7_SPACING; print "[APP ", say__p, " ", say__pc, " ", say__pc_save, "]^"; #endif;
+	#ifdef LKTRACE_SPACING; print "[APP ", say__p, " ", say__pc, " ", say__pc_save, "]^"; #endif;
 	if (say__pc_save) say__pc = (say__pc | PARA_COMPLETED);
 ];
 
@@ -203,14 +209,14 @@ below.
 ];
 
 [ RunParagraphOn;
-	#ifdef TRACE_I7_SPACING; print "[RPO", say__p, say__pc, "]"; #endif;
+	#ifdef LKTRACE_SPACING; print "[RPO", say__p, say__pc, "]"; #endif;
 	say__p = 0;
 	say__pc = say__pc | PARA_PROMPTSKIP;
 	say__pc = say__pc | PARA_SUPPRESSPROMPTSKIP;
 ];
 
 [ SpecialLookSpacingBreak;
-	#ifdef TRACE_I7_SPACING; print "[SLS", say__p, say__pc, "]"; #endif;
+	#ifdef LKTRACE_SPACING; print "[SLS", say__p, say__pc, "]"; #endif;
 	say__p = 0;
 	say__pc = say__pc | PARA_PROMPTSKIP;
 ];
@@ -276,7 +282,7 @@ whatever is the current language of play.
         print (LanguageNumber) n/100, " hundred"; n = n%100; f = 1;
     }
     if (n == 0) rfalse;
-    if (KIT_CONFIGURATION_BITMAP & DIALECT_US_TCBIT) {
+    if (BasicInformKit`AMERICAN_DIALECT_CFGF) {
 	    if (f == 1) print " ";
     } else {
 	    if (f == 1) print " and ";

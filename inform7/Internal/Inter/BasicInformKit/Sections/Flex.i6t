@@ -92,7 +92,14 @@ Constant BLK_DATA_MULTI_OFFSET = BLK_DATA_OFFSET + 2*WORDSIZE;
 Constant BLK_NEXT 3;
 Constant BLK_PREV 4;
 
-! Constant BLKVALUE_TRACE = 1; ! Uncomment this for debugging purposes
+@h Tracing.
+Uncomment this line and rebuild the kit to enable tracing of what the algorithm
+below is doing. (This constant should not be used anywhere except in this file
+and in |BlockValues.i6t|, where |#Ifdef| on it will have the expected effect:
+elsewhere, it might not.)
+
+=
+! Constant LKTRACE_HEAP;
 
 @h The Heap.
 Properly speaking, a "heap" is a specific kind of structure often used for
@@ -236,7 +243,7 @@ Constant SMALLEST_BLK_WORTH_ALLOCATING = 12; ! i.e. 2^12 = 4096 bytes
 		Flex_Heap-->BLK_NEXT = newblock;
 		newblock-->BLK_PREV = Flex_Heap;
 		.Linked; ;
-		#ifdef BLKVALUE_TRACE;
+		#ifdef LKTRACE_HEAP;
 		print "Increasing heap to free space map: "; FlexDebugDecomposition(Flex_Heap, 0);
 		#endif;
 	}
@@ -422,11 +429,11 @@ invariant (b) above.
 		first = first-->BLK_PREV;
 	pv = first-->BLK_PREV;
 	nx = last-->BLK_NEXT;
-	#ifdef BLKVALUE_TRACE;
+	#ifdef LKTRACE_HEAP;
 	print "Merging: "; FlexDebugDecomposition(pv-->BLK_NEXT, nx); print "^";
 	#endif;
 	if (FlexRecutInternal(first, last)) {
-		#ifdef BLKVALUE_TRACE;
+		#ifdef LKTRACE_HEAP;
 		print " --> "; FlexDebugDecomposition(pv-->BLK_NEXT, nx); print "^";
 		#endif;
 	}

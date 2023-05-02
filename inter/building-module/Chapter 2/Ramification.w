@@ -1937,7 +1937,7 @@ int Ramification::sanity_check(inter_schema_node *par, inter_schema_node *isn) {
 	return FALSE;
 }
 
-int Ramification::check_for_to(inter_schema_node *par, inter_schema_node *isn) {
+void Ramification::check_for_to(inter_schema_node *par, inter_schema_node *isn) {
 	for (inter_schema_token *t = isn->expression_tokens; t; t=t->next)
 		if ((t->ist_type == IDENTIFIER_ISTT) && (Str::eq(t->material, I"to")))
 			I6Errors::issue_at_node(isn, I"'to' ranges are unsupported in switch cases");

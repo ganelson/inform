@@ -49,7 +49,7 @@ fancy text style for Glulx, ...
 
 =
 [ NotifyTheScore d;
-	if ((KIT_CONFIGURATION_BITMAP & USE_SCORING_TCBIT) && (notify_mode == 1)) {
+	if ((WorldModelKit`SCORING_CFGV) && (notify_mode == 1)) {
 		DivideParagraphPoint();
 		VM_Style(NOTE_VMSTY);
 		d = score-last_score;
@@ -67,7 +67,7 @@ not to use these now dated conventions.
 
 =
 [ PrintRank i j v;
-	if (KIT_CONFIGURATION_BITMAP & RANKING_TABLE_TCBIT) {
+	if (WorldModelKit`RANKING_TABLE_GIVEN) {
 		ANNOUNCE_SCORE_RM('B');
 		j = TableRows(RANKING_TABLE);
 		for (i=j:i>=1:i--)
@@ -120,7 +120,7 @@ Array T_SL_Score_Moves --> CONSTANT_PACKED_TEXT_STORAGE SL_Score_Moves;
 
 [ SL_Score_Moves;
 	if (not_yet_in_play) return;
-	if (KIT_CONFIGURATION_BITMAP & USE_SCORING_TCBIT)
+	if (WorldModelKit`SCORING_CFGV)
 		print sline1, "/", sline2;
 ];
 
@@ -155,7 +155,7 @@ compile a |Story_Author|.
 		VM_Style(NORMAL_VMSTY);
 		new_line;
 		TEXT_TY_Say(Headline);
-		if (KIT_CONFIGURATION_BITMAP & STORY_AUTHOR_TCBIT) {
+		if (WorldModelKit`STORY_AUTHOR_GIVEN) {
 			print " ", (address) BY__WD, " ";
 			TEXT_TY_Say(Story_Author);
 		}
@@ -252,9 +252,7 @@ Global caps_mode = false;
    	    else PRINT_PROTAGONIST_INTERNAL_RM('B');
    	    return;
    	}
-    #Ifdef LanguagePrintShortName;
     if (LanguagePrintShortName(obj)) return;
-    #Endif; ! LanguagePrintShortName
     if (indef_mode && obj provides short_name_indef &&
     	PrintOrRun(obj, short_name_indef, true) ~= 0) return;
     if (caps_mode &&

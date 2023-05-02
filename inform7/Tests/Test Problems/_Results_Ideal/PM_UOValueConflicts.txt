@@ -1,0 +1,10 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 27 words long.
+I've also read Basic Inform by Graham Nelson, which is 7899 words long.
+I've also read English Language by Graham Nelson, which is 2330 words long.
+I've also read Standard Rules by Graham Nelson, which is 34398 words long.
+Problem__ PM_UOValueConflicts
+  >--> In 'Use frog count of 18' (source text, line 6), you set a use option
+    'frog count', but that conflicts with the earlier setting 'Use frog count
+    of 15' (source text, line 5).
+Inform 7 has finished.

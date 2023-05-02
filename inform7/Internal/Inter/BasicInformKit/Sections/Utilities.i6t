@@ -8,7 +8,7 @@ Miscellaneous utility routines for some fundamental I6 needs.
 #ifdef TARGET_ZCODE;
 Constant BLOCKV_STACK_SIZE = 224;
 #ifnot;
-Constant BLOCKV_STACK_SIZE = DynamicMemoryAllocation/4;
+Constant BLOCKV_STACK_SIZE = BasicInformKit`STACK_FRAME_CAPACITY_CFGV / 4;
 #endif;
 
 Array blockv_stack --> BLOCKV_STACK_SIZE;

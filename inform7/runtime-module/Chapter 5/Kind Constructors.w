@@ -665,6 +665,21 @@ void RTKindConstructors::compile(void) {
 			Hierarchy::make_available(iname);
 			DISCARD_TEXT(ICN)
 			Emit::numeric_constant(iname, (inter_ti) Instances::count(K));
+			
+			if (Kinds::eq(K, K_room)) {
+				inter_name *iname = 
+					Hierarchy::make_iname_in(FWMATRIX_SIZE_HL, RTKindConstructors::kind_package(K));
+				Hierarchy::make_available(iname);
+				inter_ti val = 0;
+				if (TargetVMs::is_16_bit(Task::vm()) == FALSE)
+					val = (inter_ti) (Instances::count(K)*Instances::count(K));
+				if (global_compilation_settings.fast_route_finding)
+					val = (inter_ti) (Instances::count(K)*Instances::count(K));
+				if (global_compilation_settings.slow_route_finding)
+					val = 0;
+				if (val <= 1) val = 2;
+				Emit::numeric_constant(iname, (inter_ti) val);
+			}
 		}
 		if (Kinds::Behaviour::is_object(K)) {
 			Hierarchy::apply_metadata_from_number(RTKindConstructors::kind_package(K),

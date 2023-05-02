@@ -1,0 +1,9 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 22 words long.
+I've also read Basic Inform by Graham Nelson, which is 7826 words long.
+I've also read English Language by Graham Nelson, which is 2330 words long.
+I've also read Standard Rules by Graham Nelson, which is 34398 words long.
+Problem__ PM_UONumerical
+  >--> You wrote 'Use frog count' (source text, line 5): but that 'Use' option
+    has to have a numerical setting, and you do not give one.
+Inform 7 has finished.

@@ -532,8 +532,8 @@ Array PowersOfTen --> 1 10 100 1000 10000 100000 1000000 10000000 100000000 1000
 	}
 
 	! Print the exponent. There are two conventions coded here: the
-	! programmatic ("1.0e+00") and the literary ("1.0 x 10^0").
-	if (KIT_CONFIGURATION_BITMAP & PROGRAMMING_EXPONENTS_TCBIT == 0) {
+	! engineering notation ("1.0e+00") and the mathematical ("1.0 x 10^0").
+	if (BasicInformKit`PRINT_ENGINEER_EXPS_CFGF == 0) {
 		PrintMultiplicationSign();
 		@streamchar '1';
 		@streamchar '0';
