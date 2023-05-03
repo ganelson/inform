@@ -101,6 +101,7 @@ DECLARE_CLASS(use_option)
 @e nonlocal_variable_CLASS
 @e response_message_CLASS
 @e text_substitution_CLASS
+@e unicode_lookup_value_CLASS
 
 =
 DECLARE_CLASS(equation)
@@ -115,6 +116,7 @@ DECLARE_CLASS(llist_entry)
 DECLARE_CLASS(nonlocal_variable)
 DECLARE_CLASS(response_message)
 DECLARE_CLASS(text_substitution)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(unicode_lookup_value, 1000)
 
 @ //knowledge// --
 

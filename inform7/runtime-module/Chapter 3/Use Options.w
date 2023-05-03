@@ -164,7 +164,7 @@ one doesn't, that's not an error; it's just a pragma we suppress.
 	Emit::pragma(I"-s");
 	i6_memory_setting *ms;
 	LOOP_OVER(ms, i6_memory_setting) {
-		if ((Str::eq_wide_string(ms->ICL_identifier, L"MAX_LOCAL_VARIABLES")) &&
+		if ((Str::eq(ms->ICL_identifier, I"MAX_LOCAL_VARIABLES")) &&
 			(TargetVMs::allow_MAX_LOCAL_VARIABLES(Task::vm()) == FALSE))
 			continue;
 		TEMPORARY_TEXT(prag)
