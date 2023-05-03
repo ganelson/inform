@@ -1,0 +1,6 @@
+The Viability Chamber is a room.
+
+Use crazy paving translates as (- Constant CRAZY_PAVING; -).
+
+Use no deprecated features.
+

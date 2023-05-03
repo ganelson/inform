@@ -317,7 +317,6 @@ The |/main/synoptic/use_options| submodule.
 @e TESTUSEOPTION_HL
 @e PRINT_USE_OPTION_HL
 @e USE_OPTION_VALUES_HL
-@e USE_OPTION_CHOSEN_HL
 
 @<Resources for use options@> =
 	SYN_SUBMD(I"use_options")
@@ -325,4 +324,3 @@ The |/main/synoptic/use_options| submodule.
 		SYN_FUNCT(TESTUSEOPTION_HL,               I"test_fn", I"TestUseOption")
 		SYN_FUNCT(PRINT_USE_OPTION_HL,            I"print_fn", I"PrintUseOption")
 		SYN_CONST(USE_OPTION_VALUES_HL,           I"USE_OPTION_VALUES")
-		SYN_CONST(USE_OPTION_CHOSEN_HL,           I"USE_OPTION_CHOSEN")

@@ -51,13 +51,6 @@ void Interventions::make_for_subject(inter_name *iname, inference_subject *infs)
 		}
 }
 
-@ Thirdly, from use options:
-
-=
-void Interventions::from_use_option(text_stream *S) {
-	Emit::intervention(Interventions::expand_bracket_plus(S), NULL);
-}
-
 @ Not to digress,[1] but the following function has a surprising history. In the
 pre-2015 design of Inform, it was a formidably complex function. It was used
 to read |*.i6t| template files, as they were then: the precursors of today's

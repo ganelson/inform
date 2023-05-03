@@ -27,12 +27,36 @@ inter_name *RTUseOptions::uo_iname(use_option *uo) {
 }
 
 void RTUseOptions::compile(void) {
+	@<Reject inline definitions if we forbid deprecated features@>;
 	@<Calculate the values of configuration constants@>;
 	@<Apply Inter metadata@>;
 	@<Compile pragmas from use options which set these@>;
 	@<Compile configuration values supplied by the compiler itself@>;
 	@<Compile configuration values supplied by use options@>;
 }
+
+@ This is only done here in the runtime module as a convenience of timing.
+The potential issue is that by the time "Use no deprecated features" is read,
+we have already read all the offending inline definitions.
+
+@<Reject inline definitions if we forbid deprecated features@> =
+	if (global_compilation_settings.no_deprecated_features) {
+		use_option *uo;
+		LOOP_OVER(uo, use_option)
+			if (uo->definition_form == INLINE_UTAS) {
+				current_sentence = uo->where_created;
+				StandardProblems::handmade_problem(Task::syntax_tree(),
+					_p_(PM_UONotationDeprecated));
+				Problems::quote_source(1, current_sentence);
+				Problems::issue_problem_segment(
+					"In %1, you set up a use option, but you use the deprecated notation "
+					"'(- ... -)' to say what to do if this option is set. Since you "
+					"also have 'Use no deprecated features' set, I'm issuing a problem "
+					"message. (For now, though, this would have worked if it hadn't been "
+					"for 'Use no deprecated features'.)");
+				Problems::issue_problem_end();
+			}
+	}
 
 @<Calculate the values of configuration constants@> =
 	use_option *uo;
@@ -148,8 +172,6 @@ void RTUseOptions::compile(void) {
 				CompilationUnits::extension_id(efo));
 		Hierarchy::apply_metadata_from_number(R, USE_OPTION_CV_MD_HL,
 			(inter_ti) uo->compilation_data.value_to_use);
-		Hierarchy::apply_metadata_from_number(R, USE_OPTION_CHOSEN_MD_HL,
-			(inter_ti) (RTUseOptions::used(uo))?1:0);
 	}
 
 @ Some use options convert directly into pragma instructions telling the Inform 6
@@ -238,24 +260,15 @@ The |{N}| marker, if present, is converted to the value, producing, say:
 = (text as Inform 6)
 	Constant DREAMY_TIME = 4096+3;
 =
+All this form of notation is deprecated now, but in the mean time we can still
+read almost all such definitions, because almost all users write them in a simple
+enough way that we can tell what they want and achieve it by better means.
 
 @<Include raw Inform 6 code@> =
 	text_stream *UO = Str::new();
-	WRITE_TO(UO, "%W", Wordings::from(uo->expansion,
-		Wordings::first_wn(uo->expansion) + 1));
-	text_stream *S = Str::new();
-	for (int i=0; i<Str::len(UO); i++) {
-		if ((Str::get_at(UO, i) == '{') && (Str::get_at(UO, i+1) == 'N') &&
-			(Str::get_at(UO, i+2) == '}')) {
-			WRITE_TO(S, "%d", uo->compilation_data.value_to_use);
-			i += 2;
-		} else {
-			PUT_TO(S, Str::get_at(UO, i));
-		}
-	}
-	if (active == FALSE) LOGIF(USE_OPTIONS, "not ");
-	LOGIF(USE_OPTIONS, "inserting (- %S -).\n", S);
-	if (active) Interventions::from_use_option(S);
+	WRITE_TO(UO, "%W", Wordings::from(uo->expansion, Wordings::first_wn(uo->expansion) + 1));
+	current_sentence = uo->where_created;
+	RTUseOptions::handle_deprecated_definition(UO, active, uo->compilation_data.value_to_use);
 
 @ The newer and better way does not involve inclusions (with their concomitant
 need to inject splat nodes into the Inter we generate), but instead makes
@@ -418,3 +431,54 @@ void RTUseOptions::log_puos(parsed_use_option_setting *puos) {
 	if (puos->at_least == FALSE) LOGIF(USE_OPTIONS, " == %d", puos->value);
 	LOGIF(USE_OPTIONS, "}");
 }
+
+@h Deprecated inclusion notation.
+The old-school way for use options to take effect is by causing a constant to
+be defined using inclusion notation. That is, they are defined using Inform 6
+notation inside |(-| and |-)| markers: for example,
+= (text as Inform 7)
+Use feverish dreams translates as (- Constant FEVERISH_DREAMS; -).
+Use hallucination time of at least 1024 translates as
+	(- Constant DREAMY_TIME = {N}+3; -).
+=
+The |{N}| marker, if present, is converted to the value, producing, say:
+= (text as Inform 6)
+	Constant DREAMY_TIME = 4096+3;
+=
+All this form of notation is deprecated now, but in the mean time we can still
+read almost all such definitions, because almost all users write them in a simple
+enough way that we can tell what they want and achieve it by better means.
+
+=
+int RTUseOptions::check_deprecated_definition(text_stream *UO) {
+	return RTUseOptions::handle_deprecated_definition(UO, FALSE, 0);
+}
+
+int  RTUseOptions::handle_deprecated_definition(text_stream *UO, int active, int N) {
+	int rv = FALSE;
+	inter_ti val = 0; text_stream *identifier = NULL;
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, UO, L" *Constant (%C+) *; *")) {
+		identifier = mr.exp[0];
+	} else if (Regexp::match(&mr, UO, L" *Constant (%C+) *= *(%d+) *; *")) {
+		identifier = mr.exp[0]; val = (inter_ti) Str::atoi(mr.exp[1], 0);
+	} else if (Regexp::match(&mr, UO, L" *Constant (%C+) *= *{N} *; *")) {
+		identifier = mr.exp[0]; val = (inter_ti) N;
+	} else if (Regexp::match(&mr, UO, L" *Constant (%C+) *= *{N} *%+ *(%d+) *; *")) {
+		identifier = mr.exp[0];
+		val = (inter_ti) (N + Str::atoi(mr.exp[1], 0));
+	} else if ((Regexp::match(&mr, UO, L" *Constant (%C+) *= *{N} *%* *(%d+) *; *")) ||
+			(Regexp::match(&mr, UO, L" *Constant (%C+) *= *(%d+) *%* *{N} *; *"))) {
+		identifier = mr.exp[0];
+		val = (inter_ti) (N * Str::atoi(mr.exp[1], 0));
+	}
+	if (Str::len(identifier) > 0) @<Declare a constant, in a civilised way@>
+	Regexp::dispose_of(&mr);
+	return rv;
+}
+
+@<Declare a constant, in a civilised way@> =
+	if (active == FALSE) LOGIF(USE_OPTIONS, "not ");
+	LOGIF(USE_OPTIONS, "deducing %S = %d from (- %S -).\n", identifier, val, UO);
+	if (active) RTUseOptions::define_config_constant(identifier, val);
+	rv = TRUE;

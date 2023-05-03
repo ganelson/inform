@@ -140,7 +140,7 @@ typedef struct use_option {
 	uo->name = UOW;
 	uo->expansion = EMPTY_WORDING;
 	uo->definition_form = form;
-	if (uo->definition_form == INLINE_UTAS) uo->expansion = OP;
+	if (uo->definition_form == INLINE_UTAS) @<Handle the deprecated inline case@>;
 	uo->symbol_name = NULL;
 	uo->kit_name = NULL;
 	uo->is_explicitly_numerical = FALSE;
@@ -176,6 +176,29 @@ typedef struct use_option {
 	uo->compilation_data = RTUseOptions::new_compilation_data(uo);
 	Nouns::new_proper_noun(uo->name, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 		MISCELLANEOUS_MC, Rvalues::from_use_option(uo), Task::language_of_syntax());
+
+@ At some point this will cease to be allowed, but simple inline definitions
+are still supported, and the call to |RTUseOptions::check_deprecated_definition|
+checks that the one here is simple enough to deal with. If it isn't, a problem
+message is thrown.
+
+@<Handle the deprecated inline case@> =
+	uo->expansion = OP;
+	text_stream *UO = Str::new();
+	WRITE_TO(UO, "%W", Wordings::from(OP, Wordings::first_wn(OP) + 1));
+	if (RTUseOptions::check_deprecated_definition(UO) == FALSE) {
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_UONotationWithdrawn));
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_stream(2, UO);
+		Problems::issue_problem_segment(
+			"In %1, you set up a use option, but you use the deprecated notation "
+			"'(- %2 -)' to say what to do if this option is set. For now, that "
+			"still works if a simple form is used, such as '(- Constant X; -)' or "
+			"'(- Constant Y = {N}; -)' or even '(- Constant Z = 2*{N}; -)', but the "
+			"ability to write arbitrary Inform 6-syntax code here has been withdrawn.");
+		Problems::issue_problem_end();
+	}
 
 @ The ambiguity alluded to here is with Inform 6 ICL settings: see below.
 

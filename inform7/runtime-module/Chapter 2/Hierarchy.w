@@ -1849,7 +1849,6 @@ void Hierarchy::establish(void) {
 @e USED_IN_OPTIONS_MD_HL
 @e USED_IN_EXTENSION_MD_HL
 @e USE_OPTION_CV_MD_HL
-@e USE_OPTION_CHOSEN_MD_HL
 @e USE_OPTION_ID_HL
 
 @<Establish use options@> =
@@ -1866,7 +1865,6 @@ void Hierarchy::establish(void) {
 			H_C_U(USED_IN_OPTIONS_MD_HL,      I"^used_in_options")
 			H_C_U(USED_IN_EXTENSION_MD_HL,    I"^used_in_extension")
 			H_C_U(USE_OPTION_CV_MD_HL,        I"^configured_value")
-			H_C_U(USE_OPTION_CHOSEN_MD_HL,    I"^chosen")
 			H_C_U(USE_OPTION_ID_HL,           I"use_option_id")
 		H_END
 	H_END

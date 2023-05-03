@@ -226,7 +226,7 @@ OP match the following:
 <span class="plain-syntax">    </span><span class="identifier-syntax">uo</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">UOW</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">uo</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">expansion</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">uo</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">definition_form</span><span class="plain-syntax"> = </span><span class="identifier-syntax">form</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">uo</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">definition_form</span><span class="plain-syntax"> == </span><span class="constant-syntax">INLINE_UTAS</span><span class="plain-syntax">) </span><span class="identifier-syntax">uo</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">expansion</span><span class="plain-syntax"> = </span><span class="identifier-syntax">OP</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">uo</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">definition_form</span><span class="plain-syntax"> == </span><span class="constant-syntax">INLINE_UTAS</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-nuor.html#SP3_2_2_1" class="named-paragraph-link"><span class="named-paragraph">Handle the deprecated inline case</span><span class="named-paragraph-number">3.2.2.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">uo</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">symbol_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">uo</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">kit_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">uo</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">is_explicitly_numerical</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -238,8 +238,8 @@ OP match the following:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">uo</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">default_value</span><span class="plain-syntax"> = </span><span class="identifier-syntax">puos</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">M</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">M_set</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-nuor.html#SP3_2_2_1" class="named-paragraph-link"><span class="named-paragraph">See if this option sets a value to some specified number M</span><span class="named-paragraph-number">3.2.2.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-nuor.html#SP3_2_2_2" class="named-paragraph-link"><span class="named-paragraph">Make sure the flag or value name is valid</span><span class="named-paragraph-number">3.2.2.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-nuor.html#SP3_2_2_2" class="named-paragraph-link"><span class="named-paragraph">See if this option sets a value to some specified number M</span><span class="named-paragraph-number">3.2.2.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-nuor.html#SP3_2_2_3" class="named-paragraph-link"><span class="named-paragraph">Make sure the flag or value name is valid</span><span class="named-paragraph-number">3.2.2.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">uo</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_Inter_presence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">uo</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">definition_form</span><span class="plain-syntax"> == </span><span class="constant-syntax">CONFIG_NAMELESS_FLAG_UTAS</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">uo</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">definition_form</span><span class="plain-syntax"> = </span><span class="constant-syntax">CONFIG_FLAG_UTAS</span><span class="plain-syntax">;</span>
@@ -252,7 +252,7 @@ OP match the following:
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">uo</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">definition_form</span><span class="plain-syntax"> == </span><span class="constant-syntax">COMPILER_UTAS</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">uo</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_Inter_presence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-nuor.html#SP3_2_2_3" class="named-paragraph-link"><span class="named-paragraph">Make sure the kit name is valid</span><span class="named-paragraph-number">3.2.2.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-nuor.html#SP3_2_2_4" class="named-paragraph-link"><span class="named-paragraph">Make sure the kit name is valid</span><span class="named-paragraph-number">3.2.2.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">uo</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">settings_made</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="reserved-syntax">parsed_use_option_setting</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">uo</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">source_file_scoped</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">uo</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">notable_option_code</span><span class="plain-syntax"> = -1;</span>
@@ -264,6 +264,34 @@ OP match the following:
 <span class="plain-syntax">        </span><span class="identifier-syntax">MISCELLANEOUS_MC</span><span class="plain-syntax">, </span><span class="identifier-syntax">Rvalues::from_use_option</span><span class="plain-syntax">(</span><span class="identifier-syntax">uo</span><span class="plain-syntax">), </span><span class="identifier-syntax">Task::language_of_syntax</span><span class="plain-syntax">());</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-nuor.html#SP3_2">&#167;3.2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP3_2_2_1" class="paragraph-anchor"></a><b>&#167;3.2.2.1.  </b>At some point this will cease to be allowed, but simple inline definitions
+are still supported, and the call to <span class="extract"><span class="extract-syntax">RTUseOptions::check_deprecated_definition</span></span>
+checks that the one here is simple enough to deal with. If it isn't, a problem
+message is thrown.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Handle the deprecated inline case</span><span class="named-paragraph-number">3.2.2.1</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">uo</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">expansion</span><span class="plain-syntax"> = </span><span class="identifier-syntax">OP</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">UO</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::new</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">UO</span><span class="plain-syntax">, </span><span class="string-syntax">"%W"</span><span class="plain-syntax">, </span><span class="identifier-syntax">Wordings::from</span><span class="plain-syntax">(</span><span class="identifier-syntax">OP</span><span class="plain-syntax">, </span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">OP</span><span class="plain-syntax">) + </span><span class="constant-syntax">1</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">RTUseOptions::check_deprecated_definition</span><span class="plain-syntax">(</span><span class="identifier-syntax">UO</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(),</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_UONotationWithdrawn</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::quote_stream</span><span class="plain-syntax">(2, </span><span class="identifier-syntax">UO</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"In %1, you set up a use option, but you use the deprecated notation "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"'(- %2 -)' to say what to do if this option is set. For now, that "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"still works if a simple form is used, such as '(- Constant X; -)' or "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"'(- Constant Y = {N}; -)' or even '(- Constant Z = 2*{N}; -)', but the "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"ability to write arbitrary Inform 6-syntax code here has been withdrawn."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    }</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="3-nuor.html#SP3_2_2">&#167;3.2.2</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3_2_3" class="paragraph-anchor"></a><b>&#167;3.2.3.  </b>The ambiguity alluded to here is with Inform 6 ICL settings: see below.
 </p>
 
@@ -290,7 +318,7 @@ OP match the following:
 <span class="plain-syntax">            </span><span class="string-syntax">"so it cannot be 'at least' some minimum number."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-nuor.html#SP3_2">&#167;3.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_2_2_1" class="paragraph-anchor"></a><b>&#167;3.2.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">See if this option sets a value to some specified number M</span><span class="named-paragraph-number">3.2.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_2_2_2" class="paragraph-anchor"></a><b>&#167;3.2.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">See if this option sets a value to some specified number M</span><span class="named-paragraph-number">3.2.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -312,7 +340,7 @@ OP match the following:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-nuor.html#SP3_2_2">&#167;3.2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_2_2_2" class="paragraph-anchor"></a><b>&#167;3.2.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make sure the flag or value name is valid</span><span class="named-paragraph-number">3.2.2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_2_2_3" class="paragraph-anchor"></a><b>&#167;3.2.2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make sure the flag or value name is valid</span><span class="named-paragraph-number">3.2.2.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -346,7 +374,7 @@ OP match the following:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-nuor.html#SP3_2_2">&#167;3.2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_2_2_3" class="paragraph-anchor"></a><b>&#167;3.2.2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make sure the kit name is valid</span><span class="named-paragraph-number">3.2.2.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_2_2_4" class="paragraph-anchor"></a><b>&#167;3.2.2.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make sure the kit name is valid</span><span class="named-paragraph-number">3.2.2.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

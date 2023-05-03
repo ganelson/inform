@@ -12,7 +12,6 @@ void SynopticUseOptions::compile(inter_tree *I, pipeline_step *step, tree_invent
 	@<Define TESTUSEOPTION function@>;
 	@<Define PRINT_USE_OPTION function@>;
 	@<Define USE_OPTION_VALUES array@>;
-	@<Define USE_OPTION_CHOSEN array@>;
 }
 
 @ Each use option package contains a numeric constant with the symbol name
@@ -99,18 +98,6 @@ name of a given use option.
 	for (int i=0; i<InterNodeList::array_len(inv->use_option_nodes); i++) {
 		inter_package *pack = PackageInstruction::at_this_head(inv->use_option_nodes->list[i].node);
 		inter_ti cv = Metadata::read_numeric(pack, I"^configured_value");
-		Synoptic::numeric_entry(cv);
-	}
-	Synoptic::numeric_entry(0);
-	Synoptic::numeric_entry(0);
-	Synoptic::end_array(I);
-
-@<Define USE_OPTION_CHOSEN array@> =
-	inter_name *iname = HierarchyLocations::iname(I, USE_OPTION_CHOSEN_HL);
-	Synoptic::begin_array(I, step, iname);
-	for (int i=0; i<InterNodeList::array_len(inv->use_option_nodes); i++) {
-		inter_package *pack = PackageInstruction::at_this_head(inv->use_option_nodes->list[i].node);
-		inter_ti cv = Metadata::read_numeric(pack, I"^chosen");
 		Synoptic::numeric_entry(cv);
 	}
 	Synoptic::numeric_entry(0);

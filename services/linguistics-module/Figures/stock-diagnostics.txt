@@ -1,4 +1,4 @@
-adjective: 139 items
+adjective: 137 items
 article: 2 items
 noun: 2385 items
 pronoun: 8 items
@@ -6,10 +6,8 @@ preposition: 274 items
 determiner: 22 items
 verb: 109 items
 verb_form: 388 items
-total in all categories: 3327
+total in all categories: 3325
 
-adjective: 'chosen'
-adjective: 'unchosen'
 adjective: 'even'
 adjective: 'odd'
 adjective: 'positive'

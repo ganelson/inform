@@ -1,0 +1,13 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 13 words long.
+I've also read Basic Inform by Graham Nelson, which is 7899 words long.
+I've also read English Language by Graham Nelson, which is 2330 words long.
+I've also read Standard Rules by Graham Nelson, which is 34398 words long.
+Problem__ PM_UONotationWithdrawn
+  >--> In 'Use crazy paving translates as (- Property crazed; -)' (source text, line 3),
+    you set up a use option, but you use the deprecated notation '(- Property
+    crazed; -)' to say what to do if this option is set. For now, that still
+    works if a simple form is used, such as '(- Constant X; -)' or '(- Constant
+    Y = {N}; -)' or even '(- Constant Z = 2*{N}; -)', but the ability to write
+    arbitrary Inform 6-syntax code here has been withdrawn.
+Inform 7 has finished.
