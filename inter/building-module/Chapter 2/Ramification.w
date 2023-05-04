@@ -1243,7 +1243,7 @@ int Ramification::break_for_statements(inter_schema_node *par, inter_schema_node
 				return FALSE;
 			}
 			inter_schema_token *n = predicates->expression_tokens;
-			inter_schema_token *near = n;
+			inter_schema_token *nearby_token = n;
 			inter_schema_node *code_node = predicates->next_node;
 			int bl = 0, cw = 0;
 			inter_schema_token *from[3], *to[3];
@@ -1272,7 +1272,7 @@ int Ramification::break_for_statements(inter_schema_node *par, inter_schema_node
 			}
 			for (int i=0; i<3; i++) {
 				inter_schema_node *eval_isn =
-					InterSchemas::new_node(isn->parent_schema, EVAL_ISNT, near);
+					InterSchemas::new_node(isn->parent_schema, EVAL_ISNT, nearby_token);
 				if (i == 0) isn->child_node = eval_isn;
 				if (i == 1) isn->child_node->next_node = eval_isn;
 				if (i == 2) {
@@ -1282,7 +1282,7 @@ int Ramification::break_for_statements(inter_schema_node *par, inter_schema_node
 				eval_isn->parent_node = isn;
 
 				inter_schema_node *expr_isn =
-					InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT, near);
+					InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT, nearby_token);
 				eval_isn->child_node = expr_isn;
 				expr_isn->parent_node = eval_isn;
 
