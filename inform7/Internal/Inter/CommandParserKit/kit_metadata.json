@@ -2,7 +2,7 @@
     "is": {
         "type": "kit",
         "title": "CommandParserKit",
-        "version": "10.2.0-beta+6W43"
+        "version": "10.2.0-beta+6W44"
     },
     "needs": [ {
         "need": {
