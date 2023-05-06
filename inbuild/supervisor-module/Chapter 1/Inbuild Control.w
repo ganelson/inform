@@ -216,6 +216,8 @@ the parent to do, using code from Foundation. When the parent finds an option
 it doesn't know about, that will be one of ours, so it should call the following:
 
 =
+int dash_internal_used = FALSE;
+
 void Supervisor::option(int id, int val, text_stream *arg, void *state) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
 	switch (id) {
@@ -225,6 +227,7 @@ void Supervisor::option(int id, int val, text_stream *arg, void *state) {
 		case NEST_CLSW:
 			Supervisor::add_nest(Pathnames::from_text(arg), GENERIC_NEST_TAG); break;
 		case INTERNAL_CLSW:
+			dash_internal_used = TRUE;
 			Supervisor::add_nest(Pathnames::from_text(arg), INTERNAL_NEST_TAG); break;
 		case EXTERNAL_CLSW:
 			Supervisor::add_nest(Pathnames::from_text(arg), EXTERNAL_NEST_TAG); break;
@@ -254,6 +257,10 @@ void Supervisor::option(int id, int val, text_stream *arg, void *state) {
 		case RNG_CLSW: @<Seed the random number generator@>; break;
 		case CASE_CLSW: SourceLinks::set_case(arg); break;
 	}
+}
+
+int Supervisor::dash_internal_was_used(void) {
+	return dash_internal_used;
 }
 
 @ Note that the following has no effect unless the //pipeline// module is part

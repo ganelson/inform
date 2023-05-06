@@ -183,18 +183,27 @@ utility functions in the //supervisor// module, which we call.
 
 @ Preform is the crowning jewel of the |words| module, and parses excerpts of
 natural-language text against a "grammar". The |inform7| executable makes very
-heavy-duty use of Preform, but we use a much coarser grammar, which simply
-breaks down source text into sentences, headings and so on. That grammar is
-stored in a file called |Syntax.preform| inside the installation of Inbuild,
-which is why we need to have worked out |path_to_inbuild| (the pathname at
-which we are installed) already. Once the following is run, Preform is ready
-for use.
+heavy-duty use of Preform, and we can use that too provided we have access to
+the English Preform syntax file stored inside the core Inform distribution,
+that is, in the |-internal| area.
+
+But suppose we can't get that? Well, then we fall back on a much coarser
+grammar, which simply breaks down source text into sentences, headings and so
+on. That grammar is stored in a file called |Syntax.preform| inside the
+installation of Inbuild, which is why we need to have worked out
+|path_to_inbuild| (the pathname at which we are installed) already. Once the
+following is run, Preform is ready for use.
 
 =
 int Main::load_preform(inform_language *L) {
-	pathname *P = Pathnames::down(path_to_inbuild, I"Tangled");
-	filename *S = Filenames::in(P, I"Syntax.preform");
-	return LoadPreform::load(S, NULL);
+	if (Supervisor::dash_internal_was_used()) {
+		filename *F = Filenames::in(Languages::path_to_bundle(L), I"Syntax.preform");
+		return LoadPreform::load(F, L);
+	} else {
+		pathname *P = Pathnames::down(path_to_inbuild, I"Tangled");
+		filename *S = Filenames::in(P, I"Syntax.preform");
+		return LoadPreform::load(S, NULL);
+	}
 }
 
 @h Target list.

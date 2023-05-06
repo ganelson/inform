@@ -75,6 +75,7 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 		if (N > 0) @<Begin report on a damaged extension@>
 		else @<Begin report on a valid extension@>;
 		if (OUT) {
+			Copies::get_source_text(project->as_copy);
 			build_vertex *V = Copies::construct_project_graph(project->as_copy);
 			if (confirmed) @<Make confirmed report@>
 			else @<Make unconfirmed report@>;
@@ -433,7 +434,7 @@ void InbuildReport::show_extensions(OUTPUT_STREAM, build_vertex *V, int scan_cou
 						(*built_in_count)++;
 						if (built_in) {
 							if ((*built_in_count) > 1) WRITE(", ");
-							Copies::write_copy(OUT, C);
+							WRITE("%S v%v", C->edition->work->title, &(C->edition->version));
 						}
 					} else {
 						(*installed_count)++;
