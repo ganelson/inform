@@ -530,7 +530,7 @@ will be required to pass <span class="extract"><span class="extract-syntax">&lt;
 <span class="plain-syntax">            </span><span class="string-syntax">"'X is defined by Inter as Y'."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-tr.html#SP8_2_2">&#167;8.2.2</a> (three times), <a href="3-tr.html#SP8_5">&#167;8.5</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-tr.html#SP8_2_2">&#167;8.2.2</a> (three times), <a href="3-tr.html#SP8_5">&#167;8.5</a>, <a href="3-tr.html#SP8_5_1">&#167;8.5.1</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP8_2_2_2" class="paragraph-anchor"></a><b>&#167;8.2.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Require the defined-by form</span><span class="named-paragraph-number">8.2.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
@@ -618,17 +618,41 @@ will be required to pass <span class="extract"><span class="extract-syntax">&lt;
 <span class="plain-syntax">                    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">i6r</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">                }</span>
 <span class="plain-syntax">            } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(),</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_BadObjectTranslation</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">                    </span><span class="string-syntax">"there is no such object or kind of object"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">                    </span><span class="string-syntax">"so its name will never be translated into an Inter "</span>
-<span class="plain-syntax">                    </span><span class="string-syntax">"identifier in any event."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;k-kind&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">                    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *) </span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                    </span><span class="named-paragraph-container code-font"><a href="3-tr.html#SP8_5_1" class="named-paragraph-link"><span class="named-paragraph">Translate a kind</span><span class="named-paragraph-number">8.5.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">                    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"So W = %W\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(),</span>
+<span class="plain-syntax">                        </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_BadObjectTranslation</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">                        </span><span class="string-syntax">"there is no such object or kind of object"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">                        </span><span class="string-syntax">"so its name will never be translated into an Inter "</span>
+<span class="plain-syntax">                        </span><span class="string-syntax">"identifier in any event."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                }</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tr.html#SP8">&#167;8</a>, <a href="3-tr.html#SP10">&#167;10</a>, <a href="3-tr.html#SP12">&#167;12</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP8_5_1" class="paragraph-anchor"></a><b>&#167;8.5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Translate a kind</span><span class="named-paragraph-number">8.5.1</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-tr.html#SP8_2_2_1" class="named-paragraph-link"><span class="named-paragraph">Require the accessible-to form</span><span class="named-paragraph-number">8.2.2.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">i6r</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">i6r</span><span class="plain-syntax">, </span><span class="string-syntax">"%N"</span><span class="plain-syntax">, </span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">OP</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::get_first_char</span><span class="plain-syntax">(</span><span class="identifier-syntax">i6r</span><span class="plain-syntax">) == </span><span class="character-syntax">'"'</span><span class="plain-syntax">) </span><span class="identifier-syntax">Str::delete_first_character</span><span class="plain-syntax">(</span><span class="identifier-syntax">i6r</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::get_last_char</span><span class="plain-syntax">(</span><span class="identifier-syntax">i6r</span><span class="plain-syntax">) == </span><span class="character-syntax">'"'</span><span class="plain-syntax">) </span><span class="identifier-syntax">Str::delete_last_character</span><span class="plain-syntax">(</span><span class="identifier-syntax">i6r</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RTKindDeclarations::iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">iname</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">InterNames::set_translation</span><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">, </span><span class="identifier-syntax">i6r</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">InterNames::clear_flag</span><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">, </span><span class="identifier-syntax">MAKE_NAME_UNIQUE_ISYMF</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Hierarchy::make_available</span><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">i6r</span><span class="plain-syntax">)</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="3-tr.html#SP8_5">&#167;8.5</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="3-pr.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-am.html">1</a></li><li class="progresschapter"><a href="2-bv.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresssection"><a href="3-dlr.html">dlr</a></li><li class="progresssection"><a href="3-pr.html">pr</a></li><li class="progresscurrent">tr</li><li class="progresssection"><a href="3-nuor.html">nuor</a></li><li class="progresssection"><a href="3-uor.html">uor</a></li><li class="progresssection"><a href="3-tr2.html">tr2</a></li><li class="progresssection"><a href="3-dbtr.html">dbtr</a></li><li class="progresssection"><a href="3-rpr.html">rpr</a></li><li class="progresssection"><a href="3-nar.html">nar</a></li><li class="progresssection"><a href="3-nlpr.html">nlpr</a></li><li class="progresssection"><a href="3-nrr.html">nrr</a></li><li class="progresssection"><a href="3-npr.html">npr</a></li><li class="progresssection"><a href="3-nvr.html">nvr</a></li><li class="progresssection"><a href="3-nar2.html">nar2</a></li><li class="progresssection"><a href="3-ir.html">ir</a></li><li class="progresschapter"><a href="4-nr.html">4</a></li><li class="progresschapter"><a href="5-id.html">5</a></li><li class="progresschapter"><a href="6-rls.html">6</a></li><li class="progresschapter"><a href="7-tc.html">7</a></li><li class="progresschapter"><a href="8-kpr.html">8</a></li><li class="progressnext"><a href="3-nuor.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

@@ -2218,6 +2218,10 @@ inter_name *Hierarchy::derive_iname_in(int id, inter_name *from, package_request
 	return HierarchyLocations::derive_iname_in(Emit::tree(), id, from, P);
 }
 
+inter_name *Hierarchy::derive_iname_in_translating(int id, inter_name *from, package_request *P) {
+	return HierarchyLocations::derive_iname_in_translating(Emit::tree(), id, from, P);
+}
+
 @ For the handful of names with "imposed translation", where the caller has to
 supply the translated name, the following should be used:
 

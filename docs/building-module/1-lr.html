@@ -60,7 +60,7 @@ function togglePopup(material_id) {
 <p class="purpose">A way to express rules for the permitted places where inames and packages are allowed to appear in the Inter hierarchy.</p>
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>As seen in <a href="1-hl.html" class="internal">Hierarchy Locations</a>, each <a href="1-hl.html#SP1" class="internal">hierarchy_location</a> and
-<a href="1-hl.html#SP16" class="internal">hierarchy_attachment_point</a> stipulates something about where its resource
+<a href="1-hl.html#SP17" class="internal">hierarchy_attachment_point</a> stipulates something about where its resource
 (an iname, a package) can aopear in the hierarchy. For example, that might be
 "only in <span class="extract"><span class="extract-syntax">/main/ingredients</span></span>", or "only in a package of type <span class="extract"><span class="extract-syntax">_recipe</span></span>".
 </p>
@@ -134,7 +134,7 @@ for what this means.)
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">location_requirement</span><span class="plain-syntax"> </span><span class="function-syntax">LocationRequirements::plug</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">LocationRequirements::plug</span></span>:<br/>Hierarchy Locations - <a href="1-hl.html#SP20">&#167;20</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">location_requirement</span><span class="plain-syntax"> </span><span class="function-syntax">LocationRequirements::plug</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">LocationRequirements::plug</span></span>:<br/>Hierarchy Locations - <a href="1-hl.html#SP21">&#167;21</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">location_requirement</span><span class="plain-syntax"> </span><span class="identifier-syntax">req</span><span class="plain-syntax"> = </span><a href="1-lr.html#SP1" class="function-link"><span class="function-syntax">LocationRequirements::blank</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">req</span><span class="plain-syntax">.</span><span class="element-syntax">must_be_plug</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">req</span><span class="plain-syntax">;</span>

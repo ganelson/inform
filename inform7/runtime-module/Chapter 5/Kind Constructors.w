@@ -120,7 +120,7 @@ inter_name *RTKindConstructors::first_instance_iname(kind *K) {
 	kind_constructor *kc = Kinds::get_construct(K);
 	if (kc->compilation_data.first_instance_iname == NULL)
 		kc->compilation_data.first_instance_iname =
-			Hierarchy::derive_iname_in(FIRST_INSTANCE_HL,
+			Hierarchy::derive_iname_in_translating(FIRST_INSTANCE_HL,
 				RTKindDeclarations::iname(K), RTKindConstructors::package(kc));
 	return kc->compilation_data.first_instance_iname;
 }
@@ -129,7 +129,7 @@ inter_name *RTKindConstructors::next_instance_iname(kind *K) {
 	kind_constructor *kc = Kinds::get_construct(K);
 	if (kc->compilation_data.next_instance_iname == NULL)
 		kc->compilation_data.next_instance_iname =
-			Hierarchy::derive_iname_in(NEXT_INSTANCE_HL,
+			Hierarchy::derive_iname_in_translating(NEXT_INSTANCE_HL,
 				RTKindDeclarations::iname(K), RTKindConstructors::package(kc));
 	return kc->compilation_data.next_instance_iname;
 }
@@ -152,7 +152,7 @@ inter_name *RTKindConstructors::instance_count_iname(kind *K) {
 		}
 		if (hl == -1)
 			kc->compilation_data.instance_count_iname =
-				Hierarchy::derive_iname_in(COUNT_INSTANCE_HL, RTKindDeclarations::iname(K),
+				Hierarchy::derive_iname_in_translating(COUNT_INSTANCE_HL, RTKindDeclarations::iname(K),
 					RTKindConstructors::kind_package(K));
 		else
 			kc->compilation_data.instance_count_iname =
