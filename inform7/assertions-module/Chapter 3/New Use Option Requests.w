@@ -328,11 +328,64 @@ void NewUseOptions::set(parsed_use_option_setting *puos) {
 	CompilationSettings::set(uo->notable_option_code, puos->value, from);
 }
 
-@ We can also meddle with the I6 memory settings which will be used to finish
-compiling the story file. We need this because we have no practical way to
-predict when our code will break I6's limits: the only reasonable way it can
-work is for the user to hit the limit occasionally, and then raise that limit
-by hand with a sentence in the source text.
+@ Target pragma settings arise from sentences like
+
+>> Use Ada compiler option "!check-boundaries".
+
+which tell Inform that the Inter it produces should be marked so that any
+hypothetical translation of that code to Ada could (if the translation code
+chose to) take notice of the option set. We know nothing of the possible
+languages or their options: ours just to pass on the news.
+
+=
+typedef struct target_pragma_setting {
+	struct text_stream *target;
+	struct text_stream *content;
+	CLASS_DEFINITION
+} target_pragma_setting;
+
+@ We handle the case of Inform 6 ICL memory limit settings specially:
+|$MAX_WHATEVER=200| must be able to raise the numerical value to the largest
+set, if multiple sentences set |$MAX_WHATEVER|.
+
+=
+void NewUseOptions::pragma_setting(parsed_use_option_setting *puos) {
+	TEMPORARY_TEXT(target)
+	LOOP_THROUGH_TEXT(pos, puos->language_for_pragma)
+		if (Characters::is_whitespace(Str::get(pos)) == FALSE)
+			PUT_TO(target, Str::get(pos));
+	if (Str::eq_insensitive(target, I"Inform6")) {
+		match_results mr = Regexp::create_mr();
+		if (Regexp::match(&mr, puos->content_of_pragma, L" *$(%C+)=(%d+);* *")) {
+			int val = Str::atoi(mr.exp[1], 0);
+			NewUseOptions::memory_setting(mr.exp[0], val);
+		} else {
+			@<Stash the PUOS for later@>;
+		}
+		Regexp::dispose_of(&mr);
+	} else {
+		@<Stash the PUOS for later@>;
+	}
+	DISCARD_TEXT(target)
+}
+
+@ There are far too few of these to worry about a quadratic running time here.
+
+@<Stash the PUOS for later@> =
+	int already_done = FALSE;
+	target_pragma_setting *tps;
+	LOOP_OVER(tps, target_pragma_setting)
+		if ((Str::eq_insensitive(tps->target, target)) &&
+			(Str::eq(tps->content, puos->content_of_pragma)))
+			already_done = TRUE;
+	if (already_done == FALSE) {
+		tps = CREATE(target_pragma_setting);
+		tps->target = Str::duplicate(target);
+		tps->content = Str::duplicate(puos->content_of_pragma);
+	}
+
+@ So this is the special case for Inform 6 memory settings. (Well, that's what
+they mostly are.)
 
 =
 typedef struct i6_memory_setting {
@@ -343,6 +396,14 @@ typedef struct i6_memory_setting {
 
 @ =
 void NewUseOptions::memory_setting(text_stream *identifier, int n) {
+	LOOP_THROUGH_TEXT(pos, identifier)
+		Str::put(pos, Characters::toupper(Str::get(pos)));
+	if (Str::len(identifier) > 63) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_BadICLIdentifier),
+			"that is too long to be an ICL identifier",
+			"so can't be the name of any I6 memory setting.");
+	}
 	i6_memory_setting *ms;
 	LOOP_OVER(ms, i6_memory_setting)
 		if (Str::eq(identifier, ms->ICL_identifier)) {

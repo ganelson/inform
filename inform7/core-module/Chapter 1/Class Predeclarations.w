@@ -50,6 +50,7 @@ DECLARE_CLASS(compile_task_data)
 @e table_CLASS
 @e table_column_CLASS
 @e table_contribution_CLASS
+@e target_pragma_setting_CLASS
 @e to_family_data_CLASS
 @e use_option_CLASS
 
@@ -84,6 +85,7 @@ DECLARE_CLASS(source_text_intervention)
 DECLARE_CLASS(table_column)
 DECLARE_CLASS(table)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(table_contribution, 100)
+DECLARE_CLASS(target_pragma_setting)
 DECLARE_CLASS(to_family_data)
 DECLARE_CLASS(use_option)
 

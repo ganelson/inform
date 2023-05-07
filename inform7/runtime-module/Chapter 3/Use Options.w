@@ -183,7 +183,9 @@ Note that not every VM allows |MAX_LOCAL_VARIABLES| to be raised; if the current
 one doesn't, that's not an error; it's just a pragma we suppress.
 
 @<Compile pragmas from use options which set these@> =
-	Emit::pragma(I"-s");
+	target_pragma_setting *tps;
+	LOOP_OVER(tps, target_pragma_setting)
+		Emit::pragma(tps->target, tps->content);
 	i6_memory_setting *ms;
 	LOOP_OVER(ms, i6_memory_setting) {
 		if ((Str::eq(ms->ICL_identifier, I"MAX_LOCAL_VARIABLES")) &&
@@ -191,10 +193,10 @@ one doesn't, that's not an error; it's just a pragma we suppress.
 			continue;
 		TEMPORARY_TEXT(prag)
 		WRITE_TO(prag, "$%S=%d", ms->ICL_identifier, ms->number);
-		Emit::pragma(prag);
+		Emit::pragma(I"Inform6", prag);
 		DISCARD_TEXT(prag)
 	}
-
+	
 @ A few kit configuration values cannot be set with use options, and are
 hard-wired into the compiler:
 

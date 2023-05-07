@@ -16,7 +16,7 @@
         (@1)<s-literal-truth-state>=1 
           (hits 78/702) (matched: 'false') constraint CS = {17} extremes [1, 1]
         <s-literal-list>=1 
-          (hits 0/1638) constraint DS = {19} extremes [2, infinity)
+          (hits 0/1664) constraint DS = {19} extremes [2, infinity)
         (@1)unicode <s-unicode-character>=1 
           (hits 0/3307) constraint DS = {23} extremes [2, infinity)
         <s-literal-time>=1 

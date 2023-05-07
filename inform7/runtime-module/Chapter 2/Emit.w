@@ -118,13 +118,13 @@ void Emit::kind(inter_name *iname, inter_name *super,
 @h Pragmas.
 The Inter language allows pragmas, or code-generation hints, to be passed
 through. These are specific to the target of compilation, and can be ignored
-by all other targets. Here we generate only I6-target pragmas, which are commands
-in I6's "Inform Control Language".
+by all other targets.
 
 =
-void Emit::pragma(text_stream *text) {
+void Emit::pragma(text_stream *target, text_stream *text) {
 	inter_tree *I = Emit::tree();
-	LargeScale::emit_pragma(I, I"Inform6", text);
+	LargeScale::emit_pragma(I, target, text);
+	LOGIF(USE_OPTIONS, "Pragma set for target '%S': '%S'\n", target, text);
 }
 
 @h Constants.

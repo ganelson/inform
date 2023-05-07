@@ -49,8 +49,21 @@ typedef struct parsed_use_option_setting {
 	struct parse_node *made_at;
 	int at_least;
 	int value;
+	struct text_stream *language_for_pragma;
+	struct text_stream *content_of_pragma;
 	CLASS_DEFINITION
 } parsed_use_option_setting;
+
+parsed_use_option_setting *UseOptions::new_puos(wording W) {
+	parsed_use_option_setting *puos = CREATE(parsed_use_option_setting);
+	puos->textual_option = W;
+	puos->resolved_option = NULL;
+	puos->at_least = NOT_APPLICABLE;
+	puos->value = -1;
+	puos->language_for_pragma = NULL;
+	puos->content_of_pragma = NULL;
+	return puos;
+}
 
 parsed_use_option_setting *UseOptions::parse_setting(wording W) {
 	<use-setting>(W);
@@ -72,6 +85,7 @@ option name is taken from the |...| or |###| as appropriate:
 	... language index                             ==> { TRUE, - }
 
 <use-memory-setting> ::=
+	... compiler option {<quoted-text>} |          ==> @<Make a compiler option@>
 	### of <cardinal-number-unlimited>             ==> @<Make an exact setting@>
 
 <use-setting> ::=
@@ -81,11 +95,7 @@ option name is taken from the |...| or |###| as appropriate:
 	...                                            ==> @<Make a non-setting@>
 
 @<Make a non-setting@> =
-	parsed_use_option_setting *puos = CREATE(parsed_use_option_setting);
-	puos->textual_option = GET_RW(<use-setting>, 1);
-	puos->resolved_option = NULL;
-	puos->at_least = NOT_APPLICABLE;
-	puos->value = -1;
+	parsed_use_option_setting *puos = UseOptions::new_puos(GET_RW(<use-setting>, 1));
 	==> { -1, puos }
 
 @<Make an at-least setting@> =
@@ -97,18 +107,27 @@ option name is taken from the |...| or |###| as appropriate:
 			"since it describes a quantity which must be 0 or more");
 		val = 0;
 	}
-	parsed_use_option_setting *puos = CREATE(parsed_use_option_setting);
-	puos->textual_option = GET_RW(<use-setting>, 1);
-	puos->resolved_option = NULL;
+	parsed_use_option_setting *puos = UseOptions::new_puos(GET_RW(<use-setting>, 1));
 	puos->at_least = TRUE;
 	puos->value = val;
 	==> { val, puos }
 
+@<Make a compiler option@> =
+	int val = R[1];
+	parsed_use_option_setting *puos = UseOptions::new_puos(EMPTY_WORDING);
+	puos->at_least = FALSE;
+	puos->value = val;
+	puos->language_for_pragma = Str::new();
+	WRITE_TO(puos->language_for_pragma, "%+W", GET_RW(<use-memory-setting>, 1));
+	puos->content_of_pragma = Str::new();
+	WRITE_TO(puos->content_of_pragma, "%+W", GET_RW(<use-memory-setting>, 2));
+	Str::delete_first_character(puos->content_of_pragma);
+	Str::delete_last_character(puos->content_of_pragma);
+	==> { -1, puos }
+
 @<Make an exact setting@> =
 	int val = R[1];
-	parsed_use_option_setting *puos = CREATE(parsed_use_option_setting);
-	puos->textual_option = GET_RW(<use-setting>, 1);
-	puos->resolved_option = NULL;
+	parsed_use_option_setting *puos = UseOptions::new_puos(GET_RW(<use-setting>, 1));
 	puos->at_least = FALSE;
 	puos->value = val;
 	==> { val, puos }
@@ -156,19 +175,16 @@ since the compiler next down the chain may no longer be I6.
 See //runtime: Use Options// for what happens to these.
 
 @<Set a memory setting@> =
-	int n = <<r>>, w1 = Wordings::first_wn(S);
-	TEMPORARY_TEXT(icl_identifier)
-	WRITE_TO(icl_identifier, "%+W", Wordings::one_word(w1));
-	LOOP_THROUGH_TEXT(pos, icl_identifier)
-		Str::put(pos, Characters::toupper(Str::get(pos)));
-	if (Str::len(icl_identifier) > 63) {
-		StandardProblems::sentence_problem(Task::syntax_tree(),
-			_p_(PM_BadICLIdentifier),
-			"that is too long to be an ICL identifier",
-			"so can't be the name of any I6 memory setting.");
+	parsed_use_option_setting *puos = (parsed_use_option_setting *) <<rp>>;
+	if (Str::len(puos->language_for_pragma) > 0) {
+		NewUseOptions::pragma_setting(puos);
+	} else {
+		int n = <<r>>, w1 = Wordings::first_wn(S);
+		TEMPORARY_TEXT(icl_identifier)
+		WRITE_TO(icl_identifier, "%+W", Wordings::one_word(w1));
+		NewUseOptions::memory_setting(icl_identifier, n);
+		DISCARD_TEXT(icl_identifier)
 	}
-	NewUseOptions::memory_setting(icl_identifier, n);
-	DISCARD_TEXT(icl_identifier)
 
 @ Whereas this is the standard use option syntax:
 

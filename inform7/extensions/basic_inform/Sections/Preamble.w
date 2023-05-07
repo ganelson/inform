@@ -171,7 +171,7 @@ the highest |MAX_VERBS| setting we can safely make here.
 The |MAX_LOCAL_VARIABLES| setting is suppressed by I7 if we're compiling
 to the Z-machine, because it's only legal in I6 when compiling to Glulx.
 
-Note that these settings are unnecessary (and do nothing) if the version of
+Most of these settings are unnecessary (and do nothing) if the version of
 the I6 compiler eventually used to compile this code is 6.36 or better: in
 modern times, the I6 compiler flexibly manages memory so that it doesn't have
 these maxima. If that's the case, these lines are simply ignored. For the 
@@ -179,18 +179,19 @@ moment, they remain here just in case somebody is still using an early I6
 compiler for some reason.
 
 =
-Use ALLOC_CHUNK_SIZE of 32000.
-Use MAX_ARRAYS of 10000.
-Use MAX_CLASSES of 200.
-Use MAX_VERBS of 255.
-Use MAX_LABELS of 10000.
-Use MAX_ZCODE_SIZE of 1000000.
-Use MAX_STATIC_DATA of 500000.
-Use MAX_NUM_STATIC_STRINGS of 500000.
-Use MAX_PROP_TABLE_SIZE of 200000.
-Use MAX_INDIV_PROP_TABLE_SIZE of 20000.
-Use MAX_STACK_SIZE of 65536.
-Use MAX_SYMBOLS of 20000.
-Use MAX_EXPRESSION_NODES of 256.
-Use MAX_LABELS of 200000.
-Use MAX_LOCAL_VARIABLES of 256.
+Use Inform 6 compiler option "-s".
+Use Inform 6 compiler option "$ALLOC_CHUNK_SIZE=32000".
+Use Inform 6 compiler option "$MAX_ARRAYS=10000".
+Use Inform 6 compiler option "$MAX_CLASSES=200".
+Use Inform 6 compiler option "$MAX_VERBS=255".
+Use Inform 6 compiler option "$MAX_LABELS=10000".
+Use Inform 6 compiler option "$MAX_ZCODE_SIZE=1000000".
+Use Inform 6 compiler option "$MAX_STATIC_DATA=500000".
+Use Inform 6 compiler option "$MAX_NUM_STATIC_STRINGS=500000".
+Use Inform 6 compiler option "$MAX_PROP_TABLE_SIZE=200000".
+Use Inform 6 compiler option "$MAX_INDIV_PROP_TABLE_SIZE=20000".
+Use Inform 6 compiler option "$MAX_STACK_SIZE=65536".
+Use Inform 6 compiler option "$MAX_SYMBOLS=20000".
+Use Inform 6 compiler option "$MAX_EXPRESSION_NODES=256".
+Use Inform 6 compiler option "$MAX_LABELS=200000".
+Use Inform 6 compiler option "$MAX_LOCAL_VARIABLES=256".
