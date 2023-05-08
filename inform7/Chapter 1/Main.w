@@ -36,7 +36,9 @@ int Main::deputy(int argc, char *argv[]) {
 	int proceed = Main::read_command_line(argc, argv);
 	PluginCalls::start();
 	if (proceed) {
-		if (silence_is_golden == FALSE)
+		if (silence_is_golden)
+			ProgressBar::enable_or_disable(FALSE); /* disable */
+		else
 			PRINT("Inform 7 v[[Version Number]] has started.\n", FALSE, TRUE);
 		inform_project *proj = NULL;
 		@<Find the project identified for us by Inbuild@>;
