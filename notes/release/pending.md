@@ -24,10 +24,13 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 
 ## Bug fixes
 
+- Fix for Jira bug [I7-2344](https://inform7.atlassian.net/browse/I7-2344)
+	"inform7's -silence flag should imply -no-progress"
+	([commit 687dba6](https://github.com/ganelson/inform/commit/687dba6857983420a76559cfed292cde0a2891fb))
 - Fix for Jira bug [I7-2341](https://inform7.atlassian.net/browse/I7-2341)
 	"You can `use dict_word_size of 12` and I7's ok with it, but then passes it
 	on to I6 in lower case"
-	([commit ](https://github.com/ganelson/inform/commit/))
+	([commit a011ec6](https://github.com/ganelson/inform/commit/a011ec67b900bf13d89ab73a46dc519b58c69906))
 - Fix for Jira bug [I7-2335](https://inform7.atlassian.net/browse/I7-2335)
 	"Several previously-legal forms of the Array directive no longer work in I6 inclusions in 10.1.2"
 	([commit 4d97b49](https://github.com/ganelson/inform/commit/4d97b499cfd3e15650d1bba1e6e8c70c24a01fb2))
