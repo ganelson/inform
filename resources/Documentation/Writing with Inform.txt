@@ -8042,7 +8042,7 @@ which might be, say, "chalk". It's a run-time problem to use this if no such X e
 
 Of course, there might be many answers to this question, so perhaps these are neater:
 
-{defn ph_leftlookuplist}list of (name of kind) that/which/who relate to (value) by (relation of values to values) ... value
+{defn ph_leftlookuplist}list of (name of kind) that/which/who relate to (value) by (relation of values to values) ... list of values
 This phrase produces a list of all the X such that X relates to the given value V by the given relation. Example: suppose partnership relates various texts to various texts. Then we can obtain
 
 	list of texts which relate to "cheese" by the partnership relation
@@ -8050,7 +8050,7 @@ This phrase produces a list of all the X such that X relates to the given value 
 which might be, say, { "chalk", "grapes", "macaroni" }. The answer might be the empty set, but that's not a problem.
 {end}
 
-{defn ph_rightlookuplist}list of (name of kind) to which/whom (value) relates by (relation of values to values) ... value & list of (name of kind) that/which/whom (value) relates to by (relation of values to values) ... value
+{defn ph_rightlookuplist}list of (name of kind) to which/whom (value) relates by (relation of values to values) ... value & list of (name of kind) that/which/whom (value) relates to by (relation of values to values) ... list of values
 This phrase produces a list of all Y such that the given value V relates to Y by the given relation. Example: suppose partnership relates various texts to various texts. Then we can obtain
 
 	list of texts to which "chalk" relates by the partnership relation
@@ -8060,13 +8060,13 @@ which might be, say, { "cheese", "blackboard", "cliffs" }. The answer might be t
 
 Finally, it's sometimes useful to get at the list of all values which can appear on the left or right hand side of a relation. We need tongue-twister like wording to do it, but:
 
-{defn ph_leftdomain}list of (name of kind) that/which/whom (relation of values to values) relates ... value
+{defn ph_leftdomain}list of (name of kind) that/which/whom (relation of values to values) relates ... list of values
 This phrase produces a list of all X which relate to anything under the given relation. Example: suppose partnership relates various texts to various texts. Then we can obtain
 
 	list of texts which the partnership relation relates
 {end}
 
-{defn ph_rightdomain}list of (name of kind) to which/whom (relation of values to values) relates ... value & list of (name of kind) that/which/whom (relation of values to values) relates to ... value
+{defn ph_rightdomain}list of (name of kind) to which/whom (relation of values to values) relates ... value & list of (name of kind) that/which/whom (relation of values to values) relates to ... list of values
 This phrase produces a list of all Y which anything relates to under the given relation. Example: suppose partnership relates various texts to various texts. Then we can obtain
 
 	list of texts which the partnership relation relates to
@@ -14641,7 +14641,7 @@ Lists can be made of values of any kind (including other lists), but lists of ob
 
 But it is usually easier and clearer to use descriptions.
 
-{defn ph_listofdesc}list of (description of values) ... value
+{defn ph_listofdesc}list of (description of values) ... list of values
 This phrase produces the list of all values matching the given description. Inform will issue a problem message if the result would be an infinite list, or one which is impractical to test: for instance "list of even numbers" is not feasible.
 {end}
 
@@ -15313,7 +15313,7 @@ When a mass of computations has to be done, the traditional approach is to work 
 
 Inform provides all three of these fundamental list-processing operations. There is no special term for a "map", because Inform treats it as another case of "applied to".
 
-{defn ph_appliedlist}(phrase value -> value) applied to (list of values) ... value
+{defn ph_appliedlist}(phrase value -> value) applied to (list of values) ... list of values
 This phrase takes the list, applies the phrase to each entry in the list, and forms a new list of the result. Example:
 
 	To decide what number is double (N - a number) (this is doubling):
@@ -15345,7 +15345,7 @@ to produce the value {"sx", "sxtn", "ght", "thrty-ght", "frtn"}.
 
 Next, filtering. Here we make use of descriptions, in order to say what values will be allowed through the filter. So:
 
-{defn ph_filter}filter to (description of values) of (list of values) ... value
+{defn ph_filter}filter to (description of values) of (list of values) ... list of values
 This phrase produces a new list which is a thinner version of the one given, so that it contains only those values which match the description given. Example:
 
 	filter to even numbers of {3, 8, 4, 19, 7}
