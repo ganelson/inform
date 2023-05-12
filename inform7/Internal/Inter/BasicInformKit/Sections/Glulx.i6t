@@ -1606,6 +1606,9 @@ not overflow. (However, the return value is the total length of the output,
 including discarded characters.) The character set stored here is ZSCII,
 not Unicode.
 
+|Glulx_PrintAnyToArrayUni| does the same again, but the output is sent to a
+word array in memory. The stored characters are Unicode code points.
+
 |Glulx_ChangeAnyToCString| calls |Glulx_PrintAnyToArray| on a particular
 array, then amends the result to make it a C-style string -- that is, a
 sequence of byte-sized characters which are null terminated. The character
@@ -1668,6 +1671,28 @@ set stored here is once again ZSCII, not Unicode.
 
     oldstr = glk_stream_get_current();
     str = glk_stream_open_memory(arr, arrlen, 1, 0);
+    if (str == 0) return 0;
+
+    glk_stream_set_current(str);
+
+    @call Glulx_PrintAnything _vararg_count 0;
+
+    glk_stream_set_current(oldstr);
+    @copy $ffffffff sp;
+    @copy str sp;
+    @glk $0044 2 0; ! stream_close
+    @copy sp len;
+    @copy sp 0;
+    return len;
+];
+
+[ Glulx_PrintAnyToArrayUni _vararg_count arr arrlen str oldstr len;
+    @copy sp arr;
+    @copy sp arrlen;
+    _vararg_count = _vararg_count - 2;
+
+    oldstr = glk_stream_get_current();
+    str = glk_stream_open_memory_uni(arr, arrlen, 1, 0);
     if (str == 0) return 0;
 
     glk_stream_set_current(str);
