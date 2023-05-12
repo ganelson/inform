@@ -165,8 +165,10 @@ upwards from 1 to |WordCount()|. The following utility routines provide
 access to words in the current command; because buffers have different
 definitions in Z and Glulx, so these routines must vary also.
 
-The actual text of each word is stored as a sequence of ZSCII values in
-a |->| (byte) array, with address |WordAddress(x)| and length |WordLength(x)|.
+In Z, the actual text of each word is stored as a sequence of ZSCII values in
+a |->| (byte) array. In G, the text is a sequence of Unicode code counts in
+a |-->| (word) array. In either case, the array has address |WordAddress(x)|
+and character length |WordLength(x)|.
 
 We picture the command as a stream of words to be read one at a time, with
 the global variable |wn| being the "current word" marker. |NextWord|, which
@@ -191,7 +193,7 @@ The current word marker |wn| is always advanced.
 [ WordLength wordnum; return parse->(wordnum*4); ];
 #Ifnot;
 [ WordCount; return parse-->0; ];
-[ WordAddress wordnum; return buffer + parse-->(wordnum*3); ];
+[ WordAddress wordnum; return buffer + WORDSIZE * parse-->(wordnum*3); ];
 [ WordLength wordnum; return parse-->(wordnum*3 - 1); ];
 #Endif;
 
@@ -242,8 +244,12 @@ $$ C = 100 + N $$
 		if ((w1 == 1) && (w2 == 0)) rfalse;
 		return RunTimeProblem(RTP_SAYINVALIDSNIPPET, w1, w2);
 	}
-	from = WordAddress(w1); to = WordAddress(w2) + WordLength(w2) - 1;
+	from = WordAddress(w1); to = WordAddress(w2) + WORDSIZE * WordLength(w2);
+	#Ifdef TARGET_ZCODE;
 	for (i=from: i<=to: i++) print (char) i->0;
+	#Ifnot;
+	for (i=from: i<=to: i=i+WORDSIZE) print (char) i-->0;
+	#Endif;
 ];
 
 [ SpliceSnippet snip t i w1 w2 nextw at endsnippet newlen saved;
@@ -254,14 +260,24 @@ $$ C = 100 + N $$
 	}
 	@push say__p; @push say__pc;
 	nextw = w2 + 1;
+	#Ifdef TARGET_ZCODE;
 	at = WordAddress(w1) - buffer;
+	#ifnot;
+	at = (WordAddress(w1) - buffer) / WORDSIZE;
+	#endif;
 	if (nextw <= WordCount()) endsnippet = 100*nextw + (WordCount() - nextw + 1);
 	saved = buffer2-->0;
-	buffer2-->0 = 120;
-	newlen = VM_PrintToBuffer(buffer2, 120, SpliceSnippet__TextPrinter, t, endsnippet);
-	for (i=0: (i<newlen) && (at+i<120): i++) buffer->(at+i) = buffer2->(WORDSIZE+i);
-	#Ifdef TARGET_ZCODE; buffer->1 = at+i; #ifnot; buffer-->0 = at+i; #endif;
-	for (:at+i<120:i++) buffer->(at+i) = ' ';
+	buffer2-->0 = INPUT_BUFFER_LEN;
+	newlen = VM_PrintToBuffer(buffer2, INPUT_BUFFER_LEN, SpliceSnippet__TextPrinter, t, endsnippet);
+	#Ifdef TARGET_ZCODE;
+	for (i=0: (i<newlen) && (at+i<INPUT_BUFFER_LEN): i++) buffer->(at+i) = buffer2->(WORDSIZE+i);
+	buffer->1 = at+i;
+	for (:at+i<INPUT_BUFFER_LEN:i++) buffer->(at+i) = ' ';
+	#ifnot;
+	for (i=0: (i<newlen) && (at+i<INPUT_BUFFER_LEN): i++) buffer-->(at+i) = buffer2-->(WORDSIZE+i);
+	buffer-->0 = at+i;
+	for (:at+i<INPUT_BUFFER_LEN:i++) buffer-->(at+i) = ' ';
+	#endif;
 	VM_Tokenise(buffer, parse);
 	players_command = 100 + WordCount();
 	buffer2-->0 = saved;
@@ -4153,7 +4169,7 @@ the heap.
 	buffer-->0 = len; at = 4;
 	#endif;
 	for (i=0:i<len:i++) buffer->(i+at) = CharToCase(BlkValueRead(from_txt, i), 0);
-	for (:at+i<120:i++) buffer->(at+i) = ' ';
+	for (:at+i<INPUT_BUFFER_LEN:i++) buffer->(at+i) = ' ';
 	VM_Tokenise(buffer, parse);
 	players_command = 100 + WordCount(); ! The snippet variable "player's command"
 	TEXT_TY_Untransmute(from_txt, p, cp);
