@@ -1375,7 +1375,7 @@ Array gg_lowercasebuf --> LOWERCASE_BUF_SIZE;
 
     dictlen = #dictionary_table-->0;
     bytesperword = DICT_WORD_SIZE * DICT_CHAR_SIZE;
-    uninormavail = glk($0004, 16, 0);
+    uninormavail = glk_gestalt(16, 0);
 
     for (wx=0 : wx<numwords : wx++) {
         wlen = tab-->(wx*3+2);
@@ -1395,7 +1395,7 @@ Array gg_lowercasebuf --> LOWERCASE_BUF_SIZE;
         if (uninormavail) {
             ! Also normalize the Unicode -- combine accent marks with letters
             ! where possible.
-            wlen = glk($0124, gg_lowercasebuf, LOWERCASE_BUF_SIZE, wlen); ! buffer_canon_normalize_uni
+            wlen = glk_buffer_canon_normalize_uni(gg_lowercasebuf, LOWERCASE_BUF_SIZE, wlen); ! buffer_canon_normalize_uni
         }
         if (wlen > DICT_WORD_SIZE) wlen = DICT_WORD_SIZE;
         for (ix=0: ix<wlen : ix++) {
