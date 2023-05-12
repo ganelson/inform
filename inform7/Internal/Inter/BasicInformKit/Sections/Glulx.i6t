@@ -1035,7 +1035,7 @@ light to the Dark Room.")
     InitGlkWindow(1);
 
     ! Empty the parse buffer (see bug 0001451)
-    buffer3-->0 = 0;
+    gbuffer3-->0 = 0;
 ];
 
 [ GGRecoverObjects id;
@@ -1343,10 +1343,14 @@ languages of play, and is not called in the template.
     return buf-->0;
 ];
 
+Constant LOWERCASE_BUF_SIZE = 2*DICT_WORD_SIZE;
+Array gg_lowercasebuf --> LOWERCASE_BUF_SIZE;
+
 [ VM_Tokenise buf tab
     cx numwords len bx ix wx wpos wlen val res dictlen ch bytesperword uninormavail;
     len = buf-->0;
     buf = buf+WORDSIZE;
+    
     ! First, split the buffer up into words. We use the standard Infocom
     ! list of word separators (comma, period, double-quote).
 
@@ -1409,7 +1413,7 @@ languages of play, and is not called in the template.
 
     ! Protect us from strict mode, as this isn't an array in quite the
     ! sense it expects
-    b = buffer;
+    b = gbuffer;
 
     ! Insert character ch into buffer at point i.
     ! Being careful not to let the buffer possibly overflow:
@@ -1417,8 +1421,8 @@ languages of play, and is not called in the template.
     if (y > INPUT_BUFFER_LEN) y = INPUT_BUFFER_LEN;
 
     ! Move the subsequent text along one character:
-    for (y=y+WORDSIZE : y>i : y--) b->y = b->(y-1);
-    b->i = ch;
+    for (y=y+1 : y>i : y--) b-->y = b-->(y-1);
+    b-->i = ch;
 
     ! And the text is now one character longer:
     if (b-->0 < INPUT_BUFFER_LEN) (b-->0)++;
@@ -1449,11 +1453,11 @@ since, on Glulx, they are the same, these are each the identity function.
 [ VM_DictionaryAddressToNumber w; return w; ];
 [ VM_NumberToDictionaryAddress n; return n; ];
 
-Array gg_tokenbuf -> DICT_WORD_SIZE;
+Array gg_tokenbuf --> DICT_WORD_SIZE;
 
 [ GGWordCompare str1 str2 ix jx;
     for (ix=0 : ix<DICT_WORD_SIZE : ix++) {
-        jx = (str1->ix) - (str2->ix);
+        jx = (str1-->ix) - (str2-->ix);
         if (jx ~= 0) return jx;
     }
     return 0;
