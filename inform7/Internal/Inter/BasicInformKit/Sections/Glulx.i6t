@@ -1295,7 +1295,7 @@ to document all of that.
     }
     if (BasicInformKit`ECHO_COMMANDS_CFGF) {
 		print "** ";
-		for (ix=WORDSIZE: ix<(a_buffer-->0)+WORDSIZE: ix++) print (char) a_buffer->ix;
+		for (ix=0: ix<(a_buffer-->0): ix++) print (char) a_buffer-->(1+ix);
 		print "^";
 	}
 ];
@@ -1389,7 +1389,7 @@ Array gg_lowercasebuf --> LOWERCASE_BUF_SIZE;
         cx = wpos - 1;
         for (ix=0 : ix<wlen : ix++) {
             ch = buf-->(cx+ix);
-            gg_lowercasebuf->ix = ch;
+            gg_lowercasebuf-->ix = ch;
         }
         wlen = glk_buffer_to_lower_case_uni(gg_lowercasebuf, LOWERCASE_BUF_SIZE, wlen);
         if (uninormavail) {
@@ -1398,8 +1398,8 @@ Array gg_lowercasebuf --> LOWERCASE_BUF_SIZE;
             wlen = glk($0124, gg_lowercasebuf, LOWERCASE_BUF_SIZE, wlen); ! buffer_canon_normalize_uni
         }
         if (wlen > DICT_WORD_SIZE) wlen = DICT_WORD_SIZE;
-        for (ix=0: ix<DICT_WORD_SIZE : ix++) {
-            gg_tokenbuf->ix = gg_lowercasebuf-->ix;
+        for (ix=0: ix<wlen : ix++) {
+            gg_tokenbuf-->ix = gg_lowercasebuf-->ix;
         }
         for (: ix<DICT_WORD_SIZE : ix++) gg_tokenbuf-->ix = 0;
         
@@ -1413,6 +1413,8 @@ Array gg_lowercasebuf --> LOWERCASE_BUF_SIZE;
 
     ! Protect us from strict mode, as this isn't an array in quite the
     ! sense it expects
+    ! (This is not an issue now that gbuffer is a word array, but I'm
+    ! keeping the alias.)
     b = gbuffer;
 
     ! Insert character ch into buffer at point i.
