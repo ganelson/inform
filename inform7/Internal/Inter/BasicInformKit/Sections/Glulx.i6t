@@ -40,9 +40,9 @@ Constant INPUT_BUFFER_LEN = 260;    ! No extra byte necessary
 Constant MAX_BUFFER_WORDS = 20;
 Constant PARSE_BUFFER_LEN = 61;
 
-Array  gbuffer   --> INPUT_BUFFER_LEN;
-Array  gbuffer2  --> INPUT_BUFFER_LEN;
-Array  gbuffer3  --> INPUT_BUFFER_LEN;
+Array  buffer   --> INPUT_BUFFER_LEN;
+Array  buffer2  --> INPUT_BUFFER_LEN;
+Array  buffer3  --> INPUT_BUFFER_LEN;
 Array  parse     --> PARSE_BUFFER_LEN;
 Array  parse2    --> PARSE_BUFFER_LEN;
 
@@ -1035,7 +1035,7 @@ light to the Dark Room.")
     InitGlkWindow(1);
 
     ! Empty the parse buffer (see bug 0001451)
-    gbuffer3-->0 = 0;
+    buffer3-->0 = 0;
 ];
 
 [ GGRecoverObjects id;
@@ -1413,9 +1413,9 @@ Array gg_lowercasebuf --> LOWERCASE_BUF_SIZE;
 
     ! Protect us from strict mode, as this isn't an array in quite the
     ! sense it expects
-    ! (This is not an issue now that gbuffer is a word array, but I'm
+    ! (This is not an issue now that buffer is a word array, but I'm
     ! keeping the alias.)
-    b = gbuffer;
+    b = buffer;
 
     ! Insert character ch into buffer at point i.
     ! Being careful not to let the buffer possibly overflow:
