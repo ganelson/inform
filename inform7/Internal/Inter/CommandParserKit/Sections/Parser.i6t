@@ -455,11 +455,12 @@ The return value is the number of words typed.
 			! So now we know: there was a previous mistake, and the player has
 			! attempted to correct a single word of it.
 
-			for (i=0 : i<INPUT_BUFFER_LEN : i++) buffer2->i = a_buffer->i;
 			#Ifdef TARGET_ZCODE;
+			for (i=0 : i<INPUT_BUFFER_LEN : i++) buffer2->i = a_buffer->i;
 			x1 = a_table->9;  ! Start of word following "oops"
 			x2 = a_table->8;  ! Length of word following "oops"
 			#Ifnot; ! TARGET_GLULX
+			for (i=0 : i<INPUT_BUFFER_LEN : i++) buffer2-->i = a_buffer-->i;
 			x1 = a_table-->6; ! Start of word following "oops"
 			x2 = a_table-->5; ! Length of word following "oops"
 			#Endif; ! TARGET_
@@ -483,12 +484,21 @@ The return value is the number of words typed.
 			#Endif; ! TARGET_
 
 			! Write spaces over the word to be corrected:
+			#Ifdef TARGET_ZCODE;
 			for (i=0 : i<w2 : i++) a_buffer->(i+w) = ' ';
+			#Ifnot; ! TARGET_GLULX
+			for (i=0 : i<w2 : i++) a_buffer-->(i+w) = ' ';
+			#Endif; ! TARGET_
 
 			if (w2 < x2) {
 				! If the replacement is longer than the original, move up...
+				#Ifdef TARGET_ZCODE;
 				for (i=INPUT_BUFFER_LEN-1 : i>=w+x2 : i--)
 					a_buffer->i = a_buffer->(i-x2+w2);
+				#Ifnot; ! TARGET_GLULX
+				for (i=INPUT_BUFFER_LEN-1 : i>=w+x2 : i--)
+					a_buffer-->i = a_buffer-->(i-x2+w2);
+				#Endif; ! TARGET_
 
 				! ...increasing buffer size accordingly.
 				#Ifdef TARGET_ZCODE;
@@ -499,7 +509,11 @@ The return value is the number of words typed.
 			}
 
 			! Write the correction in:
+			#Ifdef TARGET_ZCODE;
 			for (i=0 : i<x2 : i++) a_buffer->(i+w) = buffer2->(i+x1);
+			#Ifnot; ! TARGET_GLULX
+			for (i=0 : i<x2 : i++) a_buffer-->(i+w) = buffer2-->(i+x1);
+			#Endif; ! TARGET_
 
 			VM_Tokenise(a_buffer, a_table);
 			#Ifdef TARGET_ZCODE; nw = a_table->1; #Ifnot; nw = a_table-->0; #Endif;
