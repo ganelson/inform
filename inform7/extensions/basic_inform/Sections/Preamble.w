@@ -170,6 +170,7 @@ the highest |MAX_VERBS| setting we can safely make here.
 
 The |MAX_LOCAL_VARIABLES| setting is suppressed by I7 if we're compiling
 to the Z-machine, because it's only legal in I6 when compiling to Glulx.
+#### DICT_CHAR_SIZE should be suppressed in the same way.
 
 Most of these settings are unnecessary (and do nothing) if the version of
 the I6 compiler eventually used to compile this code is 6.36 or better: in
@@ -195,3 +196,4 @@ Use Inform 6 compiler option "$MAX_SYMBOLS=20000".
 Use Inform 6 compiler option "$MAX_EXPRESSION_NODES=256".
 Use Inform 6 compiler option "$MAX_LABELS=200000".
 Use Inform 6 compiler option "$MAX_LOCAL_VARIABLES=256".
+Use Inform 6 compiler option "$DICT_CHAR_SIZE=4".
