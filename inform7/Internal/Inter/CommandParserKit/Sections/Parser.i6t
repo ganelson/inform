@@ -4205,14 +4205,16 @@ the heap.
 [ SetPlayersCommand from_txt i len at p cp;
 	cp = from_txt-->0; p = TEXT_TY_Temporarily_Transmute(from_txt);
 	len = TEXT_TY_CharacterLength(from_txt);
-	if (len > 118) len = 118;
+	if (len > INPUT_BUFFER_LEN-2) len = INPUT_BUFFER_LEN-2;
 	#ifdef TARGET_ZCODE;
 	buffer->1 = len; at = 2;
-	#ifnot;
-	buffer-->0 = len; at = 4;
-	#endif;
 	for (i=0:i<len:i++) buffer->(i+at) = CharToCase(BlkValueRead(from_txt, i), 0);
 	for (:at+i<INPUT_BUFFER_LEN:i++) buffer->(at+i) = ' ';
+	#ifnot;
+	buffer-->0 = len; at = 1;
+	for (i=0:i<len:i++) buffer-->(i+at) = CharToCase(BlkValueRead(from_txt, i), 0);
+	for (:at+i<INPUT_BUFFER_LEN:i++) buffer-->(at+i) = ' ';
+	#endif;
 	VM_Tokenise(buffer, parse);
 	players_command = 100 + WordCount(); ! The snippet variable "player's command"
 	TEXT_TY_Untransmute(from_txt, p, cp);
