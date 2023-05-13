@@ -709,7 +709,7 @@ Get the input, do OOPS and AGAIN.
     if (verb_word == AGAIN1__WD) {
         if (actor ~= player) {
             best_etype = ANIMAAGAIN_PE;
-			jump GiveError;
+            jump GiveError;
         }
         #Ifdef TARGET_ZCODE;
         if (buffer3->1 == 0) {
@@ -722,16 +722,25 @@ Get the input, do OOPS and AGAIN.
             jump ReType;
         }
         #Endif; ! TARGET_
+        #Ifdef TARGET_ZCODE;
         for (i=0 : i<INPUT_BUFFER_LEN : i++) buffer->i = buffer3->i;
+        #Ifnot; ! TARGET_GLULX
+        for (i=0 : i<INPUT_BUFFER_LEN : i++) buffer-->i = buffer3-->i;
+        #Endif; ! TARGET_
         VM_Tokenise(buffer,parse);
-		num_words = WordCount(); players_command = 100 + num_words;
-    	jump ReParse;
+        num_words = WordCount(); players_command = 100 + num_words;
+        jump ReParse;
     }
 
     ! Save the present input in case of an "again" next time
 
-    if (verb_word ~= AGAIN1__WD)
+    if (verb_word ~= AGAIN1__WD) {
+        #Ifdef TARGET_ZCODE;
         for (i=0 : i<INPUT_BUFFER_LEN : i++) buffer3->i = buffer->i;
+        #Ifnot; ! TARGET_GLULX
+        for (i=0 : i<INPUT_BUFFER_LEN : i++) buffer3-->i = buffer-->i;
+        #Endif; ! TARGET_
+    }
 
     if (usual_grammar_after == 0) {
         j = verb_wordnum;
