@@ -1374,7 +1374,7 @@ Array gg_lowercasebuf --> LOWERCASE_BUF_SIZE;
     ! Now we look each word up in the dictionary.
 
     dictlen = #dictionary_table-->0;
-    bytesperword = DICT_WORD_SIZE * DICT_CHAR_SIZE;
+    bytesperword = DICT_WORD_SIZE * WORDSIZE;
     uninormavail = glk_gestalt(16, 0);
 
     for (wx=0 : wx<numwords : wx++) {
