@@ -595,7 +595,11 @@ Get the input, do OOPS and AGAIN.
         held_back_mode = false; wn = hb_wn;
         if (verb_wordnum > 0) i = WordAddress(verb_wordnum); else i = WordAddress(1);
         j = WordAddress(wn);
+        #Ifdef TARGET_ZCODE;
         if (i<=j) for (: i<j : i++) i->0 = ' ';
+        #Ifnot; ! TARGET_GLULX
+        if (i<=j) for (: i<j : i=i+WORDSIZE) i-->0 = ' ';
+        #Endif; ! TARGET_
         i = NextWord();
         if (i == AGAIN1__WD or AGAIN2__WD or AGAIN3__WD) {
             ! Delete the words "then again" from the again buffer,
@@ -605,7 +609,11 @@ Get the input, do OOPS and AGAIN.
             i = WordAddress(wn-2)-buffer;
             if (wn > num_words) j = INPUT_BUFFER_LEN-1;
             else j = WordAddress(wn)-buffer;
+            #Ifdef TARGET_ZCODE;
             for (: i<j : i++) buffer3->i = ' ';
+            #Ifnot; ! TARGET_GLULX
+            for (: i<j : i++) buffer3-->i = ' ';
+            #Endif; ! TARGET_
         }
 
         VM_Tokenise(buffer, parse);
