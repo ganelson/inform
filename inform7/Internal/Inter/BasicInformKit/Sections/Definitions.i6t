@@ -88,6 +88,11 @@ Constant ROM_COMPVERSION      = $30;     ! four ASCII characters
 Constant ROM_GAMERELEASE      = $34;     ! short word
 Constant ROM_GAMESERIAL       = $36;     ! six ASCII characters
 
+!#### wrong place to set DICT_WORD_SIZE
+Constant DICT_WORD_SIZE = 9;
+Constant DICT_ENTRY_BYTES = 12+DICT_WORD_SIZE*WORDSIZE;
+
+!#### #dict_parX should depend on DICT_WORD_SIZE
 Constant #dict_par1 = 11;
 Constant #dict_par2 = 13;
 
