@@ -89,7 +89,11 @@ Global cobj_flag = 0;
 
 Global oops_from;                   ! The "first mistake" word number
 Global saved_oops;                  ! Used in working this out
+#Ifdef TARGET_ZCODE;
 Array  oops_workspace -> 64;        ! Used temporarily by "oops" routine
+#Ifnot;
+Array  oops_workspace --> 64;       ! Used temporarily by "oops" routine
+#Endif;
 
 Global held_back_mode;              ! Flag: is there some input from last time
 Global hb_wn;                       ! left over?  (And a save value for wn.)
@@ -405,7 +409,11 @@ The return value is the number of words typed.
 
 	while (true) {
 		! Save the start of the buffer, in case "oops" needs to restore it
+		#Ifdef TARGET_ZCODE;
 		for (i=0 : i<64 : i++) oops_workspace->i = a_buffer->i;
+		#Ifnot;
+		for (i=0 : i<64 : i++) oops_workspace-->i = a_buffer-->i;
+		#Endif;
 
 		! In case of an array entry corruption that shouldn't happen, but would be
 		! disastrous if it did:
@@ -458,7 +466,11 @@ The return value is the number of words typed.
 
 			! Repair the buffer to the text that was in it before the "oops"
 			! was typed:
+			#Ifdef TARGET_ZCODE;
 			for (i=0 : i<64 : i++) a_buffer->i = oops_workspace->i;
+			#Ifnot;
+			for (i=0 : i<64 : i++) a_buffer-->i = oops_workspace-->i;
+			#Endif;
 			VM_Tokenise(a_buffer,a_table);
 
 			! Work out the position in the buffer of the word to be corrected:
