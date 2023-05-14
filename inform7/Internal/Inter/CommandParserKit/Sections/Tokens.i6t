@@ -9,7 +9,7 @@ $2^{15}-1 = +32767$, while a 32-bit VM can hold $-2^{31} = -2147483648$ to
 $2^{31}-1 = +2147483647$: the token below accepts exactly those ranges.
 
 =
-[ DECIMAL_TOKEN wnc wna r n wa wl sign base digit digit_count original_wn group_wn;
+[ DECIMAL_TOKEN wnc wna r n wa wl sign base digit digit_count original_wn group_wn ch;
 	wnc = wn; original_wn = wn; group_wn = wn;
 	r = DECIMAL_TOKEN_INNER();
 	if (r ~= GPR_FAIL) return r;
@@ -20,15 +20,32 @@ $2^{31}-1 = +2147483647$: the token below accepts exactly those ranges.
 	wa = WordAddress(wn);
 	wl = WordLength(wn);
 	sign = 1; base = 10; digit_count = 0;
-	if (wa->0 ~= '-' or '$' or '0' or '1' or '2' or '3' or '4'
+	#Ifdef TARGET_ZCODE;
+	ch = wa->0;
+	#Ifnot; ! TARGET_GLULX
+	ch = wa-->0;
+	#Endif; ! TARGET_
+	if (ch ~= '-' or '$' or '0' or '1' or '2' or '3' or '4'
 		or '5' or '6' or '7' or '8' or '9')
 		return GPR_FAIL;
-	if (wa->0 == '-') { sign = -1; wl--; wa++; }
+	if (ch == '-') {
+		sign = -1; wl--;
+		#Ifdef TARGET_ZCODE;
+		wa++;
+		#Ifnot; ! TARGET_GLULX
+		wa = wa+WORDSIZE;
+		#Endif; ! TARGET_
+	}
 	if (wl == 0) return GPR_FAIL;
 	n = 0;
 	while (wl > 0) {
-		if (wa->0 >= 'a') digit = wa->0 - 'a' + 10;
-		else digit = wa->0 - '0';
+		#Ifdef TARGET_ZCODE;
+		ch = wa->0;
+		#Ifnot; ! TARGET_GLULX
+		ch = wa-->0;
+		#Endif; ! TARGET_
+		if (ch >= 'a') digit = ch - 'a' + 10;
+		else digit = ch - '0';
 		digit_count++;
 		switch (base) {
 			2:  if (digit_count == 17) return GPR_FAIL;
@@ -56,7 +73,12 @@ $2^{31}-1 = +2147483647$: the token below accepts exactly those ranges.
 		}
 		if (digit >= 0 && digit < base) n = base*n + digit;
 		else return GPR_FAIL;
-		wl--; wa++;
+		wl--;
+		#Ifdef TARGET_ZCODE;
+		wa++;
+		#Ifnot; ! TARGET_GLULX
+		wa = wa+WORDSIZE;
+		#Endif; ! TARGET_
 	}
 	parsed_number = n*sign; wn++;
 	return GPR_NUMBER;
