@@ -1,8 +1,8 @@
 *** When play ends
 (Resuming play after an accidental death; Big Sky Country)
-Allowing the player to continue play after a fatal accident, but penalizing him by scattering his possessions around the game map.
+Allowing the player to continue play after a fatal accident, but penalizing them by scattering their possessions around the game map.
 
-Some older games allowed the player to be resurrected after a death, but punished him by distributing his possessions far and wide. Here we emulate that effect.
+Some older games allowed the player to be resurrected after a death, but punished them by distributing his possessions far and wide. Here we emulate that effect.
 
 	{*}"Big Sky Country"
 

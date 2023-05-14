@@ -2,7 +2,7 @@
 (Player's erroneous command recorded for later; Xot)
 Storing an invalid command to be repeated as text later in the game.
 
-In Hitchhiker's Guide to the Galaxy, any erroneous command the player types can return to haunt him later in the game. We could do the same, if we liked, by storing the player's command whenever we print a parser error.
+In Hitchhiker's Guide to the Galaxy, any erroneous command the player types can return to haunt them later in the game. We could do the same, if we liked, by storing the player's command whenever we print a parser error.
 
 	{*} "Xot"
 	

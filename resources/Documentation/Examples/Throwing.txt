@@ -10,7 +10,7 @@ Suppose we want to expand the function of the existing THROW SOMETHING AT comman
 		check	an actor throwing something at	futile to throw things at inanimate objects rule
 		check	an actor throwing something at	block throwing at rule
 		
-Some of those still look useful. We want to leave the "implicitly remove thrown clothing" rule, for instance -- no fair having the player throw a hat that's on his head. On the other hand, the "futile to throw things at inanimate objects rule" is going to have to go, because that would prevent us from ever being able to complete the throwing command. So let's get rid of that:
+Some of those still look useful. We want to leave the "implicitly remove thrown clothing" rule, for instance -- no fair having the player throw a hat that's on their head. On the other hand, the "futile to throw things at inanimate objects rule" is going to have to go, because that would prevent us from ever being able to complete the throwing command. So let's get rid of that:
 
 	{*}"Kyoto"
 	
@@ -18,7 +18,7 @@ Some of those still look useful. We want to leave the "implicitly remove thrown 
 	
 	The futile to throw things at inanimate objects rule is not listed in the check throwing it at rules.
 	
-That "block throwing at" rule also looks sinister: any "block..." rule in the standard actions library is there to print a message telling the player he can't do what he's asked to do.
+That "block throwing at" rule also looks sinister: any "block..." rule in the standard actions library is there to print a message telling the player they can't do what they've asked to do.
 
 But it's not enough to ignore it, the way we did the "futile" rule. Since we are only expanding the command to affect inanimate objects, let's replace the "block throwing at" rule with a different one which will only prevent the player throwing things at people:
 	

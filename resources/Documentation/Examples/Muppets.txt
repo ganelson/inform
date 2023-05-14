@@ -6,7 +6,7 @@ Inform has built-in commands for other people, and sometimes we may want to adju
 
 	Kermit the Frog looks through his possessions.
 	
-we'd like someone taking inventory to report what he's got, thus:
+we'd like someone taking inventory to report what they have, thus:
 
 	Kermit the Frog says, "I seem to be carrying a microphone and wearing a hat and a trenchcoat."
 

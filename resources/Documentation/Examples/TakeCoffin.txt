@@ -2,7 +2,7 @@
 (Check rules modified for taking something we're inside--Automatically leaving an object before trying to take it; Get Axe)
 Changing the check rules to try automatically leaving a container before attempting to take it. (And arranging things so that other people will do likewise.)
 
-We could now re-write the check rules so that any time someone (the player or someone else) tries to pick up a container which he is in, he will first get out:
+We could now re-write the check rules so that any time someone (the player or someone else) tries to pick up a container which they're in, they will first get out:
 
 	{*}"GET AXE"
 	

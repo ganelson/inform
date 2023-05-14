@@ -2,7 +2,7 @@
 (INVENTORY handling of properties made more flexible; Oyster Wide Shut)
 Replacing Inform's default printing of properties such as "(closed)", "(open and providing light)", etc., with our own, more flexible variation.
 
-As we've seen in earlier examples such as "Equipment List", it is possible to vary the way Inform creates inventory listings in general (to create lists that look more like paragraphs of prose, lists divided between what the player is wearing and what he isn't, and so on). We can also use activities to alter the printing of specific objects' names and contents, as with the "omit contents in listing" feature after printing the name of something.
+As we've seen in earlier examples such as "Equipment List", it is possible to vary the way Inform creates inventory listings in general (to create lists that look more like paragraphs of prose, lists divided between what the player is wearing and what they aren't, and so on). We can also use activities to alter the printing of specific objects' names and contents, as with the "omit contents in listing" feature after printing the name of something.
 
 We may find, however, that we would like a great deal more control over Inform's printing of inventory details, not just as a special effect for a few items, but throughout the game.
 
@@ -69,14 +69,14 @@ Now we're free to meddle. Let's give the player a bunch of possessions that will
 	
 	The player carries an oyster. The oyster contains a pearl. The oyster is openable.
 
-Now suppose that we don't want the oyster to say "closed" when it's closed. Instead, we'd like it to say "clamped shut". As this is the only property the oyster will ever have, we can simply override his whole property-aggregation rulebook:
+Now suppose that we don't want the oyster to say "closed" when it's closed. Instead, we'd like it to say "clamped shut". As this is the only property the oyster will ever have, we can simply override its whole property-aggregation rulebook:
 
 	{**}A property-aggregation rule for the oyster:
 		if the oyster is closed:
 			say " (clamped shut)";
 		rule succeeds.
 
-That's fine for the oyster because "clamped shut" is the only property he'll ever have. What if we'd like instead just to revise the way the sack (and only the sack) gets described as providing light?
+That's fine for the oyster because "clamped shut" is the only property it'll ever have. What if we'd like instead just to revise the way the sack (and only the sack) gets described as providing light?
 
 	{**}The sacklight rule is listed after the mention lit objects rule in the property-aggregation rules.
 
@@ -87,7 +87,7 @@ That's fine for the oyster because "clamped shut" is the only property he'll eve
 
 Now the flashlight (and any other regular light sources we might add to the game) will be described as "providing light", but the sack will only be said to be gently glowing -- a bit more appropriate for its rather fainter gleam.
 
-We might also wish to add a systematic feature across the board to include a new property in the inventory list? Let's say the player can enchant his possessions, and enchanted possessions should thereafter be listed accordingly:
+We might also wish to add a systematic feature across the board to include a new property in the inventory list? Let's say the player can enchant their possessions, and enchanted possessions should thereafter be listed accordingly:
 
 	{**}A thing can be magical or non-magical. A thing is usually non-magical. 
 

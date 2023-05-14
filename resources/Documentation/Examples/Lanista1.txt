@@ -14,7 +14,7 @@ We start by recording, for each person, a maximum number of points of damage the
 
 	The current hit points of the player is 35. The current hit points of the gladiator is 25. 
 
-Now our rule for the actual attack. We want first to calculate how much damage the player's attack does, inflict that damage, and remove the enemy if he's dead; then, if he doesn't die, the enemy counter-attacks, also for a randomized amount of damage, and if this kills the player, the game ends in defeat.
+Now our rule for the actual attack. We want first to calculate how much damage the player's attack does, inflict that damage, and remove the enemy if they're dead; then, if still alive, the enemy counter-attacks, also for a randomized amount of damage, and if this kills the player, the game ends in defeat.
 
 	{**}Instead of attacking someone:
 		let the damage be a random number between 2 and 10;

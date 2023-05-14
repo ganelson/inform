@@ -2,7 +2,7 @@
 (Raised supporter kind that conceals its contents; Kiwi)
 Creating a raised supporter kind whose contents the player can't see or take from the ground.
 
-Suppose we want there to be some high shelves in our game, which the player can't get at unless he's standing on a prop of some kind. (This is a pretty hoary and over-used puzzle, but there may still be occasions when it becomes useful again.) 
+Suppose we want there to be some high shelves in our game, which the player can't get at unless they're standing on a prop of some kind. (This is a pretty hoary and over-used puzzle, but there may still be occasions when it becomes useful again.) 
 
 In order to resolve this, we want to set up a raised supporter kind. When something is on a raised supporter, it should be mentioned to the player only if the player is in the right position (i.e., standing on something) and otherwise omitted from the description entirely.
 

@@ -22,7 +22,7 @@ In our simpler version of this example we set the current hit points by hand, bu
 		repeat with victim running through people:
 			now the current hit points of the victim is the maximum hit points of the victim.
 
-	Definition: a person is dead if his current hit points are less than 0.
+	Definition: a person is dead if their current hit points are less than 0.
 	
 	Section 2 - Diagnosis
 		
@@ -48,7 +48,7 @@ In our new system, we want to specify what is being used for an attack. This mea
 
 Here's why: If we leave the default attack command in place, Inform will continue to accept commands like >ATTACK GLADIATOR, but reply foolishly with the default "Violence is not the answer..." response. 
 
-A somewhat better approach would be to change the reply of >ATTACK GLADIATOR to say something like "You must specify a weapon to attack with." But this is still less than ideal, because it means that the player has to then rewrite his entire command. If, on the other hand, we take out "ATTACK GLADIATOR" entirely, the game will always prompt "What do you want to attack the gladiator with?" -- which teaches the player the correct command structure for this particular game, and avoids pretending to understand any command that is not meaningful within this game.
+A somewhat better approach would be to change the reply of >ATTACK GLADIATOR to say something like "You must specify a weapon to attack with." But this is still less than ideal, because it means that the player has to then rewrite the entire command. If, on the other hand, we take out "ATTACK GLADIATOR" entirely, the game will always prompt "What do you want to attack the gladiator with?" -- which teaches the player the correct command structure for this particular game, and avoids pretending to understand any command that is not meaningful within this game.
 
 This is a little bit of work because ATTACK has a lot of synonyms in the default library, but if we look through the actions index we can find them all:
 

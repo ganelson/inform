@@ -2,7 +2,7 @@
 (HELP command is recommended if the player seems lost; Y ask Y?)
 Noticing when the player seems to be at a loss, and recommending the use of hints.
 
-Suppose we'd like to watch for signs that the player is floundering, and if we see them, recommend that he try the hints. There are probably more sophisticated diagnostics, but as a first cut, let's assume that a player who repeatedly reviews descriptions of objects he's already seen, looks around the room, and takes inventory, is at a loss for more productive activities. So then...
+Suppose we'd like to watch for signs that the player is floundering, and if we see such signs, recommend that they try the hints. There are probably more sophisticated diagnostics, but as a first cut, let's assume that a player who repeatedly reviews descriptions of objects they've already seen, looks around the room, and takes inventory, is at a loss for more productive activities. So then...
 
 	{*}"Y ask Y?"
 	
@@ -13,7 +13,7 @@ Suppose we'd like to watch for signs that the player is floundering, and if we s
 	After acting confused for the sixth turn:
 		say "(If you are feeling lost, try typing HELP for suggestions.)"
 
-And now we write a scenario which will, alas, rather encourage even a deft and clueful player to play as though he were hopelessly confused:
+And now we write a scenario which will, alas, rather encourage even a deft and clueful player to play as though they were hopelessly confused:
 
 	{**}The story headline is "or: Bad Author, No Biscuit".
 	

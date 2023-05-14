@@ -1,6 +1,6 @@
 ** Going by, going through, going with
 (Plank bridge breaks on being crossed when the player is carrying something; One Short Plank)
-A plank bridge which breaks if the player is carrying something when he goes across it. Pushing anything over the bridge is forbidden outright.
+A plank bridge which breaks if the player is carrying something when they cross it. Pushing anything over the bridge is forbidden outright.
 
 	{*}"One Short Plank"
 

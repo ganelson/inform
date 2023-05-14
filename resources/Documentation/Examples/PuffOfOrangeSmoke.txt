@@ -40,7 +40,7 @@ The trick is, though, that >MOVE LYDIA will only be understood if there is somet
 
 	{**}The worldview is a privately-named backdrop. It is everywhere. The spirit-world is a privately-named transparent closed unopenable container. It is part of the worldview.
 
-	Definition: a person is dead if he is in the spirit-world.
+	Definition: a person is dead if they are in the spirit-world.
 
 It's also possible that the player will type something like >X LYDIA when Lydia's corpse is not in view, so we should have an appropriate answer to that as well:
 

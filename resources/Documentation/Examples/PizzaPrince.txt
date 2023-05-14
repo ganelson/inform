@@ -1,10 +1,10 @@
 * Implicitly taking something
 (Near-infinite supply of pizza; Pizza Prince)
-Providing a pizza buffet from which the player can take as many pieces as he wants.
+Providing a pizza buffet from which the player can take as many pieces as they want.
 
-Suppose we want the player to have a pizza buffet from which he can take a number of slices. But we don't want to actually put the slices there in front of him, because "you can see 17 slices of pizza here" is not the descriptive effect we want, and because we want to pretend, at least, that the pizza supply is nearly infinite. In fact, we're going to replenish the supply by allowing eaten slices to return to the buffet table (safer in IF than in real life).
+Suppose we want the player to have a pizza buffet from which they can take a number of slices. But we don't want to actually put the slices there in front of them, because "you can see 17 slices of pizza here" is not the descriptive effect we want, and because we want to pretend, at least, that the pizza supply is nearly infinite. In fact, we're going to replenish the supply by allowing eaten slices to return to the buffet table (safer in IF than in real life).
 
-To do this, we create one object to stand in for the pizza supply, but whenever the player tries to take it, we give him a different "pizza slice" object instead. Thus:
+To do this, we create one object to stand in for the pizza supply, but whenever the player tries to take it, we give them a different "pizza slice" object instead. Thus:
 
 	{*}"Pizza Prince"
 	
@@ -21,11 +21,11 @@ Now we introduce our actual pizza slices, which are retained in a container out 
 
 	{**}A pizza slice is a kind of thing. 10 pizza slices are in Pizza Limbo. A pizza slice is always edible. [After a fashion, anyway.]
 
-In this example we've set that supply to be artificially small, to make it easier to test what happens when the player reaches the limit; but we could provide many more slices to start with in Pizza Limbo, and the aim in practice would be to pick a number high enough (such as 50 or 100) that the average player will get bored of TAKE PIZZA long before he reaches the limit. 
+In this example we've set that supply to be artificially small, to make it easier to test what happens when the player reaches the limit; but we could provide many more slices to start with in Pizza Limbo, and the aim in practice would be to pick a number high enough (such as 50 or 100) that the average player will get bored of TAKE PIZZA long before they reach the limit. 
 
 The main thing to be aware of is that objects consume memory in the game file, so creating a large number of pizza slices might bulk the game out. This is more of a concern if we're compiling for the Z-machine than if we're compiling for Glulx.
 
-Whenever the player tries to take the selection, we want him to wind up holding an individual slice instead; but of course we need to check and make sure that he hasn't exhausted the pizza slice supply. 
+Whenever the player tries to take the selection, we want them to wind up holding an individual slice instead; but of course we need to check and make sure that they haven't exhausted the pizza slice supply. 
 
 	{**}Instead of taking the pizza selection:
 		let chosen slice be a random pizza slice in Pizza Limbo;

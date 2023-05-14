@@ -1,6 +1,6 @@
 *** Printing a refusal to act in the dark
 (Light levels variable depending on the number of candles the player has lit; Zorn of Zorna)
-Light levels vary depending on the number of candles the player has lit, and this determines whether or not he is able to examine detailed objects successfully.
+Light levels vary depending on the number of candles the player has lit, and this determines whether or not they are able to examine detailed objects successfully.
 
 	{*}"Zorn of Zorna"
 

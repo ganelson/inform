@@ -94,7 +94,7 @@ This next bit is an optional borrowing from the Activities chapter: we want to p
 	
 	{**}Rule for printing room description details of something: do nothing instead. 
 	
-Finally, we want the player to use "draw" and "discard" to manipulate his hand of cards:
+Finally, we want the player to use "draw" and "discard" to manipulate their hand of cards:
 	
 	{**}Section 3 - Drawing and Discarding Actions
 
