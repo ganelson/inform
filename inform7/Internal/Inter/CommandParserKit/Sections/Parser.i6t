@@ -248,10 +248,11 @@ $$ C = 100 + N $$
 		if ((w1 == 1) && (w2 == 0)) rfalse;
 		return RunTimeProblem(RTP_SAYINVALIDSNIPPET, w1, w2);
 	}
-	from = WordAddress(w1); to = WordAddress(w2) + WORDSIZE * WordLength(w2);
 	#Ifdef TARGET_ZCODE;
+	from = WordAddress(w1); to = WordAddress(w2) + WordLength(w2) - 1;
 	for (i=from: i<=to: i++) print (char) i->0;
 	#Ifnot;
+	from = WordAddress(w1); to = WordAddress(w2) + WORDSIZE * (WordLength(w2) - 1);
 	for (i=from: i<=to: i=i+WORDSIZE) print (char) i-->0;
 	#Endif;
 ];
