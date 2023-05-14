@@ -82,6 +82,9 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 - Fix for Jira bug [I7-2247](https://inform7.atlassian.net/browse/I7-2247)
 	"Internal error 'unowned' when using 'Understand'"
 	([commit 3ebcac0](https://github.com/ganelson/inform/commit/3ebcac0b5dc58e9754de6b2c8dd85fad719e4629))
+- Fix for Jira bug [I7-2242](https://inform7.atlassian.net/browse/I7-2242)
+	"Creating kinds via tables fails"
+	([commit 0038a2e](https://github.com/ganelson/inform/commit/0038a2e46f91fa104f65c7c910ff7097f1c09198))
 - Fix for Jira bug [I7-2237](https://inform7.atlassian.net/browse/I7-2237)
 	"Inform hangs when reading a Neptune file in a kit with no final newline"
 	([commit 1cd75d8](https://github.com/ganelson/inform/commit/1cd75d8a4946ba10636a8ec474aded9716fffe9b))
