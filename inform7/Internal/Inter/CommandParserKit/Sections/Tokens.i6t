@@ -137,7 +137,7 @@ out not to be.) I don't plan to worry about these cases.)
 			! There's whitespace between the previous word and this one.
 			! Whitespace is okay around an asterisk...
 			if ((lastchar ~= '*' or 'x' or 'X' or $D7)
-				&& (newstart->0 ~= '*' or 'x' or 'X' or $D7)) {
+				&& (newstart-->0 ~= '*' or 'x' or 'X' or $D7)) {
 				! But around any other character, it's not.
 				! Don't include the new word.
 				break;
@@ -145,7 +145,7 @@ out not to be.) I don't plan to worry about these cases.)
 		}
 		newlen = WordLength(wn);
 		for (ix=0 : ix<newlen : ix++) {
-			ch = newstart->ix;
+			ch = newstart-->ix;
 			if (~~((ch >= '0' && ch <= '9')
 				|| (ch == '-' or '+' or 'E' or 'e' or '.' or 'x' or 'X' or '*' or $D7 or $5E)))
 				break;
@@ -156,16 +156,16 @@ out not to be.) I don't plan to worry about these cases.)
 			break;
 		}
 		! Okay, include it.
-		bufend = newstart + newlen;
+		bufend = newstart + newlen*WORDSIZE;
 		wn++;
-		lastchar = (bufend-1)->0;
+		lastchar = (bufend-WORDSIZE)-->0;
 		lastwasdot = (newlen == 1 && lastchar == '.');
 	}
 
 	if (wn > firstwd && lastwasdot) {
 		! Exclude a trailing period.
 		wn--;
-		bufend--;
+		bufend = bufend - WORDSIZE;
 	}
 
 	if (wn == firstwd) {
@@ -173,7 +173,7 @@ out not to be.) I don't plan to worry about these cases.)
 		return GPR_FAIL;
 	}
 
-	parsed_number = FloatParse(buf, bufend-buf, true);
+	parsed_number = FloatParse(buf, (bufend-buf)/WORDSIZE, true);
 	if (parsed_number == FLOAT_NAN)
 		return GPR_FAIL;
 	return GPR_NUMBER;
