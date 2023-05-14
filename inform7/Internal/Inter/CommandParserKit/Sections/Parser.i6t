@@ -659,7 +659,11 @@ Get the input, do OOPS and AGAIN.
             #Endif; ! TARGET_
             k = WordAddress(i+1);
             l = WordLength(i+1);
+            #Ifdef TARGET_ZCODE;
             print "~"; for (m=0 : m<l : m++) print (char) k->m; print "~ ";
+            #Ifnot; ! TARGET_GLULX
+            print "~"; for (m=0 : m<l : m++) print (char) k-->m; print "~ ";
+            #Endif; ! TARGET_
 
             if (j == 0) print "?";
             else {
