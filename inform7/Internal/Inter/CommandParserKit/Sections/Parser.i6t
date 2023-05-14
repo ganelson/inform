@@ -2420,11 +2420,11 @@ because we want to allow duplicates).
     buffer->1 = buffer->1 + l;
     if (buffer->1 >= (buffer->0 - 1)) buffer->1 = buffer->0;
     #Ifnot; ! TARGET_GLULX
-    k = WordAddress(match_from) - buffer;
+    k = (WordAddress(match_from) - buffer) / WORDSIZE;
     l = (buffer2-->0) + 1;
-    for (j=buffer+INPUT_BUFFER_LEN-1 : j>=buffer+k+l : j--) j->0 = j->(-l);
-    for (i=0 : i<l : i++) buffer->(k+i) = buffer2->(WORDSIZE+i);
-    buffer->(k+l-1) = ' ';
+    for (j=INPUT_BUFFER_LEN-1 : j>=k+l : j--) buffer-->j = buffer-->(j-l);
+    for (i=0 : i<l : i++) buffer-->(k+i) = buffer2-->(1+i);
+    buffer-->(k+l-1) = ' ';
     buffer-->0 = buffer-->0 + l;
     if (buffer-->0 > (INPUT_BUFFER_LEN-WORDSIZE)) buffer-->0 = (INPUT_BUFFER_LEN-WORDSIZE);
     #Endif; ! TARGET_
@@ -2495,8 +2495,8 @@ because we want to allow duplicates).
             #Ifdef TARGET_ZCODE;
             i = 2+buffer->1; (buffer->1)++; buffer->(i++) = ' ';
             #Ifnot; ! TARGET_GLULX
-            i = WORDSIZE + buffer-->0;
-            (buffer-->0)++; buffer->(i++) = ' ';
+            i = 1 + buffer-->0;
+            (buffer-->0)++; buffer-->(i++) = ' ';
             #Endif; ! TARGET_
 
             #Ifdef DEBUG;
@@ -2546,7 +2546,7 @@ because we want to allow duplicates).
                 for (l=i : l<i+k : l++) buffer->l = buffer->(l+2);
                 i = i + k; buffer->1 = i-2;
                 #Ifnot; ! TARGET_GLULX
-                k = Glulx_PrintAnyToArray(buffer+i, INPUT_BUFFER_LEN-i, parse2-->1);
+                k = Glulx_PrintAnyToArrayUni(buffer+WORDSIZE*i, INPUT_BUFFER_LEN-i, parse2-->1);
                 i = i + k; buffer-->0 = i - WORDSIZE;
                 #Endif; ! TARGET_
             }
@@ -2563,10 +2563,10 @@ because we want to allow duplicates).
         if (buffer->1 == INPUT_BUFFER_LEN) break;
     }
     #Ifnot; ! TARGET_GLULX
-    i = WORDSIZE + buffer-->0;
-    (buffer-->0)++; buffer->(i++) = ' ';
+    i = 1 + buffer-->0;
+    (buffer-->0)++; buffer-->(i++) = ' ';
     for (j=0 : j<buffer2-->0 : i++,j++) {
-        buffer->i = buffer2->(j+WORDSIZE);
+        buffer-->i = buffer2-->(j+1);
         (buffer-->0)++;
         if (buffer-->0 == INPUT_BUFFER_LEN) break;
     }
