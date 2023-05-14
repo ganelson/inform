@@ -3783,7 +3783,7 @@ are parsed.)
     #Ifdef TARGET_ZCODE;
     i = wordnum*4+1; j = parse->i; num = j+buffer; len = parse->(i-1);
     #Ifnot; ! TARGET_GLULX
-    i = wordnum*3; j = parse-->i; num = j+buffer; len = parse-->(i-1);
+    num = WordAddress(wordnum); len = WordLength(wordnum);
     #Endif; ! TARGET_
 
     if (len >= 4) mul=1000;
@@ -3794,7 +3794,11 @@ are parsed.)
     tot = 0; c = 0; len = len-1;
 
     for (c=0 : c<=len : c++) {
+        #Ifdef TARGET_ZCODE;
         digit=num->c;
+        #Ifnot; ! TARGET_GLULX
+        digit=num-->c;
+        #Endif; ! TARGET_
         if (digit == '0') { d = 0; jump digok; }
         if (digit == '1') { d = 1; jump digok; }
         if (digit == '2') { d = 2; jump digok; }
