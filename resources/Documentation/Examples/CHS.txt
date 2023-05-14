@@ -1,6 +1,6 @@
 **** Printing the name of something
 (Hints leading the player through conversation; Chronic Hinting Syndrome)
-Using name-printing rules to keep track of whether the player knows about objects, and also to highlight things he might want to follow up.
+Using name-printing rules to keep track of whether the player knows about objects, and also to highlight things they might want to follow up.
 
 Suppose we have a conversation system in which it is important to keep track of which subjects the player has heard mentioned. If we're careful to mark subjects in brackets, we can use the "printing the name of" activity to record which things have been mentioned so far:
 
@@ -21,7 +21,7 @@ Suppose we have a conversation system in which it is important to keep track of 
 	After printing the name of a subject (called idea):
 		now the player is aware of the idea.
 		
-Now suppose that as an added convenience for the player, we let him turn on a mode in which useful conversation topics are always automatically highlighted in the text, so he doesn't waste his time trying to follow up dead leads:
+Now suppose that as an added convenience for the player, we let them turn on a mode in which useful conversation topics are always automatically highlighted in the text, so they don't waste time trying to follow up dead leads:
 
 	{**}Setting is a kind of value. The settings are bright and dull. Understand "on" as bright. Understand "off" as dull.
 

@@ -258,7 +258,7 @@ As these examples begin to show, Inform source imitates the conventions of print
 
 ^^{error messages: for source text} ^^{problem messages: for source text}
 
-The language used in the source reads as if it were English aimed at a human reader (and this is intentional: the designer, after all, is a human reader and needs to be able to understand his or her own source), but in reality Inform can only understand a very modest range of sentences and will complain if its limits are passed. Subtler problems arise if the source contains contradictions. For instance, the following "Problem" might be produced:
+The language used in the source reads as if it were English aimed at a human reader (and this is intentional: the designer, after all, is a human reader and needs to be able to understand their own source), but in reality Inform can only understand a very modest range of sentences and will complain if its limits are passed. Subtler problems arise if the source contains contradictions. For instance, the following "Problem" might be produced:
 
 	<b>Problem.</b> You wrote 'A starting pistol is in the cup' ///Reveal.png///, but in another sentence 'A Panama hat is on the cup' ///Reveal.png///: the trophy cup cannot both contain things and support things, which is what you're implying here. If you need both, the easiest way is to make it either a supporter with a container attached or vice versa. For instance: 'A desk is here. On the desk is a newspaper. An openable container called the drawer is part of the desk. In the drawer is a stapler.'
 
@@ -440,13 +440,13 @@ Newcomers will probably not need extensions for quite some while, but there is n
 
 Extensions are identified by name (say "Following People") and also by author (say "Mary Brown"). They need to be installed before they can be used, which means downloading them from the Internet. By far the easiest way to do this is to use the Public Library feature of Inform: then the application can do everything, letting us either choose individual extensions or download them en masse. But it's also possible to install extensions by hand.
 
-{OSX,^app:}When using Inform on Mac OS X, use the File menu item <b>Show Extensions Folder</b> to open the relevant folder in the Finder. Each author has a subfolder of this folder, and his or her extensions live inside it.
+{OSX,^app:}When using Inform on Mac OS X, use the File menu item <b>Show Extensions Folder</b> to open the relevant folder in the Finder. Each author has a subfolder of this folder, and their extensions live inside it.
 
 {Windows,^app:}When using Inform on Windows, this means storing them in the folder
 
 {Windows,^app:}	My Documents\Inform\Extensions
 
-{Windows,^app:}Each author has a subfolder of this folder, and his or her extensions live inside it. Our example extension should therefore be placed as:
+{Windows,^app:}Each author has a subfolder of this folder, and their extensions live inside it. Our example extension should therefore be placed as:
 
 {Windows,^app:}	My Documents\Inform\Extensions\Mary Brown\Following People.i7x
 
@@ -454,7 +454,7 @@ Extensions are identified by name (say "Following People") and also by author (s
 
 {Linux,^app:}	~/Inform/Extensions/
 
-{Linux,^app:}where "~" signifies your home folder. (This will have been created for you the first time you ran i7.)  Each author has a subfolder of this folder, and his or her extensions live inside it. Our example extension should therefore be placed as:
+{Linux,^app:}where "~" signifies your home folder. (This will have been created for you the first time you ran i7.)  Each author has a subfolder of this folder, and their extensions live inside it. Our example extension should therefore be placed as:
 
 {Linux,^app:}	~/Inform/Extensions/Mary Brown/Following People.i7x
 
@@ -462,7 +462,7 @@ Extensions are identified by name (say "Following People") and also by author (s
 
 {GNOME,^app:}	~/Inform/Extensions/
 
-{GNOME,^app:}where "~" signifies your home folder. (This will have been created for you the first time you ran i7.)  Each author has a subfolder of this folder, and his or her extensions live inside it. Our example extension should therefore be placed as:
+{GNOME,^app:}where "~" signifies your home folder. (This will have been created for you the first time you ran i7.)  Each author has a subfolder of this folder, and their extensions live inside it. Our example extension should therefore be placed as:
 
 {GNOME,^app:}	~/Inform/Extensions/Mary Brown/Following People.i7x
 
@@ -1148,7 +1148,7 @@ Rooms can be "dark" or "lighted", though they are lighted by default, and are li
 
 	The Sinister Cave is a dark room. "A profoundly disquieting rock formation, apparently sculptured by some demonic hand, this is not a cave in which to relax."
 
-When the player is in a dark room, he can still go in various directions, but he cannot see the room description or interact with any of the objects in the room, except those he is holding. This means that, unless we should change the Cave in some way during play, the text above ("A profoundly...") will only be read if the player succeeds in bringing light into the Cave, perhaps by bringing along the following:
+When the player is in a dark room, they can still go in various directions, but they cannot see the room description or interact with any of the objects in the room, except those they are holding. This means that, unless we should change the Cave in some way during play, the text above ("A profoundly...") will only be read if the player succeeds in bringing light into the Cave, perhaps by bringing along the following:
 
 	The flaming torch is in the Sandy Passage. "Stuck loosely into the sand is a flaming torch." The flaming torch is lit.
 
@@ -1336,7 +1336,7 @@ When the player has only limited carrying capacity, play is likely to be tiresom
 
 	In the Attic are a CD entitled No Smoke Without Fire, a 70s photograph of an American winning Wimbledon, a fraxinus branch, an urn holding your late great-aunt's remains, a convention badge from the American Society of Hypertension and a ghost story by M R James.
 
-This example story introduces a new kind of container, the "player's holdall". This is a kind of which most stories will contain at most one example, but in principle there can be any number. A player's holdall is a capacious bag into which the player automatically places surplus items whenever his or her hands are full: trying the above example story and getting the items one by one will give the general idea.
+This example story introduces a new kind of container, the "player's holdall". This is a kind of which most stories will contain at most one example, but in principle there can be any number. A player's holdall is a capacious bag into which the player automatically places surplus items whenever their hands are full: trying the above example story and getting the items one by one will give the general idea.
 
 Of course, if the carrying capacity of the player is never reached then there will never be any surplus items and a player's holdall will behave just like any other (portable, usually openable) container.
 
@@ -1543,7 +1543,7 @@ Some kinds are more general than others. For example, if we write:
 
 	Growler is an animal in the Savannah.
 
-then Growler is an "animal", which is a kind of "thing", which is a kind of "object". When we talk about "the" kind of Growler, we mean "animal", the most specific one, but actually he belongs to all of those kinds.
+then Growler is an "animal", which is a kind of "thing", which is a kind of "object". When we talk about "the" kind of Growler, we mean "animal", the most specific one, but actually Growler belongs to all of those kinds.
 
 As we see from this example, kinds have a whole hierarchy. Some are specialised versions of other kinds; some are not. Browsing the Kinds index shows that Inform builds its model world out of "objects". (That's really what objects are: "object" is a kind of value used to make the ingredients of the model world.) The objects fall into four fundamental kinds, "room", "thing", "direction" and "region", and "thing" is more subdivided still.
 
@@ -2165,7 +2165,7 @@ The standard naming scheme is often about right, but as usual Inform offers a wa
 then we will find the world full of, say, the Garden buggy, the Patio buggy and so on - instead of the Garden vehicle, the Patio vehicle and so on, which is what we would have had without the "called..." part. Similarly, we could write:
 
 	A person (called its fan) likes every colour.
-	Every person likes a colour (called his favourite colour).
+	Every person likes a colour (called their favourite colour).
 
 The former would produce new people with names like "Green's fan", whereas the latter would produce new colours with names like "Daphne's favourite colour".
 
@@ -2864,7 +2864,7 @@ but not
 
 	Łodz Churchyard is a room.
 
-Moreover, the player is not allowed to type these characters in commands during play: or rather, they will not be recognised if he does. They are for printing only.
+Moreover, the player is not allowed to type these characters in commands during play: or rather, the characters will not be recognised if the player does. They are for printing only.
 
 (d) <b>Characters which might work in quoted text, or might not</b>. The Arabic and Hebrew alphabets are fairly likely to be available; miscellaneous symbols are sometimes legible to the player, sometimes not. Other alphabets are chancier still. (If a work of IF depends on these being visible, it may be necessary to instruct players to use specific interpreters, or to provide a way for the player to test that all will be well.)
 
@@ -4062,7 +4062,7 @@ This may be a good place to mention a small restriction on the ways we can speci
 
 	The Dome is a room. The Hutch is north of the Dome. The rabbit is in the Hutch. Before going to the location of the rabbit, say "You pick up a scent!"
 
-because "the location of the rabbit" is a quantity which changes in play (the player can pick up the rabbit and take him to the Dome, for instance). However, we can get around this restriction by defining a suitable adjective, like so:
+because "the location of the rabbit" is a quantity which changes in play (the player can pick up the rabbit and take it to the Dome, for instance). However, we can get around this restriction by defining a suitable adjective, like so:
 
 	The Dome is a room. The Hutch is north of the Dome. The rabbit is in the Hutch. Definition: a room is rabbit-infested if it is the location of the rabbit. Before going to a rabbit-infested room, say "You pick up a scent!"
 
@@ -4106,7 +4106,7 @@ Finally, going is an action which can also happen while the player is pushing so
 
 	Instead of going from the Office with the trolley, say "But it looks perfectly placed here. Why push any further?"
 
-"Going" is not the only action which moves the player. Another is "exiting", an action which moves the player out of whatever he/she is currently in or on. This action is often caused by the player typing just OUT or GET DOWN, and there's no noun as such. But Inform allows the syntax "exiting from" to make it easier to write rules about the exiting of particular containers or supporters:
+"Going" is not the only action which moves the player. Another is "exiting", an action which moves the player out of whatever they are currently in or on. This action is often caused by the player typing just OUT or GET DOWN, and there's no noun as such. But Inform allows the syntax "exiting from" to make it easier to write rules about the exiting of particular containers or supporters:
 
 	After exiting from the Mini Cooper:
 		say "You painstakingly unpack your limbs from the tiny car."
@@ -4975,7 +4975,7 @@ The score and maximum score are just numbers that vary, so we can freely change 
 ^^{scoring: ranking table}
 ^^{maximum score (— number)+glob+}
 
-Another tradition of interactive fiction is that the player has a current 'rank' according to how far his or her score has got. We can (but need not) choose to provide such rankings, and should do so by specifying a table like this:
+Another tradition of interactive fiction is that the player has a current 'rank' according to how far their score has got. We can (but need not) choose to provide such rankings, and should do so by specifying a table like this:
 
 	{*}Table 1 - Rankings
 	Score	Rank
@@ -5518,7 +5518,7 @@ Every scene has two rulebooks attached, one at each end, so to speak. These look
 		now the Flying Scotsman is nowhere;
 		if the player is in the Station, say "The Flying Scotsman inches away, with a squeal of released brakes, gathering speed invincibly until it disappears around the hill. All is abruptly still once more."
 
-Thus when the scene begins, our imaginary stage-hands wheel in a steam train; when it ends, they get rid of it again. Note that we know where the player will be at the start of the scene, but by the end he may have wandered off across the fields, so we must be careful not to report something he might not be in a position to see.
+Thus when the scene begins, our imaginary stage-hands wheel in a steam train; when it ends, they get rid of it again. Note that we know where the player will be at the start of the scene, but by the end they may have wandered off across the fields, so we must be careful not to report something they might not be in a position to see.
 
 When Train Stop begins, we printed some text, but we did this by hand. We didn't need to, because Inform automatically prints out the description of a scene (if it has one) when the scene begins. Scenes can have properties, just like objects, and in particular they have the "description" property. For example, we could write:
 
@@ -6687,7 +6687,7 @@ The following flow chart shows the natural course of events when Inform deals wi
 
 The coloured boxes on this chart represent "rulebooks", that is, collections of rules with a common purpose. The orange boxes for Before, Instead and After were covered in the Basic Actions chapter, but the blue boxes are new. The orange boxes are where we put rules to handle unusual situations, or unexpected events: special rules to cover the opening of a container which happens to be booby-trapped, or walking through a doorway into a room where a surprise party is about to be sprung.
 
-Blue boxes hold the mundane, everyday rules - the generic ways that particular actions behave. Every action provides these: "Check" rules, to see if it makes sense - for instance, to see that the player is not trying to take his or her own body, or a whole room, or something he or she already has; then "Carry out" rules, to actually do what the action is supposed to do - in the case of taking, to move an object into the player's possession; and finally "Report" rules, which tell the player what has happened - perhaps printing up "Taken."
+Blue boxes hold the mundane, everyday rules - the generic ways that particular actions behave. Every action provides these: "Check" rules, to see if it makes sense - for instance, to see that the player is not trying to take their own body, or a whole room, or something they already have; then "Carry out" rules, to actually do what the action is supposed to do - in the case of taking, to move an object into the player's possession; and finally "Report" rules, which tell the player what has happened - perhaps printing up "Taken."
 
 When we create a new action, we add a new column to the blue rows in this diagram. As we shall see, we can also put new rules into the existing blue boxes: for instance, if we wanted to increase physical realism by forbidding the player to carry more than a certain weight, we would want to add a new "check taking" rule, and this is entirely legal.
 
@@ -6797,7 +6797,7 @@ If we wish to write new successful actions for another character, we will need t
 ^^{ACTIONS+testcmd+} ^^{testing commands: >ACTIONS}
 ^^{Actions page of Index panel+ui+} ^^{user interface: Index panel: Actions page} ^^{Index panel+ui+: Actions page}
 
-Suppose, finally, that Will not only consents to try the action, but it also survives its passage through Before and Instead rules. What happens then? In principle, what happens to Will is exactly what would have happened to the player in his place. For instance:
+Suppose, finally, that Will not only consents to try the action, but it also survives its passage through Before and Instead rules. What happens then? In principle, what happens to Will is exactly what would have happened to the player in Will's place. For instance:
 
 	> will, go east
 	Will leaves to the east.
@@ -6838,7 +6838,7 @@ Finally, note that "unsuccessful attempt" rules apply only when the person in qu
 ^^{characters (people): acting spontaneously}
 ^^{unsuccessful attempt by+rb+: not used for spontaneous actions}
 
-The player's actions happen not only when he types a command, but can also happen spontaneously as a result of a "try" phrase.
+The player's actions happen not only when they type a command, but can also happen spontaneously as a result of a "try" phrase.
 
 	try going west
 	try asking Will to try going west
@@ -7464,7 +7464,7 @@ Sometimes we can choose our own answer to this question, and go either way. Supp
 
 The next question is: does the effect kick in after the hoped-for action has taken place, or not? In the case of the land mine, to answer that means deciding whether we think the detonator is sensitive to the slightest touch - in which case the explosion would happen at the first touch, and should be in an "Instead" rule - or whether one must actually pick up and disturb the mine - in which case an "After" should be used.
 
-That leaves us a choice of two rulebooks if the effect takes place when the merest impulse towards the action is felt: "Before" and "Instead". Which to use? In cases of doubt, choose "Instead". But if the effect is intended to absolutely suppress all such impulses - for instance, in a silent examination room there must be no talking - then "Before" might be more appropriate. We could imagine that someone about to say something first has a mental impulse to speak, then opens his mouth so that it becomes visible to others that some talking is about to go on, and finally utters words. Here are three possible responses:
+That leaves us a choice of two rulebooks if the effect takes place when the merest impulse towards the action is felt: "Before" and "Instead". Which to use? In cases of doubt, choose "Instead". But if the effect is intended to absolutely suppress all such impulses - for instance, in a silent examination room there must be no talking - then "Before" might be more appropriate. We could imagine that someone about to say something first has a mental impulse to speak, then opens their mouth so that it becomes visible to others that some talking is about to go on, and finally utters words. Here are three possible responses:
 
 	"You cannot contemplate breaking this smothering silence." (<i>Before</i>)
 	"The invigilator stares you down through her horn-rimmed glasses." (<i>Instead</i>)
@@ -7801,9 +7801,9 @@ Earlier versions of Inform needed to be told how to make other parts of the verb
 
 	The verb to sport means the wearing relation.
 
-is enough for Inform to understand "he sports", "they sport", "he sported", "it is sported", "he is sporting", "he had sported" and so on. It works with irregular verbs, too; it has a very comprehensive dictionary. But it's legal to spell out the conjugation if need be:
+is enough for Inform to understand "she sports", "they sport", "he sported", "it is sported", "she is sporting", "he had sported" and so on. It works with irregular verbs, too; it has a very comprehensive dictionary. But it's legal to spell out the conjugation if need be:
 
-	The verb to sport (he sports, they sport, he sported, it is sported) implies the knowledge relation.
+	The verb to sport (she sports, they sport, he sported, it is sported) implies the knowledge relation.
 
 Occasionally it's convenient to have the relation the other way around. For instance:
 
@@ -8694,7 +8694,7 @@ Adapts the given verb to the current story tense and story viewpoint, giving it 
 {end}
 
 {defn phs_negatev}say "[negate (verb) from (narrative viewpoint)]"
-Adapts the given verb to the current story tense but the given viewpoint, giving it a negative sense. For example, "he [negate the verb provoke from the third person singular]" might produce "he does not provoke".
+Adapts the given verb to the current story tense but the given viewpoint, giving it a negative sense. For example, "she [negate the verb provoke from the third person singular]" might produce "she does not provoke".
 {end}
 
 {defn phs_negatet}say "[negate (verb) in (grammatical tense)]"
@@ -11246,7 +11246,7 @@ As this demonstrates, the either/or property "privately-named" makes Inform crea
 
 	The ungraspable concept is a privately-named thing in the Dining Room.
 
-then nothing the player can type will ever refer to it; though he will see it, and even be able to pick it up by typing TAKE ALL.
+then nothing the player can type will ever refer to it; though they will see it, and even be able to pick it up by typing TAKE ALL.
 
 The reverse property is "publicly-named", which all things and rooms are by default.
 
@@ -11379,7 +11379,7 @@ This phrase sets the multiple object list to the given value. The list is ordina
 ^^{testing commands: comments in transcripts from beta testers}
 ^^{comments: in transcripts from beta testers}
 
-When inspiration strikes the player, he can usually be relied upon to make a good-faith effort to communicate the new idea: he will guess the right command. If he guesses wrongly, the mistake is probably the author's, because a good author will try to anticipate all possible wordings and make all of them work.
+When inspiration strikes the player, they can usually be relied upon to make a good-faith effort to communicate the new idea: they will guess the right command. If they guess wrongly, the mistake is probably the author's, because a good author will try to anticipate all possible wordings and make all of them work.
 
 Nevertheless it is sometimes good practice to nudge the player towards the right wording - particularly if the player has the right idea but is not explicit enough: for instance, typing TALK TO JUDGE when we really want to know what is to be said (JUDGE, GUILTY); or if the player tries something like PLAY CHESS rather than MOVE PAWN TO KING 4. Similarly, if we make a casual reference such as "In your childhood days, you loved sliding in stocking feet across this hallway", a player might type SLIDE IN STOCKING FEET: a nice idea, and which deserves a nice response, even though it asks to do something beyond the scope of the story.
 
@@ -12092,7 +12092,7 @@ The " (providing light)" (note initial space) was added by this activity.
 
 	Before printing the announcement of darkness: now all of the gremlins are in the kitchen.
 
-(c) A special description for occasions when the player has climbed into a container and shut it (so that the darkness is the result of his own actions, rather than some external circumstance):
+(c) A special description for occasions when the player has climbed into a container and shut it (so that the darkness is the result of their own actions, rather than some external circumstance):
 
 	Rule for printing the announcement of darkness when closing a container which contains the player:
 		say "Congratulations: now you can't see a thing." instead.
@@ -12380,7 +12380,7 @@ Note that the object in question can be a room, as in this second example.
 
 (This must, however, also be a mirage, as at time of writing Mr Depp is alive and as well as can be expected following the reviews of "Charlie and the Chocolate Factory".) Note that "place the Ballroom in scope" doesn't just allow the player to talk about the dancers, the chamber musicians and so forth, also allows, say, "EXAMINE BALLROOM". To get one but not the other, use "place the contents of the Ballroom in scope" or "place the Ballroom in scope, but not its contents".
 
-(c) In darkness, the scope of someone is ordinarily restricted to his or her possessions (and body), but we can override that:
+(c) In darkness, the scope of someone is ordinarily restricted to their possessions (and body), but we can override that:
 
 	After deciding the scope of the player while in darkness: place the location in scope.
 
@@ -12575,7 +12575,7 @@ This converts the player's command to text, which is then manipulated by searchi
 
 No matter what rules are written for this activity, it is impossible to use it to allow the action to go ahead even without the item. The activity allows us to change how, or if, an implicit take will happen, but not to change the consequences of failure. (To do that, we would need to say that "The carrying requirements rule does nothing", but this kind of unstitching of the action machinery needs to be done with caution.)
 
-<b>3. Examples.</b> (a) Forbidding implicit takes for certain dangerous items. (This seems especially fair if taking such items might cause death: the player will not wish to be killed on the strength only of our guess as to what he might be intending to do.)
+<b>3. Examples.</b> (a) Forbidding implicit takes for certain dangerous items. (This seems especially fair if taking such items might cause death: the player will not wish to be killed on the strength only of our guess as to what they might be intending to do.)
 
 	Rule for implicitly taking the curare:
 		say "Ordinarily you'd pick up the curare in order to be able to do that, but this seems like a good moment for caution." instead.
@@ -13199,7 +13199,7 @@ To follow the working of this mechanism, we need to be able to predict the outco
 	stop the action; <i>means</i> "end this rule in failure"
 	... instead; <i>means</i> "end this rule in failure"
 
-("Success" and "failure" are technical terms here: they do not mean that the player has or hasn't got what he wanted.) This is why the rule:
+("Success" and "failure" are technical terms here: they do not mean that the player has or hasn't got what they wanted.) This is why the rule:
 
 	Before taking something: say "The sentry won't let you!" instead.
 
@@ -14914,7 +14914,7 @@ Queues typically form when two independent processes are at work, but going at d
 
 	The queue is a list of objects that varies.
 
-(Invariably people, in what follows, but we'll make it a "list of objects" to allow for other possibilities too.) Once we identify a "new customer", we can join him to the queue thus:
+(Invariably people, in what follows, but we'll make it a "list of objects" to allow for other possibilities too.) Once we identify a "new customer", we can join them to the queue thus:
 
 	add the new customer to the queue;
 
@@ -17249,7 +17249,7 @@ However, the Inform project does recognise some extensions as "public". Public e
 
 Writers who wish to make their extensions public on the Inform website should also be clear that by doing so, they are donating their work to the community on the basis of the broadest form of Creative Commons license: that is, they retain copyright and the right to be identified as the author (and as we shall see they are automatically credited in any work of IF which uses their extension), but are giving unlimited permission to use, circulate and republish their extensions in any form, even as part of commercial works (should that arise). To publish a public extension is a public-spirited act, done for only the reward of a modest acknowledgement.
 
-If the author of an extension has not made it public, or indicated in some other way that it is free to be used without the need for permission, then it would be both polite and prudent to check with the author before publishing something which incorporates his work.
+If the author of an extension has not made it public, or indicated in some other way that it is free to be used without the need for permission, then it would be both polite and prudent to check with the author before publishing something which incorporates their work.
 
 [x] The Standard Rules {SRULES}
 
@@ -17278,7 +17278,7 @@ If the file has already been included, then the sentence is simply ignored. This
 ^^{materials folder: project-specific extensions}
 ^^{inform7.com+web+}
 
-To recap: Inform builds projects from both the source text typed by the author and from Extensions; one of these, the Standard Rules, is always included; others are added as authors please. About 20 are "built-in" to Inform, meaning that they are stored inside the application and always available. Others must be "installed", and each Inform user will have a folder somewhere on his computer which contains these. Users typically obtain these from the Public Library feature in the Inform application, but can also download them directly from the extension writer's website and then use an Install Extension menu option in the application. Either way, the application then squirrels the file away, and it becomes available to any projects that that user may be working on.
+To recap: Inform builds projects from both the source text typed by the author and from Extensions; one of these, the Standard Rules, is always included; others are added as authors please. About 20 are "built-in" to Inform, meaning that they are stored inside the application and always available. Others must be "installed", and each Inform user will have a folder somewhere on their computer which contains these. Users typically obtain these from the Public Library feature in the Inform application, but can also download them directly from the extension writer's website and then use an Install Extension menu option in the application. Either way, the application then squirrels the file away, and it becomes available to any projects that that user may be working on.
 
 It is also possible to have extensions available to just one project. These must be stored in the Extensions subfolder of the project's ".materials" folder, but otherwise are arranged the same as installed extensions - there's an outer folder for each author's name, and extensions are named with a ".i7x" extension within. For example:
 
@@ -17297,7 +17297,7 @@ When Inform needs to find an extension, it looks here first, then in the install
 ^^{extensions: writing: author+biblio+}
 ^^{author+biblio+: of an extension}
 
-Extensions are identified by author and by name, so that a given author can produce his or her own range of extensions, and need only ensure that these are named differently from each other. If John Smith and Mary Brown each want to write an extension called "Following People", there is no conflict.
+Extensions are identified by author and by name, so that a given author can produce their own range of extensions, and need only ensure that these are named differently from each other. If John Smith and Mary Brown each want to write an extension called "Following People", there is no conflict.
 
 The name of an extension, and of an author, should be written in Sentence Capitalisation: that is, upper case for the first letter in each word. (Inform uses this to minimise problems on machines where filenames are read with case sensitivity.) It is permitted for author names to include upper-case letters within words, as with the "G" in "^{@Jesse McGrew}". In general it is best to avoid accented or unusual letters in titles and author names, but the standard ISO Latin-1 characters should be allowed - for instance,
 
@@ -17626,7 +17626,7 @@ Note that the paste button, denoted "*:", pastes in the text following it, but o
 
 Extensions often need to define new kinds or properties, which we want to make as helpful as possible for the user. In particular, we want them not to require additional work for the author just to obtain the effect which seems only natural.
 
-For example, consider Inform's built-in "locked" property. If a door is locked, then it cannot be opened, which seems fair enough. But if the player tries to unlock the door, he might then find the following response:
+For example, consider Inform's built-in "locked" property. If a door is locked, then it cannot be opened, which seems fair enough. But if the player tries to unlock the door, they might then find the following response:
 
 	That doesn't seem to be something you can unlock.
 

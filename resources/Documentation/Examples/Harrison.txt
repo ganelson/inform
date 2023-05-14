@@ -2,7 +2,7 @@
 (Smuggler carrying hidden items; Search and Seizure)
 A smuggler who has items, some of which are hidden.
 
-Suppose we want a character who carries hidden objects, but only while he is wearing his jacket. If we deprive him of this, his other possessions become known. Furthermore, if we ever search him, his possessions also become known, and can thereafter be mentioned by us.
+Suppose we want a character who carries hidden objects, but only while they are wearing their jacket. If we deprive them of this, their other possessions become known. Furthermore, if we ever search them, their possessions also become known, and can thereafter be mentioned by us.
 
 	{*}"Search and Seizure"
 
@@ -12,7 +12,7 @@ Suppose we want a character who carries hidden objects, but only while he is wea
 
 	A thing can be discovered or secret. A thing is usually secret.
 	
-Now, we want the character to be able to hide small things if he has some sort of concealing garment on. We also want to be able to see anything that the player has already found once, perhaps by using the >SEARCH PERSON command. So:
+Now, we want the character to be able to hide small things if they have some sort of concealing garment on. We also want to be able to see anything that the player has already found once, perhaps by using the >SEARCH PERSON command. So:
 
 	{**}Rule for deciding the concealed possessions of someone (called the suspect):
 		if the particular possession is discovered, no;

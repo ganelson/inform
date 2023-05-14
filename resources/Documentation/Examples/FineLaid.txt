@@ -2,7 +2,7 @@
 (Redirecting actions to new objects; Fine Laid)
 Making writing that can be separately examined from the paper on which it appears, but which directs all other actions to the paper.
 
-Sometimes it is useful to direct all -- or almost all -- actions from one object to another. For the sake of argument, say we have a sheet of paper with writing on it, and (because we're very meticulous) we want to let the player examine the writing and get a customized response, different from when he just examines the sheet of paper. But for all other purposes -- say, TAKE or TASTE -- we want the two objects to be treated as one.
+Sometimes it is useful to direct all -- or almost all -- actions from one object to another. For the sake of argument, say we have a sheet of paper with writing on it, and (because we're very meticulous) we want to let the player examine the writing and get a customized response, different from when they just examine the sheet of paper. But for all other purposes -- say, TAKE or TASTE -- we want the two objects to be treated as one.
 
 Here, we approach the problem by changing the noun and/or the second noun of the current action, then issuing a new command to "try the current action". Because we've changed the noun and second noun, the "current action" at this point is different from the one generated originally by the player's command.
 

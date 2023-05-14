@@ -47,4 +47,4 @@ This example takes the ordering of grammar lines to its logical extreme, sorting
 	
 	Test me with "use gate / use blower / use nippers / use brush / use apple / remove sombrero / use sombrero".
 
-Whether we actually want a USE action is a subject of some theoretical debate in the IF community. On the one hand, it helps avoid guess-the-verb problems where the player cannot figure out what term to use in order to express a fairly simple idea. On the other, it encourages the player to think that all items have one and exactly one use, rather than getting him to consider the range of possibilities that arise from having a complex vocabulary.
+Whether we actually want a USE action is a subject of some theoretical debate in the IF community. On the one hand, it helps avoid guess-the-verb problems where the player cannot figure out what term to use in order to express a fairly simple idea. On the other, it encourages the player to think that all items have one and exactly one use, rather than getting them to consider the range of possibilities that arise from having a complex vocabulary.

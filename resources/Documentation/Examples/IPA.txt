@@ -1,8 +1,8 @@
 ** The time of day
 (Shops open and close at specific hours; IPA)
-Shops which each have opening and closing hours, so that it is impossible to go in at the wrong times, and the player is kicked out if he overstays his welcome.
+Shops which each have opening and closing hours, so that it is impossible to go in at the wrong times, and the player is kicked out if they overstay their welcome.
 
-Suppose we wanted a game set in a living town, with locations opening and closing at different times of day, and business carrying on as usual. The point might be to force the player to plan his itinerary carefully to hit the right spots at the right times; or we might be writing a more contemplative piece, where part of the enjoyment came from just watching the characters wander around doing their daily business...
+Suppose we wanted a game set in a living town, with locations opening and closing at different times of day, and business carrying on as usual. The point might be to force the player to plan an itinerary carefully to hit the right spots at the right times; or we might be writing a more contemplative piece, where part of the enjoyment came from just watching the characters wander around doing their daily business...
 
 	{*}"IPA"
 

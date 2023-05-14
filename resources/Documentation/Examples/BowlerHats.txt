@@ -15,7 +15,7 @@ Suppose we have a plot that features a number of scripted scenes, where we need 
 	Instead of going somewhere during a restricted scene:	
 		say "Better to stay here for the moment and find out what is going to happen next."
 
-And now let's set up our restricted scene. In it, a clown is going to turn up wherever the player is (it doesn't matter where on the map he's gotten to at this point) and do a performance; the player will not be able to leave the area until the performance completes. We'll start with the setting:
+And now let's set up our restricted scene. In it, a clown is going to turn up wherever the player is (it doesn't matter where on the map they've gotten to at this point) and do a performance; the player will not be able to leave the area until the performance completes. We'll start with the setting:
 	
 	{**}Section 2 - The Stage and Props
 
