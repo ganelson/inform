@@ -4153,7 +4153,7 @@ recognises an existing value: it doesn't parse a new one.
 	return r;
 ];
 [ TEXT_TY_ROGPRI txt
-	pos len wa wl wpos bdm ch own;
+	pos len wa wl wpos wach bdm ch own;
 	bdm = true; own = wn;
 	len = BlkValueLBCapacity(txt);
 	for (pos=0: pos<=len: pos++) {
@@ -4171,7 +4171,12 @@ recognises an existing value: it doesn't parse a new one.
 				wl = WordLength(wn-1);
 				wpos = 0;
 			}
-			if (wa->wpos ~= ch or TEXT_TY_RevCase(ch)) return GPR_FAIL;
+			#Ifdef TARGET_ZCODE;
+			wach = wa->wpos;
+			#Ifnot; ! TARGET_GLULX
+			wach = wa-->wpos;
+			#Endif; ! TARGET_
+			if (wach ~= ch or TEXT_TY_RevCase(ch)) return GPR_FAIL;
 			wpos++;
 		}
 	}
