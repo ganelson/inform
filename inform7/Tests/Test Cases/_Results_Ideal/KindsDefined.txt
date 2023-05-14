@@ -1,0 +1,21 @@
+   Castle Zenda
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Castle Zenda
+  You can see Arggg, three centaurs and Jira here.
+  
+> >   Castle Zenda
+  (Testing.)
+  
+  >[1] attack arggg
+  Boldly, you declare: "Ho, Arggg! I see your strength 5!" It begins pummeling its green fists.
+  
+  >[2] attack centaur
+  Boldly, you declare: "Ho, centaur! I see your strength 9!" It begins kicking its hooves.
+  
+  >[3] attack jira
+  Boldly, you declare: "Ho, Jira! I see your strength 2!" It begins slapping its feeble arms.
+  
+> >
