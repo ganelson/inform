@@ -428,7 +428,11 @@ Global test_sp = 0;
 	        	if ((p->i == '[') && (p->(i+1) == '/') && (p->(i+2) == ']')) {
 	        		ch = '/'; i = i+2;
 	        	}
+	            #ifdef TARGET_ZCODE;
 	            a_buffer->(j+WORDSIZE) = ch;
+	            #ifnot; ! TARGET_GLULX
+	            a_buffer-->(j+1) = ch;
+	            #endif;
 	            print (char) ch;
 	            i++; j++;
 	            spaced = true;
