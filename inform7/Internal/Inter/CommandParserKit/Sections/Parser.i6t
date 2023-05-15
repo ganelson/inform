@@ -279,7 +279,7 @@ $$ C = 100 + N $$
 	buffer->1 = at+i;
 	for (:at+i<INPUT_BUFFER_LEN:i++) buffer->(at+i) = ' ';
 	#ifnot;
-	for (i=0: (i<newlen) && (at+i<INPUT_BUFFER_LEN): i++) buffer-->(at+i) = buffer2-->(WORDSIZE+i);
+	for (i=0: (i<newlen) && (at+i<INPUT_BUFFER_LEN): i++) buffer-->(at+i) = buffer2-->(1+i);
 	buffer-->0 = at+i;
 	for (:at+i<INPUT_BUFFER_LEN:i++) buffer-->(at+i) = ' ';
 	#endif;
