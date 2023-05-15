@@ -1,14 +1,14 @@
    Experimentation Chamber
   Robo
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Experimentation Chamber
-  Robo, your prototype tin companion, stands awkwardly beside you. In the middle of his chest is a red enamel button, currently un-depressed.
+  Robo, your prototype tin companion, stands awkwardly beside you. In the middle of its chest is a red enamel button, currently un-depressed.
   
   You can also see a red block and a blue cylinder here.
   
-  Robo watches you looking. In his metal head, gears whirr.
+  Robo watches you looking. In its metal head, gears whirr.
   
 > >   Experimentation Chamber
   (Testing.)
@@ -19,7 +19,7 @@
   Time passes.
   
   >[2] take cylinder
-  Robo watches you taking the blue cylinder, his brushed-copper handlebar moustaches twitching.
+  Robo watches you taking the blue cylinder, its brushed-copper handlebar moustaches twitching.
   
   Taken.
   
@@ -29,32 +29,32 @@
   Taken.
   
   >[4] put cylinder on counter
-  Robo watches you putting the blue cylinder on the counter, his brushed-copper handlebar moustaches twitching.
+  Robo watches you putting the blue cylinder on the counter, its brushed-copper handlebar moustaches twitching.
   
   You put the blue cylinder on the counter.
   
   >[5] put block on counter
-  Robo watches you putting the red block on the counter, his yellow eyes lamp-like and observant.
+  Robo watches you putting the red block on the counter, its yellow eyes lamp-like and observant.
   
   You put the red block on the counter.
   
   >[6] x robo
   You see nothing special about Robo.
   
-  Robo watches you examining Robo, his brushed-copper handlebar moustaches twitching.
+  Robo watches you examining Robo, its brushed-copper handlebar moustaches twitching.
   
   >[7] x me
   As good-looking as ever.
   
-  Robo watches you examining yourself, his yellow eyes lamp-like and observant.
+  Robo watches you examining yourself, its yellow eyes lamp-like and observant.
   
   >[8] get block
-  Robo watches you taking the red block, his brushed-copper handlebar moustaches twitching.
+  Robo watches you taking the red block, its brushed-copper handlebar moustaches twitching.
   
   Taken.
   
   >[9] drop block
-  Robo watches you dropping the red block, his yellow eyes lamp-like and observant.
+  Robo watches you dropping the red block, its yellow eyes lamp-like and observant.
   
   Dropped.
   
@@ -71,7 +71,7 @@
   >[12] z
   Time passes.
   
-  Robo needs several attempts to get his metal fingers around the blue cylinder -- they are not designed for grasping small objects elegantly. But at last he succeeds.
+  Robo needs several attempts to get its metal fingers around the blue cylinder -- they are not designed for grasping small objects elegantly. But at last it succeeds.
   
   >[13] z
   Time passes.
@@ -91,7 +91,7 @@
   >[16] z
   Time passes.
   
-  Robo examines each of his hands in turn, then each of his legs (bending over mostly double in the middle to do this).
+  Robo examines each of its hands in turn, then each of his legs (bending over mostly double in the middle to do this).
   
   >[17] z
   Time passes.
