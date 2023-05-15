@@ -607,12 +607,15 @@ Get the input, do OOPS and AGAIN.
             ! in which we have just realised that it must occur:
             ! prevents an infinite loop on "i. again"
 
+            #Ifdef TARGET_ZCODE;
             i = WordAddress(wn-2)-buffer;
             if (wn > num_words) j = INPUT_BUFFER_LEN-1;
             else j = WordAddress(wn)-buffer;
-            #Ifdef TARGET_ZCODE;
             for (: i<j : i++) buffer3->i = ' ';
             #Ifnot; ! TARGET_GLULX
+            i = (WordAddress(wn-2)-buffer) / WORDSIZE;
+            if (wn > num_words) j = INPUT_BUFFER_LEN-1;
+            else j = (WordAddress(wn)-buffer) / WORDSIZE;
             for (: i<j : i++) buffer3-->i = ' ';
             #Endif; ! TARGET_
         }
