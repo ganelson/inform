@@ -936,7 +936,7 @@ These variations are also covered in the Understanding chapter. If the action ne
 
 We may also need to modify reach or light levels (see Changing reachability and Changing visibility in the Advanced Actions chapter), or rely on the Deciding the scope of... activity. 
 
-As for guessing the player's intention when the command isn't clear, we may want to consult the Does the player mean rules (to help Inform make guesses between multiple possible targets) and the activities Supplying a missing noun and Supplying a missing second noun (to help Inform guess an appropriate item when the player leaves something entirely out of his command). For instance, if the player typed SHOOT HENRY, it is the supplying a missing noun/second noun activity that would allow us to make Inform draw the obvious conclusion that they shoot Henry with the pistol they are carrying. The Does the player mean rules are discussed in the chapter on Advanced Actions; the activities in the Activities chapter.
+As for guessing the player's intention when a command isn't clear, we may want to consult the Does the player mean rules (to help Inform make guesses between multiple possible targets) and the activities Supplying a missing noun and Supplying a missing second noun (to help Inform guess an appropriate item when the player leaves something entirely out of his command). For instance, if the player typed SHOOT HENRY, it is the supplying a missing noun/second noun activity that would allow us to make Inform draw the obvious conclusion that they shoot Henry with the pistol they are carrying. The Does the player mean rules are discussed in the chapter on Advanced Actions; the activities in the Activities chapter.
 
 Next we need to define our new action, as in
 

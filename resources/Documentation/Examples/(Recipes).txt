@@ -96,7 +96,7 @@ Appraisal == OMIT
 	Maze with randomized room links
 	Carousel Room from which exits lead to random locations
 	Exits added to a room
-	Map rearranged as player wanders so they findxo rooms in order
+	Map rearranged as player wanders so they find rooms in order
 	Compass directions renamed
 	A hexagonal map grid for movement
 	
