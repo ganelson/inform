@@ -150,17 +150,17 @@ Section 3 (for Glulx only)
 Include (-
 
 [ BufferOut i;   
-	for (i = WORDSIZE : i <= (buffer-->0)+(WORDSIZE-1) : i++)
+	for (i = 1 : i <= (buffer-->0) : i++)
 	{  
-		print (char) (buffer->i);
+		print (char) (buffer-->i);
 	} 
 ];
 
 [ PunctuationStripping i;
-	for (i = WORDSIZE : i <= (buffer-->0)+(WORDSIZE-1) : i++)
+	for (i = 1 : i <= (buffer-->0) : i++)
 	{ 
-		if ((buffer->i) == '"' or '?' or '!') 
-		{	buffer->i = ' ';  
+		if ((buffer-->i) == '"' or '?' or '!') 
+		{	buffer-->i = ' ';  
 		}
 	}
 	VM_Tokenise(buffer, parse);
@@ -172,18 +172,18 @@ Include (-
 Include (-
 
 [ SingleQuoteStripping i;
-	for (i = WORDSIZE : i <= (buffer-->0)+(WORDSIZE-1) : i++)	{ 
-		if ((buffer->i) == 39) 
-		{	buffer->i = ' ';  
+	for (i = 1 : i <= (buffer-->0) : i++)	{ 
+		if ((buffer-->i) == 39) 
+		{	buffer-->i = ' ';  
 		}
 	}
 	VM_Tokenise(buffer, parse);
 ];
 
 [ QuoteStripping i;
-	for (i = WORDSIZE : i <= (buffer-->0)+(WORDSIZE-1) : i++)	{ 
-		if ((buffer->i) == '"') 
-		{	buffer->i = ' ';  
+	for (i = 1 : i <= (buffer-->0) : i++)	{ 
+		if ((buffer-->i) == '"') 
+		{	buffer-->i = ' ';  
 		}
 	}
 	VM_Tokenise(buffer, parse);
@@ -194,10 +194,10 @@ Include (-
 Include (-
 
 [ QuestionStripping i;
-	for (i = WORDSIZE : i <= (buffer-->0)+(WORDSIZE-1) : i++)
+	for (i = 1 : i <= (buffer-->0) : i++)
 	{ 
-		if ((buffer->i) == '?') 
-		{	buffer->i = ' ';  
+		if ((buffer-->i) == '?') 
+		{	buffer-->i = ' ';  
 		}
 	}
 	VM_Tokenise(buffer, parse);
@@ -208,10 +208,10 @@ Include (-
 Include (-
 
 [ ExclamationStripping i;
-	for (i = WORDSIZE : i <= (buffer-->0)+(WORDSIZE-1) : i++)
+	for (i = 1 : i <= (buffer-->0) : i++)
 	{ 
-		if ((buffer->i) == '!') 
-		{	buffer->i = ' ';  
+		if ((buffer-->i) == '!') 
+		{	buffer-->i = ' ';  
 		}
 	}
 	VM_Tokenise(buffer, parse);
@@ -222,10 +222,10 @@ Include (-
 Include (-
 
 [ PeriodStripping i j;
-	for (i = WORDSIZE : i <= (buffer-->0)+(WORDSIZE-1) : i++)
+	for (i = 1 : i <= (buffer-->0) : i++)
 	{ 
-		if ((buffer->i) == '.') 
-		{	buffer->i = ' ';  
+		if ((buffer-->i) == '.') 
+		{	buffer-->i = ' ';  
 		}
 	}
 	VM_Tokenise(buffer, parse);
