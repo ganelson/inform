@@ -179,23 +179,18 @@ compiler (assuming we will be using that) to raise some limit. This is done with
 ICL ("Inform Control Language") instructions: see the Inform 6 Designer's Manual
 for details of these. Any other code-generator can ignore these pragmas.
 
-Note that not every VM allows |MAX_LOCAL_VARIABLES| to be raised; if the current
-one doesn't, that's not an error; it's just a pragma we suppress.
-
 @<Compile pragmas from use options which set these@> =
 	target_pragma_setting *tps;
 	LOOP_OVER(tps, target_pragma_setting)
 		Emit::pragma(tps->target, tps->content);
 	i6_memory_setting *ms;
-	LOOP_OVER(ms, i6_memory_setting) {
-		if ((Str::eq(ms->ICL_identifier, I"MAX_LOCAL_VARIABLES")) &&
-			(TargetVMs::allow_MAX_LOCAL_VARIABLES(Task::vm()) == FALSE))
-			continue;
-		TEMPORARY_TEXT(prag)
-		WRITE_TO(prag, "$%S=%d", ms->ICL_identifier, ms->number);
-		Emit::pragma(I"Inform6", prag);
-		DISCARD_TEXT(prag)
-	}
+	LOOP_OVER(ms, i6_memory_setting)
+		if (TargetVMs::allow_memory_setting(Task::vm(), ms->ICL_identifier)) {
+			TEMPORARY_TEXT(prag)
+			WRITE_TO(prag, "$%S=%d", ms->ICL_identifier, ms->number);
+			Emit::pragma(I"Inform6", prag);
+			DISCARD_TEXT(prag)
+		}
 	
 @ A few kit configuration values cannot be set with use options, and are
 hard-wired into the compiler:
