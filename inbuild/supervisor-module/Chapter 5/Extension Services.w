@@ -171,7 +171,7 @@ by the local |\n| for good measure.
 
 @<Read the titling line of the extension and normalise its casing@> =
 	int c;
-	while ((c = TextFiles::utf8_fgetc(EXTF, NULL, FALSE, NULL)) != EOF) {
+	while ((c = TextFiles::utf8_fgetc(EXTF, NULL, NULL)) != EOF) {
 		if (c == 0xFEFF) continue; /* skip the optional Unicode BOM pseudo-character */
 		if ((c == '\x0a') || (c == '\x0d') || (c == '\n')) break;
 		PUT_TO(titling_line, c);
@@ -188,7 +188,7 @@ thing we read here is a meaningless |0D|.
 
 @<Read the rubric text, if any is present@> =
 	int c, found_start = FALSE;
-	while ((c = TextFiles::utf8_fgetc(EXTF, NULL, FALSE, NULL)) != EOF) {
+	while ((c = TextFiles::utf8_fgetc(EXTF, NULL, NULL)) != EOF) {
 		if ((c == '\x0a') || (c == '\x0d') || (c == '\n') || (c == '\t')) c = ' ';
 		if ((c != ' ') && (found_start == FALSE)) {
 			if (c == '"') found_start = TRUE;

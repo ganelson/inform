@@ -43,8 +43,11 @@ source_file *SourceText::read_file(inbuild_copy *C, filename *F, text_stream *sy
 	if (handle) {
 		text_stream *leaf = Filenames::get_leafname(F);
 		if (primary) leaf = I"main source text";
+		int mode = UNICODE_UFBHM;
+		target_vm *vm = Supervisor::current_vm();
+		if (TargetVMs::is_16_bit(vm)) mode = ZSCII_UFBHM;
 		sf = TextFromFiles::feed_open_file_into_lexer(F, handle,
-			leaf, documentation_only, ref);
+			leaf, documentation_only, ref, mode);
 		if (sf == NULL) {
 			Copies::attach_error(C, CopyErrors::new_F(OPEN_FAILED_CE, -1, F));
 		} else {

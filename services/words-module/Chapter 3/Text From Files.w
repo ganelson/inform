@@ -31,7 +31,7 @@ instance, so they are not similarly converted.
 
 =
 source_file *TextFromFiles::feed_open_file_into_lexer(filename *F, FILE *handle,
-	text_stream *leaf, int documentation_only, general_pointer ref) {
+	text_stream *leaf, int documentation_only, general_pointer ref, int mode) {
 	source_file *sf = CREATE(source_file);
 	sf->words_of_source = 0;
 	sf->words_of_quoted_text = 0;
@@ -41,7 +41,7 @@ source_file *TextFromFiles::feed_open_file_into_lexer(filename *F, FILE *handle,
 	source_location top_of_file;
 	int cr, last_cr, next_cr, read_cr, newline_char = 0;
 
-	unicode_file_buffer ufb = TextFiles::create_ufb();
+	unicode_file_buffer ufb = TextFiles::create_filtered_ufb(mode);
 
 	top_of_file.file_of_origin = sf;
 	top_of_file.line_number = 1;
@@ -49,10 +49,10 @@ source_file *TextFromFiles::feed_open_file_into_lexer(filename *F, FILE *handle,
 	Lexer::feed_begins(top_of_file);
 	if (documentation_only) lexer_wait_for_dashes = TRUE;
 
-	last_cr = ' '; cr = ' '; next_cr = TextFiles::utf8_fgetc(sf->handle, NULL, TRUE, &ufb);
-	if (next_cr == 0xFEFF) next_cr = TextFiles::utf8_fgetc(sf->handle, NULL, TRUE, &ufb); /* Unicode BOM code */
+	last_cr = ' '; cr = ' '; next_cr = TextFiles::utf8_fgetc(sf->handle, NULL, &ufb);
+	if (next_cr == 0xFEFF) next_cr = TextFiles::utf8_fgetc(sf->handle, NULL, &ufb); /* Unicode BOM code */
 	if (next_cr != EOF)
-		while (((read_cr = TextFiles::utf8_fgetc(sf->handle, NULL, TRUE, &ufb)), next_cr) != EOF) {
+		while (((read_cr = TextFiles::utf8_fgetc(sf->handle, NULL, &ufb)), next_cr) != EOF) {
 			last_cr = cr; cr = next_cr; next_cr = read_cr;
 			switch(cr) {
 				case '\x0a':
@@ -94,7 +94,7 @@ source_file *TextFromFiles::feed_into_lexer(filename *F, general_pointer ref) {
 	FILE *handle = Filenames::fopen(F, "r");
 	if (handle == NULL) return NULL;
 	source_file *sf = TextFromFiles::feed_open_file_into_lexer(F, handle,
-		Filenames::get_leafname(F), FALSE, ref);
+		Filenames::get_leafname(F), FALSE, ref, UNICODE_UFBHM);
 	fclose(handle);
 	return sf;
 }
