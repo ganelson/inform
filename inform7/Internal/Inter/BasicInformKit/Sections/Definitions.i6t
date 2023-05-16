@@ -88,13 +88,14 @@ Constant ROM_COMPVERSION      = $30;     ! four ASCII characters
 Constant ROM_GAMERELEASE      = $34;     ! short word
 Constant ROM_GAMESERIAL       = $36;     ! six ASCII characters
 
-!#### wrong place to set DICT_WORD_SIZE
+! The following constants describe the layout of a dictionary word entry.
+! I6 allows us to change DICT_WORD_SIZE with a compiler setting, but I7
+! currently does not.
+
 Constant DICT_WORD_SIZE = 9;
 Constant DICT_ENTRY_BYTES = 12+DICT_WORD_SIZE*WORDSIZE;
-
-!#### #dict_parX should depend on DICT_WORD_SIZE
-Constant #dict_par1 = 11;
-Constant #dict_par2 = 13;
+Constant #dict_par1 = DICT_WORD_SIZE*WORDSIZE+4+1;
+Constant #dict_par2 = DICT_WORD_SIZE*WORDSIZE+4+3;
 
 #Endif;
 
