@@ -35,11 +35,12 @@ the player types either of these:
 	==> { fail nonterminal };
 }
 
-@ And here is the range check:
+@ And here is the range check. Values above |MAX_UNICODE_CODE_POINT| are
+permitted, but need to be specified numerically.
 
 =
 int UnicodeLiterals::max(int cc) {
-	if ((cc < 0) || (cc >= MAX_UNICODE_CODE_POINT)) {
+	if (cc < 0) {
 		@<Issue PM_UnicodeOutOfRange@>;
 		return 65;
 	}

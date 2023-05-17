@@ -1187,7 +1187,7 @@ the whole thing goes into |bibliographic_sentence| and |bracketed| is empty.
 
 @<Capture the opening sentence and its bracketed part@> =
 	int c, commented = FALSE, quoted = FALSE, rounded = FALSE, content_found = FALSE;
-	while ((c = TextFiles::utf8_fgetc(SF, NULL, FALSE, NULL)) != EOF) {
+	while ((c = TextFiles::utf8_fgetc(SF, NULL, NULL)) != EOF) {
 		if (c == 0xFEFF) continue; /* skip the optional Unicode BOM pseudo-character */
 		if (commented) {
 			if (c == ']') commented = FALSE;

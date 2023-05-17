@@ -102,12 +102,13 @@ the player types either of these:
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1.  </b>And here is the range check:
+<p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1.  </b>And here is the range check. Values above <span class="extract"><span class="Preform-extract-syntax">MAX_UNICODE_CODE_POINT</span></span> are
+permitted, but need to be specified numerically.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">UnicodeLiterals::max</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">UnicodeLiterals::max</span></span>:<br/><a href="3-ul.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cc</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">cc</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">cc</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">MAX_UNICODE_CODE_POINT</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cc</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-ul.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph">Issue PM_UnicodeOutOfRange</span><span class="named-paragraph-number">1.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">65</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
