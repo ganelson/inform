@@ -1,0 +1,26 @@
+
+
+
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Kitchen
+You can see a rock here.
+
+>(Testing.)
+
+>[1] please go away
+Please do not say please.
+
+>[2] now excuse me
+You jump on the spot.
+
+>[3] examine element 12
+Matched "element 12" in "examine element 12"...
+... now "examine ⠗⠕⠉⠅"...
+
+It's a rock.
+
+>Are you sure you want to quit? 
