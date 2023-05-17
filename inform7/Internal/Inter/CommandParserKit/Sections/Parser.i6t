@@ -2541,8 +2541,8 @@ because we want to allow duplicates).
             ! parse2-->1 now holds the dictionary address of the word to glue in.
 
             if (parse2-->1 ~= 0) {
-                k = buffer + i;
                 #Ifdef TARGET_ZCODE;
+                k = buffer + i;
                 @output_stream 3 k;
                  print (address) parse2-->1;
                 @output_stream -3;
@@ -2551,7 +2551,7 @@ because we want to allow duplicates).
                 i = i + k; buffer->1 = i-2;
                 #Ifnot; ! TARGET_GLULX
                 k = Glulx_PrintAnyToArrayUni(buffer+WORDSIZE*i, INPUT_BUFFER_LEN-i, parse2-->1);
-                i = i + k; buffer-->0 = i - WORDSIZE;
+                i = i + k; buffer-->0 = i - 1;
                 #Endif; ! TARGET_
             }
         }
