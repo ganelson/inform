@@ -56,6 +56,14 @@ void i7_default_glk(i7process_t *proc, i7word_t selector, i7word_t varargc, i7wo
 			rv = i7_miniglk_char_to_lower(proc, a[0]); break;
 		case i7_glk_char_to_upper:
 			rv = i7_miniglk_char_to_upper(proc, a[0]); break;
+		case i7_glk_buffer_to_lower_case_uni:
+			for (int pos=0; pos<a[2]; pos++) {
+				i7word_t c = i7_read_word(proc, a[0], pos);
+				i7_write_word(proc, a[0], pos, i7_miniglk_char_to_lower(proc, c));
+			}
+			rv = a[2]; break;
+		case i7_glk_buffer_canon_normalize_uni:
+			rv = a[2]; break; /* Ignore this one */
 
 		/* File handling */
 		case i7_glk_fileref_create_by_name:
