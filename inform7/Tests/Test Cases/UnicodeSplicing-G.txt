@@ -17,4 +17,4 @@ After reading a command:
 
 Understand "⠚⠥⠍⠏" as jumping.
 
-Test me with "please go away / now excuse me / examine element 12".
+Test me with "please go away / now excuse me / examine element 12 / get ⠗⠕⠅ / oops ⠗⠕⠉⠅".

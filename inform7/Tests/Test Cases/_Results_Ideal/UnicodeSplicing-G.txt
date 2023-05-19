@@ -23,4 +23,10 @@ Matched "element 12" in "examine element 12"...
 
 It's a rock.
 
+>[4] get ⠗⠕⠅
+You can't see any such thing.
+
+>[5] oops ⠗⠕⠉⠅
+Taken.
+
 >Are you sure you want to quit? 
