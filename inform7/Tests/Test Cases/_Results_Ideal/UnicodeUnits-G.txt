@@ -26,4 +26,25 @@ You count 100.0 €.
 >[5] count 34x10^-1€
 You count 3.4 €.
 
+>[6] resist 1Ω
+The resistance is 1.0Ω.
+
+>[7] resist 2000mΩ
+The resistance is 2.0Ω.
+
+>[8] resist 1mΩ
+The resistance is 1.0mΩ.
+
+>[9] resist 1000μΩ
+The resistance is 1.0mΩ.
+
+>[10] resist 0.3mΩ
+The resistance is 300.0μΩ, which is useless.
+
+>[11] resist 300μΩ
+The resistance is 300.0μΩ, which is useless.
+
+>[12] resist 2μΩ
+The resistance is 2.0μΩ, which is useless.
+
 >Are you sure you want to quit? 
