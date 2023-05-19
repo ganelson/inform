@@ -1,4 +1,4 @@
-Version 5 of Punctuation Removal by Emily Short begins here.
+Version 6 of Punctuation Removal by Emily Short begins here.
 
 Use authorial modesty.
 
