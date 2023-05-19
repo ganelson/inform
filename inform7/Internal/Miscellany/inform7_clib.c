@@ -1163,6 +1163,14 @@ void i7_default_glk(i7process_t *proc, i7word_t selector, i7word_t varargc, i7wo
 			rv = i7_miniglk_char_to_lower(proc, a[0]); break;
 		case i7_glk_char_to_upper:
 			rv = i7_miniglk_char_to_upper(proc, a[0]); break;
+		case i7_glk_buffer_to_lower_case_uni:
+			for (int pos=0; pos<a[2]; pos++) {
+				i7word_t c = i7_read_word(proc, a[0], pos);
+				i7_write_word(proc, a[0], pos, i7_miniglk_char_to_lower(proc, c));
+			}
+			rv = a[2]; break;
+		case i7_glk_buffer_canon_normalize_uni:
+			rv = a[2]; break; /* Ignore this one */
 
 		/* File handling */
 		case i7_glk_fileref_create_by_name:
@@ -1211,6 +1219,8 @@ void i7_default_glk(i7process_t *proc, i7word_t selector, i7word_t varargc, i7wo
 		/* Event handling */
 		case i7_glk_request_line_event:
 			rv = i7_miniglk_request_line_event(proc, a[0], a[1], a[2], a[3]); break;
+		case i7_glk_request_line_event_uni:
+			rv = i7_miniglk_request_line_event_uni(proc, a[0], a[1], a[2], a[3]); break;
 		case i7_glk_select:
 			rv = i7_miniglk_select(proc, a[0]); break;
 
@@ -1707,6 +1717,33 @@ i7word_t i7_miniglk_request_line_event(i7process_t *proc, i7word_t window_id,
 	}
 	if (pos < max_len) i7_write_byte(proc, buffer + pos, 0);
 	else i7_write_byte(proc, buffer + max_len-1, 0);
+	e.val1 = pos;
+	i7_mg_add_event_to_buffer(proc, e);
+	if (proc->miniglk->no_line_events++ == 1000) {
+		fprintf(stdout, "[Too many line events: terminating to prevent hang]\n");
+		exit(0);
+	}
+	return 0;
+}
+
+i7word_t i7_miniglk_request_line_event_uni(i7process_t *proc, i7word_t window_id,
+	i7word_t buffer, i7word_t max_len, i7word_t init_len) {
+	i7_mg_event_t e;
+	e.type = i7_evtype_LineInput;
+	e.win_id = window_id;
+	e.val1 = 1;
+	e.val2 = 0;
+	wchar_t c; int pos = init_len;
+	if (proc->sender == NULL) i7_benign_exit(proc);
+	char *s = (proc->sender)(proc->send_count++);
+	int i = 0;
+	while (1) {
+		c = s[i++];
+		if ((c == EOF) || (c == 0) || (c == '\n') || (c == '\r')) break;
+		if (pos < max_len) i7_write_word(proc, buffer, pos++, c);
+	}
+	if (pos < max_len) i7_write_word(proc, buffer, pos, 0);
+	else i7_write_word(proc, buffer, max_len-1, 0);
 	e.val1 = pos;
 	i7_mg_add_event_to_buffer(proc, e);
 	if (proc->miniglk->no_line_events++ == 1000) {
