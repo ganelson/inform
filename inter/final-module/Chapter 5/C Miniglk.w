@@ -95,6 +95,15 @@ void i7_default_glk(i7process_t *proc, i7word_t selector, i7word_t varargc, i7wo
 			i7_miniglk_put_char_stream(proc, a[0], a[1]); break;
 		case i7_glk_get_char_stream:
 			rv = i7_miniglk_get_char_stream(proc, a[0]); break;
+		case i7_glk_put_buffer_uni:
+			{
+				i7word_t str = i7_miniglk_stream_get_current(proc);
+				for (int pos=0; pos<a[1]; pos++) {
+					i7word_t c = i7_read_word(proc, a[0], pos);
+					i7_miniglk_put_char_stream(proc, str, c);
+				}
+			}
+			rv = 0; break;
 		/* And we ignore: */
 		case i7_glk_stream_iterate: rv = 0; break;
 
