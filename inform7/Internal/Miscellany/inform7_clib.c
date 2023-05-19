@@ -809,7 +809,7 @@ char *i7_text_to_C_string(i7word_t str) {
 }
 void i7_print_dword(i7process_t *proc, i7word_t at) {
 	for (i7byte_t i=1; i<=9; i++) {
-		i7byte_t c = i7_read_byte(proc, at+i);
+		i7word_t c = i7_read_word(proc, at, i);
 		if (c == 0) break;
 		i7_print_char(proc, c);
 	}
