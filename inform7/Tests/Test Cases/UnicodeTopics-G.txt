@@ -16,6 +16,4 @@ topic	answer
 "αθηνα"	"the goddess Athena"
 "водяно́й"	"the vodyanoi, a water spirit"
 
-[### the vodyanoi case does not currently work]
-
-Test me with "ask fred about nothing / ask Frəd about cheese / ask fred about Dück / ask fred about dück / ask fred about αθηνα / ask fred about Αθηνα".
+Test me with "ask fred about nothing / ask Frəd about cheese / ask fred about Dück / ask fred about dück / ask fred about αθηνα / ask fred about Αθηνα / ask fred about водяно́й".

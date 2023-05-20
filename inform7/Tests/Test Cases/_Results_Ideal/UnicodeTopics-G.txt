@@ -29,4 +29,7 @@ Fred explains that αθηνα is the goddess Athena.
 >[6] ask fred about Αθηνα
 Fred explains that Αθηνα is the goddess Athena.
 
+>[7] ask fred about водяно́й
+Fred explains that водяно́й is the vodyanoi, a water spirit.
+
 >Are you sure you want to quit? 
