@@ -144,7 +144,7 @@ just in case some generators are opting to align word arrays in memory.
 	for (int i=0; i<9; i++) {
 		int c = 0;
 		if (i < Str::len(dw->text)) c = (int) Str::get_at(dw->text, i);
-		VanillaIF::byte_entry(gen, ((c & 0xFF000000) >> 24));
+		VanillaIF::byte_entry(gen, (((unsigned int)c & 0xFF000000) >> 24));
 		VanillaIF::byte_entry(gen, ((c & 0x00FF0000) >> 16));
 		VanillaIF::byte_entry(gen, ((c & 0x0000FF00) >> 8));
 		VanillaIF::byte_entry(gen, (c & 0x000000FF));
