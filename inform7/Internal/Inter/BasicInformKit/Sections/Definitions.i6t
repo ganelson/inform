@@ -90,12 +90,7 @@ Constant ROM_GAMESERIAL       = $36;     ! six ASCII characters
 
 ! The following constants describe the layout of a dictionary word entry.
 ! The math is copied from the I6 compiler.
-!
-! I6 allows us to change DICT_WORD_SIZE with a compiler setting, but I7
-! currently does not understand this. (If you try, Inter complains about a
-! second definition of DICT_WORD_SIZE.)
 
-Constant DICT_WORD_SIZE = 9;
 Constant DICT_ENTRY_BYTES = 12+DICT_WORD_SIZE*WORDSIZE;
 Constant #dict_par1 = DICT_WORD_SIZE*WORDSIZE+4+1;
 Constant #dict_par2 = DICT_WORD_SIZE*WORDSIZE+4+3;
