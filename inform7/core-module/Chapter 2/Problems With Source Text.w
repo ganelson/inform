@@ -62,6 +62,13 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 					"which I don't recognise (which is not fine). Specifically, %2.");
 				Problems::issue_problem_end();
 				break;
+			case PROJECT_MALFORMED_CE:
+				Problems::quote_stream(1, CE->details);
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+				Problems::issue_problem_segment(
+					"This project seems to be malformed. Specifically, %1.");
+				Problems::issue_problem_end();
+				break;
 			case METADATA_MALFORMED_CE:
 				if (CE->copy->found_by) {
 					Problems::quote_work(1, CE->copy->found_by->work);
