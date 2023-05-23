@@ -244,14 +244,35 @@ allowed to contain this word, so "North By Northwest By Cary Grant" is
 not a situation we need to contend with.
 
 @<Divide the remaining text into a claimed author name and title, divided by By@> =
-	if (Regexp::match(&mr, titling_line, L"(%c*?) By (%c*)")) {
-		Str::copy(claimed_title, mr.exp[0]);
-		Str::copy(claimed_author_name, mr.exp[1]);
-	} else {
-		Str::copy(claimed_title, titling_line);
+	int quote_found = FALSE, brackets_underflowed = FALSE, brackets_in_author = FALSE;
+	int which = 1, bl = 0;
+	for (int i=0; i<Str::len(titling_line); i++) {
+		wchar_t c = Str::get_at(titling_line, i);
+		if (c == '(') { bl++; if (which == 2) brackets_in_author = TRUE; }
+		if (c == ')') { bl--; if (bl < 0) brackets_underflowed = TRUE; }
+		if (c == '\"') quote_found = TRUE;
+		if ((bl == 0) && (Str::includes_at(titling_line, i, I" By "))) {
+			if (which == 1) {
+				i += 3;
+				which = 2;
+				continue;
+			}
+		}
+		if (which == 1) PUT_TO(claimed_title, c);
+		else PUT_TO(claimed_author_name, c);
+	}
+	if ((bl != 0) || (brackets_underflowed))
+		Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1,
+			I"brackets '(' and ')' are used in an unbalanced way in the titling line"));
+	else if (brackets_in_author)
+		Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1,
+			I"brackets '(' and ')' are used as part of the author name in the titling line"));
+	if (quote_found)
+		Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1,
+			I"the titling line includes a double-quotation mark"));
+	if (which == 1)
 		Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1,
 			I"the titling line does not give both author and title"));
-	}
 
 @ Similarly, extension titles are not allowed to contain parentheses, so
 this is unambiguous.
