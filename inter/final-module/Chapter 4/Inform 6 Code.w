@@ -182,7 +182,7 @@ void I6TargetCode::evaluate_label(code_generator *gtr, code_generation *gen,
 void I6TargetCode::origsource(code_generator *gtr, code_generation *gen,
 	text_provenance *source_loc) {
 	text_stream *OUT = CodeGen::current(gen);
-	if (source_loc->textual_filename) {
+	if (source_loc->textual_filename && Str::len(source_loc->textual_filename) > 0) {
 		WRITE("#OrigSource ");
 		/* We use compile_literal_text() to avoid literal quotes in the filename. This will probably cause trouble but the I6 will be valid. */
 		Generators::compile_literal_text(gen, source_loc->textual_filename, TRUE);

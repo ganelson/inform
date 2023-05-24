@@ -48,6 +48,10 @@ void CompileBlocksAndLines::full_definition_body(int statement_count, parse_node
 	int allow_implied_newlines) {
 	source_location last_loc = Lexer::as_if_from_nowhere();
 	CompileBlocksAndLines::code_block(statement_count, body, TRUE, allow_implied_newlines, &last_loc);
+	if (last_loc.file_of_origin) {
+		last_loc = Lexer::as_if_from_nowhere();
+		EmitCode::origsource(&last_loc);
+	}
 }
 
 @ See //words: Nonterminals// for an explanation of what it means for a nonterminal
