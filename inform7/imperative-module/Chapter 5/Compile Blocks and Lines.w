@@ -46,7 +46,8 @@ always hangs from a single top-level |CODE_BLOCK_NT|.
 =
 void CompileBlocksAndLines::full_definition_body(int statement_count, parse_node *body,
 	int allow_implied_newlines) {
-	CompileBlocksAndLines::code_block(statement_count, body, TRUE, allow_implied_newlines);
+	source_location last_loc = Lexer::as_if_from_nowhere();
+	CompileBlocksAndLines::code_block(statement_count, body, TRUE, allow_implied_newlines, &last_loc);
 }
 
 @ See //words: Nonterminals// for an explanation of what it means for a nonterminal
@@ -57,7 +58,7 @@ most "likely" interpretation.
 
 =
 int CompileBlocksAndLines::code_block(int statement_count, parse_node *block, int top_level,
-	int allow_implied_newlines) {
+	int allow_implied_newlines, source_location *last_loc) {
 	if (block) {
 		if (Node::get_type(block) != CODE_BLOCK_NT) internal_error("not a code block");
 		int saved_mult = <s-value-uncached>->multiplicitous;
@@ -68,7 +69,7 @@ int CompileBlocksAndLines::code_block(int statement_count, parse_node *block, in
 		for (parse_node *p = block->down; p; p = p->next)
 			statement_count =
 				CompileBlocksAndLines::code_line(statement_count, p, singleton,
-					allow_implied_newlines);
+					allow_implied_newlines, last_loc);
 		<s-value-uncached>->multiplicitous = saved_mult;
 	}
 	return statement_count;
@@ -97,7 +98,7 @@ So, then, this is called on each child node of a |CODE_BLOCK_NT| in turn:
 
 =
 int CompileBlocksAndLines::code_line(int statement_count, parse_node *p, int as_singleton,
-	int allow_implied_newlines) {
+	int allow_implied_newlines, source_location *last_loc) {
 	compiling_single_line_block = as_singleton;
 	control_structure_phrase *csp = Node::get_control_structure_used(p);
 	parse_node *to_compile = p;
@@ -107,6 +108,7 @@ int CompileBlocksAndLines::code_line(int statement_count, parse_node *p, int as_
 	}
 	statement_count++;
 	@<Compile a comment about this line@>;
+	@<Compile a location reference for this line@>;
 	int L = EmitCode::level();
 	@<Compile the head@>;
 	@<Compile the midriff@>;
@@ -123,6 +125,22 @@ int CompileBlocksAndLines::code_line(int statement_count, parse_node *p, int as_
 		WRITE_TO(C, "]");
 		EmitCode::comment(C);
 		DISCARD_TEXT(C)
+	}
+
+@<Compile a location reference for this line@> =
+	source_location sl = Wordings::location(Node::get_text(to_compile));
+	if (sl.file_of_origin) {
+		if (sl.file_of_origin != last_loc->file_of_origin || sl.line_number != last_loc->line_number) {
+			TEMPORARY_TEXT(C)
+			WRITE_TO(C, "[#### line %d", sl.line_number);
+			WRITE_TO(C, " of ");
+			//Filenames::writer(C, "%s", sl.file_of_origin->name);
+			WRITE_TO(C, "%S", sl.file_of_origin->name->leafname);
+			WRITE_TO(C, "]");
+			EmitCode::comment(C);
+			DISCARD_TEXT(C)
+			*last_loc = sl;
+		}
 	}
 
 @h Head code for lines.
@@ -260,14 +278,14 @@ is false:
 		EmitCode::down();
 			CodeBlocks::open_code_block();
 			statement_count = CompileBlocksAndLines::code_block(statement_count,
-				p->down->next, FALSE, allow_implied_newlines);
+				p->down->next, FALSE, allow_implied_newlines, last_loc);
 		if (p->down->next->next) {
 		EmitCode::up();
 		EmitCode::code();
 		EmitCode::down();
 			CodeBlocks::divide_code_block();
 			statement_count = CompileBlocksAndLines::code_block(statement_count,
-				p->down->next->next, FALSE, allow_implied_newlines);
+				p->down->next->next, FALSE, allow_implied_newlines, last_loc);
 		}
 			CodeBlocks::close_code_block();
 		EmitCode::up();
@@ -417,7 +435,7 @@ of |downs| is how many times we have called |Produce::down|.
 		EmitCode::code();
 		EmitCode::down();
 			statement_count = CompileBlocksAndLines::code_block(statement_count,
-				ow_node, FALSE, allow_implied_newlines);
+				ow_node, FALSE, allow_implied_newlines, last_loc);
 		if (final_flag == FALSE) {
 			EmitCode::up();
 			EmitCode::code();
@@ -429,7 +447,7 @@ of |downs| is how many times we have called |Produce::down|.
 
 @<Handle a pointery default@> =
 	statement_count = CompileBlocksAndLines::code_block(statement_count, ow_node,
-		FALSE, allow_implied_newlines);
+		FALSE, allow_implied_newlines, last_loc);
 
 @<End a pointery switch@> =
 	while (downs-- > 0) EmitCode::up();
@@ -452,7 +470,7 @@ of |downs| is how many times we have called |Produce::down|.
 		EmitCode::code();
 		EmitCode::down();
 			statement_count = CompileBlocksAndLines::code_block(statement_count,
-				ow_node, FALSE, allow_implied_newlines);
+				ow_node, FALSE, allow_implied_newlines, last_loc);
 		EmitCode::up();
 	EmitCode::up();
 
@@ -462,7 +480,7 @@ of |downs| is how many times we have called |Produce::down|.
 		EmitCode::code();
 		EmitCode::down();
 			statement_count = CompileBlocksAndLines::code_block(statement_count,
-				ow_node, FALSE, allow_implied_newlines);
+				ow_node, FALSE, allow_implied_newlines, last_loc);
 		EmitCode::up();
 	EmitCode::up();
 
@@ -522,7 +540,7 @@ inline definitions for "say if" and similar.
 
 @<Compile a say tail@> =
 	statement_count = CompileBlocksAndLines::code_block(statement_count, p,
-		FALSE, allow_implied_newlines);
+		FALSE, allow_implied_newlines, last_loc);
 
 	TEMPORARY_TEXT(SAYL)
 	WRITE_TO(SAYL, ".");
@@ -546,7 +564,7 @@ inline definitions for "say if" and similar.
 @<Compile a loop tail@> =
 	CodeBlocks::open_code_block();
 	statement_count = CompileBlocksAndLines::code_block(statement_count, p->down->next,
-		FALSE, allow_implied_newlines);
+		FALSE, allow_implied_newlines, last_loc);
 	while (EmitCode::level() > L) EmitCode::up();
 	CodeBlocks::close_code_block();
 
