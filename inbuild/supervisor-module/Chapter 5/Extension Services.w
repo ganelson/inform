@@ -814,6 +814,8 @@ we dare not assume |stdout| can manage characters outside the basic ASCII
 range, we flatten them from general ISO to plain ASCII.
 
 @<Concoct a synopsis for the extension to be read@> =
+	if (VersionNumbers::is_null(E->as_copy->edition->version) == FALSE)
+		WRITE_TO(synopsis, "version %v of ", &(E->as_copy->edition->version));
 	WRITE_TO(synopsis, "%S by %S", 
 		E->as_copy->edition->work->title,
 		E->as_copy->edition->work->author_name);
