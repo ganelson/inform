@@ -7,6 +7,7 @@ void I6TargetCode::create_generator(code_generator *gtr) {
 	METHOD_ADD(gtr, DECLARE_FUNCTION_MTID, I6TargetCode::declare_function);
 	METHOD_ADD(gtr, PLACE_LABEL_MTID, I6TargetCode::place_label);
 	METHOD_ADD(gtr, EVALUATE_LABEL_MTID, I6TargetCode::evaluate_label);
+	METHOD_ADD(gtr, ORIGSOURCE_MTID, I6TargetCode::origsource);
 	METHOD_ADD(gtr, INVOKE_PRIMITIVE_MTID, I6TargetCode::invoke_primitive);
 	METHOD_ADD(gtr, INVOKE_FUNCTION_MTID, I6TargetCode::invoke_function);
 	METHOD_ADD(gtr, INVOKE_OPCODE_MTID, I6TargetCode::invoke_opcode);
@@ -174,6 +175,22 @@ void I6TargetCode::evaluate_label(code_generator *gtr, code_generation *gen,
 	LOOP_THROUGH_TEXT(pos, label_name)
 		if (Str::get(pos) != '.')
 			PUT(Str::get(pos));
+}
+
+@h Origsource references.
+=
+void I6TargetCode::origsource(code_generator *gtr, code_generation *gen,
+	text_provenance *source_loc) {
+	text_stream *OUT = CodeGen::current(gen);
+	if (source_loc->textual_filename) {
+		WRITE("#OrigSource ");
+		/* We use compile_literal_text() to avoid literal quotes in the filename. This will probably cause trouble but the I6 will be valid. */
+		Generators::compile_literal_text(gen, source_loc->textual_filename, TRUE);
+		WRITE(" %d;\n", source_loc->line_number);
+	}
+	else {
+		WRITE("#OrigSource;\n");
+	}
 }
 
 @h Function invocations.
