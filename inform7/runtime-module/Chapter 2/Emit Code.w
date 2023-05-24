@@ -70,6 +70,14 @@ void EmitCode::comment(text_stream *text) {
 		(inter_ti) EmitCode::level()));
 }
 
+@h OrigSource directives.
+
+=
+void EmitCode::origsource(source_location *sl) {
+	Produce::guard(OrigSourceInstruction::new(EmitCode::at(), sl->file_of_origin->name, (unsigned int)sl->line_number, NULL,
+		(inter_ti) EmitCode::level()));
+}
+
 @h In value context.
 These functions all generate a |val| opcode:
 

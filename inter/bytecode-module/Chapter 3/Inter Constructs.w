@@ -334,6 +334,11 @@ instead specify something else about the tree:
 @e SOCKET_IST
 @e VERSION_IST
 
+@ This can go inside or outside function bodies, like COMMENT_IST. I put it
+at the end so that it wouldn't change //The Inter Version//.
+
+@e ORIGSOURCE_IST
+
 @ Since these IDs are stored in the bytecode for an instruction, in fact in the
 0th word of the frame, we will need to convert them to their //inter_construct//
 equivalents quickly. So we store a lookup table:
@@ -380,6 +385,7 @@ void InterInstruction::create_language(void) {
 	InterInstruction::define_invalid_construct();
 	NopInstruction::define_construct();
 	CommentInstruction::define_construct();
+	OrigSourceInstruction::define_construct();
 	PlugInstruction::define_construct();
 	SocketInstruction::define_construct();
 	VersionInstruction::define_construct();

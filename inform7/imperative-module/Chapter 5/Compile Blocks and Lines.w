@@ -140,6 +140,7 @@ int CompileBlocksAndLines::code_line(int statement_count, parse_node *p, int as_
 			EmitCode::comment(C);
 			DISCARD_TEXT(C)
 			*last_loc = sl;
+			EmitCode::origsource(last_loc);
 		}
 	}
 
