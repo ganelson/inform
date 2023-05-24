@@ -170,11 +170,33 @@ alone, and the version number is returned.
 by the local |\n| for good measure.
 
 @<Read the titling line of the extension and normalise its casing@> =
-	int c;
+	int c, commented_out = FALSE, quoted = FALSE, content_found = FALSE;
 	while ((c = TextFiles::utf8_fgetc(EXTF, NULL, NULL)) != EOF) {
 		if (c == 0xFEFF) continue; /* skip the optional Unicode BOM pseudo-character */
-		if ((c == '\x0a') || (c == '\x0d') || (c == '\n')) break;
-		PUT_TO(titling_line, c);
+		if (commented_out) {
+			if (c == ']') commented_out = FALSE;		
+		} else if (quoted) {
+			if (c == '"') quoted = FALSE;
+			PUT_TO(titling_line, c);
+		} else {
+			if (c == '[') commented_out = TRUE;
+			else {
+				if (c == '"') quoted = TRUE;
+				else if ((c == '\x0a') || (c == '\x0d') || (c == '\n')) {
+					if (content_found) break;
+					c = ' ';
+				} else if (Characters::is_whitespace(c) == FALSE) {
+					content_found = TRUE;
+				}
+				PUT_TO(titling_line, c);
+			}
+		}
+	}
+	if (content_found == FALSE) {
+		TEMPORARY_TEXT(error_text)
+		WRITE_TO(error_text, "extension doesn't have an identifying title line at the top");
+		Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1, error_text));
+		DISCARD_TEXT(error_text)
 	}
 	Str::trim_white_space(titling_line);
 	Works::normalise_casing_mixed(titling_line);
@@ -273,6 +295,8 @@ not a situation we need to contend with.
 	if (which == 1)
 		Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1,
 			I"the titling line does not give both author and title"));
+	Str::trim_white_space(claimed_title);
+	Str::trim_white_space(claimed_author_name);
 
 @ Similarly, extension titles are not allowed to contain parentheses, so
 this is unambiguous.
