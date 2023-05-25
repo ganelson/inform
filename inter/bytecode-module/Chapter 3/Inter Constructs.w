@@ -302,6 +302,7 @@ These are constructs used for instructions outside function bodies:
 @e INSTANCE_IST
 @e INSERT_IST
 @e NOP_IST
+@e ORIGSOURCE_IST
 @e PACKAGE_IST
 @e PACKAGETYPE_IST
 @e PERMISSION_IST
@@ -333,11 +334,6 @@ instead specify something else about the tree:
 @e PLUG_IST
 @e SOCKET_IST
 @e VERSION_IST
-
-@ This can go inside or outside function bodies, like COMMENT_IST. I put it
-at the end so that it wouldn't change //The Inter Version//.
-
-@e ORIGSOURCE_IST
 
 @ Since these IDs are stored in the bytecode for an instruction, in fact in the
 0th word of the frame, we will need to convert them to their //inter_construct//
