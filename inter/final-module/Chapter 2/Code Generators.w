@@ -245,7 +245,8 @@ void Generators::evaluate_label(code_generation *gen, text_stream *label_name) {
 	VOID_METHOD_CALL(gen->generator, EVALUATE_LABEL_MTID, gen, label_name);
 }
 
-@ OrigSource directives
+@ OrigSource directives. These identify the original source location that
+generated the current code.
 
 @e PLACE_ORIGSOURCE_MTID
 
