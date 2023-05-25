@@ -135,14 +135,6 @@ int CompileBlocksAndLines::code_line(int statement_count, parse_node *p, int as_
 	source_location sl = Wordings::location(Node::get_text(to_compile));
 	if (sl.file_of_origin) {
 		if (sl.file_of_origin != last_loc->file_of_origin || sl.line_number != last_loc->line_number) {
-			TEMPORARY_TEXT(C)
-			WRITE_TO(C, "[#### line %d", sl.line_number);
-			WRITE_TO(C, " of ");
-			//Filenames::writer(C, "%s", sl.file_of_origin->name);
-			WRITE_TO(C, "%S", sl.file_of_origin->name->leafname);
-			WRITE_TO(C, "]");
-			EmitCode::comment(C);
-			DISCARD_TEXT(C)
 			*last_loc = sl;
 			EmitCode::origsource(last_loc);
 		}
