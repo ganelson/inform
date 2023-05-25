@@ -148,8 +148,8 @@ void VanillaCode::assembly(code_generation *gen, inter_tree_node *P) {
 @ OrigSource directives are passed through to the generator.
 
 =
-void VanillaCode::origsource(code_generation *gen, inter_tree_node *P) {
+void VanillaCode::place_origsource(code_generation *gen, inter_tree_node *P) {
 	text_provenance prov = OrigSourceInstruction::provenance(P);
-	Generators::origsource(gen, &prov);
+	Generators::place_origsource(gen, &prov);
 }
 

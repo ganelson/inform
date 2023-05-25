@@ -112,7 +112,7 @@ void Vanilla::node(code_generation *gen, inter_tree_node *P) {
 		case LOCAL_IST:         break;
 		case NOP_IST:           break;
 		case COMMENT_IST:       break;
-		case ORIGSOURCE_IST:    VanillaCode::origsource(gen, P); break;
+		case ORIGSOURCE_IST:    VanillaCode::place_origsource(gen, P); break;
 
 		case INVALID_IST:       InterErrors::backtrace(DL, P);
 								internal_error("INVALID node type in Inter tree");

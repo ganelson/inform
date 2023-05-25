@@ -247,13 +247,13 @@ void Generators::evaluate_label(code_generation *gen, text_stream *label_name) {
 
 @ OrigSource directives
 
-@e ORIGSOURCE_MTID
+@e PLACE_ORIGSOURCE_MTID
 
 =
-VOID_METHOD_TYPE(ORIGSOURCE_MTID, code_generator *generator, code_generation *gen,
+VOID_METHOD_TYPE(PLACE_ORIGSOURCE_MTID, code_generator *generator, code_generation *gen,
 	text_provenance *source_loc)
-void Generators::origsource(code_generation *gen, text_provenance *source_loc) {
-	VOID_METHOD_CALL(gen->generator, ORIGSOURCE_MTID, gen, source_loc);
+void Generators::place_origsource(code_generation *gen, text_provenance *source_loc) {
+	VOID_METHOD_CALL(gen->generator, PLACE_ORIGSOURCE_MTID, gen, source_loc);
 }
 
 @ The three ways to invoke (and a doohickey for assembly opcodes):
