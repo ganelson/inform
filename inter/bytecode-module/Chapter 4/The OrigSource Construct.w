@@ -29,7 +29,7 @@ compulsory words -- see //Inter Nodes// -- followed by:
 @d PROVENANCELINE_ORIGSOURCE_IFLD (DATA_IFLD + 1)
 
 If |PROVENANCEFILE| is zero, the instruction means "Following bytecode is not
-from any specific source location."
+from any specific source location." The line number is ignored in this case.
 
 =
 inter_error_message *OrigSourceInstruction::new(inter_bookmark *IBM,
