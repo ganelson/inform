@@ -28,16 +28,22 @@ compulsory words -- see //Inter Nodes// -- followed by:
 @d PROVENANCEFILE_ORIGSOURCE_IFLD (DATA_IFLD + 0)
 @d PROVENANCELINE_ORIGSOURCE_IFLD (DATA_IFLD + 1)
 
+If |PROVENANCEFILE| is zero, the instruction means "Following bytecode is not
+from any specific source location."
+
 =
 inter_error_message *OrigSourceInstruction::new(inter_bookmark *IBM,
 	filename *file, inter_ti line_number,
 	inter_error_location *eloc, inter_ti level) {
-	TEMPORARY_TEXT(file_as_text)
-	if (file) WRITE_TO(file_as_text, "%f", file);
-	inter_warehouse *warehouse = InterBookmark::warehouse(IBM);
-	inter_package *pack = InterBookmark::package(IBM);
-	inter_ti FID = InterWarehouse::create_text(warehouse, pack);
-	Str::copy(InterWarehouse::get_text(warehouse, FID), file_as_text);
+	inter_ti FID = 0;
+	if (file) {
+		TEMPORARY_TEXT(file_as_text)
+		WRITE_TO(file_as_text, "%f", file);
+		inter_warehouse *warehouse = InterBookmark::warehouse(IBM);
+		inter_package *pack = InterBookmark::package(IBM);
+		FID = InterWarehouse::create_text(warehouse, pack);
+		Str::copy(InterWarehouse::get_text(warehouse, FID), file_as_text);
+	}
 	inter_tree_node *P = Inode::new_with_2_data_fields(IBM, ORIGSOURCE_IST,
 		/* PROVENANCEFILE_ORIGSOURCE_IFLD: */ FID,
 		/* PROVENANCELINE_ORIGSOURCE_IFLD: */ line_number,
@@ -58,7 +64,12 @@ void OrigSourceInstruction::transpose(inter_construct *IC, inter_tree_node *P,
 =
 void OrigSourceInstruction::verify(inter_construct *IC, inter_tree_node *P,
 	inter_package *owner, inter_error_message **E) {
-	*E = VerifyingInter::text_field(owner, P, PROVENANCEFILE_ORIGSOURCE_IFLD);
+	if (!P->W.instruction[PROVENANCEFILE_ORIGSOURCE_IFLD]) {
+		/* (0,anything) is valid */
+	}
+	else {
+		*E = VerifyingInter::text_field(owner, P, PROVENANCEFILE_ORIGSOURCE_IFLD);
+	}
 	if (*E) return;
 }
 
@@ -86,8 +97,13 @@ void OrigSourceInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter
 
 =
 void OrigSourceInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
-	WRITE("origsource ");
-	Provenance::write(OUT, OrigSourceInstruction::provenance(P));
+	if (!P->W.instruction[PROVENANCEFILE_ORIGSOURCE_IFLD]) {
+		WRITE("origsource");
+	}
+	else {
+		WRITE("origsource ");
+		Provenance::write(OUT, OrigSourceInstruction::provenance(P));
+	}
 }
 
 @h Access functions.
@@ -96,6 +112,8 @@ void OrigSourceInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree
 text_provenance OrigSourceInstruction::provenance(inter_tree_node *P) {
 	if (P == NULL) return Provenance::nowhere();
 	if (Inode::isnt(P, ORIGSOURCE_IST)) return Provenance::nowhere();
+	if (!P->W.instruction[PROVENANCEFILE_ORIGSOURCE_IFLD])
+		return Provenance::nowhere();
 	return Provenance::at_file_and_line(
 		Inode::ID_to_text(P, P->W.instruction[PROVENANCEFILE_ORIGSOURCE_IFLD]),
 		(int) P->W.instruction[PROVENANCELINE_ORIGSOURCE_IFLD]);
