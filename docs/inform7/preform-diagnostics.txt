@@ -6199,7 +6199,9 @@
 
 <defined-by-sentence-subject> nti 24 constraint (none) extremes [1, infinity)
     English:
-        kind/kinds of <s-type-expression> 
+        <article> kind/kinds of {<s-type-expression>} 
+          constraint DS = {24} extremes [4, infinity)
+        kind/kinds of {<s-type-expression>} 
           constraint DS = {24} extremes [3, infinity)
         <s-type-expression> 
           constraint (none) extremes [1, infinity)

@@ -22,6 +22,7 @@ usage: inbuild [-TASK] TARGET1 TARGET2 ...
 -preprocess-html X             construct HTML page based on X
 -preprocess-html-to X          set destination for -preprocess-html to be X
 -rebuild                       completely rebuild target(s)
+-recursive                     run -contents-of recursively to look through subdirectories too (default is -no-recursive)
 -no-repair                     don't quietly fix missing or incorrect extension metadata (default is -repair)
 -results X                     write HTML report file to X (for use within Inform GUI apps)
 -sync-to X                     forcibly copy target(s) to nest X, even if prior version already there

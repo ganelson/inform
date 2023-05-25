@@ -170,11 +170,33 @@ alone, and the version number is returned.
 by the local |\n| for good measure.
 
 @<Read the titling line of the extension and normalise its casing@> =
-	int c;
+	int c, commented_out = FALSE, quoted = FALSE, content_found = FALSE;
 	while ((c = TextFiles::utf8_fgetc(EXTF, NULL, NULL)) != EOF) {
 		if (c == 0xFEFF) continue; /* skip the optional Unicode BOM pseudo-character */
-		if ((c == '\x0a') || (c == '\x0d') || (c == '\n')) break;
-		PUT_TO(titling_line, c);
+		if (commented_out) {
+			if (c == ']') commented_out = FALSE;		
+		} else if (quoted) {
+			if (c == '"') quoted = FALSE;
+			PUT_TO(titling_line, c);
+		} else {
+			if (c == '[') commented_out = TRUE;
+			else {
+				if (c == '"') quoted = TRUE;
+				else if ((c == '\x0a') || (c == '\x0d') || (c == '\n')) {
+					if (content_found) break;
+					c = ' ';
+				} else if (Characters::is_whitespace(c) == FALSE) {
+					content_found = TRUE;
+				}
+				PUT_TO(titling_line, c);
+			}
+		}
+	}
+	if (content_found == FALSE) {
+		TEMPORARY_TEXT(error_text)
+		WRITE_TO(error_text, "extension doesn't have an identifying title line at the top");
+		Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1, error_text));
+		DISCARD_TEXT(error_text)
 	}
 	Str::trim_white_space(titling_line);
 	Works::normalise_casing_mixed(titling_line);
@@ -244,14 +266,37 @@ allowed to contain this word, so "North By Northwest By Cary Grant" is
 not a situation we need to contend with.
 
 @<Divide the remaining text into a claimed author name and title, divided by By@> =
-	if (Regexp::match(&mr, titling_line, L"(%c*?) By (%c*)")) {
-		Str::copy(claimed_title, mr.exp[0]);
-		Str::copy(claimed_author_name, mr.exp[1]);
-	} else {
-		Str::copy(claimed_title, titling_line);
+	int quote_found = FALSE, brackets_underflowed = FALSE, brackets_in_author = FALSE;
+	int which = 1, bl = 0;
+	for (int i=0; i<Str::len(titling_line); i++) {
+		wchar_t c = Str::get_at(titling_line, i);
+		if (c == '(') { bl++; if (which == 2) brackets_in_author = TRUE; }
+		if (c == ')') { bl--; if (bl < 0) brackets_underflowed = TRUE; }
+		if (c == '\"') quote_found = TRUE;
+		if ((bl == 0) && (Str::includes_at(titling_line, i, I" By "))) {
+			if (which == 1) {
+				i += 3;
+				which = 2;
+				continue;
+			}
+		}
+		if (which == 1) PUT_TO(claimed_title, c);
+		else PUT_TO(claimed_author_name, c);
+	}
+	if ((bl != 0) || (brackets_underflowed))
+		Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1,
+			I"brackets '(' and ')' are used in an unbalanced way in the titling line"));
+	else if (brackets_in_author)
+		Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1,
+			I"brackets '(' and ')' are used as part of the author name in the titling line"));
+	if (quote_found)
+		Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1,
+			I"the titling line includes a double-quotation mark"));
+	if (which == 1)
 		Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1,
 			I"the titling line does not give both author and title"));
-	}
+	Str::trim_white_space(claimed_title);
+	Str::trim_white_space(claimed_author_name);
 
 @ Similarly, extension titles are not allowed to contain parentheses, so
 this is unambiguous.
@@ -769,6 +814,8 @@ we dare not assume |stdout| can manage characters outside the basic ASCII
 range, we flatten them from general ISO to plain ASCII.
 
 @<Concoct a synopsis for the extension to be read@> =
+	if (VersionNumbers::is_null(E->as_copy->edition->version) == FALSE)
+		WRITE_TO(synopsis, "version %v of ", &(E->as_copy->edition->version));
 	WRITE_TO(synopsis, "%S by %S", 
 		E->as_copy->edition->work->title,
 		E->as_copy->edition->work->author_name);

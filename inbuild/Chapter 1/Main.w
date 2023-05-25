@@ -12,6 +12,7 @@ pathname *path_to_inbuild = NULL;
 int inbuild_task = INSPECT_TTASK;
 pathname *path_to_tools = NULL;
 int dry_run_mode = FALSE, build_trace_mode = FALSE, confirmed = FALSE;
+int contents_of_used = FALSE, recursive = FALSE;
 inbuild_nest *destination_nest = NULL;
 inbuild_registry *selected_registry = NULL;
 text_stream *filter_text = NULL;
@@ -305,8 +306,21 @@ inbuild_copy *Main::file_or_path_to_copy(text_stream *arg, int throwing_error) {
 }
 
 void Main::add_file_or_path_as_target(text_stream *arg, int throwing_error) {
+	int is_folder = Platform::is_folder_separator(Str::get_last_char(arg));
 	inbuild_copy *C = Main::file_or_path_to_copy(arg, throwing_error);
-	if (C) Main::add_target(C);
+	if (C) {
+		Main::add_target(C);
+	} else if ((recursive) && (is_folder)) {
+		pathname *P = Pathnames::from_text(arg);
+		linked_list *L = Directories::listing(P);
+		text_stream *entry;
+		LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+			TEMPORARY_TEXT(FILENAME)
+			WRITE_TO(FILENAME, "%p%c%S", P, FOLDER_SEPARATOR, entry);
+			Main::add_file_or_path_as_target(FILENAME, throwing_error);
+			DISCARD_TEXT(FILENAME)
+		}
+	}
 }
 
 @h Command line.
@@ -331,6 +345,7 @@ other options to the selection defined here.
 @e BUILD_TRACE_CLSW
 @e TOOLS_CLSW
 @e CONTENTS_OF_CLSW
+@e RECURSIVE_CLSW
 @e MATCHING_CLSW
 @e COPY_TO_CLSW
 @e SYNC_TO_CLSW
@@ -391,6 +406,8 @@ other options to the selection defined here.
 		L"apply to all works in nest(s) matching requirement X");
 	CommandLine::declare_switch(CONTENTS_OF_CLSW, L"contents-of", 2,
 		L"apply to all targets in the directory X");
+	CommandLine::declare_boolean_switch(RECURSIVE_CLSW, L"recursive", 1,
+		L"run -contents-of recursively to look through subdirectories too", FALSE);
 	CommandLine::declare_switch(VERIFY_REGISTRY_CLSW, L"verify-registry", 2,
 		L"verify roster.json metadata of registry in the directory X");
 	CommandLine::declare_switch(BUILD_REGISTRY_CLSW, L"build-registry", 2,
@@ -435,8 +452,11 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case BUILD_MISSING_CLSW: inbuild_task = BUILD_MISSING_TTASK; break;
 		case TOOLS_CLSW: path_to_tools = Pathnames::from_text(arg); break;
 		case MATCHING_CLSW: filter_text = Str::duplicate(arg); break;
-		case CONTENTS_OF_CLSW:
+		case CONTENTS_OF_CLSW: contents_of_used = TRUE;
 			Main::add_directory_contents_targets(Pathnames::from_text(arg)); break;
+		case RECURSIVE_CLSW: recursive = val;
+			if (contents_of_used) Errors::fatal("-recursive must be used before -contents-of");
+			break;
 		case DRY_CLSW: dry_run_mode = val; break;
 		case BUILD_TRACE_CLSW: build_trace_mode = val; break;
 		case COPY_TO_CLSW: inbuild_task = COPY_TO_TTASK;
