@@ -11,7 +11,7 @@ the conditional compilation splats gone, we are left with these:
 = (text)
 ARRAY_PLM         ATTRIBUTE_PLM     CONSTANT_PLM      DEFAULT_PLM
 FAKEACTION_PLM    GLOBAL_PLM        OBJECT_PLM        PROPERTY_PLM
-ROUTINE_PLM       STUB_PLM          VERB_PLM
+ROUTINE_PLM       STUB_PLM          VERB_PLM          ORIGSOURCE_PLM
 =
 And we must turn those into splatless Inter code with the same effect. In some
 cases, notably |ROUTINE_PLM| which contains an entire Inform 6-notation
@@ -86,6 +86,9 @@ void CompileSplatsStage::visitor1(inter_tree *I, inter_tree_node *P, void *state
 			case STUB_PLM:
 				@<Assimilate routine@>;
 				break;
+			case ORIGSOURCE_PLM:
+				@<Assimilate origsource directive@>;
+				break;
 		}
 	}
 }
@@ -132,6 +135,31 @@ void CompileSplatsStage::visitor3(inter_tree *I, inter_tree_node *P, void *state
 		}
 	}
 }
+
+@h How OrigSource definitions are assimilated.
+
+### This is not yet useful. It converts a top-level #Origsource directive
+to a top-level ORIGSOURCE_IST node, but it doesn't put it anywhere
+meaningful; the node just winds up tacked onto the end of the kit.
+
+@<Assimilate origsource directive@> =	
+	I6Errors::set_current_location_near_splat(P);
+	match_results mr = Regexp::create_mr();
+	text_stream *origfilestr = NULL;
+	int origline = 0;
+	int proceed = TRUE;
+	@<Parse text of splat for optional string and number@>;
+	if (proceed) {
+		filename *origfilename = NULL;
+		if (origfilestr)
+			origfilename = Filenames::from_text(origfilestr);
+		inter_bookmark content_at = InterBookmark::after_this_node(P);
+		inter_bookmark *IBM = &content_at;
+		inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
+		Produce::guard(OrigSourceInstruction::new(IBM, origfilename, (unsigned int)origline, NULL, B));
+		NodePlacement::remove(P);
+	}
+	Regexp::dispose_of(&mr);
 
 @h How definitions are assimilated.
 
@@ -191,6 +219,28 @@ meaningfully have a value, even though a third token is present.
 	}
 	Str::trim_all_white_space_at_end(raw_identifier);
 
+@ The following finds |"STRING" NUMBER|, or |"STRING"|, or nothing.
+(In its pocketses.) This is needed for the |OrigSource| directive.
+In I6 that directive can accept a second number, but we won't
+worry about that here.
+
+@<Parse text of splat for optional string and number@> =
+	text_stream *S = SplatInstruction::splatter(P);
+	if (Regexp::match(&mr, S, L" *%C+ \"(%C*)\" (%d+) *; *")) {
+		origfilestr = mr.exp[0];
+		origline = Str::atoi(mr.exp[1], 0);
+	}
+	else if (Regexp::match(&mr, S, L" *%C+ \"(%C*)\" *; *")) {
+		origfilestr = mr.exp[0];
+	}
+	else if (Regexp::match(&mr, S, L" *%C+ *; *")) {
+		/* bare "Origsource;" is okay */
+	}
+	else {
+		I6Errors::issue("Unable to parse ORIGSOURCE_PLM: '%S'", S);
+		proceed = FALSE;
+	}
+
 @ An eccentricity of Inform 6 syntax is that fake action names ought to be given
 in the form |Fake_Action ##Bake|, but are not. The constant created by |Fake_Action Bake|
 is nevertheless |##Bake|, so we take care of that here.
@@ -229,7 +279,7 @@ But in fact it's easier to handle it here.
 @ So if we're here, we have reduced the possibilities to:
 = (text)
 ARRAY_PLM         ATTRIBUTE_PLM     CONSTANT_PLM      FAKEACTION_PLM
-GLOBAL_PLM        OBJECT_PLM        PROPERTY_PLM		VERB_PLM
+GLOBAL_PLM        OBJECT_PLM        PROPERTY_PLM      VERB_PLM
 =
 We basically do the same thing in all of these cases: decide where to put
 the result, declare a symbol for it, and then define that symbol.
