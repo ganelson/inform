@@ -500,8 +500,19 @@ other Inform 6 directives are not valid inside function bodies, which is the
 only part of I6 syntax covered by schemas. Therefore:
 
 @<Non-conditional directive@> =
-	I6Errors::issue_at_node(node, I"misplaced directive");
-	return;
+	if (node->dir_clarifier == ORIGSOURCE_I6RW) {
+		//### arg params
+		TEMPORARY_TEXT(origfilestr);
+		WRITE_TO(origfilestr, "frotzfrotz");
+		filename *origfilename = Filenames::from_text(origfilestr);
+		inter_bookmark *IBM = Produce::at(I);
+		Produce::guard(OrigSourceInstruction::new(IBM, origfilename, (unsigned int)333, NULL, (inter_ti) Produce::level(I)));
+		DISCARD_TEXT(origfilestr);
+	}
+	else {
+		I6Errors::issue_at_node(node, I"misplaced directive");
+		return;
+	}
 
 @ An |EVAL_ISNT| node can have any number of children, they are sequentially
 evaluated for their potential side-effects, but only the last produces a value.
