@@ -190,7 +190,10 @@ void I6TargetCode::place_origsource(code_generator *gtr, code_generation *gen,
 	if (source_loc->textual_filename && Str::len(source_loc->textual_filename) > 0) {
 		WRITE("#OrigSource ");
 		Generators::compile_literal_text(gen, source_loc->textual_filename, TRUE);
-		WRITE(" %d;\n", source_loc->line_number);
+		if (source_loc->line_number > 0)
+			WRITE(" %d;\n", source_loc->line_number);
+		else
+			WRITE(";\n");
 	}
 	else {
 		WRITE("#OrigSource;\n");
