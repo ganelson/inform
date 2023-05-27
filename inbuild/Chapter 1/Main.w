@@ -87,9 +87,12 @@ error in this case.
 		if (D->location_if_file) Supervisor::set_I7_source(D->location_if_file);
 	}
 	if ((LinkedLists::len(unsorted_nest_list) == 0) ||
-		((others_exist == FALSE) && (D)))
+		((others_exist == FALSE) && (D))) {
+		SVEXPLAIN(1, "(in absence of explicit -internal, inventing -internal %p)\n",
+			Supervisor::default_internal_path());
 		Supervisor::add_nest(
-			Pathnames::from_text(I"inform7/Internal"), INTERNAL_NEST_TAG);
+			Supervisor::default_internal_path(), INTERNAL_NEST_TAG);
+	}
 	Supervisor::optioneering_complete(D, FALSE, &Main::load_preform);
 	inform_project *proj;
 	LOOP_OVER(proj, inform_project)
@@ -359,6 +362,8 @@ other options to the selection defined here.
 @e RESULTS_CLSW
 @e INSTALL_CLSW
 @e CONFIRMED_CLSW
+@e VERBOSE_CLSW
+@e VERBOSITY_CLSW
 
 @<Read the command line@> =	
 	CommandLine::declare_heading(
@@ -424,6 +429,10 @@ other options to the selection defined here.
 		L"write HTML report file to X (for use within Inform GUI apps)");
 	CommandLine::declare_boolean_switch(CONFIRMED_CLSW, L"confirmed", 1,
 		L"confirm installation in the Inform GUI apps", TRUE);
+	CommandLine::declare_boolean_switch(VERBOSE_CLSW, L"verbose", 1,
+		L"equivalent to -verbosity=1", FALSE);
+	CommandLine::declare_numerical_switch(VERBOSITY_CLSW, L"verbosity", 1,
+		L"how much explanation to print: lowest is 0 (default), highest is 3");
 	Supervisor::declare_options();
 
 	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
@@ -491,6 +500,8 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case INSTALL_CLSW: to_install = Main::file_or_path_to_copy(arg, TRUE); break;
 		case RESULTS_CLSW: InbuildReport::set_filename(Filenames::from_text(arg)); break;
 		case CONFIRMED_CLSW: confirmed = val; break;
+		case VERBOSE_CLSW: Supervisor::set_verbosity(1); break;
+		case VERBOSITY_CLSW: Supervisor::set_verbosity(val); break;
 	}
 	Supervisor::option(id, val, arg, state);
 }

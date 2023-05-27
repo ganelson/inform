@@ -30,6 +30,8 @@ usage: inbuild [-TASK] TARGET1 TARGET2 ...
 -use-locate                    show file paths of all the extensions, kits and so on needed to use
 -use-missing                   show the extensions, kits and so on which are needed to use but missing
 -use-needs                     show all the extensions, kits and so on needed to use
+-verbose                       equivalent to -verbosity=1 (default is -no-verbose)
+-verbosity=N                   how much explanation to print: lowest is 0 (default), highest is 3
 -verify-registry X             verify roster.json metadata of registry in the directory X
 -no-versions-in-filenames      don't append _v number to destination filenames on -copy-to or -sync-to (default is -versions-in-filenames)
 

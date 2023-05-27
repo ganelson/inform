@@ -48,6 +48,17 @@ void Nests::set_tag(inbuild_nest *N, int t) {
 	N->tag_value = t;
 }
 
+text_stream *Nests::tag_name(int t) {
+	switch (t) {
+		case MATERIALS_NEST_TAG: return I"materials";
+		case EXTERNAL_NEST_TAG: return I"external";
+		case GENERIC_NEST_TAG: return I"generic";
+		case INTERNAL_NEST_TAG: return I"internal";
+		case EXTENSION_NEST_TAG: return I"extension";
+	}
+	return I"<unknown nest tag>";
+}
+
 @ =
 void Nests::protect(inbuild_nest *N) {
 	N->read_only = TRUE;
@@ -56,6 +67,12 @@ void Nests::protect(inbuild_nest *N) {
 int Nests::is_protected(inbuild_nest *N) {
 	if (N == NULL) return FALSE;
 	return N->read_only;
+}
+
+@ =
+pathname *Nests::get_location(inbuild_nest *N) {
+	if (N == NULL) return NULL;
+	return N->location;
 }
 
 @h Search list.

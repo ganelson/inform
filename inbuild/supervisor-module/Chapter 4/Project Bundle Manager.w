@@ -221,11 +221,12 @@ inbuild_copy *ProjectBundleManager::claim_folder_as_copy(pathname *P) {
 		if (Platform::is_folder_separator(Str::get_last_char(entry)) == FALSE) {
 			TEMPORARY_TEXT(ext)
 			Filenames::write_extension(ext, Filenames::from_text(entry));
-			if (Str::eq_insensitive(ext, I".html") == FALSE) {
+			if ((Str::eq_insensitive(ext, I".html") == FALSE) &&
+				(Str::eq_insensitive(ext, I".xml") == FALSE)) {
 				TEMPORARY_TEXT(error_text)
 				WRITE_TO(error_text,
 					"the 'Index' subdirectory of the project directory '%S' contains a "
-					"file called '%S', but can only contain HTML files",
+					"file called '%S', but can only contain HTML and XML files",
 					Pathnames::directory_name(P), entry);
 				Copies::attach_error(C, CopyErrors::new_T(PROJECT_MALFORMED_CE, -1, error_text));
 				DISCARD_TEXT(error_text)
