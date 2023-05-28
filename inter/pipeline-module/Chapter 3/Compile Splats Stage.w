@@ -1489,6 +1489,7 @@ int CompileSplatsStage::function_bodies(pipeline_step *step, compile_splats_stat
 	IdentifierFinders::set_namespace(&finder, req->namespace);
 	Produce::guard(OrigSourceInstruction::new(Produce::at(I), req->provenance.textual_filename, (unsigned int)req->provenance.line_number, NULL, (inter_ti) Produce::level(I)));
 	EmitInterSchemas::emit(I, &VH, sch, finder, NULL, NULL, NULL);
+	Produce::guard(OrigSourceInstruction::new(Produce::at(I), NULL, 0, NULL, (inter_ti) Produce::level(I)));
 	CompileSplatsStage::report_kit_errors(sch, req);
 	Produce::pop_code_position(I);
 	Produce::set_function(I, NULL);
