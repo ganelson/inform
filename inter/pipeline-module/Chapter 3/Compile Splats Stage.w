@@ -154,13 +154,10 @@ meaningful; the node just winds up tacked onto the end of the kit.
 	int proceed = TRUE;
 	@<Parse text of splat for optional string and number@>;
 	if (proceed) {
-		filename *origfilename = NULL;
-		if (origfilestr)
-			origfilename = Filenames::from_text(origfilestr);
 		inter_bookmark content_at = InterBookmark::after_this_node(P);
 		inter_bookmark *IBM = &content_at;
 		inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
-		Produce::guard(OrigSourceInstruction::new(IBM, origfilename, (unsigned int)origline, NULL, B));
+		Produce::guard(OrigSourceInstruction::new(IBM, origfilestr, (unsigned int)origline, NULL, B));
 		NodePlacement::remove(P);
 	}
 	Regexp::dispose_of(&mr);

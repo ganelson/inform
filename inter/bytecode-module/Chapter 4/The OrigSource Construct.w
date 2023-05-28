@@ -33,16 +33,14 @@ from any specific source location." The line number is ignored in this case.
 
 =
 inter_error_message *OrigSourceInstruction::new(inter_bookmark *IBM,
-	filename *file, inter_ti line_number,
+	text_stream *file_name, inter_ti line_number,
 	inter_error_location *eloc, inter_ti level) {
 	inter_ti FID = 0;
-	if (file) {
-		TEMPORARY_TEXT(file_as_text)
-		WRITE_TO(file_as_text, "%f", file);
+	if (file_name) {
 		inter_warehouse *warehouse = InterBookmark::warehouse(IBM);
 		inter_package *pack = InterBookmark::package(IBM);
 		FID = InterWarehouse::create_text(warehouse, pack);
-		Str::copy(InterWarehouse::get_text(warehouse, FID), file_as_text);
+		Str::copy(InterWarehouse::get_text(warehouse, FID), file_name);
 	}
 	inter_tree_node *P = Inode::new_with_2_data_fields(IBM, ORIGSOURCE_IST,
 		/* PROVENANCEFILE_ORIGSOURCE_IFLD: */ FID,
@@ -83,11 +81,11 @@ void OrigSourceInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter
 	TEMPORARY_TEXT(file_as_text)
 	*E = TextualInter::parse_literal_text(file_as_text, fn, 0, Str::len(fn), eloc);
 	if (*E == NULL) {
-		filename *F = NULL;
-		if (Str::len(file_as_text) > 0) F = Filenames::from_text(file_as_text);
+		text_stream *temp_filename = NULL;
+		if (Str::len(file_as_text) > 0) temp_filename = file_as_text;
 		inter_ti line_number = 0;
 		if (Str::len(lc) > 0) line_number = (inter_ti) Str::atoi(lc, 0);
-		*E = OrigSourceInstruction::new(IBM, F, line_number,
+		*E = OrigSourceInstruction::new(IBM, temp_filename, line_number,
 			eloc, (inter_ti) ilp->indent_level);
 	}
 	DISCARD_TEXT(file_as_text)

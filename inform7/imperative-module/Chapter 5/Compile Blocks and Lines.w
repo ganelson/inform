@@ -46,10 +46,10 @@ always hangs from a single top-level |CODE_BLOCK_NT|.
 =
 void CompileBlocksAndLines::full_definition_body(int statement_count, parse_node *body,
 	int allow_implied_newlines) {
-	source_location last_loc = Lexer::as_if_from_nowhere();
+	text_provenance last_loc = Provenance::nowhere();
 	CompileBlocksAndLines::code_block(statement_count, body, TRUE, allow_implied_newlines, &last_loc);
-	if (last_loc.file_of_origin) {
-		last_loc = Lexer::as_if_from_nowhere();
+	if (Provenance::is_somewhere(last_loc)) {
+		last_loc = Provenance::nowhere();
 		EmitCode::origsource(&last_loc);
 	}
 }
@@ -62,7 +62,7 @@ most "likely" interpretation.
 
 =
 int CompileBlocksAndLines::code_block(int statement_count, parse_node *block, int top_level,
-	int allow_implied_newlines, source_location *last_loc) {
+	int allow_implied_newlines, text_provenance *last_loc) {
 	if (block) {
 		if (Node::get_type(block) != CODE_BLOCK_NT) internal_error("not a code block");
 		int saved_mult = <s-value-uncached>->multiplicitous;
@@ -102,7 +102,7 @@ So, then, this is called on each child node of a |CODE_BLOCK_NT| in turn:
 
 =
 int CompileBlocksAndLines::code_line(int statement_count, parse_node *p, int as_singleton,
-	int allow_implied_newlines, source_location *last_loc) {
+	int allow_implied_newlines, text_provenance *last_loc) {
 	compiling_single_line_block = as_singleton;
 	control_structure_phrase *csp = Node::get_control_structure_used(p);
 	parse_node *to_compile = p;
@@ -134,8 +134,12 @@ int CompileBlocksAndLines::code_line(int statement_count, parse_node *p, int as_
 @<Compile a location reference for this line@> =
 	source_location sl = Wordings::location(Node::get_text(to_compile));
 	if (sl.file_of_origin) {
-		if (sl.file_of_origin != last_loc->file_of_origin || sl.line_number != last_loc->line_number) {
-			*last_loc = sl;
+		TEMPORARY_TEXT(fname);
+		WRITE_TO(fname, "%f", sl.file_of_origin->name);
+		text_provenance loc = Provenance::at_file_and_line(fname, sl.line_number);
+		DISCARD_TEXT(fname);
+		if (Str::ne(loc.textual_filename, last_loc->textual_filename) || loc.line_number != last_loc->line_number) {
+			*last_loc = loc;
 			EmitCode::origsource(last_loc);
 		}
 	}

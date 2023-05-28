@@ -509,10 +509,10 @@ Therefore:
 	}
 
 @<OrigSource directive@> =
-	filename *origfilename = NULL;
+	text_stream *origfilename = NULL;
 	int origlinenum = 0;
 	if (node->child_node) {
-		origfilename = Filenames::from_text(node->child_node->expression_tokens->material);
+		origfilename = node->child_node->expression_tokens->material;
 		if (node->child_node->expression_tokens->next) {
 			origlinenum = Str::atoi(node->child_node->expression_tokens->next->material, 0);
 		}
