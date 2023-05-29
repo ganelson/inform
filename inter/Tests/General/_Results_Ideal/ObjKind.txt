@@ -22,6 +22,7 @@ Class K_mica
   class K_stone
 ;
 #Ifdef TARGET_ZCODE;
+#OrigSource "inter/final-module/Chapter 4/Final Inform 6.w" 155;
 Global max_z_object;
 #Ifdef Z__Region;
 [ OC__Cl obj cla j a n objflag;
@@ -86,6 +87,7 @@ Global max_z_object;
     rfalse;
 ];
 #Endif;
+#OrigSource;
 #Endif;
 [ DebugAttribute a anames str;
     print "<attribute ", a, ">";
