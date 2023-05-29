@@ -52,6 +52,12 @@ inter_error_message *OrigSourceInstruction::new(inter_bookmark *IBM,
 	return NULL;
 }
 
+inter_error_message *OrigSourceInstruction::new_from_provenance(inter_bookmark *IBM,
+	text_provenance prov,
+	inter_error_location *eloc, inter_ti level) {
+	return OrigSourceInstruction::new(IBM, prov.textual_filename, (unsigned int)prov.line_number, eloc, level);
+}
+
 void OrigSourceInstruction::transpose(inter_construct *IC, inter_tree_node *P,
 	inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
 	P->W.instruction[PROVENANCEFILE_ORIGSOURCE_IFLD] = grid[P->W.instruction[PROVENANCEFILE_ORIGSOURCE_IFLD]];
