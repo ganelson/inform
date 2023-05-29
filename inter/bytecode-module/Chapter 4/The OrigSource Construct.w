@@ -36,7 +36,7 @@ inter_error_message *OrigSourceInstruction::new(inter_bookmark *IBM,
 	text_stream *file_name, inter_ti line_number,
 	inter_ti level, inter_error_location *eloc) {
 	inter_ti FID = 0;
-	if (file_name) {
+	if (Str::len(file_name) > 0) {
 		inter_warehouse *warehouse = InterBookmark::warehouse(IBM);
 		inter_package *pack = InterBookmark::package(IBM);
 		FID = InterWarehouse::create_text(warehouse, pack);
