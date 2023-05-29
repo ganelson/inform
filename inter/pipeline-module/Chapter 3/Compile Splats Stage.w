@@ -157,7 +157,7 @@ meaningful; the node just winds up tacked onto the end of the kit.
 		inter_bookmark content_at = InterBookmark::after_this_node(P);
 		inter_bookmark *IBM = &content_at;
 		inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
-		Produce::guard(OrigSourceInstruction::new(IBM, origfilestr, (unsigned int)origline, NULL, B));
+		Produce::guard(OrigSourceInstruction::new(IBM, origfilestr, (unsigned int)origline, B, NULL));
 		NodePlacement::remove(P);
 	}
 	Regexp::dispose_of(&mr);
@@ -1487,9 +1487,9 @@ int CompileSplatsStage::function_bodies(pipeline_step *step, compile_splats_stat
 	IdentifierFinders::next_priority(&finder, scope1);
 	IdentifierFinders::next_priority(&finder, scope2);
 	IdentifierFinders::set_namespace(&finder, req->namespace);
-	Produce::guard(OrigSourceInstruction::new_from_provenance(Produce::at(I), req->provenance, NULL, (inter_ti) Produce::level(I)));
+	Produce::guard(OrigSourceInstruction::new_from_provenance(Produce::at(I), req->provenance, (inter_ti) Produce::level(I), NULL));
 	EmitInterSchemas::emit(I, &VH, sch, finder, NULL, NULL, NULL);
-	Produce::guard(OrigSourceInstruction::new(Produce::at(I), NULL, 0, NULL, (inter_ti) Produce::level(I)));
+	Produce::guard(OrigSourceInstruction::new(Produce::at(I), NULL, 0, (inter_ti) Produce::level(I), NULL));
 	CompileSplatsStage::report_kit_errors(sch, req);
 	Produce::pop_code_position(I);
 	Produce::set_function(I, NULL);

@@ -34,7 +34,7 @@ from any specific source location." The line number is ignored in this case.
 =
 inter_error_message *OrigSourceInstruction::new(inter_bookmark *IBM,
 	text_stream *file_name, inter_ti line_number,
-	inter_error_location *eloc, inter_ti level) {
+	inter_ti level, inter_error_location *eloc) {
 	inter_ti FID = 0;
 	if (file_name) {
 		inter_warehouse *warehouse = InterBookmark::warehouse(IBM);
@@ -54,8 +54,8 @@ inter_error_message *OrigSourceInstruction::new(inter_bookmark *IBM,
 
 inter_error_message *OrigSourceInstruction::new_from_provenance(inter_bookmark *IBM,
 	text_provenance prov,
-	inter_error_location *eloc, inter_ti level) {
-	return OrigSourceInstruction::new(IBM, prov.textual_filename, (unsigned int)prov.line_number, eloc, level);
+	inter_ti level, inter_error_location *eloc) {
+	return OrigSourceInstruction::new(IBM, prov.textual_filename, (unsigned int)prov.line_number, level, eloc);
 }
 
 void OrigSourceInstruction::transpose(inter_construct *IC, inter_tree_node *P,
@@ -92,7 +92,7 @@ void OrigSourceInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter
 		inter_ti line_number = 0;
 		if (Str::len(lc) > 0) line_number = (inter_ti) Str::atoi(lc, 0);
 		*E = OrigSourceInstruction::new(IBM, temp_filename, line_number,
-			eloc, (inter_ti) ilp->indent_level);
+			(inter_ti) ilp->indent_level, eloc);
 	}
 	DISCARD_TEXT(file_as_text)
 }

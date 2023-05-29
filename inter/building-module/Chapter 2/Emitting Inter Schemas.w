@@ -518,7 +518,7 @@ Therefore:
 		}
 	}
 	inter_bookmark *IBM = Produce::at(I);
-	Produce::guard(OrigSourceInstruction::new(IBM, origfilename, (unsigned int)origlinenum, NULL, (inter_ti) Produce::level(I)));
+	Produce::guard(OrigSourceInstruction::new(IBM, origfilename, (unsigned int)origlinenum, (inter_ti) Produce::level(I), NULL));
 
 
 @ An |EVAL_ISNT| node can have any number of children, they are sequentially

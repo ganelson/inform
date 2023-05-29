@@ -74,8 +74,8 @@ void EmitCode::comment(text_stream *text) {
 
 =
 void EmitCode::origsource(text_provenance *from) {
-	Produce::guard(OrigSourceInstruction::new(EmitCode::at(), from->textual_filename, (unsigned int)from->line_number, NULL,
-		(inter_ti) EmitCode::level()));
+	Produce::guard(OrigSourceInstruction::new_from_provenance(EmitCode::at(), *from,
+		(inter_ti) EmitCode::level(), NULL));
 }
 
 @h In value context.
