@@ -165,7 +165,7 @@ or as paragraph of text in pass 2:
 	if (Str::len(variance) > 0) {
 		HTML::open_indented_p(OUT, 1, "tight");
 		WRITE("<i>%S&nbsp;", variance);
-		HTML_OPEN_WITH("a", "href=#contra>");
+		HTML_OPEN_WITH("a", "href=#contra");
 		HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/shelp.png");
 		HTML_CLOSE("a");
 		WRITE("</i>");
