@@ -142,7 +142,7 @@ void CompileSplatsStage::visitor3(inter_tree *I, inter_tree_node *P, void *state
 within a function body. We will handle that case later; see
 //Emitting Inter Schemas//.
 
-### This is not yet useful. It converts a top-level #Origsource directive
+This is not yet useful. It converts a top-level #Origsource directive
 to a top-level ORIGSOURCE_IST node, but it doesn't put it anywhere
 meaningful; the node just winds up tacked onto the end of the kit.
 
