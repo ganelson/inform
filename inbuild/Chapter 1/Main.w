@@ -90,6 +90,7 @@ error in this case.
 		((others_exist == FALSE) && (D))) {
 		SVEXPLAIN(1, "(in absence of explicit -internal, inventing -internal %p)\n",
 			Supervisor::default_internal_path());
+		if (path_to_tools) SVEXPLAIN(2, "(note that -tools is %p)\n", path_to_tools);
 		Supervisor::add_nest(
 			Supervisor::default_internal_path(), INTERNAL_NEST_TAG);
 	}
@@ -402,7 +403,7 @@ other options to the selection defined here.
 	CommandLine::declare_switch(ARCHIVE_TO_CLSW, L"archive-to", 2,
 		L"sync copies of all extensions, kits and so on needed into nest X");
 	CommandLine::declare_switch(TOOLS_CLSW, L"tools", 2,
-		L"make X the directory of intools executables, and exit developer mode");
+		L"make X the directory of intools executables");
 	CommandLine::declare_boolean_switch(DRY_CLSW, L"dry", 1,
 		L"make this a dry run (print but do not execute shell commands)", FALSE);
 	CommandLine::declare_boolean_switch(BUILD_TRACE_CLSW, L"build-trace", 1,
@@ -459,7 +460,9 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case ARCHIVE_CLSW: inbuild_task = ARCHIVE_TTASK; break;
 		case USE_MISSING_CLSW: inbuild_task = USE_MISSING_TTASK; break;
 		case BUILD_MISSING_CLSW: inbuild_task = BUILD_MISSING_TTASK; break;
-		case TOOLS_CLSW: path_to_tools = Pathnames::from_text(arg); break;
+		case TOOLS_CLSW:
+			path_to_tools = Pathnames::from_text(arg);
+			Supervisor::set_tools_location(path_to_tools); break;
 		case MATCHING_CLSW: filter_text = Str::duplicate(arg); break;
 		case CONTENTS_OF_CLSW: contents_of_used = TRUE;
 			Main::add_directory_contents_targets(Pathnames::from_text(arg)); break;

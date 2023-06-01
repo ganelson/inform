@@ -101,6 +101,8 @@ void Projects::scan(inbuild_copy *C) {
 					@<Extract this requirement@>;
 			}
 		}
+	} else {
+		SVEXPLAIN(2, "(no JSON metadata file found at %f)\n", F);
 	}
 }
 
@@ -1104,6 +1106,7 @@ it comes.
 		}
 		N->as_source_file =
 			SourceText::read_file(proj->as_copy, F, N->source_source, FALSE, TRUE);
+		SVEXPLAIN(1, "(from %f)\n", F);
 	}
 	int l = SyntaxTree::push_bud(proj->syntax_tree, proj->syntax_tree->root_node);
 	Sentences::break_into_project_copy(

@@ -1213,44 +1213,44 @@ When made with the Glulx setting, an Inform project can include sound effects or
 </p>
 <hr>
 <p class="halftightin1"><a name=A46></a><b>list of K</b> (<i>plural</i> lists of K)&nbsp;<a href=inform:/doc350.html><img border=0 src=inform:/doc_images/help.png></a></p>
-<p class="tightin1"><i>covariant&nbsp;<a href=#contra>><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
+<p class="tightin1"><i>covariant&nbsp;<a href=#contra><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 A flexible-length list of values, where all of the items have to have the same kind of value as each other - for instance, a list of rooms, or a list of lists of numbers. The empty list, with no items yet, is written { }, and a list with items in is written with commas dividing them - say {2, 5, 9}.<br>
 </p>
 <p class="halftightin1"><a name=A55></a><b>phrase K -> L</b> (<i>plural</i> phrases K -> L)</p>
-<p class="tightin1"><i>contravariant in K, covariant in L&nbsp;<a href=#contra>><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
+<p class="tightin1"><i>contravariant in K, covariant in L&nbsp;<a href=#contra><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 </p>
 <p class="halftightin1"><a name=A57></a><b><span class="indexgrey"></span>relation<span class="indexgrey"> of K</span></b> (<i>plural</i> <span class="indexgrey"></span>relations<span class="indexgrey"> of K</span>)</p>
-<p class="tightin1"><i>covariant&nbsp;<a href=#contra>><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
+<p class="tightin1"><i>covariant&nbsp;<a href=#contra><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 </p>
 <p class="halftightin1"><a name=A58></a><b><span class="indexgrey">K based</span> rule<span class="indexgrey"> producing L</span></b> (<i>plural</i> <span class="indexgrey">K based</span> rules<span class="indexgrey"> producing L</span>)&nbsp;<a href=inform:/doc325.html><img border=0 src=inform:/doc_images/help.png></a></p>
-<p class="tightin1"><i>contravariant in K, covariant in L&nbsp;<a href=#contra>><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
+<p class="tightin1"><i>contravariant in K, covariant in L&nbsp;<a href=#contra><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 One of many, many rules which determine what happens during play. Rules can be triggered by scenes beginning or ending, by certain actions, at certain times, or in the course of carrying out certain activities.<br>
 </p>
 <p class="halftightin1"><a name=A59></a><b><span class="indexgrey">K based</span> rulebook<span class="indexgrey"> producing L</span></b> (<i>plural</i> <span class="indexgrey">K based</span> rulebooks<span class="indexgrey"> producing L</span>)&nbsp;<a href=inform:/doc325.html><img border=0 src=inform:/doc_images/help.png></a></p>
-<p class="tightin1"><i>contravariant in K, covariant in L&nbsp;<a href=#contra>><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
+<p class="tightin1"><i>contravariant in K, covariant in L&nbsp;<a href=#contra><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 A list of rules to follow, in sequence, to get something done. A rulebook is like a ring-binder, with the individual rules as sheets of paper. Inform normally sorts these into their 'natural' order, with the most specific rules first, but it's easy to shuffle the pages if you need to. When some task is carried out during play, Inform is normally working through a rulebook, turning the pages one by one.<br>
 </p>
 <p class="halftightin1"><a name=A60></a><b><span class="indexgrey"></span>activity<span class="indexgrey"> on K</span></b> (<i>plural</i> <span class="indexgrey"></span>activities<span class="indexgrey"> on K</span>)&nbsp;<a href=inform:/doc285.html><img border=0 src=inform:/doc_images/help.png></a></p>
-<p class="tightin1"><i>contravariant&nbsp;<a href=#contra>><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
+<p class="tightin1"><i>contravariant&nbsp;<a href=#contra><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
 <p class="tightin1"><i>Matches:</i> value<br>
 An activity is something which Inform does as part of the mechanics of play - for instance, printing the name of an object, which Inform often has to do. An activity can happen by itself ('printing the banner text', for instance) or can be applied to an object ('printing the name of something', say).<br>
 </p>
 <p class="halftightin1"><a name=A61></a><b>description of K</b> (<i>plural</i> descriptions of K)&nbsp;<a href=inform:/doc362.html><img border=0 src=inform:/doc_images/help.png></a></p>
-<p class="tightin1"><i>covariant&nbsp;<a href=#contra>><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
+<p class="tightin1"><i>covariant&nbsp;<a href=#contra><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
 <p class="tightin1"><i>Matches:</i> value<br>
 A description of a set of values, where all of the items have to have the same kind of value as each other - for instance, 'even numbers' or 'open doors which are in lighted rooms'.<br>
 </p>
 <p class="halftightin1"><a name=A62></a><b><span class="indexgrey">K valued</span> property<span class="indexgrey"></span></b> (<i>plural</i> <span class="indexgrey">K valued</span> properties<span class="indexgrey"></span>)</p>
-<p class="tightin1"><i>covariant&nbsp;<a href=#contra>><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
+<p class="tightin1"><i>covariant&nbsp;<a href=#contra><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
 <p class="tightin1"><i>Matches:</i> value<br>
 </p>
 <p class="halftightin1"><a name=A63></a><b><span class="indexgrey">K valued</span> table<span class="indexgrey"></span> column<span class="indexgrey"></span></b> (<i>plural</i> <span class="indexgrey">K valued</span> table<span class="indexgrey"></span> columns<span class="indexgrey"></span>)</p>
-<p class="tightin1"><i>covariant&nbsp;<a href=#contra>><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
+<p class="tightin1"><i>covariant&nbsp;<a href=#contra><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
 <p class="tightin1"><i>Matches:</i> value<br>
 </p>
 <p><a name=contra><span class="smaller"><b>Covariance</b> means that if K is a kind of L, then something

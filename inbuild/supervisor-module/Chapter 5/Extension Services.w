@@ -350,6 +350,7 @@ are immutable, and need to be for the extensions dictionary to work.
 			}
 		}
 	} else {
+		SVEXPLAIN(2, "(no JSON metadata file found at %f)\n", F);
 		if (repair_mode) {
 			force_JSON_write = I"the JSON file is currently missing";
 		} else {
@@ -797,6 +798,7 @@ void Extensions::read_source_text_for(inform_extension *E) {
 	TEMPORARY_TEXT(synopsis)
 	@<Concoct a synopsis for the extension to be read@>;
 	E->read_into_file = SourceText::read_file(E->as_copy, F, synopsis, doc_only, FALSE);
+	SVEXPLAIN(1, "(from %f)\n", F);
 	DISCARD_TEXT(synopsis)
 	if (E->read_into_file) {
 		E->read_into_file->your_ref = STORE_POINTER_inbuild_copy(E->as_copy);
