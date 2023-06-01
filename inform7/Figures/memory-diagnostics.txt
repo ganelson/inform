@@ -1,16 +1,16 @@
-Total memory consumption was 123165K = 120 MB
+Total memory consumption was 123167K = 120 MB
 
- ---- was used for 2063851 objects, in 367798 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2063855 objects, in 367802 frames in 0 x 800K = 0K = 0 MB:
 
     33.1%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
     20.9%  text_stream_array                        4684 x 100 = 468400 objects, 26380288 bytes
-    19.7%  linked_list                              44526 objects, 24934560 bytes
+    19.7%  linked_list                              44525 objects, 24934000 bytes
     11.2%  inter_symbol_array                       133 x 1024 = 136192 objects, 14168224 bytes
     10.7%  inter_error_stash_array                  103 x 1024 = 105472 objects, 13503712 bytes
      8.2%  parse_node                               130369 objects, 10429520 bytes
      6.0%  verb_conjugation                         164 objects, 7610912 bytes
      4.4%  parse_node_annotation_array              348 x 500 = 174000 objects, 5579136 bytes
-     2.8%  scan_directory                           872 objects, 3599616 bytes
+     2.8%  scan_directory                           877 objects, 3620256 bytes
      2.6%  pcalc_prop_array                         25 x 1000 = 25000 objects, 3400800 bytes
      2.5%  inter_name_array                         67 x 1000 = 67000 objects, 3218144 bytes
      2.1%  kind_array                               67 x 1000 = 67000 objects, 2682144 bytes
@@ -101,7 +101,7 @@ Total memory consumption was 123165K = 120 MB
      ----  nonlocal_variable                        94 objects, 20304 bytes
      ----  pipeline_step                            15 objects, 20280 bytes
      ----  action_name                              90 objects, 20160 bytes
-     ----  pathname                                 492 objects, 19680 bytes
+     ----  pathname                                 489 objects, 19560 bytes
      ----  timed_rules_rfd_data                     401 objects, 19248 bytes
      ----  method                                   390 objects, 18720 bytes
      ----  pcalc_prop_deferral                      86 objects, 17888 bytes
@@ -139,8 +139,8 @@ Total memory consumption was 123165K = 120 MB
      ----  activity                                 35 objects, 4760 bytes
      ----  value_property_data                      84 objects, 4704 bytes
      ----  parsing_pp_data                          96 objects, 4608 bytes
+     ----  command_line_switch                      54 objects, 4320 bytes
      ----  use_option                               30 objects, 4080 bytes
-     ----  command_line_switch                      51 objects, 4080 bytes
      ----  semver_range                             39 objects, 4056 bytes
      ----  either_or_property_data                  62 objects, 3968 bytes
      ----  parse_node_annotation_type               119 objects, 3808 bytes
@@ -251,9 +251,9 @@ Total memory consumption was 123165K = 120 MB
 
 100.0% was used for memory not allocated for objects:
 
-    57.5%  text stream storage                      72575744 bytes in 488060 claims
+    57.5%  text stream storage                      72577472 bytes in 488067 claims
      4.2%  dictionary storage                       5319680 bytes in 7630 claims
-     ----  sorting                                  2752 bytes in 394 claims
+     ----  sorting                                  2752 bytes in 393 claims
      5.7%  source text                              7200000 bytes in 3 claims
      8.5%  source text details                      10800000 bytes in 2 claims
      0.2%  documentation fragments                  262144 bytes in 1 claim
@@ -269,5 +269,5 @@ Total memory consumption was 123165K = 120 MB
      ----  code generation workspace for objects    3480 bytes in 19 claims
      0.2%  emitter array storage                    280544 bytes in 2001 claims
 
--150.0% was overhead - -189284320 bytes = -184847K = -180 MB
+-150.0% was overhead - -189304520 bytes = -184867K = -180 MB
 
