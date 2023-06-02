@@ -1,0 +1,42 @@
+*** Defining phrases in Inform 6
+(Asking the player to choose to be good or evil; Good or Evil)
+Asking the player to select whether to be a good or evil character to begin play.
+
+Suppose we would like to allow the player to make a fundamental choice at the beginning of the game, and outside the main parsing sequence. "When play begins" seems like a good place to put this.
+
+	{*}"Good or Evil"
+	
+	A person can be good or evil.
+
+	When play begins:
+		say "Should your character be good or evil? >";
+		if good wins, now the player is good;
+		otherwise now the player is evil; 
+		say paragraph break. 
+	
+Now a piece of Inform 6 code handles the unusual input. It's not necessary to understand this to use it, and the code should work for any question you'd like to ask the player. The first three words in quotation marks ('good', 'G', 'goody'...) correspond to positive feedback; the later three words correspond to negative feedback. So "to decide whether good wins" will be true if the player types one of the first three, and false if they type one of the last three.
+
+	{**}To decide whether good wins:
+		(- Question('good','G//','goody','evil','E//','bad') -)
+	 
+	Include (- 
+	
+	[ Question pos1 pos2 pos3 neg1 neg2 neg3 first_word_typed;
+		while (true) {
+			VM_ReadKeyboard(buffer, parse);
+			wn = 1; first_word_typed = NextWordStopped();
+			if (first_word_typed == pos1 or pos2 or pos3) rtrue;
+			if (first_word_typed == neg1 or neg2 or neg3) rfalse;
+			print "Please choose ", (address) pos1, " or ", (address) neg1, ". > ";
+		}
+	];
+
+	-)
+
+	Instead of examining the player when the player is evil:
+		say "It's clear from the look in your eye that you are evil!"
+	
+	Instead of examining the player when the player is good:
+		say "It's clear from the look in your eye that you are good."
+	
+	The Room of Self-Knowledge is a room. "Mirrors cover every available wall-surface of this hexagonal chamber, allowing you to examine yourself from all angles."

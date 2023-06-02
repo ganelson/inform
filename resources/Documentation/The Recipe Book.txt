@@ -630,7 +630,7 @@ Some IF tries to make the viewpoint character more congenial to the player by al
 
 <b>Identity Theft</b> demonstrates asking the player to supply the viewpoint character's name.
 
-<b>Pink or Blue</b> demonstrates a way to let the player choose a gender at the start of play: this will mostly be interesting if the rest of the story makes some use of the player's choice. Since that example is written expressly to demonstrate included Inform 6 code, however, we may find it more congenial to generalize from the more flexible <b>Baritone, Bass</b>.
+<b>Good or Evil</b> demonstrates a way to let the player choose a moral position at the start of play: this will mostly be interesting if the rest of the story makes some use of the player's choice. Since that example is written expressly to demonstrate included Inform 6 code, however, we may find it more congenial to generalize from the more flexible <b>Baritone, Bass</b>.
 
 This is not the only way to go - as we'll see in the next section, there's also something to be said for making the viewpoint character a strongly distinct creature with well-defined preferences and attitudes.
 

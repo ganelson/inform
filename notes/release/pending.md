@@ -22,6 +22,13 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 	references and links provided. (A feature request for this was filed as
 	Jira bug [I7-2232](https://inform7.atlassian.net/browse/I7-2232).)
 
+## Documentation
+
+"Writing with Inform" and "The Recipe Book" benefit from a revision throughout to
+remove unnecessary gender-binary language, mostly to do with pronouns attached
+to "the player", or similar. The example `Blue or Pink` has become `Good or Evil`,
+and now poses a moral rather than gender-based question.
+
 ## Bug fixes
 
 - Fix for Jira bug [I7-2344](https://inform7.atlassian.net/browse/I7-2344)

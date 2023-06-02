@@ -202,7 +202,7 @@ Appraisal == OMIT
 	
 	*TRAITS DETERMINED BY THE PLAYER
 	Name of player character selected at start of play
-	Asking the player to choose a gender
+	Asking the player to choose to be good or evil
 	Allowing the player to describe the main character before starting play
 
 	*CHARACTERIZATION
