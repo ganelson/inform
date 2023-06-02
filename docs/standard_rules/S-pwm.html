@@ -65,7 +65,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Extensions</a></li><li><a href="index.html">srules</a></li><li><b>Physical World Model</b></li></ul></div>
 <p class="purpose">Spatial relationships; the hierarchy of kinds used to model things and places, and their properties.</p>
 
-<ul class="toc"><li><a href="S-pwm.html#SP1">&#167;1. Verbs and Relations</a></li><li><a href="S-pwm.html#SP9">&#167;9. Kinds</a></li><li><a href="S-pwm.html#SP12">&#167;12. Rooms</a></li><li><a href="S-pwm.html#SP17">&#167;17. Things</a></li><li><a href="S-pwm.html#SP23">&#167;23. Directions</a></li><li><a href="S-pwm.html#SP26">&#167;26. Doors</a></li><li><a href="S-pwm.html#SP29">&#167;29. Containers and supporters</a></li><li><a href="S-pwm.html#SP31">&#167;31. Kinds vs patterns</a></li><li><a href="S-pwm.html#SP32">&#167;32. The openability pattern</a></li><li><a href="S-pwm.html#SP33">&#167;33. The lockability pattern</a></li><li><a href="S-pwm.html#SP35">&#167;35. Backdrops</a></li><li><a href="S-pwm.html#SP36">&#167;36. People</a></li><li><a href="S-pwm.html#SP38">&#167;38. Non-fundamental kinds</a></li><li><a href="S-pwm.html#SP39">&#167;39. Men, women and animals</a></li><li><a href="S-pwm.html#SP41">&#167;41. Devices</a></li><li><a href="S-pwm.html#SP42">&#167;42. Vehicles</a></li><li><a href="S-pwm.html#SP44">&#167;44. Player's holdalls</a></li><li><a href="S-pwm.html#SP45">&#167;45. Correspondence between I6 and I7 property and attribute names</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-pwm.html#SP1">&#167;1. Verbs and Relations</a></li><li><a href="S-pwm.html#SP10">&#167;10. Kinds</a></li><li><a href="S-pwm.html#SP13">&#167;13. Rooms</a></li><li><a href="S-pwm.html#SP18">&#167;18. Things</a></li><li><a href="S-pwm.html#SP24">&#167;24. Directions</a></li><li><a href="S-pwm.html#SP27">&#167;27. Doors</a></li><li><a href="S-pwm.html#SP30">&#167;30. Containers and supporters</a></li><li><a href="S-pwm.html#SP32">&#167;32. Kinds vs patterns</a></li><li><a href="S-pwm.html#SP33">&#167;33. The openability pattern</a></li><li><a href="S-pwm.html#SP34">&#167;34. The lockability pattern</a></li><li><a href="S-pwm.html#SP36">&#167;36. Backdrops</a></li><li><a href="S-pwm.html#SP37">&#167;37. People</a></li><li><a href="S-pwm.html#SP39">&#167;39. Non-fundamental kinds</a></li><li><a href="S-pwm.html#SP40">&#167;40. Men, women and animals</a></li><li><a href="S-pwm.html#SP42">&#167;42. Devices</a></li><li><a href="S-pwm.html#SP43">&#167;43. Vehicles</a></li><li><a href="S-pwm.html#SP45">&#167;45. Player's holdalls</a></li><li><a href="S-pwm.html#SP46">&#167;46. Correspondence between I6 and I7 property and attribute names</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Verbs and Relations. </b>We first extend our suite of verbs and meanings to cover standard
 world-modelling terms.
@@ -162,7 +162,61 @@ long gone.
 <span class="identifier-syntax">he</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">concealing</span><span class="plain-syntax">) </span><span class="identifier-syntax">means</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">concealment</span><span class="plain-syntax"> </span><span class="identifier-syntax">relation</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">Definition</span><span class="plain-syntax">: </span><span class="identifier-syntax">Something</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">concealed</span><span class="plain-syntax"> </span><span class="identifier-syntax">rather</span><span class="plain-syntax"> </span><span class="identifier-syntax">than</span><span class="plain-syntax"> </span><span class="identifier-syntax">unconcealed</span><span class="plain-syntax"> </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">holder</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">conceals</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>A final sort of pseudo-containment: does the entire world contain
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>If a supporter or container has something on/in it, but all the contents are concealed or
+undescribed, default behavior should be the same to what it would be if it were empty. The
+following adjectives assist the maintenance of the deceit.
+</p>
+
+<p class="commentary">Something is obviously-occupied if it has at least one obvious (neither concealed nor
+undescribed) thing in it, but closed opaque containers the player is outside of aren't
+obviously-occupied because their status isn't obvious. The player is undescribed and so
+the player's own presence in an enterable supporter or container doesn't count toward it
+being considered occupied. The opposite of obviously-occupied is possibly-unoccupied.
+Something is possibly-unoccupied if it's truly empty, or the only things in it are concealed
+or undescribed (or both), or it's a closed opaque container the player is outside of.
+</p>
+
+<p class="commentary">Something is falsely-unoccupied if it's not a closed opaque continer the player is outside
+of and it's not truly empty but everything in it is concealed or undescribed. Note that
+falsely-unoccupied is not the opposite of obviously-occupied. Possibly-occupied is the
+opposite of obviously-occupied; falsely-occupied is something different.
+</p>
+
+<p class="commentary">None of this considers visibility per se and they behave the same way in light or
+darkness. The presumption is that if the game is evaluating whether the player can perceive
+the contents of a thing, it has already been determined that they can perceive that
+thing.
+</p>
+
+<p class="commentary">These tests only consider what's directly contained or supported. If there's an obvious
+thing its contents can't make it any less obvious; if something is undescribed or
+concealed, it's assumed that the game shouldn't be calling attention to their contents.
+</p>
+
+<p class="commentary">These adjectives are not defined for people. Things directly held by the player are always
+perceptible by the player. Things possessed by other people aren't mentioned by default
+in room descriptions or when searching or examining them, but only through whatever rules
+an author adds to do so, so the details are left to the author.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">Definition</span><span class="plain-syntax">: </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">container</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">obviously</span><span class="plain-syntax">-</span><span class="identifier-syntax">occupied</span><span class="plain-syntax"> </span><span class="identifier-syntax">rather</span><span class="plain-syntax"> </span><span class="identifier-syntax">than</span><span class="plain-syntax"> </span><span class="identifier-syntax">possibly</span><span class="plain-syntax">-</span><span class="identifier-syntax">unoccupied</span><span class="plain-syntax"> </span><span class="identifier-syntax">if</span>
+<span class="identifier-syntax">I6</span><span class="plain-syntax"> </span><span class="identifier-syntax">routine</span><span class="plain-syntax"> </span><span class="string-syntax">"ObviouslyOccupied"</span><span class="plain-syntax"> </span><span class="identifier-syntax">says</span><span class="plain-syntax"> </span><span class="identifier-syntax">so</span><span class="plain-syntax"> (</span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">contains</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">least</span><span class="plain-syntax"> </span><span class="identifier-syntax">one</span><span class="plain-syntax"> </span><span class="identifier-syntax">obvious</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax">).</span>
+
+<span class="identifier-syntax">Definition</span><span class="plain-syntax">: </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">supporter</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">obviously</span><span class="plain-syntax">-</span><span class="identifier-syntax">occupied</span><span class="plain-syntax"> </span><span class="identifier-syntax">rather</span><span class="plain-syntax"> </span><span class="identifier-syntax">than</span><span class="plain-syntax"> </span><span class="identifier-syntax">possibly</span><span class="plain-syntax">-</span><span class="identifier-syntax">unoccupied</span><span class="plain-syntax"> </span><span class="identifier-syntax">if</span>
+<span class="identifier-syntax">I6</span><span class="plain-syntax"> </span><span class="identifier-syntax">routine</span><span class="plain-syntax"> </span><span class="string-syntax">"ObviouslyOccupied"</span><span class="plain-syntax"> </span><span class="identifier-syntax">says</span><span class="plain-syntax"> </span><span class="identifier-syntax">so</span><span class="plain-syntax"> (</span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">supports</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">least</span><span class="plain-syntax"> </span><span class="identifier-syntax">one</span><span class="plain-syntax"> </span><span class="identifier-syntax">obvious</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax">).</span>
+
+<span class="identifier-syntax">Definition</span><span class="plain-syntax">: </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">container</span><span class="plain-syntax"> (</span><span class="identifier-syntax">called</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">) </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">falsely</span><span class="plain-syntax">-</span><span class="identifier-syntax">unoccupied</span><span class="plain-syntax">:</span>
+<span class="plain-syntax">  </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">first</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> </span><span class="identifier-syntax">held</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">nothing</span><span class="plain-syntax">, </span><span class="identifier-syntax">no</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">  </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">closed</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">opaque</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">does</span><span class="plain-syntax"> </span><span class="identifier-syntax">not</span><span class="plain-syntax"> </span><span class="identifier-syntax">enclose</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax">, </span><span class="identifier-syntax">no</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">  </span><span class="identifier-syntax">decide</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> </span><span class="identifier-syntax">whether</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">not</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">possibly</span><span class="plain-syntax">-</span><span class="identifier-syntax">unoccupied</span><span class="plain-syntax">;</span>
+
+<span class="identifier-syntax">Definition</span><span class="plain-syntax">: </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">supporter</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">falsely</span><span class="plain-syntax">-</span><span class="identifier-syntax">unoccupied</span><span class="plain-syntax">:</span>
+<span class="plain-syntax">  </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">first</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> </span><span class="identifier-syntax">held</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">nothing</span><span class="plain-syntax">, </span><span class="identifier-syntax">no</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">  </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">first</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> </span><span class="identifier-syntax">held</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">next</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> </span><span class="identifier-syntax">held</span><span class="plain-syntax"> </span><span class="identifier-syntax">after</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">nothing</span><span class="plain-syntax">, </span><span class="identifier-syntax">no</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">  </span><span class="identifier-syntax">decide</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> </span><span class="identifier-syntax">whether</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">not</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">possibly</span><span class="plain-syntax">-</span><span class="identifier-syntax">unoccupied</span><span class="plain-syntax">;</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>A final sort of pseudo-containment: does the entire world contain
 something, or not? (For things destroyed during play, or not yet created, the
 answer would be no.)
 </p>
@@ -175,7 +229,7 @@ answer would be no.)
 <span class="identifier-syntax">Definition</span><span class="plain-syntax">: </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">scene</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">happening</span><span class="plain-syntax"> </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">I6</span><span class="plain-syntax"> </span><span class="identifier-syntax">condition</span><span class="plain-syntax"> </span><span class="string-syntax">"scene_status--&gt;(*1-1)==1"</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">says</span><span class="plain-syntax"> </span><span class="identifier-syntax">so</span><span class="plain-syntax"> (</span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">currently</span><span class="plain-syntax"> </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> </span><span class="identifier-syntax">place</span><span class="plain-syntax">).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Kinds. </b>Basic Inform provides the kind "object", but no specialisations of it. We
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Kinds. </b>Basic Inform provides the kind "object", but no specialisations of it. We
 will use objects to represent physical objects and locations, with the
 hierarchy given below. (The template code assumes these kinds will be
 declared in this order, so be careful rearranging them.)
@@ -202,7 +256,7 @@ correct, but "people" is more idiomatically usual.
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">person</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">region</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>At this point, then, the hierarchy looks like so:
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>At this point, then, the hierarchy looks like so:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -236,7 +290,7 @@ those are merely design choices, and Inform would not be troubled by their
 absence.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b></p>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">Section</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="identifier-syntax">a</span><span class="plain-syntax"> - </span><span class="identifier-syntax">Concepts</span><span class="plain-syntax"> (</span><span class="identifier-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">concepts</span><span class="plain-syntax"> </span><span class="identifier-syntax">language</span><span class="plain-syntax"> </span><span class="identifier-syntax">element</span><span class="plain-syntax"> </span><span class="identifier-syntax">only</span><span class="plain-syntax">)</span>
@@ -244,7 +298,7 @@ absence.
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">concept</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">concept</span><span class="plain-syntax"> </span><span class="identifier-syntax">can</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">privately</span><span class="plain-syntax">-</span><span class="identifier-syntax">named</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">publicly</span><span class="plain-syntax">-</span><span class="identifier-syntax">named</span><span class="plain-syntax">. </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">concept</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">usually</span><span class="plain-syntax"> </span><span class="identifier-syntax">publicly</span><span class="plain-syntax">-</span><span class="identifier-syntax">named</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Rooms. </b>We now detail each of the fundamental kinds in turn, in order of their
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Rooms. </b>We now detail each of the fundamental kinds in turn, in order of their
 declaration, and thus beginning with rooms.
 </p>
 
@@ -256,7 +310,7 @@ declaration, and thus beginning with rooms.
 <span class="string-syntax">room is mostly unable to sense, or interact with, anything in a different room.</span>
 <span class="string-syntax">Rooms are arranged in a map."</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Rooms have rather few properties built in; this reflects their usual role
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>Rooms have rather few properties built in; this reflects their usual role
 in IF as ambient environments in which interesting things happen, rather
 than being direct participants.
 </p>
@@ -268,7 +322,7 @@ than being direct participants.
 
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">room</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">called</span><span class="plain-syntax"> </span><span class="identifier-syntax">description</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>Note that the "map region" property here is created with the type
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>Note that the "map region" property here is created with the type
 "object", not "region", even though we think of it as always being a
 region. This is because of I7's type-checking rule: the type "object" can
 legally hold 0, meaning "nothing", but more specific object types &mdash; in
@@ -282,7 +336,7 @@ specific.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">room</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">object</span><span class="plain-syntax"> </span><span class="identifier-syntax">called</span><span class="plain-syntax"> </span><span class="identifier-syntax">map</span><span class="plain-syntax"> </span><span class="identifier-syntax">region</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">map</span><span class="plain-syntax"> </span><span class="identifier-syntax">region</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">room</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">usually</span><span class="plain-syntax"> </span><span class="identifier-syntax">nothing</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>Rooms have two specialised spatial relationships of their own, which again
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>Rooms have two specialised spatial relationships of their own, which again
 we need verbal forms of:
 </p>
 
@@ -292,7 +346,7 @@ we need verbal forms of:
 
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">regionally</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">means</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">reversed</span><span class="plain-syntax"> </span><span class="identifier-syntax">regional</span><span class="plain-syntax">-</span><span class="identifier-syntax">containment</span><span class="plain-syntax"> </span><span class="identifier-syntax">relation</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>There's no detailed writeup of regions, since they have no properties
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>There's no detailed writeup of regions, since they have no properties
 in the usual setup. So let's add this here for the Kinds index:
 </p>
 
@@ -307,7 +361,7 @@ in the usual setup. So let's add this here for the Kinds index:
 
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">region</span><span class="plain-syntax"> </span><span class="identifier-syntax">can</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">privately</span><span class="plain-syntax">-</span><span class="identifier-syntax">named</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">publicly</span><span class="plain-syntax">-</span><span class="identifier-syntax">named</span><span class="plain-syntax">. </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">region</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">usually</span><span class="plain-syntax"> </span><span class="identifier-syntax">publicly</span><span class="plain-syntax">-</span><span class="identifier-syntax">named</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Things. </b>Things are ubiquitous:
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Things. </b>Things are ubiquitous:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -318,7 +372,7 @@ in the usual setup. So let's add this here for the Kinds index:
 <span class="string-syntax">mislaid umbrellas might all be examples, and so might more surprising things</span>
 <span class="string-syntax">like the sound of birdsong or a shaft of sunlight."</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>The large number of either/or properties things can have reflects the
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>The large number of either/or properties things can have reflects the
 flexibility of the I6 world model, which we largely adopt for I7 too. That
 is, you can have any combination of lit/unlit, edible/inedible, fixed in
 place/portable, and so on. We can divide them into three broad categories:
@@ -340,7 +394,7 @@ from the world model entirely.
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> </span><span class="identifier-syntax">can</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">wearable</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> </span><span class="identifier-syntax">can</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">pushable</span><span class="plain-syntax"> </span><span class="identifier-syntax">between</span><span class="plain-syntax"> </span><span class="identifier-syntax">rooms</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>Second, status properties, which in effect refer to the past history of an
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>Second, status properties, which in effect refer to the past history of an
 item without our needing to use the past tenses, which can be tricky or
 inefficient. "Handled" means that the player has at some time carried the
 thing in question. (We used to have "initially carried" here, too, but that's
@@ -350,7 +404,7 @@ now considered a part of the verb "to carry" rather than an adjective.)
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> </span><span class="identifier-syntax">can</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">handled</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>Third, linguistic properties, influencing when and how the thing's name
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>Third, linguistic properties, influencing when and how the thing's name
 will be included in lists. ("Mentioned" goes here rather than as a status
 property because it refers only to the current room description, so it carries
 no long-term historic information. "Marked for listing", similarly, carries
@@ -365,7 +419,7 @@ also by some of the I7 template routines.)
 <span class="identifier-syntax">unmarked</span><span class="plain-syntax"> </span><span class="identifier-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">listing</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> </span><span class="identifier-syntax">can</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">mentioned</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">unmentioned</span><span class="plain-syntax">. </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">usually</span><span class="plain-syntax"> </span><span class="identifier-syntax">mentioned</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>We now have a mixed bag of value properties, all descriptive &mdash; it's an
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>We now have a mixed bag of value properties, all descriptive &mdash; it's an
 interesting reflection on how qualitative English text usually is that the
 world model so seldom needs quantitative properties (sizes, weights, distances,
 and so on).
@@ -375,7 +429,7 @@ and so on).
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">called</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">description</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">called</span><span class="plain-syntax"> </span><span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">initial</span><span class="plain-syntax"> </span><span class="identifier-syntax">appearance</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>Lastly on things: an implication about scenery. The following sentence looks
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>Lastly on things: an implication about scenery. The following sentence looks
 like an assertion much like others above ("A thing is usually inedible", for
 instance) &mdash; but in fact it is an "implication": it says that an object having
 one property also probably has another. The Standard Rules make only very
@@ -392,7 +446,7 @@ just as every sentence qualified by "usually" can.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">Scenery</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">usually</span><span class="plain-syntax"> </span><span class="identifier-syntax">fixed</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">place</span><span class="plain-syntax">. </span><span class="comment-syntax">n implication.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Directions. </b>The first important point about directions is that they are not things and
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Directions. </b>The first important point about directions is that they are not things and
 not rooms. They are not positions in the world, but imaginary arrows pointing
 in different ways one could go from those positions. In the language of
 geometry, we could call them tangent vectors which can be taken anywhere
@@ -422,7 +476,7 @@ an Inform 7 work, too.) More concisely:
 <span class="identifier-syntax">usually</span><span class="plain-syntax"> </span><span class="identifier-syntax">unmarked</span><span class="plain-syntax"> </span><span class="identifier-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">listing</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">direction</span><span class="plain-syntax"> </span><span class="identifier-syntax">can</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">scenery</span><span class="plain-syntax">. </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">direction</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">always</span><span class="plain-syntax"> </span><span class="identifier-syntax">scenery</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>The following value property expresses that all directions in I7 come in
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>The following value property expresses that all directions in I7 come in
 matched, diametrically opposing pairs &mdash; north/south, up/down and so on.
 This is a concept we need to provide so that I7 can apply its assumption
 that if room X is north of room Y, then probably room Y is also south of
@@ -434,7 +488,7 @@ not "object": a value of 0, meaning "there's no opposite", is illegal.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">direction</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">direction</span><span class="plain-syntax"> </span><span class="identifier-syntax">called</span><span class="plain-syntax"> </span><span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">opposite</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>The Standard Rules define only thirteen I7 objects, and here we go with
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26.  </b>The Standard Rules define only thirteen I7 objects, and here we go with
 twelve of them: the standard set of directions, which come in six pairs
 of opposites.
 </p>
@@ -518,7 +572,7 @@ the traditional order is N, NE, NW, S, SE, SW, E, W, U, D, IN, OUT.
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">below</span><span class="plain-syntax"> </span><span class="identifier-syntax">means</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">mapping</span><span class="plain-syntax"> </span><span class="identifier-syntax">down</span><span class="plain-syntax"> </span><span class="identifier-syntax">relation</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">mapped</span><span class="plain-syntax"> </span><span class="identifier-syntax">below</span><span class="plain-syntax"> </span><span class="identifier-syntax">means</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">mapping</span><span class="plain-syntax"> </span><span class="identifier-syntax">down</span><span class="plain-syntax"> </span><span class="identifier-syntax">relation</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Doors. </b>Doors are, literally, a difficult edge case for the world model of IF, since
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. Doors. </b>Doors are, literally, a difficult edge case for the world model of IF, since
 they occupy the awkward junction between the two different ways of dividing
 up space: the "vertical" model of objects containing and supporting each
 other, all within a tree rooted by the room which represents, for the moment,
@@ -540,7 +594,7 @@ to be in?
 <span class="string-syntax">sometimes only one-way (for instance if you write 'East of the Ballroom is</span>
 <span class="string-syntax">the long slide. Through the long slide is the cellar.')."</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b>This is the first kind we have declared to be a kind of something else:
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b>This is the first kind we have declared to be a kind of something else:
 a door is a kind of thing. That means a door inherits all of the properties
 of a thing, but in a way which allows us to change the normal expectations.
 So here we see the first case of assertions which contradict earlier ones,
@@ -556,7 +610,7 @@ if we allowed anybody to move them around during play. So:
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">door</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">always</span><span class="plain-syntax"> </span><span class="identifier-syntax">fixed</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">place</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">door</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">never</span><span class="plain-syntax"> </span><span class="identifier-syntax">pushable</span><span class="plain-syntax"> </span><span class="identifier-syntax">between</span><span class="plain-syntax"> </span><span class="identifier-syntax">rooms</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b>"Every exit is an entrance somewhere else," as Stoppard's play
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29.  </b>"Every exit is an entrance somewhere else," as Stoppard's play
 "Rosencrantz and Guildenstern are Dead" puts it: and though not all
 I7 doors are present on both sides, they do nevertheless have two sides.
 The representation of this is quite tricky because, as Stoppard implies,
@@ -589,7 +643,7 @@ has been added to the Standard Rules, and this avoids directly evaluating "door_
 <span class="identifier-syntax">Leading</span><span class="plain-syntax">-</span><span class="identifier-syntax">through</span><span class="plain-syntax"> </span><span class="identifier-syntax">relates</span><span class="plain-syntax"> </span><span class="identifier-syntax">one</span><span class="plain-syntax"> </span><span class="identifier-syntax">room</span><span class="plain-syntax"> (</span><span class="identifier-syntax">called</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">leading</span><span class="plain-syntax">-</span><span class="identifier-syntax">through</span><span class="plain-syntax"> </span><span class="identifier-syntax">destination</span><span class="plain-syntax">) </span><span class="identifier-syntax">to</span>
 <span class="identifier-syntax">various</span><span class="plain-syntax"> </span><span class="identifier-syntax">doors</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">through</span><span class="plain-syntax"> </span><span class="identifier-syntax">means</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">leading</span><span class="plain-syntax">-</span><span class="identifier-syntax">through</span><span class="plain-syntax"> </span><span class="identifier-syntax">relation</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29. Containers and supporters. </b>The carrying capacity property is the exception to the remarks above about
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30. Containers and supporters. </b>The carrying capacity property is the exception to the remarks above about
 the qualitative nature of the world model: here for the first and only time
 we have a value which can be meaningfully compared.
 </p>
@@ -607,7 +661,7 @@ we have a value which can be meaningfully compared.
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">container</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax"> </span><span class="identifier-syntax">called</span><span class="plain-syntax"> </span><span class="identifier-syntax">carrying</span><span class="plain-syntax"> </span><span class="identifier-syntax">capacity</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">carrying</span><span class="plain-syntax"> </span><span class="identifier-syntax">capacity</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">container</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">usually</span><span class="plain-syntax"> </span><span class="constant-syntax">100</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30.  </b>The most interesting thing to note here (and we will see it again in the
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31.  </b>The most interesting thing to note here (and we will see it again in the
 definition of "people") is that "transparent" the I7 property is not
 a direct match onto <span class="extract"><span class="extract-syntax">transparent</span></span> the I6 attribute. In I7, the term is
 applicable only to containers (a reform made in January 2008, but clarifying
@@ -634,7 +688,7 @@ these things, and expect the user to write activity rules instead.
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">supporter</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">usually</span><span class="plain-syntax"> </span><span class="identifier-syntax">fixed</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">place</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">supporter</span><span class="plain-syntax"> </span><span class="identifier-syntax">can</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">transparent</span><span class="plain-syntax">. </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">supporter</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">always</span><span class="plain-syntax"> </span><span class="identifier-syntax">transparent</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31. Kinds vs patterns. </b>A problem faced by all object-oriented systems is "fear of the diamond",
+<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32. Kinds vs patterns. </b>A problem faced by all object-oriented systems is "fear of the diamond",
 the problematic diagram of inheritance which results when we have two
 different subclasses B and C of a class A, which represent quite different
 ideas, but then we also turn out to want some behaviour D which is shared
@@ -667,7 +721,7 @@ between rooms, whereas containers do it for the "vertical" spatial model
 of objects enclosing each other.)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32. The openability pattern. </b>To satisfy the openability pattern, a thing has to provide both of the
+<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33. The openability pattern. </b>To satisfy the openability pattern, a thing has to provide both of the
 either/or properties "open" and "openable". This entitles it to be
 opened and closed by the opening and closing actions, defined below.
 Note that I7 has no formal concept of patterns as part of its type-checking:
@@ -689,7 +743,7 @@ don't share the pattern.
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">container</span><span class="plain-syntax"> </span><span class="identifier-syntax">can</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">open</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">closed</span><span class="plain-syntax">. </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">container</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">usually</span><span class="plain-syntax"> </span><span class="identifier-syntax">open</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">container</span><span class="plain-syntax"> </span><span class="identifier-syntax">can</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">openable</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">unopenable</span><span class="plain-syntax">. </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">container</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">usually</span><span class="plain-syntax"> </span><span class="identifier-syntax">unopenable</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33. The lockability pattern. </b>And similarly for lockability, because a principle of the world model is
+<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34. The lockability pattern. </b>And similarly for lockability, because a principle of the world model is
 that any spatial barrier can be given a lock if the designer so chooses. To
 satisfy this pattern, a thing must
 </p>
@@ -721,7 +775,7 @@ addition.
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">locked</span><span class="plain-syntax"> </span><span class="identifier-syntax">container</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">usually</span><span class="plain-syntax"> </span><span class="identifier-syntax">closed</span><span class="plain-syntax">. </span><span class="comment-syntax">n implication.</span>
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">lockable</span><span class="plain-syntax"> </span><span class="identifier-syntax">container</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">usually</span><span class="plain-syntax"> </span><span class="identifier-syntax">openable</span><span class="plain-syntax">. </span><span class="comment-syntax">n implication.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34.  </b>Note that the lock-fitting relation has, as its domains, "thing" and
+<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35.  </b>Note that the lock-fitting relation has, as its domains, "thing" and
 "thing". That means that compile-time typechecking will not reject an
 attempt to apply the relation to (say) two vehicles. At run time, evaluating
 "if X unlocks P" where P is a peculiar thing with no possibility of a lock
@@ -734,7 +788,7 @@ not at compile-time.
 <span class="identifier-syntax">Lock</span><span class="plain-syntax">-</span><span class="identifier-syntax">fitting</span><span class="plain-syntax"> </span><span class="identifier-syntax">relates</span><span class="plain-syntax"> </span><span class="identifier-syntax">one</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> (</span><span class="identifier-syntax">called</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">matching</span><span class="plain-syntax"> </span><span class="identifier-syntax">key</span><span class="plain-syntax">) </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">various</span><span class="plain-syntax"> </span><span class="identifier-syntax">things</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">unlock</span><span class="plain-syntax"> </span><span class="identifier-syntax">means</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">lock</span><span class="plain-syntax">-</span><span class="identifier-syntax">fitting</span><span class="plain-syntax"> </span><span class="identifier-syntax">relation</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35. Backdrops. </b>The true subtlety of backdrops is not visible in the brief description here:
+<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36. Backdrops. </b>The true subtlety of backdrops is not visible in the brief description here:
 but they require careful handling both in Inform and in the template layer code,
 because they can be in many rooms at once.
 </p>
@@ -750,7 +804,7 @@ because they can be in many rooms at once.
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">backdrop</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">always</span><span class="plain-syntax"> </span><span class="identifier-syntax">fixed</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">place</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">backdrop</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">never</span><span class="plain-syntax"> </span><span class="identifier-syntax">pushable</span><span class="plain-syntax"> </span><span class="identifier-syntax">between</span><span class="plain-syntax"> </span><span class="identifier-syntax">rooms</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36. People. </b>From a compilation point of view, people are surprisingly easy to deal with.
+<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37. People. </b>From a compilation point of view, people are surprisingly easy to deal with.
 It may well be argued that this is because the I6 world model is so sketchy
 in modelling them, but that may actually be a good thing, because it's not at
 all obvious that any single model will be sensible for what different
@@ -792,7 +846,7 @@ and the valued property <span class="extract"><span class="extract-syntax">befor
 
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">person</span><span class="plain-syntax"> </span><span class="identifier-syntax">can</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">transparent</span><span class="plain-syntax">. </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">person</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">always</span><span class="plain-syntax"> </span><span class="identifier-syntax">transparent</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37.  </b>One among the people is special: the enigmatic default protagonist, whose
+<p class="commentary firstcommentary"><a id="SP38" class="paragraph-anchor"></a><b>&#167;38.  </b>One among the people is special: the enigmatic default protagonist, whose
 name is not "player" but "yourself". (The I6 library requires this object to
 be created as <span class="extract"><span class="extract-syntax">selfobj</span></span>, but that's not a name that is ever printed or parsed:
 it's a constant value used only in I6 source code.)
@@ -826,7 +880,7 @@ that property for the "yourself" object, so we need do nothing here.
 
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">yourself</span><span class="plain-syntax"> </span><span class="identifier-syntax">object</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">accessible</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"selfobj"</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP38" class="paragraph-anchor"></a><b>&#167;38. Non-fundamental kinds. </b>We have now finished defining the nine fundamental kinds which Inform requires
+<p class="commentary firstcommentary"><a id="SP39" class="paragraph-anchor"></a><b>&#167;39. Non-fundamental kinds. </b>We have now finished defining the nine fundamental kinds which Inform requires
 in order for it to function. There are six more to define, but it's worth
 emphasising that none of these is required or assumed by either Inform or
 its template layer of I6 code. So any of them could be changed drastically
@@ -847,7 +901,7 @@ white paper, "Natural Language, Semantic Analysis and Interactive Fiction"
 (2005), but briefly: we are minimalist but not puritanically so.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP39" class="paragraph-anchor"></a><b>&#167;39. Men, women and animals. </b>Of these discretionary kinds, so to speak, "man" and "woman" are perhaps
+<p class="commentary firstcommentary"><a id="SP40" class="paragraph-anchor"></a><b>&#167;40. Men, women and animals. </b>Of these discretionary kinds, so to speak, "man" and "woman" are perhaps
 the least challengeable. They are not obviously the domains of any
 natural relation (unless one takes a very old-fashioned idea of gender
 identity and supposes that, oh, "X keeps Y" implies that X is a wealthy
@@ -894,7 +948,7 @@ purely in terms of gender: they have no distinguishing behaviour.
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">specification</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">woman</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="string-syntax">"Represents a woman or girl."</span>
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">woman</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">always</span><span class="plain-syntax"> </span><span class="identifier-syntax">female</span><span class="plain-syntax">. </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">woman</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">never</span><span class="plain-syntax"> </span><span class="identifier-syntax">neuter</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP40" class="paragraph-anchor"></a><b>&#167;40.  </b>But what about "animal"? Animals turn up often in IF, and of course
+<p class="commentary firstcommentary"><a id="SP41" class="paragraph-anchor"></a><b>&#167;41.  </b>But what about "animal"? Animals turn up often in IF, and of course
 domestic animals have been part of human society since prehistoric times:
 but then again, the same can be said for stoves and larders, and we aren't
 declaring kinds for those.
@@ -922,7 +976,7 @@ not even any implication for gender.
 <span class="string-syntax">non-human living creature reasonably large and possible to interact with: a</span>
 <span class="string-syntax">giant Venus fly-trap might qualify, but not a patch of lichen."</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP41" class="paragraph-anchor"></a><b>&#167;41. Devices. </b>The justification for providing a "device" kind is much thinner. It's done
+<p class="commentary firstcommentary"><a id="SP42" class="paragraph-anchor"></a><b>&#167;42. Devices. </b>The justification for providing a "device" kind is much thinner. It's done
 largely for traditional reasons &mdash; such a concept existed in the I6 library,
 which in turn followed Infocom conventions dating from the early 1980s.
 The inclusion is defensible as representing a common linguistic category
@@ -945,7 +999,7 @@ from a mousetrap to a nuclear reactor.
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">specification</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">device</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="string-syntax">"Represents a machine or contrivance of some</span>
 <span class="string-syntax">kind which can be switched on or off."</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP42" class="paragraph-anchor"></a><b>&#167;42. Vehicles. </b>Here again the justification boils down to tradition. Vehicles were a
+<p class="commentary firstcommentary"><a id="SP43" class="paragraph-anchor"></a><b>&#167;43. Vehicles. </b>Here again the justification boils down to tradition. Vehicles were a
 staple ingredient of the Infocom classics, largely because of code
 originally written for the inflatable boat in the 1978-79 mainframe version
 of "Zork", which was then copied through into later titles. Unlike
@@ -996,7 +1050,7 @@ property of (for instance) a door or a person.
 
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">vehicle</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">always</span><span class="plain-syntax"> </span><span class="identifier-syntax">enterable</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP43" class="paragraph-anchor"></a><b>&#167;43.  </b>The part about vehicles not usually being portable is simply for realism's
+<p class="commentary firstcommentary"><a id="SP44" class="paragraph-anchor"></a><b>&#167;44.  </b>The part about vehicles not usually being portable is simply for realism's
 sake: generally speaking if something can hold human weight it's pretty
 large and heavy. (A bicycle is an edge case, and a skateboard is clearly
 an exception, but that's why the rule is only "usually".)
@@ -1012,7 +1066,7 @@ boats or spacecraft between rooms.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">vehicle</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">usually</span><span class="plain-syntax"> </span><span class="identifier-syntax">not</span><span class="plain-syntax"> </span><span class="identifier-syntax">portable</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP44" class="paragraph-anchor"></a><b>&#167;44. Player's holdalls. </b>This is the final kind created in the Standard Rules, and probably the most
+<p class="commentary firstcommentary"><a id="SP45" class="paragraph-anchor"></a><b>&#167;45. Player's holdalls. </b>This is the final kind created in the Standard Rules, and probably the most
 doubtful of all. It simply provides a hook to a cute and traditional feature
 of the I6 library whereby spare possessions are automatically cleared out
 of the player's way: it derives from the rucksack in the 1993 IF title "Curses".
@@ -1030,7 +1084,7 @@ of the player's way: it derives from the rucksack in the 1993 IF title "Curses".
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax">'</span><span class="identifier-syntax">s</span><span class="plain-syntax"> </span><span class="identifier-syntax">holdall</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">always</span><span class="plain-syntax"> </span><span class="identifier-syntax">portable</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax">'</span><span class="identifier-syntax">s</span><span class="plain-syntax"> </span><span class="identifier-syntax">holdall</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">usually</span><span class="plain-syntax"> </span><span class="identifier-syntax">openable</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP45" class="paragraph-anchor"></a><b>&#167;45. Correspondence between I6 and I7 property and attribute names. </b>All of the kinds, objects and properties which make up the standard kit
+<p class="commentary firstcommentary"><a id="SP46" class="paragraph-anchor"></a><b>&#167;46. Correspondence between I6 and I7 property and attribute names. </b>All of the kinds, objects and properties which make up the standard kit
 provided to every source text are now complete. We conclude Section SR1 by
 giving the Inform compiler a dictionary to tell it how I7's names for
 properties &mdash; some value properties, some either/or &mdash; mesh with those
@@ -1060,7 +1114,7 @@ dictionary of equivalents, and here it is. (Any I7 property not named is
 handled purely by I7 source text in the remainder of the Standard Rules.)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP46" class="paragraph-anchor"></a><b>&#167;46.  </b>First, equivalents where I7 either/or properties map directly onto
+<p class="commentary firstcommentary"><a id="SP47" class="paragraph-anchor"></a><b>&#167;47.  </b>First, equivalents where I7 either/or properties map directly onto
 I6 attributes. Note the way "lit" (for things) and "lighted" (for rooms)
 both map onto the same I6 attribute, <span class="extract"><span class="extract-syntax">light</span></span>. Attributes were in scarce
 supply in I6 (with a limit of 32 in the early days, later raised to 48) and
@@ -1095,7 +1149,7 @@ meanings were basically similar.
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">marked</span><span class="plain-syntax"> </span><span class="identifier-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">listing</span><span class="plain-syntax"> </span><span class="identifier-syntax">property</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">defined</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"workflag"</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="identifier-syntax">grouping</span><span class="plain-syntax"> </span><span class="identifier-syntax">key</span><span class="plain-syntax"> </span><span class="identifier-syntax">property</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">defined</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"list_together"</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP47" class="paragraph-anchor"></a><b>&#167;47.  </b>Second, the I7 value properties mapping onto I6 properties. Again,
+<p class="commentary firstcommentary"><a id="SP48" class="paragraph-anchor"></a><b>&#167;48.  </b>Second, the I7 value properties mapping onto I6 properties. Again,
 <span class="extract"><span class="extract-syntax">map_region</span></span> is a new I6 property of our own, while the rest are I6 staples.
 And see also "other side", which is translated above for timing reasons.
 </p>
