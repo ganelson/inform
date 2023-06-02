@@ -259,6 +259,8 @@ When the story compiles the list of nondescript items, it adds tags such as "(op
 
 	Rule for printing room description details: stop.
 
+The "(empty)" tag can appear when something is <i>not</i> truly empty if everything within is concealed or undescribed.
+
 And we can suppress the "(open)" and "(on which is...)" sorts of tags with the "omit the contents in listing" phrase, as in
 
 	Rule for printing the name of the bottle while not inserting or removing: 
