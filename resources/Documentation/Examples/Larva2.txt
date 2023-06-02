@@ -28,7 +28,7 @@ To say phrases can be more complex, as well, since we can have them incorporate 
 		
 Here where we have (speaker - a person), we are leaving a slot which we can later fill in, madlibs-like, with any person we like. That is why we can write "insult for the noun": we are summoning the To say phrase and telling it to fill in the identity of the unknown speaker with the noun.
 
-This differs from "insult of the noun" in the previous example; in that case, each person had his own insult property, and were merely printing that property out. Here we are actually telling Inform to calculate anew what the insult should be, and giving it some instructions about how to do that.
+This differs from "insult of the noun" in the previous example; in that case, each person had their own insult property, and we were merely printing that property out. Here we are actually telling Inform to calculate anew what the insult should be, and giving it some instructions about how to do that.
 
 Our instructions can also get arbitrarily complex:
 

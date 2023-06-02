@@ -2,7 +2,7 @@
 (Port Royal: 4. Character names--Random characters seen through a window)
 A cell window through which the player can see people who were in Port Royal in the current year of game-time.
 
-Our protagonist is imprisoned in Port Royal, waiting out his years, and sometimes through the window of his cell he is able to see someone. 
+Our protagonist is imprisoned in Port Royal, waiting out their years, and sometimes through the window of the cell they are able to see someone. 
 
 We are, however, obsessive about historical accuracy, so we provide a table of people who really lived in the city, together with the year in which their existence is attested. We want these people to appear in the description only in the year when they are known to have been present. (After all, mortality was high in Port Royal and new people were constantly arriving, so someone's presence one year is no guarantee of their continued existence the next.)
 

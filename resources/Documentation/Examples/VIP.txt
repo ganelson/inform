@@ -1,6 +1,6 @@
 ** Going from, going to
 (Region off-limits to a player without VIP pass; A&E)
-Using regions to block access to an entire area when the player does not carry a pass, regardless of which entrance he uses.
+Using regions to block access to an entire area when the player does not carry a pass, regardless of which entrance they use.
 
 Rules about going to regions make it easy to exclude the player from a large portion of the map, even if there are many connecting paths to the region. For instance, in this story it would be annoying to have to write a rule about all four exits by which the player could reach the film set area:
 

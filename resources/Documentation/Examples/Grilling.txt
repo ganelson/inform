@@ -1,6 +1,6 @@
 * Instead rules
 (Supporter from which the player cannot take things; Grilling)
-A grill, from which the player is not allowed to take anything lest he burn himself.
+A grill, from which the player is not allowed to take anything lest they're burned.
 
 Descriptions of objects can be used in "Instead" rules: we can not only say "Instead of taking the steak", but also "Instead of taking something" or "Instead of taking something which is on the grill". 
 

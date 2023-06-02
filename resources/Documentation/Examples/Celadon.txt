@@ -1,8 +1,8 @@
 * To carry, to wear, to have
 (DROP applies even to objects the player carries indirectly; Celadon)
-Using the enclosure relation to let the player drop things which he only indirectly carries.
+Using the enclosure relation to let the player drop things which they only indirectly carry.
 
-By default, Inform only lets the player drop those things which he is carrying -- that is, those directly in his possession. Things inside satchels or on portable trays have to be taken first.
+By default, Inform only lets the player drop those things which they are carrying -- that is, those directly in their possession. Things inside satchels or on portable trays have to be taken first.
 
 If we want to change this behavior, we might add a dropping rule that distinguishes between carrying and mere enclosure (introduced back in "The location of something" in the chapter on Things):
 

@@ -1,8 +1,8 @@
 ** Conditions and questions
 (Asking the player a Yes/No question; Proposal)
-Asking the player a yes/no question which he must answer, and another which he may answer or not as he chooses.
+Asking the player a yes/no question which they must answer, and another which they may answer or not as they choose.
 
-Suppose we want to ask the player a question where he might say yes or no in response. There are two possible forms of this: the modal question where the player must pick one to proceed, and the non-modal question where he might also type other verbs.
+Suppose we want to ask the player a question where they might say yes or no in response. There are two possible forms of this: the modal question where the player must pick one to proceed, and the non-modal question where they might also type other verbs.
 
 	{*}"Proposal"
 

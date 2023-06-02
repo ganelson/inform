@@ -2,7 +2,7 @@
 (Room description changes at each of several visits; Infiltration)
 A room whose description changes depending on the number of times the player has visited.
 
-Suppose we have a location that makes the player uncomfortable, and we want its description to change slightly each time he goes there, to reflect his increasing unease. We also want the door to that room to show whether he is going there for the first time, or whether this is a repeat visit.
+Suppose we have a location that makes the player uncomfortable, and we want its description to change slightly each time they go there, to reflect his increasing unease. We also want the door to that room to show whether they are going there for the first time, or whether this is a repeat visit.
 
 We start with an ordinary room:
 

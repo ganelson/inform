@@ -1,5 +1,5 @@
 **** Spontaneous actions by other people
-(Person who pursues his own goals each turn; Boston Cream)
+(Person who pursues their own goals each turn; Boston Cream)
 A fuller implementation of Ogg, giving him a motivation of his own and allowing him to react to the situation created by the player.
 
 	{*}"Boston Cream"

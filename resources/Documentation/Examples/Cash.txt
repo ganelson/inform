@@ -1,6 +1,6 @@
 * Arithmetic with units
 (BUY command and a system of money--Money system with simple tracking of player wealth; Frozen Assets)
-A treatment of money which keeps track of how much the player has on him, and a BUY command which lets him go shopping.
+A treatment of money which keeps track of how much the player has on them, and a BUY command which lets him go shopping.
 
 In our brave new world, everything will have a price, so we had better spell this out.
 

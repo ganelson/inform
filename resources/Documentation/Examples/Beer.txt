@@ -1,6 +1,6 @@
 ** Deciding the scope of something
 (Telescope allowing view of another room; Ginger Beer)
-A portable magic telescope which allows the player to view items in another room of his choice.
+A portable magic telescope which allows the player to view items in another room of their choice.
 
 Suppose we want to have a pair of linked lenses so that the player can look into one of them and see things which occur in room containing the other lense.
 

@@ -14,7 +14,7 @@ We allow things to have prices, and the player's price to indicate how much mone
 	
 	The player has a price. The price of the player is $60.00.
 	
-Because we're allowing the player to order things that he can't currently see, we need to borrow a special kind of grammar from the Understanding chapter. All our orderable items in this example are toys, so "any toy" means any object of the toy kind, whether or not it is in view at the moment:
+Because we're allowing the player to order things that they can't currently see, we need to borrow a special kind of grammar from the Understanding chapter. All our orderable items in this example are toys, so "any toy" means any object of the toy kind, whether or not it is in view at the moment:
 
 	{**}Understand "buy [any toy]" as ordering. Understand the command "order" as something new. Understand the command "order" as "buy".
 

@@ -10,7 +10,7 @@ It may sometimes be helpful to prompt the player with a list of exits printed up
 		now left hand status line is "Nearby: [if a room is adjacent][the list of adjacent rooms][end if][if a room is adjacent and a door is visible] and [end if][if a door is visible][the list of visible doors][end if]";
 		now right hand status line is "".
 	
-Of course, we may not want to tell the player what glories are to be found in locations he hasn't yet explored. 
+Of course, we may not want to tell the player what glories are to be found in locations they haven't yet explored. 
 
 	{**}Rule for printing the name of an unvisited room (called the target) while constructing the status line:
 		let aim be the best route from the location to the target;

@@ -46,7 +46,7 @@ A campfire added to the camp site, which can be lit using tinder.
 		now the cloth is glowing;
 		say "You strike the flint against the steel and throw sparks onto the patch of cloth; they make tiny circles of orange there, which will only prosper if blown into flame."	
 
-Realistically, we ought to attach a randomization to this so that each step of the fire-starting has a good chance of failure. But because our player may not be as patient as someone who actually needs a fire started, we allow him to succeed the first time in every case.
+Realistically, we ought to attach a randomization to this so that each step of the fire-starting has a good chance of failure. But because our player may not be as patient as someone who actually needs a fire started, we allow them to succeed the first time in every case.
 
 	{**}Ignition is a kind of value. The ignitions are whole, fading, glowing, flaming. A thing has an ignition.
 	

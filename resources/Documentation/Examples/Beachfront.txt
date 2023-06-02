@@ -1,8 +1,8 @@
 * In the presence of, and when
 (SEARCHing for an item which moves into play--Evidence hidden until item is searched; Beachfront)
-An item that the player can't interact with until he has found it by searching the scenery.
+An item that the player can't interact with until they have found it by searching the scenery.
 
-Suppose we have our player, a detective, searching for evidence; we don't want him to be able to use this evidence until he has performed the action that reveals it, but after that it should be visible in the room when he looks.
+Suppose we have our player, a detective, searching for evidence; we don't want them to be able to use this evidence until they have performed the action that reveals it, but after that it should be visible in the room when they look.
 
 A simple way to do this is to start the object -- an envelope, in this scenario -- out of play, and only move it into the location when the player looks for it:
 
@@ -21,7 +21,7 @@ A simple way to do this is to start the object -- an envelope, in this scenario 
 		say "You rifle through the piles of bills and notices; invitations to conventions; advertisements for high-end prescription drugs; pink carbon sheets bearing patients['] names and medical identification numbers in spidery, elderly handwriting. Almost at the bottom of the heap, you find what you were looking for: a creamy envelope with the address typed.";
 		move the envelope to the desk.
 	
-Here we've changed the property of the envelope to keep track of the fact that it has been found, so that if the player tries again, he won't find anything more. 
+Here we've changed the property of the envelope to keep track of the fact that it has been found, so that if the player tries again, they won't find anything more.
 	
 	{**}Instead of searching the desk:
 		say "Further investigation of the desk reveals nothing else suspicious."

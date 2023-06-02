@@ -27,7 +27,7 @@ Because of the "...when" part of this line, random text is only treated as an an
 			say "Wrong!"; 
 		now answer mode is false. 
 
-This next rule allows a player to do something other than answer the question, but then makes him wait for another question before answering.
+This next rule allows a player to do something other than answer the question, but then makes them wait for another question before answering.
 
 	{**}Before doing anything other than guessing: 
 		if answer mode is true:

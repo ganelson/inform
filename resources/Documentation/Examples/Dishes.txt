@@ -2,7 +2,7 @@
 (Refusing to understand "hot"--Infrared goggles affect what player can see and refer to; Hot Glass Looks Like Cold Glass)
 Responding to references to a property that the player isn't yet allowed to mention (or when not to use "understand as a mistake").
 
-Suppose we have a situation where the player is allowed to talk about the heat of an object only if he's properly equipped to detect it.
+Suppose we have a situation where the player is allowed to talk about the heat of an object only if they're properly equipped to detect it.
 
 	{*}"Hot Glass Looks Like Cold Glass"
 
@@ -28,7 +28,7 @@ Suppose we have a situation where the player is allowed to talk about the heat o
 
 	Before printing the plural name of a glass dish when the player wears the goggles: say "[heat] "
 	
-So far, so good. Now, what if the player tries to GET HOT DISH when the goggles are off? "You can't see any such thing." doesn't seem like quite the right response: he can see such a thing. He just doesn't know which it is.
+So far, so good. Now, what if the player tries to GET HOT DISH when the goggles are off? "You can't see any such thing." doesn't seem like quite the right response: they can see such a thing. They just don't know which it is.
 
 We could go on to write a mistake rule that would scold the player for trying "get [heat] [text]" when not wearing the goggles. The problem is that this would not cover any other phrasing of the command, nor would it account for all the many other things the player might try to do with an object specified by heat. 
 

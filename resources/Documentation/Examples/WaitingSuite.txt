@@ -1,10 +1,10 @@
 ** Creating a scene
 (Scene that ends as soon as the player has embarrassed himself--Triggering a new scene when the player does any of several things; Entrapment)
-A scene in which the player is allowed to explore as much as he likes, but another character strolls in as soon as he has gotten himself into an awkward or embarrassing situation.
+A scene in which the player is allowed to explore as much as they like, but another character strolls in as soon as they have gotten into an awkward or embarrassing situation.
 
 The power of scenes lies in their ability to watch for general conditions and move the narrative along whenever these are fulfilled. Instead of waiting for the player to do one specific thing, the game waits for the world to be in a certain condition, before moving to the next stage of the plot.
 
-For instance, suppose we have a story in which the player has been captured for doing something inappropriate at court and is brought in to await a meeting with a palace official. We want to give the player a few minutes to stew, and we want the scene to end with him doing something mildly peculiar or embarrassing, and the official catching him in the act. So we tempt him into trying any of a number of different kooky activities, and just wait until he falls into the trap...
+For instance, suppose we have a story in which the player has been captured for doing something inappropriate at court and is brought in to await a meeting with a palace official. We want to give the player a few minutes to stew, and we want the scene to end with them doing something mildly peculiar or embarrassing, and the official catching them in the act. So we tempt them into trying any of a number of different kooky activities, and just wait until they fall into the trap...
 
 	{*}"Entrapment"
 
@@ -69,4 +69,4 @@ For instance, suppose we have a story in which the player has been captured for 
 	
 ...and this scene might lead to another, and so on.
 
-The purpose of an open-ended scene like this might be puzzly or narrative: we might be waiting for the player to get a puzzle solved, or we might be waiting for him to fulfil some plot condition that must be met before we can go on. 
+The purpose of an open-ended scene like this might be puzzly or narrative: we might be waiting for the player to get a puzzle solved, or we might be waiting for them to fulfil some plot condition that must be met before we can go on. 

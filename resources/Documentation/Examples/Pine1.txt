@@ -2,7 +2,7 @@
 (Pine: 1. Waking the Princess--Sleeping person who can be woken in various ways)
 Pine: Using a scene to watch for the solution of a puzzle, however arrived-at by the player.
 
-Because scene rules are checked every turn, they can be useful for designing puzzles which have multiple solutions. Instead of deciding the puzzle is "solved" when the player does a certain action, we set up a scene that checks to see whether the player has achieved a certain outcome -- however he accomplished it.
+Because scene rules are checked every turn, they can be useful for designing puzzles which have multiple solutions. Instead of deciding the puzzle is "solved" when the player does a certain action, we set up a scene that checks to see whether the player has achieved a certain outcome -- however they accomplished it.
 
 For instance, in this scenario, we're waiting for Sleeping Beauty to wake up, and it doesn't much matter how...
 

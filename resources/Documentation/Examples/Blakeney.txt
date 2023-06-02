@@ -1,6 +1,6 @@
 *** Relations which express conditions
 (People introduced by relative; A Humble Wayside Flower)
-Relations track the relationships between one character and another. Whenever the player meets a relative of someone he already knows, he receives a brief introduction.
+Relations track the relationships between one character and another. Whenever the player meets a relative of someone they already know, they receive a brief introduction.
 
 First we define the relationships we choose to acknowledge:
 

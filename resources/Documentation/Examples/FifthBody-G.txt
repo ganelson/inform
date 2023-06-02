@@ -1,8 +1,8 @@
 ** Writing, reading and appending text to files
 (WRITE IN command that will open a free-text mode--Notebooks that can be written in as a separate command line; The Fifth Body)
-An expansion on the notebook, allowing the player somewhat more room in which to type his recorded remark.
+An expansion on the notebook, allowing the player somewhat more room in which to type their recorded remark.
 
-The implementation here is much like that of the previous example, except that we allow the player to write his notebook input as a separate command, leading to an exchange such as
+The implementation here is much like that of the previous example, except that we allow the player to write their notebook input as a separate command, leading to an exchange such as
 
 	>write in my notebook
 	You open your notebook and prepare to write in it.
@@ -63,7 +63,7 @@ The opening is much as before:
 
 Now what happens is that the player, having typed WRITE IN NOTEBOOK, will be faced with a ">>" prompt instead of the usual ">": a sign that the input mode has changed. 
 
-The next code is to react to reading a command. Whatever the player types at the >> prompt when the target jotter is set will now be recorded in the notebook, though with a character limit of about 60-100 characters depending on how much upper-case and punctuation he uses. (There are ways to lift the character length restriction as well, but they would take us into deeper waters.)
+The next code is to react to reading a command. Whatever the player types at the >> prompt when the target jotter is set will now be recorded in the notebook, though with a character limit of about 60-100 characters depending on how much upper-case and punctuation they use. (There are ways to lift the character length restriction as well, but they would take us into deeper waters.)
 	
 	{**}After reading a command when target jotter is a jotter:
 		now the command prompt is ">";

@@ -12,7 +12,7 @@ Suppose we would like to allow the player to choose a gender for the main charac
 		otherwise now the player is female; 
 		say paragraph break. 
 	
-Now a piece of Inform 6 code handles the unusual input. It's not necessary to understand this to use it, and the code should work for any question you'd like to ask the player. The first three words in quotation marks ('male', 'M', 'man'...) correspond to positive feedback; the later three words correspond to negative feedback. So "to decide whether men win" will be true if the player types one of the first three, and false if he types one of the last three.
+Now a piece of Inform 6 code handles the unusual input. It's not necessary to understand this to use it, and the code should work for any question you'd like to ask the player. The first three words in quotation marks ('male', 'M', 'man'...) correspond to positive feedback; the later three words correspond to negative feedback. So "to decide whether men win" will be true if the player types one of the first three, and false if they type one of the last three.
 
 	{**}To decide whether men win:
 		(- Question('male','M//','man','female','F//','woman') -)
