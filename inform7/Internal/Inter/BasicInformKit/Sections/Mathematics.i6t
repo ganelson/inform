@@ -291,7 +291,7 @@ Constant FLOAT_NAN       = $7FC00000;
 	expon expnegative count;
 
 !	print "FloatParse <";
-!	for (ix=0: ix<len: ix++) print (char) buf->ix;
+!	for (ix=0: ix<len: ix++) print (char) buf-->ix;
 !	print ">^";
 
 	if (len == 0)
@@ -304,7 +304,7 @@ Constant FLOAT_NAN       = $7FC00000;
 	@numtof 10 ten;
 
 	! Sign character (optional)
-	ch = buf->ix;
+	ch = buf-->ix;
 	if (ch == '-') {
 		negative = true;
 		ix++;
@@ -315,7 +315,7 @@ Constant FLOAT_NAN       = $7FC00000;
 
 	! Some digits (optional)
 	for (count=0 : ix<len : ix++, count++) {
-		ch = buf->ix;
+		ch = buf-->ix;
 		if (ch < '0' || ch > '9')
 			break;
 		val = (ch - '0');
@@ -325,11 +325,11 @@ Constant FLOAT_NAN       = $7FC00000;
 	}
 
 	! Decimal point and more digits (optional)
-	if (ix<len && buf->ix == '.') {
+	if (ix<len && buf-->ix == '.') {
 		ix++;
 		@numtof 1 fracdiv;
 		for ( : ix<len : ix++, count++) {
-			ch = buf->ix;
+			ch = buf-->ix;
 			if (ch < '0' || ch > '9')
 				break;
 			val = (ch - '0');
@@ -349,8 +349,8 @@ Constant FLOAT_NAN       = $7FC00000;
 	@fadd intpart fracpart res;
 
 	! Exponent (optional)
-	if (ix<len && buf->ix == 'e' or 'E' or ' ' or '*' or 'x' or 'X' or $D7) {
-		if (buf->ix == 'e' or 'E') {
+	if (ix<len && buf-->ix == 'e' or 'E' or ' ' or '*' or 'x' or 'X' or $D7) {
+		if (buf-->ix == 'e' or 'E') {
 			! no spaces, just the 'e'
 			ix++;
 			if (ix == len)
@@ -358,31 +358,31 @@ Constant FLOAT_NAN       = $7FC00000;
 		}
 		else {
 			! any number of spaces, "*", any number of spaces more, "10^"
-			while (ix < len && buf->ix == ' ')
+			while (ix < len && buf-->ix == ' ')
 				ix++;
 			if (ix == len)
 				return FLOAT_NAN;
-			if (buf->ix ~= '*' or 'x' or 'X' or $D7)
+			if (buf-->ix ~= '*' or 'x' or 'X' or $D7)
 				return FLOAT_NAN;
 			ix++;
-			while (ix < len && buf->ix == ' ')
+			while (ix < len && buf-->ix == ' ')
 				ix++;
 			if (ix == len)
 				return FLOAT_NAN;
-			if (buf->ix ~= '1')
+			if (buf-->ix ~= '1')
 				return FLOAT_NAN;
 			ix++;
-			if (buf->ix ~= '0')
+			if (buf-->ix ~= '0')
 				return FLOAT_NAN;
 			ix++;
-			if (buf->ix ~= $5E)
+			if (buf-->ix ~= $5E)
 				return FLOAT_NAN;
 			ix++;
 		}
 
 		! Sign character (optional)
 		expnegative = false;
-		ch = buf->ix;
+		ch = buf-->ix;
 		if (ch == '-') {
 			expnegative = true;
 			ix++;
@@ -394,7 +394,7 @@ Constant FLOAT_NAN       = $7FC00000;
 		expon = 0;
 		! Some digits (mandatory)
 		for (count=0 : ix<len : ix++, count++) {
-			ch = buf->ix;
+			ch = buf-->ix;
 			if (ch < '0' || ch > '9')
 				break;
 			expon = 10*expon + (ch - '0');

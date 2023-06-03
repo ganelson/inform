@@ -88,8 +88,12 @@ Constant ROM_COMPVERSION      = $30;     ! four ASCII characters
 Constant ROM_GAMERELEASE      = $34;     ! short word
 Constant ROM_GAMESERIAL       = $36;     ! six ASCII characters
 
-Constant #dict_par1 = 11;
-Constant #dict_par2 = 13;
+! The following constants describe the layout of a dictionary word entry.
+! The math is copied from the I6 compiler.
+
+Constant DICT_ENTRY_BYTES = 12+DICT_WORD_SIZE*WORDSIZE;
+Constant #dict_par1 = DICT_WORD_SIZE*WORDSIZE+4+1;
+Constant #dict_par2 = DICT_WORD_SIZE*WORDSIZE+4+3;
 
 #Endif;
 

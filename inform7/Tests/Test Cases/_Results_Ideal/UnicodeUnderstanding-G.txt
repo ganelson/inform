@@ -1,0 +1,51 @@
+
+
+
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Kitchen
+You can see a sack (empty), a ruby and an emerald here.
+
+>(Testing.)
+
+>[1] i
+You are carrying:
+  επ coin
+
+>[2] x coin
+Επ coin has an unusual article in this country.
+
+>[3] x red gem
+The gem is red.
+
+>[4] x γrëēɲ γεм
+The gem is γrëēɲ.
+
+>[5] get gem
+Which do you mean, the ruby or the emerald?
+
+>[6] γrëēɲ
+Taken.
+
+>[7] x it
+The gem is γrëēɲ.
+
+>[8] drop all
+emerald: Dropped.
+coin: Dropped.
+
+>[9] їпσεяτ red gem їп sack
+(first taking the ruby)
+You put the ruby into the sack.
+
+>[10] їпσεяτ γrëēɲ gem
+What do you want to їпσεяτ the emerald їп?
+
+>[11] sack
+(first taking the emerald)
+You put the emerald into the sack.
+
+>Are you sure you want to quit? 

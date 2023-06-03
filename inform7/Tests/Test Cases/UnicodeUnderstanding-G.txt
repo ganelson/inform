@@ -1,0 +1,20 @@
+The Kitchen is a room.
+
+Understand the command "τακε" as "take".
+
+Understand "їпσεяτ [other things] їп [something]" as inserting it into.
+
+The sack is an open container. The sack is in the Kitchen.
+
+A gem is a kind of thing. Understand "gem", "γεм" as a gem.
+A gem has a text called the color. Understand the color property as describing a gem.
+The description of a gem is usually "The gem is [color]."
+
+The ruby is a gem in the Kitchen. The color is "red".
+The emerald is a gem in the Kitchen. The color is "γrëēɲ".
+
+The player carries a coin.
+The indefinite article of the coin is "επ".
+The description of the coin is "[A coin] has an unusual article in this country."
+
+Test me with "i / x coin / x red gem / x γrëēɲ γεм / get gem / γrëēɲ / x it / drop all / їпσεяτ red gem їп sack / їпσεяτ γrëēɲ gem / sack".

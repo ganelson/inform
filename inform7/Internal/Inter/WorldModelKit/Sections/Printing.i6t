@@ -182,23 +182,50 @@ by having to capitalise the first letter. We do this by writing to the
 buffer and then altering the first character.
 
 =
-Array StorageForShortName buffer 250;
+Constant SHORT_NAME_BUFFER_LEN = 160;
+
+#Ifdef TARGET_ZCODE;
+! Allow a generous overrun
+Array StorageForShortName buffer SHORT_NAME_BUFFER_LEN+90;
+#Ifnot;
+Array StorageForShortName --> SHORT_NAME_BUFFER_LEN;
+#Endif;
 
 [ CPrintOrRun obj prop  v length i;
-    if ((obj ofclass String or Routine) || (prop == 0))
-        VM_PrintToBuffer (StorageForShortName, 160, obj);
+    if ((obj ofclass String or Routine) || (prop == 0)) {
+        #Ifdef TARGET_ZCODE;
+        length = VM_PrintToBuffer (StorageForShortName, SHORT_NAME_BUFFER_LEN, obj);
+        #Ifnot;
+        length = Glulx_PrintAnyToArrayUni(StorageForShortName, SHORT_NAME_BUFFER_LEN, obj);
+        #Endif;
+    }
     else {
-    	if (obj.prop == NULL) rfalse;
-        if (metaclass(obj.prop) == Routine or String)
-            VM_PrintToBuffer(StorageForShortName, 160, obj, prop);
-        else return RunTimeError(2, obj, prop);
-	}
+        if (obj.prop == NULL) rfalse;
+        if (metaclass(obj.prop) == Routine or String) {
+            #Ifdef TARGET_ZCODE;
+            length = VM_PrintToBuffer(StorageForShortName, SHORT_NAME_BUFFER_LEN, obj, prop);
+            #Ifnot;
+            length = Glulx_PrintAnyToArrayUni(StorageForShortName, SHORT_NAME_BUFFER_LEN, obj.prop);
+            #Endif;
+        }
+        else {
+             return RunTimeError(2, obj, prop);
+        }
+    }
 
-    length = StorageForShortName-->0;
-
+    #Ifdef TARGET_ZCODE;
     StorageForShortName->WORDSIZE = VM_LowerToUpperCase(StorageForShortName->WORDSIZE);
     for (i=WORDSIZE: i<length+WORDSIZE: i++) print (char) StorageForShortName->i;
-    if (i>WORDSIZE) say__p = 1;
+    #Ifnot;
+    if (length > SHORT_NAME_BUFFER_LEN) length = SHORT_NAME_BUFFER_LEN;
+    !TODO: length = glk_buffer_to_title_case_uni(StorageForShortName, SHORT_NAME_BUFFER_LEN, length, false);
+    !TODO: glk_put_buffer_uni(StorageForShortName, length);
+    if (length)
+        StorageForShortName-->0 = VM_LowerToUpperCase(StorageForShortName-->0);
+    glk_put_buffer_uni(StorageForShortName, length);
+    #Endif;
+    
+    if (length) say__p = 1;
 
     return;
 ];
@@ -327,7 +354,7 @@ Global short_name_case;
     }
     #Ifdef TARGET_ZCODE;
     if (standard_interpreter ~= 0 && findout) {
-        StorageForShortName-->0 = 160;
+        StorageForShortName-->0 = SHORT_NAME_BUFFER_LEN;
         @output_stream 3 StorageForShortName;
         if (pluralise) print (number) pluralise; else print (PSN__) obj;
         @output_stream -3;
@@ -336,9 +363,9 @@ Global short_name_case;
     #Ifnot; ! TARGET_GLULX
     if (findout) {
         if (pluralise)
-            Glulx_PrintAnyToArray(StorageForShortName, 160, EnglishNumber, pluralise);
+            Glulx_PrintAnyToArrayUni(StorageForShortName, SHORT_NAME_BUFFER_LEN, EnglishNumber, pluralise);
         else
-            Glulx_PrintAnyToArray(StorageForShortName, 160, PSN__, obj);
+            Glulx_PrintAnyToArrayUni(StorageForShortName, SHORT_NAME_BUFFER_LEN, PSN__, obj);
         acode = acode + 3*LanguageContraction(StorageForShortName);
     }
     #Endif; ! TARGET_

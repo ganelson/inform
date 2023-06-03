@@ -195,3 +195,7 @@ Use Inform 6 compiler option "$MAX_SYMBOLS=20000".
 Use Inform 6 compiler option "$MAX_EXPRESSION_NODES=256".
 Use Inform 6 compiler option "$MAX_LABELS=200000".
 Use Inform 6 compiler option "$MAX_LOCAL_VARIABLES=256".
+
+Chapter 1 - Glulx Preamble (for Glulx only)
+
+Use Inform 6 compiler option "$DICT_CHAR_SIZE=4".

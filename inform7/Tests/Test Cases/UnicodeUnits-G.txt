@@ -1,0 +1,35 @@
+The Kitchen is a room.
+
+A wallet is a kind of value.
+1.0 € specifies a wallet.
+1.0€ specifies a wallet.
+
+A resistance is a kind of value.
+1.0Ω specifies a resistance.
+1.0mΩ specifies a resistance scaled down by 1000.
+1.0μΩ specifies a resistance scaled down by 1000000.
+
+A sign is in the Kitchen.
+
+Check examining the sign:
+	let C be 2.0 €;
+	now C is C plus 0.5€;
+	instead say "Bananas: 2.5 € is [C].";
+
+Counting is an action applying to one wallet.
+Understand "count [wallet]" as counting.
+
+Report counting:
+	say "You count [the wallet understood]."
+
+Resisting is an action applying to one resistance.
+Understand "resist [resistance]" as resisting.
+
+Report resisting:
+	say "The resistance is [the resistance understood]";
+	if the resistance understood is less than 0.5mΩ:
+		say ", which is useless";
+	instead say ".";
+
+Test me with "x sign / count 1.5 € / count 2€ / count 1.0x10^2 € / count 34x10^-1€ / resist 1Ω / resist 2000mΩ / resist 1mΩ / resist 1000μΩ / resist 0.3mΩ / resist 300μΩ / resist 2μΩ".
+

@@ -318,6 +318,12 @@ sets the |parsed_number| global to the value matched.
 	int tc, ec;
 	RTLiteralPatterns::comment_use_of_lp(lp);
 
+	unsigned int bufferbip;
+	if (TargetVMs::is_16_bit(Task::vm()))
+		bufferbip = LOOKUPBYTE_BIP;
+	else
+		bufferbip = LOOKUP_BIP;
+
 	EmitCode::inv(STORE_BIP);
 	EmitCode::down();
 		EmitCode::ref_symbol(K_value, gprk.wpos_s);
@@ -527,7 +533,7 @@ sets the |parsed_number| global to the value matched.
 		if (upper_form != lower_form) { EmitCode::inv(AND_BIP); EmitCode::down(); }
 		EmitCode::inv(NE_BIP);
 		EmitCode::down();
-			EmitCode::inv(LOOKUPBYTE_BIP);
+			EmitCode::inv(bufferbip);
 			EmitCode::down();
 				EmitCode::val_symbol(K_value, gprk.cur_addr_s);
 				EmitCode::inv(POSTINCREMENT_BIP);
@@ -540,7 +546,7 @@ sets the |parsed_number| global to the value matched.
 		if (upper_form != lower_form) {
 			EmitCode::inv(NE_BIP);
 			EmitCode::down();
-				EmitCode::inv(LOOKUPBYTE_BIP);
+				EmitCode::inv(bufferbip);
 				EmitCode::down();
 					EmitCode::val_symbol(K_value, gprk.cur_addr_s);
 					EmitCode::inv(MINUS_BIP);
@@ -578,7 +584,7 @@ sets the |parsed_number| global to the value matched.
 	EmitCode::down();
 		EmitCode::inv(EQ_BIP);
 		EmitCode::down();
-			EmitCode::inv(LOOKUPBYTE_BIP);
+			EmitCode::inv(bufferbip);
 			EmitCode::down();
 				EmitCode::val_symbol(K_value, gprk.cur_addr_s);
 				EmitCode::val_symbol(K_value, gprk.wpos_s);
@@ -753,7 +759,7 @@ sets the |parsed_number| global to the value matched.
 			EmitCode::up();
 			EmitCode::inv(EQ_BIP);
 			EmitCode::down();
-				EmitCode::inv(LOOKUPBYTE_BIP);
+				EmitCode::inv(bufferbip);
 				EmitCode::down();
 					EmitCode::val_symbol(K_value, gprk.cur_addr_s);
 					EmitCode::val_symbol(K_value, gprk.wpos_s);
@@ -825,7 +831,7 @@ sets the |parsed_number| global to the value matched.
 					EmitCode::down();
 						EmitCode::inv(EQ_BIP);
 						EmitCode::down();
-							EmitCode::inv(LOOKUPBYTE_BIP);
+							EmitCode::inv(bufferbip);
 							EmitCode::down();
 								EmitCode::val_symbol(K_value, gprk.cur_addr_s);
 								EmitCode::val_symbol(K_value, gprk.wpos_s);
@@ -836,7 +842,7 @@ sets the |parsed_number| global to the value matched.
 						EmitCode::down();
 							EmitCode::inv(EQ_BIP);
 							EmitCode::down();
-								EmitCode::inv(LOOKUPBYTE_BIP);
+								EmitCode::inv(bufferbip);
 								EmitCode::down();
 									EmitCode::val_symbol(K_value, gprk.cur_addr_s);
 									EmitCode::inv(PLUS_BIP);
@@ -849,7 +855,7 @@ sets the |parsed_number| global to the value matched.
 							EmitCode::up();
 							EmitCode::inv(EQ_BIP);
 							EmitCode::down();
-								EmitCode::inv(LOOKUPBYTE_BIP);
+								EmitCode::inv(bufferbip);
 								EmitCode::down();
 									EmitCode::val_symbol(K_value, gprk.cur_addr_s);
 									EmitCode::inv(PLUS_BIP);
@@ -896,7 +902,7 @@ sets the |parsed_number| global to the value matched.
 							EmitCode::down();
 								EmitCode::inv(EQ_BIP);
 								EmitCode::down();
-									EmitCode::inv(LOOKUPBYTE_BIP);
+									EmitCode::inv(bufferbip);
 									EmitCode::down();
 										EmitCode::val_symbol(K_value, gprk.cur_addr_s);
 										EmitCode::val_symbol(K_value, gprk.wpos_s);
@@ -905,7 +911,7 @@ sets the |parsed_number| global to the value matched.
 								EmitCode::up();
 								EmitCode::inv(EQ_BIP);
 								EmitCode::down();
-									EmitCode::inv(LOOKUPBYTE_BIP);
+									EmitCode::inv(bufferbip);
 									EmitCode::down();
 										EmitCode::val_symbol(K_value, gprk.cur_addr_s);
 										EmitCode::val_symbol(K_value, gprk.wpos_s);
@@ -1003,7 +1009,7 @@ sets the |parsed_number| global to the value matched.
 			EmitCode::down();
 				EmitCode::call(Hierarchy::find(DIGITTOVALUE_HL));
 				EmitCode::down();
-					EmitCode::inv(LOOKUPBYTE_BIP);
+					EmitCode::inv(bufferbip);
 					EmitCode::down();
 						EmitCode::val_symbol(K_value, gprk.cur_addr_s);
 						EmitCode::val_symbol(K_value, gprk.wpos_s);
@@ -1050,7 +1056,7 @@ sets the |parsed_number| global to the value matched.
 			EmitCode::down();
 				EmitCode::call(Hierarchy::find(DIGITTOVALUE_HL));
 				EmitCode::down();
-					EmitCode::inv(LOOKUPBYTE_BIP);
+					EmitCode::inv(bufferbip);
 					EmitCode::down();
 						EmitCode::val_symbol(K_value, gprk.cur_addr_s);
 						EmitCode::val_symbol(K_value, gprk.wpos_s);
@@ -1066,7 +1072,7 @@ sets the |parsed_number| global to the value matched.
 				EmitCode::ref_symbol(K_value, gprk.f_s);
 				EmitCode::call(Hierarchy::find(DIGITTOVALUE_HL));
 				EmitCode::down();
-					EmitCode::inv(LOOKUPBYTE_BIP);
+					EmitCode::inv(bufferbip);
 					EmitCode::down();
 						EmitCode::val_symbol(K_value, gprk.cur_addr_s);
 						EmitCode::val_symbol(K_value, gprk.wpos_s);
@@ -1216,7 +1222,7 @@ sets the |parsed_number| global to the value matched.
 									EmitCode::down();
 										EmitCode::call(Hierarchy::find(DIGITTOVALUE_HL));
 										EmitCode::down();
-											EmitCode::inv(LOOKUPBYTE_BIP);
+											EmitCode::inv(bufferbip);
 											EmitCode::down();
 												EmitCode::val_symbol(K_value, gprk.cur_addr_s);
 												EmitCode::val_symbol(K_value, gprk.wpos_s);
@@ -1237,7 +1243,7 @@ sets the |parsed_number| global to the value matched.
 										EmitCode::down();
 											EmitCode::call(Hierarchy::find(DIGITTOVALUE_HL));
 											EmitCode::down();
-												EmitCode::inv(LOOKUPBYTE_BIP);
+												EmitCode::inv(bufferbip);
 												EmitCode::down();
 													EmitCode::val_symbol(K_value, gprk.cur_addr_s);
 													EmitCode::val_symbol(K_value, gprk.wpos_s);

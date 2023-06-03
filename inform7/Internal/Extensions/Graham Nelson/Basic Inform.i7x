@@ -113,6 +113,10 @@ Use Inform 6 compiler option "$MAX_EXPRESSION_NODES=256".
 Use Inform 6 compiler option "$MAX_LABELS=200000".
 Use Inform 6 compiler option "$MAX_LOCAL_VARIABLES=256".
 
+Chapter 1 - Glulx Preamble (for Glulx only)
+
+Use Inform 6 compiler option "$DICT_CHAR_SIZE=4".
+
 Part Two - Miscellaneous Definitions
 
 An object has a value called variable initial value.
