@@ -18,7 +18,7 @@ void Supervisor::set_verbosity(int level) {
 	if (level < 0) level = 0;
 	if (level > 3) level = 3;
 	supervisor_verbosity = level;
-	if (level > 0) WRITE_TO(STDOUT, "(Verbosity set to %d)\n", level);
+	if (level > 0) WRITE_TO(STDOUT, "(inbuild verbosity set to %d)\n", level);
 }
 
 @h Phases.
@@ -543,8 +543,17 @@ inbuild_nest *Supervisor::external(void) {
 no better indication of where they are.
 
 =
+pathname *supervisor_tools_location = NULL;
+
+void Supervisor::set_tools_location(pathname *P) {
+	supervisor_tools_location = P;
+}
+
 pathname *Supervisor::default_internal_path(void) {
-	return Pathnames::from_text(I"inform7/Internal");
+	pathname *P = supervisor_tools_location;
+	P = Pathnames::down(P, I"inform7");
+	P = Pathnames::down(P, I"Internal");
+	return P;
 }
 
 @ This tells the //html// module where to find, say, CSS files. Those files
@@ -616,7 +625,7 @@ int Supervisor::set_I7_bundle(pathname *P) {
 		SVEXPLAIN(1, "(reading further command-line settings from: %f)\n", expert_settings);
 		CommandLine::also_read_file(expert_settings);
 	} else {
-		SVEXPLAIN(2, "(no command-line settings file is present at %f)\n");
+		SVEXPLAIN(2, "(no command-line settings file found at %f)\n", expert_settings);
 	}
 	DISCARD_TEXT(leaf)
 	return TRUE;

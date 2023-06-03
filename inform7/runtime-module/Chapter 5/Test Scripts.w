@@ -73,7 +73,11 @@ void RTTestCommand::compilation_agent(compilation_subtask *t) {
 	Hierarchy::apply_metadata_from_number(RTTestCommand::package(test),
 		TEST_LENGTH_MD_HL, (inter_ti) l);
 
-	packaging_state save = EmitArrays::begin_byte(RTTestCommand::text_iname(test), K_text);
+	packaging_state save;
+	if (TargetVMs::is_16_bit(Task::vm()))
+		save = EmitArrays::begin_byte(RTTestCommand::text_iname(test), K_text);
+	else
+		save = EmitArrays::begin_word(RTTestCommand::text_iname(test), K_text);
 	TEMPORARY_TEXT(tttext)
 	TranscodeText::from_stream(tttext, test->text_of_script,
 		CT_EXPAND_APOSTROPHES + CT_RECOGNISE_APOSTROPHE_SUBSTITUTION);

@@ -2,7 +2,7 @@
 (Verbosity: 2. Full-length descriptions mandatory--Full-length descriptions mandatory)
 Making rooms give full descriptions each time we enter, even if we have visited before, and disallowing player use of BRIEF and SUPERBRIEF.
 
-Suppose that we want the player always to see full room descriptions, even if he tries to reset the defaults -- perhaps because there is vital information there which he will miss if he turns off full-length room descriptions.
+Suppose that we want the player always to see full room descriptions, even if they try to reset the defaults -- perhaps because there is vital information there which they will miss if they turn off full-length room descriptions.
 
 To do this, we might want to remove the standard behavior of the three actions associated with BRIEF, SUPERBRIEF, and VERBOSE, replacing them with explanatory messages about how the game behaves. We cannot use Instead to override these actions, because Instead rules do not apply to actions out of world. Instead, we will want to remove and replace the carry out rules. 
 

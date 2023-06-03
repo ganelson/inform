@@ -2,7 +2,7 @@
 (LOCK and UNLOCK with altered carrying requirements; Slogar's Revenge)
 Creating an amulet of tumblers that can be used to lock and unlock things even when it is worn, overriding the usual requirement that keys be carried.
 
-Under most circumstances, locking and unlocking require the player to be carrying the key he uses to unlock something. This makes sense -- unless the key is on a keychain, or on a chain around his neck, for instance. So here we explore one way to circumstantially override the carrying requirements, while still making sure that the player cannot unlock the door if the unlocking tool is nowhere in sight. 
+Under most circumstances, locking and unlocking require the player to be carrying the key they use to unlock something. This makes sense -- unless the key is on a keychain, or on a chain around their neck, for instance. So here we explore one way to circumstantially override the carrying requirements, while still making sure that the player cannot unlock the door if the unlocking tool is nowhere in sight. 
 
 In essence, we are rewriting the carrying requirements rule with a different one of our own devising, and swapping it in only at those moments when it is correct to do so.
 

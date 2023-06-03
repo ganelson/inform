@@ -36,52 +36,52 @@ The rationale for asking the question this way, and not another, is that novices
 	
 	The novice suggestion rules is a rulebook.
 
-	A novice suggestion rule (this is the suggestion that he look rule):
+	A novice suggestion rule (this is the suggestion that they look rule):
 		if not looking and not going, say "  [bold type]look[roman type]".
 
-	A novice suggestion rule (this is the suggestion that he check inventory rule): 
+	A novice suggestion rule (this is the suggestion that they check inventory rule): 
 		if the player carries something and we are not taking inventory, say "  [bold type]inventory[roman type] (I)".
 
-	A novice suggestion rule (this is the suggestion that he put things on rule):
+	A novice suggestion rule (this is the suggestion that they put things on rule):
 		if the player carries something and a free-standing supporter is relevant, say "  [bold type]put[roman type] something [bold type]on[roman type] [the list of relevant supporters]".
 
-	A novice suggestion rule (this is the suggestion that he take things rule): 
+	A novice suggestion rule (this is the suggestion that they take things rule): 
 		if a gettable thing is relevant, say "  [bold type]take[roman type] [the list of gettable relevant things]".
 	
-	A novice suggestion rule (this is the suggestion that he examine things rule):
+	A novice suggestion rule (this is the suggestion that they examine things rule):
 		if an unexamined thing is relevant, say "  [bold type]examine[roman type] (X) [the list of unexamined relevant things]".
 
-	A novice suggestion rule (this is the suggestion that he enter things rule):
+	A novice suggestion rule (this is the suggestion that they enter things rule):
 		if a relevant thing is worth entering, say "  [bold type]enter[roman type] [the list of worth entering relevant things], or [bold type]get out[roman type]".
 
-	A novice suggestion rule (this is the suggestion that he open things rule):
+	A novice suggestion rule (this is the suggestion that they open things rule):
 		if an unlocked openable thing is relevant, say "  [bold type]open[roman type] or [bold type]close[roman type] [the list of unlocked openable relevant things]".
 
-	A novice suggestion rule (this is the suggestion that he lock things rule):
+	A novice suggestion rule (this is the suggestion that they lock things rule):
 		if a closed lockable thing is relevant, say "  [bold type]lock[roman type] or [bold type]unlock[roman type] [the list of closed lockable relevant things]".
 	
-	A novice suggestion rule (this is the suggestion that he eat things rule):
+	A novice suggestion rule (this is the suggestion that they eat things rule):
 		if the player carries an edible relevant thing, say "  [bold type]eat[roman type] [the list of edible relevant things carried by the player]".
 
-	A novice suggestion rule (this is the suggestion that he wear things rule):
+	A novice suggestion rule (this is the suggestion that they wear things rule):
 		if the player carries a wearable relevant thing, say "  [bold type]wear[roman type] [the list of wearable relevant things carried by the player]".
 
-	A novice suggestion rule (this is the suggestion that he turn things on rule):
+	A novice suggestion rule (this is the suggestion that they turn things on rule):
 		if a device is relevant, say "  [bold type]turn on[roman type] or [bold type]turn off[roman type] [the list of relevant devices]".
 
-	A novice suggestion rule (this is the suggestion that he go places rule):
+	A novice suggestion rule (this is the suggestion that they go places rule):
 		if a room is adjacent, say "  [bold type]go[roman type][exit list][if in darkness] or try other directions in the dark[otherwise]".
 
-	A novice suggestion rule (this is the suggestion that he enter doors rule):
+	A novice suggestion rule (this is the suggestion that they enter doors rule):
 		if an open door is relevant, say "  [bold type]go through[roman type] [the list of relevant open doors]".
 	
-	A novice suggestion rule (this is the suggestion that he interact with people rule):
+	A novice suggestion rule (this is the suggestion that they interact with people rule):
 		if another person is relevant, say "  [bold type]kiss[roman type] or [bold type]wake[roman type] [the list of relevant other people][if the player carries something], or [bold type]give[roman type] things [bold type]to[roman type] someone[end if]".
 	
-	A novice suggestion rule (this is the suggestion that he ask for help rule):
+	A novice suggestion rule (this is the suggestion that they ask for help rule):
 		say "  [bold type]help[roman type] to see a more complete set of instructions".
 		
-	A novice suggestion rule (this is the suggestion that he turn off help rule):
+	A novice suggestion rule (this is the suggestion that they turn off help rule):
 		say "  [bold type]novice mode off[roman type] to turn off this guidance".
 
 	Last novice suggestion rule:

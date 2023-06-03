@@ -347,6 +347,26 @@ account.
 	rfalse;
 ];
 
+@h Having Evident Content
+This is true when something has at least one unconcealed thing in it.
+It's false when something is truly empty or when all the things in
+it are concealed or undescribed, and is used to ensure that output
+is consistent in both those cases. The player shouldn't count for
+these purposes, but since the player is undescribed, they're excluded
+anyway.
+
+=
+[ ObviouslyOccupied o x;
+  if (~~((o ofclass K5_container) || (o ofclass K6_supporter))) rfalse;
+  if (o has container && o hasnt open && o hasnt transparent) rfalse; ! opaque closed container's status can never be obvious
+  x = child(o);
+  while (x) {
+    if ((x hasnt concealed) && (~~TestConcealment(o, x))) rtrue;
+    x = sibling(x);
+  }
+  rfalse;
+];
+
 @h Coalesce Marked List.
 The return value is the new first entry in the raw list.
 
@@ -588,21 +608,16 @@ by Inform. But this seems to be sound.
 
 =
 [ ListEqual o1 o2;
-	if ((o1.plural == 0) || (o2.plural == 0)) rfalse;
- 	if (child(o1) ~= 0 && WillRecurs(o1) ~= 0) rfalse;
-    if (child(o2) ~= 0 && WillRecurs(o2) ~= 0) rfalse;
-    if (c_style & (FULLINV_BIT + PARTINV_BIT) ~= 0) {
-        if ((o1 hasnt worn && o2 has worn) || (o2 hasnt worn && o1 has worn)) rfalse;
-        if ((o1 hasnt light && o2 has light) || (o2 hasnt light && o1 has light)) rfalse;
-        if (o1 has container) {
-            if (o2 hasnt container) rfalse;
-            if ((o1 has open && o2 hasnt open) || (o2 has open && o1 hasnt open))
-                rfalse;
-        }
-        else if (o2 has container)
-            rfalse;
-    }
-    return Identical(o1, o2);
+  if (o1.KD_Count ~= o2.KD_Count) rfalse;
+  if ((o1.plural == 0) || (o2.plural == 0)) rfalse;
+  if (ObviouslyOccupied(o1) && WillRecurs(o1)) rfalse;
+  if (ObviouslyOccupied(o2) && WillRecurs(o2)) rfalse;
+  if (c_style & (FULLINV_BIT + PARTINV_BIT) ~= 0) {
+    if ((o1 hasnt worn && o2 has worn) || (o2 hasnt worn && o1 has worn)) rfalse;
+    if ((o1 hasnt light && o2 has light) || (o2 hasnt light && o1 has light)) rfalse;
+    if ((o1 has open && o2 hasnt open) || (o2 has open && o1 hasnt open)) rfalse;
+  }
+  return Identical(o1, o2);
 ];
 
 [ WillRecurs o;

@@ -422,13 +422,25 @@ Global test_sp = 0;
 	    print "] ";
 	    test_stack-->2 = test_stack-->2 + 1;
 	    style bold;
-	    while ((i < l) && (p->i ~= '/')) {
+	    while (i < l) {
+	        #ifdef TARGET_ZCODE;
 	    	ch = p->i;
+	        #ifnot; ! TARGET_GLULX
+	    	ch = p-->i;
+	        #endif;
+		if (ch == '/') break;
 	        if (spaced || (ch ~= ' ')) {
-	        	if ((p->i == '[') && (p->(i+1) == '/') && (p->(i+2) == ']')) {
-	        		ch = '/'; i = i+2;
-	        	}
+	            #ifdef TARGET_ZCODE;
+	            if ((p->i == '[') && (p->(i+1) == '/') && (p->(i+2) == ']')) {
+	                ch = '/'; i = i+2;
+	            }
 	            a_buffer->(j+WORDSIZE) = ch;
+	            #ifnot; ! TARGET_GLULX
+	            if ((p-->i == '[') && (p-->(i+1) == '/') && (p-->(i+2) == ']')) {
+	                ch = '/'; i = i+2;
+	            }
+	            a_buffer-->(j+1) = ch;
+	            #endif;
 	            print (char) ch;
 	            i++; j++;
 	            spaced = true;
@@ -442,7 +454,11 @@ Global test_sp = 0;
 	    a_buffer-->0 = j;
 	    #endif;
 	    VM_Tokenise(a_buffer, a_table);
+	    #ifdef TARGET_ZCODE;
 	    if (p->i == '/') i++;
+	    #ifnot; ! TARGET_GLULX
+	    if (p-->i == '/') i++;
+	    #endif;
 	    if (i >= l) {
 	        test_sp = test_sp - 4;
 	    } else test_stack-->(test_sp-3) = i;

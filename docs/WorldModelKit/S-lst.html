@@ -65,7 +65,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">WorldModelKit</a></li><li><b>ListWriter Template</b></li></ul></div>
 <p class="purpose">A flexible object-lister taking care of plurals, inventory information, various formats and so on.</p>
 
-<ul class="toc"><li><a href="S-lst.html#SP1">&#167;1. Specification</a></li><li><a href="S-lst.html#SP2">&#167;2. Memory</a></li><li><a href="S-lst.html#SP3">&#167;3. WriteListOfMarkedObjects</a></li><li><a href="S-lst.html#SP4">&#167;4. List Number and Gender</a></li><li><a href="S-lst.html#SP5">&#167;5. List Writer Regard Storage</a></li><li><a href="S-lst.html#SP6">&#167;6. Response Printing</a></li><li><a href="S-lst.html#SP7">&#167;7. About Iterator Functions</a></li><li><a href="S-lst.html#SP8">&#167;8. Tracing</a></li><li><a href="S-lst.html#SP9">&#167;9. Marked List Iterator</a></li><li><a href="S-lst.html#SP10">&#167;10. Concealment</a></li><li><a href="S-lst.html#SP11">&#167;11. Coalesce Marked List</a></li><li><a href="S-lst.html#SP12">&#167;12. Object Tree Iterator</a></li><li><a href="S-lst.html#SP13">&#167;13. Coalesce Object Tree</a></li><li><a href="S-lst.html#SP14">&#167;14. GroupChildren</a></li><li><a href="S-lst.html#SP15">&#167;15. WriteListFrom</a></li><li><a href="S-lst.html#SP16">&#167;16. Standard Contents Listing Rule</a></li><li><a href="S-lst.html#SP17">&#167;17. Partitioning</a></li><li><a href="S-lst.html#SP18">&#167;18. Partition List</a></li><li><a href="S-lst.html#SP19">&#167;19. Equivalence Relation</a></li><li><a href="S-lst.html#SP20">&#167;20. Grouping</a></li><li><a href="S-lst.html#SP21">&#167;21. Write List Recursively</a></li><li><a href="S-lst.html#SP22">&#167;22. Write Multiple Class Group</a></li><li><a href="S-lst.html#SP23">&#167;23. Write Single Class Group</a></li><li><a href="S-lst.html#SP24">&#167;24. Write After Entry</a></li><li><a href="S-lst.html#SP25">&#167;25. Internal Rule</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-lst.html#SP1">&#167;1. Specification</a></li><li><a href="S-lst.html#SP2">&#167;2. Memory</a></li><li><a href="S-lst.html#SP3">&#167;3. WriteListOfMarkedObjects</a></li><li><a href="S-lst.html#SP4">&#167;4. List Number and Gender</a></li><li><a href="S-lst.html#SP5">&#167;5. List Writer Regard Storage</a></li><li><a href="S-lst.html#SP6">&#167;6. Response Printing</a></li><li><a href="S-lst.html#SP7">&#167;7. About Iterator Functions</a></li><li><a href="S-lst.html#SP8">&#167;8. Tracing</a></li><li><a href="S-lst.html#SP9">&#167;9. Marked List Iterator</a></li><li><a href="S-lst.html#SP10">&#167;10. Concealment</a></li><li><a href="S-lst.html#SP11">&#167;11. </a></li><li><a href="S-lst.html#SP12">&#167;12. Coalesce Marked List</a></li><li><a href="S-lst.html#SP13">&#167;13. Object Tree Iterator</a></li><li><a href="S-lst.html#SP14">&#167;14. Coalesce Object Tree</a></li><li><a href="S-lst.html#SP15">&#167;15. GroupChildren</a></li><li><a href="S-lst.html#SP16">&#167;16. WriteListFrom</a></li><li><a href="S-lst.html#SP17">&#167;17. Standard Contents Listing Rule</a></li><li><a href="S-lst.html#SP18">&#167;18. Partitioning</a></li><li><a href="S-lst.html#SP19">&#167;19. Partition List</a></li><li><a href="S-lst.html#SP20">&#167;20. Equivalence Relation</a></li><li><a href="S-lst.html#SP21">&#167;21. Grouping</a></li><li><a href="S-lst.html#SP22">&#167;22. Write List Recursively</a></li><li><a href="S-lst.html#SP23">&#167;23. Write Multiple Class Group</a></li><li><a href="S-lst.html#SP24">&#167;24. Write Single Class Group</a></li><li><a href="S-lst.html#SP25">&#167;25. Write After Entry</a></li><li><a href="S-lst.html#SP26">&#167;26. Internal Rule</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Specification. </b>The list-writer is called by one of the following function calls:
 </p>
@@ -427,7 +427,28 @@ account.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Coalesce Marked List. </b>The return value is the new first entry in the raw list.
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Having Evident Content
+This is true when something has at least one unconcealed thing in it.
+It's false when something is truly empty or when all the things in
+it are concealed or undescribed, and is used to ensure that output
+is consistent in both those cases. The player shouldn't count for
+these purposes, but since the player is undescribed, they're excluded
+anyway.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">[ </span><span class="identifier-syntax">ObviouslyOccupied</span><span class="plain-syntax"> </span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">  </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (~~((</span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="reserved-syntax">ofclass</span><span class="plain-syntax"> </span><span class="identifier-syntax">K5_container</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="reserved-syntax">ofclass</span><span class="plain-syntax"> </span><span class="identifier-syntax">K6_supporter</span><span class="plain-syntax">))) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">  </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="reserved-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">container</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="reserved-syntax">hasnt</span><span class="plain-syntax"> </span><span class="identifier-syntax">open</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="reserved-syntax">hasnt</span><span class="plain-syntax"> </span><span class="identifier-syntax">transparent</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">; </span><span class="comment-syntax">opaque closed container's status can never be obvious</span>
+<span class="plain-syntax">  </span><span class="identifier-syntax">x</span><span class="plain-syntax"> = </span><span class="reserved-syntax">child</span><span class="plain-syntax">(</span><span class="identifier-syntax">o</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">  </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">x</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="reserved-syntax">hasnt</span><span class="plain-syntax"> </span><span class="identifier-syntax">concealed</span><span class="plain-syntax">) &amp;&amp; (~~</span><span class="identifier-syntax">TestConcealment</span><span class="plain-syntax">(</span><span class="identifier-syntax">o</span><span class="plain-syntax">, </span><span class="identifier-syntax">x</span><span class="plain-syntax">))) </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">x</span><span class="plain-syntax"> = </span><span class="reserved-syntax">sibling</span><span class="plain-syntax">(</span><span class="identifier-syntax">x</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">  }</span>
+<span class="plain-syntax">  </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Coalesce Marked List. </b>The return value is the new first entry in the raw list.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -457,7 +478,7 @@ account.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">MarkedObjectArray</span><span class="plain-syntax">--&gt;0;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Object Tree Iterator. </b>Here the raw list is the list of all children of a given parent: since the
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Object Tree Iterator. </b>Here the raw list is the list of all children of a given parent: since the
 argument <span class="extract"><span class="extract-syntax">obj</span></span> is required to be a member of the raw list, we can use
 <span class="extract"><span class="extract-syntax">parent(obj)</span></span> to find it. Now seeking and advancing are fast, but coalescing
 is slower.
@@ -484,7 +505,7 @@ is slower.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Coalesce Object Tree. </b>Again, the return value is the new first entry in the raw list.
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Coalesce Object Tree. </b>Again, the return value is the new first entry in the raw list.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -520,7 +541,7 @@ is slower.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. GroupChildren. </b>The following runs through the child-objects of <span class="extract"><span class="extract-syntax">par</span></span> in the I6 object tree,
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. GroupChildren. </b>The following runs through the child-objects of <span class="extract"><span class="extract-syntax">par</span></span> in the I6 object tree,
 and moves those having a given <span class="extract"><span class="extract-syntax">list_property</span></span> property value together, to
 become the eldest children. It preserves the ordering in between those
 objects, and also in between those not having that property value.
@@ -549,7 +570,7 @@ objects which in all other circumstances never have children in the tree.
 <span class="plain-syntax">];</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. WriteListFrom. </b>And here we go at last. Or at any rate we initialise the quartet of global
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. WriteListFrom. </b>And here we go at last. Or at any rate we initialise the quartet of global
 variables detailing the current list-writing process, and begin.
 </p>
 
@@ -585,7 +606,7 @@ variables detailing the current list-writing process, and begin.
 <span class="plain-syntax">    @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">c_margin</span><span class="plain-syntax">; @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">c_depth</span><span class="plain-syntax">; @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">c_style</span><span class="plain-syntax">; @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">c_iterator</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Standard Contents Listing Rule. </b>The default for the listing contents activity is to call this rule in its
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Standard Contents Listing Rule. </b>The default for the listing contents activity is to call this rule in its
 "for" stage: note that this suppresses the use of the activity, to avoid
 an infinite regress. The activity is used only for the default
 <span class="extract"><span class="extract-syntax">ObjectTreeIterator</span></span>, so there is no need to specify which is used.
@@ -596,7 +617,7 @@ an infinite regress. The activity is used only for the default
 <span class="plain-syntax">    </span><span class="identifier-syntax">WriteListFrom</span><span class="plain-syntax">(</span><span class="reserved-syntax">child</span><span class="plain-syntax">(</span><span class="identifier-syntax">parameter_value</span><span class="plain-syntax">), </span><span class="identifier-syntax">c_style</span><span class="plain-syntax">, </span><span class="identifier-syntax">c_depth</span><span class="plain-syntax">, </span><span class="reserved-syntax">true</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Partitioning. </b>Given qualifying objects \(x_1, ..., x_j\), we partition them into classes of
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Partitioning. </b>Given qualifying objects \(x_1, ..., x_j\), we partition them into classes of
 the equivalence relation \(x_i\sim x_j\) if and only
 </p>
 
@@ -632,7 +653,7 @@ objects in this class.
 <span class="plain-syntax">];</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Partition List. </b>The following creates the <span class="extract"><span class="extract-syntax">partition_classes</span></span> and <span class="extract"><span class="extract-syntax">partition_class_sizes</span></span>
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Partition List. </b>The following creates the <span class="extract"><span class="extract-syntax">partition_classes</span></span> and <span class="extract"><span class="extract-syntax">partition_class_sizes</span></span>
 accordingly. We return \(n\), the number of classes.
 </p>
 
@@ -662,7 +683,7 @@ accordingly. We return \(n\), the number of classes.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Equivalence Relation. </b>The above algorithm will fail unless <span class="extract"><span class="extract-syntax">ListEqual</span></span> is indeed reflexive, symmetric
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Equivalence Relation. </b>The above algorithm will fail unless <span class="extract"><span class="extract-syntax">ListEqual</span></span> is indeed reflexive, symmetric
 and transitive, which ultimately depends on the care with which <span class="extract"><span class="extract-syntax">Identical</span></span>
 is implemented, which in turn hangs on the <span class="extract"><span class="extract-syntax">parse_noun</span></span> properties compiled
 by Inform. But this seems to be sound.
@@ -670,21 +691,16 @@ by Inform. But this seems to be sound.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">ListEqual</span><span class="plain-syntax"> </span><span class="identifier-syntax">o1</span><span class="plain-syntax"> </span><span class="identifier-syntax">o2</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">o1</span><span class="plain-syntax">.</span><span class="identifier-syntax">plural</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">o2</span><span class="plain-syntax">.</span><span class="identifier-syntax">plural</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">)) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="reserved-syntax">child</span><span class="plain-syntax">(</span><span class="identifier-syntax">o1</span><span class="plain-syntax">) ~= </span><span class="constant-syntax">0</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">WillRecurs</span><span class="plain-syntax">(</span><span class="identifier-syntax">o1</span><span class="plain-syntax">) ~= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="reserved-syntax">child</span><span class="plain-syntax">(</span><span class="identifier-syntax">o2</span><span class="plain-syntax">) ~= </span><span class="constant-syntax">0</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">WillRecurs</span><span class="plain-syntax">(</span><span class="identifier-syntax">o2</span><span class="plain-syntax">) ~= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c_style</span><span class="plain-syntax"> &amp; (</span><span class="identifier-syntax">FULLINV_BIT</span><span class="plain-syntax"> + </span><span class="identifier-syntax">PARTINV_BIT</span><span class="plain-syntax">) ~= </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">o1</span><span class="plain-syntax"> </span><span class="reserved-syntax">hasnt</span><span class="plain-syntax"> </span><span class="identifier-syntax">worn</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">o2</span><span class="plain-syntax"> </span><span class="reserved-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">worn</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">o2</span><span class="plain-syntax"> </span><span class="reserved-syntax">hasnt</span><span class="plain-syntax"> </span><span class="identifier-syntax">worn</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">o1</span><span class="plain-syntax"> </span><span class="reserved-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">worn</span><span class="plain-syntax">)) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">o1</span><span class="plain-syntax"> </span><span class="reserved-syntax">hasnt</span><span class="plain-syntax"> </span><span class="identifier-syntax">light</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">o2</span><span class="plain-syntax"> </span><span class="reserved-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">light</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">o2</span><span class="plain-syntax"> </span><span class="reserved-syntax">hasnt</span><span class="plain-syntax"> </span><span class="identifier-syntax">light</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">o1</span><span class="plain-syntax"> </span><span class="reserved-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">light</span><span class="plain-syntax">)) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">o1</span><span class="plain-syntax"> </span><span class="reserved-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">container</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">o2</span><span class="plain-syntax"> </span><span class="reserved-syntax">hasnt</span><span class="plain-syntax"> </span><span class="identifier-syntax">container</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">o1</span><span class="plain-syntax"> </span><span class="reserved-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">open</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">o2</span><span class="plain-syntax"> </span><span class="reserved-syntax">hasnt</span><span class="plain-syntax"> </span><span class="identifier-syntax">open</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">o2</span><span class="plain-syntax"> </span><span class="reserved-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">open</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">o1</span><span class="plain-syntax"> </span><span class="reserved-syntax">hasnt</span><span class="plain-syntax"> </span><span class="identifier-syntax">open</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">o2</span><span class="plain-syntax"> </span><span class="reserved-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">container</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Identical</span><span class="plain-syntax">(</span><span class="identifier-syntax">o1</span><span class="plain-syntax">, </span><span class="identifier-syntax">o2</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">  </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">o1</span><span class="plain-syntax">.</span><span class="identifier-syntax">KD_Count</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">o2</span><span class="plain-syntax">.</span><span class="identifier-syntax">KD_Count</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">  </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">o1</span><span class="plain-syntax">.</span><span class="identifier-syntax">plural</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">o2</span><span class="plain-syntax">.</span><span class="identifier-syntax">plural</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">)) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">  </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ObviouslyOccupied</span><span class="plain-syntax">(</span><span class="identifier-syntax">o1</span><span class="plain-syntax">) &amp;&amp; </span><span class="identifier-syntax">WillRecurs</span><span class="plain-syntax">(</span><span class="identifier-syntax">o1</span><span class="plain-syntax">)) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">  </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ObviouslyOccupied</span><span class="plain-syntax">(</span><span class="identifier-syntax">o2</span><span class="plain-syntax">) &amp;&amp; </span><span class="identifier-syntax">WillRecurs</span><span class="plain-syntax">(</span><span class="identifier-syntax">o2</span><span class="plain-syntax">)) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">  </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c_style</span><span class="plain-syntax"> &amp; (</span><span class="identifier-syntax">FULLINV_BIT</span><span class="plain-syntax"> + </span><span class="identifier-syntax">PARTINV_BIT</span><span class="plain-syntax">) ~= </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">o1</span><span class="plain-syntax"> </span><span class="reserved-syntax">hasnt</span><span class="plain-syntax"> </span><span class="identifier-syntax">worn</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">o2</span><span class="plain-syntax"> </span><span class="reserved-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">worn</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">o2</span><span class="plain-syntax"> </span><span class="reserved-syntax">hasnt</span><span class="plain-syntax"> </span><span class="identifier-syntax">worn</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">o1</span><span class="plain-syntax"> </span><span class="reserved-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">worn</span><span class="plain-syntax">)) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">o1</span><span class="plain-syntax"> </span><span class="reserved-syntax">hasnt</span><span class="plain-syntax"> </span><span class="identifier-syntax">light</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">o2</span><span class="plain-syntax"> </span><span class="reserved-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">light</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">o2</span><span class="plain-syntax"> </span><span class="reserved-syntax">hasnt</span><span class="plain-syntax"> </span><span class="identifier-syntax">light</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">o1</span><span class="plain-syntax"> </span><span class="reserved-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">light</span><span class="plain-syntax">)) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">o1</span><span class="plain-syntax"> </span><span class="reserved-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">open</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">o2</span><span class="plain-syntax"> </span><span class="reserved-syntax">hasnt</span><span class="plain-syntax"> </span><span class="identifier-syntax">open</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">o2</span><span class="plain-syntax"> </span><span class="reserved-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">open</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">o1</span><span class="plain-syntax"> </span><span class="reserved-syntax">hasnt</span><span class="plain-syntax"> </span><span class="identifier-syntax">open</span><span class="plain-syntax">)) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">  }</span>
+<span class="plain-syntax">  </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Identical</span><span class="plain-syntax">(</span><span class="identifier-syntax">o1</span><span class="plain-syntax">, </span><span class="identifier-syntax">o2</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">WillRecurs</span><span class="plain-syntax"> </span><span class="identifier-syntax">o</span><span class="plain-syntax">;</span>
@@ -694,7 +710,7 @@ by Inform. But this seems to be sound.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Grouping. </b>A "group" is a maximally-sized run of one or more adjacent partition
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Grouping. </b>A "group" is a maximally-sized run of one or more adjacent partition
 classes in the list whose first members have a common value of
 <span class="extract"><span class="extract-syntax">list_together</span></span> which is a routine or string, and which is not equal to
 <span class="extract"><span class="extract-syntax">lt_value</span></span>, the current grouping value. (As we see below, it's by setting
@@ -786,7 +802,7 @@ in the above sense.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">BlkValueCompare</span><span class="plain-syntax">(</span><span class="identifier-syntax">lt1</span><span class="plain-syntax">, </span><span class="identifier-syntax">lt2</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Write List Recursively. </b>The big one: <span class="extract"><span class="extract-syntax">WriteListR</span></span> is the heart of the list-writer.
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Write List Recursively. </b>The big one: <span class="extract"><span class="extract-syntax">WriteListR</span></span> is the heart of the list-writer.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -885,7 +901,7 @@ in the above sense.
 <span class="plain-syntax">    </span><span class="identifier-syntax">FreeStack</span><span class="plain-syntax">(</span><span class="identifier-syntax">partition_classes</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">]; </span><span class="comment-syntax">end of WriteListR</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Write Multiple Class Group. </b>The text of a single group which contains more than one partition class.
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Write Multiple Class Group. </b>The text of a single group which contains more than one partition class.
 We carry out the "grouping together" activity, so that the user can add
 text fore and aft &mdash; this is how groups of objects such as "X, Y and Z"
 can be fluffed up to "the letters X, Y and Z from a Scrabble set" &mdash;
@@ -958,7 +974,7 @@ below, and {\it that} is where they are printed.
 <span class="plain-syntax">    </span><span class="identifier-syntax">c_style</span><span class="plain-syntax"> = </span><span class="identifier-syntax">q</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Write Single Class Group. </b>The text of a single group which contains exactly one partition class.
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Write Single Class Group. </b>The text of a single group which contains exactly one partition class.
 Because of the way the multiple-class case recurses, every class ends up
 in this routine sooner or later; this is the place where the actual
 name of an object is printed, at long last.
@@ -996,7 +1012,7 @@ name of an object is printed, at long last.
 <span class="plain-syntax">    </span><span class="identifier-syntax">c_style</span><span class="plain-syntax"> = </span><span class="identifier-syntax">q</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Write After Entry. </b>Each entry can be followed by supplementary, usually parenthetical, information:
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Write After Entry. </b>Each entry can be followed by supplementary, usually parenthetical, information:
 exactly what, depends on the style. The extreme case is when the style, and
 the object, call for recursion to list the object-tree contents: this is
 achieved by calling <span class="extract"><span class="extract-syntax">WriteListR</span></span>, using the <span class="extract"><span class="extract-syntax">ObjectTreeIterator</span></span> (whatever
@@ -1123,7 +1139,7 @@ the iterator used at the top level) and increasing the depth by 1.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Internal Rule. </b>This rule does nothing in itself; it exists as a placeholder for the
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Internal Rule. </b>This rule does nothing in itself; it exists as a placeholder for the
 response texts used by the list-writer.
 </p>
 

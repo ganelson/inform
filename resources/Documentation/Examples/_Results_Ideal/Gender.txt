@@ -1,3 +1,0 @@
-  
-> Should your character be male or female? >  
-> Please choose male or female. > 

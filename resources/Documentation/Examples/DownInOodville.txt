@@ -1,12 +1,12 @@
 ** Understanding kinds of value
 (Menu of numerical options; Down in Oodville)
-Offering the player a choice of numbered options at certain times, without otherwise interfering with his ability to give regular commands.
+Offering the player a choice of numbered options at certain times, without otherwise interfering with their ability to give regular commands.
 
 Now and then in IF there is a situation where we need to ask the player for a numbered choice rather than an ordinary action command. What's more, that numbered choice might change during the game, so we don't want to just hard-wire the meanings of "1", "2", and "3" whenever the player types them.
 
 A better trick is to keep a list or table (we'll use a table here because it involves slightly less overhead) recording what the player's numerical choices currently mean. Then every time the player selects a number, the table is consulted, and if the number corresponds to something, the player's choice is acted on.
 
-In our example, we'll have a transporter pad that can take the player to any room in the game that he's already visited. (Just for the sake of example, we'll start him off with a few pre-visited rooms.) 
+In our example, we'll have a transporter pad that can take the player to any room in the story that they've already visited. (Just for the sake of example, we'll start him off with a few pre-visited rooms.) 
 
 	{*}"Down in Oodville"
 	

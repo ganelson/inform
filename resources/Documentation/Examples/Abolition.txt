@@ -153,7 +153,7 @@ Note that the above unsetting is not equivalent to "now the noun does not impres
 		now every person fancies the noun.
 	
 	Report flattering:
-		say "You draw down universal admiration for [the noun] by casting him or her in a flattering light."
+		say "You draw down universal admiration for [the noun] by casting them in a flattering light."
 
 
 	Understand "unflatter [someone]" as unflattering. [Okay, okay, but it's four am.] Unflattering is an action applying to one thing.

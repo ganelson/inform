@@ -310,6 +310,8 @@ compiler via Delia scripts in |intest|.
 @e TEST_OUTPUT_CLSW
 @e SILENCE_CLSW
 @e CHECK_RESOURCES_CLSW
+@e INBUILD_VERBOSE_CLSW
+@e INBUILD_VERBOSITY_CLSW
 
 @<Register command-line arguments@> =
 	CommandLine::begin_group(INFORM_TESTING_CLSG, I"for testing and debugging inform7");
@@ -335,6 +337,10 @@ compiler via Delia scripts in |intest|.
 		L"write output of internal tests to file X");
 	CommandLine::declare_boolean_switch(SILENCE_CLSW, L"silence", 1,
 		L"practice 'silence is golden': print only Unix-style errors", FALSE);
+	CommandLine::declare_boolean_switch(INBUILD_VERBOSE_CLSW, L"inbuild-verbose", 1,
+		L"equivalent to -inbuild-verbosity=1", FALSE);
+	CommandLine::declare_numerical_switch(INBUILD_VERBOSITY_CLSW, L"inbuild-verbosity", 1,
+		L"how much inbuild should explain: lowest is 0 (default), highest is 3");
 	CommandLine::end_group();
 
 @ Three of the five options here actually configure the |problems| module
@@ -357,6 +363,8 @@ void Main::switch(int id, int val, text_stream *arg, void *state) {
 		case CHECK_RESOURCES_CLSW: ResourceFinder::set_mode(val); break;
 		case TEST_OUTPUT_CLSW: InternalTests::set_file(Filenames::from_text(arg)); break;
 		case SILENCE_CLSW: silence_is_golden = TRUE; break;
+		case INBUILD_VERBOSE_CLSW: Supervisor::set_verbosity(1); break;
+		case INBUILD_VERBOSITY_CLSW: Supervisor::set_verbosity(val); break;
 	}
 	Supervisor::option(id, val, arg, state);
 }

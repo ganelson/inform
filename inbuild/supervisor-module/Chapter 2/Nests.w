@@ -131,11 +131,37 @@ genre's manager to look for copies of that genre:
 =
 void Nests::search_for(inbuild_requirement *req,
 	linked_list *search_list, linked_list *results) {
+	text_stream *OUT = STDOUT;
+	if (supervisor_verbosity >= 3) {
+		WRITE("(search for ");
+		Requirements::write(OUT, req);
+		WRITE(" in ");
+		inbuild_nest *N; int c = 0;
+		LOOP_OVER_LINKED_LIST(N, inbuild_nest, search_list) {
+			if (c++ > 0) WRITE(", ");
+			WRITE("%S nest at %p", Nests::tag_name(N->tag_value), N->location);
+		}
+		WRITE(")\n");
+		INDENT;
+	}
+	
 	inbuild_nest *N;
 	LOOP_OVER_LINKED_LIST(N, inbuild_nest, search_list) {
 		inbuild_genre *G;
 		LOOP_OVER(G, inbuild_genre)
 			VOID_METHOD_CALL(G, GENRE_SEARCH_NEST_FOR_MTID, N, req, results);
+	}
+
+	if (supervisor_verbosity >= 3) {
+		OUTDENT;
+		inbuild_search_result *R;
+		int c = 1;
+		LOOP_OVER_LINKED_LIST(R, inbuild_search_result, results) {
+			WRITE("  (Result %d. ", c++);
+			Copies::write_copy(OUT, R->copy);
+			WRITE(" from %S nest at %p)\n", Nests::tag_name(R->nest->tag_value), R->nest->location);
+		}
+		WRITE("(search complete with %d result(s))\n", c);
 	}
 }
 
@@ -147,10 +173,14 @@ inbuild_search_result *Nests::search_for_best(inbuild_requirement *req,
 	linked_list *search_list) {
 	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
 	Nests::search_for(req, search_list, L);
-	inbuild_search_result *best = NULL, *search_result;
-	LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L)
-		if (Nests::better_result(search_result, best))
-			best = search_result;
+	inbuild_search_result *best = NULL, *search_result; int c = 1, bc = 0;
+	LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L) {
+		if (Nests::better_result(search_result, best)) {
+			best = search_result; bc = c;
+		}
+		c++;
+	}
+	SVEXPLAIN(3, "(best result is %d)\n", bc);
 	return best;
 }
 

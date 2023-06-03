@@ -2,7 +2,7 @@
 (Instant EXAMINE and LOOK; Timeless)
 A set of actions which do not take any game time at all.
 
-In a game with tight timing, it is sometimes friendliest to the player to let him LOOK and EXAMINE as much as necessary without being penalized.
+In a game with tight timing, it is sometimes friendliest to the player to let them LOOK and EXAMINE as much as necessary without being penalized.
 
 	{*}"Timeless"
 	

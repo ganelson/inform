@@ -2,7 +2,7 @@
 (Windows in high places; A Haughty Spirit)
 Windows overlooking lower spaces which will prevent the player from climbing through if the lower space is too far below.
 
-Suppose we have a game in which the player can climb through windows which overlook rooms below. We want him to be allowed to climb out windows to reach a room on the same level or at most one level lower than the one he's on; otherwise, he should get a refusal, saying that he would break his neck.
+Suppose we have a game in which the player can climb through windows which overlook rooms below. We want them to be allowed to climb out windows to reach a room on the same level or at most one level lower than the one they're on; otherwise, they should get a refusal, saying that they would break their neck.
 
 To figure out the height distance between the start room and the destination room, we might have a repeat loop look at all the directions one has to follow along the "best route" path between the two rooms, and record any ups and downs; then subtract the number of "up" steps from the number of "down" steps, and report what remains.
 

@@ -22,6 +22,13 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 	references and links provided. (A feature request for this was filed as
 	Jira bug [I7-2232](https://inform7.atlassian.net/browse/I7-2232).)
 
+## Documentation
+
+"Writing with Inform" and "The Recipe Book" benefit from a revision throughout to
+remove unnecessary gender-binary language, mostly to do with pronouns attached
+to "the player", or similar. The example `Blue or Pink` has become `Good or Evil`,
+and now poses a moral rather than gender-based question.
+
 ## Bug fixes
 
 - Fix for Jira bug [I7-2344](https://inform7.atlassian.net/browse/I7-2344)
@@ -111,6 +118,24 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 	the interpreter website, but the filename is a lie. It's the base64-encoding
 	of the `story.ulx` file, not the `story.gblorb`." (Andrew Plotkin, not from Jira)
 - Cosmetic fixes not worth linking to (I7-2319, I7-2316, I7-2315, I7-2293, I7-2270, I7-2268, I7-2221)
+
+## Bugs fixed in the course of feature additions
+
+Work done on Inform evolution proposal [(IE-0015) World model enforcement](https://github.com/ganelson/inform-evolution/blob/main/proposals/0015-world-model-enforcement.md)
+fixes a number of known anomalies in the way that the standard world model
+handled containment, incorporation and so on. This enabled a number of bugs to
+be closed:
+
+- [I7-2220](https://inform7.atlassian.net/browse/I7-2220)
+	on the definition of holding
+- [I7-2219](https://inform7.atlassian.net/browse/I7-2219)
+	on directions being held
+- [I7-2046 = Mantis 2083](https://inform7.atlassian.net/browse/I7-2046)
+	on when containers holding concealed items say they are "(empty)"
+- [I7-2036 = Mantis 2073](https://inform7.atlassian.net/browse/I7-2036)
+	on inconsistencies when containers or supporters holding concealed items are examined
+- [I7-2296](https://inform7.atlassian.net/browse/I7-2296)
+	on things being privately-named causing their printed names not to be used in room description
 
 ## Note about intest
 

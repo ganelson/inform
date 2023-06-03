@@ -4,7 +4,7 @@ Making implicit takes add a minute to the clock, just as though the player had t
 
 Implicit takes are a convenience to players; in general, we would like to avoid asking players to type any more obvious commands than strictly necessary, while allowing the computer to guess as much as it safely can.
 
-Occasionally, though, we have designed a timed puzzle in which the player has a limited number of moves in which to accomplish his objectives. In that case, the implicit take complicates matters, because it means that a player who types
+Occasionally, though, we have designed a timed puzzle in which the player has a limited number of moves in which to accomplish their objectives. In that case, the implicit take complicates matters, because it means that a player who types
 
 	>EAT GATEAU
 	(first taking the gateau...)

@@ -2,7 +2,7 @@
 (Preferences file loaded on replaying; Alien Invasion Part 23)
 Keeping a preference file that could be loaded by any game in a series.
 
-Suppose that we have a series of games each of which allows the player to select a puzzle difficulty level. When the player plays a new game in the series, we want him to start out by default with the same difficulty level he faced earlier on, so we store this information in a small preferences file, as follows:
+Suppose that we have a series of games each of which allows the player to select a puzzle difficulty level. When the player plays a new game in the series, we want them to start out by default with the same difficulty level they faced earlier on, so we store this information in a small preferences file, as follows:
 
 	{*}"Alien Invasion Part 23"
 

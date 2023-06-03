@@ -544,6 +544,8 @@ i7_mg_event_t *i7_mg_get_event_from_buffer(i7process_t *proc);
 i7word_t i7_miniglk_select(i7process_t *proc, i7word_t structure);
 i7word_t i7_miniglk_request_line_event(i7process_t *proc, i7word_t window_id,
 	i7word_t buffer, i7word_t max_len, i7word_t init_len);
+i7word_t i7_miniglk_request_line_event_uni(i7process_t *proc, i7word_t window_id,
+	i7word_t buffer, i7word_t max_len, i7word_t init_len);
 i7word_t i7_encode_float(i7float_t val);
 i7float_t i7_decode_float(i7word_t val);
 i7word_t i7_read_variable(i7process_t *proc, i7word_t var_id);

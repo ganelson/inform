@@ -1,0 +1,19 @@
+The Kitchen is a room.
+
+Fred is a person in the Kitchen.
+Understand "Frəd" as Fred.
+
+Check asking Fred about a topic listed in the Table of Mythological Names:
+	instead say "Fred explains that [the topic understood] is [answer entry]."
+
+Check asking Fred about:
+	instead say "Fred doesn't know anything about it."
+
+Table of Mythological Names
+topic	answer
+"cheese"	"a fabled substance"
+"dück"	"a waterfowl with an umlaut"
+"αθηνα"	"the goddess Athena"
+"водяно́й"	"the vodyanoi, a water spirit"
+
+Test me with "ask fred about nothing / ask Frəd about cheese / ask fred about Dück / ask fred about dück / ask fred about αθηνα / ask fred about Αθηνα / ask fred about водяно́й".

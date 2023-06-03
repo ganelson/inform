@@ -1,7 +1,7 @@
    Experimentation Chamber
   Robo 2
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Experimentation Chamber
   Robo, your prototype tin companion, stands awkwardly beside you.
@@ -27,7 +27,7 @@
   "Learning CHOCOLATE," Robo replies.
   
   >[6] take red
-  Robo watches you taking the red block. In his metal head, gears whirr.
+  Robo watches you taking the red block. In its metal head, gears whirr.
   
   Taken.
   
@@ -54,7 +54,7 @@
   
   Robo puts the red block on the counter.
   
-  Robo's program ends, and he reverts to stand-by mode.
+  Robo's program ends, and it reverts to stand-by mode.
   
   >[12] robo, run chocolate
   "Running CHOCOLATE," Robo confirms.
@@ -74,7 +74,7 @@
   "Learning VANILLA," Robo replies.
   
   >[17] take all
-  blue cylinder: Robo watches you taking the blue cylinder, his brushed-copper handlebar moustaches twitching.
+  blue cylinder: Robo watches you taking the blue cylinder, its brushed-copper handlebar moustaches twitching.
   
   Taken.
   red block: That seems to belong to Robo.
@@ -87,19 +87,19 @@
   
   >[19] drop all
   (the blue cylinder)
-  Robo watches you dropping the blue cylinder, his brushed-copper handlebar moustaches twitching.
+  Robo watches you dropping the blue cylinder, its brushed-copper handlebar moustaches twitching.
   
   Dropped.
   
   >[20] x robo
   You see nothing special about Robo.
   
-  Robo watches you examining Robo, his yellow eyes lamp-like and observant.
+  Robo watches you examining Robo, its yellow eyes lamp-like and observant.
   
   >[21] x me
   As good-looking as ever.
   
-  Robo watches you examining yourself, his brushed-copper handlebar moustaches twitching.
+  Robo watches you examining yourself, its brushed-copper handlebar moustaches twitching.
   
   >[22] robo, stop
   "Stored VANILLA."
@@ -115,7 +115,7 @@
   >[25] robo, run vanilla
   "Running VANILLA," Robo confirms.
   
-  Robo needs several attempts to get his metal fingers around the blue cylinder -- they are not designed for grasping small objects elegantly. But at last he succeeds.
+  Robo needs several attempts to get its metal fingers around the blue cylinder -- they are not designed for grasping small objects elegantly. But at last it succeeds.
   
   >[26] z
   Time passes.
@@ -130,7 +130,7 @@
   >[28] robo, delete vanilla
   "ERROR: programs may only be deleted while Robo is in stand-by mode."
   
-  Robo examines each of his hands in turn, then each of his legs (bending over mostly double in the middle to do this).
+  Robo examines each of its hands in turn, then each of its legs (bending over mostly double in the middle to do this).
   
   >[29] robo, stop
   Robo is now standing by.

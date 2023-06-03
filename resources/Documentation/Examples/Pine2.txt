@@ -87,4 +87,4 @@ After we've generated any spontaneous conversation, we return her to her regular
 	
 	Test me with "x beauty / wake beauty / pour water on beauty / ask beauty about sleep / z / ask beauty about marriage".
 
-Now we have a scenario in which the player can ask her some questions out of order if he really wants to, but the scene will not end until the basic conversation topics have been exhausted. If we wanted to add some other chit-chat, not as part of the main conversation strand, but by way of optional enrichment, we might make a second conversation table and record alternative outcomes in it.
+Now we have a scenario in which the player can ask her some questions out of order if they really want to, but the scene will not end until the basic conversation topics have been exhausted. If we wanted to add some other chit-chat, not as part of the main conversation strand, but by way of optional enrichment, we might make a second conversation table and record alternative outcomes in it.

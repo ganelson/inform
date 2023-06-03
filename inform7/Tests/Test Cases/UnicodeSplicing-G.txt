@@ -1,0 +1,20 @@
+The Kitchen is a room.
+
+The rock is in the Kitchen. The description is "It's a rock."
+
+Understand "⠗⠕⠉⠅" as the rock.
+
+After reading a command: 
+	if the player's command includes "please": 
+		say "Please do not say please."; 
+		reject the player's command;
+	if the player's command includes "excuse me":
+		change the text of the player's command to "⠚⠥⠍⠏";
+	if the player's command includes "element [number]":
+		say "Matched '[matched text]' in '[player's command]'...";
+		replace the matched text with "⠗⠕⠉⠅";
+		say "... now '[player's command]'...";
+
+Understand "⠚⠥⠍⠏" as jumping.
+
+Test me with "please go away / now excuse me / examine element 12 / get ⠗⠕⠅ / oops ⠗⠕⠉⠅".

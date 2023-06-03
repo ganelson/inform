@@ -26,7 +26,7 @@ usage: inbuild [-TASK] TARGET1 TARGET2 ...
 -no-repair                     don't quietly fix missing or incorrect extension metadata (default is -repair)
 -results X                     write HTML report file to X (for use within Inform GUI apps)
 -sync-to X                     forcibly copy target(s) to nest X, even if prior version already there
--tools X                       make X the directory of intools executables, and exit developer mode
+-tools X                       make X the directory of intools executables
 -use-locate                    show file paths of all the extensions, kits and so on needed to use
 -use-missing                   show the extensions, kits and so on which are needed to use but missing
 -use-needs                     show all the extensions, kits and so on needed to use

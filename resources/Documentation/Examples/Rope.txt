@@ -198,7 +198,7 @@ Another part of the fun of a rope is that you can drag things from another room:
 
 	Definition: a thing is secondary if it is not the noun.  Definition: a thing is pullable if it is not the noun and it is not the player.
 
-A player who is tied to things should also have some restrictions on his ability to move.
+A player who is tied to things should also have some restrictions on their ability to move.
 
 	{**}Before going a direction (called the way) when the player has something (called the link) which is stuck to something anchored (called the anchor):
 		let the next room be the home of the anchor;
@@ -227,7 +227,7 @@ A player who is tied to things should also have some restrictions on his ability
 			otherwise:
 				say "Your attachments prevent you going any way but [best route from the location to the next room]." instead.
 
-Sometimes, if the player is tied to a movable object, the moved object will move with him.
+Sometimes, if the player is tied to a movable object, the moved object will move with them.
 
 	{**}After going somewhere when the player has something (called the link) which is stuck to something draggable:
 		if the player is not stuck to the link:

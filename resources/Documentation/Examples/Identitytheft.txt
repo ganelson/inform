@@ -2,7 +2,7 @@
 (Name of player character selected at start of play; Identity Theft)
 Allowing the player to enter a name to be used for the player character during the game.
 
-Let's say we want to allow the player to enter any name he likes for his character. Moreover, we want to reject very long names (which are likely to be mistakes anyway), and we want to extract the player's chosen first name from the rest.
+Let's say we want to allow the player to enter any name they like for their character. Moreover, we want to reject very long names (which are likely to be mistakes anyway), and we want to extract the player's chosen first name from the rest.
 
 	{*} "Identity Theft"
 	
@@ -39,7 +39,7 @@ We also want to postpone the proper beginning of the game until we've gotten the
 
 	The player carries a letter. The description of the letter is "Dear [player's full name], [paragraph break]You have won the Norwegian Daily Lottery! ...".
 	
-If we are compiling for Glulx, this is enough to capture not only the player's name but also the capitalization he uses.
+If we are compiling for Glulx, this is enough to capture not only the player's name but also the capitalization used.
 
 If we are compiling for the Z-machine, the player's input will unfortunately be reduced to lower case before we can inspect it. If we would like by default to capitalize the first letter of each word of the name, we might substitute the following after reading a command rule:
 

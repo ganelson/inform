@@ -1,6 +1,6 @@
 *** Going from, going to
 (GOing an invalid direction produces a list of valid exits--Exits listed when the player tries a wrong direction; Bumping into Walls)
-Offering the player a list of valid directions if he tries to go in a direction that leads nowhere.
+Offering the player a list of valid directions if they try to go in a direction that leads nowhere.
 
 	{*}"Bumping into Walls"
 

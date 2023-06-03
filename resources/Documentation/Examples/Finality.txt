@@ -2,7 +2,7 @@
 (UNDO not mentioned in the final question; Finality)
 Not mentioning UNDO in the final set of options.
 
-By default, Inform reminds the player that he has the option of typing UNDO after a story-ending action. This is generally good practice, especially for the sake of novice players who might not be aware of this possibility otherwise, and might be frustrated by a loss they could easily step back from.
+By default, Inform reminds the player that they have the option of typing UNDO after a story-ending action. This is generally good practice, especially for the sake of novice players who might not be aware of this possibility otherwise, and might be frustrated by a loss they could easily step back from.
 
 Just occasionally, though, we may decide that the player does not deserve any such notification:
 

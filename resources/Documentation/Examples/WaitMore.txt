@@ -21,7 +21,7 @@ The one nuance here is that after our wait command occurs, the turn sequence rul
 	{**}Report waiting more:
 		say "It is now [time of day + 1 minute]."
 
-And if we want to ensure that the player doesn't (accidentally or intentionally) put the interpreter through a really long loop, we could put an upper limit on his patience:
+And if we want to ensure that the player doesn't (accidentally or intentionally) put the interpreter through a really long loop, we could put an upper limit on their patience:
 
 	{**}Check waiting more:
 		if the time understood is greater than one hour, say "You really haven't got that kind of patience." instead.

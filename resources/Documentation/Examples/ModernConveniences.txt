@@ -134,7 +134,7 @@ or create an
 
 	Instead of examining the stove in the Industrial Kitchen: ...
 	
-sort of rule for those objects he wanted to describe specially; or he might use a when play begins rule to initialize a few things:
+sort of rule for those objects they wanted to describe specially; or they might use a when play begins rule to initialize a few things:
 
 	When play begins:
 		let N be a random stove in the Industrial Kitchen;

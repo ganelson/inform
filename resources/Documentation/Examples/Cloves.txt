@@ -2,7 +2,7 @@
 (Adverbs used in commands; Cloves)
 Accepting adverbs anywhere in a command, registering what the player typed but then cutting them out before interpreting the command.
 
-It has sometimes been suggested that IF should allow for the player to use adverbs, so that doing something "carefully" will have a different effect from doing it "quickly". There are several inherent challenges here: it's a good idea to make very sure the player knows all his adverb options, and the list of possibilities should probably not be too long. 
+It has sometimes been suggested that IF should allow for the player to use adverbs, so that doing something "carefully" will have a different effect from doing it "quickly". There are several inherent challenges here: it's a good idea to make very sure the player knows all their adverb options, and the list of possibilities should probably not be too long. 
 
 Another trick is that adverbs complicate understanding commands, because they can occur anywhere: one might type >GO WEST CAREFULLY or >CAREFULLY GO WEST, and ideally the game should understand both. After reading a command is the best point to do this sort of thing, because we can find adverbs, interpret them, and remove them from the command stream. So:
 

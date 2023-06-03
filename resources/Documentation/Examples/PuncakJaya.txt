@@ -39,4 +39,4 @@ Based on the "representation" relation, we now devise a conditional relation tha
  
 	Test me with "x kippax / up / x kippax / kiss kippax / kippax, hello".
 	
-Further complications of this example might require that the player meet a character before being able to refer to him or her.
+Further complications of this example might require that the player meet a character before being able to refer to them.

@@ -1,6 +1,6 @@
 ** Stored actions
 (Device to remember and play back actions; Anteaters)
-The player carries a gizmo that is able to record actions performed by the player, then force him to repeat them when the gizmo is dropped. This includes storing actions that apply to topics, as in "look up anteater colonies in the guide".
+The player carries a gizmo that is able to record actions performed by the player, then force them to repeat those actions when the gizmo is dropped. This includes storing actions that apply to topics, as in "look up anteater colonies in the guide".
 
 	{*} "Anteaters"
 	

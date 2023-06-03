@@ -1,4 +1,4 @@
-Version 5 of Punctuation Removal by Emily Short begins here.
+Version 6 of Punctuation Removal by Emily Short begins here.
 
 Use authorial modesty.
 
@@ -25,16 +25,15 @@ To remove periods:
 To resolve punctuated titles:
 	(- DeTitler(); players_command = 100 + WordCount(); -)
 	
+
+
+Section 2 (for Z-machine only)
+
 Include (- 
 
 [ DeTitler i j buffer_length flag; 
 
-#ifdef TARGET_ZCODE;
 	buffer_length = buffer->1+(WORDSIZE-1);
-#endif;
-#ifdef TARGET_GLULX;
-	buffer_length = (buffer-->0)+(WORDSIZE-1);
-#endif; 
 	for (i = WORDSIZE : i <= buffer_length: i++)
 	{ 
 		if ((buffer->i) == '.' && (i > WORDSIZE + 1)) 
@@ -56,9 +55,6 @@ Include (-
 ]; 
 
 -) 
-
-
-Section 2 (for Z-machine only)
 
 Include (-
 
@@ -147,20 +143,47 @@ Include (-
 
 Section 3 (for Glulx only) 
 
+Include (- 
+
+[ DeTitler i j buffer_length flag; 
+
+	buffer_length = (buffer-->0)+1;
+	for (i = 1 : i <= buffer_length: i++)
+	{ 
+		if ((buffer-->i) == '.' && (i > 1)) 
+		{ 
+			! flag if the period follows Mr, Mrs, Dr, prof, rev, or st
+			!
+			! This is hackish, but our hearts are pure
+			
+			if ((buffer-->(i-1)=='r') && (buffer-->(i-2)=='m') && ((buffer-->(i-3)==' ') || ((i-3) < 1))) flag = 1;
+			if ((buffer-->(i-1)=='r') && (buffer-->(i-2)=='d') && ((buffer-->(i-3)==' ') || ((i-3) < 1))) flag = 1;
+			if ((buffer-->(i-1)=='t') && (buffer-->(i-2)=='s') && ((buffer-->(i-3)==' ') || ((i-3) < 1))) flag = 1;
+			if ((buffer-->(i-1)=='s') && (buffer-->(i-2)=='r') && (buffer-->(i-3)=='m') && ((buffer-->(i-4)==' ') || ((i-4) < 1))) flag = 1;
+			if ((buffer-->(i-1)=='v') && (buffer-->(i-2)=='e') && (buffer-->(i-3)=='r') && ((buffer-->(i-4)==' ') || ((i-4) < 1))) flag = 1;
+			if ((buffer-->(i-1)=='f') && (buffer-->(i-2)=='o') && (buffer-->(i-3)=='r') && (buffer-->(i-4)=='p') && ((buffer-->(i-5)==' ') || ((i-5) < 1))) flag = 1;
+			if (flag) buffer-->i = ' ';   
+		}
+	}
+	VM_Tokenise(buffer, parse);
+]; 
+
+-) 
+
 Include (-
 
 [ BufferOut i;   
-	for (i = WORDSIZE : i <= (buffer-->0)+(WORDSIZE-1) : i++)
+	for (i = 1 : i <= (buffer-->0) : i++)
 	{  
-		print (char) (buffer->i);
+		print (char) (buffer-->i);
 	} 
 ];
 
 [ PunctuationStripping i;
-	for (i = WORDSIZE : i <= (buffer-->0)+(WORDSIZE-1) : i++)
+	for (i = 1 : i <= (buffer-->0) : i++)
 	{ 
-		if ((buffer->i) == '"' or '?' or '!') 
-		{	buffer->i = ' ';  
+		if ((buffer-->i) == '"' or '?' or '!') 
+		{	buffer-->i = ' ';  
 		}
 	}
 	VM_Tokenise(buffer, parse);
@@ -172,18 +195,18 @@ Include (-
 Include (-
 
 [ SingleQuoteStripping i;
-	for (i = WORDSIZE : i <= (buffer-->0)+(WORDSIZE-1) : i++)	{ 
-		if ((buffer->i) == 39) 
-		{	buffer->i = ' ';  
+	for (i = 1 : i <= (buffer-->0) : i++)	{ 
+		if ((buffer-->i) == 39) 
+		{	buffer-->i = ' ';  
 		}
 	}
 	VM_Tokenise(buffer, parse);
 ];
 
 [ QuoteStripping i;
-	for (i = WORDSIZE : i <= (buffer-->0)+(WORDSIZE-1) : i++)	{ 
-		if ((buffer->i) == '"') 
-		{	buffer->i = ' ';  
+	for (i = 1 : i <= (buffer-->0) : i++)	{ 
+		if ((buffer-->i) == '"') 
+		{	buffer-->i = ' ';  
 		}
 	}
 	VM_Tokenise(buffer, parse);
@@ -194,10 +217,10 @@ Include (-
 Include (-
 
 [ QuestionStripping i;
-	for (i = WORDSIZE : i <= (buffer-->0)+(WORDSIZE-1) : i++)
+	for (i = 1 : i <= (buffer-->0) : i++)
 	{ 
-		if ((buffer->i) == '?') 
-		{	buffer->i = ' ';  
+		if ((buffer-->i) == '?') 
+		{	buffer-->i = ' ';  
 		}
 	}
 	VM_Tokenise(buffer, parse);
@@ -208,10 +231,10 @@ Include (-
 Include (-
 
 [ ExclamationStripping i;
-	for (i = WORDSIZE : i <= (buffer-->0)+(WORDSIZE-1) : i++)
+	for (i = 1 : i <= (buffer-->0) : i++)
 	{ 
-		if ((buffer->i) == '!') 
-		{	buffer->i = ' ';  
+		if ((buffer-->i) == '!') 
+		{	buffer-->i = ' ';  
 		}
 	}
 	VM_Tokenise(buffer, parse);
@@ -222,10 +245,10 @@ Include (-
 Include (-
 
 [ PeriodStripping i j;
-	for (i = WORDSIZE : i <= (buffer-->0)+(WORDSIZE-1) : i++)
+	for (i = 1 : i <= (buffer-->0) : i++)
 	{ 
-		if ((buffer->i) == '.') 
-		{	buffer->i = ' ';  
+		if ((buffer-->i) == '.') 
+		{	buffer-->i = ' ';  
 		}
 	}
 	VM_Tokenise(buffer, parse);

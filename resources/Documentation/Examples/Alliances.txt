@@ -1,6 +1,6 @@
 * Defining new assertion verbs
 (Shifting alliances among people; Unthinkable Alliances)
-People are to be grouped into alliances. To kiss someone is to join his or her faction, which may make a grand alliance; to strike them is to give notice of quitting, and to become a lone wolf.
+People are to be grouped into alliances. To kiss someone is to join their faction, which may make a grand alliance; to strike them is to give notice of quitting, and to become a lone wolf.
 
 The following is best tested by experimentally kissing and/or attacking, and typing RELATIONS after every change to see the effect.
 
