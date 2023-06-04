@@ -1561,7 +1561,14 @@ void i7_miniglk_put_char_stream(i7process_t *proc, i7word_t stream_id, i7word_t 
 		if (win_id >= 1) rock = i7_mg_get_window_rock(proc, win_id);
 		unsigned int c = (unsigned int) x;
 		if (proc->use_UTF8) {
-			if (c >= 0x800) {
+			if (c >= 0x200000) { /* invalid Unicode */
+				i7_mg_put_to_stream(proc, rock, '?');
+			} else if (c >= 0x10000) {
+				i7_mg_put_to_stream(proc, rock, 0xF0 + (c >> 18));
+				i7_mg_put_to_stream(proc, rock, 0x80 + ((c >> 12) & 0x3f));
+				i7_mg_put_to_stream(proc, rock, 0x80 + ((c >> 6) & 0x3f));
+				i7_mg_put_to_stream(proc, rock, 0x80 + (c & 0x3f));
+			} else if (c >= 0x800) {
 				i7_mg_put_to_stream(proc, rock, 0xE0 + (c >> 12));
 				i7_mg_put_to_stream(proc, rock, 0x80 + ((c >> 6) & 0x3f));
 				i7_mg_put_to_stream(proc, rock, 0x80 + (c & 0x3f));
