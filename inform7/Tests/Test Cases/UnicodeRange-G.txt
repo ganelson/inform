@@ -1,0 +1,30 @@
+The Kitchen is a room.
+
+[U+F6]
+The ö is in the Kitchen.
+
+[U+3B1 through U+3B5]
+The αβγδε is in the Kitchen.
+
+[U+10D1, U+10D2]
+The ბგ is in the Kitchen.
+
+[U+7B3C]
+The 笼 is in the Kitchen.
+
+[U+A6A2, U+A6C4]
+The ꚢꛄ is in the Kitchen.
+
+[U+102A8]
+The 𐊨 is in the Kitchen.
+
+[U+1F701]
+The 🜁 is in the Kitchen.
+
+
+Instead of taking inventory:
+	let T be the substituted form of "XYZZY: [list of things carried by the player]";
+	replace the text "XYZZY" in T with "𝑰nventory";
+	say "[T].";
+
+Test me with "i / get all / i".
