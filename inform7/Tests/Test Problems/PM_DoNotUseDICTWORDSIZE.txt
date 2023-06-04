@@ -1,0 +1,9 @@
+Xanadu is a room.
+
+Use Inform 6 compiler option "$DICT_WORD_SIZE=13".
+
+Use Inform 6 compiler option "$dict_word_size=13".
+
+Use DICT_WORD_SIZE of 10.
+
+Use dict_word_size of 10.

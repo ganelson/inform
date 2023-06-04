@@ -87,6 +87,8 @@ Use authorial modesty translates as the configuration flag AUTHORIAL_MODESTY
 	in BasicInformKit.
 Use command line echoing translates as the configuration flag ECHO_COMMANDS
 	in BasicInformKit.
+Use dictionary resolution of at least 6 translates as the configuration value
+	DICT_RESOLUTION in BasicInformKit.
 
 Use dynamic memory allocation of at least 8192 translates as the configuration
 	value STACK_FRAME_CAPACITY in BasicInformKit.

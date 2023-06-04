@@ -191,7 +191,14 @@ for details of these. Any other code-generator can ignore these pragmas.
 			Emit::pragma(I"Inform6", prag);
 			DISCARD_TEXT(prag)
 		}
-	
+	if (TargetVMs::is_16_bit(Task::vm()) == FALSE) {
+		TEMPORARY_TEXT(prag)
+		WRITE_TO(prag, "$DICT_WORD_SIZE=%d",
+			global_compilation_settings.dictionary_resolution);
+		Emit::pragma(I"Inform6", prag);
+		DISCARD_TEXT(prag)
+	}
+
 @ A few kit configuration values cannot be set with use options, and are
 hard-wired into the compiler:
 
