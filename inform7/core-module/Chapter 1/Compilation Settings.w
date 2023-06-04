@@ -25,6 +25,7 @@ meaningful only for works of IF and are inert for Basic Inform projects.
 @e INDEX_FIGURE_THUMBNAILS_UO
 @e FAST_ROUTE_FINDING_UO
 @e SLOW_ROUTE_FINDING_UO
+@e DICTIONARY_RESOLUTION_UO
 
 @ Note that Inform recognises these by their English names, so there would be no
 need to translate this to other languages.
@@ -43,7 +44,8 @@ need to translate this to other languages.
 	unabbreviated object names |    ==> { UNABBREVIATED_OBJECT_NAMES_UO, - }
 	index figure thumbnails |       ==> { INDEX_FIGURE_THUMBNAILS_UO, - }
 	fast route-finding |  			==> { FAST_ROUTE_FINDING_UO, - }
-	slow route-finding  			==> { SLOW_ROUTE_FINDING_UO, - }
+	slow route-finding | 			==> { SLOW_ROUTE_FINDING_UO, - }
+	dictionary resolution           ==> { DICTIONARY_RESOLUTION_UO, - }
 
 @ Some of the pragma-like settings are stored here:
 
@@ -59,7 +61,7 @@ typedef struct compilation_settings {
 	int ranking_table_given;
 	int scoring_option_set;
 	int use_exact_parsing_option;
-	int dict_word_size;
+	int dictionary_resolution;
 	int fast_route_finding;
 	int slow_route_finding;
 } compilation_settings;
@@ -80,7 +82,9 @@ void CompilationSettings::initialise_gcs(void) {
 	global_compilation_settings.ranking_table_given = FALSE;
 	global_compilation_settings.scoring_option_set = NOT_APPLICABLE;
 	global_compilation_settings.use_exact_parsing_option = FALSE;
-	global_compilation_settings.dict_word_size = -1;
+	int N = 9;
+	if (TargetVMs::is_16_bit(Task::vm())) N = 6;
+	global_compilation_settings.dictionary_resolution = N;
 	global_compilation_settings.fast_route_finding = FALSE;
 	global_compilation_settings.slow_route_finding = FALSE;
 }
@@ -114,6 +118,7 @@ void CompilationSettings::set(int U, int N, source_file *from) {
 		switch (U) {
 			case DYNAMIC_MEMORY_ALLOCATION_UO: g->dynamic_memory_allocation = N; break;
 			case INDEX_FIGURE_THUMBNAILS_UO:   g->index_figure_thumbnails = N;   break;
+			case DICTIONARY_RESOLUTION_UO:     g->dictionary_resolution = N;            break;
 		}
 	}
 }

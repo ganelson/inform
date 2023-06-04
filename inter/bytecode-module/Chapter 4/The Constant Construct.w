@@ -294,7 +294,7 @@ void ConstantInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 
 =
 void ConstantInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
-	inter_symbol *con_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
+	inter_symbol *con_name = ConstantInstruction::symbol(P);
 	WRITE("constant ");
 	TextualInter::write_optional_type_marker(OUT, P, TYPE_CONST_IFLD);
 	WRITE("%S = ", InterSymbol::identifier(con_name));
@@ -334,6 +334,12 @@ void ConstantInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 @h Access functions.
 
 =
+inter_symbol *ConstantInstruction::symbol(inter_tree_node *P) {
+	if (Inode::is(P, CONSTANT_IST))
+		return InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
+	return NULL;
+}
+
 inter_ti ConstantInstruction::list_format(inter_tree_node *P) {
 	if (Inode::is(P, CONSTANT_IST))
 		return P->W.instruction[FORMAT_CONST_IFLD];

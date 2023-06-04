@@ -404,12 +404,16 @@ void NewUseOptions::memory_setting(text_stream *identifier, int n) {
 			"that is too long to be an ICL identifier",
 			"so can't be the name of any I6 memory setting.");
 	}
+	if (Str::eq(identifier, I"DICT_WORD_SIZE"))
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_DoNotUseDICTWORDSIZE),
+			"the Inform 6 memory setting 'DICT_WORD_SIZE' should no longer be used",
+			"and instead you should write 'Use dictionary resolution of N' to set "
+			"the number of letters recognised in a word typed in a command during play.");
 	i6_memory_setting *ms;
 	LOOP_OVER(ms, i6_memory_setting)
 		if (Str::eq(identifier, ms->ICL_identifier)) {
 			if (ms->number < n) ms->number = n;
-			if (Str::eq(identifier, I"DICT_WORD_SIZE"))
-				global_compilation_settings.dict_word_size = n;
 			return;
 		}
 	ms = CREATE(i6_memory_setting);

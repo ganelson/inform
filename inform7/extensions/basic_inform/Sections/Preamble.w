@@ -138,6 +138,8 @@ Use authorial modesty translates as the configuration flag AUTHORIAL_MODESTY
 	in BasicInformKit.
 Use command line echoing translates as the configuration flag ECHO_COMMANDS
 	in BasicInformKit.
+Use dictionary resolution of at least 6 translates as the configuration value
+	DICT_RESOLUTION in BasicInformKit.
 
 @ These, on the other hand, are settings used by the dynamic memory management
 code, which runs in I6 as part of the template layer. Each setting translates

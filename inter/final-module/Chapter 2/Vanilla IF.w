@@ -141,7 +141,7 @@ just in case some generators are opting to align word arrays in memory.
 	VanillaIF::byte_entry(gen, 0);
 	VanillaIF::byte_entry(gen, 0);
 	VanillaIF::byte_entry(gen, 0);
-	for (int i=0; i<9; i++) {
+	for (int i=0; i<gen->dictionary_resolution; i++) {
 		int c = 0;
 		if (i < Str::len(dw->text)) c = (int) Str::get_at(dw->text, i);
 		VanillaIF::byte_entry(gen, (((unsigned int)c & 0xFF000000) >> 24));

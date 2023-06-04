@@ -151,8 +151,12 @@ of the template layer, and would only get in the way here.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ROM_GAMERELEASE</span><span class="plain-syntax">      = </span><span class="constant-syntax">$34</span><span class="plain-syntax">;     </span><span class="comment-syntax">short word</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ROM_GAMESERIAL</span><span class="plain-syntax">       = </span><span class="constant-syntax">$36</span><span class="plain-syntax">;     </span><span class="comment-syntax">six ASCII characters</span>
 
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> #</span><span class="identifier-syntax">dict_par1</span><span class="plain-syntax"> = </span><span class="constant-syntax">11</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> #</span><span class="identifier-syntax">dict_par2</span><span class="plain-syntax"> = </span><span class="constant-syntax">13</span><span class="plain-syntax">;</span>
+<span class="comment-syntax">The following constants describe the layout of a dictionary word entry.</span>
+<span class="comment-syntax">The math is copied from the I6 compiler.</span>
+
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DICT_ENTRY_BYTES</span><span class="plain-syntax"> = </span><span class="constant-syntax">12</span><span class="plain-syntax">+</span><span class="identifier-syntax">DICT_WORD_SIZE</span><span class="plain-syntax">*</span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> #</span><span class="identifier-syntax">dict_par1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">DICT_WORD_SIZE</span><span class="plain-syntax">*</span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">+4+1;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> #</span><span class="identifier-syntax">dict_par2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">DICT_WORD_SIZE</span><span class="plain-syntax">*</span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">+4+3;</span>
 
 <span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 </pre>

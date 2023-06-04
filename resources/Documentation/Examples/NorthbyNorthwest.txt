@@ -28,7 +28,7 @@ Here's how we'd set up such a thing:
 	
 A complication arises because we reach the 9-character limit: Inform truncates the names of objects to nine characters before trying to understand them. To make matters worse, the hyphen (and other punctuation marks) count as two letters. So both north-northwest and north-northeast will get truncated to "north-no", and be indistinguishable when the player types them.
 
-When we are compiling for Glulx, the limit is easily changed with a single line, setting the constant called DICT_WORD_SIZE. For instance, if we wanted to raise the limit to 15, we would simply write "Use DICT_WORD_SIZE of 15."
+When we are compiling for Glulx, the limit is easily changed with a single line, setting the use option called "dictionary resolution". For instance, if we wanted to raise the limit so that it is at least 15, we would simply write "Use dictionary resolution of 15."
 
 If we're compiling to the Z-machine, however, we'll have to resort to some manipulation of the player's command. The general solution is that when the player's name for an object is going to have to be longer than we can correctly read, we can substitute an unambiguous abbreviation for the thing the player typed. In this case, it will be simplest and most efficient always to condense the player's direction names to single letters, thus:
 

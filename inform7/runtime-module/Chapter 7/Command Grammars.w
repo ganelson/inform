@@ -38,15 +38,9 @@ void RTCommandGrammars::compile_generic_constants(void) {
 
 =
 void RTCommandGrammars::compile_non_generic_constants(void) {
-	target_vm *VM = Task::vm();
-	int N = global_compilation_settings.dict_word_size;
-	if (TargetVMs::is_16_bit(VM)) {
-		if (N <= 0) N = 6;
-	} else {
-		if (N <= 0) N = 9;
-	}
-	RTCommandGrammars::grammar_constant(DICT_WORD_SIZE_HL, N);
-	if (TargetVMs::is_16_bit(VM))
+	RTCommandGrammars::grammar_constant(DICT_WORD_SIZE_HL,
+		global_compilation_settings.dictionary_resolution);
+	if (TargetVMs::is_16_bit(Task::vm()))
 		RTCommandGrammars::grammar_constant(DICT_ENTRY_BYTES_HL, 8);
 }
 
