@@ -102,6 +102,8 @@ Global hb_wn;                       ! left over?  (And a save value for wn.)
 Global usual_grammar_after;         ! Point from which usual grammar is parsed (it may vary from
                                     ! the above if user's routines match multi-word verbs)
 
+Global dont_ask_for_clarification;  ! Allows deactivating clarification question
+
 @h Grammar Token Variables.
 More globals, but dealing at the level of individual tokens now.
 
@@ -1818,7 +1820,7 @@ Parse an object name.
         #Ifdef DEBUG;
         if (parser_trace >= 3) print "  [Calling NounDomain on location and actor]^";
         #Endif; ! DEBUG
-        l = NounDomain(actors_location, actor, token);
+        l = NounDomain(actors_location, actor, token, dont_ask_for_clarification);
         if (l == REPARSE_CODE) return l;                  ! Reparse after Q&A
         if (indef_wanted == INDEF_ALL_WANTED && l == 0 && number_matched == 0)
             l = 1;  ! ReviseMulti if TAKE ALL FROM empty container
@@ -1902,7 +1904,7 @@ Parse an object name.
     ! Case 2: token is "held" (which fortunately can't take multiple objects)
     ! and may generate an implicit take
 
-        l = NounDomain(actor,actors_location,token);       ! Same as above...
+        l = NounDomain(actor,actors_location,token,dont_ask_for_clarification);       ! Same as above...
         if (l == REPARSE_CODE) return l;
         if (l == 0) {
             if (indef_possambig) {

@@ -1,0 +1,19 @@
+"The Clarified Ancients of Mu Mu"
+
+Lab is a room.
+
+no-clarifications is a truth state that varies.
+The no-clarifications variable translates into Inter as "dont_ask_for_clarification".
+
+The red box is a thing in the Lab.
+The blue box is a thing in the Lab.
+
+After dropping:
+ now no-clarifications is true;
+ continue the action.
+
+After taking the blue box:
+ now no-clarifications is false;
+ continue the action.
+
+Test me with "get box / red / drop box / l / get box / i / get blue box / drop box".
