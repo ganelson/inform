@@ -251,7 +251,7 @@ We can pre-empt items from appearing in this paragraph or change their listing b
 			say "The watch catches your eye."; 
 			now the watch is not marked for listing.
 
-If we wanted the watch always to be listed this way, it would be better to give it an initial appearance, but for conditional cases, the listing nondescript items activity is a good place to intervene. For instance, <b>Rip</b> uses this activity to incorporate changeable or portable items into the main description text for a room when (and only when) that is appropriate.
+If we wanted the watch always to be listed this way, it would be better to give it an initial appearance, but for conditional cases, the listing nondescript items activity is a good place to intervene. For instance, <b>Rip Van Winkle</b> uses this activity to incorporate changeable or portable items into the main description text for a room when (and only when) that is appropriate.
 
 The listing nondescript items activity also allows us to replace the "You can see..." tag with something else more fitting, if for instance we are in a dimly lit room.
 
@@ -1898,7 +1898,7 @@ The examples below are therefore mostly ways to get around the usual restriction
 
 <b>U-Stor-It</b> provides a way to have containers with a lid which is also a supporter.
 
-<b>Swigmore</b> provides a supporter which holds up the player, but has no top surface as such, and cannot hold up anything else. <b>Kiwi</b> demonstrates a kind of high shelf, whose objects cannot be seen or used unless the player stands on a ladder.
+<b>Swigmore U.</b> provides a supporter which holds up the player, but has no top surface as such, and cannot hold up anything else. <b>Kiwi</b> demonstrates a kind of high shelf, whose objects cannot be seen or used unless the player stands on a ladder.
 
 <b>Princess and the Pea</b> shows how a pile of supporters, each on top of the last, could be managed.
 
