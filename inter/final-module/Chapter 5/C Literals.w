@@ -248,7 +248,7 @@ have very little flexibility about this because code in CommandParserKit makes
 many assumptions about these arrays. So we will closely imitate what the Inform 6
 compiler would automatically do.
 
-In the array |DW|, the bytes |DW->1| to |DW->9| are the characters of the word,
+In the array |DW|, the words |DW->1| to |DW->9| are the characters of the word,
 with trailing nulls padding it out if the word is shorter than that. If it's
 longer, then the text is truncated to 9 characters only. This means printing
 out the text of a dictionary word is a somewhat faithless operation.[1] Still,
@@ -263,8 +263,8 @@ void i7_print_dword(i7process_t *proc, i7word_t at);
 
 = (text to inform7_clib.c)
 void i7_print_dword(i7process_t *proc, i7word_t at) {
-	for (i7byte_t i=1; i<=9; i++) {
-		i7byte_t c = i7_read_byte(proc, at+i);
+	for (i7byte_t i=1; i<=i7_mgl_DICT_WORD_SIZE; i++) {
+		i7word_t c = i7_read_word(proc, at, i);
 		if (c == 0) break;
 		i7_print_char(proc, c);
 	}

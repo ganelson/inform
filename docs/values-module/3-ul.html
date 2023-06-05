@@ -102,12 +102,13 @@ the player types either of these:
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1.  </b>And here is the range check:
+<p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1.  </b>And here is the range check. Values above <span class="extract"><span class="Preform-extract-syntax">MAX_UNICODE_CODE_POINT</span></span> are
+permitted, but need to be specified numerically.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">UnicodeLiterals::max</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">UnicodeLiterals::max</span></span>:<br/><a href="3-ul.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cc</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">cc</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">cc</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">MAX_UNICODE_CODE_POINT</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cc</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-ul.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph">Issue PM_UnicodeOutOfRange</span><span class="named-paragraph-number">1.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">65</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
@@ -219,8 +220,28 @@ main data file. Although parsing that file is relatively fast, we do it only
 on demand, because it's not small (about 2 MB of text) and is often not needed.
 </p>
 
+<p class="commentary">The <span class="extract"><span class="extract-syntax">UnicodeData_lookup</span></span> dictionary really associates texts (names of characters)
+with non-negative integers (their code points), but our <span class="extract"><span class="extract-syntax">dictionary</span></span> type only
+allows texts-to-pointers, so we wrap these integers up into <span class="extract"><span class="extract-syntax">unicode_lookup_value</span></span>
+to which we can then have pointers.
+</p>
+
+<p class="commentary">(As noted by David Kinder in May 2023, it's unsafe to use this dictionary to
+associate texts with <span class="extract"><span class="extract-syntax">unicode_point *</span></span> values, because the flexible-sized array
+holding those means that they will move around in memory. If we are lucky, the
+memory freed when the old version of the array is surpassed will be left intact
+and then the dictionary pointers to it will all work fine: if we are not lucky,
+for example if the memory environment is stressed because <span class="extract"><span class="extract-syntax">intest</span></span> is running
+many simultaneous copies of Inform, then that space will be reused and the
+dictionary pointers will be invalid.)
+</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">UnicodeData_lookup</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">unicode_lookup_value</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">code_point</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">} </span><span class="reserved-syntax">unicode_lookup_value</span><span class="plain-syntax">;</span>
+
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">UnicodeLiterals::ensure_data</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">UnicodeLiterals::ensure_data</span></span>:<br/><a href="3-ul.html#SP3">&#167;3</a>, <a href="3-ul.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">UnicodeData_lookup</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">UnicodeData_lookup</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Dictionaries::new</span><span class="plain-syntax">(65536, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
@@ -231,6 +252,7 @@ on demand, because it's not small (about 2 MB of text) and is often not needed.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
+<ul class="endnotetexts"><li>The structure unicode_lookup_value is private to this section.</li></ul>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>The format of this file is admirably stable. Lines look like so:
 </p>
 
@@ -384,7 +406,9 @@ users to insert control characters into Inform text literals.)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">index</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Dictionaries::create</span><span class="plain-syntax">(</span><span class="identifier-syntax">UnicodeData_lookup</span><span class="plain-syntax">, </span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Dictionaries::write_value</span><span class="plain-syntax">(</span><span class="identifier-syntax">UnicodeData_lookup</span><span class="plain-syntax">, </span><span class="identifier-syntax">name</span><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">up</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">unicode_lookup_value</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ulv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">unicode_lookup_value</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">ulv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">code_point</span><span class="plain-syntax"> = </span><span class="identifier-syntax">U</span><span class="plain-syntax">[</span><span class="constant-syntax">CODE_VALUE_UNICODE_DATA_FIELD</span><span class="plain-syntax">];</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Dictionaries::write_value</span><span class="plain-syntax">(</span><span class="identifier-syntax">UnicodeData_lookup</span><span class="plain-syntax">, </span><span class="identifier-syntax">name</span><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">ulv</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-ul.html#SP5">&#167;5</a>.</li></ul>
@@ -396,8 +420,8 @@ specification data file. But after that everything runs quite swiftly.
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">UnicodeLiterals::parse</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">UnicodeLiterals::parse</span></span>:<br/><a href="3-ul.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="3-ul.html#SP4" class="function-link"><span class="function-syntax">UnicodeLiterals::ensure_data</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Dictionaries::find</span><span class="plain-syntax">(</span><span class="identifier-syntax">UnicodeData_lookup</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">unicode_point</span><span class="plain-syntax"> *</span><span class="identifier-syntax">up</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Dictionaries::read_value</span><span class="plain-syntax">(</span><span class="identifier-syntax">UnicodeData_lookup</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">up</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">code_point</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">unicode_lookup_value</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ulv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Dictionaries::read_value</span><span class="plain-syntax">(</span><span class="identifier-syntax">UnicodeData_lookup</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ulv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">code_point</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
 <span class="plain-syntax">}</span>

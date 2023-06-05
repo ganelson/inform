@@ -2,7 +2,7 @@
 (You see nothing special... message replaced; Odin)
 Replacing "You see nothing special..." with a different default message for looking at something nondescript.
 
-In recent years there has been a strong trend towards providing unique descriptions for all implemented objects. Often this is a good idea, but there are also contexts in which we may want to discourage the player from looking too closely at some things and concentrate his attention on just a few interesting ones.
+In recent years there has been a strong trend towards providing unique descriptions for all implemented objects. Often this is a good idea, but there are also contexts in which we may want to discourage the player from looking too closely at some things and concentrate their attention on just a few interesting ones.
 
 The trick here is that leaving items completely undescribed leads to rather dull exchanges like this:
 

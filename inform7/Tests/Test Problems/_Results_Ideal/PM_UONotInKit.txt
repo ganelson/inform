@@ -1,0 +1,12 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 17 words long.
+I've also read Basic Inform by Graham Nelson, which is 7826 words long.
+I've also read English Language by Graham Nelson, which is 2330 words long.
+I've also read Standard Rules by Graham Nelson, which is 34398 words long.
+Problem__ PM_UONotInKit
+  >--> In 'Use frog count translates as the configuration flag FROG_COUNT in
+    BasicInformKit' (source text, line 3), you set up a use option used to
+    configure the kit 'BasicInformKit' by setting the value of 'FROG_COUNT',
+    but that kit (though part of the current project) has no such configuration
+    value. These are set for a kit in its JSON metadata file.
+Inform 7 has finished.

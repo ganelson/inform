@@ -1,6 +1,6 @@
 *** Accessing entries in a list
 (Robo: 2. Robot able to store and perform fifteen named scripts--Robot who tracks up to fifteen separate command scripts)
-A robot which watches and records the player's actions, then tries to repeat them back in the same order when he is switched into play-back mode.
+A robot which watches and records the player's actions, then tries to repeat them back in the same order when it is switched into play-back mode.
 
 We have seen how we can make a robot that watches the player, then plays back the same actions again. A slightly more adventurous implementation would be to let the player create a whole series of named scripts which the robot will run on command.
 
@@ -21,7 +21,7 @@ To do this, we'll need each program to have a command that sets it off (stored a
 
 	The current instruction name is some text that varies. The current instruction set is a list of stored actions that varies.
 
-Now, we want to let Robo learn new programs; for this purpose, we'll emulate the code from our previous implementation, so that Robo watches what the player does and stores those actions in his script:
+Now, we want to let Robo learn new programs; for this purpose, we'll emulate the code from our previous implementation, so that Robo watches what the player does and stores those actions in its script:
 
 	{**}Section 2 - Learning New Programs
 	
@@ -45,10 +45,10 @@ Now, we want to let Robo learn new programs; for this purpose, we'll emulate the
 		now the actor is Robo;
 		add the current action to the current instruction set;
 		now the actor is the player;
-		say "Robo watches you [the current action][one of], his yellow eyes lamp-like and observant[or]. In his metal head, gears whirr[or], his brushed-copper handlebar moustaches twitching[or] impassively[at random].";
+		say "Robo watches you [the current action][one of], its yellow eyes lamp-like and observant[or]. In its metal head, gears whirr[or], its brushed-copper handlebar moustaches twitching[or] impassively[at random].";
 		continue the action. 
 
-Of course, we also need to be able to switch learning mode off, and store any script learned this way. We'll also use the same STOP command to make Robo terminate a program he's in the middle of running.
+Of course, we also need to be able to switch learning mode off, and store any script learned this way. We'll also use the same STOP command to make Robo terminate a program it's in the middle of running.
 
 	{**}Section 3 - Returning to Standby Mode
 
@@ -75,7 +75,7 @@ Of course, we also need to be able to switch learning mode off, and store any sc
 	Report Robo stopping:
 		say "Robo is now standing by."
 
-Next, we need to be able to play these programs back again. We'll give Robo a "current program" to store which program he's currently working on, and a number called "stage" which will record where he is in the script. Our previous implementation simply had Robo erase entries from his script list as he performed them, but this time we would like Robo to be able to remember and rerun the same scripts over and over, so we need something a little more subtle.
+Next, we need to be able to play these programs back again. We'll give Robo a "current program" to store which program it's currently working on, and a number called "stage" which will record where it is in the script. Our previous implementation simply had Robo erase entries from its script list as it performed them, but this time we would like Robo to be able to remember and rerun the same scripts over and over, so we need something a little more subtle.
 
 	{**}Section 4 - Running Learned Programs
 
@@ -106,7 +106,7 @@ Next, we need to be able to play these programs back again. We'll give Robo a "c
 		try the next step;
 		increment the stage of Robo;
 		if the stage of Robo is greater than the maximum:
-			say "Robo's program ends, and he reverts to stand-by mode.";
+			say "Robo's program ends, and it reverts to stand-by mode.";
 			now Robo is standing by;
 			now the stage of Robo is 1.
 	
@@ -166,13 +166,13 @@ Now we use pretty much the same set-up as before to test Robo's abilities:
 	The red block and the blue cylinder are things in the Experimentation Chamber. The counter is a supporter in the Experimentation Chamber. The counter is scenery.
 
 	Report Robo examining Robo:
-		say "Robo examines each of his hands in turn, then each of his legs (bending over mostly double in the middle to do this)." instead.
+		say "Robo examines each of its hands in turn, then each of its legs (bending over mostly double in the middle to do this)." instead.
 
 	Report Robo examining the player:
-		say "Robo stares at you, unblinkingly, for several seconds together[if a random chance of 1 in 7 succeeds]. His left moustache-bar twitches infinitesimally upward[end if]." instead.
+		say "Robo stares at you, unblinkingly, for several seconds together[if a random chance of 1 in 7 succeeds]. Its left moustache-bar twitches infinitesimally upward[end if]." instead.
 
 	Report Robo taking the cylinder:
-		say "[one of][Robo] needs several attempts to get his metal fingers around [the cylinder] -- they are not designed for grasping small objects elegantly. But at last he succeeds[or]Once again, Robo struggles a bit before picking up [the cylinder][stopping]." instead.
+		say "[one of][Robo] needs several attempts to get its metal fingers around [the cylinder] -- they are not designed for grasping small objects elegantly. But at last it succeeds[or]Once again, Robo struggles a bit before picking up [the cylinder][stopping]." instead.
 
 	Test me with "test chocolate / test vanilla".
 

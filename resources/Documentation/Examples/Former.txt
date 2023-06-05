@@ -1,14 +1,14 @@
 *** Going from, going to
 (GO BACK command; Polarity)
-A "go back" command that keeps track of the direction from which the player came, and sends him back.
+A "go back" command that keeps track of the direction from which the player came, and sends them back.
 
-The main trick of this is always to record where the player has gone when he has just moved. 
+The main trick of this is always to record where the player has gone when they have just moved. 
 
 	{*}"Polarity"
 	
 	The former location is a room that varies.
 
-Here we record where the player has been before moving him; by calling this the "first carry out going rule", we make sure that this rule is followed during the going action before any other pieces of the movement occur. For more detail, see the chapters on advanced actions and on rules.
+Here we record where the player has been before moving them; by calling this the "first carry out going rule", we make sure that this rule is followed during the going action before any other pieces of the movement occur. For more detail, see the chapters on advanced actions and on rules.
 
 	{**}First carry out going rule:
 		now the former location is the location.

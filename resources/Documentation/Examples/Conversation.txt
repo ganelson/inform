@@ -2,7 +2,7 @@
 (Conversation system with recap of past exchanges; Farewell)
 People who respond to conversational gambits, summarize what they said before if asked again, and provide recap of conversation that is past.
 
-We begin with the idea that each person comes with his own table of things to say:
+We begin with the idea that each person comes with their own table of things to say:
 
 	{*}"Farewell"
 

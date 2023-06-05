@@ -1637,3 +1637,21 @@ schema
 	print BasicInformKit`stuff();
 	DialogueKit`temp = 1;
 end
+
+schema
+
+
+
+	print BasicInformKit`stuff();
+
+
+	DialogueKit`temp = 1;
+end
+
+schema
+	switch (num) {
+		8, 10: print "a test-flight.";
+		11, 12, 14 to 17: print "a landing.";
+		13: print "it back.";
+	}
+end

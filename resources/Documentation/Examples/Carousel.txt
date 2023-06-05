@@ -2,7 +2,7 @@
 (Carousel Room from which exits lead to random locations; Zork II)
 A "Carousel Room", as in Zork II, where moving in any direction from the room leads (at random) to one of the eight rooms nearby.
 
-All we need to do is select the player's destination for him at random:
+All we need to do is select the player's destination at random:
 
 	{*}"Zork II"
 	

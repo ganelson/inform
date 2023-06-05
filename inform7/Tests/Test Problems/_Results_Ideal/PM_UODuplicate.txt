@@ -1,12 +1,11 @@
-Inform 7 v10.1.0 has started.
+Inform 7 v10.2.0 has started.
 I've now read your source text, which is 18 words long.
-I've also read Basic Inform by Graham Nelson, which is 7691 words long.
-I've also read English Language by Graham Nelson, which is 2328 words long.
-I've also read Standard Rules by Graham Nelson, which is 32092 words long.
+I've also read Basic Inform by Graham Nelson, which is 7826 words long.
+I've also read English Language by Graham Nelson, which is 2330 words long.
+I've also read Standard Rules by Graham Nelson, which is 34398 words long.
 Problem__ PM_UODuplicate
   >--> In 'Use sequential action translates as (- Constant ASEQUENTIAL_ACTION;
     -)' (source text, line 4), you define a use option 'sequential action', but
-    that has already been defined, and with a different meaning: 'Use
-    sequential action translates as (- Constant SEQUENTIAL_ACTION; -)' (source
-    text, line 3).
+    that has already been defined: 'Use sequential action translates as (-
+    Constant SEQUENTIAL_ACTION; -)' (source text, line 3).
 Inform 7 has finished.

@@ -89,11 +89,19 @@ int InterSkill::build_kit_internally(build_skill *skill, build_step *S,
 			WRITE_TO(STDOUT, "(Building %S for architecture %S)\n",
 				S->associated_copy->edition->work->title,
 				Architectures::to_codename(A));
+		#ifdef CORE_MODULE
+		SourceProblems::kit_notification(S->associated_copy->edition->work->title,
+			Architectures::to_codename(A));
+		#endif
 		linked_list *requirements_list = NEW_LINKED_LIST(attachment_instruction);
+		I6Errors::reset_count();
 		RunningPipelines::run(NULL, SS, NULL, S->associated_copy->location_if_path,
 			requirements_list, S->for_vm, FALSE);
 		PipelineModule::set_architecture_to(saved_A);
-		return TRUE;
+		#ifdef CORE_MODULE
+		SourceProblems::kit_notification(NULL, NULL);
+		#endif
+		return (I6Errors::errors_occurred())?FALSE:TRUE;
 	} else {
 		Errors::nowhere("build-kit pipeline could not be parsed");
 		return FALSE;

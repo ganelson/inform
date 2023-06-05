@@ -2,7 +2,7 @@
 (Travel requiring a vehicle; Peugeot)
 A journey from one room to another that requires the player to be on a vehicle.
 
-Let's say that our protagonist is about to flee . Obviously, he can't make the journey on foot; he needs transportation.
+Let's say that our protagonist is about to flee . Obviously, they can't make the journey on foot; they need transportation.
 
 	{*}"Peugeot"
 	

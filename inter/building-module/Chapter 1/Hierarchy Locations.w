@@ -319,6 +319,38 @@ inter_name *HierarchyLocations::derive_iname_in(inter_tree *I, int id, inter_nam
 		DEFAULT_INAME_TRUNCATION);
 }
 
+@ And this variant form ensures that any translation already made to |from|
+is transferred to a similarly derived translation name for the result.
+
+=
+inter_name *HierarchyLocations::derive_iname_in_translating(inter_tree *I, int id,
+	inter_name *from, package_request *P) {
+	inter_name *iname = HierarchyLocations::iip(I, id, P, EMPTY_WORDING, from, -1, NULL,
+		DEFAULT_INAME_TRUNCATION);
+	TEMPORARY_TEXT(F)
+	WRITE_TO(F, "%n", from);
+	if (Str::ne(F, InterNames::get_translation(from))) {
+		hierarchy_location *hl = HierarchyLocations::id_to_HL(I, id);
+		if ((hl->trans.name_generator) && (from)) {
+			TEMPORARY_TEXT(T)
+			WRITE_TO(T, "%S", InterNames::get_translation(from));
+			TEMPORARY_TEXT(TT)
+			Str::truncate(T,
+				30  - Str::len(hl->trans.name_generator->derived_prefix)
+					- Str::len(hl->trans.name_generator->derived_suffix));
+			WRITE_TO(TT, "%S%S%S",
+				hl->trans.name_generator->derived_prefix,
+				T,
+				hl->trans.name_generator->derived_suffix);
+			InterNames::set_translation(iname, Str::duplicate(TT));
+			DISCARD_TEXT(T)
+			DISCARD_TEXT(TT)
+		}
+	}
+	DISCARD_TEXT(F)
+	return iname;
+}
+
 @ All of the above use this command back-end:
 
 =

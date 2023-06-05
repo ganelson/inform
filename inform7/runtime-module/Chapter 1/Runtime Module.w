@@ -15,6 +15,7 @@ which use this module:
 @e RELATION_CONSTRUCTION_MREASON
 
 @e HIERARCHY_DA
+@e USE_OPTIONS_DA
 
 =
 void RuntimeModule::start(void) {
@@ -22,6 +23,7 @@ void RuntimeModule::start(void) {
 	Memory::reason_name(PARTITION_MREASON, "initial state for relations in groups");
 	Memory::reason_name(RELATION_CONSTRUCTION_MREASON, "relation bitmap storage");
 	Log::declare_aspect(HIERARCHY_DA, L"inter hierarchy", FALSE, FALSE);
+	Log::declare_aspect(USE_OPTIONS_DA, L"use options", FALSE, FALSE);
 }
 void RuntimeModule::end(void) {
 }

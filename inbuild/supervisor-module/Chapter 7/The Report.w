@@ -26,7 +26,7 @@ text_stream *InbuildReport::begin(text_stream *title, text_stream *subtitle) {
 	HTML::begin_html_table(OUT, NULL, TRUE, 0, 4, 0, 0, 0);
 	HTML::first_html_column(OUT, 0);
 	HTML_TAG_WITH("img",
-		"src='inform:/doc_images/extensions@2x.png' border=0 width=150 height=150");
+		"src='inform:/doc_images/importer@2x.png' border=0 width=150 height=150");
 	HTML::next_html_column(OUT, 0);
 
 	HTML_OPEN_WITH("div", "class=\"headingpanellayout headingpanelalt\"");
@@ -75,6 +75,7 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 		if (N > 0) @<Begin report on a damaged extension@>
 		else @<Begin report on a valid extension@>;
 		if (OUT) {
+			Copies::get_source_text(project->as_copy);
 			build_vertex *V = Copies::construct_project_graph(project->as_copy);
 			if (confirmed) @<Make confirmed report@>
 			else @<Make unconfirmed report@>;
@@ -97,8 +98,17 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 
 @<Begin report on a valid extension@> =
 	TEMPORARY_TEXT(desc)
-	Editions::inspect(desc, C->edition);
-	OUT = InbuildReport::begin(desc, I"An extension for use in Inform projects");
+	TEMPORARY_TEXT(version)
+	Works::write(desc, C->edition->work);
+	semantic_version_number V = C->edition->version;
+	if (VersionNumbers::is_null(V)) {
+		WRITE_TO(version, "An extension");
+	} else {
+		WRITE_TO(version, "Version %v of an extension", &V);
+	}
+	OUT = InbuildReport::begin(desc, version);
+	DISCARD_TEXT(desc)
+	DISCARD_TEXT(version)
 
 @<Begin report on a damaged extension@> =
 	TEMPORARY_TEXT(desc)
@@ -110,12 +120,11 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 	if (N > 0) @<Report on damage to extension@>
 	else @<Report that extension seems valid@>;
 	HTML_TAG("hr");
-	@<Explain what installation and Inclusion mean@>;
-	@<List the extensions currently Included by the project@>;
+	@<Explain about extensions@>;
 
 	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
 	int same = 0, earlier = 0, later = 0;
-	@<List the extensions currently installed in the project@>;
+	@<Search the extensions currently installed in the project@>;
 	@<Count how many versions of the same extension are already installed@>;
 		
 	HTML_TAG("hr");
@@ -153,14 +162,19 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 	}
 	@<Make documentation@>;
 
-@<Explain what installation and Inclusion mean@> =
+@<Explain about extensions@> =
 	HTML_OPEN("p");
-	WRITE("Extensions are installed to a project by being put in the 'Extensions' ");
-	WRITE("subfolder of its '.materials' folder, which for %S is here: ", pname);
+	WRITE("Extensions are additional Inform features, often contributed by Inform "
+		"authors from around the world. Authors download them as needed. Each "
+		"project wanting to use an extension must install it into the 'Extensions' "
+		"subfolder of its '.materials' folder. Authors are free to do that by hand, but "
+		"this installer is more convenient. For more on extensions, see: ");
+	DocReferences::link(OUT, I"EXTENSIONS");
+	HTML_CLOSE("p");
+	HTML_OPEN("p");
+	WRITE("The '.materials' folder for %S is here: ", pname);
 	pathname *area = Projects::materials_path(project);
 	PasteButtons::open_file(OUT, area, NULL, "border=\"0\" src=\"inform:/doc_images/folder.png\"");
-	WRITE(". But they take effect only if the project's source text has an Include ");
-	WRITE("sentence naming them.");
 	HTML_CLOSE("p");
 
 @<List the extensions currently Included by the project@> =
@@ -187,12 +201,19 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 		}
 	} else if (bic > 0) {
 		HTML_OPEN("p");
-		WRITE("The project %S uses only extensions ", pname);
+		WRITE("Installing extensions is not the same thing as actually using them. "
+			"The project %S uses only extensions ", pname);
 		WRITE("built into Inform which do not need to be installed (");
 		bic = 0;
 		InbuildReport::show_extensions(OUT, V, Graphs::get_unique_graph_scan_count(),
 			TRUE, &bic, FALSE, &ic, FALSE, &rc);
-		WRITE(").");
+		WRITE(") and are included automatically.");
+		HTML_CLOSE("p");
+		HTML_OPEN("p");
+		WRITE("Except for those ones, "
+		"extensions take effect only if the source contains a sentence like "
+		"'Include EXTENSION TITLE by EXTENSION AUTHOR.' At present, the source "
+		"doesn't contain any sentences like that.");
 		HTML_CLOSE("p");
 	}
 	if (rc > 0) {
@@ -205,11 +226,13 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 		HTML_CLOSE("ul");
 	}
 
-@<List the extensions currently installed in the project@> =
+@<Search the extensions currently installed in the project@> =
 	inbuild_requirement *req = Requirements::anything_of_genre(extension_bundle_genre);
 	linked_list *search_list = NEW_LINKED_LIST(inbuild_nest);
 	ADD_TO_LINKED_LIST(Projects::materials_nest(project), inbuild_nest, search_list);
 	Nests::search_for(req, search_list, L);
+
+@<List the extensions currently installed in the project@> =
 	inbuild_search_result *search_result;
 	int unused = 0, broken = 0;
 	LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L) {
@@ -221,7 +244,9 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 	if (unused + broken > 0) {
 		if (unused > 0) {
 			HTML_OPEN("p");
-			WRITE("The following are currently installed for %S, but not (yet) Included and so not used:", pname);
+			WRITE("The following are currently installed for %S, but not (yet) "
+				"Included and so not used. (You can click the 'paste' buttons to "
+				"paste a suitable Include sentence into the source text.)", pname);
 			HTML_CLOSE("p");
 			HTML_OPEN("ul");
 			LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L) {
@@ -234,7 +259,7 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 						WRITE_TO(inclusion_text, "Include %X.\n\n\n", search_result->copy->edition->work);
 						PasteButtons::paste_text(OUT, inclusion_text);
 						DISCARD_TEXT(inclusion_text)
-						WRITE("&nbsp;<i>Paste 'Include' sentence into Source</i>");
+						WRITE("&nbsp;<i>'Include'</i>");
 						HTML_CLOSE("li");
 					}
 				}
@@ -325,14 +350,14 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 	}
 
 @<Make confirmed report@> =
+	int use = SHELL_METHODOLOGY;
+	build_methodology *BM = BuildMethodology::new(Pathnames::up(to_tool), TRUE, use);
+	Copies::copy_to(C, Projects::materials_nest(project), TRUE, BM);
 	HTML_OPEN("p");
 	WRITE("This extension has now been installed in the materials folder for %S, as:", pname);
 	HTML_CLOSE("p");
 	HTML_OPEN("ul");
 	HTML_OPEN("li");
-	int use = DRY_RUN_METHODOLOGY;
-	build_methodology *BM = BuildMethodology::new(Pathnames::up(to_tool), TRUE, use);
-	Copies::copy_to(C, Projects::materials_nest(project), TRUE, BM);
 	HTML_OPEN("p");
 	if (C->edition->work->genre == extension_bundle_genre) {
 		pathname *P = ExtensionBundleManager::pathname_in_nest(Projects::materials_nest(project), C->edition);
@@ -349,15 +374,13 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 	}
 	HTML_CLOSE("li");
 	HTML_CLOSE("ul");
-	HTML_OPEN("p");
-	WRITE("(Well, actually, nothing was done, but you can see the commands which would have been issued on stdout)\n");
-	HTML_CLOSE("p");
 	HTML_TAG("hr");
 
 	ExtensionWebsite::index_after_compilation(project);
 
 	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
 	@<List the extensions currently Included by the project@>;
+	@<Search the extensions currently installed in the project@>;
 	@<List the extensions currently installed in the project@>;
 	inbuild_search_result *search_result;
 	int broken = 0;
@@ -367,13 +390,25 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 	if (broken > 0) {
 		HTML_TAG("hr");
 		HTML_OPEN("p");
-		WRITE("Note that the following are installed but are not working:");
+		WRITE("Although installed, the following have errors and will not work. "
+			"They may need to be repaired, or may simply not be extensions at all:");
 		HTML_CLOSE("p");
 		HTML_OPEN("ul");
 		LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L) {
 			if (LinkedLists::len(search_result->copy->errors_reading_source_text) > 0) {
 				HTML_OPEN("li");
 				Copies::write_copy(OUT, search_result->copy);
+				if (search_result->copy->location_if_file) {
+					HTML_TAG("br");
+					WRITE("at ");
+					Filenames::to_text_relative(OUT, search_result->copy->location_if_file,
+						Pathnames::up(Projects::materials_path(project)));
+				} else if (search_result->copy->location_if_path) {
+					HTML_TAG("br");
+					WRITE("at ");
+					Pathnames::relative_URL(OUT, Pathnames::up(Projects::materials_path(project)),
+						search_result->copy->location_if_path);
+				}
 				Copies::list_attached_errors_to_HTML(OUT, search_result->copy);
 				HTML_CLOSE("li");
 			}
@@ -399,7 +434,7 @@ void InbuildReport::show_extensions(OUTPUT_STREAM, build_vertex *V, int scan_cou
 						(*built_in_count)++;
 						if (built_in) {
 							if ((*built_in_count) > 1) WRITE(", ");
-							Copies::write_copy(OUT, C);
+							WRITE("%S v%v", C->edition->work->title, &(C->edition->version));
 						}
 					} else {
 						(*installed_count)++;

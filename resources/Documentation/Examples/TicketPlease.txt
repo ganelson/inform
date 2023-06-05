@@ -73,7 +73,7 @@ Our choice of understand rules guarantees that "five dollar" will be understood 
 	Instead of examining a for sale thing (this is the describe things by price rule):
 		say "[The noun] costs [the price of the noun], payable to [the owner of the noun]."
 	
-The cashbox is a theoretical construct, not something the player will ever encounter in the course of the game. It contains all the money that is available for non-player characters to use in making change. If we wanted, we could give each character his own stash of change, but this would increase the likelihood that any given person would run out of cash to make change with. (And in this example there is only one vendor anyway.)
+The cashbox is a theoretical construct, not something the player will ever encounter in the course of the game. It contains all the money that is available for non-player characters to use in making change. If we wanted, we could give each character their own stash of change, but this would increase the likelihood that any given person would run out of cash to make change with. (And in this example there is only one vendor anyway.)
 
 	{**}The cashbox is a container. The cashbox contains 10 pennies. The cashbox contains 10 nickels.  The cashbox contains 10 dimes.  The cashbox contains 10 quarters.  The cashbox contains 10 dollar bills.  The cashbox contains 10 five-dollar bills.
 
@@ -121,7 +121,7 @@ The cashbox is a theoretical construct, not something the player will ever encou
 		if the player owns the noun,
 			say "Your transaction is now complete, leaving you with [the player's cash]."
 
-We've skipped over defining what makes a denomination the best for a given transaction, so we'd better do that now. Our goal is to avoid ever having the player gratuitously overpay -- he should always offer the smallest amount of money that will meet the price of what he's buying.
+We've skipped over defining what makes a denomination the best for a given transaction, so we'd better do that now. Our goal is to avoid ever having the player gratuitously overpay -- they should always offer the smallest amount of money that will meet the price of what they're buying.
 
 We also assume that all money "enclosed by the buyer" -- that is, somewhere in the buyer's possession -- is available for use. This might not be true in a game where the player could pick up, say, a sealed lucite container with a ten-dollar bill inside; in that case we would have to define our terms more rigorously, perhaps by requiring that the bills be both enclosed and touchable by the buyer. The touchability check adds an extra layer of calculation, however, and since it is not necessary in this example (and probably not in most other cases either), we'll leave it out:
 

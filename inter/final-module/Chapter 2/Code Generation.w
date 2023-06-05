@@ -60,6 +60,7 @@ typedef struct code_generation {
 	int true_action_count;
 	int fake_action_count;
 	struct linked_list *actions; /* of |text_stream| */
+	int dictionary_resolution;
 	int dword_count;
 	struct linked_list *words; /* of |vanilla_dword| */
 	struct dictionary *dword_dictionary; /* of |vanilla_dword| */
@@ -98,6 +99,7 @@ code_generation *CodeGen::new_generation(pipeline_step *step, filename *F,
 	gen->true_action_count = 0;
 	gen->fake_action_count = 0;
 	gen->actions = NEW_LINKED_LIST(text_stream);
+	gen->dictionary_resolution = -1;
 	gen->dword_count = 0;
 	gen->words = NEW_LINKED_LIST(vanilla_dword);
 	gen->dword_dictionary = Dictionaries::new(1024, FALSE);
@@ -119,6 +121,12 @@ code_generation *CodeGen::new_generation(pipeline_step *step, filename *F,
 void CodeGen::gather_up(inter_tree *I, inter_tree_node *P, void *state) {
 	code_generation *gen = (code_generation *) state;
 	switch (Inode::get_construct_ID(P)) {
+		case CONSTANT_IST: {
+			inter_symbol *const_name = ConstantInstruction::symbol(P);
+			if (Str::eq(InterSymbol::identifier(const_name), I"DICT_WORD_SIZE"))
+				gen->dictionary_resolution = ConstantInstruction::evaluate_to_int(const_name);
+			break;
+		}
 		case VARIABLE_IST: {
 			inter_symbol *var_name = VariableInstruction::variable(P);
 			ADD_TO_LINKED_LIST(var_name, inter_symbol, gen->global_variables);

@@ -57,7 +57,7 @@
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">Perform_Undo</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">PREVENT_UNDO_TCBIT</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">CommandParserKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">UNDO_PREVENTION_CFGF</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">IMMEDIATELY_UNDO_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'A'</span><span class="plain-syntax">); </span><span class="reserved-syntax">new_line</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">IterationsOfTurnSequence</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) { </span><span class="identifier-syntax">IMMEDIATELY_UNDO_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'B'</span><span class="plain-syntax">); </span><span class="reserved-syntax">new_line</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax">; }</span>
@@ -71,7 +71,7 @@
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">ANNOUNCE_SCORE_R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">actor</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">player</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">USE_SCORING_TCBIT</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WorldModelKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">SCORING_CFGV</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">ANNOUNCE_SCORE_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'C'</span><span class="plain-syntax">); </span><span class="reserved-syntax">new_line</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">ANNOUNCE_SCORE_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'A'</span><span class="plain-syntax">); </span><span class="identifier-syntax">PrintRank</span><span class="plain-syntax">();</span>
@@ -83,7 +83,7 @@
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">SWITCH_SCORE_NOTIFY_ON_R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">actor</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">player</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">USE_SCORING_TCBIT</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">ANNOUNCE_SCORE_R</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WorldModelKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">SCORING_CFGV</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">ANNOUNCE_SCORE_R</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">notify_mode</span><span class="plain-syntax">=1;</span>
 <span class="plain-syntax">];</span>
 </pre>
@@ -92,7 +92,7 @@
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">REP_SWITCH_NOTIFY_ON_R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">actor</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">player</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">USE_SCORING_TCBIT</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WorldModelKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">SCORING_CFGV</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">REP_SWITCH_NOTIFY_ON_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'A'</span><span class="plain-syntax">); </span><span class="reserved-syntax">new_line</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
@@ -102,7 +102,7 @@
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">SWITCH_SCORE_NOTIFY_OFF_R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">actor</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">player</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">USE_SCORING_TCBIT</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">ANNOUNCE_SCORE_R</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WorldModelKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">SCORING_CFGV</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">ANNOUNCE_SCORE_R</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">notify_mode</span><span class="plain-syntax">=0;</span>
 <span class="plain-syntax">];</span>
 </pre>
@@ -111,7 +111,7 @@
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">REP_SWITCH_NOTIFY_OFF_R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">actor</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">player</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">USE_SCORING_TCBIT</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WorldModelKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">SCORING_CFGV</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">REP_SWITCH_NOTIFY_OFF_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'A'</span><span class="plain-syntax">); </span><span class="reserved-syntax">new_line</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
@@ -184,7 +184,7 @@
 <span class="plain-syntax">        </span><span class="identifier-syntax">d</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">d</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">c</span><span class="plain-syntax">-1) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">", "</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">d</span><span class="plain-syntax"> == </span><span class="identifier-syntax">c</span><span class="plain-syntax">-1) {</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">SERIAL_COMMA_TCBIT</span><span class="plain-syntax">) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">","</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">BasicInformKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">SERIAL_COMMA_CFGF</span><span class="plain-syntax">) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">","</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">LIST_WRITER_INTERNAL_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'C'</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>

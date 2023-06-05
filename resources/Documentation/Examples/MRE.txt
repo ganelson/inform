@@ -4,9 +4,9 @@ Hunger that eventually kills the player, and foodstuffs that can delay the inevi
 
 Many older interactive fiction games required the player to find food and eat on a regular basis in order to avoid death. This effect was often unrealistic (since most people can survive much longer than a few hours without eating) and is often seen as an annoyance. However, for the sake of argument, suppose that we do want to construct a hunger-and-death system.
 
-To make things a little more interesting, we will postulate that different foods are differently filling, so that if the player manages to find something really caloric, he is off the hook on his hunger search for a while.
+To make things a little more interesting, we will postulate that different foods are differently filling, so that if the player manages to find something really caloric, they are off the hook on their hunger search for a while.
 
-We will also implement the system so that the player gets messages when he is hungry, then dies a short time later. (The times involved are ludicrously short, but this allows us to see the effects within a simple example. In a real game we would want to allow a considerably longer timer for the hunger to play out.)
+We will also implement the system so that the player gets messages when they are hungry, then dies a short time later. (The times involved are ludicrously short, but this allows us to see the effects within a simple example. In a real game we would want to allow a considerably longer timer for the hunger to play out.)
 
 First, a little scene-setting:
 
@@ -49,7 +49,7 @@ The first of those two phrases, "now the player is replete", causes the player t
 	
 Note "if the player is hungry": it is possible that the starvation event will be set up but the player will eat before it occurs; in that case, we want it not to take effect.
 
-And now, since we really ought to give the player some warning of what is happening to him:
+And now, since we really ought to give the player some warning of what is happening to them:
 	
 	{**}Every turn when the player is hungry:
 		choose a random row in the Table of Hunger Complaints;

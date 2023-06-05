@@ -105,10 +105,10 @@ where he is, the surprise will not be spoiled.
 =
 [ INITIALISE_MEMORY_R;
 	#ifdef TARGET_GLULX; VM_PreInitialise(); #Endif;
-	#Ifdef LanguageInitialise; LanguageInitialise(); #Endif;
+	LanguageInitialise();
 
 	not_yet_in_play = true;
-	lookmode = KIT_CONFIGURATION_LOOKMODE;
+	lookmode = WorldModelKit`ROOM_DESC_DETAIL_CFGV;
 	player = InitialSituation-->PLAYER_OBJECT_INIS;
 	the_time = InitialSituation-->START_TIME_INIS;
 	real_location = nothing;
@@ -543,14 +543,14 @@ See the Standard Rules for comment on this.
     objectloop (obj in player) give obj moved;
     objectloop (obj has concealed)
     	if (IndirectlyContains(player, obj)) give obj ~concealed;
-    #Ifdef RUCKSACK_CLASS;
-	objectloop (obj in player)
-		if (obj ofclass RUCKSACK_CLASS)
+	if (RUCKSACK_CLASS) {
+		objectloop (obj in player)
+			if (obj ofclass RUCKSACK_CLASS)
+				SACK_OBJECT = obj;
+		objectloop (obj ofclass RUCKSACK_CLASS && obj provides component_parent
+			&& obj.component_parent == player)
 			SACK_OBJECT = obj;
-	objectloop (obj ofclass RUCKSACK_CLASS && obj provides component_parent
-		&& obj.component_parent == player)
-		SACK_OBJECT = obj;
-	#Endif;
+	}
 	rfalse;
 ];
 
@@ -654,7 +654,7 @@ obituary" activity.
 
 =
 [ PRINT_FINAL_SCORE_R;
-	if (KIT_CONFIGURATION_BITMAP & USE_SCORING_TCBIT) ANNOUNCE_SCORE_R();
+	if (WorldModelKit`SCORING_CFGV) ANNOUNCE_SCORE_R();
 	rfalse;
 ];
 

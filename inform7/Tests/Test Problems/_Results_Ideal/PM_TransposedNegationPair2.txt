@@ -1,13 +1,13 @@
 Inform 7 v10.2.0 has started.
 I've now read your source text, which is 10 words long.
-I've also read Basic Inform by Graham Nelson, which is 7792 words long.
-I've also read English Language by Graham Nelson, which is 2330 words long.
-I've also read Standard Rules by Graham Nelson, which is 34311 words long.
+I've also read version 1 of Basic Inform by Graham Nelson, which is 7888 words long.
+I've also read version 1 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 6 of Standard Rules by Graham Nelson, which is 35013 words long.
 Problem__ PM_TransposedNegationPair2
   >--> In 'A door can be opaque' (source text, line 3), you proposed to set up
     the property 'opaque' as something which is sometimes held and sometimes
     not, but by default is not. However, that clashes with the existing
-    declaration 'A container can be transparent or opaque' (the Standard Rules, line 233),
+    declaration 'A container can be transparent or opaque' (the Standard Rules, line 267),
     which establishes that opaque is the opposite of transparent, and is held
     by default. (The simplest way to fix this is just to change 'opaque' to
     'transparent' in your sentence here.)

@@ -1,0 +1,35 @@
+
+
+
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Kitchen
+You can see Fred here.
+
+>(Testing.)
+
+>[1] ask fred about nothing
+Fred doesn't know anything about it.
+
+>[2] ask frəd about cheese
+Fred explains that cheese is a fabled substance.
+
+>[3] ask fred about dück
+Fred explains that dück is a waterfowl with an umlaut.
+
+>[4] ask fred about dück
+Fred explains that dück is a waterfowl with an umlaut.
+
+>[5] ask fred about αθηνα
+Fred explains that αθηνα is the goddess Athena.
+
+>[6] ask fred about Αθηνα
+Fred explains that Αθηνα is the goddess Athena.
+
+>[7] ask fred about водяно́й
+Fred explains that водяно́й is the vodyanoi, a water spirit.
+
+>Are you sure you want to quit? 

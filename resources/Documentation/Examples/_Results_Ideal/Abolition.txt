@@ -1,7 +1,7 @@
    Chapel
   The Abolition of Love
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Chapel
   You can see Elizabeth, Wickham, Darcy, Mr Bennett, Mrs Bennett and Georgiana here.
@@ -487,7 +487,7 @@
     and yourself, Wickham and Georgiana in single-member groups
   
   >[43] flatter elizabeth
-  You draw down universal admiration for Elizabeth by casting him or her in a flattering light.
+  You draw down universal admiration for Elizabeth by casting them in a flattering light.
   
   >[44] relations
   Loving relates one person to one person:

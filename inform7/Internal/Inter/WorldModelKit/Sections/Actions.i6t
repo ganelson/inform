@@ -796,9 +796,15 @@ a whole action might produce "Henry taking the grapefruit".)
 	print "~";
 	for (a=cf:d<cw:d++,a++) {
 		wn = a; b = WordAddress(a); c = WordLength(a);
+		#Ifdef TARGET_ZCODE;
 		for (i=b:i<b+c:i++) {
 			print (char) 0->i;
 		}
+		#Ifnot; ! TARGET_GLULX
+		for (i=0:i<c:i++) {
+			print (char) b-->i;
+		}
+		#Endif; ! TARGET_
 		if (d<cw-1) print " ";
 	}
 	print "~";

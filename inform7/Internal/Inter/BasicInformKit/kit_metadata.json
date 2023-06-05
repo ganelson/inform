@@ -2,7 +2,7 @@
     "is": {
         "type": "kit",
         "title": "BasicInformKit",
-        "version": "10.2.0-beta+6W35"
+        "version": "10.2.0-beta+6W55"
     },
     "needs": [ {
         "unless": {
@@ -31,6 +31,8 @@
         "has-priority": 0,
         "defines-Main": false,
         "provides-kinds": [ "Macros.neptune", "Protocols.neptune", "Core.neptune", "Punctuation.neptune", "Files.neptune" ],
-        "indexes-with-structure": "Basic.indext"
+        "indexes-with-structure": "Basic.indext",
+        "configuration-flags": [ "AMERICAN_DIALECT", "AUTHORIAL_MODESTY", "ECHO_COMMANDS", "FIX_RNG", "MEMORY_ECONOMY", "NO_DEPRECATED", "NUMBERED_RULES", "PRINT_ENGINEER_EXPS", "SERIAL_COMMA" ],
+        "configuration-values": [ "STACK_FRAME_CAPACITY", "TEXT_BUFFER_SIZE", "DICT_RESOLUTION" ]
     }
 }

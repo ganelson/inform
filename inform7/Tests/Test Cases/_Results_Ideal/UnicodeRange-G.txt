@@ -1,0 +1,29 @@
+
+
+
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Kitchen
+You can see a ö, a αβγδε, a ბგ, a 笼, a ꚢꛄ, a 𐊨 and a 🜁 here.
+
+>(Testing.)
+
+>[1] i
+𝑰nventory: nothing.
+
+>[2] get all
+ö: Taken.
+αβγδε: Taken.
+ბგ: Taken.
+笼: Taken.
+ꚢꛄ: Taken.
+𐊨: Taken.
+🜁: Taken.
+
+>[3] i
+𝑰nventory: 🜁, 𐊨, ꚢꛄ, 笼, ბგ, αβγδε and ö.
+
+>Are you sure you want to quit? 

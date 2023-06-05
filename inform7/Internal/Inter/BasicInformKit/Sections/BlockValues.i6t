@@ -511,8 +511,6 @@ Constant WRITE_FILE_KOVS  = 13;
 Constant HASH_KOVS        = 14;
 Constant DEBUG_KOVS       = 15;
 
-! Constant BLKVALUE_TRACE; ! Uncomment this to expose masses of tracery
-
 @h Creation.
 To create a block value, call:
 = (text as Inform 6)
@@ -540,7 +538,7 @@ which returns the address of the short block for the new value.
 	kovs = KOVSupportFunction(strong_kind, "impossible allocation");
 	short_block = kovs(CREATE_KOVS, strong_kind, short_block);
 
-	#ifdef BLKVALUE_TRACE; print "Created: ", (BlkValueDebug) short_block, "^"; #endif;
+	#ifdef LKTRACE_HEAP; print "Created: ", (BlkValueDebug) short_block, "^"; #endif;
 
 	! The new value is represented in I6 as the pointer to its short block:
 	return short_block;
@@ -748,7 +746,7 @@ which should return true if a quick copy is okay, or false if not.
 	if (from_bv == 0) BlkValueError("copy from null value");
 	if (to_bv == from_bv) return;
 
-	#ifdef BLKVALUE_TRACE;
+	#ifdef LKTRACE_HEAP;
 	print "Copy: ", (BlkValueDebug) to_bv, " to equal ", (BlkValueDebug) from_bv, "^";
 	#endif;
 
@@ -793,7 +791,7 @@ a list must not, for example, contain itself.
 
 =
 [ BlkValueDestroyPrimitive bv kovs long_block;
-	#ifdef BLKVALUE_TRACE; print "Destroying ", (BlkValueDebug) bv, "^"; #endif;
+	#ifdef LKTRACE_HEAP; print "Destroying ", (BlkValueDebug) bv, "^"; #endif;
 	if (BlkValueDecRefCountPrimitive(bv) == 0) {
 		kovs(DESTROY_KOVS, bv);
 		long_block = BlkValueGetLongBlock(bv);
@@ -810,7 +808,7 @@ replace the small block with a new one (at the same address).
 
 =
 [ BlkValueRecyclePrimitive bv kovs;
-	#ifdef BLKVALUE_TRACE; print "Recycling ", (BlkValueDebug) bv, "^"; #endif;
+	#ifdef LKTRACE_HEAP; print "Recycling ", (BlkValueDebug) bv, "^"; #endif;
 	if (BlkValueDecRefCountPrimitive(bv) == 0) {
 		kovs(DESTROY_KOVS, bv);
 		BlkValueIncRefCountPrimitive(bv);
@@ -840,7 +838,7 @@ a temporary one-value stack frame instead to hold it.
 	if (bv == 0) BlkValueError("tried to make null block mutable");
 
 	if (BlkValueGetRefCountPrimitive(bv) > 1) {
-		#ifdef BLKVALUE_TRACE; print "Make mutable: ", (BlkValueDebug) bv, "^"; #endif;
+		#ifdef LKTRACE_HEAP; print "Make mutable: ", (BlkValueDebug) bv, "^"; #endif;
 
 		BlkValueDecRefCountPrimitive(bv);
 

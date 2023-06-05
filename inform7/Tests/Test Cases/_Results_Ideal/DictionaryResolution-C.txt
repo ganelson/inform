@@ -1,0 +1,20 @@
+
+
+
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+OED Workshop
+You can see a politician and a politicianish briefcase here.
+
+>(Testing.)
+
+>[1] x politician
+You see nothing special about the politician.
+
+>[2] x politicianish
+You see nothing special about the politicianish briefcase.
+
+>Are you sure you want to quit? 

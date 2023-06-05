@@ -1,0 +1,5 @@
+The Viability Chamber is a room.
+
+Use frogs of at least 20 translates as the configuration value FROG_COUNT in AmphibianKit.
+
+Use toads translates as the configuration value TOAD_COUNT = 15 in AmphibianKit.

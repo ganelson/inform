@@ -65,7 +65,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">WorldModelKit</a></li><li><b>MapRouteFinding</b></li></ul></div>
 <p class="purpose">Testing and changing the fundamental spatial relations.</p>
 
-<ul class="toc"><li><a href="S-mpr.html#SP1">&#167;1. Map Route-Finding</a></li><li><a href="S-mpr.html#SP2">&#167;2. Cache Control</a></li><li><a href="S-mpr.html#SP3">&#167;3. Fast Route-Finding</a></li><li><a href="S-mpr.html#SP4">&#167;4. Slow Route-Finding</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-mpr.html#SP1">&#167;1. Map Route-Finding</a></li><li><a href="S-mpr.html#SP2">&#167;2. Cache Control</a></li><li><a href="S-mpr.html#SP4">&#167;4. Fast Route-Finding</a></li><li><a href="S-mpr.html#SP5">&#167;5. Slow Route-Finding</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Map Route-Finding. </b>The general problem we have to solve here is: given \(x, y\in R\), where \(R\)
 is the set of rooms and we write \(x\sim y\) if there is a map connection from
@@ -116,15 +116,17 @@ due to a disagreement between extensions &mdash; "fast" wins.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">ifndef</span><span class="plain-syntax"> </span><span class="identifier-syntax">FAST_ROUTE_FINDING</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">ifndef</span><span class="plain-syntax"> </span><span class="identifier-syntax">SLOW_ROUTE_FINDING</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_GLULX</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">FAST_ROUTE_FINDING</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">ifnot</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">SLOW_ROUTE_FINDING</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">endif</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">endif</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">endif</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">UseFastRouteFinding</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WorldModelKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">ROUTE_FINDING_CFGV</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_ZCODE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        #</span><span class="identifier-syntax">ifnot</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        #</span><span class="identifier-syntax">endif</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WorldModelKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">ROUTE_FINDING_CFGV</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Cache Control. </b>We provide code to enable our route-finding algorithms to cache their partial
 results from one usage to the next (though at present only the "fast"
@@ -187,19 +189,35 @@ by enumerating them in the property <span class="extract"><span class="extract-s
 <span class="plain-syntax">        </span><span class="identifier-syntax">oyi</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">map_has_changed</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">FAST_ROUTE_FINDING</span><span class="plain-syntax">; </span><span class="identifier-syntax">ComputeFWMatrix</span><span class="plain-syntax">(</span><span class="identifier-syntax">filter</span><span class="plain-syntax">, </span><span class="identifier-syntax">use_doors</span><span class="plain-syntax">); #</span><span class="identifier-syntax">endif</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">UseFastRouteFinding</span><span class="plain-syntax">()) </span><span class="identifier-syntax">ComputeFWMatrix</span><span class="plain-syntax">(</span><span class="identifier-syntax">filter</span><span class="plain-syntax">, </span><span class="identifier-syntax">use_doors</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">map_has_changed</span><span class="plain-syntax"> = </span><span class="reserved-syntax">false</span><span class="plain-syntax">; </span><span class="identifier-syntax">last_filter</span><span class="plain-syntax"> = </span><span class="identifier-syntax">filter</span><span class="plain-syntax">; </span><span class="identifier-syntax">last_use_doors</span><span class="plain-syntax"> = </span><span class="identifier-syntax">use_doors</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">FAST_ROUTE_FINDING</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FastCountRouteTo</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">to</span><span class="plain-syntax">, </span><span class="identifier-syntax">filter</span><span class="plain-syntax">, </span><span class="identifier-syntax">use_doors</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FastRouteTo</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">to</span><span class="plain-syntax">, </span><span class="identifier-syntax">filter</span><span class="plain-syntax">, </span><span class="identifier-syntax">use_doors</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifnot</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">SlowCountRouteTo</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">to</span><span class="plain-syntax">, </span><span class="identifier-syntax">filter</span><span class="plain-syntax">, </span><span class="identifier-syntax">use_doors</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">SlowRouteTo</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">to</span><span class="plain-syntax">, </span><span class="identifier-syntax">filter</span><span class="plain-syntax">, </span><span class="identifier-syntax">use_doors</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">UseFastRouteFinding</span><span class="plain-syntax">()) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FastCountRouteTo</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">to</span><span class="plain-syntax">, </span><span class="identifier-syntax">filter</span><span class="plain-syntax">, </span><span class="identifier-syntax">use_doors</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FastRouteTo</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">to</span><span class="plain-syntax">, </span><span class="identifier-syntax">filter</span><span class="plain-syntax">, </span><span class="identifier-syntax">use_doors</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">SlowCountRouteTo</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">to</span><span class="plain-syntax">, </span><span class="identifier-syntax">filter</span><span class="plain-syntax">, </span><span class="identifier-syntax">use_doors</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">SlowRouteTo</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">to</span><span class="plain-syntax">, </span><span class="identifier-syntax">filter</span><span class="plain-syntax">, </span><span class="identifier-syntax">use_doors</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Fast Route-Finding. </b>The following is a form of Floyd's adaptation of Warshall's algorithm for
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>When this code became part of <span class="extract"><span class="extract-syntax">WorldModelKit</span></span>, and thus needed to be linked
+at the Inter level rather than mixed in as raw I6 code as in the pre-2020 days,
+the mechanism for selecting the route-finding algorithm needed to change.
+Previously, if the constant <span class="extract"><span class="extract-syntax">FAST_ROUTE_FINDING</span></span> was defined, the matrix
+<span class="extract"><span class="extract-syntax">FW_Matrix</span></span> and its functions would be compiled, and otherwise the functions
+with names beginning <span class="extract"><span class="extract-syntax">Slow...</span></span> would be compiled.
+</p>
+
+<p class="commentary">To avoid having to make two different linkable binaries of <span class="extract"><span class="extract-syntax">WorldModelKit</span></span>,
+one in which fast route finding is used and one in which it isn't, we now
+instead compile the functions either way (they are not large) and the Inform
+compiler defines the constant <span class="extract"><span class="extract-syntax">FWMATRIX_SIZE</span></span> to be 2 for slow route-finding
+(wasting only a negligible number of words for an unused array) and \(R^2\),
+where \(R\) is the number of rooms, for fast route-finding.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Fast Route-Finding. </b>The following is a form of Floyd's adaptation of Warshall's algorithm for
 finding the transitive closure of a directed graph.
 </p>
 
@@ -248,8 +266,7 @@ cache is useful for all future routes whatever their endpoints.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">FAST_ROUTE_FINDING</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">FWMatrix</span><span class="plain-syntax"> --&gt; </span><span class="identifier-syntax">NUM_ROOMS</span><span class="plain-syntax">*</span><span class="identifier-syntax">NUM_ROOMS</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">FWMatrix</span><span class="plain-syntax"> --&gt; </span><span class="identifier-syntax">FWMATRIX_SIZE</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">FastRouteTo</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="reserved-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">filter</span><span class="plain-syntax"> </span><span class="identifier-syntax">use_doors</span><span class="plain-syntax"> </span><span class="identifier-syntax">diri</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> </span><span class="identifier-syntax">dir</span><span class="plain-syntax"> </span><span class="identifier-syntax">oy</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">from</span><span class="plain-syntax"> == </span><span class="reserved-syntax">to</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="reserved-syntax">nothing</span><span class="plain-syntax">;</span>
@@ -318,9 +335,8 @@ cache is useful for all future routes whatever their endpoints.
 <span class="plain-syntax">                }</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">];</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">ENDIF</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Slow Route-Finding. </b>The alternative algorithm, used when only \(O(n)\) memory is available,
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Slow Route-Finding. </b>The alternative algorithm, used when only \(O(n)\) memory is available,
 computes only some of the shortest paths leading to \(R_y\), and is not cached &mdash;
 both because the storage is likely to be reused often by other searches and
 because there is little gain from doing so, given that a subsequent search
@@ -371,7 +387,6 @@ the direction of the shortest path from there to \(R_y\).
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">ifndef</span><span class="plain-syntax"> </span><span class="identifier-syntax">FAST_ROUTE_FINDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">[ </span><span class="identifier-syntax">SlowRouteTo</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="reserved-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">filter</span><span class="plain-syntax"> </span><span class="identifier-syntax">use_doors</span><span class="plain-syntax">  </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> </span><span class="identifier-syntax">dir</span><span class="plain-syntax"> </span><span class="identifier-syntax">in_direction</span><span class="plain-syntax"> </span><span class="identifier-syntax">progressed</span><span class="plain-syntax"> </span><span class="identifier-syntax">sl</span><span class="plain-syntax"> </span><span class="identifier-syntax">through_door</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">from</span><span class="plain-syntax"> == </span><span class="reserved-syntax">nothing</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="reserved-syntax">nothing</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="reserved-syntax">to</span><span class="plain-syntax"> == </span><span class="reserved-syntax">nothing</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="reserved-syntax">nothing</span><span class="plain-syntax">;</span>
@@ -436,7 +451,6 @@ the direction of the shortest path from there to \(R_y\).
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
 <span class="plain-syntax">];</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">ENDIF</span><span class="plain-syntax">;</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="S-wrl.html">&#10094;</a></li><li class="progresssection"><a href="S-msc.html">msc</a></li><li class="progresssection"><a href="S-gll.html">gll</a></li><li class="progresssection"><a href="S-zmc.html">zmc</a></li><li class="progresssection"><a href="S-lgh.html">lgh</a></li><li class="progresssection"><a href="S-lst.html">lst</a></li><li class="progresssection"><a href="S-ord.html">ord</a></li><li class="progresssection"><a href="S-act.html">act</a></li><li class="progresssection"><a href="S-act2.html">act2</a></li><li class="progresssection"><a href="S-fgr.html">fgr</a></li><li class="progresssection"><a href="S-otf.html">otf</a></li><li class="progresssection"><a href="S-prn.html">prn</a></li><li class="progresssection"><a href="S-wrl.html">wrl</a></li><li class="progresscurrent">mpr</li><li class="progresssection"><a href="S-rtp.html">rtp</a></li><li class="progresssection"><a href="S-tm.html">tm</a></li><li class="progresssection"><a href="S-tst.html">tst</a></li><li class="progresssection"><a href="S-chr.html">chr</a></li><li class="progresssection"><a href="S-str.html">str</a></li><li class="progressnext"><a href="S-rtp.html">&#10095;</a></li></ul></div>

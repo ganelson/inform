@@ -160,7 +160,7 @@ or 2^6 = 64 words of storage.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">bp</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">.</span><span class="element-syntax">bp_package</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The structure bp_compilation_data is private to this section.</li></ul>
+<ul class="endnotetexts"><li>The structure bp_compilation_data is accessed in 5/kc and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Some relations are never needed or referred to by runtime code: for example,
 reversals of relations used only one way around. It would be wasteful to
 compile arrays or functions for those, so we keep track of which have actually

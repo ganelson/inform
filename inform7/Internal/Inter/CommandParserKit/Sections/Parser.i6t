@@ -89,7 +89,11 @@ Global cobj_flag = 0;
 
 Global oops_from;                   ! The "first mistake" word number
 Global saved_oops;                  ! Used in working this out
+#Ifdef TARGET_ZCODE;
 Array  oops_workspace -> 64;        ! Used temporarily by "oops" routine
+#Ifnot;
+Array  oops_workspace --> 64;       ! Used temporarily by "oops" routine
+#Endif;
 
 Global held_back_mode;              ! Flag: is there some input from last time
 Global hb_wn;                       ! left over?  (And a save value for wn.)
@@ -97,6 +101,8 @@ Global hb_wn;                       ! left over?  (And a save value for wn.)
 
 Global usual_grammar_after;         ! Point from which usual grammar is parsed (it may vary from
                                     ! the above if user's routines match multi-word verbs)
+
+Global dont_ask_for_clarification;  ! Allows deactivating clarification question
 
 @h Grammar Token Variables.
 More globals, but dealing at the level of individual tokens now.
@@ -149,6 +155,7 @@ and we don't of course know which object or objects are meant. We store the
 possibilities (up to |MATCH_LIST_WORDS|, anyway) in a data structure called the match list.
 
 =
+Constant MATCH_LIST_WORDS = WorldModelKit`MULTI_OBJ_LIST_SIZE_CFGV;
 Array  match_list --> MATCH_LIST_WORDS;    ! An array of matched objects so far
 Array  match_classes --> MATCH_LIST_WORDS; ! An array of equivalence classes for them
 Array  match_scores --> MATCH_LIST_WORDS;  ! An array of match scores for them
@@ -164,8 +171,10 @@ upwards from 1 to |WordCount()|. The following utility routines provide
 access to words in the current command; because buffers have different
 definitions in Z and Glulx, so these routines must vary also.
 
-The actual text of each word is stored as a sequence of ZSCII values in
-a |->| (byte) array, with address |WordAddress(x)| and length |WordLength(x)|.
+In Z, the actual text of each word is stored as a sequence of ZSCII values in
+a |->| (byte) array. In G, the text is a sequence of Unicode code counts in
+a |-->| (word) array. In either case, the array has address |WordAddress(x)|
+and character length |WordLength(x)|.
 
 We picture the command as a stream of words to be read one at a time, with
 the global variable |wn| being the "current word" marker. |NextWord|, which
@@ -190,7 +199,7 @@ The current word marker |wn| is always advanced.
 [ WordLength wordnum; return parse->(wordnum*4); ];
 #Ifnot;
 [ WordCount; return parse-->0; ];
-[ WordAddress wordnum; return buffer + parse-->(wordnum*3); ];
+[ WordAddress wordnum; return buffer + WORDSIZE * parse-->(wordnum*3); ];
 [ WordLength wordnum; return parse-->(wordnum*3 - 1); ];
 #Endif;
 
@@ -241,8 +250,13 @@ $$ C = 100 + N $$
 		if ((w1 == 1) && (w2 == 0)) rfalse;
 		return RunTimeProblem(RTP_SAYINVALIDSNIPPET, w1, w2);
 	}
+	#Ifdef TARGET_ZCODE;
 	from = WordAddress(w1); to = WordAddress(w2) + WordLength(w2) - 1;
 	for (i=from: i<=to: i++) print (char) i->0;
+	#Ifnot;
+	from = WordAddress(w1); to = WordAddress(w2) + WORDSIZE * (WordLength(w2) - 1);
+	for (i=from: i<=to: i=i+WORDSIZE) print (char) i-->0;
+	#Endif;
 ];
 
 [ SpliceSnippet snip t i w1 w2 nextw at endsnippet newlen saved;
@@ -253,14 +267,24 @@ $$ C = 100 + N $$
 	}
 	@push say__p; @push say__pc;
 	nextw = w2 + 1;
+	#Ifdef TARGET_ZCODE;
 	at = WordAddress(w1) - buffer;
+	#ifnot;
+	at = (WordAddress(w1) - buffer) / WORDSIZE;
+	#endif;
 	if (nextw <= WordCount()) endsnippet = 100*nextw + (WordCount() - nextw + 1);
 	saved = buffer2-->0;
-	buffer2-->0 = 120;
-	newlen = VM_PrintToBuffer(buffer2, 120, SpliceSnippet__TextPrinter, t, endsnippet);
-	for (i=0: (i<newlen) && (at+i<120): i++) buffer->(at+i) = buffer2->(WORDSIZE+i);
-	#Ifdef TARGET_ZCODE; buffer->1 = at+i; #ifnot; buffer-->0 = at+i; #endif;
-	for (:at+i<120:i++) buffer->(at+i) = ' ';
+	buffer2-->0 = INPUT_BUFFER_LEN;
+	newlen = VM_PrintToBuffer(buffer2, INPUT_BUFFER_LEN, SpliceSnippet__TextPrinter, t, endsnippet);
+	#Ifdef TARGET_ZCODE;
+	for (i=0: (i<newlen) && (at+i<INPUT_BUFFER_LEN): i++) buffer->(at+i) = buffer2->(WORDSIZE+i);
+	buffer->1 = at+i;
+	for (:at+i<INPUT_BUFFER_LEN:i++) buffer->(at+i) = ' ';
+	#ifnot;
+	for (i=0: (i<newlen) && (at+i<INPUT_BUFFER_LEN): i++) buffer-->(at+i) = buffer2-->(1+i);
+	buffer-->0 = at+i;
+	for (:at+i<INPUT_BUFFER_LEN:i++) buffer-->(at+i) = ' ';
+	#endif;
 	VM_Tokenise(buffer, parse);
 	players_command = 100 + WordCount();
 	buffer2-->0 = saved;
@@ -388,7 +412,11 @@ The return value is the number of words typed.
 
 	while (true) {
 		! Save the start of the buffer, in case "oops" needs to restore it
+		#Ifdef TARGET_ZCODE;
 		for (i=0 : i<64 : i++) oops_workspace->i = a_buffer->i;
+		#Ifnot;
+		for (i=0 : i<64 : i++) oops_workspace-->i = a_buffer-->i;
+		#Endif;
 
 		! In case of an array entry corruption that shouldn't happen, but would be
 		! disastrous if it did:
@@ -430,18 +458,23 @@ The return value is the number of words typed.
 			! So now we know: there was a previous mistake, and the player has
 			! attempted to correct a single word of it.
 
-			for (i=0 : i<INPUT_BUFFER_LEN : i++) buffer2->i = a_buffer->i;
 			#Ifdef TARGET_ZCODE;
+			for (i=0 : i<INPUT_BUFFER_LEN : i++) buffer2->i = a_buffer->i;
 			x1 = a_table->9;  ! Start of word following "oops"
 			x2 = a_table->8;  ! Length of word following "oops"
 			#Ifnot; ! TARGET_GLULX
+			for (i=0 : i<INPUT_BUFFER_LEN : i++) buffer2-->i = a_buffer-->i;
 			x1 = a_table-->6; ! Start of word following "oops"
 			x2 = a_table-->5; ! Length of word following "oops"
 			#Endif; ! TARGET_
 
 			! Repair the buffer to the text that was in it before the "oops"
 			! was typed:
+			#Ifdef TARGET_ZCODE;
 			for (i=0 : i<64 : i++) a_buffer->i = oops_workspace->i;
+			#Ifnot;
+			for (i=0 : i<64 : i++) a_buffer-->i = oops_workspace-->i;
+			#Endif;
 			VM_Tokenise(a_buffer,a_table);
 
 			! Work out the position in the buffer of the word to be corrected:
@@ -454,12 +487,21 @@ The return value is the number of words typed.
 			#Endif; ! TARGET_
 
 			! Write spaces over the word to be corrected:
+			#Ifdef TARGET_ZCODE;
 			for (i=0 : i<w2 : i++) a_buffer->(i+w) = ' ';
+			#Ifnot; ! TARGET_GLULX
+			for (i=0 : i<w2 : i++) a_buffer-->(i+w) = ' ';
+			#Endif; ! TARGET_
 
 			if (w2 < x2) {
 				! If the replacement is longer than the original, move up...
+				#Ifdef TARGET_ZCODE;
 				for (i=INPUT_BUFFER_LEN-1 : i>=w+x2 : i--)
 					a_buffer->i = a_buffer->(i-x2+w2);
+				#Ifnot; ! TARGET_GLULX
+				for (i=INPUT_BUFFER_LEN-1 : i>=w+x2 : i--)
+					a_buffer-->i = a_buffer-->(i-x2+w2);
+				#Endif; ! TARGET_
 
 				! ...increasing buffer size accordingly.
 				#Ifdef TARGET_ZCODE;
@@ -470,7 +512,11 @@ The return value is the number of words typed.
 			}
 
 			! Write the correction in:
+			#Ifdef TARGET_ZCODE;
 			for (i=0 : i<x2 : i++) a_buffer->(i+w) = buffer2->(i+x1);
+			#Ifnot; ! TARGET_GLULX
+			for (i=0 : i<x2 : i++) a_buffer-->(i+w) = buffer2-->(i+x1);
+			#Endif; ! TARGET_
 
 			VM_Tokenise(a_buffer, a_table);
 			#Ifdef TARGET_ZCODE; nw = a_table->1; #Ifnot; nw = a_table-->0; #Endif;
@@ -485,7 +531,7 @@ The return value is the number of words typed.
 			continue;
 		}
 		i = VM_Save_Undo();
-		if (KIT_CONFIGURATION_BITMAP & PREVENT_UNDO_TCBIT) undo_flag = 0;
+		if (CommandParserKit`UNDO_PREVENTION_CFGF) undo_flag = 0;
 		else undo_flag = 2;
 		if (i == -1) undo_flag = 0;
 		if (i == 0) undo_flag = 1;
@@ -552,17 +598,28 @@ Get the input, do OOPS and AGAIN.
         held_back_mode = false; wn = hb_wn;
         if (verb_wordnum > 0) i = WordAddress(verb_wordnum); else i = WordAddress(1);
         j = WordAddress(wn);
+        #Ifdef TARGET_ZCODE;
         if (i<=j) for (: i<j : i++) i->0 = ' ';
+        #Ifnot; ! TARGET_GLULX
+        if (i<=j) for (: i<j : i=i+WORDSIZE) i-->0 = ' ';
+        #Endif; ! TARGET_
         i = NextWord();
         if (i == AGAIN1__WD or AGAIN2__WD or AGAIN3__WD) {
             ! Delete the words "then again" from the again buffer,
             ! in which we have just realised that it must occur:
             ! prevents an infinite loop on "i. again"
 
+            #Ifdef TARGET_ZCODE;
             i = WordAddress(wn-2)-buffer;
             if (wn > num_words) j = INPUT_BUFFER_LEN-1;
             else j = WordAddress(wn)-buffer;
             for (: i<j : i++) buffer3->i = ' ';
+            #Ifnot; ! TARGET_GLULX
+            i = (WordAddress(wn-2)-buffer) / WORDSIZE;
+            if (wn > num_words) j = INPUT_BUFFER_LEN-1;
+            else j = (WordAddress(wn)-buffer) / WORDSIZE;
+            for (: i<j : i++) buffer3-->i = ' ';
+            #Endif; ! TARGET_
         }
 
         VM_Tokenise(buffer, parse);
@@ -608,7 +665,11 @@ Get the input, do OOPS and AGAIN.
             #Endif; ! TARGET_
             k = WordAddress(i+1);
             l = WordLength(i+1);
+            #Ifdef TARGET_ZCODE;
             print "~"; for (m=0 : m<l : m++) print (char) k->m; print "~ ";
+            #Ifnot; ! TARGET_GLULX
+            print "~"; for (m=0 : m<l : m++) print (char) k-->m; print "~ ";
+            #Endif; ! TARGET_
 
             if (j == 0) print "?";
             else {
@@ -658,7 +719,7 @@ Get the input, do OOPS and AGAIN.
     if (verb_word == AGAIN1__WD) {
         if (actor ~= player) {
             best_etype = ANIMAAGAIN_PE;
-			jump GiveError;
+            jump GiveError;
         }
         #Ifdef TARGET_ZCODE;
         if (buffer3->1 == 0) {
@@ -671,16 +732,25 @@ Get the input, do OOPS and AGAIN.
             jump ReType;
         }
         #Endif; ! TARGET_
+        #Ifdef TARGET_ZCODE;
         for (i=0 : i<INPUT_BUFFER_LEN : i++) buffer->i = buffer3->i;
+        #Ifnot; ! TARGET_GLULX
+        for (i=0 : i<INPUT_BUFFER_LEN : i++) buffer-->i = buffer3-->i;
+        #Endif; ! TARGET_
         VM_Tokenise(buffer,parse);
-		num_words = WordCount(); players_command = 100 + num_words;
-    	jump ReParse;
+        num_words = WordCount(); players_command = 100 + num_words;
+        jump ReParse;
     }
 
     ! Save the present input in case of an "again" next time
 
-    if (verb_word ~= AGAIN1__WD)
+    if (verb_word ~= AGAIN1__WD) {
+        #Ifdef TARGET_ZCODE;
         for (i=0 : i<INPUT_BUFFER_LEN : i++) buffer3->i = buffer->i;
+        #Ifnot; ! TARGET_GLULX
+        for (i=0 : i<INPUT_BUFFER_LEN : i++) buffer3-->i = buffer-->i;
+        #Endif; ! TARGET_
+    }
 
     if (usual_grammar_after == 0) {
         j = verb_wordnum;
@@ -1750,7 +1820,7 @@ Parse an object name.
         #Ifdef DEBUG;
         if (parser_trace >= 3) print "  [Calling NounDomain on location and actor]^";
         #Endif; ! DEBUG
-        l = NounDomain(actors_location, actor, token);
+        l = NounDomain(actors_location, actor, token, dont_ask_for_clarification);
         if (l == REPARSE_CODE) return l;                  ! Reparse after Q&A
         if (indef_wanted == INDEF_ALL_WANTED && l == 0 && number_matched == 0)
             l = 1;  ! ReviseMulti if TAKE ALL FROM empty container
@@ -1834,7 +1904,7 @@ Parse an object name.
     ! Case 2: token is "held" (which fortunately can't take multiple objects)
     ! and may generate an implicit take
 
-        l = NounDomain(actor,actors_location,token);       ! Same as above...
+        l = NounDomain(actor,actors_location,token,dont_ask_for_clarification);       ! Same as above...
         if (l == REPARSE_CODE) return l;
         if (l == 0) {
             if (indef_possambig) {
@@ -2275,7 +2345,7 @@ because we want to allow duplicates).
 
         if (i < j-1)  print ", ";
         if (i == j-1) {
-			if (KIT_CONFIGURATION_BITMAP & SERIAL_COMMA_TCBIT) {
+			if (BasicInformKit`SERIAL_COMMA_CFGF) {
 				if (j ~= 2) print ",";
         	}
         	PARSER_CLARIF_INTERNAL_RM('H');
@@ -2356,11 +2426,11 @@ because we want to allow duplicates).
     buffer->1 = buffer->1 + l;
     if (buffer->1 >= (buffer->0 - 1)) buffer->1 = buffer->0;
     #Ifnot; ! TARGET_GLULX
-    k = WordAddress(match_from) - buffer;
+    k = (WordAddress(match_from) - buffer) / WORDSIZE;
     l = (buffer2-->0) + 1;
-    for (j=buffer+INPUT_BUFFER_LEN-1 : j>=buffer+k+l : j--) j->0 = j->(-l);
-    for (i=0 : i<l : i++) buffer->(k+i) = buffer2->(WORDSIZE+i);
-    buffer->(k+l-1) = ' ';
+    for (j=INPUT_BUFFER_LEN-1 : j>=k+l : j--) buffer-->j = buffer-->(j-l);
+    for (i=0 : i<l : i++) buffer-->(k+i) = buffer2-->(1+i);
+    buffer-->(k+l-1) = ' ';
     buffer-->0 = buffer-->0 + l;
     if (buffer-->0 > (INPUT_BUFFER_LEN-WORDSIZE)) buffer-->0 = (INPUT_BUFFER_LEN-WORDSIZE);
     #Endif; ! TARGET_
@@ -2372,11 +2442,9 @@ because we want to allow duplicates).
 
 	num_words = WordCount(); players_command = 100 + num_words;
     wn = 1;
-    #Ifdef LanguageToInformese;
     LanguageToInformese();
     ! Re-tokenise:
     VM_Tokenise(buffer,parse);
-    #Endif; ! LanguageToInformese
 	num_words = WordCount(); players_command = 100 + num_words;
     actors_location = ScopeCeiling(player);
 	FollowRulebook(Activity_after_rulebooks-->READING_A_COMMAND_ACT);
@@ -2433,8 +2501,8 @@ because we want to allow duplicates).
             #Ifdef TARGET_ZCODE;
             i = 2+buffer->1; (buffer->1)++; buffer->(i++) = ' ';
             #Ifnot; ! TARGET_GLULX
-            i = WORDSIZE + buffer-->0;
-            (buffer-->0)++; buffer->(i++) = ' ';
+            i = 1 + buffer-->0;
+            (buffer-->0)++; buffer-->(i++) = ' ';
             #Endif; ! TARGET_
 
             #Ifdef DEBUG;
@@ -2475,8 +2543,8 @@ because we want to allow duplicates).
             ! parse2-->1 now holds the dictionary address of the word to glue in.
 
             if (parse2-->1 ~= 0) {
-                k = buffer + i;
                 #Ifdef TARGET_ZCODE;
+                k = buffer + i;
                 @output_stream 3 k;
                  print (address) parse2-->1;
                 @output_stream -3;
@@ -2484,8 +2552,8 @@ because we want to allow duplicates).
                 for (l=i : l<i+k : l++) buffer->l = buffer->(l+2);
                 i = i + k; buffer->1 = i-2;
                 #Ifnot; ! TARGET_GLULX
-                k = Glulx_PrintAnyToArray(buffer+i, INPUT_BUFFER_LEN-i, parse2-->1);
-                i = i + k; buffer-->0 = i - WORDSIZE;
+                k = Glulx_PrintAnyToArrayUni(buffer+WORDSIZE*i, INPUT_BUFFER_LEN-i, parse2-->1);
+                i = i + k; buffer-->0 = i - 1;
                 #Endif; ! TARGET_
             }
         }
@@ -2501,10 +2569,10 @@ because we want to allow duplicates).
         if (buffer->1 == INPUT_BUFFER_LEN) break;
     }
     #Ifnot; ! TARGET_GLULX
-    i = WORDSIZE + buffer-->0;
-    (buffer-->0)++; buffer->(i++) = ' ';
+    i = 1 + buffer-->0;
+    (buffer-->0)++; buffer-->(i++) = ' ';
     for (j=0 : j<buffer2-->0 : i++,j++) {
-        buffer->i = buffer2->(j+WORDSIZE);
+        buffer-->i = buffer2-->(j+1);
         (buffer-->0)++;
         if (buffer-->0 == INPUT_BUFFER_LEN) break;
     }
@@ -2890,7 +2958,6 @@ Constant SCORE__NOTACTOR = 5;
 Constant SCORE__GNA = 1;
 Constant SCORE__DIVISOR = 20;
 
-Constant PREFER_HELD;
 [ ScoreMatchL context its_owner its_score obj i j threshold met a_s l_s;
 !   if (indef_type & OTHER_BIT ~= 0) threshold++;
     if (indef_type & MY_BIT ~= 0)    threshold++;
@@ -2904,18 +2971,11 @@ Constant PREFER_HELD;
       indef_type, ", satisfying ", threshold, " requirements:^";
     #Endif; ! DEBUG
 
-    #ifdef PREFER_HELD;
     a_s = SCORE__BESTLOC; l_s = SCORE__NEXTBESTLOC;
     if (action_to_be == ##Take or ##Remove) {
         a_s = SCORE__NEXTBESTLOC; l_s = SCORE__BESTLOC;
     }
     context = context;  ! silence warning
-    #ifnot;
-    a_s = SCORE__NEXTBESTLOC; l_s = SCORE__BESTLOC;
-    if (context == HELD_TOKEN or MULTIHELD_TOKEN or MULTIEXCEPT_TOKEN) {
-        a_s = SCORE__BESTLOC; l_s = SCORE__NEXTBESTLOC;
-    }
-    #endif; ! PREFER_HELD
 
     for (i=0 : i<number_matched : i++) {
         obj = match_list-->i; its_owner = parent(obj); its_score=0; met=0;
@@ -3659,9 +3719,7 @@ complex in languages other than English.
 [ Refers obj wnum   wd k l m;
     if (obj == 0) rfalse;
 
-    #Ifdef LanguageRefers;
     k = LanguageRefers(obj,wnum); if (k >= 0) return k;
-    #Endif; ! LanguageRefers
 
     k = wn; wn = wnum; wd = NextWordStopped(); wn = k;
 
@@ -3731,7 +3789,7 @@ are parsed.)
     #Ifdef TARGET_ZCODE;
     i = wordnum*4+1; j = parse->i; num = j+buffer; len = parse->(i-1);
     #Ifnot; ! TARGET_GLULX
-    i = wordnum*3; j = parse-->i; num = j+buffer; len = parse-->(i-1);
+    num = WordAddress(wordnum); len = WordLength(wordnum);
     #Endif; ! TARGET_
 
     if (len >= 4) mul=1000;
@@ -3742,7 +3800,11 @@ are parsed.)
     tot = 0; c = 0; len = len-1;
 
     for (c=0 : c<=len : c++) {
+        #Ifdef TARGET_ZCODE;
         digit=num->c;
+        #Ifnot; ! TARGET_GLULX
+        digit=num-->c;
+        #Endif; ! TARGET_
         if (digit == '0') { d = 0; jump digok; }
         if (digit == '1') { d = 1; jump digok; }
         if (digit == '2') { d = 2; jump digok; }
@@ -3847,10 +3909,9 @@ Manual}, 4th edition.
 ];
 
 [ PronounNoticeHeldObjects x;
-#IFNDEF MANUAL_PRONOUNS;
-	objectloop(x in player) PronounNotice(x);
-#ENDIF;
-	x = 0; ! To prevent a "not used" error
+	if (CommandParserKit`MANUAL_PRONOUNS_CFGF == 0)
+		objectloop(x in player)
+			PronounNotice(x);
 	rfalse;
 ];
 
@@ -3891,6 +3952,14 @@ words (single words) and their numeric equivalents.
     return 0;
 ];
 
+@h Tracing.
+Uncomment this line and rebuild the kit to enable tracing of what the algorithm
+below is doing. (This constant should not be used anywhere except in this file,
+where |#Ifdef| on it will have the expected effect: elsewhere, it might not.)
+
+=
+! Constant LKTRACE_CHOOSE_OBJECTS;
+
 @h Choose Objects.
 This material, the final body of code in the parser, is an I7 addition.
 The I6 parser leaves it to the user to provide a |ChooseObjects| routine
@@ -3901,8 +3970,6 @@ code below because it is hidden in the |CheckDPMR| routine -- which
 is defined in the Standard Rules, not here.
 
 =
-!Constant COBJ_DEBUG;
-
 ! the highest value returned by CheckDPMR (see the Standard Rules)
 Constant HIGHEST_DPMR_SCORE = 4;
 
@@ -3941,12 +4008,12 @@ Array alt_match_list --> (MATCH_LIST_WORDS+1);
 	if (cobj_flag == 1) {
 		.CodeOne;
 		if (parameters > 0) {
-			#ifdef COBJ_DEBUG;
+			#ifdef LKTRACE_CHOOSE_OBJECTS;
 			print "[scoring ", (the) obj, " (second)]^";
 			#endif;
 			return ScoreDabCombo(parser_results-->INP1_PRES, obj);
 		} else {
-			#ifdef COBJ_DEBUG;
+			#ifdef LKTRACE_CHOOSE_OBJECTS;
 			print "[scoring ", (the) obj, " (first) in ",
 				alt_match_list-->0, " combinations]^";
 			#endif;
@@ -3954,7 +4021,7 @@ Array alt_match_list --> (MATCH_LIST_WORDS+1);
 			for (i=1: i<=alt_match_list-->0: i++) {
 				spcount = ScoreDabCombo(obj, alt_match_list-->i);
 				if (spcount == HIGHEST_DPMR_SCORE) {
-					#ifdef COBJ_DEBUG;
+					#ifdef LKTRACE_CHOOSE_OBJECTS;
 					print "[scored ", spcount, " - best possible]^";
 					#endif;
 					return spcount;
@@ -3966,7 +4033,7 @@ Array alt_match_list --> (MATCH_LIST_WORDS+1);
 	}
 	if (cobj_flag == 2) {
 		.CodeTwo;
-		#ifdef COBJ_DEBUG;
+		#ifdef LKTRACE_CHOOSE_OBJECTS;
 		print "[scoring ", (the) obj, " (simple); parameters = ", parameters,
 			" aw = ", advance_warning, "]^";
 		#endif;
@@ -3983,7 +4050,7 @@ Array alt_match_list --> (MATCH_LIST_WORDS+1);
 		return l;
 	}
 
-	#ifdef COBJ_DEBUG;
+	#ifdef LKTRACE_CHOOSE_OBJECTS;
 	print "[choosing a cobj strategy: ";
 	#endif;
 	swn = wn;
@@ -4008,7 +4075,7 @@ Array alt_match_list --> (MATCH_LIST_WORDS+1);
 			match_length = 0; number_matched = 0; match_from = wn;
 			token_filter = 0;
 			SearchScope(actor, actors_location, line_tdata-->pcount);
-			#ifdef COBJ_DEBUG;
+			#ifdef LKTRACE_CHOOSE_OBJECTS;
 			print number_matched, " possible second nouns]^";
 			#endif;
 			wn = swn;
@@ -4023,7 +4090,7 @@ Array alt_match_list --> (MATCH_LIST_WORDS+1);
 	pcount = spcount;
 	wn = swn;
 
-	#ifdef COBJ_DEBUG;
+	#ifdef LKTRACE_CHOOSE_OBJECTS;
 	print "nothing interesting]^";
 	#endif;
 	cobj_flag = 2;
@@ -4038,7 +4105,7 @@ Array alt_match_list --> (MATCH_LIST_WORDS+1);
 	else { noun = a; second = b; }
 	result = CheckDPMR();
 	@pull second; @pull noun; @pull act_requester; @pull action;
-	#ifdef COBJ_DEBUG;
+	#ifdef LKTRACE_CHOOSE_OBJECTS;
 	print "[", (the) a, " / ", (the) b, " => ", result, "]^";
 	#endif;
 	return result;
@@ -4092,7 +4159,7 @@ recognises an existing value: it doesn't parse a new one.
 	return r;
 ];
 [ TEXT_TY_ROGPRI txt
-	pos len wa wl wpos bdm ch own;
+	pos len wa wl wpos wach bdm ch own;
 	bdm = true; own = wn;
 	len = BlkValueLBCapacity(txt);
 	for (pos=0: pos<=len: pos++) {
@@ -4110,7 +4177,12 @@ recognises an existing value: it doesn't parse a new one.
 				wl = WordLength(wn-1);
 				wpos = 0;
 			}
-			if (wa->wpos ~= ch or TEXT_TY_RevCase(ch)) return GPR_FAIL;
+			#Ifdef TARGET_ZCODE;
+			wach = wa->wpos;
+			#Ifnot; ! TARGET_GLULX
+			wach = wa-->wpos;
+			#Endif; ! TARGET_
+			if (wach ~= ch or TEXT_TY_RevCase(ch)) return GPR_FAIL;
 			wpos++;
 		}
 	}
@@ -4152,14 +4224,16 @@ the heap.
 [ SetPlayersCommand from_txt i len at p cp;
 	cp = from_txt-->0; p = TEXT_TY_Temporarily_Transmute(from_txt);
 	len = TEXT_TY_CharacterLength(from_txt);
-	if (len > 118) len = 118;
+	if (len > INPUT_BUFFER_LEN-2) len = INPUT_BUFFER_LEN-2;
 	#ifdef TARGET_ZCODE;
 	buffer->1 = len; at = 2;
-	#ifnot;
-	buffer-->0 = len; at = 4;
-	#endif;
 	for (i=0:i<len:i++) buffer->(i+at) = CharToCase(BlkValueRead(from_txt, i), 0);
-	for (:at+i<120:i++) buffer->(at+i) = ' ';
+	for (:at+i<INPUT_BUFFER_LEN:i++) buffer->(at+i) = ' ';
+	#ifnot;
+	buffer-->0 = len; at = 1;
+	for (i=0:i<len:i++) buffer-->(i+at) = CharToCase(BlkValueRead(from_txt, i), 0);
+	for (:at+i<INPUT_BUFFER_LEN:i++) buffer-->(at+i) = ' ';
+	#endif;
 	VM_Tokenise(buffer, parse);
 	players_command = 100 + WordCount(); ! The snippet variable "player's command"
 	TEXT_TY_Untransmute(from_txt, p, cp);

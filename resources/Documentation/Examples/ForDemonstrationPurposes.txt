@@ -34,7 +34,7 @@ Thanks to Jesse McGrew for the initial design of this example.
 	
 	The learning by observation rule is listed after the report stage rule in the specific action-processing rules.
 	
-	Definition: a person is other if he is not the player.
+	Definition: a person is other if they are not the player.
 	
 	This is the learning by observation rule:
 		repeat with the viewer running through other people who can see the player:

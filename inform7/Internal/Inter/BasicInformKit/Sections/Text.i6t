@@ -46,8 +46,9 @@ number of characters, plus one for the null terminator.
 
 @h Character Set.
 On the Z-machine, we use the 8-bit ZSCII character set, stored in bytes;
-on Glulx, we use the opening 16-bit subset of Unicode (which though only a
-subset covers almost all letter forms used on Earth), stored in half-words.
+on Glulx, we use full 32-bit Unicode, stored in words. (Until May 2023,
+16-bit half-words were used, but that restricted the range of Unicode points
+so as to omit such essentials as "Smiling Cat Face With Heart-Shaped Eyes".)
 
 The Z-machine does have very partial Unicode support, but not in a way that
 can help us here. It is capable of printing a wide range of Unicode
@@ -56,14 +57,14 @@ OS X, using the Lucida Grande font) can produce many thousands of glyphs. But
 it is not capable of printing those characters into memory rather than the
 screen, an essential technique for texts: it can only write each character to
 a single byte, and it does so in ZSCII. That forces our hand when it comes to
-choosing the indexed-text character set.
+choosing the character set here. For Unicode, use Glulx.
 
 =
 #IFDEF TARGET_ZCODE;
 Constant TEXT_TY_Storage_Flags = BLK_FLAG_MULTIPLE;
 Constant ZSCII_Tables;
 #IFNOT;
-Constant TEXT_TY_Storage_Flags = BLK_FLAG_MULTIPLE + BLK_FLAG_16_BIT;
+Constant TEXT_TY_Storage_Flags = BLK_FLAG_MULTIPLE + BLK_FLAG_WORD;
 Constant Large_Unicode_Tables;
 #ENDIF;
 
@@ -217,6 +218,7 @@ does handle overruns safely, and indeed allows us to dynamically allocate
 memory as necessary so that we can always avoid overruns entirely.
 
 =
+Constant TEXT_TY_BufferSize = BasicInformKit`TEXT_BUFFER_SIZE_CFGV + 3;
 Constant TEXT_TY_NoBuffers = 2;
 
 #ifdef TARGET_ZCODE;

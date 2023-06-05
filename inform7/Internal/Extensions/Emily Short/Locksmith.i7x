@@ -8,7 +8,7 @@ To open is a verb. To lack is a verb. To fit is a verb. To lock is a verb. To un
 
 Volume 1 - Automatic locking and unlocking with necessary actions
 
-Use sequential action translates as (- Constant SEQUENTIAL_ACTION; -).
+Use sequential action translates as a configuration flag.
 
 Before going through a closed door (called the blocking door) (this is the opening doors before entering rule):
 	if sequential action option is active:

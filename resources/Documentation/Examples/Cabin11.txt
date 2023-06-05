@@ -6,13 +6,13 @@ If we wanted, we could make the player's backpack infinitely capacious, so:
 
 	{*}The backpack is a player's holdall.
 	
-...And now whenever the player character is unable to hold everything, he will automatically stow some of his possessions therein.
+...And now whenever the player character is unable to hold everything, they will automatically stow some of their possessions therein.
 
-This is only useful if the player doesn't have infinite carrying capacity himself, so perhaps we also need
+This is only useful if the player doesn't have infinite carrying capacity, so perhaps we also need
 
 	{*}The carrying capacity of the player is 3.
 	
-Perhaps mercifully, items which are worn are not counted against the player's carrying capacity. We might want to let him take advantage of that, too:
+Perhaps mercifully, items which are worn are not counted against the player's carrying capacity. We might want to let them take advantage of that, too:
 
 	{*}The backpack is wearable.
 

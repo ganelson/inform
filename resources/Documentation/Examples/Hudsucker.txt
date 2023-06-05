@@ -2,7 +2,7 @@
 (Letters described as a group; Hudsucker Industries)
 Letters which are described differently as a group, depending on whether the player has read none, some, or all of them, and on whether they are alike or unlike.
 
-In this scenario, the player starts with a bag full of unsorted letters. These can be polite or rude, but he won't know which until he has examined them. What's more, he is allowed to sort the letters, in which case a group of letters will be shown as (for instance) "two polite letters"; but a group of mixed letters, even if they have all been read, will be called "unsorted letters".
+In this scenario, the player starts with a bag full of unsorted letters. These can be polite or rude, but they won't know which until they have examined them. What's more, they are allowed to sort the letters, in which case a group of letters will be shown as (for instance) "two polite letters"; but a group of mixed letters, even if they have all been read, will be called "unsorted letters".
 
 Further, the player should be allowed to refer to sorted letters by tone, but not unsorted letters.
 
@@ -49,7 +49,7 @@ To do this, we'll need printing the name... and printing the plural name..., as 
 
 	The plural of mailbox is mailboxes. A mailbox is a kind of container. The CEO box is a mailbox. The Hold box is a mailbox. The Trash box is a mailbox. Understand "mailbox" as a mailbox.
  
-Now, there's a good bit of interaction to streamline. We intend that the player will be taking letters from the satchel, reading them, and putting them (perhaps grouped) into boxes. Our interaction rules should assist in this process as much as possible. To start with, the player will be most likely to examine letters he hasn't read yet:
+Now, there's a good bit of interaction to streamline. We intend that the player will be taking letters from the satchel, reading them, and putting them (perhaps grouped) into boxes. Our interaction rules should assist in this process as much as possible. To start with, the player will be most likely to examine letters they haven't read yet:
 
 	{**}Does the player mean examining a letter (called the subject):
 		if we have examined the subject, it is very unlikely;
@@ -67,7 +67,7 @@ The rules about taking are more subtle: the player is more likely to want to tak
 		if the subject is in the satchel, it is very likely;
 		it is possible.
 
-And finally, we will assume by default that anything other than examining or taking is most likely to apply to a letter he's already identified:
+And finally, we will assume by default that anything other than examining or taking is most likely to apply to a letter they've already identified:
 	
 	{**}Does the player mean doing something other than examining or taking with a letter (called the subject):
 		if we have examined the subject, it is likely;

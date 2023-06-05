@@ -12,6 +12,7 @@ pathname *path_to_inbuild = NULL;
 int inbuild_task = INSPECT_TTASK;
 pathname *path_to_tools = NULL;
 int dry_run_mode = FALSE, build_trace_mode = FALSE, confirmed = FALSE;
+int contents_of_used = FALSE, recursive = FALSE;
 inbuild_nest *destination_nest = NULL;
 inbuild_registry *selected_registry = NULL;
 text_stream *filter_text = NULL;
@@ -86,9 +87,13 @@ error in this case.
 		if (D->location_if_file) Supervisor::set_I7_source(D->location_if_file);
 	}
 	if ((LinkedLists::len(unsorted_nest_list) == 0) ||
-		((others_exist == FALSE) && (D)))
+		((others_exist == FALSE) && (D))) {
+		SVEXPLAIN(1, "(in absence of explicit -internal, inventing -internal %p)\n",
+			Supervisor::default_internal_path());
+		if (path_to_tools) SVEXPLAIN(2, "(note that -tools is %p)\n", path_to_tools);
 		Supervisor::add_nest(
-			Pathnames::from_text(I"inform7/Internal"), INTERNAL_NEST_TAG);
+			Supervisor::default_internal_path(), INTERNAL_NEST_TAG);
+	}
 	Supervisor::optioneering_complete(D, FALSE, &Main::load_preform);
 	inform_project *proj;
 	LOOP_OVER(proj, inform_project)
@@ -183,18 +188,27 @@ utility functions in the //supervisor// module, which we call.
 
 @ Preform is the crowning jewel of the |words| module, and parses excerpts of
 natural-language text against a "grammar". The |inform7| executable makes very
-heavy-duty use of Preform, but we use a much coarser grammar, which simply
-breaks down source text into sentences, headings and so on. That grammar is
-stored in a file called |Syntax.preform| inside the installation of Inbuild,
-which is why we need to have worked out |path_to_inbuild| (the pathname at
-which we are installed) already. Once the following is run, Preform is ready
-for use.
+heavy-duty use of Preform, and we can use that too provided we have access to
+the English Preform syntax file stored inside the core Inform distribution,
+that is, in the |-internal| area.
+
+But suppose we can't get that? Well, then we fall back on a much coarser
+grammar, which simply breaks down source text into sentences, headings and so
+on. That grammar is stored in a file called |Syntax.preform| inside the
+installation of Inbuild, which is why we need to have worked out
+|path_to_inbuild| (the pathname at which we are installed) already. Once the
+following is run, Preform is ready for use.
 
 =
 int Main::load_preform(inform_language *L) {
-	pathname *P = Pathnames::down(path_to_inbuild, I"Tangled");
-	filename *S = Filenames::in(P, I"Syntax.preform");
-	return LoadPreform::load(S, NULL);
+	if (Supervisor::dash_internal_was_used()) {
+		filename *F = Filenames::in(Languages::path_to_bundle(L), I"Syntax.preform");
+		return LoadPreform::load(F, L);
+	} else {
+		pathname *P = Pathnames::down(path_to_inbuild, I"Tangled");
+		filename *S = Filenames::in(P, I"Syntax.preform");
+		return LoadPreform::load(S, NULL);
+	}
 }
 
 @h Target list.
@@ -296,8 +310,21 @@ inbuild_copy *Main::file_or_path_to_copy(text_stream *arg, int throwing_error) {
 }
 
 void Main::add_file_or_path_as_target(text_stream *arg, int throwing_error) {
+	int is_folder = Platform::is_folder_separator(Str::get_last_char(arg));
 	inbuild_copy *C = Main::file_or_path_to_copy(arg, throwing_error);
-	if (C) Main::add_target(C);
+	if (C) {
+		Main::add_target(C);
+	} else if ((recursive) && (is_folder)) {
+		pathname *P = Pathnames::from_text(arg);
+		linked_list *L = Directories::listing(P);
+		text_stream *entry;
+		LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+			TEMPORARY_TEXT(FILENAME)
+			WRITE_TO(FILENAME, "%p%c%S", P, FOLDER_SEPARATOR, entry);
+			Main::add_file_or_path_as_target(FILENAME, throwing_error);
+			DISCARD_TEXT(FILENAME)
+		}
+	}
 }
 
 @h Command line.
@@ -322,6 +349,7 @@ other options to the selection defined here.
 @e BUILD_TRACE_CLSW
 @e TOOLS_CLSW
 @e CONTENTS_OF_CLSW
+@e RECURSIVE_CLSW
 @e MATCHING_CLSW
 @e COPY_TO_CLSW
 @e SYNC_TO_CLSW
@@ -335,6 +363,8 @@ other options to the selection defined here.
 @e RESULTS_CLSW
 @e INSTALL_CLSW
 @e CONFIRMED_CLSW
+@e VERBOSE_CLSW
+@e VERBOSITY_CLSW
 
 @<Read the command line@> =	
 	CommandLine::declare_heading(
@@ -373,7 +403,7 @@ other options to the selection defined here.
 	CommandLine::declare_switch(ARCHIVE_TO_CLSW, L"archive-to", 2,
 		L"sync copies of all extensions, kits and so on needed into nest X");
 	CommandLine::declare_switch(TOOLS_CLSW, L"tools", 2,
-		L"make X the directory of intools executables, and exit developer mode");
+		L"make X the directory of intools executables");
 	CommandLine::declare_boolean_switch(DRY_CLSW, L"dry", 1,
 		L"make this a dry run (print but do not execute shell commands)", FALSE);
 	CommandLine::declare_boolean_switch(BUILD_TRACE_CLSW, L"build-trace", 1,
@@ -382,6 +412,8 @@ other options to the selection defined here.
 		L"apply to all works in nest(s) matching requirement X");
 	CommandLine::declare_switch(CONTENTS_OF_CLSW, L"contents-of", 2,
 		L"apply to all targets in the directory X");
+	CommandLine::declare_boolean_switch(RECURSIVE_CLSW, L"recursive", 1,
+		L"run -contents-of recursively to look through subdirectories too", FALSE);
 	CommandLine::declare_switch(VERIFY_REGISTRY_CLSW, L"verify-registry", 2,
 		L"verify roster.json metadata of registry in the directory X");
 	CommandLine::declare_switch(BUILD_REGISTRY_CLSW, L"build-registry", 2,
@@ -398,6 +430,10 @@ other options to the selection defined here.
 		L"write HTML report file to X (for use within Inform GUI apps)");
 	CommandLine::declare_boolean_switch(CONFIRMED_CLSW, L"confirmed", 1,
 		L"confirm installation in the Inform GUI apps", TRUE);
+	CommandLine::declare_boolean_switch(VERBOSE_CLSW, L"verbose", 1,
+		L"equivalent to -verbosity=1", FALSE);
+	CommandLine::declare_numerical_switch(VERBOSITY_CLSW, L"verbosity", 1,
+		L"how much explanation to print: lowest is 0 (default), highest is 3");
 	Supervisor::declare_options();
 
 	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
@@ -424,10 +460,15 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case ARCHIVE_CLSW: inbuild_task = ARCHIVE_TTASK; break;
 		case USE_MISSING_CLSW: inbuild_task = USE_MISSING_TTASK; break;
 		case BUILD_MISSING_CLSW: inbuild_task = BUILD_MISSING_TTASK; break;
-		case TOOLS_CLSW: path_to_tools = Pathnames::from_text(arg); break;
+		case TOOLS_CLSW:
+			path_to_tools = Pathnames::from_text(arg);
+			Supervisor::set_tools_location(path_to_tools); break;
 		case MATCHING_CLSW: filter_text = Str::duplicate(arg); break;
-		case CONTENTS_OF_CLSW:
+		case CONTENTS_OF_CLSW: contents_of_used = TRUE;
 			Main::add_directory_contents_targets(Pathnames::from_text(arg)); break;
+		case RECURSIVE_CLSW: recursive = val;
+			if (contents_of_used) Errors::fatal("-recursive must be used before -contents-of");
+			break;
 		case DRY_CLSW: dry_run_mode = val; break;
 		case BUILD_TRACE_CLSW: build_trace_mode = val; break;
 		case COPY_TO_CLSW: inbuild_task = COPY_TO_TTASK;
@@ -462,6 +503,8 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case INSTALL_CLSW: to_install = Main::file_or_path_to_copy(arg, TRUE); break;
 		case RESULTS_CLSW: InbuildReport::set_filename(Filenames::from_text(arg)); break;
 		case CONFIRMED_CLSW: confirmed = val; break;
+		case VERBOSE_CLSW: Supervisor::set_verbosity(1); break;
+		case VERBOSITY_CLSW: Supervisor::set_verbosity(val); break;
 	}
 	Supervisor::option(id, val, arg, state);
 }

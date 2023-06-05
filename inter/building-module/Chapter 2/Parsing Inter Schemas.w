@@ -14,8 +14,8 @@ Note that the results can be tested independently of //inform7// using the
 samples produce the correct schemas.
 
 =
-inter_schema *ParsingSchemas::from_text(text_stream *from) {
-	return ParsingSchemas::back_end(from, FALSE, 0, NULL);
+inter_schema *ParsingSchemas::from_text(text_stream *from, text_provenance provenance) {
+	return ParsingSchemas::back_end(from, FALSE, 0, NULL, provenance);
 }
 
 @h Abbreviated I6S notation.
@@ -45,12 +45,12 @@ inter_schema *ParsingSchemas::from_i6s(text_stream *from,
 	if (de) return (inter_schema *) Dictionaries::value_for_entry(de);
 
 	inter_schema *result = ParsingSchemas::back_end(from, TRUE,
-		no_quoted_inames, quoted_inames);
+		no_quoted_inames, quoted_inames, Provenance::nowhere());
 
 	Dictionaries::create(i6s_inter_schema_cache, from);
 	Dictionaries::write_value(i6s_inter_schema_cache, from, (void *) result);
 
-	InterSchemas::internal_error_on_schema_errors(result);
+	I6Errors::internal_error_on_schema_errors(result);
 	return result;
 }
 
@@ -84,16 +84,16 @@ so it's the caller's responsibility to check for those and act accordingly.
 
 =
 void ParsingSchemas::from_inline_phrase_definition(wchar_t *from, inter_schema **head,
-	inter_schema **tail) {
+	inter_schema **tail, text_provenance provenance) {
 	*head = NULL; *tail = NULL;
 
 	text_stream *head_defn = Str::new();
 	text_stream *tail_defn = Str::new();
 	@<Fetch the head and tail definitions@>;
 
-	*head = ParsingSchemas::from_text(head_defn);
+	*head = ParsingSchemas::from_text(head_defn, provenance);
 	if (Str::len(tail_defn) > 0)
-		*tail = ParsingSchemas::from_text(tail_defn);
+		*tail = ParsingSchemas::from_text(tail_defn, provenance);
 }
 
 @ A tail will only be present if the definition contains |{-block}|. If it
@@ -148,8 +148,8 @@ and then this will work as might be hoped:
 
 =
 inter_schema *ParsingSchemas::back_end(text_stream *from, int abbreviated,
-	int no_quoted_inames, void **quoted_inames) {
-	inter_schema *sch = InterSchemas::new(from);
+	int no_quoted_inames, void **quoted_inames, text_provenance provenance) {
+	inter_schema *sch = InterSchemas::new(from, provenance);
 	if ((Log::aspect_switched_on(SCHEMA_COMPILATION_DA)) ||
 		(Log::aspect_switched_on(SCHEMA_COMPILATION_DETAILS_DA)))
 		LOG("\n\n------------\nCompiling inter schema from: <%S>\n", from);
@@ -159,6 +159,10 @@ inter_schema *ParsingSchemas::back_end(text_stream *from, int abbreviated,
 		sch->dereference_mode = TRUE; pos = 3;
 	}
 	Tokenisation::go(sch, from, pos, abbreviated, no_quoted_inames, quoted_inames);
+	if ((Log::aspect_switched_on(SCHEMA_COMPILATION_DA)) ||
+		(Log::aspect_switched_on(SCHEMA_COMPILATION_DETAILS_DA)))
+		LOG("Tokenised inter schema:\n$1", sch);
+	
 	Ramification::go(sch);
 	InterSchemas::lint(sch);
 

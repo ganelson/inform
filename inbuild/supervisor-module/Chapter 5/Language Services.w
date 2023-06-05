@@ -83,6 +83,7 @@ void Languages::scan(inbuild_copy *C) {
 			}
 		}
 	} else {
+		SVEXPLAIN(2, "(no JSON metadata file found at %f)\n", F);
 		TEMPORARY_TEXT(err)
 		WRITE_TO(err, "a language bundle must now provide a 'language_metadata.json' file");
 		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
@@ -243,14 +244,18 @@ so the function is now deprecated:
 
 =
 text_stream *Languages::find_by_native_cue(text_stream *cue, linked_list *search) {
+	SVEXPLAIN(3, "(find language by native cue %S)\n", cue);
 	linked_list *results = NEW_LINKED_LIST(inbuild_search_result);
 	Nests::search_for(Requirements::anything_of_genre(language_genre), search, results);
 	inbuild_search_result *search_result;
 	LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, results) {
 		inform_language *L = LanguageManager::from_copy(search_result->copy);
-		if (Str::eq_insensitive(cue, L->native_cue))
+		if (Str::eq_insensitive(cue, L->native_cue)) {
+			SVEXPLAIN(3, "(found at %p)\n", L->as_copy->location_if_path);
 			return L->as_copy->edition->work->title;
+		}
 	}
+	SVEXPLAIN(3, "(not found)\n");
 	return NULL;
 }
 

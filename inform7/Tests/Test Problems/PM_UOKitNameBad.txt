@@ -1,0 +1,5 @@
+The Viability Chamber is a room.
+
+Use frog count translates as the configuration flag FROG_COUNT in Amphibian_Kit.
+Use toad count translates as the configuration flag TOAD_COUNT in AmphibianK.
+Use newt count translates as the configuration flag NEWT_COUNT in amphibianKit.

@@ -165,7 +165,7 @@ and we do that in this module, using a data structure called an //inter_schema//
 in effect, an annotated syntax tree -- to represent the results of parsing Inform 6
 notation. For example, this:
 = (text as InC)
-	inter_schema *sch = ParsingSchemas::from_text(I"return true;");
+	inter_schema *sch = ParsingSchemas::from_text(I"return true;", where);
 	EmitInterSchemas::emit(I, ..., sch, ...);
 =
 generates Inter code equivalent to the example above.[3] But the real power of

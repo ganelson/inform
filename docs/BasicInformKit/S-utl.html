@@ -73,7 +73,7 @@ MathJax = {
 <span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_ZCODE</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">BLOCKV_STACK_SIZE</span><span class="plain-syntax"> = </span><span class="constant-syntax">224</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">ifnot</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">BLOCKV_STACK_SIZE</span><span class="plain-syntax"> = </span><span class="identifier-syntax">DynamicMemoryAllocation</span><span class="plain-syntax">/4;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">BLOCKV_STACK_SIZE</span><span class="plain-syntax"> = </span><span class="identifier-syntax">BasicInformKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">STACK_FRAME_CAPACITY_CFGV</span><span class="plain-syntax"> / </span><span class="constant-syntax">4</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">blockv_stack</span><span class="plain-syntax"> --&gt; </span><span class="identifier-syntax">BLOCKV_STACK_SIZE</span><span class="plain-syntax">;</span>

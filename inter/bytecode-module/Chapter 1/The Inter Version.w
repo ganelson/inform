@@ -55,11 +55,14 @@ to directives.
 represent new data structures with custom kind constructors from Neptune files
 in Inform kits.
 
+5.0.0 (24 April 2023) added (further) new fields to |SPLAT_IST| instructions, to
+record their provenance and so make better error reporting possible.
+
 @ Anyway, the implementation, such as it is:
 
 =
 semantic_version_number InterVersion::current(void) {
-	semantic_version_number V = VersionNumbers::from_text(I"4.0.0");
+	semantic_version_number V = VersionNumbers::from_text(I"5.0.0");
 	if (VersionNumbers::is_null(V)) internal_error("malformed version number");
 	return V;
 }

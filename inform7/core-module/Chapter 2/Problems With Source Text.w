@@ -62,6 +62,13 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 					"which I don't recognise (which is not fine). Specifically, %2.");
 				Problems::issue_problem_end();
 				break;
+			case PROJECT_MALFORMED_CE:
+				Problems::quote_stream(1, CE->details);
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+				Problems::issue_problem_segment(
+					"This project seems to be malformed. Specifically, %1.");
+				Problems::issue_problem_end();
+				break;
 			case METADATA_MALFORMED_CE:
 				if (CE->copy->found_by) {
 					Problems::quote_work(1, CE->copy->found_by->work);
@@ -616,4 +623,99 @@ void SourceProblems::inter_schema_errors(inter_schema *sch) {
 		c++;
 	}
 	Problems::issue_problem_end();
+}
+
+@ And these are errors (mostly) from parsing the Inform 6-syntax content
+in |Include (- ... -)| insertions of low-level code:
+
+=
+text_stream *notified_kit_name = NULL;
+text_stream *notified_architecture_name = NULL;
+int general_kit_notice_issued = FALSE;
+int trigger_kit_notice = FALSE;
+
+void SourceProblems::kit_notification(text_stream *kit_name, text_stream *architecture_name) {
+	if (Str::len(kit_name) > 0) trigger_kit_notice = TRUE;
+	else trigger_kit_notice = FALSE;
+	notified_kit_name = Str::duplicate(kit_name);
+	notified_architecture_name = Str::duplicate(architecture_name);
+}
+
+void SourceProblems::I6_level_error(char *message, text_stream *quote,
+	text_provenance at) {
+	filename *F = Provenance::get_filename(at);
+	int line = Provenance::get_line(at);
+	TEMPORARY_TEXT(file)
+	if (F) WRITE_TO(file, "%f", F);
+	TEMPORARY_TEXT(kit)
+	TEMPORARY_TEXT(M)
+	WRITE_TO(M, message, quote);
+	if (Provenance::is_somewhere(at)) {
+		TEMPORARY_TEXT(EX)
+		Filenames::write_extension(EX, F);
+		if (Str::eq_insensitive(EX, I".i6t")) {
+			pathname *P = Filenames::up(F);
+			if (Str::eq_insensitive(Pathnames::directory_name(P), I"Sections"))
+				P = Pathnames::up(P);
+			WRITE_TO(kit, "%S", Pathnames::directory_name(P));
+			Str::clear(file);
+			WRITE_TO(file, "%S", Filenames::get_leafname(F));
+		}
+		DISCARD_TEXT(EX)
+	}
+	if (trigger_kit_notice) {
+		if (general_kit_notice_issued == FALSE) {
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+			Problems::issue_problem_segment(
+				"Before the project could be translated, one of the 'kits' of low-level "
+				"Inter code which it uses needed to be built first. This is seldom "
+				"necessary and normally happens silently when it is, but this time errors "
+				"occurred and therefore translation had to be abandoned. If you are "
+				"currently tinkering with a kit, you'll often see errors like this, "
+				"but otherwise it probably means that a new extension you're using "
+				"(and which contains a kit) isn't properly working.");
+			general_kit_notice_issued = TRUE;
+			Problems::issue_problem_end();
+		}
+		WRITE_TO(problems_file, "<h3>Building %S for architecture %S</h3>\n",
+			notified_kit_name, notified_architecture_name);
+		trigger_kit_notice = FALSE;
+	}
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_I6SyntaxError));
+	Problems::quote_stream(1, M);
+	if (Str::len(kit) > 0) {
+		Problems::quote_stream(2, file);
+		Problems::quote_number(3, &line);
+		Problems::quote_stream(4, kit);
+		if (general_kit_notice_issued) Problems::issue_problem_segment("%2, near line %3: %1.");
+		else Problems::issue_problem_segment("Near line %3 of file %2 in %4: %1.");
+	} else if (Provenance::is_somewhere(at)) {
+		LOG("%S, line %d:\n", file, line);
+		Problems::problem_quote_file(2, file, line);
+		Problems::issue_problem_segment(
+			"Inform 6 syntax error near here %2: %1.");
+	} else {
+		Problems::issue_problem_segment(
+			"My low-level reader of source code reported a mistake - \"%1\". "
+			"%PLow-level material written in Inform 6 syntax occurs either in kits or "
+			"in matter written inside 'Include (- ... -)' in source text, either in "
+			"the main source or in an extension used by it.");
+	}
+	Problems::issue_problem_end();
+	if ((Str::len(kit) > 0) && (general_kit_notice_issued)) {
+		WRITE_TO(problems_file, "<p>Path: ");
+		pathname *P = NULL, *Q = NULL, *MAT = NULL, *EXT = NULL, *INT = NULL;
+		for (Q = Filenames::up(F); Q; Q = Pathnames::up(Q)) {
+			text_stream *name = Pathnames::directory_name(Q);
+			if (Str::eq_insensitive(name, I"Extensions")) EXT = Q;
+			if (Str::eq_insensitive(name, I"Inter")) INT = Q;
+			if (Str::suffix_eq(name, I".materials", 10)) MAT = Q;
+		}
+		if (MAT) P = MAT; else if (EXT) P = EXT; else if (INT) P = INT;
+		if (P) Filenames::to_text_relative(problems_file, F, Pathnames::up(P));
+		else WRITE_TO(problems_file, "%f", F);
+		WRITE_TO(problems_file, "</p>");
+	}
+	DISCARD_TEXT(M)
+	DISCARD_TEXT(kit)
 }

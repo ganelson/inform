@@ -2,7 +2,7 @@
 (Varying room description text; Ant-Sensitive Sunglasses)
 What are activities good for? Controlling output when we want the same action to be able to produce very flexible text depending on the state of the world -- in this case, making highly variable room description and object description text.
 
-Suppose we want to create an object -- or maybe even a series of objects -- that warp the player's perception of every room description and object around him. 
+Suppose we want to create an object -- or maybe even a series of objects -- that warp the player's perception of every room description and object around them. 
 
 We've already seen some ways to create variations in text. For instance, we could make a room description with if substitutions in it, like so:
 
@@ -90,7 +90,7 @@ Now we do the same thing to room descriptions.
 
 	The activity-based room description body text rule is listed instead of the room description body text rule in the carry out looking rules. 
 	
-Our replacement rule this time around is a little bit trickier just because the rule that we're replacing is a complicated one: describing a room already checks to see whether there's light to see by, whether the player has turned off room descriptions when he enters a room for the second time, and whether the player character is (say) inside a closed box he can't see out of. 
+Our replacement rule this time around is a little bit trickier just because the rule that we're replacing is a complicated one: describing a room already checks to see whether there's light to see by, whether the player has turned off room descriptions when entering a room for the second time, and whether the player character is (say) inside a closed box they can't see out of. 
 
 But all of those details are re-copied from the standard rules, and the important thing is that, at the end, we again carry out our activity.
 

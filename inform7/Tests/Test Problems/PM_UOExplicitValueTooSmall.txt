@@ -1,0 +1,6 @@
+The Viability Chamber is a room.
+
+Use frog count of at least 20 translates as the configuration value FROG_COUNT.
+
+Use frog count of at least 33.
+Use frog count of 27.

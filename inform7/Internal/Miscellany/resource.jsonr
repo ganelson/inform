@@ -11,7 +11,9 @@
 	?"provides-kinds": [ string* ],
 	?"defines-Main": boolean,
 	?"indexes-with-structure": string,
-	?"inserts-source-text": string
+	?"inserts-source-text": string,
+	?"configuration-flags": [ string* ],
+	?"configuration-values": [ string* ]
 }
 
 <extension-metadata> ::= {

@@ -92,6 +92,54 @@ The verb to conceal (he conceals, they conceal, he concealed, it is concealed,
 he is concealing) means the concealment relation.
 Definition: Something is concealed rather than unconcealed if the holder of it conceals it.
 
+@ If a supporter or container has something on/in it, but all the contents are concealed or
+undescribed, default behavior should be the same to what it would be if it were empty. The
+following adjectives assist the maintenance of the deceit.
+
+Something is obviously-occupied if it has at least one obvious (neither concealed nor
+undescribed) thing in it, but closed opaque containers the player is outside of aren't
+obviously-occupied because their status isn't obvious. The player is undescribed and so
+the player's own presence in an enterable supporter or container doesn't count toward it
+being considered occupied. The opposite of obviously-occupied is possibly-unoccupied.
+Something is possibly-unoccupied if it's truly empty, or the only things in it are concealed
+or undescribed (or both), or it's a closed opaque container the player is outside of.
+
+Something is falsely-unoccupied if it's not a closed opaque continer the player is outside
+of and it's not truly empty but everything in it is concealed or undescribed. Note that
+falsely-unoccupied is not the opposite of obviously-occupied. Possibly-occupied is the
+opposite of obviously-occupied; falsely-occupied is something different.
+
+None of this considers visibility per se and they behave the same way in light or
+darkness. The presumption is that if the game is evaluating whether the player can perceive
+the contents of a thing, it has already been determined that they can perceive that
+thing.
+
+These tests only consider what's directly contained or supported. If there's an obvious
+thing its contents can't make it any less obvious; if something is undescribed or
+concealed, it's assumed that the game shouldn't be calling attention to their contents.
+
+These adjectives are not defined for people. Things directly held by the player are always
+perceptible by the player. Things possessed by other people aren't mentioned by default
+in room descriptions or when searching or examining them, but only through whatever rules
+an author adds to do so, so the details are left to the author.
+
+=
+Definition: a container is obviously-occupied rather than possibly-unoccupied if
+I6 routine "ObviouslyOccupied" says so (it contains at least one obvious thing).
+
+Definition: a supporter is obviously-occupied rather than possibly-unoccupied if
+I6 routine "ObviouslyOccupied" says so (it supports at least one obvious thing).
+
+Definition: a container (called c) is falsely-unoccupied:
+  if the first thing held by it is nothing, no;
+  if it is closed and it is opaque and it does not enclose the player, no;
+  decide on whether or not it is possibly-unoccupied;
+
+Definition: a supporter is falsely-unoccupied:
+  if the first thing held by it is nothing, no;
+  if the first thing held by it is the player and the next thing held after the player is nothing, no;
+  decide on whether or not it is possibly-unoccupied;
+
 @ A final sort of pseudo-containment: does the entire world contain
 something, or not? (For things destroyed during play, or not yet created, the
 answer would be no.)

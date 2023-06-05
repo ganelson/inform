@@ -87,7 +87,7 @@ In charity, though, let us assume that the author has a legitimate reason for wa
 	
 	Test me with "press 3 / in / press button 3 / look / out / in / press 27 / out / s / in / n / in / press 15 / out / in / press 18 / out / s / in / n / in / press 4 button / out".
 		
-This will all work very well, unless the player has portable objects; in that case, anything he drops on the Generic Floor will be there every time he goes back -- whether it's masquerading as Floor 6 or Floor 23. There are there are two ways round this -- (i) the cheeky way. When we drop something, the unobtrusive yet ever-vigilant maids pick it up and take it down to the Foyer's lost property office; and (ii) the super-duper way, in which things are moved out of play but with their floor numbers remembered, so that the scenario can be reconstructed each time. (i) is probably in fact the more true-to-life, considering the hotel's boasts about its service, but we will demonstrate both methods.
+This will all work very well, unless the player has portable objects; in that case, anything they drop on the Generic Floor will be there every time they go back -- whether it's masquerading as Floor 6 or Floor 23. There are there are two ways round this -- (i) the cheeky way. When we drop something, the unobtrusive yet ever-vigilant maids pick it up and take it down to the Foyer's lost property office; and (ii) the super-duper way, in which things are moved out of play but with their floor numbers remembered, so that the scenario can be reconstructed each time. (i) is probably in fact the more true-to-life, considering the hotel's boasts about its service, but we will demonstrate both methods.
 
 Here is the version with vigilant maids:
 
@@ -100,7 +100,7 @@ Here is the version with vigilant maids:
 	
 	Test maids with "in / press 6 / out / drop all / in / out / in / press 23 / out / in / press 1 / out / s / get all".
 	
-Notice that we tie the maid service to the pressing of the lift button, so that if the player just goes into the lift and comes out again, the maids will not have had a chance to clear his possessions. 
+Notice that we tie the maid service to the pressing of the lift button, so that if the player just goes into the lift and comes out again, the maids will not have had a chance to clear the dropped items.
 
 Alternatively:
 
@@ -129,6 +129,6 @@ The "enclosed by" line clears even things left on, say, small un-portable side-t
 	
 	Test management with "get all from bag / in / press 22 / out / drop tickets / in / press 23 / out / drop gown / in / press 22 / out / get tickets / in / press 23 / out / get gown".
 	
-And now we have a situation in which the player's valuables are left untouched wherever in the hotel he happens to abandon them.
+And now we have a situation in which the player's valuables are left untouched wherever in the hotel they happen to abandon them.
 	
 Incidentally, this example was almost set in an entirely different location: the largest hotel in the world may some day be the Ryugyong Hotel in Pyongyang, North Korea, with its 105 floors -- but for some years construction halted at the creation of the building's huge concrete shell.

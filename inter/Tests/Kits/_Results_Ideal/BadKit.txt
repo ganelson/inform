@@ -1,21 +1,21 @@
-inter: inform 6 syntax error in function 'E1': operator '+' used with 1 not 2 operand(s)
-inter: inform 6 syntax error in function 'E2': do without until
-inter: inform 6 syntax error in function 'E3': expected 'on' or 'off' after 'font', not 'whatever'
-inter: inform 6 syntax error in function 'E4': move without to
-inter: inform 6 syntax error in function 'E5': 'for' header with too few clauses
-inter: inform 6 syntax error in function 'E6': 'for' header with too many clauses
-inter: inform 6 syntax error in function 'E7': unexpected '{ ... }' code block
-inter: inform 6 syntax error in function 'E8': unexpected '{'
-inter: inform 6 syntax error in function 'E8': unexpected use of reserved word 'print'
-inter: inform 6 syntax error in function 'E8': unexpected '}'
-inter: inform 6 syntax error in function 'E9': no matching '#endif'
-inter: inform 6 syntax error in function 'E9': misplaced directive
-inter: inform 6 syntax error in function 'E10': unexpected ','
-inter: inform 6 syntax error in function 'E11': malformed '#if...'
-inter: inform 6 syntax error in function 'E11': misplaced directive
-inter: inform 6 syntax error in function 'E11': misplaced directive
-inter: inform 6 syntax error in function 'E12': '@something' was unexpected in expression context
-inter: inform 6 syntax error in function 'E13': too many arguments for call-message
-inter: inform 6 syntax error in function 'E14': malformed literal number '$ffa0z'
-inter: inform 6 syntax error in function 'E15': unexpected use of reserved word 'return'
-inter: inform 6 syntax error in function 'E16': 'objectloop' without visible variable
+inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 11: Inform 6 syntax error in function 'E1': operator '+' used with 1 not 2 operand(s)
+inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 14: Inform 6 syntax error in function 'E2': do without until
+inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 19: Inform 6 syntax error in function 'E3': expected 'on' or 'off' after 'font', not 'whatever'
+inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 21: Inform 6 syntax error in function 'E4': move without to
+inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 23: Inform 6 syntax error in function 'E5': 'for' header with too few clauses
+inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 25: Inform 6 syntax error in function 'E6': 'for' header with too many clauses
+inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 27: Inform 6 syntax error in function 'E7': unexpected '{ ... }' code block
+inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 29: Inform 6 syntax error in function 'E8': unexpected '{'
+inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 29: Inform 6 syntax error in function 'E8': unexpected use of reserved word 'print'
+inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 29: Inform 6 syntax error in function 'E8': unexpected '}'
+inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 31: Inform 6 syntax error in function 'E9': no matching '#endif'
+inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 31: Inform 6 syntax error in function 'E9': misplaced directive
+inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 33: Inform 6 syntax error in function 'E10': unexpected ','
+inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 35: Inform 6 syntax error in function 'E11': malformed '#if...'
+inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 35: Inform 6 syntax error in function 'E11': misplaced directive
+inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 35: Inform 6 syntax error in function 'E11': misplaced directive
+inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 37: Inform 6 syntax error in function 'E12': '@something' was unexpected in expression context
+inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 39: Inform 6 syntax error in function 'E13': too many arguments for call-message
+inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 41: Inform 6 syntax error in function 'E14': malformed literal number '$ffa0z'
+inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 43: Inform 6 syntax error in function 'E15': unexpected use of reserved word 'return'
+inter: inter/Tests/Kits/_kits/BadKit/Sections/Wrong Wrong Wrong.i6t, line 45: Inform 6 syntax error in function 'E16': 'objectloop' without visible variable

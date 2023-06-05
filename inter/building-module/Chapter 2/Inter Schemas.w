@@ -17,17 +17,19 @@ typedef struct inter_schema {
 	int mid_case; /* does this seem to be used inside a switch case? */
 	int dereference_mode; /* emit from this in dereference-pointers mode */
 	struct linked_list *parsing_errors; /* of |schema_parsing_error| */
+	struct text_provenance provenance;
 	CLASS_DEFINITION
 } inter_schema;
 
 @ =
-inter_schema *InterSchemas::new(text_stream *source) {
+inter_schema *InterSchemas::new(text_stream *source, text_provenance provenance) {
 	inter_schema *sch = CREATE(inter_schema);
 	sch->converted_from = Str::duplicate(source);
 	sch->node_tree = NULL;
 	sch->mid_case = FALSE;
 	sch->dereference_mode = FALSE;
 	sch->parsing_errors = NULL;
+	sch->provenance = provenance;
 	return sch;
 }
 
@@ -68,11 +70,13 @@ typedef struct inter_schema_node {
 
 	int blocked_by_conditional;						/* used in code generation */
 
+	struct text_provenance provenance; 				/* used for error reporting */
 	CLASS_DEFINITION
 } inter_schema_node;
 
 @ =
-inter_schema_node *InterSchemas::new_node(inter_schema *sch, int isnt) {
+inter_schema_node *InterSchemas::new_node(inter_schema *sch, int isnt,
+	inter_schema_token *near_here) {
 	inter_schema_node *isn = CREATE(inter_schema_node);
 	isn->parent_schema = sch;
 
@@ -92,6 +96,15 @@ inter_schema_node *InterSchemas::new_node(inter_schema *sch, int isnt) {
 	isn->unopened = FALSE;
 	isn->blocked_by_conditional = FALSE;
 
+	isn->provenance = (sch)?(sch->provenance):(Provenance::nowhere());
+	if (near_here) Provenance::advance_line(&(isn->provenance), near_here->line_offset);
+	return isn;
+}
+
+inter_schema_node *InterSchemas::new_node_near_node(inter_schema *sch, int isnt,
+	inter_schema_node *near_here) {
+	inter_schema_node *isn = InterSchemas::new_node(sch, isnt, NULL);
+	if (near_here) isn->provenance = near_here->provenance;
 	return isn;
 }
 
@@ -141,7 +154,7 @@ void InterSchemas::mark_unopened(inter_schema_node *isn) {
 			inter_schema *sch = isn->parent_schema;
 			inter_schema_node *top = sch->node_tree;
 			inter_schema_node *code_isn =
-				InterSchemas::new_node(isn->parent_schema, CODE_ISNT);
+				InterSchemas::new_node(isn->parent_schema, CODE_ISNT, NULL);
 			code_isn->child_node = top;
 			sch->node_tree = code_isn;
 			for (inter_schema_node *n = top; n; n = n->next_node)
@@ -232,13 +245,13 @@ typedef struct inter_schema_token {
 
 	int preinsert;								/* fleeting markers only */
 	int postinsert;
-
+	int line_offset;							/* counting lines for error message use */
 	CLASS_DEFINITION
 } inter_schema_token;
 
 @ =
 inter_schema_token *InterSchemas::new_token(int type, text_stream *material,
-	inter_ti operation_primitive, int reserved_word, int n) {
+	inter_ti operation_primitive, int reserved_word, int n, int offset) {
 	inter_schema_token *t = CREATE(inter_schema_token);
 	t->ist_type = type;
 	t->material = Str::duplicate(material);
@@ -260,6 +273,7 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material,
 	t->constant_number = n;
 	t->preinsert = FALSE;
 	t->postinsert = FALSE;
+	t->line_offset = offset;
 	return t;
 }
 
@@ -376,7 +390,7 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material,
 =
 void InterSchemas::add_token(inter_schema *sch, inter_schema_token *t) {
 	if (sch->node_tree == NULL)
-		sch->node_tree = InterSchemas::new_node(sch, EXPRESSION_ISNT);
+		sch->node_tree = InterSchemas::new_node(sch, EXPRESSION_ISNT, t);
 	InterSchemas::add_token_to_node(sch->node_tree, t);
 }
 
@@ -457,6 +471,11 @@ void InterSchemas::log_depth(inter_schema_node *isn, int depth) {
 		InterSchemas::log_just(isn, depth);
 }
 void InterSchemas::log_just(inter_schema_node *isn, int depth) {
+	if (Provenance::is_somewhere(isn->provenance)) {
+		LOG("%04d ", Provenance::get_line(isn->provenance));
+	} else {
+		LOG(".... ");
+	}
 	if (isn->blocked_by_conditional) LOG("XX"); else LOG("  ");
 	for (int d = 0; d < depth; d++) LOG("    ");
 	switch (isn->isn_type) {
@@ -514,6 +533,11 @@ void InterSchemas::log_just(inter_schema_node *isn, int depth) {
 			if (isn->expression_tokens == NULL) LOG(" - empty");
 			LOG("\n");
 			for (inter_schema_token *t = isn->expression_tokens; t; t=t->next) {
+				if (Provenance::is_somewhere(isn->provenance)) {
+					LOG("%04d ", Provenance::get_line(isn->provenance));
+				} else {
+					LOG(".... ");
+				}
 				for (int d = 0; d < depth + 1; d++) LOG("    ");
 				InterSchemas::log_ist(t);
 				if (isn != t->owner) LOG(" !!! ownership incorrect here");
@@ -626,48 +650,4 @@ text_stream *InterSchemas::lint_isn(inter_schema_node *isn, int depth) {
 		if (R) return R;
 	}
 	return NULL;
-}
-
-@h Errors.
-Errors can be detected both when parsing text into schemas, and also when emitting
-code from them. In either case, the following is used to attach error message(s)
-to the schema itself.
-
-Note that the |parsing_errors| field is null until the first error is detected --
-which, of course, it usually isn't.
-
-=
-typedef struct schema_parsing_error {
-	struct text_stream *message;
-	CLASS_DEFINITION
-} schema_parsing_error;
-
-@ =
-void InterSchemas::throw_error(inter_schema_node *at, text_stream *message) {
-	if (at->parent_schema->parsing_errors == NULL)
-		at->parent_schema->parsing_errors = NEW_LINKED_LIST(schema_parsing_error);
-	schema_parsing_error *err = CREATE(schema_parsing_error);
-	err->message = Str::duplicate(message);
-	ADD_TO_LINKED_LIST(err, schema_parsing_error, at->parent_schema->parsing_errors);
-	LOG("Schema error: %S\n", message);
-	LOG("$1\n", at->parent_schema);
-}
-
-@ And this is an especially drastic way to deal with such errors:
-
-=
-void InterSchemas::internal_error_on_schema_errors(inter_schema *sch) {
-	if (LinkedLists::len(sch->parsing_errors) > 0) {
-		#ifdef CORE_MODULE
-		SourceProblems::inter_schema_errors(sch);
-		#endif
-		#ifndef CORE_MODULE
-		WRITE_TO(STDERR, "Parsing error(s) in the internal schema '%S':\n",
-			sch->converted_from);
-		schema_parsing_error *err;
-		LOOP_OVER_LINKED_LIST(err, schema_parsing_error, sch->parsing_errors)
-			WRITE_TO(STDERR, "- %S\n", err->message);
-		internal_error("malformed schema");
-		#endif
-	}
 }

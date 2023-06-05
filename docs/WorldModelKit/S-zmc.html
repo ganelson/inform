@@ -76,7 +76,7 @@
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse</span><span class="plain-syntax">-&gt;0   = </span><span class="constant-syntax">15</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse2</span><span class="plain-syntax">-&gt;0  = </span><span class="constant-syntax">15</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">FIX_RNG_TCBIT</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">BasicInformKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">FIX_RNG_CFGF</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        @</span><span class="reserved-syntax">random</span><span class="plain-syntax"> </span><span class="constant-syntax">10000</span><span class="plain-syntax"> -&gt; </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = -</span><span class="identifier-syntax">i</span><span class="plain-syntax">-2000;</span>
 <span class="plain-syntax">        @</span><span class="reserved-syntax">random</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> -&gt; </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>

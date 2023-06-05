@@ -15,7 +15,7 @@ Notice that the following two scenarios do not have the same effect:
 		
 	Test me with "x me / x killer / touch killer / smell mace".
 	
-...will prevent the player from doing anything else to the killer, but allow him free range of action with other objects. By contrast, the following will prevent him doing anything other than examining to any item:
+...will prevent the player from doing anything else to the killer, but allow them free range of action with other objects. By contrast, the following will prevent them doing anything other than examining to any item:
 	
 	{*}"Zodiac"
 	

@@ -205,7 +205,7 @@ use the "listing contents of..." activity in any circumstances.
 		if (i<no_items-2) print ", ";
 		if (i==no_items-2) {
 			if (format == 1) print ", "; else {
-				if (KIT_CONFIGURATION_BITMAP & SERIAL_COMMA_TCBIT) {
+				if (BasicInformKit`SERIAL_COMMA_CFGF) {
 					if (no_items ~= 2) print ",";
 				}
 				LIST_WRITER_INTERNAL_RM('C');

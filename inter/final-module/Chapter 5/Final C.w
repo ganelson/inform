@@ -132,6 +132,7 @@ int CTarget::begin_generation(code_generator *gtr, code_generation *gen) {
 	@<Parse the C compilation options@>;
 	@<Compile the Clib header inclusion and some clang pragmas@>;
 	@<Compile the Clib code inclusion@>;
+	@<Default the dictionary resolution@>;
 
 	CNamespace::fix_locals(gen);
 	CMemoryModel::begin(gen);
@@ -181,6 +182,16 @@ int CTarget::begin_generation(code_generator *gtr, code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#include \"inform7_clib.c\"\n");
 	CodeGen::deselect(gen, saved);
+
+@<Default the dictionary resolution@> =
+	if (gen->dictionary_resolution < 0) {
+		segmentation_pos saved = CodeGen::select(gen, c_ids_and_maxima_I7CGS);
+		text_stream *OUT = CodeGen::current(gen);
+		WRITE("#define ");
+		CNamespace::mangle(gtr, OUT, I"DICT_WORD_SIZE");
+		WRITE(" 9\n");
+		CodeGen::deselect(gen, saved);
+	}
 
 @ The Inform 6 compiler automatically generates the dictionary, verb and actions
 tables, but other compilers do not, of course, so generators for other languages

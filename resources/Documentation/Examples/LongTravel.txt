@@ -1,6 +1,6 @@
 ** Commands consisting only of nouns
 (GO TO ROOM with automatic door-handling en route--Traveling by room name, opening doors on the way; Safari Guide)
-The same functionality, but making the player continue to move until he reaches his destination or a barrier, handling all openable doors on the way.
+The same functionality, but making the player continue to move until they reach their destination or a barrier, handling all openable doors on the way.
 
 The foregoing example moves the player one location towards his destination, and requires that rooms have been visited before. But suppose we wanted to be a bit more lenient about movement, and let the player make as many steps as necessary per turn. We will also show consideration about doors, using the "Locksmith" extension supplied with Inform. (Now every time the code attempts opening a door, unlocking rules will also be invoked.)
 
@@ -28,4 +28,4 @@ The foregoing example moves the player one location towards his destination, and
 	
 	Test me with "go to aviary / go to ostrich enclosure / african grasslands".
 		
-Notice that we continue the movement until one of two things happens: either the player reaches the room that is his destination, or the going attempt doesn't work. In the latter case we stop the action in order to avoid hanging the game up in a loop. This event might occur when the player runs into a locked door, for instance.
+Notice that we continue the movement until one of two things happens: either the player reaches the room that is their destination, or the going attempt doesn't work. In the latter case we stop the action in order to avoid hanging the game up in a loop. This event might occur when the player runs into a locked door, for instance.

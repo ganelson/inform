@@ -27,7 +27,7 @@ As the descriptions make clear, the ferris wheel should be visible from everywhe
 
 as it normally would.
 
-Now, by default, if the player were to type TOUCH FERRIS WHEEL while in another room, he would get the response
+Now, by default, if the player were to type TOUCH FERRIS WHEEL while in another room, the story would respond
 
 	You can't reach into By the Wheel.
 	

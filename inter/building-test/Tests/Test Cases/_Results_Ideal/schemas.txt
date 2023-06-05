@@ -1,2604 +1,2604 @@
 Test: parse schema from:
 	{-say:val:K} 
 
-  * (expr)
-    INLINE      -say:val:K
+0001   * (expr)
+0001     INLINE      -say:val:K
 =========
 Test: parse schema from:
 	print (number) say__n=({something}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LanguageNumber
-      * (operation) !store
-          * (expr)
-            IDENTIFIER  say__n
-          * (subexpression)
-              * (expr)
-                INLINE      something
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LanguageNumber
+0001       * (operation) !store
+0001           * (expr)
+0001             IDENTIFIER  say__n
+0001           * (subexpression)
+0001               * (expr)
+0001                 INLINE      something
 =========
 Test: parse schema from:
 	STextSubstitution(); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  STextSubstitution
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  STextSubstitution
 =========
 Test: parse schema from:
 	print (PrintTimeOfDayEnglish) {something}; 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  PrintTimeOfDayEnglish
-      * (expr)
-        INLINE      something
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  PrintTimeOfDayEnglish
+0001       * (expr)
+0001         INLINE      something
 =========
 Test: parse schema from:
 	print (a) {something}; 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  IndefArt
-      * (expr)
-        INLINE      something
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  IndefArt
+0001       * (expr)
+0001         INLINE      something
 =========
 Test: parse schema from:
 	print (a) {something}; 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  IndefArt
-      * (expr)
-        INLINE      something
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  IndefArt
+0001       * (expr)
+0001         INLINE      something
 =========
 Test: parse schema from:
 	CIndefArt({something}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  CIndefArt
-      * (expr)
-        INLINE      something
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  CIndefArt
+0001       * (expr)
+0001         INLINE      something
 =========
 Test: parse schema from:
 	CIndefArt({something}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  CIndefArt
-      * (expr)
-        INLINE      something
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  CIndefArt
+0001       * (expr)
+0001         INLINE      something
 =========
 Test: parse schema from:
 	print (the) {something}; 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  DefArt
-      * (expr)
-        INLINE      something
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  DefArt
+0001       * (expr)
+0001         INLINE      something
 =========
 Test: parse schema from:
 	print (The) {something}; 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  CDefArt
-      * (expr)
-        INLINE      something
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  CDefArt
+0001       * (expr)
+0001         INLINE      something
 =========
 Test: parse schema from:
 	@nop; {-segment-count}: 
 
-  * (assembly)
-      * (expr)
-        OPCODE      @nop
-  * (statement) !case
-      * (expr)
-        INLINE      -segment-count
-      * (code) <
+0001   * (assembly)
+0001       * (expr)
+0001         OPCODE      @nop
+0001   * (statement) !case
+0001       * (expr)
+0001         INLINE      -segment-count
+0001       * (code) <
 =========
 Test: parse schema from:
 	{-close-brace} 
 
-  * (code) >
+0001   * (code) >
 =========
 Test: parse schema from:
 	{-close-brace} 
 
-  * (code) >
+0001   * (code) >
 =========
 Test: parse schema from:
 	{-close-brace} 
 
-  * (code) >
+0001   * (code) >
 =========
 Test: parse schema from:
 	{-close-brace} 
 
-  * (code) >
+0001   * (code) >
 =========
 Test: parse schema from:
 	{-close-brace} 
 
-  * (code) >
+0001   * (code) >
 =========
 Test: parse schema from:
 	{-close-brace} 
 
-  * (code) >
+0001   * (code) >
 =========
 Test: parse schema from:
 	{-close-brace} 
 
-  * (code) >
+0001   * (code) >
 =========
 Test: parse schema from:
 	{-close-brace} 
 
-  * (code) >
+0001   * (code) >
 =========
 Test: parse schema from:
 	{-close-brace} 
 
-  * (code) >
+0001   * (code) >
 =========
 Test: parse schema from:
 	{-close-brace} 
 
-  * (code) >
+0001   * (code) >
 =========
 Test: parse schema from:
 	new_line; 
 
-  * (statement) !print
-      * (expr)
-        DQUOTED     
+0001   * (statement) !print
+0001       * (expr)
+0001         DQUOTED     
 
 =========
 Test: parse schema from:
 	DivideParagraphPoint(); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  DivideParagraphPoint
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  DivideParagraphPoint
 =========
 Test: parse schema from:
 	CommandClarificationBreak(); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  CommandClarificationBreak
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  CommandClarificationBreak
 =========
 Test: parse schema from:
 	DivideParagraphPoint(); new_line; 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  DivideParagraphPoint
-  * (statement) !print
-      * (expr)
-        DQUOTED     
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  DivideParagraphPoint
+0001   * (statement) !print
+0001       * (expr)
+0001         DQUOTED     
 
 =========
 Test: parse schema from:
 	RunParagraphOn(); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  RunParagraphOn
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  RunParagraphOn
 =========
 Test: parse schema from:
 	SpecialLookSpacingBreak(); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  SpecialLookSpacingBreak
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  SpecialLookSpacingBreak
 =========
 Test: parse schema from:
 	(say__p) 
 
-  * (subexpression)
-      * (expr)
-        IDENTIFIER  say__p
+0001   * (subexpression)
+0001       * (expr)
+0001         IDENTIFIER  say__p
 =========
 Test: parse schema from:
 	print "["; 
 
-  * (statement) !print
-      * (expr)
-        DQUOTED     [
+0001   * (statement) !print
+0001       * (expr)
+0001         DQUOTED     [
 =========
 Test: parse schema from:
 	print "]"; 
 
-  * (statement) !print
-      * (expr)
-        DQUOTED     ]
+0001   * (statement) !print
+0001       * (expr)
+0001         DQUOTED     ]
 =========
 Test: parse schema from:
 	print "'"; 
 
-  * (statement) !print
-      * (expr)
-        DQUOTED     '
+0001   * (statement) !print
+0001       * (expr)
+0001         DQUOTED     '
 =========
 Test: parse schema from:
 	print "~"; 
 
-  * (statement) !print
-      * (expr)
-        DQUOTED     "
+0001   * (statement) !print
+0001       * (expr)
+0001         DQUOTED     "
 =========
 Test: parse schema from:
 	style bold; 
 
-  * (statement) !style
-      * (expr)
-        NUMBER      1
+0001   * (statement) !style
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	style underline; 
 
-  * (statement) !style
-      * (expr)
-        NUMBER      2
+0001   * (statement) !style
+0001       * (expr)
+0001         NUMBER      2
 =========
 Test: parse schema from:
 	style roman; 
 
-  * (statement) !style
-      * (expr)
-        NUMBER      0
+0001   * (statement) !style
+0001       * (expr)
+0001         NUMBER      0
 =========
 Test: parse schema from:
 	font off; 
 
-  * (statement) !font
-      * (expr)
-        NUMBER      0
+0001   * (statement) !font
+0001       * (expr)
+0001         NUMBER      0
 =========
 Test: parse schema from:
 	font on; 
 
-  * (statement) !font
-      * (expr)
-        NUMBER      1
+0001   * (statement) !font
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	DisplayBoxedQuotation({-box-quotation-text:Q}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  DisplayBoxedQuotation
-      * (expr)
-        INLINE      -box-quotation-text:Q
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  DisplayBoxedQuotation
+0001       * (expr)
+0001         INLINE      -box-quotation-text:Q
 =========
 Test: parse schema from:
 	Banner(); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  Banner
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  Banner
 =========
 Test: parse schema from:
 	ShowExtensionVersions(); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  ShowExtensionVersions
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  ShowExtensionVersions
 =========
 Test: parse schema from:
 	ShowFullExtensionVersions(); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  ShowFullExtensionVersions
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  ShowFullExtensionVersions
 =========
 Test: parse schema from:
 	SL_Location(true); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  SL_Location
-      * (expr)
-        NUMBER      true
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  SL_Location
+0001       * (expr)
+0001         NUMBER      true
 =========
 Test: parse schema from:
 	WriteListFrom(child({O}), {phrase options}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  WriteListFrom
-      * (call)
-          * (expr)
-            IDENTIFIER  child
-          * (expr)
-            INLINE      O
-      * (expr)
-        INLINE      phrase options
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  WriteListFrom
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  child
+0001           * (expr)
+0001             INLINE      O
+0001       * (expr)
+0001         INLINE      phrase options
 =========
 Test: parse schema from:
 	c_style = c_style &~ (RECURSE_BIT+FULLINV_BIT+PARTINV_BIT); 
 
-  * (operation) !store
-      * (expr)
-        IDENTIFIER  c_style
-      * (operation) !bitwiseand
-          * (expr)
-            IDENTIFIER  c_style
-          * (operation) !bitwisenot
-              * (subexpression)
-                  * (operation) !plus
-                      * (operation) !plus
-                          * (expr)
-                            IDENTIFIER  RECURSE_BIT
-                          * (expr)
-                            IDENTIFIER  FULLINV_BIT
-                      * (expr)
-                        IDENTIFIER  PARTINV_BIT
+0001   * (operation) !store
+0001       * (expr)
+0001         IDENTIFIER  c_style
+0001       * (operation) !bitwiseand
+0001           * (expr)
+0001             IDENTIFIER  c_style
+0001           * (operation) !bitwisenot
+0001               * (subexpression)
+0001                   * (operation) !plus
+0001                       * (operation) !plus
+0001                           * (expr)
+0001                             IDENTIFIER  RECURSE_BIT
+0001                           * (expr)
+0001                             IDENTIFIER  FULLINV_BIT
+0001                       * (expr)
+0001                         IDENTIFIER  PARTINV_BIT
 =========
 Test: parse schema from:
 	LIST_OF_TY_Say({-by-reference:L}, 1); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_Say
-      * (expr)
-        INLINE      -by-reference:L
-      * (expr)
-        NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_Say
+0001       * (expr)
+0001         INLINE      -by-reference:L
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	LIST_OF_TY_Say({-by-reference:L}, 2); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_Say
-      * (expr)
-        INLINE      -by-reference:L
-      * (expr)
-        NUMBER      2
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_Say
+0001       * (expr)
+0001         INLINE      -by-reference:L
+0001       * (expr)
+0001         NUMBER      2
 =========
 Test: parse schema from:
 	LIST_OF_TY_Say({-by-reference:L}, 3); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_Say
-      * (expr)
-        INLINE      -by-reference:L
-      * (expr)
-        NUMBER      3
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_Say
+0001       * (expr)
+0001         INLINE      -by-reference:L
+0001       * (expr)
+0001         NUMBER      3
 =========
 Test: parse schema from:
 	list_filter_routine = {D}; 
 
-  * (operation) !store
-      * (expr)
-        IDENTIFIER  list_filter_routine
-      * (expr)
-        INLINE      D
+0001   * (operation) !store
+0001       * (expr)
+0001         IDENTIFIER  list_filter_routine
+0001       * (expr)
+0001         INLINE      D
 =========
 Test: parse schema from:
 	list_filter_routine = 0; 
 
-  * (operation) !store
-      * (expr)
-        IDENTIFIER  list_filter_routine
-      * (expr)
-        NUMBER      0
+0001   * (operation) !store
+0001       * (expr)
+0001         IDENTIFIER  list_filter_routine
+0001       * (expr)
+0001         NUMBER      0
 =========
 Test: parse schema from:
 	{cn} 
 
-  * (expr)
-    INLINE      cn
+0001   * (expr)
+0001     INLINE      cn
 =========
 Test: parse schema from:
 	({-arithmetic-operation:X:Y}) 
 
-  * (subexpression)
-      * (expr)
-        INLINE      -arithmetic-operation:X:Y
+0001   * (subexpression)
+0001       * (expr)
+0001         INLINE      -arithmetic-operation:X:Y
 =========
 Test: parse schema from:
 	({-arithmetic-operation:X:Y}) 
 
-  * (subexpression)
-      * (expr)
-        INLINE      -arithmetic-operation:X:Y
+0001   * (subexpression)
+0001       * (expr)
+0001         INLINE      -arithmetic-operation:X:Y
 =========
 Test: parse schema from:
 	({-arithmetic-operation:X:Y}) 
 
-  * (subexpression)
-      * (expr)
-        INLINE      -arithmetic-operation:X:Y
+0001   * (subexpression)
+0001       * (expr)
+0001         INLINE      -arithmetic-operation:X:Y
 =========
 Test: parse schema from:
 	({-arithmetic-operation:X:Y}) 
 
-  * (subexpression)
-      * (expr)
-        INLINE      -arithmetic-operation:X:Y
+0001   * (subexpression)
+0001       * (expr)
+0001         INLINE      -arithmetic-operation:X:Y
 =========
 Test: parse schema from:
 	({-arithmetic-operation:X:Y}) 
 
-  * (subexpression)
-      * (expr)
-        INLINE      -arithmetic-operation:X:Y
+0001   * (subexpression)
+0001       * (expr)
+0001         INLINE      -arithmetic-operation:X:Y
 =========
 Test: parse schema from:
 	({-arithmetic-operation:X:Y}) 
 
-  * (subexpression)
-      * (expr)
-        INLINE      -arithmetic-operation:X:Y
+0001   * (subexpression)
+0001       * (expr)
+0001         INLINE      -arithmetic-operation:X:Y
 =========
 Test: parse schema from:
 	({-arithmetic-operation:X:Y}) 
 
-  * (subexpression)
-      * (expr)
-        INLINE      -arithmetic-operation:X:Y
+0001   * (subexpression)
+0001       * (expr)
+0001         INLINE      -arithmetic-operation:X:Y
 =========
 Test: parse schema from:
 	({-arithmetic-operation:X:Y}) 
 
-  * (subexpression)
-      * (expr)
-        INLINE      -arithmetic-operation:X:Y
+0001   * (subexpression)
+0001       * (expr)
+0001         INLINE      -arithmetic-operation:X:Y
 =========
 Test: parse schema from:
 	({-arithmetic-operation:X:Y}) 
 
-  * (subexpression)
-      * (expr)
-        INLINE      -arithmetic-operation:X:Y
+0001   * (subexpression)
+0001       * (expr)
+0001         INLINE      -arithmetic-operation:X:Y
 =========
 Test: parse schema from:
 	({-arithmetic-operation:X:Y}) 
 
-  * (subexpression)
-      * (expr)
-        INLINE      -arithmetic-operation:X:Y
+0001   * (subexpression)
+0001       * (expr)
+0001         INLINE      -arithmetic-operation:X:Y
 =========
 Test: parse schema from:
 	({-arithmetic-operation:X:Y}) 
 
-  * (subexpression)
-      * (expr)
-        INLINE      -arithmetic-operation:X:Y
+0001   * (subexpression)
+0001       * (expr)
+0001         INLINE      -arithmetic-operation:X:Y
 =========
 Test: parse schema from:
 	({-arithmetic-operation:X}) 
 
-  * (subexpression)
-      * (expr)
-        INLINE      -arithmetic-operation:X
+0001   * (subexpression)
+0001       * (expr)
+0001         INLINE      -arithmetic-operation:X
 =========
 Test: parse schema from:
 	({-arithmetic-operation:X}) 
 
-  * (subexpression)
-      * (expr)
-        INLINE      -arithmetic-operation:X
+0001   * (subexpression)
+0001       * (expr)
+0001         INLINE      -arithmetic-operation:X
 =========
 Test: parse schema from:
 	{-primitive-definition:total-of} 
 
-  * (expr)
-    INLINE      -primitive-definition:total-of
+0001   * (expr)
+0001     INLINE      -primitive-definition:total-of
 =========
 Test: parse schema from:
 	Float({R}, {N}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  Float
-      * (expr)
-        INLINE      R
-      * (expr)
-        INLINE      N
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  Float
+0001       * (expr)
+0001         INLINE      R
+0001       * (expr)
+0001         INLINE      N
 =========
 Test: parse schema from:
 	FloatDec({R}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  FloatDec
-      * (expr)
-        INLINE      R
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  FloatDec
+0001       * (expr)
+0001         INLINE      R
 =========
 Test: parse schema from:
 	FloatDec({R}, {N}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  FloatDec
-      * (expr)
-        INLINE      R
-      * (expr)
-        INLINE      N
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  FloatDec
+0001       * (expr)
+0001         INLINE      R
+0001       * (expr)
+0001         INLINE      N
 =========
 Test: parse schema from:
 	FloatExp({R}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  FloatExp
-      * (expr)
-        INLINE      R
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  FloatExp
+0001       * (expr)
+0001         INLINE      R
 =========
 Test: parse schema from:
 	FloatExp({R}, {N}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  FloatExp
-      * (expr)
-        INLINE      R
-      * (expr)
-        INLINE      N
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  FloatExp
+0001       * (expr)
+0001         INLINE      R
+0001       * (expr)
+0001         INLINE      N
 =========
 Test: parse schema from:
 	REAL_NUMBER_TY_Reciprocal({R}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  REAL_NUMBER_TY_Reciprocal
-      * (expr)
-        INLINE      R
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  REAL_NUMBER_TY_Reciprocal
+0001       * (expr)
+0001         INLINE      R
 =========
 Test: parse schema from:
 	REAL_NUMBER_TY_Abs({R}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  REAL_NUMBER_TY_Abs
-      * (expr)
-        INLINE      R
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  REAL_NUMBER_TY_Abs
+0001       * (expr)
+0001         INLINE      R
 =========
 Test: parse schema from:
 	REAL_NUMBER_TY_Root({R}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  REAL_NUMBER_TY_Root
-      * (expr)
-        INLINE      R
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  REAL_NUMBER_TY_Root
+0001       * (expr)
+0001         INLINE      R
 =========
 Test: parse schema from:
 	REAL_NUMBER_TY_Ceiling({R}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  REAL_NUMBER_TY_Ceiling
-      * (expr)
-        INLINE      R
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  REAL_NUMBER_TY_Ceiling
+0001       * (expr)
+0001         INLINE      R
 =========
 Test: parse schema from:
 	REAL_NUMBER_TY_Floor({R}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  REAL_NUMBER_TY_Floor
-      * (expr)
-        INLINE      R
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  REAL_NUMBER_TY_Floor
+0001       * (expr)
+0001         INLINE      R
 =========
 Test: parse schema from:
 	REAL_NUMBER_TY_to_NUMBER_TY({R}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  REAL_NUMBER_TY_to_NUMBER_TY
-      * (expr)
-        INLINE      R
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  REAL_NUMBER_TY_to_NUMBER_TY
+0001       * (expr)
+0001         INLINE      R
 =========
 Test: parse schema from:
 	REAL_NUMBER_TY_Log({R}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  REAL_NUMBER_TY_Log
-      * (expr)
-        INLINE      R
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  REAL_NUMBER_TY_Log
+0001       * (expr)
+0001         INLINE      R
 =========
 Test: parse schema from:
 	REAL_NUMBER_TY_BLog({R}, {N}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  REAL_NUMBER_TY_BLog
-      * (expr)
-        INLINE      R
-      * (expr)
-        INLINE      N
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  REAL_NUMBER_TY_BLog
+0001       * (expr)
+0001         INLINE      R
+0001       * (expr)
+0001         INLINE      N
 =========
 Test: parse schema from:
 	REAL_NUMBER_TY_Exp({R}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  REAL_NUMBER_TY_Exp
-      * (expr)
-        INLINE      R
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  REAL_NUMBER_TY_Exp
+0001       * (expr)
+0001         INLINE      R
 =========
 Test: parse schema from:
 	REAL_NUMBER_TY_Pow({R}, {P}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  REAL_NUMBER_TY_Pow
-      * (expr)
-        INLINE      R
-      * (expr)
-        INLINE      P
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  REAL_NUMBER_TY_Pow
+0001       * (expr)
+0001         INLINE      R
+0001       * (expr)
+0001         INLINE      P
 =========
 Test: parse schema from:
 	REAL_NUMBER_TY_Times({R}, $+0.0174532925) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  REAL_NUMBER_TY_Times
-      * (expr)
-        INLINE      R
-      * (expr)
-        REAL_NUMBER $+0.0174532925
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  REAL_NUMBER_TY_Times
+0001       * (expr)
+0001         INLINE      R
+0001       * (expr)
+0001         REAL_NUMBER $+0.0174532925
 =========
 Test: parse schema from:
 	REAL_NUMBER_TY_Sin({R}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  REAL_NUMBER_TY_Sin
-      * (expr)
-        INLINE      R
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  REAL_NUMBER_TY_Sin
+0001       * (expr)
+0001         INLINE      R
 =========
 Test: parse schema from:
 	REAL_NUMBER_TY_Cos({R}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  REAL_NUMBER_TY_Cos
-      * (expr)
-        INLINE      R
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  REAL_NUMBER_TY_Cos
+0001       * (expr)
+0001         INLINE      R
 =========
 Test: parse schema from:
 	REAL_NUMBER_TY_Tan({R}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  REAL_NUMBER_TY_Tan
-      * (expr)
-        INLINE      R
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  REAL_NUMBER_TY_Tan
+0001       * (expr)
+0001         INLINE      R
 =========
 Test: parse schema from:
 	REAL_NUMBER_TY_Arcsin({R}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  REAL_NUMBER_TY_Arcsin
-      * (expr)
-        INLINE      R
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  REAL_NUMBER_TY_Arcsin
+0001       * (expr)
+0001         INLINE      R
 =========
 Test: parse schema from:
 	REAL_NUMBER_TY_Arccos({R}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  REAL_NUMBER_TY_Arccos
-      * (expr)
-        INLINE      R
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  REAL_NUMBER_TY_Arccos
+0001       * (expr)
+0001         INLINE      R
 =========
 Test: parse schema from:
 	REAL_NUMBER_TY_Arctan({R}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  REAL_NUMBER_TY_Arctan
-      * (expr)
-        INLINE      R
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  REAL_NUMBER_TY_Arctan
+0001       * (expr)
+0001         INLINE      R
 =========
 Test: parse schema from:
 	REAL_NUMBER_TY_Sinh({R}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  REAL_NUMBER_TY_Sinh
-      * (expr)
-        INLINE      R
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  REAL_NUMBER_TY_Sinh
+0001       * (expr)
+0001         INLINE      R
 =========
 Test: parse schema from:
 	REAL_NUMBER_TY_Cosh({R}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  REAL_NUMBER_TY_Cosh
-      * (expr)
-        INLINE      R
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  REAL_NUMBER_TY_Cosh
+0001       * (expr)
+0001         INLINE      R
 =========
 Test: parse schema from:
 	REAL_NUMBER_TY_Tanh({R}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  REAL_NUMBER_TY_Tanh
-      * (expr)
-        INLINE      R
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  REAL_NUMBER_TY_Tanh
+0001       * (expr)
+0001         INLINE      R
 =========
 Test: parse schema from:
 	{-primitive-definition:number-of} 
 
-  * (expr)
-    INLINE      -primitive-definition:number-of
+0001   * (expr)
+0001     INLINE      -primitive-definition:number-of
 =========
 Test: parse schema from:
 	{-next-routine:K}({X}) 
 
-  * (call)
-      * (expr)
-        INLINE      -next-routine:K
-      * (expr)
-        INLINE      X
+0001   * (call)
+0001       * (expr)
+0001         INLINE      -next-routine:K
+0001       * (expr)
+0001         INLINE      X
 =========
 Test: parse schema from:
 	{-previous-routine:K}({X}) 
 
-  * (call)
-      * (expr)
-        INLINE      -previous-routine:K
-      * (expr)
-        INLINE      X
+0001   * (call)
+0001       * (expr)
+0001         INLINE      -previous-routine:K
+0001       * (expr)
+0001         INLINE      X
 =========
 Test: parse schema from:
 	({C}) 
 
-  * (subexpression)
-      * (expr)
-        INLINE      C
+0001   * (subexpression)
+0001       * (expr)
+0001         INLINE      C
 =========
 Test: parse schema from:
 	{-primitive-definition:random-of} 
 
-  * (expr)
-    INLINE      -primitive-definition:random-of
+0001   * (expr)
+0001     INLINE      -primitive-definition:random-of
 =========
 Test: parse schema from:
 	{-ranger-routine:K}({first value}, {second value}) 
 
-  * (call)
-      * (expr)
-        INLINE      -ranger-routine:K
-      * (expr)
-        INLINE      first value
-      * (expr)
-        INLINE      second value
+0001   * (call)
+0001       * (expr)
+0001         INLINE      -ranger-routine:K
+0001       * (expr)
+0001         INLINE      first value
+0001       * (expr)
+0001         INLINE      second value
 =========
 Test: parse schema from:
 	{-ranger-routine:K}({first value}, {second value}) 
 
-  * (call)
-      * (expr)
-        INLINE      -ranger-routine:K
-      * (expr)
-        INLINE      first value
-      * (expr)
-        INLINE      second value
+0001   * (call)
+0001       * (expr)
+0001         INLINE      -ranger-routine:K
+0001       * (expr)
+0001         INLINE      first value
+0001       * (expr)
+0001         INLINE      second value
 =========
 Test: parse schema from:
 	{-ranger-routine:K}({first value}, {second value}) 
 
-  * (call)
-      * (expr)
-        INLINE      -ranger-routine:K
-      * (expr)
-        INLINE      first value
-      * (expr)
-        INLINE      second value
+0001   * (call)
+0001       * (expr)
+0001         INLINE      -ranger-routine:K
+0001       * (expr)
+0001         INLINE      first value
+0001       * (expr)
+0001         INLINE      second value
 =========
 Test: parse schema from:
 	{-ranger-routine:K}({first value}, {second value}) 
 
-  * (call)
-      * (expr)
-        INLINE      -ranger-routine:K
-      * (expr)
-        INLINE      first value
-      * (expr)
-        INLINE      second value
+0001   * (call)
+0001       * (expr)
+0001         INLINE      -ranger-routine:K
+0001       * (expr)
+0001         INLINE      first value
+0001       * (expr)
+0001         INLINE      second value
 =========
 Test: parse schema from:
 	(GenerateRandomNumber(1, {M}) <= {N}) 
 
-  * (subexpression)
-      * (operation) !le
-          * (call)
-              * (expr)
-                IDENTIFIER  GenerateRandomNumber
-              * (expr)
-                NUMBER      1
-              * (expr)
-                INLINE      M
-          * (expr)
-            INLINE      N
+0001   * (subexpression)
+0001       * (operation) !le
+0001           * (call)
+0001               * (expr)
+0001                 IDENTIFIER  GenerateRandomNumber
+0001               * (expr)
+0001                 NUMBER      1
+0001               * (expr)
+0001                 INLINE      M
+0001           * (expr)
+0001             INLINE      N
 =========
 Test: parse schema from:
 	VM_Seed_RNG({N}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  VM_Seed_RNG
-      * (expr)
-        INLINE      N
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  VM_Seed_RNG
+0001       * (expr)
+0001         INLINE      N
 =========
 Test: parse schema from:
 	{-my:ct_0} = {T}; {-my:ct_1} = {N}; 
 
-  * (operation) !store
-      * (expr)
-        INLINE      -my:ct_0
-      * (expr)
-        INLINE      T
-  * (operation) !store
-      * (expr)
-        INLINE      -my:ct_1
-      * (expr)
-        INLINE      N
+0001   * (operation) !store
+0001       * (expr)
+0001         INLINE      -my:ct_0
+0001       * (expr)
+0001         INLINE      T
+0001   * (operation) !store
+0001       * (expr)
+0001         INLINE      -my:ct_1
+0001       * (expr)
+0001         INLINE      N
 =========
 Test: parse schema from:
 	{-my:ct_0} = {T}; {-my:ct_1} = TableRowCorr(ct_0, {TC}, {w}); 
 
-  * (operation) !store
-      * (expr)
-        INLINE      -my:ct_0
-      * (expr)
-        INLINE      T
-  * (operation) !store
-      * (expr)
-        INLINE      -my:ct_1
-      * (call)
-          * (expr)
-            IDENTIFIER  TableRowCorr
-          * (expr)
-            IDENTIFIER  ct_0
-          * (expr)
-            INLINE      TC
-          * (expr)
-            INLINE      w
+0001   * (operation) !store
+0001       * (expr)
+0001         INLINE      -my:ct_0
+0001       * (expr)
+0001         INLINE      T
+0001   * (operation) !store
+0001       * (expr)
+0001         INLINE      -my:ct_1
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  TableRowCorr
+0001           * (expr)
+0001             IDENTIFIER  ct_0
+0001           * (expr)
+0001             INLINE      TC
+0001           * (expr)
+0001             INLINE      w
 =========
 Test: parse schema from:
 	{-my:ct_0} = {T}; {-my:ct_1} = TableBlankRow(ct_0); 
 
-  * (operation) !store
-      * (expr)
-        INLINE      -my:ct_0
-      * (expr)
-        INLINE      T
-  * (operation) !store
-      * (expr)
-        INLINE      -my:ct_1
-      * (call)
-          * (expr)
-            IDENTIFIER  TableBlankRow
-          * (expr)
-            IDENTIFIER  ct_0
+0001   * (operation) !store
+0001       * (expr)
+0001         INLINE      -my:ct_0
+0001       * (expr)
+0001         INLINE      T
+0001   * (operation) !store
+0001       * (expr)
+0001         INLINE      -my:ct_1
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  TableBlankRow
+0001           * (expr)
+0001             IDENTIFIER  ct_0
 =========
 Test: parse schema from:
 	{-my:ct_0} = {T}; {-my:ct_1} = TableRandomRow(ct_0); 
 
-  * (operation) !store
-      * (expr)
-        INLINE      -my:ct_0
-      * (expr)
-        INLINE      T
-  * (operation) !store
-      * (expr)
-        INLINE      -my:ct_1
-      * (call)
-          * (expr)
-            IDENTIFIER  TableRandomRow
-          * (expr)
-            IDENTIFIER  ct_0
+0001   * (operation) !store
+0001       * (expr)
+0001         INLINE      -my:ct_0
+0001       * (expr)
+0001         INLINE      T
+0001   * (operation) !store
+0001       * (expr)
+0001         INLINE      -my:ct_1
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  TableRandomRow
+0001           * (expr)
+0001             IDENTIFIER  ct_0
 =========
 Test: parse schema from:
 	TableRows({T}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TableRows
-      * (expr)
-        INLINE      T
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TableRows
+0001       * (expr)
+0001         INLINE      T
 =========
 Test: parse schema from:
 	TableBlankRows({T}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TableBlankRows
-      * (expr)
-        INLINE      T
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TableBlankRows
+0001       * (expr)
+0001         INLINE      T
 =========
 Test: parse schema from:
 	TableFilledRows({T}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TableFilledRows
-      * (expr)
-        INLINE      T
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TableFilledRows
+0001       * (expr)
+0001         INLINE      T
 =========
 Test: parse schema from:
 	({-reference-exists:TR}) 
 
-  * (subexpression)
-      * (expr)
-        INLINE      -reference-exists:TR
+0001   * (subexpression)
+0001       * (expr)
+0001         INLINE      -reference-exists:TR
 =========
 Test: parse schema from:
 	({-reference-exists:TR} == false) 
 
-  * (subexpression)
-      * (operation) !eq
-          * (expr)
-            INLINE      -reference-exists:TR
-          * (expr)
-            NUMBER      false
+0001   * (subexpression)
+0001       * (operation) !eq
+0001           * (expr)
+0001             INLINE      -reference-exists:TR
+0001           * (expr)
+0001             NUMBER      false
 =========
 Test: parse schema from:
 	{-by-reference-blank-out:tr}; 
 
-  * (expr) ;
-    INLINE      -by-reference-blank-out:tr
+0001   * (expr) ;
+0001     INLINE      -by-reference-blank-out:tr
 =========
 Test: parse schema from:
 	TableBlankOutRow({-my:ct_0}, {-my:ct_1}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TableBlankOutRow
-      * (expr)
-        INLINE      -my:ct_0
-      * (expr)
-        INLINE      -my:ct_1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TableBlankOutRow
+0001       * (expr)
+0001         INLINE      -my:ct_0
+0001       * (expr)
+0001         INLINE      -my:ct_1
 =========
 Test: parse schema from:
 	TableBlankOutColumn({T}, {TC}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TableBlankOutColumn
-      * (expr)
-        INLINE      T
-      * (expr)
-        INLINE      TC
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TableBlankOutColumn
+0001       * (expr)
+0001         INLINE      T
+0001       * (expr)
+0001         INLINE      TC
 =========
 Test: parse schema from:
 	TableBlankOutAll({T}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TableBlankOutAll
-      * (expr)
-        INLINE      T
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TableBlankOutAll
+0001       * (expr)
+0001         INLINE      T
 =========
 Test: parse schema from:
 	TableDebug({T}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TableDebug
-      * (expr)
-        INLINE      T
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TableDebug
+0001       * (expr)
+0001         INLINE      T
 =========
 Test: parse schema from:
 	TableRowDebug({-my:ct_0}, {-my:ct_1}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TableRowDebug
-      * (expr)
-        INLINE      -my:ct_0
-      * (expr)
-        INLINE      -my:ct_1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TableRowDebug
+0001       * (expr)
+0001         INLINE      -my:ct_0
+0001       * (expr)
+0001         INLINE      -my:ct_1
 =========
 Test: parse schema from:
 	TableRowDebug({T}, {N}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TableRowDebug
-      * (expr)
-        INLINE      T
-      * (expr)
-        INLINE      N
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TableRowDebug
+0001       * (expr)
+0001         INLINE      T
+0001       * (expr)
+0001         INLINE      N
 =========
 Test: parse schema from:
 	TableColumnDebug({T}, {TC}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TableColumnDebug
-      * (expr)
-        INLINE      T
-      * (expr)
-        INLINE      TC
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TableColumnDebug
+0001       * (expr)
+0001         INLINE      T
+0001       * (expr)
+0001         INLINE      TC
 =========
 Test: parse schema from:
 	TableShuffle({T}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TableShuffle
-      * (expr)
-        INLINE      T
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TableShuffle
+0001       * (expr)
+0001         INLINE      T
 =========
 Test: parse schema from:
 	TableSort({T}, {TC}, 1); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TableSort
-      * (expr)
-        INLINE      T
-      * (expr)
-        INLINE      TC
-      * (expr)
-        NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TableSort
+0001       * (expr)
+0001         INLINE      T
+0001       * (expr)
+0001         INLINE      TC
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	TableSort({T}, {TC}, -1); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TableSort
-      * (expr)
-        INLINE      T
-      * (expr)
-        INLINE      TC
-      * (operation) !unaryminus
-          * (expr)
-            NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TableSort
+0001       * (expr)
+0001         INLINE      T
+0001       * (expr)
+0001         INLINE      TC
+0001       * (operation) !unaryminus
+0001           * (expr)
+0001             NUMBER      1
 =========
 Test: parse schema from:
 	TEXT_TY_BlobAccess({-by-reference:T}, CHR_BLOB) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_BlobAccess
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        IDENTIFIER  CHR_BLOB
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_BlobAccess
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         IDENTIFIER  CHR_BLOB
 =========
 Test: parse schema from:
 	TEXT_TY_BlobAccess({-by-reference:T}, WORD_BLOB) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_BlobAccess
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        IDENTIFIER  WORD_BLOB
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_BlobAccess
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         IDENTIFIER  WORD_BLOB
 =========
 Test: parse schema from:
 	TEXT_TY_BlobAccess({-by-reference:T}, PWORD_BLOB) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_BlobAccess
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        IDENTIFIER  PWORD_BLOB
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_BlobAccess
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         IDENTIFIER  PWORD_BLOB
 =========
 Test: parse schema from:
 	TEXT_TY_BlobAccess({-by-reference:T}, UWORD_BLOB) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_BlobAccess
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        IDENTIFIER  UWORD_BLOB
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_BlobAccess
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         IDENTIFIER  UWORD_BLOB
 =========
 Test: parse schema from:
 	TEXT_TY_BlobAccess({-by-reference:T}, LINE_BLOB) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_BlobAccess
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        IDENTIFIER  LINE_BLOB
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_BlobAccess
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         IDENTIFIER  LINE_BLOB
 =========
 Test: parse schema from:
 	TEXT_TY_BlobAccess({-by-reference:T}, PARA_BLOB) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_BlobAccess
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        IDENTIFIER  PARA_BLOB
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_BlobAccess
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         IDENTIFIER  PARA_BLOB
 =========
 Test: parse schema from:
 	TEXT_TY_GetBlob({-new:text}, {-by-reference:T}, {N}, CHR_BLOB) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_GetBlob
-      * (expr)
-        INLINE      -new:text
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        INLINE      N
-      * (expr)
-        IDENTIFIER  CHR_BLOB
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_GetBlob
+0001       * (expr)
+0001         INLINE      -new:text
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         INLINE      N
+0001       * (expr)
+0001         IDENTIFIER  CHR_BLOB
 =========
 Test: parse schema from:
 	TEXT_TY_GetBlob({-new:text}, {-by-reference:T}, {N}, WORD_BLOB) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_GetBlob
-      * (expr)
-        INLINE      -new:text
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        INLINE      N
-      * (expr)
-        IDENTIFIER  WORD_BLOB
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_GetBlob
+0001       * (expr)
+0001         INLINE      -new:text
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         INLINE      N
+0001       * (expr)
+0001         IDENTIFIER  WORD_BLOB
 =========
 Test: parse schema from:
 	TEXT_TY_GetBlob({-new:text}, {-by-reference:T}, {N}, PWORD_BLOB) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_GetBlob
-      * (expr)
-        INLINE      -new:text
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        INLINE      N
-      * (expr)
-        IDENTIFIER  PWORD_BLOB
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_GetBlob
+0001       * (expr)
+0001         INLINE      -new:text
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         INLINE      N
+0001       * (expr)
+0001         IDENTIFIER  PWORD_BLOB
 =========
 Test: parse schema from:
 	TEXT_TY_GetBlob({-new:text}, {-by-reference:T}, {N}, UWORD_BLOB) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_GetBlob
-      * (expr)
-        INLINE      -new:text
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        INLINE      N
-      * (expr)
-        IDENTIFIER  UWORD_BLOB
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_GetBlob
+0001       * (expr)
+0001         INLINE      -new:text
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         INLINE      N
+0001       * (expr)
+0001         IDENTIFIER  UWORD_BLOB
 =========
 Test: parse schema from:
 	TEXT_TY_GetBlob({-new:text}, {-by-reference:T}, {N}, LINE_BLOB) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_GetBlob
-      * (expr)
-        INLINE      -new:text
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        INLINE      N
-      * (expr)
-        IDENTIFIER  LINE_BLOB
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_GetBlob
+0001       * (expr)
+0001         INLINE      -new:text
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         INLINE      N
+0001       * (expr)
+0001         IDENTIFIER  LINE_BLOB
 =========
 Test: parse schema from:
 	TEXT_TY_GetBlob({-new:text}, {-by-reference:T}, {N}, PARA_BLOB) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_GetBlob
-      * (expr)
-        INLINE      -new:text
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        INLINE      N
-      * (expr)
-        IDENTIFIER  PARA_BLOB
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_GetBlob
+0001       * (expr)
+0001         INLINE      -new:text
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         INLINE      N
+0001       * (expr)
+0001         IDENTIFIER  PARA_BLOB
 =========
 Test: parse schema from:
 	TEXT_TY_SubstitutedForm({-new:text}, {-by-reference:T}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_SubstitutedForm
-      * (expr)
-        INLINE      -new:text
-      * (expr)
-        INLINE      -by-reference:T
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_SubstitutedForm
+0001       * (expr)
+0001         INLINE      -new:text
+0001       * (expr)
+0001         INLINE      -by-reference:T
 =========
 Test: parse schema from:
 	TEXT_TY_Replace_RE(CHR_BLOB,{-by-reference:T},{-by-reference:find},0,{phrase options},1) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_Replace_RE
-      * (expr)
-        IDENTIFIER  CHR_BLOB
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        INLINE      -by-reference:find
-      * (expr)
-        NUMBER      0
-      * (expr)
-        INLINE      phrase options
-      * (expr)
-        NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_Replace_RE
+0001       * (expr)
+0001         IDENTIFIER  CHR_BLOB
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         INLINE      -by-reference:find
+0001       * (expr)
+0001         NUMBER      0
+0001       * (expr)
+0001         INLINE      phrase options
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	TEXT_TY_Replace_RE(CHR_BLOB,{-by-reference:T},{-by-reference:find},0,{phrase options}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_Replace_RE
-      * (expr)
-        IDENTIFIER  CHR_BLOB
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        INLINE      -by-reference:find
-      * (expr)
-        NUMBER      0
-      * (expr)
-        INLINE      phrase options
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_Replace_RE
+0001       * (expr)
+0001         IDENTIFIER  CHR_BLOB
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         INLINE      -by-reference:find
+0001       * (expr)
+0001         NUMBER      0
+0001       * (expr)
+0001         INLINE      phrase options
 =========
 Test: parse schema from:
 	TEXT_TY_Replace_RE(CHR_BLOB,{-by-reference:T},{-by-reference:find},1,{phrase options}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_Replace_RE
-      * (expr)
-        IDENTIFIER  CHR_BLOB
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        INLINE      -by-reference:find
-      * (expr)
-        NUMBER      1
-      * (expr)
-        INLINE      phrase options
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_Replace_RE
+0001       * (expr)
+0001         IDENTIFIER  CHR_BLOB
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         INLINE      -by-reference:find
+0001       * (expr)
+0001         NUMBER      1
+0001       * (expr)
+0001         INLINE      phrase options
 =========
 Test: parse schema from:
 	TEXT_TY_Replace_RE(REGEXP_BLOB,{-by-reference:T},{-by-reference:find},0,{phrase options},1) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_Replace_RE
-      * (expr)
-        IDENTIFIER  REGEXP_BLOB
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        INLINE      -by-reference:find
-      * (expr)
-        NUMBER      0
-      * (expr)
-        INLINE      phrase options
-      * (expr)
-        NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_Replace_RE
+0001       * (expr)
+0001         IDENTIFIER  REGEXP_BLOB
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         INLINE      -by-reference:find
+0001       * (expr)
+0001         NUMBER      0
+0001       * (expr)
+0001         INLINE      phrase options
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	TEXT_TY_Replace_RE(REGEXP_BLOB,{-by-reference:T},{-by-reference:find},0,{phrase options}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_Replace_RE
-      * (expr)
-        IDENTIFIER  REGEXP_BLOB
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        INLINE      -by-reference:find
-      * (expr)
-        NUMBER      0
-      * (expr)
-        INLINE      phrase options
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_Replace_RE
+0001       * (expr)
+0001         IDENTIFIER  REGEXP_BLOB
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         INLINE      -by-reference:find
+0001       * (expr)
+0001         NUMBER      0
+0001       * (expr)
+0001         INLINE      phrase options
 =========
 Test: parse schema from:
 	TEXT_TY_RE_GetMatchVar(0) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_RE_GetMatchVar
-      * (expr)
-        NUMBER      0
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_RE_GetMatchVar
+0001       * (expr)
+0001         NUMBER      0
 =========
 Test: parse schema from:
 	TEXT_TY_RE_GetMatchVar({N}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_RE_GetMatchVar
-      * (expr)
-        INLINE      N
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_RE_GetMatchVar
+0001       * (expr)
+0001         INLINE      N
 =========
 Test: parse schema from:
 	TEXT_TY_Replace_RE(REGEXP_BLOB,{-by-reference:T},{-by-reference:find},1,{phrase options}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_Replace_RE
-      * (expr)
-        IDENTIFIER  REGEXP_BLOB
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        INLINE      -by-reference:find
-      * (expr)
-        NUMBER      1
-      * (expr)
-        INLINE      phrase options
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_Replace_RE
+0001       * (expr)
+0001         IDENTIFIER  REGEXP_BLOB
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         INLINE      -by-reference:find
+0001       * (expr)
+0001         NUMBER      1
+0001       * (expr)
+0001         INLINE      phrase options
 =========
 Test: parse schema from:
 	TEXT_TY_ReplaceText(WORD_BLOB, {-lvalue-by-reference:T}, {-by-reference:find}, {-by-reference:replace}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_ReplaceText
-      * (expr)
-        IDENTIFIER  WORD_BLOB
-      * (expr)
-        INLINE      -lvalue-by-reference:T
-      * (expr)
-        INLINE      -by-reference:find
-      * (expr)
-        INLINE      -by-reference:replace
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_ReplaceText
+0001       * (expr)
+0001         IDENTIFIER  WORD_BLOB
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:T
+0001       * (expr)
+0001         INLINE      -by-reference:find
+0001       * (expr)
+0001         INLINE      -by-reference:replace
 =========
 Test: parse schema from:
 	TEXT_TY_ReplaceText(PWORD_BLOB, {-lvalue-by-reference:T}, {-by-reference:find}, {-by-reference:replace}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_ReplaceText
-      * (expr)
-        IDENTIFIER  PWORD_BLOB
-      * (expr)
-        INLINE      -lvalue-by-reference:T
-      * (expr)
-        INLINE      -by-reference:find
-      * (expr)
-        INLINE      -by-reference:replace
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_ReplaceText
+0001       * (expr)
+0001         IDENTIFIER  PWORD_BLOB
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:T
+0001       * (expr)
+0001         INLINE      -by-reference:find
+0001       * (expr)
+0001         INLINE      -by-reference:replace
 =========
 Test: parse schema from:
 	TEXT_TY_ReplaceBlob(CHR_BLOB, {-lvalue-by-reference:T}, {N}, {-by-reference:replace}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_ReplaceBlob
-      * (expr)
-        IDENTIFIER  CHR_BLOB
-      * (expr)
-        INLINE      -lvalue-by-reference:T
-      * (expr)
-        INLINE      N
-      * (expr)
-        INLINE      -by-reference:replace
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_ReplaceBlob
+0001       * (expr)
+0001         IDENTIFIER  CHR_BLOB
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:T
+0001       * (expr)
+0001         INLINE      N
+0001       * (expr)
+0001         INLINE      -by-reference:replace
 =========
 Test: parse schema from:
 	TEXT_TY_ReplaceBlob(WORD_BLOB, {-lvalue-by-reference:T}, {N}, {-by-reference:replace}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_ReplaceBlob
-      * (expr)
-        IDENTIFIER  WORD_BLOB
-      * (expr)
-        INLINE      -lvalue-by-reference:T
-      * (expr)
-        INLINE      N
-      * (expr)
-        INLINE      -by-reference:replace
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_ReplaceBlob
+0001       * (expr)
+0001         IDENTIFIER  WORD_BLOB
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:T
+0001       * (expr)
+0001         INLINE      N
+0001       * (expr)
+0001         INLINE      -by-reference:replace
 =========
 Test: parse schema from:
 	TEXT_TY_ReplaceBlob(PWORD_BLOB, {-lvalue-by-reference:T}, {N}, {-by-reference:replace}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_ReplaceBlob
-      * (expr)
-        IDENTIFIER  PWORD_BLOB
-      * (expr)
-        INLINE      -lvalue-by-reference:T
-      * (expr)
-        INLINE      N
-      * (expr)
-        INLINE      -by-reference:replace
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_ReplaceBlob
+0001       * (expr)
+0001         IDENTIFIER  PWORD_BLOB
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:T
+0001       * (expr)
+0001         INLINE      N
+0001       * (expr)
+0001         INLINE      -by-reference:replace
 =========
 Test: parse schema from:
 	TEXT_TY_ReplaceBlob(UWORD_BLOB, {-lvalue-by-reference:T}, {N}, {-by-reference:replace}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_ReplaceBlob
-      * (expr)
-        IDENTIFIER  UWORD_BLOB
-      * (expr)
-        INLINE      -lvalue-by-reference:T
-      * (expr)
-        INLINE      N
-      * (expr)
-        INLINE      -by-reference:replace
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_ReplaceBlob
+0001       * (expr)
+0001         IDENTIFIER  UWORD_BLOB
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:T
+0001       * (expr)
+0001         INLINE      N
+0001       * (expr)
+0001         INLINE      -by-reference:replace
 =========
 Test: parse schema from:
 	TEXT_TY_ReplaceBlob(LINE_BLOB, {-lvalue-by-reference:T}, {N}, {-by-reference:replace}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_ReplaceBlob
-      * (expr)
-        IDENTIFIER  LINE_BLOB
-      * (expr)
-        INLINE      -lvalue-by-reference:T
-      * (expr)
-        INLINE      N
-      * (expr)
-        INLINE      -by-reference:replace
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_ReplaceBlob
+0001       * (expr)
+0001         IDENTIFIER  LINE_BLOB
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:T
+0001       * (expr)
+0001         INLINE      N
+0001       * (expr)
+0001         INLINE      -by-reference:replace
 =========
 Test: parse schema from:
 	TEXT_TY_ReplaceBlob(PARA_BLOB, {-lvalue-by-reference:T}, {N}, {-by-reference:replace}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_ReplaceBlob
-      * (expr)
-        IDENTIFIER  PARA_BLOB
-      * (expr)
-        INLINE      -lvalue-by-reference:T
-      * (expr)
-        INLINE      N
-      * (expr)
-        INLINE      -by-reference:replace
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_ReplaceBlob
+0001       * (expr)
+0001         IDENTIFIER  PARA_BLOB
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:T
+0001       * (expr)
+0001         INLINE      N
+0001       * (expr)
+0001         INLINE      -by-reference:replace
 =========
 Test: parse schema from:
 	TEXT_TY_CharactersToCase({-new:text}, {-by-reference:T}, 0) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_CharactersToCase
-      * (expr)
-        INLINE      -new:text
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        NUMBER      0
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_CharactersToCase
+0001       * (expr)
+0001         INLINE      -new:text
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         NUMBER      0
 =========
 Test: parse schema from:
 	TEXT_TY_CharactersToCase({-new:text}, {-by-reference:T}, 1) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_CharactersToCase
-      * (expr)
-        INLINE      -new:text
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_CharactersToCase
+0001       * (expr)
+0001         INLINE      -new:text
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	TEXT_TY_CharactersToCase({-new:text}, {-by-reference:T}, 2) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_CharactersToCase
-      * (expr)
-        INLINE      -new:text
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        NUMBER      2
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_CharactersToCase
+0001       * (expr)
+0001         INLINE      -new:text
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         NUMBER      2
 =========
 Test: parse schema from:
 	TEXT_TY_CharactersToCase({-new:text}, {-by-reference:T}, 3) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_CharactersToCase
-      * (expr)
-        INLINE      -new:text
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        NUMBER      3
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_CharactersToCase
+0001       * (expr)
+0001         INLINE      -new:text
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         NUMBER      3
 =========
 Test: parse schema from:
 	TEXT_TY_CharactersOfCase({-by-reference:T}, 0) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_CharactersOfCase
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        NUMBER      0
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_CharactersOfCase
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         NUMBER      0
 =========
 Test: parse schema from:
 	TEXT_TY_CharactersOfCase({-by-reference:T}, 1) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TEXT_TY_CharactersOfCase
-      * (expr)
-        INLINE      -by-reference:T
-      * (expr)
-        NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TEXT_TY_CharactersOfCase
+0001       * (expr)
+0001         INLINE      -by-reference:T
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	{V}(1); 
 
-  * (call)
-      * (expr)
-        INLINE      V
-      * (expr)
-        NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         INLINE      V
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	{V}(2); 
 
-  * (call)
-      * (expr)
-        INLINE      V
-      * (expr)
-        NUMBER      2
+0001   * (call)
+0001       * (expr)
+0001         INLINE      V
+0001       * (expr)
+0001         NUMBER      2
 =========
 Test: parse schema from:
 	{V}(3); 
 
-  * (call)
-      * (expr)
-        INLINE      V
-      * (expr)
-        NUMBER      3
+0001   * (call)
+0001       * (expr)
+0001         INLINE      V
+0001       * (expr)
+0001         NUMBER      3
 =========
 Test: parse schema from:
 	{V}(CV_POS, PNToVP(), story_tense); 
 
-  * (call)
-      * (expr)
-        INLINE      V
-      * (expr)
-        IDENTIFIER  CV_POS
-      * (call)
-          * (expr)
-            IDENTIFIER  PNToVP
-      * (expr)
-        IDENTIFIER  story_tense
+0001   * (call)
+0001       * (expr)
+0001         INLINE      V
+0001       * (expr)
+0001         IDENTIFIER  CV_POS
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  PNToVP
+0001       * (expr)
+0001         IDENTIFIER  story_tense
 =========
 Test: parse schema from:
 	{V}(CV_POS, PNToVP(), {T}); 
 
-  * (call)
-      * (expr)
-        INLINE      V
-      * (expr)
-        IDENTIFIER  CV_POS
-      * (call)
-          * (expr)
-            IDENTIFIER  PNToVP
-      * (expr)
-        INLINE      T
+0001   * (call)
+0001       * (expr)
+0001         INLINE      V
+0001       * (expr)
+0001         IDENTIFIER  CV_POS
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  PNToVP
+0001       * (expr)
+0001         INLINE      T
 =========
 Test: parse schema from:
 	{V}(CV_POS, {P}, story_tense); 
 
-  * (call)
-      * (expr)
-        INLINE      V
-      * (expr)
-        IDENTIFIER  CV_POS
-      * (expr)
-        INLINE      P
-      * (expr)
-        IDENTIFIER  story_tense
+0001   * (call)
+0001       * (expr)
+0001         INLINE      V
+0001       * (expr)
+0001         IDENTIFIER  CV_POS
+0001       * (expr)
+0001         INLINE      P
+0001       * (expr)
+0001         IDENTIFIER  story_tense
 =========
 Test: parse schema from:
 	{V}(CV_POS, {P}, {T}); 
 
-  * (call)
-      * (expr)
-        INLINE      V
-      * (expr)
-        IDENTIFIER  CV_POS
-      * (expr)
-        INLINE      P
-      * (expr)
-        INLINE      T
+0001   * (call)
+0001       * (expr)
+0001         INLINE      V
+0001       * (expr)
+0001         IDENTIFIER  CV_POS
+0001       * (expr)
+0001         INLINE      P
+0001       * (expr)
+0001         INLINE      T
 =========
 Test: parse schema from:
 	{V}(CV_NEG, PNToVP(), story_tense); 
 
-  * (call)
-      * (expr)
-        INLINE      V
-      * (expr)
-        IDENTIFIER  CV_NEG
-      * (call)
-          * (expr)
-            IDENTIFIER  PNToVP
-      * (expr)
-        IDENTIFIER  story_tense
+0001   * (call)
+0001       * (expr)
+0001         INLINE      V
+0001       * (expr)
+0001         IDENTIFIER  CV_NEG
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  PNToVP
+0001       * (expr)
+0001         IDENTIFIER  story_tense
 =========
 Test: parse schema from:
 	{V}(CV_NEG, PNToVP(), {T}); 
 
-  * (call)
-      * (expr)
-        INLINE      V
-      * (expr)
-        IDENTIFIER  CV_NEG
-      * (call)
-          * (expr)
-            IDENTIFIER  PNToVP
-      * (expr)
-        INLINE      T
+0001   * (call)
+0001       * (expr)
+0001         INLINE      V
+0001       * (expr)
+0001         IDENTIFIER  CV_NEG
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  PNToVP
+0001       * (expr)
+0001         INLINE      T
 =========
 Test: parse schema from:
 	{V}(CV_NEG, {P}, story_tense); 
 
-  * (call)
-      * (expr)
-        INLINE      V
-      * (expr)
-        IDENTIFIER  CV_NEG
-      * (expr)
-        INLINE      P
-      * (expr)
-        IDENTIFIER  story_tense
+0001   * (call)
+0001       * (expr)
+0001         INLINE      V
+0001       * (expr)
+0001         IDENTIFIER  CV_NEG
+0001       * (expr)
+0001         INLINE      P
+0001       * (expr)
+0001         IDENTIFIER  story_tense
 =========
 Test: parse schema from:
 	{V}(CV_NEG, {P}, {T}); 
 
-  * (call)
-      * (expr)
-        INLINE      V
-      * (expr)
-        IDENTIFIER  CV_NEG
-      * (expr)
-        INLINE      P
-      * (expr)
-        INLINE      T
+0001   * (call)
+0001       * (expr)
+0001         INLINE      V
+0001       * (expr)
+0001         IDENTIFIER  CV_NEG
+0001       * (expr)
+0001         INLINE      P
+0001       * (expr)
+0001         INLINE      T
 =========
 Test: parse schema from:
 	{V}(CV_MEANING) 
 
-  * (call)
-      * (expr)
-        INLINE      V
-      * (expr)
-        IDENTIFIER  CV_MEANING
+0001   * (call)
+0001       * (expr)
+0001         INLINE      V
+0001       * (expr)
+0001         IDENTIFIER  CV_MEANING
 =========
 Test: parse schema from:
 	LIST_OF_TY_InsertItem({-lvalue-by-reference:L}, {new entry}, 0, 0, {phrase options}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_InsertItem
-      * (expr)
-        INLINE      -lvalue-by-reference:L
-      * (expr)
-        INLINE      new entry
-      * (expr)
-        NUMBER      0
-      * (expr)
-        NUMBER      0
-      * (expr)
-        INLINE      phrase options
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_InsertItem
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:L
+0001       * (expr)
+0001         INLINE      new entry
+0001       * (expr)
+0001         NUMBER      0
+0001       * (expr)
+0001         NUMBER      0
+0001       * (expr)
+0001         INLINE      phrase options
 =========
 Test: parse schema from:
 	LIST_OF_TY_InsertItem({-lvalue-by-reference:L}, {new entry}, 1, {E}, {phrase options}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_InsertItem
-      * (expr)
-        INLINE      -lvalue-by-reference:L
-      * (expr)
-        INLINE      new entry
-      * (expr)
-        NUMBER      1
-      * (expr)
-        INLINE      E
-      * (expr)
-        INLINE      phrase options
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_InsertItem
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:L
+0001       * (expr)
+0001         INLINE      new entry
+0001       * (expr)
+0001         NUMBER      1
+0001       * (expr)
+0001         INLINE      E
+0001       * (expr)
+0001         INLINE      phrase options
 =========
 Test: parse schema from:
 	LIST_OF_TY_AppendList({-lvalue-by-reference:L}, {-by-reference:LX}, 0, 0, {phrase options}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_AppendList
-      * (expr)
-        INLINE      -lvalue-by-reference:L
-      * (expr)
-        INLINE      -by-reference:LX
-      * (expr)
-        NUMBER      0
-      * (expr)
-        NUMBER      0
-      * (expr)
-        INLINE      phrase options
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_AppendList
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:L
+0001       * (expr)
+0001         INLINE      -by-reference:LX
+0001       * (expr)
+0001         NUMBER      0
+0001       * (expr)
+0001         NUMBER      0
+0001       * (expr)
+0001         INLINE      phrase options
 =========
 Test: parse schema from:
 	LIST_OF_TY_AppendList({-lvalue-by-reference:L}, {-by-reference:LX}, 1, {E}, 0); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_AppendList
-      * (expr)
-        INLINE      -lvalue-by-reference:L
-      * (expr)
-        INLINE      -by-reference:LX
-      * (expr)
-        NUMBER      1
-      * (expr)
-        INLINE      E
-      * (expr)
-        NUMBER      0
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_AppendList
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:L
+0001       * (expr)
+0001         INLINE      -by-reference:LX
+0001       * (expr)
+0001         NUMBER      1
+0001       * (expr)
+0001         INLINE      E
+0001       * (expr)
+0001         NUMBER      0
 =========
 Test: parse schema from:
 	LIST_OF_TY_RemoveValue({-lvalue-by-reference:L}, {existing entry}, {phrase options}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_RemoveValue
-      * (expr)
-        INLINE      -lvalue-by-reference:L
-      * (expr)
-        INLINE      existing entry
-      * (expr)
-        INLINE      phrase options
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_RemoveValue
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:L
+0001       * (expr)
+0001         INLINE      existing entry
+0001       * (expr)
+0001         INLINE      phrase options
 =========
 Test: parse schema from:
 	LIST_OF_TY_Remove_List({-lvalue-by-reference:L}, {-by-reference:N}, {phrase options}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_Remove_List
-      * (expr)
-        INLINE      -lvalue-by-reference:L
-      * (expr)
-        INLINE      -by-reference:N
-      * (expr)
-        INLINE      phrase options
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_Remove_List
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:L
+0001       * (expr)
+0001         INLINE      -by-reference:N
+0001       * (expr)
+0001         INLINE      phrase options
 =========
 Test: parse schema from:
 	LIST_OF_TY_RemoveItemRange({-lvalue-by-reference:L}, {N}, {N}, {phrase options}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_RemoveItemRange
-      * (expr)
-        INLINE      -lvalue-by-reference:L
-      * (expr)
-        INLINE      N
-      * (expr)
-        INLINE      N
-      * (expr)
-        INLINE      phrase options
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_RemoveItemRange
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:L
+0001       * (expr)
+0001         INLINE      N
+0001       * (expr)
+0001         INLINE      N
+0001       * (expr)
+0001         INLINE      phrase options
 =========
 Test: parse schema from:
 	LIST_OF_TY_RemoveItemRange({-lvalue-by-reference:L}, {N}, {N2}, {phrase options}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_RemoveItemRange
-      * (expr)
-        INLINE      -lvalue-by-reference:L
-      * (expr)
-        INLINE      N
-      * (expr)
-        INLINE      N2
-      * (expr)
-        INLINE      phrase options
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_RemoveItemRange
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:L
+0001       * (expr)
+0001         INLINE      N
+0001       * (expr)
+0001         INLINE      N2
+0001       * (expr)
+0001         INLINE      phrase options
 =========
 Test: parse schema from:
 	(LIST_OF_TY_FindItem({-by-reference:L}, {N})) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  LIST_OF_TY_FindItem
-          * (expr)
-            INLINE      -by-reference:L
-          * (expr)
-            INLINE      N
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  LIST_OF_TY_FindItem
+0001           * (expr)
+0001             INLINE      -by-reference:L
+0001           * (expr)
+0001             INLINE      N
 =========
 Test: parse schema from:
 	(LIST_OF_TY_FindItem({-by-reference:L}, {N}) == false) 
 
-  * (subexpression)
-      * (operation) !eq
-          * (call)
-              * (expr)
-                IDENTIFIER  LIST_OF_TY_FindItem
-              * (expr)
-                INLINE      -by-reference:L
-              * (expr)
-                INLINE      N
-          * (expr)
-            NUMBER      false
+0001   * (subexpression)
+0001       * (operation) !eq
+0001           * (call)
+0001               * (expr)
+0001                 IDENTIFIER  LIST_OF_TY_FindItem
+0001               * (expr)
+0001                 INLINE      -by-reference:L
+0001               * (expr)
+0001                 INLINE      N
+0001           * (expr)
+0001             NUMBER      false
 =========
 Test: parse schema from:
 	{-new-list-of:list of K} 
 
-  * (expr)
-    INLINE      -new-list-of:list of K
+0001   * (expr)
+0001     INLINE      -new-list-of:list of K
 =========
 Test: parse schema from:
 	LIST_OF_TY_Mol({-new:list of objects}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_Mol
-      * (expr)
-        INLINE      -new:list of objects
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_Mol
+0001       * (expr)
+0001         INLINE      -new:list of objects
 =========
 Test: parse schema from:
 	LIST_OF_TY_Set_Mol({-by-reference:L}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_Set_Mol
-      * (expr)
-        INLINE      -by-reference:L
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_Set_Mol
+0001       * (expr)
+0001         INLINE      -by-reference:L
 =========
 Test: parse schema from:
 	LIST_OF_TY_GetLength({-by-reference:L}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_GetLength
-      * (expr)
-        INLINE      -by-reference:L
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_GetLength
+0001       * (expr)
+0001         INLINE      -by-reference:L
 =========
 Test: parse schema from:
 	LIST_OF_TY_SetLength({-lvalue-by-reference:L}, {N}, -1, 1); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_SetLength
-      * (expr)
-        INLINE      -lvalue-by-reference:L
-      * (expr)
-        INLINE      N
-      * (operation) !unaryminus
-          * (expr)
-            NUMBER      1
-      * (expr)
-        NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_SetLength
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:L
+0001       * (expr)
+0001         INLINE      N
+0001       * (operation) !unaryminus
+0001           * (expr)
+0001             NUMBER      1
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	LIST_OF_TY_SetLength({-lvalue-by-reference:L}, {N}, -1, 1); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_SetLength
-      * (expr)
-        INLINE      -lvalue-by-reference:L
-      * (expr)
-        INLINE      N
-      * (operation) !unaryminus
-          * (expr)
-            NUMBER      1
-      * (expr)
-        NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_SetLength
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:L
+0001       * (expr)
+0001         INLINE      N
+0001       * (operation) !unaryminus
+0001           * (expr)
+0001             NUMBER      1
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	LIST_OF_TY_SetLength({-lvalue-by-reference:L}, {N}, -1, -1); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_SetLength
-      * (expr)
-        INLINE      -lvalue-by-reference:L
-      * (expr)
-        INLINE      N
-      * (operation) !unaryminus
-          * (expr)
-            NUMBER      1
-      * (operation) !unaryminus
-          * (expr)
-            NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_SetLength
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:L
+0001       * (expr)
+0001         INLINE      N
+0001       * (operation) !unaryminus
+0001           * (expr)
+0001             NUMBER      1
+0001       * (operation) !unaryminus
+0001           * (expr)
+0001             NUMBER      1
 =========
 Test: parse schema from:
 	LIST_OF_TY_SetLength({-lvalue-by-reference:L}, {N}, 1); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_SetLength
-      * (expr)
-        INLINE      -lvalue-by-reference:L
-      * (expr)
-        INLINE      N
-      * (expr)
-        NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_SetLength
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:L
+0001       * (expr)
+0001         INLINE      N
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	LIST_OF_TY_SetLength({-lvalue-by-reference:L}, {N}, 0); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_SetLength
-      * (expr)
-        INLINE      -lvalue-by-reference:L
-      * (expr)
-        INLINE      N
-      * (expr)
-        NUMBER      0
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_SetLength
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:L
+0001       * (expr)
+0001         INLINE      N
+0001       * (expr)
+0001         NUMBER      0
 =========
 Test: parse schema from:
 	LIST_OF_TY_Reverse({-lvalue-by-reference:L}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_Reverse
-      * (expr)
-        INLINE      -lvalue-by-reference:L
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_Reverse
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:L
 =========
 Test: parse schema from:
 	LIST_OF_TY_Rotate({-lvalue-by-reference:L}, 0); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_Rotate
-      * (expr)
-        INLINE      -lvalue-by-reference:L
-      * (expr)
-        NUMBER      0
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_Rotate
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:L
+0001       * (expr)
+0001         NUMBER      0
 =========
 Test: parse schema from:
 	LIST_OF_TY_Rotate({-lvalue-by-reference:L}, 1); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_Rotate
-      * (expr)
-        INLINE      -lvalue-by-reference:L
-      * (expr)
-        NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_Rotate
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:L
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	LIST_OF_TY_Sort({-lvalue-by-reference:L}, 1); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_Sort
-      * (expr)
-        INLINE      -lvalue-by-reference:L
-      * (expr)
-        NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_Sort
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:L
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	LIST_OF_TY_Sort({-lvalue-by-reference:L}, -1); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_Sort
-      * (expr)
-        INLINE      -lvalue-by-reference:L
-      * (operation) !unaryminus
-          * (expr)
-            NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_Sort
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:L
+0001       * (operation) !unaryminus
+0001           * (expr)
+0001             NUMBER      1
 =========
 Test: parse schema from:
 	LIST_OF_TY_Sort({-lvalue-by-reference:L}, 2); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_Sort
-      * (expr)
-        INLINE      -lvalue-by-reference:L
-      * (expr)
-        NUMBER      2
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_Sort
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:L
+0001       * (expr)
+0001         NUMBER      2
 =========
 Test: parse schema from:
 	LIST_OF_TY_Sort({-lvalue-by-reference:L}, 1, {P}, {-property-holds-block-value:P}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_Sort
-      * (expr)
-        INLINE      -lvalue-by-reference:L
-      * (expr)
-        NUMBER      1
-      * (expr)
-        INLINE      P
-      * (expr)
-        INLINE      -property-holds-block-value:P
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_Sort
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:L
+0001       * (expr)
+0001         NUMBER      1
+0001       * (expr)
+0001         INLINE      P
+0001       * (expr)
+0001         INLINE      -property-holds-block-value:P
 =========
 Test: parse schema from:
 	LIST_OF_TY_Sort({-lvalue-by-reference:L}, -1, {P}, {-property-holds-block-value:P}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LIST_OF_TY_Sort
-      * (expr)
-        INLINE      -lvalue-by-reference:L
-      * (operation) !unaryminus
-          * (expr)
-            NUMBER      1
-      * (expr)
-        INLINE      P
-      * (expr)
-        INLINE      -property-holds-block-value:P
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LIST_OF_TY_Sort
+0001       * (expr)
+0001         INLINE      -lvalue-by-reference:L
+0001       * (operation) !unaryminus
+0001           * (expr)
+0001             NUMBER      1
+0001       * (expr)
+0001         INLINE      P
+0001       * (expr)
+0001         INLINE      -property-holds-block-value:P
 =========
 Test: parse schema from:
 	{-show-me:R}; RelationTest({-by-reference:R}, RELS_SHOW); 
 
-  * (expr) ;
-    INLINE      -show-me:R
-  * (call)
-      * (expr)
-        IDENTIFIER  RelationTest
-      * (expr)
-        INLINE      -by-reference:R
-      * (expr)
-        IDENTIFIER  RELS_SHOW
+0001   * (expr) ;
+0001     INLINE      -show-me:R
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  RelationTest
+0001       * (expr)
+0001         INLINE      -by-reference:R
+0001       * (expr)
+0001         IDENTIFIER  RELS_SHOW
 =========
 Test: parse schema from:
 	RelationRouteTo({-by-reference:R},{O1},{O2},false) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  RelationRouteTo
-      * (expr)
-        INLINE      -by-reference:R
-      * (expr)
-        INLINE      O1
-      * (expr)
-        INLINE      O2
-      * (expr)
-        NUMBER      false
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  RelationRouteTo
+0001       * (expr)
+0001         INLINE      -by-reference:R
+0001       * (expr)
+0001         INLINE      O1
+0001       * (expr)
+0001         INLINE      O2
+0001       * (expr)
+0001         NUMBER      false
 =========
 Test: parse schema from:
 	RelationRouteTo({-by-reference:R},{O1},{O2},true) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  RelationRouteTo
-      * (expr)
-        INLINE      -by-reference:R
-      * (expr)
-        INLINE      O1
-      * (expr)
-        INLINE      O2
-      * (expr)
-        NUMBER      true
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  RelationRouteTo
+0001       * (expr)
+0001         INLINE      -by-reference:R
+0001       * (expr)
+0001         INLINE      O1
+0001       * (expr)
+0001         INLINE      O2
+0001       * (expr)
+0001         NUMBER      true
 =========
 Test: parse schema from:
 	RelationTest({-by-reference:R}, RELS_LIST, {-new:list of K}, RLIST_ALL_X) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  RelationTest
-      * (expr)
-        INLINE      -by-reference:R
-      * (expr)
-        IDENTIFIER  RELS_LIST
-      * (expr)
-        INLINE      -new:list of K
-      * (expr)
-        IDENTIFIER  RLIST_ALL_X
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  RelationTest
+0001       * (expr)
+0001         INLINE      -by-reference:R
+0001       * (expr)
+0001         IDENTIFIER  RELS_LIST
+0001       * (expr)
+0001         INLINE      -new:list of K
+0001       * (expr)
+0001         IDENTIFIER  RLIST_ALL_X
 =========
 Test: parse schema from:
 	RelationTest({-by-reference:R}, RELS_LIST, {-new:list of L}, RLIST_ALL_Y) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  RelationTest
-      * (expr)
-        INLINE      -by-reference:R
-      * (expr)
-        IDENTIFIER  RELS_LIST
-      * (expr)
-        INLINE      -new:list of L
-      * (expr)
-        IDENTIFIER  RLIST_ALL_Y
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  RelationTest
+0001       * (expr)
+0001         INLINE      -by-reference:R
+0001       * (expr)
+0001         IDENTIFIER  RELS_LIST
+0001       * (expr)
+0001         INLINE      -new:list of L
+0001       * (expr)
+0001         IDENTIFIER  RLIST_ALL_Y
 =========
 Test: parse schema from:
 	RelationTest({-by-reference:R}, RELS_LIST, {-new:list of L}, RLIST_ALL_Y) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  RelationTest
-      * (expr)
-        INLINE      -by-reference:R
-      * (expr)
-        IDENTIFIER  RELS_LIST
-      * (expr)
-        INLINE      -new:list of L
-      * (expr)
-        IDENTIFIER  RLIST_ALL_Y
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  RelationTest
+0001       * (expr)
+0001         INLINE      -by-reference:R
+0001       * (expr)
+0001         IDENTIFIER  RELS_LIST
+0001       * (expr)
+0001         INLINE      -new:list of L
+0001       * (expr)
+0001         IDENTIFIER  RLIST_ALL_Y
 =========
 Test: parse schema from:
 	RelationTest({-by-reference:R}, RELS_LOOKUP_ALL_X, {Y}, {-new:list of K}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  RelationTest
-      * (expr)
-        INLINE      -by-reference:R
-      * (expr)
-        IDENTIFIER  RELS_LOOKUP_ALL_X
-      * (expr)
-        INLINE      Y
-      * (expr)
-        INLINE      -new:list of K
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  RelationTest
+0001       * (expr)
+0001         INLINE      -by-reference:R
+0001       * (expr)
+0001         IDENTIFIER  RELS_LOOKUP_ALL_X
+0001       * (expr)
+0001         INLINE      Y
+0001       * (expr)
+0001         INLINE      -new:list of K
 =========
 Test: parse schema from:
 	RelationTest({-by-reference:R}, RELS_LOOKUP_ALL_Y, {X}, {-new:list of L}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  RelationTest
-      * (expr)
-        INLINE      -by-reference:R
-      * (expr)
-        IDENTIFIER  RELS_LOOKUP_ALL_Y
-      * (expr)
-        INLINE      X
-      * (expr)
-        INLINE      -new:list of L
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  RelationTest
+0001       * (expr)
+0001         INLINE      -by-reference:R
+0001       * (expr)
+0001         IDENTIFIER  RELS_LOOKUP_ALL_Y
+0001       * (expr)
+0001         INLINE      X
+0001       * (expr)
+0001         INLINE      -new:list of L
 =========
 Test: parse schema from:
 	RelationTest({-by-reference:R}, RELS_LOOKUP_ALL_Y, {X}, {-new:list of L}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  RelationTest
-      * (expr)
-        INLINE      -by-reference:R
-      * (expr)
-        IDENTIFIER  RELS_LOOKUP_ALL_Y
-      * (expr)
-        INLINE      X
-      * (expr)
-        INLINE      -new:list of L
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  RelationTest
+0001       * (expr)
+0001         INLINE      -by-reference:R
+0001       * (expr)
+0001         IDENTIFIER  RELS_LOOKUP_ALL_Y
+0001       * (expr)
+0001         INLINE      X
+0001       * (expr)
+0001         INLINE      -new:list of L
 =========
 Test: parse schema from:
 	RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {Y}, RLANY_CAN_GET_X) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  RelationTest
-      * (expr)
-        INLINE      -by-reference:R
-      * (expr)
-        IDENTIFIER  RELS_LOOKUP_ANY
-      * (expr)
-        INLINE      Y
-      * (expr)
-        IDENTIFIER  RLANY_CAN_GET_X
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  RelationTest
+0001       * (expr)
+0001         INLINE      -by-reference:R
+0001       * (expr)
+0001         IDENTIFIER  RELS_LOOKUP_ANY
+0001       * (expr)
+0001         INLINE      Y
+0001       * (expr)
+0001         IDENTIFIER  RLANY_CAN_GET_X
 =========
 Test: parse schema from:
 	RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {X}, RLANY_CAN_GET_Y) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  RelationTest
-      * (expr)
-        INLINE      -by-reference:R
-      * (expr)
-        IDENTIFIER  RELS_LOOKUP_ANY
-      * (expr)
-        INLINE      X
-      * (expr)
-        IDENTIFIER  RLANY_CAN_GET_Y
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  RelationTest
+0001       * (expr)
+0001         INLINE      -by-reference:R
+0001       * (expr)
+0001         IDENTIFIER  RELS_LOOKUP_ANY
+0001       * (expr)
+0001         INLINE      X
+0001       * (expr)
+0001         IDENTIFIER  RLANY_CAN_GET_Y
 =========
 Test: parse schema from:
 	RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {Y}, RLANY_GET_X) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  RelationTest
-      * (expr)
-        INLINE      -by-reference:R
-      * (expr)
-        IDENTIFIER  RELS_LOOKUP_ANY
-      * (expr)
-        INLINE      Y
-      * (expr)
-        IDENTIFIER  RLANY_GET_X
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  RelationTest
+0001       * (expr)
+0001         INLINE      -by-reference:R
+0001       * (expr)
+0001         IDENTIFIER  RELS_LOOKUP_ANY
+0001       * (expr)
+0001         INLINE      Y
+0001       * (expr)
+0001         IDENTIFIER  RLANY_GET_X
 =========
 Test: parse schema from:
 	RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {X}, RLANY_GET_Y) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  RelationTest
-      * (expr)
-        INLINE      -by-reference:R
-      * (expr)
-        IDENTIFIER  RELS_LOOKUP_ANY
-      * (expr)
-        INLINE      X
-      * (expr)
-        IDENTIFIER  RLANY_GET_Y
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  RelationTest
+0001       * (expr)
+0001         INLINE      -by-reference:R
+0001       * (expr)
+0001         IDENTIFIER  RELS_LOOKUP_ANY
+0001       * (expr)
+0001         INLINE      X
+0001       * (expr)
+0001         IDENTIFIER  RLANY_GET_Y
 =========
 Test: parse schema from:
 	RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {X}, RLANY_GET_Y) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  RelationTest
-      * (expr)
-        INLINE      -by-reference:R
-      * (expr)
-        IDENTIFIER  RELS_LOOKUP_ANY
-      * (expr)
-        INLINE      X
-      * (expr)
-        IDENTIFIER  RLANY_GET_Y
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  RelationTest
+0001       * (expr)
+0001         INLINE      -by-reference:R
+0001       * (expr)
+0001         IDENTIFIER  RELS_LOOKUP_ANY
+0001       * (expr)
+0001         INLINE      X
+0001       * (expr)
+0001         IDENTIFIER  RLANY_GET_Y
 =========
 Test: parse schema from:
 	{-primitive-definition:description-application} 
 
-  * (expr)
-    INLINE      -primitive-definition:description-application
+0001   * (expr)
+0001     INLINE      -primitive-definition:description-application
 =========
 Test: parse schema from:
 	{-primitive-definition:function-application} 
 
-  * (expr)
-    INLINE      -primitive-definition:function-application
+0001   * (expr)
+0001     INLINE      -primitive-definition:function-application
 =========
 Test: parse schema from:
 	{-primitive-definition:function-application} 
 
-  * (expr)
-    INLINE      -primitive-definition:function-application
+0001   * (expr)
+0001     INLINE      -primitive-definition:function-application
 =========
 Test: parse schema from:
 	{-primitive-definition:function-application} 
 
-  * (expr)
-    INLINE      -primitive-definition:function-application
+0001   * (expr)
+0001     INLINE      -primitive-definition:function-application
 =========
 Test: parse schema from:
 	{-primitive-definition:function-application} 
 
-  * (expr)
-    INLINE      -primitive-definition:function-application
+0001   * (expr)
+0001     INLINE      -primitive-definition:function-application
 =========
 Test: parse schema from:
 	{-primitive-definition:function-application}; 
 
-  * (expr) ;
-    INLINE      -primitive-definition:function-application
+0001   * (expr) ;
+0001     INLINE      -primitive-definition:function-application
 =========
 Test: parse schema from:
 	{-primitive-definition:function-application}; 
 
-  * (expr) ;
-    INLINE      -primitive-definition:function-application
+0001   * (expr) ;
+0001     INLINE      -primitive-definition:function-application
 =========
 Test: parse schema from:
 	{-primitive-definition:function-application}; 
 
-  * (expr) ;
-    INLINE      -primitive-definition:function-application
+0001   * (expr) ;
+0001     INLINE      -primitive-definition:function-application
 =========
 Test: parse schema from:
 	{-primitive-definition:function-application}; 
 
-  * (expr) ;
-    INLINE      -primitive-definition:function-application
+0001   * (expr) ;
+0001     INLINE      -primitive-definition:function-application
 =========
 Test: parse schema from:
 	{-show-me:V} 
 
-  * (expr)
-    INLINE      -show-me:V
+0001   * (expr)
+0001     INLINE      -show-me:V
 =========
 Test: parse schema from:
 	{-new:K} 
 
-  * (expr)
-    INLINE      -new:K
+0001   * (expr)
+0001     INLINE      -new:K
 =========
 Test: parse schema from:
 	FileIO_GetTable({filename}, {T}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  FileIO_GetTable
-      * (expr)
-        INLINE      filename
-      * (expr)
-        INLINE      T
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  FileIO_GetTable
+0001       * (expr)
+0001         INLINE      filename
+0001       * (expr)
+0001         INLINE      T
 =========
 Test: parse schema from:
 	FileIO_PutTable({filename}, {T}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  FileIO_PutTable
-      * (expr)
-        INLINE      filename
-      * (expr)
-        INLINE      T
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  FileIO_PutTable
+0001       * (expr)
+0001         INLINE      filename
+0001       * (expr)
+0001         INLINE      T
 =========
 Test: parse schema from:
 	(FileIO_Exists({filename}, false)) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  FileIO_Exists
-          * (expr)
-            INLINE      filename
-          * (expr)
-            NUMBER      false
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  FileIO_Exists
+0001           * (expr)
+0001             INLINE      filename
+0001           * (expr)
+0001             NUMBER      false
 =========
 Test: parse schema from:
 	(FileIO_Ready({filename}, false)) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  FileIO_Ready
-          * (expr)
-            INLINE      filename
-          * (expr)
-            NUMBER      false
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  FileIO_Ready
+0001           * (expr)
+0001             INLINE      filename
+0001           * (expr)
+0001             NUMBER      false
 =========
 Test: parse schema from:
 	FileIO_MarkReady({filename}, true); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  FileIO_MarkReady
-      * (expr)
-        INLINE      filename
-      * (expr)
-        NUMBER      true
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  FileIO_MarkReady
+0001       * (expr)
+0001         INLINE      filename
+0001       * (expr)
+0001         NUMBER      true
 =========
 Test: parse schema from:
 	FileIO_MarkReady({filename}, false); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  FileIO_MarkReady
-      * (expr)
-        INLINE      filename
-      * (expr)
-        NUMBER      false
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  FileIO_MarkReady
+0001       * (expr)
+0001         INLINE      filename
+0001       * (expr)
+0001         NUMBER      false
 =========
 Test: parse schema from:
 	FileIO_PutContents({FN}, {T}, false); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  FileIO_PutContents
-      * (expr)
-        INLINE      FN
-      * (expr)
-        INLINE      T
-      * (expr)
-        NUMBER      false
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  FileIO_PutContents
+0001       * (expr)
+0001         INLINE      FN
+0001       * (expr)
+0001         INLINE      T
+0001       * (expr)
+0001         NUMBER      false
 =========
 Test: parse schema from:
 	FileIO_PutContents({FN}, {T}, true); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  FileIO_PutContents
-      * (expr)
-        INLINE      FN
-      * (expr)
-        INLINE      T
-      * (expr)
-        NUMBER      true
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  FileIO_PutContents
+0001       * (expr)
+0001         INLINE      FN
+0001       * (expr)
+0001         INLINE      T
+0001       * (expr)
+0001         NUMBER      true
 =========
 Test: parse schema from:
 	FileIO_PrintContents({FN}); say__p = 1; 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  FileIO_PrintContents
-      * (expr)
-        INLINE      FN
-  * (operation) !store
-      * (expr)
-        IDENTIFIER  say__p
-      * (expr)
-        NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  FileIO_PrintContents
+0001       * (expr)
+0001         INLINE      FN
+0001   * (operation) !store
+0001       * (expr)
+0001         IDENTIFIER  say__p
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	DisplayFigure(ResourceIDsOfFigures-->{F}, {phrase options}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  DisplayFigure
-      * (operation) !lookup
-          * (expr)
-            IDENTIFIER  ResourceIDsOfFigures
-          * (expr)
-            INLINE      F
-      * (expr)
-        INLINE      phrase options
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  DisplayFigure
+0001       * (operation) !lookup
+0001           * (expr)
+0001             IDENTIFIER  ResourceIDsOfFigures
+0001           * (expr)
+0001             INLINE      F
+0001       * (expr)
+0001         INLINE      phrase options
 =========
 Test: parse schema from:
 	ResourceIDsOfFigures-->{F} 
 
-  * (operation) !lookup
-      * (expr)
-        IDENTIFIER  ResourceIDsOfFigures
-      * (expr)
-        INLINE      F
+0001   * (operation) !lookup
+0001       * (expr)
+0001         IDENTIFIER  ResourceIDsOfFigures
+0001       * (expr)
+0001         INLINE      F
 =========
 Test: parse schema from:
 	PlaySound(ResourceIDsOfSounds-->{SFX}, {phrase options}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  PlaySound
-      * (operation) !lookup
-          * (expr)
-            IDENTIFIER  ResourceIDsOfSounds
-          * (expr)
-            INLINE      SFX
-      * (expr)
-        INLINE      phrase options
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  PlaySound
+0001       * (operation) !lookup
+0001           * (expr)
+0001             IDENTIFIER  ResourceIDsOfSounds
+0001           * (expr)
+0001             INLINE      SFX
+0001       * (expr)
+0001         INLINE      phrase options
 =========
 Test: parse schema from:
 	ResourceIDsOfSounds-->{SFX} 
 
-  * (operation) !lookup
-      * (expr)
-        IDENTIFIER  ResourceIDsOfSounds
-      * (expr)
-        INLINE      SFX
+0001   * (operation) !lookup
+0001       * (expr)
+0001         IDENTIFIER  ResourceIDsOfSounds
+0001       * (expr)
+0001         INLINE      SFX
 =========
 Test: parse schema from:
 	{c}  
 
-  * (expr)
-    INLINE      c
+0001   * (expr)
+0001     INLINE      c
 =========
 Test: parse schema from:
 	(~~{c})  
 
-  * (subexpression)
-      * (operation) !not
-          * (expr)
-            INLINE      c
+0001   * (subexpression)
+0001       * (operation) !not
+0001           * (expr)
+0001             INLINE      c
 =========
 Test: parse schema from:
 	end
 
 schemawhile {c}  
 
-  * (expr)
-    IDENTIFIER  end
-    IDENTIFIER  schemawhile
-    INLINE      c
+0002   * (expr)
+0002     IDENTIFIER  end
+0002     IDENTIFIER  schemawhile
+0002     INLINE      c
 =========
 Test: parse schema from:
 	for ({loopvar}={v}: {loopvar}<={w}: {loopvar}++)  
 
-  * (statement) !for
-      * (eval)
-          * (operation) !store
-              * (expr)
-                INLINE      loopvar
-              * (expr)
-                INLINE      v
-      * (eval)
-          * (operation) !le
-              * (expr)
-                INLINE      loopvar
-              * (expr)
-                INLINE      w
-      * (eval)
-          * (operation) !postincrement
-              * (expr)
-                INLINE      loopvar
-      * (code) <
+0001   * (statement) !for
+0001       * (eval)
+0001           * (operation) !store
+0001               * (expr)
+0001                 INLINE      loopvar
+0001               * (expr)
+0001                 INLINE      v
+0001       * (eval)
+0001           * (operation) !le
+0001               * (expr)
+0001                 INLINE      loopvar
+0001               * (expr)
+0001                 INLINE      w
+0001       * (eval)
+0001           * (operation) !postincrement
+0001               * (expr)
+0001                 INLINE      loopvar
+0001       * (code) <
 =========
 Test: parse schema from:
 	for ({loopvar}={v}: {loopvar}<={w}: {loopvar}++)  
 
-  * (statement) !for
-      * (eval)
-          * (operation) !store
-              * (expr)
-                INLINE      loopvar
-              * (expr)
-                INLINE      v
-      * (eval)
-          * (operation) !le
-              * (expr)
-                INLINE      loopvar
-              * (expr)
-                INLINE      w
-      * (eval)
-          * (operation) !postincrement
-              * (expr)
-                INLINE      loopvar
-      * (code) <
+0001   * (statement) !for
+0001       * (eval)
+0001           * (operation) !store
+0001               * (expr)
+0001                 INLINE      loopvar
+0001               * (expr)
+0001                 INLINE      v
+0001       * (eval)
+0001           * (operation) !le
+0001               * (expr)
+0001                 INLINE      loopvar
+0001               * (expr)
+0001                 INLINE      w
+0001       * (eval)
+0001           * (operation) !postincrement
+0001               * (expr)
+0001                 INLINE      loopvar
+0001       * (code) <
 =========
 Test: parse schema from:
 	{-primitive-definition:repeat-through} 
 
-  * (expr)
-    INLINE      -primitive-definition:repeat-through
+0001   * (expr)
+0001     INLINE      -primitive-definition:repeat-through
 =========
 Test: parse schema from:
 	{-primitive-definition:repeat-through-list} 
 
-  * (expr)
-    INLINE      -primitive-definition:repeat-through-list
+0001   * (expr)
+0001     INLINE      -primitive-definition:repeat-through-list
 =========
 Test: parse schema from:
 	{-primitive-definition:break} 
 
-  * (expr)
-    INLINE      -primitive-definition:break
+0001   * (expr)
+0001     INLINE      -primitive-definition:break
 =========
 Test: parse schema from:
 	continue; 
 
-  * (statement) !continue
+0001   * (statement) !continue
 =========
 Test: parse schema from:
 	rtrue; 
 
-  * (statement) !return
-      * (expr)
-        NUMBER      1
+0001   * (statement) !return
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	rtrue; 
 
-  * (statement) !return
-      * (expr)
-        NUMBER      1
+0001   * (statement) !return
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	rfalse; 
 
-  * (statement) !return
-      * (expr)
-        NUMBER      0
+0001   * (statement) !return
+0001       * (expr)
+0001         NUMBER      0
 =========
 Test: parse schema from:
 	rfalse; 
 
-  * (statement) !return
-      * (expr)
-        NUMBER      0
+0001   * (statement) !return
+0001       * (expr)
+0001         NUMBER      0
 =========
 Test: parse schema from:
 	return {-return-value:something}; 
 
-  * (statement) !return
-      * (expr)
-        INLINE      -return-value:something
+0001   * (statement) !return
+0001       * (expr)
+0001         INLINE      -return-value:something
 =========
 Test: parse schema from:
 	; 
@@ -2608,1551 +2608,1551 @@ Test: parse schema from:
 Test: parse schema from:
 	rtrue; 
 
-  * (statement) !return
-      * (expr)
-        NUMBER      1
+0001   * (statement) !return
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	{-try-action:S} 
 
-  * (expr)
-    INLINE      -try-action:S
+0001   * (expr)
+0001     INLINE      -try-action:S
 =========
 Test: parse schema from:
 	{-try-action-silently:S} 
 
-  * (expr)
-    INLINE      -try-action-silently:S
+0001   * (expr)
+0001     INLINE      -try-action-silently:S
 =========
 Test: parse schema from:
 	{-try-action-silently:S} 
 
-  * (expr)
-    INLINE      -try-action-silently:S
+0001   * (expr)
+0001     INLINE      -try-action-silently:S
 =========
 Test: parse schema from:
 	(keep_silent == false) 
 
-  * (subexpression)
-      * (operation) !eq
-          * (expr)
-            IDENTIFIER  keep_silent
-          * (expr)
-            NUMBER      false
+0001   * (subexpression)
+0001       * (operation) !eq
+0001           * (expr)
+0001             IDENTIFIER  keep_silent
+0001           * (expr)
+0001             NUMBER      false
 =========
 Test: parse schema from:
 	(NeedToTouchNoun()) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  NeedToTouchNoun
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  NeedToTouchNoun
 =========
 Test: parse schema from:
 	(NeedToTouchSecondNoun()) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  NeedToTouchSecondNoun
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  NeedToTouchSecondNoun
 =========
 Test: parse schema from:
 	(NeedToCarryNoun()) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  NeedToCarryNoun
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  NeedToCarryNoun
 =========
 Test: parse schema from:
 	(NeedToCarrySecondNoun()) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  NeedToCarrySecondNoun
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  NeedToCarrySecondNoun
 =========
 Test: parse schema from:
 	(NeedLightForAction()) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  NeedLightForAction
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  NeedLightForAction
 =========
 Test: parse schema from:
 	rtrue; 
 
-  * (statement) !return
-      * (expr)
-        NUMBER      1
+0001   * (statement) !return
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	rfalse; 
 
-  * (statement) !return
-      * (expr)
-        NUMBER      0
+0001   * (statement) !return
+0001       * (expr)
+0001         NUMBER      0
 =========
 Test: parse schema from:
 	STORED_ACTION_TY_Current({-new:action}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  STORED_ACTION_TY_Current
-      * (expr)
-        INLINE      -new:action
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  STORED_ACTION_TY_Current
+0001       * (expr)
+0001         INLINE      -new:action
 =========
 Test: parse schema from:
 	{A} 
 
-  * (expr)
-    INLINE      A
+0001   * (expr)
+0001     INLINE      A
 =========
 Test: parse schema from:
 	(STORED_ACTION_TY_Involves({-by-reference:act}, {X})) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  STORED_ACTION_TY_Involves
-          * (expr)
-            INLINE      -by-reference:act
-          * (expr)
-            INLINE      X
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  STORED_ACTION_TY_Involves
+0001           * (expr)
+0001             INLINE      -by-reference:act
+0001           * (expr)
+0001             INLINE      X
 =========
 Test: parse schema from:
 	(STORED_ACTION_TY_Part({-by-reference:act}, STORA_ACTION_F)) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  STORED_ACTION_TY_Part
-          * (expr)
-            INLINE      -by-reference:act
-          * (expr)
-            IDENTIFIER  STORA_ACTION_F
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  STORED_ACTION_TY_Part
+0001           * (expr)
+0001             INLINE      -by-reference:act
+0001           * (expr)
+0001             IDENTIFIER  STORA_ACTION_F
 =========
 Test: parse schema from:
 	(STORED_ACTION_TY_Part({-by-reference:act}, STORA_NOUN_F)) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  STORED_ACTION_TY_Part
-          * (expr)
-            INLINE      -by-reference:act
-          * (expr)
-            IDENTIFIER  STORA_NOUN_F
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  STORED_ACTION_TY_Part
+0001           * (expr)
+0001             INLINE      -by-reference:act
+0001           * (expr)
+0001             IDENTIFIER  STORA_NOUN_F
 =========
 Test: parse schema from:
 	(STORED_ACTION_TY_Part({-by-reference:act}, STORA_SECOND_F)) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  STORED_ACTION_TY_Part
-          * (expr)
-            INLINE      -by-reference:act
-          * (expr)
-            IDENTIFIER  STORA_SECOND_F
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  STORED_ACTION_TY_Part
+0001           * (expr)
+0001             INLINE      -by-reference:act
+0001           * (expr)
+0001             IDENTIFIER  STORA_SECOND_F
 =========
 Test: parse schema from:
 	(STORED_ACTION_TY_Part({-by-reference:act}, STORA_ACTOR_F)) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  STORED_ACTION_TY_Part
-          * (expr)
-            INLINE      -by-reference:act
-          * (expr)
-            IDENTIFIER  STORA_ACTOR_F
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  STORED_ACTION_TY_Part
+0001           * (expr)
+0001             INLINE      -by-reference:act
+0001           * (expr)
+0001             IDENTIFIER  STORA_ACTOR_F
 =========
 Test: parse schema from:
 	CarryOutActivity({A}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  CarryOutActivity
-      * (expr)
-        INLINE      A
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  CarryOutActivity
+0001       * (expr)
+0001         INLINE      A
 =========
 Test: parse schema from:
 	CarryOutActivity({A}, {val}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  CarryOutActivity
-      * (expr)
-        INLINE      A
-      * (expr)
-        INLINE      val
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  CarryOutActivity
+0001       * (expr)
+0001         INLINE      A
+0001       * (expr)
+0001         INLINE      val
 =========
 Test: parse schema from:
 	rfalse; 
 
-  * (statement) !return
-      * (expr)
-        NUMBER      0
+0001   * (statement) !return
+0001       * (expr)
+0001         NUMBER      0
 =========
 Test: parse schema from:
 	BeginActivity({A}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  BeginActivity
-      * (expr)
-        INLINE      A
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  BeginActivity
+0001       * (expr)
+0001         INLINE      A
 =========
 Test: parse schema from:
 	BeginActivity({A}, {val}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  BeginActivity
-      * (expr)
-        INLINE      A
-      * (expr)
-        INLINE      val
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  BeginActivity
+0001       * (expr)
+0001         INLINE      A
+0001       * (expr)
+0001         INLINE      val
 =========
 Test: parse schema from:
 	(~~(ForActivity({A}))) 
 
-  * (subexpression)
-      * (operation) !not
-          * (subexpression)
-              * (call)
-                  * (expr)
-                    IDENTIFIER  ForActivity
-                  * (expr)
-                    INLINE      A
+0001   * (subexpression)
+0001       * (operation) !not
+0001           * (subexpression)
+0001               * (call)
+0001                   * (expr)
+0001                     IDENTIFIER  ForActivity
+0001                   * (expr)
+0001                     INLINE      A
 =========
 Test: parse schema from:
 	(~~(ForActivity({A}, {val}))) 
 
-  * (subexpression)
-      * (operation) !not
-          * (subexpression)
-              * (call)
-                  * (expr)
-                    IDENTIFIER  ForActivity
-                  * (expr)
-                    INLINE      A
-                  * (expr)
-                    INLINE      val
+0001   * (subexpression)
+0001       * (operation) !not
+0001           * (subexpression)
+0001               * (call)
+0001                   * (expr)
+0001                     IDENTIFIER  ForActivity
+0001                   * (expr)
+0001                     INLINE      A
+0001                   * (expr)
+0001                     INLINE      val
 =========
 Test: parse schema from:
 	EndActivity({A}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  EndActivity
-      * (expr)
-        INLINE      A
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  EndActivity
+0001       * (expr)
+0001         INLINE      A
 =========
 Test: parse schema from:
 	EndActivity({A}, {val}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  EndActivity
-      * (expr)
-        INLINE      A
-      * (expr)
-        INLINE      val
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  EndActivity
+0001       * (expr)
+0001         INLINE      A
+0001       * (expr)
+0001         INLINE      val
 =========
 Test: parse schema from:
 	AbandonActivity({A}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  AbandonActivity
-      * (expr)
-        INLINE      A
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  AbandonActivity
+0001       * (expr)
+0001         INLINE      A
 =========
 Test: parse schema from:
 	AbandonActivity({A}, {val}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  AbandonActivity
-      * (expr)
-        INLINE      A
-      * (expr)
-        INLINE      val
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  AbandonActivity
+0001       * (expr)
+0001         INLINE      A
+0001       * (expr)
+0001         INLINE      val
 =========
 Test: parse schema from:
 	FollowRulebook({RL}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  FollowRulebook
-      * (expr)
-        INLINE      RL
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  FollowRulebook
+0001       * (expr)
+0001         INLINE      RL
 =========
 Test: parse schema from:
 	FollowRulebook({RL}, {V}, true); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  FollowRulebook
-      * (expr)
-        INLINE      RL
-      * (expr)
-        INLINE      V
-      * (expr)
-        NUMBER      true
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  FollowRulebook
+0001       * (expr)
+0001         INLINE      RL
+0001       * (expr)
+0001         INLINE      V
+0001       * (expr)
+0001         NUMBER      true
 =========
 Test: parse schema from:
 	FollowRulebook({RL}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  FollowRulebook
-      * (expr)
-        INLINE      RL
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  FollowRulebook
+0001       * (expr)
+0001         INLINE      RL
 =========
 Test: parse schema from:
 	ResultOfRule({RL}, 0, true, {-strong-kind:K}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  ResultOfRule
-      * (expr)
-        INLINE      RL
-      * (expr)
-        NUMBER      0
-      * (expr)
-        NUMBER      true
-      * (expr)
-        INLINE      -strong-kind:K
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  ResultOfRule
+0001       * (expr)
+0001         INLINE      RL
+0001       * (expr)
+0001         NUMBER      0
+0001       * (expr)
+0001         NUMBER      true
+0001       * (expr)
+0001         INLINE      -strong-kind:K
 =========
 Test: parse schema from:
 	ResultOfRule({RL}, {V}, true, {-strong-kind:L}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  ResultOfRule
-      * (expr)
-        INLINE      RL
-      * (expr)
-        INLINE      V
-      * (expr)
-        NUMBER      true
-      * (expr)
-        INLINE      -strong-kind:L
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  ResultOfRule
+0001       * (expr)
+0001         INLINE      RL
+0001       * (expr)
+0001         INLINE      V
+0001       * (expr)
+0001         NUMBER      true
+0001       * (expr)
+0001         INLINE      -strong-kind:L
 =========
 Test: parse schema from:
 	ResultOfRule({RL}, 0, true, {-strong-kind:K}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  ResultOfRule
-      * (expr)
-        INLINE      RL
-      * (expr)
-        NUMBER      0
-      * (expr)
-        NUMBER      true
-      * (expr)
-        INLINE      -strong-kind:K
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  ResultOfRule
+0001       * (expr)
+0001         INLINE      RL
+0001       * (expr)
+0001         NUMBER      0
+0001       * (expr)
+0001         NUMBER      true
+0001       * (expr)
+0001         INLINE      -strong-kind:K
 =========
 Test: parse schema from:
 	if (FollowRulebook({RL})) rtrue; 
 
-  * (statement) !if
-      * (subexpression)
-          * (call)
-              * (expr)
-                IDENTIFIER  FollowRulebook
-              * (expr)
-                INLINE      RL
-      * (code)
-          * (statement) !return
-              * (expr)
-                NUMBER      1
+0001   * (statement) !if
+0001       * (subexpression)
+0001           * (call)
+0001               * (expr)
+0001                 IDENTIFIER  FollowRulebook
+0001               * (expr)
+0001                 INLINE      RL
+0001       * (code)
+0001           * (statement) !return
+0001               * (expr)
+0001                 NUMBER      1
 =========
 Test: parse schema from:
 	if (FollowRulebook({RL}, {V}, true)) rtrue; 
 
-  * (statement) !if
-      * (subexpression)
-          * (call)
-              * (expr)
-                IDENTIFIER  FollowRulebook
-              * (expr)
-                INLINE      RL
-              * (expr)
-                INLINE      V
-              * (expr)
-                NUMBER      true
-      * (code)
-          * (statement) !return
-              * (expr)
-                NUMBER      1
+0001   * (statement) !if
+0001       * (subexpression)
+0001           * (call)
+0001               * (expr)
+0001                 IDENTIFIER  FollowRulebook
+0001               * (expr)
+0001                 INLINE      RL
+0001               * (expr)
+0001                 INLINE      V
+0001               * (expr)
+0001                 NUMBER      true
+0001       * (code)
+0001           * (statement) !return
+0001               * (expr)
+0001                 NUMBER      1
 =========
 Test: parse schema from:
 	if (FollowRulebook({RL})) rtrue; 
 
-  * (statement) !if
-      * (subexpression)
-          * (call)
-              * (expr)
-                IDENTIFIER  FollowRulebook
-              * (expr)
-                INLINE      RL
-      * (code)
-          * (statement) !return
-              * (expr)
-                NUMBER      1
+0001   * (statement) !if
+0001       * (subexpression)
+0001           * (call)
+0001               * (expr)
+0001                 IDENTIFIER  FollowRulebook
+0001               * (expr)
+0001                 INLINE      RL
+0001       * (code)
+0001           * (statement) !return
+0001               * (expr)
+0001                 NUMBER      1
 =========
 Test: parse schema from:
 	rfalse; 
 
-  * (statement) !return
-      * (expr)
-        NUMBER      0
+0001   * (statement) !return
+0001       * (expr)
+0001         NUMBER      0
 =========
 Test: parse schema from:
 	RulebookSucceeds(); rtrue; 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  RulebookSucceeds
-  * (statement) !return
-      * (expr)
-        NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  RulebookSucceeds
+0001   * (statement) !return
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	RulebookFails(); rtrue; 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  RulebookFails
-  * (statement) !return
-      * (expr)
-        NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  RulebookFails
+0001   * (statement) !return
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	RulebookSucceeds({-weak-kind:rule-return-kind},{-return-value-from-rule:val}); rtrue; 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  RulebookSucceeds
-      * (expr)
-        INLINE      -weak-kind:rule-return-kind
-      * (expr)
-        INLINE      -return-value-from-rule:val
-  * (statement) !return
-      * (expr)
-        NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  RulebookSucceeds
+0001       * (expr)
+0001         INLINE      -weak-kind:rule-return-kind
+0001       * (expr)
+0001         INLINE      -return-value-from-rule:val
+0001   * (statement) !return
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	(RulebookSucceeded()) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  RulebookSucceeded
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  RulebookSucceeded
 =========
 Test: parse schema from:
 	(RulebookFailed()) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  RulebookFailed
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  RulebookFailed
 =========
 Test: parse schema from:
 	(ResultOfRule()) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  ResultOfRule
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  ResultOfRule
 =========
 Test: parse schema from:
 	deadflag=3; story_complete=false; 
 
-  * (operation) !store
-      * (expr)
-        IDENTIFIER  deadflag
-      * (expr)
-        NUMBER      3
-  * (operation) !store
-      * (expr)
-        IDENTIFIER  story_complete
-      * (expr)
-        NUMBER      false
+0001   * (operation) !store
+0001       * (expr)
+0001         IDENTIFIER  deadflag
+0001       * (expr)
+0001         NUMBER      3
+0001   * (operation) !store
+0001       * (expr)
+0001         IDENTIFIER  story_complete
+0001       * (expr)
+0001         NUMBER      false
 =========
 Test: parse schema from:
 	deadflag=3; story_complete=true; 
 
-  * (operation) !store
-      * (expr)
-        IDENTIFIER  deadflag
-      * (expr)
-        NUMBER      3
-  * (operation) !store
-      * (expr)
-        IDENTIFIER  story_complete
-      * (expr)
-        NUMBER      true
+0001   * (operation) !store
+0001       * (expr)
+0001         IDENTIFIER  deadflag
+0001       * (expr)
+0001         NUMBER      3
+0001   * (operation) !store
+0001       * (expr)
+0001         IDENTIFIER  story_complete
+0001       * (expr)
+0001         NUMBER      true
 =========
 Test: parse schema from:
 	deadflag={-by-reference:finale}; story_complete=false; 
 
-  * (operation) !store
-      * (expr)
-        IDENTIFIER  deadflag
-      * (expr)
-        INLINE      -by-reference:finale
-  * (operation) !store
-      * (expr)
-        IDENTIFIER  story_complete
-      * (expr)
-        NUMBER      false
+0001   * (operation) !store
+0001       * (expr)
+0001         IDENTIFIER  deadflag
+0001       * (expr)
+0001         INLINE      -by-reference:finale
+0001   * (operation) !store
+0001       * (expr)
+0001         IDENTIFIER  story_complete
+0001       * (expr)
+0001         NUMBER      false
 =========
 Test: parse schema from:
 	deadflag={-by-reference:finale}; story_complete=true; 
 
-  * (operation) !store
-      * (expr)
-        IDENTIFIER  deadflag
-      * (expr)
-        INLINE      -by-reference:finale
-  * (operation) !store
-      * (expr)
-        IDENTIFIER  story_complete
-      * (expr)
-        NUMBER      true
+0001   * (operation) !store
+0001       * (expr)
+0001         IDENTIFIER  deadflag
+0001       * (expr)
+0001         INLINE      -by-reference:finale
+0001   * (operation) !store
+0001       * (expr)
+0001         IDENTIFIER  story_complete
+0001       * (expr)
+0001         NUMBER      true
 =========
 Test: parse schema from:
 	(deadflag~=0) 
 
-  * (subexpression)
-      * (operation) !ne
-          * (expr)
-            IDENTIFIER  deadflag
-          * (expr)
-            NUMBER      0
+0001   * (subexpression)
+0001       * (operation) !ne
+0001           * (expr)
+0001             IDENTIFIER  deadflag
+0001           * (expr)
+0001             NUMBER      0
 =========
 Test: parse schema from:
 	(story_complete) 
 
-  * (subexpression)
-      * (expr)
-        IDENTIFIER  story_complete
+0001   * (subexpression)
+0001       * (expr)
+0001         IDENTIFIER  story_complete
 =========
 Test: parse schema from:
 	(deadflag==0) 
 
-  * (subexpression)
-      * (operation) !eq
-          * (expr)
-            IDENTIFIER  deadflag
-          * (expr)
-            NUMBER      0
+0001   * (subexpression)
+0001       * (operation) !eq
+0001           * (expr)
+0001             IDENTIFIER  deadflag
+0001           * (expr)
+0001             NUMBER      0
 =========
 Test: parse schema from:
 	(story_complete==false) 
 
-  * (subexpression)
-      * (operation) !eq
-          * (expr)
-            IDENTIFIER  story_complete
-          * (expr)
-            NUMBER      false
+0001   * (subexpression)
+0001       * (operation) !eq
+0001           * (expr)
+0001             IDENTIFIER  story_complete
+0001           * (expr)
+0001             NUMBER      false
 =========
 Test: parse schema from:
 	resurrect_please = true; 
 
-  * (operation) !store
-      * (expr)
-        IDENTIFIER  resurrect_please
-      * (expr)
-        NUMBER      true
+0001   * (operation) !store
+0001       * (expr)
+0001         IDENTIFIER  resurrect_please
+0001       * (expr)
+0001         NUMBER      true
 =========
 Test: parse schema from:
 	({t}%ONE_HOUR) 
 
-  * (subexpression)
-      * (operation) !modulo
-          * (expr)
-            INLINE      t
-          * (expr)
-            IDENTIFIER  ONE_HOUR
+0001   * (subexpression)
+0001       * (operation) !modulo
+0001           * (expr)
+0001             INLINE      t
+0001           * (expr)
+0001             IDENTIFIER  ONE_HOUR
 =========
 Test: parse schema from:
 	({t}/ONE_HOUR) 
 
-  * (subexpression)
-      * (operation) !divide
-          * (expr)
-            INLINE      t
-          * (expr)
-            IDENTIFIER  ONE_HOUR
+0001   * (subexpression)
+0001       * (operation) !divide
+0001           * (expr)
+0001             INLINE      t
+0001           * (expr)
+0001             IDENTIFIER  ONE_HOUR
 =========
 Test: parse schema from:
 	((({t}+20*ONE_HOUR)%(TWENTY_FOUR_HOURS))<(({t2}+20*ONE_HOUR)%(TWENTY_FOUR_HOURS))) 
 
-  * (subexpression)
-      * (operation) !lt
-          * (subexpression)
-              * (operation) !modulo
-                  * (subexpression)
-                      * (operation) !plus
-                          * (expr)
-                            INLINE      t
-                          * (operation) !times
-                              * (expr)
-                                NUMBER      20
-                              * (expr)
-                                IDENTIFIER  ONE_HOUR
-                  * (subexpression)
-                      * (expr)
-                        IDENTIFIER  TWENTY_FOUR_HOURS
-          * (subexpression)
-              * (operation) !modulo
-                  * (subexpression)
-                      * (operation) !plus
-                          * (expr)
-                            INLINE      t2
-                          * (operation) !times
-                              * (expr)
-                                NUMBER      20
-                              * (expr)
-                                IDENTIFIER  ONE_HOUR
-                  * (subexpression)
-                      * (expr)
-                        IDENTIFIER  TWENTY_FOUR_HOURS
+0001   * (subexpression)
+0001       * (operation) !lt
+0001           * (subexpression)
+0001               * (operation) !modulo
+0001                   * (subexpression)
+0001                       * (operation) !plus
+0001                           * (expr)
+0001                             INLINE      t
+0001                           * (operation) !times
+0001                               * (expr)
+0001                                 NUMBER      20
+0001                               * (expr)
+0001                                 IDENTIFIER  ONE_HOUR
+0001                   * (subexpression)
+0001                       * (expr)
+0001                         IDENTIFIER  TWENTY_FOUR_HOURS
+0001           * (subexpression)
+0001               * (operation) !modulo
+0001                   * (subexpression)
+0001                       * (operation) !plus
+0001                           * (expr)
+0001                             INLINE      t2
+0001                           * (operation) !times
+0001                               * (expr)
+0001                                 NUMBER      20
+0001                               * (expr)
+0001                                 IDENTIFIER  ONE_HOUR
+0001                   * (subexpression)
+0001                       * (expr)
+0001                         IDENTIFIER  TWENTY_FOUR_HOURS
 =========
 Test: parse schema from:
 	((({t}+20*ONE_HOUR)%(TWENTY_FOUR_HOURS))>(({t2}+20*ONE_HOUR)%(TWENTY_FOUR_HOURS))) 
 
-  * (subexpression)
-      * (operation) !gt
-          * (subexpression)
-              * (operation) !modulo
-                  * (subexpression)
-                      * (operation) !plus
-                          * (expr)
-                            INLINE      t
-                          * (operation) !times
-                              * (expr)
-                                NUMBER      20
-                              * (expr)
-                                IDENTIFIER  ONE_HOUR
-                  * (subexpression)
-                      * (expr)
-                        IDENTIFIER  TWENTY_FOUR_HOURS
-          * (subexpression)
-              * (operation) !modulo
-                  * (subexpression)
-                      * (operation) !plus
-                          * (expr)
-                            INLINE      t2
-                          * (operation) !times
-                              * (expr)
-                                NUMBER      20
-                              * (expr)
-                                IDENTIFIER  ONE_HOUR
-                  * (subexpression)
-                      * (expr)
-                        IDENTIFIER  TWENTY_FOUR_HOURS
+0001   * (subexpression)
+0001       * (operation) !gt
+0001           * (subexpression)
+0001               * (operation) !modulo
+0001                   * (subexpression)
+0001                       * (operation) !plus
+0001                           * (expr)
+0001                             INLINE      t
+0001                           * (operation) !times
+0001                               * (expr)
+0001                                 NUMBER      20
+0001                               * (expr)
+0001                                 IDENTIFIER  ONE_HOUR
+0001                   * (subexpression)
+0001                       * (expr)
+0001                         IDENTIFIER  TWENTY_FOUR_HOURS
+0001           * (subexpression)
+0001               * (operation) !modulo
+0001                   * (subexpression)
+0001                       * (operation) !plus
+0001                           * (expr)
+0001                             INLINE      t2
+0001                           * (operation) !times
+0001                               * (expr)
+0001                                 NUMBER      20
+0001                               * (expr)
+0001                                 IDENTIFIER  ONE_HOUR
+0001                   * (subexpression)
+0001                       * (expr)
+0001                         IDENTIFIER  TWENTY_FOUR_HOURS
 =========
 Test: parse schema from:
 	(({t2}-{t}+TWENTY_FOUR_HOURS)%(TWENTY_FOUR_HOURS)) 
 
-  * (subexpression)
-      * (operation) !modulo
-          * (subexpression)
-              * (operation) !plus
-                  * (operation) !minus
-                      * (expr)
-                        INLINE      t2
-                      * (expr)
-                        INLINE      t
-                  * (expr)
-                    IDENTIFIER  TWENTY_FOUR_HOURS
-          * (subexpression)
-              * (expr)
-                IDENTIFIER  TWENTY_FOUR_HOURS
+0001   * (subexpression)
+0001       * (operation) !modulo
+0001           * (subexpression)
+0001               * (operation) !plus
+0001                   * (operation) !minus
+0001                       * (expr)
+0001                         INLINE      t2
+0001                       * (expr)
+0001                         INLINE      t
+0001                   * (expr)
+0001                     IDENTIFIER  TWENTY_FOUR_HOURS
+0001           * (subexpression)
+0001               * (expr)
+0001                 IDENTIFIER  TWENTY_FOUR_HOURS
 =========
 Test: parse schema from:
 	(({t2}+{t}+TWENTY_FOUR_HOURS)%(TWENTY_FOUR_HOURS)) 
 
-  * (subexpression)
-      * (operation) !modulo
-          * (subexpression)
-              * (operation) !plus
-                  * (operation) !plus
-                      * (expr)
-                        INLINE      t2
-                      * (expr)
-                        INLINE      t
-                  * (expr)
-                    IDENTIFIER  TWENTY_FOUR_HOURS
-          * (subexpression)
-              * (expr)
-                IDENTIFIER  TWENTY_FOUR_HOURS
+0001   * (subexpression)
+0001       * (operation) !modulo
+0001           * (subexpression)
+0001               * (operation) !plus
+0001                   * (operation) !plus
+0001                       * (expr)
+0001                         INLINE      t2
+0001                       * (expr)
+0001                         INLINE      t
+0001                   * (expr)
+0001                     IDENTIFIER  TWENTY_FOUR_HOURS
+0001           * (subexpression)
+0001               * (expr)
+0001                 IDENTIFIER  TWENTY_FOUR_HOURS
 =========
 Test: parse schema from:
 	(({n})%(TWENTY_FOUR_HOURS)) 
 
-  * (subexpression)
-      * (operation) !modulo
-          * (subexpression)
-              * (expr)
-                INLINE      n
-          * (subexpression)
-              * (expr)
-                IDENTIFIER  TWENTY_FOUR_HOURS
+0001   * (subexpression)
+0001       * (operation) !modulo
+0001           * (subexpression)
+0001               * (expr)
+0001                 INLINE      n
+0001           * (subexpression)
+0001               * (expr)
+0001                 IDENTIFIER  TWENTY_FOUR_HOURS
 =========
 Test: parse schema from:
 	(({n}*ONE_HOUR)%(TWENTY_FOUR_HOURS)) 
 
-  * (subexpression)
-      * (operation) !modulo
-          * (subexpression)
-              * (operation) !times
-                  * (expr)
-                    INLINE      n
-                  * (expr)
-                    IDENTIFIER  ONE_HOUR
-          * (subexpression)
-              * (expr)
-                IDENTIFIER  TWENTY_FOUR_HOURS
+0001   * (subexpression)
+0001       * (operation) !modulo
+0001           * (subexpression)
+0001               * (operation) !times
+0001                   * (expr)
+0001                     INLINE      n
+0001                   * (expr)
+0001                     IDENTIFIER  ONE_HOUR
+0001           * (subexpression)
+0001               * (expr)
+0001                 IDENTIFIER  TWENTY_FOUR_HOURS
 =========
 Test: parse schema from:
 	SetTimedEvent({-mark-event-used:R}, {t}+1, 0); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  SetTimedEvent
-      * (expr)
-        INLINE      -mark-event-used:R
-      * (operation) !plus
-          * (expr)
-            INLINE      t
-          * (expr)
-            NUMBER      1
-      * (expr)
-        NUMBER      0
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  SetTimedEvent
+0001       * (expr)
+0001         INLINE      -mark-event-used:R
+0001       * (operation) !plus
+0001           * (expr)
+0001             INLINE      t
+0001           * (expr)
+0001             NUMBER      1
+0001       * (expr)
+0001         NUMBER      0
 =========
 Test: parse schema from:
 	SetTimedEvent({-mark-event-used:R}, {t}, 1); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  SetTimedEvent
-      * (expr)
-        INLINE      -mark-event-used:R
-      * (expr)
-        INLINE      t
-      * (expr)
-        NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  SetTimedEvent
+0001       * (expr)
+0001         INLINE      -mark-event-used:R
+0001       * (expr)
+0001         INLINE      t
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	SetTimedEvent({-mark-event-used:R}, (the_time+{t})%(TWENTY_FOUR_HOURS), 1); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  SetTimedEvent
-      * (expr)
-        INLINE      -mark-event-used:R
-      * (operation) !modulo
-          * (subexpression)
-              * (operation) !plus
-                  * (expr)
-                    IDENTIFIER  the_time
-                  * (expr)
-                    INLINE      t
-          * (subexpression)
-              * (expr)
-                IDENTIFIER  TWENTY_FOUR_HOURS
-      * (expr)
-        NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  SetTimedEvent
+0001       * (expr)
+0001         INLINE      -mark-event-used:R
+0001       * (operation) !modulo
+0001           * (subexpression)
+0001               * (operation) !plus
+0001                   * (expr)
+0001                     IDENTIFIER  the_time
+0001                   * (expr)
+0001                     INLINE      t
+0001           * (subexpression)
+0001               * (expr)
+0001                 IDENTIFIER  TWENTY_FOUR_HOURS
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	(scene_endings-->({sc}-1)) 
 
-  * (subexpression)
-      * (operation) !lookup
-          * (expr)
-            IDENTIFIER  scene_endings
-          * (subexpression)
-              * (operation) !minus
-                  * (expr)
-                    INLINE      sc
-                  * (expr)
-                    NUMBER      1
+0001   * (subexpression)
+0001       * (operation) !lookup
+0001           * (expr)
+0001             IDENTIFIER  scene_endings
+0001           * (subexpression)
+0001               * (operation) !minus
+0001                   * (expr)
+0001                     INLINE      sc
+0001                   * (expr)
+0001                     NUMBER      1
 =========
 Test: parse schema from:
 	(scene_endings-->({sc}-1) == 0) 
 
-  * (subexpression)
-      * (operation) !eq
-          * (operation) !lookup
-              * (expr)
-                IDENTIFIER  scene_endings
-              * (subexpression)
-                  * (operation) !minus
-                      * (expr)
-                        INLINE      sc
-                      * (expr)
-                        NUMBER      1
-          * (expr)
-            NUMBER      0
+0001   * (subexpression)
+0001       * (operation) !eq
+0001           * (operation) !lookup
+0001               * (expr)
+0001                 IDENTIFIER  scene_endings
+0001               * (subexpression)
+0001                   * (operation) !minus
+0001                       * (expr)
+0001                         INLINE      sc
+0001                       * (expr)
+0001                         NUMBER      1
+0001           * (expr)
+0001             NUMBER      0
 =========
 Test: parse schema from:
 	(scene_endings-->({sc}-1) > 1) 
 
-  * (subexpression)
-      * (operation) !gt
-          * (operation) !lookup
-              * (expr)
-                IDENTIFIER  scene_endings
-              * (subexpression)
-                  * (operation) !minus
-                      * (expr)
-                        INLINE      sc
-                      * (expr)
-                        NUMBER      1
-          * (expr)
-            NUMBER      1
+0001   * (subexpression)
+0001       * (operation) !gt
+0001           * (operation) !lookup
+0001               * (expr)
+0001                 IDENTIFIER  scene_endings
+0001               * (subexpression)
+0001                   * (operation) !minus
+0001                       * (expr)
+0001                         INLINE      sc
+0001                       * (expr)
+0001                         NUMBER      1
+0001           * (expr)
+0001             NUMBER      1
 =========
 Test: parse schema from:
 	(scene_endings-->({sc}-1) <= 1) 
 
-  * (subexpression)
-      * (operation) !le
-          * (operation) !lookup
-              * (expr)
-                IDENTIFIER  scene_endings
-              * (subexpression)
-                  * (operation) !minus
-                      * (expr)
-                        INLINE      sc
-                      * (expr)
-                        NUMBER      1
-          * (expr)
-            NUMBER      1
+0001   * (subexpression)
+0001       * (operation) !le
+0001           * (operation) !lookup
+0001               * (expr)
+0001                 IDENTIFIER  scene_endings
+0001               * (subexpression)
+0001                   * (operation) !minus
+0001                       * (expr)
+0001                         INLINE      sc
+0001                       * (expr)
+0001                         NUMBER      1
+0001           * (expr)
+0001             NUMBER      1
 =========
 Test: parse schema from:
 	(SceneUtility({sc}, 1)) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  SceneUtility
-          * (expr)
-            INLINE      sc
-          * (expr)
-            NUMBER      1
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  SceneUtility
+0001           * (expr)
+0001             INLINE      sc
+0001           * (expr)
+0001             NUMBER      1
 =========
 Test: parse schema from:
 	(SceneUtility({sc}, 2)) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  SceneUtility
-          * (expr)
-            INLINE      sc
-          * (expr)
-            NUMBER      2
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  SceneUtility
+0001           * (expr)
+0001             INLINE      sc
+0001           * (expr)
+0001             NUMBER      2
 =========
 Test: parse schema from:
 	(SceneUtility({sc}, 3)) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  SceneUtility
-          * (expr)
-            INLINE      sc
-          * (expr)
-            NUMBER      3
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  SceneUtility
+0001           * (expr)
+0001             INLINE      sc
+0001           * (expr)
+0001             NUMBER      3
 =========
 Test: parse schema from:
 	(SceneUtility({sc}, 4)) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  SceneUtility
-          * (expr)
-            INLINE      sc
-          * (expr)
-            NUMBER      4
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  SceneUtility
+0001           * (expr)
+0001             INLINE      sc
+0001           * (expr)
+0001             NUMBER      4
 =========
 Test: parse schema from:
 	(location==thedark) 
 
-  * (subexpression)
-      * (operation) !eq
-          * (expr)
-            IDENTIFIER  location
-          * (expr)
-            IDENTIFIER  thedark
+0001   * (subexpression)
+0001       * (operation) !eq
+0001           * (expr)
+0001             IDENTIFIER  location
+0001           * (expr)
+0001             IDENTIFIER  thedark
 =========
 Test: parse schema from:
 	MoveObject({something}, {something else}, {phrase options}, false); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  MoveObject
-      * (expr)
-        INLINE      something
-      * (expr)
-        INLINE      something else
-      * (expr)
-        INLINE      phrase options
-      * (expr)
-        NUMBER      false
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  MoveObject
+0001       * (expr)
+0001         INLINE      something
+0001       * (expr)
+0001         INLINE      something else
+0001       * (expr)
+0001         INLINE      phrase options
+0001       * (expr)
+0001         NUMBER      false
 =========
 Test: parse schema from:
 	RemoveFromPlay({something}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  RemoveFromPlay
-      * (expr)
-        INLINE      something
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  RemoveFromPlay
+0001       * (expr)
+0001         INLINE      something
 =========
 Test: parse schema from:
 	MoveBackdrop({O}, {D}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  MoveBackdrop
-      * (expr)
-        INLINE      O
-      * (expr)
-        INLINE      D
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  MoveBackdrop
+0001       * (expr)
+0001         INLINE      O
+0001       * (expr)
+0001         INLINE      D
 =========
 Test: parse schema from:
 	MoveFloatingObjects(); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  MoveFloatingObjects
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  MoveFloatingObjects
 =========
 Test: parse schema from:
 	LocationOf({O}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LocationOf
-      * (expr)
-        INLINE      O
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LocationOf
+0001       * (expr)
+0001         INLINE      O
 =========
 Test: parse schema from:
 	MapConnection({R1},{D}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  MapConnection
-      * (expr)
-        INLINE      R1
-      * (expr)
-        INLINE      D
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  MapConnection
+0001       * (expr)
+0001         INLINE      R1
+0001       * (expr)
+0001         INLINE      D
 =========
 Test: parse schema from:
 	DoorFrom({R1},{D}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  DoorFrom
-      * (expr)
-        INLINE      R1
-      * (expr)
-        INLINE      D
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  DoorFrom
+0001       * (expr)
+0001         INLINE      R1
+0001       * (expr)
+0001         INLINE      D
 =========
 Test: parse schema from:
 	OtherSideOfDoor({D},{R1}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  OtherSideOfDoor
-      * (expr)
-        INLINE      D
-      * (expr)
-        INLINE      R1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  OtherSideOfDoor
+0001       * (expr)
+0001         INLINE      D
+0001       * (expr)
+0001         INLINE      R1
 =========
 Test: parse schema from:
 	DirectionDoorLeadsIn({D},{R1}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  DirectionDoorLeadsIn
-      * (expr)
-        INLINE      D
-      * (expr)
-        INLINE      R1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  DirectionDoorLeadsIn
+0001       * (expr)
+0001         INLINE      D
+0001       * (expr)
+0001         INLINE      R1
 =========
 Test: parse schema from:
 	RoomOrDoorFrom({R1},{D}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  RoomOrDoorFrom
-      * (expr)
-        INLINE      R1
-      * (expr)
-        INLINE      D
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  RoomOrDoorFrom
+0001       * (expr)
+0001         INLINE      R1
+0001       * (expr)
+0001         INLINE      D
 =========
 Test: parse schema from:
 	AssertMapConnection({R1},{D},{R2}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  AssertMapConnection
-      * (expr)
-        INLINE      R1
-      * (expr)
-        INLINE      D
-      * (expr)
-        INLINE      R2
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  AssertMapConnection
+0001       * (expr)
+0001         INLINE      R1
+0001       * (expr)
+0001         INLINE      D
+0001       * (expr)
+0001         INLINE      R2
 =========
 Test: parse schema from:
 	AssertMapConnection({R1},{D},nothing); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  AssertMapConnection
-      * (expr)
-        INLINE      R1
-      * (expr)
-        INLINE      D
-      * (expr)
-        NUMBER      nothing
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  AssertMapConnection
+0001       * (expr)
+0001         INLINE      R1
+0001       * (expr)
+0001         INLINE      D
+0001       * (expr)
+0001         NUMBER      nothing
 =========
 Test: parse schema from:
 	FrontSideOfDoor({D}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  FrontSideOfDoor
-      * (expr)
-        INLINE      D
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  FrontSideOfDoor
+0001       * (expr)
+0001         INLINE      D
 =========
 Test: parse schema from:
 	BackSideOfDoor({D}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  BackSideOfDoor
-      * (expr)
-        INLINE      D
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  BackSideOfDoor
+0001       * (expr)
+0001         INLINE      D
 =========
 Test: parse schema from:
 	MapRouteTo({R1},{R2},0,{phrase options}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  MapRouteTo
-      * (expr)
-        INLINE      R1
-      * (expr)
-        INLINE      R2
-      * (expr)
-        NUMBER      0
-      * (expr)
-        INLINE      phrase options
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  MapRouteTo
+0001       * (expr)
+0001         INLINE      R1
+0001       * (expr)
+0001         INLINE      R2
+0001       * (expr)
+0001         NUMBER      0
+0001       * (expr)
+0001         INLINE      phrase options
 =========
 Test: parse schema from:
 	MapRouteTo({R1},{R2},0,{phrase options},true) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  MapRouteTo
-      * (expr)
-        INLINE      R1
-      * (expr)
-        INLINE      R2
-      * (expr)
-        NUMBER      0
-      * (expr)
-        INLINE      phrase options
-      * (expr)
-        NUMBER      true
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  MapRouteTo
+0001       * (expr)
+0001         INLINE      R1
+0001       * (expr)
+0001         INLINE      R2
+0001       * (expr)
+0001         NUMBER      0
+0001       * (expr)
+0001         INLINE      phrase options
+0001       * (expr)
+0001         NUMBER      true
 =========
 Test: parse schema from:
 	MapRouteTo({R1},{R2},{RS},{phrase options}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  MapRouteTo
-      * (expr)
-        INLINE      R1
-      * (expr)
-        INLINE      R2
-      * (expr)
-        INLINE      RS
-      * (expr)
-        INLINE      phrase options
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  MapRouteTo
+0001       * (expr)
+0001         INLINE      R1
+0001       * (expr)
+0001         INLINE      R2
+0001       * (expr)
+0001         INLINE      RS
+0001       * (expr)
+0001         INLINE      phrase options
 =========
 Test: parse schema from:
 	MapRouteTo({R1},{R2},{RS},{phrase options},true) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  MapRouteTo
-      * (expr)
-        INLINE      R1
-      * (expr)
-        INLINE      R2
-      * (expr)
-        INLINE      RS
-      * (expr)
-        INLINE      phrase options
-      * (expr)
-        NUMBER      true
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  MapRouteTo
+0001       * (expr)
+0001         INLINE      R1
+0001       * (expr)
+0001         INLINE      R2
+0001       * (expr)
+0001         INLINE      RS
+0001       * (expr)
+0001         INLINE      phrase options
+0001       * (expr)
+0001         NUMBER      true
 =========
 Test: parse schema from:
 	(HolderOf({something})) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  HolderOf
-          * (expr)
-            INLINE      something
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  HolderOf
+0001           * (expr)
+0001             INLINE      something
 =========
 Test: parse schema from:
 	(sibling({something})) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  sibling
-          * (expr)
-            INLINE      something
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  sibling
+0001           * (expr)
+0001             INLINE      something
 =========
 Test: parse schema from:
 	(child({something})) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  child
-          * (expr)
-            INLINE      something
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  child
+0001           * (expr)
+0001             INLINE      something
 =========
 Test: parse schema from:
 	YesOrNo() 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  YesOrNo
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  YesOrNo
 =========
 Test: parse schema from:
 	(SnippetMatches({S}, {T})) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  SnippetMatches
-          * (expr)
-            INLINE      S
-          * (expr)
-            INLINE      T
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  SnippetMatches
+0001           * (expr)
+0001             INLINE      S
+0001           * (expr)
+0001             INLINE      T
 =========
 Test: parse schema from:
 	(SnippetMatches({S}, {T}) == false) 
 
-  * (subexpression)
-      * (operation) !eq
-          * (call)
-              * (expr)
-                IDENTIFIER  SnippetMatches
-              * (expr)
-                INLINE      S
-              * (expr)
-                INLINE      T
-          * (expr)
-            NUMBER      false
+0001   * (subexpression)
+0001       * (operation) !eq
+0001           * (call)
+0001               * (expr)
+0001                 IDENTIFIER  SnippetMatches
+0001               * (expr)
+0001                 INLINE      S
+0001               * (expr)
+0001                 INLINE      T
+0001           * (expr)
+0001             NUMBER      false
 =========
 Test: parse schema from:
 	(matched_text=SnippetIncludes({T},{S})) 
 
-  * (subexpression)
-      * (operation) !store
-          * (expr)
-            IDENTIFIER  matched_text
-          * (call)
-              * (expr)
-                IDENTIFIER  SnippetIncludes
-              * (expr)
-                INLINE      T
-              * (expr)
-                INLINE      S
+0001   * (subexpression)
+0001       * (operation) !store
+0001           * (expr)
+0001             IDENTIFIER  matched_text
+0001           * (call)
+0001               * (expr)
+0001                 IDENTIFIER  SnippetIncludes
+0001               * (expr)
+0001                 INLINE      T
+0001               * (expr)
+0001                 INLINE      S
 =========
 Test: parse schema from:
 	(SnippetIncludes({T},{S})==0) 
 
-  * (subexpression)
-      * (operation) !eq
-          * (call)
-              * (expr)
-                IDENTIFIER  SnippetIncludes
-              * (expr)
-                INLINE      T
-              * (expr)
-                INLINE      S
-          * (expr)
-            NUMBER      0
+0001   * (subexpression)
+0001       * (operation) !eq
+0001           * (call)
+0001               * (expr)
+0001                 IDENTIFIER  SnippetIncludes
+0001               * (expr)
+0001                 INLINE      T
+0001               * (expr)
+0001                 INLINE      S
+0001           * (expr)
+0001             NUMBER      0
 =========
 Test: parse schema from:
 	SetPlayersCommand({-by-reference:T}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  SetPlayersCommand
-      * (expr)
-        INLINE      -by-reference:T
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  SetPlayersCommand
+0001       * (expr)
+0001         INLINE      -by-reference:T
 =========
 Test: parse schema from:
 	SpliceSnippet({S}, {-by-reference:T}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  SpliceSnippet
-      * (expr)
-        INLINE      S
-      * (expr)
-        INLINE      -by-reference:T
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  SpliceSnippet
+0001       * (expr)
+0001         INLINE      S
+0001       * (expr)
+0001         INLINE      -by-reference:T
 =========
 Test: parse schema from:
 	SpliceSnippet({S}, 0); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  SpliceSnippet
-      * (expr)
-        INLINE      S
-      * (expr)
-        NUMBER      0
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  SpliceSnippet
+0001       * (expr)
+0001         INLINE      S
+0001       * (expr)
+0001         NUMBER      0
 =========
 Test: parse schema from:
 	RulebookFails(); rtrue; 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  RulebookFails
-  * (statement) !return
-      * (expr)
-        NUMBER      1
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  RulebookFails
+0001   * (statement) !return
+0001       * (expr)
+0001         NUMBER      1
 =========
 Test: parse schema from:
 	PlaceInScope({O}, {phrase options}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  PlaceInScope
-      * (expr)
-        INLINE      O
-      * (expr)
-        INLINE      phrase options
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  PlaceInScope
+0001       * (expr)
+0001         INLINE      O
+0001       * (expr)
+0001         INLINE      phrase options
 =========
 Test: parse schema from:
 	ScopeWithin({O}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  ScopeWithin
-      * (expr)
-        INLINE      O
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  ScopeWithin
+0001       * (expr)
+0001         INLINE      O
 =========
 Test: parse schema from:
 	PronounNotice({O}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  PronounNotice
-      * (expr)
-        INLINE      O
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  PronounNotice
+0001       * (expr)
+0001         INLINE      O
 =========
 Test: parse schema from:
 	NotifyTheScore(); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  NotifyTheScore
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  NotifyTheScore
 =========
 Test: parse schema from:
 	print (address) pronoun_word; 
 
-  * (statement) !printdword
-      * (expr)
-        IDENTIFIER  pronoun_word
+0001   * (statement) !printdword
+0001       * (expr)
+0001         IDENTIFIER  pronoun_word
 =========
 Test: parse schema from:
 	PrintCommand(); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  PrintCommand
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  PrintCommand
 =========
 Test: parse schema from:
 	print (address) pronoun_word; 
 
-  * (statement) !printdword
-      * (expr)
-        IDENTIFIER  pronoun_word
+0001   * (statement) !printdword
+0001       * (expr)
+0001         IDENTIFIER  pronoun_word
 =========
 Test: parse schema from:
 	PrintCommand(); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  PrintCommand
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  PrintCommand
 =========
 Test: parse schema from:
 	CoreOf({X}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  CoreOf
-      * (expr)
-        INLINE      X
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  CoreOf
+0001       * (expr)
+0001         INLINE      X
 =========
 Test: parse schema from:
 	(CommonAncestor({O}, {P})) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  CommonAncestor
-          * (expr)
-            INLINE      O
-          * (expr)
-            INLINE      P
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  CommonAncestor
+0001           * (expr)
+0001             INLINE      O
+0001           * (expr)
+0001             INLINE      P
 =========
 Test: parse schema from:
 	(CoreOfParentOfCoreOf({O})) 
 
-  * (subexpression)
-      * (call)
-          * (expr)
-            IDENTIFIER  CoreOfParentOfCoreOf
-          * (expr)
-            INLINE      O
+0001   * (subexpression)
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  CoreOfParentOfCoreOf
+0001           * (expr)
+0001             INLINE      O
 =========
 Test: parse schema from:
 	VisibilityParent({O}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  VisibilityParent
-      * (expr)
-        INLINE      O
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  VisibilityParent
+0001       * (expr)
+0001         INLINE      O
 =========
 Test: parse schema from:
 	FindVisibilityLevels(); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  FindVisibilityLevels
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  FindVisibilityLevels
 =========
 Test: parse schema from:
 	TouchabilityCeiling({O}) 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  TouchabilityCeiling
-      * (expr)
-        INLINE      O
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  TouchabilityCeiling
+0001       * (expr)
+0001         INLINE      O
 =========
 Test: parse schema from:
 	visibility_levels 
 
-  * (expr)
-    IDENTIFIER  visibility_levels
+0001   * (expr)
+0001     IDENTIFIER  visibility_levels
 =========
 Test: parse schema from:
 	visibility_ceiling 
 
-  * (expr)
-    IDENTIFIER  visibility_ceiling
+0001   * (expr)
+0001     IDENTIFIER  visibility_ceiling
 =========
 Test: parse schema from:
 	LookAfterGoing(); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  LookAfterGoing
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  LookAfterGoing
 =========
 Test: parse schema from:
 	PrintOrRun(location, description); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  PrintOrRun
-      * (expr)
-        IDENTIFIER  location
-      * (expr)
-        IDENTIFIER  description
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  PrintOrRun
+0001       * (expr)
+0001         IDENTIFIER  location
+0001       * (expr)
+0001         IDENTIFIER  description
 =========
 Test: parse schema from:
 	say__comp 
 
-  * (expr)
-    IDENTIFIER  say__comp
+0001   * (expr)
+0001     IDENTIFIER  say__comp
 =========
 Test: parse schema from:
 	(multiflag==1) 
 
-  * (subexpression)
-      * (operation) !eq
-          * (expr)
-            IDENTIFIER  multiflag
-          * (expr)
-            NUMBER      1
+0001   * (subexpression)
+0001       * (operation) !eq
+0001           * (expr)
+0001             IDENTIFIER  multiflag
+0001           * (expr)
+0001             NUMBER      1
 =========
 Test: parse schema from:
 	(lookmode == 1) 
 
-  * (subexpression)
-      * (operation) !eq
-          * (expr)
-            IDENTIFIER  lookmode
-          * (expr)
-            NUMBER      1
+0001   * (subexpression)
+0001       * (operation) !eq
+0001           * (expr)
+0001             IDENTIFIER  lookmode
+0001           * (expr)
+0001             NUMBER      1
 =========
 Test: parse schema from:
 	(lookmode == 2) 
 
-  * (subexpression)
-      * (operation) !eq
-          * (expr)
-            IDENTIFIER  lookmode
-          * (expr)
-            NUMBER      2
+0001   * (subexpression)
+0001       * (operation) !eq
+0001           * (expr)
+0001             IDENTIFIER  lookmode
+0001           * (expr)
+0001             NUMBER      2
 =========
 Test: parse schema from:
 	(lookmode == 3) 
 
-  * (subexpression)
-      * (operation) !eq
-          * (expr)
-            IDENTIFIER  lookmode
-          * (expr)
-            NUMBER      3
+0001   * (subexpression)
+0001       * (operation) !eq
+0001           * (expr)
+0001             IDENTIFIER  lookmode
+0001           * (expr)
+0001             NUMBER      3
 =========
 Test: parse schema from:
 	return GVS_Convert({AN},{O},0); 
 
-  * (statement) !return
-      * (call)
-          * (expr)
-            IDENTIFIER  GVS_Convert
-          * (expr)
-            INLINE      AN
-          * (expr)
-            INLINE      O
-          * (expr)
-            NUMBER      0
+0001   * (statement) !return
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  GVS_Convert
+0001           * (expr)
+0001             INLINE      AN
+0001           * (expr)
+0001             INLINE      O
+0001           * (expr)
+0001             NUMBER      0
 =========
 Test: parse schema from:
 	return ConvertToRequest({X}, {AN}, {Y}, {Z}); 
 
-  * (statement) !return
-      * (call)
-          * (expr)
-            IDENTIFIER  ConvertToRequest
-          * (expr)
-            INLINE      X
-          * (expr)
-            INLINE      AN
-          * (expr)
-            INLINE      Y
-          * (expr)
-            INLINE      Z
+0001   * (statement) !return
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  ConvertToRequest
+0001           * (expr)
+0001             INLINE      X
+0001           * (expr)
+0001             INLINE      AN
+0001           * (expr)
+0001             INLINE      Y
+0001           * (expr)
+0001             INLINE      Z
 =========
 Test: parse schema from:
 	return ConvertToGoingWithPush(); 
 
-  * (statement) !return
-      * (call)
-          * (expr)
-            IDENTIFIER  ConvertToGoingWithPush
+0001   * (statement) !return
+0001       * (call)
+0001           * (expr)
+0001             IDENTIFIER  ConvertToGoingWithPush
 =========
 Test: parse schema from:
 	move {something} to {something else}; 
 
-  * (statement) !move
-      * (expr)
-        INLINE      something
-      * (expr)
-        INLINE      something else
+0001   * (statement) !move
+0001       * (expr)
+0001         INLINE      something
+0001       * (expr)
+0001         INLINE      something else
 =========
 Test: parse schema from:
 	MoveDuringGoing({something}, {something else}); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  MoveDuringGoing
-      * (expr)
-        INLINE      something
-      * (expr)
-        INLINE      something else
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  MoveDuringGoing
+0001       * (expr)
+0001         INLINE      something
+0001       * (expr)
+0001         INLINE      something else
 =========
 Test: parse schema from:
 	SilentlyConsiderLight(); 
 
-  * (call)
-      * (expr)
-        IDENTIFIER  SilentlyConsiderLight
+0001   * (call)
+0001       * (expr)
+0001         IDENTIFIER  SilentlyConsiderLight
 =========
 Test: parse schema from:
 	{-primitive-definition:verbose-checking} 
 
-  * (expr)
-    INLINE      -primitive-definition:verbose-checking
+0001   * (expr)
+0001     INLINE      -primitive-definition:verbose-checking
 =========
 Test: parse schema from:
 	{-primitive-definition:verbose-checking} 
 
-  * (expr)
-    INLINE      -primitive-definition:verbose-checking
+0001   * (expr)
+0001     INLINE      -primitive-definition:verbose-checking
 =========
 Test: parse schema from:
 	@log_shift xorshift_seed -3 -> temp;
 	@log_shift xorshift_seed (-3) -> temp;
 
-  * (assembly)
-      * (expr)
-        OPCODE      @log_shift
-      * (expr)
-        IDENTIFIER  xorshift_seed
-      * (expr)
-        NUMBER      -3
-      * (expr)
-        ASM_ARROW   ->
-      * (expr)
-        IDENTIFIER  temp
-  * (assembly)
-      * (expr)
-        OPCODE      @log_shift
-      * (expr)
-        IDENTIFIER  xorshift_seed
-      * (expr)
-        NUMBER      -3
-      * (expr)
-        ASM_ARROW   ->
-      * (expr)
-        IDENTIFIER  temp
+0001   * (assembly)
+0001       * (expr)
+0001         OPCODE      @log_shift
+0001       * (expr)
+0001         IDENTIFIER  xorshift_seed
+0001       * (expr)
+0001         NUMBER      -3
+0001       * (expr)
+0001         ASM_ARROW   ->
+0001       * (expr)
+0001         IDENTIFIER  temp
+0002   * (assembly)
+0002       * (expr)
+0002         OPCODE      @log_shift
+0002       * (expr)
+0002         IDENTIFIER  xorshift_seed
+0002       * (expr)
+0002         NUMBER      -3
+0002       * (expr)
+0002         ASM_ARROW   ->
+0001       * (expr)
+0001         IDENTIFIER  temp
 =========
 Test: parse schema from:
 	print "";
 
-  * (statement) !print
-      * (expr)
-        DQUOTED     
+0001   * (statement) !print
+0001       * (expr)
+0001         DQUOTED     
 =========
 Test: parse schema from:
 	print '^';
@@ -4162,39 +4162,39 @@ Test: parse schema from:
 	print (char) '@{0041}', " might be an A, who knows.^";
 	print (address) 'x@{0041}', " might be an xA, who knows.^";
 
-  * (statement) !printnumber
-      * (expr)
-        SQUOTED     ^
-  * (statement) !printnumber
-      * (expr)
-        SQUOTED     helen's//
-  * (statement) !printchar
-      * (expr)
-        SQUOTED     ß
-  * (statement) !print
-      * (expr)
-        DQUOTED      might be an ß, who knows.
+0001   * (statement) !printnumber
+0001       * (expr)
+0001         SQUOTED     ^
+0002   * (statement) !printnumber
+0002       * (expr)
+0002         SQUOTED     helen's//
+0003   * (statement) !printchar
+0003       * (expr)
+0003         SQUOTED     ß
+0003   * (statement) !print
+0003       * (expr)
+0003         DQUOTED      might be an ß, who knows.
 
-  * (statement) !printdword
-      * (expr)
-        SQUOTED     xß
-  * (statement) !print
-      * (expr)
-        DQUOTED      might be an xß, who knows.
+0004   * (statement) !printdword
+0004       * (expr)
+0004         SQUOTED     xß
+0004   * (statement) !print
+0004       * (expr)
+0004         DQUOTED      might be an xß, who knows.
 
-  * (statement) !printchar
-      * (expr)
-        SQUOTED     A
-  * (statement) !print
-      * (expr)
-        DQUOTED      might be an A, who knows.
+0005   * (statement) !printchar
+0005       * (expr)
+0005         SQUOTED     A
+0005   * (statement) !print
+0005       * (expr)
+0005         DQUOTED      might be an A, who knows.
 
-  * (statement) !printdword
-      * (expr)
-        SQUOTED     xA
-  * (statement) !print
-      * (expr)
-        DQUOTED      might be an xA, who knows.
+0006   * (statement) !printdword
+0006       * (expr)
+0006         SQUOTED     xA
+0006   * (statement) !print
+0006       * (expr)
+0006         DQUOTED      might be an xA, who knows.
 
 =========
 Test: parse schema from:
@@ -4276,249 +4276,353 @@ Test: parse schema from:
 	print "inverted ?: @@223.";
 	print "[unicode 169] is a copyright sign. [unicode 1060] is a capital Cyrillic ef, and [unicode 9650] is a triangle.";
 
-  * (statement) !print
-      * (expr)
-        DQUOTED     Les œuvres d'Æsop en français, mon élève!
-  * (statement) !print
-      * (expr)
-        DQUOTED     Naïve readers of the New Yorker reëlected Mr Clinton.
-  * (statement) !print
-      * (expr)
-        DQUOTED     Gauß first proved the Fundamental Theorem of Algebra.
-  * (statement) !print
-      * (expr)
-        DQUOTED     áéíóúýÁÉÍÓÚÝàèìòùÀÈÌÒÙâêîôûÂÊÎÔÛäëïöüÿÄËÏÖÜŸ
-  * (statement) !print
-      * (expr)
-        DQUOTED     ãñõÃÑÕçÇøØæÆðÐþÎ£¡¿«»ßåÅœŒ
-  * (statement) !print
-      * (expr)
-        DQUOTED     So © is a copyright sign, and Ф is a capital Cyrillic ef, and ▲ is a triangle
-  * (statement) !print
-      * (expr)
-        DQUOTED     Backslash: \ At sign: @ Caret: ^ Tilde: ~
-  * (statement) !print
-      * (expr)
-        DQUOTED     a-diarhesis: ä.
-  * (statement) !print
-      * (expr)
-        DQUOTED     o-diarhesis: ö.
-  * (statement) !print
-      * (expr)
-        DQUOTED     u-diarhesis: ü.
-  * (statement) !print
-      * (expr)
-        DQUOTED     A-diarhesis: Ä.
-  * (statement) !print
-      * (expr)
-        DQUOTED     O-diarhesis: Ö.
-  * (statement) !print
-      * (expr)
-        DQUOTED     U-diarhesis: Ü.
-  * (statement) !print
-      * (expr)
-        DQUOTED     sharp s: ß.
-  * (statement) !print
-      * (expr)
-        DQUOTED     close double-angle quotation mark: ».
-  * (statement) !print
-      * (expr)
-        DQUOTED     open double-angle quotation mark: «.
-  * (statement) !print
-      * (expr)
-        DQUOTED     e-diarhesis: ë.
-  * (statement) !print
-      * (expr)
-        DQUOTED     i-diarhesis: ï.
-  * (statement) !print
-      * (expr)
-        DQUOTED     y-diarhesis: ÿ.
-  * (statement) !print
-      * (expr)
-        DQUOTED     E-diarhesis: Ë.
-  * (statement) !print
-      * (expr)
-        DQUOTED     I-diarhesis: Ï.
-  * (statement) !print
-      * (expr)
-        DQUOTED     a-acute: á.
-  * (statement) !print
-      * (expr)
-        DQUOTED     e-acute: é.
-  * (statement) !print
-      * (expr)
-        DQUOTED     i-acute: í.
-  * (statement) !print
-      * (expr)
-        DQUOTED     o-acute: ó.
-  * (statement) !print
-      * (expr)
-        DQUOTED     u-acute: ú.
-  * (statement) !print
-      * (expr)
-        DQUOTED     y-acute: ý.
-  * (statement) !print
-      * (expr)
-        DQUOTED     A-acute: Á.
-  * (statement) !print
-      * (expr)
-        DQUOTED     E-acute: É.
-  * (statement) !print
-      * (expr)
-        DQUOTED     I-acute: Í.
-  * (statement) !print
-      * (expr)
-        DQUOTED     O-acute: Ó.
-  * (statement) !print
-      * (expr)
-        DQUOTED     U-acute: Ú.
-  * (statement) !print
-      * (expr)
-        DQUOTED     Y-acute: Ý.
-  * (statement) !print
-      * (expr)
-        DQUOTED     a-grave: à.
-  * (statement) !print
-      * (expr)
-        DQUOTED     e-grave: è.
-  * (statement) !print
-      * (expr)
-        DQUOTED     i-grave: ì.
-  * (statement) !print
-      * (expr)
-        DQUOTED     o-grave: ò.
-  * (statement) !print
-      * (expr)
-        DQUOTED     u-grave: ù.
-  * (statement) !print
-      * (expr)
-        DQUOTED     A-grave: À.
-  * (statement) !print
-      * (expr)
-        DQUOTED     E-grave: È.
-  * (statement) !print
-      * (expr)
-        DQUOTED     I-grave: Ì.
-  * (statement) !print
-      * (expr)
-        DQUOTED     O-grave: Ò.
-  * (statement) !print
-      * (expr)
-        DQUOTED     U-grave: Ù.
-  * (statement) !print
-      * (expr)
-        DQUOTED     a-circumflex: â.
-  * (statement) !print
-      * (expr)
-        DQUOTED     e-circumflex: ê.
-  * (statement) !print
-      * (expr)
-        DQUOTED     i-circumflex: î.
-  * (statement) !print
-      * (expr)
-        DQUOTED     o-circumflex: ô.
-  * (statement) !print
-      * (expr)
-        DQUOTED     u-circumflex: û.
-  * (statement) !print
-      * (expr)
-        DQUOTED     A-circumflex: Â.
-  * (statement) !print
-      * (expr)
-        DQUOTED     E-circumflex: Ê.
-  * (statement) !print
-      * (expr)
-        DQUOTED     I-circumflex: Î.
-  * (statement) !print
-      * (expr)
-        DQUOTED     O-circumflex: Ô.
-  * (statement) !print
-      * (expr)
-        DQUOTED     U-circumflex: Û.
-  * (statement) !print
-      * (expr)
-        DQUOTED     a-ring: æ.
-  * (statement) !print
-      * (expr)
-        DQUOTED     A-ring: Æ.
-  * (statement) !print
-      * (expr)
-        DQUOTED     o-stroke: ø.
-  * (statement) !print
-      * (expr)
-        DQUOTED     O-stroke: Ø.
-  * (statement) !print
-      * (expr)
-        DQUOTED     a-tilde: ã.
-  * (statement) !print
-      * (expr)
-        DQUOTED     n-tilde: ñ.
-  * (statement) !print
-      * (expr)
-        DQUOTED     o-tilde: õ.
-  * (statement) !print
-      * (expr)
-        DQUOTED     A-tilde: Ã.
-  * (statement) !print
-      * (expr)
-        DQUOTED     N-tilde: Ñ.
-  * (statement) !print
-      * (expr)
-        DQUOTED     O-tilde: Õ.
-  * (statement) !print
-      * (expr)
-        DQUOTED     ae: æ.
-  * (statement) !print
-      * (expr)
-        DQUOTED     AE: Æ.
-  * (statement) !print
-      * (expr)
-        DQUOTED     c-cedilla: ç.
-  * (statement) !print
-      * (expr)
-        DQUOTED     C-cedilla: Ç.
-  * (statement) !print
-      * (expr)
-        DQUOTED     thorn: þ.
-  * (statement) !print
-      * (expr)
-        DQUOTED     eth: ð.
-  * (statement) !print
-      * (expr)
-        DQUOTED     Thorn: Þ.
-  * (statement) !print
-      * (expr)
-        DQUOTED     Eth: Ð.
-  * (statement) !print
-      * (expr)
-        DQUOTED     pound sterling sign: £.
-  * (statement) !print
-      * (expr)
-        DQUOTED     oe: œ.
-  * (statement) !print
-      * (expr)
-        DQUOTED     OE: Œ.
-  * (statement) !print
-      * (expr)
-        DQUOTED     inverted !: ¡.
-  * (statement) !print
-      * (expr)
-        DQUOTED     inverted ?: ¿.
-  * (statement) !print
-      * (expr)
-        DQUOTED     © is a copyright sign. Ф is a capital Cyrillic ef, and ▲ is a triangle.
+0001   * (statement) !print
+0001       * (expr)
+0001         DQUOTED     Les œuvres d'Æsop en français, mon élève!
+0002   * (statement) !print
+0002       * (expr)
+0002         DQUOTED     Naïve readers of the New Yorker reëlected Mr Clinton.
+0003   * (statement) !print
+0003       * (expr)
+0003         DQUOTED     Gauß first proved the Fundamental Theorem of Algebra.
+0004   * (statement) !print
+0004       * (expr)
+0004         DQUOTED     áéíóúýÁÉÍÓÚÝàèìòùÀÈÌÒÙâêîôûÂÊÎÔÛäëïöüÿÄËÏÖÜŸ
+0005   * (statement) !print
+0005       * (expr)
+0005         DQUOTED     ãñõÃÑÕçÇøØæÆðÐþÎ£¡¿«»ßåÅœŒ
+0006   * (statement) !print
+0006       * (expr)
+0006         DQUOTED     So © is a copyright sign, and Ф is a capital Cyrillic ef, and ▲ is a triangle
+0007   * (statement) !print
+0007       * (expr)
+0007         DQUOTED     Backslash: \ At sign: @ Caret: ^ Tilde: ~
+0008   * (statement) !print
+0008       * (expr)
+0008         DQUOTED     a-diarhesis: ä.
+0009   * (statement) !print
+0009       * (expr)
+0009         DQUOTED     o-diarhesis: ö.
+0010   * (statement) !print
+0010       * (expr)
+0010         DQUOTED     u-diarhesis: ü.
+0011   * (statement) !print
+0011       * (expr)
+0011         DQUOTED     A-diarhesis: Ä.
+0012   * (statement) !print
+0012       * (expr)
+0012         DQUOTED     O-diarhesis: Ö.
+0013   * (statement) !print
+0013       * (expr)
+0013         DQUOTED     U-diarhesis: Ü.
+0014   * (statement) !print
+0014       * (expr)
+0014         DQUOTED     sharp s: ß.
+0015   * (statement) !print
+0015       * (expr)
+0015         DQUOTED     close double-angle quotation mark: ».
+0016   * (statement) !print
+0016       * (expr)
+0016         DQUOTED     open double-angle quotation mark: «.
+0017   * (statement) !print
+0017       * (expr)
+0017         DQUOTED     e-diarhesis: ë.
+0018   * (statement) !print
+0018       * (expr)
+0018         DQUOTED     i-diarhesis: ï.
+0019   * (statement) !print
+0019       * (expr)
+0019         DQUOTED     y-diarhesis: ÿ.
+0020   * (statement) !print
+0020       * (expr)
+0020         DQUOTED     E-diarhesis: Ë.
+0021   * (statement) !print
+0021       * (expr)
+0021         DQUOTED     I-diarhesis: Ï.
+0022   * (statement) !print
+0022       * (expr)
+0022         DQUOTED     a-acute: á.
+0023   * (statement) !print
+0023       * (expr)
+0023         DQUOTED     e-acute: é.
+0024   * (statement) !print
+0024       * (expr)
+0024         DQUOTED     i-acute: í.
+0025   * (statement) !print
+0025       * (expr)
+0025         DQUOTED     o-acute: ó.
+0026   * (statement) !print
+0026       * (expr)
+0026         DQUOTED     u-acute: ú.
+0027   * (statement) !print
+0027       * (expr)
+0027         DQUOTED     y-acute: ý.
+0028   * (statement) !print
+0028       * (expr)
+0028         DQUOTED     A-acute: Á.
+0029   * (statement) !print
+0029       * (expr)
+0029         DQUOTED     E-acute: É.
+0030   * (statement) !print
+0030       * (expr)
+0030         DQUOTED     I-acute: Í.
+0031   * (statement) !print
+0031       * (expr)
+0031         DQUOTED     O-acute: Ó.
+0032   * (statement) !print
+0032       * (expr)
+0032         DQUOTED     U-acute: Ú.
+0033   * (statement) !print
+0033       * (expr)
+0033         DQUOTED     Y-acute: Ý.
+0034   * (statement) !print
+0034       * (expr)
+0034         DQUOTED     a-grave: à.
+0035   * (statement) !print
+0035       * (expr)
+0035         DQUOTED     e-grave: è.
+0036   * (statement) !print
+0036       * (expr)
+0036         DQUOTED     i-grave: ì.
+0037   * (statement) !print
+0037       * (expr)
+0037         DQUOTED     o-grave: ò.
+0038   * (statement) !print
+0038       * (expr)
+0038         DQUOTED     u-grave: ù.
+0039   * (statement) !print
+0039       * (expr)
+0039         DQUOTED     A-grave: À.
+0040   * (statement) !print
+0040       * (expr)
+0040         DQUOTED     E-grave: È.
+0041   * (statement) !print
+0041       * (expr)
+0041         DQUOTED     I-grave: Ì.
+0042   * (statement) !print
+0042       * (expr)
+0042         DQUOTED     O-grave: Ò.
+0043   * (statement) !print
+0043       * (expr)
+0043         DQUOTED     U-grave: Ù.
+0044   * (statement) !print
+0044       * (expr)
+0044         DQUOTED     a-circumflex: â.
+0045   * (statement) !print
+0045       * (expr)
+0045         DQUOTED     e-circumflex: ê.
+0046   * (statement) !print
+0046       * (expr)
+0046         DQUOTED     i-circumflex: î.
+0047   * (statement) !print
+0047       * (expr)
+0047         DQUOTED     o-circumflex: ô.
+0048   * (statement) !print
+0048       * (expr)
+0048         DQUOTED     u-circumflex: û.
+0049   * (statement) !print
+0049       * (expr)
+0049         DQUOTED     A-circumflex: Â.
+0050   * (statement) !print
+0050       * (expr)
+0050         DQUOTED     E-circumflex: Ê.
+0051   * (statement) !print
+0051       * (expr)
+0051         DQUOTED     I-circumflex: Î.
+0052   * (statement) !print
+0052       * (expr)
+0052         DQUOTED     O-circumflex: Ô.
+0053   * (statement) !print
+0053       * (expr)
+0053         DQUOTED     U-circumflex: Û.
+0054   * (statement) !print
+0054       * (expr)
+0054         DQUOTED     a-ring: æ.
+0055   * (statement) !print
+0055       * (expr)
+0055         DQUOTED     A-ring: Æ.
+0056   * (statement) !print
+0056       * (expr)
+0056         DQUOTED     o-stroke: ø.
+0057   * (statement) !print
+0057       * (expr)
+0057         DQUOTED     O-stroke: Ø.
+0058   * (statement) !print
+0058       * (expr)
+0058         DQUOTED     a-tilde: ã.
+0059   * (statement) !print
+0059       * (expr)
+0059         DQUOTED     n-tilde: ñ.
+0060   * (statement) !print
+0060       * (expr)
+0060         DQUOTED     o-tilde: õ.
+0061   * (statement) !print
+0061       * (expr)
+0061         DQUOTED     A-tilde: Ã.
+0062   * (statement) !print
+0062       * (expr)
+0062         DQUOTED     N-tilde: Ñ.
+0063   * (statement) !print
+0063       * (expr)
+0063         DQUOTED     O-tilde: Õ.
+0064   * (statement) !print
+0064       * (expr)
+0064         DQUOTED     ae: æ.
+0065   * (statement) !print
+0065       * (expr)
+0065         DQUOTED     AE: Æ.
+0066   * (statement) !print
+0066       * (expr)
+0066         DQUOTED     c-cedilla: ç.
+0067   * (statement) !print
+0067       * (expr)
+0067         DQUOTED     C-cedilla: Ç.
+0068   * (statement) !print
+0068       * (expr)
+0068         DQUOTED     thorn: þ.
+0069   * (statement) !print
+0069       * (expr)
+0069         DQUOTED     eth: ð.
+0070   * (statement) !print
+0070       * (expr)
+0070         DQUOTED     Thorn: Þ.
+0071   * (statement) !print
+0071       * (expr)
+0071         DQUOTED     Eth: Ð.
+0072   * (statement) !print
+0072       * (expr)
+0072         DQUOTED     pound sterling sign: £.
+0073   * (statement) !print
+0073       * (expr)
+0073         DQUOTED     oe: œ.
+0074   * (statement) !print
+0074       * (expr)
+0074         DQUOTED     OE: Œ.
+0075   * (statement) !print
+0075       * (expr)
+0075         DQUOTED     inverted !: ¡.
+0076   * (statement) !print
+0076       * (expr)
+0076         DQUOTED     inverted ?: ¿.
+0077   * (statement) !print
+0077       * (expr)
+0077         DQUOTED     © is a copyright sign. Ф is a capital Cyrillic ef, and ▲ is a triangle.
 =========
 Test: parse schema from:
 	print BasicInformKit`stuff();
 	DialogueKit`temp = 1;
 
-  * (statement) !printnumber
-      * (call)
-          * (expr)
-            IDENTIFIER  BasicInformKit`stuff
-  * (operation) !store
-      * (expr)
-        IDENTIFIER  DialogueKit`temp
-      * (expr)
-        NUMBER      1
+0001   * (statement) !printnumber
+0001       * (call)
+0002           * (expr)
+0002             IDENTIFIER  BasicInformKit`stuff
+0002   * (operation) !store
+0002       * (expr)
+0002         IDENTIFIER  DialogueKit`temp
+0003       * (expr)
+0003         NUMBER      1
+=========
+Test: parse schema from:
+
+
+
+	print BasicInformKit`stuff();
+
+
+	DialogueKit`temp = 1;
+
+0004   * (statement) !printnumber
+0004       * (call)
+0005           * (expr)
+0005             IDENTIFIER  BasicInformKit`stuff
+0005   * (operation) !store
+0007       * (expr)
+0007         IDENTIFIER  DialogueKit`temp
+0008       * (expr)
+0008         NUMBER      1
+=========
+Test: parse schema from:
+	switch (num) {
+		8, 10: print "a test-flight.";
+		11, 12, 14 to 17: print "a landing.";
+		13: print "it back.";
+	}
+
+Schema error: 'to' ranges are unsupported in switch cases
+Schema provenance hypothetical.txt, line 1
+0001   * (statement) !switch
+0001       * (subexpression)
+0001           * (expr)
+0001             IDENTIFIER  num
+0002       * (code)
+0002           * (statement) !case
+0002               * (operation) !alternativecase
+0002                   * (expr)
+0002                     NUMBER      8
+0002                   * (expr)
+0002                     NUMBER      10
+0002               * (code)
+0002                   * (statement) !print
+0002                       * (expr)
+0002                         DQUOTED     a test-flight.
+0003           * (statement) !case
+0003               * (operation) !alternativecase
+0003                   * (operation) !alternativecase
+0003                       * (expr)
+0003                         NUMBER      11
+0003                       * (expr)
+0003                         NUMBER      12
+0003                   * (expr)
+0003                     NUMBER      14
+0003                     IDENTIFIER  to
+0003                     NUMBER      17
+0003               * (code)
+0003                   * (statement) !print
+0003                       * (expr)
+0003                         DQUOTED     a landing.
+0004           * (statement) !case
+0004               * (expr)
+0004                 NUMBER      13
+0004               * (code)
+0004                   * (statement) !print
+0004                       * (expr)
+0004                         DQUOTED     it back.
+
+0001   * (statement) !switch
+0001       * (subexpression)
+0001           * (expr)
+0001             IDENTIFIER  num
+0002       * (code)
+0002           * (statement) !case
+0002               * (operation) !alternativecase
+0002                   * (expr)
+0002                     NUMBER      8
+0002                   * (expr)
+0002                     NUMBER      10
+0002               * (code)
+0002                   * (statement) !print
+0002                       * (expr)
+0002                         DQUOTED     a test-flight.
+0003           * (statement) !case
+0003               * (operation) !alternativecase
+0003                   * (operation) !alternativecase
+0003                       * (expr)
+0003                         NUMBER      11
+0003                       * (expr)
+0003                         NUMBER      12
+0003                   * (expr)
+0003                     NUMBER      14
+0003                     IDENTIFIER  to
+0003                     NUMBER      17
+0003               * (code)
+0003                   * (statement) !print
+0003                       * (expr)
+0003                         DQUOTED     a landing.
+0004           * (statement) !case
+0004               * (expr)
+0004                 NUMBER      13
+0004               * (code)
+0004                   * (statement) !print
+0004                       * (expr)
+0004                         DQUOTED     it back.
 =========

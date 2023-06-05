@@ -39,6 +39,7 @@ DECLARE_CLASS(compile_task_data)
 @e imperative_defn_family_CLASS
 @e implication_CLASS
 @e named_rulebook_outcome_CLASS
+@e parsed_use_option_setting_CLASS
 @e phrase_option_CLASS
 @e relation_guard_CLASS
 @e rule_CLASS
@@ -49,6 +50,7 @@ DECLARE_CLASS(compile_task_data)
 @e table_CLASS
 @e table_column_CLASS
 @e table_contribution_CLASS
+@e target_pragma_setting_CLASS
 @e to_family_data_CLASS
 @e use_option_CLASS
 
@@ -72,6 +74,7 @@ DECLARE_CLASS(imperative_defn_family)
 DECLARE_CLASS(imperative_defn)
 DECLARE_CLASS(implication)
 DECLARE_CLASS(named_rulebook_outcome)
+DECLARE_CLASS(parsed_use_option_setting)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(phrase_option, 100)
 DECLARE_CLASS(relation_guard)
 DECLARE_CLASS(rule_family_data)
@@ -82,6 +85,7 @@ DECLARE_CLASS(source_text_intervention)
 DECLARE_CLASS(table_column)
 DECLARE_CLASS(table)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(table_contribution, 100)
+DECLARE_CLASS(target_pragma_setting)
 DECLARE_CLASS(to_family_data)
 DECLARE_CLASS(use_option)
 
@@ -99,6 +103,7 @@ DECLARE_CLASS(use_option)
 @e nonlocal_variable_CLASS
 @e response_message_CLASS
 @e text_substitution_CLASS
+@e unicode_lookup_value_CLASS
 
 =
 DECLARE_CLASS(equation)
@@ -113,6 +118,7 @@ DECLARE_CLASS(llist_entry)
 DECLARE_CLASS(nonlocal_variable)
 DECLARE_CLASS(response_message)
 DECLARE_CLASS(text_substitution)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(unicode_lookup_value, 1000)
 
 @ //knowledge// --
 

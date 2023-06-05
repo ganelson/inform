@@ -65,6 +65,7 @@ which use this module:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">PARTITION_MREASON</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">RELATION_CONSTRUCTION_MREASON</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">HIERARCHY_DA</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">USE_OPTIONS_DA</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RuntimeModule::start</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -72,6 +73,7 @@ which use this module:
 <span class="plain-syntax">    </span><span class="identifier-syntax">Memory::reason_name</span><span class="plain-syntax">(</span><span class="constant-syntax">PARTITION_MREASON</span><span class="plain-syntax">, </span><span class="string-syntax">"initial state for relations in groups"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Memory::reason_name</span><span class="plain-syntax">(</span><span class="constant-syntax">RELATION_CONSTRUCTION_MREASON</span><span class="plain-syntax">, </span><span class="string-syntax">"relation bitmap storage"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">HIERARCHY_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"inter hierarchy"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">USE_OPTIONS_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"use options"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RuntimeModule::end</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">}</span>

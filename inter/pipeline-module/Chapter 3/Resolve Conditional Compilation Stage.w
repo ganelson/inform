@@ -72,8 +72,9 @@ void ResolveConditionalsStage::resolve(inter_tree *I) {
 	state.cc_sp = 0;
 	InterTree::traverse(I, ResolveConditionalsStage::visitor, &state, NULL, 0);
 	if (state.cc_sp != 0)
-		PipelineErrors::kit_error(
+		I6Errors::issue(
 			"conditional compilation wrongly structured: not enough #endif", NULL);
+	I6Errors::clear_current_location();
 }
 
 @ Note that when the top of the stack is a block whose body is not to be compiled,
@@ -86,6 +87,7 @@ void ResolveConditionalsStage::visitor(inter_tree *I, inter_tree_node *P, void *
 	int compile_this = TRUE;
 	for (int i=0; i<state->cc_sp; i++) if (state->cc_stack[i] == FALSE) compile_this = FALSE;
 	if (Inode::is(P, SPLAT_IST)) {
+		I6Errors::set_current_location_near_splat(P);
 		text_stream *S = SplatInstruction::splatter(P);
 		switch (SplatInstruction::plm(P)) {
 			case CONSTANT_PLM:
@@ -137,6 +139,8 @@ But here it is not:
 	@<Extract rest of text into ident@>;
 	int result = FALSE;
 	text_stream *symbol_name = ident;
+	text_stream *identifier = ident;
+	@<Throw an error for what looks like a configuration identifier@>;
 	@<Decide whether symbol defined@>;
 	@<Stack up the result@>;
 	compile_this = FALSE;
@@ -147,6 +151,8 @@ But here it is not:
 	@<Extract rest of text into ident@>;
 	int result = FALSE;
 	text_stream *symbol_name = ident;
+	text_stream *identifier = ident;
+	@<Throw an error for what looks like a configuration identifier@>;
 	@<Decide whether symbol defined@>;
 	result = (result)?FALSE:TRUE;
 	@<Stack up the result@>;
@@ -176,17 +182,60 @@ Inform kits use this only to test |#Iftrue WORDSIZE == 4| or |#Iftrue WORDSIZE =
 	match_results mr2 = Regexp::create_mr();
 	if (Regexp::match(&mr2, cond, L" *(%C+?) *== *(%d+) *")) {
 		text_stream *identifier = mr2.exp[0];
-		inter_symbol *symbol =
-			LargeScale::architectural_symbol(I, identifier);
+		@<Throw an error for what looks like a configuration identifier@>;
+		inter_symbol *symbol = LargeScale::architectural_symbol(I, identifier);
 		if (symbol) {
 			int V = InterSymbol::evaluate_to_int(symbol);
 			int W = Str::atoi(mr2.exp[1], 0);
 			if ((V >= 0) && (V == W)) result = TRUE; else result = FALSE;
 		}
 	}
+	if (Regexp::match(&mr2, cond, L" *(%C+?) *>= *(%d+) *")) {
+		text_stream *identifier = mr2.exp[0];
+		@<Throw an error for what looks like a configuration identifier@>;
+		inter_symbol *symbol = LargeScale::architectural_symbol(I, identifier);
+		if (symbol) {
+			int V = InterSymbol::evaluate_to_int(symbol);
+			int W = Str::atoi(mr2.exp[1], 0);
+			if ((V >= 0) && (V >= W)) result = TRUE; else result = FALSE;
+		}
+	}
+	if (Regexp::match(&mr2, cond, L" *(%C+?) *> *(%d+) *")) {
+		text_stream *identifier = mr2.exp[0];
+		@<Throw an error for what looks like a configuration identifier@>;
+		inter_symbol *symbol = LargeScale::architectural_symbol(I, identifier);
+		if (symbol) {
+			int V = InterSymbol::evaluate_to_int(symbol);
+			int W = Str::atoi(mr2.exp[1], 0);
+			if ((V >= 0) && (V > W)) result = TRUE; else result = FALSE;
+		}
+	}
+	if (Regexp::match(&mr2, cond, L" *(%C+?) *<= *(%d+) *")) {
+		text_stream *identifier = mr2.exp[0];
+		@<Throw an error for what looks like a configuration identifier@>;
+		inter_symbol *symbol = LargeScale::architectural_symbol(I, identifier);
+		if (symbol) {
+			int V = InterSymbol::evaluate_to_int(symbol);
+			int W = Str::atoi(mr2.exp[1], 0);
+			if ((V >= 0) && (V <= W)) result = TRUE; else result = FALSE;
+		}
+	}
+	if (Regexp::match(&mr2, cond, L" *(%C+?) *< *(%d+) *")) {
+		text_stream *identifier = mr2.exp[0];
+		@<Throw an error for what looks like a configuration identifier@>;
+		inter_symbol *symbol = LargeScale::architectural_symbol(I, identifier);
+		if (symbol) {
+			int V = InterSymbol::evaluate_to_int(symbol);
+			int W = Str::atoi(mr2.exp[1], 0);
+			if ((V >= 0) && (V < W)) result = TRUE; else result = FALSE;
+		}
+	}
 	if (result == NOT_APPLICABLE) {
-		PipelineErrors::kit_error(
-			"conditional compilation is too difficult: #iftrue on %S", cond);
+		I6Errors::issue(
+			"conditional compilation is too difficult: #iftrue on '%S' "
+			"(can only test SYMBOL == DECIMALVALUE, or >, <, >=, <=, where "
+			"the DECIMALVALUE is non-negative, and even then only for a few "
+			"symbols, of which 'WORDSIZE' is the most useful)", cond);
 		result = FALSE;
 	}
 	LOGIF(RESOLVING_CONDITIONAL_COMPILATION, "Must decide if %S: ", cond);
@@ -196,10 +245,23 @@ Inform kits use this only to test |#Iftrue WORDSIZE == 4| or |#Iftrue WORDSIZE =
 	compile_this = FALSE;
 	DISCARD_TEXT(ident)
 
+@<Throw an error for what looks like a configuration identifier@> =
+	LOOP_THROUGH_TEXT(pos, identifier)
+		if (Str::get(pos) == '`') {
+			if ((Str::suffix_eq(identifier, I"_CFGF", 5)) ||
+				(Str::suffix_eq(identifier, I"_CFGV", 5)))
+				I6Errors::issue(
+					"#iftrue, #iffalse, #ifdef and #ifndef should not be used with kit "
+					"configuration values such as '%S', since those values are not known "
+					"when the kit is being compiled: use regular 'if (S)' or 'if (S == V)'",
+					identifier);
+			break;
+		}
+
 @<Stack up the result@> =
 	if (state->cc_sp >= MAX_CC_STACK_SIZE) {
 		state->cc_sp = MAX_CC_STACK_SIZE;
-		PipelineErrors::kit_error(
+		I6Errors::issue(
 			"conditional compilation wrongly structured: too many nested #ifdef or #iftrue", NULL);
 	} else {
 		state->cc_stack[state->cc_sp++] = result;
@@ -208,7 +270,7 @@ Inform kits use this only to test |#Iftrue WORDSIZE == 4| or |#Iftrue WORDSIZE =
 @<Deal with an IFNOT@> =
 	LOGIF(RESOLVING_CONDITIONAL_COMPILATION, "ifnot\n");
 	if (state->cc_sp == 0)
-		PipelineErrors::kit_error("conditional compilation wrongly structured: #ifnot at top level", NULL);
+		I6Errors::issue("conditional compilation wrongly structured: #ifnot at top level", NULL);
 	else
 		state->cc_stack[state->cc_sp-1] = (state->cc_stack[state->cc_sp-1])?FALSE:TRUE;
 	compile_this = FALSE;
@@ -219,7 +281,7 @@ Inform kits use this only to test |#Iftrue WORDSIZE == 4| or |#Iftrue WORDSIZE =
 	state->cc_sp--;
 	if (state->cc_sp < 0) {
 		state->cc_sp = 0;
-		PipelineErrors::kit_error("conditional compilation wrongly structured: too many #endif", NULL);
+		I6Errors::issue("conditional compilation wrongly structured: too many #endif", NULL);
 	}
 	compile_this = FALSE;
 

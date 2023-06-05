@@ -25,7 +25,7 @@ To provide Z-specific actions.
 	parse->0   = 15;
 	parse2->0  = 15;
 
-	if (KIT_CONFIGURATION_BITMAP & FIX_RNG_TCBIT) {
+	if (BasicInformKit`FIX_RNG_CFGF) {
 		@random 10000 -> i;
 		i = -i-2000;
 		@random i -> i;

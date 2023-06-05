@@ -1,6 +1,6 @@
 *** Printing the description of a dark room
 (Four Stars: 1. Dark room which relies on other senses when light is off--Dark room which relies on other senses when light is off) 
-An elaboration of the idea that when light is absent, the player should be given a description of what he can smell and hear, instead.
+An elaboration of the idea that when light is absent, the player should be given a description of what they can smell and hear, instead.
 
 	{*}"Four Stars"
 

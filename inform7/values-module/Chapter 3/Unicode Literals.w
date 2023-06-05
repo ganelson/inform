@@ -35,11 +35,12 @@ the player types either of these:
 	==> { fail nonterminal };
 }
 
-@ And here is the range check:
+@ And here is the range check. Values above |MAX_UNICODE_CODE_POINT| are
+permitted, but need to be specified numerically.
 
 =
 int UnicodeLiterals::max(int cc) {
-	if ((cc < 0) || (cc >= MAX_UNICODE_CODE_POINT)) {
+	if (cc < 0) {
 		@<Issue PM_UnicodeOutOfRange@>;
 		return 65;
 	}
@@ -145,8 +146,26 @@ unicode_point *UnicodeLiterals::code_point(int U) {
 main data file. Although parsing that file is relatively fast, we do it only
 on demand, because it's not small (about 2 MB of text) and is often not needed.
 
+The |UnicodeData_lookup| dictionary really associates texts (names of characters)
+with non-negative integers (their code points), but our |dictionary| type only
+allows texts-to-pointers, so we wrap these integers up into |unicode_lookup_value|
+to which we can then have pointers.
+
+(As noted by David Kinder in May 2023, it's unsafe to use this dictionary to
+associate texts with |unicode_point *| values, because the flexible-sized array
+holding those means that they will move around in memory. If we are lucky, the
+memory freed when the old version of the array is surpassed will be left intact
+and then the dictionary pointers to it will all work fine: if we are not lucky,
+for example if the memory environment is stressed because |intest| is running
+many simultaneous copies of Inform, then that space will be reused and the
+dictionary pointers will be invalid.)
+
 =
 dictionary *UnicodeData_lookup = NULL;
+typedef struct unicode_lookup_value {
+	int code_point;
+} unicode_lookup_value;
+
 void UnicodeLiterals::ensure_data(void) {
 	if (UnicodeData_lookup == NULL) {
 		UnicodeData_lookup = Dictionaries::new(65536, FALSE);
@@ -289,7 +308,9 @@ users to insert control characters into Inform text literals.)
 	}
 	if (index) {
 		Dictionaries::create(UnicodeData_lookup, name);
-		Dictionaries::write_value(UnicodeData_lookup, name, (void *) up);	
+		unicode_lookup_value *ulv = CREATE(unicode_lookup_value);
+		ulv->code_point = U[CODE_VALUE_UNICODE_DATA_FIELD];
+		Dictionaries::write_value(UnicodeData_lookup, name, (void *) ulv);	
 	}
 
 @h Using the Unicode data.
@@ -300,8 +321,8 @@ specification data file. But after that everything runs quite swiftly.
 int UnicodeLiterals::parse(text_stream *N) {
 	UnicodeLiterals::ensure_data();
 	if (Dictionaries::find(UnicodeData_lookup, N)) {
-		unicode_point *up = Dictionaries::read_value(UnicodeData_lookup, N);
-		return up->code_point;
+		unicode_lookup_value *ulv = Dictionaries::read_value(UnicodeData_lookup, N);
+		return ulv->code_point;
 	}
 	return -1;
 }

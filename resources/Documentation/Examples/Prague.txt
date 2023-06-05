@@ -1,8 +1,8 @@
 * More general linkages
-(Scenes which change as the player explores his inventory--Hurrying the player on a specific task; The Prague Job)
-Scenes used to provide pacing while the player goes through his possessions.
+(Scenes which change as the player explores their inventory--Hurrying the player on a specific task; The Prague Job)
+Scenes used to provide pacing while the player goes through their possessions.
 
-Suppose we want to remind the player that he doesn't have all the time in the world, by starting to nag him when he's nearly, but not entirely, done going over his inventory in preparation for a job.
+Suppose we want to remind the player that they don't have all the time in the world, by starting to nag them when they're nearly, but not entirely, done going over their inventory in preparation for a job.
 
 	{*}"The Prague Job"
 

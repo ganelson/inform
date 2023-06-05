@@ -1,0 +1,6 @@
+The Viability Chamber is a room.
+
+Use banana bread translates as configuration value SERIAL_COMMA = 6 in BasicInformKit.
+
+Use banana bread.
+

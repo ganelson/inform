@@ -1,0 +1,39 @@
+   Lab
+  The Clarified Ancients of Mu Mu
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Lab
+  You can see a red box and a blue box here.
+  
+> >   Lab
+  (Testing.)
+  
+  >[1] get box
+  Which do you mean, the red box or the blue box?
+  
+  >[2] red
+  Taken.
+  
+  >[3] drop box
+  (the red box)
+  Dropped.
+  
+  >[4] l
+  Lab
+  You can see a red box and a blue box here.
+  
+  >[5] get box
+  Taken.
+  
+  >[6] i
+  You are carrying:
+    a red box
+  
+  >[7] get blue box
+  Taken.
+  
+  >[8] drop box
+  Which do you mean, the blue box or the red box?
+  
+> >

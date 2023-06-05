@@ -1,8 +1,8 @@
 Inform 7 v10.2.0 has started.
 I've now read your source text, which is 12 words long.
-I've also read Basic Inform by Graham Nelson, which is 7792 words long.
-I've also read English Language by Graham Nelson, which is 2330 words long.
-I've also read Standard Rules by Graham Nelson, which is 34311 words long.
+I've also read version 1 of Basic Inform by Graham Nelson, which is 7888 words long.
+I've also read version 1 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 6 of Standard Rules by Graham Nelson, which is 35013 words long.
 Problem__ PM_TransposedNegationPair
   >--> In 'A door is either opaque or transparent' (source text, line 3), you
     proposed to set up the properties 'opaque' and 'transparent' as opposites
@@ -10,7 +10,7 @@ Problem__ PM_TransposedNegationPair
     opposites, but the other way around. (This matters because it affects
     whether things not explicitly said to be either should be opaque or
     transparent. Here you imply transparent is the default, but in the previous
-    declaration 'A container can be transparent or opaque' (the Standard Rules, line 233),
+    declaration 'A container can be transparent or opaque' (the Standard Rules, line 267),
     opaque was.) Putting these two property names the other way around should
     fix it.
 Inform 7 has finished.

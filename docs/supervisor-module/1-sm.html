@@ -97,6 +97,7 @@ which use this module:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inform_pipeline_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inform_project_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inform_template_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">kit_configuration_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">kit_dependency_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">known_extension_clash_CLASS</span>
 </pre>
@@ -129,6 +130,7 @@ which use this module:
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inform_pipeline</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inform_project</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inform_template</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">kit_configuration</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">kit_dependency</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">known_extension_clash</span><span class="plain-syntax">)</span>
 </pre>
@@ -149,7 +151,7 @@ which use this module:
 <span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_writer</span><span class="plain-syntax">(</span><span class="character-syntax">'J'</span><span class="plain-syntax">, &amp;</span><a href="5-ls.html#SP4" class="function-link"><span class="function-syntax">Languages::log</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">EXTENSIONS_CENSUS_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"extensions census"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">HEADINGS_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"headings"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="1-ic.html#SP3" class="function-link"><span class="function-syntax">Supervisor::start</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="1-ic.html#SP5" class="function-link"><span class="function-syntax">Supervisor::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-sm.html#SP3_2" class="named-paragraph-link"><span class="named-paragraph">Declare the tree annotations</span><span class="named-paragraph-number">3.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">SupervisorModule::end</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>

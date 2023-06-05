@@ -421,6 +421,10 @@ source_file *Lexer::file_of_origin(int wn) {
 	return lw_array[wn].lw_source.file_of_origin;
 }
 
+int Lexer::line_of_origin(int wn) {
+	return lw_array[wn].lw_source.line_number;
+}
+
 source_location Lexer::word_location(int wn) {
 	if (wn < 0) {
 		source_location nowhere;

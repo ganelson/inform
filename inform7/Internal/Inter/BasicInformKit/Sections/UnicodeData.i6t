@@ -8,11 +8,16 @@ defined:
 
 (a) |ZSCII_Tables|, meaning that we will use ZSCII as the character set
 for characters in text values.
-(b) |Small_Unicode_Tables|, meaning that we will use Unicode but store
+(b) |Large_Unicode_Tables|, meaning that we will use Unicode and store
+word-sized characters.
+
+At one time we also supported, but essentially never used,
+
+(c) |Small_Unicode_Tables|, meaning that we will use Unicode but store
 only single-byte characters, so that only the codes 0 to 255 are valid:
 in effect ISO Latin-1.
-(c) |Large_Unicode_Tables|, meaning that we will use Unicode and store
-two-byte characters, so that all of Unicode in the range 0 to 65535 are valid.
+
+This has now been removed.
 
 Whichever is defined, we must create two arrays:
 
@@ -39,7 +44,7 @@ Constant UNIC_NCT = 10000; ! Safe as highest case-change delta is 8383
 @h ZSCII Casing Tables.
 
 =
-#IFDEF ZSCII_Tables;
+#Ifdef TARGET_ZCODE;
 Array CharCasingChart0 -->
     $0061 (  26) (     -32) $009b (   3) (       3) $00a1 (   1)   UNIC_NCT
     $00a4 (   2) (       3) $00a6 (   1)   UNIC_NCT $00a9 (   6) (       6)
@@ -54,28 +59,12 @@ Array CharCasingChart1 -->
     $00ca (  -3) (      -1) $00d0 (   3) (      -3) $00d4 (  -3) (      -1)
     $00d9 (   2) (      -2) $00dd (   1) (      -1) $0000
 ;
-#ENDIF; ! ZSCII_Tables
-
-@h Small Unicode Casing Tables.
-
-=
-#IFDEF Small_Unicode_Tables;
-Array CharCasingChart0 -->
-    $0061 (  26) (     -32) $00aa (   1)   UNIC_NCT $00b5 (   1)   UNIC_NCT $00ba (   1)   UNIC_NCT
-    $00df (   1)   UNIC_NCT $00e0 (  23) (     -32) $00f8 (   7) (     -32) $00ff (   1)   UNIC_NCT
-    $0000
-;
-
-Array CharCasingChart1 -->
-    $0041 (  26) (      32) $00c0 (  23) (      32) $00d8 (   7) (      32) $0000
-;
-
-#ENDIF; ! Small_Unicode_Tables
+#Endif; ! TARGET_ZCODE
 
 @h Large Unicode Casing Tables.
 
 =
-#IFDEF Large_Unicode_Tables;
+#Ifdef TARGET_GLULX;
 Array CharCasingChart0 -->
     $0061 (  26) (     -32) $00aa (   1)   UNIC_NCT $00b5 (   1) (     743) $00ba (   1)   UNIC_NCT
     $00df (   1)   UNIC_NCT $00e0 (  23) (     -32) $00f8 (   7) (     -32) $00ff (   1) (     121)
@@ -155,4 +144,4 @@ Array CharCasingChart1 -->
     $213e (   2)   UNIC_NCT $2145 (   1)   UNIC_NCT $ff21 (  26) (      32) $0000
 ;
 
-#ENDIF; ! Large_Unicode_Tables
+#Endif; ! TARGET_GLULX

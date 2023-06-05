@@ -19,7 +19,7 @@ Suppose that we have a core set of issues we want to be able to bring up with al
 		relate the current subject with the second noun;
 		now the current subject is the second noun.
 
-And if we wanted to offer the player some hints about angles he could pursue:
+And if we wanted to offer the player some hints about angles they could pursue:
 	
 	{**}Instead of thinking:
 		say "You contemplate [a list of things suggested by the current subject]."

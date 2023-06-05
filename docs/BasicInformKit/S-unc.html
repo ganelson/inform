@@ -65,7 +65,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">BasicInformKit</a></li><li><b>UnicodeData Template</b></li></ul></div>
 <p class="purpose">To tabulate casings in the character set.</p>
 
-<ul class="toc"><li><a href="S-unc.html#SP1">&#167;1. Source</a></li><li><a href="S-unc.html#SP2">&#167;2. ZSCII Casing Tables</a></li><li><a href="S-unc.html#SP3">&#167;3. Small Unicode Casing Tables</a></li><li><a href="S-unc.html#SP4">&#167;4. Large Unicode Casing Tables</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-unc.html#SP1">&#167;1. Source</a></li><li><a href="S-unc.html#SP2">&#167;2. ZSCII Casing Tables</a></li><li><a href="S-unc.html#SP3">&#167;3. Large Unicode Casing Tables</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Source. </b>When this section is included, exactly one of the following constants is
 defined:
@@ -73,12 +73,19 @@ defined:
 
 <ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">ZSCII_Tables</span></span>, meaning that we will use ZSCII as the character set
 for characters in text values.
-</li><li>(b) <span class="extract"><span class="extract-syntax">Small_Unicode_Tables</span></span>, meaning that we will use Unicode but store
+</li><li>(b) <span class="extract"><span class="extract-syntax">Large_Unicode_Tables</span></span>, meaning that we will use Unicode and store
+word-sized characters.
+</li></ul>
+<p class="commentary">At one time we also supported, but essentially never used,
+</p>
+
+<ul class="items"><li>(c) <span class="extract"><span class="extract-syntax">Small_Unicode_Tables</span></span>, meaning that we will use Unicode but store
 only single-byte characters, so that only the codes 0 to 255 are valid:
 in effect ISO Latin-1.
-</li><li>(c) <span class="extract"><span class="extract-syntax">Large_Unicode_Tables</span></span>, meaning that we will use Unicode and store
-two-byte characters, so that all of Unicode in the range 0 to 65535 are valid.
 </li></ul>
+<p class="commentary">This has now been removed.
+</p>
+
 <p class="commentary">Whichever is defined, we must create two arrays:
 </p>
 
@@ -107,7 +114,7 @@ not included in the ranges below is not a letter.
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. ZSCII Casing Tables. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">IFDEF</span><span class="plain-syntax"> </span><span class="identifier-syntax">ZSCII_Tables</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_ZCODE</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">CharCasingChart0</span><span class="plain-syntax"> --&gt;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">$0061</span><span class="plain-syntax"> (  </span><span class="constant-syntax">26</span><span class="plain-syntax">) (     -32) </span><span class="constant-syntax">$009b</span><span class="plain-syntax"> (   </span><span class="constant-syntax">3</span><span class="plain-syntax">) (       </span><span class="constant-syntax">3</span><span class="plain-syntax">) </span><span class="constant-syntax">$00a1</span><span class="plain-syntax"> (   </span><span class="constant-syntax">1</span><span class="plain-syntax">)   </span><span class="identifier-syntax">UNIC_NCT</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">$00a4</span><span class="plain-syntax"> (   </span><span class="constant-syntax">2</span><span class="plain-syntax">) (       </span><span class="constant-syntax">3</span><span class="plain-syntax">) </span><span class="constant-syntax">$00a6</span><span class="plain-syntax"> (   </span><span class="constant-syntax">1</span><span class="plain-syntax">)   </span><span class="identifier-syntax">UNIC_NCT</span><span class="plain-syntax"> </span><span class="constant-syntax">$00a9</span><span class="plain-syntax"> (   </span><span class="constant-syntax">6</span><span class="plain-syntax">) (       </span><span class="constant-syntax">6</span><span class="plain-syntax">)</span>
@@ -122,28 +129,12 @@ not included in the ranges below is not a letter.
 <span class="plain-syntax">    </span><span class="constant-syntax">$00ca</span><span class="plain-syntax"> (  -3) (      -1) </span><span class="constant-syntax">$00d0</span><span class="plain-syntax"> (   </span><span class="constant-syntax">3</span><span class="plain-syntax">) (      -3) </span><span class="constant-syntax">$00d4</span><span class="plain-syntax"> (  -3) (      -1)</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">$00d9</span><span class="plain-syntax"> (   </span><span class="constant-syntax">2</span><span class="plain-syntax">) (      -2) </span><span class="constant-syntax">$00dd</span><span class="plain-syntax"> (   </span><span class="constant-syntax">1</span><span class="plain-syntax">) (      -1) </span><span class="constant-syntax">$0000</span>
 <span class="plain-syntax">;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">ENDIF</span><span class="plain-syntax">; </span><span class="comment-syntax">ZSCII_Tables</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">; </span><span class="comment-syntax">TARGET_ZCODE</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Small Unicode Casing Tables. </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Large Unicode Casing Tables. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">IFDEF</span><span class="plain-syntax"> </span><span class="identifier-syntax">Small_Unicode_Tables</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">CharCasingChart0</span><span class="plain-syntax"> --&gt;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">$0061</span><span class="plain-syntax"> (  </span><span class="constant-syntax">26</span><span class="plain-syntax">) (     -32) </span><span class="constant-syntax">$00aa</span><span class="plain-syntax"> (   </span><span class="constant-syntax">1</span><span class="plain-syntax">)   </span><span class="identifier-syntax">UNIC_NCT</span><span class="plain-syntax"> </span><span class="constant-syntax">$00b5</span><span class="plain-syntax"> (   </span><span class="constant-syntax">1</span><span class="plain-syntax">)   </span><span class="identifier-syntax">UNIC_NCT</span><span class="plain-syntax"> </span><span class="constant-syntax">$00ba</span><span class="plain-syntax"> (   </span><span class="constant-syntax">1</span><span class="plain-syntax">)   </span><span class="identifier-syntax">UNIC_NCT</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">$00df</span><span class="plain-syntax"> (   </span><span class="constant-syntax">1</span><span class="plain-syntax">)   </span><span class="identifier-syntax">UNIC_NCT</span><span class="plain-syntax"> </span><span class="constant-syntax">$00e0</span><span class="plain-syntax"> (  </span><span class="constant-syntax">23</span><span class="plain-syntax">) (     -32) </span><span class="constant-syntax">$00f8</span><span class="plain-syntax"> (   </span><span class="constant-syntax">7</span><span class="plain-syntax">) (     -32) </span><span class="constant-syntax">$00ff</span><span class="plain-syntax"> (   </span><span class="constant-syntax">1</span><span class="plain-syntax">)   </span><span class="identifier-syntax">UNIC_NCT</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">$0000</span>
-<span class="plain-syntax">;</span>
-
-<span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">CharCasingChart1</span><span class="plain-syntax"> --&gt;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">$0041</span><span class="plain-syntax"> (  </span><span class="constant-syntax">26</span><span class="plain-syntax">) (      </span><span class="constant-syntax">32</span><span class="plain-syntax">) </span><span class="constant-syntax">$00c0</span><span class="plain-syntax"> (  </span><span class="constant-syntax">23</span><span class="plain-syntax">) (      </span><span class="constant-syntax">32</span><span class="plain-syntax">) </span><span class="constant-syntax">$00d8</span><span class="plain-syntax"> (   </span><span class="constant-syntax">7</span><span class="plain-syntax">) (      </span><span class="constant-syntax">32</span><span class="plain-syntax">) </span><span class="constant-syntax">$0000</span>
-<span class="plain-syntax">;</span>
-
-<span class="plain-syntax">#</span><span class="identifier-syntax">ENDIF</span><span class="plain-syntax">; </span><span class="comment-syntax">Small_Unicode_Tables</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Large Unicode Casing Tables. </b></p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">IFDEF</span><span class="plain-syntax"> </span><span class="identifier-syntax">Large_Unicode_Tables</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_GLULX</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">CharCasingChart0</span><span class="plain-syntax"> --&gt;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">$0061</span><span class="plain-syntax"> (  </span><span class="constant-syntax">26</span><span class="plain-syntax">) (     -32) </span><span class="constant-syntax">$00aa</span><span class="plain-syntax"> (   </span><span class="constant-syntax">1</span><span class="plain-syntax">)   </span><span class="identifier-syntax">UNIC_NCT</span><span class="plain-syntax"> </span><span class="constant-syntax">$00b5</span><span class="plain-syntax"> (   </span><span class="constant-syntax">1</span><span class="plain-syntax">) (     </span><span class="constant-syntax">743</span><span class="plain-syntax">) </span><span class="constant-syntax">$00ba</span><span class="plain-syntax"> (   </span><span class="constant-syntax">1</span><span class="plain-syntax">)   </span><span class="identifier-syntax">UNIC_NCT</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">$00df</span><span class="plain-syntax"> (   </span><span class="constant-syntax">1</span><span class="plain-syntax">)   </span><span class="identifier-syntax">UNIC_NCT</span><span class="plain-syntax"> </span><span class="constant-syntax">$00e0</span><span class="plain-syntax"> (  </span><span class="constant-syntax">23</span><span class="plain-syntax">) (     -32) </span><span class="constant-syntax">$00f8</span><span class="plain-syntax"> (   </span><span class="constant-syntax">7</span><span class="plain-syntax">) (     -32) </span><span class="constant-syntax">$00ff</span><span class="plain-syntax"> (   </span><span class="constant-syntax">1</span><span class="plain-syntax">) (     </span><span class="constant-syntax">121</span><span class="plain-syntax">)</span>
@@ -223,7 +214,7 @@ not included in the ranges below is not a letter.
 <span class="plain-syntax">    </span><span class="constant-syntax">$213e</span><span class="plain-syntax"> (   </span><span class="constant-syntax">2</span><span class="plain-syntax">)   </span><span class="identifier-syntax">UNIC_NCT</span><span class="plain-syntax"> </span><span class="constant-syntax">$2145</span><span class="plain-syntax"> (   </span><span class="constant-syntax">1</span><span class="plain-syntax">)   </span><span class="identifier-syntax">UNIC_NCT</span><span class="plain-syntax"> </span><span class="constant-syntax">$ff21</span><span class="plain-syntax"> (  </span><span class="constant-syntax">26</span><span class="plain-syntax">) (      </span><span class="constant-syntax">32</span><span class="plain-syntax">) </span><span class="constant-syntax">$0000</span>
 <span class="plain-syntax">;</span>
 
-<span class="plain-syntax">#</span><span class="identifier-syntax">ENDIF</span><span class="plain-syntax">; </span><span class="comment-syntax">Large_Unicode_Tables</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">; </span><span class="comment-syntax">TARGET_GLULX</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="S-txt.html">&#10094;</a></li><li class="progresssection"><a href="S-dfn.html">dfn</a></li><li class="progresssection"><a href="S-utl.html">utl</a></li><li class="progresssection"><a href="S-gll.html">gll</a></li><li class="progresssection"><a href="S-zmc.html">zmc</a></li><li class="progresssection"><a href="S-prg.html">prg</a></li><li class="progresssection"><a href="S-mth.html">mth</a></li><li class="progresssection"><a href="S-fl.html">fl</a></li><li class="progresssection"><a href="S-srt.html">srt</a></li><li class="progresssection"><a href="S-tbl.html">tbl</a></li><li class="progresssection"><a href="S-mst.html">mst</a></li><li class="progresssection"><a href="S-rlb.html">rlb</a></li><li class="progresssection"><a href="S-flx.html">flx</a></li><li class="progresssection"><a href="S-blc.html">blc</a></li><li class="progresssection"><a href="S-txt.html">txt</a></li><li class="progresscurrent">unc</li><li class="progresssection"><a href="S-chr.html">chr</a></li><li class="progresssection"><a href="S-rgx.html">rgx</a></li><li class="progresssection"><a href="S-lst.html">lst</a></li><li class="progresssection"><a href="S-cmb.html">cmb</a></li><li class="progresssection"><a href="S-rlt.html">rlt</a></li><li class="progresssection"><a href="S-rlt2.html">rlt2</a></li><li class="progresssection"><a href="S-rtp.html">rtp</a></li><li class="progressnext"><a href="S-chr.html">&#10095;</a></li></ul></div>
