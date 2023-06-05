@@ -141,7 +141,7 @@ Use command line echoing translates as the configuration flag ECHO_COMMANDS
 Use dictionary resolution of at least 6 translates as the configuration value
 	DICT_RESOLUTION in BasicInformKit.
 Use no automatic plural synonyms translates as the configuration flag
-	NO_AUTOMATIC_PLURAL_SYNONYMS in BasicInformKit.
+	NO_AUTO_PLURAL_NAMES in BasicInformKit.
 
 @ These, on the other hand, are settings used by the dynamic memory management
 code, which runs in I6 as part of the template layer. Each setting translates

@@ -26,7 +26,7 @@ meaningful only for works of IF and are inert for Basic Inform projects.
 @e FAST_ROUTE_FINDING_UO
 @e SLOW_ROUTE_FINDING_UO
 @e DICTIONARY_RESOLUTION_UO
-@e NO_AUTOMATIC_PLURAL_SYNONYMS_UO
+@e NO_AUTO_PLURAL_NAMES_UO
 
 @ Note that Inform recognises these by their English names, so there would be no
 need to translate this to other languages.
@@ -43,7 +43,7 @@ need to translate this to other languages.
 	no scoring |                    ==> { NO_SCORING_UO, - }
 	engineering notation |          ==> { ENGINEERING_NOTATION_UO, - }
 	unabbreviated object names |    ==> { UNABBREVIATED_OBJECT_NAMES_UO, - }
-	no automatic plural synonyms |    ==> { NO_AUTOMATIC_PLURAL_SYNONYMS_UO, - }
+	no automatic plural synonyms |	==> { NO_AUTO_PLURAL_NAMES_UO, - }
 	index figure thumbnails |       ==> { INDEX_FIGURE_THUMBNAILS_UO, - }
 	fast route-finding |  		==> { FAST_ROUTE_FINDING_UO, - }
 	slow route-finding | 		==> { SLOW_ROUTE_FINDING_UO, - }
@@ -63,7 +63,7 @@ typedef struct compilation_settings {
 	int ranking_table_given;
 	int scoring_option_set;
 	int use_exact_parsing_option;
-        int no_automatic_plural_synonyms;
+        int no_auto_plural_names;
 	int dictionary_resolution;
 	int fast_route_finding;
 	int slow_route_finding;
@@ -85,7 +85,7 @@ void CompilationSettings::initialise_gcs(void) {
 	global_compilation_settings.ranking_table_given = FALSE;
 	global_compilation_settings.scoring_option_set = NOT_APPLICABLE;
 	global_compilation_settings.use_exact_parsing_option = FALSE;
-       	global_compilation_settings.no_automatic_plural_synonyms = FALSE;
+       	global_compilation_settings.no_auto_plural_names = FALSE;
 	int N = 9;
 	if (TargetVMs::is_16_bit(Task::vm())) N = 6;
 	global_compilation_settings.dictionary_resolution = N;
@@ -115,7 +115,7 @@ void CompilationSettings::set(int U, int N, source_file *from) {
 		case SCORING_UO:                       g->scoring_option_set = TRUE; break;
 		case TELEMETRY_RECORDING_UO:           ProblemBuffer::set_telemetry(); break;
 		case UNABBREVIATED_OBJECT_NAMES_UO:    g->use_exact_parsing_option = TRUE; break;
-                case NO_AUTOMATIC_PLURAL_SYNONYMS_UO:  g->no_automatic_plural_synonyms = TRUE; break; 
+                case NO_AUTO_PLURAL_NAMES_UO:          g->no_auto_plural_names = TRUE; break; 
 		case FAST_ROUTE_FINDING_UO:            g->fast_route_finding = TRUE; break;
 		case SLOW_ROUTE_FINDING_UO:            g->slow_route_finding = TRUE; break;
 	}
