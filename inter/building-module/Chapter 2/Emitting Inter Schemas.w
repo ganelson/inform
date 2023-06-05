@@ -495,13 +495,31 @@ more natural |{ ... }|.
 	}
 	if (node->unopened) Produce::set_level_to_current_code_block_plus(I, 0);
 
-@ Note that conditional directives have already been taken care of, and that
-other Inform 6 directives are not valid inside function bodies, which is the
-only part of I6 syntax covered by schemas. Therefore:
+@ Note that conditional directives have already been taken care of. The
+only other Inform 6 directive valid inside a function body is OrigSource.
+Therefore:
 
 @<Non-conditional directive@> =
-	I6Errors::issue_at_node(node, I"misplaced directive");
-	return;
+	if (node->dir_clarifier == ORIGSOURCE_I6RW) {
+		@<OrigSource directive@>;
+	}
+	else {
+		I6Errors::issue_at_node(node, I"misplaced directive");
+		return;
+	}
+
+@<OrigSource directive@> =
+	text_stream *origfilename = NULL;
+	int origlinenum = 0;
+	if (node->child_node) {
+		origfilename = node->child_node->expression_tokens->material;
+		if (node->child_node->expression_tokens->next) {
+			origlinenum = Str::atoi(node->child_node->expression_tokens->next->material, 0);
+		}
+	}
+	inter_bookmark *IBM = Produce::at(I);
+	Produce::guard(OrigSourceInstruction::new(IBM, origfilename, (unsigned int)origlinenum, (inter_ti) Produce::level(I), NULL));
+
 
 @ An |EVAL_ISNT| node can have any number of children, they are sequentially
 evaluated for their potential side-effects, but only the last produces a value.

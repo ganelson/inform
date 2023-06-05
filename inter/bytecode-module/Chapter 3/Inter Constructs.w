@@ -302,6 +302,7 @@ These are constructs used for instructions outside function bodies:
 @e INSTANCE_IST
 @e INSERT_IST
 @e NOP_IST
+@e ORIGSOURCE_IST
 @e PACKAGE_IST
 @e PACKAGETYPE_IST
 @e PERMISSION_IST
@@ -380,6 +381,7 @@ void InterInstruction::create_language(void) {
 	InterInstruction::define_invalid_construct();
 	NopInstruction::define_construct();
 	CommentInstruction::define_construct();
+	OrigSourceInstruction::define_construct();
 	PlugInstruction::define_construct();
 	SocketInstruction::define_construct();
 	VersionInstruction::define_construct();

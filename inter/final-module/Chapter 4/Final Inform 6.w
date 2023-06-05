@@ -152,6 +152,7 @@ Document for a specification.
 	segmentation_pos saved = CodeGen::select(gen, functions_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#Ifdef TARGET_ZCODE;\n");
+	WRITE("#OrigSource \"%s\" %d;\n", __FILE__, __LINE__);
 	WRITE("Global max_z_object;\n");
 	WRITE("#Ifdef Z__Region;\n");
 	WRITE("[ OC__Cl obj cla j a n objflag;\n"); INDENT;
@@ -216,6 +217,7 @@ Document for a specification.
 	WRITE("rfalse;\n");
 	OUTDENT; WRITE("];\n");
 	WRITE("#Endif;\n");
+	WRITE("#OrigSource;\n");
 	WRITE("#Endif;\n");
 	CodeGen::deselect(gen, saved);
 

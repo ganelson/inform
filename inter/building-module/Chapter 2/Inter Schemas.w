@@ -314,6 +314,7 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material,
 @e IFFALSE_I6RW
 @e IFNOT_I6RW
 @e ENDIF_I6RW
+@e ORIGSOURCE_I6RW
 
 @ The value of |inline_command|, in an |INLINE_ISTT| node, must be one of:
 
@@ -506,6 +507,7 @@ void InterSchemas::log_just(inter_schema_node *isn, int depth) {
 				case IFFALSE_I6RW: LOG("#iffalse"); break;
 				case IFNOT_I6RW: LOG("#ifnot"); break;
 				case ENDIF_I6RW: LOG("#endif"); break;
+				case ORIGSOURCE_I6RW: LOG("#origsource"); break;
 				default: LOG("<unknown>"); break;
 			}
 			LOG("\n");

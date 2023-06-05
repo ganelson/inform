@@ -368,6 +368,7 @@ the directive type as 0.
 		else if (Str::eq_insensitive(mr.exp[0], I"Iftrue"))     I6_dir = IFTRUE_PLM;
 		else if (Str::eq_insensitive(mr.exp[0], I"Ifnot"))      I6_dir = IFNOT_PLM;
 		else if (Str::eq_insensitive(mr.exp[0], I"Endif"))      I6_dir = ENDIF_PLM;
+		else if (Str::eq_insensitive(mr.exp[0], I"OrigSource")) I6_dir = ORIGSOURCE_PLM;
 		else if (Str::eq_insensitive(mr.exp[0], I"Stub"))       I6_dir = STUB_PLM;
 		else if (Str::eq_insensitive(mr.exp[0], I"Constant"))    I6_dir = CONSTANT_PLM;
 		else if (Str::eq_insensitive(mr.exp[0], I"Global"))      I6_dir = GLOBAL_PLM;
@@ -397,7 +398,7 @@ the directive type as 0.
 		else if (Str::eq_insensitive(mr.exp[0], I"Import"))      known = TRUE;
 		else if (Str::eq_insensitive(mr.exp[0], I"Link"))        known = TRUE;
 		else if (Str::eq_insensitive(mr.exp[0], I"Lowstring"))   known = TRUE;
-		else if (Str::eq_insensitive(mr.exp[0], I"Origsource"))  known = TRUE;
+		else if (Str::eq_insensitive(mr.exp[0], I"Message"))     known = TRUE;
 		else if (Str::eq_insensitive(mr.exp[0], I"Replace"))     known = TRUE;
 		else if (Str::eq_insensitive(mr.exp[0], I"Switches"))    known = TRUE;
 		else if (Str::eq_insensitive(mr.exp[0], I"Trace"))       known = TRUE;
@@ -406,7 +407,7 @@ the directive type as 0.
 		if (known)
 			I6Errors::issue(
 				"this Inform 6 directive is not supported in kits or '(-' inclusions: '%S' "
-				"(only #Ifdef, #Ifndef, #Iftrue, #Ifnot, #Endif, #Stub, Constant, Global, "
+				"(only #Ifdef, #Ifndef, #Iftrue, #Ifnot, #Endif, #OrigSource, #Stub, Constant, Global, "
 				"Array, Attribute, Property, Verb, Fake_action, Object, Default are "
 				"supported)", R);
 		else

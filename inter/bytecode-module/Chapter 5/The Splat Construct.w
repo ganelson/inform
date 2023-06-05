@@ -180,6 +180,7 @@ The other names here are taken from their corresponding I6 directives.
 @e IFNOT_PLM
 @e ENDIF_PLM
 @e IFTRUE_PLM
+@e ORIGSOURCE_PLM
 @e CONSTANT_PLM
 @e ARRAY_PLM
 @e GLOBAL_PLM

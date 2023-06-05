@@ -778,6 +778,7 @@ but speed is not quite important enough to make it worthwhile.
 	if (Str::eq_insensitive(T, I"#IFFALSE")) { is = DIRECTIVE_ISTT; which_rw = IFFALSE_I6RW; }
 	if (Str::eq_insensitive(T, I"#IFNOT")) { is = DIRECTIVE_ISTT; which_rw = IFNOT_I6RW; }
 	if (Str::eq_insensitive(T, I"#ENDIF")) { is = DIRECTIVE_ISTT; which_rw = ENDIF_I6RW; }
+	if (Str::eq_insensitive(T, I"#ORIGSOURCE")) { is = DIRECTIVE_ISTT; which_rw = ORIGSOURCE_I6RW; }
 
 	if (Str::eq(T, I",")) is = COMMA_ISTT;
 	if (Str::eq(T, I":")) is = COLON_ISTT;
