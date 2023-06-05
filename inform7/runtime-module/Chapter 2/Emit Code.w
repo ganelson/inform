@@ -73,9 +73,8 @@ void EmitCode::comment(text_stream *text) {
 @h OrigSource directives.
 
 =
-void EmitCode::origsource(text_provenance *from) {
-	Produce::guard(OrigSourceInstruction::new_from_provenance(EmitCode::at(), *from,
-		(inter_ti) EmitCode::level(), NULL));
+void EmitCode::origsource(text_provenance from) {
+	Produce::origsource(Emit::tree(), from);
 }
 
 @h In value context.

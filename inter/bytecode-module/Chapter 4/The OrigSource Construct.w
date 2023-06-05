@@ -23,13 +23,13 @@ void OrigSourceInstruction::define_construct(void) {
 
 @h Instructions.
 In bytecode, the frame of an |origsource| instruction is laid out with the
-compulsory words -- see //Inter Nodes// -- followed by:
-
-@d PROVENANCEFILE_ORIGSOURCE_IFLD (DATA_IFLD + 0)
-@d PROVENANCELINE_ORIGSOURCE_IFLD (DATA_IFLD + 1)
+compulsory words -- see //Inter Nodes//.
 
 If |PROVENANCEFILE| is zero, the instruction means "Following bytecode is not
 from any specific source location." The line number is ignored in this case.
+
+@d PROVENANCEFILE_ORIGSOURCE_IFLD (DATA_IFLD + 0)
+@d PROVENANCELINE_ORIGSOURCE_IFLD (DATA_IFLD + 1)
 
 =
 inter_error_message *OrigSourceInstruction::new(inter_bookmark *IBM,
@@ -55,12 +55,14 @@ inter_error_message *OrigSourceInstruction::new(inter_bookmark *IBM,
 inter_error_message *OrigSourceInstruction::new_from_provenance(inter_bookmark *IBM,
 	text_provenance prov,
 	inter_ti level, inter_error_location *eloc) {
-	return OrigSourceInstruction::new(IBM, prov.textual_filename, (unsigned int)prov.line_number, level, eloc);
+	return OrigSourceInstruction::new(IBM, prov.textual_filename,
+		(unsigned int)prov.line_number, level, eloc);
 }
 
 void OrigSourceInstruction::transpose(inter_construct *IC, inter_tree_node *P,
 	inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
-	P->W.instruction[PROVENANCEFILE_ORIGSOURCE_IFLD] = grid[P->W.instruction[PROVENANCEFILE_ORIGSOURCE_IFLD]];
+	P->W.instruction[PROVENANCEFILE_ORIGSOURCE_IFLD] =
+		grid[P->W.instruction[PROVENANCEFILE_ORIGSOURCE_IFLD]];
 }
 
 @ Verification consists only of sanity checks.
@@ -101,11 +103,9 @@ void OrigSourceInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter
 
 =
 void OrigSourceInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
-	if (!P->W.instruction[PROVENANCEFILE_ORIGSOURCE_IFLD]) {
-		WRITE("origsource");
-	}
-	else {
-		WRITE("origsource ");
+	WRITE("origsource");
+	if (P->W.instruction[PROVENANCEFILE_ORIGSOURCE_IFLD]) {
+		WRITE(" ");
 		Provenance::write(OUT, OrigSourceInstruction::provenance(P));
 	}
 }

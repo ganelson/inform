@@ -137,10 +137,8 @@ void CompileSplatsStage::visitor3(inter_tree *I, inter_tree_node *P, void *state
 }
 
 @h How OrigSource definitions are assimilated.
-
-@ Note that the #OrigSource directive (with hash sign) is also valid
-within a function body. We will handle that case later; see
-//Emitting Inter Schemas//.
+Note that the #OrigSource directive (with hash sign) is also valid
+within a function body. We will handle that case later; see //building: Emitting Inter Schemas//.
 
 This is not yet useful. It converts a top-level #Origsource directive
 to a top-level ORIGSOURCE_IST node, but it doesn't put it anywhere
@@ -157,7 +155,7 @@ meaningful; the node just winds up tacked onto the end of the kit.
 		inter_bookmark content_at = InterBookmark::after_this_node(P);
 		inter_bookmark *IBM = &content_at;
 		inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
-		Produce::guard(OrigSourceInstruction::new(IBM, origfilestr, (unsigned int)origline, B, NULL));
+		Produce::guard(OrigSourceInstruction::new(IBM, origfilestr, (inter_ti) origline, B, NULL));
 		NodePlacement::remove(P);
 	}
 	Regexp::dispose_of(&mr);
@@ -1487,9 +1485,9 @@ int CompileSplatsStage::function_bodies(pipeline_step *step, compile_splats_stat
 	IdentifierFinders::next_priority(&finder, scope1);
 	IdentifierFinders::next_priority(&finder, scope2);
 	IdentifierFinders::set_namespace(&finder, req->namespace);
-	Produce::guard(OrigSourceInstruction::new_from_provenance(Produce::at(I), req->provenance, (inter_ti) Produce::level(I), NULL));
+	Produce::origsource(I, req->provenance);
 	EmitInterSchemas::emit(I, &VH, sch, finder, NULL, NULL, NULL);
-	Produce::guard(OrigSourceInstruction::new(Produce::at(I), NULL, 0, (inter_ti) Produce::level(I), NULL));
+	Produce::origsource(I, Provenance::nowhere());
 	CompileSplatsStage::report_kit_errors(sch, req);
 	Produce::pop_code_position(I);
 	Produce::set_function(I, NULL);

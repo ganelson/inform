@@ -634,3 +634,11 @@ inter_symbol *Produce::local_exists(inter_tree *I, text_stream *lname) {
 	return InterSymbolsTable::symbol_from_name(
 		InterPackage::scope(I->site.sprdata.current_inter_function), lname);
 }
+
+@ And finally, code provenance markers:
+
+=
+void Produce::origsource(inter_tree *I, text_provenance from) {
+	Produce::guard(OrigSourceInstruction::new_from_provenance(Produce::at(I), from,
+		(inter_ti) Produce::level(I), NULL));
+}
