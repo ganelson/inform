@@ -26,6 +26,7 @@ meaningful only for works of IF and are inert for Basic Inform projects.
 @e FAST_ROUTE_FINDING_UO
 @e SLOW_ROUTE_FINDING_UO
 @e DICTIONARY_RESOLUTION_UO
+@e NO_AUTOMATIC_PLURAL_SYNONYMS_UO
 
 @ Note that Inform recognises these by their English names, so there would be no
 need to translate this to other languages.
@@ -42,6 +43,7 @@ need to translate this to other languages.
 	no scoring |                    ==> { NO_SCORING_UO, - }
 	engineering notation |          ==> { ENGINEERING_NOTATION_UO, - }
 	unabbreviated object names |    ==> { UNABBREVIATED_OBJECT_NAMES_UO, - }
+	no automatic plural synonyms |    ==> { NO_AUTOMATIC_PLURAL_SYNONYMS_UO, - }
 	index figure thumbnails |       ==> { INDEX_FIGURE_THUMBNAILS_UO, - }
 	fast route-finding |  		==> { FAST_ROUTE_FINDING_UO, - }
 	slow route-finding | 		==> { SLOW_ROUTE_FINDING_UO, - }
