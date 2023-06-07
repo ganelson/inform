@@ -51,7 +51,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">BasicInformExtrasKit</a></li><li><b>Miscellany</b></li></ul></div>
 <p class="purpose">Additions to the Basic Inform template which are needed only if the Standard Rules are not to be used.</p>
 
-<ul class="toc"><li><a href="S-msc.html#SP1">&#167;1. Identification</a></li><li><a href="S-msc.html#SP2">&#167;2. Justification</a></li><li><a href="S-msc.html#SP3">&#167;3. Miscellany</a></li><li><a href="S-msc.html#SP4">&#167;4. Veneer</a></li><li><a href="S-msc.html#SP5">&#167;5. Short Name Storage</a></li><li><a href="S-msc.html#SP6">&#167;6. Object Names I</a></li><li><a href="S-msc.html#SP7">&#167;7. Standard Name Printing Rule</a></li><li><a href="S-msc.html#SP8">&#167;8. Object Names II</a></li><li><a href="S-msc.html#SP9">&#167;9. Object Names III</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-msc.html#SP1">&#167;1. Identification</a></li><li><a href="S-msc.html#SP2">&#167;2. Justification</a></li><li><a href="S-msc.html#SP3">&#167;3. Miscellany</a></li><li><a href="S-msc.html#SP4">&#167;4. Short Name Storage</a></li><li><a href="S-msc.html#SP5">&#167;5. Object Names I</a></li><li><a href="S-msc.html#SP6">&#167;6. Standard Name Printing Rule</a></li><li><a href="S-msc.html#SP7">&#167;7. Object Names II</a></li><li><a href="S-msc.html#SP8">&#167;8. Object Names III</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Identification. </b></p>
 
@@ -97,7 +97,7 @@ before it is known how they will be used.
 <span class="plain-syntax">];</span>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">INITIALISE_MEMORY_R</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_GLULX</span><span class="plain-syntax">; </span><span class="identifier-syntax">VM_PreInitialise</span><span class="plain-syntax">(); #</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">VM_PreInitialise</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LanguageInitialise</span><span class="plain-syntax">();</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">HeapInitialise</span><span class="plain-syntax">(); </span><span class="comment-syntax">Create a completely unused memory allocation heap</span>
@@ -110,23 +110,7 @@ before it is known how they will be used.
 <span class="plain-syntax">[ </span><span class="identifier-syntax">DrawStatusLine</span><span class="plain-syntax"> </span><span class="identifier-syntax">width</span><span class="plain-syntax"> </span><span class="identifier-syntax">posb</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Veneer. </b></p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_ZCODE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_Initialise</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">standard_interpreter</span><span class="plain-syntax"> = </span><span class="identifier-syntax">HDR_TERPSTANDARD</span><span class="plain-syntax">--&gt;0;</span>
-
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">BasicInformKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">FIX_RNG_CFGF</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        @</span><span class="reserved-syntax">random</span><span class="plain-syntax"> </span><span class="constant-syntax">10000</span><span class="plain-syntax"> -&gt; </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = -</span><span class="identifier-syntax">i</span><span class="plain-syntax">-2000;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"[Random number generator seed is "</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="string-syntax">"]^"</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        @</span><span class="reserved-syntax">random</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> -&gt; </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">];</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Short Name Storage. </b>None of the following functions should be called for the Z-machine if the
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Short Name Storage. </b>None of the following functions should be called for the Z-machine if the
 short name exceeds the size of the following buffer: whereas the Glulx
 implementation of <span class="extract"><span class="extract-syntax">VM_PrintToBuffer</span></span> will safely truncate overlong text,
 that's impossible for the Z-machine, and horrible results will follow.
@@ -192,7 +176,7 @@ buffer and then altering the first character.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">CPrintOrRun</span><span class="plain-syntax">(</span><span class="identifier-syntax">str</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Object Names I. </b>We now begin the work of printing object names. In the lowest level of this
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Object Names I. </b>We now begin the work of printing object names. In the lowest level of this
 process we print just the name itself (without articles attached), and we
 do it by carrying out an activity.
 </p>
@@ -214,7 +198,7 @@ do it by carrying out an activity.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PSN__</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">); </span><span class="identifier-syntax">indef_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Standard Name Printing Rule. </b>In its initial state, the "printing the name of" activity has just one rule:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Standard Name Printing Rule. </b>In its initial state, the "printing the name of" activity has just one rule:
 the following "for" rule.
 </p>
 
@@ -248,7 +232,7 @@ the following "for" rule.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PrintOrRun</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">, </span><span class="identifier-syntax">plural</span><span class="plain-syntax">, </span><span class="reserved-syntax">true</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Object Names II. </b>The second level of the system for printing object names handles the placing
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Object Names II. </b>The second level of the system for printing object names handles the placing
 of articles in front of them: {\it the} red herring, {\it an} elephant,
 {\it Some} bread. The following routine allows us to choose:
 </p>
@@ -323,7 +307,7 @@ indefinite singular depends on the text of the object's name.
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="identifier-syntax">PSN__</span><span class="plain-syntax">) </span><span class="identifier-syntax">obj</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Object Names III. </b>The routines accessible from outside this segment.
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Object Names III. </b>The routines accessible from outside this segment.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

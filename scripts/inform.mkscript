@@ -149,6 +149,8 @@ INFORM6WEB = inform6
 # code and Inform 7 extensions.
 
 {component type: web symbol: BASICINFORMKIT       webname: BasicInformKit       path: inform7/Internal/Inter/BasicInformKit       set: kits}
+{component type: web symbol: ARCHITECTURE16KIT    webname: Architecture16Kit    path: inform7/Internal/Inter/Architecture16Kit    set: kits}
+{component type: web symbol: ARCHITECTURE32KIT    webname: Architecture32Kit    path: inform7/Internal/Inter/Architecture32Kit    set: kits}
 {component type: web symbol: WORLDMODELKIT        webname: WorldModelKit        path: inform7/Internal/Inter/WorldModelKit        set: kits}
 {component type: web symbol: COMMANDPARSERKIT     webname: CommandParserKit     path: inform7/Internal/Inter/CommandParserKit     set: kits}
 {component type: web symbol: BASICINFORMEXTRASKIT webname: BasicInformExtrasKit path: inform7/Internal/Inter/BasicInformExtrasKit set: kits}

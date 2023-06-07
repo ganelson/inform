@@ -349,6 +349,12 @@ int TargetVMs::allow_this_many_locals(target_vm *VM, int N) {
 	return TRUE;
 }
 
+int TargetVMs::has_architecture(target_vm *VM, inter_architecture *A) {
+	if (VM == NULL) internal_error("no VM");
+	if (A == VM->architecture) return TRUE;
+	return FALSE;
+}
+
 @ This function is only called to decide whether to issue certain ICL memory
 settings to the Inform 6 compiler, and so we can basically assume the VM here
 is going to end up as either the Z-machine or Glulx.

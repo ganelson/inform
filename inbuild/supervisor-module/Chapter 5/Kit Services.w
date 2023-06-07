@@ -480,16 +480,17 @@ internal nest shouldn't be written to even on other platforms.
 
 @<Add build edges to the binaries for each architecture@> =
 	inter_architecture *A;
-	LOOP_OVER(A, inter_architecture) {
-		filename *F = Architectures::canonical_binary(P, A);
-		build_vertex *BV = Graphs::file_vertex(F);
-		if ((C->nest_of_origin) && (Nests::is_protected(C->nest_of_origin)))
-			BV->never_build_this = TRUE;
-		else @<Check the Inter version used any already-existing binary file@>;
-		Graphs::need_this_to_build(KV, BV);
-		BuildSteps::attach(BV, build_kit_using_inter_skill, FALSE, NULL, A, K->as_copy);
-		ADD_TO_LINKED_LIST(BV, build_vertex, BVL);
-	}
+	LOOP_OVER(A, inter_architecture)
+		if (Compatibility::test_architecture(K->as_copy->edition->compatibility, A)) {
+			filename *F = Architectures::canonical_binary(P, A);
+			build_vertex *BV = Graphs::file_vertex(F);
+			if ((C->nest_of_origin) && (Nests::is_protected(C->nest_of_origin)))
+				BV->never_build_this = TRUE;
+			else @<Check the Inter version used any already-existing binary file@>;
+			Graphs::need_this_to_build(KV, BV);
+			BuildSteps::attach(BV, build_kit_using_inter_skill, FALSE, NULL, A, K->as_copy);
+			ADD_TO_LINKED_LIST(BV, build_vertex, BVL);
+		}
 
 @<Add build edges from the binary vertices to the contents vertex@> =
 	build_vertex *BV;

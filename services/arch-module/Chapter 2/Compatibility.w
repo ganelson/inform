@@ -362,3 +362,14 @@ int Compatibility::test_universal(compatibility_specification *C) {
 	if (C->default_allows == FALSE) return FALSE;
 	return TRUE;
 }
+
+@ This tests whether at least one VM of the given architecture is compatible.
+
+=
+int Compatibility::test_architecture(compatibility_specification *C, inter_architecture *A) {
+	target_vm *VM;
+	LOOP_OVER(VM, target_vm)
+		if ((Compatibility::test(C, VM)) && (TargetVMs::has_architecture(VM, A)))
+			return TRUE;
+	return FALSE;
+}

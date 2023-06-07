@@ -60,4 +60,6 @@ Internal/Inter/BasicInformKit/*.interb
 Internal/Inter/BasicInformExtrasKit/*.interb
 Internal/Inter/WorldModelKit/*.interb
 Internal/Inter/CommandParserKit/*.interb
+Internal/Inter/Architecture16Kit/*.interb
+Internal/Inter/Architecture32Kit/*.interb
 

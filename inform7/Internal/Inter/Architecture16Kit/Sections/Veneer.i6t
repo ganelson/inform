@@ -1,0 +1,37 @@
+Veneer Template.
+
+Veneer code for use by the Inform 6 compiler with the Z-machine target.
+
+@ These functions have strange-looking names special to the Inform 6 compiler,
+which uses them to replace its default "veneer" functions. If we're compiling
+to something other than Inform 6, though, they are just strangely-named functions,
+and do no harm.
+
+=
+[ Unsigned__Compare x y u v;
+	@je x y ?rfalse; ! i.e., return 0
+	@jl x 0 ?XNegative;
+	! So here x >= 0 and x ~= y
+	@jl y 0 ?XPosYNeg;
+
+	! Here x >=0, y >= 0, x ~= y
+
+	@jg x y ?rtrue; ! i.e., return 1
+	@ret -1;
+
+	.XPosYNeg;
+	! Here x >= 0, y < 0, x ~= y
+	@ret -1;
+
+	.XNegative;
+	@jl y 0 ?~rtrue; ! if x < 0, y >= 0, return 1
+
+	! Here x < 0, y < 0, x ~= y
+	@jg x y ?rtrue;
+	@ret -1;
+];
+
+[ RT__ChLDW base offset;
+    @loadw base offset -> sp;
+    @ret sp;
+];

@@ -1,0 +1,94 @@
+Capabilities Template.
+
+Miscellaneous capabilities of the 16-bit architecture.
+
+@h Summary.
+The 16-bit architecture is for very limited virtual machines, and is closely
+modelled on Infocom's Z-machine, originally developed between 1979 and 1986,
+but still sometimes used into the modern age. Its input-output model is
+almost entirely textual, and it has an idiosyncratic character set.
+
+@h Release Number.
+Our programs will have both a release number and a serial code, which are
+in each case stored in the header memory of the virtual machine.
+
+|VM_Describe_Release()| has been removed and replaced with functions returning
+the release number, a non-negative integer, and the serial code, a byte array
+expected to be 6 digit characters wide.
+
+=
+[ VM_ReleaseNumber;
+	return (HDR_GAMERELEASE-->0) & $03ff;
+];
+
+[ VM_SerialNumber;
+	return HDR_GAMESERIAL;
+];
+
+@h RNG.
+No routine is needed for extracting a random number, since I6's built-in
+|random| function does that, but it's useful to abstract the process of
+seeding the RNG so that it produces a repeatable sequence of "random"
+numbers from here on: the necessary opcodes are different for the two VMs.
+
+=
+[ VM_Seed_RNG n;
+	if (n > 0) n = -n;
+	@random n -> n;
+];
+
+@h Memory Allocation.
+This is dynamic memory allocation: something which is never practicable in
+the Z-machine, because the whole address range is already claimed, but which
+is viable on recent revisions of Glulx.
+
+=
+[ VM_AllocateMemory amount;
+	return 0;
+];
+
+[ VM_FreeMemory address;
+];
+
+@h Audiovisual Resources.
+The Z-machine only barely supports figures and sound effects, and only in
+version 6 of the Z-machine, which Inform 7 no longer supports. Sound effects
+have a longer pedigree and Infocom used them on some version 5 and even some
+version 3 works: really, though, from an Inform point of view we would prefer
+that anyone needing figures and sounds use Glulx instead. (Inform 6 remains
+available for those who really need to make audiovisual effects in these
+long-gone formats.)
+
+=
+[ VM_Picture resource_ID;
+];
+
+[ VM_SoundEffect resource_ID;
+];
+
+@h Typography.
+Relatively few typographic effects are available on the Z-machine, so that
+many of the semantic markups for text which would be distinguishable on
+Glulx are indistinguishable here.
+
+=
+[ VM_Style sty;
+	switch (sty) {
+		NORMAL_VMSTY, NOTE_VMSTY: style roman;
+		HEADER_VMSTY, SUBHEADER_VMSTY, ALERT_VMSTY: style bold;
+	}
+];
+
+@h Undo.
+These simply wrap the relevant opcodes.
+
+=
+[ VM_Undo result_code;
+	@restore_undo result_code;
+	return result_code;
+];
+
+[ VM_Save_Undo result_code;
+    @save_undo result_code;
+	return result_code;
+];

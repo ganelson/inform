@@ -568,6 +568,12 @@ on //WorldModelKit//, through the if-this-then-that mechanism.
 	}
 	if (LinkedLists::len(project->kits_to_include) > 0) no_word_from_JSON = FALSE;
 	Projects::add_kit_dependency(project, I"BasicInformKit", NULL, NULL, NULL, NULL);
+	
+	if (TargetVMs::is_16_bit(Supervisor::current_vm()))
+		Projects::add_kit_dependency(project, I"Architecture16Kit", NULL, NULL, NULL, NULL);
+	else	
+		Projects::add_kit_dependency(project, I"Architecture32Kit", NULL, NULL, NULL, NULL);
+	
 	inform_language *L = project->language_of_play;
 	if (L) {
 		Languages::add_kit_dependencies_to_project(L, project);

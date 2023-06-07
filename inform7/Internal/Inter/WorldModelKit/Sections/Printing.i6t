@@ -147,7 +147,7 @@ Note that Inform always compiles |Story| and |Headline| texts, but does not alwa
 compile a |Story_Author|.
 
 =
-[ Banner;
+[ Banner i serial;
    BeginActivity(PRINTING_BANNER_TEXT_ACT);
    if (ForActivity(PRINTING_BANNER_TEXT_ACT) == false) {
 	   	VM_Style(HEADER_VMSTY);
@@ -160,7 +160,9 @@ compile a |Story_Author|.
 			TEXT_TY_Say(Story_Author);
 		}
 		new_line;
-		VM_Describe_Release();
+		print "Release ", VM_ReleaseNumber(), " / Serial number ";
+		serial = VM_SerialNumber();
+		for (i=0 : i<6 : i++) print (char) serial->i;
 		print " / Inform 7 v", (PrintI6Text) I7_VERSION_NUMBER;
 		#Ifdef DEBUG;
 		print " / D";

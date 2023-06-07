@@ -1,0 +1,58 @@
+Character Set Template.
+
+Code relating to the ZSCII character set.
+
+@ The following are the equivalent of |tolower| and |toupper|, the traditional
+C library functions for forcing letters into lower and upper case form, for
+the ZSCII character set.
+
+=
+[ VM_UpperToLowerCase c;
+	if (c < 'A') return c;
+	if (c <= 'Z') return c + 32;
+	if (c < 158) return c;
+	if (c <= 160) return c - 3;
+	if (c < 167) return c;
+	if (c <= 168) return c - 3;
+	if (c < 175) return c;
+	if (c <= 180) return c - 6;
+	if (c < 186) return c;
+	if (c <= 190) return c - 5;
+	if (c < 196) return c;
+	if (c <= 200) return c - 5;
+	if (c == 202) return c - 1;
+	if (c == 204) return c - 1;
+	if (c < 208) return c;
+	if (c <= 210) return c - 3;
+	if (c == 212) return c - 1;
+	if (c == 214) return c - 1;
+	if (c == 217) return c - 2;
+	if (c == 218) return c - 2;
+	if (c == 221) return c - 1;
+	return c;
+];
+
+[ VM_LowerToUpperCase c;
+ 	if (c < 'a') return c;
+	if (c <= 'z') return c - 32;
+	if (c < 155) return c;
+	if (c <= 157) return c + 3;
+	if (c < 164) return c;
+	if (c <= 165) return c + 3;
+	if (c < 169) return c;
+	if (c <= 174) return c + 6;
+	if (c < 181) return c;
+	if (c <= 185) return c + 5;
+	if (c < 191) return c;
+	if (c <= 195) return c + 5;
+	if (c == 201) return c + 1;
+	if (c == 203) return c + 1;
+	if (c < 205) return c;
+	if (c <= 207) return c + 3;
+	if (c == 211) return c + 1;
+	if (c == 213) return c + 1;
+	if (c == 215) return c + 2;
+	if (c == 216) return c + 2;
+	if (c == 220) return c + 1;
+	return c;
+];

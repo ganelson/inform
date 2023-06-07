@@ -47,7 +47,7 @@ Constant ACTION_PROCESSING_RB = -1; ! Identifier needs to exist even when the ru
 ];
 
 [ INITIALISE_MEMORY_R;
-	#ifdef TARGET_GLULX; VM_PreInitialise(); #Endif;
+	VM_PreInitialise();
 	LanguageInitialise();
 
 	HeapInitialise(); ! Create a completely unused memory allocation heap
@@ -59,22 +59,6 @@ Constant ACTION_PROCESSING_RB = -1; ! Identifier needs to exist even when the ru
 
 [ DrawStatusLine width posb;
 ];
-
-@h Veneer.
-
-=
-#Ifdef TARGET_ZCODE;
-[ VM_Initialise i;
-	standard_interpreter = HDR_TERPSTANDARD-->0;
-
-	if (BasicInformKit`FIX_RNG_CFGF) {
-		@random 10000 -> i;
-		i = -i-2000;
-		print "[Random number generator seed is ", i, "]^";
-		@random i -> i;
-	}
-];
-#Endif;
 
 @h Short Name Storage.
 None of the following functions should be called for the Z-machine if the

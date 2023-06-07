@@ -104,7 +104,7 @@ where he is, the surprise will not be spoiled.
 
 =
 [ INITIALISE_MEMORY_R;
-	#ifdef TARGET_GLULX; VM_PreInitialise(); #Endif;
+	VM_PreInitialise();
 	LanguageInitialise();
 
 	not_yet_in_play = true;

@@ -1,0 +1,12 @@
+Character Set Template.
+
+Code relating to the Unicode character set.
+
+@ The following are the equivalent of |tolower| and |toupper|, the traditional
+C library functions for forcing letters into lower and upper case form, for
+the 32-bit architecture's character set. That's now Unicode, and we delegate
+all of the work to glk functions.
+
+=
+[ VM_UpperToLowerCase c; return glk_char_to_lower(c); ];
+[ VM_LowerToUpperCase c; return glk_char_to_upper(c); ];

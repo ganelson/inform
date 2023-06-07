@@ -8,8 +8,6 @@ Web Syntax Version: 2
 Sections
 	Definitions
 	Utilities
-	Glulx
-	ZMachine
 	Paragraphing
 	Mathematics
 	FileIO

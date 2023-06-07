@@ -1,21 +1,6 @@
-ZMachine Template.
+Input Output Template.
 
-To provide routines handling low-level Z-machine facilities.
-
-@h Begin Z-only matter.
-
-=
-#Ifdef TARGET_ZCODE;
-
-@h Summary.
-This segment closely parallels "Glulx.i6t", which provides exactly
-equivalent functionality (indeed, usually the same-named functions and in
-the same order) for the Glulx VM. This is intended to make the rest of the
-template code independent of the choice of VM, although that is more of an
-ideal than a reality, because there are so many fiddly differences in some
-of the grammar and dictionary tables that it is not really practical for
-the parser (for instance) to call VM-neutral routines to get the data it
-wants out of these arrays.
+Access to the keyboard and to textual windows.
 
 @h Variables and Arrays.
 
@@ -34,22 +19,6 @@ Array  parse2    buffer 63;         !
 Global dict_start;
 Global dict_entry_size;
 Global dict_end;
-
-@h Release Number.
-Like all software, IF story files have release numbers to mark revised
-versions being circulated: unlike most software, and partly for traditional
-reasons, the version number is recorded not in some print statement or
-variable but is branded on, so to speak, in a specific memory location
-of the story file header.
-
-|VM_Describe_Release()| describes the release and is used as part of the
-"banner", IF's equivalent to a title page.
-
-=
-[ VM_Describe_Release i;
-	print "Release ", (HDR_GAMERELEASE-->0) & $03ff, " / Serial number ";
-	for (i=0 : i<6 : i++) print (char) HDR_GAMESERIAL->i;
-];
 
 @h Keyboard Input.
 The VM must provide three routines for keyboard input:
@@ -106,7 +75,7 @@ are called tokens.
 
 |LTI_Insert| is documented in the DM4 and the |LTI| prefix stands for
 "Language To Informese": it's used only by translations into non-English
-languages of play, and is not called in the template.
+languages of play.
 
 =
 [ VM_CopyBuffer bto bfrom i;
@@ -186,116 +155,6 @@ recognised by the parser.
     for (j=0 : j<(da+5)-->0 : j++)
         if (da->(j*DICT_ENTRY_BYTES + 14) == $ff-i)
         	print "'", (address) VM_NumberToDictionaryAddress(j), "' ";
-];
-
-@h RNG.
-No routine is needed for extracting a random number, since I6's built-in
-|random| function does that, but it's useful to abstract the process of
-seeding the RNG so that it produces a repeatable sequence of "random"
-numbers from here on: the necessary opcodes are different for the two VMs.
-
-=
-[ VM_Seed_RNG n;
-	if (n > 0) n = -n;
-	@random n -> n;
-];
-
-@h Memory Allocation.
-This is dynamic memory allocation: something which is never practicable in
-the Z-machine, because the whole address range is already claimed, but which
-is viable on recent revisions of Glulx.
-
-=
-[ VM_AllocateMemory amount;
-	return 0;
-];
-
-[ VM_FreeMemory address;
-];
-
-@h Audiovisual Resources.
-The Z-machine only barely supports figures and sound effects, and only in
-version 6 of the Z-machine, which Inform 7 no longer supports. Sound effects
-have a longer pedigree and Infocom used them on some version 5 and even some
-version 3 works: really, though, from an Inform point of view we would prefer
-that anyone needing figures and sounds use Glulx instead. (Inform 6 remains
-available for those who really need to make audiovisual effects in these
-long-gone formats.)
-
-=
-[ VM_Picture resource_ID;
-];
-
-[ VM_SoundEffect resource_ID;
-];
-
-@h Typography.
-Relatively few typographic effects are available on the Z-machine, so that
-many of the semantic markups for text which would be distinguishable on
-Glulx are indistinguishable here.
-
-=
-[ VM_Style sty;
-	switch (sty) {
-		NORMAL_VMSTY, NOTE_VMSTY: style roman;
-		HEADER_VMSTY, SUBHEADER_VMSTY, ALERT_VMSTY: style bold;
-	}
-];
-
-@h Character Casing.
-The following are the equivalent of |tolower| and |toupper|, the traditional
-C library functions for forcing letters into lower and upper case form, for
-the ZSCII character set.
-
-=
-[ VM_UpperToLowerCase c;
-	if (c < 'A') return c;
-	if (c <= 'Z') return c + 32;
-	if (c < 158) return c;
-	if (c <= 160) return c - 3;
-	if (c < 167) return c;
-	if (c <= 168) return c - 3;
-	if (c < 175) return c;
-	if (c <= 180) return c - 6;
-	if (c < 186) return c;
-	if (c <= 190) return c - 5;
-	if (c < 196) return c;
-	if (c <= 200) return c - 5;
-	if (c == 202) return c - 1;
-	if (c == 204) return c - 1;
-	if (c < 208) return c;
-	if (c <= 210) return c - 3;
-	if (c == 212) return c - 1;
-	if (c == 214) return c - 1;
-	if (c == 217) return c - 2;
-	if (c == 218) return c - 2;
-	if (c == 221) return c - 1;
-	return c;
-];
-
-[ VM_LowerToUpperCase c;
- 	if (c < 'a') return c;
-	if (c <= 'z') return c - 32;
-	if (c < 155) return c;
-	if (c <= 157) return c + 3;
-	if (c < 164) return c;
-	if (c <= 165) return c + 3;
-	if (c < 169) return c;
-	if (c <= 174) return c + 6;
-	if (c < 181) return c;
-	if (c <= 185) return c + 5;
-	if (c < 191) return c;
-	if (c <= 195) return c + 5;
-	if (c == 201) return c + 1;
-	if (c == 203) return c + 1;
-	if (c < 205) return c;
-	if (c <= 207) return c + 3;
-	if (c == 211) return c + 1;
-	if (c == 213) return c + 1;
-	if (c == 215) return c + 2;
-	if (c == 216) return c + 2;
-	if (c == 220) return c + 1;
-	return c;
 ];
 
 @h The Screen.
@@ -421,57 +280,3 @@ line; line 2 is underneath, and so on; columns are similarly numbered from
         @split_window height;
     statuswin_cursize = height;
 ];
-
-@h Quotation Boxes.
-No routine is needed to produce quotation boxes: the I6 |box| statement
-generates the necessary Z-machine opcodes all by itself.
-
-@h Undo.
-These simply wrap the relevant opcodes.
-
-=
-[ VM_Undo result_code;
-	@restore_undo result_code;
-	return result_code;
-];
-
-[ VM_Save_Undo result_code;
-    @save_undo result_code;
-	return result_code;
-];
-
-@h Veneer.
-
-=
-[ Unsigned__Compare x y u v;
-	@je x y ?rfalse; ! i.e., return 0
-	@jl x 0 ?XNegative;
-	! So here x >= 0 and x ~= y
-	@jl y 0 ?XPosYNeg;
-
-	! Here x >=0, y >= 0, x ~= y
-
-	@jg x y ?rtrue; ! i.e., return 1
-	@ret -1;
-
-	.XPosYNeg;
-	! Here x >= 0, y < 0, x ~= y
-	@ret -1;
-
-	.XNegative;
-	@jl y 0 ?~rtrue; ! if x < 0, y >= 0, return 1
-
-	! Here x < 0, y < 0, x ~= y
-	@jg x y ?rtrue;
-	@ret -1;
-];
-
-[ RT__ChLDW base offset;
-    @loadw base offset -> sp;
-    @ret sp;
-];
-
-@h End Z-only matter.
-
-=
-#Endif; ! TARGET_ZCODE
