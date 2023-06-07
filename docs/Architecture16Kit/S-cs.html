@@ -12,6 +12,20 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script>
+MathJax = {
+	tex: {
+		inlineMath: '$', '$'], ['\\(', '\\)'
+	},
+	svg: {
+		fontCache: 'global'
+	}
+};
+</script>
+<script type="text/javascript" id="MathJax-script" async
+	src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -51,7 +65,52 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">Architecture16Kit</a></li><li><b>Character Set Template</b></li></ul></div>
 <p class="purpose">Code relating to the ZSCII character set.</p>
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>The following are the equivalent of <span class="extract"><span class="extract-syntax">tolower</span></span> and <span class="extract"><span class="extract-syntax">toupper</span></span>, the traditional
+<ul class="toc"><li><a href="S-cs.html#SP2">&#167;2. ZSCII Casing Tables</a></li></ul><hr class="tocbar">
+
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>We must create two arrays:
+</p>
+
+<ul class="items"><li>(i) <span class="extract"><span class="extract-syntax">CharCasingChart0</span></span>, a table indicating lower-case letters with
+transitions to convert them to upper case;
+</li><li>(ii) <span class="extract"><span class="extract-syntax">CharCasingChart1</span></span>, vice versa.
+</li></ul>
+<p class="commentary">Each array is a sequence of three-word records, consisting of the start of
+a character range, the size of the range (the number of characters in it),
+and the numerical offset to convert to the opposite case. For instance,
+the sequence \((97, 26, -32)\) means the 26 lower-case letters "a" to "z",
+and marks them as convertible to upper case by subtracting 32 from the
+character code (so "a", 97, becomes "A", 65). If the size of the
+range is negative, this indicates that only every alternate code is valid.
+(This makes for efficient storage since there are large parts of the
+Unicode number-space in which upper and lower case letters alternate.)
+</p>
+
+<p class="commentary">An offset of <span class="extract"><span class="extract-syntax">UNIC_NCT</span></span> means no case change is possible; and any character
+not included in the ranges below is not a letter.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">UNIC_NCT</span><span class="plain-syntax"> = </span><span class="constant-syntax">10000</span><span class="plain-syntax">;</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. ZSCII Casing Tables. </b></p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">CharCasingChart0</span><span class="plain-syntax"> --&gt;</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">$0061</span><span class="plain-syntax"> (  </span><span class="constant-syntax">26</span><span class="plain-syntax">) (     -32) </span><span class="constant-syntax">$009b</span><span class="plain-syntax"> (   </span><span class="constant-syntax">3</span><span class="plain-syntax">) (       </span><span class="constant-syntax">3</span><span class="plain-syntax">) </span><span class="constant-syntax">$00a1</span><span class="plain-syntax"> (   </span><span class="constant-syntax">1</span><span class="plain-syntax">)   </span><span class="identifier-syntax">UNIC_NCT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">$00a4</span><span class="plain-syntax"> (   </span><span class="constant-syntax">2</span><span class="plain-syntax">) (       </span><span class="constant-syntax">3</span><span class="plain-syntax">) </span><span class="constant-syntax">$00a6</span><span class="plain-syntax"> (   </span><span class="constant-syntax">1</span><span class="plain-syntax">)   </span><span class="identifier-syntax">UNIC_NCT</span><span class="plain-syntax"> </span><span class="constant-syntax">$00a9</span><span class="plain-syntax"> (   </span><span class="constant-syntax">6</span><span class="plain-syntax">) (       </span><span class="constant-syntax">6</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">$00b5</span><span class="plain-syntax"> (   </span><span class="constant-syntax">5</span><span class="plain-syntax">) (       </span><span class="constant-syntax">5</span><span class="plain-syntax">) </span><span class="constant-syntax">$00bf</span><span class="plain-syntax"> (   </span><span class="constant-syntax">5</span><span class="plain-syntax">) (       </span><span class="constant-syntax">5</span><span class="plain-syntax">) </span><span class="constant-syntax">$00c9</span><span class="plain-syntax"> (  -3) (       </span><span class="constant-syntax">1</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">$00cd</span><span class="plain-syntax"> (   </span><span class="constant-syntax">3</span><span class="plain-syntax">) (       </span><span class="constant-syntax">3</span><span class="plain-syntax">) </span><span class="constant-syntax">$00d3</span><span class="plain-syntax"> (  -3) (       </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="constant-syntax">$00d7</span><span class="plain-syntax"> (   </span><span class="constant-syntax">2</span><span class="plain-syntax">) (       </span><span class="constant-syntax">2</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">$00dc</span><span class="plain-syntax"> (   </span><span class="constant-syntax">1</span><span class="plain-syntax">) (       </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="constant-syntax">$0000</span>
+<span class="plain-syntax">;</span>
+
+<span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">CharCasingChart1</span><span class="plain-syntax"> --&gt;</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">$0041</span><span class="plain-syntax"> (  </span><span class="constant-syntax">26</span><span class="plain-syntax">) (      </span><span class="constant-syntax">32</span><span class="plain-syntax">) </span><span class="constant-syntax">$009e</span><span class="plain-syntax"> (   </span><span class="constant-syntax">3</span><span class="plain-syntax">) (      -3) </span><span class="constant-syntax">$00a7</span><span class="plain-syntax"> (   </span><span class="constant-syntax">2</span><span class="plain-syntax">) (      -3)</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">$00af</span><span class="plain-syntax"> (   </span><span class="constant-syntax">6</span><span class="plain-syntax">) (      -6) </span><span class="constant-syntax">$00ba</span><span class="plain-syntax"> (   </span><span class="constant-syntax">5</span><span class="plain-syntax">) (      -5) </span><span class="constant-syntax">$00c4</span><span class="plain-syntax"> (   </span><span class="constant-syntax">5</span><span class="plain-syntax">) (      -5)</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">$00ca</span><span class="plain-syntax"> (  -3) (      -1) </span><span class="constant-syntax">$00d0</span><span class="plain-syntax"> (   </span><span class="constant-syntax">3</span><span class="plain-syntax">) (      -3) </span><span class="constant-syntax">$00d4</span><span class="plain-syntax"> (  -3) (      -1)</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">$00d9</span><span class="plain-syntax"> (   </span><span class="constant-syntax">2</span><span class="plain-syntax">) (      -2) </span><span class="constant-syntax">$00dd</span><span class="plain-syntax"> (   </span><span class="constant-syntax">1</span><span class="plain-syntax">) (      -1) </span><span class="constant-syntax">$0000</span>
+<span class="plain-syntax">;</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The following are the equivalent of <span class="extract"><span class="extract-syntax">tolower</span></span> and <span class="extract"><span class="extract-syntax">toupper</span></span>, the traditional
 C library functions for forcing letters into lower and upper case form, for
 the ZSCII character set.
 </p>

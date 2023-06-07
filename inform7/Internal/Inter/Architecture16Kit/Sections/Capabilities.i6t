@@ -8,6 +8,46 @@ modelled on Infocom's Z-machine, originally developed between 1979 and 1986,
 but still sometimes used into the modern age. Its input-output model is
 almost entirely textual, and it has an idiosyncratic character set.
 
+@h Header layout.
+The Z-machine contains certain special constants and variables at fixed
+position in its "header"; the addresses of these are given below. See
+The Z-Machine Standards Document, version 1.0, for details.
+
+=
+Constant HDR_ZCODEVERSION     = $00;     ! byte
+Constant HDR_TERPFLAGS        = $01;     ! byte
+Constant HDR_GAMERELEASE      = $02;     ! word
+Constant HDR_HIGHMEMORY       = $04;     ! word
+Constant HDR_INITIALPC        = $06;     ! word
+Constant HDR_DICTIONARY       = $08;     ! word
+Constant HDR_OBJECTS          = $0A;     ! word
+Constant HDR_GLOBALS          = $0C;     ! word
+Constant HDR_STATICMEMORY     = $0E;     ! word
+Constant HDR_GAMEFLAGS        = $10;     ! word
+Constant HDR_GAMESERIAL       = $12;     ! six ASCII characters
+Constant HDR_ABBREVIATIONS    = $18;     ! word
+Constant HDR_FILELENGTH       = $1A;     ! word
+Constant HDR_CHECKSUM         = $1C;     ! word
+Constant HDR_TERPNUMBER       = $1E;     ! byte
+Constant HDR_TERPVERSION      = $1F;     ! byte
+Constant HDR_SCREENHLINES     = $20;     ! byte
+Constant HDR_SCREENWCHARS     = $21;     ! byte
+Constant HDR_SCREENWUNITS     = $22;     ! word
+Constant HDR_SCREENHUNITS     = $24;     ! word
+Constant HDR_FONTWUNITS       = $26;     ! byte
+Constant HDR_FONTHUNITS       = $27;     ! byte
+Constant HDR_ROUTINEOFFSET    = $28;     ! word
+Constant HDR_STRINGOFFSET     = $2A;     ! word
+Constant HDR_BGCOLOUR         = $2C;     ! byte
+Constant HDR_FGCOLOUR         = $2D;     ! byte
+Constant HDR_TERMCHARS        = $2E;     ! word
+Constant HDR_PIXELSTO3        = $30;     ! word
+Constant HDR_TERPSTANDARD     = $32;     ! two bytes
+Constant HDR_ALPHABET         = $34;     ! word
+Constant HDR_EXTENSION        = $36;     ! word
+Constant HDR_UNUSED           = $38;     ! two words
+Constant HDR_INFORMVERSION    = $3C;     ! four ASCII characters
+
 @h Release Number.
 Our programs will have both a release number and a serial code, which are
 in each case stored in the header memory of the virtual machine.
@@ -48,6 +88,15 @@ is viable on recent revisions of Glulx.
 ];
 
 [ VM_FreeMemory address;
+];
+
+@h Memcpy.
+This is equivalent to C's memcpy function, in good ways and bad.
+
+=
+[ Memcpy to_addr from_addr size  n;
+	for (n = size/WORDSIZE: (n--) > 0: ) to_addr-->n = from_addr-->n;
+	for (n = size: ((n--) % WORDSIZE ~= 0): ) to_addr->n = from_addr->n;
 ];
 
 @h Audiovisual Resources.

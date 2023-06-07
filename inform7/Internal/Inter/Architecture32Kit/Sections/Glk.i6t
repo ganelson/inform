@@ -882,3 +882,48 @@ Constant wintype_TextGrid = 4;
   return ret;
 ];
 
+@h Debugging verb.
+This powers the GLKLIST command, when there's a command parser to read it.
+
+=
+[ GlkDebuggingList id val;
+    id = glk_window_iterate(0, gg_arguments);
+    while (id) {
+        print "Window ", id, " (", gg_arguments-->0, "): ";
+        val = glk_window_get_type(id);
+        switch (val) {
+          1: print "pair";
+          2: print "blank";
+          3: print "textbuffer";
+          4: print "textgrid";
+          5: print "graphics";
+          default: print "unknown";
+        }
+        val = glk_window_get_parent(id);
+        if (val) print ", parent is window ", val;
+        else     print ", no parent (root)";
+        val = glk_window_get_stream(id);
+        print ", stream ", val;
+        val = glk_window_get_echo_stream(id);
+        if (val) print ", echo stream ", val;
+        print "^";
+        id = glk_window_iterate(id, gg_arguments);
+    }
+    id = glk_stream_iterate(0, gg_arguments);
+    while (id) {
+        print "Stream ", id, " (", gg_arguments-->0, ")^";
+        id = glk_stream_iterate(id, gg_arguments);
+    }
+    id = glk_fileref_iterate(0, gg_arguments);
+    while (id) {
+        print "Fileref ", id, " (", gg_arguments-->0, ")^";
+        id = glk_fileref_iterate(id, gg_arguments);
+    }
+    if (glk_gestalt(gestalt_Sound, 0)) {
+        id = glk_schannel_iterate(0, gg_arguments);
+        while (id) {
+            print "Soundchannel ", id, " (", gg_arguments-->0, ")^";
+            id = glk_schannel_iterate(id, gg_arguments);
+        }
+    }
+];

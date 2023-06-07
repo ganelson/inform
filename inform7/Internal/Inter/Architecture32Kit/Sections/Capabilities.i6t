@@ -7,6 +7,27 @@ The 32-bit architecture is currently the default targeted by Inform, and is
 used both for programs compiled via Inform 6 to the Glulx virtual machine, and
 also for programs compiled via C.
 
+@h Header layout.
+The VM is expected to contain certain special constants and variables at fixed
+position in its "header"; the addresses of these are given below.
+
+=
+Constant HDR_MAGICNUMBER      = $00;     ! long word
+Constant HDR_GLULXVERSION     = $04;     ! long word
+Constant HDR_RAMSTART         = $08;     ! long word
+Constant HDR_EXTSTART         = $0C;     ! long word
+Constant HDR_ENDMEM           = $10;     ! long word
+Constant HDR_STACKSIZE        = $14;     ! long word
+Constant HDR_STARTFUNC        = $18;     ! long word
+Constant HDR_DECODINGTBL      = $1C;     ! long word
+Constant HDR_CHECKSUM         = $20;     ! long word
+Constant ROM_INFO             = $24;     ! four ASCII characters
+Constant ROM_MEMORYLAYOUT     = $28;     ! long word
+Constant ROM_INFORMVERSION    = $2C;     ! four ASCII characters
+Constant ROM_COMPVERSION      = $30;     ! four ASCII characters
+Constant ROM_GAMERELEASE      = $34;     ! short word
+Constant ROM_GAMESERIAL       = $36;     ! six ASCII characters
+
 @h Release Number.
 Our programs will have both a release number and a serial code, which are
 in each case stored in the header memory of the virtual machine.
@@ -53,6 +74,14 @@ is viable on recent revisions of Glulx.
 	@gestalt 7 0 i;
 	if (i == 0) return;
 	@mfree address;
+];
+
+@h Memcpy.
+This is equivalent to C's memcpy function, in good ways and bad.
+
+=
+[ Memcpy to_addr from_addr size;
+    @mcopy size from_addr to_addr;
 ];
 
 @h Audiovisual Resources.

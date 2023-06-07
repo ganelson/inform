@@ -65,7 +65,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">BasicInformKit</a></li><li><b>Definitions Template</b></li></ul></div>
 <p class="purpose">Miscellaneous constant definitions, usually providing symbolic names for otherwise inscrutable numbers, which are used throughout the template layer.</p>
 
-<ul class="toc"><li><a href="S-dfn.html#SP1">&#167;1. Identification</a></li><li><a href="S-dfn.html#SP2">&#167;2. Z-Machine Definitions</a></li><li><a href="S-dfn.html#SP3">&#167;3. Glulx Definitions</a></li><li><a href="S-dfn.html#SP4">&#167;4. Nothing</a></li><li><a href="S-dfn.html#SP5">&#167;5. Powers of Two</a></li><li><a href="S-dfn.html#SP6">&#167;6. Text Styles</a></li><li><a href="S-dfn.html#SP7">&#167;7. Colour Numbers</a></li><li><a href="S-dfn.html#SP8">&#167;8. Window Numbers</a></li><li><a href="S-dfn.html#SP9">&#167;9. Paragraphing Flags</a></li><li><a href="S-dfn.html#SP10">&#167;10. Descriptors in the Language of Play</a></li><li><a href="S-dfn.html#SP11">&#167;11. Run-Time Problem Numbers</a></li><li><a href="S-dfn.html#SP12">&#167;12. Scope Searching Reasons</a></li><li><a href="S-dfn.html#SP13">&#167;13. Token Types</a></li><li><a href="S-dfn.html#SP14">&#167;14. GPR Return Values</a></li><li><a href="S-dfn.html#SP15">&#167;15. List Styles</a></li><li><a href="S-dfn.html#SP16">&#167;16. Lengths Of Time</a></li><li><a href="S-dfn.html#SP17">&#167;17. Empty Text</a></li><li><a href="S-dfn.html#SP18">&#167;18. Empty Table</a></li><li><a href="S-dfn.html#SP19">&#167;19. Empty Set</a></li><li><a href="S-dfn.html#SP20">&#167;20. Template Attributes</a></li><li><a href="S-dfn.html#SP21">&#167;21. Template Properties</a></li><li><a href="S-dfn.html#SP22">&#167;22. Formal Parameters</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-dfn.html#SP1">&#167;1. Identification</a></li><li><a href="S-dfn.html#SP2">&#167;2. Nothing</a></li><li><a href="S-dfn.html#SP3">&#167;3. Powers of Two</a></li><li><a href="S-dfn.html#SP4">&#167;4. Text Styles</a></li><li><a href="S-dfn.html#SP5">&#167;5. Colour Numbers</a></li><li><a href="S-dfn.html#SP6">&#167;6. Window Numbers</a></li><li><a href="S-dfn.html#SP7">&#167;7. Paragraphing Flags</a></li><li><a href="S-dfn.html#SP8">&#167;8. Descriptors in the Language of Play</a></li><li><a href="S-dfn.html#SP9">&#167;9. Run-Time Problem Numbers</a></li><li><a href="S-dfn.html#SP10">&#167;10. Scope Searching Reasons</a></li><li><a href="S-dfn.html#SP11">&#167;11. Token Types</a></li><li><a href="S-dfn.html#SP12">&#167;12. GPR Return Values</a></li><li><a href="S-dfn.html#SP13">&#167;13. List Styles</a></li><li><a href="S-dfn.html#SP14">&#167;14. Lengths Of Time</a></li><li><a href="S-dfn.html#SP15">&#167;15. Empty Text</a></li><li><a href="S-dfn.html#SP16">&#167;16. Empty Table</a></li><li><a href="S-dfn.html#SP17">&#167;17. Empty Set</a></li><li><a href="S-dfn.html#SP18">&#167;18. Template Attributes</a></li><li><a href="S-dfn.html#SP19">&#167;19. Template Properties</a></li><li><a href="S-dfn.html#SP20">&#167;20. Formal Parameters</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Identification. </b></p>
 
@@ -73,101 +73,14 @@ MathJax = {
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">BASICINFORMKIT</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">SERIAL_COMMA</span><span class="plain-syntax"> = </span><span class="identifier-syntax">BasicInformKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">SERIAL_COMMA_CFGF</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Z-Machine Definitions. </b>The Z-machine contains certain special constants and variables at fixed
-position in its "header"; the addresses of these are given below. See
-The Z-Machine Standards Document, version 1.0, for details.
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_ZCODE</span><span class="plain-syntax">;</span>
-
-<span class="comment-syntax">Offsets into Z-machine header:</span>
-
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_ZCODEVERSION</span><span class="plain-syntax">     = </span><span class="constant-syntax">$00</span><span class="plain-syntax">;     </span><span class="comment-syntax">byte</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_TERPFLAGS</span><span class="plain-syntax">        = </span><span class="constant-syntax">$01</span><span class="plain-syntax">;     </span><span class="comment-syntax">byte</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_GAMERELEASE</span><span class="plain-syntax">      = </span><span class="constant-syntax">$02</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_HIGHMEMORY</span><span class="plain-syntax">       = </span><span class="constant-syntax">$04</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_INITIALPC</span><span class="plain-syntax">        = </span><span class="constant-syntax">$06</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_DICTIONARY</span><span class="plain-syntax">       = </span><span class="constant-syntax">$08</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_OBJECTS</span><span class="plain-syntax">          = </span><span class="constant-syntax">$0A</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_GLOBALS</span><span class="plain-syntax">          = </span><span class="constant-syntax">$0C</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_STATICMEMORY</span><span class="plain-syntax">     = </span><span class="constant-syntax">$0E</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_GAMEFLAGS</span><span class="plain-syntax">        = </span><span class="constant-syntax">$10</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_GAMESERIAL</span><span class="plain-syntax">       = </span><span class="constant-syntax">$12</span><span class="plain-syntax">;     </span><span class="comment-syntax">six ASCII characters</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_ABBREVIATIONS</span><span class="plain-syntax">    = </span><span class="constant-syntax">$18</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_FILELENGTH</span><span class="plain-syntax">       = </span><span class="constant-syntax">$1A</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_CHECKSUM</span><span class="plain-syntax">         = </span><span class="constant-syntax">$1C</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_TERPNUMBER</span><span class="plain-syntax">       = </span><span class="constant-syntax">$1E</span><span class="plain-syntax">;     </span><span class="comment-syntax">byte</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_TERPVERSION</span><span class="plain-syntax">      = </span><span class="constant-syntax">$1F</span><span class="plain-syntax">;     </span><span class="comment-syntax">byte</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_SCREENHLINES</span><span class="plain-syntax">     = </span><span class="constant-syntax">$20</span><span class="plain-syntax">;     </span><span class="comment-syntax">byte</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_SCREENWCHARS</span><span class="plain-syntax">     = </span><span class="constant-syntax">$21</span><span class="plain-syntax">;     </span><span class="comment-syntax">byte</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_SCREENWUNITS</span><span class="plain-syntax">     = </span><span class="constant-syntax">$22</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_SCREENHUNITS</span><span class="plain-syntax">     = </span><span class="constant-syntax">$24</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_FONTWUNITS</span><span class="plain-syntax">       = </span><span class="constant-syntax">$26</span><span class="plain-syntax">;     </span><span class="comment-syntax">byte</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_FONTHUNITS</span><span class="plain-syntax">       = </span><span class="constant-syntax">$27</span><span class="plain-syntax">;     </span><span class="comment-syntax">byte</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_ROUTINEOFFSET</span><span class="plain-syntax">    = </span><span class="constant-syntax">$28</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_STRINGOFFSET</span><span class="plain-syntax">     = </span><span class="constant-syntax">$2A</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_BGCOLOUR</span><span class="plain-syntax">         = </span><span class="constant-syntax">$2C</span><span class="plain-syntax">;     </span><span class="comment-syntax">byte</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_FGCOLOUR</span><span class="plain-syntax">         = </span><span class="constant-syntax">$2D</span><span class="plain-syntax">;     </span><span class="comment-syntax">byte</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_TERMCHARS</span><span class="plain-syntax">        = </span><span class="constant-syntax">$2E</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_PIXELSTO3</span><span class="plain-syntax">        = </span><span class="constant-syntax">$30</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_TERPSTANDARD</span><span class="plain-syntax">     = </span><span class="constant-syntax">$32</span><span class="plain-syntax">;     </span><span class="comment-syntax">two bytes</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_ALPHABET</span><span class="plain-syntax">         = </span><span class="constant-syntax">$34</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_EXTENSION</span><span class="plain-syntax">        = </span><span class="constant-syntax">$36</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_UNUSED</span><span class="plain-syntax">           = </span><span class="constant-syntax">$38</span><span class="plain-syntax">;     </span><span class="comment-syntax">two words</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_INFORMVERSION</span><span class="plain-syntax">    = </span><span class="constant-syntax">$3C</span><span class="plain-syntax">;     </span><span class="comment-syntax">four ASCII characters</span>
-
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> #</span><span class="identifier-syntax">dict_par1</span><span class="plain-syntax"> = </span><span class="constant-syntax">6</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> #</span><span class="identifier-syntax">dict_par2</span><span class="plain-syntax"> = </span><span class="constant-syntax">7</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Glulx Definitions. </b>We make similar header definitions for Glulx. Extensive further
-definitions, of constants needed to handle the Glk I/O layer, can be found
-in the "Infglk" section of "Glulx.i6t"; they are not used in the rest
-of the template layer, and would only get in the way here.
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">IFDEF</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_GLULX</span><span class="plain-syntax">;</span>
-
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">unicode_gestalt_ok</span><span class="plain-syntax">; </span><span class="comment-syntax">Set if interpreter supports Unicode</span>
-
-<span class="comment-syntax">Offsets into Glulx header and start of ROM:</span>
-
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_MAGICNUMBER</span><span class="plain-syntax">      = </span><span class="constant-syntax">$00</span><span class="plain-syntax">;     </span><span class="comment-syntax">long word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_GLULXVERSION</span><span class="plain-syntax">     = </span><span class="constant-syntax">$04</span><span class="plain-syntax">;     </span><span class="comment-syntax">long word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_RAMSTART</span><span class="plain-syntax">         = </span><span class="constant-syntax">$08</span><span class="plain-syntax">;     </span><span class="comment-syntax">long word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_EXTSTART</span><span class="plain-syntax">         = </span><span class="constant-syntax">$0C</span><span class="plain-syntax">;     </span><span class="comment-syntax">long word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_ENDMEM</span><span class="plain-syntax">           = </span><span class="constant-syntax">$10</span><span class="plain-syntax">;     </span><span class="comment-syntax">long word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_STACKSIZE</span><span class="plain-syntax">        = </span><span class="constant-syntax">$14</span><span class="plain-syntax">;     </span><span class="comment-syntax">long word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_STARTFUNC</span><span class="plain-syntax">        = </span><span class="constant-syntax">$18</span><span class="plain-syntax">;     </span><span class="comment-syntax">long word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_DECODINGTBL</span><span class="plain-syntax">      = </span><span class="constant-syntax">$1C</span><span class="plain-syntax">;     </span><span class="comment-syntax">long word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_CHECKSUM</span><span class="plain-syntax">         = </span><span class="constant-syntax">$20</span><span class="plain-syntax">;     </span><span class="comment-syntax">long word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ROM_INFO</span><span class="plain-syntax">             = </span><span class="constant-syntax">$24</span><span class="plain-syntax">;     </span><span class="comment-syntax">four ASCII characters</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ROM_MEMORYLAYOUT</span><span class="plain-syntax">     = </span><span class="constant-syntax">$28</span><span class="plain-syntax">;     </span><span class="comment-syntax">long word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ROM_INFORMVERSION</span><span class="plain-syntax">    = </span><span class="constant-syntax">$2C</span><span class="plain-syntax">;     </span><span class="comment-syntax">four ASCII characters</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ROM_COMPVERSION</span><span class="plain-syntax">      = </span><span class="constant-syntax">$30</span><span class="plain-syntax">;     </span><span class="comment-syntax">four ASCII characters</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ROM_GAMERELEASE</span><span class="plain-syntax">      = </span><span class="constant-syntax">$34</span><span class="plain-syntax">;     </span><span class="comment-syntax">short word</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ROM_GAMESERIAL</span><span class="plain-syntax">       = </span><span class="constant-syntax">$36</span><span class="plain-syntax">;     </span><span class="comment-syntax">six ASCII characters</span>
-
-<span class="comment-syntax">The following constants describe the layout of a dictionary word entry.</span>
-<span class="comment-syntax">The math is copied from the I6 compiler.</span>
-
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DICT_ENTRY_BYTES</span><span class="plain-syntax"> = </span><span class="constant-syntax">12</span><span class="plain-syntax">+</span><span class="identifier-syntax">DICT_WORD_SIZE</span><span class="plain-syntax">*</span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> #</span><span class="identifier-syntax">dict_par1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">DICT_WORD_SIZE</span><span class="plain-syntax">*</span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">+4+1;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> #</span><span class="identifier-syntax">dict_par2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">DICT_WORD_SIZE</span><span class="plain-syntax">*</span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">+4+3;</span>
-
-<span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Nothing. </b>This is defined automatically by the Inform 6 compiler, but not by other final
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Nothing. </b>This is defined automatically by the Inform 6 compiler, but not by other final
 compilation platforms (such as C).
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="reserved-syntax">nothing</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Powers of Two. </b>I6 lacks support for logical shifts, and the Z-machine opcodes which bear
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Powers of Two. </b>I6 lacks support for logical shifts, and the Z-machine opcodes which bear
 on this are not always well supported, so the I6 library has traditionally
 used a lookup table for the values of \(2^{15-n}\) where \(0\leq n \leq 11\).
 </p>
@@ -205,7 +118,7 @@ used a lookup table for the values of \(2^{15-n}\) where \(0\leq n \leq 11\).
 <span class="plain-syntax">      </span><span class="constant-syntax">$$0100000000000000</span>
 <span class="plain-syntax">      </span><span class="constant-syntax">$$1000000000000000</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Text Styles. </b>These are the styles of text distinguished by the template layer, though
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Text Styles. </b>These are the styles of text distinguished by the template layer, though
 they are not required to look different from each other on any given VM.
 The codes are independent of the VM targetted, though in fact they are
 equal to Glulx style numbers as conventionally used. (The Z-machine renders
@@ -228,7 +141,7 @@ it, and for unornamental works Glulx is fine in practice.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">BLOCKQUOTE_VMSTY</span><span class="plain-syntax"> = </span><span class="constant-syntax">7</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">INPUT_VMSTY</span><span class="plain-syntax">      = </span><span class="constant-syntax">8</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Colour Numbers. </b>These are traditional colour names: quite who it was who thought that azure
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Colour Numbers. </b>These are traditional colour names: quite who it was who thought that azure
 was the same colour as cyan is now unclear. Colour is, again, not easy to
 arrange on Glulx, but there is some workaround code.
 </p>
@@ -244,7 +157,7 @@ arrange on Glulx, but there is some workaround code.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CLR_CYAN</span><span class="plain-syntax">    = </span><span class="constant-syntax">8</span><span class="plain-syntax">; </span><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CLR_AZURE</span><span class="plain-syntax">   = </span><span class="constant-syntax">8</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CLR_WHITE</span><span class="plain-syntax">   = </span><span class="constant-syntax">9</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Window Numbers. </b>Although Glulx can support elaborate tessalations of windows on screen (if
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Window Numbers. </b>Although Glulx can support elaborate tessalations of windows on screen (if
 the complexity of handling this can be mastered), the Z-machine has much
 more limited resources in general, so the template layer assumes a simple
 screen model: there are just two screen areas, the scrolling main window
@@ -257,7 +170,7 @@ line bar at the top of the screen.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">WIN_STATUS</span><span class="plain-syntax">  = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">WIN_MAIN</span><span class="plain-syntax">    = </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Paragraphing Flags. </b>I am not sure many dictionaries would countenance "to paragraph" as a
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Paragraphing Flags. </b>I am not sure many dictionaries would countenance "to paragraph" as a
 verb, but never mind: the reference here is to the algorithm used to place
 paragraph breaks within text, which uses bitmaps composed of the following.
 </p>
@@ -269,7 +182,7 @@ paragraph breaks within text, which uses bitmaps composed of the following.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PARA_NORULEBOOKBREAKS</span><span class="plain-syntax">   = </span><span class="constant-syntax">8</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PARA_CONTENTEXPECTED</span><span class="plain-syntax">    = </span><span class="constant-syntax">16</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Descriptors in the Language of Play. </b>The following constants are used in the <span class="extract"><span class="extract-syntax">LanguageDescriptors</span></span> table found
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Descriptors in the Language of Play. </b>The following constants are used in the <span class="extract"><span class="extract-syntax">LanguageDescriptors</span></span> table found
 in the definition of the language of play.
 </p>
 
@@ -280,7 +193,7 @@ in the definition of the language of play.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">LIGHTED_PK</span><span class="plain-syntax">   = </span><span class="constant-syntax">$103</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">UNLIGHTED_PK</span><span class="plain-syntax"> = </span><span class="constant-syntax">$104</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Run-Time Problem Numbers. </b>The enumeration sequence here must correspond to that in the file of RTP
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Run-Time Problem Numbers. </b>The enumeration sequence here must correspond to that in the file of RTP
 texts, which is used to generate the HTML pages displayed by the Inform
 user interface when a run-time problem has occurred. (For instance, the
 file of RTP texts includes the heading "P17 - Can't divide by zero",
@@ -364,7 +277,7 @@ to I7.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RTP_NOTASUPPORTER</span><span class="plain-syntax">           = </span><span class="constant-syntax">72</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RTP_BADCONTAINMENT</span><span class="plain-syntax">          = </span><span class="constant-syntax">73</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Scope Searching Reasons. </b>The parser makes use of a mechanism for searching through the objects currently
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Scope Searching Reasons. </b>The parser makes use of a mechanism for searching through the objects currently
 "in scope", which basically means visible to the actor who would perform the
 action envisaged by the command being parsed. It is sometimes useful to
 behave differently depending on why this scope searching is being done, so
@@ -383,7 +296,7 @@ in numbering.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">LOOPOVERSCOPE_REASON</span><span class="plain-syntax"> = </span><span class="constant-syntax">5</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">TESTSCOPE_REASON</span><span class="plain-syntax">     = </span><span class="constant-syntax">6</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Token Types. </b>Tokens are the indecomposable pieces of a grammar line making up a possible
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Token Types. </b>Tokens are the indecomposable pieces of a grammar line making up a possible
 reading of a command; some are literal words, others stand for "any named
 object in scope", and so on. The following codes identify the possibilities.
 The <span class="extract"><span class="extract-syntax">*_TOKEN</span></span> constants must not be altered without modifying the I6 compiler
@@ -411,7 +324,7 @@ to match (so, basically, they must not be altered at all).
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">TOPIC_TOKEN</span><span class="plain-syntax">        = </span><span class="constant-syntax">9</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ENDIT_TOKEN</span><span class="plain-syntax">        = </span><span class="constant-syntax">15</span><span class="plain-syntax">;   </span><span class="comment-syntax">Value used to mean "end of grammar line"</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. GPR Return Values. </b>GRP stands for "General Parsing Routine", an I6 routine which acts as a
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. GPR Return Values. </b>GRP stands for "General Parsing Routine", an I6 routine which acts as a
 grammar token: again, see the {\it Inform Designer's Manual}, 4th edition,
 for details.
 </p>
@@ -439,7 +352,7 @@ here regardless.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GPR_MULTIINSIDE</span><span class="plain-syntax">    = </span><span class="identifier-syntax">GPR_NOUN</span><span class="plain-syntax"> + </span><span class="constant-syntax">5</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GPR_CREATURE</span><span class="plain-syntax">       = </span><span class="identifier-syntax">GPR_NOUN</span><span class="plain-syntax"> + </span><span class="constant-syntax">6</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. List Styles. </b>These constants make up bitmaps of the options in use when listing objects.
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. List Styles. </b>These constants make up bitmaps of the options in use when listing objects.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -462,7 +375,7 @@ here regardless.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">EXTRAINDENT_BIT</span><span class="plain-syntax">    = </span><span class="constant-syntax">$$0010000000000000</span><span class="plain-syntax">; </span><span class="comment-syntax">New in I7: extra indentation of 1 level</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CFIRSTART_BIT</span><span class="plain-syntax">      = </span><span class="constant-syntax">$$0100000000000000</span><span class="plain-syntax">; </span><span class="comment-syntax">Capitalise first article in list</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Lengths Of Time. </b>Inform measures time in minutes.
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Lengths Of Time. </b>Inform measures time in minutes.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -472,7 +385,7 @@ here regardless.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">TWELVE_HOURS</span><span class="plain-syntax"> = </span><span class="constant-syntax">720</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">TWENTY_FOUR_HOURS</span><span class="plain-syntax"> = </span><span class="constant-syntax">1440</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Empty Text. </b>The I6 compiler does not optimise string compilation: if it needs to compile
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Empty Text. </b>The I6 compiler does not optimise string compilation: if it needs to compile
 the (packed, read-only) string <span class="extract"><span class="extract-syntax">"exemplum"</span></span> twice, it will compile two copies.
 This is slightly wasteful on memory, though in practice the loss is not
 enough for us to care. But we do want to avoid this in I7 because, to make
@@ -488,21 +401,21 @@ and properties: we give it a name as follows.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">EMPTY_TEXT_PACKED</span><span class="plain-syntax"> </span><span class="string-syntax">""</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">EMPTY_TEXT_VALUE</span><span class="plain-syntax"> --&gt; </span><span class="identifier-syntax">CONSTANT_PACKED_TEXT_STORAGE</span><span class="plain-syntax"> </span><span class="identifier-syntax">EMPTY_TEXT_PACKED</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Empty Table. </b>Similarly: the default value for the "table" kind of value, a Table
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Empty Table. </b>Similarly: the default value for the "table" kind of value, a Table
 containing no rows and no columns.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">TheEmptyTable</span><span class="plain-syntax"> --&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Empty Set. </b>The falsity proposition describes the empty set of objects, and is the
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Empty Set. </b>The falsity proposition describes the empty set of objects, and is the
 zero value for the "description" kind of value.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">Prop_Falsity</span><span class="plain-syntax"> </span><span class="identifier-syntax">reason</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Template Attributes. </b>An I6 attribute is equivalent to an I7 "either/or property", though the
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Template Attributes. </b>An I6 attribute is equivalent to an I7 "either/or property", though the
 latter are not always translated into I6 attributes because the Z-machine
 has only a limited number of attributes to use. Here, we define attributes
 used by the template.
@@ -565,7 +478,7 @@ are not visible to I7 source text as storage.
 <span class="identifier-syntax">Attribute</span><span class="plain-syntax"> </span><span class="identifier-syntax">workflag2</span><span class="plain-syntax">; </span><span class="comment-syntax">new in I7 and also temporary workspace</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">list_filter_permits</span><span class="plain-syntax"> = </span><span class="identifier-syntax">privately_named</span><span class="plain-syntax">; </span><span class="comment-syntax">another I7 listwriter convenience</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Template Properties. </b>As remarked above, these more often correspond to value properties in I7.
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Template Properties. </b>As remarked above, these more often correspond to value properties in I7.
 To an experienced I6 user, though, the death toll of abolished I6
 properties in I7 is breathtaking: in alphabetical order, <span class="extract"><span class="extract-syntax">after</span></span>,
 <span class="extract"><span class="extract-syntax">cant_go</span></span>, <span class="extract"><span class="extract-syntax">daemon</span></span>, <span class="extract"><span class="extract-syntax">each_turn</span></span>, <span class="extract"><span class="extract-syntax">invent</span></span>, <span class="extract"><span class="extract-syntax">life</span></span>, <span class="extract"><span class="extract-syntax">number</span></span>, <span class="extract"><span class="extract-syntax">orders</span></span>,
@@ -624,7 +537,7 @@ future use.
 <span class="identifier-syntax">Property</span><span class="plain-syntax"> </span><span class="identifier-syntax">inside_description</span><span class="plain-syntax">; </span><span class="comment-syntax">not used by I7, but an interesting hook in the locale code</span>
 <span class="identifier-syntax">Property</span><span class="plain-syntax"> </span><span class="identifier-syntax">short_name_indef</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax">not used by I7, but an interesting hook in the listmaker</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Formal Parameters. </b>These are needed for efficient run-time ambiguity resolution.
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Formal Parameters. </b>These are needed for efficient run-time ambiguity resolution.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -640,7 +553,7 @@ future use.
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">unicode_temp</span><span class="plain-syntax">;</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrent">dfn</li><li class="progresssection"><a href="S-utl.html">utl</a></li><li class="progresssection"><a href="S-prg.html">prg</a></li><li class="progresssection"><a href="S-mth.html">mth</a></li><li class="progresssection"><a href="S-fl.html">fl</a></li><li class="progresssection"><a href="S-srt.html">srt</a></li><li class="progresssection"><a href="S-tbl.html">tbl</a></li><li class="progresssection"><a href="S-mst.html">mst</a></li><li class="progresssection"><a href="S-rlb.html">rlb</a></li><li class="progresssection"><a href="S-flx.html">flx</a></li><li class="progresssection"><a href="S-blc.html">blc</a></li><li class="progresssection"><a href="S-txt.html">txt</a></li><li class="progresssection"><a href="S-unc.html">unc</a></li><li class="progresssection"><a href="S-chr.html">chr</a></li><li class="progresssection"><a href="S-rgx.html">rgx</a></li><li class="progresssection"><a href="S-lst.html">lst</a></li><li class="progresssection"><a href="S-cmb.html">cmb</a></li><li class="progresssection"><a href="S-rlt.html">rlt</a></li><li class="progresssection"><a href="S-rlt2.html">rlt2</a></li><li class="progresssection"><a href="S-rtp.html">rtp</a></li><li class="progressnext"><a href="S-utl.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrent">dfn</li><li class="progresssection"><a href="S-utl.html">utl</a></li><li class="progresssection"><a href="S-prg.html">prg</a></li><li class="progresssection"><a href="S-mth.html">mth</a></li><li class="progresssection"><a href="S-fl.html">fl</a></li><li class="progresssection"><a href="S-srt.html">srt</a></li><li class="progresssection"><a href="S-tbl.html">tbl</a></li><li class="progresssection"><a href="S-mst.html">mst</a></li><li class="progresssection"><a href="S-rlb.html">rlb</a></li><li class="progresssection"><a href="S-flx.html">flx</a></li><li class="progresssection"><a href="S-blc.html">blc</a></li><li class="progresssection"><a href="S-txt.html">txt</a></li><li class="progresssection"><a href="S-chr.html">chr</a></li><li class="progresssection"><a href="S-rgx.html">rgx</a></li><li class="progresssection"><a href="S-lst.html">lst</a></li><li class="progresssection"><a href="S-cmb.html">cmb</a></li><li class="progresssection"><a href="S-rlt.html">rlt</a></li><li class="progresssection"><a href="S-rlt2.html">rlt2</a></li><li class="progresssection"><a href="S-rtp.html">rtp</a></li><li class="progressnext"><a href="S-utl.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

@@ -18,7 +18,6 @@ Sections
 	Flex
 	BlockValues
 	Text
-	UnicodeData
 	Char
 	RegExp
 	Lists

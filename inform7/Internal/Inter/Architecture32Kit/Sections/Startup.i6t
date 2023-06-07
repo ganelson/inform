@@ -2,6 +2,12 @@ Startup Template.
 
 How programs for this architecture start up the virtual machine.
 
+@ This variable is set at startup, to avoid asking the interpreter over
+and over again.
+
+=
+Global unicode_gestalt_ok; ! Set if interpreter supports Unicode
+
 @ |VM_Initialise()| is almost the first routine called, except that the
 "starting the virtual machine" activity is allowed to go first; and,
 come to think of it, memory allocation has to be set up before even that,

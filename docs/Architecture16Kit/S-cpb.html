@@ -51,7 +51,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">Architecture16Kit</a></li><li><b>Capabilities Template</b></li></ul></div>
 <p class="purpose">Miscellaneous capabilities of the 16-bit architecture.</p>
 
-<ul class="toc"><li><a href="S-cpb.html#SP1">&#167;1. Summary</a></li><li><a href="S-cpb.html#SP2">&#167;2. Release Number</a></li><li><a href="S-cpb.html#SP3">&#167;3. RNG</a></li><li><a href="S-cpb.html#SP4">&#167;4. Memory Allocation</a></li><li><a href="S-cpb.html#SP5">&#167;5. Audiovisual Resources</a></li><li><a href="S-cpb.html#SP6">&#167;6. Typography</a></li><li><a href="S-cpb.html#SP7">&#167;7. Undo</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-cpb.html#SP1">&#167;1. Summary</a></li><li><a href="S-cpb.html#SP2">&#167;2. Header layout</a></li><li><a href="S-cpb.html#SP3">&#167;3. Release Number</a></li><li><a href="S-cpb.html#SP4">&#167;4. RNG</a></li><li><a href="S-cpb.html#SP5">&#167;5. Memory Allocation</a></li><li><a href="S-cpb.html#SP6">&#167;6. Memcpy</a></li><li><a href="S-cpb.html#SP7">&#167;7. Audiovisual Resources</a></li><li><a href="S-cpb.html#SP8">&#167;8. Typography</a></li><li><a href="S-cpb.html#SP9">&#167;9. Undo</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Summary. </b>The 16-bit architecture is for very limited virtual machines, and is closely
 modelled on Infocom's Z-machine, originally developed between 1979 and 1986,
@@ -59,7 +59,47 @@ but still sometimes used into the modern age. Its input-output model is
 almost entirely textual, and it has an idiosyncratic character set.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Release Number. </b>Our programs will have both a release number and a serial code, which are
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Header layout. </b>The Z-machine contains certain special constants and variables at fixed
+position in its "header"; the addresses of these are given below. See
+The Z-Machine Standards Document, version 1.0, for details.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_ZCODEVERSION</span><span class="plain-syntax">     = </span><span class="constant-syntax">$00</span><span class="plain-syntax">;     </span><span class="comment-syntax">byte</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_TERPFLAGS</span><span class="plain-syntax">        = </span><span class="constant-syntax">$01</span><span class="plain-syntax">;     </span><span class="comment-syntax">byte</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_GAMERELEASE</span><span class="plain-syntax">      = </span><span class="constant-syntax">$02</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_HIGHMEMORY</span><span class="plain-syntax">       = </span><span class="constant-syntax">$04</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_INITIALPC</span><span class="plain-syntax">        = </span><span class="constant-syntax">$06</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_DICTIONARY</span><span class="plain-syntax">       = </span><span class="constant-syntax">$08</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_OBJECTS</span><span class="plain-syntax">          = </span><span class="constant-syntax">$0A</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_GLOBALS</span><span class="plain-syntax">          = </span><span class="constant-syntax">$0C</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_STATICMEMORY</span><span class="plain-syntax">     = </span><span class="constant-syntax">$0E</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_GAMEFLAGS</span><span class="plain-syntax">        = </span><span class="constant-syntax">$10</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_GAMESERIAL</span><span class="plain-syntax">       = </span><span class="constant-syntax">$12</span><span class="plain-syntax">;     </span><span class="comment-syntax">six ASCII characters</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_ABBREVIATIONS</span><span class="plain-syntax">    = </span><span class="constant-syntax">$18</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_FILELENGTH</span><span class="plain-syntax">       = </span><span class="constant-syntax">$1A</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_CHECKSUM</span><span class="plain-syntax">         = </span><span class="constant-syntax">$1C</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_TERPNUMBER</span><span class="plain-syntax">       = </span><span class="constant-syntax">$1E</span><span class="plain-syntax">;     </span><span class="comment-syntax">byte</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_TERPVERSION</span><span class="plain-syntax">      = </span><span class="constant-syntax">$1F</span><span class="plain-syntax">;     </span><span class="comment-syntax">byte</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_SCREENHLINES</span><span class="plain-syntax">     = </span><span class="constant-syntax">$20</span><span class="plain-syntax">;     </span><span class="comment-syntax">byte</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_SCREENWCHARS</span><span class="plain-syntax">     = </span><span class="constant-syntax">$21</span><span class="plain-syntax">;     </span><span class="comment-syntax">byte</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_SCREENWUNITS</span><span class="plain-syntax">     = </span><span class="constant-syntax">$22</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_SCREENHUNITS</span><span class="plain-syntax">     = </span><span class="constant-syntax">$24</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_FONTWUNITS</span><span class="plain-syntax">       = </span><span class="constant-syntax">$26</span><span class="plain-syntax">;     </span><span class="comment-syntax">byte</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_FONTHUNITS</span><span class="plain-syntax">       = </span><span class="constant-syntax">$27</span><span class="plain-syntax">;     </span><span class="comment-syntax">byte</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_ROUTINEOFFSET</span><span class="plain-syntax">    = </span><span class="constant-syntax">$28</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_STRINGOFFSET</span><span class="plain-syntax">     = </span><span class="constant-syntax">$2A</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_BGCOLOUR</span><span class="plain-syntax">         = </span><span class="constant-syntax">$2C</span><span class="plain-syntax">;     </span><span class="comment-syntax">byte</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_FGCOLOUR</span><span class="plain-syntax">         = </span><span class="constant-syntax">$2D</span><span class="plain-syntax">;     </span><span class="comment-syntax">byte</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_TERMCHARS</span><span class="plain-syntax">        = </span><span class="constant-syntax">$2E</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_PIXELSTO3</span><span class="plain-syntax">        = </span><span class="constant-syntax">$30</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_TERPSTANDARD</span><span class="plain-syntax">     = </span><span class="constant-syntax">$32</span><span class="plain-syntax">;     </span><span class="comment-syntax">two bytes</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_ALPHABET</span><span class="plain-syntax">         = </span><span class="constant-syntax">$34</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_EXTENSION</span><span class="plain-syntax">        = </span><span class="constant-syntax">$36</span><span class="plain-syntax">;     </span><span class="comment-syntax">word</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_UNUSED</span><span class="plain-syntax">           = </span><span class="constant-syntax">$38</span><span class="plain-syntax">;     </span><span class="comment-syntax">two words</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_INFORMVERSION</span><span class="plain-syntax">    = </span><span class="constant-syntax">$3C</span><span class="plain-syntax">;     </span><span class="comment-syntax">four ASCII characters</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Release Number. </b>Our programs will have both a release number and a serial code, which are
 in each case stored in the header memory of the virtual machine.
 </p>
 
@@ -77,7 +117,7 @@ expected to be 6 digit characters wide.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_GAMESERIAL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. RNG. </b>No routine is needed for extracting a random number, since I6's built-in
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. RNG. </b>No routine is needed for extracting a random number, since I6's built-in
 <span class="extract"><span class="extract-syntax">random</span></span> function does that, but it's useful to abstract the process of
 seeding the RNG so that it produces a repeatable sequence of "random"
 numbers from here on: the necessary opcodes are different for the two VMs.
@@ -89,7 +129,7 @@ numbers from here on: the necessary opcodes are different for the two VMs.
 <span class="plain-syntax">    @</span><span class="reserved-syntax">random</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> -&gt; </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Memory Allocation. </b>This is dynamic memory allocation: something which is never practicable in
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Memory Allocation. </b>This is dynamic memory allocation: something which is never practicable in
 the Z-machine, because the whole address range is already claimed, but which
 is viable on recent revisions of Glulx.
 </p>
@@ -102,7 +142,16 @@ is viable on recent revisions of Glulx.
 <span class="plain-syntax">[ </span><span class="identifier-syntax">VM_FreeMemory</span><span class="plain-syntax"> </span><span class="identifier-syntax">address</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Audiovisual Resources. </b>The Z-machine only barely supports figures and sound effects, and only in
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Memcpy. </b>This is equivalent to C's memcpy function, in good ways and bad.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">[ </span><span class="identifier-syntax">Memcpy</span><span class="plain-syntax"> </span><span class="identifier-syntax">to_addr</span><span class="plain-syntax"> </span><span class="identifier-syntax">from_addr</span><span class="plain-syntax"> </span><span class="identifier-syntax">size</span><span class="plain-syntax">  </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">size</span><span class="plain-syntax">/</span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">: (</span><span class="identifier-syntax">n</span><span class="plain-syntax">--) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">: ) </span><span class="identifier-syntax">to_addr</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">from_addr</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">size</span><span class="plain-syntax">: ((</span><span class="identifier-syntax">n</span><span class="plain-syntax">--) % </span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax"> ~= </span><span class="constant-syntax">0</span><span class="plain-syntax">): ) </span><span class="identifier-syntax">to_addr</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">from_addr</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Audiovisual Resources. </b>The Z-machine only barely supports figures and sound effects, and only in
 version 6 of the Z-machine, which Inform 7 no longer supports. Sound effects
 have a longer pedigree and Infocom used them on some version 5 and even some
 version 3 works: really, though, from an Inform point of view we would prefer
@@ -118,7 +167,7 @@ long-gone formats.)
 <span class="plain-syntax">[ </span><span class="identifier-syntax">VM_SoundEffect</span><span class="plain-syntax"> </span><span class="identifier-syntax">resource_ID</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Typography. </b>Relatively few typographic effects are available on the Z-machine, so that
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Typography. </b>Relatively few typographic effects are available on the Z-machine, so that
 many of the semantic markups for text which would be distinguishable on
 Glulx are indistinguishable here.
 </p>
@@ -131,7 +180,7 @@ Glulx are indistinguishable here.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Undo. </b>These simply wrap the relevant opcodes.
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Undo. </b>These simply wrap the relevant opcodes.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
