@@ -1,0 +1,52 @@
+   Daily Planet Newsroom
+  The Man of Steel Excuses Himself
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Daily Planet Newsroom
+  Clark is here, frowning as he revises his latest article.
+  
+> >   Perry White's Office
+  (Testing.)
+  
+  >[1] west
+  
+  Perry White's Office
+  You can see a desk (on which is a lead-lined box (in which is a green kryptonite crystal)) and a poster of Elvis here.
+  
+  >[2] get box
+  Taken.
+  
+  >[3] east
+  
+  Daily Planet Newsroom
+  Clark looks a bit ill.
+  
+  Muttering about thinking he smells smoke, Clark heads east.
+  
+  >[4] close box
+  You close the lead-lined box.
+  
+  >[5] east
+  
+  Supply Closet
+  Clark is here, frowning as he revises his latest article.
+  
+  >[6] west
+  
+  Daily Planet Newsroom
+  
+  >[7] north
+  
+  Elevator Bank
+  
+  >[8] south
+  
+  Daily Planet Newsroom
+  
+  >[9] west
+  
+  Perry White's Office
+  You can see a desk and a poster of Elvis here.
+  
+> >

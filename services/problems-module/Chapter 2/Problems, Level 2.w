@@ -310,6 +310,17 @@ int Problems::explained_before(char *explanation) {
 	return FALSE;
 }
 
+@h A note on warnings.
+Warnings are almost identically handled. Inform traditionally avoided warnings,
+but we're finally giving way on that.
+
+=
+int warning_count = 0;
+
+int Problems::warnings_occurred(void) {
+	return (warning_count > 0)?TRUE:FALSE;
+}
+
 @h How problems begin and end.
 During the construction of a problem message, we will be running through a
 standard text, and at any point might be considering matter which should
@@ -322,6 +333,13 @@ to remember whether to use the short or long form.
 
 =
 void Problems::issue_problem_begin(parse_node_tree *T, char *message) {
+	Problems::issue_advisory_begin(T, message, TRUE);
+}
+void Problems::issue_warning_begin(parse_node_tree *T, char *message) {
+	Problems::issue_advisory_begin(T, message, FALSE);
+}
+void Problems::issue_advisory_begin(parse_node_tree *T, char *message, int problematic) {
+	currently_issuing_a_warning = (problematic)?FALSE:TRUE;
 	ProblemBuffer::clear();
 	if (strcmp(message, "*") == 0) {
 		WRITE_TO(PBUFF, ">++>");
@@ -336,7 +354,7 @@ void Problems::issue_problem_begin(parse_node_tree *T, char *message) {
 		this_is_a_subsequent_use_of_problem = FALSE;
 	} else {
 		Problems::show_problem_location(T);
-		problem_count++;
+		if (problematic) problem_count++; else warning_count++;
 		WRITE_TO(PBUFF, ">--> ");
 		this_is_a_subsequent_use_of_problem =
 			Problems::explained_before(message);
@@ -351,6 +369,10 @@ void Problems::issue_problem_end(void) {
 	ProblemBuffer::output_problem_buffer(1);
 	Problems::problem_documentation_links(problems_file);
 	if (crash_on_all_problems) ProblemSigils::force_crash();
+	currently_issuing_a_warning = FALSE;
+}
+void Problems::issue_warning_end(void) {
+	Problems::issue_problem_end();
 }
 
 @ Documentation links:
@@ -402,6 +424,9 @@ void Problems::issue_problem_segment(char *message) {
 			(this_is_a_subsequent_use_of_problem == TRUE)) continue;
 		@<Act on the problem message text, since it is now contextually allowed@>;
 	}
+}
+void Problems::issue_warning_segment(char *message) {
+	Problems::issue_problem_segment(message);
 }
 
 @ Ordinarily we just append the new character, but we also act on the escapes

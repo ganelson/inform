@@ -134,6 +134,7 @@ int problem_count_at_last_in = 1;
 text_stream problems_file_struct; /* The actual report of Problems file */
 text_stream *problems_file = &problems_file_struct; /* As a |text_stream *| */
 int problems_file_active = FALSE; /* Currently in use */
+int currently_issuing_a_warning = FALSE;
 
 #ifndef PROBLEMS_HTML_EMITTER
 #define PROBLEMS_HTML_EMITTER PUT_TO
@@ -194,7 +195,8 @@ indentation. And similarly for |>++>|, used to mark continuations.
 			HTML_TAG("hr");
 		}
 		HTML_OPEN_WITH("p", "class=\"hang\"");
-		WRITE("<b>Problem.</b> ");
+		if (currently_issuing_a_warning) WRITE("<b>Warning.</b> ");
+		else WRITE("<b>Problem.</b> ");
 		i+=3; continue;
 	}
 	if (Str::includes_wide_string_at(PBUFF, L">++>", i)) {

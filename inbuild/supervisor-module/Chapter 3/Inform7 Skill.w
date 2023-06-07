@@ -32,7 +32,10 @@ int Inform7Skill::inform7_via_shell(build_skill *skill, build_step *S,
 		switch (Nests::get_tag(N)) {
 			case MATERIALS_NEST_TAG: continue;
 			case EXTENSION_NEST_TAG: continue;
-			case EXTERNAL_NEST_TAG: WRITE_TO(command, "-external "); break;
+			case EXTERNAL_NEST_TAG:
+				if (Nests::is_deprecated(N)) WRITE_TO(command, "-deprecated-external ");
+				else WRITE_TO(command, "-external ");
+				break;
 			case GENERIC_NEST_TAG: WRITE_TO(command, "-nest "); break;
 			case INTERNAL_NEST_TAG: WRITE_TO(command, "-internal "); break;
 			default: internal_error("mystery nest");

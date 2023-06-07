@@ -172,6 +172,7 @@ better way to choose a virtual machine to compile to.
 @e NEST_CLSW
 @e INTERNAL_CLSW
 @e EXTERNAL_CLSW
+@e DEPRECATED_EXTERNAL_CLSW
 @e TRANSIENT_CLSW
 
 @<Declare resource-related options@> =
@@ -182,6 +183,8 @@ better way to choose a virtual machine to compile to.
 		L"use X as the location of built-in material such as the Standard Rules");
 	CommandLine::declare_switch(EXTERNAL_CLSW, L"external", 2,
 		L"use X as the user's home for installed material such as extensions");
+	CommandLine::declare_switch(DEPRECATED_EXTERNAL_CLSW, L"deprecated-external", 2,
+		L"same as -external X, but issues warnings if the nest is actually used");
 	CommandLine::declare_switch(TRANSIENT_CLSW, L"transient", 2,
 		L"use X for transient data such as the extensions census");
 	CommandLine::end_group();
@@ -266,6 +269,9 @@ void Supervisor::option(int id, int val, text_stream *arg, void *state) {
 			Supervisor::add_nest(Pathnames::from_text(arg), INTERNAL_NEST_TAG); break;
 		case EXTERNAL_CLSW:
 			Supervisor::add_nest(Pathnames::from_text(arg), EXTERNAL_NEST_TAG); break;
+		case DEPRECATED_EXTERNAL_CLSW:
+			Nests::deprecate(Supervisor::add_nest(Pathnames::from_text(arg),
+				EXTERNAL_NEST_TAG)); break;
 		case TRANSIENT_CLSW:
 			shared_transient_resources = Pathnames::from_text(arg); break;
 		case BASIC_CLSW: Projects::enter_forcible_basic_mode(); break;

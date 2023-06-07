@@ -59,7 +59,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../inform7n.html">Inform7</a></li><li><a href="index.html">core</a></li><li><a href="index.html#1">Chapter 1: Control</a></li><li><b>What To Compile</b></li></ul></div>
 <p class="purpose">To receive an instruction to compile something from Inbuild, and then to sort out the many locations then used in the host filing system.</p>
 
-<ul class="toc"><li><a href="1-wtc.html#SP1">&#167;1. Timers</a></li><li><a href="1-wtc.html#SP2">&#167;2. The task</a></li><li><a href="1-wtc.html#SP10">&#167;10. Project-related files and file paths</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="1-wtc.html#SP1">&#167;1. Timers</a></li><li><a href="1-wtc.html#SP2">&#167;2. The task</a></li><li><a href="1-wtc.html#SP11">&#167;11. Project-related files and file paths</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Timers. </b>We keep track of about how long the compiler spends on each task, for the
 sake of better diagnostics.
@@ -219,12 +219,12 @@ rough stages. Twenty is plenty.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::project</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Task::project</span></span>:<br/>Internal Test Cases - <a href="1-itc.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::project</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Task::project</span></span>:<br/><a href="1-wtc.html#SP7">&#167;7</a><br/>Internal Test Cases - <a href="1-itc.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"there is no current task"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">project</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="identifier-syntax">target_vm</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::vm</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Task::vm</span></span>:<br/><a href="1-wtc.html#SP15">&#167;15</a><br/>Compilation Settings - <a href="1-cs.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">target_vm</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::vm</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Task::vm</span></span>:<br/><a href="1-wtc.html#SP16">&#167;16</a><br/>Compilation Settings - <a href="1-cs.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"there is no current task"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">for_vm</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -246,7 +246,7 @@ rough stages. Twenty is plenty.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">project</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">as_copy</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">edition</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="identifier-syntax">parse_node_tree</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::syntax_tree</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Task::syntax_tree</span></span>:<br/><a href="1-wtc.html#SP14">&#167;14</a><br/>Core Preform - <a href="1-cp2.html#SP2">&#167;2</a>, <a href="1-cp2.html#SP3">&#167;3</a><br/>Using Problems - <a href="2-up.html#SP3">&#167;3</a>, <a href="2-up.html#SP3_3">&#167;3.3</a><br/>Supplementary Issues - <a href="2-si.html#SP1">&#167;1</a>, <a href="2-si.html#SP2">&#167;2</a>, <a href="2-si.html#SP3">&#167;3</a>, <a href="2-si.html#SP4">&#167;4</a>, <a href="2-si.html#SP5">&#167;5</a>, <a href="2-si.html#SP6">&#167;6</a>, <a href="2-si.html#SP7">&#167;7</a>, <a href="2-si.html#SP8">&#167;8</a>, <a href="2-si.html#SP9">&#167;9</a>, <a href="2-si.html#SP10">&#167;10</a>, <a href="2-si.html#SP11">&#167;11</a>, <a href="2-si.html#SP12">&#167;12</a>, <a href="2-si.html#SP13">&#167;13</a><br/>Problems With Source Text - <a href="2-pwst.html#SP1">&#167;1</a>, <a href="2-pwst.html#SP2">&#167;2</a>, <a href="2-pwst.html#SP3">&#167;3</a><br/>Calculus Problems - <a href="2-cp.html#SP1">&#167;1</a><br/>Kinds Problems - <a href="2-kp.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">parse_node_tree</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::syntax_tree</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Task::syntax_tree</span></span>:<br/><a href="1-wtc.html#SP7">&#167;7</a>, <a href="1-wtc.html#SP15">&#167;15</a><br/>Core Preform - <a href="1-cp2.html#SP2">&#167;2</a>, <a href="1-cp2.html#SP3">&#167;3</a><br/>Using Problems - <a href="2-up.html#SP3">&#167;3</a>, <a href="2-up.html#SP3_3">&#167;3.3</a><br/>Supplementary Issues - <a href="2-si.html#SP1">&#167;1</a>, <a href="2-si.html#SP2">&#167;2</a>, <a href="2-si.html#SP3">&#167;3</a>, <a href="2-si.html#SP4">&#167;4</a>, <a href="2-si.html#SP5">&#167;5</a>, <a href="2-si.html#SP6">&#167;6</a>, <a href="2-si.html#SP7">&#167;7</a>, <a href="2-si.html#SP8">&#167;8</a>, <a href="2-si.html#SP9">&#167;9</a>, <a href="2-si.html#SP10">&#167;10</a>, <a href="2-si.html#SP11">&#167;11</a>, <a href="2-si.html#SP12">&#167;12</a>, <a href="2-si.html#SP13">&#167;13</a><br/>Problems With Source Text - <a href="2-pwst.html#SP1">&#167;1</a>, <a href="2-pwst.html#SP2">&#167;2</a>, <a href="2-pwst.html#SP3">&#167;3</a><br/>Calculus Problems - <a href="2-cp.html#SP1">&#167;1</a><br/>Kinds Problems - <a href="2-kp.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">latest_syntax_tree</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
@@ -263,7 +263,34 @@ rough stages. Twenty is plenty.
 <span class="plain-syntax">    </span><span class="identifier-syntax">VerifyTree::verify_structure</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">());</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Resources in a Blorb file have unique ID numbers which are positive integers,
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>This is part of a scheme to wean authors off of use of an external extensions
+area.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Task::warn_about_deprecated_nests</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Task::warn_about_deprecated_nests</span></span>:<br/>How To Compile - <a href="1-htc.html#SP2_2">&#167;2.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="identifier-syntax">project</span><span class="plain-syntax"> = </span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::project</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ext</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">ext</span><span class="plain-syntax">, </span><span class="identifier-syntax">inform_extension</span><span class="plain-syntax">, </span><span class="identifier-syntax">project</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">extensions_included</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">inbuild_nest</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Copies::origin</span><span class="plain-syntax">(</span><span class="identifier-syntax">ext</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">as_copy</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Nests::is_deprecated</span><span class="plain-syntax">(</span><span class="identifier-syntax">N</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">ename</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Copies::write_copy</span><span class="plain-syntax">(</span><span class="identifier-syntax">ename</span><span class="plain-syntax">, </span><span class="identifier-syntax">ext</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">as_copy</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_stream</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">ename</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">StandardProblems::handmade_warning</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">Untestable</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::issue_warning_segment</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"The extension '%1' was included from an external location, that is, "</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"from outside of this project's materials folder. That's allowed, and "</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"is how most authors managed things until 2023, but we now recommend "</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"moving all extensions needed for a project (other than those built "</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"into Inform itself) into the project's materials folder. "</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"If you do, this warning will go away."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::issue_warning_end</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Resources in a Blorb file have unique ID numbers which are positive integers,
 but these are not required to start from 1, nor to be contiguous. For Inform,
 ID number 1 is reserved for the cover image (whether or not any cover image
 is provided: it is legal for there to be figures but no cover, and vice versa).
@@ -281,7 +308,7 @@ number but a long or short beep. If a genuine sound effect had resource ID
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_resource_number</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>This seed is ordinarily 0, causing no fix to occur, but can be set to
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>This seed is ordinarily 0, causing no fix to occur, but can be set to
 a non-zero value to make testing Inform easier.
 </p>
 
@@ -291,12 +318,12 @@ a non-zero value to make testing Inform easier.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">project</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">fix_rng</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>These functions are for steps on the production line which involve
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>These functions are for steps on the production line which involve
 referring something back up to Inbuild.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Task::make_built_in_kind_constructors</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Task::make_built_in_kind_constructors</span></span>:<br/>How To Compile - <a href="1-htc.html#SP2_3">&#167;2.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Task::make_built_in_kind_constructors</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Task::make_built_in_kind_constructors</span></span>:<br/>How To Compile - <a href="1-htc.html#SP2_3">&#167;2.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"there is no current task"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Projects::load_built_in_kind_constructors</span><span class="plain-syntax">(</span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">project</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
@@ -307,7 +334,7 @@ referring something back up to Inbuild.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Project-related files and file paths. </b>An Inform compilation can touch dozens of different files, and the rest
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Project-related files and file paths. </b>An Inform compilation can touch dozens of different files, and the rest
 of this section is a tour through the ones which are associated with the
 project itself. (Common resources, used for all compilations, or optional
 add-ins such as extensions are the business of Inbuild.)
@@ -363,7 +390,7 @@ the command line), but they take no time to generate so we make them anyway.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Filenames::in</span><span class="plain-syntax">(</span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">path</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Release.blurb"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>The build folder for a project contains all of the working files created
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>The build folder for a project contains all of the working files created
 during the compilation process. The debugging log and Inform problems report
 (its HTML file of error messages) are both written there: see the Main Routine
 section for details. In addition we have:
@@ -379,7 +406,7 @@ section for details. In addition we have:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Filenames::in</span><span class="plain-syntax">(</span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">build</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Parse tree.txt"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>The name of the unblorbed story file is chosen for us by Inbuild, so
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>The name of the unblorbed story file is chosen for us by Inbuild, so
 we have to extract it from the build graph.
 </p>
 
@@ -395,7 +422,7 @@ produce, say, a C program rather than a Glulx or Z-machine story file.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">as_file</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Deeper inside the<span class="extract"><span class="extract-syntax">Build</span></span> subfolder is an (also ephemeral) <span class="extract"><span class="extract-syntax">Index</span></span> subfolder,
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>Deeper inside the<span class="extract"><span class="extract-syntax">Build</span></span> subfolder is an (also ephemeral) <span class="extract"><span class="extract-syntax">Index</span></span> subfolder,
 which holds the mini-website of the Index for a project.
 </p>
 
@@ -403,7 +430,7 @@ which holds the mini-website of the Index for a project.
 details on actions live in the subfolder <span class="extract"><span class="extract-syntax">Details</span></span>: see below.
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PATH_INDEX_CALLBACK</span><span class="plain-syntax"> </span><a href="1-wtc.html#SP13" class="function-link"><span class="function-syntax">Task::index_path</span></a>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PATH_INDEX_CALLBACK</span><span class="plain-syntax"> </span><a href="1-wtc.html#SP14" class="function-link"><span class="function-syntax">Task::index_path</span></a>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::index_path</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -413,18 +440,18 @@ details on actions live in the subfolder <span class="extract"><span class="extr
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>The XML file of headings is written by the supervisor, but only if we ask
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>The XML file of headings is written by the supervisor, but only if we ask
 it to, and this is where:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Task::write_XML_headings_file</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Task::write_XML_headings_file</span></span>:<br/>How To Compile - <a href="1-htc.html#SP2_2">&#167;2.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Task::write_XML_headings_file</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Task::write_XML_headings_file</span></span>:<br/>How To Compile - <a href="1-htc.html#SP2_2">&#167;2.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"there is no current task"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">project</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">stand_alone</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Headings::write_as_XML</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">IndexLocations::xml_headings_filename</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>That's it for the project folder, but other project-related stuff is in
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>That's it for the project folder, but other project-related stuff is in
 the materials folder, which we turn to next.
 </p>
 
@@ -462,7 +489,7 @@ level of materials.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">existing_storyfile</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>Materials is also where cover art lives: it could have either the file
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>Materials is also where cover art lives: it could have either the file
 extension <span class="extract"><span class="extract-syntax">.jpg</span></span> or <span class="extract"><span class="extract-syntax">.png</span></span>, and we generate both sets of filenames, even
 though at most one will actually work. This is also where we generate the EPS
 file of the map, if so requested; a bit anomalously, it's the only file in
@@ -480,7 +507,7 @@ Materials but outside Release which we write to.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Filenames::in</span><span class="plain-syntax">(</span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">materials</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Inform Map.eps"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>This is also where the originals (not the released copies) of the Figures
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>This is also where the originals (not the released copies) of the Figures
 and Sounds, if any, live: in their own subfolders, or "departments".
 </p>
 
@@ -500,7 +527,7 @@ and Sounds, if any, live: in their own subfolders, or "departments".
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">I</span><span class="string-syntax">"Data"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>On a release run, Inblorb will populate the Release subfolder of Materials;
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>On a release run, Inblorb will populate the Release subfolder of Materials;
 figures and sounds will be copied into the relevant subfolders. The principle
 is that everything in Release can always be thrown away without loss, because
 it can all be generated again.
@@ -512,16 +539,16 @@ it can all be generated again.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Pathnames::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">materials</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Release"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 <span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::released_figures_path</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Pathnames::down</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP18" class="function-link"><span class="function-syntax">Task::release_path</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">I</span><span class="string-syntax">"Figures"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Pathnames::down</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP19" class="function-link"><span class="function-syntax">Task::release_path</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">I</span><span class="string-syntax">"Figures"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 <span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::released_sounds_path</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Pathnames::down</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP18" class="function-link"><span class="function-syntax">Task::release_path</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">I</span><span class="string-syntax">"Sounds"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Pathnames::down</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP19" class="function-link"><span class="function-syntax">Task::release_path</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">I</span><span class="string-syntax">"Sounds"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 <span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Task::released_interpreter_path</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Pathnames::down</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP18" class="function-link"><span class="function-syntax">Task::release_path</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">I</span><span class="string-syntax">"interpreter"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Pathnames::down</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP19" class="function-link"><span class="function-syntax">Task::release_path</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">I</span><span class="string-syntax">"interpreter"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>EPS-format files are vector art, rather than raster art, and are produced
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>EPS-format files are vector art, rather than raster art, and are produced
 with the intention that authors can tidy them up afterwards using programs
 like Adobe Illustrator. By default they aren't produced, so that the following
 flag stays <span class="extract"><span class="extract-syntax">FALSE</span></span>:
@@ -547,12 +574,12 @@ flag stays <span class="extract"><span class="extract-syntax">FALSE</span></span
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">do_not_generate_problems</span><span class="plain-syntax">?</span><span class="identifier-syntax">FALSE:TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>And so, finally, the following triggers the indexing process.
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>And so, finally, the following triggers the indexing process.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">inform7_index_requirements</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Task::specify_index_requirements</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Task::specify_index_requirements</span></span>:<br/>How To Compile - <a href="1-htc.html#SP2_15">&#167;2.15</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Task::specify_index_requirements</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">Task::specify_index_requirements</span></span>:<br/>How To Compile - <a href="1-htc.html#SP2_15">&#167;2.15</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inform7_index_requirements</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">do_not_generate_index</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">inform7_index_requirements</span><span class="plain-syntax"> |= </span><span class="identifier-syntax">INDEX_REQUIRED_BIT</span><span class="plain-syntax">;</span>

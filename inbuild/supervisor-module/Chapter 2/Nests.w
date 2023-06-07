@@ -12,6 +12,7 @@ typedef struct inbuild_nest {
 	struct pathname *location;
 	int read_only; /* files cannot be written into this nest */
 	int tag_value; /* used to indicate whether internal, external, and such */
+	int deprecated; /* issue warnings if resources from here are actually used */
 	CLASS_DEFINITION
 } inbuild_nest;
 
@@ -21,6 +22,7 @@ inbuild_nest *Nests::new(pathname *P) {
 	N->location = P;
 	N->read_only = FALSE;
 	N->tag_value = -1;
+	N->deprecated = FALSE;
 	return N;
 }
 
@@ -59,7 +61,10 @@ text_stream *Nests::tag_name(int t) {
 	return I"<unknown nest tag>";
 }
 
-@ =
+@ A nest is read-only if nothing in it should be updated or added to. You
+can't install to a read-only nest.
+
+=
 void Nests::protect(inbuild_nest *N) {
 	N->read_only = TRUE;
 }
@@ -67,6 +72,18 @@ void Nests::protect(inbuild_nest *N) {
 int Nests::is_protected(inbuild_nest *N) {
 	if (N == NULL) return FALSE;
 	return N->read_only;
+}
+
+@ A nest is deprecated if its resources can be used, but ideally shouldn't be.
+
+=
+void Nests::deprecate(inbuild_nest *N) {
+	N->deprecated = TRUE;
+}
+
+int Nests::is_deprecated(inbuild_nest *N) {
+	if (N == NULL) return FALSE;
+	return N->deprecated;
 }
 
 @ =

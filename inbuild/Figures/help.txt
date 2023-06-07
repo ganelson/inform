@@ -48,6 +48,7 @@ for translating Inform source text to Inter:
   -source X                    use file X as the Inform source text
 
 for locating resources in the file system:
+  -deprecated-external X       same as -external X, but issues warnings if the nest is actually used
   -external X                  use X as the user's home for installed material such as extensions
   -internal X                  use X as the location of built-in material such as the Standard Rules
   -nest X                      add the nest at pathname X to the search list

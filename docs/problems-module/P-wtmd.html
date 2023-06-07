@@ -160,9 +160,9 @@ For example:
 
 <ul class="items"><li>(a) Establish what material should go into the placeholders <span class="extract"><span class="extract-syntax">%1</span></span> and <span class="extract"><span class="extract-syntax">%2</span></span>,
 </li><li>(b) Call <a href="2-pl3.html#SP10" class="internal">StandardProblems::handmade_problem</a> to begin work,
-</li><li>(c) Call <a href="2-pl2.html#SP12" class="internal">Problems::issue_problem_segment</a> a number of times &mdash; though often
+</li><li>(c) Call <a href="2-pl2.html#SP13" class="internal">Problems::issue_problem_segment</a> a number of times &mdash; though often
 just once &mdash; to put some text into the problem, and
-</li><li>(d) Call <a href="2-pl2.html#SP9" class="internal">Problems::issue_problem_end</a> to signal that we are done.
+</li><li>(d) Call <a href="2-pl2.html#SP10" class="internal">Problems::issue_problem_end</a> to signal that we are done.
 </li></ul>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>As this demonstrates, problem messages are expanded from prototypes using
 a <span class="extract"><span class="extract-syntax">printf</span></span>-like formatting system. Unlike <span class="extract"><span class="extract-syntax">printf</span></span>, though, where <span class="extract"><span class="extract-syntax">%s</span></span> means
@@ -185,7 +185,7 @@ generated,
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">%A</span></span> means "both long and short", which is the situation at the start,
 </li></ul>
 <p class="commentary">Note that the form is reset to <span class="extract"><span class="extract-syntax">%A</span></span> when a new problem message begins, but not
-in between calls to <a href="2-pl2.html#SP12" class="internal">Problems::issue_problem_segment</a>: i.e., if one segment
+in between calls to <a href="2-pl2.html#SP13" class="internal">Problems::issue_problem_segment</a>: i.e., if one segment
 leaves things in <span class="extract"><span class="extract-syntax">%L</span></span>, the next segment, if there is one, resumes that way.
 </p>
 
@@ -222,7 +222,7 @@ placeholders with content &mdash; see <a href="2-pl2.html#SP4" class="internal">
 <p class="commentary">The mechanism for determining whether an explanation has been given before is
 <a href="2-pl2.html#SP8" class="internal">Problems::explained_before</a>. The obvious thing would be to go by the sigils
 of previously issued messages, but it actually uses the textual token supplied
-on the call to <a href="2-pl2.html#SP9" class="internal">Problems::issue_problem_begin</a>, which allows for some
+on the call to <a href="2-pl2.html#SP10" class="internal">Problems::issue_problem_begin</a>, which allows for some
 variations &mdash; Level 3 functions are able to use this to ensure that particular
 kinds of message are always, or are never, explained.
 </p>
@@ -240,8 +240,8 @@ typically used for filing-system disasters or failed assertions (so-called
 <p class="commentary">Facilities for these are very limited:
 </p>
 
-<ul class="items"><li>&#9679; <a href="2-pl2.html#SP14" class="internal">Problems::fatal</a> for a simple message with fixed wording.
-</li><li>&#9679; <a href="2-pl2.html#SP14" class="internal">Problems::fatal_on_file</a> for a message relating to a file.
+<ul class="items"><li>&#9679; <a href="2-pl2.html#SP15" class="internal">Problems::fatal</a> for a simple message with fixed wording.
+</li><li>&#9679; <a href="2-pl2.html#SP15" class="internal">Problems::fatal_on_file</a> for a message relating to a file.
 </li></ul>
 <p class="commentary">These routines have to be written with care because a file-system disaster
 might mean that the problems file itself cannot be written to.

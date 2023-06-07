@@ -185,7 +185,7 @@ run would also be set. This would become whose genre is <span class="extract"><s
 These are not explicitly named on the command line: instead, they are found by
 searching through the nests. <a href="index.html" class="internal">supervisor</a> does this by creating an
 <a href="2-rqr.html#SP1" class="internal">inbuild_requirement</a> object to specify what it wants, and then calling its
-search engine <a href="2-nst.html#SP8" class="internal">Nests::search_for</a>. This builds a list of <a href="2-nst.html#SP6" class="internal">inbuild_search_result</a>
+search engine <a href="2-nst.html#SP9" class="internal">Nests::search_for</a>. This builds a list of <a href="2-nst.html#SP7" class="internal">inbuild_search_result</a>
 objects, each pointing to a new copy which matches the requirement given.
 </p>
 
@@ -202,9 +202,9 @@ which matches any extension by Emily Short.
 <a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Although such searches can be used with vague requirements to scan for,
 say, everything with a given genre, they can also be used to seek specific
-pieces of software which we will need. <a href="2-nst.html#SP9" class="internal">Nests::search_for_best</a> is a version
+pieces of software which we will need. <a href="2-nst.html#SP10" class="internal">Nests::search_for_best</a> is a version
 of the search engine which returns a single result (or none): the best one.
-Best is defined by <a href="2-nst.html#SP10" class="internal">Nests::better_result</a> and makes careful use of both
+Best is defined by <a href="2-nst.html#SP11" class="internal">Nests::better_result</a> and makes careful use of both
 semantic versioning and the user's intentions to ensure a happy outcome.
 For example, if an Inform project says
 </p>
@@ -213,7 +213,7 @@ For example, if an Inform project says
     <p>Include Upturned Faces by Raphael.</p>
 </blockquote>
 
-<p class="commentary">then <a href="2-nst.html#SP9" class="internal">Nests::search_for_best</a> will be used to seek which copy of this
+<p class="commentary">then <a href="2-nst.html#SP10" class="internal">Nests::search_for_best</a> will be used to seek which copy of this
 extension to use.
 </p>
 

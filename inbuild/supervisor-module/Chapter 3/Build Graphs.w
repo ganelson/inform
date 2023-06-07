@@ -218,18 +218,9 @@ void Graphs::show_needs_r(OUTPUT_STREAM, build_vertex *V,
 		inbuild_copy *C = V->as_copy;
 		if (C->last_scanned != scan_count) {
 			C->last_scanned = scan_count;
-/*			if (paths) {
-				if (C->location_if_path) WRITE("%p", C->location_if_path);
-				else if (C->location_if_file) WRITE("%f", C->location_if_file);
-				else WRITE("?unlocated");
-				WRITE(" (%S)", C->edition->work->genre->genre_name);
-			} else {
-*/
-				for (int i=0; i<depth; i++) WRITE("  ");
-				WRITE("%S: ", C->edition->work->genre->genre_name);
-				Copies::write_copy(OUT, C);
-/*			}
-*/
+			for (int i=0; i<depth; i++) WRITE("  ");
+			WRITE("%S: ", C->edition->work->genre->genre_name);
+			Copies::write_copy(OUT, C);
 			WRITE("\n");
 			if (paths) @<Add needs-locations@>;
 		}
