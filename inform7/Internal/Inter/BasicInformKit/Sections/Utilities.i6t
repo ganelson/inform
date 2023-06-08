@@ -5,7 +5,7 @@ Miscellaneous utility routines for some fundamental I6 needs.
 @h Miscellany.
 
 =
-#ifdef TARGET_ZCODE;
+#Iftrue WORDSIZE == 2;
 Constant BLOCKV_STACK_SIZE = 224;
 #ifnot;
 Constant BLOCKV_STACK_SIZE = BasicInformKit`STACK_FRAME_CAPACITY_CFGV / 4;

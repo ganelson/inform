@@ -84,6 +84,15 @@ This is equivalent to C's memcpy function, in good ways and bad.
     @mcopy size from_addr to_addr;
 ];
 
+@ And this can be used to copy exactly |words| words from one word array to
+another:
+
+=
+[ VM_CopyWords words from to  i;
+	for (i=0: i<words: i++)
+		to-->i = from-->i;
+];
+
 @h Audiovisual Resources.
 The Z-machine only barely supports figures and sound effects, so Glulx is
 the preferred VM to choose if they are wanted. Properly speaking, it's not

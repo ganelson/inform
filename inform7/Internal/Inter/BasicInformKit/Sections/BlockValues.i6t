@@ -268,7 +268,7 @@ read it from the given long block directly. |BlkValueWrite| is similar.
 			long_block = long_block + header_size_in_bytes + seek_byte_position;
 			switch(entry_size_in_bytes) {
 				1: return long_block->0;
-				2:	#Iftrue (WORDSIZE == 2); return long_block-->0;
+				2:	#Iftrue WORDSIZE == 2; return long_block-->0;
 					#ifnot; return (long_block->0)*256 + (long_block->1);
 					#endif;
 				4: return long_block-->0;
@@ -304,7 +304,7 @@ read it from the given long block directly. |BlkValueWrite| is similar.
 			long_block = long_block + header_size_in_bytes + seek_byte_position;
 			switch(entry_size_in_bytes) {
 				1: long_block->0 = val;
-				2:	#Iftrue (WORDSIZE == 2); long_block-->0 = val;
+				2:	#Iftrue WORDSIZE == 2; long_block-->0 = val;
 					#ifnot; long_block->0 = (val/256)%256; long_block->1 = val%256;
 					#endif;
 				4: long_block-->0 = val;

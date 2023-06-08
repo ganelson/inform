@@ -616,7 +616,7 @@ this to be typed at the keyboard, then returns the choice made.
 				switch (base) {
 					2:  if (digit_count == 17) jump Retry;
 					10:
-						#Iftrue (WORDSIZE == 2);
+						#Iftrue WORDSIZE == 2;
 						if (digit_count == 6) jump Retry;
 						if (digit_count == 5) {
 							if (n > 3276) jump Retry;

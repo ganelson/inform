@@ -101,6 +101,7 @@ primitive !message3 val val val val val -> val
 primitive !externalcall val val -> val
 package main _plain
 	package architectural _linkage
+		constant CHARSIZE = 1
 		constant WORDSIZE = 2
 		constant NULL = 0xffff
 		constant WORD_HIGHBIT = 0x8000

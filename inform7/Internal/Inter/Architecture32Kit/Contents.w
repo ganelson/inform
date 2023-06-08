@@ -9,6 +9,7 @@ Sections
 	Capabilities
 	Glk
 	Startup
+	Mathematics
 	Character Set
 	Input Output
 	File Input Output 

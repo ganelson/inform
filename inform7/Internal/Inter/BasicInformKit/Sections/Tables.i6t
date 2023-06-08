@@ -675,7 +675,7 @@ will perform a loop of valid row numbers in order of column |C|.
 	f = ((tab-->col)-->1);
 	if (f & TB_COLUMN_ALLOCATED) blk = true;
 	signed_arithmetic = f & TB_COLUMN_SIGNED;
-	#Iftrue (WORDSIZE == 2);
+	#Iftrue WORDSIZE == 2;
 	if (row == 0) {
 		if (signed_arithmetic) {
 		    if (dir == 1) val = $8000; else val = $7fff;

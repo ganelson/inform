@@ -99,6 +99,15 @@ This is equivalent to C's memcpy function, in good ways and bad.
 	for (n = size: ((n--) % WORDSIZE ~= 0): ) to_addr->n = from_addr->n;
 ];
 
+@ And this can be used to copy exactly |words| words from one word array to
+another:
+
+=
+[ VM_CopyWords words from to  bytes;
+	bytes = words * WORDSIZE;
+	@copy_table from to bytes;
+];
+
 @h Audiovisual Resources.
 The Z-machine only barely supports figures and sound effects, and only in
 version 6 of the Z-machine, which Inform 7 no longer supports. Sound effects

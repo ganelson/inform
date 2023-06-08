@@ -51,7 +51,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">Architecture32Kit</a></li><li><b>Capabilities Template</b></li></ul></div>
 <p class="purpose">Miscellaneous capabilities of the 16-bit architecture.</p>
 
-<ul class="toc"><li><a href="S-cpb.html#SP1">&#167;1. Summary</a></li><li><a href="S-cpb.html#SP2">&#167;2. Header layout</a></li><li><a href="S-cpb.html#SP3">&#167;3. Release Number</a></li><li><a href="S-cpb.html#SP4">&#167;4. Random Number Generator</a></li><li><a href="S-cpb.html#SP5">&#167;5. Memory Allocation</a></li><li><a href="S-cpb.html#SP6">&#167;6. Memcpy</a></li><li><a href="S-cpb.html#SP7">&#167;7. Audiovisual Resources</a></li><li><a href="S-cpb.html#SP8">&#167;8. Typography</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-cpb.html#SP1">&#167;1. Summary</a></li><li><a href="S-cpb.html#SP2">&#167;2. Header layout</a></li><li><a href="S-cpb.html#SP3">&#167;3. Release Number</a></li><li><a href="S-cpb.html#SP4">&#167;4. Random Number Generator</a></li><li><a href="S-cpb.html#SP5">&#167;5. Memory Allocation</a></li><li><a href="S-cpb.html#SP6">&#167;6. Memcpy</a></li><li><a href="S-cpb.html#SP8">&#167;8. Audiovisual Resources</a></li><li><a href="S-cpb.html#SP9">&#167;9. Typography</a></li><li><a href="S-cpb.html#SP10">&#167;10. Undo</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Summary. </b>The 32-bit architecture is currently the default targeted by Inform, and is
 used both for programs compiled via Inform 6 to the Glulx virtual machine, and
@@ -136,7 +136,17 @@ is viable on recent revisions of Glulx.
 <span class="plain-syntax">    @</span><span class="identifier-syntax">mcopy</span><span class="plain-syntax"> </span><span class="identifier-syntax">size</span><span class="plain-syntax"> </span><span class="identifier-syntax">from_addr</span><span class="plain-syntax"> </span><span class="identifier-syntax">to_addr</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Audiovisual Resources. </b>The Z-machine only barely supports figures and sound effects, so Glulx is
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>And this can be used to copy exactly <span class="extract"><span class="extract-syntax">words</span></span> words from one word array to
+another:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_CopyWords</span><span class="plain-syntax"> </span><span class="identifier-syntax">words</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="reserved-syntax">to</span><span class="plain-syntax">  </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=0: </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">words</span><span class="plain-syntax">: </span><span class="identifier-syntax">i</span><span class="plain-syntax">++)</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">to</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">from</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Audiovisual Resources. </b>The Z-machine only barely supports figures and sound effects, so Glulx is
 the preferred VM to choose if they are wanted. Properly speaking, it's not
 Glulx which supports these, but its I/O layer Glk, and implementations
 of Glk are free to support them or not as they please: "cheapglk", a
@@ -161,7 +171,7 @@ investigate the "gestalt" to find out.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Typography. </b>Glk makes an attempt to present typographic styles as being a matter of
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Typography. </b>Glk makes an attempt to present typographic styles as being a matter of
 semantic markup rather than controlling the actual appearance of text:
 the idea is that the story file should want to print something in a
 heading kind of way, and then the interpreter &mdash; guided by the player's
@@ -183,8 +193,23 @@ not the place to discuss whether that was a wise decision for Glk to take.)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Undo. </b>These are really emulations of the Z-machine's conventions on UNDO.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_Undo</span><span class="plain-syntax"> </span><span class="identifier-syntax">result_code</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    @</span><span class="identifier-syntax">restoreundo</span><span class="plain-syntax"> </span><span class="identifier-syntax">result_code</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (~~</span><span class="identifier-syntax">result_code</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_Save_Undo</span><span class="plain-syntax"> </span><span class="identifier-syntax">result_code</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    @</span><span class="identifier-syntax">saveundo</span><span class="plain-syntax"> </span><span class="identifier-syntax">result_code</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">result_code</span><span class="plain-syntax"> == -1) { </span><span class="identifier-syntax">GGRecoverObjects</span><span class="plain-syntax">(); </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">; }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (~~</span><span class="identifier-syntax">result_code</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">];</span>
+</pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrent">cpb</li><li class="progresssection"><a href="S-glk.html">glk</a></li><li class="progresssection"><a href="S-str.html">str</a></li><li class="progresssection"><a href="S-cs.html">cs</a></li><li class="progresssection"><a href="S-io.html">io</a></li><li class="progresssection"><a href="S-fio.html">fio</a></li><li class="progresssection"><a href="S-vnr.html">vnr</a></li><li class="progressnext"><a href="S-glk.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrent">cpb</li><li class="progresssection"><a href="S-glk.html">glk</a></li><li class="progresssection"><a href="S-str.html">str</a></li><li class="progresssection"><a href="S-mth.html">mth</a></li><li class="progresssection"><a href="S-cs.html">cs</a></li><li class="progresssection"><a href="S-io.html">io</a></li><li class="progresssection"><a href="S-fio.html">fio</a></li><li class="progresssection"><a href="S-vnr.html">vnr</a></li><li class="progressnext"><a href="S-glk.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

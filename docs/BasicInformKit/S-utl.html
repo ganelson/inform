@@ -70,7 +70,7 @@ MathJax = {
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Miscellany. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_ZCODE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">Iftrue</span><span class="plain-syntax"> </span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">BLOCKV_STACK_SIZE</span><span class="plain-syntax"> = </span><span class="constant-syntax">224</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">ifnot</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">BLOCKV_STACK_SIZE</span><span class="plain-syntax"> = </span><span class="identifier-syntax">BasicInformKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">STACK_FRAME_CAPACITY_CFGV</span><span class="plain-syntax"> / </span><span class="constant-syntax">4</span><span class="plain-syntax">;</span>

@@ -74,7 +74,7 @@ buffer and then altering the first character.
 =
 Constant SHORT_NAME_BUFFER_LEN = 160;
 
-#Ifdef TARGET_ZCODE;
+#Iftrue CHARSIZE == 1;
 ! Allow a generous overrun
 Array StorageForShortName buffer SHORT_NAME_BUFFER_LEN+90;
 #Ifnot;

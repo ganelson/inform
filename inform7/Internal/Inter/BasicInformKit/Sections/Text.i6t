@@ -60,13 +60,11 @@ a single byte, and it does so in ZSCII. That forces our hand when it comes to
 choosing the character set here. For Unicode, use Glulx.
 
 =
-#IFDEF TARGET_ZCODE;
+#Iftrue CHARSIZE == 1;
 Constant TEXT_TY_Storage_Flags = BLK_FLAG_MULTIPLE;
-Constant ZSCII_Tables;
-#IFNOT;
+#Ifnot;
 Constant TEXT_TY_Storage_Flags = BLK_FLAG_MULTIPLE + BLK_FLAG_WORD;
-Constant Large_Unicode_Tables;
-#ENDIF;
+#Endif; ! CHARSIZE
 
 @h KOV Support.
 See the "BlockValues.i6t" segment for the specification of the following
@@ -221,11 +219,11 @@ memory as necessary so that we can always avoid overruns entirely.
 Constant TEXT_TY_BufferSize = BasicInformKit`TEXT_BUFFER_SIZE_CFGV + 3;
 Constant TEXT_TY_NoBuffers = 2;
 
-#ifdef TARGET_ZCODE;
+#Iftrue CHARSIZE == 1;
 Array TEXT_TY_Buffers -> TEXT_TY_BufferSize*TEXT_TY_NoBuffers; ! Where characters are bytes
-#ifnot;
+#Ifnot;
 Array TEXT_TY_Buffers --> (TEXT_TY_BufferSize+2)*TEXT_TY_NoBuffers; ! Where characters are words
-#endif;
+#Endif;
 
 Global RawBufferAddress = TEXT_TY_Buffers;
 Global RawBufferSize = TEXT_TY_BufferSize;

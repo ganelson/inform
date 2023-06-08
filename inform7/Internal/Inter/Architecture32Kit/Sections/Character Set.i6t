@@ -2,6 +2,12 @@ Character Set Template.
 
 Code relating to the Unicode character set.
 
+@ The old Inform 7 template defined the following constant for the benefit,
+presumably, of conditional compilation. It's probably no longer useful.
+
+=
+Constant Large_Unicode_Tables;
+
 @ We must create two arrays:
 
 (i) |CharCasingChart0|, a table indicating lower-case letters with

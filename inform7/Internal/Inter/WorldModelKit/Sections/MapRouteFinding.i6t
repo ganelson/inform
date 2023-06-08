@@ -48,11 +48,11 @@ due to a disagreement between extensions -- "fast" wins.
 =
 [ UseFastRouteFinding;
 	if (WorldModelKit`ROUTE_FINDING_CFGV == 0) {
-		#ifdef TARGET_ZCODE;
+		#Iftrue WORDSIZE == 2;
 		rfalse;
-		#ifnot;
+		#Ifnot;
 		rtrue;
-		#endif;
+		#Endif;
 	}
 	if (WorldModelKit`ROUTE_FINDING_CFGV == 1) rtrue;
 	rfalse;

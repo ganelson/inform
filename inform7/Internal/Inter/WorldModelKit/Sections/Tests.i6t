@@ -380,10 +380,10 @@ TEST runs a short script of commands from the source text.
 =
 #ifdef DEBUG;
 
-#ifdef TARGET_GLULX;
-Constant TEST_STACK_SIZE = 128;
-#ifnot;
+#iftrue WORDSIZE == 2;
 Constant TEST_STACK_SIZE = 48;
+#ifnot;
+Constant TEST_STACK_SIZE = 128;
 #endif;
 
 Array test_stack --> TEST_STACK_SIZE;
@@ -423,19 +423,19 @@ Global test_sp = 0;
 	    test_stack-->2 = test_stack-->2 + 1;
 	    style bold;
 	    while (i < l) {
-	        #ifdef TARGET_ZCODE;
+	        #iftrue (CHARSIZE == 1);
 	    	ch = p->i;
-	        #ifnot; ! TARGET_GLULX
+	        #ifnot;
 	    	ch = p-->i;
 	        #endif;
 		if (ch == '/') break;
 	        if (spaced || (ch ~= ' ')) {
-	            #ifdef TARGET_ZCODE;
+	            #iftrue (CHARSIZE == 1);
 	            if ((p->i == '[') && (p->(i+1) == '/') && (p->(i+2) == ']')) {
 	                ch = '/'; i = i+2;
 	            }
 	            a_buffer->(j+WORDSIZE) = ch;
-	            #ifnot; ! TARGET_GLULX
+	            #ifnot;
 	            if ((p-->i == '[') && (p-->(i+1) == '/') && (p-->(i+2) == ']')) {
 	                ch = '/'; i = i+2;
 	            }
@@ -448,15 +448,15 @@ Global test_sp = 0;
 	    }
 	    style roman;
 	    print "^";
-	    #ifdef TARGET_ZCODE;
+	    #iftrue (CHARSIZE == 1);
 	    a_buffer->1 = j;
-	    #ifnot; ! TARGET_GLULX
+	    #ifnot;
 	    a_buffer-->0 = j;
 	    #endif;
 	    VM_Tokenise(a_buffer, a_table);
-	    #ifdef TARGET_ZCODE;
+	    #iftrue (CHARSIZE == 1);
 	    if (p->i == '/') i++;
-	    #ifnot; ! TARGET_GLULX
+	    #ifnot;
 	    if (p-->i == '/') i++;
 	    #endif;
 	    if (i >= l) {

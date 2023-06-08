@@ -171,11 +171,11 @@ Constant LanguageContractionForms = 2;     ! English has two:
 
 [ LanguageContraction text
     ch;
-    #Ifdef TARGET_ZCODE;
+    #Iftrue CHARSIZE == 1;
     ch = text->0;
-    #Ifnot; ! TARGET_GLULX
+    #Ifnot;
     ch = text-->0;
-    #Endif; ! TARGET_
+    #Endif; ! CHARSIZE
     if (ch == 'a' or 'e' or 'i' or 'o' or 'u'
            or 'A' or 'E' or 'I' or 'O' or 'U') return 1;
     return 0;
