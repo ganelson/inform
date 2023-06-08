@@ -22,23 +22,6 @@ Verb meta 'glklist'
     *                                           -> GlkList;
 #Endif;
 
-@h Undo.
-These are really emulations of the Z-machine's conventions on UNDO: Glulx's
-undo opcodes used different result codes while providing essentially the same
-functionality, for reasons which are opaque, but no trouble is caused thereby.
-
-=
-[ VM_Undo result_code;
-	@restoreundo result_code;
-	return (~~result_code);
-];
-
-[ VM_Save_Undo result_code;
-    @saveundo result_code;
-    if (result_code == -1) { GGRecoverObjects(); return 2; }
-    return (~~result_code);
-];
-
 @h Quit The Game Rule.
 
 =

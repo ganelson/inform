@@ -130,3 +130,18 @@ not the place to discuss whether that was a wise decision for Glk to take.)
 		INPUT_VMSTY:      glk_set_style(style_Input);
 	}
 ];
+
+@h Undo.
+These are really emulations of the Z-machine's conventions on UNDO.
+
+=
+[ VM_Undo result_code;
+	@restoreundo result_code;
+	return (~~result_code);
+];
+
+[ VM_Save_Undo result_code;
+    @saveundo result_code;
+    if (result_code == -1) { GGRecoverObjects(); return 2; }
+    return (~~result_code);
+];
