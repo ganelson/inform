@@ -130,6 +130,29 @@ Constant INDEFART_PK  = $102;
 Constant LIGHTED_PK   = $103;
 Constant UNLIGHTED_PK = $104;
 
+@h Auxiliary file structure.
+The I7 kind of value "auxiliary-file" is an |-->| array, holding a memory
+structure containing information about external files. The following
+constants specify memory offsets and values. Note the safety value stored
+as the first word of the structure: this helps protect the routines below
+from accidents.
+
+=
+Constant AUXF_MAGIC = 0; ! First word holds a safety constant
+Constant AUXF_MAGIC_VALUE = 16339; ! Should be first word of any valid file structure
+Constant AUXF_STATUS = 1; ! One of the following:
+	Constant AUXF_STATUS_IS_CLOSED = 1; ! Currently closed, or perhaps doesn't exist
+	Constant AUXF_STATUS_IS_OPEN_FOR_READ = 2;
+	Constant AUXF_STATUS_IS_OPEN_FOR_WRITE = 3;
+	Constant AUXF_STATUS_IS_OPEN_FOR_APPEND = 4;
+	Constant AUXF_STATUS_IS_ERRONEOUS = 5;
+Constant AUXF_BINARY = 2; ! False for text files (I7 default), true for binary
+Constant AUXF_STREAM = 3; ! Stream for an open file (meaningless otherwise)
+Constant AUXF_FILENAME = 4; ! Packed address of constant string
+Constant AUXF_IFID_OF_OWNER = 5; ! UUID_ARRAY if owned by this project, or
+	! string array of IFID of owner, or NULL to leave open
+Constant AUXF_RESOURCE_ID = 6; ! Only for internal files, identified by Blorb resource
+
 @h Run-Time Problem Numbers.
 The enumeration sequence here must correspond to that in the file of RTP
 texts, which is used to generate the HTML pages displayed by the Inform

@@ -65,7 +65,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">BasicInformKit</a></li><li><b>Definitions Template</b></li></ul></div>
 <p class="purpose">Miscellaneous constant definitions, usually providing symbolic names for otherwise inscrutable numbers, which are used throughout the template layer.</p>
 
-<ul class="toc"><li><a href="S-dfn.html#SP1">&#167;1. Identification</a></li><li><a href="S-dfn.html#SP2">&#167;2. Nothing</a></li><li><a href="S-dfn.html#SP3">&#167;3. Powers of Two</a></li><li><a href="S-dfn.html#SP4">&#167;4. Text Styles</a></li><li><a href="S-dfn.html#SP5">&#167;5. Colour Numbers</a></li><li><a href="S-dfn.html#SP6">&#167;6. Window Numbers</a></li><li><a href="S-dfn.html#SP7">&#167;7. Paragraphing Flags</a></li><li><a href="S-dfn.html#SP8">&#167;8. Descriptors in the Language of Play</a></li><li><a href="S-dfn.html#SP9">&#167;9. Run-Time Problem Numbers</a></li><li><a href="S-dfn.html#SP10">&#167;10. Scope Searching Reasons</a></li><li><a href="S-dfn.html#SP11">&#167;11. Token Types</a></li><li><a href="S-dfn.html#SP12">&#167;12. GPR Return Values</a></li><li><a href="S-dfn.html#SP13">&#167;13. List Styles</a></li><li><a href="S-dfn.html#SP14">&#167;14. Lengths Of Time</a></li><li><a href="S-dfn.html#SP15">&#167;15. Empty Text</a></li><li><a href="S-dfn.html#SP16">&#167;16. Empty Table</a></li><li><a href="S-dfn.html#SP17">&#167;17. Empty Set</a></li><li><a href="S-dfn.html#SP18">&#167;18. Template Attributes</a></li><li><a href="S-dfn.html#SP19">&#167;19. Template Properties</a></li><li><a href="S-dfn.html#SP20">&#167;20. Formal Parameters</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-dfn.html#SP1">&#167;1. Identification</a></li><li><a href="S-dfn.html#SP2">&#167;2. Nothing</a></li><li><a href="S-dfn.html#SP3">&#167;3. Powers of Two</a></li><li><a href="S-dfn.html#SP4">&#167;4. Text Styles</a></li><li><a href="S-dfn.html#SP5">&#167;5. Colour Numbers</a></li><li><a href="S-dfn.html#SP6">&#167;6. Window Numbers</a></li><li><a href="S-dfn.html#SP7">&#167;7. Paragraphing Flags</a></li><li><a href="S-dfn.html#SP8">&#167;8. Descriptors in the Language of Play</a></li><li><a href="S-dfn.html#SP9">&#167;9. Auxiliary file structure</a></li><li><a href="S-dfn.html#SP10">&#167;10. Run-Time Problem Numbers</a></li><li><a href="S-dfn.html#SP11">&#167;11. Scope Searching Reasons</a></li><li><a href="S-dfn.html#SP12">&#167;12. Token Types</a></li><li><a href="S-dfn.html#SP13">&#167;13. GPR Return Values</a></li><li><a href="S-dfn.html#SP14">&#167;14. List Styles</a></li><li><a href="S-dfn.html#SP15">&#167;15. Lengths Of Time</a></li><li><a href="S-dfn.html#SP16">&#167;16. Empty Text</a></li><li><a href="S-dfn.html#SP17">&#167;17. Empty Table</a></li><li><a href="S-dfn.html#SP18">&#167;18. Empty Set</a></li><li><a href="S-dfn.html#SP19">&#167;19. Template Attributes</a></li><li><a href="S-dfn.html#SP20">&#167;20. Template Properties</a></li><li><a href="S-dfn.html#SP21">&#167;21. Formal Parameters</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Identification. </b></p>
 
@@ -193,7 +193,30 @@ in the definition of the language of play.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">LIGHTED_PK</span><span class="plain-syntax">   = </span><span class="constant-syntax">$103</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">UNLIGHTED_PK</span><span class="plain-syntax"> = </span><span class="constant-syntax">$104</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Run-Time Problem Numbers. </b>The enumeration sequence here must correspond to that in the file of RTP
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Auxiliary file structure. </b>The I7 kind of value "auxiliary-file" is an <span class="extract"><span class="extract-syntax">--&gt;</span></span> array, holding a memory
+structure containing information about external files. The following
+constants specify memory offsets and values. Note the safety value stored
+as the first word of the structure: this helps protect the routines below
+from accidents.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">AUXF_MAGIC</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax">First word holds a safety constant</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">AUXF_MAGIC_VALUE</span><span class="plain-syntax"> = </span><span class="constant-syntax">16339</span><span class="plain-syntax">; </span><span class="comment-syntax">Should be first word of any valid file structure</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">AUXF_STATUS</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="comment-syntax">One of the following:</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">AUXF_STATUS_IS_CLOSED</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="comment-syntax">Currently closed, or perhaps doesn't exist</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">AUXF_STATUS_IS_OPEN_FOR_READ</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">AUXF_STATUS_IS_OPEN_FOR_WRITE</span><span class="plain-syntax"> = </span><span class="constant-syntax">3</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">AUXF_STATUS_IS_OPEN_FOR_APPEND</span><span class="plain-syntax"> = </span><span class="constant-syntax">4</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">AUXF_STATUS_IS_ERRONEOUS</span><span class="plain-syntax"> = </span><span class="constant-syntax">5</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">AUXF_BINARY</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">; </span><span class="comment-syntax">False for text files (I7 default), true for binary</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">AUXF_STREAM</span><span class="plain-syntax"> = </span><span class="constant-syntax">3</span><span class="plain-syntax">; </span><span class="comment-syntax">Stream for an open file (meaningless otherwise)</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">AUXF_FILENAME</span><span class="plain-syntax"> = </span><span class="constant-syntax">4</span><span class="plain-syntax">; </span><span class="comment-syntax">Packed address of constant string</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">AUXF_IFID_OF_OWNER</span><span class="plain-syntax"> = </span><span class="constant-syntax">5</span><span class="plain-syntax">; </span><span class="comment-syntax">UUID_ARRAY if owned by this project, or</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">string array of IFID of owner, or NULL to leave open</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">AUXF_RESOURCE_ID</span><span class="plain-syntax"> = </span><span class="constant-syntax">6</span><span class="plain-syntax">; </span><span class="comment-syntax">Only for internal files, identified by Blorb resource</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Run-Time Problem Numbers. </b>The enumeration sequence here must correspond to that in the file of RTP
 texts, which is used to generate the HTML pages displayed by the Inform
 user interface when a run-time problem has occurred. (For instance, the
 file of RTP texts includes the heading "P17 - Can't divide by zero",
@@ -277,7 +300,7 @@ to I7.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RTP_NOTASUPPORTER</span><span class="plain-syntax">           = </span><span class="constant-syntax">72</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RTP_BADCONTAINMENT</span><span class="plain-syntax">          = </span><span class="constant-syntax">73</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Scope Searching Reasons. </b>The parser makes use of a mechanism for searching through the objects currently
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Scope Searching Reasons. </b>The parser makes use of a mechanism for searching through the objects currently
 "in scope", which basically means visible to the actor who would perform the
 action envisaged by the command being parsed. It is sometimes useful to
 behave differently depending on why this scope searching is being done, so
@@ -296,7 +319,7 @@ in numbering.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">LOOPOVERSCOPE_REASON</span><span class="plain-syntax"> = </span><span class="constant-syntax">5</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">TESTSCOPE_REASON</span><span class="plain-syntax">     = </span><span class="constant-syntax">6</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Token Types. </b>Tokens are the indecomposable pieces of a grammar line making up a possible
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Token Types. </b>Tokens are the indecomposable pieces of a grammar line making up a possible
 reading of a command; some are literal words, others stand for "any named
 object in scope", and so on. The following codes identify the possibilities.
 The <span class="extract"><span class="extract-syntax">*_TOKEN</span></span> constants must not be altered without modifying the I6 compiler
@@ -324,7 +347,7 @@ to match (so, basically, they must not be altered at all).
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">TOPIC_TOKEN</span><span class="plain-syntax">        = </span><span class="constant-syntax">9</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ENDIT_TOKEN</span><span class="plain-syntax">        = </span><span class="constant-syntax">15</span><span class="plain-syntax">;   </span><span class="comment-syntax">Value used to mean "end of grammar line"</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. GPR Return Values. </b>GRP stands for "General Parsing Routine", an I6 routine which acts as a
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. GPR Return Values. </b>GRP stands for "General Parsing Routine", an I6 routine which acts as a
 grammar token: again, see the {\it Inform Designer's Manual}, 4th edition,
 for details.
 </p>
@@ -352,7 +375,7 @@ here regardless.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GPR_MULTIINSIDE</span><span class="plain-syntax">    = </span><span class="identifier-syntax">GPR_NOUN</span><span class="plain-syntax"> + </span><span class="constant-syntax">5</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GPR_CREATURE</span><span class="plain-syntax">       = </span><span class="identifier-syntax">GPR_NOUN</span><span class="plain-syntax"> + </span><span class="constant-syntax">6</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. List Styles. </b>These constants make up bitmaps of the options in use when listing objects.
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. List Styles. </b>These constants make up bitmaps of the options in use when listing objects.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -375,7 +398,7 @@ here regardless.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">EXTRAINDENT_BIT</span><span class="plain-syntax">    = </span><span class="constant-syntax">$$0010000000000000</span><span class="plain-syntax">; </span><span class="comment-syntax">New in I7: extra indentation of 1 level</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CFIRSTART_BIT</span><span class="plain-syntax">      = </span><span class="constant-syntax">$$0100000000000000</span><span class="plain-syntax">; </span><span class="comment-syntax">Capitalise first article in list</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Lengths Of Time. </b>Inform measures time in minutes.
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Lengths Of Time. </b>Inform measures time in minutes.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -385,7 +408,7 @@ here regardless.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">TWELVE_HOURS</span><span class="plain-syntax"> = </span><span class="constant-syntax">720</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">TWENTY_FOUR_HOURS</span><span class="plain-syntax"> = </span><span class="constant-syntax">1440</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Empty Text. </b>The I6 compiler does not optimise string compilation: if it needs to compile
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Empty Text. </b>The I6 compiler does not optimise string compilation: if it needs to compile
 the (packed, read-only) string <span class="extract"><span class="extract-syntax">"exemplum"</span></span> twice, it will compile two copies.
 This is slightly wasteful on memory, though in practice the loss is not
 enough for us to care. But we do want to avoid this in I7 because, to make
@@ -401,21 +424,21 @@ and properties: we give it a name as follows.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">EMPTY_TEXT_PACKED</span><span class="plain-syntax"> </span><span class="string-syntax">""</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">EMPTY_TEXT_VALUE</span><span class="plain-syntax"> --&gt; </span><span class="identifier-syntax">CONSTANT_PACKED_TEXT_STORAGE</span><span class="plain-syntax"> </span><span class="identifier-syntax">EMPTY_TEXT_PACKED</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Empty Table. </b>Similarly: the default value for the "table" kind of value, a Table
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Empty Table. </b>Similarly: the default value for the "table" kind of value, a Table
 containing no rows and no columns.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">TheEmptyTable</span><span class="plain-syntax"> --&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Empty Set. </b>The falsity proposition describes the empty set of objects, and is the
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Empty Set. </b>The falsity proposition describes the empty set of objects, and is the
 zero value for the "description" kind of value.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">Prop_Falsity</span><span class="plain-syntax"> </span><span class="identifier-syntax">reason</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Template Attributes. </b>An I6 attribute is equivalent to an I7 "either/or property", though the
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Template Attributes. </b>An I6 attribute is equivalent to an I7 "either/or property", though the
 latter are not always translated into I6 attributes because the Z-machine
 has only a limited number of attributes to use. Here, we define attributes
 used by the template.
@@ -478,7 +501,7 @@ are not visible to I7 source text as storage.
 <span class="identifier-syntax">Attribute</span><span class="plain-syntax"> </span><span class="identifier-syntax">workflag2</span><span class="plain-syntax">; </span><span class="comment-syntax">new in I7 and also temporary workspace</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">list_filter_permits</span><span class="plain-syntax"> = </span><span class="identifier-syntax">privately_named</span><span class="plain-syntax">; </span><span class="comment-syntax">another I7 listwriter convenience</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Template Properties. </b>As remarked above, these more often correspond to value properties in I7.
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Template Properties. </b>As remarked above, these more often correspond to value properties in I7.
 To an experienced I6 user, though, the death toll of abolished I6
 properties in I7 is breathtaking: in alphabetical order, <span class="extract"><span class="extract-syntax">after</span></span>,
 <span class="extract"><span class="extract-syntax">cant_go</span></span>, <span class="extract"><span class="extract-syntax">daemon</span></span>, <span class="extract"><span class="extract-syntax">each_turn</span></span>, <span class="extract"><span class="extract-syntax">invent</span></span>, <span class="extract"><span class="extract-syntax">life</span></span>, <span class="extract"><span class="extract-syntax">number</span></span>, <span class="extract"><span class="extract-syntax">orders</span></span>,
@@ -537,7 +560,7 @@ future use.
 <span class="identifier-syntax">Property</span><span class="plain-syntax"> </span><span class="identifier-syntax">inside_description</span><span class="plain-syntax">; </span><span class="comment-syntax">not used by I7, but an interesting hook in the locale code</span>
 <span class="identifier-syntax">Property</span><span class="plain-syntax"> </span><span class="identifier-syntax">short_name_indef</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax">not used by I7, but an interesting hook in the listmaker</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Formal Parameters. </b>These are needed for efficient run-time ambiguity resolution.
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Formal Parameters. </b>These are needed for efficient run-time ambiguity resolution.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -553,7 +576,7 @@ future use.
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">unicode_temp</span><span class="plain-syntax">;</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrent">dfn</li><li class="progresssection"><a href="S-utl.html">utl</a></li><li class="progresssection"><a href="S-prg.html">prg</a></li><li class="progresssection"><a href="S-mth.html">mth</a></li><li class="progresssection"><a href="S-fl.html">fl</a></li><li class="progresssection"><a href="S-srt.html">srt</a></li><li class="progresssection"><a href="S-tbl.html">tbl</a></li><li class="progresssection"><a href="S-mst.html">mst</a></li><li class="progresssection"><a href="S-rlb.html">rlb</a></li><li class="progresssection"><a href="S-flx.html">flx</a></li><li class="progresssection"><a href="S-blc.html">blc</a></li><li class="progresssection"><a href="S-txt.html">txt</a></li><li class="progresssection"><a href="S-chr.html">chr</a></li><li class="progresssection"><a href="S-rgx.html">rgx</a></li><li class="progresssection"><a href="S-lst.html">lst</a></li><li class="progresssection"><a href="S-cmb.html">cmb</a></li><li class="progresssection"><a href="S-rlt.html">rlt</a></li><li class="progresssection"><a href="S-rlt2.html">rlt2</a></li><li class="progresssection"><a href="S-rtp.html">rtp</a></li><li class="progressnext"><a href="S-utl.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrent">dfn</li><li class="progresssection"><a href="S-utl.html">utl</a></li><li class="progresssection"><a href="S-prg.html">prg</a></li><li class="progresssection"><a href="S-mth.html">mth</a></li><li class="progresssection"><a href="S-srt.html">srt</a></li><li class="progresssection"><a href="S-tbl.html">tbl</a></li><li class="progresssection"><a href="S-mst.html">mst</a></li><li class="progresssection"><a href="S-rlb.html">rlb</a></li><li class="progresssection"><a href="S-flx.html">flx</a></li><li class="progresssection"><a href="S-blc.html">blc</a></li><li class="progresssection"><a href="S-txt.html">txt</a></li><li class="progresssection"><a href="S-chr.html">chr</a></li><li class="progresssection"><a href="S-rgx.html">rgx</a></li><li class="progresssection"><a href="S-lst.html">lst</a></li><li class="progresssection"><a href="S-cmb.html">cmb</a></li><li class="progresssection"><a href="S-rlt.html">rlt</a></li><li class="progresssection"><a href="S-rlt2.html">rlt2</a></li><li class="progresssection"><a href="S-rtp.html">rtp</a></li><li class="progressnext"><a href="S-utl.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

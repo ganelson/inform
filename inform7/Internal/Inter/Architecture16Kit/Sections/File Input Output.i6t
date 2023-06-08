@@ -1,0 +1,38 @@
+File Input Output Template.
+
+Access to external files.
+
+@h API.
+The 16-bit architecture does not allow for any external file I/O at all,
+so these functions essentially refuse to do anything. Note that |FileIO_GetC|
+returns end-of-file at all times, thus treating all files as if empty.
+
+=
+[ FileIO_Exists extf; rfalse; ];
+[ FileIO_Ready extf; rfalse; ];
+[ FileIO_GetC extf; return -1; ];
+[ FileIO_PutTable extf tab;
+	return FileIO_Error(extf, "external files cannot be used in the Z-machine");
+];
+[ FileIO_MarkReady extf status; FileIO_PutTable(extf); ];
+[ FileIO_GetTable extf tab; FileIO_PutTable(extf); ];
+[ FileIO_PrintContents extf; FileIO_PutTable(extf); ];
+[ FileIO_PutContents extf; FileIO_PutTable(extf); ];
+
+@h Errors.
+This could be used for I/O errors of all kinds, but in fact we only need one:
+see above.
+
+=
+[ FileIO_Error extf err_text  struc;
+	if ((extf < 1) || (extf > NO_EXTERNAL_FILES)) {
+		print "^*** Error on unknown file: ", (string) err_text, " ***^";
+	} else {
+		struc = TableOfExternalFiles-->extf;
+		print "^*** Error on file '",
+			(string) struc-->AUXF_FILENAME, "': ",
+			(string) err_text, " ***^";
+	}
+	RunTimeProblem(RTP_FILEIOERROR);
+	return 0;
+];

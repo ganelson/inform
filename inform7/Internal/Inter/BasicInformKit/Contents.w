@@ -10,7 +10,6 @@ Sections
 	Utilities
 	Paragraphing
 	Mathematics
-	FileIO
 	Sort
 	Tables
 	MStack

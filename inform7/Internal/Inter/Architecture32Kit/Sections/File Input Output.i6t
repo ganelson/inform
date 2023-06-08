@@ -1,61 +1,6 @@
-FileIO Template.
+File Input Output Template.
 
-Reading and writing external files, in the Glulx virtual machine only.
-
-@h Structure.
-The I7 kind of value "auxiliary-file" is an |-->| array, holding a memory
-structure containing information about external files. The following
-constants specify memory offsets and values. Note the safety value stored
-as the first word of the structure: this helps protect the routines below
-from accidents. (16339, besides being prime, is a number interesting to the
-author of Inform since it was the examination board identifying number of
-his school, and so had to be filled in on all of the many papers he sat
-during his formative years.)
-
-=
-Constant AUXF_MAGIC = 0; ! First word holds a safety constant
-Constant AUXF_MAGIC_VALUE = 16339; ! Should be first word of any valid file structure
-Constant AUXF_STATUS = 1; ! One of the following:
-	Constant AUXF_STATUS_IS_CLOSED = 1; ! Currently closed, or perhaps doesn't exist
-	Constant AUXF_STATUS_IS_OPEN_FOR_READ = 2;
-	Constant AUXF_STATUS_IS_OPEN_FOR_WRITE = 3;
-	Constant AUXF_STATUS_IS_OPEN_FOR_APPEND = 4;
-	Constant AUXF_STATUS_IS_ERRONEOUS = 5;
-Constant AUXF_BINARY = 2; ! False for text files (I7 default), true for binary
-Constant AUXF_STREAM = 3; ! Stream for an open file (meaningless otherwise)
-Constant AUXF_FILENAME = 4; ! Packed address of constant string
-Constant AUXF_IFID_OF_OWNER = 5; ! UUID_ARRAY if owned by this project, or
-	! string array of IFID of owner, or NULL to leave open
-Constant AUXF_RESOURCE_ID = 6; ! Only for internal files, identified by Blorb resource
-
-@h Instances.
-These structures are not dynamically created: they are precompiled by the Inform
-compiler, already filled in with the necessary values. The following command
-generates them.
-
-@h Errors.
-This is used for I/O errors of all kinds: it isn't within the Glulx-only
-code because one of the errors is to try to use these routines on the
-Z-machine.
-
-=
-[ FileIO_Error extf err_text  struc;
-	if ((extf < 1) || (extf > NO_EXTERNAL_FILES)) {
-		print "^*** Error on unknown file: ", (string) err_text, " ***^";
-	} else {
-		struc = TableOfExternalFiles-->extf;
-		print "^*** Error on file '",
-			(string) struc-->AUXF_FILENAME, "': ",
-			(string) err_text, " ***^";
-	}
-	RunTimeProblem(RTP_FILEIOERROR);
-	return 0;
-];
-
-@h Glulx Material.
-
-=
-#IFDEF TARGET_GLULX;
+Access to external files.
 
 @h Existence.
 Determine whether a file exists on disc. Note that we have no concept of
@@ -484,20 +429,20 @@ InternalFileReadChar(F, N) reads the data at position N in file F.
 	rfalse;
 ];
 
-@h Z-Machine Stubs.
-These routines do the minimum possible, but equally, they only generate a
-run-time problem when there is no alternative.
+@h Errors.
+This could be used for I/O errors of all kinds, but in fact we only need one:
+see above.
 
 =
-#IFNOT; ! TARGET_GLULX
-[ FileIO_Exists extf; rfalse; ];
-[ FileIO_Ready extf; rfalse; ];
-[ FileIO_GetC extf; return -1; ];
-[ FileIO_PutTable extf tab;
-	return FileIO_Error(extf, "external files can only be used under Glulx");
+[ FileIO_Error extf err_text  struc;
+	if ((extf < 1) || (extf > NO_EXTERNAL_FILES)) {
+		print "^*** Error on unknown file: ", (string) err_text, " ***^";
+	} else {
+		struc = TableOfExternalFiles-->extf;
+		print "^*** Error on file '",
+			(string) struc-->AUXF_FILENAME, "': ",
+			(string) err_text, " ***^";
+	}
+	RunTimeProblem(RTP_FILEIOERROR);
+	return 0;
 ];
-[ FileIO_MarkReady extf status; FileIO_PutTable(extf); ];
-[ FileIO_GetTable extf tab; FileIO_PutTable(extf); ];
-[ FileIO_PrintContents extf; FileIO_PutTable(extf); ];
-[ FileIO_PutContents extf; FileIO_PutTable(extf); ];
-#ENDIF; ! TARGET_GLULX
