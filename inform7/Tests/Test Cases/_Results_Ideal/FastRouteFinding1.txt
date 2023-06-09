@@ -1,12 +1,12 @@
    Barn
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Barn
   You can see Larry, Curly, Moe, George, Mike, Bob, Jayson, Crito and Pheidippides here.
   
-> >   Encircled Plateau
+> >   Barn
   (Testing.)
   
   >[1] go to plateau
@@ -244,7 +244,7 @@
   Jayson hikes from Landing to Farm in 9 moves.
   
   Crito arrives from the east.
-   Encircled Plateau
+   Barn
   Crito goes west.
   
   Crito hikes from Rookery to Cathedral in 11 moves.
@@ -481,7 +481,7 @@
   Curly hikes from Dungbeetle Feeding Station to Dangerous Descent in 7 moves.
   
   Moe hikes from Dungbeetle Harnessing Station to Divine Palace in 2 moves.
-   Encircled Plateau
+   Barn
   George hikes from Vista Over Clouds to Scrubland in 7 moves.
   
   Mike hikes from Feather Heap to Wilderness in 3 moves.

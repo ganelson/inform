@@ -177,7 +177,8 @@ all conditionals are resolved.
 @<Work out what the condition is@> =
 	if ((dir_node->dir_clarifier == IFDEF_I6RW) ||
 		(dir_node->dir_clarifier == IFNDEF_I6RW)) {
-		if (dir_node->child_node == NULL) {
+		if ((dir_node->child_node == NULL) ||
+			(dir_node->child_node->expression_tokens == NULL)) {
 			I6Errors::issue_at_node(dir_node, I"bare '#ifdef' or '#ifndef'");
 			return FALSE;
 		}

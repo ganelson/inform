@@ -413,13 +413,30 @@ uses a hacked version to allow TEST commands to work. (When a TEST is running,
 the text in the walk-through provided is fed into the buffer as if it had
 been typed at the keyboard.)
 
+If a |fn| is provided, it is called to redraw the status line at the top of
+the main text window.
+
 =
-[ KeyboardPrimitive a_buffer a_table;
+[ KeyboardPrimitive a_buffer a_table fn;
 	#Ifdef DEBUG;
-	return TestKeyboardPrimitive(a_buffer, a_table);
+	TestKeyboardPrimitive(a_buffer, a_table, fn);
 	#Ifnot;
-	return VM_ReadKeyboard(a_buffer, a_table);
+	KeyboardMorePrimitive(a_buffer, a_table, fn);
 	#Endif;
+];
+
+[ KeyboardMorePrimitive a_buffer a_table fn ix;
+	if (fn) fn();
+	VM_ReadKeyboard(a_buffer, a_table);
+    if (BasicInformKit`ECHO_COMMANDS_CFGF) {
+		print "** ";
+		#Iftrue CHARSIZE == 1;
+ 	    for (ix=2: ix<=(a_buffer->1)+1: ix++) print (char) a_buffer->ix;
+		#Ifnot;
+		for (ix=0: ix<(a_buffer-->0): ix++) print (char) a_buffer-->(1+ix);
+		#Endif;
+		print "^";
+	}
 ];
 
 @h Reading the Command.
@@ -463,8 +480,7 @@ The return value is the number of words typed.
 
 		! Print the prompt, and read in the words and dictionary addresses
 		PrintPrompt();
-		DrawStatusLine();
-		KeyboardPrimitive(a_buffer, a_table);
+		KeyboardPrimitive(a_buffer, a_table, DrawStatusLine);
 
 		! Set nw to the number of words
 		#Iftrue CHARSIZE == 1;
@@ -711,17 +727,8 @@ Get the input, do OOPS and AGAIN.
             #Endif;
 
             if (j == 0) print "?";
-            else {
-                #Ifdef TARGET_ZCODE;
-                if (UnsignedCompare(j, HDR_DICTIONARY-->0) >= 0 &&
-                    UnsignedCompare(j, HDR_HIGHMEMORY-->0) < 0)
-                     print (address) j;
-                else print j;
-                #Ifnot; ! TARGET_GLULX
-                if (j->0 == $60) print (address) j;
-                else print j;
-                #Endif; ! TARGET_
-            }
+            else if (VM_ProbablyDictionaryAddress(j)) print (address) j;
+    		else print j;
             if (i ~= num_words-1) print " / ";
         }
         print " ]^";
@@ -2589,7 +2596,7 @@ because we want to allow duplicates).
                 #Ifdef TARGET_ZCODE;
                 k = buffer + i;
                 @output_stream 3 k;
-                 print (address) parse2-->1;
+                print (address) parse2-->1;
                 @output_stream -3;
                 k = k-->0;
                 for (l=i : l<i+k : l++) buffer->l = buffer->(l+2);
@@ -3967,15 +3974,13 @@ Manual}, 4th edition.
 =
 [ YesOrNo i j;
     for (::) {
-        #Ifdef TARGET_ZCODE;
-        if (location == nothing || parent(player) == nothing) read buffer2 parse2;
-        else read buffer2 parse2 DrawStatusLine;
+        if (location == nothing || parent(player) == nothing) KeyboardPrimitive(buffer2, parse2);
+        else KeyboardPrimitive(buffer2, parse2, DrawStatusLine);
+        #Iftrue CHARSIZE == 1;
         j = parse2->1;
-        #Ifnot; ! TARGET_GLULX;
-        if (location ~= nothing && parent(player) ~= nothing) DrawStatusLine();
-        KeyboardPrimitive(buffer2, parse2);
+        #Ifnot;
         j = parse2-->0;
-        #Endif; ! TARGET_
+        #Endif;
         if (j) { ! at least one word entered
             i = parse2-->1;
             if (i == YES1__WD or YES2__WD or YES3__WD) rtrue;

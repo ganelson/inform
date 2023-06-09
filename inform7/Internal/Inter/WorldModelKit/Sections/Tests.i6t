@@ -408,12 +408,11 @@ Global test_sp = 0;
 	}
 	print "(Testing.)^"; say__p = 1;
 ];
-[ TestKeyboardPrimitive a_buffer a_table p i j l spaced ch;
+[ TestKeyboardPrimitive a_buffer a_table fn p i j l spaced ch;
 	if (test_sp == 0) {
 	    test_stack-->2 = 1;
-	    return VM_ReadKeyboard(a_buffer, a_table);
-	}
-	else {
+	    KeyboardMorePrimitive(a_buffer, a_table, fn);
+	} else {
 	    p = test_stack-->(test_sp-4);
 	    i = test_stack-->(test_sp-3);
 	    l = test_stack-->(test_sp-1);
@@ -428,7 +427,7 @@ Global test_sp = 0;
 	        #ifnot;
 	    	ch = p-->i;
 	        #endif;
-		if (ch == '/') break;
+			if (ch == '/') break;
 	        if (spaced || (ch ~= ' ')) {
 	            #iftrue (CHARSIZE == 1);
 	            if ((p->i == '[') && (p->(i+1) == '/') && (p->(i+2) == ']')) {

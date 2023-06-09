@@ -23,6 +23,18 @@ Global dict_start;
 Global dict_entry_size;
 Global dict_end;
 
+@h Dictionary words.
+This tests whether an address is probably that of a dictionary word. It's used
+only for debugging output, so the false positives here (where an address is in
+the dictionary table, but mid-word) really do not matter.
+
+=
+[ VM_ProbablyDictionaryAddress addr;
+	if (UnsignedCompare(addr, HDR_DICTIONARY-->0) >= 0 &&
+		UnsignedCompare(addr, HDR_HIGHMEMORY-->0) < 0) rtrue;
+	rfalse;
+];
+
 @h Keyboard Input.
 The VM must provide three routines for keyboard input:
 
@@ -49,13 +61,8 @@ to document all of that.
 ];
 [ VM_KeyDelay_Interrupt; rtrue; ];
 
-[ VM_ReadKeyboard  a_buffer a_table i;
-    read a_buffer a_table;
-    if (BasicInformKit`ECHO_COMMANDS_CFGF) {
-	    print "** ";
-	    for (i=2: i<=(a_buffer->1)+1: i++) print (char) a_buffer->i;
-	    print "^";
-    }
+[ VM_ReadKeyboard a_buffer a_table;
+	read a_buffer a_table;
 ];
 
 @h Buffer Functions.

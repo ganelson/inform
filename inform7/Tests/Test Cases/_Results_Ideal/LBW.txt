@@ -19,9 +19,11 @@
   (5) Make feeble wordplay, light of it, and an escape.
   
 > >   Cricket History Museum
+  ** x bat
   (Please type an option in the range 1 to 5 and press return.)
   
 > >   Cricket History Museum
+  ** 4
   Look at the watch Q gave you.
   
   The watch says it is now 9:00 am in Melbourne.
@@ -33,6 +35,7 @@
   (5) Make feeble wordplay, light of it, and an escape.
   
 > >   Cricket History Museum
+  ** 1
   Fix Honey with your Scottish stare.
   
   Honey looks suddenly abashed and resolves to tell the truth.
@@ -43,6 +46,7 @@
   (4) Make feeble wordplay, light of it, and an escape.
   
 > >   Cricket History Museum
+  ** 1
   Listen politely.
   
   Honey Maiden: "The first ever cricket match is thought to have taken place in 18th-century Hampshire."
@@ -91,9 +95,11 @@
   (5) Make feeble wordplay, light of it, and an escape.
   
 > >   Cricket History Museum
+  ** x bat
   (Please type an option in the range 1 to 5 and press return.)
   
 > >   Cricket History Museum
+  ** 3
   Enquire about the bat and ball.
   
   Honey Maiden tries to pick up the bat, but it's magically glued down!
@@ -110,6 +116,7 @@
   (4) Make feeble wordplay, light of it, and an escape.
   
 > >   Cricket History Museum
+  ** 2
   Listen politely.
   
   Honey Maiden: "The first ever cricket match is thought to have taken place in stone-age Dresden."
@@ -172,6 +179,7 @@
   (5) Make feeble wordplay, light of it, and an escape.
   
 > >   Cricket History Museum
+  ** 5
   Make feeble wordplay, light of it, and an escape.
   
   You: "Sorry, Honey, it's time for a "run out"."
@@ -180,6 +188,7 @@
   (2) Use my rocket-pack.
   
 > >   Cricket History Museum
+  ** 1
   Hurl myself at the window.
   
   Honey Maiden: "That glass is strong enough to withstand a six from a full toss at a distance of ten feet! You wouldn't stand a chance."
@@ -187,6 +196,7 @@
   (1) Use my rocket-pack.
   
 > >   Cricket History Museum
+  ** 1
   Use my rocket-pack.
   
   Is this supposed to be like the cold open of Thunderball, where you're suddenly carrying a huge jet-pack even though you came into the room in a regular dinner suit?
@@ -195,6 +205,7 @@
   (2) No.
   
 > >   Cricket History Museum
+  ** 2
   No.
   
   Then find some other way out of here.
@@ -202,6 +213,7 @@
   (1) Admit to being out of ideas.
   
 > >   Cricket History Museum
+  ** 1
   Admit to being out of ideas.
   
   Honey Maiden: "I have permitted this charade for one reason only, Mr Bond, to demonstrate its futility."
@@ -210,4 +222,5 @@
   
 > >   Cricket History Museum
   ** quit
-> Are you sure you want to quit? 
+> Are you sure you want to quit?    Cricket History Museum
+  ** y

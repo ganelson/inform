@@ -43,6 +43,7 @@
   (Option 2) My favourite cheese is camembert.
   
 > >  
+  ** 2
   My favourite cheese is camembert.
   
   (Okay, select from white seeded choice, black choice and poison choice here.)
@@ -51,6 +52,7 @@
   (Option 3) My preferred grapes are arsenic-laced.
   
 > >   Laboratory
+  ** 1
   My preferred grapes are white yet seeded.
   
   You would appear to have selected: camembert choice and white seeded choice.
@@ -278,7 +280,7 @@
   ** perform fourth wall breaker beat
   This is all just fiction.
   
-> >   Laboratory
+> >   Experimental Zone
   ** w
   Helmuth: "Are you, or are you in league with, Star A Star of the Galactic Patrol?"
   
@@ -286,7 +288,8 @@
   (Option 1) No.
   (Option 2) I don't know who that is.
   
-> >   Laboratory
+> >   Experimental Zone
+  ** 1
   No.
   
   Gharlane: "A likely story."
@@ -294,7 +297,8 @@
   (Okay, select from choice-21 here.)
   (Option 1) I don't know who that is.
   
-> >   Laboratory
+> >   Experimental Zone
+  ** 1
   I don't know who that is.
   
   Gharlane: "A mere worm."
@@ -303,6 +307,7 @@
   (Option 1) Admit frankly that you've run out of answers.
   
 > >   Experimental Zone
+  ** 1
   Admit frankly that you've run out of answers.
   
   Gharlane: "Well, I've always respected honesty."
@@ -344,4 +349,5 @@
   
 > >   Laboratory
   ** quit
-> Are you sure you want to quit? 
+> Are you sure you want to quit?    Laboratory
+  ** y

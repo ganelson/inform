@@ -48,6 +48,16 @@ Constant GG_SCRIPTFREF_ROCK     401;
 Constant GG_FOREGROUNDCHAN_ROCK 410;
 Constant GG_BACKGROUNDCHAN_ROCK 411;
 
+@h Dictionary words.
+This tests whether an address is probably that of a dictionary word. It's used
+only for debugging output, so the false positives here really do not matter.
+
+=
+[ VM_ProbablyDictionaryAddress addr;
+	if (addr->0 == $60) rtrue;
+	rfalse;
+];
+
 @h Keyboard Input.
 The VM must provide three routines for keyboard input:
 
@@ -154,8 +164,7 @@ to document all of that.
         if (ix == 2) {
             key = gg_arguments-->0;
             done = true;
-        }
-        else if (ix >= 0 && gg_event-->0 == 1 or 2) {
+        } else if (ix >= 0 && gg_event-->0 == 1 or 2) {
             key = gg_event-->2;
             done = true;
         }
@@ -173,8 +182,7 @@ to document all of that.
             glk_stream_close(gg_commandstr, 0);
             gg_commandstr = 0;
             gg_command_reading = false;
-        }
-        else {
+        } else {
             ! Trim the trailing newline
             if ((a_buffer+WORDSIZE)-->(done-1) == 10) done = done-1;
             a_buffer-->0 = done;
@@ -213,11 +221,6 @@ to document all of that.
         glk_window_close(gg_quotewin, 0);
         gg_quotewin = 0;
     }
-    if (BasicInformKit`ECHO_COMMANDS_CFGF) {
-		print "** ";
-		for (ix=0: ix<(a_buffer-->0): ix++) print (char) a_buffer-->(1+ix);
-		print "^";
-	}
 ];
 
 @h Buffer Functions.
