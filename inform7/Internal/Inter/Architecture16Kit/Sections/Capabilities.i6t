@@ -136,17 +136,3 @@ Glulx are indistinguishable here.
 		HEADER_VMSTY, SUBHEADER_VMSTY, ALERT_VMSTY: style bold;
 	}
 ];
-
-@h Undo.
-These simply wrap the relevant opcodes.
-
-=
-[ VM_Undo result_code;
-	@restore_undo result_code;
-	return result_code;
-];
-
-[ VM_Save_Undo result_code;
-    @save_undo result_code;
-	return result_code;
-];

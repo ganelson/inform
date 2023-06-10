@@ -11,7 +11,6 @@ activity runs; and then |VM_Initialise()| is called.
 
 [ VM_Initialise i;
 	standard_interpreter = HDR_TERPSTANDARD-->0;
-	transcript_mode = ((HDR_GAMEFLAGS-->0) & 1);
 
 	dict_start = HDR_DICTIONARY-->0;
 	dict_entry_size = dict_start->(dict_start->0 + 1);

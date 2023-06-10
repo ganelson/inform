@@ -2,36 +2,6 @@ Input Output Template.
 
 Access to the keyboard and to textual windows.
 
-@h Variables and Arrays.
-
-=
-Constant DICT_ENTRY_BYTES = 12+DICT_WORD_SIZE*WORDSIZE;
-Constant #dict_par1 = DICT_WORD_SIZE*WORDSIZE+4+1;
-Constant #dict_par2 = DICT_WORD_SIZE*WORDSIZE+4+3;
-
-Array gg_event --> 4;
-Array gg_arguments buffer 28;
-Global gg_mainwin = 0;
-Global gg_statuswin = 0;
-Global gg_quotewin = 0;
-Global gg_scriptfref = 0;
-Global gg_scriptstr = 0;
-Global gg_savestr = 0;
-Global gg_commandstr = 0;
-Global gg_command_reading = 0;      ! true if gg_commandstr is being replayed
-Global gg_foregroundchan = 0;
-Global gg_backgroundchan = 0;
-
-Constant INPUT_BUFFER_LEN = 260;    ! No extra byte necessary
-Constant MAX_BUFFER_WORDS = 20;
-Constant PARSE_BUFFER_LEN = 61;
-
-Array  buffer   --> INPUT_BUFFER_LEN;
-Array  buffer2  --> INPUT_BUFFER_LEN;
-Array  buffer3  --> INPUT_BUFFER_LEN;
-Array  parse     --> PARSE_BUFFER_LEN;
-Array  parse2    --> PARSE_BUFFER_LEN;
-
 @h Rocks.
 These are unique ID codes used to mark resources; think of them as inedible
 cookies.
@@ -47,6 +17,77 @@ Constant GG_COMMANDRSTR_ROCK    304;
 Constant GG_SCRIPTFREF_ROCK     401;
 Constant GG_FOREGROUNDCHAN_ROCK 410;
 Constant GG_BACKGROUNDCHAN_ROCK 411;
+
+@h Transcript support.
+This is a mode in which the transcript of text in the main window is being
+written out to an external file.
+
+|VM_TranscriptIsOn| tests whether this mode is on. |VM_TranscriptOn| should
+be called only if it is off, and tries to turn it on, returning |true| or |false|
+according to whether or not it succeeds. |VM_TranscriptOff| should be called
+only if scripting is on: this always succeeds.
+
+=
+Global gg_scriptfref = 0;
+Global gg_scriptstr = 0;
+
+[ VM_TranscriptIsOn;
+	if (gg_scriptstr) rtrue;
+	rfalse;
+];
+
+[ VM_TranscriptOn;
+	while (true) {
+		if (gg_scriptfref == 0) {
+			gg_scriptfref = glk_fileref_create_by_prompt($102, $05, GG_SCRIPTFREF_ROCK);
+			if (gg_scriptfref == 0) rfalse;
+		}
+		! stream_open_file
+		gg_scriptstr = glk_stream_open_file(gg_scriptfref, $05, GG_SCRIPTSTR_ROCK);
+		if (gg_scriptstr == 0) {
+			! Could not open selected file; select again
+			glk_fileref_destroy(gg_scriptfref);
+			gg_scriptfref = 0;
+			continue;
+		}
+		glk_window_set_echo_stream(gg_mainwin, gg_scriptstr);
+		rtrue;
+	}
+];
+
+[ VM_TranscriptOff;
+	glk_stream_close(gg_scriptstr, 0); ! stream_close
+	gg_scriptstr = 0;
+	rtrue;
+];
+
+@h Variables and Arrays.
+
+=
+Constant DICT_ENTRY_BYTES = 12+DICT_WORD_SIZE*WORDSIZE;
+Constant #dict_par1 = DICT_WORD_SIZE*WORDSIZE+4+1;
+Constant #dict_par2 = DICT_WORD_SIZE*WORDSIZE+4+3;
+
+Array gg_event --> 4;
+Array gg_arguments buffer 28;
+Global gg_mainwin = 0;
+Global gg_statuswin = 0;
+Global gg_quotewin = 0;
+Global gg_savestr = 0;
+Global gg_commandstr = 0;
+Global gg_command_reading = 0;      ! true if gg_commandstr is being replayed
+Global gg_foregroundchan = 0;
+Global gg_backgroundchan = 0;
+
+Constant INPUT_BUFFER_LEN = 260;    ! No extra byte necessary
+Constant MAX_BUFFER_WORDS = 20;
+Constant PARSE_BUFFER_LEN = 61;
+
+Array  buffer   --> INPUT_BUFFER_LEN;
+Array  buffer2  --> INPUT_BUFFER_LEN;
+Array  buffer3  --> INPUT_BUFFER_LEN;
+Array  parse     --> PARSE_BUFFER_LEN;
+Array  parse2    --> PARSE_BUFFER_LEN;
 
 @h Dictionary words.
 This tests whether an address is probably that of a dictionary word. It's used
@@ -431,6 +472,18 @@ routine was added to concentrate lookups of this field in one place.
     @aloads dword 0 verbnum;
     verbnum = $ffff-verbnum;
 	return verbnum;
+];
+
+@h Action functions.
+This looks up the address of a function like |TakeSub| from the table of
+"action subroutines".
+
+Strangely, Glulx's action routines table is numbered in an off-by-one way
+compared to the Z-machine's: hence the |+1| here.
+
+=
+[ VM_ActionFunction act;
+	return #actions_table-->(act+1);
 ];
 
 @h Glulx-Only Printing Routines.

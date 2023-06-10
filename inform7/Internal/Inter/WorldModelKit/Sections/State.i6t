@@ -1,11 +1,6 @@
-ZMachine Template.
+State Template.
 
-To provide Z-specific actions.
-
-@h Begin Z-only matter.
-
-=
-#Ifdef TARGET_ZCODE;
+To implement out of world actions relating to the program state.
 
 @h Quit The Game Rule.
 
@@ -23,7 +18,7 @@ To provide Z-specific actions.
 	if (actor ~= player) rfalse;
 	RESTART_THE_GAME_RM('A');
 	if (YesOrNo()~=0) {
-		@restart;
+		VM_Restart();
 		RESTART_THE_GAME_RM('B'); new_line;
 	}
 ];
@@ -33,10 +28,11 @@ To provide Z-specific actions.
 =
 [ RESTORE_THE_GAME_R;
 	if (actor ~= player) rfalse;
-	restore RMaybe;
-	RESTORE_THE_GAME_RM('A'); new_line;
-	rtrue;
-	.RMaybe; RESTORE_THE_GAME_RM('B'); new_line;
+	if (VM_Restore()) {
+		RESTORE_THE_GAME_RM('B'); new_line;
+	} else {
+		RESTORE_THE_GAME_RM('A'); new_line;
+	}
 ];
 
 @h Save The Game Rule.
@@ -44,12 +40,24 @@ To provide Z-specific actions.
 =
 [ SAVE_THE_GAME_R flag;
 	if (actor ~= player) rfalse;
-	@save -> flag;
-	switch (flag) {
+	switch (VM_Save()) {
 		0: SAVE_THE_GAME_RM('A'); new_line;
 		1: SAVE_THE_GAME_RM('B'); new_line;
 		2: RESTORE_THE_GAME_RM('B'); new_line;
 	}
+];
+
+@h Perform Undo.
+
+=
+[ Perform_Undo;
+	if (CommandParserKit`UNDO_PREVENTION_CFGF) {
+		IMMEDIATELY_UNDO_RM('A'); new_line; return;
+	}
+	if (IterationsOfTurnSequence == 0) { IMMEDIATELY_UNDO_RM('B'); new_line; return; }
+	if (undo_flag == 0) { IMMEDIATELY_UNDO_RM('C'); new_line; return; }
+	if (undo_flag == 1) { IMMEDIATELY_UNDO_RM('D'); new_line; return; }
+	if (VM_Undo() == 0) { IMMEDIATELY_UNDO_RM('F'); new_line; }
 ];
 
 @h Verify The Story File Rule.
@@ -62,17 +70,13 @@ corrupt disc or was unable to read data of that density. So the VERIFY
 command, which took up to ten minutes on some early computers, would chug
 through the entire story file and compute a checksum, compare it against a
 known result in the header, and determine that the story file could or
-could not properly be read. The Z-machine provided this service as an
-opcode, and so Glulx followed suit.
+could not properly be read.
 
 =
 [ VERIFY_THE_STORY_FILE_R;
 	if (actor ~= player) rfalse;
-	@verify ?Vmaybe;
-	jump Vwrong;
-	.Vmaybe; VERIFY_THE_STORY_FILE_RM('A'); new_line; rtrue;
-	.Vwrong;
-	VERIFY_THE_STORY_FILE_RM('B'); new_line;
+	if (VM_Verify()) { VERIFY_THE_STORY_FILE_RM('A'); new_line; }
+	else { VERIFY_THE_STORY_FILE_RM('B'); new_line; }
 ];
 
 @h Switch Transcript On Rule.
@@ -80,12 +84,9 @@ opcode, and so Glulx followed suit.
 =
 [ SWITCH_TRANSCRIPT_ON_R;
 	if (actor ~= player) rfalse;
-	transcript_mode = ((0-->8) & 1);
-	if (transcript_mode) { SWITCH_TRANSCRIPT_ON_RM('A'); new_line; rtrue; }
-	@output_stream 2;
-	if (((0-->8) & 1) == 0) { SWITCH_TRANSCRIPT_ON_RM('C'); new_line; rtrue; }
+	if (VM_TranscriptIsOn()) { SWITCH_TRANSCRIPT_ON_RM('A'); new_line; rtrue; }
+	if (VM_TranscriptOn() == false) { SWITCH_TRANSCRIPT_ON_RM('C'); new_line; rtrue; }
 	SWITCH_TRANSCRIPT_ON_RM('B'); new_line; VersionSub();
-	transcript_mode = true;
 ];
 
 @h Switch Transcript Off Rule.
@@ -93,12 +94,9 @@ opcode, and so Glulx followed suit.
 =
 [ SWITCH_TRANSCRIPT_OFF_R;
 	if (actor ~= player) rfalse;
-	transcript_mode = ((0-->8) & 1);
-	if (transcript_mode == false) { SWITCH_TRANSCRIPT_OFF_RM('A'); new_line; rtrue; }
+	if (VM_TranscriptIsOn() == false) { SWITCH_TRANSCRIPT_OFF_RM('A'); new_line; rtrue; }
 	SWITCH_TRANSCRIPT_OFF_RM('B'); new_line;
-	@output_stream -2;
-	if ((0-->8) & 1) { SWITCH_TRANSCRIPT_ON_RM('C'); new_line; rtrue; }
-	transcript_mode = false;
+	if (VM_TranscriptOff() == false) { SWITCH_TRANSCRIPT_ON_RM('C'); new_line; rtrue; }
 ];
 
 @h Announce Story File Version Rule.
@@ -113,38 +111,7 @@ opcode, and so Glulx followed suit.
 		for (ix=6: ix <= UUID_ARRAY->0: ix++) print (char) UUID_ARRAY->ix;
 		print "^";
 	}
-	ix = 0; ! shut up compiler warning
-	if (standard_interpreter > 0) {
-		print "Standard interpreter ",
-			standard_interpreter/256, ".", standard_interpreter%256,
-			" (", HDR_TERPNUMBER->0;
-		print (char) HDR_TERPVERSION->0;
-		print ")^";
-	} else {
-		print "Interpreter ", HDR_TERPNUMBER->0, " Version ";
-		print (char) HDR_TERPVERSION->0;
-		print "^";
-	}
+	VM_ReportOnInterpreter();
 	ShowExtensionVersions();
 	say__p = 1;
 ];
-
-@h Descend To Specific Action Rule.
-There are 100 or so actions, typically, and this rule is for efficiency's
-sake: rather than perform 100 or so comparisons to see which routine to
-call, we indirect through a jump table. The routines called are the |-Sub|
-routines: thus, for instance, if |action| is |##Wait| then |WaitSub| is
-called. It is essential that this routine not be called for fake actions:
-in I7 use this is guaranteed, since fake actions are not allowed into the
-action machinery at all.
-
-=
-[ DESCEND_TO_SPECIFIC_ACTION_R;
-	( #actions_table-->action )();
-	rtrue;
-];
-
-@h End Z-only matter.
-
-=
-#Endif; ! TARGET_ZCODE

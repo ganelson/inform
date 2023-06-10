@@ -65,16 +65,41 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">Architecture16Kit</a></li><li><b>Input Output Template</b></li></ul></div>
 <p class="purpose">Access to the keyboard and to textual windows.</p>
 
-<ul class="toc"><li><a href="S-io.html#SP1">&#167;1. Variables and Arrays</a></li><li><a href="S-io.html#SP2">&#167;2. Dictionary words</a></li><li><a href="S-io.html#SP3">&#167;3. Keyboard Input</a></li><li><a href="S-io.html#SP4">&#167;4. Buffer Functions</a></li><li><a href="S-io.html#SP5">&#167;5. Dictionary Functions</a></li><li><a href="S-io.html#SP6">&#167;6. Command Tables</a></li><li><a href="S-io.html#SP7">&#167;7. Extracting Verb Numbers</a></li><li><a href="S-io.html#SP8">&#167;8. The Screen</a></li><li><a href="S-io.html#SP9">&#167;9. Window Colours</a></li><li><a href="S-io.html#SP10">&#167;10. Main Window</a></li><li><a href="S-io.html#SP11">&#167;11. Status Line</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-io.html#SP1">&#167;1. Transcript support</a></li><li><a href="S-io.html#SP2">&#167;2. Variables and Arrays</a></li><li><a href="S-io.html#SP3">&#167;3. Dictionary words</a></li><li><a href="S-io.html#SP4">&#167;4. Keyboard Input</a></li><li><a href="S-io.html#SP5">&#167;5. Buffer Functions</a></li><li><a href="S-io.html#SP6">&#167;6. Dictionary Functions</a></li><li><a href="S-io.html#SP7">&#167;7. Command Tables</a></li><li><a href="S-io.html#SP8">&#167;8. Extracting Verb Numbers</a></li><li><a href="S-io.html#SP9">&#167;9. Action functions</a></li><li><a href="S-io.html#SP10">&#167;10. The Screen</a></li><li><a href="S-io.html#SP11">&#167;11. Window Colours</a></li><li><a href="S-io.html#SP12">&#167;12. Main Window</a></li><li><a href="S-io.html#SP13">&#167;13. Status Line</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Variables and Arrays. </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Transcript support. </b>This is a mode in which the transcript of text in the main window is being
+written out to an external file.
+</p>
+
+<p class="commentary"><span class="extract"><span class="extract-syntax">VM_TranscriptIsOn</span></span> tests whether this mode is on. <span class="extract"><span class="extract-syntax">VM_TranscriptOn</span></span> should
+be called only if it is off, and tries to turn it on, returning <span class="extract"><span class="extract-syntax">true</span></span> or <span class="extract"><span class="extract-syntax">false</span></span>
+according to whether or not it succeeds. <span class="extract"><span class="extract-syntax">VM_TranscriptOff</span></span> should be called
+only if scripting is on.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_TranscriptIsOn</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">HDR_GAMEFLAGS</span><span class="plain-syntax">--&gt;0) &amp; </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_TranscriptOn</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    @</span><span class="identifier-syntax">output_stream</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">VM_TranscriptIsOn</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_TranscriptOff</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    @</span><span class="identifier-syntax">output_stream</span><span class="plain-syntax"> -2;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">VM_TranscriptIsOn</span><span class="plain-syntax">()) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Variables and Arrays. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> #</span><span class="identifier-syntax">dict_par1</span><span class="plain-syntax"> = </span><span class="constant-syntax">6</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> #</span><span class="identifier-syntax">dict_par2</span><span class="plain-syntax"> = </span><span class="constant-syntax">7</span><span class="plain-syntax">;</span>
 
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">xcommsdir</span><span class="plain-syntax">; </span><span class="comment-syntax">true if command recording is on</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">transcript_mode</span><span class="plain-syntax">; </span><span class="comment-syntax">true if game scripting is on</span>
 
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">INPUT_BUFFER_LEN</span><span class="plain-syntax"> = </span><span class="constant-syntax">120</span><span class="plain-syntax">; </span><span class="comment-syntax">Length of buffer array</span>
 
@@ -88,7 +113,7 @@ MathJax = {
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">dict_entry_size</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">dict_end</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Dictionary words. </b>This tests whether an address is probably that of a dictionary word. It's used
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Dictionary words. </b>This tests whether an address is probably that of a dictionary word. It's used
 only for debugging output, so the false positives here (where an address is in
 the dictionary table, but mid-word) really do not matter.
 </p>
@@ -100,7 +125,7 @@ the dictionary table, but mid-word) really do not matter.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Keyboard Input. </b>The VM must provide three routines for keyboard input:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Keyboard Input. </b>The VM must provide three routines for keyboard input:
 </p>
 
 <ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">VM_KeyChar()</span></span> waits for a key to be pressed and then returns the
@@ -131,7 +156,7 @@ to document all of that.
 <span class="plain-syntax">    </span><span class="reserved-syntax">read</span><span class="plain-syntax"> </span><span class="identifier-syntax">a_buffer</span><span class="plain-syntax"> </span><span class="identifier-syntax">a_table</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Buffer Functions. </b>A "buffer", in this sense, is an array containing a stream of characters
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Buffer Functions. </b>A "buffer", in this sense, is an array containing a stream of characters
 typed from the keyboard; a "parse buffer" is an array which resolves this
 into individual words, pointing to the relevant entries in the dictionary
 structure. Because each VM has its own format for each of these arrays (not
@@ -194,7 +219,7 @@ languages of play.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">b</span><span class="plain-syntax">-&gt;1 &lt; </span><span class="identifier-syntax">b</span><span class="plain-syntax">-&gt;0) (</span><span class="identifier-syntax">b</span><span class="plain-syntax">-&gt;1)++;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Dictionary Functions. </b>Again, the dictionary structure is differently arranged on the different VMs.
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Dictionary Functions. </b>Again, the dictionary structure is differently arranged on the different VMs.
 This is a data structure containing, in compressed form, the text of all the
 words to be recognised by tokenisation (above). In I6 for Z, a dictionary word
 value is represented at run-time by its record number in the dictionary,
@@ -220,7 +245,7 @@ convert between record numbers and dictionary addresses.
 <span class="plain-syntax">[ </span><span class="identifier-syntax">VM_DictionaryAddressToNumber</span><span class="plain-syntax"> </span><span class="identifier-syntax">w</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="identifier-syntax">w</span><span class="plain-syntax">-(</span><span class="identifier-syntax">HDR_DICTIONARY</span><span class="plain-syntax">--&gt;0 + </span><span class="constant-syntax">7</span><span class="plain-syntax">))/</span><span class="identifier-syntax">DICT_ENTRY_BYTES</span><span class="plain-syntax">; ];</span>
 <span class="plain-syntax">[ </span><span class="identifier-syntax">VM_NumberToDictionaryAddress</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">HDR_DICTIONARY</span><span class="plain-syntax">--&gt;0 + </span><span class="constant-syntax">7</span><span class="plain-syntax"> + </span><span class="identifier-syntax">DICT_ENTRY_BYTES</span><span class="plain-syntax">*</span><span class="identifier-syntax">n</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Command Tables. </b>The VM is also generated containing a data structure for the grammar
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Command Tables. </b>The VM is also generated containing a data structure for the grammar
 produced by I6's <span class="extract"><span class="extract-syntax">Verb</span></span> and <span class="extract"><span class="extract-syntax">Extend</span></span> directives: this is essentially a
 list of command verbs such as DROP or PUSH, together with a list of
 synonyms, and then the grammar for the subsequent commands to be
@@ -239,7 +264,7 @@ recognised by the parser.
 <span class="plain-syntax">            </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"'"</span><span class="plain-syntax">, (</span><span class="identifier-syntax">address</span><span class="plain-syntax">) </span><span class="identifier-syntax">VM_NumberToDictionaryAddress</span><span class="plain-syntax">(</span><span class="identifier-syntax">j</span><span class="plain-syntax">), </span><span class="string-syntax">"' "</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Extracting Verb Numbers. </b>A long tale of woe lies behind the following. Infocom games stored verb numbers
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Extracting Verb Numbers. </b>A long tale of woe lies behind the following. Infocom games stored verb numbers
 in a single byte in dictionary entries, but they did so counting downwards, so
 that verb number 0 was stored as 255, 1 as 254, and so on. Inform followed
 suit so that debugging of Inform 1 could be aided by using the then-available
@@ -260,7 +285,16 @@ routine was added to concentrate lookups of this field in one place.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">$ff</span><span class="plain-syntax">-(</span><span class="identifier-syntax">dword</span><span class="plain-syntax">-&gt;#</span><span class="identifier-syntax">dict_par2</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. The Screen. </b>Our generic screen model is that the screen is made up of windows: we tend
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Action functions. </b>This looks up the address of a function like <span class="extract"><span class="extract-syntax">TakeSub</span></span> from the table of
+"action subroutines".
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_ActionFunction</span><span class="plain-syntax"> </span><span class="identifier-syntax">act</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> #</span><span class="identifier-syntax">actions_table</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">act</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. The Screen. </b>Our generic screen model is that the screen is made up of windows: we tend
 to refer only to two of these, the main window and the status line, but
 others may also exist from time to time. Windows have unique ID numbers:
 the special window ID \(-1\) means "all windows" or "the entire screen",
@@ -291,7 +325,7 @@ in order to keep it accurate.
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">VM_ScreenHeight</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="identifier-syntax">HDR_SCREENHLINES</span><span class="plain-syntax">-&gt;0); ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Window Colours. </b>Each window can have its own foreground and background colours.
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Window Colours. </b>Each window can have its own foreground and background colours.
 </p>
 
 <p class="commentary">The colour of individual letters or words of type is not controllable in
@@ -330,7 +364,7 @@ which is greatly superior in this respect).
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Main Window. </b>The part of the screen on which commands and responses are printed, which
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Main Window. </b>The part of the screen on which commands and responses are printed, which
 ordinarily occupies almost all of the screen area.
 </p>
 
@@ -349,7 +383,7 @@ emulates the Glulx model of window rather than text colours.
 <span class="plain-syntax">    </span><span class="identifier-syntax">statuswin_current</span><span class="plain-syntax"> = </span><span class="reserved-syntax">false</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Status Line. </b>Despite the name, the status line need not be a single line at the top of
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Status Line. </b>Despite the name, the status line need not be a single line at the top of
 the screen: that's only the conventional default arrangement. It can expand
 to become the equivalent of an old-fashioned VT220 terminal, with menus
 and grids and mazes displayed lovingly in character graphics, or it can
@@ -391,7 +425,7 @@ line; line 2 is underneath, and so on; columns are similarly numbered from
 <span class="plain-syntax">];</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="S-cs.html">&#10094;</a></li><li class="progresssection"><a href="S-cpb.html">cpb</a></li><li class="progresssection"><a href="S-str.html">str</a></li><li class="progresssection"><a href="S-mth.html">mth</a></li><li class="progresssection"><a href="S-cs.html">cs</a></li><li class="progresscurrent">io</li><li class="progresssection"><a href="S-fio.html">fio</a></li><li class="progresssection"><a href="S-vnr.html">vnr</a></li><li class="progressnext"><a href="S-fio.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="S-cs.html">&#10094;</a></li><li class="progresssection"><a href="S-cpb.html">cpb</a></li><li class="progresssection"><a href="S-str.html">str</a></li><li class="progresssection"><a href="S-stt.html">stt</a></li><li class="progresssection"><a href="S-mth.html">mth</a></li><li class="progresssection"><a href="S-cs.html">cs</a></li><li class="progresscurrent">io</li><li class="progresssection"><a href="S-fio.html">fio</a></li><li class="progresssection"><a href="S-vnr.html">vnr</a></li><li class="progressnext"><a href="S-fio.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

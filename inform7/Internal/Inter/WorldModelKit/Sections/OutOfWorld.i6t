@@ -2,19 +2,6 @@ OutOfWorld Template.
 
 To implement some of the out of world actions.
 
-@h Perform Undo.
-
-=
-[ Perform_Undo;
-	if (CommandParserKit`UNDO_PREVENTION_CFGF) {
-		IMMEDIATELY_UNDO_RM('A'); new_line; return;
-	}
-	if (IterationsOfTurnSequence == 0) { IMMEDIATELY_UNDO_RM('B'); new_line; return; }
-	if (undo_flag == 0) { IMMEDIATELY_UNDO_RM('C'); new_line; return; }
-	if (undo_flag == 1) { IMMEDIATELY_UNDO_RM('D'); new_line; return; }
-	if (VM_Undo() == 0) { IMMEDIATELY_UNDO_RM('F'); new_line; }
-];
-
 @h Announce Score Rule.
 
 =

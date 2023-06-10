@@ -8,6 +8,7 @@ Web Syntax Version: 2
 Sections
 	Capabilities
 	Startup
+	State
 	Mathematics
 	Character Set
 	Input Output

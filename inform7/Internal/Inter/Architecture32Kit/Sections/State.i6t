@@ -1,0 +1,114 @@
+State Template.
+
+Saving, restoring, restarting and verifying the program from within itself.
+
+@h Environment.
+The language "interpreter" here supposes that the eventual program is
+running in a VM which is being interpreted, and that may not be the case,
+but it's traditional.
+
+=
+[ VM_ReportOnInterpreter ix;
+	@gestalt 1 0 ix;
+	print "Interpreter version ", ix / $10000, ".", (ix & $FF00) / $100,
+	".", ix & $FF, " / ";
+	@gestalt 0 0 ix;
+	print "VM ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, "^";
+];
+
+@h Verification.
+This verifies that the current story file is intact.
+
+=
+[ VM_Verify res;
+	@verify res;
+	return res;
+];
+
+@h Save, restore, restart.
+Restart does what it says: restarts the program as if it had just loaded for
+the first time.
+
+|VM_Save()| attempts to save the current state of the program to a file, and
+returns 0 if this fails, 1 if this succeeds, or 2 if in fact a restore has
+just succeeded. (A successful restoration should resume execution where the
+save succeeded, but we want to distinguish those cases.)
+
+|VM_Restore()| pretends to return |true| or |false| according to whether or not
+it succeeds, but in fact it can only return |false| to indicate failure, because
+a successful restoration means that execution has transferred to |VM_Save|
+instead.
+
+=
+[ VM_Restart;
+	@restart;
+];
+
+[ VM_Restore res fref;
+	fref = glk_fileref_create_by_prompt($01, $02, 0);
+	if (fref == 0) jump RFailed;
+	gg_savestr = glk_stream_open_file(fref, $02, GG_SAVESTR_ROCK);
+	glk_fileref_destroy(fref);
+	if (gg_savestr == 0) jump RFailed;
+	@restore gg_savestr res;
+	glk_stream_close(gg_savestr, 0);
+	gg_savestr = 0;
+	.RFailed;
+	rfalse;
+];
+
+[ VM_Save fref len res;
+	fref = glk_fileref_create_by_prompt(fileusage_SavedGame, filemode_Write, 0);
+	if (fref) {
+		gg_savestr = glk_stream_open_file(fref, filemode_Write, GG_SAVESTR_ROCK);
+		if (gg_savestr) {
+			@save gg_savestr res;
+			if (res == -1) {
+				! The player actually just typed "restore". We first have to recover
+				! all the Glk objects; the values in our global variables are all wrong.
+				GGRecoverObjects();
+				glk_stream_close(gg_savestr, GLK_NULL);
+				gg_savestr = 0;
+				return 2;
+			}
+			glk_stream_close(gg_savestr, GLK_NULL);
+			gg_savestr = 0;
+			if (res == 0) {
+				! Check that the savefile was actually written - this is mostly to account for browser limits in Parchment
+				if (glk_fileref_does_file_exist(fref)) {
+					gg_savestr = glk_stream_open_file(fref, filemode_Read, GG_SAVESTR_ROCK);
+					if (gg_savestr) {
+						glk_stream_set_position(gg_savestr, 0, seekmode_End);
+						len = glk_stream_get_position(gg_savestr);
+						glk_stream_close(gg_savestr, GLK_NULL);
+						gg_savestr = 0;
+						if (len) {
+							! We've confirmed the file exists and has content, which is about all we can do
+							glk_fileref_destroy(fref);
+							return 1;
+						}
+						! Cleanup the empty file
+						glk_fileref_delete_file(fref);
+					}
+				}
+			}
+		}
+		glk_fileref_destroy(fref);
+	}
+	return 0;
+];
+
+@h Undo.
+These are really emulations of the Z-machine's conventions on UNDO.
+
+=
+[ VM_Undo result_code;
+	@restoreundo result_code;
+	return (~~result_code);
+];
+
+[ VM_Save_Undo result_code;
+    @saveundo result_code;
+    if (result_code == -1) { GGRecoverObjects(); return 2; }
+    return (~~result_code);
+];

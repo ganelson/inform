@@ -506,6 +506,18 @@ in I7 terms. It should arguably be withdrawn, but doesn't seem to do any harm.
         WriteListFrom(child(obj), NEWLINE_BIT+INDENT_BIT+ALWAYS_BIT+FULLINV_BIT, 1);
 ];
 
+@h GlkList Command.
+GLKLIST is a testing command best used by those who understand Glulx and its
+ways: it isn't documented in the I7 manual, because it is pretty inscrutable
+for "real" users, but it's probably worth keeping just the same.
+
+=
+#Ifdef TARGET_GLULX;
+[ GlkListSub;
+    GlkDebuggingList();
+];
+#Endif;
+
 @h Grammar.
 In the old I6 parser, testing commands had their own scope hardwired in to the
 code: this worked by comparing the verb command word directly against |'scope'|
@@ -580,6 +592,10 @@ Verb meta 'trace'
 Verb meta 'tree'
     *                                           -> XTree
     * scope=testcommandnoun                     -> XTree;
+#Ifdef TARGET_GLULX;
+Verb meta 'glklist'
+    *                                           -> GlkList;
+#Endif;
 
 @h End testy.
 
