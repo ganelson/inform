@@ -1,0 +1,6 @@
+"Automatic Plural Synonyms"
+
+Lab is a room.
+The enigma is a thing in the Lab.
+
+Test me with "get things".

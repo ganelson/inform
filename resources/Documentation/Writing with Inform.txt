@@ -10888,6 +10888,7 @@ As might be expected, "[anything]" means the same as "[any thing]"; "[anybody]" 
 ^^{plurals: understanding (in commands)}
 ^^{`plural of: in player command}
 ^^{understanding: synonyms}
+^^{use options: catalogue: `no automatic plural synonyms} ^^{no automatic plural synonyms+useopt+}
 
 So far in this chapter, Understand sentences have been used to give names to actions, but they can also be used to name objects - in particular, things and rooms.
 
@@ -10899,12 +10900,12 @@ makes ST BERNARD refer to the dog, and MONASTERY CAGES refer to the room. But so
 
 	Understand "dog" as the St Bernard.
 
-Matters become more complicated when the player wants to refer to more than one object at once.	When a kind is created, and the source text constructs multiple duplicate items of that kind, Inform generates a plural of the kind's name in order to understand commands referring to these multiples. For instance, given...
+When a kind is created, Inform generates a plural of the kind's name. When objects of that kind are created, it's automatically the case that commands can refer to any of those objects by that plural name. For instance, given...
 
 	The Lake is a room. A duck is a kind of animal. Four ducks are in
 		the Lake.
 
-...the player can type TAKE DUCKS to try to pick up all four.
+...the player can type TAKE DUCKS to try to pick up all four. 
 
 Once again the automatic behaviour can be enhanced:
 
@@ -10915,6 +10916,12 @@ Now TAKE BIRDS and TAKE DUCKS are equivalent. Plurals can even, strange as it ma
 	The magpie is in the Lake. Understand "birds" as the plural of the magpie.
 
 And now TAKE BIRDS tries to take all four ducks and the magpie too.
+
+In fact, it is the norm that any given thing can be referred to by the plural of its kind name. EXAMINE ANIMALS would scrutinize the St. Bernard, even if it were alone, but would not automatically work for the ducks: things only receive the plural name of the most specific kind to which they belong.
+
+If you don't want this behavior, it can be suppressed with a use option:
+
+	Use no automatic plural synonyms.
 
 [x] Understanding kinds of value {var_understood}
 
@@ -11000,7 +11007,9 @@ then it can be called "brass", or "lantern", but not "lamp": Inform does not rea
 	Understand "lamp" as the lantern.
 	Understand "old lamp" as the lantern.
 
-With care, we can do the same trick for entire kinds of thing at once. It is not ordinarily the case that a thing can be called by the name of its kind: if we put a woman called April into a room, then she can usually be called "April", but not "woman". (The exception is when we do not specify any name for her - in that case, Inform will give up and call her just "woman".) So there is not usually any form of words which can refer to anything of a given kind. If we should want this, we have to say so explicitly:
+It is not ordinarily the case that a thing can be called by the name of its kind: if we put a woman called April into a room, then she can usually be called "April", but not "woman". (The exception is when we do not specify any name for her - in that case, Inform will give up and call her just "woman".) 
+
+With care, we can do the same trick for entire kinds of thing at once. So there is not usually any form of words which can refer to anything of a given kind. If we should want this, we have to say so explicitly:
 
 	Understand "machine" as a device.
 
