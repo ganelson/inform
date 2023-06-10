@@ -138,9 +138,6 @@ called. It is essential that this routine not be called for fake actions:
 in I7 use this is guaranteed, since fake actions are not allowed into the
 action machinery at all.
 
-Strangely, Glulx's action routines table is numbered in an off-by-one way
-compared to the Z-machine's: hence the |+1|.
-
 =
 [ DESCEND_TO_SPECIFIC_ACTION_R;
 	( #actions_table-->action )();

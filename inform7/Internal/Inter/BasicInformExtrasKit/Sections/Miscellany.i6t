@@ -108,10 +108,7 @@ Array StorageForShortName --> SHORT_NAME_BUFFER_LEN;
     for (i=WORDSIZE: i<length+WORDSIZE: i++) print (char) StorageForShortName->i;
     #Ifnot;
     if (length > SHORT_NAME_BUFFER_LEN) length = SHORT_NAME_BUFFER_LEN;
-    !#### length = glk_buffer_to_title_case_uni(StorageForShortName, SHORT_NAME_BUFFER_LEN, length, false);
-    !#### glk_put_buffer_uni(StorageForShortName, length);
-    if (length)
-        StorageForShortName-->0 = VM_LowerToUpperCase(StorageForShortName-->0);
+    if (length) StorageForShortName-->0 = VM_LowerToUpperCase(StorageForShortName-->0);
     glk_put_buffer_uni(StorageForShortName, length);
     #Endif;
     
