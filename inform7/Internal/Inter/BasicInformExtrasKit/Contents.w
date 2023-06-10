@@ -7,4 +7,3 @@ Web Syntax Version: 2
 
 Sections
 	Miscellany
-	Activities

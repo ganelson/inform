@@ -25,7 +25,7 @@ and we define:
 =
 Section 1 - Responses
 
-Issuing the response text of something -- documented at act_resp -- is an
+Issuing the response text of something -- hidden in RULES command -- -- documented at act_resp -- is an
 activity on responses.
 The issuing the response text activity is accessible to Inter as "PRINTING_RESPONSE_ACT".
 
@@ -63,7 +63,7 @@ a number rulebook.
 supplemented by details:
 
 =
-Printing room description details of something (documented at act_details) is an activity.
+Printing room description details of something (hidden in RULES command) (documented at act_details) is an activity.
 The printing room description details activity is accessible to Inter as "PRINTING_ROOM_DESC_DETAILS_ACT".
 
 For printing room description details of a container (called the box) when the box is falsely-unoccupied (this is the falsely-unoccupied container room description details rule):
@@ -77,7 +77,7 @@ For printing room description details of a container (called the box) when the b
   end if;
   say text of list writer internal rule response (B); [ ")" ]
 
-Printing inventory details of something (documented at act_idetails) is an activity.
+Printing inventory details of something (hidden in RULES command) (documented at act_idetails) is an activity.
 The printing inventory details activity is accessible to Inter as "PRINTING_INVENTORY_DETAILS_ACT".
 
 
@@ -123,11 +123,11 @@ For printing inventory details of a container (called the box) when the box is f
 grouped together:
 
 =
-Listing contents of something (documented at act_lc) is an activity.
+Listing contents of something (hidden in RULES command) (documented at act_lc) is an activity.
 The listing contents activity is accessible to Inter as "LISTING_CONTENTS_ACT".
 The standard contents listing rule is listed last in the for listing contents rulebook.
 The standard contents listing rule is defined by Inter as "STANDARD_CONTENTS_LISTING_R".
-Grouping together something (documented at act_gt) is an activity.
+Grouping together something (hidden in RULES command) (documented at act_gt) is an activity.
 The grouping together activity is accessible to Inter as "GROUPING_TOGETHER_ACT".
 
 

@@ -1,12 +1,12 @@
 adjective: 140 items
 article: 2 items
-noun: 2388 items
+noun: 2389 items
 pronoun: 8 items
 preposition: 274 items
 determiner: 22 items
 verb: 109 items
 verb_form: 388 items
-total in all categories: 3331
+total in all categories: 3332
 
 adjective: 'even'
 adjective: 'odd'
@@ -661,6 +661,7 @@ noun: proper: 'no deprecated features'
 noun: proper: 'authorial modesty'
 noun: proper: 'command line echoing'
 noun: proper: 'dictionary resolution'
+noun: proper: 'no automatic plural synonyms'
 noun: proper: 'dynamic memory allocation'
 noun: proper: 'maximum text length'
 noun: proper: 'index figure thumbnails'

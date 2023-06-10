@@ -14,6 +14,7 @@ Sections
 	Tables
 	MStack
 	Rulebooks
+	Activities
 	Flex
 	BlockValues
 	Text

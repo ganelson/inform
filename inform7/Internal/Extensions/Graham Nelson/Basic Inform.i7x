@@ -89,6 +89,8 @@ Use command line echoing translates as the configuration flag ECHO_COMMANDS
 	in BasicInformKit.
 Use dictionary resolution of at least 6 translates as the configuration value
 	DICT_RESOLUTION in BasicInformKit.
+Use no automatic plural synonyms translates as the configuration flag
+	NO_AUTO_PLURAL_NAMES in BasicInformKit.
 
 Use dynamic memory allocation of at least 8192 translates as the configuration
 	value STACK_FRAME_CAPACITY in BasicInformKit.
@@ -156,13 +158,13 @@ The starting the virtual machine activity is accessible to Inter as "STARTING_VI
 The final code startup rule is listed first in for starting the virtual machine.
 The final code startup rule is defined by Inter as "FINAL_CODE_STARTUP_R".
 
-Printing the name of something (documented at act_pn) is an activity.
+Printing the name of something (hidden in RULES command) (documented at act_pn) is an activity.
 The printing the name activity is accessible to Inter as "PRINTING_THE_NAME_ACT".
 
 The standard name printing rule is listed last in the for printing the name rulebook.
 The standard name printing rule is defined by Inter as "STANDARD_NAME_PRINTING_R".
 
-Printing the plural name of something (documented at act_ppn) is an activity.
+Printing the plural name of something (hidden in RULES command) (documented at act_ppn) is an activity.
 The printing the plural name activity is accessible to Inter as "PRINTING_THE_PLURAL_NAME_ACT".
 
 The standard printing the plural name rule is listed last in the for printing the

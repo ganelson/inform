@@ -77,18 +77,18 @@ The |/main/synoptic/actions| submodule.
 The |/main/synoptic/activities| submodule.
 
 @e ACTIVITY_AFTER_RULEBOOKS_HL
-@e ACTIVITY_ATB_RULEBOOKS_HL
 @e ACTIVITY_BEFORE_RULEBOOKS_HL
 @e ACTIVITY_FOR_RULEBOOKS_HL
+@e ACTIVITY_FLAGS_HL
 @e ACTIVITY_VAR_CREATORS_HL
 
 @<Resources for activities@> =
 	SYN_SUBMD(I"activities")
 		SYN_CONST(ACTIVITY_AFTER_RULEBOOKS_HL,    I"Activity_after_rulebooks")
-		SYN_CONST(ACTIVITY_ATB_RULEBOOKS_HL,      I"Activity_atb_rulebooks")
 		SYN_CONST(ACTIVITY_BEFORE_RULEBOOKS_HL,   I"Activity_before_rulebooks")
 		SYN_CONST(ACTIVITY_FOR_RULEBOOKS_HL,      I"Activity_for_rulebooks")
 		SYN_CONST(ACTIVITY_VAR_CREATORS_HL,       I"activity_var_creators")
+		SYN_CONST(ACTIVITY_FLAGS_HL,              I"Activity_flags")
 
 @h Chronology.
 The |/main/synoptic/chronology| submodule.

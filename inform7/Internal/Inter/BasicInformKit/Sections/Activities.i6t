@@ -16,6 +16,20 @@ Global activities_sp = 0;
 Array activities_stack --> MAX_NESTED_ACTIVITIES;
 Array activity_parameters_stack --> MAX_NESTED_ACTIVITIES;
 
+@ The |Activity_flags| byte array, indexed by activity number, is a bitmap:
+
+=
+Constant FUTURE_ACTION_ACTFLAG = 1;
+Constant HIDDEN_IN_RULES_ACTFLAG = 2;
+
+@ These variables are not needed by Basic Inform, and are unused in that case,
+but are included in |BasicInformKit| anyway in order that the activities code
+below can compile in both Basic and regular Inform projects.
+
+=
+Global action;
+Global action_to_be; ! (if the current command line being parsed were accepted)
+
 @h Rule Debugging Inhibition.
 The output from RULES or RULES ALL becomes totally illegible if it is applied
 even to the activities printing names of objects, so this is inhibited when
@@ -25,14 +39,13 @@ changes and ensures that |inhibit_flag| has exactly this meaning.
 =
 Global inhibit_flag = 0;
 Global saved_debug_rules = 0;
-[ FixInhibitFlag n act inhibit_rule_debugging;
-	for (n=0:n<activities_sp:n++) {
-		act = activities_stack-->n;
-		if (act == PRINTING_THE_NAME_ACT or PRINTING_THE_PLURAL_NAME_ACT or
-			PRINTING_ROOM_DESC_DETAILS_ACT or PRINTING_INVENTORY_DETAILS_ACT or
-			LISTING_CONTENTS_ACT or GROUPING_TOGETHER_ACT or PRINTING_RESPONSE_ACT)
-				inhibit_rule_debugging = true;
-	}
+
+[ FixInhibitFlag n inhibit_rule_debugging;
+	for (n=0:n<activities_sp:n++)
+		if ((Activity_flags->(activities_stack-->n)) & HIDDEN_IN_RULES_ACTFLAG) {
+			inhibit_rule_debugging = true;
+			break;
+		}
 	if ((inhibit_flag == false) && (inhibit_rule_debugging)) {
 		saved_debug_rules = debug_rules;
 		debug_rules = 0;
@@ -87,12 +100,30 @@ empty.
 This is really much like processing any rulebook, except that |self| is
 temporarily set to the parameter, and is preserved by the process.
 
+Note that when an activity based on the conjectural "future action" is
+being run -- in a few parser-related cases, that is -- the identity of this
+action is put temporarily into |action|, and the current value saved while
+this takes place. That allows rules in the activity rulebooks to have
+preambles based on the current action, and yet be tested against what is not
+yet the current action.
+
 =
 [ ProcessActivityRulebook rulebook parameter  rv;
 	@push self;
 	if (parameter) self = parameter;
 	rv = FollowRulebook(rulebook, parameter, true);
 	@pull self;
+	if (rv) rtrue;
+	rfalse;
+];
+
+[ ProcessActivityRulebookATB rulebook parameter  rv;
+	@push action; action = action_to_be;
+	@push self;
+	if (parameter) self = parameter;
+	rv = FollowRulebook(rulebook, parameter, true);
+	@pull self;
+	@pull action;
 	if (rv) rtrue;
 	rfalse;
 ];
@@ -110,34 +141,26 @@ simple routine, but some are run by calling the three subroutines independently.
 ];
 
 @h Begin.
-Note that when an activity based on the conjectural "future action" is
-being run -- in a few parser-related cases, that is -- the identity of this
-action is put temporarily into |action|, and the current value saved while
-this takes place. That allows rules in the activity rulebooks to have
-preambles based on the current action, and yet be tested against what is not
-yet the current action.
 
 =
-[ BeginActivity A o x;
+[ BeginActivity A o;
 	if (activities_sp == MAX_NESTED_ACTIVITIES) return RunTimeProblem(RTP_TOOMANYACTS);
 	activity_parameters_stack-->activities_sp = o;
 	activities_stack-->(activities_sp++) = A;
 	FixInhibitFlag();
 	MStack_CreateAVVars(A);
-	if (Activity_atb_rulebooks->A) { x = action; action = action_to_be; }
-	o = ProcessActivityRulebook(Activity_before_rulebooks-->A, o);
-	if (Activity_atb_rulebooks->A) action = x;
-	return o;
+	if ((Activity_flags->A) & FUTURE_ACTION_ACTFLAG)
+		return ProcessActivityRulebookATB(Activity_before_rulebooks-->A, o);
+	return ProcessActivityRulebook(Activity_before_rulebooks-->A, o);
 ];
 
 @h For.
 
 =
-[ ForActivity A o x;
-	if (Activity_atb_rulebooks->A) { x = action; action = action_to_be; }
-	o = ProcessActivityRulebook(Activity_for_rulebooks-->A, o);
-	if (Activity_atb_rulebooks->A) action = x;
-	return o;
+[ ForActivity A o;
+	if ((Activity_flags->A) & FUTURE_ACTION_ACTFLAG)
+		return ProcessActivityRulebookATB(Activity_for_rulebooks-->A, o);
+	return ProcessActivityRulebook(Activity_for_rulebooks-->A, o);
 ];
 
 @h End.
@@ -145,9 +168,10 @@ yet the current action.
 =
 [ EndActivity A o rv x;
 	if ((activities_sp > 0) && (activities_stack-->(activities_sp-1) == A)) {
-		if (Activity_atb_rulebooks->A) { x = action; action = action_to_be; }
-		rv = ProcessActivityRulebook(Activity_after_rulebooks-->A, o);
-		if (Activity_atb_rulebooks->A) action = x;
+		if ((Activity_flags->A) & FUTURE_ACTION_ACTFLAG) 
+			rv = ProcessActivityRulebookATB(Activity_after_rulebooks-->A, o);
+		else
+			rv = ProcessActivityRulebook(Activity_after_rulebooks-->A, o);
 		activities_sp--; FixInhibitFlag();
 		MStack_DestroyAVVars(A);
 		return rv;

@@ -441,6 +441,7 @@ void Hierarchy::establish(void) {
 @e ACTIVITY_FOR_MD_HL
 @e ACTIVITY_AFTER_MD_HL
 @e ACTIVITY_UFA_MD_HL
+@e ACTIVITY_HID_MD_HL
 @e ACTIVITY_INDEX_ID_MD_HL
 @e ACTIVITY_DOCUMENTATION_MD_HL
 @e ACTIVITY_XREFS_HAP
@@ -469,6 +470,7 @@ void Hierarchy::establish(void) {
 			H_C_U(ACTIVITY_AFTER_MD_HL,       I"^after_rulebook")
 			H_C_U(ACTIVITY_EMPTY_MD_HL,       I"^empty")
 			H_C_U(ACTIVITY_UFA_MD_HL,         I"^used_by_future")
+			H_C_U(ACTIVITY_HID_MD_HL,         I"^hide_in_debugging")
 			H_C_U(ACTIVITY_VAR_CREATOR_MD_HL, I"^var_creator")
 			H_C_U(ACTIVITY_DOCUMENTATION_MD_HL, I"^documentation")
 			H_C_U(ACTIVITY_INDEX_ID_MD_HL,    I"^index_id")

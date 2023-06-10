@@ -12,7 +12,6 @@ Sections
 	ListWriter
 	OrderOfPlay
 	Actions
-	Activities
 	Figures
 	OutOfWorld
 	Printing
