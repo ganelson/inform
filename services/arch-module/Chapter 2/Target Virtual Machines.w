@@ -348,10 +348,33 @@ int TargetVMs::allow_this_many_locals(target_vm *VM, int N) {
 	if ((VM->max_locals >= 0) && (VM->max_locals < N)) return FALSE;
 	return TRUE;
 }
-int TargetVMs::allow_MAX_LOCAL_VARIABLES(target_vm *VM) {
+
+int TargetVMs::has_architecture(target_vm *VM, inter_architecture *A) {
 	if (VM == NULL) internal_error("no VM");
-	if (VM->max_locals > 15) return TRUE;
+	if (A == VM->architecture) return TRUE;
 	return FALSE;
+}
+
+@ This function is only called to decide whether to issue certain ICL memory
+settings to the Inform 6 compiler, and so we can basically assume the VM here
+is going to end up as either the Z-machine or Glulx.
+
+=
+int TargetVMs::allow_memory_setting(target_vm *VM, text_stream *setting) {
+	if (VM == NULL) internal_error("no VM");
+	if (Str::eq_insensitive(setting, I"MAX_LOCAL_VARIABLES")) {
+		if (VM->max_locals > 15) return TRUE;
+		return FALSE;
+	}
+	if (Str::eq_insensitive(setting, I"DICT_CHAR_SIZE")) {
+		if (TargetVMs::is_16_bit(VM) == FALSE) return TRUE;
+		return FALSE;
+	}
+	if (Str::eq_insensitive(setting, I"DICT_WORD_SIZE")) {
+		if (TargetVMs::is_16_bit(VM) == FALSE) return TRUE;
+		return FALSE;
+	}
+	return TRUE;
 }
 
 @h File extension provisions.

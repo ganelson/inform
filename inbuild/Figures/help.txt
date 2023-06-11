@@ -22,13 +22,16 @@ usage: inbuild [-TASK] TARGET1 TARGET2 ...
 -preprocess-html X             construct HTML page based on X
 -preprocess-html-to X          set destination for -preprocess-html to be X
 -rebuild                       completely rebuild target(s)
+-recursive                     run -contents-of recursively to look through subdirectories too (default is -no-recursive)
 -no-repair                     don't quietly fix missing or incorrect extension metadata (default is -repair)
 -results X                     write HTML report file to X (for use within Inform GUI apps)
 -sync-to X                     forcibly copy target(s) to nest X, even if prior version already there
--tools X                       make X the directory of intools executables, and exit developer mode
+-tools X                       make X the directory of intools executables
 -use-locate                    show file paths of all the extensions, kits and so on needed to use
 -use-missing                   show the extensions, kits and so on which are needed to use but missing
 -use-needs                     show all the extensions, kits and so on needed to use
+-verbose                       equivalent to -verbosity=1 (default is -no-verbose)
+-verbosity=N                   how much explanation to print: lowest is 0 (default), highest is 3
 -verify-registry X             verify roster.json metadata of registry in the directory X
 -no-versions-in-filenames      don't append _v number to destination filenames on -copy-to or -sync-to (default is -versions-in-filenames)
 
@@ -45,6 +48,7 @@ for translating Inform source text to Inter:
   -source X                    use file X as the Inform source text
 
 for locating resources in the file system:
+  -deprecated-external X       same as -external X, but issues warnings if the nest is actually used
   -external X                  use X as the user's home for installed material such as extensions
   -internal X                  use X as the location of built-in material such as the Standard Rules
   -nest X                      add the nest at pathname X to the search list

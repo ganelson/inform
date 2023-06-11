@@ -1,12 +1,12 @@
 *** Defining new assertion verbs
 (Hints leading the player through physical puzzles; The Unexamined Life)
-An adaptive hint system that tracks what the player needs to have seen or to possess in order to solve a given puzzle, and doles out suggestions accordingly. Handles changes in the game state with remarkable flexibility, and allows the player to decide how explicit a nudge he wants at any given moment.
+An adaptive hint system that tracks what the player needs to have seen or to possess in order to solve a given puzzle, and doles out suggestions accordingly. Handles changes in the game state with remarkable flexibility, and allows the player to decide how explicit a nudge they want at any given moment.
 
 Hint systems in IF come in a variety of flavors: some are a static, prewritten set of guidelines (which might exist in a menu or outside the game entirely); others are built in as part of the program, and attempt to adapt to the situation the player currently faces. Adaptive hints have the advantage that they are less likely to reveal information for which the player is not ready, and the disadvantage that they are more work for the author.
 
-The exercise here is to write an adaptive hint system that will both respond in agile ways to the state of the world model and require a minimum of authorial fussing. We also want the player to be able to ask for a hint about any object he encounters in the game world: this will let him be specific and avoid accidentally receiving hints about the wrong puzzles.
+The exercise here is to write an adaptive hint system that will both respond in agile ways to the state of the world model and require a minimum of authorial fussing. We also want the player to be able to ask for a hint about any object they encounter in the game world: this will let them be specific and avoid accidentally receiving hints about the wrong puzzles.
 
-Our baseline assumption is that a player may find a puzzle unsolvable for one of two reasons: he either hasn't seen the relevant clue, or he hasn't got the relevant equipment. If these are true, then he should be given hints about how to find this information, and then once he has it, more specific hints about the puzzle itself -- ending, as a last resort, with the exact command(s) he will need to use in order to bring about the solution.
+Our baseline assumption is that a player may find a puzzle unsolvable for one of two reasons: they either haven't seen the relevant clue, or they haven't got the relevant equipment. If these are true, then they should be given hints about how to find this information, and then once they have it, more specific hints about the puzzle itself -- ending, as a last resort, with the exact command(s) they will need to use in order to bring about the solution.
 
 In practice, there are other possibilities, but this will do for an example. 
 
@@ -30,7 +30,7 @@ We begin by defining our relations:
 
 	Hinting about is an action applying to one visible thing. Understand "hint about [any thing]" as hinting about. 
 
-This allows us to create the most absolutely generic sort of hint -- boring, perhaps, but in practice the player often just needs a nudge about what part of the game world he should be examining for a solution:
+This allows us to create the most absolutely generic sort of hint -- boring, perhaps, but in practice the player often just needs a nudge about what part of the game world they should be examining for a solution:
 
 	{**}Carry out hinting about:
 		if something explains the noun, say "You might want to review [the list of things which explain the noun]. ";
@@ -39,7 +39,7 @@ This allows us to create the most absolutely generic sort of hint -- boring, per
 		otherwise:
 			say "Sorry, I can't advise you further on that.".
 
-These things cover hinting about objects that are themselves puzzles. But what if the player asks for hints about a tool or piece of information because he doesn't know how to apply it yet? We might want to give some guidance there, as well.
+These things cover hinting about objects that are themselves puzzles. But what if the player asks for hints about a tool or piece of information because they don't know how to apply it yet? We might want to give some guidance there, as well.
 	
 	{**}Carry out hinting about something which explains something (called target):
 		if target is unseen, say "[The noun] might prove useful information, sooner or later." instead;
@@ -161,7 +161,7 @@ Now we can add specific hints to replace the generic ones:
 	{**}Carry out hinting about the tomb:
 		say "The lids are heavy, but you can open them when you carry the pry bar."
 		
-The rest of the hint system ensures that the player will not see this final suggestion until he has the pry bar, since the tomb "requires" the pry bar. Having the hint there doesn't excuse us from providing some alternate wording in case the player solves this not-very-difficult conundrum on his own, though:
+The rest of the hint system ensures that the player will not see this final suggestion until they have the pry bar, since the tomb "requires" the pry bar. Having the hint there doesn't excuse us from providing some alternate wording in case the player solves this not-very-difficult conundrum on his own, though:
 
 	{**}Understand "pry [something] with [something preferably held]" as unlocking it with. Understand the commands "lever" or "prise" as "pry".
 

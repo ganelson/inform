@@ -94,6 +94,31 @@ void ProblemBuffer::copy_source_reference(wording W) {
 	DISCARD_TEXT(file)
 }
 
+void ProblemBuffer::copy_file_reference(text_stream *file_ref, int line) {
+	TEMPORARY_TEXT(file)
+	WRITE_TO(file, "%S", file_ref);
+	pathname *proj = HTML::get_link_abbreviation_path();
+	if (proj) {
+		TEMPORARY_TEXT(project_prefix)
+		WRITE_TO(project_prefix, "%p", proj);
+		if (Str::prefix_eq(file, project_prefix, Str::len(project_prefix)))
+			Str::delete_n_characters(file, Str::len(project_prefix));
+		DISCARD_TEXT(project_prefix)
+	} else {
+		WRITE_TO(file, "(no file)");
+	}
+	text_stream *paraphrase = file;
+	#ifdef DESCRIBE_SOURCE_FILE_PROBLEMS_CALLBACK
+	paraphrase = DESCRIBE_SOURCE_FILE_PROBLEMS_CALLBACK(paraphrase, NULL, file);
+	#endif
+	WRITE_TO(PBUFF, " %c%S%c%S%c%d%c",
+		SOURCE_REF_CHAR, paraphrase,
+		SOURCE_REF_CHAR, file,
+		SOURCE_REF_CHAR, line,
+		SOURCE_REF_CHAR);
+	DISCARD_TEXT(file)
+}
+
 @ Once the error message is fully constructed, we will want to output it
 to a file: in fact, by default it will go in three directions, to
 |stderr|, to the debugging log and of course to the problems file. The main
@@ -109,6 +134,7 @@ int problem_count_at_last_in = 1;
 text_stream problems_file_struct; /* The actual report of Problems file */
 text_stream *problems_file = &problems_file_struct; /* As a |text_stream *| */
 int problems_file_active = FALSE; /* Currently in use */
+int currently_issuing_a_warning = FALSE;
 
 #ifndef PROBLEMS_HTML_EMITTER
 #define PROBLEMS_HTML_EMITTER PUT_TO
@@ -169,7 +195,8 @@ indentation. And similarly for |>++>|, used to mark continuations.
 			HTML_TAG("hr");
 		}
 		HTML_OPEN_WITH("p", "class=\"hang\"");
-		WRITE("<b>Problem.</b> ");
+		if (currently_issuing_a_warning) WRITE("<b>Warning.</b> ");
+		else WRITE("<b>Problem.</b> ");
 		i+=3; continue;
 	}
 	if (Str::includes_wide_string_at(PBUFF, L">++>", i)) {

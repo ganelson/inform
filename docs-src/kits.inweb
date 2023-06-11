@@ -7,12 +7,15 @@ extensions, different projects may use different sets of kits, but some are
 compulsory, and others nearly so. For an English-language work of interactive
 fiction being made with the Inform apps, the kits will be:
 = (text)
-BasicInformKit + EnglishLanguageKit + WorldModelKit + CommandParserKit
+Architecture32Kit + BasicInformKit + EnglishLanguageKit + WorldModelKit + CommandParserKit
 =
+or perhaps Architecture16Kit instead of Architecture32Kit, depending on whether
+the project is being compiled to a 16-bit or a 32-bit platform.
+
 However, if the "Basic Inform" checkbox is ticked on the Settings panel for
 the project, the kits will instead be:
 = (text)
-BasicInformKit + EnglishLanguageKit + BasicInformExtrasKit
+Architecture32Kit + BasicInformKit + EnglishLanguageKit
 =
 And these are also the defaults when Inform projects are compiled from the command
 line, with the optional |-basic| switch forcing us into the second case.

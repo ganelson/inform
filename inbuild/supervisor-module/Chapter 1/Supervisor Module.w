@@ -38,6 +38,7 @@ which use this module:
 @e inform_pipeline_CLASS
 @e inform_project_CLASS
 @e inform_template_CLASS
+@e kit_configuration_CLASS
 @e kit_dependency_CLASS
 @e known_extension_clash_CLASS
 
@@ -70,6 +71,7 @@ DECLARE_CLASS(inform_language)
 DECLARE_CLASS(inform_pipeline)
 DECLARE_CLASS(inform_project)
 DECLARE_CLASS(inform_template)
+DECLARE_CLASS(kit_configuration)
 DECLARE_CLASS(kit_dependency)
 DECLARE_CLASS(known_extension_clash)
 

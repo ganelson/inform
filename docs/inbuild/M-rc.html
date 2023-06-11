@@ -81,13 +81,16 @@ and those not documented in this manual are covered in that one.
 <span class="plain-syntax">-preprocess-html X             construct HTML page based on X</span>
 <span class="plain-syntax">-preprocess-html-to X          set destination for -preprocess-html to be X</span>
 <span class="plain-syntax">-rebuild                       completely rebuild target(s)</span>
+<span class="plain-syntax">-recursive                     run -contents-of recursively to look through subdirectories too (default is -no-recursive)</span>
 <span class="plain-syntax">-no-repair                     don't quietly fix missing or incorrect extension metadata (default is -repair)</span>
 <span class="plain-syntax">-results X                     write HTML report file to X (for use within Inform GUI apps)</span>
 <span class="plain-syntax">-sync-to X                     forcibly copy target(s) to nest X, even if prior version already there</span>
-<span class="plain-syntax">-tools X                       make X the directory of intools executables, and exit developer mode</span>
+<span class="plain-syntax">-tools X                       make X the directory of intools executables</span>
 <span class="plain-syntax">-use-locate                    show file paths of all the extensions, kits and so on needed to use</span>
 <span class="plain-syntax">-use-missing                   show the extensions, kits and so on which are needed to use but missing</span>
 <span class="plain-syntax">-use-needs                     show all the extensions, kits and so on needed to use</span>
+<span class="plain-syntax">-verbose                       equivalent to -verbosity=1 (default is -no-verbose)</span>
+<span class="plain-syntax">-verbosity=N                   how much explanation to print: lowest is 0 (default), highest is 3</span>
 <span class="plain-syntax">-verify-registry X             verify roster.json metadata of registry in the directory X</span>
 <span class="plain-syntax">-no-versions-in-filenames      don't append _v number to destination filenames on -copy-to or -sync-to (default is -versions-in-filenames)</span>
 
@@ -104,6 +107,7 @@ and those not documented in this manual are covered in that one.
 <span class="plain-syntax">  -source X                    use file X as the Inform source text</span>
 
 <span class="plain-syntax">for locating resources in the file system:</span>
+<span class="plain-syntax">  -deprecated-external X       same as -external X, but issues warnings if the nest is actually used</span>
 <span class="plain-syntax">  -external X                  use X as the user's home for installed material such as extensions</span>
 <span class="plain-syntax">  -internal X                  use X as the location of built-in material such as the Standard Rules</span>
 <span class="plain-syntax">  -nest X                      add the nest at pathname X to the search list</span>

@@ -65,46 +65,61 @@ The operator < means the numerically-less-than relation.
 The operator >= means the numerically-greater-than-or-equal-to relation.
 The operator <= means the numerically-less-than-or-equal-to relation.
 
-Use ineffectual translates as (- ! Use ineffectual does nothing. -).
+Use ineffectual translates as a compiler feature.
 
-Use American dialect translates as (- Constant DIALECT_US; -).
-Use the serial comma translates as (- Constant SERIAL_COMMA; -).
-Use memory economy translates as (- Constant MEMORY_ECONOMY; -).
-Use engineering notation translates as (- Constant USE_E_NOTATION = 0; -).
-Use unabbreviated object names translates as (- Constant UNABBREVIATED_OBJECT_NAMES = 0; -).
-Use predictable randomisation translates as (- Constant FIX_RNG; -).
-Use fast route-finding translates as (- Constant FAST_ROUTE_FINDING; -).
-Use slow route-finding translates as (- Constant SLOW_ROUTE_FINDING; -).
-Use numbered rules translates as (- Constant NUMBERED_RULES; -).
-Use telemetry recordings translates as (- Constant TELEMETRY_ON; -).
-Use no deprecated features translates as (- Constant NO_DEPRECATED_FEATURES; -).
-Use gn testing version translates as (- Constant GN_TESTING_VERSION; -).
-Use authorial modesty translates as (- Constant AUTHORIAL_MODESTY; -).
+Use American dialect translates as the configuration flag AMERICAN_DIALECT
+	in BasicInformKit.
+Use the serial comma translates as the configuration flag SERIAL_COMMA
+	in BasicInformKit.
+Use memory economy translates as the configuration flag MEMORY_ECONOMY
+	in BasicInformKit.
+Use engineering notation translates as a compiler feature.
+Use printed engineering notation translates as the configuration flag
+	PRINT_ENGINEER_EXPS in BasicInformKit.
+Use predictable randomisation translates as the configuration flag FIX_RNG
+	in BasicInformKit.
+Use numbered rules translates as the configuration flag NUMBERED_RULES
+	in BasicInformKit.
+Use telemetry recordings translates as a compiler feature.
+Use no deprecated features translates as the configuration flag NO_DEPRECATED
+	in BasicInformKit.
+Use authorial modesty translates as the configuration flag AUTHORIAL_MODESTY
+	in BasicInformKit.
+Use command line echoing translates as the configuration flag ECHO_COMMANDS
+	in BasicInformKit.
+Use dictionary resolution of at least 6 translates as the configuration value
+	DICT_RESOLUTION in BasicInformKit.
+Use no automatic plural synonyms translates as the configuration flag
+	NO_AUTO_PLURAL_NAMES in BasicInformKit.
 
-Use dynamic memory allocation of at least 8192 translates as
-	(- Constant DynamicMemoryAllocation = {N}; -).
-Use maximum text length of at least 1024 translates as
-	(- Constant TEXT_TY_BufferSize = {N}+3; -).
-Use index figure thumbnails of at least 50 translates as
-	(- Constant MAX_FIGURE_THUMBNAILS_IN_INDEX = {N}; -).
+Use dynamic memory allocation of at least 8192 translates as the configuration
+	value STACK_FRAME_CAPACITY in BasicInformKit.
+Use maximum text length of at least 1024 translates as the configuration
+	value TEXT_BUFFER_SIZE in BasicInformKit.
+Use index figure thumbnails of at least 50 translates as a compiler feature.
 
 Use dynamic memory allocation of at least 8192.
 
-Use ALLOC_CHUNK_SIZE of 32000.
-Use MAX_ARRAYS of 10000.
-Use MAX_CLASSES of 200.
-Use MAX_VERBS of 255.
-Use MAX_LABELS of 10000.
-Use MAX_ZCODE_SIZE of 1000000.
-Use MAX_STATIC_DATA of 500000.
-Use MAX_NUM_STATIC_STRINGS of 500000.
-Use MAX_PROP_TABLE_SIZE of 200000.
-Use MAX_INDIV_PROP_TABLE_SIZE of 20000.
-Use MAX_STACK_SIZE of 65536.
-Use MAX_SYMBOLS of 20000.
-Use MAX_EXPRESSION_NODES of 256.
-Use MAX_LABELS of 200000.
-Use MAX_LOCAL_VARIABLES of 256.
+Use Inform 6 compiler option "-s".
+Use Inform 6 compiler option "$ALLOC_CHUNK_SIZE=32000".
+Use Inform 6 compiler option "$MAX_ARRAYS=10000".
+Use Inform 6 compiler option "$MAX_CLASSES=200".
+Use Inform 6 compiler option "$MAX_VERBS=255".
+Use Inform 6 compiler option "$MAX_LABELS=10000".
+Use Inform 6 compiler option "$MAX_ZCODE_SIZE=1000000".
+Use Inform 6 compiler option "$MAX_STATIC_DATA=500000".
+Use Inform 6 compiler option "$MAX_NUM_STATIC_STRINGS=500000".
+Use Inform 6 compiler option "$MAX_PROP_TABLE_SIZE=200000".
+Use Inform 6 compiler option "$MAX_INDIV_PROP_TABLE_SIZE=20000".
+Use Inform 6 compiler option "$MAX_STACK_SIZE=65536".
+Use Inform 6 compiler option "$MAX_SYMBOLS=20000".
+Use Inform 6 compiler option "$MAX_EXPRESSION_NODES=256".
+Use Inform 6 compiler option "$MAX_LABELS=200000".
+Use Inform 6 compiler option "$MAX_LOCAL_VARIABLES=256".
+
+Chapter 1 - Glulx Preamble (for Glulx only)
+
+Use Inform 6 compiler option "$DICT_CHAR_SIZE=4".
 
 Part Two - Miscellaneous Definitions
 
@@ -143,20 +158,19 @@ The starting the virtual machine activity is accessible to Inter as "STARTING_VI
 The final code startup rule is listed first in for starting the virtual machine.
 The final code startup rule is defined by Inter as "FINAL_CODE_STARTUP_R".
 
-Printing the name of something (documented at act_pn) is an activity.
+Printing the name of something (hidden in RULES command) (documented at act_pn) is an activity.
 The printing the name activity is accessible to Inter as "PRINTING_THE_NAME_ACT".
 
 The standard name printing rule is listed last in the for printing the name rulebook.
 The standard name printing rule is defined by Inter as "STANDARD_NAME_PRINTING_R".
 
-Printing the plural name of something (documented at act_ppn) is an activity.
+Printing the plural name of something (hidden in RULES command) (documented at act_ppn) is an activity.
 The printing the plural name activity is accessible to Inter as "PRINTING_THE_PLURAL_NAME_ACT".
 
 The standard printing the plural name rule is listed last in the for printing the
 plural name rulebook.
 The standard printing the plural name rule is defined by Inter as
 "STANDARD_PLURAL_NAME_PRINTING_R".
-
 
 Part Three - Phrasebook
 
@@ -1388,6 +1402,13 @@ To mark (filename - external file) as ready to read
 To mark (filename - external file) as not ready to read
 	(documented at ph_markfilenotready):
 	(- FileIO_MarkReady({filename}, false); -).
+
+Chapter 10 - Use Options
+
+Section 1 - Numerical Value
+
+To decide what number is the numerical value of (U - a use option):
+	(- USE_OPTION_VALUES-->({U}) -).
 
 Part Four - Adjectival Definitions
 

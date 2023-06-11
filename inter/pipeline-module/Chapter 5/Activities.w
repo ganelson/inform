@@ -9,10 +9,10 @@ in the tree with type |_activity|.
 void SynopticActivities::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (InterNodeList::array_len(inv->activity_nodes) > 0) @<Assign unique activity ID numbers@>;
 	@<Define ACTIVITY_AFTER_RULEBOOKS array@>;
-	@<Define ACTIVITY_ATB_RULEBOOKS array@>;
 	@<Define ACTIVITY_BEFORE_RULEBOOKS array@>;
 	@<Define ACTIVITY_FOR_RULEBOOKS array@>;
 	@<Define ACTIVITY_VAR_CREATORS array@>;
+	@<Define ACTIVITY_FLAGS array@>;
 }
 
 @ Each activity package contains a numeric constant with the symbol name |activity_id|.
@@ -44,16 +44,6 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	}
 	Synoptic::end_array(I);
 
-@<Define ACTIVITY_ATB_RULEBOOKS array@> =
-	inter_name *iname = HierarchyLocations::iname(I, ACTIVITY_ATB_RULEBOOKS_HL);
-	Synoptic::begin_byte_array(I, step, iname);
-	for (int i=0; i<InterNodeList::array_len(inv->activity_nodes); i++) {
-		inter_package *pack = PackageInstruction::at_this_head(inv->activity_nodes->list[i].node);
-		inter_ti ubf = Metadata::read_numeric(pack, I"^used_by_future");
-		Synoptic::numeric_entry(ubf);
-	}
-	Synoptic::end_array(I);
-
 @<Define ACTIVITY_BEFORE_RULEBOOKS array@> =
 	inter_name *iname = HierarchyLocations::iname(I, ACTIVITY_BEFORE_RULEBOOKS_HL);
 	Synoptic::begin_array(I, step, iname);
@@ -82,5 +72,17 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 		inter_symbol *vc_s = Metadata::optional_symbol(pack, I"^var_creator");
 		if (vc_s) Synoptic::symbol_entry(vc_s);
 		else Synoptic::numeric_entry(0);
+	}
+	Synoptic::end_array(I);
+
+@<Define ACTIVITY_FLAGS array@> =
+	inter_name *iname = HierarchyLocations::iname(I, ACTIVITY_FLAGS_HL);
+	Synoptic::begin_byte_array(I, step, iname);
+	for (int i=0; i<InterNodeList::array_len(inv->activity_nodes); i++) {
+		inter_package *pack = PackageInstruction::at_this_head(inv->activity_nodes->list[i].node);
+		inter_ti flags = 0;
+		if (Metadata::read_numeric(pack, I"^used_by_future")) flags += 1;
+		if (Metadata::read_numeric(pack, I"^hide_in_debugging")) flags += 2;
+		Synoptic::numeric_entry(flags);
 	}
 	Synoptic::end_array(I);

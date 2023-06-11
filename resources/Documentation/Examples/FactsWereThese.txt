@@ -18,7 +18,7 @@ We start by creating the idea that everything in the game has a monetary value:
 
 	Understand "give [things preferably held] to [someone]" as multiply-giving it to. Understand "give [things] to [someone]" as multiply-giving it to.  Multiply-giving it to is an action applying to two things.
 	
-A subtlety here: we say "things preferably held" to prefer items that the player is holding (so if the player has two dollars in hand and a third lies on the ground, he will use just the two he has). 
+A subtlety here: we say "things preferably held" to prefer items that the player is holding (so if the player has two dollars in hand and a third lies on the ground, they will use just the two they have). 
 
 The second grammar line allows Inform to match things that aren't held if it can't make up the list from things that are. If all three dollars are on the ground, the player can pick them up before spending them.
 

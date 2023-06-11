@@ -20,6 +20,7 @@ typedef struct inform_kit {
 	struct linked_list *kind_definitions; /* of |text_stream| */
 	struct linked_list *extensions; /* of |inbuild_requirement| */
 	struct linked_list *activations; /* of |element_activation| */
+	struct linked_list *configurations; /* of |kit_configuration| */
 	struct text_stream *index_structure; /* for indexing projects using this kit */
 	int defines_Main; /* does the Inter code in this kit define the |Main| routine? */
 	int supports_nl; /* does the Inter code in this kit support a natural language extension? */
@@ -48,6 +49,18 @@ typedef struct element_activation {
 	CLASS_DEFINITION
 } element_activation;
 
+@ And kits can be configured with constants linked into them: for example,
+the constant |BasicInformKit`AMERICAN_DIALECT_CFGF|. These are mostly set by
+use options.
+
+=
+typedef struct kit_configuration {
+	struct inform_kit *owner;
+	struct text_stream *symbol_name;
+	int is_flag;
+	CLASS_DEFINITION
+} kit_configuration;
+
 @ Here goes, then:
 
 =
@@ -66,11 +79,14 @@ void Kits::scan(inbuild_copy *C) {
 	K->kind_definitions = NEW_LINKED_LIST(text_stream);
 	K->extensions = NEW_LINKED_LIST(inbuild_requirement);
 	K->activations = NEW_LINKED_LIST(element_activation);
+	K->configurations = NEW_LINKED_LIST(kit_configuration);
 	K->index_structure = NULL;
 	K->defines_Main = FALSE;
 	K->supports_nl = FALSE;
 
 	filename *F = Filenames::in(C->location_if_path, I"kit_metadata.json");
+	if (TextFiles::exists(F) == FALSE)
+		SVEXPLAIN(2, "(no JSON metadata file found at %f)\n", F);
 	JSONMetadata::read_metadata_file(C, F, NULL, NULL);
 	
 	if (C->metadata_record) {
@@ -121,6 +137,16 @@ void Kits::scan(inbuild_copy *C) {
 	if (inserts_source_text) {
 		K->early_source = Str::duplicate(inserts_source_text->if_string);
 		WRITE_TO(K->early_source, "\n\n");
+	}
+	JSON_value *configs = JSON::look_up_object(kit_details, I"configuration-flags");
+	if (configs) {
+		int f = TRUE;
+		@<Extract the configuration symbols@>;
+	}
+	configs = JSON::look_up_object(kit_details, I"configuration-values");
+	if (configs) {
+		int f = FALSE;
+		@<Extract the configuration symbols@>;
 	}
 
 @<Extract this possibly conditional requirement@> =
@@ -193,6 +219,16 @@ void Kits::scan(inbuild_copy *C) {
 		}
 	}
 	Kits::dependency(K, if_kit, parity, need_title->if_string);
+
+@<Extract the configuration symbols@> =
+	JSON_value *E;
+	LOOP_OVER_LINKED_LIST(E, JSON_value, configs->if_list) {
+		kit_configuration *kc = CREATE(kit_configuration);
+		kc->owner = K;
+		kc->symbol_name = Str::duplicate(E->if_string);
+		kc->is_flag = f;
+		ADD_TO_LINKED_LIST(kc, kit_configuration, K->configurations);
+	}
 
 @ We provide if this then that, where |inc| is true, and if this then not that,
 where it's false.
@@ -444,16 +480,17 @@ internal nest shouldn't be written to even on other platforms.
 
 @<Add build edges to the binaries for each architecture@> =
 	inter_architecture *A;
-	LOOP_OVER(A, inter_architecture) {
-		filename *F = Architectures::canonical_binary(P, A);
-		build_vertex *BV = Graphs::file_vertex(F);
-		if ((C->nest_of_origin) && (Nests::is_protected(C->nest_of_origin)))
-			BV->never_build_this = TRUE;
-		else @<Check the Inter version used any already-existing binary file@>;
-		Graphs::need_this_to_build(KV, BV);
-		BuildSteps::attach(BV, build_kit_using_inter_skill, FALSE, NULL, A, K->as_copy);
-		ADD_TO_LINKED_LIST(BV, build_vertex, BVL);
-	}
+	LOOP_OVER(A, inter_architecture)
+		if (Compatibility::test_architecture(K->as_copy->edition->compatibility, A)) {
+			filename *F = Architectures::canonical_binary(P, A);
+			build_vertex *BV = Graphs::file_vertex(F);
+			if ((C->nest_of_origin) && (Nests::is_protected(C->nest_of_origin)))
+				BV->never_build_this = TRUE;
+			else @<Check the Inter version used any already-existing binary file@>;
+			Graphs::need_this_to_build(KV, BV);
+			BuildSteps::attach(BV, build_kit_using_inter_skill, FALSE, NULL, A, K->as_copy);
+			ADD_TO_LINKED_LIST(BV, build_vertex, BVL);
+		}
 
 @<Add build edges from the binary vertices to the contents vertex@> =
 	build_vertex *BV;
@@ -531,4 +568,17 @@ void Kits::add_extension_dependency(build_vertex *KV, inbuild_requirement *req) 
 		RV = Graphs::req_vertex(req);
 	}
 	Graphs::need_this_to_use(KV, RV);
+}
+
+@ We can find a configuration symbol as used by a kit, returning |TRUE| if
+it is a flag, |FALSE| if a value, and |NOT_APPLICABLE| if it doesn't exist
+for the kit:
+
+=
+int Kits::configuration_is_a_flag(inform_kit *kit, text_stream *name) {
+	kit_configuration *kc;
+	LOOP_OVER_LINKED_LIST(kc, kit_configuration, kit->configurations)
+		if (Str::eq_insensitive(kc->symbol_name, name))
+			return kc->is_flag;
+	return NOT_APPLICABLE;
 }

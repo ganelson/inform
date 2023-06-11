@@ -101,6 +101,8 @@ void Projects::scan(inbuild_copy *C) {
 					@<Extract this requirement@>;
 			}
 		}
+	} else {
+		SVEXPLAIN(2, "(no JSON metadata file found at %f)\n", F);
 	}
 }
 
@@ -566,6 +568,12 @@ on //WorldModelKit//, through the if-this-then-that mechanism.
 	}
 	if (LinkedLists::len(project->kits_to_include) > 0) no_word_from_JSON = FALSE;
 	Projects::add_kit_dependency(project, I"BasicInformKit", NULL, NULL, NULL, NULL);
+	
+	if (TargetVMs::is_16_bit(Supervisor::current_vm()))
+		Projects::add_kit_dependency(project, I"Architecture16Kit", NULL, NULL, NULL, NULL);
+	else	
+		Projects::add_kit_dependency(project, I"Architecture32Kit", NULL, NULL, NULL, NULL);
+	
 	inform_language *L = project->language_of_play;
 	if (L) {
 		Languages::add_kit_dependencies_to_project(L, project);
@@ -709,6 +717,34 @@ text_stream *Projects::index_structure(inform_project *project) {
 		if (kd->kit->index_structure)
 			I = kd->kit->index_structure;
 	return I;
+}
+
+@ We can find a kit as used by a project:
+
+=
+inform_kit *Projects::get_linked_kit(inform_project *project, text_stream *name) {
+	kit_dependency *kd;
+	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include) {
+		inform_kit *kit = kd->kit;
+		if (Str::eq_insensitive(kit->as_copy->edition->work->title, name))
+			return kit;
+	}
+	return NULL;
+}
+
+@ And find an exhaustive collection:
+
+=
+linked_list *Projects::list_of_kit_configurations(inform_project *project) {
+	linked_list *L = NEW_LINKED_LIST(kit_configuration);
+	kit_dependency *kd;
+	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include) {
+		inform_kit *kit = kd->kit;
+		kit_configuration *kc;
+		LOOP_OVER_LINKED_LIST(kc, kit_configuration, kit->configurations)
+			ADD_TO_LINKED_LIST(kc, kit_configuration, L);
+	}
+	return L;
 }
 
 @ Every source text read into Inform is automatically prefixed by a few words
@@ -1076,6 +1112,7 @@ it comes.
 		}
 		N->as_source_file =
 			SourceText::read_file(proj->as_copy, F, N->source_source, FALSE, TRUE);
+		SVEXPLAIN(1, "(from %f)\n", F);
 	}
 	int l = SyntaxTree::push_bud(proj->syntax_tree, proj->syntax_tree->root_node);
 	Sentences::break_into_project_copy(
@@ -1159,7 +1196,7 @@ the whole thing goes into |bibliographic_sentence| and |bracketed| is empty.
 
 @<Capture the opening sentence and its bracketed part@> =
 	int c, commented = FALSE, quoted = FALSE, rounded = FALSE, content_found = FALSE;
-	while ((c = TextFiles::utf8_fgetc(SF, NULL, FALSE, NULL)) != EOF) {
+	while ((c = TextFiles::utf8_fgetc(SF, NULL, NULL)) != EOF) {
 		if (c == 0xFEFF) continue; /* skip the optional Unicode BOM pseudo-character */
 		if (commented) {
 			if (c == ']') commented = FALSE;

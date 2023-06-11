@@ -1,0 +1,19 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 39 words long.
+I've also read Basic Inform by Graham Nelson, which is 7826 words long.
+I've also read English Language by Graham Nelson, which is 2330 words long.
+I've also read Standard Rules by Graham Nelson, which is 34398 words long.
+Problem__ PM_UOKitNameBad
+  >--> You wrote 'Use frog count translates as the configuration flag
+    FROG_COUNT in Amphibian_Kit' (source text, line 3): but the name of that
+    kit is invalid, and must begin with an upper-case letter A to Z, must end
+    with 'Kit', and must contain only letters and digits.
+Problem__ PM_UOKitNameBad
+  >--> You wrote 'Use toad count translates as the configuration flag
+    TOAD_COUNT in AmphibianK' (source text, line 4): again, the name of that
+    kit is invalid.
+Problem__ PM_UOKitNameBad
+  >--> You wrote 'Use newt count translates as the configuration flag
+    NEWT_COUNT in amphibianKit' (source text, line 5): again, the name of that
+    kit is invalid.
+Inform 7 has finished.

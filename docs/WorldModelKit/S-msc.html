@@ -69,6 +69,7 @@ MathJax = {
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">WORLDMODELKIT</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">USE_SCORING</span><span class="plain-syntax"> = </span><span class="identifier-syntax">WorldModelKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">SCORING_CFGV</span><span class="plain-syntax">;</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Global Variables. </b>These are not the only global variables defined in the template layer:
 those needed locally only by single sections (and not used in definitions
@@ -179,7 +180,6 @@ based on character cells.
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">right_hand_status_line</span><span class="plain-syntax"> = </span><span class="identifier-syntax">T_SL_Score_Moves</span><span class="plain-syntax">; </span><span class="comment-syntax">= I7 "right hand status line"</span>
 
 <span class="comment-syntax">(7)</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax">; </span><span class="comment-syntax">= I7 "player"</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">real_location</span><span class="plain-syntax">; </span><span class="comment-syntax">= I7 "location"</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">visibility_ceiling</span><span class="plain-syntax">; </span><span class="comment-syntax">highest object in tree visible to player</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">visibility_levels</span><span class="plain-syntax">; </span><span class="comment-syntax">distance in tree to that</span>
@@ -191,11 +191,10 @@ based on character cells.
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">actor</span><span class="plain-syntax">; </span><span class="comment-syntax">= I7 "person asked" = I7 "person reaching"</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">actors_location</span><span class="plain-syntax">; </span><span class="comment-syntax">like real_location, but for the actor</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">actor_location</span><span class="plain-syntax">; </span><span class="comment-syntax">= I7 "actor-location"</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">meta</span><span class="plain-syntax">; </span><span class="comment-syntax">action is out of world</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">inp1</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">inp2</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Array</span><span class="plain-syntax">  </span><span class="identifier-syntax">multiple_object</span><span class="plain-syntax"> --&gt; </span><span class="identifier-syntax">MATCH_LIST_WORDS</span><span class="plain-syntax">; </span><span class="comment-syntax">multiple-object list (I6 table array)</span>
+<span class="reserved-syntax">Array</span><span class="plain-syntax">  </span><span class="identifier-syntax">multiple_object</span><span class="plain-syntax"> --&gt; </span><span class="identifier-syntax">WorldModelKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">MULTI_OBJ_LIST_SIZE_CFGV</span><span class="plain-syntax">; </span><span class="comment-syntax">multiple-object list (I6 table array)</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">toomany_flag</span><span class="plain-syntax">; </span><span class="comment-syntax">multiple-object list overflowed</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">multiflag</span><span class="plain-syntax">; </span><span class="comment-syntax">multiple-object being processed</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">multiple_object_item</span><span class="plain-syntax">; </span><span class="comment-syntax">item currently being processed in multiple-object list</span>
@@ -230,7 +229,6 @@ based on character cells.
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">parser_one</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">parser_two</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">parameters</span><span class="plain-syntax">; </span><span class="comment-syntax">number of I7 tokens parsed on the current line</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">action_to_be</span><span class="plain-syntax">; </span><span class="comment-syntax">(if the current line were accepted)</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">action_reversed</span><span class="plain-syntax">; </span><span class="comment-syntax">(parameters would be reversed in order)</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">wn</span><span class="plain-syntax">; </span><span class="comment-syntax">word number within "parse" buffer (from 1)</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">num_words</span><span class="plain-syntax">; </span><span class="comment-syntax">number of words in buffer</span>
@@ -256,7 +254,7 @@ based on character cells.
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">move_through</span><span class="plain-syntax">;</span>
 
 <span class="comment-syntax">(12)</span>
-<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">lookmode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">KIT_CONFIGURATION_LOOKMODE</span><span class="plain-syntax">; </span><span class="comment-syntax">1 = BRIEF, 2 = VERBOSE, 3 = SUPERBRIEF</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">lookmode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">WorldModelKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">ROOM_DESC_DETAIL_CFGV</span><span class="plain-syntax">; </span><span class="comment-syntax">1 = BRIEF, 2 = VERBOSE, 3 = SUPERBRIEF</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">c_style</span><span class="plain-syntax">; </span><span class="comment-syntax">current list-writer style</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">c_depth</span><span class="plain-syntax">; </span><span class="comment-syntax">current recursion depth</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">c_iterator</span><span class="plain-syntax">; </span><span class="comment-syntax">current iteration function</span>
@@ -295,20 +293,20 @@ possibility later.
 <span class="plain-syntax">];</span>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">UnknownVerb</span><span class="plain-syntax"> </span><span class="identifier-syntax">v</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">NO_VERB_VERB_DEFINED_TCBIT</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WorldModelKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">NO_VERB_VERB_EXISTS</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">verb_wordnum</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="character-syntax">'no.verb'</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 <span class="plain-syntax">[ </span><span class="identifier-syntax">PrintVerb</span><span class="plain-syntax"> </span><span class="identifier-syntax">v</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">NO_VERB_VERB_DEFINED_TCBIT</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WorldModelKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">NO_VERB_VERB_EXISTS</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">v</span><span class="plain-syntax"> == </span><span class="character-syntax">'no.verb'</span><span class="plain-syntax">) { </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"do something to"</span><span class="plain-syntax">; </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrent">msc</li><li class="progresssection"><a href="S-gll.html">gll</a></li><li class="progresssection"><a href="S-zmc.html">zmc</a></li><li class="progresssection"><a href="S-lgh.html">lgh</a></li><li class="progresssection"><a href="S-lst.html">lst</a></li><li class="progresssection"><a href="S-ord.html">ord</a></li><li class="progresssection"><a href="S-act.html">act</a></li><li class="progresssection"><a href="S-act2.html">act2</a></li><li class="progresssection"><a href="S-fgr.html">fgr</a></li><li class="progresssection"><a href="S-otf.html">otf</a></li><li class="progresssection"><a href="S-prn.html">prn</a></li><li class="progresssection"><a href="S-wrl.html">wrl</a></li><li class="progresssection"><a href="S-mpr.html">mpr</a></li><li class="progresssection"><a href="S-rtp.html">rtp</a></li><li class="progresssection"><a href="S-tm.html">tm</a></li><li class="progresssection"><a href="S-tst.html">tst</a></li><li class="progresssection"><a href="S-chr.html">chr</a></li><li class="progresssection"><a href="S-str.html">str</a></li><li class="progressnext"><a href="S-gll.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrent">msc</li><li class="progresssection"><a href="S-stt.html">stt</a></li><li class="progresssection"><a href="S-lgh.html">lgh</a></li><li class="progresssection"><a href="S-lst.html">lst</a></li><li class="progresssection"><a href="S-ord.html">ord</a></li><li class="progresssection"><a href="S-act.html">act</a></li><li class="progresssection"><a href="S-fgr.html">fgr</a></li><li class="progresssection"><a href="S-otf.html">otf</a></li><li class="progresssection"><a href="S-prn.html">prn</a></li><li class="progresssection"><a href="S-wrl.html">wrl</a></li><li class="progresssection"><a href="S-mpr.html">mpr</a></li><li class="progresssection"><a href="S-rtp.html">rtp</a></li><li class="progresssection"><a href="S-tm.html">tm</a></li><li class="progresssection"><a href="S-tst.html">tst</a></li><li class="progresssection"><a href="S-chr.html">chr</a></li><li class="progresssection"><a href="S-str.html">str</a></li><li class="progressnext"><a href="S-stt.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

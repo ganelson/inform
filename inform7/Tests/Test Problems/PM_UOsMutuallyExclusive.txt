@@ -1,0 +1,7 @@
+The Viability Chamber is a room.
+
+Use scaly hide translates as the configuration value FROG_HIDE = 1.
+Use slimy hide translates as the configuration value FROG_HIDE = 2.
+
+Use scaly hide.
+Use slimy hide.

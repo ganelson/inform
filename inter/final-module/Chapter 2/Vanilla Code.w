@@ -144,3 +144,12 @@ void VanillaCode::assembly(code_generation *gen, inter_tree_node *P) {
 	inter_ti which = AssemblyInstruction::which_marker(P);
 	Generators::assembly_marker(gen, which);
 }
+
+@ OrigSource directives are passed through to the generator.
+
+=
+void VanillaCode::place_origsource(code_generation *gen, inter_tree_node *P) {
+	text_provenance prov = OrigSourceInstruction::provenance(P);
+	Generators::place_origsource(gen, &prov);
+}
+

@@ -216,8 +216,6 @@ void Hierarchy::establish(void) {
 @e MAX_INDEXED_FIGURES_HL
 @e NO_TEST_SCENARIOS_HL
 @e MEMORY_HEAP_SIZE_HL
-@e KIT_CONFIGURATION_BITMAP_HL
-@e KIT_CONFIGURATION_LOOKMODE_HL
 @e LOCALPARKING_HL
 @e RNG_SEED_AT_START_OF_PLAY_HL
 @e MAX_FRAME_SIZE_NEEDED_HL
@@ -252,8 +250,6 @@ void Hierarchy::establish(void) {
 		H_C_T(LANGUAGE_ELEMENTS_NOT_USED_MD_HL, I"^language_elements_not_used")
 		H_C_T(MEMORY_ECONOMY_MD_HL,           I"^memory_economy")
 		H_C_T(MEMORY_HEAP_SIZE_HL,            I"MEMORY_HEAP_SIZE")
-		H_C_T(KIT_CONFIGURATION_BITMAP_HL,    I"KIT_CONFIGURATION_BITMAP")
-		H_C_T(KIT_CONFIGURATION_LOOKMODE_HL,  I"KIT_CONFIGURATION_LOOKMODE")
 		H_C_T(LOCALPARKING_HL,                I"LocalParking")
 		H_C_T(RNG_SEED_AT_START_OF_PLAY_HL,   I"RNG_SEED_AT_START_OF_PLAY")
 		H_C_T(MAX_INDEXED_FIGURES_HL,         I"^max_indexed_figures")
@@ -445,6 +441,7 @@ void Hierarchy::establish(void) {
 @e ACTIVITY_FOR_MD_HL
 @e ACTIVITY_AFTER_MD_HL
 @e ACTIVITY_UFA_MD_HL
+@e ACTIVITY_HID_MD_HL
 @e ACTIVITY_INDEX_ID_MD_HL
 @e ACTIVITY_DOCUMENTATION_MD_HL
 @e ACTIVITY_XREFS_HAP
@@ -473,6 +470,7 @@ void Hierarchy::establish(void) {
 			H_C_U(ACTIVITY_AFTER_MD_HL,       I"^after_rulebook")
 			H_C_U(ACTIVITY_EMPTY_MD_HL,       I"^empty")
 			H_C_U(ACTIVITY_UFA_MD_HL,         I"^used_by_future")
+			H_C_U(ACTIVITY_HID_MD_HL,         I"^hide_in_debugging")
 			H_C_U(ACTIVITY_VAR_CREATOR_MD_HL, I"^var_creator")
 			H_C_U(ACTIVITY_DOCUMENTATION_MD_HL, I"^documentation")
 			H_C_U(ACTIVITY_INDEX_ID_MD_HL,    I"^index_id")
@@ -1210,6 +1208,7 @@ void Hierarchy::establish(void) {
 @e KIND_BRIEF_INFERENCES_MD_HL
 @e WEAK_ID_HL
 @e ICOUNT_HL
+@e FWMATRIX_SIZE_HL
 @e ILIST_HL
 @e KIND_XREF_SYMBOL_HL
 @e DECREMENT_FN_HL
@@ -1319,6 +1318,7 @@ void Hierarchy::establish(void) {
 			H_C_I(WEAK_ID_HL)
 			H_C_I(ICOUNT_HL)
 			H_C_I(ILIST_HL)
+			H_C_U(FWMATRIX_SIZE_HL,           I"FWMATRIX_SIZE")
 			H_C_U(KIND_XREF_SYMBOL_HL,        I"kind_ref")
 			H_F_U(MKDEF_FN_HL,                I"mkdef_fn")
 			H_F_U(DECREMENT_FN_HL,            I"decrement_fn")
@@ -1850,7 +1850,7 @@ void Hierarchy::establish(void) {
 @e USED_IN_SOURCE_TEXT_MD_HL
 @e USED_IN_OPTIONS_MD_HL
 @e USED_IN_EXTENSION_MD_HL
-@e USE_OPTION_MINIMUM_MD_HL
+@e USE_OPTION_CV_MD_HL
 @e USE_OPTION_ID_HL
 
 @<Establish use options@> =
@@ -1866,7 +1866,7 @@ void Hierarchy::establish(void) {
 			H_C_U(USED_IN_SOURCE_TEXT_MD_HL,  I"^used_in_source_text")
 			H_C_U(USED_IN_OPTIONS_MD_HL,      I"^used_in_options")
 			H_C_U(USED_IN_EXTENSION_MD_HL,    I"^used_in_extension")
-			H_C_U(USE_OPTION_MINIMUM_MD_HL,   I"^minimum")
+			H_C_U(USE_OPTION_CV_MD_HL,        I"^configured_value")
 			H_C_U(USE_OPTION_ID_HL,           I"use_option_id")
 		H_END
 	H_END
@@ -2218,6 +2218,10 @@ it (e.g. by adding a prefix or suffix), the following should be used:
 =
 inter_name *Hierarchy::derive_iname_in(int id, inter_name *from, package_request *P) {
 	return HierarchyLocations::derive_iname_in(Emit::tree(), id, from, P);
+}
+
+inter_name *Hierarchy::derive_iname_in_translating(int id, inter_name *from, package_request *P) {
+	return HierarchyLocations::derive_iname_in_translating(Emit::tree(), id, from, P);
 }
 
 @ For the handful of names with "imposed translation", where the caller has to

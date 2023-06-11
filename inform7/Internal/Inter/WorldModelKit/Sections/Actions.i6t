@@ -715,6 +715,21 @@ Array Details_of_Specific_Action-->5;
 	rtrue;
 ];
 
+@h Descend To Specific Action Rule.
+There are 100 or so actions, typically, and this rule is for efficiency's
+sake: rather than perform 100 or so comparisons to see which routine to
+call, we indirect through a jump table. The routines called are the |-Sub|
+routines: thus, for instance, if |action| is |##Wait| then |WaitSub| is
+called. It is essential that this routine not be called for fake actions:
+in I7 use this is guaranteed, since fake actions are not allowed into the
+action machinery at all.
+
+=
+[ DESCEND_TO_SPECIFIC_ACTION_R;
+	( VM_ActionFunction(action) )();
+	rtrue;
+];
+
 @h Work Out Details Of Specific Action Rule.
 This is one of the I6 primitive rules in the specific action processing
 rulebook, and it's basically a trick to allow information known to the
@@ -796,8 +811,12 @@ a whole action might produce "Henry taking the grapefruit".)
 	print "~";
 	for (a=cf:d<cw:d++,a++) {
 		wn = a; b = WordAddress(a); c = WordLength(a);
-		for (i=b:i<b+c:i++) {
-			print (char) 0->i;
+		for (i=0:i<c:i++) {
+			#Iftrue CHARSIZE == 1;
+			print (char) b->i;
+			#Ifnot;
+			print (char) b-->i;
+			#Endif; ! CHARSIZE
 		}
 		if (d<cw-1) print " ";
 	}

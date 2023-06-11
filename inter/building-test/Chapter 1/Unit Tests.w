@@ -74,7 +74,8 @@ void Unit::test_harvester(text_stream *text, text_file_position *tfp, void *v_iu
 @<Perform the schema test@> =
 	LOG("Test: parse schema from:\n%S\n", iut->test_input);
 	Str::trim_white_space(iut->test_input);
-	inter_schema *sch = ParsingSchemas::from_text(iut->test_input);
+	inter_schema *sch = ParsingSchemas::from_text(iut->test_input,
+		Provenance::at_file_and_line(I"hypothetical.txt", 1));
 	if (sch == NULL) LOG("<null schema>\n");
 	else if (sch->node_tree == NULL) LOG("<nodeless scheme\n");
 	else InterSchemas::log(DL, sch);

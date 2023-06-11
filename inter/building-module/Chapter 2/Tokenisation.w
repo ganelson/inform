@@ -34,11 +34,13 @@ void Tokenisation::go(inter_schema *sch, text_stream *from, int pos, int abbrevi
 	inter_schema_token *preceding_token = NULL;
 
 	int definition_length = Str::len(from);
+	int line_offset = 0;
 	text_stream *current_raw = Str::new();
 	int tokeniser_state = NO_TOKSTATE;
 	for (; pos<definition_length; pos++) {
 		int c = Str::get_at(from, pos);
 		if (Characters::is_whitespace(c)) {
+			if (c == '\n') line_offset++;
 			if ((tokeniser_state == TOK_TOKSTATE) || (tokeniser_state == NO_TOKSTATE)) {
 				@<Absorb raw material, if any@>;
 				tokeniser_state = WHITE_TOKSTATE;
@@ -117,17 +119,17 @@ void Tokenisation::go(inter_schema *sch, text_stream *from, int pos, int abbrevi
 	switch (tokeniser_state) {
 		case WHITE_TOKSTATE:
 			InterSchemas::add_token(sch,
-				InterSchemas::new_token(WHITE_SPACE_ISTT, I" ", 0, 0, -1));
+				InterSchemas::new_token(WHITE_SPACE_ISTT, I" ", 0, 0, -1, line_offset));
 			break;
 		case DQUOTED_TOKSTATE:
 			Tokenisation::de_escape_text(current_raw);
 			InterSchemas::add_token(sch,
-				InterSchemas::new_token(DQUOTED_ISTT, current_raw, 0, 0, -1));
+				InterSchemas::new_token(DQUOTED_ISTT, current_raw, 0, 0, -1, line_offset));
 			break;
 		case SQUOTED_TOKSTATE:
 			Tokenisation::de_escape_sq_text(current_raw);
 			InterSchemas::add_token(sch,
-				InterSchemas::new_token(SQUOTED_ISTT, current_raw, 0, 0, -1));
+				InterSchemas::new_token(SQUOTED_ISTT, current_raw, 0, 0, -1, line_offset));
 			break;
 		default:
 			@<Look for individual tokens@>;
@@ -172,7 +174,7 @@ void Tokenisation::go(inter_schema *sch, text_stream *from, int pos, int abbrevi
 @<Expand a fragment of Inform 7 text@> =
 	if (Str::len(source_text_fragment) > 0) {
 		InterSchemas::add_token(sch,
-			InterSchemas::new_token(I7_ISTT, source_text_fragment, 0, 0, -1));
+			InterSchemas::new_token(I7_ISTT, source_text_fragment, 0, 0, -1, line_offset));
 	}
 
 @ Material in braces sometimes indicates an inline command, but not always,
@@ -202,7 +204,7 @@ a "bracing".
 a bracing.
 
 @<Parse a bracing into an inline command@> =
-	inter_schema_token *t = InterSchemas::new_token(INLINE_ISTT, bracing, 0, 0, -1);
+	inter_schema_token *t = InterSchemas::new_token(INLINE_ISTT, bracing, 0, 0, -1, line_offset);
 	t->bracing = Str::duplicate(bracing);
 	t->command = Str::new();
 	t->operand = Str::new();
@@ -407,7 +409,7 @@ of modifiers are allowed. See //calculus: Compilation Schemas//.
 	wchar_t c = Str::get_at(from, ++at);
 	int iss_bitmap = 0;
 	switch (c) {
-		case '!': InterSchemas::throw_error(sch->node_tree, 
+		case '!': I6Errors::issue_at_node(sch->node_tree, 
 			I"the '*!' schema notation has been abolished"); break;
 		case '%': iss_bitmap = iss_bitmap | LVALUE_CONTEXT_ISSBM;
 				  c = Str::get_at(from, ++at); break;
@@ -434,7 +436,7 @@ of modifiers are allowed. See //calculus: Compilation Schemas//.
 		@<Absorb raw material, if any@>;
 		TEMPORARY_TEXT(T)
 		for (int i=pos; i<=at; i++) PUT_TO(T, Str::get_at(from, i));
-		inter_schema_token *t = InterSchemas::new_token(INLINE_ISTT, T, 0, 0, -1);
+		inter_schema_token *t = InterSchemas::new_token(INLINE_ISTT, T, 0, 0, -1, line_offset);
 		t->bracing = Str::duplicate(T);
 		t->inline_command = substitute_ISINC;
 		t->inline_modifiers = iss_bitmap;
@@ -444,7 +446,7 @@ of modifiers are allowed. See //calculus: Compilation Schemas//.
 		DISCARD_TEXT(T)
 		pos = at;
 	} else if (c == '&') {
-		inter_schema_token *t = InterSchemas::new_token(INLINE_ISTT, I"*&", 0, 0, -1);
+		inter_schema_token *t = InterSchemas::new_token(INLINE_ISTT, I"*&", 0, 0, -1, line_offset);
 		t->bracing = I"*&";
 		t->inline_command = combine_ISINC;
 		t->inline_modifiers = iss_bitmap;
@@ -452,7 +454,7 @@ of modifiers are allowed. See //calculus: Compilation Schemas//.
 		preceding_token = t;
 		pos = at;
 	} else if (c == '-') {
-		InterSchemas::throw_error(sch->node_tree, 
+		I6Errors::issue_at_node(sch->node_tree, 
 			I"the '*-' schema notation has been abolished"); 
 	} else if (c == '*') {
 		int c = '*'; @<Absorb a raw character@>;
@@ -657,7 +659,7 @@ inclusive; we ignore an empty token.
 		int which_rw = 0, which_number = -1, which_quote = -1;
 		@<Identify this new token@>;
 
-		inter_schema_token *n = InterSchemas::new_token(is, T, which, which_rw, which_number);
+		inter_schema_token *n = InterSchemas::new_token(is, T, which, which_rw, which_number, line_offset);
 		#ifdef CORE_MODULE
 		if (which_quote >= 0) n->as_quoted = quoted_inames[which_quote];
 		#endif
@@ -776,6 +778,7 @@ but speed is not quite important enough to make it worthwhile.
 	if (Str::eq_insensitive(T, I"#IFFALSE")) { is = DIRECTIVE_ISTT; which_rw = IFFALSE_I6RW; }
 	if (Str::eq_insensitive(T, I"#IFNOT")) { is = DIRECTIVE_ISTT; which_rw = IFNOT_I6RW; }
 	if (Str::eq_insensitive(T, I"#ENDIF")) { is = DIRECTIVE_ISTT; which_rw = ENDIF_I6RW; }
+	if (Str::eq_insensitive(T, I"#ORIGSOURCE")) { is = DIRECTIVE_ISTT; which_rw = ORIGSOURCE_I6RW; }
 
 	if (Str::eq(T, I",")) is = COMMA_ISTT;
 	if (Str::eq(T, I":")) is = COLON_ISTT;

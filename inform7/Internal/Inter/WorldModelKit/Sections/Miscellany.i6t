@@ -4,6 +4,7 @@ Miscellany Template.
 
 =
 Constant WORLDMODELKIT = 1;
+Constant USE_SCORING = WorldModelKit`SCORING_CFGV;
 
 @h Global Variables.
 These are not the only global variables defined in the template layer:
@@ -127,7 +128,6 @@ Global left_hand_status_line = T_SL_Location; ! = I7 "left hand status line"
 Global right_hand_status_line = T_SL_Score_Moves; ! = I7 "right hand status line"
 
 ! (7)
-Global player; ! = I7 "player"
 Global real_location; ! = I7 "location"
 Global visibility_ceiling; ! highest object in tree visible to player
 Global visibility_levels; ! distance in tree to that
@@ -139,11 +139,10 @@ Global act_requester;
 Global actor; ! = I7 "person asked" = I7 "person reaching"
 Global actors_location; ! like real_location, but for the actor
 Global actor_location; ! = I7 "actor-location"
-Global action;
 Global meta; ! action is out of world
 Global inp1;
 Global inp2;
-Array  multiple_object --> MATCH_LIST_WORDS; ! multiple-object list (I6 table array)
+Array  multiple_object --> WorldModelKit`MULTI_OBJ_LIST_SIZE_CFGV; ! multiple-object list (I6 table array)
 Global toomany_flag; ! multiple-object list overflowed
 Global multiflag; ! multiple-object being processed
 Global multiple_object_item; ! item currently being processed in multiple-object list
@@ -178,7 +177,6 @@ Global parser_action; ! written by the parser for the benefit of GPRs
 Global parser_one;
 Global parser_two;
 Global parameters; ! number of I7 tokens parsed on the current line
-Global action_to_be; ! (if the current line were accepted)
 Global action_reversed; ! (parameters would be reversed in order)
 Global wn; ! word number within "parse" buffer (from 1)
 Global num_words; ! number of words in buffer
@@ -204,7 +202,7 @@ Global move_by;
 Global move_through;
 
 ! (12)
-Global lookmode = KIT_CONFIGURATION_LOOKMODE; ! 1 = BRIEF, 2 = VERBOSE, 3 = SUPERBRIEF
+Global lookmode = WorldModelKit`ROOM_DESC_DETAIL_CFGV; ! 1 = BRIEF, 2 = VERBOSE, 3 = SUPERBRIEF
 Global c_style; ! current list-writer style
 Global c_depth; ! current recursion depth
 Global c_iterator; ! current iteration function
@@ -243,13 +241,13 @@ Global MAX_SCORE = INITIAL_MAX_SCORE;
 ];
 
 [ UnknownVerb v;
-	if (KIT_CONFIGURATION_BITMAP & NO_VERB_VERB_DEFINED_TCBIT) {
+	if (WorldModelKit`NO_VERB_VERB_EXISTS) {
 		verb_wordnum = 0; return 'no.verb';
 	}
 	rfalse;
 ];
 [ PrintVerb v;
-	if (KIT_CONFIGURATION_BITMAP & NO_VERB_VERB_DEFINED_TCBIT) {
+	if (WorldModelKit`NO_VERB_VERB_EXISTS) {
 		if (v == 'no.verb') { print "do something to"; rtrue; }
 	}
 	rfalse;

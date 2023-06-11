@@ -14,6 +14,7 @@
   (2). Any view on whether science is a social construct?
   
 > >   Laboratory
+  ** 2
   You: "Any view on whether science is a social construct?"
   
   Liza: "Only that it's not a falsifiable hypothesis."

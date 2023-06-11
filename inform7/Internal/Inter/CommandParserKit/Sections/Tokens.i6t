@@ -9,7 +9,7 @@ $2^{15}-1 = +32767$, while a 32-bit VM can hold $-2^{31} = -2147483648$ to
 $2^{31}-1 = +2147483647$: the token below accepts exactly those ranges.
 
 =
-[ DECIMAL_TOKEN wnc wna r n wa wl sign base digit digit_count original_wn group_wn;
+[ DECIMAL_TOKEN wnc wna r n wa wl sign base digit digit_count original_wn group_wn ch;
 	wnc = wn; original_wn = wn; group_wn = wn;
 	r = DECIMAL_TOKEN_INNER();
 	if (r ~= GPR_FAIL) return r;
@@ -20,20 +20,37 @@ $2^{31}-1 = +2147483647$: the token below accepts exactly those ranges.
 	wa = WordAddress(wn);
 	wl = WordLength(wn);
 	sign = 1; base = 10; digit_count = 0;
-	if (wa->0 ~= '-' or '$' or '0' or '1' or '2' or '3' or '4'
+	#Iftrue CHARSIZE == 1;
+	ch = wa->0;
+	#Ifnot;
+	ch = wa-->0;
+	#Endif; ! CHARSIZE
+	if (ch ~= '-' or '$' or '0' or '1' or '2' or '3' or '4'
 		or '5' or '6' or '7' or '8' or '9')
 		return GPR_FAIL;
-	if (wa->0 == '-') { sign = -1; wl--; wa++; }
+	if (ch == '-') {
+		sign = -1; wl--;
+		#Iftrue CHARSIZE == 1;
+		wa++;
+		#Ifnot;
+		wa = wa + WORDSIZE;
+		#Endif; ! CHARSIZE
+	}
 	if (wl == 0) return GPR_FAIL;
 	n = 0;
 	while (wl > 0) {
-		if (wa->0 >= 'a') digit = wa->0 - 'a' + 10;
-		else digit = wa->0 - '0';
+		#Iftrue CHARSIZE == 1;
+		ch = wa->0;
+		#Ifnot;
+		ch = wa-->0;
+		#Endif; ! CHARSIZE
+		if (ch >= 'a') digit = ch - 'a' + 10;
+		else digit = ch - '0';
 		digit_count++;
 		switch (base) {
 			2:  if (digit_count == 17) return GPR_FAIL;
 			10:
-				#Iftrue (WORDSIZE == 2);
+				#Iftrue WORDSIZE == 2;
 				if (digit_count == 6) return GPR_FAIL;
 				if (digit_count == 5) {
 					if (n > 3276) return GPR_FAIL;
@@ -56,7 +73,12 @@ $2^{31}-1 = +2147483647$: the token below accepts exactly those ranges.
 		}
 		if (digit >= 0 && digit < base) n = base*n + digit;
 		else return GPR_FAIL;
-		wl--; wa++;
+		wl--;
+		#iftrue (CHARSIZE == 1);
+		wa++;
+		#Ifnot;
+		wa = wa + WORDSIZE;
+		#Endif; ! CHARSIZE
 	}
 	parsed_number = n*sign; wn++;
 	return GPR_NUMBER;
@@ -84,7 +106,7 @@ An I6 grammar routine (GPR) for floats. On success, this returns
 GPR_NUMBER and stores a value in the global parsed_number.
 
 This is quite a nuisance, actually, because "." is a word separator.
-Also, we want to accept command sequences like "type 4. look"So we
+Also, we want to accept command sequences like "type 4. look". So we
 need to collect a set of words made up of digits, signs, periods, and
 the letter "e", but without any intervening whitespace, and excluding
 a trailing period.
@@ -98,7 +120,7 @@ Contrariwise, "type 4. x me" will be taken as one command. (Because the "x"
 out not to be.) I don't plan to worry about these cases.)
 
 =
-#Ifdef TARGET_GLULX;
+#Iftrue WORDSIZE > 2;
 [ FLOAT_TOKEN buf bufend ix ch firstwd newstart newlen lastchar lastwasdot;
 	if (wn > num_words)
 		return GPR_FAIL;
@@ -115,7 +137,7 @@ out not to be.) I don't plan to worry about these cases.)
 			! There's whitespace between the previous word and this one.
 			! Whitespace is okay around an asterisk...
 			if ((lastchar ~= '*' or 'x' or 'X' or $D7)
-				&& (newstart->0 ~= '*' or 'x' or 'X' or $D7)) {
+				&& (newstart-->0 ~= '*' or 'x' or 'X' or $D7)) {
 				! But around any other character, it's not.
 				! Don't include the new word.
 				break;
@@ -123,7 +145,7 @@ out not to be.) I don't plan to worry about these cases.)
 		}
 		newlen = WordLength(wn);
 		for (ix=0 : ix<newlen : ix++) {
-			ch = newstart->ix;
+			ch = newstart-->ix;
 			if (~~((ch >= '0' && ch <= '9')
 				|| (ch == '-' or '+' or 'E' or 'e' or '.' or 'x' or 'X' or '*' or $D7 or $5E)))
 				break;
@@ -134,16 +156,16 @@ out not to be.) I don't plan to worry about these cases.)
 			break;
 		}
 		! Okay, include it.
-		bufend = newstart + newlen;
+		bufend = newstart + newlen*WORDSIZE;
 		wn++;
-		lastchar = (bufend-1)->0;
+		lastchar = (bufend-WORDSIZE)-->0;
 		lastwasdot = (newlen == 1 && lastchar == '.');
 	}
 
 	if (wn > firstwd && lastwasdot) {
 		! Exclude a trailing period.
 		wn--;
-		bufend--;
+		bufend = bufend - WORDSIZE;
 	}
 
 	if (wn == firstwd) {
@@ -151,9 +173,9 @@ out not to be.) I don't plan to worry about these cases.)
 		return GPR_FAIL;
 	}
 
-	parsed_number = FloatParse(buf, bufend-buf, true);
+	parsed_number = FloatParse(buf, (bufend-buf)/WORDSIZE, true);
 	if (parsed_number == FLOAT_NAN)
 		return GPR_FAIL;
 	return GPR_NUMBER;
 ];
-#Endif; ! TARGET_GLULX
+#Endif; ! WORDSIZE

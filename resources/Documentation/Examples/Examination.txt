@@ -1,8 +1,8 @@
 * After rules
 (TAKE prints a description; Morning After)
-When the player picks something up which he hasn't already examined, the object is described.
+When the player picks something up which they haven't already examined, the object is described.
 
-Suppose we want to make the player's life slightly easier by examining everything he picks up, if he hasn't already examined it.
+Suppose we want to make the player's life slightly easier by examining everything they pick up, if they haven't already examined it.
 
 	{*}"Morning After"
 

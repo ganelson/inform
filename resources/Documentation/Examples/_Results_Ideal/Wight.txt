@@ -1,7 +1,7 @@
    Crypt                                                                                                                                                                                                                  0/1
   The Unexamined Life
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Crypt
   This squat, barrel-vaulted chamber runs roughly north-south. Along either side are the graves of Saxon kings and early bishops of the church long since gone to dust -- one tomb in particular looks undisturbed.
@@ -16,4 +16,16 @@
   >[1] hint about wight
   You're missing an object that might be useful to resolving this problem.
   
-> Shall I go on? > 
+  Shall I go on? > [2] north
+  Please answer yes or no.> [3] get bar
+  Please answer yes or no.> [4] south
+  Please answer yes or no.> [5] open tomb
+  Please answer yes or no.> [6] get dagger
+  Please answer yes or no.> [7] south
+  Please answer yes or no.> [8] hint about wight
+  Please answer yes or no.> [9] read inscription
+  Please answer yes or no.> [10] hint about wight
+  Please answer yes or no.> [11] attack wight
+  Please answer yes or no.> [12] throw dagger at wight
+  Please answer yes or no.> [13] south
+> Please answer yes or no.> 

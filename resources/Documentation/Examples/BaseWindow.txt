@@ -2,7 +2,7 @@
 (Basic window similar to a door; Escape)
 Window that can be climbed through or looked through.
 
-Suppose we want to offer the player a window he can climb through, instead of a boring ordinary door. Our window will be like a door in that it connects two rooms, appears in both places, and impedes movement when it is shut. But we also want to add that we can look through it and see what lies on the other side; and we further want to understand "climb through window" or "jump through window" as attempts to pass through it.
+Suppose we want to offer the player a window they can climb through, instead of a boring ordinary door. Our window will be like a door in that it connects two rooms, appears in both places, and impedes movement when it is shut. But we also want to add that we can look through it and see what lies on the other side; and we further want to understand "climb through window" or "jump through window" as attempts to pass through it.
 
 We'll start by defining a couple of rooms and making the window a door between them.
 

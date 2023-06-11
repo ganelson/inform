@@ -7,13 +7,11 @@ Web Syntax Version: 2
 
 Sections
 	Miscellany
-	Glulx
-	ZMachine
+	State
 	Light
 	ListWriter
 	OrderOfPlay
 	Actions
-	Activities
 	Figures
 	OutOfWorld
 	Printing

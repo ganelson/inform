@@ -1,6 +1,6 @@
 *** Writing and reading tables to external files
 (Scoreboard preserved between games; Rubies)
-A scoreboard that keeps track of the ten highest-scoring players from one playthrough to the next, adding the player's name if he has done well enough.
+A scoreboard that keeps track of the ten highest-scoring players from one playthrough to the next, adding the player's name if they have done well enough.
 
 The trick here is that we need a table with text in order to keep track of the players' names.
 

@@ -115,7 +115,7 @@ int Localisation::stock_from_file(filename *localisation_file, localisation_dict
 }
 
 @<Read next character@> =
-	cr = TextFiles::utf8_fgetc(Input_File, NULL, FALSE, &ufb);
+	cr = TextFiles::utf8_fgetc(Input_File, NULL, &ufb);
 	col++;
 	if ((cr == 10) || (cr == 13)) { col = 0; nwsol = FALSE; line++; }
 

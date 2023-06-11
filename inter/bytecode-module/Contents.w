@@ -34,6 +34,7 @@ Chapter 3: Their Instructions
 	Inter Data Types
 	Metadata
 	Inter Errors
+	Text Provenance
 
 Chapter 4: Void Constructs
 	The Comment Construct
@@ -41,6 +42,7 @@ Chapter 4: Void Constructs
 	The Insert Construct
 	The Instance Construct
 	The Nop Construct
+	The OrigSource Construct
 	The Package Construct
 	The PackageType Construct
 	The Permission Construct

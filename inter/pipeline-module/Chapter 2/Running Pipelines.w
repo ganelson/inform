@@ -155,7 +155,7 @@ void RunningPipelines::run(pathname *P, inter_pipeline *S, inter_tree *I,
 				@<Work out the filename@>;
 				text_stream text_output_struct;
 				text_stream *T = &text_output_struct;
-				if (STREAM_OPEN_TO_FILE(T, step->ephemera.parsed_filename, ISO_ENC) == FALSE) {
+				if (STREAM_OPEN_TO_FILE(T, step->ephemera.parsed_filename, UTF8_ENC) == FALSE) {
 					PipelineErrors::error(step, "unable to open file named in pipeline step");
 					active = FALSE;
 				} else {

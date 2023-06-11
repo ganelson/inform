@@ -96,7 +96,7 @@ Appraisal == OMIT
 	Maze with randomized room links
 	Carousel Room from which exits lead to random locations
 	Exits added to a room
-	Map rearranged as player wanders so he finds rooms in order
+	Map rearranged as player wanders so they find rooms in order
 	Compass directions renamed
 	A hexagonal map grid for movement
 	
@@ -202,8 +202,8 @@ Appraisal == OMIT
 	
 	*TRAITS DETERMINED BY THE PLAYER
 	Name of player character selected at start of play
-	Asking the player to choose a gender
-	Allowing the player to describe his character before starting play
+	Asking the player to choose to be good or evil
+	Allowing the player to describe the main character before starting play
 
 	*CHARACTERIZATION
 	Another, distinct from the player
@@ -421,7 +421,7 @@ Appraisal == OMIT
 	Escape action for non-player characters only
 	Reporting rules for other characters' behavior
 	Person who opens a container before trying to get something from it
-	Person who pursues his own goals each turn
+	Person who pursues their own goals each turn
 	
 	*SOCIAL GROUPS
 	People who interact with each other each turn

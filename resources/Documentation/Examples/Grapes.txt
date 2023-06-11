@@ -2,7 +2,7 @@
 (Scope approaches compared; Peeled)
 Two different approaches to adjusting what the player can interact with, compared.
 
-Suppose we have a situation where the player is in darkness, but is allowed to feel and interact with (except for examining) any large objects. In that case, we write a scope rule that puts those large objects into scope all the time, and trust the "requires light" aspect of verbs like examining to prevent the player from doing any actions that he shouldn't:
+Suppose we have a situation where the player is in darkness, but is allowed to feel and interact with (except for examining) any large objects. In that case, we write a scope rule that puts those large objects into scope all the time, and trust the "requires light" aspect of verbs like examining to prevent the player from doing any actions that they shouldn't:
 
 	{*}"Peeled"
 	

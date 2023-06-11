@@ -18,13 +18,13 @@ The original Adventure allowed the player to type the names of rooms in order to
 
 	Going by name is an action applying to one thing.
 	
-We should reject movement to the player's current location, or to anywhere he hasn't been and can't see:
+We should reject movement to the player's current location, or to anywhere they haven't been and can't see:
 
 	{**}Check going by name:
 		if the noun is the location, say "You're already in [the location]." instead;
 		if the noun is not adjacent and the noun is unvisited, say "That noun did not make sense in this context." instead.
 
-The assumption here is that the player does know the names of the rooms adjacent to his current location, even if he hasn't been there yet.
+The assumption here is that the player does know the names of the rooms adjacent to their current location, even if they haven't been there yet.
 
 Now for the travel itself. The simplest way to ensure that the usual movement rules will still apply is to convert GO BY NAME into a GO action, and here the best route comes to our aid:
 
@@ -35,7 +35,7 @@ Now for the travel itself. The simplest way to ensure that the usual movement ru
 		try going aim;
 		if the location is not the noun, say "You'll have to stop here."
 		
-This will allow the player to travel toward rooms he has already visited even if they are several moves away.
+This will allow the player to travel toward rooms they have already visited even if they are several moves away.
 
 Finally, so that the player can also use the names of doors as commands:
 

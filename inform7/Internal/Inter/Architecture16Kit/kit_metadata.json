@@ -1,0 +1,12 @@
+{
+    "is": {
+        "type": "kit",
+        "title": "Architecture16Kit",
+        "version": "10.2.0-beta+6W61"
+    },
+    "compatibility": "16-bit",
+    "kit-details": {
+        "has-priority": 1,
+        "defines-Main": false
+    }
+}

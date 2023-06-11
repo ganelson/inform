@@ -1,25 +1,25 @@
-<s-literal> hits 2100/23896 nti 22 constraint (none) extremes [1, infinity)
+<s-literal> hits 2126/24584 nti 23 constraint (none) extremes [1, infinity)
     English:
         (@1)<cardinal-number>=1 
           (hits 171/171) (matched: '100') constraint CS = {r0} extremes [1, 1]
         (@1)minus (@2)<cardinal-number>=1 
-          (hits 0/1490) constraint DS = {22} extremes [2, 2]
+          (hits 0/1482) constraint DS = {23} extremes [2, 2]
         (@1)<quoted-text>=1 (@2)( (@3)<response-letter>=2 (@4)) 
-          (hits 274/844) (matched: '"[current item from the multiple object list]: [run paragraph on]" ( a )') constraint DS = {22} extremes [4, 4]
+          (hits 274/751) (matched: '"[current item from the multiple object list]: [run paragraph on]" ( a )') constraint DS = {23} extremes [4, 4]
         (@1)<quoted-text>=1 
-          (hits 1566/5560) (matched: 'Represents geographical locations, both indoor
+          (hits 1570/5726) (matched: 'Represents geographical locations, both indoor
         and outdoor, which are not necessarily areas in a building. A player in one
         room is mostly unable to sense, or interact with, anything in a different room.
         Rooms are arranged in a map.') constraint (none) extremes [1, 1]
         <s-literal-real-number>=1 
-          (hits 11/9937) (matched: 'plus infinity') constraint (none) extremes [1, infinity)
+          (hits 11/10277) (matched: 'plus infinity') constraint (none) extremes [1, infinity)
         (@1)<s-literal-truth-state>=1 
-          (hits 78/702) (matched: 'false') constraint CS = {16} extremes [1, 1]
+          (hits 100/721) (matched: 'false') constraint CS = {17} extremes [1, 1]
         <s-literal-list>=1 
-          (hits 0/1714) constraint DS = {18} extremes [2, infinity)
+          (hits 0/1703) constraint DS = {19} extremes [2, infinity)
         (@1)unicode <s-unicode-character>=1 
-          (hits 0/3572) constraint DS = {22} extremes [2, infinity)
+          (hits 0/3441) constraint DS = {23} extremes [2, infinity)
         <s-literal-time>=1 
-          (hits 0/3909) constraint DW = {19, 20, 21} extremes [2, 5]
+          (hits 0/3993) constraint DW = {20, 21, 22} extremes [2, 5]
         <s-literal-unit-notation>=1 
-          (hits 0/9848) constraint (none) extremes [1, infinity)
+          (hits 0/10166) constraint (none) extremes [1, infinity)

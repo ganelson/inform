@@ -190,6 +190,10 @@ void StandardProblems::handmade_problem(parse_node_tree *T, SIGIL_ARGUMENTS) {
 	ACT_ON_SIGIL
 	Problems::issue_problem_begin(T, "");
 }
+void StandardProblems::handmade_warning(parse_node_tree *T, SIGIL_ARGUMENTS) {
+	ACT_ON_SIGIL
+	Problems::issue_warning_begin(T, "");
+}
 
 @h Limit problems.
 Running out of memory, irretrievably: the politest kind of fatal error,

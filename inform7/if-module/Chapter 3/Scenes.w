@@ -258,7 +258,7 @@ void Scenes::new_scene_rulebook(scene *sc, int end) {
 	@<Compose a name and alternate name for the new scene end rulebook@>;
 
 	rulebook *rb = Rulebooks::new_automatic(RW, K_action_name,
-			NO_OUTCOME, FALSE, FALSE, FALSE, 0, NULL);
+			NO_OUTCOME, FALSE, FALSE, 0, NULL);
 	Rulebooks::set_alt_name(rb, AW);
 	sc->ends[end].end_rulebook = rb;
 

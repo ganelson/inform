@@ -1,16 +1,16 @@
 ** Locks and keys
-(Deadbolted door unlockable without a key on one side; Neighborhood Watch)
+(Deadbolted door unlockable without a key on one side; Neighbourhood Watch)
 A locked door that can be locked or unlocked without a key from one side, but not from the other.
 
 Suppose we want a locked door that can be opened with a key, but is also openable by hand without a key from one side only. We start by defining an ordinary lockable door and the key that controls it:
 
-	{*}"Neighborhood Watch"
+	{*}"Neighbourhood Watch"
 	
 	The shabby door is a door. It is outside from the Studio Apartment and inside from the Rickety Stairwell. The shabby door is locked.
 
 	The brass key is carried by the player. It unlocks the shabby door.
 	
-The next part is going to require that we modify the normal operation of the "lock" command. "Lock" ordinarily requires that the player supply two objects: a thing he wants to unlock, and the key he wants to use on it. The full command is LOCK DOOR WITH THE KEY, and Inform will not accept simply LOCK DOOR as locking. 
+The next part is going to require that we modify the normal operation of the "lock" command. "Lock" ordinarily requires that the player supply two objects: a thing they want to unlock, and the key they want to use on it. The full command is LOCK DOOR WITH THE KEY, and Inform will not accept simply LOCK DOOR as locking. 
 
 Therefore, we're going to need to create our own new variant on the lock verb (and the unlock verb, while we're at it). The full procedure for this is laid out in the chapters on Action and Understanding, but here is an example:
 
@@ -30,7 +30,7 @@ This check rule is performed before the keyless locking action succeeds. The fir
 
 The second thing is to check whether the player is outside but keyless, and, if so stop the action from being performed successfully. Here we print a failure message followed by the word "instead", which tells Inform that we've substituted some other outcome for the usual performance of the action.
 
-Now we're reasonably sure that the player is only locking keylessly in the case that he is inside the Studio. (We might have to do a more thorough check for this if there were more than two rooms, but as it is, the player can only be in the Stairwell or in the Studio, so if we have ruled out the Stairwell, we are safe.) So now we want to add what happens when locking-without-a-key command succeeds:
+Now we're reasonably sure that the player is only locking keylessly in the case that they are inside the Studio. (We might have to do a more thorough check for this if there were more than two rooms, but as it is, the player can only be in the Stairwell or in the Studio, so if we have ruled out the Stairwell, we are safe.) So now we want to add what happens when locking-without-a-key command succeeds:
 	
 	{**}Carry out locking keylessly:
 		now the noun is locked.

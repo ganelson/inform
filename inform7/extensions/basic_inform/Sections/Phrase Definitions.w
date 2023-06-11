@@ -1769,3 +1769,13 @@ To mark (filename - external file) as ready to read
 To mark (filename - external file) as not ready to read
 	(documented at ph_markfilenotready):
 	(- FileIO_MarkReady({filename}, false); -).
+
+@h Use Options.
+
+=
+Chapter 10 - Use Options
+
+Section 1 - Numerical Value
+
+To decide what number is the numerical value of (U - a use option):
+	(- USE_OPTION_VALUES-->({U}) -).

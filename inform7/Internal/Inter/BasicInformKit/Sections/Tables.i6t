@@ -675,7 +675,7 @@ will perform a loop of valid row numbers in order of column |C|.
 	f = ((tab-->col)-->1);
 	if (f & TB_COLUMN_ALLOCATED) blk = true;
 	signed_arithmetic = f & TB_COLUMN_SIGNED;
-	#Iftrue (WORDSIZE == 2);
+	#Iftrue WORDSIZE == 2;
 	if (row == 0) {
 		if (signed_arithmetic) {
 		    if (dir == 1) val = $8000; else val = $7fff;
@@ -817,7 +817,6 @@ is called.
 And this is how we unserialise again. It makes sense only on Glulx.
 
 =
-#ifdef TARGET_GLULX;
 [ TableRead tab auxf row maxrow col ch v sgn dg j tc kov;
 	for (col=1:col<=tab-->0:col++) {
 		j = tab-->col; ! Address of column table
@@ -894,7 +893,6 @@ And this is how we unserialise again. It makes sense only on Glulx.
 	.NotTable;
 	return RunTimeProblem(RTP_TABLE_BADFILE, tab);
 ];
-#ENDIF; ! TARGET_GLULX
 
 @h Debugging.
 Routines to print the state of a table, for debugging purposes only.

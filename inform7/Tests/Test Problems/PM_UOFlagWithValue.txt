@@ -1,0 +1,3 @@
+The Viability Chamber is a room.
+
+Use frog count of at least 20 translates as the configuration flag FROG_COUNT in AmphibianKit.

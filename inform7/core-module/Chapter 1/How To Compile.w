@@ -117,6 +117,7 @@ will divide according to these units.
 	BENCH(NameResolution::make_the_tree)
 	BENCH(Task::write_XML_headings_file)
 	BENCH(CompilationUnits::determine)
+	BENCH(Task::warn_about_deprecated_nests)
 
 @ Most of the conceptual infrastructure in Inform is created by Inform source
 text in the Basic Inform or Standard Rules extensions, but not basic kinds of

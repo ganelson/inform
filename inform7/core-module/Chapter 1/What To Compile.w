@@ -199,6 +199,32 @@ void Task::verify(void) {
 	VerifyTree::verify_structure(Task::syntax_tree());
 }
 
+@ This is part of a scheme to wean authors off of use of an external extensions
+area.
+
+=
+void Task::warn_about_deprecated_nests(void) {
+	inform_project *project = Task::project();
+	inform_extension *ext;
+	LOOP_OVER_LINKED_LIST(ext, inform_extension, project->extensions_included) {
+		inbuild_nest *N = Copies::origin(ext->as_copy);
+		if (Nests::is_deprecated(N)) {
+			TEMPORARY_TEXT(ename)
+			Copies::write_copy(ename, ext->as_copy);
+			Problems::quote_stream(1, ename);
+			StandardProblems::handmade_warning(Task::syntax_tree(), _p_(Untestable));
+			Problems::issue_warning_segment(
+				"The extension '%1' was included from an external location, that is, "
+				"from outside of this project's materials folder. That's allowed, and "
+				"is how most authors managed things until 2023, but we now recommend "
+				"moving all extensions needed for a project (other than those built "
+				"into Inform itself) into the project's materials folder. "
+				"If you do, this warning will go away.");
+			Problems::issue_warning_end();
+		}
+	}
+}
+
 @ Resources in a Blorb file have unique ID numbers which are positive integers,
 but these are not required to start from 1, nor to be contiguous. For Inform,
 ID number 1 is reserved for the cover image (whether or not any cover image

@@ -2,25 +2,12 @@ OutOfWorld Template.
 
 To implement some of the out of world actions.
 
-@h Perform Undo.
-
-=
-[ Perform_Undo;
-	if (KIT_CONFIGURATION_BITMAP & PREVENT_UNDO_TCBIT) {
-		IMMEDIATELY_UNDO_RM('A'); new_line; return;
-	}
-	if (IterationsOfTurnSequence == 0) { IMMEDIATELY_UNDO_RM('B'); new_line; return; }
-	if (undo_flag == 0) { IMMEDIATELY_UNDO_RM('C'); new_line; return; }
-	if (undo_flag == 1) { IMMEDIATELY_UNDO_RM('D'); new_line; return; }
-	if (VM_Undo() == 0) { IMMEDIATELY_UNDO_RM('F'); new_line; }
-];
-
 @h Announce Score Rule.
 
 =
 [ ANNOUNCE_SCORE_R;
 	if (actor ~= player) rfalse;
-	if (KIT_CONFIGURATION_BITMAP & USE_SCORING_TCBIT == 0) {
+	if (WorldModelKit`SCORING_CFGV == 0) {
 		ANNOUNCE_SCORE_RM('C'); new_line;
 	} else {
 		ANNOUNCE_SCORE_RM('A'); PrintRank();
@@ -32,7 +19,7 @@ To implement some of the out of world actions.
 =
 [ SWITCH_SCORE_NOTIFY_ON_R;
 	if (actor ~= player) rfalse;
-	if (KIT_CONFIGURATION_BITMAP & USE_SCORING_TCBIT == 0) ANNOUNCE_SCORE_R();
+	if (WorldModelKit`SCORING_CFGV == 0) ANNOUNCE_SCORE_R();
 	else notify_mode=1;
 ];
 
@@ -41,7 +28,7 @@ To implement some of the out of world actions.
 =
 [ REP_SWITCH_NOTIFY_ON_R;
 	if (actor ~= player) rfalse;
-	if (KIT_CONFIGURATION_BITMAP & USE_SCORING_TCBIT) {
+	if (WorldModelKit`SCORING_CFGV) {
 		REP_SWITCH_NOTIFY_ON_RM('A'); new_line;
 	}
 ];
@@ -51,7 +38,7 @@ To implement some of the out of world actions.
 =
 [ SWITCH_SCORE_NOTIFY_OFF_R;
 	if (actor ~= player) rfalse;
-	if (KIT_CONFIGURATION_BITMAP & USE_SCORING_TCBIT == 0) ANNOUNCE_SCORE_R();
+	if (WorldModelKit`SCORING_CFGV == 0) ANNOUNCE_SCORE_R();
 	else notify_mode=0;
 ];
 
@@ -60,7 +47,7 @@ To implement some of the out of world actions.
 =
 [ REP_SWITCH_NOTIFY_OFF_R;
 	if (actor ~= player) rfalse;
-	if (KIT_CONFIGURATION_BITMAP & USE_SCORING_TCBIT) {
+	if (WorldModelKit`SCORING_CFGV) {
 		REP_SWITCH_NOTIFY_OFF_RM('A'); new_line;
 	}
 ];
@@ -133,8 +120,8 @@ To implement some of the out of world actions.
 		d++;
 		if (d < c-1) print ", ";
 		if (d == c-1) {
-			if (KIT_CONFIGURATION_BITMAP & SERIAL_COMMA_TCBIT) print ",";
-			LIST_WRITER_INTERNAL_RM('C');
+			if (BasicInformKit`SERIAL_COMMA_CFGF) print ",";
+			LW_Response('C');
 		}
 	}
 	if (player ~= selfobj) {

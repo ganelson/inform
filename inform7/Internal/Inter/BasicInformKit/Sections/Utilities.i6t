@@ -5,10 +5,10 @@ Miscellaneous utility routines for some fundamental I6 needs.
 @h Miscellany.
 
 =
-#ifdef TARGET_ZCODE;
+#Iftrue WORDSIZE == 2;
 Constant BLOCKV_STACK_SIZE = 224;
 #ifnot;
-Constant BLOCKV_STACK_SIZE = DynamicMemoryAllocation/4;
+Constant BLOCKV_STACK_SIZE = BasicInformKit`STACK_FRAME_CAPACITY_CFGV / 4;
 #endif;
 
 Array blockv_stack --> BLOCKV_STACK_SIZE;
@@ -235,21 +235,8 @@ following shows. (The name is from "region of the Z-machine".)
     }
 ];
 
-@h Memcpy.
-This is equivalent to C's memcpy function, in good ways and bad.
-
-=
-[ Memcpy to_addr from_addr size  n;
-#Ifdef TARGET_ZCODE;
-	for (n = size/WORDSIZE: (n--) > 0: ) to_addr-->n = from_addr-->n;
-	for (n = size: ((n--) % WORDSIZE ~= 0): ) to_addr->n = from_addr->n;
-#Ifnot; ! TARGET_GLULX
-    @mcopy size from_addr to_addr;
-#Endif; ! TARGET_
-];
-
 @h Arrcpy.
-This is not quite so efficient, but not terrible.
+This is not quite so efficient as Memcpy, but not terrible.
 
 =
 [ Arrcpy to_array to_entry_size from_array from_entry_size no_entries  n val;
@@ -303,33 +290,10 @@ of course, in a state of sin" (von Neumann).
 	rfalse;
 ];
 
-@h Extracting Verb Numbers.
-A long tale of woe lies behind the following. Infocom games stored verb numbers
-in a single byte in dictionary entries, but they did so counting downwards, so
-that verb number 0 was stored as 255, 1 as 254, and so on. Inform followed
-suit so that debugging of Inform 1 could be aided by using the then-available
-tools for dumping dictionaries from Infocom story files; by using the Infocom
-format for dictionary tables, Inform's life was easier.
-
-But there was an implicit restriction there of 255 distinct verbs (not 256
-since not all words were verbs). When Glulx raised almost all of the Z-machine
-limits, it made space for 65535 verbs instead of 255, but it appears that
-nobody remembered to implement this in I6-for-Glulx and the Glulx form of
-the I6 library. This was only put right in March 2009, and the following
-routine was added to concentrate lookups of this field in one place.
+@h Regarding.
+These are used with adaptive text.
 
 =
-[ DictionaryWordToVerbNum dword verbnum i;
-#Ifdef TARGET_ZCODE;
-	verbnum = $ff-(dword->#dict_par2);
-#Ifnot; ! GLULX
-	dword = dword + #dict_par2 - 1;
-    @aloads dword 0 verbnum;
-    verbnum = $ffff-verbnum;
-#Endif;
-	return verbnum;
-];
-
 [ RegardingSingleObject obj;
 	prior_named_list = 1;
 	prior_named_list_gender = -1;

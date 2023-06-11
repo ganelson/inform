@@ -1,0 +1,18 @@
+Castle Zenda is a room.
+
+A monster is a kind of person.
+
+Some kinds of monster are defined by the Table of Monstrous Beasts.
+
+Table of Monstrous Beasts
+name	strength	hand-to-hand combat method
+goblin	5	"pummeling its green fists"
+gnome	2	"slapping its feeble arms"
+centaur	9	"kicking its hooves"
+
+In Zenda is a goblin called Arggg. Three centaurs are in Zenda. A gnome called Jira is in Zenda.
+
+Instead of attacking a monster (called the opponent):
+	say "Boldly, you declare: 'Ho, [opponent]! I see your strength [strength of opponent]!' It begins [hand-to-hand combat method of opponent].";
+
+Test me with "attack arggg / attack centaur / attack jira".

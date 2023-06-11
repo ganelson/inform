@@ -164,7 +164,7 @@ all conditionals are resolved.
 		at = at->next_node;
 	}
 	if (endif_node == NULL) {
-		InterSchemas::throw_error(dir_node, I"no matching '#endif'");
+		I6Errors::issue_at_node(dir_node, I"no matching '#endif'");
 		return FALSE;
 	}
 
@@ -177,6 +177,11 @@ all conditionals are resolved.
 @<Work out what the condition is@> =
 	if ((dir_node->dir_clarifier == IFDEF_I6RW) ||
 		(dir_node->dir_clarifier == IFNDEF_I6RW)) {
+		if ((dir_node->child_node == NULL) ||
+			(dir_node->child_node->expression_tokens == NULL)) {
+			I6Errors::issue_at_node(dir_node, I"bare '#ifdef' or '#ifndef'");
+			return FALSE;
+		}
 		symbol_to_check = dir_node->child_node->expression_tokens->material;
 	} else {
 		inter_schema_node *to_eval = dir_node->child_node;
@@ -184,7 +189,7 @@ all conditionals are resolved.
 			to_eval = to_eval->child_node;
 		if ((to_eval == NULL) || (to_eval->child_node == NULL) ||
 			(to_eval->child_node->expression_tokens == NULL)) {
-			InterSchemas::throw_error(dir_node, I"malformed '#if...'");
+			I6Errors::issue_at_node(dir_node, I"malformed '#if...'");
 			return FALSE;
 		}
 		symbol_to_check = to_eval->child_node->expression_tokens->material;
@@ -328,8 +333,8 @@ void EmitInterSchemas::emit_recursively(inter_tree *I, inter_schema_node *node,
 Note that recursion in |VAL_PRIM_CAT| mode evaluates |x|, |y| and |z|.
 
 @<Assembly@> =
-	if (prim_cat != CODE_PRIM_CAT) {
-		InterSchemas::throw_error(node, I"assembly language unexpected here");
+	if (prim_cat != CODE_PRIM_CAT) { /* should never in fact happen */
+		I6Errors::issue_at_node(node, I"assembly language unexpected here");
 		return;
 	}
 	inter_schema_node *at = node->child_node;
@@ -341,7 +346,7 @@ Note that recursion in |VAL_PRIM_CAT| mode evaluates |x|, |y| and |z|.
 				opcode_text = tok->material;
 		}
 		if (opcode_text == NULL) { /* should never in fact happen */
-			InterSchemas::throw_error(node, I"assembly language malformed here");
+			I6Errors::issue_at_node(node, I"assembly language malformed here");
 			return;
 		}
 		Produce::inv_assembly(I, opcode_text);
@@ -422,7 +427,7 @@ changed back again very soon after.
 	} else if (Str::eq(tok->material, I"indirect")) { 
 		at = at->next_node;
 	} else if (Str::eq(tok->material, I"glk")) {
-		InterSchemas::throw_error(node, I"the glk() function is now unsupported");
+		I6Errors::issue_at_node(node, I"the glk() function is now unsupported");
 		return;
 	} else {	
 		to_call = IdentifierFinders::find_token(I, tok, finder);
@@ -460,7 +465,7 @@ somewhere (in fact, always in a property value).
 		int argc = 0;
 		for (inter_schema_node *n = node->child_node; n; n=n->next_node) argc++;
 		if (argc > 4) {
-			InterSchemas::throw_error(node, I"too many arguments for call-message");
+			I6Errors::issue_at_node(node, I"too many arguments for call-message");
 			return;
 		}
 		inter_ti BIP = Primitives::BIP_for_indirect_call_returning_value(argc-1);
@@ -477,7 +482,7 @@ more natural |{ ... }|.
 
 @<Code block@> =
 	if (prim_cat != CODE_PRIM_CAT) {
-		InterSchemas::throw_error(node, I"unexpected '{ ... }' code block");
+		I6Errors::issue_at_node(node, I"unexpected '{ ... }' code block");
 		return;
 	}
 	if (node->unopened == FALSE) {
@@ -491,20 +496,36 @@ more natural |{ ... }|.
 	}
 	if (node->unopened) Produce::set_level_to_current_code_block_plus(I, 0);
 
-@ Note that conditional directives have already been taken care of, and that
-other Inform 6 directives are not valid inside function bodies, which is the
-only part of I6 syntax covered by schemas. Therefore:
+@ Note that conditional directives have already been taken care of. The
+only other Inform 6 directive valid inside a function body is OrigSource.
+Therefore:
 
 @<Non-conditional directive@> =
-	InterSchemas::throw_error(node, I"misplaced directive");
-	return;
+	if (node->dir_clarifier == ORIGSOURCE_I6RW) {
+		@<OrigSource directive@>;
+	}
+	else {
+		I6Errors::issue_at_node(node, I"misplaced directive");
+		return;
+	}
+
+@<OrigSource directive@> =
+	text_stream *origfilename = NULL;
+	int origlinenum = 0;
+	if (node->child_node) {
+		origfilename = node->child_node->expression_tokens->material;
+		if (node->child_node->expression_tokens->next) {
+			origlinenum = Str::atoi(node->child_node->expression_tokens->next->material, 0);
+		}
+	}
+	Produce::origsource(I, Provenance::at_file_and_line(origfilename, origlinenum));
 
 @ An |EVAL_ISNT| node can have any number of children, they are sequentially
 evaluated for their potential side-effects, but only the last produces a value.
 
 @<Eval block@> =
 	if ((prim_cat != CODE_PRIM_CAT) && (prim_cat != VAL_PRIM_CAT)){
-		InterSchemas::throw_error(node, I"expression in unexpected place");
+		I6Errors::issue_at_node(node, I"expression in unexpected place");
 		return;
 	}
 	if (node->child_node == NULL) Produce::val(I, K_value, InterValuePairs::number(1));
@@ -610,7 +631,7 @@ parsing the schema.)
 				if (InterValuePairs::is_undef(val)) {
 					TEMPORARY_TEXT(msg)
 					WRITE_TO(msg, "malformed literal number '%S'", t->material);
-					InterSchemas::throw_error(node, msg);
+					I6Errors::issue_at_node(node, msg);
 					DISCARD_TEXT(msg)
 					return;
 				}
@@ -642,7 +663,7 @@ parsing the schema.)
 		default: {
 			TEMPORARY_TEXT(msg)
 			WRITE_TO(msg, "'%S' was unexpected in expression context", t->material);
-			InterSchemas::throw_error(node, msg);
+			I6Errors::issue_at_node(node, msg);
 			DISCARD_TEXT(msg)
 			break;
 		}
@@ -669,7 +690,7 @@ For example, the schema |.{-label:Say}{-counter-up:Say};| results in:
 
 @<Label@> =
 	if (prim_cat != CODE_PRIM_CAT) {
-		InterSchemas::throw_error(node, I"label in unexpected place");
+		I6Errors::issue_at_node(node, I"label in unexpected place");
 		return;
 	}
 	TEMPORARY_TEXT(L)
@@ -688,7 +709,7 @@ For example, the schema |.{-label:Say}{-counter-up:Say};| results in:
 			} else {
 				TEMPORARY_TEXT(msg)
 				WRITE_TO(msg, "expected label name but found '%S'", t->material);
-				InterSchemas::throw_error(node, msg);
+				I6Errors::issue_at_node(node, msg);
 				DISCARD_TEXT(msg)
 				return;
 			}
@@ -778,7 +799,7 @@ on others.
 
 @<Statement@> =
 	if (prim_cat != CODE_PRIM_CAT) {
-		InterSchemas::throw_error(node, I"statement in unexpected place");
+		I6Errors::issue_at_node(node, I"statement in unexpected place");
 		return;
 	}
 	if (node->isn_clarifier == CASE_BIP) Produce::set_level_to_current_code_block_plus(I, 2);
@@ -848,7 +869,7 @@ these possibilities:
 			EIS_RECURSE(var_node, REF_PRIM_CAT);
 			EIS_RECURSE(cl_node, VAL_PRIM_CAT);
 		} else {
-			InterSchemas::throw_error(node, I"malformed 'objectloop' header");
+			I6Errors::issue_at_node(node, I"malformed 'objectloop' header");
 			return;
 		}
 	} else {
@@ -861,7 +882,7 @@ these possibilities:
 			EIS_RECURSE(var_node, REF_PRIM_CAT);
 			Produce::val_symbol(I, K_value, IdentifierFinders::find(I, I"Object", finder));
 		} else {
-			InterSchemas::throw_error(node, I"'objectloop' without visible variable");
+			I6Errors::issue_at_node(node, I"'objectloop' without visible variable");
 			return;
 		}
 	}

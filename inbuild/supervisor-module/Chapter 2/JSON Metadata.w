@@ -17,6 +17,7 @@ void JSONMetadata::read_metadata_file(inbuild_copy *C, filename *F,
 	TEMPORARY_TEXT(contents)
 	TextFiles::read(F, FALSE, "unable to read file of JSON metadata", TRUE,
 		&JSONMetadata::read_metadata_file_helper, NULL, contents);
+	SVEXPLAIN(2, "(read JSON metadata file found at %f)\n", F);
 	text_file_position tfp = TextFiles::at(F, 1);
 	JSON_value *obj = JSON::decode(contents, &tfp);
 	if ((obj) && (obj->JSON_type == ERROR_JSONTYPE)) {

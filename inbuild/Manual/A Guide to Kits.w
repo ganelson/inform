@@ -28,12 +28,15 @@ Inbuild is in charge of deciding which kits a project will use, just as it also
 decides which extensions. For an English-language work of interactive
 fiction being made with the Inform apps, the kits will always be:
 = (text)
-BasicInformKit + EnglishLanguageKit + WorldModelKit + CommandParserKit
+BasicInformKit + Architecture32Kit + EnglishLanguageKit + WorldModelKit + CommandParserKit
 =
+That's for a 32-bit target, such as when Inform projects are compiled for Glulx:
+the alternative is to swap |Architecture16Kit| for |Architecture32Kit|.
+
 However, if the "Basic Inform" checkbox is ticked on the Settings panel for
 the project, the kits will instead be:
 = (text)
-BasicInformKit + EnglishLanguageKit + BasicInformExtrasKit
+BasicInformKit + Architecture32Kit + EnglishLanguageKit
 =
 And these are also the defaults when Inform projects are compiled from the command
 line, with the optional |-basic| switch forcing us into the second case. As a
@@ -47,8 +50,8 @@ Inbuild also makes each project dependent on the language kit for whatever langu
 bundle it is using. So if French is the language of play, the default configurations
 become:
 = (text)
-BasicInformKit + FrenchLanguageKit + WorldModelKit + CommandParserKit
-BasicInformKit + FrenchLanguageKit + BasicInformExtrasKit
+BasicInformKit + Architecture32Kit + FrenchLanguageKit + WorldModelKit + CommandParserKit
+BasicInformKit + Architecture32Kit + FrenchLanguageKit
 =
 Projects can specify their own unusual choices of kits using a project_metadata.json
 file: see //A Guide to Project Metadata// for more on this. But assuming they
@@ -72,23 +75,25 @@ for CommandParserKit includes:
 Never mind the JSON syntax (all that punctuation) for now: what this is saying
 is that CommandParserKit always needs WorldModelKit in order to function.
 This means that any project depending on CommandParserKit automatically depends
-on WorldModelKit too. BasicInformKit uses this facility as well, but in a
-conditional way. Its own metadata file includes:
+on WorldModelKit too.
+
+For example, this can be used to say "unless we have kit MarthaKit, include
+GeorgeKit":
 = (text)
 	{
         "unless": {
             "type": "kit",
-            "title": "WorldModelKit"
+            "title": "MarthaKit"
         },
         "need": {
             "type": "kit",
-            "title": "BasicInformExtrasKit"
+            "title": "GeorgeKit"
         }
     }
 =
-Inbuild acts on this by checking to see if WorldModelKit is not present, and
-in that case BasicInformExtrasKit is automatically added instead. (Positive
-conditions can also be made, with "if" instead of "unless".)
+Inbuild acts on this by checking to see if |MarthaKit| is not present, and
+in that case |GeorgeKit| is automatically added instead. (Positive conditions
+can also be made, with "if" instead of "unless".)
 
 @ Kits can also use their metadata to specify that associated extensions should
 automatically be loaded into the project.[1] For example, the |kit_metadata.json|
@@ -118,6 +123,7 @@ with the |-build-needs| option shows what is needed to build this project:
 	  kit: BasicInformKit
 		extension: Basic Inform by Graham Nelson v1
 		extension: English Language by Graham Nelson v1
+	  kit: Architecture32Kit
 	  kit: CommandParserKit
 		extension: Standard Rules by Graham Nelson v6
 		kit: WorldModelKit
@@ -141,11 +147,11 @@ and (in consequence) WorldModelKit are no longer auto-included.
 
 For example, if BalloonKit is specified, then we will end up with:
 = (text)
-BasicInformKit + EnglishLanguageKit + BalloonKit + BasicInformExtrasKit
+BasicInformKit + Architecture32Kit + EnglishLanguageKit + BalloonKit
 =
 But if CommandParserKit and BalloonKit are both specified, then:
 = (text)
-BasicInformKit + EnglishLanguageKit + WorldModelKit + CommandParserKit + BalloonKit
+BasicInformKit + Architecture32Kit + EnglishLanguageKit + WorldModelKit + CommandParserKit + BalloonKit
 =
 If so, then when we next look at the build requirements for the project, we see:
 = (text as ConsoleText)
@@ -154,6 +160,7 @@ If so, then when we next look at the build requirements for the project, we see:
 	  kit: BasicInformKit
 		extension: Basic Inform by Graham Nelson v1
 		extension: English Language by Graham Nelson v1
+	  kit: Architecture32Kit
 	  kit: CommandParserKit
 		extension: Standard Rules by Graham Nelson v6
 		kit: WorldModelKit

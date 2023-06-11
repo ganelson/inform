@@ -96,22 +96,22 @@ saying "now build this".
 
 <ul class="items"><li>(1) <a href="index.html" class="internal">supervisor</a> has to be started and stopped at each end of the parent's
 run, by calling <a href="1-sm.html#SP3" class="internal">SupervisorModule::start</a> and <a href="1-sm.html#SP3" class="internal">SupervisorModule::end</a>.
-The former calls <a href="1-ic.html#SP3" class="internal">Supervisor::start</a> in turn, and that activates a number of
+The former calls <a href="1-ic.html#SP5" class="internal">Supervisor::start</a> in turn, and that activates a number of
 subsystems with further calls. But all modules do something like this.
 </li><li>(2) More unusually, when the parent is creating its command-line options, it
-should call <a href="1-ic.html#SP4" class="internal">Supervisor::declare_options</a> to add more. This allows all tools
+should call <a href="1-ic.html#SP6" class="internal">Supervisor::declare_options</a> to add more. This allows all tools
 containing the Supervisor to offer a unified set of command-line options to
 configure it.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> When the parent is given a switch that it doesn't recognise,
-it should call <a href="1-ic.html#SP7" class="internal">Supervisor::option</a>; and when it has fully processed the
-command line, it should call <a href="1-ic.html#SP8" class="internal">Supervisor::optioneering_complete</a>.
+it should call <a href="1-ic.html#SP9" class="internal">Supervisor::option</a>; and when it has fully processed the
+command line, it should call <a href="1-ic.html#SP10" class="internal">Supervisor::optioneering_complete</a>.
 </li><li>(3) The parent can now, if it chooses, make calls into <a href="index.html" class="internal">supervisor</a> to set
-up additional dependencies. But eventually it will call <a href="1-ic.html#SP10" class="internal">Supervisor::go_operational</a>.
+up additional dependencies. But eventually it will call <a href="1-ic.html#SP12" class="internal">Supervisor::go_operational</a>.
 The Supervisor is now ready for use!
 </li></ul>
 <p class="commentary">There is no single "go" button: instead, the Supervisor provides a suite
 of functions to call, each acting on a "copy" &mdash; an instance of some software
 at a given filing system location. When <a href="../inform7/index.html" class="internal">inform7</a> is the parent, it follows
-the call to <a href="1-ic.html#SP10" class="internal">Supervisor::go_operational</a> with a single call to <a href="2-cps.html#SP12" class="internal">Copies::build</a>
+the call to <a href="1-ic.html#SP12" class="internal">Supervisor::go_operational</a> with a single call to <a href="2-cps.html#SP12" class="internal">Copies::build</a>
 on the copy representing the current Inform 7 project. But when <a href="../inbuild/index.html" class="internal">inbuild</a>
 is the parent, a variety of other functions may be made.
 </p>
@@ -123,7 +123,7 @@ to see the effect.
 example, "Inform 7 extension" and "website template" are both genres. Each
 different genre is represented by an <a href="2-gnr.html#SP1" class="internal">inbuild_genre</a> object, whose method
 calls provide the behaviour distinctive to that genre. The currently seven
-genre objects are created during <a href="1-ic.html#SP3" class="internal">Supervisor::start</a>, which calls out to
+genre objects are created during <a href="1-ic.html#SP5" class="internal">Supervisor::start</a>, which calls out to
 <a href="4-em.html#SP2" class="internal">ExtensionManager::start</a>, <a href="4-km.html#SP1" class="internal">KitManager::start</a>, and so on: the seven
 sections of <a href="4-em.html" class="internal">Chapter 4: Genre Management</a> are exactly the method calls for the seven genre
 objects.
@@ -174,7 +174,7 @@ typed:
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inform7</span><span class="ConsoleText-identifier-syntax"> -internal</span><span class="ConsoleText-plain-syntax"> inform7/Internal</span><span class="ConsoleText-identifier-syntax"> -external</span><span class="ConsoleText-plain-syntax"> ~/mystuff</span><span class="ConsoleText-identifier-syntax"> -project</span><span class="ConsoleText-plain-syntax"> Tadpoles.inform</span>
 </pre>
 <p class="commentary">then all three command-line switches here would actually be parsed by
-<a href="1-ic.html#SP7" class="internal">Supervisor::option</a>, rather than by anything in the <a href="../core-module/index.html" class="internal">core</a> module.
+<a href="1-ic.html#SP9" class="internal">Supervisor::option</a>, rather than by anything in the <a href="../core-module/index.html" class="internal">core</a> module.
 They would set the "internal" and "external" nest (see <a href="../inbuild/M-ui.html" class="internal">Manual (in inbuild)</a>),
 creating an <a href="2-nst.html#SP1" class="internal">inbuild_nest</a> object for each. The Inform 7 project for the
 run would also be set. This would become whose genre is <span class="extract"><span class="ConsoleText-extract-syntax">project_bundle_genre</span></span>.
@@ -185,7 +185,7 @@ run would also be set. This would become whose genre is <span class="extract"><s
 These are not explicitly named on the command line: instead, they are found by
 searching through the nests. <a href="index.html" class="internal">supervisor</a> does this by creating an
 <a href="2-rqr.html#SP1" class="internal">inbuild_requirement</a> object to specify what it wants, and then calling its
-search engine <a href="2-nst.html#SP7" class="internal">Nests::search_for</a>. This builds a list of <a href="2-nst.html#SP5" class="internal">inbuild_search_result</a>
+search engine <a href="2-nst.html#SP9" class="internal">Nests::search_for</a>. This builds a list of <a href="2-nst.html#SP7" class="internal">inbuild_search_result</a>
 objects, each pointing to a new copy which matches the requirement given.
 </p>
 
@@ -202,9 +202,9 @@ which matches any extension by Emily Short.
 <a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Although such searches can be used with vague requirements to scan for,
 say, everything with a given genre, they can also be used to seek specific
-pieces of software which we will need. <a href="2-nst.html#SP8" class="internal">Nests::search_for_best</a> is a version
+pieces of software which we will need. <a href="2-nst.html#SP10" class="internal">Nests::search_for_best</a> is a version
 of the search engine which returns a single result (or none): the best one.
-Best is defined by <a href="2-nst.html#SP9" class="internal">Nests::better_result</a> and makes careful use of both
+Best is defined by <a href="2-nst.html#SP11" class="internal">Nests::better_result</a> and makes careful use of both
 semantic versioning and the user's intentions to ensure a happy outcome.
 For example, if an Inform project says
 </p>
@@ -213,7 +213,7 @@ For example, if an Inform project says
     <p>Include Upturned Faces by Raphael.</p>
 </blockquote>
 
-<p class="commentary">then <a href="2-nst.html#SP8" class="internal">Nests::search_for_best</a> will be used to seek which copy of this
+<p class="commentary">then <a href="2-nst.html#SP10" class="internal">Nests::search_for_best</a> will be used to seek which copy of this
 extension to use.
 </p>
 
@@ -294,10 +294,10 @@ placeholder.
 
 <p class="commentary">The answer in fact depends on genre. For pipelines, languages and website
 templates, there are no dependencies, so there's nothing to build. For kits,
-extensions and projects, the task is performed by <a href="5-ks.html#SP13" class="internal">Kits::construct_graph</a>,
-<a href="5-es.html#SP9" class="internal">Extensions::construct_graph</a> and <a href="5-ps2.html#SP31" class="internal">Projects::construct_graph</a>. Kits are
+extensions and projects, the task is performed by <a href="5-ks.html#SP14" class="internal">Kits::construct_graph</a>,
+<a href="5-es.html#SP9" class="internal">Extensions::construct_graph</a> and <a href="5-ps2.html#SP33" class="internal">Projects::construct_graph</a>. Kits are
 graphed when the Supervisor "goes operational", because
-<a href="1-ic.html#SP10" class="internal">Supervisor::go_operational</a> calls <a href="2-cps.html#SP8" class="internal">Copies::construct_graph</a> for
+<a href="1-ic.html#SP12" class="internal">Supervisor::go_operational</a> calls <a href="2-cps.html#SP8" class="internal">Copies::construct_graph</a> for
 every extant copy.
 </p>
 
@@ -323,7 +323,7 @@ at most once, and is cached so that a second read produces the same result
 as the first.
 </p>
 
-<p class="commentary">Reading is performed by <a href="5-ps2.html#SP34" class="internal">Projects::read_source_text_for</a> and
+<p class="commentary">Reading is performed by <a href="5-ps2.html#SP36" class="internal">Projects::read_source_text_for</a> and
 <a href="5-es.html#SP10" class="internal">Extensions::read_source_text_for</a>. For extensions this involves reading
 only a single file, but for projects it can involve multiple files. Each
 such is read by a call to <a href="6-st.html#SP3" class="internal">SourceText::read_file</a>, which then sends out
@@ -480,7 +480,7 @@ dependencies on other extensions. If we were reading an extension, we now have
 its complete graph made, because it can only be dependent on other extensions.
 But a project also depends on kits of Inter codes, on a language definition,
 and so forth: and also on the files it draws its source text from. See
-<a href="5-ps2.html#SP31" class="internal">Projects::construct_graph</a> for the details.
+<a href="5-ps2.html#SP33" class="internal">Projects::construct_graph</a> for the details.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Incremental builds. </b>So, then, at this point we can determine the complete build graph for any copy.
@@ -505,7 +505,7 @@ i.e., has edges out to.
 <p class="commentary">How does one "build a vertex", though? The answer is that if a vertex has been
 given a <a href="3-bs.html#SP1" class="internal">build_script</a>, one follows this script. The script is only a list
 of <a href="3-bs2.html#SP3" class="internal">build_step</a> objects, and each step is an application of a <a href="3-bs2.html#SP1" class="internal">build_skill</a>.
-There are only a few skills known to the Supervisor, created by <a href="1-ic.html#SP3" class="internal">Supervisor::start</a>.
+There are only a few skills known to the Supervisor, created by <a href="1-ic.html#SP5" class="internal">Supervisor::start</a>.
 For example, assimilating a kit is a skill; but the need to apply this skill to
 a particular copy of <span class="extract"><span class="ConsoleText-extract-syntax">WorldModelKit</span></span> is a build step.
 </p>

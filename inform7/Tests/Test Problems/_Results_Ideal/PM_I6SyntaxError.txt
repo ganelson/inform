@@ -1,0 +1,213 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 12 words long.
+I've also read version 1 of Basic Inform by Graham Nelson, which is 7888 words long.
+I've also read version 1 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 6 of Standard Rules by Graham Nelson, which is 34398 words long.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 24): this is not an
+    Inform 6 directive.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 25): this Inform 6
+    directive is not supported in kits or '(-' inclusions: 'Link;' (only
+    #Ifdef, #Ifndef, #Iftrue, #Ifnot, #Endif, #OrigSource, #Stub, Constant,
+    Global, Array, Attribute, Property, Verb, Fake_action, Object, Default are
+    supported).
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 36): in a +namespace
+    annotation, the 'access' must be 'private' or 'public', not 'whimsical'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 37): the +namespace
+    annotation does not take the term 'level'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 38): this +annotation
+    is malformed: '+namespace("This");'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 38): this is not an
+    Inform 6 directive.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 39): the namespace
+    '10' is not allowed: namespace names should begin with a letter and contain
+    only alphanumeric characters or '_'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 40):
+    '+namespace(...)' names are case-sensitive: use 'main', not 'Main', to
+    return to the global namespace.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 41): the namespace
+    'replaced' is reserved, and cannot be used directly.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 42): the annotation
+    '+private()' seems not to apply to any directive: only '+namespace' can do
+    that.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 45): '+namespace()'
+    is not allowed: use '+namespace(main);' to return to the global namespace.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 48): '+namespace()'
+    is not allowed: use '+namespace(main);' to return to the global namespace.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 55): conditional
+    compilation is too difficult: #iftrue on 'STUFF==201' (can only test SYMBOL
+    == DECIMALVALUE, or >, =, 
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 57): conditional
+    compilation wrongly structured: #ifnot at top level.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 58): conditional
+    compilation wrongly structured: too many #endif.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 123): conditional
+    compilation wrongly structured: not enough #endif.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 27): the annotation
+    '+namespace(Whatever)' must be followed by a ';'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 29): invalid Inform 6
+    routine declaration: '"hello" ]'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 30): invalid #Stub
+    declaration: '#Stub X "banana"; '.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 31): invalid Inform 6
+    local variable name: '12' in function 'Routine'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 31): invalid Inform 6
+    local variable name: '1aa' in function 'Routine'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 31): invalid Inform 6
+    local variable name: '"semolina"' in function 'Routine'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 33): the annotation
+    '+silly' is not one of those allowed.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 34): the +private
+    annotation does not take any terms.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 35): the +public
+    annotation does not take any terms.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 44): the +private
+    annotation is redundant in namespace 'AmphibianKit'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 47): the +public
+    annotation is redundant in namespace 'ReptileKit'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 49): expected 'from
+    K' or 'keeping' in '+replacing(...)', not 'sideways'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 50): the +replacing
+    annotation does not take the term 'route'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 7): cannot make array
+    'supposed': the 'string' initialiser is unsupported.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 8): cannot make array
+    'supposed2': the initial value syntax is unrecognised.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 9): multiple entries
+    between ';' markers in array 'helium'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 10): array 'lithium'
+    contains empty entry.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 10): array 'lithium'
+    contains empty entry.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 13): array 'sizeplus'
+    gives its size using operator '+' (use brackets '(' ... ')' around the size
+    for a calculated array size).
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 15): array
+    'sizeminus' gives its size using operator '-' (use brackets '(' ... ')'
+    around the size for a calculated array size).
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 17): array
+    'sizetimes' gives its size using operator '*' (use brackets '(' ... ')'
+    around the size for a calculated array size).
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 19): array
+    'sizedivide' gives its size using operator '/' (use brackets '(' ... ')'
+    around the size for a calculated array size).
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 52): can't find any
+    scope routine called 'Bogus'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 52): can't find any
+    noun routine called 'JustAsBogus'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 60): Inform 6 syntax
+    error in function 'Dud1': '@mul' was unexpected in expression context.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 63): Inform 6 syntax
+    error in function 'Dud2': no matching '#endif'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 63): Inform 6 syntax
+    error in function 'Dud2': misplaced directive.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 66): Inform 6 syntax
+    error in function 'Dud3': misplaced directive.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 70): Inform 6 syntax
+    error in function 'Dud4': bare '#ifdef' or '#ifndef'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 70): Inform 6 syntax
+    error in function 'Dud4': misplaced directive.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 70): Inform 6 syntax
+    error in function 'Dud4': misplaced directive.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 74): Inform 6 syntax
+    error in function 'Dud4': malformed '#if...'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 74): Inform 6 syntax
+    error in function 'Dud4': misplaced directive.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 74): Inform 6 syntax
+    error in function 'Dud4': misplaced directive.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 77): Inform 6 syntax
+    error in function 'Dud5': '@mul' was unexpected in expression context.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 80): Inform 6 syntax
+    error in function 'Dud6': the glk() function is now unsupported.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 83): Inform 6 syntax
+    error in function 'Dud7': too many arguments for call-message.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 86): Inform 6 syntax
+    error in function 'Dud8': malformed literal number '$f05g'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 89): Inform 6 syntax
+    error in function 'Dud9': label in unexpected place.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 92): Inform 6 syntax
+    error in function 'Dud10': expected label name but found '1534'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 95): Inform 6 syntax
+    error in function 'Dud11': statement in unexpected place.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 98): Inform 6 syntax
+    error in function 'Dud12': 'objectloop' without visible variable.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 101): Inform 6 syntax
+    error in function 'Dud13': do without until.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 104): Inform 6 syntax
+    error in function 'Dud14': expected 'on' or 'off' after 'font', not 'Times
+    New Roman'.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 107): Inform 6 syntax
+    error in function 'Dud15': move without to.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 110): Inform 6 syntax
+    error in function 'Dud16': 'for' header with too few clauses.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 113): Inform 6 syntax
+    error in function 'Dud17': 'for' header with too few clauses.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 116): Inform 6 syntax
+    error in function 'Dud18': 'for' header with too many clauses.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 119): Inform 6 syntax
+    error in function 'Dud19': operator '+' used with 1 not 2 operand(s).
+Inform 7 has finished.

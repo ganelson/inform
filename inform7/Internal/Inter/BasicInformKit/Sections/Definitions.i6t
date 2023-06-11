@@ -8,89 +8,7 @@ layer.
 
 =
 Constant BASICINFORMKIT = 1;
-
-@h Z-Machine Definitions.
-The Z-machine contains certain special constants and variables at fixed
-position in its "header"; the addresses of these are given below. See
-The Z-Machine Standards Document, version 1.0, for details.
-
-=
-#Ifdef TARGET_ZCODE;
-
-! Offsets into Z-machine header:
-
-Constant HDR_ZCODEVERSION     = $00;     ! byte
-Constant HDR_TERPFLAGS        = $01;     ! byte
-Constant HDR_GAMERELEASE      = $02;     ! word
-Constant HDR_HIGHMEMORY       = $04;     ! word
-Constant HDR_INITIALPC        = $06;     ! word
-Constant HDR_DICTIONARY       = $08;     ! word
-Constant HDR_OBJECTS          = $0A;     ! word
-Constant HDR_GLOBALS          = $0C;     ! word
-Constant HDR_STATICMEMORY     = $0E;     ! word
-Constant HDR_GAMEFLAGS        = $10;     ! word
-Constant HDR_GAMESERIAL       = $12;     ! six ASCII characters
-Constant HDR_ABBREVIATIONS    = $18;     ! word
-Constant HDR_FILELENGTH       = $1A;     ! word
-Constant HDR_CHECKSUM         = $1C;     ! word
-Constant HDR_TERPNUMBER       = $1E;     ! byte
-Constant HDR_TERPVERSION      = $1F;     ! byte
-Constant HDR_SCREENHLINES     = $20;     ! byte
-Constant HDR_SCREENWCHARS     = $21;     ! byte
-Constant HDR_SCREENWUNITS     = $22;     ! word
-Constant HDR_SCREENHUNITS     = $24;     ! word
-Constant HDR_FONTWUNITS       = $26;     ! byte
-Constant HDR_FONTHUNITS       = $27;     ! byte
-Constant HDR_ROUTINEOFFSET    = $28;     ! word
-Constant HDR_STRINGOFFSET     = $2A;     ! word
-Constant HDR_BGCOLOUR         = $2C;     ! byte
-Constant HDR_FGCOLOUR         = $2D;     ! byte
-Constant HDR_TERMCHARS        = $2E;     ! word
-Constant HDR_PIXELSTO3        = $30;     ! word
-Constant HDR_TERPSTANDARD     = $32;     ! two bytes
-Constant HDR_ALPHABET         = $34;     ! word
-Constant HDR_EXTENSION        = $36;     ! word
-Constant HDR_UNUSED           = $38;     ! two words
-Constant HDR_INFORMVERSION    = $3C;     ! four ASCII characters
-
-Constant #dict_par1 = 6;
-Constant #dict_par2 = 7;
-
-#Endif;
-
-@h Glulx Definitions.
-We make similar header definitions for Glulx. Extensive further
-definitions, of constants needed to handle the Glk I/O layer, can be found
-in the "Infglk" section of "Glulx.i6t"; they are not used in the rest
-of the template layer, and would only get in the way here.
-
-=
-#IFDEF TARGET_GLULX;
-
-Global unicode_gestalt_ok; ! Set if interpreter supports Unicode
-
-! Offsets into Glulx header and start of ROM:
-
-Constant HDR_MAGICNUMBER      = $00;     ! long word
-Constant HDR_GLULXVERSION     = $04;     ! long word
-Constant HDR_RAMSTART         = $08;     ! long word
-Constant HDR_EXTSTART         = $0C;     ! long word
-Constant HDR_ENDMEM           = $10;     ! long word
-Constant HDR_STACKSIZE        = $14;     ! long word
-Constant HDR_STARTFUNC        = $18;     ! long word
-Constant HDR_DECODINGTBL      = $1C;     ! long word
-Constant HDR_CHECKSUM         = $20;     ! long word
-Constant ROM_INFO             = $24;     ! four ASCII characters
-Constant ROM_MEMORYLAYOUT     = $28;     ! long word
-Constant ROM_INFORMVERSION    = $2C;     ! four ASCII characters
-Constant ROM_COMPVERSION      = $30;     ! four ASCII characters
-Constant ROM_GAMERELEASE      = $34;     ! short word
-Constant ROM_GAMESERIAL       = $36;     ! six ASCII characters
-
-Constant #dict_par1 = 11;
-Constant #dict_par2 = 13;
-
-#Endif;
+Constant SERIAL_COMMA = BasicInformKit`SERIAL_COMMA_CFGF;
 
 @h Nothing.
 This is defined automatically by the Inform 6 compiler, but not by other final
@@ -211,6 +129,29 @@ Constant DEFART_PK    = $101;
 Constant INDEFART_PK  = $102;
 Constant LIGHTED_PK   = $103;
 Constant UNLIGHTED_PK = $104;
+
+@h Auxiliary file structure.
+The I7 kind of value "auxiliary-file" is an |-->| array, holding a memory
+structure containing information about external files. The following
+constants specify memory offsets and values. Note the safety value stored
+as the first word of the structure: this helps protect the routines below
+from accidents.
+
+=
+Constant AUXF_MAGIC = 0; ! First word holds a safety constant
+Constant AUXF_MAGIC_VALUE = 16339; ! Should be first word of any valid file structure
+Constant AUXF_STATUS = 1; ! One of the following:
+	Constant AUXF_STATUS_IS_CLOSED = 1; ! Currently closed, or perhaps doesn't exist
+	Constant AUXF_STATUS_IS_OPEN_FOR_READ = 2;
+	Constant AUXF_STATUS_IS_OPEN_FOR_WRITE = 3;
+	Constant AUXF_STATUS_IS_OPEN_FOR_APPEND = 4;
+	Constant AUXF_STATUS_IS_ERRONEOUS = 5;
+Constant AUXF_BINARY = 2; ! False for text files (I7 default), true for binary
+Constant AUXF_STREAM = 3; ! Stream for an open file (meaningless otherwise)
+Constant AUXF_FILENAME = 4; ! Packed address of constant string
+Constant AUXF_IFID_OF_OWNER = 5; ! UUID_ARRAY if owned by this project, or
+	! string array of IFID of owner, or NULL to leave open
+Constant AUXF_RESOURCE_ID = 6; ! Only for internal files, identified by Blorb resource
 
 @h Run-Time Problem Numbers.
 The enumeration sequence here must correspond to that in the file of RTP
@@ -566,20 +507,3 @@ Global formal_par5;
 Global formal_par6;
 Global formal_par7;
 Global unicode_temp;
-
-@h Template Configuration.
-To minimise the need for conditional compilation in the template, the
-constant |KIT_CONFIGURATION_BITMAP| must be generated by the user
-(i.e., by I7). It's made up of these bits:
-
-=
-Constant USE_SCORING_TCBIT = 1;
-Constant PREVENT_UNDO_TCBIT = 2;
-Constant SERIAL_COMMA_TCBIT = 4;
-Constant PROGRAMMING_EXPONENTS_TCBIT = 8;
-Constant FIX_RNG_TCBIT = 16;
-Constant ECHO_COMMANDS_TCBIT = 32;
-Constant NO_VERB_VERB_DEFINED_TCBIT = 64;
-Constant DIALECT_US_TCBIT = 128;
-Constant STORY_AUTHOR_TCBIT = 256;
-Constant RANKING_TABLE_TCBIT = 512;

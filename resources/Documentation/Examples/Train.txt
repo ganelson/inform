@@ -58,7 +58,7 @@ And now our schedule for the train -- somewhat truncated, admittedly, since the 
 		if the player is in the train or the player is in the station of the train, say "The train pulls out of [the station of the Train] and continues east through the darkness towards Spokane.";
 		now the station of the Train is the Train.
 	 
-Playing this out would of course require near inhuman patience. Let's set things up so that the player at least doesn't have to wait too long for his first departure:
+Playing this out would of course require near inhuman patience. Let's set things up so that the player at least doesn't have to wait too long for the first departure:
 
 	{**}The time of day is 4:43 PM.
 	

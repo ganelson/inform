@@ -88,14 +88,18 @@ fiction being made with the Inform apps, the kits will always be:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">BasicInformKit + EnglishLanguageKit + WorldModelKit + CommandParserKit</span>
+<span class="plain-syntax">BasicInformKit + Architecture32Kit + EnglishLanguageKit + WorldModelKit + CommandParserKit</span>
 </pre>
+<p class="commentary">That's for a 32-bit target, such as when Inform projects are compiled for Glulx:
+the alternative is to swap <span class="extract"><span class="extract-syntax">Architecture16Kit</span></span> for <span class="extract"><span class="extract-syntax">Architecture32Kit</span></span>.
+</p>
+
 <p class="commentary">However, if the "Basic Inform" checkbox is ticked on the Settings panel for
 the project, the kits will instead be:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">BasicInformKit + EnglishLanguageKit + BasicInformExtrasKit</span>
+<span class="plain-syntax">BasicInformKit + Architecture32Kit + EnglishLanguageKit</span>
 </pre>
 <p class="commentary">And these are also the defaults when Inform projects are compiled from the command
 line, with the optional <span class="extract"><span class="extract-syntax">-basic</span></span> switch forcing us into the second case. As a
@@ -113,8 +117,8 @@ become:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">BasicInformKit + FrenchLanguageKit + WorldModelKit + CommandParserKit</span>
-<span class="plain-syntax">BasicInformKit + FrenchLanguageKit + BasicInformExtrasKit</span>
+<span class="plain-syntax">BasicInformKit + Architecture32Kit + FrenchLanguageKit + WorldModelKit + CommandParserKit</span>
+<span class="plain-syntax">BasicInformKit + Architecture32Kit + FrenchLanguageKit</span>
 </pre>
 <p class="commentary">Projects can specify their own unusual choices of kits using a project_metadata.json
 file: see <a href="M-agtpm.html" class="internal">A Guide to Project Metadata</a> for more on this. But assuming they
@@ -141,25 +145,28 @@ for CommandParserKit includes:
 <p class="commentary">Never mind the JSON syntax (all that punctuation) for now: what this is saying
 is that CommandParserKit always needs WorldModelKit in order to function.
 This means that any project depending on CommandParserKit automatically depends
-on WorldModelKit too. BasicInformKit uses this facility as well, but in a
-conditional way. Its own metadata file includes:
+on WorldModelKit too.
+</p>
+
+<p class="commentary">For example, this can be used to say "unless we have kit MarthaKit, include
+GeorgeKit":
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    {</span>
 <span class="plain-syntax">        "unless": {</span>
 <span class="plain-syntax">            "type": "kit",</span>
-<span class="plain-syntax">            "title": "WorldModelKit"</span>
+<span class="plain-syntax">            "title": "MarthaKit"</span>
 <span class="plain-syntax">        },</span>
 <span class="plain-syntax">        "need": {</span>
 <span class="plain-syntax">            "type": "kit",</span>
-<span class="plain-syntax">            "title": "BasicInformExtrasKit"</span>
+<span class="plain-syntax">            "title": "GeorgeKit"</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="commentary">Inbuild acts on this by checking to see if WorldModelKit is not present, and
-in that case BasicInformExtrasKit is automatically added instead. (Positive
-conditions can also be made, with "if" instead of "unless".)
+<p class="commentary">Inbuild acts on this by checking to see if <span class="extract"><span class="extract-syntax">MarthaKit</span></span> is not present, and
+in that case <span class="extract"><span class="extract-syntax">GeorgeKit</span></span> is automatically added instead. (Positive conditions
+can also be made, with "if" instead of "unless".)
 </p>
 
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Kits can also use their metadata to specify that associated extensions should
@@ -194,6 +201,7 @@ with the <span class="extract"><span class="extract-syntax">-build-needs</span><
 <span class="ConsoleText-plain-syntax">      kit: BasicInformKit</span>
 <span class="ConsoleText-plain-syntax">        extension: Basic Inform by Graham Nelson v1</span>
 <span class="ConsoleText-plain-syntax">        extension: English Language by Graham Nelson v1</span>
+<span class="ConsoleText-plain-syntax">      kit: Architecture32Kit</span>
 <span class="ConsoleText-plain-syntax">      kit: CommandParserKit</span>
 <span class="ConsoleText-plain-syntax">        extension: Standard Rules by Graham Nelson v6</span>
 <span class="ConsoleText-plain-syntax">        kit: WorldModelKit</span>
@@ -222,13 +230,13 @@ and (in consequence) WorldModelKit are no longer auto-included.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">BasicInformKit + EnglishLanguageKit + BalloonKit + BasicInformExtrasKit</span>
+<span class="plain-syntax">BasicInformKit + Architecture32Kit + EnglishLanguageKit + BalloonKit</span>
 </pre>
 <p class="commentary">But if CommandParserKit and BalloonKit are both specified, then:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">BasicInformKit + EnglishLanguageKit + WorldModelKit + CommandParserKit + BalloonKit</span>
+<span class="plain-syntax">BasicInformKit + Architecture32Kit + EnglishLanguageKit + WorldModelKit + CommandParserKit + BalloonKit</span>
 </pre>
 <p class="commentary">If so, then when we next look at the build requirements for the project, we see:
 </p>
@@ -239,6 +247,7 @@ and (in consequence) WorldModelKit are no longer auto-included.
 <span class="ConsoleText-plain-syntax">      kit: BasicInformKit</span>
 <span class="ConsoleText-plain-syntax">        extension: Basic Inform by Graham Nelson v1</span>
 <span class="ConsoleText-plain-syntax">        extension: English Language by Graham Nelson v1</span>
+<span class="ConsoleText-plain-syntax">      kit: Architecture32Kit</span>
 <span class="ConsoleText-plain-syntax">      kit: CommandParserKit</span>
 <span class="ConsoleText-plain-syntax">        extension: Standard Rules by Graham Nelson v6</span>
 <span class="ConsoleText-plain-syntax">        kit: WorldModelKit</span>

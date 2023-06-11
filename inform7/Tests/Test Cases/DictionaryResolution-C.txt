@@ -1,0 +1,7 @@
+Use dictionary resolution of 12.
+
+The OED Workshop is a room.
+
+A politician and a politicianish briefcase are here.
+
+Test me with "x politician / x politicianish".

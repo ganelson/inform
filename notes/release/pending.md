@@ -1,8 +1,10 @@
 # Pending
 
-These will be added to release notes when the release is made.
+These will be added to release notes when the release is made. This page
+only hold bug fixes and other minor tweaks: anything larger is covered by
+[Inform evolution](https://github.com/ganelson/inform-evolution) proposals.
 
-## Features
+## Featurettes arising from bug reports, but too small for Inform Evolution proposals
 
 - This was reported as Jira bug [I7-2087](https://inform7.atlassian.net/browse/I7-2087)
 	"three anonymous standard rules", but is arguably a feature request: that three
@@ -15,9 +17,30 @@ These will be added to release notes when the release is made.
 	late scene changing stage
 	default action success rule
 	```
+- Errors occurring in I6-syntax code, either in `(- ... -)` inclusions into I7
+	source text or in kit source code, are now reported more fully, with source
+	references and links provided. (A feature request for this was filed as
+	Jira bug [I7-2232](https://inform7.atlassian.net/browse/I7-2232).)
+
+## Documentation
+
+"Writing with Inform" and "The Recipe Book" benefit from a revision throughout to
+remove unnecessary gender-binary language, mostly to do with pronouns attached
+to "the player", or similar. The example `Blue or Pink` has become `Good or Evil`,
+and now poses a moral rather than gender-based question.
 
 ## Bug fixes
 
+- Fix for Jira bug [I7-2344](https://inform7.atlassian.net/browse/I7-2344)
+	"inform7's -silence flag should imply -no-progress"
+	([commit 687dba6](https://github.com/ganelson/inform/commit/687dba6857983420a76559cfed292cde0a2891fb))
+- Fix for Jira bug [I7-2341](https://inform7.atlassian.net/browse/I7-2341)
+	"You can `use dict_word_size of 12` and I7's ok with it, but then passes it
+	on to I6 in lower case"
+	([commit a011ec6](https://github.com/ganelson/inform/commit/a011ec67b900bf13d89ab73a46dc519b58c69906))
+- Fix for Jira bug [I7-2335](https://inform7.atlassian.net/browse/I7-2335)
+	"Several previously-legal forms of the Array directive no longer work in I6 inclusions in 10.1.2"
+	([commit 4d97b49](https://github.com/ganelson/inform/commit/4d97b499cfd3e15650d1bba1e6e8c70c24a01fb2))
 - Fix for Jira bug [I7-2334](https://inform7.atlassian.net/browse/I7-2334)
 	"imbalanced parentheses in Definition by I6 Condition causes abject failure"
 	([commit 5d45863](https://github.com/ganelson/inform/commit/5d4586387c6b7405cd45e43f04c984583cd76bb3))
@@ -27,9 +50,21 @@ These will be added to release notes when the release is made.
 - Fix for Jira bug [I7-2329](https://inform7.atlassian.net/browse/I7-2329)
 	"Colons in story title are not sanitised in release filenames"
 	([commit f50a043](https://github.com/ganelson/inform/commit/f50a043fabf558ad3396bc1b97dfb13b93619305))
+- Fix for Jira bug [I7-2306](https://inform7.atlassian.net/browse/I7-2306)
+	"remaining arbitary ifdefs in kit code": also fixes an unreported bug in
+	which the use options "Use numbered rules", "Use manual pronouns",
+	"Use fast route-finding" and "Use slow route-finding" had ceased to have
+	any effect; all taken care of in the implementation of IE-0018
+	([commit 95e613c](https://github.com/ganelson/inform/commit/95e613cd6a2d4341823f16f1635e59136710090a))
 - Fix for Jira bug [I7-2304](https://inform7.atlassian.net/browse/I7-2304)
 	"switch(): first branch can't start with negative number"
 	([commit 1c18007](https://github.com/ganelson/inform/commit/1c18007326bf6fb15c74a1d5742827a4d76a0c20))
+- Fix for Jira bug [I7-2298](https://inform7.atlassian.net/browse/I7-2298)
+	""to" in I6 switch statement is not recognized"
+	([commit 04e526f](https://github.com/ganelson/inform/commit/04e526f0a676b89fa032d6c886a146499d5e7ae5))
+- Fix for Jira bug [I7-2297](https://inform7.atlassian.net/browse/I7-2297)
+	"Missing semicolon after I6 routine crashed compiler without explanation"
+	([commit 4fb6e57](https://github.com/ganelson/inform/commit/4fb6e57b866eacd84d27e4752c7d0147fc982ac0))
 - Fix for Jira bug [I7-2284](https://inform7.atlassian.net/browse/I7-2284)
 	"Inter error" - arising from a sentence trying to use an either-or property
 	in a way which would make it unheld by default, when an existing sentence
@@ -54,6 +89,9 @@ These will be added to release notes when the release is made.
 - Fix for Jira bug [I7-2247](https://inform7.atlassian.net/browse/I7-2247)
 	"Internal error 'unowned' when using 'Understand'"
 	([commit 3ebcac0](https://github.com/ganelson/inform/commit/3ebcac0b5dc58e9754de6b2c8dd85fad719e4629))
+- Fix for Jira bug [I7-2242](https://inform7.atlassian.net/browse/I7-2242)
+	"Creating kinds via tables fails"
+	([commit 0038a2e](https://github.com/ganelson/inform/commit/0038a2e46f91fa104f65c7c910ff7097f1c09198))
 - Fix for Jira bug [I7-2237](https://inform7.atlassian.net/browse/I7-2237)
 	"Inform hangs when reading a Neptune file in a kit with no final newline"
 	([commit 1cd75d8](https://github.com/ganelson/inform/commit/1cd75d8a4946ba10636a8ec474aded9716fffe9b))
@@ -70,13 +108,34 @@ These will be added to release notes when the release is made.
 - Fix for Jira bug [I7-2234](https://inform7.atlassian.net/browse/I7-2234)
 	"Non-heading @ sections not supported in template files"
 	(Inweb: [commit f2aaa32](https://github.com/ganelson/inweb/commit/f2aaa32479e14187679828e3e5696f5951b43b38))
+- Fix for Jira bug [I7-2225](https://inform7.atlassian.net/browse/I7-2225)
+	"Translating kinds into I6 doesn't work"
+	(Inweb: [commit d608388](https://github.com/ganelson/inweb/commit/d608388d643a85d1aa3c88cfa1710b848bd5cb7e))
 - Fix for Jira bug [I7-2139](https://inform7.atlassian.net/browse/I7-2139)
 	"Articles become part of relation name"
 	([commit 85110a9](https://github.com/ganelson/inform/commit/85110a981a3d2419b3778eb383408de122c301a8))
 - Fix for a "very old quirk of I7 where it generates a `story.gblorb.js` file for
 	the interpreter website, but the filename is a lie. It's the base64-encoding
 	of the `story.ulx` file, not the `story.gblorb`." (Andrew Plotkin, not from Jira)
-- Cosmetic fixes not worth linking to (I7-2319, I7-2316, I7-2315, I7-2270, I7-2268, I7-2221)
+- Cosmetic fixes not worth linking to (I7-2319, I7-2316, I7-2315, I7-2293, I7-2270, I7-2268, I7-2221)
+
+## Bugs fixed in the course of feature additions
+
+Work done on Inform evolution proposal [(IE-0015) World model enforcement](https://github.com/ganelson/inform-evolution/blob/main/proposals/0015-world-model-enforcement.md)
+fixes a number of known anomalies in the way that the standard world model
+handled containment, incorporation and so on. This enabled a number of bugs to
+be closed:
+
+- [I7-2220](https://inform7.atlassian.net/browse/I7-2220)
+	on the definition of holding
+- [I7-2219](https://inform7.atlassian.net/browse/I7-2219)
+	on directions being held
+- [I7-2046 = Mantis 2083](https://inform7.atlassian.net/browse/I7-2046)
+	on when containers holding concealed items say they are "(empty)"
+- [I7-2036 = Mantis 2073](https://inform7.atlassian.net/browse/I7-2036)
+	on inconsistencies when containers or supporters holding concealed items are examined
+- [I7-2296](https://inform7.atlassian.net/browse/I7-2296)
+	on things being privately-named causing their printed names not to be used in room description
 
 ## Note about intest
 

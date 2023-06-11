@@ -167,6 +167,7 @@ void Graphs::describe_r(OUTPUT_STREAM, int depth, build_vertex *V,
 	if (V->last_described_in_generation == description_round) { WRITE(" q.v.\n"); return; }
 	V->last_described_in_generation = description_round;
 	WRITE("\n");
+	@<Add locations in verbose mode@>;
 	if (recurse) {
 		if (V->as_copy) stem = V->as_copy->location_if_path;
 		if (V->as_file)
@@ -179,6 +180,17 @@ void Graphs::describe_r(OUTPUT_STREAM, int depth, build_vertex *V,
 	}
 }
 
+@<Add locations in verbose mode@> =
+	if ((V->type == COPY_VERTEX) && (supervisor_verbosity > 0)) {
+		for (int i=0; i<depth; i++) WRITE("  ");
+		WRITE("        > at ");
+		inbuild_copy *C = V->as_copy;
+		if ((C) && (C->location_if_file)) WRITE("%f", C->location_if_file);
+		if ((C) && (C->location_if_path)) WRITE("%p", C->location_if_path);
+		WRITE("\n");
+	}
+
+@ =
 void Graphs::describe_vertex(OUTPUT_STREAM, build_vertex *V) {
 	if (V == NULL) WRITE("<none>");
 	else switch (V->type) {
@@ -206,17 +218,11 @@ void Graphs::show_needs_r(OUTPUT_STREAM, build_vertex *V,
 		inbuild_copy *C = V->as_copy;
 		if (C->last_scanned != scan_count) {
 			C->last_scanned = scan_count;
-			if (paths) {
-				if (C->location_if_path) WRITE("%p", C->location_if_path);
-				else if (C->location_if_file) WRITE("%f", C->location_if_file);
-				else WRITE("?unlocated");
-				WRITE(" (%S)", C->edition->work->genre->genre_name);
-			} else {
-				for (int i=0; i<depth; i++) WRITE("  ");
-				WRITE("%S: ", C->edition->work->genre->genre_name);
-				Copies::write_copy(OUT, C);
-			}
+			for (int i=0; i<depth; i++) WRITE("  ");
+			WRITE("%S: ", C->edition->work->genre->genre_name);
+			Copies::write_copy(OUT, C);
 			WRITE("\n");
+			if (paths) @<Add needs-locations@>;
 		}
 		depth++;
 	}
@@ -242,6 +248,15 @@ void Graphs::show_needs_r(OUTPUT_STREAM, build_vertex *V,
 			Graphs::show_needs_r(OUT, W, depth, true_depth+1, uses_only, paths, scan_count);
 	}
 }
+
+@<Add needs-locations@> =
+	for (int i=0; i<depth; i++) WRITE("  ");
+	int L = Str::len(C->edition->work->genre->genre_name) + 2;
+	for (int i=0; i<L; i++) WRITE(" ");
+	if ((C) && (C->location_if_file)) WRITE("at %f", C->location_if_file);
+	else if ((C) && (C->location_if_path)) WRITE("at %p", C->location_if_path);
+	else WRITE("?unlocated");
+	WRITE("\n");
 
 @ And for |-build-missing| and |-use-missing|.
 

@@ -51,7 +51,7 @@ void UsingProblems::final_report(int disaster_struck, int problems_count) {
 		if (problems_file_active) ProblemBuffer::redirect_problem_stream(NULL);
 	} else {
 		int rooms = 0, things = 0;
-		if (problems_file_active)
+		if ((problems_file_active) && (Problems::warnings_occurred() == FALSE))
 			UsingProblems::html_outcome_image(problems_file, "ni_succeeded", "Succeeded");
 		#ifdef IF_MODULE
 		Spatial::get_world_size(&rooms, &things);
@@ -125,6 +125,15 @@ command line -- deserves the truth.
 	ProblemBuffer::redirect_problem_stream(problems_file);
 	text_stream *OUT = problems_file;
 	HTML_OPEN("p");
+	
+	if (Problems::warnings_occurred()) {
+		Problems::issue_problem_begin(Task::syntax_tree(), "**");
+		Problems::issue_problem_segment(
+			"Although one or more warnings were issued, there were no problems "
+			"serious enough to stop translation from going ahead.");
+		Problems::issue_problem_end();
+	}
+	
 	Problems::issue_problem_begin(Task::syntax_tree(), "**");
 	Problems::issue_problem_segment(
 		"The %5-word source text has successfully been translated "
@@ -132,6 +141,7 @@ command line -- deserves the truth.
 		"brought up to date.");
 	Problems::issue_problem_end();
 	UsingProblems::outcome_image_tail(problems_file);
+	HTML_CLOSE("p");
 
 	if (telemetry_recording) {
 		Telemetry::ensure_telemetry_file();
@@ -183,7 +193,7 @@ void UsingProblems::html_outcome_failed(OUTPUT_STREAM) {
 	if (StandardProblems::internal_errors_have_occurred())
 		UsingProblems::html_outcome_image(problems_file, "ni_failed_badly", "Failed");
 	else
-		UsingProblems::html_outcome_image(problems_file, "ni_failed", "Failed");
+		UsingProblems::html_outcome_image(problems_file, "ni_failed", "Problems or Warnings");
 }
 
 void UsingProblems::html_outcome_image(OUTPUT_STREAM, char *image, char *verdict) {

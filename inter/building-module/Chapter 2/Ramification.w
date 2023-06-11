@@ -130,14 +130,14 @@ int Ramification::implied_braces(inter_schema_node *par, inter_schema_node *at) 
 				if ((prev) && (t->preinsert > 0)) {
 					t->preinsert--;
 					inter_schema_token *open_b =
-						InterSchemas::new_token(OPEN_BRACE_ISTT, I"{", 0, 0, -1);
+						InterSchemas::new_token(OPEN_BRACE_ISTT, I"{", 0, 0, -1, t->line_offset);
 					InterSchemas::add_token_after(open_b, prev);
 					changed = TRUE;
 				}
 				if (t->postinsert > 0) {
 					t->postinsert--;
 					inter_schema_token *close_b =
-						InterSchemas::new_token(CLOSE_BRACE_ISTT, I"}", 0, 0, -1);
+						InterSchemas::new_token(CLOSE_BRACE_ISTT, I"}", 0, 0, -1, t->line_offset);
 					InterSchemas::add_token_after(close_b, t);
 					changed = TRUE;
 				}
@@ -210,12 +210,12 @@ int Ramification::unbrace_schema(inter_schema_node *par, inter_schema_node *isn)
 			if ((prev) && (t->ist_type == OPEN_BRACE_ISTT)) {
 				prev->next = NULL;
 				inter_schema_node *code_isn =
-					InterSchemas::new_node(isn->parent_schema, CODE_ISNT);
+					InterSchemas::new_node(isn->parent_schema, CODE_ISNT, t);
 				isn->child_node = code_isn;
 				code_isn->parent_node = isn;
 
 				inter_schema_node *new_isn =
-					InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+					InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT, t);
 				code_isn->child_node = new_isn;
 				new_isn->parent_node = code_isn;
 
@@ -245,7 +245,7 @@ int Ramification::unbrace_schema(inter_schema_node *par, inter_schema_node *isn)
 						resumed = resumed->next;
 					if (resumed) {
 						inter_schema_node *new_isn =
-							InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+							InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT, t);
 						new_isn->expression_tokens = resumed;
 						new_isn->parent_node = isn->parent_node;
 						InterSchemas::changed_tokens_on(new_isn);
@@ -296,7 +296,7 @@ int Ramification::divide_schema(inter_schema_node *par, inter_schema_node *isn) 
 			if (t->ist_type == CLOSE_ROUND_ISTT) bl--;
 			if ((bl == 0) && (t->ist_type == DIVIDER_ISTT) && (t->next)) {
 				inter_schema_node *new_isn =
-					InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+					InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT, t);
 				new_isn->expression_tokens = t->next;
 				new_isn->parent_node = isn->parent_node;
 				if (isn->child_node) {
@@ -398,7 +398,8 @@ int Ramification::resolve_halfopen_blocks(inter_schema_node *par, inter_schema_n
 			t->ist_type = WHITE_SPACE_ISTT;
 			t->material = I" ";
 			if (t->next) {
-				inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+				inter_schema_node *new_isn = 
+					InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT, t);
 				new_isn->expression_tokens = t->next;
 				new_isn->parent_node = isn->parent_node;
 				if (isn->child_node) {
@@ -458,7 +459,7 @@ int Ramification::break_early_bracings(inter_schema_node *par, inter_schema_node
 			}
 			if ((m) && (n) && (n->ist_type == RESERVED_ISTT)) {
 				inter_schema_node *new_isn =
-					InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+					InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT, n);
 				new_isn->expression_tokens = n;
 				new_isn->parent_node = isn->parent_node;
 				if (isn->child_node) {
@@ -555,12 +556,12 @@ int Ramification::split_switches_into_cases(inter_schema_node *par, inter_schema
 					inter_schema_node *sw_val = NULL;
 					inter_schema_node *sw_code = NULL;
 					if (defaulter) {
-						sw_code = InterSchemas::new_node(isn->parent_schema, CODE_ISNT);
+						sw_code = InterSchemas::new_node(isn->parent_schema, CODE_ISNT, n);
 						isn->child_node = sw_code;
 						sw_code->parent_node = isn;
 					} else {
-						sw_val = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
-						sw_code = InterSchemas::new_node(isn->parent_schema, CODE_ISNT);
+						sw_val = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT, n);
+						sw_code = InterSchemas::new_node(isn->parent_schema, CODE_ISNT, n);
 						sw_val->next_node = sw_code;
 						sw_val->parent_node = isn; isn->child_node = sw_val;
 						sw_code->parent_node = isn;
@@ -595,7 +596,7 @@ int Ramification::split_switches_into_cases(inter_schema_node *par, inter_schema
 						isn->isn_clarifier = CASE_BIP;
 
 					inter_schema_node *sw_code_exp =
-						InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+						InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT, n);
 					sw_code_exp->expression_tokens = n->next;
 
 					sw_code->child_node = sw_code_exp;
@@ -705,7 +706,7 @@ int Ramification::split_print_statements(inter_schema_node *par, inter_schema_no
 						if (n->reserved_word == PRINT_I6RW) n->material = I"print";
 						else n->material = I"print_ret";
 						inter_schema_node *new_isn =
-							InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+							InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT, n);
 						new_isn->expression_tokens = n;
 						new_isn->parent_node = isn->parent_node;
 						InterSchemas::changed_tokens_on(new_isn);
@@ -827,7 +828,7 @@ nodes, which we want to fold into just one:
 		operand1 = InterSchemas::second_dark_token(until_node);
 		cons->next_node = until_node->next_node;
 	} else {
-		InterSchemas::throw_error(cons, I"do without until");
+		I6Errors::issue_at_node(cons, I"do without until");
 		return FALSE;
 	}
 
@@ -840,7 +841,7 @@ nodes, which we want to fold into just one:
 		TEMPORARY_TEXT(msg)
 		WRITE_TO(msg, "expected 'on' or 'off' after 'font', not '%S'",
 			n->material);
-		InterSchemas::throw_error(cons, msg);
+		I6Errors::issue_at_node(cons, msg);
 		DISCARD_TEXT(msg)
 		return FALSE;
 	}
@@ -890,7 +891,7 @@ clause at all. We split these possibilities into two different statement nodes.
 		to = InterSchemas::next_dark_token(to);
 	}
 	if (to == NULL) {
-		InterSchemas::throw_error(cons, I"move without to");
+		I6Errors::issue_at_node(cons, I"move without to");
 		return FALSE;
 	}
 	operand2 = InterSchemas::next_dark_token(to);
@@ -983,13 +984,13 @@ turned into function calls too, leaving:
 
 	cons->expression_tokens = printing_rule;
 	inter_schema_token *open_b =
-		InterSchemas::new_token(OPEN_ROUND_ISTT, I"(", 0, 0, -1);
+		InterSchemas::new_token(OPEN_ROUND_ISTT, I"(", 0, 0, -1, printing_rule->line_offset);
 	InterSchemas::add_token_after(open_b, cons->expression_tokens);
 	open_b->next = n;
 	n = open_b;
 	while ((n) && (n->next)) n = n->next;
 	inter_schema_token *close_b =
-		InterSchemas::new_token(CLOSE_ROUND_ISTT, I")", 0, 0, -1);
+		InterSchemas::new_token(CLOSE_ROUND_ISTT, I")", 0, 0, -1, printing_rule->line_offset);
 	InterSchemas::add_token_after(close_b, n);
 	which_statement = 0;
 	operand1 = NULL;
@@ -1002,17 +1003,17 @@ character, and one to return |true|.
 	inter_schema_node *save_next = cons->next_node;
 
 	cons->next_node =
-		InterSchemas::new_node(cons->parent_schema, STATEMENT_ISNT);
+		InterSchemas::new_node(cons->parent_schema, STATEMENT_ISNT, n);
 	cons->next_node->parent_node = cons->parent_node;
 	cons->next_node->isn_clarifier = PRINT_BIP;
 	cons->next_node->child_node =
-		InterSchemas::new_node(cons->parent_schema, EXPRESSION_ISNT);
+		InterSchemas::new_node(cons->parent_schema, EXPRESSION_ISNT, n);
 	cons->next_node->child_node->parent_node = cons->next_node;
 	InterSchemas::add_token_to_node(cons->next_node->child_node,
-		InterSchemas::new_token(DQUOTED_ISTT, I"\n", 0, 0, -1));
+		InterSchemas::new_token(DQUOTED_ISTT, I"\n", 0, 0, -1, 0));
 
 	cons->next_node->next_node =
-		InterSchemas::new_node(cons->parent_schema, STATEMENT_ISNT);
+		InterSchemas::new_node(cons->parent_schema, STATEMENT_ISNT, n);
 	cons->next_node->next_node->parent_node = cons->parent_node;
 	cons->next_node->next_node->isn_clarifier = RETURN_BIP;
 
@@ -1048,7 +1049,7 @@ becomes
 	cons->dir_clarifier = InterSchemas::opening_directive_word(cons);
 	if (InterSchemas::second_dark_token(cons)) {
 		inter_schema_node *new_isn =
-			InterSchemas::new_node(cons->parent_schema, EXPRESSION_ISNT);
+			InterSchemas::new_node(cons->parent_schema, EXPRESSION_ISNT, first);
 		cons->child_node = new_isn;
 		new_isn->parent_node = cons;
 		new_isn->expression_tokens = InterSchemas::second_dark_token(cons);
@@ -1075,7 +1076,7 @@ to be recognised for what they are.
 			if ((n) && (Str::eq(l->material, I")"))) continue;
 			if (l->ist_type != WHITE_SPACE_ISTT) {
 				inter_schema_node *new_isn =
-					InterSchemas::new_node(cons->parent_schema, EXPRESSION_ISNT);
+					InterSchemas::new_node(cons->parent_schema, EXPRESSION_ISNT, n);
 				new_isn->expression_tokens = l; l->next = NULL; l->owner = new_isn;
 				if (l->operation_primitive) {
 					l->ist_type = IDENTIFIER_ISTT;
@@ -1123,7 +1124,7 @@ assembly instructions |@push| or |@pull| -- we do the following.
 	if (which_statement == STORE_BIP) @<The special case of giving an attribute@>;
 
 @<Make the first child@> =
-	first_child = InterSchemas::new_node(cons->parent_schema, EXPRESSION_ISNT);
+	first_child = InterSchemas::new_node(cons->parent_schema, EXPRESSION_ISNT, first);
 	if (operand1 == NULL) operand1 = InterSchemas::second_dark_token(cons);
 	first_child->expression_tokens = operand1;
 	InterSchemas::changed_tokens_on(first_child);
@@ -1140,11 +1141,13 @@ they cannot both apply.)
 	if (dangle_number >= 0) {
 		text_stream *T = Str::new();
 		WRITE_TO(T, "%d", dangle_number);
-		first_child->expression_tokens = InterSchemas::new_token(NUMBER_ISTT, T, 0, 0, -1);
+		first_child->expression_tokens =
+			InterSchemas::new_token(NUMBER_ISTT, T, 0, 0, -1, 0);
 		first_child->expression_tokens->owner = first_child;
 	}
 	if (Str::len(dangle_text) > 0) {
-		first_child->expression_tokens = InterSchemas::new_token(DQUOTED_ISTT, dangle_text, 0, 0, -1);
+		first_child->expression_tokens =
+			InterSchemas::new_token(DQUOTED_ISTT, dangle_text, 0, 0, -1, 0);
 		first_child->expression_tokens->owner = first_child;
 	}
 
@@ -1153,7 +1156,7 @@ they cannot both apply.)
 @<Make the second child@> =
 	if (operand2) {
 		inter_schema_node *second_child =
-			InterSchemas::new_node(cons->parent_schema, EXPRESSION_ISNT);
+			InterSchemas::new_node(cons->parent_schema, EXPRESSION_ISNT, first);
 		if (which_statement == IFELSE_BIP) {
 			second_child->semicolon_terminated = TRUE;
 			second_child->next_node = first_child->next_node->next_node;
@@ -1189,14 +1192,14 @@ But it is legal to do so in this schema, and that is what our expression node do
 	cons->child_node = NULL;
 	cons->expression_tokens = A->expression_tokens;
 	cons->expression_tokens->next =
-		InterSchemas::new_token(OPERATOR_ISTT, I".", PROPERTYVALUE_BIP, 0, -1);
+		InterSchemas::new_token(OPERATOR_ISTT, I".", PROPERTYVALUE_BIP, 0, -1, 0);
 	cons->expression_tokens->next->next = B->expression_tokens;
 	cons->expression_tokens->next->next->next =
-		InterSchemas::new_token(OPERATOR_ISTT, I"=", STORE_BIP, 0, -1);
+		InterSchemas::new_token(OPERATOR_ISTT, I"=", STORE_BIP, 0, -1, 0);
 	text_stream *T = Str::new();
 	WRITE_TO(T, "%d", dangle_number);
 	cons->expression_tokens->next->next->next->next =
-		InterSchemas::new_token(NUMBER_ISTT, T, 0, 0, -1);
+		InterSchemas::new_token(NUMBER_ISTT, T, 0, 0, -1, 0);
 	InterSchemas::changed_tokens_on(cons);
 
 @h The break for statements ramification.
@@ -1236,10 +1239,11 @@ int Ramification::break_for_statements(inter_schema_node *par, inter_schema_node
 			(isn->node_marked == FALSE)) {
 			inter_schema_node *predicates = isn->child_node;
 			if ((predicates == NULL) || (predicates->isn_type != EXPRESSION_ISNT)) {
-				InterSchemas::throw_error(isn, I"malformed 'for' loop");
+				I6Errors::issue_at_node(isn, I"malformed 'for' loop");
 				return FALSE;
 			}
 			inter_schema_token *n = predicates->expression_tokens;
+			inter_schema_token *nearby_token = n;
 			inter_schema_node *code_node = predicates->next_node;
 			int bl = 0, cw = 0;
 			inter_schema_token *from[3], *to[3];
@@ -1263,11 +1267,12 @@ int Ramification::break_for_statements(inter_schema_node *par, inter_schema_node
 				n = n->next;
 			}
 			if (cw != 3) {
-				InterSchemas::throw_error(isn, I"'for' header with too few clauses");
+				I6Errors::issue_at_node(isn, I"'for' header with too few clauses");
 				return FALSE;
 			}
 			for (int i=0; i<3; i++) {
-				inter_schema_node *eval_isn = InterSchemas::new_node(isn->parent_schema, EVAL_ISNT);
+				inter_schema_node *eval_isn =
+					InterSchemas::new_node(isn->parent_schema, EVAL_ISNT, nearby_token);
 				if (i == 0) isn->child_node = eval_isn;
 				if (i == 1) isn->child_node->next_node = eval_isn;
 				if (i == 2) {
@@ -1276,7 +1281,8 @@ int Ramification::break_for_statements(inter_schema_node *par, inter_schema_node
 				}
 				eval_isn->parent_node = isn;
 
-				inter_schema_node *expr_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+				inter_schema_node *expr_isn =
+					InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT, nearby_token);
 				eval_isn->child_node = expr_isn;
 				expr_isn->parent_node = eval_isn;
 
@@ -1302,7 +1308,7 @@ int Ramification::break_for_statements(inter_schema_node *par, inter_schema_node
 
 @<End a for loop header clause@> =
 	if (cw >= 3) {
-		InterSchemas::throw_error(isn, I"'for' header with too many clauses");
+		I6Errors::issue_at_node(isn, I"'for' header with too many clauses");
 		return FALSE;
 	}
 	if (from[cw] == NULL) to[cw] = NULL;
@@ -1330,11 +1336,12 @@ int Ramification::add_missing_bodies(inter_schema_node *par, inter_schema_node *
 			int actual = 0;
 			for (inter_schema_node *ch = isn->child_node; ch; ch=ch->next_node) actual++;
 			if ((actual < req-1) || (actual > req)) {
-				InterSchemas::throw_error(isn, I"malformed statement");
+				I6Errors::issue_at_node(isn, I"malformed statement");
 				return FALSE;
 			}
 			if (actual == req-1) {
-				inter_schema_node *code_isn = InterSchemas::new_node(isn->parent_schema, CODE_ISNT);
+				inter_schema_node *code_isn =
+					InterSchemas::new_node_near_node(isn->parent_schema, CODE_ISNT, isn);
 				code_isn->parent_node = isn;
 
 				inter_schema_node *ch = isn->child_node;
@@ -1415,7 +1422,7 @@ that |(x+1)| would now become:
 =
 
 @<This expression is entirely in a matching pair of round brackets@> =
-	inter_schema_node *sub_node = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+	inter_schema_node *sub_node = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT, from);
 	sub_node->expression_tokens = from;
 	for (inter_schema_token *l = sub_node->expression_tokens; l; l=l->next)
 		if (l->next == to)
@@ -1472,7 +1479,7 @@ int Ramification::top_level_commas(inter_schema_node *par, inter_schema_node *is
 					prev = n; n = n->next;
 					while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) { prev = n; n = n->next; }
 					inter_schema_node *new_isn =
-						InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+						InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT, n);
 					new_isn->expression_tokens = n;
 					new_isn->parent_node = isn->parent_node;
 					InterSchemas::changed_tokens_on(new_isn);
@@ -1503,7 +1510,8 @@ int Ramification::multiple_case_values(inter_schema_node *par, inter_schema_node
 			inter_schema_node *A = isn->child_node;
 			inter_schema_node *B = isn->child_node->next_node;
 			if ((A) && (B) && (B->next_node)) {
-				inter_schema_node *C = InterSchemas::new_node(isn->parent_schema, OPERATION_ISNT);
+				inter_schema_node *C =
+					InterSchemas::new_node_near_node(isn->parent_schema, OPERATION_ISNT, A);
 				C->isn_clarifier = ALTERNATIVECASE_BIP;
 				C->child_node = A;
 				A->parent_node = C; B->parent_node = C;
@@ -1657,7 +1665,7 @@ Here the final operator is the |+|, and there are both left and right operands.
 
 @<Make the left operand expression@> =
 	inter_schema_node *left_operand_node =
-		InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+		InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT, from);
 	left_operand_node->expression_tokens = from;
 	for (inter_schema_token *l = left_operand_node->expression_tokens; l; l=l->next)
 		if (l->next == to)
@@ -1669,7 +1677,7 @@ Here the final operator is the |+|, and there are both left and right operands.
 
 @<Make the right operand expression@> =
 	inter_schema_node *right_operand_node =
-		InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+		InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT, from);
 	right_operand_node->expression_tokens = from;
 	InterSchemas::changed_tokens_on(right_operand_node);
 	if (isn->child_node == NULL) {
@@ -1710,7 +1718,7 @@ operation |a.b|.
 			WRITE_TO(msg, "operator '%S' used with %d not %d operand(s)",
 				I6Operators::I6_notation_for(isn->isn_clarifier),
 				a, I6Operators::arity(isn->isn_clarifier));
-			InterSchemas::throw_error(isn, msg);
+			I6Errors::issue_at_node(isn, msg);
 			DISCARD_TEXT(msg)
 			return FALSE;
 		}
@@ -1803,7 +1811,7 @@ array lookup is performed to find the address of the function to call.
 @<Relegate node@> =
 	if ((from) && (to) && (from != to)) {
 		inter_schema_node *new_isn =
-			InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+			InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT, from);
 		new_isn->expression_tokens = from;
 		for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next)
 			if (l->next == to)
@@ -1827,8 +1835,9 @@ int Ramification::implied_return_values(inter_schema_node *par, inter_schema_nod
 	for (inter_schema_node *prev = NULL; isn; prev = isn, isn = isn->next_node) {
 		if ((isn->isn_type == STATEMENT_ISNT) &&
 			(isn->isn_clarifier == RETURN_BIP) && (isn->child_node == FALSE)) {
-			inter_schema_node *one = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
-			one->expression_tokens = InterSchemas::new_token(NUMBER_ISTT, I"1", 0, 0, -1);
+			inter_schema_node *one =
+				InterSchemas::new_node_near_node(isn->parent_schema, EXPRESSION_ISNT, isn);
+			one->expression_tokens = InterSchemas::new_token(NUMBER_ISTT, I"1", 0, 0, -1, 0);
 			one->expression_tokens->owner = one;
 			isn->child_node = one;
 			one->parent_node = isn;
@@ -1885,34 +1894,51 @@ int Ramification::sanity_check(inter_schema_node *par, inter_schema_node *isn) {
 			for (inter_schema_token *t = isn->expression_tokens; t; t=t->next) {
 				switch (t->ist_type) {
 					case OPCODE_ISTT:		asm = TRUE; break;
-					case RAW_ISTT:			InterSchemas::throw_error(isn, I"malformed expression"); break;
-					case OPEN_BRACE_ISTT:	InterSchemas::throw_error(isn, I"unexpected '{'"); break;
-					case CLOSE_BRACE_ISTT:	InterSchemas::throw_error(isn, I"unexpected '}'"); break;
-					case OPEN_ROUND_ISTT:	InterSchemas::throw_error(isn, I"unexpected '('"); break;
-					case CLOSE_ROUND_ISTT:	InterSchemas::throw_error(isn, I"unexpected ')'"); break;
-					case COMMA_ISTT:		InterSchemas::throw_error(isn, I"unexpected ','"); break;
-					case DIVIDER_ISTT:		InterSchemas::throw_error(isn, I"malformed expression"); break;
+					case RAW_ISTT:			I6Errors::issue_at_node(isn, I"malformed expression"); break;
+					case OPEN_BRACE_ISTT:	I6Errors::issue_at_node(isn, I"unexpected '{'"); break;
+					case CLOSE_BRACE_ISTT:	I6Errors::issue_at_node(isn, I"unexpected '}'"); break;
+					case OPEN_ROUND_ISTT:	I6Errors::issue_at_node(isn, I"unexpected '('"); break;
+					case CLOSE_ROUND_ISTT:	I6Errors::issue_at_node(isn, I"unexpected ')'"); break;
+					case COMMA_ISTT:		I6Errors::issue_at_node(isn, I"unexpected ','"); break;
+					case DIVIDER_ISTT:		I6Errors::issue_at_node(isn, I"malformed expression"); break;
 					case RESERVED_ISTT: {
 						TEMPORARY_TEXT(msg)
 						WRITE_TO(msg, "unexpected use of reserved word '%S'", t->material);
-						InterSchemas::throw_error(isn, msg);
+						I6Errors::issue_at_node(isn, msg);
 						DISCARD_TEXT(msg)
 						break;
 					}
-					case COLON_ISTT:		InterSchemas::throw_error(isn, I"unexpected ':'"); break;
-					case DCOLON_ISTT:		InterSchemas::throw_error(isn,
+					case COLON_ISTT:		I6Errors::issue_at_node(isn, I"unexpected ':'"); break;
+					case DCOLON_ISTT:		I6Errors::issue_at_node(isn,
 												I"the Inform 6 '::' operator is unsupported"); break;
-					case OPERATOR_ISTT:		InterSchemas::throw_error(isn, I"unexpected operator"); break;
+					case OPERATOR_ISTT:		I6Errors::issue_at_node(isn, I"unexpected operator"); break;
 				}
 				if ((t->ist_type == NUMBER_ISTT) && (t->next) &&
 					(t->next->ist_type == NUMBER_ISTT) && (asm == FALSE))
-					InterSchemas::throw_error(isn, I"two consecutive numbers");
+					I6Errors::issue_at_node(isn, I"two consecutive numbers");
 			}
-			if (isn->child_node) InterSchemas::throw_error(isn, I"malformed expression");
+			if (isn->child_node) I6Errors::issue_at_node(isn, I"malformed expression");
 		} else {
-			if (isn->expression_tokens) InterSchemas::throw_error(isn, I"syntax error");
+			if (isn->expression_tokens) I6Errors::issue_at_node(isn, I"syntax error");
+		}
+		if ((isn->isn_type == STATEMENT_ISNT) && (isn->isn_clarifier == CASE_BIP)) {		
+			if ((isn->child_node) && (isn->child_node->isn_type == EXPRESSION_ISNT))
+				Ramification::check_for_to(isn, isn->child_node);
+		}
+		if ((isn->isn_type == OPERATION_ISNT) && (isn->isn_clarifier == ALTERNATIVECASE_BIP)) {
+			if ((isn->child_node) && (isn->child_node->isn_type == EXPRESSION_ISNT))
+				Ramification::check_for_to(isn, isn->child_node);
+			if ((isn->child_node) && (isn->child_node->next_node) &&
+				(isn->child_node->next_node->isn_type == EXPRESSION_ISNT))
+				Ramification::check_for_to(isn, isn->child_node->next_node);
 		}
 		Ramification::sanity_check(isn, isn->child_node);
 	}
 	return FALSE;
+}
+
+void Ramification::check_for_to(inter_schema_node *par, inter_schema_node *isn) {
+	for (inter_schema_token *t = isn->expression_tokens; t; t=t->next)
+		if ((t->ist_type == IDENTIFIER_ISTT) && (Str::eq(t->material, I"to")))
+			I6Errors::issue_at_node(isn, I"'to' ranges are unsupported in switch cases");
 }

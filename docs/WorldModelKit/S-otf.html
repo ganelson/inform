@@ -51,72 +51,59 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">WorldModelKit</a></li><li><b>OutOfWorld Template</b></li></ul></div>
 <p class="purpose">To implement some of the out of world actions.</p>
 
-<ul class="toc"><li><a href="S-otf.html#SP1">&#167;1. Perform Undo</a></li><li><a href="S-otf.html#SP2">&#167;2. Announce Score Rule</a></li><li><a href="S-otf.html#SP3">&#167;3. Switch Score Notification On Rule</a></li><li><a href="S-otf.html#SP4">&#167;4. Standard Report Switching Score Notification On Rule</a></li><li><a href="S-otf.html#SP5">&#167;5. Switch Score Notification Off Rule</a></li><li><a href="S-otf.html#SP6">&#167;6. Standard Report Switching Score Notification Off Rule</a></li><li><a href="S-otf.html#SP7">&#167;7. Prefer Sometimes Abbreviated Room Descriptions Rule</a></li><li><a href="S-otf.html#SP8">&#167;8. Standard Report Prefer Sometimes Abbreviated Room Descriptions Rule</a></li><li><a href="S-otf.html#SP9">&#167;9. Prefer Unabbreviated Room Descriptions Rule</a></li><li><a href="S-otf.html#SP10">&#167;10. Standard Report Prefer Unabbreviated Room Descriptions Rule</a></li><li><a href="S-otf.html#SP11">&#167;11. Prefer Abbreviated Room Descriptions Rule</a></li><li><a href="S-otf.html#SP12">&#167;12. Standard Report Prefer Abbreviated Room Descriptions Rule</a></li><li><a href="S-otf.html#SP13">&#167;13. Announce Pronoun Meanings Rule</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-otf.html#SP1">&#167;1. Announce Score Rule</a></li><li><a href="S-otf.html#SP2">&#167;2. Switch Score Notification On Rule</a></li><li><a href="S-otf.html#SP3">&#167;3. Standard Report Switching Score Notification On Rule</a></li><li><a href="S-otf.html#SP4">&#167;4. Switch Score Notification Off Rule</a></li><li><a href="S-otf.html#SP5">&#167;5. Standard Report Switching Score Notification Off Rule</a></li><li><a href="S-otf.html#SP6">&#167;6. Prefer Sometimes Abbreviated Room Descriptions Rule</a></li><li><a href="S-otf.html#SP7">&#167;7. Standard Report Prefer Sometimes Abbreviated Room Descriptions Rule</a></li><li><a href="S-otf.html#SP8">&#167;8. Prefer Unabbreviated Room Descriptions Rule</a></li><li><a href="S-otf.html#SP9">&#167;9. Standard Report Prefer Unabbreviated Room Descriptions Rule</a></li><li><a href="S-otf.html#SP10">&#167;10. Prefer Abbreviated Room Descriptions Rule</a></li><li><a href="S-otf.html#SP11">&#167;11. Standard Report Prefer Abbreviated Room Descriptions Rule</a></li><li><a href="S-otf.html#SP12">&#167;12. Announce Pronoun Meanings Rule</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Perform Undo. </b></p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">Perform_Undo</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">PREVENT_UNDO_TCBIT</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">IMMEDIATELY_UNDO_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'A'</span><span class="plain-syntax">); </span><span class="reserved-syntax">new_line</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">IterationsOfTurnSequence</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) { </span><span class="identifier-syntax">IMMEDIATELY_UNDO_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'B'</span><span class="plain-syntax">); </span><span class="reserved-syntax">new_line</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax">; }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">undo_flag</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) { </span><span class="identifier-syntax">IMMEDIATELY_UNDO_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'C'</span><span class="plain-syntax">); </span><span class="reserved-syntax">new_line</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax">; }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">undo_flag</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) { </span><span class="identifier-syntax">IMMEDIATELY_UNDO_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'D'</span><span class="plain-syntax">); </span><span class="reserved-syntax">new_line</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax">; }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">VM_Undo</span><span class="plain-syntax">() == </span><span class="constant-syntax">0</span><span class="plain-syntax">) { </span><span class="identifier-syntax">IMMEDIATELY_UNDO_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'F'</span><span class="plain-syntax">); </span><span class="reserved-syntax">new_line</span><span class="plain-syntax">; }</span>
-<span class="plain-syntax">];</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Announce Score Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Announce Score Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">ANNOUNCE_SCORE_R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">actor</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">player</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">USE_SCORING_TCBIT</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WorldModelKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">SCORING_CFGV</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">ANNOUNCE_SCORE_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'C'</span><span class="plain-syntax">); </span><span class="reserved-syntax">new_line</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">ANNOUNCE_SCORE_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'A'</span><span class="plain-syntax">); </span><span class="identifier-syntax">PrintRank</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Switch Score Notification On Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Switch Score Notification On Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">SWITCH_SCORE_NOTIFY_ON_R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">actor</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">player</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">USE_SCORING_TCBIT</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">ANNOUNCE_SCORE_R</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WorldModelKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">SCORING_CFGV</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">ANNOUNCE_SCORE_R</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">notify_mode</span><span class="plain-syntax">=1;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Standard Report Switching Score Notification On Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Standard Report Switching Score Notification On Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">REP_SWITCH_NOTIFY_ON_R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">actor</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">player</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">USE_SCORING_TCBIT</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WorldModelKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">SCORING_CFGV</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">REP_SWITCH_NOTIFY_ON_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'A'</span><span class="plain-syntax">); </span><span class="reserved-syntax">new_line</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Switch Score Notification Off Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Switch Score Notification Off Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">SWITCH_SCORE_NOTIFY_OFF_R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">actor</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">player</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">USE_SCORING_TCBIT</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">ANNOUNCE_SCORE_R</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WorldModelKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">SCORING_CFGV</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">ANNOUNCE_SCORE_R</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">notify_mode</span><span class="plain-syntax">=0;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Standard Report Switching Score Notification Off Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Standard Report Switching Score Notification Off Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">REP_SWITCH_NOTIFY_OFF_R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">actor</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">player</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">USE_SCORING_TCBIT</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WorldModelKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">SCORING_CFGV</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">REP_SWITCH_NOTIFY_OFF_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'A'</span><span class="plain-syntax">); </span><span class="reserved-syntax">new_line</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Prefer Sometimes Abbreviated Room Descriptions Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Prefer Sometimes Abbreviated Room Descriptions Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">PREFER_SOMETIMES_ABBREVIATED_R</span><span class="plain-syntax">;</span>
@@ -124,7 +111,7 @@
 <span class="plain-syntax">    </span><span class="identifier-syntax">lookmode</span><span class="plain-syntax">=1;</span>
 <span class="plain-syntax">]; </span><span class="comment-syntax">Brief</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Standard Report Prefer Sometimes Abbreviated Room Descriptions Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Standard Report Prefer Sometimes Abbreviated Room Descriptions Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">REP_PREFER_SOMETIMES_ABBR_R</span><span class="plain-syntax">;</span>
@@ -132,7 +119,7 @@
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="identifier-syntax">TEXT_TY_Say</span><span class="plain-syntax">) </span><span class="identifier-syntax">Story</span><span class="plain-syntax">; </span><span class="identifier-syntax">REP_PREFER_SOMETIMES_ABBR_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'A'</span><span class="plain-syntax">); </span><span class="reserved-syntax">new_line</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">]; </span><span class="comment-syntax">Brief</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Prefer Unabbreviated Room Descriptions Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Prefer Unabbreviated Room Descriptions Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">PREFER_UNABBREVIATED_R</span><span class="plain-syntax">;</span>
@@ -140,7 +127,7 @@
 <span class="plain-syntax">    </span><span class="identifier-syntax">lookmode</span><span class="plain-syntax">=2;</span>
 <span class="plain-syntax">]; </span><span class="comment-syntax">Verbose</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Standard Report Prefer Unabbreviated Room Descriptions Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Standard Report Prefer Unabbreviated Room Descriptions Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">REP_PREFER_UNABBREVIATED_R</span><span class="plain-syntax">;</span>
@@ -148,7 +135,7 @@
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="identifier-syntax">TEXT_TY_Say</span><span class="plain-syntax">) </span><span class="identifier-syntax">Story</span><span class="plain-syntax">; </span><span class="identifier-syntax">REP_PREFER_UNABBREVIATED_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'A'</span><span class="plain-syntax">); </span><span class="reserved-syntax">new_line</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">]; </span><span class="comment-syntax">Verbose</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Prefer Abbreviated Room Descriptions Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Prefer Abbreviated Room Descriptions Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">PREFER_ABBREVIATED_R</span><span class="plain-syntax">;</span>
@@ -156,7 +143,7 @@
 <span class="plain-syntax">    </span><span class="identifier-syntax">lookmode</span><span class="plain-syntax">=3;</span>
 <span class="plain-syntax">]; </span><span class="comment-syntax">Superbrief</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Standard Report Prefer Abbreviated Room Descriptions Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Standard Report Prefer Abbreviated Room Descriptions Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">REP_PREFER_ABBREVIATED_R</span><span class="plain-syntax">;</span>
@@ -164,7 +151,7 @@
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="identifier-syntax">TEXT_TY_Say</span><span class="plain-syntax">) </span><span class="identifier-syntax">Story</span><span class="plain-syntax">; </span><span class="identifier-syntax">REP_PREFER_ABBREVIATED_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'A'</span><span class="plain-syntax">); </span><span class="reserved-syntax">new_line</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">]; </span><span class="comment-syntax">Superbrief</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Announce Pronoun Meanings Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Announce Pronoun Meanings Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">ANNOUNCE_PRONOUN_MEANINGS_R</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">y</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> </span><span class="identifier-syntax">d</span><span class="plain-syntax">;</span>
@@ -184,8 +171,8 @@
 <span class="plain-syntax">        </span><span class="identifier-syntax">d</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">d</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">c</span><span class="plain-syntax">-1) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">", "</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">d</span><span class="plain-syntax"> == </span><span class="identifier-syntax">c</span><span class="plain-syntax">-1) {</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIT_CONFIGURATION_BITMAP</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">SERIAL_COMMA_TCBIT</span><span class="plain-syntax">) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">","</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">LIST_WRITER_INTERNAL_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'C'</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">BasicInformKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">SERIAL_COMMA_CFGF</span><span class="plain-syntax">) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">","</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">LW_Response</span><span class="plain-syntax">(</span><span class="character-syntax">'C'</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">player</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">selfobj</span><span class="plain-syntax">) {</span>
@@ -197,7 +184,7 @@
 <span class="plain-syntax">];</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="S-fgr.html">&#10094;</a></li><li class="progresssection"><a href="S-msc.html">msc</a></li><li class="progresssection"><a href="S-gll.html">gll</a></li><li class="progresssection"><a href="S-zmc.html">zmc</a></li><li class="progresssection"><a href="S-lgh.html">lgh</a></li><li class="progresssection"><a href="S-lst.html">lst</a></li><li class="progresssection"><a href="S-ord.html">ord</a></li><li class="progresssection"><a href="S-act.html">act</a></li><li class="progresssection"><a href="S-act2.html">act2</a></li><li class="progresssection"><a href="S-fgr.html">fgr</a></li><li class="progresscurrent">otf</li><li class="progresssection"><a href="S-prn.html">prn</a></li><li class="progresssection"><a href="S-wrl.html">wrl</a></li><li class="progresssection"><a href="S-mpr.html">mpr</a></li><li class="progresssection"><a href="S-rtp.html">rtp</a></li><li class="progresssection"><a href="S-tm.html">tm</a></li><li class="progresssection"><a href="S-tst.html">tst</a></li><li class="progresssection"><a href="S-chr.html">chr</a></li><li class="progresssection"><a href="S-str.html">str</a></li><li class="progressnext"><a href="S-prn.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="S-fgr.html">&#10094;</a></li><li class="progresssection"><a href="S-msc.html">msc</a></li><li class="progresssection"><a href="S-stt.html">stt</a></li><li class="progresssection"><a href="S-lgh.html">lgh</a></li><li class="progresssection"><a href="S-lst.html">lst</a></li><li class="progresssection"><a href="S-ord.html">ord</a></li><li class="progresssection"><a href="S-act.html">act</a></li><li class="progresssection"><a href="S-fgr.html">fgr</a></li><li class="progresscurrent">otf</li><li class="progresssection"><a href="S-prn.html">prn</a></li><li class="progresssection"><a href="S-wrl.html">wrl</a></li><li class="progresssection"><a href="S-mpr.html">mpr</a></li><li class="progresssection"><a href="S-rtp.html">rtp</a></li><li class="progresssection"><a href="S-tm.html">tm</a></li><li class="progresssection"><a href="S-tst.html">tst</a></li><li class="progresssection"><a href="S-chr.html">chr</a></li><li class="progresssection"><a href="S-str.html">str</a></li><li class="progressnext"><a href="S-prn.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

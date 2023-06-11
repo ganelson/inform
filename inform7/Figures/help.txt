@@ -15,6 +15,7 @@ for translating Inform source text to Inter:
   -source X                use file X as the Inform source text
 
 for locating resources in the file system:
+  -deprecated-external X   same as -external X, but issues warnings if the nest is actually used
   -external X              use X as the user's home for installed material such as extensions
   -internal X              use X as the location of built-in material such as the Standard Rules
   -nest X                  add the nest at pathname X to the search list
@@ -30,6 +31,8 @@ for testing and debugging inform7:
   -no-census-update        don't update the extensions census (default is -census-update)
   -crash-all               intentionally crash on Problem messages, for backtracing (default is -no-crash-all)
   -diagnostics X           if no problems occur, write diagnostics files to directory X (default is -no-diagnostics)
+  -inbuild-verbose         equivalent to -inbuild-verbosity=1 (default is -no-inbuild-verbose)
+  -inbuild-verbosity=N     how much inbuild should explain: lowest is 0 (default), highest is 3
   -no-index                don't produce an Index (default is -index)
   -no-problems             don't produce (an HTML) Problems report page (default is -problems)
   -no-progress             don't display progress percentages (default is -progress)

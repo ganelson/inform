@@ -25,7 +25,7 @@ and we define:
 =
 Section 1 - Responses
 
-Issuing the response text of something -- documented at act_resp -- is an
+Issuing the response text of something -- hidden in RULES command -- -- documented at act_resp -- is an
 activity on responses.
 The issuing the response text activity is accessible to Inter as "PRINTING_RESPONSE_ACT".
 
@@ -63,21 +63,73 @@ a number rulebook.
 supplemented by details:
 
 =
-Printing room description details of something (documented at act_details) is an activity.
+Printing room description details of something (hidden in RULES command) (documented at act_details) is an activity.
 The printing room description details activity is accessible to Inter as "PRINTING_ROOM_DESC_DETAILS_ACT".
-Printing inventory details of something (documented at act_idetails) is an activity.
+
+For printing room description details of a container (called the box) when the box is falsely-unoccupied (this is the falsely-unoccupied container room description details rule):
+  say text of list writer internal rule response (A); [ " (" ]
+  if the box is lit and the location is unlit begin;
+    if the box is closed, say text of list writer internal rule response (J); [ "closed, empty[if serial comma option is active],[end if] and providing light" ]
+    else say text of list writer internal rule response (I); [ "empty and providing light" ]
+  else;
+    if the box is closed, say text of list writer internal rule response (E); [ "closed" ]
+    else say text of list writer internal rule response (F); [ "empty" ]
+  end if;
+  say text of list writer internal rule response (B); [ ")" ]
+
+Printing inventory details of something (hidden in RULES command) (documented at act_idetails) is an activity.
 The printing inventory details activity is accessible to Inter as "PRINTING_INVENTORY_DETAILS_ACT".
+
+
+To say the deceitfully empty inventory details of (box - a container):
+  let inventory text printed be false;
+  if the box is lit begin;
+    if the box is worn, say text of list writer internal rule response (K); [ "providing light and being worn" ]
+    else say text of list writer internal rule response (D); [ "providing light" ]
+    now inventory text printed is true;
+  else if the box is worn;
+    say text of list writer internal rule response (L); [ "being worn" ]
+    now inventory text printed is true;
+  end if;
+  if the box is openable begin;
+    if inventory text printed is true begin;
+      if the serial comma option is active, say ",";
+      say text of list writer internal rule response (C); [ "and" ]
+    end if;
+    if the box is open begin;
+      say text of list writer internal rule response (N); [ "open but empty" ]
+    else; [ it's closed ]
+      if the box is locked, say text of list writer internal rule response (P); [ "closed and locked" ]
+      else say text of list writer internal rule response (O); [ "closed" ]
+      now inventory text printed is true;
+    end if;
+  else; [ it's not openable ]
+    if the box is transparent begin;
+      if inventory text printed is true, say text of list writer internal rule response (C); [ "and" ]
+      say text of list writer internal rule response (F); [ "empty" ]
+      now inventory text printed is true; [ not relevant unless code is added ]
+    end if;
+  end if;
+
+For printing inventory details of a container (called the box) when the box is falsely-unoccupied (this is the falsely-unoccupied container inventory details rule):
+    let the tag be "[the deceitfully empty inventory details of box]";
+    if tag is not empty begin;
+      say text of list writer internal rule response (A); [ "(" ]
+      say tag;
+      say text of list writer internal rule response (B); [ ")" ]
+    end if;
 
 @ Names of things are often formed up into lists, in which they are sometimes
 grouped together:
 
 =
-Listing contents of something (documented at act_lc) is an activity.
+Listing contents of something (hidden in RULES command) (documented at act_lc) is an activity.
 The listing contents activity is accessible to Inter as "LISTING_CONTENTS_ACT".
 The standard contents listing rule is listed last in the for listing contents rulebook.
 The standard contents listing rule is defined by Inter as "STANDARD_CONTENTS_LISTING_R".
-Grouping together something (documented at act_gt) is an activity.
+Grouping together something (hidden in RULES command) (documented at act_gt) is an activity.
 The grouping together activity is accessible to Inter as "GROUPING_TOGETHER_ACT".
+
 
 @ And such lists of names are formed up in turn into room descriptions.
 Something which is visible in a room can either have a paragraph of its own
@@ -511,6 +563,7 @@ For printing the locale description (this is the interesting locale paragraphs r
 For printing the locale description (this is the you-can-also-see rule):
 	let the domain be the parameter-object;
 	let the mentionable count be 0;
+	if the domain is a thing and the domain holds the player and the domain is falsely-unoccupied, continue the activity;
 	repeat with item running through things:
 		now the item is not marked for listing;
 	repeat through the Table of Locale Priorities:
@@ -711,22 +764,32 @@ For printing a locale paragraph about a supporter (called the tabletop)
 Definition: a thing (called the item) is locale-supportable if the item is not
 scenery and the item is not mentioned and the item is not undescribed.
 
-For printing a locale paragraph about a thing (called the item)
+For printing a locale paragraph about a thing (called the platform)
 	(this is the describe what's on scenery supporters in room descriptions rule):
-	if the item is scenery and the item does not enclose the player:
-		if a locale-supportable thing is on the item:
-			set pronouns from the item;
-			repeat with possibility running through things on the item:
-				now the possibility is marked for listing;
-				if the possibility is mentioned:
-					now the possibility is not marked for listing;
-			increase the locale paragraph count by 1;
-			say "On [the item] " (A);
-			list the contents of the item, as a sentence, including contents,
-				giving brief inventory information, tersely, not listing
-				concealed items, prefacing with is/are, listing marked items only;
-			say ".[paragraph break]";
-	continue the activity.
+    if the platform is not a scenery supporter that does not enclose the player, continue the activity;
+    let print a paragraph be false;
+    let item be the first thing held by the platform;
+    while item is not nothing begin;
+      if the item is not scenery and the item is described and the platform does not conceal the item begin;
+        if the item is mentioned begin;
+          now the item is not marked for listing;
+        else;
+          now the item is marked for listing;
+          now print a paragraph is true;
+        end if;
+      end if;
+      now the item is the next thing held after the item;
+    end while;
+    if print a paragraph is true begin;
+      set pronouns from the platform;
+      increase the locale paragraph count by 1;
+      say "On [the platform] " (A);
+      list the contents of the platform, as a sentence, including contents,
+        giving brief inventory information, tersely, not listing
+        concealed items, prefacing with is/are, listing marked items only;
+      say ".[paragraph break]";
+    end if;
+    continue the activity
 
 For printing a locale paragraph about a thing (called the item)
 	(this is the describe what's on mentioned supporters in room descriptions rule):

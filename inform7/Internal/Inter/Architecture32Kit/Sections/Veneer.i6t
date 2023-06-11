@@ -1,0 +1,29 @@
+Veneer Template.
+
+Veneer code for use by the Inform 6 compiler with the Glulx target.
+
+@ These functions have strange-looking names special to the Inform 6 compiler,
+which uses them to replace its default "veneer" functions. If we're compiling
+to something other than Inform 6, though, they are just strangely-named functions,
+and do no harm.
+
+=
+[ Unsigned__Compare x y;
+	@jleu x y ?lesseq;
+	return 1;
+	.lesseq;
+	@jeq x y ?equal;
+	return -1;
+	.equal;
+	return 0;
+];
+
+[ RT__ChLDW x y;
+	@aload x y sp;
+	@return sp;
+];
+
+[ RT__ChLDB x y;
+	@aloadb x y sp;
+	@return sp;
+];

@@ -94,17 +94,16 @@ The final code startup rule is defined by Inter as "FINAL_CODE_STARTUP_R".
 functional in Basic Inform.
 
 =
-Printing the name of something (documented at act_pn) is an activity.
+Printing the name of something (hidden in RULES command) (documented at act_pn) is an activity.
 The printing the name activity is accessible to Inter as "PRINTING_THE_NAME_ACT".
 
 The standard name printing rule is listed last in the for printing the name rulebook.
 The standard name printing rule is defined by Inter as "STANDARD_NAME_PRINTING_R".
 
-Printing the plural name of something (documented at act_ppn) is an activity.
+Printing the plural name of something (hidden in RULES command) (documented at act_ppn) is an activity.
 The printing the plural name activity is accessible to Inter as "PRINTING_THE_PLURAL_NAME_ACT".
 
 The standard printing the plural name rule is listed last in the for printing the
 plural name rulebook.
 The standard printing the plural name rule is defined by Inter as
 "STANDARD_PLURAL_NAME_PRINTING_R".
-

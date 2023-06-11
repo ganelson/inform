@@ -1,7 +1,7 @@
 Printing Template.
 
 To manage the line skips which space paragraphs out, and to handle
-the printing of names of objects, pieces of text and numbers.
+the printing of pieces of text and numbers.
 
 @h Prompt.
 This is the text printed just before we wait for the player's command: it
@@ -49,7 +49,7 @@ fancy text style for Glulx, ...
 
 =
 [ NotifyTheScore d;
-	if ((KIT_CONFIGURATION_BITMAP & USE_SCORING_TCBIT) && (notify_mode == 1)) {
+	if ((WorldModelKit`SCORING_CFGV) && (notify_mode == 1)) {
 		DivideParagraphPoint();
 		VM_Style(NOTE_VMSTY);
 		d = score-last_score;
@@ -67,7 +67,7 @@ not to use these now dated conventions.
 
 =
 [ PrintRank i j v;
-	if (KIT_CONFIGURATION_BITMAP & RANKING_TABLE_TCBIT) {
+	if (WorldModelKit`RANKING_TABLE_GIVEN) {
 		ANNOUNCE_SCORE_RM('B');
 		j = TableRows(RANKING_TABLE);
 		for (i=j:i>=1:i--)
@@ -89,7 +89,7 @@ requires a heavily rewritten |DrawStatusLine| equivalent, to be found
 in "ZMachine.i6t".
 
 =
-[ DrawStatusLine width posb;
++replacing(from BasicInformKit) [ DrawStatusLine width posb;
 	@push say__p; @push say__pc;
 	BeginActivity(CONSTRUCTING_STATUS_LINE_ACT);
 	VM_StatusLineHeight(1); VM_MoveCursorInStatusLine(1, 1);
@@ -120,7 +120,7 @@ Array T_SL_Score_Moves --> CONSTANT_PACKED_TEXT_STORAGE SL_Score_Moves;
 
 [ SL_Score_Moves;
 	if (not_yet_in_play) return;
-	if (KIT_CONFIGURATION_BITMAP & USE_SCORING_TCBIT)
+	if (WorldModelKit`SCORING_CFGV)
 		print sline1, "/", sline2;
 ];
 
@@ -142,12 +142,20 @@ Array T_SL_Location --> CONSTANT_PACKED_TEXT_STORAGE SL_Location;
 
 [ DARKNESS_NAME_INTERNAL_R; ];
 
+@h Player's name.
+
+=
++replacing(from BasicInformKit) [ PRINT_PROTAGONIST_INTERNAL_R;
+	if (indef_mode == NULL && caps_mode) PRINT_PROTAGONIST_INTERNAL_RM('A');
+	else PRINT_PROTAGONIST_INTERNAL_RM('B');
+];
+
 @h Banner.
 Note that Inform always compiles |Story| and |Headline| texts, but does not always
 compile a |Story_Author|.
 
 =
-[ Banner;
+[ Banner i serial;
    BeginActivity(PRINTING_BANNER_TEXT_ACT);
    if (ForActivity(PRINTING_BANNER_TEXT_ACT) == false) {
 	   	VM_Style(HEADER_VMSTY);
@@ -155,12 +163,14 @@ compile a |Story_Author|.
 		VM_Style(NORMAL_VMSTY);
 		new_line;
 		TEXT_TY_Say(Headline);
-		if (KIT_CONFIGURATION_BITMAP & STORY_AUTHOR_TCBIT) {
+		if (WorldModelKit`STORY_AUTHOR_GIVEN) {
 			print " ", (address) BY__WD, " ";
 			TEXT_TY_Say(Story_Author);
 		}
 		new_line;
-		VM_Describe_Release();
+		print "Release ", VM_ReleaseNumber(), " / Serial number ";
+		serial = VM_SerialNumber();
+		for (i=0 : i<6 : i++) print (char) serial->i;
 		print " / Inform 7 v", (PrintI6Text) I7_VERSION_NUMBER;
 		#Ifdef DEBUG;
 		print " / D";
@@ -168,247 +178,6 @@ compile a |Story_Author|.
 		new_line;
     }
     EndActivity(PRINTING_BANNER_TEXT_ACT);
-];
-
-@h Short Name Storage.
-None of the following functions should be called for the Z-machine if the
-short name exceeds the size of the following buffer: whereas the Glulx
-implementation of |VM_PrintToBuffer| will safely truncate overlong text,
-that's impossible for the Z-machine, and horrible results will follow.
-
-|CPrintOrRun| is a variation on |PrintOrRun|, simplified by not needing
-to handle entire paragraphs (so, no fuss about dividing) but complicated
-by having to capitalise the first letter. We do this by writing to the
-buffer and then altering the first character.
-
-=
-Array StorageForShortName buffer 250;
-
-[ CPrintOrRun obj prop  v length i;
-    if ((obj ofclass String or Routine) || (prop == 0))
-        VM_PrintToBuffer (StorageForShortName, 160, obj);
-    else {
-    	if (obj.prop == NULL) rfalse;
-        if (metaclass(obj.prop) == Routine or String)
-            VM_PrintToBuffer(StorageForShortName, 160, obj, prop);
-        else return RunTimeError(2, obj, prop);
-	}
-
-    length = StorageForShortName-->0;
-
-    StorageForShortName->WORDSIZE = VM_LowerToUpperCase(StorageForShortName->WORDSIZE);
-    for (i=WORDSIZE: i<length+WORDSIZE: i++) print (char) StorageForShortName->i;
-    if (i>WORDSIZE) say__p = 1;
-
-    return;
-];
-
-[ Cap str nocaps;
-    if (nocaps) print (string) str;
-    else CPrintOrRun(str, 0);
-];
-
-@h Object Names I.
-We now begin the work of printing object names. In the lowest level of this
-process we print just the name itself (without articles attached), and we
-do it by carrying out an activity.
-
-=
-[ PSN__ o;
-    if (o == 0) { LIST_WRITER_INTERNAL_RM('Y'); rtrue; }
-    switch (metaclass(o)) {
-		Routine:  print "<routine ", o, ">"; rtrue;
-		String:   print "<string ~", (string) o, "~>"; rtrue;
-		nothing:  print "<illegal object number ", o, ">"; rtrue;
-    }
-    RegardingSingleObject(o);
-    CarryOutActivity(PRINTING_THE_NAME_ACT, o);
-];
-
-[ PrintShortName obj i;
-    i = indef_mode; indef_mode = NULL;
-    PSN__(obj); indef_mode = i;
-];
-
-@h Standard Name Printing Rule.
-In its initial state, the "printing the name of" activity has just one rule:
-the following "for" rule.
-
-=
-Global caps_mode = false;
-
-[ STANDARD_NAME_PRINTING_R obj;
-	obj = parameter_value;
-    if (obj == 0) {
-    	LIST_WRITER_INTERNAL_RM('Y'); return;
-    }
-    switch (metaclass(obj)) {
-		Routine:  print "<routine ", obj, ">"; return;
-		String:   print "<string ~", (string) obj, "~>"; return;
-		nothing:  print "<illegal object number ", obj, ">"; return;
-    }
-    if (obj == player) {
-   	    if (indef_mode == NULL && caps_mode) PRINT_PROTAGONIST_INTERNAL_RM('A');
-   	    else PRINT_PROTAGONIST_INTERNAL_RM('B');
-   	    return;
-   	}
-    #Ifdef LanguagePrintShortName;
-    if (LanguagePrintShortName(obj)) return;
-    #Endif; ! LanguagePrintShortName
-    if (indef_mode && obj provides short_name_indef &&
-    	PrintOrRun(obj, short_name_indef, true) ~= 0) return;
-    if (caps_mode &&
-    	obj provides cap_short_name && PrintOrRun(obj, cap_short_name, true) ~= 0) {
-    	caps_mode = false;
-    	return;
-    }
-    if (obj provides short_name && PrintOrRun(obj, short_name, true) ~= 0) return;
-    print (object) obj;
-];
-
-[ STANDARD_PLURAL_NAME_PRINTING_R obj;
-	obj = parameter_value;
-	PrintOrRun(obj, plural, true);
-];
-
-@h Internal Rule.
-
-=
-[ PRINT_PROTAGONIST_INTERNAL_R; ];
-
-@h Object Names II.
-The second level of the system for printing object names handles the placing
-of articles in front of them: {\it the} red herring, {\it an} elephant,
-{\it Some} bread. The following routine allows us to choose:
-
-(a) |obj|, the object whose name is to be printed;
-(b) |acode|, the kind of article needed: capitalised definite (0), lower case
-uncapitalised definite (1), or uncapitalised indefinite (2);
-(c) |pluralise|, a flag forcing to a plural form (e.g., "some" being the
-pluralised form of an indefinite article in English);
-(d) |capitalise|, a flag forcing us to capitalise the article -- it's by
-setting this that we can achieve the fourth option missing from (b), viz.,
-capitalised indefinite. (All of this is a legacy design from a time when
-the I6 library did not support capitalised indefinite articles.)
-
-The routine then looks after issues such as which contraction form to
-use: for instance, in English, whether to use "a" or "an" for the
-indefinite singular depends on the text of the object's name.
-
-=
-Global short_name_case;
-
-[ PrefaceByArticle obj acode pluralise capitalise  i artform findout artval;
-    if (obj provides articles) {
-        artval=(obj.&articles)-->(acode+short_name_case*LanguageCases);
-        if (capitalise)
-            print (Cap) artval;
-        else
-            print (string) artval;
-        if (pluralise) return;
-        print (PSN__) obj; return;
-    }
-
-    i = GetGNAOfObject(obj);
-    if (pluralise) {
-        if (i < 3 || (i >= 6 && i < 9)) i = i + 3;
-    }
-    i = LanguageGNAsToArticles-->i;
-
-    artform = LanguageArticles
-        + 3*WORDSIZE*LanguageContractionForms*(short_name_case + i*LanguageCases);
-
-    switch (LanguageContractionForms) {
-    	2: if (artform-->acode ~= artform-->(acode+3)) findout = true;
-    	3: if (artform-->acode ~= artform-->(acode+3)) findout = true;
-	       if (artform-->(acode+3) ~= artform-->(acode+6)) findout = true;
-		4: if (artform-->acode ~= artform-->(acode+3)) findout = true;
-    	   if (artform-->(acode+3) ~= artform-->(acode+6)) findout = true;
-    	   if (artform-->(acode+6) ~= artform-->(acode+9)) findout = true;
-		default: findout = true;
-    }
-    #Ifdef TARGET_ZCODE;
-    if (standard_interpreter ~= 0 && findout) {
-        StorageForShortName-->0 = 160;
-        @output_stream 3 StorageForShortName;
-        if (pluralise) print (number) pluralise; else print (PSN__) obj;
-        @output_stream -3;
-        acode = acode + 3*LanguageContraction(StorageForShortName + 2);
-    }
-    #Ifnot; ! TARGET_GLULX
-    if (findout) {
-        if (pluralise)
-            Glulx_PrintAnyToArray(StorageForShortName, 160, EnglishNumber, pluralise);
-        else
-            Glulx_PrintAnyToArray(StorageForShortName, 160, PSN__, obj);
-        acode = acode + 3*LanguageContraction(StorageForShortName);
-    }
-    #Endif; ! TARGET_
-
-    Cap (artform-->acode, ~~capitalise); ! print article
-    if (pluralise) return;
-    print (PSN__) obj;
-];
-
-@h Object Names III.
-The routines accessible from outside this segment.
-
-=
-[ IndefArt obj i s;
-	if (obj == 0) { LIST_WRITER_INTERNAL_RM('Y'); rtrue; }
-    i = indef_mode; indef_mode = true; s = self; self = obj;
-    if (obj has proper) { indef_mode = NULL; print (PSN__) obj; indef_mode = i; self = s; return; }
-    if ((obj provides article) && (TEXT_TY_Compare(obj.article, EMPTY_TEXT_VALUE) ~= 0)) {
-        PrintOrRun(obj, article, true); print " ", (PSN__) obj; indef_mode = i; self = s;
-        return;
-    }
-    PrefaceByArticle(obj, 2); indef_mode = i; self = s;
-];
-
-[ CIndefArt obj i s;
-	if (obj == 0) { LIST_WRITER_INTERNAL_RM('X'); rtrue; }
-    i = indef_mode; indef_mode = true; s = self; self = obj;
-    if (obj has proper) {
-    	indef_mode = NULL;
-		caps_mode = true;
-    	print (PSN__) obj;
-    	indef_mode = i;
-    	caps_mode = false;
-    	self = s;
-    	return;
-    }
-    if ((obj provides article) && (TEXT_TY_Compare(obj.article, EMPTY_TEXT_VALUE) ~= 0)) {
-        TEXT_TY_Say_Capitalised(obj.article); print " ", (PSN__) obj; indef_mode = i; self = s;
-        return;
-    }
-    PrefaceByArticle(obj, 2, 0, 1); indef_mode = i; self = s;
-];
-
-[ DefArt obj i s;
-    i = indef_mode; indef_mode = false; s = self; self = obj;
-    if ((~~obj ofclass Object) || obj has proper) {
-        indef_mode = NULL; print (PSN__) obj; indef_mode = i; self = s;
-        return;
-    }
-    PrefaceByArticle(obj, 1); indef_mode = i; self = s;
-];
-
-[ CDefArt obj i s;
-    i = indef_mode; indef_mode = false; s = self; self = obj;
-    if ((obj ofclass Object) && (obj has proper || obj == player)) {
-    	indef_mode = NULL;
-    	caps_mode = true;
-    	print (PSN__) obj;
-    	indef_mode = i;
-    	caps_mode = false;
-    	self = s;
-    	return;
-    }
-    if ((~~obj ofclass Object) || obj has proper) {
-        indef_mode = NULL; print (PSN__) obj; indef_mode = i; self = s;
-        return;
-    }
-    PrefaceByArticle(obj, 0); indef_mode = i; self = s;
 ];
 
 @h Standard Response Issuing Rule.

@@ -68,7 +68,7 @@ rulebook *Actions::new_rulebook(action_name *an, int RB) {
 	int prefix_length = Wordings::length(W) -
 		Wordings::length(ActionNameNames::tensed(an, IS_TENSE));
 	rulebook *R = Rulebooks::new_automatic(W, K_action_name, NO_OUTCOME,
-		TRUE, FALSE, FALSE, prefix_length,
+		TRUE, FALSE, prefix_length,
 		Hierarchy::make_package_in(RB, RTActions::package(an)));
 	return R;
 }

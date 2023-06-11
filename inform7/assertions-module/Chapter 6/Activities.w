@@ -15,6 +15,8 @@ typedef struct activity {
 	struct kind *activity_on_what_kind; /* or null */
 	struct shared_variable_set *activity_variables; /* activity variables owned here */
 	struct activity_compilation_data compilation_data;
+	int future_action_flag;
+	int hide_in_debugging_flag;
 	CLASS_DEFINITION
 } activity;
 
@@ -26,6 +28,14 @@ kind *Activities::to_kind(activity *av) {
 	return Kinds::unary_con(CON_activity, av->activity_on_what_kind);
 }
 
+int Activities::used_by_future_actions(activity *av) {
+	return av->future_action_flag;
+}
+
+int Activities::hide_in_debugging(activity *av) {
+	return av->hide_in_debugging_flag;
+}
+
 @ Activities are much simpler to create than actions. For example,
 
 >> Announcing something is an activity on numbers.
@@ -35,24 +45,27 @@ special Preform of its own; here is the subject phrase:
 
 =
 <activity-sentence-subject> ::=
-	<activity-noted> ( <documentation-symbol> ) |   ==> { R[1], -, <<ds>> = R[2] }
-	<activity-noted> -- <documentation-symbol> -- | ==> { R[1], -, <<ds>> = R[2] }
-	<activity-noted>                                ==> { R[1], -, <<ds>> = -1 }
+	<activity-sentence-subject> ( <activity-note> ) |   ==> { R[1], - }
+	<activity-sentence-subject> -- <activity-note> -- | ==> { R[1], - }
+	<activity-sentence-subject> ( ...... ) |            ==> @<Issue PM_ActivityNoteUnknown problem@>
+	<activity-sentence-subject> -- ... -- |             ==> @<Issue PM_ActivityNoteUnknown problem@>
+	<activity-new-name>                                 ==> { R[1], - }
 
-<activity-noted> ::=
-	<activity-new-name> ( future action ) |         ==> { TRUE, -, <<future>> = TRUE }
-	<activity-new-name> ( ... )	|                   ==> @<Issue PM_ActivityNoteUnknown problem@>
-	<activity-new-name>                             ==> { TRUE, -, <<future>> = FALSE }
+<activity-note> ::=
+	<documentation-symbol> |                            ==> { -, -, <<ds>> = R[1] }
+	future action |                                     ==> { -, -, <<future>> = TRUE }
+	hidden in RULES command                             ==> { -, -, <<hide>> = TRUE }
 
 <activity-new-name> ::=
-	... of/for something/anything |                 ==> { 0, -, <<any>> = TRUE }
-	... something/anything |                        ==> { 0, -, <<any>> = TRUE }
-	...                                             ==> { 0, -, <<any>> = FALSE }
+	... of/for something/anything |                     ==> { TRUE, -, <<any>> = TRUE }
+	... something/anything |                            ==> { TRUE, -, <<any>> = TRUE }
+	...                                                 ==> { TRUE, -, <<any>> = FALSE }
 
 @<Issue PM_ActivityNoteUnknown problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActivityNoteUnknown),
 		"one of the notes about this activity makes no sense",
-		"and should be either 'documented at SYMBOL' or 'future action'.");
+		"and should be either 'documented at SYMBOL', 'hidden in RULES command' "
+		"or 'future action'.");
 	==> { FALSE, - };
 
 @
@@ -64,11 +77,13 @@ activity *Activities::new(kind *K, wording W) {
 	if (Kinds::eq(on_kind, K_nil)) {
 		kind_given = FALSE; on_kind = K_object;
 	}
-
+	
+	<<ds>> = -1;
+	<<future>> = FALSE;
+	<<hide>> = FALSE;
 	<activity-sentence-subject>(W);
 	W = GET_RW(<activity-new-name>, 1);
 	wording doc_symbol = Wordings::one_word(<<ds>>);
-	int future_action_flag = <<future>>;
 
 	@<The name can't have been used before@>;
 	@<The kind the activity is performed on, if there is one, must be definite@>;
@@ -78,6 +93,8 @@ activity *Activities::new(kind *K, wording W) {
 	av->name = W;
 	av->compilation_data = RTActivities::new_compilation_data(av, doc_symbol);
 	av->activity_on_what_kind = on_kind;
+	av->future_action_flag = <<future>>;
+	av->hide_in_debugging_flag = <<hide>>;
 
 	LOGIF(ACTIVITY_CREATIONS, "Created activity '%W'\n", av->name);
 
@@ -85,9 +102,9 @@ activity *Activities::new(kind *K, wording W) {
 
 	av->activity_variables = SharedVariables::new_set(av->compilation_data.variables_id);
 
-	av->before_rules = Activities::make_rulebook(av, 0, future_action_flag);
-	av->for_rules = Activities::make_rulebook(av, 1, future_action_flag);
-	av->after_rules = Activities::make_rulebook(av, 2, future_action_flag);
+	av->before_rules = Activities::make_rulebook(av, 0);
+	av->for_rules = Activities::make_rulebook(av, 1);
+	av->after_rules = Activities::make_rulebook(av, 2);
 
 	PluginCalls::new_activity_notify(av);
 
@@ -156,14 +173,14 @@ it; actually two -- for example, both "announcing" and "announcing activity".
 	after ...
 
 @ =
-rulebook *Activities::make_rulebook(activity *av, int N, int future_action_flag) {
+rulebook *Activities::make_rulebook(activity *av, int N) {
 	int def = NO_OUTCOME;
 	if (N == 1) def = SUCCESS_OUTCOME;
 	word_assemblage wa = PreformUtilities::merge(<activity-rulebook-construction>, N,
 		WordAssemblages::from_wording(av->name));
 	wording RW = WordAssemblages::to_wording(&wa);
 	rulebook *R = Rulebooks::new_automatic(RW, av->activity_on_what_kind,
-		def, FALSE, future_action_flag, TRUE, 0, RTActivities::rulebook_package(av, N));
+		def, FALSE, TRUE, 0, RTActivities::rulebook_package(av, N));
 	Rulebooks::grant_access_to_variables(R, av->activity_variables);
 	return R;
 }

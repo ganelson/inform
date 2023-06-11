@@ -30,7 +30,7 @@ And this allows us to write rules that have characters interacting with doors ev
 	
 	Liminality relates a door (called X) to a room (called Y) when the front side of X is Y or the back side of X is Y. The verb to be a threshold of means the liminality relation.
 
-	Definition: a person is other if he is not the player.
+	Definition: a person is other if they are not the player.
 
 	Every turn:
 		repeat with indiscreet one running through other people:

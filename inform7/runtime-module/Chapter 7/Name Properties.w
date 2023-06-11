@@ -82,7 +82,7 @@ parse_node *Name::name_property_array(instance *I, wording W, wording PW,
 		EmitArrays::dword_entry(content); entry_count++;
 		DISCARD_TEXT(content)
 	}
-	if (from_kind)
+	if (from_kind && !global_compilation_settings.no_auto_plural_names)
 		LOOP_THROUGH_WORDING(j, PW) {
 			int additional = TRUE;
 			LOOP_THROUGH_WORDING(k, W)

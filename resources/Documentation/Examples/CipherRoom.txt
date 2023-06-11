@@ -2,7 +2,7 @@
 (ASK someone ABOUT an object the same as SHOW--ASK made like SHOW when applied to objects; Nameless)
 ASKing someone about an object rather than about a topic.
 
-By default, ASK SOMEONE ABOUT... applies only to a text token. We might want also to offer the player the option of asking characters about pieces of physical evidence. This example implements an ASK PERSON ABOUT THING command that is mostly synonymous with SHOW, with the added nuance that the player can ask about things that are not currently visible, as long as he has encountered them at some time in the past.
+By default, ASK SOMEONE ABOUT... applies only to a text token. We might want also to offer the player the option of asking characters about pieces of physical evidence. This example implements an ASK PERSON ABOUT THING command that is mostly synonymous with SHOW, with the added nuance that the player can ask about things that are not currently visible, as long as they have encountered them at some time in the past.
 
 	{*}"Nameless"
 
@@ -18,7 +18,7 @@ Now we create our new action, "interrogating it about". We write the grammar lin
 
 	Understand "ask [someone] about [any known thing]" as interrogating it about. interrogating it about is an action applying to two visible things. 
 
-Now we replace and redirect the showing action. This gets rid of the requirement in the default library that the player be holding anything he shows to another character:
+Now we replace and redirect the showing action. This gets rid of the requirement in the default library that the player be holding anything they show to another character:
 
 	{**}Understand the commands "show" and "display" and "present" as something new. 
 

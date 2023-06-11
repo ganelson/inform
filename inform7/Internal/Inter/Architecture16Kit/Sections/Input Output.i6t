@@ -1,0 +1,345 @@
+Input Output Template.
+
+Access to the keyboard and to textual windows.
+
+@h Transcript support.
+This is a mode in which the transcript of text in the main window is being
+written out to an external file.
+
+|VM_TranscriptIsOn| tests whether this mode is on. |VM_TranscriptOn| should
+be called only if it is off, and tries to turn it on, returning |true| or |false|
+according to whether or not it succeeds. |VM_TranscriptOff| should be called
+only if scripting is on.
+
+=
+[ VM_TranscriptIsOn;
+	return ((HDR_GAMEFLAGS-->0) & 1);
+];
+
+[ VM_TranscriptOn;
+	@output_stream 2;
+	return VM_TranscriptIsOn();
+];
+
+[ VM_TranscriptOff;
+	@output_stream -2;
+	if (VM_TranscriptIsOn()) rfalse;
+	rtrue;
+];
+
+@h Variables and Arrays.
+
+=
+Constant #dict_par1 = 6;
+Constant #dict_par2 = 7;
+
+Global xcommsdir; ! true if command recording is on
+
+Constant INPUT_BUFFER_LEN = 120; ! Length of buffer array
+
+Array  buffer    -> 123;            ! Buffer for parsing main line of input
+Array  buffer2   -> 123;            ! Buffers for supplementary questions
+Array  buffer3   -> 123;            ! Buffer retaining input for "again"
+Array  parse     buffer 63;         ! Parse table mirroring it
+Array  parse2    buffer 63;         !
+
+Global dict_start;
+Global dict_entry_size;
+Global dict_end;
+
+@h Dictionary words.
+This tests whether an address is probably that of a dictionary word. It's used
+only for debugging output, so the false positives here (where an address is in
+the dictionary table, but mid-word) really do not matter.
+
+=
+[ VM_ProbablyDictionaryAddress addr;
+	if (UnsignedCompare(addr, HDR_DICTIONARY-->0) >= 0 &&
+		UnsignedCompare(addr, HDR_HIGHMEMORY-->0) < 0) rtrue;
+	rfalse;
+];
+
+@h Keyboard Input.
+The VM must provide three routines for keyboard input:
+
+(a) |VM_KeyChar()| waits for a key to be pressed and then returns the
+character chosen as a ZSCII character.
+(b) |VM_KeyDelay(N)| waits up to $N/10$ seconds for a key to be pressed,
+returning the ZSCII character if so, or 0 if not.
+(c) |VM_ReadKeyboard(b, t)| reads a whole newline-terminated command
+into the buffer |b|, then parses it into a word stream in the table |t|.
+
+There are elaborations to due with mouse clicks, but this isn't the place
+to document all of that.
+
+=
+[ VM_KeyChar win  key;
+    if (win) @set_window win;
+    @read_char 1 -> key;
+    return key;
+];
+
+[ VM_KeyDelay tenths  key;
+    @read_char 1 tenths VM_KeyDelay_Interrupt -> key;
+    return key;
+];
+[ VM_KeyDelay_Interrupt; rtrue; ];
+
+[ VM_ReadKeyboard a_buffer a_table;
+	read a_buffer a_table;
+];
+
+@h Buffer Functions.
+A "buffer", in this sense, is an array containing a stream of characters
+typed from the keyboard; a "parse buffer" is an array which resolves this
+into individual words, pointing to the relevant entries in the dictionary
+structure. Because each VM has its own format for each of these arrays (not
+to mention the dictionary), we have to provide some standard operations
+needed by the rest of the template as routines for each VM.
+
+The Z-machine buffer and parse buffer formats are documented in the DM4.
+
+|VM_CopyBuffer(to, from)| copies one buffer into another.
+
+|VM_Tokenise(buff, parse_buff)| takes the text in the buffer |buff| and
+produces the corresponding data in the parse buffer |parse_buff| -- this is
+called tokenisation since the characters are divided into words: in traditional
+computing jargon, such clumps of characters treated syntactically as units
+are called tokens.
+
+|LTI_Insert| is documented in the DM4 and the |LTI| prefix stands for
+"Language To Informese": it's used only by translations into non-English
+languages of play.
+
+=
+[ VM_CopyBuffer bto bfrom i;
+    for (i=0: i<INPUT_BUFFER_LEN: i++) bto->i = bfrom->i;
+];
+
+[ VM_PrintToBuffer buf len a b c;
+    @output_stream 3 buf;
+    switch (metaclass(a)) {
+		String: print (string) a;
+		Routine: a(b, c);
+		Object, Class: if (b) PrintOrRun(a, b, true); else print (name) a;
+    }
+    @output_stream -3;
+    if (buf-->0 > len) print "Error: Overflow in VM_PrintToBuffer.^";
+    return buf-->0;
+];
+
+[ VM_Tokenise b p; b->(2 + b->1) = 0; @tokenise b p; ];
+
+[ LTI_Insert i ch  b y;
+    ! Protect us from strict mode, as this isn't an array in quite the
+    ! sense it expects
+    b = buffer;
+
+    ! Insert character ch into buffer at point i.
+    ! Being careful not to let the buffer possibly overflow:
+    y = b->1;
+    if (y > b->0) y = b->0;
+
+    ! Move the subsequent text along one character:
+    for (y=y+2 : y>i : y--) b->y = b->(y-1);
+    b->i = ch;
+
+    ! And the text is now one character longer:
+    if (b->1 < b->0) (b->1)++;
+];
+
+@h Dictionary Functions.
+Again, the dictionary structure is differently arranged on the different VMs.
+This is a data structure containing, in compressed form, the text of all the
+words to be recognised by tokenisation (above). In I6 for Z, a dictionary word
+value is represented at run-time by its record number in the dictionary,
+0, 1, 2, ..., in alphabetical order.
+
+|VM_InvalidDictionaryAddress(A)| tests whether |A| is a valid record address
+in the dictionary data structure.
+
+|VM_DictionaryAddressToNumber(A)| and |VM_NumberToDictionaryAddress(N)|
+convert between record numbers and dictionary addresses.
+
+=
+[ VM_InvalidDictionaryAddress addr;
+    if ((UnsignedCompare(addr, dict_start) < 0) ||
+		(UnsignedCompare(addr, dict_end) >= 0) ||
+		((addr - dict_start) % dict_entry_size ~= 0)) rtrue;
+	rfalse;
+];
+
+[ VM_DictionaryAddressToNumber w; return (w-(HDR_DICTIONARY-->0 + 7))/DICT_ENTRY_BYTES; ];
+[ VM_NumberToDictionaryAddress n; return HDR_DICTIONARY-->0 + 7 + DICT_ENTRY_BYTES*n; ];
+
+@h Command Tables.
+The VM is also generated containing a data structure for the grammar
+produced by I6's |Verb| and |Extend| directives: this is essentially a
+list of command verbs such as DROP or PUSH, together with a list of
+synonyms, and then the grammar for the subsequent commands to be
+recognised by the parser.
+
+=
+[ VM_CommandTableAddress i;
+	return (HDR_STATICMEMORY-->0)-->i;
+];
+
+[ VM_PrintCommandWords i da j;
+    da = HDR_DICTIONARY-->0;
+    for (j=0 : j<(da+5)-->0 : j++)
+        if (da->(j*DICT_ENTRY_BYTES + 14) == $ff-i)
+        	print "'", (address) VM_NumberToDictionaryAddress(j), "' ";
+];
+
+@h Extracting Verb Numbers.
+A long tale of woe lies behind the following. Infocom games stored verb numbers
+in a single byte in dictionary entries, but they did so counting downwards, so
+that verb number 0 was stored as 255, 1 as 254, and so on. Inform followed
+suit so that debugging of Inform 1 could be aided by using the then-available
+tools for dumping dictionaries from Infocom story files; by using the Infocom
+format for dictionary tables, Inform's life was easier.
+
+But there was an implicit restriction there of 255 distinct verbs (not 256
+since not all words were verbs). When Glulx raised almost all of the Z-machine
+limits, it made space for 65535 verbs instead of 255, but it appears that
+nobody remembered to implement this in I6-for-Glulx and the Glulx form of
+the I6 library. This was only put right in March 2009, and the following
+routine was added to concentrate lookups of this field in one place.
+
+=
+[ DictionaryWordToVerbNum dword;
+	return $ff-(dword->#dict_par2);
+];
+
+@h Action functions.
+This looks up the address of a function like |TakeSub| from the table of
+"action subroutines".
+
+=
+[ VM_ActionFunction act;
+	return #actions_table-->act;
+];
+
+@h The Screen.
+Our generic screen model is that the screen is made up of windows: we tend
+to refer only to two of these, the main window and the status line, but
+others may also exist from time to time. Windows have unique ID numbers:
+the special window ID $-1$ means "all windows" or "the entire screen",
+which usually amounts to the same thing.
+
+Screen height and width are measured in characters, with respect to the
+fixed-pitch font used for the status line. The main window normally contains
+variable-pitch text which may even have been kerned, and character dimensions
+make little sense there.
+
+Clearing all windows (|WIN_ALL| here) has the side-effect of collapsing the
+status line, so we need to ensure that |statuswin_cursize| is reduced to 0,
+in order to keep it accurate.
+
+=
+[ VM_ClearScreen window;
+    switch (window) {
+		WIN_ALL:    @erase_window -1; statuswin_cursize = 0;
+		WIN_STATUS: @erase_window 1;
+		WIN_MAIN:   @erase_window 0;
+    }
+];
+
+[ VM_ScreenWidth  width charw; return (HDR_SCREENWCHARS->0); ];
+
+[ VM_ScreenHeight; return (HDR_SCREENHLINES->0); ];
+
+@h Window Colours.
+Each window can have its own foreground and background colours.
+
+The colour of individual letters or words of type is not controllable in
+Glulx, to the frustration of many, and so the template layer of I7 has no
+framework for handling this (even though it is controllable on the Z-machine,
+which is greatly superior in this respect).
+
+=
+[ VM_SetWindowColours f b window;
+    if (clr_on && f && b) {
+        if (window == 0) {  ! if setting both together, set reverse
+            clr_fgstatus = b;
+            clr_bgstatus = f;
+            }
+        if (window == 1) {
+            clr_fgstatus = f;
+            clr_bgstatus = b;
+        }
+        if (window == 0 or 2) {
+            clr_fg = f;
+            clr_bg = b;
+        }
+        if (statuswin_current)
+            @set_colour clr_fgstatus clr_bgstatus;
+        else
+            @set_colour clr_fg clr_bg;
+    }
+];
+
+[ VM_RestoreWindowColours; ! compare I6 library patch L61007
+    if (clr_on) { ! check colour has been used
+        VM_SetWindowColours(clr_fg, clr_bg, 2); ! make sure both sets of variables are restored
+        VM_SetWindowColours(clr_fgstatus, clr_bgstatus, 1, true);
+        VM_ClearScreen();
+    }
+];
+
+@h Main Window.
+The part of the screen on which commands and responses are printed, which
+ordinarily occupies almost all of the screen area.
+
+|VM_MainWindow()| switches printing back from another window, usually the
+status line, to the main window. Note that the Z-machine implementation
+emulates the Glulx model of window rather than text colours.
+
+=
+[ VM_MainWindow;
+    if (statuswin_current) {
+        if (clr_on && clr_bgstatus > 1) @set_colour clr_fg clr_bg;
+        else style roman;
+        @set_window 0;
+    }
+    statuswin_current = false;
+];
+
+@h Status Line.
+Despite the name, the status line need not be a single line at the top of
+the screen: that's only the conventional default arrangement. It can expand
+to become the equivalent of an old-fashioned VT220 terminal, with menus
+and grids and mazes displayed lovingly in character graphics, or it can
+close up to invisibility.
+
+|VM_StatusLineHeight(n)| sets the status line to have a height of |n| lines
+of type. (The width of the status line is always the width of the whole
+screen, and the position is always at the top, so the height is the only
+controllable aspect.) The $n=0$ case makes the status line disappear.
+
+|VM_MoveCursorInStatusLine(x, y)| switches printing to the status line,
+positioning the "cursor" -- the position at which printing will begin --
+at the given character grid position $(x, y)$. Line 1 represents the top
+line; line 2 is underneath, and so on; columns are similarly numbered from
+1 at the left.
+
+=
+[ VM_MoveCursorInStatusLine line column; ! 1-based position on text grid
+    if (~~statuswin_current) {
+         @set_window 1;
+         if (clr_on && clr_bgstatus > 1) @set_colour clr_fgstatus clr_bgstatus;
+         else                            style reverse;
+    }
+    if (line == 0) {
+        line = 1;
+        column = 1;
+    }
+    @set_cursor line column;
+	statuswin_current = true;
+];
+
+[ VM_StatusLineHeight height  wx wy x y charh;
+    if (statuswin_cursize ~= height)
+        @split_window height;
+    statuswin_cursize = height;
+];

@@ -1,10 +1,11 @@
-Inform 7 build 6L26 has started.
+Inform 7 v10.2.0 has started.
 I've now read your source text, which is 14 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read version 1 of Basic Inform by Graham Nelson, which is 7938 words long.
+I've also read version 1 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 6 of Standard Rules by Graham Nelson, which is 35035 words long.
 Problem__ PM_ActivityNoteUnknown
   >--> You wrote 'Decreeing pleasure-domes (best left to the Chinese) is an
     activity' (source text, line 3): but one of the notes about this activity
-    makes no sense, and should be either 'documented at SYMBOL' or 'future
-    action'.
-Inform 7 has finished: 16 centiseconds used.
+    makes no sense, and should be either 'documented at SYMBOL', 'hidden in
+    RULES command' or 'future action'.
+Inform 7 has finished.

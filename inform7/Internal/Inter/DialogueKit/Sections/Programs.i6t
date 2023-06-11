@@ -588,19 +588,17 @@ this to be typed at the keyboard, then returns the choice made.
 [ DirectorPickANumber max i j wa wl sign base digit_count n digit;
     for (::) {
     	print ">";
-        #Ifdef TARGET_ZCODE;
-        if (location == nothing || parent(player) == nothing) read buffer2 parse2;
-        else read buffer2 parse2 DrawStatusLine;
+        if (location == nothing || parent(player) == nothing) KeyboardPrimitive(buffer2, parse2);
+        else KeyboardPrimitive(buffer2, parse2, DrawStatusLine);
+        #Iftrue CHARSIZE == 1;
         j = parse2->1;
 		wa = buffer2 + parse2->5;
 		wl = parse2->4;
-        #Ifnot; ! TARGET_GLULX;
-        if (location ~= nothing && parent(player) ~= nothing) DrawStatusLine();
-        KeyboardPrimitive(buffer2, parse2);
+        #Ifnot;
         j = parse2-->0;
  		wa = buffer2 + parse2-->3;
 		wl = parse2-->2;
-        #Endif; ! TARGET_
+        #Endif;
         if (j) { ! at least one word entered
             sign = 1; base = 10; digit_count = 0;
 			if (wa->0 ~= '-' or '$' or '0' or '1' or '2' or '3' or '4'
@@ -616,7 +614,7 @@ this to be typed at the keyboard, then returns the choice made.
 				switch (base) {
 					2:  if (digit_count == 17) jump Retry;
 					10:
-						#Iftrue (WORDSIZE == 2);
+						#Iftrue WORDSIZE == 2;
 						if (digit_count == 6) jump Retry;
 						if (digit_count == 5) {
 							if (n > 3276) jump Retry;

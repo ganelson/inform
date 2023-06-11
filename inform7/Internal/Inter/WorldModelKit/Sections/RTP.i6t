@@ -5,7 +5,7 @@ To issue run-time problem messages arising from the world model.
 @h Reporting.
 
 =
-[ RunTimeProblemShowWM n par1 par2 par3;
++replacing(from BasicInformKit) [ RunTimeProblemShowWM n par1 par2 par3;
 	switch(n) {
 		RTP_BACKDROP:
 			print "Tried to move ", (the) par1, " (a backdrop) to ", (the) par2,

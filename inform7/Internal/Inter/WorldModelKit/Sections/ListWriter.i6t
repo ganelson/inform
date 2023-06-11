@@ -150,7 +150,7 @@ before objects in Room B if A was created before B in the source text).
 Global MarkedObjectArray = 0;
 Global MarkedObjectLength = 0;
 
-[ WriteListOfMarkedObjects in_style
++replacing(from BasicInformKit) [ WriteListOfMarkedObjects in_style
 	obj common_parent first mixed_parentage length g gc;
 
 	gc = -2;
@@ -165,9 +165,9 @@ Global MarkedObjectLength = 0;
 	if (mixed_parentage) common_parent = nothing;
 
 	if (length == 0) {
-    	if (in_style & ISARE_BIT ~= 0) LIST_WRITER_INTERNAL_RM('W');
-    	else if (in_style & CFIRSTART_BIT ~= 0) LIST_WRITER_INTERNAL_RM('X');
-		else LIST_WRITER_INTERNAL_RM('Y');
+    	if (in_style & ISARE_BIT ~= 0) LW_Response('W');
+    	else if (in_style & CFIRSTART_BIT ~= 0) LW_Response('X');
+		else LW_Response('Y');
 	} else {
 		@push MarkedObjectArray; @push MarkedObjectLength;
 		MarkedObjectArray = RequisitionStack(length);
@@ -217,7 +217,7 @@ prior named list number and gender for everything matching a description.
 	return;
 ];
 
-[ PNToVP gna;
++replacing(from BasicInformKit) [ PNToVP gna;
 	if (prior_named_noun == player) return story_viewpoint;
 	if (prior_named_noun) gna = GetGNAOfObject(prior_named_noun);
 	if (((gna%6)/3 == 1) || (prior_named_list >= 2)) return 6;
@@ -291,7 +291,13 @@ Constant ADVANCE_ITF = 1;
 Constant COALESCE_ITF = 2;
 Constant START_ITF = 3;
 
-! Constant DBLW; ! Uncomment this to provide debugging information at run-time
+@h Tracing.
+Uncomment this line and rebuild the kit to enable tracing of what the algorithm
+below is doing. (This constant should not be used anywhere except in this file,
+where |#Ifdef| on it will have the expected effect: elsewhere, it might not.)
+
+=
+! Constant LKTRACE_LIST_WRITER;
 
 @h Marked List Iterator.
 Here the raw list is provided by the |MarkedObjectArray|, which is convenient
@@ -339,6 +345,26 @@ account.
 	c = parent(obj);
 	if ((c) && (c ofclass K5_container or K6_supporter) && (TestConcealment(c, obj))) rtrue;
 	rfalse;
+];
+
+@h Having Evident Content
+This is true when something has at least one unconcealed thing in it.
+It's false when something is truly empty or when all the things in
+it are concealed or undescribed, and is used to ensure that output
+is consistent in both those cases. The player shouldn't count for
+these purposes, but since the player is undescribed, they're excluded
+anyway.
+
+=
+[ ObviouslyOccupied o x;
+  if (~~((o ofclass K5_container) || (o ofclass K6_supporter))) rfalse;
+  if (o has container && o hasnt open && o hasnt transparent) rfalse; ! opaque closed container's status can never be obvious
+  x = child(o);
+  while (x) {
+    if ((x hasnt concealed) && (~~TestConcealment(o, x))) rtrue;
+    x = sibling(x);
+  }
+  rfalse;
 ];
 
 @h Coalesce Marked List.
@@ -403,7 +429,7 @@ Again, the return value is the new first entry in the raw list.
 
 =
 [ ObjectTreeCoalesce obj memb lt later;
-	#Ifdef DBLW; print "^^Sorting out: "; DiagnoseSortList(obj); #Endif;
+	#Ifdef LKTRACE_LIST_WRITER; print "^^Sorting out: "; DiagnoseSortList(obj); #Endif;
 	.StartAgain;
 	memb = obj;
 	while (memb ~= nothing) {
@@ -425,7 +451,7 @@ Again, the return value is the new first entry in the raw list.
 			if (LT_Compare(later.list_together, lt) == 0) {
 				! Yes, they do: so we perform a regrouping of the list and start again:
 				obj = GroupChildren(parent(obj), lt);
-				#Ifdef DBLW; print "^^Sorted to: "; DiagnoseSortList(obj); #Endif;
+				#Ifdef LKTRACE_LIST_WRITER; print "^^Sorted to: "; DiagnoseSortList(obj); #Endif;
 				jump StartAgain;
 			}
 		}
@@ -456,7 +482,7 @@ objects which in all other circumstances never have children in the tree.
     return child(par);
 ];
 
-#Ifdef DBLW;
+#Ifdef LKTRACE_LIST_WRITER;
 [ DiagnoseSortList obj memb;
     for (memb=obj: memb~=nothing: memb=sibling(memb)) print memb, " --> "; new_line;
 ];
@@ -481,8 +507,8 @@ variables detailing the current list-writing process, and begin.
 
     first = c_iterator(first, depth, 0, START_ITF);
 	if (first == nothing) {
-		if (in_style & ISARE_BIT ~= 0) LIST_WRITER_INTERNAL_RM('W');
-        else LIST_WRITER_INTERNAL_RM('Y');
+		if (in_style & ISARE_BIT ~= 0) LW_Response('W');
+        else LW_Response('Y');
         if (in_style & NEWLINE_BIT ~= 0) new_line;
     } else {
 		if ((noactivity) || (iter)) {
@@ -529,7 +555,7 @@ equivalence class number $c$, |partition_class_sizes->c| is the number of
 objects in this class.
 
 =
-#Ifdef DBLW;
+#Ifdef LKTRACE_LIST_WRITER;
 Global DBLW_no_classes; Global DBLW_no_objs;
 [ DebugPartition partition_class_sizes partition_classes first depth i k o;
 	print "[Length of list is ", DBLW_no_objs, " with ", k, " plural.]^";
@@ -567,7 +593,7 @@ accordingly. We return $n$, the number of classes.
             if (n < 255) n++;
         }
     n--;
-	#Ifdef DBLW;
+	#Ifdef LKTRACE_LIST_WRITER;
 	DBLW_no_classes = n; DBLW_no_objs = no_objs;
 	DebugPartition(partition_class_sizes, partition_classes, first, depth);
 	#Endif;
@@ -582,21 +608,16 @@ by Inform. But this seems to be sound.
 
 =
 [ ListEqual o1 o2;
-	if ((o1.plural == 0) || (o2.plural == 0)) rfalse;
- 	if (child(o1) ~= 0 && WillRecurs(o1) ~= 0) rfalse;
-    if (child(o2) ~= 0 && WillRecurs(o2) ~= 0) rfalse;
-    if (c_style & (FULLINV_BIT + PARTINV_BIT) ~= 0) {
-        if ((o1 hasnt worn && o2 has worn) || (o2 hasnt worn && o1 has worn)) rfalse;
-        if ((o1 hasnt light && o2 has light) || (o2 hasnt light && o1 has light)) rfalse;
-        if (o1 has container) {
-            if (o2 hasnt container) rfalse;
-            if ((o1 has open && o2 hasnt open) || (o2 has open && o1 hasnt open))
-                rfalse;
-        }
-        else if (o2 has container)
-            rfalse;
-    }
-    return Identical(o1, o2);
+  if (o1.KD_Count ~= o2.KD_Count) rfalse;
+  if ((o1.plural == 0) || (o2.plural == 0)) rfalse;
+  if (ObviouslyOccupied(o1) && WillRecurs(o1)) rfalse;
+  if (ObviouslyOccupied(o2) && WillRecurs(o2)) rfalse;
+  if (c_style & (FULLINV_BIT + PARTINV_BIT) ~= 0) {
+    if ((o1 hasnt worn && o2 has worn) || (o2 hasnt worn && o1 has worn)) rfalse;
+    if ((o1 hasnt light && o2 has light) || (o2 hasnt light && o1 has light)) rfalse;
+    if ((o1 has open && o2 hasnt open) || (o2 has open && o1 hasnt open)) rfalse;
+  }
+  return Identical(o1, o2);
 ];
 
 [ WillRecurs o;
@@ -672,7 +693,7 @@ in the above sense.
             current_lt = lt;
         }
     }
- 	#Ifdef DBLW; print "[There are ", no_groups, " groups.]^"; #Endif;
+ 	#Ifdef LKTRACE_LIST_WRITER; print "[There are ", no_groups, " groups.]^"; #Endif;
 	return no_groups;
 ];
 
@@ -710,7 +731,7 @@ The big one: |WriteListR| is the heart of the list-writer.
 
     if (c_style & ISARE_BIT ~= 0) {
     	SetLWI(index, -1, o);
-    	LIST_WRITER_INTERNAL_RM('V', o);
+    	LW_Response('V', o);
     	if (c_style & NEWLINE_BIT ~= 0)   print ":^";
         else                              print (char) ' ';
         c_style = c_style - ISARE_BIT;
@@ -734,7 +755,7 @@ The big one: |WriteListR| is the heart of the list-writer.
             if (memb==0) { print "*** Error in list-writer ***^"; return; }
         }
 
-    	#Ifdef DBLW;
+    	#Ifdef LKTRACE_LIST_WRITER;
 		! DebugPartition(partition_class_sizes, partition_classes, o, depth);
 		print "^[Class ", cl, " of ", no_classes, ": first object ", memb,
 			" (", memb.list_together, "); groups_to_do ", groups_to_do, ",
@@ -776,10 +797,10 @@ The big one: |WriteListR| is the heart of the list-writer.
 		groups_to_do--;
         if (c_style & ENGLISH_BIT ~= 0) {
             if (groups_to_do == 1) {
-            	if (KIT_CONFIGURATION_BITMAP & SERIAL_COMMA_TCBIT) {
+            	if (BasicInformKit`SERIAL_COMMA_CFGF) {
             		if (cl > 1) print ",";
             	}
-            	LIST_WRITER_INTERNAL_RM('C');
+            	LW_Response('C');
             }
             if (groups_to_do > 1) print ", ";
         }
@@ -833,10 +854,10 @@ below, and {\it that} is where they are printed.
 		@push lt_value; @push listing_together; @push listing_size;
 
 		lt_value = memb.list_together; listing_together = memb;
-		#Ifdef DBLW; print "^^DOWN lt_value = ", lt_value, " listing_together = ", memb, "^^";
+		#Ifdef LKTRACE_LIST_WRITER; print "^^DOWN lt_value = ", lt_value, " listing_together = ", memb, "^^";
 		@push DBLW_no_classes; @push DBLW_no_objs; #Endif;
 		WriteListR(memb, depth, false);
-		#Ifdef DBLW; print "^^UP^^"; @pull DBLW_no_objs; @pull DBLW_no_classes; #Endif;
+		#Ifdef LKTRACE_LIST_WRITER; print "^^UP^^"; @pull DBLW_no_objs; @pull DBLW_no_classes; #Endif;
 
 		@pull listing_size; @pull listing_together; @pull lt_value;
 		c_margin--;
@@ -920,17 +941,17 @@ the iterator used at the top level) and increasing the depth by 1.
 			if (o has container && o hasnt open)     combo=combo+2;
 			if ((o has container && (o has open || o has transparent))
 				&& (child(o)==0))                    combo=combo+4;
-			if (combo) LIST_WRITER_INTERNAL_RM('A'); ! space and open bracket
+			if (combo) LW_Response('A'); ! space and open bracket
 			switch (combo) {
-				1: LIST_WRITER_INTERNAL_RM('D', o);
-				2: LIST_WRITER_INTERNAL_RM('E', o);
-				3: LIST_WRITER_INTERNAL_RM('H', o);
-				4: LIST_WRITER_INTERNAL_RM('F', o);
-				5: LIST_WRITER_INTERNAL_RM('I', o);
-				6: LIST_WRITER_INTERNAL_RM('G', o);
-				7: LIST_WRITER_INTERNAL_RM('J', o);
+				1: LW_Response('D', o);
+				2: LW_Response('E', o);
+				3: LW_Response('H', o);
+				4: LW_Response('F', o);
+				5: LW_Response('I', o);
+				6: LW_Response('G', o);
+				7: LW_Response('J', o);
 			}
-			if (combo) LIST_WRITER_INTERNAL_RM('B'); ! close bracket
+			if (combo) LW_Response('B'); ! close bracket
 		}
         EndActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o);
     }   ! end of PARTINV_BIT processing
@@ -938,36 +959,36 @@ the iterator used at the top level) and increasing the depth by 1.
     if (c_style & FULLINV_BIT) {
         BeginActivity(PRINTING_INVENTORY_DETAILS_ACT, o);
         if (ForActivity(PRINTING_INVENTORY_DETAILS_ACT, o) == false) {
-			if (o has light && o has worn) { LIST_WRITER_INTERNAL_RM('A'); LIST_WRITER_INTERNAL_RM('K', o);  parenth_flag = true; }
+			if (o has light && o has worn) { LW_Response('A'); LW_Response('K', o);  parenth_flag = true; }
 			else {
-				if (o has light)           { LIST_WRITER_INTERNAL_RM('A'); LIST_WRITER_INTERNAL_RM('D', o);  parenth_flag = true; }
-				if (o has worn)            { LIST_WRITER_INTERNAL_RM('A'); LIST_WRITER_INTERNAL_RM('L', o); parenth_flag = true; }
+				if (o has light)           { LW_Response('A'); LW_Response('D', o);  parenth_flag = true; }
+				if (o has worn)            { LW_Response('A'); LW_Response('L', o); parenth_flag = true; }
 			}
 
 			if (o has container) {
 				if (o has openable) {
 					if (parenth_flag) {
-						if (KIT_CONFIGURATION_BITMAP & SERIAL_COMMA_TCBIT)
+						if (BasicInformKit`SERIAL_COMMA_CFGF)
 							print ",";
-						LIST_WRITER_INTERNAL_RM('C');
-					} else            LIST_WRITER_INTERNAL_RM('A', o);
+						LW_Response('C');
+					} else            LW_Response('A', o);
 					if (o has open) {
-						if (child(o)) LIST_WRITER_INTERNAL_RM('M', o);
-						else          LIST_WRITER_INTERNAL_RM('N', o);
+						if (child(o)) LW_Response('M', o);
+						else          LW_Response('N', o);
 					} else {
-						if (o has lockable && o has locked) LIST_WRITER_INTERNAL_RM('P', o);
-						else                                LIST_WRITER_INTERNAL_RM('O', o);
+						if (o has lockable && o has locked) LW_Response('P', o);
+						else                                LW_Response('O', o);
 					}
 					parenth_flag = true;
 				}
 				else {
 					if (child(o)==0 && o has transparent) {
-						if (parenth_flag) { LIST_WRITER_INTERNAL_RM('C'); LIST_WRITER_INTERNAL_RM('F'); }
-						else              { LIST_WRITER_INTERNAL_RM('A'); LIST_WRITER_INTERNAL_RM('F'); LIST_WRITER_INTERNAL_RM('B'); }
+						if (parenth_flag) { LW_Response('C'); LW_Response('F'); }
+						else              { LW_Response('A'); LW_Response('F'); LW_Response('B'); }
 					}
 				}
 			}
-			if (parenth_flag) LIST_WRITER_INTERNAL_RM('B');
+			if (parenth_flag) LW_Response('B');
 		}
         EndActivity(PRINTING_INVENTORY_DETAILS_ACT, o);
     }   ! end of FULLINV_BIT processing
@@ -982,7 +1003,7 @@ the iterator used at the top level) and increasing the depth by 1.
 			}
 
     if (child_count && (c_style & ALWAYS_BIT)) {
-        if (c_style & ENGLISH_BIT) { print " "; LIST_WRITER_INTERNAL_RM('Q', o); print " "; }
+        if (c_style & ENGLISH_BIT) { print " "; LW_Response('Q', o); print " "; }
         recurse_flag = true;
     }
 
@@ -990,18 +1011,18 @@ the iterator used at the top level) and increasing the depth by 1.
         if (o has supporter) {
             if (c_style & ENGLISH_BIT) {
                 if (c_style & TERSE_BIT) {
-                	LIST_WRITER_INTERNAL_RM('A', o);
-                	LIST_WRITER_INTERNAL_RM('R', o);
-                } else LIST_WRITER_INTERNAL_RM('S', o);
+                	LW_Response('A', o);
+                	LW_Response('R', o);
+                } else LW_Response('S', o);
             }
             recurse_flag = true;
         }
         if (o has container && (o has open || o has transparent)) {
             if (c_style & ENGLISH_BIT) {
                 if (c_style & TERSE_BIT) {
-                	LIST_WRITER_INTERNAL_RM('A', o);
-                	LIST_WRITER_INTERNAL_RM('T', o);
-                } else LIST_WRITER_INTERNAL_RM('U', o);
+                	LW_Response('A', o);
+                	LW_Response('T', o);
+                } else LW_Response('U', o);
             }
             recurse_flag = true;
         }
@@ -1009,7 +1030,7 @@ the iterator used at the top level) and increasing the depth by 1.
 
     if (recurse_flag && (c_style & ENGLISH_BIT)) {
     	SetLWI(child_count, -1, eldest_child);
-    	LIST_WRITER_INTERNAL_RM('V', o); print " ";
+    	LW_Response('V', o); print " ";
 	}
 
     if (c_style & NEWLINE_BIT) new_line;
@@ -1023,7 +1044,7 @@ the iterator used at the top level) and increasing the depth by 1.
         WriteListR(o, depth+1, true);
         @pull c_iterator;
         @pull listing_size; @pull listing_together; @pull lt_value;
-        if (c_style & TERSE_BIT) LIST_WRITER_INTERNAL_RM('B');
+        if (c_style & TERSE_BIT) LW_Response('B');
     }
 ];
 
@@ -1033,4 +1054,8 @@ response texts used by the list-writer.
 
 =
 [ LIST_WRITER_INTERNAL_R;
+];
+
++replacing(from BasicInformKit) [ LW_Response X o;
+	return LIST_WRITER_INTERNAL_RM(X, o);
 ];

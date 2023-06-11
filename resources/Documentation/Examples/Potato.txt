@@ -2,7 +2,7 @@
 (Disambiguating based on properties; Masochism Deli)
 Multiple potatoes, with rules to make the player drop the hot potato first and pick it up last.
 
-Here the player has several potatoes; we would like to make him more likely to drop the hot one, and more likely to pick up the cold one, all else being equal. At the same time, we want to phrase our rules so that they don't make the player try to take something he's already holding, or drop something he isn't. 
+Here the player has several potatoes; we would like to make them more likely to drop the hot one, and more likely to pick up the cold one, all else being equal. At the same time, we want to phrase our rules so that they don't make the player try to take something they're already holding, or drop something they're not.
 
 So:
 

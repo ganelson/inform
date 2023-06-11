@@ -1,14 +1,14 @@
 Inform 7 v10.2.0 has started.
 I've now read your source text, which is 46 words long.
-I've also read Basic Inform by Graham Nelson, which is 7691 words long.
-I've also read English Language by Graham Nelson, which is 2328 words long.
-I've also read Standard Rules by Graham Nelson, which is 33071 words long.
+I've also read version 1 of Basic Inform by Graham Nelson, which is 7888 words long.
+I've also read version 1 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 6 of Standard Rules by Graham Nelson, which is 35013 words long.
 Problem__ PM_VarKOVClash
 In Part Three - Variables and Rulebooks, Chapter 1 - Variables, Section 3 -
   Used when ruling on accessibility in the extension Standard Rules by Graham
   Nelson:
   >--> You wrote 'The container in question is an object that varies' (the
-    Standard Rules, line 436): but the name supplied for this new variable is a
+    Standard Rules, line 470): but the name supplied for this new variable is a
     piece of text which is not available because it has a rival meaning
     already, as a result of definitions made elsewhere. (Sometimes these are
     indirect: for instance, defining a column in a table called 'question' can
@@ -19,7 +19,7 @@ In Part Three - Variables and Rulebooks, Chapter 1 - Variables, Section 3 -
     defined which might cause this clash.
 Problem__ PM_VarKOVClash
   >--> You wrote 'The supporter in question is an object that varies' (the
-    Standard Rules, line 437): again, the name supplied for this new variable
+    Standard Rules, line 471): again, the name supplied for this new variable
     is a piece of text which is not available because it has a rival meaning
     already.
 Inform 7 has finished.

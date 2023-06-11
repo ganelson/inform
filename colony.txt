@@ -62,7 +62,8 @@ web: "WorldModelKit" at "inform7/Internal/Inter/WorldModelKit" in "docs/WorldMod
 web: "EnglishLanguageKit" at "inform7/Internal/Inter/EnglishLanguageKit" in "docs/EnglishLanguageKit"
 web: "CommandParserKit" at "inform7/Internal/Inter/CommandParserKit" in "docs/CommandParserKit"
 web: "BasicInformKit" at "inform7/Internal/Inter/BasicInformKit" in "docs/BasicInformKit"
-web: "BasicInformExtrasKit" at "inform7/Internal/Inter/BasicInformExtrasKit" in "docs/BasicInformExtrasKit"
+web: "Architecture16Kit" at "inform7/Internal/Inter/Architecture16Kit" in "docs/Architecture16Kit"
+web: "Architecture32Kit" at "inform7/Internal/Inter/Architecture32Kit" in "docs/Architecture32Kit"
 web: "DialogueKit" at "inform7/Internal/Inter/DialogueKit" in "docs/DialogueKit"
 
 breadcrumbs: "Home: //overview//"

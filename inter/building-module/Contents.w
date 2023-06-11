@@ -26,6 +26,7 @@ Chapter 2: Blueprints
 	Emitting Inter Schemas
 	Identifier Finders
 	Inform 6 Annotations
+	Inform 6 Syntax Errors
 
 Chapter 3: Masonry
 	Produce

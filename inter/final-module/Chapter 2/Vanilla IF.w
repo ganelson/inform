@@ -138,10 +138,16 @@ just in case some generators are opting to align word arrays in memory.
 	dw = sorted[i];
 	Generators::begin_array(gen, sorted[i]->identifier, NULL, NULL, BYTE_ARRAY_FORMAT, -1, NULL);
 	VanillaIF::byte_entry(gen, 0x60);
-	for (int i=0; i<9; i++) {
+	VanillaIF::byte_entry(gen, 0);
+	VanillaIF::byte_entry(gen, 0);
+	VanillaIF::byte_entry(gen, 0);
+	for (int i=0; i<gen->dictionary_resolution; i++) {
 		int c = 0;
 		if (i < Str::len(dw->text)) c = (int) Str::get_at(dw->text, i);
-		VanillaIF::byte_entry(gen, c);
+		VanillaIF::byte_entry(gen, (((unsigned int)c & 0xFF000000) >> 24));
+		VanillaIF::byte_entry(gen, ((c & 0x00FF0000) >> 16));
+		VanillaIF::byte_entry(gen, ((c & 0x0000FF00) >> 8));
+		VanillaIF::byte_entry(gen, (c & 0x000000FF));
 	}
 	int f = 0;
 	if (dw->verblike) f += 1;
@@ -153,6 +159,8 @@ just in case some generators are opting to align word arrays in memory.
 	VanillaIF::byte_entry(gen, f%256);
 	VanillaIF::byte_entry(gen, (0xFFFF - dw->verb_number)/256);
 	VanillaIF::byte_entry(gen, (0xFFFF - dw->verb_number)%256);
+	VanillaIF::byte_entry(gen, 0);
+	VanillaIF::byte_entry(gen, 0);
 	VanillaIF::byte_entry(gen, 0);
 	VanillaIF::byte_entry(gen, 0);
 	Generators::end_array(gen, BYTE_ARRAY_FORMAT, -1, NULL);

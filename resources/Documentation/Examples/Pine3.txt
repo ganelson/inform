@@ -93,7 +93,7 @@ So far we haven't much of a chance to affect matters and make them better. Suppo
 
 	A fact is a kind of thing. The family circumstances is a fact. A fact can be known or unknown. A fact can be current or past.
 
-Once known, a fact remains known permanently -- this could be useful if we wanted to make some rules about how Beauty acts when she knows different information. By contrast, a fact is only "current" if it is the last thing discussed. Since a player can mention a fact over and over, he can make it "current" again and again, and thus reactivate the flashback.
+Once known, a fact remains known permanently -- this could be useful if we wanted to make some rules about how Beauty acts when she knows different information. By contrast, a fact is only "current" if it is the last thing discussed. Since a player can mention a fact over and over, they can make it "current" again and again, and thus reactivate the flashback.
 
 	{**}Table of Flashback Material
 	topic	reply

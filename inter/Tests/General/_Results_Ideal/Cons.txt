@@ -1,3 +1,4 @@
+!% -Cu
 !% $ZCODE_LESS_DICT_DATA=1;
 !% $OMIT_UNUSED_ROUTINES=1;
 Constant Grammar__Version 2;
@@ -10,6 +11,7 @@ Constant Budger = 32738;
 Constant Danza = (2 + 34);
 Constant Sahara = (Danza + Bidger + 1);
 #Ifdef TARGET_ZCODE;
+#OrigSource "inter/final-module/Chapter 4/Final Inform 6.w" 155;
 Global max_z_object;
 #Ifdef Z__Region;
 [ OC__Cl obj cla j a n objflag;
@@ -74,6 +76,7 @@ Global max_z_object;
     rfalse;
 ];
 #Endif;
+#OrigSource;
 #Endif;
 [ DebugAttribute a anames str;
     print "<attribute ", a, ">";

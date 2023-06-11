@@ -1,0 +1,138 @@
+Capabilities Template.
+
+Miscellaneous capabilities of the 16-bit architecture.
+
+@h Summary.
+The 16-bit architecture is for very limited virtual machines, and is closely
+modelled on Infocom's Z-machine, originally developed between 1979 and 1986,
+but still sometimes used into the modern age. Its input-output model is
+almost entirely textual, and it has an idiosyncratic character set.
+
+@h Header layout.
+The Z-machine contains certain special constants and variables at fixed
+position in its "header"; the addresses of these are given below. See
+The Z-Machine Standards Document, version 1.0, for details.
+
+=
+Constant HDR_ZCODEVERSION     = $00;     ! byte
+Constant HDR_TERPFLAGS        = $01;     ! byte
+Constant HDR_GAMERELEASE      = $02;     ! word
+Constant HDR_HIGHMEMORY       = $04;     ! word
+Constant HDR_INITIALPC        = $06;     ! word
+Constant HDR_DICTIONARY       = $08;     ! word
+Constant HDR_OBJECTS          = $0A;     ! word
+Constant HDR_GLOBALS          = $0C;     ! word
+Constant HDR_STATICMEMORY     = $0E;     ! word
+Constant HDR_GAMEFLAGS        = $10;     ! word
+Constant HDR_GAMESERIAL       = $12;     ! six ASCII characters
+Constant HDR_ABBREVIATIONS    = $18;     ! word
+Constant HDR_FILELENGTH       = $1A;     ! word
+Constant HDR_CHECKSUM         = $1C;     ! word
+Constant HDR_TERPNUMBER       = $1E;     ! byte
+Constant HDR_TERPVERSION      = $1F;     ! byte
+Constant HDR_SCREENHLINES     = $20;     ! byte
+Constant HDR_SCREENWCHARS     = $21;     ! byte
+Constant HDR_SCREENWUNITS     = $22;     ! word
+Constant HDR_SCREENHUNITS     = $24;     ! word
+Constant HDR_FONTWUNITS       = $26;     ! byte
+Constant HDR_FONTHUNITS       = $27;     ! byte
+Constant HDR_ROUTINEOFFSET    = $28;     ! word
+Constant HDR_STRINGOFFSET     = $2A;     ! word
+Constant HDR_BGCOLOUR         = $2C;     ! byte
+Constant HDR_FGCOLOUR         = $2D;     ! byte
+Constant HDR_TERMCHARS        = $2E;     ! word
+Constant HDR_PIXELSTO3        = $30;     ! word
+Constant HDR_TERPSTANDARD     = $32;     ! two bytes
+Constant HDR_ALPHABET         = $34;     ! word
+Constant HDR_EXTENSION        = $36;     ! word
+Constant HDR_UNUSED           = $38;     ! two words
+Constant HDR_INFORMVERSION    = $3C;     ! four ASCII characters
+
+@h Release Number.
+Our programs will have both a release number and a serial code, which are
+in each case stored in the header memory of the virtual machine.
+
+|VM_Describe_Release()| has been removed and replaced with functions returning
+the release number, a non-negative integer, and the serial code, a byte array
+expected to be 6 digit characters wide.
+
+=
+[ VM_ReleaseNumber;
+	return (HDR_GAMERELEASE-->0) & $03ff;
+];
+
+[ VM_SerialNumber;
+	return HDR_GAMESERIAL;
+];
+
+@h RNG.
+No routine is needed for extracting a random number, since I6's built-in
+|random| function does that, but it's useful to abstract the process of
+seeding the RNG so that it produces a repeatable sequence of "random"
+numbers from here on: the necessary opcodes are different for the two VMs.
+
+=
+[ VM_Seed_RNG n;
+	if (n > 0) n = -n;
+	@random n -> n;
+];
+
+@h Memory Allocation.
+This is dynamic memory allocation: something which is never practicable in
+the Z-machine, because the whole address range is already claimed, but which
+is viable on recent revisions of Glulx.
+
+=
+[ VM_AllocateMemory amount;
+	return 0;
+];
+
+[ VM_FreeMemory address;
+];
+
+@h Memcpy.
+This is equivalent to C's memcpy function, in good ways and bad.
+
+=
+[ Memcpy to_addr from_addr size  n;
+	for (n = size/WORDSIZE: (n--) > 0: ) to_addr-->n = from_addr-->n;
+	for (n = size: ((n--) % WORDSIZE ~= 0): ) to_addr->n = from_addr->n;
+];
+
+@ And this can be used to copy exactly |words| words from one word array to
+another:
+
+=
+[ VM_CopyWords words from to  bytes;
+	bytes = words * WORDSIZE;
+	@copy_table from to bytes;
+];
+
+@h Audiovisual Resources.
+The Z-machine only barely supports figures and sound effects, and only in
+version 6 of the Z-machine, which Inform 7 no longer supports. Sound effects
+have a longer pedigree and Infocom used them on some version 5 and even some
+version 3 works: really, though, from an Inform point of view we would prefer
+that anyone needing figures and sounds use Glulx instead. (Inform 6 remains
+available for those who really need to make audiovisual effects in these
+long-gone formats.)
+
+=
+[ VM_Picture resource_ID;
+];
+
+[ VM_SoundEffect resource_ID;
+];
+
+@h Typography.
+Relatively few typographic effects are available on the Z-machine, so that
+many of the semantic markups for text which would be distinguishable on
+Glulx are indistinguishable here.
+
+=
+[ VM_Style sty;
+	switch (sty) {
+		NORMAL_VMSTY, NOTE_VMSTY: style roman;
+		HEADER_VMSTY, SUBHEADER_VMSTY, ALERT_VMSTY: style bold;
+	}
+];

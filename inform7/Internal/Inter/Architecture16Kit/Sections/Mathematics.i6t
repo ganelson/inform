@@ -1,0 +1,40 @@
+Mathematics Template.
+
+Mathematical functions.
+
+@h Unsigned integer comparison.
+Comparison of integers is normally signed, that is, treating the word as
+a twos-complement signed number, so that |$FFFF| is less than |0|, for
+instance. If we want to construe words as being unsigned integers, or as
+addresses, we need to compare them with the following routine, which returns
+1 if $x>y$, 0 if $x=y$ and $-1$ if $x<y$.
+
+=
+[ UnsignedCompare x y u v;
+    if (x == y) return 0;
+    if (x < 0 && y >= 0) return 1;
+    if (x >= 0 && y < 0) return -1;
+    u = x&~WORD_HIGHBIT; v= y&~WORD_HIGHBIT;
+    if (u > v) return 1;
+    return -1;
+];
+
+@h Integer roots.
+We are unable to provide VM support for taking square or cube roots rapidly:
+
+=
+[ VM_SquareRoot num;
+    return 0;
+];
+
+[ VM_CubeRoot num;
+	return 0;
+];
+
+@h Real number support.
+These need to exist, but are likely never to be used.
+
+=
+[ REAL_NUMBER_TY_Say real; print real; ];
+
+[ REAL_NUMBER_TY_Compare r1 r2; return UnsignedCompare(r1, r2); ];

@@ -4,7 +4,7 @@ Adapting the going action so that something special can happen when going from a
 
 Text in this example is drawn from Will Crowther's original 1976 FORTRAN implementation of ADVENTURE, the founding work of the genre, whose source code was rediscovered by Dennis G. Jerz in 2007. Note the capitals: the program ran on an early computer without lower case lettering. They look a little mimsy now, but picture them glowing green on an old-style cathode ray tube monitor in a darkened room late at night.
 
-The problem alluded to is that the player is forbidden to walk between two dark rooms, so that he must always have light to see by from at least one end of any movement. Writing source text to achieve this is tricky to get right in every case, because the determination of light is hard to do. Here we interleave the necessary rules into the existing "going" action, using a new action variable to record the number of ends which are dark as experienced by the player, which might be 0, 1 or 2:
+The problem alluded to is that the player is forbidden to walk between two dark rooms, so that they must always have light to see by from at least one end of any movement. Writing source text to achieve this is tricky to get right in every case, because the determination of light is hard to do. Here we interleave the necessary rules into the existing "going" action, using a new action variable to record the number of ends which are dark as experienced by the player, which might be 0, 1 or 2:
 
 	{*}"THE SECOND OLDEST PROBLEM"
 	

@@ -65,15 +65,15 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">BasicInformKit</a></li><li><b>Utilities Template</b></li></ul></div>
 <p class="purpose">Miscellaneous utility routines for some fundamental I6 needs.</p>
 
-<ul class="toc"><li><a href="S-utl.html#SP1">&#167;1. Miscellany</a></li><li><a href="S-utl.html#SP2">&#167;2. Final Code Dependencies</a></li><li><a href="S-utl.html#SP3">&#167;3. Firebreak</a></li><li><a href="S-utl.html#SP4">&#167;4. Print Decimal Number</a></li><li><a href="S-utl.html#SP5">&#167;5. Print Text</a></li><li><a href="S-utl.html#SP6">&#167;6. Print Or Run</a></li><li><a href="S-utl.html#SP7">&#167;7. Saying Phrases</a></li><li><a href="S-utl.html#SP8">&#167;8. Kinds</a></li><li><a href="S-utl.html#SP9">&#167;9. GenerateRandomNumber</a></li><li><a href="S-utl.html#SP10">&#167;10. PrintSpaces</a></li><li><a href="S-utl.html#SP11">&#167;11. SwapWorkflags</a></li><li><a href="S-utl.html#SP12">&#167;12. TestUseOption</a></li><li><a href="S-utl.html#SP13">&#167;13. ZRegion</a></li><li><a href="S-utl.html#SP14">&#167;14. Memcpy</a></li><li><a href="S-utl.html#SP15">&#167;15. Arrcpy</a></li><li><a href="S-utl.html#SP16">&#167;16. Verbs as Values</a></li><li><a href="S-utl.html#SP17">&#167;17. Seed Random Number Generator Rule</a></li><li><a href="S-utl.html#SP18">&#167;18. Extracting Verb Numbers</a></li><li><a href="S-utl.html#SP19">&#167;19. Say One Of</a></li><li><a href="S-utl.html#SP20">&#167;20. Rounding</a></li><li><a href="S-utl.html#SP21">&#167;21. Doing nothing</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-utl.html#SP1">&#167;1. Miscellany</a></li><li><a href="S-utl.html#SP2">&#167;2. Final Code Dependencies</a></li><li><a href="S-utl.html#SP3">&#167;3. Firebreak</a></li><li><a href="S-utl.html#SP4">&#167;4. Print Decimal Number</a></li><li><a href="S-utl.html#SP5">&#167;5. Print Text</a></li><li><a href="S-utl.html#SP6">&#167;6. Print Or Run</a></li><li><a href="S-utl.html#SP7">&#167;7. Saying Phrases</a></li><li><a href="S-utl.html#SP8">&#167;8. Kinds</a></li><li><a href="S-utl.html#SP9">&#167;9. GenerateRandomNumber</a></li><li><a href="S-utl.html#SP10">&#167;10. PrintSpaces</a></li><li><a href="S-utl.html#SP11">&#167;11. SwapWorkflags</a></li><li><a href="S-utl.html#SP12">&#167;12. TestUseOption</a></li><li><a href="S-utl.html#SP13">&#167;13. ZRegion</a></li><li><a href="S-utl.html#SP14">&#167;14. Arrcpy</a></li><li><a href="S-utl.html#SP15">&#167;15. Verbs as Values</a></li><li><a href="S-utl.html#SP16">&#167;16. Seed Random Number Generator Rule</a></li><li><a href="S-utl.html#SP17">&#167;17. Regarding</a></li><li><a href="S-utl.html#SP18">&#167;18. Say One Of</a></li><li><a href="S-utl.html#SP19">&#167;19. Rounding</a></li><li><a href="S-utl.html#SP20">&#167;20. Doing nothing</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Miscellany. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_ZCODE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">Iftrue</span><span class="plain-syntax"> </span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">BLOCKV_STACK_SIZE</span><span class="plain-syntax"> = </span><span class="constant-syntax">224</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">ifnot</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">BLOCKV_STACK_SIZE</span><span class="plain-syntax"> = </span><span class="identifier-syntax">DynamicMemoryAllocation</span><span class="plain-syntax">/4;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">BLOCKV_STACK_SIZE</span><span class="plain-syntax"> = </span><span class="identifier-syntax">BasicInformKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">STACK_FRAME_CAPACITY_CFGV</span><span class="plain-syntax"> / </span><span class="constant-syntax">4</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">blockv_stack</span><span class="plain-syntax"> --&gt; </span><span class="identifier-syntax">BLOCKV_STACK_SIZE</span><span class="plain-syntax">;</span>
@@ -302,20 +302,7 @@ following shows. (The name is from "region of the Z-machine".)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Memcpy. </b>This is equivalent to C's memcpy function, in good ways and bad.
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">Memcpy</span><span class="plain-syntax"> </span><span class="identifier-syntax">to_addr</span><span class="plain-syntax"> </span><span class="identifier-syntax">from_addr</span><span class="plain-syntax"> </span><span class="identifier-syntax">size</span><span class="plain-syntax">  </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_ZCODE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">size</span><span class="plain-syntax">/</span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">: (</span><span class="identifier-syntax">n</span><span class="plain-syntax">--) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">: ) </span><span class="identifier-syntax">to_addr</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">from_addr</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">size</span><span class="plain-syntax">: ((</span><span class="identifier-syntax">n</span><span class="plain-syntax">--) % </span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax"> ~= </span><span class="constant-syntax">0</span><span class="plain-syntax">): ) </span><span class="identifier-syntax">to_addr</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">from_addr</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">Ifnot</span><span class="plain-syntax">; </span><span class="comment-syntax">TARGET_GLULX</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">mcopy</span><span class="plain-syntax"> </span><span class="identifier-syntax">size</span><span class="plain-syntax"> </span><span class="identifier-syntax">from_addr</span><span class="plain-syntax"> </span><span class="identifier-syntax">to_addr</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">; </span><span class="comment-syntax">TARGET_</span>
-<span class="plain-syntax">];</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Arrcpy. </b>This is not quite so efficient, but not terrible.
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Arrcpy. </b>This is not quite so efficient as Memcpy, but not terrible.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -331,7 +318,7 @@ following shows. (The name is from "region of the Z-machine".)
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="string-syntax">"*** Arrcpy doesn't support this ***"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Verbs as Values. </b></p>
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Verbs as Values. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">PrintVerbAsValue</span><span class="plain-syntax"> </span><span class="identifier-syntax">vb</span><span class="plain-syntax">;</span>
@@ -349,7 +336,7 @@ following shows. (The name is from "region of the Z-machine".)
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Seed Random Number Generator Rule. </b>Unless a seed is provided by Inform, and it won't be for released story files,
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Seed Random Number Generator Rule. </b>Unless a seed is provided by Inform, and it won't be for released story files,
 the VM's interpreter is supposed to start up with a good seed in its random
 number generator: something usually derived from, say, the milliseconds part
 of the current time of day, which is unlikely to repeat or show any pattern
@@ -370,34 +357,10 @@ of course, in a state of sin" (von Neumann).
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Extracting Verb Numbers. </b>A long tale of woe lies behind the following. Infocom games stored verb numbers
-in a single byte in dictionary entries, but they did so counting downwards, so
-that verb number 0 was stored as 255, 1 as 254, and so on. Inform followed
-suit so that debugging of Inform 1 could be aided by using the then-available
-tools for dumping dictionaries from Infocom story files; by using the Infocom
-format for dictionary tables, Inform's life was easier.
-</p>
-
-<p class="commentary">But there was an implicit restriction there of 255 distinct verbs (not 256
-since not all words were verbs). When Glulx raised almost all of the Z-machine
-limits, it made space for 65535 verbs instead of 255, but it appears that
-nobody remembered to implement this in I6-for-Glulx and the Glulx form of
-the I6 library. This was only put right in March 2009, and the following
-routine was added to concentrate lookups of this field in one place.
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Regarding. </b>These are used with adaptive text.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">DictionaryWordToVerbNum</span><span class="plain-syntax"> </span><span class="identifier-syntax">dword</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbnum</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_ZCODE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">verbnum</span><span class="plain-syntax"> = </span><span class="constant-syntax">$ff</span><span class="plain-syntax">-(</span><span class="identifier-syntax">dword</span><span class="plain-syntax">-&gt;#</span><span class="identifier-syntax">dict_par2</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">Ifnot</span><span class="plain-syntax">; </span><span class="comment-syntax">GLULX</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">dword</span><span class="plain-syntax"> = </span><span class="identifier-syntax">dword</span><span class="plain-syntax"> + #</span><span class="identifier-syntax">dict_par2</span><span class="plain-syntax"> - </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">aloads</span><span class="plain-syntax"> </span><span class="identifier-syntax">dword</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbnum</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">verbnum</span><span class="plain-syntax"> = </span><span class="constant-syntax">$ffff</span><span class="plain-syntax">-</span><span class="identifier-syntax">verbnum</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbnum</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">];</span>
-
 <span class="plain-syntax">[ </span><span class="identifier-syntax">RegardingSingleObject</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">prior_named_list</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">prior_named_list_gender</span><span class="plain-syntax"> = -1;</span>
@@ -410,7 +373,7 @@ routine was added to concentrate lookups of this field in one place.
 <span class="plain-syntax">    </span><span class="identifier-syntax">prior_named_noun</span><span class="plain-syntax"> = </span><span class="reserved-syntax">nothing</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Say One Of. </b>These routines are described in the Extensions chapter of the Inform
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Say One Of. </b>These routines are described in the Extensions chapter of the Inform
 documentation.
 </p>
 
@@ -456,7 +419,7 @@ documentation.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">v</span><span class="plain-syntax"> + </span><span class="identifier-syntax">ct</span><span class="plain-syntax">*</span><span class="identifier-syntax">base</span><span class="plain-syntax"> + </span><span class="identifier-syntax">ssd</span><span class="plain-syntax">*</span><span class="identifier-syntax">base</span><span class="plain-syntax">*</span><span class="identifier-syntax">base</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Rounding. </b>The following rounds a numerical value <span class="extract"><span class="extract-syntax">t1</span></span> to the nearest unit of <span class="extract"><span class="extract-syntax">t2</span></span>;
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Rounding. </b>The following rounds a numerical value <span class="extract"><span class="extract-syntax">t1</span></span> to the nearest unit of <span class="extract"><span class="extract-syntax">t2</span></span>;
 for instance, if <span class="extract"><span class="extract-syntax">t2</span></span> is 5 then it rounds to the nearest 5. The name is an
 anachronism, as it's used for all kinds of value.
 </p>
@@ -467,7 +430,7 @@ anachronism, as it's used for all kinds of value.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -((-</span><span class="identifier-syntax">t1</span><span class="plain-syntax">+</span><span class="identifier-syntax">t2</span><span class="plain-syntax">/2)/</span><span class="identifier-syntax">t2</span><span class="plain-syntax">)*</span><span class="identifier-syntax">t2</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Doing nothing. </b>Surprisingly, this function has a use.
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Doing nothing. </b>Surprisingly, this function has a use.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -476,7 +439,7 @@ anachronism, as it's used for all kinds of value.
 <span class="plain-syntax">];</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="S-dfn.html">&#10094;</a></li><li class="progresssection"><a href="S-dfn.html">dfn</a></li><li class="progresscurrent">utl</li><li class="progresssection"><a href="S-gll.html">gll</a></li><li class="progresssection"><a href="S-zmc.html">zmc</a></li><li class="progresssection"><a href="S-prg.html">prg</a></li><li class="progresssection"><a href="S-mth.html">mth</a></li><li class="progresssection"><a href="S-fl.html">fl</a></li><li class="progresssection"><a href="S-srt.html">srt</a></li><li class="progresssection"><a href="S-tbl.html">tbl</a></li><li class="progresssection"><a href="S-mst.html">mst</a></li><li class="progresssection"><a href="S-rlb.html">rlb</a></li><li class="progresssection"><a href="S-flx.html">flx</a></li><li class="progresssection"><a href="S-blc.html">blc</a></li><li class="progresssection"><a href="S-txt.html">txt</a></li><li class="progresssection"><a href="S-unc.html">unc</a></li><li class="progresssection"><a href="S-chr.html">chr</a></li><li class="progresssection"><a href="S-rgx.html">rgx</a></li><li class="progresssection"><a href="S-lst.html">lst</a></li><li class="progresssection"><a href="S-cmb.html">cmb</a></li><li class="progresssection"><a href="S-rlt.html">rlt</a></li><li class="progresssection"><a href="S-rlt2.html">rlt2</a></li><li class="progresssection"><a href="S-rtp.html">rtp</a></li><li class="progressnext"><a href="S-gll.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="S-dfn.html">&#10094;</a></li><li class="progresssection"><a href="S-dfn.html">dfn</a></li><li class="progresscurrent">utl</li><li class="progresssection"><a href="S-prg.html">prg</a></li><li class="progresssection"><a href="S-mth.html">mth</a></li><li class="progresssection"><a href="S-srt.html">srt</a></li><li class="progresssection"><a href="S-tbl.html">tbl</a></li><li class="progresssection"><a href="S-mst.html">mst</a></li><li class="progresssection"><a href="S-rlb.html">rlb</a></li><li class="progresssection"><a href="S-act.html">act</a></li><li class="progresssection"><a href="S-prn.html">prn</a></li><li class="progresssection"><a href="S-flx.html">flx</a></li><li class="progresssection"><a href="S-blc.html">blc</a></li><li class="progresssection"><a href="S-txt.html">txt</a></li><li class="progresssection"><a href="S-chr.html">chr</a></li><li class="progresssection"><a href="S-rgx.html">rgx</a></li><li class="progresssection"><a href="S-lst.html">lst</a></li><li class="progresssection"><a href="S-cmb.html">cmb</a></li><li class="progresssection"><a href="S-rlt.html">rlt</a></li><li class="progresssection"><a href="S-rlt2.html">rlt2</a></li><li class="progresssection"><a href="S-rtp.html">rtp</a></li><li class="progressnext"><a href="S-prg.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

@@ -258,6 +258,7 @@ void LargeScale::make_architectural_definitions(inter_tree *I,
 	if (current_architecture == NULL) internal_error("no architecture set");
 	inter_type type = InterTypes::unchecked();
 	if (Architectures::is_16_bit(current_architecture)) {
+		LargeScale::arch_constant_dec(I,    I"CHARSIZE", type,                      1);
 		LargeScale::arch_constant_dec(I,    I"WORDSIZE", type,                      2);
 		LargeScale::arch_constant_hex(I,    I"NULL", type,                     0xffff);
 		LargeScale::arch_constant_hex(I,    I"WORD_HIGHBIT", type,             0x8000);
@@ -267,6 +268,7 @@ void LargeScale::make_architectural_definitions(inter_tree *I,
 		LargeScale::arch_constant_signed(I, I"MIN_NEGATIVE_NUMBER", type,      -32768);
 		LargeScale::arch_constant_dec(I,    I"TARGET_ZCODE", type,                  1);
 	} else {
+		LargeScale::arch_constant_dec(I,    I"CHARSIZE", type,                      4);
 		LargeScale::arch_constant_dec(I,    I"WORDSIZE", type,                      4);
 		LargeScale::arch_constant_hex(I,    I"NULL", type,                 0xffffffff);
 		LargeScale::arch_constant_hex(I,    I"WORD_HIGHBIT", type,         0x80000000);

@@ -1,10 +1,10 @@
    Bar
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Bar
-  You can see a counter (on which is a glass jar) and an obvious item here.
+  You can see a counter (on which is a glass jar (empty)) and an obvious item here.
   
 > >   Bar
   (Testing.)
@@ -17,7 +17,7 @@
   
   >[3] look
   Bar
-  You can see a counter (on which is a glass jar) and an obvious item here.
+  You can see a counter (on which is a glass jar (empty)) and an obvious item here.
   
   >[4] take all
   obvious item: Taken.

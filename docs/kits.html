@@ -61,14 +61,18 @@ fiction being made with the Inform apps, the kits will be:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">BasicInformKit + EnglishLanguageKit + WorldModelKit + CommandParserKit</span>
+<span class="plain-syntax">Architecture32Kit + BasicInformKit + EnglishLanguageKit + WorldModelKit + CommandParserKit</span>
 </pre>
+<p class="commentary">or perhaps Architecture16Kit instead of Architecture32Kit, depending on whether
+the project is being compiled to a 16-bit or a 32-bit platform.
+</p>
+
 <p class="commentary">However, if the "Basic Inform" checkbox is ticked on the Settings panel for
 the project, the kits will instead be:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">BasicInformKit + EnglishLanguageKit + BasicInformExtrasKit</span>
+<span class="plain-syntax">Architecture32Kit + BasicInformKit + EnglishLanguageKit</span>
 </pre>
 <p class="commentary">And these are also the defaults when Inform projects are compiled from the command
 line, with the optional <span class="extract"><span class="extract-syntax">-basic</span></span> switch forcing us into the second case.
@@ -87,19 +91,26 @@ to include. For documentation on how, see <a href="inbuild/M-agtk.html" class="i
           with Inform.</p>
         </div>
         <div class="w3-quarter">
-          <a href="BasicInformExtrasKit/index.html"><img src="docs-assets/kit.jpg" alt="BasicInformExtrasKit" style="width:100%"></a>
-          <h3><a href="BasicInformExtrasKit/index.html">BasicInformExtrasKit</a></h3>
-          <p>A kit of Inter code providing runtime support for all programs not using
-          WorldModelKit.</p>
+          <a href="Architecture16Kit/index.html"><img src="docs-assets/kit.jpg" alt="Architecture16Kit" style="width:100%"></a>
+          <h3><a href="Architecture16Kit/index.html">Architecture16Kit</a></h3>
+          <p>A kit of Inter code providing runtime support for projects being compiled
+          to 16-bit platforms, such as the Z-machine virtual machine via Inform 6.</p>
         </div>
+        <div class="w3-quarter">
+          <a href="Architecture32Kit/index.html"><img src="docs-assets/kit.jpg" alt="Architecture32Kit" style="width:100%"></a>
+          <h3><a href="Architecture32Kit/index.html">Architecture32Kit</a></h3>
+          <p>A kit of Inter code providing runtime support for projects being compiled
+          to 32-bit platforms, such as the Glulx virtual machine via Inform 6, or to
+          executables via C.</p>
+        </div>
+      </div>
+      <div class="w3-row-padding w3-padding-16 w3-center">
         <div class="w3-quarter">
           <a href="EnglishLanguageKit/index.html"><img src="docs-assets/kit.jpg" alt="EnglishLanguageKit" style="width:100%"></a>
           <h3><a href="EnglishLanguageKit/index.html">EnglishLanguageKit</a></h3>
           <p>A kit of Inter code providing runtime support for programs compiled
           with English as their natural language.</p>
         </div>
-      </div>
-      <div class="w3-row-padding w3-padding-16 w3-center">
         <div class="w3-quarter">
           <a href="WorldModelKit/index.html"><img src="docs-assets/ifkit.jpg" alt="WorldModelKit" style="width:100%"></a>
           <h3><a href="WorldModelKit/index.html">WorldModelKit</a></h3>
@@ -112,6 +123,8 @@ to include. For documentation on how, see <a href="inbuild/M-agtk.html" class="i
           <p>A kit of Inter code providing runtime support for interactive fiction
           projects with a command parser interface.</p>
         </div>
+      </div>
+    <div class="w3-row-padding w3-padding-16 w3-center">
         <div class="w3-quarter">
           <a href="DialogueKit/index.html"><img src="docs-assets/ifkit.jpg" alt="DialogueKit" style="width:100%"></a>
           <h3><a href="DialogueKit/index.html">DialogueKit</a></h3>

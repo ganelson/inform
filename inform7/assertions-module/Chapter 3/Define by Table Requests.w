@@ -104,13 +104,14 @@ void DefineByTable::kind_defined_by_table(parse_node *V) {
 
 =
 <defined-by-sentence-subject> ::=
-	kind/kinds of <s-type-expression> |  ==> { TRUE, RP[1] }
-	<s-type-expression> |                ==> { TRUE, RP[1] }
-	...                                  ==> @<Issue PM_TableDefiningTheImpossible problem@>
+	<article> kind/kinds of {<s-type-expression>} | ==> { TRUE, RP[2] }
+	kind/kinds of {<s-type-expression>} |           ==> { TRUE, RP[1] }
+	<s-type-expression> |                           ==> { FALSE, RP[1] }
+	...                                             ==> @<Issue PM_TableDefiningTheImpossible problem@>
 
 @<Issue PM_TableDefiningTheImpossible problem@> =
 	@<Actually issue PM_TableDefiningTheImpossible problem@>;
-	==> { FALSE, - };
+	==> { NOT_APPLICABLE, - };
 
 @ (We're going to need this problem message twice.)
 
@@ -134,8 +135,9 @@ void DefineByTable::kind_defined_by_table(parse_node *V) {
 	@<Create values for this kind as enumerated by names in the first column@>;
 
 @<Determine the kind of what to make@> =
-	<defined-by-sentence-subject>(SPW); if (<<r>> == FALSE) return;
+	<defined-by-sentence-subject>(SPW); if (<<r>> == NOT_APPLICABLE) return;
 	parse_node *what = <<rp>>;
+	if (<<r>>) @<Rewrite in a KIND subtree@>;
 	int defining_objects = FALSE;
 	if (Specifications::is_kind_like(what)) {
 		K = Specifications::to_kind(what);
@@ -152,6 +154,23 @@ void DefineByTable::kind_defined_by_table(parse_node *V) {
 		return;
 	}
 	if (t) Tables::use_to_define(t, defining_objects, V->next);
+
+@ This is all a little clumsy, but it rewrites, say, "kinds of snake" in a
+little subtree under a |KIND_NT| node with "snake" as |UNPARSED_NOUN_NT|, rather
+than leaving "kinds of snake" as a single |UNPARSED_NOUN_NT| node, which would
+cause a new object instance to be created with that name.
+
+@<Rewrite in a KIND subtree@> =
+	parse_node *old_node = V->next;
+	parse_node *to_node = V->next->next;
+	parse_node *new_node = Diagrams::new_KIND(SPW, old_node);
+	wording KW = GET_RW(<defined-by-sentence-subject>, 1);
+	Node::set_text(old_node, KW);
+	old_node->next = NULL;
+	V->next = new_node;
+	V->next->next = to_node;
+	what = NULL;
+	if (<k-kind>(KW)) what = Descriptions::from_kind(<<rp>>, FALSE);
 
 @<Issue PM_TableDefiningObject problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(),

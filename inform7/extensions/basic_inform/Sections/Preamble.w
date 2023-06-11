@@ -110,7 +110,7 @@ The following has no effect, and exists only to be a default non-value for
 "use option" variables, should anyone ever create them:
 
 =
-Use ineffectual translates as (- ! Use ineffectual does nothing. -).
+Use ineffectual translates as a compiler feature.
 
 @ We can now make definitions of miscellaneous options: none are used by default,
 but all translate into I6 constant definitions if used. (These are constants
@@ -118,19 +118,30 @@ whose values are used in the I6 library or in the template layer, which is
 how they have effect.)
 
 =
-Use American dialect translates as (- Constant DIALECT_US; -).
-Use the serial comma translates as (- Constant SERIAL_COMMA; -).
-Use memory economy translates as (- Constant MEMORY_ECONOMY; -).
-Use engineering notation translates as (- Constant USE_E_NOTATION = 0; -).
-Use unabbreviated object names translates as (- Constant UNABBREVIATED_OBJECT_NAMES = 0; -).
-Use predictable randomisation translates as (- Constant FIX_RNG; -).
-Use fast route-finding translates as (- Constant FAST_ROUTE_FINDING; -).
-Use slow route-finding translates as (- Constant SLOW_ROUTE_FINDING; -).
-Use numbered rules translates as (- Constant NUMBERED_RULES; -).
-Use telemetry recordings translates as (- Constant TELEMETRY_ON; -).
-Use no deprecated features translates as (- Constant NO_DEPRECATED_FEATURES; -).
-Use gn testing version translates as (- Constant GN_TESTING_VERSION; -).
-Use authorial modesty translates as (- Constant AUTHORIAL_MODESTY; -).
+Use American dialect translates as the configuration flag AMERICAN_DIALECT
+	in BasicInformKit.
+Use the serial comma translates as the configuration flag SERIAL_COMMA
+	in BasicInformKit.
+Use memory economy translates as the configuration flag MEMORY_ECONOMY
+	in BasicInformKit.
+Use engineering notation translates as a compiler feature.
+Use printed engineering notation translates as the configuration flag
+	PRINT_ENGINEER_EXPS in BasicInformKit.
+Use predictable randomisation translates as the configuration flag FIX_RNG
+	in BasicInformKit.
+Use numbered rules translates as the configuration flag NUMBERED_RULES
+	in BasicInformKit.
+Use telemetry recordings translates as a compiler feature.
+Use no deprecated features translates as the configuration flag NO_DEPRECATED
+	in BasicInformKit.
+Use authorial modesty translates as the configuration flag AUTHORIAL_MODESTY
+	in BasicInformKit.
+Use command line echoing translates as the configuration flag ECHO_COMMANDS
+	in BasicInformKit.
+Use dictionary resolution of at least 6 translates as the configuration value
+	DICT_RESOLUTION in BasicInformKit.
+Use no automatic plural synonyms translates as the configuration flag
+	NO_AUTO_PLURAL_NAMES in BasicInformKit.
 
 @ These, on the other hand, are settings used by the dynamic memory management
 code, which runs in I6 as part of the template layer. Each setting translates
@@ -145,12 +156,11 @@ tight array space of the Z-machine it's quite a large commitment, and we
 want to avoid it whenever possible.)
 
 =
-Use dynamic memory allocation of at least 8192 translates as
-	(- Constant DynamicMemoryAllocation = {N}; -).
-Use maximum text length of at least 1024 translates as
-	(- Constant TEXT_TY_BufferSize = {N}+3; -).
-Use index figure thumbnails of at least 50 translates as
-	(- Constant MAX_FIGURE_THUMBNAILS_IN_INDEX = {N}; -).
+Use dynamic memory allocation of at least 8192 translates as the configuration
+	value STACK_FRAME_CAPACITY in BasicInformKit.
+Use maximum text length of at least 1024 translates as the configuration
+	value TEXT_BUFFER_SIZE in BasicInformKit.
+Use index figure thumbnails of at least 50 translates as a compiler feature.
 
 Use dynamic memory allocation of at least 8192.
 
@@ -165,19 +175,31 @@ the highest |MAX_VERBS| setting we can safely make here.
 The |MAX_LOCAL_VARIABLES| setting is suppressed by I7 if we're compiling
 to the Z-machine, because it's only legal in I6 when compiling to Glulx.
 
+Most of these settings are unnecessary (and do nothing) if the version of
+the I6 compiler eventually used to compile this code is 6.36 or better: in
+modern times, the I6 compiler flexibly manages memory so that it doesn't have
+these maxima. If that's the case, these lines are simply ignored. For the 
+moment, they remain here just in case somebody is still using an early I6
+compiler for some reason.
+
 =
-Use ALLOC_CHUNK_SIZE of 32000.
-Use MAX_ARRAYS of 10000.
-Use MAX_CLASSES of 200.
-Use MAX_VERBS of 255.
-Use MAX_LABELS of 10000.
-Use MAX_ZCODE_SIZE of 1000000.
-Use MAX_STATIC_DATA of 500000.
-Use MAX_NUM_STATIC_STRINGS of 500000.
-Use MAX_PROP_TABLE_SIZE of 200000.
-Use MAX_INDIV_PROP_TABLE_SIZE of 20000.
-Use MAX_STACK_SIZE of 65536.
-Use MAX_SYMBOLS of 20000.
-Use MAX_EXPRESSION_NODES of 256.
-Use MAX_LABELS of 200000.
-Use MAX_LOCAL_VARIABLES of 256.
+Use Inform 6 compiler option "-s".
+Use Inform 6 compiler option "$ALLOC_CHUNK_SIZE=32000".
+Use Inform 6 compiler option "$MAX_ARRAYS=10000".
+Use Inform 6 compiler option "$MAX_CLASSES=200".
+Use Inform 6 compiler option "$MAX_VERBS=255".
+Use Inform 6 compiler option "$MAX_LABELS=10000".
+Use Inform 6 compiler option "$MAX_ZCODE_SIZE=1000000".
+Use Inform 6 compiler option "$MAX_STATIC_DATA=500000".
+Use Inform 6 compiler option "$MAX_NUM_STATIC_STRINGS=500000".
+Use Inform 6 compiler option "$MAX_PROP_TABLE_SIZE=200000".
+Use Inform 6 compiler option "$MAX_INDIV_PROP_TABLE_SIZE=20000".
+Use Inform 6 compiler option "$MAX_STACK_SIZE=65536".
+Use Inform 6 compiler option "$MAX_SYMBOLS=20000".
+Use Inform 6 compiler option "$MAX_EXPRESSION_NODES=256".
+Use Inform 6 compiler option "$MAX_LABELS=200000".
+Use Inform 6 compiler option "$MAX_LOCAL_VARIABLES=256".
+
+Chapter 1 - Glulx Preamble (for Glulx only)
+
+Use Inform 6 compiler option "$DICT_CHAR_SIZE=4".

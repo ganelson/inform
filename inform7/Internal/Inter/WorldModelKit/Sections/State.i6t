@@ -1,0 +1,117 @@
+State Template.
+
+To implement out of world actions relating to the program state.
+
+@h Quit The Game Rule.
+
+=
+[ QUIT_THE_GAME_R;
+	if (actor ~= player) rfalse;
+	QUIT_THE_GAME_RM('A');
+	if (YesOrNo()~=0) quit;
+];
+
+@h Restart The Game Rule.
+
+=
+[ RESTART_THE_GAME_R;
+	if (actor ~= player) rfalse;
+	RESTART_THE_GAME_RM('A');
+	if (YesOrNo()~=0) {
+		VM_Restart();
+		RESTART_THE_GAME_RM('B'); new_line;
+	}
+];
+
+@h Restore The Game Rule.
+
+=
+[ RESTORE_THE_GAME_R;
+	if (actor ~= player) rfalse;
+	if (VM_Restore()) {
+		RESTORE_THE_GAME_RM('B'); new_line;
+	} else {
+		RESTORE_THE_GAME_RM('A'); new_line;
+	}
+];
+
+@h Save The Game Rule.
+
+=
+[ SAVE_THE_GAME_R flag;
+	if (actor ~= player) rfalse;
+	switch (VM_Save()) {
+		0: SAVE_THE_GAME_RM('A'); new_line;
+		1: SAVE_THE_GAME_RM('B'); new_line;
+		2: RESTORE_THE_GAME_RM('B'); new_line;
+	}
+];
+
+@h Perform Undo.
+
+=
+[ Perform_Undo;
+	if (CommandParserKit`UNDO_PREVENTION_CFGF) {
+		IMMEDIATELY_UNDO_RM('A'); new_line; return;
+	}
+	if (IterationsOfTurnSequence == 0) { IMMEDIATELY_UNDO_RM('B'); new_line; return; }
+	if (undo_flag == 0) { IMMEDIATELY_UNDO_RM('C'); new_line; return; }
+	if (undo_flag == 1) { IMMEDIATELY_UNDO_RM('D'); new_line; return; }
+	if (VM_Undo() == 0) { IMMEDIATELY_UNDO_RM('F'); new_line; }
+];
+
+@h Verify The Story File Rule.
+This is a fossil now, really, but in the days of Infocom, the 110K story
+file occupying an entire disc was a huge data set: floppy discs were by no
+means a reliable medium, and cheap hardware often used hit-and-miss
+components, as on the notorious Commodore 64 disc controller. If somebody
+experienced an apparent bug in play, it could easily be that he had a
+corrupt disc or was unable to read data of that density. So the VERIFY
+command, which took up to ten minutes on some early computers, would chug
+through the entire story file and compute a checksum, compare it against a
+known result in the header, and determine that the story file could or
+could not properly be read.
+
+=
+[ VERIFY_THE_STORY_FILE_R;
+	if (actor ~= player) rfalse;
+	if (VM_Verify()) { VERIFY_THE_STORY_FILE_RM('A'); new_line; }
+	else { VERIFY_THE_STORY_FILE_RM('B'); new_line; }
+];
+
+@h Switch Transcript On Rule.
+
+=
+[ SWITCH_TRANSCRIPT_ON_R;
+	if (actor ~= player) rfalse;
+	if (VM_TranscriptIsOn()) { SWITCH_TRANSCRIPT_ON_RM('A'); new_line; rtrue; }
+	if (VM_TranscriptOn() == false) { SWITCH_TRANSCRIPT_ON_RM('C'); new_line; rtrue; }
+	SWITCH_TRANSCRIPT_ON_RM('B'); new_line; VersionSub();
+];
+
+@h Switch Transcript Off Rule.
+
+=
+[ SWITCH_TRANSCRIPT_OFF_R;
+	if (actor ~= player) rfalse;
+	if (VM_TranscriptIsOn() == false) { SWITCH_TRANSCRIPT_OFF_RM('A'); new_line; rtrue; }
+	SWITCH_TRANSCRIPT_OFF_RM('B'); new_line;
+	if (VM_TranscriptOff() == false) { SWITCH_TRANSCRIPT_ON_RM('C'); new_line; rtrue; }
+];
+
+@h Announce Story File Version Rule.
+
+=
+[ ANNOUNCE_STORY_FILE_VERSION_R ix;
+	if (actor ~= player) rfalse;
+	Banner();
+	print "Inform 7 v", (PrintI6Text) I7_FULL_VERSION_NUMBER, "^";
+	if (UUID_ARRAY->0 >= 6) {
+		print "Identification number: ";
+		for (ix=6: ix <= UUID_ARRAY->0: ix++) print (char) UUID_ARRAY->ix;
+		print "^";
+	}
+	VM_ReportOnInterpreter();
+	ShowExtensionVersions();
+	say__p = 1;
+];

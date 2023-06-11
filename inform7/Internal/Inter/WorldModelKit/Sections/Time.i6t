@@ -49,7 +49,7 @@ exercise in the DM4.
 
 =
 [ TIME_TOKEN first_word second_word at length flag
-	illegal_char offhour hr mn i original_wn;
+	illegal_char offhour hr mn i original_wn ch;
 	original_wn = wn;
 	i = TIME_TOKEN_INNER();
 	if (i ~= GPR_FAIL) return i;
@@ -63,7 +63,12 @@ exercise in the DM4.
 	! Next try the format 12:02
 	at = WordAddress(wn-1); length = WordLength(wn-1);
 	for (i=0: i<length: i++) {
-		switch (at->i) {
+		#iftrue (CHARSIZE == 1);
+		ch = at->i;
+		#Ifnot;
+		ch = at-->i;
+		#Endif; ! CHARSIZE
+		switch (ch) {
 			':': if (flag == false && i>0 && i<length-1) flag = true;
 			else illegal_char = true;
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9': ;
@@ -72,9 +77,17 @@ exercise in the DM4.
 	}
 	if (length < 3 || length > 5 || illegal_char) flag = false;
 	if (flag) {
+		#iftrue (CHARSIZE == 1);
 		for (i=0: at->i~=':': i++, hr=hr*10) hr = hr + at->i - '0';
+		#Ifnot;
+		for (i=0: at-->i~=':': i++, hr=hr*10) hr = hr + at-->i - '0';
+		#Endif; ! CHARSIZE
 		hr = hr/10;
+		#iftrue (CHARSIZE == 1);
 		for (i++: i<length: i++, mn=mn*10) mn = mn + at->i - '0';
+		#Ifnot;
+		for (i++: i<length: i++, mn=mn*10) mn = mn + at-->i - '0';
+		#Endif; ! CHARSIZE
 		mn = mn/10;
 		second_word = NextWordStopped();
 		parsed_number = HoursMinsWordToTime(hr, mn, second_word);

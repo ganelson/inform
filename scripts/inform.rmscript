@@ -135,10 +135,11 @@ The following webs are the source for kits of Inter code shipped with Inform (at
 * {PROGRAM} - {PURPOSE} - [{WEBICON}&nbsp;Web]({GITHUBPAGESLINK}/{PROGRAM}/index.html)
 {end-define}
 {kit name: BasicInformKit       purpose: Support for Inform as a programming language}
+{kit name: Architecture16Kit    purpose: Support for running on 16-bit platforms}
+{kit name: Architecture32Kit    purpose: Support for running on 32-bit platforms}
 {kit name: WorldModelKit        purpose: Support for modelling space, time and actions in interactive fiction}
 {kit name: EnglishLanguageKit   purpose: Support for English as the natural language used}
 {kit name: CommandParserKit     purpose: Support for parsing turn-by-turn commands in interactive fiction}
-{kit name: BasicInformExtrasKit purpose: Additional support needed only if the Standard Rules are not used}
 {kit name: DialogueKit          purpose: Additional support for dialogue (under construction)}
 
 ### Extensions shipped with Inform

@@ -71,11 +71,175 @@ void ProjectBundleManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 }
 
 inbuild_copy *ProjectBundleManager::claim_folder_as_copy(pathname *P) {
-	filename *canary = Filenames::in(Pathnames::down(P, I"Source"), I"story.ni");
-	if (TextFiles::exists(canary))
-		return ProjectBundleManager::new_copy(Pathnames::directory_name(P), P);
-	return NULL;
+	if (Directories::exists(P) == FALSE) return NULL;
+	inbuild_copy *C = ProjectBundleManager::new_copy(Pathnames::directory_name(P), P);
+	@<Police extraneous contents@>;
+	return C;
 }
+
+@<Police extraneous contents@> =
+	int uuid_found = FALSE, source_found = FALSE;
+	linked_list *L = Directories::listing(P);
+	text_stream *entry;
+	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+		if (Platform::is_folder_separator(Str::get_last_char(entry))) {
+			TEMPORARY_TEXT(subdir)
+			WRITE_TO(subdir, "%S", entry);
+			Str::delete_last_character(subdir);
+			if (Str::eq_insensitive(subdir, I"Source")) {
+				@<Police Source contents@>;
+			} else if (Str::eq_insensitive(subdir, I"Build")) {
+				@<Police Build contents@>;
+			} else if (Str::eq_insensitive(subdir, I"Index")) {
+				@<Police Index contents@>;
+			} else if (Str::eq_insensitive(subdir, I"Details")) {
+				@<Police spurious Details contents@>;
+			} else {
+				TEMPORARY_TEXT(error_text)
+				WRITE_TO(error_text,
+					"the project directory '%S' contains a subdirectory called '%S', "
+					"which I don't recognise",
+					Pathnames::directory_name(P), subdir);
+				Copies::attach_error(C, CopyErrors::new_T(PROJECT_MALFORMED_CE, -1, error_text));
+				DISCARD_TEXT(error_text)				
+			}
+			DISCARD_TEXT(subdir)
+		} else {
+			if (Str::eq_insensitive(entry, I"manifest.plist")) continue;
+			if (Str::eq_insensitive(entry, I"Metadata.iFiction")) continue;
+			if (Str::eq_insensitive(entry, I"notes.rtf")) continue;
+			if (Str::eq_insensitive(entry, I"Release.blurb")) continue;
+			if (Str::eq_insensitive(entry, I"Settings.plist")) continue;
+			if (Str::eq_insensitive(entry, I"Skein.skein")) continue;
+			if (Str::eq_insensitive(entry, I"uuid.txt")) { uuid_found = TRUE; continue; }
+			TEMPORARY_TEXT(error_text)
+			WRITE_TO(error_text,
+				"the project directory '%S' contains a file called '%S', "
+				"which I don't recognise",
+				Pathnames::directory_name(P), entry);
+			Copies::attach_error(C, CopyErrors::new_T(PROJECT_MALFORMED_CE, -1, error_text));
+			DISCARD_TEXT(error_text)				
+		}
+	}
+	if (uuid_found == FALSE) {
+		TEMPORARY_TEXT(error_text)
+		WRITE_TO(error_text,
+			"the project directory '%S' does not contain a 'uuid.txt' file",
+			Pathnames::directory_name(P));
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, error_text));
+		DISCARD_TEXT(error_text)				
+	}
+	if (source_found == FALSE) {
+		TEMPORARY_TEXT(error_text)
+		WRITE_TO(error_text,
+			"the project directory '%S' does not contain a 'story.ni' source file in a "
+			"'Source' subdirectory",
+			Pathnames::directory_name(P));
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, error_text));
+		DISCARD_TEXT(error_text)				
+	}
+
+@<Police Source contents@> =
+	pathname *Q = Pathnames::down(P, subdir);
+	linked_list *L = Directories::listing(Q);
+	text_stream *entry;
+	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+		if (Platform::is_folder_separator(Str::get_last_char(entry))) {
+			TEMPORARY_TEXT(subdir)
+			WRITE_TO(subdir, "%S", entry);
+			Str::delete_last_character(subdir);
+			TEMPORARY_TEXT(error_text)
+			WRITE_TO(error_text,
+				"the 'Source' subdirectory of the project directory '%S' contains a "
+				"further subdirectory called '%S', but should not have further subdirectories",
+				Pathnames::directory_name(P), subdir);
+			Copies::attach_error(C, CopyErrors::new_T(PROJECT_MALFORMED_CE, -1, error_text));
+			DISCARD_TEXT(error_text)
+			DISCARD_TEXT(subdir)
+		} else {
+			if (Str::eq_insensitive(entry, I"story.ni")) { source_found = TRUE; continue; }
+			TEMPORARY_TEXT(error_text)
+			WRITE_TO(error_text,
+				"the 'Source' subdirectory of the project directory '%S' contains a "
+				"file called '%S', but should only contain the source text file 'story.ni'",
+				Pathnames::directory_name(P), entry);
+			Copies::attach_error(C, CopyErrors::new_T(PROJECT_MALFORMED_CE, -1, error_text));
+			DISCARD_TEXT(error_text)				
+		}
+	}
+
+@<Police Build contents@> =
+	pathname *Q = Pathnames::down(P, subdir);
+	linked_list *L = Directories::listing(Q);
+	text_stream *entry;
+	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+		if (Platform::is_folder_separator(Str::get_last_char(entry))) {
+			TEMPORARY_TEXT(subdir)
+			WRITE_TO(subdir, "%S", entry);
+			Str::delete_last_character(subdir);
+			TEMPORARY_TEXT(error_text)
+			WRITE_TO(error_text,
+				"the 'Build' subdirectory of the project directory '%S' contains a "
+				"further subdirectory called '%S', but should not have further subdirectories",
+				Pathnames::directory_name(P), subdir);
+			Copies::attach_error(C, CopyErrors::new_T(PROJECT_MALFORMED_CE, -1, error_text));
+			DISCARD_TEXT(error_text)
+			DISCARD_TEXT(subdir)
+		}
+	}
+
+@<Police Index contents@> =
+	pathname *Q = Pathnames::down(P, subdir);
+	linked_list *L = Directories::listing(Q);
+	text_stream *entry;
+	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+		if (Platform::is_folder_separator(Str::get_last_char(entry))) {
+			TEMPORARY_TEXT(subdir)
+			WRITE_TO(subdir, "%S", entry);
+			Str::delete_last_character(subdir);
+			if (Str::eq_insensitive(subdir, I"Details")) {
+				Q = Pathnames::down(Q, subdir);
+				@<Check for non-HTML files@>;
+			} else {
+				TEMPORARY_TEXT(error_text)
+				WRITE_TO(error_text,
+					"the 'Index' subdirectory of the project directory '%S' contains a "
+					"further subdirectory called '%S', but can only have one, 'Details'",
+					Pathnames::directory_name(P), subdir);
+				Copies::attach_error(C, CopyErrors::new_T(PROJECT_MALFORMED_CE, -1, error_text));
+				DISCARD_TEXT(error_text)
+			}
+			DISCARD_TEXT(subdir)
+		}
+	}
+	@<Check for non-HTML files@>;
+
+@<Check for non-HTML files@> =
+	linked_list *L = Directories::listing(Q);
+	text_stream *entry;
+	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+		if (Platform::is_folder_separator(Str::get_last_char(entry)) == FALSE) {
+			TEMPORARY_TEXT(ext)
+			Filenames::write_extension(ext, Filenames::from_text(entry));
+			if ((Str::eq_insensitive(ext, I".html") == FALSE) &&
+				(Str::eq_insensitive(ext, I".xml") == FALSE)) {
+				TEMPORARY_TEXT(error_text)
+				WRITE_TO(error_text,
+					"the 'Index' subdirectory of the project directory '%S' contains a "
+					"file called '%S', but can only contain HTML and XML files",
+					Pathnames::directory_name(P), entry);
+				Copies::attach_error(C, CopyErrors::new_T(PROJECT_MALFORMED_CE, -1, error_text));
+				DISCARD_TEXT(error_text)
+			}
+		}
+	}
+
+@ For now, we will allow a subdirectory called Details to exist, because a bug
+in intest at one point caused the temporary workspace projects used when testing Inform
+to be created with such a subdirectory.
+
+@<Police spurious Details contents@> =
+	;
 
 @h Searching.
 Here we look through a nest to find all projects matching the supplied

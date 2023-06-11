@@ -2,6 +2,25 @@
 
 Who shall supervise the supervisor? This section of code will.
 
+@h Verbosity.
+It is both a strength and a source of anxiety that build managers work in
+an autonomous sort of way, doing "whatever is necessary". Some users want
+silence while this happens, and others expect detailed explanations.
+
+= (early code)
+int supervisor_verbosity = 0;
+#define SVEXPLAIN(level, args...) { \
+	if (supervisor_verbosity >= level) Writers::printf(STDOUT, args); \
+}
+
+@ =
+void Supervisor::set_verbosity(int level) {
+	if (level < 0) level = 0;
+	if (level > 3) level = 3;
+	supervisor_verbosity = level;
+	if (level > 0) WRITE_TO(STDOUT, "(inbuild verbosity set to %d)\n", level);
+}
+
 @h Phases.
 The //supervisor// module provides services to the parent tool.
 
@@ -37,8 +56,23 @@ out of turn.
 =
 int inbuild_phase = STARTUP_INBUILD_PHASE;
 void Supervisor::enter_phase(int p) {
-	if (p <= inbuild_phase) internal_error("phases out of sequence");
+	SVEXPLAIN(2, "(Supervisor phase %d: %S -> %d: %S)\n",
+		inbuild_phase, Supervisor::phase_name(inbuild_phase), p, Supervisor::phase_name(p));
 	inbuild_phase = p;
+}
+
+text_stream *Supervisor::phase_name(int p) {
+	switch (p) {
+		case STARTUP_INBUILD_PHASE: return I"startup";
+		case CONFIGURATION_INBUILD_PHASE: return I"configuration";
+		case PRETINKERING_INBUILD_PHASE: return I"pretinkering";
+		case TINKERING_INBUILD_PHASE: return I"tinkering";
+		case NESTED_INBUILD_PHASE: return I"nested";
+		case TARGETED_INBUILD_PHASE: return I"targeted";
+		case GRAPH_CONSTRUCTION_INBUILD_PHASE: return I"graphing";
+		case OPERATIONAL_INBUILD_PHASE: return I"operational";
+	}
+	return I"<unknown phase>";
 }
 
 @h Startup phase.
@@ -71,7 +105,7 @@ void Supervisor::start(void) {
 
 	ControlStructures::create_standard();
 	
-	inbuild_phase = CONFIGURATION_INBUILD_PHASE;
+	Supervisor::enter_phase(CONFIGURATION_INBUILD_PHASE);
 	Supervisor::set_defaults();
 }
 
@@ -138,6 +172,7 @@ better way to choose a virtual machine to compile to.
 @e NEST_CLSW
 @e INTERNAL_CLSW
 @e EXTERNAL_CLSW
+@e DEPRECATED_EXTERNAL_CLSW
 @e TRANSIENT_CLSW
 
 @<Declare resource-related options@> =
@@ -148,6 +183,8 @@ better way to choose a virtual machine to compile to.
 		L"use X as the location of built-in material such as the Standard Rules");
 	CommandLine::declare_switch(EXTERNAL_CLSW, L"external", 2,
 		L"use X as the user's home for installed material such as extensions");
+	CommandLine::declare_switch(DEPRECATED_EXTERNAL_CLSW, L"deprecated-external", 2,
+		L"same as -external X, but issues warnings if the nest is actually used");
 	CommandLine::declare_switch(TRANSIENT_CLSW, L"transient", 2,
 		L"use X for transient data such as the extensions census");
 	CommandLine::end_group();
@@ -209,6 +246,7 @@ void Supervisor::set_inter_pipeline(text_stream *name) {
 	if (inter_pipeline_name == NULL) inter_pipeline_name = Str::new();
 	else Str::clear(inter_pipeline_name);
 	WRITE_TO(inter_pipeline_name, "%S", name);
+	SVEXPLAIN(1, "(inter pipeline name set to %S)\n", name);
 }
 
 @ The //supervisor// module itself doesn't parse command-line options: that's for
@@ -216,6 +254,8 @@ the parent to do, using code from Foundation. When the parent finds an option
 it doesn't know about, that will be one of ours, so it should call the following:
 
 =
+int dash_internal_used = FALSE;
+
 void Supervisor::option(int id, int val, text_stream *arg, void *state) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
 	switch (id) {
@@ -225,9 +265,13 @@ void Supervisor::option(int id, int val, text_stream *arg, void *state) {
 		case NEST_CLSW:
 			Supervisor::add_nest(Pathnames::from_text(arg), GENERIC_NEST_TAG); break;
 		case INTERNAL_CLSW:
+			dash_internal_used = TRUE;
 			Supervisor::add_nest(Pathnames::from_text(arg), INTERNAL_NEST_TAG); break;
 		case EXTERNAL_CLSW:
 			Supervisor::add_nest(Pathnames::from_text(arg), EXTERNAL_NEST_TAG); break;
+		case DEPRECATED_EXTERNAL_CLSW:
+			Nests::deprecate(Supervisor::add_nest(Pathnames::from_text(arg),
+				EXTERNAL_NEST_TAG)); break;
 		case TRANSIENT_CLSW:
 			shared_transient_resources = Pathnames::from_text(arg); break;
 		case BASIC_CLSW: Projects::enter_forcible_basic_mode(); break;
@@ -254,6 +298,10 @@ void Supervisor::option(int id, int val, text_stream *arg, void *state) {
 		case RNG_CLSW: @<Seed the random number generator@>; break;
 		case CASE_CLSW: SourceLinks::set_case(arg); break;
 	}
+}
+
+int Supervisor::dash_internal_was_used(void) {
+	return dash_internal_used;
 }
 
 @ Note that the following has no effect unless the //pipeline// module is part
@@ -301,23 +349,23 @@ int (*shared_preform_callback)(inform_language *);
 void Supervisor::optioneering_complete(inbuild_copy *C, int compile_only,
 	int (*preform_callback)(inform_language *)) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
-	inbuild_phase = PRETINKERING_INBUILD_PHASE;
+	Supervisor::enter_phase(PRETINKERING_INBUILD_PHASE);
 	shared_preform_callback = preform_callback;
 
 	@<Find the virtual machine@>;
 	Supervisor::make_project_from_command_line(C);
 	
 	Supervisor::create_default_externals();
-	inbuild_phase = TINKERING_INBUILD_PHASE;
+	Supervisor::enter_phase(TINKERING_INBUILD_PHASE);
 	Supervisor::sort_nest_list();
 
-	inbuild_phase = NESTED_INBUILD_PHASE;
+	Supervisor::enter_phase(NESTED_INBUILD_PHASE);
 	inform_project *proj;
 	LOOP_OVER(proj, inform_project)
 		Projects::set_compilation_options(proj,
 			this_is_a_release_compile, compile_only, rng_seed_at_start_of_play);
 	
-	inbuild_phase = TARGETED_INBUILD_PHASE;
+	Supervisor::enter_phase(TARGETED_INBUILD_PHASE);
 }
 
 @ The VM to be used depends on the settings of all three of |-format|,
@@ -343,6 +391,7 @@ target_vm *Supervisor::current_vm(void) {
 void Supervisor::set_current_vm(target_vm *VM) {
 	RUN_ONLY_IN_PHASE(PRETINKERING_INBUILD_PHASE)
 	current_target_VM = VM;
+	SVEXPLAIN(1, "(target VM set to %S)\n", TargetVMs::get_full_format_text(VM));
 }
 
 @h The Graph Construction and Operational phases.
@@ -359,9 +408,9 @@ We do that copy by copy.
 =
 void Supervisor::go_operational(void) {
 	RUN_ONLY_IN_PHASE(TARGETED_INBUILD_PHASE)
-	inbuild_phase = GRAPH_CONSTRUCTION_INBUILD_PHASE;
+	Supervisor::enter_phase(GRAPH_CONSTRUCTION_INBUILD_PHASE);
 	Copies::graph_everything();
-	inbuild_phase = OPERATIONAL_INBUILD_PHASE;
+	Supervisor::enter_phase(OPERATIONAL_INBUILD_PHASE);
 	if (census_mode) ExtensionWebsite::handle_census_mode();
 }
 
@@ -408,12 +457,17 @@ inbuild_nest *Supervisor::add_nest(pathname *P, int tag) {
 		unsorted_nest_list = NEW_LINKED_LIST(inbuild_nest);
 	inbuild_nest *N = Nests::new(P);
 	Nests::set_tag(N, tag);
+	int set_shared = FALSE;
 	ADD_TO_LINKED_LIST(N, inbuild_nest, unsorted_nest_list);
-	if ((tag == EXTERNAL_NEST_TAG) && (shared_external_nest == NULL))
-		shared_external_nest = N;
-	if ((tag == INTERNAL_NEST_TAG) && (shared_internal_nest == NULL))
-		shared_internal_nest = N;
+	if ((tag == EXTERNAL_NEST_TAG) && (shared_external_nest == NULL)) {
+		shared_external_nest = N; set_shared = TRUE;
+	}
+	if ((tag == INTERNAL_NEST_TAG) && (shared_internal_nest == NULL)) {
+		shared_internal_nest = N; set_shared = TRUE;
+	}
 	if (tag == INTERNAL_NEST_TAG) Nests::protect(N);
+	SVEXPLAIN(2, "(%S%S nest set at %p)\n",
+		(set_shared)?I"shared ":I"", Nests::tag_name(tag), P);
 	return N;
 }
 
@@ -430,6 +484,8 @@ void Supervisor::create_default_externals(void) {
 			DISCARD_TEXT(SF)
 		}
 		P = Pathnames::down(P, I"Inform");
+		SVEXPLAIN(1, "(in absence of explicit -external, inventing -external %p)\n", P);
+		SVEXPLAIN(2, "(because home path, according to environment variable HOME, is %p)\n", home_path);
 		E = Supervisor::add_nest(P, EXTERNAL_NEST_TAG);
 	}
 }
@@ -454,6 +510,20 @@ void Supervisor::sort_nest_list(void) {
 	LOOP_OVER_LINKED_LIST(N, inbuild_nest, unsorted_nest_list)
 		if (Nests::get_tag(N) == INTERNAL_NEST_TAG)
 			ADD_TO_LINKED_LIST(N, inbuild_nest, shared_nest_list);
+	Supervisor::report_nest_list(2, I"unsorted", unsorted_nest_list);
+	Supervisor::report_nest_list(1, I"shared", shared_nest_list);
+	SVEXPLAIN(1, "(shared internal nest: %p)\n", Nests::get_location(shared_internal_nest));
+	SVEXPLAIN(1, "(shared external nest: %p)\n", Nests::get_location(shared_external_nest));
+}
+
+void Supervisor::report_nest_list(int level, text_stream *desc, linked_list *L) {
+	SVEXPLAIN(level, "(%S nest list:", desc);
+	if (LinkedLists::len(L) == 0) { SVEXPLAIN(level, " empty)\n"); return; }
+	inbuild_nest *N;
+	LOOP_OVER_LINKED_LIST(N, inbuild_nest, L)
+		SVEXPLAIN(level, "\n    %S %p",
+			Nests::tag_name(Nests::get_tag(N)), Nests::get_location(N));
+	SVEXPLAIN(level, ")\n");
 }
 
 @ And the rest of Inform or Inbuild can now use:
@@ -475,6 +545,23 @@ inbuild_nest *Supervisor::external(void) {
 	return shared_external_nest;
 }
 
+@ This is the default location for internal resources, to be used if there is
+no better indication of where they are.
+
+=
+pathname *supervisor_tools_location = NULL;
+
+void Supervisor::set_tools_location(pathname *P) {
+	supervisor_tools_location = P;
+}
+
+pathname *Supervisor::default_internal_path(void) {
+	pathname *P = supervisor_tools_location;
+	P = Pathnames::down(P, I"inform7");
+	P = Pathnames::down(P, I"Internal");
+	return P;
+}
+
 @ This tells the //html// module where to find, say, CSS files. Those files
 are not managed by //inbuild//, have no versions, or anything fancy: they're
 just plain old files.
@@ -484,7 +571,7 @@ just plain old files.
 =
 pathname *Supervisor::installed_files(void) {
 	if (shared_internal_nest) return shared_internal_nest->location;
-	return Pathnames::from_text(I"inform7/Internal");
+	return Supervisor::default_internal_path();
 }
 
 @ As noted above, the transient area is used for ephemera such as dynamically
@@ -507,7 +594,7 @@ Inform 7 program. This can be presented to it either in a project bundle
 temporary build files), or as a single file (just a text file containing
 source text).
 
-It is also possible o set a folder to be the project bundle, and nevertheless
+It is also possible to set a folder to be the project bundle, and nevertheless
 specify a file somewhere else to be the source text. What you can't do is
 specify the bundle twice, or specify the file twice.
 
@@ -519,6 +606,7 @@ int Supervisor::set_I7_source(filename *F) {
 	RUN_ONLY_FROM_PHASE(CONFIGURATION_INBUILD_PHASE)
 	if (project_file_request) return FALSE;
 	project_file_request = F;
+	SVEXPLAIN(1, "(set project source file to: %f)\n", project_file_request);
 	return TRUE;
 }
 
@@ -533,13 +621,18 @@ int Supervisor::set_I7_bundle(pathname *P) {
 	RUN_ONLY_FROM_PHASE(CONFIGURATION_INBUILD_PHASE)
 	if (project_bundle_request) return FALSE;
 	project_bundle_request = P;
+	SVEXPLAIN(1, "(set project bundle path to: %p)\n", project_bundle_request);
 	pathname *materials = Projects::materialise_pathname(
 		Pathnames::up(P), Pathnames::directory_name(P));
 	TEMPORARY_TEXT(leaf)
 	WRITE_TO(leaf, "%s-settings.txt", PROGRAM_NAME);
 	filename *expert_settings = Filenames::in(materials, leaf);
-	if (TextFiles::exists(expert_settings))
+	if (TextFiles::exists(expert_settings)) {
+		SVEXPLAIN(1, "(reading further command-line settings from: %f)\n", expert_settings);
 		CommandLine::also_read_file(expert_settings);
+	} else {
+		SVEXPLAIN(2, "(no command-line settings file found at %f)\n", expert_settings);
+	}
 	DISCARD_TEXT(leaf)
 	return TRUE;
 }
@@ -561,14 +654,22 @@ void Supervisor::make_project_from_command_line(inbuild_copy *C) {
 	pathname *P = NULL; /* result of |-project| at the command line */
 	if (project_bundle_request) P = project_bundle_request;
 	if (project_file_request) F = project_file_request;
-	if (C == NULL) {
-		if (P) {
-			C = ProjectBundleManager::claim_folder_as_copy(P);
-			if (C == NULL) Errors::fatal("No such Inform project directory");
-		} else if (F) {
-			C = ProjectFileManager::claim_file_as_copy(F);
-			if (C == NULL) Errors::fatal("No such Inform source file");
+	if (C) {
+		if (C->location_if_path) {
+			SVEXPLAIN(1, "(project identified by parent tool: %p)\n", C->location_if_path);
+		} else {
+			SVEXPLAIN(1, "(project identified by parent tool: %f)\n", C->location_if_file);
 		}
+	} else if (P) {
+		SVEXPLAIN(1, "(project identified by -project: %p)\n", P);
+		C = ProjectBundleManager::claim_folder_as_copy(P);
+		if (C == NULL) Errors::fatal("No such Inform project directory");
+	} else if (F) {
+		SVEXPLAIN(1, "(project identified by -source: %f)\n", F);
+		C = ProjectFileManager::claim_file_as_copy(F);
+		if (C == NULL) Errors::fatal("No such Inform source file");
+	} else {
+		SVEXPLAIN(1, "(no designated project)\n");
 	}
 	if (C) {
 		inform_project *proj = Projects::from_copy(C);
@@ -576,6 +677,8 @@ void Supervisor::make_project_from_command_line(inbuild_copy *C) {
 		if (F) {
 			Projects::set_primary_source(proj, F);
 			Projects::set_primary_output(proj, transpiled_output_file);
+			if (transpiled_output_file)
+				SVEXPLAIN(1, "(transpiled output redirected to: %f)\n", transpiled_output_file);
 		}
 		chosen_project = proj;
 	}

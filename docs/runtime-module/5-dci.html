@@ -233,7 +233,7 @@ function togglePopup(material_id) {
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">packaging_state</span><span class="plain-syntax"> </span><span class="identifier-syntax">save</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Functions::begin</span><span class="plain-syntax">(</span><a href="5-dci.html#SP1" class="function-link"><span class="function-syntax">RTDialogueChoices::available_fn_iname</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">dc</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-dci.html#SP3_5_1" class="named-paragraph-link"><span class="named-paragraph">Check the if and unless conditions</span><span class="named-paragraph-number">3.5.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><a href="2-ec.html#SP14" class="function-link"><span class="function-syntax">EmitCode::rtrue</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="2-ec.html#SP15" class="function-link"><span class="function-syntax">EmitCode::rtrue</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Functions::end</span><span class="plain-syntax">(</span><span class="identifier-syntax">save</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-dci.html#SP3">&#167;3</a>.</li></ul>
@@ -253,10 +253,10 @@ function togglePopup(material_id) {
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;s-condition&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">A</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cond</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Dash::validate_conditional_clause</span><span class="plain-syntax">(</span><span class="identifier-syntax">cond</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">                        </span><a href="2-ec.html#SP13" class="function-link"><span class="function-syntax">EmitCode::inv</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">IF_BIP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                        </span><a href="2-ec.html#SP14" class="function-link"><span class="function-syntax">EmitCode::inv</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">IF_BIP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                        </span><a href="2-ec.html#SP3" class="function-link"><span class="function-syntax">EmitCode::down</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">                            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="identifier-syntax">IF_DCC</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                                </span><a href="2-ec.html#SP13" class="function-link"><span class="function-syntax">EmitCode::inv</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NOT_BIP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                                </span><a href="2-ec.html#SP14" class="function-link"><span class="function-syntax">EmitCode::inv</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NOT_BIP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                                </span><a href="2-ec.html#SP3" class="function-link"><span class="function-syntax">EmitCode::down</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">                            }</span>
 <span class="plain-syntax">                            </span><span class="identifier-syntax">CompileValues::to_code_val_of_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">cond</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_truth_state</span><span class="plain-syntax">);</span>
@@ -265,7 +265,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">                            }</span>
 <span class="plain-syntax">                            </span><a href="2-ec.html#SP5" class="function-link"><span class="function-syntax">EmitCode::code</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">                            </span><a href="2-ec.html#SP3" class="function-link"><span class="function-syntax">EmitCode::down</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">                                </span><a href="2-ec.html#SP14" class="function-link"><span class="function-syntax">EmitCode::rfalse</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">                                </span><a href="2-ec.html#SP15" class="function-link"><span class="function-syntax">EmitCode::rfalse</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">                            </span><a href="2-ec.html#SP3" class="function-link"><span class="function-syntax">EmitCode::up</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">                        </span><a href="2-ec.html#SP3" class="function-link"><span class="function-syntax">EmitCode::up</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">                    }</span>
@@ -284,17 +284,17 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;s-action-pattern-as-value&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">APW</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cond</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Dash::check_condition</span><span class="plain-syntax">(</span><span class="identifier-syntax">cond</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">            </span><a href="2-ec.html#SP13" class="function-link"><span class="function-syntax">EmitCode::inv</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">IF_BIP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="2-ec.html#SP14" class="function-link"><span class="function-syntax">EmitCode::inv</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">IF_BIP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><a href="2-ec.html#SP3" class="function-link"><span class="function-syntax">EmitCode::down</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">CompileValues::to_code_val_of_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">cond</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_truth_state</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                </span><a href="2-ec.html#SP5" class="function-link"><span class="function-syntax">EmitCode::code</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">                </span><a href="2-ec.html#SP3" class="function-link"><span class="function-syntax">EmitCode::down</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">                    </span><a href="2-ec.html#SP14" class="function-link"><span class="function-syntax">EmitCode::rtrue</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">                    </span><a href="2-ec.html#SP15" class="function-link"><span class="function-syntax">EmitCode::rtrue</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">                </span><a href="2-ec.html#SP3" class="function-link"><span class="function-syntax">EmitCode::up</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">            </span><a href="2-ec.html#SP3" class="function-link"><span class="function-syntax">EmitCode::up</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><a href="2-ec.html#SP14" class="function-link"><span class="function-syntax">EmitCode::rfalse</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="2-ec.html#SP15" class="function-link"><span class="function-syntax">EmitCode::rfalse</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Functions::end</span><span class="plain-syntax">(</span><span class="identifier-syntax">save</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-dci.html#SP3">&#167;3</a>.</li></ul>

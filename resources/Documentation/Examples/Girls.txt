@@ -2,7 +2,7 @@
 (Randomized pedestrian passer-by; Uptown Girls)
 A stream of random pedestrians who go by the player.
 
-Suppose we have an urban space we want to populate with random passers-by. These should have a range of characteristics and not always be described in the same way; and once the player has noticed one, he should be able to look at her further, until another pedestrian crosses his path.
+Suppose we have an urban space we want to populate with random women walking by. These should have a range of characteristics and not always be described in the same way; after having noticed one, the player should be able to look at the passers-by further, until another pedestrian crosses their path.
 
 	{*}"Uptown Girls"
 

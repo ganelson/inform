@@ -21,8 +21,9 @@ explained in the Standard Rules.
 Global EarlyInTurnSequence;
 Global IterationsOfTurnSequence;
 
-[ Main;
++replacing(from BasicInformKit) [ Main;
 	say__pc = say__pc | PARA_NORULEBOOKBREAKS;
+	rulebook_without_variables = ACTION_PROCESSING_RB;
 	FollowRulebook(STARTUP_RB);
 	if (say__pc & PARA_NORULEBOOKBREAKS) say__pc = say__pc - PARA_NORULEBOOKBREAKS;
 	while (true) {
@@ -103,12 +104,12 @@ text: thus, if there is some long text to read before the player finds out
 where he is, the surprise will not be spoiled.
 
 =
-[ INITIALISE_MEMORY_R;
-	#ifdef TARGET_GLULX; VM_PreInitialise(); #Endif;
-	#Ifdef LanguageInitialise; LanguageInitialise(); #Endif;
++replacing(from BasicInformKit) [ INITIALISE_MEMORY_R;
+	VM_PreInitialise();
+	LanguageInitialise();
 
 	not_yet_in_play = true;
-	lookmode = KIT_CONFIGURATION_LOOKMODE;
+	lookmode = WorldModelKit`ROOM_DESC_DETAIL_CFGV;
 	player = InitialSituation-->PLAYER_OBJECT_INIS;
 	the_time = InitialSituation-->START_TIME_INIS;
 	real_location = nothing;
@@ -543,14 +544,14 @@ See the Standard Rules for comment on this.
     objectloop (obj in player) give obj moved;
     objectloop (obj has concealed)
     	if (IndirectlyContains(player, obj)) give obj ~concealed;
-    #Ifdef RUCKSACK_CLASS;
-	objectloop (obj in player)
-		if (obj ofclass RUCKSACK_CLASS)
+	if (RUCKSACK_CLASS) {
+		objectloop (obj in player)
+			if (obj ofclass RUCKSACK_CLASS)
+				SACK_OBJECT = obj;
+		objectloop (obj ofclass RUCKSACK_CLASS && obj provides component_parent
+			&& obj.component_parent == player)
 			SACK_OBJECT = obj;
-	objectloop (obj ofclass RUCKSACK_CLASS && obj provides component_parent
-		&& obj.component_parent == player)
-		SACK_OBJECT = obj;
-	#Endif;
+	}
 	rfalse;
 ];
 
@@ -593,8 +594,7 @@ same buffers for the final question as for game commands.
 
 =
 [ READ_FINAL_ANSWER_R;
-	DrawStatusLine();
-	KeyboardPrimitive(buffer, parse);
+	KeyboardPrimitive(buffer, parse, DrawStatusLine);
 	players_command = 100 + WordCount();
 	num_words = WordCount();
 	wn = 1;
@@ -654,7 +654,7 @@ obituary" activity.
 
 =
 [ PRINT_FINAL_SCORE_R;
-	if (KIT_CONFIGURATION_BITMAP & USE_SCORING_TCBIT) ANNOUNCE_SCORE_R();
+	if (WorldModelKit`SCORING_CFGV) ANNOUNCE_SCORE_R();
 	rfalse;
 ];
 

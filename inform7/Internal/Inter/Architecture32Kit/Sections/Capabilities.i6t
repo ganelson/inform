@@ -1,0 +1,141 @@
+Capabilities Template.
+
+Miscellaneous capabilities of the 16-bit architecture.
+
+@h Summary.
+The 32-bit architecture is currently the default targeted by Inform, and is
+used both for programs compiled via Inform 6 to the Glulx virtual machine, and
+also for programs compiled via C.
+
+@h Header layout.
+The VM is expected to contain certain special constants and variables at fixed
+position in its "header"; the addresses of these are given below.
+
+=
+Constant HDR_MAGICNUMBER      = $00;     ! long word
+Constant HDR_GLULXVERSION     = $04;     ! long word
+Constant HDR_RAMSTART         = $08;     ! long word
+Constant HDR_EXTSTART         = $0C;     ! long word
+Constant HDR_ENDMEM           = $10;     ! long word
+Constant HDR_STACKSIZE        = $14;     ! long word
+Constant HDR_STARTFUNC        = $18;     ! long word
+Constant HDR_DECODINGTBL      = $1C;     ! long word
+Constant HDR_CHECKSUM         = $20;     ! long word
+Constant ROM_INFO             = $24;     ! four ASCII characters
+Constant ROM_MEMORYLAYOUT     = $28;     ! long word
+Constant ROM_INFORMVERSION    = $2C;     ! four ASCII characters
+Constant ROM_COMPVERSION      = $30;     ! four ASCII characters
+Constant ROM_GAMERELEASE      = $34;     ! short word
+Constant ROM_GAMESERIAL       = $36;     ! six ASCII characters
+
+@h Release Number.
+Our programs will have both a release number and a serial code, which are
+in each case stored in the header memory of the virtual machine.
+
+|VM_Describe_Release()| has been removed and replaced with functions returning
+the release number, a non-negative integer, and the serial code, a byte array
+expected to be 6 digit characters wide.
+
+=
+[ VM_ReleaseNumber r;
+	@aloads ROM_GAMERELEASE 0 r;
+	return r;
+];
+
+[ VM_SerialNumber;
+	return ROM_GAMESERIAL;
+];
+
+@h Random Number Generator.
+No routine is needed for extracting a random number, since I6's built-in
+|random| function does that, but it's useful to abstract the process of
+seeding the RNG so that it produces a repeatable sequence of "random"
+numbers from here on: the necessary opcodes are different for the two VMs.
+
+=
+[ VM_Seed_RNG n;
+	@setrandom n;
+];
+
+@h Memory Allocation.
+This is dynamic memory allocation: something which is never practicable in
+the Z-machine, because the whole address range is already claimed, but which
+is viable on recent revisions of Glulx.
+
+=
+[ VM_AllocateMemory amount i;
+	@gestalt 7 0 i;
+	if (i == 0) return i;
+	@malloc amount i;
+	return i;
+];
+
+[ VM_FreeMemory address i;
+	@gestalt 7 0 i;
+	if (i == 0) return;
+	@mfree address;
+];
+
+@h Memcpy.
+This is equivalent to C's memcpy function, in good ways and bad.
+
+=
+[ Memcpy to_addr from_addr size;
+    @mcopy size from_addr to_addr;
+];
+
+@ And this can be used to copy exactly |words| words from one word array to
+another:
+
+=
+[ VM_CopyWords words from to  i;
+	for (i=0: i<words: i++)
+		to-->i = from-->i;
+];
+
+@h Audiovisual Resources.
+The Z-machine only barely supports figures and sound effects, so Glulx is
+the preferred VM to choose if they are wanted. Properly speaking, it's not
+Glulx which supports these, but its I/O layer Glk, and implementations
+of Glk are free to support them or not as they please: "cheapglk", a
+dumb terminal version, does not, for instance. We therefore have to
+investigate the "gestalt" to find out.
+
+=
+[ VM_Picture resource_ID;
+	if (glk_gestalt(gestalt_Graphics, 0)) {
+		glk_image_draw(gg_mainwin, resource_ID, imagealign_InlineCenter, 0);
+	} else {
+		print "[Picture number ", resource_ID, " here.]^";
+	}
+];
+
+[ VM_SoundEffect resource_ID;
+	if (glk_gestalt(gestalt_Sound, 0)) {
+		glk_schannel_play(gg_foregroundchan, resource_ID);
+	} else {
+		print "[Sound effect number ", resource_ID, " here.]^";
+	}
+];
+
+@h Typography.
+Glk makes an attempt to present typographic styles as being a matter of
+semantic markup rather than controlling the actual appearance of text:
+the idea is that the story file should want to print something in a
+heading kind of way, and then the interpreter -- guided by the player's
+reading preferences -- might set that in bold, or larger type, or red ink,
+or any combination of the three, or with other effects entirely. (This is
+not the place to discuss whether that was a wise decision for Glk to take.)
+
+=
+[ VM_Style sty;
+	switch (sty) {
+		NORMAL_VMSTY:     glk_set_style(style_Normal);
+		HEADER_VMSTY:     glk_set_style(style_Header);
+		SUBHEADER_VMSTY:  glk_set_style(style_Subheader);
+		NOTE_VMSTY:       glk_set_style(style_Note);
+		ALERT_VMSTY:      glk_set_style(style_Alert);
+		BLOCKQUOTE_VMSTY: glk_set_style(style_BlockQuote);
+		INPUT_VMSTY:      glk_set_style(style_Input);
+	}
+];

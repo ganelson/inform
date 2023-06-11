@@ -81,7 +81,7 @@ inter_pair InterValuePairs::number_from_I6_notation(text_stream *S) {
 		else if ((c >= 'A') && (c <= 'Z')) d = c-'A'+10;
 		else if ((c >= '0') && (c <= '9')) d = c-'0';
 		else return InterValuePairs::undef();
-		if (d > base) return InterValuePairs::undef();
+		if (d >= base) return InterValuePairs::undef();
 		N = base*N + (long long int) d;
 		if (pos.index > 34) return InterValuePairs::undef();
 	}

@@ -490,12 +490,32 @@ void Translations::plus_responses(parse_node *p, rule *R) {
 					DISCARD_TEXT(i6r)
 				}
 			} else {
-				StandardProblems::sentence_problem(Task::syntax_tree(),
-					_p_(PM_BadObjectTranslation),
-					"there is no such object or kind of object",
-					"so its name will never be translated into an Inter "
-					"identifier in any event.");
+				if (<k-kind>(W)) {
+					kind *K = (kind *) <<rp>>;
+					@<Translate a kind@>;
+				} else {
+					LOG("So W = %W\n", W);
+					StandardProblems::sentence_problem(Task::syntax_tree(),
+						_p_(PM_BadObjectTranslation),
+						"there is no such object or kind of object",
+						"so its name will never be translated into an Inter "
+						"identifier in any event.");
+				}
 			}
 			break;
 		}
 	}
+
+@<Translate a kind@> =
+	@<Require the accessible-to form@>;
+	TEMPORARY_TEXT(i6r)
+	WRITE_TO(i6r, "%N", Wordings::first_wn(OP));
+	if (Str::get_first_char(i6r) == '"') Str::delete_first_character(i6r);
+	if (Str::get_last_char(i6r) == '"') Str::delete_last_character(i6r);
+	inter_name *iname = RTKindDeclarations::iname(K);
+	if (iname) {
+		InterNames::set_translation(iname, i6r);
+		InterNames::clear_flag(iname, MAKE_NAME_UNIQUE_ISYMF);
+		Hierarchy::make_available(iname);
+	}
+	DISCARD_TEXT(i6r)

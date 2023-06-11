@@ -138,7 +138,7 @@ This example does include a number of features that we haven't met yet, particul
 	Instead of going to an adjacent room when the player is in the Dining Room:
 		say "'You're not leaving!?' whimpers the table at once."
 	
-Moreover, every time the player gets close to resolving this issue, his unhelpful companion Alison brings in something else inconvenient. We can use the counting of contented supporters to decide when the player is getting close to winning and it's time for her to bring something else...
+Moreover, every time the player gets close to resolving this issue, their unhelpful companion Alison brings in something else inconvenient. We can use the counting of contented supporters to decide when the player is getting close to winning and it's time for her to bring something else...
 
 	{**}Section 5 - Source of Further Complications
 
@@ -181,7 +181,7 @@ Moreover, every time the player gets close to resolving this issue, his unhelpfu
 			say "Just then the kettle boils in the kitchen. Whistling chirpily, Alison brings it in and sets it down smack on [the next victim], then goes back out.";
 			rule succeeds.	
 		
-And just so that the player knows where he stands at the end of each turn:
+And just so that the player knows where they stand at the end of each turn:
 	
 	{**}Section 6 - General Assessment 
 

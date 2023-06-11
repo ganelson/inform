@@ -29,7 +29,6 @@ typedef struct rulebook {
 	int rules_always_test_actor; /* for action-tied check, carry out, report */
 	int automatically_generated; /* rather than by explicit Inform 7 source text */
 	int runs_during_activities; /* allow "while..." clauses to name these */
-	int used_by_future_action_activity; /* like "deciding the scope of something..." */
 
 	struct shared_variable_set *my_variables; /* rulebook variables owned here */
 	struct shared_variable_access_list *accessible_variables; /* and which can be named here */
@@ -54,7 +53,6 @@ rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
 
 	B->rules_always_test_actor = FALSE;
 	B->automatically_generated = FALSE;
-	B->used_by_future_action_activity = FALSE;
 	B->runs_during_activities = FALSE;
 
 	@<Work out the focus and outcome@>;
@@ -239,13 +237,12 @@ that action are automatically created, and similarly for activities and scenes.
 
 =
 rulebook *Rulebooks::new_automatic(wording W, kind *basis,
-	int default_outcome, int always_test_actor, int ubfaa, int for_activities,
+	int default_outcome, int always_test_actor, int for_activities,
 	int stem_length, package_request *R) {
 	rulebook *B = Rulebooks::new(Kinds::binary_con(CON_rulebook, basis, K_void), W, R);
 	FocusAndOutcome::set_default_outcome(&(B->my_outcomes), default_outcome);
 	B->rules_always_test_actor = always_test_actor;
 	B->automatically_generated = TRUE;
-	B->used_by_future_action_activity = ubfaa;
 	B->runs_during_activities = for_activities;
 	B->action_stem_length = stem_length;
 	return B;
@@ -271,10 +268,6 @@ void Rulebooks::translates(wording W, parse_node *p2) {
 @h Access.
 
 =
-int Rulebooks::used_by_future_actions(rulebook *B) {
-	return B->used_by_future_action_activity;
-}
-
 int Rulebooks::requires_specific_action(rulebook *B) {
 	if (B == RB_check) return TRUE;
 	if (B == RB_carry_out) return TRUE;

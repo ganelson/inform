@@ -82,7 +82,7 @@ void Problems::show_problem_location(parse_node_tree *T) {
 		#endif
 		for (i=0; i<NO_HEADING_LEVELS; i++) last_problem_headings[i] = NULL;
 	}
-	if (do_not_locate_problems) return;
+	if ((T == NULL) || (do_not_locate_problems)) return;
 	Problems::find_headings_at(T, current_sentence, problem_headings);
 	for (i=0; i<NO_HEADING_LEVELS; i++) if (problem_headings[i] != NULL) f = TRUE;
 	if (f)
@@ -139,6 +139,8 @@ typedef struct problem_quotation {
 	void *structure_quoted; /* if false */
 	void (*expander)(text_stream *, void *); /* if false */
 	struct wording text_quoted; /* if true */
+	struct text_stream *file; /* relevant only to |'F'| file references */
+	int line; /* relevant only to |'F'| file references */
 } problem_quotation;
 
 problem_quotation problem_quotations[10];
@@ -157,6 +159,8 @@ void Problems::problem_quote(int t, void *v, void (*f)(text_stream *, void *)) {
 	problem_quotations[t].quotation_type = '?';
 	problem_quotations[t].wording_based = FALSE;
 	problem_quotations[t].text_quoted = EMPTY_WORDING;
+	problem_quotations[t].file = NULL;
+	problem_quotations[t].line = 0;
 }
 
 void Problems::problem_quote_tinted(int t, void *v, void (*f)(text_stream *, void *), char type) {
@@ -166,6 +170,8 @@ void Problems::problem_quote_tinted(int t, void *v, void (*f)(text_stream *, voi
 	problem_quotations[t].quotation_type = type;
 	problem_quotations[t].wording_based = FALSE;
 	problem_quotations[t].text_quoted = EMPTY_WORDING;
+	problem_quotations[t].file = NULL;
+	problem_quotations[t].line = 0;
 }
 
 void Problems::problem_quote_textual(int t, char type, wording W) {
@@ -174,6 +180,18 @@ void Problems::problem_quote_textual(int t, char type, wording W) {
 	problem_quotations[t].quotation_type = type;
 	problem_quotations[t].wording_based = TRUE;
 	problem_quotations[t].text_quoted = W;
+	problem_quotations[t].file = NULL;
+	problem_quotations[t].line = 0;
+}
+
+void Problems::problem_quote_file(int t, text_stream *file, int line) {
+	if ((t<0) || (t > 10)) internal_error("problem quotation number out of range");
+	problem_quotations[t].structure_quoted = NULL;
+	problem_quotations[t].quotation_type = 'F';
+	problem_quotations[t].wording_based = FALSE;
+	problem_quotations[t].text_quoted = EMPTY_WORDING;
+	problem_quotations[t].file = Str::duplicate(file);
+	problem_quotations[t].line = line;
 }
 
 @ Here are the three public routines for quoting from text: either via a node
@@ -292,6 +310,17 @@ int Problems::explained_before(char *explanation) {
 	return FALSE;
 }
 
+@h A note on warnings.
+Warnings are almost identically handled. Inform traditionally avoided warnings,
+but we're finally giving way on that.
+
+=
+int warning_count = 0;
+
+int Problems::warnings_occurred(void) {
+	return (warning_count > 0)?TRUE:FALSE;
+}
+
 @h How problems begin and end.
 During the construction of a problem message, we will be running through a
 standard text, and at any point might be considering matter which should
@@ -304,6 +333,13 @@ to remember whether to use the short or long form.
 
 =
 void Problems::issue_problem_begin(parse_node_tree *T, char *message) {
+	Problems::issue_advisory_begin(T, message, TRUE);
+}
+void Problems::issue_warning_begin(parse_node_tree *T, char *message) {
+	Problems::issue_advisory_begin(T, message, FALSE);
+}
+void Problems::issue_advisory_begin(parse_node_tree *T, char *message, int problematic) {
+	currently_issuing_a_warning = (problematic)?FALSE:TRUE;
 	ProblemBuffer::clear();
 	if (strcmp(message, "*") == 0) {
 		WRITE_TO(PBUFF, ">++>");
@@ -317,8 +353,8 @@ void Problems::issue_problem_begin(parse_node_tree *T, char *message) {
 	} else if (strcmp(message, "**") == 0) {
 		this_is_a_subsequent_use_of_problem = FALSE;
 	} else {
-		if (T) Problems::show_problem_location(T);
-		problem_count++;
+		Problems::show_problem_location(T);
+		if (problematic) problem_count++; else warning_count++;
 		WRITE_TO(PBUFF, ">--> ");
 		this_is_a_subsequent_use_of_problem =
 			Problems::explained_before(message);
@@ -333,6 +369,10 @@ void Problems::issue_problem_end(void) {
 	ProblemBuffer::output_problem_buffer(1);
 	Problems::problem_documentation_links(problems_file);
 	if (crash_on_all_problems) ProblemSigils::force_crash();
+	currently_issuing_a_warning = FALSE;
+}
+void Problems::issue_warning_end(void) {
+	Problems::issue_problem_end();
 }
 
 @ Documentation links:
@@ -385,6 +425,9 @@ void Problems::issue_problem_segment(char *message) {
 		@<Act on the problem message text, since it is now contextually allowed@>;
 	}
 }
+void Problems::issue_warning_segment(char *message) {
+	Problems::issue_problem_segment(message);
+}
 
 @ Ordinarily we just append the new character, but we also act on the escapes
 |%P| and |%1| to |%9|. |%P| forces a paragraph break, or at any rate, it does
@@ -402,7 +445,9 @@ on when the shortened form is the one being issued).
 		if (Characters::isdigit((wchar_t) message[i+1])) {
 			int t = ((int) (message[i+1]))-((int) '0'); i++;
 			if ((t>=1) && (t<=9)) {
-				if (problem_quotations[t].wording_based)
+				if (problem_quotations[t].quotation_type == 'F')
+					@<Expand file reference@>
+				else if (problem_quotations[t].wording_based)
 					@<Expand wording-based escape@>
 				else
 					@<Expand structure-based escape@>
@@ -411,6 +456,11 @@ on when the shortened form is the one being issued).
 		}
 	}
 	PUT_TO(PBUFF, message[i]);
+
+@ This is where there is an explicit reference to a filename and line number.
+
+@<Expand file reference@> =
+	ProblemBuffer::copy_file_reference(problem_quotations[t].file, problem_quotations[t].line);
 
 @ This is where a quotation escape, such as |%2|, is expanded: by looking up
 its type, stored internally as a single character.

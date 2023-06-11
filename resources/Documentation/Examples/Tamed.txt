@@ -4,7 +4,7 @@ Examples of a container and a supporter that can be entered, as well as nested r
 
 Within a room, we might have containers and supporters that a player can enter. A chair, stool, table, dais, or pedestal would be an enterable supporter (anything we would describe a person as being "on"); a cage, hammock, or booth would be an enterable container (because we would describe the person as being "inside"). 
 
-When the player is in or on something, he is able to see the rest of the contents of the room, but a note such as "(in the hammock)" or "(on the poster bed)" is added to the room title when he looks around.
+When the player is in or on something, they are able to see the rest of the contents of the room, but a note such as "(in the hammock)" or "(on the poster bed)" is added to the room title when they look around.
 
 Here is an example to show off the possibilities:
 
@@ -40,7 +40,7 @@ Now we create our other location:
 
 	{**}Inside from the Center Ring is the Starry Vastness. 
 
-...which handles the case of the player typing >IN. (We will not assume by default that he wants to get into the cage with the lion, this being obviously perilous.) But we also want to make sure that the player who types >ENTER BOOTH winds up in the same place, so we should add:
+...which handles the case of the player typing >IN. (We will not assume by default that they want to get into the cage with the lion, this being obviously perilous.) But we also want to make sure that the player who types >ENTER BOOTH winds up in the same place, so we should add:
 	
 	{**}Instead of entering the magician's booth: try going inside.
 	

@@ -1,8 +1,8 @@
 ** Counting while comparing
 (Drawers where thing is always in the last opened; Yolk of Gold)
-Set of drawers where the item the player seeks is always in the last drawer he opens, regardless of the order of opening.
+Set of drawers where the item the player seeks is always in the last drawer they open, regardless of the order of opening.
 
-Suppose that for dramatic effect we would like the player to find the thing he is looking for always in the last drawer he opens...
+Suppose that for dramatic effect we would like the player to find the thing they are looking for always in the last drawer they open...
 
 	{*}"Yolk of Gold"
 

@@ -30,7 +30,7 @@ After that, we can use "the topic understood" to refer to the text we read:
 	"monkfish liver"	"monkfish liver"	"Expert eaters only"	"The odds of Ichiro's having this unusual delicacy is near zero."
 	"microdot"	"microdot"	"What you came here to deliver"	"There'll be time enough for that later. If Fowler ever turns up. Where is she, anyway?"
 	
-Since the player may not know what all the help options are, we might as well let him get an overview, as well.
+Since the player may not know what all the help options are, we might as well let them get an overview, as well.
 
 	{**}Understand "help" as summoning help.  Summoning help is an action applying to nothing.
 

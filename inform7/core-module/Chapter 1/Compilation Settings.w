@@ -23,16 +23,10 @@ meaningful only for works of IF and are inert for Basic Inform projects.
 @e ENGINEERING_NOTATION_UO
 @e UNABBREVIATED_OBJECT_NAMES_UO
 @e INDEX_FIGURE_THUMBNAILS_UO
-@e UNDO_PREVENTION_UO
-@e SERIAL_COMMA_UO
-@e PREDICTABLE_RANDOMISATION_UO
-@e COMMAND_LINE_ECHOING_UO
-@e AMERICAN_DIALECT_UO
-@e FULL_LENGTH_ROOM_DESCRIPTIONS_UO
-@e ABBREVIATED_ROOM_DESCRIPTIONS_UO
-@e VERBOSE_ROOM_DESCRIPTIONS_UO
-@e BRIEF_ROOM_DESCRIPTIONS_UO
-@e SUPERBRIEF_ROOM_DESCRIPTIONS_UO
+@e FAST_ROUTE_FINDING_UO
+@e SLOW_ROUTE_FINDING_UO
+@e DICTIONARY_RESOLUTION_UO
+@e NO_AUTO_PLURAL_NAMES_UO
 
 @ Note that Inform recognises these by their English names, so there would be no
 need to translate this to other languages.
@@ -49,39 +43,30 @@ need to translate this to other languages.
 	no scoring |                    ==> { NO_SCORING_UO, - }
 	engineering notation |          ==> { ENGINEERING_NOTATION_UO, - }
 	unabbreviated object names |    ==> { UNABBREVIATED_OBJECT_NAMES_UO, - }
+	no automatic plural synonyms |	==> { NO_AUTO_PLURAL_NAMES_UO, - }
 	index figure thumbnails |       ==> { INDEX_FIGURE_THUMBNAILS_UO, - }
-	undo prevention |               ==> { UNDO_PREVENTION_UO, - }
-	serial comma |                  ==> { SERIAL_COMMA_UO, - }
-	predictable randomisation |     ==> { PREDICTABLE_RANDOMISATION_UO, - }
-	command line echoing |          ==> { COMMAND_LINE_ECHOING_UO, - }
-	american dialect |              ==> { AMERICAN_DIALECT_UO, - }
-	full-length room descriptions | ==> { FULL_LENGTH_ROOM_DESCRIPTIONS_UO, - }
-	abbreviated room descriptions | ==> { ABBREVIATED_ROOM_DESCRIPTIONS_UO, - }
-	verbose room descriptions |     ==> { VERBOSE_ROOM_DESCRIPTIONS_UO, - }
-	brief room descriptions |       ==> { BRIEF_ROOM_DESCRIPTIONS_UO, - }
-	superbrief room descriptions    ==> { SUPERBRIEF_ROOM_DESCRIPTIONS_UO, - }
+	fast route-finding |  		==> { FAST_ROUTE_FINDING_UO, - }
+	slow route-finding | 		==> { SLOW_ROUTE_FINDING_UO, - }
+	dictionary resolution           ==> { DICTIONARY_RESOLUTION_UO, - }
 
 @ Some of the pragma-like settings are stored here:
 
 =
 typedef struct compilation_settings {
 	int allow_engineering_notation;
-	int American_dialect;
-	int command_line_echoing;
 	int dynamic_memory_allocation;
 	int index_figure_thumbnails;
 	int memory_economy_in_force;
 	int no_deprecated_features;
 	int no_verb_verb_exists;
 	int number_rules_in_index;
-	int predictable_randomisation;
 	int ranking_table_given;
-	int room_description_level;
 	int scoring_option_set;
-	int serial_comma;
-	int undo_prevention;
 	int use_exact_parsing_option;
-	int dict_word_size;
+        int no_auto_plural_names;
+	int dictionary_resolution;
+	int fast_route_finding;
+	int slow_route_finding;
 } compilation_settings;
 
 compilation_settings global_compilation_settings;
@@ -91,22 +76,21 @@ compilation_settings global_compilation_settings;
 =
 void CompilationSettings::initialise_gcs(void) {
 	global_compilation_settings.allow_engineering_notation = FALSE;
-	global_compilation_settings.American_dialect = FALSE;
-	global_compilation_settings.command_line_echoing = FALSE;
 	global_compilation_settings.dynamic_memory_allocation = 0;
 	global_compilation_settings.index_figure_thumbnails = 50;
 	global_compilation_settings.memory_economy_in_force = FALSE;
 	global_compilation_settings.no_deprecated_features = FALSE;
 	global_compilation_settings.no_verb_verb_exists = FALSE;
 	global_compilation_settings.number_rules_in_index = FALSE;
-	global_compilation_settings.predictable_randomisation = FALSE;
 	global_compilation_settings.ranking_table_given = FALSE;
-	global_compilation_settings.room_description_level = 2;
 	global_compilation_settings.scoring_option_set = NOT_APPLICABLE;
-	global_compilation_settings.serial_comma = FALSE;
-	global_compilation_settings.undo_prevention = FALSE;
 	global_compilation_settings.use_exact_parsing_option = FALSE;
-	global_compilation_settings.dict_word_size = -1;
+       	global_compilation_settings.no_auto_plural_names = FALSE;
+	int N = 9;
+	if (TargetVMs::is_16_bit(Task::vm())) N = 6;
+	global_compilation_settings.dictionary_resolution = N;
+	global_compilation_settings.fast_route_finding = FALSE;
+	global_compilation_settings.slow_route_finding = FALSE;
 }
 
 @ And when (for example) a "Use..." sentence triggers one of these, the
@@ -123,29 +107,23 @@ void CompilationSettings::set(int U, int N, source_file *from) {
 			else Extensions::set_authorial_modesty(E);
 			break;
 		}
-		case ABBREVIATED_ROOM_DESCRIPTIONS_UO: g->room_description_level = 3; break;
-		case AMERICAN_DIALECT_UO:              g->American_dialect = TRUE; break;
-		case BRIEF_ROOM_DESCRIPTIONS_UO:       g->room_description_level = 1; break;
-		case COMMAND_LINE_ECHOING_UO:          g->command_line_echoing = TRUE; break;
 		case ENGINEERING_NOTATION_UO:          g->allow_engineering_notation = TRUE; break;
-		case FULL_LENGTH_ROOM_DESCRIPTIONS_UO: g->room_description_level = 2; break;
 		case MEMORY_ECONOMY_UO:                g->memory_economy_in_force = TRUE; break;
 		case NO_DEPRECATED_FEATURES_UO:        g->no_deprecated_features = TRUE; break;
 		case NO_SCORING_UO:                    g->scoring_option_set = FALSE; break;
 		case NUMBERED_RULES_UO:                g->number_rules_in_index = TRUE; break;
-		case PREDICTABLE_RANDOMISATION_UO:     g->predictable_randomisation = TRUE; break;
 		case SCORING_UO:                       g->scoring_option_set = TRUE; break;
-		case SERIAL_COMMA_UO:                  g->serial_comma = TRUE; break;
-		case SUPERBRIEF_ROOM_DESCRIPTIONS_UO:  g->room_description_level = 3; break;
 		case TELEMETRY_RECORDING_UO:           ProblemBuffer::set_telemetry(); break;
 		case UNABBREVIATED_OBJECT_NAMES_UO:    g->use_exact_parsing_option = TRUE; break;
-		case UNDO_PREVENTION_UO:               g->undo_prevention = TRUE; break;
-		case VERBOSE_ROOM_DESCRIPTIONS_UO:     g->room_description_level = 2; break;
+                case NO_AUTO_PLURAL_NAMES_UO:          g->no_auto_plural_names = TRUE; break; 
+		case FAST_ROUTE_FINDING_UO:            g->fast_route_finding = TRUE; break;
+		case SLOW_ROUTE_FINDING_UO:            g->slow_route_finding = TRUE; break;
 	}
 	if (N > 0) {
 		switch (U) {
 			case DYNAMIC_MEMORY_ALLOCATION_UO: g->dynamic_memory_allocation = N; break;
 			case INDEX_FIGURE_THUMBNAILS_UO:   g->index_figure_thumbnails = N;   break;
+			case DICTIONARY_RESOLUTION_UO:     g->dictionary_resolution = N;            break;
 		}
 	}
 }

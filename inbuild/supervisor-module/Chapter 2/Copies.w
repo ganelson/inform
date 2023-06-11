@@ -78,6 +78,11 @@ void Copies::set_metadata(inbuild_copy *C, general_pointer ref) {
 	C->metadata = ref;
 }
 
+inbuild_nest *Copies::origin(inbuild_copy *C) {
+	if (C == NULL) return NULL;
+	return C->nest_of_origin;
+}
+
 @h List of errors.
 When copies are found to be malformed, error messages are attached to them
 for later reporting. These are stored in a list.

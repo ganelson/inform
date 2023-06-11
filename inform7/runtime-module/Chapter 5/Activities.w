@@ -137,7 +137,9 @@ void RTActivities::compilation_agent(compilation_subtask *t) {
 	Hierarchy::apply_metadata_from_iname(pack, ACTIVITY_AFTER_MD_HL,
 		RTRulebooks::id_iname(av->after_rules));
 	Hierarchy::apply_metadata_from_number(pack, ACTIVITY_UFA_MD_HL,
-		(inter_ti) Rulebooks::used_by_future_actions(av->before_rules));
+		(inter_ti) Activities::used_by_future_actions(av));
+	Hierarchy::apply_metadata_from_number(pack, ACTIVITY_HID_MD_HL,
+		(inter_ti) Activities::hide_in_debugging(av));
 
 	int empty = TRUE;
 	if (Rulebooks::is_empty(av->before_rules) == FALSE) empty = FALSE;

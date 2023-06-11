@@ -51,14 +51,21 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><b>EnglishLanguageKit</b></li></ul></div>
 <p class="purpose">The fundamental definitions needed by the parser and the verb library in order to specify the language of play -- that is, the language used for communications between the story file and the player.</p>
 
-<ul class="toc"><li><a href="S-lng.html#SP1">&#167;1. Identification</a></li><li><a href="S-lng.html#SP2">&#167;2. Vocabulary</a></li><li><a href="S-lng.html#SP3">&#167;3. Pronouns</a></li><li><a href="S-lng.html#SP4">&#167;4. Descriptors</a></li><li><a href="S-lng.html#SP5">&#167;5. Numbers</a></li><li><a href="S-lng.html#SP6">&#167;6. Time</a></li><li><a href="S-lng.html#SP7">&#167;7. Directions</a></li><li><a href="S-lng.html#SP8">&#167;8. Translation</a></li><li><a href="S-lng.html#SP9">&#167;9. Articles</a></li><li><a href="S-lng.html#SP10">&#167;10. Commands</a></li><li><a href="S-lng.html#SP11">&#167;11. Stubs</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-lng.html#SP1">&#167;1. Initialisation</a></li><li><a href="S-lng.html#SP2">&#167;2. Identification</a></li><li><a href="S-lng.html#SP3">&#167;3. Vocabulary</a></li><li><a href="S-lng.html#SP4">&#167;4. Pronouns</a></li><li><a href="S-lng.html#SP5">&#167;5. Descriptors</a></li><li><a href="S-lng.html#SP6">&#167;6. Numbers</a></li><li><a href="S-lng.html#SP7">&#167;7. Time</a></li><li><a href="S-lng.html#SP8">&#167;8. Directions</a></li><li><a href="S-lng.html#SP9">&#167;9. Translation</a></li><li><a href="S-lng.html#SP10">&#167;10. Articles</a></li><li><a href="S-lng.html#SP11">&#167;11. Commands</a></li><li><a href="S-lng.html#SP12">&#167;12. Stubs</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Identification. </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Initialisation. </b>It used to be optional whether or not to include a function of this name in
+a language kit: it's now compulsory, even when (as now) it does nothing.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">[ </span><span class="identifier-syntax">LanguageInitialise</span><span class="plain-syntax">; ];</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Identification. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ENGLISHLANGUAGEKIT</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Vocabulary. </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Vocabulary. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">AGAIN1__WD</span><span class="plain-syntax">     = </span><span class="character-syntax">'again'</span><span class="plain-syntax">;</span>
@@ -112,7 +119,7 @@
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RESTART__WD</span><span class="plain-syntax">    = </span><span class="character-syntax">'restart'</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RESTORE__WD</span><span class="plain-syntax">    = </span><span class="character-syntax">'restore'</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Pronouns. </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Pronouns. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguagePronouns</span><span class="plain-syntax"> </span><span class="identifier-syntax">table</span>
@@ -128,7 +135,7 @@
 <span class="plain-syntax">    </span><span class="character-syntax">'her'</span><span class="plain-syntax">     </span><span class="constant-syntax">$$010000000000</span><span class="plain-syntax">                    </span><span class="identifier-syntax">NULL</span>
 <span class="plain-syntax">    </span><span class="character-syntax">'them'</span><span class="plain-syntax">    </span><span class="constant-syntax">$$000111000111</span><span class="plain-syntax">                    </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Descriptors. </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Descriptors. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguageDescriptors</span><span class="plain-syntax"> </span><span class="identifier-syntax">table</span>
@@ -156,7 +163,7 @@
 <span class="plain-syntax">    </span><span class="character-syntax">'lighted'</span><span class="plain-syntax"> </span><span class="constant-syntax">$$111111111111</span><span class="plain-syntax">    </span><span class="identifier-syntax">LIGHTED_PK</span><span class="plain-syntax">      </span><span class="identifier-syntax">NULL</span>
 <span class="plain-syntax">    </span><span class="character-syntax">'unlit'</span><span class="plain-syntax">   </span><span class="constant-syntax">$$111111111111</span><span class="plain-syntax">    </span><span class="identifier-syntax">UNLIGHTED_PK</span><span class="plain-syntax">    </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Numbers. </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Numbers. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguageNumbers</span><span class="plain-syntax"> </span><span class="identifier-syntax">table</span>
@@ -169,7 +176,7 @@
 <span class="plain-syntax">    </span><span class="character-syntax">'twenty-nine'</span><span class="plain-syntax"> </span><span class="constant-syntax">29</span><span class="plain-syntax"> </span><span class="character-syntax">'thirty'</span><span class="plain-syntax"> </span><span class="constant-syntax">30</span>
 <span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Time. </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Time. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">LanguageTimeOfDay</span><span class="plain-syntax"> </span><span class="identifier-syntax">hours</span><span class="plain-syntax"> </span><span class="identifier-syntax">mins</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
@@ -180,19 +187,29 @@
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">hours</span><span class="plain-syntax">/12) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" pm"</span><span class="plain-syntax">; </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" am"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Directions. </b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Directions. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">LanguageDirection</span><span class="plain-syntax"> </span><span class="identifier-syntax">d</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="identifier-syntax">name</span><span class="plain-syntax">) </span><span class="identifier-syntax">d</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Translation. </b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Translation. </b>These are all opportunities to meddle with the normal (Anglo-centric) running
+of things, which we will decline.
+</p>
+
+<p class="commentary">Until April 2023, it was optional for a kit to provide <span class="extract"><span class="extract-syntax">LanguageRefers</span></span> and
+<span class="extract"><span class="extract-syntax">LanguagePrintShortName</span></span>, but this is now compulsory.
+</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">LanguageToInformese</span><span class="plain-syntax">; ];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">LanguageRefers</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">y</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1; ];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">LanguagePrintShortName</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax">; </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Articles. </b></p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Articles. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguageAnimateGender</span><span class="plain-syntax">   = </span><span class="identifier-syntax">male</span><span class="plain-syntax">;</span>
@@ -202,9 +219,15 @@
 <span class="plain-syntax">                                           </span><span class="comment-syntax">0 = starting with a consonant</span>
 <span class="plain-syntax">                                           </span><span class="comment-syntax">1 = starting with a vowel</span>
 
-<span class="plain-syntax">[ </span><span class="identifier-syntax">LanguageContraction</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">text</span><span class="plain-syntax">-&gt;0 == </span><span class="character-syntax">'a'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'e'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'i'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'o'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'u'</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'A'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'E'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'I'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'O'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'U'</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">LanguageContraction</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">ch</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">Iftrue</span><span class="plain-syntax"> </span><span class="identifier-syntax">CHARSIZE</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">ch</span><span class="plain-syntax"> = </span><span class="identifier-syntax">text</span><span class="plain-syntax">-&gt;0;</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">Ifnot</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">ch</span><span class="plain-syntax"> = </span><span class="identifier-syntax">text</span><span class="plain-syntax">--&gt;0;</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">; </span><span class="comment-syntax">CHARSIZE</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ch</span><span class="plain-syntax"> == </span><span class="character-syntax">'a'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'e'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'i'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'o'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'u'</span>
+<span class="plain-syntax">           </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'A'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'E'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'I'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'O'</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="character-syntax">'U'</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 
@@ -222,7 +245,7 @@
 
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguageGNAsToArticles</span><span class="plain-syntax"> --&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Commands. </b><span class="extract"><span class="extract-syntax">LanguageVerbLikesAdverb</span></span> is called by <span class="extract"><span class="extract-syntax">PrintCommand</span></span> when printing an <span class="extract"><span class="extract-syntax">UPTO_PE</span></span>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Commands. </b><span class="extract"><span class="extract-syntax">LanguageVerbLikesAdverb</span></span> is called by <span class="extract"><span class="extract-syntax">PrintCommand</span></span> when printing an <span class="extract"><span class="extract-syntax">UPTO_PE</span></span>
 error or an inference message.  Words which are intransitive verbs, i.e.,
 which require a direction name as an adverb ("walk west"), not a noun
 ("I only understood you as far as wanting to touch the ground"), should
@@ -262,7 +285,7 @@ adjective in a <span class="extract"><span class="extract-syntax">name</span></s
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Stubs. </b>To reduce the need for conditional compilation, we provide these stub
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Stubs. </b>To reduce the need for conditional compilation, we provide these stub
 routines:
 </p>
 

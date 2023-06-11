@@ -1,10 +1,10 @@
 ** The location of something
 (Person who follows the player; Van Helsing)
-A character who approaches the player, then follows him from room to room.
+A character who approaches the player, then follows them from room to room.
 
 Suppose we want to write a character who tries to be in the same room as the player. We will do this by testing every turn whether the character's location and the player's location are the same; if the answer is no, the character will look for a path to the player's location, then try to move along that path. (We will learn more about finding paths and giving characters instructions later.)
 
-The result will be that if the player ever moves to another location, the character will automatically pursue him.
+The result will be that if the player ever moves to another location, the character will automatically pursue them.
 
 	{*}"Van Helsing"
 

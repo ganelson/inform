@@ -38,7 +38,7 @@ comprehensive list of what is there.)
 	@<Establish resources offered by BasicInformKit@>;
 	@<Establish resources offered by WorldModelKit@>;
 	@<Establish resources offered by CommandParserKit@>;
-	@<Establish resources offered by either WorldModelKit or BasicInformExtrasKit@>;
+	@<Establish resources offered by either WorldModelKit or BasicInformKit@>;
 	@<Establish resources offered by EnglishLanguageKit@>;
 	@<Establish resources offered by DialogueKit@>;
 
@@ -540,7 +540,7 @@ comprehensive list of what is there.)
 @e PNTOVP_HL
 @e PRINTSHORTNAME_HL
 
-@<Establish resources offered by either WorldModelKit or BasicInformExtrasKit@> =
+@<Establish resources offered by either WorldModelKit or BasicInformKit@> =
 	KIT_PROVIDED(PNTOVP_HL,                           I"PNToVP")
 	KIT_PROVIDED(PRINTSHORTNAME_HL,                   I"PrintShortName")
 

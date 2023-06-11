@@ -43,4 +43,4 @@ We could, if we wanted, make a table of stored actions all of which represent th
 	
 	Test me with "eat lily / w / full score / get leaf / full".
 	
-This system is tidy, but limited: we cannot give actions interesting names in the score list, like "seducing the pirate's daughter" or "collecting a valuable artifact". So it will not be ideal in all situations, but it has the virtue of being easy to extend, and of listing all of the player's successes in the order in which they occurred in his play-through.
+This system is tidy, but limited: we cannot give actions interesting names in the score list, like "seducing the pirate's daughter" or "collecting a valuable artifact". So it will not be ideal in all situations, but it has the virtue of being easy to extend, and of listing all of the player's successes in the order in which they occurred in their play-through.
