@@ -1,0 +1,27 @@
+Startup Template.
+
+How the program starts up, in a Basic Inform project.
+
+@ Because the functions below are replaced by |WorldModelKit| alternatives
+if that kit is present, the following applies only to Basic Inform programs
+where |WorldModelKit| is not involved.
+
+=
+[ INITIALISE_MEMORY_R;
+	VM_PreInitialise();
+	LanguageInitialise();
+
+	HeapInitialise(); ! Create a completely unused memory allocation heap
+	StackFramingInitialise(); ! Create an empty stack
+	CreateDynamicRelations(); ! Create relation structures on the heap
+
+	rfalse;
+];
+
+[ Main;
+	self = COL_HSIZE; ! To ensure this definition is not optimised out
+	VM_Initialise();
+	INITIALISE_MEMORY_R();
+	SEED_RANDOM_NUMBER_GENERATOR_R();
+	Submain();
+];

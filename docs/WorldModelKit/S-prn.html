@@ -140,7 +140,7 @@ in "ZMachine.i6t".
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">DrawStatusLine</span><span class="plain-syntax"> </span><span class="identifier-syntax">width</span><span class="plain-syntax"> </span><span class="identifier-syntax">posb</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">+</span><span class="identifier-syntax">replacing</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="identifier-syntax">BasicInformKit</span><span class="plain-syntax">) [ </span><span class="identifier-syntax">DrawStatusLine</span><span class="plain-syntax"> </span><span class="identifier-syntax">width</span><span class="plain-syntax"> </span><span class="identifier-syntax">posb</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> </span><span class="identifier-syntax">say__p</span><span class="plain-syntax">; @</span><span class="identifier-syntax">push</span><span class="plain-syntax"> </span><span class="identifier-syntax">say__pc</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BeginActivity</span><span class="plain-syntax">(</span><span class="identifier-syntax">CONSTRUCTING_STATUS_LINE_ACT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">VM_StatusLineHeight</span><span class="plain-syntax">(1); </span><span class="identifier-syntax">VM_MoveCursorInStatusLine</span><span class="plain-syntax">(1, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
@@ -196,7 +196,7 @@ text substitution "[player's surroundings]".
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Player's name. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">PRINT_PROTAGONIST_INTERNAL_R</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">+</span><span class="identifier-syntax">replacing</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="identifier-syntax">BasicInformKit</span><span class="plain-syntax">) [ </span><span class="identifier-syntax">PRINT_PROTAGONIST_INTERNAL_R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">indef_mode</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">caps_mode</span><span class="plain-syntax">) </span><span class="identifier-syntax">PRINT_PROTAGONIST_INTERNAL_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'A'</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINT_PROTAGONIST_INTERNAL_RM</span><span class="plain-syntax">(</span><span class="character-syntax">'B'</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>

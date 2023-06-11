@@ -87,8 +87,8 @@ void KitManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 	}
 }
 
-@ So, for example, given |BasicInformExtrasKit-v10_1_0-beta+6V20| this returns
-20, the length of the actual name part |BasicInformExtrasKit|.
+@ So, for example, given |Architecture32Kit-v10_1_0-beta+6V20| this returns
+17, the length of the actual name part |Architecture32Kit|.
 
 =
 int KitManager::name_len(text_stream *arg) {

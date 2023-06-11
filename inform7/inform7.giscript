@@ -56,7 +56,6 @@ Tests/Documentation/
 
 Internal/Inter/Architecture16Kit/*.interb
 Internal/Inter/Architecture32Kit/*.interb
-Internal/Inter/BasicInformExtrasKit/*.interb
 Internal/Inter/BasicInformKit/*.interb
 Internal/Inter/CommandParserKit/*.interb
 Internal/Inter/DialogueKit/*.interb

@@ -1,16 +1,16 @@
-Total memory consumption was 137254K = 134 MB
+Total memory consumption was 137292K = 134 MB
 
- ---- was used for 2100411 objects, in 372339 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2101456 objects, in 372262 frames in 0 x 800K = 0K = 0 MB:
 
     30.2%  inter_tree_node_array                    59 x 8192 = 483328 objects, 42534752 bytes
-    19.2%  text_stream_array                        4808 x 100 = 480800 objects, 27078656 bytes
-    17.8%  linked_list                              44834 objects, 25107040 bytes
+    19.2%  text_stream_array                        4809 x 100 = 480900 objects, 27084288 bytes
+    17.8%  linked_list                              44798 objects, 25086880 bytes
     10.1%  inter_symbol_array                       134 x 1024 = 137216 objects, 14274752 bytes
-     9.7%  inter_error_stash_array                  105 x 1024 = 107520 objects, 13765920 bytes
+     9.8%  inter_error_stash_array                  106 x 1024 = 108544 objects, 13897024 bytes
      7.5%  parse_node                               133423 objects, 10673840 bytes
      5.4%  verb_conjugation                         164 objects, 7610912 bytes
      4.0%  parse_node_annotation_array              356 x 500 = 178000 objects, 5707392 bytes
-     2.7%  scan_directory                           923 objects, 3810144 bytes
+     2.6%  scan_directory                           914 objects, 3772992 bytes
      2.5%  pcalc_prop_array                         26 x 1000 = 26000 objects, 3536832 bytes
      2.2%  inter_name_array                         67 x 1000 = 67000 objects, 3218144 bytes
      1.9%  kind_array                               68 x 1000 = 68000 objects, 2722176 bytes
@@ -19,10 +19,10 @@ Total memory consumption was 137254K = 134 MB
      1.3%  package_request                          21235 objects, 1868680 bytes
      1.3%  vocabulary_entry_array                   164 x 100 = 16400 objects, 1842048 bytes
      1.1%  dict_entry_array                         481 x 100 = 48100 objects, 1554592 bytes
-     1.0%  inter_symbols_table                      26734 objects, 1497104 bytes
+     1.0%  inter_symbols_table                      26763 objects, 1498728 bytes
      1.0%  match_trie_array                         11 x 1000 = 11000 objects, 1496352 bytes
      1.0%  i6_schema_array                          24 x 100 = 2400 objects, 1440768 bytes
-     0.9%  inter_package                            26734 objects, 1283232 bytes
+     0.9%  inter_package                            26763 objects, 1284624 bytes
      0.8%  map_data                                 672 objects, 1128960 bytes
      0.7%  id_body                                  955 objects, 1092520 bytes
      0.7%  adjective_meaning                        208 objects, 1030016 bytes
@@ -36,13 +36,13 @@ Total memory consumption was 137254K = 134 MB
      0.3%  local_variable_array                     48 x 100 = 4800 objects, 462336 bytes
      0.2%  verb_usage                               1148 objects, 394912 bytes
      0.2%  rule                                     472 objects, 370048 bytes
-     0.2%  dictionary                               7695 objects, 369360 bytes
+     0.2%  dictionary                               7694 objects, 369312 bytes
      0.2%  verb_form                                388 objects, 350752 bytes
      0.2%  noun                                     2389 objects, 286680 bytes
      0.1%  compilation_subtask                      3369 objects, 269520 bytes
      0.1%  inter_annotation_array                   2 x 8192 = 16384 objects, 262208 bytes
      0.1%  inference_subject                        667 objects, 261464 bytes
-     0.1%  vanilla_function                         3754 objects, 240256 bytes
+     0.1%  vanilla_function                         3755 objects, 240320 bytes
      0.1%  binary_predicate                         326 objects, 172128 bytes
      0.1%  hierarchy_location                       1180 objects, 169920 bytes
      0.1%  linguistic_stock_item                    3332 objects, 159936 bytes
@@ -93,16 +93,16 @@ Total memory consumption was 137254K = 134 MB
      ----  verb_sense                               407 objects, 29304 bytes
      ----  parse_node_tree                          33 objects, 28776 bytes
      ----  action_pattern_array                     7 x 100 = 700 objects, 28224 bytes
-     ----  filename                                 635 objects, 25400 bytes
+     ----  filename                                 620 objects, 24800 bytes
      ----  shared_variable_set_array                6 x 100 = 600 objects, 24192 bytes
      ----  property                                 146 objects, 22192 bytes
      ----  backdrops_data                           672 objects, 21504 bytes
-     ----  pathname                                 527 objects, 21080 bytes
+     ----  pathname                                 521 objects, 20840 bytes
      ----  inter_node_list                          646 objects, 20672 bytes
      ----  nonlocal_variable                        94 objects, 20304 bytes
      ----  pipeline_step                            15 objects, 20280 bytes
-     ----  build_vertex                             169 objects, 20280 bytes
      ----  action_name                              90 objects, 20160 bytes
+     ----  build_vertex                             162 objects, 19440 bytes
      ----  timed_rules_rfd_data                     403 objects, 19344 bytes
      ----  method                                   395 objects, 18960 bytes
      ----  pcalc_prop_deferral                      86 objects, 17888 bytes
@@ -112,29 +112,29 @@ Total memory consumption was 137254K = 134 MB
      ----  action_name_list_array                   1 x 1000 objects, 16032 bytes
      ----  match_avinue_array                       1 x 1000 objects, 16032 bytes
      ----  adjective                                140 objects, 15680 bytes
-     ----  JSON_value                               177 objects, 15576 bytes
-     ----  web_bibliographic_datum                  232 objects, 14848 bytes
+     ----  JSON_value                               163 objects, 14344 bytes
      ----  booking_list                             407 objects, 13024 bytes
+     ----  web_bibliographic_datum                  203 objects, 12992 bytes
      ----  adjective_iname_holder                   323 objects, 12920 bytes
      ----  uniqueness_count                         474 objects, 11376 bytes
      ----  inter_construct                          31 objects, 10664 bytes
      ----  heading_tree                             33 objects, 10296 bytes
      ----  stopwatch_timer                          121 objects, 9680 bytes
-     ----  inbuild_work                             136 objects, 8704 bytes
-     ----  inbuild_copy                             66 objects, 7920 bytes
+     ----  inbuild_work                             135 objects, 8640 bytes
+     ----  inbuild_copy                             65 objects, 7800 bytes
      ----  equation_node                            68 objects, 7616 bytes
      ----  understanding_item_array                 3 x 100 = 300 objects, 7296 bytes
      ----  shared_variable_array                    1 x 100 objects, 7232 bytes
      ----  determiner                               22 objects, 7216 bytes
-     ----  inbuild_edition                          98 objects, 7056 bytes
+     ----  inbuild_edition                          97 objects, 6984 bytes
      ----  verb                                     109 objects, 6976 bytes
      ----  hierarchy_attachment_point               78 objects, 6864 bytes
      ----  inform_extension                         32 objects, 6656 bytes
      ----  text_literal_holder                      163 objects, 6520 bytes
-     ----  section_md                               62 objects, 5952 bytes
+     ----  section_md                               61 objects, 5856 bytes
      ----  parsed_use_option_setting                80 objects, 5760 bytes
-     ----  compatibility_specification              114 objects, 5472 bytes
-     ----  build_script                             169 objects, 5408 bytes
+     ----  compatibility_specification              113 objects, 5424 bytes
+     ----  build_script                             162 objects, 5184 bytes
      ----  activity                                 35 objects, 5040 bytes
      ----  explicit_action_array                    1 x 100 objects, 4832 bytes
      ----  value_property_data                      84 objects, 4704 bytes
@@ -158,7 +158,7 @@ Total memory consumption was 137254K = 134 MB
      ----  kind_constructor_instance_array          1 x 100 objects, 2432 bytes
      ----  equation_symbol                          30 objects, 2400 bytes
      ----  scene                                    1 object, 2352 bytes
-     ----  build_step                               32 objects, 2304 bytes
+     ----  build_step                               28 objects, 2016 bytes
      ----  pronoun_usage                            42 objects, 1680 bytes
      ----  compiler_feature                         30 objects, 1680 bytes
      ----  table_contribution_array                 1 x 100 objects, 1632 bytes
@@ -173,33 +173,33 @@ Total memory consumption was 137254K = 134 MB
      ----  invocation_options_array                 1 x 100 objects, 1224 bytes
      ----  direction_inference_data                 30 objects, 1200 bytes
      ----  inbuild_search_result                    29 objects, 1160 bytes
-     ----  web_md                                   8 objects, 1152 bytes
      ----  tree_inventory_item                      28 objects, 1120 bytes
      ----  submodule_identity                       34 objects, 1088 bytes
      ----  runtime_kind_structure                   13 objects, 1040 bytes
      ----  quantifier                               16 objects, 1024 bytes
+     ----  web_md                                   7 objects, 1008 bytes
      ----  pipeline_stage                           20 objects, 960 bytes
      ----  named_rulebook_outcome                   15 objects, 960 bytes
      ----  JSON_pair_requirement                    29 objects, 928 bytes
-     ----  inform_kit                               8 objects, 896 bytes
      ----  control_structure_phrase                 12 objects, 864 bytes
      ----  cached_understanding                     21 objects, 840 bytes
      ----  kit_configuration                        21 objects, 840 bytes
      ----  phrase_option_array                      1 x 100 objects, 824 bytes
+     ----  inform_kit                               7 objects, 784 bytes
      ----  copy_error                               7 objects, 784 bytes
      ----  internal_test                            15 objects, 720 bytes
-     ----  chapter_md                               8 objects, 704 bytes
-     ----  module                                   8 objects, 640 bytes
      ----  relation_guard                           5 objects, 640 bytes
      ----  implication                              13 objects, 624 bytes
+     ----  chapter_md                               7 objects, 616 bytes
      ----  code_generation                          1 object, 576 bytes
-     ----  generated_segment                        14 objects, 560 bytes
-     ----  inter_warehouse_room                     10 objects, 560 bytes
      ----  inter_annotation_form                    14 objects, 560 bytes
+     ----  generated_segment                        14 objects, 560 bytes
+     ----  module                                   7 objects, 560 bytes
+     ----  inter_warehouse_room                     10 objects, 560 bytes
      ----  rulebook_outcome                         17 objects, 544 bytes
      ----  small_word_set                           11 objects, 528 bytes
-     ----  equation                                 4 objects, 480 bytes
      ----  i6_memory_setting                        15 objects, 480 bytes
+     ----  equation                                 4 objects, 480 bytes
      ----  bp_family                                14 objects, 448 bytes
      ----  inference_family                         11 objects, 440 bytes
      ----  inbuild_genre                            8 objects, 384 bytes
@@ -213,15 +213,15 @@ Total memory consumption was 137254K = 134 MB
      ----  module_request                           8 objects, 320 bytes
      ----  inter_pipeline                           1 object, 312 bytes
      ----  up_family                                9 objects, 288 bytes
-     ----  compilation_unit                         5 objects, 280 bytes
      ----  explicit_bp_data                         5 objects, 280 bytes
-     ----  door_to_notice                           5 objects, 280 bytes
+     ----  compilation_unit                         5 objects, 280 bytes
      ----  contents_entry                           7 objects, 280 bytes
+     ----  door_to_notice                           5 objects, 280 bytes
      ----  verb_usage_tier                          5 objects, 240 bytes
      ----  kit_dependency                           5 objects, 240 bytes
      ----  inform_project                           1 object, 232 bytes
-     ----  adjective_meaning_family                 7 objects, 224 bytes
      ----  local_block_value                        4 objects, 224 bytes
+     ----  adjective_meaning_family                 7 objects, 224 bytes
      ----  test_scenario                            1 object, 216 bytes
      ----  release_instructions                     1 object, 208 bytes
      ----  build_skill                              5 objects, 200 bytes
@@ -229,19 +229,19 @@ Total memory consumption was 137254K = 134 MB
      ----  attachment_instruction                   5 objects, 200 bytes
      ----  plural_dictionary_entry                  4 objects, 192 bytes
      ----  element_activation                       6 objects, 192 bytes
-     ----  inter_architecture                       4 objects, 160 bytes
      ----  inference_subject_family                 5 objects, 160 bytes
      ----  imperative_defn_family                   4 objects, 160 bytes
+     ----  inter_architecture                       4 objects, 160 bytes
      ----  inbuild_nest                             3 objects, 120 bytes
      ----  inform_language                          1 object, 104 bytes
-     ----  inform_kit_ittt                          2 objects, 96 bytes
      ----  group_together_function                  2 objects, 80 bytes
      ----  article                                  2 objects, 80 bytes
      ----  compile_task_data                        1 object, 80 bytes
-     ----  figures_data                             1 object, 56 bytes
      ----  inter_warehouse                          1 object, 56 bytes
+     ----  figures_data                             1 object, 56 bytes
      ----  build_methodology                        1 object, 56 bytes
      ----  star_invention                           1 object, 48 bytes
+     ----  inform_kit_ittt                          1 object, 48 bytes
      ----  HTML_file_state                          1 object, 48 bytes
      ----  kind_template_definition                 1 object, 40 bytes
      ----  target_pragma_setting                    1 object, 40 bytes
@@ -251,16 +251,16 @@ Total memory consumption was 137254K = 134 MB
 
 100.0% was used for memory not allocated for objects:
 
-    61.8%  text stream storage                      86980272 bytes in 503870 claims
-     3.8%  dictionary storage                       5349376 bytes in 7695 claims
+    61.8%  text stream storage                      87015596 bytes in 504034 claims
+     3.8%  dictionary storage                       5348864 bytes in 7694 claims
      ----  sorting                                  2792 bytes in 403 claims
      5.1%  source text                              7200000 bytes in 3 claims
      7.6%  source text details                      10800000 bytes in 2 claims
      0.1%  documentation fragments                  262144 bytes in 1 claim
      ----  linguistic stock array                   81920 bytes in 2 claims
      ----  small word set array                     105600 bytes in 22 claims
-     3.2%  inter symbols storage                    4561760 bytes in 28111 claims
-    11.9%  inter bytecode storage                   16762448 bytes in 15 claims
+     3.2%  inter symbols storage                    4565968 bytes in 28141 claims
+    11.9%  inter bytecode storage                   16762820 bytes in 15 claims
      4.4%  inter links storage                      6222976 bytes in 11 claims
      0.1%  inter tree location list storage         191232 bytes in 32 claims
      1.2%  instance-of-kind counting                1705636 bytes in 1 claim
@@ -269,5 +269,5 @@ Total memory consumption was 137254K = 134 MB
      ----  code generation workspace for objects    3480 bytes in 19 claims
      0.1%  emitter array storage                    280672 bytes in 2002 claims
 
--136.-8% was overhead - -192296528 bytes = -187789K = -183 MB
+-136.-8% was overhead - -192372832 bytes = -187864K = -183 MB
 

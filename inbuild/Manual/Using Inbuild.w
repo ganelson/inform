@@ -292,9 +292,7 @@ We can also tell Inbuild to work on everything it finds in a given directory
 	$ inbuild/Tangled/inbuild -inspect -contents-of inform7/Internal/Inter
 	kit: EnglishLanguageKit at path inform7/Internal/Inter/EnglishLanguageKit
 	kit: CommandParserKit at path inform7/Internal/Inter/CommandParserKit
-	kit: BasicInformExtrasKit at path inform7/Internal/Inter/BasicInformExtrasKit
-	kit: WorldModelKit at path inform7/Internal/Inter/WorldModelKit
-	kit: BasicInformKit at path inform7/Internal/Inter/BasicInformKit
+	...
 =
 For compatibility with the |inform7| command line syntax, we can also specify
 the project target using |-project|:

@@ -5,15 +5,6 @@
         "version": "10.2.0-beta+6W61"
     },
     "needs": [ {
-        "unless": {
-            "type": "kit",
-            "title": "WorldModelKit"
-        },
-        "need": {
-            "type": "kit",
-            "title": "BasicInformExtrasKit"
-        }
-    }, {
         "need": {
             "type": "extension",
             "title": "Basic Inform",

@@ -86,6 +86,7 @@ and otherwise there was no decision.
 =
 Global process_rulebook_count; ! Depth of processing recursion
 Global debugging_rules = false; ! Are we tracing rule invocations?
+Global rulebook_without_variables = -1; ! WorldModelKit sets this to ACTION_PROCESSING_RB
 
 [ FollowRulebook rulebook parameter no_paragraph_skips
 	rv ss spv;
@@ -105,10 +106,10 @@ Global debugging_rules = false; ! Are we tracing rule invocations?
 	if ((rulebook >= 0) && (rulebook < NUMBER_RULEBOOKS_CREATED)) {
 		rv = rulebooks_array-->rulebook;
 		if (rv ~= EMPTY_RULEBOOK) {
-			if (rulebook ~= ACTION_PROCESSING_RB) MStack_CreateRBVars(rulebook);
+			if (rulebook ~= rulebook_without_variables) MStack_CreateRBVars(rulebook);
 			if (say__p) RulebookParBreak(no_paragraph_skips);
 			rv = rv(no_paragraph_skips);
-			if (rulebook ~= ACTION_PROCESSING_RB) MStack_DestroyRBVars(rulebook);
+			if (rulebook ~= rulebook_without_variables) MStack_DestroyRBVars(rulebook);
 		} else {
 			rv = 0;
 		}

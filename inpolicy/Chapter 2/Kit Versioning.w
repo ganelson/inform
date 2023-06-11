@@ -32,7 +32,6 @@ void KitVersioning::iterate(semantic_version_number set_to) {
 	KitVersioning::show_version(I"EnglishLanguageKit", set_to);
 	KitVersioning::show_version(I"CommandParserKit", set_to);
 	KitVersioning::show_version(I"BasicInformKit", set_to);
-	KitVersioning::show_version(I"BasicInformExtrasKit", set_to);
 	KitVersioning::show_version(I"Architecture16Kit", set_to);
 	KitVersioning::show_version(I"Architecture32Kit", set_to);
 }

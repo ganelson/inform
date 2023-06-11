@@ -121,7 +121,7 @@ To implement some of the out of world actions.
 		if (d < c-1) print ", ";
 		if (d == c-1) {
 			if (BasicInformKit`SERIAL_COMMA_CFGF) print ",";
-			LIST_WRITER_INTERNAL_RM('C');
+			LW_Response('C');
 		}
 	}
 	if (player ~= selfobj) {

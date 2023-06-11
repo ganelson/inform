@@ -72,7 +72,7 @@ do it by carrying out an activity.
 
 =
 [ PSN__ o;
-    if (o == 0) { LIST_WRITER_INTERNAL_RM('Y'); rtrue; }
+    if (o == 0) { LW_Response('Y'); rtrue; }
     switch (metaclass(o)) {
 		Routine:  print "<routine ", o, ">"; rtrue;
 		String:   print "<string ~", (string) o, "~>"; rtrue;
@@ -97,7 +97,7 @@ Global caps_mode = false;
 [ STANDARD_NAME_PRINTING_R obj;
 	obj = parameter_value;
     if (obj == 0) {
-    	LIST_WRITER_INTERNAL_RM('Y'); return;
+    	LW_Response('Y'); return;
     }
     switch (metaclass(obj)) {
 		Routine:  print "<routine ", obj, ">"; return;
@@ -204,7 +204,7 @@ The routines accessible from outside this segment.
 
 =
 [ IndefArt obj i s;
-	if (obj == 0) { LIST_WRITER_INTERNAL_RM('Y'); rtrue; }
+	if (obj == 0) { LW_Response('Y'); rtrue; }
     i = indef_mode; indef_mode = true; s = self; self = obj;
     if (obj has proper) { indef_mode = NULL; print (PSN__) obj; indef_mode = i; self = s; return; }
     if ((obj provides article) && (TEXT_TY_Compare(obj.article, EMPTY_TEXT_VALUE) ~= 0)) {
@@ -215,7 +215,7 @@ The routines accessible from outside this segment.
 ];
 
 [ CIndefArt obj i s;
-	if (obj == 0) { LIST_WRITER_INTERNAL_RM('X'); rtrue; }
+	if (obj == 0) { LW_Response('X'); rtrue; }
     i = indef_mode; indef_mode = true; s = self; self = obj;
     if (obj has proper) {
     	indef_mode = NULL;
@@ -258,4 +258,60 @@ The routines accessible from outside this segment.
         return;
     }
     PrefaceByArticle(obj, 0); indef_mode = i; self = s;
+];
+
+@h Miscellaneous.
+What the following functions have in common is that they are all minimal
+definitions which apply only to Basic Inform programs. More elaborate
+|WorldModelKit| alternatives will be used if that kit is present, as it
+always is for non-Basic Inform projects.
+
+=
+[ DrawStatusLine width posb; ]; ! No status line is displayed
+[ DefaultTopic; return 0; ]; ! Topics exist only in CommandParserKit
+[ PrintSnippet x; ]; ! Snippets exist only in CommandParserKit
+[ PRINT_PROTAGONIST_INTERNAL_R; ]; ! There is no player in Basic Inform
+[ RunTimeProblemShowWM n x y z; ]; ! Prints RTPs only occurring in WorldModelKit
+
+@ PNToVP() takes no arguments and returns the GNA (gender-noun-animation) for
+the |prior_named_noun|.
+
+=
+[ PNToVP gna;
+	if (prior_named_noun) gna = GetGNAOfObject(prior_named_noun);
+	if (((gna%6)/3 == 1) || (prior_named_list >= 2)) return 6;
+	return 3;
+];
+[ GetGNAOfObject obj case gender;
+    if (gender == 0) {
+        if (case == 0) gender = LanguageAnimateGender;
+        else gender = LanguageInanimateGender;
+    }
+    if (obj has pluralname) case = case + 3;
+    return case;
+];
+
+@ This provides just a little of the list-writer.
+
+=
+[ WriteListOfMarkedObjects in_style
+	obj c;
+	objectloop (obj ofclass Object && obj has workflag2) {
+		c++;
+	}
+	objectloop (obj ofclass Object && obj has workflag2) {
+		PrintShortName(obj);
+		c--;
+		if (c > 0) print ", ";
+	}
+];
+[ LW_Response X o; print " and "; ];
+
+@ These two functions are not really to do with printing, but are also stubs
+provided for Basic Inform only.
+
+=
+[ OwnerOf o; return nothing; ]; ! "owner" implies personhood, and we have no people
+[ MoveObject A B; ! this is considerably more restricted by WorldModelKit
+	if ((A) && (B)) move A to B;
 ];

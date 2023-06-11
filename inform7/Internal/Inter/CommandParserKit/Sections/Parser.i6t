@@ -278,7 +278,7 @@ signed, and the loop |for (i=from: i<=to: ...)| will fail if the addresses
 are above 32K. This only rarely happens, but it can.
 
 =
-[ PrintSnippet snip from to i w1 w2;
++replacing(from BasicInformKit) [ PrintSnippet snip from to i w1 w2;
 	w1 = snip/100; w2 = w1 + (snip%100) - 1;
 	if ((w2<w1) || (w1<1) || (w2>WordCount())) {
 		if ((w1 == 1) && (w2 == 0)) rfalse;
@@ -3895,7 +3895,7 @@ Manual}, 4th edition.
     rfalse;
 ];
 
-[ GetGNAOfObject obj case gender;
++replacing(from BasicInformKit) [ GetGNAOfObject obj case gender;
     if (obj hasnt animate) case = 6;
     if (obj has male) gender = male;
     if (obj has female) gender = female;
@@ -4174,7 +4174,7 @@ Array alt_match_list --> (MATCH_LIST_WORDS+1);
 A default value for the I7 sort-of-kind "topic", which never matches.
 
 =
-[ DefaultTopic; return GPR_FAIL; ];
++replacing(from BasicInformKit) [ DefaultTopic; return GPR_FAIL; ];
 
 @h Recognition-only-GPR.
 An I6 general parsing routine to look at words from the position marker

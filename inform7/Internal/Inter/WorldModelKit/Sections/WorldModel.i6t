@@ -327,7 +327,7 @@ from play, then |worn| is removed.
 A person has something if and only if he either wears or carries it.
 
 =
-[ OwnerOf obj p;
++replacing(from BasicInformKit) [ OwnerOf obj p;
 	p = parent(obj);
 	if (p && (p ofclass K8_person)) return p;
 	return nothing;
@@ -376,7 +376,7 @@ Note that an object is detached from its component parent, if it has one,
 when moved.
 
 =
-[ MoveObject F T opt going_mode was L;
++replacing(from BasicInformKit) [ MoveObject F T opt going_mode was L;
 	if (F == nothing) return RunTimeProblem(RTP_CANTMOVENOTHING);
 	if (F ofclass K7_backdrop) {
 		if (T ofclass K9_region) {

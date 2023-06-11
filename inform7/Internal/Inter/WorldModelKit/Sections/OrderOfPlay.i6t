@@ -21,8 +21,9 @@ explained in the Standard Rules.
 Global EarlyInTurnSequence;
 Global IterationsOfTurnSequence;
 
-[ Main;
++replacing(from BasicInformKit) [ Main;
 	say__pc = say__pc | PARA_NORULEBOOKBREAKS;
+	rulebook_without_variables = ACTION_PROCESSING_RB;
 	FollowRulebook(STARTUP_RB);
 	if (say__pc & PARA_NORULEBOOKBREAKS) say__pc = say__pc - PARA_NORULEBOOKBREAKS;
 	while (true) {
@@ -103,7 +104,7 @@ text: thus, if there is some long text to read before the player finds out
 where he is, the surprise will not be spoiled.
 
 =
-[ INITIALISE_MEMORY_R;
++replacing(from BasicInformKit) [ INITIALISE_MEMORY_R;
 	VM_PreInitialise();
 	LanguageInitialise();
 

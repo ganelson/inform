@@ -125,10 +125,11 @@ following command-line tools:
 The following webs are the source for kits of Inter code shipped with Inform (at the subtree inform7/Internal/Inter). Kits are libraries of code needed at run-time, and whose source is written in Inform 6 notation:
 
 * BasicInformKit - Support for Inform as a programming language - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/BasicInformKit/index.html)
+* Architecture16Kit - Support for running on 16-bit platforms - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/Architecture16Kit/index.html)
+* Architecture32Kit - Support for running on 32-bit platforms - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/Architecture32Kit/index.html)
 * WorldModelKit - Support for modelling space, time and actions in interactive fiction - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/WorldModelKit/index.html)
 * EnglishLanguageKit - Support for English as the natural language used - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/EnglishLanguageKit/index.html)
 * CommandParserKit - Support for parsing turn-by-turn commands in interactive fiction - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/CommandParserKit/index.html)
-* BasicInformExtrasKit - Additional support needed only if the Standard Rules are not used - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/BasicInformExtrasKit/index.html)
 * DialogueKit - Additional support for dialogue (under construction) - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/DialogueKit/index.html)
 
 ### Extensions shipped with Inform

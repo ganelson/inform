@@ -208,7 +208,7 @@ use the "listing contents of..." activity in any circumstances.
 				if (BasicInformKit`SERIAL_COMMA_CFGF) {
 					if (no_items ~= 2) print ",";
 				}
-				LIST_WRITER_INTERNAL_RM('C');
+				LW_Response('C');
 			}
 		}
 	}
