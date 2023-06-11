@@ -128,7 +128,6 @@ Global left_hand_status_line = T_SL_Location; ! = I7 "left hand status line"
 Global right_hand_status_line = T_SL_Score_Moves; ! = I7 "right hand status line"
 
 ! (7)
-Global player; ! = I7 "player"
 Global real_location; ! = I7 "location"
 Global visibility_ceiling; ! highest object in tree visible to player
 Global visibility_levels; ! distance in tree to that

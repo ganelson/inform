@@ -172,7 +172,6 @@ plural name rulebook.
 The standard printing the plural name rule is defined by Inter as
 "STANDARD_PLURAL_NAME_PRINTING_R".
 
-
 Part Three - Phrasebook
 
 Chapter 1 - Saying

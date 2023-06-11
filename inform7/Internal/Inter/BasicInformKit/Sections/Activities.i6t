@@ -27,6 +27,7 @@ but are included in |BasicInformKit| anyway in order that the activities code
 below can compile in both Basic and regular Inform projects.
 
 =
+Global player;
 Global action;
 Global action_to_be; ! (if the current command line being parsed were accepted)
 

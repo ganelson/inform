@@ -107,4 +107,3 @@ The standard printing the plural name rule is listed last in the for printing th
 plural name rulebook.
 The standard printing the plural name rule is defined by Inter as
 "STANDARD_PLURAL_NAME_PRINTING_R".
-

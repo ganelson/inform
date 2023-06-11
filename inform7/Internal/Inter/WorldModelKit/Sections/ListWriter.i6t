@@ -150,7 +150,7 @@ before objects in Room B if A was created before B in the source text).
 Global MarkedObjectArray = 0;
 Global MarkedObjectLength = 0;
 
-[ WriteListOfMarkedObjects in_style
++replacing(from BasicInformKit) [ WriteListOfMarkedObjects in_style
 	obj common_parent first mixed_parentage length g gc;
 
 	gc = -2;

@@ -272,6 +272,11 @@ require that $1\leq w_1\leq w_2\leq N$, where $N$ is the number of words in
 the current player's command. The entire command is therefore represented by:
 $$ C = 100 + N $$
 
+A careless bug in this code lasted for many years: on a 16-bit architecture
+we have to remember that addresses in byte-addressable memory are potentially
+signed, and the loop |for (i=from: i<=to: ...)| will fail if the addresses
+are above 32K. This only rarely happens, but it can.
+
 =
 [ PrintSnippet snip from to i w1 w2;
 	w1 = snip/100; w2 = w1 + (snip%100) - 1;
@@ -281,7 +286,7 @@ $$ C = 100 + N $$
 	}
 	#Iftrue CHARSIZE == 1;
 	from = WordAddress(w1); to = WordAddress(w2) + WordLength(w2) - 1;
-	for (i=from: i<=to: i++) print (char) i->0;
+	for (i=0: i<=to-from: i++) print (char) from->i;
 	#Ifnot;
 	from = WordAddress(w1); to = WordAddress(w2) + WORDSIZE * (WordLength(w2) - 1);
 	for (i=from: i<=to: i=i+WORDSIZE) print (char) i-->0;
@@ -689,7 +694,6 @@ Get the input, do OOPS and AGAIN.
 		Keyboard(buffer,parse);
 		num_words = WordCount(); players_command = 100 + num_words;
     } if (EndActivity(READING_A_COMMAND_ACT)) jump ReType;
-
   .ReParse;
 
     parser_inflection = name;

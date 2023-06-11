@@ -15,6 +15,7 @@ Sections
 	MStack
 	Rulebooks
 	Activities
+	Printing
 	Flex
 	BlockValues
 	Text
