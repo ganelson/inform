@@ -12770,11 +12770,17 @@ This text substitution expands to the banner text giving bibliographic details o
 
 ^^{virtual machine: starting the virtual machine+activity+}
 
-<b>1. When it happens.</b> This activity is provided solely as a "hook" for any low-level tasks which need to be performed when the virtual computer which runs Inform story files is starting up. This happens much earlier than "when play begins" rules, and should be used only as a last resort.
+<b>1. When it happens.</b> This activity is provided as a "hook" for any low-level tasks which need to be performed when the virtual computer which runs Inform story files is starting up. This happens much earlier than "when play begins" rules, and contains a lot of critical low-level code; most authors will not need to delve into its details, but if necessary it can be controlled like any other activity. Extension authors however may find it to be a useful place to put their code.
 
-It should be remembered that Inform can produce story files for several different virtual computers. On some of these, it will not be safe to print any text during this activity, as the windows which would display such text do not yet exist.
+It should be remembered that Inform can produce story files for several different virtual computers. On some of these, it may not be safe to print any text during this activity, as the windows which would display such text do not yet exist. In Glulx, Inform's default format, you can safely print text in the after rules, but not the before or for rules. In general, the three rulebooks of the activity should be used in this manner:
 
-<b>2. The default behaviour.</b> None.
+(i) The before rulebook should be used only for rules that do not need any input/output systems.
+(ii) The for rulebook should be used for rules involved with setting up the input/output systems.
+(iii) The after rulebook should be used for rules which depend on the input/output systems.
+
+Many extensions would most appropriately put their rules in the after rulebook, though Glk extensions will often need to use all three.
+
+<b>2. The default behaviour.</b> Inform's low-level systems are set up, as well as the virtual machine's input/output systems.
 
 <b>3. Examples.</b> No detailed examples will be given here, but the activity might be used (for instance) to set styles for the Glulx windows shortly to be brought into existence.
 
