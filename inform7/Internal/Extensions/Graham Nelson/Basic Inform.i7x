@@ -1,4 +1,4 @@
-Version 1 of Basic Inform by Graham Nelson begins here.
+Version 2 of Basic Inform by Graham Nelson begins here.
 
 "Basic Inform, included in every project, defines the basic framework
 of Inform as a programming language."

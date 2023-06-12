@@ -1,4 +1,4 @@
-Version 13 of Locksmith by Emily Short begins here.
+Version 14 of Locksmith by Emily Short begins here.
 
 "Implicit handling of doors and containers so that lock manipulation is automatic if the player has the necessary keys."
 

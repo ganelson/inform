@@ -1,4 +1,4 @@
-Version 1 of English Language by Graham Nelson begins here.
+Version 2 of English Language by Graham Nelson begins here.
 
 "To make English the language of play."
 
