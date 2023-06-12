@@ -8,6 +8,7 @@ packagetype _function
 packagetype _code
 packagetype _linkage
 packagetype _property
+origin @origin_1 "inter/Tests/General/Assim.intert"
 package main _plain
 	constant VERB_DIRECTIVE_DIVIDER = 1
 	constant VERB_DIRECTIVE_RESULT = 2
@@ -30,21 +31,21 @@ package main _plain
 		package Falsity_fn _function
 			package Falsity _code
 				code
-					origsource "inter/Tests/General/Assim.intert" 10
+					provenance @origin_1 10
 					inv !return
 						val 0
-					origsource
+					provenance -
 		package Demo_fn _function
 			package Demo _code
 				local x
 				local y
 				code
-					origsource "inter/Tests/General/Assim.intert" 11
+					provenance @origin_1 11
 					inv !return
 						inv !plus
 							val x
 							val y
-					origsource
+					provenance -
 		package arrays _submodule
 			package XA_arr _plain
 				constant (list of unchecked) XA = { 2, 4, 56 } __assimilated
@@ -69,17 +70,17 @@ package main _plain
 				local x1
 				local x2
 				code
-					origsource "inter/Tests/General/Assim.intert" 23
+					provenance @origin_1 23
 					inv !return
 						val 0
-					origsource
+					provenance -
 		package Peach_fn _function
 			package Peach _code
 				code
-					origsource "inter/Tests/General/Assim.intert" 24
+					provenance @origin_1 24
 					inv !return
 						val 0
-					origsource
+					provenance -
 		package marmorial_prop _property
 			constant property_id = 0
 			property (int2) marmorial __assimilated

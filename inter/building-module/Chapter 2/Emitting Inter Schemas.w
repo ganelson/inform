@@ -518,7 +518,7 @@ Therefore:
 			origlinenum = Str::atoi(node->child_node->expression_tokens->next->material, 0);
 		}
 	}
-	Produce::origsource(I, Provenance::at_file_and_line(origfilename, origlinenum));
+	Produce::provenance(I, Provenance::at_file_and_line(origfilename, origlinenum));
 
 @ An |EVAL_ISNT| node can have any number of children, they are sequentially
 evaluated for their potential side-effects, but only the last produces a value.

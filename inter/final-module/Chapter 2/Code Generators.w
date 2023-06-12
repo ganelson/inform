@@ -245,16 +245,16 @@ void Generators::evaluate_label(code_generation *gen, text_stream *label_name) {
 	VOID_METHOD_CALL(gen->generator, EVALUATE_LABEL_MTID, gen, label_name);
 }
 
-@ OrigSource directives. These identify the original source location that
+@ Provenance instructions. These identify the original source location that
 generated the current code.
 
-@e PLACE_ORIGSOURCE_MTID
+@e PLACE_PROVENANCE_MTID
 
 =
-VOID_METHOD_TYPE(PLACE_ORIGSOURCE_MTID, code_generator *generator, code_generation *gen,
+VOID_METHOD_TYPE(PLACE_PROVENANCE_MTID, code_generator *generator, code_generation *gen,
 	text_provenance *source_loc)
-void Generators::place_origsource(code_generation *gen, text_provenance *source_loc) {
-	VOID_METHOD_CALL(gen->generator, PLACE_ORIGSOURCE_MTID, gen, source_loc);
+void Generators::place_provenance(code_generation *gen, text_provenance *source_loc) {
+	VOID_METHOD_CALL(gen->generator, PLACE_PROVENANCE_MTID, gen, source_loc);
 }
 
 @ The three ways to invoke (and a doohickey for assembly opcodes):

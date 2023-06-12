@@ -60,11 +60,14 @@ record their provenance and so make better error reporting possible.
 
 6.0.0 (25 May 2023) added the |ORIGSOURCE_IST| instruction.
 
+7.0.0 (11 June 2023) renamed |ORIGSOURCE_IST| to |PROVENANCE_IST|, and added the
+|ORIGIN_IST| instruction.
+
 @ Anyway, the implementation, such as it is:
 
 =
 semantic_version_number InterVersion::current(void) {
-	semantic_version_number V = VersionNumbers::from_text(I"6.0.0");
+	semantic_version_number V = VersionNumbers::from_text(I"7.0.0");
 	if (VersionNumbers::is_null(V)) internal_error("malformed version number");
 	return V;
 }

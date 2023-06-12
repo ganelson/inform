@@ -45,7 +45,7 @@ void CodeInstruction::verify_children(inter_construct *IC, inter_tree_node *P,
 			(C->W.instruction[0] != LABEL_IST) &&
 			(C->W.instruction[0] != VAL_IST) &&
 			(C->W.instruction[0] != COMMENT_IST) &&
-			(C->W.instruction[0] != ORIGSOURCE_IST) &&
+			(C->W.instruction[0] != PROVENANCE_IST) &&
 			(C->W.instruction[0] != NOP_IST)) {
 			*E = Inode::error(C, I"only executable matter can be below a code", NULL);
 			return;
