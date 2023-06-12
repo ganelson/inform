@@ -78,7 +78,7 @@ and now poses a moral rather than gender-based question.
 	([commit f46433c](https://github.com/ganelson/inform/commit/f46433c22cfd9d414b7c337f8ee58220fb9286cc))
 - Fix for Jira bug [I7-2265](https://inform7.atlassian.net/browse/I7-2265)
 	"Compiler fails on creating an instance of a specified kind with multiple parts"
-	([commit ](https://github.com/ganelson/inform/commit/))
+	([commit af2531f](https://github.com/ganelson/inform/commit/af2531f4b2b4d1f59e4a9b45a8ddc274c94c7f77))
 - Fix for Jira bug [I7-2264](https://inform7.atlassian.net/browse/I7-2264)
 	"Cannot compile 'Verb meta' directive inside a kit"
 	([commit cbe7012](https://github.com/ganelson/inform/commit/cbe7012fb6950932ebf2a4b9290f80bcd5970ad1)):
