@@ -1,0 +1,16 @@
+Lab is a room.
+The box is in the Lab.
+
+Before doing anything when the player does not carry the box (this is the yow rule): say "yow."
+
+This is the zow rule: say "zow.".
+
+Every turn (this is the kow rule): say "kow."
+
+This is the pow rule: say "pow."
+
+The zow rule substitutes for the yow rule when the player carries the box.
+
+The pow rule substitutes for the kow rule.
+
+Test me with "z / get box / z / drop box / z".

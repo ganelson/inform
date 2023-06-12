@@ -126,6 +126,7 @@ void RulePlacement::request_substitute(parse_node *p1, parse_node *p2, parse_nod
 	rule *old_rule = <<rp>>;
 	wording CW = EMPTY_WORDING;
 	if (p3) CW = Node::get_text(p3);
+LOG("Impose constraint %W, %W, %W, %d\n", new_rule->name, old_rule->name, CW, sense);
 	Rules::impose_constraint(new_rule, old_rule, CW, (sense)?FALSE:TRUE);
 }
 

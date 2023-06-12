@@ -1,0 +1,49 @@
+   Lab
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  yow.
+  
+  Lab
+  You can see a box here.
+  
+> >   Lab
+  (Testing.)
+  
+  >[1] z
+  yow.
+  
+  Time passes.
+  
+  pow.
+  
+  >[2] get box
+  yow.
+  
+  Taken.
+  
+  pow.
+  
+  >[3] z
+  zow.
+  
+  Time passes.
+  
+  pow.
+  
+  >[4] drop box
+  zow.
+  
+  Dropped.
+  
+  pow.
+  
+  >[5] z
+  yow.
+  
+  Time passes.
+  
+  pow.
+  
+> >
