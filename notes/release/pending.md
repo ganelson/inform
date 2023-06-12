@@ -111,6 +111,10 @@ and now poses a moral rather than gender-based question.
 - Fix for Jira bug [I7-2225](https://inform7.atlassian.net/browse/I7-2225)
 	"Translating kinds into I6 doesn't work"
 	(Inweb: [commit d608388](https://github.com/ganelson/inweb/commit/d608388d643a85d1aa3c88cfa1710b848bd5cb7e))
+- Fix for Jira bug [I7-2142](https://inform7.atlassian.net/browse/I7-2142)
+	"With 'the foo rule substitutes for the bar rule when...', the bar rule is
+	suppressed but the foo rule isn't followed."
+	([commit 11e1f75](https://github.com/ganelson/inform/commit/11e1f756c16aa17b31afd02ca2bb5f4e5abd3ac6))
 - Fix for Jira bug [I7-2139](https://inform7.atlassian.net/browse/I7-2139)
 	"Articles become part of relation name"
 	([commit 85110a9](https://github.com/ganelson/inform/commit/85110a981a3d2419b3778eb383408de122c301a8))
