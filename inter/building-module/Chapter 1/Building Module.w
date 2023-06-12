@@ -86,6 +86,7 @@ typedef struct building_site {
 	struct site_packaging_data spdata;
 	struct site_production_data sprdata;
 	struct site_primitives_data spridata;
+	struct site_origins_data soridata;
 } building_site;
 
 void BuildingModule::clear_data(inter_tree *I) {
@@ -94,6 +95,7 @@ void BuildingModule::clear_data(inter_tree *I) {
 	Produce::clear_site_data(I);
 	Packaging::clear_site_data(I);
 	Primitives::clear_site_data(I);
+	Origins::clear_site_data(I);
 }
 
 @h The end.

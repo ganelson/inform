@@ -217,9 +217,14 @@ existing socket here.)
 	DISCARD_TEXT(identifier)
 
 @ Okay, so now for the first cross-referencing fix. The following function traverses
-every node inside the |migrant| tree. The first thing to do is to correct |P->tree|,
-which records, for every node, the tree to which it belongs: this is why the traverse
-needs to visit every node inside |migrant| (including its own head node). But we
+every node inside the |migrant| tree.
+
+First, we amend any source file origin references in provenance instructions. For
+that to work, we need the instruction to have its original |P->tree| value,
+which records, for every node, the tree to which it belongs.
+
+But then we correct |P->tree|: the need to do this is why the traverse has to
+visit every node inside |migrant| (including its own head node). But we
 need to work out the |primitive| invoked first, because the interpretation of the
 bytecode in the invocation depends on |P->tree|, and will give a meaningful
 answer only if |P->tree| is still its original value.
@@ -230,6 +235,8 @@ head nodes.
 =
 void Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, void *state) {
 	transmigration_details *det = (transmigration_details *) state;
+	if (Inode::is(P, PROVENANCE_IST))
+		ProvenanceInstruction::migrate(P, det->destination_tree);
 	inter_symbol *primitive = InvInstruction::primitive(P);
 	P->tree = I;
 	if (primitive)

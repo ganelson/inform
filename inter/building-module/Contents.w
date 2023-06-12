@@ -11,6 +11,7 @@ Chapter 1: Architecture
 	Building Module
 	Large-Scale Structure
 	Inter Primitives
+	Origins
 	Hierarchy Locations
 	Location Requirements
 	Translation

@@ -1,0 +1,72 @@
+The Receptacle Rotunda is a room.
+
+The satchel is a closed openable container.
+The player carries the satchel.
+
+The gift box is a closed openable container. It contains the gift certificate.
+The player carries the gift box.
+
+The sunglasses case is a closed openable container.
+The player carries the sunglasses case.
+
+The wallet is a closed openable container. It contains the ID card.
+The player carries the wallet.
+
+The plastic bag is a transparent closed openable container. 
+The player carries the plastic bag.
+
+The lucite box is a transparent closed openable container. It contains the specimen.
+The player carries the lucite box.
+
+The palette is a supporter.
+The player carries the palette.
+
+The tray is a supporter. It supports the wine glass.
+The player carries the tray.
+
+The table is a supporter in the Rotunda.
+
+The desk is a supporter in the Rotunda. The letter is on the desk.
+
+The podium is a scenery supporter in the Rotunda.
+
+The hook is a scenery supporter in the Rotunda. The robe is on the hook.
+
+The umbrella stand is a scenery container in the Rotunda.
+
+The vase is a scenery container in the Rotunda. Some peonies are in the vase.
+
+The bowling bag is a closed openable scenery container in the Rotunda.
+
+The trunk is a closed openable scenery container in the Rotunda. A pair of galoshes is in the trunk.
+
+The display case is a closed openable transparent scenery container in the Rotunda.
+
+The crystal skull is a closed openable transparent scenery container in the Rotunda. The fossilized brain is in the crystal skull.
+
+The refrigerator box is an enterable container in the Rotunda.
+
+The phone booth is an enterable container in the Rotunda.
+The directory is in the phone booth.
+
+The platform is an enterable supporter in the Rotunda.
+
+The bandstand is an enterable supporter in the Rotunda.
+The mic stand is on the bandstand.
+
+Test inventory with "i / x satchel / x gift box / x sunglasses case / x wallet / x plastic bag / x lucite box / x palette / x tray".
+
+Test open-carry with "open satchel / open gift box / open sunglasses case / open wallet / open plastic bag / open lucite box".
+
+Test inv-redux with "i / x satchel / x gift box / x sunglasses case / x wallet / x plastic bag / x lucite box".
+
+Test examination-room with "x table / x desk / x podium / x hook / x umbrella stand / x vase / x bowling bag / x trunk / x display case / x crystal skull / x refrigerator box / x phone booth."
+
+Test open-room-plan with "open bowling bag / open trunk / open display case / open crystal skull / x bowling bag / x trunk / x display case / x crystal skull".
+
+Test entry with "x refrigerator box / enter refrigerator box / drop wallet / x refrigerator box / exit / x refrigerator box / x phone booth / enter phone booth / drop satchel / x phone booth / exit / x phone booth / x platform / enter platform / drop gift box / x platform / exit / x platform / x bandstand / enter bandstand / drop sunglasses case / x bandstand / exit / x bandstand".
+
+Test me with "test inventory / test open-carry / test inv-redux / test examination-room / test open-room-plan / test entry".
+
+
+

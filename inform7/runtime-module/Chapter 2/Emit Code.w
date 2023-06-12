@@ -70,11 +70,11 @@ void EmitCode::comment(text_stream *text) {
 		(inter_ti) EmitCode::level()));
 }
 
-@h OrigSource directives.
+@h Provenance markers.
 
 =
-void EmitCode::origsource(text_provenance from) {
-	Produce::origsource(Emit::tree(), from);
+void EmitCode::provenance(text_provenance from) {
+	Produce::provenance(Emit::tree(), from);
 }
 
 @h In value context.

@@ -59,7 +59,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../inform7n.html">Inform7</a></li><li><a href="index.html">runtime</a></li><li><a href="index.html#2">Chapter 2: Emission</a></li><li><b>Emit Code</b></li></ul></div>
 <p class="purpose">Here is how bytecode for instructions inside functions is emitted.</p>
 
-<ul class="toc"><li><a href="2-ec.html#SP1">&#167;1. Introduction</a></li><li><a href="2-ec.html#SP2">&#167;2. Where bytecode comes out</a></li><li><a href="2-ec.html#SP5">&#167;5. Structural</a></li><li><a href="2-ec.html#SP6">&#167;6. Comments</a></li><li><a href="2-ec.html#SP7">&#167;7. OrigSource directives</a></li><li><a href="2-ec.html#SP8">&#167;8. In value context</a></li><li><a href="2-ec.html#SP9">&#167;9. Either/or property testing</a></li><li><a href="2-ec.html#SP10">&#167;10. Casts</a></li><li><a href="2-ec.html#SP13">&#167;13. In reference context</a></li><li><a href="2-ec.html#SP14">&#167;14. Invocations</a></li><li><a href="2-ec.html#SP17">&#167;17. Labels</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="2-ec.html#SP1">&#167;1. Introduction</a></li><li><a href="2-ec.html#SP2">&#167;2. Where bytecode comes out</a></li><li><a href="2-ec.html#SP5">&#167;5. Structural</a></li><li><a href="2-ec.html#SP6">&#167;6. Comments</a></li><li><a href="2-ec.html#SP7">&#167;7. Provenance markers</a></li><li><a href="2-ec.html#SP8">&#167;8. In value context</a></li><li><a href="2-ec.html#SP9">&#167;9. Either/or property testing</a></li><li><a href="2-ec.html#SP10">&#167;10. Casts</a></li><li><a href="2-ec.html#SP13">&#167;13. In reference context</a></li><li><a href="2-ec.html#SP14">&#167;14. Invocations</a></li><li><a href="2-ec.html#SP17">&#167;17. Labels</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction. </b>Many sections of <a href="index.html" class="internal">runtime</a> need to create functions by explicitly giving
 their bytecode. This is quite verbose, but with practice easy enough to read.
@@ -134,11 +134,11 @@ start of a function.
 <span class="plain-syntax">        (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) </span><a href="2-ec.html#SP4" class="function-link"><span class="function-syntax">EmitCode::level</span></a><span class="plain-syntax">()));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. OrigSource directives. </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Provenance markers. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">EmitCode::origsource</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_provenance</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Produce::origsource</span><span class="plain-syntax">(</span><a href="2-emt.html#SP1" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">from</span><span class="plain-syntax">);</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">EmitCode::provenance</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_provenance</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Produce::provenance</span><span class="plain-syntax">(</span><a href="2-emt.html#SP1" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">from</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. In value context. </b>These functions all generate a <span class="extract"><span class="extract-syntax">val</span></span> opcode:

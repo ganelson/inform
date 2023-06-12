@@ -1,0 +1,277 @@
+   Receptacle Rotunda
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Receptacle Rotunda
+  On the hook is a robe.
+  
+  You can also see a table, a desk (on which is a letter), a refrigerator box (empty), a phone booth (in which is a directory), a platform and a bandstand (on which is a mic stand) here.
+  
+> >   Receptacle Rotunda
+  (Testing.)
+  
+  >[1] test inventory
+  (Testing.)
+  
+  >[2] i
+  You are carrying:
+    a satchel (closed)
+    a gift box (closed)
+    a sunglasses case (closed)
+    a wallet (closed)
+    a plastic bag (closed)
+    a lucite box (closed)
+      a specimen
+    a palette
+    a tray
+      a wine glass
+  
+  >[3] x satchel
+  You see nothing special about the satchel.
+  
+  >[4] x gift box
+  You see nothing special about the gift box.
+  
+  >[5] x sunglasses case
+  You see nothing special about the sunglasses case.
+  
+  >[6] x wallet
+  You see nothing special about the wallet.
+  
+  >[7] x plastic bag
+  The plastic bag is empty.
+  
+  >[8] x lucite box
+  In the lucite box is a specimen.
+  
+  >[9] x palette
+  You see nothing special about the palette.
+  
+  >[10] x tray
+  On the tray is a wine glass.
+  
+  >[11] test open-carry
+  (Testing.)
+  
+  >[12] open satchel
+  You open the satchel.
+  
+  >[13] open gift box
+  You open the gift box, revealing a gift certificate.
+  
+  >[14] open sunglasses case
+  You open the sunglasses case.
+  
+  >[15] open wallet
+  You open the wallet, revealing an ID card.
+  
+  >[16] open plastic bag
+  You open the plastic bag.
+  
+  >[17] open lucite box
+  You open the lucite box.
+  
+  >[18] test inv-redux
+  (Testing.)
+  
+  >[19] i
+  You are carrying:
+    a satchel (open but empty)
+    a gift box (open)
+      a gift certificate
+    a sunglasses case (open but empty)
+    a wallet (open)
+      an ID card
+    a plastic bag (open but empty)
+    a lucite box (open)
+      a specimen
+    a palette
+    a tray
+      a wine glass
+  
+  >[20] x satchel
+  The satchel is empty.
+  
+  >[21] x gift box
+  In the gift box is a gift certificate.
+  
+  >[22] x sunglasses case
+  The sunglasses case is empty.
+  
+  >[23] x wallet
+  In the wallet is an ID card.
+  
+  >[24] x plastic bag
+  The plastic bag is empty.
+  
+  >[25] x lucite box
+  In the lucite box is a specimen.
+  
+  >[26] test examination-room
+  (Testing.)
+  
+  >[27] x table
+  You see nothing special about the table.
+  
+  >[28] x desk
+  On the desk is a letter.
+  
+  >[29] x podium
+  You see nothing special about the podium.
+  
+  >[30] x hook
+  On the hook is a robe.
+  
+  >[31] x umbrella stand
+  The umbrella stand is empty.
+  
+  >[32] x vase
+  In the vase are some peonies.
+  
+  >[33] x bowling bag
+  You see nothing special about the bowling bag.
+  
+  >[34] x trunk
+  You see nothing special about the trunk.
+  
+  >[35] x display case
+  The display case is empty.
+  
+  >[36] x crystal skull
+  In the crystal skull is a fossilized brain.
+  
+  >[37] x refrigerator box
+  The refrigerator box is empty.
+  
+  >[38] x phone booth.
+  In the phone booth is a directory.
+  
+  >[39] test open-room-plan
+  (Testing.)
+  
+  >[40] open bowling bag
+  You open the bowling bag.
+  
+  >[41] open trunk
+  You open the trunk, revealing a pair of galoshes.
+  
+  >[42] open display case
+  You open the display case.
+  
+  >[43] open crystal skull
+  You open the crystal skull.
+  
+  >[44] x bowling bag
+  The bowling bag is empty.
+  
+  >[45] x trunk
+  In the trunk is a pair of galoshes.
+  
+  >[46] x display case
+  The display case is empty.
+  
+  >[47] x crystal skull
+  In the crystal skull is a fossilized brain.
+  
+  >[48] test entry
+  (Testing.)
+  
+  >[49] x refrigerator box
+  The refrigerator box is empty.
+  
+  >[50] enter refrigerator box
+  You get into the refrigerator box.
+  
+  >[51] drop wallet
+  Dropped.
+  
+  >[52] x refrigerator box
+  In the refrigerator box is a wallet.
+  
+  >[53] exit
+  You get out of the refrigerator box.
+  
+  Receptacle Rotunda
+  On the hook is a robe.
+  
+  You can also see a table, a desk (on which is a letter), a refrigerator box (in which is a wallet (in which is an ID card)), a phone booth (in which is a directory), a platform and a bandstand (on which is a mic stand) here.
+  
+  >[54] x refrigerator box
+  In the refrigerator box is a wallet.
+  
+  >[55] x phone booth
+  In the phone booth is a directory.
+  
+  >[56] enter phone booth
+  You get into the phone booth.
+  
+  In the phone booth you can see a directory.
+  
+  >[57] drop satchel
+  Dropped.
+  
+  >[58] x phone booth
+  In the phone booth are a satchel and a directory.
+  
+  >[59] exit
+  You get out of the phone booth.
+  
+  Receptacle Rotunda
+  On the hook is a robe.
+  
+  You can also see a table, a desk (on which is a letter), a refrigerator box (in which is a wallet (in which is an ID card)), a phone booth (in which are a satchel (empty) and a directory), a platform and a bandstand (on which is a mic stand) here.
+  
+  >[60] x phone booth
+  In the phone booth are a satchel and a directory.
+  
+  >[61] x platform
+  You see nothing special about the platform.
+  
+  >[62] enter platform
+  You get onto the platform.
+  
+  >[63] drop gift box
+  Dropped.
+  
+  >[64] x platform
+  On the platform is a gift box (in which is a gift certificate).
+  
+  >[65] exit
+  You get off the platform.
+  
+  Receptacle Rotunda
+  On the hook is a robe.
+  
+  You can also see a table, a desk (on which is a letter), a refrigerator box (in which is a wallet (in which is an ID card)), a phone booth (in which are a satchel (empty) and a directory), a platform (on which is a gift box (in which is a gift certificate)) and a bandstand (on which is a mic stand) here.
+  
+  >[66] x platform
+   Receptacle Rotunda
+  On the platform is a gift box (in which is a gift certificate).
+  
+  >[67] x bandstand
+  On the bandstand is a mic stand.
+  
+  >[68] enter bandstand
+  You get onto the bandstand.
+  
+  On the bandstand you can see a mic stand.
+  
+  >[69] drop sunglasses case
+  Dropped.
+  
+  >[70] x bandstand
+  On the bandstand are a sunglasses case (empty) and a mic stand.
+  
+  >[71] exit
+  You get off the bandstand.
+  
+  Receptacle Rotunda
+  On the hook is a robe.
+  
+  You can also see a table, a desk (on which is a letter), a refrigerator box (in which is a wallet (in which is an ID card)), a phone booth (in which are a satchel (empty) and a directory), a platform (on which is a gift box (in which is a gift certificate)) and a bandstand (on which are a sunglasses case (empty) and a mic stand) here.
+  
+  >[72] x bandstand
+  On the bandstand are a sunglasses case (empty) and a mic stand.
+  
+> >

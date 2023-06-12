@@ -50,7 +50,7 @@ void CompileBlocksAndLines::full_definition_body(int statement_count, parse_node
 	CompileBlocksAndLines::code_block(statement_count, body, TRUE, allow_implied_newlines, &last_loc);
 	if (Provenance::is_somewhere(last_loc)) {
 		last_loc = Provenance::nowhere();
-		EmitCode::origsource(last_loc);
+		EmitCode::provenance(last_loc);
 	}
 }
 
@@ -140,7 +140,7 @@ int CompileBlocksAndLines::code_line(int statement_count, parse_node *p, int as_
 		DISCARD_TEXT(fname);
 		if (Str::ne(loc.textual_filename, last_loc->textual_filename) || loc.line_number != last_loc->line_number) {
 			*last_loc = loc;
-			EmitCode::origsource(loc);
+			EmitCode::provenance(loc);
 		}
 	}
 

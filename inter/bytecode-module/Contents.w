@@ -42,7 +42,7 @@ Chapter 4: Void Constructs
 	The Insert Construct
 	The Instance Construct
 	The Nop Construct
-	The OrigSource Construct
+	The Origin Construct
 	The Package Construct
 	The PackageType Construct
 	The Permission Construct
@@ -50,6 +50,7 @@ Chapter 4: Void Constructs
 	The Primitive Construct
 	The Property Construct
 	The PropertyValue Construct
+	The Provenance Construct
 	The Typename Construct
 	The Variable Construct
 

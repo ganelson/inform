@@ -7,7 +7,7 @@ void I6TargetCode::create_generator(code_generator *gtr) {
 	METHOD_ADD(gtr, DECLARE_FUNCTION_MTID, I6TargetCode::declare_function);
 	METHOD_ADD(gtr, PLACE_LABEL_MTID, I6TargetCode::place_label);
 	METHOD_ADD(gtr, EVALUATE_LABEL_MTID, I6TargetCode::evaluate_label);
-	METHOD_ADD(gtr, PLACE_ORIGSOURCE_MTID, I6TargetCode::place_origsource);
+	METHOD_ADD(gtr, PLACE_PROVENANCE_MTID, I6TargetCode::place_provenance);
 	METHOD_ADD(gtr, INVOKE_PRIMITIVE_MTID, I6TargetCode::invoke_primitive);
 	METHOD_ADD(gtr, INVOKE_FUNCTION_MTID, I6TargetCode::invoke_function);
 	METHOD_ADD(gtr, INVOKE_OPCODE_MTID, I6TargetCode::invoke_opcode);
@@ -184,7 +184,7 @@ for special characters. We're leaving it up to the end user to decode all
 of I6's confusing escape sequences. But at least we guarantee that the
 I6 compiler won't choke on the directive.
 =
-void I6TargetCode::place_origsource(code_generator *gtr, code_generation *gen,
+void I6TargetCode::place_provenance(code_generator *gtr, code_generation *gen,
 	text_provenance *source_loc) {
 	text_stream *OUT = CodeGen::current(gen);
 	if (Provenance::is_somewhere(*source_loc)) {

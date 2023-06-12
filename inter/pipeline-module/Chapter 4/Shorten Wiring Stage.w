@@ -82,13 +82,15 @@ void ShortenWiringStage::visitor(inter_tree *I, inter_tree_node *P, void *v_stat
 are each wired to sockets. Removing the plugs first then leaves the sockets
 with no incoming connections either, and so the sockets can go too.
 
-The result should be a completely empty |connectors| module.
+The result is not necessarily a completely empty |connectors| module, because
+of the possibility of a function which has been replaced and thus is effectively
+not part of the program any longer, but still has trailing plugs. There will
+however be no sockets.
 
 @<Remove the now unnecessary plugs and sockets@> =
 	inter_symbols_table *ST = InterPackage::scope(connectors);
 	@<Remove plugs with no incoming connections@>;
 	@<Remove sockets with no incoming connections@>;
-	@<Report any remaining symbols in this table as errors@>;
 
 @<Remove plugs with no incoming connections@> =
 	LOOP_OVER_SYMBOLS_TABLE(S, ST) {
@@ -101,13 +103,3 @@ The result should be a completely empty |connectors| module.
 		if ((InterSymbol::is_socket(S)) && (Wiring::has_no_incoming_connections(S)))
 			InterSymbolsTable::remove_symbol(S);
 	}
-
-@ This should never happen:
-
-@<Report any remaining symbols in this table as errors@> =
-	int errors = 0;
-	LOOP_OVER_SYMBOLS_TABLE(S, ST) {
-		LOG("Connector not deleted: $3\n", S);
-		errors++;
-	}
-//	if (errors > 0) internal_error("plugs and sockets mismanaged");
