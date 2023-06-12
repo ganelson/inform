@@ -1392,7 +1392,6 @@ To decide which price is price with dollars part ( part0 - a number ) cents part
 @<Define a phrase to convert from numerical parts to a packed value@> =
 	if (lp->no_lp_elements > 0) {
 		feed_t id = Feeds::begin();
-		TEMPORARY_TEXT(print_rule_buff)
 		Feeds::feed_C_string(L"To decide which ");
 		Feeds::feed_text(TEMP);
 		Feeds::feed_C_string(L" is ");
@@ -1400,19 +1399,21 @@ To decide which price is price with dollars part ( part0 - a number ) cents part
 		Feeds::feed_C_string(L" with ");
 		for (int i=0; i<lp->no_lp_elements; i++) {
 			literal_pattern_element *lpe = &(lp->lp_elements[i]);
+			TEMPORARY_TEXT(print_rule_buff)
 			WRITE_TO(print_rule_buff, " part%d ", i);
 			Feeds::feed_wording(lpe->element_name);
 			Feeds::feed_C_string(L" part ( ");
 			Feeds::feed_text(print_rule_buff);
 			Feeds::feed_C_string(L" - a number ) ");
+			DISCARD_TEXT(print_rule_buff)
 		}
 		wording XW = Feeds::end(id);
-		if (Wordings::phrasual_length(XW) >= MAX_WORDS_PER_PHRASE + 5)
+		if (Wordings::phrasual_length(XW) >= MAX_WORDS_PER_PHRASE + 5) {
 			@<Issue a problem for overly long part names@>
-		else {
+		} else {
 			Sentences::make_node(Task::syntax_tree(), XW, ':');
 			id = Feeds::begin();
-			Str::clear(print_rule_buff);
+			TEMPORARY_TEXT(print_rule_buff)
 			WRITE_TO(print_rule_buff, " (- (");
 			for (int i=0; i<lp->no_lp_elements; i++) {
 				literal_pattern_element *lpe = &(lp->lp_elements[i]);
@@ -1424,9 +1425,9 @@ To decide which price is price with dollars part ( part0 - a number ) cents part
 			WRITE_TO(print_rule_buff, ") -) ");
 			Feeds::feed_text(print_rule_buff);
 			XW = Feeds::end(id);
+			DISCARD_TEXT(print_rule_buff)
 			Sentences::make_node(Task::syntax_tree(), XW, '.');
 		}
-		DISCARD_TEXT(print_rule_buff)
 	}
 
 @<Issue a problem for overly long part names@> =
