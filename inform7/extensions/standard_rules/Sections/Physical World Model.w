@@ -328,7 +328,7 @@ A thing can be privately-named or publicly-named. A thing is usually publicly-na
 A thing can be undescribed or described. A thing is usually described.
 A thing can be marked for listing or unmarked for listing. A thing is usually
 unmarked for listing.
-A thing can be mentioned or unmentioned. A thing is usually mentioned.
+A thing can be mentioned or unmentioned. A thing is usually unmentioned.
 
 @ We now have a mixed bag of value properties, all descriptive -- it's an
 interesting reflection on how qualitative English text usually is that the

@@ -147,16 +147,58 @@ The language of play is a natural language that varies.
 The parameter-object is an object that varies.
 The parameter-object variable is defined by Inter as "parameter_value".
 
+Chapter - Startup
+
 Startup rules is a rulebook.
 The startup rulebook is accessible to Inter as "STARTUP_RB".
 Startup rules have outcomes allow startup (success) and deny startup (failure).
+
 Shutdown rules is a rulebook.
 The shutdown rulebook is accessible to Inter as "SHUTDOWN_RB".
 
 Starting the virtual machine (documented at act_startvm) is an activity.
 The starting the virtual machine activity is accessible to Inter as "STARTING_VIRTUAL_MACHINE_ACT".
-The final code startup rule is listed first in for starting the virtual machine.
-The final code startup rule is defined by Inter as "FINAL_CODE_STARTUP_R".
+The for starting the virtual machine rules have default no outcome.
+
+First startup rule (this is the virtual machine startup rule):
+	carry out the starting the virtual machine activity.
+
+Section - Startup A (for Glulx only)
+
+The start capturing startup text rule is listed in the before starting the virtual machine rules.
+The start capturing startup text rule translates into Inter as "CAPTURE_STARTUP_TEXT_R".
+
+The enable Glulx acceleration rule is listed in the before starting the virtual machine rules.
+The enable Glulx acceleration rule translates into Inter as "FINAL_CODE_STARTUP_R".
+
+Section - Startup B
+
+The initialise memory rule is listed in the before starting the virtual machine rules.
+The initialise memory rule translates into Inter as "INITIALISE_MEMORY_R".
+
+The seed random number generator rule is listed in the before starting the virtual machine rules.
+The seed random number generator rule translates into Inter as "SEED_RANDOM_NUMBER_GENERATOR_R".
+
+Section - Startup C (for Z-Machine only)
+
+The final code startup rule is listed in the for starting the virtual machine rules.
+The final code startup rule translates into Inter  as "FINAL_CODE_STARTUP_R".
+
+Section - Startup D (for Glulx only)
+
+The recover Glk objects rule is listed in the before starting the virtual machine rules.
+The recover Glk objects rule translates into Inter as "GGRecoverObjects".
+
+The sound channel initialisation rule is listed in the for starting the virtual machine rules.
+The sound channel initialisation rule translates into Inter as "SOUND_CHANNEL_INIT_R".
+
+The open built-in windows rule is listed in the for starting the virtual machine rules.
+The open built-in windows rule translates into Inter as "OPEN_BUILT_IN_WINDOWS_R".
+
+The display captured startup text rule is listed in the for starting the virtual machine rules.
+The display captured startup text rule translates into Inter as "END_CAPTURE_STARTUP_TEXT_R".
+
+Chapter - Printing activities
 
 Printing the name of something (hidden in RULES command) (documented at act_pn) is an activity.
 The printing the name activity is accessible to Inter as "PRINTING_THE_NAME_ACT".

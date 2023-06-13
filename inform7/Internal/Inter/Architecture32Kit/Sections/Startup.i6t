@@ -2,176 +2,121 @@ Startup Template.
 
 How programs for this architecture start up the virtual machine.
 
-@ This variable is set at startup, to avoid asking the interpreter over
-and over again.
+@ |VM_Check_Functionality| checks that we are running in a Glk interpreter,
+as well as that it supports the minimum requirements, which are currently
+that Glk supports unicode, and Glulx supports real numbers. If one of those
+requirements is not met an error message will be shown before quitting.
 
 =
-Global unicode_gestalt_ok; ! Set if interpreter supports Unicode
+[ VM_Check_Functionality res;
+	@gestalt 4 2 res; ! Test if this interpreter has Glk...
+	if (res == 0) quit; ! ...without which there would be nothing we could do
 
-@ |VM_Initialise()| is almost the first routine called, except that the
-"starting the virtual machine" activity is allowed to go first; and,
-come to think of it, memory allocation has to be set up before even that,
-and that in turn calls |VM_PreInitialise()| to do the absolute minimum.
+	! Set the VM's I/O system to be Glk.
+	@setiosys 2 0;
 
-Arrangements are a little different here compared with the 16-bit architecture,
-because some data is retained in the case of a restart.
+	if (~~glk_gestalt(gestalt_Unicode, 0)) {
+		Fatal_Error("This storyfile can only be run in an unicode interpreter.");
+	}
 
-(Many thanks are due to Eliuk Blau, who found several tricky timing errors
-here and elsewhere in the Glulx-specific code. Frankly, I feel like hanging
-a sign on the following routines which reads "Congratulations on bringing
-light to the Dark Room.")
-
-=
-[ VM_PreInitialise res;
-    @gestalt 4 2 res; ! Test if this interpreter has Glk...
-    if (res == 0) quit; ! ...without which there would be nothing we could do
-
-	unicode_gestalt_ok = false;
-	if (glk_gestalt(gestalt_Unicode, 0))
-		unicode_gestalt_ok = true;
-
-    ! Set the VM's I/O system to be Glk.
-    @setiosys 2 0;
+	@gestalt 11 0 res; ! Test if this interpreter supports real numbers...
+	if (res == 0) {
+		Fatal_Error("This storyfile can only be run in a Glulx interpreter that supports floating-point arithmetic.");
+	}
 ];
 
-[ VM_Initialise res sty i;
-    @gestalt 4 2 res; ! Test if this interpreter has Glk...
-    if (res == 0) quit; ! ...without which there would be nothing we could do
+[ Fatal_Error msg;
+	gg_mainwin = glk_window_open(0, 0, 0, wintype_TextBuffer, GG_MAINWIN_ROCK);
+	glk_set_window(gg_mainwin);
+	print "Fatal Error: ", (string) msg, "^";
+	quit;
+];
 
-    ! First, we must go through all the Glk objects that exist, and see
-    ! if we created any of them. One might think this strange, since the
-    ! program has just started running, but remember that the player might
-    ! have just typed "restart".
+@h Capture startup text.
+It is a semi-common problem for authors to do something which results in text
+being printed before any Glk windows have been opened, which results in a fatal
+interpreter error. (Or even worse, an extension is the cause, which the author
+should not be expected to know the internal details of.) This is very frustrating,
+as the author often will not know what is the cause of the error as any error
+messages can't be shown until a Glk window is created; indeed it's often an error
+message that is trying to be printed, which the author will never see. To help
+authors, while we wait for the virtual machine to be set up (including a Glk
+window) we can instead send any text to a memory stream. Then once the VM is ready
+we can check if any text was sent to the memory stream, and then finally display
+it in the window. We only capture 256 bytes, which may not be all that is attempted
+to be printed, but hopefully it gives authors enough to identify the problem.
 
-    GGRecoverObjects();
+=
+Constant PRE_STARTUP_TEXT_CAPTURE_MAX_LEN = 256;
+Array Pre_Startup_Text_Capture_Buffer -> PRE_STARTUP_TEXT_CAPTURE_MAX_LEN;
+Array Pre_Startup_Text_Capture_Results --> 2;
+Global Pre_Startup_Text_Capture_Stream;
 
-	! Sound channel initialisation, and RNG fixing, must be done now rather
-	! than later in case InitGlkWindow() returns a non-zero value.
+[ CAPTURE_STARTUP_TEXT_R;
+	Pre_Startup_Text_Capture_Stream = glk_stream_open_memory(Pre_Startup_Text_Capture_Buffer, PRE_STARTUP_TEXT_CAPTURE_MAX_LEN, filemode_Write, 0);
+	glk_stream_set_current(Pre_Startup_Text_Capture_Stream);
+	rfalse;
+];
 
+[ END_CAPTURE_STARTUP_TEXT_R len;
+	glk_stream_close(Pre_Startup_Text_Capture_Stream, Pre_Startup_Text_Capture_Results);
+	len = Pre_Startup_Text_Capture_Results-->1;
+	if (len) {
+		if (len > PRE_STARTUP_TEXT_CAPTURE_MAX_LEN) {
+			len = PRE_STARTUP_TEXT_CAPTURE_MAX_LEN;
+		}
+		glk_put_buffer(Pre_Startup_Text_Capture_Buffer, len);
+	}
+	rfalse;
+];
+
+@h Set up the Glk objects.
+
+=
+[ SOUND_CHANNEL_INIT_R;
 	if (glk_gestalt(gestalt_Sound, 0)) {
-		if (gg_foregroundchan == 0)
+		if (gg_foregroundchan == 0) {
 			gg_foregroundchan = glk_schannel_create(GG_FOREGROUNDCHAN_ROCK);
-		if (gg_backgroundchan == 0)
-			gg_backgroundchan = glk_schannel_create(GG_BACKGROUNDCHAN_ROCK);
-	}
-
-	if (BasicInformKit`FIX_RNG_CFGF) {
-		@random 10000 i;
-		i = -i-2000;
-		@setrandom i;
-	}
-
-    res = InitGlkWindow(0);
-    if (res ~= 0) return;
-
-    ! Now, gg_mainwin and gg_storywin might already be set. If not, set them.
-
-    if (gg_mainwin == 0) {
-        ! Open the story window.
-        res = InitGlkWindow(GG_MAINWIN_ROCK);
-        if (res == 0) {
-        	! Left-justify the header style
-			glk_stylehint_set(wintype_TextBuffer, style_Header, stylehint_Justification, 0);
-			! Try to make emphasized type in italics and not boldface
-			glk_stylehint_set(wintype_TextBuffer, style_Emphasized, stylehint_Weight, 0);
-			glk_stylehint_set(wintype_TextBuffer, style_Emphasized, stylehint_Oblique, 1);
-            gg_mainwin = glk_window_open(0, 0, 0, wintype_TextBuffer, GG_MAINWIN_ROCK);
 		}
-        if (gg_mainwin == 0) quit; ! If we can't even open one window, give in
-    } else {
-        ! There was already a story window. We should erase it.
-        glk_window_clear(gg_mainwin);
-    }
-
-    if (gg_statuswin == 0) {
-        res = InitGlkWindow(GG_STATUSWIN_ROCK);
-        if (res == 0) {
-            statuswin_cursize = statuswin_size;
-			for (sty=0: sty<style_NUMSTYLES: sty++)
-				glk_stylehint_set(wintype_TextGrid, sty, stylehint_ReverseColor, 1);
-            gg_statuswin =
-            	glk_window_open(gg_mainwin, winmethod_Fixed + winmethod_Above,
-            		statuswin_cursize, wintype_TextGrid, GG_STATUSWIN_ROCK);
-        }
-    }
-    ! It's possible that the status window couldn't be opened, in which case
-    ! gg_statuswin is now zero. We must allow for that later on.
-
-    glk_set_window(gg_mainwin);
-
-    InitGlkWindow(1);
-
-    ! Empty the parse buffer (see bug 0001451)
-    buffer3-->0 = 0;
+		if (gg_backgroundchan == 0) {
+			gg_backgroundchan = glk_schannel_create(GG_BACKGROUNDCHAN_ROCK);
+		}
+	}
+	rfalse;
 ];
 
-[ GGRecoverObjects id;
-    ! If GGRecoverObjects() has been called, all these stored IDs are
-    ! invalid, so we start by clearing them all out.
-    ! (In fact, after a restoreundo, some of them may still be good.
-    ! For simplicity, though, we assume the general case.)
-    gg_mainwin = 0;
-    gg_statuswin = 0;
-    gg_quotewin = 0;
-    gg_scriptfref = 0;
-    gg_scriptstr = 0;
-    gg_savestr = 0;
-    statuswin_cursize = 0;
-    gg_foregroundchan = 0;
-    gg_backgroundchan = 0;
-    gg_commandstr = 0;
-    gg_command_reading = false;
-    ! Also tell the game to clear its object references.
-    IdentifyGlkObject(0);
+[ OPEN_BUILT_IN_WINDOWS_R res sty;
+	! gg_mainwin and gg_storywin might already be set. If not, create them.
 
-    id = glk_stream_iterate(0, gg_arguments);
-    while (id) {
-        switch (gg_arguments-->0) {
-            GG_SAVESTR_ROCK: gg_savestr = id;
-            GG_SCRIPTSTR_ROCK: gg_scriptstr = id;
-            GG_COMMANDWSTR_ROCK: gg_commandstr = id;
-                                 gg_command_reading = false;
-            GG_COMMANDRSTR_ROCK: gg_commandstr = id;
-                                 gg_command_reading = true;
-            default: IdentifyGlkObject(1, 1, id, gg_arguments-->0);
-        }
-        id = glk_stream_iterate(id, gg_arguments);
-    }
-
-    id = glk_window_iterate(0, gg_arguments);
-    while (id) {
-        switch (gg_arguments-->0) {
-            GG_MAINWIN_ROCK: gg_mainwin = id;
-            GG_STATUSWIN_ROCK: gg_statuswin = id;
-            GG_QUOTEWIN_ROCK: gg_quotewin = id;
-            default: IdentifyGlkObject(1, 0, id, gg_arguments-->0);
-        }
-        id = glk_window_iterate(id, gg_arguments);
-    }
-
-    id = glk_fileref_iterate(0, gg_arguments);
-    while (id) {
-        switch (gg_arguments-->0) {
-            GG_SCRIPTFREF_ROCK: gg_scriptfref = id;
-            default: IdentifyGlkObject(1, 2, id, gg_arguments-->0);
-        }
-        id = glk_fileref_iterate(id, gg_arguments);
-    }
-
-	if (glk_gestalt(gestalt_Sound, 0)) {
-		id = glk_schannel_iterate(0, gg_arguments);
-		while (id) {
-			switch (gg_arguments-->0) {
-				GG_FOREGROUNDCHAN_ROCK: gg_foregroundchan = id;
-				GG_BACKGROUNDCHAN_ROCK: gg_backgroundchan = id;
-				default: IdentifyGlkObject(1, 3, id, gg_arguments-->0);
-			}
-			id = glk_schannel_iterate(id, gg_arguments);
+	if (gg_mainwin == 0) {
+		! Open the story window.
+		! Left-justify the header style
+		glk_stylehint_set(wintype_TextBuffer, style_Header, stylehint_Justification, 0);
+		! Try to make emphasized type in italics and not boldface
+		glk_stylehint_set(wintype_TextBuffer, style_Emphasized, stylehint_Weight, 0);
+		glk_stylehint_set(wintype_TextBuffer, style_Emphasized, stylehint_Oblique, 1);
+		gg_mainwin = glk_window_open(0, 0, 0, wintype_TextBuffer, GG_MAINWIN_ROCK);
+		if (gg_mainwin == 0) {
+			! If we can't even open one window, give in
+			quit;
 		}
-		if (gg_foregroundchan ~= 0) { glk_schannel_stop(gg_foregroundchan); }
-		if (gg_backgroundchan ~= 0) { glk_schannel_stop(gg_backgroundchan); }
+	} else {
+		! There was already a story window. We should erase it.
+		glk_window_clear(gg_mainwin);
 	}
 
-    ! Tell the game to tie up any loose ends.
-    IdentifyGlkObject(2);
+	if (gg_statuswin == 0) {
+		statuswin_cursize = statuswin_size;
+		for (sty=0: sty < style_NUMSTYLES: sty++) {
+			glk_stylehint_set(wintype_TextGrid, sty, stylehint_ReverseColor, 1);
+		}
+		gg_statuswin =
+			glk_window_open(gg_mainwin, winmethod_Fixed + winmethod_Above,
+				statuswin_cursize, wintype_TextGrid, GG_STATUSWIN_ROCK);
+	}
+	! It's possible that the status window couldn't be opened, in which case
+	! gg_statuswin is now zero. We must allow for that later on.
+
+	glk_set_window(gg_mainwin);
+	rfalse;
 ];
