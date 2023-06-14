@@ -58,6 +58,7 @@ typedef struct kind_command_definition {
 @e specification_text_KCC
 @e small_block_size_KCC
 @e terms_KCC
+@e instance_KCC
 
 =
 kind_command_definition table_of_kind_commands[] = {
@@ -97,6 +98,8 @@ kind_command_definition table_of_kind_commands[] = {
 	{ "small-block-size",               small_block_size_KCC,               NUMERIC_KCA },
 
 	{ "invent-source-text",             invent_source_text_KCC,             TEMPLATE_KCA },
+
+	{ "instance",                       instance_KCC, 			            TEXT_KCA },
 
 	{ "apply-macro",                    apply_macro_KCC,                    MACRO_KCA },
 

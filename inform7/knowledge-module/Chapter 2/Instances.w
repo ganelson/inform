@@ -342,6 +342,30 @@ void Instances::new_grammatical(instance *I) {
 		grammatical_genders[no_ggs_recorded++] = I;
 }
 
+@h Instances specified in Neptune files.
+
+=
+void Instances::make_instances_from_Neptune(void) {
+	kind_constructor *kc;
+	LOOP_OVER(kc, kind_constructor) {
+		linked_list *L = KindConstructors::instances(kc);
+		kind_constructor_instance *kci;
+		LOOP_OVER_LINKED_LIST(kci, kind_constructor_instance, L) {
+			wording W = Feeds::feed_text(kci->natural_language_name);
+			LOG("So make %W ident: %S val: %d\n",
+				W,
+				kci->identifier,
+				kci->value);
+			kind *K = Kinds::base_construction(kc);
+			pcalc_prop *prop = Propositions::Abstract::to_create_something(K, W);
+			Assert::true(prop, CERTAIN_CE);
+			instance *I = Instances::latest();
+			RTInstances::set_explicit_runtime_value(I, (inter_ti) kci->value);
+			LOG("Underlying instance is $O\n", I);
+		}
+	}
+}
+
 @h Logging.
 
 =

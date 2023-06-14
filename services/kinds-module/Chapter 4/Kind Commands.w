@@ -83,7 +83,7 @@ void KindCommands::apply(single_kind_command stc, kind_constructor *con) {
 		return;
 	}
 	if (tcc == conforms_to_KCC) {
-		kind_constructor_instance *dti = CREATE(kind_constructor_instance);
+		kind_constructor_instance_rule *dti = CREATE(kind_constructor_instance_rule);
 		dti->next_instance_rule = con->first_instance_rule;
 		con->first_instance_rule = dti;
 		dti->instance_of_this_unparsed = Str::duplicate(stc.constructor_argument);
@@ -97,6 +97,21 @@ void KindCommands::apply(single_kind_command stc, kind_constructor *con) {
 		dtcs->comparator_unparsed = Str::duplicate(stc.constructor_argument);
 		dtcs->comparator = NULL;
 		dtcs->comparison_schema = Str::duplicate(stc.textual_argument);
+		return;
+	}
+	if (tcc == instance_KCC) {
+		match_results mr = Regexp::create_mr();
+		if (Regexp::match(&mr, stc.textual_argument, L" *(%c+?) *= *(%c+) *= *(%d+) *")) {
+			kind_constructor_instance *kci = CREATE(kind_constructor_instance);
+			kci->natural_language_name = Str::duplicate(mr.exp[0]);
+			kci->identifier = Str::duplicate(mr.exp[1]);
+			kci->value = Str::atoi(mr.exp[2], 0);
+			ADD_TO_LINKED_LIST(kci, kind_constructor_instance, con->instances);	
+		} else {
+			NeptuneFiles::error(stc.textual_argument,
+				I"instance not in form NAME = IDENTIFIER = VALUE", stc.origin);
+		}
+		Regexp::dispose_of(&mr);
 		return;
 	}
 

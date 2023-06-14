@@ -207,7 +207,9 @@ inter_name *RTKindConstructors::get_iname(kind *K) {
 	K = Kinds::weaken(K, K_object);
 	if (K->construct->compilation_data.pr_iname)
 		return K->construct->compilation_data.pr_iname;
-	if (Str::len(K->construct->explicit_identifier) == 0) {
+LOG("Kind = %u, exid = %S\n", K, K->construct->explicit_identifier);
+	if ((Str::len(K->construct->explicit_identifier) == 0) ||
+		(LinkedLists::len(KindConstructors::instances(K->construct)) > 0)) {
 		package_request *R = RTKindConstructors::package(K->construct);
 		K->construct->compilation_data.pr_iname = Hierarchy::make_iname_in(PRINT_DASH_FN_HL, R);
 		return K->construct->compilation_data.pr_iname;
@@ -281,18 +283,17 @@ inter_name *RTKindConstructors::get_iname(kind *K) {
 
 	package_request *R = NULL;
 	int external = TRUE;
-	if ((Kinds::get_construct(K) == CON_rule) ||
-		(Kinds::get_construct(K) == CON_rulebook)) external = TRUE;
 	if (Kinds::Behaviour::is_an_enumeration(K)) {
 		R = RTKindConstructors::kind_package(K); external = FALSE;
 	}
-	text_stream *X = K->construct->print_identifier;
 	if (Kinds::Behaviour::is_quasinumerical(K)) {
 		R = RTKindConstructors::kind_package(K); external = FALSE;
+		if (Kinds::eq(K, K_time)) external = TRUE;
+		if (Kinds::eq(K, K_number)) external = TRUE;
+		if (Kinds::eq(K, K_real_number)) external = TRUE;
 	}
-	if (Kinds::eq(K, K_time)) external = TRUE;
-	if (Kinds::eq(K, K_number)) external = TRUE;
-	if (Kinds::eq(K, K_real_number)) external = TRUE;
+
+	text_stream *X = K->construct->print_identifier;
 	if (Str::len(X) == 0) X = I"DecimalNumber";
 
 	if (R) {
@@ -301,11 +302,13 @@ inter_name *RTKindConstructors::get_iname(kind *K) {
 			inter_name *actual_iname = HierarchyLocations::find_by_name(Emit::tree(), X);
 			Emit::iname_constant(K->construct->compilation_data.pr_iname, K_value, actual_iname);
 		} else {
-			WRITE_TO(STDERR, "identifier: '%S'\n", X);
+			WRITE_TO(STDERR, "kind: %u, identifier: '%S'\n", K, X);
 			internal_error("internal but unknown kind printing routine");
 		}
 	} else {
-		if (external) K->construct->compilation_data.pr_iname = HierarchyLocations::find_by_name(Emit::tree(), X);
+		if (external)
+			K->construct->compilation_data.pr_iname =
+				HierarchyLocations::find_by_name(Emit::tree(), X);
 		else internal_error("internal but unpackaged kind printing routine");
 	}
 	return K->construct->compilation_data.pr_iname;

@@ -12,6 +12,8 @@ typedef struct instance_compilation_data {
 	struct inter_name *instance_iname;
 	struct linked_list *usages; /* of |parse_node| */
 	int declaration_sequence_number;
+	int has_explicit_runtime_value;
+	inter_ti explicit_runtime_value;
 } instance_compilation_data;
 
 instance_compilation_data RTInstances::new_compilation_data(instance *I) {
@@ -21,6 +23,8 @@ instance_compilation_data RTInstances::new_compilation_data(instance *I) {
 	icd.instance_iname = Hierarchy::make_iname_with_memo(INSTANCE_HL,
 		icd.instance_package, W);
 	icd.declaration_sequence_number = -1;
+	icd.has_explicit_runtime_value = FALSE;
+	icd.explicit_runtime_value = 0;
 	icd.usages = NEW_LINKED_LIST(parse_node);
 	NounIdentifiers::set_iname(I->as_noun, icd.instance_iname);
 	Hierarchy::make_available_one_per_name_only(icd.instance_iname);
@@ -34,6 +38,11 @@ inter_name *RTInstances::value_iname(instance *I) {
 
 package_request *RTInstances::package(instance *I) {
 	return I->compilation_data.instance_package;
+}
+
+void RTInstances::set_explicit_runtime_value(instance *I, inter_ti value) {
+	I->compilation_data.has_explicit_runtime_value = TRUE;
+	I->compilation_data.explicit_runtime_value = value;
 }
 
 @ It's perhaps ambiguous what a usage of an instance is, or where it occurs,

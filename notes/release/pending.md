@@ -124,7 +124,7 @@ and now poses a moral rather than gender-based question.
 - Fix for a "very old quirk of I7 where it generates a `story.gblorb.js` file for
 	the interpreter website, but the filename is a lie. It's the base64-encoding
 	of the `story.ulx` file, not the `story.gblorb`." (Andrew Plotkin, not from Jira)
-- Cosmetic fixes not worth linking to (I7-2319, I7-2316, I7-2315, I7-2293, I7-2270, I7-2268, I7-2221)
+- Cosmetic fixes not worth linking to (I7-2350, I7-2319, I7-2316, I7-2315, I7-2293, I7-2270, I7-2268, I7-2221)
 
 ## Bugs fixed in the course of feature additions
 
@@ -133,16 +133,25 @@ fixes a number of known anomalies in the way that the standard world model
 handled containment, incorporation and so on. This enabled a number of bugs to
 be closed:
 
+- [I7-2296](https://inform7.atlassian.net/browse/I7-2296)
+	on things being privately-named causing their printed names not to be used in room description
 - [I7-2220](https://inform7.atlassian.net/browse/I7-2220)
 	on the definition of holding
 - [I7-2219](https://inform7.atlassian.net/browse/I7-2219)
 	on directions being held
+- [I7-2178](https://inform7.atlassian.net/browse/I7-2178)
+	on "if x is held by a supporter" resulting in false negative
+- [I7-2128](https://inform7.atlassian.net/browse/I7-2128)
+	on holding relation tests failing for containment, support, or incorporation
 - [I7-2046 = Mantis 2083](https://inform7.atlassian.net/browse/I7-2046)
 	on when containers holding concealed items say they are "(empty)"
 - [I7-2036 = Mantis 2073](https://inform7.atlassian.net/browse/I7-2036)
 	on inconsistencies when containers or supporters holding concealed items are examined
-- [I7-2296](https://inform7.atlassian.net/browse/I7-2296)
-	on things being privately-named causing their printed names not to be used in room description
+
+Similarly, [(IE-0021) No automatic plural synonyms](https://github.com/ganelson/inform-evolution/blob/main/proposals/0021-no-automatic-plural-synonyms.md):
+
+- [I7-1980](https://inform7.atlassian.net/browse/I7-1980)
+	on understanding things by plural name of kind
 
 ## Note about intest
 

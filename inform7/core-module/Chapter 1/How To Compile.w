@@ -131,6 +131,7 @@ so on. Those absolute basics are made here.
 	BENCH(Task::make_built_in_kind_constructors);
 	BENCH(BinaryPredicateFamilies::first_stock)
 	BENCH(BootVerbs::make_built_in)
+	BENCH(Instances::make_instances_from_Neptune);
 
 @<Pass three times through the major nodes@> =
 	Task::advance_stage_to(SEMANTIC_ANALYSIS_CSEQ, I"Pre-pass through major nodes",

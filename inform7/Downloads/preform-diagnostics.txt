@@ -5669,9 +5669,9 @@
 <extension-title-and-version> hits 10/20 nti 8 constraint (none) extremes [1, infinity)
     English:
         version <extension-version> of <definite-article> <extension-unversioned> 
-          (hits 1/3) (matched: 'version 6 of the standard rules') constraint DS = {8} extremes [5, infinity)
+          (hits 1/3) (matched: 'version 7 of the standard rules') constraint DS = {8} extremes [5, infinity)
         version <extension-version> of <extension-unversioned> 
-          (hits 3/3) (matched: 'version 1 of basic inform') constraint DS = {8} extremes [4, infinity)
+          (hits 3/3) (matched: 'version 2 of basic inform') constraint DS = {8} extremes [4, infinity)
         <definite-article> <extension-unversioned> 
           (hits 0/5) constraint (none) extremes [2, infinity)
         <extension-unversioned> 
