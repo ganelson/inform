@@ -159,8 +159,7 @@ void Features::run_activation_function(compiler_feature *F) {
 	if ((allow_activation_functions_to_be_run) && (F) &&
 		(F->activation_function_run == FALSE)) {
 		F->activation_function_run = TRUE;
-		void (*start)() = (void (*)()) F->activation_function;
-		if (start) (*start)();
+		if (F->activation_function) (*(F->activation_function))();
 	}
 }
 
