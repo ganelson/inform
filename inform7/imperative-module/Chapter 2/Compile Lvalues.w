@@ -46,7 +46,6 @@ void CompileLvalues::compile_in_mode(value_holster *VH, parse_node *spec_found, 
 	local_variable *lvar = Node::get_constant_local_variable(spec_found);
 	inter_symbol *lvar_s = LocalVariables::declare(lvar);
 	if (lvar == NULL) {
-		LOG("Bad: %08x\n", spec_found);
 		internal_error("Compiled never-specified LOCAL VARIABLE SP");
 	}
 	EmitCode::val_symbol(K_value, lvar_s);

@@ -413,7 +413,7 @@ void Frames::emit_new_local_value(kind *K) {
 void Frames::log(stack_frame *frame) {
 	if (frame == NULL) { LOG("<null stack frame>\n"); return; }
 	LOG("Stack frame at %08x: it:%s, dpc:%s\n",
-		frame,
+		(unsigned int)(pointer_sized_int)frame,
 		(frame->local_variables.it_variable_exists)?"yes":"no",
 		(frame->determines_past_conditions)?"yes":"no");
 	local_variable *lvar;

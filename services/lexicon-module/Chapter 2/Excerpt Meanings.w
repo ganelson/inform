@@ -128,7 +128,7 @@ void ExcerptMeanings::log_all(void) {
 	int i = 0;
 	excerpt_meaning *em;
 	LOOP_OVER(em, excerpt_meaning)
-		LOG("%02d: %08x $M\n", i++, (pointer_sized_int) em, em);
+		LOG("%02d: $M\n", i++, em);
 }
 
 @h Hashing excerpts.

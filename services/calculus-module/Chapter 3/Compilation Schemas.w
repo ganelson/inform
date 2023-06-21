@@ -166,16 +166,10 @@ so it would not be safe to store only the textual identifier.
 			#ifdef CORE_MODULE
 			RTKindIDs::write_weak_identifier(OUT, va_arg(ap, kind *));
 			#endif
-			#ifndef CORE_MODULE
-			WRITE("{%u}", va_arg(ap, kind *));
-			#endif
 			break;
 		case 'L':
 			#ifdef CORE_MODULE
 			WRITE("%~L", va_arg(ap, local_variable *)); break;
-			#endif
-			#ifndef CORE_MODULE
-			WRITE("%08x", va_arg(ap, void *)); break;
 			#endif
 			break;
 		case 'n': {
