@@ -101,7 +101,7 @@ void KindCommands::apply(single_kind_command stc, kind_constructor *con) {
 	}
 	if (tcc == instance_KCC) {
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, stc.textual_argument, L" *(%c+?) *= *(%c+) *= *(%d+) *")) {
+		if (Regexp::match(&mr, stc.textual_argument, L" *(%c+?) *= *(%c+?) *= *(%d+) *")) {
 			kind_constructor_instance *kci = CREATE(kind_constructor_instance);
 			kci->natural_language_name = Str::duplicate(mr.exp[0]);
 			kci->identifier = Str::duplicate(mr.exp[1]);

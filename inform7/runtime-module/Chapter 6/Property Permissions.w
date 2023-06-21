@@ -33,6 +33,8 @@ void RTPropertyPermissions::emit_kind_permissions(kind *K) {
 	property_permission *pp;
 	LOOP_OVER_PERMISSIONS_FOR_INFS(pp, subj) c++;
 	if (c == 0) return;
+	if (RTKindConstructors::is_nonstandard_enumeration(K))
+		internal_error("nonstandard enumeration with properties");
 	packaging_state save = Packaging::enter(RTPropertyPermissions::home(subj));
 	inter_symbol *owner_s = Produce::kind_to_symbol(K);
 	LOOP_OVER_PERMISSIONS_FOR_INFS(pp, subj)

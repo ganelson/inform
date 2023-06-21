@@ -24,6 +24,7 @@ typedef struct kind_constructor_compilation_data {
 	struct inter_name *debug_print_fn_iname;
 	struct package_request *usage_package;
 	int declaration_sequence_number;
+	int nonstandard_enumeration;
 } kind_constructor_compilation_data;
 
 kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_constructor *kc) {
@@ -46,6 +47,7 @@ kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_
 	kccd.debug_print_fn_iname = NULL;
 	kccd.usage_package = NULL;
 	kccd.declaration_sequence_number = -1;
+	kccd.nonstandard_enumeration = FALSE;
 	return kccd;
 }
 
@@ -161,6 +163,25 @@ inter_name *RTKindConstructors::instance_count_iname(kind *K) {
 	return kc->compilation_data.instance_count_iname;
 }
 
+@ Non-standard enumeration occurs when a kit defines an enumerative kind with
+runtime values other than 1, 2, 3, ...; an instance which has other than the
+expected runtime value is called "out of order", and a kind is a "non-standard
+enumeration" if it has an out of order instance.
+
+=
+void RTKindConstructors::set_explicit_runtime_instance_value(kind *K, instance *I,
+	inter_ti val) {
+	kind_constructor *kc = Kinds::get_construct(K);
+	RTInstances::set_explicit_runtime_value(I, val);
+	if (RTInstances::out_of_place(I))
+		kc->compilation_data.nonstandard_enumeration = TRUE;
+}
+
+int RTKindConstructors::is_nonstandard_enumeration(kind *K) {
+	kind_constructor *kc = Kinds::get_construct(K);
+	return kc->compilation_data.nonstandard_enumeration;
+}
+
 @ Convenient storage for some names.
 
 =
@@ -207,7 +228,7 @@ inter_name *RTKindConstructors::get_iname(kind *K) {
 	K = Kinds::weaken(K, K_object);
 	if (K->construct->compilation_data.pr_iname)
 		return K->construct->compilation_data.pr_iname;
-LOG("Kind = %u, exid = %S\n", K, K->construct->explicit_identifier);
+
 	if ((Str::len(K->construct->explicit_identifier) == 0) ||
 		(LinkedLists::len(KindConstructors::instances(K->construct)) > 0)) {
 		package_request *R = RTKindConstructors::package(K->construct);

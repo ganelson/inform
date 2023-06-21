@@ -259,10 +259,10 @@ void Emit::named_generic_constant(inter_name *con_iname, inter_pair val) {
 @h Instances.
 
 =
-void Emit::instance(inter_name *inst_iname, kind *K, int v) {
+void Emit::instance(inter_name *inst_iname, kind *K, inter_ti v, int has_value) {
 	packaging_state save = Packaging::enter_home_of(inst_iname);
 	inter_symbol *inst_s = InterNames::to_symbol(inst_iname);
-	inter_pair val = v ? InterValuePairs::number((inter_ti) v) : InterValuePairs::undef();
+	inter_pair val = has_value ? InterValuePairs::number(v) : InterValuePairs::undef();
 	Produce::guard(InstanceInstruction::new(Emit::at(), inst_s,
 		Produce::kind_to_symbol(K), val, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
