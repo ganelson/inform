@@ -31,6 +31,10 @@ inter_tree_node *Synoptic::get_definition(inter_package *pack, text_stream *name
 does exist, it must have a definition, and we return that.
 
 =
+inter_symbol *Synoptic::get_optional_symbol(inter_package *pack, text_stream *name) {
+	return InterSymbolsTable::symbol_from_name(InterPackage::scope(pack), name);
+}
+
 inter_tree_node *Synoptic::get_optional_definition(inter_package *pack, text_stream *name) {
 	inter_symbol *def_s = InterSymbolsTable::symbol_from_name(InterPackage::scope(pack), name);
 	if (def_s == NULL) return NULL;

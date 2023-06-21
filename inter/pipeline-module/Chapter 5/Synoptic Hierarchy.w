@@ -164,6 +164,7 @@ The |/main/synoptic/kinds| submodule.
 
 @e DEFAULTVALUEOFKOV_HL
 @e DEFAULTVALUEFINDER_HL
+@e VALUESFINDER_HL
 @e PRINTKINDVALUEPAIR_HL
 @e KOVCOMPARISONFUNCTION_HL
 @e KOVDOMAINSIZE_HL
@@ -180,6 +181,7 @@ The |/main/synoptic/kinds| submodule.
 		SYN_CONST(BASE_KIND_HWM_HL,               I"BASE_KIND_HWM")
 		SYN_FUNCT(DEFAULTVALUEOFKOV_HL,           I"defaultvalue_fn", I"DefaultValueOfKOV")
 		SYN_FUNCT(DEFAULTVALUEFINDER_HL,          I"defaultvaluefinder_fn", I"DefaultValueFinder")
+		SYN_FUNCT(VALUESFINDER_HL,                I"valuesfinder_fn", I"ValuesFinder")
 		SYN_FUNCT(PRINTKINDVALUEPAIR_HL,          I"printkindvaluepair_fn", I"PrintKindValuePair")
 		SYN_FUNCT(KOVCOMPARISONFUNCTION_HL,       I"comparison_fn", I"KOVComparisonFunction")
 		SYN_FUNCT(KOVDOMAINSIZE_HL,               I"domainsize_fn", I"KOVDomainSize")

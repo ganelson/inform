@@ -9,6 +9,7 @@ typedef struct kind_constructor_compilation_data {
 	struct inter_name *xref_iname;
 	struct inter_name *con_iname;
 	struct inter_name *list_iname;
+	struct inter_name *instances_array_iname;
 	struct package_request *kc_package;
 	struct inter_name *kind_GPR_iname;
 	int needs_GPR; /* a GPR is actually required to be compiled */
@@ -33,6 +34,7 @@ kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_
 	kccd.con_iname = NULL;
 	kccd.kc_package = NULL;
 	kccd.list_iname = NULL;
+	kccd.instances_array_iname = NULL;
 	kccd.kind_GPR_iname = NULL;
 	kccd.needs_GPR = FALSE;
 	kccd.instance_GPR_iname = NULL;
@@ -161,6 +163,15 @@ inter_name *RTKindConstructors::instance_count_iname(kind *K) {
 				Hierarchy::make_iname_in(hl, RTKindConstructors::kind_package(K));
 	}
 	return kc->compilation_data.instance_count_iname;
+}
+
+inter_name *RTKindConstructors::instances_array_iname(kind *K) {
+	kind_constructor *kc = Kinds::get_construct(K);
+	if (kc->compilation_data.instances_array_iname == NULL)
+		kc->compilation_data.instances_array_iname =
+			Hierarchy::derive_iname_in_translating(INSTANCES_ARRAY_HL,
+				RTKindDeclarations::iname(K), RTKindConstructors::package(kc));
+	return kc->compilation_data.instances_array_iname;
 }
 
 @ Non-standard enumeration occurs when a kit defines an enumerative kind with
@@ -690,6 +701,19 @@ void RTKindConstructors::compile(void) {
 			DISCARD_TEXT(ICN)
 			Emit::numeric_constant(iname, (inter_ti) Instances::count(K));
 			
+			if (RTKindConstructors::is_nonstandard_enumeration(K)) {
+				inter_name *array_iname =
+					RTKindConstructors::instances_array_iname(K);
+				Hierarchy::make_available(array_iname);
+				packaging_state save = EmitArrays::begin_word(array_iname, K_value);
+				EmitArrays::iname_entry(iname);
+				RTKindConstructors::make_enumeration_entries(K);
+				EmitArrays::numeric_entry(0);
+				EmitArrays::end(save);
+				Hierarchy::apply_metadata_from_iname(RTKindConstructors::kind_package(K),
+					ENUMERATION_ARRAY_MD_HL, array_iname);
+			}
+			
 			if (Kinds::eq(K, K_room)) {
 				inter_name *iname = 
 					Hierarchy::make_iname_in(FWMATRIX_SIZE_HL, RTKindConstructors::kind_package(K));
@@ -750,7 +774,8 @@ void RTKindConstructors::compile(void) {
 			Hierarchy::apply_metadata_from_number(pack, KIND_SHADED_MD_HL, 1);
 		if (Deferrals::has_finite_domain(K))
 			Hierarchy::apply_metadata_from_number(pack, KIND_FINITE_DOMAIN_MD_HL, 1);
-		if (KindSubjects::has_properties(K))
+		if ((KindSubjects::has_properties(K)) &&
+			(RTKindConstructors::is_nonstandard_enumeration(K) == FALSE)) 
 			Hierarchy::apply_metadata_from_number(pack, KIND_HAS_PROPERTIES_MD_HL, 1);
 		if (RTKindConstructors::offers_I6_GPR(K))
 			Hierarchy::apply_metadata_from_number(pack, KIND_UNDERSTANDABLE_MD_HL, 1);
@@ -880,6 +905,31 @@ as "0 kg", "0 hectares", or whatever is appropriate.
 		Hierarchy::apply_metadata(pack, RESULT_BM_MD_HL, OUT);
 		DISCARD_TEXT(OUT)
 	}
+
+@
+
+=
+int RTKindConstructors::count_enumeration_entries(kind *K) {
+	return Instances::count(K);
+}
+
+@ A little dubiously, for an enumeration ("Colour is a kind of value. The
+colours are red, green and blue."), the entries are just the numbers 1, 2, 3, ...
+That never seems a good use of memory, but it is still more efficient to store
+one copy of this than to have to construct it frequently at runtime.
+
+=
+void RTKindConstructors::make_enumeration_entries(kind *K) {
+	if (RTKindConstructors::is_nonstandard_enumeration(K)) {
+		instance *I;
+		LOOP_OVER_INSTANCES(I, K)
+			EmitArrays::iname_entry(RTInstances::value_iname(I));		
+	} else {
+		int N = RTKindConstructors::get_highest_valid_value_as_integer(K);
+		for (int i = 1; i <= N; i++)
+			EmitArrays::numeric_entry((inter_ti) i);
+	}
+}
 
 @
 

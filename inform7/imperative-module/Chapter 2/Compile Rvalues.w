@@ -14,6 +14,8 @@ void CompileRvalues::compile(value_holster *VH, parse_node *value) {
 		case CONSTANT_NT: {
 			kind *kind_of_constant = Node::get_kind_of_value(value);
 			int ccm = Kinds::Behaviour::get_constant_compilation_method(kind_of_constant);
+			if ((ccm == NONE_CCM) && (Kinds::Behaviour::is_an_enumeration(kind_of_constant)))
+				ccm = NAMED_CONSTANT_CCM;
 			switch(ccm) {
 				case NONE_CCM: /* constant values of this kind cannot exist */
 					LOG("SP: $P; kind: %u\n", value, kind_of_constant);

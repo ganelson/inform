@@ -1209,7 +1209,7 @@ void Hierarchy::establish(void) {
 @e WEAK_ID_HL
 @e ICOUNT_HL
 @e FWMATRIX_SIZE_HL
-@e ILIST_HL
+@e ENUMERATION_ARRAY_MD_HL
 @e KIND_XREF_SYMBOL_HL
 @e DECREMENT_FN_HL
 @e INCREMENT_FN_HL
@@ -1223,6 +1223,7 @@ void Hierarchy::establish(void) {
 @e INSTANCE_GPR_FN_HL
 @e INSTANCE_LIST_HL
 @e FIRST_INSTANCE_HL
+@e INSTANCES_ARRAY_HL
 @e NEXT_INSTANCE_HL
 @e COUNT_INSTANCE_1_HL
 @e COUNT_INSTANCE_2_HL
@@ -1317,7 +1318,7 @@ void Hierarchy::establish(void) {
 			H_C_U(KIND_INFERENCES_MD_HL,      I"^inferences")
 			H_C_I(WEAK_ID_HL)
 			H_C_I(ICOUNT_HL)
-			H_C_I(ILIST_HL)
+			H_C_U(ENUMERATION_ARRAY_MD_HL,    I"^enumeration_array")
 			H_C_U(FWMATRIX_SIZE_HL,           I"FWMATRIX_SIZE")
 			H_C_U(KIND_XREF_SYMBOL_HL,        I"kind_ref")
 			H_F_U(MKDEF_FN_HL,                I"mkdef_fn")
@@ -1333,6 +1334,7 @@ void Hierarchy::establish(void) {
 			H_F_U(SHOWME_FN_HL,               I"showme_fn")
 			H_C_S(FIRST_INSTANCE_HL,          I"_First")
 			H_C_S(NEXT_INSTANCE_HL,           I"_Next")
+			H_C_S(INSTANCES_ARRAY_HL,         I"_Array")
 			H_C_T(COUNT_INSTANCE_1_HL,        I"IK1_Count")
 			H_C_T(COUNT_INSTANCE_2_HL,        I"IK2_Count")
 			H_C_T(COUNT_INSTANCE_3_HL,        I"IK3_Count")
