@@ -493,6 +493,16 @@ osx_app {
 	destination = ../Inform.app/Contents/Resources/English.lproj/
 }
 
+osx_dev_app {
+	# HTML documentation for the OS X app
+	follow: in-application-instructions.txt
+	assume_Public_Library = yes
+	support_creation = yes
+	retina_images = yes
+	declare: OSX
+	destination = resources/App HTML/en.lproj/
+}
+
 windows_app {
 	# HTML documentation for the Windows app
 	follow: in-application-instructions.txt
