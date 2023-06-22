@@ -734,6 +734,7 @@ Section 1 - Enumerations
 To decide which number is number of (S - description of values)
 	(documented at ph_numberof):
 	(- {-primitive-definition:number-of} -).
+To decide what number is the numerical value of (V - enumerated value): (- {V} -).
 To decide which K is (name of kind of enumerated value K) after (X - K)
 	(documented at ph_enumafter):
 	(- {-next-routine:K}({X}) -).

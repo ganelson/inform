@@ -135,6 +135,7 @@ typedef struct kind_constructor_instance {
 	struct text_stream *natural_language_name;
 	struct text_stream *identifier;
 	int value;
+	int value_specified;
 } kind_constructor_instance;
 
 @ The "tupling" of an argument is the extent to which an argument can be

@@ -101,11 +101,19 @@ void KindCommands::apply(single_kind_command stc, kind_constructor *con) {
 	}
 	if (tcc == instance_KCC) {
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, stc.textual_argument, L" *(%c+?) *= *(%c+?) *= *(%d+) *")) {
+		if (Regexp::match(&mr, stc.textual_argument, L" *(%c+?) *= *(%C+) *= *(%d+) *")) {
 			kind_constructor_instance *kci = CREATE(kind_constructor_instance);
 			kci->natural_language_name = Str::duplicate(mr.exp[0]);
 			kci->identifier = Str::duplicate(mr.exp[1]);
 			kci->value = Str::atoi(mr.exp[2], 0);
+			kci->value_specified = TRUE;
+			ADD_TO_LINKED_LIST(kci, kind_constructor_instance, con->instances);	
+		} else if (Regexp::match(&mr, stc.textual_argument, L" *(%c+?) *= *(%C+) *")) {
+			kind_constructor_instance *kci = CREATE(kind_constructor_instance);
+			kci->natural_language_name = Str::duplicate(mr.exp[0]);
+			kci->identifier = Str::duplicate(mr.exp[1]);
+			kci->value = 0;
+			kci->value_specified = FALSE;
 			ADD_TO_LINKED_LIST(kci, kind_constructor_instance, con->instances);	
 		} else {
 			NeptuneFiles::error(stc.textual_argument,
