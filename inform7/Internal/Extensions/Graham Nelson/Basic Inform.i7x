@@ -661,7 +661,7 @@ To repeat with (loopvar - nonexisting K variable)
 To repeat with (loopvar - nonexisting K variable)
 	running from (v - enumerated value of kind K) to (w - K) begin -- end loop
 	(documented at ph_repeat):
-		(- for ({loopvar}={v}: {loopvar}<={w}: {loopvar}++)  -).
+		(- for ({loopvar}={v}: {loopvar}<={w}: {loopvar}={-next-routine:K}({loopvar}))  -).
 To repeat with (loopvar - nonexisting K variable)
 	running through (OS - description of values of kind K) begin -- end loop
 	(documented at ph_runthrough):

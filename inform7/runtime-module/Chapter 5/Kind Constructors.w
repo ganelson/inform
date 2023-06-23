@@ -1194,6 +1194,12 @@ first function ever implemented by emitting Inter code, on 12 November 2017.
 
 	if (instance_count <= 1) {
 		EmitCode::val_symbol(K, x);
+	} else if (RTKindConstructors::is_nonstandard_enumeration(K)) {
+		EmitCode::call(Hierarchy::find(NEXT_ENUM_VAL_HL));
+		EmitCode::down();
+			EmitCode::val_symbol(K, x);
+			EmitCode::val_iname(K_value, RTKindConstructors::instances_array_iname(K));
+		EmitCode::up();
 	} else {
 		EmitCode::cast(K_number, K);
 		EmitCode::down();
@@ -1226,6 +1232,12 @@ first function ever implemented by emitting Inter code, on 12 November 2017.
 
 	if (instance_count <= 1) {
 		EmitCode::val_symbol(K, x);
+	} else if (RTKindConstructors::is_nonstandard_enumeration(K)) {
+		EmitCode::call(Hierarchy::find(PREV_ENUM_VAL_HL));
+		EmitCode::down();
+			EmitCode::val_symbol(K, x);
+			EmitCode::val_iname(K_value, RTKindConstructors::instances_array_iname(K));
+		EmitCode::up();
 	} else {
 		EmitCode::cast(K_number, K);
 		EmitCode::down();
@@ -1273,77 +1285,88 @@ and |b| inclusive.
 	inter_symbol *a_s = LocalVariables::new_other_as_symbol(I"a");
 	inter_symbol *b_s = LocalVariables::new_other_as_symbol(I"b");
 
-	EmitCode::inv(IF_BIP);
-	EmitCode::down();
-		EmitCode::inv(AND_BIP);
+	if (RTKindConstructors::is_nonstandard_enumeration(K)) {
+		EmitCode::inv(RETURN_BIP);
+		EmitCode::down();
+			EmitCode::call(Hierarchy::find(RANDOM_ENUM_VAL_HL));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, RTKindConstructors::instances_array_iname(K));
+				EmitCode::val_symbol(K_value, a_s);
+				EmitCode::val_symbol(K_value, b_s);
+			EmitCode::up();
+		EmitCode::up();
+	} else {
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(AND_BIP);
+			EmitCode::down();
+				EmitCode::inv(EQ_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, a_s);
+					EmitCode::val_number(0);
+				EmitCode::up();
+				EmitCode::inv(EQ_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, b_s);
+					EmitCode::val_number(0);
+				EmitCode::up();
+			EmitCode::up();
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::inv(RETURN_BIP);
+				EmitCode::down();
+					EmitCode::inv(RANDOM_BIP);
+					EmitCode::down();
+						if (Kinds::Behaviour::is_quasinumerical(K))
+							EmitCode::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
+						else
+							EmitCode::val_number((inter_ti) RTKindConstructors::get_highest_valid_value_as_integer(K));
+					EmitCode::up();
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
+
+		EmitCode::inv(IF_BIP);
 		EmitCode::down();
 			EmitCode::inv(EQ_BIP);
 			EmitCode::down();
 				EmitCode::val_symbol(K_value, a_s);
-				EmitCode::val_number(0);
-			EmitCode::up();
-			EmitCode::inv(EQ_BIP);
-			EmitCode::down();
 				EmitCode::val_symbol(K_value, b_s);
-				EmitCode::val_number(0);
 			EmitCode::up();
-		EmitCode::up();
-		EmitCode::code();
-		EmitCode::down();
-			EmitCode::inv(RETURN_BIP);
+			EmitCode::code();
 			EmitCode::down();
-				EmitCode::inv(RANDOM_BIP);
+				EmitCode::inv(RETURN_BIP);
 				EmitCode::down();
-					if (Kinds::Behaviour::is_quasinumerical(K))
-						EmitCode::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
-					else
-						EmitCode::val_number((inter_ti) RTKindConstructors::get_highest_valid_value_as_integer(K));
+					EmitCode::val_symbol(K_value, b_s);
 				EmitCode::up();
 			EmitCode::up();
 		EmitCode::up();
-	EmitCode::up();
 
-	EmitCode::inv(IF_BIP);
-	EmitCode::down();
-		EmitCode::inv(EQ_BIP);
+		inter_symbol *smaller = NULL, *larger = NULL;
+
+		EmitCode::inv(IF_BIP);
 		EmitCode::down();
-			EmitCode::val_symbol(K_value, a_s);
-			EmitCode::val_symbol(K_value, b_s);
-		EmitCode::up();
-		EmitCode::code();
-		EmitCode::down();
-			EmitCode::inv(RETURN_BIP);
+			EmitCode::inv(GT_BIP);
 			EmitCode::down();
+				EmitCode::val_symbol(K_value, a_s);
 				EmitCode::val_symbol(K_value, b_s);
 			EmitCode::up();
-		EmitCode::up();
-	EmitCode::up();
-
-	inter_symbol *smaller = NULL, *larger = NULL;
-
-	EmitCode::inv(IF_BIP);
-	EmitCode::down();
-		EmitCode::inv(GT_BIP);
-		EmitCode::down();
-			EmitCode::val_symbol(K_value, a_s);
-			EmitCode::val_symbol(K_value, b_s);
-		EmitCode::up();
-		EmitCode::code();
-		EmitCode::down();
-			EmitCode::inv(RETURN_BIP);
+			EmitCode::code();
 			EmitCode::down();
-				smaller = b_s; larger = a_s;
-				@<Formula for range@>;
+				EmitCode::inv(RETURN_BIP);
+				EmitCode::down();
+					smaller = b_s; larger = a_s;
+					@<Formula for range@>;
+				EmitCode::up();
 			EmitCode::up();
 		EmitCode::up();
-	EmitCode::up();
 
-	EmitCode::inv(RETURN_BIP);
-	EmitCode::down();
-		smaller = a_s; larger = b_s;
-		@<Formula for range@>;
-	EmitCode::up();
-
+		EmitCode::inv(RETURN_BIP);
+		EmitCode::down();
+			smaller = a_s; larger = b_s;
+			@<Formula for range@>;
+		EmitCode::up();
+	}
 	Functions::end(save);
 
 @<Formula for range@> =
