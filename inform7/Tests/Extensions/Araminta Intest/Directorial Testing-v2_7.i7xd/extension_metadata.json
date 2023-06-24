@@ -1,0 +1,14 @@
+{
+    "is": {
+        "type": "extension",
+        "title": "Directorial Testing",
+        "author": "Araminta Intest",
+        "version": "2.7"
+    },
+    "needs": [ {
+        "need": {
+            "type": "kit",
+            "title": "TestKit"
+        }
+    } ]
+}

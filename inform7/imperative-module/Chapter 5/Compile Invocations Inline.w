@@ -667,6 +667,7 @@ We'll start with a suite of details about kinds:
 	if (C == new_list_of_ISINC)      @<Inline command "new-list-of"@>;
 	if (C == printing_routine_ISINC) @<Inline command "printing-routine"@>;
 	if (C == ranger_routine_ISINC)   @<Inline command "ranger-routine"@>;
+	if (C == indexing_routine_ISINC) @<Inline command "indexing-routine"@>;
 	if (C == next_routine_ISINC)     @<Inline command "next-routine"@>;
 	if (C == previous_routine_ISINC) @<Inline command "previous-routine"@>;
 	if (C == strong_kind_ISINC)      @<Inline command "strong-kind"@>;
@@ -739,6 +740,13 @@ proposition.
 		(Kinds::eq(K, K_time)))
 		EmitCode::val_iname(K_value, Hierarchy::find(GENERATERANDOMNUMBER_HL));
 	else if (K) EmitCode::val_iname(K_value, RTKindConstructors::get_ranger_iname(K));
+	else @<Issue an inline no-such-kind problem@>;
+	return;
+
+@<Inline command "indexing-routine"@> =
+	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
+		Node::get_kind_variable_declarations(inv));
+	if (K) EmitCode::val_iname(K_value, RTKindConstructors::get_indexing_iname(K));
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 

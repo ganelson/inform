@@ -241,7 +241,8 @@ void ExtensionManager::ensure_graphed(inbuild_copy *C) {
 	Extensions::construct_graph(ExtensionManager::from_copy(C));
 	build_vertex *V;
 	LOOP_OVER_LINKED_LIST(V, build_vertex, C->vertex->use_edges)
-		ExtensionManager::ensure_graphed(V->as_copy);
+		if (ExtensionManager::from_copy(V->as_copy))
+			ExtensionManager::ensure_graphed(V->as_copy);
 }
 
 @h Source text.

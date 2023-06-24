@@ -1,0 +1,50 @@
+   Laboratory
+  This rule originated from the extension source.
+  
+  This is an uninitialised colour variable - "C" = colour: red
+  Iterating...
+  "D" = colour: red
+  "colour after D" = colour: purple
+  "colour before D" = colour: chartreusey lavender
+  "sequence number of D" = number: 1
+  "numerical value of D" = number: 7
+  "whether or not D is valid" = truth state: true
+  "D" = colour: purple
+  "colour after D" = colour: chartreusey lavender
+  "colour before D" = colour: red
+  "sequence number of D" = number: 2
+  "numerical value of D" = number: 31
+  "whether or not D is valid" = truth state: true
+  "D" = colour: chartreusey lavender
+  "colour after D" = colour: red
+  "colour before D" = colour: purple
+  "sequence number of D" = number: 3
+  "numerical value of D" = number: 101
+  "whether or not D is valid" = truth state: true
+  Done.
+  Now for a limited-span repeat...
+  "D" = colour: red
+  "D" = colour: purple
+  Done.
+  "list of colours" = list of colours: {red, purple, chartreusey lavender}
+  "first value of colour" = colour: red
+  "last value of colour" = colour: chartreusey lavender
+  "colour scheme of the Laboratory" = colour: red
+  This tests bracket-plus...
+  The red is 7
+  The mauve is 101
+  101 = 101
+  Now for some random values...
+  purple; purple; chartreusey lavender; purple; red; red; chartreusey lavender; purple; chartreusey lavender; red; purple; chartreusey lavender; chartreusey lavender; purple; chartreusey lavender; red; purple; purple; red; purple; red; chartreusey lavender; purple; chartreusey lavender; chartreusey lavender; chartreusey lavender; purple; red; red; red; purple; purple; purple; red; purple; chartreusey lavender; red; purple; purple; purple; chartreusey lavender; purple; chartreusey lavender; chartreusey lavender; red; purple; red; red; red; red; chartreusey lavender; purple; purple; chartreusey lavender; purple; purple; chartreusey lavender; red; red; purple; purple; chartreusey lavender; chartreusey lavender; red; red; red; red; red; red; purple; red; chartreusey lavender; purple; red; purple; red; chartreusey lavender; purple; purple; chartreusey lavender; red; red; chartreusey lavender; chartreusey lavender; chartreusey lavender; chartreusey lavender; purple; purple; purple; purple;
+  chartreusey lavender; chartreusey lavender; purple; red; red; red; purple; chartreusey lavender; red; red; ... enough!
+  red; purple; red; purple; red; red; purple; red; purple; purple; red; red; purple; red; purple; purple; red; purple; red; red; purple; red; red; purple; purple; purple; purple; red; red; purple; red; purple; red; red; red; red; purple; purple; red; red; purple; purple; red; purple; purple; purple; purple; red; purple; purple; purple; red; red; red; purple; red; red; purple; purple; purple; purple; purple; red; red; purple; red; red; purple; purple; red; red; purple; red; red; purple; red; purple; purple; red; red; purple; red; red; red; purple; red; purple; red; purple; red; red; purple; red; purple; purple; purple; red; purple; purple; purple; ... enough!
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Laboratory
+  The wallpaper has a somewhat red tint.
+  
+> >   Laboratory
+> Are you sure you want to quit? 

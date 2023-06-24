@@ -1217,6 +1217,7 @@ void Hierarchy::establish(void) {
 @e PRINT_DASH_FN_HL
 @e MKDEF_FN_HL
 @e RANGER_FN_HL
+@e INDEXING_FN_HL
 @e DEFAULT_CLOSURE_FN_HL
 @e GPR_FN_HL
 @e SHOWME_FN_HL
@@ -1327,6 +1328,7 @@ void Hierarchy::establish(void) {
 			H_F_U(PRINT_FN_HL,                I"print_fn")
 			H_F_G(PRINT_DASH_FN_HL,           I"print_fn", I"E")
 			H_F_U(RANGER_FN_HL,               I"ranger_fn")
+			H_F_U(INDEXING_FN_HL,             I"indexing_fn")
 			H_F_U(DEFAULT_CLOSURE_FN_HL,      I"default_closure_fn")
 			H_F_U(GPR_FN_HL,                  I"gpr_fn")
 			H_F_U(INSTANCE_GPR_FN_HL,         I"instance_gpr_fn")

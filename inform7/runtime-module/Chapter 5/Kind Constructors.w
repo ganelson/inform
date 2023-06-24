@@ -22,6 +22,7 @@ typedef struct kind_constructor_compilation_data {
 	struct inter_name *dec_iname;
 	struct inter_name *mkdef_iname;
 	struct inter_name *ranger_iname;
+	struct inter_name *indexing_iname;
 	struct inter_name *debug_print_fn_iname;
 	struct package_request *usage_package;
 	int declaration_sequence_number;
@@ -46,6 +47,7 @@ kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_
 	kccd.dec_iname = NULL;
 	kccd.mkdef_iname = NULL;
 	kccd.ranger_iname = NULL;
+	kccd.indexing_iname = NULL;
 	kccd.debug_print_fn_iname = NULL;
 	kccd.usage_package = NULL;
 	kccd.declaration_sequence_number = -1;
@@ -368,6 +370,13 @@ inter_name *RTKindConstructors::get_ranger_iname(kind *K) {
 	package_request *R = RTKindConstructors::kind_package(K);
 	K->construct->compilation_data.ranger_iname = Hierarchy::make_iname_in(RANGER_FN_HL, R);
 	return K->construct->compilation_data.ranger_iname;
+}
+inter_name *RTKindConstructors::get_indexing_iname(kind *K) {
+	if (K == NULL) internal_error("null kind has no indexing fn");
+	if (K->construct->compilation_data.indexing_iname) return K->construct->compilation_data.indexing_iname;
+	package_request *R = RTKindConstructors::kind_package(K);
+	K->construct->compilation_data.indexing_iname = Hierarchy::make_iname_in(INDEXING_FN_HL, R);
+	return K->construct->compilation_data.indexing_iname;
 }
 inter_name *RTKindConstructors::get_mkdef_iname(kind_constructor *kc) {
 	if (kc->compilation_data.mkdef_iname == NULL)
@@ -1021,6 +1030,7 @@ void RTKindConstructors::compile_permissions(void) {
 		@<Compile I6 printing routine for an enumerated kind@>;
 		@<Compile the A and B routines for an enumerated kind@>;
 		@<Compile random-ranger routine for this kind@>;
+		@<Compile indexing routine for this kind@>;
 	}
 	if ((Kinds::Behaviour::is_built_in(K) == FALSE) &&
 		(Kinds::Behaviour::is_subkind_of_object(K) == FALSE) &&
@@ -1391,3 +1401,48 @@ and |b| inclusive.
 		EmitCode::up();
 	EmitCode::up();
 
+@<Compile indexing routine for this kind@> =
+	inter_name *iname_r = RTKindConstructors::get_indexing_iname(K);
+	packaging_state save = Functions::begin(iname_r);
+	inter_symbol *a_s = LocalVariables::new_other_as_symbol(I"a");
+
+	if (RTKindConstructors::is_nonstandard_enumeration(K)) {
+		EmitCode::inv(RETURN_BIP);
+		EmitCode::down();
+			EmitCode::call(Hierarchy::find(INDEX_OF_ENUM_VAL_HL));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, RTKindConstructors::instances_array_iname(K));
+				EmitCode::val_symbol(K_value, a_s);
+			EmitCode::up();
+		EmitCode::up();
+	} else {
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(OR_BIP);
+			EmitCode::down();
+				EmitCode::inv(LT_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, a_s);
+					EmitCode::val_number(0);
+				EmitCode::up();
+				EmitCode::inv(GT_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, a_s);
+					EmitCode::val_number((inter_ti) RTKindConstructors::get_highest_valid_value_as_integer(K));
+				EmitCode::up();
+			EmitCode::up();
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::inv(RETURN_BIP);
+				EmitCode::down();
+					EmitCode::val_number(0);
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
+
+		EmitCode::inv(RETURN_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, a_s);
+		EmitCode::up();
+	}
+	Functions::end(save);

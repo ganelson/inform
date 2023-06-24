@@ -209,6 +209,14 @@ the number of valid instances. This is guaranteed to be at least 1.
 	return instances-->(a_index + random(b_index - a_index + 1) - 1);
 ];
 
+[ IndexOfEnumVal instances a count c;
+	count = instances-->0;
+	for (c = 1: c <= count: c++)
+		if (instances-->c == a)
+			return c;
+	return 0;
+];
+
 @h GenerateRandomNumber.
 The following uses the virtual machine's RNG (via the I6 built-in function
 |random|) to produce a uniformly random integer in the range $n$ to $m$

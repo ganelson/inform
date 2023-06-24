@@ -94,6 +94,7 @@ comprehensive list of what is there.)
 @e GPROPERTY_HL
 @e HASHLISTRELATIONHANDLER_HL
 @e I7SFRAME_HL
+@e INDEX_OF_ENUM_VAL_HL
 @e INTEGERDIVIDE_HL
 @e INTEGERREMAINDER_HL
 @e KINDATOMIC_HL
@@ -240,6 +241,7 @@ comprehensive list of what is there.)
 	KIT_PROVIDED(GPROPERTY_HL,                        I"GProperty")
 	KIT_PROVIDED(HASHLISTRELATIONHANDLER_HL,          I"HashListRelationHandler")
 	KIT_PROVIDED(I7SFRAME_HL,                         I"I7SFRAME")
+	KIT_PROVIDED(INDEX_OF_ENUM_VAL_HL,                I"IndexOfEnumVal");
 	KIT_PROVIDED(INTEGERDIVIDE_HL,                    I"IntegerDivide")
 	KIT_PROVIDED(INTEGERREMAINDER_HL,                 I"IntegerRemainder")
 	KIT_PROVIDED(KINDATOMIC_HL,                       I"KindAtomic")

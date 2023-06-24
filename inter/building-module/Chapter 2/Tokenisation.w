@@ -247,6 +247,8 @@ a bracing.
 			c = printing_routine_ISINC;
 		} else if (Str::eq_wide_string(t->command, L"ranger-routine")) {
 			c = ranger_routine_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"indexing-routine")) {
+			c = indexing_routine_ISINC;
 		} else if (Str::eq_wide_string(t->command, L"next-routine")) {
 			c = next_routine_ISINC;
 		} else if (Str::eq_wide_string(t->command, L"previous-routine")) {

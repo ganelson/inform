@@ -1,0 +1,45 @@
+Include Directorial Testing by Araminta Intest.
+
+Laboratory is a room.
+
+A room has a colour called colour scheme.
+
+After looking: say "The wallpaper has a somewhat [colour scheme of the location] tint."
+
+Definition: A colour (called C) is valid if the sequence number of C is not 0.
+
+When play begins:
+	say "This is an uninitialised colour variable - ";
+	let C be a colour;
+	showme C;
+	say "Iterating...";
+	repeat with D running through colours:
+		showme D;
+		showme the colour after D;
+		showme the colour before D;
+		showme the sequence number of D;
+		showme the numerical value of D;
+		showme whether or not D is valid;
+	say "Done.";
+	say "Now for a limited-span repeat...";
+	repeat with D running from red to purple:
+		showme D;
+	say "Done.";
+	showme the list of colours;
+	showme the first value of colour;
+	showme the last value of colour;
+	showme the colour scheme of the Laboratory;
+	say "This tests bracket-plus...";
+	test out bracket-plus;
+	say "Now for some random values...";
+	repeat with N running from 1 to 100:
+		say "[a random colour]; ";
+	say "... enough!";
+	repeat with N running from 1 to 100:
+		say "[a random colour from red to purple]; ";
+	say "... enough!";
+
+To test out bracket-plus: (-
+	TestFunction();
+	print MAUVE_COL, " = ", (+ chartreusey lavender +), "^";
+-).

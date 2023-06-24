@@ -326,6 +326,7 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material,
 @e next_routine_ISINC
 @e previous_routine_ISINC
 @e ranger_routine_ISINC
+@e indexing_routine_ISINC
 @e strong_kind_ISINC
 @e weak_kind_ISINC
 @e backspace_ISINC
