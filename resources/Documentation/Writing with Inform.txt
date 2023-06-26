@@ -13813,14 +13813,20 @@ Following a successful text match, this produces the character number of the sta
 	if "vacation" matches the text "cat":
 	        let x be the start index of the text match;
 
-assigns 3 to x. (Following a failed text match, this phrase would result in 0.)
+assigns 3 to x. Every text (including "") matches the text ""; the start index returned in this case is 0.
+
+Always test for success before using this phrase: the result isn't meaningful if the match failed.
 {end}
 {defn ph_textfinalindex}final index of the/-- text match ... number
 Similarly, we can find the character number of the final character in the match.
 
 	final index of "cat" in "vacation"
 
-produces 5, but a failed text match will produce -1.
+produces 5.
+
+Every text (including "") matches the text ""; the final index returned in this case is 0.
+
+As noted above, always test for success before using this phrase: the result isn't meaningful if the match failed.
 {end}
 
 {defn ph_textlength}length of the/-- text match ... number

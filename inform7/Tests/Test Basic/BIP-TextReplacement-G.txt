@@ -11,6 +11,7 @@ To begin:
 	run test D;
 	run test E;
 	run test F;        
+	run test G;
 
 To run test A:
 	let Neptune be text;
@@ -69,13 +70,68 @@ To run test F:
 	let Neptune be "The capture of Triton may explain a number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants.";
 	if Neptune matches the regular expression "explain\s+(<a-d>+)\s*(num<^\s>+).+e(c+)":
 		repeat with i running from 0 to 3:
-			 say "subexpression [i]: from [start index of subexpression i] to [final index of subexpression i], length [length of subexpression i] [text matching subexpression i].";                
-[	unless cap matches the text Neptune:
-		say "'[cap]' did not match long string. [start index of text match] to [final index of text match]: [length of text match] characters.";
-	if cap matches the text "":
-		say "'[cap]' matched empty string. [start index of text match] to [final index of text match]: [length of text match] characters.";
-	unless Neptune matches the text "giants..":
-		say "Neptune did not match 'giants..' [start index of text match] to [final index of text match]: [length of text match] characters.";
-	if Neptune matches the text "t", case insensitively:
-		say "Neptune insensitively matched 't' [start index of text match] to [final index of text match]: [length of text match] characters.";
-]
+			 say "subexpression [i]: from [start index of subexpression i] to [final index of subexpression i], length [length of subexpression i] [text matching subexpression i].";
+
+
+To decide what number is subexp (n - number) data1: (- (RE_Subexpressions-->{n}-->RE_DATA1) -).
+To decide what number is subexp (n - number) data2: (- (RE_Subexpressions-->{n}-->RE_DATA2) -).
+
+to subexpdump:
+repeat with i running from 0 to 1 begin;
+say "[i] [subexp i data1] [subexp i data2].";
+end repeat;
+
+to set trace: (- TEXT_TY_RE_SetTrace(1); -)
+
+To run test G:
+[set trace;]
+say "testing t blank/blank.";
+	if "" matches the text "", say "t blank/blank: start [start index of text match]; final [final index of text match]; length [length of text match].";
+        say "testing t blank/non-blank.";
+        if "" matches the text "xyzzy", say "t blank/non-blank: start [start index of text match]; final [final index of text match]; length [length of text match].";
+        if "plughxyzzy" matches the text "xyzzy", say "t trailing substring: start [start index of text match]; final [final index of text match]; length [length of text match].";
+        if "xyzzyplugh" matches the text "xyzzy", say "t leading substring: start [start index of text match]; final [final index of text match]; length [length of text match].";
+        if "plughxyzzyplugh" matches the text "xyzzy", say "t internal substring: start [start index of text match]; final [final index of text match]; length [length of text match].";
+        if "xyzzyxyzzy" matches the text "xyzzy", say "t multiple substring: start [start index of text match]; final [final index of text match]; length [length of text match].";
+        say "testing t non-blank/blank.";
+        if "xyzzy" matches the text "", say "t non-blank/blank: start [start index of text match]; final [final index of text match]; length [length of text match].";
+        if "xyzzy" matches the text "xyzzy", say "t identical: start [start index of text match]; final [final index of text match]; length [length of text match].";
+        if "xyzzy" matches the text "plughxyzzy", say "t reversed trailing substring: start [start index of text match]; final [final index of text match]; length [length of text match].";
+        if "xyzzy" matches the text "xyzzyplugh", say "t reversed substring: start [start index of text match]; final [final index of text match]; length [length of text match].";
+        if "xyzzy" matches the text "plughxyzzyplugh", say "t reversed internal substring: start [start index of text match]; final [final index of text match]; length [length of text match].";
+        if "xyzzy" matches the text "xyzzyxyzzy", say "t reversed multiple substring: start [start index of text match]; final [final index of text match]; length [length of text match].";
+	if "" matches the regular expression "", say "r blank/blank: start [start index of subexpression 0]; final [final index of subexpression 0]; length [length of subexpression 0].";
+        if "" matches the regular expression "xyzzy", say "r blank/non-blank: start [start index of subexpression 0]; final [final index of subexpression 0]; length [length of subexpression 0].";
+        if "xyzzy" matches the regular expression "", say "l non-blank/blank: start [start index of subexpression 0]; final [final index of subexpression 0]; length [length of subexpression 0].";
+        if "xyzzy" matches the regular expression "(xyzzy)", say "r identical: start [start index of subexpression 0]; final [final index of subexpression 0]; length [length of subexpression 0].";
+                subexpdump;
+        if "xyzzy" matches the regular expression "plugh(xyzzy)", say "r reversed trailing substring: start [start index of subexpression 0]; final [final index of subexpression 0]; length [length of subexpression 0].";
+                        subexpdump;
+        if "xyzzy" matches the regular expression "(xyzzy)plugh", say "r reversed substring: start [start index of subexpression 0]; final [final index of subexpression 0]; length [length of subexpression 0].";
+                                subexpdump;
+        if "xyzzy" matches the regular expression "plugh(xyzzy)plugh", say "r reversed internal substring: start [start index of subexpression 0]; final [final index of subexpression 0]; length [length of subexpression 0].";
+                                subexpdump;
+        if "xyzzy" matches the regular expression "xyzzy(xyzzy)", say "r reversed multiple substring: start [start index of subexpression 0]; final [final index of subexpression 0]; length [length of subexpression 0].";
+                                subexpdump;
+        if "plughxyzzy" matches the regular expression "(xyzzy)", say "rr trailing substring: start [start index of subexpression 0]; final [final index of subexpression 0]; length [length of subexpression 0].";
+                                subexpdump;
+        if "xyzzyplugh" matches the regular expression "(xyzzy)", say "rr leading substring: start [start index of subexpression 0]; final [final index of subexpression 0]; length [length of subexpression 0].";
+                                subexpdump;
+        if "plughxyzzyplugh" matches the regular expression "(xyzzy)", say "rr internal substring: start [start index of subexpression 0]; final [final index of subexpression 0]; length [length of subexpression 0].";
+                                subexpdump;
+        if "xyzzyxyzzy" matches the regular expression "(xyzzy)", say "rr multiple substring: start [start index of subexpression 0]; final [final index of subexpression 0]; length [length of subexpression 0].";
+                                subexpdump;
+	if "xyzzy" matches the regular expression "$^", say "oops 1.";
+	if "xyzzy" matches the regular expression "$.", say "oops 2.";
+	if "xyzzy" matches the regular expression ".^", say "oops 3.";
+	if "xyzzy" matches the regular expression "^$", say "oops 4.";
+	if "" matches the regular expression "^$", say "r blank/^$ start [start index of subexpression 0]; final [final index of subexpression 0]; length [length of subexpression 0].";
+	if "" matches the regular expression ".*", say "r blank/e* start [start index of subexpression 0]; final [final index of subexpression 0]; length [length of subexpression 0].";
+	if "" matches the regular expression "(?:)", say "r blank/(?:) start [start index of subexpression 0]; final [final index of subexpression 0]; length [length of subexpression 0].";
+	if "" matches the regular expression "(d?)", say "r blank/(d?) start [start index of subexpression 0]; final [final index of subexpression 0]; length [length of subexpression 0].";
+	if "xyzzy" matches the regular expression "(?:)", say "r xyzzy/(?:) start [start index of subexpression 0]; final [final index of subexpression 0]; length [length of subexpression 0].";
+	if "xyzzy" matches the regular expression "(.*)", say "r xyzzy/(.*) start [start index of subexpression 0]; final [final index of subexpression 0]; length [length of subexpression 0].";
+	if "xyzzy" matches the regular expression "(d?)", say "r xyzzy/(d?) start [start index of subexpression 0]; final [final index of subexpression 0]; length [length of subexpression 0].";
+	if "shinto" matches the text "hint", say "shinto/hint substring: start [start index of text match]; final [final index of text match]; length [length of text match].";
+	if "educate" matches the regular expression "du(cat)", say "educate/ducat start [start index of subexpression 0]; final [final index of subexpression 0]; length [length of subexpression 0] [start index of subexpression 1]; final [final index of subexpression 1]; length [length of subexpression 1].";
+	if "Q*bert" matches the regular expression "x?", say "r Q*bert/x? start [start index of subexpression 0]; final [final index of subexpression 0]; length [length of subexpression 0].";
