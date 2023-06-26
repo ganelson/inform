@@ -1092,7 +1092,7 @@ To replace paragraph number (N - a number) in (T - text) with (replace - text)
 	(- TEXT_TY_ReplaceBlob(PARA_BLOB, {-lvalue-by-reference:T}, {N}, {-by-reference:replace}); -).
 To decide what number is the start index of text match
 	(documented at ph_textstartindex):
-	(- match0_idx + 1 -).
+	(- (match0_idx2 ~= 0) * (match0_idx + 1) -).
 To decide what number is the final index of text match
 	(documented at ph_textfinalindex):
 	(- match0_idx2 -).
@@ -1126,13 +1126,13 @@ To decide what text is text matching subexpression (N - a number)
 	(- TEXT_TY_RE_GetMatchVar({N}) -).
 To decide what number is the start index of subexpression (n - a number)
 	(documented at ph_restartindex):
-	(- (RE_Subexpressions-->{n}-->RE_DATA1 + 1) -).
+	(- (RE_Subexpressions-->{n}-->RE_DATA2 ~= 0) * (RE_Subexpressions-->{n}-->RE_DATA1 + 1) -).
 To decide what number is the final index of subexpression (n - a number)
 	(documented at ph_refinalindex):
 	(- (RE_Subexpressions-->{n}-->RE_DATA2) -).
 To decide what number is the length of subexpression (n - a number)
 	(documented at ph_relength):
-	(- (RE_Subexpressions-->{n}-->RE_DATA2 - RE_Subexpressions-->{n}-->RE_DATA1) -)
+	(- (RE_Subexpressions-->{n}-->RE_DATA2 - RE_Subexpressions-->{n}-->RE_DATA1) -).
 To decide what number is number of times (T - text) matches the regular expression
 	(find - text),case insensitively
 	(documented at ph_nummatchesre):

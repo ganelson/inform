@@ -1645,7 +1645,7 @@ For an explanation of the use of the word "blob", see "Text.i6t".
 		REGEXP_BLOB: i = TEXT_TY_RE_CompileTree(ftxt, exactly);
 		CHR_BLOB: i = TEXT_TY_CHR_CompileTree(ftxt, exactly);
        			  match0_idx = -1;
-			  match0_idx2 = -1;
+			  match0_idx2 = 0;
 		default: "*** bad ftxtype ***";
 	}
 
