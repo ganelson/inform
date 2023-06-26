@@ -373,6 +373,7 @@ anl_parsing_data ActionNameLists::new_parsing_data(int at) {
 	anl_parsing_data parsing_data;
 	parsing_data.anl_clauses = NULL;
 	parsing_data.abbreviation_level = 0;
+	parsing_data.word_position = -1;
 	return parsing_data;
 }
 
