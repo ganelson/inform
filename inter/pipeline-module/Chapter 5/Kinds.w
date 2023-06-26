@@ -180,8 +180,7 @@ which have to be given some type-safe value to start out at.
 		Produce::down(I);
 		for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
 			inter_package *pack = PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
-			if ((Metadata::read_optional_numeric(pack, I"^is_base")) &&
-				(Metadata::optional_symbol(pack, I"^print_fn")) &&
+			if ((Metadata::optional_symbol(pack, I"^print_fn")) &&
 				(Metadata::read_optional_numeric(pack, I"^is_subkind_of_object") == FALSE)) {
 				inter_symbol *id_s = Metadata::required_symbol(pack, I"^strong_id");
 				inter_symbol *print_fn_s = Metadata::required_symbol(pack, I"^print_fn");

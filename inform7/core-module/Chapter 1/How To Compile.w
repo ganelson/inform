@@ -198,6 +198,7 @@ here, which only happens when special runs are made for compiler testing.
 	BENCH(RTUseOptions::compile)
 	BENCH(RTCommandGrammars::compile_non_generic_constants)
 	BENCH(Interventions::make_all)
+	BENCH(RTKindConstructors::assign_declaration_sequence_numbers)
 	BENCH(RTKindConstructors::compile)
 	BENCH(RTLiteralPatterns::compile)
 	

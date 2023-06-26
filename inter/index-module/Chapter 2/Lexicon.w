@@ -96,8 +96,7 @@ inter_lexicon *IndexLexicon::stock(inter_tree *I, tree_inventory *inv) {
 @<Add common noun entries@> =
 	inter_package *pack;
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->kind_nodes)
-		if ((Metadata::read_optional_numeric(pack, I"^is_base")) &&
-			(Metadata::read_optional_numeric(pack, I"^is_subkind_of_object"))) {
+		if (Metadata::read_optional_numeric(pack, I"^is_subkind_of_object")) {
 			index_lexicon_entry *lex = IndexLexicon::new_entry(
 				Metadata::required_textual(pack, I"^name"), COMMON_NOUN_TLEXE);
 			lex->link_to = (int) Metadata::read_numeric(pack, I"^at");

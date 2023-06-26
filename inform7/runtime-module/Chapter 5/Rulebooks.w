@@ -713,32 +713,5 @@ void RTRulebooks::compile_outcome(named_rulebook_outcome *nro) {
 }
 
 void RTRulebooks::RulebookOutcomePrintingRule(void) {
-	inter_name *printing_rule_name = RTKindConstructors::get_iname(K_rulebook_outcome);
-	packaging_state save = Functions::begin(printing_rule_name);
-	inter_symbol *rbnov_s = LocalVariables::new_other_as_symbol(I"nro");
-	EmitCode::inv(IFELSE_BIP);
-	EmitCode::down();
-		EmitCode::inv(EQ_BIP);
-		EmitCode::down();
-			EmitCode::val_symbol(K_value, rbnov_s);
-			EmitCode::val_number(0);
-		EmitCode::up();
-		EmitCode::code();
-		EmitCode::down();
-			EmitCode::inv(PRINT_BIP);
-			EmitCode::down();
-				EmitCode::val_text(I"(no outcome)");
-			EmitCode::up();
-		EmitCode::up();
-		EmitCode::code();
-		EmitCode::down();
-			EmitCode::inv(PRINTSTRING_BIP);
-			EmitCode::down();
-				EmitCode::val_symbol(K_value, rbnov_s);
-			EmitCode::up();
-			EmitCode::rfalse();
-		EmitCode::up();
-	EmitCode::up();
-	Functions::end(save);
 }
 

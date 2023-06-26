@@ -433,6 +433,18 @@ int KindConstructors::variance(kind_constructor *con, int b) {
 	return con->variance[b];
 }
 
+int KindConstructors::is_base(kind_constructor *con) {
+	if (con == NULL) return FALSE;
+	if (con->group == BASE_CONSTRUCTOR_GRP) return TRUE;
+	return FALSE;
+}
+
+int KindConstructors::is_proper_constructor(kind_constructor *con) {
+	if (con == NULL) return FALSE;
+	if (con->group == PROPER_CONSTRUCTOR_GRP) return TRUE;
+	return FALSE;
+}
+
 @h Questions about constructors.
 The rest of Inform is not encouraged to poke at constructors directly; it
 ought to ask questions about kinds instead (see "Using Kinds"). However:
@@ -447,7 +459,7 @@ int KindConstructors::is_definite(kind_constructor *con) {
 	return FALSE;
 }
 
-int KindConstructors::offers_I6_GPR(kind_constructor *con) {
+int KindConstructors::is_understandable(kind_constructor *con) {
 	if (con == NULL) return FALSE;
 	if ((KindConstructors::is_definite(con)) &&
 		(KindConstructors::compatible(con,

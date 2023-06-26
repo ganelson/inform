@@ -93,7 +93,6 @@ response_message *Responses::response_cue(rule *R, int marker, wording W, stack_
 	text_stream *desc = Str::new();
 	WRITE_TO(desc, "response (%c) to '%W'", 'A'+marker, R->name);
 	Sequence::queue(&Responses::compilation_agent, STORE_POINTER_response_message(resp), desc);
-
 	return resp;
 }
 

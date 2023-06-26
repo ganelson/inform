@@ -189,8 +189,23 @@ int Kinds::Behaviour::new_enumerated_value(kind *K) {
 	return K->construct->next_free_value++;
 }
 
-@h (B) Constructing kinds.
+@h (B) Command parsing.
 
+=
+int Kinds::Behaviour::is_understandable(kind *K) {
+	if (K == NULL) return FALSE;
+	return KindConstructors::is_understandable(K->construct);
+}
+
+text_stream *Kinds::Behaviour::GPR_identifier(kind *K) {
+	if (K == NULL) return NULL;
+	return K->construct->explicit_GPR_identifier;
+}
+
+text_stream *Kinds::Behaviour::recognition_only_GPR_identifier(kind *K) {
+	if (K == NULL) return NULL;
+	return K->construct->recognition_routine;
+}
 
 @h (C) Compatibility with other kinds.
 
@@ -306,6 +321,12 @@ dimensional_rules *Kinds::Behaviour::get_dim_rules(kind *K) {
 @h (H) An identifier name.
 
 =
+int Kinds::Behaviour::comes_from_Neptune(kind *K) {
+	if (K == NULL) return FALSE;
+	if (Str::len(K->construct->explicit_identifier) > 0) return TRUE;
+	return FALSE;
+}
+
 text_stream *Kinds::Behaviour::get_identifier(kind *K) {
 	if (K == NULL) return I"UNKNOWN_NT";
 	return K->construct->explicit_identifier;

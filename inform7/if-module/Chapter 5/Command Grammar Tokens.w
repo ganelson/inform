@@ -540,7 +540,7 @@ be a description which is true or false for any given value, so:
 		if ((K_understanding) &&
 			(Kinds::Behaviour::is_object(K) == FALSE) &&
 			(Kinds::eq(K, K_understanding) == FALSE) &&
-			(RTKindConstructors::request_I6_GPR(K) == FALSE)) {
+			(Kinds::Behaviour::is_understandable(K) == FALSE)) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, CGTokens::text(cgt));
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnparsableKind));

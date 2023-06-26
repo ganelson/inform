@@ -81,7 +81,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">lpcd</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The structure literal_pattern_compilation_data is accessed in 3/uo, 5/mlt, 5/tbl, 5/dbi, 5/dli, 5/dci, 5/prp, 5/act2, 5/nap and here.</li></ul>
+<ul class="endnotetexts"><li>The structure literal_pattern_compilation_data is accessed in 3/uo, 5/mlt, 5/tbl, 5/dbi, 5/dli, 5/dci, 5/prp, 5/kc, 5/act2, 5/nap and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>And each gives rise to a package, though it contains only two functions:
 one to print, one to parse from a player's command. (So in Basic Inform, only
 the first function appears.)
@@ -1467,7 +1467,7 @@ sets the <span class="extract"><span class="extract-syntax">parsed_number</span>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Printing the I6 variable |value| out in an LP's notation at run-time. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RTLiteralPatterns::printing_routine</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">RTLiteralPatterns::printing_routine</span></span>:<br/>Kind Constructors - <a href="5-kc.html#SP11_8_2">&#167;11.8.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax">, </span><span class="identifier-syntax">literal_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lp_list</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RTLiteralPatterns::printing_routine</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">RTLiteralPatterns::printing_routine</span></span>:<br/>Kind Constructors - <a href="5-kc.html#SP30_3_15">&#167;30.3.15</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax">, </span><span class="identifier-syntax">literal_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lp_list</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">packaging_state</span><span class="plain-syntax"> </span><span class="identifier-syntax">save</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Functions::begin</span><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">literal_pattern_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lpn</span><span class="plain-syntax">;</span>

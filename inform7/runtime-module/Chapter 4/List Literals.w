@@ -139,15 +139,9 @@ for the number of instances it has:
 
 =
 int ListLiterals::extent_of_instance_list(kind *K) {
-	int N = -1;
-	if (Kinds::Behaviour::is_an_enumeration(K))
-		N = RTKindConstructors::count_enumeration_entries(K);
-	if (Kinds::Behaviour::is_subkind_of_object(K)) {
-		N = 0;
-		instance *I;
-		LOOP_OVER_INSTANCES(I, K) N++;
-	}
-	return N;
+	if (Kinds::Behaviour::is_an_enumeration(K)) return RTKindConstructors::enumeration_size(K);
+	if (Kinds::Behaviour::is_subkind_of_object(K)) return Instances::count(K);
+	return -1;
 }
 
 @ And the following then constructs the literal list, on demand:

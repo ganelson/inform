@@ -103,9 +103,7 @@ void NounFilterTokens::compilation_agent(compilation_subtask *t) {
 	EmitCode::inv(STORE_BIP);
 	EmitCode::down();
 		EmitCode::ref_symbol(K_value, v_s);
-		inter_name *gpr_to_ask = RTKindConstructors::get_explicit_I6_GPR_iname(K);
-		if (gpr_to_ask == NULL) gpr_to_ask = RTKindConstructors::get_kind_GPR_iname(K);
-		EmitCode::call(gpr_to_ask);
+		EmitCode::call(RTKindConstructors::GPR_iname(K));
 	EmitCode::up();
 
 	EmitCode::inv(IF_BIP);

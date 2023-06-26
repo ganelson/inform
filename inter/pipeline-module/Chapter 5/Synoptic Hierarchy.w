@@ -326,3 +326,15 @@ The |/main/synoptic/use_options| submodule.
 		SYN_FUNCT(TESTUSEOPTION_HL,               I"test_fn", I"TestUseOption")
 		SYN_FUNCT(PRINT_USE_OPTION_HL,            I"print_fn", I"PrintUseOption")
 		SYN_CONST(USE_OPTION_VALUES_HL,           I"USE_OPTION_VALUES")
+
+@h Synoptic printing functions.
+
+=
+#ifdef CORE_MODULE
+inter_name *SynopticHierarchy::printing_function_iname(inter_tree *I, kind *K) {
+	if (Kinds::eq(K, K_use_option)) return HierarchyLocations::iname(I, PRINT_USE_OPTION_HL);
+	if (Kinds::eq(K, K_table)) return HierarchyLocations::iname(I, PRINT_TABLE_HL);
+	if (Kinds::eq(K, K_response)) return HierarchyLocations::iname(I, PRINT_RESPONSE_HL);
+	return NULL;
+}
+#endif

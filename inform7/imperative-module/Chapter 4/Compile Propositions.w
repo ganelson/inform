@@ -243,7 +243,7 @@ void CompilePropositions::to_random_match(parse_node *desc) {
 			EmitCode::inv(INDIRECT0_BIP);
 			EmitCode::down();
 				EmitCode::val_iname(K_value,
-					RTKindConstructors::get_ranger_iname(K));
+					RTKindConstructors::random_value_fn_iname(K));
 			EmitCode::up();
 			return;
 		}

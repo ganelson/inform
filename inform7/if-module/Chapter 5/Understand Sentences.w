@@ -594,11 +594,12 @@ void Understand::property_block(property *pr, int level, inference_subject *subj
 			"and this refers to something which is not an object.");
 		return;
 	}
+	kind *PK = ValueProperties::kind(pr);
 	if ((Properties::is_either_or(pr) == FALSE) &&
-		(Str::len(RTKindConstructors::get_recognition_only_GPR(ValueProperties::kind(pr))) == 0) &&
-		((Kinds::Behaviour::is_object(ValueProperties::kind(pr))) ||
-			(RTKindConstructors::request_I6_GPR(ValueProperties::kind(pr)) == FALSE))) {
-		if (Kinds::Behaviour::is_object(ValueProperties::kind(pr)))
+		(RTKindConstructors::recognition_only_GPR_provided_by_kit(PK) == FALSE) &&
+		((Kinds::Behaviour::is_object(PK)) ||
+			(Kinds::Behaviour::is_understandable(PK) == FALSE))) {
+		if (Kinds::Behaviour::is_object(PK))
 			StandardProblems::sentence_problem(Task::syntax_tree(),
 				_p_(PM_ThingReferringProperty),
 				"the value of that property is itself a kind of object",
@@ -804,7 +805,7 @@ void Understand::text_block(wording W, understanding_reference *ur) {
 					"make sense.");
 				return;
 			}
-			if (RTKindConstructors::request_I6_GPR(K) == FALSE) {
+			if (Kinds::Behaviour::is_understandable(K) == FALSE) {
 				StandardProblems::sentence_problem(Task::syntax_tree(),
 					_p_(PM_UnderstandAsBadValue),
 					"'understand ... as ...' gives text meaning a value whose kind "

@@ -207,16 +207,10 @@ And here is how to tell what the results were.
 	return 0;
 ];
 
-@h Printing Rule Names.
-This is the I6 printing rule used for a value of kind "rule", which as
-noted above can either be rulebook ID numbers in the range 0 to $N-1$ or
-are addresses of individual rules.
-
-Names of rules and rulebooks take up a fair amount of space, and one of the
-main memory economies enforced by the "Use memory economy" option is to
-omit the necessary arrays. (It's not the text which is the problem so
-much as the table of addresses pointing to that text, which has to live in
-precious readable memory on the Z-machine.)
+[ RulebookOutcomePrintingRule nro;
+	if (nro == 0) print "(no outcome)";
+	else print (string) nro;
+];
 
 @h Casting.
 Nothing needs to be done to a rulebook value to make it a rule value.

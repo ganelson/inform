@@ -233,11 +233,11 @@ int CompileLoops::schema(i6_schema *sch, kind *K) {
 			inter_name *lname = RTKindConstructors::instances_array_iname(K);
 			Calculus::Schemas::modify(sch,
 				"for (*2=1, *1=%n-->*2: *2<=%d: *2++, *1=%n-->*2)",
-					lname, RTKindConstructors::get_highest_valid_value_as_integer(K), lname);
+					lname, RTKindConstructors::enumeration_size(K), lname);
 		} else {
 			Calculus::Schemas::modify(sch,
 				"for (*1=1: *1<=%d: *1++)",
-					RTKindConstructors::get_highest_valid_value_as_integer(K));
+					RTKindConstructors::enumeration_size(K));
 		}
 		return TRUE;
 	}

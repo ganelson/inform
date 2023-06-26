@@ -69,7 +69,7 @@ void KindGPRs::truth_state(void) {
 }
 
 @ More generally, we can make a GPR for values of any enumeration or quasinumerical
-kind on request: see //RTKindConstructors::request_I6_GPR//.
+kind on request.
 
 This does not work for other kinds, and in particular for kinds of object. Those
 are handled elsewhere by //Noun Filter Tokens//.
@@ -81,7 +81,7 @@ kind, trying each possible notation in turn until one matches:
 void KindGPRs::quasinumerical_agent(compilation_subtask *t) {
 	kind *K = RETRIEVE_POINTER_kind(t->data);
 	if (Kinds::Behaviour::is_quasinumerical(K) == FALSE) internal_error("miscall");
-	inter_name *iname = RTKindConstructors::get_kind_GPR_iname(K);
+	inter_name *iname = RTKindConstructors::GPR_iname(K);
 	packaging_state save = Functions::begin(iname);
 	gpr_kit kit = GPRs::new_kit();
 	GPRs::add_original_var(&kit);
@@ -160,7 +160,7 @@ For example, for a kind called "colour", it might match any of "burnt umber",
 "cerulean blue" or "sienna".
 
 @<Compile the normal GPR@> =
-	inter_name *iname = RTKindConstructors::get_kind_GPR_iname(K);
+	inter_name *iname = RTKindConstructors::GPR_iname(K);
 	packaging_state save = Functions::begin(iname);
 	gpr_kit kit = GPRs::new_kit();
 	GPRs::add_original_var(&kit);
@@ -182,7 +182,7 @@ is the only way to allow, say, "Understand "sooty" as burnt umber." to work --
 the grammar holding "sooty" comes out only in the following function.
 
 @<Compile the instance GPR@> =
-	inter_name *iname = RTKindConstructors::get_instance_GPR_iname(K);
+	inter_name *iname = RTKindConstructors::instance_GPR_iname(K);
 	packaging_state save = Functions::begin(iname);
 	gpr_kit kit = GPRs::new_kit();
 	GPRs::add_instance_var(&kit);
