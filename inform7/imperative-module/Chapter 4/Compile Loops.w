@@ -229,9 +229,16 @@ int CompileLoops::schema(i6_schema *sch, kind *K) {
 		return TRUE;
 	}
 	if (Kinds::Behaviour::is_an_enumeration(K)) {
-		Calculus::Schemas::modify(sch,
-			"for (*1=1: *1<=%d: *1++)",
-				RTKindConstructors::get_highest_valid_value_as_integer(K));
+		if (RTKindConstructors::is_nonstandard_enumeration(K)) {
+			inter_name *lname = RTKindConstructors::instances_array_iname(K);
+			Calculus::Schemas::modify(sch,
+				"for (*2=1, *1=%n-->*2: *2<=%d: *2++, *1=%n-->*2)",
+					lname, RTKindConstructors::enumeration_size(K), lname);
+		} else {
+			Calculus::Schemas::modify(sch,
+				"for (*1=1: *1<=%d: *1++)",
+					RTKindConstructors::enumeration_size(K));
+		}
 		return TRUE;
 	}
 	text_stream *p = K->construct->loop_domain_schema;

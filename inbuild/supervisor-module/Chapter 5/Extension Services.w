@@ -778,6 +778,14 @@ void Extensions::construct_graph(inform_extension *E) {
 	Copies::get_source_text(E->as_copy);
 	Sentences::set_start_of_source(sfsm, -1);
 	Inclusions::traverse(E->as_copy, E->syntax_tree);
+	linked_list *L = NEW_LINKED_LIST(inbuild_nest);
+	inbuild_nest *N = Extensions::materials_nest(E);
+	ADD_TO_LINKED_LIST(N, inbuild_nest, L);
+	inbuild_requirement *req;
+	LOOP_OVER_LINKED_LIST(req, inbuild_requirement, E->kits) {
+		inform_kit *K = Kits::find_by_name(req->work->raw_title, L, NULL);
+		if (K) Graphs::need_this_to_use(E->as_copy->vertex, K->as_copy->vertex);
+	}
 }
 
 @h Read source text.

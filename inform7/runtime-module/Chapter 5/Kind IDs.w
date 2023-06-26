@@ -34,15 +34,14 @@ Weak IDs have already appeared:
 
 =
 text_stream *RTKindIDs::identifier_for_weak_ID(kind_constructor *kc) {
-	if (Str::len(kc->explicit_identifier) > 0)
-		return kc->explicit_identifier;
+	if (Str::len(kc->explicit_identifier) > 0) return kc->explicit_identifier;
 	text_stream *invented = Str::new();
 	WRITE_TO(invented, "WEAK_ID_%d", kc->allocation_id);
 	return invented;
 }
 
 inter_name *RTKindIDs::weak_iname(kind *K) {
-	if (K == NULL) { return RTKindConstructors::UNKNOWN_iname(); }
+	if (K == NULL) return RTKindConstructors::weak_ID_iname(CON_UNKNOWN);
 	if (Kinds::Behaviour::is_subkind_of_object(K)) K = K_object;
 	kind_constructor *con = Kinds::get_construct(K);
 	inter_name *iname = RTKindConstructors::weak_ID_iname(con);
@@ -53,7 +52,7 @@ inter_name *RTKindIDs::weak_iname(kind *K) {
 }
 
 inter_name *RTKindIDs::weak_iname_of_constructor(kind_constructor *kc) {
-	if (kc == NULL) return RTKindConstructors::UNKNOWN_iname();
+	if (kc == NULL) return RTKindConstructors::weak_ID_iname(CON_UNKNOWN);
 	if (Kinds::Behaviour::is_subkind_of_object(Kinds::base_construction(kc)))
 		return RTKindIDs::weak_iname(K_object);
 	return RTKindConstructors::weak_ID_iname(kc);

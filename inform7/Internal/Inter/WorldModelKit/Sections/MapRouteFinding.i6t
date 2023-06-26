@@ -81,9 +81,6 @@ by enumerating them in the property |room_index| and by the flags in the
 |DoorRoutingViable| array respectively.
 
 =
-Constant NUM_DOORS = ICOUNT_DOOR;
-Constant NUM_ROOMS = ICOUNT_ROOM;
-
 Array DoorRoutingViable -> NUM_DOORS+1;
 
 Global map_has_changed = true;

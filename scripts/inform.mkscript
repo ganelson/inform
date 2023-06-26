@@ -607,10 +607,23 @@ ebooks:
 # from the inform repository (after all is built) into a GUI app. Command-line
 # hackers will therefore not use these make targets.
 
-# The rest of the file is inside "ifdef BUILTINCOMPS ... endif", which is in
-# effect a test of whether any make-integration-settings.mk has been provided:
-# that file has to define this symbol (see below), and the symbol will not
-# otherwise have been defined.
+{set name: IMAGESETLIST value: bg_images, doc_images, map_icons, outcome_images, scene_icons}
+
+{define: transfer-images}
+	mkdir -p $(BUILTINHTML)
+	cp -f resources/Imagery/app_images/Welcome*Background.png $(BUILTINHTML)
+	cp -f resources/Imagery/app_images/Welcome*Banner.png $(BUILTINHTML)
+	{repeat with: SET in: {IMAGESETLIST}}
+	mkdir -p $(BUILTINHTML)/{SET}
+	rm -f $(BUILTINHTML)/{SET}/*
+	cp -f resources/Imagery/{SET}/[A-Za-z]*.* $(BUILTINHTML)/{SET}
+	{end-repeat}
+{end-define}
+
+# The next part of the file is inside "ifdef BUILTINCOMPS ... endif", which tests
+# whether functional parts of the built core distribution should be copied into
+# the app. If BUILTINCOMPS is defined, then BUILTINHTML should be defined too;
+# but it is also legal to define just ADVICEHTML, BUILTINHTML and BUILTINHTMLINNER
 
 ifdef BUILTINCOMPS
 
@@ -793,29 +806,6 @@ forcetransferotherinternals:
 	{transfer-other-internals}
 
 # -----------------------------------------------------------------------------
-# Copying images into the app
-
-# Note that make-integration-settings.mk is expected to define BUILTINHTML as
-# the directory which will hold the mini-website formed by the in-app manuals.
-
-{set name: IMAGESETLIST value: bg_images, doc_images, map_icons, outcome_images, scene_icons}
-
-{define: transfer-images}
-	mkdir -p $(BUILTINHTML)
-	cp -f resources/Imagery/app_images/Welcome*Background.png $(BUILTINHTML)
-	cp -f resources/Imagery/app_images/Welcome*Banner.png $(BUILTINHTML)
-	{repeat with: SET in: {IMAGESETLIST}}
-	mkdir -p $(BUILTINHTML)/{SET}
-	rm -f $(BUILTINHTML)/{SET}/*
-	cp -f resources/Imagery/{SET}/[A-Za-z]*.* $(BUILTINHTML)/{SET}
-	{end-repeat}
-{end-define}
-
-.PHONY: forcetransferimages
-forcetransferimages:
-	{transfer-images}
-
-# -----------------------------------------------------------------------------
 # Incrementally copying the internal tree
 # This is super-awkward and probably should be dropped in favour of rsync, but
 # it's only used by "make integration", not by "make forceintegration". It aims
@@ -857,6 +847,69 @@ $(INTERNALEXEMPLUM): \
 	{transfer-other-internals}
 	{transfer-images}
 
+# =============================================================================
+
+# End of the block which is used only if make-integration-settings.mk defines
+# BUILTINCOMPS
+
+endif
+
+# =============================================================================
+
+ifdef BUILTINHTML
+
+# (alternative passage to the above, for use only if BUILTINCOMPS is not provided)
+
+ifndef BUILTINCOMPS
+
+# -----------------------------------------------------------------------------
+# Targets "integration" and "forceintegration"
+# -----------------------------------------------------------------------------
+
+.PHONY: integration
+integration: \
+		transferimages \
+		transferdocumentation \
+		transferoutcomepages
+
+.PHONY: forceintegration
+forceintegration: \
+		forcetransferimages \
+		forcetransferdocumentation \
+		forcetransferoutcomepages
+
+# -----------------------------------------------------------------------------
+# Incrementally copying the images
+# A simplified version of the above.
+
+IMAGEEXEMPLUM = $(BUILTINHTML)/doc_images/index.png
+IMAGEEXEMPLUMFROM = resources/Imagery/doc_images/index.png
+
+.PHONY: transferimages
+transferimages: $(IMAGEEXEMPLUM)
+
+$(IMAGEEXEMPLUMFROM):
+	$(IMAGEEXEMPLUM)
+
+$(IMAGEEXEMPLUM): \
+		{repeat with: SET in: {IMAGESETLIST}}
+		resources/Imagery/{SET}/[A-Za-z]*.* \
+		{end-repeat}
+		resources/Imagery/app_images/[A-Za-z]*.*
+	touch $(IMAGEEXEMPLUMFROM)
+	{transfer-images}
+
+# (end of the alternative passage if BUILTINCOMPS is not provided)
+
+endif
+
+# -----------------------------------------------------------------------------
+# Copying images into the app
+
+.PHONY: forcetransferimages
+forcetransferimages:
+	{transfer-images}
+
 # -----------------------------------------------------------------------------
 # Typesetting documentation to HTML inside the app, using indoc
 
@@ -886,7 +939,9 @@ forcetransferadvice:
 {define: compile-inapp-documentation}
 	mkdir -p $(BUILTINHTMLINNER)
 	$(INDOCX) -from resources/Documentation -xrefs '$(INFORM7WEB)/Internal/HTML/xrefs.txt' $(INDOCOPTS)
+ifdef INTERNAL
 	cp -f $(INFORM7WEB)/Internal/HTML/xrefs.txt "$(INTERNAL)/HTML"
+endif
 {end-define}
 
 .PHONY: transferdocumentation
@@ -923,9 +978,7 @@ forcetransferoutcomepages:
 
 # =============================================================================
 
-# End of the block which is used only if make-integration-settings.mk is
-# provided
+# End of the block which is used only if make-integration-settings.mk defines
+# BUILTINHTML
 
 endif
-
-# -----------------------------------------------------------------------------

@@ -239,16 +239,16 @@ created during the same second.
 	if (last_up_to_date_at == Platform::never_time())
 		needs_building = TRUE;
 	else {
-		if (T) { WRITE_TO(T, "Last built at: %08x\n", last_up_to_date_at); }
+		if (T) { WRITE_TO(T, "Last built at: %s\n", ctime(&last_up_to_date_at)); }
 		if (gb & BUILD_DEPENDENCIES_MATTER_GB) {
 			time_t t = IncrementalBuild::time_of_latest_build_dependency(V);
-			if (T) { WRITE_TO(T, "Most recent build dependency: %08x\n", t); }
+			if (T) { WRITE_TO(T, "Most recent build dependency: %s\n", ctime(&t)); }
 			if (IncrementalBuild::timecmp(t, last_up_to_date_at) >= 0)
 				needs_building = TRUE;
 		}
 		if (gb & USE_DEPENDENCIES_MATTER_GB) {
 			time_t t = IncrementalBuild::time_of_latest_use_dependency(V);
-			if (T) { WRITE_TO(T, "Most recent use dependency: %08x\n", t); }
+			if (T) { WRITE_TO(T, "Most recent use dependency: %s\n", ctime(&t)); }
 			if (IncrementalBuild::timecmp(t, last_up_to_date_at) >= 0)
 				needs_building = TRUE;
 		}

@@ -164,6 +164,7 @@ The |/main/synoptic/kinds| submodule.
 
 @e DEFAULTVALUEOFKOV_HL
 @e DEFAULTVALUEFINDER_HL
+@e VALUESFINDER_HL
 @e PRINTKINDVALUEPAIR_HL
 @e KOVCOMPARISONFUNCTION_HL
 @e KOVDOMAINSIZE_HL
@@ -180,6 +181,7 @@ The |/main/synoptic/kinds| submodule.
 		SYN_CONST(BASE_KIND_HWM_HL,               I"BASE_KIND_HWM")
 		SYN_FUNCT(DEFAULTVALUEOFKOV_HL,           I"defaultvalue_fn", I"DefaultValueOfKOV")
 		SYN_FUNCT(DEFAULTVALUEFINDER_HL,          I"defaultvaluefinder_fn", I"DefaultValueFinder")
+		SYN_FUNCT(VALUESFINDER_HL,                I"valuesfinder_fn", I"ValuesFinder")
 		SYN_FUNCT(PRINTKINDVALUEPAIR_HL,          I"printkindvaluepair_fn", I"PrintKindValuePair")
 		SYN_FUNCT(KOVCOMPARISONFUNCTION_HL,       I"comparison_fn", I"KOVComparisonFunction")
 		SYN_FUNCT(KOVDOMAINSIZE_HL,               I"domainsize_fn", I"KOVDomainSize")
@@ -324,3 +326,15 @@ The |/main/synoptic/use_options| submodule.
 		SYN_FUNCT(TESTUSEOPTION_HL,               I"test_fn", I"TestUseOption")
 		SYN_FUNCT(PRINT_USE_OPTION_HL,            I"print_fn", I"PrintUseOption")
 		SYN_CONST(USE_OPTION_VALUES_HL,           I"USE_OPTION_VALUES")
+
+@h Synoptic printing functions.
+
+=
+#ifdef CORE_MODULE
+inter_name *SynopticHierarchy::printing_function_iname(inter_tree *I, kind *K) {
+	if (Kinds::eq(K, K_use_option)) return HierarchyLocations::iname(I, PRINT_USE_OPTION_HL);
+	if (Kinds::eq(K, K_table)) return HierarchyLocations::iname(I, PRINT_TABLE_HL);
+	if (Kinds::eq(K, K_response)) return HierarchyLocations::iname(I, PRINT_RESPONSE_HL);
+	return NULL;
+}
+#endif

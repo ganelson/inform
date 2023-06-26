@@ -1,4 +1,4 @@
-Version 1 of Basic Inform by Graham Nelson begins here.
+Version 2 of Basic Inform by Graham Nelson begins here.
 
 "Basic Inform, included in every project, defines the basic framework
 of Inform as a programming language."
@@ -661,7 +661,7 @@ To repeat with (loopvar - nonexisting K variable)
 To repeat with (loopvar - nonexisting K variable)
 	running from (v - enumerated value of kind K) to (w - K) begin -- end loop
 	(documented at ph_repeat):
-		(- for ({loopvar}={v}: {loopvar}<={w}: {loopvar}++)  -).
+		(- for ({loopvar}={v}: {loopvar}<={w}: {loopvar}={-next-routine:K}({loopvar}))  -).
 To repeat with (loopvar - nonexisting K variable)
 	running through (OS - description of values of kind K) begin -- end loop
 	(documented at ph_runthrough):
@@ -734,6 +734,9 @@ Section 1 - Enumerations
 To decide which number is number of (S - description of values)
 	(documented at ph_numberof):
 	(- {-primitive-definition:number-of} -).
+To decide what number is the numerical value of (X - enumerated value): (- {X} -).
+To decide what number is the sequence number of (X - enumerated value of kind K):
+	(- {-indexing-routine:K}({X}) -).
 To decide which K is (name of kind of enumerated value K) after (X - K)
 	(documented at ph_enumafter):
 	(- {-next-routine:K}({X}) -).

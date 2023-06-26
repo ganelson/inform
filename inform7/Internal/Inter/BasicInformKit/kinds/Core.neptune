@@ -186,7 +186,7 @@ builtin base TABLE_TY {
 	documentation-reference: kind_tablename
 	index-priority: 6
 	index-default-value: <i>a table with no rows or columns</i>
-	indexed-grey-if-empty: yes
+	indexed-grey-if-empty: no
 	specification-text: Like tables of information in a book or newspaper, tables in Inform hold values which have been organised into rows and columns. A table name is just a single value, identifying which table is meant - say, 'Table of US Presidents' might be a table name value.
 }
 
@@ -275,7 +275,7 @@ builtin constructor RULE_TY {
 
 	documentation-reference: kind_rule
 	index-default-value: the little-used do nothing rule
-	indexed-grey-if-empty: yes
+	indexed-grey-if-empty: no
 	specification-text: One of many, many rules which determine what happens during play. Rules can be triggered by scenes beginning or ending, by certain actions, at certain times, or in the course of carrying out certain activities.
 }
 

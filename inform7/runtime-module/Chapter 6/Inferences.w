@@ -32,13 +32,13 @@ void RTInferences::index(package_request *pack, int hl, inference_subject *infs,
 state of being boolean, and the given certainty levels:
 
 =
-void RTInferences::index_provided(OUTPUT_STREAM, inference_subject *infs, int bool, int c, char *cert, int brief) {
+void RTInferences::index_provided(OUTPUT_STREAM, inference_subject *infs, int boolean, int c, char *cert, int brief) {
 	int f = TRUE;
 	property *prn;
 	LOOP_OVER(prn, property) {
 		if (RTProperties::is_shown_in_index(prn) == FALSE) continue;
 		if (RTProperties::get_indexed_already_flag(prn)) continue;
-		if (Properties::is_either_or(prn) != bool) continue;
+		if (Properties::is_either_or(prn) != boolean) continue;
 
 		int state = PropertyInferences::has_or_can_have(infs, prn);
 		if (state != c) continue;

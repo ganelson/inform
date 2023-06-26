@@ -342,6 +342,45 @@ void Instances::new_grammatical(instance *I) {
 		grammatical_genders[no_ggs_recorded++] = I;
 }
 
+@h Instances specified in Neptune files.
+
+=
+void Instances::make_instances_from_Neptune(void) {
+	kind_constructor *kc;
+	LOOP_OVER(kc, kind_constructor) {
+		linked_list *L = KindConstructors::instances(kc);
+		kind_constructor_instance *kci;
+		inter_ti current_val = 1;
+		int first_val = TRUE;
+		LOOP_OVER_LINKED_LIST(kci, kind_constructor_instance, L) {
+			wording W = Feeds::feed_text(kci->natural_language_name);
+			kind *K = Kinds::base_construction(kc);
+			pcalc_prop *prop = Propositions::Abstract::to_create_something(K, W);
+			Assert::true(prop, CERTAIN_CE);
+			instance *I = Instances::latest();
+			if (kci->value_specified) {
+				if ((current_val >= (inter_ti) kci->value) && (first_val == FALSE)) {
+					Problems::quote_object(1, I);
+					Problems::quote_kind(2, K);
+					StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+					Problems::issue_problem_segment(
+						"A kit defined an instance %1 of a kind called %2, but this "
+						"has a numerical value which is equal to or greater than that "
+						"of its predecessor. Instances in a kit have to be defined "
+						"in evaluation order.");
+					Problems::issue_problem_end();
+				}
+				current_val = (inter_ti) kci->value;
+			}
+			RTKindConstructors::set_explicit_runtime_instance_value(K, I, current_val);
+			RTInstances::set_translation(I, kci->identifier);
+			// LOG("From kit: %W = %S = %d -> $O\n", W, kci->identifier, current_val, I);
+			current_val++;
+			first_val = FALSE;
+		}
+	}
+}
+
 @h Logging.
 
 =

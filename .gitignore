@@ -10,6 +10,7 @@ makefile
 tags
 *.glkdata
 
+resources/App HTML/
 resources/Changes/Output/
 resources/Changes/Output/META-INF/
 resources/Changes/Output/OEBPS/

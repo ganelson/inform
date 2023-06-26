@@ -83,7 +83,7 @@ void KindCommands::apply(single_kind_command stc, kind_constructor *con) {
 		return;
 	}
 	if (tcc == conforms_to_KCC) {
-		kind_constructor_instance *dti = CREATE(kind_constructor_instance);
+		kind_constructor_instance_rule *dti = CREATE(kind_constructor_instance_rule);
 		dti->next_instance_rule = con->first_instance_rule;
 		con->first_instance_rule = dti;
 		dti->instance_of_this_unparsed = Str::duplicate(stc.constructor_argument);
@@ -97,6 +97,36 @@ void KindCommands::apply(single_kind_command stc, kind_constructor *con) {
 		dtcs->comparator_unparsed = Str::duplicate(stc.constructor_argument);
 		dtcs->comparator = NULL;
 		dtcs->comparison_schema = Str::duplicate(stc.textual_argument);
+		return;
+	}
+	if (tcc == instance_KCC) {
+		match_results mr = Regexp::create_mr();
+		if (Regexp::match(&mr, stc.textual_argument, L" *(%c+?) *= *(%C+) *= *(%C+) *")) {
+			kind_constructor_instance *kci = CREATE(kind_constructor_instance);
+			kci->natural_language_name = Str::duplicate(mr.exp[0]);
+			kci->identifier = Str::duplicate(mr.exp[1]);
+			int bad = FALSE;
+			kci->value = KindCommands::parse_literal_number(mr.exp[2], &bad);
+			kci->value_specified = TRUE;
+			if (bad) {
+				NeptuneFiles::error(stc.textual_argument,
+					I"value after the final '=' is not a valid Inform 6 literal", stc.origin);
+				kci->value = 0;
+				kci->value_specified = FALSE;
+			}
+			ADD_TO_LINKED_LIST(kci, kind_constructor_instance, con->instances);	
+		} else if (Regexp::match(&mr, stc.textual_argument, L" *(%c+?) *= *(%C+) *")) {
+			kind_constructor_instance *kci = CREATE(kind_constructor_instance);
+			kci->natural_language_name = Str::duplicate(mr.exp[0]);
+			kci->identifier = Str::duplicate(mr.exp[1]);
+			kci->value = 0;
+			kci->value_specified = FALSE;
+			ADD_TO_LINKED_LIST(kci, kind_constructor_instance, con->instances);	
+		} else {
+			NeptuneFiles::error(stc.textual_argument,
+				I"instance not in form NAME = IDENTIFIER = VALUE", stc.origin);
+		}
+		Regexp::dispose_of(&mr);
 		return;
 	}
 
@@ -185,3 +215,41 @@ void KindCommands::apply(single_kind_command stc, kind_constructor *con) {
 		DISCARD_TEXT(wd)
 	}
 	con->constructor_arity = c+1;
+
+@ This is used for parsing the values of enumeration members in |instance|
+commands:
+
+=
+int KindCommands::parse_literal_number(text_stream *S, int *bad) {
+	*bad = FALSE;
+	int sign = 1, base = 10, from = 0, to = Str::len(S)-1;
+	if ((Str::get_at(S, from) == '(') && (Str::get_at(S, to) == ')')) { from++; to--; }
+	while (Characters::is_whitespace(Str::get_at(S, from))) from++;
+	while (Characters::is_whitespace(Str::get_at(S, to))) to--;
+	if (Str::get_at(S, from) == '-') { sign = -1; from++; }
+	else if (Str::get_at(S, from) == '$') {
+		from++; base = 16;
+		if (Str::get_at(S, from) == '$') {
+			from++; base = 2;
+		}
+	}
+	long long int N = 0;
+	LOOP_THROUGH_TEXT(pos, S) {
+		if (pos.index < from) continue;
+		if (pos.index > to) continue;
+		int c = Str::get(pos), d = 0;
+		if ((c >= 'a') && (c <= 'z')) d = c-'a'+10;
+		else if ((c >= 'A') && (c <= 'Z')) d = c-'A'+10;
+		else if ((c >= '0') && (c <= '9')) d = c-'0';
+		else { *bad = TRUE; break; }
+		if (d > base) { *bad = TRUE; break; }
+		N = base*N + (long long int) d;
+		if (pos.index > 34) { *bad = TRUE; break; }
+	}
+	if (*bad == FALSE) {
+		N = sign*N;
+		return (int) N;
+	}
+	return -1;
+}
+

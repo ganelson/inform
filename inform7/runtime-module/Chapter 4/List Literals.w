@@ -139,19 +139,10 @@ for the number of instances it has:
 
 =
 int ListLiterals::extent_of_instance_list(kind *K) {
-	int N = -1;
-	if (Kinds::Behaviour::is_an_enumeration(K)) @<Count entries for an enumeration@>;
-	if (Kinds::Behaviour::is_subkind_of_object(K)) @<Count entries for a kind of object@>;
-	return N;
+	if (Kinds::Behaviour::is_an_enumeration(K)) return RTKindConstructors::enumeration_size(K);
+	if (Kinds::Behaviour::is_subkind_of_object(K)) return Instances::count(K);
+	return -1;
 }
-
-@<Count entries for an enumeration@> =
-	N = RTKindConstructors::get_highest_valid_value_as_integer(K);
-
-@<Count entries for a kind of object@> =
-	N = 0;
-	instance *I;
-	LOOP_OVER_INSTANCES(I, K) N++;
 
 @ And the following then constructs the literal list, on demand:
 
@@ -165,22 +156,13 @@ inter_name *ListLiterals::get_instance_list(kind *K) {
 			Hierarchy::make_iname_in(INSTANCE_LIST_HL, RTKindConstructors::kind_package(K));
 		packaging_state save = ListLiterals::begin_large_block(
 			large_block_iname, Kinds::unary_con(CON_list_of, K), N);
-		if (Kinds::Behaviour::is_an_enumeration(K)) @<Compile entries for an enumeration@>;
+		if (Kinds::Behaviour::is_an_enumeration(K)) RTKindConstructors::make_enumeration_entries(K);
 		if (Kinds::Behaviour::is_subkind_of_object(K)) @<Compile entries for a kind of object@>;
 		ListLiterals::end_large_block(save);
 		RTKindConstructors::set_list_iname(Kinds::get_construct(K), large_block_iname);
 	}
 	return ListLiterals::small_block(large_block_iname);
 }
-
-@ A little dubiously, for an enumeration ("Colour is a kind of value. The
-colours are red, green and blue."), the entries are just the numbers 1, 2, 3, ...
-That never seems a good use of memory, but it is still more efficient to store
-one copy of this than to have to construct it frequently at runtime.
-
-@<Compile entries for an enumeration@> =
-	for (int i = 1; i <= N; i++)
-		EmitArrays::numeric_entry((inter_ti) i);
 
 @ Note that the instances are given in the order preferred by //Instance Counting//,
 not in creation order, as a simple |LOOP_OVER_INSTANCES| would have done.

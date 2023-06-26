@@ -22,7 +22,8 @@ these words would be 5, 2 and 4 respectively.
 =
 int BinaryInter::test_file(filename *F) {
 	int verdict = TRUE;
-	FILE *fh = BinaryFiles::open_for_reading(F);
+	FILE *fh = BinaryFiles::try_to_open_for_reading(F);
+	if (fh == NULL) return FALSE;
 	unsigned int X = 0;
 	if ((BinaryFiles::read_int32(fh, &X) == FALSE) ||
 		((inter_ti) X != INTER_SHIBBOLETH)) verdict = FALSE;
@@ -37,7 +38,8 @@ file, or else a null semver if the file isn't binary Inter:
 
 =
 semantic_version_number BinaryInter::test_file_version(filename *F) {
-	FILE *fh = BinaryFiles::open_for_reading(F);
+	FILE *fh = BinaryFiles::try_to_open_for_reading(F);
+	if (fh == NULL) return VersionNumbers::null();
 	unsigned int X = 0;
 	if ((BinaryFiles::read_int32(fh, &X) == FALSE) ||
 		((inter_ti) X != INTER_SHIBBOLETH) ||

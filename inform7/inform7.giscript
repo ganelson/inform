@@ -54,6 +54,7 @@ Tests/Test Problems/_Results_Actual/
 Tests/Test Filings/_Results_Actual/
 Tests/Documentation/
 
+**/*.interb
 Internal/Inter/Architecture16Kit/*.interb
 Internal/Inter/Architecture32Kit/*.interb
 Internal/Inter/BasicInformKit/*.interb

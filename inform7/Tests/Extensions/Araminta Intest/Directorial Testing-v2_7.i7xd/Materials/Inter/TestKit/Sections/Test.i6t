@@ -1,0 +1,13 @@
+Test Template.
+
+Stuff.
+
+@h Misc.
+
+=
+Constant TEST_TEMPLATE_CONSTANT = 13;
+
+[ TestFunction;
+	print "The red is ", RED_COL, "^";
+	print "The mauve is ", MAUVE_COL, "^";
+];

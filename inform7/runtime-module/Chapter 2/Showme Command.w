@@ -327,7 +327,7 @@ routine for colours; and the best thing is to print nothing at all.
 @<Compile the SHOWME of the actual value@> =
 	EmitCode::inv(INDIRECT1V_BIP);
 	EmitCode::down();
-		EmitCode::val_iname(K_value, RTKindConstructors::get_iname(K));
+		EmitCode::val_iname(K_value, RTKindConstructors::printing_fn_iname(K));
 		EmitCode::call(Hierarchy::find(GPROPERTY_HL));
 		EmitCode::down();
 			RTKindIDs::emit_weak_ID_as_val(K_object);

@@ -131,6 +131,7 @@ so on. Those absolute basics are made here.
 	BENCH(Task::make_built_in_kind_constructors);
 	BENCH(BinaryPredicateFamilies::first_stock)
 	BENCH(BootVerbs::make_built_in)
+	BENCH(Instances::make_instances_from_Neptune);
 
 @<Pass three times through the major nodes@> =
 	Task::advance_stage_to(SEMANTIC_ANALYSIS_CSEQ, I"Pre-pass through major nodes",
@@ -197,6 +198,7 @@ here, which only happens when special runs are made for compiler testing.
 	BENCH(RTUseOptions::compile)
 	BENCH(RTCommandGrammars::compile_non_generic_constants)
 	BENCH(Interventions::make_all)
+	BENCH(RTKindConstructors::assign_declaration_sequence_numbers)
 	BENCH(RTKindConstructors::compile)
 	BENCH(RTLiteralPatterns::compile)
 	

@@ -38,7 +38,7 @@ typedef struct kind_constructor {
 	/* C: compatibility with other kinds */
 	struct parse_node *superkind_set_at; /* where it says, e.g., "A rabbit is a kind of animal" */
 	struct kind_constructor_casting_rule *first_casting_rule; /* list of these */
-	struct kind_constructor_instance *first_instance_rule; /* list of these */
+	struct kind_constructor_instance_rule *first_instance_rule; /* list of these */
 
 	/* D: how constant values of this kind are expressed */
 	struct literal_pattern *ways_to_write_literals; /* list of ways to write this */
@@ -76,6 +76,7 @@ typedef struct kind_constructor {
 	struct text_stream *distinguishing_routine; /* Inter routine to see if values distinguishable */
 	struct kind_constructor_comparison_schema *first_comparison_schema; /* list of these */
 	struct text_stream *loop_domain_schema; /* how to compile a loop over the instances */
+	struct linked_list *instances; /* if enumerated explicitly in a Neptune file */
 
 	/* J: printing and parsing values at run-time */
 	struct text_stream *print_identifier; /* an Inter identifier used for compiling printing rules */
@@ -107,6 +108,15 @@ typedef struct kind_constructor_casting_rule {
 	struct kind_constructor_casting_rule *next_casting_rule;
 } kind_constructor_casting_rule;
 
+@ And this is the analogous structure for recording conformance:
+
+=
+typedef struct kind_constructor_instance_rule {
+	struct text_stream *instance_of_this_unparsed;
+	struct kind_constructor *instance_of_this;
+	struct kind_constructor_instance_rule *next_instance_rule;
+} kind_constructor_instance_rule;
+
 @ And this is the analogous structure for giving Inter schemas to compare
 data of two different kinds:
 
@@ -118,14 +128,14 @@ typedef struct kind_constructor_comparison_schema {
 	struct kind_constructor_comparison_schema *next_comparison_schema;
 } kind_constructor_comparison_schema;
 
-@ And this is the analogous structure for giving Inter schemas to compare
-data of two different kinds:
+@ And this is where explicit instances are recorded:
 
 =
 typedef struct kind_constructor_instance {
-	struct text_stream *instance_of_this_unparsed;
-	struct kind_constructor *instance_of_this;
-	struct kind_constructor_instance *next_instance_rule;
+	struct text_stream *natural_language_name;
+	struct text_stream *identifier;
+	int value;
+	int value_specified;
 } kind_constructor_instance;
 
 @ The "tupling" of an argument is the extent to which an argument can be
@@ -258,6 +268,7 @@ we apply any defaults set in Neptune files.
 	con->first_comparison_schema = NULL;
 	con->distinguishing_routine = NULL;
 	con->loop_domain_schema = NULL;
+	con->instances = NEW_LINKED_LIST(kind_constructor_instance);
 
 	/* J: printing and parsing values at run-time */
 	con->print_identifier = Str::new();
@@ -422,6 +433,18 @@ int KindConstructors::variance(kind_constructor *con, int b) {
 	return con->variance[b];
 }
 
+int KindConstructors::is_base(kind_constructor *con) {
+	if (con == NULL) return FALSE;
+	if (con->group == BASE_CONSTRUCTOR_GRP) return TRUE;
+	return FALSE;
+}
+
+int KindConstructors::is_proper_constructor(kind_constructor *con) {
+	if (con == NULL) return FALSE;
+	if (con->group == PROPER_CONSTRUCTOR_GRP) return TRUE;
+	return FALSE;
+}
+
 @h Questions about constructors.
 The rest of Inform is not encouraged to poke at constructors directly; it
 ought to ask questions about kinds instead (see "Using Kinds"). However:
@@ -436,7 +459,7 @@ int KindConstructors::is_definite(kind_constructor *con) {
 	return FALSE;
 }
 
-int KindConstructors::offers_I6_GPR(kind_constructor *con) {
+int KindConstructors::is_understandable(kind_constructor *con) {
 	if (con == NULL) return FALSE;
 	if ((KindConstructors::is_definite(con)) &&
 		(KindConstructors::compatible(con,
@@ -512,7 +535,7 @@ group or |PROPER_CONSTRUCTOR_GRP|) which it can cast to.
 
 =
 int KindConstructors::find_instance(kind_constructor *from, kind_constructor *to) {
-	kind_constructor_instance *dti;
+	kind_constructor_instance_rule *dti;
 	for (dti = from->first_instance_rule; dti; dti = dti->next_instance_rule) {
 		if (Str::len(dti->instance_of_this_unparsed) > 0) {
 			dti->instance_of_this =
@@ -523,6 +546,15 @@ int KindConstructors::find_instance(kind_constructor *from, kind_constructor *to
 		if (KindConstructors::find_instance(dti->instance_of_this, to)) return TRUE;
 	}
 	return FALSE;
+}
+
+@ Each constructor has a list of explicitly-named instances from the Neptune
+file creating it (if any were: by default this will be empty):
+
+=
+linked_list *KindConstructors::instances(kind_constructor *kc) {
+	if (kc == NULL) return FALSE;
+	return kc->instances;
 }
 
 @h Compatibility.

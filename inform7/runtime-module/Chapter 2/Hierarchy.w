@@ -1177,6 +1177,7 @@ void Hierarchy::establish(void) {
 @e KIND_INDEX_PLURAL_MD_HL
 @e KIND_SHOWME_MD_HL
 @e KIND_IS_BASE_MD_HL
+@e KIND_IS_PROPER_MD_HL
 @e KIND_IS_QUASINUMERICAL_MD_HL
 @e KIND_IS_DEF_MD_HL
 @e KIND_IS_OBJECT_MD_HL
@@ -1209,7 +1210,9 @@ void Hierarchy::establish(void) {
 @e WEAK_ID_HL
 @e ICOUNT_HL
 @e FWMATRIX_SIZE_HL
-@e ILIST_HL
+@e NUM_DOORS_HL
+@e NUM_ROOMS_HL
+@e ENUMERATION_ARRAY_MD_HL
 @e KIND_XREF_SYMBOL_HL
 @e DECREMENT_FN_HL
 @e INCREMENT_FN_HL
@@ -1217,24 +1220,26 @@ void Hierarchy::establish(void) {
 @e PRINT_DASH_FN_HL
 @e MKDEF_FN_HL
 @e RANGER_FN_HL
+@e INDEXING_FN_HL
 @e DEFAULT_CLOSURE_FN_HL
 @e GPR_FN_HL
 @e SHOWME_FN_HL
 @e INSTANCE_GPR_FN_HL
 @e INSTANCE_LIST_HL
 @e FIRST_INSTANCE_HL
+@e INSTANCES_ARRAY_HL
 @e NEXT_INSTANCE_HL
-@e COUNT_INSTANCE_1_HL
-@e COUNT_INSTANCE_2_HL
-@e COUNT_INSTANCE_3_HL
-@e COUNT_INSTANCE_4_HL
-@e COUNT_INSTANCE_5_HL
-@e COUNT_INSTANCE_6_HL
-@e COUNT_INSTANCE_7_HL
-@e COUNT_INSTANCE_8_HL
-@e COUNT_INSTANCE_9_HL
-@e COUNT_INSTANCE_10_HL
-@e COUNT_INSTANCE_HL
+@e BASE_IK_1_HL
+@e BASE_IK_2_HL
+@e BASE_IK_3_HL
+@e BASE_IK_4_HL
+@e BASE_IK_5_HL
+@e BASE_IK_6_HL
+@e BASE_IK_7_HL
+@e BASE_IK_8_HL
+@e BASE_IK_9_HL
+@e BASE_IK_10_HL
+@e BASE_IK_HL
 @e KIND_INLINE_PROPERTIES_HAP
 @e KIND_INLINE_PROPERTY_HL
 @e KIND_PROPERTIES_HAP
@@ -1248,7 +1253,6 @@ void Hierarchy::establish(void) {
 @e DK_KIND_HL
 @e DK_DEFAULT_VALUE_HL
 
-@e KIND_USAGE_HAP
 @e KIND_CLASS_HL
 
 @e MULTIPLICATION_RULE_HAP
@@ -1286,6 +1290,7 @@ void Hierarchy::establish(void) {
 			H_C_U(KIND_INDEX_VARIANCE_MD_HL,  I"^variance")
 			H_C_U(KIND_SHOWME_MD_HL,          I"^showme_fn")
 			H_C_U(KIND_IS_BASE_MD_HL,         I"^is_base")
+			H_C_U(KIND_IS_PROPER_MD_HL,       I"^is_proper")
 			H_C_U(KIND_IS_QUASINUMERICAL_MD_HL, I"^is_quasinumerical")
 			H_C_U(KIND_IS_DEF_MD_HL,          I"^is_definite")
 			H_C_U(KIND_IS_OBJECT_MD_HL,       I"^is_object")
@@ -1317,8 +1322,10 @@ void Hierarchy::establish(void) {
 			H_C_U(KIND_INFERENCES_MD_HL,      I"^inferences")
 			H_C_I(WEAK_ID_HL)
 			H_C_I(ICOUNT_HL)
-			H_C_I(ILIST_HL)
+			H_C_U(ENUMERATION_ARRAY_MD_HL,    I"^enumeration_array")
 			H_C_U(FWMATRIX_SIZE_HL,           I"FWMATRIX_SIZE")
+			H_C_U(NUM_DOORS_HL,               I"NUM_DOORS")
+			H_C_U(NUM_ROOMS_HL,               I"NUM_ROOMS")
 			H_C_U(KIND_XREF_SYMBOL_HL,        I"kind_ref")
 			H_F_U(MKDEF_FN_HL,                I"mkdef_fn")
 			H_F_U(DECREMENT_FN_HL,            I"decrement_fn")
@@ -1326,6 +1333,7 @@ void Hierarchy::establish(void) {
 			H_F_U(PRINT_FN_HL,                I"print_fn")
 			H_F_G(PRINT_DASH_FN_HL,           I"print_fn", I"E")
 			H_F_U(RANGER_FN_HL,               I"ranger_fn")
+			H_F_U(INDEXING_FN_HL,             I"indexing_fn")
 			H_F_U(DEFAULT_CLOSURE_FN_HL,      I"default_closure_fn")
 			H_F_U(GPR_FN_HL,                  I"gpr_fn")
 			H_F_U(INSTANCE_GPR_FN_HL,         I"instance_gpr_fn")
@@ -1333,17 +1341,18 @@ void Hierarchy::establish(void) {
 			H_F_U(SHOWME_FN_HL,               I"showme_fn")
 			H_C_S(FIRST_INSTANCE_HL,          I"_First")
 			H_C_S(NEXT_INSTANCE_HL,           I"_Next")
-			H_C_T(COUNT_INSTANCE_1_HL,        I"IK1_Count")
-			H_C_T(COUNT_INSTANCE_2_HL,        I"IK2_Count")
-			H_C_T(COUNT_INSTANCE_3_HL,        I"IK3_Count")
-			H_C_T(COUNT_INSTANCE_4_HL,        I"IK4_Count")
-			H_C_T(COUNT_INSTANCE_5_HL,        I"IK5_Count")
-			H_C_T(COUNT_INSTANCE_6_HL,        I"IK6_Count")
-			H_C_T(COUNT_INSTANCE_7_HL,        I"IK7_Count")
-			H_C_T(COUNT_INSTANCE_8_HL,        I"IK8_Count")
-			H_C_T(COUNT_INSTANCE_9_HL,        I"IK9_Count")
-			H_C_T(COUNT_INSTANCE_10_HL,       I"IK10_Count")
-			H_C_S(COUNT_INSTANCE_HL,          I"_Count")
+			H_C_S(INSTANCES_ARRAY_HL,         I"_Array")
+			H_C_T(BASE_IK_1_HL,               I"IK1_Count")
+			H_C_T(BASE_IK_2_HL,               I"IK2_Count")
+			H_C_T(BASE_IK_3_HL,               I"IK3_Count")
+			H_C_T(BASE_IK_4_HL,               I"IK4_Count")
+			H_C_T(BASE_IK_5_HL,               I"IK5_Count")
+			H_C_T(BASE_IK_6_HL,               I"IK6_Count")
+			H_C_T(BASE_IK_7_HL,               I"IK7_Count")
+			H_C_T(BASE_IK_8_HL,               I"IK8_Count")
+			H_C_T(BASE_IK_9_HL,               I"IK9_Count")
+			H_C_T(BASE_IK_10_HL,              I"IK10_Count")
+			H_C_S(BASE_IK_HL,                 I"_Count")
 			H_C_G(KIND_CLASS_HL,              I"K")
 			H_BEGIN_AP(KIND_INLINE_PROPERTIES_HAP, I"inline_property", I"_inline_property")
 				H_C_U(KIND_INLINE_PROPERTY_HL, I"inline")
@@ -1363,8 +1372,6 @@ void Hierarchy::establish(void) {
 	H_END
 
 	H_BEGIN(LocationRequirements::completion_submodule(I, kinds))
-		H_BEGIN_AP(KIND_USAGE_HAP,            I"kind_usage", I"_kind_usage")
-		H_END
 		H_BEGIN_AP(MULTIPLICATION_RULE_HAP,   I"multiplication_rule", I"_multiplication_rule")
 			H_C_U(SET_AT_MD_HL,               I"^at")
 			H_C_U(LEFT_OPERAND_MD_HL,         I"^left_operand")
@@ -1958,35 +1965,11 @@ void Hierarchy::establish(void) {
 @e K_NUMBER_XPACKAGE
 @e K_TIME_XPACKAGE
 @e K_TRUTH_STATE_XPACKAGE
-@e K_TABLE_XPACKAGE
-@e K_FIGURE_NAME_XPACKAGE
-@e K_SOUND_NAME_XPACKAGE
-@e K_USE_OPTION_XPACKAGE
-@e K_EXTERNAL_FILE_XPACKAGE
-@e K_INTERNAL_FILE_XPACKAGE
-@e K_RULEBOOK_OUTCOME_XPACKAGE
-@e K_RESPONSE_XPACKAGE
-@e K_SCENE_XPACKAGE
-@e K_DIALOGUE_BEAT_XPACKAGE
-@e K_DIALOGUE_LINE_XPACKAGE
-@e K_DIALOGUE_CHOICE_XPACKAGE
-@e K_PERFORMANCE_STYLE_XPACKAGE
 
 @e CAPSHORTNAME_HL
 @e DECIMAL_TOKEN_INNER_HL
 @e TIME_TOKEN_INNER_HL
 @e TRUTH_STATE_TOKEN_INNER_HL
-
-@e PRINT_RULEBOOK_OUTCOME_HL
-@e PRINT_FIGURE_NAME_HL
-@e PRINT_SOUND_NAME_HL
-@e PRINT_EXTERNAL_FILE_NAME_HL
-@e PRINT_INTERNAL_FILE_NAME_HL
-@e PRINT_SCENE_HL
-@e PRINT_DIALOGUE_BEAT_HL
-@e PRINT_DIALOGUE_LINE_HL
-@e PRINT_DIALOGUE_CHOICE_HL
-@e PRINT_PERFORMANCE_STYLE_HL
 
 @<The rest@> =
 	H_BEGIN(LocationRequirements::this_exotic_package(K_OBJECT_XPACKAGE))
@@ -2003,46 +1986,6 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(LocationRequirements::this_exotic_package(K_TRUTH_STATE_XPACKAGE))
 		H_F_T(TRUTH_STATE_TOKEN_INNER_HL,     I"gpr_fn", I"TRUTH_STATE_TOKEN_INNER")
-	H_END
-
-	H_BEGIN(LocationRequirements::this_exotic_package(K_FIGURE_NAME_XPACKAGE))
-		H_F_T(PRINT_FIGURE_NAME_HL,           I"print_fn", I"PrintFigureName")
-	H_END
-
-	H_BEGIN(LocationRequirements::this_exotic_package(K_SOUND_NAME_XPACKAGE))
-		H_F_T(PRINT_SOUND_NAME_HL,            I"print_fn", I"PrintSoundName")
-	H_END
-
-	H_BEGIN(LocationRequirements::this_exotic_package(K_EXTERNAL_FILE_XPACKAGE))
-		H_F_T(PRINT_EXTERNAL_FILE_NAME_HL,    I"print_fn", I"PrintExternalFileName")
-	H_END
-
-	H_BEGIN(LocationRequirements::this_exotic_package(K_INTERNAL_FILE_XPACKAGE))
-		H_F_T(PRINT_INTERNAL_FILE_NAME_HL,    I"print_fn", I"PrintInternalFileName")
-	H_END
-
-	H_BEGIN(LocationRequirements::this_exotic_package(K_RULEBOOK_OUTCOME_XPACKAGE))
-		H_F_T(PRINT_RULEBOOK_OUTCOME_HL,      I"print_fn", I"RulebookOutcomePrintingRule")
-	H_END
-
-	H_BEGIN(LocationRequirements::this_exotic_package(K_SCENE_XPACKAGE))
-		H_F_T(PRINT_SCENE_HL,                 I"print_fn", I"PrintSceneName")
-	H_END
-
-	H_BEGIN(LocationRequirements::this_exotic_package(K_DIALOGUE_BEAT_XPACKAGE))
-		H_F_T(PRINT_DIALOGUE_BEAT_HL,         I"print_fn", I"PrintDialogueBeatName")
-	H_END
-
-	H_BEGIN(LocationRequirements::this_exotic_package(K_DIALOGUE_LINE_XPACKAGE))
-		H_F_T(PRINT_DIALOGUE_LINE_HL,         I"print_fn", I"PrintDialogueLineName")
-	H_END
-
-	H_BEGIN(LocationRequirements::this_exotic_package(K_DIALOGUE_CHOICE_XPACKAGE))
-		H_F_T(PRINT_DIALOGUE_CHOICE_HL,       I"print_fn", I"PrintDialogueChoiceName")
-	H_END
-
-	H_BEGIN(LocationRequirements::this_exotic_package(K_PERFORMANCE_STYLE_XPACKAGE))
-		H_F_T(PRINT_PERFORMANCE_STYLE_HL,     I"print_fn", I"PrintPerformanceStyleName")
 	H_END
 
 @h Architectural symbols.
@@ -2138,19 +2081,6 @@ package_request *Hierarchy::exotic_package(int x) {
 		case K_NUMBER_XPACKAGE:            return RTKindConstructors::kind_package(K_number);
 		case K_TIME_XPACKAGE:              return RTKindConstructors::kind_package(K_time);
 		case K_TRUTH_STATE_XPACKAGE:       return RTKindConstructors::kind_package(K_truth_state);
-		case K_TABLE_XPACKAGE:             return RTKindConstructors::kind_package(K_table);
-		case K_FIGURE_NAME_XPACKAGE:       return RTKindConstructors::kind_package(K_figure_name);
-		case K_SOUND_NAME_XPACKAGE:        return RTKindConstructors::kind_package(K_sound_name);
-		case K_USE_OPTION_XPACKAGE:        return RTKindConstructors::kind_package(K_use_option);
-		case K_EXTERNAL_FILE_XPACKAGE:     return RTKindConstructors::kind_package(K_external_file);
-		case K_INTERNAL_FILE_XPACKAGE:     return RTKindConstructors::kind_package(K_internal_file);
-		case K_RULEBOOK_OUTCOME_XPACKAGE:  return RTKindConstructors::kind_package(K_rulebook_outcome);
-		case K_RESPONSE_XPACKAGE:          return RTKindConstructors::kind_package(K_response);
-		case K_SCENE_XPACKAGE:             return RTKindConstructors::kind_package(K_scene);
-		case K_DIALOGUE_BEAT_XPACKAGE:     return RTKindConstructors::kind_package(K_dialogue_beat);
-		case K_DIALOGUE_LINE_XPACKAGE:     return RTKindConstructors::kind_package(K_dialogue_line);
-		case K_DIALOGUE_CHOICE_XPACKAGE:   return RTKindConstructors::kind_package(K_dialogue_choice);
-		case K_PERFORMANCE_STYLE_XPACKAGE: return RTKindConstructors::kind_package(K_performance_style);
 	}
 	internal_error("unknown exotic package");
 	return NULL;

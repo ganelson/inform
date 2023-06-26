@@ -399,7 +399,7 @@ void RTActions::print_noun_or_second(action_name *an, int n, inter_symbol *n_s, 
 		var = InterNames::to_symbol(Hierarchy::find(PARSED_NUMBER_HL));
 	EmitCode::inv(INDIRECT1V_BIP);
 	EmitCode::down();
-		EmitCode::val_iname(K_value, RTKindConstructors::get_debug_print_fn_iname(K));
+		EmitCode::val_iname(K_value, RTKindConstructors::debug_print_fn_iname(K));
 		if ((K_understanding) && (Kinds::eq(K, K_understanding))) {
 			EmitCode::inv(PLUS_BIP);
 			EmitCode::down();

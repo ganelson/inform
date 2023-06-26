@@ -240,15 +240,14 @@ IK-count in a numerical property. So the red car, for example, would be given tw
 property values: one for (red car, thing), one for (red car, vehicle). The
 properties in question are the |IK_count_prop| for thing and vehicle.
 
-Similarly for the next terms in the IK-sequences, where the properties are
-the |
+Similarly for the next terms in the IK-sequences.
 
 @<Create the two instance properties for each kind of object@> =
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {
 			inference_subject *subj = KindSubjects::from_kind(K);
-			inter_name *count_iname = RTKindConstructors::instance_count_iname(K);
+			inter_name *count_iname = RTKindConstructors::base_IK_iname(K);
 
 			COUNTING_DATA(subj)->IK_count_prop =
 				ValueProperties::new_nameless_using(K_number,

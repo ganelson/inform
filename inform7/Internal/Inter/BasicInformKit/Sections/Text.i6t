@@ -418,11 +418,7 @@ printed in ZSCII rather than Unicode.
 	for (i=0: i<dsize: i++) {
 		ch = BlkValueRead(txt, i);
 		if (ch == 0) break;
-		#ifdef TARGET_ZCODE;
 		print (char) ch;
-		#ifnot; ! TARGET_ZCODE
-		@streamunichar ch;
-		#endif;
 	}
 	if (i == 0) rfalse;
 	rtrue;

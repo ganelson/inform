@@ -19,6 +19,7 @@ void ParsingPlugin::start(void) {
 	PluginCalls::plug(COMPLETE_MODEL_PLUG, ParsingPlugin::complete_model);
 	
 	RTLiteralPatterns::enable_parsing();
+	RTKindConstructors::enable_parsing();
 }
 
 @ This will also need extensive amounts of run-time code, and the sequence

@@ -793,7 +793,7 @@ void ParseName::distinguish_visible_property(gpr_kit *kit, property *prn) {
 		EmitCode::up();
 	} else {
 		kind *K = ValueProperties::kind(prn);
-		inter_name *distinguisher = RTKindConstructors::get_distinguisher_iname(K);
+		inter_name *distinguisher = RTKindConstructors::distinguisher_function_iname(K);
 		EmitCode::inv(IF_BIP);
 		EmitCode::down();
 			if (distinguisher) {
@@ -939,7 +939,7 @@ void ParseName::parse_visible_property(gpr_kit *kit,
 		EmitCode::inv(IF_BIP);
 		EmitCode::down();
 			kind *K = ValueProperties::kind(prn);
-			inter_name *recog_gpr = RTKindConstructors::get_recognition_only_GPR_as_iname(K);
+			inter_name *recog_gpr = RTKindConstructors::recognition_only_GPR_iname(K);
 			if (recog_gpr) {
 				EmitCode::inv(EQ_BIP);
 				EmitCode::down();
@@ -954,14 +954,13 @@ void ParseName::parse_visible_property(gpr_kit *kit,
 					EmitCode::up();
 					EmitCode::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 				EmitCode::up();
-			} else if (RTKindConstructors::offers_I6_GPR(K)) {
-				inter_name *i6_gpr_name = RTKindConstructors::get_explicit_I6_GPR_iname(K);
-				if (i6_gpr_name) {
+			} else if (Kinds::Behaviour::is_understandable(K)) {
+				if (RTKindConstructors::GPR_provided_by_kit(K)) {
 					EmitCode::inv(AND_BIP);
 					EmitCode::down();
 						EmitCode::inv(EQ_BIP);
 						EmitCode::down();
-							EmitCode::call(i6_gpr_name);
+							EmitCode::call(RTKindConstructors::GPR_iname(K));
 							EmitCode::val_iname(K_value, Hierarchy::find(GPR_NUMBER_HL));
 						EmitCode::up();
 						EmitCode::inv(EQ_BIP);
@@ -978,7 +977,7 @@ void ParseName::parse_visible_property(gpr_kit *kit,
 				} else if (Kinds::Behaviour::is_an_enumeration(K)) {
 					EmitCode::inv(EQ_BIP);
 					EmitCode::down();
-						EmitCode::call(RTKindConstructors::get_instance_GPR_iname(K));
+						EmitCode::call(RTKindConstructors::instance_GPR_iname(K));
 						EmitCode::down();
 							EmitCode::inv(PROPERTYVALUE_BIP);
 							EmitCode::down();
@@ -994,7 +993,7 @@ void ParseName::parse_visible_property(gpr_kit *kit,
 					EmitCode::down();
 						EmitCode::inv(EQ_BIP);
 						EmitCode::down();
-							EmitCode::call(RTKindConstructors::get_kind_GPR_iname(K));
+							EmitCode::call(RTKindConstructors::GPR_iname(K));
 							EmitCode::val_iname(K_value, Hierarchy::find(GPR_NUMBER_HL));
 						EmitCode::up();
 						EmitCode::inv(EQ_BIP);

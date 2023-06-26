@@ -1,0 +1,9 @@
+{
+    "is": {
+        "type": "kit",
+        "title": "TestKit"
+    },
+    "kit-details": {
+        "provides-kinds": [ "Testy.neptune" ]
+    }
+}

@@ -65,7 +65,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">BasicInformKit</a></li><li><b>Rulebooks Template</b></li></ul></div>
 <p class="purpose">To work through the rules in a rulebook until a decision is made.</p>
 
-<ul class="toc"><li><a href="S-rlb.html#SP1">&#167;1. Latest Rule Result</a></li><li><a href="S-rlb.html#SP2">&#167;2. Following</a></li><li><a href="S-rlb.html#SP3">&#167;3. Specifying Outcomes</a></li><li><a href="S-rlb.html#SP4">&#167;4. Discovering Outcomes</a></li><li><a href="S-rlb.html#SP5">&#167;5. Printing Rule Names</a></li><li><a href="S-rlb.html#SP6">&#167;6. Casting</a></li><li><a href="S-rlb.html#SP7">&#167;7. Debugging</a></li><li><a href="S-rlb.html#SP8">&#167;8. The Default Rule and Rulebook</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-rlb.html#SP1">&#167;1. Latest Rule Result</a></li><li><a href="S-rlb.html#SP2">&#167;2. Following</a></li><li><a href="S-rlb.html#SP3">&#167;3. Specifying Outcomes</a></li><li><a href="S-rlb.html#SP4">&#167;4. Discovering Outcomes</a></li><li><a href="S-rlb.html#SP5">&#167;5. Casting</a></li><li><a href="S-rlb.html#SP6">&#167;6. Debugging</a></li><li><a href="S-rlb.html#SP7">&#167;7. The Default Rule and Rulebook</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Latest Rule Result. </b>This used to be a large data structure which kept track of the effect of
 procedural rules, but in January 2011 procedurals were abolished. It retains
@@ -277,20 +277,13 @@ call it.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">DefaultValueOfKOV</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">RulebookOutcomePrintingRule</span><span class="plain-syntax"> </span><span class="identifier-syntax">nro</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">nro</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"(no outcome)"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="reserved-syntax">string</span><span class="plain-syntax">) </span><span class="identifier-syntax">nro</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Printing Rule Names. </b>This is the I6 printing rule used for a value of kind "rule", which as
-noted above can either be rulebook ID numbers in the range 0 to \(N-1\) or
-are addresses of individual rules.
-</p>
-
-<p class="commentary">Names of rules and rulebooks take up a fair amount of space, and one of the
-main memory economies enforced by the "Use memory economy" option is to
-omit the necessary arrays. (It's not the text which is the problem so
-much as the table of addresses pointing to that text, which has to live in
-precious readable memory on the Z-machine.)
-</p>
-
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Casting. </b>Nothing needs to be done to a rulebook value to make it a rule value.
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Casting. </b>Nothing needs to be done to a rulebook value to make it a rule value.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -298,7 +291,7 @@ precious readable memory on the Z-machine.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">r</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Debugging. </b>Two modest routines to print out the names of rules and rulebooks when they
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Debugging. </b>Two modest routines to print out the names of rules and rulebooks when they
 occur, in so far as memory economy allows this.
 </p>
 
@@ -323,7 +316,7 @@ occur, in so far as memory economy allows this.
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">").]^"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. The Default Rule and Rulebook. </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. The Default Rule and Rulebook. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">LITTLE_USED_DO_NOTHING_R</span><span class="plain-syntax">; </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">; ];</span>

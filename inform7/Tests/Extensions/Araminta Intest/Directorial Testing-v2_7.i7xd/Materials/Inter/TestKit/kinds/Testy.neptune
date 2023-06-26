@@ -1,0 +1,9 @@
+new base COLOUR_TY {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: colour
+	plural: colours
+
+	instance: red                  = RED_COL    =          7 
+	instance: purple               = PURPLE_COL =        $1f 
+	instance: chartreusey lavender = MAUVE_COL  =  $$1100101 
+}

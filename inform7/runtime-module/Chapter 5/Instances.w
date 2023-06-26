@@ -12,6 +12,8 @@ typedef struct instance_compilation_data {
 	struct inter_name *instance_iname;
 	struct linked_list *usages; /* of |parse_node| */
 	int declaration_sequence_number;
+	int has_explicit_runtime_value;
+	inter_ti explicit_runtime_value;
 } instance_compilation_data;
 
 instance_compilation_data RTInstances::new_compilation_data(instance *I) {
@@ -21,6 +23,8 @@ instance_compilation_data RTInstances::new_compilation_data(instance *I) {
 	icd.instance_iname = Hierarchy::make_iname_with_memo(INSTANCE_HL,
 		icd.instance_package, W);
 	icd.declaration_sequence_number = -1;
+	icd.has_explicit_runtime_value = FALSE;
+	icd.explicit_runtime_value = 0;
 	icd.usages = NEW_LINKED_LIST(parse_node);
 	NounIdentifiers::set_iname(I->as_noun, icd.instance_iname);
 	Hierarchy::make_available_one_per_name_only(icd.instance_iname);
@@ -284,8 +288,13 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 		Hierarchy::apply_metadata_from_iname(RTInstances::package(I),
 			INST_SHOWME_MD_HL, iname);
 	}
-
-	Emit::instance(RTInstances::value_iname(I), Instances::to_kind(I), I->enumeration_index);
+	
+	inter_ti val = (inter_ti) I->enumeration_index;
+	int has_value = TRUE;
+	if (val == 0) has_value = FALSE;
+	if (I->compilation_data.has_explicit_runtime_value)
+		val = I->compilation_data.explicit_runtime_value;
+	Emit::instance(RTInstances::value_iname(I), Instances::to_kind(I), val, has_value);
 	if (I->compilation_data.declaration_sequence_number >= 0) {
 		inter_name *iname = RTInstances::value_iname(I);
 		package_request *req = InterNames::location(iname);
@@ -312,6 +321,31 @@ void RTInstances::xref_metadata(instance *I, int hl, instance *X) {
 	if (X)
 		Hierarchy::apply_metadata_from_iname(RTInstances::package(I), hl,
 			RTInstances::value_iname(X));
+}
+
+@ Explicit instance numbering is used for enumerative kinds provided by kits,
+which exist for the benefit of the Inter layer. Such kinds might have an erratic
+series of values such as 2, 6, 17, ... rather than 1, 2, 3, ..., and if so then
+an instance with an unexpected runtime value is called "out of place".
+
+=
+void RTInstances::set_explicit_runtime_value(instance *I, inter_ti val) {
+	I->compilation_data.has_explicit_runtime_value = TRUE;
+	I->compilation_data.explicit_runtime_value = val;
+}
+
+int RTInstances::out_of_place(instance *I) {
+	if (I->compilation_data.has_explicit_runtime_value == FALSE) return FALSE;
+	if (I->compilation_data.explicit_runtime_value == (inter_ti) I->enumeration_index)
+		return FALSE;
+	return TRUE;
+}
+
+void RTInstances::set_translation(instance *I, text_stream *identifier) {
+	inter_name *iname = RTInstances::value_iname(I);
+	InterNames::set_translation(iname, identifier);
+	InterNames::clear_flag(iname, MAKE_NAME_UNIQUE_ISYMF);
+	Hierarchy::make_available(iname);
 }
 
 @ When names are abbreviated for use on the World Index map (for instance,

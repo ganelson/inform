@@ -13,6 +13,7 @@ void SynopticKinds::compile(inter_tree *I, pipeline_step *step, tree_inventory *
 		InterNodeList::array_sort(inv->derived_kind_nodes, MakeSynopticModuleStage::module_order);
 	@<Define BASE_KIND_HWM@>;	
 	@<Define DEFAULTVALUEFINDER function@>;
+	@<Define VALUESFINDER function@>;
 	@<Define DEFAULTVALUEOFKOV function@>;
 	@<Define PRINTKINDVALUEPAIR function@>;
 	@<Define KOVCOMPARISONFUNCTION function@>;
@@ -71,6 +72,36 @@ or higher is therefore that of a derived kind.
 					Produce::inv_primitive(I, RETURN_BIP);
 					Produce::down(I);
 						Produce::val_symbol(I, K_value, dv_s);
+					Produce::up(I);
+				Produce::up(I);
+			Produce::up(I);
+		}
+	}
+	Produce::rfalse(I);
+	Synoptic::end_function(I, step, iname);
+
+@<Define VALUESFINDER function@> =
+	inter_name *iname = HierarchyLocations::iname(I, VALUESFINDER_HL);
+	Synoptic::begin_function(I, iname);
+	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
+	for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
+		inter_package *pack =
+			PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
+		inter_symbol *ea_s = Metadata::optional_symbol(pack, I"^enumeration_array");
+		if (ea_s) {
+			inter_symbol *id_s = Metadata::required_symbol(pack, I"^strong_id");
+			Produce::inv_primitive(I, IF_BIP);
+			Produce::down(I);
+				Produce::inv_primitive(I, EQ_BIP);
+				Produce::down(I);
+					Produce::val_symbol(I, K_value, k_s);
+					Produce::val_symbol(I, K_value, id_s);
+				Produce::up(I);
+				Produce::code(I);
+				Produce::down(I);
+					Produce::inv_primitive(I, RETURN_BIP);
+					Produce::down(I);
+						Produce::val_symbol(I, K_value, ea_s);
 					Produce::up(I);
 				Produce::up(I);
 			Produce::up(I);
@@ -149,8 +180,7 @@ which have to be given some type-safe value to start out at.
 		Produce::down(I);
 		for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
 			inter_package *pack = PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
-			if ((Metadata::read_optional_numeric(pack, I"^is_base")) &&
-				(Metadata::optional_symbol(pack, I"^print_fn")) &&
+			if ((Metadata::optional_symbol(pack, I"^print_fn")) &&
 				(Metadata::read_optional_numeric(pack, I"^is_subkind_of_object") == FALSE)) {
 				inter_symbol *id_s = Metadata::required_symbol(pack, I"^strong_id");
 				inter_symbol *print_fn_s = Metadata::required_symbol(pack, I"^print_fn");

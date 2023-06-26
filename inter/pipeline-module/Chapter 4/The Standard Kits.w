@@ -94,6 +94,7 @@ comprehensive list of what is there.)
 @e GPROPERTY_HL
 @e HASHLISTRELATIONHANDLER_HL
 @e I7SFRAME_HL
+@e INDEX_OF_ENUM_VAL_HL
 @e INTEGERDIVIDE_HL
 @e INTEGERREMAINDER_HL
 @e KINDATOMIC_HL
@@ -110,6 +111,7 @@ comprehensive list of what is there.)
 @e MSTVO_HL
 @e MSTVON_HL
 @e NAME_HL
+@e NEXT_ENUM_VAL_HL
 @e NOTHING_HL
 @e NUMBER_TY_ABS_HL
 @e NUMBER_TY_TO_REAL_NUMBER_TY_HL
@@ -117,12 +119,14 @@ comprehensive list of what is there.)
 @e PACKED_TEXT_STORAGE_HL
 @e PARACONTENT_HL
 @e PARAMETER_VALUE_HL
+@e PREV_ENUM_VAL_HL
 @e PRINTORRUN_HL
 @e PRIOR_NAMED_LIST_GENDER_HL
 @e PRIOR_NAMED_LIST_HL
 @e PRIOR_NAMED_NOUN_HL
 @e PROPERTY_LOOP_SIGN_HL
 @e PROPERTY_TO_BE_TOTALLED_HL
+@e RANDOM_ENUM_VAL_HL
 @e REAL_NUMBER_TY_ABS_HL
 @e REAL_NUMBER_TY_APPROXIMATE_HL
 @e REAL_NUMBER_TY_COMPARE_HL
@@ -237,6 +241,7 @@ comprehensive list of what is there.)
 	KIT_PROVIDED(GPROPERTY_HL,                        I"GProperty")
 	KIT_PROVIDED(HASHLISTRELATIONHANDLER_HL,          I"HashListRelationHandler")
 	KIT_PROVIDED(I7SFRAME_HL,                         I"I7SFRAME")
+	KIT_PROVIDED(INDEX_OF_ENUM_VAL_HL,                I"IndexOfEnumVal");
 	KIT_PROVIDED(INTEGERDIVIDE_HL,                    I"IntegerDivide")
 	KIT_PROVIDED(INTEGERREMAINDER_HL,                 I"IntegerRemainder")
 	KIT_PROVIDED(KINDATOMIC_HL,                       I"KindAtomic")
@@ -253,6 +258,7 @@ comprehensive list of what is there.)
 	KIT_PROVIDED(MSTVO_HL,                            I"MstVO")
 	KIT_PROVIDED(MSTVON_HL,                           I"MstVON")
 	KIT_PROVIDED(NAME_HL,                             I"name")
+	KIT_PROVIDED(NEXT_ENUM_VAL_HL,                    I"NextEnumVal");
 	KIT_PROVIDED(NOTHING_HL,                          I"nothing")
 	KIT_PROVIDED(NUMBER_TY_ABS_HL,                    I"NUMBER_TY_Abs")
 	KIT_PROVIDED(NUMBER_TY_TO_REAL_NUMBER_TY_HL,      I"NUMBER_TY_to_REAL_NUMBER_TY")
@@ -260,12 +266,14 @@ comprehensive list of what is there.)
 	KIT_PROVIDED(PACKED_TEXT_STORAGE_HL,              I"PACKED_TEXT_STORAGE")
 	KIT_PROVIDED(PARACONTENT_HL,                      I"ParaContent")
 	KIT_PROVIDED(PARAMETER_VALUE_HL,                  I"parameter_value")
+	KIT_PROVIDED(PREV_ENUM_VAL_HL,                    I"PrevEnumVal");
 	KIT_PROVIDED(PRINTORRUN_HL,                       I"PrintOrRun")
 	KIT_PROVIDED(PRIOR_NAMED_LIST_GENDER_HL,          I"prior_named_list_gender")
 	KIT_PROVIDED(PRIOR_NAMED_LIST_HL,                 I"prior_named_list")
 	KIT_PROVIDED(PRIOR_NAMED_NOUN_HL,                 I"prior_named_noun")
 	KIT_PROVIDED(PROPERTY_LOOP_SIGN_HL,               I"property_loop_sign")
 	KIT_PROVIDED(PROPERTY_TO_BE_TOTALLED_HL,          I"property_to_be_totalled")
+	KIT_PROVIDED(RANDOM_ENUM_VAL_HL,                  I"RandomEnumVal");
 	KIT_PROVIDED(REAL_NUMBER_TY_ABS_HL,               I"REAL_NUMBER_TY_Abs")
 	KIT_PROVIDED(REAL_NUMBER_TY_APPROXIMATE_HL,       I"REAL_NUMBER_TY_Approximate")
 	KIT_PROVIDED(REAL_NUMBER_TY_COMPARE_HL,           I"REAL_NUMBER_TY_Compare")

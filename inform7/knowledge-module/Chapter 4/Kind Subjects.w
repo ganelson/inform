@@ -112,6 +112,12 @@ concerning our kind.
 =
 void KindSubjects::new_permission_granted(inference_subject_family *f,
 	inference_subject *from, property_permission *pp) {
+	kind *K = KindSubjects::to_kind(from);
+	if (RTKindConstructors::is_nonstandard_enumeration(K))
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(Untestable),
+			"this kind cannot have properties",
+			"since it is an enumeration provided by a kit.");
 	RTPropertyPermissions::new_storage(pp);
 }
 

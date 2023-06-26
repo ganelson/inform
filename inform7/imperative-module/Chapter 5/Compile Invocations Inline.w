@@ -667,6 +667,7 @@ We'll start with a suite of details about kinds:
 	if (C == new_list_of_ISINC)      @<Inline command "new-list-of"@>;
 	if (C == printing_routine_ISINC) @<Inline command "printing-routine"@>;
 	if (C == ranger_routine_ISINC)   @<Inline command "ranger-routine"@>;
+	if (C == indexing_routine_ISINC) @<Inline command "indexing-routine"@>;
 	if (C == next_routine_ISINC)     @<Inline command "next-routine"@>;
 	if (C == previous_routine_ISINC) @<Inline command "previous-routine"@>;
 	if (C == strong_kind_ISINC)      @<Inline command "strong-kind"@>;
@@ -714,21 +715,21 @@ proposition.
 @<Inline command "next-routine"@> =
 	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
 		Node::get_kind_variable_declarations(inv));
-	if (K) EmitCode::val_iname(K_value, RTKindConstructors::get_inc_iname(K));
+	if (K) EmitCode::val_iname(K_value, RTKindConstructors::increment_fn_iname(K));
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
 @<Inline command "previous-routine"@> =
 	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
 		Node::get_kind_variable_declarations(inv));
-	if (K) EmitCode::val_iname(K_value, RTKindConstructors::get_dec_iname(K));
+	if (K) EmitCode::val_iname(K_value, RTKindConstructors::decrement_fn_iname(K));
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
 @<Inline command "printing-routine"@> =
 	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
 		Node::get_kind_variable_declarations(inv));
-	if (K) EmitCode::val_iname(K_value, RTKindConstructors::get_iname(K));
+	if (K) EmitCode::val_iname(K_value, RTKindConstructors::printing_fn_iname(K));
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
@@ -738,7 +739,14 @@ proposition.
 	if ((Kinds::eq(K, K_number)) ||
 		(Kinds::eq(K, K_time)))
 		EmitCode::val_iname(K_value, Hierarchy::find(GENERATERANDOMNUMBER_HL));
-	else if (K) EmitCode::val_iname(K_value, RTKindConstructors::get_ranger_iname(K));
+	else if (K) EmitCode::val_iname(K_value, RTKindConstructors::random_value_fn_iname(K));
+	else @<Issue an inline no-such-kind problem@>;
+	return;
+
+@<Inline command "indexing-routine"@> =
+	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
+		Node::get_kind_variable_declarations(inv));
+	if (K) EmitCode::val_iname(K_value, RTKindConstructors::indexing_fn_iname(K));
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
@@ -1271,7 +1279,7 @@ result would be the same without the optimisation.
 	if (Kinds::eq(K, K_number)) @<Inline say number@>;
 	if (Kinds::eq(K, K_unicode_character)) @<Inline say unicode character@>;
 	if (K) {
-		EmitCode::call(RTKindConstructors::get_iname(K));
+		EmitCode::call(RTKindConstructors::printing_fn_iname(K));
 		EmitCode::down();
 			CompileValues::to_code_val_of_kind(to_say, K);
 		EmitCode::up();
@@ -1293,7 +1301,7 @@ result would be the same without the optimisation.
 		EmitCode::up();
 	} else {
 		kind *K = Specifications::to_kind(to_say);
-		EmitCode::call(RTKindConstructors::get_iname(K));
+		EmitCode::call(RTKindConstructors::printing_fn_iname(K));
 		EmitCode::down();
 			CompileValues::to_code_val_of_kind(to_say, K);
 		EmitCode::up();
@@ -1796,7 +1804,7 @@ void CSIInline::emit_showme(parse_node *spec) {
 			EmitCode::val_number(1);
 		EmitCode::up();
 	} else {
-		EmitCode::call(RTKindConstructors::get_iname(K));
+		EmitCode::call(RTKindConstructors::printing_fn_iname(K));
 		EmitCode::down();
 			CompileValues::to_code_val(spec);
 		EmitCode::up();

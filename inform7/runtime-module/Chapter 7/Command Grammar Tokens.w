@@ -826,7 +826,7 @@ object, we again use a noun-filter token:
 @ Here we have a token like "[number]", say.
 
 @<Handle an unqualified common noun non-object token@> =
-	inter_name *GPR = RTKindConstructors::get_exp_kind_GPR_iname(K);
+	inter_name *GPR = RTKindConstructors::GPR_iname(K);
 	if (code_mode) {
 		EmitCode::inv(STORE_BIP);
 		EmitCode::down();

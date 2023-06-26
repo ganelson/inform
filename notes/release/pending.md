@@ -76,6 +76,9 @@ and now poses a moral rather than gender-based question.
 - Fix for Jira bug [I7-2267](https://inform7.atlassian.net/browse/I7-2267)
 	"I6 inclusion for which compiler hangs (using '::' operator)"
 	([commit f46433c](https://github.com/ganelson/inform/commit/f46433c22cfd9d414b7c337f8ee58220fb9286cc))
+- Fix for Jira bug [I7-2265](https://inform7.atlassian.net/browse/I7-2265)
+	"Compiler fails on creating an instance of a specified kind with multiple parts"
+	([commit af2531f](https://github.com/ganelson/inform/commit/af2531f4b2b4d1f59e4a9b45a8ddc274c94c7f77))
 - Fix for Jira bug [I7-2264](https://inform7.atlassian.net/browse/I7-2264)
 	"Cannot compile 'Verb meta' directive inside a kit"
 	([commit cbe7012](https://github.com/ganelson/inform/commit/cbe7012fb6950932ebf2a4b9290f80bcd5970ad1)):
@@ -111,13 +114,17 @@ and now poses a moral rather than gender-based question.
 - Fix for Jira bug [I7-2225](https://inform7.atlassian.net/browse/I7-2225)
 	"Translating kinds into I6 doesn't work"
 	(Inweb: [commit d608388](https://github.com/ganelson/inweb/commit/d608388d643a85d1aa3c88cfa1710b848bd5cb7e))
+- Fix for Jira bug [I7-2142](https://inform7.atlassian.net/browse/I7-2142)
+	"With 'the foo rule substitutes for the bar rule when...', the bar rule is
+	suppressed but the foo rule isn't followed."
+	([commit 11e1f75](https://github.com/ganelson/inform/commit/11e1f756c16aa17b31afd02ca2bb5f4e5abd3ac6))
 - Fix for Jira bug [I7-2139](https://inform7.atlassian.net/browse/I7-2139)
 	"Articles become part of relation name"
 	([commit 85110a9](https://github.com/ganelson/inform/commit/85110a981a3d2419b3778eb383408de122c301a8))
 - Fix for a "very old quirk of I7 where it generates a `story.gblorb.js` file for
 	the interpreter website, but the filename is a lie. It's the base64-encoding
 	of the `story.ulx` file, not the `story.gblorb`." (Andrew Plotkin, not from Jira)
-- Cosmetic fixes not worth linking to (I7-2319, I7-2316, I7-2315, I7-2293, I7-2270, I7-2268, I7-2221)
+- Cosmetic fixes not worth linking to (I7-2350, I7-2319, I7-2316, I7-2315, I7-2293, I7-2270, I7-2268, I7-2221)
 
 ## Bugs fixed in the course of feature additions
 
@@ -126,16 +133,25 @@ fixes a number of known anomalies in the way that the standard world model
 handled containment, incorporation and so on. This enabled a number of bugs to
 be closed:
 
+- [I7-2296](https://inform7.atlassian.net/browse/I7-2296)
+	on things being privately-named causing their printed names not to be used in room description
 - [I7-2220](https://inform7.atlassian.net/browse/I7-2220)
 	on the definition of holding
 - [I7-2219](https://inform7.atlassian.net/browse/I7-2219)
 	on directions being held
+- [I7-2178](https://inform7.atlassian.net/browse/I7-2178)
+	on "if x is held by a supporter" resulting in false negative
+- [I7-2128](https://inform7.atlassian.net/browse/I7-2128)
+	on holding relation tests failing for containment, support, or incorporation
 - [I7-2046 = Mantis 2083](https://inform7.atlassian.net/browse/I7-2046)
 	on when containers holding concealed items say they are "(empty)"
 - [I7-2036 = Mantis 2073](https://inform7.atlassian.net/browse/I7-2036)
 	on inconsistencies when containers or supporters holding concealed items are examined
-- [I7-2296](https://inform7.atlassian.net/browse/I7-2296)
-	on things being privately-named causing their printed names not to be used in room description
+
+Similarly, [(IE-0021) No automatic plural synonyms](https://github.com/ganelson/inform-evolution/blob/main/proposals/0021-no-automatic-plural-synonyms.md):
+
+- [I7-1980](https://inform7.atlassian.net/browse/I7-1980)
+	on understanding things by plural name of kind
 
 ## Note about intest
 
