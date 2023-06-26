@@ -404,11 +404,6 @@ This calculates a hash value for the string, using Bernstein's algorithm.
 ];
 
 @h Printing.
-Unicode is not the native character set on Glulx: it came along as a late
-addition to Glulx's specification. The deal is that we have to explicitly
-tell the Glk interface layer to perform certain operations in a Unicode way;
-if we simply perform |print (char) ch;| then the character |ch| will be
-printed in ZSCII rather than Unicode.
 
 =
 [ TEXT_TY_Say txt  ch i dsize;

@@ -345,7 +345,7 @@ void RTInstances::set_translation(instance *I, text_stream *identifier) {
 	inter_name *iname = RTInstances::value_iname(I);
 	InterNames::set_translation(iname, identifier);
 	InterNames::clear_flag(iname, MAKE_NAME_UNIQUE_ISYMF);
-	Hierarchy::make_available(iname);
+	Hierarchy::make_available_one_per_name_only(iname);
 }
 
 @ When names are abbreviated for use on the World Index map (for instance,
