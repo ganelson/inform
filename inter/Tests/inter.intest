@@ -82,7 +82,7 @@
 
 	show: $A
 
-	match text: $A $I
+	match platform text: $A $I
 	or: 'produced incorrect output'
 
 -end
@@ -110,10 +110,10 @@
 
 	show: $A
 
-	match text: $AA $IA
+	match platform text: $AA $IA
 	or: 'produced incorrect output on A'
 
-	match text: $AB $IB
+	match platform text: $AB $IB
 	or: 'produced incorrect output on B'
 
 -end
