@@ -113,7 +113,7 @@ $(INTERPRETERS)/dumb-glulx/glulxe/glulxe: \
 	cd $(INTERPRETERS)/dumb-glulx/cheapglk; make clean
 	cd $(INTERPRETERS)/dumb-glulx/cheapglk; make
 	cd $(INTERPRETERS)/dumb-glulx/glulxe; make clean
-	cd $(INTERPRETERS)/dumb-glulx/glulxe; make OPTIONS = -g\ -Wall\ -Wno-unused\ -DOS_UNIX\ -UWIN32\ -DCOMPILE_RANDOM_CODE
+	cd $(INTERPRETERS)/dumb-glulx/glulxe; make OPTIONS=-g\ -Wall\ -Wno-unused\ -DOS_UNIX\ -UWIN32\ -DCOMPILE_RANDOM_CODE
 
 # Cleaning up:
 
@@ -124,9 +124,9 @@ clean:
 .PHONY: purge
 purge:
 	$(call clean-up)
-	rm -f $(ME)/Tangled/$(ME)
-	rm -f $(INTERPRETERS)/dumb-frotz/dumb-frotz
-	rm -f $(INTERPRETERS)/dumb-glulx/glulxe/glulxe
+	rm -f $(ME)/Tangled/$(ME)$(EXEEXTENSION)
+	rm -f $(INTERPRETERS)/dumb-frotz/dumb-frotz$(EXEEXTENSION)
+	rm -f $(INTERPRETERS)/dumb-glulx/glulxe/glulxe$(EXEEXTENSION)
 
 define clean-up
 	rm -f $(SANDBOX)/*.o
