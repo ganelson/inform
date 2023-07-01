@@ -81,10 +81,10 @@ typedef int16_t glsi16;
 /* Some macros to read and write integers to memory, always in big-endian
    format. */
 #define Read4(ptr)    \
-  ( (glui32)(((unsigned char *)(ptr))[0] << 24)  \
-  | (glui32)(((unsigned char *)(ptr))[1] << 16)  \
-  | (glui32)(((unsigned char *)(ptr))[2] << 8)   \
-  | (glui32)(((unsigned char *)(ptr))[3]))
+  ( (glui32)((glui32)((unsigned char *)(ptr))[0] << 24)  \
+  | (glui32)((glui32)((unsigned char *)(ptr))[1] << 16)  \
+  | (glui32)((glui32)((unsigned char *)(ptr))[2] << 8)   \
+  | (glui32)((glui32)((unsigned char *)(ptr))[3]))
 #define Read2(ptr)    \
   ( (glui16)(((unsigned char *)(ptr))[0] << 8)  \
   | (glui16)(((unsigned char *)(ptr))[1]))
@@ -195,6 +195,7 @@ extern void (*stream_char_handler)(unsigned char ch);
 extern void (*stream_unichar_handler)(glui32 ch);
 
 /* main.c */
+extern glui32 init_rng_seed;
 extern void set_library_start_hook(void (*)(void));
 extern void set_library_autorestore_hook(void (*)(void));
 extern void fatal_error_handler(char *str, char *arg, int useval, glsi32 val) GLK_ATTRIBUTE_NORETURN;
