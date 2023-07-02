@@ -31,7 +31,7 @@ GLKMAKEFILE = Make.cheapglk
 CC = cc
 #CC = gcc
 
-OPTIONS = -g -Wall -Wmissing-prototypes -Wstrict-prototypes -Wno-unused -DOS_UNIX
+OPTIONS = -g -Wall -Wmissing-prototypes -Wno-unused -DOS_UNIX
 
 # Locate the libxml2 library. You only need these lines if you are using
 # the VM_DEBUGGER option. If so, uncomment these and set appropriately.

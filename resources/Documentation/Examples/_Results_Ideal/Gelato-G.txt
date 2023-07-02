@@ -6,14 +6,14 @@ Gelato's Syndrome. It's struck, and it's struck hard. In these sticky summer mon
 
 Patient Zero
 An Interactive Fiction
-Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
 
 Alfred Cralle Pool Hall
 The town's most popular gathering-place, the pool hall is decorated in honor of the inventor of the ice cream scoop.
 
 An air conditioner sits in the corner, unhappily inert.
 
-You can see Lewis and Linnea here. 
+You can see Lewis and Linnea here. The latter looks as though dipped in french vanilla.
 
 >(Testing.)
 
@@ -58,7 +58,7 @@ Vanessa watches serenely as the metal door slides automatically back in place, s
 >[6] ask vanessa for french vanilla
 "Do you have a coupon?" Vanessa demands. You admit you do not. "No french vanilla for you!"
 
-Antony trades in the coupon and receives a chocolate chip ice cream cone from Vanessa.
+Antony trades in the coupon and receives a blackberry sorbet ice cream cone from Vanessa.
 
 >[7] ask vanessa for chocolate
 "Do you have a coupon?" Vanessa demands. You admit you do not. "No chocolate for you!"
@@ -77,6 +77,6 @@ Vanessa watches serenely as the metal door slides automatically back in place, s
 >[9] ask vanessa for chocolate chocolate chip
 "Do you have a coupon?" Vanessa demands. You admit you do not. "No chocolate chocolate chip for you!"
 
-Martin trades in the coupon and receives a dulce de leche ice cream cone from Vanessa.
+Martin trades in the coupon and receives a rocky road ice cream cone from Vanessa.
 
 >Are you sure you want to quit? 

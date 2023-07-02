@@ -124,9 +124,9 @@ void execute_loop()
            first. They have to be unsigned values, too, otherwise the
            0x80000000 case goes wonky. */
         if (vals0 < 0) {
-          val0 = (-vals0);
+          val0 = (-(glui32)vals0);
           if (vals1 < 0) {
-            val1 = (-vals1);
+            val1 = (-(glui32)vals1);
             value = val0 / val1;
           }
           else {
@@ -137,7 +137,7 @@ void execute_loop()
         else {
           val0 = vals0;
           if (vals1 < 0) {
-            val1 = (-vals1);
+            val1 = (-(glui32)vals1);
             value = -(val0 / val1);
           }
           else {
@@ -153,13 +153,13 @@ void execute_loop()
         if (vals1 == 0)
           fatal_error("Division by zero doing remainder.");
         if (vals1 < 0) {
-            val1 = -vals1;
+            val1 = -(glui32)vals1;
         }
         else {
             val1 = vals1;
         }
         if (vals0 < 0) {
-          val0 = (-vals0);
+          val0 = (-(glui32)vals0);
           value = -(val0 % val1);
         }
         else {
@@ -170,7 +170,7 @@ void execute_loop()
         break;
       case op_neg:
         vals0 = inst[0].value;
-        value = (-vals0);
+        value = (-(glui32)vals0);
         store_operand(inst[1].desttype, inst[1].value, value);
         break;
 
@@ -527,7 +527,7 @@ void execute_loop()
           vals1 = (vals0) - vals1;
         }
         else {
-          vals1 = (-vals1) % vals0;
+          vals1 = (-(glui32)vals1) % vals0;
         }
         if (vals1 == 0)
           break;
@@ -663,7 +663,7 @@ void execute_loop()
         else if (vals0 >= 1)
           value = glulx_random() % (glui32)(vals0);
         else 
-          value = -(glulx_random() % (glui32)(-vals0));
+          value = -(glulx_random() % (glui32)(-(glui32)vals0));
         store_operand(inst[1].desttype, inst[1].value, value);
         break;
       case op_setrandom:
