@@ -77,7 +77,7 @@ activity *Activities::new(kind *K, wording W) {
 	if (Kinds::eq(on_kind, K_nil)) {
 		kind_given = FALSE; on_kind = K_object;
 	}
-	
+	LOG("So %W has kind given = %d, res = %u\n", W, kind_given, on_kind);
 	<<ds>> = -1;
 	<<future>> = FALSE;
 	<<hide>> = FALSE;
@@ -162,6 +162,18 @@ it; actually two -- for example, both "announcing" and "announcing activity".
 	wording AW = WordAssemblages::to_wording(&wa);
 	Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 		ACTIVITY_MC, Rvalues::from_activity(av), Task::language_of_syntax());
+
+@ The above mechanism for assuming that activities must be based on something --
+objects, failing anything else -- can be wrong, and if so, the assertions
+machinery call this:
+
+=
+void Activities::base_on_nothing(activity *av) {
+	av->activity_on_what_kind = K_nil;
+	Rulebooks::base_on_nothing(av->before_rules);
+	Rulebooks::base_on_nothing(av->for_rules);
+	Rulebooks::base_on_nothing(av->after_rules);
+}
 
 @ And its rulebooks are named with these constructions:
 

@@ -138,6 +138,10 @@ kind *Rulebooks::get_focus_kind(rulebook *B) {
 	return FocusAndOutcome::get_focus_parameter_kind(&(B->my_focus));
 }
 
+void Rulebooks::base_on_nothing(rulebook *B) {
+	FocusAndOutcome::focus_on_nothing(&(B->my_focus));
+}
+
 kind *Rulebooks::get_outcome_kind(rulebook *B) {
 	return FocusAndOutcome::get_outcome_kind(&(B->my_outcomes));
 }

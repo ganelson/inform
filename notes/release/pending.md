@@ -126,6 +126,12 @@ and now poses a moral rather than gender-based question.
 	of the `story.ulx` file, not the `story.gblorb`." (Andrew Plotkin, not from Jira)
 - Cosmetic fixes not worth linking to (I7-2350, I7-2319, I7-2316, I7-2315, I7-2293, I7-2270, I7-2268, I7-2221)
 
+## Bugs fixed but not from tracked reports
+
+- "X is an activity on nothing" would incorrectly create an activity on objects,
+	resulting in an immediate contradiction. (Activities on nothing are not often
+	useful, which is why this bug has lasted so long.)
+
 ## Bugs fixed in the course of feature additions
 
 Work done on Inform evolution proposal [(IE-0015) World model enforcement](https://github.com/ganelson/inform-evolution/blob/main/proposals/0015-world-model-enforcement.md)
