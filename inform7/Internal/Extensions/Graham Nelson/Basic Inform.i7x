@@ -908,7 +908,7 @@ To decide what number is the first index of subexpression (n - a number)
 	(- (RE_Subexpressions-->{n}-->RE_DATA2 ~= 0) * (RE_Subexpressions-->{n}-->RE_DATA1 + 1) -).
 To decide what number is the last index of subexpression (n - a number)
 	(documented at ph_relastindex):
-	(- (RE_Subexpressions-->{n}-->RE_DATA2) -).
+	(- ((RE_Subexpressions-->{n}-->RE_DATA2 >= 0) * RE_Subexpressions-->{n}-->RE_DATA2) -).
 To decide what number is the length of subexpression (n - a number)
 	(documented at ph_relength):
 	(- (RE_Subexpressions-->{n}-->RE_DATA2 - RE_Subexpressions-->{n}-->RE_DATA1) -).

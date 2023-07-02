@@ -13803,7 +13803,7 @@ is true if the score and best score currently print out as the same text, which 
 is never true - these are different texts, even if they sometimes look the same.
 {end}
 
-We can also find exactly where in the text the match occurred.
+We can also find exactly <i>where</i> in the text the match occurred.
 
 {defn ph_textfirstindex}first index of the/-- text match ... number
 Following a successful text match, this produces the character number of where the match began.
@@ -14042,7 +14042,7 @@ Following a successful regular expression match, this produces the character num
 	if "ham sandwich" matches the regular expression "a(.+)\b(.+)":
 		let x be the start index of subexpression 2;
 
-would set x to 5. For the first index of the match as a whole, including what is outside any groups, use subexpression 0. For the example above, the start index of subexpression 0 would be 2.
+would set x to 5. For the first index of the match as a whole, including what is outside any groups, use "subexpression 0". For the example above, the start index of subexpression 0 would be 2.
 
 As with the text case, use or store the result promptly. And as before, results are undefined in case of failure, but with an important additional caveat: even when a match succeeds, results are not guaranteed to be meaningful <i>for a given subexpression</i> if the text that matched that subexpression was empty. For instance, adding "(.*)" to the end of a regular expression won't make any of the texts that currently match it fail to match, but the results for first index, last index, and length for the corresponding subexpression number might not be meaningful.
 

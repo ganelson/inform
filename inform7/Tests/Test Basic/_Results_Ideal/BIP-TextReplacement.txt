@@ -17,10 +17,10 @@
   The redacted text: The capture of Triton may explain a number of features of the Neptunian toad including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants!
   text ""/"": first 0; last 0; length 0.
   text ""/xyzzy: "" correctly doesn't match xyzzy.
-  t trailing substring : plughxyzzy/xyzzy: first 6; last 10; length 5.
-  t leading substring: xyzzyplugh/xyzzyfirst 1; last 5; length 5.
-  t internal substring plughxyzzyplugh/xyzzy: t internal substring: first 6; last 10; length 5.
-  t multiple substring: xyzzyxyzzy/xyzzy: first 1; last 5; length 5.
+  text trailing substring : plughxyzzy/xyzzy: first 6; last 10; length 5.
+  text leading substring: xyzzyplugh/xyzzyfirst 1; last 5; length 5.
+  text internal substring plughxyzzyplugh/xyzzy: t internal substring: first 6; last 10; length 5.
+  text multiple substring: xyzzyxyzzy/xyzzy: first 1; last 5; length 5.
   text non-blank/blank: first 0; last 0; length 0.
   text identical: xyzzy/xyzzy: text identical: first 1; last 5; length 5.
   text reversed trailing substring xyzzy/plughxyzzy: correctly failed to match.
@@ -56,4 +56,3 @@
   educate/du(cat): educate/ducat first 2; last 6; length 5 4; last 6; length 3.
   regexp Q*bert/x? :first 0; last 0; length 0.
   regexp ham sandwich/(.+)\b(.+): sub0: first 1; last 12; length 12 sub1: first 1; last 4; length 4; sub2: first 5; last 12; length 8.
-] regexp ""/"":

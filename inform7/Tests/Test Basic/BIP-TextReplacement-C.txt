@@ -168,6 +168,3 @@ say "regexp xyzzy/(xyzzy): ";
         say "regexp ham sandwich/(.+)\b(.+): ";
         if "ham sandwich" matches the regular expression "(.+)\b(.+)", say "sub0: first [first index of subexpression 0]; last [last index of subexpression 0]; length [length of subexpression 0] sub1: first [first index of subexpression 1]; last [last index of subexpression 1]; length [length of subexpression 1]; sub2: first [first index of subexpression 2]; last [last index of subexpression 2]; length [length of subexpression 2].";
         else say "problem.";
-        say "regexp ''/'': ";
-	[if "" matches the regular expression "", say "first [first index of subexpression 0]; last [last index of subexpression 0]; length [length of subexpression 0].";
-        else say "problem.";]

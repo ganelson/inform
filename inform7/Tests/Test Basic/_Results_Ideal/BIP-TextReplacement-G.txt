@@ -56,5 +56,3 @@ shinto/hint substring: first 2; last 5; length 4.
 educate/du(cat): educate/ducat first 2; last 6; length 5; sub1 4; last 6; length 3.
 regexp Q*bert/x? :first 0; last 0; length 0.
 regexp ham sandwich/a(.+)\b(.+): sub0: first 2; last 12; length 11 sub1: first 3; last 4; length 2; sub2: first 5; last 12; length 8.
-""/(.)?(?:)(.*): sub0: first 0; last 0; length 0 sub1: first 0; last 0; length 0; sub2: first 0; last 0; length 0; sub3: first -390541870; last 1231971951; length 1622513822.
-regexp ""/"": 
