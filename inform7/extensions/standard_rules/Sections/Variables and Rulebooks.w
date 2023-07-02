@@ -281,7 +281,7 @@ Chapter 2 - Rulebooks
 
 Section 1 - The Standard Rulebooks
 
-Turn sequence rules is a rulebook.
+Turn sequence rules is a nothing based rulebook.
 The turn sequence rulebook is accessible to Inter as "TURN_SEQUENCE_RB".
 
 @ Now a set of rulebooks to do with the passage of time.
@@ -491,9 +491,8 @@ space the opening text better.
 (b) The "position player in model world rule" completes the initial
 construction of the spatial model world.
 
-(c) The "prepare chronological records rule" is described in further detail
-below (where it's called the "update chronological records rule), since it appears
-both here and also in the turn sequence rulebook.
+(c) The "update chronological records rule" is described in further detail
+below, since it appears both here and also in the turn sequence rulebook.
 Here it's providing us with a baseline of initial truths from which we can
 later assess conditions such as "the marble door has been open". A subtle
 and questionable point of the design is that this rule is placed at a time
@@ -518,15 +517,8 @@ The initial whitespace rule translates into Inter as "INITIAL_WHITESPACE_R".
 The position player in model world rule is listed in the after starting the virtual machine rules.
 The position player in model world rule translates into Inter as "POSITION_PLAYER_IN_MODEL_R".
 
-The prepare chronological records rule is listed in the after starting the virtual machine rules.
-The prepare chronological records rule translates into Inter as "PREPARE_CHRONOLOGICAL_RECORDS_R".
-
-Include (-
-! Awkward hack to get around rulebook basis issues that mean we can't simply include the one rule everywhere we need to
-[ PREPARE_CHRONOLOGICAL_RECORDS_R;
-	UPDATE_CHRONOLOGICAL_RECORDS_R();
-];
--).
+The update chronological records rule is listed in the after starting the virtual machine rules.
+The update chronological records rule translates into Inter as "UPDATE_CHRONOLOGICAL_RECORDS_R".
 
 After starting the virtual machine (this is the start in the correct scenes rule):
 	follow the scene changing rules.
@@ -639,7 +631,6 @@ points", which are strategic moments during play, and this is one of them.
 The timed events rule is listed in the turn sequence rulebook.
 The advance time rule is listed in the turn sequence rulebook.
 The update chronological records rule is listed in the turn sequence rulebook.
-The update chronological records rule translates into Inter as "UPDATE_CHRONOLOGICAL_RECORDS_R".
 
 @ We now come to the rules anchored at the end, using "last". This part of
 the rulebook is reserved for book-keeping which has to happen positively

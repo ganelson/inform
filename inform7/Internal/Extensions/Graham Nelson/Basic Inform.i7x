@@ -156,7 +156,8 @@ Startup rules have outcomes allow startup (success) and deny startup (failure).
 Shutdown rules is a rulebook.
 The shutdown rulebook is accessible to Inter as "SHUTDOWN_RB".
 
-Starting the virtual machine (documented at act_startvm) is an activity.
+[Starting the virtual machine (documented at act_startvm) is an activity on nothing.]
+Starting the virtual machine is an activity on nothing.
 The starting the virtual machine activity is accessible to Inter as "STARTING_VIRTUAL_MACHINE_ACT".
 The for starting the virtual machine rules have default no outcome.
 
