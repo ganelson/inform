@@ -46,6 +46,10 @@ void FocusAndOutcome::initialise_focus(focus *foc, kind *K) {
 	foc->focus_kind = K;
 }
 
+void FocusAndOutcome::focus_on_nothing(focus *foc) {
+	foc->focus_kind = K_nil;
+}
+
 @h Outcome.
 This is more involved. Some rulebooks produce values (and if so, we need to
 know what kind), others do not. But they also end in one of an enumerated

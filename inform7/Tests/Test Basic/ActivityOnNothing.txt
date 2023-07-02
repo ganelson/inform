@@ -1,0 +1,11 @@
+The apple rules is a rulebook.
+Banana is an activity on nothing.
+This is the fruit rule: say "I like fruit!".
+The fruit rule is listed in the apple rules.
+The fruit rule is listed in the before banana rules.
+
+To begin:
+	say "Apple rules...";
+	follow the apple rules;
+	say "Banana activity...";
+	carry out the banana activity.
