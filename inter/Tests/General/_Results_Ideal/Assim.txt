@@ -8,7 +8,7 @@ packagetype _function
 packagetype _code
 packagetype _linkage
 packagetype _property
-origin @origin_1 "inter\\Tests\\General\\Assim.intert"
+origin @origin_1 "inter/Tests/General/Assim.intert"
 package main _plain
 	constant VERB_DIRECTIVE_DIVIDER = 1
 	constant VERB_DIRECTIVE_RESULT = 2
