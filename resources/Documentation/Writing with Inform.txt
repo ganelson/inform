@@ -13803,39 +13803,42 @@ is true if the score and best score currently print out as the same text, which 
 is never true - these are different texts, even if they sometimes look the same.
 {end}
 
-We can also find exactly where in the text the match occurred. If you're interested
-in these results, get and store them immediately after the match: the values will
-be overwritten when the next match operation happens.
+We can also find exactly where in the text the match occurred.
 
 {defn ph_textfirstindex}first index of the/-- text match ... number
-Following a successful text match, this produces the character number of the start of the match.
+Following a successful text match, this produces the character number of where the match began.
 
 	if "vacation" matches the text "cat":
-	        let x be the start index of the text match;
+	        let x be the first index of the text match;
 
-assigns 3 to x. Every text (including "") matches the text ""; the start index returned in this case is 0.
+assigns 3 to x.
 
-Always test for success before using this phrase: the result isn't meaningful if the match failed.
+If you're interested in these results, get and store them immediately after the match: the values will
+be overwritten when the next match operation happens.
+
+Always test for success before using this phrase: the result is undefined if the match failed.
 {end}
+
 {defn ph_textlastindex}last index of the/-- text match ... number
-Similarly, we can find the character number of the final character in the match.
+Similarly, we can find the character number of the <i>last</i> character in the match.
 
 	last index of "cat" in "vacation"
 
 produces 5.
 
-Every text (including "") matches the text ""; the final index returned in this case is 0.
-
-As noted above, always test for success before using this phrase: the result isn't meaningful if the match failed.
+As noted above, always test for success before using this phrase, and store or act on the
+result immediately before another match overwrites it.
 {end}
 
 {defn ph_textlength}length of the/-- text match ... number
-Finally, we can get the length of the match, i.e., 3 for the "cat" example,
-or 0 for a failed text match.
+Finally, we can get the length of the match, i.e., 3 for the "cat" example, again with
+the caveats above regarding testing for a successful match and using or storing the result
+promptly.
 {end}
 
-As noted above, everything matches the empty text "". In that case, the length is 0,
-the start index is 1, and the final index is... 0.
+Every text (including "") matches the text "". In this case, the first index, last index, and
+length are all 0. Matching against "" is the <i>only</i> time any of these values will be 0 after
+a successful text match.
 
 We can also see how many times something matches:
 
@@ -14034,12 +14037,15 @@ matches any run of two or more word-characters, subject to the restriction that 
 Similar to the situation with text matches, we can find the starting and ending character numbers of where a given subexpression occurred in the original text, as well as the length.
 
 {defn ph_refirstindex}first index of subexpression (number) ... number
-Following a regular expression match, this produces the character number in the original text of the beginning of a given subexpression.
+Following a successful regular expression match, this produces the character number in the original text of the beginning of a given subexpression.
 
-	if "ham sandwich" matches the regular expression "(.+)\b(.+)":
+	if "ham sandwich" matches the regular expression "a(.+)\b(.+)":
 		let x be the start index of subexpression 2;
 
-would set x to 5. After a failed match, the phrase would result in 0.
+would set x to 5. For the first index of the match as a whole, including what is outside any groups, use subexpression 0. For the example above, the start index of subexpression 0 would be 2.
+
+As with the text case, use or store the result promptly. And as before, results are undefined in case of failure, but with an important additional caveat: even when a match succeeds, results are not guaranteed to be meaningful <i>for a given subexpression</i> if the text that matched that subexpression was empty. For instance, adding "(.*)" to the end of a regular expression won't make any of the texts that currently match it fail to match, but the results for first index, last index, and length for the corresponding subexpression number might not be meaningful.
+
 {end}
 
 {defn ph_relastindex}last index of subexpression (number) ... number
@@ -14047,7 +14053,7 @@ Similarly, we can find the character number of the last character in the subexpr
 
 	last index of subexpression 1
 
-would be 3. After a failed match, the result would be -1.
+would be 4 (".+" matches "ham" <i>and</i> the following space). The same caveats noted above apply.
 {end}
 
 {defn ph_relength}length of subexpression  (number) ... number
@@ -14055,8 +14061,10 @@ Finally, we can get the length of the match, e.g., for the above,
 
 	length of subexpression 2
 
-would be 8.
+would be 8 (for "sandwich").
 {end}
+
+Similar to the text case, any time the empty string ("") matches a regular expression, the values of all of first index, last index, and length for subexpression 0 would be 0.
 
 Numbered groups allow wicked tricks in matching, it's true, but really come into their own when it comes to replacing - as we shall see.
 
