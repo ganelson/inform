@@ -75,20 +75,6 @@ interpreters: $(INTERPRETERS)/dumb-frotz/dumb-frotz $(INTERPRETERS)/dumb-glulx/g
 # that story files in Z format perform as intended. It's written in old C,
 # and is dumb in the sense that it uses a dumb terminal.
 
-GLKLIB = libcheapglk.a
-GLKINCLUDEDIR = ../cheapglk
-GLKLIBDIR = ../cheapglk
-GLKMAKEFILE = Make.cheapglk
-
-CHEAPGLK_OBJS =  \
-  cgfref.o cggestal.o cgmisc.o cgstream.o cgstyle.o cgwindow.o cgschan.o \
-  cgunicod.o main.o gi_dispa.o gi_blorb.o cgblorb.o
-
-GLULXE_OBJS = main.o files.o vm.o exec.o float.o funcs.o operand.o string.o glkop.o \
-	heap.o serial.o search.o gestalt.o osdepend.o unixstrt.o accel.o profile.o
-
-CHEAPGLK_HEADERS = cheapglk.h gi_dispa.h
-
 $(INTERPRETERS)/dumb-frotz/dumb-frotz: \
 	$(INTERPRETERS)/dumb-frotz/*.c \
 	$(INTERPRETERS)/dumb-frotz/*.h
@@ -127,7 +113,7 @@ $(INTERPRETERS)/dumb-glulx/glulxe/glulxe: \
 	cd $(INTERPRETERS)/dumb-glulx/cheapglk; make clean
 	cd $(INTERPRETERS)/dumb-glulx/cheapglk; make
 	cd $(INTERPRETERS)/dumb-glulx/glulxe; make clean
-	cd $(INTERPRETERS)/dumb-glulx/glulxe; make
+	cd $(INTERPRETERS)/dumb-glulx/glulxe; make OPTIONS=-g\ -Wall\ -Wno-unused\ -DOS_UNIX\ -UWIN32\ -DCOMPILE_RANDOM_CODE
 
 # Cleaning up:
 
@@ -138,9 +124,9 @@ clean:
 .PHONY: purge
 purge:
 	$(call clean-up)
-	rm -f $(ME)/Tangled/$(ME)
-	rm -f $(INTERPRETERS)/dumb-frotz/dumb-frotz
-	rm -f $(INTERPRETERS)/dumb-glulx/glulxe/glulxe
+	rm -f $(ME)/Tangled/$(ME)$(EXEEXTENSION)
+	rm -f $(INTERPRETERS)/dumb-frotz/dumb-frotz$(EXEEXTENSION)
+	rm -f $(INTERPRETERS)/dumb-glulx/glulxe/glulxe$(EXEEXTENSION)
 
 define clean-up
 	rm -f $(SANDBOX)/*.o

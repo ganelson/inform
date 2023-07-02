@@ -14,6 +14,19 @@
    symbol. Code contributions welcome. 
 */
 
+/* Always use Glulxe's random number generator for MacOS and Windows.
+   For Unix and anything else, it is optional: define
+   COMPILE_RANDOM_CODE to use it.
+*/
+#if (defined(OS_MAC) || defined (WIN32)) && !defined(COMPILE_RANDOM_CODE)
+#define COMPILE_RANDOM_CODE
+#endif
+
+#ifdef COMPILE_RANDOM_CODE
+static glui32 lo_random(void);
+static void lo_seed_random(glui32 seed);
+#endif
+
 #ifdef OS_UNIX
 
 #include <time.h>
@@ -45,13 +58,21 @@ void glulx_setrandom(glui32 seed)
 {
   if (seed == 0)
     seed = time(NULL);
+#ifdef COMPILE_RANDOM_CODE
+  lo_seed_random(seed);
+#else
   srandom(seed);
+#endif
 }
 
 /* Return a random number in the range 0 to 2^32-1. */
 glui32 glulx_random()
 {
+#ifdef COMPILE_RANDOM_CODE
+  return (lo_random() << 16) ^ lo_random();
+#else
   return (random() << 16) ^ random();
+#endif
 }
 
 #endif /* OS_UNIX */
@@ -80,10 +101,6 @@ void glulx_free(void *ptr)
 {
   free(ptr);
 }
-
-#define COMPILE_RANDOM_CODE
-static glui32 lo_random(void);
-static void lo_seed_random(glui32 seed);
 
 /* Return a random number in the range 0 to 2^32-1. */
 glui32 glulx_random()
@@ -126,10 +143,6 @@ void glulx_free(void *ptr)
 {
   free(ptr);
 }
-
-#define COMPILE_RANDOM_CODE
-static glui32 lo_random(void);
-static void lo_seed_random(glui32 seed);
 
 /* Return a random number in the range 0 to 2^32-1. */
 glui32 glulx_random()

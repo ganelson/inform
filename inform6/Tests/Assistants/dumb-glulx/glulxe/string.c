@@ -142,7 +142,7 @@ void stream_num(glsi32 val, int inmiddle, int charnum)
   }
   else {
     if (val < 0) 
-      ival = -val;
+      ival = -(glui32)val;
     else 
       ival = val;
 

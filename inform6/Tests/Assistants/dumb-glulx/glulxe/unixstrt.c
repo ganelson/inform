@@ -34,6 +34,7 @@ static void glkunix_game_autorestore(void);
 glkunix_argumentlist_t glkunix_arguments[] = {
 
   { "--undo", glkunix_arg_ValueFollows, "Number of undo states to store." },
+  { "--rngseed", glkunix_arg_ValueFollows, "Fix initial RNG if nonzero." },
 
 #if GLKUNIX_AUTOSAVE_FEATURES
   { "--autosave", glkunix_arg_NoValue, "Autosave every turn." },
@@ -82,12 +83,27 @@ int glkunix_startup_code(glkunix_startup_t *data)
     if (!strcmp(data->argv[ix], "--undo")) {
       ix++;
       if (ix<data->argc) {
-        int val = atoi(data->argv[ix]);
-        if (val <= 0) {
+        char *endptr = NULL;
+        int val = strtol(data->argv[ix], &endptr, 10);
+        if (*endptr) {
           init_err = "--undo must be a number.";
           return TRUE;
         }
         max_undo_level = val;
+      }
+      continue;
+    }
+
+    if (!strcmp(data->argv[ix], "--rngseed")) {
+      ix++;
+      if (ix<data->argc) {
+        char *endptr = NULL;
+        int val = strtol(data->argv[ix], &endptr, 10);
+        if (*endptr) {
+          init_err = "--rngseed must be a number.";
+          return TRUE;
+        }
+        init_rng_seed = val;
       }
       continue;
     }
