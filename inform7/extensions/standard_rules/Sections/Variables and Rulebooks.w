@@ -281,7 +281,7 @@ Chapter 2 - Rulebooks
 
 Section 1 - The Standard Rulebooks
 
-Turn sequence rules is a rulebook.
+Turn sequence rules is a nothing based rulebook.
 The turn sequence rulebook is accessible to Inter as "TURN_SEQUENCE_RB".
 
 @ Now a set of rulebooks to do with the passage of time.
@@ -481,34 +481,17 @@ Section 2 - The Standard Rules
 The little-used do nothing rule is defined by Inter as "LITTLE_USED_DO_NOTHING_R".
 
 @h Startup.
-Every rulebook contains a (possibly empty) run of "first" rules, then
-a (possibly empty) run of miscellaneous rules, then a (possibly empty)
-run of "last" rules. It's unusual to have more than one rule anchored
-to either end as "first" or "last", but entirely legal, and we make
-use of that ability here.
+These startup rules prepare the various world model specific systems.
 
-The "first" rules here are the ones which get the basic machinery working
-to the point where it is safe to run arbitrary I7 source text. They necessarily
-do very low-level things, and it is not guaranteed that I7 phrases will behave
-to specification if executed before these early rules have finished. So it
-is hazardous to obstruct or alter them.
+(a) The printing of three blank lines at the start of play is traditional: on early
+Z-machine interpreters such as InfoTaskForce and Zip it was a necessity because
+of the way they buffered output. On modern windowed ones it still helps to
+space the opening text better.
 
-(a) The "initialise memory rule" starts up the memory allocation heap,
-if there is one, and sets some essential I6 variables. If there is any rule
-not to meddle with, this is it.
+(b) The "position player in model world rule" completes the initial
+construction of the spatial model world.
 
-(b) The "virtual machine startup rule" carries out necessary steps to
-begin execution on the virtual machine in use: this entails relatively little
-on the Z-machine versions 5 or 8, but can involve extensive work to get the
-screen display working on Glulx or Z6. Before anything else happens, however,
-the "starting the virtual machine" activity (see below) is carried out.
-
-(c) The "seed random number generator rule" seeds the RNG to a fixed value
-if Inform has requested this (which it does in response to the |-rng| command
-line switch, which is in turn used by the |intest| testing utility: it's a
-way to make deterministic tests of programs which use random values).
-
-(d) The "update chronological records rule" is described in further detail
+(c) The "update chronological records rule" is described in further detail
 below, since it appears both here and also in the turn sequence rulebook.
 Here it's providing us with a baseline of initial truths from which we can
 later assess conditions such as "the marble door has been open". A subtle
@@ -520,12 +503,7 @@ Dining Room for three turns". It's as if the player teleports into an
 already-existing world, like some Star Trek crewman, just in time for the
 first command.
 
-(e) All items begin unmentioned, as might be expected.
-
-(f) And the "position player in model world rule" completes the initial
-construction of the spatial model world.
-
-(g) The "start in the correct scenes rule" ensures that we start out
+(d) The "start in the correct scenes rule" ensures that we start out
 in the correct scenes. (This can't wait, because it's just conceivable
 that somebody has written a rule with a preamble like "When play
 begins during the Hunting Season...": it's also where the scene
@@ -533,24 +511,17 @@ Entire Game begins.) That completes the necessary preliminaries before
 ordinary I7 rules can be run.
 
 =
-The start in the correct scenes rule is listed first in the startup rulebook. [7th.]
-The position player in model world rule is listed first in the startup rulebook. [6th.]
-This is the declare everything initially unmentioned rule:
-	repeat with item running through things:
-		now the item is not mentioned.
-The declare everything initially unmentioned rule is listed first in the startup rulebook. [5th]
-The update chronological records rule is listed first in the startup rulebook. [4th.]
-The seed random number generator rule is listed first in the startup rulebook. [3rd.]
-The virtual machine startup rule is listed first in the startup rulebook. [2nd.]
-The initialise memory rule is listed first in the startup rulebook. [1st.]
+The initial whitespace rule is listed first in the after starting the virtual machine rules.
+The initial whitespace rule translates into Inter as "INITIAL_WHITESPACE_R".
 
-The virtual machine startup rule is defined by Inter as "VIRTUAL_MACHINE_STARTUP_R".
-The initialise memory rule is defined by Inter as "INITIALISE_MEMORY_R".
-The seed random number generator rule is defined by Inter as "SEED_RANDOM_NUMBER_GENERATOR_R".
-The update chronological records rule is defined by Inter as "UPDATE_CHRONOLOGICAL_RECORDS_R".
-The position player in model world rule is defined by Inter as "POSITION_PLAYER_IN_MODEL_R".
+The position player in model world rule is listed in the after starting the virtual machine rules.
+The position player in model world rule translates into Inter as "POSITION_PLAYER_IN_MODEL_R".
 
-This is the start in the correct scenes rule: follow the scene changing rules.
+The update chronological records rule is listed in the after starting the virtual machine rules.
+The update chronological records rule translates into Inter as "UPDATE_CHRONOLOGICAL_RECORDS_R".
+
+After starting the virtual machine (this is the start in the correct scenes rule):
+	follow the scene changing rules.
 
 @ The remaining rules, though, are fair game for alteration, and as if to
 prove the point they are all written in standard I7 source text. Note that
@@ -561,18 +532,17 @@ a change to be notified to the player as if it has happened through some
 action.
 
 =
-The when play begins stage rule is listed in the startup rulebook.
-The fix baseline scoring rule is listed in the startup rulebook.
-The display banner rule is listed in the startup rulebook.
-The initial room description rule is listed in the startup rulebook.
+Startup rule (this is the when play begins stage rule):
+	follow the when play begins rulebook.
 
-This is the when play begins stage rule: follow the when play begins rulebook.
+Startup rule (this is the fix baseline scoring rule):
+	now the last notified score is the score.
 
-This is the fix baseline scoring rule: now the last notified score is the score.
+Startup rule (this is the display banner rule):
+	say "[banner text]".
 
-This is the display banner rule: say "[banner text]".
-
-This is the initial room description rule: try looking.
+Startup rule (this is the initial room description rule):
+	try looking.
 
 @h The turn sequence.
 In each turn, a command is read and parsed from the keyboard, and any
@@ -633,6 +603,9 @@ A first turn sequence rule (this is the every turn stage rule):
 A first turn sequence rule (this is the early scene changing stage rule):
 	follow the scene changing rules. [4th.]
 The generate action rule is listed first in the turn sequence rulebook. [3rd.]
+This is the declare everything initially unmentioned rule:
+	repeat with item running through things:
+		now the item is not mentioned.
 The declare everything initially unmentioned rule is listed first in the turn sequence rulebook. [2nd.]
 The parse command rule is listed first in the turn sequence rulebook. [1st.]
 

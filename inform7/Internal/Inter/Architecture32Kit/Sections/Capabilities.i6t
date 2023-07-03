@@ -1,6 +1,6 @@
 Capabilities Template.
 
-Miscellaneous capabilities of the 16-bit architecture.
+Miscellaneous capabilities of the 32-bit architecture.
 
 @h Summary.
 The 32-bit architecture is currently the default targeted by Inform, and is

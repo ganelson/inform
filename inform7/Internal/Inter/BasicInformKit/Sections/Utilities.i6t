@@ -55,14 +55,14 @@ Default LanguageCases 1;
 @h Final Code Dependencies.
 This function definition is a little misleading. The idea is that the
 final code-generator can inject code of its own into the body here: for example,
-the final code-generation for Glulx injects code into |FINAL_CODE_STARTUP_R|
+the final code-generation for Glulx injects code into |PLATFORM_SPECIFIC_STARTUP_R|
 to use accelerated VM support for certain veneer functions.
 
 The other three are also misleading, in that final code-generation can add more
 helpful code here: the fallbacks here are basic.
 
 =
-[ FINAL_CODE_STARTUP_R addr res;
+[ PLATFORM_SPECIFIC_STARTUP_R addr res;
 ];
 
 [ DebugAction a anames str;
@@ -315,27 +315,6 @@ This is not quite so efficient as Memcpy, but not terrible.
 
 [ VerbIsModal vb;
 	if ((vb) && (vb(CV_MODAL))) rtrue;
-	rfalse;
-];
-
-@h Seed Random Number Generator Rule.
-Unless a seed is provided by Inform, and it won't be for released story files,
-the VM's interpreter is supposed to start up with a good seed in its random
-number generator: something usually derived from, say, the milliseconds part
-of the current time of day, which is unlikely to repeat or show any pattern
-in real-world use. However, early Z-machine interpreters often did this quite
-badly, starting with poor seed values which meant that the first few random
-numbers always had something in common (being fairly small in their range,
-for instance). To obviate this we extract and throw away 100 random numbers
-to get the generator going, shaking out more obvious early patterns, but
-that cannot really help much if the VM interpreter's RNG is badly written.
-"Anyone who considers arithmetical methods of producing random digits is,
-of course, in a state of sin" (von Neumann).
-
-=
-[ SEED_RANDOM_NUMBER_GENERATOR_R i;
-	if (RNG_SEED_AT_START_OF_PLAY) VM_Seed_RNG(RNG_SEED_AT_START_OF_PLAY);
-	for (i=1: i<=100: i++) random(i);
 	rfalse;
 ];
 
