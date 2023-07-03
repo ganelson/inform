@@ -156,8 +156,7 @@ Startup rules have outcomes allow startup (success) and deny startup (failure).
 Shutdown rules is a rulebook.
 The shutdown rulebook is accessible to Inter as "SHUTDOWN_RB".
 
-[Starting the virtual machine (documented at act_startvm) is an activity on nothing.]
-Starting the virtual machine is an activity on nothing.
+Starting the virtual machine (documented at act_startvm) is an activity on nothing.
 The starting the virtual machine activity is accessible to Inter as "STARTING_VIRTUAL_MACHINE_ACT".
 The for starting the virtual machine rules have default no outcome.
 
@@ -169,10 +168,10 @@ Section - Startup A (for Glulx only)
 The start capturing startup text rule is listed in the before starting the virtual machine rules.
 The start capturing startup text rule translates into Inter as "CAPTURE_STARTUP_TEXT_R".
 
-The enable Glulx acceleration rule is listed in the before starting the virtual machine rules.
-The enable Glulx acceleration rule translates into Inter as "FINAL_CODE_STARTUP_R".
-
 Section - Startup B
+
+The platform specific startup rule is listed in the before starting the virtual machine rules.
+The platform specific startup rule translates into Inter as "PLATFORM_SPECIFIC_STARTUP_R".
 
 The initialise memory rule is listed in the before starting the virtual machine rules.
 The initialise memory rule translates into Inter as "INITIALISE_MEMORY_R".
@@ -180,12 +179,7 @@ The initialise memory rule translates into Inter as "INITIALISE_MEMORY_R".
 The seed random number generator rule is listed in the before starting the virtual machine rules.
 The seed random number generator rule translates into Inter as "SEED_RANDOM_NUMBER_GENERATOR_R".
 
-Section - Startup C (for Z-Machine only)
-
-The final code startup rule is listed in the for starting the virtual machine rules.
-The final code startup rule translates into Inter  as "FINAL_CODE_STARTUP_R".
-
-Section - Startup D (for Glulx only)
+Section - Startup C (for Glulx only)
 
 The recover Glk objects rule is listed in the before starting the virtual machine rules.
 The recover Glk objects rule translates into Inter as "GGRecoverObjects".

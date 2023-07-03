@@ -39,7 +39,7 @@ void I6TargetCode::declare_function(code_generator *gtr, code_generation *gen,
 	if (Str::eq(fn_name, I"DebugAction"))          @<Inject code at the top of DebugAction@>;
 	if (Str::eq(fn_name, I"DebugAttribute"))       @<Inject code at the top of DebugAttribute@>;
 	if (Str::eq(fn_name, I"DebugProperty"))        @<Inject code at the top of DebugProperty@>;
-	if (Str::eq(fn_name, I"FINAL_CODE_STARTUP_R")) @<Inject code at the top of FINAL_CODE_STARTUP_R@>;
+	if (Str::eq(fn_name, I"PLATFORM_SPECIFIC_STARTUP_R")) @<Inject code at the top of PLATFORM_SPECIFIC_STARTUP_R@>;
 
 	Vanilla::node(gen, vf->function_body); /* This compiles the body of the function */
 
@@ -126,7 +126,7 @@ a bug in the previous Glulx spec -- but on the other hand, these accelerated
 functions do not exist in earlier Glulx implementations. However, takeup of
 3.1.3 has been swift. (See Jira bug I7-2328 and I7-1162.)
 
-@<Inject code at the top of FINAL_CODE_STARTUP_R@> =
+@<Inject code at the top of PLATFORM_SPECIFIC_STARTUP_R@> =
 	WRITE("#ifdef TARGET_GLULX;\n");
 	WRITE("@gestalt 9 0 res;\n");
 	WRITE("if (res == 0) rfalse;\n");

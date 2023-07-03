@@ -89,19 +89,24 @@ begin execution on the virtual machine in use: this entails relatively little
 on the Z-machine versions 5 or 8, but can involve extensive work to get the
 screen display working on Glulx or Z6.
 
-(b) The "initialise memory rule" starts up the memory allocation heap,
+(b) The platform specific startup rule contains code which Inform injects for
+the specific compilation platform. Note that this is not the same as an
+architecture: both Glulx and C use the 32 bit architecture, but are different
+platforms, and so might inject different code into this rule.
+
+(c) The "initialise memory rule" starts up the memory allocation heap,
 if there is one, and sets some essential I6 variables. If there is any rule
 not to meddle with, this is it.
 
-(c) The "seed random number generator rule" seeds the RNG to a fixed value
+(d) The "seed random number generator rule" seeds the RNG to a fixed value
 if Inform has requested this (which it does in response to the |-rng| command
 line switch, which is in turn used by the |intest| testing utility: it's a
 way to make deterministic tests of programs which use random values).
 
-(d) The "recover Glk objects rule" runs the object recovery process in order to
+(e) The "recover Glk objects rule" runs the object recovery process in order to
 identify and pre-existing Glk objects after a restart.
 
-(e) The "open built-in windows rule" opens the Glk windows; only after this
+(f) The "open built-in windows rule" opens the Glk windows; only after this
 point is it safe to print anything.
 
 =
@@ -114,8 +119,7 @@ Startup rules have outcomes allow startup (success) and deny startup (failure).
 Shutdown rules is a rulebook.
 The shutdown rulebook is accessible to Inter as "SHUTDOWN_RB".
 
-[Starting the virtual machine (documented at act_startvm) is an activity on nothing.]
-Starting the virtual machine is an activity on nothing.
+Starting the virtual machine (documented at act_startvm) is an activity on nothing.
 The starting the virtual machine activity is accessible to Inter as "STARTING_VIRTUAL_MACHINE_ACT".
 The for starting the virtual machine rules have default no outcome.
 
@@ -127,10 +131,10 @@ Section - Startup A (for Glulx only)
 The start capturing startup text rule is listed in the before starting the virtual machine rules.
 The start capturing startup text rule translates into Inter as "CAPTURE_STARTUP_TEXT_R".
 
-The enable Glulx acceleration rule is listed in the before starting the virtual machine rules.
-The enable Glulx acceleration rule translates into Inter as "FINAL_CODE_STARTUP_R".
-
 Section - Startup B
+
+The platform specific startup rule is listed in the before starting the virtual machine rules.
+The platform specific startup rule translates into Inter as "PLATFORM_SPECIFIC_STARTUP_R".
 
 The initialise memory rule is listed in the before starting the virtual machine rules.
 The initialise memory rule translates into Inter as "INITIALISE_MEMORY_R".
@@ -138,12 +142,7 @@ The initialise memory rule translates into Inter as "INITIALISE_MEMORY_R".
 The seed random number generator rule is listed in the before starting the virtual machine rules.
 The seed random number generator rule translates into Inter as "SEED_RANDOM_NUMBER_GENERATOR_R".
 
-Section - Startup C (for Z-Machine only)
-
-The final code startup rule is listed in the for starting the virtual machine rules.
-The final code startup rule translates into Inter  as "FINAL_CODE_STARTUP_R".
-
-Section - Startup D (for Glulx only)
+Section - Startup C (for Glulx only)
 
 The recover Glk objects rule is listed in the before starting the virtual machine rules.
 The recover Glk objects rule translates into Inter as "GGRecoverObjects".
