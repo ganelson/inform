@@ -15,3 +15,44 @@ The original text: the capture of Triton may explain a number of features of the
 The redacted text: potato capture of Triton may explain a number of features of potato Neptunian frog, including potato extremely eccentric orbit of Neptune's moon Nereid and potato scarcity of moons as compared to potato other gas giants.
 The original text: The capture of Triton may explain a number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants.
 The redacted text: The capture of Triton may explain a number of features of the Neptunian toad including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants!
+text ""/"": first 0; last 0; length 0.
+text ""/xyzzy: "" correctly doesn't match xyzzy.
+text trailing substring : plughxyzzy/xyzzy: first 6; last 10; length 5.
+text leading substring: xyzzyplugh/xyzzyfirst 1; last 5; length 5.
+text internal substring plughxyzzyplugh/xyzzy: t internal substring: first 6; last 10; length 5.
+text multiple substring: xyzzyxyzzy/xyzzy: first 1; last 5; length 5.
+text non-blank/blank: first 0; last 0; length 0.
+text identical: xyzzy/xyzzy: text identical: first 1; last 5; length 5.
+text reversed trailing substring xyzzy/plughxyzzy: correctly failed to match.
+text reversed substring xyzzy/xyzzyplugh: correctly failed to match.
+text reversed internal substring xyzzy/plughxyzzyplugh: correctly failed to match.
+text reversed multiple substring xyzzy/xyzzyxyzzy: correctly failed to match.
+regexp ""/xyzzy: correctly failed to match.
+regexp xyzzy/"": correctly failed to match.
+regexp xyzzy/(xyzzy): regexp identical: first 1; last 5; length 5; sub1 1; last 5; length 5.
+regexp reversed trailing substring: xyzzy/plugh(xyzzy): correctly failed to match.
+regexp reversed substring: xyzzy/(xyzzy)plugh: correctly failed to match.
+regexp reversed internal substring: xyzzy/plugh(xyzzy)plugh: correctly failed to match.
+regexp reversed multiple substring: xyzzy/xyzzy(xyzzy): correctly failed to match.
+regexp multiple substring: xyzzy/xyzzy(xyzzy)?: first 1; last 5; length 5; sub1 0; last 0; length 0.
+regexp reversed trailing substring: plughxyzzy/(xyzzy): first 6; last 10; length 5; sub1 6; last 10; length 5.
+regexp reversed leading substring xyzzyplugh/(xyzzy): first 1; last 5; length 5; sub1 1; last 5; length 5.
+regexp reversed internal substring plughxyzzyplugh/(xyzzy): first 6; last 10; length 5; sub1 6; last 10; length 5.
+regexp reversed multiple substring: xyzzyxyzzy/(xyzzy): first 1; last 5; length 5; sub1 1; last 5; length 5.
+xyzzy/$^: correctly failed to match.
+xyzzy/$.: correctly failed to match.
+xyzzy/.^: correctly failed to match.
+xyzzy/^$: correctly failed to match.
+regexp xyzzy/(?:): xyzzy/(?:) first 0; last 0; length 0; sub1 0; last 0; length 0.
+xyzzy/(.*) first 1; last 5; length 5; sub1 1; last 5; length 5.
+xyzzy/(d?) first 0; last 0; length 0; sub1 0; last 0; length 0.
+""/^$: first 0; last 0; length 0.
+""/.*: first 0; last 0; length 0.
+""/(?:): first 0; last 0; length 0; sub1 0; last 0; length 0.
+""/(d?): first 0; last 0; length 0; sub1 0; last 0; length 0.
+""/$.: correctly failed to match.
+""/.^: correctly failed to match.
+shinto/hint substring: first 2; last 5; length 4.
+educate/du(cat): educate/ducat first 2; last 6; length 5; sub1 4; last 6; length 3.
+regexp Q*bert/x? :first 0; last 0; length 0.
+regexp ham sandwich/a(.+)\b(.+): sub0: first 2; last 12; length 11 sub1: first 3; last 4; length 2; sub2: first 5; last 12; length 8.
