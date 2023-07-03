@@ -257,6 +257,9 @@ a previous match, setting them to the empty text.
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">RE_Subexpressions</span><span class="plain-syntax"> --&gt; </span><span class="constant-syntax">11</span><span class="plain-syntax">; </span><span class="comment-syntax">Address of node for this subexpression</span>
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">Allocated_Match_Vars</span><span class="plain-syntax"> --&gt; </span><span class="constant-syntax">10</span><span class="plain-syntax">; </span><span class="comment-syntax">Indexed text to hold values of the variables</span>
 
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">match0_idx</span><span class="plain-syntax">;  </span><span class="comment-syntax">for plain text match, index of initial character match</span>
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">match0_idx2</span><span class="plain-syntax">; </span><span class="comment-syntax">for plain text match, index of final character match</span>
+
 <span class="plain-syntax">[ </span><span class="identifier-syntax">TEXT_TY_RE_DebugMatchVars</span><span class="plain-syntax"> </span><span class="identifier-syntax">txt</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">offset</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="identifier-syntax">RE_Subexpressions</span><span class="plain-syntax">--&gt;10, </span><span class="string-syntax">" collecting subexps^"</span><span class="plain-syntax">;</span>
@@ -1717,6 +1720,8 @@ indeed useful where the blob type is <span class="extract"><span class="extract-
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ftxtype</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">REGEXP_BLOB</span><span class="plain-syntax">: </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TEXT_TY_RE_CompileTree</span><span class="plain-syntax">(</span><span class="identifier-syntax">ftxt</span><span class="plain-syntax">, </span><span class="identifier-syntax">exactly</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">CHR_BLOB</span><span class="plain-syntax">: </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TEXT_TY_CHR_CompileTree</span><span class="plain-syntax">(</span><span class="identifier-syntax">ftxt</span><span class="plain-syntax">, </span><span class="identifier-syntax">exactly</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                  </span><span class="identifier-syntax">match0_idx</span><span class="plain-syntax"> = -1;</span>
+<span class="plain-syntax">              </span><span class="identifier-syntax">match0_idx2</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">default</span><span class="plain-syntax">: </span><span class="string-syntax">"*** bad ftxtype ***"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 
@@ -1748,7 +1753,10 @@ indeed useful where the blob type is <span class="extract"><span class="extract-
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" ***^"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
-
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ftxtype</span><span class="plain-syntax"> == </span><span class="identifier-syntax">CHR_BLOB</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">match0_idx</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RE_PACKET_space</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">RE_DATA1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">match0_idx2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RE_PACKET_space</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">RE_DATA2</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rtxt</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">break</span><span class="plain-syntax">; </span><span class="comment-syntax">Accept only one match, replace nothing</span>
 
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rtxt</span><span class="plain-syntax"> ~= </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">) {</span>
