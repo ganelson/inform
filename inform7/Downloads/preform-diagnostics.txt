@@ -16,7 +16,7 @@
 
 <any-integer> internal nti 10 constraint (none) extremes [1, 1]
 
-<quoted-text> internal hits 3000/26146 nti 11 constraint (none) extremes [1, 1]
+<quoted-text> internal hits 3000/26026 nti 11 constraint (none) extremes [1, 1]
 
 <quoted-text-with-subs> internal nti 12 constraint (none) extremes [1, 1]
 
@@ -76,17 +76,17 @@
         * : {...} 
           constraint DS = {21} extremes [3, infinity)
 
-<documentation-symbol-tail> hits 454/2620 nti 23 constraint DS = {22, 23} extremes [6, infinity)
+<documentation-symbol-tail> hits 466/3136 nti 23 constraint DS = {22, 23} extremes [6, infinity)
     English:
         {...} ( <documentation-symbol> ) 
-          (hits 431/896) (matched long text) constraint DS = {22, 23} extremes [6, infinity)
+          (hits 431/920) (matched long text) constraint DS = {22, 23} extremes [6, infinity)
         {...} -- <documentation-symbol> -- 
-          (hits 23/465) (matched long text) constraint DS = {22, 23} extremes [6, infinity)
+          (hits 35/489) (matched long text) constraint DS = {22, 23} extremes [6, infinity)
 
-<documentation-symbol> hits 487/1204 nti 22 constraint DS = {22} extremes [3, 3]
+<documentation-symbol> hits 499/1228 nti 22 constraint DS = {22} extremes [3, 3]
     English:
         documented at {###} 
-          (hits 487/491) (matched: 'documented at ph_say') constraint DS = {22} extremes [3, 3]
+          (hits 499/503) (matched: 'documented at ph_say') constraint DS = {22} extremes [3, 3]
 
 <comparative-construction> nti 24 constraint DS = {24} extremes [2, infinity)
     English:
@@ -4784,7 +4784,7 @@
         <article> {...} 
           constraint (none) extremes [2, infinity)
 
-<article> internal hits 16860/102758 nti r2 constraint (none) extremes [1, 1]
+<article> internal hits 16860/102764 nti r2 constraint (none) extremes [1, 1]
 
 <definite-article> internal hits 20758/244746 nti r2 constraint (none) extremes [1, 1]
 
@@ -6746,13 +6746,13 @@
 <creation-problem-diagnosis> hits 0/548 nti 27 constraint (none) extremes [1, infinity)
     English:
         <article> 
-          (hits 0/73) constraint (none) extremes [1, 1]
+          (hits 0/76) constraint (none) extremes [1, 1]
         (/)/(- {***} 
           (hits 0/81) constraint DS = {27} extremes [1, infinity)
         {***} (/)/(- 
           (hits 0/81) constraint DS = {27} extremes [1, infinity)
         {...} (/)/(- {...} 
-          (hits 0/57) constraint DS = {27} extremes [3, infinity)
+          (hits 0/55) constraint DS = {27} extremes [3, infinity)
         ni--crash--1 
           (hits 0/2) constraint CS = {27} extremes [1, 1]
         ni--crash--10 
@@ -6764,7 +6764,7 @@
         {...} , 
           (hits 0/79) constraint DS = {27} extremes [2, infinity)
         {...} when/while {...} 
-          (hits 0/57) constraint DS = {27} extremes [3, infinity)
+          (hits 0/55) constraint DS = {27} extremes [3, infinity)
         {***} <quoted-text> {***} 
           (hits 0/274) constraint (none) extremes [1, infinity)
         condition 

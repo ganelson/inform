@@ -1118,7 +1118,7 @@ but not in this context.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">av</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"failed to extract activity structure"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">global_pass_state</span><span class="plain-syntax">.</span><span class="element-syntax">pass</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;activity-name-formal&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">px</span><span class="plain-syntax">)))</span>
-<span class="plain-syntax">            </span><a href="6-act.html#SP10" class="function-link"><span class="function-syntax">Activities::add_variable</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">av</span><span class="plain-syntax">, </span><span class="identifier-syntax">py</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="6-act.html#SP9" class="function-link"><span class="function-syntax">Activities::add_variable</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">av</span><span class="plain-syntax">, </span><span class="identifier-syntax">py</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">UsingProblems::assertion_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_BadActivityRef</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"an activity has to be formally referred to in a way making clear that "</span>
@@ -1830,7 +1830,7 @@ allow one case, where the declaration is redundant and harmless.)
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Node::get_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">py</span><span class="plain-syntax">) != </span><span class="identifier-syntax">KindSubjects::from_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">K_object</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">            (</span><span class="identifier-syntax">InferenceSubjects::is_a_kind_of_object</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">py</span><span class="plain-syntax">)) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><a href="4-ass.html#SP8" class="function-link"><span class="function-syntax">Assertions::issue_value_equation_problem</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">px</span><span class="plain-syntax">, </span><span class="identifier-syntax">py</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-ass.html#SP6_3_39_6" class="named-paragraph-link"><span class="named-paragraph">Assert that X is an instance of Y</span><span class="named-paragraph-number">6.3.39.6</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-ass.html#SP6_3_39_5" class="named-paragraph-link"><span class="named-paragraph">Assert that X is an instance of Y</span><span class="named-paragraph-number">6.3.39.5</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">g_spec</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_evaluation</span><span class="plain-syntax">(</span><span class="identifier-syntax">py</span><span class="plain-syntax">);</span>
@@ -1853,15 +1853,10 @@ allow one case, where the declaration is redundant and harmless.)
 <span class="plain-syntax">        &amp;&amp; (</span><span class="identifier-syntax">a_kind</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">a_kind</span><span class="plain-syntax">, </span><span class="identifier-syntax">g_kind</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="4-ass.html#SP6_3_39_2" class="named-paragraph-link"><span class="named-paragraph">This sentence redundantly specifies the kind of value for a value</span><span class="named-paragraph-number">6.3.39.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Kinds::get_construct</span><span class="plain-syntax">(</span><span class="identifier-syntax">a_kind</span><span class="plain-syntax">) == </span><span class="identifier-syntax">CON_activity</span><span class="plain-syntax">) &amp;&amp;</span>
-<span class="plain-syntax">            (</span><span class="identifier-syntax">Kinds::get_construct</span><span class="plain-syntax">(</span><span class="identifier-syntax">g_kind</span><span class="plain-syntax">) == </span><span class="identifier-syntax">CON_activity</span><span class="plain-syntax">) &amp;&amp;</span>
-<span class="plain-syntax">            (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">Kinds::unary_construction_material</span><span class="plain-syntax">(</span><span class="identifier-syntax">a_kind</span><span class="plain-syntax">), </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">)) &amp;&amp;</span>
-<span class="plain-syntax">            (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">Kinds::unary_construction_material</span><span class="plain-syntax">(</span><span class="identifier-syntax">g_kind</span><span class="plain-syntax">), </span><span class="identifier-syntax">K_nil</span><span class="plain-syntax">)))</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="4-ass.html#SP6_3_39_3" class="named-paragraph-link"><span class="named-paragraph">Amend kind of activity so that it is based on nothing</span><span class="named-paragraph-number">6.3.39.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::get_construct</span><span class="plain-syntax">(</span><span class="identifier-syntax">a_kind</span><span class="plain-syntax">) == </span><span class="identifier-syntax">CON_description</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="4-ass.html#SP6_3_39_5" class="named-paragraph-link"><span class="named-paragraph">Issue problem for trying to use a description as a literal</span><span class="named-paragraph-number">6.3.39.5</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="4-ass.html#SP6_3_39_4" class="named-paragraph-link"><span class="named-paragraph">Issue problem for trying to use a description as a literal</span><span class="named-paragraph-number">6.3.39.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">var_set</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="4-ass.html#SP6_3_39_4" class="named-paragraph-link"><span class="named-paragraph">Dabble further in ruthless sarcasm</span><span class="named-paragraph-number">6.3.39.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">var_set</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="4-ass.html#SP6_3_39_3" class="named-paragraph-link"><span class="named-paragraph">Dabble further in ruthless sarcasm</span><span class="named-paragraph-number">6.3.39.3</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_wording</span><span class="plain-syntax">(2, </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">px</span><span class="plain-syntax">));</span>
@@ -1940,24 +1935,10 @@ file: this may possibly be useful to I6 hackers.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ass.html#SP6_3_39">&#167;6.3.39</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_3_39_3" class="paragraph-anchor"></a><b>&#167;6.3.39.3.  </b>This is a very special case. We get here from "X is an activity based on
-nothing" but not from "X is an activity", and so it can be used to override
-the default assumption about the basis of an activity.
+<p class="commentary firstcommentary"><a id="SP6_3_39_3" class="paragraph-anchor"></a><b>&#167;6.3.39.3.  </b>My, aren't we charming?
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Amend kind of activity so that it is based on nothing</span><span class="named-paragraph-number">6.3.39.3</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">activity</span><span class="plain-syntax"> *</span><span class="identifier-syntax">av</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Rvalues::to_activity</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_evaluation</span><span class="plain-syntax">(</span><span class="identifier-syntax">px</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">av</span><span class="plain-syntax">) </span><a href="6-act.html#SP5" class="function-link"><span class="function-syntax">Activities::base_on_nothing</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">av</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="4-ass.html#SP6_3_39">&#167;6.3.39</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_3_39_4" class="paragraph-anchor"></a><b>&#167;6.3.39.4.  </b>My, aren't we charming?
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Dabble further in ruthless sarcasm</span><span class="named-paragraph-number">6.3.39.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Dabble further in ruthless sarcasm</span><span class="named-paragraph-number">6.3.39.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1979,7 +1960,7 @@ the default assumption about the basis of an activity.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ass.html#SP6_3_39">&#167;6.3.39</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_3_39_5" class="paragraph-anchor"></a><b>&#167;6.3.39.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem for trying to use a description as a literal</span><span class="named-paragraph-number">6.3.39.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_3_39_4" class="paragraph-anchor"></a><b>&#167;6.3.39.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem for trying to use a description as a literal</span><span class="named-paragraph-number">6.3.39.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1992,13 +1973,13 @@ the default assumption about the basis of an activity.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ass.html#SP6_3_39">&#167;6.3.39</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_3_39_6" class="paragraph-anchor"></a><b>&#167;6.3.39.6.  </b>Creation has already taken place, in that X does now exist, but any
+<p class="commentary firstcommentary"><a id="SP6_3_39_5" class="paragraph-anchor"></a><b>&#167;6.3.39.5.  </b>Creation has already taken place, in that X does now exist, but any
 stipulations on X &mdash; that it should have certain properties, or be in a
 certain place, for instance &mdash; will not yet be enforced. These will be in
 the "creation proposition" of Y, and we now assert this to be true about X.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert that X is an instance of Y</span><span class="named-paragraph-number">6.3.39.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert that X is an instance of Y</span><span class="named-paragraph-number">6.3.39.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

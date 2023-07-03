@@ -36,8 +36,8 @@ int ActivityRequests::new_activity_SMF(int task, parse_node *V, wording *NPs) {
 			}
 			break;
 		case PASS_1_SMFT:
-			Activities::new(Kinds::unary_con(CON_activity, K_nil),
-				Node::get_text(V->next));
+			Activities::new(Kinds::unary_con(CON_activity, K_object),
+				Node::get_text(V->next), TRUE);
 			break;
 	}
 	return FALSE;
