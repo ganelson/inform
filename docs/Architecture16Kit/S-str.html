@@ -51,33 +51,11 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">Architecture16Kit</a></li><li><b>Startup Template</b></li></ul></div>
 <p class="purpose">How programs for this architecture start up the virtual machine.</p>
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b><span class="extract"><span class="extract-syntax">VM_PreInitialise()</span></span> is called; then the "starting the virtual machine"
-activity runs; and then <span class="extract"><span class="extract-syntax">VM_Initialise()</span></span> is called.
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b><span class="extract"><span class="extract-syntax">VM_Check_Functionality()</span></span> doesn't need to do anything in Z-Code.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_PreInitialise</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">];</span>
-
-<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_Initialise</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">standard_interpreter</span><span class="plain-syntax"> = </span><span class="identifier-syntax">HDR_TERPSTANDARD</span><span class="plain-syntax">--&gt;0;</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">dict_start</span><span class="plain-syntax"> = </span><span class="identifier-syntax">HDR_DICTIONARY</span><span class="plain-syntax">--&gt;0;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">dict_entry_size</span><span class="plain-syntax"> = </span><span class="identifier-syntax">dict_start</span><span class="plain-syntax">-&gt;(</span><span class="identifier-syntax">dict_start</span><span class="plain-syntax">-&gt;0 + </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">dict_start</span><span class="plain-syntax"> = </span><span class="identifier-syntax">dict_start</span><span class="plain-syntax"> + </span><span class="identifier-syntax">dict_start</span><span class="plain-syntax">-&gt;0 + </span><span class="constant-syntax">4</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">dict_end</span><span class="plain-syntax"> = </span><span class="identifier-syntax">dict_start</span><span class="plain-syntax"> + ((</span><span class="identifier-syntax">dict_start</span><span class="plain-syntax"> - </span><span class="constant-syntax">2</span><span class="plain-syntax">)--&gt;0) * </span><span class="identifier-syntax">dict_entry_size</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">buffer</span><span class="plain-syntax">-&gt;0  = </span><span class="identifier-syntax">INPUT_BUFFER_LEN</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">buffer2</span><span class="plain-syntax">-&gt;0 = </span><span class="identifier-syntax">INPUT_BUFFER_LEN</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">buffer3</span><span class="plain-syntax">-&gt;0 = </span><span class="identifier-syntax">INPUT_BUFFER_LEN</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">parse</span><span class="plain-syntax">-&gt;0   = </span><span class="constant-syntax">15</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">parse2</span><span class="plain-syntax">-&gt;0  = </span><span class="constant-syntax">15</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">BasicInformKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">FIX_RNG_CFGF</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        @</span><span class="reserved-syntax">random</span><span class="plain-syntax"> </span><span class="constant-syntax">10000</span><span class="plain-syntax"> -&gt; </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = -</span><span class="identifier-syntax">i</span><span class="plain-syntax">-2000;</span>
-<span class="plain-syntax">        @</span><span class="reserved-syntax">random</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> -&gt; </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_Check_Functionality</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">

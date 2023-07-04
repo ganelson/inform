@@ -131,6 +131,8 @@ and now poses a moral rather than gender-based question.
 - "X is an activity on nothing" would incorrectly create an activity on objects,
 	resulting in an immediate contradiction. (Activities on nothing are not often
 	useful, which is why this bug has lasted so long.)
+- "empty", as an adjective, was defined only on activities and rulebooks based
+	on objects
 
 ## Bugs fixed in the course of feature additions
 

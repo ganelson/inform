@@ -371,14 +371,14 @@ This is the print the final question rule:
 	repeat through the Table of Final Question Options:
 		if the only if victorious entry is false or the story has ended finally:
 			if there is a final response rule entry
-				or the final response activity entry [activity] is not empty:
+				or the final response activity entry is not empty:
 				if there is a final question wording entry, increase named options count by 1;
 	if the named options count is less than 1, abide by the immediately quit rule;
 	say "Would you like to " (A);
 	repeat through the Table of Final Question Options:
 		if the only if victorious entry is false or the story has ended finally:
 			if there is a final response rule entry
-				or the final response activity entry [activity] is not empty:
+				or the final response activity entry is not empty:
 				if there is a final question wording entry:
 					say final question wording entry;
 					decrease named options count by 1;
@@ -397,7 +397,7 @@ This is the standard respond to final question rule:
 	repeat through the Table of Final Question Options:
 		if the only if victorious entry is false or the story has ended finally:
 			if there is a final response rule entry
-				or the final response activity entry [activity] is not empty:
+				or the final response activity entry is not empty:
 				if the player's command matches the topic entry:
 					if there is a final response rule entry, abide by final response rule entry;
 					otherwise carry out the final response activity entry activity;

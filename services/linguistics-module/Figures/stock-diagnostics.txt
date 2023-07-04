@@ -1,12 +1,12 @@
 adjective: 140 items
 article: 2 items
-noun: 2389 items
+noun: 2395 items
 pronoun: 8 items
 preposition: 274 items
 determiner: 22 items
 verb: 109 items
 verb_form: 388 items
-total in all categories: 3332
+total in all categories: 3338
 
 adjective: 'even'
 adjective: 'odd'
@@ -229,6 +229,7 @@ noun: proper: 'printed plural name'
 noun: proper: 'property printed plural name'
 noun: proper: 'indefinite article'
 noun: proper: 'property indefinite article'
+noun: proper: 'virtual machine startup rule'
 noun: proper: 'abs function'
 noun: proper: 'root function'
 noun: proper: 'rsqr function'
@@ -281,7 +282,6 @@ noun: proper: 'property matching key'
 noun: proper: 'lock-fitting relation'
 noun: proper: 'list grouping key'
 noun: proper: 'property list grouping key'
-noun: proper: 'declare everything initially unmentioned rule'
 noun: proper: 'start in the correct scenes rule'
 noun: proper: 'when play begins stage rule'
 noun: proper: 'fix baseline scoring rule'
@@ -289,6 +289,7 @@ noun: proper: 'display banner rule'
 noun: proper: 'initial room description rule'
 noun: proper: 'every turn stage rule'
 noun: proper: 'early scene changing stage rule'
+noun: proper: 'declare everything initially unmentioned rule'
 noun: proper: 'late scene changing stage rule'
 noun: proper: 'notify score changes rule'
 noun: proper: 'when play ends stage rule'
@@ -696,7 +697,14 @@ noun: proper: 'for starting the virtual machine rulebook'
 noun: proper: 'after starting the virtual machine'
 noun: proper: 'after starting the virtual machine rules'
 noun: proper: 'after starting the virtual machine rulebook'
-noun: proper: 'final code startup rule'
+noun: proper: 'start capturing startup text rule'
+noun: proper: 'platform specific startup rule'
+noun: proper: 'initialise memory rule'
+noun: proper: 'seed random number generator rule'
+noun: proper: 'recover glk objects rule'
+noun: proper: 'sound channel initialisation rule'
+noun: proper: 'open built-in windows rule'
+noun: proper: 'display captured startup text rule'
 noun: proper: 'printing the name'
 noun: proper: 'printing the name activity'
 noun: proper: 'before printing the name'
@@ -974,9 +982,7 @@ noun: proper: 'multiple action processing'
 noun: proper: 'multiple action processing rules'
 noun: proper: 'multiple action processing rulebook'
 noun: proper: 'little-used do nothing rule'
-noun: proper: 'virtual machine startup rule'
-noun: proper: 'initialise memory rule'
-noun: proper: 'seed random number generator rule'
+noun: proper: 'initial whitespace rule'
 noun: proper: 'update chronological records rule'
 noun: proper: 'position player in model world rule'
 noun: proper: 'adjust light rule'

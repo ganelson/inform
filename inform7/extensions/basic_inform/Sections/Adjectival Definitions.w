@@ -5,6 +5,12 @@ to symmetric (for relations).
 
 @ See test case |BIP-Adjectives|.
 
+Something to watch out for here is that the domain of an adjective with an
+intentionally broad kind has to be written in a way which considers covariance
+and contravariance. Thus, "list of values" matches every list, because "list of K"
+is covariant: but "activity on values" does not match every activity, because
+"activity on K" is contravariant, and instead "activity on nothing" is needed.
+
 =
 Part Four - Adjectival Definitions
 
@@ -24,12 +30,13 @@ Definition: a text is substituted rather than unsubstituted if I6 routine
 Definition: a table name is empty rather than non-empty if the number of filled rows in it is 0.
 Definition: a table name is full rather than non-full if the number of blank rows in it is 0.
 
-Definition: a rulebook is empty rather than non-empty if I6 routine "RulebookEmpty" says so (it
-	contains no rules, so that following it does nothing and makes no decision).
+Definition: a nothing based rulebook is empty rather than non-empty if I6 routine
+	"RulebookEmpty" says so (it contains no rules, so that following it does
+	nothing and makes no decision).
 
-Definition: an activity is empty rather than non-empty if I6 routine "ActivityEmpty" says so (its
-	before, for and after rulebooks are all empty).
-Definition: an activity is going on if I6 routine "TestActivity" says so (one
+Definition: an activity on nothing is empty rather than non-empty if I6 routine
+	"ActivityEmpty" says so (its before, for and after rulebooks are all empty).
+Definition: an activity on nothing is going on if I6 routine "TestActivity" says so (one
 	of its three rulebooks is currently being run).
 
 Definition: a list of values is empty rather than non-empty if I6 routine

@@ -132,7 +132,7 @@ or as paragraph of text in pass 2:
 			if (Metadata::read_optional_numeric(pack, I"^understandable")) under = "tick";
 			if (priority == 8) { repeat = NULL; props = NULL; under = NULL; }
 			ChartElement::begin_chart_row(OUT, session);
-			ChartElement::index_kind_name_cell(OUT, shaded, pack);
+			ChartElement::index_kind_name_cell(OUT, shaded, i, pack);
 			ChartElement::end_chart_row(OUT, shaded, pack, repeat, props, under);
 			break;
 		}
@@ -240,7 +240,8 @@ which can have enumerated values but doesn't at the moment -- for instance, the
 sound effects row is shaded if there are none.
 
 =
-int ChartElement::index_kind_name_cell(OUTPUT_STREAM, int shaded, inter_package *pack) {
+int ChartElement::index_kind_name_cell(OUTPUT_STREAM, int shaded, int posn,
+	inter_package *pack) {
 	if (shaded) HTML::begin_span(OUT, I"indexgrey");
 	IndexUtilities::kind_name(OUT, pack, FALSE, TRUE);
 	if (Metadata::read_optional_numeric(pack, I"^is_quasinumerical")) {
@@ -252,7 +253,7 @@ int ChartElement::index_kind_name_cell(OUTPUT_STREAM, int shaded, inter_package 
 	IndexUtilities::link_to_documentation(OUT, pack);
 	int i = (int) Metadata::read_optional_numeric(pack, I"^instance_count");
 	if (i >= 1) WRITE(" [%d]", i);
-	IndexUtilities::below_link_numbered(OUT, pack->allocation_id);
+	IndexUtilities::below_link_numbered(OUT, posn);
 	if (shaded) HTML::end_span(OUT);
 	return shaded;
 }
@@ -312,7 +313,6 @@ void ChartElement::index_object_kind(OUTPUT_STREAM, tree_inventory *inv,
 	inter_symbol *class_s = Metadata::optional_symbol(pack, I"^object_class");
 	if (class_s == NULL) internal_error("no class for object kind");
 	text_stream *anchor = InterSymbol::identifier(class_s);
-
 	int shaded = FALSE;
 	@<Begin the object citation line@>;
 	@<Index the name part of the object citation@>;
