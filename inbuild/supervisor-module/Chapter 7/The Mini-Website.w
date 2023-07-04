@@ -48,7 +48,7 @@ void ExtensionWebsite::index_after_compilation(inform_project *proj) {
 void ExtensionWebsite::go(inform_project *proj, int force_update) {
 	ExtensionDictionary::read_from_file();
 
-	extension_census *C = ExtensionCensus::perform(proj);
+	ExtensionCensus::perform(proj);
 	@<Time-stamp extensions used in the project as being last used today@>;
 	@<Write index pages@>;
 	@<Write individual pages on individual extensions@>;
@@ -70,9 +70,7 @@ documentation as used today until the next run, for obscure timing reasons.
 	}
 
 @<Write index pages@> =
-	ExtensionIndex::write(ExtensionWebsite::index_URL(proj, I"Extensions.html"), HOME_EXTPAGE, C);
-	if (proj == NULL)
-		ExtensionIndex::write(ExtensionWebsite::index_URL(proj, I"ExtIndex.html"), INDEX_EXTPAGE, C);
+	ExtensionIndex::write(proj);
 
 @ Each extension gets its own page in the external documentation area, but
 this page can have two forms:
@@ -190,6 +188,58 @@ filename *ExtensionWebsite::page_URL(inform_project *proj, inbuild_edition *edit
 		WRITE_TO(leaf, ".html");
 	}
 
+	filename *F = Filenames::in(P, leaf);
+	DISCARD_TEXT(leaf)
+	return F;
+}
+
+filename *ExtensionWebsite::abs_page_URL(inform_project *proj, inbuild_edition *edition,
+	int eg_number) {
+	TEMPORARY_TEXT(leaf)
+	Editions::write_canonical_leaf(leaf, edition);
+	
+	pathname *P;
+	if (proj) {
+		P = Projects::materials_path(proj);
+		if (P == NULL) return NULL;
+		P = Pathnames::down(P, I"Extensions");
+		P = Pathnames::down(P, I"Reserved");
+		P = Pathnames::down(P, I"Documentation");
+	} else {
+		P = ExtensionWebsite::home_URL(NULL);
+		if (P == NULL) return NULL;
+		P = Pathnames::down(P, I"Extensions");
+	}
+	P = Pathnames::down(P, edition->work->author_name);
+
+	if (proj) {
+		P = Pathnames::down(P, leaf);
+		Str::clear(leaf);
+		if (eg_number > 0) WRITE_TO(leaf, "eg%d.html", eg_number);
+		else WRITE_TO(leaf, "index.html");
+	} else {
+		if (eg_number > 0) WRITE_TO(leaf, "-eg%d", eg_number);
+		WRITE_TO(leaf, ".html");
+	}
+
+	filename *F = Filenames::in(P, leaf);
+	DISCARD_TEXT(leaf)
+	return F;
+}
+
+filename *ExtensionWebsite::rel_page_URL(inbuild_edition *edition, int eg_number) {
+	TEMPORARY_TEXT(leaf)
+	Editions::write_canonical_leaf(leaf, edition);
+	
+	pathname *P = NULL;
+	P = Pathnames::down(P, I"Extensions");
+	P = Pathnames::down(P, I"Reserved");
+	P = Pathnames::down(P, I"Documentation");
+	P = Pathnames::down(P, edition->work->author_name);
+	P = Pathnames::down(P, leaf);
+	Str::clear(leaf);
+	if (eg_number > 0) WRITE_TO(leaf, "eg%d.html", eg_number);
+	else WRITE_TO(leaf, "index.html");
 	filename *F = Filenames::in(P, leaf);
 	DISCARD_TEXT(leaf)
 	return F;

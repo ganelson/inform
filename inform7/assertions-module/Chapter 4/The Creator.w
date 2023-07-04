@@ -360,7 +360,8 @@ from the tree.
 		W = GET_RW(<grammatical-gender-marker>, 1);
 		Annotations::write_int(p, explicit_gender_marker_ANNOT, <<r>> + 1);
 	}
-	if (<creation-problem-diagnosis>(W)) W = EMPTY_WORDING;
+	wording XW = W; DocReferences::position_of_symbol(&XW);
+	if (<creation-problem-diagnosis>(XW)) W = EMPTY_WORDING;
 	Node::set_text(p, W);
 	if (((create_as == NULL) || (Kinds::Behaviour::is_object(create_as))) &&
 		(prevailing_mood != INITIALLY_CE) &&
@@ -666,7 +667,7 @@ them by asserting propositions to be true; we act directly.
 	Annotations::write_int(current_sentence, clears_pronouns_ANNOT, TRUE);
 
 @<Create a new activity@> =
-	activity *av = Activities::new(create_as, W);
+	activity *av = Activities::new(create_as, W, FALSE);
 	if (av) val = Rvalues::from_activity(av);
 	Annotations::write_int(current_sentence, clears_pronouns_ANNOT, TRUE);
 

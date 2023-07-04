@@ -214,7 +214,6 @@ Constant RTP_FILEIOERROR             = 48;
 Constant RTP_HEAPERROR               = 49;
 Constant RTP_LISTRANGEERROR          = 50;
 Constant RTP_REGEXPSYNTAXERROR       = 51;
-Constant RTP_NOGLULXUNICODE          = 52;
 Constant RTP_BACKDROPONLY            = 53;
 Constant RTP_NOTTHING                = 54;
 Constant RTP_SCENEHASNTSTARTED       = 55;

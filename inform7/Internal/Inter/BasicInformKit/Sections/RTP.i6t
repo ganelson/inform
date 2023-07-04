@@ -154,8 +154,6 @@ Array RTP_Buffer --> (-1) 0 0 0 0 0 0;
 			"always be 0 or more.^";
 		RTP_REGEXPSYNTAXERROR:
 			print "Syntax error in regular expression.^";
-		RTP_NOGLULXUNICODE:
-			print "This interpreter does not support Unicode.^";
 		RTP_NEGATIVEROOT:
 			print "You can't take the square root of a negative number.^";
 		RTP_CANTITERATE:

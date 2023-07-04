@@ -1093,6 +1093,15 @@ To replace line number (N - a number) in (T - text) with (replace - text)
 To replace paragraph number (N - a number) in (T - text) with (replace - text)
 	(documented at ph_replacepara):
 	(- TEXT_TY_ReplaceBlob(PARA_BLOB, {-lvalue-by-reference:T}, {N}, {-by-reference:replace}); -).
+To decide what number is the first index of text match
+	(documented at ph_textfirstindex):
+	(- (match0_idx2 ~= 0) * (match0_idx + 1) -).
+To decide what number is the last index of text match
+	(documented at ph_textlastindex):
+	(- match0_idx2 -).
+To decide what number is the length of text match
+	(documented at ph_textlength):
+	(- (match0_idx2 - match0_idx) -).
 
 @ ...and for regular expressions, though here we also have access to the
 exact text which matched (not interesting in the plain text case since it's
@@ -1118,6 +1127,15 @@ To decide what text is text matching regular expression
 To decide what text is text matching subexpression (N - a number)
 	(documented at ph_subexpressiontext):
 	(- TEXT_TY_RE_GetMatchVar({N}) -).
+To decide what number is the first index of subexpression (n - a number)
+	(documented at ph_refirstindex):
+	(- (RE_Subexpressions-->{n}-->RE_DATA2 ~= 0) * (RE_Subexpressions-->{n}-->RE_DATA1 + 1) -).
+To decide what number is the last index of subexpression (n - a number)
+	(documented at ph_relastindex):
+	(- ((RE_Subexpressions-->{n}-->RE_DATA2 >= 0) * RE_Subexpressions-->{n}-->RE_DATA2) -).
+To decide what number is the length of subexpression (n - a number)
+	(documented at ph_relength):
+	(- (RE_Subexpressions-->{n}-->RE_DATA2 - RE_Subexpressions-->{n}-->RE_DATA1) -).
 To decide what number is number of times (T - text) matches the regular expression
 	(find - text),case insensitively
 	(documented at ph_nummatchesre):

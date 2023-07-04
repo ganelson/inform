@@ -1391,11 +1391,6 @@ allow one case, where the declaration is redundant and harmless.)
 		&& (a_kind)) {
 		if (Kinds::eq(a_kind, g_kind))
 			@<This sentence redundantly specifies the kind of value for a value@>;
-		if ((Kinds::get_construct(a_kind) == CON_activity) &&
-			(Kinds::get_construct(g_kind) == CON_activity) &&
-			(Kinds::eq(Kinds::unary_construction_material(a_kind), K_object)) &&
-			(Kinds::eq(Kinds::unary_construction_material(g_kind), K_nil)))
-			@<Amend kind of activity so that it is based on nothing@>;
 		if (Kinds::get_construct(a_kind) == CON_description)
 			@<Issue problem for trying to use a description as a literal@>;
 	}
@@ -1462,15 +1457,6 @@ file: this may possibly be useful to I6 hackers.
 			"I think perhaps I could manage without this sentence.");
 		Problems::issue_problem_end();
 	}
-	return;
-
-@ This is a very special case. We get here from "X is an activity based on
-nothing" but not from "X is an activity", and so it can be used to override
-the default assumption about the basis of an activity.
-
-@<Amend kind of activity so that it is based on nothing@> =
-	activity *av = Rvalues::to_activity(Node::get_evaluation(px)); 
-	if (av) Activities::base_on_nothing(av);
 	return;
 
 @ My, aren't we charming?

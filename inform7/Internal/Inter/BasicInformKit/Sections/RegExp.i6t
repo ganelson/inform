@@ -190,6 +190,9 @@ a previous match, setting them to the empty text.
 Array RE_Subexpressions --> 11; ! Address of node for this subexpression
 Array Allocated_Match_Vars --> 10; ! Indexed text to hold values of the variables
 
+Global match0_idx;  ! for plain text match, index of initial character match
+Global match0_idx2; ! for plain text match, index of final character match
+
 [ TEXT_TY_RE_DebugMatchVars txt
 	offset n i;
 	print RE_Subexpressions-->10, " collecting subexps^";
@@ -1641,6 +1644,8 @@ For an explanation of the use of the word "blob", see "Text.i6t".
 	switch (ftxtype) {
 		REGEXP_BLOB: i = TEXT_TY_RE_CompileTree(ftxt, exactly);
 		CHR_BLOB: i = TEXT_TY_CHR_CompileTree(ftxt, exactly);
+       			  match0_idx = -1;
+			  match0_idx2 = 0;
 		default: "*** bad ftxtype ***";
 	}
 
@@ -1672,7 +1677,10 @@ For an explanation of the use of the word "blob", see "Text.i6t".
 			}
 			print " ***^";
 		}
-
+		if (ftxtype == CHR_BLOB) {
+			match0_idx = RE_PACKET_space-->RE_DATA1;
+			match0_idx2 = RE_PACKET_space-->RE_DATA2;
+		}
 		if (rtxt == 0) break; ! Accept only one match, replace nothing
 
 		if (rtxt ~= 0 or 1) {

@@ -284,49 +284,45 @@ it's clearer to give two definitions, so:
 			FlexError("ran out with too many simultaneous text conversions");
 	}
 
-	if (unicode_gestalt_ok) {
-		SuspendRTP();
-		.RetryWithLargerBuffer;
-		saved_stream = glk_stream_get_current();
-		stream = glk_stream_open_memory_uni(buffer, RawBufferSize, filemode_Write, 0);
-		glk_stream_set_current(stream);
+	SuspendRTP();
+	.RetryWithLargerBuffer;
+	saved_stream = glk_stream_get_current();
+	stream = glk_stream_open_memory_uni(buffer, RawBufferSize, filemode_Write, 0);
+	glk_stream_set_current(stream);
 
-		@push say__p; @push say__pc;
-		ClearParagraphing(7);
-		if (from_snippet) print (PrintSnippet) from_value;
-		else print (PrintI6Text) from_value;
-		@pull say__pc; @pull say__p;
+	@push say__p; @push say__pc;
+	ClearParagraphing(7);
+	if (from_snippet) print (PrintSnippet) from_value;
+	else print (PrintI6Text) from_value;
+	@pull say__pc; @pull say__p;
 
-		results = buffer + buffer_size - 2*WORDSIZE;
-		glk_stream_close(stream, results);
-		if (saved_stream) glk_stream_set_current(saved_stream);
-		ResumeRTP();
+	results = buffer + buffer_size - 2*WORDSIZE;
+	glk_stream_close(stream, results);
+	if (saved_stream) glk_stream_set_current(saved_stream);
+	ResumeRTP();
 
-		len = results-->1;
-		if (len > RawBufferSize-1) {
-			! Glulx had to truncate text output because the buffer ran out:
-			! len is the number of characters which it tried to print
-			news = RawBufferSize;
-			while (news < len) news=news*2;
-			i = VM_AllocateMemory(news*WORDSIZE);
-			if (i ~= 0) {
-				if (memory_to_free) VM_FreeMemory(memory_to_free);
-				memory_to_free = i;
-				buffer = i;
-				RawBufferSize = news;
-				buffer_size = (RawBufferSize + 2)*WORDSIZE;
-				jump RetryWithLargerBuffer;
-			}
-			! Memory allocation refused: all we can do is to truncate the text
-			len = RawBufferSize-1;
+	len = results-->1;
+	if (len > RawBufferSize-1) {
+		! Glulx had to truncate text output because the buffer ran out:
+		! len is the number of characters which it tried to print
+		news = RawBufferSize;
+		while (news < len) news=news*2;
+		i = VM_AllocateMemory(news*WORDSIZE);
+		if (i ~= 0) {
+			if (memory_to_free) VM_FreeMemory(memory_to_free);
+			memory_to_free = i;
+			buffer = i;
+			RawBufferSize = news;
+			buffer_size = (RawBufferSize + 2)*WORDSIZE;
+			jump RetryWithLargerBuffer;
 		}
-		buffer-->(len) = 0;
-
-		TEXT_TY_CastPrimitiveNesting--;
-		BlkValueMassCopyFromArray(to_txt, buffer, 4, len+1);
-	} else {
-		RunTimeProblem(RTP_NOGLULXUNICODE);
+		! Memory allocation refused: all we can do is to truncate the text
+		len = RawBufferSize-1;
 	}
+	buffer-->(len) = 0;
+
+	TEXT_TY_CastPrimitiveNesting--;
+	BlkValueMassCopyFromArray(to_txt, buffer, 4, len+1);
 	if (memory_to_free) VM_FreeMemory(memory_to_free);
 ];
 #endif;

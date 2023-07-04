@@ -12770,11 +12770,17 @@ This text substitution expands to the banner text giving bibliographic details o
 
 ^^{virtual machine: starting the virtual machine+activity+}
 
-<b>1. When it happens.</b> This activity is provided solely as a "hook" for any low-level tasks which need to be performed when the virtual computer which runs Inform story files is starting up. This happens much earlier than "when play begins" rules, and should be used only as a last resort.
+<b>1. When it happens.</b> This activity is provided as a "hook" for any low-level tasks which need to be performed when the virtual computer which runs Inform story files is starting up. This happens much earlier than "when play begins" rules, and contains a lot of critical low-level code; most authors will not need to delve into its details, but if necessary it can be controlled like any other activity. Extension authors however may find it to be a useful place to put their code.
 
-It should be remembered that Inform can produce story files for several different virtual computers. On some of these, it will not be safe to print any text during this activity, as the windows which would display such text do not yet exist.
+It should be remembered that Inform can produce story files for several different virtual computers. On some of these, it may not be safe to print any text during this activity, as the windows which would display such text do not yet exist. In Glulx, Inform's default format, you can safely print text in the after rules, but not the before or for rules. In general, the three rulebooks of the activity should be used in this manner:
 
-<b>2. The default behaviour.</b> None.
+(i) The before rulebook should be used only for rules that do not need any input/output systems.
+(ii) The for rulebook should be used for rules involved with setting up the input/output systems.
+(iii) The after rulebook should be used for rules which depend on the input/output systems.
+
+Many extensions would most appropriately put their rules in the after rulebook, though Glk extensions will often need to use all three.
+
+<b>2. The default behaviour.</b> Inform's low-level systems are set up, as well as the virtual machine's input/output systems.
 
 <b>3. Examples.</b> No detailed examples will be given here, but the activity might be used (for instance) to set styles for the Glulx windows shortly to be brought into existence.
 
@@ -13783,6 +13789,12 @@ tests whether the digit 3 occurs anywhere in the score, as printed out; and
 tests to see whether "the" can be found anywhere in the current room's name. Note that the location "Smotheringly Hot Jungle" would pass this test - it's there if you look. On the other hand, "The Orangery" would not, because "The" does not match against "the". We can get around this in a variety of ways, one of which is to tell Inform to be insensitive to the case (upper or lower) of letters:
 
 	if the printed name of the location matches the text "the", case insensitively: ...
+
+Every text matches the empty text, thus
+
+	if t matches the text "", ...
+
+is always true.
 {end}
 
 {defn ph_exactlymatches}if (text) exactly matches the text (text):
@@ -13797,7 +13809,42 @@ is true if the score and best score currently print out as the same text, which 
 is never true - these are different texts, even if they sometimes look the same.
 {end}
 
-In the next section we shall see that "matches" and "exactly matches" can do much more than the simple text matching demonstrated above.
+We can also find exactly <i>where</i> in the text the match occurred.
+
+{defn ph_textfirstindex}first index of the/-- text match ... number
+Following a successful text match, this produces the character number of where the match began.
+
+	if "vacation" matches the text "cat":
+	        let x be the first index of the text match;
+
+assigns 3 to x.
+
+If you're interested in these results, get and store them immediately after the match: the values will
+be overwritten when the next match operation happens.
+
+Always test for success before using this phrase: the result is undefined if the match failed.
+{end}
+
+{defn ph_textlastindex}last index of the/-- text match ... number
+Similarly, we can find the character number of the <i>last</i> character in the match.
+
+	last index of "cat" in "vacation"
+
+produces 5.
+
+As noted above, always test for success before using this phrase, and store or act on the
+result immediately before another match overwrites it.
+{end}
+
+{defn ph_textlength}length of the/-- text match ... number
+Finally, we can get the length of the match, i.e., 3 for the "cat" example, again with
+the caveats above regarding testing for a successful match and using or storing the result
+promptly.
+{end}
+
+Every text (including "") matches the text "". In this case, the first index, last index, and
+length are all 0. Matching against "" is the <i>only</i> time any of these values will be 0 after
+a successful text match.
 
 We can also see how many times something matches:
 
@@ -13809,6 +13856,8 @@ This produces the number of times the second text occurs within the first. The m
 	number of times "xyzzy" matches the text "Z", case insensitively = 2
 	number of times "aaaaaaaa" matches the text "aaaa" = 2
 {end}
+In the next section we shall see that "matches" and "exactly matches" can do much more than the simple text matching demonstrated above.
+
 ^^{XYZZY}
 
 There's no "number of times WHATEVER exactly matches the text FIND" phrase since this is by definition going to have to be 0 or 1. 
@@ -13990,6 +14039,38 @@ For instance:
 	"(\w)\w*\1"
 
 matches any run of two or more word-characters, subject to the restriction that the last one has to be the same as the first - so it matches "xerox" but not "alphabet". When Inform matches this against "xerox", first it matches the initial "x" against the group "(\w)". It then matches "\w*" ("any number of word-characters") against "ero", so that the "*" runs up to 3 repetitions. It then matches "\1" against the final "x", because "\1" requires it to match against whatever last matched in sub-expression 1 - which was an "x".
+
+Similar to the situation with text matches, we can find the starting and ending character numbers of where a given subexpression occurred in the original text, as well as the length.
+
+{defn ph_refirstindex}first index of subexpression (number) ... number
+Following a successful regular expression match, this produces the character number in the original text of the beginning of a given subexpression.
+
+	if "ham sandwich" matches the regular expression "a(.+)\b(.+)":
+		let x be the start index of subexpression 2;
+
+would set x to 5. For the first index of the match as a whole, including what is outside any groups, use "subexpression 0". For the example above, the start index of subexpression 0 would be 2.
+
+As with the text case, use or store the result promptly. And as before, results are undefined in case of failure, but with an important additional caveat: even when a match succeeds, results are not guaranteed to be meaningful <i>for a given subexpression</i> if the text that matched that subexpression was empty. For instance, adding "(.*)" to the end of a regular expression won't make any of the texts that currently match it fail to match, but the results for first index, last index, and length for the corresponding subexpression number might not be meaningful.
+
+{end}
+
+{defn ph_relastindex}last index of subexpression (number) ... number
+Similarly, we can find the character number of the last character in the subexpression. For the "ham sandwich" example above:
+
+	last index of subexpression 1
+
+would be 4 (".+" matches "ham" <i>and</i> the following space). The same caveats noted above apply.
+{end}
+
+{defn ph_relength}length of subexpression  (number) ... number
+Finally, we can get the length of the match, e.g., for the above,
+
+	length of subexpression 2
+
+would be 8 (for "sandwich").
+{end}
+
+Similar to the text case, any time the empty string ("") matches a regular expression, the values of all of first index, last index, and length for subexpression 0 would be 0.
 
 Numbered groups allow wicked tricks in matching, it's true, but really come into their own when it comes to replacing - as we shall see.
 

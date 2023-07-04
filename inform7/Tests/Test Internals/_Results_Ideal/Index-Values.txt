@@ -46,8 +46,8 @@ prior named object - <i>object</i><br>
 latest parser error - <i>command parser error</i><br>
 </p>
 <p><b>Grammatical definitions</b><br>
-story tense&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title="English Language by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>grammatical tense</i><br>
-story viewpoint&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title="English Language by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>narrative viewpoint</i><br>
+story tense&nbsp;<a href='inform://Extensions/Documentation/Graham%20Nelson/English%20Language.html' title="English Language by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>grammatical tense</i><br>
+story viewpoint&nbsp;<a href='inform://Extensions/Documentation/Graham%20Nelson/English%20Language.html' title="English Language by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> - <i>narrative viewpoint</i><br>
 </p>
 <p><b></b><br>
 royal family&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a> - <i>dynasty</i><br>

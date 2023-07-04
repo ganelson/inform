@@ -147,16 +147,53 @@ The language of play is a natural language that varies.
 The parameter-object is an object that varies.
 The parameter-object variable is defined by Inter as "parameter_value".
 
+Chapter - Startup
+
 Startup rules is a rulebook.
 The startup rulebook is accessible to Inter as "STARTUP_RB".
 Startup rules have outcomes allow startup (success) and deny startup (failure).
+
 Shutdown rules is a rulebook.
 The shutdown rulebook is accessible to Inter as "SHUTDOWN_RB".
 
-Starting the virtual machine (documented at act_startvm) is an activity.
+Starting the virtual machine (documented at act_startvm) is an activity on nothing.
 The starting the virtual machine activity is accessible to Inter as "STARTING_VIRTUAL_MACHINE_ACT".
-The final code startup rule is listed first in for starting the virtual machine.
-The final code startup rule is defined by Inter as "FINAL_CODE_STARTUP_R".
+The for starting the virtual machine rules have default no outcome.
+
+First startup rule (this is the virtual machine startup rule):
+	carry out the starting the virtual machine activity.
+
+Section - Startup A (for Glulx only)
+
+The start capturing startup text rule is listed in the before starting the virtual machine rules.
+The start capturing startup text rule translates into Inter as "CAPTURE_STARTUP_TEXT_R".
+
+Section - Startup B
+
+The platform specific startup rule is listed in the before starting the virtual machine rules.
+The platform specific startup rule translates into Inter as "PLATFORM_SPECIFIC_STARTUP_R".
+
+The initialise memory rule is listed in the before starting the virtual machine rules.
+The initialise memory rule translates into Inter as "INITIALISE_MEMORY_R".
+
+The seed random number generator rule is listed in the before starting the virtual machine rules.
+The seed random number generator rule translates into Inter as "SEED_RANDOM_NUMBER_GENERATOR_R".
+
+Section - Startup C (for Glulx only)
+
+The recover Glk objects rule is listed in the before starting the virtual machine rules.
+The recover Glk objects rule translates into Inter as "GGRecoverObjects".
+
+The sound channel initialisation rule is listed in the for starting the virtual machine rules.
+The sound channel initialisation rule translates into Inter as "SOUND_CHANNEL_INIT_R".
+
+The open built-in windows rule is listed in the for starting the virtual machine rules.
+The open built-in windows rule translates into Inter as "OPEN_BUILT_IN_WINDOWS_R".
+
+The display captured startup text rule is listed in the for starting the virtual machine rules.
+The display captured startup text rule translates into Inter as "END_CAPTURE_STARTUP_TEXT_R".
+
+Chapter - Printing activities
 
 Printing the name of something (hidden in RULES command) (documented at act_pn) is an activity.
 The printing the name activity is accessible to Inter as "PRINTING_THE_NAME_ACT".
@@ -877,6 +914,15 @@ To replace line number (N - a number) in (T - text) with (replace - text)
 To replace paragraph number (N - a number) in (T - text) with (replace - text)
 	(documented at ph_replacepara):
 	(- TEXT_TY_ReplaceBlob(PARA_BLOB, {-lvalue-by-reference:T}, {N}, {-by-reference:replace}); -).
+To decide what number is the first index of text match
+	(documented at ph_textfirstindex):
+	(- (match0_idx2 ~= 0) * (match0_idx + 1) -).
+To decide what number is the last index of text match
+	(documented at ph_textlastindex):
+	(- match0_idx2 -).
+To decide what number is the length of text match
+	(documented at ph_textlength):
+	(- (match0_idx2 - match0_idx) -).
 
 Section 3 - Regular Expressions
 
@@ -894,6 +940,15 @@ To decide what text is text matching regular expression
 To decide what text is text matching subexpression (N - a number)
 	(documented at ph_subexpressiontext):
 	(- TEXT_TY_RE_GetMatchVar({N}) -).
+To decide what number is the first index of subexpression (n - a number)
+	(documented at ph_refirstindex):
+	(- (RE_Subexpressions-->{n}-->RE_DATA2 ~= 0) * (RE_Subexpressions-->{n}-->RE_DATA1 + 1) -).
+To decide what number is the last index of subexpression (n - a number)
+	(documented at ph_relastindex):
+	(- ((RE_Subexpressions-->{n}-->RE_DATA2 >= 0) * RE_Subexpressions-->{n}-->RE_DATA2) -).
+To decide what number is the length of subexpression (n - a number)
+	(documented at ph_relength):
+	(- (RE_Subexpressions-->{n}-->RE_DATA2 - RE_Subexpressions-->{n}-->RE_DATA1) -).
 To decide what number is number of times (T - text) matches the regular expression
 	(find - text),case insensitively
 	(documented at ph_nummatchesre):
@@ -1431,12 +1486,13 @@ Definition: a text is substituted rather than unsubstituted if I6 routine
 Definition: a table name is empty rather than non-empty if the number of filled rows in it is 0.
 Definition: a table name is full rather than non-full if the number of blank rows in it is 0.
 
-Definition: a rulebook is empty rather than non-empty if I6 routine "RulebookEmpty" says so (it
-	contains no rules, so that following it does nothing and makes no decision).
+Definition: a nothing based rulebook is empty rather than non-empty if I6 routine
+	"RulebookEmpty" says so (it contains no rules, so that following it does
+	nothing and makes no decision).
 
-Definition: an activity is empty rather than non-empty if I6 routine "ActivityEmpty" says so (its
-	before, for and after rulebooks are all empty).
-Definition: an activity is going on if I6 routine "TestActivity" says so (one
+Definition: an activity on nothing is empty rather than non-empty if I6 routine
+	"ActivityEmpty" says so (its before, for and after rulebooks are all empty).
+Definition: an activity on nothing is going on if I6 routine "TestActivity" says so (one
 	of its three rulebooks is currently being run).
 
 Definition: a list of values is empty rather than non-empty if I6 routine

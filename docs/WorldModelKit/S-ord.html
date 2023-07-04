@@ -65,7 +65,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">WorldModelKit</a></li><li><b>OrderOfPlay Template</b></li></ul></div>
 <p class="purpose">The sequence of events in play: the Main routine which runs the startup rulebook, the turn sequence rulebook and the shutdown rulebook; and most of the I6 definitions of primitive rules in those rulebooks.</p>
 
-<ul class="toc"><li><a href="S-ord.html#SP1">&#167;1. Main</a></li><li><a href="S-ord.html#SP2">&#167;2. Virtual Machine Startup Rule</a></li><li><a href="S-ord.html#SP3">&#167;3. Initial Situation</a></li><li><a href="S-ord.html#SP4">&#167;4. Initialise Memory Rule</a></li><li><a href="S-ord.html#SP5">&#167;5. Position Player In Model World Rule</a></li><li><a href="S-ord.html#SP6">&#167;6. Parse Command Rule</a></li><li><a href="S-ord.html#SP7">&#167;7. Treat Parser Results</a></li><li><a href="S-ord.html#SP8">&#167;8. Generate Action Rule</a></li><li><a href="S-ord.html#SP9">&#167;9. Generate Multiple Actions</a></li><li><a href="S-ord.html#SP10">&#167;10. Timed Events Rule</a></li><li><a href="S-ord.html#SP11">&#167;11. Setting Timed Events</a></li><li><a href="S-ord.html#SP12">&#167;12. Setting Time Of Day</a></li><li><a href="S-ord.html#SP13">&#167;13. Advance Time Rule</a></li><li><a href="S-ord.html#SP14">&#167;14. Note Object Acquisitions Rule</a></li><li><a href="S-ord.html#SP15">&#167;15. Resurrect Player If Asked Rule</a></li><li><a href="S-ord.html#SP16">&#167;16. Ask The Final Question Rule</a></li><li><a href="S-ord.html#SP17">&#167;17. Read The Final Answer Rule</a></li><li><a href="S-ord.html#SP18">&#167;18. Immediately Restart VM Rule</a></li><li><a href="S-ord.html#SP19">&#167;19. Immediately Restore Saved Game Rule</a></li><li><a href="S-ord.html#SP20">&#167;20. Immediately Quit Rule</a></li><li><a href="S-ord.html#SP21">&#167;21. Immediately Undo Rule</a></li><li><a href="S-ord.html#SP22">&#167;22. Print Obituary Headline Rule</a></li><li><a href="S-ord.html#SP23">&#167;23. Print Final Score Rule</a></li><li><a href="S-ord.html#SP24">&#167;24. Display Final Status Line Rule</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-ord.html#SP1">&#167;1. Main</a></li><li><a href="S-ord.html#SP2">&#167;2. Initial Whitespace Rule</a></li><li><a href="S-ord.html#SP3">&#167;3. Initial Situation</a></li><li><a href="S-ord.html#SP4">&#167;4. Initialise Memory Rule</a></li><li><a href="S-ord.html#SP5">&#167;5. Position Player In Model World Rule</a></li><li><a href="S-ord.html#SP6">&#167;6. Parse Command Rule</a></li><li><a href="S-ord.html#SP7">&#167;7. Treat Parser Results</a></li><li><a href="S-ord.html#SP8">&#167;8. Generate Action Rule</a></li><li><a href="S-ord.html#SP9">&#167;9. Generate Multiple Actions</a></li><li><a href="S-ord.html#SP10">&#167;10. Timed Events Rule</a></li><li><a href="S-ord.html#SP11">&#167;11. Setting Timed Events</a></li><li><a href="S-ord.html#SP12">&#167;12. Setting Time Of Day</a></li><li><a href="S-ord.html#SP13">&#167;13. Advance Time Rule</a></li><li><a href="S-ord.html#SP14">&#167;14. Note Object Acquisitions Rule</a></li><li><a href="S-ord.html#SP15">&#167;15. Resurrect Player If Asked Rule</a></li><li><a href="S-ord.html#SP16">&#167;16. Ask The Final Question Rule</a></li><li><a href="S-ord.html#SP17">&#167;17. Read The Final Answer Rule</a></li><li><a href="S-ord.html#SP18">&#167;18. Immediately Restart VM Rule</a></li><li><a href="S-ord.html#SP19">&#167;19. Immediately Restore Saved Game Rule</a></li><li><a href="S-ord.html#SP20">&#167;20. Immediately Quit Rule</a></li><li><a href="S-ord.html#SP21">&#167;21. Immediately Undo Rule</a></li><li><a href="S-ord.html#SP22">&#167;22. Print Obituary Headline Rule</a></li><li><a href="S-ord.html#SP23">&#167;23. Print Final Score Rule</a></li><li><a href="S-ord.html#SP24">&#167;24. Display Final Status Line Rule</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Main. </b>This is where every I6 story file begins execution: it can end either by
 returning, or by a <span class="extract"><span class="extract-syntax">quit</span></span> statement or equivalent opcode. (In I7 this does
@@ -86,10 +86,8 @@ explained in the Standard Rules.
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">IterationsOfTurnSequence</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">+</span><span class="identifier-syntax">replacing</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="identifier-syntax">BasicInformKit</span><span class="plain-syntax">) [ </span><span class="identifier-syntax">Main</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">say__pc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">say__pc</span><span class="plain-syntax"> | </span><span class="identifier-syntax">PARA_NORULEBOOKBREAKS</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">rulebook_without_variables</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ACTION_PROCESSING_RB</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">FollowRulebook</span><span class="plain-syntax">(</span><span class="identifier-syntax">STARTUP_RB</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">say__pc</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">PARA_NORULEBOOKBREAKS</span><span class="plain-syntax">) </span><span class="identifier-syntax">say__pc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">say__pc</span><span class="plain-syntax"> - </span><span class="identifier-syntax">PARA_NORULEBOOKBREAKS</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Startup</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="reserved-syntax">true</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">deadflag</span><span class="plain-syntax"> == </span><span class="reserved-syntax">false</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">EarlyInTurnSequence</span><span class="plain-syntax"> = </span><span class="reserved-syntax">true</span><span class="plain-syntax">;</span>
@@ -102,17 +100,14 @@ explained in the Standard Rules.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Virtual Machine Startup Rule. </b>We delegate to the appropriate VM-specific section of code for the real work.
-The printing of three blank lines at the start of play is traditional: on early
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Initial Whitespace Rule. </b>The printing of three blank lines at the start of play is traditional: on early
 Z-machine interpreters such as InfoTaskForce and Zip it was a necessity because
 of the way they buffered output. On modern windowed ones it still helps to
 space the opening text better.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">VIRTUAL_MACHINE_STARTUP_R</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CarryOutActivity</span><span class="plain-syntax">(</span><span class="identifier-syntax">STARTING_VIRTUAL_MACHINE_ACT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">VM_Initialise</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">INITIAL_WHITESPACE_R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">It is now safe for the paragraph breaking between rules mechanism to work</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">say__pc</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">PARA_NORULEBOOKBREAKS</span><span class="plain-syntax">) </span><span class="identifier-syntax">say__pc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">say__pc</span><span class="plain-syntax"> - </span><span class="identifier-syntax">PARA_NORULEBOOKBREAKS</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"^^^"</span><span class="plain-syntax">;</span>
@@ -136,13 +131,11 @@ reads, say, "Mrs Bridges is a woman. The player is Mrs Bridges."): in
 other circumstances they are often correct, but this must not be relied on.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Initialise Memory Rule. </b>This rule amalgamates some minimal initialisations which all need to happen
-before we can risk using some of the more exotic I7 kinds:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Initialise Memory Rule. </b>In addition to BasicInformKit's memory initialisation, this rule sets up
+the initial situation:
 </p>
 
-<ul class="items"><li>(a) The language definition might call for initialisation, although the
-default language of play (English) does not.
-</li><li>(b) A handful of variables are filled in. <span class="extract"><span class="extract-syntax">I7_LOOKMODE</span></span> is a constant
+<p class="commentary">A handful of variables are filled in. <span class="extract"><span class="extract-syntax">I7_LOOKMODE</span></span> is a constant
 created by the use options "use full-length room descriptions" or
 "use abbreviated room descriptions", but otherwise not existing. It is
 particularly important that <span class="extract"><span class="extract-syntax">player</span></span> have the correct value, as the
@@ -155,12 +148,8 @@ interesting point here is that we explicitly set <span class="extract"><span cla
 we know better. We do this so that the "update chronological records rule"
 cannot see where the player is: see the Standard Rules for an explanation
 of why this is, albeit perhaps dubiously, a good thing.
-</li><li>(c) We start the machinery needed to check that property accesses are
-valid during play.
-</li><li>(d) And we initialise the memory allocation heap, and expand the literal
-constants, as hinted above: these are called "block constants" since
-they occupy blocks of memory.
-</li></ul>
+</p>
+
 <p class="commentary">The <span class="extract"><span class="extract-syntax">not_yet_in_play</span></span> flag, which is cleared when the first command is
 about to be read from the keyboard, suppresses the standard status line
 text: thus, if there is some long text to read before the player finds out
@@ -168,10 +157,7 @@ where he is, the surprise will not be spoiled.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">+</span><span class="identifier-syntax">replacing</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="identifier-syntax">BasicInformKit</span><span class="plain-syntax">) [ </span><span class="identifier-syntax">INITIALISE_MEMORY_R</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">VM_PreInitialise</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">LanguageInitialise</span><span class="plain-syntax">();</span>
-
+<span class="plain-syntax">+</span><span class="identifier-syntax">replacing</span><span class="plain-syntax">(</span><span class="identifier-syntax">keeping</span><span class="plain-syntax">)(</span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="identifier-syntax">BasicInformKit</span><span class="plain-syntax">) [ </span><span class="identifier-syntax">INITIALISE_MEMORY_R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">not_yet_in_play</span><span class="plain-syntax"> = </span><span class="reserved-syntax">true</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">lookmode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">WorldModelKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">ROOM_DESC_DETAIL_CFGV</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">player</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InitialSituation</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">PLAYER_OBJECT_INIS</span><span class="plain-syntax">;</span>
@@ -179,9 +165,7 @@ where he is, the surprise will not be spoiled.
 <span class="plain-syntax">    </span><span class="identifier-syntax">real_location</span><span class="plain-syntax"> = </span><span class="reserved-syntax">nothing</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">location</span><span class="plain-syntax"> = </span><span class="reserved-syntax">nothing</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">HeapInitialise</span><span class="plain-syntax">(); </span><span class="comment-syntax">Create a completely unused memory allocation heap</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">StackFramingInitialise</span><span class="plain-syntax">(); </span><span class="comment-syntax">Create an empty stack</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CreateDynamicRelations</span><span class="plain-syntax">(); </span><span class="comment-syntax">Create relation structures on the heap</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">replaced</span><span class="plain-syntax">`</span><span class="identifier-syntax">INITIALISE_MEMORY_R</span><span class="plain-syntax">();</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
