@@ -48,7 +48,7 @@ void ExtensionWebsite::index_after_compilation(inform_project *proj) {
 void ExtensionWebsite::go(inform_project *proj, int force_update) {
 	ExtensionDictionary::read_from_file();
 
-	extension_census *C = ExtensionCensus::perform(proj);
+	ExtensionCensus::perform(proj);
 	@<Time-stamp extensions used in the project as being last used today@>;
 	@<Write index pages@>;
 	@<Write individual pages on individual extensions@>;
@@ -70,7 +70,7 @@ documentation as used today until the next run, for obscure timing reasons.
 	}
 
 @<Write index pages@> =
-	ExtensionIndex::write(proj, C);
+	ExtensionIndex::write(proj);
 
 @ Each extension gets its own page in the external documentation area, but
 this page can have two forms:

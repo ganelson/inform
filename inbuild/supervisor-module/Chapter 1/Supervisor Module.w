@@ -21,6 +21,7 @@ which use this module:
 @e extension_census_CLASS
 @e extension_census_datum_CLASS
 @e extension_dictionary_entry_CLASS
+@e extensions_key_item_CLASS
 @e heading_CLASS
 @e heading_tree_CLASS
 @e inbuild_copy_CLASS
@@ -54,6 +55,7 @@ DECLARE_CLASS(element_activation)
 DECLARE_CLASS(extension_census_datum)
 DECLARE_CLASS(extension_census)
 DECLARE_CLASS(extension_dictionary_entry)
+DECLARE_CLASS(extensions_key_item)
 DECLARE_CLASS(heading_tree)
 DECLARE_CLASS(heading)
 DECLARE_CLASS(inbuild_copy)
