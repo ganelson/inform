@@ -70,9 +70,7 @@ documentation as used today until the next run, for obscure timing reasons.
 	}
 
 @<Write index pages@> =
-	ExtensionIndex::write(ExtensionWebsite::index_URL(proj, I"Extensions.html"), HOME_EXTPAGE, C);
-	if (proj == NULL)
-		ExtensionIndex::write(ExtensionWebsite::index_URL(proj, I"ExtIndex.html"), INDEX_EXTPAGE, C);
+	ExtensionIndex::write(proj, C);
 
 @ Each extension gets its own page in the external documentation area, but
 this page can have two forms:

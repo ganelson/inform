@@ -2,24 +2,45 @@
 
 To generate the two top-level pages in the extension mini-website.
 
-@h Writing the extensions home pages.
-There are two of these, both with the same surround:
-
-@e HOME_EXTPAGE from 1
-@e INDEX_EXTPAGE
+@h Writing the extensions home page.
+There were once two of these, but now there's just one.
 
 =
-void ExtensionIndex::write(filename *F, int content, extension_census *C) {
+void ExtensionIndex::write(inform_project *proj, extension_census *C) {
+	filename *F = ExtensionWebsite::index_URL(proj, I"Extensions.html");
 	if (F == NULL) return;
+
+	linked_list *in_project = NEW_LINKED_LIST(inbuild_search_result);
+	@<See what we have installed in the project itself@>;
+	linked_list *in_installation = NEW_LINKED_LIST(inbuild_search_result);
+	@<See what we have installed built in to Inform@>;
+
 	text_stream HOMEPAGE_struct;
 	text_stream *OUT = &HOMEPAGE_struct;
 	if (STREAM_OPEN_TO_FILE(OUT, F, UTF8_ENC) == FALSE) return;
-
 	InformPages::header(OUT, I"Extensions", JAVASCRIPT_FOR_EXTENSIONS_IRES, NULL);
 	@<Write the body of the HTML@>;
 	InformPages::footer(OUT);
 	STREAM_CLOSE(OUT);
 }
+
+@<See what we have installed in the project itself@> =
+	inbuild_nest *materials = Projects::materials_nest(proj);
+	if (materials) {
+		inbuild_requirement *req = Requirements::anything_of_genre(extension_bundle_genre);
+		linked_list *search_list = NEW_LINKED_LIST(inbuild_nest);
+		ADD_TO_LINKED_LIST(materials, inbuild_nest, search_list);
+		Nests::search_for(req, search_list, in_project);
+	}
+
+@<See what we have installed built in to Inform@> =
+	inbuild_nest *internal = Supervisor::internal();
+	if (internal) {
+		inbuild_requirement *req = Requirements::anything_of_genre(extension_bundle_genre);
+		linked_list *search_list = NEW_LINKED_LIST(inbuild_nest);
+		ADD_TO_LINKED_LIST(internal, inbuild_nest, search_list);
+		Nests::search_for(req, search_list, in_installation);
+	}
 
 @<Write the body of the HTML@> =
 	HTML::begin_html_table(OUT, NULL, TRUE, 0, 4, 0, 0, 0);
@@ -31,90 +52,65 @@ void ExtensionIndex::write(filename *F, int content, extension_census *C) {
 	HTML_OPEN_WITH("div", "class=\"headingpanellayout headingpanelalt\"");
 	HTML_OPEN_WITH("div", "class=\"headingtext\"");
 	HTML::begin_span(OUT, I"headingpaneltextalt");
-	WRITE("Installed Extensions");
+	WRITE("Extensions in this Project");
 	HTML::end_span(OUT);
 	HTML_CLOSE("div");
 	HTML_OPEN_WITH("div", "class=\"headingrubric\"");
 	HTML::begin_span(OUT, I"headingpanelrubricalt");
-	WRITE("Bundles of extra rules or phrases to extend what Inform can do");
+	WRITE("What you have installed and what you have used");
 	HTML::end_span(OUT);
 	HTML_CLOSE("div");
 	HTML_CLOSE("div");
-	@<Write the heading details text for the page@>;
+	@<Display the location of installed extensions@>;
+	@<Display a warning about any census errors which turned up@>;
 	HTML::end_html_row(OUT);
 	HTML::end_html_table(OUT);
 	HTML_TAG("hr");
-	@<Write the main content for the page@>;
-
-@<Write the heading details text for the page@> =
-	switch (content) {
-		case HOME_EXTPAGE:
-			@<Display the location of installed extensions@>;
-			@<Display a warning about any census errors which turned up@>;
-			break;
-		case INDEX_EXTPAGE: 
-			HTML_OPEN("p");
-			WRITE("Whenever an extension is used, its definitions are entered into the "
-				"following index. (Thus, a newly installed but never-used extension "
-				"is not indexed yet.).");
-			HTML_CLOSE("p");
-			break;
-	}
-
-@<Write the main content for the page@> =
-	switch (content) {
-		case HOME_EXTPAGE: @<Display an alphabetised directory@>; break;
-		case INDEX_EXTPAGE: ExtensionDictionary::write_to_HTML(OUT); break;
-	}
+	HTML_OPEN("p");
+	WRITE("The project currently Includes, or otherwise uses, the following:");
+	HTML_CLOSE("p");
+	@<Display an alphabetised directory@>;
+	HTML_TAG("hr");
+	HTML_OPEN("p");
+	WRITE("The following are available for use by the project, either by being "
+		"installed in it or by being built in to the app, but are not currently used:");
+	HTML_CLOSE("p");
+	@<Display an alphabetised directory@>;
 
 @ From here on, then, all the code in this section generates the main directory
 page, not the index of terms, which is all handled by
 //ExtensionDictionary::write_to_HTML//.
 
 @<Display the location of installed extensions@> =
-	int nps = 0, nbi = 0, ni = 0;
-	extension_census_datum *ecd;
-	LOOP_OVER(ecd, extension_census_datum) {
-		if (Nests::get_tag(ecd->found_as->nest) == MATERIALS_NEST_TAG) nps++;
-		else if (Nests::get_tag(ecd->found_as->nest) == INTERNAL_NEST_TAG) nbi++;
-		else ni++;
+	int nbi = LinkedLists::len(in_installation), nps = LinkedLists::len(in_project);
+
+	HTML_OPEN("p");
+	pathname *P = Nests::get_location(Projects::materials_nest(proj));
+	P = Pathnames::down(P, I"Extensions");
+	PasteButtons::open_file(OUT, P, NULL, PROJECT_SPECIFIC_SYMBOL);
+	WRITE("&nbsp;");
+	if (nps > 0) {
+		WRITE("You have %d extension%s in the .materials folder for the "
+			"current project. (Click the purple folder icon to show the location.)",
+			nps, (nps==1)?"":"s");
+	} else {
+		WRITE("There are currently no extensions installed in the .materials folder "
+			"for this project. (Click the purple folder icon to show the location. "
+			"Extensions should be put in the 'Extensions' subfolder of this: you "
+			"can put them there yourself, or use the Inform app to install them "
+			"for you.)");
 	}
+	HTML_CLOSE("p");
 
 	HTML_OPEN("p");
 	HTML_TAG_WITH("img", "src='inform:/doc_images/builtin_ext.png' border=0");
-	WRITE("&nbsp;You have "
-		"%d extensions built-in to this copy of Inform, marked with a grey folder "
+	WRITE("&nbsp;");
+	WRITE("As well as being able to use extensions installed into its own folder, "
+		"projects can use extensions which come built into the Inform app. In "
+		"your current installation there are %d of these, marked with a grey folder "
 		"icon in the catalogue below.",
 		nbi);
 	HTML_CLOSE("p");
-	HTML_OPEN("p");
-	if (ni == 0) {
-		HTML_TAG_WITH("img", "src='inform:/doc_images/folder4.png' border=0");
-		WRITE("&nbsp;You have no other extensions installed at present.");
-	} else {
-		#ifdef INDEX_MODULE
-		PasteButtons::open_file(OUT, ExtensionCensus::external_path(C), NULL,
-			"src='inform:/doc_images/folder4.png' border=0");
-		#endif
-		WRITE("&nbsp;You have %d further extension%s installed. These are marked "
-			"with a blue folder icon in the catalogue below. (Click it to see "
-			"where the file is stored on your computer.) "
-			"For more extensions, visit <b>www.inform7.com</b>.",
-			ni, (ni==1)?"":"s");
-	}
-	HTML_CLOSE("p");
-	if (nps > 0) {
-		HTML_OPEN("p");
-		#ifdef INDEX_MODULE
-		PasteButtons::open_file(OUT, ExtensionCensus::internal_path(C),
-			NULL, PROJECT_SPECIFIC_SYMBOL);
-		#endif
-		WRITE("&nbsp;You have %d extension%s in the .materials folder for the "
-			"current project. (Click the purple folder icon to show the "
-			"location.) %s not available to other projects.",
-			nps, (nps==1)?"":"s", (nps==1)?"This is":"These are");
-		HTML_CLOSE("p");
-	}
 
 @ We sometimes position a warning prominently at the top of the listing,
 because otherwise its position at the bottom will be invisible unless the user
@@ -142,7 +138,7 @@ any oddities found in the external extensions area.
 	int no_entries = NUMBER_CREATED(extension_census_datum);
 	extension_census_datum **sorted_census_results = Memory::calloc(no_entries,
 		sizeof(extension_census_datum *), EXTENSION_DICTIONARY_MREASON);
-	for (int d=1; d<=5; d++) {
+	for (int d=1; d<=3; d++) {
 		@<Start an HTML division for this sorted version of the census@>;
 		@<Sort the census into the appropriate order@>;
 		@<Display the sorted version of the census@>;
@@ -154,63 +150,42 @@ any oddities found in the external extensions area.
 		no_entries, sizeof(extension_census_datum *));
 
 @ I am the first to admit that this implementation is not inspired. There
-are five radio buttons, and number 2 is selected by default.
+are three radio buttons, and number 1 is selected by default.
 
 @<Display the census radio buttons@> =
 	HTML_OPEN("p");
-	WRITE("Sort catalogue: ");
+	WRITE("Sort this list: ");
 	HTML_OPEN_WITH("a",
 		"href=\"#\" style=\"text-decoration: none\" "
 		"onclick=\"openExtra('disp1', 'plus1'); closeExtra('disp2', 'plus2'); "
-		"closeExtra('disp3', 'plus3'); closeExtra('disp4', 'plus4'); "
-		"closeExtra('disp5', 'plus5'); return false;\"");
-	HTML_TAG_WITH("img", "border=0 id=\"plus1\" src=inform:/doc_images/extrarboff.png");
+		"closeExtra('disp3', 'plus3'); return false;\"");
+	HTML_TAG_WITH("img", "border=0 id=\"plus1\" src=inform:/doc_images/extrarbon.png");
 	WRITE("&nbsp;By title");
 	HTML_CLOSE("a");
 	WRITE(" | ");
 	HTML_OPEN_WITH("a",
 		"href=\"#\" style=\"text-decoration: none\" "
 		"onclick=\"closeExtra('disp1', 'plus1'); openExtra('disp2', 'plus2'); "
-		"closeExtra('disp3', 'plus3'); closeExtra('disp4', 'plus4'); "
-		"closeExtra('disp5', 'plus5'); return false;\"");
-	HTML_TAG_WITH("img", "border=0 id=\"plus2\" src=inform:/doc_images/extrarbon.png");
+		"closeExtra('disp3', 'plus3'); return false;\"");
+	HTML_TAG_WITH("img", "border=0 id=\"plus2\" src=inform:/doc_images/extrarboff.png");
 	WRITE("&nbsp;By author");
 	HTML_CLOSE("a");
 	WRITE(" | ");
 	HTML_OPEN_WITH("a",
 		"href=\"#\" style=\"text-decoration: none\" "
 		"onclick=\"closeExtra('disp1', 'plus1'); closeExtra('disp2', 'plus2'); "
-		"openExtra('disp3', 'plus3'); closeExtra('disp4', 'plus4'); "
-		"closeExtra('disp5', 'plus5'); return false;\"");
+		"openExtra('disp3', 'plus3'); return false;\"");
 	HTML_TAG_WITH("img", "border=0 id=\"plus3\" src=inform:/doc_images/extrarboff.png");
-	WRITE("&nbsp;By installation");
-	HTML_CLOSE("a");
-	WRITE(" | ");
-	HTML_OPEN_WITH("a",
-		"href=\"#\" style=\"text-decoration: none\" "
-		"onclick=\"closeExtra('disp1', 'plus1'); closeExtra('disp2', 'plus2'); "
-		"closeExtra('disp3', 'plus3'); openExtra('disp4', 'plus4'); "
-		"closeExtra('disp5', 'plus5'); return false;\"");
-	HTML_TAG_WITH("img", "border=0 id=\"plus4\" src=inform:/doc_images/extrarboff.png");
-	WRITE("&nbsp;By date used");
-	HTML_CLOSE("a");
-	WRITE(" | ");
-	HTML_OPEN_WITH("a",
-		"href=\"#\" style=\"text-decoration: none\" "
-		"onclick=\"closeExtra('disp1', 'plus1'); closeExtra('disp2', 'plus2'); "
-		"closeExtra('disp3', 'plus3'); closeExtra('disp4', 'plus4'); "
-		"openExtra('disp5', 'plus5'); return false;\"");
-	HTML_TAG_WITH("img", "border=0 id=\"plus5\" src=inform:/doc_images/extrarboff.png");
 	WRITE("&nbsp;By word count");
 	HTML_CLOSE("a");
 	HTML_CLOSE("p");
 
-@ Consequently, of the five divisions, number 2 is shown and the others
+@ Consequently, of the three divisions, number 1 is shown and the others
 hidden, by default.
 
 @<Start an HTML division for this sorted version of the census@> =
 	char *display = "none";
-	if (d == SORT_CE_BY_AUTHOR) display = "block";
+	if (d == SORT_CE_BY_TITLE) display = "block";
 	HTML_OPEN_WITH("div", "id=\"disp%d\" style=\"display: %s;\"", d, display);
 
 @ The key at the foot only explicates those symbols actually used, and
@@ -293,9 +268,7 @@ until they put matters right.
 
 @d SORT_CE_BY_TITLE 1
 @d SORT_CE_BY_AUTHOR 2
-@d SORT_CE_BY_INSTALL 3
-@d SORT_CE_BY_DATE 4
-@d SORT_CE_BY_LENGTH 5
+@d SORT_CE_BY_LENGTH 3
 
 @<Sort the census into the appropriate order@> =
 	int i = 0;
@@ -306,8 +279,6 @@ until they put matters right.
 	switch (d) {
 		case SORT_CE_BY_TITLE: criterion = ExtensionCensus::compare_ecd_by_title; break;
 		case SORT_CE_BY_AUTHOR: criterion = ExtensionCensus::compare_ecd_by_author; break;
-		case SORT_CE_BY_INSTALL: criterion = ExtensionCensus::compare_ecd_by_installation; break;
-		case SORT_CE_BY_DATE: criterion = ExtensionCensus::compare_ecd_by_date; break;
 		case SORT_CE_BY_LENGTH: criterion = ExtensionCensus::compare_ecd_by_length; break;
 		default: internal_error("no such sorting criterion");
 	}
@@ -322,8 +293,7 @@ the usual ones seen in Mac OS X applications such as iTunes.
 	@<Show a titling row explaining the census sorting, if necessary@>;
 	int stripe = 0;
 	TEMPORARY_TEXT(current_author_name)
-	int i, current_installation = -1;
-	for (i=0; i<no_entries; i++) {
+	for (int i=0; i<no_entries; i++) {
 		extension_census_datum *ecd = sorted_census_results[i];
 		@<Insert a subtitling row in the census sorting, if necessary@>;
 		stripe = 1 - stripe;
@@ -345,11 +315,6 @@ the usual ones seen in Mac OS X applications such as iTunes.
 			WRITE("Extensions in alphabetical order");
 			@<End a tinted census line@>;
 			break;
-		case SORT_CE_BY_DATE:
-			@<Begin a tinted census line@>;
-			WRITE("Extensions in order of date used (most recent first)");
-			@<End a tinted census line@>;
-			break;
 		case SORT_CE_BY_LENGTH:
 			@<Begin a tinted census line@>;
 			WRITE("Extensions in order of word count (longest first)");
@@ -363,14 +328,6 @@ the usual ones seen in Mac OS X applications such as iTunes.
 		Str::copy(current_author_name, ecd->found_as->copy->edition->work->author_name);
 		@<Begin a tinted census line@>;
 		@<Print the author's line in the extension census table@>;
-		@<End a tinted census line@>;
-		stripe = 0;
-	}
-	if ((d == SORT_CE_BY_INSTALL) &&
-		(ExtensionCensus::installation_region(ecd) != current_installation)) {
-		current_installation = ExtensionCensus::installation_region(ecd);
-		@<Begin a tinted census line@>;
-		@<Print the installation region in the extension census table@>;
 		@<End a tinted census line@>;
 		stripe = 0;
 	}
@@ -421,24 +378,6 @@ the usual ones seen in Mac OS X applications such as iTunes.
 	else if (cn+cu > 0) WRITE(", %d used, %d unused", cu, cn);
 	WRITE(")");
 	HTML::end_span(OUT);
-
-@ Used only in "by installation".
-
-@<Print the installation region in the extension census table@> =
-	switch (current_installation) {
-		case 0:
-			WRITE("Supplied in the .materials folder&nbsp;&nbsp;");
-			HTML::begin_span(OUT, I"smaller");
-			WRITE("%p", ExtensionCensus::internal_path(C));
-			HTML::end_span(OUT); break;
-		case 1: WRITE("Built in to Inform"); break;
-		case 2: WRITE("User installed but overriding a built-in extension"); break;
-		case 3:
-			WRITE("User installed&nbsp;&nbsp;");
-			HTML::begin_span(OUT, I"smaller");
-			WRITE("%p", ExtensionCensus::external_path(C));
-			HTML::end_span(OUT); break;
-	}
 
 @
 
@@ -545,9 +484,7 @@ the first and last word and just look at what is in between:
 @<Print column 4 of the census line@> =
 	inform_extension *E = Extensions::from_copy(ecd->found_as->copy);
 	HTML::begin_span(OUT, I"smaller");
-	if ((d == SORT_CE_BY_DATE) || (d == SORT_CE_BY_INSTALL)) {
-		WRITE("%S", Extensions::get_usage_date(E));
-	} else if (d == SORT_CE_BY_LENGTH) {
+	if (d == SORT_CE_BY_LENGTH) {
 		if (Extensions::get_word_count(E) == 0)
 			WRITE("--");
 		else
