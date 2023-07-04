@@ -162,7 +162,7 @@ are three radio buttons, and number 1 is selected by default.
 		"onclick=\"closeExtra('disp1', 'plus1'); closeExtra('disp2', 'plus2'); "
 		"openExtra('disp3', 'plus3'); return false;\"");
 	HTML_TAG_WITH("img", "border=0 id=\"plus3\" src=inform:/doc_images/extrarboff.png");
-	WRITE("&nbsp;By word count");
+	WRITE("&nbsp;By location");
 	HTML_CLOSE("a");
 	HTML_CLOSE("p");
 
@@ -244,7 +244,7 @@ until they put matters right.
 
 @d SORT_CE_BY_TITLE 1
 @d SORT_CE_BY_AUTHOR 2
-@d SORT_CE_BY_LENGTH 3
+@d SORT_CE_BY_LOCATION 3
 @d SORT_CE_BY_USAGE 4
 
 @<Sort the census into the appropriate order@> =
@@ -265,7 +265,7 @@ until they put matters right.
 	switch (d) {
 		case SORT_CE_BY_TITLE: criterion = ExtensionIndex::compare_ecd_by_title; break;
 		case SORT_CE_BY_AUTHOR: criterion = ExtensionIndex::compare_ecd_by_author; break;
-		case SORT_CE_BY_LENGTH: criterion = ExtensionIndex::compare_ecd_by_length; break;
+		case SORT_CE_BY_LOCATION: criterion = ExtensionIndex::compare_ecd_by_location; break;
 		case SORT_CE_BY_USAGE: criterion = ExtensionIndex::compare_ecd_by_title; break;
 		default: internal_error("no such sorting criterion");
 	}
@@ -303,9 +303,9 @@ the usual ones seen in Mac OS X applications such as iTunes.
 			WRITE("Extensions in alphabetical order");
 			@<End a tinted census line@>;
 			break;
-		case SORT_CE_BY_LENGTH:
+		case SORT_CE_BY_LOCATION:
 			@<Begin a tinted census line@>;
-			WRITE("Extensions in order of word count (longest first)");
+			WRITE("Extensions grouped by location");
 			@<End a tinted census line@>;
 			break;
 	}
@@ -348,6 +348,9 @@ the usual ones seen in Mac OS X applications such as iTunes.
 @d UNINDEXED_SYMBOL "border=\"0\" src=\"inform:/doc_images/unindexed_bullet.png\""
 @d INDEXED_SYMBOL "border=\"0\" src=\"inform:/doc_images/indexed_bullet.png\""
 @d PROBLEM_SYMBOL "border=\"0\" height=\"12\" src=\"inform:/doc_images/census_problem.png\""
+@d REVEAL_SYMBOL "border=\"0\" src=\"inform:/doc_images/Reveal.png\""
+@d HELP_SYMBOL "border=\"0\" src=\"inform:/doc_images/help.png\""
+@d PASTE_SYMBOL "border=\"0\" src=\"inform:/doc_images/paste.png\""
 
 @<Print the census line for this extension@> =
 	@<Print column 1 of the census line@>;
@@ -359,8 +362,6 @@ the usual ones seen in Mac OS X applications such as iTunes.
 	@<Print column 4 of the census line@>;
 
 @<Print column 1 of the census line@> =
-	Works::begin_extension_link(OUT,
-		ecd->copy->edition->work, ExtensionIndex::ecd_rubric(ecd));
 	HTML::begin_span(OUT, I"extensionindexentry");
 	if (d != SORT_CE_BY_AUTHOR) {
 		WRITE("%S", ecd->copy->edition->work->raw_title);
@@ -376,12 +377,44 @@ the usual ones seen in Mac OS X applications such as iTunes.
 		WRITE("%S", ecd->copy->edition->work->raw_title);
 	}
 	HTML::end_span(OUT);
-	Works::end_extension_link(OUT, ecd->copy->edition->work);
+
+	filename *F = ExtensionWebsite::abs_page_URL(proj, ecd->copy->edition, -1);
+	if (TextFiles::exists(F)) {
+		WRITE(" ");
+		TEMPORARY_TEXT(link)
+		TEMPORARY_TEXT(URL)
+		WRITE_TO(URL, "%f", ExtensionWebsite::rel_page_URL(ecd->copy->edition, -1));
+		WRITE_TO(link, "href='inform:/");
+		Works::escape_apostrophes(link, URL);
+		WRITE_TO(link, "' style=\"text-decoration: none\"");
+		HTML_OPEN_WITH("a", "%S", link);
+		DISCARD_TEXT(link)
+		HTML_TAG_WITH("img", "%s", HELP_SYMBOL);
+		ExtensionIndex::add_to_key(key_list, HELP_SYMBOL, I"Documentation (click to read)");
+		HTML_CLOSE("a");
+	}
+
+	inform_extension *E = Extensions::from_copy(ecd->copy);
+	parse_node *at = Extensions::get_inclusion_sentence(E);
+	if (at) {
+		wording W = Node::get_text(at);
+		source_location sl = Lexer::word_location(Wordings::first_wn(W));
+		SourceLinks::link(OUT, sl, TRUE);
+		ExtensionIndex::add_to_key(key_list, REVEAL_SYMBOL, I"Included here (click to see)");
+	}
 
 	if (LinkedLists::len(ecd->copy->errors_reading_source_text) > 0) {
 		WRITE(" ");
 		HTML_TAG_WITH("img", "%s", PROBLEM_SYMBOL);
 		ExtensionIndex::add_to_key(key_list, PROBLEM_SYMBOL, I"Has errors (see below)");
+	} else if (usage_state == FALSE) {
+		WRITE(" ");
+		TEMPORARY_TEXT(inclusion_text)
+		WRITE_TO(inclusion_text, "Include %X.\n\n\n", ecd->copy->edition->work);
+		PasteButtons::paste_text(OUT, inclusion_text);
+		DISCARD_TEXT(inclusion_text)
+		ExtensionIndex::add_to_key(key_list, PASTE_SYMBOL,
+			I"Source text to Include this (click to paste in)");
 	}
 
 	compatibility_specification *C = ecd->copy->edition->compatibility;
@@ -433,13 +466,12 @@ the first and last word and just look at what is in between:
 	}
 
 @<Print column 4 of the census line@> =
-	inform_extension *E = Extensions::from_copy(ecd->copy);
 	HTML::begin_span(OUT, I"smaller");
-	if (d == SORT_CE_BY_LENGTH) {
-		if (Extensions::get_word_count(E) == 0)
-			WRITE("--");
+	if (d == SORT_CE_BY_LOCATION) {
+		if (Nests::get_tag(ecd->nest) == INTERNAL_NEST_TAG)
+			WRITE("Built in to Inform");
 		else
-			WRITE("%d words", Extensions::get_word_count(E));
+			WRITE("Installed in this project");
 	} else {
 		if (Str::len(ExtensionIndex::ecd_rubric(ecd)) > 0)
 			WRITE("%S", ExtensionIndex::ecd_rubric(ecd));
@@ -594,12 +626,12 @@ int ExtensionIndex::compare_ecd_by_author(const void *ecd1, const void *ecd2) {
 	return Extensions::compare_by_author(E2, E1);
 }
 
-int ExtensionIndex::compare_ecd_by_length(const void *ecd1, const void *ecd2) {
+int ExtensionIndex::compare_ecd_by_location(const void *ecd1, const void *ecd2) {
 	inbuild_search_result *e1 = *((inbuild_search_result **) ecd1);
 	inbuild_search_result *e2 = *((inbuild_search_result **) ecd2);
-	inform_extension *E1 = Extensions::from_copy(e1->copy);
-	inform_extension *E2 = Extensions::from_copy(e2->copy);
-	return Extensions::compare_by_length(E1, E2);
+	int d = Nests::get_tag(e1->nest) - Nests::get_tag(e2->nest);
+	if (d != 0) return d;
+	return ExtensionIndex::compare_ecd_by_title(ecd1, ecd2);
 }
 
 int ExtensionIndex::ecd_used(inbuild_search_result *ecd) {

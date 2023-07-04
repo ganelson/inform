@@ -192,3 +192,55 @@ filename *ExtensionWebsite::page_URL(inform_project *proj, inbuild_edition *edit
 	DISCARD_TEXT(leaf)
 	return F;
 }
+
+filename *ExtensionWebsite::abs_page_URL(inform_project *proj, inbuild_edition *edition,
+	int eg_number) {
+	TEMPORARY_TEXT(leaf)
+	Editions::write_canonical_leaf(leaf, edition);
+	
+	pathname *P;
+	if (proj) {
+		P = Projects::materials_path(proj);
+		if (P == NULL) return NULL;
+		P = Pathnames::down(P, I"Extensions");
+		P = Pathnames::down(P, I"Reserved");
+		P = Pathnames::down(P, I"Documentation");
+	} else {
+		P = ExtensionWebsite::home_URL(NULL);
+		if (P == NULL) return NULL;
+		P = Pathnames::down(P, I"Extensions");
+	}
+	P = Pathnames::down(P, edition->work->author_name);
+
+	if (proj) {
+		P = Pathnames::down(P, leaf);
+		Str::clear(leaf);
+		if (eg_number > 0) WRITE_TO(leaf, "eg%d.html", eg_number);
+		else WRITE_TO(leaf, "index.html");
+	} else {
+		if (eg_number > 0) WRITE_TO(leaf, "-eg%d", eg_number);
+		WRITE_TO(leaf, ".html");
+	}
+
+	filename *F = Filenames::in(P, leaf);
+	DISCARD_TEXT(leaf)
+	return F;
+}
+
+filename *ExtensionWebsite::rel_page_URL(inbuild_edition *edition, int eg_number) {
+	TEMPORARY_TEXT(leaf)
+	Editions::write_canonical_leaf(leaf, edition);
+	
+	pathname *P = NULL;
+	P = Pathnames::down(P, I"Extensions");
+	P = Pathnames::down(P, I"Reserved");
+	P = Pathnames::down(P, I"Documentation");
+	P = Pathnames::down(P, edition->work->author_name);
+	P = Pathnames::down(P, leaf);
+	Str::clear(leaf);
+	if (eg_number > 0) WRITE_TO(leaf, "eg%d.html", eg_number);
+	else WRITE_TO(leaf, "index.html");
+	filename *F = Filenames::in(P, leaf);
+	DISCARD_TEXT(leaf)
+	return F;
+}
