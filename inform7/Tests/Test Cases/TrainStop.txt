@@ -19,6 +19,4 @@ Train Stop begins when the player is in the Station for the third turn.
 
 Train Stop ends when the time since Train Stop began is 3 minutes.
 
-[ / z / z / z / z / z / z".]
-
-Test me with "x self".
+Test me with "z / z / z / z / z / z".
