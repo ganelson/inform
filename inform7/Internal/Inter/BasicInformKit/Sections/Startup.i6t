@@ -42,7 +42,9 @@ where |WorldModelKit| is not involved.
 
 [ Startup;
 	VM_Check_Functionality();
+	say__pc = say__pc | PARA_NORULEBOOKBREAKS;
 	FollowRulebook(STARTUP_RB);
+	if (say__pc & PARA_NORULEBOOKBREAKS) say__pc = say__pc - PARA_NORULEBOOKBREAKS;
 	rfalse;
 ];
 
@@ -60,7 +62,7 @@ valid during play.
 constants, as hinted above: these are called "block constants" since
 they occupy blocks of memory.
 
-(d) Some platform-specific dictionary and parse buffer related globals
+(d) Some architecture-specific dictionary and parse buffer related globals
 are initialised.
 
 =
