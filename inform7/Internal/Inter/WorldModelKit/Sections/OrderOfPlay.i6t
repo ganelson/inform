@@ -22,10 +22,8 @@ Global EarlyInTurnSequence;
 Global IterationsOfTurnSequence;
 
 +replacing(from BasicInformKit) [ Main;
-	say__pc = say__pc | PARA_NORULEBOOKBREAKS;
 	rulebook_without_variables = ACTION_PROCESSING_RB;
 	Startup();
-	if (say__pc & PARA_NORULEBOOKBREAKS) say__pc = say__pc - PARA_NORULEBOOKBREAKS;
 	while (true) {
 		while (deadflag == false) {
 			EarlyInTurnSequence = true;
@@ -92,14 +90,14 @@ where he is, the surprise will not be spoiled.
 
 =
 +replacing(keeping)(from BasicInformKit) [ INITIALISE_MEMORY_R;
-	replaced`INITIALISE_MEMORY_R();
-
 	not_yet_in_play = true;
 	lookmode = WorldModelKit`ROOM_DESC_DETAIL_CFGV;
 	player = InitialSituation-->PLAYER_OBJECT_INIS;
 	the_time = InitialSituation-->START_TIME_INIS;
 	real_location = nothing;
 	location = nothing;
+
+	replaced`INITIALISE_MEMORY_R();
 
 	rfalse;
 ];
