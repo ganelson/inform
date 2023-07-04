@@ -63,6 +63,7 @@ helpful code here: the fallbacks here are basic.
 
 =
 [ PLATFORM_SPECIFIC_STARTUP_R addr res;
+	rfalse;
 ];
 
 [ DebugAction a anames str;

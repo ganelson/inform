@@ -958,7 +958,7 @@ Rooms are arranged in a map.<br>
 world that is not a room. People, pieces of scenery, furniture, doors and
 mislaid umbrellas might all be examples, and so might more surprising things
 like the sound of birdsong or a shaft of sunlight.<br>
-<i>Usually</i> unlit <i>not</i> lit, inedible <i>not</i> edible, portable <i>not</i> fixed in place, described <i>not</i> undescribed, unmarked for listing <i>not</i> marked for listing, mentioned <i>not</i> unmentioned.<br>
+<i>Usually</i> unlit <i>not</i> lit, inedible <i>not</i> edible, portable <i>not</i> fixed in place, described <i>not</i> undescribed, unmarked for listing <i>not</i> marked for listing, unmentioned <i>not</i> mentioned.<br>
 <i>Usually not</i> scenery, wearable, pushable between rooms, handled.<br>
 <i>Can have</i> description (<i>text</i>), initial appearance (<i>text</i>), matching key (<i>object</i>).<br>
 </p>
