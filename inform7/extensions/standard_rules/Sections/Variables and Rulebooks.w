@@ -488,10 +488,7 @@ Z-machine interpreters such as InfoTaskForce and Zip it was a necessity because
 of the way they buffered output. On modern windowed ones it still helps to
 space the opening text better.
 
-(b) The "position player in model world rule" completes the initial
-construction of the spatial model world.
-
-(c) The "update chronological records rule" is described in further detail
+(b) The "update chronological records rule" is described in further detail
 below, since it appears both here and also in the turn sequence rulebook.
 Here it's providing us with a baseline of initial truths from which we can
 later assess conditions such as "the marble door has been open". A subtle
@@ -503,6 +500,9 @@ Dining Room for three turns". It's as if the player teleports into an
 already-existing world, like some Star Trek crewman, just in time for the
 first command.
 
+(c) The "position player in model world rule" completes the initial
+construction of the spatial model world.
+
 (d) The "start in the correct scenes rule" ensures that we start out
 in the correct scenes. (This can't wait, because it's just conceivable
 that somebody has written a rule with a preamble like "When play
@@ -511,16 +511,17 @@ Entire Game begins.) That completes the necessary preliminaries before
 ordinary I7 rules can be run.
 
 =
-The initial whitespace rule is listed first in the after starting the virtual machine rules.
+The initial whitespace rule is listed in the after starting the virtual machine rules.
 The initial whitespace rule translates into Inter as "INITIAL_WHITESPACE_R".
-
-The position player in model world rule is listed in the after starting the virtual machine rules.
-The position player in model world rule translates into Inter as "POSITION_PLAYER_IN_MODEL_R".
 
 The update chronological records rule is listed in the after starting the virtual machine rules.
 The update chronological records rule translates into Inter as "UPDATE_CHRONOLOGICAL_RECORDS_R".
 
-After starting the virtual machine (this is the start in the correct scenes rule):
+The position player in model world rule is listed in the after starting the virtual machine rules.
+The position player in model world rule translates into Inter as "POSITION_PLAYER_IN_MODEL_R".
+
+The start in the correct scenes rule is listed in the after starting the virtual machine rules.
+This is the start in the correct scenes rule:
 	follow the scene changing rules.
 
 @ The remaining rules, though, are fair game for alteration, and as if to
