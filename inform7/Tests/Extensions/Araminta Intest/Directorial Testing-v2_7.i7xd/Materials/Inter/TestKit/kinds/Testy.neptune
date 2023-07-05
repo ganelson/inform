@@ -4,6 +4,7 @@ new base COLOUR_TY {
 	plural: colours
 
 	instance: red                  = RED_COL    =          7 
+	instance: pink                 = PINK_COL    =         8 
 	instance: purple               = PURPLE_COL =        $1f 
 	instance: chartreusey lavender = MAUVE_COL  =  $$1100101 
 }

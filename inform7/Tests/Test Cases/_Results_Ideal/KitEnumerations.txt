@@ -4,29 +4,36 @@
   This is an uninitialised colour variable - "C" = colour: red
   Iterating...
   "D" = colour: red
-  "colour after D" = colour: purple
+  "colour after D" = colour: pink
   "colour before D" = colour: chartreusey lavender
   "sequence number of D" = number: 1
   "numerical value of D" = number: 7
   "whether or not D is valid" = truth state: true
-  "D" = colour: purple
-  "colour after D" = colour: chartreusey lavender
+  "D" = colour: pink
+  "colour after D" = colour: purple
   "colour before D" = colour: red
   "sequence number of D" = number: 2
+  "numerical value of D" = number: 8
+  "whether or not D is valid" = truth state: true
+  "D" = colour: purple
+  "colour after D" = colour: chartreusey lavender
+  "colour before D" = colour: pink
+  "sequence number of D" = number: 3
   "numerical value of D" = number: 31
   "whether or not D is valid" = truth state: true
   "D" = colour: chartreusey lavender
   "colour after D" = colour: red
   "colour before D" = colour: purple
-  "sequence number of D" = number: 3
+  "sequence number of D" = number: 4
   "numerical value of D" = number: 101
   "whether or not D is valid" = truth state: true
   Done.
   Now for a limited-span repeat...
   "D" = colour: red
+  "D" = colour: pink
   "D" = colour: purple
   Done.
-  "list of colours" = list of colours: {red, purple, chartreusey lavender}
+  "list of colours" = list of colours: {red, pink, purple, chartreusey lavender}
   "first value of colour" = colour: red
   "last value of colour" = colour: chartreusey lavender
   "colour scheme of the Laboratory" = colour: red
@@ -35,9 +42,9 @@
   The mauve is 101
   101 = 101
   Now for some random values...
-  purple; purple; chartreusey lavender; purple; red; red; chartreusey lavender; purple; chartreusey lavender; red; purple; chartreusey lavender; chartreusey lavender; purple; chartreusey lavender; red; purple; purple; red; purple; red; chartreusey lavender; purple; chartreusey lavender; chartreusey lavender; chartreusey lavender; purple; red; red; red; purple; purple; purple; red; purple; chartreusey lavender; red; purple; purple; purple; chartreusey lavender; purple; chartreusey lavender; chartreusey lavender; red; purple; red; red; red; red; chartreusey lavender; purple; purple; chartreusey lavender; purple; purple; chartreusey lavender; red; red; purple; purple; chartreusey lavender; chartreusey lavender; red; red; red; red; red; red; purple; red; chartreusey lavender; purple; red; purple; red; chartreusey lavender; purple; purple; chartreusey lavender; red; red; chartreusey lavender; chartreusey lavender; chartreusey lavender; chartreusey lavender; purple; purple; purple; purple;
-  chartreusey lavender; chartreusey lavender; purple; red; red; red; purple; chartreusey lavender; red; red; ... enough!
-  red; purple; red; purple; red; red; purple; red; purple; purple; red; red; purple; red; purple; purple; red; purple; red; red; purple; red; red; purple; purple; purple; purple; red; red; purple; red; purple; red; red; red; red; purple; purple; red; red; purple; purple; red; purple; purple; purple; purple; red; purple; purple; purple; red; red; red; purple; red; red; purple; purple; purple; purple; purple; red; red; purple; red; red; purple; purple; red; red; purple; red; red; purple; red; purple; purple; red; red; purple; red; red; red; purple; red; purple; red; purple; red; red; purple; red; purple; purple; purple; red; purple; purple; purple; ... enough!
+  pink; chartreusey lavender; purple; purple; chartreusey lavender; purple; purple; red; purple; red; purple; purple; red; chartreusey lavender; chartreusey lavender; pink; red; chartreusey lavender; purple; red; pink; chartreusey lavender; red; pink; chartreusey lavender; pink; chartreusey lavender; red; chartreusey lavender; red; purple; red; purple; chartreusey lavender; red; chartreusey lavender; pink; pink; red; chartreusey lavender; chartreusey lavender; red; red; purple; chartreusey lavender; pink; pink; pink; chartreusey lavender; chartreusey lavender; chartreusey lavender; red; pink; purple; pink; pink; pink; chartreusey lavender; chartreusey lavender; chartreusey lavender; chartreusey lavender; chartreusey lavender; pink; red; purple; pink; purple; pink; pink; chartreusey lavender; purple; pink; red; purple; pink; pink; purple; pink; pink; chartreusey lavender; pink; red; pink; purple; chartreusey lavender; purple; purple; red; red; red; pink; red; chartreusey lavender;
+  chartreusey lavender; chartreusey lavender; pink; pink; chartreusey lavender; pink; red; ... enough!
+  red; pink; red; purple; pink; pink; red; pink; purple; red; purple; pink; purple; pink; red; purple; pink; purple; purple; red; purple; red; red; red; pink; pink; red; purple; pink; pink; purple; red; purple; red; red; purple; red; pink; pink; purple; red; pink; red; red; pink; red; pink; pink; pink; red; pink; red; pink; purple; pink; purple; red; pink; pink; pink; pink; purple; purple; red; pink; purple; purple; red; red; pink; pink; red; purple; red; purple; purple; red; purple; red; pink; pink; purple; pink; purple; red; purple; pink; purple; pink; red; red; red; purple; pink; red; purple; pink; purple; pink; purple; ... enough!
   
   Welcome
   An Interactive Fiction
