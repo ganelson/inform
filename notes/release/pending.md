@@ -31,6 +31,9 @@ and now poses a moral rather than gender-based question.
 
 ## Bug fixes
 
+-Fix for Jira bug [I7-2355](https://inform7.atlassian.net/browse/I7-2355)
+	to do with how to handle symlinks or broken directory entries
+	(see [Inweb PR#28](https://github.com/ganelson/inweb/pull/28))
 - Fix for Jira bug [I7-2344](https://inform7.atlassian.net/browse/I7-2344)
 	"inform7's -silence flag should imply -no-progress"
 	([commit 687dba6](https://github.com/ganelson/inform/commit/687dba6857983420a76559cfed292cde0a2891fb))
@@ -50,12 +53,17 @@ and now poses a moral rather than gender-based question.
 - Fix for Jira bug [I7-2329](https://inform7.atlassian.net/browse/I7-2329)
 	"Colons in story title are not sanitised in release filenames"
 	([commit f50a043](https://github.com/ganelson/inform/commit/f50a043fabf558ad3396bc1b97dfb13b93619305))
+- Fix for Jira bugs [I7-2310](https://inform7.atlassian.net/browse/I7-2310),
+	[I7-2333](https://inform7.atlassian.net/browse/I7-2333),
+	[I7-2364](https://inform7.atlassian.net/browse/I7-2364), all duplicates
+	to do with actions defined with "it" in the name
 - Fix for Jira bug [I7-2306](https://inform7.atlassian.net/browse/I7-2306)
 	"remaining arbitary ifdefs in kit code": also fixes an unreported bug in
 	which the use options "Use numbered rules", "Use manual pronouns",
 	"Use fast route-finding" and "Use slow route-finding" had ceased to have
 	any effect; all taken care of in the implementation of IE-0018
 	([commit 95e613c](https://github.com/ganelson/inform/commit/95e613cd6a2d4341823f16f1635e59136710090a))
+	(see also duplicate report [I7-2276](https://inform7.atlassian.net/browse/I7-2276))
 - Fix for Jira bug [I7-2304](https://inform7.atlassian.net/browse/I7-2304)
 	"switch(): first branch can't start with negative number"
 	([commit 1c18007](https://github.com/ganelson/inform/commit/1c18007326bf6fb15c74a1d5742827a4d76a0c20))
@@ -121,13 +129,13 @@ and now poses a moral rather than gender-based question.
 - Fix for Jira bug [I7-2139](https://inform7.atlassian.net/browse/I7-2139)
 	"Articles become part of relation name"
 	([commit 85110a9](https://github.com/ganelson/inform/commit/85110a981a3d2419b3778eb383408de122c301a8))
-- Fix for a "very old quirk of I7 where it generates a `story.gblorb.js` file for
-	the interpreter website, but the filename is a lie. It's the base64-encoding
-	of the `story.ulx` file, not the `story.gblorb`." (Andrew Plotkin, not from Jira)
-- Cosmetic fixes not worth linking to (I7-2350, I7-2319, I7-2316, I7-2315, I7-2293, I7-2270, I7-2268, I7-2221)
+- Cosmetic fixes not worth linking to (I7-2350, I7-2319, I7-2316, I7-2315, I7-2293, I7-2270, I7-2268, I7-2221, I7-2214, I7-2210)
 
 ## Bugs fixed but not from tracked reports
 
+- Fix for a "very old quirk of I7 where it generates a `story.gblorb.js` file for
+	the interpreter website, but the filename is a lie. It's the base64-encoding
+	of the `story.ulx` file, not the `story.gblorb`." (Andrew Plotkin, not from Jira)
 - "X is an activity on nothing" would incorrectly create an activity on objects,
 	resulting in an immediate contradiction. (Activities on nothing are not often
 	useful, which is why this bug has lasted so long.)
@@ -149,6 +157,8 @@ be closed:
 	on directions being held
 - [I7-2178](https://inform7.atlassian.net/browse/I7-2178)
 	on "if x is held by a supporter" resulting in false negative
+- [I7-2158](https://inform7.atlassian.net/browse/I7-2158)
+	on "all" determiner tests failing with relations
 - [I7-2128](https://inform7.atlassian.net/browse/I7-2128)
 	on holding relation tests failing for containment, support, or incorporation
 - [I7-2046 = Mantis 2083](https://inform7.atlassian.net/browse/I7-2046)
@@ -158,7 +168,7 @@ be closed:
 
 Similarly, [(IE-0021) No automatic plural synonyms](https://github.com/ganelson/inform-evolution/blob/main/proposals/0021-no-automatic-plural-synonyms.md):
 
-- [I7-1980](https://inform7.atlassian.net/browse/I7-1980)
+- [I7-1980 = Mantis 2016](https://inform7.atlassian.net/browse/I7-1980)
 	on understanding things by plural name of kind
 
 ## Note about intest
