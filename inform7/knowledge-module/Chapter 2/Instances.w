@@ -350,7 +350,7 @@ void Instances::make_instances_from_Neptune(void) {
 	LOOP_OVER(kc, kind_constructor) {
 		linked_list *L = KindConstructors::instances(kc);
 		kind_constructor_instance *kci;
-		inter_ti current_val = 1;
+		inter_ti current_val = 0;
 		int first_val = TRUE;
 		LOOP_OVER_LINKED_LIST(kci, kind_constructor_instance, L) {
 			wording W = Feeds::feed_text(kci->natural_language_name);
@@ -372,10 +372,12 @@ void Instances::make_instances_from_Neptune(void) {
 				}
 				current_val = (inter_ti) kci->value;
 			}
+			else {
+				current_val++;
+			}
 			RTKindConstructors::set_explicit_runtime_instance_value(K, I, current_val);
 			RTInstances::set_translation(I, kci->identifier);
 			// LOG("From kit: %W = %S = %d -> $O\n", W, kci->identifier, current_val, I);
-			current_val++;
 			first_val = FALSE;
 		}
 	}
