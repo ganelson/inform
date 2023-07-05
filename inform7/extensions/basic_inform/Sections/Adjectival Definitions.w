@@ -12,7 +12,7 @@ is covariant: but "activity on values" does not match every activity, because
 "activity on K" is contravariant, and instead "activity on nothing" is needed.
 
 =
-Part Four - Adjectival Definitions
+Part Five - Adjectival Definitions
 
 Section 1 - Miscellaneous Useful Adjectives
 

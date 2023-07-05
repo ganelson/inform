@@ -9,7 +9,7 @@ requirements is not met an error message will be shown before quitting.
 
 =
 [ VM_Check_Functionality res;
-	@gestalt 4 2 res; ! Test if this interpreter has Glk...
+	@gestalt GLULX_GESTALT_IOSystem 2 res; ! Test if this interpreter has Glk...
 	if (res == 0) quit; ! ...without which there would be nothing we could do
 
 	! Set the VM's I/O system to be Glk.
@@ -19,7 +19,7 @@ requirements is not met an error message will be shown before quitting.
 		Fatal_Error("This storyfile can only be run in an unicode interpreter.");
 	}
 
-	@gestalt 11 0 res; ! Test if this interpreter supports real numbers...
+	@gestalt GLULX_GESTALT_Float 0 res; ! Test if this interpreter supports real numbers...
 	if (res == 0) {
 		Fatal_Error("This storyfile can only be run in a Glulx interpreter that supports floating-point arithmetic.");
 	}
