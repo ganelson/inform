@@ -1,0 +1,39 @@
+   Station
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Station
+  
+> >   Station
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  11:57 pm
+  >[2] z
+  Time passes.
+  
+  11:58 pm
+  The Flying Scotsman pulls up at the platform, to a billow of steam and hammering.
+  
+  >[3] z
+  Time passes.
+  
+  11:59 pm
+  >[4] z
+  Time passes.
+  
+  12:00 am
+  >[5] z
+  Time passes.
+  
+  12:01 am
+  The Flying Scotsman inches away, with a squeal of released brakes, gathering speed invincibly until it disappears around the hill. All is abruptly still once more.
+  
+  >[6] z
+  Time passes.
+  
+  12:02 am
+> >

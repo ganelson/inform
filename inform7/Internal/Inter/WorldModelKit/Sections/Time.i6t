@@ -221,9 +221,9 @@ only absolute times; we need the following for relative ones.
 		if (scene_endings-->(sc-1) <= 1) return RunTimeProblem(RTP_SCENEHASNTENDED, sc);
 	}
 	switch (task) {
-		1: return (the_time - scene_started-->(sc-1))%(TWENTY_FOUR_HOURS);
+		1: return (TWENTY_FOUR_HOURS + the_time - scene_started-->(sc-1))%(TWENTY_FOUR_HOURS);
 		2: return scene_started-->(sc-1);
-		3: return (the_time - scene_ended-->(sc-1))%(TWENTY_FOUR_HOURS);
+		3: return (TWENTY_FOUR_HOURS + the_time - scene_ended-->(sc-1))%(TWENTY_FOUR_HOURS);
 		4: return scene_ended-->(sc-1);
 	}
 ];
