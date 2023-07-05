@@ -7,6 +7,7 @@ Web Syntax Version: 2
 
 Sections
 	Capabilities
+	InfGlk
 	Glk
 	Startup
 	State

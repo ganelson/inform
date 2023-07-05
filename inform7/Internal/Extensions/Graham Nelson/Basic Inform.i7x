@@ -1521,7 +1521,38 @@ Section 1 - Numerical Value
 To decide what number is the numerical value of (U - a use option):
 	(- USE_OPTION_VALUES-->({U}) -).
 
-Part Four - Adjectival Definitions
+Part Four - Glulx and Glk (for Glulx only)
+
+Chapter - Feature testing
+
+To decide whether (F - glk feature) is/are supported:
+	(- glk_gestalt({F}) -).
+
+To decide what number is the glk version number/--:
+	(- glk_gestalt(gestalt_Version) -).
+
+To decide whether buffer window graphics are/is supported:
+	(- glk_gestalt(gestalt_DrawImage, winType_TextBuffer) -).
+
+To decide whether graphics window graphics are/is supported:
+	(- glk_gestalt(gestalt_DrawImage, winType_Graphics) -).
+
+To decide whether graphics window mouse input is supported:
+	(- glk_gestalt(gestalt_MouseInput, winType_Graphics) -).
+
+To decide whether grid window mouse input is supported:
+	(- glk_gestalt(gestalt_MouseInput, winType_TextGrid) -).
+
+To decide whether (F - glulx feature) is/are supported:
+	(- Glulx_Gestalt({F}) -).
+
+To decide what number is the glulx version number/--:
+	(- Glulx_Gestalt(0) -).
+
+To decide what number is the interpreter version number/--:
+	(- Glulx_Gestalt(1) -).
+
+Part Five - Adjectival Definitions
 
 Section 1 - Miscellaneous Useful Adjectives
 
