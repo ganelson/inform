@@ -355,7 +355,7 @@ void Supervisor::optioneering_complete(inbuild_copy *C, int compile_only,
 	@<Find the virtual machine@>;
 	Supervisor::make_project_from_command_line(C);
 	
-	Supervisor::create_default_externals();
+	// Supervisor::create_default_externals();
 	Supervisor::enter_phase(TINKERING_INBUILD_PHASE);
 	Supervisor::sort_nest_list();
 

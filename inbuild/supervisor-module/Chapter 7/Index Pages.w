@@ -30,11 +30,15 @@ void ExtensionIndex::write(inform_project *proj) {
 	if (materials) ADD_TO_LINKED_LIST(materials, inbuild_nest, search_list);
 	inbuild_nest *internal = Supervisor::internal();
 	if (internal) ADD_TO_LINKED_LIST(internal, inbuild_nest, search_list);
-	if (LinkedLists::len(search_list) > 0) {
-		inbuild_requirement *req = Requirements::anything_of_genre(extension_bundle_genre);
-		Nests::search_for(req, search_list, L);
-	}
+	inbuild_requirement *req = Requirements::anything_of_genre(extension_bundle_genre);
+	if (LinkedLists::len(search_list) > 0) Nests::search_for(req, search_list, L);
 	ExtensionIndex::find_used_extensions(proj, U, R);
+	inbuild_copy *C;
+	LOOP_OVER_LINKED_LIST(C, inbuild_copy, U)
+		if ((C->nest_of_origin) &&
+			(Nests::get_tag(C->nest_of_origin) != INTERNAL_NEST_TAG) &&
+			(Nests::get_tag(C->nest_of_origin) != MATERIALS_NEST_TAG))
+			Nests::add_search_result(L, C->nest_of_origin, C, req);
 
 @<Write the body of the HTML@> =
 	HTML::begin_html_table(OUT, NULL, TRUE, 0, 4, 0, 0, 0);
@@ -80,11 +84,12 @@ page, not the index of terms, which is all handled by
 //ExtensionDictionary::write_to_HTML//.
 
 @<Display the location of installed extensions@> =
-	int nbi = 0, nps = 0;
+	int nbi = 0, nps = 0, nex = 0;;
 	inbuild_search_result *ecd;
 	LOOP_OVER_LINKED_LIST(ecd, inbuild_search_result, L) {
 		if (Nests::get_tag(ecd->nest) == INTERNAL_NEST_TAG) nbi++;
-		else nps++;
+		else if (Nests::get_tag(ecd->nest) == MATERIALS_NEST_TAG) nps++;
+		else nex++;
 	}
 
 	HTML_OPEN("p");
@@ -94,11 +99,11 @@ page, not the index of terms, which is all handled by
 	WRITE("&nbsp;");
 	if (nps > 0) {
 		WRITE("%d extension%s installed in the .materials folder for the "
-			"project '%S'. (Click the purple folder icon to show the location.)",
+			"project '%S'. (Click the icon to show the location.)",
 			nps, (nps==1)?" is":"s are", proj->as_copy->edition->work->title);
 	} else {
 		WRITE("No extensions are installed in the .materials folder for the "
-			"project '%S'. (Click the purple folder icon to show the location. "
+			"project '%S'. (Click the icon to show the location. "
 			"Extensions should be put in the 'Extensions' subfolder of this: you "
 			"can put them there yourself, or use the Inform app to install them "
 			"for you.)", proj->as_copy->edition->work->title);
@@ -106,12 +111,23 @@ page, not the index of terms, which is all handled by
 	HTML_CLOSE("p");
 
 	HTML_OPEN("p");
-	HTML_TAG_WITH("img", "src='inform:/doc_images/builtin_ext.png' border=0");
+	HTML_TAG_WITH("img", BUILT_IN_SYMBOL);
 	WRITE("&nbsp;");
 	WRITE("As well as being able to use extensions installed into its own folder, "
 		"any project can use extensions which come built into the Inform app. There "
 		"are currently %d.", nbi);
 	HTML_CLOSE("p");
+
+	if (nex > 0) {
+		HTML_OPEN("p");
+		HTML_TAG_WITH("img", LEGACY_AREA_SYMBOL);
+		WRITE("&nbsp;");
+		WRITE("And '%S' still uses %d extension%s from the legacy extensions area. Best "
+			"practice is to install %s into .materials instead, which the Inform app "
+			"can do for you.",
+			proj->as_copy->edition->work->title, nex, (nex==1)?"":"s", (nex==1)?"it":"them");
+		HTML_CLOSE("p");
+	}
 
 @ The following is an alphabetised directory of extensions by author and then
 title, along with some useful information about them, and then a list of
@@ -174,21 +190,9 @@ hidden, by default.
 	if ((d == SORT_CE_BY_TITLE) || (d == SORT_CE_BY_USAGE)) display = "block";
 	HTML_OPEN_WITH("div", "id=\"disp%d\" style=\"display: %s;\"", d, display);
 
-@ The key at the foot only explicates those symbols actually used, and
-doesn't explicate the "unindexed" symbol at all, since that's actually
-just a blank image used for horizontal spacing to keep margins straight.
-
 @<Print the key to any symbols used in the census lines@> =
-	if (LinkedLists::len(key_list) > 0) {
-		HTML_OPEN("p");
-		WRITE("Key: ");
-		extensions_key_item *eki;
-		LOOP_OVER_LINKED_LIST(eki, extensions_key_item, key_list) {
-			HTML_TAG_WITH("img", "%S", eki->image_URL);
-			WRITE("&nbsp;%S &nbsp;&nbsp;", eki->gloss);
-		}
-		HTML_CLOSE("p");
-	}
+	if (LinkedLists::len(key_list) > 0)
+		ExtensionIndex::render_key(OUT, key_list);
 
 @ Census errors are nothing more than copy errors arising on the copies
 of extensions found by the census:
@@ -343,15 +347,6 @@ the usual ones seen in Mac OS X applications such as iTunes.
 @<Print the author's line in the extension census table@> =
 	WRITE("%S", ecd->copy->edition->work->raw_author_name);
 
-@
-
-@d UNINDEXED_SYMBOL "border=\"0\" src=\"inform:/doc_images/unindexed_bullet.png\""
-@d INDEXED_SYMBOL "border=\"0\" src=\"inform:/doc_images/indexed_bullet.png\""
-@d PROBLEM_SYMBOL "border=\"0\" height=\"12\" src=\"inform:/doc_images/census_problem.png\""
-@d REVEAL_SYMBOL "border=\"0\" src=\"inform:/doc_images/Reveal.png\""
-@d HELP_SYMBOL "border=\"0\" src=\"inform:/doc_images/help.png\""
-@d PASTE_SYMBOL "border=\"0\" src=\"inform:/doc_images/paste.png\""
-
 @<Print the census line for this extension@> =
 	@<Print column 1 of the census line@>;
 	HTML::next_html_column_nw(OUT, 0);
@@ -438,22 +433,18 @@ the first and last word and just look at what is in between:
 		WRITE("--");
 	HTML::end_span(OUT);
 
-@
-
-@d BUILT_IN_SYMBOL "border=\"0\" src=\"inform:/doc_images/builtin_ext.png\""
-@d PROJECT_SPECIFIC_SYMBOL "border=\"0\" src=\"inform:/doc_images/pspec_ext.png\""
-@d ARCH_16_SYMBOL "border=\"0\" src=\"inform:/doc_images/vm_z8.png\""
-@d ARCH_32_SYMBOL "border=\"0\" src=\"inform:/doc_images/vm_glulx.png\""
-
 @<Print column 3 of the census line@> =
-	char *opener = "src='inform:/doc_images/folder4.png' border=0";
+	char *opener = NULL;
 	if (Nests::get_tag(ecd->nest) == INTERNAL_NEST_TAG) {
 		opener = BUILT_IN_SYMBOL;
 		ExtensionIndex::add_to_key(key_list, BUILT_IN_SYMBOL, I"Built in");
-	}
-	if (Nests::get_tag(ecd->nest) == MATERIALS_NEST_TAG) {
+	} else if (Nests::get_tag(ecd->nest) == MATERIALS_NEST_TAG) {
 		opener = PROJECT_SPECIFIC_SYMBOL;
 		ExtensionIndex::add_to_key(key_list, PROJECT_SPECIFIC_SYMBOL, I"Installed in .materials");
+	} else {
+		opener = LEGACY_AREA_SYMBOL;
+		ExtensionIndex::add_to_key(key_list, LEGACY_AREA_SYMBOL,
+			I"Used from legacy extensions area");
 	}
 	if (Nests::get_tag(ecd->nest) == INTERNAL_NEST_TAG)
 		HTML_TAG_WITH("img", "%s", opener)
@@ -483,10 +474,21 @@ the first and last word and just look at what is in between:
 @h The key.
 There is just no need to do this efficiently in either running time or memory.
 
+@d PROBLEM_SYMBOL "border=\"0\" height=\"12\" src=\"inform:/doc_images/census_problem.png\""
+@d REVEAL_SYMBOL "border=\"0\" src=\"inform:/doc_images/Reveal.png\""
+@d HELP_SYMBOL "border=\"0\" src=\"inform:/doc_images/help.png\""
+@d PASTE_SYMBOL "border=\"0\" src=\"inform:/doc_images/paste.png\""
+@d BUILT_IN_SYMBOL "border=\"0\" src=\"inform:/doc_images/builtin_ext.png\""
+@d PROJECT_SPECIFIC_SYMBOL "border=\"0\" src=\"inform:/doc_images/folder4.png\""
+@d LEGACY_AREA_SYMBOL "border=\"0\" src=\"inform:/doc_images/pspec_ext.png\""
+@d ARCH_16_SYMBOL "border=\"0\" src=\"inform:/doc_images/vm_z8.png\""
+@d ARCH_32_SYMBOL "border=\"0\" src=\"inform:/doc_images/vm_glulx.png\""
+
 =
 typedef struct extensions_key_item {
 	struct text_stream *image_URL;
 	struct text_stream *gloss;
+	int displayed;
 	CLASS_DEFINITION
 } extensions_key_item;
 
@@ -502,9 +504,42 @@ void ExtensionIndex::add_to_key(linked_list *L, char *URL, text_stream *gloss) {
 		eki = CREATE(extensions_key_item);
 		eki->image_URL = Str::duplicate(as_text);
 		eki->gloss = Str::duplicate(gloss);
+		eki->displayed = FALSE;
 		ADD_TO_LINKED_LIST(eki, extensions_key_item, L);
 	}
 	DISCARD_TEXT(as_text)
+}
+
+void ExtensionIndex::render_key(OUTPUT_STREAM, linked_list *L) {
+	HTML_OPEN("p");
+	WRITE("Key: ");
+	char *sequence[] = {
+		PROJECT_SPECIFIC_SYMBOL, BUILT_IN_SYMBOL, LEGACY_AREA_SYMBOL,
+		HELP_SYMBOL, REVEAL_SYMBOL, PASTE_SYMBOL, PROBLEM_SYMBOL,
+		ARCH_16_SYMBOL, ARCH_32_SYMBOL,
+		NULL };
+	for (int i=0; sequence[i] != NULL; i++) {
+		TEMPORARY_TEXT(as_text)
+		WRITE_TO(as_text, "%s", sequence[i]);
+		extensions_key_item *eki;
+		LOOP_OVER_LINKED_LIST(eki, extensions_key_item, L) {
+			if (Str::eq(eki->image_URL, as_text)) {
+				HTML_TAG_WITH("img", "%S", eki->image_URL);
+				WRITE("&nbsp;%S &nbsp;&nbsp;", eki->gloss);
+				eki->displayed = TRUE;
+			}
+		}
+		DISCARD_TEXT(as_text)
+	}
+	extensions_key_item *eki;
+	LOOP_OVER_LINKED_LIST(eki, extensions_key_item, L) {
+		if (eki->displayed == FALSE) {
+			HTML_TAG_WITH("img", "%S", eki->image_URL);
+			WRITE("&nbsp;%S &nbsp;&nbsp;", eki->gloss);
+			eki->displayed = TRUE;
+		}
+	}
+	HTML_CLOSE("p");
 }
 
 @h Icons for virtual machines.
