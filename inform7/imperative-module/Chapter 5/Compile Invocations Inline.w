@@ -133,6 +133,14 @@ this issue.
 		parse_node *val = tokens->token_vals[i];
 		kind *K = Invocations::get_token_variable_kind(inv, i);
 		if (K) {
+			if (K->construct == CON_INTERMEDIATE) {
+				StandardProblems::sentence_problem(Task::syntax_tree(),
+					_p_(PM_DimensionallyImpossibleLetVariable),
+					"this variable does not have a kind I can use",
+					"since it results from performing arithmetic on other values "
+					"in a way which doesn't result in a kind that I recognise.");
+				K = K_number;
+			}
 			local_variable *lvar = LocalVariables::new_let_value(Node::get_text(val), K);
 			if (IDTypeData::block_follows(idb) == LOOP_BODY_BLOCK_FOLLOWS)
 				CodeBlocks::set_scope_to_block_about_to_open(lvar);

@@ -550,7 +550,7 @@ void Produce::cast(inter_tree *I, kind *F, kind *T) {
 
 inter_symbol *Produce::kind_to_symbol(kind *K) {
 	#ifdef CORE_MODULE
-	if ((K == NULL) || (K == K_value)) return NULL;
+	if ((K == NULL) || (K == K_value) || (K->construct == CON_INTERMEDIATE)) return NULL;
 	return InterNames::to_symbol(RTKindDeclarations::iname(K));
 	#endif
 	#ifndef CORE_MODULE

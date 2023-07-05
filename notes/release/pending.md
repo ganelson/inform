@@ -31,6 +31,8 @@ and now poses a moral rather than gender-based question.
 
 ## Bug fixes
 
+-Fix for Jira bug [I7-2366](https://inform7.atlassian.net/browse/I7-2366)
+	"10.1 segfaults with compound units that haven't been explicitly defined"
 -Fix for Jira bug [I7-2355](https://inform7.atlassian.net/browse/I7-2355)
 	to do with how to handle symlinks or broken directory entries
 	(see [Inweb PR#28](https://github.com/ganelson/inweb/pull/28))
@@ -129,6 +131,11 @@ and now poses a moral rather than gender-based question.
 - Fix for Jira bug [I7-2139](https://inform7.atlassian.net/browse/I7-2139)
 	"Articles become part of relation name"
 	([commit 85110a9](https://github.com/ganelson/inform/commit/85110a981a3d2419b3778eb383408de122c301a8))
+- Fix for Jira bug [I7-2074](https://inform7.atlassian.net/browse/I7-2074)
+	"Documentation recommends scene code that causes soft lock" (about times
+	since scene ending sometimes being negative)
+	([PR#109](https://github.com/ganelson/inform/pull/109))
+
 - Cosmetic fixes not worth linking to (I7-2350, I7-2319, I7-2316, I7-2315, I7-2293, I7-2270, I7-2268, I7-2221, I7-2214, I7-2210)
 
 ## Bugs fixed but not from tracked reports
