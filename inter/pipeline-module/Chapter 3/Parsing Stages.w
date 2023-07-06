@@ -34,6 +34,7 @@ int ParsingStages::run_load_kit_source(pipeline_step *step) {
 	@<Create a module to hold the Inter read in from this kit@>;
 	TEMPORARY_TEXT(namespacename)
 	simple_tangle_docket docket;
+	rpi_docket_state state;
 	@<Make a suitable simple tangler docket@>;
 	SimpleTangler::tangle_web(&docket);
 	DISCARD_TEXT(namespacename)
@@ -78,6 +79,7 @@ int ParsingStages::run_parse_insertions(pipeline_step *step) {
 	inter_tree *I = step->ephemera.tree;
 	TEMPORARY_TEXT(namespacename)
 	simple_tangle_docket docket;
+	rpi_docket_state state;
 	@<Make a suitable simple tangler docket@>;
 	rpi_state rpis;
 	rpis.docket = &docket;
@@ -129,7 +131,6 @@ typedef struct rpi_docket_state {
 	if (assimilation_package == NULL) assimilation_package = LargeScale::main_package(I);
 	inter_bookmark assimilation_point =
 		InterBookmark::at_end_of_this_package(assimilation_package);
-	rpi_docket_state state;
 	state.assimilation_point = &assimilation_point;
 	state.namespace = namespacename;
 	state.provenance = Provenance::nowhere();
