@@ -165,7 +165,6 @@ to document all of that.
                 done = true;
                 }
         }
-        ix = HandleGlkEvent(gg_event, 1, gg_arguments);
         if (ix == 2) {
             res = gg_arguments-->0;
             done = true;
@@ -201,7 +200,6 @@ to document all of that.
     glk_request_timer_events(tenths*100);
     while (~~done) {
         glk_select(gg_event);
-        ix = HandleGlkEvent(gg_event, 1, gg_arguments);
         if (ix == 2) {
             key = gg_arguments-->0;
             done = true;
@@ -247,7 +245,6 @@ to document all of that.
                 done = true;
             }
         }
-        ix = HandleGlkEvent(gg_event, 0, a_buffer);
         if (ix == 2) done = true;
         else if (ix == -1) done = false;
     }
@@ -798,7 +795,6 @@ text just appears in the main window.
 
     if (gg_quotewin == 0) {
         gg_arguments-->0 = lines;
-        ix = InitGlkWindow(GG_QUOTEWIN_ROCK);
         if (ix == 0)
             gg_quotewin =
             	glk_window_open(gg_mainwin, winmethod_Fixed + winmethod_Above,

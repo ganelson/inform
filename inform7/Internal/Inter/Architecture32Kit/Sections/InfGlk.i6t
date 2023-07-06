@@ -10,6 +10,7 @@ This is an almost verbatim copy of an invaluable I6 header file originally put t
 Some things have been commented out:
 
 - the System_file directive (no longer supported by Inform 10)
+- glk_select (redefined in Glk.i6t)
 
 The current version can be obtained at
 https://github.com/erkyrath/glk-dev/blob/master/dispatch_dump/infglk.h
@@ -497,11 +498,11 @@ Constant wintype_TextGrid = 4;
   return ret;
 ];
 
-[ glk_select _vararg_count;
-  ! glk_select(&{uint, window, uint, uint})
-  @glk 192 _vararg_count 0;
-  return 0;
-];
+![ glk_select _vararg_count;
+!  ! glk_select(&{uint, window, uint, uint})
+!  @glk 192 _vararg_count 0;
+!  return 0;
+!];
 
 [ glk_select_poll _vararg_count;
   ! glk_select_poll(&{uint, window, uint, uint})
