@@ -123,9 +123,15 @@ Use Inform 6 compiler option "$DICT_CHAR_SIZE=4".
 
 Part Two - Miscellaneous Definitions
 
+An abstract object is a kind of object.
+
 An object has a value called variable initial value.
 
 An object has a text called specification.
+
+The specification of abstract object is "Can be used for objects which are purely
+conceptual, like ideas, or are needed for internal book-keeping."
+
 An object has a text called indefinite appearance text.
 An object has a text called printed name.
 An object has a text called printed plural name.

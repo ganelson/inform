@@ -84,6 +84,9 @@ and now poses a moral rather than gender-based question.
 	in a way which would make it unheld by default, when an existing sentence
 	already makes it held by default
 	([commit 1fc5055](https://github.com/ganelson/inform/commit/1fc505507b52be19a09cc3898326952954620312))
+- Fix for Jira bug [I7-2282](https://inform7.atlassian.net/browse/I7-2282)
+	"segfaults in linux with latest inform, ..., built with gcc"
+	(hat-tip to Adrian Welcker: [PR#111](https://github.com/ganelson/inform/pull/111))
 - Fix for Jira bug [I7-2269](https://inform7.atlassian.net/browse/I7-2269)
 	"Output of I6 floating point literals strips the '+', resulting in uncompilable I6"
 	([commit 46349cb](https://github.com/ganelson/inform/commit/46349cb85c56116602c9245ee47e67ea08155d40))

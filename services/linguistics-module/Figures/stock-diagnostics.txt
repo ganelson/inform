@@ -1,12 +1,12 @@
 adjective: 140 items
 article: 2 items
-noun: 2395 items
+noun: 2396 items
 pronoun: 8 items
 preposition: 274 items
 determiner: 22 items
 verb: 109 items
 verb_form: 388 items
-total in all categories: 3338
+total in all categories: 3339
 
 adjective: 'even'
 adjective: 'odd'
@@ -666,6 +666,7 @@ noun: proper: 'no automatic plural synonyms'
 noun: proper: 'dynamic memory allocation'
 noun: proper: 'maximum text length'
 noun: proper: 'index figure thumbnails'
+noun: common: 'abstract object'
 noun: proper: 'plural-named'
 noun: proper: 'property plural-named'
 noun: proper: 'singular-named'

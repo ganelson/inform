@@ -268,7 +268,7 @@ inter_name *RTKindConstructors::base_IK_iname(kind *K) {
 
 inter_name *RTKindConstructors::create_base_IK_iname(kind *K) {
 	package_request *pack = RTKindConstructors::kind_package(K);
-	int N = Kinds::Behaviour::get_range_number(K), hl = -1;
+	int N = RTKindConstructors::traditional_class_number(K), hl = -1;
 	switch (N) {
 		case 1: hl = BASE_IK_1_HL; break;
 		case 2: hl = BASE_IK_2_HL; break;
@@ -645,6 +645,31 @@ void RTKindConstructors::assign_dsn_r(int *N, inference_subject *within) {
 			(InferenceSubjects::is_a_kind_of_object(subj)))
 			RTKindConstructors::assign_dsn_r(N, subj);
 }
+
+@ Whereas the traditional class number (see above) is used only to ensure that
+standard names are used.
+
+=
+int RTKindConstructors::traditional_class_number(kind *K) {
+	if (K == NULL) return -1;
+	wording W = KindConstructors::get_name(K->construct, FALSE);
+	if (<traditional-class-number>(W)) return <<r>>;
+	return 100 + Kinds::Behaviour::get_range_number(K);
+}
+
+@
+
+=
+<traditional-class-number> ::=
+	room |       ==> { 1, - }
+	thing |      ==> { 2, - }
+	direction |  ==> { 3, - }
+	door |       ==> { 4, - }
+	container |  ==> { 5, - }
+	supporter |  ==> { 6, - }
+	backdrop |   ==> { 7, - }
+	person |     ==> { 8, - }
+	region       ==> { 9, - }
 
 @h Compilation.
 Deep breath now...

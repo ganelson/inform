@@ -7,6 +7,8 @@ Basic Inform kernel is as small as it sensibly can be, with just a few of each.
 @ =
 Part Two - Miscellaneous Definitions
 
+An abstract object is a kind of object.
+
 @h Properties.
 The following declaration is misleading, since Inform doesn't read it
 literally. "Variable initial value" is in fact the only property common
@@ -24,6 +26,10 @@ after an object is created).
 
 =
 An object has a text called specification.
+
+The specification of abstract object is "Can be used for objects which are purely
+conceptual, like ideas, or are needed for internal book-keeping."
+
 An object has a text called indefinite appearance text.
 An object has a text called printed name.
 An object has a text called printed plural name.
