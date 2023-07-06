@@ -244,14 +244,14 @@ next instance: this enables rapid looping through all instances at runtime.
 =
 inter_name *RTKindConstructors::first_instance_iname(kind *K) {
 	kind_constructor *kc = Kinds::get_construct(K);
-	RETURN_INAME_IN(kc, first_instance_iname,
+	RETURN_AVAILABLE_INAME_IN(kc, first_instance_iname,
 		Hierarchy::derive_iname_in_translating(FIRST_INSTANCE_HL,
 			RTKindDeclarations::iname(K), RTKindConstructors::package(kc)))
 }
 
 inter_name *RTKindConstructors::next_instance_iname(kind *K) {
 	kind_constructor *kc = Kinds::get_construct(K);
-	RETURN_INAME_IN(kc, next_instance_iname,
+	RETURN_AVAILABLE_INAME_IN(kc, next_instance_iname,
 		Hierarchy::derive_iname_in_translating(NEXT_INSTANCE_HL,
 			RTKindDeclarations::iname(K), RTKindConstructors::package(kc)))
 }

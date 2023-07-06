@@ -31,8 +31,12 @@ and now poses a moral rather than gender-based question.
 
 ## Bug fixes
 
+-Fix for Jira bug [I7-2370](https://inform7.atlassian.net/browse/I7-2370)
+	"A template file ending with a comment and no line break breaks the next file"
+	(see [Inweb commit 901d125](https://github.com/ganelson/inform/commit/901d12582f1d7746046f11ecac6c2f357ddfac81))
 -Fix for Jira bug [I7-2366](https://inform7.atlassian.net/browse/I7-2366)
 	"10.1 segfaults with compound units that haven't been explicitly defined"
+	([commit ad2c648](https://github.com/ganelson/inform/commit/ad2c648098279dec88c654b23e633037874bc8d3))
 -Fix for Jira bug [I7-2355](https://inform7.atlassian.net/browse/I7-2355)
 	to do with how to handle symlinks or broken directory entries
 	(see [Inweb PR#28](https://github.com/ganelson/inweb/pull/28))
