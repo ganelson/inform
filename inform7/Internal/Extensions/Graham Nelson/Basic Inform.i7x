@@ -1547,10 +1547,48 @@ To decide whether (F - glulx feature) is/are supported:
 	(- Glulx_Gestalt({F}) -).
 
 To decide what number is the glulx version number/--:
-	(- Glulx_Gestalt(0) -).
+	(- Glulx_Gestalt(GLULX_GESTALT_GlulxVersion) -).
 
 To decide what number is the interpreter version number/--:
-	(- Glulx_Gestalt(1) -).
+	(- Glulx_Gestalt(GLULX_GESTALT_TerpVersion) -).
+
+Chapter - Glk object recovery
+
+The current glk object rock number is a number that varies.
+The current glk object rock number variable translates into Inter as "current_glk_object_rock".
+The current glk object reference number is a number that varies.
+The current glk object reference number variable translates into Inter as "current_glk_object_reference".
+
+The reset glk references rules is a rulebook.
+The reset glk references rules is accessible to Inter as "RESET_GLK_REFERENCES_RB".
+The identify glk windows rules is a rulebook.
+The identify glk windows rules is accessible to Inter as "IDENTIFY_WINDOWS_RB".
+The identify glk streams rules is a rulebook.
+The identify glk streams rules is accessible to Inter as "IDENTIFY_STREAMS_RB".
+The identify glk filerefs rules is a rulebook.
+The identify glk filerefs rules is accessible to Inter as "IDENTIFY_FILEREFS_RB".
+The identify glk sound channels rules is a rulebook.
+The identify glk sound channels rules is accessible to Inter as "IDENTIFY_SCHANNELS_RB".
+The glk object updating rules is a rulebook.
+The glk object updating rules is accessible to Inter as "GLK_OBJECT_UPDATING_RB".
+
+The reset glk references for built in objects rule is listed first in the reset glk references rules.
+The reset glk references for built in objects rule translates into Inter as "RESET_GLK_REFERENCES_R".
+
+The identify built in windows rule is listed first in the identify glk windows rules.
+The identify built in windows rule translates into Inter as "IDENTIFY_WINDOWS_R".
+
+The identify built in streams rule is listed first in the identify glk streams rules.
+The identify built in streams rule translates into Inter as "IDENTIFY_STREAMS_R".
+
+The identify built in filerefs rule is listed first in the identify glk filerefs rules.
+The identify built in filerefs rule translates into Inter as "IDENTIFY_FILEREFS_R".
+
+The identify built in sound channels rule is listed first in the identify glk sound channels rules.
+The identify built in sound channels rule translates into Inter as "IDENTIFY_SCHANNELS_R".
+
+The stop built in sound channels rule is listed in the glk object updating rules.
+The stop built in sound channels rule translates into Inter as "STOP_SCHANNELS_R".
 
 Part Five - Adjectival Definitions
 

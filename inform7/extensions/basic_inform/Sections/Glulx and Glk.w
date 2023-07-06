@@ -39,3 +39,64 @@ To decide what number is the glulx version number/--:
 
 To decide what number is the interpreter version number/--:
 	(- Glulx_Gestalt(GLULX_GESTALT_TerpVersion) -).
+
+@h Glk object recovery.
+These rules are a low level system for managing Glk references. When a Glulx
+game restarts and restores, the current Glk IO state is not reset. All the old
+windows, sound channels etc. will be kept as they were, even though the game file
+might be expecting a different state. This extension allows Inform 7 game files
+to ensure that the IO state is as it should be. It does this in three stages:
+
+(a) The "reset glk references rules" is run. Rules should be added to reset all
+Glk references as if none existed.
+
+(b) The "identify glk windows rules" etc. are run. These rulebooks will be run
+once for each Glk IO object which currently exists. Objects can be identified
+through the current glk object rock number and current glk object reference
+number variables.
+
+(c) The "glk object updating rules" is run. Rules should be added to correct the
+Glk IO state by, for example, closing windows which shouldn't exist, and opening
+windows which should but currently do not.
+
+=
+Chapter - Glk object recovery
+
+The current glk object rock number is a number that varies.
+The current glk object rock number variable translates into Inter as "current_glk_object_rock".
+The current glk object reference number is a number that varies.
+The current glk object reference number variable translates into Inter as "current_glk_object_reference".
+
+The reset glk references rules is a rulebook.
+The reset glk references rules is accessible to Inter as "RESET_GLK_REFERENCES_RB".
+The identify glk windows rules is a rulebook.
+The identify glk windows rules is accessible to Inter as "IDENTIFY_WINDOWS_RB".
+The identify glk streams rules is a rulebook.
+The identify glk streams rules is accessible to Inter as "IDENTIFY_STREAMS_RB".
+The identify glk filerefs rules is a rulebook.
+The identify glk filerefs rules is accessible to Inter as "IDENTIFY_FILEREFS_RB".
+The identify glk sound channels rules is a rulebook.
+The identify glk sound channels rules is accessible to Inter as "IDENTIFY_SCHANNELS_RB".
+The glk object updating rules is a rulebook.
+The glk object updating rules is accessible to Inter as "GLK_OBJECT_UPDATING_RB".
+
+@ And the standard rules, which may be replaced by extensions.
+
+=
+The reset glk references for built in objects rule is listed first in the reset glk references rules.
+The reset glk references for built in objects rule translates into Inter as "RESET_GLK_REFERENCES_R".
+
+The identify built in windows rule is listed first in the identify glk windows rules.
+The identify built in windows rule translates into Inter as "IDENTIFY_WINDOWS_R".
+
+The identify built in streams rule is listed first in the identify glk streams rules.
+The identify built in streams rule translates into Inter as "IDENTIFY_STREAMS_R".
+
+The identify built in filerefs rule is listed first in the identify glk filerefs rules.
+The identify built in filerefs rule translates into Inter as "IDENTIFY_FILEREFS_R".
+
+The identify built in sound channels rule is listed first in the identify glk sound channels rules.
+The identify built in sound channels rule translates into Inter as "IDENTIFY_SCHANNELS_R".
+
+The stop built in sound channels rule is listed in the glk object updating rules.
+The stop built in sound channels rule translates into Inter as "STOP_SCHANNELS_R".

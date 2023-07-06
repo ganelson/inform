@@ -10,19 +10,54 @@ in case I7 extensions want to do interesting things with Glulx.
 
 =
 #Stub HandleGlkEvent    3;
-#Stub IdentifyGlkObject 4;
 #Stub InitGlkWindow     1;
 
 Constant GLK_NULL 0;
 
-@ |GGRecoverObjects| handles recovering the Glk objects after restarting or restoring.
+@h Glk object recovery.
+|GGRecoverObjects| handles recovering the Glk objects after restarting or restoring.
 
 =
-[ GGRecoverObjects id;
-	! If GGRecoverObjects() has been called, all these stored IDs are
-	! invalid, so we start by clearing them all out.
-	! (In fact, after a restoreundo, some of them may still be good.
-	! For simplicity, though, we assume the general case.)
+Global current_glk_object_rock = 0;
+Global current_glk_object_reference = 0;
+
+[ GGRecoverObjects ref;
+	! Reset all Glk references as if none existed
+	FollowRulebook(RESET_GLK_REFERENCES_RB);
+
+	! Iterate through each of the windows, streams, file refs and sound channels
+	while (ref = glk_window_iterate(ref, gg_arguments)) {
+		current_glk_object_rock = gg_arguments-->0;
+		current_glk_object_reference = ref;
+		FollowRulebook(IDENTIFY_WINDOWS_RB);
+	}
+	while (ref = glk_stream_iterate(ref, gg_arguments)) {
+		current_glk_object_rock = gg_arguments-->0;
+		current_glk_object_reference = ref;
+		FollowRulebook(IDENTIFY_STREAMS_RB);
+	}
+	while (ref = glk_fileref_iterate(ref, gg_arguments)) {
+		current_glk_object_rock = gg_arguments-->0;
+		current_glk_object_reference = ref;
+		FollowRulebook(IDENTIFY_FILEREFS_RB);
+	}
+	if (glk_gestalt(gestalt_Sound, 0)) {
+		while (ref = glk_schannel_iterate(ref, gg_arguments)) {
+			current_glk_object_rock = gg_arguments-->0;
+			current_glk_object_reference = ref;
+			FollowRulebook(IDENTIFY_SCHANNELS_RB);
+		}
+	}
+
+	! Tell the game to tie up any loose ends
+	FollowRulebook(GLK_OBJECT_UPDATING_RB);
+	rfalse;
+];
+
+@ The built in object recovery rules.
+
+=
+[ RESET_GLK_REFERENCES_R;
 	gg_mainwin = 0;
 	gg_statuswin = 0;
 	gg_quotewin = 0;
@@ -34,59 +69,64 @@ Constant GLK_NULL 0;
 	gg_backgroundchan = 0;
 	gg_commandstr = 0;
 	gg_command_reading = false;
-	! Also tell the game to clear its object references.
-	IdentifyGlkObject(0);
+	rfalse;
+];
 
-	id = glk_stream_iterate(0, gg_arguments);
-	while (id) {
-		switch (gg_arguments-->0) {
-			GG_SAVESTR_ROCK: gg_savestr = id;
-			GG_SCRIPTSTR_ROCK: gg_scriptstr = id;
-			GG_COMMANDWSTR_ROCK: gg_commandstr = id;
-									gg_command_reading = false;
-			GG_COMMANDRSTR_ROCK: gg_commandstr = id;
-									gg_command_reading = true;
-			default: IdentifyGlkObject(1, 1, id, gg_arguments-->0);
-		}
-		id = glk_stream_iterate(id, gg_arguments);
+[ IDENTIFY_WINDOWS_R;
+	switch (current_glk_object_rock) {
+		GG_MAINWIN_ROCK:
+			gg_mainwin = current_glk_object_reference;
+		GG_STATUSWIN_ROCK:
+			gg_statuswin = current_glk_object_reference;
+		GG_QUOTEWIN_ROCK:
+			gg_quotewin = current_glk_object_reference;
 	}
+	rfalse;
+];
 
-	id = glk_window_iterate(0, gg_arguments);
-	while (id) {
-		switch (gg_arguments-->0) {
-			GG_MAINWIN_ROCK: gg_mainwin = id;
-			GG_STATUSWIN_ROCK: gg_statuswin = id;
-			GG_QUOTEWIN_ROCK: gg_quotewin = id;
-			default: IdentifyGlkObject(1, 0, id, gg_arguments-->0);
-		}
-		id = glk_window_iterate(id, gg_arguments);
+[ IDENTIFY_STREAMS_R;
+	switch (current_glk_object_rock) {
+		GG_SAVESTR_ROCK:
+			gg_savestr = current_glk_object_reference;
+		GG_SCRIPTSTR_ROCK:
+			gg_scriptstr = current_glk_object_reference;
+		GG_COMMANDWSTR_ROCK:
+			gg_commandstr = current_glk_object_reference;
+			gg_command_reading = false;
+		GG_COMMANDRSTR_ROCK:
+			gg_commandstr = current_glk_object_reference;
+			gg_command_reading = true;
 	}
+	rfalse;
+];
 
-	id = glk_fileref_iterate(0, gg_arguments);
-	while (id) {
-		switch (gg_arguments-->0) {
-			GG_SCRIPTFREF_ROCK: gg_scriptfref = id;
-			default: IdentifyGlkObject(1, 2, id, gg_arguments-->0);
-		}
-		id = glk_fileref_iterate(id, gg_arguments);
+[ IDENTIFY_FILEREFS_R;
+	switch (current_glk_object_rock) {
+		GG_SCRIPTFREF_ROCK:
+			gg_scriptfref = current_glk_object_reference;
 	}
+	rfalse;
+];
 
+[ IDENTIFY_SCHANNELS_R;
+	switch (current_glk_object_rock) {
+		GG_FOREGROUNDCHAN_ROCK:
+			gg_foregroundchan = current_glk_object_reference;
+		GG_BACKGROUNDCHAN_ROCK:
+			gg_backgroundchan = current_glk_object_reference;
+	}
+	rfalse;
+];
+
+[ STOP_SCHANNELS_R;
 	if (glk_gestalt(gestalt_Sound, 0)) {
-		id = glk_schannel_iterate(0, gg_arguments);
-		while (id) {
-			switch (gg_arguments-->0) {
-				GG_FOREGROUNDCHAN_ROCK: gg_foregroundchan = id;
-				GG_BACKGROUNDCHAN_ROCK: gg_backgroundchan = id;
-				default: IdentifyGlkObject(1, 3, id, gg_arguments-->0);
-			}
-			id = glk_schannel_iterate(id, gg_arguments);
+		if (gg_foregroundchan ~= 0) {
+			glk_schannel_stop(gg_foregroundchan);
 		}
-		if (gg_foregroundchan ~= 0) { glk_schannel_stop(gg_foregroundchan); }
-		if (gg_backgroundchan ~= 0) { glk_schannel_stop(gg_backgroundchan); }
+		if (gg_backgroundchan ~= 0) {
+			glk_schannel_stop(gg_backgroundchan);
+		}
 	}
-
-	! Tell the game to tie up any loose ends.
-	IdentifyGlkObject(2);
 	rfalse;
 ];
 
