@@ -4,14 +4,10 @@ Glk is a fully-featured input-output model, designed by Andrew Plotkin for use
 with the Glulx virtual machine, but not used only for that. All 32-bit Inform
 programs use Glk.
 
-@h Stubs.
-These are I6 library-style entry point routines, not used by I7, but retained
-in case I7 extensions want to do interesting things with Glulx.
+@h Glk constants.
+General Glk constants.
 
 =
-#Stub HandleGlkEvent    3;
-#Stub InitGlkWindow     1;
-
 Constant GLK_NULL 0;
 
 @h Glk object recovery.
@@ -127,6 +123,66 @@ Global current_glk_object_reference = 0;
 			glk_schannel_stop(gg_backgroundchan);
 		}
 	}
+	rfalse;
+];
+
+@h Glk windows.
+Functions for minimal Glk windows support.
+
+=
+[ FindGlkWindowFromRefNum ref win;
+	if (ref ~= 0) {
+		for (win = K_Glk_Window_First: win: win = win.K_Glk_Window_Next) {
+			if (win.glk_ref == ref) {
+				return win;
+			}
+		}
+	}
+	return nothing;
+];
+
+@h Glk events.
+To handle events we intercept the |glk_select| function. This allows us to handle
+events early and consistently.
+
+=
+Global Glk_Event_Struct_type;
+Global Glk_Event_Struct_win;
+Global Glk_Event_Struct_val1;
+Global Glk_Event_Struct_val2;
+
+[ glk_select event_struct;
+	! Call the real glk_select
+	@push event_struct;
+	@glk 192 1 0;
+
+	! Clear the unknown window's ref so that we don't immediately match it
+	Unknown_Glk_Window.glk_ref = 0;
+
+	! Copy values to our variables
+	Glk_Event_Struct_type = event_struct-->0;
+	Glk_Event_Struct_win = FindGlkWindowFromRefNum(event_struct-->1);
+	Glk_Event_Struct_val1 = event_struct-->2;
+	Glk_Event_Struct_val2 = event_struct-->3;
+
+	! If no window was found, then use the unknown window
+	if (Glk_Event_Struct_win == nothing && event_struct-->1) {
+		Glk_Event_Struct_win = Unknown_Glk_Window;
+		Unknown_Glk_Window.glk_ref = event_struct-->1;
+		Unknown_Glk_Window.glk_rock = glk_window_get_rock(Unknown_Glk_Window.glk_ref);
+	}
+
+	! Run the glk event handling rules (but disable rules debugging because it crashes if keyboard input events are pending)
+	@push debug_rules; @push say__p; @push say__pc;
+	debug_rules = false; ClearParagraphing(1);
+	FollowRulebook(GLK_EVENT_HANDLING_RB, Glk_Event_Struct_type, true);
+	@pull say__pc; @pull say__p; @pull debug_rules;
+
+	! Copy back to the original event structure
+	event_struct-->0 = Glk_Event_Struct_type;
+	event_struct-->1 = GProperty(OBJECT_TY, Glk_Event_Struct_win, glk_ref);
+	event_struct-->2 = Glk_Event_Struct_val1;
+	event_struct-->3 = Glk_Event_Struct_val2;
 	rfalse;
 ];
 

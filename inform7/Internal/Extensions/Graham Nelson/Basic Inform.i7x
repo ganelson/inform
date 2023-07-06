@@ -1523,7 +1523,22 @@ To decide what number is the numerical value of (U - a use option):
 
 Part Four - Glulx and Glk (for Glulx only)
 
-Chapter - Feature testing
+Chapter - Glk windows
+
+A glk window is a kind of abstract object.
+The glk window kind is accessible to Inter as "K_Glk_Window".
+The specification of a glk window is "Models the Glk window system."
+
+A glk window has a number called the rock number.
+The rock number property translates into Inter as "glk_rock".
+
+A glk window has a number called the reference number.
+The reference number property translates into Inter as "glk_ref".
+
+The unknown window is a glk window.
+The unknown window object is accessible to Inter as "Unknown_Glk_Window".
+
+Chapter - Glk and Glulx feature testing
 
 To decide whether (F - glk feature) is/are supported:
 	(- glk_gestalt({F}) -).
@@ -1589,6 +1604,26 @@ The identify built in sound channels rule translates into Inter as "IDENTIFY_SCH
 
 The stop built in sound channels rule is listed in the glk object updating rules.
 The stop built in sound channels rule translates into Inter as "STOP_SCHANNELS_R".
+
+Chapter - Glk events
+
+The glk event handling rules is a glk event based rulebook.
+The glk event handling rules is accessible to Inter as "GLK_EVENT_HANDLING_RB".
+
+The glk event type is a glk event variable.
+The glk event type variable translates into Inter as "Glk_Event_Struct_type".
+The glk event window is a glk window variable.
+The glk event window variable translates into Inter as "Glk_Event_Struct_win".
+The glk event value 1 is a number variable.
+The glk event value 1 variable translates into Inter as "Glk_Event_Struct_val1".
+The glk event value 2 is a number variable.
+The glk event value 2 variable translates into Inter as "Glk_Event_Struct_val2".
+
+Definition: a glk event is dependent on the player rather than independent of the player if
+	it is character event or
+	it is line event or
+	it is mouse event or
+	it is hyperlink event.
 
 Part Five - Adjectival Definitions
 

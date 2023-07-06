@@ -55,6 +55,8 @@ void StandardsElement::render(OUTPUT_STREAM, index_session *session) {
 		IndexRules::find_rulebook(inv, I"IDENTIFY_SCHANNELS_RB"), NULL, 1, TRUE, session);
 	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.GlkObjectUpdatingRules", NULL,
 		IndexRules::find_rulebook(inv, I"GLK_OBJECT_UPDATING_RB"), NULL, 1, TRUE, session);
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.GlkEventHandlingRules", NULL,
+		IndexRules::find_rulebook(inv, I"GLK_EVENT_HANDLING_RB"), NULL, 1, TRUE, session);
 
 @<Index the segment for the sequence of play rulebooks@> =
 	StandardsElement::subhead(OUT, LD,

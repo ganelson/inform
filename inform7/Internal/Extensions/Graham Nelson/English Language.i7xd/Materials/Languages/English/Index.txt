@@ -313,6 +313,7 @@
 %Index.Elements.St.IdentifyFilerefsRules = Identify glk filerefs rules
 %Index.Elements.St.IdentifySchannelsRules = Identify glk sound channels rules
 %Index.Elements.St.GlkObjectUpdatingRules = Glk object updating rules
+%Index.Elements.St.GlkEventHandlingRules = Glk event handling rules
 
 %Index.Elements.St.CheckRules =
 	Check rules are tied to specific actions, and there are too many to index here.
