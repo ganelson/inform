@@ -48,6 +48,7 @@ typedef struct literal_pattern {
 	int no_lp_elements; /* how many tokens are numbers */
 	struct literal_pattern_element lp_elements[MAX_ELEMENTS_PER_LITERAL];
 	int number_signed; /* for instance -10 cm would be allowed if this is set */
+	int number_base; /* for instance 16 for hexadecimal */
 
 	/* used when we have a sequence of alternative notations for the same unit */
 	int primary_alternative; /* first of a set of alternatives? */
@@ -117,7 +118,9 @@ typedef struct literal_pattern_element {
 	struct wording element_name; /* if we define a name for the element */
 
 	int is_real; /* store as a real number, not an integer? */
-	int without_leading_zeros; /* normally without? */
+	int with_leading_zeros; /* override default to say yes */
+	int without_leading_zeros; /* override default to say no */
+	int number_base; /* e.g., 10 for decimal */
 	int element_optional; /* can we truncate the LP here? */
 	int preamble_optional; /* if so, can we lose the preamble as well? */
 } literal_pattern_element;
@@ -161,6 +164,7 @@ literal_pattern *LiteralPatterns::lp_new(kind *K, wording W) {
 	lp->no_lp_elements = 0;
 	lp->no_lp_tokens = 0;
 	lp->number_signed = FALSE;
+	lp->number_base = 10;
 	lp->scaling = Kinds::Scalings::new(TRUE, LP_SCALED_AT, 1, 1.0, 0, 0.0);
 	lp->equivalent_unit = FALSE;
 	lp->benchmark = FALSE;
@@ -187,6 +191,8 @@ literal_pattern_element LiteralPatterns::lpe_new(int i, int r, int sgn) {
 	lpe.element_name = EMPTY_WORDING;
 	lpe.preamble_optional = FALSE;
 	lpe.element_optional = FALSE;
+	lpe.number_base = 10;
+	lpe.with_leading_zeros = FALSE;
 	lpe.without_leading_zeros = FALSE;
 	return lpe;
 }
@@ -455,7 +461,7 @@ here, because of the use of |tolower|.
 @<Match an element token within a literal pattern@> =
 	literal_pattern_element *lpe = &(lp->lp_elements[ec++]); /* fetch details of next number */
 	if (wpos == -1) { wpos = 0; wd = Lexer::word_text(wn); } /* start parsing the interior of a word */
-	if (wd[wpos] == '-') { sign_used_at = lpe; wpos++; }
+	if ((wd[wpos] == '-') && (lpe->number_base == 10)) { sign_used_at = lpe; wpos++; }
 	if (Kinds::FloatingPoint::uses_floating_point(lp->kind_specified)) @<Match a real number element token@>
 	else @<Match an integer number element token@>;
 	if (wd[wpos] == 0) { wn++; wpos = -1; } /* and stop parsing the interior of a word */
@@ -471,20 +477,22 @@ We report none of these as a problem immediately -- only if the pattern would
 otherwise match.
 
 The following assumes that |long long int| is at least 64-bit, so that it
-can hold any 32-bit integer multiplied by 10, and also any product of two
-32-bit numbers. This is true for all modern |gcc| implementations and is
-required by PM_, but was not required by C90, so it is just possible that
-this could cause trouble on unusual platforms.
+can hold any 32-bit integer multiplied by the number base, and also any product
+of two 32-bit numbers. This is true for all modern |gcc| implementations, but
+was not required by C90, so it is just possible that this could cause trouble
+on unusual platforms.
 
 @<Match an integer number element token@> =
 	long long int tot = 0, max_32_bit, max_16_bit;
 	int digits_found = 0, point_at = -1;
 	max_16_bit = 32767LL; if (sign_used_at) max_16_bit = 32768LL;
 	max_32_bit = 2147483647LL; if (sign_used_at) max_32_bit = 2147483648LL;
-	while ((Characters::isdigit(wd[wpos])) ||
-		((wd[wpos] == '.') && (Kinds::Scalings::get_integer_multiplier(lp->scaling) > 1) && (point_at == -1))) {
+	while ((LiteralPatterns::digit_value(wd[wpos], lpe) >= 0) ||
+		((wd[wpos] == '.') &&
+			(Kinds::Scalings::get_integer_multiplier(lp->scaling) > 1) &&
+			(point_at == -1))) {
 		if (wd[wpos] == '.') { point_at = digits_found; wpos++; continue; }
-		tot = 10*tot + (wd[wpos++] - '0');
+		tot = lpe->number_base*tot + LiteralPatterns::digit_value(wd[wpos++], lpe);
 		if (tot > max_16_bit) overflow_16_bit_flag = TRUE;
 		if (tot > max_32_bit) overflow_32_bit_flag = TRUE;
 		digits_found++;
@@ -492,7 +500,7 @@ this could cause trouble on unusual platforms.
 	if ((point_at == 0) || (point_at == digits_found)) return NULL;
 	if (digits_found == 0) return NULL;
 	while ((point_at > 0) && (point_at < digits_found)) {
-		matched_scaledown *= 10; point_at++;
+		matched_scaledown *= lpe->number_base; point_at++;
 	}
 	if ((tot >= lpe->element_range) && (lpe->element_index > 0)) element_overflow_at = lpe;
 	tot = (lpe->element_multiplier)*tot;
@@ -640,6 +648,25 @@ which is annoying. So we have a mechanism to suppress duplicates:
 		"value has - see the Kinds page of the Index for the range it has.");
 	Problems::issue_problem_end();
 	return NULL;
+
+@ A digit value in a given LPE:
+
+=
+int LiteralPatterns::digit_value(wchar_t c, literal_pattern_element *lpe) {
+	int r = -1;
+	int d = ((int) c - (int) '0');
+	if ((d >= 0) && (d < 10)) r = d;
+	else {
+		d = ((int) c - (int) 'a');
+		if ((d >= 0) && (d < 26)) r = d + 10;
+		else {
+			d = ((int) c - (int) 'A');
+			if ((d >= 0) && (d < 26)) r = d + 10; else return -1;
+		}
+	}
+	if ((r >= 0) && (r < lpe->number_base)) return r;
+	return -1;	
+}
 
 @h Indexing literal patterns for a given kind.
 
@@ -861,7 +888,8 @@ note that the following uses the raw text of the word.
 		if (ec == 0) WRITE("%d", v/(lpe->element_multiplier));
 		else {
 			char *prototype = "%d";
-			if ((lp->lp_tokens[tc].new_word_at == FALSE) && (lpe->without_leading_zeros == FALSE))
+			if ((lpe->with_leading_zeros) ||
+				((lp->lp_tokens[tc].new_word_at == FALSE) && (lpe->without_leading_zeros == FALSE)))
 				prototype = LiteralPatterns::leading_zero_prototype(lpe->element_range);
 			WRITE(prototype, (v/(lpe->element_multiplier)) % (lpe->element_range));
 		}
@@ -920,7 +948,6 @@ literal_pattern *LiteralPatterns::new_literal_specification_inner(lp_specificati
 	@<Create the new literal pattern structure@>;
 	@<Break down the specification text into tokens and elements@>;
 	@<Adopt real arithmetic if this is called for@>;
-	@<Calculate the multipliers for packing the elements into a single integer@>;
 
 	if (LiteralPatterns::list_of_literal_forms(K) == NULL) lp->benchmark = TRUE;
 	LiteralPatterns::add_literal_pattern(K, lp);
@@ -928,7 +955,10 @@ literal_pattern *LiteralPatterns::new_literal_specification_inner(lp_specificati
 	if (lps->part_np_list) {
 		@<Work through parts text to assign names to the individual elements@>;
 		@<Check that any notes to do with optional elements are mutually compatible@>;
+		@<Calculate the multipliers for packing the elements into a single integer@>;
 		LiteralPatterns::define_packing_phrases(lp, K);
+	} else {
+		@<Calculate the multipliers for packing the elements into a single integer@>;
 	}
 
 	if (owner == NULL) owner = lp;
@@ -940,15 +970,6 @@ literal_pattern *LiteralPatterns::new_literal_specification_inner(lp_specificati
 	literal_pattern *alt = owner;
 	while ((alt) && (alt->next_alternative_lp)) alt = alt->next_alternative_lp;
 	alt->next_alternative_lp = lp;
-
-@
-
-@d PARTS_LPC 1
-@d SCALING_LPC 2
-@d OFFSET_LPC 3
-@d EQUIVALENT_LPC 4
-
-@ That's it for syntax: now back to semantics.
 
 @<Check that any other value mentioned as an equivalent or scaled equivalent has the right kind@> =
 	if (lps->equivalent_value) {
@@ -1057,6 +1078,7 @@ does not throw a problem message as being a bar which is out of range
 	}
 	lp->scaling = Kinds::Scalings::new(integer_scaling, lps->scaled_dir,
 		lps->scale_factor, lps->scale_factor_as_double, offset, lps->offset_value_as_double);
+	lp->number_base = lps->number_base;
 	if (owner == NULL) lp->primary_alternative = TRUE;
 	if (lps->equivalent_value) lp->equivalent_unit = TRUE;
 	if (lps->notation_options & SINGULAR_LPN) lp->singular_form_only = TRUE;
@@ -1167,8 +1189,7 @@ the multipliers can only be calculated by working from right to left, so
 this is deferred until all elements exist, at which point we --
 
 @<Calculate the multipliers for packing the elements into a single integer@> =
-	int i, m = 1;
-	for (i=lp->no_lp_elements-1; i>=0; i--) {
+	for (int i = lp->no_lp_elements-1, m = 1; i>=0; i--) {
 		literal_pattern_element *lpe = &(lp->lp_elements[i]);
 		lpe->element_multiplier = m;
 		m = m*(lpe->element_range);
@@ -1187,7 +1208,12 @@ this is deferred until all elements exist, at which point we --
 		if (O & PREAMBLE_OPTIONAL_LSO) {
 			lpe->element_optional = TRUE; lpe->preamble_optional = TRUE;
 		}
-		if (O & WITHOUT_LEADING_ZEROS_LSO) lpe->without_leading_zeros = TRUE;
+		if (O & WITH_LEADING_ZEROS_LSO) lpe->with_leading_zeros = TRUE;
+		else if (O & WITHOUT_LEADING_ZEROS_LSO) lpe->without_leading_zeros = TRUE;
+		if (O & BASE_MASK_LSO) lpe->number_base = ((O & BASE_MASK_LSO) / BASE_LSO);
+		else lpe->number_base = lp->number_base;
+		if (O & MAXIMUM_LSO)
+			lpe->element_range = Annotations::read_int(p, lpe_max_ANNOT) + 1;
 		if ((i == lp->no_lp_elements - 1) && (p->next)) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPTooManyPartNames),
 				"this gives names for too many parts",

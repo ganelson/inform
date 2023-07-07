@@ -168,13 +168,20 @@ void RTLiteralPatterns::compilation_agent(compilation_subtask *t) {
 					EmitCode::up();
 				EmitCode::up();
 			}
-			EmitCode::inv(PRINTNUMBER_BIP);
+			@<Print leading zeros@>;
+			if (lpe->number_base != 10) {
+				EmitCode::call(Hierarchy::find(PRINTINBASE_HL));
+			} else {
+				EmitCode::inv(PRINTNUMBER_BIP);
+			}
 			EmitCode::down();
 				EmitCode::inv(DIVIDE_BIP);
 				EmitCode::down();
 					EmitCode::val_symbol(K_value, value_s);
 					EmitCode::val_number((inter_ti) (lpe->element_multiplier));
 				EmitCode::up();
+				if (lpe->number_base != 10)
+					EmitCode::val_number((inter_ti) (lpe->number_base));
 			EmitCode::up();
 			if (lp->number_signed) {
 				EmitCode::inv(IF_BIP);
@@ -199,38 +206,12 @@ void RTLiteralPatterns::compilation_agent(compilation_subtask *t) {
 				EmitCode::up();
 			}
 		} else {
-			if ((lp->lp_tokens[tc].new_word_at == FALSE) &&
-				(lpe->without_leading_zeros == FALSE)) {
-				int pow = 1;
-				for (pow = 1000000000; pow>1; pow = pow/10)
-					if (lpe->element_range > pow) {
-						EmitCode::inv(IF_BIP);
-						EmitCode::down();
-							EmitCode::inv(LT_BIP);
-							EmitCode::down();
-								EmitCode::inv(MODULO_BIP);
-								EmitCode::down();
-									EmitCode::inv(DIVIDE_BIP);
-									EmitCode::down();
-										EmitCode::val_symbol(K_value, value_s);
-										EmitCode::val_number((inter_ti) (lpe->element_multiplier));
-									EmitCode::up();
-									EmitCode::val_number((inter_ti) (lpe->element_range));
-								EmitCode::up();
-								EmitCode::val_number((inter_ti) (pow));
-							EmitCode::up();
-							EmitCode::code();
-							EmitCode::down();
-								EmitCode::inv(PRINT_BIP);
-								EmitCode::down();
-									EmitCode::val_text(I"0");
-								EmitCode::up();
-							EmitCode::up();
-						EmitCode::up();
-
-					}
+			@<Print leading zeros@>;
+			if (lpe->number_base != 10) {
+				EmitCode::call(Hierarchy::find(PRINTINBASE_HL));
+			} else {
+				EmitCode::inv(PRINTNUMBER_BIP);
 			}
-			EmitCode::inv(PRINTNUMBER_BIP);
 			EmitCode::down();
 				EmitCode::inv(MODULO_BIP);
 				EmitCode::down();
@@ -241,10 +222,46 @@ void RTLiteralPatterns::compilation_agent(compilation_subtask *t) {
 					EmitCode::up();
 					EmitCode::val_number((inter_ti) (lpe->element_range));
 				EmitCode::up();
+				if (lpe->number_base != 10)
+					EmitCode::val_number((inter_ti) (lpe->number_base));
 			EmitCode::up();
 		}
 	}
 	ec++;
+
+@<Print leading zeros@> =
+	if ((lpe->with_leading_zeros) ||
+		((lp->lp_tokens[tc].new_word_at == FALSE) &&
+			(lpe->without_leading_zeros == FALSE))) {
+		int pow = 1;
+		while (lpe->element_range > pow) pow = pow * lpe->number_base;
+		for (; pow>1; pow = pow/lpe->number_base)
+			if (lpe->element_range > pow) {
+				EmitCode::inv(IF_BIP);
+				EmitCode::down();
+					EmitCode::inv(LT_BIP);
+					EmitCode::down();
+						EmitCode::inv(MODULO_BIP);
+						EmitCode::down();
+							EmitCode::inv(DIVIDE_BIP);
+							EmitCode::down();
+								EmitCode::val_symbol(K_value, value_s);
+								EmitCode::val_number((inter_ti) (lpe->element_multiplier));
+							EmitCode::up();
+							EmitCode::val_number((inter_ti) (lpe->element_range));
+						EmitCode::up();
+						EmitCode::val_number((inter_ti) (pow));
+					EmitCode::up();
+					EmitCode::code();
+					EmitCode::down();
+						EmitCode::inv(PRINT_BIP);
+						EmitCode::down();
+							EmitCode::val_text(I"0");
+						EmitCode::up();
+					EmitCode::up();
+				EmitCode::up();
+			}
+	}
 
 @<Truncate the printed form here if subsequent numerical parts are zero@> =
 	if (oc == ec) {
@@ -1061,6 +1078,8 @@ sets the |parsed_number| global to the value matched.
 						EmitCode::val_symbol(K_value, gprk.cur_addr_s);
 						EmitCode::val_symbol(K_value, gprk.wpos_s);
 					EmitCode::up();
+					if (lpe->number_base != 10)
+						EmitCode::val_number((inter_ti) lpe->number_base);
 				EmitCode::up();
 				EmitCode::val_number(0);
 			EmitCode::up();
@@ -1077,10 +1096,12 @@ sets the |parsed_number| global to the value matched.
 						EmitCode::val_symbol(K_value, gprk.cur_addr_s);
 						EmitCode::val_symbol(K_value, gprk.wpos_s);
 					EmitCode::up();
+					if (lpe->number_base != 10)
+						EmitCode::val_number((inter_ti) lpe->number_base);
 				EmitCode::up();
 			EmitCode::up();
 			Kinds::Scalings::compile_scale_and_add(gprk.tot_s, gprk.sgn_s,
-				10, 0, gprk.f_s, failed_label);
+				lpe->number_base, 0, gprk.f_s, failed_label);
 			EmitCode::inv(STORE_BIP);
 			EmitCode::down();
 				EmitCode::ref_symbol(K_value, gprk.f_s);
@@ -1214,7 +1235,7 @@ sets the |parsed_number| global to the value matched.
 										EmitCode::inv(MODULO_BIP);
 										EmitCode::down();
 											EmitCode::val_symbol(K_value, gprk.f_s);
-											EmitCode::val_number(10);
+											EmitCode::val_number((inter_ti) lpe->number_base);
 										EmitCode::up();
 										EmitCode::val_number(0);
 									EmitCode::up();
@@ -1227,6 +1248,8 @@ sets the |parsed_number| global to the value matched.
 												EmitCode::val_symbol(K_value, gprk.cur_addr_s);
 												EmitCode::val_symbol(K_value, gprk.wpos_s);
 											EmitCode::up();
+										if (lpe->number_base != 10)
+											EmitCode::val_number((inter_ti) lpe->number_base);
 										EmitCode::up();
 										EmitCode::val_number(0);
 									EmitCode::up();
@@ -1248,10 +1271,12 @@ sets the |parsed_number| global to the value matched.
 													EmitCode::val_symbol(K_value, gprk.cur_addr_s);
 													EmitCode::val_symbol(K_value, gprk.wpos_s);
 												EmitCode::up();
+												if (lpe->number_base != 10)
+													EmitCode::val_number((inter_ti) lpe->number_base);
 											EmitCode::up();
 											EmitCode::val_symbol(K_value, gprk.f_s);
 										EmitCode::up();
-										EmitCode::val_number(10);
+										EmitCode::val_number((inter_ti) lpe->number_base);
 									EmitCode::up();
 								EmitCode::up();
 								Kinds::Scalings::compile_scale_and_add(gprk.x_s, gprk.sgn_s,
@@ -1266,7 +1291,7 @@ sets the |parsed_number| global to the value matched.
 									EmitCode::inv(DIVIDE_BIP);
 									EmitCode::down();
 										EmitCode::val_symbol(K_value, gprk.f_s);
-										EmitCode::val_number(10);
+										EmitCode::val_number((inter_ti) lpe->number_base);
 									EmitCode::up();
 								EmitCode::up();
 							EmitCode::up();

@@ -120,6 +120,7 @@ comprehensive list of what is there.)
 @e PARACONTENT_HL
 @e PARAMETER_VALUE_HL
 @e PREV_ENUM_VAL_HL
+@e PRINTINBASE_HL
 @e PRINTORRUN_HL
 @e PRIOR_NAMED_LIST_GENDER_HL
 @e PRIOR_NAMED_LIST_HL
@@ -267,6 +268,8 @@ comprehensive list of what is there.)
 	KIT_PROVIDED(PARACONTENT_HL,                      I"ParaContent")
 	KIT_PROVIDED(PARAMETER_VALUE_HL,                  I"parameter_value")
 	KIT_PROVIDED(PREV_ENUM_VAL_HL,                    I"PrevEnumVal");
+	KIT_PROVIDED(DIGITTOVALUE_HL,                     I"DigitToValue")
+	KIT_PROVIDED(PRINTINBASE_HL,                      I"PrintInBase")
 	KIT_PROVIDED(PRINTORRUN_HL,                       I"PrintOrRun")
 	KIT_PROVIDED(PRIOR_NAMED_LIST_GENDER_HL,          I"prior_named_list_gender")
 	KIT_PROVIDED(PRIOR_NAMED_LIST_HL,                 I"prior_named_list")

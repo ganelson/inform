@@ -77,10 +77,38 @@ This takes a ZSCII or Unicode character code and returns its value as a digit,
 or returns $-1$ if it isn't a digit.
 
 =
-[ DigitToValue c n;
-	n = c-'0';
-	if ((n<0) || (n>9)) return -1;
-	return n;
+[ DigitToValue c base n;
+	if (base == 0) {
+		n = c-'0';
+		if ((n<0) || (n>9)) return -1;
+		return n;
+	}
+	if ((c >= '0') && (c <= '9')) n = c - '0';
+	else if ((c >= 'a') && (c <= 'z')) n = c - 'a' + 10;
+	else if ((c >= 'A') && (c <= 'Z')) n = c - 'A' + 10;
+	else return -1;
+	if (n < base) return n;
+	return -1;
+];
+
+[ PrintInBase n base a b i j k d;
+	if ((base < 2) || (base > 36)) { print "(", n, " in base ", base, ")"; return; }
+	if (base == 10) { print n; return; }
+	b = 1;
+	a = n;
+	i = 1;
+	do {
+		a = a - ((n/b)%base)*b;
+		b = b*base;
+		i++;
+	} until (a == 0);
+	if (i == 1) { print 0; return; }
+	for (j = i-1: j >= 1: j--) {
+		a = n; b = 1; k = 1;
+		for (k = 1: k < j: k++) b = b*base;
+		d = (n/b)%base;
+		if (d < 10) print d; else print (char) 'A' + d - 10;
+	}
 ];
 
 @h Testing.

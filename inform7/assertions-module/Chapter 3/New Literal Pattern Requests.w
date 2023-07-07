@@ -78,6 +78,7 @@ typedef struct lp_specification {
 	struct parse_node *offset_value;
 	double offset_value_as_double;
 
+	int number_base;
 	int uses_real_arithmetic;
 
 	int notation_options; /* a bitmap of the |*_LPN| values */
@@ -96,6 +97,7 @@ void LPRequests::initialise(lp_specification *lps) {
 	lps->equivalent_value = NULL;
 	lps->offset_value_as_double = 0.0;
 	lps->offset_value = NULL;
+	lps->number_base = 10;
 	lps->uses_real_arithmetic = FALSE;
 	lps->notation_options = 0;
 	lps->notation_groups = NULL;
@@ -134,7 +136,12 @@ literal_pattern *LPRequests::new_list(parse_node *p,
 @ The following grammar is used to parse the new literal patterns defined
 in a "specifies" sentence.
 
-Formally, the subject noun phrase of a "specifies" sentence must be a list
+@d PARTS_LPC 1
+@d SCALING_LPC 2
+@d OFFSET_LPC 3
+@d EQUIVALENT_LPC 4
+
+@ Formally, the subject noun phrase of a "specifies" sentence must be a list
 of alternatives each of which matches the following:
 
 =
@@ -198,12 +205,20 @@ can't set both scaling and an equivalent, for instance.
 
 =
 <specifies-sentence-object> ::=
-	<kind-specified> <lp-specification-tail> |     ==> { pass 2 }
-	<kind-specified>                               ==> { 0, NULL }
+	<kind-specified-with-base> <lp-specification-tail> |  ==> { pass 2 }
+	<kind-specified-with-base>                            ==> { 0, NULL }
 
-<kind-specified> ::=
-	<k-kind-articled> |                            ==> { 0, NULL }; glps.kind_specified = RP[1];
-	...                                            ==> @<Issue PM_LPNotKOV problem@>
+<kind-specified-with-base> ::=
+	<k-kind-articled> in <number-base> |  ==> { 0, NULL }; glps.number_base = R[2]; glps.kind_specified = RP[1];
+	<k-kind-articled> |                   ==> { 0, NULL }; glps.kind_specified = RP[1];
+	...                                   ==> @<Issue PM_LPNotKOV problem@>
+
+<number-base> ::=
+	binary |                ==> { 2, NULL }
+	octal |                 ==> { 8, NULL }
+	decimal |               ==> { 10, NULL }
+	hexadecimal |           ==> { 16, NULL }
+	base <cardinal-number>  ==> { R[1], NULL }
 
 <lp-specification-tail> ::=
 	with parts <lp-part-list> |                    ==> { PARTS_LPC, RP[1] }
@@ -269,7 +284,7 @@ by a bracketed list of up to three options in any order.
 	<lp-part>                                      ==> { 0, RP[1] }
 
 <lp-part> ::=
-	<np-unparsed-bal> ( <lp-part-option-list> ) |  ==> { 0, LPRequests::mark(RP[1], R[2]) }
+	<np-unparsed-bal> ( <lp-part-option-list> ) |  ==> { 0, LPRequests::mark(RP[1], R[2], <<max_part_val>>) }
 	<np-unparsed-bal>                              ==> { 0, RP[1] }
 
 <lp-part-option-list> ::=
@@ -283,7 +298,10 @@ by a bracketed list of up to three options in any order.
 <lp-part-option> ::=
 	optional |                                     ==> { OPTIONAL_LSO, - }
 	preamble optional |                            ==> { PREAMBLE_OPTIONAL_LSO, - }
+	with leading zeros |                           ==> { WITH_LEADING_ZEROS_LSO, - }
 	without leading zeros |                        ==> { WITHOUT_LEADING_ZEROS_LSO, - }
+	in <number-base> |                             ==> { BASE_LSO*R[1], - }
+	maximum <cardinal-number> |                    ==> { MAXIMUM_LSO, - }; <<max_part_val>> = R[1];
 	......                                         ==> @<Issue PM_BadLPPartOption problem@>
 
 @<Issue PM_BadLPPartOption problem@> =
@@ -310,10 +328,17 @@ literal_pattern_name *LPRequests::compose(literal_pattern_name *A, literal_patte
 
 @d OPTIONAL_LSO 1
 @d PREAMBLE_OPTIONAL_LSO 2
-@d WITHOUT_LEADING_ZEROS_LSO 4
+@d WITH_LEADING_ZEROS_LSO 4
+@d WITHOUT_LEADING_ZEROS_LSO 8
+@d MAXIMUM_LSO 16
+@d BASE_LSO 0x10000
+@d BASE_MASK_LSO 0xff0000
 
 =
-parse_node *LPRequests::mark(parse_node *A, int N) {
-	if (A) Annotations::write_int(A, lpe_options_ANNOT, N);
+parse_node *LPRequests::mark(parse_node *A, int N, int M) {
+	if (A) {
+		Annotations::write_int(A, lpe_options_ANNOT, N);
+		if (N & MAXIMUM_LSO) Annotations::write_int(A, lpe_max_ANNOT, M);
+	}
 	return A;
 }
