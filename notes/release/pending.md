@@ -85,7 +85,8 @@ and now poses a moral rather than gender-based question.
 	already makes it held by default
 	([commit 1fc5055](https://github.com/ganelson/inform/commit/1fc505507b52be19a09cc3898326952954620312))
 - Fix for Jira bug [I7-2282](https://inform7.atlassian.net/browse/I7-2282)
-	"segfaults in linux with latest inform, ..., built with gcc"
+	"segfaults in linux with latest inform, ..., built with gcc": see
+	also [I7-2108](https://inform7.atlassian.net/browse/I7-2108)
 	(hat-tip to Adrian Welcker: [PR#111](https://github.com/ganelson/inform/pull/111))
 - Fix for Jira bug [I7-2269](https://inform7.atlassian.net/browse/I7-2269)
 	"Output of I6 floating point literals strips the '+', resulting in uncompilable I6"

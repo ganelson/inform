@@ -103,7 +103,7 @@ error in this case.
 		if ((C->edition->work->genre == project_bundle_genre) ||
 			(C->edition->work->genre == project_file_genre))
 			count++;
-	if (count > 1)
+	if ((count > 1) && (inbuild_task != INSPECT_TTASK))
 		Errors::with_text("can only work on one project bundle at a time", NULL);
 	if (Str::len(filter_text) > 0) Main::add_search_results_as_targets(filter_text);
 

@@ -210,13 +210,8 @@ This function implements the command-line instruction to |-inspect|.
 void Copies::inspect(OUTPUT_STREAM, inbuild_copy *C) {
 	WRITE("%S: ", Genres::name(C->edition->work->genre));
 	Editions::inspect(OUT, C->edition);
-	if (C->location_if_path) {
-		WRITE(" at path %p", C->location_if_path);
-	}
-	if (C->location_if_file) {
-		pathname *P = Filenames::up(C->location_if_file);
-		if (P) WRITE(" in directory %p", P);
-	}
+	if (C->location_if_path) WRITE(" = directory %p", C->location_if_path);
+	if (C->location_if_file) WRITE(" = file %f", C->location_if_file);
 	int N = LinkedLists::len(C->errors_reading_source_text);
 	if (N > 0) {
 		WRITE(" - %d error", N);
