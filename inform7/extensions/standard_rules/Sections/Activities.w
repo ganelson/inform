@@ -223,17 +223,17 @@ The implicitly taking activity is accessible to Inter as "IMPLICITLY_TAKING_ACT"
 @ Here are the default rules for the behaviour of ALL:
 
 =
-Rule for deciding whether all includes scenery while taking or taking off or
+Rule for deciding whether all includes scenery while an actor taking or taking off or
 	removing (this is the exclude scenery from take all rule): it does not.
-Rule for deciding whether all includes people while taking or taking off or
+Rule for deciding whether all includes people while an actor taking or taking off or
 	removing (this is the exclude people from take all rule): it does not.
-Rule for deciding whether all includes fixed in place things while taking or
+Rule for deciding whether all includes fixed in place things while an actor taking or
 	taking off or removing (this is the exclude fixed in place things from
 	take all rule): it does not.
 Rule for deciding whether all includes things enclosed by the person reaching
-	while taking or taking off (this is the exclude indirect possessions from
+	while an actor taking or taking off (this is the exclude indirect possessions from
 	take all rule): it does not.
-Rule for deciding whether all includes a person while dropping or throwing
+Rule for deciding whether all includes a person while an actor dropping or throwing
 	or inserting or putting (this is the exclude people from drop all rule):
 	it does not.
 

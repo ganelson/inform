@@ -1,0 +1,11 @@
+The bedroom is a room.
+Jeeves is a man in the bedroom.
+A persuasion rule for asking Jeeves to try doing something: persuasion succeeds.
+
+The bed is an enterable fixed in place supporter in the bedroom.
+
+The breakfast tray is on the bed.
+The curtains are scenery in the bedroom.
+Aunt Dahlia is a woman in the bedroom.
+
+Test me with "Jeeves, take all / Jeeves, put all on bed / take all".
