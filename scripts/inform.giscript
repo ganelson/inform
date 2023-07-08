@@ -15,6 +15,7 @@ makefile
 !inform7/Tests/Test Makes/Eg*/makefile
 tags
 *.glkdata
+*.exe
 
 resources/App HTML/
 resources/Changes/Output/

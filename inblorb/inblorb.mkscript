@@ -63,7 +63,7 @@ clean:
 purge:
 	$(call clean-up)
 	rm -f $(ME)/Tangled/$(ME)
-	rm -f $(BLORBLIB)/blorbscan
+	rm -f $(BLORBLIB)/blorbscan$(EXEEXTENSION)
 
 define clean-up
 	rm -f $(ME)/Tangled/*.o
