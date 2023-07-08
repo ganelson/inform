@@ -70,7 +70,7 @@ clean:
 .PHONY: purge
 purge:
 	$(call clean-up)
-	rm -f $(ME)/Tangled/$(ME)
+	rm -f $(ME)/Tangled/$(ME)$(EXEEXTENSION)
 
 define clean-up
 	rm -f $(ME)/Tangled/*.o
