@@ -24,12 +24,6 @@
 -cases			[Internal] 'inform7/Tests/Test Internals'
 -cases			[Make] 'inform7/Tests/Test Makes'
 -cases			[Filing] 'inform7/Tests/Test Filings'
--extension		[Main] 'inform7/Internal/Extensions/Emily Short/Complex Listing.i7x'
--extension		[Main] 'inform7/Internal/Extensions/Emily Short/Inanimate Listeners.i7x'
--extension		[Main] 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x'
--extension		[Main] 'inform7/Internal/Extensions/Emily Short/Punctuation Removal.i7x'
--extension		[Main] 'inform7/Internal/Extensions/Emily Short/Skeleton Keys.i7x'
--extensions		[Main] 'inform7/Internal/Extensions/Graham Nelson'
 -examples		[Main] resources/Documentation/Examples
 -problems		[Main] 'inform7/Tests/Test Problems'
 

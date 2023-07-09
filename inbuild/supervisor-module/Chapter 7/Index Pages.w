@@ -13,6 +13,8 @@ void ExtensionIndex::write(inform_project *proj) {
 	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
 	linked_list *U = NEW_LINKED_LIST(inbuild_copy);
 	linked_list *R = NEW_LINKED_LIST(inbuild_requirement);
+	int internals_used = 0, materials_used = 0, externals_used = 0;
+	int internals_installed = 0, materials_installed = 0;
 	@<See what we have installed and used@>;
 
 	text_stream HOMEPAGE_struct;
@@ -33,12 +35,20 @@ void ExtensionIndex::write(inform_project *proj) {
 	inbuild_requirement *req = Requirements::anything_of_genre(extension_bundle_genre);
 	if (LinkedLists::len(search_list) > 0) Nests::search_for(req, search_list, L);
 	ExtensionIndex::find_used_extensions(proj, U, R);
+	inbuild_search_result *ecd;
+	LOOP_OVER_LINKED_LIST(ecd, inbuild_search_result, L) {
+		if (Nests::get_tag(ecd->nest) == INTERNAL_NEST_TAG) internals_installed++;
+		else if (Nests::get_tag(ecd->nest) == MATERIALS_NEST_TAG) materials_installed++;
+	}
 	inbuild_copy *C;
 	LOOP_OVER_LINKED_LIST(C, inbuild_copy, U)
-		if ((C->nest_of_origin) &&
-			(Nests::get_tag(C->nest_of_origin) != INTERNAL_NEST_TAG) &&
-			(Nests::get_tag(C->nest_of_origin) != MATERIALS_NEST_TAG))
-			Nests::add_search_result(L, C->nest_of_origin, C, req);
+		if (C->nest_of_origin) {
+			switch (Nests::get_tag(C->nest_of_origin)) {
+				case INTERNAL_NEST_TAG: internals_used++; break;
+				case MATERIALS_NEST_TAG: materials_used++; break;
+				default: externals_used++; Nests::add_search_result(L, C->nest_of_origin, C, req); break;
+			}
+		}
 
 @<Write the body of the HTML@> =
 	HTML::begin_html_table(OUT, NULL, TRUE, 0, 4, 0, 0, 0);
@@ -71,36 +81,34 @@ void ExtensionIndex::write(inform_project *proj) {
 	int usage_state = TRUE;
 	@<Display an alphabetised directory@>;
 	HTML_TAG("hr");
-	HTML_OPEN("p");
-	HTML_OPEN("b");
-	WRITE("These are available, but are not used by '%S'...", proj->as_copy->edition->work->title);
-	HTML_CLOSE("b");
-	HTML_CLOSE("p");
-	usage_state = FALSE;
-	@<Display an alphabetised directory@>;
+	if ((internals_used < internals_installed) || (materials_used < materials_installed)) {
+		HTML_OPEN("p");
+		HTML_OPEN("b");
+		WRITE("These are available, but are not used by '%S'...", proj->as_copy->edition->work->title);
+		HTML_CLOSE("b");
+		HTML_CLOSE("p");
+		usage_state = FALSE;
+		@<Display an alphabetised directory@>;
+	}
 
 @ From here on, then, all the code in this section generates the main directory
 page, not the index of terms, which is all handled by
 //ExtensionDictionary::write_to_HTML//.
 
 @<Display the location of installed extensions@> =
-	int nbi = 0, nps = 0, nex = 0;;
-	inbuild_search_result *ecd;
-	LOOP_OVER_LINKED_LIST(ecd, inbuild_search_result, L) {
-		if (Nests::get_tag(ecd->nest) == INTERNAL_NEST_TAG) nbi++;
-		else if (Nests::get_tag(ecd->nest) == MATERIALS_NEST_TAG) nps++;
-		else nex++;
-	}
-
 	HTML_OPEN("p");
 	pathname *P = Nests::get_location(Projects::materials_nest(proj));
 	P = Pathnames::down(P, I"Extensions");
 	PasteButtons::open_file(OUT, P, NULL, PROJECT_SPECIFIC_SYMBOL);
 	WRITE("&nbsp;");
-	if (nps > 0) {
+	if (materials_installed > 0) {
 		WRITE("%d extension%s installed in the .materials folder for the "
-			"project '%S'. (Click the icon to show the location.)",
-			nps, (nps==1)?" is":"s are", proj->as_copy->edition->work->title);
+			"project '%S'",
+			materials_installed, (materials_installed==1)?" is":"s are",
+			proj->as_copy->edition->work->title);
+		int i = materials_installed, u = materials_used;
+		@<Say how many of those installed are used@>;
+		WRITE(" (Click the icon to show the location.)");
 	} else {
 		WRITE("No extensions are installed in the .materials folder for the "
 			"project '%S'. (Click the icon to show the location. "
@@ -113,21 +121,42 @@ page, not the index of terms, which is all handled by
 	HTML_OPEN("p");
 	HTML_TAG_WITH("img", BUILT_IN_SYMBOL);
 	WRITE("&nbsp;");
-	WRITE("As well as being able to use extensions installed into its own folder, "
-		"any project can use extensions which come built into the Inform app. There "
-		"are currently %d.", nbi);
+	WRITE("The Inform app comes with a small number of built-in extensions, which "
+		"you need not install, and which are automatically included if necessary. "
+		"'%S' has access to %d", proj->as_copy->edition->work->title, internals_installed);
+	int i = internals_installed, u = internals_used;
+	@<Say how many of those installed are used@>;
 	HTML_CLOSE("p");
 
-	if (nex > 0) {
+	if (externals_used > 0) {
 		HTML_OPEN("p");
 		HTML_TAG_WITH("img", LEGACY_AREA_SYMBOL);
 		WRITE("&nbsp;");
 		WRITE("And '%S' still uses %d extension%s from the legacy extensions area. Best "
 			"practice is to install %s into .materials instead, which the Inform app "
 			"can do for you.",
-			proj->as_copy->edition->work->title, nex, (nex==1)?"":"s", (nex==1)?"it":"them");
+			proj->as_copy->edition->work->title, externals_used, (externals_used==1)?"":"s", (externals_used==1)?"it":"them");
 		HTML_CLOSE("p");
 	}
+
+@<Say how many of those installed are used@> =
+	if (u == 0) {
+		if (i == 1) {
+			WRITE(", but it doesn't use it.");
+		} else if (i == 2) {
+			WRITE(", but it doesn't use either of them.");
+		} else {
+			WRITE(", but it doesn't use any of them.");
+		}
+	} else if (u < i) {
+		WRITE(", but it uses only %d.", u);
+	} else if (u == 1) {
+		WRITE(", and it uses it.");
+	} else if (u == 2) {
+		WRITE(", and it uses both of them.");
+	} else {
+		WRITE(", and it uses all of them.");
+	}		
 
 @ The following is an alphabetised directory of extensions by author and then
 title, along with some useful information about them, and then a list of
@@ -323,14 +352,8 @@ the usual ones seen in Mac OS X applications such as iTunes.
 	HTML::begin_span(OUT, I"extensionindexentry");
 	if (d != SORT_CE_BY_AUTHOR) {
 		WRITE("%S", ecd->copy->edition->work->raw_title);
-		if (Str::len(ecd->copy->edition->work->raw_title) +
-			Str::len(ecd->copy->edition->work->raw_author_name) > 45) {
-			HTML_TAG("br");
-			WRITE("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-		} else {
-			WRITE(" ");
-		}
-		WRITE("by %S", ecd->copy->edition->work->raw_author_name);
+		if (Nests::get_tag(ecd->nest) != INTERNAL_NEST_TAG)
+			WRITE(" by %S", ecd->copy->edition->work->raw_author_name);
 	} else {
 		WRITE("%S", ecd->copy->edition->work->raw_title);
 	}

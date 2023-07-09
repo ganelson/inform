@@ -160,21 +160,7 @@ The following webs are the source for the two most important extensions shipped 
 
 Other extensions shipped with Inform are not presented as webs, but as single files:
 
-{extension author: Emily Short   title: Basic Help Menu}
-{extension author: Emily Short   title: Basic Screen Effects}
-{extension author: Emily Short   title: Complex Listing}
-{extension author: Emily Short   title: Glulx Image Centering}
-{extension author: Emily Short   title: Glulx Text Effects}
-{extension author: Emily Short   title: Inanimate Listeners}
-{extension author: Emily Short   title: Locksmith}
-{extension author: Emily Short   title: Menus}
-{extension author: Emily Short   title: Punctuation Removal}
-{extension author: Emily Short   title: Skeleton Keys}
-{extension author: Eric Eve      title: Epistemology}
-{extension author: Graham Nelson title: Approximate Metric Units}
 {extension author: Graham Nelson title: English Language}
-{extension author: Graham Nelson title: Metric Units}
-{extension author: Graham Nelson title: Rideable Vehicles}
 
 ### Website templates and interpreters shipped with Inform
 

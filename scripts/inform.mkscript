@@ -746,10 +746,6 @@ forcetransferkits:
 
 {define: transfer-extensions}
 	mkdir -p $(INTERNAL)
-	mkdir -p "$(INTERNAL)/Extensions/Eric Eve"
-	rm -f $(INTERNAL)/Extensions/Eric\ Eve/*
-	mkdir -p "$(INTERNAL)/Extensions/Emily Short"
-	rm -f $(INTERNAL)/Extensions/Emily\ Short/*
 	mkdir -p "$(INTERNAL)/Extensions/Graham Nelson"
 	rm -f $(INTERNAL)/Extensions/Graham\ Nelson/*
 	cp -R -f $(INFORM7WEB)/Internal/Extensions $(INTERNAL)/Extensions/..
@@ -826,8 +822,6 @@ $(INTERNALEXEMPLUMFROM):
 	$(INTERNALEXEMPLUM)
 
 $(INTERNALEXEMPLUM): \
-		$(INFORM7WEB)/Internal/Extensions/Eric\ Eve/[A-Za-z]* \
-		$(INFORM7WEB)/Internal/Extensions/Emily\ Short/[A-Za-z]* \
 		$(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/[A-Za-z]* \
 		$(INFORM7WEB)/Internal/Languages/*/*.* \
 		$(INFORM7WEB)/Internal/Templates/*/*.* \

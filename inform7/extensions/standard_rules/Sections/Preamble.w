@@ -10,8 +10,8 @@ rubric text, and the Standard Rules are no exception:
 =
 Version [[Version Number]] of the Standard Rules by Graham Nelson begins here.
 
-"The Standard Rules, included in every project, define phrases, actions and
-activities for interactive fiction."
+"The Standard Rules, included in every interactive fiction project, creates
+a model world populated by actors who perform actions."
 
 Part One - Preamble
 

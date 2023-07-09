@@ -141,21 +141,7 @@ The following webs are the source for the two most important extensions shipped 
 
 Other extensions shipped with Inform are not presented as webs, but as single files:
 
-* [Basic Help Menu by Emily Short](<inform7/Internal/Extensions/Emily Short/Basic Help Menu.i7x>) - __v1__
-* [Basic Screen Effects by Emily Short](<inform7/Internal/Extensions/Emily Short/Basic Screen Effects.i7x>) - __v9__
-* [Complex Listing by Emily Short](<inform7/Internal/Extensions/Emily Short/Complex Listing.i7x>) - __v9__
-* [Glulx Image Centering by Emily Short](<inform7/Internal/Extensions/Emily Short/Glulx Image Centering.i7x>) - __v4__
-* [Glulx Text Effects by Emily Short](<inform7/Internal/Extensions/Emily Short/Glulx Text Effects.i7x>) - __v6__
-* [Inanimate Listeners by Emily Short](<inform7/Internal/Extensions/Emily Short/Inanimate Listeners.i7x>) - __v2__
-* [Locksmith by Emily Short](<inform7/Internal/Extensions/Emily Short/Locksmith.i7x>) - __v14__
-* [Menus by Emily Short](<inform7/Internal/Extensions/Emily Short/Menus.i7x>) - __v3__
-* [Punctuation Removal by Emily Short](<inform7/Internal/Extensions/Emily Short/Punctuation Removal.i7x>) - __v6__
-* [Skeleton Keys by Emily Short](<inform7/Internal/Extensions/Emily Short/Skeleton Keys.i7x>) - __v1__
-* [Epistemology by Eric Eve](<inform7/Internal/Extensions/Eric Eve/Epistemology.i7x>) - __v9__
-* [Approximate Metric Units by Graham Nelson](<inform7/Internal/Extensions/Graham Nelson/Approximate Metric Units.i7x>) - __v1__
 * [English Language by Graham Nelson](<inform7/Internal/Extensions/Graham Nelson/English Language.i7x>) - __v2__
-* [Metric Units by Graham Nelson](<inform7/Internal/Extensions/Graham Nelson/Metric Units.i7x>) - __v2__
-* [Rideable Vehicles by Graham Nelson](<inform7/Internal/Extensions/Graham Nelson/Rideable Vehicles.i7x>) - __v3__
 
 ### Website templates and interpreters shipped with Inform
 
