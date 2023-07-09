@@ -69,12 +69,9 @@ Make a directory in which to work: let's call this `work`. Then:
 to run the full suite of 2500 test cases.
 
 **Caution again**: `inform7` is written in standard C99, but is a challengingly
-large task for a C compiler, and we have now seen two different cases where `gcc`
-generates incorrect code
-(see Jira bugs [I7-2108](https://inform7.atlassian.net/browse/I7-2108) and
-[I7-2282](https://inform7.atlassian.net/jira/software/c/projects/I7/issues/I7-2282)).
-In each case, recent versions of `clang` compile correct code.
-We recommend compiling the core Inform tools with `clang` rather than `gcc` if possible.
+large task for a C compiler. In the past we have had difficulties using `gcc` to
+compile it, and although we believe these may now be resolved, we recommend compiling
+the core Inform tools with `clang` rather than `gcc` where possible.
 
 ## Issues and Contributions
 
