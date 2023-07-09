@@ -96,6 +96,7 @@ Global Pre_Startup_Text_Capture_Stream;
 		glk_stylehint_set(wintype_TextBuffer, style_Emphasized, stylehint_Weight, 0);
 		glk_stylehint_set(wintype_TextBuffer, style_Emphasized, stylehint_Oblique, 1);
 		gg_mainwin = glk_window_open(0, 0, 0, wintype_TextBuffer, GG_MAINWIN_ROCK);
+		Main_Window.glk_ref = gg_mainwin;
 		if (gg_mainwin == 0) {
 			! If we can't even open one window, give in
 			quit;
@@ -113,6 +114,7 @@ Global Pre_Startup_Text_Capture_Stream;
 		gg_statuswin =
 			glk_window_open(gg_mainwin, winmethod_Fixed + winmethod_Above,
 				statuswin_cursize, wintype_TextGrid, GG_STATUSWIN_ROCK);
+		Status_Window.glk_ref = gg_mainwin;
 	}
 	! It's possible that the status window couldn't be opened, in which case
 	! gg_statuswin is now zero. We must allow for that later on.

@@ -54,6 +54,9 @@ Global current_glk_object_reference = 0;
 
 =
 [ RESET_GLK_REFERENCES_R;
+	Main_Window.glk_window_type = GG_MAINWIN_ROCK;
+	Status_Window.glk_window_type = GG_STATUSWIN_ROCK;
+	Quote_Window.glk_window_type = GG_QUOTEWIN_ROCK;
 	gg_mainwin = 0;
 	gg_statuswin = 0;
 	gg_quotewin = 0;
@@ -141,6 +144,12 @@ Functions for minimal Glk windows support.
 	return nothing;
 ];
 
+[ FillInWindowDetails win ref;
+	win.glk_ref = ref;
+	win.glk_rock = glk_window_get_rock(ref);
+	win.glk_window_type = glk_window_get_type(ref);
+];
+
 @h Glk events.
 To handle events we intercept the |glk_select| function. This allows us to handle
 events early and consistently.
@@ -168,8 +177,7 @@ Global Glk_Event_Struct_val2;
 	! If no window was found, then use the unknown window
 	if (Glk_Event_Struct_win == nothing && event_struct-->1) {
 		Glk_Event_Struct_win = Unknown_Glk_Window;
-		Unknown_Glk_Window.glk_ref = event_struct-->1;
-		Unknown_Glk_Window.glk_rock = glk_window_get_rock(Unknown_Glk_Window.glk_ref);
+		FillInWindowDetails(Unknown_Glk_Window, event_struct-->1);
 	}
 
 	! Run the glk event handling rules (but disable rules debugging because it crashes if keyboard input events are pending)

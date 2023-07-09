@@ -821,10 +821,10 @@ line; line 2 is underneath, and so on; columns are similarly numbered from
 
 =
 [ VM_StatusLineHeight hgt;
-    if (gg_statuswin == 0) return;
-    if (hgt == statuswin_cursize) return;
-    glk_window_set_arrangement(glk_window_get_parent(gg_statuswin), $12, hgt, 0);
-    statuswin_cursize = hgt;
+	if (gg_statuswin == 0) return;
+	if (hgt == statuswin_cursize) return;
+	glk_window_set_arrangement(glk_window_get_parent(gg_statuswin), winmethod_Fixed + winmethod_Above, hgt, 0);
+	statuswin_cursize = hgt;
 ];
 
 [ VM_MoveCursorInStatusLine line column;
@@ -843,33 +843,37 @@ text just appears in the main window.
 
 =
 [ Box__Routine maxwid arr ix lines lastnl parwin;
-    maxwid = 0; ! squash compiler warning
-    lines = arr-->0;
+	maxwid = 0; ! squash compiler warning
+	lines = arr-->0;
 
-    if (gg_quotewin == 0) {
-        gg_arguments-->0 = lines;
-        if (ix == 0)
-            gg_quotewin =
-            	glk_window_open(gg_mainwin, winmethod_Fixed + winmethod_Above,
-            		lines, wintype_TextBuffer, GG_QUOTEWIN_ROCK);
-    } else {
-        parwin = glk_window_get_parent(gg_quotewin);
-        glk_window_set_arrangement(parwin, $12, lines, 0);
-    }
+	if (gg_quotewin == 0) {
+		gg_arguments-->0 = lines;
+		if (ix == 0) {
+			gg_quotewin =
+				glk_window_open(gg_mainwin, winmethod_Fixed + winmethod_Above,
+					lines, wintype_TextBuffer, GG_QUOTEWIN_ROCK);
+			Quote_Window.glk_ref = gg_quotewin;
+		}
+	} else {
+		parwin = glk_window_get_parent(gg_quotewin);
+		glk_window_set_arrangement(parwin, winmethod_Fixed + winmethod_Above, lines, 0);
+	}
 
-    lastnl = true;
-    if (gg_quotewin) {
-        glk_window_clear(gg_quotewin);
-        glk_set_window(gg_quotewin);
-        lastnl = false;
-    }
+	lastnl = true;
+	if (gg_quotewin) {
+		glk_window_clear(gg_quotewin);
+		glk_set_window(gg_quotewin);
+		lastnl = false;
+	}
 
 	VM_Style(BLOCKQUOTE_VMSTY);
-    for (ix=0 : ix<lines : ix++) {
-        print (string) arr-->(ix+1);
-        if (ix < lines-1 || lastnl) new_line;
-    }
+	for (ix=0 : ix<lines : ix++) {
+		print (string) arr-->(ix+1);
+		if (ix < lines-1 || lastnl) new_line;
+	}
 	VM_Style(NORMAL_VMSTY);
 
-    if (gg_quotewin) glk_set_window(gg_mainwin);
+	if (gg_quotewin) {
+		glk_set_window(gg_mainwin);
+	}
 ];

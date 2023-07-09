@@ -64,3 +64,15 @@ new base GLK_EVENT_TY {
 	instance: hyperlink event          = evtype_Hyperlink_    = 8
 	instance: volume event             = evtype_VolumeNotify_ = 9
 }
+
+new base GLK_WINDOW_TYPE_TY {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: glk window type
+	plural: glk window types
+
+	specification-text: Type of a Glk window.
+
+	instance: text buffer = wintype_TextBuffer_ = 3
+	instance: text grid   = wintype_TextGrid_   = 4
+	instance: graphics    = wintype_Graphics_   = 5
+}
