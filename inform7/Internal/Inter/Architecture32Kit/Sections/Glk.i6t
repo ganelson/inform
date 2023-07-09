@@ -150,6 +150,11 @@ Functions for minimal Glk windows support.
 	win.glk_window_type = glk_window_get_type(ref);
 ];
 
+[ GetWindowSize win index;
+	glk_window_get_size(win.glk_ref, gg_arguments, gg_arguments + WORDSIZE);
+	return gg_arguments-->index;
+];
+
 @h Glk events.
 To handle events we intercept the |glk_select| function. This allows us to handle
 events early and consistently.
