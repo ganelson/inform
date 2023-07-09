@@ -1523,6 +1523,35 @@ To decide what number is the numerical value of (U - a use option):
 
 Part Four - Glulx and Glk (for Glulx only)
 
+Chapter - Glk and Glulx feature testing
+
+To decide whether (F - glk feature) is/are supported:
+	(- glk_gestalt({F}) -).
+
+To decide what number is the glk version number/--:
+	(- glk_gestalt(gestalt_Version) -).
+
+To decide whether buffer window graphics are/is supported:
+	(- glk_gestalt(gestalt_DrawImage, winType_TextBuffer) -).
+
+To decide whether graphics window graphics are/is supported:
+	(- glk_gestalt(gestalt_DrawImage, winType_Graphics) -).
+
+To decide whether graphics window mouse input is supported:
+	(- glk_gestalt(gestalt_MouseInput, winType_Graphics) -).
+
+To decide whether grid window mouse input is supported:
+	(- glk_gestalt(gestalt_MouseInput, winType_TextGrid) -).
+
+To decide whether (F - glulx feature) is/are supported:
+	(- Glulx_Gestalt({F}) -).
+
+To decide what number is the glulx version number/--:
+	(- Glulx_Gestalt(GLULX_GESTALT_GlulxVersion) -).
+
+To decide what number is the interpreter version number/--:
+	(- Glulx_Gestalt(GLULX_GESTALT_TerpVersion) -).
+
 Chapter - Glk windows
 
 A glk window is a kind of abstract object.
@@ -1562,34 +1591,22 @@ The type of the quote window is text buffer.
 The unknown window is a glk window.
 The unknown window object is accessible to Inter as "Unknown_Glk_Window".
 
-Chapter - Glk and Glulx feature testing
+Section - Glk windows
 
-To decide whether (F - glk feature) is/are supported:
-	(- glk_gestalt({F}) -).
+To clear (win - a glk window):
+	(- glk_window_clear({win}.glk_ref); -).
 
-To decide what number is the glk version number/--:
-	(- glk_gestalt(gestalt_Version) -).
+To focus (win - a glk window):
+	(- glk_set_window({win}.glk_ref); -).
 
-To decide whether buffer window graphics are/is supported:
-	(- glk_gestalt(gestalt_DrawImage, winType_TextBuffer) -).
+To decide what number is the height of (win - a glk window):
+	(- GetWindowSize({win}, 1) -).
 
-To decide whether graphics window graphics are/is supported:
-	(- glk_gestalt(gestalt_DrawImage, winType_Graphics) -).
+To decide what number is the width of (win - a glk window):
+	(- GetWindowSize({win}, 0) -).
 
-To decide whether graphics window mouse input is supported:
-	(- glk_gestalt(gestalt_MouseInput, winType_Graphics) -).
-
-To decide whether grid window mouse input is supported:
-	(- glk_gestalt(gestalt_MouseInput, winType_TextGrid) -).
-
-To decide whether (F - glulx feature) is/are supported:
-	(- Glulx_Gestalt({F}) -).
-
-To decide what number is the glulx version number/--:
-	(- Glulx_Gestalt(GLULX_GESTALT_GlulxVersion) -).
-
-To decide what number is the interpreter version number/--:
-	(- Glulx_Gestalt(GLULX_GESTALT_TerpVersion) -).
+To set (win - a glk window) cursor to row (row - a number) and/-- column (col - a number):
+	(- glk_window_move_cursor({win}.glk_ref, {col} - 1, {row} - 1); -).
 
 Chapter - Glk object recovery
 
