@@ -10,7 +10,7 @@ This is an almost verbatim copy of an invaluable I6 header file originally put t
 Some things have been commented out:
 
 - the System_file directive (no longer supported by Inform 10)
-- glk_select (redefined in Glk.i6t)
+- various glk functions which are redefined in Glk.i6t
 
 The current version can be obtained at
 https://github.com/erkyrath/glk-dev/blob/master/dispatch_dump/infglk.h
@@ -510,41 +510,41 @@ Constant wintype_TextGrid = 4;
   return 0;
 ];
 
-[ glk_request_line_event _vararg_count;
-  ! glk_request_line_event(window, nativechararray, arraylen, uint)
-  @glk 208 _vararg_count 0;
-  return 0;
-];
+![ glk_request_line_event _vararg_count;
+!  ! glk_request_line_event(window, nativechararray, arraylen, uint)
+!  @glk 208 _vararg_count 0;
+!  return 0;
+!];
 
-[ glk_cancel_line_event _vararg_count;
-  ! glk_cancel_line_event(window, &{uint, window, uint, uint})
-  @glk 209 _vararg_count 0;
-  return 0;
-];
+![ glk_cancel_line_event _vararg_count;
+!  ! glk_cancel_line_event(window, &{uint, window, uint, uint})
+!  @glk 209 _vararg_count 0;
+!  return 0;
+!];
 
-[ glk_request_char_event _vararg_count;
-  ! glk_request_char_event(window)
-  @glk 210 _vararg_count 0;
-  return 0;
-];
+![ glk_request_char_event _vararg_count;
+!  ! glk_request_char_event(window)
+!  @glk 210 _vararg_count 0;
+!  return 0;
+!];
 
-[ glk_cancel_char_event _vararg_count;
-  ! glk_cancel_char_event(window)
-  @glk 211 _vararg_count 0;
-  return 0;
-];
+![ glk_cancel_char_event _vararg_count;
+!  ! glk_cancel_char_event(window)
+!  @glk 211 _vararg_count 0;
+!  return 0;
+!];
 
-[ glk_request_mouse_event _vararg_count;
-  ! glk_request_mouse_event(window)
-  @glk 212 _vararg_count 0;
-  return 0;
-];
+![ glk_request_mouse_event _vararg_count;
+!  ! glk_request_mouse_event(window)
+!  @glk 212 _vararg_count 0;
+!  return 0;
+!];
 
-[ glk_cancel_mouse_event _vararg_count;
-  ! glk_cancel_mouse_event(window)
-  @glk 213 _vararg_count 0;
-  return 0;
-];
+![ glk_cancel_mouse_event _vararg_count;
+!  ! glk_cancel_mouse_event(window)
+!  @glk 213 _vararg_count 0;
+!  return 0;
+!];
 
 [ glk_request_timer_events _vararg_count;
   ! glk_request_timer_events(uint)
@@ -690,17 +690,17 @@ Constant wintype_TextGrid = 4;
   return 0;
 ];
 
-[ glk_request_hyperlink_event _vararg_count;
-  ! glk_request_hyperlink_event(window)
-  @glk 258 _vararg_count 0;
-  return 0;
-];
+![ glk_request_hyperlink_event _vararg_count;
+!  ! glk_request_hyperlink_event(window)
+!  @glk 258 _vararg_count 0;
+!  return 0;
+!];
 
-[ glk_cancel_hyperlink_event _vararg_count;
-  ! glk_cancel_hyperlink_event(window)
-  @glk 259 _vararg_count 0;
-  return 0;
-];
+![ glk_cancel_hyperlink_event _vararg_count;
+!  ! glk_cancel_hyperlink_event(window)
+!  @glk 259 _vararg_count 0;
+!  return 0;
+!];
 
 [ glk_buffer_to_lower_case_uni _vararg_count ret;
   ! glk_buffer_to_lower_case_uni(uintarray, arraylen, uint) => uint
@@ -804,17 +804,17 @@ Constant wintype_TextGrid = 4;
   return ret;
 ];
 
-[ glk_request_char_event_uni _vararg_count;
-  ! glk_request_char_event_uni(window)
-  @glk 320 _vararg_count 0;
-  return 0;
-];
+![ glk_request_char_event_uni _vararg_count;
+!  ! glk_request_char_event_uni(window)
+!  @glk 320 _vararg_count 0;
+!  return 0;
+!];
 
-[ glk_request_line_event_uni _vararg_count;
-  ! glk_request_line_event_uni(window, uintarray, arraylen, uint)
-  @glk 321 _vararg_count 0;
-  return 0;
-];
+![ glk_request_line_event_uni _vararg_count;
+!  ! glk_request_line_event_uni(window, uintarray, arraylen, uint)
+!  @glk 321 _vararg_count 0;
+!  return 0;
+!];
 
 [ glk_set_echo_line_event _vararg_count;
   ! glk_set_echo_line_event(window, uint)

@@ -1538,6 +1538,15 @@ The rock number property translates into Inter as "glk_rock".
 A glk window has a number called the reference number.
 The reference number property translates into Inter as "glk_ref".
 
+A glk window has a text input status.
+The text input status property translates into Inter as "input_status".
+
+A glk window can be requesting mouse input.
+The requesting mouse input property translates into Inter as "requesting_mouse".
+
+A glk window can be requesting hyperlink input.
+The requesting hyperlink input property translates into Inter as "requesting_hyperlink".
+
 The main window is a glk window.
 The main window object is accessible to Inter as "Main_Window".
 The type of the main window is text buffer.

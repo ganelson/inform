@@ -194,6 +194,88 @@ Global Glk_Event_Struct_val2;
 	rfalse;
 ];
 
+@h Tracking input requests.
+These replaced versions of the glk versions track which types of input have been
+requested.
+
+=
+[ glk_cancel_char_event win;
+	@push win;
+	@glk 211 1 0;
+	WriteGProperty(OBJECT_TY, FindGlkWindowFromRefNum(win), input_status, INPUT_STATUS_NONE);
+	return 0;
+];
+
+[ glk_cancel_hyperlink_event win;
+	@push win;
+	@glk 259 1 0;
+	WriteGProperty(OBJECT_TY, FindGlkWindowFromRefNum(win), requesting_hyperlink, 0);
+	return 0;
+];
+
+[ glk_cancel_line_event win event;
+	@push event;
+	@push win;
+	@glk 209 2 0;
+	WriteGProperty(OBJECT_TY, FindGlkWindowFromRefNum(win), input_status, INPUT_STATUS_NONE);
+	return 0;
+];
+
+[ glk_cancel_mouse_event win;
+	@push win;
+	@glk 213 1 0;
+	WriteGProperty(OBJECT_TY, FindGlkWindowFromRefNum(win), requesting_mouse, 0);
+	return 0;
+];
+
+[ glk_request_char_event win;
+	@push win;
+	@glk 210 1 0;
+	WriteGProperty(OBJECT_TY, FindGlkWindowFromRefNum(win), input_status, INPUT_STATUS_ACTIVE_CHAR);
+	return 0;
+];
+
+[ glk_request_char_event_uni win;
+	@push win;
+	@glk 320 1 0;
+	WriteGProperty(OBJECT_TY, FindGlkWindowFromRefNum(win), input_status, INPUT_STATUS_ACTIVE_CHAR_UNI);
+	return 0;
+];
+
+[ glk_request_hyperlink_event win;
+	@push win;
+	@glk 258 1 0;
+	WriteGProperty(OBJECT_TY, FindGlkWindowFromRefNum(win), requesting_hyperlink, 1);
+	return 0;
+];
+
+[ glk_request_line_event win buf maxlen initlen;
+	@push initlen;
+	@push maxlen;
+	@push buf;
+	@push win;
+	@glk 208 4 0;
+	WriteGProperty(OBJECT_TY, FindGlkWindowFromRefNum(win), input_status, INPUT_STATUS_ACTIVE_LINE);
+	return 0;
+];
+
+[ glk_request_line_event_uni win buf maxlen initlen;
+	@push initlen;
+	@push maxlen;
+	@push buf;
+	@push win;
+	@glk 321 4 0;
+	WriteGProperty(OBJECT_TY, FindGlkWindowFromRefNum(win), input_status, INPUT_STATUS_ACTIVE_LINE_UNI);
+	return 0;
+];
+
+[ glk_request_mouse_event win;
+	@push win;
+	@glk 212 1 0;
+	WriteGProperty(OBJECT_TY, FindGlkWindowFromRefNum(win), requesting_mouse, 1);
+	return 0;
+];
+
 @h Debugging verb.
 This powers the GLKLIST command, when there's a command parser to read it.
 
