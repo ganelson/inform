@@ -18,7 +18,7 @@ void ExtensionIndex::write(inform_project *proj) {
 	text_stream HOMEPAGE_struct;
 	text_stream *OUT = &HOMEPAGE_struct;
 	if (STREAM_OPEN_TO_FILE(OUT, F, UTF8_ENC) == FALSE) return;
-	InformPages::header(OUT, I"Extensions", JAVASCRIPT_FOR_EXTENSIONS_IRES, NULL);
+	InformPages::header(OUT, I"Extensions", JAVASCRIPT_FOR_ONE_EXTENSION_IRES, NULL);
 	@<Write the body of the HTML@>;
 	InformPages::footer(OUT);
 	STREAM_CLOSE(OUT);
@@ -135,60 +135,17 @@ any oddities found in the external extensions area.
 
 @<Display an alphabetised directory@> =
 	linked_list *key_list = NEW_LINKED_LIST(extensions_key_item);
-	if (usage_state == FALSE) @<Display the census radio buttons@>;
 	int no_entries = LinkedLists::len(L);
 	inbuild_search_result **sorted_census_results = Memory::calloc(no_entries,
 		sizeof(inbuild_search_result *), EXTENSION_DICTIONARY_MREASON);
-	for (int d=((usage_state)?4:1); d<=((usage_state)?4:3); d++) {
-		@<Start an HTML division for this sorted version of the census@>;
-		int no_entries_in_set = 0;
-		@<Sort the census into the appropriate order@>;
-		@<Display the sorted version of the census@>;
-		@<Print the key to any symbols used in the census lines@>;
-		@<Transcribe any census errors@>;
-		HTML_CLOSE("div");
-	}
+	int d = 3;
+	int no_entries_in_set = 0;
+	@<Sort the census into the appropriate order@>;
+	@<Display the sorted version of the census@>;
+	@<Print the key to any symbols used in the census lines@>;
+	@<Transcribe any census errors@>;
 	Memory::I7_array_free(sorted_census_results, EXTENSION_DICTIONARY_MREASON,
 		no_entries, sizeof(inbuild_search_result *));
-
-@ I am the first to admit that this implementation is not inspired. There
-are three radio buttons, and number 1 is selected by default.
-
-@<Display the census radio buttons@> =
-	HTML_OPEN("p");
-	WRITE("Sort this list: ");
-	HTML_OPEN_WITH("a",
-		"href=\"#\" style=\"text-decoration: none\" "
-		"onclick=\"openExtra('disp1', 'plus1'); closeExtra('disp2', 'plus2'); "
-		"closeExtra('disp3', 'plus3'); return false;\"");
-	HTML_TAG_WITH("img", "border=0 id=\"plus1\" src=inform:/doc_images/extrarbon.png");
-	WRITE("&nbsp;By title");
-	HTML_CLOSE("a");
-	WRITE(" | ");
-	HTML_OPEN_WITH("a",
-		"href=\"#\" style=\"text-decoration: none\" "
-		"onclick=\"closeExtra('disp1', 'plus1'); openExtra('disp2', 'plus2'); "
-		"closeExtra('disp3', 'plus3'); return false;\"");
-	HTML_TAG_WITH("img", "border=0 id=\"plus2\" src=inform:/doc_images/extrarboff.png");
-	WRITE("&nbsp;By author");
-	HTML_CLOSE("a");
-	WRITE(" | ");
-	HTML_OPEN_WITH("a",
-		"href=\"#\" style=\"text-decoration: none\" "
-		"onclick=\"closeExtra('disp1', 'plus1'); closeExtra('disp2', 'plus2'); "
-		"openExtra('disp3', 'plus3'); return false;\"");
-	HTML_TAG_WITH("img", "border=0 id=\"plus3\" src=inform:/doc_images/extrarboff.png");
-	WRITE("&nbsp;By location");
-	HTML_CLOSE("a");
-	HTML_CLOSE("p");
-
-@ Consequently, of the three divisions, number 1 is shown and the others
-hidden, by default.
-
-@<Start an HTML division for this sorted version of the census@> =
-	char *display = "none";
-	if ((d == SORT_CE_BY_TITLE) || (d == SORT_CE_BY_USAGE)) display = "block";
-	HTML_OPEN_WITH("div", "id=\"disp%d\" style=\"display: %s;\"", d, display);
 
 @<Print the key to any symbols used in the census lines@> =
 	if (LinkedLists::len(key_list) > 0)
@@ -294,6 +251,12 @@ the usual ones seen in Mac OS X applications such as iTunes.
 			HTML::first_html_column_coloured(OUT, 0, I"stripeone", 0);
 		@<Print the census line for this extension@>;
 		HTML::end_html_row(OUT);
+		if (stripe == 0)
+			ExtensionIndex::first_html_column_wrapping(OUT, 0, I"stripetwo", 4, 48, 4);
+		else
+			ExtensionIndex::first_html_column_wrapping(OUT, 0, I"stripeone", 4, 48, 4);
+		@<Print the rubric line for this extension@>;
+		HTML::end_html_row(OUT);
 	}
 	DISCARD_TEXT(current_author_name)
 	@<Show a final titling row closing the census sorting@>;
@@ -394,8 +357,10 @@ the usual ones seen in Mac OS X applications such as iTunes.
 	if (at) {
 		wording W = Node::get_text(at);
 		source_location sl = Lexer::word_location(Wordings::first_wn(W));
-		SourceLinks::link(OUT, sl, TRUE);
-		ExtensionIndex::add_to_key(key_list, REVEAL_SYMBOL, I"Included here (click to see)");
+		if (sl.file_of_origin) {
+			SourceLinks::link(OUT, sl, TRUE);
+			ExtensionIndex::add_to_key(key_list, REVEAL_SYMBOL, I"Included here (click to see)");
+		}
 	}
 
 	if (LinkedLists::len(ecd->copy->errors_reading_source_text) > 0) {
@@ -470,6 +435,37 @@ the first and last word and just look at what is in between:
 			WRITE("--");
 	}
 	HTML::end_span(OUT);
+
+@<Print the rubric line for this extension@> =
+	HTML::begin_span(OUT, I"smaller");
+	if (Str::len(ExtensionIndex::ecd_rubric(ecd)) > 0)
+		WRITE("%S", ExtensionIndex::ecd_rubric(ecd));
+	else
+		WRITE("--");
+	HTML::end_span(OUT);
+
+@ This is just too special-purpose to belong in the foundation module.
+
+=
+void ExtensionIndex::first_html_column_wrapping(OUTPUT_STREAM, int width, text_stream *classname,
+	int cs, int left_padding, int bottom_padding) {
+	if (Str::len(classname) > 0)
+		HTML_OPEN_WITH("tr", "class=\"%S\"", classname)
+	else
+		HTML_OPEN("tr");
+	TEMPORARY_TEXT(col)
+	WRITE_TO(col, "align=\"left\" valign=\"top\"");
+	if (width > 0) WRITE_TO(col, " width=\"%d\"", width);
+	if (cs > 0) WRITE_TO(col, " colspan=\"%d\"", cs);
+	if ((left_padding > 0) || (bottom_padding > 0)) {
+		WRITE_TO(col, " style=\"");
+		if (left_padding > 0) WRITE_TO(col, "padding-left: %dpx;", left_padding);
+		if (bottom_padding > 0) WRITE_TO(col, "padding-bottom: %dpx;", bottom_padding);
+		WRITE_TO(col, "\"");
+	}
+	HTML_OPEN_WITH("td", "%S", col);
+	DISCARD_TEXT(col)
+}
 
 @h The key.
 There is just no need to do this efficiently in either running time or memory.
