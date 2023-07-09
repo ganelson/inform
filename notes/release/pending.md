@@ -143,6 +143,9 @@ and now poses a moral rather than gender-based question.
 	"Documentation recommends scene code that causes soft lock" (about times
 	since scene ending sometimes being negative)
 	([PR#109](https://github.com/ganelson/inform/pull/109))
+- Fix for Jira bug [I7-1973](https://inform7.atlassian.net/browse/I7-1973) = Mantis 2009
+	"Standard 'deciding whether all include' rules don't apply to an actor."
+	([PR#113](https://github.com/ganelson/inform/pull/113))
 
 - Cosmetic fixes not worth linking to (I7-2350, I7-2319, I7-2316, I7-2315, I7-2293, I7-2270, I7-2268, I7-2221, I7-2214, I7-2210)
 
