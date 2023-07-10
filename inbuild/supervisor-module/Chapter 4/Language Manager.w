@@ -12,7 +12,7 @@ vertices with no build or use edges.
 
 =
 void LanguageManager::start(void) {
-	language_genre = Genres::new(I"language", TRUE);
+	language_genre = Genres::new(I"language", I"language", TRUE);
 	METHOD_ADD(language_genre, GENRE_WRITE_WORK_MTID, LanguageManager::write_work);
 	METHOD_ADD(language_genre, GENRE_CLAIM_AS_COPY_MTID, LanguageManager::claim_as_copy);
 	METHOD_ADD(language_genre, GENRE_SEARCH_NEST_FOR_MTID, LanguageManager::search_nest_for);

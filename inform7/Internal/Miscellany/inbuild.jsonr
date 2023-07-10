@@ -1,0 +1,17 @@
+<resource> ::= {
+	"type": ( "kit" | "extension" | "language" | "project" | "pipeline" | "template" ),
+	"title": string,
+	?"author": string,
+	?"version": string
+}
+
+<inspection-result> ::= {
+	"resource": <resource>,
+	?"errors": [ string* ],
+	?"location-file": string,
+	?"location-directory": string
+}
+
+<inbuild-output> ::= {
+	?"inspection": [ <inspection-result>* ]
+}

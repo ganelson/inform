@@ -115,6 +115,18 @@ void Copies::list_attached_errors_to_HTML(OUTPUT_STREAM, inbuild_copy *C) {
 	HTML_CLOSE("ul"); WRITE("\n");
 }
 
+void Copies::list_attached_errors_to_JSON(JSON_value *errors, inbuild_copy *C) {
+	if (C == NULL) return;
+	copy_error *CE;
+	LOOP_OVER_LINKED_LIST(CE, copy_error, C->errors_reading_source_text) {
+		TEMPORARY_TEXT(err)
+		CopyErrors::write(err, CE);
+		JSON_value *err_jv = JSON::new_string(err);
+		JSON::add_to_array(errors, err_jv);
+		DISCARD_TEXT(err)
+	}
+}
+
 @h Writing.
 
 =
@@ -207,19 +219,61 @@ int Copies::cmp(const void *v1, const void *v2) {
 This function implements the command-line instruction to |-inspect|.
 
 =
-void Copies::inspect(OUTPUT_STREAM, inbuild_copy *C) {
-	WRITE("%S: ", Genres::name(C->edition->work->genre));
-	Editions::inspect(OUT, C->edition);
-	if (C->location_if_path) WRITE(" = directory %p", C->location_if_path);
-	if (C->location_if_file) WRITE(" = file %f", C->location_if_file);
-	int N = LinkedLists::len(C->errors_reading_source_text);
-	if (N > 0) {
-		WRITE(" - %d error", N);
-		if (N > 1) WRITE("s");
-	}
-	WRITE("\n");
-	if (N > 0) {
-		INDENT; Copies::list_attached_errors(OUT, C); OUTDENT;
+void Copies::inspect(OUTPUT_STREAM, JSON_value *obj, inbuild_copy *C) {
+	if (obj) {
+		JSON_value *results = JSON::look_up_object(obj, I"inspection");
+		if (results == NULL) {
+			results = JSON::new_array();
+			JSON::add_to_object(obj, I"inspection", results);
+		}
+		JSON_value *result = JSON::new_object();
+		JSON_value *resource = JSON::new_object();
+		JSON::add_to_object(resource, I"type",
+			JSON::new_string(Genres::metadata_type_name(C->edition->work->genre)));
+		JSON::add_to_object(resource, I"title",
+			JSON::new_string(C->edition->work->title));
+		if (Str::len(C->edition->work->author_name) > 0)
+			JSON::add_to_object(resource, I"author",
+				JSON::new_string(C->edition->work->author_name));
+		semantic_version_number V = C->edition->version;
+		if (VersionNumbers::is_null(V) == FALSE) {
+			TEMPORARY_TEXT(version)
+			WRITE_TO(version, "%v", &V);
+			JSON::add_to_object(resource, I"version", JSON::new_string(version));
+			DISCARD_TEXT(version)
+		}
+		JSON::add_to_object(result, I"resource", resource);
+		int N = LinkedLists::len(C->errors_reading_source_text);
+		if (N > 0) {
+			JSON_value *errors = JSON::new_array();
+			Copies::list_attached_errors_to_JSON(errors, C);
+			JSON::add_to_object(result, I"errors", errors);
+		}
+		TEMPORARY_TEXT(location)
+		if (C->location_if_path) {
+			WRITE_TO(location, "%p", C->location_if_path);
+			JSON::add_to_object(result, I"location-directory", JSON::new_string(location));
+		}
+		if (C->location_if_file) {
+			WRITE_TO(location, "%f", C->location_if_file);
+			JSON::add_to_object(result, I"location-file", JSON::new_string(location));
+		}
+		DISCARD_TEXT(location)
+		JSON::add_to_array(results, result);
+	} else {
+		WRITE("%S: ", Genres::name(C->edition->work->genre));
+		Editions::inspect(OUT, C->edition);
+		if (C->location_if_path) WRITE(" = directory %p", C->location_if_path);
+		if (C->location_if_file) WRITE(" = file %f", C->location_if_file);
+		int N = LinkedLists::len(C->errors_reading_source_text);
+		if (N > 0) {
+			WRITE(" - %d error", N);
+			if (N > 1) WRITE("s");
+		}
+		WRITE("\n");
+		if (N > 0) {
+			INDENT; Copies::list_attached_errors(OUT, C); OUTDENT;
+		}
 	}
 }
 

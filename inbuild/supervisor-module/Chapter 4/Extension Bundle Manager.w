@@ -8,7 +8,7 @@ The |extension_bundle_genre| can be summarised as follows.
 
 =
 void ExtensionBundleManager::start(void) {
-	extension_bundle_genre = Genres::new(I"extensionbundle", TRUE);
+	extension_bundle_genre = Genres::new(I"extensionbundle", I"extension", TRUE);
 	Genres::place_in_class(extension_bundle_genre, 1);
 	METHOD_ADD(extension_bundle_genre, GENRE_WRITE_WORK_MTID, ExtensionBundleManager::write_work);
 	METHOD_ADD(extension_bundle_genre, GENRE_CLAIM_AS_COPY_MTID, ExtensionBundleManager::claim_as_copy);

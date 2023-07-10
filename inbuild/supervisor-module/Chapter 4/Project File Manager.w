@@ -17,7 +17,7 @@ However it is stored in the file system, a project is a project.
 
 =
 void ProjectFileManager::start(void) {
-	project_file_genre = Genres::new(I"projectfile", FALSE);
+	project_file_genre = Genres::new(I"projectfile", I"project", FALSE);
 	METHOD_ADD(project_file_genre, GENRE_WRITE_WORK_MTID, ProjectFileManager::write_work);
 	METHOD_ADD(project_file_genre, GENRE_CLAIM_AS_COPY_MTID, ProjectFileManager::claim_as_copy);
 	METHOD_ADD(project_file_genre, GENRE_SEARCH_NEST_FOR_MTID, ProjectFileManager::search_nest_for);

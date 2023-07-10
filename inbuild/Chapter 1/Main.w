@@ -13,6 +13,8 @@ int inbuild_task = INSPECT_TTASK;
 pathname *path_to_tools = NULL;
 int dry_run_mode = FALSE, build_trace_mode = FALSE, confirmed = FALSE;
 int contents_of_used = FALSE, recursive = FALSE;
+int JSON_file_format = FALSE;
+filename *JSON_file_to_output = NULL;
 inbuild_nest *destination_nest = NULL;
 inbuild_registry *selected_registry = NULL;
 text_stream *filter_text = NULL;
@@ -122,10 +124,25 @@ that we want to start work now.
 	if (path_to_tools) BM = BuildMethodology::new(path_to_tools, FALSE, use);
 	else BM = BuildMethodology::new(Pathnames::up(path_to_inbuild), TRUE, use);
 	if (build_trace_mode) IncrementalBuild::enable_trace();
+	JSON_value *obj = NULL;
+	if (JSON_file_format) obj = JSON::new_object();
 	linked_list *L = Main::list_of_targets();
 	inbuild_copy *C;
 	LOOP_OVER_LINKED_LIST(C, inbuild_copy, L)
 		@<Carry out the required task on the copy C@>;
+	if (obj) {
+		Main::validate_JSON(obj);
+		if (JSON_file_to_output) {
+			text_stream J;
+			if (STREAM_OPEN_TO_FILE(&J, JSON_file_to_output, UTF8_ENC) == FALSE)
+				Errors::fatal_with_file("unable to open JSON file for output: %f",
+					JSON_file_to_output);
+			JSON::encode(&J, obj);
+			STREAM_CLOSE(&J);
+		} else {
+			JSON::encode(STDOUT, obj);
+		}
+	}
 
 @ The list of possible tasks is as follows; they basically all correspond to
 utility functions in the //supervisor// module, which we call.
@@ -148,7 +165,7 @@ utility functions in the //supervisor// module, which we call.
 @<Carry out the required task on the copy C@> =
 	text_stream *OUT = STDOUT;
 	switch (inbuild_task) {
-		case INSPECT_TTASK: Copies::inspect(OUT, C); break;
+		case INSPECT_TTASK: Copies::inspect(OUT, obj, C); break;
 		case GRAPH_TTASK: Copies::show_graph(OUT, C); break;
 		case USE_NEEDS_TTASK: Copies::show_needs(OUT, C, TRUE, FALSE); break;
 		case BUILD_NEEDS_TTASK: Copies::show_needs(OUT, C, FALSE, FALSE); break;
@@ -365,6 +382,7 @@ other options to the selection defined here.
 @e CONFIRMED_CLSW
 @e VERBOSE_CLSW
 @e VERBOSITY_CLSW
+@e JSON_CLSW
 
 @<Read the command line@> =	
 	CommandLine::declare_heading(
@@ -434,6 +452,8 @@ other options to the selection defined here.
 		L"equivalent to -verbosity=1", FALSE);
 	CommandLine::declare_numerical_switch(VERBOSITY_CLSW, L"verbosity", 1,
 		L"how much explanation to print: lowest is 0 (default), highest is 3");
+	CommandLine::declare_switch(JSON_CLSW, L"json", 2,
+		L"write output of -inspect to a JSON file in X (or '-' for stdout)");
 	Supervisor::declare_options();
 
 	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
@@ -505,6 +525,11 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case CONFIRMED_CLSW: confirmed = val; break;
 		case VERBOSE_CLSW: Supervisor::set_verbosity(1); break;
 		case VERBOSITY_CLSW: Supervisor::set_verbosity(val); break;
+		case JSON_CLSW:
+			JSON_file_format = TRUE;
+			if (Str::ne(arg, I"-"))
+				JSON_file_to_output = Filenames::from_text(arg);
+			break;
 	}
 	Supervisor::option(id, val, arg, state);
 }
@@ -515,4 +540,21 @@ subordinate to any switch; we take it as the name of a copy.
 =
 void Main::bareword(int id, text_stream *arg, void *state) {
 	Main::add_file_or_path_as_target(arg, TRUE);
+}
+
+@h JSON validation.
+For options which output JSON, we perform a check that what we've made
+conforms to what we say we make.
+
+=
+void Main::validate_JSON(JSON_value *obj) {
+	filename *F = InstalledFiles::filename(INBUILD_JSON_REQS_IRES);
+	dictionary *D = JSON::read_requirements_file(NULL, F);
+	JSON_requirement *req = JSON::look_up_requirements(D, I"inbuild-output");
+	linked_list *validation_errors = NEW_LINKED_LIST(text_stream);
+	if (JSON::validate(obj, req, validation_errors) == FALSE) {
+		text_stream *err;
+		LOOP_OVER_LINKED_LIST(err, text_stream, validation_errors)
+			WRITE_TO(STDERR, "warning: JSON generated did not validate: '%S'", err);
+	}
 }

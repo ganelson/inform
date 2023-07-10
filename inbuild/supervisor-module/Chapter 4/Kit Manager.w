@@ -15,7 +15,7 @@ the metadata file.
 
 =
 void KitManager::start(void) {
-	kit_genre = Genres::new(I"kit", TRUE);
+	kit_genre = Genres::new(I"kit", I"kit", TRUE);
 	METHOD_ADD(kit_genre, GENRE_WRITE_WORK_MTID, KitManager::write_work);
 	METHOD_ADD(kit_genre, GENRE_CLAIM_AS_COPY_MTID, KitManager::claim_as_copy);
 	METHOD_ADD(kit_genre, GENRE_SEARCH_NEST_FOR_MTID, KitManager::search_nest_for);

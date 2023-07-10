@@ -1,4 +1,4 @@
-Total memory consumption was 135940K = 133 MB
+Total memory consumption was 135943K = 133 MB
 
  ---- was used for 2113736 objects, in 374136 frames in 0 x 800K = 0K = 0 MB:
 
@@ -200,9 +200,9 @@ Total memory consumption was 135940K = 133 MB
      ----  small_word_set                           11 objects, 528 bytes
      ----  i6_memory_setting                        15 objects, 480 bytes
      ----  equation                                 4 objects, 480 bytes
+     ----  inbuild_genre                            8 objects, 448 bytes
      ----  bp_family                                14 objects, 448 bytes
      ----  inference_family                         11 objects, 440 bytes
-     ----  inbuild_genre                            8 objects, 384 bytes
      ----  article_usage                            8 objects, 384 bytes
      ----  source_file                              5 objects, 360 bytes
      ----  tree_inventory                           1 object, 320 bytes
@@ -251,7 +251,7 @@ Total memory consumption was 135940K = 133 MB
 
 100.0% was used for memory not allocated for objects:
 
-    61.3%  text stream storage                      85446132 bytes in 501046 claims
+    61.3%  text stream storage                      85448228 bytes in 501066 claims
      3.8%  dictionary storage                       5377536 bytes in 7751 claims
      ----  sorting                                  2616 bytes in 531 claims
      5.1%  source text                              7200000 bytes in 3 claims
@@ -269,5 +269,5 @@ Total memory consumption was 135940K = 133 MB
      ----  code generation workspace for objects    3488 bytes in 19 claims
      0.2%  emitter array storage                    281184 bytes in 2006 claims
 
--139.-6% was overhead - -194383456 bytes = -189827K = -185 MB
+-139.-6% was overhead - -194383520 bytes = -189827K = -185 MB
 

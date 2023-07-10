@@ -23,6 +23,7 @@ but they're just plain old files, and are not managed by Inbuild as "copies".
 @e EXTENSION_DOCUMENTATION_MODEL_IRES
 @e RESOURCE_JSON_REQS_IRES
 @e REGISTRY_JSON_REQS_IRES
+@e INBUILD_JSON_REQS_IRES
 @e UNICODE_DATA_IRES
 
 =
@@ -45,6 +46,8 @@ filename *InstalledFiles::filename(int ires) {
 				return Filenames::in(misc, I"resource.jsonr");
 		case REGISTRY_JSON_REQS_IRES:
 				return Filenames::in(misc, I"registry.jsonr");
+		case INBUILD_JSON_REQS_IRES:
+				return Filenames::in(misc, I"inbuild.jsonr");
 		case UNICODE_DATA_IRES:
 				return Filenames::in(misc, I"UnicodeData.txt");
 

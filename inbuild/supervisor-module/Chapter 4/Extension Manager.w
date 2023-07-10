@@ -18,7 +18,7 @@ later on, as needed, just for extensions of interest: see below.
 
 @ =
 void ExtensionManager::start(void) {
-	extension_genre = Genres::new(I"extension", TRUE);
+	extension_genre = Genres::new(I"extension", I"extension", TRUE);
 	Genres::place_in_class(extension_genre, 1);
 	METHOD_ADD(extension_genre, GENRE_WRITE_WORK_MTID, ExtensionManager::write_work);
 	METHOD_ADD(extension_genre, GENRE_CLAIM_AS_COPY_MTID, ExtensionManager::claim_as_copy);

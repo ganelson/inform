@@ -18,15 +18,17 @@ the instance |kit_genre| and provides its method functions.
 =
 typedef struct inbuild_genre {
 	text_stream *genre_name;
+	text_stream *metadata_type_name;
 	int stored_in_nests;
 	int genre_class;
 	struct method_set *methods;
 	CLASS_DEFINITION
 } inbuild_genre;
 
-inbuild_genre *Genres::new(text_stream *name, int nested) {
+inbuild_genre *Genres::new(text_stream *name, text_stream *md, int nested) {
 	inbuild_genre *gen = CREATE(inbuild_genre);
 	gen->genre_name = Str::duplicate(name);
+	gen->metadata_type_name = Str::duplicate(md);
 	gen->stored_in_nests = nested;
 	gen->genre_class = 0;
 	gen->methods = Methods::new_set();
@@ -36,6 +38,11 @@ inbuild_genre *Genres::new(text_stream *name, int nested) {
 text_stream *Genres::name(inbuild_genre *G) {
 	if (G == NULL) return I"(none)";
 	return G->genre_name;
+}
+
+text_stream *Genres::metadata_type_name(inbuild_genre *G) {
+	if (G == NULL) return I"(none)";
+	return G->metadata_type_name;
 }
 
 @ Some genres of work, such as kits and extensions, can be stored in nests;
