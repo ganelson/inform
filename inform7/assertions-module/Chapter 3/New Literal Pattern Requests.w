@@ -301,8 +301,47 @@ by a bracketed list of up to three options in any order.
 	with leading zeros |                           ==> { WITH_LEADING_ZEROS_LSO, - }
 	without leading zeros |                        ==> { WITHOUT_LEADING_ZEROS_LSO, - }
 	in <number-base> |                             ==> { BASE_LSO*R[1], - }
-	maximum <cardinal-number> |                    ==> { MAXIMUM_LSO, - }; <<max_part_val>> = R[1];
+	<cardinal-number> to <cardinal-number> |       ==> <<max_part_val>> = R[2]; @<Apply range@>;
+	up to <cardinal-number> <number-base> digit/digits | ==> @<Apply based max digit count@>;
+	up to <cardinal-number> digit/digits |         ==> @<Apply max digit count@>;
+	<cardinal-number> <number-base> digit/digits | ==> @<Apply based digit count@>;
+	<cardinal-number> digit/digits |               ==> @<Apply digit count@>;
 	......                                         ==> @<Issue PM_BadLPPartOption problem@>
+
+@<Apply range@> =
+	if (R[1] != 0) 
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
+			"the range in a named part has to begin at 0",
+			"for the moment at least.");
+	==> { MAXIMUM_LSO, - };
+
+@<Apply max digit count@> =
+	if (R[1] < 1) 
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
+			"the digit count in a named part has to be at least 1",
+			"for obvious reasons.");
+	==> { MAX_DIGITS_LSO*R[1], - }
+
+@<Apply digit count@> =
+	if (R[1] < 1) 
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
+			"the digit count in a named part has to be at least 1",
+			"for obvious reasons.");
+	==> { MAX_DIGITS_LSO*R[1] + MIN_DIGITS_LSO*R[1] + WITH_LEADING_ZEROS_LSO, - };
+
+@<Apply based max digit count@> =
+	if (R[1] < 1) 
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
+			"the digit count in a named part has to be at least 1",
+			"for obvious reasons.");
+	==> { MAX_DIGITS_LSO*R[1] + BASE_LSO*R[2], - }
+
+@<Apply based digit count@> =
+	if (R[1] < 1) 
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
+			"the digit count in a named part has to be at least 1",
+			"for obvious reasons.");
+	==> { MAX_DIGITS_LSO*R[1] + MIN_DIGITS_LSO*R[1] + BASE_LSO*R[2] + WITH_LEADING_ZEROS_LSO, - };
 
 @<Issue PM_BadLPPartOption problem@> =
 	if (preform_lookahead_mode == FALSE) {
@@ -326,13 +365,17 @@ literal_pattern_name *LPRequests::compose(literal_pattern_name *A, literal_patte
 
 @ Nodes used as "parts" of a notation are annotated with a bitmap of these:
 
-@d OPTIONAL_LSO 1
-@d PREAMBLE_OPTIONAL_LSO 2
-@d WITH_LEADING_ZEROS_LSO 4
-@d WITHOUT_LEADING_ZEROS_LSO 8
-@d MAXIMUM_LSO 16
-@d BASE_LSO 0x10000
-@d BASE_MASK_LSO 0xff0000
+@d OPTIONAL_LSO                 0x00000001
+@d PREAMBLE_OPTIONAL_LSO        0x00000002
+@d WITH_LEADING_ZEROS_LSO       0x00000004
+@d WITHOUT_LEADING_ZEROS_LSO    0x00000008
+@d MAXIMUM_LSO                  0x00000010
+@d BASE_LSO                     0x00000100
+@d BASE_MASK_LSO                0x0000ff00
+@d MIN_DIGITS_LSO               0x00010000
+@d MIN_DIGITS_MASK_LSO          0x007f0000
+@d MAX_DIGITS_LSO               0x01000000
+@d MAX_DIGITS_MASK_LSO          0x7f000000
 
 =
 parse_node *LPRequests::mark(parse_node *A, int N, int M) {

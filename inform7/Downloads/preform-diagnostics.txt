@@ -5740,9 +5740,9 @@
 <other-significant-phrase> hits 785/14942 nti 13 constraint DS = {13} extremes [2, infinity)
     English:
         say {...} 
-          (hits 604/2971) (matched long text) constraint DS = {13} extremes [2, infinity)
+          (hits 604/2970) (matched long text) constraint DS = {13} extremes [2, infinity)
         now {...} 
-          (hits 181/2367) (matched long text) constraint DS = {13} extremes [2, infinity)
+          (hits 181/2366) (matched long text) constraint DS = {13} extremes [2, infinity)
 
 <phrase-with-comma-notation> hits 2324/7612 nti 14 constraint DS = {14} extremes [3, infinity)
     English:
@@ -6478,7 +6478,15 @@
           constraint CS = {13} extremes [3, 3]
         in <number-base> 
           constraint DS = {11, 13} extremes [2, 3]
-        maximum <cardinal-number> 
+        <cardinal-number> to <cardinal-number> 
+          constraint DS = {13} extremes [3, 3]
+        up to <cardinal-number> <number-base> digit/digits 
+          constraint DS = {11, 13} extremes [5, 6]
+        up to <cardinal-number> digit/digits 
+          constraint DS = {13} extremes [4, 4]
+        <cardinal-number> <number-base> digit/digits 
+          constraint DS = {11, 13} extremes [3, 4]
+        <cardinal-number> digit/digits 
           constraint DS = {13} extremes [2, 2]
         {......} 
           constraint (none) extremes [1, infinity)
@@ -8867,23 +8875,23 @@
 <spatial-specifying-nouns> hits 288/63652 nti 13 constraint DS = {13} extremes [1, infinity)
     English:
         _something/anything {***} 
-          (hits 207/17164) (matched long text) constraint DS = {13} extremes [1, infinity)
+          (hits 207/17156) (matched long text) constraint DS = {13} extremes [1, infinity)
         _somewhere/anywhere {***} 
-          (hits 0/16957) constraint DS = {13} extremes [1, infinity)
+          (hits 0/16949) constraint DS = {13} extremes [1, infinity)
         _someone/anyone/somebody/anybody {***} 
-          (hits 57/16957) (matched: 'someone') constraint DS = {13} extremes [1, infinity)
+          (hits 57/16949) (matched: 'someone') constraint DS = {13} extremes [1, infinity)
         _everything {***} 
-          (hits 0/16900) constraint DS = {13} extremes [1, infinity)
+          (hits 0/16892) constraint DS = {13} extremes [1, infinity)
         _everywhere {***} 
-          (hits 0/16900) constraint DS = {13} extremes [1, infinity)
+          (hits 0/16892) constraint DS = {13} extremes [1, infinity)
         _everyone/everybody {***} 
-          (hits 0/16900) constraint DS = {13} extremes [1, infinity)
+          (hits 0/16892) constraint DS = {13} extremes [1, infinity)
         _nowhere {***} 
-          (hits 24/16900) (matched: 'nowhere') constraint DS = {13} extremes [1, infinity)
+          (hits 24/16892) (matched: 'nowhere') constraint DS = {13} extremes [1, infinity)
         _nobody/no-one {***} 
-          (hits 0/16876) constraint DS = {13} extremes [1, infinity)
+          (hits 0/16868) constraint DS = {13} extremes [1, infinity)
         _no _one {***} 
-          (hits 0/16482) constraint DS = {13} extremes [2, infinity)
+          (hits 0/16474) constraint DS = {13} extremes [2, infinity)
 
 <notable-spatial-noun-phrases> hits 0/2186 nti 14 constraint CS = {14} extremes [1, 1]
     English:

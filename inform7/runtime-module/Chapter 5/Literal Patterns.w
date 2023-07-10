@@ -230,9 +230,7 @@ void RTLiteralPatterns::compilation_agent(compilation_subtask *t) {
 	ec++;
 
 @<Print leading zeros@> =
-	if ((lpe->with_leading_zeros) ||
-		((lp->lp_tokens[tc].new_word_at == FALSE) &&
-			(lpe->without_leading_zeros == FALSE))) {
+	if (lpe->print_with_leading_zeros) {
 		int pow = 1;
 		while (lpe->element_range > pow) pow = pow * lpe->number_base;
 		for (; pow>1; pow = pow/lpe->number_base)
@@ -1060,29 +1058,47 @@ sets the |parsed_number| global to the value matched.
 		EmitCode::val_false();
 	EmitCode::up();
 
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, gprk.rv_s);
+		EmitCode::val_number(0);
+	EmitCode::up();
+
 	EmitCode::inv(WHILE_BIP);
 	EmitCode::down();
 		EmitCode::inv(AND_BIP);
 		EmitCode::down();
-			EmitCode::inv(LT_BIP);
-			EmitCode::down();
-				EmitCode::val_symbol(K_value, gprk.wpos_s);
-				EmitCode::val_symbol(K_value, gprk.cur_len_s);
-			EmitCode::up();
-			EmitCode::inv(GE_BIP);
-			EmitCode::down();
-				EmitCode::call(Hierarchy::find(DIGITTOVALUE_HL));
+			if (lpe->max_digits < 1000000) {
+				EmitCode::inv(LT_BIP);
 				EmitCode::down();
-					EmitCode::inv(bufferbip);
-					EmitCode::down();
-						EmitCode::val_symbol(K_value, gprk.cur_addr_s);
-						EmitCode::val_symbol(K_value, gprk.wpos_s);
-					EmitCode::up();
-					if (lpe->number_base != 10)
-						EmitCode::val_number((inter_ti) lpe->number_base);
+					EmitCode::val_symbol(K_value, gprk.rv_s);
+					EmitCode::val_number((inter_ti) lpe->max_digits);
 				EmitCode::up();
-				EmitCode::val_number(0);
-			EmitCode::up();
+				EmitCode::inv(AND_BIP);
+				EmitCode::down();
+			}
+					EmitCode::inv(LT_BIP);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, gprk.wpos_s);
+						EmitCode::val_symbol(K_value, gprk.cur_len_s);
+					EmitCode::up();
+					EmitCode::inv(GE_BIP);
+					EmitCode::down();
+						EmitCode::call(Hierarchy::find(DIGITTOVALUE_HL));
+						EmitCode::down();
+							EmitCode::inv(bufferbip);
+							EmitCode::down();
+								EmitCode::val_symbol(K_value, gprk.cur_addr_s);
+								EmitCode::val_symbol(K_value, gprk.wpos_s);
+							EmitCode::up();
+							if (lpe->number_base != 10)
+								EmitCode::val_number((inter_ti) lpe->number_base);
+						EmitCode::up();
+						EmitCode::val_number(0);
+					EmitCode::up();
+			if (lpe->max_digits < 1000000) {
+				EmitCode::up();
+			}
 		EmitCode::up();
 		EmitCode::code();
 		EmitCode::down();
@@ -1111,6 +1127,10 @@ sets the |parsed_number| global to the value matched.
 			EmitCode::down();
 				EmitCode::ref_symbol(K_value, gprk.wpos_s);
 			EmitCode::up();
+			EmitCode::inv(POSTINCREMENT_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, gprk.rv_s);
+			EmitCode::up();
 		EmitCode::up();
 	EmitCode::up();
 
@@ -1129,6 +1149,24 @@ sets the |parsed_number| global to the value matched.
 			EmitCode::up();
 		EmitCode::up();
 	EmitCode::up();
+
+	if (lpe->min_digits > 1) {
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(LT_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, gprk.rv_s);
+				EmitCode::val_number((inter_ti) lpe->min_digits);
+			EmitCode::up();
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::inv(JUMP_BIP);
+				EmitCode::down();
+					EmitCode::lab(failed_label);
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
+	}
 
 	if (lpe->element_index > 0) {
 		EmitCode::inv(IF_BIP);

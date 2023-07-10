@@ -10,6 +10,7 @@ which use this module:
 
 @ Like all modules, this one must define a |start| and |end| function:
 
+@e LITERAL_NOTATIONS_DA
 @e OBJECT_CREATIONS_DA
 @e PHRASE_USAGE_DA
 @e SPECIFICITIES_DA
@@ -26,6 +27,7 @@ COMPILE_WRITER(nonlocal_variable *, NonlocalVariables::log)
 void ValuesModule::start(void) {
 	Tables::Relations::start();
 	Writers::register_writer('I', &Instances::writer);
+	Log::declare_aspect(LITERAL_NOTATIONS_DA, L"literal notations", FALSE, FALSE);
 	Log::declare_aspect(OBJECT_CREATIONS_DA, L"object creations", FALSE, FALSE);
 	Log::declare_aspect(PHRASE_USAGE_DA, L"phrase usage", FALSE, FALSE);
 	Log::declare_aspect(SPECIFICITIES_DA, L"specificities", FALSE, FALSE);

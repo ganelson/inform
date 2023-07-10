@@ -118,8 +118,9 @@ typedef struct literal_pattern_element {
 	struct wording element_name; /* if we define a name for the element */
 
 	int is_real; /* store as a real number, not an integer? */
-	int with_leading_zeros; /* override default to say yes */
-	int without_leading_zeros; /* override default to say no */
+	int print_with_leading_zeros; /* print with leading zeros */
+	int min_digits; /* when writing this */
+	int max_digits; /* when writing this */
 	int number_base; /* e.g., 10 for decimal */
 	int element_optional; /* can we truncate the LP here? */
 	int preamble_optional; /* if so, can we lose the preamble as well? */
@@ -183,6 +184,8 @@ literal_pattern_token LiteralPatterns::lpt_new(int t, int nw) {
 }
 
 @ =
+literal_pattern_element *parsing_new_element = NULL;
+
 literal_pattern_element LiteralPatterns::lpe_new(int i, int r, int sgn) {
 	literal_pattern_element lpe;
 	if (i == 0) lpe.element_range = -1; else lpe.element_range = r;
@@ -192,8 +195,9 @@ literal_pattern_element LiteralPatterns::lpe_new(int i, int r, int sgn) {
 	lpe.preamble_optional = FALSE;
 	lpe.element_optional = FALSE;
 	lpe.number_base = 10;
-	lpe.with_leading_zeros = FALSE;
-	lpe.without_leading_zeros = FALSE;
+	lpe.print_with_leading_zeros = FALSE;
+	lpe.min_digits = 1;
+	lpe.max_digits = 1000000;
 	return lpe;
 }
 
@@ -487,18 +491,20 @@ on unusual platforms.
 	int digits_found = 0, point_at = -1;
 	max_16_bit = 32767LL; if (sign_used_at) max_16_bit = 32768LL;
 	max_32_bit = 2147483647LL; if (sign_used_at) max_32_bit = 2147483648LL;
-	while ((LiteralPatterns::digit_value(wd[wpos], lpe) >= 0) ||
-		((wd[wpos] == '.') &&
-			(Kinds::Scalings::get_integer_multiplier(lp->scaling) > 1) &&
-			(point_at == -1))) {
+	while ((digits_found < lpe->max_digits) &&
+			((LiteralPatterns::digit_value(wd[wpos], lpe->number_base) >= 0) ||
+				((wd[wpos] == '.') &&
+				(Kinds::Scalings::get_integer_multiplier(lp->scaling) > 1) &&
+				(point_at == -1)))) {
 		if (wd[wpos] == '.') { point_at = digits_found; wpos++; continue; }
-		tot = lpe->number_base*tot + LiteralPatterns::digit_value(wd[wpos++], lpe);
+		tot = lpe->number_base*tot + LiteralPatterns::digit_value(wd[wpos++], lpe->number_base);
 		if (tot > max_16_bit) overflow_16_bit_flag = TRUE;
 		if (tot > max_32_bit) overflow_32_bit_flag = TRUE;
 		digits_found++;
 	}
 	if ((point_at == 0) || (point_at == digits_found)) return NULL;
 	if (digits_found == 0) return NULL;
+	if (digits_found < lpe->min_digits) return NULL;
 	while ((point_at > 0) && (point_at < digits_found)) {
 		matched_scaledown *= lpe->number_base; point_at++;
 	}
@@ -652,7 +658,7 @@ which is annoying. So we have a mechanism to suppress duplicates:
 @ A digit value in a given LPE:
 
 =
-int LiteralPatterns::digit_value(wchar_t c, literal_pattern_element *lpe) {
+int LiteralPatterns::digit_value(wchar_t c, int base) {
 	int r = -1;
 	int d = ((int) c - (int) '0');
 	if ((d >= 0) && (d < 10)) r = d;
@@ -664,7 +670,7 @@ int LiteralPatterns::digit_value(wchar_t c, literal_pattern_element *lpe) {
 			if ((d >= 0) && (d < 26)) r = d + 10; else return -1;
 		}
 	}
-	if ((r >= 0) && (r < lpe->number_base)) return r;
+	if ((r >= 0) && (r < base)) return r;
 	return -1;	
 }
 
@@ -885,14 +891,9 @@ note that the following uses the raw text of the word.
 		int remainder;
 		Kinds::Scalings::value_to_quanta(v, lp->scaling, &v, &remainder);
 		literal_pattern_element *lpe = &(lp->lp_elements[ec]);
-		if (ec == 0) WRITE("%d", v/(lpe->element_multiplier));
-		else {
-			char *prototype = "%d";
-			if ((lpe->with_leading_zeros) ||
-				((lp->lp_tokens[tc].new_word_at == FALSE) && (lpe->without_leading_zeros == FALSE)))
-				prototype = LiteralPatterns::leading_zero_prototype(lpe->element_range);
-			WRITE(prototype, (v/(lpe->element_multiplier)) % (lpe->element_range));
-		}
+		int m = lpe->element_range;
+		LiteralPatterns::write_val(OUT, m,
+			(v/(lpe->element_multiplier)) % m, lpe->number_base, lpe->print_with_leading_zeros);
 		if (ec == 0) @<Index the fractional part of the value@>;
 	}
 	ec++;
@@ -906,23 +907,29 @@ note that the following uses the raw text of the word.
 	}
 	if (remainder > 0) {
 		WRITE(".");
-		WRITE(LiteralPatterns::leading_zero_prototype(ranger), remainder);
+		LiteralPatterns::write_val(OUT, ranger, remainder, lp->number_base, TRUE);
 	}
 
-@ Please don't mention the words "logarithm" or "shift". It works fine.
+@ Please don't ask pointed questions about the running time here. It works fine.
 
 =
-char *LiteralPatterns::leading_zero_prototype(int range) {
-	if (range > 1000000000) return "%010d";
-	if (range > 100000000) return "%09d";
-	if (range > 10000000) return "%08d";
-	if (range > 1000000) return "%07d";
-	if (range > 100000) return "%06d";
-	if (range > 10000) return "%05d";
-	if (range > 1000) return "%04d";
-	if (range > 100) return "%03d";
-	if (range > 10) return "%02d";
-	return "%d";
+void LiteralPatterns::write_val(OUTPUT_STREAM, int range, int val, int base, int lz) {
+	if (val < 0) internal_error("negative val");
+	if (base < 2) internal_error("impossible number base");
+	int d = 1; int vc = 0;
+	if (val == 0) vc = 1;
+	while (d < val) vc++, d *= base;
+	if ((lz) && (range >= 0)) {
+		int d = 1, c = 0;
+		while (d < range) c++, d *= base;
+		for (int i=vc; i<c; i++) WRITE("0");
+	}
+	for (int i=vc; i>=1; i--) {
+		int d = 1; for (int j=1; j<i; j++) d = d*base;
+		int dval = (val/d)%base;
+		if (dval < 10) WRITE("%d", dval);
+		else WRITE("%c", 'A' + dval - 10);
+	}
 }
 
 @ The grammars for the specify sentence are quite complicated, but aren't used
@@ -960,6 +967,8 @@ literal_pattern *LiteralPatterns::new_literal_specification_inner(lp_specificati
 	} else {
 		@<Calculate the multipliers for packing the elements into a single integer@>;
 	}
+
+	if (Log::aspect_switched_on(LITERAL_NOTATIONS_DA)) @<Log this literal pattern in full@>;
 
 	if (owner == NULL) owner = lp;
 	else @<Add this new alternative to the list belonging to our owner@>;
@@ -1090,20 +1099,9 @@ does not throw a problem message as being a bar which is out of range
 alphabetic vs numeric pieces of a word:
 
 @<Break down the specification text into tokens and elements@> =
-	int i, j, tc, ec;
-	for (i=0, tc=0, ec=0; i<Wordings::length(lps->notation_wording); i++) {
-		literal_pattern_token new_token;
-		int digit_found = FALSE;
-		wchar_t *text_of_word = Lexer::word_raw_text(Wordings::first_wn(lps->notation_wording)+i);
-		for (j=0; text_of_word[j]; j++) if (Characters::isdigit(text_of_word[j])) digit_found = TRUE;
-		if (digit_found)
-			@<Break up the word into at least one element token, and perhaps also character tokens@>
-		else {
-			new_token = LiteralPatterns::lpt_new(WORD_LPT, TRUE);
-			new_token.token_wn = Wordings::first_wn(lps->notation_wording)+i;
-			@<Add new token to LP@>;
-		}
-	}
+	int tc = 0, ec = 0, angle_escaped_parts_exist = FALSE;
+	wording NW = lps->notation_wording;
+	@<Subdivide the wording around angle-bracket escapes@>;
 	lp->no_lp_tokens = tc;
 	lp->no_lp_elements = ec;
 	if (lp->no_lp_elements == 0) {
@@ -1113,19 +1111,152 @@ alphabetic vs numeric pieces of a word:
 			"specifies a weight'.");
 		return owner;
 	}
+	if ((lps->part_np_list == NULL) && (angle_escaped_parts_exist)) {
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
+			"since the specification involves parts named in angle brackets "
+			"it must go on to give details such as 'with parts...'",
+			"and it appears that it doesn't.");
+		return owner;
+	}
+
+@ We will use this throwaway little structure to hold inclusive endpoints for
+ranges we are scanning: |(143, 2)| means "character 2 (counting from 0) in
+word number 143".
+
+=
+typedef struct lpe_notation_pos {
+	int wn;
+	int char_pos;
+} lpe_notation_pos;
+
+@ This enables us to express how we want to divide up text such as
+|#<red level>_<green level>_<blue level>|, which may have word breaks in the
+middle of either angle-escapes or the material in between.
+
+@<Subdivide the wording around angle-bracket escapes@> =
+	lpe_notation_pos from = { Wordings::first_wn(NW), 0 };
+	for (int i=0; i<Wordings::length(NW); i++) {
+		int quoted = FALSE;
+		wchar_t *text = Lexer::word_raw_text(Wordings::first_wn(NW)+i);
+		for (int j=0; text[j]; j++)
+			if (text[j] == '\"') {
+				quoted = quoted?FALSE:TRUE;
+			} else if ((quoted == FALSE) && (text[j] == '<')) {
+				if (j == 0) {
+					if (i > 0) {
+						lpe_notation_pos to = { Wordings::first_wn(NW)+i-1,
+							Wide::len(Lexer::word_raw_text(Wordings::last_wn(NW)+i-1)) - 1 };
+						@<Compile unescaped notation between from and to@>;
+					}
+				} else {
+					lpe_notation_pos to = { Wordings::first_wn(NW)+i, j-1 };
+					@<Compile unescaped notation between from and to@>;
+				}
+				TEMPORARY_TEXT(angles)
+				int next_token_begins_word = TRUE;
+				if (j > 0) next_token_begins_word = FALSE;
+				int k = j+1, found = FALSE, found_open = FALSE;
+				for (; ((found == FALSE) && (i<Wordings::length(NW))); i++, k=0) {
+					text = Lexer::word_raw_text(Wordings::first_wn(NW)+i);
+					for (; text[k]; k++) {
+						if (text[k] == '\"') quoted = quoted?FALSE:TRUE;
+						if ((quoted == FALSE) && (text[k] == '>')) {
+							found = TRUE; k++;
+							break;
+						} else {
+							if ((quoted == FALSE) && (text[k] == '<')) found_open = TRUE;
+							PUT_TO(angles, text[k]);
+						}
+					}
+					if (found) break;
+					quoted = FALSE;
+					if (i < Wordings::length(NW)) PUT_TO(angles, ' ');
+				}
+				if ((found == FALSE) || (found_open))
+					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
+						"'<' without '>' in a literal specification",
+						"which must mean that the angle brackets do not match.");
+				from.wn = Wordings::first_wn(NW)+i;
+				from.char_pos = k;
+				@<Act on angle-bracketed escape@>;
+				DISCARD_TEXT(angles)
+				j = k - 1;
+			}
+	}
+	lpe_notation_pos to = { Wordings::last_wn(NW),
+		Wide::len(Lexer::word_raw_text(Wordings::last_wn(NW))) - 1 };
+	@<Compile unescaped notation between from and to@>;
+
+@ Angle-escapes are easy, and must consist of either double-quoted literal
+material or else names for parts about which nothing else is said.
+
+@<Act on angle-bracketed escape@> =
+	Str::trim_white_space(angles);
+	wording AW = Feeds::feed_text(angles);
+	if (<quoted-text>(AW)) {
+		wchar_t *literal_text = Lexer::word_raw_text(Wordings::first_wn(AW));
+		for (int x=1; x < Wide::len(literal_text) - 1; x++) {
+			literal_pattern_token new_token =
+				LiteralPatterns::lpt_new(CHARACTER_LPT, next_token_begins_word);
+			new_token.token_char = literal_text[x];
+			@<Add new token to LP@>;
+			next_token_begins_word = FALSE;
+		}
+	} else {
+		int tot = 1, sgn = 1;
+		@<Make a new element@>;
+		parsing_new_element = &(lp->lp_elements[ec-1]);
+		parsing_new_element->element_name = AW;
+		literal_pattern_token new_token =
+			LiteralPatterns::lpt_new(ELEMENT_LPT, next_token_begins_word);
+		@<Add new token to LP@>;
+		next_token_begins_word = FALSE;
+		angle_escaped_parts_exist = TRUE;
+	}
+
+@ Now we are looking for digits. |x45yyz| would be split into the character
+literal |x|, then a numerical element with range |45| in the current number base,
+then three more character literals. If there are no digits, and we have an entire
+word to play with, we optimise by making a word token instead of a run of
+character ones.
+
+@<Compile unescaped notation between from and to@> =
+	if ((from.wn < to.wn) || (from.char_pos < to.char_pos)) {
+		wording NW = Wordings::new(from.wn, to.wn);
+		for (int i=0; i<Wordings::length(NW); i++) {
+			wchar_t *text_of_word = Lexer::word_raw_text(Wordings::first_wn(NW)+i);
+			int start_from = 0, finish_at = Wide::len(text_of_word)-1;
+			if (i == 0) start_from = from.char_pos;
+			if (i == Wordings::length(NW)-1) finish_at = to.char_pos;
+			int digit_found = FALSE;
+			for (int j=start_from; j<=finish_at; j++)
+				if (LiteralPatterns::digit_value(text_of_word[j], lp->number_base) >= 0)
+					digit_found = TRUE;
+			if ((digit_found) || (start_from != 0) || (finish_at != Wide::len(text_of_word)-1))
+				@<Break up the word into at least one element token, and perhaps also character tokens@>
+			else {
+				literal_pattern_token new_token = LiteralPatterns::lpt_new(WORD_LPT, TRUE);
+				new_token.token_wn = Wordings::first_wn(NW)+i;
+				@<Add new token to LP@>;
+			}
+		}
+	}
 
 @ Bounds checking is easier here since we know that a LP specification will
 not ever need to create the maximum conceivable value which a C integer can
 hold -- so we need not fool around with long long ints.
 
 @<Break up the word into at least one element token, and perhaps also character tokens@> =
-	int j, sgn = 1, next_token_begins_word = TRUE;
-	for (j=0; text_of_word[j]; j++) {
+	int sgn = 1, next_token_begins_word = TRUE, base = lp->number_base;
+	if (start_from > 0) next_token_begins_word = FALSE;
+	for (int j=start_from; j<=finish_at; j++) {
 		int tot = 0, digit_found = FALSE, point_found = FALSE;
-		if ((text_of_word[j] == '-') && (Characters::isdigit(text_of_word[j+1])) && (ec == 0)) {
+		if ((text_of_word[j] == '-') &&
+			(LiteralPatterns::digit_value(text_of_word[j+1], base) >= 0) &&
+			(ec == 0)) {
 			sgn = -1; continue;
 		}
-		while (Characters::isdigit(text_of_word[j++])) {
+		while (LiteralPatterns::digit_value(text_of_word[j++], base) >= 0) {
 			digit_found = TRUE;
 			if (tot > 999999999) {
 				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPElementTooLarge),
@@ -1134,34 +1265,39 @@ hold -- so we need not fool around with long long ints.
 					"be stored at run-time.");
 				return owner;
 			}
-			tot = 10*tot + (text_of_word[j-1]-'0');
+			tot = base*tot + LiteralPatterns::digit_value(text_of_word[j-1], base);
 		}
 		j--;
 		if ((text_of_word[j] == '.') && (text_of_word[j+1] == '0') && (ec == 0)) {
 			j += 2; point_found = TRUE;
 		}
 		if (digit_found) {
-			literal_pattern_element new_element = LiteralPatterns::lpe_new(ec, tot+1, sgn);
-			if (ec >= MAX_ELEMENTS_PER_LITERAL) {
-				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPTooManyElements),
-					"that specification contains too many numerical elements",
-					"and is too complicated for Inform to handle.");
-				return owner;
-			}
-			new_element.is_real = point_found;
+			@<Make a new element@>;
+			lp->lp_elements[ec-1].is_real = point_found;
 			if (point_found) integer_scaling = FALSE;
-			lp->lp_elements[ec++] = new_element;
 			if (sgn == -1) lp->number_signed = TRUE;
-			new_token = LiteralPatterns::lpt_new(ELEMENT_LPT, next_token_begins_word);
+			literal_pattern_token new_token = LiteralPatterns::lpt_new(ELEMENT_LPT, next_token_begins_word);
 			@<Add new token to LP@>;
 			j--;
 		} else {
-			new_token = LiteralPatterns::lpt_new(CHARACTER_LPT, next_token_begins_word);
+			literal_pattern_token new_token = LiteralPatterns::lpt_new(CHARACTER_LPT, next_token_begins_word);
 			new_token.token_char = text_of_word[j];
 			@<Add new token to LP@>;
 		}
 		sgn = 1; next_token_begins_word = FALSE;
 	}
+
+@<Make a new element@> =
+	literal_pattern_element new_element = LiteralPatterns::lpe_new(ec, tot+1, sgn);
+	if ((next_token_begins_word == FALSE) && (ec > 0))
+		new_element.print_with_leading_zeros = TRUE;
+	if (ec >= MAX_ELEMENTS_PER_LITERAL) {
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPTooManyElements),
+			"that specification contains too many numerical elements",
+			"and is too complicated for Inform to handle.");
+		return owner;
+	}
+	lp->lp_elements[ec++] = new_element;
 
 @ In fact counting tokens is not necessarily a good way to measure the
 complexity of an LP, since any long run of characters in a word which
@@ -1202,18 +1338,57 @@ this is deferred until all elements exist, at which point we --
 	parse_node *p;
 	for (i=0, p=lps->part_np_list; (i<lp->no_lp_elements) && (p); i++, p = p->next) {
 		literal_pattern_element *lpe = &(lp->lp_elements[i]);
-		lpe->element_name = Node::get_text(p);
+		int size_needed = FALSE;
+		if (Wordings::empty(lpe->element_name)) {
+			lpe->element_name = Node::get_text(p);
+		} else if (Wordings::match(lpe->element_name, Node::get_text(p)) == FALSE) {
+			LOG("Want %W have %W\n", lpe->element_name, Node::get_text(p));
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
+				"the part names after 'with' do not exactly match those named "
+				"in the specification itself",
+				"as they must.");
+		} else {
+			size_needed = TRUE;
+		}
 		int O = Annotations::read_int(p, lpe_options_ANNOT);
 		if (O & OPTIONAL_LSO) lpe->element_optional = TRUE;
 		if (O & PREAMBLE_OPTIONAL_LSO) {
 			lpe->element_optional = TRUE; lpe->preamble_optional = TRUE;
 		}
-		if (O & WITH_LEADING_ZEROS_LSO) lpe->with_leading_zeros = TRUE;
-		else if (O & WITHOUT_LEADING_ZEROS_LSO) lpe->without_leading_zeros = TRUE;
+		if (O & WITH_LEADING_ZEROS_LSO) lpe->print_with_leading_zeros = TRUE;
+		else if (O & WITHOUT_LEADING_ZEROS_LSO) lpe->print_with_leading_zeros = FALSE;
 		if (O & BASE_MASK_LSO) lpe->number_base = ((O & BASE_MASK_LSO) / BASE_LSO);
 		else lpe->number_base = lp->number_base;
-		if (O & MAXIMUM_LSO)
+		if (O & MIN_DIGITS_MASK_LSO)
+			lpe->min_digits = ((O & MIN_DIGITS_MASK_LSO) / MIN_DIGITS_LSO);
+		if (O & MAX_DIGITS_MASK_LSO)
+			lpe->max_digits = ((O & MAX_DIGITS_MASK_LSO) / MAX_DIGITS_LSO);
+		if (O & MAXIMUM_LSO) {
 			lpe->element_range = Annotations::read_int(p, lpe_max_ANNOT) + 1;
+			if (O & MAX_DIGITS_MASK_LSO) {
+				int n = lpe->element_range - 1;
+				for (int i=1; i<=lpe->max_digits; i++) n = n/lpe->number_base;
+				if (n != 0)
+					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
+						"the maximum value here is greater than would fit in the number of digits",
+						"so that it could not be written down.");
+			}
+		} else {
+			if (O & MAX_DIGITS_MASK_LSO) {
+				int n = 1;
+				for (int i=1; i<=lpe->max_digits; i++) n = n*lpe->number_base;
+				lpe->element_range = n;
+			}
+		}
+
+		if ((size_needed) && ((O & (MAX_DIGITS_MASK_LSO + MAXIMUM_LSO)) == 0)) {
+			if (i == 0) lpe->element_range = -1;
+			else
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
+					"this has a part with no indication of its possible range",
+					"that is, by saying '0 to N' or 'N digits'.");
+		}
+
 		if ((i == lp->no_lp_elements - 1) && (p->next)) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPTooManyPartNames),
 				"this gives names for too many parts",
@@ -1254,6 +1429,39 @@ optional, and it must not be the first.
 			"since if any part is omitted then so are all subsequent parts.");
 		return owner;
 	}
+
+@<Log this literal pattern in full@> =
+	LOG("Notation for kind %u\nSpecification: %W\n", K, Node::get_text(p));
+	for (parse_node *p = lps->part_np_list; p; p = p->next) {
+		LOG("part: %W (%08x)\n", Node::get_text(p), Annotations::read_int(p, lpe_options_ANNOT));
+	}
+	for (int i=0, ec=0; i<lp->no_lp_tokens; i++) {
+		literal_pattern_token *lpt = &(lp->lp_tokens[i]);
+		LOG("Token %d ", i);
+		if (lpt->new_word_at) LOG("(starts word) ");
+		switch (lpt->lpt_type) {
+			case WORD_LPT: LOG("word %+W\n", Wordings::one_word(lpt->token_wn)); break;
+			case CHARACTER_LPT: LOG("char %c\n", lpt->token_char); break;
+			case ELEMENT_LPT: {
+				LOG("element ");
+				literal_pattern_element *lpe = &(lp->lp_elements[ec]);
+				LOG("(%d) ", lpe->element_index);
+				if (Wordings::empty(lpe->element_name)) LOG("(nameless) ");
+				else LOG("%W ", lpe->element_name);
+				if (lpe->min_digits == lpe->max_digits) LOG("%d digit(s) ", lpe->min_digits);
+				else if ((lpe->min_digits > 1) || (lpe->max_digits < 1000000))
+					LOG("%d to %d digits ", lpe->min_digits, lpe->max_digits);
+				if (lpe->print_with_leading_zeros) LOG("printed with leading zeros ");
+				if (lpe->element_range >= 0) LOG("range 0 to %d ", lpe->element_range);
+				else LOG("range unlimited ");
+				LOG("(base %d) ", lpe->number_base);
+				LOG("- multiplier %d\n", lpe->element_multiplier);
+				ec++;
+				break;
+			}
+		}
+	}
+	LOG("\n");
 
 @ Group names are created when first seen; the following recognises one which
 has been seen before.
