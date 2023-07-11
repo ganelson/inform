@@ -479,7 +479,7 @@ int do_not_generate_problems = FALSE; /* Set by the |-no-problems| command line 
 void Task::disable_or_enable_problems(int which) {
 	do_not_generate_problems = which;
 }
-int do_not_update_census = FALSE; /* Set by the |-no-update-census| command line option */
+int do_not_update_census = TRUE; /* Set by the |-no-update-census| command line option */
 void Task::disable_or_enable_census(int which) {
 	do_not_update_census = which;
 }

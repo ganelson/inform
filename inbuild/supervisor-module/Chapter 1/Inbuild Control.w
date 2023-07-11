@@ -158,7 +158,7 @@ better way to choose a virtual machine to compile to.
 	CommandLine::declare_switch(O_CLSW, L"o", 2,
 		L"use file X as the compiled output (not for use with -project)");
 	CommandLine::declare_boolean_switch(CENSUS_CLSW, L"census", 1,
-		L"perform an extensions census", FALSE);
+		L"withdrawn: previously, 'perform an extensions census'", FALSE);
 	CommandLine::declare_boolean_switch(RNG_CLSW, L"rng", 1,
 		L"fix the random number generator of the story file (for testing)", FALSE);
 	CommandLine::declare_switch(CASE_CLSW, L"case", 2,
@@ -291,7 +291,10 @@ void Supervisor::option(int id, int val, text_stream *arg, void *state) {
 			break;
 		}
 		case O_CLSW: transpiled_output_file = Filenames::from_text(arg); break;
-		case CENSUS_CLSW: census_mode = val; break;
+		case CENSUS_CLSW:
+			WRITE_TO(STDOUT, "(ignoring -census and -no-census, which have been withdrawn)\n");
+			// census_mode = val;
+			break;
 		case PIPELINE_CLSW: inter_pipeline_name = Str::duplicate(arg); break;
 		case PIPELINE_FILE_CLSW: inter_pipeline_file = Filenames::from_text(arg); break;
 		case PIPELINE_VARIABLE_CLSW: @<Set a pipeline variable@>; break;

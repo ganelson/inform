@@ -322,7 +322,7 @@ compiler via Delia scripts in |intest|.
 	CommandLine::declare_boolean_switch(PROBLEMS_CLSW, L"problems", 1,
 		L"produce (an HTML) Problems report page", TRUE);
 	CommandLine::declare_boolean_switch(CENSUS_UPDATE_CLSW, L"census-update", 1,
-		L"update the extensions census", TRUE);
+		L"withdrawn: previously, 'update the extensions census'", TRUE);
 	CommandLine::declare_boolean_switch(PROGRESS_CLSW, L"progress", 1,
 		L"display progress percentages", TRUE);
 	CommandLine::declare_boolean_switch(SIGILS_CLSW, L"sigils", 1,
@@ -355,7 +355,11 @@ void Main::switch(int id, int val, text_stream *arg, void *state) {
 			index_explicitly_set = TRUE; break;
 		case PROBLEMS_CLSW: Task::disable_or_enable_problems(val?FALSE:TRUE);
 			problems_explicitly_set = TRUE; break;
-		case CENSUS_UPDATE_CLSW: Task::disable_or_enable_census(val?FALSE:TRUE); break;
+		case CENSUS_UPDATE_CLSW:
+			WRITE_TO(STDOUT, "(ignoring -census-update and -no-census-update, "
+				"which have been withdrawn)\n");
+//			Task::disable_or_enable_census(val?FALSE:TRUE);
+			break;
 		case PROGRESS_CLSW: ProgressBar::enable_or_disable(val); break;
 		case SIGILS_CLSW: ProblemSigils::echo_sigils(val); break;
 		case REQUIRE_PROBLEM_CLSW: ProblemSigils::require(arg); break;
