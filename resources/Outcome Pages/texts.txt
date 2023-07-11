@@ -328,7 +328,7 @@ The application ran your source text through the Inform 7 compiler, as usual, an
 <p>
 Inform can produce story files for several different virtual computers, and the one used by the current project can be selected using the Settings panel. If you are currently using the "Z-machine" format, try switching the project to "Glulx" format (you can make this change at the Settings panel), and limits like this will probably not bother you again. Although Z-machine story files used to be much more widely playable than Glulx ones, these days Glulx interpreters are widely available, so it's probably not worth making big sacrifices to stay within the Z-machine memory size.
 
-# And finally the pages showing the result of inblorb, on a Release run.
+# The pages showing the result of inblorb, on a Release run.
 
 model = released.html
 
@@ -338,3 +338,10 @@ The application ran your source text through the Inform 7 compiler, as usual, an
 <center><img src='inform:/cblorb_failed.png' border=0></center>
 <p>
 This almost never happens in normal usage, and is almost certainly the result of a &quot;Release along with...&quot; sentence in the source having asked to do something impossible. For instance, an attempt to release along with cover art will fail if there's no cover art provided, or it has the wrong filename or is in the wrong place. So the best thing to do is probably to look carefully at any Release instructions in the source, and check them against the documentation.
+
+# The 404 page displayed when extension documentation is missing.
+
+model = ex404.html
+
+--> NoExtensions - Details Not Yet Available
+This part of the Inform application ordinarily displays the extensions which are installed into the current project. A catalogue of those is made every time the project is translated, and also every time an extension is added. That seems not to have happened yet, so no catalogue is available. Try clicking Go and look again, or else install an extension using the menus.
