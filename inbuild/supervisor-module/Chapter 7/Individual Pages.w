@@ -2,60 +2,44 @@
 
 To generate the individual pages on extensions in the extension mini-website.
 
-@ //ExtensionWebsite::go// calls the following function to make either a
-detailed or a sketchy documentation page on an extension, supplying either
-a non-null |E| for details, or a non-null |ecd| for a sketch.
-
-The outer shell function calls the inner one first to generate the main
+@ The outer shell function calls the inner one first to generate the main
 page of the documentation (where |eg_number| is |-1|), then uses its return
 value (the number of examples provided, which may be 0) to generate
 associated files for each example.w
 
 =
-void ExtensionPages::write_page(extension_census_datum *ecd,
-	inform_extension *E, int force_update, inform_project *proj) {
-	if ((E) && (E->as_copy) &&
-		(LinkedLists::len(E->as_copy->errors_reading_source_text) > 0)) {
-		LOG("Not writing documentation on %f because errors occurred scanning it\n",
-			E->as_copy->location_if_file);
+void ExtensionPages::document_extension(inform_extension *E, int force_update,
+	inform_project *proj) {
+	int state = SourceText::for_documentation_only(TRUE);
+	if (E == NULL) internal_error("no extension");
+	if (proj == NULL) internal_error("no project");
+	if (E->documented_on_this_run) return;
+	if (LinkedLists::len(E->as_copy->errors_reading_source_text) > 0) {
+		LOG("Not writing documentation on $X because errors occurred scanning it\n",
+			E->as_copy->edition->work);
 	} else {
 		int c, eg_count;
-		eg_count = ExtensionPages::write_page_inner(ecd, E, -1, force_update, proj);
+		eg_count = ExtensionPages::write_page_inner(E, -1, force_update, proj);
 		for (c=1; c<=eg_count; c++)
-			ExtensionPages::write_page_inner(ecd, E, c, force_update, proj);
+			ExtensionPages::write_page_inner(E, c, force_update, proj);
 	}
+	E->documented_on_this_run = TRUE;
+	SourceText::for_documentation_only(state);
 }
 
-@ Here then is the nub of it. An ECD is not really enough information to go on.
-We are not always obliged to make a sketchy page from an ECD: we decide against
-in a normal run where a page exists for it already, as otherwise a user with
-many extensions installed would detect an annoying slight delay on every run
-of Inform -- whereas a slight delay on each census-mode run is acceptable, since
-census-mode runs are made only when extensions are installed or uninstalled.
-If we do decide to make a page from an ECD, we in fact read the extension into
-the lexer so as to make an E of it. Of course, it won't be a very interesting
-E -- since it wasn't used in compilation there will be no definitions arising
-from it, so the top half of its documentation page will be vacant -- but it
-will at least provide the extension author's supplied documentation, if there
-is any, as well as the correct identifying headings and requirements.
+@
 
 =
-int ExtensionPages::write_page_inner(extension_census_datum *ecd,
-	inform_extension *E, int eg_number, int force_update, inform_project *proj) {
-	inbuild_edition *edition = NULL;
-	if (ecd) edition = ecd->found_as->copy->edition;
-	else if (E) edition = E->as_copy->edition;
-	else internal_error("write_page incorrectly called");
+int ExtensionPages::write_page_inner(inform_extension *E, int eg_number,
+	int force_update, inform_project *proj) {
+	inbuild_edition *edition = E->as_copy->edition;
 	inbuild_work *work = edition->work;
 
-	filename *F = ExtensionWebsite::page_URL(proj, edition, eg_number);
+	filename *F = ExtensionWebsite::cut_way_for_page(proj, edition, eg_number);
 	if (F == NULL) return 0;
 	int page_exists_already = TextFiles::exists(F);
-	LOGIF(EXTENSIONS_CENSUS, "Write %s (%X)/%d %s: %f\n",
-		(ecd)?"ecd":" ef", work, eg_number,
-		(page_exists_already)?"exists":"does not exist", F);
-
-	if (ecd) @<Convert ECD to a text-only E@>;
+	LOGIF(EXTENSIONS_CENSUS, "Write (%X)/%d %s: %f\n",
+		work, eg_number, (page_exists_already)?"exists":"does not exist", F);
 
 	if (Pathnames::create_in_file_system(Filenames::up(F)) == 0) return 0;
 	text_stream DOCF_struct;
@@ -68,25 +52,6 @@ int ExtensionPages::write_page_inner(extension_census_datum *ecd,
 	STREAM_CLOSE(OUT);
 	return no_egs;
 }
-
-@ The reader may wonder why we perform the conversion in this slightly recursive
-way, by calling our parent function again. Wouldn't it be simpler just to set
-|ecd| to null and let events take their course? The answer is that this would
-fail if there were examples, because we would return (say) 3 for the number
-of examples, and then the function would be called 3 more times -- but with
-the original ECD as argument each time: that would mean reading the file
-thrice more, reconverting to E each time. So we restart the process from
-our E, and return 0 in response to the ECD call to prevent further ECD calls.
-
-@<Convert ECD to a text-only E@> =
-	if ((page_exists_already == FALSE) || (force_update)) {
-		Feeds::feed_C_string(L"This sentence provides a firebreak, no more. ");
-		E = Extensions::from_copy(ecd->found_as->copy);
-		if (E == NULL) return 0; /* but shouldn't happen: it was there only moments ago */
-		Copies::get_source_text(E->as_copy);
-		ExtensionPages::write_page(NULL, E, force_update, proj);
-	}
-	return 0;
 
 @<Write the actual extension documentation page@> =
 	InformPages::header(OUT, I"Extension", JAVASCRIPT_FOR_ONE_EXTENSION_IRES, NULL);
@@ -110,7 +75,7 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 	HTML::end_span(OUT);
 	HTML_CLOSE("p");
 	if (E) {
-		filename *B = ExtensionWebsite::page_URL(proj, edition, -1);
+		filename *B = ExtensionWebsite::cut_way_for_page(proj, edition, -1);
 		TEMPORARY_TEXT(leaf)
 		Filenames::write_unextended_leafname(leaf, B);
 		@<Write up the rubric, if any@>;

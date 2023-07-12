@@ -61,8 +61,6 @@ Chapter 6: Inform Source Text
 
 Chapter 7: Extension Indexing
 	The Mini-Website
-	Dictionary
-	Census
 	Index Pages
 	Individual Pages
 	The Report

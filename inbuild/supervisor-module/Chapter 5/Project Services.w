@@ -1111,7 +1111,7 @@ it comes.
 			Sentences::set_start_of_source(sfsm, lexer_wordcount);
 		}
 		N->as_source_file =
-			SourceText::read_file(proj->as_copy, F, N->source_source, FALSE, TRUE);
+			SourceText::read_file(proj->as_copy, F, N->source_source, TRUE);
 		SVEXPLAIN(1, "(from %f)\n", F);
 	}
 	int l = SyntaxTree::push_bud(proj->syntax_tree, proj->syntax_tree->root_node);
@@ -1348,3 +1348,28 @@ int Projects::parse_language_clause(inform_project *proj, text_stream *what, tex
 	proj->name_of_language_of_index = Str::duplicate(language_name);
 	Str::trim_white_space(proj->name_of_language_of_index);
 	verdict = TRUE;
+
+@h Performing the census.
+For some reason a census often makes a good story (cf. Luke 2:1-5), but here
+there's disappointingly little to tell, because the work is all done by a
+single call to //Nests::search_for//.
+
+What we return is "a list of all extensions normally visible to the project",
+which means, those built in to Inform, and those installed in its materials
+directory.
+
+=
+linked_list *Projects::perform_census(inform_project *proj) {
+	if (proj == NULL) internal_error("no project");
+
+	linked_list *search_list = NEW_LINKED_LIST(inbuild_search_result);
+	if (Projects::materials_nest(proj))
+		ADD_TO_LINKED_LIST(Projects::materials_nest(proj), inbuild_nest, search_list);
+	if (Supervisor::internal())
+		ADD_TO_LINKED_LIST(Supervisor::internal(), inbuild_nest, search_list);
+
+	linked_list *census = NEW_LINKED_LIST(inbuild_nest);
+	inbuild_requirement *req = Requirements::anything_of_genre(extension_genre);
+	Nests::search_for(req, search_list, census);
+	return census;
+}

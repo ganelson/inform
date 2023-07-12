@@ -12,9 +12,6 @@ documentation page could be forgiven for thinking it a miscellany.
 
 =
 void IndexExtensions::document_in_detail(OUTPUT_STREAM, inform_extension *E) {
-	ExtensionDictionary::erase_entries_concerning(E);
-	ExtensionDictionary::time_stamp(E);
-
 	@<Document and dictionary the kinds made in extension@>;
 	@<Document and dictionary the objects made in extension@>;
 
@@ -144,7 +141,6 @@ void IndexExtensions::document_in_detail(OUTPUT_STREAM, inform_extension *E) {
 			WRITE_TO(entry_text, "%A", &(vc->infinitive));
 			if (verb_count++ == 0) { HTML_OPEN("p"); WRITE("Verbs: "); } else WRITE(", ");
 			WRITE("to <b>%S</b>", entry_text);
-			ExtensionDictionary::new_entry(I"verb", E, entry_text);
 			DISCARD_TEXT(entry_text)
 		}
 	}
@@ -198,6 +194,5 @@ int IndexExtensions::document_headword(OUTPUT_STREAM, int kc, inform_extension *
 	if (kc++ == 0) { HTML_OPEN("p"); WRITE("%s: ", par_heading); }
 	else WRITE(", ");
 	WRITE("<b>%+W</b>", W);
-	ExtensionDictionary::new_entry_from_wording(category, E, W);
 	return kc;
 }

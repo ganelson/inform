@@ -57,7 +57,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../inbuildn.html">Inbuild Modules</a></li><li><a href="index.html">supervisor</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the supervisor module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. The Supervisor and its Parent</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Genre, work, edition, copy</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Searches and requirements</a></li><li><a href="P-wtmd.html#SP7">&#167;7. Discovery</a></li><li><a href="P-wtmd.html#SP8">&#167;8. Build graph</a></li><li><a href="P-wtmd.html#SP10">&#167;10. Reading source text</a></li><li><a href="P-wtmd.html#SP17">&#167;17. Incremental builds</a></li><li><a href="P-wtmd.html#SP18">&#167;18. Extension census</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. The Supervisor and its Parent</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Genre, work, edition, copy</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Searches and requirements</a></li><li><a href="P-wtmd.html#SP7">&#167;7. Discovery</a></li><li><a href="P-wtmd.html#SP8">&#167;8. Build graph</a></li><li><a href="P-wtmd.html#SP10">&#167;10. Reading source text</a></li><li><a href="P-wtmd.html#SP17">&#167;17. Incremental builds</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The supervisor module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -515,14 +515,6 @@ issuing a command to the shell; or internally, by calling a function in some
 module also present in the parent tool. The Supervisor chooses which way
 according to the <a href="3-bm.html#SP1" class="internal">build_methodology</a> object passed to <a href="3-ib.html#SP5" class="internal">IncrementalBuild::build</a>
 to configure how it should go about its business.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Extension census. </b>That's basically everything except for the lengthy but unimportant code in
-<a href="7-tm.html" class="internal">Chapter 7: Extension Indexing</a>, which constructs a mini-website of extension documentation for
-use inside the GUI app. None of this affects how builds are made. See
-<a href="7-tm.html" class="internal">The Mini-Website</a> for the site's makeup. A little metadata is cached
-between runs of <a href="../inform7/index.html" class="internal">inform7</a> in a file called the <a href="7-dct.html" class="internal">Dictionary</a>, and the
-search for all installed extensions is called the <a href="7-cns.html" class="internal">Census</a>.
 </p>
 
 <nav role="progress"><div class="progresscontainer">

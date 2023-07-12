@@ -258,7 +258,7 @@ linked_list *Main::list_of_targets(void) {
 	int no_entries = LinkedLists::len(targets);
 	if (no_entries == 0) return targets;
 	inbuild_copy **sorted_targets =
-		Memory::calloc(no_entries, sizeof(inbuild_copy *), EXTENSION_DICTIONARY_MREASON);
+		Memory::calloc(no_entries, sizeof(inbuild_copy *), RESULTS_SORTING_MREASON);
 	int i=0;
 	inbuild_copy *C;
 	LOOP_OVER_LINKED_LIST(C, inbuild_copy, targets) sorted_targets[i++] = C;
@@ -266,7 +266,7 @@ linked_list *Main::list_of_targets(void) {
 	linked_list *result = NEW_LINKED_LIST(inbuild_copy);
 	for (int i=0; i<no_entries; i++)
 		ADD_TO_LINKED_LIST(sorted_targets[i], inbuild_copy, result);
-	Memory::I7_array_free(sorted_targets, EXTENSION_DICTIONARY_MREASON,
+	Memory::I7_array_free(sorted_targets, RESULTS_SORTING_MREASON,
 		no_entries, sizeof(inbuild_copy *));
 	return result;
 }

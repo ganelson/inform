@@ -279,12 +279,12 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 		}
 
 @<Make documentation@> =
-	ExtensionPages::write_page(NULL, Extensions::from_copy(C), FALSE, project);
+	ExtensionPages::document_extension(Extensions::from_copy(C), FALSE, project);
 	HTML_OPEN("p");
 	WRITE("Documentation about %S ", C->edition->work->title);
 	TEMPORARY_TEXT(link)
 	TEMPORARY_TEXT(URL)
-	WRITE_TO(URL, "%f", ExtensionWebsite::page_URL(project, C->edition, 0));
+	WRITE_TO(URL, "%f", ExtensionWebsite::page_filename(project, C->edition, 0));
 	WRITE_TO(link, "href='");
 	Works::escape_apostrophes(link, URL);
 	WRITE_TO(link, "' style=\"text-decoration: none\"");
@@ -376,7 +376,7 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 	HTML_CLOSE("ul");
 	HTML_TAG("hr");
 
-	ExtensionWebsite::index_after_compilation(project);
+	ExtensionWebsite::update(project);
 
 	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
 	@<List the extensions currently Included by the project@>;

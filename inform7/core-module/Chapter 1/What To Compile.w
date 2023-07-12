@@ -479,9 +479,9 @@ int do_not_generate_problems = FALSE; /* Set by the |-no-problems| command line 
 void Task::disable_or_enable_problems(int which) {
 	do_not_generate_problems = which;
 }
-int do_not_update_census = TRUE; /* Set by the |-no-update-census| command line option */
-void Task::disable_or_enable_census(int which) {
-	do_not_update_census = which;
+int do_not_update_extensions_index = FALSE; /* Also set by the |-no-index| command line option */
+void Task::disable_or_enable_extensions_update(int which) {
+	do_not_update_extensions_index = which;
 }
 
 int Task::problems_enabled(void) {
@@ -496,8 +496,8 @@ void Task::specify_index_requirements(void) {
 	inform7_index_requirements = 0;
 	if (do_not_generate_index == FALSE)
 		inform7_index_requirements |= INDEX_REQUIRED_BIT;
-	if (do_not_update_census == FALSE)
-		inform7_index_requirements |= CENSUS_UPDATE_REQUIRED_BIT;
+	if (do_not_update_extensions_index == FALSE)
+		inform7_index_requirements |= EXTENSIONS_INDEX_REQUIRED_BIT;
 	if (write_EPS_format_map)
 		inform7_index_requirements |= EPS_MAP_REQUIRED_BIT;
 }

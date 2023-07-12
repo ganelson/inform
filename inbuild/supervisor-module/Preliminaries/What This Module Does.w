@@ -397,11 +397,3 @@ issuing a command to the shell; or internally, by calling a function in some
 module also present in the parent tool. The Supervisor chooses which way
 according to the //build_methodology// object passed to //IncrementalBuild::build//
 to configure how it should go about its business.
-
-@h Extension census.
-That's basically everything except for the lengthy but unimportant code in
-//Chapter 7//, which constructs a mini-website of extension documentation for
-use inside the GUI app. None of this affects how builds are made. See
-//The Mini-Website// for the site's makeup. A little metadata is cached
-between runs of //inform7// in a file called the //Dictionary//, and the
-search for all installed extensions is called the //Census//.

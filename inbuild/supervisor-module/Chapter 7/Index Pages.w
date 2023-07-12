@@ -7,7 +7,8 @@ There were once two of these, but now there's just one.
 
 =
 void ExtensionIndex::write(inform_project *proj) {
-	filename *F = ExtensionWebsite::index_URL(proj, I"Extensions.html");
+	if (proj == NULL) internal_error("no project");
+	filename *F = ExtensionWebsite::cut_way_for_index_page(proj);
 	if (F == NULL) return;
 
 	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
@@ -35,10 +36,10 @@ void ExtensionIndex::write(inform_project *proj) {
 	inbuild_requirement *req = Requirements::anything_of_genre(extension_bundle_genre);
 	if (LinkedLists::len(search_list) > 0) Nests::search_for(req, search_list, L);
 	ExtensionIndex::find_used_extensions(proj, U, R);
-	inbuild_search_result *ecd;
-	LOOP_OVER_LINKED_LIST(ecd, inbuild_search_result, L) {
-		if (Nests::get_tag(ecd->nest) == INTERNAL_NEST_TAG) internals_installed++;
-		else if (Nests::get_tag(ecd->nest) == MATERIALS_NEST_TAG) materials_installed++;
+	inbuild_search_result *res;
+	LOOP_OVER_LINKED_LIST(res, inbuild_search_result, L) {
+		if (Nests::get_tag(res->nest) == INTERNAL_NEST_TAG) internals_installed++;
+		else if (Nests::get_tag(res->nest) == MATERIALS_NEST_TAG) materials_installed++;
 	}
 	inbuild_copy *C;
 	LOOP_OVER_LINKED_LIST(C, inbuild_copy, U)
@@ -90,10 +91,6 @@ void ExtensionIndex::write(inform_project *proj) {
 		usage_state = FALSE;
 		@<Display an alphabetised directory@>;
 	}
-
-@ From here on, then, all the code in this section generates the main directory
-page, not the index of terms, which is all handled by
-//ExtensionDictionary::write_to_HTML//.
 
 @<Display the location of installed extensions@> =
 	HTML_OPEN("p");
@@ -166,14 +163,14 @@ any oddities found in the external extensions area.
 	linked_list *key_list = NEW_LINKED_LIST(extensions_key_item);
 	int no_entries = LinkedLists::len(L);
 	inbuild_search_result **sorted_census_results = Memory::calloc(no_entries,
-		sizeof(inbuild_search_result *), EXTENSION_DICTIONARY_MREASON);
+		sizeof(inbuild_search_result *), RESULTS_SORTING_MREASON);
 	int d = 3;
 	int no_entries_in_set = 0;
 	@<Sort the census into the appropriate order@>;
 	@<Display the sorted version of the census@>;
 	@<Print the key to any symbols used in the census lines@>;
 	@<Transcribe any census errors@>;
-	Memory::I7_array_free(sorted_census_results, EXTENSION_DICTIONARY_MREASON,
+	Memory::I7_array_free(sorted_census_results, RESULTS_SORTING_MREASON,
 		no_entries, sizeof(inbuild_search_result *));
 
 @<Print the key to any symbols used in the census lines@> =
@@ -186,25 +183,25 @@ of extensions found by the census:
 @<Transcribe any census errors@> =
 	int no_census_errors = 0;
 	for (int i=0; i<no_entries_in_set; i++) {
-		inbuild_search_result *ecd = sorted_census_results[i];
+		inbuild_search_result *res = sorted_census_results[i];
 		no_census_errors +=
-			LinkedLists::len(ecd->copy->errors_reading_source_text);
+			LinkedLists::len(res->copy->errors_reading_source_text);
 	}
 	if (no_census_errors > 0) {
 		@<Include the headnote explaining what census errors are@>;
 		for (int i=0; i<no_entries_in_set; i++) {
-			inbuild_search_result *ecd = sorted_census_results[i];
-			if (LinkedLists::len(ecd->copy->errors_reading_source_text) > 0) {
+			inbuild_search_result *res = sorted_census_results[i];
+			if (LinkedLists::len(res->copy->errors_reading_source_text) > 0) {
 				copy_error *CE;
 				LOOP_OVER_LINKED_LIST(CE, copy_error,
-					ecd->copy->errors_reading_source_text) {
+					res->copy->errors_reading_source_text) {
 					#ifdef INDEX_MODULE
 					HTML::open_indented_p(OUT, 2, "hanging");
 					#endif
 					#ifndef INDEX_MODULE
 					HTML_OPEN("p");
 					#endif
-					WRITE("<b>%X</b> - ", ecd->copy->edition->work);
+					WRITE("<b>%X</b> - ", res->copy->edition->work);
 					CopyErrors::write(OUT, CE);
 					HTML_CLOSE("p");
 				}
@@ -239,24 +236,24 @@ until they put matters right.
 
 @<Sort the census into the appropriate order@> =
 	int i = 0;
-	inbuild_search_result *ecd;
-	LOOP_OVER_LINKED_LIST(ecd, inbuild_search_result, L) {
+	inbuild_search_result *res;
+	LOOP_OVER_LINKED_LIST(res, inbuild_search_result, L) {
 		int found = FALSE;
 		inbuild_copy *C;
 		LOOP_OVER_LINKED_LIST(C, inbuild_copy, U)
-			if (C == ecd->copy) {
+			if (C == res->copy) {
 				found = TRUE;
 				break;
 			}
-		if (found == usage_state) sorted_census_results[i++] = ecd;
+		if (found == usage_state) sorted_census_results[i++] = res;
 	}
 	no_entries_in_set = i;
 	int (*criterion)(const void *, const void *) = NULL;
 	switch (d) {
-		case SORT_CE_BY_TITLE: criterion = ExtensionIndex::compare_ecd_by_title; break;
-		case SORT_CE_BY_AUTHOR: criterion = ExtensionIndex::compare_ecd_by_author; break;
-		case SORT_CE_BY_LOCATION: criterion = ExtensionIndex::compare_ecd_by_location; break;
-		case SORT_CE_BY_USAGE: criterion = ExtensionIndex::compare_ecd_by_title; break;
+		case SORT_CE_BY_TITLE: criterion = ExtensionIndex::compare_res_by_title; break;
+		case SORT_CE_BY_AUTHOR: criterion = ExtensionIndex::compare_res_by_author; break;
+		case SORT_CE_BY_LOCATION: criterion = ExtensionIndex::compare_res_by_location; break;
+		case SORT_CE_BY_USAGE: criterion = ExtensionIndex::compare_res_by_title; break;
 		default: internal_error("no such sorting criterion");
 	}
 	qsort(sorted_census_results, (size_t) no_entries_in_set, sizeof(inbuild_search_result *),
@@ -271,7 +268,7 @@ the usual ones seen in Mac OS X applications such as iTunes.
 	int stripe = 0;
 	TEMPORARY_TEXT(current_author_name)
 	for (int i=0; i<no_entries_in_set; i++) {
-		inbuild_search_result *ecd = sorted_census_results[i];
+		inbuild_search_result *res = sorted_census_results[i];
 		@<Insert a subtitling row in the census sorting, if necessary@>;
 		stripe = 1 - stripe;
 		if (stripe == 0)
@@ -308,8 +305,8 @@ the usual ones seen in Mac OS X applications such as iTunes.
 
 @<Insert a subtitling row in the census sorting, if necessary@> =
 	if ((d == SORT_CE_BY_AUTHOR) &&
-		(Str::ne(current_author_name, ecd->copy->edition->work->author_name))) {
-		Str::copy(current_author_name, ecd->copy->edition->work->author_name);
+		(Str::ne(current_author_name, res->copy->edition->work->author_name))) {
+		Str::copy(current_author_name, res->copy->edition->work->author_name);
 		@<Begin a tinted census line@>;
 		@<Print the author's line in the extension census table@>;
 		@<End a tinted census line@>;
@@ -337,7 +334,7 @@ the usual ones seen in Mac OS X applications such as iTunes.
 @ Used only in "by author".
 
 @<Print the author's line in the extension census table@> =
-	WRITE("%S", ecd->copy->edition->work->raw_author_name);
+	WRITE("%S", res->copy->edition->work->raw_author_name);
 
 @<Print the census line for this extension@> =
 	@<Print column 1 of the census line@>;
@@ -351,20 +348,20 @@ the usual ones seen in Mac OS X applications such as iTunes.
 @<Print column 1 of the census line@> =
 	HTML::begin_span(OUT, I"extensionindexentry");
 	if (d != SORT_CE_BY_AUTHOR) {
-		WRITE("%S", ecd->copy->edition->work->raw_title);
-		if (Nests::get_tag(ecd->nest) != INTERNAL_NEST_TAG)
-			WRITE(" by %S", ecd->copy->edition->work->raw_author_name);
+		WRITE("%S", res->copy->edition->work->raw_title);
+		if (Nests::get_tag(res->nest) != INTERNAL_NEST_TAG)
+			WRITE(" by %S", res->copy->edition->work->raw_author_name);
 	} else {
-		WRITE("%S", ecd->copy->edition->work->raw_title);
+		WRITE("%S", res->copy->edition->work->raw_title);
 	}
 	HTML::end_span(OUT);
 
-	filename *F = ExtensionWebsite::abs_page_URL(proj, ecd->copy->edition, -1);
+	filename *F = ExtensionWebsite::page_filename(proj, res->copy->edition, -1);
 	if (TextFiles::exists(F)) {
 		WRITE(" ");
 		TEMPORARY_TEXT(link)
 		TEMPORARY_TEXT(URL)
-		WRITE_TO(URL, "%f", ExtensionWebsite::rel_page_URL(ecd->copy->edition, -1));
+		WRITE_TO(URL, "%f", ExtensionWebsite::page_filename_relative_to_materials(res->copy->edition, -1));
 		WRITE_TO(link, "href='inform:/");
 		Works::escape_apostrophes(link, URL);
 		WRITE_TO(link, "' style=\"text-decoration: none\"");
@@ -375,7 +372,7 @@ the usual ones seen in Mac OS X applications such as iTunes.
 		HTML_CLOSE("a");
 	}
 
-	inform_extension *E = Extensions::from_copy(ecd->copy);
+	inform_extension *E = Extensions::from_copy(res->copy);
 	parse_node *at = Extensions::get_inclusion_sentence(E);
 	if (at) {
 		wording W = Node::get_text(at);
@@ -386,21 +383,21 @@ the usual ones seen in Mac OS X applications such as iTunes.
 		}
 	}
 
-	if (LinkedLists::len(ecd->copy->errors_reading_source_text) > 0) {
+	if (LinkedLists::len(res->copy->errors_reading_source_text) > 0) {
 		WRITE(" ");
 		HTML_TAG_WITH("img", "%s", PROBLEM_SYMBOL);
 		ExtensionIndex::add_to_key(key_list, PROBLEM_SYMBOL, I"Has errors (see below)");
 	} else if (usage_state == FALSE) {
 		WRITE(" ");
 		TEMPORARY_TEXT(inclusion_text)
-		WRITE_TO(inclusion_text, "Include %X.\n\n\n", ecd->copy->edition->work);
+		WRITE_TO(inclusion_text, "Include %X.\n\n\n", res->copy->edition->work);
 		PasteButtons::paste_text(OUT, inclusion_text);
 		DISCARD_TEXT(inclusion_text)
 		ExtensionIndex::add_to_key(key_list, PASTE_SYMBOL,
 			I"Source text to Include this (click to paste in)");
 	}
 
-	compatibility_specification *C = ecd->copy->edition->compatibility;
+	compatibility_specification *C = res->copy->edition->compatibility;
 	if (Str::len(C->parsed_from) > 0)
 		@<Append icons which signify the VM requirements of the extension@>;
 
@@ -415,18 +412,18 @@ the first and last word and just look at what is in between:
 
 @<Print column 2 of the census line@> =
 	HTML::begin_span(OUT, I"smaller");
-	if (VersionNumbers::is_null(ecd->copy->edition->version) == FALSE)
-		WRITE("v&nbsp;%v", &(ecd->copy->edition->version));
+	if (VersionNumbers::is_null(res->copy->edition->version) == FALSE)
+		WRITE("v&nbsp;%v", &(res->copy->edition->version));
 	else
 		WRITE("--");
 	HTML::end_span(OUT);
 
 @<Print column 3 of the census line@> =
 	char *opener = NULL;
-	if (Nests::get_tag(ecd->nest) == INTERNAL_NEST_TAG) {
+	if (Nests::get_tag(res->nest) == INTERNAL_NEST_TAG) {
 		opener = BUILT_IN_SYMBOL;
 		ExtensionIndex::add_to_key(key_list, BUILT_IN_SYMBOL, I"Built in");
-	} else if (Nests::get_tag(ecd->nest) == MATERIALS_NEST_TAG) {
+	} else if (Nests::get_tag(res->nest) == MATERIALS_NEST_TAG) {
 		opener = PROJECT_SPECIFIC_SYMBOL;
 		ExtensionIndex::add_to_key(key_list, PROJECT_SPECIFIC_SYMBOL, I"Installed in .materials");
 	} else {
@@ -434,37 +431,33 @@ the first and last word and just look at what is in between:
 		ExtensionIndex::add_to_key(key_list, LEGACY_AREA_SYMBOL,
 			I"Used from legacy extensions area");
 	}
-	if (Nests::get_tag(ecd->nest) == INTERNAL_NEST_TAG)
+	if (Nests::get_tag(res->nest) == INTERNAL_NEST_TAG)
 		HTML_TAG_WITH("img", "%s", opener)
 	else {
 		#ifdef INDEX_MODULE
-		pathname *area = ExtensionManager::path_within_nest(ecd->nest);
+		pathname *area = ExtensionManager::path_within_nest(res->nest);
 		PasteButtons::open_file(OUT, area,
-			ecd->copy->edition->work->raw_author_name, opener);
+			res->copy->edition->work->raw_author_name, opener);
 		#endif
 	}
 
 @<Print column 4 of the census line@> =
 	HTML::begin_span(OUT, I"smaller");
 	if (d == SORT_CE_BY_LOCATION) {
-		if (Nests::get_tag(ecd->nest) == INTERNAL_NEST_TAG)
+		if (Nests::get_tag(res->nest) == INTERNAL_NEST_TAG)
 			WRITE("Built in to Inform");
 		else
 			WRITE("Installed in this project");
 	} else {
-		if (Str::len(ExtensionIndex::ecd_rubric(ecd)) > 0)
-			WRITE("%S", ExtensionIndex::ecd_rubric(ecd));
-		else
-			WRITE("--");
+		text_stream *R = Extensions::get_rubric(Extensions::from_copy(res->copy));
+		if (Str::len(R) > 0) WRITE("%S", R); else WRITE("--");
 	}
 	HTML::end_span(OUT);
 
 @<Print the rubric line for this extension@> =
 	HTML::begin_span(OUT, I"smaller");
-	if (Str::len(ExtensionIndex::ecd_rubric(ecd)) > 0)
-		WRITE("%S", ExtensionIndex::ecd_rubric(ecd));
-	else
-		WRITE("--");
+	text_stream *R = Extensions::get_rubric(Extensions::from_copy(res->copy));
+	if (Str::len(R) > 0) WRITE("%S", R); else WRITE("--");
 	HTML::end_span(OUT);
 
 @ This is just too special-purpose to belong in the foundation module.
@@ -664,35 +657,26 @@ The following give some sorting criteria, and are functions fit to be
 handed to |qsort|.
 
 =
-int ExtensionIndex::compare_ecd_by_title(const void *ecd1, const void *ecd2) {
-	inbuild_search_result *e1 = *((inbuild_search_result **) ecd1);
-	inbuild_search_result *e2 = *((inbuild_search_result **) ecd2);
+int ExtensionIndex::compare_res_by_title(const void *res1, const void *res2) {
+	inbuild_search_result *e1 = *((inbuild_search_result **) res1);
+	inbuild_search_result *e2 = *((inbuild_search_result **) res2);
 	inform_extension *E1 = Extensions::from_copy(e1->copy);
 	inform_extension *E2 = Extensions::from_copy(e2->copy);
 	return Extensions::compare_by_title(E2, E1);
 }
 
-int ExtensionIndex::compare_ecd_by_author(const void *ecd1, const void *ecd2) {
-	inbuild_search_result *e1 = *((inbuild_search_result **) ecd1);
-	inbuild_search_result *e2 = *((inbuild_search_result **) ecd2);
+int ExtensionIndex::compare_res_by_author(const void *res1, const void *res2) {
+	inbuild_search_result *e1 = *((inbuild_search_result **) res1);
+	inbuild_search_result *e2 = *((inbuild_search_result **) res2);
 	inform_extension *E1 = Extensions::from_copy(e1->copy);
 	inform_extension *E2 = Extensions::from_copy(e2->copy);
 	return Extensions::compare_by_author(E2, E1);
 }
 
-int ExtensionIndex::compare_ecd_by_location(const void *ecd1, const void *ecd2) {
-	inbuild_search_result *e1 = *((inbuild_search_result **) ecd1);
-	inbuild_search_result *e2 = *((inbuild_search_result **) ecd2);
+int ExtensionIndex::compare_res_by_location(const void *res1, const void *res2) {
+	inbuild_search_result *e1 = *((inbuild_search_result **) res1);
+	inbuild_search_result *e2 = *((inbuild_search_result **) res2);
 	int d = Nests::get_tag(e1->nest) - Nests::get_tag(e2->nest);
 	if (d != 0) return d;
-	return ExtensionIndex::compare_ecd_by_title(ecd1, ecd2);
-}
-
-int ExtensionIndex::ecd_used(inbuild_search_result *ecd) {
-	inform_extension *E = Extensions::from_copy(ecd->copy);
-	return E->has_historically_been_used;
-}
-
-text_stream *ExtensionIndex::ecd_rubric(inbuild_search_result *ecd) {
-	return Extensions::get_rubric(Extensions::from_copy(ecd->copy));
+	return ExtensionIndex::compare_res_by_title(res1, res2);
 }

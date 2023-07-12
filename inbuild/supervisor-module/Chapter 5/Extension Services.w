@@ -29,13 +29,11 @@ typedef struct inform_extension {
 	int auto_included;
 	struct linked_list *search_list; /* of |inbuild_nest| */	
 	int word_count; /* or 0 if this hasn't been read (yet) */
-	struct text_stream *last_usage_date; /* perhaps on a previous run */
-	struct text_stream *sort_usage_date; /* used temporarily when sorting */	
-	int has_historically_been_used;
 	struct linked_list *activations; /* of |element_activation| */
 	struct linked_list *extensions; /* of |inbuild_requirement| */
 	struct linked_list *kits; /* of |inbuild_requirement| */
 	struct inbuild_nest *materials_nest;
+	int documented_on_this_run;
 	CLASS_DEFINITION
 } inform_extension;
 
@@ -90,14 +88,12 @@ void Extensions::scan(inbuild_copy *C) {
 	E->inclusion_sentence = NULL;
 	E->auto_included = FALSE;
 	E->search_list = NEW_LINKED_LIST(inbuild_nest);
-	E->has_historically_been_used = FALSE;
 	E->word_count = 0;
-	E->last_usage_date = Str::new();
-	E->sort_usage_date = Str::new();
 	E->activations = NEW_LINKED_LIST(element_activation);
 	E->extensions = NEW_LINKED_LIST(inbuild_requirement);
 	E->kits = NEW_LINKED_LIST(inbuild_requirement);
 	E->materials_nest = NULL;
+	E->documented_on_this_run = FALSE;
 
 @ The following scans a potential extension file. If it seems malformed, a
 suitable error is written to the stream |error_text|. If not, this is left
@@ -617,27 +613,8 @@ inbuild_nest *Extensions::materials_nest(inform_extension *E) {
 }
 
 @h Cached metadata.
-The following data hides between runs in the //Dictionary//.
 
 =
-void Extensions::set_usage_date(inform_extension *E, text_stream *date) {
-	Str::clear(E->last_usage_date);
-	Str::copy(E->last_usage_date, date);
-}
-
-void Extensions::set_sort_date(inform_extension *E, text_stream *date) {
-	Str::clear(E->sort_usage_date);
-	Str::copy(E->sort_usage_date, date);
-}
-
-text_stream *Extensions::get_usage_date(inform_extension *E) {
-	return E->last_usage_date;
-}
-
-text_stream *Extensions::get_sort_date(inform_extension *E) {
-	return E->sort_usage_date;
-}
-
 void Extensions::set_word_count(inform_extension *E, int wc) {
 	E->word_count = wc;
 }
@@ -658,13 +635,6 @@ int Extensions::compare_by_edition(inform_extension *E1, inform_extension *E2) {
 	if (d != 0) return d;
 	return VersionNumbers::cmp(
 		E1->as_copy->edition->version, E2->as_copy->edition->version);
-}
-
-int Extensions::compare_by_date(inform_extension *E1, inform_extension *E2) {
-	if ((E1 == NULL) || (E2 == NULL)) internal_error("bad work match");
-	int d = Str::cmp(Extensions::get_sort_date(E2), Extensions::get_sort_date(E1));
-	if (d != 0) return d;
-	return Extensions::compare_by_edition(E1, E2);
 }
 
 int Extensions::compare_by_author(inform_extension *E1, inform_extension *E2) {
@@ -801,11 +771,9 @@ void Extensions::read_source_text_for(inform_extension *E) {
 	inform_language *L = Languages::find_for(I"English", Extensions::nest_list(E));
 	Languages::read_Preform_definition(L, Extensions::nest_list(E));
 	filename *F = Extensions::main_source_file(E->as_copy);
-	int doc_only = FALSE;
-	if (census_mode) doc_only = TRUE;
 	TEMPORARY_TEXT(synopsis)
 	@<Concoct a synopsis for the extension to be read@>;
-	E->read_into_file = SourceText::read_file(E->as_copy, F, synopsis, doc_only, FALSE);
+	E->read_into_file = SourceText::read_file(E->as_copy, F, synopsis, FALSE);
 	SVEXPLAIN(1, "(from %f)\n", F);
 	DISCARD_TEXT(synopsis)
 	if (E->read_into_file) {
@@ -894,8 +862,10 @@ wording Extensions::get_documentation_text(inform_extension *E) {
 		Copies::attach_error(E->as_copy, CopyErrors::new_T(EXT_MISWORDED_CE, -1, error_text));
 		DISCARD_TEXT(error_text)					
 	} else {
-		source_file *sf = SourceText::read_file(E->as_copy, F, NULL, TRUE, FALSE);
+		int state = SourceText::for_documentation_only(TRUE);
+		source_file *sf = SourceText::read_file(E->as_copy, F, NULL, FALSE);
 		if (sf) E->documentation_text = sf->text_read;
+		SourceText::for_documentation_only(state);
 	}
 
 @ When the extension source text was read from its |source_file|, we

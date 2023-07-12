@@ -222,7 +222,6 @@ pathname *shared_transient_resources = NULL;
 int this_is_a_debug_compile = FALSE; /* Destined to be compiled with debug features */
 int this_is_a_release_compile = FALSE; /* Omit sections of source text marked not for release */
 text_stream *output_format = NULL; /* What story file we will eventually have */
-int census_mode = FALSE; /* Running only to update extension documentation */
 int repair_mode = FALSE; /* Automatically fix missing or damaged extension metadata */
 int rng_seed_at_start_of_play = 0; /* The seed value, or 0 if not seeded */
 
@@ -293,7 +292,6 @@ void Supervisor::option(int id, int val, text_stream *arg, void *state) {
 		case O_CLSW: transpiled_output_file = Filenames::from_text(arg); break;
 		case CENSUS_CLSW:
 			WRITE_TO(STDOUT, "(ignoring -census and -no-census, which have been withdrawn)\n");
-			// census_mode = val;
 			break;
 		case PIPELINE_CLSW: inter_pipeline_name = Str::duplicate(arg); break;
 		case PIPELINE_FILE_CLSW: inter_pipeline_file = Filenames::from_text(arg); break;
@@ -414,7 +412,6 @@ void Supervisor::go_operational(void) {
 	Supervisor::enter_phase(GRAPH_CONSTRUCTION_INBUILD_PHASE);
 	Copies::graph_everything();
 	Supervisor::enter_phase(OPERATIONAL_INBUILD_PHASE);
-	if (census_mode) ExtensionWebsite::handle_census_mode();
 }
 
 @h The nest list.

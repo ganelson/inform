@@ -110,7 +110,7 @@ HEADING.
 			Copies::attach_error(inclusions_errors_to, CE);					
 		} else {
 			int l = SyntaxTree::push_bud(T, pn);
-			source_file *S = SourceText::read_file(inclusions_errors_to, F, leaf, FALSE, FALSE);
+			source_file *S = SourceText::read_file(inclusions_errors_to, F, leaf, FALSE);
 			if (S) @<Sentence-break the contents of S under the heading node@>;
 			SyntaxTree::pop_bud(T, l);
 			*includes_cleared = FALSE;

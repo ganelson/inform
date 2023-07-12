@@ -3,8 +3,7 @@
 To refresh the mini-website of available extensions presented in the
 Inform GUI applications.
 
-@h The mini-website.
-The Inform GUI apps present HTML in-app documentation on extensions: in
+@ The Inform GUI apps present HTML in-app documentation on extensions: in
 effect, a mini-website showing all the extensions available to the current
 user, and giving detailed documentation on each one. The code in this
 chapter of //supervisor// runs only if and when we want to generate or
@@ -19,228 +18,120 @@ an essential. This point of view was encouraged by many Inform users working
 clandestinely on thumb drives at their places of work, and whose employers
 had locked their computers down fairly heavily.
 
-@ The process always involves a "census" of all installed extensions, but
-can happen for two different reasons:
+@ The site has a very simple structure: there is an index page, and then
+each visible extension is given its own page(s) concerning that extension alone.
 
-(a) when we run in "census mode", because of |-census| at the command line;
-(b) when //inform7// is indexing after a successful compilation.
-
-Reason (a) typically happens because the user installs a new extension from
-the app, and it calls the //inform7// tool in |-census| mode to force an
-update of the documentation. But (a) can also happen from the command line
-using either //inbuild// or //inform7//.
-
-The second sort of census is lighter in effect because only incremental
-changes to documentation are made, but the process of census-taking is the
-same either way. Here are the functions for (a) and (b) respectively:
+Note that the "census" gives us a list of all extensions normally visible
+to the project: those it has installed, and those built into the app. But
+the project might also still be using an extension from the legacy external
+area, so we have to document everything it uses as well as everything in
+the census, to be on the safe side.
 
 =
-void ExtensionWebsite::handle_census_mode(void) {
-	HTML::set_link_abbreviation_path(NULL);
-	ExtensionWebsite::go(NULL, TRUE);
-}
-
-void ExtensionWebsite::index_after_compilation(inform_project *proj) {
+void ExtensionWebsite::update(inform_project *proj) {
+	LOGIF(EXTENSIONS_CENSUS, "Updating extensions documentation for project\n");
+	
 	HTML::set_link_abbreviation_path(Projects::path(proj));
-	ExtensionWebsite::go(proj, FALSE);
-}
-
-void ExtensionWebsite::go(inform_project *proj, int force_update) {
-	ExtensionDictionary::read_from_file();
-
-	ExtensionCensus::perform(proj);
-	@<Time-stamp extensions used in the project as being last used today@>;
-	@<Write index pages@>;
-	@<Write individual pages on individual extensions@>;
-
-	ExtensionDictionary::write_back();
-}
-
-@ This simply ensures that dates used are updated to today's date for
-extensions used in the current run; otherwise they wouldn't show in the
-documentation as used today until the next run, for obscure timing reasons.
-
-@<Time-stamp extensions used in the project as being last used today@> =
-	if (proj) {
-		inform_extension *E;
-		LOOP_OVER_LINKED_LIST(E, inform_extension, proj->extensions_included) {
-			ExtensionDictionary::time_stamp(E);
-			E->has_historically_been_used = TRUE;
-		}
-	}
-
-@<Write index pages@> =
 	ExtensionIndex::write(proj);
 
-@ Each extension gets its own page in the external documentation area, but
-this page can have two forms:
-(i) a deluxe version, produced if a project |proj| has successfully used
-the extension on this run and we therefore know a lot about the extension;
-(ii) an ordinaire version, where we may never have used the extension and
-currently have no specific knowledge of it.
+	inform_extension *E;
+	LOOP_OVER_LINKED_LIST(E, inform_extension, proj->extensions_included)
+		ExtensionPages::document_extension(E, FALSE, proj);
 
-@<Write individual pages on individual extensions@> =
-	if (proj) {
-		inform_extension *E;
-		LOOP_OVER_LINKED_LIST(E, inform_extension, proj->extensions_included)
-			ExtensionPages::write_page(NULL, E, FALSE, proj); /* deluxe */
-	}
-	extension_census_datum *ecd;
-	LOOP_OVER(ecd, extension_census_datum)
-		ExtensionPages::write_page(ecd, NULL, force_update, NULL); /* ordinaire */
-
-@h Organisation of the website.
-There is a top level consisting of two home pages: a directory of all
-installed extensions, and an index to the terms defined in those extensions. A
-cross-link switches between them. Each of these links down to the bottom
-level, where there is a page for every installed extension (wherever it is
-installed). The picture is therefore something like this:
-= (text)
-         Extensions -- ExtIndex
-             |      \/    |
-             |      /\    |
-    Nigel Toad/Eggs    Barnabas Dundritch/Neopolitan Iced Cream   ...
-=
-These pages would be stored in the transient area at the relative URLs:
-= (text)
-	Documentation/Extensions.html
-	Documentation/ExtIndex.html
-	Documentation/Extensions/Nigel Toad/Eggs.html
-	Documentation/Extensions/Barnabas Dundritch/Neopolitan Iced Cream.html
-=
-And see also the function //ExtensionDictionary::filename//, which uses a file
-in the same area but not as part of the site.
-
-=
-pathname *ExtensionWebsite::home_URL(inform_project *proj) {
-	if (proj == NULL) {
-		pathname *P = Supervisor::transient();
-		if (P == NULL) return NULL;
-		if (Pathnames::create_in_file_system(P) == 0) return NULL;
-		P = Pathnames::down(P, I"Documentation");
-		if (Pathnames::create_in_file_system(P) == 0) return NULL;
-		return P;
-	} else {
-		pathname *P = Projects::materials_path(proj);
-		if (P == NULL) return NULL;
-		P = Pathnames::down(P, I"Extensions");
-		if (Pathnames::create_in_file_system(P) == 0) return NULL;
-		P = Pathnames::down(P, I"Reserved");
-		if (Pathnames::create_in_file_system(P) == 0) return NULL;
-		P = Pathnames::down(P, I"Documentation");
-		if (Pathnames::create_in_file_system(P) == 0) return NULL;
-		return P;
-	}
+	linked_list *census = Projects::perform_census(proj);
+	inbuild_search_result *res;
+	LOOP_OVER_LINKED_LIST(res, inbuild_search_result, census)
+		ExtensionPages::document_extension(Extensions::from_copy(res->copy), FALSE, proj);
 }
 
-@ The top-level files |Extensions.html| and |ExtIndex.html| go here:
+@ The top-level index page is at this filename.
+
+The distinction between these two calls is that |ExtensionWebsite::index_page_filename|
+returns just the filename, and produces |NULL| only if there is no materials folder,
+which certainly means we wouldn't want to be writing documentation to it;
+but |ExtensionWebsite::cut_way_for_index_page| cuts its way through the file-system
+with a machete in order to ensure that its parent directory will indeed exist.
+That returns |NULL| if this fails because e.g. the file system objects.
 
 =
-filename *ExtensionWebsite::index_URL(inform_project *proj, text_stream *leaf) {
-	pathname *P = ExtensionWebsite::home_URL(proj);
+filename *ExtensionWebsite::index_page_filename(inform_project *proj) {
+	if (proj == NULL) internal_error("no project");
+	pathname *P = ExtensionWebsite::path_to_site(proj, FALSE, FALSE);
 	if (P == NULL) return NULL;
-	return Filenames::in(P, leaf);
+	return Filenames::in(P, I"Extensions.html");
 }
 
-@ And individual extension pages here. A complication is that a single
-extension may also have sidekick pages for any examples in its supplied
-documentation: so for instance we might actually see --
-= (text)
-	Documentation/Extensions/Emily Short/Locksmith.html
-	Documentation/Extensions/Emily Short/Locksmith-eg1.html
-	Documentation/Extensions/Emily Short/Locksmith-eg2.html
-	Documentation/Extensions/Emily Short/Locksmith-eg3.html
-	Documentation/Extensions/Emily Short/Locksmith-eg4.html
-=
-The following supplies the necessary filenames.
+filename *ExtensionWebsite::cut_way_for_index_page(inform_project *proj) {
+	if (proj == NULL) internal_error("no project");
+	pathname *P = ExtensionWebsite::path_to_site(proj, FALSE, TRUE);
+	if (P == NULL) return NULL;
+	return Filenames::in(P, I"Extensions.html");
+}
+
+@ And this finds, or if |use_machete| is set, also makes way for, the directory
+in which our mini-website is to be built.
 
 =
-filename *ExtensionWebsite::page_URL(inform_project *proj, inbuild_edition *edition, int eg_number) {
-	TEMPORARY_TEXT(leaf)
-	Editions::write_canonical_leaf(leaf, edition);
-	
-	pathname *P;
-	if (proj) {
-		P = Projects::materials_path(proj);
-		if (P == NULL) return NULL;
-		P = Pathnames::down(P, I"Extensions");
-		if (Pathnames::create_in_file_system(P) == 0) return NULL;
-		P = Pathnames::down(P, I"Reserved");
-		if (Pathnames::create_in_file_system(P) == 0) return NULL;
-		P = Pathnames::down(P, I"Documentation");
-	} else {
-		P = ExtensionWebsite::home_URL(NULL);
-		if (P == NULL) return NULL;
-		P = Pathnames::down(P, I"Extensions");
-	}
-	if (Pathnames::create_in_file_system(P) == 0) return NULL;
-	P = Pathnames::down(P, edition->work->author_name);
-	if (Pathnames::create_in_file_system(P) == 0) return NULL;
-
-	if (proj) {
-		P = Pathnames::down(P, leaf);
-		if (Pathnames::create_in_file_system(P) == 0) return NULL;
-		Str::clear(leaf);
-		if (eg_number > 0) WRITE_TO(leaf, "eg%d.html", eg_number);
-		else WRITE_TO(leaf, "index.html");
-	} else {
-		if (eg_number > 0) WRITE_TO(leaf, "-eg%d", eg_number);
-		WRITE_TO(leaf, ".html");
-	}
-
-	filename *F = Filenames::in(P, leaf);
-	DISCARD_TEXT(leaf)
-	return F;
-}
-
-filename *ExtensionWebsite::abs_page_URL(inform_project *proj, inbuild_edition *edition,
-	int eg_number) {
-	TEMPORARY_TEXT(leaf)
-	Editions::write_canonical_leaf(leaf, edition);
-	
-	pathname *P;
-	if (proj) {
-		P = Projects::materials_path(proj);
-		if (P == NULL) return NULL;
-		P = Pathnames::down(P, I"Extensions");
-		P = Pathnames::down(P, I"Reserved");
-		P = Pathnames::down(P, I"Documentation");
-	} else {
-		P = ExtensionWebsite::home_URL(NULL);
-		if (P == NULL) return NULL;
-		P = Pathnames::down(P, I"Extensions");
-	}
-	P = Pathnames::down(P, edition->work->author_name);
-
-	if (proj) {
-		P = Pathnames::down(P, leaf);
-		Str::clear(leaf);
-		if (eg_number > 0) WRITE_TO(leaf, "eg%d.html", eg_number);
-		else WRITE_TO(leaf, "index.html");
-	} else {
-		if (eg_number > 0) WRITE_TO(leaf, "-eg%d", eg_number);
-		WRITE_TO(leaf, ".html");
-	}
-
-	filename *F = Filenames::in(P, leaf);
-	DISCARD_TEXT(leaf)
-	return F;
-}
-
-filename *ExtensionWebsite::rel_page_URL(inbuild_edition *edition, int eg_number) {
-	TEMPORARY_TEXT(leaf)
-	Editions::write_canonical_leaf(leaf, edition);
-	
+pathname *ExtensionWebsite::path_to_site(inform_project *proj, int relative, int use_machete) {
+	if (relative) use_machete = FALSE; /* just for safety's sake */
 	pathname *P = NULL;
+	if (relative == FALSE) {
+		if (proj == NULL) internal_error("no project");
+		P = Projects::materials_path(proj);
+		if (P == NULL) return NULL;
+	}
 	P = Pathnames::down(P, I"Extensions");
+	if ((use_machete) && (Pathnames::create_in_file_system(P) == 0)) return NULL;
 	P = Pathnames::down(P, I"Reserved");
+	if ((use_machete) && (Pathnames::create_in_file_system(P) == 0)) return NULL;
 	P = Pathnames::down(P, I"Documentation");
+	if ((use_machete) && (Pathnames::create_in_file_system(P) == 0)) return NULL;
+	return P;
+}
+
+@ And similarly for pages which hold individual extension documentation. Note
+that if |eg_number| is positive, it should be 1, 2, 3, ... up to the number of
+examples provided in the extension.
+
+=
+filename *ExtensionWebsite::page_filename(inform_project *proj, inbuild_edition *edition,
+	int eg_number) {
+	if (proj == NULL) internal_error("no project");
+	return ExtensionWebsite::page_filename_inner(proj, edition, eg_number, FALSE, FALSE);
+}
+
+filename *ExtensionWebsite::page_filename_relative_to_materials(inbuild_edition *edition,
+	int eg_number) {
+	return ExtensionWebsite::page_filename_inner(NULL, edition, eg_number, TRUE, FALSE);
+}
+
+filename *ExtensionWebsite::cut_way_for_page(inform_project *proj,
+	inbuild_edition *edition, int eg_number) {
+	if (proj == NULL) internal_error("no project");
+	return ExtensionWebsite::page_filename_inner(proj, edition, eg_number, FALSE, TRUE);
+}
+
+@ All of which use this private utility function:
+
+=
+filename *ExtensionWebsite::page_filename_inner(inform_project *proj, inbuild_edition *edition,
+	int eg_number, int relative, int use_machete) {
+	if (relative) use_machete = FALSE; /* just for safety's sake */
+	TEMPORARY_TEXT(leaf)
+	Editions::write_canonical_leaf(leaf, edition);
+	
+	pathname *P = ExtensionWebsite::path_to_site(proj, relative, use_machete);
+	if (P == NULL) return NULL;
 	P = Pathnames::down(P, edition->work->author_name);
+	if ((use_machete) && (Pathnames::create_in_file_system(P) == 0)) return NULL;
 	P = Pathnames::down(P, leaf);
+	if ((use_machete) && (Pathnames::create_in_file_system(P) == 0)) return NULL;
 	Str::clear(leaf);
 	if (eg_number > 0) WRITE_TO(leaf, "eg%d.html", eg_number);
 	else WRITE_TO(leaf, "index.html");
+
 	filename *F = Filenames::in(P, leaf);
 	DISCARD_TEXT(leaf)
 	return F;
 }
+

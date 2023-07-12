@@ -18,9 +18,6 @@ which use this module:
 @e control_structure_phrase_CLASS
 @e copy_error_CLASS
 @e element_activation_CLASS
-@e extension_census_CLASS
-@e extension_census_datum_CLASS
-@e extension_dictionary_entry_CLASS
 @e extensions_key_item_CLASS
 @e heading_CLASS
 @e heading_tree_CLASS
@@ -41,7 +38,6 @@ which use this module:
 @e inform_template_CLASS
 @e kit_configuration_CLASS
 @e kit_dependency_CLASS
-@e known_extension_clash_CLASS
 
 =
 DECLARE_CLASS(build_methodology)
@@ -52,9 +48,6 @@ DECLARE_CLASS(build_vertex)
 DECLARE_CLASS(control_structure_phrase)
 DECLARE_CLASS(copy_error)
 DECLARE_CLASS(element_activation)
-DECLARE_CLASS(extension_census_datum)
-DECLARE_CLASS(extension_census)
-DECLARE_CLASS(extension_dictionary_entry)
 DECLARE_CLASS(extensions_key_item)
 DECLARE_CLASS(heading_tree)
 DECLARE_CLASS(heading)
@@ -75,20 +68,16 @@ DECLARE_CLASS(inform_project)
 DECLARE_CLASS(inform_template)
 DECLARE_CLASS(kit_configuration)
 DECLARE_CLASS(kit_dependency)
-DECLARE_CLASS(known_extension_clash)
 
 @ Like all modules, this one must define a |start| and |end| function:
 
-@e EXTENSION_DICTIONARY_MREASON
+@e RESULTS_SORTING_MREASON
 @e EXTENSIONS_CENSUS_DA
 @e HEADINGS_DA
 
 =
-COMPILE_WRITER(extension_dictionary_entry *, ExtensionDictionary::log_entry)
-
 void SupervisorModule::start(void) {
-	Memory::reason_name(EXTENSION_DICTIONARY_MREASON, "extension dictionary");
-	REGISTER_WRITER('d', ExtensionDictionary::log_entry);
+	Memory::reason_name(RESULTS_SORTING_MREASON, "results sorting");
 	Writers::register_writer('X', &Works::writer);
 	Writers::register_writer('J', &Languages::log);
 	Log::declare_aspect(EXTENSIONS_CENSUS_DA, L"extensions census", FALSE, FALSE);

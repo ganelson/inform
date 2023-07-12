@@ -351,14 +351,15 @@ void Main::switch(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
 		case CRASHALL_CLSW: debugger_mode = val;
 			ProblemSigils::crash_on_problems(val); break;
-		case INDEX_CLSW: Task::disable_or_enable_index(val?FALSE:TRUE);
+		case INDEX_CLSW:
+			Task::disable_or_enable_index(val?FALSE:TRUE);
+			Task::disable_or_enable_extensions_update(val?FALSE:TRUE);
 			index_explicitly_set = TRUE; break;
 		case PROBLEMS_CLSW: Task::disable_or_enable_problems(val?FALSE:TRUE);
 			problems_explicitly_set = TRUE; break;
 		case CENSUS_UPDATE_CLSW:
 			WRITE_TO(STDOUT, "(ignoring -census-update and -no-census-update, "
 				"which have been withdrawn)\n");
-//			Task::disable_or_enable_census(val?FALSE:TRUE);
 			break;
 		case PROGRESS_CLSW: ProgressBar::enable_or_disable(val); break;
 		case SIGILS_CLSW: ProblemSigils::echo_sigils(val); break;

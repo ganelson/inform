@@ -22,7 +22,7 @@ generating an EPS map are also sometimes part of the indexing process, depending
 on the command-line settings used when invoking |inform7|.
 
 @d INDEX_REQUIRED_BIT 1
-@d CENSUS_UPDATE_REQUIRED_BIT 2
+@d EXTENSIONS_INDEX_REQUIRED_BIT 2
 @d EPS_MAP_REQUIRED_BIT 4
 
 =
@@ -33,18 +33,16 @@ int IndexStage::run(pipeline_step *step) {
 	#ifdef CORE_MODULE
 	req = Task::get_index_requirements();
 	#endif
-	inform_project *project = NULL;
-	#ifdef SUPERVISOR_MODULE
-	project = InterSkill::get_associated_project();
-	#endif
+	inform_project *project = InterSkill::get_associated_project();
 	if (project) {
-		if ((req & INDEX_REQUIRED_BIT) || (req & EPS_MAP_REQUIRED_BIT)) {
+		if ((req & INDEX_REQUIRED_BIT) ||
+			(req & EPS_MAP_REQUIRED_BIT) ||
+			(req & EXTENSIONS_INDEX_REQUIRED_BIT)) {
 			index_session *session = IndexStage::index_session_for(I, project);
-			if (req & INDEX_REQUIRED_BIT) {
+			if (req & INDEX_REQUIRED_BIT)
 				Indexing::generate_index_website(session, Projects::index_structure(project));
-				if (req & CENSUS_UPDATE_REQUIRED_BIT)
-					ExtensionWebsite::index_after_compilation(project);
-			}
+			if (req & EXTENSIONS_INDEX_REQUIRED_BIT)
+				ExtensionWebsite::update(project);
 			#ifdef CORE_MODULE
 			if (req & EPS_MAP_REQUIRED_BIT)
 				Indexing::generate_EPS_map(session, Task::epsmap_file(), NULL);
