@@ -39,7 +39,7 @@ usage: inbuild [-TASK] TARGET1 TARGET2 ...
 for translating Inform source text to Inter:
   -basic                       use Basic Inform language
   -case X                      make any source links refer to the source in extension example X
-  -census                      perform an extensions census (default is -no-census)
+  -census                      withdrawn: previously, 'perform an extensions census' (default is -no-census)
   -debug                       compile with debugging features even on a Release (default is -no-debug)
   -format=X                    compile to the format X (default is Inform6/32)
   -o X                         use file X as the compiled output (not for use with -project)

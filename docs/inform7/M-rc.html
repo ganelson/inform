@@ -62,7 +62,7 @@
 <span class="plain-syntax">for translating Inform source text to Inter:</span>
 <span class="plain-syntax">  -basic                   use Basic Inform language</span>
 <span class="plain-syntax">  -case X                  make any source links refer to the source in extension example X</span>
-<span class="plain-syntax">  -census                  perform an extensions census (default is -no-census)</span>
+<span class="plain-syntax">  -census                  withdrawn: previously, 'perform an extensions census' (default is -no-census)</span>
 <span class="plain-syntax">  -debug                   compile with debugging features even on a Release (default is -no-debug)</span>
 <span class="plain-syntax">  -format=X                compile to the format X (default is Inform6/32)</span>
 <span class="plain-syntax">  -o X                     use file X as the compiled output (not for use with -project)</span>
@@ -72,6 +72,7 @@
 <span class="plain-syntax">  -source X                use file X as the Inform source text</span>
 
 <span class="plain-syntax">for locating resources in the file system:</span>
+<span class="plain-syntax">  -deprecated-external X   same as -external X, but issues warnings if the nest is actually used</span>
 <span class="plain-syntax">  -external X              use X as the user's home for installed material such as extensions</span>
 <span class="plain-syntax">  -internal X              use X as the location of built-in material such as the Standard Rules</span>
 <span class="plain-syntax">  -nest X                  add the nest at pathname X to the search list</span>
@@ -84,7 +85,7 @@
 <span class="plain-syntax">  -variable X              set pipeline variable X (in form name=value)</span>
 
 <span class="plain-syntax">for testing and debugging inform7:</span>
-<span class="plain-syntax">  -no-census-update        don't update the extensions census (default is -census-update)</span>
+<span class="plain-syntax">  -no-census-update        don't withdrawn: previously, 'update the extensions census' (default is -census-update)</span>
 <span class="plain-syntax">  -crash-all               intentionally crash on Problem messages, for backtracing (default is -no-crash-all)</span>
 <span class="plain-syntax">  -diagnostics X           if no problems occur, write diagnostics files to directory X (default is -no-diagnostics)</span>
 <span class="plain-syntax">  -inbuild-verbose         equivalent to -inbuild-verbosity=1 (default is -no-inbuild-verbose)</span>

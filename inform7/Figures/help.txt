@@ -5,7 +5,7 @@ Usage: inform7 [OPTIONS]
 for translating Inform source text to Inter:
   -basic                   use Basic Inform language
   -case X                  make any source links refer to the source in extension example X
-  -census                  perform an extensions census (default is -no-census)
+  -census                  withdrawn: previously, 'perform an extensions census' (default is -no-census)
   -debug                   compile with debugging features even on a Release (default is -no-debug)
   -format=X                compile to the format X (default is Inform6/32)
   -o X                     use file X as the compiled output (not for use with -project)
@@ -28,7 +28,7 @@ for tweaking code generation from Inter:
   -variable X              set pipeline variable X (in form name=value)
 
 for testing and debugging inform7:
-  -no-census-update        don't update the extensions census (default is -census-update)
+  -no-census-update        don't withdrawn: previously, 'update the extensions census' (default is -census-update)
   -crash-all               intentionally crash on Problem messages, for backtracing (default is -no-crash-all)
   -diagnostics X           if no problems occur, write diagnostics files to directory X (default is -no-diagnostics)
   -inbuild-verbose         equivalent to -inbuild-verbosity=1 (default is -no-inbuild-verbose)

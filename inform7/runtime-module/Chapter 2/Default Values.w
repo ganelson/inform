@@ -130,8 +130,10 @@ inter_pair DefaultValues::to_value_pair(kind *K) {
 	@<Rulebook outcome@>;
 	@<Action name@>;
 	text_stream *textual_description = K->construct->default_value;
-	if (Str::len(textual_description) > 0)
+	@<Block values not known to the compiler@>;
+	if (Str::len(textual_description) > 0) {
 		@<Kinds whose default values are set by Neptune files@>;
+	}
 	return InterValuePairs::undef();
 }
 
@@ -240,10 +242,83 @@ case to avoid having to parse double-sharp notation below.
 		return Emit::to_value_pair(wait);
 	}
 
+@ If we reach here, we need to take care of a block value not anticipated by
+the compiler, i.e., one created in the Neptune files of some kit. We interpret
+the absence of any specified default value as meaning "fill a small block with
+all zeros", and otherwise we look for a comma-separated list to fill it.
+
+@<Block values not known to the compiler@> =
+	if (Kinds::Behaviour::uses_block_values(K)) {
+		inter_name *small_block = Enclosures::new_small_block_for_constant();
+		packaging_state save = EmitArrays::begin_unchecked(small_block);
+		int extent = Kinds::Behaviour::get_small_block_size(K);
+		TheHeap::emit_block_value_header(K, FALSE, extent);
+		if (Str::len(textual_description) == 0) {
+			for (int i=0; i<extent; i++)
+				EmitArrays::numeric_entry(0);
+		} else {
+			int err = FALSE, count = 0;
+			TEMPORARY_TEXT(term)
+			for (int i=0, state=1; i<Str::len(textual_description); i++) {
+				wchar_t c = Str::get_at(textual_description, i);
+				switch (state) {
+					case 1: /* waiting for term */
+						if (c == ' ') break;
+						if (c == ',') { err = TRUE; break; }
+						PUT_TO(term, c); state = 2;
+						break;
+					case 2: /* reading term */
+						if (c == ' ') { @<Complete term@>; state = 3; break; }
+						if (c == ',') { @<Complete term@>; state = 1; break; }
+						PUT_TO(term, c);
+						break;
+					case 3: /* waiting for comma */
+						if (c == ' ') break;
+						if (c == ',') { state = 1; break; }
+						err = TRUE; PUT_TO(term, c); state = 2;
+						break;
+				}
+			}
+			@<Complete term@>;
+			DISCARD_TEXT(term)
+			if (count != extent) err = TRUE;
+			if (err) {
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+				Problems::quote_kind(1, K);
+				Problems::quote_stream(2, textual_description);
+				Problems::quote_number(3, &extent);
+				Problems::issue_problem_segment(
+					"I am unable to create default values for the kind %1, because the "
+					"the default value given in its Neptune definition, '%2', is not a "
+					"comma-separated list of the right number of values for its short "
+					"block extent (i.e., %3), with all of those being numbers or symbol names.");
+				Problems::issue_problem_end();
+			}
+		}
+		EmitArrays::end(save);
+		return Emit::to_value_pair(small_block);
+	}
+
+@<Complete term@> =
+	if (Str::len(term) > 0) {
+		inter_pair val = DefaultValues::from_Neptune_term(term, K);
+		if (InterValuePairs::is_undef(val)) {
+			err = TRUE;
+			EmitArrays::numeric_entry(0);
+		} else {
+			EmitArrays::generic_entry(val);
+		}
+		Str::clear(term);
+		count++;
+	}
+
 @ Now we reach the most general case, where the default value is something fixed
 and specified by a brief textual description taken from a Neptune file.
 
-That description has to be very simple: a literal number, |true|, |false|, or an
+@<Kinds whose default values are set by Neptune files@> =
+	return DefaultValues::from_Neptune_term(textual_description, K);
+
+@ That description has to be very simple: a literal number, |true|, |false|, or an
 identifier name which the linker will be able to find -- maybe a function name,
 maybe an array, maybe a constant.
 
@@ -252,7 +327,8 @@ cache the result. But if so be careful: it would only be safe to cache the
 numerical results, because only those are the same in all packages. Symbol
 names, for example, are not.
 
-@<Kinds whose default values are set by Neptune files@> =
+=
+inter_pair DefaultValues::from_Neptune_term(text_stream *textual_description, kind *K) {
 	inter_pair val = InterValuePairs::number_from_I6_notation(textual_description);
 	if (InterValuePairs::is_undef(val) == FALSE) return val;
 
@@ -261,3 +337,4 @@ names, for example, are not.
 
 	int hl = Hierarchy::kind_default(Kinds::get_construct(K), textual_description);
 	return Emit::to_value_pair(Hierarchy::find(hl));
+}
