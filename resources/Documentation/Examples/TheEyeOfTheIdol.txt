@@ -43,6 +43,10 @@ A quiet supporter is one that is never mentioned itself and which only mentions 
 
 Notice that we can still override this with writing a paragraph rules about specific supporters in our game, if we decide that we want something a little different in some cases.
 
+We would find, though, that this alone doesn't do the trick and that in-place things were still listed. The RULES command could tell us that they were being printed by the "describe what's on mentioned supporters in room descriptions rule" (a Standard Rule in the "for printing a locale paragraph about a thing rulebook). And so we deactivate it for this case:
+
+	The describe what's on mentioned supporters in room descriptions rule does nothing when the supporter in question is quiet.
+
 Now, an example to test this out:
 	
 	{**}Section 2 - A Sample Scenario
