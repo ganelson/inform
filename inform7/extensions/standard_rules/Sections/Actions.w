@@ -277,7 +277,7 @@ Check an actor dropping something which is part of the actor (this is the
 Check an actor dropping (this is the can't drop what's already dropped rule):
 	if the noun is in the holder of the actor:
 		if the actor is the player:
-			say "[The noun] [are] already here." (A);
+			say "[The noun] [are] already [here]." (A);
 		stop the action.
 
 Check an actor dropping (this is the can't drop what's not held rule):
@@ -2525,7 +2525,7 @@ Check an actor pushing something to (this is the can't push vertically rule):
 Check an actor pushing something to (this is the can't push from within rule):
 	if the noun encloses the actor:
 		if the actor is the player:
-			say "[The noun] [cannot] be pushed from here." (A);
+			say "[The noun] [cannot] be pushed from [here]." (A);
 		stop the action.
 
 Check an actor pushing something to (this is the standard pushing in directions rule):
@@ -2828,7 +2828,7 @@ with some further check rules.)"
 Check an actor drinking (this is the block drinking rule):
 	if the actor is the player:
 		now the prior named object is nothing;
-		say "[There's] nothing suitable to drink here." (A);
+		say "[There's] nothing suitable to drink [here]." (A);
 	stop the action.
 
 @h Saying sorry.
@@ -2874,7 +2874,7 @@ with some further check rules.)"
 Check an actor swinging (this is the block swinging rule):
 	if the actor is the player:
 		now the prior named object is nothing;
-		say "[There's] nothing sensible to swing here." (A);
+		say "[There's] nothing sensible to swing [here]." (A);
 	stop the action.
 
 @h Rubbing.
