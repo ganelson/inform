@@ -36,8 +36,11 @@ The rationale for asking the question this way, and not another, is that novices
 	
 	The novice suggestion rules is a rulebook.
 
+	The previous action is an action that varies.
+	Before doing anything, now the previous action is the current action.
+
 	A novice suggestion rule (this is the suggestion that they look rule):
-		if not looking and not going, say "  [bold type]look[roman type]".
+		unless the previous action is looking or the previous action is going, say "  [bold type]look[roman type]".
 
 	A novice suggestion rule (this is the suggestion that they check inventory rule): 
 		if the player carries something and we are not taking inventory, say "  [bold type]inventory[roman type] (I)".
