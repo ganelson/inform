@@ -1221,7 +1221,7 @@ word to play with, we optimise by making a word token instead of a run of
 character ones.
 
 @<Compile unescaped notation between from and to@> =
-	if ((from.wn < to.wn) || (from.char_pos < to.char_pos)) {
+	if ((from.wn < to.wn) || (from.char_pos <= to.char_pos)) {
 		wording NW = Wordings::new(from.wn, to.wn);
 		for (int i=0; i<Wordings::length(NW); i++) {
 			wchar_t *text_of_word = Lexer::word_raw_text(Wordings::first_wn(NW)+i);

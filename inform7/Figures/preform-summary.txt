@@ -4,6 +4,12 @@
           (hits 171/171) (matched: '100') constraint CS = {r0} extremes [1, 1]
         (@1)minus (@2)<cardinal-number>=1 
           (hits 0/1393) constraint DS = {25} extremes [2, 2]
+        (@1)hexadecimal (@2)<hexadecimal-number>=1 
+          (hits 0/1393) constraint DS = {25} extremes [2, 2]
+        (@1)binary (@2)<binary-number>=1 
+          (hits 0/1393) constraint DS = {25} extremes [2, 2]
+        (@1)octal (@2)<octal-number>=1 
+          (hits 0/1393) constraint DS = {25} extremes [2, 2]
         (@1)<quoted-text>=1 (@2)( (@3)<response-letter>=2 (@4)) 
           (hits 274/841) (matched: '"[current item from the multiple object list]: [run paragraph on]" ( a )') constraint DS = {25} extremes [4, 4]
         (@1)<quoted-text>=1 

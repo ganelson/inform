@@ -14,6 +14,9 @@ Note also that ordinal numbers are not valid as literals: "2nd" is not a noun.
 <s-literal> ::=
 	<cardinal-number> |                    ==> { -, Rvalues::from_int(R[1], W) }
 	minus <cardinal-number> |              ==> { -, Rvalues::from_int(-R[1], W) }
+	hexadecimal <hexadecimal-number> |     ==> { -, Rvalues::from_int(R[1], W) }
+	binary <binary-number> |               ==> { -, Rvalues::from_int(R[1], W) }
+	octal <octal-number> |                 ==> { -, Rvalues::from_int(R[1], W) }
 	<quoted-text> ( <response-letter> ) |  ==> { -, Rvalues::from_wording(W) }
 	<quoted-text> |                        ==> { -, Rvalues::from_wording(W) }
 	<s-literal-real-number> |              ==> { pass 1 }
@@ -46,3 +49,45 @@ in principle be any number of people, colours, vehicles, and such.
 <s-literal-truth-state> ::=
 	false |  ==> { -, Rvalues::from_boolean(FALSE, W) }
 	true     ==> { -, Rvalues::from_boolean(TRUE, W) }
+
+@ And these are the number-base literals:
+
+=
+<hexadecimal-number> internal 1 {
+	wchar_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
+	inter_ti base = 16;
+	@<Parse a literal in this number base@>;
+}
+
+<octal-number> internal 1 {
+	wchar_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
+	inter_ti base = 8;
+	@<Parse a literal in this number base@>;
+}
+
+<binary-number> internal 1 {
+	wchar_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
+	inter_ti base = 2;
+	@<Parse a literal in this number base@>;
+}
+
+@<Parse a literal in this number base@> =
+	int i = 0;
+	inter_ti t = 0;
+	while (p[i]) {
+		int d = 0;
+		wchar_t c = p[i];
+		if ((c >= '0') && (c <= '9')) d = c - '0';
+		else if ((c >= 'a') && (c <= 'f')) d = c - 'a' + 10;
+		else if ((c >= 'A') && (c <= 'F')) d = c - 'A' + 10;
+		else {
+			==> { fail nonterminal };
+		}
+		if (d >= (int) base) {
+			==> { fail nonterminal };
+		}
+		t = t*base + (inter_ti) d;
+		i++;
+	}
+	==> { (int) t, - };
+	return TRUE;

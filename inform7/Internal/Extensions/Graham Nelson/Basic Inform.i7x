@@ -268,6 +268,12 @@ To say (N - a number) in (M - a number) binary digit/digits:
 To say (N - a number) in (M - a number) base (B - a number) digit/digits:
 	(- PrintInBase({N}, {B}, {M}); -).
 
+To say (N - a number) in unsigned decimal:
+	(- PrintInBase({N}, 10, 1); -).
+
+To say (N - a number) in (M - a number) unsigned decimal digit/digits:
+	(- PrintInBase({N}, 10, {M}); -).
+
 Section 2 - Saying Names
 
 To say a (something - object)

@@ -155,6 +155,12 @@ To say (N - a number) in (M - a number) binary digit/digits:
 To say (N - a number) in (M - a number) base (B - a number) digit/digits:
 	(- PrintInBase({N}, {B}, {M}); -).
 
+To say (N - a number) in unsigned decimal:
+	(- PrintInBase({N}, 10, 1); -).
+
+To say (N - a number) in (M - a number) unsigned decimal digit/digits:
+	(- PrintInBase({N}, 10, {M}); -).
+
 @ Objects are the most difficult things to say, because of the elaborate
 apparatus for managing their natural-language representations. In particular,
 we need to say them with a definite or indefinite article, which can either

@@ -322,9 +322,11 @@ int Vocabulary::hash_code_from_word(wchar_t *text) {
     unsigned int hash_code = 0;
     wchar_t *p = text;
     switch(*p) {
-    	case '-': if (p[1] == 0) break; /* an isolated minus sign is an ordinary word */
+    	case '-': if (p[1] == 0) break; /* an isolated minus sign is text */
     		/* and otherwise fall through to... */
-    	case '0': case '1': case '2': case '3': case '4':
+    	case '0': if ((p[0] == '0') && (p[1] != 0)) break; /* 0 followed by anything is text */
+    		/* and otherwise fall through to... */
+    	case '1': case '2': case '3': case '4':
     	case '5': case '6': case '7': case '8': case '9':
     		/* the first character may prove to be the start of a number: is this true? */
 			for (p++; *p; p++) if (Characters::isdigit(*p) == FALSE) goto Try_Text;
