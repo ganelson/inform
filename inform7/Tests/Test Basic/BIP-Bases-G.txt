@@ -1,0 +1,13 @@
+To begin:
+	repeat with N running through { 7, 100, 16339, 2147483647, -2147483648, 0, -1, -36 }:
+		test N.
+
+To test (N - a number):
+	showme N;
+	say "N in hexadecimal: [N in hexadecimal] ... [N in 1 hexadecimal digit] ... [N in 2 hexadecimal digits] ... [N in 6 hexadecimal digits] ... [N in 20 hexadecimal digits].";
+	say "N in decimal: [N in decimal] ... [N in 1 decimal digit] ... [N in 2 decimal digits] ... [N in 6 decimal digits] ... [N in 20 decimal digits].";
+	say "N in octal: [N in octal] ... [N in 1 octal digit] ... [N in 2 octal digits] ... [N in 6 octal digits] ... [N in 20 octal digits].";
+	say "N in binary: [N in binary] ... [N in 1 binary digit] ... [N in 2 binary digits] ... [N in 6 binary digits] ... [N in 20 binary digits].";
+	say "N in base 3: [N in base 3] ... [N in 1 base 3 digit] ... [N in 2 base 3 digits] ... [N in 6 base 3 digits] ... [N in 20 base 3 digits].";
+	say "N in base 36: [N in base 36] ... [N in 1 base 36 digit] ... [N in 2 base 36 digits] ... [N in 6 base 36 digits] ... [N in 20 base 36 digits].";
+	say paragraph break;

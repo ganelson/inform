@@ -51,7 +51,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">BasicInformKit</a></li><li><b>Printing Template</b></li></ul></div>
 <p class="purpose">To handle the printing of names of objects.</p>
 
-<ul class="toc"><li><a href="S-prn.html#SP1">&#167;1. Short Name Storage</a></li><li><a href="S-prn.html#SP2">&#167;2. Object Names I</a></li><li><a href="S-prn.html#SP3">&#167;3. Standard Name Printing Rule</a></li><li><a href="S-prn.html#SP4">&#167;4. Object Names II</a></li><li><a href="S-prn.html#SP5">&#167;5. Object Names III</a></li><li><a href="S-prn.html#SP6">&#167;6. Miscellaneous</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-prn.html#SP1">&#167;1. Short Name Storage</a></li><li><a href="S-prn.html#SP2">&#167;2. Object Names I</a></li><li><a href="S-prn.html#SP3">&#167;3. Standard Name Printing Rule</a></li><li><a href="S-prn.html#SP4">&#167;4. Object Names II</a></li><li><a href="S-prn.html#SP5">&#167;5. Object Names III</a></li><li><a href="S-prn.html#SP6">&#167;6. Printing in number bases</a></li><li><a href="S-prn.html#SP8">&#167;8. Miscellaneous</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Short Name Storage. </b>None of the following functions should be called for the Z-machine if the
 short name exceeds the size of the following buffer: whereas the Glulx
@@ -313,7 +313,80 @@ indefinite singular depends on the text of the object's name.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PrefaceByArticle</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">); </span><span class="identifier-syntax">indef_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i</span><span class="plain-syntax">; </span><span class="identifier-syntax">self</span><span class="plain-syntax"> = </span><span class="identifier-syntax">s</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Miscellaneous. </b>What the following functions have in common is that they are all minimal
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Printing in number bases. </b>The following prints the number <span class="extract"><span class="extract-syntax">n</span></span> in base <span class="extract"><span class="extract-syntax">base</span></span>, which must be 2 to 36.
+If <span class="extract"><span class="extract-syntax">digits</span></span> is supplied, the number is padded with leading zeros to form at
+least that many digits.
+</p>
+
+<p class="commentary"><span class="extract"><span class="extract-syntax">n</span></span> is printed as a signed number if <span class="extract"><span class="extract-syntax">base</span></span> is 10 and <span class="extract"><span class="extract-syntax">digits</span></span> is not supplied,
+but in all other cases is printed as unsigned.
+</p>
+
+<p class="commentary">For example, -1 prints as FFFFFFFF in hex, either -1 or 4294967285 in decimal,
+37777777777 in octal, 11111111111111111111111111111111 in binary, 102002022201221111200
+in base 3 and 1Z141Y3 in base 36.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">[ </span><span class="identifier-syntax">PrintInBase</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> </span><span class="identifier-syntax">base</span><span class="plain-syntax"> </span><span class="identifier-syntax">digits</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">digit_count</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax"> </span><span class="identifier-syntax">k</span><span class="plain-syntax"> </span><span class="identifier-syntax">d</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">base</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">2</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">base</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">36</span><span class="plain-syntax">)) { </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"("</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">, </span><span class="string-syntax">" in base "</span><span class="plain-syntax">, </span><span class="identifier-syntax">base</span><span class="plain-syntax">, </span><span class="string-syntax">")"</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax">; }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">digits</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="identifier-syntax">digits</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">digits</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">100</span><span class="plain-syntax">) </span><span class="identifier-syntax">digits</span><span class="plain-syntax"> = </span><span class="constant-syntax">100</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">base</span><span class="plain-syntax"> == </span><span class="constant-syntax">10</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">digits</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">)) { </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax">; }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">digit_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">a</span><span class="plain-syntax"> = </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">digit_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">do</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">a</span><span class="plain-syntax"> = </span><span class="identifier-syntax">DropDigit</span><span class="plain-syntax">(</span><span class="identifier-syntax">a</span><span class="plain-syntax">, </span><span class="identifier-syntax">base</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">digit_count</span><span class="plain-syntax">++;</span>
+<span class="plain-syntax">        } </span><span class="reserved-syntax">until</span><span class="plain-syntax"> (</span><span class="identifier-syntax">a</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">j</span><span class="plain-syntax"> = </span><span class="identifier-syntax">digits</span><span class="plain-syntax">: </span><span class="identifier-syntax">j</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">digit_count</span><span class="plain-syntax">: </span><span class="identifier-syntax">j</span><span class="plain-syntax">--) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"0"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">j</span><span class="plain-syntax"> = </span><span class="identifier-syntax">digit_count</span><span class="plain-syntax">: </span><span class="identifier-syntax">j</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">1</span><span class="plain-syntax">: </span><span class="identifier-syntax">j</span><span class="plain-syntax">--) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">a</span><span class="plain-syntax"> = </span><span class="identifier-syntax">n</span><span class="plain-syntax">; </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">: </span><span class="identifier-syntax">k</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">j</span><span class="plain-syntax">: </span><span class="identifier-syntax">k</span><span class="plain-syntax">++) </span><span class="identifier-syntax">a</span><span class="plain-syntax"> = </span><span class="identifier-syntax">DropDigit</span><span class="plain-syntax">(</span><span class="identifier-syntax">a</span><span class="plain-syntax">, </span><span class="identifier-syntax">base</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">d</span><span class="plain-syntax"> = </span><span class="identifier-syntax">LeastDigit</span><span class="plain-syntax">(</span><span class="identifier-syntax">a</span><span class="plain-syntax">, </span><span class="identifier-syntax">base</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">d</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">10</span><span class="plain-syntax">) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="identifier-syntax">d</span><span class="plain-syntax">; </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="identifier-syntax">char</span><span class="plain-syntax">) </span><span class="character-syntax">'A'</span><span class="plain-syntax"> + </span><span class="identifier-syntax">d</span><span class="plain-syntax"> - </span><span class="constant-syntax">10</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">];</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Here, <span class="extract"><span class="extract-syntax">n</span></span> may be negative, but we want to treat it as an unsigned integer,
+not as twos-complement signed, and that is very annoying because we only have
+access to signed integer division and remainder. On the bright side, <span class="extract"><span class="extract-syntax">base</span></span> is
+between 2 and 36.
+</p>
+
+<p class="commentary">The idea here is that if <span class="extract"><span class="extract-syntax">n</span></span> has the top bit set, we take that bit away and
+then can safely perform signed division getting the right answer; but then we
+have to compensate by working out what difference it made that we changed
+the value of <span class="extract"><span class="extract-syntax">n</span></span> (from an unsigned point of view) by subtracting <span class="extract"><span class="extract-syntax">$80000000</span></span>.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">[ </span><span class="identifier-syntax">DropDigit</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> </span><span class="identifier-syntax">base</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">WORD_HIGHBIT</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">n</span><span class="plain-syntax"> - </span><span class="identifier-syntax">WORD_HIGHBIT</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">n</span><span class="plain-syntax">/</span><span class="identifier-syntax">base</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">n</span><span class="plain-syntax"> + (</span><span class="identifier-syntax">WORD_HIGHBIT</span><span class="plain-syntax"> - </span><span class="identifier-syntax">base</span><span class="plain-syntax">)/</span><span class="identifier-syntax">base</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">/</span><span class="identifier-syntax">base</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">LeastDigit</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> </span><span class="identifier-syntax">base</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">WORD_HIGHBIT</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">n</span><span class="plain-syntax"> - </span><span class="identifier-syntax">DropDigit</span><span class="plain-syntax">(</span><span class="identifier-syntax">n</span><span class="plain-syntax">, </span><span class="identifier-syntax">base</span><span class="plain-syntax">)*</span><span class="identifier-syntax">base</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">n</span><span class="plain-syntax">%</span><span class="identifier-syntax">base</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">n</span><span class="plain-syntax"> + </span><span class="identifier-syntax">base</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">%</span><span class="identifier-syntax">base</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">];</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Miscellaneous. </b>What the following functions have in common is that they are all minimal
 definitions which apply only to Basic Inform programs. More elaborate
 <span class="extract"><span class="extract-syntax">WorldModelKit</span></span> alternatives will be used if that kit is present, as it
 always is for non-Basic Inform projects.
@@ -326,7 +399,7 @@ always is for non-Basic Inform projects.
 <span class="plain-syntax">[ </span><span class="identifier-syntax">PRINT_PROTAGONIST_INTERNAL_R</span><span class="plain-syntax">; ]; </span><span class="comment-syntax">There is no player in Basic Inform</span>
 <span class="plain-syntax">[ </span><span class="identifier-syntax">RunTimeProblemShowWM</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">y</span><span class="plain-syntax"> </span><span class="identifier-syntax">z</span><span class="plain-syntax">; ]; </span><span class="comment-syntax">Prints RTPs only occurring in WorldModelKit</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>PNToVP() takes no arguments and returns the GNA (gender-noun-animation) for
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>PNToVP() takes no arguments and returns the GNA (gender-noun-animation) for
 the <span class="extract"><span class="extract-syntax">prior_named_noun</span></span>.
 </p>
 
@@ -345,7 +418,7 @@ the <span class="extract"><span class="extract-syntax">prior_named_noun</span></
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">case</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>This provides just a little of the list-writer.
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>This provides just a little of the list-writer.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -362,7 +435,7 @@ the <span class="extract"><span class="extract-syntax">prior_named_noun</span></
 <span class="plain-syntax">];</span>
 <span class="plain-syntax">[ </span><span class="identifier-syntax">LW_Response</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="identifier-syntax">o</span><span class="plain-syntax">; </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" and "</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>These two functions are not really to do with printing, but are also stubs
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>These two functions are not really to do with printing, but are also stubs
 provided for Basic Inform only.
 </p>
 

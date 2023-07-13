@@ -119,6 +119,42 @@ To showme (val - value)
 	(documented at ph_showme):
 	(- {-show-me:val} -).
 
+@ Now some fun with number bases:
+
+=
+To say (N - a number) in hexadecimal:
+	(- PrintInBase({N}, 16); -).
+
+To say (N - a number) in decimal:
+	(- PrintInBase({N}, 10); -).
+
+To say (N - a number) in octal:
+	(- PrintInBase({N}, 8); -).
+
+To say (N - a number) in binary:
+	(- PrintInBase({N}, 2); -).
+
+To say (N - a number) in base (B - a number):
+	(- PrintInBase({N}, {B}); -).
+
+To say (N - a number) in (M - a number) digit/digits:
+	(- PrintInBase({N}, 10, {M}); -).
+
+To say (N - a number) in (M - a number) hexadecimal digit/digits:
+	(- PrintInBase({N}, 16, {M}); -).
+
+To say (N - a number) in (M - a number) decimal digit/digits:
+	(- PrintInBase({N}, 10, {M}); -).
+
+To say (N - a number) in (M - a number) octal digit/digits:
+	(- PrintInBase({N}, 8, {M}); -).
+
+To say (N - a number) in (M - a number) binary digit/digits:
+	(- PrintInBase({N}, 2, {M}); -).
+
+To say (N - a number) in (M - a number) base (B - a number) digit/digits:
+	(- PrintInBase({N}, {B}, {M}); -).
+
 @ Objects are the most difficult things to say, because of the elaborate
 apparatus for managing their natural-language representations. In particular,
 we need to say them with a definite or indefinite article, which can either

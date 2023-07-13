@@ -260,6 +260,75 @@ The routines accessible from outside this segment.
     PrefaceByArticle(obj, 0); indef_mode = i; self = s;
 ];
 
+@h Printing in number bases.
+The following prints the number |n| in base |base|, which must be 2 to 36.
+If |digits| is supplied, the number is padded with leading zeros to form at
+least that many digits.
+
+|n| is printed as a signed number if |base| is 10 and |digits| is not supplied,
+but in all other cases is printed as unsigned.
+
+For example, -1 prints as FFFFFFFF in hex, either -1 or 4294967285 in decimal,
+37777777777 in octal, 11111111111111111111111111111111 in binary, 102002022201221111200
+in base 3 and 1Z141Y3 in base 36.
+
+=
+[ PrintInBase n base digits a digit_count j k d;
+	if ((base < 2) || (base > 36)) { print "(", n, " in base ", base, ")"; return; }
+	if (digits < 1) digits = 0;
+	if (digits > 100) digits = 100;
+	if ((base == 10) && (digits == 0)) { print n; return; }
+	if (n == 0) {
+		digit_count = 1;
+	} else {
+		a = n;
+		digit_count = 0;
+		do {
+			a = DropDigit(a, base);
+			digit_count++;
+		} until (a == 0);
+	}
+	for (j = digits: j > digit_count: j--) print "0";
+	for (j = digit_count: j >= 1: j--) {
+		a = n; for (k = 1: k < j: k++) a = DropDigit(a, base);
+		d = LeastDigit(a, base);
+		if (d < 10) print d; else print (char) 'A' + d - 10;
+	}
+];
+
+@ Here, |n| may be negative, but we want to treat it as an unsigned integer,
+not as twos-complement signed, and that is very annoying because we only have
+access to signed integer division and remainder. On the bright side, |base| is
+between 2 and 36.
+
+The idea here is that if |n| has the top bit set, we take that bit away and
+then can safely perform signed division getting the right answer; but then we
+have to compensate by working out what difference it made that we changed
+the value of |n| (from an unsigned point of view) by subtracting |$80000000|.
+
+=
+[ DropDigit n base;
+	if (n & WORD_HIGHBIT) {
+		n = n - WORD_HIGHBIT;
+		n = n/base;
+		n = n + (WORD_HIGHBIT - base)/base + 1;
+		return n;
+	} else {
+		return n/base;
+	}
+];
+
+[ LeastDigit n base;
+	if (n & WORD_HIGHBIT) {
+		n = n - DropDigit(n, base)*base;
+		n = n%base;
+		if (n < 0) n = n + base;
+		return n;
+	} else {
+		return n%base;
+	}
+];
+
 @h Miscellaneous.
 What the following functions have in common is that they are all minimal
 definitions which apply only to Basic Inform programs. More elaborate
