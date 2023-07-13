@@ -225,7 +225,7 @@ do this is to write a rule about taking, which covers all possibilities."
 Check an actor removing something from (this is the can't remove what's not inside rule):
 	if the holder of the noun is not the second noun:
 		if the actor is the player:
-			say "But [regarding the noun][they] [aren't] there now." (A);
+			say "But [regarding the noun][they] [aren't] there [now]." (A);
 		stop the action.
 
 Check an actor removing something from (this is the can't remove from people rule):
