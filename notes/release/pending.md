@@ -31,15 +31,18 @@ and now poses a moral rather than gender-based question.
 
 ## Bug fixes
 
--Fix for Jira bug [I7-2370](https://inform7.atlassian.net/browse/I7-2370)
+- Fix for Jira bug [I7-2370](https://inform7.atlassian.net/browse/I7-2370)
 	"A template file ending with a comment and no line break breaks the next file"
 	(see [Inweb commit 901d125](https://github.com/ganelson/inform/commit/901d12582f1d7746046f11ecac6c2f357ddfac81))
--Fix for Jira bug [I7-2366](https://inform7.atlassian.net/browse/I7-2366)
+- Fix for Jira bug [I7-2366](https://inform7.atlassian.net/browse/I7-2366)
 	"10.1 segfaults with compound units that haven't been explicitly defined"
 	([commit ad2c648](https://github.com/ganelson/inform/commit/ad2c648098279dec88c654b23e633037874bc8d3))
--Fix for Jira bug [I7-2355](https://inform7.atlassian.net/browse/I7-2355)
+- Fix for Jira bug [I7-2355](https://inform7.atlassian.net/browse/I7-2355)
 	to do with how to handle symlinks or broken directory entries
 	(see [Inweb PR#28](https://github.com/ganelson/inweb/pull/28))
+- Fix for Jira bug [I7-2349](https://inform7.atlassian.net/browse/I7-2349)
+	"example 399, "Solitude", has a bug"
+	([PR#115](https://github.com/ganelson/inform/pull/115))
 - Fix for Jira bug [I7-2344](https://inform7.atlassian.net/browse/I7-2344)
 	"inform7's -silence flag should imply -no-progress"
 	([commit 687dba6](https://github.com/ganelson/inform/commit/687dba6857983420a76559cfed292cde0a2891fb))
@@ -139,6 +142,9 @@ and now poses a moral rather than gender-based question.
 - Fix for Jira bug [I7-2139](https://inform7.atlassian.net/browse/I7-2139)
 	"Articles become part of relation name"
 	([commit 85110a9](https://github.com/ganelson/inform/commit/85110a981a3d2419b3778eb383408de122c301a8))
+- Fix for Jira bug [I7-2129](https://inform7.atlassian.net/browse/I7-2129)
+	"Quiet supporters from The Eye of the Idol no longer work"
+	([PR#114](https://github.com/ganelson/inform/pull/114))
 - Fix for Jira bug [I7-2074](https://inform7.atlassian.net/browse/I7-2074)
 	"Documentation recommends scene code that causes soft lock" (about times
 	since scene ending sometimes being negative)

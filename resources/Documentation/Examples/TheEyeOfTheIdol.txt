@@ -2,7 +2,7 @@
 (Supporters that don't list contents in room descriptions; The Eye of the Idol)
 A systematic way to allow objects in certain places to be described in the room description body text rather than in paragraphs following the room description, and to control whether supporters list their contents or not.
 
-	{*} "The Eye of the Idol"
+	{*}"The Eye of the Idol"
 
 	Section 1 - Reusable Material
 
@@ -45,7 +45,7 @@ Notice that we can still override this with writing a paragraph rules about spec
 
 We would find, though, that this alone doesn't do the trick and that in-place things were still listed. The RULES command could tell us that they were being printed by the "describe what's on mentioned supporters in room descriptions rule" (a Standard Rule in the "for printing a locale paragraph about a thing rulebook). And so we deactivate it for this case:
 
-	The describe what's on mentioned supporters in room descriptions rule does nothing when the supporter in question is quiet.
+	{**}The describe what's on mentioned supporters in room descriptions rule does nothing when the supporter in question is quiet.
 
 Now, an example to test this out:
 	
@@ -76,5 +76,3 @@ We could have done all this with text conditions in the main room description, b
 	A mat is in the Hexagonal Temple. It is room-placed in the Hexagonal Temple. The description is "Woven of assorted grasses."
 	
 	Test me with "get diamond / look / n / get mat / look / drop diamond / look / get diamond / put diamond in eye / look / get incense / look / drop mat / look / get mat / put mat on pedestal / look / put incense on pedestal / look".
-
- 
