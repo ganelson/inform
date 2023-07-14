@@ -99,6 +99,8 @@ DECLARE_CLASS(use_option)
 @e literal_list_CLASS
 @e literal_pattern_CLASS
 @e literal_pattern_name_CLASS
+@e literal_pattern_element_value_set_CLASS
+@e literal_pattern_element_value_pair_CLASS
 @e llist_entry_CLASS
 @e nonlocal_variable_CLASS
 @e response_message_CLASS
@@ -114,6 +116,8 @@ DECLARE_CLASS(inv_token_problem_token)
 DECLARE_CLASS(literal_list)
 DECLARE_CLASS(literal_pattern)
 DECLARE_CLASS(literal_pattern_name)
+DECLARE_CLASS(literal_pattern_element_value_set)
+DECLARE_CLASS(literal_pattern_element_value_pair)
 DECLARE_CLASS(llist_entry)
 DECLARE_CLASS(nonlocal_variable)
 DECLARE_CLASS(response_message)

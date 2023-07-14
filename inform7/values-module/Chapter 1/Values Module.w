@@ -18,6 +18,7 @@ which use this module:
 @e VARIABLE_CREATIONS_DA
 @e TABLES_DA
 @e UNICODE_DATA_MREASON
+@e LITERAL_PATTERN_MREASON
 
 =
 COMPILE_WRITER(instance *, Instances::log)
@@ -35,6 +36,7 @@ void ValuesModule::start(void) {
 	Log::declare_aspect(VARIABLE_CREATIONS_DA, L"variable creations", FALSE, FALSE);
 	Log::declare_aspect(TABLES_DA, L"table construction", FALSE, FALSE);
 	Memory::reason_name(UNICODE_DATA_MREASON, "Unicode data");
+	Memory::reason_name(LITERAL_PATTERN_MREASON, "Literal pattern storage");
 	REGISTER_WRITER('O', Instances::log);
 	REGISTER_WRITER('q', Equations::log);
 	REGISTER_WRITER('Z', NonlocalVariables::log);

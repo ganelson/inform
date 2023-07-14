@@ -273,11 +273,11 @@ For example, -1 prints as FFFFFFFF in hex, either -1 or 4294967285 in decimal,
 in base 3 and 1Z141Y3 in base 36.
 
 =
-[ PrintInBase n base digits a digit_count j k d;
+[ PrintInBase n base digits digitset a digit_count j k d;
 	if ((base < 2) || (base > 36)) { print "(", n, " in base ", base, ")"; return; }
 	if (digits < 1) digits = 0;
 	if (digits > 100) digits = 100;
-	if ((base == 10) && (digits == 0)) { print n; return; }
+	if ((base == 10) && (digits == 0) && (digitset == 0)) { print n; return; }
 	if (n == 0) {
 		digit_count = 1;
 	} else {
@@ -288,11 +288,18 @@ in base 3 and 1Z141Y3 in base 36.
 			digit_count++;
 		} until (a == 0);
 	}
-	for (j = digits: j > digit_count: j--) print "0";
+	for (j = digits: j > digit_count: j--) {
+		if (digitset) digitset(0);
+		else print "0";
+	}
 	for (j = digit_count: j >= 1: j--) {
 		a = n; for (k = 1: k < j: k++) a = DropDigit(a, base);
 		d = LeastDigit(a, base);
-		if (d < 10) print d; else print (char) 'A' + d - 10;
+		if (digitset) digitset(d);
+		else {
+			if (d < 10) print d;
+			else print (char) 'A' + d - 10;
+		}
 	}
 ];
 

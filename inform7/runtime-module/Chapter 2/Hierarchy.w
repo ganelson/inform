@@ -1931,6 +1931,8 @@ void Hierarchy::establish(void) {
 @e GROUP_TOGETHER_FN_HL
 @e LOOPS_OVER_SCOPE_HAP
 @e LOOP_OVER_SCOPE_FN_HL
+@e DIGIT_MANAGERS_HAP
+@e DIGIT_MANAGER_HL
 
 @<Establish enclosed matter@> =
 	H_BEGIN(LocationRequirements::any_enclosure())
@@ -1957,6 +1959,9 @@ void Hierarchy::establish(void) {
 			H_F_G(LOOP_OVER_SCOPE_FN_HL,      I"loop_over_scope_fn", I"LOS")
 		H_END
 		H_C_U(RTP_HL,                         I"rtp")
+		H_BEGIN_AP(DIGIT_MANAGERS_HAP,        I"digit_manager", I"_digit_manager")
+			H_C_U(DIGIT_MANAGER_HL,           I"dm")
+		H_END
 	H_END
 
 @

@@ -6488,6 +6488,10 @@
           constraint DS = {11, 13} extremes [3, 4]
         <cardinal-number> digit/digits 
           constraint DS = {13} extremes [2, 2]
+        digits {<quoted-text>} 
+          constraint DS = {13} extremes [2, 2]
+        values {<quoted-text>} 
+          constraint DS = {13} extremes [2, 2]
         {......} 
           constraint (none) extremes [1, infinity)
 

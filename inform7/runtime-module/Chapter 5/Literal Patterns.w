@@ -165,16 +165,7 @@ void RTLiteralPatterns::compilation_agent(compilation_subtask *t) {
 				EmitCode::up();
 			}
 			@<Print leading zeros@>;
-			if (lpe->number_base != 10) {
-				EmitCode::call(Hierarchy::find(PRINTINBASE_HL));
-			} else {
-				EmitCode::inv(PRINTNUMBER_BIP);
-			}
-			EmitCode::down();
-				@<Evaluate LPE value to be printed@>;
-				if (lpe->number_base != 10)
-					EmitCode::val_number((inter_ti) (lpe->number_base));
-			EmitCode::up();
+			@<Print the value itself@>;
 			if (lp->number_signed) {
 				EmitCode::inv(IF_BIP);
 				EmitCode::down();
@@ -199,19 +190,35 @@ void RTLiteralPatterns::compilation_agent(compilation_subtask *t) {
 			}
 		} else {
 			@<Print leading zeros@>;
-			if (lpe->number_base != 10) {
-				EmitCode::call(Hierarchy::find(PRINTINBASE_HL));
-			} else {
-				EmitCode::inv(PRINTNUMBER_BIP);
-			}
-			EmitCode::down();
-				@<Evaluate LPE value to be printed@>;
-				if (lpe->number_base != 10)
-					EmitCode::val_number((inter_ti) (lpe->number_base));
-			EmitCode::up();
+			@<Print the value itself@>;
 		}
 	}
 	ec++;
+
+@<Print the value itself@> =
+	if (LiteralPatterns::element_value_count(lpe->values) > 0) {
+		EmitCode::call(RTLiteralPatterns::values_iname(lpe->values->source));
+		EmitCode::down();
+			@<Evaluate LPE value to be printed without offset@>;
+		EmitCode::up();
+	} else {
+		if ((lpe->number_base == 10) && (Str::len(lpe->digits_text) == 0)) {
+			EmitCode::inv(PRINTNUMBER_BIP);
+			EmitCode::down();
+				@<Evaluate LPE value to be printed@>;
+			EmitCode::up();
+		} else {
+			EmitCode::call(Hierarchy::find(PRINTINBASE_HL));
+			EmitCode::down();
+				@<Evaluate LPE value to be printed@>;
+				EmitCode::val_number((inter_ti) (lpe->number_base));
+				EmitCode::val_number(0);
+				if (Str::len(lpe->digits_text) > 0)
+					EmitCode::val_iname(K_value,
+						RTLiteralPatterns::digits_iname(lpe->digits_text));
+			EmitCode::up();
+		}
+	}
 
 @<Print leading zeros@> =
 	if (lpe->print_with_leading_zeros) {
@@ -265,6 +272,21 @@ void RTLiteralPatterns::compilation_agent(compilation_subtask *t) {
 	}
 	if (lpe->element_offset != 0) {
 		EmitCode::val_number((inter_ti) (lpe->element_offset));
+		EmitCode::up();
+	}
+
+@<Evaluate LPE value to be printed without offset@> =
+	if (lpe->element_range >= 0) {
+		EmitCode::inv(MODULO_BIP);
+		EmitCode::down();
+	}
+	EmitCode::inv(DIVIDE_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, value_s);
+		EmitCode::val_number((inter_ti) (lpe->element_multiplier));
+	EmitCode::up();
+	if (lpe->element_range >= 0) {
+		EmitCode::val_number((inter_ti) (lpe->element_range));
 		EmitCode::up();
 	}
 
@@ -1565,3 +1587,106 @@ void RTLiteralPatterns::comment_use_of_lp(literal_pattern *lp) {
 	EmitCode::comment(W);
 	DISCARD_TEXT(W)
 }
+
+@ Dealing with non-standard digits.
+
+@e DIGIT_PRINTER_NSDF from 1
+@e VALUES_PRINTER_NSDF
+
+=
+dictionary *digits_iname_D[4] = { NULL, NULL, NULL, NULL };
+inter_name *RTLiteralPatterns::digits_iname(text_stream *text) {
+	return RTLiteralPatterns::digits_iname_inner(text, DIGIT_PRINTER_NSDF);
+}
+inter_name *RTLiteralPatterns::values_iname(text_stream *text) {
+	return RTLiteralPatterns::digits_iname_inner(text, VALUES_PRINTER_NSDF);
+}
+
+typedef struct digit_manager {
+	struct inter_name *function_iname;
+	struct text_stream *text;
+	int category;
+	CLASS_DEFINITION
+} digit_manager;
+
+inter_name *RTLiteralPatterns::digits_iname_inner(text_stream *text, int cat) {
+	if (digits_iname_D[cat] == NULL)
+		digits_iname_D[cat] = Dictionaries::new(16, FALSE);
+	dictionary *D = digits_iname_D[cat];
+	if (Dictionaries::find(D, text))
+		return Dictionaries::read_value(D, text);
+
+	package_request *PR = HierarchyLocations::attach_new_package(
+		Emit::tree(), NULL, Emit::current_enclosure(), DIGIT_MANAGERS_HAP);
+	inter_name *iname = Hierarchy::make_iname_in(DIGIT_MANAGER_HL, PR);
+	text_stream *desc = Str::new();
+	WRITE_TO(desc, "digit manager for <%S> cat %d", text, cat);
+	digit_manager *dm = CREATE(digit_manager);
+	dm->function_iname = iname;
+	dm->text = Str::duplicate(text);
+	dm->category = cat;
+	Sequence::queue(&RTLiteralPatterns::dm_agent, STORE_POINTER_digit_manager(dm), desc);
+
+	Dictionaries::create(D, text);
+	Dictionaries::write_value(D, text, iname);
+	return iname;
+}
+
+void RTLiteralPatterns::dm_agent(compilation_subtask *t) {
+	digit_manager *dm = RETRIEVE_POINTER_digit_manager(t->data);
+	packaging_state save = Functions::begin(dm->function_iname);
+	inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
+	switch (dm->category) {
+		case DIGIT_PRINTER_NSDF: @<Compile the body of a digit-printer function@>; break;
+		case VALUES_PRINTER_NSDF: @<Compile the body of a value-printer function@>; break;
+	}
+	Functions::end(save);
+}
+
+@<Compile the body of a digit-printer function@> =
+ 	EmitCode::inv(SWITCH_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, value_s);
+		EmitCode::code();
+		EmitCode::down();
+	for (int c = 0; c < Str::len(dm->text); c++) {
+			EmitCode::inv(CASE_BIP);
+			EmitCode::down();
+				EmitCode::val_number((inter_ti) c);
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::inv(PRINTCHAR_BIP);
+					EmitCode::down();
+						EmitCode::val_number((inter_ti) Str::get_at(dm->text, c));
+					EmitCode::up();
+				EmitCode::up();
+			EmitCode::up();
+	}
+		EmitCode::up();
+	EmitCode::up();
+	EmitCode::rtrue();
+
+@<Compile the body of a value-printer function@> =
+ 	EmitCode::inv(SWITCH_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, value_s);
+		EmitCode::code();
+		EmitCode::down();
+	literal_pattern_element_value_set *set = LiteralPatterns::parse_value_set(dm->text);
+	for (int c = 0; c < LiteralPatterns::element_value_count(set); c++) {
+			EmitCode::inv(CASE_BIP);
+			EmitCode::down();
+				EmitCode::val_number((inter_ti) LiteralPatterns::element_value_equivalent(set, c));
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::inv(PRINT_BIP);
+					EmitCode::down();
+						EmitCode::val_text(LiteralPatterns::element_value_text(set, c));
+					EmitCode::up();
+				EmitCode::up();
+			EmitCode::up();
+	}
+		EmitCode::up();
+	EmitCode::up();
+	EmitCode::rtrue();
+

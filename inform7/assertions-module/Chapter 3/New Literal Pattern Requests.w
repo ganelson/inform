@@ -284,7 +284,7 @@ by a bracketed list of up to three options in any order.
 	<lp-part>                                      ==> { 0, RP[1] }
 
 <lp-part> ::=
-	<np-unparsed-bal> ( <lp-part-option-list> ) |  ==> { 0, LPRequests::mark(RP[1], R[2], <<min_part_val>>, <<max_part_val>>) }
+	<np-unparsed-bal> ( <lp-part-option-list> ) |  ==> { 0, LPRequests::mark(RP[1], R[2], <<min_part_val>>, <<max_part_val>>, <<digits_wd_val>>, <<values_wd_val>>) }
 	<np-unparsed-bal>                              ==> { 0, RP[1] }
 
 <lp-part-option-list> ::=
@@ -306,6 +306,8 @@ by a bracketed list of up to three options in any order.
 	up to <cardinal-number> digit/digits |         ==> @<Apply max digit count@>;
 	<cardinal-number> <number-base> digit/digits | ==> @<Apply based digit count@>;
 	<cardinal-number> digit/digits |               ==> @<Apply digit count@>;
+	digits { <quoted-text> } |                     ==> <<digits_wd_val>> = Wordings::first_wn(WR[1]); @<Apply digits text@>;
+	values { <quoted-text> } |                     ==> <<values_wd_val>> = Wordings::first_wn(WR[1]); @<Apply values text@>;
 	......                                         ==> @<Issue PM_BadLPPartOption problem@>
 
 @<Apply range@> =
@@ -343,6 +345,12 @@ by a bracketed list of up to three options in any order.
 			"for obvious reasons.");
 	==> { MAX_DIGITS_LSO*R[1] + MIN_DIGITS_LSO*R[1] + BASE_LSO*R[2] + WITH_LEADING_ZEROS_LSO, - };
 
+@<Apply digits text@> =
+	==> { DIGITS_TEXT_LSO, - };
+
+@<Apply values text@> =
+	==> { VALUES_TEXT_LSO, - };
+
 @<Issue PM_BadLPPartOption problem@> =
 	if (preform_lookahead_mode == FALSE) {
 		Problems::quote_source(1, current_sentence);
@@ -371,6 +379,8 @@ literal_pattern_name *LPRequests::compose(literal_pattern_name *A, literal_patte
 @d WITHOUT_LEADING_ZEROS_LSO    0x00000008
 @d MAXIMUM_LSO                  0x00000010
 @d MINIMUM_LSO                  0x00000020
+@d DIGITS_TEXT_LSO              0x00000040
+@d VALUES_TEXT_LSO              0x00000080
 @d BASE_LSO                     0x00000100
 @d BASE_MASK_LSO                0x0000ff00
 @d MIN_DIGITS_LSO               0x00010000
@@ -379,11 +389,13 @@ literal_pattern_name *LPRequests::compose(literal_pattern_name *A, literal_patte
 @d MAX_DIGITS_MASK_LSO          0x7f000000
 
 =
-parse_node *LPRequests::mark(parse_node *A, int N, int MI, int MA) {
+parse_node *LPRequests::mark(parse_node *A, int N, int MI, int MA, int DT, int VT) {
 	if (A) {
 		Annotations::write_int(A, lpe_options_ANNOT, N);
 		if (N & MINIMUM_LSO) Annotations::write_int(A, lpe_min_ANNOT, MI);
 		if (N & MAXIMUM_LSO) Annotations::write_int(A, lpe_max_ANNOT, MA);
+		if (N & DIGITS_TEXT_LSO) Annotations::write_int(A, lpe_digits_ANNOT, DT);
+		if (N & VALUES_TEXT_LSO) Annotations::write_int(A, lpe_values_ANNOT, VT);
 	}
 	return A;
 }

@@ -123,9 +123,27 @@ typedef struct literal_pattern_element {
 	int min_digits; /* when writing this */
 	int max_digits; /* when writing this */
 	int number_base; /* e.g., 10 for decimal */
+	struct text_stream *digits_text; /* what digit characters to use */
+	struct literal_pattern_element_value_set *values; /* what value texts to use */
 	int element_optional; /* can we truncate the LP here? */
 	int preamble_optional; /* if so, can we lose the preamble as well? */
 } literal_pattern_element;
+
+@ This is used for sets of textual equivalents to values.
+
+=
+typedef struct literal_pattern_element_value_set {
+	struct text_stream *source;
+	int extent;
+	struct literal_pattern_element_value_pair *values;
+	CLASS_DEFINITION
+} literal_pattern_element_value_set;
+
+typedef struct literal_pattern_element_value_pair {
+	int value_equivalent;
+	struct text_stream *text_equivalent;
+	CLASS_DEFINITION
+} literal_pattern_element_value_pair;
 
 @ For the sake of printing, we can specify which notation is to be used in
 printing a value back. For instance,
@@ -200,6 +218,8 @@ literal_pattern_element LiteralPatterns::lpe_new(int i, int r, int sgn) {
 	lpe.print_with_leading_zeros = FALSE;
 	lpe.min_digits = 1;
 	lpe.max_digits = 1000000;
+	lpe.digits_text = NULL;
+	lpe.values = NULL;
 	return lpe;
 }
 
@@ -490,16 +510,19 @@ on unusual platforms.
 
 @<Match an integer number element token@> =
 	long long int tot = 0, max_32_bit, max_16_bit;
-	int digits_found = 0, point_at = -1;
+	int digits_found = 0, point_at = -1, len = 0;
 	max_16_bit = 32767LL; if (sign_used_at) max_16_bit = 32768LL;
 	max_32_bit = 2147483647LL; if (sign_used_at) max_32_bit = 2147483648LL;
 	while ((digits_found < lpe->max_digits) &&
-			((LiteralPatterns::digit_value(wd[wpos], lpe->number_base) >= 0) ||
+			((LiteralPatterns::digit_value(wd + wpos, lpe->number_base,
+				lpe->digits_text, lpe->values, NULL) >= 0) ||
 				((wd[wpos] == '.') &&
 				(Kinds::Scalings::get_integer_multiplier(lp->scaling) > 1) &&
 				(point_at == -1)))) {
 		if (wd[wpos] == '.') { point_at = digits_found; wpos++; continue; }
-		tot = lpe->number_base*tot + LiteralPatterns::digit_value(wd[wpos++], lpe->number_base);
+		tot = lpe->number_base*tot + LiteralPatterns::digit_value(wd + wpos,
+			lpe->number_base, lpe->digits_text, lpe->values, &len);
+		wpos += len;
 		if (tot > max_16_bit) overflow_16_bit_flag = TRUE;
 		if (tot > max_32_bit) overflow_32_bit_flag = TRUE;
 		digits_found++;
@@ -665,20 +688,54 @@ which is annoying. So we have a mechanism to suppress duplicates:
 @ A digit value in a given LPE:
 
 =
-int LiteralPatterns::digit_value(wchar_t c, int base) {
-	int r = -1;
-	int d = ((int) c - (int) '0');
-	if ((d >= 0) && (d < 10)) r = d;
-	else {
-		d = ((int) c - (int) 'a');
-		if ((d >= 0) && (d < 26)) r = d + 10;
-		else {
-			d = ((int) c - (int) 'A');
-			if ((d >= 0) && (d < 26)) r = d + 10; else return -1;
+int LiteralPatterns::simple_digit_value(wchar_t *p, int base) {
+	return LiteralPatterns::digit_value(p, base, NULL, NULL, NULL);
+}
+int LiteralPatterns::digit_value(wchar_t *p, int base, text_stream *digits,
+	literal_pattern_element_value_set *set, int *len) {
+	if (set) {
+		for (int i=0; i<LiteralPatterns::element_value_count(set); i++) {
+			text_stream *match = LiteralPatterns::element_value_text(set, i);
+			int fail = FALSE;
+			for (int j=0; j<Str::len(match); j++)
+				if (Characters::tolower(Str::get_at(match, j)) != Characters::tolower(p[j])) {
+					fail = TRUE;
+					break;
+				}
+			if (fail == FALSE) {
+				if (len) *len = Str::len(match);
+				return LiteralPatterns::element_value_equivalent(set, i) + 1;
+			}
 		}
+		return -1;
+	} else if (Str::len(digits) == 0) {
+		wchar_t c = p[0];
+		int r = -1;
+		int d = ((int) c - (int) '0');
+		if ((d >= 0) && (d < 10)) r = d;
+		else {
+			d = ((int) c - (int) 'a');
+			if ((d >= 0) && (d < 26)) r = d + 10;
+			else {
+				d = ((int) c - (int) 'A');
+				if ((d >= 0) && (d < 26)) r = d + 10; else return -1;
+			}
+		}
+		if ((r >= 0) && (r < base))  {
+			if (len) *len = 1;
+			return r;
+		}
+		return -1;
+	} else {
+		wchar_t c = p[0];
+		if (c)
+			for (int i=0; i<base; i++)
+				if (Str::get_at(digits, i) == c) {
+					if (len) *len = 1;
+					return i;
+				}
+		return -1;
 	}
-	if ((r >= 0) && (r < base)) return r;
-	return -1;	
 }
 
 @h Indexing literal patterns for a given kind.
@@ -1001,7 +1058,6 @@ literal_pattern *LiteralPatterns::new_literal_specification_inner(lp_specificati
 				"before the current one.");
 		}
 	}
-
 	if (lps->offset_value) {
 		if (Rvalues::is_CONSTANT_of_kind(lps->offset_value, K)) {
 			offset = Rvalues::to_encoded_notation(lps->offset_value);
@@ -1241,7 +1297,7 @@ character ones.
 			if (i == Wordings::length(NW)-1) finish_at = to.char_pos;
 			int digit_found = FALSE;
 			for (int j=start_from; j<=finish_at; j++)
-				if (LiteralPatterns::digit_value(text_of_word[j], lp->number_base) >= 0)
+				if (LiteralPatterns::simple_digit_value(text_of_word + j, lp->number_base) >= 0)
 					digit_found = TRUE;
 			if ((digit_found) || (start_from != 0) || (finish_at != Wide::len(text_of_word)-1))
 				@<Break up the word into at least one element token, and perhaps also character tokens@>
@@ -1263,11 +1319,11 @@ hold -- so we need not fool around with long long ints.
 	for (int j=start_from; j<=finish_at; j++) {
 		int tot = 0, digit_found = FALSE, point_found = FALSE;
 		if ((text_of_word[j] == '-') &&
-			(LiteralPatterns::digit_value(text_of_word[j+1], base) >= 0) &&
+			(LiteralPatterns::simple_digit_value(text_of_word+j+1, base) >= 0) &&
 			(ec == 0)) {
 			sgn = -1; continue;
 		}
-		while (LiteralPatterns::digit_value(text_of_word[j++], base) >= 0) {
+		while (LiteralPatterns::simple_digit_value(text_of_word+(j++), base) >= 0) {
 			digit_found = TRUE;
 			if (tot > 999999999) {
 				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPElementTooLarge),
@@ -1276,7 +1332,7 @@ hold -- so we need not fool around with long long ints.
 					"be stored at run-time.");
 				return owner;
 			}
-			tot = base*tot + LiteralPatterns::digit_value(text_of_word[j-1], base);
+			tot = base*tot + LiteralPatterns::simple_digit_value(text_of_word+j-1, base);
 		}
 		j--;
 		if ((text_of_word[j] == '.') && (text_of_word[j+1] == '0') && (ec == 0)) {
@@ -1287,11 +1343,13 @@ hold -- so we need not fool around with long long ints.
 			lp->lp_elements[ec-1].is_real = point_found;
 			if (point_found) integer_scaling = FALSE;
 			if (sgn == -1) lp->number_signed = TRUE;
-			literal_pattern_token new_token = LiteralPatterns::lpt_new(ELEMENT_LPT, next_token_begins_word);
+			literal_pattern_token new_token =
+				LiteralPatterns::lpt_new(ELEMENT_LPT, next_token_begins_word);
 			@<Add new token to LP@>;
 			j--;
 		} else {
-			literal_pattern_token new_token = LiteralPatterns::lpt_new(CHARACTER_LPT, next_token_begins_word);
+			literal_pattern_token new_token =
+				LiteralPatterns::lpt_new(CHARACTER_LPT, next_token_begins_word);
 			new_token.token_char = text_of_word[j];
 			@<Add new token to LP@>;
 		}
@@ -1393,13 +1451,76 @@ this is deferred until all elements exist, at which point we --
 				lpe->element_range = n;
 			}
 		}
+		if (O & DIGITS_TEXT_LSO) {
+			lpe->digits_text = Str::new();
+			WRITE_TO(lpe->digits_text, "%W", Wordings::one_word(Annotations::read_int(p, lpe_digits_ANNOT)));
+			Str::delete_first_character(lpe->digits_text);
+			Str::delete_last_character(lpe->digits_text);
+			if (Str::len(lpe->digits_text) != lpe->number_base) {
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
+					"there are the wrong number of digits here",
+					"since we need one different digit character for each possible "
+					"value, which will be 0 up to the number base minus 1.");
+			} else {
+				for (int i=0; i<lpe->number_base; i++)
+					for (int j=0; j<lpe->number_base; j++)
+						if ((i != j) &&
+							(Str::get_at(lpe->digits_text, i) == Str::get_at(lpe->digits_text, j))) {
+					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
+						"the digits here contain duplicates",
+						"and we need one different digit character for each possible "
+						"value, which will be 0 up to the number base minus 1.");
+					break;
+				}
+				LOOP_THROUGH_TEXT(pos, lpe->digits_text)
+					if ((Characters::is_whitespace(Str::get(pos))) ||
+						(Str::get(pos) == ',') ||
+						(Str::get(pos) == '[') ||
+						(Str::get(pos) == ']')) {
+						StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
+							"the digits cannot include square brackets, commas or white space",
+							"such as spaces or tabs.");
+						break;
+					}
+			}
+		}
+		if (O & VALUES_TEXT_LSO) {
+			if ((O & WITH_LEADING_ZEROS_LSO) ||
+				(O & WITHOUT_LEADING_ZEROS_LSO) ||
+				(O & MAXIMUM_LSO) ||
+				(O & MAX_DIGITS_MASK_LSO) ||
+				(O & MAX_DIGITS_MASK_LSO) ||
+				(O & BASE_MASK_LSO)) {
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
+					"the list of values cannot be used with those other options",
+					"since number base, leading zeros and digits make no sense, "
+					"and the range is determined by the number of items in the list.");
+			}
+			if ((O & DIGITS_TEXT_LSO) && (O & VALUES_TEXT_LSO)) {
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
+					"you can't give both a digits text and a values text",
+					"since if the digits are determined then the values follow.");
+			}
+			TEMPORARY_TEXT(source)
+			WRITE_TO(source, "%W", Wordings::one_word(Annotations::read_int(p, lpe_values_ANNOT)));
+			Str::delete_first_character(source);
+			Str::delete_last_character(source);
+			lpe->values = LiteralPatterns::parse_value_set(source);
+			if (lpe->values) {
+				lpe->element_offset = 1;
+				lpe->element_range = LiteralPatterns::element_value_count(lpe->values);
+				lpe->print_with_leading_zeros = FALSE;
+			}
+			DISCARD_TEXT(source)
+		}
 
-		if ((size_needed) && ((O & (MAX_DIGITS_MASK_LSO + MAXIMUM_LSO)) == 0)) {
+		if ((size_needed) && ((O & (MAX_DIGITS_MASK_LSO + MAXIMUM_LSO + VALUES_TEXT_LSO)) == 0)) {
 			if (i == 0) lpe->element_range = -1;
 			else
 				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
 					"this has a part with no indication of its possible range",
-					"that is, by saying '0 to N' or 'N digits'.");
+					"that is, by saying '0 to N' or 'N digits' or giving a list "
+					"of possible values.");
 		}
 
 		if ((i == lp->no_lp_elements - 1) && (p->next)) {
@@ -1469,6 +1590,10 @@ optional, and it must not be the first.
 					lpe->element_offset, lpe->element_offset + lpe->element_range);
 				else LOG("range unlimited ");
 				LOG("(base %d) ", lpe->number_base);
+				if (Str::len(lpe->digits_text) > 0) LOG("(digits %S) ", lpe->digits_text);
+				if (lpe->values) {
+					LOG("(values "); LiteralPatterns::log_element_value_set(lpe->values); LOG(")");
+				}
 				LOG("- multiplier %d\n", lpe->element_multiplier);
 				ec++;
 				break;
@@ -1714,6 +1839,118 @@ void LiteralPatterns::add_literal_pattern(kind *K, literal_pattern *lp) {
 literal_pattern *LiteralPatterns::list_of_literal_forms(kind *K) {
 	if (K == NULL) return NULL;
 	return K->construct->ways_to_write_literals;
+}
+
+@
+
+=
+literal_pattern_element_value_set *LiteralPatterns::parse_value_set(text_stream *src) {
+	literal_pattern_element_value_set *set = CREATE(literal_pattern_element_value_set);
+	set->source = Str::duplicate(src);
+	set->extent = 0;
+	int capacity = 4;
+	set->values = (literal_pattern_element_value_pair *)
+		(Memory::calloc(capacity, sizeof(literal_pattern_element_value_pair),
+			LITERAL_PATTERN_MREASON));
+	for (int i = 0; i<capacity; i++) {
+		set->values[i].value_equivalent = -1;
+		set->values[i].text_equivalent = NULL;
+	}
+	int err = FALSE, count = 0;
+	TEMPORARY_TEXT(term)
+	for (int i=0, state=1; i<Str::len(src); i++) {
+		wchar_t c = Str::get_at(src, i);
+		switch (state) {
+			case 1: /* waiting for term */
+				if (Characters::is_whitespace(c)) break;
+				if (c == ',') { err = TRUE; break; }
+				PUT_TO(term, c); state = 2;
+				break;
+			case 2: /* reading term */
+				if (Characters::is_whitespace(c)) { @<Complete term@>; state = 3; break; }
+				if (c == ',') { @<Complete term@>; state = 1; break; }
+				PUT_TO(term, c);
+				break;
+			case 3: /* waiting for comma */
+				if (Characters::is_whitespace(c)) break;
+				if (c == ',') { state = 1; break; }
+				err = TRUE; PUT_TO(term, c); state = 2;
+				break;
+		}
+	}
+	@<Complete term@>;
+	DISCARD_TEXT(term)
+	if (err) {
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_stream(2, src);
+		Problems::issue_problem_segment(
+			"In the sentence %1, I am unable to work out the set of values '%2', "
+			"which should be a comma-separated list.");
+		Problems::issue_problem_end();
+	}
+	qsort(set->values, (size_t) set->extent, sizeof(literal_pattern_element_value_pair),
+		LiteralPatterns::compare_value_texts);
+	return set;
+}
+
+@<Complete term@> =
+	if (Str::len(term) > 0) {
+		if (set->extent >= capacity) {
+			int old_capacity = capacity;
+			literal_pattern_element_value_pair *old_values = set->values;
+			capacity = 4*capacity;
+			set->values = (literal_pattern_element_value_pair *)
+				(Memory::calloc(capacity, sizeof(literal_pattern_element_value_pair),
+					LITERAL_PATTERN_MREASON));
+			int i = 0;
+			for (; i<set->extent; i++) set->values[i] = old_values[i];
+			for (; i<capacity; i++) {
+				set->values[i].value_equivalent = -1;
+				set->values[i].text_equivalent = NULL;
+			}
+			Memory::I7_array_free(old_values, LITERAL_PATTERN_MREASON,
+				old_capacity, sizeof(literal_pattern_element_value_pair));
+		}
+		set->values[set->extent].value_equivalent = set->extent;
+		set->values[set->extent].text_equivalent = Str::duplicate(term);
+		set->extent++;
+		Str::clear(term);
+		count++;
+	}
+
+@
+
+=
+int LiteralPatterns::compare_value_texts(const void *res1, const void *res2) {
+	const literal_pattern_element_value_pair *e1 = res1;
+	const literal_pattern_element_value_pair *e2 = res2;
+	int d = Str::len(e2->text_equivalent) - Str::len(e1->text_equivalent);
+	if (d != 0) return d;
+	return Str::cmp(e1->text_equivalent, e2->text_equivalent);
+}
+
+int LiteralPatterns::element_value_count(literal_pattern_element_value_set *set) {
+	if (set) return set->extent;
+	return 0;
+}
+text_stream *LiteralPatterns::element_value_text(literal_pattern_element_value_set *set,
+	int val) {
+	if ((set) && (val >= 0) && (val < set->extent)) return set->values[val].text_equivalent;
+	return NULL;
+}
+
+int LiteralPatterns::element_value_equivalent(literal_pattern_element_value_set *set,
+	int val) {
+	if ((set) && (val >= 0) && (val < set->extent)) return set->values[val].value_equivalent;
+	return -1;
+}
+
+void LiteralPatterns::log_element_value_set(literal_pattern_element_value_set *set) {
+	for (int i=0; i<set->extent; i++) {
+		if (i > 0) LOG(", ");
+		LOG("%d = <%S>", set->values[i].value_equivalent, set->values[i].text_equivalent);
+	}
 }
 
 @h Literal patterns in Preform.
