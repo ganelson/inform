@@ -112,6 +112,7 @@ The rightmost element $e_{n-1}$ is the least significant numerically.
 =
 typedef struct literal_pattern_element {
 	int element_index; /* the value $i$ placing this within its LP, where $0\leq i<n$ */
+	int element_offset; /* amount by which outward values differ from stored ones */
 	int element_range; /* the value $r_i$ for this LP */
 	int element_multiplier; /* the value $m_i$ for this LP */
 
@@ -189,6 +190,7 @@ literal_pattern_element *parsing_new_element = NULL;
 literal_pattern_element LiteralPatterns::lpe_new(int i, int r, int sgn) {
 	literal_pattern_element lpe;
 	if (i == 0) lpe.element_range = -1; else lpe.element_range = r;
+	lpe.element_offset = 0;
 	lpe.element_multiplier = 1;
 	lpe.element_index = i;
 	lpe.element_name = EMPTY_WORDING;
@@ -508,8 +510,11 @@ on unusual platforms.
 	while ((point_at > 0) && (point_at < digits_found)) {
 		matched_scaledown *= lpe->number_base; point_at++;
 	}
-	if ((tot >= lpe->element_range) && (lpe->element_index > 0)) element_overflow_at = lpe;
-	tot = (lpe->element_multiplier)*tot;
+	if (lpe->element_range != -1) { /* i.e., if the range of this LPE is finite */
+		if ((tot < lpe->element_offset) || (tot >= lpe->element_offset + lpe->element_range))
+			element_overflow_at = lpe;
+	}
+	tot = (lpe->element_multiplier)*(tot - lpe->element_offset);
 	if (tot > max_16_bit) overflow_16_bit_flag = TRUE;
 	if (tot > max_32_bit) overflow_32_bit_flag = TRUE;
 	tot = matched_number + tot;
@@ -617,29 +622,31 @@ which is annoying. So we have a mechanism to suppress duplicates:
 @ The more specific problem of an internal overflow:
 
 @<Report a problem because one element in the notation overflows@> =
-	int max = element_overflow_at->element_range - 1;
+	int min_val = element_overflow_at->element_offset;
+	int max_val = element_overflow_at->element_offset + element_overflow_at->element_range - 1;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
 	Problems::quote_wording(3, lp->prototype_text);
-	Problems::quote_number(4, &max);
+	Problems::quote_number(4, &min_val);
+	Problems::quote_number(5, &max_val);
 	switch (element_overflow_at->element_index) {
-		case 0: Problems::quote_text(5, "first"); break;
-		case 1: Problems::quote_text(5, "second"); break;
-		case 2: Problems::quote_text(5, "third"); break;
-		case 3: Problems::quote_text(5, "fourth"); break;
-		case 4: Problems::quote_text(5, "fifth"); break;
-		case 5: Problems::quote_text(5, "sixth"); break;
-		case 6: Problems::quote_text(5, "seventh"); break;
-		case 7: Problems::quote_text(5, "eighth"); break;
-		case 8: Problems::quote_text(5, "ninth"); break;
-		case 9: Problems::quote_text(5, "tenth"); break;
-		default: Problems::quote_text(5, "eventual"); break;
+		case 0: Problems::quote_text(6, "first"); break;
+		case 1: Problems::quote_text(6, "second"); break;
+		case 2: Problems::quote_text(6, "third"); break;
+		case 3: Problems::quote_text(6, "fourth"); break;
+		case 4: Problems::quote_text(6, "fifth"); break;
+		case 5: Problems::quote_text(6, "sixth"); break;
+		case 6: Problems::quote_text(6, "seventh"); break;
+		case 7: Problems::quote_text(6, "eighth"); break;
+		case 8: Problems::quote_text(6, "ninth"); break;
+		case 9: Problems::quote_text(6, "tenth"); break;
+		default: Problems::quote_text(6, "eventual"); break;
 	}
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ElementOverflow));
 	Problems::issue_problem_segment(
 		"In the sentence %1, you use the notation '%2' to write a constant value. "
-		"But the notation was specified as '%3', which means that the %5 numerical "
-		"part should range between 0 and %4.");
+		"But the notation was specified as '%3', which means that the %6 numerical "
+		"part should range between %4 and %5.");
 	Problems::issue_problem_end();
 	return NULL;
 
@@ -893,7 +900,8 @@ note that the following uses the raw text of the word.
 		literal_pattern_element *lpe = &(lp->lp_elements[ec]);
 		int m = lpe->element_range;
 		LiteralPatterns::write_val(OUT, m,
-			(v/(lpe->element_multiplier)) % m, lpe->number_base, lpe->print_with_leading_zeros);
+			(v/(lpe->element_multiplier)) % m + lpe->element_offset,
+			lpe->number_base, lpe->print_with_leading_zeros);
 		if (ec == 0) @<Index the fractional part of the value@>;
 	}
 	ec++;
@@ -1145,7 +1153,7 @@ middle of either angle-escapes or the material in between.
 				if (j == 0) {
 					if (i > 0) {
 						lpe_notation_pos to = { Wordings::first_wn(NW)+i-1,
-							Wide::len(Lexer::word_raw_text(Wordings::last_wn(NW)+i-1)) - 1 };
+							Wide::len(Lexer::word_raw_text(Wordings::first_wn(NW)+i-1)) - 1 };
 						@<Compile unescaped notation between from and to@>;
 					}
 				} else {
@@ -1191,6 +1199,7 @@ middle of either angle-escapes or the material in between.
 material or else names for parts about which nothing else is said.
 
 @<Act on angle-bracketed escape@> =
+	// LOG("Scan escape <%S>\n", angles);
 	Str::trim_white_space(angles);
 	wording AW = Feeds::feed_text(angles);
 	if (<quoted-text>(AW)) {
@@ -1221,7 +1230,9 @@ word to play with, we optimise by making a word token instead of a run of
 character ones.
 
 @<Compile unescaped notation between from and to@> =
-	if ((from.wn < to.wn) || (from.char_pos <= to.char_pos)) {
+	// LOG("Scan word %W, %d to %W, %d\n",
+	//	Wordings::one_word(from.wn), from.char_pos, Wordings::one_word(to.wn), to.char_pos);
+	if ((from.wn < to.wn) || ((from.wn == to.wn) && (from.char_pos <= to.char_pos))) {
 		wording NW = Wordings::new(from.wn, to.wn);
 		for (int i=0; i<Wordings::length(NW); i++) {
 			wchar_t *text_of_word = Lexer::word_raw_text(Wordings::first_wn(NW)+i);
@@ -1342,7 +1353,8 @@ this is deferred until all elements exist, at which point we --
 		if (Wordings::empty(lpe->element_name)) {
 			lpe->element_name = Node::get_text(p);
 		} else if (Wordings::match(lpe->element_name, Node::get_text(p)) == FALSE) {
-			LOG("Want %W have %W\n", lpe->element_name, Node::get_text(p));
+			@<Log this literal pattern in full@>;
+			LOG("Here, want %W have %W\n", lpe->element_name, Node::get_text(p));
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
 				"the part names after 'with' do not exactly match those named "
 				"in the specification itself",
@@ -1364,9 +1376,10 @@ this is deferred until all elements exist, at which point we --
 		if (O & MAX_DIGITS_MASK_LSO)
 			lpe->max_digits = ((O & MAX_DIGITS_MASK_LSO) / MAX_DIGITS_LSO);
 		if (O & MAXIMUM_LSO) {
-			lpe->element_range = Annotations::read_int(p, lpe_max_ANNOT) + 1;
+			lpe->element_offset = Annotations::read_int(p, lpe_min_ANNOT);
+			lpe->element_range = Annotations::read_int(p, lpe_max_ANNOT) - lpe->element_offset + 1;
 			if (O & MAX_DIGITS_MASK_LSO) {
-				int n = lpe->element_range - 1;
+				int n = lpe->element_offset + lpe->element_range - 1;
 				for (int i=1; i<=lpe->max_digits; i++) n = n/lpe->number_base;
 				if (n != 0)
 					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
@@ -1452,7 +1465,8 @@ optional, and it must not be the first.
 				else if ((lpe->min_digits > 1) || (lpe->max_digits < 1000000))
 					LOG("%d to %d digits ", lpe->min_digits, lpe->max_digits);
 				if (lpe->print_with_leading_zeros) LOG("printed with leading zeros ");
-				if (lpe->element_range >= 0) LOG("range 0 to %d ", lpe->element_range);
+				if (lpe->element_range >= 0) LOG("range %d to %d ",
+					lpe->element_offset, lpe->element_offset + lpe->element_range);
 				else LOG("range unlimited ");
 				LOG("(base %d) ", lpe->number_base);
 				LOG("- multiplier %d\n", lpe->element_multiplier);
@@ -1600,13 +1614,18 @@ To define which number is cents part of ( full - price ) : |(- ({full}%100) -)|.
 
 		id = Feeds::begin();
 		TEMPORARY_TEXT(print_rule_buff)
+		TEMPORARY_TEXT(offset_addition)
+		if (lpe->element_offset != 0)
+			WRITE_TO(offset_addition, " + %d", lpe->element_offset);
 		if (i==0)
-			WRITE_TO(print_rule_buff, " (- ({full}/%d) -) ", lpe->element_multiplier);
+			WRITE_TO(print_rule_buff, " (- ({full}/%d%S) -) ",
+				lpe->element_multiplier, offset_addition);
 		else if (lpe->element_multiplier > 1)
-			WRITE_TO(print_rule_buff, " (- (({full}/%d)%%%d) -) ",
-				lpe->element_multiplier, lpe->element_range);
+			WRITE_TO(print_rule_buff, " (- (({full}/%d)%%%d%S) -) ",
+				lpe->element_multiplier, lpe->element_range, offset_addition);
 		else
-			WRITE_TO(print_rule_buff, " (- ({full}%%%d) -) ", lpe->element_range);
+			WRITE_TO(print_rule_buff, " (- ({full}%%%d%S) -) ",
+				lpe->element_range, offset_addition);
 		Feeds::feed_text(print_rule_buff);
 		XW = Feeds::end(id);
 		if (Wordings::phrasual_length(XW) >= MAX_WORDS_PER_PHRASE + 5)
@@ -1614,6 +1633,7 @@ To define which number is cents part of ( full - price ) : |(- ({full}%100) -)|.
 		else
 			Sentences::make_node(Task::syntax_tree(), XW, '.');
 		DISCARD_TEXT(print_rule_buff)
+		DISCARD_TEXT(offset_addition)
 	}
 
 @ And similarly, a packing phrase to calculate the value given its elements.
@@ -1651,10 +1671,14 @@ To decide which price is price with dollars part ( part0 - a number ) cents part
 			WRITE_TO(print_rule_buff, " (- (");
 			for (int i=0; i<lp->no_lp_elements; i++) {
 				literal_pattern_element *lpe = &(lp->lp_elements[i]);
+				if (lpe->element_offset != 0)
+					WRITE_TO(print_rule_buff, "(");
 				if (i>0) WRITE_TO(print_rule_buff, "+");
 				if (lpe->element_multiplier != 1)
 					WRITE_TO(print_rule_buff, "%d*", lpe->element_multiplier);
 				WRITE_TO(print_rule_buff, "{part%d}", i);
+				if (lpe->element_offset != 0)
+					WRITE_TO(print_rule_buff, " - %d)", lpe->element_offset);
 			}
 			WRITE_TO(print_rule_buff, ") -) ");
 			Feeds::feed_text(print_rule_buff);

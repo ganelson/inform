@@ -151,11 +151,7 @@ void RTLiteralPatterns::compilation_agent(compilation_subtask *t) {
 						EmitCode::up();
 						EmitCode::inv(EQ_BIP);
 						EmitCode::down();
-							EmitCode::inv(DIVIDE_BIP);
-							EmitCode::down();
-								EmitCode::val_symbol(K_value, value_s);
-								EmitCode::val_number((inter_ti) (lpe->element_multiplier));
-							EmitCode::up();
+							@<Evaluate LPE value to be printed@>;
 							EmitCode::val_number(0);
 						EmitCode::up();
 					EmitCode::up();
@@ -175,11 +171,7 @@ void RTLiteralPatterns::compilation_agent(compilation_subtask *t) {
 				EmitCode::inv(PRINTNUMBER_BIP);
 			}
 			EmitCode::down();
-				EmitCode::inv(DIVIDE_BIP);
-				EmitCode::down();
-					EmitCode::val_symbol(K_value, value_s);
-					EmitCode::val_number((inter_ti) (lpe->element_multiplier));
-				EmitCode::up();
+				@<Evaluate LPE value to be printed@>;
 				if (lpe->number_base != 10)
 					EmitCode::val_number((inter_ti) (lpe->number_base));
 			EmitCode::up();
@@ -213,15 +205,7 @@ void RTLiteralPatterns::compilation_agent(compilation_subtask *t) {
 				EmitCode::inv(PRINTNUMBER_BIP);
 			}
 			EmitCode::down();
-				EmitCode::inv(MODULO_BIP);
-				EmitCode::down();
-					EmitCode::inv(DIVIDE_BIP);
-					EmitCode::down();
-						EmitCode::val_symbol(K_value, value_s);
-						EmitCode::val_number((inter_ti) (lpe->element_multiplier));
-					EmitCode::up();
-					EmitCode::val_number((inter_ti) (lpe->element_range));
-				EmitCode::up();
+				@<Evaluate LPE value to be printed@>;
 				if (lpe->number_base != 10)
 					EmitCode::val_number((inter_ti) (lpe->number_base));
 			EmitCode::up();
@@ -231,23 +215,23 @@ void RTLiteralPatterns::compilation_agent(compilation_subtask *t) {
 
 @<Print leading zeros@> =
 	if (lpe->print_with_leading_zeros) {
+		int max_printable = lpe->element_range + lpe->element_offset;
+		if (lpe->max_digits < 1000000) {
+			int b = 1;
+			for (int d = 1; d <= lpe->max_digits; d++)
+				b = b * lpe->number_base;
+			max_printable = b - 1;
+		}
 		int pow = 1;
-		while (lpe->element_range > pow) pow = pow * lpe->number_base;
+		while (max_printable > pow)
+			pow = pow * lpe->number_base;
 		for (; pow>1; pow = pow/lpe->number_base)
-			if (lpe->element_range > pow) {
+			if (max_printable > pow) {
 				EmitCode::inv(IF_BIP);
 				EmitCode::down();
 					EmitCode::inv(LT_BIP);
 					EmitCode::down();
-						EmitCode::inv(MODULO_BIP);
-						EmitCode::down();
-							EmitCode::inv(DIVIDE_BIP);
-							EmitCode::down();
-								EmitCode::val_symbol(K_value, value_s);
-								EmitCode::val_number((inter_ti) (lpe->element_multiplier));
-							EmitCode::up();
-							EmitCode::val_number((inter_ti) (lpe->element_range));
-						EmitCode::up();
+						@<Evaluate LPE value to be printed@>;
 						EmitCode::val_number((inter_ti) (pow));
 					EmitCode::up();
 					EmitCode::code();
@@ -261,18 +245,38 @@ void RTLiteralPatterns::compilation_agent(compilation_subtask *t) {
 			}
 	}
 
+@<Evaluate LPE value to be printed@> =
+	if (lpe->element_offset != 0) {
+		EmitCode::inv(PLUS_BIP);
+		EmitCode::down();
+	}
+	if (lpe->element_range >= 0) {
+		EmitCode::inv(MODULO_BIP);
+		EmitCode::down();
+	}
+	EmitCode::inv(DIVIDE_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, value_s);
+		EmitCode::val_number((inter_ti) (lpe->element_multiplier));
+	EmitCode::up();
+	if (lpe->element_range >= 0) {
+		EmitCode::val_number((inter_ti) (lpe->element_range));
+		EmitCode::up();
+	}
+	if (lpe->element_offset != 0) {
+		EmitCode::val_number((inter_ti) (lpe->element_offset));
+		EmitCode::up();
+	}
+
 @<Truncate the printed form here if subsequent numerical parts are zero@> =
 	if (oc == ec) {
+		literal_pattern_element *lpe = &(lp->lp_elements[ec]);
 		if (ec == 0) {
 			EmitCode::inv(IF_BIP);
 			EmitCode::down();
 				EmitCode::inv(EQ_BIP);
 				EmitCode::down();
-					EmitCode::inv(DIVIDE_BIP);
-					EmitCode::down();
-						EmitCode::val_symbol(K_value, value_s);
-						EmitCode::val_number((inter_ti) (lp->lp_elements[ec].element_multiplier));
-					EmitCode::up();
+					@<Evaluate LPE value to be printed@>;
 					EmitCode::val_number(0);
 				EmitCode::up();
 				EmitCode::code();
@@ -285,15 +289,7 @@ void RTLiteralPatterns::compilation_agent(compilation_subtask *t) {
 			EmitCode::down();
 				EmitCode::inv(EQ_BIP);
 				EmitCode::down();
-					EmitCode::inv(MODULO_BIP);
-					EmitCode::down();
-						EmitCode::inv(DIVIDE_BIP);
-						EmitCode::down();
-							EmitCode::val_symbol(K_value, value_s);
-							EmitCode::val_number((inter_ti) (lp->lp_elements[ec].element_multiplier));
-						EmitCode::up();
-						EmitCode::val_number((inter_ti) (lp->lp_elements[ec].element_range));
-					EmitCode::up();
+					@<Evaluate LPE value to be printed@>;
 					EmitCode::val_number(0);
 				EmitCode::up();
 				EmitCode::code();
@@ -1168,13 +1164,42 @@ sets the |parsed_number| global to the value matched.
 		EmitCode::up();
 	}
 
-	if (lpe->element_index > 0) {
+	if (lpe->element_offset != 0) {
+		EmitCode::inv(STORE_BIP);
+		EmitCode::down();
+			EmitCode::ref_symbol(K_value, gprk.tot_s);
+			EmitCode::inv(MINUS_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, gprk.tot_s);
+				EmitCode::val_number((inter_ti) lpe->element_offset);
+			EmitCode::up();
+		EmitCode::up();
+	}
+
+	if (lpe->element_range > 0) {
+		inter_ti min_val = 0;
+		inter_ti max_val = (inter_ti) (lpe->element_range);
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(LT_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, gprk.tot_s);
+				EmitCode::val_number(min_val);
+			EmitCode::up();
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::inv(JUMP_BIP);
+				EmitCode::down();
+					EmitCode::lab(failed_label);
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
 		EmitCode::inv(IF_BIP);
 		EmitCode::down();
 			EmitCode::inv(GE_BIP);
 			EmitCode::down();
 				EmitCode::val_symbol(K_value, gprk.tot_s);
-				EmitCode::val_number((inter_ti) lpe->element_range);
+				EmitCode::val_number(max_val);
 			EmitCode::up();
 			EmitCode::code();
 			EmitCode::down();

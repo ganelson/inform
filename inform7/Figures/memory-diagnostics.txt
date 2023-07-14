@@ -1,6 +1,6 @@
 Total memory consumption was 138261K = 135 MB
 
- ---- was used for 2115190 objects, in 374468 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2115191 objects, in 374469 frames in 0 x 800K = 0K = 0 MB:
 
     30.5%  inter_tree_node_array                    60 x 8192 = 491520 objects, 43255680 bytes
     19.1%  text_stream_array                        4813 x 100 = 481300 objects, 27106816 bytes
@@ -143,7 +143,7 @@ Total memory consumption was 138261K = 135 MB
      ----  semver_range                             42 objects, 4368 bytes
      ----  use_option                               32 objects, 4352 bytes
      ----  either_or_property_data                  62 objects, 3968 bytes
-     ----  parse_node_annotation_type               120 objects, 3840 bytes
+     ----  parse_node_annotation_type               121 objects, 3872 bytes
      ----  method_set                               108 objects, 3456 bytes
      ----  definition                               48 objects, 3456 bytes
      ----  property_setting_bp_data                 86 objects, 3440 bytes
@@ -269,5 +269,5 @@ Total memory consumption was 138261K = 135 MB
      ----  code generation workspace for objects    3488 bytes in 19 claims
      0.1%  emitter array storage                    281184 bytes in 2006 claims
 
--137.-4% was overhead - -194581688 bytes = -190021K = -185 MB
+-137.-4% was overhead - -194581720 bytes = -190021K = -185 MB
 

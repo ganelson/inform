@@ -284,7 +284,7 @@ by a bracketed list of up to three options in any order.
 	<lp-part>                                      ==> { 0, RP[1] }
 
 <lp-part> ::=
-	<np-unparsed-bal> ( <lp-part-option-list> ) |  ==> { 0, LPRequests::mark(RP[1], R[2], <<max_part_val>>) }
+	<np-unparsed-bal> ( <lp-part-option-list> ) |  ==> { 0, LPRequests::mark(RP[1], R[2], <<min_part_val>>, <<max_part_val>>) }
 	<np-unparsed-bal>                              ==> { 0, RP[1] }
 
 <lp-part-option-list> ::=
@@ -301,7 +301,7 @@ by a bracketed list of up to three options in any order.
 	with leading zeros |                           ==> { WITH_LEADING_ZEROS_LSO, - }
 	without leading zeros |                        ==> { WITHOUT_LEADING_ZEROS_LSO, - }
 	in <number-base> |                             ==> { BASE_LSO*R[1], - }
-	<cardinal-number> to <cardinal-number> |       ==> <<max_part_val>> = R[2]; @<Apply range@>;
+	<cardinal-number> to <cardinal-number> |       ==> <<min_part_val>> = R[1]; <<max_part_val>> = R[2]; @<Apply range@>;
 	up to <cardinal-number> <number-base> digit/digits | ==> @<Apply based max digit count@>;
 	up to <cardinal-number> digit/digits |         ==> @<Apply max digit count@>;
 	<cardinal-number> <number-base> digit/digits | ==> @<Apply based digit count@>;
@@ -309,11 +309,11 @@ by a bracketed list of up to three options in any order.
 	......                                         ==> @<Issue PM_BadLPPartOption problem@>
 
 @<Apply range@> =
-	if (R[1] != 0) 
+	if (R[1] > R[2]) 
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
-			"the range in a named part has to begin at 0",
-			"for the moment at least.");
-	==> { MAXIMUM_LSO, - };
+			"the minimum value for a named part cannot be greater than the maximum",
+			"or it would be impossible for any value of this kind to exist.");
+	==> { MINIMUM_LSO + MAXIMUM_LSO, - };
 
 @<Apply max digit count@> =
 	if (R[1] < 1) 
@@ -370,6 +370,7 @@ literal_pattern_name *LPRequests::compose(literal_pattern_name *A, literal_patte
 @d WITH_LEADING_ZEROS_LSO       0x00000004
 @d WITHOUT_LEADING_ZEROS_LSO    0x00000008
 @d MAXIMUM_LSO                  0x00000010
+@d MINIMUM_LSO                  0x00000020
 @d BASE_LSO                     0x00000100
 @d BASE_MASK_LSO                0x0000ff00
 @d MIN_DIGITS_LSO               0x00010000
@@ -378,10 +379,11 @@ literal_pattern_name *LPRequests::compose(literal_pattern_name *A, literal_patte
 @d MAX_DIGITS_MASK_LSO          0x7f000000
 
 =
-parse_node *LPRequests::mark(parse_node *A, int N, int M) {
+parse_node *LPRequests::mark(parse_node *A, int N, int MI, int MA) {
 	if (A) {
 		Annotations::write_int(A, lpe_options_ANNOT, N);
-		if (N & MAXIMUM_LSO) Annotations::write_int(A, lpe_max_ANNOT, M);
+		if (N & MINIMUM_LSO) Annotations::write_int(A, lpe_min_ANNOT, MI);
+		if (N & MAXIMUM_LSO) Annotations::write_int(A, lpe_max_ANNOT, MA);
 	}
 	return A;
 }

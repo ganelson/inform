@@ -416,6 +416,7 @@ void CoreSyntax::grant_L2_permissions(void) {
 @e evaluation_ANNOT /* |parse_node|: result of evaluating the text */
 @e explicit_gender_marker_ANNOT  /* |int|: used by PROPER NOUN nodes for evident genders */
 @e lpe_options_ANNOT /* |int|: options set for a literal pattern part */
+@e lpe_min_ANNOT /* |int|: value offset for a literal pattern part */
 @e lpe_max_ANNOT /* |int|: maximum value for a literal pattern part */
 @e multiplicity_ANNOT /* |int|: e.g., 5 for "five gold rings" */
 @e new_relation_here_ANNOT /* |binary_predicate|: new relation as subject of "relates" sentence */
@@ -466,6 +467,8 @@ void CoreSyntax::declare_L3_annotations(void) {
 		lpe_options_ANNOT, CoreSyntax::write_lpe_options_ANNOT);
 	Annotations::declare_type(
 		lpe_max_ANNOT, CoreSyntax::write_lpe_max_ANNOT);
+	Annotations::declare_type(
+		lpe_min_ANNOT, CoreSyntax::write_lpe_min_ANNOT);
 	Annotations::declare_type(
 		multiplicity_ANNOT, CoreSyntax::write_multiplicity_ANNOT);
 	Annotations::declare_type(
@@ -520,6 +523,9 @@ void CoreSyntax::write_lpe_options_ANNOT(text_stream *OUT, parse_node *p) {
 }
 void CoreSyntax::write_lpe_max_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE(" {lpe max: %d}", Annotations::read_int(p, lpe_max_ANNOT));
+}
+void CoreSyntax::write_lpe_min_ANNOT(text_stream *OUT, parse_node *p) {
+	WRITE(" {lpe offset: %d}", Annotations::read_int(p, lpe_min_ANNOT));
 }
 void CoreSyntax::write_multiplicity_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Annotations::read_int(p, multiplicity_ANNOT))
@@ -597,6 +603,7 @@ void CoreSyntax::grant_L3_permissions(void) {
 	Annotations::allow(PROPER_NOUN_NT, defn_language_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, lpe_options_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, lpe_max_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, lpe_min_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, multiplicity_ANNOT);
 	Annotations::allow(UNPARSED_NOUN_NT, new_relation_here_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, new_relation_here_ANNOT);
