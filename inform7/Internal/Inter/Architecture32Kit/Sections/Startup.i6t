@@ -114,7 +114,7 @@ Global Pre_Startup_Text_Capture_Stream;
 		gg_statuswin =
 			glk_window_open(gg_mainwin, winmethod_Fixed + winmethod_Above,
 				statuswin_cursize, wintype_TextGrid, GG_STATUSWIN_ROCK);
-		Status_Window.glk_ref = gg_mainwin;
+		Status_Window.glk_ref = gg_statuswin;
 	}
 	! It's possible that the status window couldn't be opened, in which case
 	! gg_statuswin is now zero. We must allow for that later on.

@@ -77,14 +77,14 @@ new base GLK_WINDOW_TYPE_TY {
 	instance: graphics    = wintype_Graphics_   = 5
 }
 
-new base GLK_WINDOW_INPUT_STATUS {
+new base TEXT_INPUT_STATUS_TY {
 	conforms-to: ENUMERATED_VALUE_TY
 	singular: text input status
 	plural: text input statuses
 
 	specification-text: The current text input status of a Glk window.
 
-	instance: not requesting input              = INPUT_STATUS_NONE
+	instance: inactive text input               = INPUT_STATUS_NONE
 	instance: active line input                 = INPUT_STATUS_ACTIVE_LINE
 	instance: active unicode line input         = INPUT_STATUS_ACTIVE_LINE_UNI
 	instance: active character input            = INPUT_STATUS_ACTIVE_CHAR
@@ -93,4 +93,14 @@ new base GLK_WINDOW_INPUT_STATUS {
 	instance: suspended unicode line input      = INPUT_STATUS_SUSPENDED_LINE_UNI
 	instance: suspended character input         = INPUT_STATUS_SUSPENDED_CHAR
 	instance: suspended unicode character input = INPUT_STATUS_SUSPENDED_CHAR_UNI
+}
+
+new base SUSPENDED_INPUT_TY {
+	conforms-to: POINTER_VALUE_TY
+	singular: suspended input state
+	plural: suspended input states
+
+	default-value: 0
+
+	specification-text: A stored input state from a Glk window.
 }
