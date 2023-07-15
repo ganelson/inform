@@ -410,6 +410,7 @@ void CoreSyntax::grant_L2_permissions(void) {
 @h Annotations of Level 3 nodes.
 
 @e category_of_I6_translation_ANNOT /* int: what sort of "translates into I6" sentence this is */
+@e corresponding_kind_ANNOT /* |kind|: kind to which values of a literal pattern element correspond */
 @e creation_proposition_ANNOT /* |pcalc_prop|: proposition which newly created value satisfies */
 @e creation_site_ANNOT /* |int|: whether an instance was created from this node */
 @e defn_language_ANNOT /* |inform_language|: what language this definition is in */
@@ -434,6 +435,7 @@ void CoreSyntax::grant_L2_permissions(void) {
 @e turned_already_ANNOT /* |int|: aliasing like "player" to "yourself" performed already */
 
 = (early code)
+DECLARE_ANNOTATION_FUNCTIONS(corresponding_kind, kind)
 DECLARE_ANNOTATION_FUNCTIONS(creation_proposition, pcalc_prop)
 DECLARE_ANNOTATION_FUNCTIONS(defn_language, inform_language)
 DECLARE_ANNOTATION_FUNCTIONS(evaluation, parse_node)
@@ -443,6 +445,7 @@ DECLARE_ANNOTATION_FUNCTIONS(quant, quantifier)
 DECLARE_ANNOTATION_FUNCTIONS(subject, inference_subject)
 
 @ =
+MAKE_ANNOTATION_FUNCTIONS(corresponding_kind, kind)
 MAKE_ANNOTATION_FUNCTIONS(creation_proposition, pcalc_prop)
 MAKE_ANNOTATION_FUNCTIONS(defn_language, inform_language)
 MAKE_ANNOTATION_FUNCTIONS(evaluation, parse_node)
@@ -475,6 +478,8 @@ void CoreSyntax::declare_L3_annotations(void) {
 		lpe_digits_ANNOT, CoreSyntax::write_lpe_digits_ANNOT);
 	Annotations::declare_type(
 		lpe_values_ANNOT, CoreSyntax::write_lpe_values_ANNOT);
+	Annotations::declare_type(
+		corresponding_kind_ANNOT, CoreSyntax::write_corresponding_kind_ANNOT);
 	Annotations::declare_type(
 		multiplicity_ANNOT, CoreSyntax::write_multiplicity_ANNOT);
 	Annotations::declare_type(
@@ -538,6 +543,10 @@ void CoreSyntax::write_lpe_digits_ANNOT(text_stream *OUT, parse_node *p) {
 }
 void CoreSyntax::write_lpe_values_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE(" {lpe values: %W}", Wordings::one_word(Annotations::read_int(p, lpe_values_ANNOT)));
+}
+void CoreSyntax::write_corresponding_kind_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_corresponding_kind(p))
+		WRITE(" {corresponding to: %u}", Node::get_corresponding_kind(p));
 }
 void CoreSyntax::write_multiplicity_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Annotations::read_int(p, multiplicity_ANNOT))
@@ -618,6 +627,7 @@ void CoreSyntax::grant_L3_permissions(void) {
 	Annotations::allow(PROPER_NOUN_NT, lpe_min_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, lpe_digits_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, lpe_values_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, corresponding_kind_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, multiplicity_ANNOT);
 	Annotations::allow(UNPARSED_NOUN_NT, new_relation_here_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, new_relation_here_ANNOT);

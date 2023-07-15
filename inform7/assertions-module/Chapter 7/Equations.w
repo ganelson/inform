@@ -569,7 +569,7 @@ declarations will trump them.
 void Equations::eqn_declare_standard_symbols(void) {
 	if (standard_equation_symbols) return;
 
-	wording TCW = Feeds::feed_C_string(L"e pi");
+	wording TCW = Feeds::feed_text(I"e pi");
 	LOOP_THROUGH_WORDING(i, TCW) {
 		wording V = Wordings::one_word(i);
 		if (<s-type-expression>(V)) {

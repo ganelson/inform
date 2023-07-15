@@ -135,68 +135,64 @@ void RTLiteralPatterns::compilation_agent(compilation_subtask *t) {
 	if (lpe->element_optional)
 		@<Truncate the printed form here if subsequent numerical parts are zero@>;
 	oc = ec + 1;
-	if (lp->no_lp_elements == 1) {
+	if ((lp->no_lp_elements == 1) && (lpe->element_range == -1) &&
+		(Str::len(lpe->digits_text) == 0) && (lpe->values == NULL)) {
 		Kinds::Scalings::compile_print_in_quanta(lp->scaling, value_s, rem_s, S_s);
 	} else {
-		if (ec == 0) {
-			if (lp->number_signed) {
-				EmitCode::inv(IF_BIP);
-				EmitCode::down();
-					EmitCode::inv(AND_BIP);
-					EmitCode::down();
-						EmitCode::inv(LT_BIP);
-						EmitCode::down();
-							EmitCode::val_symbol(K_value, value_s);
-							EmitCode::val_number(0);
-						EmitCode::up();
-						EmitCode::inv(EQ_BIP);
-						EmitCode::down();
-							@<Evaluate LPE value to be printed@>;
-							EmitCode::val_number(0);
-						EmitCode::up();
-					EmitCode::up();
-					EmitCode::code();
-					EmitCode::down();
-						EmitCode::inv(PRINT_BIP);
-						EmitCode::down();
-							EmitCode::val_text(I"-");
-						EmitCode::up();
-					EmitCode::up();
-				EmitCode::up();
-			}
-			@<Print leading zeros@>;
-			@<Print the value itself@>;
-			if (lp->number_signed) {
-				EmitCode::inv(IF_BIP);
+		if ((ec == 0) && (lp->number_signed)) {
+			EmitCode::inv(IF_BIP);
+			EmitCode::down();
+				EmitCode::inv(AND_BIP);
 				EmitCode::down();
 					EmitCode::inv(LT_BIP);
 					EmitCode::down();
 						EmitCode::val_symbol(K_value, value_s);
 						EmitCode::val_number(0);
 					EmitCode::up();
-					EmitCode::code();
+					EmitCode::inv(EQ_BIP);
 					EmitCode::down();
-						EmitCode::inv(STORE_BIP);
+						@<Evaluate LPE value to be printed@>;
+						EmitCode::val_number(0);
+					EmitCode::up();
+				EmitCode::up();
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::inv(PRINT_BIP);
+					EmitCode::down();
+						EmitCode::val_text(I"-");
+					EmitCode::up();
+				EmitCode::up();
+			EmitCode::up();
+		}
+		@<Print leading zeros@>;
+		@<Print the value itself@>;
+		if ((ec == 0) && (lp->number_signed)) {
+			EmitCode::inv(IF_BIP);
+			EmitCode::down();
+				EmitCode::inv(LT_BIP);
+				EmitCode::down();
+					EmitCode::val_symbol(K_value, value_s);
+					EmitCode::val_number(0);
+				EmitCode::up();
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::inv(STORE_BIP);
+					EmitCode::down();
+						EmitCode::ref_symbol(K_value, value_s);
+						EmitCode::inv(MINUS_BIP);
 						EmitCode::down();
-							EmitCode::ref_symbol(K_value, value_s);
-							EmitCode::inv(MINUS_BIP);
-							EmitCode::down();
-								EmitCode::val_number(0);
-								EmitCode::val_symbol(K_value, value_s);
-							EmitCode::up();
+							EmitCode::val_number(0);
+							EmitCode::val_symbol(K_value, value_s);
 						EmitCode::up();
 					EmitCode::up();
 				EmitCode::up();
-			}
-		} else {
-			@<Print leading zeros@>;
-			@<Print the value itself@>;
+			EmitCode::up();
 		}
 	}
 	ec++;
 
 @<Print the value itself@> =
-	if (LiteralPatterns::element_value_count(lpe->values) > 0) {
+	if (lpe->values) {
 		EmitCode::call(RTLiteralPatterns::values_iname(lpe->values->source));
 		EmitCode::down();
 			@<Evaluate LPE value to be printed without offset@>;
@@ -243,9 +239,12 @@ void RTLiteralPatterns::compilation_agent(compilation_subtask *t) {
 					EmitCode::up();
 					EmitCode::code();
 					EmitCode::down();
-						EmitCode::inv(PRINT_BIP);
+						EmitCode::inv(PRINTCHAR_BIP);
 						EmitCode::down();
-							EmitCode::val_text(I"0");
+							if (Str::len(lpe->digits_text) > 0)
+								EmitCode::val_number((inter_ti) Str::get_at(lpe->digits_text, 0));
+							else
+								EmitCode::val_number((inter_ti) '0');
 						EmitCode::up();
 					EmitCode::up();
 				EmitCode::up();
@@ -1040,7 +1039,7 @@ sets the |parsed_number| global to the value matched.
 			EmitCode::up();
 			EmitCode::inv(GE_BIP);
 			EmitCode::down();
-				EmitCode::call(Hierarchy::find(DIGITTOVALUE_HL));
+				EmitCode::call(RTLiteralPatterns::digit_value_function_iname(lpe));
 				EmitCode::down();
 					EmitCode::inv(bufferbip);
 					EmitCode::down();
@@ -1082,6 +1081,246 @@ sets the |parsed_number| global to the value matched.
 		EmitCode::val_number(0);
 	EmitCode::up();
 
+	if (lpe->values) @<Use the custom value set@>
+	else @<Use regular digit-by-digit parsing@>;
+
+	Kinds::Scalings::compile_scale_and_add(gprk.tot_s, gprk.sgn_s,
+		lpe->element_multiplier, 0, gprk.matched_number_s, failed_label);
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, gprk.matched_number_s);
+		EmitCode::val_symbol(K_value, gprk.tot_s);
+	EmitCode::up();
+
+	int M = Kinds::Scalings::get_integer_multiplier(lp->scaling);
+	if (M > 1) {
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, gprk.wpos_s);
+				EmitCode::val_symbol(K_value, gprk.cur_len_s);
+			EmitCode::up();
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::inv(POSTINCREMENT_BIP);
+				EmitCode::down();
+					EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+				EmitCode::up();
+				EmitCode::inv(STORE_BIP);
+				EmitCode::down();
+					EmitCode::ref_symbol(K_value, gprk.cur_word_s);
+					EmitCode::call(Hierarchy::find(NEXTWORDSTOPPED_HL));
+				EmitCode::up();
+				EmitCode::inv(STORE_BIP);
+				EmitCode::down();
+					EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+					EmitCode::inv(MINUS_BIP);
+					EmitCode::down();
+						EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
+						EmitCode::val_number(2);
+					EmitCode::up();
+				EmitCode::up();
+				EmitCode::inv(IF_BIP);
+				EmitCode::down();
+					EmitCode::inv(EQ_BIP);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, gprk.cur_word_s);
+						EmitCode::val_iname(K_value, Hierarchy::find(THEN1__WD_HL));
+					EmitCode::up();
+					EmitCode::code();
+					EmitCode::down();
+						EmitCode::inv(STORE_BIP);
+						EmitCode::down();
+							EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
+							EmitCode::inv(PLUS_BIP);
+							EmitCode::down();
+								EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
+								EmitCode::val_number(2);
+							EmitCode::up();
+						EmitCode::up();
+						EmitCode::inv(STORE_BIP);
+						EmitCode::down();
+							EmitCode::ref_symbol(K_value, gprk.mid_word_s);
+							EmitCode::val_false();
+						EmitCode::up();
+						@<Compile Inter to enter mid-word parsing if not already in it@>;
+						EmitCode::inv(STORE_BIP);
+						EmitCode::down();
+							EmitCode::ref_symbol(K_value, gprk.x_s);
+							EmitCode::val_number(0);
+						EmitCode::up();
+						EmitCode::inv(STORE_BIP);
+						EmitCode::down();
+							EmitCode::ref_symbol(K_value, gprk.f_s);
+							EmitCode::val_number((inter_ti) M);
+						EmitCode::up();
+						EmitCode::inv(WHILE_BIP);
+						EmitCode::down();
+							EmitCode::inv(AND_BIP);
+							EmitCode::down();
+								EmitCode::inv(GT_BIP);
+								EmitCode::down();
+									EmitCode::val_symbol(K_value, gprk.f_s);
+									EmitCode::val_number(1);
+								EmitCode::up();
+								EmitCode::inv(AND_BIP);
+								EmitCode::down();
+									EmitCode::inv(EQ_BIP);
+									EmitCode::down();
+										EmitCode::inv(MODULO_BIP);
+										EmitCode::down();
+											EmitCode::val_symbol(K_value, gprk.f_s);
+											EmitCode::val_number((inter_ti) lpe->number_base);
+										EmitCode::up();
+										EmitCode::val_number(0);
+									EmitCode::up();
+									EmitCode::inv(GE_BIP);
+									EmitCode::down();
+										EmitCode::call(RTLiteralPatterns::digit_value_function_iname(lpe));
+										EmitCode::down();
+											EmitCode::inv(bufferbip);
+											EmitCode::down();
+												EmitCode::val_symbol(K_value, gprk.cur_addr_s);
+												EmitCode::val_symbol(K_value, gprk.wpos_s);
+											EmitCode::up();
+										if (lpe->number_base != 10)
+											EmitCode::val_number((inter_ti) lpe->number_base);
+										EmitCode::up();
+										EmitCode::val_number(0);
+									EmitCode::up();
+								EmitCode::up();
+							EmitCode::up();
+							EmitCode::code();
+							EmitCode::down();
+								EmitCode::inv(STORE_BIP);
+								EmitCode::down();
+									EmitCode::ref_symbol(K_value, gprk.w_s);
+									EmitCode::inv(DIVIDE_BIP);
+									EmitCode::down();
+										EmitCode::inv(TIMES_BIP);
+										EmitCode::down();
+											EmitCode::call(RTLiteralPatterns::digit_value_function_iname(lpe));
+											EmitCode::down();
+												EmitCode::inv(bufferbip);
+												EmitCode::down();
+													EmitCode::val_symbol(K_value, gprk.cur_addr_s);
+													EmitCode::val_symbol(K_value, gprk.wpos_s);
+												EmitCode::up();
+												if (lpe->number_base != 10)
+													EmitCode::val_number((inter_ti) lpe->number_base);
+											EmitCode::up();
+											EmitCode::val_symbol(K_value, gprk.f_s);
+										EmitCode::up();
+										EmitCode::val_number((inter_ti) lpe->number_base);
+									EmitCode::up();
+								EmitCode::up();
+								Kinds::Scalings::compile_scale_and_add(gprk.x_s, gprk.sgn_s,
+									1, 0, gprk.w_s, failed_label);
+								EmitCode::inv(POSTINCREMENT_BIP);
+								EmitCode::down();
+									EmitCode::ref_symbol(K_value, gprk.wpos_s);
+								EmitCode::up();
+								EmitCode::inv(STORE_BIP);
+								EmitCode::down();
+									EmitCode::ref_symbol(K_value, gprk.f_s);
+									EmitCode::inv(DIVIDE_BIP);
+									EmitCode::down();
+										EmitCode::val_symbol(K_value, gprk.f_s);
+										EmitCode::val_number((inter_ti) lpe->number_base);
+									EmitCode::up();
+								EmitCode::up();
+							EmitCode::up();
+						EmitCode::up();
+					EmitCode::up();
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
+	}
+
+@<Use the custom value set@> =
+	TEMPORARY_TEXT(lname)
+	WRITE_TO(lname, ".Exit%d", lpe->element_index);
+	inter_symbol *exit_label = EmitCode::reserve_label(lname);
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, gprk.rv_s);
+		EmitCode::val_false();
+	EmitCode::up();
+	literal_pattern_element_value_set *set = lpe->values;
+	for (int c = 0; c < LiteralPatterns::element_value_count(set); c++) {
+		text_stream *match = LiteralPatterns::element_value_text(set, c);
+		for (int i = 0; i < Str::len(match); i++) {
+			EmitCode::inv(IF_BIP);
+			EmitCode::down();
+				EmitCode::inv(EQ_BIP);
+				EmitCode::down();
+					EmitCode::inv(bufferbip);
+					EmitCode::down();
+						EmitCode::val_symbol(K_value, gprk.cur_addr_s);
+						if (i > 0) {
+							EmitCode::inv(PLUS_BIP);
+							EmitCode::down();
+						}
+						EmitCode::val_symbol(K_value, gprk.wpos_s);
+						if (i > 0) {
+							EmitCode::val_number((inter_ti) i);
+							EmitCode::up();
+						}
+					EmitCode::up();
+					EmitCode::val_number((inter_ti) Characters::tolower(Str::get_at(match, i)));
+				EmitCode::up();
+				EmitCode::code();
+				EmitCode::down();
+		}
+					EmitCode::inv(STORE_BIP);
+					EmitCode::down();
+						EmitCode::ref_symbol(K_value, gprk.tot_s);
+						EmitCode::val_number((inter_ti) LiteralPatterns::element_value_equivalent(set, c));
+					EmitCode::up();
+					EmitCode::inv(STORE_BIP);
+					EmitCode::down();
+						EmitCode::ref_symbol(K_value, gprk.rv_s);
+						EmitCode::val_true();
+					EmitCode::up();
+					EmitCode::inv(STORE_BIP);
+					EmitCode::down();
+						EmitCode::ref_symbol(K_value, gprk.wpos_s);
+						EmitCode::inv(PLUS_BIP);
+						EmitCode::down();
+							EmitCode::val_symbol(K_value, gprk.wpos_s);
+							EmitCode::val_number((inter_ti) Str::len(match));
+						EmitCode::up();
+					EmitCode::up();
+					EmitCode::inv(JUMP_BIP);
+					EmitCode::down();
+						EmitCode::lab(exit_label);
+					EmitCode::up();
+					
+		for (int i = 0; i < Str::len(match); i++) {
+				EmitCode::up();
+			EmitCode::up();
+		}
+	}
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(EQ_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, gprk.rv_s);
+			EmitCode::val_false();
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::inv(JUMP_BIP);
+			EmitCode::down();
+				EmitCode::lab(failed_label);
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
+	EmitCode::place_label(exit_label);
+	DISCARD_TEXT(lname)
+
+@<Use regular digit-by-digit parsing@> =
 	EmitCode::inv(WHILE_BIP);
 	EmitCode::down();
 		EmitCode::inv(AND_BIP);
@@ -1102,7 +1341,7 @@ sets the |parsed_number| global to the value matched.
 					EmitCode::up();
 					EmitCode::inv(GE_BIP);
 					EmitCode::down();
-						EmitCode::call(Hierarchy::find(DIGITTOVALUE_HL));
+						EmitCode::call(RTLiteralPatterns::digit_value_function_iname(lpe));
 						EmitCode::down();
 							EmitCode::inv(bufferbip);
 							EmitCode::down();
@@ -1123,7 +1362,7 @@ sets the |parsed_number| global to the value matched.
 			EmitCode::inv(STORE_BIP);
 			EmitCode::down();
 				EmitCode::ref_symbol(K_value, gprk.f_s);
-				EmitCode::call(Hierarchy::find(DIGITTOVALUE_HL));
+				EmitCode::call(RTLiteralPatterns::digit_value_function_iname(lpe));
 				EmitCode::down();
 					EmitCode::inv(bufferbip);
 					EmitCode::down();
@@ -1228,160 +1467,6 @@ sets the |parsed_number| global to the value matched.
 				EmitCode::inv(JUMP_BIP);
 				EmitCode::down();
 					EmitCode::lab(failed_label);
-				EmitCode::up();
-			EmitCode::up();
-		EmitCode::up();
-	}
-
-	Kinds::Scalings::compile_scale_and_add(gprk.tot_s, gprk.sgn_s,
-		lpe->element_multiplier, 0, gprk.matched_number_s, failed_label);
-	EmitCode::inv(STORE_BIP);
-	EmitCode::down();
-		EmitCode::ref_symbol(K_value, gprk.matched_number_s);
-		EmitCode::val_symbol(K_value, gprk.tot_s);
-	EmitCode::up();
-
-	int M = Kinds::Scalings::get_integer_multiplier(lp->scaling);
-	if (M > 1) {
-		EmitCode::inv(IF_BIP);
-		EmitCode::down();
-			EmitCode::inv(EQ_BIP);
-			EmitCode::down();
-				EmitCode::val_symbol(K_value, gprk.wpos_s);
-				EmitCode::val_symbol(K_value, gprk.cur_len_s);
-			EmitCode::up();
-			EmitCode::code();
-			EmitCode::down();
-				EmitCode::inv(POSTINCREMENT_BIP);
-				EmitCode::down();
-					EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
-				EmitCode::up();
-				EmitCode::inv(STORE_BIP);
-				EmitCode::down();
-					EmitCode::ref_symbol(K_value, gprk.cur_word_s);
-					EmitCode::call(Hierarchy::find(NEXTWORDSTOPPED_HL));
-				EmitCode::up();
-				EmitCode::inv(STORE_BIP);
-				EmitCode::down();
-					EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
-					EmitCode::inv(MINUS_BIP);
-					EmitCode::down();
-						EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
-						EmitCode::val_number(2);
-					EmitCode::up();
-				EmitCode::up();
-				EmitCode::inv(IF_BIP);
-				EmitCode::down();
-					EmitCode::inv(EQ_BIP);
-					EmitCode::down();
-						EmitCode::val_symbol(K_value, gprk.cur_word_s);
-						EmitCode::val_iname(K_value, Hierarchy::find(THEN1__WD_HL));
-					EmitCode::up();
-					EmitCode::code();
-					EmitCode::down();
-						EmitCode::inv(STORE_BIP);
-						EmitCode::down();
-							EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
-							EmitCode::inv(PLUS_BIP);
-							EmitCode::down();
-								EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
-								EmitCode::val_number(2);
-							EmitCode::up();
-						EmitCode::up();
-						EmitCode::inv(STORE_BIP);
-						EmitCode::down();
-							EmitCode::ref_symbol(K_value, gprk.mid_word_s);
-							EmitCode::val_false();
-						EmitCode::up();
-						@<Compile Inter to enter mid-word parsing if not already in it@>;
-						EmitCode::inv(STORE_BIP);
-						EmitCode::down();
-							EmitCode::ref_symbol(K_value, gprk.x_s);
-							EmitCode::val_number(0);
-						EmitCode::up();
-						EmitCode::inv(STORE_BIP);
-						EmitCode::down();
-							EmitCode::ref_symbol(K_value, gprk.f_s);
-							EmitCode::val_number((inter_ti) M);
-						EmitCode::up();
-						EmitCode::inv(WHILE_BIP);
-						EmitCode::down();
-							EmitCode::inv(AND_BIP);
-							EmitCode::down();
-								EmitCode::inv(GT_BIP);
-								EmitCode::down();
-									EmitCode::val_symbol(K_value, gprk.f_s);
-									EmitCode::val_number(1);
-								EmitCode::up();
-								EmitCode::inv(AND_BIP);
-								EmitCode::down();
-									EmitCode::inv(EQ_BIP);
-									EmitCode::down();
-										EmitCode::inv(MODULO_BIP);
-										EmitCode::down();
-											EmitCode::val_symbol(K_value, gprk.f_s);
-											EmitCode::val_number((inter_ti) lpe->number_base);
-										EmitCode::up();
-										EmitCode::val_number(0);
-									EmitCode::up();
-									EmitCode::inv(GE_BIP);
-									EmitCode::down();
-										EmitCode::call(Hierarchy::find(DIGITTOVALUE_HL));
-										EmitCode::down();
-											EmitCode::inv(bufferbip);
-											EmitCode::down();
-												EmitCode::val_symbol(K_value, gprk.cur_addr_s);
-												EmitCode::val_symbol(K_value, gprk.wpos_s);
-											EmitCode::up();
-										if (lpe->number_base != 10)
-											EmitCode::val_number((inter_ti) lpe->number_base);
-										EmitCode::up();
-										EmitCode::val_number(0);
-									EmitCode::up();
-								EmitCode::up();
-							EmitCode::up();
-							EmitCode::code();
-							EmitCode::down();
-								EmitCode::inv(STORE_BIP);
-								EmitCode::down();
-									EmitCode::ref_symbol(K_value, gprk.w_s);
-									EmitCode::inv(DIVIDE_BIP);
-									EmitCode::down();
-										EmitCode::inv(TIMES_BIP);
-										EmitCode::down();
-											EmitCode::call(Hierarchy::find(DIGITTOVALUE_HL));
-											EmitCode::down();
-												EmitCode::inv(bufferbip);
-												EmitCode::down();
-													EmitCode::val_symbol(K_value, gprk.cur_addr_s);
-													EmitCode::val_symbol(K_value, gprk.wpos_s);
-												EmitCode::up();
-												if (lpe->number_base != 10)
-													EmitCode::val_number((inter_ti) lpe->number_base);
-											EmitCode::up();
-											EmitCode::val_symbol(K_value, gprk.f_s);
-										EmitCode::up();
-										EmitCode::val_number((inter_ti) lpe->number_base);
-									EmitCode::up();
-								EmitCode::up();
-								Kinds::Scalings::compile_scale_and_add(gprk.x_s, gprk.sgn_s,
-									1, 0, gprk.w_s, failed_label);
-								EmitCode::inv(POSTINCREMENT_BIP);
-								EmitCode::down();
-									EmitCode::ref_symbol(K_value, gprk.wpos_s);
-								EmitCode::up();
-								EmitCode::inv(STORE_BIP);
-								EmitCode::down();
-									EmitCode::ref_symbol(K_value, gprk.f_s);
-									EmitCode::inv(DIVIDE_BIP);
-									EmitCode::down();
-										EmitCode::val_symbol(K_value, gprk.f_s);
-										EmitCode::val_number((inter_ti) lpe->number_base);
-									EmitCode::up();
-								EmitCode::up();
-							EmitCode::up();
-						EmitCode::up();
-					EmitCode::up();
 				EmitCode::up();
 			EmitCode::up();
 		EmitCode::up();
@@ -1590,8 +1675,9 @@ void RTLiteralPatterns::comment_use_of_lp(literal_pattern *lp) {
 
 @ Dealing with non-standard digits.
 
-@e DIGIT_PRINTER_NSDF from 1
+@e DIGIT_PRINTER_NSDF from 0
 @e VALUES_PRINTER_NSDF
+@e DIGIT_READER_NSDF
 
 =
 dictionary *digits_iname_D[4] = { NULL, NULL, NULL, NULL };
@@ -1600,6 +1686,11 @@ inter_name *RTLiteralPatterns::digits_iname(text_stream *text) {
 }
 inter_name *RTLiteralPatterns::values_iname(text_stream *text) {
 	return RTLiteralPatterns::digits_iname_inner(text, VALUES_PRINTER_NSDF);
+}
+inter_name *RTLiteralPatterns::digit_value_function_iname(literal_pattern_element *lpe) {
+	if ((lpe) && (lpe->digits_text))
+		return RTLiteralPatterns::digits_iname_inner(lpe->digits_text, DIGIT_READER_NSDF);
+	return Hierarchy::find(DIGITTOVALUE_HL);
 }
 
 typedef struct digit_manager {
@@ -1639,6 +1730,7 @@ void RTLiteralPatterns::dm_agent(compilation_subtask *t) {
 	switch (dm->category) {
 		case DIGIT_PRINTER_NSDF: @<Compile the body of a digit-printer function@>; break;
 		case VALUES_PRINTER_NSDF: @<Compile the body of a value-printer function@>; break;
+		case DIGIT_READER_NSDF: @<Compile the body of a digit-reader function@>; break;
 	}
 	Functions::end(save);
 }
@@ -1690,3 +1782,28 @@ void RTLiteralPatterns::dm_agent(compilation_subtask *t) {
 	EmitCode::up();
 	EmitCode::rtrue();
 
+@<Compile the body of a digit-reader function@> =
+ 	EmitCode::inv(SWITCH_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, value_s);
+		EmitCode::code();
+		EmitCode::down();
+	for (int c = 0; c < Str::len(dm->text); c++) {
+			EmitCode::inv(CASE_BIP);
+			EmitCode::down();
+				EmitCode::val_number((inter_ti) Str::get_at(dm->text, c));
+				EmitCode::code();
+				EmitCode::down();
+					EmitCode::inv(RETURN_BIP);
+					EmitCode::down();
+						EmitCode::val_number((inter_ti) c);
+					EmitCode::up();
+				EmitCode::up();
+			EmitCode::up();
+	}
+		EmitCode::up();
+	EmitCode::up();
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+		EmitCode::val_number((inter_ti) -1);
+	EmitCode::up();

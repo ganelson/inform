@@ -43,6 +43,7 @@ typedef struct literal_pattern {
 	struct kind *kind_specified; /* the kind of the result: i.e., what it specifies */
 	struct literal_pattern *next_for_this_kind; /* continuing list for this kind */
 	struct wording prototype_text; /* where the prototype specification is */
+	struct parse_node *where_specified;
 	int no_lp_tokens; /* number of tokens in parse_node */
 	struct literal_pattern_token lp_tokens[MAX_TOKENS_PER_LITERAL];
 	int no_lp_elements; /* how many tokens are numbers */
@@ -117,6 +118,7 @@ typedef struct literal_pattern_element {
 	int element_multiplier; /* the value $m_i$ for this LP */
 
 	struct wording element_name; /* if we define a name for the element */
+	struct kind *corresponding_to;
 
 	int is_real; /* store as a real number, not an integer? */
 	int print_with_leading_zeros; /* print with leading zeros */
@@ -188,6 +190,7 @@ literal_pattern *LiteralPatterns::lp_new(kind *K, wording W) {
 	lp->scaling = Kinds::Scalings::new(TRUE, LP_SCALED_AT, 1, 1.0, 0, 0.0);
 	lp->equivalent_unit = FALSE;
 	lp->benchmark = FALSE;
+	lp->where_specified = current_sentence;
 	lp->compilation_data = RTLiteralPatterns::new_compilation_data(lp);
 	return lp;
 }
@@ -212,6 +215,7 @@ literal_pattern_element LiteralPatterns::lpe_new(int i, int r, int sgn) {
 	lpe.element_multiplier = 1;
 	lpe.element_index = i;
 	lpe.element_name = EMPTY_WORDING;
+	lpe.corresponding_to = K_number;
 	lpe.preamble_optional = FALSE;
 	lpe.element_optional = FALSE;
 	lpe.number_base = 10;
@@ -534,8 +538,10 @@ on unusual platforms.
 		matched_scaledown *= lpe->number_base; point_at++;
 	}
 	if (lpe->element_range != -1) { /* i.e., if the range of this LPE is finite */
-		if ((tot < lpe->element_offset) || (tot >= lpe->element_offset + lpe->element_range))
+		if ((tot < lpe->element_offset) || (tot >= lpe->element_offset + lpe->element_range)) {
+			LOG("Overflow value is %d\n", tot);
 			element_overflow_at = lpe;
+		}
 	}
 	tot = (lpe->element_multiplier)*(tot - lpe->element_offset);
 	if (tot > max_16_bit) overflow_16_bit_flag = TRUE;
@@ -1510,8 +1516,13 @@ this is deferred until all elements exist, at which point we --
 				lpe->element_offset = 1;
 				lpe->element_range = LiteralPatterns::element_value_count(lpe->values);
 				lpe->print_with_leading_zeros = FALSE;
+				lpe->min_digits = 1;
+				lpe->max_digits = 1;
 			}
 			DISCARD_TEXT(source)
+		}
+		if (O & KIND_LSO) {
+			lpe->corresponding_to = Node::get_corresponding_kind(p);
 		}
 
 		if ((size_needed) && ((O & (MAX_DIGITS_MASK_LSO + MAXIMUM_LSO + VALUES_TEXT_LSO)) == 0)) {
@@ -1586,14 +1597,19 @@ optional, and it must not be the first.
 				else if ((lpe->min_digits > 1) || (lpe->max_digits < 1000000))
 					LOG("%d to %d digits ", lpe->min_digits, lpe->max_digits);
 				if (lpe->print_with_leading_zeros) LOG("printed with leading zeros ");
-				if (lpe->element_range >= 0) LOG("range %d to %d ",
-					lpe->element_offset, lpe->element_offset + lpe->element_range);
+				if (lpe->element_range >= 0) {
+					LOG("range %d to %d ",
+						lpe->element_offset, lpe->element_offset + lpe->element_range - 1);
+					if (lpe->element_offset != 0)
+						LOG("stored as %d to %d ", 0, lpe->element_range - 1);
+				}
 				else LOG("range unlimited ");
 				LOG("(base %d) ", lpe->number_base);
 				if (Str::len(lpe->digits_text) > 0) LOG("(digits %S) ", lpe->digits_text);
 				if (lpe->values) {
-					LOG("(values "); LiteralPatterns::log_element_value_set(lpe->values); LOG(")");
+					LOG("(values "); LiteralPatterns::log_element_value_set(lpe->values); LOG(") ");
 				}
+				LOG("= %u ", lpe->corresponding_to);
 				LOG("- multiplier %d\n", lpe->element_multiplier);
 				ec++;
 				break;
@@ -1626,6 +1642,7 @@ wording.)
 literal_pattern_name *LiteralPatterns::new_lpn(wording W, literal_pattern_name *existing) {
 	if (preform_lookahead_mode) return NULL;
 	literal_pattern_name *new = CREATE(literal_pattern_name);
+	LOGIF(LITERAL_NOTATIONS, "New LP 'in ...' name: %W\n", W);
 	new->notation_name = W;
 	new->can_use_this_lp = NULL;
 	new->next = NULL;
@@ -1673,43 +1690,41 @@ the LPs under each named possibility.
 
 @<Compile the printing phrase for this and perhaps subsequent LPs@> =
 	kind *K = lpn2->can_use_this_lp->kind_specified;
-	TEMPORARY_TEXT(TEMP)
-	Kinds::Textual::write(TEMP, K);
+	LOGIF(LITERAL_NOTATIONS, "Inventing printing phrase:\n");
+	TEMPORARY_TEXT(preamble)
+	WRITE_TO(preamble, "To say ( val - %u ) %W", K, lpn->notation_name);
 
 	feed_t id = Feeds::begin();
-	Feeds::feed_C_string(L"To say ( val - ");
-	Feeds::feed_text(TEMP);
-	Feeds::feed_C_string(L" ) ");
-	Feeds::feed_wording(lpn->notation_name);
+	Feeds::feed_text(preamble);
+	LOGIF(LITERAL_NOTATIONS, "%S:\n", preamble);
 	wording XW = Feeds::end(id);
 	Sentences::make_node(Task::syntax_tree(), XW, ':');
 
 	id = Feeds::begin();
 	TEMPORARY_TEXT(print_rule_buff)
-	WRITE_TO(print_rule_buff, " (- {-printing-routine:%S", TEMP);
-	WRITE_TO(print_rule_buff, "}({val}, %d); -) ", lpn->allocation_id + 1);
+	WRITE_TO(print_rule_buff, " (- {-printing-routine:%u}({val}, %d); -)", K, lpn->allocation_id + 1);
 	Feeds::feed_text(print_rule_buff);
+	LOGIF(LITERAL_NOTATIONS, "\t%S\n", print_rule_buff);
 	DISCARD_TEXT(print_rule_buff)
 	XW = Feeds::end(id);
 	Sentences::make_node(Task::syntax_tree(), XW, '.');
-	DISCARD_TEXT(TEMP)
 
 	literal_pattern_name *lpn3;
 	for (lpn3 = lpn2; lpn3; lpn3 = lpn3->next)
 		if (Kinds::eq(K, lpn3->can_use_this_lp->kind_specified))
 			lpn3->lpn_compiled_already = TRUE;
+	LOGIF(LITERAL_NOTATIONS, "\n");
 
 @h I7 phrases to pack and unpack the value.
 Creating a LP implicitly defines further I7 source text, as follows.
 
 =
 void LiteralPatterns::define_packing_phrases(literal_pattern *lp, kind *K) {
-	TEMPORARY_TEXT(TEMP)
-	Kinds::Textual::write(TEMP, K);
+	LOGIF(LITERAL_NOTATIONS, "Inventing packing phrases:\n");
 	@<Define phrases to convert from a packed value to individual parts@>;
 	@<Define a phrase to convert from numerical parts to a packed value@>;
 	ImperativeSubtrees::accept_all();
-	DISCARD_TEXT(TEMP)
+	LOGIF(LITERAL_NOTATIONS, "\n");
 }
 
 @ First, we automatically create $n$ phrases to unpack the elements given the value.
@@ -1724,34 +1739,43 @@ To define which number is cents part of ( full - price ) : |(- ({full}%100) -)|.
 =
 
 @<Define phrases to convert from a packed value to individual parts@> =
-	int i;
-	for (i=0; i<lp->no_lp_elements; i++) {
+	for (int i=0; i<lp->no_lp_elements; i++) {
 		literal_pattern_element *lpe = &(lp->lp_elements[i]);
 
 		feed_t id = Feeds::begin();
-		Feeds::feed_C_string(L"To decide which number is ");
-		Feeds::feed_wording(lpe->element_name);
-		Feeds::feed_C_string(L" part of ( full - ");
-		Feeds::feed_text(TEMP);
-		Feeds::feed_C_string(L" ) ");
+		TEMPORARY_TEXT(preamble)
+		WRITE_TO(preamble, "To decide which %u is %W part of ( full - %u ) ",
+			lpe->corresponding_to, lpe->element_name, K);
+		Feeds::feed_text(preamble);
+		LOGIF(LITERAL_NOTATIONS, "%S:\n", preamble);
+		DISCARD_TEXT(preamble)
 		wording XW = Feeds::end(id);
 		Sentences::make_node(Task::syntax_tree(), XW, ':');
 
 		id = Feeds::begin();
 		TEMPORARY_TEXT(print_rule_buff)
+		WRITE_TO(print_rule_buff, " (- ");
 		TEMPORARY_TEXT(offset_addition)
+		if (Kinds::FloatingPoint::uses_floating_point(lpe->corresponding_to)) {
+			WRITE_TO(print_rule_buff, "NUMBER_TY_to_REAL_NUMBER_TY(");
+		}
 		if (lpe->element_offset != 0)
 			WRITE_TO(offset_addition, " + %d", lpe->element_offset);
 		if (i==0)
-			WRITE_TO(print_rule_buff, " (- ({full}/%d%S) -) ",
+			WRITE_TO(print_rule_buff, "({full}/%d%S)",
 				lpe->element_multiplier, offset_addition);
 		else if (lpe->element_multiplier > 1)
-			WRITE_TO(print_rule_buff, " (- (({full}/%d)%%%d%S) -) ",
+			WRITE_TO(print_rule_buff, "(({full}/%d)%%%d%S)",
 				lpe->element_multiplier, lpe->element_range, offset_addition);
 		else
-			WRITE_TO(print_rule_buff, " (- ({full}%%%d%S) -) ",
+			WRITE_TO(print_rule_buff, "({full}%%%d%S)",
 				lpe->element_range, offset_addition);
+		if (Kinds::FloatingPoint::uses_floating_point(lpe->corresponding_to)) {
+			WRITE_TO(print_rule_buff, ")");
+		}
+		WRITE_TO(print_rule_buff, " -) ");
 		Feeds::feed_text(print_rule_buff);
+		LOGIF(LITERAL_NOTATIONS, "\t%S\n", print_rule_buff);
 		XW = Feeds::end(id);
 		if (Wordings::phrasual_length(XW) >= MAX_WORDS_PER_PHRASE + 5)
 			@<Issue a problem for overly long part names@>
@@ -1771,21 +1795,16 @@ To decide which price is price with dollars part ( part0 - a number ) cents part
 @<Define a phrase to convert from numerical parts to a packed value@> =
 	if (lp->no_lp_elements > 0) {
 		feed_t id = Feeds::begin();
-		Feeds::feed_C_string(L"To decide which ");
-		Feeds::feed_text(TEMP);
-		Feeds::feed_C_string(L" is ");
-		Feeds::feed_text(TEMP);
-		Feeds::feed_C_string(L" with ");
+		TEMPORARY_TEXT(preamble)
+		WRITE_TO(preamble, "To decide which %u is %u with ", K, K);
 		for (int i=0; i<lp->no_lp_elements; i++) {
 			literal_pattern_element *lpe = &(lp->lp_elements[i]);
-			TEMPORARY_TEXT(print_rule_buff)
-			WRITE_TO(print_rule_buff, " part%d ", i);
-			Feeds::feed_wording(lpe->element_name);
-			Feeds::feed_C_string(L" part ( ");
-			Feeds::feed_text(print_rule_buff);
-			Feeds::feed_C_string(L" - a number ) ");
-			DISCARD_TEXT(print_rule_buff)
+			WRITE_TO(preamble, "%W part ( part%d - %u ) ",
+				lpe->element_name, i, lpe->corresponding_to);
 		}
+		Feeds::feed_text(preamble);
+		LOGIF(LITERAL_NOTATIONS, "%S:\n", preamble);
+		DISCARD_TEXT(preamble)
 		wording XW = Feeds::end(id);
 		if (Wordings::phrasual_length(XW) >= MAX_WORDS_PER_PHRASE + 5) {
 			@<Issue a problem for overly long part names@>
@@ -1795,19 +1814,32 @@ To decide which price is price with dollars part ( part0 - a number ) cents part
 			TEMPORARY_TEXT(print_rule_buff)
 			WRITE_TO(print_rule_buff, " (- (");
 			for (int i=0; i<lp->no_lp_elements; i++) {
+				if (i>0) WRITE_TO(print_rule_buff, " + ");
 				literal_pattern_element *lpe = &(lp->lp_elements[i]);
-				if (lpe->element_offset != 0)
-					WRITE_TO(print_rule_buff, "(");
-				if (i>0) WRITE_TO(print_rule_buff, "+");
 				if (lpe->element_multiplier != 1)
 					WRITE_TO(print_rule_buff, "%d*", lpe->element_multiplier);
+				if (lpe->element_range >= 1) {
+					WRITE_TO(print_rule_buff, "(");
+				}
+				if (lpe->element_offset != 0)
+					WRITE_TO(print_rule_buff, "(");
+				if (Kinds::FloatingPoint::uses_floating_point(lpe->corresponding_to)) {
+					WRITE_TO(print_rule_buff, "REAL_NUMBER_TY_to_NUMBER_TY(");
+				}
 				WRITE_TO(print_rule_buff, "{part%d}", i);
+				if (Kinds::FloatingPoint::uses_floating_point(lpe->corresponding_to)) {
+					WRITE_TO(print_rule_buff, ")");
+				}
 				if (lpe->element_offset != 0)
 					WRITE_TO(print_rule_buff, " - %d)", lpe->element_offset);
+				if (lpe->element_range >= 1) {
+					WRITE_TO(print_rule_buff, " %% %d)", lpe->element_range);
+				}
 			}
 			WRITE_TO(print_rule_buff, ") -) ");
 			Feeds::feed_text(print_rule_buff);
 			XW = Feeds::end(id);
+			LOGIF(LITERAL_NOTATIONS, "\t%S\n", print_rule_buff);
 			DISCARD_TEXT(print_rule_buff)
 			Sentences::make_node(Task::syntax_tree(), XW, '.');
 		}
@@ -1951,6 +1983,77 @@ void LiteralPatterns::log_element_value_set(literal_pattern_element_value_set *s
 		if (i > 0) LOG(", ");
 		LOG("%d = <%S>", set->values[i].value_equivalent, set->values[i].text_equivalent);
 	}
+}
+
+@h Corresponding kind sanity checking.
+This can only be done at the end of pass 1, so that we know all of the members
+of enumerated kinds, and therefore how many there are.
+
+=
+void LiteralPatterns::after_pass_1(void) {
+	literal_pattern *lp;
+	LOOP_OVER(lp, literal_pattern)
+		for (int i=0; i<lp->no_lp_elements; i++) {
+			current_sentence = lp->where_specified;
+			literal_pattern_element *lpe = &(lp->lp_elements[i]);
+			kind *K = lpe->corresponding_to;
+			if (K) {
+				if (Kinds::Behaviour::is_quasinumerical(K)) continue;
+				if (RTKindConstructors::is_nonstandard_enumeration(K)) {
+					StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+					Problems::quote_source(1, current_sentence);
+					Problems::quote_wording(2, lpe->element_name);
+					Problems::quote_kind(3, K);
+					Problems::issue_problem_segment(
+						"In the sentence %1, you say that values of '%2' "
+						"should correspond to the kind '%3', but the values of "
+						"that kind are not enumerated in the standard 1, 2, 3, ... way.");
+					Problems::issue_problem_end();
+					continue;
+				}
+				if (Kinds::Behaviour::is_an_enumeration(K)) {
+					int size = RTKindConstructors::enumeration_size(K);
+					if (lpe->element_range == -1) {
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+						Problems::quote_source(1, current_sentence);
+						Problems::quote_wording(2, lpe->element_name);
+						Problems::quote_kind(3, K);
+						Problems::quote_number(4, &size);
+						Problems::issue_problem_segment(
+							"In the sentence %1, you say that values of '%2' "
+							"should correspond to the kind '%3', but that has "
+							"only %4 value(s), whereas '%2' is unlimited in size.");
+						Problems::issue_problem_end();
+						continue;
+					}
+					if (size != lpe->element_range) {
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+						Problems::quote_source(1, current_sentence);
+						Problems::quote_wording(2, lpe->element_name);
+						Problems::quote_kind(3, K);
+						Problems::quote_number(4, &size);
+						Problems::quote_number(5, &(lpe->element_range));
+						Problems::issue_problem_segment(
+							"In the sentence %1, you say that values of '%2' "
+							"should correspond to the kind '%3', but that has "
+							"%4 not %5 value(s). They must correspond exactly in extent.");
+						Problems::issue_problem_end();
+						continue;
+					}
+					continue;
+				}
+			}
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+			Problems::quote_source(1, current_sentence);
+			Problems::quote_wording(2, lpe->element_name);
+			Problems::quote_kind(3, K);
+			Problems::issue_problem_segment(
+				"In the sentence %1, you say that values of '%2' "
+				"should correspond to the kind '%3', but this doesn't make "
+				"sense since it is not numerical and nor is it an enumeration.");
+			Problems::issue_problem_end();
+			continue;
+		}
 }
 
 @h Literal patterns in Preform.

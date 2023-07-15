@@ -284,7 +284,7 @@ by a bracketed list of up to three options in any order.
 	<lp-part>                                      ==> { 0, RP[1] }
 
 <lp-part> ::=
-	<np-unparsed-bal> ( <lp-part-option-list> ) |  ==> { 0, LPRequests::mark(RP[1], R[2], <<min_part_val>>, <<max_part_val>>, <<digits_wd_val>>, <<values_wd_val>>) }
+	<np-unparsed-bal> ( <lp-part-option-list> ) |  ==> { 0, LPRequests::mark(RP[1], R[2], <<kind:corresponding>>, <<min_part_val>>, <<max_part_val>>, <<digits_wd_val>>, <<values_wd_val>>) }
 	<np-unparsed-bal>                              ==> { 0, RP[1] }
 
 <lp-part-option-list> ::=
@@ -306,8 +306,10 @@ by a bracketed list of up to three options in any order.
 	up to <cardinal-number> digit/digits |         ==> @<Apply max digit count@>;
 	<cardinal-number> <number-base> digit/digits | ==> @<Apply based digit count@>;
 	<cardinal-number> digit/digits |               ==> @<Apply digit count@>;
-	digits { <quoted-text> } |                     ==> <<digits_wd_val>> = Wordings::first_wn(WR[1]); @<Apply digits text@>;
-	values { <quoted-text> } |                     ==> <<values_wd_val>> = Wordings::first_wn(WR[1]); @<Apply values text@>;
+	digits { <quoted-text> } |                     ==> <<digits_wd_val>> = Wordings::first_wn(WR[1]); ==> { DIGITS_TEXT_LSO, - }
+	values { <quoted-text> } |                     ==> <<values_wd_val>> = Wordings::first_wn(WR[1]); ==> { VALUES_TEXT_LSO, - }
+	corresponding to <k-kind> |                    ==> { KIND_LSO, <<kind:corresponding>> = RP[1] }
+	corresponding to <article> <k-kind> |          ==> { KIND_LSO, <<kind:corresponding>> = RP[2] }
 	......                                         ==> @<Issue PM_BadLPPartOption problem@>
 
 @<Apply range@> =
@@ -345,12 +347,6 @@ by a bracketed list of up to three options in any order.
 			"for obvious reasons.");
 	==> { MAX_DIGITS_LSO*R[1] + MIN_DIGITS_LSO*R[1] + BASE_LSO*R[2] + WITH_LEADING_ZEROS_LSO, - };
 
-@<Apply digits text@> =
-	==> { DIGITS_TEXT_LSO, - };
-
-@<Apply values text@> =
-	==> { VALUES_TEXT_LSO, - };
-
 @<Issue PM_BadLPPartOption problem@> =
 	if (preform_lookahead_mode == FALSE) {
 		Problems::quote_source(1, current_sentence);
@@ -381,17 +377,19 @@ literal_pattern_name *LPRequests::compose(literal_pattern_name *A, literal_patte
 @d MINIMUM_LSO                  0x00000020
 @d DIGITS_TEXT_LSO              0x00000040
 @d VALUES_TEXT_LSO              0x00000080
-@d BASE_LSO                     0x00000100
-@d BASE_MASK_LSO                0x0000ff00
+@d KIND_LSO                     0x00000100
+@d BASE_LSO                     0x00000200
+@d BASE_MASK_LSO                0x0000fe00
 @d MIN_DIGITS_LSO               0x00010000
 @d MIN_DIGITS_MASK_LSO          0x007f0000
 @d MAX_DIGITS_LSO               0x01000000
 @d MAX_DIGITS_MASK_LSO          0x7f000000
 
 =
-parse_node *LPRequests::mark(parse_node *A, int N, int MI, int MA, int DT, int VT) {
+parse_node *LPRequests::mark(parse_node *A, int N, kind *K, int MI, int MA, int DT, int VT) {
 	if (A) {
 		Annotations::write_int(A, lpe_options_ANNOT, N);
+		if (N & KIND_LSO) Node::set_corresponding_kind(A, K);
 		if (N & MINIMUM_LSO) Annotations::write_int(A, lpe_min_ANNOT, MI);
 		if (N & MAXIMUM_LSO) Annotations::write_int(A, lpe_max_ANNOT, MA);
 		if (N & DIGITS_TEXT_LSO) Annotations::write_int(A, lpe_digits_ANNOT, DT);

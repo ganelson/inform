@@ -132,8 +132,8 @@ clashes; it isn't essential to Inform's running.
 	feed_t id = Feeds::begin();
 	wording W2 = InferenceSubjects::get_name_text(infs);
 	if (Wordings::nonempty(W2)) Feeds::feed_wording(W2);
-	else Feeds::feed_C_string(L" nameless ");
-	Feeds::feed_C_string(L" condition ");
+	else Feeds::feed_text(I" nameless ");
+	Feeds::feed_text(I" condition ");
 	if (ct > 0) {
 		TEMPORARY_TEXT(numb)
 		WRITE_TO(numb, " %d ", ct+1);
