@@ -164,18 +164,23 @@ Functions for minimal Glk windows support.
 @h Stored input states.
 Support functions for the stored input state kind.
 
-Stored input states have a 4 word long block (ignoring the header):
+Stored input states have an 8 word long block (ignoring the header):
 
 Word 0: a text input status & flags for hyperlink and mouse requests
 Word 1: line input buffer address
 Word 2: line input buffer length
 Word 3: a suspended line input request's in-progress text
+Words 4-7: the current glk event struct
 
 =
 Constant STORED_INPUT_TY_FLAGS = 0;
 Constant STORED_INPUT_TY_ADDR = 1;
 Constant STORED_INPUT_TY_MAXLEN = 2;
 Constant STORED_INPUT_TY_TEXT = 3;
+Constant STORED_INPUT_TY_EVENT = 4;
+Constant STORED_INPUT_TY_WIN = 5;
+Constant STORED_INPUT_TY_VAL1 = 6;
+Constant STORED_INPUT_TY_VAL2 = 7;
 
 [ STORED_INPUT_TY_Support task arg1 arg2;
 	switch(task) {
@@ -196,14 +201,22 @@ Constant STORED_INPUT_TY_TEXT = 3;
 	win.suspended_text_buffer_addr = BlkValueRead(state, STORED_INPUT_TY_ADDR);
 	win.suspended_text_buffer_maxlen = BlkValueRead(state, STORED_INPUT_TY_MAXLEN);
 	BlkValueCopy(win.suspended_text_input, BlkValueRead(state, STORED_INPUT_TY_TEXT));
+	Glk_Event_Struct_type = BlkValueRead(state, STORED_INPUT_TY_EVENT);
+	Glk_Event_Struct_win = BlkValueRead(state, STORED_INPUT_TY_WIN);
+	Glk_Event_Struct_val1 = BlkValueRead(state, STORED_INPUT_TY_VAL1);
+	Glk_Event_Struct_val2 = BlkValueRead(state, STORED_INPUT_TY_VAL2);
 ];
 
 [ STORED_INPUT_TY_Create short_block long_block;
-	long_block = FlexAllocate(4 * WORDSIZE, STORED_INPUT_TY, BLK_FLAG_WORD);
+	long_block = FlexAllocate(8 * WORDSIZE, STORED_INPUT_TY, BLK_FLAG_WORD);
 	BlkValueWrite(long_block, STORED_INPUT_TY_FLAGS, INPUT_STATUS_NONE, true);
 	BlkValueWrite(long_block, STORED_INPUT_TY_ADDR, 0, true);
 	BlkValueWrite(long_block, STORED_INPUT_TY_MAXLEN, 0, true);
 	BlkValueWrite(long_block, STORED_INPUT_TY_TEXT, BlkValueCreate(TEXT_TY), true);
+	BlkValueWrite(long_block, STORED_INPUT_TY_EVENT, evtype_None, true);
+	BlkValueWrite(long_block, STORED_INPUT_TY_WIN, 0, true);
+	BlkValueWrite(long_block, STORED_INPUT_TY_VAL1, 0, true);
+	BlkValueWrite(long_block, STORED_INPUT_TY_VAL2, 0, true);
 	return BlkValueCreateSB1(short_block, long_block);
 ];
 
@@ -218,6 +231,10 @@ Constant STORED_INPUT_TY_TEXT = 3;
 	BlkValueWrite(long_block, STORED_INPUT_TY_ADDR, win.suspended_text_buffer_addr, true);
 	BlkValueWrite(long_block, STORED_INPUT_TY_MAXLEN, win.suspended_text_buffer_maxlen, true);
 	BlkValueCopy(BlkValueRead(long_block, STORED_INPUT_TY_TEXT, true), win.suspended_text_input);
+	BlkValueWrite(long_block, STORED_INPUT_TY_EVENT, Glk_Event_Struct_type, true);
+	BlkValueWrite(long_block, STORED_INPUT_TY_WIN, Glk_Event_Struct_win, true);
+	BlkValueWrite(long_block, STORED_INPUT_TY_VAL1, Glk_Event_Struct_val1, true);
+	BlkValueWrite(long_block, STORED_INPUT_TY_VAL2, Glk_Event_Struct_val2, true);
 	return state;
 ];
 
