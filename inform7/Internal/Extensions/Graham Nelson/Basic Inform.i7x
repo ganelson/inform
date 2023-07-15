@@ -1567,15 +1567,6 @@ The rock number property translates into Inter as "glk_rock".
 A glk window has a number called the reference number.
 The reference number property translates into Inter as "glk_ref".
 
-A glk window has a text input status.
-The text input status property translates into Inter as "input_status".
-
-A glk window can be requesting mouse input.
-The requesting mouse input property translates into Inter as "requesting_mouse".
-
-A glk window can be requesting hyperlink input.
-The requesting hyperlink input property translates into Inter as "requesting_hyperlink".
-
 The main window is a glk window.
 The main window object is accessible to Inter as "Main_Window".
 The type of the main window is text buffer.
@@ -1607,6 +1598,27 @@ To decide what number is the width of (win - a glk window):
 
 To set (win - a glk window) cursor to row (row - a number) and/-- column (col - a number):
 	(- glk_window_move_cursor({win}.glk_ref, {col} - 1, {row} - 1); -).
+
+Chapter - Suspending and resuming input
+
+A glk window has a text input status.
+The text input status property translates into Inter as "text_input_status".
+A glk window can be requesting hyperlink input.
+The requesting hyperlink input property translates into Inter as "requesting_hyperlink".
+A glk window can be requesting mouse input.
+The requesting mouse input property translates into Inter as "requesting_mouse".
+A glk window has a text called the suspended text input.
+The suspended text input property translates into Inter as "suspended_text_input".
+Include (- with suspended_text_buffer_addr 0, with suspended_text_buffer_maxlen 0 -) when defining a glk window.
+
+A glk window has a list of suspended input states called the stack of suspended input states.
+The stack of suspended input states property translates into Inter as "input_states_stack".
+
+To suspend text input in (win - a glk window):
+	(- SuspendTextInput({win}); -).
+
+To resume text input in (win - a glk window):
+	(- ResumeTextInput({win}); -).
 
 Chapter - Glk object recovery
 
@@ -1665,6 +1677,14 @@ Definition: a glk event is dependent on the player rather than independent of th
 	it is line event or
 	it is mouse event or
 	it is hyperlink event.
+
+First glk event handling rule (this is the update text input status rule):
+	if the glk event type is character event or the glk event type is line event:
+		now the text input status of the glk event window is inactive text input;
+	if the glk event type is hyperlink event:
+		now the glk event window is not requesting hyperlink input;
+	if the glk event type is mouse event:
+		now the glk event window is not requesting mouse input;
 
 Part Five - Adjectival Definitions
 

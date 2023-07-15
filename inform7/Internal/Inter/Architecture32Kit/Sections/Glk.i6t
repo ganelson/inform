@@ -4,11 +4,14 @@ Glk is a fully-featured input-output model, designed by Andrew Plotkin for use
 with the Glulx virtual machine, but not used only for that. All 32-bit Inform
 programs use Glk.
 
-@h Glk constants.
-General Glk constants.
+@h Glk definitions.
+General Glk constants and properties.
 
 =
 Constant GLK_NULL 0;
+
+Property suspended_text_buffer_addr;
+Property suspended_text_buffer_maxlen;
 
 @h Glk object recovery.
 |GGRecoverObjects| handles recovering the Glk objects after restarting or restoring.
@@ -75,10 +78,13 @@ Global current_glk_object_reference = 0;
 	switch (current_glk_object_rock) {
 		GG_MAINWIN_ROCK:
 			gg_mainwin = current_glk_object_reference;
+			Main_Window.glk_ref = gg_mainwin;
 		GG_STATUSWIN_ROCK:
 			gg_statuswin = current_glk_object_reference;
+			Status_Window.glk_ref = gg_statuswin;
 		GG_QUOTEWIN_ROCK:
 			gg_quotewin = current_glk_object_reference;
+			Quote_Window.glk_ref = gg_quotewin;
 	}
 	rfalse;
 ];
@@ -155,6 +161,46 @@ Functions for minimal Glk windows support.
 	return gg_arguments-->index;
 ];
 
+@h Suspended input states.
+Support functions for the suspended input state kind.
+
+Suspended input states have a 4 word long block (ignoring the header):
+
+Word 0: a text input status & flags for hyperlink and mouse requests
+Word 1: line input buffer address
+Word 2: line input buffer length
+Word 3: a suspended line input request's in-progress text
+
+=
+Constant SUSPENDED_INPUT_TY_FLAGS = 0;
+Constant SUSPENDED_INPUT_TY_ADDR = 1;
+Constant SUSPENDED_INPUT_TY_LEN = 2;
+Constant SUSPENDED_INPUT_TY_TEXT = 3;
+
+[ SUSPENDED_INPUT_TY_Support task arg1 arg2;
+	switch(task) {
+		COPYQUICK_KOVS: rtrue;
+		COPYSB_KOVS: BlkValueCopySB1(arg1, arg2);
+		CREATE_KOVS: return SUSPENDED_INPUT_TY_Create(arg2);
+		DESTROY_KOVS: SUSPENDED_INPUT_TY_Destroy(arg1);
+	}
+	! We don't respond to the other tasks
+	rfalse;
+];
+
+[ SUSPENDED_INPUT_TY_Create short_block long_block;
+	long_block = FlexAllocate(4 * WORDSIZE, SUSPENDED_INPUT_TY, BLK_FLAG_WORD);
+	BlkValueWrite(long_block, SUSPENDED_INPUT_TY_FLAGS, INPUT_STATUS_NONE, true);
+	BlkValueWrite(long_block, SUSPENDED_INPUT_TY_ADDR, 0, true);
+	BlkValueWrite(long_block, SUSPENDED_INPUT_TY_LEN, 0, true);
+	BlkValueWrite(long_block, SUSPENDED_INPUT_TY_TEXT, BlkValueCreate(TEXT_TY), true);
+	return BlkValueCreateSB1(short_block, long_block);
+];
+
+[ SUSPENDED_INPUT_TY_Destroy state;
+	BlkValueFree(BlkValueRead(state, SUSPENDED_INPUT_TY_TEXT));
+];
+
 @h Glk events.
 To handle events we intercept the |glk_select| function. This allows us to handle
 events early and consistently.
@@ -204,81 +250,172 @@ These replaced versions of the glk versions track which types of input have been
 requested.
 
 =
-[ glk_cancel_char_event win;
+[ glk_cancel_char_event win win_obj;
 	@push win;
 	@glk 211 1 0;
-	WriteGProperty(OBJECT_TY, FindGlkWindowFromRefNum(win), input_status, INPUT_STATUS_NONE);
+	win_obj = FindGlkWindowFromRefNum(win);
+	if (win_obj) {
+		win_obj.text_input_status = win_obj.text_input_status + 4;
+	}
 	return 0;
 ];
 
-[ glk_cancel_hyperlink_event win;
+[ glk_cancel_hyperlink_event win win_obj;
 	@push win;
 	@glk 259 1 0;
-	WriteGProperty(OBJECT_TY, FindGlkWindowFromRefNum(win), requesting_hyperlink, 0);
+	win_obj = FindGlkWindowFromRefNum(win);
+	if (win_obj) {
+		win_obj.requesting_hyperlink = false;
+	}
 	return 0;
 ];
 
-[ glk_cancel_line_event win event;
+[ glk_cancel_line_event win event
+		buf_type win_obj;
 	@push event;
 	@push win;
 	@glk 209 2 0;
-	WriteGProperty(OBJECT_TY, FindGlkWindowFromRefNum(win), input_status, INPUT_STATUS_NONE);
+	win_obj = FindGlkWindowFromRefNum(win);
+	if (win_obj) {
+		if (win_obj.text_input_status == INPUT_STATUS_ACTIVE_LINE_UNI) {
+			buf_type = 4;
+		}
+		else {
+			buf_type = 1;
+		}
+		win_obj.text_input_status = win_obj.text_input_status + 4;
+		BlkValueMassCopyFromArray(win_obj.suspended_text_input, win_obj.suspended_text_buffer_addr, buf_type, event-->2);
+	}
 	return 0;
 ];
 
-[ glk_cancel_mouse_event win;
+[ glk_cancel_mouse_event win win_obj;
 	@push win;
 	@glk 213 1 0;
-	WriteGProperty(OBJECT_TY, FindGlkWindowFromRefNum(win), requesting_mouse, 0);
+	win_obj = FindGlkWindowFromRefNum(win);
+	if (win_obj) {
+		win_obj.requesting_mouse = false;
+	}
 	return 0;
 ];
 
-[ glk_request_char_event win;
+[ glk_request_char_event win win_obj;
 	@push win;
 	@glk 210 1 0;
-	WriteGProperty(OBJECT_TY, FindGlkWindowFromRefNum(win), input_status, INPUT_STATUS_ACTIVE_CHAR);
+	win_obj = FindGlkWindowFromRefNum(win);
+	if (win_obj) {
+		win_obj.text_input_status = INPUT_STATUS_ACTIVE_CHAR;
+	}
 	return 0;
 ];
 
-[ glk_request_char_event_uni win;
+[ glk_request_char_event_uni win win_obj;
 	@push win;
 	@glk 320 1 0;
-	WriteGProperty(OBJECT_TY, FindGlkWindowFromRefNum(win), input_status, INPUT_STATUS_ACTIVE_CHAR_UNI);
+	win_obj = FindGlkWindowFromRefNum(win);
+	if (win_obj) {
+		win_obj.text_input_status = INPUT_STATUS_ACTIVE_CHAR_UNI;
+	}
 	return 0;
 ];
 
-[ glk_request_hyperlink_event win;
+[ glk_request_hyperlink_event win win_obj;
 	@push win;
 	@glk 258 1 0;
-	WriteGProperty(OBJECT_TY, FindGlkWindowFromRefNum(win), requesting_hyperlink, 1);
+	win_obj = FindGlkWindowFromRefNum(win);
+	if (win_obj) {
+		win_obj.requesting_hyperlink = true;
+	}
 	return 0;
 ];
 
-[ glk_request_line_event win buf maxlen initlen;
+[ glk_request_line_event win buf maxlen initlen win_obj;
 	@push initlen;
 	@push maxlen;
 	@push buf;
 	@push win;
 	@glk 208 4 0;
-	WriteGProperty(OBJECT_TY, FindGlkWindowFromRefNum(win), input_status, INPUT_STATUS_ACTIVE_LINE);
+	win_obj = FindGlkWindowFromRefNum(win);
+	if (win_obj) {
+		win_obj.text_input_status = INPUT_STATUS_ACTIVE_LINE;
+		win_obj.suspended_text_buffer_addr = buf;
+		win_obj.suspended_text_buffer_maxlen = maxlen;
+	}
 	return 0;
 ];
 
-[ glk_request_line_event_uni win buf maxlen initlen;
+[ glk_request_line_event_uni win buf maxlen initlen win_obj;
 	@push initlen;
 	@push maxlen;
 	@push buf;
 	@push win;
 	@glk 321 4 0;
-	WriteGProperty(OBJECT_TY, FindGlkWindowFromRefNum(win), input_status, INPUT_STATUS_ACTIVE_LINE_UNI);
+	win_obj = FindGlkWindowFromRefNum(win);
+	if (win_obj) {
+		win_obj.text_input_status = INPUT_STATUS_ACTIVE_LINE_UNI;
+		win_obj.suspended_text_buffer_addr = buf;
+		win_obj.suspended_text_buffer_maxlen = maxlen;
+	}
 	return 0;
 ];
 
-[ glk_request_mouse_event win;
+[ glk_request_mouse_event win win_obj;
 	@push win;
 	@glk 212 1 0;
-	WriteGProperty(OBJECT_TY, FindGlkWindowFromRefNum(win), requesting_mouse, 1);
+	win_obj = FindGlkWindowFromRefNum(win);
+	if (win_obj) {
+		win_obj.requesting_mouse = true;
+	}
 	return 0;
+];
+
+@h Suspending and resuming text input.
+These functions allow the author to suspend and then resume a window's text
+input requests.
+
+=
+[ SuspendTextInput win;
+	if (win.text_input_status == INPUT_STATUS_ACTIVE_CHAR or INPUT_STATUS_ACTIVE_CHAR_UNI) {
+		glk_cancel_char_event(win.glk_ref);
+	}
+	else if (win.text_input_status == INPUT_STATUS_ACTIVE_LINE or INPUT_STATUS_ACTIVE_LINE_UNI) {
+		glk_cancel_line_event(win.glk_ref, gg_arguments);
+	}
+];
+
+[ ResumeTextInput win;
+	print win.text_input_status, "^";
+	switch (win.text_input_status) {
+		INPUT_STATUS_SUSPENDED_CHAR:
+			glk_request_char_event(win.glk_ref);
+		INPUT_STATUS_SUSPENDED_CHAR_UNI:
+			glk_request_char_event_uni(win.glk_ref);
+		INPUT_STATUS_SUSPENDED_LINE:
+			glk_request_line_event(win.glk_ref, win.suspended_text_buffer_addr, win.suspended_text_buffer_maxlen, CopySuspendedTextInputBack(win, 0));
+		INPUT_STATUS_SUSPENDED_LINE_UNI:
+			glk_request_line_event_uni(win.glk_ref, win.suspended_text_buffer_addr, win.suspended_text_buffer_maxlen, CopySuspendedTextInputBack(win, 1));
+	}
+];
+
+[ CopySuspendedTextInputBack win uni
+		buf ch i len txt;
+	buf = win.suspended_text_buffer_addr;
+	txt = win.suspended_text_input;
+	len = BlkValueLBCapacity(txt);
+	for (i = 0: i < len: i++) {
+		ch = BlkValueRead(txt, i);
+		if (ch == 0) break;
+		if (uni) {
+			buf-->i = ch;
+		}
+		else if (ch <= $FF) {
+			buf->i = ch;
+		}
+		else {
+			buf->i = '?';
+		}
+	}
+	return i;
 ];
 
 @h Debugging verb.
