@@ -161,10 +161,10 @@ Functions for minimal Glk windows support.
 	return gg_arguments-->index;
 ];
 
-@h Suspended input states.
-Support functions for the suspended input state kind.
+@h Stored input states.
+Support functions for the stored input state kind.
 
-Suspended input states have a 4 word long block (ignoring the header):
+Stored input states have a 4 word long block (ignoring the header):
 
 Word 0: a text input status & flags for hyperlink and mouse requests
 Word 1: line input buffer address
@@ -172,33 +172,53 @@ Word 2: line input buffer length
 Word 3: a suspended line input request's in-progress text
 
 =
-Constant SUSPENDED_INPUT_TY_FLAGS = 0;
-Constant SUSPENDED_INPUT_TY_ADDR = 1;
-Constant SUSPENDED_INPUT_TY_LEN = 2;
-Constant SUSPENDED_INPUT_TY_TEXT = 3;
+Constant STORED_INPUT_TY_FLAGS = 0;
+Constant STORED_INPUT_TY_ADDR = 1;
+Constant STORED_INPUT_TY_MAXLEN = 2;
+Constant STORED_INPUT_TY_TEXT = 3;
 
-[ SUSPENDED_INPUT_TY_Support task arg1 arg2;
+[ STORED_INPUT_TY_Support task arg1 arg2;
 	switch(task) {
 		COPYQUICK_KOVS: rtrue;
 		COPYSB_KOVS: BlkValueCopySB1(arg1, arg2);
-		CREATE_KOVS: return SUSPENDED_INPUT_TY_Create(arg2);
-		DESTROY_KOVS: SUSPENDED_INPUT_TY_Destroy(arg1);
+		CREATE_KOVS: return STORED_INPUT_TY_Create(arg2);
+		DESTROY_KOVS: STORED_INPUT_TY_Destroy(arg1);
 	}
 	! We don't respond to the other tasks
 	rfalse;
 ];
 
-[ SUSPENDED_INPUT_TY_Create short_block long_block;
-	long_block = FlexAllocate(4 * WORDSIZE, SUSPENDED_INPUT_TY, BLK_FLAG_WORD);
-	BlkValueWrite(long_block, SUSPENDED_INPUT_TY_FLAGS, INPUT_STATUS_NONE, true);
-	BlkValueWrite(long_block, SUSPENDED_INPUT_TY_ADDR, 0, true);
-	BlkValueWrite(long_block, SUSPENDED_INPUT_TY_LEN, 0, true);
-	BlkValueWrite(long_block, SUSPENDED_INPUT_TY_TEXT, BlkValueCreate(TEXT_TY), true);
+[ STORED_INPUT_TY_Apply state win flags;
+	flags = BlkValueRead(state, STORED_INPUT_TY_FLAGS);
+	win.text_input_status = flags & $FF;
+	win.requesting_hyperlink = (flags / $100) & $FF;
+	win.requesting_mouse = (flags / $10000) & $FF;
+	win.suspended_text_buffer_addr = BlkValueRead(state, STORED_INPUT_TY_ADDR);
+	win.suspended_text_buffer_maxlen = BlkValueRead(state, STORED_INPUT_TY_MAXLEN);
+	BlkValueCopy(win.suspended_text_input, BlkValueRead(state, STORED_INPUT_TY_TEXT));
+];
+
+[ STORED_INPUT_TY_Create short_block long_block;
+	long_block = FlexAllocate(4 * WORDSIZE, STORED_INPUT_TY, BLK_FLAG_WORD);
+	BlkValueWrite(long_block, STORED_INPUT_TY_FLAGS, INPUT_STATUS_NONE, true);
+	BlkValueWrite(long_block, STORED_INPUT_TY_ADDR, 0, true);
+	BlkValueWrite(long_block, STORED_INPUT_TY_MAXLEN, 0, true);
+	BlkValueWrite(long_block, STORED_INPUT_TY_TEXT, BlkValueCreate(TEXT_TY), true);
 	return BlkValueCreateSB1(short_block, long_block);
 ];
 
-[ SUSPENDED_INPUT_TY_Destroy state;
-	BlkValueFree(BlkValueRead(state, SUSPENDED_INPUT_TY_TEXT));
+[ STORED_INPUT_TY_Destroy state;
+	BlkValueFree(BlkValueRead(state, STORED_INPUT_TY_TEXT));
+];
+
+[ STORED_INPUT_TY_Set state win long_block;
+	! Write to the long block directly, without copy-on-write semantics
+	long_block = BlkValueGetLongBlock(state);
+	BlkValueWrite(long_block, STORED_INPUT_TY_FLAGS, win.text_input_status + (win.requesting_hyperlink * $100) + (win.requesting_mouse * $10000), true);
+	BlkValueWrite(long_block, STORED_INPUT_TY_ADDR, win.suspended_text_buffer_addr, true);
+	BlkValueWrite(long_block, STORED_INPUT_TY_MAXLEN, win.suspended_text_buffer_maxlen, true);
+	BlkValueCopy(BlkValueRead(long_block, STORED_INPUT_TY_TEXT, true), win.suspended_text_input);
+	return state;
 ];
 
 @h Glk events.
@@ -271,20 +291,23 @@ requested.
 ];
 
 [ glk_cancel_line_event win event
-		buf_type win_obj;
+		buf_type len win_obj;
 	@push event;
 	@push win;
 	@glk 209 2 0;
 	win_obj = FindGlkWindowFromRefNum(win);
 	if (win_obj) {
+		len = event-->2;
 		if (win_obj.text_input_status == INPUT_STATUS_ACTIVE_LINE_UNI) {
 			buf_type = 4;
+			win_obj.suspended_text_buffer_addr-->len = 0;
 		}
 		else {
 			buf_type = 1;
+			win_obj.suspended_text_buffer_addr->len = 0;
 		}
 		win_obj.text_input_status = win_obj.text_input_status + 4;
-		BlkValueMassCopyFromArray(win_obj.suspended_text_input, win_obj.suspended_text_buffer_addr, buf_type, event-->2);
+		BlkValueMassCopyFromArray(win_obj.suspended_text_input, win_obj.suspended_text_buffer_addr, buf_type, len + 1);
 	}
 	return 0;
 ];
@@ -384,7 +407,6 @@ input requests.
 ];
 
 [ ResumeTextInput win;
-	print win.text_input_status, "^";
 	switch (win.text_input_status) {
 		INPUT_STATUS_SUSPENDED_CHAR:
 			glk_request_char_event(win.glk_ref);
