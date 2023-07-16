@@ -214,7 +214,7 @@ to document all of that.
     while (~~done) {
         glk_select(gg_event);
         switch (gg_event-->0) {
-          5: ! evtype_Arrange
+          evtype_Arrange:
             if (nostat) {
                 glk_cancel_char_event(win);
                 res = $80000000;
@@ -222,16 +222,12 @@ to document all of that.
                 break;
             }
             DrawStatusLine();
-          2: ! evtype_CharInput
+          evtype_CharInput:
             if (gg_event-->1 == win) {
                 res = gg_event-->2;
                 done = true;
-                }
+            }
         }
-        if (ix == 2) {
-            res = gg_arguments-->0;
-            done = true;
-        } else if (ix == -1)  done = false;
     }
     if (gg_commandstr ~= 0 && gg_command_reading == false) {
         if (res < 32 || res >= 256 || (res == '\' or ' ')) {
@@ -258,15 +254,12 @@ to document all of that.
     return res;
 ];
 
-[ VM_KeyDelay tenths  key done ix;
+[ VM_KeyDelay tenths  key done;
     glk_request_char_event(gg_mainwin);
     glk_request_timer_events(tenths*100);
     while (~~done) {
         glk_select(gg_event);
-        if (ix == 2) {
-            key = gg_arguments-->0;
-            done = true;
-        } else if (ix >= 0 && gg_event-->0 == 1 or 2) {
+        if (gg_event-->0 == evtype_Timer or evtype_CharInput) {
             key = gg_event-->2;
             done = true;
         }
@@ -303,16 +296,14 @@ Constant UnicodeWhitespaceLen = 8;
     while (~~done) {
         glk_select(gg_event);
         switch (gg_event-->0) {
-          5: ! evtype_Arrange
+          evtype_Arrange:
             DrawStatusLine();
-          3: ! evtype_LineInput
+          evtype_LineInput:
             if (gg_event-->1 == gg_mainwin) {
                 a_buffer-->0 = gg_event-->2;
                 done = true;
             }
         }
-        if (ix == 2) done = true;
-        else if (ix == -1) done = false;
     }
     if (gg_commandstr ~= 0 && gg_command_reading == false) {
         glk_put_buffer_stream(gg_commandstr, a_buffer+WORDSIZE, a_buffer-->0);
