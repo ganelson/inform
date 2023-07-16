@@ -382,6 +382,31 @@ int LiteralPatterns::scale_factor(kind *K) {
 	return 1;
 }
 
+@ Where a kind defined by LPs can have only finitely many values, this returns
+the number of those values. (Finite other than in the sense that all memory
+is finite, that is.) We return 0 if it has an infinite range.
+
+Where the total domain size is so large that it cannot be held in a signed
+integer, we also return 0, because no good can possibly come of looping over
+so huge a space.
+
+=
+int LiteralPatterns::finite_extent(kind *K) {
+	literal_pattern *lp;
+	LITERAL_FORMS_LOOP(lp, K) {
+		if (lp->no_lp_elements > 0) {
+			long long int N = 1;
+			for (int i=0; i<lp->no_lp_elements; i++) {
+				literal_pattern_element *lpe = &(lp->lp_elements[i]);
+				if (lpe->element_range <= 0) N = 0;
+				N = N * ((long long int) lpe->element_range);
+			}
+			if ((N > 0) && (N <= 0x7FFFFFFF)) return (int) N;
+		}
+	}
+	return 0;
+}
+
 @h Optional break points.
 Sometimes the pattern allows later numerical elements to be skipped, in which
 case they are understood to be 0.

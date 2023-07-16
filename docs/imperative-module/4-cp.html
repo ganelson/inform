@@ -332,6 +332,14 @@ longer possible to know at compile-time.
 <span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">LiteralPatterns::finite_extent</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::inv</span><span class="plain-syntax">(</span><span class="identifier-syntax">INDIRECT0_BIP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">EmitCode::val_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">K_value</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">                    </span><span class="identifier-syntax">RTKindConstructors::random_value_fn_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-dtd.html#SP18" class="function-link"><span class="function-syntax">Deferrals::defer_random_match</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">desc</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no way to compile this without deferral"</span><span class="plain-syntax">);</span>

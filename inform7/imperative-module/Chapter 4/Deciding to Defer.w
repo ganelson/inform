@@ -546,6 +546,7 @@ int Deferrals::has_finite_domain(kind *K) {
 	if (K == NULL) return FALSE;
 	if (Kinds::Behaviour::is_object(K)) return TRUE;
 	if (Kinds::Behaviour::is_an_enumeration(K)) return TRUE;
+	if (LiteralPatterns::finite_extent(K) > 0) return TRUE;
 	if (Str::len(K->construct->loop_domain_schema) > 0) return TRUE;
 	return FALSE;
 }

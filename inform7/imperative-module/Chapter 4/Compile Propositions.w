@@ -247,6 +247,14 @@ void CompilePropositions::to_random_match(parse_node *desc) {
 			EmitCode::up();
 			return;
 		}
+		if (LiteralPatterns::finite_extent(K) > 0) {
+			EmitCode::inv(INDIRECT0_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value,
+					RTKindConstructors::random_value_fn_iname(K));
+			EmitCode::up();
+			return;
+		}
 	}
 	if (Deferrals::defer_random_match(desc)) return;
 	internal_error("no way to compile this without deferral");

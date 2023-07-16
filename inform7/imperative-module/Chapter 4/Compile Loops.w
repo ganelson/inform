@@ -236,15 +236,21 @@ int CompileLoops::schema(i6_schema *sch, kind *K) {
 					lname, RTKindConstructors::enumeration_size(K), lname);
 		} else {
 			Calculus::Schemas::modify(sch,
-				"for (*1=1: *1<=%d: *1++)",
-					RTKindConstructors::enumeration_size(K));
+				"for (*1=1: *1<=%d: *1++)", RTKindConstructors::enumeration_size(K));
 		}
 		return TRUE;
 	}
 	text_stream *p = K->construct->loop_domain_schema;
-	if (p == NULL) return FALSE;
-	Calculus::Schemas::modify(sch, "%S", p);
-	return TRUE;
+	if (p) {
+		Calculus::Schemas::modify(sch, "%S", p);
+		return TRUE;
+	}
+	int N = LiteralPatterns::finite_extent(K);
+	if (N > 0) {
+		Calculus::Schemas::modify(sch, "for (*1=0: *1<%d: *1++)", N);
+		return TRUE;
+	}
+	return FALSE;
 }
 
 @h Loops through list values.

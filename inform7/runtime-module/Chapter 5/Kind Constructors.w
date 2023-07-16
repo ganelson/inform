@@ -1107,13 +1107,25 @@ and |b| inclusive.
 			EmitCode::down();
 				EmitCode::inv(RETURN_BIP);
 				EmitCode::down();
+					int N = LiteralPatterns::finite_extent(K);
+					if (N > 0) {
+						EmitCode::inv(MINUS_BIP);
+						EmitCode::down();
+					}
 					EmitCode::inv(RANDOM_BIP);
 					EmitCode::down();
-						if (Kinds::Behaviour::is_quasinumerical(K))
+						if (N > 0) {
+							EmitCode::val_number((inter_ti) N);
+						} else if (Kinds::Behaviour::is_quasinumerical(K)) {
 							EmitCode::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
-						else
+						} else {
 							EmitCode::val_number((inter_ti) RTKindConstructors::enumeration_size(K));
+						}
 					EmitCode::up();
+					if (N > 0) {
+							EmitCode::val_number(1);
+						EmitCode::up();
+					}
 				EmitCode::up();
 			EmitCode::up();
 		EmitCode::up();
