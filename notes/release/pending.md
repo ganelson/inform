@@ -31,6 +31,9 @@ and now poses a moral rather than gender-based question.
 
 ## Bug fixes
 
+- Fix for Jira bug [I7-2384](https://inform7.atlassian.net/browse/I7-2384)
+	"Some Standard Rule responses use 'here' instead of '[here]', producing 'here' in cases that should be 'there'"
+	([PR#116](https://github.com/ganelson/inform/pull/116))
 - Fix for Jira bug [I7-2370](https://inform7.atlassian.net/browse/I7-2370)
 	"A template file ending with a comment and no line break breaks the next file"
 	(see [Inweb commit 901d125](https://github.com/ganelson/inform/commit/901d12582f1d7746046f11ecac6c2f357ddfac81))
