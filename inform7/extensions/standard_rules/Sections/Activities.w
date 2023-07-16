@@ -603,7 +603,7 @@ For printing the locale description (this is the you-can-also-see rule):
 						giving brief inventory information, tersely, not listing
 						concealed items, listing marked items only;
 				otherwise say "[a list of marked for listing things including contents]";
-				if the domain is the location, say " here" (F);
+				if the domain is the location, say " [here]" (F);
 				say ".[paragraph break]";
 				unfilter list recursion;
 			end the listing nondescript items activity with the domain;

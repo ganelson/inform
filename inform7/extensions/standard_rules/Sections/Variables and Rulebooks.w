@@ -680,8 +680,7 @@ I6 primitives in the template layer.
 
 =
 The adjust light rule is defined by Inter as "ADJUST_LIGHT_R" with
-	"[It] [are] [if story tense is present tense]now [end if]pitch dark in
-	[if story tense is present tense]here[else]there[end if]!" (A).
+	"[It] [are] [if story tense is present tense]now [end if]pitch dark in [here]!" (A).
 The advance time rule is defined by Inter as "ADVANCE_TIME_R".
 The generate action rule is defined by Inter as "GENERATE_ACTION_R" with
 	"(considering the first sixteen objects only)[command clarification break]" (A),
