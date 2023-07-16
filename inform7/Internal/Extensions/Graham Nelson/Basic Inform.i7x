@@ -80,7 +80,6 @@ Use predictable randomisation translates as the configuration flag FIX_RNG
 	in BasicInformKit.
 Use numbered rules translates as the configuration flag NUMBERED_RULES
 	in BasicInformKit.
-Use telemetry recordings translates as a compiler feature.
 Use no deprecated features translates as the configuration flag NO_DEPRECATED
 	in BasicInformKit.
 Use authorial modesty translates as the configuration flag AUTHORIAL_MODESTY

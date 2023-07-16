@@ -17,7 +17,6 @@ meaningful only for works of IF and are inert for Basic Inform projects.
 @e MEMORY_ECONOMY_UO
 @e NO_DEPRECATED_FEATURES_UO
 @e NUMBERED_RULES_UO
-@e TELEMETRY_RECORDING_UO
 @e SCORING_UO
 @e NO_SCORING_UO
 @e ENGINEERING_NOTATION_UO
@@ -38,15 +37,14 @@ need to translate this to other languages.
 	memory economy |                ==> { MEMORY_ECONOMY_UO, - }
 	no deprecated features |        ==> { NO_DEPRECATED_FEATURES_UO, - }
 	numbered rules |                ==> { NUMBERED_RULES_UO, - }
-	telemetry recordings |          ==> { TELEMETRY_RECORDING_UO, - }
 	scoring |                       ==> { SCORING_UO, - }
 	no scoring |                    ==> { NO_SCORING_UO, - }
 	engineering notation |          ==> { ENGINEERING_NOTATION_UO, - }
 	unabbreviated object names |    ==> { UNABBREVIATED_OBJECT_NAMES_UO, - }
 	no automatic plural synonyms |	==> { NO_AUTO_PLURAL_NAMES_UO, - }
 	index figure thumbnails |       ==> { INDEX_FIGURE_THUMBNAILS_UO, - }
-	fast route-finding |  		==> { FAST_ROUTE_FINDING_UO, - }
-	slow route-finding | 		==> { SLOW_ROUTE_FINDING_UO, - }
+	fast route-finding |  			==> { FAST_ROUTE_FINDING_UO, - }
+	slow route-finding | 			==> { SLOW_ROUTE_FINDING_UO, - }
 	dictionary resolution           ==> { DICTIONARY_RESOLUTION_UO, - }
 
 @ Some of the pragma-like settings are stored here:
@@ -113,9 +111,8 @@ void CompilationSettings::set(int U, int N, source_file *from) {
 		case NO_SCORING_UO:                    g->scoring_option_set = FALSE; break;
 		case NUMBERED_RULES_UO:                g->number_rules_in_index = TRUE; break;
 		case SCORING_UO:                       g->scoring_option_set = TRUE; break;
-		case TELEMETRY_RECORDING_UO:           ProblemBuffer::set_telemetry(); break;
 		case UNABBREVIATED_OBJECT_NAMES_UO:    g->use_exact_parsing_option = TRUE; break;
-                case NO_AUTO_PLURAL_NAMES_UO:          g->no_auto_plural_names = TRUE; break; 
+        case NO_AUTO_PLURAL_NAMES_UO:          g->no_auto_plural_names = TRUE; break; 
 		case FAST_ROUTE_FINDING_UO:            g->fast_route_finding = TRUE; break;
 		case SLOW_ROUTE_FINDING_UO:            g->slow_route_finding = TRUE; break;
 	}

@@ -99,10 +99,6 @@ text_stream *sigil_of_latest_unlinked_problem = NULL;
 
 @d ACT_ON_SIGIL
 	LOG("Problem %s issued from %s, line %d\n", sigil, file, line);
-	if (telemetry_recording) {
-		Telemetry::ensure_telemetry_file();
-		WRITE_TO(telmy, "Problem %s issued from %s, line %d\n", sigil, file, line);
-	}
 	if (sigil_of_latest_unlinked_problem == NULL)
 		sigil_of_latest_unlinked_problem = Str::new();
 	else

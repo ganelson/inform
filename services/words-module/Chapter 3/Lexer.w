@@ -658,6 +658,20 @@ be a bug, and Inform is bug-free, so it follows that it could never happen.
     	Lexer::lexer_problem_handler(I6_NEVER_ENDS_LEXERERROR, problem_source_description, NULL);
     lxs_kind_of_word = ORDINARY_KW;
 
+@ This slightly crudely (well, very crudely) detects whether the
+|---- DOCUMENTATION ----| tear-off marker has been reached in source text.
+
+=
+int Lexer::detect_tear_off(void) {
+    if (lexer_feed_started_at == -1) internal_error("no feed is active");
+    if (lexer_wordcount < lexer_feed_started_at + 3) return FALSE;
+    if (lw_array[lexer_wordcount-3].lw_identity != QUADRUPLEDASH_V) return FALSE; 
+    if (lw_array[lexer_wordcount-2].lw_identity != DOCUMENTATION_V) return FALSE; 
+    if (lw_array[lexer_wordcount-1].lw_identity != QUADRUPLEDASH_V) return FALSE;
+    lexer_wordcount -= 3;
+	return TRUE;
+}
+
 @ The feeder routine is required to send us a triple each time: |cr|
 must be a valid character (see above) and may not be |EOF|; |last_cr| must
 be the previous one or else perhaps |EOF| at the start of feed;

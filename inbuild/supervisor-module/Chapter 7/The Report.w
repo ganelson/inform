@@ -279,7 +279,7 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 		}
 
 @<Make documentation@> =
-	ExtensionPages::document_extension(Extensions::from_copy(C), FALSE, project);
+	ExtensionWebsite::document_extension(Extensions::from_copy(C), FALSE, project);
 	HTML_OPEN("p");
 	WRITE("Documentation about %S ", C->edition->work->title);
 	TEMPORARY_TEXT(link)

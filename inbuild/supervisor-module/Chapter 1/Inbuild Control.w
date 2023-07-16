@@ -574,9 +574,9 @@ pathname *Supervisor::installed_files(void) {
 	return Supervisor::default_internal_path();
 }
 
-@ As noted above, the transient area is used for ephemera such as dynamically
-written documentation and telemetry files. |-transient| sets it, but otherwise
-the external nest is used.
+@ The transient area can be used for build files for project files, where
+there's no build directory provided by the project bundle. |-transient| sets
+it, but otherwise the external nest is used.
 
 =
 pathname *Supervisor::transient(void) {

@@ -252,6 +252,14 @@ far as the user is concerned it opens the example and goes there.
 	<if-start-of-paragraph> table ...
 
 @h Setting the body text.
+Okay, so we can be in any one of these states:
+
+@e WAITING_DSBY from 1
+@e PARAGRAPH_DSBY
+@e CODE_DSBY
+@e QUOTE_DSBY
+
+@
 
 @d EDOC_ALL_EXAMPLES_CLOSED -1 /* do not change this without also changing Extensions */
 @d EDOC_FRAGMENT_ONLY -2 /* must differ from this and from all example variant numbers */
@@ -262,14 +270,15 @@ int DocumentationRenderer::set_body_text(wording W, OUTPUT_STREAM,
 	int heading_count = 0, chapter_count = 0, section_count = 0, example_count = 0;
 	int mid_example = FALSE, skipping_text_of_an_example = FALSE,
 		start_table_next_line = FALSE, mid_I7_table = FALSE, row_of_table_is_empty = FALSE,
-		mid_displayed_source_text = FALSE, indentation = 0, close_I6_position = -1;
+		indentation = 0, close_I6_position = -1;
+	int dsby_state = WAITING_DSBY;
 	LOOP_THROUGH_WORDING(i, W) {
 		int edhl, asterisks;
 		wording NW = EMPTY_WORDING, RUBW = EMPTY_WORDING;
 		if (Lexer::word(i) == PARBREAK_V) { /* the lexer records this to mean a paragraph break */
-			@<Handle a paragraph break@>;
 			while (Lexer::word(i) == PARBREAK_V) i++;
 			if (i>Wordings::last_wn(W)) break; /* treat multiple paragraph breaks as one */
+			@<Enter waiting state@>;
 			@<Determine indentation of new paragraph@>;
 			if (indentation == 0 && DocumentationRenderer::extension_documentation_heading(Wordings::from(W, i), &edhl, &NW)) {
 				heading_count++;
@@ -298,15 +307,16 @@ int DocumentationRenderer::set_body_text(wording W, OUTPUT_STREAM,
 			}
 		}
 		if (skipping_text_of_an_example) continue;
-
+		
 		@<Handle a line or column break, if there is one@>;
+		@<Enter paragraph state@>;
 		@<Transcribe an ordinary word of the documentation@>;
 		if (close_I6_position == i) WRITE(" -)");
 	}
+	@<Enter waiting state@>; // New
+
 	if (mid_example) @<Close the previous example's text@>;
-	if (example_which_is_open != EDOC_FRAGMENT_ONLY) {
-		@<Handle a paragraph break@>;
-	}
+//	if (example_which_is_open != EDOC_FRAGMENT_ONLY) @<Enter waiting state@>;
 	return example_count;
 }
 
@@ -315,17 +325,34 @@ A paragraph break might mean the end of displayed matter (and if so, then also
 the end of any table being displayed). Otherwise, it just means a paragraph
 break, and a chance to restore our tired variables.
 
-@<Handle a paragraph break@> =
-	if (mid_displayed_source_text)  {
-		HTML::end_span(OUT);
-		if (mid_I7_table) @<End I7 table in extension documentation@>;
-		HTML_CLOSE("blockquote");
-	}	else {
-		HTML_CLOSE("p");
+@<Enter waiting state@> =
+	switch (dsby_state) {
+		case WAITING_DSBY: break;
+		case PARAGRAPH_DSBY: HTML_CLOSE("p");
+			mid_I7_table = FALSE;
+			break;
+		case CODE_DSBY:
+			HTML::end_span(OUT);
+			if (mid_I7_table) @<End I7 table in extension documentation@>;
+			HTML_CLOSE("blockquote");
+			mid_I7_table = FALSE;
+			break;
 	}
-	WRITE("\n");
-	HTML_OPEN("p");
-	mid_displayed_source_text = FALSE; mid_I7_table = FALSE;
+	dsby_state = WAITING_DSBY;
+
+@<Enter paragraph state@> =
+	if (dsby_state != PARAGRAPH_DSBY) {
+		@<Enter waiting state@>;
+		dsby_state = PARAGRAPH_DSBY;
+	}
+
+@<Enter code state@> =
+	if (dsby_state != CODE_DSBY) {
+		@<Enter waiting state@>;
+		dsby_state = CODE_DSBY;
+		HTML_OPEN("blockquote");
+		HTML::begin_span(OUT, I"indexdullblue");
+	}
 
 @ The indentation setting is made here because a tab anywhere else does
 not mean a paragraph has been indented. Here |i| is at the number of the
@@ -406,8 +433,12 @@ take us past the titling line and into the table entries, which we will
 need to achieve with an HTML |<table>|.
 
 @<Handle the start of a line which is indented@> =
-	int j;
-	if (mid_displayed_source_text) {
+	int starting_new_code = FALSE;
+	if (dsby_state != CODE_DSBY) starting_new_code = TRUE;
+	@<Enter code state@>;
+	if ((starting_new_code) && (<table-sentence>(Wordings::from(W, i))))
+		start_table_next_line = TRUE;
+	if (starting_new_code == FALSE) {
 		if (start_table_next_line) {
 			start_table_next_line = FALSE;
 			mid_I7_table = TRUE;
@@ -417,15 +448,9 @@ need to achieve with an HTML |<table>|.
 			else HTML_TAG("br");
 		}
 		if (mid_I7_table) row_of_table_is_empty = TRUE;
-	} else {
-		HTML_OPEN("blockquote");
-		HTML::begin_span(OUT, I"indexdullblue");
-		mid_displayed_source_text = TRUE;
-		if (<table-sentence>(Wordings::from(W, i)))
-			start_table_next_line = TRUE;
 	}
 	indentation--;
-	for (j=0; j<indentation; j++) WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
+	for (int j=0; j<indentation; j++) WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
 
 @h Typesetting the headings.
 That is thankfully all for the tormented logic of all those changes of state:

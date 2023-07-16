@@ -10,7 +10,6 @@ Preliminaries
 
 Chapter 1: Starting Up
 	Problems Module
-	Telemetry
 
 Chapter 2: Problems
 	Problems, Level 0

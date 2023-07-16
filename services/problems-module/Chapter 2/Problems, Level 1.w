@@ -147,16 +147,19 @@ void ProblemBuffer::output_problem_buffer_to(OUTPUT_STREAM, int indentation) {
 	FORMAT_CONSOLE_PROBLEMS_CALLBACK(&sig_mode, &break_width, &fallback);
 	#endif
 	if (OUT == problems_file) html_flag = TRUE;
+
 	if (sig_mode == FALSE)
 		for (int k=0; k<indentation; k++) { WRITE("  "); line_width+=2; }
 	TEMPORARY_TEXT(first)
 	TEMPORARY_TEXT(second)
 	TEMPORARY_TEXT(third)
 	@<Extract details of the first source code reference, if there is one@>;
-	for (int i=0, L=Str::len(PBUFF); i<L; i++) {
+
+	int i = 0;
+	@<In HTML mode, convert drawing-your-attention arrows@>;
+	@<In SIG mode, convert drawing-your-attention arrows@>;
+	for (; i<Str::len(PBUFF); i++) {
 		int c = Str::get_at(PBUFF, i);
-		@<In HTML mode, convert drawing-your-attention arrows@>;
-		@<In SIG mode, convert drawing-your-attention arrows@>;
 		@<In plain text mode, remove bold and italic HTML tags@>;
 		if ((html_flag == FALSE) && (c == SOURCE_REF_CHAR))
 			@<Issue plain text paraphrase of source reference@>
@@ -164,6 +167,7 @@ void ProblemBuffer::output_problem_buffer_to(OUTPUT_STREAM, int indentation) {
 	}
 	if (html_flag) HTML_CLOSE("p")
 	else WRITE("\n");
+
 	DISCARD_TEXT(first)
 	DISCARD_TEXT(second)
 	DISCARD_TEXT(third)
@@ -189,6 +193,8 @@ marker,
 is converted into a suitable CSS-styled HTML paragraph with hanging
 indentation. And similarly for |>++>|, used to mark continuations.
 
+Note that in HTML, this always opens one paragraph tag.
+
 @<In HTML mode, convert drawing-your-attention arrows@> =
 	if ((html_flag) && (Str::includes_wide_string_at(PBUFF, L">-->", i))) {
 		if (problem_count > problem_count_at_last_in) {
@@ -197,27 +203,23 @@ indentation. And similarly for |>++>|, used to mark continuations.
 		HTML_OPEN_WITH("p", "class=\"hang\"");
 		if (currently_issuing_a_warning) WRITE("<b>Warning.</b> ");
 		else WRITE("<b>Problem.</b> ");
-		i+=3; continue;
-	}
-	if (Str::includes_wide_string_at(PBUFF, L">++>", i)) {
+		i = 4;
+	} else if (Str::includes_wide_string_at(PBUFF, L">++>", i)) {
 		if (html_flag) HTML_OPEN_WITH("p", "class=\"in2\"") else WRITE("  ");
-		i+=3; continue;
-	}
-	if (Str::includes_wide_string_at(PBUFF, L">--->", i)) {
+		i = 4;
+	} else if (Str::includes_wide_string_at(PBUFF, L">--->", i)) {
 		if (html_flag) {
 			HTML_CLOSE("p"); HTML_TAG("hr");
 		}
 		problem_count_at_last_in = problem_count+1;
-		i+=4; continue;
-	}
-	if (Str::includes_wide_string_at(PBUFF, L">+++>", i)) {
+		i = 5;
+	} else if (Str::includes_wide_string_at(PBUFF, L">+++>", i)) {
 		if (html_flag) HTML_OPEN_WITH("p", "halftightin3\"") else WRITE("  ");
-		i+=4; continue;
-	}
-	if (Str::includes_wide_string_at(PBUFF, L">++++>", i)) {
+		i = 5;
+	} else if (Str::includes_wide_string_at(PBUFF, L">++++>", i)) {
 		if (html_flag) HTML_OPEN_WITH("p", "class=\"tightin3\"") else WRITE("  ");
-		i+=5; continue;
-	}
+		i = 6;
+	} else if (html_flag) HTML_OPEN("p");
 
 @<In SIG mode, convert drawing-your-attention arrows@> =
 	if ((sig_mode) && (Str::includes_wide_string_at(PBUFF, L">-->", i))) {
@@ -230,7 +232,7 @@ indentation. And similarly for |>++>|, used to mark continuations.
 		WRITE("\033[31m");
 		WRITE("problem: ");
 		WRITE("\033[0m");
-		i+=3; continue;
+		i = 4;
 	}
 
 @ The problem messages are put together (by Level 2 below) in a plain text
@@ -241,7 +243,7 @@ out when writing to plain text format.
 @<In plain text mode, remove bold and italic HTML tags@> =
 	if (html_flag == FALSE) {
 		if (c == PROTECTED_LT_CHAR) {
-			while ((i<L) && (Str::get_at(PBUFF, i) != PROTECTED_GT_CHAR)) i++;
+			while ((i<Str::len(PBUFF)) && (Str::get_at(PBUFF, i) != PROTECTED_GT_CHAR)) i++;
 			continue;
 		}
 		if ((c == '<') &&
@@ -262,7 +264,7 @@ out when writing to plain text format.
 				(Str::includes_wide_string_at_insensitive(PBUFF, L"</a>", i)) ||
 				(Str::includes_wide_string_at_insensitive(PBUFF, L"</span>", i)) ||
 				(Str::includes_wide_string_at_insensitive(PBUFF, L"</font>", i)))) {
-			while ((i<L) && (Str::get_at(PBUFF, i) != '>')) i++;
+			while ((i<Str::len(PBUFF)) && (Str::get_at(PBUFF, i) != '>')) i++;
 			continue;
 		}
 	}
@@ -330,14 +332,9 @@ our choice.
 
 =
 text_stream *redirected_problem_text = NULL; /* Current destination of problem message text */
-void ProblemBuffer::redirect_problem_stream(text_stream *S) {
+text_stream *ProblemBuffer::redirect_problem_stream(text_stream *S) {
 	redirected_problem_text = S;
-}
-
-int telemetry_recording = FALSE;
-
-void ProblemBuffer::set_telemetry(void) {
-	telemetry_recording = TRUE;
+	return S;
 }
 
 void ProblemBuffer::output_problem_buffer(int indentation) {
@@ -349,12 +346,9 @@ void ProblemBuffer::output_problem_buffer(int indentation) {
 		WRITE_TO(DL, "\n");
 		ProblemBuffer::output_problem_buffer_to(DL, indentation);
 		WRITE_TO(DL, "\n");
-		if (telemetry_recording) {
-			WRITE_TO(telmy, "\n");
-			ProblemBuffer::output_problem_buffer_to(telmy, indentation);
-			WRITE_TO(telmy, "\n");
-		}
-	} else ProblemBuffer::output_problem_buffer_to(redirected_problem_text, indentation);
+	} else {
+		ProblemBuffer::output_problem_buffer_to(redirected_problem_text, indentation);
+	}
 }
 
 @h Problems report and index.

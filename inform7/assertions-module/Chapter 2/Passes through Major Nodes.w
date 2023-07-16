@@ -251,32 +251,18 @@ void MajorNodes::extra_sentence(parse_node *new) {
 }
 
 @ |TRACE_NT| nodes result from asterisked sentences; this is a debugging feature of
-Inform. An asterisk on its own toggles logging of work on sentences. An asterisk
-followed by double-quoted text is a note for the telemetry file.
+Inform. An asterisk on its own toggles logging of work on sentences.
 
 =
 @<Pass through a TRACE node@> =
-	if (Wordings::length(Node::get_text(p)) > 1) {
-		int tr = telemetry_recording;
-		telemetry_recording = TRUE;
-		Telemetry::write_to_telemetry_file(
-			Lexer::word_text(Wordings::last_wn(Node::get_text(p))));
-		telemetry_recording = FALSE;
-		StandardProblems::sentence_problem(Task::syntax_tree(),
-			_p_(PM_TelemetryAccepted),
-			"that's a message for the Author, not me",
-			"so I'll note it down in the Telemetry file (if you're keeping one.)");
-		 telemetry_recording = tr;
-	} else {
-		SyntaxTree::toggle_trace(Task::syntax_tree());
-		text_stream *pass_name = NULL;
-		switch (global_pass_state.pass) {
-			case 0: pass_name = I"Pre-Pass"; break;
-			case 1: pass_name = I"Pass 1"; break;
-			case 2: pass_name = I"Pass 2"; break;
-		}
-		Log::tracing_on(SyntaxTree::is_trace_set(Task::syntax_tree()), pass_name);
+	SyntaxTree::toggle_trace(Task::syntax_tree());
+	text_stream *pass_name = NULL;
+	switch (global_pass_state.pass) {
+		case 0: pass_name = I"Pre-Pass"; break;
+		case 1: pass_name = I"Pass 1"; break;
+		case 2: pass_name = I"Pass 2"; break;
 	}
+	Log::tracing_on(SyntaxTree::is_trace_set(Task::syntax_tree()), pass_name);
 
 @
 

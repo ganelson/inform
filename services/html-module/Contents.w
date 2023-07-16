@@ -16,7 +16,6 @@ Chapter 2: Intranet
 	Inform Pages
 	Source Links
 	Paste Buttons
-	Documentation Renderer
 	Installed Files
 	Documentation References
 	Localisation

@@ -14,7 +14,7 @@ typedef struct inform_extension {
 	struct inbuild_copy *as_copy;
 	struct wording body_text; /* Body of source text supplied in extension, if any */
 	int body_text_unbroken; /* Does this contain text waiting to be sentence-broken? */
-	struct wording documentation_text; /* Documentation supplied in extension, if any */
+	struct compiled_documentation *documentation; /* or |NULL| if none supplied */
 	int documentation_sought; /* Has it yet been looked for? */
 	int standard; /* the (or perhaps just a) Standard Rules extension */
 	int authorial_modesty; /* Do not credit in the compiled game */
@@ -74,7 +74,7 @@ void Extensions::scan(inbuild_copy *C) {
 @<Initialise the extension docket@> =
 	E->body_text = EMPTY_WORDING;
 	E->body_text_unbroken = FALSE;
-	E->documentation_text = EMPTY_WORDING;
+	E->documentation = NULL;
 	E->documentation_sought = FALSE;
 	E->standard = FALSE;
 	E->authorial_modesty = FALSE;
@@ -777,6 +777,9 @@ void Extensions::read_source_text_for(inform_extension *E) {
 	SVEXPLAIN(1, "(from %f)\n", F);
 	DISCARD_TEXT(synopsis)
 	if (E->read_into_file) {
+		E->documentation =
+			DocumentationCompiler::compile(
+				TextFromFiles::torn_off_documentation(E->read_into_file), E);
 		E->read_into_file->your_ref = STORE_POINTER_inbuild_copy(E->as_copy);
 		@<Break the text into sentences@>;
 		E->body_text_unbroken = FALSE;
@@ -810,38 +813,19 @@ then its sentences will go to the extension's own tree.
 
 @<Break the text into sentences@> =
 	wording EXW = E->read_into_file->text_read;
-	if (Wordings::nonempty(EXW))
-		@<Break the extension's text into body and documentation@>;
+	E->body_text = EXW;
+	E->body_text_unbroken = TRUE; /* mark this to be sentence-broken */
 	inform_project *project = E->read_into_project;
 	if (project) E->syntax_tree = project->syntax_tree;
 	Sentences::break_into_extension_copy(E->syntax_tree,
 		E->body_text, E->as_copy, project);
 	E->body_text_unbroken = FALSE;
 
-@  If an extension file contains the special text (outside literal mode) of
-|---- Documentation ----| then this is taken as the end of the Inform source,
-and the beginning of a snippet of documentation about the extension; text from
-that point on is saved until later, but not broken into sentences for the
-parse tree, and it is therefore invisible to the rest of Inform. If this
-division line is not present then the extension contains only body source
-and no documentation.
-
-=
-<extension-body> ::=
-	*** ---- documentation ---- ... |  ==> { TRUE, - }
-	...                                ==> { FALSE, - }
-
-@<Break the extension's text into body and documentation@> =
-	<extension-body>(EXW);
-	E->body_text = GET_RW(<extension-body>, 1);
-	if (<<r>>) E->documentation_text = GET_RW(<extension-body>, 2);
-	E->body_text_unbroken = TRUE; /* mark this to be sentence-broken */
-
 @ In directory extensions, documentation can be stored separately:
 
 =
-wording Extensions::get_documentation_text(inform_extension *E) {
-	if (E == NULL) return EMPTY_WORDING;
+compiled_documentation *Extensions::get_documentation(inform_extension *E) {
+	if (E == NULL) return NULL;
 	Copies::get_source_text(E->as_copy); /* in the unlikely event this has not happened yet */
 	if (E->documentation_sought == FALSE) {
 		if (E->as_copy->location_if_path) {
@@ -851,22 +835,30 @@ wording Extensions::get_documentation_text(inform_extension *E) {
 		}
 		E->documentation_sought = TRUE;
 	}
-	return E->documentation_text;
+	return E->documentation;
 }
 
 @<Fetch wording from stand-alone file@> =
-	if (Wordings::nonempty(E->documentation_text)) {
+	if (E->documentation == NULL) {
 		TEMPORARY_TEXT(error_text)
 		WRITE_TO(error_text,
 			"this extension provides documentation both as a file and in its source");
 		Copies::attach_error(E->as_copy, CopyErrors::new_T(EXT_MISWORDED_CE, -1, error_text));
 		DISCARD_TEXT(error_text)					
 	} else {
-		int state = SourceText::for_documentation_only(TRUE);
-		source_file *sf = SourceText::read_file(E->as_copy, F, NULL, FALSE);
-		if (sf) E->documentation_text = sf->text_read;
-		SourceText::for_documentation_only(state);
+		TEMPORARY_TEXT(temp)
+		TextFiles::read(F, FALSE, "unable to read file of extension documentation", TRUE,
+			&Extensions::read_extension_file_helper, NULL, temp);
+		E->documentation = DocumentationCompiler::compile(temp, E);
+		DISCARD_TEXT(temp)
 	}
+
+@ =
+void Extensions::read_extension_file_helper(text_stream *text, text_file_position *tfp,
+	void *v_state) {
+	text_stream *contents = (text_stream *) v_state;
+	WRITE_TO(contents, "%S\n", text);
+}
 
 @ When the extension source text was read from its |source_file|, we
 attached a reference to say which |inform_extension| it was, and here we

@@ -179,14 +179,7 @@ intercepted later on when the problems file is written out as HTML (see
 
 @ When a portion of text has been buffered which Level 2 wants to get shot of,
 it calls down to //ProblemBuffer::output_problem_buffer// to send this to a
-file. By default, the text is actually sent three ways: to the standard
-console output, to the debugging log (if there is one), and to the telemetry
-file (if there is one). But this can be diverted with
-//ProblemBuffer::redirect_problem_stream//, telling it to send problem text
-just one way.
-
-@h Telemetry.
-The //Telemetry// system isn't really to do with problems, except that it
-can log them; it is an optional facility to log activity of a tool or app.
-This is locally stored rather than sent over any wires, so perhaps there's
-no "tele-" about it.
+file. By default, the text is actually sent two ways: to the standard
+console output, and to the debugging log (if there is one). But this can be
+diverted with //ProblemBuffer::redirect_problem_stream//, telling it to send
+problem text just one way.

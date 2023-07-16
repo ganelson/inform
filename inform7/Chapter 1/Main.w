@@ -43,7 +43,6 @@ int Main::deputy(int argc, char *argv[]) {
 		inform_project *proj = NULL;
 		@<Find the project identified for us by Inbuild@>;
 		@<Open the debugging log and the problems report@>;
-		@<Name the telemetry@>;
 		@<Build the project@>;
 	}
 
@@ -144,29 +143,6 @@ but we won't assume that. Remember, //supervisor// knows best.
 		}
 
 		HTML::set_link_abbreviation_path(Projects::path(proj));
-	}
-
-@ Telemetry is not as sinister as it sounds: the app isn't sending data out
-on the Internet, only (if requested) logging what it's doing to a local file.
-This was provided for classroom use, so that teachers can see what their
-students have been getting stuck on. In any case, it needs to be activated
-with a use option, so by default this file will never be written.
-
-@<Name the telemetry@> =
-	pathname *T = Supervisor::transient();
-	if (T) {
-		pathname *P = Pathnames::down(T, I"Telemetry");
-		if (Pathnames::create_in_file_system(P)) {
-			TEMPORARY_TEXT(leafname_of_telemetry)
-			int this_month = the_present->tm_mon + 1;
-			int this_day = the_present->tm_mday;
-			int this_year = the_present->tm_year + 1900;
-			WRITE_TO(leafname_of_telemetry,
-				"Telemetry %04d-%02d-%02d.txt", this_year, this_month, this_day);
-			filename *F = Filenames::in(P, leafname_of_telemetry);
-			Telemetry::locate_telemetry_file(F);
-			DISCARD_TEXT(leafname_of_telemetry)
-		}
 	}
 
 @ The compiler is now ready for use. We ask //supervisor// to go ahead and

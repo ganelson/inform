@@ -122,10 +122,7 @@ might well not be running in the Inform application, but only on the
 command line -- deserves the truth.
 
 @<Issue problem summaries for a run without problems@> =
-	ProblemBuffer::redirect_problem_stream(problems_file);
-	text_stream *OUT = problems_file;
-	HTML_OPEN("p");
-	
+	text_stream *OUT = ProblemBuffer::redirect_problem_stream(problems_file);
 	if (Problems::warnings_occurred()) {
 		Problems::issue_problem_begin(Task::syntax_tree(), "**");
 		Problems::issue_problem_segment(
@@ -141,21 +138,9 @@ command line -- deserves the truth.
 		"brought up to date.");
 	Problems::issue_problem_end();
 	UsingProblems::outcome_image_tail(problems_file);
-	HTML_CLOSE("p");
 
-	if (telemetry_recording) {
-		Telemetry::ensure_telemetry_file();
-		ProblemBuffer::redirect_problem_stream(telmy);
-		Problems::issue_problem_begin(Task::syntax_tree(), "**");
-		Problems::issue_problem_segment(
-			"The %5-word source text has successfully been translated "
-			"into a world with %1 %2 and %3 %4, and the index has been "
-			"brought up to date.");
-		Problems::issue_problem_end();
-		WRITE_TO(telmy, "\n");
-	}
-	ProblemBuffer::redirect_problem_stream(STDOUT);
-	WRITE_TO(STDOUT, "\n");
+	OUT = ProblemBuffer::redirect_problem_stream(STDOUT);
+	WRITE("\n");
 	Problems::issue_problem_begin(Task::syntax_tree(), "**");
 	Problems::issue_problem_segment(
 		"The %5-word source text has successfully been translated. "
@@ -165,9 +150,9 @@ command line -- deserves the truth.
 	ProblemBuffer::redirect_problem_stream(NULL);
 
 	ProgressBar::final_state_of_progress_bar();
-	text_stream *STATUS = ProgressBar::begin_outcome();
-	if (STATUS) {
-		WRITE_TO(STATUS, "Translation succeeded: %d room%s, %d thing%s",
+	OUT = ProgressBar::begin_outcome();
+	if (OUT) {
+		WRITE("Translation succeeded: %d room%s, %d thing%s",
 			rooms, (rooms==1)?"":"s",
 			things, (things==1)?"":"s");
 		ProgressBar::end_outcome();

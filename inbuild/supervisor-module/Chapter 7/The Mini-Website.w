@@ -36,12 +36,12 @@ void ExtensionWebsite::update(inform_project *proj) {
 
 	inform_extension *E;
 	LOOP_OVER_LINKED_LIST(E, inform_extension, proj->extensions_included)
-		ExtensionPages::document_extension(E, FALSE, proj);
+		ExtensionWebsite::document_extension(E, FALSE, proj);
 
 	linked_list *census = Projects::perform_census(proj);
 	inbuild_search_result *res;
 	LOOP_OVER_LINKED_LIST(res, inbuild_search_result, census)
-		ExtensionPages::document_extension(Extensions::from_copy(res->copy), FALSE, proj);
+		ExtensionWebsite::document_extension(Extensions::from_copy(res->copy), FALSE, proj);
 }
 
 @ The top-level index page is at this filename.
@@ -135,3 +135,32 @@ filename *ExtensionWebsite::page_filename_inner(inform_project *proj, inbuild_ed
 	return F;
 }
 
+@ And this is where extension documentation is kicked off.
+
+=
+void ExtensionWebsite::document_extension(inform_extension *E, int force_update,
+	inform_project *proj) {
+	if (E == NULL) internal_error("no extension");
+	if (proj == NULL) internal_error("no project");
+	if (E->documented_on_this_run) return;
+	inbuild_edition *edition = E->as_copy->edition;
+	inbuild_work *work = edition->work;
+	if (LinkedLists::len(E->as_copy->errors_reading_source_text) > 0) {
+		LOG("Not writing documentation on %X because it has copy errors\n", work);
+	} else {
+		compiled_documentation *doc = Extensions::get_documentation(E);
+		LOG("Writing documentation on %X\n", work);
+		inbuild_edition *edition = E->as_copy->edition;
+		filename *F = ExtensionWebsite::cut_way_for_page(proj, edition, -1);
+		if (F == NULL) return;
+		pathname *P = Filenames::up(F);
+		if (Pathnames::create_in_file_system(P) == 0) return;
+		TEMPORARY_TEXT(details);
+		#ifdef CORE_MODULE
+		IndexExtensions::document_in_detail(details, E);
+		#endif
+		DocumentationCompiler::render(P, doc, details);
+		DISCARD_TEXT(details);
+	}
+	E->documented_on_this_run = TRUE;
+}

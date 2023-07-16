@@ -25,16 +25,12 @@ code is general-purpose.
 By contrast, the //html// module is very much a part of the Inform compiler
 and provides highly Inform-specific functions needed to make the intranet-like
 miniature websites it generates on the fly -- problem pages, the Index, the
-extensions documentation.
+extensions documentation. In particular, it offers:
 
 (a) clickable links to positions in source text, opening the Source panel
 in the Inform GUI apps as needed -- see //SourceLinks::link//;
 (b) paste buttons which, when clicked, insert text into the Source panel,
 or which open certain files or folders -- see //Paste Buttons//;
-(c) renders Inform extension documentation text to HTML -- see
-//DocumentationRenderer::set_body_text// for the body of an extension or of one
-of its examples, and //DocumentationRenderer::table_of_contents// for the TOC at
-the top.
 
 @h Custom HTML link protocols.
 This seems a useful place to document something which the Inform GUI apps
