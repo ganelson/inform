@@ -1,0 +1,171 @@
+
+
+
+
+Time signatures test...
+time signature: 3/4 time
+"time signature of Chopin's Mazurka in F Sharp Minor" = time signature: 3/4 time
+
+Grid references test...
+"GR" = grid reference: SP 51014 07322
+"northing part of GR" = length: 7.322km
+"easting part of GR" = length: 51.014km
+"distance as the crow flies from the Radcliffe Camera to Queen's Lane Coffee House" = length: 250.85654m
+"distance as the crow flies from the Radcliffe Camera to Iffley Lock" = length: 2.92761km
+
+Agents test...
+agent: 007
+"troublesome agent" = agent: 007
+agent: 0011
+
+Colours test...
+css colour: #1D_2F_FF
+css colour: #01_12_0C
+alt-colour: 0x123456
+"QQ" = alt-colour: 0x14C702
+
+Chess test...
+chessboard square: c4
+chessboard square: d7
+"chessboard square with file part the d-file rank part the sixth rank" = chessboard square: d6
+"rank part of e7" = chessboard rank: seventh rank
+a1 a2 a3 a4 a5 a6 a7 a8 b1 b2 b3 b4 b5 b6 b7 b8 c1 c2 c3 c4 c5 c6 c7 c8 d1 d2 d3 d4 d5 d6 d7 d8 e1 e2 e3 e4 e5 e6 e7 e8 f1 f2 f3 f4 f5 f6 f7 f8 g1 g2 g3 g4 g5 g6 g7 g8 h1 h2 h3 h4 h5 h6 h7 h8 ...and that's all.
+a1 a2 a3 a4 a5 a6 a7 a8 b1 b2 b3 b4 b5 b6 b7 b8 c1 c2 c3 c4 c5 c6 c7 c8 d1 d2 d3 d4 d5 d6 d7 d8 e1 e2 e3 e4 e5 e6 e7 e8 f1 f2 f3 f4 f5 f6 f7 f8 g1 g2 g3 g4 g5 g6 g7 g8 h1 h2 h3 h4 h5 h6 h7 h8 ...and that's also all.
+"list of white chessboard squares" = list of chessboard squares: {a2, a4, a6, a8, b1, b3, b5, b7, c2, c4, c6, c8, d1, d3, d5, d7, e2, e4, e6, e8, f1, f3, f5, f7, g2, g4, g6, g8, h1, h3, h5, h7}
+"a random chessboard square" = chessboard square: f1
+
+Stellar type test...
+stellar type: O00
+stellar type: O0Ia
+stellar type: K9Iab
+"class part of K9Iab" = temperature class: K-type
+"temperature part of K9Iab" = real number: 9.0
+"luminosity part of K9Iab" = luminosity class: intermediate-size luminous supergiant
+"stellar type with class part A-type temperature part 4.0 luminosity part subgiant" = stellar type: A4IV
+Annie Jump Cannon classifies Beta Aquilae as G8IV. "Hm, yes - subgiant."
+Annie Jump Cannon classifies Herschel's Garnet as M2Ia. "Hm, yes - luminous supergiant."
+"number of stellar types" = number: 700
+"a random stellar type" = stellar type: M0VI
+"a random stellar type" = stellar type: K7IV
+"a random stellar type" = stellar type: A2V
+"a random stellar type" = stellar type: O7VI
+"a random stellar type" = stellar type: F1VII
+"a random stellar type" = stellar type: B0VII
+"a random stellar type" = stellar type: O6V
+"a random stellar type" = stellar type: A4V
+"a random stellar type" = stellar type: G9IV
+"a random stellar type" = stellar type: K3Ib
+
+Tomb wall test...
+"number of tomb wall patterns" = number: 256
+tomb wall pattern: ▙▛▜▟
+tomb wall pattern: ▛▛▛▛
+▙▙▙▙ ▙▙▙▛ ▙▙▙▜ ▙▙▙▟ ▙▙▛▙ ▙▙▛▛ ▙▙▛▜ ▙▙▛▟ ▙▙▜▙ ▙▙▜▛ ▙▙▜▜ ▙▙▜▟ ▙▙▟▙ ▙▙▟▛ ▙▙▟▜ ▙▙▟▟ ▙▛▙▙ ▙▛▙▛ ▙▛▙▜ ▙▛▙▟ ▙▛▛▙ ▙▛▛▛ ▙▛▛▜ ▙▛▛▟ ▙▛▜▙ ▙▛▜▛ ▙▛▜▜ ▙▛▜▟ ▙▛▟▙ ▙▛▟▛ ▙▛▟▜ ▙▛▟▟ ▙▜▙▙ ▙▜▙▛ ▙▜▙▜ ▙▜▙▟ ▙▜▛▙ ▙▜▛▛ ▙▜▛▜ ▙▜▛▟ ▙▜▜▙ ▙▜▜▛ ▙▜▜▜ ▙▜▜▟ ▙▜▟▙ ▙▜▟▛ ▙▜▟▜ ▙▜▟▟ ▙▟▙▙ ▙▟▙▛ ▙▟▙▜ ▙▟▙▟ ▙▟▛▙ ▙▟▛▛ ▙▟▛▜ ▙▟▛▟ ▙▟▜▙ ▙▟▜▛ ▙▟▜▜ ▙▟▜▟ ▙▟▟▙ ▙▟▟▛ ▙▟▟▜ ▙▟▟▟ ▛▙▙▙ ▛▙▙▛ ▛▙▙▜ ▛▙▙▟ ▛▙▛▙ ▛▙▛▛ ▛▙▛▜ ▛▙▛▟ ▛▙▜▙ ▛▙▜▛ ▛▙▜▜ ▛▙▜▟ ▛▙▟▙ ▛▙▟▛ ▛▙▟▜ ▛▙▟▟ ▛▛▙▙ ▛▛▙▛ ▛▛▙▜ ▛▛▙▟ ▛▛▛▙ ▛▛▛▛ ▛▛▛▜ ▛▛▛▟ ▛▛▜▙ ▛▛▜▛ ▛▛▜▜ ▛▛▜▟ ▛▛▟▙ ▛▛▟▛ ▛▛▟▜ ▛▛▟▟ ▛▜▙▙ ▛▜▙▛ ▛▜▙▜ ▛▜▙▟ ▛▜▛▙ ▛▜▛▛ ▛▜▛▜ ▛▜▛▟ ▛▜▜▙ ▛▜▜▛ ▛▜▜▜ ▛▜▜▟ ▛▜▟▙ ▛▜▟▛ ▛▜▟▜ ▛▜▟▟ ▛▟▙▙ ▛▟▙▛ ▛▟▙▜ ▛▟▙▟ ▛▟▛▙ ▛▟▛▛ ▛▟▛▜ ▛▟▛▟ ▛▟▜▙ ▛▟▜▛ ▛▟▜▜ ▛▟▜▟ ▛▟▟▙ ▛▟▟▛ ▛▟▟▜ ▛▟▟▟ ▜▙▙▙ ▜▙▙▛ ▜▙▙▜ ▜▙▙▟ ▜▙▛▙ ▜▙▛▛ ▜▙▛▜ ▜▙▛▟ ▜▙▜▙ ▜▙▜▛ ▜▙▜▜ ▜▙▜▟ ▜▙▟▙ ▜▙▟▛ ▜▙▟▜ ▜▙▟▟ ▜▛▙▙ ▜▛▙▛ ▜▛▙▜ ▜▛▙▟ ▜▛▛▙ ▜▛▛▛ ▜▛▛▜ ▜▛▛▟ ▜▛▜▙ ▜▛▜▛ ▜▛▜▜ ▜▛▜▟ ▜▛▟▙ ▜▛▟▛ ▜▛▟▜ ▜▛▟▟ ▜▜▙▙ ▜▜▙▛ ▜▜▙▜ ▜▜▙▟ ▜▜▛▙ ▜▜▛▛ ▜▜▛▜ ▜▜▛▟ ▜▜▜▙ ▜▜▜▛ ▜▜▜▜ ▜▜▜▟ ▜▜▟▙ ▜▜▟▛ ▜▜▟▜ ▜▜▟▟ ▜▟▙▙ ▜▟▙▛ ▜▟▙▜ ▜▟▙▟ ▜▟▛▙ ▜▟▛▛ ▜▟▛▜ ▜▟▛▟ ▜▟▜▙ ▜▟▜▛ ▜▟▜▜ ▜▟▜▟ ▜▟▟▙ ▜▟▟▛ ▜▟▟▜ ▜▟▟▟ ▟▙▙▙ ▟▙▙▛ ▟▙▙▜ ▟▙▙▟ ▟▙▛▙ ▟▙▛▛ ▟▙▛▜ ▟▙▛▟ ▟▙▜▙ ▟▙▜▛ ▟▙▜▜ ▟▙▜▟ ▟▙▟▙ ▟▙▟▛ ▟▙▟▜ ▟▙▟▟ ▟▛▙▙ ▟▛▙▛ ▟▛▙▜ ▟▛▙▟ ▟▛▛▙ ▟▛▛▛ ▟▛▛▜ ▟▛▛▟ ▟▛▜▙ ▟▛▜▛ ▟▛▜▜ ▟▛▜▟ ▟▛▟▙ ▟▛▟▛ ▟▛▟▜ ▟▛▟▟ ▟▜▙▙ ▟▜▙▛ ▟▜▙▜ ▟▜▙▟ ▟▜▛▙ ▟▜▛▛ ▟▜▛▜ ▟▜▛▟ ▟▜▜▙ ▟▜▜▛ ▟▜▜▜ ▟▜▜▟ ▟▜▟▙ ▟▜▟▛ ▟▜▟▜ ▟▜▟▟ ▟▟▙▙ ▟▟▙▛ ▟▟▙▜ ▟▟▙▟ ▟▟▛▙ ▟▟▛▛ ▟▟▛▜ ▟▟▛▟ ▟▟▜▙ ▟▟▜▛ ▟▟▜▜ ▟▟▜▟ ▟▟▟▙ ▟▟▟▛ ▟▟▟▜ ▟▟▟▟ .... is the full set.
+
+Thai number test...
+thai number: ๒๓
+thai number: ๗๓๒๑
+"value part of ๗๓๒๑" = number: 7321
+-17 = ลบ๑๗.
+-2147483648 = ลบ๒๑๔๗๔๘๓๖๔๘.
+-2147483648 = ๒๑๔๗๔๘๓๖๔๘.
+90125 = ๙๐๑๒๕.
+
+Callsign test...
+tail number: Aircraft G-ERTI
+text: Golf Echo Romeo Tango India.
+
+
+Number base printing test...
+"Q" = number: 5173548
+You notice that 5173548 is the same number as hexadecimal 4EF12C.
+number: 54
+text: 110110.
+number: 164
+text: A4.
+number: 127
+text: 177.
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Lab
+You can see Chopin's Mazurka in F Sharp Minor here.
+
+>(Testing.)
+
+>[1] test grid
+(Testing.)
+
+>[2] visit sp 51014 07322
+You walk 7.40594km to SP 51014 07322, but there's nothing much there, so you sidle a further 467.87283m over to St Hugh's College instead, at SP 50825 07750.
+
+St Hugh's College
+
+>[3] visit sp 51735 06319
+You walk 1.69584km to SP 51735 06319, which takes you neatly to...
+
+Queen's Lane Coffee House
+
+>[4] visit sp 51735 06319
+You're there already, near enough.
+
+>[5] test ph
+(Testing.)
+
+>[6] dip litmus in ph 1
+The litmus turns the right colour for pH 1.
+
+>[7] dip litmus in ph 3
+The litmus turns the right colour for pH 3.
+
+>[8] paint #1_4_20
+You paint the room in #01_04_20.
+
+>[9] test colours
+(Testing.)
+
+>[10] paint #1_4_20
+You paint the room in #01_04_20.
+
+>[11] paint #1d_2f_ff
+You paint the room in #1D_2F_FF.
+
+>[12] apaint 0x4a5f11
+You paint the room in 0x4A5F11.
+
+>[13] test chess
+(Testing.)
+
+>[14] press a1
+You press square a1.
+
+>[15] press a0
+You can't see any such thing.
+
+>[16] press h8
+You press square h8.
+
+>[17] press c3
+You press square c3.
+
+>[18] press i3
+You can't see any such thing.
+
+>[19] test stars
+(Testing.)
+
+>[20] observe k9iab
+You observe a star of type K9Iab.
+
+>[21] observe o00
+You observe a star of type O00.
+
+>[22] observe m9vii
+You observe a star of type M9VII.
+
+>[23] observe f2ia
+You observe a star of type F2Ia.
+
+>Are you sure you want to quit? 

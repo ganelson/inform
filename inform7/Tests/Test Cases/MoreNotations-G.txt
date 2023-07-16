@@ -1,0 +1,302 @@
+Test me with "test grid / test ph / paint #1_4_20 / test colours / test chess / test stars".
+
+Lab is a room.
+
+Include literal notations in the debugging log.
+
+Chapter 1 - Units
+
+Section 0 - Existing stuff with integer units
+
+Acidity is a kind of value. pH 7 specifies an acidity.
+
+Litmus-testing is an action applying to one acidity.
+
+Understand "dip litmus in [acidity]" as litmus-testing.
+
+Carry out litmus-testing: say "The litmus turns the right colour for [acidity understood]."
+
+Test ph with "dip litmus in PH 1 / dip litmus in ph 3".
+
+Section 1 - Time Signatures
+
+Time signature is a kind of value. 1/99 time specifies a time signature with parts beats and bar length (without leading zeros).
+
+A musical score is a kind of thing. A musical score has a time signature. A musical score usually has time signature 4/4 time. In the Lab is a musical score called Chopin's Mazurka in F Sharp Minor. The Mazurka has time signature 3/4 time.
+
+When play begins:
+	say "Time signatures test...";
+	showme 3/4 time;
+	showme the time signature of Chopin's Mazurka in F Sharp Minor;
+
+Section 2 - Grid References
+
+Length is a kind of value. 1.0m specifies a length. 1.0km specifies a length scaled up by 1000. Area is a kind of value. 1.0 sq m specifies an area. A length times a length specifies an area.
+
+Grid reference is a kind of value. SP <easting> <northing> specifies a grid reference with parts easting (45000 to 54999, corresponding to lengths) and northing (5 digits, 3000 to 8999, corresponding to lengths).
+
+A room has a grid reference called map position.
+
+Radcliffe Camera is a room with map position SP 51495 06392.
+Queen's Lane Coffee House is a room with map position SP 51735 06319.
+Iffley Lock is a room with map position SP 52460 03628.
+Wytham Woods is a room with map position SP 46227 08076.
+St Hugh's College is a room with map position SP 50825 07750.
+
+To decide what length is the grid distance from (GR1 - grid reference) to (GR2 - grid reference):
+	let 𝚫n be the northing part of GR1 minus the northing part of GR2;
+	let 𝚫e be the easting part of GR1 minus the easting part of GR2;
+	let D be the real square root of ((𝚫e times 𝚫e) plus (𝚫n times 𝚫n));
+	decide on D.
+
+To decide what length is the distance as the crow flies from (R1 - room) to (R2 - room):
+	let GR1 be the map position of R1;
+	let GR2 be the map position of R2;
+	decide on the grid distance from GR1 to GR2.
+
+When play begins:
+	say "Grid references test...";
+	let GR be SP 51014 07322;
+	showme GR;
+	showme the northing part of GR;
+	showme the easting part of GR;
+	showme the distance as the crow flies from the Radcliffe Camera to Queen's Lane Coffee House;
+	showme the distance as the crow flies from the Radcliffe Camera to Iffley Lock;
+
+Visiting is an action applying to one grid reference.
+
+Check visiting:
+	let D be the grid distance from the map position of the location of the actor to the grid reference understood;
+	if D < 5m, say "You're there already, near enough." instead.
+
+Carry out visiting:
+	let D be the grid distance from the map position of the location of the actor to the grid reference understood;
+	say "You walk [D] to [grid reference understood]";
+	let the closest room be a room;
+	let the closest approach be -1m;
+	repeat with R running through rooms which are not the location of the actor:
+		let D be the grid distance from the grid reference understood to the map position of R;
+		if the closest approach < 0m or the closest approach > D:
+			now the closest approach is D;
+			now the closest room is R;
+	if the closest approach < 5m:
+		say ", which takes you neatly to...";
+	otherwise:
+		say ", but there's nothing much there, so you sidle a further [closest approach] over to [the closest room] instead, at [map position of the closest room].";
+	now the actor is in the closest room.
+
+Understand "visit [grid reference]" as visiting.
+
+Test grid with "visit SP 51014 07322 / visit SP 51735 06319 / visit SP 51735 06319".
+
+Section 3 - Agents
+
+An agent is a kind of value. <"00">7 specifies an agent.
+
+The troublesome agent is always 007.
+
+When play begins:
+	say "Agents test...";
+	showme 007;
+	showme the troublesome agent;
+	showme 0011;
+
+Section 4 - Colours
+
+Alt-colour is a kind of value.
+<"0x"><red level><green level><blue level> specifies an alt-colour with parts red level (2 hexadecimal digits), green level (2 hexadecimal digits) and blue level (2 hexadecimal digits).
+
+CSS colour is a kind of value. #FF_FF_FF specifies a CSS colour in hexadecimal with parts red level (with leading zeros, 0 to 255), green level (with leading zeros) and blue level (with leading zeros).
+Dummy unit is a kind of value. D99_99 specifies a dummy unit.
+
+Painting is an action applying to one CSS colour.
+
+Carry out painting: say "You paint the room in [CSS colour understood]."
+
+Understand "paint [css colour]" as painting.
+
+Apainting is an action applying to one alt-colour.
+
+Carry out apainting: say "You paint the room in [alt-colour understood]."
+
+Understand "apaint [alt-colour]" as apainting.
+
+When play begins:
+	say "Colours test...";
+	showme #1d_2F_FF;
+	showme #1_12_c;
+	showme 0x123456;
+	let QQ be the alt-colour with red level part 20 green level part 199 blue level part 2;
+	showme QQ.
+
+Test colours with "paint #1_4_20 / paint #1d_2F_FF / apaint 0x4a5F11".
+
+Section 5 - Chess notation
+
+A chessboard file is a kind of value. The chessboard files are
+the a-file, the b-file, the c-file, the d-file, the e-file, the f-file,
+the g-file and the h-file.
+
+A chessboard rank is a kind of value. The chessboard ranks are
+the first rank, the second rank, the third rank, the fourth rank, 
+the fifth rank, the sixth rank, the seventh rank, the eighth rank.
+
+A chessboard square is a kind of value.
+<file><rank> specifies a chessboard square with parts file
+(values "a, b, c, d, e, f, g, h", corresponding to chessboard files) and
+rank (1 to 8, corresponding to chessboard ranks).
+
+Definition: a chessboard square is white rather than black:
+	let F be the file part of it;
+	let file parity be whether or not F is the a-file or F is the c-file or F is the e-file or F is the g-file;
+	let R be the rank part of it;
+	let rank parity be whether or not R is the first rank or R is the third rank or R is the fifth rank or R is the seventh rank;
+	if file parity is rank parity, no;
+	yes.
+
+When play begins:
+	say "Chess test...";
+	showme c4;
+	showme d7;
+	showme the chessboard square with file part the d-file rank part the sixth rank;
+	showme the rank part of e7;
+	repeat with S running from a1 to h8:
+		say "[S] ";
+	say "...and that's all.";
+	repeat with S running through chessboard squares:
+		say "[S] ";
+	say "...and that's also all.";
+	showme the list of white chessboard squares;
+	showme a random chessboard square.
+
+Square pressing is an action applying to one chessboard square.
+
+Carry out square pressing: say "You press square [chessboard square understood]."
+
+Understand "press [chessboard square]" as square pressing.
+
+Test chess with "press a1 / press a0 / press h8 / press c3 / press i3".
+
+Section 6 - Stellar types
+
+A temperature class is a kind of value. The temperature classes are O-type, B-type, A-type, F-type, G-type, K-type and M-type.
+
+A luminosity class is a kind of value. The luminosity classes are hypergiant, luminous supergiant, intermediate-size luminous supergiant, less luminous supergiant, bright giant, giant, subgiant, main-sequence, subdwarf and white dwarf.
+
+A stellar type is a kind of value.
+<class><temperature><luminosity> specifies a stellar type with parts class (values "O, B, A, F, G, K, M", corresponding to temperature classes), temperature (1 decimal digit, corresponding to a real number) and luminosity (values "0, Ia, Iab, Ib, II, III, IV, V, VI, VII", corresponding to luminosity classes).
+
+A star is a kind of thing. A star has a stellar type. Some stars are defined by the Table of Astral Survey Work.
+
+Table of Astral Survey Work
+name	stellar type
+S Monocerotis	O7V
+Rigel	B8Ia
+Deneb	A2Ia
+Zeta Leonis	F0III
+Beta Aquilae	G8IV
+Epsilon Eridani	K2V
+Herschel's Garnet	M2Ia
+
+To classify (star in question - a star):
+	say "Annie Jump Cannon classifies [star in question] as [stellar type of the star in question]. 'Hm, yes - [luminosity part of stellar type of the star in question].'"
+
+When play begins:
+	say "Stellar type test...";
+	showme O00;
+	showme O0Ia;
+	showme K9Iab;
+	showme the class part of K9Iab;
+	showme the temperature part of K9Iab;
+	showme the luminosity part of K9Iab;
+	showme the stellar type with class part A-type temperature part 4.0 luminosity part subgiant;
+	classify Beta Aquilae;
+	classify Herschel's Garnet;
+	showme the number of stellar types;
+	repeat with X running from 1 to 10:
+		showme a random stellar type;
+
+Observing is an action applying to one stellar type.
+
+Carry out observing: say "You observe a star of type [stellar type understood]."
+
+Understand "observe [stellar type]" as observing.
+
+Test stars with "observe K9Iab / observe O00 / observe M9VII / observe F2Ia".
+
+Section 7 - Shaded patterns
+
+A tomb wall pattern is a kind of value.
+<pattern number> specifies a tomb wall pattern with parts pattern number (4 base 4 digits, digits "▙▛▜▟").
+
+When play begins:
+	say "Tomb wall test...";
+	showme the number of tomb wall patterns;
+	showme ▙▛▜▟;
+	showme ▛▛▛▛;
+	repeat with S running from ▙▙▙▙ to ▟▟▟▟:
+		say "[S] ";
+	say ".... is the full set."
+
+Section 8 - Thai numerals
+
+A Thai number is a kind of value.
+<value> specifies a Thai number with parts value (digits "๐๑๒๓๔๕๖๗๘๙").
+
+To say (N - a number) in unsigned Thai digits:
+	say the Thai number with value part N.
+	
+To say (N - a number) in Thai digits:
+	if N is negative:
+		say "ลบ";
+		if N is -2147483648:
+			say the Thai number with value part 214748364;
+			say the Thai number with value part 8;
+		otherwise:
+			say the Thai number with value part (0 minus N);
+	otherwise:
+		say the Thai number with value part N.
+
+When play begins:
+	say "Thai number test...";
+	showme ๒๓;
+	showme ๗๓๒๑;
+	showme the value part of ๗๓๒๑;
+	say "-17 = [-17 in Thai digits].";
+	say "-2147483648 = [-2147483648 in Thai digits].";
+	say "-2147483648 = [-2147483648 in unsigned Thai digits].";
+	say "90125 = [90125 in Thai digits]."
+
+Section 9 - Aircraft tail numbers
+
+The international aviation alphabet is a kind of value. Alpha, Bravo, Charlie, Delta, Echo, Foxtrot, Golf, Hotel, India, Juliet, Kilo, Lima, Mike, November, Oscar, Papa, Quebec, Romeo, Sierra, Tango, Uniform, Victor, Whiskey, X-ray, Yankee, Zulu is the international aviation alphabet.
+
+A tail number is a kind of value.
+Aircraft <country>-<first><second><third><fourth> specifies a tail number with parts country (values "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z", corresponding to the international aviation alphabet), first (values "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z", corresponding to the international aviation alphabet), second (values "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z", corresponding to the international aviation alphabet), third (values "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z", corresponding to the international aviation alphabet) and fourth (values "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z", corresponding to the international aviation alphabet).
+
+To say callsign of (T - a tail number):
+	say "[country part of T] [first part of T] [second part of T] [third part of T] [fourth part of T]."
+
+When play begins:
+	say "Callsign test...";
+	[showme C_F;
+	showme C_X-S;
+	showme C_X-ST;
+	showme C_X-STU;]
+	showme Aircraft G-ERTI;
+	showme "[callsign of Aircraft G-ERTI]";
+
+
+Chapter 2 - Printing in number bases
+
+When play begins:
+	say "Number base printing test...";
+	let Q be hexadecimal 4EF12C;
+	showme Q;
+	say "You notice that [Q] is the same number as hexadecimal [Q in hexadecimal].";
+	showme binary 110110;
+	showme "[binary 110110 in binary].";
+	showme hexadecimal A4;
+	showme "[hexadecimal A4 in hexadecimal].";
+	showme octal 177;
+	showme "[octal 177 in octal].";
