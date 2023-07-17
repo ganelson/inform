@@ -1,6 +1,7 @@
-[ExtensionIndex::] Index Pages.
+[ExtensionIndex::] Extensions Index Page.
 
-To generate the two top-level pages in the extension mini-website.
+To generate the index page for the extension mini-website, which is the home
+page displayed in the Extensions tab for the Inform GUI apps.
 
 @h Writing the extensions home page.
 There were once two of these, but now there's just one.
@@ -52,24 +53,15 @@ void ExtensionIndex::write(inform_project *proj) {
 		}
 
 @<Write the body of the HTML@> =
+	ExtensionWebsite::add_home_breadcrumb(I"Extensions in this Project");
+	ExtensionWebsite::titling_and_navigation(OUT, I"Those installed and those used");
+
 	HTML::begin_html_table(OUT, NULL, TRUE, 0, 4, 0, 0, 0);
 	HTML::first_html_column(OUT, 0);
 	HTML_TAG_WITH("img",
 		"src='inform:/doc_images/extensions@2x.png' border=0 width=150 height=150");
 	HTML::next_html_column(OUT, 0);
 
-	HTML_OPEN_WITH("div", "class=\"headingpanellayout headingpanelalt\"");
-	HTML_OPEN_WITH("div", "class=\"headingtext\"");
-	HTML::begin_span(OUT, I"headingpaneltextalt");
-	WRITE("Extensions in this Project");
-	HTML::end_span(OUT);
-	HTML_CLOSE("div");
-	HTML_OPEN_WITH("div", "class=\"headingrubric\"");
-	HTML::begin_span(OUT, I"headingpanelrubricalt");
-	WRITE("Those installed and those used");
-	HTML::end_span(OUT);
-	HTML_CLOSE("div");
-	HTML_CLOSE("div");
 	@<Display the location of installed extensions@>;
 	HTML::end_html_row(OUT);
 	HTML::end_html_table(OUT);

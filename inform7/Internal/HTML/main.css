@@ -344,6 +344,38 @@ li.unleaded:before {
 	content: "";
 }
 
+/* Used for the contents pages in extensions indexes: */
+
+ul.extensioncontents {
+	padding: 0;
+	margin-top: 4px;
+	overflow-x: hidden;
+	list-style: none
+}
+
+li.exco1 {
+	margin-top: 4px;
+	padding-left: 0px;
+	margin-bottom: 6px;
+}
+
+li.exco2 {
+	padding-left: 20px;
+	margin-bottom: 6px;
+}
+
+li.exco3 {
+	padding-left: 40px;
+	margin-bottom: 6px;
+}
+
+p.extensionsubheading {
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	margin-top: 12px;
+	margin-bottom: 4px;
+}
+
 /* On Registry index pages (such as the Public Library), these are used for
 download buttons and the like: */
 

@@ -1,12 +1,12 @@
 adjective: 140 items
 article: 2 items
-noun: 2396 items
+noun: 2395 items
 pronoun: 8 items
 preposition: 274 items
 determiner: 22 items
 verb: 109 items
 verb_form: 388 items
-total in all categories: 3339
+total in all categories: 3338
 
 adjective: 'even'
 adjective: 'odd'
@@ -657,7 +657,6 @@ noun: proper: 'engineering notation'
 noun: proper: 'printed engineering notation'
 noun: proper: 'predictable randomisation'
 noun: proper: 'numbered rules'
-noun: proper: 'telemetry recordings'
 noun: proper: 'no deprecated features'
 noun: proper: 'authorial modesty'
 noun: proper: 'command line echoing'

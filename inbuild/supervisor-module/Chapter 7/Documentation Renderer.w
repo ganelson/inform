@@ -2,490 +2,500 @@
 
 To render a passage of extension documentation as HTML.
 
-@h Disclaimer.
-The following code originated as a port of a simplified version of an early
-form of the Inform documentation tool //indoc//: in general, that will do a
-better all-round job, but this cut-down version is adequate for what we use
-it for, which is to make extension documentation pages. Those use a much
-simplified range of syntax compared to the full gamut known to //indoc//.
-
-@h Links and leafnames.
-Matters are complicated because an extension typically has not only a
-run of source text, but also up to 26 examples: suppose there are $X$
-of these. The extension then needs to produce $X+1$ pages of HTML: the
-primary one, which just has the body text, and then $X$ variants which
-duplicate the primary one except that one of the examples is opened up
-to reveal its content. Each of these pages will have $X$ anchor points
-named |#eg1| up to |#egX|, for the positions of the examples.
-
-The pages will typically be filenamed with the extension title, followed
-by |-eg1|, |-eg2|, ..., in the case of the example variants, and then
-|.html|.
-
-The following routine prints the leafname part of an HTML reference to the
-extension documentation, at anchor point |to_example_anchor| (or if 0 then
-at the top) of the version with example |to_example_variant| opened (or if
-0 then the original with all examples closed). What complicates it is that
-the base leafname might be any of the above variant filenames, so we may
-need to strip off an existing ending. For instance, if we are in example 2
-and want to link to anchor 5 on example 4, the base leafname might be
-|Gusher-eg2| and we need to remove the |-eg2| and replace with |-eg4|
-before we can add the |#eg5|.
-
-This will fail if anyone's extension has a title ending in |-eg| followed
-by a number. I believe I can live with the guilt.
+@h Textual renderer.
+This very cheap renderer can be used to debug trees for logging purposes:
 
 =
-void DocumentationRenderer::href_of_example(OUTPUT_STREAM, text_stream *base_leafname,
-	int to_example_variant, int to_example_anchor) {
-	for (int i=0, L = Str::len(base_leafname); i<L; i++) {
-		if ((Str::includes_wide_string_at(base_leafname, L"-eg", i)) &&
-			(Characters::isdigit(Str::get_at(base_leafname, i+3)))) break;
-		PUT(Str::get_at(base_leafname, i));
-	}
-	if (to_example_variant > 0) WRITE("-eg%d", to_example_variant);
-	WRITE(".html");
-	if (to_example_anchor > 0) WRITE("#eg%d", to_example_anchor);
+void DocumentationRenderer::as_plain_text(text_stream *OUT, heterogeneous_tree *T) {
+	WRITE("%S\n", T->type->name);
+	WRITE("--------\n");
+	INDENT;
+	Trees::traverse_from(T->root, &DocumentationRenderer::textual_visit, (void *) DL, 0);
+	OUTDENT;
+	WRITE("--------\n");
 }
 
-@ The extension documentation text can optionally include section and
-chapter headings, and also examples. Here we parse the opening of a paragraph
-to see if it might be a heading. For instance, a paragraph consisting of
-
->> Section: Black Gold
-
-matches successfully and sets the level to 2 and the name to the word range
-"Black Gold".
-
-=
-<extension-documentation-heading> ::=
-	chapter : ... |  ==> { 1, - }
-	chapter - ... |  ==> { 1, - }
-	section : ... |  ==> { 2, - }
-	section - ...    ==> { 2, - }
-
-@ =
-int DocumentationRenderer::extension_documentation_heading(wording W, int *level, wording *HW) {
-	if (<extension-documentation-heading>(W)) {
-		*level = <<r>>;
-		W = Wordings::trim_first_word(Wordings::trim_first_word(W));
-		int end = Wordings::first_wn(W);
-		while ((end<=Wordings::last_wn(W)) && (Lexer::word(end) != PARBREAK_V)) end++;
-		end--;
-		if (end > Wordings::last_wn(W)) return FALSE;
-		*HW = Wordings::up_to(W, end);
-		return TRUE;
-	}
-	return FALSE;
+int DocumentationRenderer::textual_visit(tree_node *N, void *state, int L) {
+	text_stream *OUT = (text_stream *) state;
+	for (int i=0; i<L; i++) WRITE("    ");
+	if (N->type == heading_TNT) {
+		cdoc_heading *H = RETRIEVE_POINTER_cdoc_heading(N->content);
+		WRITE("Heading H%d level %d: '%S - %S'\n", H->ID, H->level, H->count, H->name);
+	} else if (N->type == example_TNT) {
+		cdoc_example *E = RETRIEVE_POINTER_cdoc_example(N->content);
+		WRITE("Example %c: '%S' (%d star(s))\n", E->letter, E->name, E->star_count);
+	} else if (N->type == passage_TNT) {
+		WRITE("Passage\n");
+	} else if (N->type == paragraph_TNT) {
+		cdoc_paragraph *E = RETRIEVE_POINTER_cdoc_paragraph(N->content);
+		WRITE("Paragraph: %d chars\n", Str::len(E->content));
+		for (int i=0; i<L+1; i++) { INDENT; }
+		WRITE("%S\n", E->content);
+		for (int i=0; i<L+1; i++) { OUTDENT; }
+	} else if (N->type == code_sample_TNT) {
+		WRITE("Code sample\n");
+	} else if (N->type == code_line_TNT) {
+		cdoc_code_line *E = RETRIEVE_POINTER_cdoc_code_line(N->content);
+		WRITE("Code line: ");
+		for (int i=0; i<E->indentation; i++) WRITE("    ");
+		WRITE("%S\n", E->content);
+	} else WRITE("Unknown node\n");
+	return TRUE;
 }
 
-@ And here we do the same to identify an example, which has to satisfy a
-more exacting specification: a paragraph in the shape
-
->> Example: *** Gelignite Anderson - A Tale of the Texas Oilmen
-
-which would result in the name being set to the range "Gelignite Anderson",
-an asterisk count of 3, and the rubric being "A Tale of the Texas Oilmen".
-
-Note the unusual use of the Preform escape character |\| below: this is
-because |***| is a reserved token in Preform, whereas we want the literal
-text of three asterisks in a row.
+@h Website renderer.
+We will make several HTML files, but only one at a time:
 
 =
-<extension-example-header> ::=
-	example : <row-of-asterisks> ... - ... |  ==> { pass 1 }
-	example - <row-of-asterisks> ... - ... |  ==> { pass 1 }
-	example : ... - ...                    |  ==> { 0, - }
-	example - ... - ...                       ==> { 0, - }
+text_stream DOCF_struct;
+text_stream *DOCF = NULL;
 
-<row-of-asterisks> ::=
-	* |     ==> { 1, - }
-	** |    ==> { 2, - }
-	\*** |  ==> { 3, - }
-	****    ==> { 4, - }
-
-@ =
-int DocumentationRenderer::extension_documentation_example(wording W,
-	int *asterisks, wording *egn, wording *egr) {
-	if (<extension-example-header>(W)) {
-		wording NW = GET_RW(<extension-example-header>, 1);
-		wording RW = GET_RW(<extension-example-header>, 2);
-		int end = Wordings::first_wn(RW);
-		while ((end <= Wordings::last_wn(RW)) &&
-			((Lexer::word(end) == PARBREAK_V) == FALSE)) end++;
-		end--;
-		if (end > Wordings::last_wn(RW)) return FALSE;
-
-		/* a successful match has now been made */
-		*asterisks = <<r>>;
-		*egn = NW;
-		*egr = Wordings::up_to(RW, end);
-		return TRUE;
-	}
-	return FALSE;
+text_stream *DocumentationRenderer::open_subpage(pathname *P, text_stream *leaf) {
+	if (P == NULL) return STDOUT;
+	if (DOCF) internal_error("nested DC writes");
+	filename *F = Filenames::in(P, leaf);
+	DOCF = &DOCF_struct;
+	if (STREAM_OPEN_TO_FILE(DOCF, F, UTF8_ENC) == FALSE)
+		return NULL; /* if we lack permissions, e.g., then write no documentation */
+	return DOCF;
 }
 
-@h The table of contents.
-The user sees chapters as A subheadings, numbered upwards from 1, and sees
-sections as B subheadings, numbered from 1 within each chapter. It is legal to
-have only A subheadings; only B subheadings; or a mixture of the two.
+void DocumentationRenderer::close_subpage(void) {
+	if (DOCF == NULL) internal_error("no DC page open");
+	if (DOCF != STDOUT) STREAM_CLOSE(DOCF);
+	DOCF = NULL;
+}
 
-If a scan can find any headings at all then we will wish to typeset a table of
-contents up front. The following routine looks for what material might go into
-a TOC, and sets one if it finds anything: otherwise, it sets nothing and has
-no effect. Because of the compulsory paragraph break following the divider
-line in the extension, we can safely assume that every headng will follow a
-paragraph break word, even one right at the top of the extension's
-documentation.
-
-(Examples are included in the table of contents only if they occur after the
-first heading, which I think is reasonable enough: there can be at most 26 per
-extension, enabling them to be lettered as Example A to Example Z.)
+@ Our tree is turned into a tiny website, with a single index page for everything
+except the examples, and then up to 26 pages holding the content of examples A to Z.
 
 =
-void DocumentationRenderer::table_of_contents(wording W, OUTPUT_STREAM, text_stream *base_leafname) {
-	int heading_count = 0, chapter_count = 0, section_count = 0, example_count = 0, indentation = 0;
-	LOOP_THROUGH_WORDING(i, W) {
-		int edhl, asterisks;
-		wording NW = EMPTY_WORDING, RUBW = EMPTY_WORDING;
-		if (Lexer::word(i) == PARBREAK_V) {
-			while (Lexer::word(i) == PARBREAK_V) i++;
-			if (i>Wordings::last_wn(W)) break;
-			@<Determine indentation of new paragraph@>;
-			if (indentation == 0 && DocumentationRenderer::extension_documentation_heading(
-				Wordings::from(W, i), &edhl, &NW)) {
-				heading_count++;
-				if (heading_count == 1) {
-					HTML_CLOSE("p");
-					HTML_TAG("hr"); /* ruled line at top of TOC */
-					HTML_OPEN("p");
-				}
-				if (edhl == 1) {
-					chapter_count++; section_count = 0;
-					if (chapter_count > 1) HTML_TAG("br"); /* skip a line between chapters */
-				}
-				if (edhl == 2) section_count++;
-				@<Typeset the table of contents entry for this heading@>;
-				i = Wordings::last_wn(NW); continue;
-			}
-			if ((heading_count > 0) && (example_count < 26) &&
-				(DocumentationRenderer::extension_documentation_example(
-					Wordings::from(W, i), &asterisks, &NW, &RUBW))) {
-				if (++example_count == 1) {
-					HTML_TAG("br");
-					HTML_OPEN("b");
-					WRITE("Examples");
-					HTML_CLOSE("b");
-					HTML_TAG("br");
-				}
-				@<Typeset the table of contents entry for this example@>;
-				i = Wordings::last_wn(RUBW); continue;
-			}
+void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd, text_stream *extras) {
+	if (cd) {
+		text_stream *OUT = DocumentationRenderer::open_subpage(P, I"index.html");
+		DocumentationRenderer::render_index_page(OUT, cd, extras);
+		DocumentationRenderer::close_subpage();
+		for (int eg=1; eg<=cd->total_examples; eg++) {
+			TEMPORARY_TEXT(leaf)
+			WRITE_TO(leaf, "eg%d.html", eg);
+			OUT = DocumentationRenderer::open_subpage(P, leaf);
+			DocumentationRenderer::render_example_page(OUT, cd, eg);
+			DocumentationRenderer::close_subpage();
+			DISCARD_TEXT(leaf)
+		}
+		for (int ch=1; ch<=cd->total_headings[1]; ch++) {
+			TEMPORARY_TEXT(leaf)
+			WRITE_TO(leaf, "chapter%d.html", ch);
+			OUT = DocumentationRenderer::open_subpage(P, leaf);
+			DocumentationRenderer::render_chapter_page(OUT, cd, ch);
+			DocumentationRenderer::close_subpage();
+			DISCARD_TEXT(leaf)
 		}
 	}
-	if (heading_count > 0) {
+}
+
+@ =
+void DocumentationRenderer::render_index_page(OUTPUT_STREAM, compiled_documentation *cd,
+	text_stream *extras) {
+	DocumentationRenderer::render_header(OUT, cd->title, NULL);
+	if (cd->associated_extension) {
+		DocumentationRenderer::render_extension_details(OUT, cd->associated_extension);
+	}
+
+	HTML_TAG("hr");
+	if (cd->total_headings[1] > 0) { /* there are chapters */
+		DocumentationRenderer::render_toc(OUT, cd);
+		HTML_OPEN("em");
+		DocumentationRenderer::render_text(OUT, I"Click on Chapter, Section or Example numbers to read");
+		HTML_CLOSE("em");
+		if (cd->tree->root->child->type == passage_TNT) {
+			HTML_TAG("hr");
+			HTML_OPEN_WITH("p", "class=\"extensionsubheading\"");
+			WRITE("introduction");
+			HTML_CLOSE("p");
+			for (tree_node *C = cd->tree->root->child; C; C = C->next) {
+				if (C->type == heading_TNT) {
+					cdoc_heading *E = RETRIEVE_POINTER_cdoc_heading(C->content);
+					if (E->level == 1) break;
+				}
+				DocumentationRenderer::render_body(OUT, cd, C);
+			}
+		}
+	} else { /* there are only sections and examples, or not even that */
+		HTML_OPEN_WITH("p", "class=\"extensionsubheading\"");
+		WRITE("documentation");
 		HTML_CLOSE("p");
-		HTML_TAG("hr"); /* ruled line at foot of TOC, if there is one */
+		if (cd->empty) {
+			HTML_OPEN("p");
+			DocumentationRenderer::render_text(OUT, I"None is provided.");
+			HTML_CLOSE("p");
+		} else {
+			DocumentationRenderer::render_body(OUT, cd, cd->tree->root);
+		}
+	}
+	WRITE("%S", extras);
+
+	@<Enter the small print@>;
+	WRITE("These documentation pages are first generated when an extension is "
+		"installed, and refreshed each time the project successfully translates.");
+	@<Exit the small print@>;
+	DocumentationRenderer::render_footer(OUT);
+}
+
+@<Enter the small print@> =
+	HTML_TAG("hr")
+	HTML_OPEN("p")
+	HTML_OPEN("em");
+
+@<Exit the small print@> =
+	HTML_CLOSE("em");
+	HTML_CLOSE("p");
+
+@
+
+=
+void DocumentationRenderer::render_example_page(OUTPUT_STREAM, compiled_documentation *cd, int eg) {
+	TEMPORARY_TEXT(title)
+	WRITE_TO(title, "Example %c", 'A' + eg - 1);
+	DocumentationRenderer::render_header(OUT, cd->title, title);
+	DISCARD_TEXT(title)
+	DocumentationRenderer::render_example(OUT, cd, eg);
+	DocumentationRenderer::render_footer(OUT);
+}
+
+void DocumentationRenderer::render_chapter_page(OUTPUT_STREAM, compiled_documentation *cd, int ch) {
+	TEMPORARY_TEXT(title)
+	WRITE_TO(title, "Chapter %d", ch);
+	DocumentationRenderer::render_header(OUT, cd->title, title);
+	DISCARD_TEXT(title)
+	DocumentationRenderer::render_chapter(OUT, cd, ch);
+	@<Enter the small print@>;
+	WRITE("This is Chapter %d of %d", ch, cd->total_headings[1]);
+	if (ch > 1) {
+		WRITE(" &bull; ");
+		HTML_OPEN_WITH("a", "href=\"chapter%d.html\"", ch-1);
+		WRITE("Chapter %d", ch-1);
+		HTML_CLOSE("a");
+	}
+	if (ch < cd->total_headings[1]) {
+		WRITE(" &bull; ");
+		HTML_OPEN_WITH("a", "href=\"chapter%d.html\"", ch+1);
+		WRITE("Chapter %d", ch+1);
+		HTML_CLOSE("a");
+	}
+	@<Exit the small print@>;
+	DocumentationRenderer::render_footer(OUT);
+}
+
+@ Each of these pages is equipped with the same Javascript and CSS.
+
+=
+void DocumentationRenderer::render_header(OUTPUT_STREAM, text_stream *title, text_stream *ptitle) {
+	InformPages::header(OUT, title, JAVASCRIPT_FOR_ONE_EXTENSION_IRES, NULL);
+	ExtensionWebsite::add_home_breadcrumb(NULL);
+	ExtensionWebsite::add_breadcrumb(title, I"index.html");
+	if (Str::len(ptitle) > 0) ExtensionWebsite::add_breadcrumb(ptitle, NULL);
+	ExtensionWebsite::titling_and_navigation(OUT,
+		I"Documentation provided by the extension author");
+}
+
+void DocumentationRenderer::render_footer(OUTPUT_STREAM) {
+	InformPages::footer(OUT);
+}
+
+@ This function is the only one which assumes our documentation comes from an
+extension.
+
+=
+void DocumentationRenderer::render_extension_details(OUTPUT_STREAM, inform_extension *E) {
+	inbuild_edition *edition = E->as_copy->edition;
+	inbuild_work *work = edition->work;
+
+	HTML_OPEN_WITH("p", "class=\"extensionsubheading\"");
+	WRITE("about this extension");
+	HTML_CLOSE("p");
+	
+	HTML_OPEN("p");
+	WRITE("This is ");
+	Works::write_to_HTML_file(OUT, work, TRUE);
+	semantic_version_number V = E->as_copy->edition->version;
+	if (VersionNumbers::is_null(V)) WRITE(", which gives no version number");
+	else WRITE(", version %v", &V);
+	WRITE(".");
+	HTML_CLOSE("p");
+
+	if (Str::len(E->rubric_as_lexed) > 0) {
 		HTML_OPEN("p");
+		DocumentationRenderer::render_text(OUT, E->rubric_as_lexed);
+		HTML_CLOSE("p");
+	}
+
+	if (Str::len(E->extra_credit_as_lexed) > 0) {
+		HTML_OPEN("p");
+		HTML_OPEN("em");
+		DocumentationRenderer::render_text(OUT, E->extra_credit_as_lexed);
+		HTML_CLOSE("em");
+		HTML_CLOSE("p");
+	}
+	compatibility_specification *C = E->as_copy->edition->compatibility;
+	if (Str::len(C->parsed_from) > 0) {
+		HTML_OPEN_WITH("p", "class=\"extensionsubheading\"");
+		WRITE("compatibility");
+		HTML_CLOSE("p");
+		HTML_OPEN("p");
+		DocumentationRenderer::render_text(OUT, C->parsed_from);
+		HTML_CLOSE("p");
 	}
 }
 
-@ Internally, we are numbering all headings independently upwards from 1, and
-we set anchor points in the documentation called |#docsec1|, |#docsec2|,
-and so on: some of these will be chapter headings, some section headings.
-These are the destinations of links from heading lines in the TOC.
+@ Now for the Table of Contents, which shows chapters, sections and examples
+in a hierarchical fashion.
 
-@<Typeset the table of contents entry for this heading@> =
-	switch (edhl) {
-		case 1:
+=
+void DocumentationRenderer::render_toc(OUTPUT_STREAM, compiled_documentation *cd) {
+	HTML_OPEN("div");
+	HTML_OPEN_WITH("p", "class=\"extensionsubheading\"");
+	WRITE("contents");
+	HTML_CLOSE("p");
+	HTML_OPEN_WITH("ul", "class=\"extensioncontents\"");
+	Trees::traverse_from(cd->tree->root, &DocumentationRenderer::toc_visitor, (void *) OUT, 0);
+	HTML_CLOSE("ul");
+	HTML_CLOSE("div");
+}
+
+void DocumentationRenderer::link_to(OUTPUT_STREAM, cdoc_heading *H) {
+	TEMPORARY_TEXT(ch)
+	if (H->level == 1) {
+		WRITE_TO(ch, "chapter%S.html", H->count);
+	} else if (H->level == 2) {
+		for (int i=0; i<Str::len(H->count); i++) {
+			wchar_t c = Str::get_at(H->count, i);
+			if (c == '.') {
+				WRITE_TO(ch, "chapter");
+				for (int j=0; j<i; j++)
+					PUT_TO(ch, Str::get_at(H->count, j));
+				WRITE_TO(ch, ".html");
+				break;
+			}
+		}
+		WRITE_TO(ch, "#section%d", H->ID);
+	}
+	HTML_OPEN_WITH("a", "style=\"text-decoration: none\" href=%S", ch);
+	DISCARD_TEXT(ch)
+}
+
+int DocumentationRenderer::toc_visitor(tree_node *N, void *state, int L) {
+	text_stream *OUT = (text_stream *) state;
+	if (N->type == heading_TNT) {
+		cdoc_heading *H = RETRIEVE_POINTER_cdoc_heading(N->content);
+		if (L > 0) {
+			HTML_OPEN_WITH("li", "class=\"exco%d\"", L);
 			HTML::begin_span(OUT, I"indexblack");
 			HTML_OPEN("b");
-			HTML_OPEN_WITH("a",
-				"style=\"text-decoration: none\" href=#docsec%d", heading_count);
-			WRITE("Chapter %d: ", chapter_count);
+			DocumentationRenderer::link_to(OUT, H);
+			if (H->level == 1) WRITE("Chapter %S: ", H->count);
+			else WRITE("Section %S: ", H->count);
 			HTML_CLOSE("a");
 			HTML_CLOSE("b");
 			HTML::end_span(OUT);
-			break;
-		case 2:
-			if (chapter_count > 0) /* if there are chapters as well as sections... */
-				WRITE("&nbsp;&nbsp;&nbsp;"); /* ...then set an indentation before entry */
-			HTML::begin_span(OUT, I"indexblack");
-			HTML_OPEN_WITH("a", "style=\"text-decoration: none\" href=#docsec%d", heading_count);
-			WRITE("Section ");
-			if (chapter_count > 0) /* if there are chapters as well as sections... */
-				WRITE("%d.%d: ", chapter_count, section_count); /* quote in form S.C */
-			else
-				WRITE("%d: ", section_count); /* otherwise quote section number only */
-			HTML_CLOSE("a");
-			HTML::end_span(OUT);
-			break;
-		default: internal_error("unable to set this heading level in extension TOC");
-	}
-	DocumentationRenderer::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, NULL);
-	HTML_TAG("br");
-
-@ The TOC entries for examples are similar. Here the link is to the variant
-page in the current family which has the given example open, and moreover,
-to the anchor in that page corresponding to the top of the example: thus as
-far as the user is concerned it opens the example and goes there.
-
-@<Typeset the table of contents entry for this example@> =
-	WRITE("&nbsp;&nbsp;&nbsp;"); /* always indent TOC entries for examples */
-	TEMPORARY_TEXT(link)
-	WRITE_TO(link, "style=\"text-decoration: none\" href=\"");
-	DocumentationRenderer::href_of_example(link, base_leafname, example_count, example_count);
-	WRITE_TO(link, "\"");
-	HTML::begin_span(OUT, I"indexblack");
-	HTML_OPEN_WITH("a", "%S", link);
-	PUT('A'+example_count-1); /* the letter A to Z */
-	WRITE(" &mdash; ");
-	DocumentationRenderer::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, NULL);
-	HTML_CLOSE("a");
-	HTML::end_span(OUT);
-	HTML_TAG("br");
-
-@
-
-=
-<table-sentence> ::=
-	<if-start-of-paragraph> table ...
-
-@h Setting the body text.
-Okay, so we can be in any one of these states:
-
-@e WAITING_DSBY from 1
-@e PARAGRAPH_DSBY
-@e CODE_DSBY
-@e QUOTE_DSBY
-
-@
-
-@d EDOC_ALL_EXAMPLES_CLOSED -1 /* do not change this without also changing Extensions */
-@d EDOC_FRAGMENT_ONLY -2 /* must differ from this and from all example variant numbers */
-
-=
-int DocumentationRenderer::set_body_text(wording W, OUTPUT_STREAM,
-	int example_which_is_open, text_stream *base_leafname) {
-	int heading_count = 0, chapter_count = 0, section_count = 0, example_count = 0;
-	int mid_example = FALSE, skipping_text_of_an_example = FALSE,
-		start_table_next_line = FALSE, mid_I7_table = FALSE, row_of_table_is_empty = FALSE,
-		indentation = 0, close_I6_position = -1;
-	int dsby_state = WAITING_DSBY;
-	LOOP_THROUGH_WORDING(i, W) {
-		int edhl, asterisks;
-		wording NW = EMPTY_WORDING, RUBW = EMPTY_WORDING;
-		if (Lexer::word(i) == PARBREAK_V) { /* the lexer records this to mean a paragraph break */
-			while (Lexer::word(i) == PARBREAK_V) i++;
-			if (i>Wordings::last_wn(W)) break; /* treat multiple paragraph breaks as one */
-			@<Enter waiting state@>;
-			@<Determine indentation of new paragraph@>;
-			if (indentation == 0 && DocumentationRenderer::extension_documentation_heading(Wordings::from(W, i), &edhl, &NW)) {
-				heading_count++;
-				if (edhl == 1) {
-					chapter_count++; section_count = 0;
-					if (chapter_count > 1) {
-						HTML_TAG("hr"); /* rule a line between chapters */
-					}
-				}
-				if (edhl == 2) section_count++;
-				@<Typeset the heading of this chapter or section@>;
-				i = Wordings::last_wn(NW); continue;
-			}
-			if ((example_count < 26) && (DocumentationRenderer::extension_documentation_example(
-					Wordings::from(W, i), &asterisks, &NW, &RUBW))) {
-				skipping_text_of_an_example = FALSE;
-				if (mid_example) @<Close the previous example's text@>;
-				mid_example = FALSE;
-				example_count++;
-				@<Typeset the heading of this example@>;
-				if (example_count == example_which_is_open) {
-					@<Open the new example's text@>;
-					mid_example = TRUE;
-				} else skipping_text_of_an_example = TRUE;
-				i = Wordings::last_wn(RUBW); continue;
-			}
+			DocumentationRenderer::render_text(OUT, H->name);
+			HTML_CLOSE("li");
 		}
-		if (skipping_text_of_an_example) continue;
-		
-		@<Handle a line or column break, if there is one@>;
-		@<Enter paragraph state@>;
-		@<Transcribe an ordinary word of the documentation@>;
-		if (close_I6_position == i) WRITE(" -)");
 	}
-	@<Enter waiting state@>; // New
-
-	if (mid_example) @<Close the previous example's text@>;
-//	if (example_which_is_open != EDOC_FRAGMENT_ONLY) @<Enter waiting state@>;
-	return example_count;
+	if (N->type == example_TNT) {
+		HTML_OPEN_WITH("li", "class=\"exco%d\"", L);
+		cdoc_example *E = RETRIEVE_POINTER_cdoc_example(N->content);
+		TEMPORARY_TEXT(link)
+		WRITE_TO(link, "style=\"text-decoration: none\" href=\"eg%d.html#eg%d\"",
+			E->number, E->number);
+		HTML::begin_span(OUT, I"indexblack");
+		HTML_OPEN_WITH("a", "%S", link);
+		WRITE("Example %c &mdash; ", E->letter);
+		DocumentationRenderer::render_text(OUT, E->name);
+		HTML_CLOSE("a");
+		HTML::end_span(OUT);
+		DISCARD_TEXT(link)
+		HTML_CLOSE("li");
+	}
+	return TRUE;
 }
 
-@h Typesetting the standard matter.
-A paragraph break might mean the end of displayed matter (and if so, then also
-the end of any table being displayed). Otherwise, it just means a paragraph
-break, and a chance to restore our tired variables.
+void DocumentationRenderer::render_body(OUTPUT_STREAM, compiled_documentation *cd,
+	tree_node *from) {
+	HTML_OPEN("div");
+	Trees::traverse_from(from, &DocumentationRenderer::body_visitor, (void *) OUT, 0);
+	HTML_CLOSE("div");
+}
 
-@<Enter waiting state@> =
-	switch (dsby_state) {
-		case WAITING_DSBY: break;
-		case PARAGRAPH_DSBY: HTML_CLOSE("p");
-			mid_I7_table = FALSE;
-			break;
-		case CODE_DSBY:
-			HTML::end_span(OUT);
-			if (mid_I7_table) @<End I7 table in extension documentation@>;
-			HTML_CLOSE("blockquote");
-			mid_I7_table = FALSE;
-			break;
+void DocumentationRenderer::render_example(OUTPUT_STREAM, compiled_documentation *cd, int eg) {
+	HTML_OPEN("div");
+	tree_node *EN = DocumentationTree::find_example(cd->tree, eg);
+	if (EN == NULL) {
+		WRITE("Example %d is missing", eg);
+	} else {
+		DocumentationRenderer::render_example_heading(OUT, EN, EN->child);
 	}
-	dsby_state = WAITING_DSBY;
-
-@<Enter paragraph state@> =
-	if (dsby_state != PARAGRAPH_DSBY) {
-		@<Enter waiting state@>;
-		dsby_state = PARAGRAPH_DSBY;
-	}
-
-@<Enter code state@> =
-	if (dsby_state != CODE_DSBY) {
-		@<Enter waiting state@>;
-		dsby_state = CODE_DSBY;
-		HTML_OPEN("blockquote");
-		HTML::begin_span(OUT, I"indexdullblue");
-	}
-
-@ The indentation setting is made here because a tab anywhere else does
-not mean a paragraph has been indented. Here |i| is at the number of the
-first word after the paragraph break; the break character corresponding
-to it is the one before that word, so describes the kind of whitespace
-between the paragraph break and the first nonwhitespace of the new
-paragraph.
-
-@<Determine indentation of new paragraph@> =
-	indentation = 0; if (Lexer::break_before(i) == '\t') indentation = 1;
-
-@ Positions for paste icons in extension documentation are marked with
-asterisk and colon:
-
-=
-<extension-documentation-paste-marker> ::=
-	* : ...
-
-@ Two lower-level sorts of breaks can also occur in the middle of a paragraph:
-line breaks, indicated by newlines plus some tabs, and column breaks inside
-I7 source tables, indicated by tabs. We have to deal with those before we
-can move on to the subsequent word.
-
-@<Handle a line or column break, if there is one@> =
-	if (Lexer::indentation_level(i) > 0) indentation = Lexer::indentation_level(i);
-
-	if (indentation > 0) @<Handle the start of a line which is indented@>;
-	if (<extension-documentation-paste-marker>(Wordings::from(W, i))) {
-		wording W = GET_RW(<extension-documentation-paste-marker>, 1);
-		@<Incorporate an icon linking to a Javascript function to paste the text which follows@>;
-		i++; continue;
-	}
-	indentation = 0;
-	if ((mid_I7_table) && ((Lexer::break_before(i) == '\t') || (Lexer::indentation_level(i) == 1))) {
-		if (row_of_table_is_empty == FALSE)
-			@<End table cell for I7 table in extension documentation@>;
-		@<Begin table cell for I7 table in extension documentation@>;
-		row_of_table_is_empty = FALSE;
-	}
-
-@ See Javascript Pastes for further explanation of the general method here.
-
-@<Transcribe an ordinary word of the documentation@> =
-	wchar_t *p = Lexer::word_raw_text(i); int j;
-	if ((i>Wordings::first_wn(W))
-		&& ((p[1] != 0) || (Lexer::is_punctuation(p[0]) == FALSE)
-			|| (p[0] == '(') || (p[0] == '{') || (p[0] == '}'))
-		&& (compare_word(i-1, OPENBRACKET_V)==FALSE))
-		WRITE(" "); /* restore normal spacing around punctuation */
-	for (j=0; p[j]; j++) HTML::put(OUT, p[j]); /* set the actual word */
-	if (Lexer::word(i) == OPENI6_V) close_I6_position = i+1; /* ensure I6 literals are closed */
-
-@ A paste causes the same material to be set twice: once in the argument to
-the Javascript paste function (which is passed to the application when the
-user clicks on the paste icon, and thus ends up in the Source panel), and
-once also in the HTML documentation. That's why the code here ranges forward
-to see how far it should go (to the next paragraph break which is not followed
-by further tabbed matter, or in other words, to the end of the display),
-but does not advance |i| commensurately.
-
-@<Incorporate an icon linking to a Javascript function to paste the text which follows@> =
-	int x = i+2, y = Wordings::last_wn(W), j;
-	for (j=x; j<=y; j++) /* first find the end of the quoted passage */
-		if (Lexer::word(j) == PARBREAK_V) {
-			int possible_end = j-1;
-			while (Lexer::word(j) == PARBREAK_V) j++;
-			if ((j<y) && ((Lexer::break_before(j) == '\t') || (Lexer::indentation_level(j) > 0))) continue;
-			y = possible_end; break;
-		}
-	PasteButtons::paste_W(OUT, Wordings::new(x, y));
-
-@ The first step of indentation is handled using the |<blockquote>| tag;
-within that, further tab stops are simulated by printing a row of four
-non-breaking spaces for each indentation level above 1. A paragraph
-of indented (i.e., display matter) beginning with the word "Table" is
-taken to be an I7 table, and we remember that the next line break will
-take us past the titling line and into the table entries, which we will
-need to achieve with an HTML |<table>|.
-
-@<Handle the start of a line which is indented@> =
-	int starting_new_code = FALSE;
-	if (dsby_state != CODE_DSBY) starting_new_code = TRUE;
-	@<Enter code state@>;
-	if ((starting_new_code) && (<table-sentence>(Wordings::from(W, i))))
-		start_table_next_line = TRUE;
-	if (starting_new_code == FALSE) {
-		if (start_table_next_line) {
-			start_table_next_line = FALSE;
-			mid_I7_table = TRUE;
-			@<Begin I7 table in extension documentation@>;
+	HTML_CLOSE("div");
+	@<Enter the small print@>;
+	WRITE("This example is drawn from ");
+	tree_node *H = EN->parent;
+	if (H->type == heading_TNT) {
+		cdoc_heading *E = RETRIEVE_POINTER_cdoc_heading(H->content);
+		if (E->level == 1) {
+			DocumentationRenderer::link_to(OUT, E);
+			WRITE("Chapter %S", E->count);
+			HTML_CLOSE("a");
+		} else if (E->level == 2) {
+			DocumentationRenderer::link_to(OUT, E);
+			WRITE("Section %S", E->count);
+			HTML_CLOSE("a");
 		} else {
-			if (mid_I7_table) @<Begin new row of I7 table in extension documentation@>
-			else HTML_TAG("br");
+			HTML_OPEN_WITH("a", "href=\"index.html\"");
+			WRITE("the introduction");
+			HTML_CLOSE("a");
 		}
-		if (mid_I7_table) row_of_table_is_empty = TRUE;
 	}
-	indentation--;
-	for (int j=0; j<indentation; j++) WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
+	@<Exit the small print@>;
+}
 
-@h Typesetting the headings.
-That is thankfully all for the tormented logic of all those changes of state:
-from here to the rest of the section, all we do is to generate pretty HTML,
-and without altering any variables or causing any side-effects at all.
-First, the headings. Recall that heading number |N| is required to be at
-anchor |#docsecN|.
+void DocumentationRenderer::render_chapter(OUTPUT_STREAM, compiled_documentation *cd, int ch) {
+	HTML_OPEN("div");
+	tree_node *CN = DocumentationTree::find_chapter(cd->tree, ch);
+	if (CN == NULL) {
+		WRITE("Chapter %d is missing", ch);
+	} else {
+		DocumentationRenderer::render_body(OUT, cd, CN);
+	}
+	HTML_CLOSE("div");
+}
+
+int DocumentationRenderer::body_visitor(tree_node *N, void *state, int L) {
+	text_stream *OUT = (text_stream *) state;
+	if (N->type == heading_TNT) {
+		cdoc_heading *H = RETRIEVE_POINTER_cdoc_heading(N->content);
+		if (H->level > 0) @<Typeset the heading of this chapter or section@>;
+	}
+	if (N->type == example_TNT) {
+		DocumentationRenderer::render_example_heading(OUT, N, NULL);
+		return FALSE;
+	}
+	if (N->type == paragraph_TNT) {
+		cdoc_paragraph *P = RETRIEVE_POINTER_cdoc_paragraph(N->content);
+		HTML_OPEN("p");
+		DocumentationRenderer::render_text(OUT, P->content);
+		HTML_CLOSE("p");
+	}
+	if (N->type == code_sample_TNT) {
+		cdoc_code_sample *S = RETRIEVE_POINTER_cdoc_code_sample(N->content);
+		HTML_OPEN("blockquote");
+		if (S->with_paste_marker) @<Render the paste icon@>;
+		@<Render the body of the code sample@>;
+		HTML_CLOSE("blockquote");
+		return FALSE;
+	}
+	return TRUE;
+}
 
 @<Typeset the heading of this chapter or section@> =
-	HTML_OPEN("p");
-	switch (edhl) {
-		case 1:
-			HTML::begin_span(OUT, I"indexdullred");
-			break;
-		case 2:
-			HTML::begin_span(OUT, I"indexblack");
-			break;
+	HTML_TAG("hr");
+	if (H->level == 1) {
+		HTML_OPEN("h2");
+		HTML::begin_span(OUT, I"indexdullred");
 	}
-	HTML_OPEN("b");
-	HTML_OPEN_WITH("span", "id=docsec%d", heading_count);
-	switch (edhl) {
-		case 1:
-			WRITE("Chapter %d: ", chapter_count);
-			break;
-		case 2:
-			WRITE("Section ");
-			if (chapter_count > 0) WRITE("%d.", chapter_count);
-			WRITE("%d: ", section_count);
-			break;
+	if (H->level == 2) {
+		HTML_OPEN("h3");
+		HTML_OPEN("span");
 	}
-	DocumentationRenderer::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, NULL);
+	HTML_OPEN_WITH("span", "id=docsec%d", H->ID);
+	if (H->level == 1) WRITE("Chapter %S: ", H->count);
+	else WRITE("Section %S: ", H->count);
+	DocumentationRenderer::render_text(OUT, H->name);
 	HTML_CLOSE("span");
-	HTML_CLOSE("b");
+	HTML_CLOSE("span");
+	if (H->level == 1) HTML_CLOSE("h2");
+	if (H->level == 2) HTML_CLOSE("h3");
+
+@<Render the paste icon@> =
+	TEMPORARY_TEXT(matter)
+	for (tree_node *C = N->child; C; C = C->next) {
+		cdoc_code_line *L = RETRIEVE_POINTER_cdoc_code_line(C->content);
+		for (int i=0; i<L->indentation; i++) WRITE_TO(matter, "\t");
+		DocumentationRenderer::render_text(matter, L->content);
+		if (C->next) WRITE_TO(matter, "\n");
+	}
+	PasteButtons::paste_text(OUT, matter);
+	WRITE("&nbsp;");
+	DISCARD_TEXT(matter)
+
+@<Render the body of the code sample@> =
+	HTML::begin_span(OUT, I"indexdullblue");
+	int tabulating = FALSE;
+	for (tree_node *C = N->child; C; C = C->next) {
+		cdoc_code_line *L = RETRIEVE_POINTER_cdoc_code_line(C->content);
+		if (L->tabular) {
+			if (tabulating) {
+				@<Begin new row of I7 table in extension documentation@>;
+			} else {
+				@<Begin I7 table in extension documentation@>;
+				tabulating = TRUE;
+			}
+			TEMPORARY_TEXT(cell)
+			@<Begin table cell for I7 table in extension documentation@>;
+			for (int i=0; i<Str::len(L->content); i++) {
+				if (Str::get_at(L->content, i) == '\t') {
+					@<End table cell for I7 table in extension documentation@>;
+					@<Begin table cell for I7 table in extension documentation@>;
+					while (Str::get_at(L->content, i) == '\t') i++;
+					i--;
+				} else {
+					PUT_TO(cell, Str::get_at(L->content, i));
+				}
+			}
+			@<End table cell for I7 table in extension documentation@>;
+			DISCARD_TEXT(cell)
+			@<End row of I7 table in extension documentation@>;
+		} else {
+			if (tabulating) {
+				@<End I7 table in extension documentation@>;
+				tabulating = FALSE;
+			}
+			for (int i=0; i<L->indentation; i++) WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
+			DocumentationRenderer::render_text(OUT, L->content);
+			if ((C->next) && (RETRIEVE_POINTER_cdoc_code_line(C->next->content)->tabular == FALSE)) HTML_TAG("br");
+		}
+		WRITE("\n");
+	}
+	if (tabulating) @<End I7 table in extension documentation@>;
+	HTML_CLOSE("span");
+
+@ Unsurprisingly, I7 tables are set (after their titling lines) as HTML tables,
+and this is fiddly but elementary in the usual way of HTML tables:
+
+@<Begin I7 table in extension documentation@> =
 	HTML::end_span(OUT);
-	HTML_CLOSE("p");
+	HTML_TAG("br");
+	HTML::begin_plain_html_table(OUT);
+	HTML::first_html_column(OUT, 0);
+
+@<End table cell for I7 table in extension documentation@> =
+	DocumentationRenderer::render_text(OUT, cell);
+	HTML::end_span(OUT);
+	HTML::next_html_column(OUT, 0);
+
+@<Begin table cell for I7 table in extension documentation@> =
+	Str::clear(cell);
+	HTML::begin_span(OUT, I"indexdullblue");
+
+@<Begin new row of I7 table in extension documentation@> =
+	HTML::first_html_column(OUT, 0);
+
+@<End row of I7 table in extension documentation@> =
+	HTML::end_html_row(OUT);
+
+@<End I7 table in extension documentation@> =
+	HTML::end_html_row(OUT);
+	HTML::end_html_table(OUT);
+	HTML::begin_span(OUT, I"indexdullblue");
 
 @ An example is set with a two-table header, and followed optionally by a
 table of its inset copy, shaded to distinguish it from the rest of the
@@ -493,40 +503,51 @@ page. The heading is constructed with a main table of one row of two cells,
 in the following section. The left-hand cell then contains a further table,
 in the next section.
 
-@<Typeset the heading of this example@> =
+=
+void DocumentationRenderer::render_example_heading(OUTPUT_STREAM, tree_node *EN,
+	tree_node *passage_node) {
+	cdoc_example *E = RETRIEVE_POINTER_cdoc_example(EN->content);
+	TEMPORARY_TEXT(link)
+	WRITE_TO(link, "style=\"text-decoration: none\" href=\"eg%d.html\"", E->number);
+
 	HTML_TAG("hr"); /* rule a line before the example heading */
 	HTML::begin_plain_html_table(OUT);
 	HTML_OPEN("tr");
 
 	/* Left hand cell: the oval icon */
 	HTML_OPEN_WITH("td", "halign=\"left\" valign=\"top\" cellpadding=0 cellspacing=0 width=38px");
-	HTML_OPEN_WITH("span", "id=eg%d", example_count); /* provide the anchor point */
+	HTML_OPEN_WITH("span", "id=eg%d", E->number); /* provide the anchor point */
 	@<Typeset the lettered oval example icon@>;
 	HTML_CLOSE("span"); /* end the textual link */
 	HTML_CLOSE("td");
 
 	/* Right hand cell: the asterisks and title, with rubric underneath */
 	HTML_OPEN_WITH("td", "cellpadding=0 cellspacing=0 halign=\"left\" valign=\"top\"");
-	@<Incorporate link to the example opened up@>;
-	while (asterisks-- > 0)
+
+	if (passage_node == NULL) HTML_OPEN_WITH("a", "%S", link);
+
+	for (int asterisk = 0; asterisk < E->star_count; asterisk++)
 		HTML_TAG_WITH("img", "border=\"0\" src='inform:/doc_images/asterisk.png'");
 	HTML_OPEN("b");
 	HTML::begin_span(OUT, I"indexdarkgrey");
 	WRITE("&nbsp;Example&nbsp;");
 	HTML::end_span(OUT);
 	HTML::begin_span(OUT, I"indexblack");
-	DocumentationRenderer::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, base_leafname);
+	DocumentationRenderer::render_text(OUT, E->name);
 	HTML::end_span(OUT);
 	HTML_CLOSE("b");
-	HTML_CLOSE("a"); /* Link does not cover body, only heading */
-	HTML_TAG("br");
-	HTML_OPEN("p");
-	DocumentationRenderer::set_body_text(RUBW, OUT, EDOC_FRAGMENT_ONLY, base_leafname);
-	HTML_CLOSE("p");
+
+	if (passage_node == NULL) HTML_CLOSE("a"); /* Link does not cover body, only heading */
+
+	if (passage_node)
+		Trees::traverse_from(passage_node, &DocumentationRenderer::body_visitor, (void *) OUT, 0);
 
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
 	HTML::end_html_table(OUT);
+
+	DISCARD_TEXT(link)
+}
 
 @ The little oval icon with its superimposed boldface letter is much harder to
 get right on all browsers than it looks, and the following is the result of
@@ -540,72 +561,22 @@ had its infamous PNG transparency bug.)
 	HTML::begin_plain_html_table(OUT);
 	HTML_OPEN_WITH("tr", "class=\"oval\"");
 	HTML_OPEN_WITH("td", "width=38px height=30px align=\"left\" valign=\"center\"");
-	@<Incorporate link to the example opened up@>;
+	if (passage_node == NULL) HTML_OPEN_WITH("a", "%S", link);
 	HTML_OPEN_WITH("div",
 		"class=\"paragraph Body\" style=\"line-height: 1px; margin-bottom: 0px; "
 		"margin-top: 0px; padding-bottom: 0pt; padding-top: 0px; text-align: center;\"");
 	HTML::begin_span(OUT, I"extensionexampleletter");
-	PUT('A' + example_count - 1);
+	PUT(E->letter);
 	HTML::end_span(OUT);
 	HTML_CLOSE("div");
-	HTML_CLOSE("a");
+	if (passage_node == NULL) HTML_CLOSE("a");
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
 	HTML::end_html_table(OUT);
 
-@ Clicking on the example banner opens it up, if it's currently closed, or
-closes it up, if it's currently open.
+@
 
-@<Incorporate link to the example opened up@> =
-	TEMPORARY_TEXT(url)
-	WRITE_TO(url, "href=\"");
-	if (example_count == example_which_is_open) /* this example currently open */
-		DocumentationRenderer::href_of_example(url, base_leafname, EDOC_ALL_EXAMPLES_CLOSED, example_count);
-	else /* this example not yet open */
-		DocumentationRenderer::href_of_example(url, base_leafname, example_count, example_count);
-	WRITE_TO(url, "\" style=\"text-decoration: none\"");
-	HTML_OPEN_WITH("a", "%S", url);
-	DISCARD_TEXT(url)
-
-@h Typesetting I7 tables in displayed source text.
-Unsurprisingly, I7 tables are set (after their titling lines) as HTML tables,
-and this is fiddly but elementary in the usual way of HTML tables:
-
-@<Begin I7 table in extension documentation@> =
-	HTML::end_span(OUT);
-	HTML_TAG("br");
-	HTML::begin_plain_html_table(OUT);
-	HTML::first_html_column(OUT, 0);
-
-@<End table cell for I7 table in extension documentation@> =
-	HTML::end_span(OUT);
-	HTML::next_html_column(OUT, 0);
-
-@<Begin table cell for I7 table in extension documentation@> =
-	HTML::begin_span(OUT, I"indexdullblue");
-
-@<Begin new row of I7 table in extension documentation@> =
-	HTML::end_html_row(OUT);
-	HTML::first_html_column(OUT, 0);
-
-@<End I7 table in extension documentation@> =
-	HTML::end_html_row(OUT);
-	HTML::end_html_table(OUT);
-
-@h Typesetting the body of an example.
-This is done just the way all other extension documentation material is
-handled, except that it is inside an inset box: which is provided by
-a shaded HTML table, containing just one row, which contains just one
-cell. Here the inset table begins:
-
-@<Open the new example's text@> =
-	HTML::begin_html_table(OUT, I"extensionexample", TRUE, 0, 0, 0, 0, 0);
-	HTML::first_html_column(OUT, 0);
-	HTML_OPEN("p");
-
-@ And here the inset table ends:
-
-@<Close the previous example's text@> =
-	HTML_CLOSE("p");
-	HTML::end_html_row(OUT);
-	HTML::end_html_table(OUT);
+=
+void DocumentationRenderer::render_text(OUTPUT_STREAM, text_stream *text) {
+	WRITE("%S", text);
+}

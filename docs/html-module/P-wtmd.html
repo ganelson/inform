@@ -77,17 +77,13 @@ code is general-purpose.
 <p class="commentary">By contrast, the <a href="index.html" class="internal">html</a> module is very much a part of the Inform compiler
 and provides highly Inform-specific functions needed to make the intranet-like
 miniature websites it generates on the fly &mdash; problem pages, the Index, the
-extensions documentation.
+extensions documentation. In particular, it offers:
 </p>
 
 <ul class="items"><li>(a) clickable links to positions in source text, opening the Source panel
 in the Inform GUI apps as needed &mdash; see <a href="2-sl.html#SP2" class="internal">SourceLinks::link</a>;
 </li><li>(b) paste buttons which, when clicked, insert text into the Source panel,
 or which open certain files or folders &mdash; see <a href="2-pb.html" class="internal">Paste Buttons</a>;
-</li><li>(c) renders Inform extension documentation text to HTML &mdash; see
-<a href="2-dr.html#SP9" class="internal">DocumentationRenderer::set_body_text</a> for the body of an extension or of one
-of its examples, and <a href="2-dr.html#SP7" class="internal">DocumentationRenderer::table_of_contents</a> for the TOC at
-the top.
 </li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Custom HTML link protocols. </b>This seems a useful place to document something which the Inform GUI apps
 must provide. These render index, problem and extension mini-website pages

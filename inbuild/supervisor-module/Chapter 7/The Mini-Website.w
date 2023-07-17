@@ -148,19 +148,72 @@ void ExtensionWebsite::document_extension(inform_extension *E, int force_update,
 	if (LinkedLists::len(E->as_copy->errors_reading_source_text) > 0) {
 		LOG("Not writing documentation on %X because it has copy errors\n", work);
 	} else {
-		compiled_documentation *doc = Extensions::get_documentation(E);
 		LOG("Writing documentation on %X\n", work);
 		inbuild_edition *edition = E->as_copy->edition;
 		filename *F = ExtensionWebsite::cut_way_for_page(proj, edition, -1);
 		if (F == NULL) return;
 		pathname *P = Filenames::up(F);
 		if (Pathnames::create_in_file_system(P) == 0) return;
-		TEMPORARY_TEXT(details);
+		compiled_documentation *doc = Extensions::get_documentation(E);
+		TEMPORARY_TEXT(OUT)
 		#ifdef CORE_MODULE
+		TEMPORARY_TEXT(details)
 		IndexExtensions::document_in_detail(details, E);
+		if (Str::len(details) > 0) {
+			HTML_TAG("hr"); /* ruled line at top of extras */
+			HTML_OPEN_WITH("p", "class=\"extensionsubheading\"");
+			WRITE("defined these in the last run");
+			HTML_CLOSE("p");
+			HTML_OPEN("div");
+			HTML_CLOSE("div");
+			WRITE("%S", details);
+		}
+		DISCARD_TEXT(details)
 		#endif
-		DocumentationCompiler::render(P, doc, details);
-		DISCARD_TEXT(details);
+		DocumentationRenderer::as_HTML(P, doc, OUT);
+		DISCARD_TEXT(OUT)
 	}
 	E->documented_on_this_run = TRUE;
+}
+
+text_stream *EXW_breadcrumb_titles[5] = { NULL, NULL, NULL, NULL, NULL };
+text_stream *EXW_breakcrumb_URLs[5] = { NULL, NULL, NULL, NULL, NULL };
+int no_EXW_breadcrumbs = 0;
+
+void ExtensionWebsite::add_home_breadcrumb(text_stream *title) {
+	if (title == NULL) title = I"Extensions";
+	ExtensionWebsite::add_breadcrumb(title,
+		I"inform:/Extensions/Reserved/Documentation/Extensions.html");
+}
+
+void ExtensionWebsite::add_breadcrumb(text_stream *title, text_stream *URL) {
+	if (no_EXW_breadcrumbs >= 5) internal_error("too many breadcrumbs");
+	EXW_breadcrumb_titles[no_EXW_breadcrumbs] = Str::duplicate(title);
+	EXW_breakcrumb_URLs[no_EXW_breadcrumbs] = Str::duplicate(URL);
+	no_EXW_breadcrumbs++;
+}
+
+void ExtensionWebsite::titling_and_navigation(OUTPUT_STREAM, text_stream *subtitle) {
+ 	HTML_OPEN_WITH("div", "class=\"headingpanellayout headingpanelalt\"");
+	HTML_OPEN_WITH("div", "class=\"headingtext\"");
+	HTML::begin_span(OUT, I"headingpaneltextalt");
+	for (int i=0; i<no_EXW_breadcrumbs; i++) {
+		if (i>0) WRITE(" &gt; ");
+		if ((i != no_EXW_breadcrumbs-1) && (Str::len(EXW_breakcrumb_URLs[i]) > 0)) {
+			HTML_OPEN_WITH("a", "href=\"%S\" class=\"registrycontentslink\"", EXW_breakcrumb_URLs[i]);
+		}
+		DocumentationRenderer::render_text(OUT, EXW_breadcrumb_titles[i]);
+		if ((i != no_EXW_breadcrumbs-1) && (Str::len(EXW_breakcrumb_URLs[i]) > 0)) {
+			HTML_CLOSE("a");
+		}
+	}
+	HTML::end_span(OUT);
+	HTML_CLOSE("div");
+	HTML_OPEN_WITH("div", "class=\"headingrubric\"");
+	HTML::begin_span(OUT, I"headingpanelrubricalt");
+	DocumentationRenderer::render_text(OUT, subtitle);
+	HTML::end_span(OUT);
+	HTML_CLOSE("div");
+	HTML_CLOSE("div");
+	no_EXW_breadcrumbs = 0;
 }

@@ -1,29 +1,29 @@
-<s-literal> hits 2128/24682 nti 25 constraint (none) extremes [1, infinity)
+<s-literal> hits 2131/24680 nti 19 constraint (none) extremes [1, infinity)
     English:
         (@1)<cardinal-number>=1 
           (hits 171/171) (matched: '100') constraint CS = {r0} extremes [1, 1]
         (@1)minus (@2)<cardinal-number>=1 
-          (hits 0/1393) constraint DS = {25} extremes [2, 2]
+          (hits 0/1627) constraint DS = {19} extremes [2, 2]
         (@1)hexadecimal (@2)<hexadecimal-number>=1 
-          (hits 0/1393) constraint DS = {25} extremes [2, 2]
+          (hits 0/1627) constraint DS = {19} extremes [2, 2]
         (@1)binary (@2)<binary-number>=1 
-          (hits 0/1393) constraint DS = {25} extremes [2, 2]
+          (hits 0/1627) constraint DS = {19} extremes [2, 2]
         (@1)octal (@2)<octal-number>=1 
-          (hits 0/1393) constraint DS = {25} extremes [2, 2]
+          (hits 0/1627) constraint DS = {19} extremes [2, 2]
         (@1)<quoted-text>=1 (@2)( (@3)<response-letter>=2 (@4)) 
-          (hits 274/841) (matched: '"[current item from the multiple object list]: [run paragraph on]" ( a )') constraint DS = {25} extremes [4, 4]
+          (hits 274/846) (matched: '"[current item from the multiple object list]: [run paragraph on]" ( a )') constraint DS = {19} extremes [4, 4]
         (@1)<quoted-text>=1 
-          (hits 1572/5753) (matched: 'Can be used for objects which are purely
+          (hits 1575/5756) (matched: 'Can be used for objects which are purely
         conceptual, like ideas, or are needed for internal book-keeping.') constraint (none) extremes [1, 1]
         <s-literal-real-number>=1 
-          (hits 11/10324) (matched: 'plus infinity') constraint (none) extremes [1, infinity)
+          (hits 11/10320) (matched: 'plus infinity') constraint (none) extremes [1, infinity)
         (@1)<s-literal-truth-state>=1 
-          (hits 100/115) (matched: 'false') constraint CS = {19} extremes [1, 1]
+          (hits 100/379) (matched: 'false') constraint CS = {13} extremes [1, 1]
         <s-literal-list>=1 
-          (hits 0/3339) constraint DS = {21} extremes [2, infinity)
+          (hits 0/3246) constraint DS = {15} extremes [2, infinity)
         (@1)unicode <s-unicode-character>=1 
-          (hits 0/3535) constraint DS = {25} extremes [2, infinity)
+          (hits 0/3994) constraint DS = {19} extremes [2, infinity)
         <s-literal-time>=1 
-          (hits 0/3471) constraint DW = {22, 23, 24} extremes [2, 5]
+          (hits 0/3569) constraint DW = {16, 17, 18} extremes [2, 5]
         <s-literal-unit-notation>=1 
-          (hits 0/10213) constraint (none) extremes [1, infinity)
+          (hits 0/10209) constraint (none) extremes [1, infinity)

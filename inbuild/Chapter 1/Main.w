@@ -111,7 +111,7 @@ error in this case.
 
 @<Perform an extension installation@> =
 	Supervisor::go_operational();
-	InbuildReport::install(to_install, confirmed, path_to_inbuild);
+	ExtensionInstaller::install(to_install, confirmed, path_to_inbuild);
 
 @ We make the function call |Supervisor::go_operational| to signal to |inbuild|
 that we want to start work now.
@@ -521,7 +521,7 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 			break;
 		case REPAIR_CLSW: repair_mode = val; break;
 		case INSTALL_CLSW: to_install = Main::file_or_path_to_copy(arg, TRUE); break;
-		case RESULTS_CLSW: InbuildReport::set_filename(Filenames::from_text(arg)); break;
+		case RESULTS_CLSW: ExtensionInstaller::set_filename(Filenames::from_text(arg)); break;
 		case CONFIRMED_CLSW: confirmed = val; break;
 		case VERBOSE_CLSW: Supervisor::set_verbosity(1); break;
 		case VERBOSITY_CLSW: Supervisor::set_verbosity(val); break;

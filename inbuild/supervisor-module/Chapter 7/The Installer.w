@@ -1,4 +1,4 @@
-[InbuildReport::] The Report.
+[ExtensionInstaller::] The Installer.
 
 To produce a report page of HTML for use in the Inform GUI apps, when a resource
 such as an extension is inspected or installed.
@@ -8,48 +8,30 @@ such as an extension is inspected or installed.
 =
 filename *inbuild_report_HTML = NULL;
 
-void InbuildReport::set_filename(filename *F) {
+void ExtensionInstaller::set_filename(filename *F) {
 	inbuild_report_HTML = F;
 }
 
 text_stream inbuild_report_file_struct; /* The actual report file */
 text_stream *inbuild_report_file = NULL; /* As a |text_stream *| */
 
-text_stream *InbuildReport::begin(text_stream *title, text_stream *subtitle) {
+text_stream *ExtensionInstaller::begin(text_stream *title, text_stream *subtitle) {
 	if (inbuild_report_HTML == NULL) return NULL;
 	inbuild_report_file = &inbuild_report_file_struct;
 	if (STREAM_OPEN_TO_FILE(inbuild_report_file, inbuild_report_HTML, UTF8_ENC) == FALSE)
 		Errors::fatal("can't open report file");
-	InformPages::header(inbuild_report_file, title, JAVASCRIPT_FOR_STANDARD_PAGES_IRES, NULL);
+
 	text_stream *OUT = inbuild_report_file;
-
-	HTML::begin_html_table(OUT, NULL, TRUE, 0, 4, 0, 0, 0);
-	HTML::first_html_column(OUT, 0);
-	HTML_TAG_WITH("img",
-		"src='inform:/doc_images/importer@2x.png' border=0 width=150 height=150");
-	HTML::next_html_column(OUT, 0);
-
-	HTML_OPEN_WITH("div", "class=\"headingpanellayout headingpanelalt\"");
-	HTML_OPEN_WITH("div", "class=\"headingtext\"");
-	HTML::begin_span(OUT, I"headingpaneltextalt");
-	WRITE("%S", title);
-	HTML::end_span(OUT);
-	HTML_CLOSE("div");
-	HTML_OPEN_WITH("div", "class=\"headingrubric\"");
-	HTML::begin_span(OUT, I"headingpanelrubricalt");
-	WRITE("%S", subtitle);
-	HTML::end_span(OUT);
-	HTML_CLOSE("div");
-	HTML_CLOSE("div");
-
+	InformPages::header(OUT, title, JAVASCRIPT_FOR_STANDARD_PAGES_IRES, NULL);
+	ExtensionWebsite::add_home_breadcrumb(NULL);
+	ExtensionWebsite::add_breadcrumb(title, NULL);
+	ExtensionWebsite::titling_and_navigation(OUT, subtitle);
 	return OUT;
 }
 
-void InbuildReport::end(void) {
+void ExtensionInstaller::end(void) {
 	if (inbuild_report_file) {
 		text_stream *OUT = inbuild_report_file;
-		HTML::end_html_row(OUT);
-		HTML::end_html_table(OUT);
 		HTML_TAG("hr");
 		InformPages::footer(OUT);
 	}
@@ -63,7 +45,7 @@ the Installer is called again, with |confirmed| true. It takes action and also
 produces a second report.
 
 =
-void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
+void ExtensionInstaller::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 	inform_project *project = Supervisor::project_set_at_command_line();
 	if (project == NULL) Errors::fatal("-project not set at command line");
 	TEMPORARY_TEXT(pname)
@@ -84,13 +66,13 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 		@<Report on something else@>;
 	}
 	if (OUT) {
-		InbuildReport::end();
+		ExtensionInstaller::end();
 	}
 	DISCARD_TEXT(pname)
 }
 
 @<Report on something else@> =
-	OUT = InbuildReport::begin(I"Not an extension...", Genres::name(C->edition->work->genre));
+	OUT = ExtensionInstaller::begin(I"Not an extension...", Genres::name(C->edition->work->genre));
 	HTML_OPEN("p");
 	WRITE("Despite its file/directory name, this doesn't seem to be an extension, ");
 	WRITE("and it can't be installed.");
@@ -106,7 +88,7 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 	} else {
 		WRITE_TO(version, "Version %v of an extension", &V);
 	}
-	OUT = InbuildReport::begin(desc, version);
+	OUT = ExtensionInstaller::begin(desc, version);
 	DISCARD_TEXT(desc)
 	DISCARD_TEXT(version)
 
@@ -114,7 +96,7 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 	TEMPORARY_TEXT(desc)
 	WRITE_TO(desc, "This may be: ");
 	Editions::inspect(desc, C->edition);
-	OUT = InbuildReport::begin(I"Warning: Damaged extension", desc);
+	OUT = ExtensionInstaller::begin(I"Warning: Damaged extension", desc);
 
 @<Make unconfirmed report@> =
 	if (N > 0) @<Report on damage to extension@>
@@ -179,7 +161,7 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 
 @<List the extensions currently Included by the project@> =
 	int rc = 0, bic = 0, ic = 0;
-	InbuildReport::show_extensions(OUT, V, Graphs::get_unique_graph_scan_count(),
+	ExtensionInstaller::show_extensions(OUT, V, Graphs::get_unique_graph_scan_count(),
 		FALSE, &bic, FALSE, &ic, FALSE, &rc);
 	if (ic > 0) {
 		HTML_OPEN("p");
@@ -187,14 +169,14 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 		WRITE("basis of what it Includes, and what they in turn Include), which it has installed:");
 		HTML_CLOSE("p");
 		HTML_OPEN("ul");
-		InbuildReport::show_extensions(OUT, V, Graphs::get_unique_graph_scan_count(),
+		ExtensionInstaller::show_extensions(OUT, V, Graphs::get_unique_graph_scan_count(),
 			FALSE, &bic, TRUE, &ic, FALSE, &rc);
 		HTML_CLOSE("ul");
 		if (bic > 0) {
 			HTML_OPEN("p");
 			WRITE("not counting extensions built into Inform which do not need to be installed (");
 			bic = 0;
-			InbuildReport::show_extensions(OUT, V, Graphs::get_unique_graph_scan_count(),
+			ExtensionInstaller::show_extensions(OUT, V, Graphs::get_unique_graph_scan_count(),
 				TRUE, &bic, FALSE, &ic, FALSE, &rc);
 			WRITE(").");
 			HTML_OPEN("p");
@@ -205,7 +187,7 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 			"The project %S uses only extensions ", pname);
 		WRITE("built into Inform which do not need to be installed (");
 		bic = 0;
-		InbuildReport::show_extensions(OUT, V, Graphs::get_unique_graph_scan_count(),
+		ExtensionInstaller::show_extensions(OUT, V, Graphs::get_unique_graph_scan_count(),
 			TRUE, &bic, FALSE, &ic, FALSE, &rc);
 		WRITE(") and are included automatically.");
 		HTML_CLOSE("p");
@@ -221,7 +203,7 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 		WRITE("The project asks to Include the following, not yet installed:");
 		HTML_CLOSE("p");
 		HTML_OPEN("ul");
-		InbuildReport::show_extensions(OUT, V, Graphs::get_unique_graph_scan_count(),
+		ExtensionInstaller::show_extensions(OUT, V, Graphs::get_unique_graph_scan_count(),
 			FALSE, &bic, FALSE, &ic, TRUE, &rc);
 		HTML_CLOSE("ul");
 	}
@@ -238,7 +220,7 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 	LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L) {
 		if (LinkedLists::len(search_result->copy->errors_reading_source_text) > 0)
 			broken++;
-		else if (InbuildReport::seek_extension_in_graph(search_result->copy, V) == FALSE)
+		else if (ExtensionInstaller::seek_extension_in_graph(search_result->copy, V) == FALSE)
 			unused++;
 	}
 	if (unused + broken > 0) {
@@ -251,7 +233,7 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 			HTML_OPEN("ul");
 			LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L) {
 				if (LinkedLists::len(search_result->copy->errors_reading_source_text) == 0) {
-					if (InbuildReport::seek_extension_in_graph(search_result->copy, V) == FALSE) {
+					if (ExtensionInstaller::seek_extension_in_graph(search_result->copy, V) == FALSE) {
 						HTML_OPEN("li");
 						Copies::write_copy(OUT, search_result->copy);
 						WRITE("&nbsp;&nbsp;");
@@ -419,7 +401,7 @@ void InbuildReport::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
 @
 
 =
-void InbuildReport::show_extensions(OUTPUT_STREAM, build_vertex *V, int scan_count,
+void ExtensionInstaller::show_extensions(OUTPUT_STREAM, build_vertex *V, int scan_count,
 	int built_in, int *built_in_count, int installed, int *installed_count,
 	int required, int *requirements_count) {
 	if (V->type == COPY_VERTEX) {
@@ -468,17 +450,17 @@ void InbuildReport::show_extensions(OUTPUT_STREAM, build_vertex *V, int scan_cou
 	}
 	build_vertex *W;
 	LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
-		InbuildReport::show_extensions(OUT, W, scan_count, built_in, built_in_count,
+		ExtensionInstaller::show_extensions(OUT, W, scan_count, built_in, built_in_count,
 			installed, installed_count, required, requirements_count);
 	LOOP_OVER_LINKED_LIST(W, build_vertex, V->use_edges)
-		InbuildReport::show_extensions(OUT, W, scan_count, built_in, built_in_count,
+		ExtensionInstaller::show_extensions(OUT, W, scan_count, built_in, built_in_count,
 			installed, installed_count, required, requirements_count);
 }
 
 @
 
 =
-int InbuildReport::seek_extension_in_graph(inbuild_copy *C, build_vertex *V) {
+int ExtensionInstaller::seek_extension_in_graph(inbuild_copy *C, build_vertex *V) {
 	if (V->type == COPY_VERTEX) {
 		inbuild_copy *VC = V->as_copy;
 		if (Editions::cmp(C->edition, VC->edition) == 0)
@@ -486,10 +468,10 @@ int InbuildReport::seek_extension_in_graph(inbuild_copy *C, build_vertex *V) {
 	}
 	build_vertex *W;
 	LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
-		 if (InbuildReport::seek_extension_in_graph(C, W))
+		 if (ExtensionInstaller::seek_extension_in_graph(C, W))
 		 	return TRUE;
 	LOOP_OVER_LINKED_LIST(W, build_vertex, V->use_edges)
-		 if (InbuildReport::seek_extension_in_graph(C, W))
+		 if (ExtensionInstaller::seek_extension_in_graph(C, W))
 		 	return TRUE;
 	return FALSE;
 }

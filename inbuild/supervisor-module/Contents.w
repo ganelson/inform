@@ -61,7 +61,8 @@ Chapter 6: Inform Source Text
 
 Chapter 7: Extension Indexing
 	The Mini-Website
-	Index Pages
-	Documentation Renderer
+	Extensions Index Page
+	The Installer
+	Documentation Tree
 	Documentation Compiler
-	The Report
+	Documentation Renderer

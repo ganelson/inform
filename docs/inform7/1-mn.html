@@ -104,14 +104,13 @@ equivalent of unlocking the doors and turning the lights on in the morning.
 <span class="plain-syntax">        </span><span class="reserved-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proj</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="1-mn.html#SP2_2" class="named-paragraph-link"><span class="named-paragraph">Find the project identified for us by Inbuild</span><span class="named-paragraph-number">2.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="1-mn.html#SP2_3" class="named-paragraph-link"><span class="named-paragraph">Open the debugging log and the problems report</span><span class="named-paragraph-number">2.3</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="1-mn.html#SP2_4" class="named-paragraph-link"><span class="named-paragraph">Name the telemetry</span><span class="named-paragraph-number">2.4</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="1-mn.html#SP2_5" class="named-paragraph-link"><span class="named-paragraph">Build the project</span><span class="named-paragraph-number">2.5</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="1-mn.html#SP2_4" class="named-paragraph-link"><span class="named-paragraph">Build the project</span><span class="named-paragraph-number">2.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-mn.html#SP2_6" class="named-paragraph-link"><span class="named-paragraph">Post mortem logging</span><span class="named-paragraph-number">2.6</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">proceed</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="1-mn.html#SP2_7" class="named-paragraph-link"><span class="named-paragraph">Shutdown and rennab</span><span class="named-paragraph-number">2.7</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-mn.html#SP2_5" class="named-paragraph-link"><span class="named-paragraph">Post mortem logging</span><span class="named-paragraph-number">2.5</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">proceed</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="1-mn.html#SP2_6" class="named-paragraph-link"><span class="named-paragraph">Shutdown and rennab</span><span class="named-paragraph-number">2.6</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">problem_count</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><a href="../problems-module/2-pl0.html#SP1" class="function-link"><span class="function-syntax">ProblemSigils::exit</span></a><span class="plain-syntax">(1);</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-mn.html#SP2_8" class="named-paragraph-link"><span class="named-paragraph">Shut down the modules</span><span class="named-paragraph-number">2.8</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-mn.html#SP2_7" class="named-paragraph-link"><span class="named-paragraph">Shut down the modules</span><span class="named-paragraph-number">2.7</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -226,41 +225,13 @@ but we won't assume that. Remember, <a href="../supervisor-module/index.html" cl
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_4" class="paragraph-anchor"></a><b>&#167;2.4.  </b>Telemetry is not as sinister as it sounds: the app isn't sending data out
-on the Internet, only (if requested) logging what it's doing to a local file.
-This was provided for classroom use, so that teachers can see what their
-students have been getting stuck on. In any case, it needs to be activated
-with a use option, so by default this file will never be written.
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Name the telemetry</span><span class="named-paragraph-number">2.4</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax"> = </span><a href="../supervisor-module/1-ic.html#SP19" class="function-link"><span class="function-syntax">Supervisor::transient</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><a href="../../../inweb/foundation-module/3-pth.html#SP4" class="function-link"><span class="function-syntax">Pathnames::down</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Telemetry"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../../../inweb/foundation-module/3-pth.html#SP9" class="function-link"><span class="function-syntax">Pathnames::create_in_file_system</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">leafname_of_telemetry</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">this_month</span><span class="plain-syntax"> = </span><span class="identifier-syntax">the_present</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">tm_mon</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">this_day</span><span class="plain-syntax"> = </span><span class="identifier-syntax">the_present</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">tm_mday</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">this_year</span><span class="plain-syntax"> = </span><span class="identifier-syntax">the_present</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">tm_year</span><span class="plain-syntax"> + </span><span class="constant-syntax">1900</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">leafname_of_telemetry</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">                </span><span class="string-syntax">"Telemetry %04d-%02d-%02d.txt"</span><span class="plain-syntax">, </span><span class="identifier-syntax">this_year</span><span class="plain-syntax">, </span><span class="identifier-syntax">this_month</span><span class="plain-syntax">, </span><span class="identifier-syntax">this_day</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><a href="../../../inweb/foundation-module/3-fln.html#SP2" class="function-link"><span class="function-syntax">Filenames::in</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">leafname_of_telemetry</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><a href="../problems-module/1-tlm.html#SP1" class="function-link"><span class="function-syntax">Telemetry::locate_telemetry_file</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">leafname_of_telemetry</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        }</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_5" class="paragraph-anchor"></a><b>&#167;2.5.  </b>The compiler is now ready for use. We ask <a href="../supervisor-module/index.html" class="internal">supervisor</a> to go ahead and
+<p class="commentary firstcommentary"><a id="SP2_4" class="paragraph-anchor"></a><b>&#167;2.4.  </b>The compiler is now ready for use. We ask <a href="../supervisor-module/index.html" class="internal">supervisor</a> to go ahead and
 build that project: it will incrementally build some of the resources needed,
 if any of them are, and then call upon <a href="../core-module/index.html" class="internal">core</a> to perform the actual
 compilation.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Build the project</span><span class="named-paragraph-number">2.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Build the project</span><span class="named-paragraph-number">2.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -272,11 +243,11 @@ compilation.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_6" class="paragraph-anchor"></a><b>&#167;2.6.  </b>Diagnostics files fall into the category of "be careful what you wish for";
+<p class="commentary firstcommentary"><a id="SP2_5" class="paragraph-anchor"></a><b>&#167;2.5.  </b>Diagnostics files fall into the category of "be careful what you wish for";
 they can be rather lengthy.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Post mortem logging</span><span class="named-paragraph-number">2.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Post mortem logging</span><span class="named-paragraph-number">2.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -294,7 +265,7 @@ they can be rather lengthy.
 <span class="plain-syntax">        </span><a href="1-mn.html#SP3" class="function-link"><span class="function-syntax">Main::write_diagnostics</span></a><span class="plain-syntax">(</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">I</span><span class="string-syntax">"preform-summary.txt"</span><span class="plain-syntax">, &amp;</span><a href="1-mn.html#SP3" class="function-link"><span class="function-syntax">Main::log_preform_summary</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><a href="1-mn.html#SP3" class="function-link"><span class="function-syntax">Main::write_diagnostics</span></a><span class="plain-syntax">(</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">I</span><span class="string-syntax">"documentation-diagnostics.txt"</span><span class="plain-syntax">, &amp;</span><a href="../html-module/2-dr2.html#SP9" class="function-link"><span class="function-syntax">DocReferences::log_statistics</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">I</span><span class="string-syntax">"documentation-diagnostics.txt"</span><span class="plain-syntax">, &amp;</span><a href="../html-module/2-dr.html#SP9" class="function-link"><span class="function-syntax">DocReferences::log_statistics</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><a href="1-mn.html#SP3" class="function-link"><span class="function-syntax">Main::write_diagnostics</span></a><span class="plain-syntax">(</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">I</span><span class="string-syntax">"verbs-diagnostics.txt"</span><span class="plain-syntax">, &amp;</span><a href="../linguistics-module/3-vu.html#SP2" class="function-link"><span class="function-syntax">VerbUsages::log_all</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><a href="1-mn.html#SP3" class="function-link"><span class="function-syntax">Main::write_diagnostics</span></a><span class="plain-syntax">(</span>
@@ -304,7 +275,7 @@ they can be rather lengthy.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_7" class="paragraph-anchor"></a><b>&#167;2.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Shutdown and rennab</span><span class="named-paragraph-number">2.7</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_6" class="paragraph-anchor"></a><b>&#167;2.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Shutdown and rennab</span><span class="named-paragraph-number">2.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -316,7 +287,7 @@ they can be rather lengthy.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_8" class="paragraph-anchor"></a><b>&#167;2.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Shut down the modules</span><span class="named-paragraph-number">2.8</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_7" class="paragraph-anchor"></a><b>&#167;2.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Shut down the modules</span><span class="named-paragraph-number">2.7</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -350,7 +321,7 @@ they can be rather lengthy.
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Main::write_diagnostics</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Main::write_diagnostics</span></span>:<br/><a href="1-mn.html#SP2_6">&#167;2.6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">write_fn</span><span class="plain-syntax">)(</span><span class="reserved-syntax">void</span><span class="plain-syntax">)) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Main::write_diagnostics</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Main::write_diagnostics</span></span>:<br/><a href="1-mn.html#SP2_5">&#167;2.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">write_fn</span><span class="plain-syntax">)(</span><span class="reserved-syntax">void</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><a href="../../../inweb/foundation-module/3-fln.html#SP2" class="function-link"><span class="function-syntax">Filenames::in</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">diagnostics_path</span><span class="plain-syntax">, </span><span class="identifier-syntax">leafname</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> </span><span class="identifier-syntax">diagnostics_file</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">STREAM_OPEN_TO_FILE</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">diagnostics_file</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="constant-syntax">ISO_ENC</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
@@ -363,15 +334,15 @@ they can be rather lengthy.
 <span class="plain-syntax">    </span><span class="identifier-syntax">STREAM_CLOSE</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">diagnostics_file</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Main::log_task_syntax_tree</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Main::log_task_syntax_tree</span></span>:<br/><a href="1-mn.html#SP2_6">&#167;2.6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Main::log_task_syntax_tree</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Main::log_task_syntax_tree</span></span>:<br/><a href="1-mn.html#SP2_5">&#167;2.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="../syntax-module/2-pn.html#SP16" class="function-link"><span class="function-syntax">Node::log_tree</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><a href="../core-module/1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">()-&gt;</span><span class="element-syntax">root_node</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Main::log_preform_summary</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Main::log_preform_summary</span></span>:<br/><a href="1-mn.html#SP2_6">&#167;2.6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Main::log_preform_summary</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Main::log_preform_summary</span></span>:<br/><a href="1-mn.html#SP2_5">&#167;2.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="../words-module/4-ins.html#SP8" class="function-link"><span class="function-syntax">Instrumentation::log_nt</span></a><span class="plain-syntax">(</span><span class="function-syntax">&lt;s-literal&gt;</span><span class="plain-syntax">, </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Main::log_task_syntax_summary</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Main::log_task_syntax_summary</span></span>:<br/><a href="1-mn.html#SP2_6">&#167;2.6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Main::log_task_syntax_summary</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Main::log_task_syntax_summary</span></span>:<br/><a href="1-mn.html#SP2_5">&#167;2.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="../syntax-module/2-pn.html#SP16" class="function-link"><span class="function-syntax">Node::summarise_tree</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><a href="../core-module/1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">()-&gt;</span><span class="element-syntax">root_node</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>

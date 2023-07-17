@@ -20,7 +20,6 @@ but they're just plain old files, and are not managed by Inbuild as "copies".
 @e JAVASCRIPT_FOR_ONE_EXTENSION_IRES
 @e CSS_SET_BY_PLATFORM_IRES
 @e CSS_FOR_STANDARD_PAGES_IRES
-@e EXTENSION_DOCUMENTATION_MODEL_IRES
 @e RESOURCE_JSON_REQS_IRES
 @e REGISTRY_JSON_REQS_IRES
 @e INBUILD_JSON_REQS_IRES
@@ -65,8 +64,6 @@ filename *InstalledFiles::filename(int ires) {
 				return InstalledFiles::varied_by_platform(models, I"platform.css");
 		case CSS_FOR_STANDARD_PAGES_IRES: 
 				return InstalledFiles::varied_by_platform(models, I"main.css");
-		case EXTENSION_DOCUMENTATION_MODEL_IRES: 
-				return InstalledFiles::varied_by_platform(models, I"extensionfile.html");
 	}
 	internal_error("unknown installation resource file");
 	return NULL;
@@ -116,9 +113,6 @@ filename *InstalledFiles::filename_for_platform(int ires, text_stream *platform)
 		case CSS_FOR_STANDARD_PAGES_IRES:
 				return InstalledFiles::varied_by_named_platform(models,
 					I"main.css", platform);
-		case EXTENSION_DOCUMENTATION_MODEL_IRES: 
-				return InstalledFiles::varied_by_named_platform(models,
-					I"extensionfile.html", platform);
 	}
 	return InstalledFiles::filename(ires);
 }

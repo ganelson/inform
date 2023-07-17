@@ -21,7 +21,6 @@ function togglePopup(material_id) {
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Preform-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -90,7 +89,7 @@ small resource folder called its "bundle". (This includes English.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">inform_language</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure inform_language is accessed in 1/sm, 3/bg, 3/ib, 3/is3, 4/em, 5/es, 5/ks, 5/ps, 5/ps2, 5/ts, 6/st, 6/hdn, 6/inc, 7/ip, 7/ip2, 7/tr and here.</li></ul>
+<ul class="endnotetexts"><li>The structure inform_language is accessed in 1/sm, 3/bg, 3/ib, 3/is3, 4/em, 5/es, 5/ks, 5/ps, 5/ps2, 5/ts, 6/st, 6/hdn, 6/inc, 7/tm, 7/eip, 7/ti, 7/dc, 7/dr and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>This is called as soon as a new copy <span class="extract"><span class="extract-syntax">C</span></span> of the language genre is created.
 </p>
 
@@ -335,18 +334,17 @@ name of a language: for example, "French". Unlike the above functions, it
 looks only at languages already loaded, and doesn't scan nests for more.
 </p>
 
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-function-syntax">&lt;natural-language&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">internal</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">inform_language</span><span class="Preform-plain-syntax"> *</span><span class="Preform-identifier-syntax">L</span><span class="Preform-plain-syntax">;</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-identifier-syntax">LOOP_OVER</span><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">L</span><span class="Preform-plain-syntax">, </span><span class="Preform-reserved-syntax">inform_language</span><span class="Preform-plain-syntax">)</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-reserved-syntax">if</span><span class="Preform-plain-syntax"> (</span><span class="Preform-identifier-syntax">Wordings::match</span><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">W</span><span class="Preform-plain-syntax">, </span><span class="Preform-identifier-syntax">Wordings::first_word</span><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">L</span><span class="Preform-plain-syntax">-&gt;</span><span class="Preform-element-syntax">instance_name</span><span class="Preform-plain-syntax">))) {</span>
-<span class="Preform-plain-syntax">            ==&gt; { -, </span><span class="Preform-identifier-syntax">L</span><span class="Preform-plain-syntax"> };</span>
-<span class="Preform-plain-syntax">            </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">TRUE</span><span class="Preform-plain-syntax">;</span>
-<span class="Preform-plain-syntax">        }</span>
-<span class="Preform-plain-syntax">    ==&gt; { </span><span class="Preform-identifier-syntax">fail</span><span class="Preform-plain-syntax"> };</span>
-<span class="Preform-plain-syntax">}</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="function-syntax">&lt;natural-language&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">internal</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">inform_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="reserved-syntax">inform_language</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::match</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">Wordings::first_word</span><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">instance_name</span><span class="plain-syntax">))) {</span>
+<span class="plain-syntax">            ==&gt; { -, </span><span class="identifier-syntax">L</span><span class="plain-syntax"> };</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    ==&gt; { </span><span class="identifier-syntax">fail</span><span class="plain-syntax"> };</span>
+<span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="5-ks.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-sm.html">1</a></li><li class="progresschapter"><a href="2-gnr.html">2</a></li><li class="progresschapter"><a href="3-bg.html">3</a></li><li class="progresschapter"><a href="4-em.html">4</a></li><li class="progresscurrentchapter">5</li><li class="progresssection"><a href="5-es.html">es</a></li><li class="progresssection"><a href="5-ks.html">ks</a></li><li class="progresscurrent">ls</li><li class="progresssection"><a href="5-ps.html">ps</a></li><li class="progresssection"><a href="5-ps2.html">ps2</a></li><li class="progresssection"><a href="5-ts.html">ts</a></li><li class="progresschapter"><a href="6-st.html">6</a></li><li class="progresschapter"><a href="7-tm.html">7</a></li><li class="progressnext"><a href="5-ps.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

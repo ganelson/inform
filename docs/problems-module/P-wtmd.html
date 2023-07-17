@@ -51,7 +51,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../services.html">Services</a></li><li><a href="index.html">problems</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the problems module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Problems and their sigils</a></li><li><a href="P-wtmd.html#SP4">&#167;4. The story of a non-fatal problem message</a></li><li><a href="P-wtmd.html#SP10">&#167;10. Telemetry</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Problems and their sigils</a></li><li><a href="P-wtmd.html#SP4">&#167;4. The story of a non-fatal problem message</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The problems module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -264,17 +264,10 @@ intercepted later on when the problems file is written out as HTML (see
 </li></ul>
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>When a portion of text has been buffered which Level 2 wants to get shot of,
 it calls down to <a href="2-pl1.html#SP6" class="internal">ProblemBuffer::output_problem_buffer</a> to send this to a
-file. By default, the text is actually sent three ways: to the standard
-console output, to the debugging log (if there is one), and to the telemetry
-file (if there is one). But this can be diverted with
-<a href="2-pl1.html#SP6" class="internal">ProblemBuffer::redirect_problem_stream</a>, telling it to send problem text
-just one way.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Telemetry. </b>The <a href="1-tlm.html" class="internal">Telemetry</a> system isn't really to do with problems, except that it
-can log them; it is an optional facility to log activity of a tool or app.
-This is locally stored rather than sent over any wires, so perhaps there's
-no "tele-" about it.
+file. By default, the text is actually sent two ways: to the standard
+console output, and to the debugging log (if there is one). But this can be
+diverted with <a href="2-pl1.html#SP6" class="internal">ProblemBuffer::redirect_problem_stream</a>, telling it to send
+problem text just one way.
 </p>
 
 <nav role="progress"><div class="progresscontainer">

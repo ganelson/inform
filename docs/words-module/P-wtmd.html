@@ -131,7 +131,7 @@ there are exotica such as <span class="extract"><span class="extract-syntax">COL
 
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Lexical errors occur if words are too long, or quoted text continues without
 a close quote right to the end of a file, and so on. These are sent to the
-function <a href="3-lxr.html#SP30" class="internal">Lexer::lexer_problem_handler</a>, but can be intercepted by the
+function <a href="3-lxr.html#SP31" class="internal">Lexer::lexer_problem_handler</a>, but can be intercepted by the
 user (see <a href="P-htitm.html" class="internal">How To Include This Module</a>).
 </p>
 
@@ -173,7 +173,7 @@ of the <a href="index.html" class="internal">words</a> module has two options:
 <ul class="items"><li>&#9679; Create a <a href="2-wa.html#SP1" class="internal">word_assemblage</a> object. This can represent any discontiguous
 list of word numbers: thus, the text "lamb went everywhere" could be a WA
 of numbers (21, 26, 23) in our example above.
-</li><li>&#9679; Use <a href="3-lxr.html#SP29" class="internal">Lexer::splice_words</a> to create duplicate snippets of text in the
+</li><li>&#9679; Use <a href="3-lxr.html#SP30" class="internal">Lexer::splice_words</a> to create duplicate snippets of text in the
 word stream, with new numbers. For example, call this on "lamb", then "went",
 then "everywhere"; the three new word numbers will then be contiguous, and
 can be represented by a <a href="3-wrd.html#SP1" class="internal">wording</a>:
