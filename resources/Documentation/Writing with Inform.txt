@@ -10318,7 +10318,7 @@ This is only really useful when a Table is being used to hold working space for 
 ^^{randomness: sorting tables in random order}
 ^^{(reverse order), for table rows+sourcepart+}
 
-There are several ways to sort a table, correspond loosely to the different orders in which tables can be repeated through. First:
+There are several ways to sort a table, corresponding loosely to the different orders in which tables can be repeated through. First:
 
 {defn ph_sortrandom}sort (table name) in random order
 This phrase rearranges the rows of the given table so that the non-blank rows occur at the top, in a uniformly random order, and any blank rows at the bottom. Example:
@@ -10369,7 +10369,7 @@ then we get
 As a result note that repeating through this sorted table goes through the original rows in order 4, 2, 3, 1; whereas repeating through the original table in reverse order goes through in order 4, 3, 2, 1. (This is all to explain the word "loosely" in the opening sentence of this section.)
 
 {defn ph_sorttablephrase}sort (table name) with (phrase (table name, number, number) -> number)
-This phrase sorts the table with a custom comparison phrase. The phrase is given the table name and two row numbers to compare, and it must return a number which indicates the relative order of the two rows: negative if the left value should come before the right, zero if they are equal, and positive if the left value should come after the right. Any completely blank rows will be put at the bottom, but if the table has partially blank rows, then the comparison phrase must be designed in order to account for the possibility of blank entries.
+This phrase sorts the table with a custom comparison phrase. The phrase is given the table name and two row numbers to compare, and it must return a number which indicates the relative order of the two rows: negative if the left row should come before the right, zero if the rows should be sorted as if they are equal, and positive if the left row should come after the right. Any completely blank rows will be put at the bottom, but if the table has partially blank rows, then the comparison phrase must be designed to account for the possibility of blank entries.
 
 The Olympic Medals example demonstrates two custom comparison phrases.
 {end}

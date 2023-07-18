@@ -738,7 +738,9 @@ Global LIST_OF_TY_Sort_cf;
 		if (j provides I7S_Col) j=j.I7S_Col; else j=0;
 	}
 	if (LIST_OF_TY_Sort_cf == 0) {
-		return i - j;
+		if (i > j) return 1;
+		if (i < j) return -1;
+		return 0;
 	} else {
 		return LIST_OF_TY_Sort_cf(i, j);
 	}
