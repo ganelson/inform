@@ -232,7 +232,7 @@ phs_listbraced phs_listdef phs_listindef _ doc352 "21.3" "21.3. Saying lists of 
 ph_islistedin ph_isnotlistedin ph_repeatlist _ doc353 "21.4" "21.4. Testing and iterating over lists"
 ph_addtolist ph_addlisttolist ph_addatentry ph_addlistatentry ph_remfromlist ph_remlistfromlist ph_rementry ph_rementries _ doc354 "21.5" "21.5. Building lists"
 ph_listofdesc _ doc355 "21.6" "21.6. Lists of objects"
-ph_reverselist ph_sortlist ph_sortlistreverse ph_sortlistrandom ph_sortlistproperty ph_sortlistpropertyreverse ph_rotatelist ph_rotatelistback _ doc357 "21.8" "21.8. Sorting, reversing and rotating lists"
+ph_reverselist ph_sortlist ph_sortlistreverse ph_sortlistphrase ph_sortlistrandom ph_sortlistproperty ph_sortlistpropertyreverse ph_rotatelist ph_rotatelistback _ doc357 "21.8" "21.8. Sorting, reversing and rotating lists"
 ph_numberentries _ doc358 "21.9" "21.9. Accessing entries in a list"
 ph_changelength ph_truncate ph_truncatefirst ph_truncatelast ph_extend _ doc359 "21.10" "21.10. Lengthening or shortening a list"
 kind_description ph_valuematch _ doc362 "22.2" "22.2. Descriptions as values"

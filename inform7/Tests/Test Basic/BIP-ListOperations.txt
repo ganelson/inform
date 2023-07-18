@@ -4,6 +4,9 @@ An apple, a pear and an orange are fruits. A fruit has a number called size.
 
 The size of a fruit is usually 4. The size of the apple is 7. The size of the pear is 6.
 
+To decide which number is the comparison of (X - a number) and (Y - a number) (this is numerical comparison):
+	decide on X - Y;
+
 To begin:
 	let L be { 16, 3, 5, -7, 11, -7, 0, 2 };
 	say "L is [L in brace notation].";
@@ -21,6 +24,9 @@ To begin:
 	say "L sorts randomly to [L in brace notation].";
 	sort L in reverse order;
 	say "L sorts in reverse order to [L in brace notation].";
+	sort L in random order;
+	sort L with numerical comparison;
+	say "L sorts with a custom comparison phrase to [L in brace notation].";
 	let F be the list of fruits;
 	showme F;
 	sort F in size order;

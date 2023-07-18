@@ -14813,6 +14813,20 @@ This phrase puts the list into descending order. Example:
 results in L being {6 PM, 4:21 PM, 11:13 AM, 9:01 AM}.
 {end}
 
+{defn ph_sortlistphrase}sort (list of values) with (phrase (value, value) -> number)
+This phrase sorts the list with a custom comparison phrase. A comparison phrase must accept two list elements, and then return a number which indicates the relative order of the two list elements: negative if the left value should come before the right, zero if they are equal, and positive if the left value should come after the right. For example to sort numbers you would use this phrase:
+
+	To decide which number is the comparison of (X - a number) and (Y - a number) (this is numerical comparison):
+		decide on X - Y;
+
+You could then sort a list of numbers using the numerical comparison phrase:
+
+	let L be {5, 1, 7, 2, 3};
+	sort L with numerical comparison;
+
+Which results in L being {1, 2, 3, 5, 7}.
+{end}
+
 {defn ph_sortlistrandom}sort (list of values) in random order
 This phrase puts the list into a uniformly random order, shuffling it as if it were a pack of cards. Example:
 

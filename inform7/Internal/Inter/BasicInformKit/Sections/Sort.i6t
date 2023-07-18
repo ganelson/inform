@@ -13,6 +13,9 @@ avoid filling the stack with copies, but otherwise we will hardly need any
 auxiliary storage.
 
 =
+Constant SORT_ASCENDING = 1;
+Constant SORT_DESCENDING = -1;
+
 Global I7S_Tab; ! The array to be sorted, which can have almost any format
 Global I7S_Col; ! The "column number" in the array, if any
 Global I7S_Dir; ! The direction of sorting: ascending (1) or descending (-1)
