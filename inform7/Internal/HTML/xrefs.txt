@@ -152,7 +152,7 @@ PM_NoRowSelected ph_chooserow ph_chooserowwith ph_chooserandomrow _ doc248 "16.5
 ph_repeattable ph_repeattablereverse ph_repeattablecol ph_repeattablecolreverse _ doc249 "16.6" "16.6. Repeating through tables"
 ph_thereis ph_thereisno _ doc250 "16.7" "16.7. Blank entries"
 ph_chooseblankrow ph_numblank ph_numfilled ph_blankout ph_blankoutrow ph_blankoutcol ph_blankouttable _ doc253 "16.10" "16.10. Adding and removing rows"
-ph_sortrandom ph_sortcolumn ph_sortcolumnreverse _ doc254 "16.11" "16.11. Sorting"
+ph_sortrandom ph_sortcolumn ph_sortcolumnreverse ph_sorttablephrase _ doc254 "16.11" "16.11. Sorting"
 kind_tablename _ doc258 "16.15" "16.15. Varying which table to look at"
 PM_TableDefiningTheImpossible PM_TableDefiningNothing _ doc259 "16.16" "16.16. Defining things with tables"
 PM_TableNotContinuation _ doc261 "16.18" "16.18. Table continuations"

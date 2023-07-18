@@ -1128,10 +1128,13 @@ To sort (T - table name) in/into random order
 	(- TableShuffle({T}); -).
 To sort (T - table name) in/into (TC - table column) order
 	(documented at ph_sortcolumn):
-	(- TableSort({T}, {TC}, 1); -).
+	(- TableSort({T}, {TC}, SORT_ASCENDING); -).
 To sort (T - table name) in/into reverse (TC - table column) order
 	(documented at ph_sortcolumnreverse):
-	(- TableSort({T}, {TC}, -1); -).
+	(- TableSort({T}, {TC}, SORT_DESCENDING); -).
+To sort (T - table name) with (cf - phrase (table name, number, number) -> number)
+	(documented at ph_sorttablephrase):
+	(- TableSort({T}, 0, SORT_ASCENDING, 0, {cf}-->1); -).
 
 Section 3 - Lists
 

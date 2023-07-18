@@ -1,0 +1,34 @@
+   Tally Room
+  Table of Olympic Medals
+  (row 1)  | United States | 39 | 41 | 33 |
+  (row 2)  | China | 38 | 32 | 19 |
+  (row 3)  | Japan | 27 | 14 | 17 |
+  (row 4)  | Great Britain | 22 | 20 | 22 |
+  (row 5)  | ROC | 20 | 28 | 23 |
+  (row 6)  | Australia | 17 | 7 | 22 |
+  (row 7)  | Netherlands | 10 | 12 | 14 |
+  (row 8)  | France | 10 | 12 | 11 |
+  (row 9)  | Germany | 10 | 11 | 16 |
+  (row 10)  | Italy | 10 | 10 | 20 |
+  
+  Table of Olympic Medals
+  (row 1)  | United States | 39 | 41 | 33 |
+  (row 2)  | China | 38 | 32 | 19 |
+  (row 3)  | ROC | 20 | 28 | 23 |
+  (row 4)  | Great Britain | 22 | 20 | 22 |
+  (row 5)  | Japan | 27 | 14 | 17 |
+  (row 6)  | Australia | 17 | 7 | 22 |
+  (row 7)  | Italy | 10 | 10 | 20 |
+  (row 8)  | Germany | 10 | 11 | 16 |
+  (row 9)  | Netherlands | 10 | 12 | 14 |
+  (row 10)  | France | 10 | 12 | 11 |
+  
+  Olympic Medals
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Tally Room
+  Here we count the event results as they come in and update that most important table of all, the Table of Olympic Medals.
+  
+> >   Tally Room
+> Are you sure you want to quit? 
