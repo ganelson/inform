@@ -65,9 +65,10 @@ one line at a time:
 	current_headings[2] = NULL; /* Latest section in most recent thing of lower level */
 	current_headings[3] = NULL; /* Latest example in most recent thing of lower level */
 	
-	tree_node *current_passage = NULL,   /* passage being assembled, if any */
-			  *current_paragraph = NULL, /* paragraph being assembled, if any */
-			  *current_code = NULL;      /* code sample being assembled, if any */
+	tree_node *current_passage = NULL,     /* passage being assembled, if any */
+			  *current_phrase_defn = NULL, /* again, if any */
+			  *current_paragraph = NULL,   /* paragraph being assembled, if any */
+			  *current_code = NULL;        /* code sample being assembled, if any */
 
 	int pending_code_sample_blanks = 0, code_is_tabular = FALSE; /* used only when assembling code samples */
 
@@ -129,6 +130,10 @@ part of paragraphs; or indented ones, which are always part of code samples.
 		} else if ((Regexp::match(&mr, line, L"Example *: *(%**) *(%c+?)")) ||
 			(Regexp::match(&mr, line, L"Example *- *(%**) *(%c+?)"))) {
 			@<Insert an example heading@>;
+		} else if (Regexp::match(&mr, line, L"{defn *(%c*?)} *(%c+)")) {
+			@<Begin a phrase definition@>;
+		} else if (Regexp::match(&mr, line, L"{end}")) {
+			@<End a phrase definition@>;
 		} else {
 			if (current_paragraph == NULL) @<Begin paragraph@>;
 			@<Insert space in paragraph@>;
@@ -166,6 +171,23 @@ part of paragraphs; or indented ones, which are always part of code samples.
 		Str::len(mr.exp[0]), ++(cd->total_examples));
 	@<Place this new structural node in the tree@>;
 
+@<Begin a phrase definition@> =
+	if (current_phrase_defn == NULL) {
+		@<Begin passage if not already in one@>;
+		@<Complete paragraph or code@>;
+		current_phrase_defn =
+			DocumentationTree::new_phrase_defn(cd->tree, mr.exp[0], mr.exp[1]);
+		Trees::make_child(current_phrase_defn, current_passage);
+		@<Complete passage if in one@>;
+	}
+
+@<End a phrase definition@> =
+	if (current_phrase_defn) {
+		@<Complete passage if in one@>;
+		current_passage = current_phrase_defn->parent;
+		current_phrase_defn = NULL;
+	}
+
 @<Place this new structural node in the tree@> =
 	for (int j=level-1; j>=0; j--)
 		if (current_headings[j]) {
@@ -178,7 +200,9 @@ part of paragraphs; or indented ones, which are always part of code samples.
 @<Begin passage if not already in one@> =
 	if (current_passage == NULL) {
 		current_passage = DocumentationTree::new_passage(cd->tree);
-		for (int j=3; j>=0; j--)
+		if (current_phrase_defn)
+			Trees::make_child(current_passage, current_phrase_defn);
+		else for (int j=3; j>=0; j--)
 			if (current_headings[j]) {
 				Trees::make_child(current_passage, current_headings[j]);
 				break;

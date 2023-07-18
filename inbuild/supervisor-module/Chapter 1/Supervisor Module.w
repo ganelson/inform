@@ -18,6 +18,7 @@ which use this module:
 @e cdoc_heading_CLASS
 @e cdoc_example_CLASS
 @e cdoc_passage_CLASS
+@e cdoc_phrase_defn_CLASS
 @e cdoc_paragraph_CLASS
 @e cdoc_code_sample_CLASS
 @e cdoc_code_line_CLASS
@@ -55,6 +56,7 @@ DECLARE_CLASS(build_vertex)
 DECLARE_CLASS(cdoc_heading)
 DECLARE_CLASS(cdoc_example)
 DECLARE_CLASS(cdoc_passage)
+DECLARE_CLASS(cdoc_phrase_defn)
 DECLARE_CLASS(cdoc_paragraph)
 DECLARE_CLASS(cdoc_code_sample)
 DECLARE_CLASS(cdoc_code_line)

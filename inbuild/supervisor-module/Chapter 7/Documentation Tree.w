@@ -12,6 +12,7 @@ tree_node_type
 	*heading_TNT = NULL,
 	*example_TNT = NULL,
 	*passage_TNT = NULL,
+	*phrase_defn_TNT = NULL,
 	*paragraph_TNT = NULL,
 	*code_sample_TNT = NULL,
 	*code_line_TNT = NULL;
@@ -27,6 +28,8 @@ heterogeneous_tree *DocumentationTree::new(void) {
 			&DocumentationTree::example_verifier);
 		passage_TNT = Trees::new_node_type(I"passage", cdoc_passage_CLASS,
 			&DocumentationTree::passage_verifier);
+		phrase_defn_TNT = Trees::new_node_type(I"phrase defn", cdoc_phrase_defn_CLASS,
+			&DocumentationTree::phrase_defn_verifier);
 		paragraph_TNT = Trees::new_node_type(I"paragraph", cdoc_paragraph_CLASS,
 			&DocumentationTree::paragraph_verifier);
 		code_sample_TNT = Trees::new_node_type(I"code sample", cdoc_code_sample_CLASS,
@@ -134,14 +137,43 @@ tree_node *DocumentationTree::new_passage(heterogeneous_tree *tree) {
 	return Trees::new_node(tree, passage_TNT, STORE_POINTER_cdoc_passage(P));
 }
 
-@ A passage node is essentially a holder for a mixed list of paragraphs and
-indented code samples.
+@ A passage node is essentially a holder for a mixed list of paragraphs,
+indented code samples and phrase definitions.
 
 =
 int DocumentationTree::passage_verifier(tree_node *N) {
 	for (tree_node *C = N->child; C; C = C->next)
-		if ((C->type != paragraph_TNT) && (C->type != code_sample_TNT))
+		if ((C->type != paragraph_TNT) &&
+			(C->type != code_sample_TNT) && (C->type != phrase_defn_TNT))
 			return FALSE;
+	return TRUE;
+}
+
+@ Phrase definition nodes contain little dashed inset boxes formally describing
+phrases. The "tag" is optional and is for potential cross-referencing; the
+"prototype" is the Inform source text for the phrase definition.
+
+=
+typedef struct cdoc_phrase_defn {
+	struct text_stream *tag;
+	struct text_stream *prototype;
+	CLASS_DEFINITION
+} cdoc_phrase_defn;
+
+tree_node *DocumentationTree::new_phrase_defn(heterogeneous_tree *tree,
+	text_stream *tag, text_stream *prototype) {
+	cdoc_phrase_defn *P = CREATE(cdoc_phrase_defn);
+	P->tag = Str::duplicate(tag);
+	P->prototype = Str::duplicate(prototype);
+	return Trees::new_node(tree, phrase_defn_TNT, STORE_POINTER_cdoc_phrase_defn(P));
+}
+
+@ An phrase defn node always has a single child: the passage containing its content.
+
+=
+int DocumentationTree::phrase_defn_verifier(tree_node *N) {
+	if ((N->child == NULL) || (N->child->type != passage_TNT) || (N->child->next))
+		return FALSE;
 	return TRUE;
 }
 

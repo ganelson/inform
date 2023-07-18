@@ -376,6 +376,31 @@ p.extensionsubheading {
 	margin-bottom: 4px;
 }
 
+/* Miscellaneous extension documentation styles: */
+
+div.documentation p {
+	font-size: 13px;
+	line-height: 18px;
+}
+
+div.documentation blockquote {
+	font-size: 12px;
+	line-height: 17px;
+}
+
+div.documentation div.definition {
+	margin: 0.75em;
+	padding: 0.75em;
+	border: 1px dashed #2f6fab;
+	background-color: #e9e9e9;
+}
+
+div.definition p.defnprototype {
+	margin: 0;
+	padding: 0;
+	text-indent: 0;
+}
+
 /* On Registry index pages (such as the Public Library), these are used for
 download buttons and the like: */
 

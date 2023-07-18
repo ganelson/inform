@@ -24,6 +24,9 @@ int DocumentationRenderer::textual_visit(tree_node *N, void *state, int L) {
 	} else if (N->type == example_TNT) {
 		cdoc_example *E = RETRIEVE_POINTER_cdoc_example(N->content);
 		WRITE("Example %c: '%S' (%d star(s))\n", E->letter, E->name, E->star_count);
+	} else if (N->type == phrase_defn_TNT) {
+		cdoc_phrase_defn *E = RETRIEVE_POINTER_cdoc_phrase_defn(N->content);
+		WRITE("Phrase definition (tag '%S') [ %S ]\n", E->tag, E->prototype);
 	} else if (N->type == passage_TNT) {
 		WRITE("Passage\n");
 	} else if (N->type == paragraph_TNT) {
@@ -72,6 +75,7 @@ except the examples, and then up to 26 pages holding the content of examples A t
 =
 void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd, text_stream *extras) {
 	if (cd) {
+DocumentationRenderer::as_plain_text(DL, cd->tree);
 		text_stream *OUT = DocumentationRenderer::open_subpage(P, I"index.html");
 		DocumentationRenderer::render_index_page(OUT, cd, extras);
 		DocumentationRenderer::close_subpage();
@@ -322,7 +326,7 @@ int DocumentationRenderer::toc_visitor(tree_node *N, void *state, int L) {
 
 void DocumentationRenderer::render_body(OUTPUT_STREAM, compiled_documentation *cd,
 	tree_node *from) {
-	HTML_OPEN("div");
+	HTML_OPEN_WITH("div", "class=\"documentation\"");
 	Trees::traverse_from(from, &DocumentationRenderer::body_visitor, (void *) OUT, 0);
 	HTML_CLOSE("div");
 }
@@ -371,12 +375,31 @@ void DocumentationRenderer::render_chapter(OUTPUT_STREAM, compiled_documentation
 
 int DocumentationRenderer::body_visitor(tree_node *N, void *state, int L) {
 	text_stream *OUT = (text_stream *) state;
+	if (N == NULL) return FALSE;
 	if (N->type == heading_TNT) {
 		cdoc_heading *H = RETRIEVE_POINTER_cdoc_heading(N->content);
 		if (H->level > 0) @<Typeset the heading of this chapter or section@>;
 	}
 	if (N->type == example_TNT) {
 		DocumentationRenderer::render_example_heading(OUT, N, NULL);
+		return FALSE;
+	}
+	if (N->type == phrase_defn_TNT) {
+		HTML_OPEN_WITH("div", "class=\"definition\"");
+		HTML_OPEN_WITH("p", "class=\"defnprototype\"");
+		cdoc_phrase_defn *P = RETRIEVE_POINTER_cdoc_phrase_defn(N->content);
+		HTML_OPEN("b");
+		int bl = 0;
+		for (int i=0; i<Str::len(P->prototype); i++) {
+			wchar_t c = Str::get_at(P->prototype, i);
+			if (c == '(') { bl++; if (bl == 1) HTML_CLOSE("b"); }
+			PUT(c);
+			if (c == ')') { bl--; if (bl == 0) HTML_OPEN("b"); }
+		}
+		if (bl <= 0) HTML_CLOSE("b");
+		HTML_CLOSE("p");
+		Trees::traverse_from(N->child, &DocumentationRenderer::body_visitor, state, L);
+		HTML_CLOSE("div");
 		return FALSE;
 	}
 	if (N->type == paragraph_TNT) {
