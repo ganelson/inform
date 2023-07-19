@@ -1,0 +1,11 @@
+Name: "Inform"
+Details: "The natural-language based language Inform 7"
+Extension: ".i7x"
+Multiline Comment Open: "["
+Multiline Comment Close: "]"
+String Literal: "\""
+
+# This is here so that tangling the Standard Rules extension doesn't insert
+# a spurious comment betraying Inweb's involvement in the process -
+
+Suppress Disclaimer: true

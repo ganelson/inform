@@ -1,0 +1,7 @@
+Name: "text"
+Details: "For text files which are not programs"
+Extension: ".txt"
+
+colouring {
+	=> !plain
+}

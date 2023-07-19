@@ -187,3 +187,11 @@ the Inbuild command-line options |-copy-to N| and |-sync-to N|.
 VOID_METHOD_TYPE(GENRE_COPY_TO_NEST_MTID,
 	inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N, int syncing,
 	build_methodology *meth)
+
+@ This writes documentation on the edition (if it provides any).
+
+@e GENRE_DOCUMENT_MTID
+
+=
+VOID_METHOD_TYPE(GENRE_DOCUMENT_MTID,
+	inbuild_genre *gen, inbuild_copy *C, pathname *dest)

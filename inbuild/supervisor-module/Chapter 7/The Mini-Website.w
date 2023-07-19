@@ -36,12 +36,12 @@ void ExtensionWebsite::update(inform_project *proj) {
 
 	inform_extension *E;
 	LOOP_OVER_LINKED_LIST(E, inform_extension, proj->extensions_included)
-		ExtensionWebsite::document_extension(E, FALSE, proj);
+		ExtensionWebsite::document_extension(E, proj);
 
 	linked_list *census = Projects::perform_census(proj);
 	inbuild_search_result *res;
 	LOOP_OVER_LINKED_LIST(res, inbuild_search_result, census)
-		ExtensionWebsite::document_extension(Extensions::from_copy(res->copy), FALSE, proj);
+		ExtensionWebsite::document_extension(Extensions::from_copy(res->copy), proj);
 }
 
 @ The top-level index page is at this filename.
@@ -138,8 +138,7 @@ filename *ExtensionWebsite::page_filename_inner(inform_project *proj, inbuild_ed
 @ And this is where extension documentation is kicked off.
 
 =
-void ExtensionWebsite::document_extension(inform_extension *E, int force_update,
-	inform_project *proj) {
+void ExtensionWebsite::document_extension(inform_extension *E, inform_project *proj) {
 	if (E == NULL) internal_error("no extension");
 	if (proj == NULL) internal_error("no project");
 	if (E->documented_on_this_run) return;

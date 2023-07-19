@@ -21,6 +21,8 @@ text_stream *filter_text = NULL;
 pathname *preprocess_HTML_destination = NULL;
 text_stream *preprocess_HTML_app = NULL;
 inbuild_copy *to_install = NULL;
+filename *documentation_source = NULL;
+pathname *documentation_dest = NULL;
 
 @h Main routine.
 When Inbuild is called at the command line, it begins at |main|, like all C
@@ -39,6 +41,7 @@ int main(int argc, char **argv) {
 	CommandLine::play_back_log();
 	@<Complete the list of targets@>;
 	if (to_install) @<Perform an extension installation@>
+	else if (documentation_source) @<Document from a file@>
 	else @<Act on the targets@>;
 	@<Shut down the modules@>;
 	if (Errors::have_occurred()) return 1;
@@ -113,6 +116,13 @@ error in this case.
 	Supervisor::go_operational();
 	ExtensionInstaller::install(to_install, confirmed, path_to_inbuild);
 
+@<Document from a file@> =
+	if (documentation_dest == NULL)
+		Errors::fatal("need to specify '-document-to' directory");
+	compiled_documentation *cd = DocumentationCompiler::compile_from_file(
+		documentation_source, NULL);
+	if (cd) DocumentationRenderer::as_HTML(documentation_dest, cd, NULL);
+
 @ We make the function call |Supervisor::go_operational| to signal to |inbuild|
 that we want to start work now.
 
@@ -161,6 +171,7 @@ utility functions in the //supervisor// module, which we call.
 @e REBUILD_TTASK
 @e COPY_TO_TTASK
 @e SYNC_TO_TTASK
+@e DOCUMENT_TTASK
 
 @<Carry out the required task on the copy C@> =
 	text_stream *OUT = STDOUT;
@@ -193,6 +204,10 @@ utility functions in the //supervisor// module, which we call.
 		case REBUILD_TTASK: Copies::rebuild(OUT, C, BM); break;
 		case COPY_TO_TTASK: Copies::copy_to(C, destination_nest, FALSE, BM); break;
 		case SYNC_TO_TTASK: Copies::copy_to(C, destination_nest, TRUE, BM); break;
+		case DOCUMENT_TTASK:
+			if (documentation_dest == NULL)
+				Errors::fatal("need to specify '-document-to' directory");
+			Copies::document(C, documentation_dest); break;
 	}
 
 @<Shut down the modules@> =
@@ -383,6 +398,9 @@ other options to the selection defined here.
 @e VERBOSE_CLSW
 @e VERBOSITY_CLSW
 @e JSON_CLSW
+@e DOCUMENT_CLSW
+@e DOCUMENT_FROM_CLSW
+@e DOCUMENT_TO_CLSW
 
 @<Read the command line@> =	
 	CommandLine::declare_heading(
@@ -454,6 +472,12 @@ other options to the selection defined here.
 		L"how much explanation to print: lowest is 0 (default), highest is 3");
 	CommandLine::declare_switch(JSON_CLSW, L"json", 2,
 		L"write output of -inspect to a JSON file in X (or '-' for stdout)");
+	CommandLine::declare_switch(DOCUMENT_CLSW, L"document", 1,
+		L"(re-)generate documentation on this within current project");
+	CommandLine::declare_switch(DOCUMENT_FROM_CLSW, L"document-from", 2,
+		L"generate documentation from documentation source file X");
+	CommandLine::declare_switch(DOCUMENT_TO_CLSW, L"document-to", 2,
+		L"divert generated documentation to directory X");
 	Supervisor::declare_options();
 
 	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
@@ -473,6 +497,7 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case BUILD_NEEDS_CLSW: inbuild_task = BUILD_NEEDS_TTASK; break;
 		case USE_LOCATE_CLSW: inbuild_task = USE_LOCATE_TTASK; break;
 		case BUILD_LOCATE_CLSW: inbuild_task = BUILD_LOCATE_TTASK; break;
+		case DOCUMENT_CLSW: inbuild_task = DOCUMENT_TTASK; break;
 		case ARCHIVE_TO_CLSW:
 			destination_nest = Nests::new(Pathnames::from_text(arg));
 			inbuild_task = ARCHIVE_TO_TTASK;
@@ -530,6 +555,8 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 			if (Str::ne(arg, I"-"))
 				JSON_file_to_output = Filenames::from_text(arg);
 			break;
+		case DOCUMENT_FROM_CLSW: documentation_source = Filenames::from_text(arg); break;
+		case DOCUMENT_TO_CLSW: documentation_dest = Pathnames::from_text(arg); break;
 	}
 	Supervisor::option(id, val, arg, state);
 }

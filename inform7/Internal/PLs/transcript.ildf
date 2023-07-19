@@ -1,0 +1,11 @@
+Name: "transcript"
+Details: "For styling transcripts of story file output"
+Extension: ".txt"
+
+colouring {
+	=> !identifier
+	brackets in /\s*(>)(.*)/ {
+		number 1 => !element
+		number 2 => !extract
+	}
+}

@@ -13,6 +13,9 @@ usage: inbuild [-TASK] TARGET1 TARGET2 ...
 -no-confirmed                  don't confirm installation in the Inform GUI apps (default is -confirmed)
 -contents-of X                 apply to all targets in the directory X
 -copy-to X                     copy target(s) to nest X
+-document                      (re-)generate documentation on this within current project
+-document-from X               generate documentation from documentation source file X
+-document-to X                 divert generated documentation to directory X
 -dry                           make this a dry run (print but do not execute shell commands) (default is -no-dry)
 -graph                         show dependency graph of target(s) but take no action
 -inspect                       show target(s) but take no action

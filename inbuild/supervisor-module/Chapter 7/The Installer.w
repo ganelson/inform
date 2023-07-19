@@ -261,7 +261,7 @@ void ExtensionInstaller::install(inbuild_copy *C, int confirmed, pathname *to_to
 		}
 
 @<Make documentation@> =
-	ExtensionWebsite::document_extension(Extensions::from_copy(C), FALSE, project);
+	ExtensionWebsite::document_extension(Extensions::from_copy(C), project);
 	HTML_OPEN("p");
 	WRITE("Documentation about %S ", C->edition->work->title);
 	TEMPORARY_TEXT(link)

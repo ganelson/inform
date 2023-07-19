@@ -31,7 +31,27 @@ compiled_documentation *DocumentationCompiler::new_wrapper(text_stream *source) 
 	return cd;
 }
 
-@ Off we go, then:
+@ We can compile either from a file...
+
+=
+compiled_documentation *DocumentationCompiler::compile_from_file(filename *F,
+	inform_extension *associated_extension) {
+	TEMPORARY_TEXT(temp)
+	TextFiles::read(F, FALSE, "unable to read file of documentation", TRUE,
+		&DocumentationCompiler::read_file_helper, NULL, temp);
+	compiled_documentation *cd =
+		DocumentationCompiler::compile(temp, associated_extension);
+	DISCARD_TEXT(temp)
+	return cd;
+}
+
+void DocumentationCompiler::read_file_helper(text_stream *text, text_file_position *tfp,
+	void *v_state) {
+	text_stream *contents = (text_stream *) v_state;
+	WRITE_TO(contents, "%S\n", text);
+}
+
+@ ...or from text:
 
 =
 compiled_documentation *DocumentationCompiler::compile(text_stream *source,
@@ -67,10 +87,13 @@ one line at a time:
 	
 	tree_node *current_passage = NULL,     /* passage being assembled, if any */
 			  *current_phrase_defn = NULL, /* again, if any */
-			  *current_paragraph = NULL,   /* paragraph being assembled, if any */
-			  *current_code = NULL;        /* code sample being assembled, if any */
+			  *current_paragraph = NULL,
+			  *current_code = NULL,
+			  *last_paste_code = NULL;     /* last code sample with a paste button */
 
 	int pending_code_sample_blanks = 0, code_is_tabular = FALSE; /* used only when assembling code samples */
+	programming_language *default_language = DocumentationCompiler::get_language(I"Inform");
+	programming_language *language = default_language;
 
 	@<Parse the source linewise@>;
 
@@ -96,6 +119,7 @@ to 1 tab.
 		}
 	}
 	if (Str::len(line) > 0) @<Line read@>;
+	@<Check for runaway phrase definitions@>;
 	@<Complete passage if in one@>;
 	DISCARD_TEXT(line)
 
@@ -141,8 +165,30 @@ part of paragraphs; or indented ones, which are always part of code samples.
 		}
 		Regexp::dispose_of(&mr);
 	} else {
-		if (current_code == NULL) @<Begin code@>
-		@<Insert line in code sample@>;
+		if (current_code == NULL) {		
+			if ((Str::get_at(line, 0) == '{') && (Str::get_at(line, 1) == 'a') &&
+				(Str::get_at(line, 2) == 's') && (Str::get_at(line, 3) == ' ') &&
+				(Str::get_at(line, Str::len(line)-1) == '}')) {
+				Str::delete_n_characters(line, 4);
+				Str::delete_last_character(line);
+				Str::trim_white_space(line);
+				language = DocumentationCompiler::get_language(line);
+				if (language == NULL) {
+					@<Complete paragraph or code@>;
+					@<Begin passage if not already in one@>;
+					TEMPORARY_TEXT(err)
+					WRITE_TO(err, "cannot find a language called '%S'", line);
+					tree_node *E = DocumentationTree::new_source_error(cd->tree, err);
+					Trees::make_child(E, current_passage);
+					DISCARD_TEXT(err)
+				}
+			} else {
+				@<Begin code@>;
+				@<Insert line in code sample@>;
+			}
+		} else {
+			@<Insert line in code sample@>;
+		}
 	}
 
 @<Insert a chapter heading@> =
@@ -166,12 +212,25 @@ part of paragraphs; or indented ones, which are always part of code samples.
 
 @<Insert an example heading@> =
 	@<Complete passage if in one@>;
-	int level = 3;
+	int level = 3, star_count = Str::len(mr.exp[0]);
 	tree_node *new_node = DocumentationTree::new_example(cd->tree, mr.exp[1],
-		Str::len(mr.exp[0]), ++(cd->total_examples));
+		star_count, ++(cd->total_examples));
 	@<Place this new structural node in the tree@>;
+	if (star_count == 0) {
+		@<Begin passage if not already in one@>;
+		tree_node *E = DocumentationTree::new_source_error(cd->tree,
+			I"this example should be marked (before the title) '*', '**', '***' or '****' for difficulty");
+		Trees::make_child(E, current_passage);
+	}
+	if (star_count > 4) {
+		@<Begin passage if not already in one@>;
+		tree_node *E = DocumentationTree::new_source_error(cd->tree,
+			I"four stars '****' is the maximum difficulty rating allowed");
+		Trees::make_child(E, current_passage);
+	}
 
 @<Begin a phrase definition@> =
+	@<Check for runaway phrase definitions@>;
 	if (current_phrase_defn == NULL) {
 		@<Begin passage if not already in one@>;
 		@<Complete paragraph or code@>;
@@ -186,9 +245,16 @@ part of paragraphs; or indented ones, which are always part of code samples.
 		@<Complete passage if in one@>;
 		current_passage = current_phrase_defn->parent;
 		current_phrase_defn = NULL;
+	} else {
+		@<Begin passage if not already in one@>;
+		tree_node *E = DocumentationTree::new_source_error(cd->tree,
+			I"{end} without {defn}");
+		Trees::make_child(E, current_passage);
 	}
+	language = default_language;
 
 @<Place this new structural node in the tree@> =
+	@<Check for runaway phrase definitions@>;
 	for (int j=level-1; j>=0; j--)
 		if (current_headings[j]) {
 			Trees::make_child(new_node, current_headings[j]);
@@ -196,6 +262,16 @@ part of paragraphs; or indented ones, which are always part of code samples.
 		}
 	current_headings[level] = new_node;
 	for (int j=level+1; j<4; j++) current_headings[j] = NULL;
+	language = default_language;
+
+@<Check for runaway phrase definitions@> =
+	if (current_phrase_defn) {
+		@<Begin passage if not already in one@>;
+		tree_node *E = DocumentationTree::new_source_error(cd->tree,
+			I"{defn} has no {end}");
+		Trees::make_child(E, current_passage);
+		current_phrase_defn = NULL;
+	}
 
 @<Begin passage if not already in one@> =
 	if (current_passage == NULL) {
@@ -249,15 +325,38 @@ of a code sample either, since a non-blank indented line is needed to trigger on
 @<Begin code@> =
 	@<Complete paragraph or code@>;
 	@<Begin passage if not already in one@>;
-	int paste_me = FALSE;
+
+	int paste_me = FALSE, continue_me = FALSE;
 	if ((Str::get_at(line, 0) == '*') &&
 		(Str::get_at(line, 1) == ':')) {
 		Str::delete_first_character(line);
 		Str::delete_first_character(line);
 		Str::trim_white_space(line);
 		paste_me = TRUE;
+	} else if ((Str::get_at(line, 0) == '*') &&
+		(Str::get_at(line, 1) == '*') &&
+		(Str::get_at(line, 2) == ':')) {
+		Str::delete_first_character(line);
+		Str::delete_first_character(line);
+		Str::delete_first_character(line);
+		Str::trim_white_space(line);
+		continue_me = TRUE;
 	}
-	current_code = DocumentationTree::new_code_sample(cd->tree, paste_me);
+	current_code = DocumentationTree::new_code_sample(cd->tree, paste_me, language);
+	if (continue_me) {
+		if (last_paste_code) {
+			cdoc_code_sample *S = RETRIEVE_POINTER_cdoc_code_sample(last_paste_code->content);
+			S->continuation = current_code;
+		} else {
+			tree_node *E = DocumentationTree::new_source_error(cd->tree, I"cannot continue a paste here");
+			Trees::make_child(E, current_passage);
+		}
+	}
+	if ((paste_me) || (continue_me)) {
+		last_paste_code = current_code;
+	} else {
+		last_paste_code = NULL;
+	}
 	Trees::make_child(current_code, current_passage);
 	pending_code_sample_blanks = 0;
 	code_is_tabular = FALSE;
@@ -285,3 +384,16 @@ of a code sample either, since a non-blank indented line is needed to trigger on
 		current_code = NULL;
 		code_is_tabular = FALSE;
 	}
+
+@
+
+=
+programming_language *DocumentationCompiler::get_language(text_stream *name) {
+	inbuild_nest *N = Supervisor::internal();
+	if (N == NULL) return NULL;
+	pathname *LP = Pathnames::down(Nests::get_location(N), I"PLs");
+	Languages::set_default_directory(LP);
+	programming_language *pl = Languages::find_by_name(name, NULL, FALSE);
+	if (pl == NULL) LOG("Did not load %S!\n", name);
+	return pl;
+}

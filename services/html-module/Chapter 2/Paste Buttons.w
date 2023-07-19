@@ -76,19 +76,28 @@ to call a suitable function.
 
 =
 void PasteButtons::paste_W(OUTPUT_STREAM, wording W) {
-	PasteButtons::paste_inner(OUT, Wordings::first_wn(W), Wordings::last_wn(W), NULL);
+	PasteButtons::paste_inner(OUT, Wordings::first_wn(W), Wordings::last_wn(W), NULL, NULL);
 }
 void PasteButtons::paste_text(OUTPUT_STREAM, text_stream *alt_stream) {
-	PasteButtons::paste_inner(OUT, -1, -1, alt_stream);
+	PasteButtons::paste_inner(OUT, -1, -1, alt_stream, NULL);
 }
-void PasteButtons::paste_inner(OUTPUT_STREAM, int from, int to, text_stream *alt_stream) {
+void PasteButtons::paste_text_using(OUTPUT_STREAM, text_stream *alt_stream,
+	text_stream *paste_icon) {
+	PasteButtons::paste_inner(OUT, -1, -1, alt_stream, paste_icon);
+}
+void PasteButtons::paste_inner(OUTPUT_STREAM, int from, int to, text_stream *alt_stream,
+	text_stream *paste_icon) {
 	TEMPORARY_TEXT(link)
-	WRITE_TO(link, "href=\"javascript:pasteCode(");
+	WRITE_TO(link, "class=\"pastelink\" href=\"javascript:pasteCode(");
 	PasteButtons::argument(link, from, to, alt_stream);
 	WRITE_TO(link, ")\"");
 	HTML_OPEN_WITH("a", "%S", link);
 	DISCARD_TEXT(link)
-	HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/paste.png");
+	if (Str::len(paste_icon) == 0) {
+		HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/paste.png");
+	} else {
+		WRITE("%S", paste_icon);
+	}
 	HTML_CLOSE("a");
 }
 

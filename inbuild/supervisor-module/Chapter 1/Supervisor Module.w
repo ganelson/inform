@@ -22,6 +22,7 @@ which use this module:
 @e cdoc_paragraph_CLASS
 @e cdoc_code_sample_CLASS
 @e cdoc_code_line_CLASS
+@e cdoc_source_error_CLASS
 @e compiled_documentation_CLASS
 @e control_structure_phrase_CLASS
 @e copy_error_CLASS
@@ -60,6 +61,7 @@ DECLARE_CLASS(cdoc_phrase_defn)
 DECLARE_CLASS(cdoc_paragraph)
 DECLARE_CLASS(cdoc_code_sample)
 DECLARE_CLASS(cdoc_code_line)
+DECLARE_CLASS(cdoc_source_error)
 DECLARE_CLASS(control_structure_phrase)
 DECLARE_CLASS(compiled_documentation)
 DECLARE_CLASS(copy_error)

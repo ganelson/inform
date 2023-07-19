@@ -860,6 +860,15 @@ void Extensions::read_extension_file_helper(text_stream *text, text_file_positio
 	WRITE_TO(contents, "%S\n", text);
 }
 
+@ And this serves the |-document| feature of inbuild:
+
+=
+void Extensions::document(inform_extension *E, pathname *dest) {
+	SVEXPLAIN(1, "(documenting %X to %p)\n", E->as_copy->edition->work, dest);
+	compiled_documentation *cd = Extensions::get_documentation(E);
+	DocumentationRenderer::as_HTML(dest, cd, NULL);
+}
+
 @ When the extension source text was read from its |source_file|, we
 attached a reference to say which |inform_extension| it was, and here we
 make use of that:

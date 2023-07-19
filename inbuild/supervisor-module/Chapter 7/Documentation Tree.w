@@ -15,7 +15,8 @@ tree_node_type
 	*phrase_defn_TNT = NULL,
 	*paragraph_TNT = NULL,
 	*code_sample_TNT = NULL,
-	*code_line_TNT = NULL;
+	*code_line_TNT = NULL,
+	*source_error_TNT = NULL;
 
 heterogeneous_tree *DocumentationTree::new(void) {
 	if (cdoc_tree_TT == NULL) {
@@ -36,6 +37,8 @@ heterogeneous_tree *DocumentationTree::new(void) {
 			&DocumentationTree::code_sample_verifier);
 		code_line_TNT = Trees::new_node_type(I"line", cdoc_code_line_CLASS,
 			&DocumentationTree::code_line_verifier);
+		source_error_TNT = Trees::new_node_type(I"error", cdoc_source_error_CLASS,
+			&DocumentationTree::source_error_verifier);
 	}
 	heterogeneous_tree *tree = Trees::new(cdoc_tree_TT);
 	Trees::make_root(tree, DocumentationTree::new_heading(tree, I"(root)", 0, 0, 0, 0));
@@ -144,7 +147,9 @@ indented code samples and phrase definitions.
 int DocumentationTree::passage_verifier(tree_node *N) {
 	for (tree_node *C = N->child; C; C = C->next)
 		if ((C->type != paragraph_TNT) &&
-			(C->type != code_sample_TNT) && (C->type != phrase_defn_TNT))
+			(C->type != code_sample_TNT) &&
+			(C->type != phrase_defn_TNT) &&
+			(C->type != source_error_TNT))
 			return FALSE;
 	return TRUE;
 }
@@ -203,11 +208,16 @@ int DocumentationTree::paragraph_verifier(tree_node *N) {
 typedef struct cdoc_code_sample {
 	CLASS_DEFINITION
 	int with_paste_marker;
+	struct tree_node *continuation;
+	struct programming_language *language;
 } cdoc_code_sample;
 
-tree_node *DocumentationTree::new_code_sample(heterogeneous_tree *tree, int paste_me) {
+tree_node *DocumentationTree::new_code_sample(heterogeneous_tree *tree, int paste_me,
+	programming_language *language) {
 	cdoc_code_sample *C = CREATE(cdoc_code_sample);
 	C->with_paste_marker = paste_me;
+	C->continuation = NULL;
+	C->language = language;
 	return Trees::new_node(tree, code_sample_TNT, STORE_POINTER_cdoc_code_sample(C));
 }
 
@@ -229,6 +239,7 @@ at 0, and is measured in tab stops.
 =
 typedef struct cdoc_code_line {
 	struct text_stream *content;
+	struct text_stream *colouring;
 	int indentation;
 	int tabular;
 	CLASS_DEFINITION
@@ -238,12 +249,33 @@ tree_node *DocumentationTree::new_code_line(heterogeneous_tree *tree,
 	text_stream *content, int indentation, int tabular) {
 	cdoc_code_line *C = CREATE(cdoc_code_line);
 	C->content = Str::duplicate(content);
+	C->colouring = Str::new();
 	C->indentation = indentation;
 	C->tabular = tabular;
 	return Trees::new_node(tree, code_line_TNT, STORE_POINTER_cdoc_code_line(C));
 }
 
 int DocumentationTree::code_line_verifier(tree_node *N) {
+	if (N->child) return FALSE; /* This must be a leaf node */
+	return TRUE;
+}
+
+@ An error node holds a single error message, and has no children.
+
+=
+typedef struct cdoc_source_error {
+	struct text_stream *error_message;
+	CLASS_DEFINITION
+} cdoc_source_error;
+
+tree_node *DocumentationTree::new_source_error(heterogeneous_tree *tree,
+	text_stream *content) {
+	cdoc_source_error *E = CREATE(cdoc_source_error);
+	E->error_message = Str::duplicate(content);
+	return Trees::new_node(tree, source_error_TNT, STORE_POINTER_cdoc_source_error(E));
+}
+
+int DocumentationTree::source_error_verifier(tree_node *N) {
 	if (N->child) return FALSE; /* This must be a leaf node */
 	return TRUE;
 }

@@ -25,6 +25,22 @@
     --safe-button-background-colour: rgb(31, 136, 61);
     --dangerous-button-background-colour: rgb(136, 31, 61);
 	--button-text-background-colour: #ffffff;
+	
+	--syntaxdefinition-colour: #000040;
+	--syntaxfunction-colour: #000040;
+	--syntaxreserved-colour: #000040;
+	--syntaxelement-colour: #000040;
+	--syntaxidentifier-colour: #000040;
+	--syntaxcharacter-colour: #000040;
+	--syntaxconstant-colour: #000040;
+	--syntaxstring-colour: #0000ff;
+	--syntaxplain-colour: #000040;
+	--syntaxextract-colour: #FF00e0;
+	--syntaxcomment-colour: #004000;
+
+    --paste-active-colour: #803030;
+    --paste-passive-colour: #303030;
+    --paste-background-colour: #f3f6fa;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -54,7 +70,23 @@
     --safe-button-background-colour: rgb(31, 136, 61);
     --dangerous-button-background-colour: rgb(136, 31, 61);
 	--button-text-background-colour: #ffffff;
-    }
+ 	
+	--syntaxdefinition-colour: #e0e0ff;
+	--syntaxfunction-colour: #e0e0ff;
+	--syntaxreserved-colour: #e0e0ff;
+	--syntaxelement-colour: #e0e0ff;
+	--syntaxidentifier-colour: #e0e0ff;
+	--syntaxcharacter-colour: #e0e0ff;
+	--syntaxconstant-colour: #e0e0ff;
+	--syntaxstring-colour: #c0c0ef;
+	--syntaxplain-colour: #e0e0ff;
+	--syntaxextract-colour: #ff8000;
+	--syntaxcomment-colour: #e0e0ff;
+
+    --paste-active-colour: #a05050;
+    --paste-passive-colour: #505050;
+    --paste-background-colour: #090b0d;
+   }
 }
 
 /* The default font (family) and size */
@@ -515,4 +547,60 @@ button.dangerousbutton {
 	font-size: 16px;
 	margin: 4px 2px;
 	cursor: pointer;
+}
+
+/* Used in syntax-colouring for extension documentation */
+
+span.syntaxdefinition { color: var(--syntaxdefinition-colour); }
+span.syntaxfunction { color: var(--syntaxfunction-colour); }
+span.syntaxplain { color: var(--syntaxplain-colour); }
+span.syntaxelement { color: var(--syntaxelement-colour); }
+span.syntaxidentifier { color: var(--syntaxidentifier-colour); }
+span.syntaxcharacter { color: var(--syntaxcharacter-colour); }
+span.syntaxconstant { color: var(--syntaxconstant-colour); }
+span.syntaxstring { color: var(--syntaxstring-colour); }
+span.syntaxplain { color: var(--syntaxplain-colour); }
+span.syntaxextract { color: var(--syntaxextract-colour); }
+span.syntaxcomment { color: var(--syntaxcomment-colour); }
+
+p.documentationerrorbox {
+	padding: 6px;
+}
+span.documentationerror {
+	background-color: var(--dangerous-button-background-colour);
+	color: var(--button-text-background-colour);
+	padding: 15px 32px;
+	margin: 4px 2px;
+}
+
+/* New-style paste button */
+
+a.pastelink {
+	background-color: var(--paste-background-colour);
+	text-decoration: none;
+	font-size: 14px;
+	padding: 2px;
+	padding-left: 6px;
+	padding-right: 6px;
+	border: solid 1px;
+}
+a.pastelink:link {
+	text-decoration: none;
+	color: var(--paste-passive-colour);
+	border-color: var(--paste-passive-colour);
+}
+a.pastelink:visited {
+	text-decoration: none;
+	color: var(--paste-passive-colour);
+	border-color: var(--paste-passive-colour);
+}
+a.pastelink:hover {
+	text-decoration: none;
+	color: var(--paste-active-colour);
+	border-color: var(--paste-active-colour);
+}
+a.pastelink:active {
+	text-decoration: none;
+	color: var(--paste-active-colour);
+	border-color: var(--paste-active-colour);
 }

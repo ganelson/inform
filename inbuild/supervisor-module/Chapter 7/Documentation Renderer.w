@@ -57,9 +57,13 @@ text_stream *DocumentationRenderer::open_subpage(pathname *P, text_stream *leaf)
 	if (P == NULL) return STDOUT;
 	if (DOCF) internal_error("nested DC writes");
 	filename *F = Filenames::in(P, leaf);
+	SVEXPLAIN(2, "(writing documentation to file %f)\n", F);
 	DOCF = &DOCF_struct;
-	if (STREAM_OPEN_TO_FILE(DOCF, F, UTF8_ENC) == FALSE)
+	if (STREAM_OPEN_TO_FILE(DOCF, F, UTF8_ENC) == FALSE) {
+		SVEXPLAIN(1, "(note: unable to write file %f)\n", F);
+		DOCF = NULL;
 		return NULL; /* if we lack permissions, e.g., then write no documentation */
+	}
 	return DOCF;
 }
 
@@ -75,24 +79,29 @@ except the examples, and then up to 26 pages holding the content of examples A t
 =
 void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd, text_stream *extras) {
 	if (cd) {
-DocumentationRenderer::as_plain_text(DL, cd->tree);
 		text_stream *OUT = DocumentationRenderer::open_subpage(P, I"index.html");
-		DocumentationRenderer::render_index_page(OUT, cd, extras);
-		DocumentationRenderer::close_subpage();
+		if (OUT) {
+			DocumentationRenderer::render_index_page(OUT, cd, extras);
+			DocumentationRenderer::close_subpage();
+		}
 		for (int eg=1; eg<=cd->total_examples; eg++) {
 			TEMPORARY_TEXT(leaf)
 			WRITE_TO(leaf, "eg%d.html", eg);
 			OUT = DocumentationRenderer::open_subpage(P, leaf);
-			DocumentationRenderer::render_example_page(OUT, cd, eg);
-			DocumentationRenderer::close_subpage();
+			if (OUT) {
+				DocumentationRenderer::render_example_page(OUT, cd, eg);
+				DocumentationRenderer::close_subpage();
+			}
 			DISCARD_TEXT(leaf)
 		}
 		for (int ch=1; ch<=cd->total_headings[1]; ch++) {
 			TEMPORARY_TEXT(leaf)
 			WRITE_TO(leaf, "chapter%d.html", ch);
 			OUT = DocumentationRenderer::open_subpage(P, leaf);
-			DocumentationRenderer::render_chapter_page(OUT, cd, ch);
-			DocumentationRenderer::close_subpage();
+			if (OUT) {
+				DocumentationRenderer::render_chapter_page(OUT, cd, ch);
+				DocumentationRenderer::close_subpage();
+			}
 			DISCARD_TEXT(leaf)
 		}
 	}
@@ -384,6 +393,15 @@ int DocumentationRenderer::body_visitor(tree_node *N, void *state, int L) {
 		DocumentationRenderer::render_example_heading(OUT, N, NULL);
 		return FALSE;
 	}
+	if (N->type == source_error_TNT) {
+		cdoc_source_error *E = RETRIEVE_POINTER_cdoc_source_error(N->content);
+		HTML_OPEN_WITH("p", "class=\"documentationerrorbox\"");
+		HTML::begin_span(OUT, I"documentationerror");
+		WRITE("Error: "); DocumentationRenderer::render_text(OUT, E->error_message);
+		HTML_CLOSE("span");
+		HTML_CLOSE("p");
+		return TRUE;
+	}
 	if (N->type == phrase_defn_TNT) {
 		HTML_OPEN_WITH("div", "class=\"definition\"");
 		HTML_OPEN_WITH("p", "class=\"defnprototype\"");
@@ -440,17 +458,50 @@ int DocumentationRenderer::body_visitor(tree_node *N, void *state, int L) {
 
 @<Render the paste icon@> =
 	TEMPORARY_TEXT(matter)
-	for (tree_node *C = N->child; C; C = C->next) {
-		cdoc_code_line *L = RETRIEVE_POINTER_cdoc_code_line(C->content);
-		for (int i=0; i<L->indentation; i++) WRITE_TO(matter, "\t");
-		DocumentationRenderer::render_text(matter, L->content);
-		if (C->next) WRITE_TO(matter, "\n");
+	for (tree_node *M = N; M; ) {
+		if (M->type == code_sample_TNT) {
+			cdoc_code_sample *S = RETRIEVE_POINTER_cdoc_code_sample(M->content);
+			for (tree_node *C = M->child; C; C = C->next) {
+				cdoc_code_line *L = RETRIEVE_POINTER_cdoc_code_line(C->content);
+				for (int i=0; i<L->indentation; i++) WRITE_TO(matter, "\t");
+				DocumentationRenderer::render_text(matter, L->content);
+				if (C->next) WRITE_TO(matter, "\n");
+			}
+			M = S->continuation;
+			if (M) WRITE_TO(matter, "\n\n");
+		} else break;
 	}
-	PasteButtons::paste_text(OUT, matter);
+	TEMPORARY_TEXT(paste)
+	WRITE_TO(paste, "<span class=\"paste\">%cV</span>", 0x2318);
+	/* the Unicode for "place of interest", the Swedish castle which became the Apple action symbol */
+	PasteButtons::paste_text_using(OUT, matter, paste);
+	DISCARD_TEXT(paste)
 	WRITE("&nbsp;");
 	DISCARD_TEXT(matter)
 
 @<Render the body of the code sample@> =
+	programming_language *pl = S->language;
+	if (pl) {
+		Painter::reset_syntax_colouring(pl);
+		for (tree_node *C = N->child; C; C = C->next) {
+			cdoc_code_line *L = RETRIEVE_POINTER_cdoc_code_line(C->content);
+			Painter::syntax_colour(pl, NULL, L->content, L->colouring, FALSE);
+		}
+		if (Str::eq(pl->language_name, I"Inform")) {
+			int ts = FALSE;
+			for (tree_node *C = N->child; C; C = C->next) {
+				cdoc_code_line *L = RETRIEVE_POINTER_cdoc_code_line(C->content);
+				for (int i=0; i<Str::len(L->colouring); i++) {
+					if (Str::get_at(L->colouring, i) == STRING_COLOUR) {
+						wchar_t c = Str::get_at(L->content, i);
+						if (c == '[') ts = TRUE;
+						if (ts) Str::put_at(L->colouring, i, EXTRACT_COLOUR);
+						if (c == ']') ts = FALSE;
+					} else ts = FALSE;
+				}
+			}
+		}
+	}
 	HTML::begin_span(OUT, I"indexdullblue");
 	int tabulating = FALSE;
 	for (tree_node *C = N->child; C; C = C->next) {
@@ -462,20 +513,19 @@ int DocumentationRenderer::body_visitor(tree_node *N, void *state, int L) {
 				@<Begin I7 table in extension documentation@>;
 				tabulating = TRUE;
 			}
-			TEMPORARY_TEXT(cell)
+			int cell_from = 0, cell_to = 0, i = 0;
 			@<Begin table cell for I7 table in extension documentation@>;
-			for (int i=0; i<Str::len(L->content); i++) {
+			for (; i<Str::len(L->content); i++) {
 				if (Str::get_at(L->content, i) == '\t') {
 					@<End table cell for I7 table in extension documentation@>;
-					@<Begin table cell for I7 table in extension documentation@>;
 					while (Str::get_at(L->content, i) == '\t') i++;
+					@<Begin table cell for I7 table in extension documentation@>;
 					i--;
 				} else {
-					PUT_TO(cell, Str::get_at(L->content, i));
+					cell_to++;
 				}
 			}
 			@<End table cell for I7 table in extension documentation@>;
-			DISCARD_TEXT(cell)
 			@<End row of I7 table in extension documentation@>;
 		} else {
 			if (tabulating) {
@@ -483,7 +533,8 @@ int DocumentationRenderer::body_visitor(tree_node *N, void *state, int L) {
 				tabulating = FALSE;
 			}
 			for (int i=0; i<L->indentation; i++) WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
-			DocumentationRenderer::render_text(OUT, L->content);
+			DocumentationRenderer::syntax_coloured_code(OUT, L->content, L->colouring,
+				0, Str::len(L->content));
 			if ((C->next) && (RETRIEVE_POINTER_cdoc_code_line(C->next->content)->tabular == FALSE)) HTML_TAG("br");
 		}
 		WRITE("\n");
@@ -501,12 +552,13 @@ and this is fiddly but elementary in the usual way of HTML tables:
 	HTML::first_html_column(OUT, 0);
 
 @<End table cell for I7 table in extension documentation@> =
-	DocumentationRenderer::render_text(OUT, cell);
+	DocumentationRenderer::syntax_coloured_code(OUT, L->content, L->colouring,
+		cell_from, cell_to);
 	HTML::end_span(OUT);
 	HTML::next_html_column(OUT, 0);
 
 @<Begin table cell for I7 table in extension documentation@> =
-	Str::clear(cell);
+	cell_from = i; cell_to = cell_from;
 	HTML::begin_span(OUT, I"indexdullblue");
 
 @<Begin new row of I7 table in extension documentation@> =
@@ -548,9 +600,11 @@ void DocumentationRenderer::render_example_heading(OUTPUT_STREAM, tree_node *EN,
 	HTML_OPEN_WITH("td", "cellpadding=0 cellspacing=0 halign=\"left\" valign=\"top\"");
 
 	if (passage_node == NULL) HTML_OPEN_WITH("a", "%S", link);
-
 	for (int asterisk = 0; asterisk < E->star_count; asterisk++)
-		HTML_TAG_WITH("img", "border=\"0\" src='inform:/doc_images/asterisk.png'");
+		PUT(0x2605); /* the Unicode for "black star" emoji */
+	/* or 0x2B50 is the Unicode for "star" emoji */
+	/* or again, could use the asterisk.png image in the app */
+	WRITE("&nbsp; ");
 	HTML_OPEN("b");
 	HTML::begin_span(OUT, I"indexdarkgrey");
 	WRITE("&nbsp;Example&nbsp;");
@@ -602,4 +656,34 @@ had its infamous PNG transparency bug.)
 =
 void DocumentationRenderer::render_text(OUTPUT_STREAM, text_stream *text) {
 	WRITE("%S", text);
+}
+
+void DocumentationRenderer::syntax_coloured_code(OUTPUT_STREAM, text_stream *text,
+	text_stream *colouring, int from, int to) {
+	wchar_t current_col = 0;
+	for (int i=from; i<to; i++) {
+		wchar_t c = Str::get_at(text, i);
+		wchar_t col = Str::get_at(colouring, i);
+		if (col != current_col) {
+			if (current_col) HTML_CLOSE("span");
+			text_stream *span_class = NULL;
+			switch (col) {
+				case DEFINITION_COLOUR: span_class = I"syntaxdefinition"; break;
+				case FUNCTION_COLOUR:   span_class = I"syntaxfunction"; break;
+				case RESERVED_COLOUR:   span_class = I"syntaxreserved"; break;
+				case ELEMENT_COLOUR:    span_class = I"syntaxelement"; break;
+				case IDENTIFIER_COLOUR: span_class = I"syntaxidentifier"; break;
+				case CHARACTER_COLOUR:  span_class = I"syntaxcharacter"; break;
+				case CONSTANT_COLOUR:   span_class = I"syntaxconstant"; break;
+				case STRING_COLOUR:     span_class = I"syntaxstring"; break;
+				case PLAIN_COLOUR:      span_class = I"syntaxplain"; break;
+				case EXTRACT_COLOUR:    span_class = I"syntaxextract"; break;
+				case COMMENT_COLOUR:    span_class = I"syntaxcomment"; break;
+			}
+			HTML_OPEN_WITH("span", "class=\"%S\"", span_class);
+			current_col = col;
+		}
+		PUT(c);
+	}
+	if (current_col) HTML_CLOSE("span");
 }

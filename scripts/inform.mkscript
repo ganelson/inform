@@ -649,6 +649,7 @@ forceintegration: \
 		forcetransferkits \
 		forcetransferextensions \
 		forcetransferlanguages \
+		forcetransferplanguages \
 		forcetransferimages \
 		forcetransferotherinternals \
 		forcetransferdocumentation \
@@ -771,6 +772,18 @@ forcetransferlanguages:
 	{transfer-languages}
 
 # -----------------------------------------------------------------------------
+# Copying programming language defns into the app
+
+{define: transfer-planguages}
+	mkdir -p "$(INTERNAL)/PLs"
+	cp -R -f $(INFORM7WEB)/Internal/PLs $(INTERNAL)/PLs/..
+{end-define}
+
+.PHONY: forcetransferplanguages
+forcetransferplanguages:
+	{transfer-planguages}
+
+# -----------------------------------------------------------------------------
 # Copying website templates into the app
 
 {set name: TEMPLATENAMES value: Standard, Classic, Parchment, Quixe}
@@ -837,6 +850,7 @@ $(INTERNALEXEMPLUM): \
 	touch $(INTERNALEXEMPLUMFROM)
 	{transfer-extensions}
 	{transfer-languages}
+	{transfer-planguages}
 	{transfer-templates}
 	{transfer-other-internals}
 	{transfer-images}

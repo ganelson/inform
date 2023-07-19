@@ -319,7 +319,7 @@ void Copies::archive(OUTPUT_STREAM, inbuild_copy *C, inbuild_nest *N, build_meth
 	else if (N) Graphs::archive(OUT, C->vertex, N, BM);
 }
 
-@ And lastly |-copy-to N| and |-sync-to N|:
+@ Now lastly |-copy-to N| and |-sync-to N|:
 
 =
 void Copies::copy_to(inbuild_copy *C, inbuild_nest *destination_nest, int syncing,
@@ -333,4 +333,11 @@ void Copies::overwrite_error(inbuild_copy *C, inbuild_nest *N) {
 	text_stream *ext = Str::new();
 	WRITE_TO(ext, "%X", C->edition->work);
 	Errors::with_text("already present (to overwrite, use -sync-to not -copy-to): '%S'", ext);
+}
+
+@ And |-document|:
+
+=
+void Copies::document(inbuild_copy *C, pathname *dest) {
+	VOID_METHOD_CALL(C->edition->work->genre, GENRE_DOCUMENT_MTID, C, dest);
 }

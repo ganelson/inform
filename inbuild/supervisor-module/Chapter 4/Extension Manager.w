@@ -26,6 +26,7 @@ void ExtensionManager::start(void) {
 	METHOD_ADD(extension_genre, GENRE_COPY_TO_NEST_MTID, ExtensionManager::copy_to_nest);
 	METHOD_ADD(extension_genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, ExtensionManager::read_source_text_for);
 	METHOD_ADD(extension_genre, GENRE_BUILDING_SOON_MTID, ExtensionManager::building_soon);
+	METHOD_ADD(extension_genre, GENRE_DOCUMENT_MTID, ExtensionManager::document);
 }
 
 void ExtensionManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
@@ -250,4 +251,11 @@ void ExtensionManager::ensure_graphed(inbuild_copy *C) {
 =
 void ExtensionManager::read_source_text_for(inbuild_genre *G, inbuild_copy *C) {
 	Extensions::read_source_text_for(ExtensionManager::from_copy(C));
+}
+
+@h Documentation.
+
+=
+void ExtensionManager::document(inbuild_genre *gen, inbuild_copy *C, pathname *dest) {
+	Extensions::document(Extensions::from_copy(C), dest);
 }

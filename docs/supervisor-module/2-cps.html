@@ -388,7 +388,7 @@ its main task: building an Inform project.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax">) </span><a href="3-bg.html#SP10" class="function-link"><span class="function-syntax">Graphs::archive</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">vertex</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="identifier-syntax">BM</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>And lastly <span class="extract"><span class="extract-syntax">-copy-to N</span></span> and <span class="extract"><span class="extract-syntax">-sync-to N</span></span>:
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>Now lastly <span class="extract"><span class="extract-syntax">-copy-to N</span></span> and <span class="extract"><span class="extract-syntax">-sync-to N</span></span>:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -403,6 +403,14 @@ its main task: building an Inform project.
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ext</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::new</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">ext</span><span class="plain-syntax">, </span><span class="string-syntax">"%X"</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">edition</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">work</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Errors::with_text</span><span class="plain-syntax">(</span><span class="string-syntax">"already present (to overwrite, use -sync-to not -copy-to): '%S'"</span><span class="plain-syntax">, </span><span class="identifier-syntax">ext</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>And <span class="extract"><span class="extract-syntax">-document</span></span>:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Copies::document</span><span class="plain-syntax">(</span><span class="reserved-syntax">inbuild_copy</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dest</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">VOID_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">edition</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">work</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">genre</span><span class="plain-syntax">, </span><span class="constant-syntax">GENRE_DOCUMENT_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">dest</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">

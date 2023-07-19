@@ -16,6 +16,7 @@ void ExtensionBundleManager::start(void) {
 	METHOD_ADD(extension_bundle_genre, GENRE_COPY_TO_NEST_MTID, ExtensionBundleManager::copy_to_nest);
 	METHOD_ADD(extension_bundle_genre, GENRE_CONSTRUCT_GRAPH_MTID, ExtensionBundleManager::construct_graph);
 	METHOD_ADD(extension_bundle_genre, GENRE_BUILDING_SOON_MTID, ExtensionBundleManager::building_soon);
+	METHOD_ADD(extension_bundle_genre, GENRE_DOCUMENT_MTID, ExtensionBundleManager::document);
 }
 
 void ExtensionBundleManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
@@ -464,4 +465,11 @@ void ExtensionBundleManager::building_soon(inbuild_genre *gen, inbuild_copy *C,
 
 void ExtensionBundleManager::construct_graph(inbuild_genre *G, inbuild_copy *C) {
 	Extensions::construct_graph(ExtensionBundleManager::from_copy(C));
+}
+
+@h Documentation.
+
+=
+void ExtensionBundleManager::document(inbuild_genre *gen, inbuild_copy *C, pathname *dest) {
+	Extensions::document(Extensions::from_copy(C), dest);
 }
