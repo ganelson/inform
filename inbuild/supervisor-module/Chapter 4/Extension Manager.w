@@ -210,12 +210,16 @@ void ExtensionManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild
 		}
 	}
 
-	TEMPORARY_TEXT(command)
-	WRITE_TO(command, "cp -f ");
-	Shell::quote_file(command, C->location_if_file);
-	Shell::quote_file(command, F);
-	BuildSteps::shell(command, meth);
-	DISCARD_TEXT(command)
+	if (meth->methodology == DRY_RUN_METHODOLOGY) {
+		TEMPORARY_TEXT(command)
+		WRITE_TO(command, "cp -f ");
+		Shell::quote_file(command, C->location_if_file);
+		Shell::quote_file(command, F);
+		WRITE_TO(STDOUT, "%S\n", command);
+		DISCARD_TEXT(command)
+	} else {
+		Filenames::copy_file(C->location_if_file, F);
+	}
 }
 
 @h Build graph.
