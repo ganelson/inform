@@ -14,6 +14,7 @@ typedef struct compiled_documentation {
 	int total_headings[3];
 	int total_examples;
 	int empty;
+	struct linked_list *cases; /* of |satellite_test_case| */
 	CLASS_DEFINITION
 } compiled_documentation;
 
@@ -28,10 +29,199 @@ compiled_documentation *DocumentationCompiler::new_wrapper(text_stream *source) 
 	cd->total_headings[1] = 0;
 	cd->total_headings[2] = 0;
 	cd->empty = FALSE;
+	cd->cases = NEW_LINKED_LIST(satellite_test_case);
 	return cd;
 }
 
+typedef struct satellite_test_case {
+	int is_example;
+	struct text_stream *owning_heading;
+	struct tree_node *owning_node;
+	struct compiled_documentation *owner;
+	struct text_stream *short_name;
+	struct filename *test_file;
+	struct filename *ideal_transcript;
+	CLASS_DEFINITION
+} satellite_test_case;
+
 @ We can compile either from a file...
+
+=
+compiled_documentation *DocumentationCompiler::compile_from_path(pathname *P,
+	inform_extension *associated_extension) {
+	filename *F = Filenames::in(P, I"Documentation.txt");
+	if (TextFiles::exists(F) == FALSE) return NULL;
+	compiled_documentation *cd =
+		DocumentationCompiler::compile_from_file(F, associated_extension);
+	if (cd == NULL) return NULL;
+	pathname *EP = Pathnames::down(P, I"Examples");
+	int egs = TRUE;
+	@<Scan EP directory for examples@>;
+	egs = FALSE;
+	EP = Pathnames::down(P, I"Tests");
+	@<Scan EP directory for examples@>;
+	return cd;
+}
+
+@<Scan EP directory for examples@> =
+	scan_directory *D = Directories::open(EP);
+	TEMPORARY_TEXT(leafname)
+	while (Directories::next(D, leafname)) {
+		wchar_t first = Str::get_first_char(leafname), last = Str::get_last_char(leafname);
+		if (Platform::is_folder_separator(last)) continue;
+		if (first == '.') continue;
+		if (first == '(') continue;
+		text_stream *short_name = Str::new();
+		filename *F = Filenames::in(EP, leafname);
+		Filenames::write_unextended_leafname(short_name, F);
+		if ((Str::get_at(short_name, Str::len(short_name)-2) == '-') &&
+			((Str::get_at(short_name, Str::len(short_name)-1) == 'I')
+				|| (Str::get_at(short_name, Str::len(short_name)-1) == 'i')))
+			continue;
+		satellite_test_case *stc = CREATE(satellite_test_case);
+		stc->is_example = egs;
+		stc->owning_heading = NULL;
+		stc->owning_node = NULL;
+		stc->owner = cd;
+		stc->short_name = short_name;
+		stc->test_file = F;
+		stc->ideal_transcript = NULL;
+		TEMPORARY_TEXT(ideal_leafname)
+		WRITE_TO(ideal_leafname, "%S-I.txt", stc->short_name);
+		filename *IF = Filenames::in(EP, ideal_leafname);
+		if (TextFiles::exists(IF)) stc->ideal_transcript = IF;
+		DISCARD_TEXT(ideal_leafname)
+		if (stc->is_example) {
+			@<Scan the example for its header and content@>;
+		}
+		ADD_TO_LINKED_LIST(stc, satellite_test_case, cd->cases);
+	}
+	DISCARD_TEXT(leafname)
+	Directories::close(D);
+
+@
+
+=
+typedef struct example_scanning_state {
+	int star_count;
+	struct text_stream *long_title;
+	struct text_stream *body_text;
+	struct text_stream *placement;
+	struct text_stream *desc;
+	struct linked_list *errors;
+	struct heterogeneous_tree *tree;
+	struct text_stream *scanning;
+	int past_header;
+} example_scanning_state;
+
+@<Scan the example for its header and content@> =
+	example_scanning_state ess;
+	ess.star_count = 1;
+	ess.long_title = NULL;
+	ess.body_text = Str::new();
+	ess.placement = NULL;
+	ess.desc = NULL;
+	ess.errors = NEW_LINKED_LIST(tree_node);
+	ess.tree = cd->tree;
+	ess.past_header = FALSE;
+	ess.scanning = Str::new(); WRITE_TO(ess.scanning, "%S", Filenames::get_leafname(stc->test_file));
+	TextFiles::read(stc->test_file, FALSE, "unable to read file of example", TRUE,
+		&DocumentationCompiler::read_example_helper, NULL, &ess);
+
+	tree_node *placement_node = NULL;
+	if (Str::len(ess.placement) == 0) {
+		DocumentationCompiler::example_error(&ess,
+			I"example does not give its Location");
+	} else {
+		placement_node = DocumentationTree::find_section(cd->tree, ess.placement);
+		if (placement_node == NULL) {
+			DocumentationCompiler::example_error(&ess,
+				I"example gives a Location which is not the name of any section");
+		}
+	}
+	if (Str::len(ess.desc) == 0) {
+		DocumentationCompiler::example_error(&ess,
+			I"example does not give its Description");
+	}
+	tree_node *content_node = NULL;
+	if (Str::len(ess.body_text) == 0) {
+		DocumentationCompiler::example_error(&ess,
+			I"example does not give any actual content");
+	} else {
+		compiled_documentation *ecd =
+			DocumentationCompiler::compile(ess.body_text, associated_extension);
+		if ((ecd) && (ecd->tree) && (ecd->tree->root) &&
+			(ecd->tree->root->child) &&
+			(ecd->tree->root->child->type == passage_TNT))
+			content_node = ecd->tree->root->child;
+		else {
+			DocumentationCompiler::example_error(&ess,
+				I"example file content is missing or wrongly set out");
+		}
+	}
+	tree_node *example_node = DocumentationTree::new_example(cd->tree,
+		ess.long_title, ess.desc, ess.star_count, ++(cd->total_examples));
+	if (placement_node) Trees::make_child(example_node, placement_node);
+	if (content_node) Trees::make_child(content_node, example_node);
+
+	tree_node *E;
+	LOOP_OVER_LINKED_LIST(E, tree_node, ess.errors)
+		Trees::make_child(E, cd->tree->root);
+
+@ =
+void DocumentationCompiler::example_error(example_scanning_state *ess, text_stream *text) {
+	text_stream *err = Str::new();
+	WRITE_TO(err, "Example file '%S': %S", ess->scanning, text);
+	tree_node *E = DocumentationTree::new_source_error(ess->tree, err);
+	ADD_TO_LINKED_LIST(E, tree_node, ess->errors);
+}
+
+@ =
+void DocumentationCompiler::read_example_helper(text_stream *text, text_file_position *tfp,
+	void *v_state) {
+	example_scanning_state *ess = (example_scanning_state *) v_state;
+	if (tfp->line_count == 1) {
+		match_results mr = Regexp::create_mr();
+		if ((Regexp::match(&mr, text, L"Example *: *(%**) *(%c+?)")) ||
+			(Regexp::match(&mr, text, L"Example *- *(%**) *(%c+?)"))) {
+			ess->star_count = Str::len(mr.exp[0]);
+			if (ess->star_count == 0) {
+				DocumentationCompiler::example_error(ess,
+					I"this example should be marked (before the title) '*', '**', '***' or '****' for difficulty");
+				ess->star_count = 1;
+			}
+			if (ess->star_count > 4) {
+				DocumentationCompiler::example_error(ess,
+					I"four stars '****' is the maximum difficulty rating allowed");
+				ess->star_count = 4;
+			}
+			ess->long_title = Str::duplicate(mr.exp[1]);
+		} else {
+			DocumentationCompiler::example_error(ess,
+				I"titling line of example file is malformed");
+		}
+		Regexp::dispose_of(&mr);
+	} else if (ess->past_header == FALSE) {
+		if (Str::is_whitespace(text)) { ess->past_header = TRUE; return; }
+		match_results mr = Regexp::create_mr();
+		if (Regexp::match(&mr, text, L"(%C+?) *: *(%c+?)")) {
+			if (Str::eq(mr.exp[0], I"Location")) ess->placement = Str::duplicate(mr.exp[1]);
+			else if (Str::eq(mr.exp[0], I"Description")) ess->desc = Str::duplicate(mr.exp[1]);
+			else {
+				DocumentationCompiler::example_error(ess,
+					I"unknown datum in header line of example file");
+			}
+		} else {
+			DocumentationCompiler::example_error(ess,
+				I"header line of example file is malformed");
+		}
+		Regexp::dispose_of(&mr);
+	} else {
+		WRITE_TO(ess->body_text, "%S\n", text);
+	}
+}
+
+@
 
 =
 compiled_documentation *DocumentationCompiler::compile_from_file(filename *F,
@@ -197,7 +387,7 @@ part of paragraphs; or indented ones, which are always part of code samples.
 	section_number = 0;
 	int level = 1, id = cd->total_headings[0] + cd->total_headings[1] + cd->total_headings[2];
 	cd->total_headings[1]++;
-	tree_node *new_node = DocumentationTree::new_heading(cd->tree, mr.exp[0], level,
+	tree_node *new_node = DocumentationTree::new_heading(cd->tree, mr.exp[0], mr.exp[0], level,
 		id, chapter_number, section_number);
 	@<Place this new structural node in the tree@>;
 
@@ -206,14 +396,14 @@ part of paragraphs; or indented ones, which are always part of code samples.
 	section_number++;
 	int level = 2, id = cd->total_headings[0] + cd->total_headings[1] + cd->total_headings[2];
 	cd->total_headings[2]++;
-	tree_node *new_node = DocumentationTree::new_heading(cd->tree, mr.exp[0], level,
+	tree_node *new_node = DocumentationTree::new_heading(cd->tree, mr.exp[0], mr.exp[0], level,
 		id, chapter_number, section_number);
 	@<Place this new structural node in the tree@>;
 
 @<Insert an example heading@> =
 	@<Complete passage if in one@>;
 	int level = 3, star_count = Str::len(mr.exp[0]);
-	tree_node *new_node = DocumentationTree::new_example(cd->tree, mr.exp[1],
+	tree_node *new_node = DocumentationTree::new_example(cd->tree, mr.exp[1], NULL,
 		star_count, ++(cd->total_examples));
 	@<Place this new structural node in the tree@>;
 	if (star_count == 0) {
@@ -341,7 +531,23 @@ of a code sample either, since a non-blank indented line is needed to trigger on
 		Str::delete_first_character(line);
 		Str::trim_white_space(line);
 		continue_me = TRUE;
+	} else if ((Str::get_at(line, 0) == '{') && (Str::get_at(line, 1) == '*') &&
+		(Str::get_at(line, 2) == '}')) {
+		Str::delete_first_character(line);
+		Str::delete_first_character(line);
+		Str::delete_first_character(line);
+		Str::trim_white_space(line);
+		paste_me = TRUE;
+	} else if ((Str::get_at(line, 0) == '{') && (Str::get_at(line, 1) == '*') &&
+		(Str::get_at(line, 2) == '*') && (Str::get_at(line, 3) == '}')) {
+		Str::delete_first_character(line);
+		Str::delete_first_character(line);
+		Str::delete_first_character(line);
+		Str::delete_first_character(line);
+		Str::trim_white_space(line);
+		continue_me = TRUE;
 	}
+
 	current_code = DocumentationTree::new_code_sample(cd->tree, paste_me, language);
 	if (continue_me) {
 		if (last_paste_code) {

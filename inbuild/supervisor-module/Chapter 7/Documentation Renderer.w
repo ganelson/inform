@@ -471,12 +471,7 @@ int DocumentationRenderer::body_visitor(tree_node *N, void *state, int L) {
 			if (M) WRITE_TO(matter, "\n\n");
 		} else break;
 	}
-	TEMPORARY_TEXT(paste)
-	WRITE_TO(paste, "<span class=\"paste\">%cV</span>", 0x2318);
-	/* the Unicode for "place of interest", the Swedish castle which became the Apple action symbol */
-	PasteButtons::paste_text_using(OUT, matter, paste);
-	DISCARD_TEXT(paste)
-	WRITE("&nbsp;");
+	ExtensionWebsite::paste_button(OUT, matter);
 	DISCARD_TEXT(matter)
 
 @<Render the body of the code sample@> =
@@ -568,7 +563,6 @@ and this is fiddly but elementary in the usual way of HTML tables:
 	HTML::end_html_row(OUT);
 
 @<End I7 table in extension documentation@> =
-	HTML::end_html_row(OUT);
 	HTML::end_html_table(OUT);
 	HTML::begin_span(OUT, I"indexdullblue");
 
@@ -611,6 +605,8 @@ void DocumentationRenderer::render_example_heading(OUTPUT_STREAM, tree_node *EN,
 	HTML::end_span(OUT);
 	HTML::begin_span(OUT, I"indexblack");
 	DocumentationRenderer::render_text(OUT, E->name);
+	HTML_TAG("br");
+	DocumentationRenderer::render_text(OUT, E->description);
 	HTML::end_span(OUT);
 	HTML_CLOSE("b");
 

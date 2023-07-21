@@ -331,7 +331,7 @@ inbuild_copy *ExtensionBundleManager::claim_folder_as_copy(pathname *P, inbuild_
 			Str::delete_last_character(subdir);
 			if (Str::eq(subdir, I"Examples")) {
 				;
-			} else if (Str::eq(subdir, I"Images")) {
+			} else if (Str::eq(subdir, I"Tests")) {
 				;
 			} else {
 				TEMPORARY_TEXT(error_text)

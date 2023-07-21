@@ -41,7 +41,7 @@ heterogeneous_tree *DocumentationTree::new(void) {
 			&DocumentationTree::source_error_verifier);
 	}
 	heterogeneous_tree *tree = Trees::new(cdoc_tree_TT);
-	Trees::make_root(tree, DocumentationTree::new_heading(tree, I"(root)", 0, 0, 0, 0));
+	Trees::make_root(tree, DocumentationTree::new_heading(tree, I"(root)", NULL, 0, 0, 0, 0));
 	return tree;
 }
 
@@ -63,19 +63,21 @@ which is otherwise something like |5| (chapter 5) or |3.4| (section 4 in chapter
 typedef struct cdoc_heading {
 	struct text_stream *count;
 	struct text_stream *name;
+	struct text_stream *recognition_name;
 	int level; /* 0 = root, 1 = chapter, 2 = section */
 	int ID;
 	CLASS_DEFINITION
 } cdoc_heading;
 
 tree_node *DocumentationTree::new_heading(heterogeneous_tree *tree,
-	text_stream *title, int level, int ID, int cc, int sc) {
+	text_stream *title, text_stream *recognise_as, int level, int ID, int cc, int sc) {
 	cdoc_heading *H = CREATE(cdoc_heading);
 	H->count = Str::new();
 	if (cc > 0) WRITE_TO(H->count, "%d", cc);
 	if ((cc > 0) && (sc > 0)) WRITE_TO(H->count, ".");
 	if (sc > 0) WRITE_TO(H->count, "%d", sc);
 	H->name = Str::duplicate(title);
+	H->recognition_name = Str::duplicate(recognise_as);
 	H->level = level;
 	H->ID = ID;
 	return Trees::new_node(tree, heading_TNT, STORE_POINTER_cdoc_heading(H));
@@ -102,6 +104,7 @@ letters are unique from A, B, C, ...
 =
 typedef struct cdoc_example {
 	struct text_stream *name;
+	struct text_stream *description;
 	int star_count;
 	int number;
 	char letter;
@@ -109,9 +112,10 @@ typedef struct cdoc_example {
 } cdoc_example;
 
 tree_node *DocumentationTree::new_example(heterogeneous_tree *tree,
-	text_stream *title, int star_count, int ecount) {
+	text_stream *title, text_stream *desc, int star_count, int ecount) {
 	cdoc_example *E = CREATE(cdoc_example);
 	E->name = Str::duplicate(title);
+	E->description = Str::duplicate(desc);
 	E->star_count = star_count;
 	E->number = ecount;
 	E->letter = 'A' + (char) ecount - 1;
@@ -289,6 +293,7 @@ tree_node *DocumentationTree::find_example(heterogeneous_tree *T, int eg) {
 	dc_find_example_task task;
 	task.to_find_example = eg;
 	task.to_find_heading = NULL;
+	task.to_find_section = NULL;
 	task.result = NULL;
 	Trees::traverse_from(T->root, &DocumentationTree::find_visit, (void *) &task, 0);
 	return task.result;
@@ -299,6 +304,18 @@ tree_node *DocumentationTree::find_chapter(heterogeneous_tree *T, int ch) {
 	dc_find_example_task task;
 	task.to_find_example = 0;
 	task.to_find_heading = Str::new(); WRITE_TO(task.to_find_heading, "%d", ch);
+	task.to_find_section = NULL;
+	task.result = NULL;
+	Trees::traverse_from(T->root, &DocumentationTree::find_visit, (void *) &task, 0);
+	return task.result;
+}
+
+tree_node *DocumentationTree::find_section(heterogeneous_tree *T, text_stream *name) {
+	if (Str::len(name) == 0) return NULL;
+	dc_find_example_task task;
+	task.to_find_example = 0;
+	task.to_find_heading = NULL;
+	task.to_find_section = name;
 	task.result = NULL;
 	Trees::traverse_from(T->root, &DocumentationTree::find_visit, (void *) &task, 0);
 	return task.result;
@@ -307,6 +324,7 @@ tree_node *DocumentationTree::find_chapter(heterogeneous_tree *T, int ch) {
 typedef struct dc_find_example_task {
 	int to_find_example;
 	struct text_stream *to_find_heading;
+	struct text_stream *to_find_section;
 	struct tree_node *result;
 } dc_find_example_task;
 
@@ -323,6 +341,15 @@ int DocumentationTree::find_visit(tree_node *N, void *state, int L) {
 	if ((task->to_find_heading) && (N->type == heading_TNT)) {
 		cdoc_heading *E = RETRIEVE_POINTER_cdoc_heading(N->content);
 		if ((E->level == 1) && (Str::eq(E->count, task->to_find_heading))) {
+			task->result = N;
+			return FALSE;
+		}
+	}
+	if ((task->to_find_section) && (N->type == heading_TNT)) {
+	
+		cdoc_heading *E = RETRIEVE_POINTER_cdoc_heading(N->content);
+LOG("Want %S find %S\n", task->to_find_section, E->recognition_name);
+		if ((E->level == 2) && (Str::eq_insensitive(E->recognition_name, task->to_find_section))) {
 			task->result = N;
 			return FALSE;
 		}
