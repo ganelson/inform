@@ -1,5 +1,5 @@
 ** Sorting
-(Olympic Medals)
+(Table sorted in different ways; Olympic Medals)
 Sort the table of Olympic Medals in two different ways.
 
 Let's start with results from the 2020 Summer Olympic Games:
