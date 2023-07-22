@@ -615,6 +615,7 @@ Appraisal == OMIT
 	Using lists as arrays
 	Using lists as sieves
 	Numbers in relations
+	Table sorted in different ways
 	
 >PUZZLES
 	*EXPLORATION

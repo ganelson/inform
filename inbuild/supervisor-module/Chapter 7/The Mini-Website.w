@@ -216,3 +216,19 @@ void ExtensionWebsite::titling_and_navigation(OUTPUT_STREAM, text_stream *subtit
 	HTML_CLOSE("div");
 	no_EXW_breadcrumbs = 0;
 }
+
+@ This is a new-look paste button, using a "command-V" ideograph rather than
+a somewhat enigmatic icon.
+
+=
+void ExtensionWebsite::paste_button(OUTPUT_STREAM, text_stream *matter) {
+	TEMPORARY_TEXT(paste)
+	ExtensionWebsite::paste_ideograph(paste);
+	PasteButtons::paste_text_using(OUT, matter, paste);
+	DISCARD_TEXT(paste)
+	WRITE("&nbsp;");
+}
+void ExtensionWebsite::paste_ideograph(OUTPUT_STREAM) {
+	/* the Unicode for "place of interest", the Swedish castle which became the Apple action symbol */
+	WRITE("<span class=\"paste\">%cV</span>", 0x2318);
+}

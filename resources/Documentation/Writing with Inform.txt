@@ -10318,7 +10318,7 @@ This is only really useful when a Table is being used to hold working space for 
 ^^{randomness: sorting tables in random order}
 ^^{(reverse order), for table rows+sourcepart+}
 
-The three ways to sort a table correspond loosely to the three different orders in which tables can be repeated through. First:
+There are several ways to sort a table, corresponding loosely to the different orders in which tables can be repeated through. First:
 
 {defn ph_sortrandom}sort (table name) in random order
 This phrase rearranges the rows of the given table so that the non-blank rows occur at the top, in a uniformly random order, and any blank rows at the bottom. Example:
@@ -10367,6 +10367,12 @@ then we get
 	1		"Originally row 1"
 
 As a result note that repeating through this sorted table goes through the original rows in order 4, 2, 3, 1; whereas repeating through the original table in reverse order goes through in order 4, 3, 2, 1. (This is all to explain the word "loosely" in the opening sentence of this section.)
+
+{defn ph_sorttablephrase}sort (table name) with (phrase (table name, number, number) -> number)
+This phrase sorts the table with a custom comparison phrase. The phrase is given the table name and two row numbers to compare, and it must return a number which indicates the relative order of the two rows: negative if the left row should come before the right, zero if the rows should be sorted as if they are equal, and positive if the left row should come after the right. Any completely blank rows will be put at the bottom, but if the table has partially blank rows, then the comparison phrase must be designed to account for the possibility of blank entries.
+
+The Olympic Medals example demonstrates two custom comparison phrases.
+{end}
 
 [x] Listed in...
 
@@ -14811,6 +14817,20 @@ This phrase puts the list into descending order. Example:
 	sort L in reverse order;
 
 results in L being {6 PM, 4:21 PM, 11:13 AM, 9:01 AM}.
+{end}
+
+{defn ph_sortlistphrase}sort (list of values) with (phrase (value, value) -> number)
+This phrase sorts the list with a custom comparison phrase. A comparison phrase must accept two list elements, and then return a number which indicates the relative order of the two list elements: negative if the left value should come before the right, zero if they are equal, and positive if the left value should come after the right. For example to sort numbers you would use this phrase:
+
+	To decide which number is the comparison of (X - a number) and (Y - a number) (this is numerical comparison):
+		decide on X - Y;
+
+You could then sort a list of numbers using the numerical comparison phrase:
+
+	let L be {5, 1, 7, 2, 3};
+	sort L with numerical comparison;
+
+Which results in L being {1, 2, 3, 5, 7}.
 {end}
 
 {defn ph_sortlistrandom}sort (list of values) in random order

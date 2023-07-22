@@ -777,9 +777,9 @@ void Extensions::read_source_text_for(inform_extension *E) {
 	SVEXPLAIN(1, "(from %f)\n", F);
 	DISCARD_TEXT(synopsis)
 	if (E->read_into_file) {
-		E->documentation =
-			DocumentationCompiler::compile(
-				TextFromFiles::torn_off_documentation(E->read_into_file), E);
+		text_stream *doc = TextFromFiles::torn_off_documentation(E->read_into_file);
+		if (Str::len(doc) > 0) E->documentation = DocumentationCompiler::compile(doc, E);
+		else E->documentation = NULL;
 		E->read_into_file->your_ref = STORE_POINTER_inbuild_copy(E->as_copy);
 		@<Break the text into sentences@>;
 		E->body_text_unbroken = FALSE;
@@ -830,35 +830,23 @@ compiled_documentation *Extensions::get_documentation(inform_extension *E) {
 	if (E->documentation_sought == FALSE) {
 		if (E->as_copy->location_if_path) {
 			pathname *D = Pathnames::down(E->as_copy->location_if_path, I"Documentation");
-			filename *F = Filenames::in(D, I"Documentation.txt");
-			if (TextFiles::exists(F)) @<Fetch wording from stand-alone file@>;
+			if (Directories::exists(D)) @<Fetch wording from stand-alone directory@>;
 		}
 		E->documentation_sought = TRUE;
 	}
 	return E->documentation;
 }
 
-@<Fetch wording from stand-alone file@> =
-	if (E->documentation == NULL) {
+@<Fetch wording from stand-alone directory@> =
+	if (E->documentation) {
 		TEMPORARY_TEXT(error_text)
 		WRITE_TO(error_text,
 			"this extension provides documentation both as a file and in its source");
 		Copies::attach_error(E->as_copy, CopyErrors::new_T(EXT_MISWORDED_CE, -1, error_text));
 		DISCARD_TEXT(error_text)					
 	} else {
-		TEMPORARY_TEXT(temp)
-		TextFiles::read(F, FALSE, "unable to read file of extension documentation", TRUE,
-			&Extensions::read_extension_file_helper, NULL, temp);
-		E->documentation = DocumentationCompiler::compile(temp, E);
-		DISCARD_TEXT(temp)
+		E->documentation = DocumentationCompiler::compile_from_path(D, E);
 	}
-
-@ =
-void Extensions::read_extension_file_helper(text_stream *text, text_file_position *tfp,
-	void *v_state) {
-	text_stream *contents = (text_stream *) v_state;
-	WRITE_TO(contents, "%S\n", text);
-}
 
 @ And this serves the |-document| feature of inbuild:
 

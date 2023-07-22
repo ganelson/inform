@@ -47,6 +47,7 @@ which use this module:
 @e inform_template_CLASS
 @e kit_configuration_CLASS
 @e kit_dependency_CLASS
+@e satellite_test_case_CLASS
 
 =
 DECLARE_CLASS(build_methodology)
@@ -86,6 +87,7 @@ DECLARE_CLASS(inform_project)
 DECLARE_CLASS(inform_template)
 DECLARE_CLASS(kit_configuration)
 DECLARE_CLASS(kit_dependency)
+DECLARE_CLASS(satellite_test_case)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

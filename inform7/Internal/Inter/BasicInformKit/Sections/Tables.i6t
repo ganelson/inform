@@ -623,6 +623,17 @@ where other entries are not.
 	}
 ];
 
+@ |TableCompareRowsCustomCF(T, C, R1, R2, D)| is similar, but calls a custom
+comparison function, and so ignores the |C| parameter. The |D| parameter is
+also ignored at present.
+
+=
+Global Table_Sort_cf;
+
+[ TableCompareRowsCustomCF tab col row1 row2 dir;
+	return Table_Sort_cf(tab, row1, row2);
+];
+
 @h Move Row Down.
 
 =
@@ -765,17 +776,25 @@ will perform a loop of valid row numbers in order of column |C|.
 This is really only a front-end: it calls the sorting code at "Sort.i6t".
 
 =
-[ TableSort tab col dir algorithm i j k f;
+[ TableSort tab col dir algorithm cf  i j k;
 	for (i=1:i<=tab-->0:i++) {
 		j = tab-->i; ! Address of column table
 		if ((j-->1) & TB_COLUMN_DONTSORTME)
 		    return RunTimeProblem(RTP_TABLE_CANTSORT, tab);
 	}
-	if (col >= 100) col=TableFindCol(tab, col, false);
+
+	if (cf) {
+		Table_Sort_cf = cf;
+		SetSortDomain(TableSwapRows, TableCompareRowsCustomCF);
+	}
+	else {
+		if (col >= 100) col=TableFindCol(tab, col, false);
+		SetSortDomain(TableSwapRows, TableCompareRows);
+	}
+
 	k = TableRows(tab);
 	k = TableMoveBlanksToBack(tab, 1, k);
 
-	SetSortDomain(TableSwapRows, TableCompareRows);
 	SortArray(tab, col, dir, k, algorithm);
 ];
 

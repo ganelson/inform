@@ -383,7 +383,7 @@ the usual ones seen in Mac OS X applications such as iTunes.
 		WRITE(" ");
 		TEMPORARY_TEXT(inclusion_text)
 		WRITE_TO(inclusion_text, "Include %X.\n\n\n", res->copy->edition->work);
-		PasteButtons::paste_text(OUT, inclusion_text);
+		ExtensionWebsite::paste_button(OUT, inclusion_text);
 		DISCARD_TEXT(inclusion_text)
 		ExtensionIndex::add_to_key(key_list, PASTE_SYMBOL,
 			I"Source text to Include this (click to paste in)");
@@ -481,7 +481,7 @@ There is just no need to do this efficiently in either running time or memory.
 @d PROBLEM_SYMBOL "border=\"0\" height=\"12\" src=\"inform:/doc_images/census_problem.png\""
 @d REVEAL_SYMBOL "border=\"0\" src=\"inform:/doc_images/Reveal.png\""
 @d HELP_SYMBOL "border=\"0\" src=\"inform:/doc_images/help.png\""
-@d PASTE_SYMBOL "border=\"0\" src=\"inform:/doc_images/paste.png\""
+@d PASTE_SYMBOL "paste"
 @d BUILT_IN_SYMBOL "border=\"0\" src=\"inform:/doc_images/builtin_ext.png\""
 @d PROJECT_SPECIFIC_SYMBOL "border=\"0\" src=\"inform:/doc_images/folder4.png\""
 @d LEGACY_AREA_SYMBOL "border=\"0\" src=\"inform:/doc_images/pspec_ext.png\""
@@ -493,6 +493,7 @@ typedef struct extensions_key_item {
 	struct text_stream *image_URL;
 	struct text_stream *gloss;
 	int displayed;
+	int ideograph;
 	CLASS_DEFINITION
 } extensions_key_item;
 
@@ -509,6 +510,8 @@ void ExtensionIndex::add_to_key(linked_list *L, char *URL, text_stream *gloss) {
 		eki->image_URL = Str::duplicate(as_text);
 		eki->gloss = Str::duplicate(gloss);
 		eki->displayed = FALSE;
+		eki->ideograph = FALSE;
+		if (Str::eq(as_text, I"paste")) eki->ideograph = TRUE;
 		ADD_TO_LINKED_LIST(eki, extensions_key_item, L);
 	}
 	DISCARD_TEXT(as_text)
@@ -528,7 +531,7 @@ void ExtensionIndex::render_key(OUTPUT_STREAM, linked_list *L) {
 		extensions_key_item *eki;
 		LOOP_OVER_LINKED_LIST(eki, extensions_key_item, L) {
 			if (Str::eq(eki->image_URL, as_text)) {
-				HTML_TAG_WITH("img", "%S", eki->image_URL);
+				ExtensionIndex::render_icon(OUT, eki);
 				WRITE("&nbsp;%S &nbsp;&nbsp;", eki->gloss);
 				eki->displayed = TRUE;
 			}
@@ -538,12 +541,20 @@ void ExtensionIndex::render_key(OUTPUT_STREAM, linked_list *L) {
 	extensions_key_item *eki;
 	LOOP_OVER_LINKED_LIST(eki, extensions_key_item, L) {
 		if (eki->displayed == FALSE) {
-			HTML_TAG_WITH("img", "%S", eki->image_URL);
+			ExtensionIndex::render_icon(OUT, eki);
 			WRITE("&nbsp;%S &nbsp;&nbsp;", eki->gloss);
 			eki->displayed = TRUE;
 		}
 	}
 	HTML_CLOSE("p");
+}
+
+void ExtensionIndex::render_icon(OUTPUT_STREAM, extensions_key_item *eki) {
+	if (eki->ideograph) {
+		ExtensionWebsite::paste_ideograph(OUT);
+	} else {
+		HTML_TAG_WITH("img", "%S", eki->image_URL);
+	}
 }
 
 @h Icons for virtual machines.
