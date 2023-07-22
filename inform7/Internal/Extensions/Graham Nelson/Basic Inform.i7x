@@ -1128,10 +1128,13 @@ To sort (T - table name) in/into random order
 	(- TableShuffle({T}); -).
 To sort (T - table name) in/into (TC - table column) order
 	(documented at ph_sortcolumn):
-	(- TableSort({T}, {TC}, 1); -).
+	(- TableSort({T}, {TC}, SORT_ASCENDING); -).
 To sort (T - table name) in/into reverse (TC - table column) order
 	(documented at ph_sortcolumnreverse):
-	(- TableSort({T}, {TC}, -1); -).
+	(- TableSort({T}, {TC}, SORT_DESCENDING); -).
+To sort (T - table name) with (cf - phrase (table name, number, number) -> number)
+	(documented at ph_sorttablephrase):
+	(- TableSort({T}, 0, SORT_ASCENDING, 0, {cf}-->1); -).
 
 Section 3 - Lists
 
@@ -1213,19 +1216,22 @@ To rotate (L - a list of values) backwards
 	(- LIST_OF_TY_Rotate({-lvalue-by-reference:L}, 1); -).
 To sort (L - a list of values)
 	(documented at ph_sortlist):
-	(- LIST_OF_TY_Sort({-lvalue-by-reference:L}, 1); -).
+	(- LIST_OF_TY_Sort({-lvalue-by-reference:L}, SORT_ASCENDING); -).
 To sort (L - a list of values) in/into reverse order
 	(documented at ph_sortlistreverse):
-	(- LIST_OF_TY_Sort({-lvalue-by-reference:L}, -1); -).
+	(- LIST_OF_TY_Sort({-lvalue-by-reference:L}, SORT_DESCENDING); -).
+To sort (L - a list of values of kind K) with (cf - phrase (K, K) -> number)
+	(documented at ph_sortlistphrase):
+	(- LIST_OF_TY_Sort({-lvalue-by-reference:L}, SORT_ASCENDING, 0, 0, {cf}-->1); -).
 To sort (L - a list of values) in/into random order
 	(documented at ph_sortlistrandom):
-	(- LIST_OF_TY_Sort({-lvalue-by-reference:L}, 2); -).
+	(- LIST_OF_TY_Sort({-lvalue-by-reference:L}, SORT_LIST_RANDOM); -).
 To sort (L - a list of objects) in/into (P - property) order
 	(documented at ph_sortlistproperty):
-	(- LIST_OF_TY_Sort({-lvalue-by-reference:L}, 1, {P}, {-property-holds-block-value:P}); -).
+	(- LIST_OF_TY_Sort({-lvalue-by-reference:L}, SORT_ASCENDING, {P}, {-property-holds-block-value:P}); -).
 To sort (L - a list of objects) in/into reverse (P - property) order
 	(documented at ph_sortlistpropertyreverse):
-	(- LIST_OF_TY_Sort({-lvalue-by-reference:L}, -1, {P}, {-property-holds-block-value:P}); -).
+	(- LIST_OF_TY_Sort({-lvalue-by-reference:L}, SORT_DESCENDING, {P}, {-property-holds-block-value:P}); -).
 
 Section 6 - Relations
 

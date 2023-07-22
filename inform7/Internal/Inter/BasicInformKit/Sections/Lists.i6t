@@ -123,11 +123,6 @@ use the list's own preferred comparison function to judge the items in turn,
 stopping as soon as a pair of corresponding items differs: thus we sort
 lists of equal size in lexicographic order.
 
-Since the comparison function depends only on the KOV, it may seem wasteful
-of a word of memory to store it in the list, given that we are already storing
-the KOV in any case. But we do this because comparisons have to be fast: we
-don't want to incur the overhead of translating KOV to comparison function.
-
 =
 [ LIST_OF_TY_Compare listleft listright delta no_items i cf;
 	delta = BlkValueRead(listleft, LIST_LENGTH_F) - BlkValueRead(listright, LIST_LENGTH_F);
@@ -687,13 +682,19 @@ the list, unless the optional argument |prop| is supplied, in which case
 we sort based not on the item values but on their values for the property
 |prop|. (This only makes sense if the list contains objects.)
 
+|LIST_OF_TY_Sort(list, dir, 0, 0, cf)| sorts the given |list| with the custom
+comparison function |cf|, which must behave as any standard comparison function
+would.
+
 =
+Constant SORT_LIST_RANDOM = 2;
+
 Global LIST_OF_TY_Sort_cf;
 
-[ LIST_OF_TY_Sort list dir prop cf  i j no_items v;
+[ LIST_OF_TY_Sort list dir prop prop_is_bv cf  i j no_items v;
 	BlkMakeMutable(list);
 	no_items = BlkValueRead(list, LIST_LENGTH_F);
-	if (dir == 2) {
+	if (dir == SORT_LIST_RANDOM) {
 		if (no_items < 2) return;
 		for (i=1:i<no_items:i++) {
 			j = random(i+1) - 1;
@@ -704,8 +705,20 @@ Global LIST_OF_TY_Sort_cf;
 		return;
 	}
 	SetSortDomain(ListSwapEntries, ListCompareEntries);
-	if (cf) LIST_OF_TY_Sort_cf = BlkValueCompare;
-	else LIST_OF_TY_Sort_cf = 0;
+	if (cf) {
+		LIST_OF_TY_Sort_cf = cf;
+	}
+	else if (prop) {
+		if (prop_is_bv) {
+			LIST_OF_TY_Sort_cf = BlkValueCompare;
+		}
+		else {
+			LIST_OF_TY_Sort_cf = 0;
+		}
+	}
+	else {
+		LIST_OF_TY_Sort_cf = LIST_OF_TY_ComparisonFn(list);
+	}
 	SortArray(list, prop, dir, no_items, 0);
 ];
 
@@ -716,21 +729,19 @@ Global LIST_OF_TY_Sort_cf;
 	BlkValueWrite(list, LIST_ITEM_BASE+j-1, v);
 ];
 
-[ ListCompareEntries list col i j d cf;
+[ ListCompareEntries list col i j d;
 	if (i==j) return 0;
 	i = BlkValueRead(list, LIST_ITEM_BASE+i-1);
 	j = BlkValueRead(list, LIST_ITEM_BASE+j-1);
 	if (I7S_Col) {
 		if (i provides I7S_Col) i=i.I7S_Col; else i=0;
 		if (j provides I7S_Col) j=j.I7S_Col; else j=0;
-		cf = LIST_OF_TY_Sort_cf;
-	} else {
-		cf = LIST_OF_TY_ComparisonFn(list);
 	}
-	if (cf == 0) {
+	if (LIST_OF_TY_Sort_cf == 0) {
 		if (i > j) return 1;
 		if (i < j) return -1;
 		return 0;
-	} else
-		return cf(i, j);
+	} else {
+		return LIST_OF_TY_Sort_cf(i, j);
+	}
 ];
