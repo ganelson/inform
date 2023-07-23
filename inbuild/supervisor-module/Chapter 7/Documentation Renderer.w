@@ -347,28 +347,28 @@ void DocumentationRenderer::render_example(OUTPUT_STREAM, compiled_documentation
 		WRITE("Example %d is missing", eg);
 	} else {
 		DocumentationRenderer::render_example_heading(OUT, EN, EN->child);
-	}
-	HTML_CLOSE("div");
-	@<Enter the small print@>;
-	WRITE("This example is drawn from ");
-	tree_node *H = EN->parent;
-	if (H->type == heading_TNT) {
-		cdoc_heading *E = RETRIEVE_POINTER_cdoc_heading(H->content);
-		if (E->level == 1) {
-			DocumentationRenderer::link_to(OUT, E);
-			WRITE("Chapter %S", E->count);
-			HTML_CLOSE("a");
-		} else if (E->level == 2) {
-			DocumentationRenderer::link_to(OUT, E);
-			WRITE("Section %S", E->count);
-			HTML_CLOSE("a");
-		} else {
-			HTML_OPEN_WITH("a", "href=\"index.html\"");
-			WRITE("the introduction");
-			HTML_CLOSE("a");
+		HTML_CLOSE("div");
+		@<Enter the small print@>;
+		WRITE("This example is drawn from ");
+		tree_node *H = EN->parent;
+		if (H->type == heading_TNT) {
+			cdoc_heading *E = RETRIEVE_POINTER_cdoc_heading(H->content);
+			if (E->level == 1) {
+				DocumentationRenderer::link_to(OUT, E);
+				WRITE("Chapter %S", E->count);
+				HTML_CLOSE("a");
+			} else if (E->level == 2) {
+				DocumentationRenderer::link_to(OUT, E);
+				WRITE("Section %S", E->count);
+				HTML_CLOSE("a");
+			} else {
+				HTML_OPEN_WITH("a", "href=\"index.html\"");
+				WRITE("the introduction");
+				HTML_CLOSE("a");
+			}
 		}
+		@<Exit the small print@>;
 	}
-	@<Exit the small print@>;
 }
 
 void DocumentationRenderer::render_chapter(OUTPUT_STREAM, compiled_documentation *cd, int ch) {

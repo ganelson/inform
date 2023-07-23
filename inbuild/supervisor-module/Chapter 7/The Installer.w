@@ -57,7 +57,7 @@ void ExtensionInstaller::install(inbuild_copy *C, int confirmed, pathname *to_to
 		if (N > 0) @<Begin report on a damaged extension@>
 		else @<Begin report on a valid extension@>;
 		if (OUT) {
-			Copies::get_source_text(project->as_copy);
+			Copies::get_source_text(project->as_copy, I"graphing for installer");
 			build_vertex *V = Copies::construct_project_graph(project->as_copy);
 			if (confirmed) @<Make confirmed report@>
 			else @<Make unconfirmed report@>;

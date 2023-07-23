@@ -828,7 +828,7 @@ void Projects::construct_graph(inform_project *proj) {
 	if (proj->chosen_build_target == NULL) {
 		Projects::finalise_kit_dependencies(proj);
 		project_being_scanned = proj;
-		Copies::get_source_text(proj->as_copy);
+		Copies::get_source_text(proj->as_copy, I"graphing project");
 		project_being_scanned = NULL;
 		build_vertex *V = proj->as_copy->vertex;
 		@<Construct the graph upstream of V@>;
