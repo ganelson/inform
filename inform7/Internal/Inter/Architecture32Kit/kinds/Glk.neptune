@@ -94,14 +94,3 @@ new base TEXT_INPUT_STATUS_TY {
 	instance: suspended character input         = INPUT_STATUS_SUSPENDED_CHAR
 	instance: suspended unicode character input = INPUT_STATUS_SUSPENDED_CHAR_UNI
 }
-
-new base STORED_INPUT_TY {
-	conforms-to: POINTER_VALUE_TY
-	singular: stored input state
-	plural: stored input states
-
-	default-value: 0
-	heap-size-estimate: 32
-
-	specification-text: A stored input state from a Glk window.
-}
