@@ -305,6 +305,13 @@ Constant UnicodeWhitespaceLen = 8;
             }
         }
     }
+	! Manually echo the command if required
+	if (BasicInformKit`MANUAL_INPUT_ECHOING_CFGF) {
+		glk_set_style(style_Input);
+		glk_put_buffer_uni(a_buffer + WORDSIZE, a_buffer-->0);
+		glk_set_style(style_Normal);
+		glk_put_char(10); ! newline
+	}
     if (gg_commandstr ~= 0 && gg_command_reading == false) {
         glk_put_buffer_stream(gg_commandstr, a_buffer+WORDSIZE, a_buffer-->0);
         glk_put_char_stream(gg_commandstr, 10); ! newline

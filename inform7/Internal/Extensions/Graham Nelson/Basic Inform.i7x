@@ -91,7 +91,10 @@ Use dictionary resolution of at least 6 translates as the configuration value
 	DICT_RESOLUTION in BasicInformKit.
 Use no automatic plural synonyms translates as the configuration flag
 	NO_AUTO_PLURAL_NAMES in BasicInformKit.
-Use no status window translates as the configuration flag NO_STATUS_WINDOW.
+Use no status window translates as the configuration flag NO_STATUS_WINDOW
+	in BasicInformKit.
+Use manual line input echoing translates as the configuration flag
+	MANUAL_INPUT_ECHOING in BasicInformKit.
 
 Use dynamic memory allocation of at least 8192 translates as the configuration
 	value STACK_FRAME_CAPACITY in BasicInformKit.
@@ -1615,8 +1618,8 @@ A glk window has a text called the suspended text input.
 The suspended text input property translates into Inter as "suspended_text_input".
 Include (- with suspended_text_buffer_addr 0, with suspended_text_buffer_maxlen 0 -) when defining a glk window.
 
-To suspend text input in (win - a glk window):
-	(- SuspendTextInput({win}); -).
+To suspend text input in (win - a glk window), without input echoing:
+	(- SuspendTextInput({win}, {phrase options}); -).
 
 To resume text input in (win - a glk window):
 	(- ResumeTextInput({win}); -).

@@ -116,8 +116,8 @@ A glk window has a text called the suspended text input.
 The suspended text input property translates into Inter as "suspended_text_input".
 Include (- with suspended_text_buffer_addr 0, with suspended_text_buffer_maxlen 0 -) when defining a glk window.
 
-To suspend text input in (win - a glk window):
-	(- SuspendTextInput({win}); -).
+To suspend text input in (win - a glk window), without input echoing:
+	(- SuspendTextInput({win}, {phrase options}); -).
 
 To resume text input in (win - a glk window):
 	(- ResumeTextInput({win}); -).
