@@ -30,9 +30,7 @@ the census, to be on the safe side.
 =
 void ExtensionWebsite::update(inform_project *proj) {
 	LOGIF(EXTENSIONS_CENSUS, "Updating extensions documentation for project\n");
-	
 	HTML::set_link_abbreviation_path(Projects::path(proj));
-	ExtensionIndex::write(proj);
 
 	inform_extension *E;
 	LOOP_OVER_LINKED_LIST(E, inform_extension, proj->extensions_included)
@@ -42,6 +40,8 @@ void ExtensionWebsite::update(inform_project *proj) {
 	inbuild_search_result *res;
 	LOOP_OVER_LINKED_LIST(res, inbuild_search_result, census)
 		ExtensionWebsite::document_extension(Extensions::from_copy(res->copy), proj);
+
+	ExtensionIndex::write(proj);
 }
 
 @ The top-level index page is at this filename.
