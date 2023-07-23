@@ -337,12 +337,19 @@ These functions allow the author to suspend and then resume a window's text
 input requests.
 
 =
-[ SuspendTextInput win;
+[ SuspendTextInput win no_input_echoing;
 	if (win.text_input_status == INPUT_STATUS_ACTIVE_CHAR or INPUT_STATUS_ACTIVE_CHAR_UNI) {
 		glk_cancel_char_event(win.glk_ref);
 	}
 	else if (win.text_input_status == INPUT_STATUS_ACTIVE_LINE or INPUT_STATUS_ACTIVE_LINE_UNI) {
 		glk_cancel_line_event(win.glk_ref, gg_arguments);
+		! Manually echo the command if required
+		if (BasicInformKit`MANUAL_INPUT_ECHOING_CFGF && no_input_echoing == 0) {
+			glk_set_style(style_Input);
+			print (TEXT_TY_Say) win.suspended_text_input;
+			glk_set_style(style_Normal);
+			glk_put_char(10); ! newline
+		}
 	}
 ];
 

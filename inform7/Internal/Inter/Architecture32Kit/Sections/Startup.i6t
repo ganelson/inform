@@ -114,12 +114,15 @@ Global Pre_Startup_Text_Capture_Stream;
 		glk_window_clear(gg_mainwin);
 	}
 
-	if (NO_STATUS_WINDOW_CFGF == 0) {
+	if (BasicInformKit`NO_STATUS_WINDOW_CFGF == 0) {
 		if (gg_statuswin == 0) {
 			statuswin_cursize = statuswin_size;
 			gg_statuswin =
 				glk_window_open(gg_mainwin, winmethod_Fixed + winmethod_Above,
 					statuswin_cursize, wintype_TextGrid, GG_STATUSWIN_ROCK);
+			if (BasicInformKit`MANUAL_INPUT_ECHOING_CFGF) {
+				glk_set_echo_line_event(gg_mainwin, 0);
+			}
 		}
 	}
 	else if (gg_statuswin) {
