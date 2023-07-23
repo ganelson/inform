@@ -85,16 +85,24 @@ Global Pre_Startup_Text_Capture_Stream;
 	rfalse;
 ];
 
-[ OPEN_BUILT_IN_WINDOWS_R res sty;
+[ SET_DEFAULT_STYLEHINTS_R sty;
+	! Main window
+	! Left-justify the header style
+	glk_stylehint_set(wintype_TextBuffer, style_Header, stylehint_Justification, 0);
+	! Try to make emphasized type in italics and not boldface
+	glk_stylehint_set(wintype_TextBuffer, style_Emphasized, stylehint_Weight, 0);
+	glk_stylehint_set(wintype_TextBuffer, style_Emphasized, stylehint_Oblique, 1);
+	! All status window styles should be reversed
+	for (sty = 0: sty < style_NUMSTYLES: sty++) {
+		glk_stylehint_set(wintype_TextGrid, sty, stylehint_ReverseColor, 1);
+	}
+];
+
+[ OPEN_BUILT_IN_WINDOWS_R;
 	! gg_mainwin and gg_storywin might already be set. If not, create them.
 
 	if (gg_mainwin == 0) {
 		! Open the story window.
-		! Left-justify the header style
-		glk_stylehint_set(wintype_TextBuffer, style_Header, stylehint_Justification, 0);
-		! Try to make emphasized type in italics and not boldface
-		glk_stylehint_set(wintype_TextBuffer, style_Emphasized, stylehint_Weight, 0);
-		glk_stylehint_set(wintype_TextBuffer, style_Emphasized, stylehint_Oblique, 1);
 		gg_mainwin = glk_window_open(0, 0, 0, wintype_TextBuffer, GG_MAINWIN_ROCK);
 		Main_Window.glk_ref = gg_mainwin;
 		if (gg_mainwin == 0) {
@@ -106,17 +114,20 @@ Global Pre_Startup_Text_Capture_Stream;
 		glk_window_clear(gg_mainwin);
 	}
 
-	if (gg_statuswin == 0) {
-		statuswin_cursize = statuswin_size;
-		for (sty=0: sty < style_NUMSTYLES: sty++) {
-			glk_stylehint_set(wintype_TextGrid, sty, stylehint_ReverseColor, 1);
+	if (NO_STATUS_WINDOW_CFGF == 0) {
+		if (gg_statuswin == 0) {
+			statuswin_cursize = statuswin_size;
+			gg_statuswin =
+				glk_window_open(gg_mainwin, winmethod_Fixed + winmethod_Above,
+					statuswin_cursize, wintype_TextGrid, GG_STATUSWIN_ROCK);
 		}
-		gg_statuswin =
-			glk_window_open(gg_mainwin, winmethod_Fixed + winmethod_Above,
-				statuswin_cursize, wintype_TextGrid, GG_STATUSWIN_ROCK);
-		Status_Window.glk_ref = gg_statuswin;
 	}
-	! It's possible that the status window couldn't be opened, in which case
+	else if (gg_statuswin) {
+		glk_window_close(gg_statuswin, GLK_NULL);
+		gg_statuswin = 0;
+	}
+	Status_Window.glk_ref = gg_statuswin;
+	! It's possible that the status window is not open, in which case
 	! gg_statuswin is now zero. We must allow for that later on.
 
 	glk_set_window(gg_mainwin);

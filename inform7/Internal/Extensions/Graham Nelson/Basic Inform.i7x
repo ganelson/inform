@@ -91,6 +91,7 @@ Use dictionary resolution of at least 6 translates as the configuration value
 	DICT_RESOLUTION in BasicInformKit.
 Use no automatic plural synonyms translates as the configuration flag
 	NO_AUTO_PLURAL_NAMES in BasicInformKit.
+Use no status window translates as the configuration flag NO_STATUS_WINDOW.
 
 Use dynamic memory allocation of at least 8192 translates as the configuration
 	value STACK_FRAME_CAPACITY in BasicInformKit.
@@ -171,11 +172,14 @@ Section - Startup C (for Glulx only)
 The recover Glk objects rule is listed in the before starting the virtual machine rules.
 The recover Glk objects rule translates into Inter as "GGRecoverObjects".
 
+The set default stylehints rule is listed in the before starting the virtual machine rules.
+The set default stylehints rule translates into Inter as "SET_DEFAULT_STYLEHINTS_R".
+
 The sound channel initialisation rule is listed in the for starting the virtual machine rules.
 The sound channel initialisation rule translates into Inter as "SOUND_CHANNEL_INIT_R".
 
-The open built-in windows rule is listed in the for starting the virtual machine rules.
-The open built-in windows rule translates into Inter as "OPEN_BUILT_IN_WINDOWS_R".
+The open built in windows rule is listed in the for starting the virtual machine rules.
+The open built in windows rule translates into Inter as "OPEN_BUILT_IN_WINDOWS_R".
 
 The display captured startup text rule is listed in the for starting the virtual machine rules.
 The display captured startup text rule translates into Inter as "END_CAPTURE_STARTUP_TEXT_R".
