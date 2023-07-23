@@ -1615,30 +1615,11 @@ A glk window has a text called the suspended text input.
 The suspended text input property translates into Inter as "suspended_text_input".
 Include (- with suspended_text_buffer_addr 0, with suspended_text_buffer_maxlen 0 -) when defining a glk window.
 
-A glk window has a list of stored input states called the stack of stored input states.
-The stack of stored input states property translates into Inter as "input_states_stack".
-
 To suspend text input in (win - a glk window):
 	(- SuspendTextInput({win}); -).
 
 To resume text input in (win - a glk window):
 	(- ResumeTextInput({win}); -).
-
-To decide what stored input state is the input state of (win - a glk window):
-	(- STORED_INPUT_TY_Set({-new:stored input state}, {win}) -).
-
-To apply (state - a stored input state) to (win - a glk window):
-	(- STORED_INPUT_TY_Apply({state}, {win}); -).
-
-To start a new input state in (win - a glk window):
-	let state be the input state of win;
-	add state to the stack of stored input states of win;
-
-To restore stored input state of (win - a glk window):
-	let count be number of entries in stack of stored input states of win;
-	let state be entry count of the stack of stored input states of win;
-	remove entry count in the stack of stored input states of win;
-	apply state to win;
 
 Chapter - Glk object recovery
 
