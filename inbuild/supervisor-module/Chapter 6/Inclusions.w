@@ -226,7 +226,8 @@ then we need to note that the version requirement on PS has been raised to 3.
 inform_extension *Inclusions::load(parse_node *last_H0, parse_node *at,
 	inbuild_requirement *req, inform_project *for_project) {
 	inform_extension *E = NULL;
-	LOOP_OVER(E, inform_extension)
+	if (for_project)
+	LOOP_OVER_LINKED_LIST(E, inform_extension, for_project->extensions_included)
 		if ((Requirements::meets(E->as_copy->edition, req)) &&
 			(Copies::source_text_has_been_read(E->as_copy))) {
 			Extensions::must_satisfy(E, req);
@@ -253,7 +254,7 @@ inform_extension *Inclusions::load(parse_node *last_H0, parse_node *at,
 			@<Issue a problem message saying that the VM does not meet requirements@>;
 
 		if (LinkedLists::len(search_result->copy->errors_reading_source_text) == 0) {
-			Copies::get_source_text(search_result->copy);
+			Copies::get_source_text(search_result->copy, I"loading extension");
 		}
 		#ifndef CORE_MODULE
 		Copies::list_attached_errors(STDERR, search_result->copy);

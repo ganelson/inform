@@ -356,7 +356,6 @@ void Supervisor::optioneering_complete(inbuild_copy *C, int compile_only,
 	@<Find the virtual machine@>;
 	Supervisor::make_project_from_command_line(C);
 	
-	// Supervisor::create_default_externals();
 	Supervisor::enter_phase(TINKERING_INBUILD_PHASE);
 	Supervisor::sort_nest_list();
 
@@ -469,25 +468,6 @@ inbuild_nest *Supervisor::add_nest(pathname *P, int tag) {
 	SVEXPLAIN(2, "(%S%S nest set at %p)\n",
 		(set_shared)?I"shared ":I"", Nests::tag_name(tag), P);
 	return N;
-}
-
-void Supervisor::create_default_externals(void) {
-	RUN_ONLY_BEFORE_PHASE(TINKERING_INBUILD_PHASE)
-	inbuild_nest *E = shared_external_nest;
-	if (E == NULL) {
-		pathname *P = home_path;
-		char *subfolder_within = INFORM_FOLDER_RELATIVE_TO_HOME;
-		if (subfolder_within[0]) {
-			TEMPORARY_TEXT(SF)
-			WRITE_TO(SF, "%s", subfolder_within);
-			P = Pathnames::down(home_path, SF);
-			DISCARD_TEXT(SF)
-		}
-		P = Pathnames::down(P, I"Inform");
-		SVEXPLAIN(1, "(in absence of explicit -external, inventing -external %p)\n", P);
-		SVEXPLAIN(2, "(because home path, according to environment variable HOME, is %p)\n", home_path);
-		E = Supervisor::add_nest(P, EXTERNAL_NEST_TAG);
-	}
 }
 
 @ It is then sorted in tag order:

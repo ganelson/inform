@@ -65,7 +65,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">BasicInformKit</a></li><li><b>Tables Template</b></li></ul></div>
 <p class="purpose">To read, write, search and allocate rows in the Table data structure.</p>
 
-<ul class="toc"><li><a href="S-tbl.html#SP1">&#167;1. Format</a></li><li><a href="S-tbl.html#SP2">&#167;2. Find Column</a></li><li><a href="S-tbl.html#SP3">&#167;3. Number of Rows</a></li><li><a href="S-tbl.html#SP4">&#167;4. Blanks</a></li><li><a href="S-tbl.html#SP5">&#167;5. Masks</a></li><li><a href="S-tbl.html#SP6">&#167;6. Testing Blankness</a></li><li><a href="S-tbl.html#SP7">&#167;7. Force Entry Blank</a></li><li><a href="S-tbl.html#SP8">&#167;8. Force Entry Non-Blank</a></li><li><a href="S-tbl.html#SP9">&#167;9. Swapping Blank Bits</a></li><li><a href="S-tbl.html#SP10">&#167;10. Moving Blank Bits Down</a></li><li><a href="S-tbl.html#SP11">&#167;11. Table Row Corresponding</a></li><li><a href="S-tbl.html#SP12">&#167;12. Table Look Up Corresponding Row</a></li><li><a href="S-tbl.html#SP13">&#167;13. Table Look Up Entry</a></li><li><a href="S-tbl.html#SP14">&#167;14. Blank Rows</a></li><li><a href="S-tbl.html#SP15">&#167;15. Random Row</a></li><li><a href="S-tbl.html#SP16">&#167;16. Swap Rows</a></li><li><a href="S-tbl.html#SP17">&#167;17. Compare Rows</a></li><li><a href="S-tbl.html#SP18">&#167;18. Move Row Down</a></li><li><a href="S-tbl.html#SP19">&#167;19. Shuffle</a></li><li><a href="S-tbl.html#SP20">&#167;20. Next Row</a></li><li><a href="S-tbl.html#SP21">&#167;21. Move Blanks to Back</a></li><li><a href="S-tbl.html#SP22">&#167;22. Sort</a></li><li><a href="S-tbl.html#SP23">&#167;23. Print Table to File</a></li><li><a href="S-tbl.html#SP24">&#167;24. Read Table from File</a></li><li><a href="S-tbl.html#SP25">&#167;25. Debugging</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-tbl.html#SP1">&#167;1. Format</a></li><li><a href="S-tbl.html#SP2">&#167;2. Find Column</a></li><li><a href="S-tbl.html#SP3">&#167;3. Number of Rows</a></li><li><a href="S-tbl.html#SP4">&#167;4. Blanks</a></li><li><a href="S-tbl.html#SP5">&#167;5. Masks</a></li><li><a href="S-tbl.html#SP6">&#167;6. Testing Blankness</a></li><li><a href="S-tbl.html#SP7">&#167;7. Force Entry Blank</a></li><li><a href="S-tbl.html#SP8">&#167;8. Force Entry Non-Blank</a></li><li><a href="S-tbl.html#SP9">&#167;9. Swapping Blank Bits</a></li><li><a href="S-tbl.html#SP10">&#167;10. Moving Blank Bits Down</a></li><li><a href="S-tbl.html#SP11">&#167;11. Table Row Corresponding</a></li><li><a href="S-tbl.html#SP12">&#167;12. Table Look Up Corresponding Row</a></li><li><a href="S-tbl.html#SP13">&#167;13. Table Look Up Entry</a></li><li><a href="S-tbl.html#SP14">&#167;14. Blank Rows</a></li><li><a href="S-tbl.html#SP15">&#167;15. Random Row</a></li><li><a href="S-tbl.html#SP16">&#167;16. Swap Rows</a></li><li><a href="S-tbl.html#SP17">&#167;17. Compare Rows</a></li><li><a href="S-tbl.html#SP19">&#167;19. Move Row Down</a></li><li><a href="S-tbl.html#SP20">&#167;20. Shuffle</a></li><li><a href="S-tbl.html#SP21">&#167;21. Next Row</a></li><li><a href="S-tbl.html#SP22">&#167;22. Move Blanks to Back</a></li><li><a href="S-tbl.html#SP23">&#167;23. Sort</a></li><li><a href="S-tbl.html#SP24">&#167;24. Print Table to File</a></li><li><a href="S-tbl.html#SP25">&#167;25. Read Table from File</a></li><li><a href="S-tbl.html#SP26">&#167;26. Debugging</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Format. </b>The I7 Table structure is not to be confused with the I6 <span class="extract"><span class="extract-syntax">table</span></span> form of
 array: it is essentially a two-dimensional array which has some metadata
@@ -708,7 +708,19 @@ where other entries are not.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Move Row Down. </b></p>
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b><span class="extract"><span class="extract-syntax">TableCompareRowsCustomCF(T, C, R1, R2, D)</span></span> is similar, but calls a custom
+comparison function, and so ignores the <span class="extract"><span class="extract-syntax">C</span></span> parameter. The <span class="extract"><span class="extract-syntax">D</span></span> parameter is
+also ignored at present.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">Table_Sort_cf</span><span class="plain-syntax">;</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">TableCompareRowsCustomCF</span><span class="plain-syntax"> </span><span class="identifier-syntax">tab</span><span class="plain-syntax"> </span><span class="identifier-syntax">col</span><span class="plain-syntax"> </span><span class="identifier-syntax">row1</span><span class="plain-syntax"> </span><span class="identifier-syntax">row2</span><span class="plain-syntax"> </span><span class="identifier-syntax">dir</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Table_Sort_cf</span><span class="plain-syntax">(</span><span class="identifier-syntax">tab</span><span class="plain-syntax">, </span><span class="identifier-syntax">row1</span><span class="plain-syntax">, </span><span class="identifier-syntax">row2</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">];</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Move Row Down. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">TableMoveRowDown</span><span class="plain-syntax"> </span><span class="identifier-syntax">tab</span><span class="plain-syntax"> </span><span class="identifier-syntax">r1</span><span class="plain-syntax"> </span><span class="identifier-syntax">r2</span><span class="plain-syntax"> </span><span class="identifier-syntax">rx</span><span class="plain-syntax"> </span><span class="identifier-syntax">k</span><span class="plain-syntax"> </span><span class="identifier-syntax">l</span><span class="plain-syntax"> </span><span class="identifier-syntax">m</span><span class="plain-syntax"> </span><span class="identifier-syntax">v</span><span class="plain-syntax"> </span><span class="identifier-syntax">f</span><span class="plain-syntax">;</span>
@@ -728,7 +740,7 @@ where other entries are not.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Shuffle. </b><span class="extract"><span class="extract-syntax">TableShuffle(T)</span></span> sorts <span class="extract"><span class="extract-syntax">T</span></span> into random row order.
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Shuffle. </b><span class="extract"><span class="extract-syntax">TableShuffle(T)</span></span> sorts <span class="extract"><span class="extract-syntax">T</span></span> into random row order.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -738,7 +750,7 @@ where other entries are not.
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=2:</span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;=</span><span class="reserved-syntax">to</span><span class="plain-syntax">:</span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">TableSwapRows</span><span class="plain-syntax">(</span><span class="identifier-syntax">tab</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="reserved-syntax">random</span><span class="plain-syntax">(</span><span class="identifier-syntax">i</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Next Row. </b><span class="extract"><span class="extract-syntax">TableNextRow(T, C, R, D)</span></span> is used when scanning through a table in order
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Next Row. </b><span class="extract"><span class="extract-syntax">TableNextRow(T, C, R, D)</span></span> is used when scanning through a table in order
 of the values in column <span class="extract"><span class="extract-syntax">C</span></span>: ascending order if <span class="extract"><span class="extract-syntax">D = 1</span></span>, descending if <span class="extract"><span class="extract-syntax">D =
 </span></span>-1<span class="extract"><span class="extract-syntax">. The current position is row </span></span>R<span class="extract"><span class="extract-syntax"> of column </span></span>C<span class="extract"><span class="extract-syntax">, or </span></span>R = 0<span class="extract"><span class="extract-syntax"> if we have
 </span></span>not yet found the first row. The return value is the row number for the
@@ -828,7 +840,7 @@ Rows with blank entries in <span class="extract"><span class="extract-syntax">C<
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">min_at</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Move Blanks to Back. </b></p>
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Move Blanks to Back. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">TableMoveBlanksToBack</span><span class="plain-syntax"> </span><span class="identifier-syntax">tab</span><span class="plain-syntax"> </span><span class="identifier-syntax">fromrow</span><span class="plain-syntax"> </span><span class="identifier-syntax">torow</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> </span><span class="identifier-syntax">fbl</span><span class="plain-syntax"> </span><span class="identifier-syntax">lnbl</span><span class="plain-syntax"> </span><span class="identifier-syntax">blc</span><span class="plain-syntax">;</span>
@@ -848,25 +860,33 @@ Rows with blank entries in <span class="extract"><span class="extract-syntax">C<
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">torow</span><span class="plain-syntax">-</span><span class="identifier-syntax">blc</span><span class="plain-syntax">; </span><span class="comment-syntax">Final non-blank row</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Sort. </b>This is really only a front-end: it calls the sorting code at "Sort.i6t".
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Sort. </b>This is really only a front-end: it calls the sorting code at "Sort.i6t".
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">TableSort</span><span class="plain-syntax"> </span><span class="identifier-syntax">tab</span><span class="plain-syntax"> </span><span class="identifier-syntax">col</span><span class="plain-syntax"> </span><span class="identifier-syntax">dir</span><span class="plain-syntax"> </span><span class="identifier-syntax">algorithm</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax"> </span><span class="identifier-syntax">k</span><span class="plain-syntax"> </span><span class="identifier-syntax">f</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">TableSort</span><span class="plain-syntax"> </span><span class="identifier-syntax">tab</span><span class="plain-syntax"> </span><span class="identifier-syntax">col</span><span class="plain-syntax"> </span><span class="identifier-syntax">dir</span><span class="plain-syntax"> </span><span class="identifier-syntax">algorithm</span><span class="plain-syntax"> </span><span class="identifier-syntax">cf</span><span class="plain-syntax">  </span><span class="identifier-syntax">i</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax"> </span><span class="identifier-syntax">k</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=1:</span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;=</span><span class="identifier-syntax">tab</span><span class="plain-syntax">--&gt;0:</span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">j</span><span class="plain-syntax"> = </span><span class="identifier-syntax">tab</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">i</span><span class="plain-syntax">; </span><span class="comment-syntax">Address of column table</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">j</span><span class="plain-syntax">--&gt;1) &amp; </span><span class="identifier-syntax">TB_COLUMN_DONTSORTME</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">RunTimeProblem</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTP_TABLE_CANTSORT</span><span class="plain-syntax">, </span><span class="identifier-syntax">tab</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">col</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">100</span><span class="plain-syntax">) </span><span class="identifier-syntax">col</span><span class="plain-syntax">=</span><span class="identifier-syntax">TableFindCol</span><span class="plain-syntax">(</span><span class="identifier-syntax">tab</span><span class="plain-syntax">, </span><span class="identifier-syntax">col</span><span class="plain-syntax">, </span><span class="reserved-syntax">false</span><span class="plain-syntax">);</span>
+
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cf</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Table_Sort_cf</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cf</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">SetSortDomain</span><span class="plain-syntax">(</span><span class="identifier-syntax">TableSwapRows</span><span class="plain-syntax">, </span><span class="identifier-syntax">TableCompareRowsCustomCF</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">col</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">100</span><span class="plain-syntax">) </span><span class="identifier-syntax">col</span><span class="plain-syntax">=</span><span class="identifier-syntax">TableFindCol</span><span class="plain-syntax">(</span><span class="identifier-syntax">tab</span><span class="plain-syntax">, </span><span class="identifier-syntax">col</span><span class="plain-syntax">, </span><span class="reserved-syntax">false</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">SetSortDomain</span><span class="plain-syntax">(</span><span class="identifier-syntax">TableSwapRows</span><span class="plain-syntax">, </span><span class="identifier-syntax">TableCompareRows</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+
 <span class="plain-syntax">    </span><span class="identifier-syntax">k</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TableRows</span><span class="plain-syntax">(</span><span class="identifier-syntax">tab</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">k</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TableMoveBlanksToBack</span><span class="plain-syntax">(</span><span class="identifier-syntax">tab</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="identifier-syntax">k</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">SetSortDomain</span><span class="plain-syntax">(</span><span class="identifier-syntax">TableSwapRows</span><span class="plain-syntax">, </span><span class="identifier-syntax">TableCompareRows</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">SortArray</span><span class="plain-syntax">(</span><span class="identifier-syntax">tab</span><span class="plain-syntax">, </span><span class="identifier-syntax">col</span><span class="plain-syntax">, </span><span class="identifier-syntax">dir</span><span class="plain-syntax">, </span><span class="identifier-syntax">k</span><span class="plain-syntax">, </span><span class="identifier-syntax">algorithm</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Print Table to File. </b>This is how we serialise a table to an external file, though the writing
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Print Table to File. </b>This is how we serialise a table to an external file, though the writing
 is done by printing characters in the standard way; it's just that the output
 stream will be an external file rather than the screen when this routine
 is called.
@@ -900,7 +920,7 @@ is called.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Read Table from File. </b>And this is how we unserialise again. It makes sense only on Glulx.
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Read Table from File. </b>And this is how we unserialise again. It makes sense only on Glulx.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -981,7 +1001,7 @@ is called.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">RunTimeProblem</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTP_TABLE_BADFILE</span><span class="plain-syntax">, </span><span class="identifier-syntax">tab</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Debugging. </b>Routines to print the state of a table, for debugging purposes only.
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Debugging. </b>Routines to print the state of a table, for debugging purposes only.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

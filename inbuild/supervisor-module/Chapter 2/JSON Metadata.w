@@ -24,7 +24,7 @@ void JSONMetadata::read_metadata_file(inbuild_copy *C, filename *F,
 		@<Report a syntax error in JSON@>;
 		return;
 	} else {
-		@<Validate the JSON read in@>;
+		if (req) @<Validate the JSON read in@>;
 	}
 	DISCARD_TEXT(contents)
 	C->metadata_record = obj;
@@ -251,6 +251,7 @@ dictionary *JSON_resource_metadata_requirements = NULL;
 JSON_requirement *JSONMetadata::requirements(void) {
 	if (JSON_resource_metadata_requirements == NULL) {
 		filename *F = InstalledFiles::filename(RESOURCE_JSON_REQS_IRES);
+		if (TextFiles::exists(F) == FALSE) return NULL;
 		JSON_resource_metadata_requirements = JSON::read_requirements_file(NULL, F);
 	}
 	JSON_requirement *req =

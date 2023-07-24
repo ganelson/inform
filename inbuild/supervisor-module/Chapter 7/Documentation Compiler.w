@@ -65,39 +65,41 @@ compiled_documentation *DocumentationCompiler::compile_from_path(pathname *P,
 
 @<Scan EP directory for examples@> =
 	scan_directory *D = Directories::open(EP);
-	TEMPORARY_TEXT(leafname)
-	while (Directories::next(D, leafname)) {
-		wchar_t first = Str::get_first_char(leafname), last = Str::get_last_char(leafname);
-		if (Platform::is_folder_separator(last)) continue;
-		if (first == '.') continue;
-		if (first == '(') continue;
-		text_stream *short_name = Str::new();
-		filename *F = Filenames::in(EP, leafname);
-		Filenames::write_unextended_leafname(short_name, F);
-		if ((Str::get_at(short_name, Str::len(short_name)-2) == '-') &&
-			((Str::get_at(short_name, Str::len(short_name)-1) == 'I')
-				|| (Str::get_at(short_name, Str::len(short_name)-1) == 'i')))
-			continue;
-		satellite_test_case *stc = CREATE(satellite_test_case);
-		stc->is_example = egs;
-		stc->owning_heading = NULL;
-		stc->owning_node = NULL;
-		stc->owner = cd;
-		stc->short_name = short_name;
-		stc->test_file = F;
-		stc->ideal_transcript = NULL;
-		TEMPORARY_TEXT(ideal_leafname)
-		WRITE_TO(ideal_leafname, "%S-I.txt", stc->short_name);
-		filename *IF = Filenames::in(EP, ideal_leafname);
-		if (TextFiles::exists(IF)) stc->ideal_transcript = IF;
-		DISCARD_TEXT(ideal_leafname)
-		if (stc->is_example) {
-			@<Scan the example for its header and content@>;
+	if (D) {
+		TEMPORARY_TEXT(leafname)
+		while (Directories::next(D, leafname)) {
+			wchar_t first = Str::get_first_char(leafname), last = Str::get_last_char(leafname);
+			if (Platform::is_folder_separator(last)) continue;
+			if (first == '.') continue;
+			if (first == '(') continue;
+			text_stream *short_name = Str::new();
+			filename *F = Filenames::in(EP, leafname);
+			Filenames::write_unextended_leafname(short_name, F);
+			if ((Str::get_at(short_name, Str::len(short_name)-2) == '-') &&
+				((Str::get_at(short_name, Str::len(short_name)-1) == 'I')
+					|| (Str::get_at(short_name, Str::len(short_name)-1) == 'i')))
+				continue;
+			satellite_test_case *stc = CREATE(satellite_test_case);
+			stc->is_example = egs;
+			stc->owning_heading = NULL;
+			stc->owning_node = NULL;
+			stc->owner = cd;
+			stc->short_name = short_name;
+			stc->test_file = F;
+			stc->ideal_transcript = NULL;
+			TEMPORARY_TEXT(ideal_leafname)
+			WRITE_TO(ideal_leafname, "%S-I.txt", stc->short_name);
+			filename *IF = Filenames::in(EP, ideal_leafname);
+			if (TextFiles::exists(IF)) stc->ideal_transcript = IF;
+			DISCARD_TEXT(ideal_leafname)
+			if (stc->is_example) {
+				@<Scan the example for its header and content@>;
+			}
+			ADD_TO_LINKED_LIST(stc, satellite_test_case, cd->cases);
 		}
-		ADD_TO_LINKED_LIST(stc, satellite_test_case, cd->cases);
+		DISCARD_TEXT(leafname)
+		Directories::close(D);
 	}
-	DISCARD_TEXT(leafname)
-	Directories::close(D);
 
 @
 
@@ -130,8 +132,7 @@ typedef struct example_scanning_state {
 
 	tree_node *placement_node = NULL;
 	if (Str::len(ess.placement) == 0) {
-		DocumentationCompiler::example_error(&ess,
-			I"example does not give its Location");
+		placement_node = cd->tree->root;
 	} else {
 		placement_node = DocumentationTree::find_section(cd->tree, ess.placement);
 		if (placement_node == NULL) {

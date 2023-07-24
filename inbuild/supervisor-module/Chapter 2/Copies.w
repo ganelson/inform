@@ -60,6 +60,8 @@ inbuild_copy *Copies::new_in_file(inbuild_edition *edition, filename *F, inbuild
 	inbuild_copy *copy = Copies::new_p(edition);
 	copy->location_if_file = F;
 	copy->nest_of_origin = N;
+	SVEXPLAIN(3, "(made %S copy C%d at file %f)\n",
+		Genres::name(copy->edition->work->genre), copy->allocation_id, F);
 	return copy;
 }
 
@@ -67,6 +69,8 @@ inbuild_copy *Copies::new_in_path(inbuild_edition *edition, pathname *P, inbuild
 	inbuild_copy *copy = Copies::new_p(edition);
 	copy->location_if_path = P;
 	copy->nest_of_origin = N;
+	SVEXPLAIN(3, "(made %S copy C%d at directory %p)\n",
+		Genres::name(copy->edition->work->genre), copy->allocation_id, P);
 	return copy;
 }
 
@@ -142,7 +146,7 @@ int Copies::source_text_has_been_read(inbuild_copy *C) {
 	return C->source_text_read;
 }
 
-wording Copies::get_source_text(inbuild_copy *C) {
+wording Copies::get_source_text(inbuild_copy *C, text_stream *reason) {
 	if (C->source_text_read == FALSE) {
 		C->source_text_read = TRUE;
 		if (LinkedLists::len(C->errors_reading_source_text) > 0) {

@@ -243,6 +243,7 @@ USAGE: ph_blankouttable 0 0 0
 USAGE: ph_sortrandom 0 0 0
 USAGE: ph_sortcolumn 0 0 0
 USAGE: ph_sortcolumnreverse 0 0 0
+USAGE: ph_sorttablephrase 0 0 0
 USAGE: ph_setpronouns 0 0 0
 USAGE: ph_multipleobjectlist 0 0 0
 USAGE: ph_altermultipleobjectlist 0 0 0
@@ -347,6 +348,7 @@ USAGE: ph_listofdesc 0 0 0
 USAGE: ph_reverselist 0 0 0
 USAGE: ph_sortlist 0 0 0
 USAGE: ph_sortlistreverse 0 0 0
+USAGE: ph_sortlistphrase 0 0 0
 USAGE: ph_sortlistrandom 0 0 0
 USAGE: ph_sortlistproperty 0 0 0
 USAGE: ph_sortlistpropertyreverse 0 0 0

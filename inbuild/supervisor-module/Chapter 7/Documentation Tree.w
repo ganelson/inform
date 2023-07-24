@@ -345,10 +345,8 @@ int DocumentationTree::find_visit(tree_node *N, void *state, int L) {
 			return FALSE;
 		}
 	}
-	if ((task->to_find_section) && (N->type == heading_TNT)) {
-	
+	if ((task->to_find_section) && (N->type == heading_TNT)) {	
 		cdoc_heading *E = RETRIEVE_POINTER_cdoc_heading(N->content);
-LOG("Want %S find %S\n", task->to_find_section, E->recognition_name);
 		if ((E->level == 2) && (Str::eq_insensitive(E->recognition_name, task->to_find_section))) {
 			task->result = N;
 			return FALSE;

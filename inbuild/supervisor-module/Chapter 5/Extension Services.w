@@ -303,10 +303,6 @@ this is unambiguous.
 		Str::copy(reqs, mr.exp[1]);
 	}
 
-@ Note that we don't attempt to modify the |inbuild_work| structure inside
-the edition; we create an entirely new |inbuild_work|. That's because they
-are immutable, and need to be for the extensions dictionary to work.
-
 @<Change the edition of the copy in light of the metadata found in the scan@> =
 	if (Str::len(claimed_title) == 0) { WRITE_TO(claimed_title, "Unknown"); }
 	if (Str::len(claimed_author_name) == 0) { WRITE_TO(claimed_author_name, "Anonymous"); }
@@ -317,7 +313,7 @@ are immutable, and need to be for the extensions dictionary to work.
 		Copies::attach_error(C,
 			CopyErrors::new_N(EXT_AUTHOR_TOO_LONG_CE, -1, Str::len(claimed_author_name)));
 	C->edition = Editions::new(
-		Works::new_raw(extension_genre, claimed_title, claimed_author_name), V);
+		Works::new_raw(C->edition->work->genre, claimed_title, claimed_author_name), V);
 	if (Str::len(reqs) > 0) {
 		compatibility_specification *CS = Compatibility::from_text(reqs);
 		if (CS) C->edition->compatibility = CS;
@@ -745,16 +741,18 @@ no project involved, we must take action ourselves.)
 
 =
 void Extensions::construct_graph(inform_extension *E) {
-	Copies::get_source_text(E->as_copy);
-	Sentences::set_start_of_source(sfsm, -1);
-	Inclusions::traverse(E->as_copy, E->syntax_tree);
-	linked_list *L = NEW_LINKED_LIST(inbuild_nest);
-	inbuild_nest *N = Extensions::materials_nest(E);
-	ADD_TO_LINKED_LIST(N, inbuild_nest, L);
-	inbuild_requirement *req;
-	LOOP_OVER_LINKED_LIST(req, inbuild_requirement, E->kits) {
-		inform_kit *K = Kits::find_by_name(req->work->raw_title, L, NULL);
-		if (K) Graphs::need_this_to_use(E->as_copy->vertex, K->as_copy->vertex);
+	if (Supervisor::project_set_at_command_line() == NULL) {
+		Copies::get_source_text(E->as_copy, I"graphing extension");
+		Sentences::set_start_of_source(sfsm, -1);
+		Inclusions::traverse(E->as_copy, E->syntax_tree);
+		linked_list *L = NEW_LINKED_LIST(inbuild_nest);
+		inbuild_nest *N = Extensions::materials_nest(E);
+		ADD_TO_LINKED_LIST(N, inbuild_nest, L);
+		inbuild_requirement *req;
+		LOOP_OVER_LINKED_LIST(req, inbuild_requirement, E->kits) {
+			inform_kit *K = Kits::find_by_name(req->work->raw_title, L, NULL);
+			if (K) Graphs::need_this_to_use(E->as_copy->vertex, K->as_copy->vertex);
+		}
 	}
 }
 
@@ -826,7 +824,7 @@ then its sentences will go to the extension's own tree.
 =
 compiled_documentation *Extensions::get_documentation(inform_extension *E) {
 	if (E == NULL) return NULL;
-	Copies::get_source_text(E->as_copy); /* in the unlikely event this has not happened yet */
+	Copies::get_source_text(E->as_copy, I"getting documentation"); /* in the unlikely event this has not happened yet */
 	if (E->documentation_sought == FALSE) {
 		if (E->as_copy->location_if_path) {
 			pathname *D = Pathnames::down(E->as_copy->location_if_path, I"Documentation");
@@ -866,7 +864,8 @@ inform_extension *Extensions::corresponding_to(source_file *sf) {
 	if (sf == NULL) return NULL;
 	inbuild_copy *C = RETRIEVE_POINTER_inbuild_copy(sf->your_ref);
 	if (C == NULL) return NULL;
-	if (C->edition->work->genre != extension_genre) return NULL;
+	if ((C->edition->work->genre != extension_genre) &&
+		(C->edition->work->genre != extension_bundle_genre)) return NULL;
 	return Extensions::from_copy(C);
 }
 

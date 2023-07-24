@@ -15,7 +15,7 @@ subdirectory. Here |"Sounds"| is what we will call the department name for
 sound effects.
 
 This code was introduced as part of the implementation of IE-0001, and for
-the first time throws problem messages is named resources do not exist.
+the first time throws problem messages if named resources do not exist.
 
 =
 int check_resources_are_present = TRUE;

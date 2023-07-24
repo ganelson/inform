@@ -17,6 +17,7 @@ void ExtensionBundleManager::start(void) {
 	METHOD_ADD(extension_bundle_genre, GENRE_CONSTRUCT_GRAPH_MTID, ExtensionBundleManager::construct_graph);
 	METHOD_ADD(extension_bundle_genre, GENRE_BUILDING_SOON_MTID, ExtensionBundleManager::building_soon);
 	METHOD_ADD(extension_bundle_genre, GENRE_DOCUMENT_MTID, ExtensionBundleManager::document);
+	METHOD_ADD(extension_bundle_genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, ExtensionBundleManager::read_source_text_for);
 }
 
 void ExtensionBundleManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
@@ -417,9 +418,10 @@ directory, we need to |rsync| it.
 
 =
 pathname *ExtensionBundleManager::pathname_in_nest(inbuild_nest *N, inbuild_edition *E) {
+	pathname *EX = ExtensionManager::path_within_nest(N);
 	TEMPORARY_TEXT(leaf)
 	Editions::write_canonical_leaf(leaf, E);
-	pathname *P = Pathnames::down(ExtensionBundleManager::path_within_nest(N), leaf);
+	pathname *P = Pathnames::down(Pathnames::down(EX, E->work->author_name), leaf);
 	DISCARD_TEXT(leaf)
 	return P;
 }
@@ -465,6 +467,13 @@ void ExtensionBundleManager::building_soon(inbuild_genre *gen, inbuild_copy *C,
 
 void ExtensionBundleManager::construct_graph(inbuild_genre *G, inbuild_copy *C) {
 	Extensions::construct_graph(ExtensionBundleManager::from_copy(C));
+}
+
+@h Source text.
+
+=
+void ExtensionBundleManager::read_source_text_for(inbuild_genre *G, inbuild_copy *C) {
+	Extensions::read_source_text_for(ExtensionBundleManager::from_copy(C));
 }
 
 @h Documentation.

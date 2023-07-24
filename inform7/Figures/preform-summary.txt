@@ -1,4 +1,4 @@
-<s-literal> hits 2131/24680 nti 19 constraint (none) extremes [1, infinity)
+<s-literal> hits 2131/24688 nti 19 constraint (none) extremes [1, infinity)
     English:
         (@1)<cardinal-number>=1 
           (hits 171/171) (matched: '100') constraint CS = {r0} extremes [1, 1]
@@ -16,14 +16,14 @@
           (hits 1575/5756) (matched: 'Can be used for objects which are purely
         conceptual, like ideas, or are needed for internal book-keeping.') constraint (none) extremes [1, 1]
         <s-literal-real-number>=1 
-          (hits 11/10320) (matched: 'plus infinity') constraint (none) extremes [1, infinity)
+          (hits 11/10324) (matched: 'plus infinity') constraint (none) extremes [1, infinity)
         (@1)<s-literal-truth-state>=1 
           (hits 100/379) (matched: 'false') constraint CS = {13} extremes [1, 1]
         <s-literal-list>=1 
-          (hits 0/3246) constraint DS = {15} extremes [2, infinity)
+          (hits 0/3250) constraint DS = {15} extremes [2, infinity)
         (@1)unicode <s-unicode-character>=1 
-          (hits 0/3994) constraint DS = {19} extremes [2, infinity)
+          (hits 0/3998) constraint DS = {19} extremes [2, infinity)
         <s-literal-time>=1 
-          (hits 0/3569) constraint DW = {16, 17, 18} extremes [2, 5]
+          (hits 0/3571) constraint DW = {16, 17, 18} extremes [2, 5]
         <s-literal-unit-notation>=1 
-          (hits 0/10209) constraint (none) extremes [1, infinity)
+          (hits 0/10213) constraint (none) extremes [1, infinity)
