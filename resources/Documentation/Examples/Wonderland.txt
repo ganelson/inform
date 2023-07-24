@@ -1,0 +1,47 @@
+Example: ** Wonderland
+Location: Units
+RecipeLocation: Going, Pushing Things in Directions
+Index: GO UP and GO DOWN determined by room altitude
+Description: Hiking Mount Rainier, with attention to which locations are higher and which lower than the present location.
+For: Z-Machine
+
+Suppose we have a landscape with a great deal of up and down variation, where GO UP and GO DOWN will be significant almost everywhere, and specifying them all individually a tremendous pain:
+
+	{*}"Wonderland"
+
+	An altitude is a kind of value. 1000 feet specifies an altitude. A room has an altitude.
+
+	Definition: a room is low if its altitude is 3000 feet or less. Definition: a room is high if its altitude is 5000 feet or more.
+
+	Instead of going down:
+		if an adjacent room is lower than the location:
+			let the valley be the lowest adjacent room;
+			let the way be the best route from the location to the valley;
+			say "(that is, [way])[paragraph break]";
+			try going the way;
+		otherwise:
+			say "You're in a local valley: there's no down from here."
+
+	Instead of going up:
+		if an adjacent room is higher than the location:
+			let the peak be the highest adjacent room;
+			let the way be the best route from the location to the peak;
+			say "(that is, [way])[paragraph break]";
+			try going the way;
+		otherwise:
+			say "You're on a local peak."
+
+	Paradise is a room. Paradise has altitude 5400 feet. "A handsome parking lot, a picnic ground, and the Henry M. Jackson Memorial Visitor Center. The latter offers, for serious climbers, a hot shower; for nature enthusiasts, an interpretive museum; and for car-trippers, a gift shop selling canned slugs. All of which is a largely unsuccessful distraction from the peak of Mt. Rainier beyond."
+
+	Cougar Rock is southwest of Paradise. The altitude of Cougar Rock is 3180 feet. "Numerous individual campsites and (on the road inventively labeled 'F') a handful of larger campgrounds suitable for church groups and family reunions."
+
+	Longmire is southwest of Cougar Rock. It has altitude 2760 feet. "A tiny town: it has to offer a few groceries, a post office, and a lodge for people who do not care to camp, all built in a rustic Park Service way."
+
+	Panorama Point is north of Paradise. It has altitude 6800 feet. Camp Muir is north of Panorama Point. It has altitude 10188 feet. Columbia Crest is northwest of Camp Muir. It has altitude 14410 feet. St Andrews Rock is west of Columbia Crest. It has altitude 10992 feet. Camp Schuman is northeast of Columbia Crest. It has altitude 9510 feet.
+
+Since Mount Rainier National Park runs to over 235,000 acres, we will omit the rest of the locations, but it does seem fair to give a little more credit to anyone who makes the summit:
+
+	{**}Instead of going up in the highest room:
+		say "You're standing at the summit of Mt. Rainier, the highest point in the state of Washington. There is no up."
+
+	Test me with "up / up / up / down / down / up / up".

@@ -1,0 +1,37 @@
+Example: ** Change of Basis
+Location: New either/or properties
+RecipeLocation: Waiting, Sleeping
+Index: Sleep and waking
+Description: Implementing sleeping and wakeful states.
+For: Z-Machine
+
+Suppose we want to allow the player to go to sleep some of the time:
+
+	{*}"Change of Basis"
+
+	A person is either awake or asleep. A person is usually awake.
+
+The important thing to note here is that it does not work to say "the player is either asleep or awake". This is because the player is not necessarily one specific person or thing during the game: the identity of the player can be changed, as we will see later.
+
+So if we want to make rules about the properties of the player, we should attach these rules to the "person" kind.
+
+	{**}Linear Algebra Class is a room. "The blackboard is covered with square arrangements of numbers. These are supposed to convey something to you, but mostly you're finding them soporific."
+
+Now a few rules about changing from one state to the other:
+
+	{**}Instead of sleeping: now the player is asleep; say "You drop off."
+
+	Instead of doing something other than waking up, waiting or sleeping when the player is asleep:
+		say "Ssh! You're sleeping!"
+
+	Instead of sleeping when the player is asleep:
+		say "Zzzz."
+
+	Instead of waking up when the player is asleep:
+		now the player is awake;
+		say "You come to suddenly, wiping drool from your lips."
+
+	Instead of doing something other than looking or sleeping when the player is awake:
+		say "You'd really rather just sleep through this."
+
+	Test me with "wake up / sleep / look / z / sleep / wake up / look".

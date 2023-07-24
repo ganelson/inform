@@ -1,0 +1,32 @@
+Example: * Control Center
+Location: Text with lists
+RecipeLocation: Simple Machines
+Index: Describing objects with parts
+Description: Objects which automatically include a description of their component parts whenever they are examined.
+For: Z-Machine
+
+It is straightforward to make a rule that anything with parts must mention all those parts during an EXAMINE command:
+
+	{*}"Control Center"
+
+	After examining a thing when something is part of the noun:
+		say "[The noun] includes [a list of things which are part of the noun]."
+
+	The Control Center is a room. "Here you are at the Control Center of the universe."
+
+	The Universe Management Computer is a fixed in place thing in the Control Center. "The Universe Management Computer sits directly before you, unguarded." The description of the Universe Management Computer is "The computer is so large that you would be unable to operate it all from one position. Alas, it does not come with a manual."
+
+	A chartreuse indicator light, an ennui meter, a golden knob settable to 15,000 positions, a toothpick dispenser, and a button labeled RESTART are part of the Universe Management Computer.
+
+	The command chair is an enterable supporter in the Control Center. It is pushable between rooms. "Because the computer is too large for you to reach all of the front panel from a standing position, there is a command chair on casters which allows you to push back and forth." The description of the command chair is "Quite ordinary, really, but for the heady rush of power that comes of sitting in it.". Some casters are part of the command chair.
+
+Now whenever we look at any object with components, we will first see the description, then a list of parts which belong to it. The following refinement brings in elements of later chapters, but it may be worth noting: because we've written our rule as an "After examining...", anything that pre-empts the operation of the examine command will also prevent that rule from occurring. So for instance:
+
+	{**}A hair-thick needle is part of the ennui meter.
+
+	Instead of examining the ennui meter: say "You can't be bothered."
+
+...would not result in the needle being mentioned.
+
+	{**}Test me with "x chair / x computer / x ennui meter"
+

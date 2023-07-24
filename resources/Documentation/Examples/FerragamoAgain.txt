@@ -1,24 +1,27 @@
-** Pattern matching
-(Phrases applying to specific things--Gestures for different characters to make during speech; Ferragamo Again)
-Using the same phrase to produce different results with different characters.
+Example: ** Ferragamo Again
+Location: Pattern matching
+RecipeLocation: Character Emotion
+Index: Phrases applying to specific things
+Description: Using the same phrase to produce different results with different characters.
+For: Z-Machine
 
 Here we use phrases that match individual items where possible, and the general kind otherwise:
 
 	{*}"Ferragamo Again"
-	
+
 	The Break Room is a room. Vanessa, Tina, and Lisa are women in the Break Room. Mark and Holman are men in the Break Room.
 
 	Understand the commands "ask" and "tell" and "answer" as something new.
 
-	Understand "talk about [any subject]" as talking about. Talking about is an action applying to one visible thing. 
+	Understand "talk about [any subject]" as talking about. Talking about is an action applying to one visible thing.
 
 	Understand "talk about [text]" as talking randomly about. Talking randomly about is an action applying to one topic. Carry out talking randomly about: say "Mostly you're interested in [the list of subjects]."
 
-	Carry out talking about something: 
+	Carry out talking about something:
 		now the previous subject is the noun.
 
 	Report talking about something:
-		say "You chat for a while about [the noun]." 
+		say "You chat for a while about [the noun]."
 
 	A subject is a kind of thing. Assyrian vowel sounds, designer handbags, and instant run-off voting are subjects. Understand "linguistics" and "mute" and "stop" as sounds. Understand "prada" and "tods" and "coach" and "carmen marc valvo" as designer handbags. Understand "reform" and "election" and "election fraud" and "two-party system" and "Diebold" as instant run-off voting.
 
@@ -30,7 +33,7 @@ Here we use phrases that match individual items where possible, and the general 
 
 	To say (annoyed-person - Holman) gestures in irritation:
 		say "Holman bobs his head. [run paragraph on]"
-	
+
 	The previous subject is a subject that varies.
 
 	Instead of talking about something for more than one turn:

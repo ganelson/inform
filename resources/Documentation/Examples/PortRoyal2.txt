@@ -1,0 +1,30 @@
+Example: * Port Royal 2
+Subtitle: With one-way connections added
+Location: One-way connections
+RecipeLocation: Map
+Index: With one-way connections added
+Description: Another part of Port Royal, with less typical map connections.
+For: Z-Machine
+
+	{*}"1691"
+
+	Thames Street End is a room.
+
+If we check out a map of historic Port Royal, we find that Thames Street End bends around the northwest tip of the peninsula and becomes the (very) roughly north/south Fisher's Row. We can't put Fisher's Row south of Thames Street End, though, because Lime Street is already going that way. So instead, let's have a map connection that bends around from west to north:
+
+	{**}West of Thames Street End is north of Fisher's Row.
+
+Now continuing west along Thames Street, or north along Fisher's Row, will bring us around the corner in question. Asymmetric map connections should be used carefully. They're good for representing the layout of the real world, which tends not to be laid out on a convenient square matrix, but if exits are not described clearly they can be disorienting for the player. So let's be sure to make things clear:
+
+	{**}The description of Fisher's Row is "A waterfront street that runs south towards Chocolata Hole, where the small craft are harboured. It also continues north around the tip of the peninsula from here, turning into the east-west Thames Street."
+
+Meanwhile, suppose Fort James is in a prominent position, raised a bit from its surroundings; maybe the player should be able to go down from there, as well as south, to get to Thames Street End.
+
+	{**}Thames Street End is down from Fort James. Thames Street End is south from Fort James.
+
+But we don't want the upward direction to work:
+
+	{**}Up from Thames Street End is nowhere.
+
+	Test me with "n / d / u / w / e / n / s".
+

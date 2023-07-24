@@ -1,0 +1,22 @@
+Example: * Access All Areas
+Location: Changing the behaviour of rules
+RecipeLocation: Magic (Breaking the Laws of Physics)
+Index: The Pointy Hat of Liminal Transgression
+Description: The Pointy Hat of Liminal Transgression allows its wearer to walk clean through closed doors.
+For: Z-Machine
+
+If somebody tries to walk through a closed door, the "can't go through closed doors rule" usually stops them. This is a rule belonging to the "check going" rulebook. These names are fairly explanatory when written out, but hard to remember: fortunately we don't need to remember them, as the Index panel contains a full inventory of the check, carry out and report rules for every action, showing all of their names and the order in which they are checked. (We can also find out which rules are stopping an action by typing the testing command ACTIONS.)
+
+Here we make the rule do nothing provided a condition holds:
+
+	{*}"Access All Areas"
+
+	The extremely difficult door is north of the Standing Room and south of the Room of Walking Upside Down.  It is a locked door.
+
+	The player is carrying the Pointy Hat of Liminal Transgression. The hat is wearable.
+
+	The can't go through closed doors rule does nothing when the Hat is worn.
+
+	Test me with "n / wear hat / n".
+
+(The Pointy Hat may be useful in debugging a game, even if it never makes it into the final published work.)

@@ -1,11 +1,14 @@
-** Reaching inside and reaching outside rules
-(Scope for large objects visible far away--Large objects visible from distant rooms; Carnivale)
-An alternative to backdrops when we want something to be visible from a distance but only touchable from one room.
+Example: ** Carnivale
+Location: Reaching inside and reaching outside rules
+RecipeLocation: Continuous Spaces and The Outdoors
+Index: Scope for large objects visible far away
+Description: An alternative to backdrops when we want something to be visible from a distance but only touchable from one room.
+For: Z-Machine
 
 Suppose we want to make an object that (unlike a backdrop) is definitely located in one room, but can be seen from far off. We want to allow the player to interact with it from a distance, but only using those actions that require visibility. Other actions should be denied:
 
 	{*}"Carnivale"
-	
+
 	The Fairground is a region. Park Entrance, By the Wheel, and Candy Stand are in Fairground. Candy Stand is north of By the Wheel. Park Entrance is west of Candy Stand and northwest of By the Wheel.
 
 	The ferris wheel is scenery in By the Wheel. "It is extravagantly tall and carries several dozen glass gondolas for riders."
@@ -19,7 +22,7 @@ Suppose we want to make an object that (unlike a backdrop) is definitely located
 As the descriptions make clear, the ferris wheel should be visible from everywhere in the fair, so we'll borrow a line from the Activities chapter to make that happen:
 
 	{**}After deciding the scope of the player:
-		if the location is in Fairground, place the ferris wheel in scope.	
+		if the location is in Fairground, place the ferris wheel in scope.
 
 "Scope" determines what the player can interact with; by writing this rule, we make Inform understand all commands that refer to the ferris wheel when the player is anywhere in the fairground, instead of responding with
 
@@ -30,7 +33,7 @@ as it normally would.
 Now, by default, if the player were to type TOUCH FERRIS WHEEL while in another room, the story would respond
 
 	You can't reach into By the Wheel.
-	
+
 This may not be quite what we want, but we can replace this text with our own reaching inside rule:
 
 	{**}Rule for reaching inside a room:
@@ -41,5 +44,5 @@ And because our accessibility rules are considered before the "Instead" phase, w
 
 	{**}Instead of touching the ferris wheel:
 		say "You don't dare: it's spinning too fast."
-	
+
 	Test me with "x ferris wheel / touch ferris wheel / se / x ferris wheel / touch ferris wheel".

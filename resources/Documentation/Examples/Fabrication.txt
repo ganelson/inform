@@ -1,6 +1,9 @@
-** Multiplication of units
-(Clothes made of priced fabrics; Fabrication)
-A system of assembling clothing from a pattern and materials; both the pattern and the different fabrics have associated prices.
+Example: ** Fabrication
+Location: Multiplication of units
+RecipeLocation: Money
+Index: Clothes made of priced fabrics
+Description: A system of assembling clothing from a pattern and materials; both the pattern and the different fabrics have associated prices.
+For: Z-Machine
 
 When we make a new kind of value, the new named values can themselves have properties. That is convenient because, for instance, we might want to associate a material (itself the property of an object) with certain features, such as price.
 
@@ -32,7 +35,7 @@ When we make a new kind of value, the new named values can themselves have prope
 		let C be the cost of the material of the chosen item;
 		let A be the area of the chosen item;
 		decide on C * A.
-	
+
 	To decide what price is the overall price of (chosen item - pattern):
 		let P be the price of the chosen item;
 		let M be the material price of the chosen item;
@@ -44,13 +47,13 @@ When we make a new kind of value, the new named values can themselves have prope
 
 	Carry out planning it for:
 		now the material of the second noun is the material understood.
-	
+
 	Report planning it for:
 		say "You lay plans for a [material understood] [second noun], running [material price of the second noun] for materials and [price of the second noun] for the pattern itself, for a total of [overall price of the second noun]."
-	
+
 	Section 2 - Scenario
-	
-	Joanne's Fabrics is a room. Joanne's Fabrics contains a pattern bin. 
+
+	Joanne's Fabrics is a room. Joanne's Fabrics contains a pattern bin.
 
 	The cape is a pattern. The material of the cape is velvet. The area of the cape is 9 sq yards.
 

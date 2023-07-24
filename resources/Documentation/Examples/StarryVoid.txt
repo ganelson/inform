@@ -1,35 +1,38 @@
-*** Rooms and the map
-(Rooms with visible exteriors; Starry Void)
-Creating a booth that can be seen from the outside, opened and closed, and entered as a separate room.
+Example: *** Starry Void
+Location: Rooms and the map
+RecipeLocation: Position Within Rooms
+Index: Rooms with visible exteriors
+Description: Creating a booth that can be seen from the outside, opened and closed, and entered as a separate room.
+For: Z-Machine
 
 Sometimes we may want a room to be visible from the outside in one location, but treated as a separate location when we are inside. The simplest way to do this is to make the exterior form of the object into a door object, and to describe it differently from different vantage points. (Doors in general are described more fully in the Doors section of the Things chapter.)
 
 	{*} "Starry Void"
-	
-	The Center Ring is a room. 
 
-	The magician's booth is a door. "[if the player is in Center Ring]A magician's booth stands in the corner, painted dark blue with glittering gold stars.[otherwise if the magician's booth is closed]A crack of light indicates the way back out to the center ring.[otherwise]The door stands open to the outside.[end if]". 
-	
+	The Center Ring is a room.
+
+	The magician's booth is a door. "[if the player is in Center Ring]A magician's booth stands in the corner, painted dark blue with glittering gold stars.[otherwise if the magician's booth is closed]A crack of light indicates the way back out to the center ring.[otherwise]The door stands open to the outside.[end if]".
+
 Here we've arranged for the booth to be described in the initial room description in different ways depending on where the player is when viewing it. We might like to do the same if the player takes a closer look:
-	
+
 	{**}Instead of examining the magician's booth in the Center Ring:
 		say "It is dark blue and glittering with gold stars. [if the booth is open]The door currently stands open[otherwise]It has been firmly shut[end if]."
-		
+
 	Instead of examining the magician's booth in the Starry Void:
 		say "The booth door is [if the magician's booth is open]wide open[otherwise]shut, admitting only a thin crack of light[end if]."
 
 And now we put it in place:
 
-	{**}The magician's booth is inside from Center Ring and outside from Starry Void. 
+	{**}The magician's booth is inside from Center Ring and outside from Starry Void.
 
 ...and make sure that the booth-and-door object responds to all the names we have used for it in different places:
 
 	{**}Understand "door" or "of" or "the" or "light" or "crack" or "thin crack" as the booth.
 
 	Test me with "examine booth / open door of the booth / in / examine door / close door / look / examine crack of light".
-	
+
 A final nice touch, if we're so inclined, is to borrow from the Basic Actions chapter and make the player automatically open the booth door before trying to enter:
-	
+
 	{*} Before going through the closed magician's booth:
 		say "(first opening the door of the booth)[command clarification break]";
 		silently try opening the booth.

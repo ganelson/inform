@@ -1,13 +1,16 @@
-** Table amendments
-(HELP command with specific set of topics; Trieste)
-Table amendment to adjust HELP commands provided for the player.
+Example: ** Trieste
+Location: Table amendments
+RecipeLocation: Helping and Hinting
+Index: HELP command with specific set of topics
+Description: Table amendment to adjust HELP commands provided for the player.
+For: Z-Machine
 
 Suppose we are using an extension in which another author has defined some help topics for the player, and we want to amend them for our game.
 
 We'll start with the portion of the text that we have inherited from the extension:
 
 	{*}"Trieste"
-	
+
 	Section 1 - Procedure
 
 	A help-topic is a kind of value. Some help-topics are defined by the Table of Standard Instructions.
@@ -29,7 +32,7 @@ We'll start with the portion of the text that we have inherited from the extensi
 			if the help-topic understood is the help-topic entry:
 				say "[reply entry][paragraph break]";
 				break.
-				
+
 	Section 2 - Scenario
 
 Now, let's imagine our game is a special one in which only a very limited supply of moves are allowed. In that case, we'll want to replace the information on commands:
@@ -40,9 +43,9 @@ Now, let's imagine our game is a special one in which only a very limited supply
 
 	Board Room is a room. Mark is a man in the Board Room. "Russia (played by Mark) is also hovering over the board."
 
-	Guest Bathroom is south of Board Room. Lena and Rob are in the Guest Bathroom. Lena is a woman. Rob is a man. 
+	Guest Bathroom is south of Board Room. Lena and Rob are in the Guest Bathroom. Lena is a woman. Rob is a man.
 
-	Rule for writing a paragraph about Lena when Lena is in the Guest Bathroom and Rob is in the Guest Bathroom: 
+	Rule for writing a paragraph about Lena when Lena is in the Guest Bathroom and Rob is in the Guest Bathroom:
 		say "[Lena] (Italy) and [Rob] (Great Britain) are having a hushed conversation while leaning against your good towels. They stop and stare at you when you come in."
 
 	Test me with "help / help commands / help saving".

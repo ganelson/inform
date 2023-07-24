@@ -1,6 +1,9 @@
-*** Adjacent rooms and routes through the map
-(Light-filled rooms as a route through a space; Unblinking)
-Finding a best route through light-filled rooms only, leaving aside any that might be dark.
+Example: *** Unblinking
+Location: Adjacent rooms and routes through the map
+RecipeLocation: Lighting
+Index: Light-filled rooms as a route through a space
+Description: Finding a best route through light-filled rooms only, leaving aside any that might be dark.
+For: Z-Machine
 
 Suppose we're simulating a situation where the player needs to travel through lit areas only, but we want to give them some hints about which way might be safe. Here we'll find our best route through light-filled rooms.
 
@@ -9,18 +12,18 @@ The slightly tricky part is that it's not necessarily easy to tell whether a roo
 The easiest way to get around this is to create an object -- the light-meter; place it in the target location; and check whether it "can see" a lit object. This preserves all the usual rules about open and closed containers, transparency, etc.
 
 	{*}"Unblinking"
-	
+
 	Section 1 - Procedure
 
 	The light-meter is a privately-named scenery thing.
 
-	Definition: a room (called the target room) is light-filled: 
-		if the target room is lighted: 
+	Definition: a room (called the target room) is light-filled:
+		if the target room is lighted:
 			yes;
 		move the light-meter to the target room;
 		let the answer be false;
-		if the light-meter can see a lit thing: 
-			now the answer is true; 
+		if the light-meter can see a lit thing:
+			now the answer is true;
 		now the light-meter is nowhere;
 		decide on the answer.
 
@@ -45,5 +48,5 @@ That done, we're free to use our best-route phrases to choose a particular route
 			say "It looks like there is no fully lit path from here to the Crash Site."
 
 	Test me with "up / drop candle / down / up / take the candle / open sarcophagus / put candle in sarcophagus / down / up / close sarcophagus / d".
-	
+
 An important word of caution: this method would give false negatives if there were a backdrop lightsource, such as the moon, providing light to the Upward Path. This is because backdrops are actually moved around the map by Inform during play, following the player around. So if the moon backdrop is in the Crash Site with the player, it will not be in the Upward Path as well -- even if it's scheduled to move there as soon as the player does.

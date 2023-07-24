@@ -1,0 +1,37 @@
+Example: * Disenchantment Bay 1
+Subtitle: The charter boat
+Location: Properties depend on kind
+RecipeLocation: Disenchantment Bay
+Index: The charter boat
+Description: A running example in this chapter, Disenchantment Bay, involves chartering a boat. This is the first step: creating the cabin.
+For: Z-Machine
+
+To begin with the title:
+
+	{*}"Disenchantment Bay"
+
+There are many Disenchantment Bays across the world, named by eighteenth-century ships' captains - one in Antarctica, another in Tasmania, for instance. The most famous is probably the one where Lewis and Clark's expedition broke through to the Pacific. But ours is the one in Alaska, named in 1791 by a Spanish navigator who had hoped it might lead to the fabled Northwest Passage, and all of this history is beside the point since the game is set in the present day.
+
+	{**}The Cabin is a room.  "The front of the small cabin is entirely occupied with navigational instruments, a radar display, and radios for calling back to shore. Along each side runs a bench with faded blue vinyl cushions, which can be lifted to reveal the storage space underneath. A glass case against the wall contains several fishing rods.
+
+	Scratched windows offer a view of the surrounding bay, and there is a door south to the deck. A sign taped to one wall announces the menu of tours offered by the Yakutat Charter Boat Company."
+
+We might want to start with the glass case.
+
+	{**}The Cabin contains a glass case. In the glass case is a collection of fishing rods.
+
+Now Inform will have guessed that the case is a container, but its default idea of a container is something like a bucket: permanently open and not able to be opened and shut. We can change that:
+
+	{**}The case is closed, transparent, and openable.
+
+We get a similar set of guesses if we write
+
+	{**}The bench is in the cabin. On the bench are some blue vinyl cushions.
+
+Using "some" rather than "a" or "the" tells Inform that the cushions are to be referred to as a plural object in the future. And because of the "on the bench..." phrase, Inform will guess that the bench is a supporter and that it is fixed in place and cannot be moved from room to room. We do have to tell it that the bench can be sat on, though:
+
+	{**}The bench is enterable.
+
+And now a short script, so that if we type TEST ME, we experiment with the case and bench:
+
+	{**}Test me with "examine case / get rods / open case / get rods / sit on bench / take cushions / get up"

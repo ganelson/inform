@@ -1,0 +1,72 @@
+Example: ** Ginger Beer
+Location: Deciding the scope of something
+RecipeLocation: Clocks and Scientific Instruments
+Index: Telescope allowing view of another room
+Description: A portable magic telescope which allows the player to view items in another room of their choice.
+For: Z-Machine
+
+Suppose we want to have a pair of linked lenses so that the player can look into one of them and see things which occur in room containing the other lense.
+
+We begin simply with a bit of environment for the player to wander around:
+
+	{*}"Ginger Beer"
+
+	The Ginger Beer Factory is a room.  "In the center of the room is an enormous pot filled with crushed ginger, which seems to be bubbling slightly on its own.  The fumes are overwhelming."
+
+	The pot is scenery in the Ginger Beer Factory. The description of the pot is "Cast iron." In the pot is a bubbling brew.
+
+	Instead of smelling the Ginger Beer Factory: try smelling the brew.
+
+	Instead of smelling the brew, say "You blink back tears."
+
+	The Storeroom is south of the Ginger Beer Factory.  "The walls here are lined with a prodigious number of small, rounded bottles, each with a screw top and a smiling pirate on the label."
+
+	The Clippings Room is west of the Ginger Beer Factory. "A clean room lined with steel tables, for preparing ingredients."
+
+	Some steel tables are a supporter in the Clippings Room.  They are scenery.  The description is "They are roughly the size and height of laboratory worksurfaces."
+
+	The quantity of dandelion is on the steel tables.  The description is "Horrible common weed."
+
+	The wooden box is on the steel tables.  It is openable and closed.  The description is "A large wooden box with a lid, used for ingredient storage.  There is a label on the lid."
+
+	The label is part of the box.  The description is "BURDOCK: the root beaten with a little salt and laid on the place suddenly easeth the pain thereof, and helpeth those that are bit by a mad dog:... the seed being drunk in wine 40 days together doth wonderfully help the sciatica: the leaves bruised with the white of an egg and applied to any place burnt with fire, taketh out the fire, gives sudden ease and heals it up afterwards.... The root may be preserved with sugar for consumption, stone and the lax."
+
+	The quantity of burdock is in the box.  The description is "It looks like a kind of thistle."
+
+	Some bottles are in the Storeroom.  They are scenery.  The description is "They are smaller than the average bottle, because more potent."  Instead of taking the bottles, say "Take one away and the whole lineup will cascade to the floor."
+
+Now for the lenses themselves:
+
+	{**}A lense is a kind of thing.
+
+	The large end of the telescope is a lense in the Ginger Beer Factory.  "There is a large glass lense propped against the wall, in which are reflected all the contents of the room."  Understand "glass" or "lense" as the large end.
+
+	The small end of the telescope is a lense in the Storeroom.  "There is a small glass lense sitting on the floor.  Due to some curious effect of the optics, it appears to be giving a view of somewhere else entirely."  Understand "glass" or "lense" as the small end.  The description is "A gleaming lense about the size of a pound coin."
+
+Here is the critical bit, which needs to be somewhat flexible, since the large end of the telescope could in theory be left anywhere in the game (and should still work).
+
+	{**}After deciding the scope of the player while the small end is carried by the player:
+		let there be the holder of the large end;
+		place there in scope.
+
+	Before searching the small end when the small end is not carried by the player:
+		say "(first picking up [the small end] and holding it to your eye)";
+		silently try taking the small end.
+
+	Instead of searching the small end when the player is not carrying the small end:
+		say "It's too hard to look through the small end from a distance."
+
+	Instead of searching the large end,
+		say "You see only your own reflection."
+
+We also want to make sure that the player who looks through the small lense does not see the large lense listed among the contents of the other location:
+
+	{**}Definition: a thing is recognizable if it is not a lense.
+
+	Instead of searching the small end:
+		let the far side be the holder of the large end of the telescope;
+		say "You peer into the little lense and through it see, in [the far side], [the list of recognizable things in the far side]."
+
+	Test me with "examine lense / south / examine lense / look through lense / north / look through small lense".
+
+And we're done.

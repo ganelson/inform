@@ -1,6 +1,9 @@
-** Two rulebooks used internally
-(Multiple-object actions given modified descriptions; Escape from the Seraglio)
-Replacing the usual response to TAKE ALL so that instead of output such as "grapes: Taken. orange: Taken.", Inform produces variable responses in place of "grapes:".
+Example: ** Escape from the Seraglio
+Location: Two rulebooks used internally
+RecipeLocation: Actions on Multiple Objects
+Index: Multiple-object actions given modified descriptions
+Description: Replacing the usual response to TAKE ALL so that instead of output such as "grapes: Taken. orange: Taken.", Inform produces variable responses in place of "grapes:".
+For: Z-Machine
 
 	{*}"Escape from the Seraglio"
 
@@ -17,20 +20,20 @@ Replacing the usual response to TAKE ALL so that instead of output such as "grap
 				say "[if number of takes this turn is 1]First [otherwise if the number of takes this turn is 2]And then [otherwise if the number of takes this turn is 3]And I suppose also [otherwise if the number of takes this turn is 7]And on we wearily go with [otherwise if the number of takes this turn is 9]Oh, and not forgetting [otherwise]And [end if][the current item from the multiple object list]: [run paragraph on]";
 		otherwise:
 			if the current item from the multiple object list is not nothing, say "[current item from the multiple object list]: [run paragraph on]".
-	
+
 	Rule for deciding whether all includes the person asked: it does not.
 	Rule for deciding whether all includes a person when taking: it does not.
-	
+
 	Section 2 - The Scenario
 
 	The Palm Chamber is a room. Sarissa is a woman in the Palm Chamber.
 
 	The Palm Chamber contains a bottle of ink, a quill pen, a tangerine, a bunch of grapes, a length of silken rope, some perfume, a cake of incense, a fitted leather bodice, a sapphire anklet, an illustrated novel, a whip, and a heavy iron key.
-	
+
 	A persuasion rule for asking Sarissa to try taking the key:
 		say "Sarissa nervously demurs, knowing that it is forbidden.";
 		persuasion fails.
-	
+
 	A persuasion rule: persuasion succeeds.
-	
+
 	Test me with "take all / drop all / sarissa, take all".

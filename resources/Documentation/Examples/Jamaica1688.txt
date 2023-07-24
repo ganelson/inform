@@ -1,6 +1,9 @@
-* Printing the player's obituary
-(Changing the final question after victory; Jamaica 1688)
-Adding a feature to the final question after victory, so that the player can choose to reveal notes about items in the game.
+Example: * Jamaica 1688
+Location: Printing the player's obituary
+RecipeLocation: Ending The Story
+Index: Changing the final question after victory
+Description: Adding a feature to the final question after victory, so that the player can choose to reveal notes about items in the game.
+For: Z-Machine
 
 The options offered to the player at the end of the game are listed in the Table of Final Question Options, which means that we can add to them simply by continuing the table; what's more, the table gives us the opportunity to create a "final response rule", a rule that the game should follow in order to parse the player's input at this point.
 
@@ -18,7 +21,7 @@ So, for instance, if we wanted the player to be allowed to ask for notes about a
 	--	true	"reveal [any room]"	investigate something rule	--
 
 	This is the investigate something rule:
-		repeat through the Table of Footnotey Stuff: 
+		repeat through the Table of Footnotey Stuff:
 			if the player's command matches the topic entry:
 				say "[revelation entry][paragraph break]";
 				rule succeeds;
@@ -35,4 +38,4 @@ So, for instance, if we wanted the player to be allowed to ask for notes about a
 	Table of Footnotey Stuff
 	topic			revelation
 	"reveal [Lucius]"	"Lucius is based on a historical buccaneer who sailed with William Dampier. The original did carry a Greek New Testament, from which he read aloud when the men were stranded in the jungles near Panama."
-	"reveal [Upper Deck]"	"The Callisto is a simplified and tidied representation of a pirate sloop ca. 1688."  
+	"reveal [Upper Deck]"	"The Callisto is a simplified and tidied representation of a pirate sloop ca. 1688."

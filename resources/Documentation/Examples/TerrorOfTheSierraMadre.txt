@@ -1,0 +1,49 @@
+Example: *** Terror of the Sierra Madre
+Location: Moving the player
+RecipeLocation: Viewpoint
+Index: Player controls multiple player-characters in turn
+Description: Multiple player characters who take turns controlling the action.
+For: Z-Machine
+
+Suppose we have a game where we want the player to control two different characters, swapping bodies from one turn to the next. First, the setting, and the two people who will alternately play:
+
+	{*}"Terror of the Sierra Madre"
+
+	The Hay-Strewn Corridor is a room. "[if the player is Maleska]The horse stalls are empty: you have already drained the animals, and carried off their corpses. The house will not long sustain you now.
+
+	The window throws on the floor a bright square of malevolent sunlight[otherwise]The stalls for horses run down one side of the room, but the house has long stood empty. A square window without shutters looks out over the ranch, away toward the Sierras[end if]."
+
+	Teresa is a woman in the Hay-Strewn Corridor. "Teresa stands opposite you[if Teresa carries something], her fingers wrapped tightly around [a list of things carried by Teresa][end if]." Teresa carries a bulb of garlic and a cross.
+
+	Maleska is a man in the Hay-Strewn Corridor. "Maleska watches you from eyes entirely black." Maleska carries a skull.
+
+If we tried the text above in Inform, we would find ourselves in the Hay-Strewn Corridor and confronted by both Teresa and Maleska. If "player" is not set to any named person, Inform creates a bland person called "yourself" to represent the player. To avoid this, we set "player" to the person we want to begin as. The player character is normally privately-named, so we'll need to make sure "Maleska" still means what it should.
+
+	{**}The player is Maleska. Understand "Maleska" as Maleska.
+
+Now the Corridor contains just two people, and we arrive on the scene as Maleska, with only Teresa facing us.
+
+At the end of every turn we will use the 'now the player is...' phrase. (This looks as if it simply changes the value of "player": which it does, but it also carries out a complicated operation behind the scenes to effect the switch.)
+
+	{**}Every turn:
+		if the player is Maleska, now the player is Teresa;
+		otherwise now the player is Maleska.
+
+Our two characters already see the Corridor differently, but let's differentiate them further:
+
+	{**}Every person has a number called strength. The strength of Teresa is 3. The strength of Maleska is 5.
+
+In this small example, strength is not used for anything, except that we will display it on the status line:
+
+	{**}When play begins:
+		now the command prompt is "[bold type][player][roman type] > ";
+		now the left hand status line is "[player]";
+		now the right hand status line is "STR: [strength of the player]".
+
+That last rule doesn't quite do what we might have expected. When we print "[player]", we find that Inform usually prints "yourself". This is because Inform says "you" to mean Teresa when talking to the player-being-Teresa, and likewise for Maleska. We want to override that in this particular story, because the rapid switches of personality are otherwise hard to follow. So:
+
+	{**}Rule for printing the name of Teresa: say "Teresa".
+
+	Rule for printing the name of Maleska: say "Maleska".
+
+	Test me with "look / look".

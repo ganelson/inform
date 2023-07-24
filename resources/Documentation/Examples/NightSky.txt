@@ -1,6 +1,9 @@
-* Actions as conditions
-(Room description changes after note is read; Night Sky)
-A room which changes its description depending on whether an object has been examined.
+Example: * Night Sky
+Location: Actions as conditions
+RecipeLocation: Room Descriptions
+Index: Room description changes after note is read
+Description: A room which changes its description depending on whether an object has been examined.
+For: Z-Machine
 
 Sometimes a nice effect is to change the way things are described depending on the information the player has gained in the course of play. We could for instance write this:
 
@@ -9,9 +12,9 @@ Sometimes a nice effect is to change the way things are described depending on t
 	The Planetarium is a room. "[if we have examined the sinister message]A dark room where it seems something is about to jump out at you![otherwise]A tranquil dark room with a ceilingful of stars.[end if]"
 
 	The sinister message is a thing in the Planetarium. "A message is taped to the wall." The description is "'BEWARE.'"
-	
+
 	Test me with "look / x message / look".
-	
+
 On the other hand, beware that this would not work as desired:
 
 	{*}"Night Sky"
@@ -19,7 +22,7 @@ On the other hand, beware that this would not work as desired:
 	The Planetarium is a room. "[if we have listened to the sinister message]A dark room where it seems something is about to jump out at you![otherwise]A tranquil dark room with a ceilingful of stars.[end if]"
 
 	The sinister message is a thing in the Planetarium. "A message plays very softly, so that you would have to listen to hear it." Instead of doing anything other than listening to the message: say "It's only a sound, after all.". Instead of listening to the sinister message: say "A voice whispers, 'BEWARE'."
-	
+
 	Test me with "listen to message / look".
-	
+
 The reason is that our Instead rule has pre-empted normal listening, so Inform considers that we have never successfully heard the message. The moral here is that "if we have..." is useful for tracking events that otherwise proceeded completely normally (picking up ordinary objects, examining things); if we have used instead to make some change, we will have to use a different approach to record that the event did occur as scheduled.

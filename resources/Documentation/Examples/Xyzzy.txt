@@ -1,22 +1,25 @@
-* Understand
-(Joke command added; XYZZY)
-Basics of adding a new command reviewed, for the case of the simple magic word XYZZY.
+Example: * XYZZY
+Location: Understand
+RecipeLocation: Magic Words
+Index: Joke command added
+Description: Basics of adding a new command reviewed, for the case of the simple magic word XYZZY.
+For: Z-Machine
 
 We have seen before how to define a new action from scratch, but we may want to review here, using a simple command that requires no objects.
 
 	{*}"XYZZY"
 
-	Understand "xyzzy" or "say xyzzy" or "cast xyzzy" as casting xyzzy. 
+	Understand "xyzzy" or "say xyzzy" or "cast xyzzy" as casting xyzzy.
 
-	Casting xyzzy is an action applying to nothing. 
+	Casting xyzzy is an action applying to nothing.
 
-	Check casting xyzzy: 
+	Check casting xyzzy:
 		if the player does not wear the amulet of elocution, say "You are unable to articulate the second 'z' separately from the first, and the spell fails in a disdainful puff. Must be Parisian magic." instead;
 		if the player has the plate, say "The plate of cheeses twitches uncomfortably, aware that it should be doing something, but not sure what." instead.
 
 	Carry out casting xyzzy:
 		move the plate to the player.
-		
+
 	Report casting xyzzy:
 		say "Under the influence of the Amulet of Elocution, you pronounce this as Xhi-zee. And lo, from nowhere, a [plate] appears!"
 
@@ -31,5 +34,5 @@ We have seen before how to define a new action from scratch, but we may want to 
 	Paradise is a room. The description is "Well, it might just be one of the posh upper rings of purgatory, if you're entirely honest with yourself."
 
 	Test me with "x squares / x amulet / x cheese / xyzzy / wear amulet / xyzzy / x ooze / smell ooze /  eat ooze".
-	
+
 XYZZY is a magic word from the original Adventure, and many other games respond to it with some sort of amusing message.

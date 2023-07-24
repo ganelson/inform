@@ -1,15 +1,18 @@
-* Printing a number of something
-(Exact numbers replaced with vague quantifiers; Prolegomena)
-Replacing precise numbers with "some" or other quantifiers when too many objects are clustered together for the player to count at a glance.
+Example: * Prolegomena
+Location: Printing a number of something
+RecipeLocation: Varying What Is Written
+Index: Exact numbers replaced with vague quantifiers
+Description: Replacing precise numbers with "some" or other quantifiers when too many objects are clustered together for the player to count at a glance.
+For: Z-Machine
 
 Room descriptions often make the player character out to be a bit of a savant, able to count whole stacks of items at a glance: "You see 27 paper clips here."
 
 We can adjust this behavior to our liking, though, with the printing a number... activity, as follows:
 
 	{*} "Prolegomena"
-	
+
 	The Editor's Office is a room. The desk is a supporter in the Editor's Office.
-	
+
 	A red pencil is a kind of thing. 12 red pencils are on the desk.
 
 	A letter is a kind of thing. 12 letters are on the desk. Understand "correspondence" as a letter.
@@ -17,9 +20,9 @@ We can adjust this behavior to our liking, though, with the printing a number...
 	Rule for printing the plural name of a letter:
 		if the listing group size is greater than 7, say "correspondence";
 		otherwise say "letters".
-	
+
 	Rule for printing a number of something (called the target) when the listing group size is greater than 7:
-		say "[one of]some [or]various [or]an assortment of [at random]"; 
+		say "[one of]some [or]various [or]an assortment of [at random]";
 		carry out the printing the plural name activity with the target.
 
 This general rule can of course be overridden by more specific ones; for instance, if we want to take the opportunity to comment on the viewpoint character's appetite for instruments of correction:
@@ -27,5 +30,5 @@ This general rule can of course be overridden by more specific ones; for instanc
 	{**}Rule for printing a number of red pencils (called the target) when the listing group size is greater than 10:
 		carry out the printing the plural name activity with the target;
 		say " in nearly-sufficient quantity".
-	
+
 	Test me with "get two letters / look / get a pencil / i / get pencil / g / g / look / i / get all / i".

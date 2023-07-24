@@ -1,6 +1,9 @@
-*** Going by, going through, going with
-(PUSH something A DIRECTION modified; Provenance Unknown)
-Allowing something like PUSH TELEVISION EAST to push the cart on which the television rests.
+Example: *** Provenance Unknown
+Location: Going by, going through, going with
+RecipeLocation: Going, Pushing Things in Directions
+Index: PUSH something A DIRECTION modified
+Description: Allowing something like PUSH TELEVISION EAST to push the cart on which the television rests.
+For: Z-Machine
 
 Suppose we have a series of items that might be stacked on top of one another -- say a heavy television on a rolling cart, and we want the player to be able to move the cart with PUSH TELEVISION EAST just as well as with PUSH CART EAST.
 
@@ -11,18 +14,18 @@ This takes a little redirection, using a setting action variables rule. This is 
 	Setting action variables for pushing something to:
 		if the noun is enclosed by a pushable between rooms thing (called the pushed item) which is in the location:
 			now the noun is the pushed item instead.
-		
+
 This rule says that any time we push an object that is on top of a stack of pushable objects, we should transfer the action to the item at the bottom of the stack.
 
 The rest is merely a test case.
 
-	{**}The heavy golden idol is on a roller board. The roller board is on a hovercraft. 
+	{**}The heavy golden idol is on a roller board. The roller board is on a hovercraft.
 
 	The hovercraft, the tea trolley, and the skateboard are pushable between rooms.
 
-	The hovercraft is in Zeta Proximan Dig Field. 
+	The hovercraft is in Zeta Proximan Dig Field.
 
-	Zeta Proximan Dig Field is a room. "During the day, the field is massed with sweating native workers, overseers, and officials from central command. Now the spades, trowels, brushes, metal detectors, ground probes, plumb lines, and sighting tripods have been laid aside. 
+	Zeta Proximan Dig Field is a room. "During the day, the field is massed with sweating native workers, overseers, and officials from central command. Now the spades, trowels, brushes, metal detectors, ground probes, plumb lines, and sighting tripods have been laid aside.
 
 	All that remains are the trenches and the fine grey dust that blows slowly across them; the moonlight; and the just-emerging outlines of an ancient and alien wall."
 

@@ -1,6 +1,9 @@
-* Articles and proper names
-(Characters and objects with titles and special articles; Belfry)
-You can see a bat, a bell, some woodworm, William Snelson, the sexton's wife, a bellringer and your local vicar here.
+Example: * Belfry
+Location: Articles and proper names
+RecipeLocation: Getting Acquainted
+Index: Characters and objects with titles and special articles
+Description: You can see a bat, a bell, some woodworm, William Snelson, the sexton's wife, a bellringer and your local vicar here.
+For: Z-Machine
 
 	{*}"Belfry"
 

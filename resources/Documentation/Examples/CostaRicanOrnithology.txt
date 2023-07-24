@@ -1,0 +1,54 @@
+Example: *** Costa Rican Ornithology
+Location: Reading and talking
+RecipeLocation: Reading Matter
+Index: Book with various contents
+Description: A fully-implemented book, answering questions from a table of data, and responding to failed consultation with a custom message such as "You flip through the Guide to Central American Birds, but find no reference to penguins."
+For: Z-Machine
+
+The following relies on quite a number of features we haven't met yet: tables, rules for printing names, instructions for understanding the player's commands. It is offered simply as an example of how a fully implemented book might be handled in Inform.
+
+	{*}"Costa Rican Ornithology"
+
+	A book is a kind of thing. Understand "book" as a book. A book has a table name called the contents.
+
+	Instead of consulting a book about a topic listed in the contents of the noun:
+		say "[reply entry][paragraph break]".
+
+	Report consulting a book about:
+		say "You flip through [the noun], but find no reference to [the topic understood]." instead.
+
+With this "topic understood" phrase, we're telling Inform to print back the word or phrase that the player was attempting to look up. This overrides the more general default response, "You discover nothing of interest in the book."
+
+We now have the essential elements to construct whatever books we like. Now let's have an example of a specific book:
+
+	{**}The Guide to Central American Birds is a book carried by the player. The contents of the Guide is the Table of Listed Birds.
+
+We will come back to the idea of tables and table names later, but for now the important thing is that we have instructed Inform to look up its answers to consulting the bird guide in this form:
+
+	{**}Table of Listed Birds
+	topic	reply
+	"[red]" or "[red] bird/macaw"	"You flip through the Guide for a while and eventually discover a reference to the [scarlet macaw], which appears to correspond with what you see before you."
+	"quetzal/trogon" or "resplendent trogon"	"The entry on the quetzal is quite lyrical, describing its brilliant plumage, flashing and igniting in the sunshine, which is supposedly sufficient to lure birdwatchers from all over the world. Unfortunately, the quetzal is described as being bright emerald in color, with a pink fuzz on its head and a long soft tail 'like a feather boa'. None of these describes your visitor."
+
+The topic column is a bit special: it matches the player's input, and is not meant to be printed out again. Topic columns will be discussed further in the chapter on Tables. (Note also that, however it may appear in the documentation, the topic column should not be spanning multiple lines in our source text.)
+
+We may also compress long or complicated topics by creating bracketed abbreviations, and in fact it's useful to do so now, to explain the red token we just used:
+
+	{**}Understand "red-orange" or "bird" or "red" or "orange" as the scarlet macaw. Understand "red-orange" or "red" or "orange" or "scarlet" as "[red]".
+
+This technique is discussed further in the chapter on Understanding.
+
+If we wanted more books, we could define those in the same way, giving each its own separate contents table to be used for consultation. But for the sake of the example we will keep it simple, and move on to the scenario itself:
+
+	{**}The Veranda is a room. "From here you can see a considerable expanse of dense-growing jungle plants, and eventually the open water beyond."
+
+	The scarlet macaw is an animal in the veranda. "A vibrantly-colored [scarlet macaw] perches on the rail."
+
+	A thing can be known or unknown.
+
+	Before printing the name of the scarlet macaw while consulting:
+		now the scarlet macaw is known.
+
+	Rule for printing the name of the unknown scarlet macaw: if the macaw is unknown, say "red-orange bird of unknown species".
+
+	Test me with "look up penguins in the guide / look up quetzal in guide / look up silver nuthatches in the guide / look / look up red bird in the book / look".

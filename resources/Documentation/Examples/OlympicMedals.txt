@@ -1,6 +1,9 @@
-** Sorting
-(Table sorted in different ways; Olympic Medals)
-Sort the table of Olympic Medals in two different ways.
+Example: ** Olympic Medals
+Location: Sorting
+RecipeLocation: Mathematics
+Index: Table sorted in different ways
+Description: Sort the table of Olympic Medals in two different ways.
+For: Z-Machine
 
 Let's start with results from the 2020 Summer Olympic Games:
 

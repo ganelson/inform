@@ -1,0 +1,20 @@
+Example: * Beverage Service
+Location: Removing things from play
+RecipeLocation: Liquids
+Index: DRINKing a potion which then goes away
+Description: A potion that the player can drink.
+For: Z-Machine
+
+Some kinds of game objects -- food, for instance -- can only sensibly be used once, and should then be destroyed. The EAT command already implements this, but suppose we also had a category of drinkable potions:
+
+	{*}"Beverage Service"
+
+	A potion is a kind of thing. The sparkly blue potion is a potion carried by the player.
+
+	Level 3 is a room.
+
+	Instead of drinking a potion (called the drink):
+		now the drink is nowhere;
+		say "You quaff [the drink]. It goes down beautifully."
+
+	Test me with "drink sparkly / i".

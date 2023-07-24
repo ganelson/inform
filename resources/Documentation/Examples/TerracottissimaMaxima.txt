@@ -1,6 +1,9 @@
-*** Understanding things by their properties
-(Understanding text; Terracottissima Maxima)
-Flowerpots with textual names that might change during play.
+Example: *** Terracottissima Maxima
+Location: Understanding things by their properties
+RecipeLocation: Using the Player's Input
+Index: Understanding text
+Description: Flowerpots with textual names that might change during play.
+For: Z-Machine
 
 Inform can also understand text properties:
 
@@ -9,7 +12,7 @@ Inform can also understand text properties:
 	A flowerpot is a kind of thing. A flowerpot has a text called pattern. Understand the pattern property as describing a flowerpot. The printed name of a flowerpot is usually "[pattern] flowerpot". The printed plural name of a flowerpot is usually "[pattern] flowerpots".
 
 	The Herb Garden is a room. In the Herb Garden is a flowerpot with pattern "blue willow". In the Herb Garden is a flowerpot with pattern "striped". In the Herb Garden is a flowerpot with pattern "striped".
-	
+
 	Test me with "x blue willow / get striped / look".
 
 This may not seem very much different from having the pattern be a kind of value -- except that texts can, of course, hold almost anything. Further exploration of these possibilities may be found in the chapter on Advanced Text.

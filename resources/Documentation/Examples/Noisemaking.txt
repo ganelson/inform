@@ -1,6 +1,9 @@
-*** Check, carry out, report
-(Observation stage after report; Noisemaking)
-Creating a stage after the report stage of an action, during which other characters may observe and react.
+Example: *** Noisemaking
+Location: Check, carry out, report
+RecipeLocation: Reactive Characters
+Index: Observation stage after report
+Description: Creating a stage after the report stage of an action, during which other characters may observe and react.
+For: Z-Machine
 
 Suppose the current sequence of action handling is not quite enough for us: we'd also like to have a stage after reporting, where other characters can react to the player character's behavior after it has already happened and been reported on screen. Having such a stage is unlike using "after", because after occurs before reports and prevents them from being printed. So, for instance, we could allow the player to do any of a range of different actions that make loud noises, and have a nervous bird that reacts to all of them by flying away afterward.
 
@@ -16,9 +19,9 @@ To do this, we can add a new rule into the specific action-processing rules. (Fo
 		follow the observation rules.
 
 	The observation rules is a rulebook.
-	
+
 	Section 2 - Scenario
-	
+
 	Country Lane is a room. West of Country Lane is Outside the Farmhouse. East of Country Lane is Village Center. North of Country Lane is Open Field.
 
 	The player carries a drum.
@@ -33,9 +36,9 @@ To do this, we can add a new rule into the specific action-processing rules. (Fo
 	Singing is a loud action.
 
 	Attacking the drum is a loud action.
-	
+
 	The block attacking rule is not listed in any rulebook.
-	
+
 	Report attacking something:
 		say "THWACK!"
 
@@ -43,5 +46,5 @@ To do this, we can add a new rule into the specific action-processing rules. (Fo
 		let N be a random adjacent room;
 		if N is a room, move the black crow to N;
 		say "The crow, startled, flies off to [N]."
-		
+
 	Test me with "sing / g / n / hit drum".

@@ -1,0 +1,64 @@
+Example: ** Neighbourhood Watch
+Location: Locks and keys
+RecipeLocation: Doors, Staircases, and Bridges
+Index: Deadbolted door unlockable without a key on one side
+Description: A locked door that can be locked or unlocked without a key from one side, but not from the other.
+For: Z-Machine
+
+Suppose we want a locked door that can be opened with a key, but is also openable by hand without a key from one side only. We start by defining an ordinary lockable door and the key that controls it:
+
+	{*}"Neighbourhood Watch"
+
+	The shabby door is a door. It is outside from the Studio Apartment and inside from the Rickety Stairwell. The shabby door is locked.
+
+	The brass key is carried by the player. It unlocks the shabby door.
+
+The next part is going to require that we modify the normal operation of the "lock" command. "Lock" ordinarily requires that the player supply two objects: a thing they want to unlock, and the key they want to use on it. The full command is LOCK DOOR WITH THE KEY, and Inform will not accept simply LOCK DOOR as locking.
+
+Therefore, we're going to need to create our own new variant on the lock verb (and the unlock verb, while we're at it). The full procedure for this is laid out in the chapters on Action and Understanding, but here is an example:
+
+	{**}Understand "lock [something]" as locking keylessly. Locking keylessly is an action applying to one thing.
+
+Here we've created a new action -- locking something without a key -- and we've told Inform to understand LOCK DOOR as this action, rather than an incomplete command to LOCK DOOR WITH SOMETHING.
+
+Now we add some instructions so that the game will not let us use this keyless unlocking command unless we're in the right place or are properly equipped:
+
+	{**}Check locking keylessly:
+		if the noun is not a door, say "[The noun] is not something you can lock." instead;
+		if the noun is locked, say "[The noun] is already locked." instead;
+		if the player carries the brass key and the player is in the Stairwell, try locking the noun with the brass key instead;
+		if the player is in the Stairwell, say "You can't lock the door from this side without the key." instead.
+
+This check rule is performed before the keyless locking action succeeds. The first thing we do is try to use the key if the player is outside and has the key: this way, LOCK DOOR will turn automatically into LOCK DOOR WITH THE KEY, under circumstances where that is both possible and necessary.
+
+The second thing is to check whether the player is outside but keyless, and, if so stop the action from being performed successfully. Here we print a failure message followed by the word "instead", which tells Inform that we've substituted some other outcome for the usual performance of the action.
+
+Now we're reasonably sure that the player is only locking keylessly in the case that they are inside the Studio. (We might have to do a more thorough check for this if there were more than two rooms, but as it is, the player can only be in the Stairwell or in the Studio, so if we have ruled out the Stairwell, we are safe.) So now we want to add what happens when locking-without-a-key command succeeds:
+
+	{**}Carry out locking keylessly:
+		now the noun is locked.
+
+That's it. We've just told Inform to make the door be locked. "Now..." syntax will be explained more thoroughly in the chapter on change. But we still haven't described to the player what just happened, so let's provide a description of that, too:
+
+	{**}Report locking keylessly:
+		say "You flip over the deadbolt to lock [the noun]."
+
+And now we have to do a similar set of things for unlocking:
+
+	{**}Understand "unlock [something]" as unlocking keylessly. Unlocking keylessly is an action applying to one thing.
+
+	Check unlocking keylessly:
+		if the noun is not a door, say "[The noun] is not something you can lock." instead;
+		if the noun is unlocked, say "[The noun] is already unlocked." instead;
+		if the player carries the brass key and the player is in the Stairwell, try unlocking the noun with the brass key instead;
+		if the player is in the Stairwell, say "You can't unlock the door from this side without the key." instead.
+
+	Carry out unlocking keylessly:
+		now the noun is unlocked.
+
+	Report unlocking keylessly:
+		say "You flip over the deadbolt to unlock [the noun]."
+
+	Test me with "unlock door / drop key / open door / out / close door / lock door / open door / in / get key / out / close door / lock door / unlock door".
+
+Some (but not all) of this work is done for you if you like by the Locksmith extension. If you prefer, you can include that extension, then follow the documentation in order to implement the remainder of the scenario. Locksmith takes care of implementing the additional locking and unlocking actions, and provides some other conveniences.

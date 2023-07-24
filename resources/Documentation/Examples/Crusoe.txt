@@ -1,24 +1,27 @@
-*** New activities
-(Printing the description of something activity--Adding to descriptions without using "after examining"; Crusoe)
-Adding a "printing the description of something" activity.
+Example: *** Crusoe
+Location: New activities
+RecipeLocation: Examining
+Index: Printing the description of something activity
+Description: Adding a "printing the description of something" activity.
+For: Z-Machine
 
 Suppose we want to add rules so that any time we examine a charred object (and most of our objects can be charred), a line about the charring is appended to the end of the object description. We could use "after examining...", but perhaps we would prefer for the sentence about the charring not to appear in its own paragraph.
 
-This is an ideal occasion for a new activity. We look at the action index for "examining" to identify the rule that causes the old behavior (in this case, the "standard examining rule"); replace this with a new rule that calls our activity; and write our "printing the description" activity in such a way that it uses an object's description without forcing a paragraph return afterward. 
+This is an ideal occasion for a new activity. We look at the action index for "examining" to identify the rule that causes the old behavior (in this case, the "standard examining rule"); replace this with a new rule that calls our activity; and write our "printing the description" activity in such a way that it uses an object's description without forcing a paragraph return afterward.
 
 Then we will use "after printing the description" to add our line about charring, and make sure that the paragraph return does occur before the prompt.
 
 So:
 
 	{*}"Crusoe"
-	
+
 	Section 1 - Creating our New Activity
-	
-	The fancy examining rule is listed instead of the standard examining rule in the carry out examining rules. 
 
-This instruction replaces a normal piece of the examine action, the standard examining rule, with another one of our own devising. (The replacement of the standard examining rule will be explained in more detail in the chapter on rulebooks.)  
+	The fancy examining rule is listed instead of the standard examining rule in the carry out examining rules.
 
-	{**}Printing the description of something is an activity. 
+This instruction replaces a normal piece of the examine action, the standard examining rule, with another one of our own devising. (The replacement of the standard examining rule will be explained in more detail in the chapter on rulebooks.)
+
+	{**}Printing the description of something is an activity.
 
 	This is the fancy examining rule:
 		carry out the printing the description activity with the noun;
@@ -33,7 +36,7 @@ All we have done here is enclose what is usually just a rule inside an activity.
 			say "You see nothing special about [the item]. [run paragraph on]".
 
 "run paragraph on" here will mean that we do not get a paragraph break following the description, even if it ends with a period. We also insert a space, so that our follow-on comments will be properly punctuated.
-	
+
 	{**}After printing the description of something charred:
 		say "It is charred." instead.
 
@@ -44,11 +47,11 @@ The standard library also has rules for printing additional text about container
 Now, because we want to make sure that we always do get a paragraph break after our description, we add this rule last after all the other rules. "Last" and "first" rules are covered in more detail in the chapter on rulebooks.
 
 	{**}Last after printing the description of something:
-		say paragraph break. 
-	
+		say paragraph break.
+
 	Section 2 - The Scenario
-	
-	The Desert Isle is a room. "A pale expanse of sand, here and there developing into hillocks of grass, and a small clump of palms. The water is shallow here, and there are other islands within swimming distance -- or even wading distance, perhaps -- but none of them is any larger than your island, so it doesn't seem worth the trouble of visiting. 
+
+	The Desert Isle is a room. "A pale expanse of sand, here and there developing into hillocks of grass, and a small clump of palms. The water is shallow here, and there are other islands within swimming distance -- or even wading distance, perhaps -- but none of them is any larger than your island, so it doesn't seem worth the trouble of visiting.
 
 	A few hundred feet out, the water turns darker blue, the sea floor drops away, and there is nothing to be seen all the way down to the horizon, except a couple of fluffy clouds, and an occasional bird.
 
@@ -58,15 +61,15 @@ Now, because we want to make sure that we always do get a paragraph break after 
 
 	The player carries a stick. The description of the stick is "A strip of palm from the woodiest part of the leaf, about a foot and a half long."
 
-	The player carries a glass bottle and a piece of paper. The description of the paper is "A single blank sheet." In the glass bottle is a grain of sand. The glass bottle is openable and open. Instead of burning the glass bottle: say "You hold the bottle to the flame, but it grows uncomfortably warm." 
-	
+	The player carries a glass bottle and a piece of paper. The description of the paper is "A single blank sheet." In the glass bottle is a grain of sand. The glass bottle is openable and open. Instead of burning the glass bottle: say "You hold the bottle to the flame, but it grows uncomfortably warm."
+
 	Instead of burning the grain of sand: say "You drop the grain into the fire pit, where it becomes indistinguishable from all the others."; now the grain of sand is nowhere. Instead of dropping the grain of sand: now the grain of sand is nowhere; say "You return the grain of sand to its brethren."
 
 The player's description is handled in an unusual way, and this will produce a space paragraph break there where it should not. Instead, therefore, we will add an instead for examining the player (probably a good idea anyway):
 
-	{**}Instead of examining the player: 
+	{**}Instead of examining the player:
 		say "You are sunburned and there is sand in cracks you didn't know existed."
 
 	Test me with "i / x stick / x bottle / x sand / x paper / x me / burn stick / x stick / burn paper / x paper".
-	
+
 The "printing a description" activity may be useful for other games, and can be imported just by lifting section 1.

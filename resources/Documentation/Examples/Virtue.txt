@@ -1,13 +1,16 @@
-* Giving instructions to other people
-(People who reject categories of instruction; Virtue)
-Defining certain kinds of behavior as inappropriate, so that other characters will refuse indignantly to do any such thing.
+Example: * Virtue
+Location: Giving instructions to other people
+RecipeLocation: Obedient Characters
+Index: People who reject categories of instruction
+Description: Defining certain kinds of behavior as inappropriate, so that other characters will refuse indignantly to do any such thing.
+For: Z-Machine
 
 	{*}"Virtue"
-	
+
 	The Cloister is a room. Lady Teresa is a woman in the Cloister. Mother Margaret is a woman in the Cloister.
 
 	Attacking someone is misbehavior. Kissing someone is misbehavior.
 
 	Instead of asking someone to try misbehavior: say "[The person asked] stiffens, offended by your suggestion."
-	
+
 	Test me with "kiss margaret / margaret, kiss me".

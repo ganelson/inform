@@ -1,6 +1,9 @@
-** What are relations for?
-(Clothing with layering and regions of the body; What Not To Wear)
-A general-purpose clothing system that handles a variety of different clothing items layered in different combinations over different areas of the body.
+Example: ** What Not To Wear
+Location: What are relations for?
+RecipeLocation: Clothing
+Index: Clothing with layering and regions of the body
+Description: A general-purpose clothing system that handles a variety of different clothing items layered in different combinations over different areas of the body.
+For: Z-Machine
 
 	{*}"What Not To Wear"
 
@@ -9,7 +12,7 @@ A general-purpose clothing system that handles a variety of different clothing i
 We start by borrowing some of the same ideas from the Bogart example, but we're also going to make a kind called "garment-element". This kind will include both garments (objects of clothing) and body parts (things that can be covered by clothing); using it allows us to restrict the way our underlying and overlying relations apply, which will make them a bit faster at run-time.
 
 	{**}A garment-element is a kind of thing.
-	
+
 	Underlying relates various garment-elements to various garment-elements with fast route-finding. The verb to underlie means the underlying relation. The verb to be under implies the underlying relation.
 
 	Check taking off:
@@ -21,7 +24,7 @@ We start by borrowing some of the same ideas from the Bogart example, but we're 
 	Report taking off something:
 		say "[We] [are] now wearing [a list of uppermost things worn by the player]." instead.
 
-	Definition: a garment-element is uppermost if it is not under something opaque. 
+	Definition: a garment-element is uppermost if it is not under something opaque.
 
 Here we've expanded on the previous ideas of 'uppermost' because it is possible for an upper layer to reveal what lies beneath: a tie, a clear plastic trenchcoat, an open-knit sweater, etc. We'll make such items transparent.
 
@@ -30,10 +33,10 @@ Here we've expanded on the previous ideas of 'uppermost' because it is possible 
 			say "(first removing [the impediment])[command clarification break]";
 			silently try taking off the impediment;
 			if the noun underlies the impediment, stop the action.
-	
+
 	Overlying relates various garment-elements to various garment-elements. The verb to overlie means the overlying relation.
-		
-	Covering relates a garment-element (called A) to a garment-element (called B) when the number of steps via the overlying relation from A to B is greater than 0. The verb to cover means the covering relation. 
+
+	Covering relates a garment-element (called A) to a garment-element (called B) when the number of steps via the overlying relation from A to B is greater than 0. The verb to cover means the covering relation.
 
 	Before wearing something when a garment which covers the noun is worn by the player:
 		while the player wears a garment (called the impediment) which covers the noun:
@@ -51,7 +54,7 @@ Here we've expanded on the previous ideas of 'uppermost' because it is possible 
 
 	Instead of taking inventory:
 		say "[if the player carries something][We]['re] carrying [a list of things carried by the player][else][We]['re] empty-handed[end if][if the player wears something]. [We] [are] wearing [a list of uppermost garments worn by the player][end if]."
-		
+
 	To peek is a verb.
 
 	Section 2 - Regional Coverage
@@ -60,7 +63,7 @@ Here we draw in the idea that different clothes go over different areas of the b
 
 	{**}Before wearing something:
 		let N be the layering depth of the noun;
-		repeat with item running through things worn by the player: 
+		repeat with item running through things worn by the player:
 			if the layering depth of the item is N and the item covers a body-part which is covered by the noun:
 				say "(first taking off [the item])[command clarification break]";
 				silently try taking off the item;
@@ -68,14 +71,14 @@ Here we draw in the idea that different clothes go over different areas of the b
 
 This may seem like overkill, but it allows us to create garments that cover different subsets of the body -- pants and shirt vs. a dress, for instance.
 
-	{**}To decide what number is the layering depth of (chosen garment - a thing): 
+	{**}To decide what number is the layering depth of (chosen garment - a thing):
 		let N be 0;
-		if the chosen garment covers a body-part (called base):  
+		if the chosen garment covers a body-part (called base):
 			let N be the number of steps via the overlying relation from the chosen garment to the base;
 		decide on N.
-	
+
 To help with modeling, we'll give everyone body parts, broken down according to their relevance to clothing:
-	
+
 	{**}A body-part is a kind of garment-element. A torso, a seat, a head, pair of legs, and pair of feet are kinds of body-part.
 
 If we wanted to allow gloves, we might put in hands as well; but this is enough for now.
@@ -83,12 +86,12 @@ If we wanted to allow gloves, we might put in hands as well; but this is enough 
 	{**}One head is part of every person. One torso is part of every person. One pair of legs is part of every person. One pair of feet is part of every person. One seat is part of every person.
 
 And now we make some categories of clothing:
-	
-	{**}A garment is a kind of garment-element. A garment can be transparent. A pair of pants, a pair of underpants, a foundation garment, a pair of socks, a pair of shoes, a jacket, a hat, a dress, and a shirt are kinds of garment. 
+
+	{**}A garment is a kind of garment-element. A garment can be transparent. A pair of pants, a pair of underpants, a foundation garment, a pair of socks, a pair of shoes, a jacket, a hat, a dress, and a shirt are kinds of garment.
 
 	The plural of pair of pants is pairs of pants. The plural of pair of underpants is pairs of underpants. The plural of pair of socks is pairs of socks. The plural of pair of shoes is pairs of shoes.
 
-	A pair of pants, a pair of underpants, a foundation garment, a pair of socks, a pair of shoes, a jacket, a hat, a dress, and a shirt are usually wearable. 
+	A pair of pants, a pair of underpants, a foundation garment, a pair of socks, a pair of shoes, a jacket, a hat, a dress, and a shirt are usually wearable.
 
 	When play begins:
 		now every pair of socks overlies every pair of feet;
@@ -102,7 +105,7 @@ And now we make some categories of clothing:
 		now every dress overlies every pair of underpants;
 		now every dress overlies every foundation garment.
 
-	Section 2 - The Scenario	
+	Section 2 - The Scenario
 
 	The Dressing Room is a room.
 
@@ -115,7 +118,7 @@ And now we make some categories of clothing:
 	The tunic is a shirt.
 	The camisole, the corset, and the plunge bra are foundation garments.
 	The cocktail dress is a dress.
-	The bolero, the cashmere shrug, and the sheer wrap are jackets. The shrug and the wrap are transparent. 
+	The bolero, the cashmere shrug, and the sheer wrap are jackets. The shrug and the wrap are transparent.
 
 	Test me with "wear capris / wear jeans / i / wear thong / i / wear dress / wear corset / wear dress / i / wear wrap / i / wear boots / wear pumps / i".
-	
+

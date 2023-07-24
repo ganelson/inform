@@ -1,6 +1,9 @@
-* Changing the meaning of pronouns
-(Setting pronouns to respond to sudden changes; Pot of Petunias)
-Responding sensibly to a pot of petunias falling from the sky.
+Example: * Pot of Petunias
+Location: Changing the meaning of pronouns
+RecipeLocation: Varying What Is Read
+Index: Setting pronouns to respond to sudden changes
+Description: Responding sensibly to a pot of petunias falling from the sky.
+For: Z-Machine
 
 Suppose we have an object that makes a dramatic entrance on the scene, like so:
 
@@ -18,7 +21,7 @@ Suppose we have an object that makes a dramatic entrance on the scene, like so:
 		move the broken flower pot to the location;
 		say "Quite unexpectedly, a flower pot falls from the sky and breaks open on the ground. Good thing you weren't standing six inches to the left.";
 		set pronouns from the broken flower pot.
-	
+
 	Test me with "x it / x it / x it".
 
 If we leave out the "set pronouns..." line here, we'll wind up with the following very unsatisfactory end to our test transcript:

@@ -1,0 +1,82 @@
+Example: ** Labyrinth of Ghosts
+Location: Writing and reading tables to external files
+RecipeLocation: Ending The Story
+Index: Histories of previous games saved to external file
+Description: Remembering the fates of all previous explorers of the labyrinth.
+For: Glulx
+
+A tradition among Nethack-like computer games of the old school is that a player's death in a given place leaves a ghost behind to haunt subsequent players. Information about past lives is sometimes stored in a "bones file", and in this example we do exactly that, for a grievously unfair little dungeon.
+
+To begin with, the labyrinth itself. We create a kind of value to remember possible means of death in these tunnels, and we assign a coordinate position in some grid to each location. (We do this because grid positions can safely be stored in tables saved out to external files, whereas room names cannot - they represent data which changes each time we amend the source.)
+
+	{*}"Labyrinth of Ghosts"
+
+	Use scoring.
+
+	A demise is a kind of value. The demises are drowned, buried by a rockfall, pierced by an arrow and slain. The latest demise is a demise that varies.
+
+	A grid location is a kind of value. (1,19) specifies a grid location. A room has a grid location called coordinates.
+
+	The Gateway is a room. "For the foolhardy adventurer, the perilous labyrinth lies north, east or south." The coordinates are (6,6). The Tomb is east of the Gateway. The coordinates are (7,6). The Rockfall Cave is north of the Gateway. "This partly fallen cave may perhaps extend further north." The coordinates are (6,5). Instead of going north in the Rockfall Cave, have the player buried by a rockfall. The Archery Canyon is south of the Gateway. "No telling why this canyon is named after archery, but perhaps if you wait around you'll find out." The coordinates are (6,7). Instead of waiting in the Archery Canyon, have the player pierced by an arrow. The Rock Pool is east of the Tomb. The coordinates are (8,6). The cold mountain pool is in the Rock Pool. The cold pool is fixed in place. Instead of entering the cold mountain pool, have the player drowned.
+
+	Every turn when a random chance of 1 in 10 succeeds:
+		say "A dwarf appears out of nowhere, and throws a nasty little knife.";
+		have the player slain.
+
+And as compensation for these hazards:
+
+	{**}Some silver bars are in the Tomb. The emerald is in the Rock Pool. The platinum pyramid is in the Canyon.
+
+	Table of Point Values
+	item 	  	score
+	silver bars		3
+	platinum pyramid	10
+	emerald		4
+
+	Report taking an item listed in the Table of Point Values:
+		increase the score by the score entry;
+		blank out the whole row.
+
+We are now ready for the actual undertaking. The Table of Ghostly Presences holds up to twenty death notices, and is initially blank. Deaths are sequentially numbered, and this number is stored in the sequence column.
+
+	{**}Table of Ghostly Presences
+	haunted position	score at death	turns at death	manner of death	sequence
+	a grid location		a number		a number		a demise		a number
+	with 19 blank rows.
+
+As the story file starts up, we look to see if a ghosts file already exists. If one does, we load up the Table of Ghostly Presences with it: and if not, as will be the case the first time the player explores, we leave the table blank. We sort the table so that it has earlier deaths (lower sequence numbers) first.
+
+	{**}The File of Ghosts is called "ghosts".
+
+	When play begins:
+		if the File of Ghosts exists, read File of Ghosts into the Table of Ghostly Presences;
+		sort the Table of Ghostly Presences in sequence order.
+
+How will ghosts manifest themselves? Because this is only a small example, we will simply tell the player that he senses something. If several ghosts are present in the same place, the most aggrieved (that is, the most recent) is sensed first...
+
+	{**}After looking:
+		repeat through the Table of Ghostly Presences in reverse sequence order:
+			if the haunted position entry is the coordinates of the location, say "You sense the ghostly presence of an adventurer, [manner of death entry] with a score of [score at death entry] in [turns at death entry] turns."
+
+(For instance, "You sense the ghostly presence of an adventurer, buried by a rockfall with a score of 10 in 5 turns.") That just leaves the rule for bumping off the player. When the Table is full, and there are already 20 ghosts, the one who died longest ago (with the lowest sequence count) is eliminated, and that row blanked out. (This will always be row 1 since we sorted the table in sequence order on reading it in.)
+
+	{**}To have the player (sticky end - a demise):
+		let the new sequence number be 0;
+		repeat through the Table of Ghostly Presences:
+			let S be the sequence entry;
+			if S is greater than the new sequence number, let the new sequence number be S;
+		increment the new sequence number;
+		if the number of blank rows in the Table of Ghostly Presences is 0:
+			choose row 1 in the Table of Ghostly Presences;
+			blank out the whole row;
+		choose a blank row in the Table of Ghostly Presences;
+		now the sequence entry is the new sequence number;
+		now the manner of death entry is the sticky end;
+		now the turns at death entry is the turn count;
+		now the score at death entry is the score;
+		now the haunted position entry is the coordinates of the location;
+		write the File of Ghosts from the Table of Ghostly Presences;
+		now the latest demise is the sticky end;
+		end the story saying "You have been [latest demise]".
+
+Strictly speaking we ought to worry that after 2,147,483,647 deaths, the sequence numbers would grow too large to store in a single value, and then the sequence of ghosts will be erratic. But it seems unlikely that anyone will play this example 2.1 billion times.

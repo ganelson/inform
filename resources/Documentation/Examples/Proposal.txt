@@ -1,6 +1,9 @@
-** Conditions and questions
-(Asking the player a Yes/No question; Proposal)
-Asking the player a yes/no question which they must answer, and another which they may answer or not as they choose.
+Example: ** Proposal
+Location: Conditions and questions
+RecipeLocation: Saying Simple Things
+Index: Asking the player a Yes/No question
+Description: Asking the player a yes/no question which they must answer, and another which they may answer or not as they choose.
+For: Z-Machine
 
 Suppose we want to ask the player a question where they might say yes or no in response. There are two possible forms of this: the modal question where the player must pick one to proceed, and the non-modal question where they might also type other verbs.
 
@@ -8,19 +11,19 @@ Suppose we want to ask the player a question where they might say yes or no in r
 
 	The story genre is "A Worked Example about Yes/No Questions".
 
-	Section 1 - Asking a Modal Yes/No Question 
+	Section 1 - Asking a Modal Yes/No Question
 
-	When play begins: 
+	When play begins:
 		say "Do you like Mr Spruce? ";
 		if player consents, now Spruce is handsome;
 		otherwise now Spruce is ugly;
 		say paragraph break.
 
-	{**}Section 2 - Mr Spruce's Non-Modal Question 
-	
+	{**}Section 2 - Mr Spruce's Non-Modal Question
+
 	Use full-length room descriptions.
 
-	The Conservatory is a room. "You are in a room full of plants." 
+	The Conservatory is a room. "You are in a room full of plants."
 
 	Mr Spruce is a man in the Conservatory. Mr Spruce can be apprehensive or calm. Mr Spruce is calm. Mr Spruce can be handsome or ugly.
 
@@ -36,7 +39,7 @@ Suppose we want to ask the player a question where they might say yes or no in r
 	At the time when Mr Spruce departs:
 		if the player can see Mr Spruce, say "Mr Spruce takes his leave of you.";
 		otherwise say "Mr Spruce pokes his head in to say that he is leaving.";
-		end the story saying "Well, that is over..."		
+		end the story saying "Well, that is over..."
 
 	Instead of saying yes in the presence of an ugly apprehensive Mr Spruce:
 		now Mr Spruce is calm;
@@ -57,24 +60,24 @@ Suppose we want to ask the player a question where they might say yes or no in r
 		now Mr Spruce is calm;
 		say "You lower your eyes and refuse petulantly, hoping to stir him to a more ardent repetition of these same requests. But then -- alack! -- he says 'I see how it is!' in a strangled voice, and strides from the room!";
 		end the story saying "A fatal error!"
-		
+
 And since the player might SAY YES TO SPRUCE, we had better reroute the relevant options:
 
 	{**}Instead of answering Mr Spruce that "no", try saying no.
 
 	Instead of answering Mr Spruce that "yes", try saying yes.
-	
+
 	Instead of asking Mr Spruce to try saying yes, try saying yes.
-	
+
 	Instead of asking Mr Spruce to try saying no, try saying no.
-	
+
 	Instead of saying sorry, try saying no.
-	
+
 	Instead of asking Mr Spruce to try saying sorry, try saying no.
-	
+
 	Instead of answering Mr Spruce that "sorry", try saying no.
-	
+
 	Test me with "z / z / z / yes".
 
 	Test more with "z / z / z / no".
- 
+

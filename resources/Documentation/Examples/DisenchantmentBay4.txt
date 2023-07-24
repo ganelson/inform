@@ -1,0 +1,41 @@
+Example: * Disenchantment Bay 4
+Subtitle: Descriptions of things
+Location: Two descriptions of things
+RecipeLocation: Disenchantment Bay
+Index: Disenchantment Bay 4. Descriptions of things
+Description: Disenchantment Bay: fleshing out the descriptions of things on the boat.
+For: Z-Machine
+
+Currently we have provided objects for most of what is on the boat, but it's not very interesting to look at. We might want to give some more description to these things.
+
+	{*}"Disenchantment Bay"
+
+	The Cabin is a room.  "The front of the small cabin is entirely occupied with navigational instruments, a radar display, and radios for calling back to shore. Along each side runs a bench with faded blue vinyl cushions, which can be lifted to reveal the storage space underneath. A glass case against the wall contains several fishing rods.
+
+	Scratched windows offer a view of the surrounding bay, and there is a door south to the deck. A sign taped to one wall announces the menu of tours offered by the Yakutat Charter Boat Company."
+
+	The Cabin contains a glass case. In the glass case is a collection of fishing rods. The case is closed, transparent, and openable. The case is scenery.
+
+	The bench is in the cabin. On the bench are some blue vinyl cushions. The bench is enterable and scenery. The cushions are scenery.
+
+	Some navigational instruments, some scratched windows, a radar display, and some radios are scenery in the cabin.
+
+	The description of the instruments is "Knowing what they do is the Captain's job."
+
+	The description of the windows is "They're a bit the worse for wear, but you can still get an impressive view of the glacier through them. There were whales earlier, but they're gone now."
+
+	The description of the radar is "Apparently necessary to avoid the larger icebergs."
+
+	The description of the radios is "With any luck you will not need to radio for help, but it is reassuring that these things are here."
+
+The order in which we define these things is fairly open. We could also define an object so:
+
+	{**}A sign is scenery in the Cabin. The description is "You can get half-day and full-day sight-seeing tours, and half-day and full-day fishing trips."
+
+Where "the description" is assumed to refer to the thing most recently defined, if no object is specified.
+
+	{**}The view of the Malaspina glacier is a backdrop. It is everywhere. The description is "The Malaspina glacier covers much of the nearby slope, and -- beyond it -- an area as large as Rhode Island."
+
+	Test me with "examine sign / examine glacier / examine instruments / examine windows / examine radar / examine radios / take the cushions / take the glacier".
+
+These last two commands show how scenery and backdrops are automatically impossible for the player to take.

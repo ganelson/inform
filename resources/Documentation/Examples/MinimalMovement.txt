@@ -1,0 +1,21 @@
+Example: * Minimal Movement
+Location: Supplying a missing noun/second noun
+RecipeLocation: Going, Pushing Things in Directions
+Index: GO equivalent to GO OUT
+Description: Supplying a default direction for "go", so that "leave", "go", etc., are always interpreted as "out".
+For: Z-Machine
+
+Sometimes it would be nice to respond a little more sensitively to a vague command such as "leave" -- converting it, perhaps, to a "go out" command.
+
+	{*}"Minimal Movement"
+
+	The Doll-like House is a room. The Postage-Stamp-Sized Garden is outside from the House.
+
+	Rule for supplying a missing noun while going:
+		now noun is outside.
+
+This particular situation is very slightly complicated by the existing rules about vague movement, but fortunately we can easily turn those off.
+
+	{**}The block vaguely going rule is not listed in the for supplying a missing noun rules.
+
+	Test me with "go".

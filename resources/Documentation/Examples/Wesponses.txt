@@ -1,13 +1,16 @@
-* Issuing the response text of something
-(Altering response text programmatically; Wesponses)
-Parser messages that are delivered with a speech impediment.
+Example: * Wesponses
+Location: Issuing the response text of something
+RecipeLocation: Varying What Is Written
+Index: Altering response text programmatically
+Description: Parser messages that are delivered with a speech impediment.
+For: Z-Machine
 
 If we want to change individual responses to player action, then the best thing to do is to use the response facility to modify those selections, as shown in the chapter on Responses.
 
 However, suppose what we want is to give the parser a speech impediment that slightly alters all of the responses it issues. For this purpose, we might need to do a bit of text replacement...
 
 	{*}"Wesponses"
-	
+
 	The Office is a room. Barry Kripke is a man in the Office.
 
 	The response inhibition is initially false.
@@ -29,9 +32,9 @@ It would also not work to try to give our parser a nervous personality by simply
 	Rule for issuing the response text of a response (called R) when response inhibition is false:
 		now response inhibition is true;
 		let output be "Um, [text of R]";
-		now response inhibition is false; 
+		now response inhibition is false;
 		say "[output]".
-		
+
 but here is what the room description would say as a result:
 
 	Office

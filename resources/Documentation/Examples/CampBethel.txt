@@ -1,9 +1,12 @@
-** Text with random alternatives
-(People who do new things each time the player looks; Camp Bethel)
-Creating characters who change their behavior from turn to turn, and a survey of other common uses for alternative texts. 
+Example: ** Camp Bethel
+Location: Text with random alternatives
+RecipeLocation: Liveliness
+Index: People who do new things each time the player looks
+Description: Creating characters who change their behavior from turn to turn, and a survey of other common uses for alternative texts.
+For: Z-Machine
 
 	{*} "Camp Bethel"
-	
+
 	Camp Bethel Kitchen is a room.
 
 One use for text alternatives is to change the description of a room after first visiting. We've already seen, in the example "Slightly Wrong", how to do this with "[if visited] ... [otherwise] ... [end if]". But since the first description is printed once and the second description on all subsequent occasions, we could equally well write
@@ -21,12 +24,12 @@ And since (textual variation or not) we do want the player to be able to see all
 Jeremy is following a sequence of actions to do an implied task (still somewhat robotically, but it will do for now). Animals might be a bit more capricious, though:
 
 	{**}Fluffy is an animal in the Camp Bethel Kitchen. "[one of]Fluffy is chasing its tail[or]Fluffy is staring out the window[or]Fluffy is rubbing itself against your leg[purely at random]."
-	
-	A housefly is an animal in the Camp Bethel Kitchen. "A large housefly [one of]lands on a countertop[or]flies around noisily[or]circles Jeremy's chef hat[at random]." 
+
+	A housefly is an animal in the Camp Bethel Kitchen. "A large housefly [one of]lands on a countertop[or]flies around noisily[or]circles Jeremy's chef hat[at random]."
 
 The housefly's description is merely "at random" rather than "purely at random" because we want to show it doing a different thing each turn, whereas Fluffy could plausibly stare out the window for five turns in a row.
 
-There are more complex ways to change and override the initial descriptions of people and things; if text alternatives do not get us far enough, we can turn to the "rule for writing a paragraph about," documented in the Activities chapter. 
+There are more complex ways to change and override the initial descriptions of people and things; if text alternatives do not get us far enough, we can turn to the "rule for writing a paragraph about," documented in the Activities chapter.
 
 Another frequent use of text alternatives is to give characters a bit of variety in things they're likely to say many times in the course of a game:
 
@@ -42,5 +45,5 @@ Or, with somewhat more complexity:
 Notice that, in that last line, our first option is entirely blank. If we put nothing as an element of the text alternatives list, this means that printing nothing at all is a viable alternative. In fact, we've made this the most common probability out of the decreasingly likely outcomes, so that five times in fifteen, or a third of the time the text is run, there will be no modifier printed at all.
 
 	{**}Test me with "look / g / g / g / ask Jeremy about his feelings for me / ask jeremy about his amnesia / tell Jeremy about my unborn child".
-	
+
 As this example (alas) reveals, text alternatives will not go all the way toward making our characters into compelling conversationalists; we will have to wait until we know more about Actions. But at least we have abolished the default responses, and given Jeremy a touch of personality, however witless.

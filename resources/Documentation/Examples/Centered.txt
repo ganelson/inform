@@ -1,0 +1,27 @@
+Example: *** Centered
+Location: Changing the status line
+RecipeLocation: The Status Line
+Index: Status line with centered text, the easy way
+Description: Replacing the two-part status line with one that centers only the room name at the top of the screen.
+For: Z-Machine
+
+If we want to lay out the status line in some other way than with left-hand and right-hand entries, it is possible to do this as well. Later we will learn about the "rule for constructing the status line", but here is a basic effect using this rule and an Inform extension included as part of the standard distribution, called Basic Screen Effects.
+
+	{*}"Centered"
+
+	When play begins:
+		say "After months of boring through the Earth's crust in this metal-jawed vehicle, you break through..."
+
+	The Hollow Core is a room. "Truly a magnificent sight: the land curves up away from you in every direction, covered with the cities and fields of the Core People. Molten rock runs in the canals, bringing heat and light to every home.
+
+	At the center of the Earth hangs a dense black sun."
+
+	Include Basic Screen Effects by Emily Short.
+
+	Rule for constructing the status line:
+		center "[location]" at row 1;
+		rule succeeds.
+
+	Test me with "look".
+
+Basic Screen Effects also provides a mechanism for building complicated status lines of more than one row. To read its documentation, we include the extension, press Go!, and then consult the contents index that results.

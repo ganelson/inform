@@ -1,6 +1,9 @@
-** The time of day
-(Shops open and close at specific hours; IPA)
-Shops which each have opening and closing hours, so that it is impossible to go in at the wrong times, and the player is kicked out if they overstay their welcome.
+Example: ** IPA
+Location: The time of day
+RecipeLocation: Event Scheduling
+Index: Shops open and close at specific hours
+Description: Shops which each have opening and closing hours, so that it is impossible to go in at the wrong times, and the player is kicked out if they overstay their welcome.
+For: Z-Machine
 
 Suppose we wanted a game set in a living town, with locations opening and closing at different times of day, and business carrying on as usual. The point might be to force the player to plan an itinerary carefully to hit the right spots at the right times; or we might be writing a more contemplative piece, where part of the enjoyment came from just watching the characters wander around doing their daily business...
 
@@ -15,15 +18,15 @@ Suppose we wanted a game set in a living town, with locations opening and closin
 	Check going to a shop (called the target):
 		if the time of day is before the opening hour of the target,
 			say "[The target] is locked up until [the opening hour of the target]." instead.
-	
+
 	Check going to a shop (called the target):
 		if the time of day is after the closing hour of the target,
 			say "[The target] has been closed since [the closing hour of the target]." instead.
 
 	Every turn when the location is a shop:
-		let deadline be the closing hour of the location; 
+		let deadline be the closing hour of the location;
 		if the deadline is before the time of day:
-			let target be a random adjacent room which is not a shop; 
+			let target be a random adjacent room which is not a shop;
 			say "You are gently but firmly ushered out, since [the location] is closing.";
 			move the player to the target.
 
@@ -34,10 +37,10 @@ Suppose we wanted a game set in a living town, with locations opening and closin
 	Pinewood Brewing Supply is a shop. It is east of Parking Lot. The opening hour of Pinewood Brewing Supply is 10:00 AM. The closing hour of Pinewood Brewing Supply is 3:30 PM. "Shelves and shelves of malt and hops; large glass carboys, and plastic tubing; empty bottles; bottle-caps; bottle-labeling kits; starters for vinegar, sourdough, root beer.
 
 	A sweet malty smell hangs in the air."
-	
+
 	Instead of going to Brewing Supply when the time of day is before the opening hour of Brewing Supply for the second time:
 		say "You rattle at the door again. 'Hold your horses, for crying out loud,' yells a voice from within."
-	
+
 	Noah's Bagels is a shop. It is north of the Parking Lot. The opening hour of Noah's Bagels is 6:00 AM. The closing hour of Noah's Bagels is 11:00 AM. "The selection has been somewhat picked over, leaving you with your choice of Pumpernickel, Asiago, or Everything."
-	
+
 	Test me with "e / e / n / z / s / e / z / e / z / z / e".

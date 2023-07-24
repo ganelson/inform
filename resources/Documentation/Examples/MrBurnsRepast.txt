@@ -1,6 +1,9 @@
-** Replacements
-(Fish of ambiguous species; Mr. Burns' Repast)
-Letting the player guess types for an unidentifiable fish.
+Example: ** Mr. Burns' Repast
+Location: Replacements
+RecipeLocation: Using the Player's Input
+Index: Fish of ambiguous species
+Description: Letting the player guess types for an unidentifiable fish.
+For: Z-Machine
 
 Suppose we have an unhappily mutated fish that the player can refer to by any of a number of species names, or any word followed by -fish. We want to reject these commands, but preserve a memory of what the player last tried to call the thing:
 
@@ -25,11 +28,11 @@ Suppose we have an unhappily mutated fish that the player can refer to by any of
 			respond with doubt;
 			reject the player's command;
 		otherwise if the unknown fish is visible and the player's command includes "[fish variety]":
-			now supposed name of the fish is "[fish variety understood](?)"; 
+			now supposed name of the fish is "[fish variety understood](?)";
 			respond with doubt;
 			reject the player's command.
 
 	To respond with doubt:
 		say "You're not [italic type]sure[roman type] you're seeing any such thing."
-	
+
 	Test me with "get swordfish / look / touch monkfish / look / listen to tunafish / x fish / x salmon / look".

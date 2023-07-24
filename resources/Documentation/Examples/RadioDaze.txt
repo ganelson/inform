@@ -1,6 +1,9 @@
-* Text with random alternatives
-(Radio producing cycling programming; Radio Daze)
-A radio that produces a cycle of output using varying text.
+Example: * Radio Daze
+Location: Text with random alternatives
+RecipeLocation: Televisions and Radios
+Index: Radio producing cycling programming
+Description: A radio that produces a cycle of output using varying text.
+For: Z-Machine
 
 	{*}"Radio Daze" by Jon Ingold
 

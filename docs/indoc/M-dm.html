@@ -64,7 +64,7 @@ using skipped lines as paragraph breaks, and tabs for indented quotations:
 <span class="plain-syntax">    standard letters are allowed:</span>
 
 <span class="plain-syntax">        The quick brown fox jumped over the lazy dog.</span>
-<span class="plain-syntax">        Jinxed wizards pluck ivy from my quilt.</span>
+<span class="plain-syntax">        Jinxed wizards pluck ivy from my big quilt.</span>
 <span class="plain-syntax">        Jackdaws love my big sphinx of quartz.</span>
 
 <span class="plain-syntax">    The second para begins here, after the</span>
@@ -520,59 +520,50 @@ Inform repository, the example Alpaca Farm lives in:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    Documentation/Examples/Alpaca.txt</span>
+<span class="plain-syntax">    Documentation/Examples/AlpacaFarm.txt</span>
 </pre>
 <p class="commentary">Example files are just like volume files except that they open with a
-special three-line header of metadata. In this example, it's:
+special header of metadata. In this example, it's:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    * New commands for old grammar</span>
-<span class="plain-syntax">    (USE action which divines rational behavior for a wide range of possible nouns; Alpaca Farm)</span>
-<span class="plain-syntax">    A generic USE action which behaves sensibly with a range of different objects.</span>
+<span class="plain-syntax">    Example: * Alpaca Farm</span>
+<span class="plain-syntax">    Location: New commands for old grammar</span>
+<span class="plain-syntax">    RecipeLocation: Clarification and Correction</span>
+<span class="plain-syntax">    Index: USE action which divines rational behavior for a wide range of possible nouns</span>
+<span class="plain-syntax">    Description: A generic USE action which behaves sensibly with a range of different objects.</span>
+<span class="plain-syntax">    For: Z-Machine</span>
 </pre>
-<p class="commentary">Line 1 opens with one to four asterisks, which is the star rating (a measure
-of difficulty/complexity), and then gives the section name to which it belongs.
-This should be a section name in the primary volume, if there are two. (For
-Inform, that's "Writing with Inform".)
+<p class="commentary">Line 1 is required to take the form <span class="extract"><span class="extract-syntax">Example: *** TITLE</span></span>, for some number of
+asterisks between one and four - a measure of difficulty/complexity. By
+convention the filename will be the same as the title but with punctuation
+removed, but that is just a convention, and any filename can be used.
 </p>
 
-<p class="commentary">Line 2 shows how to index the example, both thematically and, after the semicolon,
-alphabetically.
+<p class="commentary">After line 1, further metadata lines can optionally appear, in any order, and then there
+should be a skipped (i.e. completely blank) line before the body of the example
+appears.
 </p>
 
-<p class="commentary">Line 3 is the "strapline" shown under the example title in the documentation.
+<p class="commentary">The possible metadata lines are:
 </p>
 
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>The above metadata is not quite enough to locate the example, because it
-only gives a position in the primary volume (e.g., "Writing with Inform").
-Where should the example go in the secondary (e.g., "The Inform Recipe Book")?
-</p>
-
-<p class="commentary">The answer is provided by the special file
-</p>
-
+<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">Location: SECTION</span></span> gives the section name which an example should go into,
+in the primary volume, if there are two. (For Inform, that's "Writing with Inform".)
+</li><li>(b) <span class="extract"><span class="extract-syntax">RecipeLocation: SECTION</span></span> similarly for the secondary volume. (For Inform,
+that's "The Recipe Book".)
+</li><li>(c) <span class="extract"><span class="extract-syntax">Index: ENTRY</span></span> gives the example this explanatory index entry in the alphabetical
+index of examples.
+</li><li>(d) <span class="extract"><span class="extract-syntax">Description: DESC</span></span> gives some text to use in the example heading, to explain
+what it exemplifies.
+</li><li>(e) <span class="extract"><span class="extract-syntax">For: PLATFORM</span></span> is to do with testing the example, and is ignored by <span class="extract"><span class="extract-syntax">indoc</span></span>.
+</li><li>(f) <span class="extract"><span class="extract-syntax">Subtitle: SUBTITLE</span></span> is used only for examples occurring in numbered sequences,
+where the same idea is elaborated in successive examples. For example:
+</li></ul>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    Documentation/Examples/(Recipes).txt</span>
+<span class="plain-syntax">    Example: * Port Royal 2</span>
+<span class="plain-syntax">    Subtitle: With one-way connections added</span>
 </pre>
-<p class="commentary">which is not an example, but a list of examples under chapter and section
-names in the Recipe Book. This is fairly self-explanatory, but note that
-examples appear not under their named ("Alpaca Farm") but under their
-thematic descriptions ("USE action which divines rational behavior for a
-wide range of possible nouns") &mdash; the point of which being that the Recipe
-Book is organised by theme.
-</p>
-
-<p class="commentary">There's one special notation, for use at the top of the recipes file:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    Going Going == OMIT</span>
-</pre>
-<p class="commentary">This says that a named example, here "Going Going", should be omitted
-altogether from the Recipe Book. (Inform omits about 12 of these.)
-</p>
-
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="M-vai.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-iti.html">iti</a></li><li class="progresssection"><a href="M-vai.html">vai</a></li><li class="progresscurrent">dm</li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="1-bsc.html">1</a></li><li class="progresschapter"><a href="2-ss.html">2</a></li><li class="progresschapter"><a href="3-iu.html">3</a></li><li class="progresschapter"><a href="4-nd.html">4</a></li><li class="progressnext"><a href="M-rc.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

@@ -1,6 +1,10 @@
-* Creating a scene
-(Pine: 1. Waking the Princess--Sleeping person who can be woken in various ways)
-Pine: Using a scene to watch for the solution of a puzzle, however arrived-at by the player.
+Example: * Pine 1
+Subtitle: Waking the Princess
+Location: Creating a scene
+RecipeLocation: Reactive Characters
+Index: Pine 1. Waking the Princess
+Description: Pine: Using a scene to watch for the solution of a puzzle, however arrived-at by the player.
+For: Z-Machine
 
 Because scene rules are checked every turn, they can be useful for designing puzzles which have multiple solutions. Instead of deciding the puzzle is "solved" when the player does a certain action, we set up a scene that checks to see whether the player has achieved a certain outcome -- however they accomplished it.
 
@@ -38,5 +42,5 @@ For instance, in this scenario, we're waiting for Sleeping Beauty to wake up, an
 	[The second noun] wakes, shuddering. 'Agh! I had a terrible dream about drowning and then-- Hey!'"
 
 	The player carries a jug of water. Understand "pour [something] on [something]" or "splash [something] at/on [something]" as throwing it at.
-	
+
 	Test me with "x beauty / wake beauty / pour water on beauty".

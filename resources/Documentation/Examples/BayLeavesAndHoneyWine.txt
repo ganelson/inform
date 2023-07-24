@@ -1,0 +1,31 @@
+Example: * Bay Leaves and Honey Wine
+Location: Titling and abbreviation
+RecipeLocation: Publishing
+Index: Producing an EPS map of Greece
+Description: Creating a map of Greece using the locations from previous examples.
+For: Z-Machine
+
+The map-maker can be used in quite versatile ways, in short; though the default is a schematic line-and-box affair, that is hardly the only option. While the EPS created is not always the result of our dreams, Inform usually can be made to do most of the hard and boring part, leaving the author to do only a bit of aesthetic touchup.
+
+In many previous examples, we have sent hapless deities wandering around a map of Greece; we might like to chart that for ourselves, in a semi-realistic fashion. So:
+
+	{*}"Bay Leaves and Honey Wine"
+
+	Corinth is a room. Athens is east of Corinth. Epidaurus is southeast of Corinth and east of Mycenae. Mycenae is south of Corinth. Olympia is west of Mycenae. Argos is south of Mycenae. Thebes is northwest of Athens. Pylos is south of Olympia. Sparta is east of Pylos and south of Argos. Delphi is northwest of Thebes.
+
+	Index map with an EPS file and
+		room-size set to 8,
+		map-outline set to off,
+		room-name-offset set to 40&-40,
+		room-outline set to off,
+		room-colour set to "White",
+		route-colour set to "White",
+		room-name-colour set to "White",
+		room-name-length set to 25,
+		room-shape set to "circle".
+
+This produces a line-and-dot map, where the names of rooms do not appear inside the city-circles, but rather (thanks to "room-name-offset") off to one side. We specify a long room-name-length because we want all the names of the cities spelled out in full; and we make all the elements white because we intend to place them over a black background layer.
+
+We can then superimpose this on a vector map of Greece and tweak the exact positions of cities a little by hand (in Adobe Illustrator, as it happens, but other programs would also allow this level of editing). The result:
+
+///Greece.jpg///

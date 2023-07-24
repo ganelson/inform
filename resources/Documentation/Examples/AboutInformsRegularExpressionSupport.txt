@@ -1,0 +1,40 @@
+Example: * About Inform's regular expression support
+Location: Regular expression matching
+RecipeLocation: Information Only
+Index: About Inform's regular expression support
+Description: Some footnotes on Inform's regular expressions, and how they compare to those of other programming languages.
+For: Z-Machine
+
+There is not really any unanimity about what regular expression language is. The unix tools sed and grep extend on Kleene's original grammar. Henry Spencer's regex library extended on this again, and was a foundation for Perl, but Perl once again went further. Philip Hazel's PCRE, despite the name Perl Compatible Regular Expressions, makes further extensions still, and so on.
+
+Inform's regular expressions are modelled on those of Perl, as the best de facto standard we have, but a few omissions have been inevitable. Inform's regex matcher must occupy source code less than one hundredth the size of PCRE, and it has very little memory. Inform aims to behave exactly like Perl except as follows:
+
+	(i) Inform allows angle brackets as synonymous with square brackets, for reasons explained above. This means literal angle brackets have to be escaped as "\<" and "\>" in Inform regular expressions, which is unnecessary in Perl.
+
+	(ii) Inform only has single-line mode, not multiline mode: this removes need for the mode-switches "(?m)" and "(?s)" and the positional markers "\A" and "\Z". Multiline mode is idiosyncratic to Perl and is a messy compromise to do with holding long files of text as single strings, yet treating them as lists of lines at the same time: this would not be sensible for Inform. Similarly, because there is no ambiguity about how line breaks are represented in Inform strings (by a single "\n"), initial newline convention markers such as "(*ANYCRLF)" are unsupported.
+
+	(iii) The codes "\a", "\r", "\f", "\e", "\0" for alarm, carriage return, form feed, escape and the zero character are unsupported: none of these can occur in an Inform string.
+
+	(iv) Inform does not allow characters to be referred to by character code (whereas Perl allows "\036" for an octal character code, "\x7e" for a hexadecimal one, "\cD" for a control character). This is because we do not want the user to know whether text is internally stored as ZSCII or Unicode.
+
+	(v) Inform's character class "\p" (and its negation "\P") have no equivalent in Perl, and Inform's understanding of "\w" is different. Perl defines this as an upper or lower case English letter, underscore or digit, which is good for programming-language identifiers, but bad for natural language - for instance, "é" is not matched by "\w" in Perl, but unquestionably it appears in words. Inform therefore defines "\w" as the negation of "\s" union "\p".
+
+	(vi) Inform supports only single-digit grouping numbers "\1" to "\9", whereas Perl allows "\10", "\11", ...
+
+	(vii) POSIX named character ranges are not supported. These are only abbreviations in any case, and are not very useful. (Note that the POSIX range "[:punct:]", which is supposedly for punctuation, includes many things we do not want to think of that way - percentage signs, for instance - and so "\p" has a more natural-language-based definition.)
+
+	(viii) Character classes can be used inside ranges, so that "<\da-f>" is legal, but not as ends of contiguous runs, so that "<\d-X>" is not legal. (As reckless as this is, it is legal in Perl.)
+
+	(ix) For obvious reasons, escapes to Perl code using the notation "(?{...})" are unsupported, and so is the Perl iteration operator "\G".
+
+	(x) Perl's extended mode "(?x)", a lexical arrangement which allows expressions to be expanded out as little computer programs with comments, is unsupported. It would look awful syntax-coloured in the Inform interface and is not a style of coding to be encouraged.
+
+Inform further does not support the Python extension of named subexpression groups, nor the Java extension of the possessive quantifier "++". There was only so much functionality we could squeeze in.
+
+As verification of Inform's matching algorithm, we took the Perl 5 source code's notorious "re-test.txt" set of 961 test cases, removed the 316 using features unsupported by Inform (220 tested multiline mode, for instance), and ran the remaining 645 cases through Inform. It agrees with Perl on 643 of these: the two outstanding are -
+
+	(i) Perl is able to match "^(a\1?){4}$" against "aaaaaa" but Inform is not - Inform's backtracking is not as good when it comes to repetitions of groupings which are recursively defined. (Note that the optional "\1" match refers to the value of the bracketed expression which contains it, so that the interpretation is different on each repetition. Here to match we have to interpret "?" as 0, 0, 1, 0 repeats respectively as we work through the "{4}".)
+
+	(ii) Perl matches "((&lt;a-c>)b*?\2)*" against "ababbbcbc" finding the match "ababb", whereas Inform finds the match "ababbbcbc". This is really a difference of opinion about whether the outer asterisk, which is greedy, should be allowed three matches rather than two if to do so requires the inner asterisk, which is not greedy, to eat more than it needs on one of those three matches.
+
+Case (i) is a sacrifice to enable Inform's back-tracking to use less memory. Case (ii) simply seems unimportant.

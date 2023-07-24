@@ -1,6 +1,9 @@
-* Listing rules explicitly
-(First look text added for a newly entered room; Saint Eligius)
-Adding a first look rule that comments on locations when we visit them for the first time, inserting text after objects are listed but before any "every turn" rules might occur.
+Example: * Saint Eligius
+Location: Listing rules explicitly
+RecipeLocation: Going, Pushing Things in Directions
+Index: First look text added for a newly entered room
+Description: Adding a first look rule that comments on locations when we visit them for the first time, inserting text after objects are listed but before any "every turn" rules might occur.
+For: Z-Machine
 
 A not-infrequent desire in IF is to provide a few lines of comment when the player first enters a new room, after the objects are described but before anything else (such as an every turn rule) can fire. The cleanest, most systematic solution is to add a rule to the carry out looking rulebook, so:
 
@@ -10,12 +13,12 @@ A not-infrequent desire in IF is to provide a few lines of comment when the play
 
 	This is the first look rule:
 		if the location is uncommented, carry out the gawking at activity with the location.
-	
+
 	Gawking at something is an activity.
 
-	Rule for gawking at the Diamond Market: 
+	Rule for gawking at the Diamond Market:
 		say "Your throat closes and your eyes begin to sting. You have long disdained pomp and luxury, and railed against the oppression that brings such wealth to some men at the cost of the lives of others; you were not prepared for the magnificence."
-	
+
 	After gawking at a room (called the target): now the target is commented.
 
 And now the scene itself:
@@ -26,10 +29,10 @@ And now the scene itself:
 		say "You descend the steps quickly and step into the small foyer, allowing yourself to be searched for weapons, before going on to...";
 		continue the action.
 
-	Diamond Market is down from Cobbled Alley. "The roof is vaulted and painted in allegorical images representing Plenty, the Riches of the Earth, and Saint Eligius, patron of goldsmiths and jewelers. 
+	Diamond Market is down from Cobbled Alley. "The roof is vaulted and painted in allegorical images representing Plenty, the Riches of the Earth, and Saint Eligius, patron of goldsmiths and jewelers.
 
 	Under their watchful eye, dozens of men in sober black robes sit; and on the tables before them are rubies, emeralds, sapphires from oversea, but most of all diamonds, both raw and cut."
 
 	The burly guard is a man in Diamond Market. "A burly guard patrols quite close to you, but even he is more sumptuously dressed than the average burly guard, and his buttons shine."
-	
+
 	Test me with "d / look".

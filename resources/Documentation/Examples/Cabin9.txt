@@ -1,7 +1,0 @@
-* Men, women and animals
-(Disenchantment Bay: 9. The Captain--Basic character)
-Disenchantment Bay: enter the charter boat's Captain.
-
-Now finally we can put a Captain in the boat:
-
-	{*}The Captain is a man in the Cabin. "The captain sits at the wheel, steering the boat and occasionally checking the radar readout."

@@ -1,0 +1,80 @@
+Example: * The Fourth Body
+Location: Writing, reading and appending text to files
+RecipeLocation: Reading Matter
+Index: WRITE text IN command that will store text
+Description: Notebooks in which the player can record assorted notes throughout play.
+For: Glulx
+
+Some mystery games supply the player with an in-game system for taking notes, in case they don't want to rely on scraps of paper next to the computer. One way of doing this is to write out all the player's notes and observations into a notebook file, whose contents can be retrieved during play (or, indeed, after it).
+
+We'll first invent a general system for writing text into notebooks, by creating a new kind called jotter. Each individual jotter will have its own disc file, and there will be basically three things which can be done with jotters: erasing, reading and writing.
+
+	{*}"The Fourth Body"
+
+	A jotter is a kind of thing. A jotter has an external file called the text file. A jotter can be fresh or used. A jotter is usually fresh. A jotter has a text called the heading.
+
+	The currently erased jotter is an object that varies.
+	To erase (pad - a jotter):
+		now the currently erased jotter is the pad;
+		write "[heading of the currently erased jotter][paragraph break]" to the text file of the pad;
+		now the pad is fresh.
+
+	To write in (pad - a jotter):
+		append "[the time of day]: [topic understood][line break]" to the text file of the pad;
+		now the pad is used.
+
+	To read (pad - a jotter):
+		say "You read: [paragraph break][text of the text file of the pad]".
+
+This is all as might be expected, except perhaps for the business of the "currently erased jotter". Why copy "pad" into this - why not simply write "[heading of the pad]"? The answer is that "pad" is a temporary "let" value, and cannot be used inside other phrases, such as the "write ... to ..." phrase.
+
+We want to erase any jotters when play begins, as otherwise text left over from any previous games will still be visible:
+
+	{**}When play begins:
+		repeat with pad running through jotters:
+			erase the pad.
+
+Now we need to create rules to allow the player to control reading, writing and erasing. Reading we will handle with the ordinary examining action, but we create new actions for writing and erasing. A nice little trick allows WRITE WHATEVER to default to writing WHATEVER in a notebook being carried.
+
+	{**}Instead of examining a used jotter (called the pad):
+		read the pad.
+
+	Instead of examining a fresh jotter (called the pad):
+		say "There is nothing of note in [the pad]."
+
+	Understand "write [text] in [something preferably held]" as writing it in. Understand "write [text]" as writing it in. Writing it in is an action applying to a topic and one thing. Rule for supplying a missing second noun while writing: if a jotter (called the pad) is carried, now the second noun is the pad; otherwise say "You will have to specify what to write that it."
+
+	Check writing it in:
+		if the second noun is not a jotter, say "It would be better to write in a notebook." instead.
+
+	Carry out writing it in:
+		write in the second noun.
+
+	Report writing it in:
+		say "Under the current time, you write '[the topic understood]' into [the second noun]."
+
+	Understand "erase [something preferably held]" as erasing. Erasing is an action applying to one carried thing.
+
+	Check erasing:
+		if the noun is not a jotter, say "It's hard to see how." instead.
+
+	Carry out erasing:
+		erase the noun.
+
+	Report erasing:
+		say "You scrub out all the entries in [the noun]."
+
+That completes a general-purpose implementation of jotters, and we put it to use:
+
+	{**}The player carries a jotter called your notebook. The file of Player's Observations is called "notebook". The text file of your notebook is the file of Player's Observations. The heading of your notebook is "Observations in the Pottingham Green Case".
+
+	The Damp Hillside is a room. "It is just after dawn: among the trees there is misty and pale blue light. [if Havers is in the location]The only saturated color in view is the orange-and-yellow jacket of [Detective Havers]. She is trying unsuccessfully to light a cigarette. [end if][paragraph break]The body itself is further down, closer to the bottom of the ravine. It would be foolish to speculate before seeing it, but the odds are that the corpse was rolled down after death. The ground is not steep enough for the fall itself to be deadly."
+
+	Detective Havers is a woman in the Damp Hillside. The description is "She gives you a weak smile when you look at her: you know she hasn't slept more than three hours any of the last few nights." Havers is scenery.
+
+	Havers is carrying a jotter called Barbara's notebook. The file of Barbara's Observations is called "barbara". The text file of Barbara's notebook is the file of Barbara's Observations. The heading of Barbara's notebook is "I could murder a cup of tea".
+
+	The time of day is 6:32 AM.
+
+	Instead of examining your notebook when your notebook is fresh:
+		say "Your notebook is blank. Back in the office, of course, there are a stack of others. But you brought a fresh notebook in a kind of weary hope. You're going to pretend, just for now, that this body might be unrelated to the graphic string of murders you're already investigating."

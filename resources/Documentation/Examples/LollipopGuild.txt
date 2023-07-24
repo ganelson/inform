@@ -1,6 +1,9 @@
-*** Implicitly taking something
-(SHOW something without taking it first--Object the player can show off without taking it first; Lollipop Guild)
-Overriding the rules to allow the player to show something to another character without first taking it.
+Example: *** Lollipop Guild
+Location: Implicitly taking something
+RecipeLocation: Taking, Dropping, Inserting and Putting
+Index: SHOW something without taking it first
+Description: Overriding the rules to allow the player to show something to another character without first taking it.
+For: Z-Machine
 
 As mentioned in this section, the "implicitly taking" activity does not allow us to skip an implicit take entirely. In order to do this, we need to borrow from the chapter on Rulebooks and tell Inform that one of the rules normally built in to the Standard Rules does nothing in certain circumstances:
 
@@ -9,7 +12,7 @@ As mentioned in this section, the "implicitly taking" activity does not allow us
 	The carrying requirements rule does nothing when showing something to the guardian.
 	The can't show what you haven't got rule does nothing when showing something to the guardian.
 	The block showing rule does nothing.
-	
+
 	Candyland is a room. "A fizzing, popping wonderland of sugary delights. A path tiled with butterscotch sweets leads to the horizon."
 
 	The butterscotch path is scenery in Candyland.
@@ -19,7 +22,7 @@ As mentioned in this section, the "implicitly taking" activity does not allow us
 	The giant lollipop is a fixed in place edible thing in Candyland. "Growing right next to the path, on a trunk of white paper, is a giant lollipop colored green and red and white." The description of the lollipop is "If you were very blind, like Aunt Myrtle, you might mistake it for a young sapling just planted: the lollipop is just that leafy shade of green, with swirls of white and red that might be branches or flowers."
 
 	The guardian is a man in Candyland. "Right beside you is a guardian in a mint-colored uniform." The description of the guardian is "A killjoy wielding a gigantic toothbrush." The guardian carries a gigantic toothbrush. The description of the toothbrush is "Bristles as long as your hand. Firm bristles, too, not those soft ones. The guardian doesn't care about your tender gums."
- 
+
 	A thing can be sweet. The butterscotch path, the lollipop, and the gumdrop are sweet.
 
 	Carry out showing a sweet thing to the guardian:
@@ -27,7 +30,7 @@ As mentioned in this section, the "implicitly taking" activity does not allow us
 
 	Carry out showing something to the guardian:
 		say "The guardian nods approvingly at the unsweetened [noun]." instead.
-	
+
 	Report eating a sweet thing in the presence of the guardian:
 		say "The guardian looks mournful, but unholsters his tube of paste and begins applying it to the toothbrush, as though to say that he really did not want to have to do this...";
 		end the story saying "Everything goes minty" instead.

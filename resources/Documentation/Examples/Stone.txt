@@ -1,8 +1,11 @@
-* New rules
-(Food with ingredients affecting the player; Stone)
-A soup to which the player can add ingredients, which will have different effects when the player eats.
+Example: * Stone
+Location: New rules
+RecipeLocation: Food
+Index: Food with ingredients affecting the player
+Description: A soup to which the player can add ingredients, which will have different effects when the player eats.
+For: Z-Machine
 
-A thing can have a rule as a property, if we like. Here we are going to allow the player to make a soup whose effects will depend on its ingredients. Each ingredient will have its own "food effect" rule, to be followed when the food is eaten. 
+A thing can have a rule as a property, if we like. Here we are going to allow the player to make a soup whose effects will depend on its ingredients. Each ingredient will have its own "food effect" rule, to be followed when the food is eaten.
 
 Note that there are other, slightly less cumbersome ways to do the same thing -- we will see in the chapter on Rulebooks that we could make a "food effects rulebook" and then write a number of rules such as "food effects rule for carrots" or "food effects rule for the stone". Nonetheless, we demonstrate rules-as-properties here for the sake of thoroughness.
 
@@ -17,7 +20,7 @@ So:
 			repeat with item running through things which are part of the noun:
 				if item is a food, follow the food effect of the item;
 		follow the food effect of the noun.
-	
+
 	Report eating a food:
 		say "You eat [the noun]. [diagnosis of the player]";
 		stop the action.
@@ -36,9 +39,9 @@ So:
 		otherwise say "You are strong. ";
 		if the victim is hungry, say "You are hungry.";
 		otherwise say "You are well-fed."
-		
+
 And now to provide some particular foods:
-	
+
 	{**}Some carrots are a food. The food effect of carrots is the bright-eye rule. This is the bright-eye rule: now the player is bright-eyed.
 
 	Some potatoes are a food. The food effect of the potatoes is the sleepiness rule. This is the sleepiness rule: now the player is sleepy.
@@ -66,17 +69,17 @@ And now to provide some particular foods:
 	Instead of examining the broth:
 		if something is part of the broth, say "In the broth, [a list of things that are part of the broth] float[if exactly one thing is part of the broth]s[end if].";
 		otherwise say "It is just a thin broth with no other ingredients."
-	
+
 	Instead of inserting something into the broth: try inserting the noun into the holder of the broth.
 
 	Instead of taking the broth: say "You cannot take the broth in your bare hands."
 
 And the following is a relatively unimportant nicety:
-	
+
 	{**}To sink is a verb.
 
 	After inserting a food which is not the broth into a container which contains the broth:
 		now the noun is part of the broth;
 		say "[The noun] [sink] into [the second noun], making the broth richer."
-	
+
 	Test me with "x broth / eat hambone / put hambone in kettle / x broth / put potatoes in broth / x broth / eat carrots / eat broth / put ivy in kettle / eat ivy".

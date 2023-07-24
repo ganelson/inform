@@ -1,6 +1,9 @@
-** Listing rules explicitly
-(Postures for sitting, standing, and lying down; Slouching)
-A system of postures allowing the player and other characters to sit, stand, or lie down explicitly or implicitly on a variety of enterable supporters or containers, or in location.
+Example: ** Slouching
+Location: Listing rules explicitly
+RecipeLocation: The Human Body
+Index: Postures for sitting, standing, and lying down
+Description: A system of postures allowing the player and other characters to sit, stand, or lie down explicitly or implicitly on a variety of enterable supporters or containers, or in location.
+For: Z-Machine
 
 Suppose we want to let the player explicitly sit, stand, or lie down on different enterable objects. (Normally Inform treats all these actions as entering, but there may be cases where we want to distinguish between the player sitting on a chair and the player standing on it.)
 
@@ -9,7 +12,7 @@ Our implementation gives each kind of enterable a range of allowed postures, and
 	{*} "Slouching"
 
 	Section 1 - Posture Rules
-	
+
 	A posture is a kind of value. The postures are seated, standing, and reclining.
 
 	A person has a posture. The posture of a person is usually standing.
@@ -53,10 +56,10 @@ Our implementation gives each kind of enterable a range of allowed postures, and
 
 	Lying down is an action applying to nothing.
 	Sitting down is an action applying to nothing.
-	Standing up is an action applying to nothing. 
+	Standing up is an action applying to nothing.
 
 	Taking position is an action applying to one posture.
-	
+
 	Instead of an actor lying down:
 		try the actor taking position reclining; rule succeeds.
 	Instead of an actor sitting down:
@@ -71,7 +74,7 @@ Our implementation gives each kind of enterable a range of allowed postures, and
 			otherwise if the actor is visible:
 				say "[The actor] can't take that position.";
 			stop the action.
-	
+
 	Check an actor taking position:
 		if the posture understood is the posture of the actor:
 			if the actor is the player:
@@ -82,13 +85,13 @@ Our implementation gives each kind of enterable a range of allowed postures, and
 
 	Carry out an actor taking position:
 		now the posture of the actor is the posture understood.
-	
+
 	Report someone taking position (this is the position-report rule):
 		say "[The actor] is now [the posture of the actor][if the holder of the actor is not the location of the actor] [in-on the holder of the actor][end if]."
-	
+
 	Report taking position:
 		say "You are now [the posture of the player][if the holder of the player is not the location] [in-on the holder of the player][end if]."
-	
+
 	To say in-on (item - a thing):
 		if the item is a container, say "in [the item]";
 		otherwise say "on [the item]".
@@ -98,16 +101,16 @@ Our implementation gives each kind of enterable a range of allowed postures, and
 		if N is a container or N is a supporter,
 			now the posture of the actor is the posture of N;
 		otherwise now the posture of the actor is standing.
-	
+
 	The departure-posture rule is listed after the standard exiting rule in the carry out exiting rulebook.
 	The departure-posture rule is listed after the standard getting off rule in the carry out getting off rulebook.
-	
+
 	Carry out an actor entering something (this is the arrival-posture rule):
 		if the noun is a container or the noun is a supporter,
 			now the posture of the actor is the posture of the noun.
-		
+
 	The arrival-posture rule is listed after the standard entering rule in the carry out entering rulebook.
-	
+
 	Check an actor going somewhere:
 		if the actor is in a room and the actor is not standing:
 			say "([if the actor is not the player][the actor] [end if]first standing up)[command clarification break]";
@@ -121,7 +124,7 @@ Our implementation gives each kind of enterable a range of allowed postures, and
 	A hammock is a kind of container. A hammock is always enterable. Every hammock allows seated and reclining. A hammock is usually reclining.
 
 	Section 3 - The Scenario
-	
+
 	The Resort is a room.
 
 	The banana hammock is a hammock in the Resort. The stone bench is a sofa in the resort.
@@ -130,7 +133,7 @@ Our implementation gives each kind of enterable a range of allowed postures, and
 
 	Rule for writing a paragraph about someone (called target):
 		say "[The target] is [posture] [if the holder of the target is the location]nearby[otherwise][in-on the holder of the target][end if]."
-	
+
 	Rule for writing a paragraph about something which encloses an unmentioned person (called target):
 		carry out the writing a paragraph about activity with the target instead.
 

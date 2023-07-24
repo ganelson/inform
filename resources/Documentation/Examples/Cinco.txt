@@ -1,6 +1,9 @@
-* Understanding things by their relations
-(Containers referred to by contents; Cinco)
-A taco shell that can be referred to (when it contains things) in terms of its contents.
+Example: * Cinco
+Location: Understanding things by their relations
+RecipeLocation: Bags, Bottles, Boxes and Safes
+Index: Containers referred to by contents
+Description: A taco shell that can be referred to (when it contains things) in terms of its contents.
+For: Z-Machine
 
 It's fairly common that we want to be able to refer to a container in terms of what it has in it: a bottle of wine, a salt shaker, a chicken sandwich. The player is free to remove the contents again, and the object will go back to using its usual name:
 

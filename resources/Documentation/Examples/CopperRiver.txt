@@ -1,6 +1,9 @@
-*** Printing a locale paragraph about
-(LOOK mentions only currently useful objects; Copper River)
-Manipulating room descriptions so that only interesting items are mentioned, while objects that are present but not currently useful to the player are ignored.
+Example: *** Copper River
+Location: Printing a locale paragraph about
+RecipeLocation: Room Descriptions
+Index: LOOK mentions only currently useful objects
+Description: Manipulating room descriptions so that only interesting items are mentioned, while objects that are present but not currently useful to the player are ignored.
+For: Z-Machine
 
 In a very dense environment, we might want to offer the player room descriptions in which only the currently-interesting items are mentioned, while other objects are suppressed even if they are present. In effect, this takes the idea of scenery and makes it more flexible: different things might become background objects or foreground objects at different times during play.
 
@@ -11,43 +14,43 @@ To do this, we need some notion of what puzzles are currently available and unso
 Given that information, we can create rules about which objects in the game world are currently interesting, which are currently dull, and describe accordingly:
 
 	{*}"Copper River"
-	
+
 	Use scoring.
 
 	Section 1 - Procedure
 
-	Resolving relates various things to various things. The verb to resolve means the resolving relation. 
+	Resolving relates various things to various things. The verb to resolve means the resolving relation.
 
 	Definition: a thing is interesting if it is not dull.
-	
+
 	Definition: a person is dull:
 		no.
 
 	Definition: a thing is dull:
 		if it is unsolved, no;
-		if it resolves an unsolved thing, no; 
+		if it resolves an unsolved thing, no;
 		yes.
-	
+
 	Definition: a supporter is dull:
 		if it is unsolved, no;
-		if it resolves an unsolved thing, no; 
+		if it resolves an unsolved thing, no;
 		if it supports an interesting thing, no;
 		yes.
 
 	Definition: a container is dull:
 		if it is unsolved, no;
-		if it resolves an unsolved thing, no; 
+		if it resolves an unsolved thing, no;
 		if it contains an interesting thing, no;
 		yes.
-	
-	After choosing notable locale objects: 
-		repeat with item running through unsolved things: 
-			set the locale priority of the item to 1.	
+
+	After choosing notable locale objects:
+		repeat with item running through unsolved things:
+			set the locale priority of the item to 1.
 
 	For printing a locale paragraph about a dull thing (called item):
-		now the item is mentioned. 
+		now the item is mentioned.
 
-	Before printing a locale paragraph about a supporter (called item): 
+	Before printing a locale paragraph about a supporter (called item):
 		now every dull thing on the item is mentioned.
 
 	Before printing a locale paragraph about a container (called item):
@@ -63,7 +66,7 @@ Given that information, we can create rules about which objects in the game worl
 			say "There's nothing very useful here, only [a list of dull things on the noun].";
 		otherwise:
 			say "[The noun] [are] completely bare."
-			
+
 	Instead of searching a container:
 		if the noun contains something interesting:
 			say "[A list of interesting things in the noun] [are] in [the noun]";
@@ -74,7 +77,7 @@ Given that information, we can create rules about which objects in the game worl
 			say "There's nothing very useful here, only [a list of dull things in the noun].";
 		otherwise:
 			say "[The noun] [are] completely empty."
-		
+
 	Before listing contents when not taking inventory: group dull things together.
 
 	Rule for grouping together dull things: say "assorted dull items".
@@ -92,7 +95,7 @@ Given that information, we can create rules about which objects in the game worl
 
 	The stove is a scenery supporter in the Kitchen. The oven is part of the stove. The oven is a closed openable container.
 
-	The refrigerator is a fixed in place container in the Kitchen. 
+	The refrigerator is a fixed in place container in the Kitchen.
 		Understand "fridge" as the refrigerator.
 		The description is "The refrigerator is a dull blue-green, and has a puffy, marshmallow texture on the outside, which means that it's no good for sticking magnets to. Aunt Fiona has never been willing to explain where she got it." The refrigerator is openable and closed.
 
@@ -104,11 +107,11 @@ Given that information, we can create rules about which objects in the game worl
 		if a random chance of 1 in 3 succeeds:
 			say "[one of]Aunt Fiona's eyes follow you, wide and desperate, but it doesn't look like she's able to do anything[or]Aunt Fiona is still looking reproachful[or]A faint gurgling comes from Aunt Fiona[or]Aunt Fiona makes a funny croak noise[or]Aunt Fiona is still having trouble speaking. Perhaps her throat is as swollen as the rest of her[or]Aunt Fiona twitches[stopping]."
 
-	There is a thing called a salmon. Understand "fish" as the salmon. The salmon can be scaly or prepared. The salmon is scaly. The description is "[if scaly]It looks delicious, but is still covered with scales[otherwise]The salmon has been scaled and is ready to eat[end if]." 
+	There is a thing called a salmon. Understand "fish" as the salmon. The salmon can be scaly or prepared. The salmon is scaly. The description is "[if scaly]It looks delicious, but is still covered with scales[otherwise]The salmon has been scaled and is ready to eat[end if]."
 
 	Before printing the name of the salmon when the salmon is scaly:
 		say "very scaly ".
-	
+
 	Section 3 - Scenario Puzzles
 
 	Definition: Aunt Fiona is unsolved if she is inflated.
@@ -135,9 +138,9 @@ Given that information, we can create rules about which objects in the game worl
 	Every turn when Aunt Fiona is deflated and the salmon is off-stage:
 		move the salmon to the counter;
 		say "'At least they didn't get this,' she says, producing from somewhere on her person a fresh-caught salmon. An odd pattern around its eye sockets makes it looks comically as though it wears spectacles. 'It's the Salmon of Knowledge,' she explains casually. 'We just need to scale and cook it.'"
-	
+
 	The bottle of descaling solution resolves the salmon.
-	
+
 	Does the player mean putting the descaling solution on the fish hook: it is unlikely.
 	Does the player mean putting the descaling solution on the salmon: it is very likely.
 
@@ -148,6 +151,6 @@ Given that information, we can create rules about which objects in the game worl
 			increase the score by 2;
 		otherwise:
 			say "'Don't do that,' Aunt Fiona warns you. 'Excessive applications could damage the flesh.'"
-			
+
 	Test me with "look / get powder / drop powder / look / look in cabinet / get powder / put powder on fiona / look / open cabinet / look in cabinet / get solution / open fridge / put solution in fridge / look / get solution / put solution on salmon / look".
-	
+

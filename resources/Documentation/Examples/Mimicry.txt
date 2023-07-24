@@ -1,0 +1,63 @@
+Example: *** Mimicry
+Location: Kinds of action
+RecipeLocation: Getting Started with Conversation
+Index: People who must be greeted before conversation
+Description: People who must be greeted before conversation can begin.
+For: Z-Machine
+
+Suppose we want to add a sense of some conversational flow, so that the player is forced to acknowledge the presence of people before beginning detailed conversations with them. We collect all speech actions into a single category:
+
+	{*}"Mimicry"
+
+	Asking someone about something is speech. Telling someone about something is speech. Answering someone that something is speech. Asking someone for something is speech.
+
+And then write a general rule.
+
+	{**}Before speech in the presence of an ungreeted person: try waving hands.
+
+One complication is that "asking someone to try doing something", which describes commands such as FRED, GO SOUTH, cannot be made into a kind of action. This requires its own rule:
+
+	{**}Before asking someone to try doing something in the presence of an ungreeted person: try waving hands.
+
+Now we define what greetings are going to look like:
+
+	{**}Check waving hands:
+		unless the player can see someone who is not the player, say "You are alone." instead.
+
+	Carry out waving hands:
+		say "You nod hello to [the list of ungreeted people who can be seen by the player].";
+		now every ungreeted person who can be seen by the player is greeted.
+
+	The report waving hands rule is not listed in the report waving hands rulebook.
+
+Because of the way we've defined the command, this will now also work if the player waves.
+
+	{**}A person can be greeted or ungreeted. A person is usually ungreeted. The player is greeted.
+
+And now the scenario:
+
+	{**}The International Convention of Mimes is a room. Lester, Harold, Geoff, Kwame, and Peter are men in the Convention. Elouise is a woman in the Convention. The Invisible Box is an enterable container in the Convention. "You can detect, from the way people keep leaning on it, an invisible box in the middle of the room."
+
+	Lester carries a bowler hat.
+
+	Instead of speech in the presence of someone:
+		describe poor reception.
+
+	Definition: a person is other if it is not the player.
+
+	At 9:01 AM:
+		move Phineas to the location; say "A mime called Phineas appears from the non-existent bathroom."
+
+	Phineas is a man.
+
+	A persuasion rule:
+		describe poor reception;
+		persuasion fails.
+
+	To describe poor reception:
+		if the player is in the Invisible box,
+			say "Everyone convulses with silent laughter as you try to shout from within the invisible box.";
+		otherwise
+			say "You attempt to convey your meaning with gesture and interpretive dance, but [the list of visible other people] scorn[if the number of visible other people is 1]s[end if] your performance, refusing to respond."
+
+	Test me with "ask lester about work / lester, east / ask lester for bowler / lester, nice not talking to you / get in box / ask lester for hat / phineas, east".

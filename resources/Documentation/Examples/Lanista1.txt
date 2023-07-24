@@ -1,6 +1,10 @@
-* Randomness
-(Lanista: 1. Simple Randomized Combat--Simple Randomized Combat)
-Very simple randomized combat in which characters hit one another for a randomized amount of damage.
+Example: * Lanista 1
+Subtitle: Simple Randomized Combat
+Location: Randomness
+RecipeLocation: Combat and Death
+Index: Lanista 1. Simple Randomized Combat
+Description: Very simple randomized combat in which characters hit one another for a randomized amount of damage.
+For: Z-Machine
 
 	{*}"Lanista, Part One"
 
@@ -12,7 +16,7 @@ We start by recording, for each person, a maximum number of points of damage the
 
 	The maximum hit points of the player is 35. The maximum hit points of the gladiator is 25.
 
-	The current hit points of the player is 35. The current hit points of the gladiator is 25. 
+	The current hit points of the player is 35. The current hit points of the gladiator is 25.
 
 Now our rule for the actual attack. We want first to calculate how much damage the player's attack does, inflict that damage, and remove the enemy if they're dead; then, if still alive, the enemy counter-attacks, also for a randomized amount of damage, and if this kills the player, the game ends in defeat.
 
@@ -39,4 +43,4 @@ This last bit is a refinement to help the player keep track of how the contest i
 		now the right hand status line is "Gladiator: [current hit points of gladiator]".
 
 	Test me with "hit gladiator / g / g / g".
-	
+

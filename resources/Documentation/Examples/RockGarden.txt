@@ -1,11 +1,14 @@
-** Deciding the scope of something
-(Continuous space with distant objects visible; Rock Garden)
-A simple open landscape where the player can see between rooms and will automatically move to touch things in distant rooms.
+Example: ** Rock Garden
+Location: Deciding the scope of something
+RecipeLocation: Continuous Spaces and The Outdoors
+Index: Continuous space with distant objects visible
+Description: A simple open landscape where the player can see between rooms and will automatically move to touch things in distant rooms.
+For: Z-Machine
 
 A map of linked rooms works well for modeling enclosed or indoor space, and somewhat less well for modeling large open spaces, where a person should reasonably be able to see things which are much too far away to touch. With some modifications to scoping, though, we can create an environment where objects in nearby rooms are described and viewable, and where the player will automatically move towards distant items before interacting with them physically.
 
 	{*}"Rock Garden"
-	
+
 	Section 1 - General Rules
 
 	Intervisibility relates rooms to each other in groups. The verb to be connected with means the intervisibility relation.
@@ -29,11 +32,11 @@ A map of linked rooms works well for modeling enclosed or indoor space, and some
 	After looking when the location is an inter-visible room:
 		repeat with other place running through rooms which are connected with the location:
 			if the other place is not the location, describe locale for other place.
-	
+
 	Section 2 - The Scenario
 
 	Rock Garden West is west of Rock Garden East. Rock Garden East contains a rake. Rock Garden West contains a bench and a maple leaf. The bench is an enterable supporter.
 
 	Rock Garden West is connected with Rock Garden East.
-	
+
 	Test me with "get rake / drop rake / sit on bench / get rake".

@@ -1,13 +1,16 @@
-*** Parts of things
-(Containers and supporters given a common kind; Fallout Enclosure)
-Adding an enclosure kind that includes both containers and supporters in order to simplify text that would apply to both.
+Example: *** Fallout Enclosure
+Location: Parts of things
+RecipeLocation: Bags, Bottles, Boxes and Safes
+Index: Containers and supporters given a common kind
+Description: Adding an enclosure kind that includes both containers and supporters in order to simplify text that would apply to both.
+For: Z-Machine
 
 It may not be immediately obvious why we might want to create new intermediate categories of the kinds hierarchy. But there may be times, for instance, where we would like to make an action that applies in the same way to both containers and supporters, but to nothing else in the game. To avoid creating two nearly-identical rules, we would instead roll the two categories together into one, on the principle that duplicating source text is usually a sign of bad design.
 
 So for instance let's say the player is able to zap objects to make them go away, but any contents -- things inside a container or on top of a supporter -- should always be left as residue. Here's one way we might do this:
 
 	{*}"Fallout Enclosure"
-	
+
 	Section 1 - Procedure
 
 	An enclosure is a kind of thing. A container is a kind of enclosure. A supporter is a kind of enclosure.
@@ -22,13 +25,13 @@ So for instance let's say the player is able to zap objects to make them go away
 
 	Carry out zapping:
 		now the noun is nowhere.
-	
+
 	Report zapping:
 		say "You zap [the noun], destroying [them][if the remnants is not empty] and leaving [the remnants with indefinite articles] behind[end if]."
-		
+
 	Section 2 - Scenario
 
-	SuperDuperMart is a room. SuperDuperMart contains some shelves and a cash register. 
+	SuperDuperMart is a room. SuperDuperMart contains some shelves and a cash register.
 
 	The shelves support a bottle of Buffout and a container of Jet.
 

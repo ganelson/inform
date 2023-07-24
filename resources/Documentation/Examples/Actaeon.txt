@@ -1,0 +1,49 @@
+Example: ** Actaeon
+Location: Understanding any, understanding rooms
+RecipeLocation: Traveling Characters
+Index: FOLLOW command
+Description: A FOLLOW command allowing the player to pursue a person who has just left the room.
+For: Z-Machine
+
+Suppose we want the player to be able to go after characters who are moving around the map. The trick, of course, is that once characters are gone they are no longer visible to "follow [person]", so we need "follow [any person]" to find them.
+
+	{*}"Actaeon"
+
+	A person has a room called last location.
+
+	Understand "follow [any person]" as following. Understand the commands "chase" and "pursue" as "follow".
+
+	Following is an action applying to one visible thing.
+
+	Check following:
+		if the noun is the player, say "Wherever you go, there you are." instead;
+		if the noun is visible, say "[The noun] is right here." instead;
+		if the last location of the noun is not the location, say "It's not clear where [the noun] has gone." instead.
+
+Here again the best route comes in handy:
+
+	{**}Carry out following:
+		let the destination be the location of the noun;
+		if the destination is not a room, say "[The noun] isn't anywhere you can follow." instead;
+		let aim be the best route from the location to the destination;
+		say "(heading [aim])[line break]";
+		try going aim.
+
+	Corinth is a room. Athens is east of Corinth. Epidaurus is southeast of Corinth and east of Mycenae. Mycenae is south of Corinth. Olympia is west of Mycenae. Argos is south of Mycenae. Thebes is northwest of Athens. Pylos is south of Olympia. Sparta is east of Pylos and south of Argos. Delphi is northwest of Thebes.
+
+	Artemis is a woman in Corinth.
+
+We do also have to make sure that whenever we move a person from room to room, we record where they were moved from; otherwise, our clever restrictions about whom the player can pursue will not work properly.
+
+	{**}To move (pawn - a person) tidily to (target - a room):
+		now the last location of the pawn is the holder of the pawn;
+		move the pawn to the target.
+
+	Every turn:
+		let current location be the location of Artemis;
+		let next location be a random room which is adjacent to the current location;
+		if Artemis is visible, say "Artemis heads to [the next location].";
+		move Artemis tidily to next location;
+		if Artemis is visible, say "Artemis arrives from [the current location]."
+
+	Test me with "wait / follow artemis / follow artemis / follow artemis".

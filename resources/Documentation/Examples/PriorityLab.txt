@@ -1,8 +1,11 @@
-* Printing the locale description of something
-(Testing the locale description order; Priority Lab)
-A debugging rule useful for checking the priorities of objects about to be listed.
+Example: * Priority Lab
+Location: Printing the locale description of something
+RecipeLocation: Room Descriptions
+Index: Testing the locale description order
+Description: A debugging rule useful for checking the priorities of objects about to be listed.
+For: Z-Machine
 
-When it comes time to start manipulating the priorities of items, it is useful to be able to check the table for debugging purposes; the problem is that printing the names of the objects can itself affect the way the room description is generated, foiling our debugging efforts. 
+When it comes time to start manipulating the priorities of items, it is useful to be able to check the table for debugging purposes; the problem is that printing the names of the objects can itself affect the way the room description is generated, foiling our debugging efforts.
 
 What follows is a rule to help with debugging safely, and a sample of how priorities work:
 
@@ -18,7 +21,7 @@ What follows is a rule to help with debugging safely, and a sample of how priori
 			if the flag is false, now the notable-object entry is not mentioned;
 		say line break.
 
-Now, let's look at some items put in a specific order. Things with low priority numbers list towards the beginning; things with high priority numbers list towards the end. (It helps to think of it as though we were making a numbered list of the paragraphs to appear in the description.) Anything numbered 0 doesn't appear at all, and the default priority of an object is 1. 
+Now, let's look at some items put in a specific order. Things with low priority numbers list towards the beginning; things with high priority numbers list towards the end. (It helps to think of it as though we were making a numbered list of the paragraphs to appear in the description.) Anything numbered 0 doesn't appear at all, and the default priority of an object is 1.
 
 	{**}A thing can be early-described, late-described, latest-described, never-described, sightline-described, or ordinarily-described. A thing is usually ordinarily-described.
 
@@ -30,9 +33,9 @@ Now, let's look at some items put in a specific order. Things with low priority 
 			if there is a notable-object of item in the Table of Locale Priorities:
 				set the locale priority of the item to 10; [list after everything else -- this would work with any number larger than 5]
 		repeat with item running through never-described things:
-			set the locale priority of the item to 0; [don't list at all]  
+			set the locale priority of the item to 0; [don't list at all]
 		continue the activity.
-	
+
 An important cautionary note: priorities are only honored if the objects are going to get their own paragraphs (with "writing a paragraph about..." or because they have initial appearances). Priorities do not affect the order in which items appear in the final "You can see..." list, except that items with priority 0 or lower are omitted. (If we want to order the items in that list, we may want to resort to the Complex Listing extension by Emily Short.)
 
 There are further refinements available to us: for instance, we could make some things that are only visible if the player is raised above ground level.
@@ -43,11 +46,11 @@ There are further refinements available to us: for instance, we could make some 
 				if there is a notable-object of item in the Table of Locale Priorities:
 					set the locale priority of the item to 0; [remove objects that can only be seen from higher objects.]
 		continue the activity.
-				
 
-It may also be useful to know about the "parameter-object", which refers to the thing whose contents we are currently describing: the standard rules consider how to describe the contents of the location and then also check the contents of any supporter or container the player may be inside, so in the first case "parameter-object" would be the location, and then in the second the supporter in question. 
 
-In practice this is rarely useful, but should we need to change priorities in the case of both player and object being inside a particular container, we might make use of it, for instance: 
+It may also be useful to know about the "parameter-object", which refers to the thing whose contents we are currently describing: the standard rules consider how to describe the contents of the location and then also check the contents of any supporter or container the player may be inside, so in the first case "parameter-object" would be the location, and then in the second the supporter in question.
+
+In practice this is rarely useful, but should we need to change priorities in the case of both player and object being inside a particular container, we might make use of it, for instance:
 
 	{**}A thing can be tasteful or icky. A thing is usually tasteful.
 
@@ -79,7 +82,7 @@ The other thing to note is that by default that final collection of generic obje
 	Section 2 - Scenario
 
 	The Priority Lab is a room. The early bird, the worm, the leaf, the unseen object, the pebble, the twig, and the late edition are things in the Priority Lab.
-	
+
 	The early bird is early-described. The late edition is late-described. The unseen object is never-described.
 
 	The worm is icky.
@@ -98,7 +101,7 @@ In order for the priorities we just set to be interesting, let's give out some i
 This procedure also means (as you can test by experiment) that after the late edition has been picked up and dropped again, it lists in no special order in the "you can see..." paragraph (since initial appearances only print when the object has not yet been moved).
 
 	{**}The afterthought is a thing in the Priority Lab. It is latest-described.
-		
+
 	The bar stool is an enterable supporter in Priority Lab.
 
 	Test me with "get leaf / drop leaf / look / x unseen object / get pebble / look / get twig / look / get afterthought / look / drop twig / look / get late edition / look / drop late edition / sit on bar stool / look / get all / put all on stool / look".
