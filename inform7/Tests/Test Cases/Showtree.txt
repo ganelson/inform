@@ -1,0 +1,6 @@
+Lab is a room.
+
+The red tree is in the Lab.
+The red envelope is in the Lab.
+
+Test me with "x red / tree / showtree".

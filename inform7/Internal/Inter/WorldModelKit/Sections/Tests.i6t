@@ -481,7 +481,7 @@ of 0 (off, the default) to 5.
 [ TraceOffSub; parser_trace=0; say__p = 1; "Trace off."; ];
 
 @h Tree Command.
-TREE prints out the I6 object tree, though this is not always very helpful
+SHOWTREE prints out the I6 object tree, though this is not always very helpful
 in I7 terms. It should arguably be withdrawn, but doesn't seem to do any harm.
 
 =
@@ -589,7 +589,7 @@ Verb meta 'trace'
     * number                                    -> TraceLevel
     * 'on'                                      -> TraceOn
     * 'off'                                     -> TraceOff;
-Verb meta 'tree'
+Verb meta 'showtree'
     *                                           -> XTree
     * scope=testcommandnoun                     -> XTree;
 #Ifdef TARGET_GLULX;
