@@ -1,0 +1,40 @@
+   Lab
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Lab
+  You can see a red tree and a red envelope here.
+  
+> >   Lab
+  (Testing.)
+  
+  >[1] x red
+  Which do you mean, the red tree or the red envelope?
+  
+  >[2] tree
+  You see nothing special about the red tree.
+  
+  >[3] showtree
+  (Compass object) (22)
+    the north
+    the northeast
+    the northwest
+    the south
+    the southeast
+    the southwest
+    the east
+    the west
+    the up
+    the down
+    the inside
+    the outside
+  (thedark object) (23)
+  (VPH_25) (24)
+  (VPH_3) (25)
+  Lab (39)
+    yourself
+    a red tree
+    a red envelope
+  
+> >
