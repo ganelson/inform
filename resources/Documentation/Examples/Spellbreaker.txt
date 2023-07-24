@@ -3,7 +3,7 @@ Location: Out of world actions
 RecipeLocation: Saving and Undoing
 Index: A room where the game cannot be saved
 Description: P. David Lebling's classic "Spellbreaker" (1986) includes a room where the game cannot be saved: here is an Inform implementation.
-For: Z-Machine
+For: Untestable
 
 The answer is easy, but there is a trap:
 

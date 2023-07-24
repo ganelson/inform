@@ -7,7 +7,7 @@ For: Z-Machine
 
 As mentioned in this section, the "implicitly taking" activity does not allow us to skip an implicit take entirely. In order to do this, we need to borrow from the chapter on Rulebooks and tell Inform that one of the rules normally built in to the Standard Rules does nothing in certain circumstances:
 
-	{*}  "Lollipop Guild"
+	{*}"Lollipop Guild"
 
 	The carrying requirements rule does nothing when showing something to the guardian.
 	The can't show what you haven't got rule does nothing when showing something to the guardian.

@@ -7,7 +7,7 @@ For: Z-Machine
 
 We have already seen how Before... rules can generate implicit actions for the player, so that the player will, for instance, open doors before trying to walk through them. The same can be done for characters other than the player; so for instance:
 
-	{*} "IQ Test"
+	{*}"IQ Test"
 
 	The Donut Shop is a room. "Vibrantly decorated in donut colors: pink, brown, and cream."
 

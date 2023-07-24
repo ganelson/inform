@@ -19,7 +19,7 @@ One approach would be to write many different understand rules and actions: one 
 
 More usefully, we could consider that all of the last four options are essentially the same action at heart: the player is asking to read a page in the book using a name rather than a number, and we will have to perform a minor calculation to discover what the number should be. Here's an implementation using named values to resolve this problem:
 
-	{*} "Pages"
+	{*}"Pages"
 
 	The Library is a room. The sinister book is carried by the player. The sinister book has a number called the last page read. The sinister book has a number called the length. The length of the sinister book is 50.
 

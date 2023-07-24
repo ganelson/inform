@@ -7,7 +7,7 @@ For: Z-Machine
 
 Suppose we have an unhappily mutated fish that the player can refer to by any of a number of species names, or any word followed by -fish. We want to reject these commands, but preserve a memory of what the player last tried to call the thing:
 
-	{*} "Mr. Burns' Repast"
+	{*}"Mr. Burns' Repast"
 
 	Wharf is a room.
 

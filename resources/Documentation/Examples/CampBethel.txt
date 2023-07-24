@@ -5,7 +5,7 @@ Index: People who do new things each time the player looks
 Description: Creating characters who change their behavior from turn to turn, and a survey of other common uses for alternative texts.
 For: Z-Machine
 
-	{*} "Camp Bethel"
+	{*}"Camp Bethel"
 
 	Camp Bethel Kitchen is a room.
 

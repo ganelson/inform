@@ -3,7 +3,7 @@ Location: Preface
 RecipeLocation: Preface
 Index: About the examples
 Description: An explanation of the examples in this documentation, and the asterisks attached to them. Click the heading of the example, or the example number, to reveal the text.
-For: Z-Machine
+For: Untestable
 
 This is the first of about 400 numbered examples. In a few cases, such as this one, they provide a little background information, but almost all demonstrate Inform source text. The techniques demonstrated tend to be included either because they are frequently asked for, or because they show how to achieve some interesting effect.
 

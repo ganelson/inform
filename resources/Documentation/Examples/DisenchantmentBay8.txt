@@ -4,7 +4,7 @@ Location: Vehicles and pushable things
 RecipeLocation: Disenchantment Bay
 Index: Disenchantment Bay 8. Pushable chest of ice
 Description: Disenchantment Bay: a pushable chest of ice for the boat.
-For: Z-Machine
+For: Untestable
 
 We probably do not need a vehicle to ride around our boat, but there might be a heavy ice chest that can only be pushed from room to room:
 

@@ -7,7 +7,7 @@ For: Z-Machine
 
 In this example, we want the names of rooms to be asterisked out if the player wanders around without the benefit of a candle. We can do this by treating the room names as text, then replacing every letter:
 
-	{*} "Blackout"
+	{*}"Blackout"
 
 	Tiny Room is a dark room. Absurdly Long-Named Room is a dark room. It is west of Tiny Room.
 

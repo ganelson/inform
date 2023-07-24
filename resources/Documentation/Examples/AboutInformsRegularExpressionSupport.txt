@@ -3,7 +3,7 @@ Location: Regular expression matching
 RecipeLocation: Information Only
 Index: About Inform's regular expression support
 Description: Some footnotes on Inform's regular expressions, and how they compare to those of other programming languages.
-For: Z-Machine
+For: Untestable
 
 There is not really any unanimity about what regular expression language is. The unix tools sed and grep extend on Kleene's original grammar. Henry Spencer's regex library extended on this again, and was a foundation for Perl, but Perl once again went further. Philip Hazel's PCRE, despite the name Perl Compatible Regular Expressions, makes further extensions still, and so on.
 

@@ -7,7 +7,7 @@ For: Z-Machine
 
 Sometimes we may want a room to be visible from the outside in one location, but treated as a separate location when we are inside. The simplest way to do this is to make the exterior form of the object into a door object, and to describe it differently from different vantage points. (Doors in general are described more fully in the Doors section of the Things chapter.)
 
-	{*} "Starry Void"
+	{*}"Starry Void"
 
 	The Center Ring is a room.
 

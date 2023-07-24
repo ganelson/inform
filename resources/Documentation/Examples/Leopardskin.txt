@@ -9,7 +9,7 @@ Suppose (as in Infocom's Leather Goddesses of Phobos) that we have a maze that t
 
 For instance:
 
-	{*} "Leopard-skin"
+	{*}"Leopard-skin"
 
 	The Fur-Lined Maze is a room. "This seemingly endless sequence of rooms is decorated in a tasteful selection of exotic furs and gilded fixtures."
 

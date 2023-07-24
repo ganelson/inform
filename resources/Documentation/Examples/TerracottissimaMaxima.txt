@@ -7,7 +7,7 @@ For: Z-Machine
 
 Inform can also understand text properties:
 
-	{*} "Terracottissima Maxima"
+	{*}"Terracottissima Maxima"
 
 	A flowerpot is a kind of thing. A flowerpot has a text called pattern. Understand the pattern property as describing a flowerpot. The printed name of a flowerpot is usually "[pattern] flowerpot". The printed plural name of a flowerpot is usually "[pattern] flowerpots".
 

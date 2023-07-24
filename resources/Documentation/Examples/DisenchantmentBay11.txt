@@ -4,7 +4,7 @@ Location: The player's holdall
 RecipeLocation: Disenchantment Bay
 Index: Disenchantment Bay 11. The player's backpack
 Description: Disenchantment Bay: making a holdall of the backpack.
-For: Z-Machine
+For: Untestable
 
 If we wanted, we could make the player's backpack infinitely capacious, so:
 

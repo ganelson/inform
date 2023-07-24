@@ -15,7 +15,7 @@ Our implementation here uses a table of lists to determine which combinations of
 
 What's more, our implementation could be expanded to account for many other assemblages, if we wanted object-building to be a running theme of puzzles in our game.
 
-	{*} "What Makes You Tick"
+	{*}"What Makes You Tick"
 
 	Understand "combine [something] with [something]" as combining it with. Combining it with is an action applying to two carried things. Understand the command "connect" as "combine".
 

@@ -13,7 +13,7 @@ In some cases, we may want to add new stages to action processing. One possibili
 
 Here is how we might insert such a stage in our action processing, using rulebook manipulation.
 
-	{*} "Delicious, Delicious Rocks"
+	{*}"Delicious, Delicious Rocks"
 
 	Section 1 - Procedure
 

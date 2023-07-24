@@ -4,7 +4,7 @@ Location: Possessions and clothing
 RecipeLocation: Disenchantment Bay
 Index: Disenchantment Bay 10. Clothing and possessions
 Description: Disenchantment Bay: things for the player and the characters to wear and carry.
-For: Z-Machine
+For: Untestable
 
 At this point we can dress both the Captain and the player with some appropriate props:
 

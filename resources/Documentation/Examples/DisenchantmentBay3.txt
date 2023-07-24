@@ -4,7 +4,7 @@ Location: Backdrops
 RecipeLocation: Disenchantment Bay
 Index: Disenchantment Bay 3. Glacier view
 Description: Disenchantment Bay: adding a view of the glacier.
-For: Z-Machine
+For: Untestable
 
 Suppose we wanted to have the glacier visible from the Cabin of our boat, and anywhere else we might add to the game:
 

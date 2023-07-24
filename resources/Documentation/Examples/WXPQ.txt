@@ -14,7 +14,7 @@ The parser error "That noun did not make sense in this context" arises instead o
 
 Nonetheless, "That noun did not make sense..." is itself a fairly dry and uninformative response, and we may want to override it to something more appropriate for the specific kind of context in which it might appear. For instance:
 
-	{*} "WXPQ"
+	{*}"WXPQ"
 
 	WXPQ Studio is a room. "After about 2 AM, no one is listening anyway, so you can more or less make up whatever you like to fill the airwaves."
 

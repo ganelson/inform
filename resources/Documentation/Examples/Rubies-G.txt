@@ -3,13 +3,13 @@ Location: Writing and reading tables to external files
 RecipeLocation: Scoring
 Index: Scoreboard preserved between games
 Description: A scoreboard that keeps track of the ten highest-scoring players from one playthrough to the next, adding the player's name if they have done well enough.
-For: Z-Machine
+For: Glulx
 
 The trick here is that we need a table with text in order to keep track of the players' names.
 
 Part 1 largely replicates the source from "Identity Theft"; new material starts at Part 2.
 
-	{*} "Rubies"
+	{*}"Rubies"
 
 	Use scoring.
 

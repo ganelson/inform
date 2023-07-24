@@ -7,7 +7,7 @@ For: Z-Machine
 
 Suppose that we have a design in which the player spends lots of time on enterable supporters, and in which we want to report certain actions -- dropping things onto those supporters, or leaping from one to another -- in a new way. We might begin by adding some action variables to help us keep track of the situation:
 
-	{*} "Croft"
+	{*}"Croft"
 
 	The dropping action has an object called the container dropped into (matched as "into").
 

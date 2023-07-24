@@ -7,7 +7,7 @@ For: Z-Machine
 
 Suppose the player's mother is supposed to be cleaning the living room, but she can be interrupted by the need to pick up things the player has dropped. New tasks are added to the end of her "current plan" list; every turn, she attempts to do whatever is the last entry on that list.
 
-	{*} "Your Mother Doesn't Work Here"
+	{*}"Your Mother Doesn't Work Here"
 
 	A person has a list of stored actions called the current plan.
 
@@ -18,17 +18,17 @@ Suppose the player's mother is supposed to be cleaning the living room, but she 
 				try entry N of the current plan of the culprit;
 				remove entry N from the current plan of the culprit.
 
-	The Living Room is a room. It contains a somewhat muddy Persian rug. Your mother is a woman in the Living Room.
+	The Living Room is a room. It contains a somewhat muddy Persian rug. Mother is a woman in the Living Room.
 
 	West of the Living Room is the Kitchen.
 
-	Instead of your mother rubbing the rug:
+	Instead of mother rubbing the rug:
 		say "Your mother scrubs the stained areas of the rug, muttering to herself."
 
 	Instead of taking something:
 		say "Nah, Mom'll get that."
 
-	Report your mother taking something:
+	Report mother taking something:
 		say "Your mother picks up [the noun][one of], sighing deeply[or], jaw tight[or], with assorted comments on your manners[or]; to judge from her comments, she is also indulging in a pleasant fantasy about Swiss boarding schools[stopping]." instead.
 
 	When play begins:

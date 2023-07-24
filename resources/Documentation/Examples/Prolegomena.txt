@@ -9,7 +9,7 @@ Room descriptions often make the player character out to be a bit of a savant, a
 
 We can adjust this behavior to our liking, though, with the printing a number... activity, as follows:
 
-	{*} "Prolegomena"
+	{*}"Prolegomena"
 
 	The Editor's Office is a room. The desk is a supporter in the Editor's Office.
 

@@ -9,7 +9,7 @@ Scenes can have properties -- a fact that is very useful when it comes to writin
 
 Suppose we have a plot that features a number of scripted scenes, where we need the player to stand still and wait while the events of the scene play out. One way to set this up is to create a property for such scenes -- let's call them "restricted" -- and then write a rule that keeps the player in place while the scene happens:
 
-	{*} "Bowler Hats and Baby Geese"
+	{*}"Bowler Hats and Baby Geese"
 
 	Section 1 - The Procedure
 

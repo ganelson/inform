@@ -7,7 +7,7 @@ For: Z-Machine
 
 For the sake of argument, suppose we want to parrot back all the player's commands in pig Latin:
 
-	{*} "Igpay Atinlay"
+	{*}"Igpay Atinlay"
 
 	Armfay is a room.
 

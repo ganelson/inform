@@ -47,7 +47,7 @@ Several other examples will show how to hook activities into existing actions: C
 
 Here, we preview all of those methods, just to get a sense of how they work and why they might be useful in controlling a game. Subsequent chapters go into more detail about the syntax of creating activities and the list of activities that are already defined by Inform.
 
-	{*} "Ant-Sensitive Sunglasses"
+	{*}"Ant-Sensitive Sunglasses"
 
 	Part 1 - Procedure
 

@@ -15,7 +15,7 @@ and
 
 so we'll also need to strip quotation marks out of the command. We can do this as follows:
 
-	{*} "Fido"
+	{*}"Fido"
 
 	The Back Yard is a room.
 

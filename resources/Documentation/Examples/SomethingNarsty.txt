@@ -7,7 +7,7 @@ For: Z-Machine
 
 In a game with many staircases, we might want:
 
-	{*}A staircase is a kind of door. A staircase is always open. A staircase is never openable.
+	A staircase is a kind of door. A staircase is always open. A staircase is never openable.
 
 Defining the staircase this way means that we will never be able to get away with (for instance) a folding ladder into the attic which is sometimes closed up. So alternatively we might do
 

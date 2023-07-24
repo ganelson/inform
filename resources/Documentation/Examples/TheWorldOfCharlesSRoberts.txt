@@ -15,7 +15,7 @@ But following Charles S. Roberts's American Civil War designs for Avalon Hill of
 
 But hexes are tricky for IF, not least because English lacks words for "the direction 60 degrees around from front". Our cognitive view of the world tends to be square, perhaps because our two eyes both face front, in a direction at right angles to the plane of our arms, legs, pelvis and eyes. We reach out sideways at right angles to our walking. Even early hex-grid wargames called the cells "squares", though "hexes" eventually caught on. Still and all:
 
-	{*} "The World of Charles S. Roberts"
+	{*}"The World of Charles S. Roberts"
 
 	Forward is a direction. Forward has opposite backward. Understand "f" as forward.
 	Backward is a direction. Backward has opposite forward. Understand "b" and "back" as backward.

@@ -3,7 +3,7 @@ Location: What sentences are made up from
 RecipeLocation: Information Only
 Index: Formal syntax of sentences
 Description: A more formal description of the sentence grammar used by Inform for both assertions and conditions.
-For: Z-Machine
+For: Untestable
 
 An entire grammar for the whole mass of Inform would not be linguistically interesting: it contains many convenient wordings which are not really part of a grand pattern. Inform does, however, have a formal notion of a Sentence, a grammatical structure which we shall call S. It is almost true that conditions ("if the flowerpot is on the wall") have the same grammar as assertions ("The flowerpot is on the wall") and "now" phrases ("now the flowerpot is on the wall"). All three use the S grammar, so we could define an assertion as "S.", say that "if S", "while S", "when S" and so on are conditions, and say that "now S" defines the "now" declaration.
 

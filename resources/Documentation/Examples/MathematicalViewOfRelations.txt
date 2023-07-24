@@ -3,7 +3,7 @@ Location: What are relations for?
 RecipeLocation: Information Only
 Index: Mathematical view of relations
 Description: Some notes on relations from a mathematical point of view, provided only to clarify some technicalities for those who are interested.
-For: Z-Machine
+For: Untestable
 
 Inform uses the term "relation" in a broader sense than mathematics. Properly speaking, the term "relation" in its mathematical sense only applies to the case where the domain for the left and right objects are the same: for simplicity's sake, let us talk only about the case where they are.
 

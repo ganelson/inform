@@ -9,7 +9,7 @@ Sometimes it is useful to direct all -- or almost all -- actions from one object
 
 Here, we approach the problem by changing the noun and/or the second noun of the current action, then issuing a new command to "try the current action". Because we've changed the noun and second noun, the "current action" at this point is different from the one generated originally by the player's command.
 
-	{*} "Fine Laid"
+	{*}"Fine Laid"
 
 	High Street Stationer is a room.
 

@@ -11,7 +11,7 @@ We may find, however, that we would like a great deal more control over Inform's
 
 We start by turning off Inform's native property writer:
 
-	{*} "Oyster Wide Shut"
+	{*}"Oyster Wide Shut"
 
 	Section 1 - Procedure
 

@@ -7,7 +7,7 @@ For: Z-Machine
 
 In Hitchhiker's Guide to the Galaxy, any erroneous command the player types can return to haunt them later in the game. We could do the same, if we liked, by storing the player's command whenever we print a parser error.
 
-	{*} "Xot"
+	{*}"Xot"
 
 	Humiliation Chamber is a room. "A grim, grey-walled room. Cameras watch you from every angle; convex mirrors reflect your actions; and up near the ceiling, where you can't disable it, is a loudspeaker."
 

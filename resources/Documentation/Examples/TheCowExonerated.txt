@@ -28,7 +28,7 @@ rather than
 
 This last function appears down in Section 3, if we wish to skip ahead and look at it.
 
-	{*} "The Cow Exonerated"
+	{*}"The Cow Exonerated"
 
 	Section 1 - Simple Burning
 

@@ -19,7 +19,7 @@ to the end of our description.
 
 Here is how:
 
-	{*} "Rip Van Winkle"
+	{*}"Rip Van Winkle"
 
 	A person can be asleep.
 

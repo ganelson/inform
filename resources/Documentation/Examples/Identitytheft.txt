@@ -7,7 +7,7 @@ For: Z-Machine
 
 Let's say we want to allow the player to enter any name they like for their character. Moreover, we want to reject very long names (which are likely to be mistakes anyway), and we want to extract the player's chosen first name from the rest.
 
-	{*} "Identity Theft"
+	{*}"Identity Theft"
 
 	The player's forename is a text that varies. The player's full name is a text that varies.
 

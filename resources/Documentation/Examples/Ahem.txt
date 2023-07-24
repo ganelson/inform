@@ -16,7 +16,7 @@ would cause a problem when we tried to call it with
 
 In general, we probably don't need to make our phrase definitions quite so flexible as this, but it's a good idea to account for "a" vs. "the", and for the possibility of using singular and plural forms, especially when writing extensions or other source to be shared.
 
-	{*} "Ahem"
+	{*}"Ahem"
 
 	To do/follow (chosen rule - a rule) exactly/precisely/just (N - a number) time/times:
 		repeat with index running from 1 to N:
