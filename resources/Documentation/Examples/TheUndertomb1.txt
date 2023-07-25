@@ -1,0 +1,18 @@
+Example: * The Undertomb 1
+Location: Using new kinds of value in properties
+RecipeLocation: Sounds
+Index: Rooms with sounds of nearby water, illuminated by flickering light
+Description: A small map of dead ends, in which the sound of an underground river has different strengths in different caves.
+For: Z-Machine
+
+This example creates a kind of room, "dead end", and gives each a textual description called its "river sound". Note the use of a text substitution to fill in the appropriate river sound text in each dead end.
+
+	{*}"The Undertomb"
+
+	A dead end is a kind of room with printed name "Dead End" and description "This is a dead end. You'll have to go back the way you came, consoled only by [river sound]." A dead end is usually dark.
+
+	The Undertomb is a dark room. East is a dead end. South is a dead end with printed name "Collapsed Dead End". Northwest is a dead end called the Tortuous Alcove. In the Undertomb is the lantern. It is lit.
+
+	A dead end has some text called river sound. The river sound of a dead end is usually "a faint whispering of running water". The Tortuous Alcove has river sound "a gurgle of running water".
+
+	Test me with "get lantern / e / w / s / n / nw / se".

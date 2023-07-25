@@ -1,6 +1,10 @@
-*** Multiple endings
-(Pine: 4. Flashback with multiple endings--Flashbacks with multiple outcomes)
-Pine: Adding a flashback scene that, instead of repeating endlessly, repeats only until the Princess has understood the point.
+Example: *** Pine 4
+Subtitle: Flashback with multiple endings
+Location: Multiple endings
+RecipeLocation: Flashbacks
+Index: Pine 4. Flashback with multiple endings
+Description: Pine: Adding a flashback scene that, instead of repeating endlessly, repeats only until the Princess has understood the point.
+For: Z-Machine
 
 Suppose in addition to our pathetic little family history, we have another secret to convey to the Princess, this one a little more peculiar. She either gets it or she doesn't; once she gets it, we do not revisit that flashback, though it is still possible to keep visiting the poverty flashback.
 
@@ -10,7 +14,7 @@ Suppose in addition to our pathetic little family history, we have another secre
 
 	A person can be asleep or awake. A person can be active or passive.
 
-	The Spinning Tower is a room. "A remote corner of the old castle, reserved for spinning and weaving tasks." 
+	The Spinning Tower is a room. "A remote corner of the old castle, reserved for spinning and weaving tasks."
 
 	Sleeping Beauty is an asleep woman in the Spinning Tower. "[if asleep]Sleeping Beauty lies here, oblivious to your presence[otherwise]Sleeping Beauty stands beside you, looking [attitude][end if]." The description is "She is even more magnificent than the rumors suggested." Understand "woman" or "girl" or "princess" or "lady" as Sleeping Beauty.
 
@@ -58,9 +62,9 @@ Suppose in addition to our pathetic little family history, we have another secre
 	You try to think how to point out that it's been a hundred years since she last saw her boyfriend."	"'Do you think I could go look for someone? I'm seeing him, you see, and I think I've been... sick... for a while, so he might be worried.'
 
 	You try to think how to point out that it's been a hundred years since she last saw her boyfriend. And try not to think how awkward things would be in your family if she refuses to marry you."
-	"marriage/love/wedding/boyfriend/beau/lover"	"'Do you think you could consider alternatives if he's no longer interested in you?' you suggest. 
+	"marriage/love/wedding/boyfriend/beau/lover"	"'Do you think you could consider alternatives if he's no longer interested in you?' you suggest.
 
-	She gives you the look of a wounded squirrel. 'My father might not approve of my love for the kitchen boy, but his heart is faithful and true!' she exclaims. 
+	She gives you the look of a wounded squirrel. 'My father might not approve of my love for the kitchen boy, but his heart is faithful and true!' she exclaims.
 
 	'Right; supposing that he's still around, I'm sure that his love won't have faded,' you say, considering your fingernails. Maybe you'd better come clean with her about your identity, after all: she might be more favorably inclined if she understood that you won't interfere in her base-born romances."	"'I don't expect you to understand,' she says in a low whisper. 'I know it is not considered proper for a princess to love -- and such a one as my William, who works in the kitchen --' Her glance dares you to laugh. '-- but I cannot marry you without telling you this truth.'
 
@@ -97,14 +101,14 @@ Suppose in addition to our pathetic little family history, we have another secre
 	Instead of asking an awake beauty about a topic listed in the Table of Flashback Material:
 		now Beauty is passive;
 		say "[reply entry][paragraph break]".
-		
+
 	A fact is a kind of thing. A fact can be known or unknown. A fact can be current or past.
 
 	The family circumstances is a fact. The secret identity is a fact. The printed name of secret identity is "secret".
 
 	Table of Flashback Material
 	topic	reply
-	"poor/poverty/family/money/mother/circumstances" or "family circumstances" or "my family/mother"	"[if family circumstances is unknown]'I wish you'd give some thought to marrying me. You see,' you say, your jaw tensing. 'I wouldn't ask if it weren't for my [family circumstances]...'[otherwise]'I don't think you fully understand the [family circumstances],' you say.[end if]" 
+	"poor/poverty/family/money/mother/circumstances" or "family circumstances" or "my family/mother"	"[if family circumstances is unknown]'I wish you'd give some thought to marrying me. You see,' you say, your jaw tensing. 'I wouldn't ask if it weren't for my [family circumstances]...'[otherwise]'I don't think you fully understand the [family circumstances],' you say.[end if]"
 	"secret/identity/gender/girl/female/woman" or "secret identity" or "my secret" or "my secret identity" or "my gender"	"[if dramatic revelation ended in failure]'Look,' you say, trying again. 'Pay attention: I need you to understand my [secret identity].'[otherwise]You clear your throat and allow your voice to stray upward, into its natural register and out of this husky false tenor you've been affecting. 'There's, er, something you should know about my [secret identity],' you say...[end if][if dramatic revelation ended in success] She looks impatient. 'I get it, you know,' she says. 'I'm not stupid.'"
 
 	 After printing the name of a fact (called target): now the target is current; now the target is known.
@@ -168,7 +172,7 @@ Suppose in addition to our pathetic little family history, we have another secre
 		now every thing in the wardrobe is worn by the player;
 		move the player to saved location.
 
-	Part 3 - The Other Secret	
+	Part 3 - The Other Secret
 
 This time, we're waiting for the princess either to understand or not understand -- so we don't want to rerun the scene once it has happened successfully.
 
@@ -186,8 +190,8 @@ This time, we're waiting for the princess either to understand or not understand
 		say "You reminisce about one of the many stops on the way here: you had a long journey from your homeland, and it wasn't made any easier by your poverty, the inability to afford decent inns or plentiful food or any kind of ride along the way.";
 		move the player to the Forest Clearing;
 		move the pack to the player; now the player wears the trousers; now the player wears the shirt.
-	
-	Forest Clearing is a room. "It's mid-autumn in your memory, the pool clear and cold, gold and red leaves floating on the surface." 
+
+	Forest Clearing is a room. "It's mid-autumn in your memory, the pool clear and cold, gold and red leaves floating on the surface."
 
 	The pool is scenery in the Clearing. Understand "reflection" or "surface" or "water" as the pool. "The pool is cold but beautiful, and the stopping place a welcome rest." The leaves are scenery in the clearing. The description is "Bright gold and orange and red: it's been a sharply chilly autumn, as you have reason to know in detail."
 
@@ -197,7 +201,7 @@ This time, we're waiting for the princess either to understand or not understand
 		increment the clue count of Beauty;
 		say "You cannot see yourself without reflection, but you can feel your hair loose and unbound over your shoulders."
 
-	Rule for printing the name of the skirt while taking inventory: say "one skirt you have not been able to bring yourself to part with". The description of the skirt is "Made for you by your mother, and it looks quite pretty on you. If your primary plan does not work, you may be forced to wear it again, and hope to catch a male eye... but with luck that will not be necessary." After taking inventory: increment clue count of Beauty. 
+	Rule for printing the name of the skirt while taking inventory: say "one skirt you have not been able to bring yourself to part with". The description of the skirt is "Made for you by your mother, and it looks quite pretty on you. If your primary plan does not work, you may be forced to wear it again, and hope to catch a male eye... but with luck that will not be necessary." After taking inventory: increment clue count of Beauty.
 
 	Swimming is an action applying to nothing. Understand "swim" or "dive" as swimming.
 
@@ -219,7 +223,7 @@ This time, we're waiting for the princess either to understand or not understand
 
 		You could weep for womankind. But you don't quite dare spell it out in so many words, not when someone might come up the stair and overhear a chance revelation."
 
-	Dramatic revelation ends in success when Beauty is clever. When dramatic revelation ends in success: 
+	Dramatic revelation ends in success when Beauty is clever. When dramatic revelation ends in success:
 		restore the player;
 		now Beauty is passive;
 		say "'You're -- a girl? Like me?'
@@ -230,15 +234,15 @@ This time, we're waiting for the princess either to understand or not understand
 
 And now, since we don't really want to return to the rest of the 'marriage proposal' scene once she has learned our ID:
 
-	{**}Marriage proposal ends in distraction when Dramatic Revelation ends in success. 
+	{**}Marriage proposal ends in distraction when Dramatic Revelation ends in success.
 
 	Compromise proposal is a scene. Compromise proposal begins when Dramatic Revelation ends in success. When Compromise Proposal begins: now Beauty is passive.
 
 	Instead of asking an awake beauty about a topic listed in the Table of Secondary Conversation when Compromise Proposal is happening:
 		now Beauty is passive;
 		say "[reply entry][paragraph break]";
-		blank out the whole row. 
-	
+		blank out the whole row.
+
 	Every turn during Compromise Proposal:
 		if Beauty is active and Beauty is visible:
 			repeat through Table of Secondary Conversation:
@@ -246,8 +250,8 @@ And now, since we don't really want to return to the rest of the 'marriage propo
 				if the number of filled rows in the Table of Secondary Conversation is greater than 1, blank out the whole row;
 				make no decision.
 
-	Every turn: now Beauty is active. 
-	
+	Every turn: now Beauty is active.
+
 Notice that we moved the re-activation rule down here so that the Compromise Proposal rule would fire first. There are other more complicated ways of handling order of every turn rules than by relying on text sequence alone; but we will save that for a later chapter. For now it is sufficient to depend on the order in which the rules are declared.
 
 	{**}Table of Secondary Conversation
@@ -262,7 +266,7 @@ Notice that we moved the re-activation rule down here so that the Compromise Pro
 	Before she can go on, you say, 'There was a woman Pope, once. Compared to that, a woman king is nothing.'"
 	"decision/proposal/marriage/choice"	"'So,' you say. 'What do you think?'
 
-	[final decision]"	"Her pretty nose twitches again, which you are coming to recognize as a sign of hard mental labor. 'I think I see,' she says. [final decision]" 
+	[final decision]"	"Her pretty nose twitches again, which you are coming to recognize as a sign of hard mental labor. 'I think I see,' she says. [final decision]"
 
 	To say final decision:
 		if Beauty is sympathetic:

@@ -1,8 +1,11 @@
-*** Understanding kinds of value
-(Names of objects change with player's diction; Straw Into Gold)
-Creating a Rumpelstiltskin character who is always referred to as "dwarf", "guy", "dude", or "man" -- depending on which the player last used -- until the first time the player refers to him as "Rumpelstiltskin".
+Example: *** Straw Into Gold
+Location: Understanding kinds of value
+RecipeLocation: Varying What Is Written
+Index: Names of objects change with player's diction
+Description: Creating a Rumpelstiltskin character who is always referred to as "dwarf", "guy", "dude", or "man" -- depending on which the player last used -- until the first time the player refers to him as "Rumpelstiltskin".
+For: Z-Machine
 
-	{*} "Straw Into Gold"
+	{*}"Straw Into Gold"
 
 	The Cell is a room. Rumpelstiltskin is an improper-named man in the Cell.  Rumpelstiltskin can be identified or unidentified. Rumpelstiltskin is unidentified.
 
@@ -10,12 +13,12 @@ Creating a Rumpelstiltskin character who is always referred to as "dwarf", "guy"
 
 Our example is slightly complicated by the fact that "man" is a name already known to Inform, so we can't re-use it as a kind of value. This is possible to work around, though:
 
-	{**}Understand "man" as man-thing. 
+	{**}Understand "man" as man-thing.
 
 Now we borrow from the Activities chapter to look at the exact wording of the player's command:
 
 	{**}After reading a command:
-		if the player's command includes "[R-name]", 
+		if the player's command includes "[R-name]",
 			now the R-name of Rumpelstiltskin is the R-name understood;
 		if the player's command includes "Rumpelstiltskin":
 			now Rumpelstiltskin is identified;

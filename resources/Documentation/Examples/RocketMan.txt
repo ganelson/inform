@@ -1,6 +1,9 @@
-* Upper and lower case letters
-(Case change for text produced by to say phrases; Rocket Man)
-Using case changes on any text produced by a "to say..." phrase.
+Example: * Rocket Man
+Location: Upper and lower case letters
+RecipeLocation: Varying What Is Written
+Index: Case change for text produced by to say phrases
+Description: Using case changes on any text produced by a "to say..." phrase.
+For: Z-Machine
 
 We can now change the case of any text produced by a "to say..." phrase. This is often useful when we would like to make use of a standard say phrase in some new context. Say, for instance, that we would like to "[is-are the list...]" in a context that needs the first letter to be capitalized.
 
@@ -10,16 +13,16 @@ For example:
 
 	{*}"Rocket Man"
 
-	Instead of going somewhere from the spaceport when the player carries something: 
+	Instead of going somewhere from the spaceport when the player carries something:
 		let N be "[is-are the list of things carried by the player] really suitable gear to take to the moon?" in sentence case;
 		say "[N][paragraph break]".
 
 	The Spaceport is a room. North of the Spaceport is the Rocket Launch Pad. The player carries a stuffed bear, a chocolate cookie, and a book.
-	
+
 	The description of the book is "It is entitled [italic type]Why Not To Take [sentence cased inventory] To The Moon[roman type]."
-	
-	To say sentence cased inventory: 
+
+	To say sentence cased inventory:
 		let N be "[a list of things carried by the player]" in title case;
 		say "[N]".
 
-	Test me with "n / x book". 
+	Test me with "n / x book".

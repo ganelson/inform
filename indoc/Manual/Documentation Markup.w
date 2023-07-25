@@ -12,7 +12,7 @@ using skipped lines as paragraph breaks, and tabs for indented quotations:
 	standard letters are allowed:
 	
 	    The quick brown fox jumped over the lazy dog.
-	    Jinxed wizards pluck ivy from my quilt.
+	    Jinxed wizards pluck ivy from my big quilt.
 	    Jackdaws love my big sphinx of quartz.
 	
 	The second para begins here, after the
@@ -359,44 +359,48 @@ at the appropriate places under C and A.
 Recall that each Example provided with the documentation -- usually a
 sample program -- has its own source file. For example, in the standard
 Inform repository, the example Alpaca Farm lives in:
-= (text as Indoc)
-	Documentation/Examples/Alpaca.txt
+= (text)
+	Documentation/Examples/AlpacaFarm.txt
 =
 Example files are just like volume files except that they open with a
-special three-line header of metadata. In this example, it's:
-= (text as Indoc)
-	* New commands for old grammar
-	(USE action which divines rational behavior for a wide range of possible nouns; Alpaca Farm)
-	A generic USE action which behaves sensibly with a range of different objects.
+special header of metadata. In this example, it's:
+= (text)
+	Example: * Alpaca Farm
+	Location: New commands for old grammar
+	RecipeLocation: Clarification and Correction
+	Index: USE action which divines rational behavior for a wide range of possible nouns
+	Description: A generic USE action which behaves sensibly with a range of different objects.
+	For: Z-Machine
 =
-Line 1 opens with one to four asterisks, which is the star rating (a measure
-of difficulty/complexity), and then gives the section name to which it belongs.
-This should be a section name in the primary volume, if there are two. (For
-Inform, that's "Writing with Inform".)
+Line 1 is required to take the form |Example: *** TITLE|, for some number of
+asterisks between one and four - a measure of difficulty/complexity. By
+convention the filename will be the same as the title but with punctuation
+removed, but that is just a convention, and any filename can be used.
 
-Line 2 shows how to index the example, both thematically and, after the semicolon,
-alphabetically.
+After line 1, further metadata lines can optionally appear, in any order, and then there
+should be a skipped (i.e. completely blank) line before the body of the example
+appears.
 
-Line 3 is the "strapline" shown under the example title in the documentation.
+The possible metadata lines are:
 
-@ The above metadata is not quite enough to locate the example, because it
-only gives a position in the primary volume (e.g., "Writing with Inform").
-Where should the example go in the secondary (e.g., "The Inform Recipe Book")?
+(a) |Location: SECTION| gives the section name which an example should go into,
+in the primary volume, if there are two. (For Inform, that's "Writing with Inform".)
 
-The answer is provided by the special file
-= (text as Indoc)
-	Documentation/Examples/(Recipes).txt
+(b) |RecipeLocation: SECTION| similarly for the secondary volume. (For Inform,
+that's "The Recipe Book".)
+
+(c) |Index: ENTRY| gives the example this explanatory index entry in the alphabetical
+index of examples.
+
+(d) |Description: DESC| gives some text to use in the example heading, to explain
+what it exemplifies.
+
+(e) |For: PLATFORM| is to do with testing the example, and is ignored by |indoc|.
+
+(f) |Subtitle: SUBTITLE| is used only for examples occurring in numbered sequences,
+where the same idea is elaborated in successive examples. For example:
+
+= (text)
+	Example: * Port Royal 2
+	Subtitle: With one-way connections added
 =
-which is not an example, but a list of examples under chapter and section
-names in the Recipe Book. This is fairly self-explanatory, but note that
-examples appear not under their named ("Alpaca Farm") but under their
-thematic descriptions ("USE action which divines rational behavior for a
-wide range of possible nouns") -- the point of which being that the Recipe
-Book is organised by theme.
-
-There's one special notation, for use at the top of the recipes file:
-= (text as Indoc)
-	Going Going == OMIT
-=
-This says that a named example, here "Going Going", should be omitted
-altogether from the Recipe Book. (Inform omits about 12 of these.)

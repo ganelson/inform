@@ -1,0 +1,38 @@
+Example: ** Hotel Stechelberg
+Location: Adjacent rooms and routes through the map
+RecipeLocation: Continuous Spaces and The Outdoors
+Index: Signposts to distant rooms
+Description: Signposts such as those provided on hiking paths in the Swiss Alps, which show the correct direction and hiking time to all other locations.
+For: Z-Machine
+
+The following rule appends a paragraph to every room description. We need not worry about doors (despite the pass in the Bernese Oberland known figuratively as the "Little Door").
+
+	{*}"Hotel Stechelberg"
+
+	After looking:
+		say "Yellow arms on the signpost point:-[line break]";
+		repeat with destination running through interesting rooms:
+			let the way be the best route from the location to the destination;
+			if the way is a direction, say "  [way] for [the destination]: [number of moves from the location to the destination] Std."
+
+	Hotel Stechelberg is a room. "The wooden hiking inn at the end of the road, with flowerboxes, canton flags, outdoor tables and a triangular paddock for the cows contesting the annual Miss Stechelberg competition. Otto and Marianne do cheerful innkeeper things, while the sun blazes from a gentian-blue sky."
+
+	A room can be dull or interesting. A room is usually dull.
+
+	North of Hotel Stechelberg is Trummelbachfalle. North of Trummelbachfalle is Lauterbrunnen. Lauterbrunnen is interesting.
+
+	Southeast of Hotel Stechelberg is Trachsellauenen. Trachsellauenen is interesting.
+
+	Test me with "look".
+
+With a bit more work, the result might be:
+
+	Hotel Stechelberg
+	The wooden hiking inn at the end of the road, with flowerboxes, canton flags, outdoor tables and a triangular paddock for the cows contesting the annual Miss Stechelberg competition. Otto and Marianne do cheerful innkeeper things, while the sun blazes from a gentian-blue sky.
+
+	Yellow arms on the signpost point:-
+		north for Lauterbrunnen: 2 Std.
+		west for Sefinental: 2 Std.
+		west for Schilthorn: 6 Std.
+		southeast for Trachsellauenen: 1 Std.
+		southeast for Oberhornsee: 3 Std.

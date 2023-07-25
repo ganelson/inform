@@ -1,8 +1,11 @@
-* Pattern matching
-(Phrase to repeat a rule--Phrase to let us say things some number of times; Ahem)
-Writing a phrase, with several variant forms, whose function is to follow a rule several times.
+Example: * Ahem
+Location: Pattern matching
+RecipeLocation: Varying What Is Written
+Index: Phrase to repeat a rule
+Description: Writing a phrase, with several variant forms, whose function is to follow a rule several times.
+For: Z-Machine
 
-As we see in the example here, it is possible to use slashed variations in more than one place in a phrase, and to offer a number of separate forms. The main rule of thumb to remember is that value inputs for the phrase should always be separated by some text; so 
+As we see in the example here, it is possible to use slashed variations in more than one place in a phrase, and to offer a number of separate forms. The main rule of thumb to remember is that value inputs for the phrase should always be separated by some text; so
 
 	To do/follow (chosen rule - a rule) exactly/precisely/just/-- (N - a number) time/times:
 		....
@@ -13,24 +16,24 @@ would cause a problem when we tried to call it with
 
 In general, we probably don't need to make our phrase definitions quite so flexible as this, but it's a good idea to account for "a" vs. "the", and for the possibility of using singular and plural forms, especially when writing extensions or other source to be shared.
 
-	{*} "Ahem"
-	
+	{*}"Ahem"
+
 	To do/follow (chosen rule - a rule) exactly/precisely/just (N - a number) time/times:
 		repeat with index running from 1 to N:
 			follow chosen rule.
-		
+
 	This is the throat-clearing rule:
 		say "'Ahem,' says [a random visible person who is not the player]."
-	
+
 	After waiting:
 		do the throat-clearing rule just one time.
-	
+
 	Instead of listening:
 		follow the throat-clearing rule precisely three times.
-	
+
 	Instead of smelling:
 		follow the throat-clearing rule exactly 2 times.
-	
-	Chateau Marmont is a room. Tom, Jack, Zsa-Zsa, and Wilma-Faye are people in the Chateau. Zsa-Zsa and Wilma-Faye are women. 
+
+	Chateau Marmont is a room. Tom, Jack, Zsa-Zsa, and Wilma-Faye are people in the Chateau. Zsa-Zsa and Wilma-Faye are women.
 
 	Test me with "wait / smell / listen".

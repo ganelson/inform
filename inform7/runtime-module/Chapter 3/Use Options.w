@@ -400,7 +400,7 @@ void RTUseOptions::uo_identifier(OUTPUT_STREAM,
 		WRITE("F");
 	} else {
 		WRITE("V");
-	}	
+	}
 }
 
 @ Kit configuration constants are created in the |configuration| submodule

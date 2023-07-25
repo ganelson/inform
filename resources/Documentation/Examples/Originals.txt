@@ -1,15 +1,18 @@
-* Asking which do you mean
-(Model objects referred to by the thing modeled; Originals)
-Allowing the player to create models of anything in the game world; parsing the name "model [thing]" or even just "[thing]" to refer to these newly-created models; asking "which do you mean, the model [thing] or the actual [thing]" when there is ambiguity.
+Example: * Originals
+Location: Asking which do you mean
+RecipeLocation: Cameras and Recording Devices
+Index: Model objects referred to by the thing modeled
+Description: Allowing the player to create models of anything in the game world; parsing the name "model [thing]" or even just "[thing]" to refer to these newly-created models; asking "which do you mean, the model [thing] or the actual [thing]" when there is ambiguity.
+For: Z-Machine
 
 We rely here on the understanding-by-relations rules we've already learned, but there is an additional trick: we want to make sure that if the player types "original" or "actual", this word will not be taken to refer to the thing modeled:
 
 	{*}"Originals"
-	
-	A model is a kind of thing. 10 models are in the model-repository. 
+
+	A model is a kind of thing. 10 models are in the model-repository.
 
 	Appearance relates one thing to various models. The verb to be shown by means the appearance relation.
-	
+
 	Indication relates a model (called X) to a thing (called Y) when Y is shown by X and Y is suitable.
 
 	Understand "actual" or "original" as "[actual]". Understand "[actual]" as something when the item described is not a model.
@@ -30,34 +33,34 @@ Now our duplication command -- for the sake of simplicity, we'll suppose that in
 
 	Setting action variables for duplicating:
 		let N be a random model in the model-repository;
-		now the selected model is N.  
+		now the selected model is N.
 
 	Check duplicating:
 		if the selected model is nothing, say "You're out of power." instead.
-	
-	Carry out duplicating: 
+
+	Carry out duplicating:
 		now the noun is shown by the selected model;
 		move the selected model to the player.
-	
+
 	Report duplicating:
 		say "You concentrate and manifest [a selected model]."
-		
-Now, the challenge is that we want to print the word "actual" before printing the name of an object, but only during disambiguation questions and only when we are not printing the name of the object as part of a model-name! (If we are not careful about the latter point, we will get responses such as "Which do you mean, the model actual deer or the actual deer?" which of course defeats the whole purpose. 
+
+Now, the challenge is that we want to print the word "actual" before printing the name of an object, but only during disambiguation questions and only when we are not printing the name of the object as part of a model-name! (If we are not careful about the latter point, we will get responses such as "Which do you mean, the model actual deer or the actual deer?" which of course defeats the whole purpose.
 
 The way around this is to remember that activities stack: we're printing the name of the deer while printing the name of a model that involves the deer. So if we set a flag while printing the name of a model, we can control the way the deer's name prints during the transaction. (We could use our ...while clause to specify while not printing the name of a model, except that we're already using it for "while asking which do you mean", and these do not stack.) So:
-	
+
 	{**}The virtual-context is a truth state that varies. The virtual-context is false.
 
 	Before printing the name of a model:
 		now virtual-context is true.
-	
+
 	After printing the name of a model:
-		now virtual-context is false. 
-	 
+		now virtual-context is false.
+
 	Before printing the name of something (called target) while asking which do you mean:
-		if the target is not a model and virtual-context is false: 
+		if the target is not a model and virtual-context is false:
 			say "actual ".
-	
+
 	Forest is a room. It contains a deer and a daisy. The deer is an animal.
 
 	Test me with "duplicate deer / x model deer / x deer model / drop deer / x deer / actual / x deer / model".

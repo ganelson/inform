@@ -1,21 +1,24 @@
-* Variations: arrays, logs, queues, stacks, sets, sieves and rings
-(Using lists as sieves; Sieve of Eratosthenes)
-The haughty Eratosthenes of Cyrene will nevertheless consent to sieve prime numbers on request.
+Example: * Sieve of Eratosthenes
+Location: Variations: arrays, logs, queues, stacks, sets, sieves and rings
+RecipeLocation: Mathematics
+Index: Using lists as sieves
+Description: The haughty Eratosthenes of Cyrene will nevertheless consent to sieve prime numbers on request.
+For: Z-Machine
 
 In the words of Wikipedia: "Eratosthenes of Cyrene (Greek Eρατοσθένης; 276 BC-194 BC) was a Greek mathematician, poet, athlete, geographer and astronomer." In the words of Tom Lehrer: "It's people like that who make you realise how little you've achieved in life."
 
 A prime number is a number greater than 1 which is not a multiple of anything, so we can find the primes by starting with all the numbers and sieving out all the multiples of 2, then all the multiples of 3, and so on. Here we make our sieve of the unacceptable numbers (the "composite" or non-prime ones) first, then form a list of all the numbers, then sieve out the composites: what are left must be the primes.
 
 	{*}"Sieve of Eratosthenes"
-	
+
 	Alexandria is a room. Eratosthenes is a man in Alexandria. "The haughty Greek mathematician, Eratosthenes, glowers at you."
-	
+
 	Sieving is an action applying to one number. Understand "sieve [number]" as sieving.
-	
+
 	Instead of sieving, say "You make a feeble attempt, sketching in the sand, but it goes nowhere. Eratosthenes smirks. 'I expect your friends call you gamma, then?'"
-	
+
 	Persuasion rule for asking Eratosthenes to try sieving: persuasion succeeds.
-	
+
 	Report Eratosthenes sieving:
 		let N be the number understood;
 		let the composites be a list of numbers;
@@ -33,7 +36,7 @@ A prime number is a number greater than 1 which is not a multiple of anything, s
 			add P to the primes;
 		remove the composites from the primes;
 		say "Eratosthenes sketches lines in the sand with the air of much practice. 'The primes up to [N] are [the primes]. The composites are [the composites].'"
-	
+
 	Test me with "sieve 10 / eratosthenes, sieve 100".
 
 While this could all be done more efficiently with an array, that's only because what we are sieving are numbers: sieving is a technique which can be used for non-numerical decisions, too.

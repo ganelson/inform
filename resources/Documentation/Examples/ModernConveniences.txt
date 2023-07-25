@@ -1,6 +1,9 @@
-** A simple example extension
-(Extension design advice--Kitchen appliances; Modern Conveniences)
-Exemplifying the kind of source we might use in writing extensions for kitchen and bathroom appliances.
+Example: ** Modern Conveniences
+Location: A simple example extension
+RecipeLocation: Kitchen and Bathroom
+Index: Extension design advice
+Description: Exemplifying the kind of source we might use in writing extensions for kitchen and bathroom appliances.
+For: Z-Machine
 
 Suppose we want to write an extension or other portable code which defines a "kitchen" kind of room and a "bathroom" kind of room. All kitchen rooms we create in the future will automatically contain standard kitchen appliances: fridge, freezer, sink with taps, counters, cabinets, and a stovetop with built-in oven. Similarly, all bathrooms will have sinks, baths, cabinets, and toilets, and respond to some standard interactions.
 
@@ -50,16 +53,16 @@ What follows is fairly straightforward, but notice that we are somewhat obsessiv
 		say "You turn on [the noun]." instead. [since "switch on" sounds weird in this context.]
 
 	Report switching off a tap (this is the standard report switching taps off rule):
-		say "You turn off [the noun]." instead. 
+		say "You turn off [the noun]." instead.
 
 	After examining something which includes a switched on tap (called relevant tap) (this is the report flowing water rule):
 		say "The water is flowing from [the relevant tap]."
 
 	A drain is a kind of container. A drain is part of every sink. Understand "plughole" as the drain. Understand "[something related by reversed incorporation] drain/plughole" as a drain.
-	
+
 	 Instead of inserting something into a drain (this is the no clogging drains rule), say "Pointless."
 
-This is probably about as far as we want to go in a generic simulation: it is tempting to code up water, drains down which the player can lose objects, sinks that get clogged and overflow, and so on; but the more we embellish in these ways, the more likely the end result would be disruptive to individual games. For right now what we're aiming for is something simple which provides the basic interactions a player might expect in this kind of room, but which does not have any significant implications for the surrounding world model. 
+This is probably about as far as we want to go in a generic simulation: it is tempting to code up water, drains down which the player can lose objects, sinks that get clogged and overflow, and so on; but the more we embellish in these ways, the more likely the end result would be disruptive to individual games. For right now what we're aiming for is something simple which provides the basic interactions a player might expect in this kind of room, but which does not have any significant implications for the surrounding world model.
 
 A particularly conservative author might even want to make it turn out that the water has been shut off and nothing flows from the taps: in the extension documentation, we might want to include a line or two of example showing how this might be done by changing or removing the relevant rules of our extension.
 
@@ -110,12 +113,12 @@ If we were feeling particularly ambitious and inclined toward interior decoratio
 	Check washing (this is the block washing rule):
 		say "It doesn't seem worth the bother." instead.
 
-Now we might put this to work in a short example. 
+Now we might put this to work in a short example.
 
 One slight challenge lies in giving these assembled pieces separate descriptions. When we have an assembly that adds parts to objects, we can then talk about (for instance) "the stove's switch" elsewhere in the code. But items that have been assigned rooms are not named in the same way, so we cannot talk about "the Industrial Kitchen's stove" in our code as a way to assign it a description or special behavior. In quite a simple example, we could make the descriptions of the kind simply be the descriptions we want for the individual items:
 
 	{**}Section 3 - An Example We Might Offer
-	
+
 	Our Household Kitchen is a kitchen.
 
 	The Tiny Bathroom is a bathroom. It is west of Our Household Kitchen.
@@ -130,21 +133,21 @@ In a game that featured multiple bathrooms and kitchens, this wouldn't be enough
 
 	The description of a stove is "[if in Industrial Kitchen]A massive stainless steel stove-top with six burners[otherwise]Your standard four-burner item[end if]."
 
-or create an 
+or create an
 
 	Instead of examining the stove in the Industrial Kitchen: ...
-	
+
 sort of rule for those objects they wanted to describe specially; or they might use a when play begins rule to initialize a few things:
 
 	When play begins:
 		let N be a random stove in the Industrial Kitchen;
 		move the boiling pot to N;
 		change the description of N to...
-		
+
 Or we might even (if we anticipate lots of these kinds of amendments) want to rig up something more complex that finds the descriptions of appliances in a table, rather than relying on their individual description properties. This can all be done, but it is only interesting as long as it remains genuinely labor-saving: that is, as long as the convenience of having the assembly is greater than the annoyance of writing special rules to cover for the automation. In the end, the "kitchen" and "bathroom" room types are likely to be most useful for authors who want to include the standard props but not actually make them a critical part of the game; if stoves and sinks have more of a starring role in the production, authors may be better off coding them or at the very least placing them by hand, as in
 
 	The Industrial Kitchen is a room.
-	
+
 	Thor is a stove in the Industrial Kitchen. It supports a boiling pot.
-	
+
 All these quirks are things that we (as the extension author) want to think out in advance: we should ideally warn authors about possible pitfalls in using our extension (if we can think of them) and point out ways of customizing the behavior (if there are interesting ways).

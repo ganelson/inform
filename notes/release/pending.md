@@ -22,6 +22,11 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 	references and links provided. (A feature request for this was filed as
 	Jira bug [I7-2232](https://inform7.atlassian.net/browse/I7-2232).)
 
+- The obscure debugging verb TREE has been renamed SHOWTREE to reduce the risk
+	of confusion when "tree" is typed in reply to a clarifying question from the
+	command parser, in a debug build (such as in the app). See
+	Jira bug [I7-2398](https://inform7.atlassian.net/browse/I7-2398).
+
 ## Documentation
 
 "Writing with Inform" and "The Recipe Book" benefit from a revision throughout to

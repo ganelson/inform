@@ -57,7 +57,7 @@ text_stream *Rawtext::turn_rawtext_into_blocks(OUTPUT_STREAM,
  	rhs->no_blocks_read_in_current_chapter = 0;
  	rhs->no_pars_read_in_current_block = 0;
  	rhs->title_of_block_being_read = Str::new(); /* Untitled until a block heading found */
-	if (E) rhs->skip_opening_lines = 3;
+	if (E) rhs->skip_opening_lines = E->ex_header_length;
 	else rhs->skip_opening_lines = 0;
 
  	@<Prepare to read a new chapter of rawtext@>;

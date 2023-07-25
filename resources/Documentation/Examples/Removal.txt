@@ -1,0 +1,27 @@
+Example: * Removal
+Location: Action variables
+RecipeLocation: Taking, Dropping, Inserting and Putting
+Index: TAKE action reports where the noun came from
+Description: TAKE expanded to give responses such as "You take the book from the shelf." or "You pick up the toy from the ground."
+For: Z-Machine
+
+Suppose that we want to change the reporting of "take" so that the player is always told something like "You take the book from the shelf." or "You pick up the toy from the ground." In order to generate these reports, we will need to know where the object started, even though by the time we are printing the output, the object will have moved.
+
+	{*}"Removal"
+
+	The Pharmacy is a room. A desk and a trash can are in the Pharmacy. The pill-counter, a prescription, and a computer are on the desk. The computer is fixed in place. The pill-counter contains some Vicodin. The trash can contains an empty box.
+
+	The taking action has an object called previous locale (matched as "from").
+
+The previous locale could in theory be either a thing or a room, so we make it "an object" -- that is, the most generic possible kind, to which both things and rooms belong. Now we record what the previous locale is at the beginning of each taking action:
+
+	{**}Setting action variables for taking:
+		now previous locale is the holder of the noun.
+
+	Report taking something from the location:
+		say "You pick up [the noun] from the ground." instead.
+
+	Report taking something:
+		say "You take [the noun] from [the previous locale]." instead.
+
+	Test me with "get all".

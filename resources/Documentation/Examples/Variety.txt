@@ -1,12 +1,15 @@
-** More on adapting verbs
-(Describing action outcomes using a random choice of verb; Variety)
-Suppose we want all of our action responses to display some randomized variety. We could do this by laboriously rewriting all of the response texts, but this example demonstrates an alternative.
+Example: ** Variety
+Location: More on adapting verbs
+RecipeLocation: Varying What Is Written
+Index: Describing action outcomes using a random choice of verb
+Description: Suppose we want all of our action responses to display some randomized variety. We could do this by laboriously rewriting all of the response texts, but this example demonstrates an alternative.
+For: Z-Machine
 
 Verbs can be related to other things by relations. We've seen that it's possible for a verb to "mean" a relationship. But we can also create a relation between verbs and actions. For instance, we can tell Inform that "take", "get", and "acquire" are all valid ways to describe the action of taking, and then allow it to pick a verb randomly to describe whatever action just occurred.
 
 
 	{*}"Variety"
-	
+
 	Section 1 - Descriptive Functionality
 
 	Describing relates various verbs to various action names. The verb to describe means the describing relation.
@@ -23,17 +26,17 @@ Verbs can be related to other things by relations. We've seen that it's possible
 
 	After an actor doing something when the noun is nothing and a verb describes (the action name part of the current action) (this is the apply random verbs to describing nounless actions rule):
 		say "[The actor] [verb rendering applied to a random verb that describes (the action name part of the current action)].";
-		rule succeeds. 
+		rule succeeds.
 
 	After an actor doing something to something when a verb describes (the action name part of the current action) (this is the apply random verbs to describing actions rule):
 		say "[The actor] [verb rendering applied to a random verb that describes (the action name part of the current action)] [the noun].";
 		rule succeeds.
-	
+
 	To decide which text is the rendering of (V - verb) (this is verb rendering):
 		decide on "[adapt V]".
-	
+
 	Section 2 - Scenario
-	
+
 	Lab is a room. The table is here. The bat and the ball are on the table.
 
 	Test me with "get ball / drop ball / get bat / drop bat / smell ball".

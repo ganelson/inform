@@ -1,0 +1,36 @@
+Example: ** Today Tomorrow
+Location: In the presence of, and when
+RecipeLocation: Animals
+Index: Concealed pet who would yip at you if it could see you
+Description: A few notes on "In the presence of" and how it interacts with concealed objects.
+For: Z-Machine
+
+Rules about concealment will affect "in the presence of", too. For instance, suppose we have a man with a pocket pet:
+
+	{*}"Today Tomorrow"
+
+	The Temporary Employment Office is a room. "'Tomorrow's Temporary Workers - Today!' proclaims the logo over the door. The office is divided into two areas, the inner sanctum where you take calls and fiddle with the computer, and the outer area where workers take skill exams and watch inspirational videos ('Earn your way to partial benefits!', 'Vacation days and you!', 'Temping the Tomorrow Way', etc.)."
+
+	Maya is a woman in the Office. "Your coworker Maya sits at her own computer, diligently modifying all the [one of]pay rates in the database down from $9.00 an hour to $8.96[or]billing rates in the database up from $25.00 an hour to $25.04[purely at random]." She wears a trenchcoat. She carries a chihuahua. The description of Maya is "[if Maya is wearing the trenchcoat]She's wearing a trenchcoat, in a bizarre bid to keep your boss unaware of the chihuahua in her pocket. 'Because petsitters are really expensive!' she explained to you in an urgent hiss this morning over the coffeemaker. [otherwise]She looks cold. [end if]To all appearances, she is carrying [a list of unconcealed things carried by Maya]."
+
+	Maya's computer is scenery in the Employment Office. The description is "You can't see the screen from here, but she was perfectly happy to tell you what she was doing."
+
+	Rule for deciding the concealed possessions of someone (called carrier):
+		if the particular possession is the chihuahua and the carrier wears the trenchcoat, yes;
+		otherwise no.
+
+	Instead of eating something in the presence of the chihuahua:
+		say "[The chihuahua] yips at you! Maya looks despairingly at [the noun], which is obviously inciting it."
+
+	The desk is scenery in the Office. On the desk are a multi-line telephone and a printer. The description of the printer is "Every morning, this instrument of torture spits out a list of the assignments you have to fill - professional, attractive receptionist with level three Excel certification, at $7.05 an hour; that sort of thing. You spend the ensuing three hours trying to meet its tyrannical demands." The description of the multi-line telephone is "Line three blinks urgently at you. You'll pick it up again as soon as you can remember who it was you put on hold."
+
+	The player carries a double bacon cheeseburger and a chocolate shake. Understand "milkshake" or "beverage" as the shake. The description of the cheeseburger is "A minor self-indulgence to make up for the fact that you have to work through lunch." The cheeseburger is edible. The shake is edible. The description of the shake is "It has the consistency of spackle and is no longer cold, but there is some chocolatey goodness in it still." Understand "burger" or "hamburger" as the cheeseburger. Instead of drinking the chocolate shake: try eating the shake instead.
+
+	Test me with "x maya / x cheeseburger / drink shake / eat cheeseburger".
+
+Unless we somehow get the trenchcoat away from Maya, the chihuahua will not be in view, and will not intervene in our lunch. All very well for the player character, but not so interesting to the story... To this end, we might add an unfortunate event, courtesy of later chapters:
+
+	{**}The time of day is 11:45 AM.
+
+	At 11:47 AM: say "Your boss pokes his head in, temporarily free of the round of conference calls that occupy all his days. 'Maya,' he says. 'Your coat?' He shakes his head, clucking sadly. 'It doesn't say professional!' But mercifully Maya manages to take it off so slowly that he doesn't glimpse her pet before her phone rings again.";
+		now Maya carries the trenchcoat.

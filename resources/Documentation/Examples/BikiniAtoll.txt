@@ -1,6 +1,9 @@
-* Printing the banner text
-(Banner printing at appropriate times; Bikini Atoll)
-Delaying the banner for later.
+Example: * Bikini Atoll
+Location: Printing the banner text
+RecipeLocation: Start-Up Features
+Index: Banner printing at appropriate times
+Description: Delaying the banner for later.
+For: Z-Machine
 
 	{*}"Bikini Atoll" by Edward Teller
 
@@ -9,7 +12,7 @@ Delaying the banner for later.
 	The conch shell is in the Hut. After taking the shell for the first time: say "As you gather the oddly-warm conch shell into your arms, you experience a sudden flash of deja-vu...[banner text]"; move the player to the Tropical Beach.
 
 	Rule for printing the banner text when the player is not carrying the shell: do nothing.
-	
+
 	Test me with "look / examine shell / get shell / look".
 
 (By tradition, and as a courtesy to all the people who have worked on Inform, authors ensure that the banner is printed some time near the beginning of each game played. So please only defer it, rather than suppress it altogether.)

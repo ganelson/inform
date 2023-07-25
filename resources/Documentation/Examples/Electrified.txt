@@ -1,11 +1,14 @@
-* Two rulebooks used internally
-(Dangerous objects not to be touched--Electrified objects; Electrified)
-Adding a rule before the basic accessibility rule that will prevent the player from touching electrified objects under the wrong circumstances.
+Example: * Electrified
+Location: Two rulebooks used internally
+RecipeLocation: Electricity and Magnetism
+Index: Dangerous objects not to be touched
+Description: Adding a rule before the basic accessibility rule that will prevent the player from touching electrified objects under the wrong circumstances.
+For: Z-Machine
 
 Suppose we want to prevent the player from touching anything electrified -- not just as a response to TOUCH OBJECT, but at any time when the action would require contact with the object in question.
 
 	{*}"Electrified"
-	
+
 	A thing can be safe or electrified. A thing is usually safe.
 
 	The Open Field is a room. "At this end of the field is a wire fence separating farm country from the government testing grounds beyond." The wire fence is an electrified thing in Open Field. It is scenery. The description of the wire fence is "Built into the fence is [a list of things which are part of the fence]." The scary box is an electrified container. It is part of wire fence. In the scary box is an alluring prize.
@@ -18,11 +21,11 @@ Suppose we want to prevent the player from touching anything electrified -- not 
 		if the action requires a touchable second noun and the second noun is electrified, say "You fear touching [the second noun]." instead.
 
 	The electrocution-wisdom rule is listed before the basic accessibility rule in the action-processing rules.
-	
+
 	Before touching the scary box:
 		say "You can't help noticing a bright red sticker on the surface of the box." [This rule will fire even if we are not wearing the glove, because Before rules occur before basic accessibility.]
-	
+
 	Instead of opening the scary box:
 		say "The scary box seems to be super-glued shut." [This one won't, because Instead rules occur after basic accessibility.]
-		
+
 	Test me with "touch fence / touch box / open box / wear glove / open box".

@@ -1,0 +1,25 @@
+Example: * About the examples
+Location: Preface
+RecipeLocation: Preface
+Index: About the examples
+Description: An explanation of the examples in this documentation, and the asterisks attached to them. Click the heading of the example, or the example number, to reveal the text.
+For: Untestable
+
+This is the first of about 400 numbered examples. In a few cases, such as this one, they provide a little background information, but almost all demonstrate Inform source text. The techniques demonstrated tend to be included either because they are frequently asked for, or because they show how to achieve some interesting effect.
+
+The same examples are included in <b>both</b> of the books of documentation, but in a different order: in <i>Writing with Inform</i>, they appear near the techniques used to make them work; in <i>The Inform Recipe Book</i>, they are grouped by the effects they provide. For instance, an example called "Do Pass Go", about the throwing of a pair of dice, appears in the "Randomness" section of <i>Writing with Inform</i> and also in the "Dice and Playing Cards" section of <i>The Inform Recipe Book</i>. Clicking the italicised WI and RB buttons at the right-hand side of an example's heading switches between its position in each book.
+
+Many computing books quote excerpts from programs, but readers have grown wary of them: they are tiresome to type in, and may only be fragments, or may not ever have been tested. The authors of Inform have tried to avoid this. All but two dozen examples contain entire source texts. A single click on the paste icon ///paste.png/// (always placed just left of the double-quoted title) will write the complete source text into the Source panel. All that is then required is to click the Go button, and the example should translate into a working game.
+
+In most cases, typing the single command TEST ME will play through a few moves to show off the effect being demonstrated. (You may find it convenient to create a "scratch" project file for temporary trials like this, clearing all its text and starting again with each new test.)
+
+As part of the testing process which verifies a new build of Inform, each example in turn is extracted from this documentation, translated, played through, and the resulting transcript mechanically checked. So the examples may even work as claimed. But the flesh is weak, and there are bound to be glitches. We would welcome reports, so that future editions can be corrected.
+
+Each example is loosely graded by difficulty: if they were exercises in a textbook, the asterisks would indicate how many marks each question scores. As a general rule:
+
+	///asterisk.png/// - A simple example, fairly easily guessed.
+	///asterisk.png/// ///asterisk.png/// - A complicated or surprising example.
+	///asterisk.png/// ///asterisk.png/// ///asterisk.png/// - An example needing detailed knowledge of many aspects of the system.
+	///asterisk.png/// ///asterisk.png/// ///asterisk.png/// ///asterisk.png/// - A complete scenario, containing material not necessarily relevant to the topic being demonstrated.
+
+In general, the main text of <i>Writing with Inform</i> tries never to assume knowledge of material which has not yet appeared, but the trickier examples almost always need to break this rule.

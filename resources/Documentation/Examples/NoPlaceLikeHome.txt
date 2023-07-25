@@ -1,0 +1,28 @@
+Example: *** No Place Like Home
+Location: Awarding points
+RecipeLocation: Scoring
+Index: Scored items listed in a table
+Description: Recording a whole table of scores for specific treasures.
+For: Z-Machine
+
+Suppose we want to assign scores for a whole range of objects the player might pick up. One systematic way to do this would be with a table of point values for things:
+
+	{*}"No Place Like Home"
+
+	Use scoring.
+
+	The Hall of the Gnome King is a room. The emerald cow is a thing in the Hall of the Gnome King. The ivory chessman is a thing in the Hall of the Gnome King. The book of incantations is a thing in the Hall of the Gnome King.
+
+	Table of Point Values
+	item	score
+	cow	10
+	incantations	4
+	chessman	1
+
+	Report taking an item listed in the Table of Point Values:
+		increase the score by the score entry;
+		blank out the whole row.
+
+	Test me with "take all".
+
+"Blank out the whole row" removes the line from the table, so that each award will occur only once. The player will not be able to earn more and more points by dropping and taking the same item again.

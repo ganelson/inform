@@ -1,9 +1,12 @@
-** Stored actions
-(Device to remember and play back actions; Anteaters)
-The player carries a gizmo that is able to record actions performed by the player, then force them to repeat those actions when the gizmo is dropped. This includes storing actions that apply to topics, as in "look up anteater colonies in the guide".
+Example: ** Anteaters
+Location: Stored actions
+RecipeLocation: Remembering, Converting and Combining Actions
+Index: Device to remember and play back actions
+Description: The player carries a gizmo that is able to record actions performed by the player, then force them to repeat those actions when the gizmo is dropped. This includes storing actions that apply to topics, as in "look up anteater colonies in the guide".
+For: Z-Machine
 
-	{*} "Anteaters"
-	
+	{*}"Anteaters"
+
 	A book is a kind of thing. Understand "book" as a book. A book has a table name called the contents.
 
 	Report consulting a book about:

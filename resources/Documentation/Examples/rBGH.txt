@@ -1,0 +1,36 @@
+Example: * rBGH
+Location: Units
+RecipeLocation: The Human Body
+Index: Player's height randomized at the start of play
+Description: The player character's height is selected randomly at the start of play.
+For: Z-Machine
+
+As with ordinary numbers, we can choose random units when this is useful:
+
+	{*}"rBGH"
+
+	The Pharmaceutical Testing Facility is a room. "A [if the player is short]large [end if][if the player is tall]cramped [end if]white space with sterile counters and a[if the player is tall]n uncomfortable little[end if] stool. There is also a mirror, behind which someone must be watching you. But you can't see through to that."
+
+	A counter, a one-way mirror, and a stool are scenery in the Facility. The stool is an enterable supporter. The counter supports a plate.
+
+	Height is a kind of value. 5 feet 11 inches specifies a height. 5'11 specifies a height. A person has a height.
+
+	Definition: a person is tall if its height is 6 feet 0 inches or more.
+
+	Definition: a person is short if its height is 5 feet 4 inches or less.
+
+	When play begins:
+		now the height of the player is a random height between 5 feet 2 inches and 6 feet 4 inches;
+		now the right hand status line is "[height of player]".
+
+	Instead of examining the player:
+		say "You, Test Subject, are [height of the player] tall."
+
+	The growth pill is a kind of thing. A growth pill is always edible. The description is usually "It is leaf-green and has a reassuring logo of a curling vine on the side. Nothing to worry about, nothing at all." Two growth pills are on the plate.
+
+	After eating the growth pill:
+		increase the height of the player by 0 feet 6 inches;
+		say "Your spine does something frightening and painful, and you find yourself looking down on the room from a wholly new angle.";
+		try looking.
+
+	Test me with "examine me / eat pill / examine me / eat pill / examine me".

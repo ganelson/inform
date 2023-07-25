@@ -1,24 +1,27 @@
-* Randomness
-(Pair of dice for rolling; Do Pass Go)
-A pair of dice which can be rolled, and are described with their current total when not carried, and have individual scores when examined.
+Example: * Do Pass Go
+Location: Randomness
+RecipeLocation: Dice and Playing Cards
+Index: Pair of dice for rolling
+Description: A pair of dice which can be rolled, and are described with their current total when not carried, and have individual scores when examined.
+For: Z-Machine
 
 	{*}"Do Pass Go"
 
 	Go is a room. "A giant square area, where you and your other pewter ornament friends gather before setting out to purchase London."
 
 	The pair of dice is carried by the player.
-	
+
 	The pair of dice has a number called first die. The pair of dice has a number called second die. The first die of the pair is 6. The second die of the pair is 6. Rule for printing the name of the pair of dice while taking inventory: say "pair of dice".
 	Rule for printing the name of the pair of dice: say "pair of dice showing [first die of the pair plus second die of the pair]".
-	
+
 	To say detailed state of the dice:
 		if the first die of the pair is the second die of the pair, say "double [first die of the pair]";
 		otherwise say "[first die of the pair] and [second die of the pair]".
-	
+
 	The description of the pair of dice is "The pair of dice are [if the dice are carried]itching to be rolled[otherwise]showing [detailed state of the dice][end if]."
-	
-	Rolling is an action applying to one carried thing. Understand "roll [something preferably held]" as rolling. 
-	
+
+	Rolling is an action applying to one carried thing. Understand "roll [something preferably held]" as rolling.
+
 	Check rolling when the noun is not the pair of dice: say "Not something you can roll." instead.
 	Carry out rolling:
 		now the pair of dice is in the holder of the actor;
@@ -26,7 +29,7 @@ A pair of dice which can be rolled, and are described with their current total w
 		now the second die of the pair of dice is a random number from 1 to 6.
 	Report rolling:
 		say "You roll [detailed state of the dice]."
-	
+
 	Test me with "i / roll dice / look / x dice / get dice / x dice / roll dice / roll dice / roll dice / roll dice / roll dice / roll dice / roll dice".
 
 Because we remember the states of the individual dice, not just a total, we can make use of the combination rolled.
@@ -36,9 +39,9 @@ Because we remember the states of the individual dice, not just a total, we can 
 		if the first die of the pair is the second die of the pair, increment the doubles count;
 		otherwise now the doubles count is 0;
 		continue the action.
-	
+
 	Jail is a room. "This is Jail, and not the Just Visiting periphery, either."
-	
+
 	Every turn when the doubles count is 3:
 		say "The blue-uniformed policemen blows his whistle and beckons you sternly...";
 		now the player carries the pair of dice;

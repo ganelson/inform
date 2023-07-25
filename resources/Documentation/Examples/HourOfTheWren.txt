@@ -1,0 +1,35 @@
+Example: *** Hour of the Wren
+Location: Future events
+RecipeLocation: Event Scheduling
+Index: Appointments at future times
+Description: Allowing the player to make an appointment, which is then kept.
+For: Z-Machine
+
+Here we allow the player to set the time at which some future event is going to happen, rather than letting the game decide. We'll need to borrow the syntax for defining new actions from a later chapter:
+
+	{*}"Hour of the Wren"
+
+	When play begins:
+		say "You more or less stumble across them in Central Park: a disparate group of people, all of different ages, sitting in a circle. They aren't talking to one another -- in fact, they seem to be trying very hard to ignore one another, like people in the waiting room of an especially embarrassing kind of doctor. You are about to go around when a woman in a grey pressed suit comes up to you. Her suit-skirt is trimmed in lavender cord, and she looks as though she might have been extremely sharp-dressed in 1944. She hands you a card."
+
+	The Circle in the Grass is a room. "No one is looking at you, except for the secretary, if that is what she is."
+
+	The player carries a card. The description of the card is "Typed: 'Active astrology - dislike your fortunes? change your stars! - make an appointment now - hour of the wren STILL AVAILABLE.'".
+
+	The time of day is 1:55 PM.
+
+	Understand "pick [time]" or "choose [time]" or "make appointment for [time]" or "make an appointment for [time]" as making an appointment for. Making an appointment for is an action applying to one time.
+
+	Carry out making an appointment for:
+		say "Fate cannot be commanded more than once."
+
+	Instead of making an appointment for the time understood for the first time:
+		say "You settle on [the time understood] for your appointment. The woman makes a note of it in an appointment book, which she carries in a brown paper bag. 'Excellent choice, ma'am,' she says in a low, urgent voice. 'You'll be very satisfied.'";
+		stars shift at the time understood.
+
+	Understand "hour of the wren" as 2:00 PM.
+
+	At the time when stars shift:
+		end the story saying "insert cataclysm here".
+
+	Test me with "x card / make appointment for hour of the wren / z / z / z / z".

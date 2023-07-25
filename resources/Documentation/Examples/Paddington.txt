@@ -1,12 +1,15 @@
-** Check, carry out, report
-(CUT [something] WITH [something] command--Soft objects able to be cut open; Paddington)
-A CUT [something] WITH [something] command which acts differently on different types of objects.
+Example: ** Paddington
+Location: Check, carry out, report
+RecipeLocation: Glass and Other Damage-Prone Substances
+Index: CUT [something] WITH [something] command
+Description: A CUT [something] WITH [something] command which acts differently on different types of objects.
+For: Z-Machine
 
 Suppose we intend a game in which the player needs to cut things open on a regular basis. We'll want to check whether they have the proper tools handy, and deal graciously with commands such as CUT [something] when no tool is specified. So:
 
 	{*}"Paddington"
 
-	A blade is a kind of thing. 
+	A blade is a kind of thing.
 
 	Understand "cut [something] with [something]" as cutting it with.
 
@@ -15,7 +18,7 @@ Suppose we intend a game in which the player needs to cut things open on a regul
 			try cutting the noun with the edge;
 		otherwise say "Your fingernails are not sharp enough."
 
-	Cutting it with is an action applying to two things. 
+	Cutting it with is an action applying to two things.
 
 	Check cutting it with:
 		if the noun is a person, say "That would hurt." instead;
@@ -28,46 +31,46 @@ Suppose we intend a game in which the player needs to cut things open on a regul
 		say "You slash [the noun] with [the second noun]."
 
 We'll need a way to account for all these cuts and rips.
-		
+
 	{**}Definition: a thing is ripped if the count of rips of it > 0.  A thing has a number called the count of rips. After examining something ripped, say "You see [the count of rips of the noun in words] rip[s] in [the noun][if something is in the noun], revealing [a list of things in the noun][end if]."
-	
+
 Moreover, because open containers normally list their contents when examined but we'd prefer Paddington's to be mentioned in the ripping paragraph:
 
 	{**}The examine containers rule does nothing when examining the teddy bear.
 
 So far, so good. But suppose that we'd like cutting also to make containers be permanently open and impossible to close again. We could write an "instead" rule, but that would mean that only our instead instructions would take effect, overriding the normal cutting it with rules entirely. Better would be to add a second carry out rule:
-	
+
 	{**}Carry out cutting a container with something:
 		now the noun is open;
 		now the noun is unopenable.
 
 Now our rule will occur whenever a container is cut, but play will still go on to the reporting stage. And indeed we can add more of these, of varying degrees of specificity:
-	
+
 	{**}Carry out cutting something which is part of something with something:
 		move the noun to the player.
-		
+
 	Carry out cutting the quilt with something:
 		now the description of the quilt is "Horribly tattered."
 
-For that matter, we might want to add a report rule as well, to occur after the "You slash..." rule, so that every time the player cuts something open which has contents, the contents will be listed.	
-	
+For that matter, we might want to add a report rule as well, to occur after the "You slash..." rule, so that every time the player cuts something open which has contents, the contents will be listed.
+
 	{**}Report cutting it with:
 		if the noun is open and the noun contains something,
 			say "Visible within [is-are a list of things in the noun]."
-			
+
 This time we do not add the condition to the rule (i.e., Report cutting an open noun...) If we did, this report rule would be more specific than the general report rule, and would occur first.
 
-	{**}The Safehouse is a room.  
-	
+	{**}The Safehouse is a room.
+
 	The teddy bear is a closed thing in the Safehouse. The description is "Fluffy[if the head is part of the bear], with an outsized head[otherwise], but headless[end if]." The head is a closed part of the teddy bear. In the bear is a large wad of stuffing. In the head are a small wad of stuffing and a packet of smuggled diamonds.
 
 	The quilt is in the Safehouse. The description is "An old but comforting quilt."
 
-	The player carries a blade called a switchblade. 
-	
+	The player carries a blade called a switchblade.
+
 Here is a final nicety to get rid of the "which is closed" statement on our closed unopenable teddy bear, using an "activity" rule:
 
 	{**}After printing the name of a closed unopenable container:
 		omit contents in listing.
-	
+
 	Test me with "cut quilt with bear / cut quilt with switchblade / examine quilt / cut bear with switchblade / again / examine bear / cut head with switchblade / get diamonds / mourn loss of innocence".

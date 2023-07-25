@@ -1,0 +1,26 @@
+Example: * Cactus Will Outlive Us All
+Location: Stored actions
+RecipeLocation: Remembering, Converting and Combining Actions
+Index: Characters killed off by trigger actions
+Description: For every character besides the player, there is an action that will cause that character to wither right up and die.
+For: Z-Machine
+
+	{*}"Cactus Will Outlive Us All"
+
+	Death Valley is a room. Luckless Luke and Dead-Eye Pete are men in the Valley. A cactus is in the Valley. Persuasion rule: persuasion succeeds.
+
+	A person has an action called death knell. The death knell of Luckless Luke is pulling the cactus. The death knell of Dead-Eye Pete is Luke trying dropping the cactus.
+
+	Before an actor doing something:
+		repeat with the victim running through people in the location:
+			let the DK be the death knell of the victim;
+			if the DK is not waiting and the current action is the DK:
+				say "It looks as if [the DK] was the death knell for [the victim], who looks startled, then nonexistent.";
+				now the victim is nowhere.
+
+If we leave it at that, then pulling the cactus will kill Luckless Luke but then say "Nothing obvious happens.", which seems like a bit of an anti-climax. So we add a special case response for that one:
+
+	{**}After pulling the cactus when Luckless Luke was in the location:
+		say "That's a real shame."
+
+	Test me with "get cactus / drop cactus / luke, get cactus / luke, drop cactus / pull cactus / look".

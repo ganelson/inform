@@ -1,19 +1,22 @@
-*** Printing a parser error
-(Player's erroneous command recorded for later; Xot)
-Storing an invalid command to be repeated as text later in the game.
+Example: *** Xot
+Location: Printing a parser error
+RecipeLocation: Using the Player's Input
+Index: Player's erroneous command recorded for later
+Description: Storing an invalid command to be repeated as text later in the game.
+For: Z-Machine
 
 In Hitchhiker's Guide to the Galaxy, any erroneous command the player types can return to haunt them later in the game. We could do the same, if we liked, by storing the player's command whenever we print a parser error.
 
-	{*} "Xot"
-	
+	{*}"Xot"
+
 	Humiliation Chamber is a room. "A grim, grey-walled room. Cameras watch you from every angle; convex mirrors reflect your actions; and up near the ceiling, where you can't disable it, is a loudspeaker."
 
 	The last error is a text that varies. The last error is "xot".
 
 	Before printing a parser error:
 		now the last error is the player's command.
-	
+
 	Every turn when a random chance of 1 in 2 succeeds:
 		say "Over the loudspeaker comes some distorted nonsense. If you listen carefully, it sounds as though some fool is saying '[last error], [last error], [last error]!'"
-		
+
 	Test me with "wiggle / z / z / z / z / z / z".

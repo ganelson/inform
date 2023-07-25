@@ -1,19 +1,23 @@
-* Listing rules explicitly
-(Verbosity: 2. Full-length descriptions mandatory--Full-length descriptions mandatory)
-Making rooms give full descriptions each time we enter, even if we have visited before, and disallowing player use of BRIEF and SUPERBRIEF.
+Example: * Verbosity 2
+Subtitle: Full-length descriptions mandatory
+Location: Listing rules explicitly
+RecipeLocation: Looking
+Index: Verbosity 2. Full-length descriptions mandatory
+Description: Making rooms give full descriptions each time we enter, even if we have visited before, and disallowing player use of BRIEF and SUPERBRIEF.
+For: Z-Machine
 
 Suppose that we want the player always to see full room descriptions, even if they try to reset the defaults -- perhaps because there is vital information there which they will miss if they turn off full-length room descriptions.
 
-To do this, we might want to remove the standard behavior of the three actions associated with BRIEF, SUPERBRIEF, and VERBOSE, replacing them with explanatory messages about how the game behaves. We cannot use Instead to override these actions, because Instead rules do not apply to actions out of world. Instead, we will want to remove and replace the carry out rules. 
+To do this, we might want to remove the standard behavior of the three actions associated with BRIEF, SUPERBRIEF, and VERBOSE, replacing them with explanatory messages about how the game behaves. We cannot use Instead to override these actions, because Instead rules do not apply to actions out of world. Instead, we will want to remove and replace the carry out rules.
 
 We can do this easily by going to the Actions Index, looking up the detail panel for, say, "preferring abbreviated room descriptions", and click the "unlist" button to paste in the sentence that will remove this rule from the rulebook.
 
 Let's remove all three of the carry out rules and substitute our own:
 
 	{*}"Verbosity 2"
-	
+
 	Section 1 - Procedure
-	
+
 	The prefer unabbreviated room descriptions rule is not listed in the carry out preferring unabbreviated room descriptions rulebook.
 
 	The prefer sometimes abbreviated room descriptions rule is not listed in the carry out preferring sometimes abbreviated room descriptions rulebook.
@@ -22,19 +26,19 @@ Let's remove all three of the carry out rules and substitute our own:
 
 	Carry out preferring unabbreviated room descriptions:
 		say "[story title] always provides full-length descriptions for your reading pleasure."
-	
+
 	Carry out preferring sometimes abbreviated room descriptions:
 		say "For your playing protection, [story title] provides only full-length room descriptions."
-	
+
 	Carry out preferring abbreviated room descriptions:
 		try preferring sometimes abbreviated room descriptions instead.
-		
+
 	The standard report preferring abbreviated room descriptions rule is not listed in the report preferring abbreviated room descriptions rulebook.
-	
+
 	The standard report preferring unabbreviated room descriptions rule is not listed in the report preferring unabbreviated room descriptions rulebook.
-	
+
 	The standard report preferring sometimes abbreviated room descriptions rule is not listed in the report preferring sometimes abbreviated room descriptions rulebook.
-	
+
 	Use full-length room descriptions.
 
 	Section 2 - Scenario

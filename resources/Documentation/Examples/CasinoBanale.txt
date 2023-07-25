@@ -1,21 +1,24 @@
-*** Choosing notable locale objects for something
-(Narration which changes as the player learns new facts; Casino Banale)
-Creating room descriptions and object descriptions that change as the player learns new facts and pieces things together.
+Example: *** Casino Banale
+Location: Choosing notable locale objects for something
+RecipeLocation: Memory and Knowledge
+Index: Narration which changes as the player learns new facts
+Description: Creating room descriptions and object descriptions that change as the player learns new facts and pieces things together.
+For: Z-Machine
 
-In a work of interactive fiction that involves many new discoveries, we might want to change the way we narrate room descriptions and describe objects as the player learns new information. 
+In a work of interactive fiction that involves many new discoveries, we might want to change the way we narrate room descriptions and describe objects as the player learns new information.
 
 One approach to this is to create a model of the facts we want the player to find out, and attach some narrative text to each. When a fact becomes relevant to the story, that narrative text is shown to the player. So:
 
 	{*}"Casino Banale"
-	
+
 	Section 1 - Procedure
 
 First we create the concept of facts, and the idea that facts can make some things more important than others.
 
 	{**}A fact is a kind of thing. A fact can be known or unknown. A fact can be ready to learn or hidden. A fact has some text called the narration.
-			
+
 	Definition: a thing is narratively significant if it conveys an interesting fact.
-	
+
 	Definition: a thing is narratively dull if it is not narratively significant.
 
 	Conveyance relates various things to various facts. The verb to convey means the conveyance relation.
@@ -37,24 +40,24 @@ Next we need a way for the game to introduce these new facts. Let's say we want 
 
 	{**}After examining something which conveys an interesting fact (called discovery):
 		say "[discovery][paragraph break]".
-	
-	After choosing notable locale objects: 
+
+	After choosing notable locale objects:
 		repeat through the Table of Locale Priorities:
 			if the notable-object entry is narratively significant:
 				set the locale priority of the notable-object entry to 1.
-	
+
 	For writing a paragraph about a narratively significant thing (called item):
 		now the item is mentioned;
 		let chosen fact be a random interesting fact which is conveyed by the item;
 		say "[chosen fact][paragraph break]".
-	
+
 The "after choosing notable locale objects" line here handles things so that any interesting conclusions we want to draw are always given first, followed by the less interesting description.
 
 And finally, we need to give the player a little evidence to piece together:
-	
+
 	{**}Section 2 - Scenario
-	
-	The Casino is a room. 
+
+	The Casino is a room.
 
 	Frince is a man in the Casino. The description is "Frince is a friend of yours -- if you reckon friendship on the same terms that one reckons a cat as a pet. He spends time with you when he wants to, but if your wishes or convenience ever run counter to a whim of his, it's the whim that wins. Always. [paragraph break]He's also wearing a somewhat ludicrous shirt."
 
@@ -74,7 +77,7 @@ And finally, we need to give the player a little evidence to piece together:
 		It is ready to learn.
 		The narration is "[if looking]Penny grimaces at you-- [end if]Penny is the same woman who stepped on your toe in the buffet line. The third time, she blurted, 'You have big shoes, don't you?'"
 		Penny conveys penny-annoying.
-	
+
 	lipstick-smudges is a fact.
 		It is ready to learn.
 		The narration is "There are a couple of smudges of coral-colored lipstick on the collar."
@@ -88,6 +91,6 @@ And finally, we need to give the player a little evidence to piece together:
 	Affair-with-penny is a fact.
 		It follows lipstick-smudges and penny-wears-coral.
 		The narration is "You avoid [if examining Frince]his[otherwise]Frince's[end if] eye. You need some time to adjust to the image of him making out with Penny in a storage closet before you can talk to him without appalled giggling."
-		Frince conveys affair-with-Penny.  
-				 	
+		Frince conveys affair-with-Penny.
+
 	Test me with "x penny / x frince / x shirt / look".

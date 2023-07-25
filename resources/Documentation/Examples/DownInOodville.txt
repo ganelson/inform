@@ -1,15 +1,18 @@
-** Understanding kinds of value
-(Menu of numerical options; Down in Oodville)
-Offering the player a choice of numbered options at certain times, without otherwise interfering with their ability to give regular commands.
+Example: ** Down in Oodville
+Location: Understanding kinds of value
+RecipeLocation: Alternatives To Standard Parsing
+Index: Menu of numerical options
+Description: Offering the player a choice of numbered options at certain times, without otherwise interfering with their ability to give regular commands.
+For: Z-Machine
 
 Now and then in IF there is a situation where we need to ask the player for a numbered choice rather than an ordinary action command. What's more, that numbered choice might change during the game, so we don't want to just hard-wire the meanings of "1", "2", and "3" whenever the player types them.
 
 A better trick is to keep a list or table (we'll use a table here because it involves slightly less overhead) recording what the player's numerical choices currently mean. Then every time the player selects a number, the table is consulted, and if the number corresponds to something, the player's choice is acted on.
 
-In our example, we'll have a transporter pad that can take the player to any room in the story that they've already visited. (Just for the sake of example, we'll start him off with a few pre-visited rooms.) 
+In our example, we'll have a transporter pad that can take the player to any room in the story that they've already visited. (Just for the sake of example, we'll start him off with a few pre-visited rooms.)
 
 	{*}"Down in Oodville"
-	
+
 	Section 1 - Method
 
 	Understand "[number]" as selecting.
@@ -40,22 +43,22 @@ In our example, we'll have a transporter pad that can take the player to any roo
 		repeat through the Table of Transport Options:
 			say "  [N]: [transport entry][line break]";
 			increment N.
-		
+
 	To empty the transport options:
 		repeat through the Table of Transport Options:
 			blank out the whole row; [first we empty the table]
-		
+
 	To load the transport options:
 		repeat with interesting room running through visited rooms which are not the Transporter Room:
 			choose a blank row in the Table of Transport Options;
 			now the transport entry is the interesting room.
-		
+
 	Table of Transport Options
 	transport
 	an object
 	with 3 blank rows. [In the current scenario, the number of blank rows need never be greater than the number of rooms in the game, minus the transport room itself.]
-		
-	
+
+
 	Understand "home" as homing. Homing is an action applying to nothing.
 
 	Check homing:
@@ -64,14 +67,14 @@ In our example, we'll have a transporter pad that can take the player to any roo
 
 	Carry out homing:
 		move the player to the transporter room.
-	
+
 	Section 2 - Scenario
-	
-	The Transporter Room is a room. 
+
+	The Transporter Room is a room.
 
 	Oodville is a visited room.
 
-	Midnight is a visited room. The Diamond City is west of Midnight. 
+	Midnight is a visited room. The Diamond City is west of Midnight.
 
 	The transporter pad is an enterable supporter in the Transporter Room. "The transporter pad in the middle of the floor is currently dull blue: powered but unoccupied."
 
@@ -80,7 +83,7 @@ In our example, we'll have a transporter pad that can take the player to any roo
 		empty the transport options;
 		load the transport options;
 		list the transport options.
-	
+
 	Test me with "get on pad / 0 / -1 / 8 / 2 / look / w / home / get on pad / get off pad / 3".
 
 If we wanted to replace the regular command structure entirely with numbered menus, or use menus to hold conversation options, we could: several Inform extensions provide these functions.

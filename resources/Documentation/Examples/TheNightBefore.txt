@@ -1,0 +1,44 @@
+Example: *** The Night Before
+Location: Assemblies and body parts
+RecipeLocation: The Human Body
+Index: Disambiguating body parts
+Description: Instructing Inform to prefer different interpretations of EXAMINE NOSE, depending on whether the player is alone, in company, or with Rudolph the Red-nosed Reindeer.
+For: Z-Machine
+
+Suppose that we're going to give every person in the game a nose, but we want references to a nose always to mean the nose of someone *else*, if the player is with one other person. Moreover, on some occasions we're going to be in sight of Rudolph, so actions directed at an unspecified nose should always prefer his.
+
+This relies on a somewhat advanced technique from the Understanding chapter, but since it may become useful with assemblies and body parts, it is worth mentioning here.
+
+	{*}"The Night Before"
+
+	The North Pole is a room. "Here it is: the famous Pole. From here you can go south (or south-south, or south-south-by-south); or, alternatively, take refuge inside a red-and-white-striped cabin." The cabin is scenery in the North Pole. Instead of entering the cabin, try going inside.
+
+	Santa is a man in the North Pole. "Santa is pacing around in the snow and trying to psych himself up for the big night."
+
+	Inside from North Pole is the Candy Cane Cabin. The description of the Cabin is "Striped red and white, but nothing can make this place seem warm and inviting since Mrs. Santa ran off with the Tooth Fairy."
+
+	The Ice Shelf is south of North Pole. "The ice here has been smoothed into a kind of runway for easy take-off, and ends in a cliff and cold arctic sea." Donner, Vixen, Blixen, and Rudolph are animals in the Ice Shelf.
+
+	A nose is a kind of thing. A nose is part of every person. The description of Santa's nose is "It's a bit ruddy. You don't like to mention it, but Santa's been dipping heavily into the Grey Goose since Mrs. Santa left town." The description of a nose is usually "Not terribly exciting."  The description of Rudolph's nose is "See how it glows!"
+
+Next, we'll teach Inform some vocabulary to distinguish between the player and everyone else:
+
+	{**}Definition: a person is other if it is not the player.
+
+	Definition: a thing is selfish if it is part of the player and the player can see an other person.
+
+	Instead of examining a selfish nose:
+		say "You cross your eyes, but can't get a good look."
+
+Here is the part that actually determines the preferences. "Does the player mean..." can result in five outcomes: "it is very unlikely", "it is unlikely", "it is possible" (the neutral default), "it is likely", and "it is very likely". This is discussed in greater detail in the Understanding chapter. Here, we want to discourage references to the player's own nose and encourage references to the nose of Rudolph, so:
+
+	{**}Does the player mean doing something when the noun is a selfish nose or the second noun is a selfish nose: it is very unlikely.
+
+	Does the player mean doing something to Rudolph's nose: it is very likely.
+
+And this part is just for decoration:
+
+	{**}Rule for writing a paragraph about Rudolph:
+		say "The reindeer are already harnessed and waiting impatiently. The brilliance of [Rudolph]'s nose casts an eerie red glow over [the list of unmentioned animals in the location]."
+
+	Test me with "x nose / x my nose / x santa's nose / in / x nose / out / s / x my nose / x nose / x rudolph's nose / x donner's nose".

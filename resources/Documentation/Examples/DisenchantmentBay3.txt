@@ -1,0 +1,11 @@
+Example: * Disenchantment Bay 3
+Subtitle: Glacier view
+Location: Backdrops
+RecipeLocation: Disenchantment Bay
+Index: Disenchantment Bay 3. Glacier view
+Description: Disenchantment Bay: adding a view of the glacier.
+For: Untestable
+
+Suppose we wanted to have the glacier visible from the Cabin of our boat, and anywhere else we might add to the game:
+
+	The view of the Malaspina glacier is a backdrop. It is everywhere. The description is "The Malaspina glacier covers much of the nearby slope, and -- beyond it -- an area as large as Rhode Island."

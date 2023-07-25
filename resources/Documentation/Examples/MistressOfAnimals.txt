@@ -1,0 +1,25 @@
+Example: * Mistress of Animals
+Location: Adjacent rooms and routes through the map
+RecipeLocation: Traveling Characters
+Index: Person who moves randomly
+Description: A person who moves randomly between rooms of the map.
+For: Z-Machine
+
+Suppose we want a restless sort of character always pacing from room to room. It is quite easy to use adjacency to achieve this effect:
+
+	{*}"Mistress of Animals"
+
+	Corinth is a room. Athens is east of Corinth. Epidaurus is southeast of Corinth and east of Mycenae. Mycenae is south of Corinth. Olympia is west of Mycenae. Argos is south of Mycenae. Thebes is northwest of Athens. Pylos is south of Olympia. Sparta is east of Pylos and south of Argos. Delphi is northwest of Thebes.
+
+	Artemis is a woman in Thebes.
+
+	Every turn:
+		if Artemis is in a room (called the current space):
+			let next space be a random room which is adjacent to the current space;
+			if Artemis is visible, say "Artemis heads to [the next space].";
+			move Artemis to next space;
+			if Artemis is visible, say "Artemis arrives from [the current space]."
+
+	Test me with "z / z / z / z / z / z".
+
+Of course, it helps that Artemis is the sort to like open spaces. The implementation would become more complicated if there were doors which might block transit between these locations.

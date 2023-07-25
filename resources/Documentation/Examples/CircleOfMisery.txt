@@ -1,17 +1,20 @@
-* Variations: arrays, logs, queues, stacks, sets, sieves and rings
-(Using lists as rings; Circle of Misery)
-Retrieving items from an airport luggage carousel is such fun, how can we resist simulating it, using a list as a ring buffer?
+Example: * Circle of Misery
+Location: Variations: arrays, logs, queues, stacks, sets, sieves and rings
+RecipeLocation: Furniture
+Index: Using lists as rings
+Description: Retrieving items from an airport luggage carousel is such fun, how can we resist simulating it, using a list as a ring buffer?
+For: Z-Machine
 
 The only point we need to be careful about is that the carousel is simulated twice over, in the following text: once in the built-in way that objects are inside other objects, so that the luggage items are objects contained in the carousel object; but then again by the "circle of misery" list, a ring buffer keeping track of what order things are in. We need to be careful that these two records do not fall out of synchrony: anything put into the carousel must be added to the list, anything taken out must be removed. (In fact we forbid things to be added, for simplicity's sake.)
 
 	{*}"Circle Of Misery"
 
 	Luggage item is a kind of thing. The blue golf bag, the leopardskin suitcase, the green rucksack and the Lufthansa shoulder-bag are luggage items.
-	
+
 	Heathrow Baggage Claim is a room. The carousel is a container in Heathrow. "The luggage carousel, a scaly rubbered ring, does for the roundabout what Heathrow Airport does for the dream of flight: that is, turns the purest magic into the essence of boredom, only with extra stress. [if the number of entries in the circle of misery is 0]For once it stands idle. Perhaps it's broken.[otherwise]The baggage approaching you now: [the circle of misery with indefinite articles]."
-	
+
 	The circle of misery is a list of objects that varies.
-	
+
 	When play begins:
 		now all the luggage items are in the carousel;
 		add the list of luggage items to the circle of misery.
@@ -22,14 +25,14 @@ The list "circle of misery" is our ring, in which entry 1 is considered to be th
 		rotate the circle of misery;
 		let the bag be entry 1 of the circle of misery;
 		say "The carousel trundles on, bringing [a bag] to within reach."
-	
+
 	After taking a luggage item (called the bag):
 		remove the bag from the circle of misery, if present;
 		say "Taken."
 
 	Before doing something with a luggage item (called the bag) which is in the carousel:
 		if the bag is not entry 1 of the circle of misery, say "[The bag] is maddeningly out of range. You'll have to wait for it to come round." instead.
-	
+
 	Instead of inserting something into the carousel, say "In recent years, the authorities have tended to frown upon depositing bags in random places at airports."
-	
+
 	Test me with "get suitcase / get suitcase / get suitcase / get suitcase / look / get golf bag / look / get golf bag".

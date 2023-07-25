@@ -1,6 +1,9 @@
-* Understanding things by their properties
-(Torch understood as flaming or extinguished; Hymenaeus)
-Understanding "flaming torch" and "extinguished torch" to refer to torches when lit and unlit.
+Example: * Hymenaeus
+Location: Understanding things by their properties
+RecipeLocation: Lighting
+Index: Torch understood as flaming or extinguished
+Description: Understanding "flaming torch" and "extinguished torch" to refer to torches when lit and unlit.
+For: Z-Machine
 
 	{*}"Hymenaeus"
 
@@ -22,10 +25,10 @@ Understanding "flaming torch" and "extinguished torch" to refer to torches when 
 			let target torch be a random lit torch;
 			now the target torch is unlit;
 			say "Aquilo blows down from the north, extinguishing the torch carried by [the holder of the target torch]."
-	
+
 	Instead of examining a lit torch:
 		say "It casts a bright glow over [the holder of the noun]."
 	Instead of examining an unlit torch:
-		say "[The holder of the noun] is looking at it disconsolately, obviously worried about the omens." 
-	
+		say "[The holder of the noun] is looking at it disconsolately, obviously worried about the omens."
+
 	Test me with "z / z / z / look / x flaming torch / x extinguished torch".

@@ -1,0 +1,290 @@
+Example: *** Noisy Cricket
+Location: Listed in...
+RecipeLocation: Liquids
+Index: Liquids in mixtures, identified by recipe
+Description: Implementing liquids that can be mixed, and the components automatically recognized as matching one recipe or another.
+For: Z-Machine
+
+Our previous experiments into liquid have not dealt with the possibility of mixing components, but that is because for most games, tracking the details of mixture is overkill.
+
+But let's suppose that this time we do want to have mixed liquids; moreover, we want a way to describe the mixtures to the player inventively, so that if they hit specific combinations those combinations are recognized: calling the result a martini, say, rather than just "a mixture of vodka and vermouth".
+
+The implementation that follows relies on a fairly simple idea from linear algebra. Any given liquid can be expressed as a vector in N-space, where N is the number of available ingredients and the length of the vector depends on how much of each ingredient is used; then we find the recipe that best describes the liquid by taking the dot product of our liquid vector with a bunch of sample vectors and selecting the one with the largest result.
+
+If this does not make sense, don't worry: it's not necessary to understand the idea to use the code.
+
+Any implementation involving a large number of place values is always a bit challenging in integer arithmetic. This examples assumes that no bodies of liquid will ever be very large, and that the proportions of ingredients in a mixture will not be vastly askew. (No 20-parts-to-1 proportions, for instance.) This probably works reasonably well for the cocktails that we make the basis of the example.
+
+	{*}"Noisy Cricket"
+
+	Part 1 - Volumes and Mixtures
+
+	A volume is a kind of value. 15.9 fl oz specifies a volume with parts ounces and tenths (optional, preamble optional).
+
+	A fluid container is a kind of container. A fluid container has a volume called a fluid capacity. A fluid container has a volume called creme de menthe volume. A fluid container has a volume called vodka volume. A fluid container has a volume called cacao volume.
+
+	The fluid capacity of a fluid container is usually 12.0 fl oz. The creme de menthe volume of a fluid container is usually 0.0 fl oz. The vodka volume of a fluid container is usually 0.0 fl oz. The cacao volume of fluid container is usually 0.0 fl oz.
+
+	To decide what volume is the current volume of (item - a fluid container):
+		let total be the creme de menthe volume of the item;
+		increase total by the vodka volume of the item;
+		increase total by the cacao volume of the item;
+		decide on total.
+
+	Instead of examining a fluid container:
+		if the noun is empty,
+			say "You catch just a hint of [the nominal descriptor of the noun] at the bottom.";
+		otherwise
+			say "[The noun] contains [current volume of the noun in rough terms] of [adjectival descriptor of the noun] [nominal descriptor of the noun]."
+
+	Adjectival descriptor is a kind of value. The adjectival descriptors are strong, chocolatey, minty, perfect, and pure.
+
+	Nominal descriptor is a kind of value. The Nominal descriptors are creme de menthe, vodka, creme de cacao, grasshopper, chocolate vodka, mint vodka, chocolate martini, mintini, chocolate mint martini.
+
+Our table of mixtures is expressed in parts: so if a recipe contains one part X and two parts Y, we would put "1" in the first column and "2" in the second column.
+
+	{**}Table of Mixtures
+	rating	creme de menthe comp	vodka comp	cacao comp	adjectival descriptor	nominal descriptor
+	0.0 fl oz	1	0	0	minty	creme de menthe
+	0.0 fl oz	0	1	0	chocolatey	vodka
+	0.0 fl oz	0	0	1	chocolatey	creme de cacao
+	0.0 fl oz	1	2	0	chocolatey	mintini
+	0.0 fl oz	1	0	1	chocolatey	grasshopper
+	0.0 fl oz	0	2	1	chocolatey	chocolate martini
+	0.0 fl oz	0	3	1	chocolatey	chocolate vodka
+	0.0 fl oz	1	3	0	chocolatey	mint vodka
+	0.0 fl oz	1	2	1	chocolatey	chocolate mint martini
+
+	A fluid container has an adjectival descriptor. A fluid container has a nominal descriptor. Understand the adjectival descriptor property as describing a fluid container. Understand the nominal descriptor property as describing a fluid container.
+
+	To decide what number is (quantity - a number) squared:
+		decide on quantity times quantity.
+
+	To score mixtures in (item - a fluid container):
+		repeat through Table of Mixtures:
+			let total line parts be creme de menthe comp entry squared;
+			let total line parts be total line parts plus vodka comp entry squared;
+			let total line parts be total line parts plus cacao comp entry squared;
+			let creme de menthe score be creme de menthe comp entry times the creme de menthe volume of item;
+			let vodka score be vodka comp entry times the vodka volume of item;
+			let cacao score be cacao comp entry times the cacao volume of item;
+			let total score be creme de menthe score plus vodka score;
+			let total score be total score plus cacao score;
+			let total score be total score times calibration for total line parts;
+			now rating entry is total score;
+			if total line parts is 1, now adjectival descriptor entry is pure;
+			otherwise now adjectival descriptor entry is perfect;
+			[and for creme de menthe...]
+			now creme de menthe comp entry is creme de menthe comp entry plus 1;
+			let total line parts be creme de menthe comp entry squared plus vodka comp entry squared;
+			let total line parts be total line parts plus cacao comp entry squared;
+			let creme de menthe score be creme de menthe comp entry times the creme de menthe volume of item;
+			let vodka score be vodka comp entry times the vodka volume of item;
+			let cacao score be cacao comp entry times the cacao volume of item;
+			let total score be creme de menthe score plus vodka score;
+			let total score be total score plus cacao score;
+			let total score be total score times calibration for total line parts;
+			if total score is greater than rating entry, now adjectival descriptor entry is minty;
+			now creme de menthe comp entry is creme de menthe comp entry minus 1;
+			[and for vodka...]
+			now vodka comp entry is vodka comp entry plus 1;
+			let total line parts be creme de menthe comp entry squared plus vodka comp entry squared;
+			let total line parts be total line parts plus cacao comp entry squared;
+			let creme de menthe score be creme de menthe comp entry times the creme de menthe volume of item;
+			let vodka score be vodka comp entry times the vodka volume of item;
+			let cacao score be cacao comp entry times the cacao volume of item;
+			let total score be creme de menthe score plus vodka score;
+			let total score be total score plus cacao score;
+			let total score be total score times calibration for total line parts;
+			if total score is greater than rating entry, now adjectival descriptor entry is strong;
+			now vodka comp entry is vodka comp entry minus 1;
+			[and for cacao...]
+			now cacao comp entry is cacao comp entry plus 1;
+			let total line parts be creme de menthe comp entry squared plus vodka comp entry squared;
+			let total line parts be total line parts plus cacao comp entry squared;
+			let creme de menthe score be creme de menthe comp entry times the creme de menthe volume of item;
+			let vodka score be vodka comp entry times the vodka volume of item;
+			let cacao score be cacao comp entry times the cacao volume of item;
+			let total score be creme de menthe score plus vodka score;
+			let total score be total score plus cacao score;
+			let total score be total score times calibration for total line parts;
+			if total score is greater than rating entry, now adjectival descriptor entry is chocolatey;
+			now cacao comp entry is cacao comp entry minus 1.
+
+	To identify mixture in (item - a fluid container):
+		score mixtures in item;
+		sort Table of Mixtures in reverse rating order;
+		choose row 1 in Table of Mixtures;
+		now nominal descriptor of the item is nominal descriptor entry;
+		let sample vodka be vodka comp entry; [Now keep track of all these]
+		let sample creme de menthe be creme de menthe comp entry;
+		let sample cacao be cacao comp entry;
+		if rating entry divided by 100 is the current volume of the item:
+			now adjectival descriptor of the item is pure;
+		otherwise:
+			now adjectival descriptor of the item is adjectival descriptor entry.
+
+	To decide what number is the raw quantity of (item volume - a volume):
+		let raw be item volume divided by 0.5 fl oz;
+		decide on raw.
+
+	To decide what number is calibration for (total - a number):
+		if total is an initial listed in the table of Multipliers, decide on result entry;
+		decide on 21.
+
+Here we cheat on our arithmetic. The following chart just provides values corresponding roughly to 1/(sqrt (x)), but since Inform does not deal very gracefully with square roots or fractions, we will calculate this elsewhere and just supply the answers in the code:
+
+	{**}Table of Multipliers
+	initial	result
+	1	100
+	2	71
+	3	57
+	4	50
+	5	44
+	6	41
+	7	38
+	8	35
+	9	33
+	10	31
+	11	30
+	12	29
+	13	28
+	14	27
+	15	26
+	16	25
+	17	24
+	18	24
+	19	23
+	20	22
+
+	When play begins:
+		repeat with item running through fluid containers:
+			identify mixture in item.
+
+	To say (amount - a volume) in rough terms:
+		if the amount is less than 0.6 fl oz:
+			say "half an ounce or less";
+		otherwise if tenths part of amount is greater than 3 and tenths part of amount is less than 7:
+			let estimate be ounces part of amount;
+			say "[estimate in words] or [estimate plus 1 in words] fluid ounces";
+		otherwise:
+			if tenths part of amount is greater than 6, increase amount by 1.0 fl oz;
+			say "about [ounces part of amount in words] fluid ounce[s]".
+
+	Before printing the name of a fluid container (called the target) while not drinking or pouring:
+		if the target is empty:
+			say "empty ";
+		otherwise:
+			do nothing.
+
+	After printing the name of a fluid container (called the target) while not examining or pouring:
+		unless the target is empty:
+			say " of [adjectival descriptor of the target] [nominal descriptor of the target]";
+			omit contents in listing.
+
+	Instead of inserting something into a fluid container:
+		say "[The second noun] has too narrow a mouth to accept anything but liquids."
+
+	Definition: a fluid container is empty if the current volume of it is 0.0 fl oz. Definition: a fluid container is full if the current volume of it is the fluid capacity of it.
+
+	Understand "drink from [fluid container]" as drinking.
+
+	Instead of drinking a fluid container:
+		if the noun is empty:
+			say "There is no more [nominal descriptor of the noun] within." instead;
+		otherwise:
+			let cacao loss be the consumed cacao of the noun out of sip volume;
+			let creme de menthe loss be the consumed creme de menthe of the noun out of sip volume;
+			let vodka loss be the consumed vodka of the noun out of sip volume;
+			decrease the cacao volume of the noun by the cacao loss;
+			decrease the creme de menthe volume of the noun by creme de menthe loss;
+			decrease the vodka volume of the noun by vodka loss;
+			say "You take a sip of [the nominal descriptor of the noun][if the noun is empty], leaving [the noun] empty[end if].".
+
+	Sip volume is a volume that varies. Sip volume is 0.5 fl oz.
+
+	To decide what volume is the consumed cacao of (item - a fluid container) out of (total consumption - a volume):
+		let new volume be the cacao volume of the item times 100;
+		let percentage be the new volume divided by the current volume of the item;
+		let consumed volume be the percentage times total consumption;
+		let consumed volume be consumed volume divided by 100;
+		if consumed volume is greater than the cacao volume of the item, decide on the cacao volume of the item;
+		decide on consumed volume.
+
+	To decide what volume is the consumed creme de menthe of (item - a fluid container) out of (total consumption - a volume):
+		let new volume be the creme de menthe volume of the item times 100;
+		let percentage be the new volume divided by the current volume of the item;
+		let consumed volume be the percentage times total consumption;
+		let consumed volume be consumed volume divided by 100;
+		if consumed volume is greater than the creme de menthe volume of the item, decide on the creme de menthe volume of the item;
+		decide on consumed volume.
+
+	To decide what volume is the consumed vodka of (item - a fluid container) out of (total consumption - a volume):
+		let new volume be the vodka volume of the item times 100;
+		let percentage be the new volume divided by the current volume of the item;
+		let consumed volume be the percentage times total consumption;
+		let consumed volume be consumed volume divided by 100;
+		if consumed volume is greater than the vodka volume of the item, decide on the vodka volume of the item;
+		decide on consumed volume.
+
+	Part 2 - Filling
+
+	Understand the command "fill" as something new.
+
+	Understand "fill [something] with/from [something]" as filling it with.
+
+	Filling it with is an action applying to two things. Carry out filling it with: try pouring the second noun into the noun instead.
+
+	Understand "pour [fluid container] in/into/on/onto [fluid container]" as pouring it into. Understand "empty [fluid container] into [fluid container]" as pouring it into.
+
+	Understand "pour [something] in/into/on/onto [something]" as pouring it into. Understand "empty [something] into [something]" as pouring it into.
+
+	Pouring it into is an action applying to two things.
+
+	Check pouring it into:
+		if the noun is not a fluid container, say "You can't pour [the noun]." instead;
+		if the second noun is not a fluid container, say "You can't pour liquids into [the second noun]." instead;
+		if the noun is the second noun, say "You can hardly pour [the noun] into itself." instead;
+		if the noun is empty, say "No more [nominal descriptor of the noun] remains in [the noun]." instead;
+		if the second noun is full, say "[The second noun] cannot contain any more than it already holds." instead.
+
+	Carry out pouring it into:
+		let available capacity be the fluid capacity of the second noun minus the current volume of the second noun;
+		if the available capacity is greater than the current volume of the noun, now the available capacity is the current volume of the noun;
+		let cacao loss be the consumed cacao of the noun out of available capacity;
+		let creme de menthe loss be the consumed creme de menthe of the noun out of available capacity;
+		let vodka loss be the consumed vodka of the noun out of available capacity;
+		decrease the cacao volume of the noun by the cacao loss;
+		decrease the creme de menthe volume of the noun by creme de menthe loss;
+		decrease the vodka volume of the noun by vodka loss;
+		increase the cacao volume of the second noun by the cacao loss;
+		increase the creme de menthe volume of the second noun by creme de menthe loss;
+		increase the vodka volume of the second noun by vodka loss.
+
+	Report pouring it into:
+		identify mixture in noun;
+		identify mixture in second noun;
+		say "[if the noun is empty][The noun] is now empty; [otherwise][The noun] now contains [current volume of the noun in rough terms] of [nominal descriptor of the noun]; [end if]";
+		say "[the second noun] contains [current volume of the second noun in rough terms] of [adjectival descriptor of the second noun] [nominal descriptor of the second noun][if the second noun is full], and is now full[end if]."
+
+	Understand "of" as a fluid container.
+
+	Part 3 - Scenario
+
+	When play begins: say "When you decided to try Mixology WS102 (*cross-listed with Women's Studies), you envisioned yourself writing essays about gender discrimination during the Prohibition, say, or reading essays on male vs. female metabolism of alcohol. But no: MxWS102 turns out to be about... mixing the perfect chocolate mint martini."
+
+	The College of Mixology is a room. The bar is a supporter in the college.
+
+	The cocktail glass is a fluid container carried by the player. The fluid capacity of the cocktail glass is 4.0 fl oz.
+
+	The flask is a fluid container carried by the player. The vodka volume of the flask is 4.0 fl oz.
+
+	The jigger is a fluid container carried by the player. The fluid capacity of the jigger is 1.0 fl oz.
+
+	The small measure is a fluid container carried by the player. The fluid capacity of the small measure is 0.5 fl oz.
+
+	The decanter is a fluid container on the bar. The fluid capacity of the decanter is 32.0 fl oz. The creme de menthe volume of the decanter is 20.0 fl oz.
+
+	The bottle is a fluid container carried by the player. The cacao volume of the bottle is 10.0 fl oz.
+
+	Test me with "i / pour flask in jigger / pour jigger in glass / pour bottle in jigger / pour jigger in glass / pour bottle in jigger / pour jigger in glass / pour decanter in jigger / pour jigger in glass / drink glass / g / g / x glass / pour flask in glass".

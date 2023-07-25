@@ -1,25 +1,28 @@
-*** Action variables
-(DROPPING into and onto things; Croft)
-Adding special reporting and handling for objects dropped when the player is on a supporter, and special entering rules for moving from one supporter to another.
+Example: *** Croft
+Location: Action variables
+RecipeLocation: Taking, Dropping, Inserting and Putting
+Index: DROPPING into and onto things
+Description: Adding special reporting and handling for objects dropped when the player is on a supporter, and special entering rules for moving from one supporter to another.
+For: Z-Machine
 
 Suppose that we have a design in which the player spends lots of time on enterable supporters, and in which we want to report certain actions -- dropping things onto those supporters, or leaping from one to another -- in a new way. We might begin by adding some action variables to help us keep track of the situation:
 
-	{*} "Croft"
-		
+	{*}"Croft"
+
 	The dropping action has an object called the container dropped into (matched as "into").
 
 	The dropping action has an object called the supporter dropped onto (matched as "onto").
-		
+
 	Rule for setting action variables for dropping:
 		if the actor is in a container (called C), now the container dropped into is C;
 		if the actor is on a supporter (called C), now the supporter dropped onto is C.
-	
+
 	Report dropping a heavy thing onto a metallic thing:
 		say "You drop [the noun], and [the supporter dropped onto] clangs protestingly." instead.
 
 	Report someone dropping a heavy thing onto a metallic thing:
 		say "[The actor] drops [the noun] onto [the supporter dropped onto], which clangs protestingly." instead.
-	
+
 	A thing can be heavy or light. A thing can be metallic or ordinary. A thing is usually ordinary. A thing is usually light.
 
 	The Ancient Cambodian Temple is a room. "A vast space built for ancient and forgotten rituals. The stone floor crawls with vermin. Well above the floor, and separated by some feet, are twin platforms built into the wall: the one carved of jointed wood, the other of sheets of graven bronze."
@@ -30,16 +33,16 @@ Suppose that we have a design in which the player spends lots of time on enterab
 
 	The wood platform is an ordinary platform in the Temple. The player is on the wood platform. The player carries a rope, an Ancient Cambodian/English Phrasebook, a pickaxe, and a precious idol. The idol and the pickaxe are heavy.
 
-	Persuasion rule: persuasion succeeds. 
+	Persuasion rule: persuasion succeeds.
 
-	The entering action has an object called the place left (matched as "from"). 
+	The entering action has an object called the place left (matched as "from").
 		Check entering a platform from a platform:
-			if actor is the player, say "You leap into midair to cross the distance..."; 
+			if actor is the player, say "You leap into midair to cross the distance...";
 		otherwise say "[The actor] leaps gracefully across the distance...";
 		move the actor to the holder of the noun, without printing a room description.
 
 Because this rule occurs before the "implicitly pass through other barriers rule", that rule will not occur when we move from platform to platform; we'll use our own custom rule instead.
-		
+
 	{**}Rule for setting action variables for entering:
 		now the place left is the holder of the actor.
 
@@ -48,10 +51,10 @@ Because this rule occurs before the "implicitly pass through other barriers rule
 
 	Report Lara entering a platform from a platform:
 		say "Lara lands soundlessly on [the noun][if the noun supports the player] beside you[end if]." instead.
-	
+
 	Report entering a platform from the location:
 		say "You jump, catch the edge of [the noun] in your hands, and -- exerting considerable upper-body strength -- pull yourself up onto it." instead.
-	
+
 	Report Lara entering a platform from a location:
 		say "Lara jumps, catches the edge of [the noun], and is standing upright on it, all in less time than it takes to tell."
 

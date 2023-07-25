@@ -1,0 +1,43 @@
+Example: ** Meteoric
+Location: Moving things
+RecipeLocation: Scene Changes
+Index: Moving a backdrop during play
+Description: A meteor in the night sky which is visible from many rooms, so needs to be a backdrop, but which does not appear until 11:31 PM.
+For: Z-Machine
+
+The game below begins at half past eleven, and one turn later, it's meteor time:
+
+	{*}"Meteoric I"
+
+	The time of day is 11:30 PM.
+
+	At 11:31 PM:
+		now the meteor is in the great outdoors;
+		say "A meteor streaks across the sky.".
+
+	The great outdoors is a region. The Spanish Balcony is east of the Inner Court. The Court and Balcony are in the great outdoors. Inside from the Court is the Swimming Pool.
+
+	The meteor is a backdrop. Instead of doing something to the meteor, say "The meteor is no longer visible, now nothing more than a memory."
+
+	Test me with "wait / wait / examine meteor / west / examine meteor / in / examine meteor".
+
+Or for something a little slower-moving and with no after-image:
+
+	{*}"Meteoric II"
+
+	The time of day is 4:30 PM.
+
+	At 4:31 PM:
+		now Phobos is in the great outdoors;
+		say "Phobos rises from the western horizon."
+	At 10:06 PM:
+		now Phobos is nowhere;
+		say "Phobos sets over the eastern horizon."
+
+	The great outdoors is a region. The Martian Balcony is east of the Inner Court. The Court and Balcony are in the great outdoors. Inside from the Court is the Heavy Water Swimming Pool.
+
+	Phobos is a backdrop. Instead of doing something to Phobos, say "Phobos orbits a mere 6000km above you, which is practically touching range for astronomy. On the other hand, astronomy isn't all that practical."
+
+	Test me with "wait / wait / examine phobos / west / examine phobos / in / examine phobos".
+
+Though we should not really use Earthly time-keeping, since the Martian day is about half an hour longer than ours.

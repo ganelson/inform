@@ -1,6 +1,9 @@
-* Understanding values
-(Colour names for exotic pigments; Palette)
-An artist's workshop in which the canvas can be painted in any colour, and where painterly names for pigments ("cerulean") are accepted alongside everyday ones ("blue").
+Example: * Palette
+Location: Understanding values
+RecipeLocation: Painting and Labeling Devices
+Index: Colour names for exotic pigments
+Description: An artist's workshop in which the canvas can be painted in any colour, and where painterly names for pigments ("cerulean") are accepted alongside everyday ones ("blue").
+For: Z-Machine
 
 There are hundreds of traditional pigments, from lampblack to burnt sienna, so we will confine ourselves to just two:
 
@@ -17,5 +20,5 @@ There are hundreds of traditional pigments, from lampblack to burnt sienna, so w
 	Understand "paint [something] [a colour]" as painting.
 
 	Understand "calico" as white. Understand "cerulean" or "cerulean blue" as blue.
-	
+
 	Test me with "examine canvas / paint canvas red / examine canvas / paint canvas cerulean / examine canvas".

@@ -1,0 +1,39 @@
+Example: * The Fibonacci Sequence
+Location: Variations: arrays, logs, queues, stacks, sets, sieves and rings
+RecipeLocation: Mathematics
+Index: Using lists as arrays
+Description: The modest Leonardo Fibonacci of Pisa will be only too happy to construct his sequence on request, using an array.
+For: Z-Machine
+
+Fibonacci (a posthumous nickname) spread Arabic mathematical learning across Europe in the 13th century, and it's curious that his name lives on only for a single sequence.
+
+	{*}"The Fibonacci Sequence"
+
+	Pisa is a room. Leonardo Fibonacci is a man in Pisa. "The modest Italian mathematician, Leonardo Fibonacci (1170-1250), beams at you."
+
+	Sequencing is an action applying to one number. Understand "sequence [number]" as sequencing.
+
+	Instead of sequencing, say "You make a feeble attempt, sketching in the sand, but it goes nowhere. Leonardo is sympathetic. 'Often goes wrong for me, too, actually. I didn't even invent the thing - the ancient Indians knew about it first.'"
+
+	Persuasion rule for asking Leonardo to try sequencing: persuasion succeeds.
+
+	Report Leonardo sequencing:
+		let N be the number understood;
+		say "Leonardo scratches his head and makes self-deprecating remarks, before coming up with [the first N terms of the Fibonacci sequence]."
+
+ An array need not be fixed in length, as the following example shows:
+
+	{**}To decide what list of numbers is the first (F - a number) terms of the Fibonacci sequence:
+		let the Fibonacci sequence be {1, 1};
+		let N be 3;
+		while N < F:
+			let the last term be entry (N - 1) of the Fibonacci sequence;
+			let the penultimate term be entry (N - 2) of the Fibonacci sequence;
+			let the next term be the last term plus the penultimate term;
+			add the next term to the Fibonacci sequence;
+			increment N;
+		decide on the Fibonacci sequence.
+
+	Test me with "sequence 20 / leonardo, sequence 20".
+
+The result of "the first 20 terms of the Fibonacci sequence" is "1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584 and 4181". This is a sequence which has a knack of turning up in odd places - it was found in the 1970s to be related to the rings of florets in a sunflower, for instance - and here it is in a book about interactive fiction.

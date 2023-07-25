@@ -1,6 +1,9 @@
-* Variations: arrays, logs, queues, stacks, sets, sieves and rings
-(Safe with a multi-number combination; Eyes, Fingers, Toes)
-A safe with a multi-number combination, meant to be dialed over multiple turns, is implemented using a log of the last three numbers dialed. The log can then be compared to the safe's correct combination.
+Example: * Eyes, Fingers, Toes
+Location: Variations: arrays, logs, queues, stacks, sets, sieves and rings
+RecipeLocation: Bags, Bottles, Boxes and Safes
+Index: Safe with a multi-number combination
+Description: A safe with a multi-number combination, meant to be dialed over multiple turns, is implemented using a log of the last three numbers dialed. The log can then be compared to the safe's correct combination.
+For: Z-Machine
 
 It is not difficult to implement a safe which can be set to a single number to open; but a more common scenario in the real world is for the safe to open on a sequence of numbers when they have been dialed in the right order.
 
@@ -10,8 +13,8 @@ For IF, this means that we have to keep running track of the last N digits the p
 
 	The Addams Wine Cellar is a room. It contains a closed lockable locked container called a safe.
 
-	The safe has a list of numbers called the current combination. 
-	
+	The safe has a list of numbers called the current combination.
+
 	The safe has a list of numbers called the true combination. The true combination of the safe is {2, 10, 11}.
 
 	Understand "set [something] to [a number]" as setting it numerically to. Setting it numerically to is an action applying to one thing and one number.
@@ -26,7 +29,7 @@ For IF, this means that we have to keep running track of the last N digits the p
 
 	Instead of setting the safe numerically to the number understood:
 		truncate the current combination of the safe to the last 2 entries;
-		add the number understood to the current combination of the safe; 
+		add the number understood to the current combination of the safe;
 		if the safe is locked and the current combination of the safe is the true combination of the safe:
 			say "You dial [the number understood], and [the safe] gives a joyous CLICK.";
 			now the safe is unlocked;
@@ -35,5 +38,5 @@ For IF, this means that we have to keep running track of the last N digits the p
 			now the safe is locked;
 		otherwise:
 			say "You dial [the number understood] on the safe."
-	
+
 	Test me with "x safe / set safe to 10 / x safe / set safe to 29 / x safe / set safe to 2 / x safe / set safe to 10 / x safe / set safe to 11 / open safe / set safe to 14 / close safe / set safe to 15 / open safe".

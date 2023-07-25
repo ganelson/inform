@@ -1,21 +1,24 @@
-* Random choices of things
-(Assigning attributes randomly at the start of play--Poisoned candy chosen randomly; Candy)
-One of several identical candies chosen at the start of play to be poisonous.
+Example: * Candy
+Location: Random choices of things
+RecipeLocation: Food
+Index: Assigning attributes randomly at the start of play
+Description: One of several identical candies chosen at the start of play to be poisonous.
+For: Z-Machine
 
 Suppose we want to give the player a bag of candies, of which a random one is poisonous. We can pick which one should be poisoned at the start of play, like this:
 
 	{*}"Candy"
 
-	The plural of piece of candy is pieces of candy. A piece of candy is a kind of thing. A piece of candy is always edible. Four pieces of candy are in the Halloween bag. 
+	The plural of piece of candy is pieces of candy. A piece of candy is a kind of thing. A piece of candy is always edible. Four pieces of candy are in the Halloween bag.
 
 	Toxicity is a kind of value. The toxicities are safe and poisonous. A piece of candy has a toxicity. A piece of candy is usually safe.
 
-	The Porch is a room. The player carries the Halloween bag. 
+	The Porch is a room. The player carries the Halloween bag.
 
 	After eating a poisonous piece of candy:
 		say "Oh, that didn't taste right at all. Oh well!"
-	
+
 	When play begins:
 		now a random piece of candy is poisonous.
-	
+
 	Test me with "eat candy / g / g / g".

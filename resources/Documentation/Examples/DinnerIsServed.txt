@@ -1,0 +1,57 @@
+Example: ** Dinner is Served
+Location: Changing reachability
+RecipeLocation: Windows
+Index: Window connecting two rooms
+Description: A window between two locations. When the window is open, the player can reach through into the other location; when it isn't, access is barred.
+For: Z-Machine
+
+	{*}"Dinner is Served"
+
+	Street in Kolonaki is a room. "There is a single round table out on the street here, and a window more or less at knee level looks down into the Olive Tree Gyro Shop, which is partly basement."
+
+	The Street contains a round table. The table is scenery. On the round table is a plate. On the plate are a gyro and a mound of fresh potates. The plate is portable. The potates and the gyro are edible. The description of potates is "They'd be called french fries, at home, but these are steak-cut and fried in olive oil." The description of the gyro is "Dripping garlic-yogurt sauce."
+
+	Olive Tree Gyro Shop is inside from Street in Kolonaki. Kostis is a man in the Gyro Shop. In the Shop is a stand. On the stand is a rotating column of cooking lamb flesh. In the shop is a closed, openable container called a drinks refrigerator. The refrigerator contains a can of Mythos beer and a can of Coke Light.
+
+Here's the part that allows reaching through the window.
+
+We replace the usual rule that says the player can never reach into a room with one that more specifically checks whether we are trying to reach through the window. If we aren't, we return the usual refusal. If we are, we return a custom refusal if the window is closed ("You can't reach through the closed window"), but allow access if the window is open.
+
+	{**}The can't reach through closed window rule is listed instead of the can't reach inside rooms rule in the reaching inside rules.
+
+	This is the can't reach through closed window rule:
+		let reaching through the window be false;
+		if the container in question is a room and the container in question is not the location:
+			if the container in question is the Street and the location is the Olive Tree Gyro Shop:
+				now reaching through the window is true;
+			if the container in question is the Gyro Shop and the location is the Street:
+				now reaching through the window is true;
+			if reaching through the window is true:
+				if the window is closed:
+					say "You can't reach through the closed window.";
+					deny access;
+				otherwise:
+					allow access;
+			otherwise:
+				say "You can't reach into [the container in question] from here.";
+				deny access.
+
+And the rest is window-dressing.
+
+	{**}After looking when a room (called the next room) is adjacent:
+		try examining the next room.
+
+	Instead of examining a supporter, say "On [the noun] [is-are a list of things on the noun]." Instead of examining an open container, say "In [the noun] [is-are a list of things in the noun]."
+
+	The window is a backdrop. It is in the Street and the Shop. The window can be openable. The window can be open. The window is openable and closed. Instead of searching the window in the Street: try examining the shop. Instead of searching the window in the Shop: try examining the street.
+
+	Understand "examine [any adjacent room]" as examining.
+
+	Instead of examining a room:
+		say "Over in [the noun], you can see [a list of visible things in the noun]."
+
+	After deciding the scope of the player:
+		if the player is in the Street, place the Shop in scope;
+		if the player is in the Shop, place the Street in scope.
+
+	Test me with "examine shop / open refrigerator / open window / examine shop / open refrigerator / get beer / in / examine street / out / get gyro / close window / put gyro in refrigerator / open window / put gyro in refrigerator".

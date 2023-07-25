@@ -1,0 +1,15 @@
+Example: * Disenchantment Bay 10
+Subtitle: Clothing and possessions
+Location: Possessions and clothing
+RecipeLocation: Disenchantment Bay
+Index: Disenchantment Bay 10. Clothing and possessions
+Description: Disenchantment Bay: things for the player and the characters to wear and carry.
+For: Untestable
+
+At this point we can dress both the Captain and the player with some appropriate props:
+
+	{*}The captain wears a baseball cap. The description of the cap is "It says, THE WORST DAY FISHING IS BETTER THAN THE BEST DAY WORKING."
+
+	The player is carrying a backpack and a bottle of water. The player is wearing a pair of sunglasses. The description of the sunglasses is "The light off the water and the ice does get pretty bright sometimes."
+
+(At present the backpack can't be worn, but see the next version.)

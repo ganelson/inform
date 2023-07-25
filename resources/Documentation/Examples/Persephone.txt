@@ -1,0 +1,18 @@
+Example: *** Persephone
+Location: Text with variations
+RecipeLocation: Inventory
+Index: INVENTORY listing with separate carried and worn items
+Description: Separate the player's inventory listing into two parts, so that it says "you are carrying..." and then (if the player is wearing anything) "You are also wearing...".
+For: Z-Machine
+
+If we wanted, we might replace the rule for taking inventory as follows:
+
+	{*}"Persephone"
+
+	Instead of taking inventory:
+		say "[if the player carries something][We]['re] carrying [a list of things carried by the player][otherwise][We]['re] empty-handed";
+		say "[if the player wears something]. [We]['re] wearing [a list of things worn by the player][end if]."
+
+	The Fancy Party is a room. The player carries a sword, a strawberry stem, and 20 credits worth of platinum. The player wears a sash indicating lordhood.
+
+	Test me with "i / take off sash / i / drop all / i".

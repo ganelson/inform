@@ -1,0 +1,40 @@
+Example: * Witnessed 2
+Subtitle: EMF Meter
+Location: Phrases to decide other things
+RecipeLocation: Clocks and Scientific Instruments
+Index: Witnessed 2. EMF Meter
+Description: A piece of ghost-hunting equipment that responds depending on whether or not the meter is on and a ghost is visible or touchable from the current location.
+For: Z-Machine
+
+	{*}"Witnessed"
+
+	The player carries a device called a Trifield Natural EMF Meter. The description of the Meter is "This cost a pretty penny off the internet, but it's worth it: according to the website it has been programmed by PhD physicists to ignore manmade sources of fields and to respond only to paranormal EMF changes.
+
+	It also features an optional Tone Alarm, which can be turned on to indicate when readings spike. If the alarm is off, the meter just reads out the magnetic and electric field levels on a scale from 0-100 microteslas, or 0-1000 V/m.
+
+	Since both fields are important, you keep the meter set to SUM mode. The meter has its own optional backlighting, so that you can see the reading even if your flashlight is off. Currently it is reading at [meter setting]." A Tone Alarm is part of the Meter. It is a device. The description of the Tone Alarm is "The Tone Alarm will make a noise, if the EMF picks up a spike."
+
+	To decide what number is meter setting:
+		if the meter is switched off, decide on 0;
+		if a ghost is touchable, decide on 35;
+		if a ghost is visible, decide on 12;
+		decide on 0.
+
+	After switching on the meter:
+		say "You turn on the meter. The needle steadies at [meter setting]."
+
+	Every turn: if the meter setting is greater than 10 and the Tone Alarm is switched on, say "[The Tone Alarm] shrieks."
+
+	Thirtieth Street Station is a room. "A huge, high, rectangular room with coffered ceilings, which looks grand but mostly makes you feel lonely and small. There are long benches in rows down the middle of the room, and an information desk with the train times, and a series of ticket windows, none of which matters very much at the moment."
+
+	The benches are an enterable supporter. They are scenery in the Station. The information desk is scenery in the Station. Some ticket windows are scenery in the Station. Instead of examining scenery in the Station: say "You're fairly sure that whatever is going on here has nothing to do with [the noun]." Understand "window" as ticket windows.
+
+	The mural is fixed in place in Thirtieth Street. "At the north side of the station is a particularly pointless and empty annex to the main room. It is dominated by a huge relief of sorts, and this is what you remember." Understand "metal" or "relief" or "huge" as the mural. The description of the mural is "It is both stylized and confusing, but you think it might be supposed to represent the various tasks and occupations of Philadelphia's population. The portions closer to the ground look as though they have recently been subjected to a light dusting of talcum powder. No unusual prints are evident."
+
+	The wind chimes are fixed in place in Thirtieth Street. "Carefully attached to the wall with a piece of duct tape and a hook is a light-weight set of wind chimes. Someone else has been here before you, it seems." The description is "Several of your friends use wind chimes as a sort of ghost alarm, since ghosts sometimes cause very localized movements of air when there is no natural breeze."
+
+	A ghost is a kind of person. The pale figure is a ghost.
+
+	At 9:03 AM: move the pale figure to the location; say "You shiver with some sort of presence."
+
+	Test me with "turn on alarm / turn on meter / z / z / z / x figure".

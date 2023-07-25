@@ -1,6 +1,9 @@
-* Making new text with text substitutions
-(Mirror remembering a room description from the past; Mirror, Mirror)
-The sorcerer's mirror can, when held up high, form an impression of its surroundings which it then preserves.
+Example: * Mirror, Mirror
+Location: Making new text with text substitutions
+RecipeLocation: Cameras and Recording Devices
+Index: Mirror remembering a room description from the past
+Description: The sorcerer's mirror can, when held up high, form an impression of its surroundings which it then preserves.
+For: Z-Machine
 
 	{*}"Mirror, Mirror"
 

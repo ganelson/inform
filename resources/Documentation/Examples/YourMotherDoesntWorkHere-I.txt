@@ -1,0 +1,56 @@
+   Living Room
+  Your Mother Doesn't Work Here
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Living Room
+  You can see a somewhat muddy Persian rug and Mother here.
+  
+> >   Living Room
+  (Testing.)
+  
+  >[1] drop socks
+  Dropped.
+  
+  Your mother picks up the dirty socks, sighing deeply.
+  
+  >[2] z
+  Time passes.
+  
+  Your mother scrubs the stained areas of the rug, muttering to herself.
+  
+  >[3] drop shoes
+  Dropped.
+  
+  Your mother picks up the dirty shoes, jaw tight.
+  
+  >[4] drop hat
+  Dropped.
+  
+  Your mother picks up the dirty hat, with assorted comments on your manners.
+  
+  >[5] drop all
+  pair of dirty trousers: Dropped.
+  backpack: Dropped.
+  
+  Your mother picks up the backpack; to judge from her comments, she is also indulging in a pleasant fantasy about Swiss boarding schools.
+  
+  >[6] z
+  Time passes.
+  
+  Your mother picks up the pair of dirty trousers; to judge from her comments, she is also indulging in a pleasant fantasy about Swiss boarding schools.
+  
+  >[7] z
+  Time passes.
+  
+  Mother goes west.
+  
+  
+  
+      *** The End ***
+  
+  
+  
+  
+  Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> > 

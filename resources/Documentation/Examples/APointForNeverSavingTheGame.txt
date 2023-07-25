@@ -1,0 +1,19 @@
+Example: *** A point for never saving the game
+Location: Out of world actions
+RecipeLocation: Saving and Undoing
+Index: A point for never saving the game
+Description: In some of the late 1970s "cave crawl" adventure games, an elaborate scoring system might still leave the player perplexed as to why an apparently perfect play-through resulted in a score which was still one point short of the supposed maximum. Why only 349 out of 350? The answer varied, but sometimes the last point was earned by never saving the game - in other words by playing it right through with nothing to guard against mistakes (except perhaps UNDO for the last command), and in one long session.
+For: Untestable
+
+Here is one way to score this point with Inform:
+
+	Check saving the game for the first time: decrement the score.
+
+That has the right effect, but it just isn't sneaky enough. Instead let us quietly keep track of how many times the player saves:
+
+	Check saving the game: increment the number of saves.
+	When play ends: if the number of saves is 0, increment the score.
+
+Sneakier, certainly, but now we could get the bonus even if the game ends earlier on, so finally:
+
+	When play ends: if the number of saves is 0 and the score is 349, increment the score.

@@ -1,11 +1,14 @@
-** Stored actions
-(Video camera that records all actions; Actor's Studio)
-A video camera that records actions performed in its presence, and plays them back with time-stamps.
+Example: ** Actor's Studio
+Location: Stored actions
+RecipeLocation: Cameras and Recording Devices
+Index: Video camera that records all actions
+Description: A video camera that records actions performed in its presence, and plays them back with time-stamps.
+For: Z-Machine
 
 Here we construct a video camera to track and play back actions:
 
 	{*}"The Actor's Studio"
-	
+
 	Section 1 - The Video Camera
 
 	The video camera is a thing carried by the player.
@@ -31,11 +34,11 @@ Here we construct a video camera to track and play back actions:
 
 	Carry out tuning it to:
 		now the mode of the noun is the mode understood.
-	
+
 	Report tuning it to:
 		say "You set [the noun] to [mode understood]."
-	
-	After an actor doing something when the video camera is recording: 
+
+	After an actor doing something when the video camera is recording:
 		if the current action is tuning the video camera to recording, make no decision;
 		if the number of blank rows in the Table of Videotape is greater than zero:
 			choose a blank row in the Table of Videotape;
@@ -56,9 +59,9 @@ Here we construct a video camera to track and play back actions:
 				blank out the whole row;
 		if starting playback is false, say "only static.";
 		otherwise say paragraph break.
-		
+
 	Section 2 - The Scenario
-	
+
 	The Actor's Studio is a room. Lucas is a man in the Actor's Studio. Persuasion rule: persuasion succeeds.
 
 	The Studio contains an edible thing called a croissant.

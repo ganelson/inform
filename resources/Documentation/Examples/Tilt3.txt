@@ -1,15 +1,19 @@
-** Extensions and story file formats
-(Tilt: 3. Playing cards with colored unicode suits--Coloured lettering for both z-machine and Glulx)
-Displaying the card suits from our deck of cards with red and black colored unicode symbols.
+Example: ** Tilt 3
+Subtitle: Playing cards with colored unicode suits
+Location: Extensions and story file formats
+RecipeLocation: Typography
+Index: Tilt 3. Playing cards with colored unicode suits
+Description: Displaying the card suits from our deck of cards with red and black colored unicode symbols.
+For: Z-Machine
 
 Books and articles about card-playing traditionally abbreviate card names into a simple two-symbol notation: a number or letter representing the card rank, followed by a symbol indicating the card suit. Suppose that we want to emulate this notation when taking inventory in our poker game.
 
 The trick here is that colored output is done in different ways by the Z-Machine and by Glulx, so we'll need two different versions of the same section in order to produce this output. The relevant source is right at the beginning:
 
 	{*}"Tilt"
-	
+
 	Section 0 - Colored Output in Two Forms
-	
+
 For the suit symbols, we'll want the Unicode extension included with Inform:
 
 	{**}Rule for printing the name of a card (called target) while grouping together:
@@ -22,15 +26,15 @@ For the suit symbols, we'll want the Unicode extension included with Inform:
 		if current suit is hearts, say "[red letters][unicode black heart suit][default letters]".
 
 	Section 0Z (for Z-machine only)
-	
+
 The Basic Screen Effects extension bundled with Inform includes mechanisms to change the text color, so for the Z-machine, we need only include this:
 
-	{**}Include Basic Screen Effects by Emily Short. 
+	{**}Include Basic Screen Effects by Emily Short.
 
 	Section 0G (for Glulx only)
 
 Under Glulx, we need slightly more set-up: Glulx requires that we define special user font styles when we plan to make display changes. A fuller discussion of this (and of how to define new colors) appears in the documentation of "Glulx Text Effects", but an implementation sufficient to our purposes would be
-	
+
 	{**}Include Glulx Text Effects by Emily Short.
 
 	Table of User Styles (continued)
@@ -38,29 +42,29 @@ Under Glulx, we need slightly more set-up: Glulx requires that we define special
 	special-style-1	g-pure-red
 
 	Table of Common Color Values (continued)
-	glulx color value	assigned number 
+	glulx color value	assigned number
 	g-pure-red	16711680
 
 	To say red letters: say first custom style.
-	
+
 	To say default letters: say roman type.
-	
+
 From here, the rest of the source is mostly as we've seen in previous examples:
-	
+
 	{**}Section 1 - Cards
 
-	Suit is a kind of value. The suits are hearts, clubs, diamonds, and spades. Understand "heart" as hearts. Understand "club" as clubs. Understand "diamond" as diamonds. Understand "spade" as spades. 
+	Suit is a kind of value. The suits are hearts, clubs, diamonds, and spades. Understand "heart" as hearts. Understand "club" as clubs. Understand "diamond" as diamonds. Understand "spade" as spades.
 
-	A card is a kind of thing.  A card has a suit. A card has a number called rank. Understand the suit property as describing a card. Understand the rank property as describing a card. 
+	A card is a kind of thing.  A card has a suit. A card has a number called rank. Understand the suit property as describing a card. Understand the rank property as describing a card.
 
 	52 cards are in the card repository.
-	
+
 	To say (count - a number) as a card value:
 		choose row count in the Table of Value Names;
 		say "[term entry]".
-	
+
 	Rule for printing the name of a card (called target):
-		say "[rank of the target as a card value] of [suit of the target]" 
+		say "[rank of the target as a card value] of [suit of the target]"
 
 	To say (count - a number) as abbreviated value:
 		choose row count in the Table of Value Names;
@@ -90,7 +94,7 @@ From here, the rest of the source is mostly as we've seen in previous examples:
 			while the player's command includes topic entry:
 				replace the matched text with value entry.
 
-	When play begins: 
+	When play begins:
 		reconstitute deck.
 
 	To reconstitute deck:
@@ -117,9 +121,9 @@ From here, the rest of the source is mostly as we've seen in previous examples:
 		let R be N divided by 5;
 		let total be R times 5;
 		decide on total.
-	
-	Rule for printing room description details of something: do nothing instead. 
-	
+
+	Rule for printing room description details of something: do nothing instead.
+
 	Section 3 - Drawing and Discarding Actions
 
 	Understand the commands "take" and "carry" and "hold" and "get" and "drop" and "throw" and "discard" as something new.
@@ -130,20 +134,20 @@ From here, the rest of the source is mostly as we've seen in previous examples:
 
 	Setting action variables for drawing:
 		now the card drawn is a random card which is in the deck of cards.
-		
+
 	Check drawing:
 		if the card drawn is nothing, say "The deck is completely depleted." instead.
 
 	Check drawing:
-		if the number of cards carried by the player is greater than four, 
+		if the number of cards carried by the player is greater than four,
 			say "This is a five-card game; you must discard something before drawing anything further." instead.
 
-	Carry out drawing:  
+	Carry out drawing:
 		move the card drawn to the player.
-	
+
 	Report drawing:
-		say "You draw [a card drawn]."	 
-	
+		say "You draw [a card drawn]."
+
 
 	Understand "discard [card]" as discarding. Discarding is an action applying to one thing.
 
@@ -153,15 +157,15 @@ From here, the rest of the source is mostly as we've seen in previous examples:
 	Carry out discarding:
 		now the noun is in the discard pile;
 		if the discard pile is not visible, move the discard pile to the location.
-	
+
 	Report discarding:
-		say "You toss [the noun] nonchalantly onto the discard pile."  
+		say "You toss [the noun] nonchalantly onto the discard pile."
 
 	Section 4 - Assessing Hands
-	
+
 	Before listing contents while taking inventory: group cards together.
 
-	Before grouping together cards: 
+	Before grouping together cards:
 		if the number of cards carried by the player is 5:
 			say "[run paragraph on]";
 			follow the hand-ranking rules;
@@ -174,10 +178,10 @@ From here, the rest of the source is mostly as we've seen in previous examples:
 
 	Rule for grouping together cards:
 		say "[list hand]".
-	
+
 	To say list hand:
 		let chosen card be the first thing held by the player;
-		while chosen card is a card: 
+		while chosen card is a card:
 			say "[chosen card]";
 			now chosen card is the next thing held after chosen card;
 			if chosen card is a card, say "-".
@@ -185,44 +189,44 @@ From here, the rest of the source is mostly as we've seen in previous examples:
 	After grouping together cards:
 		say ")".
 
-	The hand-ranking rules is a rulebook. The hand-ranking rules have outcomes royal flush, straight flush, four of a kind, full house, flush, straight, three of a kind, two pairs, pair, high card.  
+	The hand-ranking rules is a rulebook. The hand-ranking rules have outcomes royal flush, straight flush, four of a kind, full house, flush, straight, three of a kind, two pairs, pair, high card.
 
 	The hand-ranking rulebook has a truth state called the flushness.
 	The hand-ranking rulebook has a truth state called the straightness.
 
 	The hand-ranking rulebook has a number called the pair count.
 	The hand-ranking rulebook has a number called the triple count.
-	The hand-ranking rulebook has a number called the quadruple count. 
+	The hand-ranking rulebook has a number called the quadruple count.
 
 	A card can be sorted or unsorted. A card is usually unsorted.
- 	
+
 	Definition: a card is high if its rank is 11 or more.
 	Definition: a card is low if its rank is 4 or less.
 
-	A hand-ranking rule (this is the initial sort rule): 
+	A hand-ranking rule (this is the initial sort rule):
 		now every card is unsorted;
 		while the player carries an unsorted card:
 			let item be the lowest unsorted card held by the player;
 			move item to the player;
 			now the item is sorted;
-		if sort-debugging is true, say "-- after initial sort: [list hand]". 
+		if sort-debugging is true, say "-- after initial sort: [list hand]".
 
 	A hand-ranking rule (this is the finding flushness rule):
 		let called suit be the suit of a random card carried by the player;
 		if every card carried by the player is called suit, now flushness is true.
-	
-	A hand-ranking rule (this is the finding straightness rule): 
+
+	A hand-ranking rule (this is the finding straightness rule):
 		now straightness is true;
 		let N be the rank of the highest card which is carried by the player;
 		repeat with current rank running from N - 4 to N:
 			now the test rank is the current rank;
 			unless the player carries a matching card:
-				if the current rank is N - 4 and the current rank is 9 and the player carries an ace card, do nothing; 
+				if the current rank is N - 4 and the current rank is 9 and the player carries an ace card, do nothing;
 				otherwise now straightness is false.
 
-	A card can be quadrupled, tripled, paired or uncombined.  
-	
-	Test rank is a number that varies. Definition: a card is matching if its rank is the test rank. 
+	A card can be quadrupled, tripled, paired or uncombined.
+
+	Test rank is a number that varies. Definition: a card is matching if its rank is the test rank.
 
 	A hand-ranking rule (this is the counting multiples rule):
 		now every card is uncombined;
@@ -240,8 +244,8 @@ From here, the rest of the source is mostly as we've seen in previous examples:
 				now every matching card held by the player is paired.
 
 	A hand-ranking rule (this is the move aces up unless there's a low straight rule):
-		unless the straightness is true and the lowest card carried by the player is an ace card and the rank of the highest card carried by the player is 5, 
-			now every ace card which is carried by the player is carried by the player; 
+		unless the straightness is true and the lowest card carried by the player is an ace card and the rank of the highest card carried by the player is 5,
+			now every ace card which is carried by the player is carried by the player;
 		if sort-debugging is true, say "-- after ace movement rule: [list hand]".
 
 	A hand-ranking rule (this is the move pairs forward rule):
@@ -276,10 +280,10 @@ From here, the rest of the source is mostly as we've seen in previous examples:
 
 	A hand-ranking rule (this is the straight-flushes rule):
 		if flushness is true and straightness is true, straight flush.
-	
+
 	A hand-ranking rule (this is the four-of-a-kind rule):
 		if the quadruple count is 1, four of a kind.
-	
+
 	A hand-ranking rule (this is the full-house rule):
 		if the pair count is 1 and the triple count is 1, full house.
 
@@ -288,7 +292,7 @@ From here, the rest of the source is mostly as we've seen in previous examples:
 
 	A hand-ranking rule (this is the straights rule):
 		if straightness is true, straight.
-	
+
 	A hand-ranking rule (this is the three-of-a-kind rule):
 		if triple count is 1, three of a kind.
 
@@ -299,10 +303,10 @@ From here, the rest of the source is mostly as we've seen in previous examples:
 		if the pair count is 1, pair.
 
 	A hand-ranking rule (this is the default rule):
-		high card.	
+		high card.
 
-	Sort-debugging is a truth state that varies. 
-	
+	Sort-debugging is a truth state that varies.
+
 	Section 5 - Testing hand identification - Not for release
 
 	Understand "debug sorting" as debugging hand sorting. Debugging hand sorting is an action out of world.
@@ -310,21 +314,21 @@ From here, the rest of the source is mostly as we've seen in previous examples:
 	Carry out debugging hand sorting:
 		if sort-debugging is false, now sort-debugging is true;
 		otherwise now sort-debugging is false.
-		
+
 	Report debugging hand sorting:
 		say "Sort debugging is now [if sort-debugging is true]on[otherwise]off[end if]."
 
 	Test me with "draw / g / g / g / g / force hand / g / g / g / g / g / g / g / g / g / g / g / g".
-	
+
 	Table of Testing Hands
-	set suit	set rank 
+	set suit	set rank
 	spades	1	[royal flush]
 	spades	13
 	spades	12
 	spades	11
 	spades	10
 	clubs	12	[straight flush]
-	clubs	11	
+	clubs	11
 	clubs	10
 	clubs	9
 	clubs	8
@@ -352,7 +356,7 @@ From here, the rest of the source is mostly as we've seen in previous examples:
 	spades	2
 	clubs	2
 	clubs	4
-	spades	3	
+	spades	3
 	diamonds	6	[two pairs]
 	spades	6
 	clubs	7
@@ -377,14 +381,14 @@ From here, the rest of the source is mostly as we've seen in previous examples:
 	diamonds	2
 	spades	3
 	diamonds	4
-	diamonds	5 
-	
+	diamonds	5
+
 	Understand "force hand" as forcing a hand. Forcing a hand is an action out of world.
 
-	Current marker is a number that varies. 
+	Current marker is a number that varies.
 
 	Carry out forcing a hand:
-		repeat with item running through cards which are carried by the player:	
+		repeat with item running through cards which are carried by the player:
 			increment current marker;
 			if current marker is greater than the number of filled rows in the Table of Testing Hands, now current marker is 1;
 			choose row current marker in the Table of Testing Hands;
@@ -392,4 +396,4 @@ From here, the rest of the source is mostly as we've seen in previous examples:
 			now the rank of item is the set rank entry.
 
 	Report forcing a hand:
-		try taking inventory. 
+		try taking inventory.

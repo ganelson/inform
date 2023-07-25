@@ -272,7 +272,7 @@ very much.
  	if ((index_to_examples) &&
  		(Regexp::match(&mr, raw, L"{%*}&quot;(%c*)&quot;%c*")) &&
  		(Str::ne_wide_string(mr.exp[0], L"Midsummer Day"))) {
- 		ExamplesIndex::add_to_alphabetic_examples_index(mr.exp[0], S, NULL, TRUE, FALSE);
+ 		ExamplesIndex::add_to_alphabetic_examples_index(mr.exp[0], S, NULL, TRUE);
  		Regexp::dispose_of(&mr);
  	}
 

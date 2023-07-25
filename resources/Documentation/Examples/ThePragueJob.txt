@@ -1,0 +1,40 @@
+Example: * The Prague Job
+Location: More general linkages
+RecipeLocation: Scripted Scenes
+Index: Scenes which change as the player explores their inventory
+Description: Scenes used to provide pacing while the player goes through their possessions.
+For: Z-Machine
+
+Suppose we want to remind the player that they don't have all the time in the world, by starting to nag them when they're nearly, but not entirely, done going over their inventory in preparation for a job.
+
+	{*}"The Prague Job"
+
+	A thing can be seen or unseen. A thing is usually unseen. Carry out examining: now the noun is seen.
+
+	The player carries a lockpick, a smoke bomb, a grappling hook, and a pair of gloves. The description of the lockpick is "Effective on most kinds of key locks, it is a gift from your mentor in the discipline, old Wheezy." The description of the smoke bomb is "Your last of these, so you should rely on it only when other modes of escape have vanished. It takes effect when dropped, producing a cloud of purple haze sufficient to fill a medium-sized room." The description of the grappling hook is "Good for shooting at balconies and other sorts of overhang."  The gloves are wearable. The description of the gloves is "Black and shiny, with gripping material on the palms. Batman would be jealous."
+
+	The Toilet is a room. "The walls are painted an unattractive green; the fixtures are a bit old. But it is the only place in the hostel with any privacy." The Long Hallway is outside from the Toilet.
+
+	Reviewing Possessions is a scene. Reviewing Possessions begins when play begins.
+
+	Escalating Danger is a scene. Reviewing Possessions ends when Escalating Danger begins. Escalating Danger begins when preparations near completion.
+
+	To decide whether preparations near completion:
+		if at least two of the things which are carried by the player are seen, yes;
+		no.
+
+	When Escalating Danger begins: say "Someone pounds on the door of your hideout and yells at you in Czech."
+
+	Instead of going from the Toilet during Reviewing Possessions: say "You need to go over your equipment first, and make sure you're ready here."
+
+	Instead of going from the Toilet during Escalating Danger: say "You're not done checking over your materials."
+
+	Instead of waiting during Escalating Danger: say "There's no time to waste."
+
+	Every turn during Escalating Danger: if the time since Escalating Danger began is greater than 1 minute, say "Impatient footsteps pass your door again."
+
+	Escalating Danger ends when every thing which is carried by the player is seen. When Escalating Danger ends, say "There -- nothing damaged or torn. You're ready to go."
+
+	Mission is a scene. Mission begins when the player is in the Long Hallway. When Mission begins: end the story saying "The game is afoot"
+
+	Test me with "i / x lockpick / out / x bomb / out / x hook / x gloves / out".

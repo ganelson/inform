@@ -1,11 +1,14 @@
-* Replacements
-(Pig Latin for the player's commands; Igpay Atinlay)
-A pig Latin filter for the player's commands.
+Example: * Igpay Atinlay
+Location: Replacements
+RecipeLocation: Using the Player's Input
+Index: Pig Latin for the player's commands
+Description: A pig Latin filter for the player's commands.
+For: Z-Machine
 
 For the sake of argument, suppose we want to parrot back all the player's commands in pig Latin:
 
-	{*} "Igpay Atinlay"
-	
+	{*}"Igpay Atinlay"
+
 	Armfay is a room.
 
 	After reading a command:
@@ -14,5 +17,5 @@ For the sake of argument, suppose we want to parrot back all the player's comman
 		replace the regular expression "\b(<bcdfghjklmnpqrstvwxz>+)(\w*)" in N with "\2\1ay";
 		say "[N][paragraph break]";
 		reject the player's command.
-		
+
 	Test me with "nix on the stupid".

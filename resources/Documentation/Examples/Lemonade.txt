@@ -1,8 +1,11 @@
-*** Arithmetic with units
-(Liquid containers with measured contents; Lemonade)
-Containers for liquid which keep track of how much liquid they are holding and of what kind, and allow quantities to be moved from one container to another.
+Example: *** Lemonade
+Location: Arithmetic with units
+RecipeLocation: Liquids
+Index: Liquid containers with measured contents
+Description: Containers for liquid which keep track of how much liquid they are holding and of what kind, and allow quantities to be moved from one container to another.
+For: Z-Machine
 
-Liquids, and all substances that can be mixed or broken off in partial amounts, pose a challenge to model in interactive fiction. The following example is a simple one, but adequate for many scenarios. 
+Liquids, and all substances that can be mixed or broken off in partial amounts, pose a challenge to model in interactive fiction. The following example is a simple one, but adequate for many scenarios.
 
 We start by assuming that all liquids in the game will always appear in containers. The player can pour liquids from one container to another, and the containers keep track of how full they are and describe themselves appropriately. The player can also refer to containers by content.
 
@@ -16,12 +19,12 @@ Mixture, however, is not allowed, nor is it possible to put liquids on other obj
 
 	The fluid capacity of a fluid container is usually 12.0 fl oz. The current volume of a fluid container is usually 0.0 fl oz.
 
-	Liquid is a kind of value. The liquids are water, milk, lemonade, and iced tea. A fluid container has a liquid. 
+	Liquid is a kind of value. The liquids are water, milk, lemonade, and iced tea. A fluid container has a liquid.
 
 	Instead of examining a fluid container:
 		if the noun is empty,
 			say "You catch just a hint of [the liquid of the noun] at the bottom.";
-		otherwise 
+		otherwise
 			say "[The noun] contains [current volume of the noun in rough terms] of [liquid of the noun]."
 
 	To say (amount - a volume) in rough terms:
@@ -47,7 +50,7 @@ Mixture, however, is not allowed, nor is it possible to put liquids on other obj
 
 	Instead of inserting something into a fluid container:
 		say "[The second noun] has too narrow a mouth to accept anything but liquids."
-	
+
 	Definition: a fluid container is empty if the current volume of it is 0.0 fl oz. Definition: a fluid container is full if the current volume of it is the fluid capacity of it.
 
 	Understand "drink from [fluid container]" as drinking.
@@ -59,13 +62,13 @@ Mixture, however, is not allowed, nor is it possible to put liquids on other obj
 			decrease the current volume of the noun by 0.2 fl oz;
 			if the current volume of the noun is less than 0.0 fl oz, now the current volume of the noun is 0.0 fl oz;
 			say "You take a sip of [the liquid of the noun][if the noun is empty], leaving [the noun] empty[end if]."
-		
+
 We have allowed all liquids to be drunk, but it would be possible also to add checking, if we had a game where some liquids were beverages and others were, say, motor oil.
 
 	{**}Understand the command "fill" as something new.
-	
-	Understand "pour [fluid container] in/into/on/onto [fluid container]" as pouring it into. Understand "empty [fluid container] into [fluid container]" as pouring it into. Understand "fill [fluid container] with/from [fluid container]" as pouring it into (with nouns reversed). 
-	
+
+	Understand "pour [fluid container] in/into/on/onto [fluid container]" as pouring it into. Understand "empty [fluid container] into [fluid container]" as pouring it into. Understand "fill [fluid container] with/from [fluid container]" as pouring it into (with nouns reversed).
+
 	Understand "pour [something] in/into/on/onto [something]" as pouring it into. Understand "empty [something] into [something]" as pouring it into. Understand "fill [something] with/from [something]" as pouring it into (with nouns reversed).
 
 	Pouring it into is an action applying to two things.
@@ -79,19 +82,19 @@ We have allowed all liquids to be drunk, but it would be possible also to add ch
 			otherwise say "Mixing [the liquid of the noun] with [the liquid of the second noun] would give unsavory results." instead;
 		if the noun is empty, say "No more [liquid of the noun] remains in [the noun]." instead;
 		if the second noun is full, say "[The second noun] cannot contain any more than it already holds." instead.
-		
+
 	Carry out pouring it into:
-		let available capacity be the fluid capacity of the second noun minus the current volume of the second noun; 
+		let available capacity be the fluid capacity of the second noun minus the current volume of the second noun;
 		if the available capacity is greater than the current volume of the noun, now the available capacity is the current volume of the noun;
 		increase the current volume of the second noun by available capacity;
 		decrease the current volume of the noun by available capacity.
-		
+
 	Report pouring it into:
 		say "[if the noun is empty][The noun] is now empty;[otherwise][The noun] now contains [current volume of the noun in rough terms] of [liquid of the noun]; [end if]";
 		say "[the second noun] contains [current volume of the second noun in rough terms] of [liquid of the second noun][if the second noun is full], and is now full[end if]."
-		
+
 This is probably a drier description than we would actually want in our story, but it does allow us to see that the mechanics of the system are working, so we'll stick with this for the example.
-	
+
 Now we need a trick from a later chapter, which allows something to be described in terms of a property it has. This way, the story will understand not only "pitcher" and "glass" but also "pitcher of lemonade" and "glass of milk" -- and, indeed, "glass of lemonade", if we empty the glass and refill it with another substance:
 
 	{**}Understand the liquid property as describing a fluid container. Understand "of" as a fluid container.
@@ -99,13 +102,13 @@ Now we need a trick from a later chapter, which allows something to be described
 And now the scenario itself:
 
 	{**}The Porch is a room. The porch swing is an enterable supporter in the Porch. "An inviting swing hangs here at the end of the porch, allowing you to enjoy the summer with a cool beverage, and watch your neighbor Ted mowing his lawn with the very last manual powerless lawnmower on the block."
-	
+
 	The glass is a fluid container carried by the player. The liquid of the glass is milk. The current volume of the glass is 0.8 fl oz.
-	
-	The pitcher is a fluid container in the Porch. The fluid capacity of the pitcher is 32.0 fl oz. The current volume of the pitcher is 20.0 fl oz. The liquid of the pitcher is lemonade. 
-	
+
+	The pitcher is a fluid container in the Porch. The fluid capacity of the pitcher is 32.0 fl oz. The current volume of the pitcher is 20.0 fl oz. The liquid of the pitcher is lemonade.
+
 	Ted's Lawn is outside from the Porch. Ted is a man in Ted's Lawn. "Ted has taken off his shirt, but still seems a bit oppressed by the sun." The description of Ted is "He looks hot. In all senses."
-	
+
 	After deciding the scope of the player: place Ted in scope.
 
 	Instead of doing something to Ted when the player is in the Porch: say "You can't really interact with Ted from this distance, except in the sense of eyeing him surreptitiously."
@@ -130,7 +133,7 @@ And now the scenario itself:
 			decrease the current volume of the noun by 2.0 fl oz;
 			if the current volume of the noun is less than 0.0 fl oz, now the current volume of the noun is 0.0 fl oz;
 			say "[The person asked] gulps down some [liquid of the noun]."
-	
+
 	After someone giving something to the player:
 		say "'Here,' says [the person asked], handing [the noun] back to you. 'Thanks, I owe you one.'";
 		end the story finally.

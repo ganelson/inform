@@ -1,14 +1,17 @@
-* Choosing notable locale objects for something
-(Levels of lighting; Low Light)
-An object that is only visible and manipulable when a bright light fixture is on.
+Example: * Low Light
+Location: Choosing notable locale objects for something
+RecipeLocation: Room Descriptions
+Index: Levels of lighting
+Description: An object that is only visible and manipulable when a bright light fixture is on.
+For: Z-Machine
 
 Suppose we want a different treatment of lighting than the usual: the room isn't totally dark, but there's something we can't see unless we turn on a bright light.
 
 	{*}"Low Light"
 
 First we make our environment and its light:
-	
-	{**}The Workroom is a room. The desk is in the Workroom. The brilliant lamp is a device on the desk. 
+
+	{**}The Workroom is a room. The desk is in the Workroom. The brilliant lamp is a device on the desk.
 
 	To decide whether the light level is high:
 		if the brilliant lamp is switched off, no;
@@ -18,11 +21,11 @@ First we make our environment and its light:
 	To decide whether the light level is low:
 		if the light level is high, no;
 		yes.
-	
+
 Now we make a shadow so that the player can only refer to it if the shadow is in inventory or the light is on:
 
-	{**}The shadow is a privately-named thing on the desk. 
-	
+	{**}The shadow is a privately-named thing on the desk.
+
 	Understand "barely-visible" or "barely visible" or "shadow" as the shadow when the light level is high. Understand "invisible" or "shadow" as the shadow when the player encloses the shadow.
 
 And finally a couple of extra touches to make it clear why we're able to interact with the shadow when it's in inventory, even if the light is low:
@@ -36,10 +39,10 @@ And finally a couple of extra touches to make it clear why we're able to interac
 	After dropping the shadow when the light level is low:
 		say "You let it go and it fades into the ambient gloom."
 
-To handle the appearance of the object, we want to set its locale priority to 0: that will prevent it being named in room descriptions. 
+To handle the appearance of the object, we want to set its locale priority to 0: that will prevent it being named in room descriptions.
 
 	{**}After choosing notable locale objects:
 		unless the light level is high:
-			set locale priority of the shadow to 0. 
+			set locale priority of the shadow to 0.
 
 	Test me with "look / get shadow / turn on lamp / look / get shadow / i / turn off lamp / i / drop shadow / look / get shadow / turn on lamp / look".
