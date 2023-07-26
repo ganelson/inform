@@ -345,7 +345,7 @@ void ExtensionInstaller::install(inbuild_copy *C, int confirmed, pathname *to_to
 		pathname *P = ExtensionBundleManager::pathname_in_nest(Projects::materials_nest(project), C->edition);
 		WRITE("the folder ");
 		HTML_OPEN("b");
-		Pathnames::relative_URL(OUT, Pathnames::up(Projects::materials_path(project)), P);
+		Pathnames::to_text_relative(OUT, Pathnames::up(Projects::materials_path(project)), P);
 		HTML_CLOSE("b");
 	} else {
 		filename *F = ExtensionManager::filename_in_nest(Projects::materials_nest(project), C->edition);
@@ -388,7 +388,7 @@ void ExtensionInstaller::install(inbuild_copy *C, int confirmed, pathname *to_to
 				} else if (search_result->copy->location_if_path) {
 					HTML_TAG("br");
 					WRITE("at ");
-					Pathnames::relative_URL(OUT, Pathnames::up(Projects::materials_path(project)),
+					Pathnames::to_text_relative(OUT, Pathnames::up(Projects::materials_path(project)),
 						search_result->copy->location_if_path);
 				}
 				Copies::list_attached_errors_to_HTML(OUT, search_result->copy);
