@@ -77,7 +77,7 @@ To say regarding (D - a description of objects): (-
 To decide if the prior naming context is plural:
 	(- ((prior_named_list >= 2) || (prior_named_noun && prior_named_noun has pluralname)) -).
 
-Section - Preferred printing gender (for interactive fiction language element only)
+Section - Preferred printing gender (for interactive fiction language element)
 
 Prefer neuter gender is a truth state that varies.
 Prefer neuter gender is usually true.
@@ -101,7 +101,7 @@ To decide which grammatical gender is the printing gender for (o - an object):
 	if o is female:
 		decide on feminine gender.
 
-Section - Saying viewpoint pronouns (for interactive fiction language element only)
+Section - Saying viewpoint pronouns (for interactive fiction language element)
 
 To say we:
 	now the prior named object is the player;
@@ -243,7 +243,7 @@ To say Our:
 		-- second person plural: say "Your";
 		-- third person plural: say "Their";
 
-Section - Saying item pronouns (for interactive fiction element only)
+Section - Saying item pronouns (for interactive fiction language element only)
 
 To say those:
 	say those in the accusative.
@@ -446,7 +446,7 @@ To say They're:
 			-- the neuter gender: say "That";
 	say "['re]".
 
-Section - Saying non-referential pronouns (for interactive fiction element only)
+Section - Saying non-referential pronouns (for interactive fiction language element only)
 
 To say It:
 	say "[regarding nothing]It".
@@ -472,7 +472,7 @@ To say it's:
 To say there's:
 	say "[regarding nothing]there['re]".
 
-Section - Saying possessives (for interactive fiction element only)
+Section - Saying possessives (for interactive fiction language element only)
 
 To say possessive:
 	let the item be the prior named object;
