@@ -1,4 +1,4 @@
-Version 2 of English Language by Graham Nelson begins here.
+Version 3 of English Language by Graham Nelson begins here.
 
 "To make English the language of play."
 
@@ -77,189 +77,173 @@ To say regarding (D - a description of objects): (-
 To decide if the prior naming context is plural:
 	(- ((prior_named_list >= 2) || (prior_named_noun && prior_named_noun has pluralname)) -).
 
-Section 2 - Saying pronouns (for interactive fiction language element only)
+Section 2 - Preferred printing gender (for interactive fiction language element)
+
+Prefer neuter gender is a truth state that varies.
+Prefer neuter gender is usually true.
+The preferred animate gender is a grammatical gender which varies.
+The preferred animate gender is usually masculine gender.  [Matches old-fashioned English.]
+
+To decide which grammatical gender is the printing gender for (o - an object):
+	[not male or female, always use "it"]
+	if o is not male and o is not female:
+		decide on neuter gender;
+	[neuter and prefer neuter gender, always use "it"]
+	if o is neuter and prefer neuter gender is true:
+		decide on neuter gender;
+	[female and male, use preferred animate gender]
+	if o is female and o is male:
+		decide on preferred animate gender;
+	[classic male; and non-neuter or male overrrides neuter]
+	if o is male:
+		decide on masculine gender;
+	[classic female; and non-neuter or female overrrides neuter]
+	if o is female:
+		decide on feminine gender.
+
+Section 3 - Saying viewpoint pronouns (for interactive fiction language element)
 
 To say we:
 	now the prior named object is the player;
-	if the story viewpoint is first person singular:
-		say "I";
-	if the story viewpoint is second person singular:
-		say "you";
-	if the story viewpoint is third person singular:
-		if the player is male:
-			say "he";
-		otherwise:
-			say "she";
-	if the story viewpoint is first person plural:
-		say "we";
-	if the story viewpoint is second person plural:
-		say "you";
-	if the story viewpoint is third person plural:
-		say "they".
+	if the story viewpoint is:
+		-- first person singular: say "I";
+		-- second person singular: say "you";
+		-- third person singular:
+			if printing gender for the player is:
+				-- the masculine gender: say "he";
+				-- the feminine gender: say "she";
+				-- the neuter gender: say "it";
+		-- first person plural: say "we";
+		-- second person plural: say "you";
+		-- third person plural: say "they";
 
 To say us:
 	now the prior named object is the player;
-	if the story viewpoint is first person singular:
-		say "me";
-	if the story viewpoint is second person singular:
-		say "you";
-	if the story viewpoint is third person singular:
-		if the player is male:
-			say "him";
-		otherwise:
-			say "her";
-	if the story viewpoint is first person plural:
-		say "us";
-	if the story viewpoint is second person plural:
-		say "you";
-	if the story viewpoint is third person plural:
-		say "them".
+	if the story viewpoint is:
+		-- first person singular: say "me";
+		-- second person singular: say "you";
+		-- third person singular:
+			if printing gender for the player is:
+				-- the masculine gender: say "him";
+				-- the feminine gender: say "her";
+				-- the neuter gender: say "it";
+		-- first person plural: say "us";
+		-- second person plural: say "you";
+		-- third person plural: say "them";
 
 To say ours:
 	now the prior named object is the player;
-	if the story viewpoint is first person singular:
-		say "mine";
-	if the story viewpoint is second person singular:
-		say "yours";
-	if the story viewpoint is third person singular:
-		if the player is male:
-			say "his";
-		otherwise:
-			say "hers";
-	if the story viewpoint is first person plural:
-		say "ours";
-	if the story viewpoint is second person plural:
-		say "yours";
-	if the story viewpoint is third person plural:
-		say "theirs".
+	if the story viewpoint is:
+		-- first person singular: say "mine";
+		-- second person singular: say "yours";
+		-- third person singular:
+			if printing gender for the player is:
+				-- the masculine gender: say "his";
+				-- the feminine gender: say "hers";
+				-- the neuter gender: say "its";
+		-- first person plural: say "ours";
+		-- second person plural: say "yours";
+		-- third person plural: say "theirs";
 
 To say ourselves:
 	now the prior named object is the player;
-	if the story viewpoint is first person singular:
-		say "myself";
-	if the story viewpoint is second person singular:
-		say "yourself";
-	if the story viewpoint is third person singular:
-		if the player is male:
-			say "himself";
-		otherwise:
-			say "herself";
-	if the story viewpoint is first person plural:
-		say "ourselves";
-	if the story viewpoint is second person plural:
-		say "yourselves";
-	if the story viewpoint is third person plural:
-		say "themselves".
+	if the story viewpoint is:
+		-- first person singular: say "myself";
+		-- second person singular: say "yourself";
+		-- third person singular:
+			if printing gender for the player is:
+				-- the masculine gender: say "himself";
+				-- the feminine gender: say "herself";
+				-- the neuter gender: say "itself";
+		-- first person plural: say "ourselves";
+		-- second person plural: say "yourselves";
+		-- third person plural: say "themselves";
 
 To say our:
 	now the prior named object is the player;
-	if the story viewpoint is first person singular:
-		say "my";
-	if the story viewpoint is second person singular:
-		say "your";
-	if the story viewpoint is third person singular:
-		if the player is male:
-			say "his";
-		otherwise:
-			say "her";
-	if the story viewpoint is first person plural:
-		say "our";
-	if the story viewpoint is second person plural:
-		say "your";
-	if the story viewpoint is third person plural:
-		say "their".
+	if the story viewpoint is:
+		-- first person singular: say "my";
+		-- second person singular: say "your";
+		-- third person singular:
+			if printing gender for the player is:
+				-- the masculine gender: say "his";
+				-- the feminine gender: say "her";
+				-- the neuter gender: say "its";
+		-- first person plural: say "our";
+		-- second person plural: say "your";
+		-- third person plural: say "their";
 
 To say We:
 	now the prior named object is the player;
-	if the story viewpoint is first person singular:
-		say "I";
-	if the story viewpoint is second person singular:
-		say "You";
-	if the story viewpoint is third person singular:
-		if the player is male:
-			say "He";
-		otherwise:
-			say "She";
-	if the story viewpoint is first person plural:
-		say "We";
-	if the story viewpoint is second person plural:
-		say "You";
-	if the story viewpoint is third person plural:
-		say "They".
+	if the story viewpoint is:
+		-- first person singular: say "I";
+		-- second person singular: say "You";
+		-- third person singular:
+			if printing gender for the player is:
+				-- the masculine gender: say "He";
+				-- the feminine gender: say "She";
+				-- the neuter gender: say "It";
+		-- first person plural: say "We";
+		-- second person plural: say "You";
+		-- third person plural: say "They";
 
 To say Us:
 	now the prior named object is the player;
-	if the story viewpoint is first person singular:
-		say "Me";
-	if the story viewpoint is second person singular:
-		say "You";
-	if the story viewpoint is third person singular:
-		if the player is male:
-			say "Him";
-		otherwise:
-			say "Her";
-	if the story viewpoint is first person plural:
-		say "Us";
-	if the story viewpoint is second person plural:
-		say "You";
-	if the story viewpoint is third person plural:
-		say "Them".
+	if the story viewpoint is:
+		-- first person singular: say "Me";
+		-- second person singular: say "You";
+		-- third person singular:
+			if printing gender for the player is:
+				-- the masculine gender: say "Him";
+				-- the feminine gender: say "Her";
+				-- the neuter gender: say "It";
+		-- first person plural: say "Us";
+		-- second person plural: say "You";
+		-- third person plural: say "Them";
 
 To say Ours:
 	now the prior named object is the player;
-	if the story viewpoint is first person singular:
-		say "Mine";
-	if the story viewpoint is second person singular:
-		say "Yours";
-	if the story viewpoint is third person singular:
-		if the player is male:
-			say "His";
-		otherwise:
-			say "Hers";
-	if the story viewpoint is first person plural:
-		say "Ours";
-	if the story viewpoint is second person plural:
-		say "Yours";
-	if the story viewpoint is third person plural:
-		say "Theirs".
+	if the story viewpoint is:
+		-- first person singular: say "Mine";
+		-- second person singular: say "Yours";
+		-- third person singular:
+			if printing gender for the player is:
+				-- the masculine gender: say "His";
+				-- the feminine gender: say "Hers";
+				-- the neuter gender: say "Its";
+		-- first person plural: say "Ours";
+		-- second person plural: say "Yours";
+		-- third person plural: say "Theirs";
 
 To say Ourselves:
 	now the prior named object is the player;
-	if the story viewpoint is first person singular:
-		say "Myself";
-	if the story viewpoint is second person singular:
-		say "Yourself";
-	if the story viewpoint is third person singular:
-		if the player is male:
-			say "Himself";
-		otherwise:
-			say "Herself";
-	if the story viewpoint is first person plural:
-		say "Ourselves";
-	if the story viewpoint is second person plural:
-		say "Yourselves";
-	if the story viewpoint is third person plural:
-		say "Themselves".
+	if the story viewpoint is:
+		-- first person singular: say "Myself";
+		-- second person singular: say "Yourself";
+		-- third person singular:
+			if printing gender for the player is:
+				-- the masculine gender: say "Himself";
+				-- the feminine gender: say "Herself";
+				-- the neuter gender: say "Itself";
+		-- first person plural: say "Ourselves";
+		-- second person plural: say "Yourselves";
+		-- third person plural: say "Themselves";
 
 To say Our:
 	now the prior named object is the player;
-	if the story viewpoint is first person singular:
-		say "My";
-	if the story viewpoint is second person singular:
-		say "Your";
-	if the story viewpoint is third person singular:
-		if the player is male:
-			say "His";
-		otherwise:
-			say "Her";
-	if the story viewpoint is first person plural:
-		say "Our";
-	if the story viewpoint is second person plural:
-		say "Your";
-	if the story viewpoint is third person plural:
-		say "Their".
+	if the story viewpoint is:
+		-- first person singular: say "My";
+		-- second person singular: say "Your";
+		-- third person singular:
+			if printing gender for the player is:
+				-- the masculine gender: say "His";
+				-- the feminine gender: say "Her";
+				-- the neuter gender: say "Its";
+		-- first person plural: say "Our";
+		-- second person plural: say "Your";
+		-- third person plural: say "Their";
 
-Section 3 - Further pronouns (for interactive fiction language element only)
+Section 4 - Further pronouns
 
 To say those:
 	say those in the accusative.
@@ -274,24 +258,22 @@ To say those in (case - grammatical case):
 			say "those";
 		otherwise if the item is the player:
 			say "[we]";
-		otherwise if the item is a male person and item is not neuter:
-			say "he";
-		otherwise if the item is a female person and item is not neuter:
-			say "she";
 		otherwise:
-			say "that";
+			if printing gender for the item is:
+				-- the masculine gender: say "he";
+				-- the feminine gender: say "she";
+				-- the neuter gender: say "that";
 	otherwise:
 		let the item be the prior named object;
 		if the prior naming context is plural:
 			say "those";
 		otherwise if the item is the player:
 			say "[we]";
-		otherwise if the item is a male person and item is not neuter:
-			say "him";
-		otherwise if the item is a female person and item is not neuter:
-			say "her";
 		otherwise:
-			say "that".
+			if printing gender for the item is:
+				-- the masculine gender: say "him";
+				-- the feminine gender: say "her";
+				-- the neuter gender: say "that";
 
 To say Those in (case - grammatical case):
 	if the case is nominative:
@@ -300,24 +282,22 @@ To say Those in (case - grammatical case):
 			say "Those";
 		otherwise if the item is the player:
 			say "[We]";
-		otherwise if the item is a male person and item is not neuter:
-			say "He";
-		otherwise if the item is a female person and item is not neuter:
-			say "She";
 		otherwise:
-			say "That";
+			if printing gender for the item is:
+				-- the masculine gender: say "He";
+				-- the feminine gender: say "She";
+				-- the neuter gender: say "That";
 	otherwise:
 		let the item be the prior named object;
 		if the prior naming context is plural:
 			say "Those";
 		otherwise if the item is the player:
 			say "[We]";
-		otherwise if the item is a male person and item is not neuter:
-			say "Him";
-		otherwise if the item is a female person and item is not neuter:
-			say "Her";
 		otherwise:
-			say "That";
+			if printing gender for the item is:
+				-- the masculine gender: say "Him";
+				-- the feminine gender: say "Her";
+				-- the neuter gender: say "That";
 
 To say they:
 	let the item be the prior named object;
@@ -325,12 +305,11 @@ To say they:
 		say "they";
 	otherwise if the item is the player:
 		say "[we]";
-	otherwise if the item is a male person and item is not neuter:
-		say "he";
-	otherwise if the item is a female person and item is not neuter:
-		say "she";
 	otherwise:
-		say "it";
+		if printing gender for the item is:
+			-- the masculine gender: say "he";
+			-- the feminine gender: say "she";
+			-- the neuter gender: say "it";
 
 To say They:
 	let the item be the prior named object;
@@ -338,12 +317,11 @@ To say They:
 		say "They";
 	otherwise if the item is the player:
 		say "[We]";
-	otherwise if the item is a male person and item is not neuter:
-		say "He";
-	otherwise if the item is a female person and item is not neuter:
-		say "She";
 	otherwise:
-		say "It";
+		if printing gender for the item is:
+			-- the masculine gender: say "He";
+			-- the feminine gender: say "She";
+			-- the neuter gender: say "It";
 
 To say their:
 	let the item be the prior named object;
@@ -351,12 +329,11 @@ To say their:
 		say "their";
 	otherwise if the item is the player:
 		say "[our]";
-	otherwise if the item is a male person and item is not neuter:
-		say "his";
-	otherwise if the item is a female person and item is not neuter:
-		say "her";
 	otherwise:
-		say "its";
+		if printing gender for the item is:
+			-- the masculine gender: say "his";
+			-- the feminine gender: say "her";
+			-- the neuter gender: say "its";
 
 To say Their:
 	let the item be the prior named object;
@@ -364,12 +341,11 @@ To say Their:
 		say "Their";
 	otherwise if the item is the player:
 		say "[Our]";
-	otherwise if the item is a male person and item is not neuter:
-		say "His";
-	otherwise if the item is a female person and item is not neuter:
-		say "Her";
 	otherwise:
-		say "Its";
+		if printing gender for the item is:
+			-- the masculine gender: say "His";
+			-- the feminine gender: say "Her";
+			-- the neuter gender: say "Its";
 
 To say them:
 	let the item be the prior named object;
@@ -377,12 +353,11 @@ To say them:
 		say "them";
 	otherwise if the item is the player:
 		say "[us]";
-	otherwise if the item is a male person and item is not neuter:
-		say "him";
-	otherwise if the item is a female person and item is not neuter:
-		say "her";
 	otherwise:
-		say "it";
+		if printing gender for the item is:
+			-- the masculine gender: say "him";
+			-- the feminine gender: say "her";
+			-- the neuter gender: say "it";
 
 To say Them:
 	let the item be the prior named object;
@@ -390,12 +365,11 @@ To say Them:
 		say "Them";
 	otherwise if the item is the player:
 		say "[Us]";
-	otherwise if the item is a male person and item is not neuter:
-		say "Him";
-	otherwise if the item is a female person and item is not neuter:
-		say "Her";
 	otherwise:
-		say "It";
+		if printing gender for the item is:
+			-- the masculine gender: say "Him";
+			-- the feminine gender: say "Her";
+			-- the neuter gender: say "It";
 
 To say theirs:
 	let the item be the prior named object;
@@ -403,12 +377,11 @@ To say theirs:
 		say "theirs";
 	otherwise if the item is the player:
 		say "[ours]";
-	otherwise if the item is a male person and item is not neuter:
-		say "his";
-	otherwise if the item is a female person and item is not neuter:
-		say "hers";
 	otherwise:
-		say "its";
+		if printing gender for the item is:
+			-- the masculine gender: say "his";
+			-- the feminine gender: say "hers";
+			-- the neuter gender: say "its";
 
 To say Theirs:
 	let the item be the prior named object;
@@ -416,12 +389,11 @@ To say Theirs:
 		say "Theirs";
 	otherwise if the item is the player:
 		say "[Ours]";
-	otherwise if the item is a male person and item is not neuter:
-		say "His";
-	otherwise if the item is a female person and item is not neuter:
-		say "Hers";
 	otherwise:
-		say "Its";
+		if printing gender for the item is:
+			-- the masculine gender: say "His";
+			-- the feminine gender: say "Hers";
+			-- the neuter gender: say "Its";
 
 To say themselves:
 	let the item be the prior named object;
@@ -429,12 +401,11 @@ To say themselves:
 		say "themselves";
 	otherwise if the item is the player:
 		say "[ourselves]";
-	otherwise if the item is a male person and item is not neuter:
-		say "himself";
-	otherwise if the item is a female person and item is not neuter:
-		say "herself";
 	otherwise:
-		say "itself";
+		if printing gender for the item is:
+			-- the masculine gender: say "himself";
+			-- the feminine gender: say "herself";
+			-- the neuter gender: say "itself";
 
 To say Themselves:
 	let the item be the prior named object;
@@ -442,25 +413,24 @@ To say Themselves:
 		say "Themselves";
 	otherwise if the item is the player:
 		say "[Ourselves]";
-	otherwise if the item is a male person and item is not neuter:
-		say "Himself";
-	otherwise if the item is a female person and item is not neuter:
-		say "Herself";
 	otherwise:
-		say "Itself";
+		if printing gender for the item is:
+			-- the masculine gender: say "Himself";
+			-- the feminine gender: say "Herself";
+			-- the neuter gender: say "Itself";
 
+[Note the difference in the neuter gender between /they're/ -> that's and /they/ /'re/ -> they're]
 To say they're:
 	let the item be the prior named object;
 	if the prior naming context is plural:
 		say "they";
 	otherwise if the item is the player:
 		say "[we]";
-	otherwise if the item is a male person and item is not neuter:
-		say "he";
-	otherwise if the item is a female person and item is not neuter:
-		say "she";
 	otherwise:
-		say "that";
+		if printing gender for the item is:
+			-- the masculine gender: say "he";
+			-- the feminine gender: say "she";
+			-- the neuter gender: say "that";
 	say "['re]".
 
 To say They're:
@@ -469,12 +439,11 @@ To say They're:
 		say "They";
 	otherwise if the item is the player:
 		say "[We]";
-	otherwise if the item is a male person and item is not neuter:
-		say "He";
-	otherwise if the item is a female person and item is not neuter:
-		say "She";
 	otherwise:
-		say "That";
+		if printing gender for the item is:
+			-- the masculine gender: say "He";
+			-- the feminine gender: say "She";
+			-- the neuter gender: say "That";
 	say "['re]".
 
 To say It:
