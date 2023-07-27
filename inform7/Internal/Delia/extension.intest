@@ -1,0 +1,4 @@
+-possible-examples			[Exemplary] '$$project/Documentation/Examples'
+-possible-annotated-cases	[Exemplary] '$$project/Documentation/Tests'
+
+-recipe [Exemplary] '$$internal/Delia/Exemplary.delia'
