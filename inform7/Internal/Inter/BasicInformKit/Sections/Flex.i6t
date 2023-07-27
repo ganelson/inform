@@ -208,7 +208,7 @@ and we might have been able to squeeze some of it into the existing free
 space. But it ensures that heap invariant (b) above is preserved, and
 besides, running out of memory tends to be something you don't do only once.
 
-(The code below is a refinement on the original, suggested by Jesse McGrew,
+(The code below is a refinement on the original, suggested by Tara McGrew,
 which handles non-multiple blocks better.)
 
 =
