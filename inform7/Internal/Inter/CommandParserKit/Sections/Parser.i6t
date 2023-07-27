@@ -3930,7 +3930,6 @@ Manual}, 4th edition.
 @h Pronoun Handling.
 
 =
-Include (-
 [ GetGNABitfield obj g gn;
   ! First calculate three-bit gender field
   g = 0;
