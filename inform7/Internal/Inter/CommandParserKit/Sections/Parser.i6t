@@ -3976,7 +3976,7 @@ Manual}, 4th edition.
 [ PronounNotice obj x bm g;
     if (obj == player) return;
 
-    bm = GetGNABigfield(obj);
+    bm = GetGNABitfield(obj);
     for (x=1 : x<=LanguagePronouns-->0 : x=x+3)
         if (bm & (LanguagePronouns-->(x+1)) ~= 0)
             LanguagePronouns-->(x+2) = obj;

@@ -701,17 +701,26 @@ Gramatical gender is somewhat complex in English, and 19th-century binary
 gender assumptions are not justifiable any more.  Male, female, and neuter are
 three either-or properties (also present in the I6 library), which can be assigned
 independently.  These determine whether the object is matched when the player uses
-the pronoun "he", "she", or "it".  In addition, the "ambiguously plural" property
-determines whether the object is matched when the player uses the pronoun "they".
+the pronouns HIM, HER, or IT.  In addition, the "ambiguously plural" property
+determines whether the object is matched when the player uses the pronoun THEM.
 
 The defaults follow a principle of least surprise for the player.
-A thing is usually neuter ("it", not "he" or "she").
+A thing is usually neuter: IT, not HIM or HER.
 However, the story writer can override this as desired
-(making a ship match "she" and "it", for example).
+(making a ship match HER and IT, for example).
+
+When the game prints a pronoun, however, it has to pick one.  If a thing is neuter
+as well as male or female, IT will take priority when
+printing pronouns (useful for the aforementioned ship), unless
+"prefer neuter gender" is set to false.  If a thing is male and female, the
+"preferred animate gender" will be used for printing pronouns, which defaults to
+male, but can be changed.  See the English Language extension for more details.
+
 See below for the defaults for people.
 
 =
 Section 11a - Gender
+
 An object can be neuter.  An object is usually not neuter.
 An object can be male.  An object is usually not male.
 An object can be female.  An object is usually not female.
@@ -726,19 +735,6 @@ It may well be argued that this is because the I6 world model is so sketchy
 in modelling them, but that may actually be a good thing, because it's not at
 all obvious that any single model will be sensible for what different
 authors want to do with their characters.
-
-On gender, see also the "man" and "woman" kinds below. Note that we have
-three gender choices available -- male, female and neuter -- but these are,
-for historical reasons to do with how gender is handled by the I6 library,
-managed using either/or properties rather than a single three-way value
-property. This doesn't in practice cause trouble. (Specifying something as
-neuter overrides the male/female choice, if anyone does both for the same
-object, but in practice nobody does.) When nothing is said about a person's
-gender, it is assumed male, though this is used only linguistically (for
-instance, the pronoun HIM can be used in commands about the object, rather
-than HER or IT). There has to be some convention here, and in a case where
-we don't know our linguistic ground, opting for the least surprising
-behaviour seems wisest.
 
 The Inform compiler automatically applies the either-or property |animate|
 and the valued property |before| to a person, giving that value as just
@@ -760,12 +756,16 @@ A person can be transparent. A person is usually transparent.
 @h Gender of People
 
 A person without further specifications is usually male and female and
-ambiguously plural (matching "he", "she", or "they", but not "it").
+ambiguously plural (matching HIM, HER, or THEM, but not IT).
 
 This follows a principle of least surprise for the player: if the player sees
-a mysterious person, they can refer to them as "he", "she", or "they".
+a mysterious person, they can refer to them as HIM, HER, or THEM.
 However, the story writer can override this as desired.
 See also the "man" and "woman" kinds below.
+
+When the game goes to print a pronoun for a generic person, it has to pick one.
+For historical reasons, and to maintain compatibility, it will default to HIM.
+This can be overridden; see the English Language extension for details.
 
 =
 Section 11c - Gender of People
@@ -798,6 +798,7 @@ that property for the "yourself" object, so we need do nothing here.
 
 =
 Section 11d - Yourself
+
 The yourself is an undescribed person. The yourself is proper-named.
 
 The yourself is privately-named.
@@ -867,7 +868,7 @@ Anyway, we set out the Anglo-Saxon plurals, and then declare these kinds
 purely in terms of gender: they have no distinguishing behaviour.
 
 The gender behavior here is defined with "usually", so that it can be overridden
-if the story author so chooses.
+if the story author so chooses.  A man will match "HIM" and a woman will match "HER".
 
 =
 Section 12 - Animals, men and women
@@ -905,7 +906,7 @@ different sort of statement. (Don't drown that Labrador! He's a person.)
 As can be seen from the tiny definition of "animal", though, it's really
 nothing more than a name for a position in the kinds hierarchy.
 
-By default an animal is neuter: it responds to "it" but not to "he" or "she".
+By default an animal is neuter, matching only IT.
 As always, this can be overriden by the story author.
 
 =
