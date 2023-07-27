@@ -195,3 +195,11 @@ VOID_METHOD_TYPE(GENRE_COPY_TO_NEST_MTID,
 =
 VOID_METHOD_TYPE(GENRE_DOCUMENT_MTID,
 	inbuild_genre *gen, inbuild_copy *C, pathname *dest)
+
+@ This performs some sort of automatic-update to the latest format:
+
+@e GENRE_MODERNISE_MTID
+
+=
+INT_METHOD_TYPE(GENRE_MODERNISE_MTID,
+	inbuild_genre *gen, inbuild_copy *C, text_stream *OUT)

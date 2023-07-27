@@ -345,3 +345,18 @@ void Copies::overwrite_error(inbuild_copy *C, inbuild_nest *N) {
 void Copies::document(inbuild_copy *C, pathname *dest) {
 	VOID_METHOD_CALL(C->edition->work->genre, GENRE_DOCUMENT_MTID, C, dest);
 }
+
+@ And |-modernise|:
+
+=
+void Copies::modernise(OUTPUT_STREAM, inbuild_copy *C) {
+	TEMPORARY_TEXT(work_done)
+	WRITE_TO(work_done, "%X: ", C->edition->work);
+	int rv = FALSE;
+	INT_METHOD_CALL(rv, C->edition->work->genre, GENRE_MODERNISE_MTID, C, work_done);
+	if (rv == FALSE) {
+		WRITE("already up to date\n", C->edition->work);
+	}
+	WRITE("%S", work_done);
+	DISCARD_TEXT(work_done)
+}

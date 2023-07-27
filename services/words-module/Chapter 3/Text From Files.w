@@ -15,6 +15,7 @@ typedef struct source_file {
 	int words_of_quoted_text; /* word count for text in double-quotes */
 	FILE *handle; /* file handle while open */
 	general_pointer your_ref; /* for the client to attach some meaning */
+	struct text_stream *body_text;
 	struct text_stream *torn_off_documentation;
 	CLASS_DEFINITION
 } source_file;
@@ -41,6 +42,7 @@ source_file *TextFromFiles::feed_open_file_into_lexer(filename *F, FILE *handle,
 	sf->your_ref = ref;
 	sf->name = F;
 	sf->handle = handle;
+	sf->body_text = Str::new();
 	sf->torn_off_documentation = Str::new();
 	source_location top_of_file;
 	int cr, last_cr, next_cr, read_cr, newline_char = 0, torn_off = FALSE;
@@ -78,6 +80,7 @@ source_file *TextFromFiles::feed_open_file_into_lexer(filename *F, FILE *handle,
 			if (torn_off) {
 				PUT_TO(sf->torn_off_documentation, cr);
 			} else {
+				PUT_TO(sf->body_text, cr);
 				Lexer::feed_triplet(last_cr, cr, next_cr);
 				torn_off = Lexer::detect_tear_off();
 			}
@@ -86,6 +89,7 @@ source_file *TextFromFiles::feed_open_file_into_lexer(filename *F, FILE *handle,
     sf->text_read = Lexer::feed_ends(TRUE, leaf);
 
     @<Word count the new material@>;
+	if (torn_off) @<Trim the edges of the tear tidily@>;
     return sf;
 }
 
@@ -95,6 +99,33 @@ quoted text (i.e., their text within double-quotes).
 @<Word count the new material@> =
 	LOOP_THROUGH_WORDING(wc, sf->text_read)
     	sf->words_of_source += TextFromFiles::word_count(wc);
+
+@<Trim the edges of the tear tidily@> =
+	Str::trim_white_space(sf->torn_off_documentation);
+	if (Str::get_first_char(sf->torn_off_documentation) == '\n')
+		Str::delete_first_character(sf->torn_off_documentation);
+	PUT_TO(sf->torn_off_documentation, '\n');
+	Str::trim_white_space(sf->body_text);
+	int quads = 0, i = Str::len(sf->body_text)-1;
+	for (; i >= 0; i--) {
+		if ((Str::get_at(sf->body_text, i) == '-') &&
+			(Str::get_at(sf->body_text, i+1) == '-') &&
+			(Str::get_at(sf->body_text, i+2) == '-') &&
+			(Str::get_at(sf->body_text, i+3) == '-')) {
+			i--; quads++;
+			break;
+		}
+	}
+	for (; i >= 0; i--) {
+		if ((Str::get_at(sf->body_text, i) == '-') &&
+			(Str::get_at(sf->body_text, i+1) == '-') &&
+			(Str::get_at(sf->body_text, i+2) == '-') &&
+			(Str::get_at(sf->body_text, i+3) == '-')) {
+			i--; quads++;
+			break;
+		}
+	}
+	if (quads == 2) Str::truncate(sf->body_text, i);
 
 @ A much simpler version:
 

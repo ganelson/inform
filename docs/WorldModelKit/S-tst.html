@@ -532,7 +532,7 @@ of 0 (off, the default) to 5.
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">TraceOffSub</span><span class="plain-syntax">; </span><span class="identifier-syntax">parser_trace</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">say__p</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="string-syntax">"Trace off."</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Tree Command. </b>TREE prints out the I6 object tree, though this is not always very helpful
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Tree Command. </b>SHOWTREE prints out the I6 object tree, though this is not always very helpful
 in I7 terms. It should arguably be withdrawn, but doesn't seem to do any harm.
 </p>
 
@@ -641,7 +641,7 @@ not picked up) and able to accept multiple objects.
 <span class="plain-syntax">    * </span><span class="identifier-syntax">number</span><span class="plain-syntax">                                    -&gt; </span><span class="identifier-syntax">TraceLevel</span>
 <span class="plain-syntax">    * </span><span class="character-syntax">'on'</span><span class="plain-syntax">                                      -&gt; </span><span class="identifier-syntax">TraceOn</span>
 <span class="plain-syntax">    * </span><span class="character-syntax">'off'</span><span class="plain-syntax">                                     -&gt; </span><span class="identifier-syntax">TraceOff</span><span class="plain-syntax">;</span>
-<span class="identifier-syntax">Verb</span><span class="plain-syntax"> </span><span class="identifier-syntax">meta</span><span class="plain-syntax"> </span><span class="character-syntax">'tree'</span>
+<span class="identifier-syntax">Verb</span><span class="plain-syntax"> </span><span class="identifier-syntax">meta</span><span class="plain-syntax"> </span><span class="character-syntax">'showtree'</span>
 <span class="plain-syntax">    *                                           -&gt; </span><span class="identifier-syntax">XTree</span>
 <span class="plain-syntax">    * </span><span class="identifier-syntax">scope</span><span class="plain-syntax">=</span><span class="identifier-syntax">testcommandnoun</span><span class="plain-syntax">                     -&gt; </span><span class="identifier-syntax">XTree</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_GLULX</span><span class="plain-syntax">;</span>
