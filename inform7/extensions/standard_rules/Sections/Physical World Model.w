@@ -867,7 +867,7 @@ Anyway, we set out the Anglo-Saxon plurals, and then declare these kinds
 purely in terms of gender: they have no distinguishing behaviour.
 
 The gender behavior here is defined with "usually", so that it can be overridden
-if the story author so chooses.  A man is 
+if the story author so chooses.
 
 =
 Section 12 - Animals, men and women
