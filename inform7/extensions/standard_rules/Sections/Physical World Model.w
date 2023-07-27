@@ -867,7 +867,7 @@ Anyway, we set out the Anglo-Saxon plurals, and then declare these kinds
 purely in terms of gender: they have no distinguishing behaviour.
 
 The gender behavior here is defined with "usually", so that it can be overridden
-if the story author so chooses.
+if the story author so chooses.  A man is 
 
 =
 Section 12 - Animals, men and women
@@ -879,12 +879,14 @@ The specification of man is "Represents a man or boy."
 A man is usually male.
 A man is usually not female.
 A man is usually not neuter.
+A man is usually not ambiguously plural.
 
 A woman is a kind of person.
 The specification of woman is "Represents a woman or girl."
 A woman is usually female.
 A woman is usually not male.
 A woman is usually not neuter.
+A woman is usually not ambiguously plural.
 
 @ But what about "animal"? Animals turn up often in IF, and of course
 domestic animals have been part of human society since prehistoric times:
@@ -911,6 +913,7 @@ An animal is a kind of person.
 An animal is usually not male.
 An animal is usually not female.
 An animal is usually neuter.
+An animal is usually not ambiguously plural.
 
 The specification of animal is "Represents an animal, or at any rate a
 non-human living creature reasonably large and possible to interact with: a
