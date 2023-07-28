@@ -10,6 +10,10 @@ General Glk constants and properties.
 =
 Constant GLK_NULL 0;
 
+! Can't use gestalt_GarglkText_FAKE or GLULX_GESTALT_Double here as they don't have the correct values yet
+Array Cached_Glk_Gestalts --> (24 + 1);
+Array Cached_Glulx_Gestalts --> (13 + 1);
+
 Property suspended_text_buffer_addr;
 Property suspended_text_buffer_maxlen;
 
@@ -71,6 +75,18 @@ Global current_glk_object_reference = 0;
 	gg_backgroundchan = 0;
 	gg_commandstr = 0;
 	gg_command_reading = false;
+	rfalse;
+];
+
+[ CACHE_GESTALTS_R ix res;
+	for (ix = 0: ix < gestalt_GarglkText_FAKE: ix++) {
+		Cached_Glk_Gestalts-->ix = glk_gestalt(ix, 0);
+	}
+	Cached_Glk_Gestalts-->gestalt_GarglkText_FAKE = glk_gestalt(gestalt_GarglkText, 0);
+	for (ix = 0: ix <= GLULX_GESTALT_Double: ix++) {
+		@gestalt ix 0 res;
+		Cached_Glulx_Gestalts-->ix = res;
+	}
 	rfalse;
 ];
 

@@ -5,8 +5,6 @@ new base GLK_FEATURE_TY {
 
 	specification-text: Glk features which may or may not be supported by the interpreter.
 
-	instance: character input                 = gestalt_CharInput_            = 1
-	instance: line input                      = gestalt_LineInput_            = 2
 	instance: mouse input                     = gestalt_MouseInput_           = 4
 	instance: timers                          = gestalt_Timer_                = 5
 	instance: graphics                        = gestalt_Graphics_             = 6
@@ -25,7 +23,7 @@ new base GLK_FEATURE_TY {
 	instance: extended sounds                 = gestalt_Sound2_               = 21
 	instance: resource streams                = gestalt_ResourceStream_       = 22
 	instance: graphics window character input = gestalt_GraphicsCharInput_    = 23
-	instance: text formatting                 = gestalt_GarglkText_           = $1100
+	instance: text formatting                 = gestalt_GarglkText_FAKE       = 24
 }
 
 new base GLULX_FEATURE_TY {
