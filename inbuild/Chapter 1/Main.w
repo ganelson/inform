@@ -172,6 +172,7 @@ utility functions in the //supervisor// module, which we call.
 @e COPY_TO_TTASK
 @e SYNC_TO_TTASK
 @e DOCUMENT_TTASK
+@e MODERNISE_TTASK
 
 @<Carry out the required task on the copy C@> =
 	text_stream *OUT = STDOUT;
@@ -208,6 +209,7 @@ utility functions in the //supervisor// module, which we call.
 			if (documentation_dest == NULL)
 				Errors::fatal("need to specify '-document-to' directory");
 			Copies::document(C, documentation_dest); break;
+		case MODERNISE_TTASK: Copies::modernise(OUT, C); break;
 	}
 
 @<Shut down the modules@> =
@@ -401,6 +403,7 @@ other options to the selection defined here.
 @e DOCUMENT_CLSW
 @e DOCUMENT_FROM_CLSW
 @e DOCUMENT_TO_CLSW
+@e MODERNISE_CLSW
 
 @<Read the command line@> =	
 	CommandLine::declare_heading(
@@ -478,6 +481,8 @@ other options to the selection defined here.
 		L"generate documentation from documentation source file X");
 	CommandLine::declare_switch(DOCUMENT_TO_CLSW, L"document-to", 2,
 		L"divert generated documentation to directory X");
+	CommandLine::declare_switch(MODERNISE_CLSW, L"modernise", 1,
+		L"update copies to the newest available format");
 	Supervisor::declare_options();
 
 	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
@@ -498,6 +503,7 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case USE_LOCATE_CLSW: inbuild_task = USE_LOCATE_TTASK; break;
 		case BUILD_LOCATE_CLSW: inbuild_task = BUILD_LOCATE_TTASK; break;
 		case DOCUMENT_CLSW: inbuild_task = DOCUMENT_TTASK; break;
+		case MODERNISE_CLSW: inbuild_task = MODERNISE_TTASK; break;
 		case ARCHIVE_TO_CLSW:
 			destination_nest = Nests::new(Pathnames::from_text(arg));
 			inbuild_task = ARCHIVE_TO_TTASK;

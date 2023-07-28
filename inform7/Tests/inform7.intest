@@ -17,6 +17,8 @@
 -if linux -set LINKFLAGS '-lm -pthread'
 -if linux -set MAKEFLAGS '-s --no-print-directory'
 
+-set STDNEST inform7/Tests 
+
 -case			[Diagnostics] 'inform7/Tests/GenerateDiagnostics-G.txt'
 -cases			[Main] 'inform7/Tests/Test Cases'
 -if macos -cases [Release] 'inform7/Tests/Test Releases'
@@ -24,7 +26,7 @@
 -cases			[Internal] 'inform7/Tests/Test Internals'
 -cases			[Make] 'inform7/Tests/Test Makes'
 -cases			[Filing] 'inform7/Tests/Test Filings'
--examples		[Exemplary] resources/Documentation/Examples
+-examples		[ExemplaryDash] resources/Documentation/Examples
 -problems		[Main] 'inform7/Tests/Test Problems'
 
 -singular temp
@@ -32,6 +34,8 @@
 -singular GenerateDiagnostics-G
 
 -groups 'inform7/Tests/Groups'
+
+-recipe [ExemplaryDash] '$$internal/Delia/Exemplary.delia'
 
 -recipe [Main]
 

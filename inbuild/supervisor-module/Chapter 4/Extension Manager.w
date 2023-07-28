@@ -27,6 +27,7 @@ void ExtensionManager::start(void) {
 	METHOD_ADD(extension_genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, ExtensionManager::read_source_text_for);
 	METHOD_ADD(extension_genre, GENRE_BUILDING_SOON_MTID, ExtensionManager::building_soon);
 	METHOD_ADD(extension_genre, GENRE_DOCUMENT_MTID, ExtensionManager::document);
+	METHOD_ADD(extension_genre, GENRE_MODERNISE_MTID, ExtensionManager::modernise);
 }
 
 void ExtensionManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
@@ -262,4 +263,11 @@ void ExtensionManager::read_source_text_for(inbuild_genre *G, inbuild_copy *C) {
 =
 void ExtensionManager::document(inbuild_genre *gen, inbuild_copy *C, pathname *dest) {
 	Extensions::document(Extensions::from_copy(C), dest);
+}
+
+@h Modernisation.
+
+=
+int ExtensionManager::modernise(inbuild_genre *gen, inbuild_copy *C, text_stream *OUT) {
+	return Extensions::modernise(Extensions::from_copy(C), OUT);
 }

@@ -1,3 +1,0 @@
->INTRODUCTION
-	*PREFACE
-	About the examples

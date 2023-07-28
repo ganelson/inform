@@ -59,10 +59,11 @@ Chapter 6: Inform Source Text
 	Control Structures
 	Virtual Machine Grammar
 
-Chapter 7: Extension Indexing
+Chapter 7: Extension Management
 	The Mini-Website
 	Extensions Index Page
 	The Installer
+	The Converter
 	Documentation Tree
 	Documentation Compiler
 	Documentation Renderer

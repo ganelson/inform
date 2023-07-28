@@ -992,3 +992,15 @@ int Extensions::rename_file(filename *F, text_stream *new_name) {
 	if (rv) WRITE_TO(STDOUT, "%S", task);
 	return rv;
 }
+
+@h Modernisation.
+
+=
+int Extensions::modernise(inform_extension *E, text_stream *OUT) {
+	if (E->as_copy->edition->work->genre == extension_bundle_genre) {
+		WRITE("already in directory format\n");
+		return TRUE;
+	}
+	ExtensionConverter::go(E, OUT);
+	return TRUE;
+}

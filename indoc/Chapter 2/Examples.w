@@ -153,11 +153,12 @@ void Examples::examples_helper(text_stream *line, text_file_position *tfp, void 
 				Errors::in_text_file("'Example:' should be on line 1", tfp);
 			} else if (Str::eq(field, I"Location")) {
 				text_stream *sname = content;
-				section *S = Dictionaries::read_value(volumes[0]->sections_by_name, sname);
-				if (S) E->example_belongs_to_section[0] = S;
-				else {
+				if (Dictionaries::find(volumes[0]->sections_by_name, sname) == NULL) {
 					E->example_belongs_to_section[0] = NULL;
 					Errors::in_text_file("example belongs to an unknown section", tfp);
+				} else {
+					section *S = Dictionaries::read_value(volumes[0]->sections_by_name, sname);
+					if (S) E->example_belongs_to_section[0] = S;
 				}
 				E->ex_filename = ehs->ef;
 			} else if (Str::eq(field, I"Description")) {
@@ -170,11 +171,12 @@ void Examples::examples_helper(text_stream *line, text_file_position *tfp, void 
 				E->ex_subtitle = Str::duplicate(content);
 			} else if (Str::eq(field, I"RecipeLocation")) {
 				text_stream *sname = content;
-				section *S = Dictionaries::read_value(volumes[1]->sections_by_name, sname);
-				if (S) E->example_belongs_to_section[1] = S;
-				else {
+				if (Dictionaries::find(volumes[1]->sections_by_name, sname) == NULL) {
 					E->example_belongs_to_section[1] = NULL;
 					Errors::in_text_file("example belongs to an unknown section", tfp);
+				} else {
+					section *S = Dictionaries::read_value(volumes[1]->sections_by_name, sname);
+					if (S) E->example_belongs_to_section[1] = S;
 				}
 			} else {
 				Errors::in_text_file("no such example details field", tfp);
