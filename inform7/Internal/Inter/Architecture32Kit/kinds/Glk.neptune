@@ -5,14 +5,12 @@ new base GLK_FEATURE_TY {
 
 	specification-text: Glk features which may or may not be supported by the interpreter.
 
-	instance: mouse input                     = gestalt_MouseInput_           = 4
 	instance: timers                          = gestalt_Timer_                = 5
 	instance: graphics                        = gestalt_Graphics_             = 6
 	instance: basic sounds                    = gestalt_Sound_                = 8
 	instance: sound volume                    = gestalt_SoundVolume_          = 9
 	instance: sound notifications             = gestalt_SoundNotify_          = 10
 	instance: hyperlinks                      = gestalt_Hyperlinks_           = 11
-	instance: hyperlink input                 = gestalt_HyperlinkInput_       = 12
 	instance: MOD sounds                      = gestalt_SoundMusic_           = 13
 	instance: PNG transparency                = gestalt_GraphicsTransparency_ = 14
 	instance: glk unicode                     = gestalt_Unicode_              = 15

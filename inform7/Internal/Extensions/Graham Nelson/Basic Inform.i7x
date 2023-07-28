@@ -1539,16 +1539,22 @@ To decide what number is the glk version number/--:
 	(- Cached_Glk_Gestalts-->gestalt_Version -).
 
 To decide whether buffer window graphics are/is supported:
-	(- glk_gestalt(gestalt_DrawImage, winType_TextBuffer) -).
+	(- glk_gestalt(gestalt_DrawImage, wintype_TextBuffer) -).
 
 To decide whether graphics window graphics are/is supported:
-	(- glk_gestalt(gestalt_DrawImage, winType_Graphics) -).
+	(- glk_gestalt(gestalt_DrawImage, wintype_Graphics) -).
+
+To decide whether buffer window hyperlinks are/is supported:
+	(- glk_gestalt(gestalt_HyperlinkInput, wintype_TextBuffer) -).
+
+To decide whether grid window hyperlinks are/is supported:
+	(- glk_gestalt(gestalt_HyperlinkInput, wintype_TextGrid) -).
 
 To decide whether graphics window mouse input is supported:
-	(- glk_gestalt(gestalt_MouseInput, winType_Graphics) -).
+	(- glk_gestalt(gestalt_MouseInput, wintype_Graphics) -).
 
 To decide whether grid window mouse input is supported:
-	(- glk_gestalt(gestalt_MouseInput, winType_TextGrid) -).
+	(- glk_gestalt(gestalt_MouseInput, wintype_TextGrid) -).
 
 To decide whether (F - glulx feature) is/are supported:
 	(- Cached_Glulx_Gestalts-->({F}) -).
