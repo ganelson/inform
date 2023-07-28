@@ -14,10 +14,10 @@ and so individual phrases are defined for them.
 Chapter - Glk and Glulx feature testing
 
 To decide whether (F - glk feature) is/are supported:
-	(- glk_gestalt({F}) -).
+	(- Cached_Glk_Gestalts-->({F}) -).
 
 To decide what number is the glk version number/--:
-	(- glk_gestalt(gestalt_Version) -).
+	(- Cached_Glk_Gestalts-->gestalt_Version -).
 
 To decide whether buffer window graphics are/is supported:
 	(- glk_gestalt(gestalt_DrawImage, winType_TextBuffer) -).
@@ -32,13 +32,13 @@ To decide whether grid window mouse input is supported:
 	(- glk_gestalt(gestalt_MouseInput, winType_TextGrid) -).
 
 To decide whether (F - glulx feature) is/are supported:
-	(- Glulx_Gestalt({F}) -).
+	(- Cached_Glulx_Gestalts-->({F}) -).
 
 To decide what number is the glulx version number/--:
-	(- Glulx_Gestalt(GLULX_GESTALT_GlulxVersion) -).
+	(- Cached_Glulx_Gestalts-->GLULX_GESTALT_GlulxVersion -).
 
 To decide what number is the interpreter version number/--:
-	(- Glulx_Gestalt(GLULX_GESTALT_TerpVersion) -).
+	(- Cached_Glulx_Gestalts-->GLULX_GESTALT_TerpVersion -).
 
 @h Glk windows.
 Minimal support for Glk windows. Other extensions may extend the kind.
@@ -167,6 +167,9 @@ The glk object updating rules is accessible to Inter as "GLK_OBJECT_UPDATING_RB"
 =
 The reset glk references for built in objects rule is listed first in the reset glk references rules.
 The reset glk references for built in objects rule translates into Inter as "RESET_GLK_REFERENCES_R".
+
+The cache gestalts rule is listed in the reset glk references rules.
+The cache gestalts rule translates into Inter as "CACHE_GESTALTS_R".
 
 The identify built in windows rule is listed first in the identify glk windows rules.
 The identify built in windows rule translates into Inter as "IDENTIFY_WINDOWS_R".
