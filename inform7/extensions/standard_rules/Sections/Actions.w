@@ -337,7 +337,7 @@ Putting it on is an action applying to two things.
 The putting it on action is accessible to Inter as "PutOn".
 
 The specification of the putting it on action is "By this action, an actor puts
-something he is holding on top of a supporter: for instance, putting an apple
+something they are holding on top of a supporter: for instance, putting an apple
 on a table."
 
 @ Check.
@@ -412,7 +412,7 @@ Inserting it into is an action applying to two things.
 The inserting it into action is accessible to Inter as "Insert".
 
 The specification of the inserting it into action is "By this action, an actor puts
-something he is holding into a container: for instance, putting a coin into a
+something they are holding into a container: for instance, putting a coin into a
 collection box."
 
 @ Check.
@@ -1237,8 +1237,8 @@ model does not have a concept of things being under other things, so this
 action is only minimally provided by the Standard Rules, but it exists here
 for traditional reasons (and because, after all, LOOK UNDER TABLE is the
 sort of command which ought to be recognised even if it does nothing useful).
-The action ordinarily either tells the player he finds nothing of interest,
-or reports that somebody else has looked under something.
+The action ordinarily either tells the player that they find nothing of
+interest, or reports that somebody else has looked under something.
 
 The usual way to make this action do something useful is to write a rule
 like 'Instead of looking under the cabinet for the first time: now the
@@ -1972,11 +1972,11 @@ Waking is an action applying to one thing.
 The waking action is accessible to Inter as "WakeOther".
 
 The specification of the waking action is "This is the act of jostling
-a sleeping person to wake him or her up, and it finds its way into the
-Standard Rules only for historical reasons. Inform does not by default
-provide any model for people being asleep or awake, so this action does
-not do anything in the standard implementation: instead, it is always
-stopped by the block waking rule."
+a sleeping person to wake them up, and it finds its way into the Standard
+Rules only for historical reasons. Inform does not by default provide
+any model for people being asleep or awake, so this action doesnot do
+anything in the standard implementation: instead, it is always stopped by
+the block waking rule."
 
 @ Check.
 
@@ -2046,7 +2046,7 @@ The attacking action is accessible to Inter as "Attack".
 The specification of the attacking action is "Violence is seldom the answer,
 and attempts to attack another person are normally blocked as being unrealistic
 or not seriously meant. (I might find a shop assistant annoying, but IF is
-not Grand Theft Auto, and responding by killing him is not really one of
+not Grand Theft Auto, and responding by killing them is not really one of
 my options.) So the Standard Rules simply block attempts to fight people,
 but the action exists for rules to make exceptions."
 

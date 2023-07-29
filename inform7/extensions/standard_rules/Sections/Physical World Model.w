@@ -88,8 +88,8 @@ beneath a cloak, but not to a key placed at the back of a shelf by somebody
 long gone.
 
 =
-The verb to conceal (he conceals, they conceal, he concealed, it is concealed,
-he is concealing) means the concealment relation.
+The verb to conceal (she conceals, they conceal, he concealed, it is concealed,
+it is concealing) means the concealment relation.
 Definition: Something is concealed rather than unconcealed if the holder of it conceals it.
 
 @ If a supporter or container has something on/in it, but all the contents are concealed or
@@ -344,7 +344,7 @@ like an assertion much like others above ("A thing is usually inedible", for
 instance) -- but in fact it is an "implication": it says that an object having
 one property also probably has another. The Standard Rules make only very
 sparing use of implications. They can trip up the user (who may quite
-reasonably say that it is up to him what properties something has): but they
+reasonably say that it is up to them what properties something has): but they
 are invaluable if they cause Inform to make deductions which any human reader
 would always make without thought.
 
@@ -520,7 +520,7 @@ it's all a matter of which side you look at it from. What we call the
 the green door", depends entirely on which side of the green door we
 stand. The awkward truth is that these expressions are undefined unless
 the player is in one of the (possibly) two rooms in which the green
-door is present; and then they are defined relative to him.
+door is present; and then they are defined relative to the player.
 
 The leading-through relation is built in to Inform. This has to be stored
 in the property "door_to", but we don't want to give authors direct access
@@ -937,7 +937,7 @@ an exception, but that's why the rule is only "usually".)
 If all vehicles were wheeled, there would be a case for a rule such as
 "A vehicle is usually pushable between rooms." But this seems more likely
 to trip up the designer with a surprise discovery in beta-testing than to
-help him achieve realism. We don't want to be able to push hot-air balloons,
+help them achieve realism. We don't want to be able to push hot-air balloons,
 boats or spacecraft between rooms.
 
 =
