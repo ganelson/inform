@@ -338,7 +338,18 @@ the usual ones seen in Mac OS X applications such as iTunes.
 	@<Print column 4 of the census line@>;
 
 @<Print column 1 of the census line@> =
+	inform_extension *E = Extensions::from_copy(res->copy);
+
 	HTML::begin_span(OUT, I"extensionindexentry");
+	if (LinkedLists::len(res->copy->errors_reading_source_text) == 0) {
+		source_location sl = Extensions::top_line_location(E);
+		if (sl.file_of_origin) {
+			ExtensionIndex::add_to_key(key_list, REVEAL_SYMBOL,
+				I"Open source (left of title: the whole extension; right: where it is Included");
+			SourceLinks::link(OUT, sl, FALSE);
+			WRITE(" ");
+		}
+	}
 	if (d != SORT_CE_BY_AUTHOR) {
 		WRITE("%S", res->copy->edition->work->raw_title);
 		if (Nests::get_tag(res->nest) != INTERNAL_NEST_TAG)
@@ -364,14 +375,14 @@ the usual ones seen in Mac OS X applications such as iTunes.
 		HTML_CLOSE("a");
 	}
 
-	inform_extension *E = Extensions::from_copy(res->copy);
 	parse_node *at = Extensions::get_inclusion_sentence(E);
 	if (at) {
 		wording W = Node::get_text(at);
 		source_location sl = Lexer::word_location(Wordings::first_wn(W));
 		if (sl.file_of_origin) {
 			SourceLinks::link(OUT, sl, TRUE);
-			ExtensionIndex::add_to_key(key_list, REVEAL_SYMBOL, I"Included here (click to see)");
+			ExtensionIndex::add_to_key(key_list, REVEAL_SYMBOL,
+				I"Open source (left of title: the whole extension; right: where it is Included");
 		}
 	}
 
@@ -379,14 +390,16 @@ the usual ones seen in Mac OS X applications such as iTunes.
 		WRITE(" ");
 		HTML_TAG_WITH("img", "%s", PROBLEM_SYMBOL);
 		ExtensionIndex::add_to_key(key_list, PROBLEM_SYMBOL, I"Has errors (see below)");
-	} else if (usage_state == FALSE) {
-		WRITE(" ");
-		TEMPORARY_TEXT(inclusion_text)
-		WRITE_TO(inclusion_text, "Include %X.\n\n\n", res->copy->edition->work);
-		ExtensionWebsite::paste_button(OUT, inclusion_text);
-		DISCARD_TEXT(inclusion_text)
-		ExtensionIndex::add_to_key(key_list, PASTE_SYMBOL,
-			I"Source text to Include this (click to paste in)");
+	} else {
+		if (usage_state == FALSE) {
+			WRITE(" ");
+			TEMPORARY_TEXT(inclusion_text)
+			WRITE_TO(inclusion_text, "Include %X.\n\n\n", res->copy->edition->work);
+			ExtensionWebsite::paste_button(OUT, inclusion_text);
+			DISCARD_TEXT(inclusion_text)
+			ExtensionIndex::add_to_key(key_list, PASTE_SYMBOL,
+				I"Source text to Include this (click to paste in)");
+		}
 	}
 
 	compatibility_specification *C = res->copy->edition->compatibility;

@@ -819,6 +819,16 @@ then its sentences will go to the extension's own tree.
 		E->body_text, E->as_copy, project);
 	E->body_text_unbroken = FALSE;
 
+@ And here's the top line:
+
+=
+source_location Extensions::top_line_location(inform_extension *E) {
+	source_location sl;
+	sl.file_of_origin = E->read_into_file;
+	sl.line_number = 1;
+	return sl;
+}
+
 @ In directory extensions, documentation can be stored separately:
 
 =
