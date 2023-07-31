@@ -110,7 +110,7 @@ void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd, tex
 @ =
 void DocumentationRenderer::render_index_page(OUTPUT_STREAM, compiled_documentation *cd,
 	text_stream *extras) {
-	DocumentationRenderer::render_header(OUT, cd->title, NULL);
+	DocumentationRenderer::render_header(OUT, cd->title, NULL, cd->within_extension);
 	if (cd->associated_extension) {
 		DocumentationRenderer::render_extension_details(OUT, cd->associated_extension);
 	}
@@ -170,7 +170,7 @@ void DocumentationRenderer::render_index_page(OUTPUT_STREAM, compiled_documentat
 void DocumentationRenderer::render_example_page(OUTPUT_STREAM, compiled_documentation *cd, int eg) {
 	TEMPORARY_TEXT(title)
 	WRITE_TO(title, "Example %c", 'A' + eg - 1);
-	DocumentationRenderer::render_header(OUT, cd->title, title);
+	DocumentationRenderer::render_header(OUT, cd->title, title, cd->within_extension);
 	DISCARD_TEXT(title)
 	DocumentationRenderer::render_example(OUT, cd, eg);
 	DocumentationRenderer::render_footer(OUT);
@@ -179,7 +179,7 @@ void DocumentationRenderer::render_example_page(OUTPUT_STREAM, compiled_document
 void DocumentationRenderer::render_chapter_page(OUTPUT_STREAM, compiled_documentation *cd, int ch) {
 	TEMPORARY_TEXT(title)
 	WRITE_TO(title, "Chapter %d", ch);
-	DocumentationRenderer::render_header(OUT, cd->title, title);
+	DocumentationRenderer::render_header(OUT, cd->title, title, cd->within_extension);
 	DISCARD_TEXT(title)
 	DocumentationRenderer::render_chapter(OUT, cd, ch);
 	@<Enter the small print@>;
@@ -203,9 +203,14 @@ void DocumentationRenderer::render_chapter_page(OUTPUT_STREAM, compiled_document
 @ Each of these pages is equipped with the same Javascript and CSS.
 
 =
-void DocumentationRenderer::render_header(OUTPUT_STREAM, text_stream *title, text_stream *ptitle) {
+void DocumentationRenderer::render_header(OUTPUT_STREAM, text_stream *title, text_stream *ptitle,
+	inform_extension *within) {
 	InformPages::header(OUT, title, JAVASCRIPT_FOR_ONE_EXTENSION_IRES, NULL);
 	ExtensionWebsite::add_home_breadcrumb(NULL);
+	if (within) {
+		ExtensionWebsite::add_breadcrumb(within->as_copy->edition->work->title,
+			I"../index.html");
+	}
 	ExtensionWebsite::add_breadcrumb(title, I"index.html");
 	if (Str::len(ptitle) > 0) ExtensionWebsite::add_breadcrumb(ptitle, NULL);
 	ExtensionWebsite::titling_and_navigation(OUT,

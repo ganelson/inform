@@ -10,6 +10,7 @@ typedef struct compiled_documentation {
 	struct text_stream *title;
 	struct text_stream *original;
 	struct inform_extension *associated_extension;
+	struct inform_extension *within_extension;
 	struct heterogeneous_tree *tree;
 	int total_headings[3];
 	int total_examples;
@@ -23,6 +24,7 @@ compiled_documentation *DocumentationCompiler::new_wrapper(text_stream *source) 
 	cd->title = Str::new();
 	cd->original = Str::duplicate(source);
 	cd->associated_extension = NULL;
+	cd->within_extension = NULL;
 	cd->tree = DocumentationTree::new();
 	cd->total_examples = 0;
 	cd->total_headings[0] = 1;

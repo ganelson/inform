@@ -1,4 +1,4 @@
-Total memory consumption was 139118K = 136 MB
+Total memory consumption was 139120K = 136 MB
 
  ---- was used for 2123163 objects, in 374917 frames in 0 x 800K = 0K = 0 MB:
 
@@ -208,35 +208,35 @@ Total memory consumption was 139118K = 136 MB
      ----  inbuild_genre                            8 objects, 448 bytes
      ----  inference_family                         11 objects, 440 bytes
      ----  source_file                              5 objects, 440 bytes
-     ----  tree_node_type                           8 objects, 384 bytes
      ----  article_usage                            8 objects, 384 bytes
-     ----  door_dir_notice                          5 objects, 320 bytes
-     ----  pronoun                                  8 objects, 320 bytes
+     ----  tree_node_type                           8 objects, 384 bytes
      ----  cached_kind_declaration                  8 objects, 320 bytes
-     ----  grammatical_category                     8 objects, 320 bytes
+     ----  door_dir_notice                          5 objects, 320 bytes
      ----  tree_inventory                           1 object, 320 bytes
+     ----  grammatical_category                     8 objects, 320 bytes
      ----  module_request                           8 objects, 320 bytes
+     ----  pronoun                                  8 objects, 320 bytes
      ----  inter_pipeline                           1 object, 312 bytes
-     ----  up_family                                9 objects, 288 bytes
      ----  cdoc_code_sample                         6 objects, 288 bytes
+     ----  compiled_documentation                   3 objects, 288 bytes
+     ----  up_family                                9 objects, 288 bytes
      ----  explicit_bp_data                         5 objects, 280 bytes
      ----  door_to_notice                           5 objects, 280 bytes
      ----  compilation_unit                         5 objects, 280 bytes
      ----  contents_entry                           7 objects, 280 bytes
-     ----  compiled_documentation                   3 objects, 264 bytes
-     ----  kit_dependency                           5 objects, 240 bytes
      ----  verb_usage_tier                          5 objects, 240 bytes
+     ----  kit_dependency                           5 objects, 240 bytes
      ----  inform_project                           1 object, 232 bytes
-     ----  adjective_meaning_family                 7 objects, 224 bytes
      ----  local_block_value                        4 objects, 224 bytes
+     ----  adjective_meaning_family                 7 objects, 224 bytes
      ----  test_scenario                            1 object, 216 bytes
      ----  release_instructions                     1 object, 208 bytes
      ----  attachment_instruction                   5 objects, 200 bytes
-     ----  build_skill                              5 objects, 200 bytes
      ----  code_generator                           5 objects, 200 bytes
-     ----  element_activation                       6 objects, 192 bytes
-     ----  cdoc_example                             4 objects, 192 bytes
+     ----  build_skill                              5 objects, 200 bytes
      ----  plural_dictionary_entry                  4 objects, 192 bytes
+     ----  cdoc_example                             4 objects, 192 bytes
+     ----  element_activation                       6 objects, 192 bytes
      ----  cdoc_passage                             7 objects, 168 bytes
      ----  cdoc_heading                             3 objects, 168 bytes
      ----  imperative_defn_family                   4 objects, 160 bytes
@@ -263,7 +263,7 @@ Total memory consumption was 139118K = 136 MB
 
 100.0% was used for memory not allocated for objects:
 
-    62.1%  text stream storage                      88592392 bytes in 508366 claims
+    62.1%  text stream storage                      88594584 bytes in 508375 claims
      3.8%  dictionary storage                       5480960 bytes in 7754 claims
      ----  sorting                                  2624 bytes in 531 claims
      5.0%  source text                              7200000 bytes in 3 claims
@@ -281,5 +281,5 @@ Total memory consumption was 139118K = 136 MB
      ----  code generation workspace for objects    3488 bytes in 19 claims
      0.1%  emitter array storage                    281184 bytes in 2006 claims
 
--136.-8% was overhead - -195021144 bytes = -190450K = -185 MB
+-136.-8% was overhead - -195021168 bytes = -190450K = -185 MB
 
