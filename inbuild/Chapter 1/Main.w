@@ -114,7 +114,9 @@ error in this case.
 
 @<Perform an extension installation@> =
 	Supervisor::go_operational();
-	ExtensionInstaller::install(to_install, confirmed, path_to_inbuild);
+	int use = SHELL_METHODOLOGY;
+	if (dry_run_mode) use = DRY_RUN_METHODOLOGY;
+	ExtensionInstaller::install(to_install, confirmed, path_to_inbuild, use);
 
 @<Document from a file@> =
 	if (documentation_dest == NULL)
