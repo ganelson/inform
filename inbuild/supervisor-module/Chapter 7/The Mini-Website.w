@@ -164,15 +164,95 @@ void ExtensionWebsite::document_extension(inform_extension *E, inform_project *p
 			WRITE("defined these in the last run");
 			HTML_CLOSE("p");
 			HTML_OPEN("div");
-			HTML_CLOSE("div");
 			WRITE("%S", details);
+			HTML_CLOSE("div");
 		}
+		if (E->as_copy->edition->work->genre == extension_bundle_genre)
+			@<Add internals@>;
 		DISCARD_TEXT(details)
 		#endif
 		DocumentationRenderer::as_HTML(P, doc, OUT);
 		DISCARD_TEXT(OUT)
 	}
 	E->documented_on_this_run = TRUE;
+}
+
+@<Add internals@> =
+	HTML_TAG("hr"); /* ruled line at top of extras */
+	HTML_OPEN_WITH("p", "class=\"extensionsubheading\"");
+	WRITE("internals");
+	HTML_CLOSE("p");
+	HTML_OPEN("p");
+	WRITE("Metadata in JSON form ");
+	HTML_OPEN_WITH("a", "href=\"metadata.html\" class=\"registrycontentslink\"");
+	WRITE("can be read here");
+	HTML_CLOSE("a");
+	WRITE(".");
+	text_stream *MD = DocumentationRenderer::open_subpage(P, I"metadata.html");
+	TEMPORARY_TEXT(title)
+	WRITE_TO(title, "%X", E->as_copy->edition->work);
+	DocumentationRenderer::render_header(MD, title, I"Metadata", NULL);
+	DISCARD_TEXT(title)
+	ExtensionWebsite::write_metadata_page(MD, E);
+	linked_list *L = NEW_LINKED_LIST(inbuild_nest);
+	inbuild_nest *N = Extensions::materials_nest(E);
+	ADD_TO_LINKED_LIST(N, inbuild_nest, L);
+	inbuild_requirement *req;
+	LOOP_OVER_LINKED_LIST(req, inbuild_requirement, E->kits) {
+		inform_kit *K = Kits::find_by_name(req->work->raw_title, L, NULL);
+		if (K) @<Link to documentation on K@>;
+	}
+	HTML_CLOSE("p");
+	DocumentationRenderer::close_subpage();
+	LOOP_OVER_LINKED_LIST(req, inbuild_requirement, E->kits) {
+		inform_kit *K = Kits::find_by_name(req->work->raw_title, L, NULL);
+		if (K) @<Create documentation on K@>;
+	}
+
+@<Link to documentation on K@> =
+	WRITE(" This extension includes the kit ");
+	HTML_OPEN_WITH("a", "href=\"%S/index.html\" class=\"registrycontentslink\"",
+		K->as_copy->edition->work->title);
+	WRITE("%S", K->as_copy->edition->work->title);
+	HTML_CLOSE("a");
+	WRITE(".");
+
+@<Create documentation on K@> =
+	pathname *KP = Pathnames::down(P, req->work->raw_title);
+	if (Pathnames::create_in_file_system(KP)) {
+		pathname *KD = Pathnames::down(K->as_copy->location_if_path, I"Documentation");
+		compiled_documentation *doc =
+			DocumentationCompiler::compile_from_path(KD, NULL);
+		if (doc == NULL) {
+			text_stream *OUT = DocumentationRenderer::open_subpage(KP, I"index.html");
+			DocumentationRenderer::render_header(OUT, K->as_copy->edition->work->title, NULL, E);
+			HTML_OPEN("p");
+			WRITE("The kit %S does not provide any internal documentation.",
+				K->as_copy->edition->work->title);
+			HTML_CLOSE("p");							
+			DocumentationRenderer::close_subpage();
+		} else {
+			doc->within_extension = E;
+			DocumentationRenderer::as_HTML(KP, doc, NULL);
+		}
+	}
+
+@ =
+void ExtensionWebsite::write_metadata_page(OUTPUT_STREAM, inform_extension *E) {
+	if (E->as_copy->metadata_record) {
+		HTML_OPEN("p");
+		WRITE("Metadata for extensions, that is, the detail of what they are and "
+			"what they need, is stored in an Internet-standard format called JSON. "
+			"The following is the metadata on %X:", E->as_copy->edition->work);
+		HTML_CLOSE("p");
+		HTML_OPEN("pre");
+		JSON::encode(OUT, E->as_copy->metadata_record);
+		HTML_CLOSE("pre");
+	} else {
+		HTML_OPEN("p");
+		WRITE("For some reason, no JSON metadata is available for this extension.");
+		HTML_CLOSE("p");
+	}
 }
 
 text_stream *EXW_breadcrumb_titles[5] = { NULL, NULL, NULL, NULL, NULL };

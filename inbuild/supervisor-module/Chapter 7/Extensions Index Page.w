@@ -345,7 +345,7 @@ the usual ones seen in Mac OS X applications such as iTunes.
 		source_location sl = Extensions::top_line_location(E);
 		if (sl.file_of_origin) {
 			ExtensionIndex::add_to_key(key_list, REVEAL_SYMBOL,
-				I"Open source (left of title: the whole extension; right: where it is Included");
+				I"See source text (left of title: the whole extension; right: where it is Included");
 			SourceLinks::link(OUT, sl, FALSE);
 			WRITE(" ");
 		}
