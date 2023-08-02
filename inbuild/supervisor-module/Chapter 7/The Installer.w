@@ -571,6 +571,8 @@ int ExtensionInstaller::trash(OUTPUT_STREAM, inform_project *proj, inbuild_copy 
 		do {
 			Str::clear(leaf);
 			WRITE_TO(leaf, "%S", Pathnames::directory_name(C->location_if_path));
+			if (Str::get_at(leaf, Str::len(leaf)-5) == '.')
+				Str::truncate(leaf, Str::len(leaf)-5);
 			if (n > 1) WRITE_TO(leaf, " %d", n);
 			n++;
 			WRITE_TO(leaf, ".i7xd");

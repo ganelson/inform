@@ -17,8 +17,6 @@ Sometimes a nice effect is to change the way things are described depending on t
 
 On the other hand, beware that this would not work as desired:
 
-	{*}"Night Sky"
-
 	The Planetarium is a room. "[if we have listened to the sinister message]A dark room where it seems something is about to jump out at you![otherwise]A tranquil dark room with a ceilingful of stars.[end if]"
 
 	The sinister message is a thing in the Planetarium. "A message plays very softly, so that you would have to listen to hear it." Instead of doing anything other than listening to the message: say "It's only a sound, after all.". Instead of listening to the sinister message: say "A voice whispers, 'BEWARE'."
