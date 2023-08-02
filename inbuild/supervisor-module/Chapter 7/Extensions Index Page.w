@@ -399,6 +399,17 @@ the usual ones seen in Mac OS X applications such as iTunes.
 			DISCARD_TEXT(inclusion_text)
 			ExtensionIndex::add_to_key(key_list, PASTE_SYMBOL,
 				I"Source text to Include this (click to paste in)");
+			if (Nests::get_tag(res->nest) == MATERIALS_NEST_TAG) {
+				WRITE(" ");
+				ExtensionInstaller::uninstall_button(OUT, proj, res->copy);
+				ExtensionIndex::add_to_key(key_list, UNINSTALL_SYMBOL, I"Remove from this project");
+			}
+		} else {
+			if (Nests::get_tag(res->nest) == EXTERNAL_NEST_TAG) {
+				WRITE(" ");
+				ExtensionInstaller::install_button(OUT, proj, res->copy);
+				ExtensionIndex::add_to_key(key_list, INSTALL_SYMBOL, I"Install to this project");
+			}
 		}
 	}
 
@@ -451,7 +462,9 @@ the first and last word and just look at what is in between:
 	if (d == SORT_CE_BY_LOCATION) {
 		if (Nests::get_tag(res->nest) == INTERNAL_NEST_TAG)
 			WRITE("Built in to Inform");
-		else
+		else if (Nests::get_tag(res->nest) == EXTERNAL_NEST_TAG)
+			WRITE("Uninstalled");
+		else 
 			WRITE("Installed in this project");
 	} else {
 		text_stream *R = Extensions::get_rubric(Extensions::from_copy(res->copy));
@@ -495,6 +508,8 @@ There is just no need to do this efficiently in either running time or memory.
 @d REVEAL_SYMBOL "border=\"0\" src=\"inform:/doc_images/Reveal.png\""
 @d HELP_SYMBOL "border=\"0\" src=\"inform:/doc_images/help.png\""
 @d PASTE_SYMBOL "paste"
+@d INSTALL_SYMBOL "install"
+@d UNINSTALL_SYMBOL "uninstall"
 @d BUILT_IN_SYMBOL "border=\"0\" src=\"inform:/doc_images/builtin_ext.png\""
 @d PROJECT_SPECIFIC_SYMBOL "border=\"0\" src=\"inform:/doc_images/folder4.png\""
 @d LEGACY_AREA_SYMBOL "border=\"0\" src=\"inform:/doc_images/pspec_ext.png\""
@@ -506,7 +521,7 @@ typedef struct extensions_key_item {
 	struct text_stream *image_URL;
 	struct text_stream *gloss;
 	int displayed;
-	int ideograph;
+	struct text_stream *ideograph;
 	CLASS_DEFINITION
 } extensions_key_item;
 
@@ -523,8 +538,10 @@ void ExtensionIndex::add_to_key(linked_list *L, char *URL, text_stream *gloss) {
 		eki->image_URL = Str::duplicate(as_text);
 		eki->gloss = Str::duplicate(gloss);
 		eki->displayed = FALSE;
-		eki->ideograph = FALSE;
-		if (Str::eq(as_text, I"paste")) eki->ideograph = TRUE;
+		eki->ideograph = Str::new();
+		if (Str::eq(as_text, I"paste")) ExtensionWebsite::paste_ideograph(eki->ideograph);
+		if (Str::eq(as_text, I"install")) ExtensionInstaller::install_icon(eki->ideograph);
+		if (Str::eq(as_text, I"uninstall")) ExtensionInstaller::uninstall_icon(eki->ideograph);
 		ADD_TO_LINKED_LIST(eki, extensions_key_item, L);
 	}
 	DISCARD_TEXT(as_text)
@@ -563,8 +580,8 @@ void ExtensionIndex::render_key(OUTPUT_STREAM, linked_list *L) {
 }
 
 void ExtensionIndex::render_icon(OUTPUT_STREAM, extensions_key_item *eki) {
-	if (eki->ideograph) {
-		ExtensionWebsite::paste_ideograph(OUT);
+	if (Str::len(eki->ideograph) > 0) {
+		WRITE("%S", eki->ideograph);
 	} else {
 		HTML_TAG_WITH("img", "%S", eki->image_URL);
 	}

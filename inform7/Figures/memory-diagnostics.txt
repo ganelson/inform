@@ -1,4 +1,4 @@
-Total memory consumption was 139120K = 136 MB
+Total memory consumption was 139121K = 136 MB
 
  ---- was used for 2123163 objects, in 374917 frames in 0 x 800K = 0K = 0 MB:
 
@@ -261,9 +261,9 @@ Total memory consumption was 139120K = 136 MB
      ----  tree_type                                1 object, 40 bytes
      ----  I6_generation_data                       1 object, 40 bytes
 
-100.0% was used for memory not allocated for objects:
+99.9% was used for memory not allocated for objects:
 
-    62.1%  text stream storage                      88594584 bytes in 508375 claims
+    62.1%  text stream storage                      88595528 bytes in 508385 claims
      3.8%  dictionary storage                       5480960 bytes in 7754 claims
      ----  sorting                                  2624 bytes in 531 claims
      5.0%  source text                              7200000 bytes in 3 claims

@@ -1,9 +1,10 @@
 [ExtensionInstaller::] The Installer.
 
-To produce a report page of HTML for use in the Inform GUI apps, when a resource
-such as an extension is inspected or installed.
+To install or uninstall an extension into an Inform project, producing an
+HTML page as a report on what happened.
 
-@h HTML page.
+@h Making the report page.
+Both the installer and uninstaller make use of:
 
 =
 filename *inbuild_report_HTML = NULL;
@@ -38,7 +39,8 @@ void ExtensionInstaller::end(void) {
 	inbuild_report_file = NULL;
 }
 
-@ The Installer works in two stages. First it is called with |confirmed| false,
+@h The installer.
+This works in two stages. First it is called with |confirmed| false,
 and it produces an HTML report on the feasibility of making the installation,
 with a clickable Confirm button. Then, assuming the user does click that button,
 the Installer is called again, with |confirmed| true. It takes action and also
@@ -75,7 +77,7 @@ void ExtensionInstaller::install(inbuild_copy *C, int confirmed, pathname *to_to
 	OUT = ExtensionInstaller::begin(I"Not an extension...", Genres::name(C->edition->work->genre));
 	HTML_OPEN("p");
 	WRITE("Despite its file/directory name, this doesn't seem to be an extension, ");
-	WRITE("and it can't be installed.");
+	WRITE("and it can't be installed or uninstalled.");
 	HTML_CLOSE("p");
 
 @<Begin report on a valid extension@> =
@@ -239,7 +241,7 @@ void ExtensionInstaller::install(inbuild_copy *C, int confirmed, pathname *to_to
 						WRITE("&nbsp;&nbsp;");
 						TEMPORARY_TEXT(inclusion_text)
 						WRITE_TO(inclusion_text, "Include %X.\n\n\n", search_result->copy->edition->work);
-						PasteButtons::paste_text(OUT, inclusion_text);
+						ExtensionWebsite::paste_button(OUT, inclusion_text);
 						DISCARD_TEXT(inclusion_text)
 						WRITE("&nbsp;<i>'Include'</i>");
 						HTML_CLOSE("li");
@@ -333,7 +335,10 @@ void ExtensionInstaller::install(inbuild_copy *C, int confirmed, pathname *to_to
 
 @<Make confirmed report@> =
 	build_methodology *BM = BuildMethodology::new(Pathnames::up(to_tool), TRUE, meth);
-	Copies::copy_to(C, Projects::materials_nest(project), TRUE, BM);
+	int no_trashed = 0;
+	TEMPORARY_TEXT(trash_report)
+	@<Trash any identically-versioned copies currently present@>;
+	@<Copy the new one into place@>;
 	HTML_OPEN("p");
 	WRITE("This extension has now been installed in the materials folder for %S, as:", pname);
 	HTML_CLOSE("p");
@@ -355,7 +360,17 @@ void ExtensionInstaller::install(inbuild_copy *C, int confirmed, pathname *to_to
 	}
 	HTML_CLOSE("li");
 	HTML_CLOSE("ul");
+	if (Str::len(trash_report) > 0) {
+		HTML_OPEN("p");
+		WRITE("Since an extension with the same title, author name and version number "
+			"was already installed in this project, some tidying-up was needed:");
+		HTML_CLOSE("p");
+		HTML_OPEN("ul");
+		WRITE("%S", trash_report);
+		HTML_CLOSE("ul");
+	}
 	HTML_TAG("hr");
+	DISCARD_TEXT(trash_report)
 
 	ExtensionWebsite::update(project);
 
@@ -396,6 +411,202 @@ void ExtensionInstaller::install(inbuild_copy *C, int confirmed, pathname *to_to
 		}
 		HTML_CLOSE("ul");
 	}
+
+@<Trash any identically-versioned copies currently present@> =
+	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
+	@<Search the extensions currently installed in the project@>;
+	inbuild_search_result *search_result;
+	LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L)
+		if ((Works::cmp(C->edition->work, search_result->copy->edition->work) == 0) &&
+			(VersionNumbers::cmp(C->edition->version, search_result->copy->edition->version) == 0))
+			no_trashed += ExtensionInstaller::trash(trash_report, project, search_result->copy, BM);
+
+@<Copy the new one into place@> =
+	Copies::copy_to(C, Projects::materials_nest(project), TRUE, BM);
+
+@h The uninstaller.
+This works in two stages, exactly like the installer, but it's much simpler.
+
+=
+void ExtensionInstaller::uninstall(inbuild_copy *C, int confirmed, pathname *to_tool, int meth) {
+	inform_project *project = Supervisor::project_set_at_command_line();
+	if (project == NULL) Errors::fatal("-project not set at command line");
+	TEMPORARY_TEXT(pname)
+	WRITE_TO(pname, "'%S'", project->as_copy->edition->work->title);
+	text_stream *OUT = NULL;
+	if ((C->edition->work->genre == extension_genre) ||
+		(C->edition->work->genre == extension_bundle_genre)) {
+		if (OUT) {
+			@<Begin uninstaller report@>;
+			if (confirmed) @<Make confirmed uninstaller report@>
+			else @<Make unconfirmed uninstaller report@>;
+		}
+	} else {
+		@<Report on something else@>;
+	}
+	if (OUT) {
+		ExtensionInstaller::end();
+	}
+	DISCARD_TEXT(pname)
+}
+
+@<Begin uninstaller report@> =
+	TEMPORARY_TEXT(desc)
+	TEMPORARY_TEXT(version)
+	Works::write(desc, C->edition->work);
+	semantic_version_number V = C->edition->version;
+	if (VersionNumbers::is_null(V)) {
+		WRITE_TO(version, "An extension");
+	} else {
+		WRITE_TO(version, "Version %v of an extension", &V);
+	}
+	OUT = ExtensionInstaller::begin(desc, version);
+	DISCARD_TEXT(desc)
+	DISCARD_TEXT(version)
+
+@<Make unconfirmed uninstaller report@> =
+	HTML_OPEN("p");
+	WRITE("Click the red button to confirm that you would like to uninstall this "
+		"extension from the materials folder for %S: ", pname);
+	if (C->edition->work->genre == extension_bundle_genre) {
+		pathname *P = ExtensionBundleManager::pathname_in_nest(Projects::materials_nest(project), C->edition);
+		WRITE("the folder ");
+		HTML_OPEN("b");
+		Pathnames::to_text_relative(OUT, Pathnames::up(Projects::materials_path(project)), P);
+		HTML_CLOSE("b");
+	} else {
+		filename *F = ExtensionManager::filename_in_nest(Projects::materials_nest(project), C->edition);
+		WRITE("the file ");
+		HTML_OPEN("b");
+		Filenames::to_text_relative(OUT, F, Pathnames::up(Projects::materials_path(project)));
+		HTML_CLOSE("b");
+	}
+	WRITE(" which is in nest %p", Nests::get_location(C->nest_of_origin));
+	HTML_CLOSE("p");
+	HTML_OPEN_WITH("a", "href='javascript:project().confirmAction()'");
+	HTML_OPEN_WITH("button", "class=\"dangerousbutton\"");
+	WRITE("Uninstall %S", C->edition->work->title);
+	HTML_CLOSE("button");
+	HTML_CLOSE("a");
+
+@<Make confirmed uninstaller report@> =
+	build_methodology *BM = BuildMethodology::new(Pathnames::up(to_tool), TRUE, meth);
+	TEMPORARY_TEXT(trash_report)
+	ExtensionInstaller::trash(trash_report, project, C, BM);
+	HTML_OPEN("p");
+	WRITE("Uninstalling this extension from the materials folder for %S:", pname);
+	HTML_CLOSE("p");
+	HTML_OPEN("ul");
+	WRITE("%S", trash_report);
+	HTML_CLOSE("ul");
+	HTML_TAG("hr");
+	DISCARD_TEXT(trash_report)
+	ExtensionWebsite::update(project);
+
+@h Moving to trash.
+
+=
+int ExtensionInstaller::trash(OUTPUT_STREAM, inform_project *proj, inbuild_copy *C,
+	build_methodology *BM) {
+	int succeeded = FALSE;
+	HTML_OPEN("li");
+	pathname *super_trash_folder =
+		Pathnames::down(
+			Pathnames::down(
+				Pathnames::down(
+					Projects::materials_path(proj),
+					I"Extensions"),
+				I"Reserved"),
+			I"Trash");
+	TEMPORARY_TEXT(dateleaf)
+	WRITE_TO(dateleaf, "Trashed on %04d-%02d-%02d at %02d%02d", the_present->tm_year+1900,
+		the_present->tm_mon, the_present->tm_mday, the_present->tm_hour, the_present->tm_min);
+	DISCARD_TEXT(dateleaf)
+	pathname *trash_folder = Pathnames::down(super_trash_folder, dateleaf);
+	TEMPORARY_TEXT(reported)
+	Pathnames::to_text_relative(reported, Pathnames::up(Projects::materials_path(proj)), trash_folder);
+	if (C->location_if_file) {
+		TEMPORARY_TEXT(leaf)
+		int n = 1;
+		filename *TF = NULL;
+		do {
+			Str::clear(leaf);
+			Filenames::write_unextended_leafname(leaf, C->location_if_file);
+			if (n > 1) WRITE_TO(leaf, " %d", n);
+			n++;
+			WRITE_TO(leaf, ".i7x");
+			TF = Filenames::in(trash_folder, leaf);
+		} while (TextFiles::exists(TF));
+		DISCARD_TEXT(leaf)
+		if (BM->methodology == DRY_RUN_METHODOLOGY) {
+			WRITE("This is only a dry run, but I now want to create the directory "
+				"%p as a trash folder and move the file %f to become %f. ",
+				trash_folder, C->location_if_file, TF);			
+		} else {
+			if ((Pathnames::create_in_file_system(super_trash_folder) == FALSE) ||
+				(Pathnames::create_in_file_system(trash_folder) == FALSE)) {
+				WRITE("I tried to move the copy installed as '%S' to the trash (%S), "
+					"but was unable to create this trash directory, perhaps because "
+					"of some file-system problem? ",
+					Filenames::get_leafname(C->location_if_file),
+					reported);
+			} else if (Filenames::move_file(C->location_if_file, TF)) {
+				WRITE("I have moved the copy previously installed as '%S' to the "
+					"project's trash. (If you need it, you can find it in %S.) ",
+					Filenames::get_leafname(C->location_if_file),
+					reported);
+				C->location_if_file = TF;
+				succeeded = TRUE;
+			} else {
+				WRITE("I tried to move the copy installed as '%S' to the trash (%S), "
+					"but was unable to, perhaps because of some file-system problem? ",
+					Filenames::get_leafname(C->location_if_file),
+					reported);
+			}
+		}
+	} else {
+		TEMPORARY_TEXT(leaf)
+		int n = 1;
+		pathname *TD = NULL;
+		do {
+			Str::clear(leaf);
+			WRITE_TO(leaf, "%S", Pathnames::directory_name(C->location_if_path));
+			if (n > 1) WRITE_TO(leaf, " %d", n);
+			n++;
+			WRITE_TO(leaf, ".i7xd");
+			TD = Pathnames::down(trash_folder, leaf);
+		} while (Directories::exists(TD));
+		DISCARD_TEXT(leaf)
+		if (BM->methodology == DRY_RUN_METHODOLOGY) {
+			WRITE("This is only a dry run, but I now want to create the directory "
+				"%p as a trash folder and move the directory %p to become %p. ",
+				trash_folder, C->location_if_path, TD);			
+		} else {
+			if ((Pathnames::create_in_file_system(super_trash_folder) == FALSE) ||
+				(Pathnames::create_in_file_system(trash_folder) == FALSE)) {
+				WRITE("I tried to move the copy installed as '%S' to the trash (%S), "
+					"but was unable to create this trash directory, perhaps because "
+					"of some file-system problem? ",
+					Pathnames::directory_name(C->location_if_path),
+					reported);
+			} else if (Pathnames::move_directory(C->location_if_path, TD)) {
+				WRITE("I have moved the copy previously installed as '%S' to the "
+					"project's trash. (If you need it, you can find it in %S.) ",
+					Pathnames::directory_name(C->location_if_path),
+					reported);
+				C->location_if_path = TD;
+				succeeded = TRUE;
+			} else {
+				WRITE("I tried to move the copy installed as '%S' to the trash (%S), "
+					"but was unable to, perhaps because of some file-system problem? ",
+					Pathnames::directory_name(C->location_if_path),
+					reported);
+			}
+		}
+	}
+	HTML_CLOSE("li");
+	return succeeded;
+}
 
 @
 
@@ -473,4 +684,41 @@ int ExtensionInstaller::seek_extension_in_graph(inbuild_copy *C, build_vertex *V
 		 if (ExtensionInstaller::seek_extension_in_graph(C, W))
 		 	return TRUE;
 	return FALSE;
+}
+
+@
+
+=
+void ExtensionInstaller::install_button(OUTPUT_STREAM, inform_project *proj,
+	inbuild_copy *C) {			
+	TEMPORARY_TEXT(URL)
+	if (C->location_if_file)
+		WRITE_TO(URL, "%f", C->location_if_file);
+	else
+		WRITE_TO(URL, "%p", C->location_if_path);
+	HTML_OPEN_WITH("a", "class=\"registrycontentslink\" href='javascript:project().install(\"%S\")'", URL);
+	DISCARD_TEXT(URL)
+	ExtensionInstaller::install_icon(OUT);
+	HTML_CLOSE("a");
+}
+
+void ExtensionInstaller::install_icon(OUTPUT_STREAM) {
+	WRITE("<span class=\"paste\">%c%c</span>", 0x2B06, 0xFE0F); /* Unicode "up arrow" */
+}
+
+void ExtensionInstaller::uninstall_button(OUTPUT_STREAM, inform_project *proj,
+	inbuild_copy *C) {
+	TEMPORARY_TEXT(URL)
+	if (C->location_if_file)
+		WRITE_TO(URL, "%f", C->location_if_file);
+	else
+		WRITE_TO(URL, "%p", C->location_if_path);
+	HTML_OPEN_WITH("a", "class=\"registrycontentslink\" href='javascript:project().uninstall(\"%S\")'", URL);
+	DISCARD_TEXT(URL)
+	ExtensionInstaller::uninstall_icon(OUT);
+	HTML_CLOSE("a");
+}
+
+void ExtensionInstaller::uninstall_icon(OUTPUT_STREAM) {
+	WRITE("<span class=\"paste\">%c%c</span>", 0x2198, 0xFE0F); /* Unicode "down right arrow" */
 }

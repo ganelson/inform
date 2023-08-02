@@ -20,7 +20,7 @@ inbuild_registry *selected_registry = NULL;
 text_stream *filter_text = NULL;
 pathname *preprocess_HTML_destination = NULL;
 text_stream *preprocess_HTML_app = NULL;
-inbuild_copy *to_install = NULL;
+inbuild_copy *to_install = NULL, *to_uninstall = NULL;
 filename *documentation_source = NULL;
 pathname *documentation_dest = NULL;
 
@@ -41,6 +41,7 @@ int main(int argc, char **argv) {
 	CommandLine::play_back_log();
 	@<Complete the list of targets@>;
 	if (to_install) @<Perform an extension installation@>
+	else if (to_uninstall) @<Perform an extension uninstallation@>
 	else if (documentation_source) @<Document from a file@>
 	else @<Act on the targets@>;
 	@<Shut down the modules@>;
@@ -117,6 +118,12 @@ error in this case.
 	int use = SHELL_METHODOLOGY;
 	if (dry_run_mode) use = DRY_RUN_METHODOLOGY;
 	ExtensionInstaller::install(to_install, confirmed, path_to_inbuild, use);
+
+@<Perform an extension uninstallation@> =
+	Supervisor::go_operational();
+	int use = SHELL_METHODOLOGY;
+	if (dry_run_mode) use = DRY_RUN_METHODOLOGY;
+	ExtensionInstaller::uninstall(to_uninstall, confirmed, path_to_inbuild, use);
 
 @<Document from a file@> =
 	if (documentation_dest == NULL)
@@ -398,6 +405,7 @@ other options to the selection defined here.
 @e REPAIR_CLSW
 @e RESULTS_CLSW
 @e INSTALL_CLSW
+@e UNINSTALL_CLSW
 @e CONFIRMED_CLSW
 @e VERBOSE_CLSW
 @e VERBOSITY_CLSW
@@ -425,6 +433,8 @@ other options to the selection defined here.
 		L"show target(s) but take no action");
 	CommandLine::declare_switch(INSTALL_CLSW, L"install", 1,
 		L"install extension within the Inform GUI apps");
+	CommandLine::declare_switch(UNINSTALL_CLSW, L"uninstall", 1,
+		L"remove extension within the Inform GUI apps");
 	CommandLine::declare_switch(GRAPH_CLSW, L"graph", 1,
 		L"show dependency graph of target(s) but take no action");
 	CommandLine::declare_switch(USE_NEEDS_CLSW, L"use-needs", 1,
@@ -554,6 +564,7 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 			break;
 		case REPAIR_CLSW: repair_mode = val; break;
 		case INSTALL_CLSW: to_install = Main::file_or_path_to_copy(arg, TRUE); break;
+		case UNINSTALL_CLSW: to_uninstall = Main::file_or_path_to_copy(arg, TRUE); break;
 		case RESULTS_CLSW: ExtensionInstaller::set_filename(Filenames::from_text(arg)); break;
 		case CONFIRMED_CLSW: confirmed = val; break;
 		case VERBOSE_CLSW: Supervisor::set_verbosity(1); break;
