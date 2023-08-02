@@ -531,7 +531,7 @@ button.safebutton {
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
-	font-size: 16px;
+	font-size: 1.067rem; /* 16/12 * 100/125 */
 	margin: 4px 2px;
 	cursor: pointer;
 }
@@ -544,7 +544,7 @@ button.dangerousbutton {
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
-	font-size: 16px;
+	font-size: 1.067rem; /* 16/12 * 100/125 */
 	margin: 4px 2px;
 	cursor: pointer;
 }
@@ -578,7 +578,7 @@ span.documentationerror {
 a.pastelink {
 	background-color: var(--paste-background-colour);
 	text-decoration: none;
-	font-size: 14px;
+	font-size: 0.933rem; /* 14/12 * 100/125 */
 	padding: 2px;
 	padding-left: 6px;
 	padding-right: 6px;

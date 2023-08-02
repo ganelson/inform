@@ -45,7 +45,7 @@ the Installer is called again, with |confirmed| true. It takes action and also
 produces a second report.
 
 =
-void ExtensionInstaller::install(inbuild_copy *C, int confirmed, pathname *to_tool) {
+void ExtensionInstaller::install(inbuild_copy *C, int confirmed, pathname *to_tool, int meth) {
 	inform_project *project = Supervisor::project_set_at_command_line();
 	if (project == NULL) Errors::fatal("-project not set at command line");
 	TEMPORARY_TEXT(pname)
@@ -332,8 +332,7 @@ void ExtensionInstaller::install(inbuild_copy *C, int confirmed, pathname *to_to
 	}
 
 @<Make confirmed report@> =
-	int use = SHELL_METHODOLOGY;
-	build_methodology *BM = BuildMethodology::new(Pathnames::up(to_tool), TRUE, use);
+	build_methodology *BM = BuildMethodology::new(Pathnames::up(to_tool), TRUE, meth);
 	Copies::copy_to(C, Projects::materials_nest(project), TRUE, BM);
 	HTML_OPEN("p");
 	WRITE("This extension has now been installed in the materials folder for %S, as:", pname);
@@ -345,7 +344,7 @@ void ExtensionInstaller::install(inbuild_copy *C, int confirmed, pathname *to_to
 		pathname *P = ExtensionBundleManager::pathname_in_nest(Projects::materials_nest(project), C->edition);
 		WRITE("the folder ");
 		HTML_OPEN("b");
-		Pathnames::relative_URL(OUT, Pathnames::up(Projects::materials_path(project)), P);
+		Pathnames::to_text_relative(OUT, Pathnames::up(Projects::materials_path(project)), P);
 		HTML_CLOSE("b");
 	} else {
 		filename *F = ExtensionManager::filename_in_nest(Projects::materials_nest(project), C->edition);
@@ -388,7 +387,7 @@ void ExtensionInstaller::install(inbuild_copy *C, int confirmed, pathname *to_to
 				} else if (search_result->copy->location_if_path) {
 					HTML_TAG("br");
 					WRITE("at ");
-					Pathnames::relative_URL(OUT, Pathnames::up(Projects::materials_path(project)),
+					Pathnames::to_text_relative(OUT, Pathnames::up(Projects::materials_path(project)),
 						search_result->copy->location_if_path);
 				}
 				Copies::list_attached_errors_to_HTML(OUT, search_result->copy);
