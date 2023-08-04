@@ -1,3 +1,6 @@
+Test: LBW
+For: Z-Machine
+
 "Leg Before Wicket" by Ian Fleming
 
 Use command line echoing.

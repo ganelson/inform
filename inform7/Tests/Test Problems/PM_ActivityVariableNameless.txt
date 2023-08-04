@@ -1,3 +1,5 @@
+Problem: PM_ActivityVariableNameless
+
 Sinning is an activity.
 Vice is a kind of value.
 The vices are Lust, Gluttony, Greed, Sloth, Wrath, Envy, and Pride.

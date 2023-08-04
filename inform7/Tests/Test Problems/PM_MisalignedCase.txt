@@ -1,3 +1,5 @@
+Problem: PM_MisalignedCase
+
 Home is a room.
 
 When play begins:

@@ -1,3 +1,5 @@
+Problem: PM_DimensionsInconsistent
+
 Laboratory is a room.
 
 Length is a kind of value. 1m specifies a length.

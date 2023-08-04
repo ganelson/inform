@@ -1,3 +1,5 @@
+Problem: PM_NoSuchRulebookPlacement
+
 Burrow is a room.
 
 This is the Wombling rule: say "Remember you're a Womble."

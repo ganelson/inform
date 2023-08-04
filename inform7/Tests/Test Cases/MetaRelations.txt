@@ -1,3 +1,6 @@
+Test: MetaRelations
+For: Z-Machine
+
 Home is a room.
 
 Meta relates various relations of things to various relations of

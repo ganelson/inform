@@ -1,3 +1,5 @@
+Problem: PM_BadProvides
+
 Xanadu is a room.
 
 The player provides 10.

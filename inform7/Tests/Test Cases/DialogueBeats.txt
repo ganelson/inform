@@ -1,3 +1,6 @@
+Test: DialogueBeats
+For: Z-Machine
+
 The Cricket History Museum is a room. The bat, the ball and the pads are here. Daphne is a woman in the Museum. The trophy case is in the Museum. The urn and the scoring pencil are in the case.
 
 Daphne can be honest or disingenuous.

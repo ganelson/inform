@@ -1,3 +1,6 @@
+Test: ConstantLists
+For: Z-Machine
+
 Pisa is a Room.
 
 The pen is here. The blotter is here. The ball is here.

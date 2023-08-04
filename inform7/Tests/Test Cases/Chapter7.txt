@@ -1,3 +1,6 @@
+Test: Chapter7
+For: Z-Machine
+
 "Chapter 7: Dutch Harbor" by Emily Short.
 
 Chapter 7 - Actions

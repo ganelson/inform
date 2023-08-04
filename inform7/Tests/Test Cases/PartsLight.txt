@@ -1,3 +1,6 @@
+Test: PartsLight
+For: Z-Machine
+
 [The rod should illuminate the Lab.]
 
 The Lab is a room. It is dark.

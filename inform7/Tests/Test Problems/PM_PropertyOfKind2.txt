@@ -1,3 +1,5 @@
+Problem: PM_PropertyOfKind2
+
 The NI School for Typing is a room.
 
 When play begins:

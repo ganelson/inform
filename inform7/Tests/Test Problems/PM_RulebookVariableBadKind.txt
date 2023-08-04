@@ -1,3 +1,5 @@
+Problem: PM_RulebookVariableBadKind
+
 The dome is a room.
 
 The every turn rulebook has 213 called Trevor.

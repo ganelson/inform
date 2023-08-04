@@ -1,3 +1,6 @@
+Test: RoomAbove
+For: Z-Machine
+
 The Parlor is a room. Town Square and Access Tunnel are rooms.
 
 The Attic is a room above the Parlor. The Attic2 is above the Parlor2.

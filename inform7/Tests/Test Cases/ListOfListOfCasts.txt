@@ -1,3 +1,6 @@
+Test: ListOfListOfCasts
+For: Z-Machine
+
 Home is a room.
 
 The grid is a list of lists of texts which varies. The grid is {{"foo", "bar"}}.

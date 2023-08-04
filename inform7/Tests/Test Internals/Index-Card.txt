@@ -1,3 +1,6 @@
+Test: Index-Card
+TestCompilerInternals: Yes
+
 Home is a room.
 
 Test index (internal) with Cd.

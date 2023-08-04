@@ -1,3 +1,6 @@
+Test: ActionsCommandTopic
+For: Z-Machine
+
 Place is a room.
 
 A dial is a kind of thing.

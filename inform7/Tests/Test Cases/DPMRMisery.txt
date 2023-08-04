@@ -1,3 +1,6 @@
+Test: DPMRMisery
+For: Z-Machine
+
 The Kitchen is a room. 
 A red apple is in the Kitchen.
 A red tomato is in the Kitchen. 

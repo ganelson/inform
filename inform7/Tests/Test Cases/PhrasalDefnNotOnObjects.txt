@@ -1,3 +1,6 @@
+Test: PhrasalDefnNotOnObjects
+For: Z-Machine
+
 Home is a room.
 
 Definition: a number (called N) is large:

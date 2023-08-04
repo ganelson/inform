@@ -1,3 +1,6 @@
+Test: Obedience-C
+For: C
+
  Use command line echoing.
 
 A hand is a kind of thing. A hand is part of every person.

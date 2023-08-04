@@ -1,3 +1,7 @@
+Test: BIP-Now-G
+Language: Basic
+For: Glulx
+
 The tally is a number that varies.
 
 A fruit is a kind of object. An apple, a pear and an orange are fruits. A fruit can be ripe or rotten.

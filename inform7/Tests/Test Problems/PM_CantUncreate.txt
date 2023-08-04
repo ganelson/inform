@@ -1,3 +1,5 @@
+Problem: PM_CantUncreate
+
 The Service Area is a room.
 The lock is scenery in the Service Area.
 The winch switch state is a kind of value. The winch switch states are

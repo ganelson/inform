@@ -1,3 +1,5 @@
+Problem: PM_RedundantReturnKOV
+
 Xanadu is a room.
 
 To admire (X - a room):

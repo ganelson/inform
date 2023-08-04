@@ -1,3 +1,6 @@
+Test: NegativeLPs
+For: Z-Machine
+
 Test is a room.
 
 A weight is a kind of value. -99.999 kg specifies a weight.

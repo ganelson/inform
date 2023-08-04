@@ -1,3 +1,7 @@
+Test: BIP-Showme
+Language: Basic
+For: Z-Machine
+
 To begin:
 	showme 7;
 	showme minus 6;

@@ -1,3 +1,7 @@
+Test: BIP-Showme-C
+Language: Basic
+For: C
+
 To begin:
 	showme 7;
 	showme minus 6;

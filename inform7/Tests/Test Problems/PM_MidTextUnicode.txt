@@ -1,3 +1,5 @@
+Problem: PM_MidTextUnicode
+
 [The problem here arises from the Greek letter lambda actually being
 known to Unicode as lamda.]
 

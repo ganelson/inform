@@ -1,3 +1,5 @@
+Problem: PM_NamedInline
+
 There is a room.
 To decide which number is the bitwise or of (I - a number) and (J - a number) (this is bitwise oring): 
 (- ( {I} | {J} ) -).

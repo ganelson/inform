@@ -1,3 +1,6 @@
+Test: SilentTimesCount
+For: Z-Machine
+
 Square One is a room.
 
 The elegant jacket is a wearable thing in Square One.

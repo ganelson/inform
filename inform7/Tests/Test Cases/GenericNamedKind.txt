@@ -1,3 +1,6 @@
+Test: GenericNamedKind
+For: Z-Machine
+
 Heart of the Sun is a room. The fish and the fowl are here.
 
 To assay (name of kind of value K):

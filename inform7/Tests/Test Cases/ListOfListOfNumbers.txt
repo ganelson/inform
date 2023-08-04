@@ -1,3 +1,6 @@
+Test: ListOfListOfNumbers
+For: Z-Machine
+
 When play begins:
 	let puzzle vector be { 
 		{1, 1, 1, 1, 1, 1, 1, 1}, 

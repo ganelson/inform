@@ -1,3 +1,6 @@
+Test: C5LiteralsWithQuotes
+For: Z-Machine
+
 The Formless Void is a room. "This is where I do dangerous coding."
 
 A height is a kind of value. 5'11" specifies a height.

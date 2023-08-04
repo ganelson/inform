@@ -1,3 +1,6 @@
+Test: ResponsesUsingTemporaryValues
+For: Z-Machine
+
 Lab is a room. Mobile home is a room. The table is in the lab. The table is an enterable supporter.
 
 The chair is in the lab. The chair is an enterable supporter.

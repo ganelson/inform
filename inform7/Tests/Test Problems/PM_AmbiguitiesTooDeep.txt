@@ -1,3 +1,5 @@
+Problem: PM_AmbiguitiesTooDeep
+
 Foo is a room.
 
 When play begins: if a room encloses a room that encloses a room that encloses a room that encloses a room that encloses a room that encloses a room that encloses a room that encloses a room that encloses a room that encloses a room that encloses a room, do nothing.

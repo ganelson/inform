@@ -1,3 +1,5 @@
+Problem: PM_NoSuchPublicRelease
+
 Xanadu is a room.
 
 Release along with a public existing story file.

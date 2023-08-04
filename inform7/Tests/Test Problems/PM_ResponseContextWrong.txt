@@ -1,3 +1,5 @@
+Problem: PM_ResponseContextWrong
+
 The Temple is a room.
 
 When play begins:

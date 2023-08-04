@@ -1,3 +1,6 @@
+Test: InRegionLoops
+For: Z-Machine
+
 Floor Six is a region.
 
 Room 601 is a room in floor six. Room 602 is a room in floor six.

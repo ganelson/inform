@@ -1,3 +1,6 @@
+Test: OfOfFear
+For: Z-Machine
+
 "The Of Of Fear"
 
 The Duke of Clarence is a room. "A fine public house in the 18th-century

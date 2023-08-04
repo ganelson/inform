@@ -1,3 +1,6 @@
+Test: Tenses2
+For: Z-Machine
+
 "Tense Boxing"
 
 The Temporal Lobe is a room.

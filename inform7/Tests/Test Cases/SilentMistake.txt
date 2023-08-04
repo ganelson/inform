@@ -1,3 +1,6 @@
+Test: SilentMistake
+For: Z-Machine
+
 The Kitchen is a room.
 
 Understand "thact" as a mistake.

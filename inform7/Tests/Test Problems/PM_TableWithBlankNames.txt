@@ -1,3 +1,5 @@
+Problem: PM_TableWithBlankNames
+
 A vial is a kind of container. A vial has a number called fullness.
 
 Starting Room is a room. Some vials in the starting room are defined by

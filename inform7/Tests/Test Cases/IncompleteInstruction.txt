@@ -1,3 +1,6 @@
+Test: IncompleteInstruction
+For: Z-Machine
+
 Lab is a room. Jay is a person in Lab. 
 
 Test me with "enter/Jay, enter".

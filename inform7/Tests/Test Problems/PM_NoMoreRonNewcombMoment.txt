@@ -1,3 +1,5 @@
+Problem: PM_NoMoreRonNewcombMoment
+
 There is a room.
 Here is a grail.  Here is another thing, yet another thing, and a further thing yet.
 Every turn:

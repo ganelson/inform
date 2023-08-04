@@ -1,3 +1,6 @@
+Test: Unless
+For: Z-Machine
+
 The Upper Cave is above the Rock Pool.
 
 When play begins:

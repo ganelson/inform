@@ -1,3 +1,6 @@
+Test: IndexedTextReturned
+For: Z-Machine
+
 [Concatenation test.]
 
 The Outer Solar System is a room.

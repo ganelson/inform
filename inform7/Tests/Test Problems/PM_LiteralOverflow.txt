@@ -1,3 +1,6 @@
+Problem: PM_LiteralOverflow
+For: Z-Machine
+
 Laboratory is a room.
 
 When play begins:

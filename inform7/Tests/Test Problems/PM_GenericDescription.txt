@@ -1,3 +1,5 @@
+Problem: PM_GenericDescription
+
 A block is a kind of thing. A block has a number called size.
 
 After taking a block: say "You take [the noun]." instead.

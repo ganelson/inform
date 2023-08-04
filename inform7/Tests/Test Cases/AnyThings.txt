@@ -1,3 +1,6 @@
+Test: AnyThings
+For: Z-Machine
+
 A thing can be spotted.
 
 Definition: A thing is player-visible if the player can see it.

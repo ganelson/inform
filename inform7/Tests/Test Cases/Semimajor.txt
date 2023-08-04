@@ -1,3 +1,6 @@
+Test: Semimajor
+For: Z-Machine
+
 The Astral Plane is a room.
 
 Solar distance is a kind of value. 1000 AU specifies a solar distance.

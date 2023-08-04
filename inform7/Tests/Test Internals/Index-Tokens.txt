@@ -1,3 +1,6 @@
+Test: Index-Tokens
+TestCompilerInternals: Yes
+
 Home is a room.
 
 Understand "my [container]" as "[wobbly]".

@@ -1,3 +1,5 @@
+Problem: PM_CaseValueDuplicated
+
 Foo is a room.
 When play begins:
 	if 5 is:

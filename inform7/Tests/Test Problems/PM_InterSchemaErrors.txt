@@ -1,3 +1,5 @@
+Problem: PM_InterSchemaErrors
+
 Laboratory is a room.
 
 Definition: an object is foo rather than bar if I6 condition "("

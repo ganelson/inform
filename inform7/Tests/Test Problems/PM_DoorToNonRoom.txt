@@ -1,2 +1,4 @@
+Problem: PM_DoorToNonRoom
+
 The Taj Mahal is a room. The Great Gate and the Lesser Gate are doors.
 East of the Great Gate is the Lesser Gate.

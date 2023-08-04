@@ -1,3 +1,5 @@
+Problem: PM_TestBadRequirements
+
 The Gram-Schmidt Memorial is a room. The statue is in the Memorial.
 
 Test statuary with "look" amidst the Memorial.

@@ -1,3 +1,6 @@
+Problem: PM_CinderOverflow
+For: Z-Machine
+
 Foo is a room.
 To zog:
 	let A0 be the player;

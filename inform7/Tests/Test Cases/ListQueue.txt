@@ -1,3 +1,6 @@
+Test: ListQueue
+For: Z-Machine
+
 The Supermarket is west of the Delicatessen Counter. Lugubrious Pete is in the Delicatessen. "Lugubrious Pete, dolefully slicing meats and cheeses, serves at the counter." Alice, Beth, Gemma, Delia, and Eliza are women in the Supermarket. The deli queue is a list of objects that varies.
 
 Every turn when a woman is in the Supermarket and a random chance of 2 in 3 succeeds (this is the customer arriving rule):

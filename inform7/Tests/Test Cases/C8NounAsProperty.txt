@@ -1,3 +1,6 @@
+Test: C8NounAsProperty
+For: Z-Machine
+
 The Starting Room is a room. "This is the starting room."
 
 A monkey is a kind of thing. A monkey can be a hairy critter. A monkey is 

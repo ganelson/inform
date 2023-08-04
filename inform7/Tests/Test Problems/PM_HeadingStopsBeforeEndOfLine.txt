@@ -1,3 +1,5 @@
+Problem: PM_HeadingStopsBeforeEndOfLine
+
 Chapter I. Home is a room
 
 Chapter I.2 - This breaks

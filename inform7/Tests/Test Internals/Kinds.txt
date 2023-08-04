@@ -1,3 +1,6 @@
+Test: Index-Kinds
+TestCompilerInternals: Yes
+
 Home is a room.
 
 Use MAX_QTEXT_SIZE of 10000.

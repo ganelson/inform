@@ -1,3 +1,5 @@
+Problem: PM_RuleNotAllowedOutcome
+
 Xanadu is a room.
 
 Instead of jumping:

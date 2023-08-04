@@ -1,3 +1,6 @@
+Test: Index-Map-GUE
+TestCompilerInternals: Yes
+
 "The Great Underground Empire Affair"
 
 Use MAX_STATIC_DATA of 512000.

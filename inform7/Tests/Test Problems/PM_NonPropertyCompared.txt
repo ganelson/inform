@@ -1,3 +1,5 @@
+Problem: PM_NonPropertyCompared
+
 The Typographium is a room. Colour is a kind of value. The colours are red,
 green and blue.
 

@@ -1,3 +1,5 @@
+Problem: PM_TableKindTwice
+
 The Kitchen is a room. 
 
 The apple is a thing. The pear is a thing.

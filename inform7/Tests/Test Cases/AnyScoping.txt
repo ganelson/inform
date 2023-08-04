@@ -1,3 +1,6 @@
+Test: AnyScoping
+For: Z-Machine
+
 The Stage is a room. A sword is in Stage. Wings is west of Stage.
 Dressing Room is north of Wings.
 

@@ -1,3 +1,5 @@
+Problem: PM_SlashedCommand
+
 The Gram-Schmidt Memorial is a room. The statue is in the Memorial.
 
 Understand "take/flip [something]" as examining.

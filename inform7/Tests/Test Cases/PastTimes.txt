@@ -1,3 +1,6 @@
+Test: PastTimes
+For: Z-Machine
+
 Swearing obscenely is an action applying to nothing.
 
 Understand "Beetlejuice" as swearing obscenely.

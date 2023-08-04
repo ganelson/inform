@@ -1,3 +1,5 @@
+Problem: PM_UnknownUnpermittedProperty
+
 The Gram-Schmidt Memorial is a room. The statue is in the Memorial.
 
 Understand the transparent property as referring to the Memorial.

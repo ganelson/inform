@@ -1,3 +1,5 @@
+Problem: PM_GoingWrongKind
+
 Ledge by Bridge is a Room. Nirvana is a region. The ball of string is in
 Ledge.
 

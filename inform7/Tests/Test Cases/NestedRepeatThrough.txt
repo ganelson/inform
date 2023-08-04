@@ -1,3 +1,6 @@
+Test: NestedRepeatThrough
+For: Z-Machine
+
 The Church is a room.
 
 Table of Combat Order

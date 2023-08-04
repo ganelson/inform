@@ -1,3 +1,5 @@
+Problem: PM_ContainerAdrift
+
 Foo is a room.
 A container is a kind of supporter.
 In the box is a wombat. The box is in Foo.

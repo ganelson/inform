@@ -1,3 +1,6 @@
+Test: Chapter11
+For: Z-Machine
+
 "Chapter 11: The Midas Touch" by Emily Short
 
 Chapter 11

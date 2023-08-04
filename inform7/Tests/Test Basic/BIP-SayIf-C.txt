@@ -1,3 +1,7 @@
+Test: BIP-SayIf-C
+Language: Basic
+For: C
+
 To begin:
 	say "It seems [if 1 is 1]1 is 1[otherwise]1 is not 1[end if].";
 	say "It seems [if 2 is 3]2 is 3[otherwise]2 is not 3[end if].";

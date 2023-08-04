@@ -1,3 +1,6 @@
+Test: NearMidnight
+For: Z-Machine
+
 The fast time rule is listed before the timed events rule in the turn sequence rules.
 The advance time rule is not listed in the turn sequence rules.
 This is the fast time rule:

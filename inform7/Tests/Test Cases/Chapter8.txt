@@ -1,3 +1,6 @@
+Test: Chapter8
+For: Z-Machine
+
 "Chapter 8: Ragnarok" by Emily Short
 
 Chapter 8

@@ -1,3 +1,6 @@
+Test: InheritedDescribed
+For: Z-Machine
+
 A flowerpot is a kind of thing. Understand "pot" as a flowerpot.
 
 A flowerpot can be unbroken or broken. A flowerpot is usually unbroken.

@@ -1,3 +1,6 @@
+Problem: PM_NestedUSubstitution
+For: Z-Machine
+
 To say ¶: say line break.
 
 When play begins, say "NEW YORK. 1832.[¶]I had just..."

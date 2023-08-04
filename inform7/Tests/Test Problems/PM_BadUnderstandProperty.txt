@@ -1,3 +1,5 @@
+Problem: PM_BadUnderstandProperty
+
 The Gram-Schmidt Memorial is a room. The statue is in the Memorial.
 
 Understand the transparent property as leading to blatant impropriety.

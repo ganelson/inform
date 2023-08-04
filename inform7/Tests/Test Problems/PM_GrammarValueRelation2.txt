@@ -1,3 +1,5 @@
+Problem: PM_GrammarValueRelation2
+
 Temperature is a kind of value. The temperatures are hot and cold.
 
 A thing has a temperature. 

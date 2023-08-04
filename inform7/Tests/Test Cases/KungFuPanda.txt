@@ -1,3 +1,6 @@
+Test: KungFuPanda
+For: Z-Machine
+
 [From the pen of Mike Gentry. The interesting point is "add Panda at entry
 6 in the Furious Five, if absent.]
 

@@ -1,3 +1,7 @@
+Test: Audiovisual
+TestReleaseMetadata: Yes
+For: Glulx
+
 The Release Zone is a room.
 
 Release along with cover art.

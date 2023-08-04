@@ -1,3 +1,5 @@
+Problem: PM_FigureWhiteSpace
+
 There is room.
 
 Figure null is the file "".

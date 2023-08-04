@@ -1,3 +1,5 @@
+Problem: PM_DefaultNamedOutcomeTwice
+
 Xanadu is a room.
 
 The cavern measuring rules are a rulebook.

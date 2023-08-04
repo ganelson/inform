@@ -1,3 +1,5 @@
+Problem: PM_PropertyType
+
 The Shore is a room. The seashell is in a bag. The bag is in the Shore.
 
 The carrying capacity of the bag is "roomy".

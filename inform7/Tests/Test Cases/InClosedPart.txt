@@ -1,3 +1,6 @@
+Test: InClosedPart
+For: Z-Machine
+
 The Garden is a room.
  
 A fruit dispenser is here.

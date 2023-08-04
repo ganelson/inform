@@ -1,2 +1,4 @@
+Problem: PM_KindsCircular2
+
 Blor is a kind.
 Blor is a kind of blor.

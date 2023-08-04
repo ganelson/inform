@@ -1,3 +1,5 @@
+Problem: PM_UnderstandAsActivity
+
 The Meaningless Room is a room.
 
 Thinking about something is an activity.

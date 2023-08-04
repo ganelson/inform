@@ -1,3 +1,6 @@
+Test: ExistentialCalling
+For: Z-Machine
+
 There is a room.
 There is a nothing based rulebook called [in] response to foo.
 There is a nothing based rulebook called in xresponse to foo.

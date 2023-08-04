@@ -1,3 +1,6 @@
+Test: FailedCallings
+For: Z-Machine
+
 There is a room. The rock is here.
 
 When play begins:

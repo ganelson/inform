@@ -1,1 +1,3 @@
+Problem: PM_KindOfExotica
+
 A trumpet is a kind of activity.

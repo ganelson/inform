@@ -1,3 +1,5 @@
+Problem: PM_ThingReferringProperty
+
 Lab is a room.
 
 A marker is a kind of thing. A marker has a thing called the markee.

@@ -1,3 +1,5 @@
+Problem: PM_AdjDomainTopic
+
 Someplace is a room.
 
 A key, a book, and a golden apple are in Someplace. The apple is edible.

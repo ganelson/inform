@@ -1,3 +1,7 @@
+Test: BIP-Apply-G
+Language: Basic
+For: Glulx
+
 To decide what number is double (N - a number) (this is doubling):
 	decide on N plus N.
 

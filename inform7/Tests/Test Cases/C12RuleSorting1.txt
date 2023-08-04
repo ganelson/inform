@@ -1,3 +1,6 @@
+Test: C12RuleSorting1
+For: Z-Machine
+
 [Adapted from the bug report "The order of things" by Lucian Smith.]
 
 Testing Room is a room. An apple and an orange are in the testing room. 

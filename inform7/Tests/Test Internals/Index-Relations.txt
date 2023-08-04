@@ -1,3 +1,6 @@
+Test: Index-Relations
+TestCompilerInternals: Yes
+
 Home is a room.
 
 Guidance relates one person to various vehicles.

@@ -1,3 +1,6 @@
+Test: FourthRoots-G
+For: Glulx
+
 Foo is a room.
 
 Ullage is a kind of value. 1.0U specifies an ullage.

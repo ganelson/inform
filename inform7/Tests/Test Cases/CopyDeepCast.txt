@@ -1,3 +1,6 @@
+Test: CopyDeepCast
+For: Z-Machine
+
 [To check that lists of texts can be copied with deep casting to lists of
 texts.]
 

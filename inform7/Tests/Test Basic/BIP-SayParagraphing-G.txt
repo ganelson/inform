@@ -1,3 +1,7 @@
+Test: BIP-SayParagraphing-G
+Language: Basic
+For: Glulx
+
 To begin:
 	say "This has a[line break]sudden line break.[line break]";
 	say "There's no skipped line above this one.[no line break]";

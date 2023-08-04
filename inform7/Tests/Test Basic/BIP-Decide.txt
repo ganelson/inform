@@ -1,3 +1,7 @@
+Test: BIP-Decide
+Language: Basic
+For: Z-Machine
+
 To decide which number is the magic number:
 	decide on 417.
 

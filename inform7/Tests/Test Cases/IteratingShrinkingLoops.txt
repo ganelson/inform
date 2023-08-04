@@ -1,3 +1,6 @@
+Test: IteratingShrinkingLoops
+For: Z-Machine
+
 Lab is a room.
 
 LN1 is a list of numbers that varies. LN1 is {1, 2, 3, 4}.

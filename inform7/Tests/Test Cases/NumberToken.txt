@@ -1,3 +1,6 @@
+Test: NumberToken
+For: Z-Machine
+
 "Ah, Spring"
 
 Ranking it as is an action applying to one visible thing and one number.

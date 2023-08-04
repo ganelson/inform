@@ -1,3 +1,6 @@
+Test: ParsingManyThings-G
+For: Glulx
+
 Porch is a room.
 
 Use maximum things understood at once of at least 200.

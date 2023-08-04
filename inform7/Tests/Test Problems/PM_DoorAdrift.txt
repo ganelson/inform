@@ -1,3 +1,5 @@
+Problem: PM_DoorAdrift
+
 A door is a kind of backdrop.
 The portal is a door.
 The portal is east of Foo and west of Goo.

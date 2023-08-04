@@ -1,3 +1,6 @@
+Test: ComparesBlank
+For: Z-Machine
+
 The Kitchen is a room.
 
 The rock is in the Kitchen. The initial appearance of the rock is "[one of]Surprising rock![or]Familiar 

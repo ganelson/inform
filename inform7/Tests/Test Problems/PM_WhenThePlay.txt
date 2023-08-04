@@ -1,3 +1,5 @@
+Problem: PM_WhenThePlay
+
 Parlour is a room.
 
 When the play begins: say "Hi!"

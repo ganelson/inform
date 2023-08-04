@@ -1,3 +1,6 @@
+Test: Sackcloth
+For: Z-Machine
+
 The Attic is a room. The old blue rucksack is a player's
 holdall. The player is wearing the rucksack.
 

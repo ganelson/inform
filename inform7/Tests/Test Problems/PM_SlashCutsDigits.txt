@@ -1,3 +1,5 @@
+Problem: PM_SlashCutsDigits
+
 Lab is a room.
 
 The camera is in the lab.

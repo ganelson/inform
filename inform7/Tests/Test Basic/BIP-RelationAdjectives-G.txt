@@ -1,3 +1,7 @@
+Test: BIP-RelationAdjectives-G
+Language: Basic
+For: Glulx
+
 Vague connection relates various numbers to various numbers.
 
 Sturdy connection relates one number to various numbers.

@@ -1,3 +1,6 @@
+Test: DelayedRTP
+For: Z-Machine
+
 The Kitchen is a room.
 
 A person has a number called size.

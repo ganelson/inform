@@ -1,3 +1,6 @@
+Test: JeevesTakesAll
+For: Z-Machine
+
 The bedroom is a room.
 Jeeves is a man in the bedroom.
 A persuasion rule for asking Jeeves to try doing something: persuasion succeeds.

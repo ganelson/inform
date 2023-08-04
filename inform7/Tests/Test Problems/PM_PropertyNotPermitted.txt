@@ -1,1 +1,3 @@
+Problem: PM_PropertyNotPermitted
+
 The Taj Mahal is a room. The Taj Mahal is portable.

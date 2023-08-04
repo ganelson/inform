@@ -1,3 +1,6 @@
+Test: ValueBlockProperties
+For: Z-Machine
+
 Laboratory is a room.
 
 Colour is a kind of value. The colours are grey and blue.

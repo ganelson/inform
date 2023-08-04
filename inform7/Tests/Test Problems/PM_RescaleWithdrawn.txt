@@ -1,3 +1,5 @@
+Problem: PM_RescaleWithdrawn
+
 Lab is a room.
 
 To flibble (X - a number): (- {-rescale:X} -).

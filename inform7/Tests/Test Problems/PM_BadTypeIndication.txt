@@ -1,3 +1,5 @@
+Problem: PM_BadTypeIndication
+
 Workshop is a room.
 
 To splodge (lkjh - a lkjhlkhj): say "No."

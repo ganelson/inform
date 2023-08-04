@@ -1,3 +1,6 @@
+Test: IndirectUnderstandKOV
+For: Z-Machine
+
 Home is a room.
 
 A foobar is a kind of value. The foobars are foo and bar.

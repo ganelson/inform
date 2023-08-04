@@ -1,3 +1,6 @@
+Test: UnicodeRange-G
+For: Glulx
+
 The Kitchen is a room.
 
 [U+F6]

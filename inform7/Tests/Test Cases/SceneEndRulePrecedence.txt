@@ -1,3 +1,6 @@
+Test: SceneEndRulePrecedence
+For: Z-Machine
+
 Once Upon a Time is a scene. Once Upon a Time begins when play begins. Once Upon a Time ends musically 
 when waving. Once Upon a Time ends bouncily when jumping.
 

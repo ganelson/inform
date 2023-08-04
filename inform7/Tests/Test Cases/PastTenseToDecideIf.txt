@@ -1,3 +1,6 @@
+Test: PastTenseToDecideIf
+For: Z-Machine
+
 Room1 is a room.
 
 Room2 is east of room1.

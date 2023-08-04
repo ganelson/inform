@@ -1,3 +1,6 @@
+Test: RealComparisons-G
+For: Glulx
+
 Math lab is a room. "Let's consider some numbers." The player is here.
 
 When play begins:

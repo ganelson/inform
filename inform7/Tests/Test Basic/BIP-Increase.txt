@@ -1,3 +1,7 @@
+Test: BIP-Increase
+Language: Basic
+For: Z-Machine
+
 The target is a number that varies. The target is 1000.
 
 A fruit is a kind of object.

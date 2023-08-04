@@ -1,3 +1,6 @@
+Test: DeclareMultipleProperties
+For: Z-Machine
+
 A tennis court is a kind of room. A tennis court has numbers called length and
 width.
 

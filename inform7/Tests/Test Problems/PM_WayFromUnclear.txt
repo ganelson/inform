@@ -1,3 +1,5 @@
+Problem: PM_WayFromUnclear
+
 Foo is a room.
 A blob is a kind of thing.
 Goo is south.

@@ -1,3 +1,6 @@
+Test: DefaultValues
+For: Z-Machine
+
 The Brahms Conservatoire is a room.
 
 Colour is a kind of value. The colours are red, indigo and chartreuse.

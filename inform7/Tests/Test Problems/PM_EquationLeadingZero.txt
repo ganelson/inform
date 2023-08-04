@@ -1,3 +1,5 @@
+Problem: PM_EquationLeadingZero
+
 Laboratory is a room.
 
 When play begins:

@@ -1,3 +1,7 @@
+Test: BIP-Bases-G
+Language: Basic
+For: Glulx
+
 To begin:
 	repeat with N running through { 7, 100, 16339, 2147483647, -2147483648, 0, -1, -36 }:
 		test N.

@@ -1,3 +1,6 @@
+Test: TablePrepositions
+For: Z-Machine
+
 The Plateau is a room.
 
 Table of Fish

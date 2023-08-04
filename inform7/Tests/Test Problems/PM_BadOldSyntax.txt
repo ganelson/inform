@@ -1,3 +1,5 @@
+Problem: PM_BadOldSyntax
+
 There is a room.
 
 When play begins:

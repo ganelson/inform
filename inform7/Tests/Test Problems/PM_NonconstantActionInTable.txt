@@ -1,3 +1,5 @@
+Problem: PM_NonconstantActionInTable
+
 The Kitchen is a room.
 
 The desk is in the Kitchen.

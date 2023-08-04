@@ -1,3 +1,5 @@
+Problem: PM_AssemblyLoop
+
 "Loop"
 
 The bar is a room. Bob is a man in the bar.

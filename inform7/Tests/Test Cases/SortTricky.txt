@@ -1,3 +1,6 @@
+Test: SortTricky
+For: Z-Machine
+
 Test is a room. Peter and Jane are people in Test. Peter has carrying capacity
 20. Jane has carrying capacity 10.
 

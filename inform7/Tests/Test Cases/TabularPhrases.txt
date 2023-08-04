@@ -1,3 +1,6 @@
+Test: TabularPhrases
+For: Z-Machine
+
 Foo is a room.
 
 To grub (this is grubbing): say "Grubbing."

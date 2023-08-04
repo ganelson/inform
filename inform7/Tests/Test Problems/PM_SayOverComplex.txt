@@ -1,3 +1,5 @@
+Problem: PM_SayOverComplex
+
 Foo is a room.
 When play begins:
 	say "[first time][first time][first time][first time][first time][first time][first time][first 

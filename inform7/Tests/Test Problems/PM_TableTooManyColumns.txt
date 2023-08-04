@@ -1,3 +1,5 @@
+Problem: PM_TableTooManyColumns
+
 The Admiralty is a room.
 
 Table of Ships

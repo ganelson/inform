@@ -1,3 +1,5 @@
+Problem: PM_ReturnKindVague
+
 There is a room.
 To decide which value is froggg: (- 0 -).
 

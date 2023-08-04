@@ -1,3 +1,6 @@
+Test: C12RuleSorting3
+For: Z-Machine
+
 The Kitchen is a room.
 
 Foo is a number that varies. Bar is a number that varies. Foo is 1. Bar is 2.

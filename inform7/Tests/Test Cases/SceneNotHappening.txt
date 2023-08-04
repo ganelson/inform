@@ -1,3 +1,6 @@
+Test: SceneNotHappening
+For: Z-Machine
+
 Street is a room. "There is a nasty looking bar east of here." Bar is
 east of Street.
 

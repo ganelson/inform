@@ -1,4 +1,4 @@
--possible-examples			[Exemplary] '$$project/Documentation/Examples'
--possible-annotated-cases	[Exemplary] '$$project/Documentation/Tests'
+-possible-examples			[Main:WORKSPACE=$$workspace] '$$project/Documentation/Examples'
+-possible-annotated-cases	[Main:WORKSPACE=$$workspace] '$$project/Documentation/Tests'
 
--recipe [Exemplary] '$$internal/Delia/Exemplary.delia'
+-recipe [Main] '$$internal/Delia/Main.delia'

@@ -1,3 +1,6 @@
+Problem: PM_TooManyLocals
+For: Z-Machine
+
 Burrow is a room.
 
 To use gratuitous locals with (A - number) and (B - text):

@@ -1,3 +1,5 @@
+Problem: PM_MultipleMultiples
+
 The lab is a room. The jar and the bottle are containers in the lab. The player carries a pebble 
 and a feather. 
 

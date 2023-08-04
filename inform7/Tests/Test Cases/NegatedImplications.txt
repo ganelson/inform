@@ -1,3 +1,6 @@
+Test: NegatedImplications
+For: Z-Machine
+
 Foo is a room.
 
 "Zog is edible: [whether or not Zog is edible]. Zoog is edible: [whether or not Zoog is edible]. Oog is marbled: [whether or not Oog is marbled]. Ooog is marbled: [whether or not Ooog is marbled]."

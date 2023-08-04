@@ -1,3 +1,5 @@
+Problem: PM_InlineExtremal
+
 Inline Arena is a room.
 
 To go awry: (-

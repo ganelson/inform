@@ -1,3 +1,5 @@
+Problem: PM_DuplicateVerbs1
+
 Frobonia is a room.
 
 Frobbing relates one person to various things.

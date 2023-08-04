@@ -1,3 +1,5 @@
+Problem: PM_BadImplicationDomain
+
 Color is a kind of value. The colors are red, white, and blue.
 Definition: A thing is colored if it provides the property color.
 Definition: A thing is uncolored if it is not colored.

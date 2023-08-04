@@ -1,3 +1,5 @@
+Problem: PM_BadRulePlacementNegation
+
 Home is a room.
 
 This is the splodge rule: say "Splodge."

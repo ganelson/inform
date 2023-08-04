@@ -1,3 +1,5 @@
+Problem: PM_IllFounded
+
 Escheresque is a room. OA and OB are things.
 
 A red thing is part of OA. A blue thing is part of OB.

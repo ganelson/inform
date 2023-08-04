@@ -1,3 +1,6 @@
+Test: DefinitionDomainRace
+For: Z-Machine
+
 Test is a room.
 
 A vessel is a kind of thing. A vessel can be full or empty.

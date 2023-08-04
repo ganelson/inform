@@ -1,3 +1,6 @@
+Test: SortListByBlockProperty
+For: Z-Machine
+
 Test is a room.
 
 A thing has an text called the of-type. The of-type of a thing is usually "standard".

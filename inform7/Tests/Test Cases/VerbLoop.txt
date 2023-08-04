@@ -1,3 +1,6 @@
+Test: VerbLoop
+For: Z-Machine
+
 Foo is a room. The ball is in Foo. The bar is in Foo.
 
 Describing relates various verbs to various action names. The verb to describe means the describing relation.

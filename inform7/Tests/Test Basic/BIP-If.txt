@@ -1,3 +1,7 @@
+Test: BIP-If
+Language: Basic
+For: Z-Machine
+
 To check (V - a number):
 	if V is:
 		-- 1:

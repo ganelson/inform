@@ -1,3 +1,6 @@
+Test: ExoticActivities
+For: Z-Machine
+
 The Activision is a room.
 
 Stringing out something is an activity on numbers.

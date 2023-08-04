@@ -1,3 +1,6 @@
+Test: RelationsAsValues2
+For: Z-Machine
+
 There is a room. The umbrella is here. The raincoat is here. A woman called Susie is here.
 
 The gadget is a relation of things to things that varies.

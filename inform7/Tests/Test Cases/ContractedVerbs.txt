@@ -1,3 +1,6 @@
+Test: ContractedVerbs
+For: Z-Machine
+
 To stand is a verb.
 
 The Taj Mahal is a room. "[We] [stand] to admire the Taj Mahal."

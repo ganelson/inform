@@ -1,3 +1,5 @@
+Problem: PM_TestCommandTooLong
+
 Lab is a room.
 
 Test me with "i/z/take inventory/take inventory/take inventory/take

@@ -1,3 +1,5 @@
+Problem: PM_LineSpeakerNonObject
+
 Elsinore is a room. Horatio and Marcellus are here.
 
 Section 1 - Meeting (dialogue)

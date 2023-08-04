@@ -1,3 +1,6 @@
+Test: RuleInsteadMoves
+For: Z-Machine
+
 [To check that replacing rule X by rule Y when both are in the same rulebook
 moves rather than copies X.]
 

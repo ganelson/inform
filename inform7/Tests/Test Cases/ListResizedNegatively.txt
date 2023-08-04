@@ -1,3 +1,6 @@
+Test: ListResizedNegatively
+For: Z-Machine
+
 Foo is a room.
 When play begins:
 	let L be {1};

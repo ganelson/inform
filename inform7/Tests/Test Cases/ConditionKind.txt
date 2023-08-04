@@ -1,3 +1,6 @@
+Test: ConditionKind
+For: Z-Machine
+
 Stage is a room.
 
 A beat is a kind of thing.  A beat can be insistent, dogged, or

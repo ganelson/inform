@@ -1,0 +1,6 @@
+Test: HelloWorld-C
+Language: Basic
+For: C
+
+To begin:
+	say "Hello world."

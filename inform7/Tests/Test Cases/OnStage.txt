@@ -1,3 +1,6 @@
+Test: OnStage
+For: Z-Machine
+
 Stage is a room. A meteor, a stone, and a long glass of sherbet are in Stage. 
 
 Instead of waiting:

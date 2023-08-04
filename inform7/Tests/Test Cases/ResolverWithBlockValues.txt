@@ -1,3 +1,6 @@
+Test: ResolverWithBlockValues
+For: Z-Machine
+
 Home is a room.
 
 To announce (msg - text) to (target - a person):

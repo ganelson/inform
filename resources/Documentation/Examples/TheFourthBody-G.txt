@@ -4,6 +4,7 @@ RecipeLocation: Reading Matter
 Index: WRITE text IN command that will store text
 Description: Notebooks in which the player can record assorted notes throughout play.
 For: Glulx
+ExternalFiles: notebook.glkdata barbara.glkdata
 
 Some mystery games supply the player with an in-game system for taking notes, in case they don't want to rely on scraps of paper next to the computer. One way of doing this is to write out all the player's notes and observations into a notebook file, whose contents can be retrieved during play (or, indeed, after it).
 

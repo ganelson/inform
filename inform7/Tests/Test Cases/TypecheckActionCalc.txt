@@ -1,3 +1,6 @@
+Test: TypecheckActionCalc
+For: Z-Machine
+
 Home is a room.
 
 Hanging around until is an action applying to one time.

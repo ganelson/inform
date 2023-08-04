@@ -1,3 +1,6 @@
+Test: TwoFormActions
+For: Z-Machine
+
 [This is actually a test of how the block tying rule in the Standard Rules
 is applied, and in general of how ambiguities between one and two object
 versions of otherwise similarly named actions are handled. The source text

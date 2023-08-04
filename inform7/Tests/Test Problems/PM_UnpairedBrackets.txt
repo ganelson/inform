@@ -1,3 +1,5 @@
+Problem: PM_UnpairedBrackets
+
 Laboratory is a room.
 
 When play begins:

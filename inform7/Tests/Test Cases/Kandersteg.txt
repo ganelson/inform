@@ -1,3 +1,6 @@
+Test: Kandersteg
+For: Z-Machine
+
 "Kandersteg"
 
 A man can be stylish or unstylish. Men are usually unstylish.

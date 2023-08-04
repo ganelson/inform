@@ -1,3 +1,6 @@
+Test: IndexedTextReplacement
+For: Z-Machine
+
 [Blob replacement test.]
 
 The Outer Solar System is a room.

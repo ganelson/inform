@@ -1,3 +1,6 @@
+Test: RegExTra
+For: Z-Machine
+
 This is a room.
 
 After reading a command: 

@@ -1,3 +1,6 @@
+Test: SayIfInstead
+For: Z-Machine
+
 The lab is a room.
 
 The bench is a supporter in the lab.

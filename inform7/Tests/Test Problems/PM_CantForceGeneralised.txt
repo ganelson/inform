@@ -1,3 +1,5 @@
+Problem: PM_CantForceGeneralised
+
 Stanford is a room. 25 things are in Stanford.
 
 When play begins:

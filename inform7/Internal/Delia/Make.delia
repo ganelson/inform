@@ -1,0 +1,30 @@
+! This is Make
+
+set: $MAKERSPACE = $PATH/$CASE
+set: $INWEB = ../inweb/Tangled/inweb
+
+set: $LOG = $MAKERSPACE/build_log.txt
+set: $RLOG = $MAKERSPACE/actual_output.txt
+set: $ILOG = $MAKERSPACE/ideal_output.txt
+set: $INWEBOUTPUT = $MAKERSPACE/inweb_output.txt
+
+step: $INWEB -prototype $MAKERSPACE/$CASE.mkscript -makefile $MAKERSPACE/makefile >$INWEBOUTPUT
+or: 'failed to construct a makefile using inweb'
+
+step: make -C $MAKERSPACE -s clean
+or: 'failed to clean example make'
+
+step: make -C $MAKERSPACE >$LOG 2>&1
+or: 'failed to build example make' $LOG
+step: make -C $MAKERSPACE `$$MAKEFLAGS run >$RLOG 2>&1
+or: 'failed to run example make' $RLOG
+
+match text: $RLOG $ILOG
+or: 'made, but produced the wrong output'
+
+show: $RLOG	
+
+step: make -C $MAKERSPACE -s clean
+or: 'failed to clean example make'
+
+pass: 'passed'

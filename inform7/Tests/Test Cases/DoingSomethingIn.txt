@@ -1,3 +1,6 @@
+Test: DoingSomethingIn
+For: Z-Machine
+
 Place is a room.
 
 The radio is here. The radio is a device.

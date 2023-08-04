@@ -1,3 +1,6 @@
+Test: VerbMeaningPropertyOfNonobject
+For: Z-Machine
+
 The Kitchen is a room. 
 
 A material is a kind of value. The materials are metal, ceramic, and polymer.

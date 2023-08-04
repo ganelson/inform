@@ -1,3 +1,6 @@
+Test: Index-Plot
+TestCompilerInternals: Yes
+
 Hypothesis Junction is a room. The Waiting Room is east of Hypothesis Junction.
 
 Arrival is a scene. "There's a flourish of trumpets."

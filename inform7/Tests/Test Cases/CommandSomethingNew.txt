@@ -1,3 +1,6 @@
+Test: CommandSomethingNew
+For: Z-Machine
+
 The Kitchen is a room. "Just a small kitchen."
 
 A candle is here. A match is here. The match is lit.

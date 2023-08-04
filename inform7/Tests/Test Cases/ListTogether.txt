@@ -1,3 +1,6 @@
+Test: ListTogether
+For: Z-Machine
+
 The Kitchen is a room.
 The Dining Room is east of the Kitchen.
 The Living Room is east of the Dining Room.

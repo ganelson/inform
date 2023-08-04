@@ -1,3 +1,5 @@
+Problem: PM_ExistingVarNotFound
+
 Home is a room.
 
 To disregard (act - an existing variable): (- {act}; -).

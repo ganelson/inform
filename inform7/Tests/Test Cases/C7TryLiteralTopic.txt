@@ -1,3 +1,6 @@
+Test: C7TryLiteralTopic
+For: Z-Machine
+
 The Cage is a room.  Bobo the monkey is an animal in the Cage.  A bag
 of bananas is here.
 

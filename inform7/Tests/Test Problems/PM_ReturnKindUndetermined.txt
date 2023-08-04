@@ -1,3 +1,5 @@
+Problem: PM_ReturnKindUndetermined
+
 To decide which K is a random (name of kind of arithmetic value J)
 	between (first value - J) and (second value - J)
 	(documented at ph_randombetween):

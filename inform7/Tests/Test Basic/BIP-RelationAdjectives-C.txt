@@ -1,3 +1,7 @@
+Test: BIP-RelationAdjectives-C
+Language: Basic
+For: C
+
 Vague connection relates various numbers to various numbers.
 
 Sturdy connection relates one number to various numbers.

@@ -1,3 +1,6 @@
+Test: EquationWithRootedDims-G
+For: Glulx
+
 Include Metric Units by Graham Nelson.
 
 Equation - triangle theorem

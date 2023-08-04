@@ -1,3 +1,5 @@
+Problem: PM_ActionNotSpecific
+
 The NI School for Typing is a room.
 
 When play begins:

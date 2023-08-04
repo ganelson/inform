@@ -1,3 +1,6 @@
+Test: EmptyListsContextualised
+For: Z-Machine
+
 The Kitchen is a room.
 The apple is a thing in the Kitchen. The pear is a thing in the Kitchen.
 

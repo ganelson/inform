@@ -1,0 +1,5 @@
+Test: Plain-G
+TestReleaseMetadata: Yes
+For: Glulx
+
+The Release Zone is a room.

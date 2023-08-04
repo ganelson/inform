@@ -1,3 +1,6 @@
+Test: Sqrt
+For: Z-Machine
+
 Numbering is an action applying to one number. Understand "[number]" as numbering.
 
 Report numbering (this is the standard report numbering rule):

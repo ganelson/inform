@@ -1,1 +1,3 @@
+Problem: PM_MultiplyVague
+
 Five rooms are lighted.

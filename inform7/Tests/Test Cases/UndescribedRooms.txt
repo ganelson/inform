@@ -1,3 +1,6 @@
+Test: UndescribedRooms
+For: Z-Machine
+
 The testing room is a room.
 
 When play begins:

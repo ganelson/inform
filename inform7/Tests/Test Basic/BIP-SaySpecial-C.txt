@@ -1,3 +1,7 @@
+Test: BIP-SaySpecial-C
+Language: Basic
+For: C
+
 To begin:
 	say "Well, look [bracket]into these squares[close bracket].";
 	say "This is 'clever', but this is [apostrophe]even more so['].";

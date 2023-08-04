@@ -1,3 +1,6 @@
+Test: StandardValueAdjectives
+For: Z-Machine
+
 Stanford is a room.
 
 Abba Concert is a scene. AC-DC Concert is a recurring scene.

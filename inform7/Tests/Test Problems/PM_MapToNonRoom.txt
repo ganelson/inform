@@ -1,3 +1,6 @@
+Problem: PM_MapToNonRoom
+GenerateIndex: Yes
+
 The Taj Mahal and the Grassy Slope are rooms.
 
 The Cyberman is a device.

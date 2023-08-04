@@ -1,3 +1,5 @@
+Problem: PM_PropertyObj2
+
 The World is a room.
 
 A button is a kind of thing. A button has a text called the label.

@@ -1,3 +1,5 @@
+Problem: PM_TableCantDefineAndAmend
+
 Foo is a room.
 
 A flob is a kind of thing.

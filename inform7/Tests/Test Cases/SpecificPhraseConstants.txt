@@ -1,3 +1,6 @@
+Test: SpecificPhraseConstants
+For: Z-Machine
+
 Home is a room.
 
 To waste time (this is wasting time): do nothing.

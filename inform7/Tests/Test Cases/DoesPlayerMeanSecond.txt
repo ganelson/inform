@@ -1,3 +1,6 @@
+Test: DoesPlayerMeanSecond
+For: Z-Machine
+
 A color is a kind of value. The colors are red and yellow.
 
 A widget is a kind of thing. A widget has a color. Understand the

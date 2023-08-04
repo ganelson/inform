@@ -1,3 +1,7 @@
+Test: BIP-Loops-G
+Language: Basic
+For: Glulx
+
 Colour is a kind of value. The colours are red, orange, yellow, green, blue, indigo, violet.
 
 Table of Neptune's Moons

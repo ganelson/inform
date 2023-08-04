@@ -1,3 +1,6 @@
+Test: ActionVariableMatching
+For: Z-Machine
+
 The Cave is a room.
 
 A large stone is here. "There's a very large stone here, in a small

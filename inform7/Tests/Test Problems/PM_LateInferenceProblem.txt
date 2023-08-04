@@ -1,3 +1,5 @@
+Problem: PM_LateInferenceProblem
+
 There is a room.
 A person has a room called the home.
 The home of yourself is House.

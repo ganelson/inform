@@ -1,3 +1,6 @@
+Test: DefaultBlockPhrases
+For: Z-Machine
+
 Home is a room.
 
 When play begins:

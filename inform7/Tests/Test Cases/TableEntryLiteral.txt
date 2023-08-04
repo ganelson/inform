@@ -1,3 +1,6 @@
+Test: TableEntryLiteral
+For: Z-Machine
+
 [Surprisingly, this tests the reading of the table entry "false" in the
 Standard Rules, which mustn't be confused with the "False Door" below.]
 

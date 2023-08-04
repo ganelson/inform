@@ -1,3 +1,6 @@
+Test: C12RelistingAsFirst
+For: Z-Machine
+
 The Lounge is a room.
 
 The pre-jump rule is listed first in the before rules.

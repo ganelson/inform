@@ -1,3 +1,5 @@
+Problem: PM_VariableContradiction
+
 Test is a room.
 
 The command prompt is "What do you want to do? >".

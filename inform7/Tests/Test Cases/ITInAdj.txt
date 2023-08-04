@@ -1,3 +1,6 @@
+Test: ITInAdj
+For: Z-Machine
+
 Home is a room.
 A pot is a kind of thing. A pot has an text called label.
 Definition: a pot is blank if its label exactly matches the text "".

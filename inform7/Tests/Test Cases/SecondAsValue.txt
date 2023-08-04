@@ -1,3 +1,6 @@
+Test: SecondAsValue
+For: Z-Machine
+
 Shoe Store is a room.
 
 A color is a kind of value. The colors are white, lavender, lilac, light purple, and pale grape.

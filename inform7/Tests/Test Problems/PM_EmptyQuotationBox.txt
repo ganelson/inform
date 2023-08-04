@@ -1,2 +1,4 @@
+Problem: PM_EmptyQuotationBox
+
 Foo is a room.
 When play begins: display the boxed quotation "".

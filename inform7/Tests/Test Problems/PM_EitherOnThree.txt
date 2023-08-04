@@ -1,3 +1,5 @@
+Problem: PM_EitherOnThree
+
 The Ballroom is a room.
 
 A room can be either elongated, round or octagonal.

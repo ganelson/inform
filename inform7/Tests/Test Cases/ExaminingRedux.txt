@@ -1,3 +1,6 @@
+Test: ExaminingRedux
+For: Z-Machine
+
 The Lounge is a room. "Ah, the Lounge! How relaxing."
 
 The comfy green chair is an enterable scenery supporter in the Lounge. The description is "The comfy chair is green."

@@ -1,3 +1,5 @@
+Problem: PM_RuleOutcomeWrongKind
+
 Xanadu is a room.
 
 Splodge is a rulebook producing a number.

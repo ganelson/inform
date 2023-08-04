@@ -1,3 +1,6 @@
+Test: DynamicRelationAsConstant
+For: Z-Machine
+
 [Tests whether dynamically allocated relations can be
 used as constants to initialise variables.]
 

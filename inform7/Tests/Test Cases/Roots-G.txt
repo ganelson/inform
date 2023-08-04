@@ -1,3 +1,6 @@
+Test: Roots-G
+For: Glulx
+
 Length is a kind of value. 1m specifies a length. 1mm specifies a length
 scaled down by 1000. 1cm specifies a length scaled down by 100. 1km
 specifies a length scaled up by 1000.

@@ -1,1 +1,3 @@
+Problem: PM_VariablesEquated
+
 The Church is a roomThe stored actions variable is a truth state that varies.

@@ -1,3 +1,6 @@
+Test: DescriptionMatching
+For: Z-Machine
+
 Home is a room.
 
 To tally (D - a description of things): say "Too lazy to actually

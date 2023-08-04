@@ -1,3 +1,6 @@
+Test: OfPhrases
+For: Z-Machine
+
 Nirvana is a room.
 
 The currently shown picture is a figure-name that varies.

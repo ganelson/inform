@@ -1,2 +1,5 @@
+Problem: PM_MapFromNonroom2
+GenerateIndex: Yes
+
 Foo is a room.
 Zog is east of 0.

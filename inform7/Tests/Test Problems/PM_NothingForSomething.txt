@@ -1,3 +1,5 @@
+Problem: PM_NothingForSomething
+
 Workshop is a room.
 
 To consume (T - thing): say "You eat [T].";

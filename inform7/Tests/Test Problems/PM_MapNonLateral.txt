@@ -1,3 +1,6 @@
+Problem: PM_MapNonLateral
+GenerateIndex: Yes
+
 The Taj Mahal and the Grassy Slope are rooms.
 
 Index map with Grassy Slope mapped outside of Taj Mahal.

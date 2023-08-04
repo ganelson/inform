@@ -1,3 +1,6 @@
+Test: Index-Map-OnePixel
+TestCompilerInternals: Yes
+
 "The One Pixel Affair"
 
 Chateau Bibliotheque is a room.

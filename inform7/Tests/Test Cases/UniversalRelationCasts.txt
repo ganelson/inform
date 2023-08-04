@@ -1,3 +1,6 @@
+Test: UniversalRelationCasts
+For: Z-Machine
+
 Home is a room.
 
 Partnership relates various texts to various texts.

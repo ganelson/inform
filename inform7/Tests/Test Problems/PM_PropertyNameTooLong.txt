@@ -1,3 +1,5 @@
+Problem: PM_PropertyNameTooLong
+
 Foo is a room.
 A room has a thing called 
 Anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti friendship level meter.

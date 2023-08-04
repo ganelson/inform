@@ -1,3 +1,6 @@
+Test: RelationSwitchedKinds
+For: Z-Machine
+
 Institute is a room. Zora is a woman in the institute. Chloe is a woman.
 
 A language is a kind of value. The languages are English, Zubian, and Perplexish. 

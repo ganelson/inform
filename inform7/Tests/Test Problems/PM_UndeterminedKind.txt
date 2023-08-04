@@ -1,3 +1,5 @@
+Problem: PM_UndeterminedKind
+
 There is a room.
 When play begins:
 	showme Foo {{1}} bar {};

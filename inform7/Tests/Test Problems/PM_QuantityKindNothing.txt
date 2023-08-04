@@ -1,3 +1,5 @@
+Problem: PM_QuantityKindNothing
+
 The just-released item is a thing that varies. The just-released item
 is nothing.
 

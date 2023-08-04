@@ -1,3 +1,6 @@
+Test: KVsInExpressions
+For: Z-Machine
+
 Brightness is a kind of value. The brightnesses are guttering, weak, radiant, and blazing.
 Lab is a room. The table lamp is in Lab. The table lamp has a brightness.
 

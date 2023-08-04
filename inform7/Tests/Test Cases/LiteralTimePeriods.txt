@@ -1,3 +1,6 @@
+Test: LiteralTimePeriods
+For: Z-Machine
+
 The arena is a room.
 
 Weird time is a time that varies.

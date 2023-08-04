@@ -1,3 +1,5 @@
+Problem: PM_OtherwiseIfMisplaced
+
 TestRoom is a Room.
 When play begins:
 	If true is true, say "--.";

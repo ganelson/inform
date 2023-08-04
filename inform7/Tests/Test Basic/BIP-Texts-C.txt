@@ -1,3 +1,7 @@
+Test: BIP-Texts-C
+Language: Basic
+For: C
+
 The magic number is a number that varies. The magic number is 1102.
 
 The magic text is a text that varies. The magic text is "N is now [the magic number]."

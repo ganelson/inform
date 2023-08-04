@@ -1,3 +1,6 @@
+Test: Increases
+For: Z-Machine
+
 Table 1
 fish	cat
 "chub"	2

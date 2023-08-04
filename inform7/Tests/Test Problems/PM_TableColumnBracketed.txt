@@ -1,3 +1,5 @@
+Problem: PM_TableColumnBracketed
+
 Mathematical laboratory is a room.
 
 Table of Splodge

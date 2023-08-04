@@ -1,3 +1,5 @@
+Problem: PM_StartsOutsideRooms
+
 The Palace is a room.
 
 The player is on the marble throne.

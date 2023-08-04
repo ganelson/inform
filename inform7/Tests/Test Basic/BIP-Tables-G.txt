@@ -1,3 +1,7 @@
+Test: BIP-Tables-G
+Language: Basic
+For: Glulx
+
 Table of Neptune's Moons
 moon		surface (text)
 "Nereid"	"utterly unknown"

@@ -1,3 +1,5 @@
+Problem: PM_NonPropertyTranslated
+
 Xanadu is a room.
 
 The wholly bogus property is accessible to Inter as "initial".

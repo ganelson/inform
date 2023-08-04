@@ -1,3 +1,6 @@
+Test: ActivityOnRegion
+For: Z-Machine
+
 [The point is to check that activities do not apply the "region implicitly
 means a room in the region" convention which actions do.]
 

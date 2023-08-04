@@ -1,3 +1,6 @@
+Problem: PM_MapPlacementDirection
+GenerateIndex: Yes
+
 Xanadu and Alph are rooms.
 
 Index map with Xanadu mapped Alph of Alph.

@@ -1,3 +1,5 @@
+Problem: PM_BadMatchingSyntax
+
 Xanadu is a room.
 
 The taking action has a number called the parenthetical amount (so there).

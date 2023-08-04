@@ -1,3 +1,6 @@
+Test: C13Chimps
+For: Z-Machine
+
 The Starting Room is a room. "This is the starting room."
 
 A monkey is a kind of thing. A tail is a kind of thing. A tail is part of

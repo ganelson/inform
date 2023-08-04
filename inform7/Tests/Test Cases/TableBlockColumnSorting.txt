@@ -1,3 +1,6 @@
+Test: TableBlockColumnSorting
+For: Z-Machine
+
 The placeholder is a room.
 
 Table of Stuff

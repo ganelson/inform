@@ -1,3 +1,7 @@
+Test: BIP-SayOneOf
+Language: Basic
+For: Z-Machine
+
 To reckon the day:
 	say "This is [one of]Monday[or]Tuesday[or]Wednesday[stopping].";
 

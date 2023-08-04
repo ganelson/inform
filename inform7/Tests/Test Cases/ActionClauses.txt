@@ -1,3 +1,6 @@
+Test: ActionClauses
+For: Z-Machine
+
 Place is a room. Otherwhere is east of Place.
 
 The jumping action has an object called the current place (matched as "at").

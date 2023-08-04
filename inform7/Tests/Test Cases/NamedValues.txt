@@ -1,3 +1,6 @@
+Test: NamedValues
+For: Z-Machine
+
 Dummy is a room.
 
 Trevor carries the fish.

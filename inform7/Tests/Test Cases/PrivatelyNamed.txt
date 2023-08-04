@@ -1,3 +1,6 @@
+Test: PrivatelyNamed
+For: Z-Machine
+
 The Wabe is a room.
 
 The blue peacock and the sundial are in the Wabe.

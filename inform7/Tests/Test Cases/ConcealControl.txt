@@ -1,3 +1,6 @@
+Test: ConcealControl
+For: Z-Machine
+
 The Receptacle Rotunda is a room.
 
 The satchel is a closed openable container.

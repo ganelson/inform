@@ -1,3 +1,6 @@
+Test: Resume
+For: Z-Machine
+
 
 Foo is a room.
 

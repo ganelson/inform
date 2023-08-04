@@ -1,3 +1,7 @@
+Test: BIP-RealAdjectives-G
+Language: Basic
+For: Glulx
+
 To assay (R - a real number):
 	say "Now testing R = [R].";
 	showme whether or not R is positive;

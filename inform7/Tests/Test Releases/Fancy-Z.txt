@@ -1,3 +1,7 @@
+Test: Fancy-Z
+TestReleaseMetadata: Yes
+For: Z-Machine
+
 Pemberley is a room.
 
 The story title is "Mansfield Perk". 

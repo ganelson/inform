@@ -1,3 +1,7 @@
+Test: BIP-SayLists
+Language: Basic
+For: Z-Machine
+
 An apple, a pear and an orange are objects.
 
 To begin:

@@ -1,3 +1,6 @@
+Problem: PM_MapSettingOfUnknown
+GenerateIndex: Yes
+
 The Taj Mahal and the Grassy Slope are rooms.
 
 Index map with room-size of the Temple set to 28.

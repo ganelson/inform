@@ -1,3 +1,5 @@
+Problem: PM_PictureNotTextual
+
 Xanadu is a room.
 
 Figure of Woodlands is the file Entire Game.

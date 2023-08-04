@@ -1,3 +1,5 @@
+Problem: PM_BadRuleConstraint
+
 The Server is a room. Kate is in the Server. Kate wears a pink hat.
 
 The hypnosis fish is in the Server.

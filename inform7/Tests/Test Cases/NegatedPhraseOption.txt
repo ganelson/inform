@@ -1,3 +1,6 @@
+Test: NegatedPhraseOption
+For: Z-Machine
+
 Stage is a room.
 
 To hunt the wumpus, fiendishly:

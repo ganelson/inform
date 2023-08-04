@@ -1,3 +1,6 @@
+Test: RelativeTimes
+For: Z-Machine
+
 Stage is a room.
 
 Understand "wait for [a time period]" as waiting for. Waiting for is an

@@ -1,3 +1,5 @@
+Problem: PM_RoomAdrift
+
 A room is a kind of door.
 
 Foo is a room.

@@ -1,3 +1,6 @@
+Test: Swans
+For: Z-Machine
+
 Home is a room.
 
 A swan is a kind of animal. A swan can be black or white.

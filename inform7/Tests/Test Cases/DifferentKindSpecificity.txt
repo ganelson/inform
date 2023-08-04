@@ -1,3 +1,6 @@
+Test: DifferentKindSpecificity
+For: Z-Machine
+
 Home is a room. Cellar is a room.
 
 A staircase is a kind of door. A staircase is always open and unopenable.

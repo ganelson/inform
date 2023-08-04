@@ -1,3 +1,6 @@
+Test: InheritedStoredActions
+For: Z-Machine
+
 The voting booth is a room. Bill is a person, here. Andy is a person, here.
 
 A person has a stored action called order. The order of a person is

@@ -1,0 +1,6 @@
+Test: HelloWorld-G
+Language: Basic
+For: Glulx
+
+To begin:
+	say "Hello world."

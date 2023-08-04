@@ -1,3 +1,5 @@
+Problem: PM_TableOfExistingKind2
+
 An outcome is a kind of value. Some outcomes are defined by the Table of outcomes.
 		
 Table of Outcomes

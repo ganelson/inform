@@ -1,3 +1,5 @@
+Problem: PM_SayOtherwiseWithoutIf
+
 The Daily Planet Newsroom is a room.
 
 "Typewriters and stuff. [otherwise]At least Clark has gone![end if]"

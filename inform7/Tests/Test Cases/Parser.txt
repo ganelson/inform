@@ -1,3 +1,6 @@
+Test: Parser
+For: Z-Machine
+
 Schloss Parserhof is a room. "Begun by Mad King Ludwig in 1878, this grand foyer was
 projected to be the antechamber to a long series of exotic chambers in which the Austrian
 monarch could have parser antics performed before his eyes. Build on a north-south

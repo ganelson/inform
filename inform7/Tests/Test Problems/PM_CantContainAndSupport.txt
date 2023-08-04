@@ -1,3 +1,5 @@
+Problem: PM_CantContainAndSupport
+
 The Taj Mahal is a room.
 
 On the table is a flower. In the table is a petal.

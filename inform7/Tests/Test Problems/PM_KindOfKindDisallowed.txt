@@ -1,3 +1,5 @@
+Problem: PM_KindOfKindDisallowed
+
 There is a room.
 
 Metametakind is a kind of kind of kind.

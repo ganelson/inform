@@ -1,3 +1,6 @@
+Test: PrintApproxScaled-G
+For: Glulx
+
 [Adapted from a bug report by Dave Chapeskie. The point is that hours are
 scaled by non-power-of-10 amounts, making it impossible to print exact decimal
 expansions in all cases.]

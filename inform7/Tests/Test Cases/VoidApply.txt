@@ -1,3 +1,6 @@
+Test: VoidApply
+For: Z-Machine
+
 Home is a room.
 
 To greet the world (this is greeting): say "Hello world!"

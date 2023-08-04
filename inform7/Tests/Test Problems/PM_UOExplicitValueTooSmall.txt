@@ -1,3 +1,5 @@
+Problem: PM_UOExplicitValueTooSmall
+
 The Viability Chamber is a room.
 
 Use frog count of at least 20 translates as the configuration value FROG_COUNT.

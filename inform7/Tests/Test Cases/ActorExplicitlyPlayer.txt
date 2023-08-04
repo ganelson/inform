@@ -1,3 +1,6 @@
+Test: ActorExplicitlyPlayer
+For: Z-Machine
+
 Over the River is a room. East is Through the Woods.
 
 The horse is an animal in Over the River.

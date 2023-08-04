@@ -1,3 +1,6 @@
+Test: SceneBeginsItself
+For: Z-Machine
+
 Home is a room.
 
 Repetition is a recurring scene. Repetition begins when play begins. Repetition

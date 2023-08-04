@@ -1,2 +1,4 @@
+Problem: PM_ScenesBadDuring
+
 Foo is a room.
 When play begins during three scenes: do nothing.

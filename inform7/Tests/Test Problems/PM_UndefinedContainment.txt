@@ -1,3 +1,5 @@
+Problem: PM_UndefinedContainment
+
 Foo is a room.
 Quog is a room that varies.
 Quog is in the player.

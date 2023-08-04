@@ -1,3 +1,5 @@
+Problem: PM_BadReferringProperty
+
 The Fruit Palace is a room.
 
 A person has a rulebook called the banana rating. Understand the banana

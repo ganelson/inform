@@ -1,3 +1,6 @@
+Test: MeasuringSouthPark
+For: Z-Machine
+
 Schoolyard is a room.
 
 A person has text called the animal type. The animal type of a person is usually "duck".

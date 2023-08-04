@@ -1,3 +1,6 @@
+Test: RulePremissUnderstand
+For: Z-Machine
+
 Place is a room.
  
 Graham is a man in the Place.

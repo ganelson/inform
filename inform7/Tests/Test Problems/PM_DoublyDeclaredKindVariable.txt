@@ -1,3 +1,5 @@
+Problem: PM_DoublyDeclaredKindVariable
+
 Xanadu is a room.
 
 To splodge (X - value of kind K) with (Y - value of kind K): do nothing.

@@ -1,3 +1,5 @@
+Problem: PM_KindIsAction
+
 Dis is a room.
 
 Fieryness is a kind of value.  The fierynesses are unburnt, cinders,

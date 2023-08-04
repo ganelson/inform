@@ -1,3 +1,6 @@
+Test: CapitalisedSnippets
+For: Z-Machine
+
 [The point here is the capital A in Athenians.]
 
 Limbo is a room.  Guy is a man in Limbo. 

@@ -1,3 +1,5 @@
+Problem: PM_NameOfKindIsnt
+
 Foo is a room.
 When play begins:
 	showme default value of 4.

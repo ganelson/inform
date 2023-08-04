@@ -1,3 +1,6 @@
+Test: TableDefinedSAs
+For: Z-Machine
+
 The Mansion is a room. The large boulder is here.
 
 A task is a kind of thing. A task has a stored action called the

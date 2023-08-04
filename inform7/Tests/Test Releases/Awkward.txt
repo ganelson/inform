@@ -1,3 +1,7 @@
+Test: Awkward
+TestReleaseMetadata: Yes
+For: Glulx
+
 "It Is An Awkward & <Difficult> Title But With Élan And Naïveté" by Halldór Ásgrímsson
 
 The Release Zone is a room.

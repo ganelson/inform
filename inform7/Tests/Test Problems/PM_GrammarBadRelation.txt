@@ -1,3 +1,5 @@
+Problem: PM_GrammarBadRelation
+
 Xanadu is a room.
 
 A box is a kind of container. Understand "box of [something related by grobble]"

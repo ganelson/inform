@@ -1,3 +1,5 @@
+Problem: PM_BadFileOwner
+
 Xanadu is a room.
 
 The file of Boundaries (owned by 100) is called "milnor".

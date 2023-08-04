@@ -1,3 +1,6 @@
+Test: HasContained
+For: Z-Machine
+
 Foo is a room.
 
 When play begins:

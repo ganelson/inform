@@ -1,3 +1,5 @@
+Problem: PM_CantCheckListContents
+
 Place is a room.
 
 To floozle (foobar - a list of people):

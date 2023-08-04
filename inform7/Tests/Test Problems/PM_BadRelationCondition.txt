@@ -1,3 +1,5 @@
+Problem: PM_BadRelationCondition
+
 Xanadu is a room.
 
 Contact relates a thing (called X) to a thing (called Y) when X arfle barfly

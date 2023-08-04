@@ -1,3 +1,6 @@
+Test: Index-Behaviour
+TestCompilerInternals: Yes
+
 Home is a room.
 
 Taking something is living dangerously.

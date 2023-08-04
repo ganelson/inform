@@ -1,3 +1,6 @@
+Test: RealNumbers-G
+For: Glulx
+
 Laboratory is a room.
 
 The gamma constant is a real number that varies. The gamma constant is 0.5772156649.

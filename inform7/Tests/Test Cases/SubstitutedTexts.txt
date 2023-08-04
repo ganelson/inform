@@ -1,3 +1,6 @@
+Test: SubstitutedTexts
+For: Z-Machine
+
 The Grange is a room. A green Citroen, a fisherman, a brace of pheasants and
 a topiary duck are here.
 

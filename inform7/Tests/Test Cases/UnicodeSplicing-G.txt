@@ -1,3 +1,6 @@
+Test: UnicodeSplicing-G
+For: Glulx
+
 The Kitchen is a room.
 
 The rock is in the Kitchen. The description is "It's a rock."

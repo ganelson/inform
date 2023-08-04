@@ -1,3 +1,7 @@
+Test: BIP-RegExp-G
+Language: Basic
+For: Glulx
+
 The lower bound is a number that varies. The upper bound is a number that varies.
 
 To begin:

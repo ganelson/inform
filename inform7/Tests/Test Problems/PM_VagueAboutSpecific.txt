@@ -1,3 +1,5 @@
+Problem: PM_VagueAboutSpecific
+
 The Gazebo is a room.
 
 The Gazebo is usually lighted.

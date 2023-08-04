@@ -1,3 +1,6 @@
+Problem: PM_MapHintUnknown
+GenerateIndex: Yes
+
 The Taj Mahal and the Grassy Slope are rooms.
 
 Index map with malice aforethought.

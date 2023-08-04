@@ -1,3 +1,6 @@
+Test: Index-Chart
+TestCompilerInternals: Yes
+
 Home is a room.
 
 A dynasty is a kind of value. The dynasties are Stuart, Hanover, Saxe-Coburg-Gotha

@@ -1,3 +1,5 @@
+Problem: PM_TypeCheckBP2
+
 This Spot is a room.
 
 After reading a command:

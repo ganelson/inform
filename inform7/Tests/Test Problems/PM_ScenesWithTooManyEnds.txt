@@ -1,3 +1,6 @@
+Problem: PM_ScenesWithTooManyEnds
+For: Z-Machine
+
 Danger Zone is a room.
 
 Frogmarch is a scene.

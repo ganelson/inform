@@ -1,3 +1,5 @@
+Problem: PM_UseTextNotTopic
+
 The Starting Location is a room. The player is in the starting location.
 
 Understand "t [a person] about [a topic]" as telling it about.

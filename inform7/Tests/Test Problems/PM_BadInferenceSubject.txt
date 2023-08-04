@@ -1,3 +1,5 @@
+Problem: PM_BadInferenceSubject
+
 Xanadu is a room.
 
 The carrying capacity of 10 is 5.

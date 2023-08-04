@@ -1,3 +1,6 @@
+Test: Obedience-G
+For: Glulx
+
  Use command line echoing.
 
 A hand is a kind of thing. A hand is part of every person.

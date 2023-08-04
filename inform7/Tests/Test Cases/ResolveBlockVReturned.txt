@@ -1,3 +1,6 @@
+Test: ResolveBlockVReturned
+For: Z-Machine
+
 Do is a room.
 
 Re is east of Do and west of Mi. not-E is a region.  Do is in not-E.

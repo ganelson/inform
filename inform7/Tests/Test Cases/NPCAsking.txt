@@ -1,3 +1,6 @@
+Test: NPCAsking
+For: Z-Machine
+
 The Place is a room.
 
 Bob is a man in the place. Sally is a woman in the Place. Rick is a man in the Place.

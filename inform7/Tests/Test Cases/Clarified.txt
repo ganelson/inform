@@ -1,3 +1,6 @@
+Test: Clarified
+For: Z-Machine
+
 "The Clarified Ancients of Mu Mu"
 
 Lab is a room.

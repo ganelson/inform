@@ -1,3 +1,7 @@
+Test: BIP-SayName-C
+Language: Basic
+For: C
+
 The planet Mars is an object.
 The asteroid Ceres is an object.
 

@@ -1,3 +1,5 @@
+Problem: PM_BadKOVForRelationProperty
+
 Xanadu is a room.
 
 Acquaintance relates one person (called the carrying capacity) to various people.

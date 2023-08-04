@@ -1,3 +1,6 @@
+Test: NPCCanSee
+For: Z-Machine
+
 Darkroom is a dark room.
 
 One Hour Photo is south of Darkroom. Robin is here. A cash register is here.

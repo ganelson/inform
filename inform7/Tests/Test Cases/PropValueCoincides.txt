@@ -1,3 +1,6 @@
+Test: PropValueCoincides
+For: Z-Machine
+
 Right here is a room. 
 
 Colour is a kind of value. The colours are red, white, green and blue.

@@ -1,3 +1,6 @@
+Test: NegateWithNow
+For: Z-Machine
+
 "Negate the Unnegateable"
 
 The Town Square is a room. "The only item of interest in this Town Square is the tall, unstable-looking statue [if the statue is upright]at its centre[otherwise]fallen across the cobbles[end if]."

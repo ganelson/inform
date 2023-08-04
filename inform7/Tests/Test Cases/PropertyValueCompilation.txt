@@ -1,3 +1,6 @@
+Test: PropertyValueCompilation
+For: Z-Machine
+
 Home is a room. A signpost is in Home.
 
 The signpost is either slightly crooked, very crooked, or straight.

@@ -1,3 +1,7 @@
+Test: BIP-Enumerations-C
+Language: Basic
+For: C
+
 A fruit is a kind of value. An apple, a pear and an orange are fruits.
 
 To begin:

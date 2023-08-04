@@ -1,3 +1,7 @@
+Test: BIP-RelationAdjectives
+Language: Basic
+For: Z-Machine
+
 Vague connection relates various numbers to various numbers.
 
 Sturdy connection relates one number to various numbers.

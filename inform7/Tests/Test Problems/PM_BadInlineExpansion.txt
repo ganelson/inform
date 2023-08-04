@@ -1,3 +1,5 @@
+Problem: PM_BadInlineExpansion
+
 Xanadu is a room.
 
 To blow up: (- score = {utter drivel}; -).

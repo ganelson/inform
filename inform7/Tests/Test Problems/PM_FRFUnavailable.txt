@@ -1,3 +1,5 @@
+Problem: PM_FRFUnavailable
+
 Home is a room.
 
 Ineptness relates one room to one person with fast route-finding.

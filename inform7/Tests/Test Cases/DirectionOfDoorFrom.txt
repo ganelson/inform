@@ -1,3 +1,6 @@
+Test: DirectionOfDoorFrom
+For: Z-Machine
+
 To decide if (portal - a door) is north-facing:
 	let dir be the direction of portal from location;
 	if dir is north, decide yes;

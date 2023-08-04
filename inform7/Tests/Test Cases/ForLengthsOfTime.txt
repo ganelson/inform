@@ -1,3 +1,6 @@
+Test: ForLengthsOfTime
+For: Z-Machine
+
 Noplace is a room.
 
 A pebble is here.

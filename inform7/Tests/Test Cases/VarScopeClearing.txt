@@ -1,3 +1,6 @@
+Test: VarScopeClearing
+For: Z-Machine
+
 There is a room.
 When play begins:
 	repeat with a counter running from one to two:

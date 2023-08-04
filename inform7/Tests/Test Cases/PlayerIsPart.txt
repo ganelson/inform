@@ -1,3 +1,6 @@
+Test: PlayerIsPart
+For: Z-Machine
+
 The Cave is a room.
 
 The jelly monster is an animal in the cave.

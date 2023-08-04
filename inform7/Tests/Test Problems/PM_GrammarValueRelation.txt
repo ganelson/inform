@@ -1,3 +1,5 @@
+Problem: PM_GrammarValueRelation
+
 Xanadu is a room.
 
 Colour is a kind of value. Mauve and cerise are colours.

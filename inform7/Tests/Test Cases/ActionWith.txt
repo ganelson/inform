@@ -1,3 +1,6 @@
+Test: ActionWith
+For: Z-Machine
+
 The dome is a room.
 
 Agreeing with bong is an action applying to one thing.

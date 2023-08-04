@@ -1,3 +1,6 @@
+Test: MultipleConditions
+For: Z-Machine
+
 A fruit is a kind of thing.
 
 A fruit can be early, summer or late.

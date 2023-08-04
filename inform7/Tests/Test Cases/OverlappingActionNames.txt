@@ -1,3 +1,6 @@
+Test: OverlappingActionNames
+For: Z-Machine
+
 The Parlor is a room. The description is "A sparsely furnished room."
 
 The table is a supporter in the parlor.

@@ -1,3 +1,6 @@
+Test: DivertInferences
+For: Z-Machine
+
 Stage is a room.
 
 The player is a woman called Edna Marsh.

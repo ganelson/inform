@@ -1,3 +1,6 @@
+Test: TableDefinedKOV
+For: Z-Machine
+
 Home is a room. French curves and Dutch cheese are in the Home.
 
 Language is a kind of value.

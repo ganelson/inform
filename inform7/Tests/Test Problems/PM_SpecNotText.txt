@@ -1,3 +1,5 @@
+Problem: PM_SpecNotText
+
 King Solomon's Mine is a room.
 
 Volcano cup size is a kind of value.

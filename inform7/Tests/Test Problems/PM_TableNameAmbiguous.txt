@@ -1,3 +1,5 @@
+Problem: PM_TableNameAmbiguous
+
 The Admiralty is a room.
 
 Table of Six

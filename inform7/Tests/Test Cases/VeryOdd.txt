@@ -1,3 +1,6 @@
+Test: VeryOdd
+For: Z-Machine
+
 Definition: a number is odd if the remainder after dividing it by 2 is 1.
 
 Definition: a number is even if the remainder after dividing it by 2 is 0.

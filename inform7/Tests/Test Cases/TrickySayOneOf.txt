@@ -1,3 +1,6 @@
+Test: TrickySayOneOf
+For: Z-Machine
+
 When play begins, seed the random-number generator with 1234.
 
 Home is a room.

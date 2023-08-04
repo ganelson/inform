@@ -1,2 +1,4 @@
+Problem: PM_TooVagueForVariables
+
 There is a room.
 A kind has a number called x.

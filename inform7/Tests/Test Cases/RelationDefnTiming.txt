@@ -1,3 +1,6 @@
+Test: RelationDefnTiming
+For: Z-Machine
+
 The test is a room. 
 
 Attraction relates various people to various people. The verb to 

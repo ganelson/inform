@@ -1,3 +1,6 @@
+Problem: PM_MapPlacement
+GenerateIndex: Yes
+
 Xanadu is a room.
 
 Index map with Xanadu mapped in pink.

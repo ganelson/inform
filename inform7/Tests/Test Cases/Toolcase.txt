@@ -1,3 +1,6 @@
+Test: Toolcase
+For: Z-Machine
+
 "Toolcase"
 
 The Kitchen is a room. "The kitchen is nice."

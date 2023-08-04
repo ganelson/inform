@@ -1,3 +1,5 @@
+Problem: PM_BadRepeatDomain
+
 Xanadu is a room.
 
 When play begins:

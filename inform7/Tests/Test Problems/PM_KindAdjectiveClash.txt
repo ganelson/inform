@@ -1,1 +1,3 @@
+Problem: PM_KindAdjectiveClash
+
 The Kitchen is a room. A cooker is a kind of thing. A cooker can be a supporter.

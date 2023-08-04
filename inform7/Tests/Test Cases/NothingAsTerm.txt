@@ -1,3 +1,6 @@
+Test: NothingAsTerm
+For: Z-Machine
+
 Home is a room.
 
 The player is carrying a box. In the box is a banana and a peach.

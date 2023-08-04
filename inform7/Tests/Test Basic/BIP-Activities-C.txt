@@ -1,3 +1,7 @@
+Test: BIP-Activities-C
+Language: Basic
+For: C
+
 Commenting on something is an activity on numbers.
 
 Rule for commenting on an even number:

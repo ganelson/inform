@@ -1,3 +1,5 @@
+Problem: PM_RoomMissingDoor
+
 Tomb of Rassilon is a room.  High Council Chamber is a room.  Dark Tower is
 a room.  Transmat is a door.
 

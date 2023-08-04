@@ -1,3 +1,7 @@
+Test: BIP-If-C
+Language: Basic
+For: C
+
 To check (V - a number):
 	if V is:
 		-- 1:

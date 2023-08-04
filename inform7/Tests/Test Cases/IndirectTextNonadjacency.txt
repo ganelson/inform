@@ -1,3 +1,6 @@
+Test: IndirectTextNonadjacency
+For: Z-Machine
+
 Lab is a room.
 The frozzle-text is an indexed text that varies.
 The grunion-list is a list of indexed texts that varies.

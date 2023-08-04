@@ -1,3 +1,6 @@
+Test: AmbiguousValue
+For: Z-Machine
+
 A phonodisk is a kind of thing. A phonodisk has a text called song.
 A subject is a kind of thing.
 

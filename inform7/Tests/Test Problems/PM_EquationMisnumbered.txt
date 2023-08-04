@@ -1,3 +1,5 @@
+Problem: PM_EquationMisnumbered
+
 Laboratory is a room.
 
 Equation X

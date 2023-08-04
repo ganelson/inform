@@ -1,2 +1,5 @@
+Problem: PM_MapToNonobject
+GenerateIndex: Yes
+
 Foo is a room.
 12 is east of Foo.

@@ -1,3 +1,6 @@
+Test: AutomaticPluralSynonyms
+For: Z-Machine
+
 "Automatic Plural Synonyms"
 
 Lab is a room.

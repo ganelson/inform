@@ -1,3 +1,5 @@
+Problem: PM_LPNeedsReal
+
 Lab is a room.
 
 A weight is a kind of value. 10kg specifies a weight.

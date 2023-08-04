@@ -1,3 +1,5 @@
+Problem: PM_CantEquateValues
+
 The Brahms Conservatoire is a room. The Rostrum is a room.
 
 When play begins:

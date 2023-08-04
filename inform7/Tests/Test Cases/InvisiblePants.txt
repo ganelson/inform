@@ -1,3 +1,6 @@
+Test: InvisiblePants
+For: Z-Machine
+
 Foo is a room. "A nice room."
 
 The table is in Foo. "A cool table is here." 

@@ -1,3 +1,7 @@
+Test: BIP-ArithmeticOperations
+Language: Basic
+For: Z-Machine
+
 A fruit is a kind of object.
 
 An apple, a pear and an orange are fruits. A fruit has a number called size.

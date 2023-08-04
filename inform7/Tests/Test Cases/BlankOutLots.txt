@@ -1,3 +1,6 @@
+Test: BlankOutLots
+For: Z-Machine
+
 Splog is a room.
 
 Table 2.1 - Selected Elements

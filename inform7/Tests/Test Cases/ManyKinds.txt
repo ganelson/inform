@@ -1,3 +1,6 @@
+Test: ManyKinds
+For: Z-Machine
+
 The lab is a room.
 
 AAcolor is a kind of value. The AAcolors are AAred, AAwhite and AAblue.

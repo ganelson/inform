@@ -1,3 +1,6 @@
+Test: PropertyOfNonobjectInstance
+For: Z-Machine
+
 The Study is a room.
 
 Eightball is a scene. 

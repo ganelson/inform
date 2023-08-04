@@ -1,3 +1,6 @@
+Test: UniversalConversion
+For: Z-Machine
+
 Foo is a room.
 When play begins:
 	if the provision relation relates 4 to the property lighted, say "huzzah."

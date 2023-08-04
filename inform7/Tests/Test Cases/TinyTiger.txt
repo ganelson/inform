@@ -1,3 +1,6 @@
+Test: TinyTiger
+For: Z-Machine
+
 "Tiny Tiger"
 
 A ball is a kind of thing. A ball has a number called size. The size

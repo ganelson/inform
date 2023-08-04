@@ -1,3 +1,6 @@
+Test: SomeProper
+For: Z-Machine
+
 The kitchen is a room. 
 
 Some tea is in the kitchen.

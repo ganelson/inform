@@ -1,3 +1,5 @@
+Problem: PM_EquationSymbolEqualsKOV
+
 Laboratory is a room.
 
 Equation 2

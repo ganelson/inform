@@ -1,3 +1,5 @@
+Problem: PM_UnderstandAsCompoundText
+
 Endless Expanse is a room.
 
 Understand "burn [something]" as "burn [something preferably held]".

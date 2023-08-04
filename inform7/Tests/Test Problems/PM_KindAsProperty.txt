@@ -1,3 +1,5 @@
+Problem: PM_KindAsProperty
+
 There is a room.
 
 A splurge is a kind of thing.

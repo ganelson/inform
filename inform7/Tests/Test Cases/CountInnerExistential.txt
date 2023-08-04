@@ -1,3 +1,6 @@
+Test: CountInnerExistential
+For: Z-Machine
+
 Foo is a room.
 Blob is a person in Foo.
 When play begins:

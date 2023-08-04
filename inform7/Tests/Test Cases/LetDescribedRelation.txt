@@ -1,3 +1,6 @@
+Test: LetDescribedRelation
+For: Z-Machine
+
 Temple is a room.
 
 When play begins:

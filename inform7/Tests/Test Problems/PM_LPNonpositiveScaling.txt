@@ -1,3 +1,5 @@
+Problem: PM_LPNonpositiveScaling
+
 Foo is a room.
 A weight is a kind of value.
 1 kg specifies a weight.

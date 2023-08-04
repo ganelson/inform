@@ -1,3 +1,7 @@
+Test: BIP-Adjectives-C
+Language: Basic
+For: C
+
 To assay (N - a number):
 	say "Now testing N = [N].";
 	showme whether or not N is positive;

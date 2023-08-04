@@ -1,3 +1,6 @@
+Test: UnicodeTopics-G
+For: Glulx
+
 The Kitchen is a room.
 
 Fred is a person in the Kitchen.

@@ -1,3 +1,6 @@
+Test: Index-Map-Crossfire
+TestCompilerInternals: Yes
+
 "The Crossfire Affair"
 
 Aleph is southwest of Beth. Beth is northwest of Gimel.

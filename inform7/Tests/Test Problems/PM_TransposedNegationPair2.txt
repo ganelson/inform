@@ -1,3 +1,5 @@
+Problem: PM_TransposedNegationPair2
+
 The Lab is a room.
 
 A door can be opaque.

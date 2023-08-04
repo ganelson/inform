@@ -1,3 +1,6 @@
+Test: ListOfStoredActions
+For: Z-Machine
+
 The Brahms Conservatoire is a room. The tuba and the trombone are in the Conservatoire.
 
 The tally is a list of stored actions that varies.

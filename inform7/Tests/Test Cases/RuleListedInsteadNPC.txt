@@ -1,3 +1,6 @@
+Test: RuleListedInsteadNPC
+For: Z-Machine
+
 The Mysterious Void is a room. "Spooky."
 
 Cassie is a woman in the Mysterious Void.

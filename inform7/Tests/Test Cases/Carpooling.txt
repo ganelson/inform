@@ -1,3 +1,6 @@
+Test: Carpooling
+For: Z-Machine
+
 Southwest Corner is a room. Northwest Corner is north of southwest corner.
 
 The truck is a vehicle in Southwest Corner. Bob is a man in truck. The player is in truck.

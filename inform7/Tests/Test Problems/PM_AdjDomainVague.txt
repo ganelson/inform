@@ -1,2 +1,4 @@
+Problem: PM_AdjDomainVague
+
 Foo is a room.
 Definition: a sayable value is green if it is 0.

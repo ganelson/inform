@@ -1,3 +1,6 @@
+Test: TARDIS
+For: Z-Machine
+
 The TARDIS is a room.
 
 When play begins:

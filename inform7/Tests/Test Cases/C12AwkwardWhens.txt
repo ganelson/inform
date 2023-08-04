@@ -1,3 +1,6 @@
+Test: C12AwkwardWhens
+For: Z-Machine
+
 Home is a room. John is a man in Home. James is a man in Home.
 
 Check telling it about when the noun is not John:

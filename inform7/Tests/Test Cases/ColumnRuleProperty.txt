@@ -1,3 +1,6 @@
+Test: ColumnRuleProperty
+For: Z-Machine
+
 A behavior is a kind of value. The behavior are defined by the Table of Behaviors.
 
 Table of Behaviors

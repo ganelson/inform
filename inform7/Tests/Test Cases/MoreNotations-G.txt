@@ -1,3 +1,6 @@
+Test: MoreNotations-G
+For: Glulx
+
 Test me with "test grid / test ph / paint #1_4_20 / test colours / test chess / test stars".
 
 Lab is a room.

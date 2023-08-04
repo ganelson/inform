@@ -1,3 +1,6 @@
+Test: NoSelfobj
+For: Z-Machine
+
 Test me with "bob/privacy/look/bob/south".
 
 Northside is north of Southside. Aaron, Bob, and Charlie

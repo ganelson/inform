@@ -1,3 +1,5 @@
+Problem: PM_PropertyInstance
+
 The Components Palace is a room.
 
 The widget is a thing with printed name a container in the Palace.

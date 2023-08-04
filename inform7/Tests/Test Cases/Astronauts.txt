@@ -1,3 +1,6 @@
+Test: Astronauts
+For: Z-Machine
+
 Moon is a room. A rock is a thing.
 
 An astronaut is a kind of person.

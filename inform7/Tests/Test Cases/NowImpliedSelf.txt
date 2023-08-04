@@ -1,3 +1,6 @@
+Test: NowImpliedSelf
+For: Z-Machine
+
 A testing-entity is a kind of thing. A testing-entity has a number called X1.
 
 The test-object is a testing-entity. The X1 is 12.

@@ -1,3 +1,7 @@
+Test: BIP-EquivalentLPs-C
+Language: Basic
+For: C
+
 Length is a kind of value.
 
 1.0m (in metric units, in m) or 1 meter (in meters, singular) or 1 metre

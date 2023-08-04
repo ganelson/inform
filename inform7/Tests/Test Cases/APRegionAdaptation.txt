@@ -1,3 +1,6 @@
+Test: APRegionAdaptation
+For: Z-Machine
+
 Foo is a region. The Lab is in Foo. The Corridor is south of the Lab.
 
 Barring is an action applying to one visible thing.

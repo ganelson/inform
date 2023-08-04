@@ -1,3 +1,5 @@
+Problem: PM_ScenesDisallowCalled
+
 Eynforme Halt is a room. Train Stop is a scene.
 
 Train Stop begins when a person (called the passenger) is in Eynforme Halt.

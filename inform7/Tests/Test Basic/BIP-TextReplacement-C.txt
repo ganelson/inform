@@ -1,3 +1,7 @@
+Test: BIP-TextReplacement-C
+Language: Basic
+For: C
+
 To begin:
 	showme whether or not "fish" exactly matches the text "FIsH";
 	showme whether or not "fish" exactly matches the text "FIsH", case insensitively;

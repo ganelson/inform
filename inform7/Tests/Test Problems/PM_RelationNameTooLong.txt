@@ -1,2 +1,4 @@
+Problem: PM_RelationNameTooLong
+
 Foo is a room.
 Anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti anti friendship relates various people to various people.

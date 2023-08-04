@@ -1,3 +1,5 @@
+Problem: PM_TypeCheckKind
+
 The Typographium is a room.
 
 When play begins:

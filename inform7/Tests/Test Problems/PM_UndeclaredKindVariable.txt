@@ -1,3 +1,5 @@
+Problem: PM_UndeclaredKindVariable
+
 Xanadu is a room.
 
 To splodge (val - K): do nothing.

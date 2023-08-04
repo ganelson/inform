@@ -1,3 +1,5 @@
+Problem: PM_ObjectIsProperty
+
 The Winter Palace is a room.
 
 The Palace is the description.

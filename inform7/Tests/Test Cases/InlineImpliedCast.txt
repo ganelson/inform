@@ -1,3 +1,6 @@
+Test: InlineImpliedCast
+For: Z-Machine
+
 The Valhalla Antechamber is a room.
 
 When play begins:

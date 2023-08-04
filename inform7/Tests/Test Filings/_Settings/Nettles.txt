@@ -1,1 +1,0 @@
--dataresourcetext '3:inform7/Tests/Test Filings/_internal_files/Nettles.txt'

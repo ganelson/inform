@@ -426,7 +426,7 @@ readmepage:
 diagrams:
 	{copy-diagram file: $(LINGUISTICSTESTWEB)/Tests/Test\ Diagrams/_Results_Ideal/*.txt into: LINGUISTICSWEB}
 	{copy-diagram file: $(LINGUISTICSTESTWEB)/Tests/vocabulary.txt                      into: LINGUISTICSWEB}
-	{copy-diagram file: $(INFORM7WEB)/Tests/Test\ Internals/_Results_Ideal/Refine*.txt  into: ASSERTIONSWEB}
+	{copy-diagram file: $(INFORM7WEB)/Tests/Test\ Internals/Refine--I.txt               into: ASSERTIONSWEB}
 	{copy-diagram file: $(KINDSTESTWEB)/Tests/Test\ Cases/_Results_Ideal/*.txt          into: KINDSWEB}
 	{copy-diagram file: $(CALCULUSTESTWEB)/Tests/Test\ Cases/_Results_Ideal/*.txt       into: CALCULUSWEB}
 	{copy-diagram file: $(INFORM7WEB)/Internal/Pipelines/compile.interpipeline          into: INTERWEB}
@@ -444,7 +444,7 @@ diagrams:
 
 # -----------------------------------------------------------------------------
 # "Diagnostics" are files produced by inform7 to measure its own performance when
-# running in a special mode, as it does when intest runs the test GenerateDiagnostics-G.
+# running in a special mode, as it does when intest runs the test GenerateDiagnostics.
 # We need first to run that test; then the diagnostics files will all be in the
 # $(INFORM7WEB)/Figures directory; but in some cases that is not where we want them, so
 # we need to move those on to their proper homes.
@@ -455,7 +455,7 @@ diagrams:
 
 .PHONY: diagnostics
 diagnostics:
-	$(INTESTX) inform7 GenerateDiagnostics-G
+	$(INTESTX) inform7 GenerateDiagnostics
 	{copy-download file: $(INFORM7WEB)/Figures/excerpts-diagnostics.txt into: INFORM7WEB}
 	rm -f $(INFORM7WEB)/Figures/syntax-diagnostics.txt
 	{copy-download file: $(INFORM7WEB)/Figures/preform-diagnostics.txt  into: INFORM7WEB}

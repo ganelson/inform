@@ -1,3 +1,6 @@
+Test: DescWithGenerics
+For: Z-Machine
+
 Home is a room.
 
 A colour is a kind of value. The colours are red, green, blue,

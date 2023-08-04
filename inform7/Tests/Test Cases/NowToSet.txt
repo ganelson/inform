@@ -1,3 +1,6 @@
+Test: NowToSet
+For: Z-Machine
+
 "Now to Set Torne's Variables"
 
 World is a room. Include predicate calculus workings in the debugging log.

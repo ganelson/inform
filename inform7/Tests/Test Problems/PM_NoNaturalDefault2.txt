@@ -1,3 +1,5 @@
+Problem: PM_NoNaturalDefault2
+
 Xanadu is a room.
 
 When play begins:

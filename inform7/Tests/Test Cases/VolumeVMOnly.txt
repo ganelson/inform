@@ -1,3 +1,6 @@
+Test: VolumeVMOnly
+For: Z-Machine
+
 Home is a room.
 
 Volume 1G (for Glulx only)

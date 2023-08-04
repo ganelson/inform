@@ -1,3 +1,6 @@
+Test: ExoticCreation
+For: Z-Machine
+
 Home is a room.
 
 Scene involvement relates various scenes to various people. The

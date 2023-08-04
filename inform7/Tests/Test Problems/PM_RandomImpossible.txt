@@ -1,3 +1,5 @@
+Problem: PM_RandomImpossible
+
 Xanadu is a room.
 
 Colour is a kind of value. Red, green and pink are colours.

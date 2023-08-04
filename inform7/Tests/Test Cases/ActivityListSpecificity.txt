@@ -1,3 +1,6 @@
+Test: ActivityListSpecificity
+For: Z-Machine
+
 For printing a parser error when the best match is at least the first word:
 	say "I only understood you as far as '[the best match]'. I don't know the word '[first word]'. (foobar is nothing: [foobar].)"
 

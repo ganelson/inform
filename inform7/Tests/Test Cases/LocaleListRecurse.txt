@@ -1,3 +1,6 @@
+Test: LocaleListRecurse
+For: Z-Machine
+
 Mrs Luxor's Home is a room.
 
 The ceramic dog and the carved walrus are on the high shelf. The high shelf

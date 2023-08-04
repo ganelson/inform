@@ -1,3 +1,5 @@
+Problem: PM_AdjDomainDuplicated
+
 Kitchen is a room.
 
 A person called the dog is here.

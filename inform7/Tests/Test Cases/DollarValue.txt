@@ -1,3 +1,6 @@
+Test: DollarValue
+For: Z-Machine
+
 Home is a room.
 
 A bill is a kind of thing.

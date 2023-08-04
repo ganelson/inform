@@ -1,3 +1,5 @@
+Problem: PM_NoSuchResponse
+
 The Temple is a room.
 
 When play begins:

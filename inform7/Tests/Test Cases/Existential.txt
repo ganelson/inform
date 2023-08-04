@@ -1,3 +1,6 @@
+Test: Existential
+For: Z-Machine
+
 Foo is a room.
 
 There is a vehicle.

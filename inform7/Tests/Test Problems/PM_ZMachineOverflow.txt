@@ -1,5 +1,5 @@
-[This throws problems on all some assignments if compiled to Z-machine,
-but everything should pass on Glulx.]
+Problem: PM_ZMachineOverflow
+For: Z-Machine
 
 Home is a room.
 

@@ -1,3 +1,5 @@
+Problem: PM_HeadingInPlaceOfUnknown
+
 The Schoolhouse is a room.
 
 Section of Minimal Grammar (in place of Section SR4/10 - Mythical Stuff in Standard Rules by Graham Nelson)

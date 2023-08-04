@@ -1,3 +1,6 @@
+Test: KindsDefined
+For: Z-Machine
+
 Castle Zenda is a room.
 
 A monster is a kind of person.

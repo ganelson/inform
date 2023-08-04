@@ -1,3 +1,5 @@
+Problem: PM_KindOfInstance
+
 The Mona Lisa is in the Louvre.
 
 A Renaissance portrait is a kind of Mona Lisa.

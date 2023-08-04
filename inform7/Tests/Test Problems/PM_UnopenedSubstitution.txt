@@ -1,3 +1,5 @@
+Problem: PM_UnopenedSubstitution
+
 Include text substitutions in the debugging log.
 
 There is a room.

@@ -1,3 +1,6 @@
+Test: Dimensionless2-G
+For: Glulx
+
 The Debugging Room is a room.
 
 Include Metric Units by Graham Nelson.

@@ -1,3 +1,6 @@
+Test: GuardedRelations
+For: Z-Machine
+
 Testing is a room.
 
 An umbrella is here. A pear is here. The screwdriver is a device.

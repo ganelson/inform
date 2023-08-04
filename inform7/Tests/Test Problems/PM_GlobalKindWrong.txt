@@ -1,3 +1,5 @@
+Problem: PM_GlobalKindWrong
+
 The Place is a room.
 
 Hall is south of the Place.

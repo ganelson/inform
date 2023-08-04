@@ -1,3 +1,7 @@
+Test: BIP-Map
+Language: Basic
+For: Z-Machine
+
 Colour is a kind of value. The colours are red, indigo and chartreuse.
 
 Weight is a kind of value. 5kg specifies a weight.

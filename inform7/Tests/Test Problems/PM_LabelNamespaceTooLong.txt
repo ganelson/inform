@@ -1,3 +1,5 @@
+Problem: PM_LabelNamespaceTooLong
+
 The study is a room.
 
 When play begins:

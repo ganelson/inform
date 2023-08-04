@@ -1,3 +1,6 @@
+Test: CuriousWith
+For: Z-Machine
+
 The Lab is a room.
 
 Object X with the printed name "Object A" is a thing.

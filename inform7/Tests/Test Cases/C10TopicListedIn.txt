@@ -1,3 +1,6 @@
+Test: C10TopicListedIn
+For: Z-Machine
+
 After reading a command:
 	if the player's command is a topic listed in the Table of Test Words  
 	begin;

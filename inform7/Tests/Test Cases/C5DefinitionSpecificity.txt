@@ -1,3 +1,6 @@
+Test: C5DefinitionSpecificity
+For: Z-Machine
+
 Home is a room.
 
 A foobar is a kind of thing.

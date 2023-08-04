@@ -1,3 +1,6 @@
+Test: RelationsAsValues
+For: Z-Machine
+
 The Brahms Conservatoire is a room.
 
 To judge (R - a relation of numbers to numbers):

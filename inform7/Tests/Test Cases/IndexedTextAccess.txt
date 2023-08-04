@@ -1,3 +1,6 @@
+Test: IndexedTextAccess
+For: Z-Machine
+
 [Blob access test.]
 
 The Outer Solar System is a room.

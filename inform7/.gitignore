@@ -29,21 +29,7 @@ problems-module/Woven/
 syntax-module/Woven/
 words-module/Woven/
 
-Tests/Test Basic/_Results_Actual/
-Tests/Test Basic/_C/
-Tests/Test Basic/_Textual/
-Tests/Test Cases/_C/
-Tests/Test Cases/_Textual/
-Tests/Test Cases/_Results_Actual/
-Tests/Test Internals/_Results_Actual/
-Tests/Test Extensions/_Results_Actual/
-Tests/Test Index/_Indices_Actual/Gelix/
-Tests/Test Inter/_Inter_Actual/
-Tests/Test Inter/_Inter_Textual/
-Tests/Test Inter/_Inter_Binary/
-Tests/Test Externals/_Build/
-Tests/Test Externals/_Executables/
-Tests/Test Externals/_Textual/
+Tests/Special Cases/Temp.txt
 Tests/Test Makes/Eg?-C/Eg?
 Tests/Test Makes/Eg?-C/makefile
 Tests/Test Makes/Eg?-C/Eg?-I.[co]
@@ -51,10 +37,6 @@ Tests/Test Makes/Eg?-C/Eg?-C.o
 Tests/Test Makes/Eg?-C/actual_output.txt
 Tests/Test Makes/Eg?-C/build_log.txt
 Tests/Test Makes/Eg?-C/inform7_symbols.h
-Tests/Test Maps/_Maps_Actual/
-Tests/Test Problems/_Results_Actual/
-Tests/Test Filings/_Results_Actual/
-Tests/Documentation/
 
 **/*.interb
 Internal/Inter/Architecture16Kit/*.interb

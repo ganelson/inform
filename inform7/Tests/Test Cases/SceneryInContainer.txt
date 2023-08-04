@@ -1,3 +1,6 @@
+Test: SceneryInContainer
+For: Z-Machine
+
 ArenaNet is a room.
 
 The cubicle is an enterable container in ArenaNet. The swivel chair is an enterable supporter. It is scenery in the cubicle.

@@ -1,3 +1,5 @@
+Problem: PM_BadActivityName
+
 Wabe is a room.
 
 5 is an activity.

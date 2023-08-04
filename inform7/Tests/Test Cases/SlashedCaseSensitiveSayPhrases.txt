@@ -1,3 +1,6 @@
+Test: SlashedCaseSensitiveSayPhrases
+For: Z-Machine
+
 To say that (item - an object): say "that".
 To say That (item - an object): say "That".
 

@@ -1,3 +1,5 @@
+Problem: PM_TableContinuationAddsCols
+
 The Admiralty is a room.
 
 Table of Ships

@@ -1,3 +1,6 @@
+Test: ListingGroupSize
+For: Z-Machine
+
 Ludus is a room.
 
 A Scrabble piece is a kind of thing. The X, the W, the F, the Y and the Z are

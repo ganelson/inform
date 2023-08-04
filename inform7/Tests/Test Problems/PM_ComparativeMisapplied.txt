@@ -1,3 +1,5 @@
+Problem: PM_ComparativeMisapplied
+
 The Typographium is a room.
 
 Weight is a kind of value. 100kg specifies a weight. A thing has a weight.

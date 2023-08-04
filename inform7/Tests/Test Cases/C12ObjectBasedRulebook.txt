@@ -1,3 +1,6 @@
+Test: C12ObjectBasedRulebook
+For: Z-Machine
+
 The Pumping House is a room. A well is a fixed in place container in
 the Pumping House. The cork, the rubber ring and a lead ingot are in
 the Pumping House.

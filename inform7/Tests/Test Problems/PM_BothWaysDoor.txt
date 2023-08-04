@@ -1,3 +1,5 @@
+Problem: PM_BothWaysDoor
+
 South View is a room.
 
 The Drawbridge is north of South View.  It is an open door.  Through

@@ -1,3 +1,6 @@
+Test: TouchyJack
+For: Z-Machine
+
 The Kitchen is a room.
 
 The box is an enterable container. 

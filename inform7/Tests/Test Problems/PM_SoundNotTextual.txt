@@ -1,3 +1,5 @@
+Problem: PM_SoundNotTextual
+
 Xanadu is a room.
 
 Sound of rustling leaves is the file 100.

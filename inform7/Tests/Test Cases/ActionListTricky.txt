@@ -1,3 +1,6 @@
+Test: ActionListTricky
+For: Z-Machine
+
 Frozen in Solid Ice is a room.
 
 Instead of doing something other than waiting or examining or taking

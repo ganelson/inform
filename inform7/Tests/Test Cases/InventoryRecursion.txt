@@ -1,3 +1,6 @@
+Test: InventoryRecursion
+For: Z-Machine
+
 
 "Inventory Recursion"
 

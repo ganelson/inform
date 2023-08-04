@@ -1,3 +1,6 @@
+Test: ChooseObj2
+For: Z-Machine
+
 The dome is a room.
 
 The chap is a man in the dome.

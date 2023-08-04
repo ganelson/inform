@@ -1,3 +1,5 @@
+Problem: PM_RelatedByEquality
+
 Church is a room.
 
 John is in the Church. John is a person.

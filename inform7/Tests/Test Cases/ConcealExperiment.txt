@@ -1,3 +1,6 @@
+Test: ConcealExperiment
+For: Z-Machine
+
 The Receptacle Rotunda is a room.
 
 [to rules-all: (- debug_rules = 2; -)

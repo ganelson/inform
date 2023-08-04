@@ -1,3 +1,6 @@
+Test: PlayerAmbiguity
+For: Z-Machine
+
 There is a room.
 Player Alice is a person.
 Instead of examining the player:

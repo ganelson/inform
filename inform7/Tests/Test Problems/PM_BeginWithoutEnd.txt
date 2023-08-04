@@ -1,3 +1,5 @@
+Problem: PM_BeginWithoutEnd
+
 Burrow is a room.
 
 To trigger an error:

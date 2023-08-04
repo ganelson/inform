@@ -1,3 +1,5 @@
+Problem: PM_SpatialContradiction
+
 There is a room.
 A hairstyle is a kind of thing.
 Every hairstyle incorporates hairspray.

@@ -1,3 +1,5 @@
+Problem: PM_TooManyDuplicates
+
 A Dalmatian is a kind of animal.
 
 101 Dalmatians are in London.

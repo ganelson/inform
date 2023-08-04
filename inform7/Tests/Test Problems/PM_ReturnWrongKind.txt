@@ -1,3 +1,5 @@
+Problem: PM_ReturnWrongKind
+
 The Arena is a room. Bob is a man in the Arena.
 
 To decide what room is spong:

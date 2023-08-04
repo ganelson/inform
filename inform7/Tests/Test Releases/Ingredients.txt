@@ -1,3 +1,7 @@
+Test: Ingredients
+TestReleaseMetadata: Yes
+For: Glulx
+
 The Release Zone is a room.
 
 Release along with the introductory booklet, an introductory postcard, a

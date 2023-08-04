@@ -1,3 +1,6 @@
+Test: BracketPlus
+For: Z-Machine
+
 Laboratory is a room. The bench is here. The isotope is on the bench.
 The sack of pitchblende is here.
 

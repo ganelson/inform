@@ -1,3 +1,7 @@
+Test: BIP-Rules
+Language: Basic
+For: Z-Machine
+
 This is the watching paint dry rule:
 	say "You watch some paint dry.";
 

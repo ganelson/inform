@@ -1,3 +1,5 @@
+Problem: PM_ResponseDuplicated
+
 The Temple is a room.
 
 This is the banana split rule:

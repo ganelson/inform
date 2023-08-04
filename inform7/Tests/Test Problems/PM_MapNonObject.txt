@@ -1,3 +1,6 @@
+Problem: PM_MapNonObject
+GenerateIndex: Yes
+
 The Kitchen is a room. 
 
 The examine supporters rule is north.

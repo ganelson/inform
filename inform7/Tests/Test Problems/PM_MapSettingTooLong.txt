@@ -1,3 +1,6 @@
+Problem: PM_MapSettingTooLong
+GenerateIndex: Yes
+
 The Taj Mahal and the Grassy Slope are rooms.
 
 Index map with EPS file and room-size of the Taj Mahal set to 28 Leagues.

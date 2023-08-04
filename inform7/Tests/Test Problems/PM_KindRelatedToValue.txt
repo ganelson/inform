@@ -1,3 +1,5 @@
+Problem: PM_KindRelatedToValue
+
 Home is a room.
 
 A posture is a kind of value.

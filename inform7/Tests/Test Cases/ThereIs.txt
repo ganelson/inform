@@ -1,3 +1,6 @@
+Test: ThereIs
+For: Z-Machine
+
 The Place is a room. The box and the crate are in the Place. A coin is a
 kind of thing. There is a room called the Shadow World. There is a coin in
 the box. There is a double-bladed axe in the box. There are three coins in

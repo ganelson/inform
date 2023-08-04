@@ -1,3 +1,5 @@
+Problem: PM_PropertyOfKind1
+
 Xanadu is a room.
 
 A kind can be significant or ordinary.

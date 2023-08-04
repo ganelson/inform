@@ -1,3 +1,5 @@
+Problem: PM_AnomalousProperty
+
 That is a room.
 
 A keyword is a kind of value. The keywords are xyzzy, plugh. A keyword can be

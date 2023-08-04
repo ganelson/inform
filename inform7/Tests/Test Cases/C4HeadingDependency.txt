@@ -1,3 +1,6 @@
+Test: C4HeadingDependency
+For: Z-Machine
+
 The Schoolhouse is a room.
 
 Chapter 1 (for use with Locksmith by Emily Short)

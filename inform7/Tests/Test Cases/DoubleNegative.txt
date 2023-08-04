@@ -1,3 +1,6 @@
+Test: DoubleNegative
+For: Z-Machine
+
 Home is a room. Bobbette is a woman in Home.
 
 A hat is a kind of thing. A hat is wearable. Bobbette wears a hat.

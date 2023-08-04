@@ -1,3 +1,6 @@
+Test: NegatedKindDescription
+For: Z-Machine
+
 Kitchen is a room.
 
 A closed openable container called a cupboard is in Kitchen.

@@ -1,3 +1,5 @@
+Problem: PM_NoSuchRuleExists
+
 Burrow is a room.
 
 This is the Wombling rule: do nothing.

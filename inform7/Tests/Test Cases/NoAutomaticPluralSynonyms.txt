@@ -1,3 +1,6 @@
+Test: NoAutomaticPluralSynonyms
+For: Z-Machine
+
 "No Automatic Plural Synonyms"
 
 Use no automatic plural synonyms.

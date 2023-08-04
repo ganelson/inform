@@ -1,3 +1,6 @@
+Test: Chapter17
+For: Z-Machine
+
 "Chapter 17: Vanity" by Emily Short
 
 

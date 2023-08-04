@@ -1,3 +1,6 @@
+Test: FormerYourself
+For: Z-Machine
+
 [A case by Kathleen Fischer. The point here is for the size property to be
 available even to the unseen former player.]
 

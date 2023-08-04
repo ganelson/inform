@@ -1,3 +1,6 @@
+Test: UnderstandTruthState
+For: Z-Machine
+
 Stanford is a room. A status display is here. The status display has a
 truth state called parity. "The sober status display reads '[parity of the
 status display]'."

@@ -1,3 +1,5 @@
+Problem: PM_EquationSymbolMisdeclared
+
 Laboratory is a room.
 
 Equation 2

@@ -1,3 +1,5 @@
+Problem: PM_BadObjectTranslation
+
 Xanadu is a room.
 
 The whatsit object translates into I6 as "whatsit".

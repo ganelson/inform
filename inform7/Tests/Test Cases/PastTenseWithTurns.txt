@@ -1,3 +1,6 @@
+Test: PastTenseWithTurns
+For: Z-Machine
+
 Home is a room.
 
 McWiggy is a man in the Home. A person can be happy or upset. McWiggy is 

@@ -1,3 +1,5 @@
+Problem: PM_TooManyDirections
+
 The Shire is a room.
 
 D1 is a direction.

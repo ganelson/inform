@@ -1,3 +1,6 @@
+Test: NegativeUnitLiterals
+For: Z-Machine
+
 An elevation is a kind of value. -100 cubits specifies an elevation.
 Every room has an elevation.
 

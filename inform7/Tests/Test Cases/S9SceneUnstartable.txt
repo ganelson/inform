@@ -1,3 +1,6 @@
+Test: S9SceneUnstartable
+For: Z-Machine
+
 The dome is a room.
 
 The dog is a thing in the dome.

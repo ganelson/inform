@@ -1,3 +1,5 @@
+Problem: PM_EquationBadArithmetic
+
 Elapsed time is a kind of value. 1s specifies an elapsed time scaled at 100.
 
 Electric current is a kind of value. 1A specifies an electric current. 1mA

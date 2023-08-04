@@ -1,3 +1,6 @@
+Test: C13PluralSpotting
+For: Z-Machine
+
 Wine Cellar is a room.
 
 A barrel is a kind of thing. Understand "cask" as a barrel.

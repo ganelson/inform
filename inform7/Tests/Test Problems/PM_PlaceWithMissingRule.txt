@@ -1,3 +1,5 @@
+Problem: PM_PlaceWithMissingRule
+
 The Empty Room is a room.
 
 This is the foo rule: say "foo".

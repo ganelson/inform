@@ -1,3 +1,6 @@
+Test: ListSetEmpty
+For: Z-Machine
+
 Home is a room.
 
 Foo is a list of text that varies.

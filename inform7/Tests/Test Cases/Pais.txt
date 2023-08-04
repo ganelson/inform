@@ -1,3 +1,6 @@
+Test: Pais
+For: Z-Machine
+
 Sparta is a room. Pais is a man in Sparta. Pais carries a fox. Pais wears
 sandals, a chiton, and a cloak.
 

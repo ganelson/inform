@@ -1,3 +1,6 @@
+Test: OnOffStage
+For: Z-Machine
+
 The Schoolhouse is a room.
 
 The frog and the toad are in the Schoolhouse. The frog is edible.

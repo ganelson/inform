@@ -1,3 +1,6 @@
+Test: Hunger
+For: Z-Machine
+
 Hunger is a room.
 
 The cake is here. The cake is edible.

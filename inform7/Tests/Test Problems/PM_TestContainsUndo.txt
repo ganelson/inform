@@ -1,3 +1,5 @@
+Problem: PM_TestContainsUndo
+
 The Fudge Palace is a room.
 
 Test me with "eat fudge/undo".

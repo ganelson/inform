@@ -1,3 +1,6 @@
+Test: ActorSelf
+For: Z-Machine
+
 The spotlight is a room. Clark is here. Clark is a man.
 
 Instead of doing something while off-stage:

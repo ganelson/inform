@@ -1,3 +1,5 @@
+Problem: PM_CantUseOutsideStructure
+
 Lab is a room.
 
 To frog -- in if: say "Croak."

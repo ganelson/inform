@@ -1,3 +1,6 @@
+Test: Index-Map-Glasgow
+TestCompilerInternals: Yes
+
 "The Glasgow Affair"
 
 Partick is west of Kelvinhall.

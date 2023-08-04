@@ -1,3 +1,6 @@
+Test: DictionaryResolution-C
+For: C
+
 Use dictionary resolution of 12.
 
 The OED Workshop is a room.

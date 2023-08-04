@@ -1,3 +1,5 @@
+Problem: PM_ScenesOnly
+
 Eynforme Halt is a room. Train Stop is a scene.
 
 100 begins when Train Stop begins.

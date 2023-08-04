@@ -1,3 +1,6 @@
+Test: RepeatRunning
+For: Z-Machine
+
 Splog is a room.
 
 Colour is a kind of value. The colours are red, orange, yellow, green, blue, indigo and violet.

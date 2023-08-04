@@ -1,3 +1,6 @@
+Test: ContainmentScanning
+For: Z-Machine
+
 Lab is a room. It contains a box. The box contains a newspaper. The wallchart is scenery in the Lab.
 
 Instead of examining something:

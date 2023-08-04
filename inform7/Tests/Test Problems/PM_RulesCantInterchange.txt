@@ -1,3 +1,5 @@
+Problem: PM_RulesCantInterchange
+
 Foo is a room.
 Quoggle is a number based rulebook.
 Quoggle a number (this is the blob rule): say "number."

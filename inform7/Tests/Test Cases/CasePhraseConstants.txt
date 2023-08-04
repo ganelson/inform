@@ -1,3 +1,6 @@
+Test: CasePhraseConstants
+For: Z-Machine
+
 Home is a room.
 
 To decide which number is (N - a number) squared (this is squaring):

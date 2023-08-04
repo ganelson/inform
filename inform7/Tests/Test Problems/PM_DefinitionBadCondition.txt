@@ -1,3 +1,5 @@
+Problem: PM_DefinitionBadCondition
+
 Xanadu is a room.
 
 Definition: A room is roomy if arfle barfle gloop.

@@ -1,3 +1,6 @@
+Test: FourthRoot-G
+For: Glulx
+
 Foo is a room.
 
 Equation - Stefan-Boltzmann Law

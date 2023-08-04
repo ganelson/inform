@@ -1,3 +1,6 @@
+Test: Chapter12
+For: Z-Machine
+
 Include Locksmith by Emily Short.  
 
 Use command line echoing. Use scoring.

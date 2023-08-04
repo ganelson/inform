@@ -1,3 +1,5 @@
+Problem: PM_UnequalHeadingInPlaceOf
+
 The Schoolhouse is a room.
 
 Chapter of Minimal Grammar (in place of Part Six - Grammar in Standard Rules by Graham Nelson)

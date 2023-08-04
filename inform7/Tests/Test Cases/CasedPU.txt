@@ -1,3 +1,6 @@
+Test: CasedPU
+For: Z-Machine
+
 Room called In Hallway is north of the Foyer.
 
 An apple is in the Foyer. The description of the apple is "Looks yummy."

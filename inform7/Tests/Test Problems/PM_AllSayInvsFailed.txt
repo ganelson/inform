@@ -1,3 +1,5 @@
+Problem: PM_AllSayInvsFailed
+
 White Chamber is a room. Guy is a man in White Chamber.
 
 Understand "hypnotise me" as selfhypnotising. Selfhypnotising is an action

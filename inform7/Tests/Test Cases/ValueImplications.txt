@@ -1,3 +1,6 @@
+Test: ValueImplications
+For: Z-Machine
+
 The Mysterious Void is a room.
 
 Colour is a kind of value.

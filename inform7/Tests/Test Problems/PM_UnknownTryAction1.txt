@@ -1,3 +1,5 @@
+Problem: PM_UnknownTryAction1
+
 Cygnus is a room.
 
 When play begins:

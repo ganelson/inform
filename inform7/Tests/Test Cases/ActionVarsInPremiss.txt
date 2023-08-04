@@ -1,3 +1,6 @@
+Test: ActionVarsInPremiss
+For: Z-Machine
+
 The Mysterious Void is a room. The frog is in the Void.
 
 Trevor is a man in the Void. Persuasion rule: persuasion succeeds.

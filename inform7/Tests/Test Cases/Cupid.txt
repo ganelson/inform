@@ -1,3 +1,6 @@
+Test: Cupid
+For: Z-Machine
+
 The Temple of Cupid is a room.
 
 A woman has an list of texts called the gift list. The gift list of a woman is usually { "chocolates", "flowers" }.

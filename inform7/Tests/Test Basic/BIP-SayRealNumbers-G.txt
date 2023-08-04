@@ -1,3 +1,7 @@
+Test: BIP-SayRealNumbers-G
+Language: Basic
+For: Glulx
+
 To begin:
 	say "Consider: [pi to 4 decimal places].";
 	say "Consider: [312 in decimal notation].";

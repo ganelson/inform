@@ -1,3 +1,5 @@
+Problem: PM_UnexpectedSemicolon
+
 Countertop is a room.
 		
 Refrigtop is a room; "f";

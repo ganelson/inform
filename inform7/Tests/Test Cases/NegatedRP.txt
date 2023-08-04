@@ -1,3 +1,6 @@
+Test: NegatedRP
+For: Z-Machine
+
 A box is a kind of container which is closed and openable.
 A sealed box is a kind of box which is not openable.
 The Start is a room. "Here are [list of things which are not closed]."

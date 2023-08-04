@@ -1,3 +1,6 @@
+Test: Sym1to1
+For: Z-Machine
+
 The Mysterious Void is a room.
 
 Colour is a kind of value. The colours are red, blue and green.

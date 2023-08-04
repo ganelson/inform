@@ -1,3 +1,6 @@
+Test: UnderstandPname
+For: Z-Machine
+
 Home is a room.
 
 The box is a container which is carried by the player.

@@ -1,3 +1,5 @@
+Problem: PM_DuplicateColumnName
+
 Foo is a room.
 
 Table 1

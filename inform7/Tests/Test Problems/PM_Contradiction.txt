@@ -1,3 +1,5 @@
+Problem: PM_Contradiction
+
 The Ballroom is a room.
 
 The Ballroom is east of the Hall.

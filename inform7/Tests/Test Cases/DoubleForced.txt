@@ -1,3 +1,6 @@
+Test: DoubleForced
+For: Z-Machine
+
 Trail Shelter is a room. Fred and George are men in Trail Shelter. The
 possum, the skunk and the weasel are animals. Dixville Notch is north of
 the Shelter. Earl is a man in Dixville Notch.

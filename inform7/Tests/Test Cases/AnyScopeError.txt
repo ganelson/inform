@@ -1,3 +1,6 @@
+Test: AnyScopeError
+For: Z-Machine
+
 Home is a room.
 
 Understand "bug [any thing]" as examining.

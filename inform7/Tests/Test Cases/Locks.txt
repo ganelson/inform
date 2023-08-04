@@ -1,3 +1,6 @@
+Test: Locks
+For: Z-Machine
+
 "Locks" by Emily Short
 
 

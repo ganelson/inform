@@ -1,3 +1,5 @@
+Problem: PM_SolvedNameless
+
 Xanadu is a room.
 
 Equation 1

@@ -1,3 +1,5 @@
+Problem: PM_BadRulePreamble
+
 Home is a room.
 
 Arfle barfle gloop: say "Yes."

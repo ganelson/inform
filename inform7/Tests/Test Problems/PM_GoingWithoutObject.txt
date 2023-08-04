@@ -1,3 +1,5 @@
+Problem: PM_GoingWithoutObject
+
 Xanadu is a room.
 
 Before going to 10, say "Stop!"

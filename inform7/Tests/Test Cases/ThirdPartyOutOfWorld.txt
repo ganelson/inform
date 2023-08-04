@@ -1,3 +1,6 @@
+Test: ThirdPartyOutOfWorld
+For: Z-Machine
+
 Instead of an actor waiting:
 	try requesting the pronoun meanings;
 	try the actor saying yes;

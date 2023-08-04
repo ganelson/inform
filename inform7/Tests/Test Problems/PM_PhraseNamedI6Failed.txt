@@ -1,3 +1,5 @@
+Problem: PM_PhraseNamedI6Failed
+
 Foo is a room.
 To rhomb (this is the foo function): (- ; -).
 Every turn: apply the foo function.

@@ -1,3 +1,5 @@
+Problem: PM_XofYRelated
+
 The Winter Palace and the Hills are rooms.
 
 The description of the Winter Palace is east of the Hills.

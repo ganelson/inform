@@ -1,3 +1,7 @@
+Test: BIP-SayName-G
+Language: Basic
+For: Glulx
+
 The planet Mars is an object.
 The asteroid Ceres is an object.
 

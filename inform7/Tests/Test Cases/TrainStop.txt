@@ -1,3 +1,6 @@
+Test: TrainStop
+For: Z-Machine
+
 Station is a room.
 Train Stop is a scene.
 Flying Scotsman is a thing.

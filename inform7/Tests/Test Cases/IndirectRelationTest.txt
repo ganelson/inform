@@ -1,3 +1,6 @@
+Test: IndirectRelationTest
+For: Z-Machine
+
 Home is a room.
 
 A fruit bowl and a plinth are in Home. An apple is in the fruit bowl. An orange is on the plinth.

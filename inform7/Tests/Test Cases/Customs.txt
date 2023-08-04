@@ -1,3 +1,6 @@
+Test: Customs
+For: Z-Machine
+
 "Customs"
 
 Assaying is an action applying to one carried thing. Understand "assay

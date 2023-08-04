@@ -1,3 +1,5 @@
+Problem: PM_InaccessibleVariable
+
 spot is room.
 
 Include (- Global foobar; -) after "Definitions.i6t".

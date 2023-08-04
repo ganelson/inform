@@ -1,3 +1,5 @@
+Problem: PM_KindAsActualValue
+
 This is a room.
 
 A persuasion is a kind of value.

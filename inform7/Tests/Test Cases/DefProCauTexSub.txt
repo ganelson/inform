@@ -1,3 +1,6 @@
+Test: DefProCauTexSub
+For: Z-Machine
+
 [Tests whether a deferred proposition can create a new text substitution.]
 
 The Kitchen is a room.

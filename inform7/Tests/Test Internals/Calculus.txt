@@ -1,3 +1,6 @@
+Test: Calculus
+TestCompilerInternals: Yes
+
 Laboratory is a room. Peter and Jane are in the laboratory. The box is a
 container. A coin is a kind of thing. Two coins are in the box. A marble is
 in the box. Missee is an animal in the laboratory.

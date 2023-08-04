@@ -1,3 +1,7 @@
+Test: BIP-Trigonometry-C
+Language: Basic
+For: C
+
 To begin:
 	showme cosine of 2;
 	showme cosine of 2.0;

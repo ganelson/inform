@@ -1,3 +1,6 @@
+Test: ActionPatternParsing
+TestCompilerInternals: Yes
+
 Radiation Laboratory is a room.
 
 A Geiger counter is here. A bench is a supporter in the Laboratory.

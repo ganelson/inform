@@ -1,3 +1,5 @@
+Problem: PM_TypeCheckBP2a
+
 [A little historical plaque: this was test case no. 1000.]
 
 Home is a room.

@@ -1,3 +1,6 @@
+Test: C12RuleSorting5
+For: Z-Machine
+
 The Trampolinium is a room.
 
 Before jumping: say "Before jumping."

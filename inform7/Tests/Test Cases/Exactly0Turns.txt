@@ -1,3 +1,6 @@
+Test: Exactly0Turns
+For: Z-Machine
+
 Stage is a room. A rose is a thing in Stage.
 
 Every turn: say "The rose has been visible for [if rose has been visible for

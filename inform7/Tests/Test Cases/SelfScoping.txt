@@ -1,3 +1,6 @@
+Test: SelfScoping
+For: Z-Machine
+
 Pavilion is a room.
 
 A thing has a text called contained-description.

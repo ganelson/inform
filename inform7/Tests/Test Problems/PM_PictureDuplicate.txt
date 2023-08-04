@@ -1,3 +1,5 @@
+Problem: PM_PictureDuplicate
+
 Xanadu is a room.
 
 Figure of Woodlands is the file "Woodlands.png".

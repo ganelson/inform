@@ -1,3 +1,5 @@
+Problem: PM_UOValueNotDecimal
+
 The Viability Chamber is a room.
 
 Use frog count translates as the configuration value FROG_COUNT = $4A12 in AmphibianKit.

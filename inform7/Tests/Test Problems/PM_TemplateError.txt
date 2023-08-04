@@ -1,3 +1,5 @@
+Problem: PM_TemplateError
+
 Cliff Edge is a room. 
 
 Include (-

@@ -1,3 +1,6 @@
+Problem: PM_MapFromNowhere
+GenerateIndex: Yes
+
 The bedroom is a room.
 
 A door called the bedroom door is north of the bedroom and south of nowhere.

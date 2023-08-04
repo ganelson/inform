@@ -1,3 +1,5 @@
+Problem: PM_EitherOrAsValue
+
 The NI School for Typing is a room.
 
 When play begins:

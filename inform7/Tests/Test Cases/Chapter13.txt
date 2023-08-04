@@ -1,3 +1,6 @@
+Test: Chapter13
+For: Z-Machine
+
 "Chapter 13: An Exercise in Concealment" by Emily Short
 
 Chapter 1

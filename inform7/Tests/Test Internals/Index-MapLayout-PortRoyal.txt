@@ -1,3 +1,6 @@
+Test: Index-MapLayout-PortRoyal
+TestCompilerInternals: Yes
+
 "The Port Royal Affair"
 
 Fort James is a room.

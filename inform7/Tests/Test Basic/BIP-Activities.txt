@@ -1,3 +1,7 @@
+Test: BIP-Activities
+Language: Basic
+For: Z-Machine
+
 Commenting on something is an activity on numbers.
 
 Rule for commenting on an even number:

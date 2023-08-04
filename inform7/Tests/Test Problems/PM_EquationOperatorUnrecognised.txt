@@ -1,3 +1,5 @@
+Problem: PM_EquationOperatorUnrecognised
+
 Laboratory is a room.
 
 When play begins:

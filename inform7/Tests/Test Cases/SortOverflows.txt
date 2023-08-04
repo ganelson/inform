@@ -1,3 +1,6 @@
+Test: SortOverflows
+For: Z-Machine
+
 Lab is a room.
 
 when play begins:

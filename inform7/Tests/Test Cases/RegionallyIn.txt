@@ -1,3 +1,6 @@
+Test: RegionallyIn
+For: Z-Machine
+
 The Mysterious Void, the Unknowable Vastness, and the Nothingness are
 rooms. The Empty Space is a region. The Mysterious Void, Unknownable
 Vastness, and Nothingness are in the Empty Space.

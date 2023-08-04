@@ -1,3 +1,6 @@
+Test: ManyActions-G
+For: Glulx
+
 Use MAX_ACTIONS of 500.
 Use MAX_VERBS of 500.
 Use MAX_VERBSPACE of 50000.

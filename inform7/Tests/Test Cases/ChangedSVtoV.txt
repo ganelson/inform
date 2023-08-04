@@ -1,3 +1,6 @@
+Test: ChangedSVtoV
+For: Z-Machine
+
 "Stepping Through Changed Reciprocal V-to-V Relation"
 
 Linking relates things to each other. The verb to link (he links, they link,

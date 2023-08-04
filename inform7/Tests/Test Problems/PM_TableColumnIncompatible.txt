@@ -1,3 +1,5 @@
+Problem: PM_TableColumnIncompatible
+
 Office is a room. "Let's consider some candidates." The player is here.
 Jack is a man. Jack is in the offfice.
 

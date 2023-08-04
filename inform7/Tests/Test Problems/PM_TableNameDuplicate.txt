@@ -1,3 +1,5 @@
+Problem: PM_TableNameDuplicate
+
 Table of Craziness
 subject
 "This is in the extension"

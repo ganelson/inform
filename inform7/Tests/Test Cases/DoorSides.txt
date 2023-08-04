@@ -1,3 +1,6 @@
+Test: DoorSides
+For: Z-Machine
+
 The red rock stair is a door.
 The red rock stair is east of the Orchard and south of the Undertomb.
 

@@ -1,3 +1,6 @@
+Test: MultiinsideWithScope
+For: Z-Machine
+
 The Balcony is a room. "Overlooking the great fountain below."
 The bench is an enterable supporter in the balcony. 
 

@@ -1,3 +1,5 @@
+Problem: PM_UseTranslatesNotI6
+
 Test is a room.
 
 Use My First Thing translates as (- Constant FOO; -)

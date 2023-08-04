@@ -1,3 +1,5 @@
+Problem: PM_BadUnderstandPropertyAs
+
 The Gram-Schmidt Memorial is a room. The statue is in the Memorial.
 
 Understand the transparent property as referring to the White Mouse.

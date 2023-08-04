@@ -1,3 +1,6 @@
+Test: SwitchTexts
+For: Z-Machine
+
 Someplace is a room.
 
 Joe is a man in Someplace.

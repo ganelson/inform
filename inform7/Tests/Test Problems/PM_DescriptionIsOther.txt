@@ -1,3 +1,5 @@
+Problem: PM_DescriptionIsOther
+
 Home is a room.
 
 A door is the carrying capacity of the player.

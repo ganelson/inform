@@ -1,3 +1,6 @@
+Test: NonconstantTableSize
+For: Z-Machine
+
 Foo is a room.
 The table size is always 12.
 

@@ -1,3 +1,6 @@
+Test: ActionVariableMatching2
+For: Z-Machine
+
 Home is a room.
 
 Exhibiting success is an action applying to nothing. The exhibiting

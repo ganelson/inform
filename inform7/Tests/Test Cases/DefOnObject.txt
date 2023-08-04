@@ -1,3 +1,6 @@
+Test: DefOnObject
+For: Z-Machine
+
 The Armoury is a room.
 
 The player holds a knife. The player holds a book.

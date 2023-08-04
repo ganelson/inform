@@ -1,3 +1,6 @@
+Test: OptionalMinusLP
+For: Z-Machine
+
 Test is a room.
 
 A surreal number is a kind of value. -999999:9999 specifies a surreal number with parts whole and fractional.

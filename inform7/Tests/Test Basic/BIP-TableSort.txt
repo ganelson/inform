@@ -1,3 +1,7 @@
+Test: BIP-TableSort
+Language: Basic
+For: Z-Machine
+
 Table of Selected Numbers
 numeric		alphabetic
 4			"four"

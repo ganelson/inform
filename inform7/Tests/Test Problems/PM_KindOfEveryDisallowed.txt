@@ -1,3 +1,5 @@
+Problem: PM_KindOfEveryDisallowed
+
 There is a room.
 
 A man is never a kind of every animal.

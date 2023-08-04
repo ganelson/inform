@@ -1,3 +1,6 @@
+Test: Ss
+For: Z-Machine
+
 Place is a room.
 
 When play begins:

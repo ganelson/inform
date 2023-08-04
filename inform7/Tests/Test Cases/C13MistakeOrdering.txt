@@ -1,3 +1,6 @@
+Test: C13MistakeOrdering
+For: Z-Machine
+
 The Study is a room. "A well-appointed study, with a large bookcase and an
 equally impressive desk."
 

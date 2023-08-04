@@ -1,3 +1,5 @@
+Problem: PM_KindsCircular
+
 There is a room.
 
 A person is a kind of animal.

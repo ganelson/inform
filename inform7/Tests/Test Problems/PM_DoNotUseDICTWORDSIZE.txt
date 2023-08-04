@@ -1,3 +1,5 @@
+Problem: PM_DoNotUseDICTWORDSIZE
+
 Xanadu is a room.
 
 Use Inform 6 compiler option "$DICT_WORD_SIZE=13".

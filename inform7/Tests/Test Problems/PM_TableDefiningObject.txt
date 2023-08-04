@@ -1,3 +1,5 @@
+Problem: PM_TableDefiningObject
+
 The retro T-shirt is a thing.
 
 Table 1 - Player's Clothing

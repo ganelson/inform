@@ -1,3 +1,6 @@
+Test: DisambiguateAdjDescs
+For: Z-Machine
+
 Home is a room.
 
 To decide which time is the interior volume of (R - a lighted room):

@@ -1,3 +1,6 @@
+Test: Jeeves
+For: Z-Machine
+
 Outside House and Outside First Presbyterian are rooms.
 
 Jeeves is a man in Outside House. The description of Jeeves is "He'll

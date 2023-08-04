@@ -1,3 +1,7 @@
+Test: BIP-Tables-C
+Language: Basic
+For: C
+
 Table of Neptune's Moons
 moon		surface (text)
 "Nereid"	"utterly unknown"

@@ -1,3 +1,6 @@
+Test: Index-Card2
+TestCompilerInternals: Yes
+
 Pemberley is a room.
 
 The story title is "Mansfield Perk". 

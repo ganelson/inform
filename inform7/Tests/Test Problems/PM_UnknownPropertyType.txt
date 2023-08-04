@@ -1,3 +1,5 @@
+Problem: PM_UnknownPropertyType
+
 There is room.
 
 The verb to be read implies the printed text property.

@@ -4,6 +4,7 @@ RecipeLocation: Scoring
 Index: Scoreboard preserved between games
 Description: A scoreboard that keeps track of the ten highest-scoring players from one playthrough to the next, adding the player's name if they have done well enough.
 For: Glulx
+ExternalFiles: leaderboard.glkdata
 
 The trick here is that we need a table with text in order to keep track of the players' names.
 

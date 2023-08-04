@@ -1,2 +1,4 @@
+Problem: PM_KindUnalterable
+
 There is a room.
 A person is a kind of room.

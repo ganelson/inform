@@ -1,3 +1,5 @@
+Problem: PM_RelationFailedOnNothing
+
 There is room.
 
 Nothing is greater than the player.

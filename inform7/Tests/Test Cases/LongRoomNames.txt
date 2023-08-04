@@ -1,3 +1,6 @@
+Test: LongRoomNames
+For: Z-Machine
+
 Bababadalgharaghtakamminarronnkonnbronntonnerronntuonnthunntrovarrhounawnskawntoohoohoordenenthurnuk is a room.
 
 Taumatawhakatang-ihangakoauauot-amateaturipukaka-pikimaunga-horonuku-pokaiwhenuak-itanatahu is a room.

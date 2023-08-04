@@ -1,3 +1,6 @@
+Test: ImpliedDescriptionOfKind
+For: Z-Machine
+
 Test room is a room.
 A folding metal chair is a kind of supporter. "The chair looks only 
 moderately uncomfortable." 

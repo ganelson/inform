@@ -1,1 +1,5 @@
+Test: Plain-Z
+TestReleaseMetadata: Yes
+For: Z-Machine
+
 The Release Zone is a room.

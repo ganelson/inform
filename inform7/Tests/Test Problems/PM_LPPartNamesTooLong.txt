@@ -1,3 +1,5 @@
+Problem: PM_LPPartNamesTooLong
+
 Foo is a room. A blorb is a kind of value.
 1B specifies a blorb with parts zog zog zog zog zog zog zog zog zog zog zog zog zog zog zog zog zog zog 
 zog zog zog zog zog zog zog zog zog zog zog.

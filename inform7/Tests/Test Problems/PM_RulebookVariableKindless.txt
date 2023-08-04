@@ -1,2 +1,4 @@
+Problem: PM_RulebookVariableKindless
+
 Foo is a room. 
 The instead rulebook has a fgdfgdgand number called borp.

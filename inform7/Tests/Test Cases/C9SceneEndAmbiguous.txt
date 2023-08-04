@@ -1,3 +1,6 @@
+Test: C9SceneEndAmbiguous
+For: Z-Machine
+
 The dome is a room. 
 
 To decide if (A - a room) qualifies:

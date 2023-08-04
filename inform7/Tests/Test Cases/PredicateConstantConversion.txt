@@ -1,3 +1,6 @@
+Test: PredicateConstantConversion
+For: Z-Machine
+
 Home is a room.
 
 A posture is a kind of value. The postures are standing, sitting and lying.

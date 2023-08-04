@@ -1,3 +1,5 @@
+Problem: PM_CantAssertAdjective
+
 Laboratory is a room. The car is a vehicle.
 
 Laboratory can be red, blue or green.

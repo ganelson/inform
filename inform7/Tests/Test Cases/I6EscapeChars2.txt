@@ -1,3 +1,6 @@
+Test: I6EscapeChars2
+For: Z-Machine
+
 The Gallery of Lexical Monstrosities is a room.
 
 Bastard is a kind of value. The bastards are @@@, ^'^, mayn't, 'do', 'cha' 'cha',

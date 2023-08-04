@@ -1,3 +1,6 @@
+Test: PropertyTranslationTiming
+For: Z-Machine
+
 [This tests a tricky race condition between the provision of an I6 equivalent
 of the property "other side" = "door_to", and the setting of schemas to
 express the relation "to be through".]

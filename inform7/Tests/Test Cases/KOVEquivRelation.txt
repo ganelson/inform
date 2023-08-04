@@ -1,3 +1,6 @@
+Test: KOVEquivRelation
+For: Z-Machine
+
 Zot is a room.
 
 A posture is a kind of value. The postures are seated, standing, and reclining.

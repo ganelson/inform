@@ -1,3 +1,6 @@
+Test: MatchingNonObject
+For: Z-Machine
+
 There is a room.
 
 Testing is an action applying to nothing.

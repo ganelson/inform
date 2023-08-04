@@ -1,3 +1,6 @@
+Test: LPOptionals
+For: Z-Machine
+
 Game Room is a room.
 
 A die roll is a kind of value. 3d20+9 specifies a die roll with parts dice, sides

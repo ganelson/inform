@@ -1,3 +1,5 @@
+Problem: PM_TableColumnLocation
+
 Foo is west of Bar.
 
 A shirt is a kind of thing. Some shirts are defined by the Table of Shirtness.

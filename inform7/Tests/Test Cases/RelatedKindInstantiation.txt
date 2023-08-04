@@ -1,3 +1,6 @@
+Test: RelatedKindInstantiation
+For: Z-Machine
+
 The Church is a room. The player is in The Church.
 
 An apple is a kind of thing.

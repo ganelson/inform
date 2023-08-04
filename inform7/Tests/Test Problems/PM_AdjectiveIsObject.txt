@@ -1,3 +1,5 @@
+Problem: PM_AdjectiveIsObject
+
 The Winter Palace is a room.
 
 Lighted is the Winter Palace.

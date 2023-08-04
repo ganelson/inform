@@ -1,3 +1,5 @@
+Problem: PM_ThingAdrift
+
 A thing is a kind of room.
 
 Foo is a room.

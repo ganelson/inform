@@ -1,3 +1,7 @@
+Test: BIP-Files-C
+Language: Basic
+For: C
+
 A jotter is a kind of value. A jotter has an external file called the text file.
 A jotter has a text called the heading.
 

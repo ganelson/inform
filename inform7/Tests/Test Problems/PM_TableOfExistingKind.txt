@@ -1,3 +1,5 @@
+Problem: PM_TableOfExistingKind
+
 The Admiralty is a room. Ship is a kind of value. Euryalus is a ship.
 Some ships are defined by Table 1.
 

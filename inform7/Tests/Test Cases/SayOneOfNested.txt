@@ -1,3 +1,6 @@
+Test: SayOneOfNested
+For: Z-Machine
+
 Foo is a room. "[one of]A palace on the [one of]Nile[or]Euphrates[purely at random]
 delta[or]A hovel by the [one of]Tigris[or]Rhine[purely at random]
 river[purely at random]."

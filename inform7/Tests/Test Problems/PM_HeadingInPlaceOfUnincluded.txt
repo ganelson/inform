@@ -1,3 +1,5 @@
+Problem: PM_HeadingInPlaceOfUnincluded
+
 The Schoolhouse is a room.
 
 Section of Minimal Grammar (in place of Section SR4/10 - Grammar in Missing Rules by Graham Nelson)

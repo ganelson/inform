@@ -1,3 +1,6 @@
+Test: ListSometimes
+For: Z-Machine
+
 A restricted-container is a kind of container.
 
 A restricted-container has a list of things called the allowed-contents.

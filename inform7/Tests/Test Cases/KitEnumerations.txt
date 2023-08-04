@@ -1,3 +1,6 @@
+Test: KitEnumerations
+For: Z-Machine
+
 Include Directorial Testing by Araminta Intest.
 
 Laboratory is a room.

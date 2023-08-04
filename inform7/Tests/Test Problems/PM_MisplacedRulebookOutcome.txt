@@ -1,3 +1,5 @@
+Problem: PM_MisplacedRulebookOutcome
+
 Kandersteg is a room.
 
 Emma rules is a rulebook. Emma rules has outcomes emma succeeds or emma fails.

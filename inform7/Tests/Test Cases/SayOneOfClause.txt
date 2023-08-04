@@ -1,3 +1,6 @@
+Test: SayOneOfClause
+For: Z-Machine
+
 The Lab is a room.
 
 Every turn:

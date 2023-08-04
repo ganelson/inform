@@ -1,3 +1,6 @@
+Test: C9TrickyHeres
+For: Z-Machine
+
 The forest is a region. The Ruined Chapel, By the Waterfall and Final
 Darkness are in the forest.
 

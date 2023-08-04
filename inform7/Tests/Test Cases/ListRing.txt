@@ -1,3 +1,6 @@
+Test: ListRing
+For: Z-Machine
+
 Luggage item is a kind of thing. The blue golf bag, the leopardskin
 suitcase, the green rucksack and the Lufthansa shoulder-bag are luggage
 items.

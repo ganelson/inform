@@ -1,3 +1,6 @@
+Test: TrickyLateConsult
+For: Z-Machine
+
 Frog is a room.
 
 To decide if masculine:

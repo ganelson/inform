@@ -1,3 +1,6 @@
+Test: IndefiniteProvision
+For: Z-Machine
+
 A person has a number called IQ.
 
 The Lab is a room. John is a man in the Lab.

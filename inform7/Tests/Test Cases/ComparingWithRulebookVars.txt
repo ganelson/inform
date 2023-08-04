@@ -1,3 +1,6 @@
+Test: ComparingWithRulebookVars
+For: Z-Machine
+
 There is a room.
 Trading is an action applying to two things.
 The trading action has a person called the trader.

@@ -1,3 +1,5 @@
+Problem: PM_TableCreatedMapClash
+
 Xanadu is a room.
 
 A length is a kind of value. Some lengths are defined by the Table of lengths.

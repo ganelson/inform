@@ -1,3 +1,5 @@
+Problem: PM_ObsoleteHeldTokens
+
 The Gram-Schmidt Memorial is a room. The statue is in the Memorial.
 
 Understand "button [something held]" as taking.

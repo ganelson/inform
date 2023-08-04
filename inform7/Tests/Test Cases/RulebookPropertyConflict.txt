@@ -1,3 +1,6 @@
+Test: RulebookPropertyConflict
+For: Z-Machine
+
 There is a room.
 The initiative rules are a rulebook.
 A person has a number called initiative.

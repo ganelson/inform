@@ -1,3 +1,7 @@
+Test: BIP-Map-G
+Language: Basic
+For: Glulx
+
 Colour is a kind of value. The colours are red, indigo and chartreuse.
 
 Weight is a kind of value. 5kg specifies a weight.

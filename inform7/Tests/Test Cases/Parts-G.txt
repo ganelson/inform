@@ -1,3 +1,6 @@
+Test: Parts-G
+For: Glulx
+
 
  Use command line echoing.
 

@@ -1,3 +1,6 @@
+Test: StoredActionsWithValues
+For: Z-Machine
+
 Home is a room. Bob is in Home.
 
 Factoring is an action applying to one number.

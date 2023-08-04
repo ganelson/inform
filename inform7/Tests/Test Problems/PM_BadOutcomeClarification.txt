@@ -1,3 +1,5 @@
+Problem: PM_BadOutcomeClarification
+
 Xanadu is a room.
 
 The cavern measuring rules are a rulebook.

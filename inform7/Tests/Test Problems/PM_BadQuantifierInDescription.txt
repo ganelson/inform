@@ -1,3 +1,5 @@
+Problem: PM_BadQuantifierInDescription
+
 The Lab is a room.
 
 To foo (X - a description of rooms):

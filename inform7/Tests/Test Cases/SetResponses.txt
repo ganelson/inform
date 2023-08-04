@@ -1,3 +1,6 @@
+Test: SetResponses
+For: Z-Machine
+
 The Paris Theatre is a room.
 
 The big box is a container in the Theatre. The box is open and openable.

@@ -1,3 +1,5 @@
+Problem: PM_InlineNoSuch
+
 Inline Arena is a room.
 
 To go awry (N - a number): (-

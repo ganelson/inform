@@ -1,3 +1,6 @@
+Test: C11AmbiguousActions
+For: Z-Machine
+
 The starting room is a room. "Starting room."
 
 Foobling is an action applying to one visible thing. Understand "fooble

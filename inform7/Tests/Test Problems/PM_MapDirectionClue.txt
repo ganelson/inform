@@ -1,3 +1,6 @@
+Problem: PM_MapDirectionClue
+GenerateIndex: Yes
+
 Xanadu is a room.
 
 Turnwise is a direction. The opposite of turnwise is widdershins.

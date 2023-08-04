@@ -1,3 +1,5 @@
+Problem: PM_EquationTokenUnrecognised
+
 Laboratory is a room.
 
 When play begins:

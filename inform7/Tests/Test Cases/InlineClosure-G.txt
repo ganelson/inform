@@ -1,3 +1,6 @@
+Test: InlineClosure-G
+For: Glulx
+
 The Kitchen is a room.
 
 When play begins:

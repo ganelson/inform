@@ -1,3 +1,6 @@
+Test: SpecialKindGPRs
+For: Z-Machine
+
 Home is a room.
 
 Considering is an action applying to one number. Understand "consider [number]" as considering.

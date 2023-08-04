@@ -1,3 +1,6 @@
+Test: PassSubkindList
+For: Z-Machine
+
 [The point of interest here is that L, a list of people, is passed to a
 phrase which expects a list of objects.]
 

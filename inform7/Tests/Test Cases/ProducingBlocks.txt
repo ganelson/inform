@@ -1,3 +1,6 @@
+Test: ProducingBlocks
+For: Z-Machine
+
 Home is a room.
 
 Foo is a rulebook producing an text.

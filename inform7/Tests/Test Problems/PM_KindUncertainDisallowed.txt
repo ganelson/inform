@@ -1,3 +1,5 @@
+Problem: PM_KindUncertainDisallowed
+
 There is a room.
 
 A man is never a kind of animal.

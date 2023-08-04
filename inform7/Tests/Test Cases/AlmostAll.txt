@@ -1,3 +1,6 @@
+Test: AlmostAll
+For: Z-Machine
+
 The Tool Room is a room.
 
 A switched on device called a blue button is here.

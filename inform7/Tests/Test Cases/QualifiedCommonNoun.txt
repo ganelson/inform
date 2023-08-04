@@ -1,3 +1,6 @@
+Test: QualifiedCommonNoun
+For: Z-Machine
+
 A colour is a kind of value. The colours are green, red and blue.
 
 A tile is a kind of thing. A tile has a colour.

@@ -1,3 +1,6 @@
+Test: ListOfNewKOVs
+For: Z-Machine
+
 The Place is a room.
 
 A temperature is a kind of value.

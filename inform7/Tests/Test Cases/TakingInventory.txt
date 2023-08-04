@@ -1,3 +1,6 @@
+Test: TakingInventory
+For: Z-Machine
+
 Place is a room.
 
 The inventory is here.

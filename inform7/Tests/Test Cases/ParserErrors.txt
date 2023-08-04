@@ -1,3 +1,6 @@
+Test: ParserErrors
+For: Z-Machine
+
 The Garden is a room. A wheelbarrow is here. It contains a pile of dirt. The Garden contains a flower plot. The plot is fixed in place. A marble is a kind of thing. Three marbles are in the Garden.
 
 The Yard is north of the Garden.

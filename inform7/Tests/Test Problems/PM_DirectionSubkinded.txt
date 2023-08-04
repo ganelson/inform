@@ -1,2 +1,4 @@
+Problem: PM_DirectionSubkinded
+
 Foo is a room.
 A rotation is a kind of direction.

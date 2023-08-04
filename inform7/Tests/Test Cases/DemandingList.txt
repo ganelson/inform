@@ -1,3 +1,6 @@
+Test: DemandingList
+For: Z-Machine
+
 [This is a surprisingly demanding test, because different versions of the syntax
 analyser have varied greatly in how quickly they parse it. It would be trivial
 if the list entries were numbers, but they are easily confusable with lists of

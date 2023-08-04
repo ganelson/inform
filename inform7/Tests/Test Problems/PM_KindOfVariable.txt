@@ -1,3 +1,5 @@
+Problem: PM_KindOfVariable
+
 The NI School for Typing is a room. Splodge splodge is a rulebook.
 
 To prognosticate about (V - a nonexisting number variable): (- ; -).

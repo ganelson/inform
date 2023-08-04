@@ -1,3 +1,6 @@
+Test: AwkwardParseNames
+For: Z-Machine
+
 After reading a command:
 	let X be text;
 	let X be the player's command;

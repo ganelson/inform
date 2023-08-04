@@ -1,3 +1,5 @@
+Problem: PM_ExtVersionTooLow
+
 Include version 3/070628 of ExtVersionTooLow Extension by Araminta Intest.
 
 Include version 2.7 of ExtNoVersion Extension by Araminta Intest.

@@ -1,3 +1,6 @@
+Test: ExcludedActions
+For: Z-Machine
+
 The Cave is a room. A creature is an animal in the Cave.
 
 Talking to is an action applying to one visible thing.

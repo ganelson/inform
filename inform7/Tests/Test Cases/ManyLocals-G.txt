@@ -1,3 +1,6 @@
+Test: ManyLocals-G
+For: Glulx
+
 The Kitchen is a room.
 
 When play begins:

@@ -1,3 +1,5 @@
+Problem: PM_QualifiedCanBe
+
 The void is a room.
 
 A portable thing can be stashable or unstashable or variably stashable.

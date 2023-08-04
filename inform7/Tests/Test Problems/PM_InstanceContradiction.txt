@@ -1,3 +1,5 @@
+Problem: PM_InstanceContradiction
+
 A room can be roomy or cramped.
 
 A room is always roomy.

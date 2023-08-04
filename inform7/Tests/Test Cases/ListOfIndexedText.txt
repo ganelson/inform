@@ -1,3 +1,6 @@
+Test: ListOfIndexedText
+For: Z-Machine
+
 The Library is a room.
 
 The catalog card is in the Library. It has a list of text called

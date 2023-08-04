@@ -1,3 +1,6 @@
+Test: WhereWords
+For: Z-Machine
+
 Aleph and Beth are rooms. Beth is dark. Alephland is a region. Aleph is in
 Alephland. Bethland is a region. Beth is in Bethland.
 

@@ -1,3 +1,5 @@
+Problem: PM_SceneryDoublyDescribed
+
 The white room is a room.
 
 The painting is a thing in the white room. "A lovely painting hangs on the wall."

@@ -1,3 +1,5 @@
+Problem: PM_BadNow3
+
 The Dock is a room. Some vending machines are containers in the dock.
 
 To break the vending machines, by superpower or by brute force:

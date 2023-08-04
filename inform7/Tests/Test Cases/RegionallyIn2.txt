@@ -1,3 +1,6 @@
+Test: RegionallyIn2
+For: Z-Machine
+
 Interior is a region.
 The Kitchen is a room in Interior.
 The screen door is a door.

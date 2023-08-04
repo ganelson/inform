@@ -1,3 +1,6 @@
+Test: TinyForest
+For: Z-Machine
+
 "Tiny Forest"
 
 Include rulebook compilation and rule attachments in the debugging log.

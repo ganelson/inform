@@ -1,3 +1,5 @@
+Problem: PM_TableWithoutRows
+
 The Admiralty is a room.
 
 Table of Ships

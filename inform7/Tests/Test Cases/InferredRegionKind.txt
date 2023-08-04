@@ -1,3 +1,6 @@
+Test: InferredRegionKind
+For: Z-Machine
+
 A crowd is a kind of people. It is usually plural-named and undescribed.
 It has a region called territory.
 

@@ -1,6 +1,0 @@
-A woman is a kind.
-
-Test refinery (internal) with Jane is a woman.
-
-To begin:
-	say "This is a test run."

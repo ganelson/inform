@@ -1,3 +1,6 @@
+Test: C9ScenesPastTenseActions
+For: Z-Machine
+
 The Desert is a room. "These new optical-reflection-triggered bombs
 are a nightmare. Be careful." The mysterious object is a thing in the
 desert. The description is "Oh n---".

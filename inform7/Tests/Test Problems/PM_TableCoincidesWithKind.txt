@@ -1,3 +1,5 @@
+Problem: PM_TableCoincidesWithKind
+
 The Admiralty is a room. Vessel is a kind.
 
 Table of Vessels

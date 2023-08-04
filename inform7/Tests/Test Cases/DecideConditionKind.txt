@@ -1,3 +1,6 @@
+Test: DecideConditionKind
+For: Z-Machine
+
 There is a room.
 
 To decide whether Pluto is a planet (this is ruling on Pluto's status):

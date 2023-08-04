@@ -1,3 +1,6 @@
+Test: LPCaseInsensitive
+For: Z-Machine
+
 Stage is a room.
 
 A frequency is a kind of value. 100kHz specifies a frequency.

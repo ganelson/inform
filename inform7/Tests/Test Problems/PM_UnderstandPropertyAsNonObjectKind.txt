@@ -1,3 +1,5 @@
+Problem: PM_UnderstandPropertyAsNonObjectKind
+
 The Bolzano-Weierstrass Memorial is a room.
 
 Colour is a kind of value. The colours are red, blue and green.

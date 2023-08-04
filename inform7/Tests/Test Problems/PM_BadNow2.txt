@@ -1,3 +1,5 @@
+Problem: PM_BadNow2
+
 The Dock is a room. Some vending machines are containers in the dock.
 
 Instead of examining the vending machines:

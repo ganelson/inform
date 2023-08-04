@@ -1,3 +1,6 @@
+Test: TouchingOtherSide
+For: Z-Machine
+
 The Reliquary is a room. The wooden door is a door.  The wooden door is inside from the Reliquary 
 and outside from the Crypt.
 The ghost is a person in the Reliquary.

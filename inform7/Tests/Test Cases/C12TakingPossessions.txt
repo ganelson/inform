@@ -1,3 +1,6 @@
+Test: C12TakingPossessions
+For: Z-Machine
+
 A shape is a kind of thing. A triangle is a kind of shape.
 
 The Lab is a room.

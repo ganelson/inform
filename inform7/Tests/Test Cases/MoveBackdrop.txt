@@ -1,3 +1,6 @@
+Test: MoveBackdrop
+For: Z-Machine
+
 The Upper Cave is above the Rock Pool.
 
 The stream is a backdrop. It is in the Upper Cave and the Ledge.

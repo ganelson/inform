@@ -1,3 +1,6 @@
+Test: KindVariables
+For: Z-Machine
+
 The Brahms Conservatoire is a room.
 
 To split (X - K) to (Y - arithmetic value of kind K):

@@ -1,3 +1,6 @@
+Test: PrepositionComma
+For: Z-Machine
+
 A direction can be cardinal. A direction is usually not cardinal.
 North, south, east, west are cardinal.
 

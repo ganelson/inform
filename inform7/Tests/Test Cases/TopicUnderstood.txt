@@ -1,3 +1,6 @@
+Test: TopicUnderstood
+For: Z-Machine
+
 The Hidden Library is a room.
 
 The Tome of Celestial Secrets is a thing in the Hidden Library.

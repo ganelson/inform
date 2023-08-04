@@ -1,3 +1,7 @@
+Test: BIP-Activities-G
+Language: Basic
+For: Glulx
+
 Commenting on something is an activity on numbers.
 
 Rule for commenting on an even number:

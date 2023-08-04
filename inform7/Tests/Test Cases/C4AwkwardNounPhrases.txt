@@ -1,3 +1,6 @@
+Test: C4AwkwardNounPhrases
+For: Z-Machine
+
 The Attic is a room.
 
 In the Attic are a CD entitled No Smoke Without Fire, a 70s

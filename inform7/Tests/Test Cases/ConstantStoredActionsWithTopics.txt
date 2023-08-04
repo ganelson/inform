@@ -1,3 +1,6 @@
+Test: ConstantStoredActionsWithTopics
+For: Z-Machine
+
 Place is a room.
 
 Bob is a man in Place.

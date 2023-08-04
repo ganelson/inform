@@ -1,3 +1,6 @@
+Test: Chapter10
+For: Z-Machine
+
 "Chapter 10: Le Gourmand" by Emily Short
 
 Chapter 10

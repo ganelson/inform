@@ -1,3 +1,5 @@
+Problem: PM_NameReserved
+
 The Kitchen is a room.
 
 Storage is a kind of thing.

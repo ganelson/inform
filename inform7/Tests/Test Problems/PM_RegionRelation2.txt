@@ -1,3 +1,5 @@
+Problem: PM_RegionRelation2
+
 Foo is a room.
 Zog is a region. Zog is in Foo. Foo is in Zog.
 When play begins:

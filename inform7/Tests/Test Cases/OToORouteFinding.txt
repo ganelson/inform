@@ -1,3 +1,6 @@
+Test: OToORouteFinding
+For: Z-Machine
+
 Afterness relates one thing to one thing.  The verb to be placed after
 implies the afterness relation.
 

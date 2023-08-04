@@ -1,3 +1,7 @@
+Test: BIP-Showme-G
+Language: Basic
+For: Glulx
+
 To begin:
 	showme 7;
 	showme minus 6;

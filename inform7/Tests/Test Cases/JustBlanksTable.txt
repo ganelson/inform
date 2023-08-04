@@ -1,3 +1,6 @@
+Test: JustBlanksTable
+For: Z-Machine
+
 Current Place is a room.
 
 Table 3 - Undiscovered Periodic Table

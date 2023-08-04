@@ -1,3 +1,6 @@
+Test: Frotzing
+For: Z-Machine
+
 The Kitchen is a room.
 
 This is the frotzing rule:

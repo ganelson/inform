@@ -1,3 +1,6 @@
+Test: BreakInSwitch
+For: Z-Machine
+
 There is a room.
 
 When play begins:

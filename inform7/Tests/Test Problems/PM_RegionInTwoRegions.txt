@@ -1,3 +1,5 @@
+Problem: PM_RegionInTwoRegions
+
 The Center is a room. North of the Center is a room called
 the North Room. East of the Center is a room called the East Room.
 

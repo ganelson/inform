@@ -1,3 +1,6 @@
+Test: NumberTheory
+For: Z-Machine
+
 Home is a room.
 
 Divisibility relates a number (called N) to a number (called M)

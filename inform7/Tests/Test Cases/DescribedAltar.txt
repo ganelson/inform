@@ -1,3 +1,6 @@
+Test: DescribedAltar
+For: Z-Machine
+
 Place is a room.
 
 A fixed in place supporter called a stone altar is in Place. A statuette is on the altar. A container 

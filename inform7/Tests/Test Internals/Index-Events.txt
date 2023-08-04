@@ -1,3 +1,6 @@
+Test: Index-Events
+TestCompilerInternals: Yes
+
 Home is a room.
 
 At 11:32 AM: say "Goodness!".

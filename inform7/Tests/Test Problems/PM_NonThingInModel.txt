@@ -1,3 +1,5 @@
+Problem: PM_NonThingInModel
+
 A nose is a kind.
 
 The Lab is a room. A potato is in the Lab.

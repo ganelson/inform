@@ -1,3 +1,6 @@
+Test: Rides
+For: Z-Machine
+
 "Rides" by Emily Short
 
 

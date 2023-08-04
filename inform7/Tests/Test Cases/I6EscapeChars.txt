@@ -1,3 +1,6 @@
+Test: I6EscapeChars
+For: Z-Machine
+
 Maths Department is a room. "Try typing E.G. 2^3 to do some
 number crunching."
 

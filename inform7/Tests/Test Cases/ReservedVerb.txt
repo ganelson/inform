@@ -1,3 +1,6 @@
+Test: ReservedVerb
+For: Z-Machine
+
 Laboratory is a room. The bat is here.
 
 Understand "purloin [thing]" as examining.

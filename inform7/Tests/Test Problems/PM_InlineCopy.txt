@@ -1,3 +1,5 @@
+Problem: PM_InlineCopy
+
 Inline Arena is a room.
 
 To go awry: (-

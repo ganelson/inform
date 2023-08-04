@@ -1,3 +1,6 @@
+Test: SpecificAction
+For: Z-Machine
+
 Orchard is a room. An apple tree is here.
 
 Instead of examining the apple tree:

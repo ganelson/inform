@@ -1,3 +1,6 @@
+Test: Index-MapLayout-Bronze
+TestCompilerInternals: Yes
+
 "The Bronzed Affair"
 
 Great Outdoors is a region.

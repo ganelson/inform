@@ -1,3 +1,7 @@
+Test: BIP-Adjectives
+Language: Basic
+For: Z-Machine
+
 To assay (N - a number):
 	say "Now testing N = [N].";
 	showme whether or not N is positive;

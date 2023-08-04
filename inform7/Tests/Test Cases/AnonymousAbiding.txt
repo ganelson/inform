@@ -1,3 +1,6 @@
+Test: AnonymousAbiding
+For: Z-Machine
+
 There is a room called The Spot.
 
 Report an actor jumping (this is the blameless rule):

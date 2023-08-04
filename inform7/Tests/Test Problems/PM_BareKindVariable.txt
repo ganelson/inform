@@ -1,3 +1,5 @@
+Problem: PM_BareKindVariable
+
 The Errea is a room.
 
 To decide whether (X - a value of kind K) is sibling to (Y - a value of kind M):

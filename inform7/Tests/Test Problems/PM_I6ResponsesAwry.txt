@@ -1,3 +1,5 @@
+Problem: PM_I6ResponsesAwry
+
 Inline Arena is a room.
 
 The restore the game rule is defined by Inter as "RESTORE_THE_GAME_R" with

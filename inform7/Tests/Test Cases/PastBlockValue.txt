@@ -1,3 +1,6 @@
+Test: PastBlockValue
+For: Z-Machine
+
 Home is a room.
 
 The message is an text which varies.

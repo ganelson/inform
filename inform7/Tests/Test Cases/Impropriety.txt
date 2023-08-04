@@ -1,3 +1,6 @@
+Test: Impropriety
+For: Z-Machine
+
 The Kitchen is a room.
 
 A key is a kind of thing.

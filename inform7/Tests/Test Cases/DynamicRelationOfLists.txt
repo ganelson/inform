@@ -1,3 +1,6 @@
+Test: DynamicRelationOfLists
+For: Z-Machine
+
 Home is a room.
 
 Partnership relates various lists of numbers to various lists of numbers. The verb to belong with (he 

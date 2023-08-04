@@ -1,3 +1,6 @@
+Test: CalledDefinitions
+For: Z-Machine
+
 The Sooty Room is a room. East of the Sooty Room is the China Room.
 The box is in the China Room. In the box is a doll. The crate is in the
 Sooty Room. The crate is a container.

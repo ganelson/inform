@@ -1,3 +1,6 @@
+Test: ListOfSubstitutions
+For: Z-Machine
+
 Config line is an text variable. Config line is "monsters=25".
 
 Stage is a room.

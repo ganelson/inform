@@ -1,3 +1,6 @@
+Test: NPCGoing
+For: Z-Machine
+
 B is west of C.  Magnet Man is a man in B.
 
 Persuasion rule for asking Magnet Man to try going: persuasion succeeds.

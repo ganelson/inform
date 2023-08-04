@@ -1,3 +1,5 @@
+Problem: PM_NonActionIn
+
 Burrow is a room.
 
 Every turn in the Burrow, say "You listen for Wombles."

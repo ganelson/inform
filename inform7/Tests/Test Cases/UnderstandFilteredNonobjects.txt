@@ -1,3 +1,6 @@
+Test: UnderstandFilteredNonobjects
+For: Z-Machine
+
 A spell is a kind of value. Xyzzy is a spell. Plugh is a spell.
 
 Casting is an action applying to one spell.

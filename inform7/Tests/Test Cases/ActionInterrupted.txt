@@ -1,3 +1,6 @@
+Test: ActionInterrupted
+For: Z-Machine
+
 The Kitchen is a room. "Just a small kitchen."
 
 A bottle is a transparent open openable container in the kitchen.

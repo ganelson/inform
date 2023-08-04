@@ -1,3 +1,6 @@
+Test: DimensionsBuiltIn
+For: Z-Machine
+
 Laboratory is a room.
 
 Frequency is a kind of value. 40/min specifies a frequency.

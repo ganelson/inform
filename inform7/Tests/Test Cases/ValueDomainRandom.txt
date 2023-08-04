@@ -1,3 +1,6 @@
+Test: ValueDomainRandom
+For: Z-Machine
+
 Stanford is a room.
 
 Figure of Woodlands is the file "Woodlands.png".

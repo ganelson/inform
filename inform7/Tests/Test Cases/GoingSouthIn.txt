@@ -1,3 +1,6 @@
+Test: GoingSouthIn
+For: Z-Machine
+
 Home is a room.
 
 Garden is south of Home.

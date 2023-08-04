@@ -1,3 +1,6 @@
+Test: ValueConditions
+For: Z-Machine
+
 Workshop is a room.
 
 Colour is a kind of value. The colours are red, green and white.

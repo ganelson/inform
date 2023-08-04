@@ -1,3 +1,6 @@
+Test: TableDefinedTexts
+For: Z-Machine
+
 Some things are defined by the table of stuff.
 
 Table of stuff

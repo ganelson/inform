@@ -1,3 +1,6 @@
+Test: Paragraphing
+For: Z-Machine
+
 The Foreshore is a room. "This is the Foreshore."
 
 The bucket, the ball and the starfish are in the Foreshore.

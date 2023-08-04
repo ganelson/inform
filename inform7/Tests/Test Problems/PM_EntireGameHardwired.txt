@@ -1,3 +1,5 @@
+Problem: PM_EntireGameHardwired
+
 There is a room. 
 
 Act I is a scene. 

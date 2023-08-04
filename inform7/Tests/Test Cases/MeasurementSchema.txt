@@ -1,3 +1,6 @@
+Test: MeasurementSchema
+For: Z-Machine
+
 There is a room.
 A foo is a kind of value.  The foo is bar.
 A foo has a truth state called baz.

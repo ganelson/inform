@@ -1,3 +1,5 @@
+Problem: PM_NameOfKindMismatch
+
 Eugene's Axe Workshop is a room.
 
 To assay (name of kind of enumerated value K):

@@ -1,3 +1,5 @@
+Problem: PM_ValueAsStorageItem
+
 There is a room.
 To decide what number is the zork: decide on 3.
 

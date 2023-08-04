@@ -1,3 +1,5 @@
+Problem: PM_CantAssertNegatedRelations
+
 Laboratory is a room. Peter and Jane are in the laboratory.
 
 Amity relates various people to various people. The verb to like (he likes,

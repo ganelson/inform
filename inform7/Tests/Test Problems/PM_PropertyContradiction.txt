@@ -1,3 +1,5 @@
+Problem: PM_PropertyContradiction
+
 The dome is a room.
 
 The box is scenery in the dome. The box has description "The box." The box has description "A hat box."

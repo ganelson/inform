@@ -1,2 +1,4 @@
+Problem: PM_ObjectIsAction2
+
 Foo is a room.
 Zog is initially examining yourself.

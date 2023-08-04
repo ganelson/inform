@@ -1,3 +1,6 @@
+Test: C9InitialMovement
+For: Z-Machine
+
 Nirvana is a room.  A stool is an enterable supporter in Nirvana. A cat is an
 animal on the stool.
 

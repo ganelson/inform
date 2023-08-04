@@ -1,3 +1,5 @@
+Problem: PM_VariableCantHaveProperties
+
 Place is a room.
 
 The player can be lackadaisical.

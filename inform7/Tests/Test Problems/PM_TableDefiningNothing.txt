@@ -1,3 +1,5 @@
+Problem: PM_TableDefiningNothing
+
 The Admiralty is a room. Ship is a kind of vehicle. Some ships are defined
 by Table 1.
 

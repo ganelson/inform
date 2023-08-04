@@ -1,3 +1,5 @@
+Problem: PM_PastTableLookup
+
 The Hall is a room. The emerald is in the Hall.
 
 Table of Point Values

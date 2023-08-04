@@ -1,3 +1,6 @@
+Test: C9SceneEndSequence
+For: Z-Machine
+
 Home is a room.
 
 Starting is a scene. Starting begins when play begins. Starting ends

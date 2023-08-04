@@ -1,3 +1,6 @@
+Test: NotProperty
+For: Z-Machine
+
 "Not Visited"
 
 Include expressions and predicate calculus workings in the debugging log.

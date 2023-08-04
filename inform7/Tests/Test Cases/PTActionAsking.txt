@@ -1,3 +1,6 @@
+Test: PTActionAsking
+For: Z-Machine
+
 The Kitchen is a room. Will is a man in the kitchen. 
 
 Cooking is an action applying to nothing. Understand "cook dinner" as cooking.

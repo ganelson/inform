@@ -1,3 +1,6 @@
+Problem: PM_RoomInIgnoredSource
+For: Z-Machine
+
 Release along with an existing story file.
 
 Nirvana is a room.

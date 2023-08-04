@@ -1,3 +1,6 @@
+Test: PhraseTokenSpecificAction
+For: Z-Machine
+
 Foo is a room.
 To clomp (Z - looking): say "Clomp!".
 

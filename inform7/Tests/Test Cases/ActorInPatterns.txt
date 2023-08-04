@@ -1,3 +1,6 @@
+Test: ActorInPatterns
+For: Z-Machine
+
 The Mysterious Void is a room. "Spooky." The Vast Nothingness is east
 of the Mysterious Void. "Empty." The Nietzschean Abyss is east of the
 Vast Nothingness. "Full of gazes."

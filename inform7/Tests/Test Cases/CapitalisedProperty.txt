@@ -1,3 +1,6 @@
+Test: CapitalisedProperty
+For: Z-Machine
+
 Venice is a room.
 
 A bug is in Venice. The indefinite article of the bug is "this".

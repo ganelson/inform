@@ -1,3 +1,6 @@
+Test: WombatsFromBeyond
+For: Z-Machine
+
 Foo is a room.
 Wombats From Beyond is a thing.
 Wombats From Beyond can be womp, zomp, or tromp.

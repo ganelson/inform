@@ -1,3 +1,6 @@
+Test: Index-MapEPS-ROTA
+TestCompilerInternals: Yes
+
 "The Back To Tolti-Aph Affair"
 
 Sanctuaries are a region.

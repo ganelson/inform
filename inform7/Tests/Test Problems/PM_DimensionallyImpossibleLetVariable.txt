@@ -1,3 +1,5 @@
+Problem: PM_DimensionallyImpossibleLetVariable
+
 Lab is a room.
 when play begins:
 	let x be 5 minutes;

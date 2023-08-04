@@ -1,3 +1,6 @@
+Test: Chapter6
+For: Z-Machine
+
 "Chapter 6: Return of the Fussy Table" by Emily Short.
 
 Chapter 6

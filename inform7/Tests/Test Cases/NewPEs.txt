@@ -1,3 +1,6 @@
+Test: NewPEs
+For: Z-Machine
+
 There is room. A rock is here. Bob is a man, here.
 
 For printing a parser error:

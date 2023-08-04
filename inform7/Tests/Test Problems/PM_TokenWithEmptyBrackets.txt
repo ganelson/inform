@@ -1,3 +1,5 @@
+Problem: PM_TokenWithEmptyBrackets
+
 Burrow is a room.
 
 To shoot (): say "Bang!"

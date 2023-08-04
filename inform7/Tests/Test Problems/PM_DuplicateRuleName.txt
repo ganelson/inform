@@ -1,3 +1,5 @@
+Problem: PM_DuplicateRuleName
+
 Burrow is a room.
 
 Instead of jumping (this is the Remember You're a Womble rule): say "Jump!"

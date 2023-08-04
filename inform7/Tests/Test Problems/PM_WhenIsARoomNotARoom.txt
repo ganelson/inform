@@ -1,2 +1,4 @@
+Problem: PM_WhenIsARoomNotARoom
+
 Foo is a room.
 Every person wears a room.

@@ -1,3 +1,6 @@
+Test: PhysicalLocals
+For: Z-Machine
+
 The climbing room is a room.
 
 The Magician's staircase is a supporter.  The Magician's staircase is here.

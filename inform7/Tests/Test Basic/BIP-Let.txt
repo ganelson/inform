@@ -1,3 +1,7 @@
+Test: BIP-Let
+Language: Basic
+For: Z-Machine
+
 To begin:
 	let the paint colour be "Cerulean Blue";
 	showme the paint colour;

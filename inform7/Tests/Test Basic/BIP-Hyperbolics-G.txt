@@ -1,3 +1,7 @@
+Test: BIP-Hyperbolics-G
+Language: Basic
+For: Glulx
+
 To begin:
 	showme the hyperbolic sine of 1;
 	showme the hyperbolic cosine of 1;

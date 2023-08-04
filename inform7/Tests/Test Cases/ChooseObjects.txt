@@ -1,3 +1,6 @@
+Test: ChooseObjects
+For: Z-Machine
+
 Home is a room. In Home are a can of shoe polish, a shoe polish
 vending machine, a Polish sausage, and a Polish man. The sausage is
 edible. The Polish man is a man.

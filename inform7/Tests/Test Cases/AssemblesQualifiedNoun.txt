@@ -1,2 +1,5 @@
+Test: AssemblesQualifiedNoun
+For: Z-Machine
+
 Foo is a dark room.
 A woman is in every room. A lit vehicle is in every room.

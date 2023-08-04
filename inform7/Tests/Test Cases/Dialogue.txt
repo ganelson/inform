@@ -1,3 +1,6 @@
+Test: Dialogue
+For: Z-Machine
+
 Use command line echoing.
 
 Laboratory is a room.

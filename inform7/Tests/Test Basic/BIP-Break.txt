@@ -1,3 +1,7 @@
+Test: BIP-Break
+Language: Basic
+For: Z-Machine
+
 To begin:
 	repeat with M running from 1 to 10:
 		if M is 5:

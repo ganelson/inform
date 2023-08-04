@@ -1,3 +1,6 @@
+Test: Index-MapLayout-Ahoy
+TestCompilerInternals: Yes
+
 "The Ahoy There Affair"
 
 starboard is a direction. The opposite of starboard is port.

@@ -1,3 +1,5 @@
+Problem: PM_PropertyUninitialisable
+
 Colour is a kind of value.
 
 The Taj Mahal is a room. A room has a colour called hue.

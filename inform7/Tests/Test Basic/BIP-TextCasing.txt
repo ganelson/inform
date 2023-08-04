@@ -1,3 +1,7 @@
+Test: BIP-TextCasing
+Language: Basic
+For: Z-Machine
+
 To begin:
 	showme whether or not "fish" is in lower case;
 	showme whether or not "fish" is in upper case;

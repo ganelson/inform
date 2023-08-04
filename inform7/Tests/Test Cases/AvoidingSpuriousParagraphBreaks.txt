@@ -1,3 +1,6 @@
+Test: AvoidingSpuriousParagraphBreaks
+For: Z-Machine
+
 Garden is a room. The chair is a fixed in place enterable supporter in  Garden.
 
 When play begins:

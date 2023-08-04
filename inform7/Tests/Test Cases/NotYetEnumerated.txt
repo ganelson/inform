@@ -1,3 +1,6 @@
+Test: NotYetEnumerated
+For: Z-Machine
+
 A behavior is a kind of value.
 A behavior has a number called stuff.
 

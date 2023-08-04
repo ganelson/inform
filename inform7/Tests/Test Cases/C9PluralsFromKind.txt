@@ -1,3 +1,6 @@
+Test: C9PluralsFromKind
+For: Z-Machine
+
 The Lounge is a room.
 
 A gold coin is a kind of thing. Four gold coins are in the Lounge.

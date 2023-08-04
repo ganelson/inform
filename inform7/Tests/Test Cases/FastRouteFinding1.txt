@@ -1,3 +1,6 @@
+Test: FastRouteFinding1
+For: Z-Machine
+
 Use fast route-finding.
 
 Barn is west of Farm. Farm is west of Open Plain. Open Plain is west of

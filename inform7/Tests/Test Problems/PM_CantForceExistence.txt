@@ -1,3 +1,5 @@
+Problem: PM_CantForceExistence
+
 Wharf is a room.
 
 When play begins:

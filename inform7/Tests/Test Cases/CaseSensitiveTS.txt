@@ -1,3 +1,6 @@
+Test: CaseSensitiveTS
+For: Z-Machine
+
 The Schoolhouse is a room.
 
 To say Blorp: say "Blorp!".

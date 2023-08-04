@@ -1,3 +1,6 @@
+Test: Index-MapLayout-BrokenDiagonals
+TestCompilerInternals: Yes
+
 "The Broken Diagonals Affair"
 
 Blockhouse A is east of Blockhouse B. Blockhouse B is south of Blockhouse A.

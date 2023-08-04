@@ -1,3 +1,5 @@
+Problem: PM_BothBlockSyntaxes
+
 Home is a room.
 
 When play begins:

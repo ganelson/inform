@@ -1,3 +1,6 @@
+Test: C12ResolverCasts
+For: Z-Machine
+
 The Study is a room. The duck is in the Study.
 
 Instead of taking something (called the item):

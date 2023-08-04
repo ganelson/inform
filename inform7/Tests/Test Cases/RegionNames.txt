@@ -1,3 +1,6 @@
+Test: RegionNames
+For: Z-Machine
+
 Zone is a room. Nigel is in the Zone.
 
 Area 51 is a region. 

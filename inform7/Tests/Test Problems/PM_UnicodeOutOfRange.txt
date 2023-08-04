@@ -1,1 +1,4 @@
+Problem: PM_UnicodeOutOfRange
+For: Z-Machine
+
 Laboratory is a room. "A sign shows: [unicode Roman Dimidia Sextula Sign]."

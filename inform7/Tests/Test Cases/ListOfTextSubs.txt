@@ -1,3 +1,6 @@
+Test: ListOfTextSubs
+For: Z-Machine
+
 Home is a room.
 
 L is a list of text that varies. L is { "[the problem]" }.

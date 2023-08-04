@@ -1,3 +1,6 @@
+Test: NamelessSceneProperty
+For: Z-Machine
+
 The Overall Plot is a scene.
 
 The Place is a room.

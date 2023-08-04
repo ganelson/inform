@@ -1,3 +1,7 @@
+Test: BIP-Say-G
+Language: Basic
+For: Glulx
+
 To begin:
 	say "Hello.";
 	say "fish";

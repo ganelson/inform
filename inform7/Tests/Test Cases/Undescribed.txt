@@ -1,3 +1,6 @@
+Test: Undescribed
+For: Z-Machine
+
 The Bar is a room.
 
 The counter is a thing in the Bar. The unnoticed change is an undescribed

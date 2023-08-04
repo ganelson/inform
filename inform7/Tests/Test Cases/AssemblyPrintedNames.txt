@@ -1,3 +1,6 @@
+Test: AssemblyPrintedNames
+For: Z-Machine
+
 Stage is a room.
 
 An oak tree is a kind of thing. Understand "oak/tree" as an oak tree.

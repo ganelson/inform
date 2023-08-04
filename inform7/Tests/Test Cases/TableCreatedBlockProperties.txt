@@ -1,3 +1,6 @@
+Test: TableCreatedBlockProperties
+For: Z-Machine
+
 Subject is a kind of value. The subjects are defined by the Table of
 TestSubjects.
 

@@ -1,3 +1,7 @@
+Test: BIP-ListLength-G
+Language: Basic
+For: Glulx
+
 To begin:
 	let M be a list of numbers;
 	add 2 to M; add 3 to M; add 5 to M; add 7 to M; add 11 to M;

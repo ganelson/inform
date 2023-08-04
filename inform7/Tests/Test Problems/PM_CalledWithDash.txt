@@ -1,3 +1,5 @@
+Problem: PM_CalledWithDash
+
 Home is a room.
 
 When play begins, if one person (called the dude - a person) is in Home, say "ok".

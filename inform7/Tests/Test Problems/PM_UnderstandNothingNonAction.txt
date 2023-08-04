@@ -1,3 +1,5 @@
+Problem: PM_UnderstandNothingNonAction
+
 Kitchen is a room.
 
 Understand nothing as taking.

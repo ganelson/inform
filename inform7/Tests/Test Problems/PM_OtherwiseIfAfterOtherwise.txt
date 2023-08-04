@@ -1,3 +1,5 @@
+Problem: PM_OtherwiseIfAfterOtherwise
+
 Stage is a room.
 Every turn:
 	if 1 is 1 begin;

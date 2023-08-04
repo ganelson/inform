@@ -1,3 +1,6 @@
+Test: MatchListPeople
+For: Z-Machine
+
 Apartment is a room.  A table and a chair are here.
 A woman called Alice is here.  Alice is wearing a dress and some shoes.
 

@@ -1,3 +1,5 @@
+Problem: PM_EquationEquatesMultiply
+
 Laboratory is a room.
 
 Equation 2

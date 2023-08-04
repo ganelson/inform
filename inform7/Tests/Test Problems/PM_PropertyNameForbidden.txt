@@ -1,3 +1,5 @@
+Problem: PM_PropertyNameForbidden
+
 The Garage is a room.
 
 A game is a kind of a thing.

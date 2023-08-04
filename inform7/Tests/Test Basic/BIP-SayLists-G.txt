@@ -1,3 +1,7 @@
+Test: BIP-SayLists-G
+Language: Basic
+For: Glulx
+
 An apple, a pear and an orange are objects.
 
 To begin:

@@ -1,3 +1,6 @@
+Test: AssertAdjectives
+For: Z-Machine
+
 Shape is a kind of value. The shapes are square and round.
 Colour is a kind of value. The colours are red and blue.
 Texture is a kind of value. The textures are smooth and rough.

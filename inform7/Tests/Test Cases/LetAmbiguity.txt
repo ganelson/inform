@@ -1,3 +1,6 @@
+Test: LetAmbiguity
+For: Z-Machine
+
 [This catches a subtle case in the type-checker, where the kind of value
 of N is possible to misinterpret as a time, due to ambiguities in "after".]
 

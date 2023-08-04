@@ -1,3 +1,6 @@
+Test: NAPs
+For: Z-Machine
+
 The arena is a room. "You're here to fight." The player is here.
 
 The lounge is east of the arena.

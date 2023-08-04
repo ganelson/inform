@@ -1,3 +1,5 @@
+Problem: PM_RuleInIncompatibleRulebooks
+
 There is a room.
 This is the foo rule:
 	let bar be the foo rule;
