@@ -178,8 +178,6 @@ void Examples::examples_helper(text_stream *line, text_file_position *tfp, void 
 					section *S = Dictionaries::read_value(volumes[1]->sections_by_name, sname);
 					if (S) E->example_belongs_to_section[1] = S;
 				}
-			} else {
-				Errors::in_text_file("no such example details field", tfp);
 			}
 		}
 	}
