@@ -1,4 +1,4 @@
--set hash_cache						'inform7/Tests/hashes.intest'
+-set hash_cache 'inform7/Tests/hashes.intest'
 
 ! These are needed for C examples and test cases, and for the Make recipe,
 ! but not for anything else:
@@ -27,7 +27,7 @@
 -annotated-cases           [Main:EXTERNAL=inform7/Tests] 'inform7/Tests/Test Internals'
 -examples		           [Main:EXTERNAL=inform7/Tests] 'resources/Documentation/Examples'
 -annotated-problems        [Main:EXTERNAL=inform7/Tests] 'inform7/Tests/Test Problems'
--if macos -annotated-cases [Main:EXTERNAL=inform7/Tests] 'inform7/Tests/Test Releases'
+-if MacOS -annotated-cases [Main:EXTERNAL=inform7/Tests] 'inform7/Tests/Test Releases'
 -recipe [Main] '$$internal/Delia/Main.delia'
 
 -cases			           [Make]                        'inform7/Tests/Test Makes'

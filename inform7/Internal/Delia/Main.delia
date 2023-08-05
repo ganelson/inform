@@ -6,6 +6,9 @@ default: $GENERATEINDEX = No
 default: $GENERATEDIAGNOSTICS = No
 default: $INTERNAL = inform7/Internal
 default: $TESTRELEASEMETADATA = No
+default: $SCRIPT =
+default: $LANGUAGE = Inform
+default: $FOR = Glulx
 
 ! (1) Set $FORMAT to the full description of the language we will transpile
 ! to, and extract the source text for the case, writing it to the given file:
@@ -29,6 +32,7 @@ endif
 
 set: $A = $$workspace/Actuals/$CASE.txt
 set: $I = $PATH/$CASE--I.txt
+show: ideal $I
 
 ! (3) Make sure the "transient area" exists and is completely empty.
 
@@ -92,6 +96,7 @@ if: $TYPE problem
 	fail step: $I7 `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform >$A 2>&1
 	or: 'failed to produce its namesake Problem message' $A
 	show: $A
+	show: i7 $A
 	exists: $I
 	or: 'produced Problem(s), but no ideal transcript existed'
 	match problem: $A $I
@@ -126,11 +131,11 @@ if: $TESTRELEASEMETADATA Yes
 
 	match text: $ABLURB $IBLURB
 	or: 'produced the wrong release blurb'
-	show: $ABLURB
+	show: blurb $ABLURB
 
 	match text: $AIFICTION $IIFICTION
 	or: 'produced the wrong iFiction metadata'
-	show: $AIFICTION
+	show: ifiction $AIFICTION
 else
 
 ! (7c) Testing that inform7 in -test-output mode outputs the correct internal data.
@@ -140,6 +145,8 @@ if: $TESTCOMPILERINTERNALS Yes
 	step: $I7 `$I7OPTIONS -project $WORK/Example.inform -test-output $A >$I7CONSOLE 2>&1
 	or: 'failed with Problem message(s)' $I7CONSOLE
 	show: $A
+	show: transcript $A
+	show: i7 $I7CONSOLE
 	exists: $I
 	or: 'ran without crashing but no ideal results existed'
 	match text: $A $I
@@ -151,11 +158,12 @@ else
 if: $FOR C
 	set: $I7CLIB = inform7/Internal/Miscellany
 
-	set: $TOUT = $$workspace/Actuals/$CASE.intert
 	set: $COUT = $$workspace/Actuals/$CASE.c
 	set: $OFILE = $WORK/Example.inform/Build/$CASE.o
-	step: $I7 `$I7OPTIONS $WORK/Example.inform/Source/story.ni -variable *tout=$TOUT -o $COUT >$I7CONSOLE 2>&1
+	step: $I7 `$I7OPTIONS $WORK/Example.inform/Source/story.ni -o $COUT >$I7CONSOLE 2>&1
 	or: 'failed with Problem message(s)' $I7CONSOLE
+	show: i7 $I7CONSOLE
+	show: c $COUT
 
 	set: $CCCONSOLE = $WORK/Example.inform/Build/cc_output.txt
 	set: $LINKCONSOLE = $WORK/Example.inform/Build/link_output.txt
@@ -163,15 +171,18 @@ if: $FOR C
 
 	step: `$$CCOMPILER -o $OFILE $COUT -I $I7CLIB >$CCCONSOLE 2>&1
 	or: 'failed to compile C' $CCCONSOLE
+	show: cc $CCCONSOLE
 
 	step: `$$CLINKER -o $STORYFILE $OFILE `$$LINKFLAGS >$LINKCONSOLE 2>&1
 	or: 'failed to link C' $LINKCONSOLE
+	show: link $LINKCONSOLE
 
 	if: $COMPILEONLY No
 		step: $STORYFILE <$SCRIPT >$A 2>&1
 		or: 'failed to run C program' $A
 
 		show: $A
+		show: transcript $A
 
 		match text: $A $I
 		or: 'C program misbehaved'
@@ -197,7 +208,7 @@ else
 	step: $I7 `$I7OPTIONS -project $WORK/Example.inform >$I7CONSOLE 2>&1
 	or: 'failed with Problem message(s)' $I7CONSOLE
 
-	show: $I7CONSOLE
+	show: i7 $I7CONSOLE
 
 	if: $COMPILEONLY No
 		set: $I6 = inform6/Tangled/inform6
@@ -211,12 +222,13 @@ else
 
 		step: $I6 `$I6OPTIONS $I6SOURCE $STORYFILE >$I6CONSOLE 2>&1
 		or: 'failed to pass through Inform 6' $I6CONSOLE
-		show i6: $I6CONSOLE
+		show: i6 $I6CONSOLE
 
 		step: $INTERPRETER `$INTOPTIONS $STORYFILE <$SCRIPT >$A 2>&1
 		or: 'unable to run interpreter (do you need to make interpreters?)'
 
-		show transcript: $A
+		show: $A
+		show: transcript $A
 
 		exists: $I
 		or: 'translated successfully but no ideal transcript existed'

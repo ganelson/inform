@@ -46,6 +46,7 @@
 	debugger: lldb -f $I7 -- `$I7OPTIONS -project $WORK/Example.inform -crash-all
 	step: $I7 `$I7OPTIONS -project $WORK/Example.inform >$I7CONSOLE 2>&1
 	or: 'failed with Problem message(s)' $I7CONSOLE
+	show: i7 $I7CONSOLE
 
 	set: $BLURB = $WORK/Example.inform/Release.blurb
 	match platform text: $BLURB $PATH/_Blurb_Ideal/$CASE.blurb
@@ -58,7 +59,7 @@
 	set: $STORYFILE = $WORK/Example.inform/Build/output.$FORMAT
 	step: $I6 `$I6OPTIONS $I6SOURCE $STORYFILE >$I6CONSOLE 2>&1
 	or: 'failed to pass through Inform 6' $I6CONSOLE
-	show i6: $I6CONSOLE
+	show: i6 $I6CONSOLE
 
 	set: $BLORBFILE = $WORK/Example.inform/Build/output.$BLORBEXT
 
