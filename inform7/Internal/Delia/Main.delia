@@ -25,6 +25,7 @@ else
 		extract: $WORK/Example.inform/Source/story.ni Z
 	endif
 endif
+show: source $WORK/Example.inform/Source/story.ni
 
 ! (2) Almost all tests produce actual textual output, which we put in $A,
 ! and ideal or blessed textual output, which is in $I: the test will end up
@@ -44,7 +45,7 @@ step: find $TRANSIENTAREA -mindepth 1 -delete
 
 ! (4) Work out the command-line options to pass to inform7.
 
-set: $I7OPTIONS = -format=$FORMAT -no-progress -no-resource-checking -fixtime -rng -sigils -log nothing -transient $TRANSIENTAREA -internal $INTERNAL
+set: $I7OPTIONS = -format=$FORMAT -no-progress -no-resource-checking -fixtime -rng -sigils -transient $TRANSIENTAREA -internal $INTERNAL
 ifdef: $EXTERNAL
 	set: $I7OPTIONS = `$I7OPTIONS -external $EXTERNAL
 else
