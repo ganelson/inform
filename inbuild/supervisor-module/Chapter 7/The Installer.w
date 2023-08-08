@@ -436,8 +436,8 @@ void ExtensionInstaller::uninstall(inbuild_copy *C, int confirmed, pathname *to_
 	text_stream *OUT = NULL;
 	if ((C->edition->work->genre == extension_genre) ||
 		(C->edition->work->genre == extension_bundle_genre)) {
+		@<Begin uninstaller report@>;
 		if (OUT) {
-			@<Begin uninstaller report@>;
 			if (confirmed) @<Make confirmed uninstaller report@>
 			else @<Make unconfirmed uninstaller report@>;
 		}
@@ -693,13 +693,10 @@ int ExtensionInstaller::seek_extension_in_graph(inbuild_copy *C, build_vertex *V
 =
 void ExtensionInstaller::install_button(OUTPUT_STREAM, inform_project *proj,
 	inbuild_copy *C) {			
-	TEMPORARY_TEXT(URL)
-	if (C->location_if_file)
-		WRITE_TO(URL, "%f", C->location_if_file);
-	else
-		WRITE_TO(URL, "%p", C->location_if_path);
-	HTML_OPEN_WITH("a", "class=\"registrycontentslink\" href='javascript:project().install(\"%S\")'", URL);
-	DISCARD_TEXT(URL)
+	TEMPORARY_TEXT(js_path)
+	@<Get the extension path escaped for use in Javascript@>
+	HTML_OPEN_WITH("a", "class=\"registrycontentslink\" href='javascript:project().install(\"%S\")'", js_path);
+	DISCARD_TEXT(js_path)
 	ExtensionInstaller::install_icon(OUT);
 	HTML_CLOSE("a");
 }
@@ -710,13 +707,10 @@ void ExtensionInstaller::install_icon(OUTPUT_STREAM) {
 
 void ExtensionInstaller::uninstall_button(OUTPUT_STREAM, inform_project *proj,
 	inbuild_copy *C) {
-	TEMPORARY_TEXT(URL)
-	if (C->location_if_file)
-		WRITE_TO(URL, "%f", C->location_if_file);
-	else
-		WRITE_TO(URL, "%p", C->location_if_path);
-	HTML_OPEN_WITH("a", "class=\"registrycontentslink\" href='javascript:project().uninstall(\"%S\")'", URL);
-	DISCARD_TEXT(URL)
+	TEMPORARY_TEXT(js_path)
+	@<Get the extension path escaped for use in Javascript@>
+	HTML_OPEN_WITH("a", "class=\"registrycontentslink\" href='javascript:project().uninstall(\"%S\")'", js_path);
+	DISCARD_TEXT(js_path)
 	ExtensionInstaller::uninstall_icon(OUT);
 	HTML_CLOSE("a");
 }
@@ -724,3 +718,18 @@ void ExtensionInstaller::uninstall_button(OUTPUT_STREAM, inform_project *proj,
 void ExtensionInstaller::uninstall_icon(OUTPUT_STREAM) {
 	WRITE("<span class=\"paste\">%c%c</span>", 0x2198, 0xFE0F); /* Unicode "down right arrow" */
 }
+
+@<Get the extension path escaped for use in Javascript@> =
+	TEMPORARY_TEXT(path)
+	if (C->location_if_file)
+		WRITE_TO(path, "%f", C->location_if_file);
+	else
+		WRITE_TO(path, "%p", C->location_if_path);
+	LOOP_THROUGH_TEXT(pos, path) {
+		wchar_t c = Str::get(pos);
+		if (c == '\\')
+			WRITE_TO(js_path, "\\\\");
+		else
+			PUT_TO(js_path, c);
+	}
+	DISCARD_TEXT(path)
