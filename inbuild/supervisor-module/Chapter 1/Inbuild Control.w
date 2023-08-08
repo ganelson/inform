@@ -186,7 +186,7 @@ better way to choose a virtual machine to compile to.
 	CommandLine::declare_switch(DEPRECATED_EXTERNAL_CLSW, L"deprecated-external", 2,
 		L"same as -external X, but issues warnings if the nest is actually used");
 	CommandLine::declare_switch(TRANSIENT_CLSW, L"transient", 2,
-		L"use X for transient data such as the extensions census");
+		L"(an option now withdrawn)");
 	CommandLine::end_group();
 
 @ These are all new in 2020. They are not formally shared with the |inter| tool,
@@ -202,7 +202,7 @@ but |-pipeline-file| and |-variable| have the same effect as they would there.
 @<Declare Inter-related options@> =
 	CommandLine::begin_group(INBUILD_INTER_CLSG, I"for tweaking code generation from Inter");
 	CommandLine::declare_switch(KIT_CLSW, L"kit", 2,
-		L"include Inter code from the kit called X");
+		L"(an option now withdrawn)");
 	CommandLine::declare_switch(PIPELINE_CLSW, L"pipeline", 2,
 		L"specify code-generation pipeline by name (default is \"compile\")");
 	CommandLine::declare_switch(PIPELINE_FILE_CLSW, L"pipeline-file", 2,
@@ -218,7 +218,6 @@ set appropriately.
 filename *inter_pipeline_file = NULL;
 filename *transpiled_output_file = NULL;
 dictionary *pipeline_vars = NULL;
-pathname *shared_transient_resources = NULL;
 int this_is_a_debug_compile = FALSE; /* Destined to be compiled with debug features */
 int this_is_a_release_compile = FALSE; /* Omit sections of source text marked not for release */
 text_stream *output_format = NULL; /* What story file we will eventually have */
@@ -272,7 +271,8 @@ void Supervisor::option(int id, int val, text_stream *arg, void *state) {
 			Nests::deprecate(Supervisor::add_nest(Pathnames::from_text(arg),
 				EXTERNAL_NEST_TAG)); break;
 		case TRANSIENT_CLSW:
-			shared_transient_resources = Pathnames::from_text(arg); break;
+			Errors::fatal("the -transient option has been withdrawn");
+			break;
 		case BASIC_CLSW: Projects::enter_forcible_basic_mode(); break;
 		case KIT_CLSW:
 			Errors::fatal("the -kit option has been withdrawn");
@@ -424,12 +424,8 @@ But among nests three are special, and can hold other things as well.
 It contains, for example, the build-in extensions. But it also contains
 miscellaneous other files needed by Inform (see below).
 
-(b) The "external" nest is the one to which the user installs her own
-selection of extensions, and so on. On most platforms, the external nest
-is also the default home of "transient" storage, for more ephemeral content,
-such as the mechanically generated extension documentation. Some mobile
-operating systems are aggressive about wanting to delete ephemeral files
-used by applications, so |-transient| can be used to divert these.
+(b) The "external" nest is a place in which extensions to be shared among
+multiple projects can be stored.
 
 (c) Every project has its own private nest, in the form of its associated
 Materials folder. For example, in |Jane Eyre.inform| is a project, then
@@ -552,19 +548,6 @@ just plain old files.
 pathname *Supervisor::installed_files(void) {
 	if (shared_internal_nest) return shared_internal_nest->location;
 	return Supervisor::default_internal_path();
-}
-
-@ The transient area can be used for build files for project files, where
-there's no build directory provided by the project bundle. |-transient| sets
-it, but otherwise the external nest is used.
-
-=
-pathname *Supervisor::transient(void) {
-	RUN_ONLY_FROM_PHASE(TINKERING_INBUILD_PHASE)
-	if (shared_transient_resources == NULL)
-		if (shared_external_nest)
-			return shared_external_nest->location;
-	return shared_transient_resources;
 }
 
 @h The shared project.

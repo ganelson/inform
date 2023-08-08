@@ -34,6 +34,7 @@ for testing and debugging inform7:
   -inbuild-verbose         equivalent to -inbuild-verbosity=1 (default is -no-inbuild-verbose)
   -inbuild-verbosity=N     how much inbuild should explain: lowest is 0 (default), highest is 3
   -no-index                don't produce an Index (default is -index)
+  -log-to-project X        like -log X, but writing the debugging log into the project
   -no-problems             don't produce (an HTML) Problems report page (default is -problems)
   -no-progress             don't display progress percentages (default is -progress)
   -require-problem X       return 0 unless exactly this Problem message is generated

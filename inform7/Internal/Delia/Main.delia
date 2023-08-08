@@ -10,8 +10,7 @@ default: $SCRIPT =
 default: $LANGUAGE = Inform
 default: $COMPATIBLEWITH = all
 
-! (1) Set $FORMAT to the full description of the language we will transpile
-! to, and extract the source text for the case, writing it to the given file:
+! (1) Set $FORMAT to the full description of the language we will transpile to.
 
 if compatible: inform6/32 `$COMPATIBLEWITH
 	default: $FOR = Glulx
@@ -48,6 +47,8 @@ else
 	fail: `$ERROR
 endif
 
+! (2) Extract the source text for the case, writing it to the given file.
+
 set: $SOURCE = $WORK/Example.inform/Source/story.ni
 if compatible: $FORMAT Glulx
 	extract: $SOURCE G
@@ -56,7 +57,7 @@ else
 endif
 show: source $SOURCE
 
-! (2) Almost all tests produce actual textual output, which we put in $A,
+! (3) Almost all tests produce actual textual output, which we put in $A,
 ! and ideal or blessed textual output, which is in $I: the test will end up
 ! by comparing $A with $I$.
 
@@ -64,17 +65,9 @@ set: $A = $$workspace/Actuals/$CASE.txt
 set: $I = $PATH/$CASE--I.txt
 show: ideal $I
 
-! (3) Make sure the "transient area" exists and is completely empty.
-
-ifndef: $TRANSIENTAREA
-	set: $TRANSIENTAREA = $WORK/Transient
-endif
-mkdir: $TRANSIENTAREA
-step: find $TRANSIENTAREA -mindepth 1 -delete
-
 ! (4) Work out the command-line options to pass to inform7.
 
-set: $I7OPTIONS = -format=$FORMAT -no-progress -no-resource-checking -fixtime -rng -sigils -transient $TRANSIENTAREA -internal $INTERNAL
+set: $I7OPTIONS = -format=$FORMAT -no-progress -no-resource-checking -fixtime -rng -sigils -internal $INTERNAL
 ifdef: $EXTERNAL
 	set: $I7OPTIONS = `$I7OPTIONS -external $EXTERNAL
 else

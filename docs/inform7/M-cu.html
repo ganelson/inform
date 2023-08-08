@@ -52,7 +52,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">inform7</a></li><li><a href="index.html#M">Manual</a></li><li><b>Command-Line Usage</b></li></ul></div>
 <p class="purpose">A brief note on using Inform 7 at the command line.</p>
 
-<ul class="toc"><li><a href="M-cu.html#SP1">&#167;1. Disclaimer</a></li><li><a href="M-cu.html#SP3">&#167;3. How the UI apps call Inform 7</a></li><li><a href="M-cu.html#SP10">&#167;10. Using Inform 7 without projects</a></li><li><a href="M-cu.html#SP11">&#167;11. Testing and debugging switches</a></li><li><a href="M-cu.html#SP12">&#167;12. Expert settings file</a></li><li><a href="M-cu.html#SP13">&#167;13. Prehistory</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-cu.html#SP1">&#167;1. Disclaimer</a></li><li><a href="M-cu.html#SP3">&#167;3. How the UI apps call Inform 7</a></li><li><a href="M-cu.html#SP9">&#167;9. Using Inform 7 without projects</a></li><li><a href="M-cu.html#SP10">&#167;10. Testing and debugging switches</a></li><li><a href="M-cu.html#SP11">&#167;11. Expert settings file</a></li><li><a href="M-cu.html#SP12">&#167;12. Prehistory</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Disclaimer. </b>This is not documentation on the Inform language or its user-interface apps:
 it's a technical note on how the command-line tool inside those apps is called.
@@ -215,24 +215,7 @@ to compile) then source-reference links will be to the right examples.
 <p class="commentary">For ordinary, non-Extension, projects, this switch should not be used.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>When the app installs a new extension (in the external area), or is run
-for the first time, it should call Inform 7 to perform a "census" of the
-available extensions. The compiler then looks through its internal and
-external areas, and creates suitable HTML pages showing what it finds,
-which it stores in a writeable area of the file system called the "transient"
-directory.
-</p>
-
-<p class="commentary">The usage for this is:
-</p>
-
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inform7/Tangled/inform7</span><span class="ConsoleText-identifier-syntax"> -internal</span><span class="ConsoleText-plain-syntax"> I</span><span class="ConsoleText-identifier-syntax"> -external</span><span class="ConsoleText-plain-syntax"> E</span><span class="ConsoleText-identifier-syntax"> -transient</span><span class="ConsoleText-plain-syntax"> T</span><span class="ConsoleText-identifier-syntax"> -census</span>
-</pre>
-<p class="commentary">(The caller has the obligation to provide the Transient directory.)
-</p>
-
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Using Inform 7 without projects. </b>To users of Inform UI apps, projects seem essential. On Mac OS, they are
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Using Inform 7 without projects. </b>To users of Inform UI apps, projects seem essential. On Mac OS, they are
 sealed boxes, looking like files in the Finder, but on all platforms they
 are in reality directories, containing not only the source code but also a
 variety of other things.
@@ -308,7 +291,7 @@ example,
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span>
 <span class="ConsoleText-plain-syntax">    helloworld.c        helloworld.i7</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Testing and debugging switches. </b>The following switches are used only when testing or maintaining Inform,
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Testing and debugging switches. </b>The following switches are used only when testing or maintaining Inform,
 and are unlikely to be useful to end users. Many of these are, however,
 used in the Intest scripts for testing Inform 7 and Inblorb.
 </p>
@@ -327,7 +310,7 @@ message".
 </li><li>(e) <span class="extract"><span class="ConsoleText-extract-syntax">-require-problem SIGIL</span></span> tells Inform to return an exit code of 0 if
 exactly this problem message is produced, and 1 otherwise.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Expert settings file. </b>Ordinarily, when the user clicks (say) "Go", the GUI app calls the inform7
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Expert settings file. </b>Ordinarily, when the user clicks (say) "Go", the GUI app calls the inform7
 executable with various command-line settings to perform the actual work.
 The user has had no way to change those settings, except indirectly by e.g.
 clicking the checkbox to do with random number generation on the Settings
@@ -341,7 +324,7 @@ settings file, and consists of a list of additional command-line arguments
 command line.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Prehistory. </b>Build 1A01 was the first rough draft of a completed compiler: but it did
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Prehistory. </b>Build 1A01 was the first rough draft of a completed compiler: but it did
 not synchronise fully with the OS X Inform application until 1G22 and
 private beta-testing did not begin until 1J34. Other milestones include
 time (1B92), tables (1C86), component parts (1E60), indexing (1F46),

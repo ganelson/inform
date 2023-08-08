@@ -140,19 +140,6 @@ to compile) then source-reference links will be to the right examples.
 
 For ordinary, non-Extension, projects, this switch should not be used.
 
-@ When the app installs a new extension (in the external area), or is run
-for the first time, it should call Inform 7 to perform a "census" of the
-available extensions. The compiler then looks through its internal and
-external areas, and creates suitable HTML pages showing what it finds,
-which it stores in a writeable area of the file system called the "transient"
-directory.
-
-The usage for this is:
-= (text as ConsoleText)
-	$ inform7/Tangled/inform7 -internal I -external E -transient T -census
-=
-(The caller has the obligation to provide the Transient directory.)
-
 @h Using Inform 7 without projects.
 To users of Inform UI apps, projects seem essential. On Mac OS, they are
 sealed boxes, looking like files in the Finder, but on all platforms they

@@ -209,9 +209,7 @@ pathname *Projects::path(inform_project *proj) {
 }
 
 pathname *Projects::build_path(inform_project *proj) {
-	if (proj->as_copy->location_if_path)
-		return Pathnames::down(Projects::path(proj), I"Build");
-	return Supervisor::transient();
+	return Pathnames::down(Projects::path(proj), I"Build");
 }
 
 inbuild_nest *Projects::materials_nest(inform_project *proj) {

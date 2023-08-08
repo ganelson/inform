@@ -283,8 +283,8 @@ but is openly accessible even on MacOS.
 
 If Inform is working on a single source text file, not a bundle, then the
 project will be the current working directory, but now the build folder will
-be the Inbuild transient area, and materials (if present) will again be
-alongside.
+be the folder |Build| in the same directory as the source file, and materials
+(if present) will again be alongside.
 
 To begin: what's in the project area? |story.ni| and |auto.inf|, neither
 one very helpfully named, are defined in Inbuild rather than here: these
