@@ -30,6 +30,7 @@ equivalent of unlocking the doors and turning the lights on in the morning.
 int silence_is_golden = FALSE;
 int index_explicitly_set = FALSE, problems_explicitly_set = FALSE;
 pathname *diagnostics_path = NULL;
+text_stream *log_to_project = NULL;
 
 int Main::deputy(int argc, char *argv[]) {
 	@<Start up@>;
@@ -132,6 +133,9 @@ but we won't assume that. Remember, //supervisor// knows best.
 		for (int i=0; i<argc; i++) LOG(" %s", argv[i]);
 		LOG("\n");
 		CommandLine::play_back_log();
+		if (Str::len(log_to_project) > 0)
+			if (Log::set_aspect_from_command_line(log_to_project, FALSE) == FALSE)
+				Problems::fatal("Unknown -log-to-project setting");
 	}
 	if (proj) {
 		if (Task::problems_enabled()) {
@@ -288,6 +292,7 @@ compiler via Delia scripts in |intest|.
 @e CHECK_RESOURCES_CLSW
 @e INBUILD_VERBOSE_CLSW
 @e INBUILD_VERBOSITY_CLSW
+@e LOG_TO_PROJECT_CLSW
 
 @<Register command-line arguments@> =
 	CommandLine::begin_group(INFORM_TESTING_CLSG, I"for testing and debugging inform7");
@@ -309,6 +314,8 @@ compiler via Delia scripts in |intest|.
 		L"if no problems occur, write diagnostics files to directory X", FALSE);
 	CommandLine::declare_switch(REQUIRE_PROBLEM_CLSW, L"require-problem", 2,
 		L"return 0 unless exactly this Problem message is generated");
+	CommandLine::declare_switch(LOG_TO_PROJECT_CLSW, L"log-to-project", 2,
+		L"like -log X, but writing the debugging log into the project");
 	CommandLine::declare_switch(TEST_OUTPUT_CLSW, L"test-output", 2,
 		L"write output of internal tests to file X");
 	CommandLine::declare_boolean_switch(SILENCE_CLSW, L"silence", 1,
@@ -343,6 +350,7 @@ void Main::switch(int id, int val, text_stream *arg, void *state) {
 		case DIAGNOSTICS_CLSW: diagnostics_path = Pathnames::from_text(arg); break;
 		case CHECK_RESOURCES_CLSW: ResourceFinder::set_mode(val); break;
 		case TEST_OUTPUT_CLSW: InternalTests::set_file(Filenames::from_text(arg)); break;
+		case LOG_TO_PROJECT_CLSW: log_to_project = Str::duplicate(arg); break;
 		case SILENCE_CLSW: silence_is_golden = TRUE; break;
 		case INBUILD_VERBOSE_CLSW: Supervisor::set_verbosity(1); break;
 		case INBUILD_VERBOSITY_CLSW: Supervisor::set_verbosity(val); break;
