@@ -436,8 +436,8 @@ void ExtensionInstaller::uninstall(inbuild_copy *C, int confirmed, pathname *to_
 	text_stream *OUT = NULL;
 	if ((C->edition->work->genre == extension_genre) ||
 		(C->edition->work->genre == extension_bundle_genre)) {
+		@<Begin uninstaller report@>;
 		if (OUT) {
-			@<Begin uninstaller report@>;
 			if (confirmed) @<Make confirmed uninstaller report@>
 			else @<Make unconfirmed uninstaller report@>;
 		}
