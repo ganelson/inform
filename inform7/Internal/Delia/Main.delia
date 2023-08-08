@@ -8,24 +8,53 @@ default: $INTERNAL = inform7/Internal
 default: $TESTRELEASEMETADATA = No
 default: $SCRIPT =
 default: $LANGUAGE = Inform
-default: $FOR = Glulx
+default: $COMPATIBLEWITH = all
 
 ! (1) Set $FORMAT to the full description of the language we will transpile
 ! to, and extract the source text for the case, writing it to the given file:
 
+if compatible: inform6/32 `$COMPATIBLEWITH
+	default: $FOR = Glulx
+else
+	if compatible: C `$COMPATIBLEWITH
+		default: $FOR = Glulx
+	else
+		default: $FOR = Z-Machine
+	endif
+endif
+
 if: $FOR C
 	default: $FORMAT = C
-	extract: $WORK/Example.inform/Source/story.ni G
 else
 	if: $FOR Glulx
 		default: $FORMAT = Inform6/32
-		extract: $WORK/Example.inform/Source/story.ni G
 	else
-		default: $FORMAT = Inform6/16
-		extract: $WORK/Example.inform/Source/story.ni Z
+		if: $FOR Z-Machine
+			default: $FORMAT = Inform6/16
+		else
+			if format valid: $FORMAT
+				default: $FORMAT = $FOR
+			else
+				set: $ERROR = 'The format $FORMAT is not something I can test'
+				fail: `$ERROR
+			endif
+		endif
 	endif
 endif
-show: source $WORK/Example.inform/Source/story.ni
+
+if compatible: $FORMAT `$COMPATIBLEWITH
+else
+	set: $ERROR = 'The test format $FORMAT is not compatible with $COMPATIBLEWITH'
+	fail: `$ERROR
+endif
+
+set: $SOURCE = $WORK/Example.inform/Source/story.ni
+if compatible: $FORMAT Glulx
+	extract: $SOURCE G
+else
+	extract: $SOURCE Z
+endif
+show: source $SOURCE
 
 ! (2) Almost all tests produce actual textual output, which we put in $A,
 ! and ideal or blessed textual output, which is in $I: the test will end up
@@ -53,6 +82,17 @@ else
 		set: $I7OPTIONS = `$I7OPTIONS -external $NEST
 	endif
 endif
+if showing: log
+	ifdef: $$LOG
+		set: $I7OPTIONS = `$I7OPTIONS -log-to-project $$LOG
+	endif
+else
+	set: $I7OPTIONS = `$I7OPTIONS -log nothing
+endif
+if showing: inter
+	set: $INTER = $WORK/Example.inform/Build/inter.txt
+	set: $I7OPTIONS = `$I7OPTIONS  -variable *tout=$INTER
+endif
 if: $LANGUAGE Basic
 	set: $I7OPTIONS = -basic `$I7OPTIONS
 endif
@@ -73,6 +113,7 @@ endif
 
 set: $I7 = inform7/Tangled/inform7
 set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
+set: $I7LOG = '$WORK/Example.inform/Build/Debug log.txt'
 
 ! (6) Clearing any external files used by the test.
 
@@ -95,7 +136,13 @@ endif
 if: $TYPE problem
 	debugger: lldb -f $I7 -- `$I7OPTIONS -project $WORK/Example.inform  -crash-all
 	fail step: $I7 `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform >$A 2>&1
-	or: 'failed to produce its namesake Problem message' $A
+	ifpass:
+		show: log $I7LOG
+		show: $A
+		show: i7 $A
+		fail: 'failed to produce its namesake Problem message' $A
+	endif
+	show: log $I7LOG
 	show: $A
 	show: i7 $A
 	exists: $I
@@ -122,7 +169,13 @@ if: $TESTRELEASEMETADATA Yes
 
 	set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
 	step: $I7 `$I7OPTIONS -project $WORK/Example.inform >$I7CONSOLE 2>&1
-	or: 'failed with Problem message(s)' $I7CONSOLE
+	iffail:
+		show: log $I7LOG
+		show: i7 $I7CONSOLE
+		fail: 'failed with Problem message(s)' $I7CONSOLE
+	endif
+	show: log $I7LOG
+	show: i7 $I7CONSOLE
 
 	set: $ABLURB = $WORK/Example.inform/Release.blurb 
 	set: $AIFICTION = $WORK/Example.inform/Metadata.iFiction
@@ -144,10 +197,15 @@ else
 if: $TESTCOMPILERINTERNALS Yes
 	debugger: lldb -f $I7 -- `$I7OPTIONS -project $WORK/Example.inform -test-output $A -crash-all
 	step: $I7 `$I7OPTIONS -project $WORK/Example.inform -test-output $A >$I7CONSOLE 2>&1
-	or: 'failed with Problem message(s)' $I7CONSOLE
+	iffail:
+		show: log $I7LOG
+		show: i7 $I7CONSOLE
+		fail: 'failed with Problem message(s)' $I7CONSOLE
+	endif
+	show: log $I7LOG
+	show: i7 $I7CONSOLE
 	show: $A
 	show: transcript $A
-	show: i7 $I7CONSOLE
 	exists: $I
 	or: 'ran without crashing but no ideal results existed'
 	match text: $A $I
@@ -162,7 +220,13 @@ if: $FOR C
 	set: $COUT = $$workspace/Actuals/$CASE.c
 	set: $OFILE = $WORK/Example.inform/Build/$CASE.o
 	step: $I7 `$I7OPTIONS $WORK/Example.inform/Source/story.ni -o $COUT >$I7CONSOLE 2>&1
-	or: 'failed with Problem message(s)' $I7CONSOLE
+	iffail:
+		show: log $I7LOG
+		show: i7 $I7CONSOLE
+		fail: 'failed with Problem message(s)' $I7CONSOLE
+	endif
+
+	show: log $I7LOG
 	show: i7 $I7CONSOLE
 	show: c $COUT
 
@@ -207,13 +271,21 @@ else
 
 	debugger: lldb -f $I7 -- `$I7OPTIONS -project $WORK/Example.inform -crash-all
 	step: $I7 `$I7OPTIONS -project $WORK/Example.inform >$I7CONSOLE 2>&1
-	or: 'failed with Problem message(s)' $I7CONSOLE
+	iffail:
+		show: log $I7LOG
+		show: i7 $I7CONSOLE
+		fail: 'failed with Problem message(s)' $I7CONSOLE
+	endif
 
+	set: $I6SOURCE = $WORK/Example.inform/Build/auto.inf
+
+	show: log $I7LOG
 	show: i7 $I7CONSOLE
+	show: inform6 $I6SOURCE
+	show: inter $INTER
 
 	if: $COMPILEONLY No
 		set: $I6 = inform6/Tangled/inform6
-		set: $I6SOURCE = $WORK/Example.inform/Build/auto.inf
 
 		hash: $I6SOURCE $WORK/Example.inform/Build/checksum.txt
 		or: 'passed (matching cached I6 known to work)'
