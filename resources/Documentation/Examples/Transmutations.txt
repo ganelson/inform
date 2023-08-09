@@ -55,4 +55,4 @@ Suppose we want to have a machine in our game that can transmute one item into a
 
 In this example we have only defined a single set of transmutable objects, but we could easily expand to include other groups.
 
-(Thanks to Jesse McGrew for proposing this example.)
+(Thanks to Tara McGrew for proposing this example.)
