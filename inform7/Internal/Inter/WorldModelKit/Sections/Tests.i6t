@@ -45,6 +45,16 @@ ACTIONS turns tracing of actions on.
 [ ActionsOnSub; trace_actions = 1; say__p = 1; "Actions listing on."; ];
 [ ActionsOffSub; trace_actions = 0; say__p = 1; "Actions listing off."; ];
 
+@h Banish Command.
+Like ABSTRACT, except that it removes something from play.
+
+=
+[ XBanishSub;
+    if (XTestMove(noun, nothing)) return;
+    remove noun;
+    say__p = 1; "[Banished.]";
+];
+
 @h Gonear Command.
 GONEAR teleports the player to the vicinity of some named item.
 
@@ -540,6 +550,8 @@ not picked up) and able to accept multiple objects.
 
 Verb meta 'abstract'
     * scope=testcommandnoun 'to' scope=testcommandnoun -> XAbstract;
+Verb meta 'banish'
+    * scope=testcommandnoun                     -> XBanish;
 Verb meta 'actions'
     *                                           -> ActionsOn
     * 'on'                                      -> ActionsOn
