@@ -17409,7 +17409,7 @@ When Inform needs to find an extension, it looks here first, then in the install
 
 Extensions are identified by author and by name, so that a given author can produce their own range of extensions, and need only ensure that these are named differently from each other. If John Smith and Mary Brown each want to write an extension called "Following People", there is no conflict.
 
-The name of an extension, and of an author, should be written in Sentence Capitalisation: that is, upper case for the first letter in each word. (Inform uses this to minimise problems on machines where filenames are read with case sensitivity.) It is permitted for author names to include upper-case letters within words, as with the "G" in "^{@Jesse McGrew}". In general it is best to avoid accented or unusual letters in titles and author names, but the standard ISO Latin-1 characters should be allowed - for instance,
+The name of an extension, and of an author, should be written in Sentence Capitalisation: that is, upper case for the first letter in each word. (Inform uses this to minimise problems on machines where filenames are read with case sensitivity.) It is permitted for author names to include upper-case letters within words, as with the "G" in "^{@Tara McGrew}". In general it is best to avoid accented or unusual letters in titles and author names, but the standard ISO Latin-1 characters should be allowed - for instance,
 
 	Étude Pour La Fênetre by Françoise Gauß begins here.
 
