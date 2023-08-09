@@ -1,5 +1,5 @@
 1. In
-<a name=STORYFILE></a><p>Story file format: <img border=0 src=inform:/doc_images/vm_glulx.png>&nbsp;Inform6/32d/v3.1.2</p>
+<a name=STORYFILE></a><p>Story file format: <img border=0 src=inform:/doc_images/vm_glulx.png>&nbsp;Inform6/32d/v3.1.2/no-orig-source-directives</p>
 <p>The following use options are in force:</p>
 <p class="tightin2"><span class="indexgrey">Set from Basic Inform version 2 by Graham Nelson:</span></p>
 <p class="tightin3">Use dynamic memory allocation</p>

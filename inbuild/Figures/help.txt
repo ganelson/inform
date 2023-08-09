@@ -58,10 +58,10 @@ for locating resources in the file system:
   -external X                  use X as the user's home for installed material such as extensions
   -internal X                  use X as the location of built-in material such as the Standard Rules
   -nest X                      add the nest at pathname X to the search list
-  -transient X                 use X for transient data such as the extensions census
+  -transient X                 (an option now withdrawn)
 
 for tweaking code generation from Inter:
-  -kit X                       include Inter code from the kit called X
+  -kit X                       (an option now withdrawn)
   -pipeline X                  specify code-generation pipeline by name (default is "compile")
   -pipeline-file X             specify code-generation pipeline as file X
   -variable X                  set pipeline variable X (in form name=value)

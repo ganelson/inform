@@ -177,13 +177,15 @@ inbuild_copy *ProjectBundleManager::claim_folder_as_copy(pathname *P) {
 			TEMPORARY_TEXT(subdir)
 			WRITE_TO(subdir, "%S", entry);
 			Str::delete_last_character(subdir);
-			TEMPORARY_TEXT(error_text)
-			WRITE_TO(error_text,
-				"the 'Build' subdirectory of the project directory '%S' contains a "
-				"further subdirectory called '%S', but should not have further subdirectories",
-				Pathnames::directory_name(P), subdir);
-			Copies::attach_error(C, CopyErrors::new_T(PROJECT_MALFORMED_CE, -1, error_text));
-			DISCARD_TEXT(error_text)
+			if (Str::ne_insensitive(subdir, I"Build")) {
+				TEMPORARY_TEXT(error_text)
+				WRITE_TO(error_text,
+					"the 'Build' subdirectory of the project directory '%S' contains a "
+					"further subdirectory called '%S', but should not have further subdirectories",
+					Pathnames::directory_name(P), subdir);
+				Copies::attach_error(C, CopyErrors::new_T(PROJECT_MALFORMED_CE, -1, error_text));
+				DISCARD_TEXT(error_text)
+			}
 			DISCARD_TEXT(subdir)
 		}
 	}

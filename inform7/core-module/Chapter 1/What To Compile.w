@@ -83,9 +83,6 @@ int Task::carry_out(build_step *S) {
 	inform7_task->project = project;
 	inform7_task->path = S->associated_copy->location_if_path;
 	inform7_task->build = Projects::build_path(project);
-	if (inform7_task->build) {
-		if (Pathnames::create_in_file_system(inform7_task->build) == 0) return FALSE;
-	}
 	inform7_task->materials = Projects::materials_path(project);
 	inform7_task->existing_storyfile = NULL;
 	inform7_task->stage_of_compilation = -1;
@@ -96,6 +93,17 @@ int Task::carry_out(build_step *S) {
 
 	int rv = Sequence::carry_out(TargetVMs::debug_enabled(inform7_task->task->for_vm));
 	return rv;
+}
+
+@ We don't want to create the Build folder unless it's actually needed, and
+in some cases it may not be.
+
+=
+pathname *Task::build_folder(void) {
+	if (inform7_task->build)
+		if (Pathnames::create_in_file_system(inform7_task->build) == FALSE)
+			return NULL;
+	return inform7_task->build;
 }
 
 @ All manner of low-level problems emerge when reading in the text of the
@@ -325,11 +333,11 @@ section for details. In addition we have:
 =
 filename *Task::cblorb_report_file(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
-	return Filenames::in(inform7_task->build, I"StatusCblorb.html");
+	return Filenames::in(Task::build_folder(), I"StatusCblorb.html");
 }
 filename *Task::parse_tree_file(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
-	return Filenames::in(inform7_task->build, I"Parse tree.txt");
+	return Filenames::in(Task::build_folder(), I"Parse tree.txt");
 }
 
 @ The name of the unblorbed story file is chosen for us by Inbuild, so

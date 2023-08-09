@@ -67,6 +67,7 @@ typedef struct I6_generation_data {
 	int value_property_holders_needed;
 	int DebugAttribute_seen;
 	int subterfuge_count;
+	int write_orig_source_directives;
 	CLASS_DEFINITION
 } I6_generation_data;
 
@@ -77,6 +78,7 @@ I6_generation_data *I6Target::new_data(void) {
 	data->value_property_holders_needed = FALSE;
 	data->DebugAttribute_seen = FALSE;
 	data->subterfuge_count = 0;
+	data->write_orig_source_directives = TRUE;
 	return data;
 }
 
@@ -99,6 +101,10 @@ int I6Target::begin_generation(code_generator *gtr, code_generation *gen) {
 	LOOP_OVER_LINKED_LIST(opt, text_stream, opts) {
 		if (Str::eq_insensitive(opt, I"omit-unused-routines")) omit_ur = TRUE;
 		else if (Str::eq_insensitive(opt, I"no-omit-unused-routines")) omit_ur = FALSE;
+		else if (Str::eq_insensitive(opt, I"orig-source-directives"))
+			I6_GEN_DATA(write_orig_source_directives) = TRUE;
+		else if (Str::eq_insensitive(opt, I"no-orig-source-directives"))
+			I6_GEN_DATA(write_orig_source_directives) = FALSE;
 		else {
 			#ifdef PROBLEMS_MODULE
 			Problems::fatal("Unknown compilation format option");
@@ -152,7 +158,8 @@ Document for a specification.
 	segmentation_pos saved = CodeGen::select(gen, functions_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#Ifdef TARGET_ZCODE;\n");
-	WRITE("#OrigSource \"%s\" %d;\n", __FILE__, __LINE__);
+	if (I6_GEN_DATA(write_orig_source_directives))
+		WRITE("#OrigSource \"%s\" %d;\n", __FILE__, __LINE__);
 	WRITE("Global max_z_object;\n");
 	WRITE("#Ifdef Z__Region;\n");
 	WRITE("[ OC__Cl obj cla j a n objflag;\n"); INDENT;
@@ -217,7 +224,8 @@ Document for a specification.
 	WRITE("rfalse;\n");
 	OUTDENT; WRITE("];\n");
 	WRITE("#Endif;\n");
-	WRITE("#OrigSource;\n");
+	if (I6_GEN_DATA(write_orig_source_directives))
+		WRITE("#OrigSource;\n");
 	WRITE("#Endif;\n");
 	CodeGen::deselect(gen, saved);
 

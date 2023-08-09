@@ -26,10 +26,10 @@ if: $FOR C
 	default: $FORMAT = C
 else
 	if: $FOR Glulx
-		default: $FORMAT = Inform6/32
+		default: $FORMAT = Inform6/32/no-orig-source-directives
 	else
 		if: $FOR Z-Machine
-			default: $FORMAT = Inform6/16
+			default: $FORMAT = Inform6/16/no-orig-source-directives
 		else
 			if format valid: $FORMAT
 				default: $FORMAT = $FOR
@@ -212,7 +212,8 @@ if: $FOR C
 
 	set: $COUT = $$workspace/Actuals/$CASE.c
 	set: $OFILE = $WORK/Example.inform/Build/$CASE.o
-	step: $I7 `$I7OPTIONS $WORK/Example.inform/Source/story.ni -o $COUT >$I7CONSOLE 2>&1
+	copy: $WORK/Example.inform/Source/story.ni $WORK/Example.inform/Build/$CASE.i7
+	step: $I7 `$I7OPTIONS $WORK/Example.inform/Build/$CASE.i7 -o $COUT >$I7CONSOLE 2>&1
 	iffail:
 		show: log $I7LOG
 		show: i7 $I7CONSOLE
@@ -222,6 +223,9 @@ if: $FOR C
 	show: log $I7LOG
 	show: i7 $I7CONSOLE
 	show: c $COUT
+
+	hash: $COUT
+	or: 'passed (matching cached C known to work)'
 
 	set: $CCCONSOLE = $WORK/Example.inform/Build/cc_output.txt
 	set: $LINKCONSOLE = $WORK/Example.inform/Build/link_output.txt
@@ -280,7 +284,7 @@ else
 	if: $COMPILEONLY No
 		set: $I6 = inform6/Tangled/inform6
 
-		hash: $I6SOURCE $WORK/Example.inform/Build/checksum.txt
+		hash: $I6SOURCE
 		or: 'passed (matching cached I6 known to work)'
 
 		set: $I6CONSOLE = $WORK/Example.inform/Build/i6_output.txt
