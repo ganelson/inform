@@ -41,6 +41,8 @@
     --paste-active-colour: #803030;
     --paste-passive-colour: #303030;
     --paste-background-colour: #f3f6fa;
+
+    --md-background-colour: #e3e6ea;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -86,6 +88,8 @@
     --paste-active-colour: #a05050;
     --paste-passive-colour: #505050;
     --paste-background-colour: #090b0d;
+
+    --md-background-colour: #090b0d;
    }
 }
 
@@ -547,6 +551,27 @@ button.dangerousbutton {
 	font-size: 16px;
 	margin: 4px 2px;
 	cursor: pointer;
+}
+
+/* Used in rendering Markdown in extension documentation */
+
+.markdowncontent em { font-style: italic; }
+.markdowncontent strong { font-weight: bold; }
+.markdowncontent code {
+	font-size: 85%;
+	font-family: SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; 
+	background-color: var(--md-background-colour);
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	box-sizing: border-box;
+	padding-bottom: 2.38px;
+	padding-left: 4.76px;
+	padding-right: 4.76px;
+	padding-top: 2.38px;
+	white-space: break-spaces;
+	width: auto;
 }
 
 /* Used in syntax-colouring for extension documentation */

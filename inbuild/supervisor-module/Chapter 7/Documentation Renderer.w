@@ -656,9 +656,13 @@ had its infamous PNG transparency bug.)
 
 =
 void DocumentationRenderer::render_text(OUTPUT_STREAM, text_stream *text) {
-	WRITE("%S", text);
+	markdown_item *md = Markdown::parse(text);
+	HTML_OPEN_WITH("span", "class=\"markdowncontent\"");
+	Markdown::render_md_purist(OUT, md);
+	HTML_CLOSE("span");
 }
 
+@ =
 void DocumentationRenderer::syntax_coloured_code(OUTPUT_STREAM, text_stream *text,
 	text_stream *colouring, int from, int to) {
 	wchar_t current_col = 0;
