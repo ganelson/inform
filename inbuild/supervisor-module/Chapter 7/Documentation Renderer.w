@@ -656,9 +656,9 @@ had its infamous PNG transparency bug.)
 
 =
 void DocumentationRenderer::render_text(OUTPUT_STREAM, text_stream *text) {
-	markdown_item *md = Markdown::parse(text);
+	markdown_item *md = MarkdownParser::inline(text);
 	HTML_OPEN_WITH("span", "class=\"markdowncontent\"");
-	Markdown::render_md_purist(OUT, md);
+	MarkdownRenderer::go(OUT, md);
 	HTML_CLOSE("span");
 }
 
