@@ -24,6 +24,7 @@ moves an object to a new position in the object tree.
 =
 [ XAbstractSub;
     if (XTestMove(noun, second)) return;
+    if (noun has worn) give noun ~worn;
     move noun to second;
     say__p = 1; "[Abstracted.]";
 ];
