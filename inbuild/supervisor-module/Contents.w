@@ -64,6 +64,6 @@ Chapter 7: Extension Management
 	Extensions Index Page
 	The Installer
 	The Converter
-	Documentation Tree
 	Documentation Compiler
 	Documentation Renderer
+	Documentation in Markdown
