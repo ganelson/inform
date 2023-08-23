@@ -17,6 +17,8 @@ markdown_variation *extension_flavoured_Markdown = NULL;
 markdown_variation *DocumentationInMarkdown::extension_flavoured_Markdown(void) {
 	if (extension_flavoured_Markdown) return extension_flavoured_Markdown;
 	extension_flavoured_Markdown = MarkdownVariations::new(I"Inform-flavoured Markdown");
+	MarkdownVariations::make_GitHub_features_active(extension_flavoured_Markdown);
+
 	MarkdownVariations::remove_feature(extension_flavoured_Markdown, HTML_BLOCKS_MARKDOWNFEATURE);
 	MarkdownVariations::remove_feature(extension_flavoured_Markdown, INLINE_HTML_MARKDOWNFEATURE);
 
