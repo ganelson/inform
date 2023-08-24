@@ -74,7 +74,7 @@ cdoc_example *DocumentationCompiler::new_example_alone(text_stream *title, text_
 =
 compiled_documentation *DocumentationCompiler::compile_from_path(pathname *P,
 	inform_extension *associated_extension) {
-	filename *F = Filenames::in(P, I"Documentation.txt");
+	filename *F = Filenames::in(P, I"Documentation.md");
 	if (TextFiles::exists(F) == FALSE) return NULL;
 	compiled_documentation *cd =
 		DocumentationCompiler::compile_from_file(F, associated_extension);

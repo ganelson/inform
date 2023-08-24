@@ -347,7 +347,7 @@ inbuild_copy *ExtensionBundleManager::claim_folder_as_copy(pathname *P, inbuild_
 			}
 			DISCARD_TEXT(subdir)
 		} else {
-			if (Str::eq(entry, I"Documentation.txt")) { doc_found = TRUE; continue; }
+			if (Str::eq(entry, I"Documentation.md")) { doc_found = TRUE; continue; }
 			TEMPORARY_TEXT(error_text)
 			WRITE_TO(error_text,
 				"the 'Documentation' subdirectory of the extension directory '%S' contains a "
@@ -361,7 +361,7 @@ inbuild_copy *ExtensionBundleManager::claim_folder_as_copy(pathname *P, inbuild_
 		TEMPORARY_TEXT(error_text)
 		WRITE_TO(error_text,
 			"the 'Documentation' subdirectory of the extension directory '%S' is optional, "
-			"but if it does exist then it needs to contain a file called 'Documentation.txt'",
+			"but if it does exist then it needs to contain a file called 'Documentation.md'",
 			Pathnames::directory_name(P));
 		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, error_text));
 		DISCARD_TEXT(error_text)				

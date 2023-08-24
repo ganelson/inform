@@ -54,7 +54,7 @@ void DocumentationInMarkdown::Inform_headings_intervene_after_Phase_I(markdown_f
 	DocumentationInMarkdown::regroup_examples_r(tree, &example_number);
 	int section_number = 0, chapter_number = 0;
 	TEMPORARY_TEXT(latest)
-	DocumentationInMarkdown::number_headings_r(tree, &section_number, &chapter_number, latest);
+	DocumentationInMarkdown::number_headings_r(tree, &section_number, &chapter_number, latest, 0);
 	DISCARD_TEXT(latest)
 }
 
@@ -131,40 +131,49 @@ void DocumentationInMarkdown::regroup_examples_r(markdown_item *md, int *example
 
 @ =
 void DocumentationInMarkdown::number_headings_r(markdown_item *md,
-	int *section_number, int *chapter_number, text_stream *latest) {
+	int *section_number, int *chapter_number, text_stream *latest, int level) {
 	if (md->type == HEADING_MIT) {
 		switch (Markdown::get_heading_level(md)) {
 			case 1: {
-				md->user_state = STORE_POINTER_text_stream(md->stashed);
-				(*chapter_number)++;
-				(*section_number) = 0;
-				Str::clear(latest);
-				WRITE_TO(latest, "Chapter %d: %S", *chapter_number, md->stashed);
-				md->stashed = Str::duplicate(latest);
-				text_stream *url = Str::new();
-				WRITE_TO(url, "chapter%d.html", *chapter_number);
-				md->user_state = STORE_POINTER_text_stream(url);
+				if (level > 1) {
+					MDBlockParser::change_type(NULL, md, PARAGRAPH_MIT);
+				} else {
+					md->user_state = STORE_POINTER_text_stream(md->stashed);
+					(*chapter_number)++;
+					(*section_number) = 0;
+					Str::clear(latest);
+					WRITE_TO(latest, "Chapter %d: %S", *chapter_number, md->stashed);
+					md->stashed = Str::duplicate(latest);
+					text_stream *url = Str::new();
+					WRITE_TO(url, "chapter%d.html", *chapter_number);
+					md->user_state = STORE_POINTER_text_stream(url);
+				}
 				break;
 			}
 			case 2: {
-				md->user_state = STORE_POINTER_text_stream(md->stashed);
-				(*section_number)++;
-				Str::clear(latest);
-				WRITE_TO(latest, "Section ");
-				if (*chapter_number > 0) WRITE_TO(latest, "%d.", *chapter_number);
-				WRITE_TO(latest, "%d: %S", *section_number, md->stashed);
-				md->stashed = Str::duplicate(latest);
-				text_stream *url = Str::new();
-				if (*chapter_number > 0)
-					WRITE_TO(url, "chapter%d.html", *chapter_number);
-				WRITE_TO(url, "#section%d", *section_number);
-				md->user_state = STORE_POINTER_text_stream(url);
+				if (level > 1) {
+					MDBlockParser::change_type(NULL, md, PARAGRAPH_MIT);
+				} else {
+					md->user_state = STORE_POINTER_text_stream(md->stashed);
+					(*section_number)++;
+					Str::clear(latest);
+					WRITE_TO(latest, "Section ");
+					if (*chapter_number > 0) WRITE_TO(latest, "%d.", *chapter_number);
+					WRITE_TO(latest, "%d: %S", *section_number, md->stashed);
+					md->stashed = Str::duplicate(latest);
+					text_stream *url = Str::new();
+					if (*chapter_number > 0)
+						WRITE_TO(url, "chapter%d.html", *chapter_number);
+					WRITE_TO(url, "#section%d", *section_number);
+					md->user_state = STORE_POINTER_text_stream(url);
+				}
 				break;
 			}
 		}
 	}
 	for (markdown_item *ch = md->down; ch; ch=ch->next) {
-		DocumentationInMarkdown::number_headings_r(ch, section_number, chapter_number, latest);
+		DocumentationInMarkdown::number_headings_r(ch, section_number, chapter_number,
+			latest, level + 1);
 	}
 }
 
@@ -255,6 +264,41 @@ int DocumentationInMarkdown::paste_icons_renderer(markdown_feature *feature, tex
 		DocumentationInMarkdown::render_code_block(OUT, md, mode);
 		return TRUE;
 	}
+	if (md->type == BLOCK_QUOTE_MIT) {
+		if ((md->down) && (md->down->type == PARAGRAPH_MIT)) {
+			match_results mr = Regexp::create_mr();
+			if ((Regexp::match(&mr, md->down->stashed, L"phrase: *{(%c*?)} *(%c+?)\n(%c*)")) ||
+				(Regexp::match(&mr, md->down->stashed, L"(phrase): *(%c+?)\n(%c*)"))) {
+				HTML_OPEN_WITH("div", "class=\"definition\"");
+				HTML_OPEN_WITH("p", "class=\"defnprototype\"");
+				WRITE("%S", mr.exp[1]);
+				HTML_CLOSE("p");
+				HTML_TAG("br");
+				markdown_item *remainder = Markdown::parse_inline_extended(mr.exp[2], DocumentationInMarkdown::extension_flavoured_Markdown());
+				Markdown::render_extended(OUT, remainder, DocumentationInMarkdown::extension_flavoured_Markdown());
+				for (markdown_item *ch = md->down->next; ch; ch = ch->next)
+					Markdown::render_extended(OUT, ch, DocumentationInMarkdown::extension_flavoured_Markdown());
+				HTML_CLOSE("div");
+				Regexp::dispose_of(&mr);
+				return TRUE;
+			}
+			Regexp::dispose_of(&mr);
+		}
+	}
+	if (md->type == CODE_MIT) {
+		if (mode & TAGS_MDRMODE) {
+			if (Markdown::get_backtick_count(md) == 1) {
+				HTML_OPEN_WITH("code", "class=\"inlinesourcetext\"");
+			} else {
+				HTML_OPEN_WITH("code", "class=\"inlinecode\"");
+			}
+		}
+		mode = mode & (~ESCAPES_MDRMODE);
+		mode = mode & (~ENTITIES_MDRMODE);
+		MDRenderer::slice(OUT, md, mode);
+		if (mode & TAGS_MDRMODE) HTML_CLOSE("code");
+		return TRUE;
+	}
 	if (md->type == INFORM_ERROR_MARKER_MIT) {
 		HTML_OPEN_WITH("p", "class=\"documentationerrorbox\"");
 		HTML::begin_span(OUT, I"documentationerror");
@@ -279,19 +323,18 @@ void DocumentationInMarkdown::render_example_heading(OUTPUT_STREAM, cdoc_example
 	WRITE_TO(link, "style=\"text-decoration: none\" href=\"eg%d.html\"", E->number);
 
 	HTML_TAG("hr"); /* rule a line before the example heading */
-	HTML::begin_plain_html_table(OUT);
-	HTML_OPEN("tr");
+
+	HTML_OPEN_WITH("div", "class=\"examplebox\"");
 
 	/* Left hand cell: the oval icon */
-	HTML_OPEN_WITH("td", "halign=\"left\" valign=\"top\" cellpadding=0 cellspacing=0 width=38px");
+	HTML_OPEN_WITH("div", "class=\"exampleleft\"");
 	HTML_OPEN_WITH("span", "id=eg%d", E->number); /* provide the anchor point */
 	@<Typeset the lettered oval example icon@>;
 	HTML_CLOSE("span"); /* end the textual link */
-	HTML_CLOSE("td");
+	HTML_CLOSE("div");
 
 	/* Right hand cell: the asterisks and title, with rubric underneath */
-	HTML_OPEN_WITH("td", "cellpadding=0 cellspacing=0 halign=\"left\" valign=\"top\"");
-
+	HTML_OPEN_WITH("div", "class=\"exampleright\"");
 	if (passage_node == NULL) HTML_OPEN_WITH("a", "%S", link);
 	for (int asterisk = 0; asterisk < E->star_count; asterisk++)
 		PUT(0x2605); /* the Unicode for "black star" emoji */
@@ -308,8 +351,10 @@ void DocumentationInMarkdown::render_example_heading(OUTPUT_STREAM, cdoc_example
 	DocumentationRenderer::render_text(OUT, E->description);
 	HTML::end_span(OUT);
 	HTML_CLOSE("b");
-
 	if (passage_node == NULL) HTML_CLOSE("a"); /* Link does not cover body, only heading */
+	HTML_CLOSE("div");
+
+	HTML_CLOSE("div");
 
 	if (passage_node) {
 		while (passage_node) {
@@ -318,10 +363,6 @@ void DocumentationInMarkdown::render_example_heading(OUTPUT_STREAM, cdoc_example
 			passage_node = passage_node->next;
 		}
 	}
-
-	HTML_CLOSE("td");
-	HTML_CLOSE("tr");
-	HTML::end_html_table(OUT);
 
 	DISCARD_TEXT(link)
 }
@@ -335,21 +376,11 @@ of its one and only cell. (Things were even worse when IE6 for Windows still
 had its infamous PNG transparency bug.)
 
 @<Typeset the lettered oval example icon@> =
-	HTML::begin_plain_html_table(OUT);
-	HTML_OPEN_WITH("tr", "class=\"oval\"");
-	HTML_OPEN_WITH("td", "width=38px height=30px align=\"left\" valign=\"center\"");
 	if (passage_node == NULL) HTML_OPEN_WITH("a", "%S", link);
-	HTML_OPEN_WITH("div",
-		"class=\"paragraph Body\" style=\"line-height: 1px; margin-bottom: 0px; "
-		"margin-top: 0px; padding-bottom: 0pt; padding-top: 0px; text-align: center;\"");
 	HTML::begin_span(OUT, I"extensionexampleletter");
 	PUT(E->letter);
 	HTML::end_span(OUT);
-	HTML_CLOSE("div");
 	if (passage_node == NULL) HTML_CLOSE("a");
-	HTML_CLOSE("td");
-	HTML_CLOSE("tr");
-	HTML::end_html_table(OUT);
 
 @ =
 markdown_item *DocumentationInMarkdown::find_section(markdown_item *tree, text_stream *name) {
@@ -402,34 +433,44 @@ void DocumentationInMarkdown::find_e(markdown_item *md, int eg, markdown_item **
 }
 
 void DocumentationInMarkdown::render_code_block(OUTPUT_STREAM, markdown_item *md, int mode) {
-	if ((Str::eq_insensitive(md->info_string, I"inform")) ||
-		(Str::eq_insensitive(md->info_string, I"inform7")) ||
-		(Str::len(md->info_string) == 0)) {
+	text_stream *language_text = md->info_string;
+	if (Str::len(language_text) == 0) {
+		for (int i=0; i<Str::len(md->stashed); i++)
+			if ((Str::get_at(md->stashed, i) == '>') &&
+				((i==0) || (Str::get_at(md->stashed, i-1) == '\n')))
+					language_text = I"transcript";
+		if (Str::len(language_text) == 0) language_text = I"inform";
+	}
+	if ((Str::eq_insensitive(language_text, I"inform")) ||
+		(Str::eq_insensitive(language_text, I"inform7"))) {
 		@<Render as Inform 7 source text@>;
 	} else {
-		programming_language *pl = NULL;
-
-		if (mode & TAGS_MDRMODE) HTML_OPEN("pre");
 		TEMPORARY_TEXT(language)
-		for (int i=0; i<Str::len(md->info_string); i++) {
-			wchar_t c = Str::get_at(md->info_string, i);
+		TEMPORARY_TEXT(language_rendered)
+		for (int i=0; i<Str::len(language_text); i++) {
+			wchar_t c = Str::get_at(language_text, i);
 			if ((c == ' ') || (c == '\t')) break;
 			PUT_TO(language, c);
 		}
 		if (Str::len(language) > 0) {
-			TEMPORARY_TEXT(language_rendered)
 			md->sliced_from = language;
 			md->from = 0; md->to = Str::len(language) - 1;
 			MDRenderer::slice(language_rendered, md, mode | ENTITIES_MDRMODE);
+		}
+		programming_language *pl = NULL;
+		if (Str::len(language_rendered) > 0) {
+			if (mode & TAGS_MDRMODE)
+				HTML_OPEN_WITH("div", "class=\"extract-%S\"", language_rendered);
+		}
+		if (mode & TAGS_MDRMODE) HTML_OPEN("pre");
+		if (Str::len(language_rendered) > 0) {
 			if (mode & TAGS_MDRMODE)
 				HTML_OPEN_WITH("code", "class=\"language-%S\"", language_rendered);
 			pl = DocumentationCompiler::get_language(language_rendered);
 			if (pl == NULL) LOG("Unable to find language <%S>\n", language_rendered);
-			DISCARD_TEXT(language_rendered)
 		} else {
 			if (mode & TAGS_MDRMODE) HTML_OPEN("code");
 		}
-		DISCARD_TEXT(language)
 
 		Painter::reset_syntax_colouring(pl);
 		TEMPORARY_TEXT(line)
@@ -449,6 +490,11 @@ void DocumentationInMarkdown::render_code_block(OUTPUT_STREAM, markdown_item *md
 		DISCARD_TEXT(line_colouring)
 		if (mode & TAGS_MDRMODE) HTML_CLOSE("code");
 		if (mode & TAGS_MDRMODE) HTML_CLOSE("pre");
+		if (Str::len(language_rendered) > 0) {
+			if (mode & TAGS_MDRMODE) HTML_CLOSE("div");
+		}
+		DISCARD_TEXT(language_rendered)
+		DISCARD_TEXT(language)
 	}
 }
 
@@ -504,7 +550,7 @@ void DocumentationInMarkdown::render_code_block(OUTPUT_STREAM, markdown_item *md
 			PUT_TO(line, Str::get_at(md->stashed, k));
 			PUT_TO(line_colouring, Str::get_at(colouring, k));
 		}
-		if (k == Str::len(md->stashed) - 1) @<Render line@>;
+		if ((k == Str::len(md->stashed) - 1) && (Str::len(line) > 0)) @<Render line@>;
 	}
 	HTML_CLOSE("span");
 	if (tabulating) @<End I7 table in extension documentation@>;
@@ -545,7 +591,7 @@ void DocumentationInMarkdown::render_code_block(OUTPUT_STREAM, markdown_item *md
 			@<End I7 table in extension documentation@>;
 			tabulating = FALSE;
 		}
-		int indentation = 1;
+		int indentation = 0;
 		int z=0, spaces = 0;
 		for (; z<Str::len(line); z++)
 			if (Str::get_at(line, z) == ' ') { spaces++; if (spaces == 4) { indentation++; spaces = 0; } }
