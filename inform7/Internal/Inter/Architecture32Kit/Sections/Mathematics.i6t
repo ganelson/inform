@@ -92,7 +92,7 @@ cases used to check the floating-point extensions to Glulx.
 	@exp in tmp;
 	@fsub M_0 in in;
 	@exp in out;
-	@fadd tmp out out;
+	@fsub tmp out out;
 	@fmul out M_HALF out;
 	return out;
 ];
@@ -101,7 +101,7 @@ cases used to check the floating-point extensions to Glulx.
 	@exp in tmp;
 	@fsub M_0 in in;
 	@exp in out;
-	@fsub tmp out out;
+	@fadd tmp out out;
 	@fmul out M_HALF out;
 	return out;
 ];
