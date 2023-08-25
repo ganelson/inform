@@ -241,7 +241,7 @@ void ExtensionInstaller::install(inbuild_copy *C, int confirmed, pathname *to_to
 						WRITE("&nbsp;&nbsp;");
 						TEMPORARY_TEXT(inclusion_text)
 						WRITE_TO(inclusion_text, "Include %X.\n\n\n", search_result->copy->edition->work);
-						ExtensionWebsite::paste_button(OUT, inclusion_text);
+						PasteButtons::paste_text_new_style(OUT, inclusion_text);
 						DISCARD_TEXT(inclusion_text)
 						WRITE("&nbsp;<i>'Include'</i>");
 						HTML_CLOSE("li");

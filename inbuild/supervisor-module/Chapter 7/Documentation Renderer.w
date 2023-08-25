@@ -34,6 +34,11 @@ except the examples, and then up to 26 pages holding the content of examples A t
 
 =
 void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd, text_stream *extras) {
+	inbuild_nest *N = Supervisor::internal();
+	if (N) {
+		pathname *LP = Pathnames::down(Nests::get_location(N), I"PLs");
+		Languages::set_default_directory(LP);
+	}
 	if (cd) {
 		text_stream *OUT = DocumentationRenderer::open_subpage(P, I"index.html");
 		if (OUT) {
@@ -75,7 +80,7 @@ void DocumentationRenderer::render_index_page(OUTPUT_STREAM, compiled_documentat
 	if (cd->total_headings[1] > 0) { /* there are chapters */
 		DocumentationRenderer::render_toc(OUT, cd);
 		HTML_OPEN("em");
-		DocumentationRenderer::render_text(OUT, I"Click on Chapter, Section or Example numbers to read");
+		InformFlavouredMarkdown::render_text(OUT, I"Click on Chapter, Section or Example numbers to read");
 		HTML_CLOSE("em");
 		markdown_item *md = cd->alt_tree->down;
 		if ((md) && ((md->type != HEADING_MIT) || (Markdown::get_heading_level(md) > 1))) {
@@ -86,7 +91,7 @@ void DocumentationRenderer::render_index_page(OUTPUT_STREAM, compiled_documentat
 			for (markdown_item *md = cd->alt_tree->down; md; md = md->next) {
 				if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) == 1))
 					break;
-				Markdown::render_extended(OUT, md, DocumentationInMarkdown::extension_flavoured_Markdown());
+				Markdown::render_extended(OUT, md, InformFlavouredMarkdown::variation());
 			}
 		}
 	} else { /* there are only sections and examples, or not even that */
@@ -95,12 +100,12 @@ void DocumentationRenderer::render_index_page(OUTPUT_STREAM, compiled_documentat
 		HTML_CLOSE("p");
 		if (cd->empty) {
 			HTML_OPEN("p");
-			DocumentationRenderer::render_text(OUT, I"None is provided.");
+			InformFlavouredMarkdown::render_text(OUT, I"None is provided.");
 			HTML_CLOSE("p");
 		} else {
 			HTML_OPEN_WITH("div", "class=\"markdowncontent\"");
 			Markdown::render_extended(OUT, cd->alt_tree,
-				DocumentationInMarkdown::extension_flavoured_Markdown());
+				InformFlavouredMarkdown::variation());
 			HTML_CLOSE("div");
 		}
 	}
@@ -202,14 +207,14 @@ void DocumentationRenderer::render_extension_details(OUTPUT_STREAM, inform_exten
 
 	if (Str::len(E->rubric_as_lexed) > 0) {
 		HTML_OPEN("p");
-		DocumentationRenderer::render_text(OUT, E->rubric_as_lexed);
+		InformFlavouredMarkdown::render_text(OUT, E->rubric_as_lexed);
 		HTML_CLOSE("p");
 	}
 
 	if (Str::len(E->extra_credit_as_lexed) > 0) {
 		HTML_OPEN("p");
 		HTML_OPEN("em");
-		DocumentationRenderer::render_text(OUT, E->extra_credit_as_lexed);
+		InformFlavouredMarkdown::render_text(OUT, E->extra_credit_as_lexed);
 		HTML_CLOSE("em");
 		HTML_CLOSE("p");
 	}
@@ -219,7 +224,7 @@ void DocumentationRenderer::render_extension_details(OUTPUT_STREAM, inform_exten
 		WRITE("compatibility");
 		HTML_CLOSE("p");
 		HTML_OPEN("p");
-		DocumentationRenderer::render_text(OUT, C->parsed_from);
+		InformFlavouredMarkdown::render_text(OUT, C->parsed_from);
 		HTML_CLOSE("p");
 	}
 }
@@ -253,7 +258,7 @@ void DocumentationRenderer::render_toc_r(OUTPUT_STREAM, markdown_item *md, int L
 			HTML_OPEN("b");
 			DocumentationRenderer::link_to(OUT, md);
 			Markdown::render_extended(OUT, md->down,
-				DocumentationInMarkdown::extension_flavoured_Markdown());
+				InformFlavouredMarkdown::variation());
 			HTML_CLOSE("a");
 			HTML_CLOSE("b");
 			HTML::end_span(OUT);
@@ -262,14 +267,14 @@ void DocumentationRenderer::render_toc_r(OUTPUT_STREAM, markdown_item *md, int L
 	}
 	if (md->type == INFORM_EXAMPLE_HEADING_MIT) {
 		HTML_OPEN_WITH("li", "class=\"exco%d\"", L);
-		cdoc_example *E = RETRIEVE_POINTER_cdoc_example(md->user_state);
+		IFM_example *E = RETRIEVE_POINTER_IFM_example(md->user_state);
 		TEMPORARY_TEXT(link)
 		WRITE_TO(link, "style=\"text-decoration: none\" href=\"eg%d.html#eg%d\"",
 			E->number, E->number);
 		HTML::begin_span(OUT, I"indexblack");
 		HTML_OPEN_WITH("a", "%S", link);
 		WRITE("Example %c &mdash; ", E->letter);
-		DocumentationRenderer::render_text(OUT, E->name);
+		InformFlavouredMarkdown::render_text(OUT, E->name);
 		HTML_CLOSE("a");
 		HTML::end_span(OUT);
 		DISCARD_TEXT(link)
@@ -281,12 +286,23 @@ void DocumentationRenderer::render_toc_r(OUTPUT_STREAM, markdown_item *md, int L
 
 void DocumentationRenderer::render_example(OUTPUT_STREAM, compiled_documentation *cd, int eg) {
 	HTML_OPEN("div");
-	markdown_item *alt_EN = DocumentationInMarkdown::find_example(cd->alt_tree, eg);
+	markdown_item *alt_EN = InformFlavouredMarkdown::find_example(cd->alt_tree, eg);
 	if (alt_EN == NULL) {
 		WRITE("Example %d is missing", eg);
 	} else {
-		cdoc_example *E = RETRIEVE_POINTER_cdoc_example(alt_EN->user_state);
-		DocumentationInMarkdown::render_example_heading(OUT, E, alt_EN->down);
+		IFM_example *E = RETRIEVE_POINTER_IFM_example(alt_EN->user_state);
+		TEMPORARY_TEXT(link)
+		if (alt_EN->down) {
+			WRITE_TO(link, "style=\"text-decoration: none\" href=\"eg%d.html\"", E->number);
+			InformFlavouredMarkdown::render_example_heading(OUT, E, link);
+		}
+		DISCARD_TEXT(link)
+		markdown_item *passage_node = alt_EN->down;
+		while (passage_node) {
+			Markdown::render_extended(OUT, passage_node,
+				InformFlavouredMarkdown::variation());
+			passage_node = passage_node->next;
+		}
 		HTML_CLOSE("div");
 		@<Enter the small print@>;
 /*		WRITE("This example is drawn from ");
@@ -325,19 +341,9 @@ void DocumentationRenderer::render_chapter(OUTPUT_STREAM, compiled_documentation
 			if (Str::begins_with(S, wanted)) { rendering = TRUE; found = TRUE; }
 			else rendering = FALSE;
 		}
-		if (rendering) Markdown::render_extended(OUT, md, DocumentationInMarkdown::extension_flavoured_Markdown());
+		if (rendering) Markdown::render_extended(OUT, md, InformFlavouredMarkdown::variation());
 		md = md->next;
 	}
 	if (found == FALSE) WRITE("Chapter %d is missing", ch);
 	HTML_CLOSE("div");
-}
-
-@
-
-=
-void DocumentationRenderer::render_text(OUTPUT_STREAM, text_stream *text) {
-	markdown_item *md = Markdown::parse_inline(text);
-	HTML_OPEN_WITH("span", "class=\"markdowncontent\"");
-	Markdown::render(OUT, md);
-	HTML_CLOSE("span");
 }

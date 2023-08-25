@@ -66,4 +66,3 @@ Chapter 7: Extension Management
 	The Converter
 	Documentation Compiler
 	Documentation Renderer
-	Documentation in Markdown

@@ -395,7 +395,7 @@ the usual ones seen in Mac OS X applications such as iTunes.
 			WRITE(" ");
 			TEMPORARY_TEXT(inclusion_text)
 			WRITE_TO(inclusion_text, "Include %X.\n\n\n", res->copy->edition->work);
-			ExtensionWebsite::paste_button(OUT, inclusion_text);
+			PasteButtons::paste_text_new_style(OUT, inclusion_text);
 			DISCARD_TEXT(inclusion_text)
 			ExtensionIndex::add_to_key(key_list, PASTE_SYMBOL,
 				I"Source text to Include this (click to paste in)");
@@ -539,7 +539,7 @@ void ExtensionIndex::add_to_key(linked_list *L, char *URL, text_stream *gloss) {
 		eki->gloss = Str::duplicate(gloss);
 		eki->displayed = FALSE;
 		eki->ideograph = Str::new();
-		if (Str::eq(as_text, I"paste")) ExtensionWebsite::paste_ideograph(eki->ideograph);
+		if (Str::eq(as_text, I"paste")) PasteButtons::paste_ideograph(eki->ideograph);
 		if (Str::eq(as_text, I"install")) ExtensionInstaller::install_icon(eki->ideograph);
 		if (Str::eq(as_text, I"uninstall")) ExtensionInstaller::uninstall_icon(eki->ideograph);
 		ADD_TO_LINKED_LIST(eki, extensions_key_item, L);

@@ -15,7 +15,6 @@ which use this module:
 @e build_skill_CLASS
 @e build_step_CLASS
 @e build_vertex_CLASS
-@e cdoc_example_CLASS
 @e compiled_documentation_CLASS
 @e control_structure_phrase_CLASS
 @e copy_error_CLASS
@@ -48,7 +47,6 @@ DECLARE_CLASS(build_script)
 DECLARE_CLASS(build_skill)
 DECLARE_CLASS(build_step)
 DECLARE_CLASS(build_vertex)
-DECLARE_CLASS(cdoc_example)
 DECLARE_CLASS(control_structure_phrase)
 DECLARE_CLASS(compiled_documentation)
 DECLARE_CLASS(copy_error)

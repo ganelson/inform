@@ -101,6 +101,22 @@ void PasteButtons::paste_inner(OUTPUT_STREAM, int from, int to, text_stream *alt
 	HTML_CLOSE("a");
 }
 
+@ This is a new-look paste button, using a "command-V" ideograph rather than
+a somewhat enigmatic icon.
+
+=
+void PasteButtons::paste_text_new_style(OUTPUT_STREAM, text_stream *matter) {
+	TEMPORARY_TEXT(paste)
+	PasteButtons::paste_ideograph(paste);
+	PasteButtons::paste_text_using(OUT, matter, paste);
+	DISCARD_TEXT(paste)
+	WRITE("&nbsp;");
+}
+void PasteButtons::paste_ideograph(OUTPUT_STREAM) {
+	/* the Unicode for "place of interest", the Swedish castle which became the Apple action symbol */
+	WRITE("<span class=\"paste\">%cV</span>", 0x2318);
+}
+
 @ In the following, the source of the text can be either a range of words
 from the lexer (as for instance when a portion of an extension is being
 typeset as documentation, with an example that can be pasted), or can

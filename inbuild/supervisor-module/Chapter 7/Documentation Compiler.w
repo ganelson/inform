@@ -46,29 +46,6 @@ typedef struct satellite_test_case {
 	CLASS_DEFINITION
 } satellite_test_case;
 
-@ Lettered examples have a "difficulty rating" in stars, 0 to 4. Numbers are unique
-from 1, 2, ...; letters are unique from A, B, C, ...
-
-=
-typedef struct cdoc_example {
-	struct text_stream *name;
-	struct text_stream *description;
-	int star_count;
-	int number;
-	char letter;
-	CLASS_DEFINITION
-} cdoc_example;
-
-cdoc_example *DocumentationCompiler::new_example_alone(text_stream *title, text_stream *desc, int star_count, int ecount) {
-	cdoc_example *E = CREATE(cdoc_example);
-	E->name = Str::duplicate(title);
-	E->description = Str::duplicate(desc);
-	E->star_count = star_count;
-	E->number = ecount;
-	E->letter = 'A' + (char) ecount - 1;
-	return E;
-}
-
 @ We can compile either from a file...
 
 =
@@ -157,7 +134,7 @@ typedef struct example_scanning_state {
 	if (Str::len(ess.placement) == 0) {
 		;
 	} else {
-		alt_placement_node = DocumentationInMarkdown::find_section(cd->alt_tree, ess.placement);
+		alt_placement_node = InformFlavouredMarkdown::find_section(cd->alt_tree, ess.placement);
 	LOG("Looking for %S.\n", ess.placement);
 		if (alt_placement_node == NULL) {
 			DocumentationCompiler::example_error(&ess,
@@ -169,11 +146,11 @@ typedef struct example_scanning_state {
 		DocumentationCompiler::example_error(&ess,
 			I"example does not give its Description");
 	}
-	cdoc_example *eg = DocumentationCompiler::new_example_alone(
+	IFM_example *eg = InformFlavouredMarkdown::new_example(
 		ess.long_title, ess.desc, ess.star_count, ++(cd->total_examples));
 
 	markdown_item *eg_header = Markdown::new_item(INFORM_EXAMPLE_HEADING_MIT);
-	eg_header->user_state = STORE_POINTER_cdoc_example(eg);
+	eg_header->user_state = STORE_POINTER_IFM_example(eg);
 	markdown_item *md = alt_placement_node;
 	if (md == NULL) {
 		md = cd->alt_tree->down;
@@ -189,7 +166,7 @@ typedef struct example_scanning_state {
 	}
 	if (Str::len(ess.body_text) > 0) {
 		markdown_item *alt_ecd = Markdown::parse_extended(ess.body_text,
-			DocumentationInMarkdown::extension_flavoured_Markdown());
+			InformFlavouredMarkdown::variation());
 		eg_header->down = alt_ecd->down;
 		Markdown::debug_subtree(DL, eg_header);
 	} else {
@@ -205,7 +182,7 @@ typedef struct example_scanning_state {
 void DocumentationCompiler::example_error(example_scanning_state *ess, text_stream *text) {
 	text_stream *err = Str::new();
 	WRITE_TO(err, "Example file '%S': %S", ess->scanning, text);
-	markdown_item *E = DocumentationInMarkdown::error_item(err);
+	markdown_item *E = InformFlavouredMarkdown::error_item(err);
 	ADD_TO_LINKED_LIST(E, markdown_item, ess->errors);
 }
 
@@ -286,19 +263,6 @@ compiled_documentation *DocumentationCompiler::compile(text_stream *source,
 		WRITE_TO(cd->title, "%X", cd->associated_extension->as_copy->edition->work);
 	if (Str::is_whitespace(source)) cd->empty = TRUE;
 	else cd->alt_tree = Markdown::parse_extended(source,
-		DocumentationInMarkdown::extension_flavoured_Markdown());
+		InformFlavouredMarkdown::variation());
 	return cd;
-}
-
-@
-
-=
-programming_language *DocumentationCompiler::get_language(text_stream *name) {
-	inbuild_nest *N = Supervisor::internal();
-	if (N == NULL) return NULL;
-	pathname *LP = Pathnames::down(Nests::get_location(N), I"PLs");
-	Languages::set_default_directory(LP);
-	programming_language *pl = Languages::find_by_name(name, NULL, FALSE);
-	if (pl == NULL) LOG("Did not load %S!\n", name);
-	return pl;
 }

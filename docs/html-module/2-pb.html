@@ -59,7 +59,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../services.html">Services</a></li><li><a href="index.html">html</a></li><li><a href="index.html#2">Chapter 2: Intranet</a></li><li><b>Paste Buttons</b></li></ul></div>
 <p class="purpose">HTML for a button which, when clicked, pastes Inform source text into the Source panel of the application, or opens a file or folder on the host computer.</p>
 
-<ul class="toc"><li><a href="2-pb.html#SP1">&#167;1. Pastes and their notation</a></li><li><a href="2-pb.html#SP3">&#167;3. Buttons</a></li><li><a href="2-pb.html#SP5">&#167;5. File-opener buttons</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="2-pb.html#SP1">&#167;1. Pastes and their notation</a></li><li><a href="2-pb.html#SP3">&#167;3. Buttons</a></li><li><a href="2-pb.html#SP6">&#167;6. File-opener buttons</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Pastes and their notation. </b>A paste button is intended to be such that the user clicks it, and some
 text is inserted at the current cursor position in the Source panel of the
@@ -120,7 +120,7 @@ in raw form in the argument to <span class="extract"><span class="extract-syntax
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PasteButtons::put_code_char</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">PasteButtons::put_code_char</span></span>:<br/><a href="2-pb.html#SP4">&#167;4</a>, <a href="2-pb.html#SP4_1">&#167;4.1</a>, <a href="2-pb.html#SP4_1_1">&#167;4.1.1</a>, <a href="2-pb.html#SP4_1_2">&#167;4.1.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PasteButtons::put_code_char</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">PasteButtons::put_code_char</span></span>:<br/><a href="2-pb.html#SP5">&#167;5</a>, <a href="2-pb.html#SP5_1">&#167;5.1</a>, <a href="2-pb.html#SP5_1_1">&#167;5.1.1</a>, <a href="2-pb.html#SP5_1_2">&#167;5.1.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax">(</span><span class="identifier-syntax">c</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="character-syntax">'\t'</span><span class="plain-syntax">: </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"[=0x0009=]"</span><span class="plain-syntax">); </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="character-syntax">'\n'</span><span class="plain-syntax">: </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEWLINE_IN_STRING:</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"[=0x000A=]"</span><span class="plain-syntax">); </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
@@ -145,7 +145,7 @@ to call a suitable function.
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PasteButtons::paste_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">alt_stream</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="2-pb.html#SP3" class="function-link"><span class="function-syntax">PasteButtons::paste_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, -1, -1, </span><span class="identifier-syntax">alt_stream</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PasteButtons::paste_text_using</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">alt_stream</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PasteButtons::paste_text_using</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">PasteButtons::paste_text_using</span></span>:<br/><a href="2-pb.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">alt_stream</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">paste_icon</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="2-pb.html#SP3" class="function-link"><span class="function-syntax">PasteButtons::paste_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, -1, -1, </span><span class="identifier-syntax">alt_stream</span><span class="plain-syntax">, </span><span class="identifier-syntax">paste_icon</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
@@ -153,7 +153,7 @@ to call a suitable function.
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">paste_icon</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">link</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">link</span><span class="plain-syntax">, </span><span class="string-syntax">"class=\"pastelink\" href=\"javascript:pasteCode("</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="2-pb.html#SP4" class="function-link"><span class="function-syntax">PasteButtons::argument</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">link</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="identifier-syntax">alt_stream</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-pb.html#SP5" class="function-link"><span class="function-syntax">PasteButtons::argument</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">link</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="identifier-syntax">alt_stream</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">link</span><span class="plain-syntax">, </span><span class="string-syntax">")\""</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">, </span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">link</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">link</span><span class="plain-syntax">)</span>
@@ -165,7 +165,24 @@ to call a suitable function.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>In the following, the source of the text can be either a range of words
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>This is a new-look paste button, using a "command-V" ideograph rather than
+a somewhat enigmatic icon.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PasteButtons::paste_text_new_style</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matter</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">paste</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><a href="2-pb.html#SP4" class="function-link"><span class="function-syntax">PasteButtons::paste_ideograph</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">paste</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-pb.html#SP3" class="function-link"><span class="function-syntax">PasteButtons::paste_text_using</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">matter</span><span class="plain-syntax">, </span><span class="identifier-syntax">paste</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">paste</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&amp;nbsp;"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PasteButtons::paste_ideograph</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="comment-syntax"> the Unicode for "place of interest", the Swedish castle which became the Apple action symbol</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;span class=\"paste\"&gt;%cV&lt;/span&gt;"</span><span class="plain-syntax">, </span><span class="constant-syntax">0x2318</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>In the following, the source of the text can be either a range of words
 from the lexer (as for instance when a portion of an extension is being
 typeset as documentation, with an example that can be pasted), or can
 be a C string: if the latter, then its encoding must be ISO Latin-1.
@@ -173,16 +190,16 @@ The conversion to UTF-8 is performed in <span class="extract"><span class="extra
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PasteButtons::argument</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">PasteButtons::argument</span></span>:<br/><a href="2-pb.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">alt_stream</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PasteButtons::argument</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">PasteButtons::argument</span></span>:<br/><a href="2-pb.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">alt_stream</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"'"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">alt_stream</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_THROUGH_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="identifier-syntax">alt_stream</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><a href="2-pb.html#SP2" class="function-link"><span class="function-syntax">PasteButtons::put_code_char</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">Str::get</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">from</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-pb.html#SP4_1" class="named-paragraph-link"><span class="named-paragraph">Write word range as Javascript string</span><span class="named-paragraph-number">4.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">from</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-pb.html#SP5_1" class="named-paragraph-link"><span class="named-paragraph">Write word range as Javascript string</span><span class="named-paragraph-number">5.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"'"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b>Writing a word range is much harder. In effect, we have to provide an
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1.  </b>Writing a word range is much harder. In effect, we have to provide an
 inverse function for the lexer, which converted raw source text to nicely
 packaged up words.
 </p>
@@ -207,7 +224,7 @@ only need to supply extra Javascript tabs when the indentation is 2 tab
 stops or more.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write word range as Javascript string</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write word range as Javascript string</span><span class="named-paragraph-number">5.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -236,21 +253,21 @@ stops or more.
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">follows_paragraph_break</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">suppress_space</span><span class="plain-syntax">==</span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-pb.html#SP4_1_1" class="named-paragraph-link"><span class="named-paragraph">Restore inter-word spaces unless this would be unnatural</span><span class="named-paragraph-number">4.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-pb.html#SP5_1_1" class="named-paragraph-link"><span class="named-paragraph">Restore inter-word spaces unless this would be unnatural</span><span class="named-paragraph-number">5.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">suppress_space</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">j</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">p</span><span class="plain-syntax">[</span><span class="identifier-syntax">j</span><span class="plain-syntax">]; </span><span class="identifier-syntax">j</span><span class="plain-syntax">++) </span><a href="2-pb.html#SP2" class="function-link"><span class="function-syntax">PasteButtons::put_code_char</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">[</span><span class="identifier-syntax">j</span><span class="plain-syntax">]);</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-pb.html#SP4_1_2" class="named-paragraph-link"><span class="named-paragraph">Insert a close-literal-I6 escape sequence if necessary</span><span class="named-paragraph-number">4.1.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-pb.html#SP5_1_2" class="named-paragraph-link"><span class="named-paragraph">Insert a close-literal-I6 escape sequence if necessary</span><span class="named-paragraph-number">5.1.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><a href="2-pb.html#SP2" class="function-link"><span class="function-syntax">PasteButtons::put_code_char</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="character-syntax">'\n'</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-pb.html#SP2" class="function-link"><span class="function-syntax">PasteButtons::put_code_char</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="character-syntax">'\n'</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-pb.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_1_1" class="paragraph-anchor"></a><b>&#167;4.1.1.  </b>The lexer also broke words around punctuation marks, so that, for instance,
+<ul class="endnotetexts"><li>This code is used in <a href="2-pb.html#SP5">&#167;5</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP5_1_1" class="paragraph-anchor"></a><b>&#167;5.1.1.  </b>The lexer also broke words around punctuation marks, so that, for instance,
 "fish, finger" would have been lexed as <span class="extract"><span class="extract-syntax">fish , finger</span></span> &mdash; three words.
 But we want to restore the more natural spacing.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Restore inter-word spaces unless this would be unnatural</span><span class="named-paragraph-number">4.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Restore inter-word spaces unless this would be unnatural</span><span class="named-paragraph-number">5.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -260,14 +277,14 @@ But we want to restore the more natural spacing.
 <span class="plain-syntax">        &amp;&amp; (</span><span class="identifier-syntax">compare_word</span><span class="plain-syntax">(</span><span class="identifier-syntax">i</span><span class="plain-syntax">-1, </span><span class="identifier-syntax">OPENBRACKET_V</span><span class="plain-syntax">)==</span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><a href="2-pb.html#SP2" class="function-link"><span class="function-syntax">PasteButtons::put_code_char</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="character-syntax">' '</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-pb.html#SP4_1">&#167;4.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_1_2" class="paragraph-anchor"></a><b>&#167;4.1.2.  </b>Finally, the lexer rendered a literal I6 inclusion in the form <span class="extract"><span class="extract-syntax">(- self=2;</span></span>
+<ul class="endnotetexts"><li>This code is used in <a href="2-pb.html#SP5_1">&#167;5.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP5_1_2" class="paragraph-anchor"></a><b>&#167;5.1.2.  </b>Finally, the lexer rendered a literal I6 inclusion in the form <span class="extract"><span class="extract-syntax">(- self=2;</span></span>
 as a sequence of two lexical words: <span class="extract"><span class="extract-syntax">(-</span></span> and then <span class="extract"><span class="extract-syntax">self=2;</span></span>. In order
 to paste back safely, we must supplement this with the closure <span class="extract"><span class="extract-syntax">-)</span></span> once
 again:
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Insert a close-literal-I6 escape sequence if necessary</span><span class="named-paragraph-number">4.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Insert a close-literal-I6 escape sequence if necessary</span><span class="named-paragraph-number">5.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -278,8 +295,8 @@ again:
 <span class="plain-syntax">        </span><a href="2-pb.html#SP2" class="function-link"><span class="function-syntax">PasteButtons::put_code_char</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="character-syntax">' '</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-pb.html#SP4_1">&#167;4.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. File-opener buttons. </b>Nothing to do with pastes: this is a completely different sort of button,
+<ul class="endnotetexts"><li>This code is used in <a href="2-pb.html#SP5_1">&#167;5.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. File-opener buttons. </b>Nothing to do with pastes: this is a completely different sort of button,
 though also powered by Javascript. It opens a file or folder on the host
 filing system.
 </p>
