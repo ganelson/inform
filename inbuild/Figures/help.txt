@@ -66,6 +66,14 @@ for tweaking code generation from Inter:
   -pipeline-file X             specify code-generation pipeline as file X
   -variable X                  set pipeline variable X (in form name=value)
 
+for generating HTML from Markdown:
+  -markdown-from X             generate HTML file from Markdown source file X
+  -markdown-from-dir X         generate HTML files from all Markdown sources in X
+  -markdown-model X            use this model file when generating HTML from Markdown ('none' for none)
+  -markdown-to X               set filename for single Markdown-generated HTML file to be X
+  -markdown-to-dir X           generate HTML files from Markdown sources into X
+  -markdown-variation X        use dialect X of Markdown: 'CommonMark', 'GitHub', 'Inform', 'RTP'
+
 -at X                          specify that this tool is installed at X
 -crash                         intentionally crash on internal errors, for backtracing (default is -no-crash)
 -fixtime                       pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)

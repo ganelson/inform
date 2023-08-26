@@ -1,0 +1,3 @@
+# Attempt to test "in ..." for a non-room or region
+
+The special condition `in R` can only be used if R is a room or a region, and it tests whether the current location of play is that room (or in that region). So it makes no sense for R to be some other kind of thing. This mistake tends to occur because the author assumes that something else is implicitly meant rather than the current location - for instance, one might write `if in player, ...` thinking that this meant some item currently under discussion: in which case the current run-time problem will occur with `yourself` as the thing which isn't a rule or region.

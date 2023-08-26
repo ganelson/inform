@@ -121,7 +121,6 @@ INWEBWEB = ../inweb
 {component type: tool   symbol: INDOC     webname: indoc       path: indoc     set: otools}
 {component type: tool   symbol: INFORM7   webname: inform7     path: inform7   set: ctools}
 {component type: tool   symbol: INPOLICY  webname: inpolicy    path: inpolicy  set: otools}
-{component type: tool   symbol: INRTPS    webname: inrtps      path: inrtps    set: otools}
 {component type: tool   symbol: INBUILD   webname: inbuild     path: inbuild   set: ctools}
 {component type: tool   symbol: INTER     webname: inter       path: inter     set: ctools}
 
@@ -475,7 +474,7 @@ diagnostics:
 # "index" because that would be a name clash with the "index" module of I7,
 # which is already a web in the colony file.
 
-{set name: NAVIGATIONPAGES value: structure, extensions, kits, services, inform6, inbuildn, inform7n, intern, inblorbn, indocn, inrtpsn, inpolicyn, secrets}
+{set name: NAVIGATIONPAGES value: structure, extensions, kits, services, inform6, inbuildn, inform7n, intern, inblorbn, indocn, inpolicyn, secrets}
 
 {define: weave-one page: PAGE}
 	$(INWEBX) -colony $(COLONY) -member {PAGE} -weave
@@ -965,11 +964,12 @@ forcetransferdocumentation:
 	{compile-inapp-documentation}
 
 # -----------------------------------------------------------------------------
-# Typesetting the HTML pages used to display run-time problem messages, using inrtps
+# Typesetting the HTML pages used to display run-time problem messages
 
 {define: make-inapp-outcome-pages}
-	$(INRTPSX) resources/Outcome\ Pages $(BUILTINHTMLINNER) $(INRTPSOPTS)
-	cp -f resources/Outcome\ Pages/pl404.html $(BUILTINHTMLINNER)
+	$(INBUILDX) -markdown-from-dir resources/Outcome\ Pages -markdown-to-dir $(BUILTINHTMLINNER) -markdown-variation RTP
+	$(INBUILDX) -markdown-from-dir $(INFORM7WEB)/Internal/Inter/BasicInformKit/RTPs -markdown-to-dir $(BUILTINHTMLINNER) -markdown-variation RTP
+	$(INBUILDX) -markdown-from-dir $(INFORM7WEB)/Internal/Inter/WorldModelKit/RTPs -markdown-to-dir $(BUILTINHTMLINNER) -markdown-variation RTP
 {end-define}
 
 RTPEXEMPLUM = $(BUILTINHTMLINNER)/RTP_P1.html
@@ -977,7 +977,7 @@ RTPEXEMPLUM = $(BUILTINHTMLINNER)/RTP_P1.html
 .PHONY: transferoutcomepages
 transferoutcomepages: $(RTPEXEMPLUM)
 
-$(RTPEXEMPLUM): resources/Outcome*Pages/texts.txt resources/Outcome*Pages/*.html
+$(RTPEXEMPLUM): resources/Outcome*Pages/roster.txt resources/Outcome*Pages/*.md
 	{make-inapp-outcome-pages}
 
 .PHONY: forcetransferoutcomepages

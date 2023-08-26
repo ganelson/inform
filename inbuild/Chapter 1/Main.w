@@ -24,6 +24,17 @@ inbuild_copy *to_install = NULL, *to_uninstall = NULL;
 filename *documentation_source = NULL;
 pathname *documentation_dest = NULL;
 
+typedef struct markdown_settings_struct {
+	struct filename *from;
+	struct filename *to;
+	struct pathname *from_dir;
+	struct pathname *to_dir;
+	struct filename *model;
+	struct markdown_variation *variation;
+} markdown_settings_struct;
+
+markdown_settings_struct markdown_settings = { NULL, NULL, NULL, NULL, NULL, NULL };
+
 @h Main routine.
 When Inbuild is called at the command line, it begins at |main|, like all C
 programs.
@@ -42,6 +53,7 @@ int main(int argc, char **argv) {
 	@<Complete the list of targets@>;
 	if (to_install) @<Perform an extension installation@>
 	else if (to_uninstall) @<Perform an extension uninstallation@>
+	else if ((markdown_settings.from) || (markdown_settings.from_dir)) @<Make HTML@>
 	else if (documentation_source) @<Document from a file@>
 	else @<Act on the targets@>;
 	@<Shut down the modules@>;
@@ -124,6 +136,16 @@ error in this case.
 	int use = SHELL_METHODOLOGY;
 	if (dry_run_mode) use = DRY_RUN_METHODOLOGY;
 	ExtensionInstaller::uninstall(to_uninstall, confirmed, path_to_inbuild, use);
+
+@<Make HTML@> =
+	if (markdown_settings.from) {
+		RTPPages::make_one(markdown_settings.model, markdown_settings.from,
+			markdown_settings.to, markdown_settings.variation);
+	} else if (markdown_settings.from_dir) {
+		RTPPages::work_through_directory(markdown_settings.model,
+			markdown_settings.from_dir, markdown_settings.to_dir,
+			markdown_settings.variation);
+	}
 
 @<Document from a file@> =
 	if (documentation_dest == NULL)
@@ -415,6 +437,15 @@ other options to the selection defined here.
 @e DOCUMENT_TO_CLSW
 @e MODERNISE_CLSW
 
+@e MARKDOWN_SUITE_CLSG
+
+@e MARKDOWN_FROM_CLSW
+@e MARKDOWN_TO_CLSW
+@e MARKDOWN_FROM_DIR_CLSW
+@e MARKDOWN_TO_DIR_CLSW
+@e MARKDOWN_MODEL_CLSW
+@e MARKDOWN_VARIATION_CLSW
+
 @<Read the command line@> =	
 	CommandLine::declare_heading(
 		L"[[Purpose]]\n\n"
@@ -495,6 +526,22 @@ other options to the selection defined here.
 		L"divert generated documentation to directory X");
 	CommandLine::declare_switch(MODERNISE_CLSW, L"modernise", 1,
 		L"update copies to the newest available format");
+
+	CommandLine::begin_group(MARKDOWN_SUITE_CLSG, I"for generating HTML from Markdown");
+	CommandLine::declare_switch(MARKDOWN_FROM_CLSW, L"markdown-from", 2,
+		L"generate HTML file from Markdown source file X");
+	CommandLine::declare_switch(MARKDOWN_TO_CLSW, L"markdown-to", 2,
+		L"set filename for single Markdown-generated HTML file to be X");
+	CommandLine::declare_switch(MARKDOWN_FROM_DIR_CLSW, L"markdown-from-dir", 2,
+		L"generate HTML files from all Markdown sources in X");
+	CommandLine::declare_switch(MARKDOWN_TO_DIR_CLSW, L"markdown-to-dir", 2,
+		L"generate HTML files from Markdown sources into X");
+	CommandLine::declare_switch(MARKDOWN_MODEL_CLSW, L"markdown-model", 2,
+		L"use this model file when generating HTML from Markdown ('none' for none)");
+	CommandLine::declare_switch(MARKDOWN_VARIATION_CLSW, L"markdown-variation", 2,
+		L"use dialect X of Markdown: 'CommonMark', 'GitHub', 'Inform', 'RTP'");
+	CommandLine::end_group();
+
 	Supervisor::declare_options();
 
 	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
@@ -576,6 +623,23 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 			break;
 		case DOCUMENT_FROM_CLSW: documentation_source = Filenames::from_text(arg); break;
 		case DOCUMENT_TO_CLSW: documentation_dest = Pathnames::from_text(arg); break;
+		
+		case MARKDOWN_FROM_CLSW: markdown_settings.from = Filenames::from_text(arg); break;
+		case MARKDOWN_TO_CLSW: markdown_settings.to = Filenames::from_text(arg); break;
+		case MARKDOWN_FROM_DIR_CLSW: markdown_settings.from_dir = Pathnames::from_text(arg); break;
+		case MARKDOWN_TO_DIR_CLSW: markdown_settings.to_dir = Pathnames::from_text(arg); break;
+		case MARKDOWN_MODEL_CLSW: markdown_settings.model = Filenames::from_text(arg); break;
+		case MARKDOWN_VARIATION_CLSW:
+			if (Str::eq_insensitive(arg, I"CommonMark"))
+				markdown_settings.variation = MarkdownVariations::CommonMark();
+			else if (Str::eq_insensitive(arg, I"GitHub"))
+				markdown_settings.variation = MarkdownVariations::GitHub_flavored_Markdown();
+			else if (Str::eq_insensitive(arg, I"Inform"))
+				markdown_settings.variation = InformFlavouredMarkdown::variation();
+			else if (Str::eq_insensitive(arg, I"RTP"))
+				markdown_settings.variation = RTPPages::RTP_flavoured_Markdown();
+			else Errors::fatal("unrecognised -markdown-variation");
+			break;
 	}
 	Supervisor::option(id, val, arg, state);
 }

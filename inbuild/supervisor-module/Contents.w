@@ -66,3 +66,4 @@ Chapter 7: Extension Management
 	The Converter
 	Documentation Compiler
 	Documentation Renderer
+	Making RTP Pages

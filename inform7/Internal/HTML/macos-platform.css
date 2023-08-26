@@ -672,6 +672,41 @@ span.extensionexampleletter {
 	width: auto;
 }
 
+/* For outcome pages */
+
+.outcomeheadingpanellayout {
+	position: relative;
+	height: 56px;
+	padding: 0px;
+	white-space:nowrap;
+}
+.outcomeheadingtext {
+	position: absolute;
+	top: -4px;
+	left: -1px;
+	width: 100%;
+	padding: 14px 10px 0px 10px;
+}
+.outcomeheadingrubric {
+	position: absolute;
+	top: 36px;
+	width: 100%;
+	padding: 0px 10px 0px 10px;
+}
+
+div.outcomebox div.outcomeleft {
+	float: left;
+	box-sizing: border-box;
+	width: 100px;
+	height: 100px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+div.outcomebox div.outcomeright {
+	margin-left: 120px;
+	box-sizing: border-box;
+}
+
 /* New-style paste button */
 
 a.pastelink {

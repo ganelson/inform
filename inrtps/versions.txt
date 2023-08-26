@@ -1,2 +1,0 @@
-Ablative	1	3K27	April 2006	First Perl version
-Benefactive	2	*9Z99	31 December 9999	Ported to C with Unicode support

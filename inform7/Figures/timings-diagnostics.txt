@@ -1,28 +1,28 @@
 100.0% in inform7 run
-     68.0% in compilation to Inter
-         45.7% in //Sequence::undertake_queued_tasks//
-          4.2% in //MajorNodes::pre_pass//
-          3.4% in //MajorNodes::pass_1//
-          1.9% in //ImperativeDefinitions::assess_all//
-          1.9% in //RTPhrasebook::compile_entries//
+     67.9% in compilation to Inter
+         46.0% in //Sequence::undertake_queued_tasks//
+          4.1% in //MajorNodes::pre_pass//
+          3.3% in //MajorNodes::pass_1//
+          1.8% in //ImperativeDefinitions::assess_all//
+          1.8% in //RTPhrasebook::compile_entries//
           1.5% in //RTKindConstructors::compile//
           1.1% in //Sequence::lint_inter//
+          0.7% in //Sequence::undertake_queued_tasks//
           0.3% in //CompletionModule::compile//
           0.3% in //ImperativeDefinitions::compile_first_block//
           0.3% in //MajorNodes::pass_2//
           0.3% in //Sequence::undertake_queued_tasks//
-          0.3% in //Sequence::undertake_queued_tasks//
           0.3% in //World::stage_V//
-          5.7% not specifically accounted for
-     27.6% in running Inter pipeline
-          8.8% in step 14/15: generate inform6 -> auto.inf
-          6.9% in step 5/15: load-binary-kits
-          6.1% in step 6/15: make-synoptic-module
-          1.9% in step 9/15: make-identifiers-unique
+          5.3% not specifically accounted for
+     27.1% in running Inter pipeline
+          8.6% in step 14/15: generate inform6 -> auto.inf
+          7.1% in step 5/15: load-binary-kits
+          6.0% in step 6/15: make-synoptic-module
+          1.8% in step 9/15: make-identifiers-unique
           0.3% in step 12/15: eliminate-redundant-operations
           0.3% in step 4/15: compile-splats
           0.3% in step 7/15: shorten-wiring
           0.3% in step 8/15: detect-indirect-calls
-          2.3% not specifically accounted for
-      3.8% in supervisor
-      0.4% not specifically accounted for
+          1.9% not specifically accounted for
+      4.1% in supervisor
+      0.8% not specifically accounted for
