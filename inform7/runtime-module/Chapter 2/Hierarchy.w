@@ -234,6 +234,8 @@ void Hierarchy::establish(void) {
 @e HEADING_WORD_COUNT_MD_HL
 @e HEADING_SUMMARY_MD_HL
 @e HEADING_ID_HL
+@e RTPS_HAP
+@e RTP_SOURCE_HL
 @e DEBUGGING_ASPECTS_HAP
 @e DEBUGGING_ASPECT_NAME_MD_HL
 @e DEBUGGING_ASPECT_USED_MD_HL
@@ -269,6 +271,9 @@ void Hierarchy::establish(void) {
 			H_C_U(HEADING_WORD_COUNT_MD_HL,   I"^word_count")
 			H_C_U(HEADING_SUMMARY_MD_HL,      I"^summary")
 			H_C_U(HEADING_ID_HL,              I"id")
+		H_END
+		H_BEGIN_AP(RTPS_HAP,                  I"rtp_source", I"_rtp_source")
+			H_C_U(RTP_SOURCE_HL,              I"location")
 		H_END
 		H_BEGIN_AP(DEBUGGING_ASPECTS_HAP,     I"debugging_aspect", I"_debugging_aspect")
 			H_C_U(DEBUGGING_ASPECT_NAME_MD_HL, I"^name")

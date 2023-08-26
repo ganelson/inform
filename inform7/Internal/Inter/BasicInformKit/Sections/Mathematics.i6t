@@ -65,7 +65,7 @@ virtual machine opcode which crashes on divide by zero.
 
 =
 [ IntegerDivide A B;
-	if (B == 0) { RunTimeProblem(RTP_DIVZERO); rfalse; }
+	if (B == 0) { IssueRTP("DividedByZero", "You can't divide by zero.", BasicInformKitRTPs); rfalse; }
 	return A/B;
 ];
 
@@ -74,7 +74,7 @@ Similarly.
 
 =
 [ IntegerRemainder A B;
-	if (B == 0) { RunTimeProblem(RTP_DIVZERO); rfalse; }
+	if (B == 0) { IssueRTP("DividedByZero", "You can't divide by zero.", BasicInformKitRTPs); rfalse; }
 	return A%B;
 ];
 
