@@ -22,7 +22,7 @@ original source text (though in fact I7 does not use this at present).
 Array RTP_Buffer --> (-1) 0 0 0 0 0 0 0 0;
 [ IssueRTP n desc set par1 par2 par3 ln file;
 	if ((n ofclass String) &&
-		((desc ofclass String) || (desc ofclass Routine)) &&
+		((desc ofclass String) || (desc ofclass Routine) || (desc == -1)) &&
 		(set ofclass String)) {
 		if (RTP_Buffer-->0 == -1) {
 			RTP_Buffer-->0 = n;
@@ -81,11 +81,12 @@ Array RTP_Buffer --> (-1) 0 0 0 0 0 0 0 0;
 	#ifdef DEBUG;
 	if (RTP_Buffer-->8) { print ": ", (string) RTP_Buffer-->8; }
 	#endif;
-	print "^*** ";
 	desc = RTP_Buffer-->7;
+	print "^";
+	if (desc ~= -1) print "*** ";
 	if (desc ofclass String) print (string) desc, "^";
 	else if (desc ofclass Routine) desc(par1, par2, par3);
-	else {
+	else if (desc ~= -1) {
 		switch(n) {
 			RTP_IMPREL:
 				print "Tried to access an inappropriate relation for ", (the) par1,
@@ -201,8 +202,8 @@ Array RTP_Buffer --> (-1) 0 0 0 0 0 0 0 0;
 					(string) RlnGetF(par3, RR_DESCRIPTION), "'.^";
 		}
 		RunTimeProblemShowWM(n, par1, par2, par3);
+		print "^";
 	}
-	print "^";
 ];
 
 @h Low-Level Errors.

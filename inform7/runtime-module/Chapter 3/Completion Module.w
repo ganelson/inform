@@ -92,26 +92,12 @@ void CompletionModule::compile(void) {
 	inform_project *proj = Task::project();
 	kit_dependency *kd;
 	LOOP_OVER_LINKED_LIST(kd, kit_dependency, proj->kits_to_include) {
-		pathname *P = kd->kit->as_copy->location_if_path;
+		pathname *P = Pathnames::down(kd->kit->as_copy->location_if_path, I"RTPs");
 		text_stream *name = kd->kit->as_copy->edition->work->title;
 		TEMPORARY_TEXT(identifier)
 		WRITE_TO(identifier, "%SRTPs", name);
 		@<Define an RTP location for P with this name@>;
 		DISCARD_TEXT(identifier)
-	}
-	inform_extension *E;
-	LOOP_OVER_LINKED_LIST(E, inform_extension, proj->extensions_included) {
-		pathname *P = E->as_copy->location_if_path;
-		if (P) {
-			text_stream *name = E->as_copy->edition->work->title;
-			TEMPORARY_TEXT(identifier)
-			LOOP_THROUGH_TEXT(pos, name)
-				if (Str::get(pos) != ' ')
-					PUT_TO(identifier, Str::get(pos));
-			WRITE_TO(identifier, "RTPs");
-			@<Define an RTP location for P with this name@>;
-			DISCARD_TEXT(identifier)
-		}
 	}
 
 @<Define an RTP location for P with this name@> =
@@ -123,18 +109,7 @@ void CompletionModule::compile(void) {
 	TEMPORARY_TEXT(I_text)
 	if (Supervisor::installed_files())
 		WRITE_TO(I_text, "%p", Supervisor::installed_files());
-
-	if (Str::begins_with(P_text, M_text)) {
-		WRITE_TO(at, "MATERIALS/");
-		Pathnames::to_text_relative(at, Projects::materials_path(proj), P);
-	} else if ((Str::len(I_text) > 0) && (Str::begins_with(P_text, I_text))) {
-		WRITE_TO(at, "INTERNAL/");
-		Pathnames::to_text_relative(at, Supervisor::installed_files(), P);
-	} else {
-		WRITE_TO(at, "%S", P_text);
-	}
-
-	LOG("DEFINE %S = %S.\n", identifier, at);
+	CompletionModule::write_RTP_path(at, P);
 	package_request *pack = Hierarchy::completion_package(RTPS_HAP);
 	inter_name *iname = Hierarchy::make_iname_in(RTP_SOURCE_HL, pack);
 	InterNames::set_translation(iname, identifier);
@@ -142,9 +117,6 @@ void CompletionModule::compile(void) {
 	Emit::text_constant(iname, at);
 	Hierarchy::make_available(iname);
 	DISCARD_TEXT(at)
-	DISCARD_TEXT(P_text)
-	DISCARD_TEXT(M_text)
-	DISCARD_TEXT(I_text)
 
 @<Debugging log aspects@> =
 	for (int i=0; i<NO_DEFINED_DA_VALUES; i++) {
@@ -157,6 +129,31 @@ void CompletionModule::compile(void) {
 				(inter_ti) Log::aspect_switched_on(i));
 		}
 	}
+
+@ =
+void CompletionModule::write_RTP_path(OUTPUT_STREAM, pathname *P) {
+	inform_project *proj = Task::project();
+	TEMPORARY_TEXT(P_text)
+	WRITE_TO(P_text, "%p", P);
+	TEMPORARY_TEXT(M_text)
+	WRITE_TO(M_text, "%p", Projects::materials_path(proj));
+	TEMPORARY_TEXT(I_text)
+	if (Supervisor::installed_files())
+		WRITE_TO(I_text, "%p", Supervisor::installed_files());
+
+	if (Str::begins_with(P_text, M_text)) {
+		WRITE("MATERIALS/");
+		Pathnames::to_text_relative(OUT, Projects::materials_path(proj), P);
+	} else if ((Str::len(I_text) > 0) && (Str::begins_with(P_text, I_text))) {
+		WRITE("INTERNAL/");
+		Pathnames::to_text_relative(OUT, Supervisor::installed_files(), P);
+	} else {
+		WRITE("%S", P_text);
+	}
+	DISCARD_TEXT(P_text)
+	DISCARD_TEXT(M_text)
+	DISCARD_TEXT(I_text)
+}
 
 @ =
 typedef struct heading_compilation_data {

@@ -4,7 +4,8 @@
   S is now {2, 4, 3, 8, 16, 32, 64, 2}.
   *** Couldn't add at entry 0 in the list {2, 4, 3, 8, 16, 32, 64, 2}, which has entries in the range 1 to 8 ***
   
-  *** Run-time problem P50: Attempt to use list item which does not exist.
+  *** Run-time problem P50
+  *** Attempt to use list item which does not exist.
   
   *** Couldn't add at entry 10 in the list {2, 4, 3, 8, 16, 32, 64, 2}, which has entries in the range 1 to 8 ***
   S is now {2, 4, 2, 4, 6, 10, 3, 8, 16, 32, 64, 2}.
@@ -15,7 +16,7 @@
   
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Brahms Conservatoire
   

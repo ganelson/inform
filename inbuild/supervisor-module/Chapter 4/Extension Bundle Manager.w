@@ -226,6 +226,8 @@ inbuild_copy *ExtensionBundleManager::claim_folder_as_copy(pathname *P, inbuild_
 				@<Police Materials contents@>;
 			} else if (Str::eq(subdir, I"Documentation")) {
 				@<Police Documentation contents@>;
+			} else if (Str::eq(subdir, I"RTPs")) {
+				@<Police RTPs contents@>;
 			} else {
 				TEMPORARY_TEXT(error_text)
 				WRITE_TO(error_text,
@@ -366,6 +368,9 @@ inbuild_copy *ExtensionBundleManager::claim_folder_as_copy(pathname *P, inbuild_
 		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, error_text));
 		DISCARD_TEXT(error_text)				
 	}
+
+@<Police RTPs contents@> =
+	;
 
 @h Searching.
 Here we look through a nest to find all extension bundles:

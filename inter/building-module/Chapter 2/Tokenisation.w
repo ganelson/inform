@@ -301,6 +301,10 @@ a bracing.
 			c = property_holds_block_value_ISINC;
 		} else if (Str::eq_wide_string(t->command, L"mark-event-used")) {
 			c = mark_event_used_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"rtp-code")) {
+			c = rtp_code_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"rtp-location")) {
+			c = rtp_location_ISINC;
 		} else if (Str::eq_wide_string(t->command, L"my")) {
 			c = my_ISINC;
 		} else if (Str::eq_wide_string(t->command, L"unprotect")) {

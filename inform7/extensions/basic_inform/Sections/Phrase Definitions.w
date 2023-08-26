@@ -943,6 +943,17 @@ To next -- in loop
 	(documented at ph_next):
 	(- continue; -).
 
+@ The following innocent-looking definition throws a problem message if the
+RTP label is not (a) literal text and (b) the leafname of a Markdown file
+(once |.md| has been added) in the |RTPs| subdirectory of the current
+extension directory: it can only be used from with a directory-format extension.
+
+=
+Section 5 - Run-Time Problems
+
+To issue the run-time problem (pcode - text):
+	(- IssueRTP({-rtp-code: pcode}, -1, {-rtp-location: pcode}); -).
+
 @h Values.
 Some of the things we can do with enumerations, others being listed under
 randomness below.
