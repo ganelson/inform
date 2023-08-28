@@ -12,9 +12,8 @@ typedef struct compiled_documentation {
 	struct inform_extension *associated_extension;
 	struct inform_extension *within_extension;
 	struct markdown_item *alt_tree;
-	int total_headings[3];
-	int total_examples;
 	int empty;
+	struct linked_list *examples; /* of |satellite_test_case| */
 	struct linked_list *cases; /* of |satellite_test_case| */
 	CLASS_DEFINITION
 } compiled_documentation;
@@ -26,11 +25,8 @@ compiled_documentation *DocumentationCompiler::new_wrapper(text_stream *source) 
 	cd->associated_extension = NULL;
 	cd->within_extension = NULL;
 	cd->alt_tree = NULL;
-	cd->total_examples = 0;
-	cd->total_headings[0] = 1;
-	cd->total_headings[1] = 0;
-	cd->total_headings[2] = 0;
 	cd->empty = FALSE;
+	cd->examples = NEW_LINKED_LIST(IFM_example);
 	cd->cases = NEW_LINKED_LIST(satellite_test_case);
 	return cd;
 }
@@ -62,6 +58,8 @@ compiled_documentation *DocumentationCompiler::compile_from_path(pathname *P,
 	egs = FALSE;
 	EP = Pathnames::down(P, I"Tests");
 	@<Scan EP directory for examples@>;
+	int example_number = 0;
+	DocumentationCompiler::recursively_renumber_examples_r(cd->alt_tree, &example_number);
 	return cd;
 }
 
@@ -106,6 +104,23 @@ compiled_documentation *DocumentationCompiler::compile_from_path(pathname *P,
 @
 
 =
+void DocumentationCompiler::recursively_renumber_examples_r(markdown_item *md, int *example_number) {
+	if (md->type == INFORM_EXAMPLE_HEADING_MIT) {
+		IFM_example *E = RETRIEVE_POINTER_IFM_example(md->user_state);
+		int N = ++(*example_number);
+		int P = 1;
+		while (N > 26) { P += 1, N -= 26; }
+		Str::clear(E->insignia);
+		if (P > 1) WRITE_TO(E->insignia, "%d", P);
+		WRITE_TO(E->insignia, "%c", 'A'+N-1);
+	}
+	for (markdown_item *ch = md->down; ch; ch = ch->next)
+		DocumentationCompiler::recursively_renumber_examples_r(ch, example_number);
+}
+
+@
+
+=
 typedef struct example_scanning_state {
 	int star_count;
 	struct text_stream *long_title;
@@ -135,7 +150,6 @@ typedef struct example_scanning_state {
 		;
 	} else {
 		alt_placement_node = InformFlavouredMarkdown::find_section(cd->alt_tree, ess.placement);
-	LOG("Looking for %S.\n", ess.placement);
 		if (alt_placement_node == NULL) {
 			DocumentationCompiler::example_error(&ess,
 				I"example gives a Location which is not the name of any section");
@@ -147,9 +161,12 @@ typedef struct example_scanning_state {
 			I"example does not give its Description");
 	}
 	IFM_example *eg = InformFlavouredMarkdown::new_example(
-		ess.long_title, ess.desc, ess.star_count, ++(cd->total_examples));
+		ess.long_title, ess.desc, ess.star_count, LinkedLists::len(cd->examples));
+	eg->cue = alt_placement_node;
+	ADD_TO_LINKED_LIST(eg, IFM_example, cd->examples);
 
 	markdown_item *eg_header = Markdown::new_item(INFORM_EXAMPLE_HEADING_MIT);
+	eg->header = eg_header;
 	eg_header->user_state = STORE_POINTER_IFM_example(eg);
 	markdown_item *md = alt_placement_node;
 	if (md == NULL) {
@@ -168,7 +185,6 @@ typedef struct example_scanning_state {
 		markdown_item *alt_ecd = Markdown::parse_extended(ess.body_text,
 			InformFlavouredMarkdown::variation());
 		eg_header->down = alt_ecd->down;
-		Markdown::debug_subtree(DL, eg_header);
 	} else {
 		DocumentationCompiler::example_error(&ess,
 			I"example does not give any actual content");
