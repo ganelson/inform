@@ -279,7 +279,9 @@ else
 	show: log $I7LOG
 	show: i7 $I7CONSOLE
 	show: inform6 $I6SOURCE
-	show: inter $INTER
+	if showing: inter
+		show: inter $INTER
+	endif
 
 	if: $COMPILEONLY No
 		set: $I6 = inform6/Tangled/inform6
