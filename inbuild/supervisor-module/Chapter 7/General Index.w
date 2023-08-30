@@ -305,17 +305,19 @@ void Indexes::mark_index_term(compiled_documentation *cd, text_stream *given_ter
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, term, L"%c*=___=([^_]+?)")) {
 		text_stream *category = mr.exp[0];
-		indexing_category *ic = (indexing_category *)
-			Dictionaries::read_value(cd->id.categories_by_name, category);
-		Regexp::dispose_of(&mr);
-		if ((ic) && (ic->cat_alsounder == TRUE)) {
-			TEMPORARY_TEXT(processed_term)
-			Indexes::process_category_options(processed_term, cd, given_term, FALSE, 5);
-			if ((Regexp::match(NULL, processed_term, L"IGNORE=___=ME%c*")) ||
-				(Regexp::match(NULL, processed_term, L"%c*:IGNORE=___=ME%c*"))) return;
-			Indexes::ensure_lemmas_exist(cd, processed_term);
-			Indexes::set_index_point(cd, processed_term, V, S, anchor, E, see);
-			DISCARD_TEXT(processed_term)
+		if (Dictionaries::find(cd->id.categories_by_name, category)) {
+			indexing_category *ic = (indexing_category *)
+				Dictionaries::read_value(cd->id.categories_by_name, category);
+			Regexp::dispose_of(&mr);
+			if ((ic) && (ic->cat_alsounder == TRUE)) {
+				TEMPORARY_TEXT(processed_term)
+				Indexes::process_category_options(processed_term, cd, given_term, FALSE, 5);
+				if ((Regexp::match(NULL, processed_term, L"IGNORE=___=ME%c*")) ||
+					(Regexp::match(NULL, processed_term, L"%c*:IGNORE=___=ME%c*"))) return;
+				Indexes::ensure_lemmas_exist(cd, processed_term);
+				Indexes::set_index_point(cd, processed_term, V, S, anchor, E, see);
+				DISCARD_TEXT(processed_term)
+			}
 		}
 	}
 	Indexes::set_index_point(cd, term, V, S, anchor, E, see);
