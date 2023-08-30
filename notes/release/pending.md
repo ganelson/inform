@@ -36,6 +36,9 @@ and now poses a moral rather than gender-based question.
 
 ## Bug fixes
 
+- Fix for Jira bug [I7-2416](https://inform7.atlassian.net/browse/I7-2416)
+	"Hyperbolic sinh and cosh each have the implementation the other needs"
+	([PR#126](https://github.com/ganelson/inform/pull/126))
 - Fix for Jira bug [I7-2384](https://inform7.atlassian.net/browse/I7-2384)
 	"Some Standard Rule responses use 'here' instead of '[here]', producing 'here' in cases that should be 'there'"
 	([PR#116](https://github.com/ganelson/inform/pull/116))
