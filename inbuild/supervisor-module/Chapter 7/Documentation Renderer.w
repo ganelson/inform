@@ -67,6 +67,15 @@ void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd, tex
 					}
 				}
 			}
+		if (Indexes::indexing_occurred(cd)) {
+			text_stream *OUT = DocumentationRenderer::open_subpage(P, I"general_index.html");
+			if (OUT) {
+				DocumentationRenderer::render_header(OUT, cd->title, I"General Index", cd->within_extension);
+				Indexes::write_general_index(OUT, cd);
+				DocumentationRenderer::render_footer(OUT);
+				DocumentationRenderer::close_subpage();
+			}
+		}
 	}
 }
 
@@ -91,7 +100,9 @@ void DocumentationRenderer::render_index_page(OUTPUT_STREAM, compiled_documentat
 			HTML_OPEN_WITH("p", "class=\"extensionsubheading\"");
 			WRITE("introduction");
 			HTML_CLOSE("p");
+			HTML_OPEN_WITH("div", "class=\"markdowncontent\"");
 			Markdown::render_extended(OUT, md, InformFlavouredMarkdown::variation());
+			HTML_CLOSE("div");
 		}
 	} else { /* there are only sections and examples, or not even that */
 		HTML_OPEN_WITH("p", "class=\"extensionsubheading\"");
@@ -243,13 +254,22 @@ in a hierarchical fashion.
 
 =
 void DocumentationRenderer::render_toc(OUTPUT_STREAM, compiled_documentation *cd) {
-Markdown::debug_subtree(DL, cd->alt_tree);
 	HTML_OPEN("div");
 	HTML_OPEN_WITH("p", "class=\"extensionsubheading\"");
 	WRITE("contents");
 	HTML_CLOSE("p");
 	HTML_OPEN_WITH("ul", "class=\"extensioncontents\"");
 	DocumentationRenderer::render_toc_r(OUT, cd->alt_tree, 0);
+	if (Indexes::indexing_occurred(cd)) {
+		HTML_OPEN_WITH("li", "class=\"exco1\"");
+		HTML::begin_span(OUT, I"indexblack");
+		HTML_OPEN("b");
+		HTML_OPEN_WITH("a", "style=\"text-decoration: none\" href=\"general_index.html\"");
+		WRITE("General Index");
+		HTML_CLOSE("a");
+		HTML_CLOSE("b");
+		HTML_CLOSE("li");
+	}
 	HTML_CLOSE("ul");
 	HTML_CLOSE("div");
 }

@@ -566,6 +566,23 @@ button.dangerousbutton {
 	white-space: break-spaces;
 	width: auto;
 }
+.markdowncontent code.inlinetranscript {
+	background-color: #f9e9e9;
+	text-transform: uppercase;
+	font-size: 90%;
+	color: var(--syntaxextract-colour);
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	box-sizing: border-box;
+	padding-bottom: 2.38px;
+	padding-left: 4.76px;
+	padding-right: 4.76px;
+	padding-top: 2.38px;
+	white-space: break-spaces;
+	width: auto;
+}
 .markdowncontent code.inlinecode {
 	font-size: 90%;
 	font-family: SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; 

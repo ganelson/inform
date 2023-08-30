@@ -67,3 +67,6 @@ Chapter 7: Extension Management
 	Documentation Compiler
 	Documentation Renderer
 	Making RTP Pages
+	Indexing Utilities
+	General Index
+	Examples Index

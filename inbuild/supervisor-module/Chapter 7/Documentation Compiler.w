@@ -15,6 +15,7 @@ typedef struct compiled_documentation {
 	int empty;
 	struct linked_list *examples; /* of |satellite_test_case| */
 	struct linked_list *cases; /* of |satellite_test_case| */
+	struct cd_indexing_data id;
 	CLASS_DEFINITION
 } compiled_documentation;
 
@@ -28,6 +29,7 @@ compiled_documentation *DocumentationCompiler::new_wrapper(text_stream *source) 
 	cd->empty = FALSE;
 	cd->examples = NEW_LINKED_LIST(IFM_example);
 	cd->cases = NEW_LINKED_LIST(satellite_test_case);
+	cd->id = Indexes::new_indexing_data();
 	return cd;
 }
 
@@ -60,6 +62,12 @@ compiled_documentation *DocumentationCompiler::compile_from_path(pathname *P,
 	@<Scan EP directory for examples@>;
 	int example_number = 0;
 	DocumentationCompiler::recursively_renumber_examples_r(cd->alt_tree, &example_number);
+	filename *IF = Filenames::in(P, I"indexing.txt");
+	if (TextFiles::exists(IF))
+		TextFiles::read(IF, FALSE, "can't open instructions file",
+			TRUE, DocumentationCompiler::read_indexing_helper, NULL, cd);
+
+	Indexes::scan(cd);
 	return cd;
 }
 
@@ -104,6 +112,42 @@ compiled_documentation *DocumentationCompiler::compile_from_path(pathname *P,
 @
 
 =
+void DocumentationCompiler::read_indexing_helper(text_stream *cl, text_file_position *tfp,
+	void *v_cd) {
+	compiled_documentation *cd = (compiled_documentation *) v_cd;
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, cl, L" *#%c*")) { Regexp::dispose_of(&mr); return; }
+	if (Regexp::match(&mr, cl, L" *")) { Regexp::dispose_of(&mr); return; }
+
+	if (Regexp::match(&mr, cl, L" *index: *(%c*?) *")) {
+		@<Act on an indexing notation@>;
+	} else {
+		Errors::in_text_file("unknown syntax in instructions file", tfp);
+	}
+	Regexp::dispose_of(&mr);
+}
+
+@<Act on an indexing notation@> =
+	text_stream *tweak = mr.exp[0];
+	match_results mr2 = Regexp::create_mr();
+	if (Regexp::match(&mr2, tweak, L"^{(%C*)headword(%C*)} = (%C+) *(%c*)")) {
+		Indexes::add_indexing_notation(cd, mr2.exp[0], mr2.exp[1], mr2.exp[2], mr2.exp[3]);
+	} else if (Regexp::match(&mr2, tweak, L"{(%C+?)} = (%C+) *(%c*)")) {
+		Indexes::add_indexing_notation_for_symbols(cd, mr2.exp[0], mr2.exp[1], mr2.exp[2]);
+	} else if (Regexp::match(&mr2, tweak, L"definition = (%C+) *(%c*)")) {
+		Indexes::add_indexing_notation_for_definitions(cd, mr2.exp[0], mr2.exp[1], NULL);
+	} else if (Regexp::match(&mr2, tweak, L"(%C+)-definition = (%C+) *(%c*)")) {
+		Indexes::add_indexing_notation_for_definitions(cd, mr2.exp[1], mr2.exp[2], mr2.exp[0]);
+	} else if (Regexp::match(&mr2, tweak, L"example = (%C+) *(%c*)")) {
+		Indexes::add_indexing_notation_for_examples(cd, mr2.exp[0], mr2.exp[1]);
+	} else {
+		Errors::in_text_file("bad indexing notation", tfp);
+	}
+	Regexp::dispose_of(&mr2);
+
+@
+
+=
 void DocumentationCompiler::recursively_renumber_examples_r(markdown_item *md, int *example_number) {
 	if (md->type == INFORM_EXAMPLE_HEADING_MIT) {
 		IFM_example *E = RETRIEVE_POINTER_IFM_example(md->user_state);
@@ -126,6 +170,9 @@ typedef struct example_scanning_state {
 	struct text_stream *long_title;
 	struct text_stream *body_text;
 	struct text_stream *placement;
+	struct text_stream *recipe_placement;
+	struct text_stream *subtitle;
+	struct text_stream *index;
 	struct text_stream *desc;
 	struct linked_list *errors; /* of |markdown_item| */
 	struct text_stream *scanning;
@@ -138,6 +185,9 @@ typedef struct example_scanning_state {
 	ess.long_title = NULL;
 	ess.body_text = Str::new();
 	ess.placement = NULL;
+	ess.recipe_placement = NULL;
+	ess.subtitle = NULL;
+	ess.index = NULL;
 	ess.desc = NULL;
 	ess.errors = NEW_LINKED_LIST(markdown_item);
 	ess.past_header = FALSE;
@@ -163,6 +213,8 @@ typedef struct example_scanning_state {
 	IFM_example *eg = InformFlavouredMarkdown::new_example(
 		ess.long_title, ess.desc, ess.star_count, LinkedLists::len(cd->examples));
 	eg->cue = alt_placement_node;
+	eg->ex_subtitle = ess.subtitle;
+	eg->ex_index = ess.index;
 	ADD_TO_LINKED_LIST(eg, IFM_example, cd->examples);
 
 	markdown_item *eg_header = Markdown::new_item(INFORM_EXAMPLE_HEADING_MIT);
@@ -232,6 +284,9 @@ void DocumentationCompiler::read_example_helper(text_stream *text, text_file_pos
 		match_results mr = Regexp::create_mr();
 		if (Regexp::match(&mr, text, L"(%C+?) *: *(%c+?)")) {
 			if (Str::eq(mr.exp[0], I"Location")) ess->placement = Str::duplicate(mr.exp[1]);
+			else if (Str::eq(mr.exp[0], I"RecipeLocation")) ess->recipe_placement = Str::duplicate(mr.exp[1]);
+			else if (Str::eq(mr.exp[0], I"Subtitle")) ess->subtitle = Str::duplicate(mr.exp[1]);
+			else if (Str::eq(mr.exp[0], I"Index")) ess->index = Str::duplicate(mr.exp[1]);
 			else if (Str::eq(mr.exp[0], I"Description")) ess->desc = Str::duplicate(mr.exp[1]);
 			else {
 				DocumentationCompiler::example_error(ess,

@@ -19,6 +19,7 @@ which use this module:
 @e control_structure_phrase_CLASS
 @e copy_error_CLASS
 @e element_activation_CLASS
+@e example_index_data_CLASS
 @e extensions_key_item_CLASS
 @e heading_CLASS
 @e heading_tree_CLASS
@@ -30,6 +31,9 @@ which use this module:
 @e inbuild_requirement_CLASS
 @e inbuild_search_result_CLASS
 @e inbuild_work_CLASS
+@e index_lemma_CLASS
+@e index_reference_CLASS
+@e indexing_category_CLASS
 @e inform_extension_CLASS
 @e inform_kit_CLASS
 @e inform_kit_ittt_CLASS
@@ -40,6 +44,7 @@ which use this module:
 @e kit_configuration_CLASS
 @e kit_dependency_CLASS
 @e satellite_test_case_CLASS
+@e span_notation_CLASS
 
 =
 DECLARE_CLASS(build_methodology)
@@ -51,6 +56,7 @@ DECLARE_CLASS(control_structure_phrase)
 DECLARE_CLASS(compiled_documentation)
 DECLARE_CLASS(copy_error)
 DECLARE_CLASS(element_activation)
+DECLARE_CLASS(example_index_data)
 DECLARE_CLASS(extensions_key_item)
 DECLARE_CLASS(heading_tree)
 DECLARE_CLASS(heading)
@@ -62,6 +68,9 @@ DECLARE_CLASS(inbuild_registry)
 DECLARE_CLASS(inbuild_requirement)
 DECLARE_CLASS(inbuild_search_result)
 DECLARE_CLASS(inbuild_work)
+DECLARE_CLASS(index_lemma)
+DECLARE_CLASS(index_reference)
+DECLARE_CLASS(indexing_category)
 DECLARE_CLASS(inform_extension)
 DECLARE_CLASS(inform_kit_ittt)
 DECLARE_CLASS(inform_kit)
@@ -72,6 +81,7 @@ DECLARE_CLASS(inform_template)
 DECLARE_CLASS(kit_configuration)
 DECLARE_CLASS(kit_dependency)
 DECLARE_CLASS(satellite_test_case)
+DECLARE_CLASS(span_notation)
 
 @ Like all modules, this one must define a |start| and |end| function:
 
