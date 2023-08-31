@@ -17,10 +17,12 @@ typedef struct compiled_documentation {
 	struct linked_list *examples; /* of |satellite_test_case| */
 	struct linked_list *cases; /* of |satellite_test_case| */
 	struct cd_indexing_data id;
+	int examples_lettered; /* the alternative being numbered */
 	CLASS_DEFINITION
 } compiled_documentation;
 
-compiled_documentation *DocumentationCompiler::new_wrapper(text_stream *source) {
+compiled_documentation *DocumentationCompiler::new_wrapper(text_stream *source,
+	filename *layout_file) {
 	compiled_documentation *cd = CREATE(compiled_documentation);
 	cd->title = Str::new();
 	cd->original = Str::duplicate(source);
@@ -32,9 +34,56 @@ compiled_documentation *DocumentationCompiler::new_wrapper(text_stream *source) 
 	cd->examples = NEW_LINKED_LIST(IFM_example);
 	cd->cases = NEW_LINKED_LIST(satellite_test_case);
 	cd->id = Indexes::new_indexing_data();
+	cd->examples_lettered = TRUE;
+
+	if (TextFiles::exists(layout_file))
+		TextFiles::read(layout_file, FALSE, "can't open layout file",
+			TRUE, DocumentationCompiler::read_layout_helper, NULL, cd);
+	Indexes::add_indexing_notation(cd, NULL, NULL, I"standard", NULL);
 	return cd;
 }
 
+@
+
+=
+void DocumentationCompiler::read_layout_helper(text_stream *cl, text_file_position *tfp,
+	void *v_cd) {
+	compiled_documentation *cd = (compiled_documentation *) v_cd;
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, cl, L" *#%c*")) { Regexp::dispose_of(&mr); return; }
+	if (Regexp::match(&mr, cl, L" *")) { Regexp::dispose_of(&mr); return; }
+
+	if (Regexp::match(&mr, cl, L" *examples: *(%c*?) *")) {
+		if (Str::eq(mr.exp[0], I"lettered")) cd->examples_lettered = TRUE;
+		else if (Str::eq(mr.exp[0], I"numbered")) cd->examples_lettered = FALSE;
+		else Errors::in_text_file("'examples:' must be 'lettered' or 'numbered'", tfp);
+	} else if (Regexp::match(&mr, cl, L" *index: *(%c*?) *")) {
+		@<Act on an indexing notation@>;
+	} else {
+		Errors::in_text_file("unknown syntax in instructions file", tfp);
+	}
+	Regexp::dispose_of(&mr);
+}
+
+@<Act on an indexing notation@> =
+	text_stream *tweak = mr.exp[0];
+	match_results mr2 = Regexp::create_mr();
+	if (Regexp::match(&mr2, tweak, L"^{(%C*)headword(%C*)} = (%C+) *(%c*)")) {
+		Indexes::add_indexing_notation(cd, mr2.exp[0], mr2.exp[1], mr2.exp[2], mr2.exp[3]);
+	} else if (Regexp::match(&mr2, tweak, L"{(%C+?)} = (%C+) *(%c*)")) {
+		Indexes::add_indexing_notation_for_symbols(cd, mr2.exp[0], mr2.exp[1], mr2.exp[2]);
+	} else if (Regexp::match(&mr2, tweak, L"definition = (%C+) *(%c*)")) {
+		Indexes::add_indexing_notation_for_definitions(cd, mr2.exp[0], mr2.exp[1], NULL);
+	} else if (Regexp::match(&mr2, tweak, L"(%C+)-definition = (%C+) *(%c*)")) {
+		Indexes::add_indexing_notation_for_definitions(cd, mr2.exp[1], mr2.exp[2], mr2.exp[0]);
+	} else if (Regexp::match(&mr2, tweak, L"example = (%C+) *(%c*)")) {
+		Indexes::add_indexing_notation_for_examples(cd, mr2.exp[0], mr2.exp[1]);
+	} else {
+		Errors::in_text_file("bad indexing notation", tfp);
+	}
+	Regexp::dispose_of(&mr2);
+
+@ =
 typedef struct satellite_test_case {
 	int is_example;
 	struct text_stream *owning_heading;
@@ -53,8 +102,9 @@ compiled_documentation *DocumentationCompiler::compile_from_path(pathname *P,
 	inform_extension *associated_extension) {
 	filename *F = Filenames::in(P, I"Documentation.md");
 	if (TextFiles::exists(F) == FALSE) return NULL;
+	filename *IF = Filenames::in(P, I"layout.txt");
 	compiled_documentation *cd =
-		DocumentationCompiler::halfway_compile_from_file(F, associated_extension);
+		DocumentationCompiler::halfway_compile_from_file(F, IF, associated_extension);
 	if (cd == NULL) return NULL;
 	pathname *EP = Pathnames::down(P, I"Examples");
 	int egs = TRUE;
@@ -63,13 +113,14 @@ compiled_documentation *DocumentationCompiler::compile_from_path(pathname *P,
 	EP = Pathnames::down(P, I"Tests");
 	@<Scan EP directory for examples@>;
 	int example_number = 0;
-	DocumentationCompiler::recursively_renumber_examples_r(cd->alt_tree, &example_number);
+	DocumentationCompiler::recursively_renumber_examples_r(cd->alt_tree, &example_number,
+		cd->examples_lettered);
 
 	IFM_example *eg;
 	LOOP_OVER_LINKED_LIST(eg, IFM_example, cd->examples) {
 		TEMPORARY_TEXT(leaf)
 		WRITE_TO(leaf, "eg_%S.html", eg->insignia);
-		Markdown::create(cd->link_references, eg->name, leaf, NULL);
+		Markdown::create(cd->link_references, Str::duplicate(eg->name), leaf, NULL);
 		DISCARD_TEXT(leaf)
 	}
 	Markdown::parse_all_blocks_inline_using_extended(cd->alt_tree, NULL,
@@ -79,12 +130,7 @@ compiled_documentation *DocumentationCompiler::compile_from_path(pathname *P,
 		if (eg->header->down)
 			Markdown::parse_all_blocks_inline_using_extended(eg->header->down, NULL,
 				cd->link_references, InformFlavouredMarkdown::variation());
-
-	filename *IF = Filenames::in(P, I"indexing.txt");
-	if (TextFiles::exists(IF))
-		TextFiles::read(IF, FALSE, "can't open instructions file",
-			TRUE, DocumentationCompiler::read_indexing_helper, NULL, cd);
-
+	
 	Indexes::scan(cd);
 	return cd;
 }
@@ -130,54 +176,24 @@ compiled_documentation *DocumentationCompiler::compile_from_path(pathname *P,
 @
 
 =
-void DocumentationCompiler::read_indexing_helper(text_stream *cl, text_file_position *tfp,
-	void *v_cd) {
-	compiled_documentation *cd = (compiled_documentation *) v_cd;
-	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, cl, L" *#%c*")) { Regexp::dispose_of(&mr); return; }
-	if (Regexp::match(&mr, cl, L" *")) { Regexp::dispose_of(&mr); return; }
-
-	if (Regexp::match(&mr, cl, L" *index: *(%c*?) *")) {
-		@<Act on an indexing notation@>;
-	} else {
-		Errors::in_text_file("unknown syntax in instructions file", tfp);
-	}
-	Regexp::dispose_of(&mr);
-}
-
-@<Act on an indexing notation@> =
-	text_stream *tweak = mr.exp[0];
-	match_results mr2 = Regexp::create_mr();
-	if (Regexp::match(&mr2, tweak, L"^{(%C*)headword(%C*)} = (%C+) *(%c*)")) {
-		Indexes::add_indexing_notation(cd, mr2.exp[0], mr2.exp[1], mr2.exp[2], mr2.exp[3]);
-	} else if (Regexp::match(&mr2, tweak, L"{(%C+?)} = (%C+) *(%c*)")) {
-		Indexes::add_indexing_notation_for_symbols(cd, mr2.exp[0], mr2.exp[1], mr2.exp[2]);
-	} else if (Regexp::match(&mr2, tweak, L"definition = (%C+) *(%c*)")) {
-		Indexes::add_indexing_notation_for_definitions(cd, mr2.exp[0], mr2.exp[1], NULL);
-	} else if (Regexp::match(&mr2, tweak, L"(%C+)-definition = (%C+) *(%c*)")) {
-		Indexes::add_indexing_notation_for_definitions(cd, mr2.exp[1], mr2.exp[2], mr2.exp[0]);
-	} else if (Regexp::match(&mr2, tweak, L"example = (%C+) *(%c*)")) {
-		Indexes::add_indexing_notation_for_examples(cd, mr2.exp[0], mr2.exp[1]);
-	} else {
-		Errors::in_text_file("bad indexing notation", tfp);
-	}
-	Regexp::dispose_of(&mr2);
-
-@
-
-=
-void DocumentationCompiler::recursively_renumber_examples_r(markdown_item *md, int *example_number) {
+void DocumentationCompiler::recursively_renumber_examples_r(markdown_item *md,
+	int *example_number, int lettered) {
 	if (md->type == INFORM_EXAMPLE_HEADING_MIT) {
 		IFM_example *E = RETRIEVE_POINTER_IFM_example(md->user_state);
-		int N = ++(*example_number);
-		int P = 1;
-		while (N > 26) { P += 1, N -= 26; }
 		Str::clear(E->insignia);
-		if (P > 1) WRITE_TO(E->insignia, "%d", P);
-		WRITE_TO(E->insignia, "%c", 'A'+N-1);
+		int N = ++(*example_number);
+		if (lettered) {
+			int P = 1;
+			while (N > 26) { P += 1, N -= 26; }
+			Str::clear(E->insignia);
+			if (P > 1) WRITE_TO(E->insignia, "%d", P);
+			WRITE_TO(E->insignia, "%c", 'A'+N-1);
+		} else {
+			WRITE_TO(E->insignia, "%d", N);
+		}
 	}
 	for (markdown_item *ch = md->down; ch; ch = ch->next)
-		DocumentationCompiler::recursively_renumber_examples_r(ch, example_number);
+		DocumentationCompiler::recursively_renumber_examples_r(ch, example_number, lettered);
 }
 
 @
@@ -335,12 +351,12 @@ compiled_documentation *DocumentationCompiler::compile_from_file(filename *F,
 }
 
 compiled_documentation *DocumentationCompiler::halfway_compile_from_file(filename *F,
-	inform_extension *associated_extension) {
+	filename *layout_file, inform_extension *associated_extension) {
 	TEMPORARY_TEXT(temp)
 	TextFiles::read(F, FALSE, "unable to read file of documentation", TRUE,
 		&DocumentationCompiler::read_file_helper, NULL, temp);
 	compiled_documentation *cd =
-		DocumentationCompiler::halfway_compile(temp, associated_extension);
+		DocumentationCompiler::halfway_compile(temp, layout_file, associated_extension);
 	DISCARD_TEXT(temp)
 	return cd;
 }
@@ -357,7 +373,7 @@ void DocumentationCompiler::read_file_helper(text_stream *text, text_file_positi
 compiled_documentation *DocumentationCompiler::compile(text_stream *source,
 	inform_extension *associated_extension) {
 	SVEXPLAIN(1, "(compiling documentation: %d chars)\n", Str::len(source));
-	compiled_documentation *cd = DocumentationCompiler::new_wrapper(source);
+	compiled_documentation *cd = DocumentationCompiler::new_wrapper(source, NULL);
 	cd->associated_extension = associated_extension;
 	if (cd->associated_extension)
 		WRITE_TO(cd->title, "%X", cd->associated_extension->as_copy->edition->work);
@@ -368,9 +384,9 @@ compiled_documentation *DocumentationCompiler::compile(text_stream *source,
 }
 
 compiled_documentation *DocumentationCompiler::halfway_compile(text_stream *source,
-	inform_extension *associated_extension) {
+	filename *layout_file, inform_extension *associated_extension) {
 	SVEXPLAIN(1, "(compiling documentation: %d chars)\n", Str::len(source));
-	compiled_documentation *cd = DocumentationCompiler::new_wrapper(source);
+	compiled_documentation *cd = DocumentationCompiler::new_wrapper(source, layout_file);
 	cd->associated_extension = associated_extension;
 	if (cd->associated_extension)
 		WRITE_TO(cd->title, "%X", cd->associated_extension->as_copy->edition->work);

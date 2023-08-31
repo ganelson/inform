@@ -156,7 +156,7 @@ void DocumentationRenderer::render_chapter_page(OUTPUT_STREAM, compiled_document
 	DocumentationRenderer::file_title(title, file_marker);
 	DocumentationRenderer::render_header(OUT, cd->title, title, cd->within_extension);
 	DISCARD_TEXT(title)
-	HTML_OPEN("div");
+	HTML_OPEN_WITH("div", "class=\"markdowncontent\"");
 	Markdown::render_extended(OUT, file_marker, InformFlavouredMarkdown::variation());
 	HTML_CLOSE("div");
 	@<Enter the small print@>;
@@ -318,12 +318,12 @@ void DocumentationRenderer::render_toc_r(OUTPUT_STREAM, markdown_item *md, int L
 
 void DocumentationRenderer::render_example(OUTPUT_STREAM, compiled_documentation *cd,
 	IFM_example *egc) {
-	HTML_OPEN("div");
 	markdown_item *alt_EN = egc->header;
 	if (alt_EN == NULL) {
 		WRITE("Example %d is missing", egc->number);
 	} else {
 		IFM_example *E = RETRIEVE_POINTER_IFM_example(alt_EN->user_state);
+		HTML_OPEN_WITH("div", "class=\"markdowncontent\"");
 		InformFlavouredMarkdown::render_example_heading(OUT, E, TRUE);
 		markdown_item *passage_node = alt_EN->down;
 		while (passage_node) {

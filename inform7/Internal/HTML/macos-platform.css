@@ -607,6 +607,13 @@ button.dangerousbutton {
 	background-color: #f9e9e9;
 }
 
+.markdowncontent div.extract-problems {
+	margin: 0.75em;
+	padding: 0.75em;
+	border: 1px dotted #2f6fab;
+	background-color: #e9f9e9;
+}
+
 .markdowncontent code.language-transcript {
     font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
 }

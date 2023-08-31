@@ -83,6 +83,7 @@ void IndexUtilities::add_span_notation(compiled_documentation *cd,
 	SN->sp_left_len = Str::len(L);
 	SN->sp_right_len = Str::len(R);
 	SN->sp_purpose = purpose;
+	ADD_TO_LINKED_LIST(SN, span_notation, cd->id.notations);
 }
 
 @h Alphabetisation.
