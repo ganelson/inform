@@ -12,6 +12,7 @@ typedef struct compiled_documentation {
 	struct inform_extension *associated_extension;
 	struct inform_extension *within_extension;
 	struct markdown_item *alt_tree;
+	struct md_links_dictionary *link_references;
 	int empty;
 	struct linked_list *examples; /* of |satellite_test_case| */
 	struct linked_list *cases; /* of |satellite_test_case| */
@@ -26,6 +27,7 @@ compiled_documentation *DocumentationCompiler::new_wrapper(text_stream *source) 
 	cd->associated_extension = NULL;
 	cd->within_extension = NULL;
 	cd->alt_tree = NULL;
+	cd->link_references = Markdown::new_links_dictionary();
 	cd->empty = FALSE;
 	cd->examples = NEW_LINKED_LIST(IFM_example);
 	cd->cases = NEW_LINKED_LIST(satellite_test_case);
@@ -52,7 +54,7 @@ compiled_documentation *DocumentationCompiler::compile_from_path(pathname *P,
 	filename *F = Filenames::in(P, I"Documentation.md");
 	if (TextFiles::exists(F) == FALSE) return NULL;
 	compiled_documentation *cd =
-		DocumentationCompiler::compile_from_file(F, associated_extension);
+		DocumentationCompiler::halfway_compile_from_file(F, associated_extension);
 	if (cd == NULL) return NULL;
 	pathname *EP = Pathnames::down(P, I"Examples");
 	int egs = TRUE;
@@ -62,6 +64,22 @@ compiled_documentation *DocumentationCompiler::compile_from_path(pathname *P,
 	@<Scan EP directory for examples@>;
 	int example_number = 0;
 	DocumentationCompiler::recursively_renumber_examples_r(cd->alt_tree, &example_number);
+
+	IFM_example *eg;
+	LOOP_OVER_LINKED_LIST(eg, IFM_example, cd->examples) {
+		TEMPORARY_TEXT(leaf)
+		WRITE_TO(leaf, "eg_%S.html", eg->insignia);
+		Markdown::create(cd->link_references, eg->name, leaf, NULL);
+		DISCARD_TEXT(leaf)
+	}
+	Markdown::parse_all_blocks_inline_using_extended(cd->alt_tree, NULL,
+		cd->link_references, InformFlavouredMarkdown::variation());
+
+	LOOP_OVER_LINKED_LIST(eg, IFM_example, cd->examples)
+		if (eg->header->down)
+			Markdown::parse_all_blocks_inline_using_extended(eg->header->down, NULL,
+				cd->link_references, InformFlavouredMarkdown::variation());
+
 	filename *IF = Filenames::in(P, I"indexing.txt");
 	if (TextFiles::exists(IF))
 		TextFiles::read(IF, FALSE, "can't open instructions file",
@@ -234,8 +252,8 @@ typedef struct example_scanning_state {
 		eg_header->next = md->next; md->next = eg_header;
 	}
 	if (Str::len(ess.body_text) > 0) {
-		markdown_item *alt_ecd = Markdown::parse_extended(ess.body_text,
-			InformFlavouredMarkdown::variation());
+		markdown_item *alt_ecd = Markdown::parse_block_structure_using_extended(ess.body_text,
+			cd->link_references, InformFlavouredMarkdown::variation());
 		eg_header->down = alt_ecd->down;
 	} else {
 		DocumentationCompiler::example_error(&ess,
@@ -316,6 +334,17 @@ compiled_documentation *DocumentationCompiler::compile_from_file(filename *F,
 	return cd;
 }
 
+compiled_documentation *DocumentationCompiler::halfway_compile_from_file(filename *F,
+	inform_extension *associated_extension) {
+	TEMPORARY_TEXT(temp)
+	TextFiles::read(F, FALSE, "unable to read file of documentation", TRUE,
+		&DocumentationCompiler::read_file_helper, NULL, temp);
+	compiled_documentation *cd =
+		DocumentationCompiler::halfway_compile(temp, associated_extension);
+	DISCARD_TEXT(temp)
+	return cd;
+}
+
 void DocumentationCompiler::read_file_helper(text_stream *text, text_file_position *tfp,
 	void *v_state) {
 	text_stream *contents = (text_stream *) v_state;
@@ -335,5 +364,18 @@ compiled_documentation *DocumentationCompiler::compile(text_stream *source,
 	if (Str::is_whitespace(source)) cd->empty = TRUE;
 	else cd->alt_tree = Markdown::parse_extended(source,
 		InformFlavouredMarkdown::variation());
+	return cd;
+}
+
+compiled_documentation *DocumentationCompiler::halfway_compile(text_stream *source,
+	inform_extension *associated_extension) {
+	SVEXPLAIN(1, "(compiling documentation: %d chars)\n", Str::len(source));
+	compiled_documentation *cd = DocumentationCompiler::new_wrapper(source);
+	cd->associated_extension = associated_extension;
+	if (cd->associated_extension)
+		WRITE_TO(cd->title, "%X", cd->associated_extension->as_copy->edition->work);
+	if (Str::is_whitespace(source)) cd->empty = TRUE;
+	else cd->alt_tree = Markdown::parse_block_structure_using_extended(source,
+		cd->link_references, InformFlavouredMarkdown::variation());
 	return cd;
 }

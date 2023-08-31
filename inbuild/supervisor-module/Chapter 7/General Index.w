@@ -84,7 +84,6 @@ dictionary *categories_redirect = NULL; /* for the built-in categories only */
 void Indexes::add_category(compiled_documentation *cd, text_stream *name, text_stream *options, text_stream *redirect) {
 	if (Str::len(redirect) > 0) @<This is a redirection@>;
 	if (Dictionaries::find(cd->id.categories_by_name, name) == NULL) {
-PRINT("Cat %S: opts '%S'\n", name, options);
 		indexing_category *ic = CREATE(indexing_category);
 		Dictionaries::create(cd->id.categories_by_name, name);
 		Dictionaries::write_value(cd->id.categories_by_name, name, ic);
@@ -96,7 +95,6 @@ PRINT("Cat %S: opts '%S'\n", name, options);
 Y", we use the redirection dictionary. Here |redirect| is Y, and |name| is X.
 
 @<This is a redirection@> =
-PRINT("Cat %S: redirect '%S'\n", name, redirect);
 	text_stream *val = Dictionaries::create_text(cd->id.categories_redirect, redirect);
 	Str::copy(val, name);
 

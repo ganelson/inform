@@ -1,6 +1,6 @@
-Total memory consumption was 140323K = 137 MB
+Total memory consumption was 140326K = 137 MB
 
- ---- was used for 2135145 objects, in 374911 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2135151 objects, in 374917 frames in 0 x 800K = 0K = 0 MB:
 
     30.1%  inter_tree_node_array                    60 x 8192 = 491520 objects, 43255680 bytes
     19.4%  text_stream_array                        4974 x 100 = 497400 objects, 28013568 bytes
@@ -36,7 +36,7 @@ Total memory consumption was 140323K = 137 MB
      0.3%  local_variable_array                     49 x 100 = 4900 objects, 471968 bytes
      0.2%  verb_usage                               1148 objects, 394912 bytes
      0.2%  rule                                     478 objects, 374752 bytes
-     0.2%  dictionary                               7771 objects, 373008 bytes
+     0.2%  dictionary                               7774 objects, 373152 bytes
      0.2%  verb_form                                388 objects, 350752 bytes
      0.2%  noun                                     2395 objects, 287400 bytes
      0.1%  compilation_subtask                      3388 objects, 271040 bytes
@@ -209,7 +209,7 @@ Total memory consumption was 140323K = 137 MB
      ----  inference_family                         11 objects, 440 bytes
      ----  source_file                              5 objects, 440 bytes
      ----  article_usage                            8 objects, 384 bytes
-     ----  compiled_documentation                   3 objects, 360 bytes
+     ----  compiled_documentation                   3 objects, 384 bytes
      ----  IFM_example                              4 objects, 352 bytes
      ----  tree_inventory                           1 object, 320 bytes
      ----  door_dir_notice                          5 objects, 320 bytes
@@ -235,31 +235,31 @@ Total memory consumption was 140323K = 137 MB
      ----  build_skill                              5 objects, 200 bytes
      ----  element_activation                       6 objects, 192 bytes
      ----  plural_dictionary_entry                  4 objects, 192 bytes
-     ----  inference_subject_family                 5 objects, 160 bytes
+     ----  md_links_dictionary                      6 objects, 192 bytes
      ----  inter_architecture                       4 objects, 160 bytes
+     ----  inference_subject_family                 5 objects, 160 bytes
      ----  imperative_defn_family                   4 objects, 160 bytes
      ----  inbuild_nest                             3 objects, 120 bytes
      ----  inform_language                          1 object, 104 bytes
-     ----  md_links_dictionary                      3 objects, 96 bytes
-     ----  article                                  2 objects, 80 bytes
      ----  compile_task_data                        1 object, 80 bytes
      ----  group_together_function                  2 objects, 80 bytes
-     ----  build_methodology                        1 object, 56 bytes
+     ----  article                                  2 objects, 80 bytes
      ----  figures_data                             1 object, 56 bytes
+     ----  build_methodology                        1 object, 56 bytes
      ----  inter_warehouse                          1 object, 56 bytes
      ----  I6_generation_data                       1 object, 48 bytes
-     ----  star_invention                           1 object, 48 bytes
      ----  HTML_file_state                          1 object, 48 bytes
      ----  inform_kit_ittt                          1 object, 48 bytes
+     ----  star_invention                           1 object, 48 bytes
      ----  target_pragma_setting                    1 object, 40 bytes
      ----  loop_over_scope                          1 object, 40 bytes
-     ----  kind_template_definition                 1 object, 40 bytes
      ----  by_function_bp_data                      1 object, 40 bytes
+     ----  kind_template_definition                 1 object, 40 bytes
 
 100.0% was used for memory not allocated for objects:
 
     62.4%  text stream storage                      89673548 bytes in 517519 claims
-     3.9%  dictionary storage                       5631552 bytes in 7771 claims
+     3.9%  dictionary storage                       5634624 bytes in 7774 claims
      ----  sorting                                  2624 bytes in 531 claims
      5.0%  source text                              7200000 bytes in 3 claims
      7.5%  source text details                      10800000 bytes in 2 claims
@@ -276,5 +276,5 @@ Total memory consumption was 140323K = 137 MB
      ----  code generation workspace for objects    3528 bytes in 19 claims
      0.1%  emitter array storage                    281184 bytes in 2006 claims
 
--136.-2% was overhead - -195732016 bytes = -191144K = -186 MB
+-136.-2% was overhead - -195732280 bytes = -191144K = -186 MB
 
