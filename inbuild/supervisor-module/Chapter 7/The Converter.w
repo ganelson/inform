@@ -74,7 +74,7 @@ void ExtensionConverter::go(inform_extension *E, text_stream *OUT) {
 	text_stream *source = E->read_into_file->torn_off_documentation;
 	if (Str::is_whitespace(source) == FALSE) {
 		if (ExtensionConverter::mkdir(E, OUT, P_documentation) == FALSE) return;
-		filename *F_documentation = Filenames::in(P_documentation, I"Documentation.txt");
+		filename *F_documentation = Filenames::in(P_documentation, I"Documentation.md");
 		text_stream DOCF_struct;
 		text_stream *S_documentation = &DOCF_struct;
 		if (ExtensionConverter::fopen(E, OUT, S_documentation, F_documentation) == FALSE) return;

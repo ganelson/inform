@@ -1,13 +1,14 @@
    Home
   Today's prime is *** Couldn't read from entry -35 of a list which has entries numbered from 1 to 5 ***
   
-  *** Run-time problem P50: Attempt to use list item which does not exist.
+  *** Run-time problem P50
+  *** Attempt to use list item which does not exist.
   
   2.
   
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Home
   

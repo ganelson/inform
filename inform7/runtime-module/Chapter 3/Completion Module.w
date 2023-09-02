@@ -14,6 +14,7 @@ void CompletionModule::compile(void) {
 	@<RNG seed@>;
 	@<Max indexed thumbnails@>;
 	@<Headings@>;
+	@<Kit relative paths@>;
 	@<Debugging log aspects@>;
 }
 
@@ -87,6 +88,36 @@ void CompletionModule::compile(void) {
 	Emit::numeric_constant(iname,
 		(inter_ti) global_compilation_settings.index_figure_thumbnails);
 
+@<Kit relative paths@> =
+	inform_project *proj = Task::project();
+	kit_dependency *kd;
+	LOOP_OVER_LINKED_LIST(kd, kit_dependency, proj->kits_to_include) {
+		pathname *P = Pathnames::down(kd->kit->as_copy->location_if_path, I"RTPs");
+		text_stream *name = kd->kit->as_copy->edition->work->title;
+		TEMPORARY_TEXT(identifier)
+		WRITE_TO(identifier, "%SRTPs", name);
+		@<Define an RTP location for P with this name@>;
+		DISCARD_TEXT(identifier)
+	}
+
+@<Define an RTP location for P with this name@> =
+	TEMPORARY_TEXT(at)
+	TEMPORARY_TEXT(P_text)
+	WRITE_TO(P_text, "%p", P);
+	TEMPORARY_TEXT(M_text)
+	WRITE_TO(M_text, "%p", Projects::materials_path(proj));
+	TEMPORARY_TEXT(I_text)
+	if (Supervisor::installed_files())
+		WRITE_TO(I_text, "%p", Supervisor::installed_files());
+	CompletionModule::write_RTP_path(at, P);
+	package_request *pack = Hierarchy::completion_package(RTPS_HAP);
+	inter_name *iname = Hierarchy::make_iname_in(RTP_SOURCE_HL, pack);
+	InterNames::set_translation(iname, identifier);
+	InterNames::clear_flag(iname, MAKE_NAME_UNIQUE_ISYMF);
+	Emit::text_constant(iname, at);
+	Hierarchy::make_available(iname);
+	DISCARD_TEXT(at)
+
 @<Debugging log aspects@> =
 	for (int i=0; i<NO_DEFINED_DA_VALUES; i++) {
 		debugging_aspect *da = &(the_debugging_aspects[i]);
@@ -98,6 +129,31 @@ void CompletionModule::compile(void) {
 				(inter_ti) Log::aspect_switched_on(i));
 		}
 	}
+
+@ =
+void CompletionModule::write_RTP_path(OUTPUT_STREAM, pathname *P) {
+	inform_project *proj = Task::project();
+	TEMPORARY_TEXT(P_text)
+	WRITE_TO(P_text, "%p", P);
+	TEMPORARY_TEXT(M_text)
+	WRITE_TO(M_text, "%p", Projects::materials_path(proj));
+	TEMPORARY_TEXT(I_text)
+	if (Supervisor::installed_files())
+		WRITE_TO(I_text, "%p", Supervisor::installed_files());
+
+	if (Str::begins_with(P_text, M_text)) {
+		WRITE("MATERIALS/");
+		Pathnames::to_text_relative(OUT, Projects::materials_path(proj), P);
+	} else if ((Str::len(I_text) > 0) && (Str::begins_with(P_text, I_text))) {
+		WRITE("INTERNAL/");
+		Pathnames::to_text_relative(OUT, Supervisor::installed_files(), P);
+	} else {
+		WRITE("%S", P_text);
+	}
+	DISCARD_TEXT(P_text)
+	DISCARD_TEXT(M_text)
+	DISCARD_TEXT(I_text)
+}
 
 @ =
 typedef struct heading_compilation_data {

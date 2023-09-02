@@ -808,6 +808,11 @@ To next -- in loop
 	(documented at ph_next):
 	(- continue; -).
 
+Section 5 - Run-Time Problems
+
+To issue the run-time problem (pcode - text):
+	(- IssueRTP({-rtp-code: pcode}, -1, {-rtp-location: pcode}); -).
+
 Chapter 4 - Values
 
 Section 1 - Enumerations

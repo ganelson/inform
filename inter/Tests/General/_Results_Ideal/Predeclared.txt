@@ -7,7 +7,7 @@ Global or_tmp_var;
 Constant Banana = 2;
 Constant Peach = Banana;
 #Ifdef TARGET_ZCODE;
-#OrigSource "inter/final-module/Chapter 4/Final Inform 6.w" 155;
+#OrigSource "inter/final-module/Chapter 4/Final Inform 6.w" 162;
 Global max_z_object;
 #Ifdef Z__Region;
 [ OC__Cl obj cla j a n objflag;

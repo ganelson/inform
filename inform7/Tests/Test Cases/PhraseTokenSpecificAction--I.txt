@@ -1,12 +1,13 @@
    Foo
   Clomp!
   
-  *** Run-time problem P47 (at paragraph 8 in the source text): Phrase applied to an incompatible kind of value.
+  *** Run-time problem P47
+  *** Phrase applied to an incompatible kind of value.
   
   
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Foo
   

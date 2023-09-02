@@ -168,7 +168,6 @@ Constant RTP_EXITDOOR                = 2;
 Constant RTP_NOEXIT                  = 3;
 Constant RTP_CANTCHANGE              = 4;
 Constant RTP_IMPREL                  = 5;
-Constant RTP_RULESTACK               = 6; ! Now out of use
 Constant RTP_TOOMANYRULEBOOKS        = 7;
 Constant RTP_TOOMANYEVENTS           = 8;
 Constant RTP_BADPROPERTY             = 9;

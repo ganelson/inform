@@ -19,7 +19,26 @@ message; |ln| is an optional parameter specifying a paragraph number in the
 original source text (though in fact I7 does not use this at present).
 
 =
-Array RTP_Buffer --> (-1) 0 0 0 0 0 0;
+Array RTP_Buffer --> (-1) 0 0 0 0 0 0 0 0;
+[ IssueRTP n desc set par1 par2 par3 ln file;
+	if ((n ofclass String) &&
+		((desc ofclass String) || (desc ofclass Routine) || (desc == -1)) &&
+		(set ofclass String)) {
+		if (RTP_Buffer-->0 == -1) {
+			RTP_Buffer-->0 = n;
+			RTP_Buffer-->1 = par1;
+			RTP_Buffer-->2 = par2;
+			RTP_Buffer-->3 = par3;
+			RTP_Buffer-->4 = ln;
+			RTP_Buffer-->5 = file;
+			RTP_Buffer-->7 = desc;
+			RTP_Buffer-->8 = set;
+		}
+		RunTimeProblemShow();
+	} else {
+		"*** Improper call to IssueRTP ***";
+	}
+];
 [ RunTimeProblem n par1 par2 par3 ln file;
 	if (RTP_Buffer-->0 == -1) {
 		RTP_Buffer-->0 = n;
@@ -28,6 +47,8 @@ Array RTP_Buffer --> (-1) 0 0 0 0 0 0;
 		RTP_Buffer-->3 = par3;
 		RTP_Buffer-->4 = ln;
 		RTP_Buffer-->5 = file;
+		RTP_Buffer-->7 = 0;
+		RTP_Buffer-->8 = 0;
 	}
 	RunTimeProblemShow();
 ];
@@ -41,7 +62,7 @@ Array RTP_Buffer --> (-1) 0 0 0 0 0 0;
 [ ResumeRTP;
 	RTP_Buffer-->6 = false;
 ];
-[ RunTimeProblemShow   n par1 par2 par3 ln file i c;
+[ RunTimeProblemShow   n par1 par2 par3 ln file i c desc;
 	if (RTP_Buffer-->0 == -1 or -2) return;
 	if (RTP_Buffer-->6) return;
 
@@ -54,130 +75,135 @@ Array RTP_Buffer --> (-1) 0 0 0 0 0 0;
 	RTP_Buffer-->0 = -2;
 
 	new_line;
-	print "*** Run-time problem P", n;
-	if (ln) {
-		print " (at paragraph ", ln, " in ";
-		if (file == 0) print "the source text";
-		else ShowOneExtension(file);
-		print ")";
-	}
-	print ": ";
-	switch(n) {
-		RTP_IMPREL:
-			print "Tried to access an inappropriate relation for ", (the) par1,
-				", violating '", (string) RlnGetF(par2, RR_DESCRIPTION), "'.^";
-		RTP_TOOMANYRULEBOOKS:
-			print "Too many rulebooks in simultaneous use.^";
-		RTP_BADPROPERTY:
-			print "Tried to access non-existent property for ", (the) par1, ".^";
-		RTP_UNPROVIDED:
-			print "Since ", (the) par1, " is not allowed the property ~",
-					(PrintPropertyName) par2, "~, it is against the rules to try to use it.^";
-		RTP_UNSET:
-			print "Although ", (the) par1, " is allowed to have the property ~",
-				(PrintPropertyName) par2, "~, no value was ever given, so it can't now be used.^";
-		RTP_TOOMANYACTS:
-			print "Too many activities are going on at once.^";
-		RTP_CANTABANDON:
-			print "Tried to abandon an activity which wasn't going on.^";
-		RTP_CANTEND:
-			print "Tried to end an activity which wasn't going on.^";
-		RTP_DIVZERO:
-			print "You can't divide by zero.^";
-		RTP_BADVALUEPROPERTY:
-			print "Tried to access property for a value which didn't fit: ",
-				"if this were a number it would be ", par1, ".^";
-		RTP_TABLE_NOCOL:
-			print "Attempt to look up a non-existent column in the table '",
-				(PrintTableName) par1, "'.^";
-		RTP_TABLE_NOCORR:
-			print "Attempt to look up a non-existent correspondence in the table '",
-				(PrintTableName) par1, "'.^";
-		RTP_TABLE_NOROW:
-			print "Attempt to look up a non-existent row in the table '",
-				(PrintTableName) par1, "'.^";
-		RTP_TABLE_NOENTRY:
-			print "Attempt to look up a non-existent entry at column ", par2,
-				", row ", par3, " of the table '", (PrintTableName) par1, "'.^";
-		RTP_TABLE_NOTABLE:
-			print "Attempt to blank out a row from a non-existent table (value ",
-				par1, ").^";
-		RTP_TABLE_NOTABLE2:
-			print "Attempt to access an entry from a non-existent table.^";
-		RTP_TABLE_NOMOREBLANKS:
-			print "Attempt to choose a blank row in a table with none left: table '",
-				(PrintTableName) par1, "'.^";
-		RTP_TABLE_NOROWS:
-			print "Attempt to choose a random row in an entirely blank table: table '",
-				(PrintTableName) par1, "'.^";
-		RTP_TABLE_CANTRUNTHROUGH:
-			print "Attempt to repeat through a table in a tricky column order: table '",
-				(PrintTableName) par1, "'.^";
-		RTP_TABLE_CANTSORT:
-			print "Attempt to sort a table whose ordering must remain fixed: table '",
-				(PrintTableName) par1, "'.^";
-		RTP_TABLE_CANTSAVE:
-			print "Attempt to save a table to a file whose data is unstable: table '",
-				(PrintTableName) par1, "'.^";
-		RTP_TABLE_WONTFIT:
-			print "File being read has too many rows or columns to fit into table: table '",
-				(PrintTableName) par1, "'.^";
-		RTP_TABLE_BADFILE:
-			print "File being read is not a previously saved table: table '",
-				(PrintTableName) par1, "'.^";
-		RTP_ROUTELESS:
-			print "Attempt to find route or count steps through an implicit
-				relation.^";
-		RTP_PROPOFNOTHING:
-			print "Attempt to use a property of the 'nothing' non-object: property ",
-				(PrintPropertyName) par2, "^";
-		RTP_DECIDEONWRONGKIND:
-			print "Attempt to 'decide on V' where V is the wrong kind of object.^";
-		RTP_DECIDEONNOTHING:
-			print "Attempt to 'decide on nothing'.^";
-		RTP_LOWLEVELERROR:
-			print "Low level error.^";
-		RTP_LISTWRITERMEMORY:
-			print "The list-writer has run out of memory.^";
-		RTP_MSTACKMEMORY:
-			print "The memory stack is exhausted.^";
-		RTP_TYPECHECK:
-			print "Phrase applied to an incompatible kind of value.^";
-		RTP_FILEIOERROR:
-			print "Error handling external file.^";
-		RTP_HEAPERROR:
-			print "Memory allocation proved impossible.^";
-		RTP_LISTRANGEERROR:
-			print "Attempt to use list item which does not exist.^";
-		RTP_LISTSIZENEGATIVE:
-			print "Attempt to resize list to ", par1, " entries - there must ",
-			"always be 0 or more.^";
-		RTP_REGEXPSYNTAXERROR:
-			print "Syntax error in regular expression.^";
-		RTP_NEGATIVEROOT:
-			print "You can't take the square root of a negative number.^";
-		RTP_CANTITERATE:
-			print "You can't implicitly repeat through the values of this kind: ",
-				"a problem arising from a description which started out here - ~",
-				(string) par1, "~.^";
-		RTP_WRONGASSIGNEDKIND:
-			print "Attempt to set a variable to the wrong kind of object: ",
-				"you wrote '", (string) par2, "', which sets the value to ", (the) par1,
-				" - but that doesn't have the kind '", (string) par3, "'.^";
-		RTP_RELKINDVIOLATION:
-			print "Tried to change a relation for objects with the wrong kinds: ",
-				(string) RlnGetF(par3, RR_DESCRIPTION), ", but you tried to ",
-				"relate (or unrelate) ", (the) par1, " to ", (the) par2, ".^";
-		RTP_TEXTTOKENTOOHARD:
-			print "This use of '[text]' is too complicated.^";
-		RTP_RELATIONCHANGEIMPOSSIBLE:
-			print "This change of the relation's nature is impossible in play.^";
-		RTP_RELMINIMAL:
-			print "This operation can't be done with the relation '",
-				(string) RlnGetF(par3, RR_DESCRIPTION), "'.^";
-	}
-	RunTimeProblemShowWM(n, par1, par2, par3);
+	print "*** Run-time problem ";
+	if (n ofclass String) print (string) n;
+	else print "P", n;
+	#ifdef DEBUG;
+	if (RTP_Buffer-->8) { print ": ", (string) RTP_Buffer-->8; }
+	#endif;
+	desc = RTP_Buffer-->7;
 	print "^";
+	if (desc ~= -1) print "*** ";
+	if (desc ofclass String) print (string) desc, "^";
+	else if (desc ofclass Routine) desc(par1, par2, par3);
+	else if (desc ~= -1) {
+		switch(n) {
+			RTP_IMPREL:
+				print "Tried to access an inappropriate relation for ", (the) par1,
+					", violating '", (string) RlnGetF(par2, RR_DESCRIPTION), "'.^";
+			RTP_TOOMANYRULEBOOKS:
+				print "Too many rulebooks in simultaneous use.^";
+			RTP_BADPROPERTY:
+				print "Tried to access non-existent property for ", (the) par1, ".^";
+			RTP_UNPROVIDED:
+				print "Since ", (the) par1, " is not allowed the property ~",
+						(PrintPropertyName) par2, "~, it is against the rules to try to use it.^";
+			RTP_UNSET:
+				print "Although ", (the) par1, " is allowed to have the property ~",
+					(PrintPropertyName) par2, "~, no value was ever given, so it can't now be used.^";
+			RTP_TOOMANYACTS:
+				print "Too many activities are going on at once.^";
+			RTP_CANTABANDON:
+				print "Tried to abandon an activity which wasn't going on.^";
+			RTP_CANTEND:
+				print "Tried to end an activity which wasn't going on.^";
+			RTP_DIVZERO:
+				print "You can't divide by zero.^";
+			RTP_BADVALUEPROPERTY:
+				print "Tried to access property for a value which didn't fit: ",
+					"if this were a number it would be ", par1, ".^";
+			RTP_TABLE_NOCOL:
+				print "Attempt to look up a non-existent column in the table '",
+					(PrintTableName) par1, "'.^";
+			RTP_TABLE_NOCORR:
+				print "Attempt to look up a non-existent correspondence in the table '",
+					(PrintTableName) par1, "'.^";
+			RTP_TABLE_NOROW:
+				print "Attempt to look up a non-existent row in the table '",
+					(PrintTableName) par1, "'.^";
+			RTP_TABLE_NOENTRY:
+				print "Attempt to look up a non-existent entry at column ", par2,
+					", row ", par3, " of the table '", (PrintTableName) par1, "'.^";
+			RTP_TABLE_NOTABLE:
+				print "Attempt to blank out a row from a non-existent table (value ",
+					par1, ").^";
+			RTP_TABLE_NOTABLE2:
+				print "Attempt to access an entry from a non-existent table.^";
+			RTP_TABLE_NOMOREBLANKS:
+				print "Attempt to choose a blank row in a table with none left: table '",
+					(PrintTableName) par1, "'.^";
+			RTP_TABLE_NOROWS:
+				print "Attempt to choose a random row in an entirely blank table: table '",
+					(PrintTableName) par1, "'.^";
+			RTP_TABLE_CANTRUNTHROUGH:
+				print "Attempt to repeat through a table in a tricky column order: table '",
+					(PrintTableName) par1, "'.^";
+			RTP_TABLE_CANTSORT:
+				print "Attempt to sort a table whose ordering must remain fixed: table '",
+					(PrintTableName) par1, "'.^";
+			RTP_TABLE_CANTSAVE:
+				print "Attempt to save a table to a file whose data is unstable: table '",
+					(PrintTableName) par1, "'.^";
+			RTP_TABLE_WONTFIT:
+				print "File being read has too many rows or columns to fit into table: table '",
+					(PrintTableName) par1, "'.^";
+			RTP_TABLE_BADFILE:
+				print "File being read is not a previously saved table: table '",
+					(PrintTableName) par1, "'.^";
+			RTP_ROUTELESS:
+				print "Attempt to find route or count steps through an implicit
+					relation.^";
+			RTP_PROPOFNOTHING:
+				print "Attempt to use a property of the 'nothing' non-object: property ",
+					(PrintPropertyName) par2, "^";
+			RTP_DECIDEONWRONGKIND:
+				print "Attempt to 'decide on V' where V is the wrong kind of object.^";
+			RTP_DECIDEONNOTHING:
+				print "Attempt to 'decide on nothing'.^";
+			RTP_LOWLEVELERROR:
+				print "Low level error.^";
+			RTP_LISTWRITERMEMORY:
+				print "The list-writer has run out of memory.^";
+			RTP_MSTACKMEMORY:
+				print "The memory stack is exhausted.^";
+			RTP_TYPECHECK:
+				print "Phrase applied to an incompatible kind of value.^";
+			RTP_FILEIOERROR:
+				print "Error handling external file.^";
+			RTP_HEAPERROR:
+				print "Memory allocation proved impossible.^";
+			RTP_LISTRANGEERROR:
+				print "Attempt to use list item which does not exist.^";
+			RTP_LISTSIZENEGATIVE:
+				print "Attempt to resize list to ", par1, " entries - there must ",
+				"always be 0 or more.^";
+			RTP_REGEXPSYNTAXERROR:
+				print "Syntax error in regular expression.^";
+			RTP_NEGATIVEROOT:
+				print "You can't take the square root of a negative number.^";
+			RTP_CANTITERATE:
+				print "You can't implicitly repeat through the values of this kind: ",
+					"a problem arising from a description which started out here - ~",
+					(string) par1, "~.^";
+			RTP_WRONGASSIGNEDKIND:
+				print "Attempt to set a variable to the wrong kind of object: ",
+					"you wrote '", (string) par2, "', which sets the value to ", (the) par1,
+					" - but that doesn't have the kind '", (string) par3, "'.^";
+			RTP_RELKINDVIOLATION:
+				print "Tried to change a relation for objects with the wrong kinds: ",
+					(string) RlnGetF(par3, RR_DESCRIPTION), ", but you tried to ",
+					"relate (or unrelate) ", (the) par1, " to ", (the) par2, ".^";
+			RTP_TEXTTOKENTOOHARD:
+				print "This use of '[text]' is too complicated.^";
+			RTP_RELATIONCHANGEIMPOSSIBLE:
+				print "This change of the relation's nature is impossible in play.^";
+			RTP_RELMINIMAL:
+				print "This operation can't be done with the relation '",
+					(string) RlnGetF(par3, RR_DESCRIPTION), "'.^";
+		}
+		RunTimeProblemShowWM(n, par1, par2, par3);
+		print "^";
+	}
 ];
 
 @h Low-Level Errors.

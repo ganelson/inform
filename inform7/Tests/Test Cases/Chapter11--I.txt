@@ -3,7 +3,7 @@
   
   Chapter 11: The Midas Touch
   An Interactive Fiction by Emily Short
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Fitting Room
   You can see a round door, Florence, a silver handbag (made of silk) (empty) and a pearl brooch (made of silk) here.
@@ -86,7 +86,8 @@
 > >   Candy Room                                                                                                                                                                                                             10/14
   ** touch me
   You drop the rubber chicken. The lavender suit (made of sow ear) wind up on the floor also.
-  *** Run-time problem P43: Attempt to remove the player from play.
+  *** Run-time problem P43
+  *** Attempt to remove the player from play.
   
   You vanish!
   

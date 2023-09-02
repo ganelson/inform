@@ -1,0 +1,3 @@
+# Bad containment
+
+When `now X is in Y` is used, `X` has to be a thing, and `Y` has to be a container or a room. Sometimes this problem is triggered when an overly broad phrase has been used such as `now X is in the holder of Y`, which would be fine if `Y` is in a room or container, but not if it's a supporter or a person. (Things can be `on` a supporter, but not `in` it. Equally, it can't be a person: people can `carry` or `wear` things, but not contain them.) The safe way to avoid that is to write `now X is held by the holder of Y`. Whatever holds `Y`, if it can hold `Y` then it can hold `X`.

@@ -351,6 +351,8 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material,
 @e return_value_from_rule_ISINC
 @e property_holds_block_value_ISINC
 @e mark_event_used_ISINC
+@e rtp_code_ISINC
+@e rtp_location_ISINC
 @e my_ISINC
 @e unprotect_ISINC
 @e copy_ISINC

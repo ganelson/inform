@@ -122,7 +122,6 @@ following command-line tools:
 {tool-with-manual name: inblorb  version-from: inblorb  doc: M-ui}
 {tool-with-manual name: indoc    version-from: indoc    doc: M-iti}
 {tool-with-manual name: inpolicy version-from: inpolicy doc: M-ui}
-{tool-with-manual name: inrtps   version-from: inrtps   doc: M-ui}
 
 ### Kits shipped with Inform
 
@@ -191,7 +190,7 @@ Two books come with the Inform apps. The source code for these books is in indoc
 
 In addition, there are:
 
-* resources/Outcome Pages - Inrtps uses these to generate HTML outcome pages (such as those showing Problem messages in the app)
+* resources/Outcome Pages - Inbuild uses these to generate HTML outcome pages (such as those showing Problem messages in the app)
 * resources/Sample Projects - Two small interactive fictions, 'Disenchantment Bay' and 'Onyx', presented as samples in the app
 
 ### Retrospective builds of Inform

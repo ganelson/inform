@@ -61,6 +61,7 @@ show: source $SOURCE
 ! and ideal or blessed textual output, which is in $I: the test will end up
 ! by comparing $A with $I$.
 
+mkdir: $$workspace/Actuals
 set: $A = $$workspace/Actuals/$CASE.txt
 set: $I = $PATH/$CASE--I.txt
 show: ideal $I
@@ -279,7 +280,9 @@ else
 	show: log $I7LOG
 	show: i7 $I7CONSOLE
 	show: inform6 $I6SOURCE
-	show: inter $INTER
+	if showing: inter
+		show: inter $INTER
+	endif
 
 	if: $COMPILEONLY No
 		set: $I6 = inform6/Tangled/inform6

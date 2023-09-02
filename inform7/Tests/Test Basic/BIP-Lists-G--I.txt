@@ -9,7 +9,8 @@ After changing the two end entries, L is now {1, 7, 208, 5, -6, 6}.
 These, however, should fail as being out of range.
 *** Couldn't write to list entry 0 of a list which has entries numbered from 1 to 6 ***
 
-*** Run-time problem P50: Attempt to use list item which does not exist.
+*** Run-time problem P50
+*** Attempt to use list item which does not exist.
 
 *** Couldn't write to list entry 7 of a list which has entries numbered from 1 to 6 ***
 L now contains two instances of 208: {1, 7, 208, 5, -6, 6, 208}.

@@ -64,6 +64,9 @@ Chapter 7: Extension Management
 	Extensions Index Page
 	The Installer
 	The Converter
-	Documentation Tree
 	Documentation Compiler
 	Documentation Renderer
+	Making RTP Pages
+	Indexing Utilities
+	General Index
+	Examples Index

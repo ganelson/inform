@@ -1,6 +1,6 @@
 # Inform 7
 
-[Version](notes/versioning.md): 10.2.0-beta+6W99 'Krypton' (9 August 2023)
+[Version](notes/versioning.md): 10.2.0-beta+6X11 'Krypton' (1 September 2023)
 
 ## About Inform
 
@@ -115,7 +115,6 @@ following command-line tools:
 * inblorb - __version 4.1__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/inblorb/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/inblorb/M-ui.html)<br>The packaging stage of the Inform 7 system, which releases a story file in the blorbed format.
 * indoc - __version 4__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/indoc/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/indoc/M-iti.html)<br>The documentation-formatter for the Inform 7 system.
 * inpolicy - __version 1__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/inpolicy/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/inpolicy/M-ui.html)<br>A lint-like tool to check up on various policies used in Inform source code.
-* inrtps - __version 2__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/inrtps/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/inrtps/M-ui.html)<br>A generator of HTML pages to show for run-time problem messages in Inform.
 
 ### Kits shipped with Inform
 
@@ -162,7 +161,7 @@ Two books come with the Inform apps. The source code for these books is in indoc
 
 In addition, there are:
 
-* resources/Outcome Pages - Inrtps uses these to generate HTML outcome pages (such as those showing Problem messages in the app)
+* resources/Outcome Pages - Inbuild uses these to generate HTML outcome pages (such as those showing Problem messages in the app)
 * resources/Sample Projects - Two small interactive fictions, 'Disenchantment Bay' and 'Onyx', presented as samples in the app
 
 ### Retrospective builds of Inform

@@ -1,9 +1,10 @@
    Foo
-  *** Run-time problem P68: Attempt to resize list to -2 entries - there must always be 0 or more.
+  *** Run-time problem P68
+  *** Attempt to resize list to -2 entries - there must always be 0 or more.
   
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 150829 / Inform 7 build 6M52 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Foo
   

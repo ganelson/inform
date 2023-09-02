@@ -474,6 +474,79 @@ button.dangerousbutton {
     --paste-background-colour: #f3f6fa;
 }
 
+/* Used in rendering Markdown in extension documentation */
+
+.markdowncontent em { font-style: italic; }
+.markdowncontent strong { font-weight: bold; }
+.markdowncontent pre {
+	line-height: 16px;
+}
+.markdowncontent code.inlinesourcetext {
+	font-size: 90%;
+	background-color: var(--md-background-colour);
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	box-sizing: border-box;
+	padding-bottom: 2.38px;
+	padding-left: 4.76px;
+	padding-right: 4.76px;
+	padding-top: 2.38px;
+	white-space: break-spaces;
+	width: auto;
+}
+.markdowncontent code.inlinecode {
+	font-size: 90%;
+	font-family: SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; 
+	background-color: var(--md-background-colour);
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	box-sizing: border-box;
+	padding-bottom: 2.38px;
+	padding-left: 4.76px;
+	padding-right: 4.76px;
+	padding-top: 2.38px;
+	white-space: break-spaces;
+	width: auto;
+}
+
+.markdowncontent div.extract-transcript {
+	margin: 0.75em;
+	padding: 0.75em;
+	border: 1px dotted #2f6fab;
+	background-color: #f9e9e9;
+}
+
+.markdowncontent code.language-transcript {
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+}
+
+.markdowncontent div.definition {
+	margin: 0.75em;
+	padding: 0.75em;
+	border: 1px dashed #2f6fab;
+	background-color: #e9e9e9;
+}
+
+.markdowncontent div.definition p.defnprototype {
+	margin: 0;
+	padding: 0;
+	text-indent: 0;
+}
+
+.markdowncontent table {
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+.markdowncontent table th, .markdowncontent table td {
+	padding: 4px 10px;
+	border: 1px solid var(--light-border-colour);
+}
+
 /* Used in syntax-colouring for extension documentation */
 
 span.syntaxdefinition { color: var(--syntaxdefinition-colour); }
@@ -496,6 +569,37 @@ span.documentationerror {
 	color: var(--button-text-background-colour);
 	padding: 15px 32px;
 	margin: 4px 2px;
+}
+
+/* For example box cues */
+
+div.examplebox div.exampleleft {
+	float: left;
+	box-sizing: border-box;
+	width: 52px;
+	height: 30px;
+	padding: 8px 0;
+}
+div.examplebox div.exampleright {
+	margin-left: 60px;
+	box-sizing: border-box;
+}
+
+span.extensionexampleletter {
+	color: var(--heading-panel-text-colour);
+	font-size: 14px;
+	font-weight: bold;
+	background-color: var(--example-label-colour);
+	border-bottom-left-radius: 12px;
+	border-bottom-right-radius: 12px;
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+	box-sizing: border-box;
+	padding-bottom: 4px;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 4px;
+	width: auto;
 }
 
 /* New-style paste button */

@@ -382,16 +382,17 @@ These all modify the way a token is compiled.
 
 	if (C == box_quotation_text_ISINC)     @<Inline annotation "box-quotation-text"@>;
 
-	#ifdef IF_MODULE
 	if (C == try_action_ISINC)             @<Inline annotation "try-action"@>;
 	if (C == try_action_silently_ISINC)    @<Inline annotation "try-action-silently"@>;
-	#endif
 
 	if (C == return_value_ISINC)           @<Inline annotation "return-value"@>;
 	if (C == return_value_from_rule_ISINC) @<Inline annotation "return-value-from-rule"@>;
 
 	if (C == property_holds_block_value_ISINC) @<Inline annotation "property-holds-block-value"@>;
 	if (C == mark_event_used_ISINC)        @<Inline annotation "mark-event-used"@>;
+
+	if (C == rtp_code_ISINC)               @<Inline annotation "rtp-code"@>;
+	if (C == rtp_location_ISINC)           @<Inline annotation "rtp-location"@>;
 
 	if ((C != no_ISINC) && (valid_annotation == FALSE))
 		@<Throw a problem message for an invalid inline annotation@>;
@@ -602,6 +603,96 @@ that would be "property name". Instead:
 @<Inline annotation "mark-event-used"@> =
 	PluginCalls::nonstandard_inline_annotation(ist->inline_command, supplied);
 	valid_annotation = TRUE;
+
+@<Inline annotation "rtp-code"@> =
+	if (Rvalues::is_CONSTANT_of_kind(supplied, K_text) == FALSE) {
+		@<Throw PM_NonConstantRTPCode@>;
+	} else {
+		wording SW = Node::get_text(supplied);
+		if (Wordings::length(SW) == 1) {
+			int w1 = Wordings::first_wn(SW);
+			inform_extension *E = Extensions::corresponding_to(Lexer::file_of_origin(w1));
+			if ((E == NULL) || (E->as_copy->location_if_path == NULL))
+				@<Throw PM_RTPOnlyInExtensions@>
+			else {
+				wchar_t *p = Lexer::word_text(w1);
+				TEMPORARY_TEXT(pcode)
+				for (; *p; p++) if (*p != '"') PUT_TO(pcode, *p);
+				EmitCode::val_text(pcode);
+				pathname *P = Pathnames::down(E->as_copy->location_if_path, I"RTPs");
+				WRITE_TO(pcode, ".md");
+				filename *F = Filenames::in(P, pcode);
+				if (TextFiles::exists(F) == FALSE) {
+					LOG("Looked for RTP text at: %f\n", F);
+					@<Throw PM_UnrecognisedRTPCode@>;
+				}
+				DISCARD_TEXT(pcode)
+			}
+		} else @<Throw PM_UnrecognisedRTPCode@>;
+	}
+	return;
+
+@<Inline annotation "rtp-location"@> =
+	if (Rvalues::is_CONSTANT_of_kind(supplied, K_text) == FALSE) {
+		@<Throw PM_NonConstantRTPCode@>;
+	} else {
+		wording SW = Node::get_text(supplied);
+		if (Wordings::length(SW) == 1) {
+			int w1 = Wordings::first_wn(SW);
+			inform_extension *E = Extensions::corresponding_to(Lexer::file_of_origin(w1));
+			if ((E == NULL) || (E->as_copy->location_if_path == NULL))
+				@<Throw PM_RTPOnlyInExtensions@>
+			else {
+				wchar_t *p = Lexer::word_text(w1);
+				TEMPORARY_TEXT(pcode)
+				for (; *p; p++) if (*p != '"') PUT_TO(pcode, *p);
+				pathname *P = Pathnames::down(E->as_copy->location_if_path, I"RTPs");
+				WRITE_TO(pcode, ".md");
+				filename *F = Filenames::in(P, pcode);
+				if (TextFiles::exists(F) == FALSE) {
+					LOG("Looked for RTP text at: %f\n", F);
+					@<Throw PM_UnrecognisedRTPCode@>;
+				} else {
+					Str::clear(pcode);
+					CompletionModule::write_RTP_path(pcode, P);
+					EmitCode::val_text(pcode);
+				}
+				DISCARD_TEXT(pcode)
+			}
+		} else @<Throw PM_UnrecognisedRTPCode@>;
+	}
+	return;
+
+@<Throw PM_NonConstantRTPCode@> =
+	Problems::quote_source(1, current_sentence);
+	Problems::quote_spec(2, supplied);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NonConstantRTPCode));
+	Problems::issue_problem_segment(
+		"In %1, a run-time problem must be identified by a literal code in double-quotation "
+		"marks: other forms of text, such as '%2', do not count.");
+	Problems::issue_problem_end();
+	return;
+
+@<Throw PM_UnrecognisedRTPCode@> =
+	Problems::quote_source(1, current_sentence);
+	Problems::quote_spec(2, supplied);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnrecognisedRTPCode));
+	Problems::issue_problem_segment(
+		"In %1, a run-time problem must be identified by a literal code in double-quotation "
+		"marks: but '%2' does not seem to be one of the RTPs for the current extension.");
+	Problems::issue_problem_end();
+	return;
+
+@<Throw PM_RTPOnlyInExtensions@> =
+	Problems::quote_source(1, current_sentence);
+	Problems::quote_spec(2, supplied);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_RTPOnlyInExtensions));
+	Problems::issue_problem_segment(
+		"You wrote %1, but run-time problems can only be issued from extensions which "
+		"are stored in directory form, not from the main source text of a project or "
+		"from an extension stored in a single .i7x file.");
+	Problems::issue_problem_end();
+	return;
 
 @<Throw a problem message for an invalid inline annotation@> =
 	Problems::quote_source(1, current_sentence);

@@ -22,7 +22,7 @@
 		set: $I6OPTIONS		= -kE2~S~Dwv8
 		set: $BLORBEXT		= zblorb
 	endif
-	set: $I7OPTIONS = -fixtime -release -format=$FORMAT -no-progress -no-index -rng -sigils -log nothing -external inblorb/Tests -transient $WORK/Transient -internal $INTERNAL
+	set: $I7OPTIONS = -fixtime -release -format=$FORMAT -no-progress -no-index -rng -sigils -log nothing -external inblorb/Tests -internal $INTERNAL
 	set: $CBLORBOPTIONS = -fixtime
 
 	mkdir: $WORK/Transient

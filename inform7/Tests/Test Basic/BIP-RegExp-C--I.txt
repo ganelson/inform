@@ -78,7 +78,8 @@ test 76: matching a<-b> in a- case sensitive --> <0> a-
 test 77: matching a<b-> in a- case sensitive --> <0> a-
 test 78: compiling a<b-a> to error Invalid <> range "b-a" --> *** Regular expression error: Invalid {} range ***
 
-*** Run-time problem P51: Syntax error in regular expression.
+*** Run-time problem <nameless>
+*** Syntax error in regular expression.
 
 test 79: compiling a<>b to error Unmatched < --> *** Regular expression error: Character range never ends ***
 test 80: compiling a< to error Unmatched < --> *** Regular expression error: Character range never ends ***

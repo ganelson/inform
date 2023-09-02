@@ -131,15 +131,15 @@ The proton rms charge radius is known to 1 part in 172.
 Pass.
 Pass.
 Pass.
-"hyperbolic sine of 1" = real number: 1.54308
-"hyperbolic cosine of 1" = real number: 1.1752
-"hyperbolic tangent of 1" = real number: 1.31304
-"hyperbolic sine of -1" = real number: 1.54308
-"hyperbolic cosine of -1" = real number: -1.1752
-"hyperbolic tangent of -1" = real number: -1.31304
-"hyperbolic sine of pi" = real number: 11.59195
-"hyperbolic cosine of pi" = real number: 11.54874
-"hyperbolic tangent of pi" = real number: 1.00374
+"hyperbolic sine of 1" = real number: 1.1752
+"hyperbolic cosine of 1" = real number: 1.54308
+"hyperbolic tangent of 1" = real number: 0.76159
+"hyperbolic sine of -1" = real number: -1.1752
+"hyperbolic cosine of -1" = real number: 1.54308
+"hyperbolic tangent of -1" = real number: -0.76159
+"hyperbolic sine of pi" = real number: 11.54874
+"hyperbolic cosine of pi" = real number: 11.59195
+"hyperbolic tangent of pi" = real number: 0.99627
 Some equations to solve now.
 y = 4/2: "y" = number: 2
 x = log (pi^2): "x" = real number: 2.28946
@@ -161,7 +161,7 @@ cosh x = 2: "x" = real number: 1.31696
 
 Welcome
 An Interactive Fiction
-Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
 
 Laboratory
 

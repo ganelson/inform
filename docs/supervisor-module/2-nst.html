@@ -41,7 +41,6 @@ function togglePopup(material_id) {
 <li><a href="../indocn.html">indoc</a></li>
 <li><a href="../inform6.html">inform6</a></li>
 <li><a href="../inpolicyn.html">inpolicy</a></li>
-<li><a href="../inrtpsn.html">inrtps</a></li>
 </ul><h2>Resources</h2><ul>
 <li><a href="../extensions.html">extensions</a></li>
 <li><a href="../kits.html">kits</a></li>
@@ -83,7 +82,7 @@ positions in the file system hierarchy which may or may not exist.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The structure inbuild_nest is accessed in 1/ic, 2/rgs, 3/bg, 3/is2, 4/em, 4/ebm, 4/km, 4/lm, 4/pm, 4/tm, 5/ps2 and here.</li></ul>
+<ul class="endnotetexts"><li>The structure inbuild_nest is accessed in 1/ic, 2/rgs, 3/bg, 3/is2, 4/em, 4/ebm, 4/km, 4/lm, 4/pm, 4/tm, 5/ps2, 7/mrp and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Nests used by the Inform and Inbuild tools are tagged with the following
 constants. (There used to be quite a good joke here, but refactoring of the
 code removed its premise. Literate programming is like that sometimes.)
@@ -151,7 +150,7 @@ can't install to a read-only nest.
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Nests::get_location</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Nests::get_location</span></span>:<br/>Inbuild Control - <a href="1-ic.html#SP15">&#167;15</a><br/>Extensions Index Page - <a href="7-eip.html#SP1_2_1">&#167;1.2.1</a><br/>The Installer - <a href="7-ti.html#SP3_2">&#167;3.2</a><br/>Documentation Compiler - <a href="7-dc.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inbuild_nest</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Nests::get_location</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Nests::get_location</span></span>:<br/>Inbuild Control - <a href="1-ic.html#SP15">&#167;15</a><br/>Extensions Index Page - <a href="7-eip.html#SP1_2_1">&#167;1.2.1</a><br/>The Installer - <a href="7-ti.html#SP3_2">&#167;3.2</a><br/>Documentation Renderer - <a href="7-dr.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inbuild_nest</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">location</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
