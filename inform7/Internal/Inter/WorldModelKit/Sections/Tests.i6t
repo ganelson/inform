@@ -52,6 +52,7 @@ Like ABSTRACT, except that it removes something from play.
 =
 [ XBanishSub;
     if (XTestMove(noun, nothing)) return;
+    if (noun has worn) give noun ~worn;
     remove noun;
     say__p = 1; "[Banished.]";
 ];
@@ -71,6 +72,7 @@ To PURLOIN is to acquire something without reference to any rules on accessibili
 [ XPurloinSub;
     if (XTestMove(noun, player)) return;
     move noun to player; give noun moved; give noun ~concealed;
+    if (noun has worn) give noun ~worn;
     say__p = 1;
     "[Purloined.]";
 ];
