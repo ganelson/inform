@@ -349,7 +349,7 @@ inbuild_copy *ExtensionBundleManager::claim_folder_as_copy(pathname *P, inbuild_
 			}
 			DISCARD_TEXT(subdir)
 		} else {
-			if (Str::eq(entry, I"Documentation.md")) { doc_found = TRUE; continue; }
+			if (Str::ends_with(entry, I".md")) { doc_found = TRUE; continue; }
 			if (Str::eq(entry, I"layout.txt")) { doc_found = TRUE; continue; }
 			TEMPORARY_TEXT(error_text)
 			WRITE_TO(error_text,

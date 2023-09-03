@@ -776,7 +776,8 @@ void Extensions::read_source_text_for(inform_extension *E) {
 	DISCARD_TEXT(synopsis)
 	if (E->read_into_file) {
 		text_stream *doc = TextFromFiles::torn_off_documentation(E->read_into_file);
-		if (Str::len(doc) > 0) E->documentation = DocumentationCompiler::compile(doc, E);
+		if (Str::len(doc) > 0)
+			E->documentation = DocumentationCompiler::compile_from_text(doc, E);
 		else E->documentation = NULL;
 		E->read_into_file->your_ref = STORE_POINTER_inbuild_copy(E->as_copy);
 		@<Break the text into sentences@>;

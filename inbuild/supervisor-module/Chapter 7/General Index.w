@@ -158,35 +158,41 @@ category:
 
 =
 void Indexes::scan(compiled_documentation *cd) {
-	markdown_item *latest = cd->alt_tree;
-	Indexes::scan_r(cd, cd->alt_tree, &latest, NULL);
+	markdown_item *latest = cd->markdown_content;
+	int volume_number = -1;
+	Indexes::scan_r(cd, cd->markdown_content, &latest, NULL, &volume_number);
+	volume_number = -1;
 	IFM_example *E;
 	LOOP_OVER_LINKED_LIST(E, IFM_example, cd->examples)
-		Indexes::scan_r(cd, E->header, NULL, E);
+		Indexes::scan_r(cd, E->header, NULL, E, &volume_number);
 	if (LinkedLists::len(cd->id.lemma_list) > 0) cd->id.present_with_index = TRUE;
 	LOOP_OVER_LINKED_LIST(E, IFM_example, cd->examples) {
 		TEMPORARY_TEXT(term)
 		Indexes::extract_from_indexable_matter(term, cd, Str::duplicate(E->name));
-		TEMPORARY_TEXT(leaf)
-		WRITE_TO(leaf, "eg_%S.html", E->insignia);
-		Indexes::mark_index_term(cd, term, 0, NULL, leaf, E, NULL, NULL);
-		DISCARD_TEXT(leaf)
+		Indexes::mark_index_term(cd, term, 0, NULL, E->URL, E, NULL, NULL, 1);
+		if (Str::len(E->ex_index) > 0) {
+			Str::clear(term);
+			Indexes::extract_from_indexable_matter(term, cd, Str::duplicate(E->ex_index));
+			Indexes::mark_index_term(cd, term, 0, NULL, E->URL, E, NULL, NULL, 2);
+		}
 		DISCARD_TEXT(term)
 	}
 }
 
-void Indexes::scan_r(compiled_documentation *cd, markdown_item *md, markdown_item **latest, IFM_example *E) {
+void Indexes::scan_r(compiled_documentation *cd, markdown_item *md, markdown_item **latest,
+	IFM_example *E, int *volume_number) {
 	if (md) {
+		if (md->type == VOLUME_MIT) (*volume_number)++;
 		if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) <= 2)) {
 			if (latest) *latest = md;
 		}
 		if (md->type == INDEX_MARKER_MIT) {
-			Indexes::scan_indexingnotations(cd, md, md->details, md->stashed, 0,
+			Indexes::scan_indexingnotations(cd, md, md->details, md->stashed, *volume_number,
 				(latest)?(*latest):NULL, E);
 		}
 	}
 	for (markdown_item *ch = md->down; ch; ch=ch->next)
-		Indexes::scan_r(cd, ch, latest, E);
+		Indexes::scan_r(cd, ch, latest, E, volume_number);
 }
 
 void Indexes::scan_indexingnotations(compiled_documentation *cd, markdown_item *md,
@@ -207,7 +213,7 @@ void Indexes::scan_indexingnotations(compiled_documentation *cd, markdown_item *
 		V = 0; S = NULL; E = NULL;
 	}
 	if (carets < 3) {
-		Indexes::mark_index_term(cd, lemma, V, S, NULL, E, NULL, alphabetise_as);
+		Indexes::mark_index_term(cd, lemma, V, S, NULL, E, NULL, alphabetise_as, FALSE);
 	} else {
 		Indexes::note_index_term_alphabetisation(cd, lemma, alphabetise_as);
 	}
@@ -219,7 +225,7 @@ void Indexes::scan_indexingnotations(compiled_documentation *cd, markdown_item *
 		Str::copy(see, mr.exp[0]);
 		TEMPORARY_TEXT(seethis)
 		Indexes::extract_from_indexable_matter(seethis, cd, mr.exp[1]);
-		Indexes::mark_index_term(cd, seethis, -1, NULL, NULL, NULL, lemma, NULL);
+		Indexes::mark_index_term(cd, seethis, -1, NULL, NULL, NULL, lemma, NULL, FALSE);
 		WRITE_TO(smoke_test_text, " <-- ");
 		Indexes::process_category_options(smoke_test_text, cd, seethis, TRUE, 2);
 		DISCARD_TEXT(seethis)
@@ -227,7 +233,7 @@ void Indexes::scan_indexingnotations(compiled_documentation *cd, markdown_item *
 	if (Str::len(see) > 0) {
 		TEMPORARY_TEXT(seethis)
 		Indexes::extract_from_indexable_matter(seethis, cd, see);
-		Indexes::mark_index_term(cd, seethis, -1, NULL, NULL, NULL, lemma, NULL);
+		Indexes::mark_index_term(cd, seethis, -1, NULL, NULL, NULL, lemma, NULL, FALSE);
 		WRITE_TO(smoke_test_text, " <-- ");
 		Indexes::process_category_options(smoke_test_text, cd, seethis, TRUE, 3);
 		DISCARD_TEXT(seethis)
@@ -290,7 +296,7 @@ void Indexes::index_notify_of_symbol(compiled_documentation *cd, text_stream *sy
 				LOOP_THROUGH_TEXT(pos, term)
 					Str::put(pos, Characters::tolower(Str::get(pos)));
 				WRITE_TO(term, "=___=%S", SN->sp_style);
-				Indexes::mark_index_term(cd, term, V, S, NULL, NULL, NULL, NULL);
+				Indexes::mark_index_term(cd, term, V, S, NULL, NULL, NULL, NULL, FALSE);
 				DISCARD_TEXT(term)
 			}
 		}
@@ -298,14 +304,15 @@ void Indexes::index_notify_of_symbol(compiled_documentation *cd, text_stream *sy
 
 @ =
 void Indexes::mark_index_term(compiled_documentation *cd, text_stream *given_term, int V, markdown_item *S,
-	text_stream *anchor, IFM_example *E, text_stream *see, text_stream *alphabetise_as) {
+	text_stream *anchor, IFM_example *E, text_stream *see, text_stream *alphabetise_as,
+	int example_index_status) {
 	TEMPORARY_TEXT(term)
 	Indexes::process_category_options(term, cd, given_term, TRUE, 4);
 	if ((Regexp::match(NULL, term, L"IGNORE=___=ME%c*")) ||
 		(Regexp::match(NULL, term, L"%c*:IGNORE=___=ME%c*"))) return;
 	if (Str::len(alphabetise_as) > 0)
 		IndexUtilities::alphabetisation_exception(term, alphabetise_as);
-	Indexes::ensure_lemmas_exist(cd, term);
+	Indexes::ensure_lemmas_exist(cd, term, example_index_status);
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, term, L"%c*=___=([^_]+?)")) {
 		text_stream *category = mr.exp[0];
@@ -318,13 +325,14 @@ void Indexes::mark_index_term(compiled_documentation *cd, text_stream *given_ter
 				Indexes::process_category_options(processed_term, cd, given_term, FALSE, 5);
 				if ((Regexp::match(NULL, processed_term, L"IGNORE=___=ME%c*")) ||
 					(Regexp::match(NULL, processed_term, L"%c*:IGNORE=___=ME%c*"))) return;
-				Indexes::ensure_lemmas_exist(cd, processed_term);
-				Indexes::set_index_point(cd, processed_term, V, S, anchor, E, see);
+				Indexes::ensure_lemmas_exist(cd, processed_term, example_index_status);
+				Indexes::set_index_point(cd, processed_term, V, S, anchor, E, see,
+					example_index_status);
 				DISCARD_TEXT(processed_term)
 			}
 		}
 	}
-	Indexes::set_index_point(cd, term, V, S, anchor, E, see);
+	Indexes::set_index_point(cd, term, V, S, anchor, E, see, example_index_status);
 	DISCARD_TEXT(term)
 }
 
@@ -334,6 +342,7 @@ typedef struct index_lemma {
 	struct linked_list *index_points; /* of |index_reference| */
 	struct text_stream *index_see; /* |<--|-separated list of refs */
 	struct text_stream *sorting_key; /* final reading order is alphabetic on this */
+	int example_index_status; /* as well as in the general index */
 	CLASS_DEFINITION
 } index_lemma;
 
@@ -345,21 +354,22 @@ typedef struct index_reference {
 	CLASS_DEFINITION
 } index_reference;
 
-void Indexes::ensure_lemmas_exist(compiled_documentation *cd, text_stream *text) {
+void Indexes::ensure_lemmas_exist(compiled_documentation *cd, text_stream *text,
+	int example_index_status) {
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, text, L" *(%c+) *: *(%c+?) *"))
-		Indexes::ensure_lemmas_exist(cd, mr.exp[0]);
+		Indexes::ensure_lemmas_exist(cd, mr.exp[0], example_index_status);
 	Regexp::dispose_of(&mr);
 	if (Dictionaries::find(cd->id.lemmas, text) == NULL) {
 		TEMPORARY_TEXT(copied)
 		Str::copy(copied, text);
-		Indexes::set_index_point(cd, copied, -1, NULL, NULL, NULL, NULL);
+		Indexes::set_index_point(cd, copied, -1, NULL, NULL, NULL, NULL, example_index_status);
 		DISCARD_TEXT(copied)
 	}
 }
 
 void Indexes::set_index_point(compiled_documentation *cd, text_stream *term, int V, markdown_item *S,
-	text_stream *anchor, IFM_example *E, text_stream *see) {
+	text_stream *anchor, IFM_example *E, text_stream *see, int example_index_status) {
 	index_lemma *il = NULL;
 	if (Dictionaries::find(cd->id.lemmas, term)) {
 		il = (index_lemma *) Dictionaries::read_value(cd->id.lemmas, term);
@@ -370,6 +380,7 @@ void Indexes::set_index_point(compiled_documentation *cd, text_stream *term, int
 		il->index_points = NEW_LINKED_LIST(index_reference);
 		il->index_see = Str::new();
 		il->sorting_key = Str::new();
+		il->example_index_status = example_index_status;
 		Dictionaries::write_value(cd->id.lemmas, term, il);
 		ADD_TO_LINKED_LIST(il, index_lemma, cd->id.lemma_list);
 	}
@@ -494,15 +505,23 @@ Having accumulated the lemmas, it's time to sort them and write the index
 as it will be seen by the reader.
 
 =
+void Indexes::write_example_index(OUTPUT_STREAM, compiled_documentation *cd) {
+	Indexes::write_general_index_inner(OUT, cd, TRUE);
+}
+
 void Indexes::write_general_index(OUTPUT_STREAM, compiled_documentation *cd) {
+	Indexes::write_general_index_inner(OUT, cd, FALSE);
+}
+
+void Indexes::write_general_index_inner(OUTPUT_STREAM, compiled_documentation *cd,
+	int just_examples) {
 	@<Construct sorting keys for the lemmas@>;
 	int NL = LinkedLists::len(cd->id.lemma_list);
 	index_lemma **lemma_list =
 		Memory::calloc(NL, sizeof(index_lemma *), ARRAY_SORTING_MREASON);
 	index_lemma *il; int i=0;
 	LOOP_OVER_LINKED_LIST(il, index_lemma, cd->id.lemma_list) lemma_list[i++] = il;
-	qsort(lemma_list, (size_t) NL, sizeof(index_lemma *),
-		Indexes::sort_comparison);
+	qsort(lemma_list, (size_t) NL, sizeof(index_lemma *), Indexes::sort_comparison);
 	@<Render the index in sorted order@>;
 	@<Give feedback in index testing mode@>;
 	Memory::I7_free(lemma_list, ARRAY_SORTING_MREASON, NL*((int) sizeof(index_lemma *)));
@@ -552,6 +571,7 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 	wchar_t current_incipit = 0;
 	for (int i=0; i<NL; i++) {
 		index_lemma *il = lemma_list[i];
+		if ((just_examples) && (il->example_index_status == 0)) continue;
 		wchar_t incipit = Str::get_first_char(il->sorting_key);
 		if (Characters::isalpha(incipit)) incipit = Characters::toupper(incipit);
 		else incipit = '#';
@@ -673,9 +693,11 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 	}
 
 @<Render the lemma text@> =
+	if (il->example_index_status == 1) HTML_OPEN("b");
 	WRITE("<span class=\"index%S\">", category);
 	WRITE("%S", lemma_wording);
 	HTML_CLOSE("span");
+	if (il->example_index_status == 1) HTML_CLOSE("b");
 
 @<Render the category gloss@> =
 	if (Str::len(ic->cat_glossed) > 0)
@@ -751,3 +773,35 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 		}
 		PRINT("%d headword(s) in all\n", t);
 	}
+
+@
+
+=
+void Indexes::render_eg_index(OUTPUT_STREAM, markdown_item *md) {
+	markdown_item *pending_chapter = NULL, *pending_section = NULL;
+	if (md) Indexes::render_eg_index_r(OUT, md, &pending_chapter, &pending_section);
+}
+
+void Indexes::render_eg_index_r(OUTPUT_STREAM, markdown_item *md,
+	markdown_item **pending_chapter, markdown_item **pending_section) {
+	if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) == 1)) {
+		*pending_chapter = md;
+		*pending_section = NULL;
+	}
+	if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) == 2)) {
+		*pending_section = md;
+	}
+	if (md->type == INFORM_EXAMPLE_HEADING_MIT) {
+		if (*pending_chapter) {
+			Markdown::render_extended(OUT, *pending_chapter, InformFlavouredMarkdown::variation());
+			*pending_chapter = NULL;
+		}
+		if (*pending_section) {
+			Markdown::render_extended(OUT, *pending_section, InformFlavouredMarkdown::variation());
+			*pending_section = NULL;
+		}
+		Markdown::render_extended(OUT, md, InformFlavouredMarkdown::variation());
+	}
+	for (markdown_item *ch = md->down; ch; ch = ch->next)
+		Indexes::render_eg_index_r(OUT, ch, pending_chapter, pending_section);
+}

@@ -2,50 +2,314 @@
 
 To compile documentation from the textual syntax in an extension into a tree.
 
-@ We will actually wrap the result in the following structure, but
-it's really not much more than a tree of Markdown:
+@ A single set of documentation, such as might be associated with a project,
+a tool or an extension or kit, is represented by a |compiled_documentation|
+object. This section provides just three public functions, for the three
+ways to make one of these.
+
+We can compile either from a single one-off file:
+
+=
+compiled_documentation *DocumentationCompiler::compile_from_file(filename *F,
+	inform_extension *associated_extension) {
+	TEMPORARY_TEXT(temp)
+	TextFiles::write_file_contents(temp, F);
+	compiled_documentation *cd =
+		DocumentationCompiler::compile_from_text(temp, associated_extension);
+	DISCARD_TEXT(temp)
+	return cd;
+}
+
+@ Or from a fragment of text, which happens when a single-file-format extension's
+torn-off documentation is found:
+
+=
+compiled_documentation *DocumentationCompiler::compile_from_text(text_stream *scrap,
+	inform_extension *associated_extension) {
+	SVEXPLAIN(1, "(compiling documentation: %d chars)\n", Str::len(scrap));
+	compiled_documentation *cd = DocumentationCompiler::new_cd(NULL, associated_extension);
+	cd_volume *vol = FIRST_IN_LINKED_LIST(cd_volume, cd->volumes);
+	cd_pageset *page = FIRST_IN_LINKED_LIST(cd_pageset, vol->pagesets);
+	page->nonfile_content = scrap;
+	DocumentationCompiler::compile_inner(cd);
+	return cd;
+}
+
+@ Or from a path to a directory holding what may be multiple Markdown files and
+other resources, which is what happens when compiling the Inform manuals, or
+the documentation for a directory-format extension.
+
+=
+compiled_documentation *DocumentationCompiler::compile_from_path(pathname *P,
+	inform_extension *associated_extension) {
+	compiled_documentation *cd = DocumentationCompiler::new_cd(P, associated_extension);
+	DocumentationCompiler::compile_inner(cd);
+	return cd;
+}
+
+@ Now to take a look inside:
+
+@d NO_CD_INDEXES 4
+
+@d ALPHABETICAL_EG_INDEX 0
+@d NUMERICAL_EG_INDEX 1
+@d THEMATIC_EG_INDEX 2
+@d GENERAL_INDEX 3
 
 =
 typedef struct compiled_documentation {
 	struct text_stream *title;
-	struct text_stream *original;
-	struct inform_extension *associated_extension;
-	struct inform_extension *within_extension;
-	struct markdown_item *alt_tree;
+
+	struct inform_extension *associated_extension; /* if an extension */
+	struct inform_extension *within_extension; /* if a kit inside an extension */
+
+	struct pathname *domain; /* where the documentation source is */
+	struct linked_list *source_files; /* of |cd_source_file| */
+	struct linked_list *layout_errors; /* of |cd_layout_error| */
+
+	struct linked_list *volumes; /* of |cd_volume| */
+
+	struct markdown_item *markdown_content;
 	struct md_links_dictionary *link_references;
 	int empty;
+
 	struct linked_list *examples; /* of |satellite_test_case| */
+	struct text_stream *example_URL_pattern;
+	int examples_lettered; /* the alternative being, numbered */
 	struct linked_list *cases; /* of |satellite_test_case| */
-	struct cd_indexing_data id;
-	int examples_lettered; /* the alternative being numbered */
+
+	int include_index[NO_CD_INDEXES];
+	struct text_stream *index_title[NO_CD_INDEXES];
+	struct text_stream *index_URL_pattern[NO_CD_INDEXES];
+
+	struct cd_indexing_data id; /* for indexing the volumes in this cd */
+
 	CLASS_DEFINITION
 } compiled_documentation;
 
-compiled_documentation *DocumentationCompiler::new_wrapper(text_stream *source,
-	filename *layout_file) {
+@ "Source files" are individual files of Markdown content which are collectively
+read to compile the volumes of documentation.
+
+=
+typedef struct cd_source_file {
+	struct text_stream *leafname;
+	struct filename *as_filename;
+	int used; /* did the layout file for this cd account for this file? */
+	CLASS_DEFINITION
+} cd_source_file;
+
+@ A cd contains one or more "volumes". For something simple like an extension,
+there will usually just be one volume, with the same title as the whole cd.
+For the Inform manual built in to the apps, there will be two volumes,
+"Writing with Inform" and "The Recipe Book".
+
+=
+typedef struct cd_volume {
+	struct text_stream *title;
+	struct text_stream *home_URL;
+	struct linked_list *pagesets; /* of |cd_pageset| */
+	struct markdown_item *volume_item;
+	CLASS_DEFINITION
+} cd_volume;
+
+cd_volume *DocumentationCompiler::add_volume(compiled_documentation *cd, text_stream *title,
+	text_stream *home_URL) {
+	cd_volume *vol = CREATE(cd_volume);
+	vol->title = Str::duplicate(title);
+	vol->home_URL = Str::duplicate(home_URL);
+	vol->pagesets = NEW_LINKED_LIST(cd_pageset);
+	vol->volume_item = NULL;
+	ADD_TO_LINKED_LIST(vol, cd_volume, cd->volumes);
+	return vol;
+}
+
+text_stream *DocumentationCompiler::home_URL_at_volume_item(markdown_item *vol) {
+	if ((vol == NULL) || (vol->type != VOLUME_MIT) || (GENERAL_POINTER_IS_NULL(vol->user_state))) return I"index.html";
+	cd_volume *cdv = RETRIEVE_POINTER_cd_volume(vol->user_state);
+	return cdv->home_URL;
+}
+
+text_stream *DocumentationCompiler::title_at_volume_item(compiled_documentation *cd, markdown_item *vol) {
+	if ((vol == NULL) || (vol->type != VOLUME_MIT) || (GENERAL_POINTER_IS_NULL(vol->user_state))) return cd->title;
+	cd_volume *cdv = RETRIEVE_POINTER_cd_volume(vol->user_state);
+	return cdv->title;
+}
+
+@ A volume contains one or more "pagesets". These are not as simple as pages.
+The source may specify multiple source files, and they may each result in
+multiple pages.
+
+"Breaking" means dividing up the content into HTML pages by following its
+chapter or section structure:
+
+@e NO_PAGESETBREAKING from 1
+@e SECTION_PAGESETBREAKING
+@e CHAPTER_PAGESETBREAKING
+
+=
+typedef struct cd_pageset {
+	struct text_stream *source_specification;
+	struct text_stream *page_specification;
+	struct text_stream *nonfile_content;
+	int breaking;
+	CLASS_DEFINITION
+} cd_pageset;
+
+cd_pageset *DocumentationCompiler::add_page(cd_volume *vol, text_stream *src, text_stream *dest,
+	int breaking) {
+	cd_pageset *pages = CREATE(cd_pageset);
+	pages->source_specification = Str::duplicate(src);
+	pages->page_specification = Str::duplicate(dest);
+	pages->nonfile_content = NULL;
+	pages->breaking = breaking;
+	ADD_TO_LINKED_LIST(pages, cd_pageset, vol->pagesets);
+	return pages;
+}
+
+@ "Layout errors" occur when the optional configuration file for a cd contains
+syntax errors or asks for something ambiguous or impossible:
+
+=
+typedef struct cd_layout_error {
+	struct text_stream *message;
+	struct text_stream *line;
+	int line_number;
+	CLASS_DEFINITION
+} cd_layout_error;
+
+void DocumentationCompiler::layout_error(compiled_documentation *cd,
+	text_stream *msg, text_stream *line, text_file_position *tfp) {
+	cd_layout_error *err = CREATE(cd_layout_error);
+	err->message = Str::duplicate(msg);
+	err->line = Str::duplicate(line);
+	err->line_number = tfp->line_count;
+	ADD_TO_LINKED_LIST(err, cd_layout_error, cd->layout_errors);
+}
+
+@ We respond to such errors by writing a list of them into the documentation's
+index page and otherwise not producting documentation at all:
+
+=
+int DocumentationCompiler::scold(OUTPUT_STREAM, compiled_documentation *cd) {
+	int bad_ones = 0;
+	cd_source_file *cdsf;
+	LOOP_OVER_LINKED_LIST(cdsf, cd_source_file, cd->source_files)
+		if (cdsf->used != 1)
+			bad_ones++;
+	if (bad_ones > 0) {
+		HTML_OPEN("p");
+		WRITE("No documentation has been produced because the Markdown file(s) "
+			"provided did not tally:");
+		HTML_CLOSE("p");
+		HTML_OPEN("ul");
+		LOOP_OVER_LINKED_LIST(cdsf, cd_source_file, cd->source_files)
+			if (cdsf->used != 1) {
+				HTML_OPEN("li");
+				WRITE("The file '%S' ", cdsf->leafname);
+				if (cdsf->used == 0) WRITE("is not part of the layout");
+				else WRITE("is ambiguous, matching multiple page-sets in the layout");
+				HTML_CLOSE("li");
+			}
+		HTML_CLOSE("ul");
+		return TRUE;
+	}
+	if (LinkedLists::len(cd->layout_errors) == 0) return FALSE;
+	HTML_OPEN("p");
+	WRITE("No documentation has been produced because the 'layout.txt' file was invalid:");
+	HTML_CLOSE("p");
+	HTML_OPEN("ul");
+	cd_layout_error *err;
+	LOOP_OVER_LINKED_LIST(err, cd_layout_error, cd->layout_errors) {
+		HTML_OPEN("li");
+		WRITE("Line %d: ", err->line_number);
+		HTML_OPEN("code");
+		WRITE("%S", err->line);
+		HTML_CLOSE("code");
+		HTML_TAG("br");
+		WRITE("%S", err->message);
+		HTML_CLOSE("li");
+	}
+	HTML_CLOSE("ul");
+	return TRUE;
+}
+
+@ And we can now create a new cd object.
+
+=
+compiled_documentation *DocumentationCompiler::new_cd(pathname *P,
+	inform_extension *associated_extension) {
 	compiled_documentation *cd = CREATE(compiled_documentation);
+	@<Initialise the cd structure@>;
+	if (P) {
+		cd_source_file *Documentation_md_cdsf = NULL;
+		@<Find the possible Markdown source files@>;
+		@<Read the layout file, if there is one@>;
+	}
+	Indexes::add_indexing_notation(cd, NULL, NULL, I"standard", NULL);
+	if (LinkedLists::len(cd->volumes) == 0) {
+		cd_volume *implied = DocumentationCompiler::add_volume(cd, cd->title, I"index.html");
+		DocumentationCompiler::add_page(implied, I"Documentation.md",
+			I"chapter*.html", CHAPTER_PAGESETBREAKING);
+	}
+	return cd;
+}
+
+@<Initialise the cd structure@> =
 	cd->title = Str::new();
-	cd->original = Str::duplicate(source);
-	cd->associated_extension = NULL;
+	cd->associated_extension = associated_extension;
+	if (cd->associated_extension)
+		WRITE_TO(cd->title, "%X", cd->associated_extension->as_copy->edition->work);
 	cd->within_extension = NULL;
-	cd->alt_tree = NULL;
+	cd->markdown_content = NULL;
 	cd->link_references = Markdown::new_links_dictionary();
 	cd->empty = FALSE;
 	cd->examples = NEW_LINKED_LIST(IFM_example);
 	cd->cases = NEW_LINKED_LIST(satellite_test_case);
 	cd->id = Indexes::new_indexing_data();
 	cd->examples_lettered = TRUE;
+	cd->example_URL_pattern = I"eg_#.html";
+	cd->index_URL_pattern[ALPHABETICAL_EG_INDEX] = I"alphabetical_index.html";
+	cd->index_URL_pattern[NUMERICAL_EG_INDEX] = I"numerical_index.html";
+	cd->index_URL_pattern[THEMATIC_EG_INDEX] = I"thematic_index.html";
+	cd->index_URL_pattern[GENERAL_INDEX] = I"general_index.html";
+	cd->index_title[ALPHABETICAL_EG_INDEX] = I"Examples in Alphabetical Order";
+	cd->index_title[NUMERICAL_EG_INDEX] = I"Examples by Number";
+	cd->index_title[THEMATIC_EG_INDEX] = I"Examples by Theme";
+	cd->index_title[GENERAL_INDEX] = I"Index";
+	cd->include_index[ALPHABETICAL_EG_INDEX] = FALSE;
+	cd->include_index[NUMERICAL_EG_INDEX] = FALSE;
+	cd->include_index[THEMATIC_EG_INDEX] = FALSE;
+	cd->include_index[GENERAL_INDEX] = FALSE;
+	cd->layout_errors = NEW_LINKED_LIST(cd_layout_error);
+	cd->volumes = NEW_LINKED_LIST(cd_volume);
+	cd->source_files = NEW_LINKED_LIST(cd_source_file);
+	cd->domain = P;
 
+@<Find the possible Markdown source files@> =
+	linked_list *L = Directories::listing(P);
+	text_stream *entry;
+	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+		if (Platform::is_folder_separator(Str::get_last_char(entry)) == FALSE) {
+			if ((Str::ends_with(entry, I".md")) || (Str::ends_with(entry, I".MD"))) {
+				cd_source_file *cdsf = CREATE(cd_source_file);
+				cdsf->leafname = Str::duplicate(entry);
+				cdsf->as_filename = Filenames::in(P, entry);
+				cdsf->used = 0;
+				ADD_TO_LINKED_LIST(cdsf, cd_source_file, cd->source_files);
+				if (Str::eq_insensitive(entry, I"Documentation.md"))
+					Documentation_md_cdsf = cdsf;
+			}
+		}
+	}
+
+@<Read the layout file, if there is one@> =
+	filename *layout_file = Filenames::in(P, I"layout.txt");
 	if (TextFiles::exists(layout_file))
 		TextFiles::read(layout_file, FALSE, "can't open layout file",
 			TRUE, DocumentationCompiler::read_layout_helper, NULL, cd);
-	Indexes::add_indexing_notation(cd, NULL, NULL, I"standard", NULL);
-	return cd;
-}
+	else if (Documentation_md_cdsf) Documentation_md_cdsf->used = TRUE;
 
-@
-
-=
+@ =
 void DocumentationCompiler::read_layout_helper(text_stream *cl, text_file_position *tfp,
 	void *v_cd) {
 	compiled_documentation *cd = (compiled_documentation *) v_cd;
@@ -53,17 +317,158 @@ void DocumentationCompiler::read_layout_helper(text_stream *cl, text_file_positi
 	if (Regexp::match(&mr, cl, L" *#%c*")) { Regexp::dispose_of(&mr); return; }
 	if (Regexp::match(&mr, cl, L" *")) { Regexp::dispose_of(&mr); return; }
 
-	if (Regexp::match(&mr, cl, L" *examples: *(%c*?) *")) {
+	if (Regexp::match(&mr, cl, L" *examples: *(%c+?) to \"(%c*)\"")) {
 		if (Str::eq(mr.exp[0], I"lettered")) cd->examples_lettered = TRUE;
 		else if (Str::eq(mr.exp[0], I"numbered")) cd->examples_lettered = FALSE;
-		else Errors::in_text_file("'examples:' must be 'lettered' or 'numbered'", tfp);
-	} else if (Regexp::match(&mr, cl, L" *index: *(%c*?) *")) {
+		else DocumentationCompiler::layout_error(cd, I"'examples:' must be 'lettered' or 'numbered'", cl, tfp);
+		cd->example_URL_pattern = Str::duplicate(mr.exp[1]);
+	} else if (Regexp::match(&mr, cl, L" *pages: *(%c*?) *")) {
+		@<Act on a page-set declaration@>;
+	} else if (Regexp::match(&mr, cl, L" *volume: *\"(%c*?)\" to \"(%c*?)\"")) {
+		@<Act on a volume declaration@>;
+	} else if (Regexp::match(&mr, cl, L" *alphabetical index: *\"(%c*?)\" to \"(%c*?)\" *")) {
+		cd->index_title[ALPHABETICAL_EG_INDEX] = Str::duplicate(mr.exp[0]);
+		cd->index_URL_pattern[ALPHABETICAL_EG_INDEX] = Str::duplicate(mr.exp[1]);
+		cd->include_index[ALPHABETICAL_EG_INDEX] = TRUE;
+	} else if (Regexp::match(&mr, cl, L" *numerical index: *\"(%c*?)\" to \"(%c*?)\" *")) {
+		cd->index_title[NUMERICAL_EG_INDEX] = Str::duplicate(mr.exp[0]);
+		cd->index_URL_pattern[NUMERICAL_EG_INDEX] = Str::duplicate(mr.exp[1]);
+		cd->include_index[NUMERICAL_EG_INDEX] = TRUE;
+	} else if (Regexp::match(&mr, cl, L" *thematic index: *\"(%c*?)\" to \"(%c*?)\" *")) {
+		cd->index_title[THEMATIC_EG_INDEX] = Str::duplicate(mr.exp[0]);
+		cd->index_URL_pattern[THEMATIC_EG_INDEX] = Str::duplicate(mr.exp[1]);
+		cd->include_index[THEMATIC_EG_INDEX] = TRUE;
+	} else if (Regexp::match(&mr, cl, L" *general index: *\"(%c*?)\" to \"(%c*?)\" *")) {
+		cd->index_title[GENERAL_INDEX] = Str::duplicate(mr.exp[0]);
+		cd->index_URL_pattern[GENERAL_INDEX] = Str::duplicate(mr.exp[1]);
+		cd->include_index[GENERAL_INDEX] = TRUE;
+	} else if (Regexp::match(&mr, cl, L" *index notation: *(%c*?) *")) {
 		@<Act on an indexing notation@>;
 	} else {
-		Errors::in_text_file("unknown syntax in instructions file", tfp);
+		DocumentationCompiler::layout_error(cd, I"unknown syntax in layout file", cl, tfp);
 	}
 	Regexp::dispose_of(&mr);
 }
+
+@<Act on a volume declaration@> =
+	if (Str::eq(mr.exp[1], I"index.html"))
+		DocumentationCompiler::layout_error(cd, I"a volume home page cannot be 'index.html'", cl, tfp);
+	DocumentationCompiler::add_volume(cd, mr.exp[0], mr.exp[1]);
+
+@<Act on a page-set declaration@> =
+	TEMPORARY_TEXT(src)
+	WRITE_TO(src, "Documentation.md");
+	TEMPORARY_TEXT(dest)
+	int breaking = NO_PAGESETBREAKING;
+
+	text_stream *set = mr.exp[0];
+	match_results mr2 = Regexp::create_mr();
+	if (Regexp::match(&mr2, set, L"(%c*) to \"(%c*?.html)\"")) {
+		Str::clear(dest); WRITE_TO(dest, "%S", mr2.exp[1]);
+		Str::clear(set); WRITE_TO(set, "%S", mr2.exp[0]);
+	} else if (Regexp::match(&mr2, set, L"(%c*) to \"(%c*?)\"")) {
+		DocumentationCompiler::layout_error(cd, I"destination file must have filename extension '.html'", cl, tfp);
+	}
+	if (Regexp::match(&mr2, set, L"(%c*) by sections")) {
+		breaking = SECTION_PAGESETBREAKING;
+		Str::clear(set); WRITE_TO(set, "%S", mr2.exp[0]);
+	} else if (Regexp::match(&mr2, set, L"(%c*) by chapters")) {
+		breaking = CHAPTER_PAGESETBREAKING;
+		Str::clear(set); WRITE_TO(set, "%S", mr2.exp[0]);
+	} else if (Regexp::match(&mr2, set, L"(%c*) by %c*")) {
+		DocumentationCompiler::layout_error(cd, I"pages may be split only 'by sections' or 'by chapters'", cl, tfp);
+		Str::clear(set); WRITE_TO(set, "%S", mr2.exp[0]);
+	}
+	if (Regexp::match(&mr2, set, L"\"(%c*?.md)\"")) {
+		Str::clear(src); WRITE_TO(src, "%S", mr2.exp[0]);
+	} else if (Regexp::match(&mr2, set, L"\"(%c*?)\"")) {
+		DocumentationCompiler::layout_error(cd, I"source file must have filename extension '.md'", cl, tfp);
+	} else {
+		DocumentationCompiler::layout_error(cd, I"unknown syntax in layout file", cl, tfp);
+	}
+	Regexp::dispose_of(&mr2);
+
+	int hash_count = 0;
+	LOOP_THROUGH_TEXT(pos, dest) if (Str::get(pos) == '#') hash_count++;
+	if (hash_count == 0) {
+		if (breaking != NO_PAGESETBREAKING)
+			DocumentationCompiler::layout_error(cd,
+				I"destination must contain a '#' for where the chapter/section number goes", cl, tfp);
+	} else if (hash_count == 1) {
+		if (breaking == NO_PAGESETBREAKING)
+			DocumentationCompiler::layout_error(cd,
+				I"destination can only contain a '#' when breaking by chapters or sections", cl, tfp);
+	} else {
+		DocumentationCompiler::layout_error(cd,
+			I"destination can only contain only one '#', and only when breaking by chapters or sections", cl, tfp);
+	}
+
+	int slash_count = 0;
+	LOOP_THROUGH_TEXT(pos, src) if ((Str::get(pos) == '/') || (Str::get(pos) == '\\')) slash_count++;
+	LOOP_THROUGH_TEXT(pos, dest) if ((Str::get(pos) == '/') || (Str::get(pos) == '\\')) slash_count++;
+	if (slash_count > 0)
+		DocumentationCompiler::layout_error(cd,
+			I"neither source nor destination can contain slashes", cl, tfp);
+
+	int star_count_1 = 0, star_count_2 = 0;
+	LOOP_THROUGH_TEXT(pos, src) if (Str::get(pos) == '*') star_count_1++;
+	LOOP_THROUGH_TEXT(pos, dest) if (Str::get(pos) == '*') star_count_2++;
+	if (star_count_1 > 1)
+		DocumentationCompiler::layout_error(cd,
+			I"source can contain at most one '*'", cl, tfp);
+	else if (star_count_2 > star_count_1)
+		DocumentationCompiler::layout_error(cd,
+			I"destination can contain at most one '*', and only if source does", cl, tfp);
+
+	cd_volume *vol, *last_vol = NULL;
+	LOOP_OVER_LINKED_LIST(vol, cd_volume, cd->volumes) last_vol = vol;
+	if (last_vol == NULL) last_vol = DocumentationCompiler::add_volume(cd, cd->title, I"index.html");
+
+	if (LinkedLists::len(cd->source_files) > 0) {
+		int counter = 0;
+		cd_source_file *cdsf;
+		LOOP_OVER_LINKED_LIST(cdsf, cd_source_file, cd->source_files) {
+			text_stream *entry = cdsf->leafname;
+			TEMPORARY_TEXT(prefix_must_be)
+			TEMPORARY_TEXT(suffix_must_be)
+			if (star_count_1 == 0) WRITE_TO(prefix_must_be, "%S", src);
+			else {
+				for (int i=0, seg=1; i<Str::len(src); i++)
+					if (Str::get_at(src, i) == '*') seg++;
+					else if (seg == 1) PUT_TO(prefix_must_be, Str::get_at(src, i));
+					else if (seg == 2) PUT_TO(suffix_must_be, Str::get_at(src, i));
+			}
+			if ((Str::begins_with(entry, prefix_must_be)) &&
+				(Str::ends_with(entry, suffix_must_be))) {
+				if (star_count_2 == 0)
+					DocumentationCompiler::add_page(last_vol, entry, dest, breaking);
+				else {
+					TEMPORARY_TEXT(expanded_dest)
+					for (int i=0; i<Str::len(dest); i++)
+						if (Str::get_at(dest, i) == '*') {
+							Str::substr(expanded_dest,
+								Str::at(entry, Str::len(prefix_must_be)),
+								Str::at(entry, Str::len(entry) - Str::len(suffix_must_be)));
+						} else {
+							PUT_TO(expanded_dest, Str::get_at(dest, i));
+						}
+					DocumentationCompiler::add_page(last_vol, entry, expanded_dest, breaking);
+					DISCARD_TEXT(expanded_dest)
+				}
+				counter++;
+				cdsf->used++;
+			}
+			DISCARD_TEXT(prefix_must_be)
+			DISCARD_TEXT(suffix_must_be)
+		}
+		if (counter == 0) 
+			DocumentationCompiler::layout_error(cd,
+				I"no Markdown file has a name matching this source", cl, tfp);
+	} else {
+		DocumentationCompiler::add_page(last_vol, src, dest, breaking);
+	}
+	DISCARD_TEXT(src)
+	DISCARD_TEXT(dest)
 
 @<Act on an indexing notation@> =
 	text_stream *tweak = mr.exp[0];
@@ -79,60 +484,68 @@ void DocumentationCompiler::read_layout_helper(text_stream *cl, text_file_positi
 	} else if (Regexp::match(&mr2, tweak, L"example = (%C+) *(%c*)")) {
 		Indexes::add_indexing_notation_for_examples(cd, mr2.exp[0], mr2.exp[1]);
 	} else {
-		Errors::in_text_file("bad indexing notation", tfp);
+		DocumentationCompiler::layout_error(cd, I"bad indexing notation", cl, tfp);
 	}
 	Regexp::dispose_of(&mr2);
 
-@ =
+@ "Satellite test cases" is an umbrella term including both examples and test
+cases, all of which are tested when an extension (say) is tested.
+
+=
 typedef struct satellite_test_case {
 	int is_example;
+	struct IFM_example *as_example; /* or |NULL| for a test case which is not an example */
 	struct text_stream *owning_heading;
 	struct tree_node *owning_node;
 	struct compiled_documentation *owner;
 	struct text_stream *short_name;
 	struct filename *test_file;
 	struct filename *ideal_transcript;
+	struct text_stream *visible_documentation;
+	struct linked_list *example_errors; /* of |markdown_item| */
+	struct markdown_item *primary_placement;
+	struct markdown_item *secondary_placement;
 	CLASS_DEFINITION
 } satellite_test_case;
 
-@ We can compile either from a file...
+satellite_test_case *DocumentationCompiler::new_satellite(compiled_documentation *cd,
+	int is_eg, text_stream *short_name, filename *F) {
+	satellite_test_case *stc = CREATE(satellite_test_case);
+	stc->is_example = is_eg;
+	stc->as_example = NULL;
+	stc->owning_heading = NULL;
+	stc->owning_node = NULL;
+	stc->owner = cd;
+	stc->short_name = Str::duplicate(short_name);
+	stc->test_file = F;
+	stc->ideal_transcript = NULL;
+	stc->visible_documentation = Str::new();
+	stc->example_errors = NEW_LINKED_LIST(markdown_item);
+	stc->primary_placement = NULL;
+	stc->secondary_placement = NULL;
+	TEMPORARY_TEXT(ideal_leafname)
+	WRITE_TO(ideal_leafname, "%S-I.txt", stc->short_name);
+	filename *IF = Filenames::in(Filenames::up(F), ideal_leafname);
+	if (TextFiles::exists(IF)) stc->ideal_transcript = IF;
+	DISCARD_TEXT(ideal_leafname)
+	ADD_TO_LINKED_LIST(stc, satellite_test_case, cd->cases);
+	return stc;
+}
+
+@ Satellites for a cd consist of examples in the |Examples| subdirectory and
+tests in the |Tests| one.
 
 =
-compiled_documentation *DocumentationCompiler::compile_from_path(pathname *P,
-	inform_extension *associated_extension) {
-	filename *F = Filenames::in(P, I"Documentation.md");
-	if (TextFiles::exists(F) == FALSE) return NULL;
-	filename *IF = Filenames::in(P, I"layout.txt");
-	compiled_documentation *cd =
-		DocumentationCompiler::halfway_compile_from_file(F, IF, associated_extension);
-	if (cd == NULL) return NULL;
-	pathname *EP = Pathnames::down(P, I"Examples");
-	int egs = TRUE;
-	@<Scan EP directory for examples@>;
-	egs = FALSE;
-	EP = Pathnames::down(P, I"Tests");
-	@<Scan EP directory for examples@>;
-	int example_number = 0;
-	DocumentationCompiler::recursively_renumber_examples_r(cd->alt_tree, &example_number,
-		cd->examples_lettered);
-
-	IFM_example *eg;
-	LOOP_OVER_LINKED_LIST(eg, IFM_example, cd->examples) {
-		TEMPORARY_TEXT(leaf)
-		WRITE_TO(leaf, "eg_%S.html", eg->insignia);
-		Markdown::create(cd->link_references, Str::duplicate(eg->name), leaf, NULL);
-		DISCARD_TEXT(leaf)
+int DocumentationCompiler::detect_satellites(compiled_documentation *cd) {
+	if (cd->domain) {
+		pathname *EP = Pathnames::down(cd->domain, I"Examples");
+		int egs = TRUE;
+		@<Scan EP directory for examples@>;
+		egs = FALSE;
+		EP = Pathnames::down(cd->domain, I"Tests");
+		@<Scan EP directory for examples@>;
 	}
-	Markdown::parse_all_blocks_inline_using_extended(cd->alt_tree, NULL,
-		cd->link_references, InformFlavouredMarkdown::variation());
-
-	LOOP_OVER_LINKED_LIST(eg, IFM_example, cd->examples)
-		if (eg->header->down)
-			Markdown::parse_all_blocks_inline_using_extended(eg->header->down, NULL,
-				cd->link_references, InformFlavouredMarkdown::variation());
-	
-	Indexes::scan(cd);
-	return cd;
+	return LinkedLists::len(cd->cases);
 }
 
 @<Scan EP directory for examples@> =
@@ -151,52 +564,17 @@ compiled_documentation *DocumentationCompiler::compile_from_path(pathname *P,
 				((Str::get_at(short_name, Str::len(short_name)-1) == 'I')
 					|| (Str::get_at(short_name, Str::len(short_name)-1) == 'i')))
 				continue;
-			satellite_test_case *stc = CREATE(satellite_test_case);
-			stc->is_example = egs;
-			stc->owning_heading = NULL;
-			stc->owning_node = NULL;
-			stc->owner = cd;
-			stc->short_name = short_name;
-			stc->test_file = F;
-			stc->ideal_transcript = NULL;
-			TEMPORARY_TEXT(ideal_leafname)
-			WRITE_TO(ideal_leafname, "%S-I.txt", stc->short_name);
-			filename *IF = Filenames::in(EP, ideal_leafname);
-			if (TextFiles::exists(IF)) stc->ideal_transcript = IF;
-			DISCARD_TEXT(ideal_leafname)
-			if (stc->is_example) {
+			satellite_test_case *stc =
+				DocumentationCompiler::new_satellite(cd, egs, short_name, F);
+			if (stc->is_example)
 				@<Scan the example for its header and content@>;
-			}
-			ADD_TO_LINKED_LIST(stc, satellite_test_case, cd->cases);
 		}
 		DISCARD_TEXT(leafname)
 		Directories::close(D);
 	}
 
-@
-
-=
-void DocumentationCompiler::recursively_renumber_examples_r(markdown_item *md,
-	int *example_number, int lettered) {
-	if (md->type == INFORM_EXAMPLE_HEADING_MIT) {
-		IFM_example *E = RETRIEVE_POINTER_IFM_example(md->user_state);
-		Str::clear(E->insignia);
-		int N = ++(*example_number);
-		if (lettered) {
-			int P = 1;
-			while (N > 26) { P += 1, N -= 26; }
-			Str::clear(E->insignia);
-			if (P > 1) WRITE_TO(E->insignia, "%d", P);
-			WRITE_TO(E->insignia, "%c", 'A'+N-1);
-		} else {
-			WRITE_TO(E->insignia, "%d", N);
-		}
-	}
-	for (markdown_item *ch = md->down; ch; ch = ch->next)
-		DocumentationCompiler::recursively_renumber_examples_r(ch, example_number, lettered);
-}
-
-@
+@ Scanning the examples is not a trivial process, because it involves going
+through the metadata and also capturing the Markdown material.
 
 =
 typedef struct example_scanning_state {
@@ -225,18 +603,35 @@ typedef struct example_scanning_state {
 	ess.desc = NULL;
 	ess.errors = NEW_LINKED_LIST(markdown_item);
 	ess.past_header = FALSE;
-	ess.scanning = Str::new(); WRITE_TO(ess.scanning, "%S", Filenames::get_leafname(stc->test_file));
+	ess.scanning = Str::new();
+	WRITE_TO(ess.scanning, "%S", Filenames::get_leafname(stc->test_file));
 	TextFiles::read(stc->test_file, FALSE, "unable to read file of example", TRUE,
 		&DocumentationCompiler::read_example_helper, NULL, &ess);
 
-	markdown_item *alt_placement_node = NULL;
-	if (Str::len(ess.placement) == 0) {
-		;
-	} else {
-		alt_placement_node = InformFlavouredMarkdown::find_section(cd->alt_tree, ess.placement);
-		if (alt_placement_node == NULL) {
-			DocumentationCompiler::example_error(&ess,
-				I"example gives a Location which is not the name of any section");
+	cd_volume *primary = NULL;
+	cd_volume *secondary = NULL;
+	cd_volume *vol;
+	LOOP_OVER_LINKED_LIST(vol, cd_volume, cd->volumes) {
+		if (primary == NULL) primary = vol;
+		else if (secondary == NULL) secondary = vol;
+	}
+	if ((Str::len(ess.placement) > 0) && (primary)) {
+		stc->primary_placement =
+			InformFlavouredMarkdown::find_section(primary->volume_item, ess.placement);
+		if (stc->primary_placement == NULL) {
+			text_stream *err = Str::new();
+			WRITE_TO(err, "example gives Location '%S', which is not the name of any section", ess.placement);
+			DocumentationCompiler::example_error(&ess, err);
+		}
+	}
+
+	if ((Str::len(ess.recipe_placement) > 0) && (secondary)) {
+		stc->secondary_placement =
+			InformFlavouredMarkdown::find_section(secondary->volume_item, ess.recipe_placement);
+		if (stc->secondary_placement == NULL) {
+			text_stream *err = Str::new();
+			WRITE_TO(err, "example gives RecipeLocation '%S', which is not the name of any section", ess.recipe_placement);
+			DocumentationCompiler::example_error(&ess, err);
 		}
 	}
 
@@ -246,39 +641,14 @@ typedef struct example_scanning_state {
 	}
 	IFM_example *eg = InformFlavouredMarkdown::new_example(
 		ess.long_title, ess.desc, ess.star_count, LinkedLists::len(cd->examples));
-	eg->cue = alt_placement_node;
+	eg->cue = stc->primary_placement;
 	eg->ex_subtitle = ess.subtitle;
 	eg->ex_index = ess.index;
 	ADD_TO_LINKED_LIST(eg, IFM_example, cd->examples);
 
-	markdown_item *eg_header = Markdown::new_item(INFORM_EXAMPLE_HEADING_MIT);
-	eg->header = eg_header;
-	eg_header->user_state = STORE_POINTER_IFM_example(eg);
-	markdown_item *md = alt_placement_node;
-	if (md == NULL) {
-		md = cd->alt_tree->down;
-		if (md == NULL) cd->alt_tree->down = eg_header;
-		else {
-			while ((md) && (md->next)) md = md->next;
-			eg_header->next = md->next; md->next = eg_header;
-		}		
-	} else {
-		if (md->next) md = md->next;
-		while ((md) && (md->next) && (md->next->type != HEADING_MIT)) md = md->next;
-		eg_header->next = md->next; md->next = eg_header;
-	}
-	if (Str::len(ess.body_text) > 0) {
-		markdown_item *alt_ecd = Markdown::parse_block_structure_using_extended(ess.body_text,
-			cd->link_references, InformFlavouredMarkdown::variation());
-		eg_header->down = alt_ecd->down;
-	} else {
-		DocumentationCompiler::example_error(&ess,
-			I"example does not give any actual content");
-	} 
-
-	markdown_item *E;
-	LOOP_OVER_LINKED_LIST(E, markdown_item, ess.errors)
-		Markdown::add_to(E, cd->alt_tree);
+	stc->as_example = eg;
+	stc->visible_documentation = Str::duplicate(ess.body_text);
+	stc->example_errors = ess.errors;
 
 @ =
 void DocumentationCompiler::example_error(example_scanning_state *ess, text_stream *text) {
@@ -322,10 +692,6 @@ void DocumentationCompiler::read_example_helper(text_stream *text, text_file_pos
 			else if (Str::eq(mr.exp[0], I"Subtitle")) ess->subtitle = Str::duplicate(mr.exp[1]);
 			else if (Str::eq(mr.exp[0], I"Index")) ess->index = Str::duplicate(mr.exp[1]);
 			else if (Str::eq(mr.exp[0], I"Description")) ess->desc = Str::duplicate(mr.exp[1]);
-			else {
-				DocumentationCompiler::example_error(ess,
-					I"unknown datum in header line of example file");
-			}
 		} else {
 			DocumentationCompiler::example_error(ess,
 				I"header line of example file is malformed");
@@ -336,62 +702,267 @@ void DocumentationCompiler::read_example_helper(text_stream *text, text_file_pos
 	}
 }
 
-@
+@ Stage two of sorting out the satellites is to put special items into the
+Markdown tree for the cd which mark the places where the examples are referred
+to. Note that an example must appear in the primary volume, and can also appear
+in the secondary (if there is one).
 
 =
-compiled_documentation *DocumentationCompiler::compile_from_file(filename *F,
-	inform_extension *associated_extension) {
-	TEMPORARY_TEXT(temp)
-	TextFiles::read(F, FALSE, "unable to read file of documentation", TRUE,
-		&DocumentationCompiler::read_file_helper, NULL, temp);
-	compiled_documentation *cd =
-		DocumentationCompiler::compile(temp, associated_extension);
-	DISCARD_TEXT(temp)
-	return cd;
+void DocumentationCompiler::place_example_heading_items(compiled_documentation *cd) {
+	satellite_test_case *stc;
+	LOOP_OVER_LINKED_LIST(stc, satellite_test_case, cd->cases) {
+		IFM_example *eg = stc->as_example;
+		if (eg) {
+			markdown_item *eg_header = Markdown::new_item(INFORM_EXAMPLE_HEADING_MIT);
+			eg->header = eg_header;
+			eg_header->user_state = STORE_POINTER_IFM_example(eg);
+			markdown_item *md = stc->primary_placement;
+			if (md == NULL) {
+				md = cd->markdown_content->down->down;
+				if (md->down == NULL) md->down = eg_header;
+				else {
+					md = md->down;
+					while ((md) && (md->next)) md = md->next;
+					eg_header->next = md->next; md->next = eg_header;
+				}		
+			} else {
+				if (md->next) md = md->next;
+				while ((md) && (md->next) && (md->next->type != HEADING_MIT)) md = md->next;
+				eg_header->next = md->next; md->next = eg_header;
+			}
+			
+			if (stc->secondary_placement) {
+				markdown_item *eg_header = Markdown::new_item(INFORM_EXAMPLE_HEADING_MIT);
+				eg->secondary_header = eg_header;
+				eg_header->user_state = STORE_POINTER_IFM_example(eg);
+				markdown_item *md = stc->secondary_placement;
+				if (md->next) md = md->next;
+				while ((md) && (md->next) && (md->next->type != HEADING_MIT)) md = md->next;
+				eg_header->next = md->next; md->next = eg_header;
+			}
+
+			markdown_item *E;
+			LOOP_OVER_LINKED_LIST(E, markdown_item, stc->example_errors)
+				Markdown::add_to(E, cd->markdown_content);
+		}
+	}
 }
 
-compiled_documentation *DocumentationCompiler::halfway_compile_from_file(filename *F,
-	filename *layout_file, inform_extension *associated_extension) {
-	TEMPORARY_TEXT(temp)
-	TextFiles::read(F, FALSE, "unable to read file of documentation", TRUE,
-		&DocumentationCompiler::read_file_helper, NULL, temp);
-	compiled_documentation *cd =
-		DocumentationCompiler::halfway_compile(temp, layout_file, associated_extension);
-	DISCARD_TEXT(temp)
-	return cd;
-}
+@ And lastly, we can number the examples. This is done as a third stage of
+processing and not as part of the second because we must also pick up
+example headers explicitly written in the source text of a single-file extension,
+which do not arise from satellites at all.
 
-void DocumentationCompiler::read_file_helper(text_stream *text, text_file_position *tfp,
-	void *v_state) {
-	text_stream *contents = (text_stream *) v_state;
-	WRITE_TO(contents, "%S\n", text);
-}
-
-@ ...or from text:
+Once we do know the sequence, we can work out the insignia for each example,
+and from that the URL of the HTML file for it.
 
 =
-compiled_documentation *DocumentationCompiler::compile(text_stream *source,
-	inform_extension *associated_extension) {
-	SVEXPLAIN(1, "(compiling documentation: %d chars)\n", Str::len(source));
-	compiled_documentation *cd = DocumentationCompiler::new_wrapper(source, NULL);
-	cd->associated_extension = associated_extension;
-	if (cd->associated_extension)
-		WRITE_TO(cd->title, "%X", cd->associated_extension->as_copy->edition->work);
-	if (Str::is_whitespace(source)) cd->empty = TRUE;
-	else cd->alt_tree = Markdown::parse_extended(source,
-		InformFlavouredMarkdown::variation());
-	return cd;
+void DocumentationCompiler::count_examples(compiled_documentation *cd) {
+	int example_number = 0;
+	DocumentationCompiler::recursively_renumber_examples_r(cd->markdown_content,
+		&example_number, cd->examples_lettered);
+
+	IFM_example *eg;
+	LOOP_OVER_LINKED_LIST(eg, IFM_example, cd->examples) {
+		Str::clear(eg->URL);
+		for (int i=0; i<Str::len(cd->example_URL_pattern); i++) {
+			wchar_t c = Str::get_at(cd->example_URL_pattern, i);
+			if (c == '#') WRITE_TO(eg->URL, "%S", eg->insignia);
+			else PUT_TO(eg->URL, c);
+		}
+		Markdown::create(cd->link_references, Str::duplicate(eg->name), eg->URL, NULL);
+	}
 }
 
-compiled_documentation *DocumentationCompiler::halfway_compile(text_stream *source,
-	filename *layout_file, inform_extension *associated_extension) {
-	SVEXPLAIN(1, "(compiling documentation: %d chars)\n", Str::len(source));
-	compiled_documentation *cd = DocumentationCompiler::new_wrapper(source, layout_file);
-	cd->associated_extension = associated_extension;
-	if (cd->associated_extension)
-		WRITE_TO(cd->title, "%X", cd->associated_extension->as_copy->edition->work);
-	if (Str::is_whitespace(source)) cd->empty = TRUE;
-	else cd->alt_tree = Markdown::parse_block_structure_using_extended(source,
+void DocumentationCompiler::recursively_renumber_examples_r(markdown_item *md,
+	int *example_number, int lettered) {
+	if (md->type == INFORM_EXAMPLE_HEADING_MIT) {
+		IFM_example *E = RETRIEVE_POINTER_IFM_example(md->user_state);
+		if (md == E->header) { /* only look at the primary header */
+			Str::clear(E->insignia);
+			int N = ++(*example_number);
+			if (lettered) {
+				int P = 1;
+				while (N > 26) { P += 1, N -= 26; }
+				if (P > 1) WRITE_TO(E->insignia, "%d", P);
+				WRITE_TO(E->insignia, "%c", 'A'+N-1);
+			} else {
+				WRITE_TO(E->insignia, "%d", N);
+			}
+		}
+	}
+	for (markdown_item *ch = md->down; ch; ch = ch->next)
+		DocumentationCompiler::recursively_renumber_examples_r(ch, example_number, lettered);
+}
+
+@ We are finally in a position to write |DocumentationCompiler::compile_inner|,
+the function which all cd compilations funnel through.
+
+What makes this such a complicated dance is that we need to perform Phase I
+Markdown parsing on the examples and the volumes first, in order to get the
+necessary links to populate the link references dictionary, and only then
+perform Phase II on everything.
+
+=
+void DocumentationCompiler::compile_inner(compiled_documentation *cd) {
+	/* Phase I parsing */
+	DocumentationCompiler::Phase_I_on_volumes(cd);
+	DocumentationCompiler::detect_satellites(cd);
+	DocumentationCompiler::place_example_heading_items(cd);
+	DocumentationCompiler::count_examples(cd);
+	satellite_test_case *stc;
+	LOOP_OVER_LINKED_LIST(stc, satellite_test_case, cd->cases) {
+		IFM_example *eg = stc->as_example;
+		if (eg) {	
+			if (Str::len(stc->visible_documentation) > 0) {
+				markdown_item *alt_ecd = Markdown::parse_block_structure_using_extended(
+					stc->visible_documentation, cd->link_references,
+					InformFlavouredMarkdown::variation());
+				eg->header->down = alt_ecd->down;
+			}
+		}
+	}
+
+	/* Phase II parsing */
+	Markdown::parse_all_blocks_inline_using_extended(cd->markdown_content, NULL,
 		cd->link_references, InformFlavouredMarkdown::variation());
-	return cd;
+	IFM_example *eg;
+	LOOP_OVER_LINKED_LIST(eg, IFM_example, cd->examples)
+		if (eg->header->down)
+			Markdown::parse_all_blocks_inline_using_extended(eg->header->down, NULL,
+				cd->link_references, InformFlavouredMarkdown::variation());
+	
+	/* Indexing */
+	Indexes::scan(cd);
+	if (Indexes::indexing_occurred(cd)) cd->include_index[GENERAL_INDEX] = TRUE;
+	if (LinkedLists::len(cd->examples) >= 10) cd->include_index[NUMERICAL_EG_INDEX] = TRUE;
+	if (LinkedLists::len(cd->examples) >= 20) cd->include_index[ALPHABETICAL_EG_INDEX] = TRUE;
+}
+
+@ In addition to regular Phase I parsing of the content in the volumes, we
+want to insert |VOLUME_MIT| and |FILE_MIT| items into the tree to mark where
+new files and volumes begin.
+
+=
+void DocumentationCompiler::Phase_I_on_volumes(compiled_documentation *cd) {
+	pathname *P = cd->domain;
+	cd_volume *vol;
+	LOOP_OVER_LINKED_LIST(vol, cd_volume, cd->volumes) {
+		cd_volume *mark_vol = vol;
+		cd_pageset *pages;
+		LOOP_OVER_LINKED_LIST(pages, cd_pageset, vol->pagesets) {
+			TEMPORARY_TEXT(temp)
+			if (P) {
+				filename *F = Filenames::in(P, pages->source_specification);
+				TextFiles::write_file_contents(temp, F);
+			} else if (Str::len(pages->nonfile_content) > 0) {
+				WRITE_TO(temp, "%S", pages->nonfile_content);
+			}
+			if (Str::is_whitespace(temp) == FALSE)
+				@<Content was found for this pageset@>;
+			DISCARD_TEXT(temp)
+		}
+	}
+	
+	if (cd->markdown_content == NULL) {
+		cd->markdown_content = Markdown::new_item(DOCUMENT_MIT);
+		cd->empty = TRUE;
+	} else {
+		InformFlavouredMarkdown::number_headings(cd->markdown_content);
+		MarkdownVariations::assign_URLs_to_headings(cd->markdown_content, cd->link_references);
+	}
+}
+
+@<Content was found for this pageset@> =
+	markdown_item *subtree = Markdown::parse_block_structure_using_extended(temp,
+		cd->link_references, InformFlavouredMarkdown::variation());
+
+	if (subtree) {
+		switch (pages->breaking) {
+			case NO_PAGESETBREAKING:
+				DocumentationCompiler::do_not_divide_tree(subtree, pages->page_specification);
+				break;
+			case SECTION_PAGESETBREAKING:
+				DocumentationCompiler::divide_tree_by_sections(subtree, pages->page_specification);
+				break;
+			case CHAPTER_PAGESETBREAKING:
+				DocumentationCompiler::divide_tree_by_chapters(subtree, pages->page_specification);
+				break;
+		}
+		markdown_item *vol_marker = NULL;
+		if (mark_vol) {
+			vol_marker = Markdown::new_volume_marker(mark_vol->title);
+			vol_marker->user_state = STORE_POINTER_cd_volume(mark_vol);
+			mark_vol->volume_item = vol_marker;
+			mark_vol = NULL;
+		}
+		if (cd->markdown_content == NULL) {
+			cd->markdown_content = subtree;
+			if (vol_marker) { vol_marker->next = subtree->down; subtree->down = vol_marker; }
+		} else {
+			markdown_item *ch = cd->markdown_content->down;
+			while ((ch) && (ch->next)) ch = ch->next;
+			if (vol_marker) { ch->next = vol_marker; ch = vol_marker; }
+			ch->next = subtree->down;
+		}
+	}
+
+@ The three strategies for breaking up the tree into chapters or sections,
+if that's what we were told to do.
+
+=
+int DocumentationCompiler::do_not_divide_tree(markdown_item *tree, text_stream *naming) {
+	markdown_item *file_marker = Markdown::new_file_marker(Filenames::from_text(naming));
+	file_marker->next = tree->down; tree->down = file_marker;
+	return TRUE;
+}
+
+int DocumentationCompiler::divide_tree_by_sections(markdown_item *tree, text_stream *naming) {
+	int N = 1, C = 0;
+	for (markdown_item *prev_md = NULL, *md = tree->down; md; prev_md = md, md = md->next) {
+		if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) == 1)) {
+			C++; N = 1;
+			if ((md->next) && (md->next->type == HEADING_MIT) &&
+				(Markdown::get_heading_level(md->next) == 2)) {
+				@<Divide by section here@>;
+				prev_md = md; md = md->next;
+			}
+		} else if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) == 2))
+			@<Divide by section here@>;
+	}
+	return TRUE;
+}
+
+@<Divide by section here@> =
+	TEMPORARY_TEXT(leaf)
+	for (int i=0; i<Str::len(naming); i++) {
+		wchar_t c = Str::get_at(naming, i);
+		if (c == '#') {
+			if (C > 0) WRITE_TO(leaf, "%d_", C);
+			WRITE_TO(leaf, "%d", N++);
+		} else PUT_TO(leaf, c);
+	}
+	markdown_item *file_marker = Markdown::new_file_marker(Filenames::from_text(leaf));
+	DISCARD_TEXT(leaf)
+	if (prev_md) prev_md->next = file_marker; else tree->down = file_marker;
+	file_marker->next = md;
+
+@ =
+int DocumentationCompiler::divide_tree_by_chapters(markdown_item *tree, text_stream *naming) {
+	int N = 1;
+	for (markdown_item *prev_md = NULL, *md = tree->down; md; prev_md = md, md = md->next) {
+		if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) == 1)) {
+			TEMPORARY_TEXT(leaf)
+			for (int i=0; i<Str::len(naming); i++) {
+				wchar_t c = Str::get_at(naming, i);
+				if (c == '#') WRITE_TO(leaf, "%d", N++);
+				else PUT_TO(leaf, c);
+			}
+			markdown_item *file_marker = Markdown::new_file_marker(Filenames::from_text(leaf));
+			DISCARD_TEXT(leaf)
+			if (prev_md) prev_md->next = file_marker; else tree->down = file_marker;
+			file_marker->next = md;
+		}
+	}
+	return TRUE;
 }
