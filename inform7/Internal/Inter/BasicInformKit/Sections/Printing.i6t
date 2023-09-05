@@ -347,7 +347,6 @@ always is for non-Basic Inform projects.
 [ DefaultTopic; return 0; ]; ! Topics exist only in CommandParserKit
 [ PrintSnippet x; ]; ! Snippets exist only in CommandParserKit
 [ PRINT_PROTAGONIST_INTERNAL_R; ]; ! There is no player in Basic Inform
-[ RunTimeProblemShowWM n x y z; ]; ! Prints RTPs only occurring in WorldModelKit
 
 @ PNToVP() takes no arguments and returns the GNA (gender-noun-animation) for
 the |prior_named_noun|.

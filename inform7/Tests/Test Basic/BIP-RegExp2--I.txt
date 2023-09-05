@@ -12,11 +12,10 @@
   test 11: matching a<b-d> in AAC case insensitive --> <0> AC
   test 12: matching a<-b> in A- case insensitive --> <0> A-
   test 13: matching a<b-> in A- case insensitive --> <0> A-
-  test 14: compiling a<b-a> to error Invalid <> range "b-a" --> *** Regular expression error: Invalid {} range ***
-  
-  *** Run-time problem P51
+  test 14: compiling a<b-a> to error Invalid <> range "b-a" -->
+  *** Run-time problem RegularExpressionMalformed: INTERNAL/Inter/BasicInformKit/RTPs
   *** Syntax error in regular expression.
-  
+  *** Regular expression error: Invalid {} range ***
   test 15: compiling a<>b to error Unmatched < --> *** Regular expression error: Character range never ends ***
   test 16: compiling a< to error Unmatched < --> *** Regular expression error: Character range never ends ***
   test 17: matching a> in A> case insensitive --> <0> A>
@@ -237,8 +236,8 @@
   test 232: matching <a<:>b<:c> in abc case sensitive --> <0> abc
   test 233: matching <a<:>b<:c> in abc case sensitive --> <0> abc
   test 234: matching ((?>a+)b) in aaab case sensitive --> <1> aaab
-  test 221: matching (a*)b+ in caab case sensitive --> <2> aab
   test 235: matching (?>(a+))b in aaab case sensitive --> <1> aaab
+  test 221: matching (a*)b+ in caab case sensitive --> <2> aab
   test 236: matching ((?><^()>+)|\(<^()>*\))+ in ((abc(ade)ufh()()x case sensitive --> <21> abc(ade)ufh()()x
   test 237: compiling (?<=x+)y to error Variable length lookbehind not implemented --> *** Regular expression error: variable length lookbehind not implemented ***
   test 238: compiling a{37,17} to error Can't do {n,m} with n > m --> *** Regular expression error: {x,y} with x greater than y ***

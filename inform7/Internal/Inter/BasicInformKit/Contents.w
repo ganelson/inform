@@ -26,4 +26,5 @@ Sections
 	Combinations
 	RelationKind
 	Relations
+	Properties
 	RTP

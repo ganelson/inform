@@ -76,11 +76,10 @@ test 74: matching a<b-d>e in ace case sensitive --> <0> ace
 test 75: matching a<b-d> in aac case sensitive --> <0> ac
 test 76: matching a<-b> in a- case sensitive --> <0> a-
 test 77: matching a<b-> in a- case sensitive --> <0> a-
-test 78: compiling a<b-a> to error Invalid <> range "b-a" --> *** Regular expression error: Invalid {} range ***
-
-*** Run-time problem P51
+test 78: compiling a<b-a> to error Invalid <> range "b-a" --> 
+*** Run-time problem RegularExpressionMalformed: INTERNAL/Inter/BasicInformKit/RTPs
 *** Syntax error in regular expression.
-
+*** Regular expression error: Invalid {} range ***
 test 79: compiling a<>b to error Unmatched < --> *** Regular expression error: Character range never ends ***
 test 80: compiling a< to error Unmatched < --> *** Regular expression error: Character range never ends ***
 test 81: matching a> in a> case sensitive --> <0> a>

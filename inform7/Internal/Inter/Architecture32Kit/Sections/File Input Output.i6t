@@ -311,7 +311,7 @@ actual translations are in "Tables.i6t".
 	rv = TablePrint(tab);
 	FileIO_Close(extf);
 	if (oldstream) glk_stream_set_current(oldstream);
-	if (rv) return RunTimeProblem(RTP_TABLE_CANTSAVE, tab);
+	if (rv) return IssueSavedUnstableTable(tab);
 	rtrue;
 ];
 
@@ -355,7 +355,7 @@ InternalFileReadChar(F, N) reads the data at position N in file F.
 			(string) err_text, " ***^";
 		struc-->AUXF_STATUS = AUXF_STATUS_IS_ERRONEOUS;
 	}
-	RunTimeProblem(RTP_FILEIOERROR);
+	IssueRTP("FileIOFailed", "Error handling external file.", BasicInformKitRTPs);
 	return 0;
 ];
 
@@ -443,6 +443,6 @@ see above.
 			(string) struc-->AUXF_FILENAME, "': ",
 			(string) err_text, " ***^";
 	}
-	RunTimeProblem(RTP_FILEIOERROR);
+	IssueRTP("FileIOFailed", "Error handling external file.", BasicInformKitRTPs);
 	return 0;
 ];

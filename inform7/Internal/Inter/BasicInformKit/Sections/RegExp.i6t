@@ -1651,8 +1651,9 @@ For an explanation of the use of the word "blob", see "Text.i6t".
 
 	if ((i<0) || (i>RE_MAX_PACKETS)) {
 		TEXT_TY_RE_Err = i;
+		IssueRTP("RegularExpressionMalformed",	
+    		"Syntax error in regular expression.", BasicInformKitRTPs);
 		print "*** Regular expression error: ", (string) TEXT_TY_RE_Err, " ***^";
-		RunTimeProblem(RTP_REGEXPSYNTAXERROR);
 		return 0;
 	}
 

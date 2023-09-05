@@ -86,9 +86,8 @@
 > >   Candy Room                                                                                                                                                                                                             10/14
   ** touch me
   You drop the rubber chicken. The lavender suit (made of sow ear) wind up on the floor also.
-  *** Run-time problem P43
-  *** Attempt to remove the player from play.
-  
+  *** Run-time problem RemovedPlayerFromPlay: INTERNAL/Inter/WorldModelKit/RTPs
+  *** You can't remove the player from play.
   You vanish!
   
 > >   Candy Room                                                                                                                                                                                                             10/13

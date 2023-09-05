@@ -21,9 +21,8 @@
   
   >[3] kiss felix
   
-  *** Run-time problem P47
+  *** Run-time problem PhraseAppliedToIncompatibleValue: INTERNAL/Inter/BasicInformKit/RTPs
   *** Phrase applied to an incompatible kind of value.
-  
   Felix might not like that.
   
 > >

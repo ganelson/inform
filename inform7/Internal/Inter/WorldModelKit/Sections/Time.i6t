@@ -216,9 +216,19 @@ only absolute times; we need the following for relative ones.
 [ SceneUtility sc task;
 	if (sc <= 0) return 0;
 	if (task == 1 or 2) {
-		if (scene_endings-->(sc-1) == 0) return RunTimeProblem(RTP_SCENEHASNTSTARTED, sc);
+		if (scene_endings-->(sc-1) == 0) {
+			IssueRTP("SceneHasNotStarted",
+				"The scene has not started.", WorldModelKitRTPs);
+			print "*** The scene in question is ", (PrintSceneName) sc, ".^";
+			rtrue;
+		}
 	} else {
-		if (scene_endings-->(sc-1) <= 1) return RunTimeProblem(RTP_SCENEHASNTENDED, sc);
+		if (scene_endings-->(sc-1) <= 1) {
+			IssueRTP("SceneHasNotEnded",
+				"The scene has not ended.", WorldModelKitRTPs);
+			print "*** The scene in question is ", (PrintSceneName) sc, ".^";
+			rtrue;
+		}
 	}
 	switch (task) {
 		1: return (TWENTY_FOUR_HOURS + the_time - scene_started-->(sc-1))%(TWENTY_FOUR_HOURS);

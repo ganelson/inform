@@ -322,7 +322,7 @@ one that's more helpfully specific and return |TRUE|.
 		(Kinds::Behaviour::is_subkind_of_object(st[0]))) {
 		TEMPORARY_TEXT(TEMP)
 		WRITE_TO(TEMP,
-			"; if (~~(*1 ofclass %n)) RunTimeProblem(RTP_WRONGASSIGNEDKIND, *1, \"*?\", \"",
+			"; if (~~(*1 ofclass %n)) IssueSetVariableRTP(*1, \"*?\", \"",
 			RTKindDeclarations::iname(st[0]));
 		Kinds::Textual::write(TEMP, st[0]);
 		WRITE_TO(TEMP, "\");");

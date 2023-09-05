@@ -4,219 +4,100 @@ To issue run-time problem messages, and to perform some run-time
 type checking which may issue such messages.
 
 @h Reporting.
-All RTPs are produced by calling the following routine, which takes one
-compulsory argument: |n|, the RTP number. When I7 is being used with the
-Inform user interface, it's important that these numbers correspond to the
-explanatory web pages stored within the interface application: those in
-turn are created by the |inrtps| utility. The interface knows to display
-these pages because it parses the printed output during play to look for
-the text layout produced by the following routine: so do not reformat
-RTPs without ensuring that corresponding changes have been made to the
-Inform user interface applications.
+All RTPs are produced by calling |IssueRTP|. This does not necessarily issue
+the problem right away, since reporting of these can be temporarily suspended,
+and we also want to avoid long cascades of repeated RTPs.
 
-The arguments |par1|, |par2| and |par3| are optional parameters clarifying the
-message; |ln| is an optional parameter specifying a paragraph number in the
-original source text (though in fact I7 does not use this at present).
+The only compulsory argument is |name|, which is used by the Inform GUI apps
+to notice that RTPs have been issued and to display an appropriate page of
+explanatory documentation. The apps notice RTPs by looking for a particular
+pattern of text, so do not reformat RTPs without coordinating with the apps.
+
+It is usual also to give |desc| and |set|. |desc| is a description, which
+can either be a string or a function which takes the three parameters and
+prints out a line of description instead. |set| should be a constant identifying
+which kit of code issued the RTP: for example, |BasicInformKitRTPs|. If an RTP
+does not belong to the right set, the GUI apps won't be able to display
+helpful pages about it.
+
+The arguments |par1|, |par2| and |par3| are optional parameters which are
+passed to the |desc| function, if there is one.
 
 =
-Array RTP_Buffer --> (-1) 0 0 0 0 0 0 0 0;
-[ IssueRTP n desc set par1 par2 par3 ln file;
-	if ((n ofclass String) &&
+Array LatestRTPData -->
+	(-1)    ! -->0 = Name of current RTP, or -1 for none, or -2 for issued already
+	0       ! -->1 = par1 value
+	0       ! -->2 = par2 value
+	0       ! -->3 = par3 value
+	0       ! -->4 = description string or function
+	0       ! -->5 = set value
+	false;  ! -->6 = suspension flag (true if suspended, false if not)
+
+[ IssueRTP name desc set par1 par2 par3;
+	if ((name ofclass String) &&
 		((desc ofclass String) || (desc ofclass Routine) || (desc == -1)) &&
 		(set ofclass String)) {
-		if (RTP_Buffer-->0 == -1) {
-			RTP_Buffer-->0 = n;
-			RTP_Buffer-->1 = par1;
-			RTP_Buffer-->2 = par2;
-			RTP_Buffer-->3 = par3;
-			RTP_Buffer-->4 = ln;
-			RTP_Buffer-->5 = file;
-			RTP_Buffer-->7 = desc;
-			RTP_Buffer-->8 = set;
+		if (LatestRTPData-->0 == -1) {
+			LatestRTPData-->0 = name;
+			LatestRTPData-->1 = par1;
+			LatestRTPData-->2 = par2;
+			LatestRTPData-->3 = par3;
+			LatestRTPData-->4 = desc;
+			LatestRTPData-->5 = set;
 		}
-		RunTimeProblemShow();
+		ShowRTP();
 	} else {
 		"*** Improper call to IssueRTP ***";
 	}
 ];
-[ RunTimeProblem n par1 par2 par3 ln file;
-	if (RTP_Buffer-->0 == -1) {
-		RTP_Buffer-->0 = n;
-		RTP_Buffer-->1 = par1;
-		RTP_Buffer-->2 = par2;
-		RTP_Buffer-->3 = par3;
-		RTP_Buffer-->4 = ln;
-		RTP_Buffer-->5 = file;
-		RTP_Buffer-->7 = 0;
-		RTP_Buffer-->8 = 0;
-	}
-	RunTimeProblemShow();
-];
 [ ClearRTP;
-	RTP_Buffer-->0 = -1;
-	RTP_Buffer-->6 = false;
+	LatestRTPData-->0 = -1;
+	LatestRTPData-->6 = false;
 ];
 [ SuspendRTP;
-	RTP_Buffer-->6 = true;
+	LatestRTPData-->6 = true;
 ];
 [ ResumeRTP;
-	RTP_Buffer-->6 = false;
+	LatestRTPData-->6 = false;
 ];
-[ RunTimeProblemShow   n par1 par2 par3 ln file i c desc;
-	if (RTP_Buffer-->0 == -1 or -2) return;
-	if (RTP_Buffer-->6) return;
+[ ShowRTP   name par1 par2 par3 desc;
+	if (LatestRTPData-->0 == -1 or -2) return;
+	if (LatestRTPData-->6) return;
 
-	n = RTP_Buffer-->0;
-	par1 = RTP_Buffer-->1;
-	par2 = RTP_Buffer-->2;
-	par3 = RTP_Buffer-->3;
-	ln = RTP_Buffer-->4;
-	file = RTP_Buffer-->5;
-	RTP_Buffer-->0 = -2;
+	name = LatestRTPData-->0;
+	par1 = LatestRTPData-->1;
+	par2 = LatestRTPData-->2;
+	par3 = LatestRTPData-->3;
+	LatestRTPData-->0 = -2;
 
-	new_line;
-	print "*** Run-time problem ";
-	if (n ofclass String) print (string) n;
-	else print "P", n;
+	print "^*** Run-time problem ", (string) name;
 	#ifdef DEBUG;
-	if (RTP_Buffer-->8) { print ": ", (string) RTP_Buffer-->8; }
+	if (LatestRTPData-->5) { print ": ", (string) LatestRTPData-->5; }
 	#endif;
-	desc = RTP_Buffer-->7;
 	print "^";
-	if (desc ~= -1) print "*** ";
-	if (desc ofclass String) print (string) desc, "^";
-	else if (desc ofclass Routine) desc(par1, par2, par3);
-	else if (desc ~= -1) {
-		switch(n) {
-			RTP_IMPREL:
-				print "Tried to access an inappropriate relation for ", (the) par1,
-					", violating '", (string) RlnGetF(par2, RR_DESCRIPTION), "'.^";
-			RTP_TOOMANYRULEBOOKS:
-				print "Too many rulebooks in simultaneous use.^";
-			RTP_BADPROPERTY:
-				print "Tried to access non-existent property for ", (the) par1, ".^";
-			RTP_UNPROVIDED:
-				print "Since ", (the) par1, " is not allowed the property ~",
-						(PrintPropertyName) par2, "~, it is against the rules to try to use it.^";
-			RTP_UNSET:
-				print "Although ", (the) par1, " is allowed to have the property ~",
-					(PrintPropertyName) par2, "~, no value was ever given, so it can't now be used.^";
-			RTP_TOOMANYACTS:
-				print "Too many activities are going on at once.^";
-			RTP_CANTABANDON:
-				print "Tried to abandon an activity which wasn't going on.^";
-			RTP_CANTEND:
-				print "Tried to end an activity which wasn't going on.^";
-			RTP_DIVZERO:
-				print "You can't divide by zero.^";
-			RTP_BADVALUEPROPERTY:
-				print "Tried to access property for a value which didn't fit: ",
-					"if this were a number it would be ", par1, ".^";
-			RTP_TABLE_NOCOL:
-				print "Attempt to look up a non-existent column in the table '",
-					(PrintTableName) par1, "'.^";
-			RTP_TABLE_NOCORR:
-				print "Attempt to look up a non-existent correspondence in the table '",
-					(PrintTableName) par1, "'.^";
-			RTP_TABLE_NOROW:
-				print "Attempt to look up a non-existent row in the table '",
-					(PrintTableName) par1, "'.^";
-			RTP_TABLE_NOENTRY:
-				print "Attempt to look up a non-existent entry at column ", par2,
-					", row ", par3, " of the table '", (PrintTableName) par1, "'.^";
-			RTP_TABLE_NOTABLE:
-				print "Attempt to blank out a row from a non-existent table (value ",
-					par1, ").^";
-			RTP_TABLE_NOTABLE2:
-				print "Attempt to access an entry from a non-existent table.^";
-			RTP_TABLE_NOMOREBLANKS:
-				print "Attempt to choose a blank row in a table with none left: table '",
-					(PrintTableName) par1, "'.^";
-			RTP_TABLE_NOROWS:
-				print "Attempt to choose a random row in an entirely blank table: table '",
-					(PrintTableName) par1, "'.^";
-			RTP_TABLE_CANTRUNTHROUGH:
-				print "Attempt to repeat through a table in a tricky column order: table '",
-					(PrintTableName) par1, "'.^";
-			RTP_TABLE_CANTSORT:
-				print "Attempt to sort a table whose ordering must remain fixed: table '",
-					(PrintTableName) par1, "'.^";
-			RTP_TABLE_CANTSAVE:
-				print "Attempt to save a table to a file whose data is unstable: table '",
-					(PrintTableName) par1, "'.^";
-			RTP_TABLE_WONTFIT:
-				print "File being read has too many rows or columns to fit into table: table '",
-					(PrintTableName) par1, "'.^";
-			RTP_TABLE_BADFILE:
-				print "File being read is not a previously saved table: table '",
-					(PrintTableName) par1, "'.^";
-			RTP_ROUTELESS:
-				print "Attempt to find route or count steps through an implicit
-					relation.^";
-			RTP_PROPOFNOTHING:
-				print "Attempt to use a property of the 'nothing' non-object: property ",
-					(PrintPropertyName) par2, "^";
-			RTP_DECIDEONWRONGKIND:
-				print "Attempt to 'decide on V' where V is the wrong kind of object.^";
-			RTP_DECIDEONNOTHING:
-				print "Attempt to 'decide on nothing'.^";
-			RTP_LOWLEVELERROR:
-				print "Low level error.^";
-			RTP_LISTWRITERMEMORY:
-				print "The list-writer has run out of memory.^";
-			RTP_MSTACKMEMORY:
-				print "The memory stack is exhausted.^";
-			RTP_TYPECHECK:
-				print "Phrase applied to an incompatible kind of value.^";
-			RTP_FILEIOERROR:
-				print "Error handling external file.^";
-			RTP_HEAPERROR:
-				print "Memory allocation proved impossible.^";
-			RTP_LISTRANGEERROR:
-				print "Attempt to use list item which does not exist.^";
-			RTP_LISTSIZENEGATIVE:
-				print "Attempt to resize list to ", par1, " entries - there must ",
-				"always be 0 or more.^";
-			RTP_REGEXPSYNTAXERROR:
-				print "Syntax error in regular expression.^";
-			RTP_NEGATIVEROOT:
-				print "You can't take the square root of a negative number.^";
-			RTP_CANTITERATE:
-				print "You can't implicitly repeat through the values of this kind: ",
-					"a problem arising from a description which started out here - ~",
-					(string) par1, "~.^";
-			RTP_WRONGASSIGNEDKIND:
-				print "Attempt to set a variable to the wrong kind of object: ",
-					"you wrote '", (string) par2, "', which sets the value to ", (the) par1,
-					" - but that doesn't have the kind '", (string) par3, "'.^";
-			RTP_RELKINDVIOLATION:
-				print "Tried to change a relation for objects with the wrong kinds: ",
-					(string) RlnGetF(par3, RR_DESCRIPTION), ", but you tried to ",
-					"relate (or unrelate) ", (the) par1, " to ", (the) par2, ".^";
-			RTP_TEXTTOKENTOOHARD:
-				print "This use of '[text]' is too complicated.^";
-			RTP_RELATIONCHANGEIMPOSSIBLE:
-				print "This change of the relation's nature is impossible in play.^";
-			RTP_RELMINIMAL:
-				print "This operation can't be done with the relation '",
-					(string) RlnGetF(par3, RR_DESCRIPTION), "'.^";
-		}
-		RunTimeProblemShowWM(n, par1, par2, par3);
-		print "^";
+
+	desc = LatestRTPData-->4;
+	if (desc ~= -1) {
+		print "*** ";
+		if (desc ofclass String) print (string) desc, "^";
+		else if (desc ofclass Routine) desc(par1, par2, par3);
 	}
 ];
 
-@h Low-Level Errors.
-The following is a residue from the old I6 library, and most of its possible
-messages can't be seen in I7 use -- for instance I7 has no timers or daemons,
-so error 4 is out of the question. But we retain the routine because the
+@h The VeneerError RTP.
+The following function, confusingly called |RunTimeError| and not to be
+confused with |IssueRTP| above, is a residue from the old I6 library. Most of
+its possible messages can't be seen in I7 use -- for instance I7 has no timers
+or daemons, so error 4 is out of the question. We retain it only because the
 veneer code added by I6 requires it to be present.
 
 =
 Constant MAX_TIMERS = 0;
 [ RunTimeError n p1 p2;
+    IssueRTP("VeneerError", "Low level error.", BasicInformKitRTPs);
+    print "*** Veneer error ", n, " (", p1, ",", p2, ")^";
     #Ifdef DEBUG;
-    print "** Library error ", n, " (", p1, ",", p2, ") **^** ";
+    print "*** ";
     switch (n) {
       1:    print "preposition not found (this should not occur)";
       2:    print "Property value not routine or string: ~", (property) p2, "~ of ~", (name) p1,
@@ -237,20 +118,51 @@ Constant MAX_TIMERS = 0;
       13:   print "A 'topic' token can only be followed by a preposition";
       default: print "(unexplained)";
     }
-    print " **^";
-    #Ifnot;
-    print "** Library error ", n, " (", p1, ",", p2, ") **^";
+    print "^";
     #Endif; ! DEBUG
-    RunTimeProblem(RTP_LOWLEVELERROR);
 ];
 
-@h Argument Type Checking Failed.
-This is called when run-time type checking for the argument of a phrase
-fails, so that no definition for the phrase can be applied.
+@h RTPs issued by the compiler.
+Or properly speaking, by code generated by the Inform 7 compiler, usually in
+response to runtime type-checking having failed. Rather than calling |IssueRTP|
+directly, it calls one of the following.
 
 =
-[ ArgumentTypeFailed line file;
-	RunTimeProblem(RTP_TYPECHECK, 0, 0, 0, line, file);
+[ IssueTypecheckingRTP line file;
+	IssueRTP("PhraseAppliedToIncompatibleValue",
+		"Phrase applied to an incompatible kind of value.", BasicInformKitRTPs);
+	rtrue;
+];
+
+[ IssueIterationRTP what;
+	IssueRTP("RepeatedThroughUnenumerableKind",
+		"Could not iterate through values of this kind.", BasicInformKitRTPs);
+	print "*** This arose from a description which started out here - ~",
+		(string) what, "~.^";
+	rtrue;
+];
+
+[ IssueSetVariableRTP val setting kind;
+	IssueRTP("SetVariableToWrongKindOfObject",
+		"Tried to set a variable to the wrong kind of object.", BasicInformKitRTPs);
+	print "*** You wrote '", (string) setting, "', which sets the value to ", (the) val,
+		" - but that doesn't have the kind '", (string) kind, "'.^";
+	rtrue;
+];
+
+[ IssueChangedRelationRTP X Y rel;
+	IssueRTP("ChangedRelationOutsideDomain",
+		"Tried to change a relation for objects with the wrong kinds.", BasicInformKitRTPs);
+	print "*** The relation was set up as ~",
+		(string) RlnGetF(rel, RR_DESCRIPTION), "~, but you tried to ",
+		"relate (or unrelate) ", (the) X, " to ", (the) Y, ".^";
+	rtrue;
+];
+
+[ IssueAbstractRelationRTP task rel;
+	IssueRTP("UsedAbstractRelation",
+		"Tried to make use of an abstract relation.", BasicInformKitRTPs);
+	rtrue;
 ];
 
 @h Return Type Checking Failed.
@@ -266,101 +178,12 @@ it can be |nothing|, and we must check that it matches a given I7 kind |K|
 =
 [ CheckKindReturned V K;
 	if (V ofclass K) return V;
-	if (V == nothing) RunTimeProblem(RTP_DECIDEONNOTHING);
-	else RunTimeProblem(RTP_DECIDEONWRONGKIND);
+	if (V == nothing) 
+		IssueRTP("DecidedOnNothing",	
+    		"Attempt to 'decide on nothing'.", BasicInformKitRTPs);
+	else
+		IssueRTP("DecidedOnWrongKindOfObject",	
+    		"Attempt to 'decide on V' where V is the wrong kind of object.",
+    		BasicInformKitRTPs);
 	return V;
-];
-
-@h Whether Provides.
-This routine defines the phrase "if O provides P": there are three tests
-to pass, and if any of the three fail, we return |false|. (The |issue_rtp|
-flag, causing RTPs to be issued depending on which test fails, is never set
-when the routine is simply testing the condition.)
-
-Firstly, P has to be a property known to I7. Secondly, there has to be
-permission either for this individual object to have it, or for its kind to
-have it, or its kind's kind, and so on. Thirdly, the object has to actually
-have the property in question at an I6 level -- having permission to have
-it doesn't mean it actually does have.
-
-=
-[ ProvidesProperty K obj q issue_rtp  a l holder;
-	if (K == OBJECT_TY) {
-		if (ScanPropertyMetadata(obj, q, 4)) jump PermissionFound;
-		if (obj provides KD_Count) {
-			l = obj.KD_Count;
-			while (l > 0) {
-				a = l*2;
-				if (ScanPropertyMetadata(KindHierarchy-->a, q, 4)) jump PermissionFound;
-				l = KindHierarchy-->(a+1);
-			}
-		}
-		if (ScanPropertyMetadata(K0_kind, q, 4)) jump PermissionFound;
-		if (issue_rtp) RunTimeProblem(RTP_UNPROVIDED, obj, q);
-		rfalse;
-	}
-
-	.PermissionFound;
-	if (K >> obj provides q) rtrue;
-
-	if (issue_rtp) RunTimeProblem(RTP_UNSET, obj, q);
-	rfalse;
-];
-
-[ PrintPropertyName  p  textual;
-	if (p<0) p = ~p;
-	textual = p-->3;
-	print (string) textual;
-];
-
-@h Scan Property Metadata.
-The supplied metadata table is a series of zero-terminated lists of objects
-(or class objects, representing I7 kinds). Each such list corresponds to a single
-property; the position in the table is called the "offset" for the property.
-The following searches from a given offset.
-
-=
-[ ScanPropertyMetadata obj property_metadata off i;
-	for (i=off: property_metadata-->i >= 0: i++)
-		if (obj == property_metadata-->i) rtrue;
-	rfalse;
-];
-
-@h Read Property.
-Some value properties belong to other values (those created in tables), and
-these are stored indirectly through a pseudo-object |V| -- an I6 object which
-is not part of the world model, and not a valid I7 "object" value, but which is
-used in order that properties belonging to values
-are still I6 property numbers. |V.P| is the table column address for this
-property; |obj| is then a value for the kind of value created by the table, so
-it is used as an index into the table column to get the address of the memory
-location storing the property value.
-
-=
-[ GProperty K V pr err holder val;
-	if (ProvidesProperty(K, V, pr, 1-err)) {
-		return (K >> V . pr);
-	}
-	return 0;
-];
-
-@h Write Property.
-This routine's name must consist of the read-value-property routine's name
-with the prefix |Write|, as that is how a reference to such a property is
-converted from an rvalue to an lvalue.
-
-=
-[ WriteGProperty K V pr val holder;
-	if (ProvidesProperty(K, V, pr, true)) {
-		K >> V . pr = val;
-	}
-];
-
-@h Printing Property Names.
-Inform doesn't print property names prettily; it more or less prints them
-only as decimal numbers.
-
-=
-[ PROPERTY_TY_Say v;
-	print "property ", v;
 ];

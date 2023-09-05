@@ -2,11 +2,10 @@
   Begin with the sets S = {2, 4, 8, 16, 32, 64}, T = {2, 4, 6, 10}.
   S is now {2, 4, 3, 8, 16, 32, 64}.
   S is now {2, 4, 3, 8, 16, 32, 64, 2}.
-  *** Couldn't add at entry 0 in the list {2, 4, 3, 8, 16, 32, 64, 2}, which has entries in the range 1 to 8 ***
   
-  *** Run-time problem P50
+  *** Run-time problem AccessedNonExistentListItem: INTERNAL/Inter/BasicInformKit/RTPs
   *** Attempt to use list item which does not exist.
-  
+  *** Couldn't add at entry 0 in the list {2, 4, 3, 8, 16, 32, 64, 2}, which has entries in the range 1 to 8 ***
   *** Couldn't add at entry 10 in the list {2, 4, 3, 8, 16, 32, 64, 2}, which has entries in the range 1 to 8 ***
   S is now {2, 4, 2, 4, 6, 10, 3, 8, 16, 32, 64, 2}.
   S rotated is now {2, 2, 4, 2, 4, 6, 10, 3, 8, 16, 32, 64}.

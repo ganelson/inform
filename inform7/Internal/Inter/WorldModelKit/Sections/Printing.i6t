@@ -9,7 +9,7 @@ prompts him to type.
 
 =
 [ PrintPrompt i;
-	RunTimeProblemShow();
+	ShowRTP();
 	ClearRTP();
 	style roman;
 	EnsureBreakBeforePrompt();

@@ -16,13 +16,16 @@ number which cannot be negated in 32-bit twos complement arithmetic.
 =
 [ SquareRoot num
     op res one n x;
-    if (num < 0) { RunTimeProblem(RTP_NEGATIVEROOT); return 1; }
+    if (num < 0) {
+    	IssueRTP("TookSquareRootOfNegativeNumber",
+    		"You can't take the square root of a negative number.", BasicInformKitRTPs);
+    	return 1;
+    }
 
     n = VM_SquareRoot(num);
     if (n) return n;
 
 	op = num;
-	if (num < 0) { RunTimeProblem(RTP_NEGATIVEROOT); return 1; }
 	! "one" starts at the highest power of four <= the argument.
 	for (one = WORD_NEXTTOHIGHBIT: one > op: one = one/4) ;
 

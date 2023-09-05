@@ -172,7 +172,9 @@ Global MarkedObjectLength = 0;
 		@push MarkedObjectArray; @push MarkedObjectLength;
 		MarkedObjectArray = RequisitionStack(length);
 		MarkedObjectLength = length;
-		if (MarkedObjectArray == 0) return RunTimeProblem(RTP_LISTWRITERMEMORY);
+		if (MarkedObjectArray == 0)
+			return IssueRTP("ListWriterRanOutOfMemory",	
+    			"The list-writer has run out of memory.^", BasicInformKitRTPs);
 
 		if (common_parent) {
 			ObjectTreeCoalesce(child(common_parent));
@@ -740,7 +742,8 @@ The big one: |WriteListR| is the heart of the list-writer.
     partition_classes = RequisitionStack(index/WORDSIZE + 2);
     partition_class_sizes = RequisitionStack(index/WORDSIZE + 2);
     if ((partition_classes == 0) || (partition_class_sizes == 0))
-    	return RunTimeProblem(RTP_LISTWRITERMEMORY);
+		return IssueRTP("ListWriterRanOutOfMemory",	
+    		"The list-writer has run out of memory.^", BasicInformKitRTPs);
 
 	no_classes =
 		PartitionList(o, index, depth, partition_classes, partition_class_sizes);

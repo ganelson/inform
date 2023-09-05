@@ -639,11 +639,9 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 	Functions::end(save);
 
 @<The default case for minimal relations only@> =
-	EmitCode::call(Hierarchy::find(RUNTIMEPROBLEM_HL));
+	EmitCode::call(Hierarchy::find(ISSUEUSEDABSTRACTRELATION_HL));
 	EmitCode::down();
-		EmitCode::val_iname(K_value, Hierarchy::find(RTP_RELMINIMAL_HL));
 		EmitCode::val_symbol(K_value, task_s);
-		EmitCode::val_number(0);
 		EmitCode::val_iname(K_value, RTRelations::iname(bp));
 	EmitCode::up();
 
@@ -1698,9 +1696,8 @@ void RTRelations::guard_compilation_agent(compilation_subtask *t) {
 
 			if (downs > 0) { EmitCode::up(); EmitCode::up(); }
 
-			EmitCode::call(Hierarchy::find(RUNTIMEPROBLEM_HL));
+			EmitCode::call(Hierarchy::find(ISSUECHANGEDRELATIONOUTSIDEDOMAIN_HL));
 			EmitCode::down();
-				EmitCode::val_iname(K_value, Hierarchy::find(RTP_RELKINDVIOLATION_HL));
 				EmitCode::val_symbol(K_value, L_s);
 				EmitCode::val_symbol(K_value, R_s);
 				EmitCode::val_iname(K_value, RTRelations::iname(rg->guarding));
@@ -1754,9 +1751,8 @@ void RTRelations::guard_compilation_agent(compilation_subtask *t) {
 
 			if (downs > 0) { EmitCode::up(); EmitCode::up(); }
 
-			EmitCode::call(Hierarchy::find(RUNTIMEPROBLEM_HL));
+			EmitCode::call(Hierarchy::find(ISSUECHANGEDRELATIONOUTSIDEDOMAIN_HL));
 			EmitCode::down();
-				EmitCode::val_iname(K_value, Hierarchy::find(RTP_RELKINDVIOLATION_HL));
 				EmitCode::val_symbol(K_value, L_s);
 				EmitCode::val_symbol(K_value, R_s);
 				EmitCode::val_iname(K_value, RTRelations::iname(rg->guarding));

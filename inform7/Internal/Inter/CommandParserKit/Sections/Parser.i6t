@@ -282,7 +282,11 @@ are above 32K. This only rarely happens, but it can.
 	w1 = snip/100; w2 = w1 + (snip%100) - 1;
 	if ((w2<w1) || (w1<1) || (w2>WordCount())) {
 		if ((w1 == 1) && (w2 == 0)) rfalse;
-		return RunTimeProblem(RTP_SAYINVALIDSNIPPET, w1, w2);
+		IssueRTP("SaidInvalidSnippet",
+	    	"Attempt to say a snippet value which is currently invalid.",
+	    	WorldModelKitRTPs);
+		print "*** The snippet ran from words ", w1, " to ", w2, ".^";
+		rtrue;
 	}
 	#Iftrue CHARSIZE == 1;
 	from = WordAddress(w1); to = WordAddress(w2) + WordLength(w2) - 1;
@@ -297,7 +301,11 @@ are above 32K. This only rarely happens, but it can.
 	w1 = snip/100; w2 = w1 + (snip%100) - 1;
 	if ((w2<w1) || (w1<1)) {
 		if ((w1 == 1) && (w2 == 0)) return;
-		return RunTimeProblem(RTP_SPLICEINVALIDSNIPPET, w1, w2);
+		IssueRTP("SplicedInvalidSnippet",
+	    	"Attempt to splice a snippet value which is currently invalid.",
+	    	WorldModelKitRTPs);
+		print "*** The snippet ran from words ", w1, " to ", w2, ".^";
+		rtrue;
 	}
 	@push say__p; @push say__pc;
 	nextw = w2 + 1;
@@ -334,7 +342,11 @@ are above 32K. This only rarely happens, but it can.
 	w1 = snippet/100; w2 = w1 + (snippet%100) - 1;
 	if ((w2<w1) || (w1<1)) {
 		if ((w1 == 1) && (w2 == 0)) rfalse;
-		return RunTimeProblem(RTP_INCLUDEINVALIDSNIPPET, w1, w2);
+		IssueRTP("IncludedInvalidSnippet",
+	    	"Attempt to match a snippet value which is currently invalid.",
+	    	WorldModelKitRTPs);
+		print "*** The snippet ran from words ", w1, " to ", w2, ".^";
+		rtrue;
 	}
 	if (metaclass(test) == Routine) {
 		wlen = snippet%100;
@@ -353,7 +365,9 @@ are above 32K. This only rarely happens, but it can.
 		if (rv ~= GPR_FAIL) rtrue;
 		rfalse;
 	}
-	RunTimeProblem(RTP_BADTOPIC);
+	IssueRTP("MatchedAgainstNonTopic",
+		"Tried to see if a snippet of text matches something which is not a topic.",
+		WorldModelKitRTPs);
 	rfalse;
 ];
 
@@ -1689,7 +1703,8 @@ Analyse token; handle all not involving object lists, break down others.
             consult_from = wn;
             if ((line_ttype-->(token_n+1) ~= PREPOSITION_TT) &&
                (line_token-->(token_n+1) ~= ENDIT_TOKEN)) {
-               	RunTimeProblem(RTP_TEXTTOKENTOOHARD);
+				IssueRTP("ComplicatedUnderstandTextToken",
+					"This use of '[text]' is too complicated.", WorldModelKitRTPs);
                	return GPR_PREPOSITION;
         	}
             do {

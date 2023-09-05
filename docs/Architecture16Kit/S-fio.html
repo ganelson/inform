@@ -33,7 +33,6 @@
 <li><a href="../indocn.html">indoc</a></li>
 <li><a href="../inform6.html">inform6</a></li>
 <li><a href="../inpolicyn.html">inpolicy</a></li>
-<li><a href="../inrtpsn.html">inrtps</a></li>
 </ul><h2>Resources</h2><ul>
 <li><a href="../extensions.html">extensions</a></li>
 <li><a href="../kits.html">kits</a></li>
@@ -84,7 +83,7 @@ see above.
 <span class="plain-syntax">            (</span><span class="reserved-syntax">string</span><span class="plain-syntax">) </span><span class="identifier-syntax">struc</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">AUXF_FILENAME</span><span class="plain-syntax">, </span><span class="string-syntax">"': "</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            (</span><span class="reserved-syntax">string</span><span class="plain-syntax">) </span><span class="identifier-syntax">err_text</span><span class="plain-syntax">, </span><span class="string-syntax">" ***^"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">RunTimeProblem</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTP_FILEIOERROR</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"FileIOFailed"</span><span class="plain-syntax">, </span><span class="string-syntax">"Error handling external file."</span><span class="plain-syntax">, </span><span class="identifier-syntax">BasicInformKitRTPs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>

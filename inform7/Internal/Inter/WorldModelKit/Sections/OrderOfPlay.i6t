@@ -477,7 +477,9 @@ that events always fire.)
 		if (rule == TimedEventsTable-->i) { b=i; break; }
 		if ((b==0) && (TimedEventsTable-->i == 0)) b=i;
 	}
-	if (b==0) return RunTimeProblem(RTP_TOOMANYEVENTS);
+	if (b==0) return 
+		IssueRTP("TooManyTimedEvents",
+			"Too many timed events are going on at once.", WorldModelKitRTPs);
 	TimedEventsTable-->b = rule;
 	if (absolute_time) TimedEventTimesTable-->b = event_time;
 	else TimedEventTimesTable-->b = -event_time;

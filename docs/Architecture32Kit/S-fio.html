@@ -364,7 +364,7 @@ actual translations are in "Tables.i6t".
 <span class="plain-syntax">    </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TablePrint</span><span class="plain-syntax">(</span><span class="identifier-syntax">tab</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">FileIO_Close</span><span class="plain-syntax">(</span><span class="identifier-syntax">extf</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">oldstream</span><span class="plain-syntax">) </span><span class="identifier-syntax">glk_stream_set_current</span><span class="plain-syntax">(</span><span class="identifier-syntax">oldstream</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rv</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">RunTimeProblem</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTP_TABLE_CANTSAVE</span><span class="plain-syntax">, </span><span class="identifier-syntax">tab</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rv</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">IssueSavedUnstableTable</span><span class="plain-syntax">(</span><span class="identifier-syntax">tab</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 
@@ -411,7 +411,7 @@ the file; files are opened using resource IDs rather than filenames.
 <span class="plain-syntax">            (</span><span class="reserved-syntax">string</span><span class="plain-syntax">) </span><span class="identifier-syntax">err_text</span><span class="plain-syntax">, </span><span class="string-syntax">" ***^"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">struc</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">AUXF_STATUS</span><span class="plain-syntax"> = </span><span class="identifier-syntax">AUXF_STATUS_IS_ERRONEOUS</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">RunTimeProblem</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTP_FILEIOERROR</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"FileIOFailed"</span><span class="plain-syntax">, </span><span class="string-syntax">"Error handling external file."</span><span class="plain-syntax">, </span><span class="identifier-syntax">BasicInformKitRTPs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 
@@ -499,7 +499,7 @@ see above.
 <span class="plain-syntax">            (</span><span class="reserved-syntax">string</span><span class="plain-syntax">) </span><span class="identifier-syntax">struc</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">AUXF_FILENAME</span><span class="plain-syntax">, </span><span class="string-syntax">"': "</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            (</span><span class="reserved-syntax">string</span><span class="plain-syntax">) </span><span class="identifier-syntax">err_text</span><span class="plain-syntax">, </span><span class="string-syntax">" ***^"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">RunTimeProblem</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTP_FILEIOERROR</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"FileIOFailed"</span><span class="plain-syntax">, </span><span class="string-syntax">"Error handling external file."</span><span class="plain-syntax">, </span><span class="identifier-syntax">BasicInformKitRTPs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>

@@ -968,8 +968,6 @@ forcetransferdocumentation:
 
 {define: make-inapp-outcome-pages}
 	$(INBUILDX) -markdown-from-dir resources/Outcome\ Pages -markdown-to-dir $(BUILTINHTMLINNER) -markdown-variation RTP
-	$(INBUILDX) -markdown-from-dir $(INFORM7WEB)/Internal/Inter/BasicInformKit/RTPs -markdown-to-dir $(BUILTINHTMLINNER) -markdown-variation RTP
-	$(INBUILDX) -markdown-from-dir $(INFORM7WEB)/Internal/Inter/WorldModelKit/RTPs -markdown-to-dir $(BUILTINHTMLINNER) -markdown-variation RTP
 {end-define}
 
 RTPEXEMPLUM = $(BUILTINHTMLINNER)/RTP_P1.html

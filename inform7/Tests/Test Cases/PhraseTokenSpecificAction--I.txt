@@ -1,9 +1,8 @@
    Foo
   Clomp!
   
-  *** Run-time problem P47
+  *** Run-time problem PhraseAppliedToIncompatibleValue: INTERNAL/Inter/BasicInformKit/RTPs
   *** Phrase applied to an incompatible kind of value.
-  
   
   Welcome
   An Interactive Fiction

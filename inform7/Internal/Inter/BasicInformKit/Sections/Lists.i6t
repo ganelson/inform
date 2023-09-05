@@ -288,10 +288,11 @@ where $N$ is the number of items in the list at present.
 	BlkValueWrite(list, LIST_LENGTH_F, no_items); ! Forces the list to be mutable
 	contents_kind = BlkValueRead(list, LIST_ITEM_KOV_F);
 	if ((posnflag) && ((posn<1) || (posn > no_items+1))) {
+		IssueRTP("AccessedNonExistentListItem",	
+    		"Attempt to use list item which does not exist.", BasicInformKitRTPs);
 		print "*** Couldn't add at entry ", posn, " in the list ";
 		LIST_OF_TY_Say(list, true);
 		print ", which has entries in the range 1 to ", no_items, " ***^";
-		RunTimeProblem(RTP_LISTRANGEERROR);
 		rfalse;
 	}
 	ex = BlkValueLBCapacity(list);
@@ -331,10 +332,11 @@ value |v| to insert, the specification is the same as for
 	no_items = BlkValueRead(list, LIST_LENGTH_F);
 	BlkValueWrite(list, LIST_LENGTH_F, no_items); ! Forces the list to be mutable
 	if ((posnflag) && ((posn<1) || (posn > no_items+1))) {
+		IssueRTP("AccessedNonExistentListItem",	
+    		"Attempt to use list item which does not exist.", BasicInformKitRTPs);
 		print "*** Couldn't add at entry ", posn, " in the list ";
 		LIST_OF_TY_Say(list, true);
 		print ", which has entries in the range 1 to ", no_items, " ***^";
-		RunTimeProblem(RTP_LISTRANGEERROR);
 		rfalse;
 	}
 	msize = BlkValueRead(more, LIST_LENGTH_F);
@@ -409,12 +411,13 @@ destroyed with |BlkValueFree| before being overwritten as the items shuffle down
 	}
 	if (odsize ~= no_items) rfalse;
 	if (forgive) rfalse;
+	IssueRTP("AccessedNonExistentListItem",	
+    	"Attempt to use list item which does not exist.", BasicInformKitRTPs);
 	print "*** Couldn't remove: the value ";
 	PrintKindValuePair(BlkValueRead(list, LIST_ITEM_KOV_F), v);
 	print " was not present in the list ";
 	LIST_OF_TY_Say(list, true);
 	print " ***^";
-	RunTimeProblem(RTP_LISTRANGEERROR);
 ];
 
 @h Remove Item Range.
@@ -437,10 +440,11 @@ as the list shuffles down to fill the void.
 			if (to >= no_items) to = no_items;
 			if (from > to) return list;
 		} else {
+			IssueRTP("AccessedNonExistentListItem",	
+    			"Attempt to use list item which does not exist.", BasicInformKitRTPs);
 			print "*** Couldn't remove entries ", from, " to ", to, " from the list ";
 			LIST_OF_TY_Say(list, true);
 			print ", which has entries in the range 1 to ", no_items, " ***^";
-			RunTimeProblem(RTP_LISTRANGEERROR);
 			rfalse;
 		}
 	}
@@ -530,7 +534,8 @@ if |truncation_end| is 1, or from the start if it is $-1$.
 =
 [ LIST_OF_TY_SetLength list newsize this_way_only truncation_end no_items ex i dv;
 	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
-	if (newsize < 0) return RunTimeProblem(RTP_LISTSIZENEGATIVE, newsize);
+	if (newsize < 0) return IssueRTP("ResizedListToNegativeSize",	
+    		"Attempt to resize list to negative size.", BasicInformKitRTPs);
 	BlkMakeMutable(list);
 	no_items = BlkValueRead(list, LIST_LENGTH_F);
 	if (no_items < newsize) {
@@ -572,13 +577,14 @@ if |truncation_end| is 1, or from the start if it is $-1$.
 	no_items = BlkValueRead(list, LIST_LENGTH_F);
 	if ((i<=0) || (i>no_items)) {
 		if (forgive) return false;
+		IssueRTP("AccessedNonExistentListItem",	
+    		"Attempt to use list item which does not exist.", BasicInformKitRTPs);
 		print "*** Couldn't read from entry ", i, " of a list which";
 		switch (no_items) {
 			0: print " is empty ***^";
 			1: print " has only one entry, numbered 1 ***^";
 			default: print " has entries numbered from 1 to ", no_items, " ***^";
 		}
-		RunTimeProblem(RTP_LISTRANGEERROR);
 		if (no_items >= 1) i = 1;
 		else return false;
 	}
@@ -595,15 +601,17 @@ to convert an rvalue such as |LIST_OF_TY_GetItem(L, 4)| is to prefix
 	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return false;
 	no_items = BlkValueRead(list, LIST_LENGTH_F);
 	if ((i<=0) || (i>no_items)) {
+		IssueRTP("AccessedNonExistentListItem",	
+    		"Attempt to use list item which does not exist.", BasicInformKitRTPs);
 		print "*** Couldn't write to list entry ", i, " of a list which";
 		switch (no_items) {
 			0: print " is empty ***^";
 			1: print " has only one entry, numbered 1 ***^";
 			default: print " has entries numbered from 1 to ", no_items, " ***^";
 		}
-		return RunTimeProblem(RTP_LISTRANGEERROR);
+	} else {
+		BlkValueWrite(list, LIST_ITEM_BASE+i-1, val);
 	}
-	BlkValueWrite(list, LIST_ITEM_BASE+i-1, val);
 ];
 
 @h Put Item.

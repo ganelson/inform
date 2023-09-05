@@ -1,7 +1,6 @@
    Foo
-  *** Run-time problem P68
-  *** Attempt to resize list to -2 entries - there must always be 0 or more.
-  
+  *** Run-time problem ResizedListToNegativeSize: INTERNAL/Inter/BasicInformKit/RTPs
+  *** Attempt to resize list to negative size.
   Welcome
   An Interactive Fiction
   Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D

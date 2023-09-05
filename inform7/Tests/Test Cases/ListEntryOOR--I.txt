@@ -1,9 +1,8 @@
    Home
-  Today's prime is *** Couldn't read from entry -35 of a list which has entries numbered from 1 to 5 ***
-  
-  *** Run-time problem P50
+  Today's prime is
+  *** Run-time problem AccessedNonExistentListItem: INTERNAL/Inter/BasicInformKit/RTPs
   *** Attempt to use list item which does not exist.
-  
+  *** Couldn't read from entry -35 of a list which has entries numbered from 1 to 5 ***
   2.
   
   Welcome

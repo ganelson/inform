@@ -1,0 +1,107 @@
+Properties Template.
+
+Runtime access to property values.
+
+@h Whether Provides.
+This routine defines the phrase "if O provides P": there are three tests
+to pass, and if any of the three fail, we return |false|. (The |issue_rtp|
+flag, causing RTPs to be issued depending on which test fails, is never set
+when the routine is simply testing the condition.)
+
+Firstly, P has to be a property known to I7. Secondly, there has to be
+permission either for this individual object to have it, or for its kind to
+have it, or its kind's kind, and so on. Thirdly, the object has to actually
+have the property in question at an I6 level -- having permission to have
+it doesn't mean it actually does have.
+
+=
+[ ProvidesProperty K obj q issue_rtp  a l holder;
+	if (K == OBJECT_TY) {
+		if (ScanPropertyMetadata(obj, q, 4)) jump PermissionFound;
+		if (obj provides KD_Count) {
+			l = obj.KD_Count;
+			while (l > 0) {
+				a = l*2;
+				if (ScanPropertyMetadata(KindHierarchy-->a, q, 4)) jump PermissionFound;
+				l = KindHierarchy-->(a+1);
+			}
+		}
+		if (ScanPropertyMetadata(K0_kind, q, 4)) jump PermissionFound;
+		if (issue_rtp) {
+			IssueRTP("UnprovidedProperty",
+				"Attempt to use a property without permission.", BasicInformKitRTPs);
+			print "*** Since ", (the) obj, " is not allowed the property ~",
+				(PrintPropertyName) q, "~, it can't be used.^";
+		}
+		rfalse;
+	}
+
+	.PermissionFound;
+	if (K >> obj provides q) rtrue;
+
+	if (issue_rtp) {
+		IssueRTP("UnsetProperty",
+			"Attempt to use a property with no value.", BasicInformKitRTPs);
+		print "*** Although ", (the) obj, " is allowed to have the property ~",
+			(PrintPropertyName) q, "~, no value was ever given.^";
+	}
+	rfalse;
+];
+
+@h Scan Property Metadata.
+The supplied metadata table is a series of zero-terminated lists of objects
+(or class objects, representing I7 kinds). Each such list corresponds to a single
+property; the position in the table is called the "offset" for the property.
+The following searches from a given offset.
+
+=
+[ ScanPropertyMetadata obj property_metadata off i;
+	for (i=off: property_metadata-->i >= 0: i++)
+		if (obj == property_metadata-->i) rtrue;
+	rfalse;
+];
+
+@h Read Property.
+Some value properties belong to other values (those created in tables), and
+these are stored indirectly through a pseudo-object |V| -- an I6 object which
+is not part of the world model, and not a valid I7 "object" value, but which is
+used in order that properties belonging to values
+are still I6 property numbers. |V.P| is the table column address for this
+property; |obj| is then a value for the kind of value created by the table, so
+it is used as an index into the table column to get the address of the memory
+location storing the property value.
+
+=
+[ GProperty K V pr err holder val;
+	if (ProvidesProperty(K, V, pr, 1-err)) {
+		return (K >> V . pr);
+	}
+	return 0;
+];
+
+@h Write Property.
+This routine's name must consist of the read-value-property routine's name
+with the prefix |Write|, as that is how a reference to such a property is
+converted from an rvalue to an lvalue.
+
+=
+[ WriteGProperty K V pr val holder;
+	if (ProvidesProperty(K, V, pr, true)) {
+		K >> V . pr = val;
+	}
+];
+
+@h Printing Property Names.
+Inform doesn't print property names prettily; it more or less prints them
+only as decimal numbers.
+
+=
+[ PROPERTY_TY_Say v;
+	print "property ", v;
+];
+
+[ PrintPropertyName  p  textual;
+	if (p<0) p = ~p;
+	textual = p-->3;
+	print (string) textual;
+];
