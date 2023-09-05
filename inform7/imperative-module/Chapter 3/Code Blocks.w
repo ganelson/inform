@@ -228,7 +228,7 @@ int CodeBlocks::current_block_level(void) {
 	return current_block_stack.pb_sp;
 }
 
-wchar_t *CodeBlocks::name_of_current_block(void) {
+inchar32_t *CodeBlocks::name_of_current_block(void) {
 	if (block_being_compiled == NULL) return NULL;
 	return ControlStructures::incipit(block_being_compiled->from_structure);
 }

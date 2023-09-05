@@ -9,7 +9,7 @@ which must be alphanumeric or else underscores, except that the leading
 character must not be a 0:
 
 =
-int Identifiers::valid(wchar_t *p) {
+int Identifiers::valid(inchar32_t *p) {
 	if ((Wide::len(p) == 0) || (Wide::len(p) > 31)) return FALSE;
 	for (int i=0; p[i]; i++)
 		if ((Characters::isdigit(p[i]) == 0) && (Characters::isalpha(p[i]) == 0)
@@ -24,7 +24,7 @@ int Identifiers::valid(wchar_t *p) {
 =
 void Identifiers::purify(text_stream *identifier) {
 	LOOP_THROUGH_TEXT(pos, identifier) {
-		int x = Str::get(pos);
+		inchar32_t x = Str::get(pos);
 		if (!(((x >= '0') && (x <= '9')) ||
 			((x >= 'a') && (x <= 'z')) || ((x >= 'A') && (x <= 'Z')) || (x == '_')))
 			Str::put(pos, '_');

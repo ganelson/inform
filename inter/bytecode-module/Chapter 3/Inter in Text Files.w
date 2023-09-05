@@ -87,7 +87,7 @@ deception.
 
 @<Find indentation@> =
 	LOOP_THROUGH_TEXT(P, ilp.line) {
-		wchar_t c = Str::get(P);
+		inchar32_t c = Str::get(P);
 		if (c == '\t') ilp.indent_level++;
 		else if (c == ' ') return InterErrors::plain(
 			I"spaces (rather than tabs) at beginning of line", eloc);
@@ -122,7 +122,7 @@ pleases.
 @<Parse any annotations at the end of the line@> =
 	int quoted = FALSE, cutoff = -1;
 	for (int i = 0; i < Str::len(ilp.line); i++) {
-		wchar_t c = Str::get_at(ilp.line, i);
+		inchar32_t c = Str::get_at(ilp.line, i);
 		if (c == '"') quoted = quoted?FALSE:TRUE;
 		else if (c == '\\') i++;
 		else if ((quoted == FALSE) && (i > 0) &&
@@ -204,7 +204,7 @@ resolve forward references at the end of the parsing process -- see below.
 	if (S == NULL) {
 		TEMPORARY_TEXT(leaf)
 		LOOP_THROUGH_TEXT(pos, name) {
-			wchar_t c = Str::get(pos);
+			inchar32_t c = Str::get(pos);
 			if (c == '/') Str::clear(leaf);
 			else PUT_TO(leaf, c);
 		}
@@ -380,7 +380,7 @@ void TextualInter::write_symbol_from(OUTPUT_STREAM, inter_tree_node *P, int fiel
 void TextualInter::write_text(OUTPUT_STREAM, text_stream *S) {
 	WRITE("\"");
 	LOOP_THROUGH_TEXT(P, S) {
-		wchar_t c = Str::get(P);
+		inchar32_t c = Str::get(P);
 		if (c == 9) { WRITE("\\t"); continue; }
 		if (c == 10) { WRITE("\\n"); continue; }
 		if (c == '"') { WRITE("\\\""); continue; }
@@ -396,7 +396,7 @@ inter_error_message *TextualInter::parse_literal_text(text_stream *parsed_text,
 	int literal_mode = FALSE;
 	LOOP_THROUGH_TEXT(pos, S) {
 		if ((pos.index < from) || (pos.index > to)) continue;
-		int c = (int) Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if (literal_mode == FALSE) {
 			if (c == '\\') { literal_mode = TRUE; continue; }
 		} else {
@@ -417,7 +417,7 @@ inter_error_message *TextualInter::parse_literal_text(text_stream *parsed_text,
 	return E;
 }
 
-int TextualInter::char_acceptable(int c) {
+int TextualInter::char_acceptable(inchar32_t c) {
 	if ((c < 0x20) && (c != 0x09) && (c != 0x0a)) return FALSE;
 	return TRUE;
 }
@@ -447,8 +447,8 @@ inter_error_message *TextualInter::parse_pair(text_stream *line, inter_error_loc
 	inter_symbols_table *scope = InterBookmark::scope(IBM);
 	inter_tree *I = InterBookmark::tree(IBM);
 
-	wchar_t first_char = Str::get_first_char(S);
-	wchar_t last_char = Str::get_last_char(S);
+	inchar32_t first_char = Str::get_first_char(S);
+	inchar32_t last_char = Str::get_last_char(S);
 	int is_identifier = FALSE;
 	if ((Characters::isalpha(first_char)) || (first_char == '_')) {
 		is_identifier = TRUE;
@@ -495,16 +495,17 @@ or (unsigned) binary, but cannot be printed back in binary.
 	}
 
 @<Parse numeric literal syntax@> =
-	wchar_t c = first_char;
+	inchar32_t c = first_char;
 	if ((c == '-') || (Characters::isdigit(c))) {
-		int sign = 1, base = 10, from = 0;
+		int sign = 1, from = 0;
+		unsigned int base = 10;
 		if (Str::prefix_eq(S, I"-", 1)) { sign = -1; from = 1; }
 		if (Str::prefix_eq(S, I"0b", 2)) { base = 2; from = 2; }
 		if (Str::prefix_eq(S, I"0x", 2)) { base = 16; from = 2; }
 		long long int N = 0;
 		LOOP_THROUGH_TEXT(pos, S) {
 			if (pos.index < from) continue;
-			int c = Str::get(pos), d = 0;
+			inchar32_t c = Str::get(pos), d = 0;
 			if ((c >= 'a') && (c <= 'z')) d = c-'a'+10;
 			else if ((c >= 'A') && (c <= 'Z')) d = c-'A'+10;
 			else if ((c >= '0') && (c <= '9')) d = c-'0';
@@ -550,7 +551,7 @@ rules on escape characters inside.
 	TextualInter::write_text(OUT, InterValuePairs::to_textual_real(I, pair));
 
 @<Parse real literal syntax@> =
-	if ((quoted_from == 2) && (Str::begins_with_wide_string(S, L"r"))) {
+	if ((quoted_from == 2) && (Str::begins_with_wide_string(S, U"r"))) {
 		TEMPORARY_TEXT(text)
 		inter_error_message *E =
 			TextualInter::parse_literal_text(text, S, quoted_from, quoted_to, eloc);
@@ -567,7 +568,7 @@ example, |dw"xyzzy"| or |dwp"fruits"|.
 	TextualInter::write_text(OUT, InterValuePairs::to_dictionary_word(I, pair));
 
 @<Parse singular dword syntax@> =
-	if ((quoted_from == 3) && (Str::begins_with_wide_string(S, L"dw"))) {
+	if ((quoted_from == 3) && (Str::begins_with_wide_string(S, U"dw"))) {
 		TEMPORARY_TEXT(text)
 		inter_error_message *E =
 			TextualInter::parse_literal_text(text, S, quoted_from, quoted_to, eloc);
@@ -581,7 +582,7 @@ example, |dw"xyzzy"| or |dwp"fruits"|.
 	TextualInter::write_text(OUT, InterValuePairs::to_dictionary_word(I, pair));
 
 @<Parse plural dword syntax@> =
-	if ((quoted_from == 4) && (Str::begins_with_wide_string(S, L"dwp"))) {
+	if ((quoted_from == 4) && (Str::begins_with_wide_string(S, U"dwp"))) {
 		TEMPORARY_TEXT(text)
 		inter_error_message *E =
 			TextualInter::parse_literal_text(text, S, quoted_from, quoted_to, eloc);
@@ -598,7 +599,7 @@ written |glob"..."|, with the same escaping rules as literal text.
 	TextualInter::write_text(OUT, InterValuePairs::to_glob_text(I, pair));
 
 @<Parse glob syntax@> =
-	if ((quoted_from == 5) && (Str::begins_with_wide_string(S, L"glob"))) {
+	if ((quoted_from == 5) && (Str::begins_with_wide_string(S, U"glob"))) {
 		TEMPORARY_TEXT(text)
 		inter_error_message *E =
 			TextualInter::parse_literal_text(text, S, quoted_from, quoted_to, eloc);

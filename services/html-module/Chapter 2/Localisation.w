@@ -87,7 +87,7 @@ int Localisation::stock_from_file(filename *localisation_file, localisation_dict
 	}
 	int col = 1, line = 1, nwsol = FALSE; /* "non white space on line" */
 	unicode_file_buffer ufb = TextFiles::create_ufb();
-	int cr; /* note that on some platforms |wchar_t| is unable to hold |EOF| */
+	int cr; /* note that on some platforms |inchar32_t| is unable to hold |EOF| */
 	TEMPORARY_TEXT(key)
 	TEMPORARY_TEXT(value)
 	do {
@@ -95,13 +95,13 @@ int Localisation::stock_from_file(filename *localisation_file, localisation_dict
 		if (cr == EOF) break;
 		if ((cr == '#') && (nwsol == FALSE)) @<Read up to end of line as a comment@>
 		else if ((cr == '%') && (nwsol == FALSE)) @<Read up to the next white space as a key@>
-		else if (Characters::is_whitespace(cr) == FALSE) nwsol = TRUE;
+		else if (Characters::is_whitespace((inchar32_t) cr) == FALSE) nwsol = TRUE;
 		if (cr == EOF) break;
 		if (Str::len(key) > 0) {
-			if ((Characters::is_whitespace(cr) == FALSE) || (Str::len(value) > 0))
-				PUT_TO(value, cr);
+			if ((Characters::is_whitespace((inchar32_t) cr) == FALSE) || (Str::len(value) > 0))
+				PUT_TO(value, (inchar32_t) cr);
 		} else {
-			if (Characters::is_whitespace(cr) == FALSE) {
+			if (Characters::is_whitespace((inchar32_t) cr) == FALSE) {
 				Localisation::error(localisation_file, line, col,
 					I"extraneous matter appears before first %key");
 			}
@@ -126,12 +126,12 @@ int Localisation::stock_from_file(filename *localisation_file, localisation_dict
 	while (TRUE) {
 		@<Read next character@>;
 		if ((cr == '=') || (cr == EOF)) break;
-		if (Characters::is_whitespace(cr) == FALSE) PUT_TO(key, cr);
+		if (Characters::is_whitespace((inchar32_t) cr) == FALSE) PUT_TO(key, (inchar32_t) cr);
 	}
 	if (cr == '=') {
 		while (TRUE) {
 			@<Read next character@>;
-			if (Characters::is_whitespace(cr)) continue;
+			if (Characters::is_whitespace((inchar32_t) cr)) continue;
 			break;
 		}
 	}		
@@ -323,10 +323,10 @@ void Localisation::write_general(OUTPUT_STREAM, localisation_dictionary *D,
 	text_stream *prototype = Localisation::read(D, key);
 	int italics_open = FALSE;
 	for (int i=0; i<Str::len(prototype); i++) {
-		wchar_t c = Str::get_at(prototype, i);
+		inchar32_t c = Str::get_at(prototype, i);
 		switch (c) {
 			case '*': {
-				wchar_t nc = Str::get_at(prototype, i+1);
+				inchar32_t nc = Str::get_at(prototype, i+1);
 				int n = ((int) nc - (int) '0');
 				if ((n >= 0) && (n <= 9)) WRITE("%S", vals[n]);
 				else PUT(nc);

@@ -26,12 +26,12 @@ int main(int argc, char **argv) {
 	LoadPreform::load(S, NULL);
 
 	CommandLine::declare_heading(
-		L"kinds-test: a tool for testing the kinds module\n");
+		U"kinds-test: a tool for testing the kinds module\n");
 
-	CommandLine::declare_switch(LOAD_CLSW, L"load", 2,
-		L"load kind definitions from file X");
-	CommandLine::declare_switch(INTERPRET_CLSW, L"interpret", 2,
-		L"interpret REPL commands in file X");
+	CommandLine::declare_switch(LOAD_CLSW, U"load", 2,
+		U"load kind definitions from file X");
+	CommandLine::declare_switch(INTERPRET_CLSW, U"interpret", 2,
+		U"interpret REPL commands in file X");
 
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::ignore);
 

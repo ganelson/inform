@@ -150,11 +150,11 @@ void ParsingPipelines::parse_line(inter_pipeline *pipeline, text_stream *instruc
 		else
 			PUT_TO(T, Str::get(P));
 	match_results mr = Regexp::create_mr();
-	while (Regexp::match(&mr, T, L" *(%c+?) *,+ *(%c*?) *")) {
+	while (Regexp::match(&mr, T, U" *(%c+?) *,+ *(%c*?) *")) {
 		ParsingPipelines::parse_instruction(pipeline, mr.exp[0], tfp);
 		Str::copy(T, mr.exp[1]);
 	}
-	if (Regexp::match(&mr, T, L" *(%c+?) *"))
+	if (Regexp::match(&mr, T, U" *(%c+?) *"))
 		ParsingPipelines::parse_instruction(pipeline, mr.exp[0], tfp);
 	Regexp::dispose_of(&mr);
 	DISCARD_TEXT(T)
@@ -169,9 +169,9 @@ void ParsingPipelines::parse_line(inter_pipeline *pipeline, text_stream *instruc
 void ParsingPipelines::parse_instruction(inter_pipeline *pipeline, text_stream *T,
 	text_file_position *tfp) {
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, T, L"!%c*")) {
+	if (Regexp::match(&mr, T, U"!%c*")) {
 		;
-	} else if (Regexp::match(&mr, T, L"run pipeline (%c*)")) {
+	} else if (Regexp::match(&mr, T, U"run pipeline (%c*)")) {
 		filename *F = NULL;
 		#ifdef SUPERVISOR_MODULE
 		F = InterSkill::filename_of_pipeline(mr.exp[0], pipeline->search_list);
@@ -218,16 +218,16 @@ pipeline_step *ParsingPipelines::parse_step(inter_pipeline *pipeline, text_strea
 	match_results mr = Regexp::create_mr();
 
 	int allow_unknown = FALSE;
-	if (Regexp::match(&mr, S, L"optionally-%c+")) allow_unknown = TRUE;
+	if (Regexp::match(&mr, S, U"optionally-%c+")) allow_unknown = TRUE;
 
 	int left_arrow_used = FALSE;
-	if (Regexp::match(&mr, S,      L"(%c+?) *<- *(%c*)"))       @<Left arrow notation@>
-	else if (Regexp::match(&mr, S, L"(%c+?) (%C+) *-> *(%c*)")) @<Right arrow notation with generator@>
-	else if (Regexp::match(&mr, S, L"(%c+?) *-> *(%c*)"))       @<Right arrow notation without generator@>;
+	if (Regexp::match(&mr, S,      U"(%c+?) *<- *(%c*)"))       @<Left arrow notation@>
+	else if (Regexp::match(&mr, S, U"(%c+?) (%C+) *-> *(%c*)")) @<Right arrow notation with generator@>
+	else if (Regexp::match(&mr, S, U"(%c+?) *-> *(%c*)"))       @<Right arrow notation without generator@>;
 
-	if (Regexp::match(&mr, S,      L"(%C+?) (%d)"))             @<Tree number as argument@>
-	else if (Regexp::match(&mr, S, L"(%C+?) (%d):(%c*)"))       @<Tree number and package as arguments@>
-	else if (Regexp::match(&mr, S, L"(%C+?) (%c+)"))            @<Package as argument@>;
+	if (Regexp::match(&mr, S,      U"(%C+?) (%d)"))             @<Tree number as argument@>
+	else if (Regexp::match(&mr, S, U"(%C+?) (%d):(%c*)"))       @<Tree number and package as arguments@>
+	else if (Regexp::match(&mr, S, U"(%C+?) (%c+)"))            @<Package as argument@>;
 
 	step->step_stage = ParsingPipelines::parse_stage(S);
 	@<Make consistency checks@>;

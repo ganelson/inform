@@ -60,13 +60,13 @@ This handles the special meaning "The story is episode...".
 
 =
 int episode_number = -1; /* for a work which is part of a numbered series */
-wchar_t *series_name = NULL;
+inchar32_t *series_name = NULL;
 
 int BibliographicData::episode_number(void) {
 	return episode_number;
 }
 
-wchar_t *BibliographicData::series_name(void) {
+inchar32_t *BibliographicData::series_name(void) {
 	return series_name;
 }
 
@@ -267,7 +267,7 @@ text_stream *BibliographicData::read_uuid(void) {
 	int c;
 	while (((c = fgetc(xf)) != EOF) /* the UUID file is plain text, not Unicode */
 		&& (uuid_read++ < MAX_UUID_LENGTH-1))
-		PUT_TO(uuid_text, (int) Characters::toupper((wchar_t) c));
+		PUT_TO(uuid_text, Characters::toupper((inchar32_t) c));
 	fclose(xf);
 	return uuid_text;
 }
@@ -286,7 +286,7 @@ therefore splits into one of three independent methods.
 @d HTML_BIBTEXT_MODE 4
 
 =
-void BibliographicData::compile_bibliographic_text(OUTPUT_STREAM, wchar_t *p, int mode) {
+void BibliographicData::compile_bibliographic_text(OUTPUT_STREAM, inchar32_t *p, int mode) {
 	if (p == NULL) return;
 	if (mode == XML_BIBTEXT_MODE)
 		@<Compile bibliographic text as XML respecting Treaty of Babel rules@>;
@@ -448,7 +448,7 @@ just too short to care overmuch about this.
 				if ((p[i+1]) && (p[i+1] != '\"')) PUT('-');
 				break;
 			default: {
-				int charcode = p[i];
+				inchar32_t charcode = p[i];
 				charcode = Characters::make_filename_safe(charcode);
 				whitespace_count = 0;
 				if (charcode < 128) {

@@ -159,7 +159,7 @@ void PackageInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_li
 	inter_type type = InterTypes::unchecked();
 	text_stream *identifier = ilp->mr.exp[0];
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, identifier, L"%((%c+)%) (%c+)")) {
+	if (Regexp::match(&mr, identifier, U"%((%c+)%) (%c+)")) {
 		type = InterTypes::parse_simple(InterBookmark::scope(IBM), eloc, mr.exp[0], E);
 		identifier = mr.exp[1];
 	}

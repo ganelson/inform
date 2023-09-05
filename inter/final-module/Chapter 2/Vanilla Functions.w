@@ -62,7 +62,7 @@ writes |award_X_points_to_X|:
 void VanillaFunctions::syntax_synopsis(OUTPUT_STREAM, vanilla_function *vf) {
 	text_stream *md = vf->phrase_syntax;
 	for (int i=3, bracketed = FALSE; i<Str::len(md); i++) {
-		wchar_t c = Str::get_at(md, i);
+		inchar32_t c = Str::get_at(md, i);
 		if (bracketed) {
 			if (c == ')') bracketed = FALSE;
 		} else if (c == '(') {

@@ -78,9 +78,9 @@ source_file *TextFromFiles::feed_open_file_into_lexer(filename *F, FILE *handle,
 					break;
 			}
 			if (torn_off) {
-				PUT_TO(sf->torn_off_documentation, cr);
+				PUT_TO(sf->torn_off_documentation, (inchar32_t) cr);
 			} else {
-				PUT_TO(sf->body_text, cr);
+				PUT_TO(sf->body_text, (inchar32_t) cr);
 				Lexer::feed_triplet(last_cr, cr, next_cr);
 				torn_off = Lexer::detect_tear_off();
 			}
@@ -142,7 +142,7 @@ source_file *TextFromFiles::feed_into_lexer(filename *F, general_pointer ref) {
 @ =
 int TextFromFiles::word_count(int wc) {
 	int N = 0;
-	wchar_t *p = Lexer::word_text(wc);
+	inchar32_t *p = Lexer::word_text(wc);
 	if (*p == '"') {
 		/* inside quoted text, each run of non-whitespace counts as 1 word */
 		p++; /* skip opening quotation mark */
@@ -157,7 +157,7 @@ int TextFromFiles::word_count(int wc) {
 		/* outside quoted text, each lexer word not wholly composed of punctuation scores 1 */
 		if (Lexer::word(wc) != PARBREAK_V)
 			for (; *p != 0; p++)
-				if ((Lexer::is_punctuation(*p) == FALSE) && (*p != '|')) {
+				if ((Lexer::is_punctuation((int) *p) == FALSE) && (*p != '|')) {
 					N++;
 					break;
 				}

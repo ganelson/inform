@@ -204,7 +204,7 @@ void ConstantInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 @<Parse the type and name@> =
 	text_stream *type_text = NULL;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, name_text, L"%((%c+)%) (%c+)")) {
+	if (Regexp::match(&mr, name_text, U"%((%c+)%) (%c+)")) {
 		type_text = mr.exp[0];
 		name_text = mr.exp[1];
 	}
@@ -215,30 +215,30 @@ void ConstantInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 
 @<Tokenise the value@> =
 	match_results mr2 = Regexp::create_mr();
-	if (Regexp::match(&mr2, S, L"sum{ *(%c*?) *}")) fmt = CONST_LIST_FORMAT_SUM;
-	else if (Regexp::match(&mr2, S, L"product{ *(%c*) *}")) fmt = CONST_LIST_FORMAT_PRODUCT;
-	else if (Regexp::match(&mr2, S, L"difference{ *(%c*) *}")) fmt = CONST_LIST_FORMAT_DIFFERENCE;
-	else if (Regexp::match(&mr2, S, L"quotient{ *(%c*) *}")) fmt = CONST_LIST_FORMAT_QUOTIENT;
-	else if (Regexp::match(&mr2, S, L"grammar{ *(%c*) *}")) fmt = CONST_LIST_FORMAT_GRAMMAR;
-	else if (Regexp::match(&mr2, S, L"inline{ *(%c*) *}")) fmt = CONST_LIST_FORMAT_INLINE;
-	else if (Regexp::match(&mr2, S, L"{ *(%c*?) *}")) fmt = CONST_LIST_FORMAT_WORDS;
-	else if (Regexp::match(&mr2, S, L"bytes{ *(%c*?) *}")) fmt = CONST_LIST_FORMAT_BYTES;
-	else if (Regexp::match(&mr2, S, L"list of *(%c*?) bytes")) fmt = CONST_LIST_FORMAT_BYTES_BY_EXTENT;
-	else if (Regexp::match(&mr2, S, L"list of *(%c*?) words")) fmt = CONST_LIST_FORMAT_WORDS_BY_EXTENT;
-	else if (Regexp::match(&mr2, S, L"bounded { *(%c*?) *}")) fmt = CONST_LIST_FORMAT_B_WORDS;
-	else if (Regexp::match(&mr2, S, L"bounded bytes{ *(%c*?) *}")) fmt = CONST_LIST_FORMAT_B_BYTES;
-	else if (Regexp::match(&mr2, S, L"bounded list of *(%c*?) bytes")) fmt = CONST_LIST_FORMAT_B_BYTES_BY_EXTENT;
-	else if (Regexp::match(&mr2, S, L"bounded list of *(%c*?) words")) fmt = CONST_LIST_FORMAT_B_WORDS_BY_EXTENT;
-	else if (Regexp::match(&mr2, S, L"struct{ *(%c*?) *}")) fmt = CONST_LIST_FORMAT_STRUCT;
+	if (Regexp::match(&mr2, S, U"sum{ *(%c*?) *}")) fmt = CONST_LIST_FORMAT_SUM;
+	else if (Regexp::match(&mr2, S, U"product{ *(%c*) *}")) fmt = CONST_LIST_FORMAT_PRODUCT;
+	else if (Regexp::match(&mr2, S, U"difference{ *(%c*) *}")) fmt = CONST_LIST_FORMAT_DIFFERENCE;
+	else if (Regexp::match(&mr2, S, U"quotient{ *(%c*) *}")) fmt = CONST_LIST_FORMAT_QUOTIENT;
+	else if (Regexp::match(&mr2, S, U"grammar{ *(%c*) *}")) fmt = CONST_LIST_FORMAT_GRAMMAR;
+	else if (Regexp::match(&mr2, S, U"inline{ *(%c*) *}")) fmt = CONST_LIST_FORMAT_INLINE;
+	else if (Regexp::match(&mr2, S, U"{ *(%c*?) *}")) fmt = CONST_LIST_FORMAT_WORDS;
+	else if (Regexp::match(&mr2, S, U"bytes{ *(%c*?) *}")) fmt = CONST_LIST_FORMAT_BYTES;
+	else if (Regexp::match(&mr2, S, U"list of *(%c*?) bytes")) fmt = CONST_LIST_FORMAT_BYTES_BY_EXTENT;
+	else if (Regexp::match(&mr2, S, U"list of *(%c*?) words")) fmt = CONST_LIST_FORMAT_WORDS_BY_EXTENT;
+	else if (Regexp::match(&mr2, S, U"bounded { *(%c*?) *}")) fmt = CONST_LIST_FORMAT_B_WORDS;
+	else if (Regexp::match(&mr2, S, U"bounded bytes{ *(%c*?) *}")) fmt = CONST_LIST_FORMAT_B_BYTES;
+	else if (Regexp::match(&mr2, S, U"bounded list of *(%c*?) bytes")) fmt = CONST_LIST_FORMAT_B_BYTES_BY_EXTENT;
+	else if (Regexp::match(&mr2, S, U"bounded list of *(%c*?) words")) fmt = CONST_LIST_FORMAT_B_WORDS_BY_EXTENT;
+	else if (Regexp::match(&mr2, S, U"struct{ *(%c*?) *}")) fmt = CONST_LIST_FORMAT_STRUCT;
 	if (fmt != CONST_LIST_FORMAT_NONE) {
 		S = NULL;
 		text_stream *conts = mr2.exp[0];
 		match_results mr3 = Regexp::create_mr();
-		while (Regexp::match(&mr3, conts, L"(%c+?), *(%c+)")) {
+		while (Regexp::match(&mr3, conts, U"(%c+?), *(%c+)")) {
 			@<Add a token@>;
 			Str::copy(conts, mr3.exp[1]);
 		}
-		if (Regexp::match(&mr3, conts, L" *(%c+?) *")) @<Add a token@>;
+		if (Regexp::match(&mr3, conts, U" *(%c+?) *")) @<Add a token@>;
 		Regexp::dispose_of(&mr3);
 	}
 

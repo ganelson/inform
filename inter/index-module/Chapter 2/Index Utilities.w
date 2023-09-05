@@ -226,10 +226,10 @@ First: to print a double-quoted word into the index, without its surrounding
 quotes.
 
 =
-void IndexUtilities::dequote(OUTPUT_STREAM, wchar_t *p) {
+void IndexUtilities::dequote(OUTPUT_STREAM, inchar32_t *p) {
 	if ((p[0] == 0) || (p[1] == 0)) return;
 	for (int i=1; p[i+1]; i++) {
-		int c = p[i];
+		inchar32_t c = p[i];
 		switch(c) {
 			case '"': WRITE("&quot;"); break;
 			default: PUT_TO(OUT, c); break;

@@ -34,13 +34,13 @@ void ImperativeModule::start(void) {
 	REGISTER_WRITER('k', LocalVariables::log);
 	REGISTER_WRITER('R', ImperativeDefinitions::log_body);
 	Memory::reason_name(INV_LIST_MREASON, "lists for type-checking invocations");
-	Log::declare_aspect(DESCRIPTION_COMPILATION_DA, L"description compilation", FALSE, FALSE);
-	Log::declare_aspect(EXPRESSIONS_DA, L"expressions", FALSE, FALSE);
-	Log::declare_aspect(LOCAL_VARIABLES_DA, L"local variables", FALSE, FALSE);
-	Log::declare_aspect(PHRASE_COMPARISONS_DA, L"phrase comparisons", FALSE, FALSE);
-	Log::declare_aspect(PHRASE_COMPILATION_DA, L"phrase compilation", FALSE, FALSE);
-	Log::declare_aspect(PHRASE_CREATIONS_DA, L"phrase creations", FALSE, FALSE);
-	Log::declare_aspect(PHRASE_REGISTRATION_DA, L"phrase registration", FALSE, FALSE);
+	Log::declare_aspect(DESCRIPTION_COMPILATION_DA, U"description compilation", FALSE, FALSE);
+	Log::declare_aspect(EXPRESSIONS_DA, U"expressions", FALSE, FALSE);
+	Log::declare_aspect(LOCAL_VARIABLES_DA, U"local variables", FALSE, FALSE);
+	Log::declare_aspect(PHRASE_COMPARISONS_DA, U"phrase comparisons", FALSE, FALSE);
+	Log::declare_aspect(PHRASE_COMPILATION_DA, U"phrase compilation", FALSE, FALSE);
+	Log::declare_aspect(PHRASE_CREATIONS_DA, U"phrase creations", FALSE, FALSE);
+	Log::declare_aspect(PHRASE_REGISTRATION_DA, U"phrase registration", FALSE, FALSE);
 }
 void ImperativeModule::end(void) {
 }

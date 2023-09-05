@@ -120,7 +120,7 @@ section names are capitalised for this purpose.)
 @<Adapt the block title to the form of the title to test@> =
  	Str::copy(form_of_title_to_test, S->unlabelled_title);
  	match_results mr = Regexp::create_mr();
- 	if (Regexp::match(&mr, form_of_title_to_test, L"(%d+.)* *(%c*)")) {
+ 	if (Regexp::match(&mr, form_of_title_to_test, U"(%d+.)* *(%c*)")) {
  		Str::copy(form_of_title_to_test, mr.exp[1]); Regexp::dispose_of(&mr);
  	}
  	if (V->allocation_id == 1)
@@ -184,7 +184,7 @@ text_stream *Renderer::render_text_of_block(OUTPUT_STREAM, volume *V, section *S
  		text_stream *raw = paragraphs[i].par_texts;
   		match_results mr = Regexp::create_mr();
  		if ((indoc_settings->treat_code_as_verbatim == FALSE) &&
- 			(Regexp::match(&mr, raw, L"{%*+} *(%c*)")))
+ 			(Regexp::match(&mr, raw, U"{%*+} *(%c*)")))
  			WRITE("%S\n", mr.exp[0]);
  		else
  			WRITE("%S\n", raw);
@@ -208,7 +208,7 @@ text_stream *Renderer::render_text_of_block(OUTPUT_STREAM, volume *V, section *S
  			if (tabular_mode == FALSE) {
  				if (code_mode == FALSE) @<Enter code mode@>
  				else HTML_TAG("br");
- 				if (Regexp::match(NULL, P->par_texts, L"%c*%C\t+%C%c*"))
+ 				if (Regexp::match(NULL, P->par_texts, U"%c*%C\t+%C%c*"))
  					@<Enter tabular mode@>;
  			}
  			if (tabular_mode)
@@ -248,12 +248,12 @@ very much.
 
  	if (indoc_settings->treat_code_as_verbatim == FALSE) {
 
- 		Regexp::replace(raw, L"{%*%*}", NULL, REP_REPEATING); /* Remove any paste-continuation marker */
+ 		Regexp::replace(raw, U"{%*%*}", NULL, REP_REPEATING); /* Remove any paste-continuation marker */
 
  		@<Take note of any named inline example@>;
 
  		match_results mr = Regexp::create_mr();
- 		if (Regexp::match(&mr, raw, L"(%c*?){%*}(%c*)")) {
+ 		if (Regexp::match(&mr, raw, U"(%c*?){%*}(%c*)")) {
  			@<Convert this paste marker to a Javascript paste mechanism@>;
  			Regexp::dispose_of(&mr);
  		}
@@ -270,8 +270,8 @@ very much.
 @<Take note of any named inline example@> =
  	match_results mr = Regexp::create_mr();
  	if ((index_to_examples) &&
- 		(Regexp::match(&mr, raw, L"{%*}&quot;(%c*)&quot;%c*")) &&
- 		(Str::ne_wide_string(mr.exp[0], L"Midsummer Day"))) {
+ 		(Regexp::match(&mr, raw, U"{%*}&quot;(%c*)&quot;%c*")) &&
+ 		(Str::ne_wide_string(mr.exp[0], U"Midsummer Day"))) {
  		ExamplesIndex::add_to_alphabetic_examples_index(mr.exp[0], S, NULL, TRUE);
  		Regexp::dispose_of(&mr);
  	}
@@ -308,10 +308,10 @@ people use the blank marker |--| explicitly if they want blanks.)
 
  	TEMPORARY_TEXT(row)
  	match_results mr = Regexp::create_mr();
- 	Regexp::match(&mr, P->par_texts, L" *(%c*?) *");
+ 	Regexp::match(&mr, P->par_texts, U" *(%c*?) *");
  	Str::copy(row, mr.exp[0]); /* Strip leading and trailing space */
 
- 	while (Regexp::match(&mr, row, L"(%c*?)\t+(%c*)")) {
+ 	while (Regexp::match(&mr, row, U"(%c*?)\t+(%c*)")) {
  		WRITE("%S", mr.exp[0]); /* Place a cell division at any run of one or more tabs */
  		HTML_CLOSE("p");
  		HTML_CLOSE("td");
@@ -341,7 +341,7 @@ convert those to HTML links.
 
 @<Look for cross-references and then render@> =
  	match_results mr = Regexp::create_mr();
- 	if (Regexp::match(&mr, P->par_texts, L"%((-*)See {(%c*?)} for (%c*?).%) *")) {
+ 	if (Regexp::match(&mr, P->par_texts, U"%((-*)See {(%c*?)} for (%c*?).%) *")) {
  		if (Str::len(mr.exp[0]) == 0) {
  			Renderer::render_cross_reference(OUT, mr.exp[1], mr.exp[2], V, 0);
  		} else {
@@ -349,7 +349,7 @@ convert those to HTML links.
  			Renderer::render_cross_reference(OUT, mr.exp[1], mr.exp[2], V, 1);
  		}
  		last_xref_type = 1;
- 	} else if (Regexp::match(&mr, P->par_texts, L"%((-*)See (%c*?) for (%c*?).%) *")) {
+ 	} else if (Regexp::match(&mr, P->par_texts, U"%((-*)See (%c*?) for (%c*?).%) *")) {
  		if (Str::len(mr.exp[0]) == 0) {
  			Renderer::render_cross_reference(OUT, mr.exp[1], mr.exp[2], V, 0);
  		} else {
@@ -357,7 +357,7 @@ convert those to HTML links.
  			Renderer::render_cross_reference(OUT, mr.exp[1], mr.exp[2], V, 1);
  		}
  		last_xref_type = 1;
- 	} else if (Regexp::match(&mr, P->par_texts, L"%(See example &quot;(%c*?)&quot;%) *")) {
+ 	} else if (Regexp::match(&mr, P->par_texts, U"%(See example &quot;(%c*?)&quot;%) *")) {
  		if (last_xref_type == 1) { HTML_TAG("hr"); }
  		Renderer::render_example_cross_reference(OUT, mr.exp[0], V);
  		last_xref_type = 2;
@@ -367,7 +367,7 @@ convert those to HTML links.
 @ Blank lines are simply ignored.
 
 @<Render a non-quotation paragraph to HTML@> =
- 	if (Regexp::match(NULL, P->par_texts, L" *") == FALSE) {
+ 	if (Regexp::match(NULL, P->par_texts, U" *") == FALSE) {
  		WRITE("%S", P->par_prefix);
  		if (P->par_suppression == TRUE) {
  			WRITE("%S\n", P->par_texts);
@@ -414,7 +414,7 @@ see below.
  		if (code_example) {
  			WRITE_TO(titling, "Example - ");
  			LOOP_THROUGH_TEXT(pos, code_example->ex_public_name) {
- 				int c = Str::get(pos);
+ 				inchar32_t c = Str::get(pos);
  				if (c == '\'') WRITE_TO(titling, "\\'");
  				else PUT_TO(titling, c);
  			}
@@ -472,7 +472,7 @@ down to the last line which is included in the paste.
  		for (l=up_to; ((l<no_paras_in_block_buffer) &&
  			(paragraphs[l].par_indentation == 0)); l++) { ; }
  		if ((l<no_paras_in_block_buffer) &&
- 			(Regexp::match(NULL, paragraphs[l].par_texts, L"%c*{%*%*}%c*"))) {
+ 			(Regexp::match(NULL, paragraphs[l].par_texts, U"%c*{%*%*}%c*"))) {
  			for (l++; ((l<no_paras_in_block_buffer) &&
  				((paragraphs[l].par_indentation > 0) ||
  					(Str::len(paragraphs[l].par_texts) == 0))); l++) { ; }
@@ -493,15 +493,16 @@ down to the last line which is included in the paste.
  			Str::copy(joinbit, br);
  			DISCARD_TEXT(br)
  		}
- 		for (int k=0, L = Str::len(joinbit), prev_c = -1; k<L; k++) {
- 			int c = Str::get_at(joinbit, k);
+ 		inchar32_t prev_c = 0;
+ 		for (int k=0, L = Str::len(joinbit); k<L; k++) {
+ 			inchar32_t c = Str::get_at(joinbit, k);
  			switch (c) {
  				case '\\': WRITE_TO(J_text, "___backslash___"); break;
  				case '\'': WRITE_TO(J_text, "\\'"); break;
  				case '\t': if (prev_c != '\t') WRITE_TO(J_text, "\\t"); break;
- 				case '&': if (Str::includes_wide_string_at(joinbit, L"amp;", k+1)) k += 4;
+ 				case '&': if (Str::includes_wide_string_at(joinbit, U"amp;", k+1)) k += 4;
  					PUT_TO(J_text, c); break;
- 				case '{': if (Str::includes_wide_string_at(joinbit, L"**}", k+1)) k += 3;
+ 				case '{': if (Str::includes_wide_string_at(joinbit, U"**}", k+1)) k += 3;
  					else PUT_TO(J_text, c); break;
  				default: PUT_TO(J_text, c); break;
  			}
@@ -528,7 +529,7 @@ void Renderer::remove_paste_markers_from(text_stream *text, int i) {
 	TEMPORARY_TEXT(modified)
 	for (int j=0; j<i; j++) PUT_TO(modified, Str::get_at(text, j));
 	for (int L=Str::len(text); i<L; i++) {
-		int c = Str::get_at(text, i);
+		inchar32_t c = Str::get_at(text, i);
 		if ((c == '{') &&
 			(Str::get_at(text, i+1) == '*') &&
 			(Str::get_at(text, i+2) == '*') &&
@@ -543,7 +544,7 @@ void Renderer::remove_paste_markers_from(text_stream *text, int i) {
 void Renderer::apply_Inform_escape_characters(text_stream *text) {
 	TEMPORARY_TEXT(modified)
 	for (int i=0, L=Str::len(text); i<L; i++) {
-		int c = Str::get_at(text, i);
+		inchar32_t c = Str::get_at(text, i);
 		switch (c) {
 			case '\\':
 				c = Str::get_at(text, ++i);
@@ -558,16 +559,16 @@ void Renderer::apply_Inform_escape_characters(text_stream *text) {
 			case '<':		WRITE_TO(modified, "[=0x003C=]"); break;
 			case '>':		WRITE_TO(modified, "[=0x003E=]"); break;
 			case '_':
-				if (Str::includes_wide_string_at(text, L"__backslash___", i+1)) {
+				if (Str::includes_wide_string_at(text, U"__backslash___", i+1)) {
 					WRITE_TO(modified, "[=0x005C=]"); i+=14;
 				} else PUT_TO(modified, c);
 				break;
 			case '&':
-				if (Str::includes_wide_string_at(text, L"quot;", i+1)) {
+				if (Str::includes_wide_string_at(text, U"quot;", i+1)) {
 					WRITE_TO(modified, "[=0x0022=]"); i+=5;
-				} else if (Str::includes_wide_string_at(text, L"lt;", i+1)) {
+				} else if (Str::includes_wide_string_at(text, U"lt;", i+1)) {
 					WRITE_TO(modified, "[=0x003C=]"); i+=3;
-				} else if (Str::includes_wide_string_at(text, L"gt;", i+1)) {
+				} else if (Str::includes_wide_string_at(text, U"gt;", i+1)) {
 					WRITE_TO(modified, "[=0x003E=]"); i+=3;
 				} else {
 					WRITE_TO(modified, "[=0x0026=]");
@@ -686,7 +687,7 @@ with a |<head>| we make ourselves.
  	HTMLUtilities::get_tt_matter(top, 0, 1);
  	if (Str::len(top) > 0) {
  		match_results mr = Regexp::create_mr();
- 		if (Regexp::match(&mr, top, L"(%c*?)<title>%c*?</title>(%c*)"))
+ 		if (Regexp::match(&mr, top, U"(%c*?)<title>%c*?</title>(%c*)"))
  			WRITE("%S<title>Inform 7 - %S</title>%S", mr.exp[0], S->section_file_title, mr.exp[1]);
  		else
 	 		WRITE("%S", top);

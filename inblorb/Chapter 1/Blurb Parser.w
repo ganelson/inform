@@ -88,7 +88,7 @@ Blurb commands.
 =
 typedef struct blurb_command {
 	char *explicated; /* plain English form of the command */
-	wchar_t *prototype; /* regular expression prototype */
+	inchar32_t *prototype; /* regular expression prototype */
 	int operands; /* one of the above |*_OPS| codes */
 	int deprecated;
 } blurb_command;
@@ -104,67 +104,67 @@ but, as we shall see, has no effect.
 
 =
 blurb_command syntaxes[] = {
-	{ "author \"name\"", L"author \"(%q*)\"", T_OPS, FALSE },
+	{ "author \"name\"", U"author \"(%q*)\"", T_OPS, FALSE },
 	{ "auxiliary \"filename\" \"description\" \"subfolder\"",
-			L"auxiliary \"(%q*)\" \"(%q*)\" \"(%q*)\"", TTT_OPS, FALSE },
+			U"auxiliary \"(%q*)\" \"(%q*)\" \"(%q*)\"", TTT_OPS, FALSE },
 	{ "base64 \"filename\" to \"filename\"",
-			L"base64 \"(%q*)\" to \"(%q*)\"", TT_OPS, FALSE },
-	{ "copyright \"message\"", L"copyright \"(%q*)\"", T_OPS, FALSE },
-	{ "cover \"filename\"", L"cover \"(%q*)\"", T_OPS, FALSE },
-	{ "css", L"css", VOID_OPS, FALSE },
-	{ "data N \"filename\" type TYPE", L"data (%d+) \"(%q*)\" type (%i+)", NTT_OPS, FALSE },
-	{ "data ID \"filename\" type TYPE", L"data (%i+) \"(%q*)\" type (%i+)", TTT_OPS, FALSE },
-	{ "ifiction", L"ifiction", VOID_OPS, FALSE },
-	{ "ifiction public", L"ifiction public", VOID_OPS, FALSE },
-	{ "ifiction \"filename\" include", L"ifiction \"(%q*)\" include", T_OPS, FALSE },
+			U"base64 \"(%q*)\" to \"(%q*)\"", TT_OPS, FALSE },
+	{ "copyright \"message\"", U"copyright \"(%q*)\"", T_OPS, FALSE },
+	{ "cover \"filename\"", U"cover \"(%q*)\"", T_OPS, FALSE },
+	{ "css", U"css", VOID_OPS, FALSE },
+	{ "data N \"filename\" type TYPE", U"data (%d+) \"(%q*)\" type (%i+)", NTT_OPS, FALSE },
+	{ "data ID \"filename\" type TYPE", U"data (%i+) \"(%q*)\" type (%i+)", TTT_OPS, FALSE },
+	{ "ifiction", U"ifiction", VOID_OPS, FALSE },
+	{ "ifiction public", U"ifiction public", VOID_OPS, FALSE },
+	{ "ifiction \"filename\" include", U"ifiction \"(%q*)\" include", T_OPS, FALSE },
 	{ "interpreter \"interpreter-name\" \"vm-letter\"",
-			L"interpreter \"(%q*)\" \"([gz])\"", TT_OPS, FALSE },
-	{ "palette { details }", L"palette {(%c*?)}", T_OPS, TRUE },
-	{ "palette 16 bit", L"palette 16 bit", VOID_OPS, TRUE },
-	{ "palette 32 bit", L"palette 32 bit", VOID_OPS, TRUE },
+			U"interpreter \"(%q*)\" \"([gz])\"", TT_OPS, FALSE },
+	{ "palette { details }", U"palette {(%c*?)}", T_OPS, TRUE },
+	{ "palette 16 bit", U"palette 16 bit", VOID_OPS, TRUE },
+	{ "palette 32 bit", U"palette 32 bit", VOID_OPS, TRUE },
 	{ "picture ID \"filename\" scale ...",
-			L"picture (%i+?) \"(%q*)\" scale (%c*)", TTT_OPS, TRUE },
-	{ "picture N \"filename\"", L"picture (%d+) \"(%q*)\"", NT_OPS, FALSE },
-	{ "picture ID \"filename\"", L"picture (%i+) \"(%q*)\"", TT_OPS, FALSE },
-	{ "picture \"filename\"", L"picture \"(%q*)\"", T_OPS, FALSE },
-	{ "picture N \"filename\" \"alt-text\"", L"picture (%d+) \"(%q*)\" \"(%q*)\"", NTT_OPS, FALSE },
-	{ "placeholder [name] = \"text\"", L"placeholder %[(%C+)%] = \"(%q*)\"", TT_OPS, FALSE },
-	{ "project folder \"pathname\"", L"project folder \"(%q*)\"", T_OPS, FALSE },
-	{ "release \"text\"", L"release \"(%q*)\"", T_OPS, FALSE },
-	{ "release file \"filename\"", L"release file \"(%q*)\"", T_OPS, FALSE },
+			U"picture (%i+?) \"(%q*)\" scale (%c*)", TTT_OPS, TRUE },
+	{ "picture N \"filename\"", U"picture (%d+) \"(%q*)\"", NT_OPS, FALSE },
+	{ "picture ID \"filename\"", U"picture (%i+) \"(%q*)\"", TT_OPS, FALSE },
+	{ "picture \"filename\"", U"picture \"(%q*)\"", T_OPS, FALSE },
+	{ "picture N \"filename\" \"alt-text\"", U"picture (%d+) \"(%q*)\" \"(%q*)\"", NTT_OPS, FALSE },
+	{ "placeholder [name] = \"text\"", U"placeholder %[(%C+)%] = \"(%q*)\"", TT_OPS, FALSE },
+	{ "project folder \"pathname\"", U"project folder \"(%q*)\"", T_OPS, FALSE },
+	{ "release \"text\"", U"release \"(%q*)\"", T_OPS, FALSE },
+	{ "release file \"filename\"", U"release file \"(%q*)\"", T_OPS, FALSE },
 	{ "release file \"filename\" from \"template\"",
-			L"release file \"(%q*)\" from \"(%q*)\"", TT_OPS, FALSE },
+			U"release file \"(%q*)\" from \"(%q*)\"", TT_OPS, FALSE },
 	{ "release source \"filename\" using \"filename\" from \"template\"",
-			L"release source \"(%q*)\" using \"(%q*)\" from \"(%q*)\"", TTT_OPS, FALSE },
-	{ "release to \"pathname\"", L"release to \"(%q*)\"", T_OPS, FALSE },
-	{ "resolution NxN max NxN", L"resolution (%d+) max (%d+)", NN_OPS, TRUE },
-	{ "resolution NxN min NxN max NxN", L"resolution (%d+) min (%d+) max (%d+)", NNN_OPS, TRUE },
-	{ "resolution NxN min NxN", L"resolution (%d+) min (%d+)", NN_OPS, TRUE },
-	{ "resolution NxN", L"resolution (%d+)", N_OPS, TRUE },
-	{ "solution", L"solution", VOID_OPS, FALSE },
-	{ "solution public", L"solution public", VOID_OPS, FALSE },
-	{ "sound ID \"filename\" music", L"sound (%i+) \"(%q*)\" music", TT_OPS, TRUE },
+			U"release source \"(%q*)\" using \"(%q*)\" from \"(%q*)\"", TTT_OPS, FALSE },
+	{ "release to \"pathname\"", U"release to \"(%q*)\"", T_OPS, FALSE },
+	{ "resolution NxN max NxN", U"resolution (%d+) max (%d+)", NN_OPS, TRUE },
+	{ "resolution NxN min NxN max NxN", U"resolution (%d+) min (%d+) max (%d+)", NNN_OPS, TRUE },
+	{ "resolution NxN min NxN", U"resolution (%d+) min (%d+)", NN_OPS, TRUE },
+	{ "resolution NxN", U"resolution (%d+)", N_OPS, TRUE },
+	{ "solution", U"solution", VOID_OPS, FALSE },
+	{ "solution public", U"solution public", VOID_OPS, FALSE },
+	{ "sound ID \"filename\" music", U"sound (%i+) \"(%q*)\" music", TT_OPS, TRUE },
 	{ "sound ID \"filename\" repeat N",
-			L"sound (%i+) \"(%q*)\" repeat (%d+)", TTN_OPS, TRUE },
+			U"sound (%i+) \"(%q*)\" repeat (%d+)", TTN_OPS, TRUE },
 	{ "sound ID \"filename\" repeat forever",
-			L"sound (%i+) \"(%q*)\" repeat forever", TT_OPS, TRUE },
-	{ "sound ID \"filename\" song", L"sound (%i+) \"(%q*)\" song", TT_OPS, TRUE },
-	{ "sound N \"filename\"", L"sound (%d+) \"(%q*)\"", NT_OPS, FALSE },
-	{ "sound ID \"filename\"", L"sound (%i+) \"(%q*)\"", TT_OPS, FALSE },
-	{ "sound \"filename\"", L"sound \"(%q*)\"", T_OPS, FALSE },
-	{ "sound N \"filename\" \"alt-text\"", L"sound (%d+) \"(%q*)\" \"(%q*)\"", NTT_OPS, FALSE },
-	{ "source", L"source", VOID_OPS, FALSE },
-	{ "source public", L"source public", VOID_OPS, FALSE },
-	{ "status \"template\" \"filename\"", L"status \"(%q*)\" \"(%q*)\"", TT_OPS, FALSE },
+			U"sound (%i+) \"(%q*)\" repeat forever", TT_OPS, TRUE },
+	{ "sound ID \"filename\" song", U"sound (%i+) \"(%q*)\" song", TT_OPS, TRUE },
+	{ "sound N \"filename\"", U"sound (%d+) \"(%q*)\"", NT_OPS, FALSE },
+	{ "sound ID \"filename\"", U"sound (%i+) \"(%q*)\"", TT_OPS, FALSE },
+	{ "sound \"filename\"", U"sound \"(%q*)\"", T_OPS, FALSE },
+	{ "sound N \"filename\" \"alt-text\"", U"sound (%d+) \"(%q*)\" \"(%q*)\"", NTT_OPS, FALSE },
+	{ "source", U"source", VOID_OPS, FALSE },
+	{ "source public", U"source public", VOID_OPS, FALSE },
+	{ "status \"template\" \"filename\"", U"status \"(%q*)\" \"(%q*)\"", TT_OPS, FALSE },
 	{ "status alternative ||link to Inform documentation||",
-			L"status alternative ||(%c*)||", T_OPS, FALSE },
+			U"status alternative ||(%c*)||", T_OPS, FALSE },
 	{ "status instruction ||link to Inform source text||",
-			L"status instruction ||(%c*)||", T_OPS, FALSE },
-	{ "storyfile \"filename\" include", L"storyfile \"(%q*)\" include", T_OPS, FALSE },
-	{ "storyfile \"filename\"", L"storyfile \"(%q*)\"", T_OPS, TRUE },
-	{ "storyfile leafname \"leafname\"", L"storyfile leafname \"(%q*)\"", T_OPS, FALSE },
-	{ "template path \"folder\"", L"template path \"(%q*)\"", T_OPS, FALSE },
-	{ "website \"template\"", L"website \"(%q*)\"", T_OPS, FALSE },
+			U"status instruction ||(%c*)||", T_OPS, FALSE },
+	{ "storyfile \"filename\" include", U"storyfile \"(%q*)\" include", T_OPS, FALSE },
+	{ "storyfile \"filename\"", U"storyfile \"(%q*)\"", T_OPS, TRUE },
+	{ "storyfile leafname \"leafname\"", U"storyfile leafname \"(%q*)\"", T_OPS, FALSE },
+	{ "template path \"folder\"", U"template path \"(%q*)\"", T_OPS, FALSE },
+	{ "website \"template\"", U"website \"(%q*)\"", T_OPS, FALSE },
 	{ NULL, NULL, VOID_OPS, FALSE }
 };
 
@@ -191,7 +191,7 @@ including any blank lines.
 void Parser::interpret_line(text_stream *command, text_file_position *tf, void *state) {
 	BlorbErrors::set_error_position(tf);
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, command, L" *(%c*?) *")) Str::copy(command, mr.exp[0]);
+	if (Regexp::match(&mr, command, U" *(%c*?) *")) Str::copy(command, mr.exp[0]);
 	if (Str::len(command) == 0) return; /* thus skip a line containing only blank space */
 	if (Str::get_first_char(command) == '!') return; /* thus skip a comment line */
 
@@ -339,7 +339,7 @@ has the assumption that the cover art is image number 1 built in.
 	if (Filenames::guess_format(cover_filename) == FORMAT_PERHAPS_JPEG)
 		cover_is_in_JPEG_format = TRUE;
 	Writer::frontispiece_chunk(1);
-	if (Str::eq_wide_string(Filenames::get_leafname(cover_filename), L"DefaultCover.jpg"))
+	if (Str::eq_wide_string(Filenames::get_leafname(cover_filename), U"DefaultCover.jpg"))
 		default_cover_used = TRUE;
 	Placeholders::set_to(I"SMALLCOVER", text1, 0);
 
@@ -385,7 +385,7 @@ void Parser::qualify_placeholder(text_stream *openUrl_path, text_stream *fileUrl
 	text_stream *FU = Placeholders::read(fileUrl_path);
 	text_stream *U = Placeholders::read(original);
 	LOOP_THROUGH_TEXT(P, U) {
-		int c = Str::get(P);
+		inchar32_t c = Str::get(P);
 		if (c == ' ') {
 			if (escape_openUrl) WRITE_TO(OU, "%%2520");
 			else PUT_TO(OU, c);

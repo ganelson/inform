@@ -102,8 +102,8 @@ void SupervisorModule::start(void) {
 	Memory::reason_name(RESULTS_SORTING_MREASON, "results sorting");
 	Writers::register_writer('X', &Works::writer);
 	Writers::register_writer('J', &Languages::log);
-	Log::declare_aspect(EXTENSIONS_CENSUS_DA, L"extensions census", FALSE, FALSE);
-	Log::declare_aspect(HEADINGS_DA, L"headings", FALSE, FALSE);
+	Log::declare_aspect(EXTENSIONS_CENSUS_DA, U"extensions census", FALSE, FALSE);
+	Log::declare_aspect(HEADINGS_DA, U"headings", FALSE, FALSE);
 	Supervisor::start();
 	@<Declare the tree annotations@>;
 }

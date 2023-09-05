@@ -11,7 +11,7 @@ void CommandsElement::render(OUTPUT_STREAM, index_session *session) {
 	@<Create the entries for the command list@>;
 	linked_list *sorted = CommandsElement::sort(entries);
 
-	wchar_t head_letter = 0;
+	inchar32_t head_letter = 0;
 	command_index_entry *cie;
 	LOOP_OVER_LINKED_LIST(cie, command_index_entry, sorted) {
 		if (Str::get_first_char(cie->command_headword) != head_letter) {

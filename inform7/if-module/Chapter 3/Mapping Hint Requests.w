@@ -113,8 +113,8 @@ int MappingHints::setting(int N) {
 
 =
 <map-setting> ::=
-	<map-parameter> of <map-setting-scope> |  ==> { R[2], -, <<wchar_t:partext>> = RP[1], <<parindex>> = R[1] }
-	<map-parameter> |                         ==> { ENTIRE_MAP_SCOPE, -, <<wchar_t:partext>> = RP[1], <<parindex>> = R[1] }
+	<map-parameter> of <map-setting-scope> |  ==> { R[2], -, <<inchar32_t:partext>> = RP[1], <<parindex>> = R[1] }
+	<map-parameter> |                         ==> { ENTIRE_MAP_SCOPE, -, <<inchar32_t:partext>> = RP[1], <<parindex>> = R[1] }
 	... of <map-setting-scope>                ==> @<Issue PM_MapSettingUnknown problem@>
 
 <map-setting-scope> ::=
@@ -137,7 +137,7 @@ For now, at least, these are all in English only.
 =
 <map-parameter> internal {
 	int i;
-	wchar_t *parameter_name = Lexer::word_text(Wordings::first_wn(W));
+	inchar32_t *parameter_name = Lexer::word_text(Wordings::first_wn(W));
 	if ((Wordings::length(W) == 1) &&
 		((i = ConfigureIndexMap::get_map_variable_index_from_wchar(parameter_name))>=0)) {
 		==> { i, parameter_name };
@@ -277,10 +277,10 @@ void MappingHints::new_map_hint_sentence(parse_node *p) {
 	wording RW = GET_RW(<index-map-sentence-subject>, 1);
 	wording RESTW = GET_RW(<index-map-sentence-subject>, 2);
 	Word::dequote(Wordings::first_wn(RW));
-	wchar_t *annotation =  Lexer::word_text(Wordings::first_wn(RW));
+	inchar32_t *annotation =  Lexer::word_text(Wordings::first_wn(RW));
 	int point_size = 12; /* 12-point type */
-	wchar_t *font = L"<font>"; /* meaning the default font */
-	wchar_t *colour = L"000000"; /* black */
+	inchar32_t *font = U"<font>"; /* meaning the default font */
+	inchar32_t *colour = U"000000"; /* black */
 	int at_offset = 10001; /* the offset $(1, 1)$ */
 	instance *offset_from = NULL;
 	int i = Wordings::first_wn(RESTW);
@@ -312,7 +312,7 @@ void MappingHints::new_map_hint_sentence(parse_node *p) {
 
 @<Make a rubric colour setting@> =
 	Word::dequote(<<rcol>>);
-	wchar_t *thec = HTML::translate_colour_name(Lexer::word_text(<<rcol>>));
+	inchar32_t *thec = HTML::translate_colour_name(Lexer::word_text(<<rcol>>));
 	if (thec == NULL) {
 		StandardProblems::map_problem(_p_(PM_MapUnknownColour), p, "There's no such map colour.");
 		return;
@@ -346,7 +346,7 @@ void MappingHints::new_map_hint_sentence(parse_node *p) {
 	instance *scope_I = NULL;
 	kind *scope_k = NULL;
 	@<Determine the scope for which the parameter is being set@>;
-	wchar_t *parameter_name = <<wchar_t:partext>>;
+	inchar32_t *parameter_name = <<inchar32_t:partext>>;
 	int index_of_parameter = <<parindex>>;
 	@<Check that the value has the right type for this map parameter, and set it@>;
 
@@ -436,7 +436,7 @@ void MappingHints::new_map_hint_sentence(parse_node *p) {
 		case COL_MDT: i_wanted_a = "a colour name in double-quotes";
 			if (type_found == TEXT_MDT) {
 				Word::dequote(wn);
-				wchar_t *col = HTML::translate_colour_name(Lexer::word_text(wn));
+				inchar32_t *col = HTML::translate_colour_name(Lexer::word_text(wn));
 				if (col) {
 					MappingHints::put_mp(parameter_name, scope_level, scope_I, scope_k, col, 0);
 					return;
@@ -457,16 +457,16 @@ typedef struct mapping_hint {
 	struct instance *dir;
 	struct instance *as_dir;
 	
-	wchar_t *name;
+	inchar32_t *name;
 	int scope_level;
 	struct instance *scope_I;
-	wchar_t *put_string;
+	inchar32_t *put_string;
 	int put_integer;
 
-	wchar_t *annotation;
+	inchar32_t *annotation;
 	int point_size;
-	wchar_t *font;
-	wchar_t *colour;
+	inchar32_t *font;
+	inchar32_t *colour;
 	int at_offset;
 	struct instance *offset_from;
 	
@@ -511,8 +511,8 @@ int MappingHints::obj_in_region(instance *I, instance *reg) {
 	return MappingHints::obj_in_region(Regions::enclosing(I), reg);
 }
 
-void MappingHints::put_mp(wchar_t *name, int scope_level, instance *scope_I,
-	kind *scope_k, wchar_t *put_string, int put_integer) {
+void MappingHints::put_mp(inchar32_t *name, int scope_level, instance *scope_I,
+	kind *scope_k, inchar32_t *put_string, int put_integer) {
 	if (scope_I) {
 		if (Regions::object_is_a_region(scope_I)) {
 			instance *rm;
@@ -538,8 +538,8 @@ void MappingHints::put_mp(wchar_t *name, int scope_level, instance *scope_I,
 	hint->put_integer = put_integer;
 }
 
-void MappingHints::make_rubric(wchar_t *annotation, int point_size, wchar_t *font,
-	wchar_t *colour, int at_offset, instance *offset_from) {
+void MappingHints::make_rubric(inchar32_t *annotation, int point_size, inchar32_t *font,
+	inchar32_t *colour, int at_offset, instance *offset_from) {
 	mapping_hint *hint = MappingHints::new_hint();
 	hint->annotation = annotation;
 	hint->point_size = point_size;
@@ -564,7 +564,7 @@ int MappingHints::parse_eps_map_offset(wording W) {
 	if (Str::len(offs) >= 30) return ERRONEOUS_OFFSET_VALUE;
 	match_results mr = Regexp::create_mr();
 	int xbit = 0, ybit = 0;
-	if (Regexp::match(&mr, offs, L"(%c*?)&(%c*)")) {
+	if (Regexp::match(&mr, offs, U"(%c*?)&(%c*)")) {
 		xbit = Str::atoi(mr.exp[0], 0), ybit = Str::atoi(mr.exp[1], 0);
 		Regexp::dispose_of(&mr);
 	} else return ERRONEOUS_OFFSET_VALUE;

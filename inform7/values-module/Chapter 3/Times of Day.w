@@ -42,7 +42,7 @@ void TimesOfDay::start(void) {
 }
 
 int TimesOfDay::times_new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
-	if (Str::eq_wide_string(name, L"TIME_TY")) {
+	if (Str::eq_wide_string(name, U"TIME_TY")) {
 		K_time = new_base; return TRUE;
 	}
 	return FALSE;
@@ -101,7 +101,7 @@ the range 0 to 23, and the minutes part in the range 0 to 59.
 <digital-clock-time> internal 1 {
 	int time_minutes = 0, time_hours = 0;
 	int ratchet = 0, t, colons = 0, digits = 0;
-	wchar_t *wd = Lexer::word_text(Wordings::first_wn(W));
+	inchar32_t *wd = Lexer::word_text(Wordings::first_wn(W));
 	for (t=0; wd[t]; t++) {
 		if (((t==1) || (t==2)) && (wd[t] == ':') && (wd[t+1])) {
 			if (ratchet >= 24) { ==> { fail nonterminal }; }
@@ -109,7 +109,7 @@ the range 0 to 23, and the minutes part in the range 0 to 59.
 			ratchet = 0; digits = 0;
 			colons++;
 		} else if (Characters::isdigit(wd[t])) {
-			ratchet = 10*ratchet + (wd[t]-'0'); digits++;
+			ratchet = 10*ratchet + (int) (wd[t]-'0'); digits++;
 			if ((ratchet >= 60) || (digits > 2)) { ==> { fail nonterminal }; }
 		} else { ==> { fail nonterminal }; }
 	}
@@ -129,7 +129,7 @@ standard English grammar doesn't use this, but translators might want to.)
 <continental-clock-time> internal 1 {
 	int time_minutes = 0, time_hours = 0;
 	int ratchet = 0, t, colons = 0, digits = 0;
-	wchar_t *wd = Lexer::word_text(Wordings::first_wn(W));
+	inchar32_t *wd = Lexer::word_text(Wordings::first_wn(W));
 	for (t=0; wd[t]; t++) {
 		if (((t==1) || (t==2)) && (wd[t] == 'h') && (wd[t+1])) {
 			if (ratchet >= 24) { ==> { fail nonterminal }; }
@@ -137,7 +137,7 @@ standard English grammar doesn't use this, but translators might want to.)
 			ratchet = 0; digits = 0;
 			colons++;
 		} else if (Characters::isdigit(wd[t])) {
-			ratchet = 10*ratchet + (wd[t]-'0'); digits++;
+			ratchet = 10*ratchet + (int) (wd[t]-'0'); digits++;
 			if ((ratchet >= 60) || (digits > 2)) { ==> { fail nonterminal }; }
 		} else { ==> { fail nonterminal }; }
 	}

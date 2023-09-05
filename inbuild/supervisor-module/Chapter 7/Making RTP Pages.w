@@ -123,7 +123,7 @@ which we expand into appropriate material:
 	WRITE_TO(source, "%S", text);
 	Str::clear(text);
 
-	while (Regexp::match(&mr, source, L"(%c*?)%[(%C+)%](%c*)")) {
+	while (Regexp::match(&mr, source, U"(%c*?)%[(%C+)%](%c*)")) {
 		WRITE_TO(text, "%S", mr.exp[0]);
 		text_stream *insertion = mr.exp[1];
 		@<Insert the insertion@>;
@@ -246,13 +246,13 @@ void RTPPages::roster_helper(text_stream *text, text_file_position *tfp, void *s
 
 	match_results mr = Regexp::create_mr();
 	text_stream *token = NULL, *equivalent = NULL, *model = NULL;
-	if (Regexp::match(&mr, text, L"> *(%c*?) *: *(%C+) *--> *(%C+)")) {
+	if (Regexp::match(&mr, text, U"> *(%c*?) *: *(%C+) *--> *(%C+)")) {
 		model = mr.exp[0]; token = mr.exp[2]; equivalent = mr.exp[1];
 		@<Act on roster item@>;
-	} else if (Regexp::match(&mr, text, L"> *(%c+?) *: *(%C+)")) {
+	} else if (Regexp::match(&mr, text, U"> *(%c+?) *: *(%C+)")) {
 		model = mr.exp[0]; token = mr.exp[1]; equivalent = token;
 		@<Act on roster item@>;
-	} else if (Regexp::match(&mr, text, L"> *(%C+)")) {
+	} else if (Regexp::match(&mr, text, U"> *(%C+)")) {
 		model = NULL; token = mr.exp[0]; equivalent = token;
 		@<Act on roster item@>;
 	} else {

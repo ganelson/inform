@@ -70,7 +70,7 @@ void Coverage::which_problems_have_test_cases(void) {
 
 void Coverage::test_case_harvester(text_stream *text, text_file_position *tfp, void *state) {
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, text, L"(PM_%C+)%c*"))
+	if (Regexp::match(&mr, text, U"(PM_%C+)%c*"))
 		Coverage::observe_problem(mr.exp[0], CASE_EXISTS_PCON);
 	Regexp::dispose_of(&mr);
 }
@@ -90,7 +90,7 @@ void Coverage::which_problems_are_referenced(void) {
 
 void Coverage::xref_harvester(text_stream *text, text_file_position *tfp, void *state) {
 	match_results mr = Regexp::create_mr();
-	while (Regexp::match(&mr, text, L"(%c*)%{(PM_%C+?)%}(%c*)")) {
+	while (Regexp::match(&mr, text, U"(%c*)%{(PM_%C+?)%}(%c*)")) {
 		Coverage::observe_problem(mr.exp[1], DOC_MENTIONS_PCON);
 		Str::clear(text);
 		WRITE_TO(text, "%S%S", mr.exp[0], mr.exp[2]);
@@ -126,7 +126,7 @@ messages:
 void Coverage::existence_harvester(text_stream *text, text_file_position *tfp, void *state) {
 	filename *SF = (filename *) state;
 	match_results mr = Regexp::create_mr();
-	while (Regexp::match(&mr, text, L"(%c*?)_p_%((%c+?)%)(%c*)")) {
+	while (Regexp::match(&mr, text, U"(%c*?)_p_%((%c+?)%)(%c*)")) {
 		Str::clear(text);
 		WRITE_TO(text, "%S%S", mr.exp[0], mr.exp[2]);
 		TEMPORARY_TEXT(name)

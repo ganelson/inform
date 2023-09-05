@@ -36,7 +36,7 @@ never needed in practice, but we must avoid any risk of buffer overrun for safet
 
 =
 typedef struct i6_schema {
-	wchar_t prototype_storage[TYPICAL_I6_SCHEMA_LENGTH]; /* used just to make space for... */
+	inchar32_t prototype_storage[TYPICAL_I6_SCHEMA_LENGTH]; /* used just to make space for... */
 	struct text_stream prototype; /* ...this */
 	int no_quoted_inames;
 	#ifdef CORE_MODULE
@@ -145,7 +145,7 @@ void Calculus::Schemas::append(i6_schema *sch, char *fmt, ...) {
 	for (p = fmt; *p; p++) {
 		switch (*p) {
 			case '%': @<Recognise schema-format escape sequences@>; break;
-			default: PUT(*p); break;
+			default: PUT((inchar32_t) *p); break;
 		}
 	}
 

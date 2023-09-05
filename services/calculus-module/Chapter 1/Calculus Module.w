@@ -49,8 +49,8 @@ void CalculusModule::start(void) {
 	REGISTER_WRITER('r', UnaryPredicates::log);
 	REGISTER_WRITER('0', Terms::log);
 	REGISTER_WRITER('2', BinaryPredicates::log);
-	Log::declare_aspect(PREDICATE_CALCULUS_DA, L"predicate calculus", FALSE, FALSE);
-	Log::declare_aspect(PREDICATE_CALCULUS_WORKINGS_DA, L"predicate calculus workings", FALSE, FALSE);
+	Log::declare_aspect(PREDICATE_CALCULUS_DA, U"predicate calculus", FALSE, FALSE);
+	Log::declare_aspect(PREDICATE_CALCULUS_WORKINGS_DA, U"predicate calculus workings", FALSE, FALSE);
 	Annotations::declare_type(subject_term_ANNOT,
 		CalculusModule::write_subject_term_ANNOT);
 	KindPredicates::start();

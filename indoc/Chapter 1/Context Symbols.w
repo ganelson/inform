@@ -53,7 +53,7 @@ otherwise.
 =
 int Symbols::perform_ifdef(text_stream *cond) {
 	for (int i=0, L=Str::len(cond); i<L; i++) {
-		int c = Str::get_at(cond, i);
+		inchar32_t c = Str::get_at(cond, i);
 		if (Characters::is_whitespace(c)) {
 			Str::delete_nth_character(cond, i);
 			i--; L--;
@@ -96,7 +96,7 @@ int Symbols::perform_ifdef_inner(text_stream *cond) {
 
 @<Subexpressions can be bracketed@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, cond, L"%((%c*)%)")) {
+	if (Regexp::match(&mr, cond, U"%((%c*)%)")) {
 		int rv = Symbols::perform_ifdef(mr.exp[0]);
 		Regexp::dispose_of(&mr);
 		return rv;
@@ -132,7 +132,7 @@ int Symbols::perform_ifdef_inner(text_stream *cond) {
 
 @<The caret operator is unary and means not@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, cond, L"%^(%c*)")) {
+	if (Regexp::match(&mr, cond, U"%^(%c*)")) {
 		int rv = Symbols::perform_ifdef(mr.exp[0]);
 		Regexp::dispose_of(&mr);
 		return rv?FALSE:TRUE;
@@ -140,10 +140,10 @@ int Symbols::perform_ifdef_inner(text_stream *cond) {
 
 @<A bare symbol name is true if and only if it is declared@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, cond, L"%i+")) {
+	if (Regexp::match(&mr, cond, U"%i+")) {
 		Regexp::dispose_of(&mr);
 		text_stream *entry = Dictionaries::get_text(defined_symbols, cond);
-		if (Str::eq_wide_string(entry, L"y")) return TRUE;
+		if (Str::eq_wide_string(entry, U"y")) return TRUE;
 		return FALSE;
 	}
 
@@ -154,10 +154,10 @@ int Symbols::perform_ifdef_inner(text_stream *cond) {
 parts of the text |cond|, and looks out for mismatched brackets on the way.
 
 =
-int Symbols::find_operator(text_stream *cond, int op) {
+int Symbols::find_operator(text_stream *cond, inchar32_t op) {
 	int bl = 0;
 	for (int k = 0, L = Str::len(cond); k < L; k++) {
-		int ch = Str::get_at(cond, k);
+		inchar32_t ch = Str::get_at(cond, k);
 		if (ch == '(') bl++;
 		if (ch == ')') bl--;
  		if (bl < 0) return -2; /* Too many close brackets */

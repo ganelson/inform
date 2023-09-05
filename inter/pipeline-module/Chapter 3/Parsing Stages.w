@@ -154,29 +154,29 @@ syntaxes in use. Now those have all gone, so in all cases we issue an error:
 =
 void ParsingStages::receive_command(OUTPUT_STREAM, text_stream *command,
 	text_stream *argument, simple_tangle_docket *docket) {
-	if ((Str::eq_wide_string(command, L"plugin")) ||
-		(Str::eq_wide_string(command, L"type")) ||
-		(Str::eq_wide_string(command, L"open-file")) ||
-		(Str::eq_wide_string(command, L"close-file")) ||
-		(Str::eq_wide_string(command, L"lines")) ||
-		(Str::eq_wide_string(command, L"endlines")) ||
-		(Str::eq_wide_string(command, L"open-index")) ||
-		(Str::eq_wide_string(command, L"close-index")) ||
-		(Str::eq_wide_string(command, L"index-page")) ||
-		(Str::eq_wide_string(command, L"index-element")) ||
-		(Str::eq_wide_string(command, L"index")) ||
-		(Str::eq_wide_string(command, L"log")) ||
-		(Str::eq_wide_string(command, L"log-phase")) ||
-		(Str::eq_wide_string(command, L"progress-stage")) ||
-		(Str::eq_wide_string(command, L"counter")) ||
-		(Str::eq_wide_string(command, L"value")) ||
-		(Str::eq_wide_string(command, L"read-assertions")) ||
-		(Str::eq_wide_string(command, L"callv")) ||
-		(Str::eq_wide_string(command, L"call")) ||
-		(Str::eq_wide_string(command, L"array")) ||
-		(Str::eq_wide_string(command, L"marker")) ||
-		(Str::eq_wide_string(command, L"testing-routine")) ||
-		(Str::eq_wide_string(command, L"testing-command"))) {
+	if ((Str::eq_wide_string(command, U"plugin")) ||
+		(Str::eq_wide_string(command, U"type")) ||
+		(Str::eq_wide_string(command, U"open-file")) ||
+		(Str::eq_wide_string(command, U"close-file")) ||
+		(Str::eq_wide_string(command, U"lines")) ||
+		(Str::eq_wide_string(command, U"endlines")) ||
+		(Str::eq_wide_string(command, U"open-index")) ||
+		(Str::eq_wide_string(command, U"close-index")) ||
+		(Str::eq_wide_string(command, U"index-page")) ||
+		(Str::eq_wide_string(command, U"index-element")) ||
+		(Str::eq_wide_string(command, U"index")) ||
+		(Str::eq_wide_string(command, U"log")) ||
+		(Str::eq_wide_string(command, U"log-phase")) ||
+		(Str::eq_wide_string(command, U"progress-stage")) ||
+		(Str::eq_wide_string(command, U"counter")) ||
+		(Str::eq_wide_string(command, U"value")) ||
+		(Str::eq_wide_string(command, U"read-assertions")) ||
+		(Str::eq_wide_string(command, U"callv")) ||
+		(Str::eq_wide_string(command, U"call")) ||
+		(Str::eq_wide_string(command, U"array")) ||
+		(Str::eq_wide_string(command, U"marker")) ||
+		(Str::eq_wide_string(command, U"testing-routine")) ||
+		(Str::eq_wide_string(command, U"testing-command"))) {
 		LOG("command: <%S> argument: <%S>\n", command, argument);
 		(*(docket->error_callback))(
 			"the template command '{-%S}' has been withdrawn in this version of Inform",
@@ -243,14 +243,14 @@ void ParsingStages::receive_raw(text_stream *S, simple_tangle_docket *docket) {
 	rpi_docket_state *state = (rpi_docket_state *) docket->state;
 	int lc = Provenance::get_line(state->provenance);
 	for (int pos = 0; pos < Str::len(S); pos++) {
-		wchar_t c = Str::get_at(S, pos);
+		inchar32_t c = Str::get_at(S, pos);
 		if ((c == 10) || (c == 13)) { c = '\n'; lc++; }
 		if ((c == '!') && (Str::includes_at(S, pos, I"! LINEMARKER "))) {
 			text_stream *file_text = Str::new();
 			TEMPORARY_TEXT(number_text)
 			int in_number = TRUE;
 			for (pos = pos + 13; pos < Str::len(S); pos++) {
-				wchar_t c = Str::get_at(S, pos);
+				inchar32_t c = Str::get_at(S, pos);
 				if ((c == 10) || (c == 13)) break;
 				if ((c == ' ') && (in_number)) { in_number = FALSE; continue; }
 				if (in_number) PUT_TO(number_text, c);
@@ -361,9 +361,9 @@ the directive type as 0.
 
 @<Find directive@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, R, L" *(%[) *(%c*);%c*")) {
+	if (Regexp::match(&mr, R, U" *(%[) *(%c*);%c*")) {
 		I6_dir = ROUTINE_PLM;
-	} else if (Regexp::match(&mr, R, L" *#*(%C+) *(%c*);%c*")) {
+	} else if (Regexp::match(&mr, R, U" *#*(%C+) *(%c*);%c*")) {
 		     if (Str::eq_insensitive(mr.exp[0], I"Ifdef"))      I6_dir = IFDEF_PLM;
 		else if (Str::eq_insensitive(mr.exp[0], I"Ifndef"))     I6_dir = IFNDEF_PLM;
 		else if (Str::eq_insensitive(mr.exp[0], I"Iftrue"))     I6_dir = IFTRUE_PLM;
@@ -456,7 +456,7 @@ apply to any directive.
 @<Vet the new namespace name@> =
 	int bad_name = FALSE;
 	for (int i=0; i<Str::len(state->namespace); i++) {
-		wchar_t c = Str::get_at(state->namespace, i);
+		inchar32_t c = Str::get_at(state->namespace, i);
 		if (i == 0) {
 			if (Characters::isalpha(c) == FALSE) bad_name = TRUE;
 		} else {

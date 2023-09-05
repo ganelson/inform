@@ -122,7 +122,7 @@ meet the many demands made of them" (Richard Guy).
 as provided for by this lookup array:
 
 =
-char *pcalc_vars = "xyzabcdefghijklmnopqrstuvw";
+inchar32_t *pcalc_vars = U"xyzabcdefghijklmnopqrstuvw";
 
 @h Underlying terms.
 Routines to see if a term is a constant $C$, or if it is a chain of functions

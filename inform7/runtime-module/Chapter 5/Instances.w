@@ -368,13 +368,13 @@ South" comes out as "QS".
 		LOOP_THROUGH_WORDING(i, W) {
 			if ((i > Wordings::first_wn(W)) && (i < Wordings::last_wn(W)) &&
 				(<map-name-abbreviation-omission-words>(Wordings::one_word(i)))) continue;
-			wchar_t *p = Lexer::word_raw_text(i);
+			inchar32_t *p = Lexer::word_raw_text(i);
 			if (c++ < ABBREV_ROOMS_TO) PUT_TO(abbrev, Characters::toupper(p[0]));
 		}
 		LOOP_THROUGH_WORDING(i, W) {
 			if ((i > Wordings::first_wn(W)) && (i < Wordings::last_wn(W)) &&
 				(<map-name-abbreviation-omission-words>(Wordings::one_word(i)))) continue;
-			wchar_t *p = Lexer::word_raw_text(i);
+			inchar32_t *p = Lexer::word_raw_text(i);
 			for (int j=1; p[j]; j++)
 				if (Characters::vowel(p[j]) == FALSE)
 					if (c++ < ABBREV_ROOMS_TO) PUT_TO(abbrev, p[j]);

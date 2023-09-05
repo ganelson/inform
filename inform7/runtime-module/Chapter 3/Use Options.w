@@ -462,17 +462,17 @@ int  RTUseOptions::handle_deprecated_definition(text_stream *UO, int active, int
 	int rv = FALSE;
 	inter_ti val = 0; text_stream *identifier = NULL;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, UO, L" *Constant (%C+) *; *")) {
+	if (Regexp::match(&mr, UO, U" *Constant (%C+) *; *")) {
 		identifier = mr.exp[0];
-	} else if (Regexp::match(&mr, UO, L" *Constant (%C+) *= *(%d+) *; *")) {
+	} else if (Regexp::match(&mr, UO, U" *Constant (%C+) *= *(%d+) *; *")) {
 		identifier = mr.exp[0]; val = (inter_ti) Str::atoi(mr.exp[1], 0);
-	} else if (Regexp::match(&mr, UO, L" *Constant (%C+) *= *{N} *; *")) {
+	} else if (Regexp::match(&mr, UO, U" *Constant (%C+) *= *{N} *; *")) {
 		identifier = mr.exp[0]; val = (inter_ti) N;
-	} else if (Regexp::match(&mr, UO, L" *Constant (%C+) *= *{N} *%+ *(%d+) *; *")) {
+	} else if (Regexp::match(&mr, UO, U" *Constant (%C+) *= *{N} *%+ *(%d+) *; *")) {
 		identifier = mr.exp[0];
 		val = (inter_ti) (N + Str::atoi(mr.exp[1], 0));
-	} else if ((Regexp::match(&mr, UO, L" *Constant (%C+) *= *{N} *%* *(%d+) *; *")) ||
-			(Regexp::match(&mr, UO, L" *Constant (%C+) *= *(%d+) *%* *{N} *; *"))) {
+	} else if ((Regexp::match(&mr, UO, U" *Constant (%C+) *= *{N} *%* *(%d+) *; *")) ||
+			(Regexp::match(&mr, UO, U" *Constant (%C+) *= *(%d+) *%* *{N} *; *"))) {
 		identifier = mr.exp[0];
 		val = (inter_ti) (N * Str::atoi(mr.exp[1], 0));
 	}

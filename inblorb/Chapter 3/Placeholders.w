@@ -177,7 +177,7 @@ within an HTML paragraph.
 @<Copy an ordinary unreserved placeholder@> =
 	int L = Str::len(wv->pl_contents);
 	for (int i=0; i<L; i++) {
-		int c = Str::get_at(wv->pl_contents, i);
+		inchar32_t c = Str::get_at(wv->pl_contents, i);
 		if ((c == '<') &&
 			(Str::get_at(wv->pl_contents, i+1) == 'b') &&
 			(Str::get_at(wv->pl_contents, i+2) == 'r') &&
@@ -189,7 +189,7 @@ within an HTML paragraph.
 			TEMPORARY_TEXT(inner_name)
 			int expanded = FALSE;
 			for (int j = i+1; j<L; j++) {
-				int c = Str::get_at(wv->pl_contents, j);
+				inchar32_t c = Str::get_at(wv->pl_contents, j);
 				if ((c == '[') || (c == ' ')) break;
 				if (c == ']') {
 					i = j;

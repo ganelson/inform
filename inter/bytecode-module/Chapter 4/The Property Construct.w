@@ -65,7 +65,7 @@ void PropertyInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 	inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	text_stream *type_text = NULL, *name_text = ilp->mr.exp[0];
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, name_text, L"%((%c+)%) (%c+)")) {
+	if (Regexp::match(&mr, name_text, U"%((%c+)%) (%c+)")) {
 		type_text = mr.exp[0]; name_text = mr.exp[1];
 	}
 	inter_symbols_table *scope = InterBookmark::scope(IBM);

@@ -83,7 +83,7 @@ If the text contains syntax errors, these are attached to the schema returned;
 so it's the caller's responsibility to check for those and act accordingly.
 
 =
-void ParsingSchemas::from_inline_phrase_definition(wchar_t *from, inter_schema **head,
+void ParsingSchemas::from_inline_phrase_definition(inchar32_t *from, inter_schema **head,
 	inter_schema **tail, text_provenance provenance) {
 	*head = NULL; *tail = NULL;
 
@@ -135,7 +135,7 @@ and then this will work as might be hoped:
 	Str::truncate(head_defn, effective_end);
 
 	for (int i=0, L=Str::len(head_defn); i<L; i++)
-		if (Str::includes_wide_string_at(head_defn, L"{-block}", i)) {
+		if (Str::includes_wide_string_at(head_defn, U"{-block}", i)) {
 			int after = i+8, before = i;
 			while (Characters::is_whitespace(Str::get_at(head_defn, after))) after++;
 			while (Characters::is_whitespace(Str::get_at(head_defn, before-1))) before--;
@@ -155,7 +155,7 @@ inter_schema *ParsingSchemas::back_end(text_stream *from, int abbreviated,
 		LOG("\n\n------------\nCompiling inter schema from: <%S>\n", from);
 
 	int pos = 0;
-	if ((abbreviated) && (Str::begins_with_wide_string(from, L"*=-"))) {
+	if ((abbreviated) && (Str::begins_with_wide_string(from, U"*=-"))) {
 		sch->dereference_mode = TRUE; pos = 3;
 	}
 	Tokenisation::go(sch, from, pos, abbreviated, no_quoted_inames, quoted_inames);

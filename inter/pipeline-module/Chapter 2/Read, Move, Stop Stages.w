@@ -25,7 +25,7 @@ int SimpleStages::run_read_stage(pipeline_step *step) {
 int SimpleStages::run_move_stage(pipeline_step *step) {
 	match_results mr = Regexp::create_mr();
 	inter_package *pack = NULL;
-	if (Regexp::match(&mr, step->step_argument, L"(%d):(%c+)")) {
+	if (Regexp::match(&mr, step->step_argument, U"(%d):(%c+)")) {
 		int from_rep = Str::atoi(mr.exp[0], 0);
 		if (step->ephemera.pipeline->ephemera.trees[from_rep] == NULL) {
 			PipelineErrors::error_with(step, "there is no Inter tree in slot %S", mr.exp[0]);

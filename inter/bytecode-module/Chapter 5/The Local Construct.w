@@ -53,7 +53,7 @@ void LocalInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line
 	text_stream *type_text = NULL, *name_text = ilp->mr.exp[0];
 	inter_symbol *variable_s = NULL;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, name_text, L"%((%c+)%) (%c+)")) {
+	if (Regexp::match(&mr, name_text, U"%((%c+)%) (%c+)")) {
 		type_text = mr.exp[0]; name_text = mr.exp[1];
 	}
 	inter_symbols_table *T = InterBookmark::scope(IBM);

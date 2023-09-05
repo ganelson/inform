@@ -633,10 +633,10 @@ expression |[A-Za-z]?{1,8}\d?{0,2}|.
 =
 int Equations::equation_symbol_legal(wording W) {
 	if (Wordings::length(W) == 1) {
-		wchar_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
+		inchar32_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
 		int j, letters = 0, digits = 0, name_legal = TRUE;
 		for (j=0; p[j]; j++) {
-			wchar_t c = p[j];
+			inchar32_t c = p[j];
 			if (Characters::isdigit(c)) digits++;
 			else if (Characters::isalpha(c)) { letters++; if (digits > 0) name_legal = FALSE; }
 			else name_legal = FALSE;
@@ -755,7 +755,7 @@ equation_node *Equations::eqn_parse(equation *eqn) {
 	int enode_count = 0; /* number of tokens shipped so far */
 	int bl = 0; /* bracket nesting level */
 
-	int wn = Wordings::first_wn(W), i = 0; wchar_t *p = NULL;
+	int wn = Wordings::first_wn(W), i = 0; inchar32_t *p = NULL;
 	while ((wn <= Wordings::last_wn(W)) || (p)) {
 		if (p == NULL) { i = 0; p = Lexer::word_raw_text(wn++); }
 		/* we are now at character |i| in string |p|, while |wn| is the next word */
@@ -782,7 +782,7 @@ equation_node *Equations::eqn_parse(equation *eqn) {
 @ Note that symbol names can't begin with a digit.
 
 @<Break off a token from the current position@> =
-	wchar_t c = p[i];
+	inchar32_t c = p[i];
 	if (Characters::isalpha(c)) @<Break off a symbol name as a token@>
 	else if (Characters::isdigit(c)) @<Break off a numeric constant as a token@>
 	else @<Break off an operator or a piece of punctuation as a token@>;
@@ -891,7 +891,7 @@ capacity; and so is the number 0 itself.
 		case ')': token = Equations::enode_new(CLOSE_BRACKET_EQN); bl--; break;
 		default: {
 			TEMPORARY_TEXT(symbol)
-			PUT_TO(symbol, (int) c);
+			PUT_TO(symbol, c);
 			StandardProblems::equation_problem_S(_p_(PM_EquationOperatorUnrecognised), eqn, symbol,
 				"the symbol '%3' is one that I don't recognise. I was "
 				"expecting an arithmetic sign, '+', '-', '*','/', or '^', "

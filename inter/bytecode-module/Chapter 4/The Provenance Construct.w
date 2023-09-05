@@ -100,7 +100,7 @@ void ProvenanceInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 	inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	text_stream *textual = ilp->mr.exp[0];
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, textual, L"@(%C+) (%d+)")) {
+	if (Regexp::match(&mr, textual, U"@(%C+) (%d+)")) {
 		inter_tree *I = InterBookmark::tree(IBM);
 		inter_symbol *origin =
 			InterSymbolsTable::symbol_from_name(InterTree::global_scope(I), mr.exp[0]);

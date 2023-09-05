@@ -408,7 +408,7 @@ to sentences like:
 void Properties::translates(wording W, parse_node *p2) {
 	property *prn = NULL;
 	if (<property-name>(W)) prn = <<rp>>;
-	wchar_t *text = Lexer::word_text(Wordings::first_wn(Node::get_text(p2)));
+	inchar32_t *text = Lexer::word_text(Wordings::first_wn(Node::get_text(p2)));
 
 	@<Make sure this is a genuine property@>;
 	@<Make sure this is a previously untranslated property@>;
@@ -581,7 +581,7 @@ defined in a kit of Inter code, and "P translates into Inter as N" will
 arrange for that. Such translations can be done with one of two functions:
 
 =
-void Properties::set_translation(property *prn, wchar_t *t) {
+void Properties::set_translation(property *prn, inchar32_t *t) {
 	if (prn == NULL) internal_error("translation set for null property");
 	if ((Properties::is_either_or(prn)) && (prn->compilation_data.store_in_negation)) {
 		Properties::set_translation(EitherOrProperties::get_negation(prn), t);
@@ -607,9 +607,9 @@ void Properties::set_translation_from_text(property *prn, text_stream *t) {
 	RTProperties::iname(prn);
 	TEMPORARY_TEXT(T)
 	LOOP_THROUGH_TEXT(pos, t) {
-		wchar_t c = Str::get(pos);
-		if ((isalpha(c)) || (Characters::isdigit(c)) || (c == '_'))
-			PUT_TO(T, (int) c);
+		inchar32_t c = Str::get(pos);
+		if ((Characters::isalpha(c)) || (Characters::isdigit(c)) || (c == '_'))
+			PUT_TO(T, c);
 		else
 			PUT_TO(T, '_');
 	}

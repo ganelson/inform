@@ -180,7 +180,7 @@ Inform kits use this only to test |#Iftrue WORDSIZE == 4| or |#Iftrue WORDSIZE =
 	int result = NOT_APPLICABLE;
 	text_stream *cond = ident;
 	match_results mr2 = Regexp::create_mr();
-	if (Regexp::match(&mr2, cond, L" *(%C+?) *== *(%d+) *")) {
+	if (Regexp::match(&mr2, cond, U" *(%C+?) *== *(%d+) *")) {
 		text_stream *identifier = mr2.exp[0];
 		@<Throw an error for what looks like a configuration identifier@>;
 		inter_symbol *symbol = LargeScale::architectural_symbol(I, identifier);
@@ -190,7 +190,7 @@ Inform kits use this only to test |#Iftrue WORDSIZE == 4| or |#Iftrue WORDSIZE =
 			if ((V >= 0) && (V == W)) result = TRUE; else result = FALSE;
 		}
 	}
-	if (Regexp::match(&mr2, cond, L" *(%C+?) *>= *(%d+) *")) {
+	if (Regexp::match(&mr2, cond, U" *(%C+?) *>= *(%d+) *")) {
 		text_stream *identifier = mr2.exp[0];
 		@<Throw an error for what looks like a configuration identifier@>;
 		inter_symbol *symbol = LargeScale::architectural_symbol(I, identifier);
@@ -200,7 +200,7 @@ Inform kits use this only to test |#Iftrue WORDSIZE == 4| or |#Iftrue WORDSIZE =
 			if ((V >= 0) && (V >= W)) result = TRUE; else result = FALSE;
 		}
 	}
-	if (Regexp::match(&mr2, cond, L" *(%C+?) *> *(%d+) *")) {
+	if (Regexp::match(&mr2, cond, U" *(%C+?) *> *(%d+) *")) {
 		text_stream *identifier = mr2.exp[0];
 		@<Throw an error for what looks like a configuration identifier@>;
 		inter_symbol *symbol = LargeScale::architectural_symbol(I, identifier);
@@ -210,7 +210,7 @@ Inform kits use this only to test |#Iftrue WORDSIZE == 4| or |#Iftrue WORDSIZE =
 			if ((V >= 0) && (V > W)) result = TRUE; else result = FALSE;
 		}
 	}
-	if (Regexp::match(&mr2, cond, L" *(%C+?) *<= *(%d+) *")) {
+	if (Regexp::match(&mr2, cond, U" *(%C+?) *<= *(%d+) *")) {
 		text_stream *identifier = mr2.exp[0];
 		@<Throw an error for what looks like a configuration identifier@>;
 		inter_symbol *symbol = LargeScale::architectural_symbol(I, identifier);
@@ -220,7 +220,7 @@ Inform kits use this only to test |#Iftrue WORDSIZE == 4| or |#Iftrue WORDSIZE =
 			if ((V >= 0) && (V <= W)) result = TRUE; else result = FALSE;
 		}
 	}
-	if (Regexp::match(&mr2, cond, L" *(%C+?) *< *(%d+) *")) {
+	if (Regexp::match(&mr2, cond, U" *(%C+?) *< *(%d+) *")) {
 		text_stream *identifier = mr2.exp[0];
 		@<Throw an error for what looks like a configuration identifier@>;
 		inter_symbol *symbol = LargeScale::architectural_symbol(I, identifier);
@@ -291,7 +291,7 @@ token of |#Iftrue FROG == 2| is |FROG|; the "rest of text" is |FROG == 2|.
 @<Extract second token into ident@> =
 	int tcount = 0;
 	LOOP_THROUGH_TEXT(pos, S) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if ((c == ' ') || (c == '\t') || (c == '\n')) {
 			if (tcount == 1) tcount = 2;
 			else if (tcount == 2) break;
@@ -305,7 +305,7 @@ token of |#Iftrue FROG == 2| is |FROG|; the "rest of text" is |FROG == 2|.
 @<Extract rest of text into ident@> =
 	int tcount = 0;
 	LOOP_THROUGH_TEXT(pos, S) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if ((c == ' ') || (c == '\t') || (c == '\n')) {
 			if (tcount == 1) tcount = 2;
 		} else {

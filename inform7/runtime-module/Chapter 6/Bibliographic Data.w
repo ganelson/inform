@@ -38,7 +38,7 @@ void RTBibliographicData::compile_constants(void) {
 		Emit::initial_value_as_raw_text(Hierarchy::find(STORY_MD_HL),
 			story_title_VAR);
 	} else {
-		Emit::text_constant_from_wide_string(iname, L"\"Welcome\"");
+		Emit::text_constant_from_wide_string(iname, U"\"Welcome\"");
 		Emit::text_constant(Hierarchy::find(STORY_MD_HL), I"Untitled");
 	}
 	Hierarchy::make_available(iname);
@@ -53,7 +53,7 @@ void RTBibliographicData::compile_constants(void) {
 		Emit::initial_value_as_raw_text(Hierarchy::find(HEADLINE_MD_HL),
 			story_headline_VAR);
 	} else {
-		Emit::text_constant_from_wide_string(iname, L"\"An Interactive Fiction\"");
+		Emit::text_constant_from_wide_string(iname, U"\"An Interactive Fiction\"");
 		Emit::text_constant(Hierarchy::find(HEADLINE_MD_HL), I"An Interactive Fiction");
 	}
 	Hierarchy::make_available(iname);

@@ -56,7 +56,7 @@ The app can therefore assume that none of these problematic characters occur
 in raw form in the argument to |pasteCode|.
 
 =
-void PasteButtons::put_code_char(OUTPUT_STREAM, int c) {
+void PasteButtons::put_code_char(OUTPUT_STREAM, inchar32_t c) {
 	switch(c) {
 		case '\t': WRITE("[=0x0009=]"); return;
 		case '\n': case NEWLINE_IN_STRING: WRITE("[=0x000A=]"); return;
@@ -160,7 +160,7 @@ stops or more.
 	int close_I6_position = -1;
 	for (i=from; i<=to; i++) {
 		int j;
-		wchar_t *p = Lexer::word_raw_text(i);
+		inchar32_t *p = Lexer::word_raw_text(i);
 		if (Lexer::word(i) == PARBREAK_V) { /* marker for a paragraph break */
 			PasteButtons::put_code_char(OUT, '\n');
 			PasteButtons::put_code_char(OUT, '\n');
@@ -195,7 +195,7 @@ But we want to restore the more natural spacing.
 
 @<Restore inter-word spaces unless this would be unnatural@> =
 	if ((i>from)
-		&& ((p[1] != 0) || (Lexer::is_punctuation(p[0]) == FALSE) ||
+		&& ((p[1] != 0) || (Lexer::is_punctuation((int) p[0]) == FALSE) ||
 			(p[0] == '(') || (p[0] == '{') || (p[0] == '}'))
 		&& (compare_word(i-1, OPENBRACKET_V)==FALSE))
 		PasteButtons::put_code_char(OUT, ' ');

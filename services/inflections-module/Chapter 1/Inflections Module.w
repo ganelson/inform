@@ -29,9 +29,9 @@ DECLARE_CLASS(verb_conjugation)
 =
 void InflectionsModule::start(void) {
 	Log::declare_aspect(CONSTRUCTED_PAST_PARTICIPLES_DA,
-		L"constructed past participles", FALSE, FALSE);
+		U"constructed past participles", FALSE, FALSE);
 	Log::declare_aspect(CONSTRUCTED_PLURALS_DA,
-		L"constructed plurals", FALSE, FALSE);
+		U"constructed plurals", FALSE, FALSE);
 }
 void InflectionsModule::end(void) {
 }

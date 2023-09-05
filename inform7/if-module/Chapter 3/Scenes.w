@@ -46,7 +46,7 @@ kind *K_scene = NULL;
 
 @ =
 int Scenes::new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
-	if (Str::eq_wide_string(name, L"SCENE_TY")) {
+	if (Str::eq_wide_string(name, U"SCENE_TY")) {
 		K_scene = new_base; return TRUE;
 	}
 	return FALSE;
@@ -273,17 +273,17 @@ ends merrily" and "when the Banquet Entertainment ends merrily".
 	wording NW = Instances::get_name(sc->as_instance, FALSE);
 
 	feed_t id = Feeds::begin();
-	Feeds::feed_C_string_expanding_strings(L"when");
+	Feeds::feed_C_string_expanding_strings(U"when");
 	Feeds::feed_wording(NW);
-	Feeds::feed_C_string_expanding_strings((end==0)?L"begins":L"ends");
+	Feeds::feed_C_string_expanding_strings((end==0)?U"begins":U"ends");
 	if (end >= 2) Feeds::feed_wording(sc->ends[end].end_names);
 	RW = Feeds::end(id);
 
 	id = Feeds::begin();
-	Feeds::feed_C_string_expanding_strings(L"when the");
+	Feeds::feed_C_string_expanding_strings(U"when the");
 	NW = Instances::get_name(sc->as_instance, FALSE);
 	Feeds::feed_wording(NW);
-	Feeds::feed_C_string_expanding_strings((end==0)?L"begins":L"ends");
+	Feeds::feed_C_string_expanding_strings((end==0)?U"begins":U"ends");
 	if (end >= 2) Feeds::feed_wording(sc->ends[end].end_names);
 	AW = Feeds::end(id);
 
@@ -292,9 +292,9 @@ ends merrily" and "when the Banquet Entertainment ends merrily".
 
 	TEMPORARY_TEXT(i6_code)
 	feed_t id = Feeds::begin();
-	Feeds::feed_C_string_expanding_strings(L"To decide if (S - ");
+	Feeds::feed_C_string_expanding_strings(U"To decide if (S - ");
 	Feeds::feed_wording(NW);
-	Feeds::feed_C_string_expanding_strings(L") ended ");
+	Feeds::feed_C_string_expanding_strings(U") ended ");
 	Feeds::feed_wording(sc->ends[end].end_names);
 	Sentences::make_node(Task::syntax_tree(), Feeds::end(id), ':');
 
@@ -306,9 +306,9 @@ ends merrily" and "when the Banquet Entertainment ends merrily".
 	Sentences::make_node(Task::syntax_tree(), Feeds::end(id), '.');
 
 	id = Feeds::begin();
-	Feeds::feed_C_string_expanding_strings(L"To decide if (S - ");
+	Feeds::feed_C_string_expanding_strings(U"To decide if (S - ");
 	Feeds::feed_wording(NW);
-	Feeds::feed_C_string_expanding_strings(L") did not end ");
+	Feeds::feed_C_string_expanding_strings(U") did not end ");
 	Feeds::feed_wording(sc->ends[end].end_names);
 	Sentences::make_node(Task::syntax_tree(), Feeds::end(id), ':');
 

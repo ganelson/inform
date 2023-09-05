@@ -22,8 +22,8 @@ void RuntimeModule::start(void) {
 	Memory::reason_name(EMIT_ARRAY_MREASON, "emitter array storage");
 	Memory::reason_name(PARTITION_MREASON, "initial state for relations in groups");
 	Memory::reason_name(RELATION_CONSTRUCTION_MREASON, "relation bitmap storage");
-	Log::declare_aspect(HIERARCHY_DA, L"inter hierarchy", FALSE, FALSE);
-	Log::declare_aspect(USE_OPTIONS_DA, L"use options", FALSE, FALSE);
+	Log::declare_aspect(HIERARCHY_DA, U"inter hierarchy", FALSE, FALSE);
+	Log::declare_aspect(USE_OPTIONS_DA, U"use options", FALSE, FALSE);
 }
 void RuntimeModule::end(void) {
 }

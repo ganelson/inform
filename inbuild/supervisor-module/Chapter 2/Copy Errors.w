@@ -41,7 +41,7 @@ typedef struct copy_error {
 	struct parse_node *details_node2;
 	struct inbuild_work *details_work;
 	struct inbuild_work *details_work2;
-	wchar_t *details_word;
+	inchar32_t *details_word;
 
 	CLASS_DEFINITION
 } copy_error;
@@ -84,7 +84,7 @@ copy_error *CopyErrors::new_F(int cat, int subcat, filename *F) {
 	return CE;
 }
 
-copy_error *CopyErrors::new_WT(int cat, int subcat, wchar_t *details_word, text_stream *NB) {
+copy_error *CopyErrors::new_WT(int cat, int subcat, inchar32_t *details_word, text_stream *NB) {
 	copy_error *CE = CopyErrors::new(cat, subcat);
 	CE->details_word = details_word;
 	CE->details = Str::duplicate(NB);

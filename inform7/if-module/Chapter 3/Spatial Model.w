@@ -219,7 +219,7 @@ int Spatial::new_property_notify(property *prn) {
 			case 1: P_wearable = prn; break;
 			case 2: P_fixed_in_place = prn; break;
 			case 3: P_matching_key = prn;
-				Properties::set_translation(P_matching_key, L"with_key");
+				Properties::set_translation(P_matching_key, U"with_key");
 				break;
 		}
 	}

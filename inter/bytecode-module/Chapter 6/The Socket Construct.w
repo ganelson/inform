@@ -40,10 +40,10 @@ void SocketInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 
 	text_stream *equate_name = NULL;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, equate_text, L"~~> \"(%C+)\"")) {
+	if (Regexp::match(&mr, equate_text, U"~~> \"(%C+)\"")) {
 		*E = InterErrors::plain(I"a socket cannot wire to a name", eloc);
 		return;
-	} else if (Regexp::match(&mr, equate_text, L"~~> (%C+)")) {
+	} else if (Regexp::match(&mr, equate_text, U"~~> (%C+)")) {
 		equate_name = mr.exp[0];
 	} else {
 		Regexp::dispose_of(&mr);

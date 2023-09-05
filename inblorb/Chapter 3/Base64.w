@@ -18,7 +18,7 @@ RFC 1113 permits white space to be used freely, including in particular
 line breaks, but we don't avail ourselves.
 
 =
-char *RFC1113_table = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+inchar32_t *RFC1113_table = U"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
 @ The encoding routine is as follows.
 

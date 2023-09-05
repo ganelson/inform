@@ -241,7 +241,7 @@ void BinaryInter::read_text(FILE *binary_file, text_stream *T, inter_error_locat
 	unsigned int L = BinaryInter::read_next(binary_file, eloc);
 	for (unsigned int i=0; i<L; i++) {
 		unsigned int c = BinaryInter::read_next(binary_file, eloc);
-		PUT_TO(T, (wchar_t) c);
+		PUT_TO(T, (inchar32_t) c);
 	}
 }
 

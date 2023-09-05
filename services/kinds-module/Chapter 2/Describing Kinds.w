@@ -409,18 +409,18 @@ int Kinds::Textual::parse_variable(vocabulary_entry *ve) {
 		Vocabulary::get_exemplar(ve, TRUE), TRUE);
 }
 
-int Kinds::Textual::parse_kind_variable_name(wchar_t *p, int allow_lower) {
+int Kinds::Textual::parse_kind_variable_name(inchar32_t *p, int allow_lower) {
 	if (p == NULL) return 0;
 	if ((p[1] == 0) || ((p[1] == 's') && (p[2] == 0))) {
-		if ((p[0] >= 'A') && (p[0] <= 'Z')) return p[0] - 'A' + 1;
-		if ((allow_lower) && (p[0] >= 'a') && (p[0] <= 'z')) return p[0] - 'a' + 1;
+		if ((p[0] >= 'A') && (p[0] <= 'Z')) return (int) (p[0] - 'A' + 1);
+		if ((allow_lower) && (p[0] >= 'a') && (p[0] <= 'z')) return (int) (p[0] - 'a' + 1);
 	}
 	return 0;
 }
 
-int Kinds::Textual::parse_kind_variable_name_singular(wchar_t *p) {
+int Kinds::Textual::parse_kind_variable_name_singular(inchar32_t *p) {
 	if ((p) && (p[1] == 0) && (p[0] >= 'A') && (p[0] <= 'Z'))
-		return p[0] - 'A' + 1;
+		return (int) (p[0] - 'A' + 1);
 	return 0;
 }
 

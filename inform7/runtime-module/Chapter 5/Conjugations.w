@@ -167,10 +167,10 @@ void RTVerbs::tabulate_usages(package_request *R, verb_conjugation *vc, int tens
 			 && (VerbUsages::get_tense_used(vu) == tense)) {
 			vocabulary_entry *lastword = WordAssemblages::last_word(&(vu->vu_text));
 			if (c++ > 0) WRITE_TO(USAGES, "; ");
-			if (Wide::cmp(Vocabulary::get_exemplar(lastword, FALSE), L"by") == 0) WRITE_TO(USAGES, "B ");
+			if (Wide::cmp(Vocabulary::get_exemplar(lastword, FALSE), U"by") == 0) WRITE_TO(USAGES, "B ");
 			else WRITE_TO(USAGES, "A ");
 			WordAssemblages::index(USAGES, &(vu->vu_text));
-			if (Wide::cmp(Vocabulary::get_exemplar(lastword, FALSE), L"by") == 0) WRITE_TO(USAGES, "A");
+			if (Wide::cmp(Vocabulary::get_exemplar(lastword, FALSE), U"by") == 0) WRITE_TO(USAGES, "A");
 			else WRITE_TO(USAGES, "B");
 		}
 	if (Str::len(USAGES) > 0) Hierarchy::apply_metadata(R, hl, USAGES);
@@ -673,7 +673,7 @@ void RTVerbs::conj_from_wa(word_assemblage *wa, verb_conjugation *vc,
 int RTVerbs::takes_contraction_form(word_assemblage *wa) {
 	vocabulary_entry *ve = WordAssemblages::first_word(wa);
 	if (ve == NULL) return FALSE;
-	wchar_t *p = Vocabulary::get_exemplar(ve, FALSE);
+	inchar32_t *p = Vocabulary::get_exemplar(ve, FALSE);
 	if (p[0] == '\'') return TRUE;
 	return FALSE;
 }

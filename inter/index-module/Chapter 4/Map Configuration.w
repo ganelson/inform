@@ -21,10 +21,10 @@ many different objects in the map, and their values inherited by sub-objects.
 typedef struct plotting_parameter {
 	int specified; /* is it explicitly specified at this scope? */
 	struct text_stream *name; /* name (used only in global scope) */
-	wchar_t *name_init; /* name (used only in global scope) */
+	inchar32_t *name_init; /* name (used only in global scope) */
 	int parameter_data_type; /* one of the above types (used only in global scope) */
 	struct text_stream *textual_value; /* string value, if appropriate to this type; */
-	wchar_t *textual_value_init; /* string value, if appropriate to this type; */
+	inchar32_t *textual_value_init; /* string value, if appropriate to this type; */
 	int numeric_value; /* or numeric value, if appropriate to this type */
 } plotting_parameter;
 
@@ -43,40 +43,40 @@ typedef struct map_parameter_scope {
 map_parameter_scope initial_global_map_scope = {
 	NULL,
 	{
-		{ TRUE, NULL, L"font",					FONT_MDT, NULL,	L"Helvetica", 0 },
-		{ TRUE, NULL, L"minimum-map-width",		INT_MDT, NULL,	NULL, 		72*5 },
-		{ TRUE, NULL, L"title",					TEXT_MDT, NULL,	L"Map", 	0 },
-		{ TRUE, NULL, L"title-size",			INT_MDT, NULL,	NULL, 		24 },
-		{ TRUE, NULL, L"title-font",			FONT_MDT, NULL,	L"<font>", 	0 },
-		{ TRUE, NULL, L"title-colour",			COL_MDT, NULL,	L"000000", 	0 },
-		{ TRUE, NULL, L"map-outline",			BOOL_MDT, NULL,	NULL, 		1 },
-		{ TRUE, NULL, L"border-size",			INT_MDT, NULL,	NULL, 		12 },
-		{ TRUE, NULL, L"vertical-spacing",		INT_MDT, NULL,	NULL, 		6 },
-		{ TRUE, NULL, L"monochrome",			BOOL_MDT, NULL,	NULL, 		0 },
-		{ TRUE, NULL, L"annotation-size",		INT_MDT, NULL,	NULL, 		8 },
-		{ TRUE, NULL, L"annotation-length",		INT_MDT, NULL,	NULL, 		8 },
-		{ TRUE, NULL, L"annotation-font",		FONT_MDT, NULL,	L"<font>", 	0 },
-		{ TRUE, NULL, L"subtitle",				TEXT_MDT, NULL,	L"Map", 	0 },
-		{ TRUE, NULL, L"subtitle-size",			INT_MDT, NULL,	NULL, 		16 },
-		{ TRUE, NULL, L"subtitle-font",			FONT_MDT, NULL,	L"<font>", 	0 },
-		{ TRUE, NULL, L"subtitle-colour",		COL_MDT, NULL,	L"000000", 	0 },
-		{ TRUE, NULL, L"grid-size",				INT_MDT, NULL,	NULL, 		72 },
-		{ TRUE, NULL, L"route-stiffness",		INT_MDT, NULL,	NULL, 		100 },
-		{ TRUE, NULL, L"route-thickness",		INT_MDT, NULL,	NULL, 		1 },
-		{ TRUE, NULL, L"route-colour",			COL_MDT, NULL,	L"000000", 	0 },
-		{ TRUE, NULL, L"room-offset",			OFF_MDT, NULL,	NULL, 		0 },
-		{ TRUE, NULL, L"room-size",				INT_MDT, NULL,	NULL, 		36 },
-		{ TRUE, NULL, L"room-colour",			COL_MDT, NULL,	L"DDDDDD", 	0 },
-		{ TRUE, NULL, L"room-name",				TEXT_MDT, NULL,	L"", 		0 },
-		{ TRUE, NULL, L"room-name-size",		INT_MDT, NULL,	NULL, 		12 },
-		{ TRUE, NULL, L"room-name-font",		FONT_MDT, NULL,	L"<font>", 	0 },
-		{ TRUE, NULL, L"room-name-colour",		COL_MDT, NULL,	L"000000", 	0 },
-		{ TRUE, NULL, L"room-name-length",		INT_MDT, NULL,	NULL, 		5 },
-		{ TRUE, NULL, L"room-name-offset",		OFF_MDT, NULL,	NULL, 		0 },
-		{ TRUE, NULL, L"room-outline",			BOOL_MDT, NULL,	NULL, 		1 },
-		{ TRUE, NULL, L"room-outline-colour",	COL_MDT, NULL,	L"000000",	0 },
-		{ TRUE, NULL, L"room-outline-thickness",INT_MDT, NULL,	NULL, 		1 },
-		{ TRUE, NULL, L"room-shape",			TEXT_MDT, NULL,	L"square",	0 }
+		{ TRUE, NULL, U"font",					FONT_MDT, NULL,	U"Helvetica", 0 },
+		{ TRUE, NULL, U"minimum-map-width",		INT_MDT, NULL,	NULL, 		72*5 },
+		{ TRUE, NULL, U"title",					TEXT_MDT, NULL,	U"Map", 	0 },
+		{ TRUE, NULL, U"title-size",			INT_MDT, NULL,	NULL, 		24 },
+		{ TRUE, NULL, U"title-font",			FONT_MDT, NULL,	U"<font>", 	0 },
+		{ TRUE, NULL, U"title-colour",			COL_MDT, NULL,	U"000000", 	0 },
+		{ TRUE, NULL, U"map-outline",			BOOL_MDT, NULL,	NULL, 		1 },
+		{ TRUE, NULL, U"border-size",			INT_MDT, NULL,	NULL, 		12 },
+		{ TRUE, NULL, U"vertical-spacing",		INT_MDT, NULL,	NULL, 		6 },
+		{ TRUE, NULL, U"monochrome",			BOOL_MDT, NULL,	NULL, 		0 },
+		{ TRUE, NULL, U"annotation-size",		INT_MDT, NULL,	NULL, 		8 },
+		{ TRUE, NULL, U"annotation-length",		INT_MDT, NULL,	NULL, 		8 },
+		{ TRUE, NULL, U"annotation-font",		FONT_MDT, NULL,	U"<font>", 	0 },
+		{ TRUE, NULL, U"subtitle",				TEXT_MDT, NULL,	U"Map", 	0 },
+		{ TRUE, NULL, U"subtitle-size",			INT_MDT, NULL,	NULL, 		16 },
+		{ TRUE, NULL, U"subtitle-font",			FONT_MDT, NULL,	U"<font>", 	0 },
+		{ TRUE, NULL, U"subtitle-colour",		COL_MDT, NULL,	U"000000", 	0 },
+		{ TRUE, NULL, U"grid-size",				INT_MDT, NULL,	NULL, 		72 },
+		{ TRUE, NULL, U"route-stiffness",		INT_MDT, NULL,	NULL, 		100 },
+		{ TRUE, NULL, U"route-thickness",		INT_MDT, NULL,	NULL, 		1 },
+		{ TRUE, NULL, U"route-colour",			COL_MDT, NULL,	U"000000", 	0 },
+		{ TRUE, NULL, U"room-offset",			OFF_MDT, NULL,	NULL, 		0 },
+		{ TRUE, NULL, U"room-size",				INT_MDT, NULL,	NULL, 		36 },
+		{ TRUE, NULL, U"room-colour",			COL_MDT, NULL,	U"DDDDDD", 	0 },
+		{ TRUE, NULL, U"room-name",				TEXT_MDT, NULL,	U"", 		0 },
+		{ TRUE, NULL, U"room-name-size",		INT_MDT, NULL,	NULL, 		12 },
+		{ TRUE, NULL, U"room-name-font",		FONT_MDT, NULL,	U"<font>", 	0 },
+		{ TRUE, NULL, U"room-name-colour",		COL_MDT, NULL,	U"000000", 	0 },
+		{ TRUE, NULL, U"room-name-length",		INT_MDT, NULL,	NULL, 		5 },
+		{ TRUE, NULL, U"room-name-offset",		OFF_MDT, NULL,	NULL, 		0 },
+		{ TRUE, NULL, U"room-outline",			BOOL_MDT, NULL,	NULL, 		1 },
+		{ TRUE, NULL, U"room-outline-colour",	COL_MDT, NULL,	U"000000",	0 },
+		{ TRUE, NULL, U"room-outline-thickness",INT_MDT, NULL,	NULL, 		1 },
+		{ TRUE, NULL, U"room-shape",			TEXT_MDT, NULL,	U"square",	0 }
 	}
 };
 
@@ -130,7 +130,7 @@ int ConfigureIndexMap::get_map_variable_index(text_stream *name, index_session *
 	return s;
 }
 
-int ConfigureIndexMap::get_map_variable_index_from_wchar(wchar_t *wc_name) {
+int ConfigureIndexMap::get_map_variable_index_from_wchar(inchar32_t *wc_name) {
 	for (int s=0; s<NO_MAP_PARAMETERS; s++)
 		if ((initial_global_map_scope.values[s].name_init) &&
 			(Wide::cmp(wc_name, initial_global_map_scope.values[s].name_init) == 0))

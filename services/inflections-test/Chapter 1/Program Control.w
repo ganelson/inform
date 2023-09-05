@@ -19,20 +19,20 @@ int main(int argc, char **argv) {
 	WordsModule::start();
 	InflectionsModule::start();
 
-	CommandLine::declare_heading(L"inflections-test: a tool for testing inflections facilities\n");
+	CommandLine::declare_heading(U"inflections-test: a tool for testing inflections facilities\n");
 
-	CommandLine::declare_switch(TEST_ADJECTIVES_CLSW, L"test-adjectives", 2,
-		L"test adjective inflection (from list in X)");
-	CommandLine::declare_switch(TEST_ARTICLES_CLSW, L"test-articles", 2,
-		L"test article inflection (from list in X)");
-	CommandLine::declare_switch(TEST_DECLENSIONS_CLSW, L"test-declensions", 2,
-		L"test noun declension (from list in X)");
-	CommandLine::declare_switch(TEST_PARTICIPLES_CLSW, L"test-participles", 2,
-		L"test plural inflection (from list in X)");
-	CommandLine::declare_switch(TEST_PLURALS_CLSW, L"test-plurals", 2,
-		L"test plural inflection (from list in X)");
-	CommandLine::declare_switch(TEST_VERBS_CLSW, L"test-verbs", 2,
-		L"test verb conjugation (from list in X)");
+	CommandLine::declare_switch(TEST_ADJECTIVES_CLSW, U"test-adjectives", 2,
+		U"test adjective inflection (from list in X)");
+	CommandLine::declare_switch(TEST_ARTICLES_CLSW, U"test-articles", 2,
+		U"test article inflection (from list in X)");
+	CommandLine::declare_switch(TEST_DECLENSIONS_CLSW, U"test-declensions", 2,
+		U"test noun declension (from list in X)");
+	CommandLine::declare_switch(TEST_PARTICIPLES_CLSW, U"test-participles", 2,
+		U"test plural inflection (from list in X)");
+	CommandLine::declare_switch(TEST_PLURALS_CLSW, U"test-plurals", 2,
+		U"test plural inflection (from list in X)");
+	CommandLine::declare_switch(TEST_VERBS_CLSW, U"test-verbs", 2,
+		U"test verb conjugation (from list in X)");
 
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::ignore);
 

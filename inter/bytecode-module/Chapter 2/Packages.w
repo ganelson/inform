@@ -352,7 +352,7 @@ inter_package *InterPackage::from_URL(inter_tree *I, text_stream *S) {
 		inter_package *at_P = I->root_package;
 		TEMPORARY_TEXT(C)
 		LOOP_THROUGH_TEXT(P, S) {
-			wchar_t c = Str::get(P);
+			inchar32_t c = Str::get(P);
 			if (c == '/') {
 				if (Str::len(C) > 0) {
 					at_P = InterPackage::from_name(at_P, C);

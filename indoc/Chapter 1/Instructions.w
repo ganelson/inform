@@ -219,15 +219,15 @@ void Instructions::read_instructions_helper(text_stream *cl, text_file_position 
 	settings_block *settings = ihs->settings;
 	match_results mr = Regexp::create_mr();
 
-	if (Regexp::match(&mr, cl, L" *#%c*")) { Regexp::dispose_of(&mr); return; }
-	if (Regexp::match(&mr, cl, L" *")) { Regexp::dispose_of(&mr); return; }
+	if (Regexp::match(&mr, cl, U" *#%c*")) { Regexp::dispose_of(&mr); return; }
+	if (Regexp::match(&mr, cl, U" *")) { Regexp::dispose_of(&mr); return; }
 
-	if (Regexp::match(&mr, cl, L"(%C+) { *")) {
+	if (Regexp::match(&mr, cl, U"(%C+) { *")) {
 		if (Str::len(ihs->scanning_target) > 0)
 			Errors::in_text_file("second target opened while first is still open", tfp);
 		Str::copy(ihs->scanning_target, mr.exp[0]);
 		if (Str::eq(ihs->scanning_target, ihs->desired_target)) ihs->found_aim = TRUE;
-	} else if (Regexp::match(&mr, cl, L" *} *")) {
+	} else if (Regexp::match(&mr, cl, U" *} *")) {
 		if (Str::len(ihs->scanning_target) == 0)
 			Errors::in_text_file("unexpected target end-marker", tfp);
 		Str::clear(ihs->scanning_target);
@@ -236,14 +236,14 @@ void Instructions::read_instructions_helper(text_stream *cl, text_file_position 
 			(Str::eq(ihs->scanning_target, ihs->desired_target))) {
 			if (settings->verbose_mode)
 				PRINT("%f, line %d: %S\n", tfp->text_file_filename, tfp->line_count, cl);
-			if (Regexp::match(&mr, cl, L" *follow: *(%c*?) *")) {
+			if (Regexp::match(&mr, cl, U" *follow: *(%c*?) *")) {
 				if (Instructions::read_instructions_from(
 					Filenames::in(settings->book_folder, mr.exp[0]),
 					ihs->desired_target, settings))
 					ihs->found_aim = TRUE;
-			} else if (Regexp::match(&mr, cl, L" *declare: *(%c*?) *")) {
+			} else if (Regexp::match(&mr, cl, U" *declare: *(%c*?) *")) {
 				Symbols::declare_symbol(mr.exp[0]);
-			} else if (Regexp::match(&mr, cl, L" *undeclare: *(%c*?) *")) {
+			} else if (Regexp::match(&mr, cl, U" *undeclare: *(%c*?) *")) {
 				Symbols::undeclare_symbol(mr.exp[0]);
 			} else @<This is an instruction@>;
 		}
@@ -252,25 +252,25 @@ void Instructions::read_instructions_helper(text_stream *cl, text_file_position 
 }
 
 @<This is an instruction@> =
-	if (Regexp::match(&mr, cl, L" *volume: *(%c*?) *")) {
+	if (Regexp::match(&mr, cl, U" *volume: *(%c*?) *")) {
 		@<Disallow this in a specific target@>;
 		@<Act on a volume creation@>
-	} else if (Regexp::match(&mr, cl, L" *cover: *(%c*?) *")) {
+	} else if (Regexp::match(&mr, cl, U" *cover: *(%c*?) *")) {
 		@<Disallow this in a specific target@>;
 		settings->book_cover_image = Instructions::set_file(mr.exp[0], settings);
-	} else if (Regexp::match(&mr, cl, L" *examples *")) {
+	} else if (Regexp::match(&mr, cl, U" *examples *")) {
 		@<Disallow this in a specific target@>;
 		settings->book_contains_examples = TRUE;
-	} else if (Regexp::match(&mr, cl, L" *dc:(%C+): *(%c*?) *")) {
+	} else if (Regexp::match(&mr, cl, U" *dc:(%C+): *(%c*?) *")) {
 		@<Disallow this in a specific target@>;
 		Instructions::create_ebook_metadata(Str::duplicate(mr.exp[0]), Str::duplicate(mr.exp[1]));
-	} else if (Regexp::match(&mr, cl, L" *css: *(%c*?) *")) {
+	} else if (Regexp::match(&mr, cl, U" *css: *(%c*?) *")) {
 		@<Act on a CSS tweak@>;
-	} else if (Regexp::match(&mr, cl, L" *index: *(%c*?) *")) {
+	} else if (Regexp::match(&mr, cl, U" *index: *(%c*?) *")) {
 		@<Act on an indexing notation@>;
-	} else if (Regexp::match(&mr, cl, L" *images: *(%c*?) *")) {
+	} else if (Regexp::match(&mr, cl, U" *images: *(%c*?) *")) {
 		HTMLUtilities::add_image_source(Instructions::set_path(mr.exp[0], settings));
-	} else if (Regexp::match(&mr, cl, L" *(%C+) *= *(%c*?) *")) {
+	} else if (Regexp::match(&mr, cl, U" *(%C+) *= *(%c*?) *")) {
 		@<Act on an instructions setting@>;
 	} else {
 		Errors::in_text_file("unknown syntax in instructions file", tfp);
@@ -296,12 +296,12 @@ which reads:
 	TEMPORARY_TEXT(file)
 	TEMPORARY_TEXT(abbrev)
 	match_results mr2 = Regexp::create_mr();
-	if (Regexp::match(&mr2, title, L"(%c+?) *= *(%c+?)")) { /* the optional filename syntax */
+	if (Regexp::match(&mr2, title, U"(%c+?) *= *(%c+?)")) { /* the optional filename syntax */
 		Str::copy(title, mr2.exp[0]); Str::copy(file, mr2.exp[1]);
 	} else {
 		WRITE_TO(file, "%S.txt", title);
 	}
-	if (Regexp::match(&mr2, title, L"(%c*?) *%((%c*?)%)")) { /* the optional abbreviation syntax */
+	if (Regexp::match(&mr2, title, U"(%c*?) *%((%c*?)%)")) { /* the optional abbreviation syntax */
 		Str::copy(title, mr2.exp[0]); Str::copy(abbrev, mr2.exp[1]);
 	}
 	Scanner::create_volume(settings->book_folder, file, title, abbrev);
@@ -313,11 +313,11 @@ which reads:
 	text_stream *tweak = mr.exp[0];
 	match_results mr2 = Regexp::create_mr();
 	match_results mr3 = Regexp::create_mr();
-	if (Regexp::match(&mr2, tweak, L"(%C+)text(%C+) = (%C+)")) {
+	if (Regexp::match(&mr2, tweak, U"(%C+)text(%C+) = (%C+)")) {
 		CSS::add_span_notation(mr2.exp[0], mr2.exp[1], mr2.exp[2], MARKUP_SPP);
 	} else {
 		volume *act_on = NULL;
-		if (Regexp::match(&mr2, tweak, L"(%C+) *: *(%c+)")) {
+		if (Regexp::match(&mr2, tweak, U"(%C+) *: *(%c+)")) {
 			text_stream *abbrev = mr2.exp[0];
 			Str::copy(tweak, mr2.exp[1]);
 			volume *V;
@@ -326,19 +326,19 @@ which reads:
 					act_on = V;
 			if (act_on == NULL) Errors::in_text_file("unknown volume abbreviation", tfp);
 		}
-		if (Regexp::match(&mr2, tweak, L"(%c+?) *{ *")) {
+		if (Regexp::match(&mr2, tweak, U"(%c+?) *{ *")) {
 			int plus = 0;
 			text_stream *tag = mr2.exp[0];
 			TEMPORARY_TEXT(want)
 			TEMPORARY_TEXT(ncl)
 			while ((TextFiles::read_line(ncl, FALSE, tfp)), (Str::len(ncl) > 0)) {
 				Str::trim_white_space(ncl);
-				if (Regexp::match(&mr3, ncl, L" *} *")) break;
+				if (Regexp::match(&mr3, ncl, U" *} *")) break;
 				WRITE_TO(want, "%S\n", ncl);
 			}
 			DISCARD_TEXT(ncl)
-			if (Regexp::match(&mr3, tag, L"(%c*?) *%+%+ *")) { plus = 2; tag = mr3.exp[0]; }
-			else if (Regexp::match(&mr3, tag, L"(%c*?) *%+ *")) { plus = 1; tag = mr3.exp[0]; }
+			if (Regexp::match(&mr3, tag, U"(%c*?) *%+%+ *")) { plus = 2; tag = mr3.exp[0]; }
+			else if (Regexp::match(&mr3, tag, U"(%c*?) *%+ *")) { plus = 1; tag = mr3.exp[0]; }
 			CSS::request_css_tweak(act_on, tag, want, plus);
 			DISCARD_TEXT(want)
 		} else Errors::in_text_file("bad CSS tweaking syntax", tfp);
@@ -350,15 +350,15 @@ which reads:
 	text_stream *tweak = mr.exp[0];
 	match_results mr2 = Regexp::create_mr();
 	if (settings->test_index_mode) PRINT("Read in: %S\n", tweak);
-	if (Regexp::match(&mr2, tweak, L"^{(%C*)headword(%C*)} = (%C+) *(%c*)")) {
+	if (Regexp::match(&mr2, tweak, U"^{(%C*)headword(%C*)} = (%C+) *(%c*)")) {
 		Indexes::add_indexing_notation(mr2.exp[0], mr2.exp[1], mr2.exp[2], mr2.exp[3]);
-	} else if (Regexp::match(&mr2, tweak, L"{(%C+?)} = (%C+) *(%c*)")) {
+	} else if (Regexp::match(&mr2, tweak, U"{(%C+?)} = (%C+) *(%c*)")) {
 		Indexes::add_indexing_notation_for_symbols(mr2.exp[0], mr2.exp[1], mr2.exp[2]);
-	} else if (Regexp::match(&mr2, tweak, L"definition = (%C+) *(%c*)")) {
+	} else if (Regexp::match(&mr2, tweak, U"definition = (%C+) *(%c*)")) {
 		Indexes::add_indexing_notation_for_definitions(mr2.exp[0], mr2.exp[1], NULL);
-	} else if (Regexp::match(&mr2, tweak, L"(%C+)-definition = (%C+) *(%c*)")) {
+	} else if (Regexp::match(&mr2, tweak, U"(%C+)-definition = (%C+) *(%c*)")) {
 		Indexes::add_indexing_notation_for_definitions(mr2.exp[1], mr2.exp[2], mr2.exp[0]);
-	} else if (Regexp::match(&mr2, tweak, L"example = (%C+) *(%c*)")) {
+	} else if (Regexp::match(&mr2, tweak, U"example = (%C+) *(%c*)")) {
 		Indexes::add_indexing_notation_for_examples(mr2.exp[0], mr2.exp[1]);
 	} else {
 		Errors::in_text_file("bad indexing notation", tfp);
@@ -381,7 +381,7 @@ taste). In a multiple-line value, each line is terminated with a newline.
 		match_results mr2 = Regexp::create_mr();
 		TEMPORARY_TEXT(ncl)
 		while ((TextFiles::read_line(ncl, FALSE, tfp)), (Str::len(ncl) > 0)) {
-			if (Regexp::match(&mr2, ncl, L" *} *")) break;
+			if (Regexp::match(&mr2, ncl, U" *} *")) break;
 			WRITE_TO(val, "%S\n", ncl);
 		}
 		DISCARD_TEXT(ncl)
@@ -389,84 +389,84 @@ taste). In a multiple-line value, each line is terminated with a newline.
 	}
 
 @<Set an instructions option@> =
-	if (Str::eq_wide_string(key, L"alphabetization")) {
-		if (Str::eq_wide_string(val, L"word-by-word"))
+	if (Str::eq_wide_string(key, U"alphabetization")) {
+		if (Str::eq_wide_string(val, U"word-by-word"))
 			settings->index_alphabetisation_algorithm = WORD_ALPHABETIZATION;
-		else if (Str::eq_wide_string(val, L"letter-by-letter"))
+		else if (Str::eq_wide_string(val, U"letter-by-letter"))
 			settings->index_alphabetisation_algorithm = LETTER_ALPHABETIZATION;
 		else Errors::in_text_file("no such alphabetization", tfp);
 	}
-	else if (Str::eq_wide_string(key, L"assume_Public_Library"))
+	else if (Str::eq_wide_string(key, U"assume_Public_Library"))
 		settings->assume_Public_Library = Instructions::set_yn(key, val, tfp);
-	else if (Str::eq_wide_string(key, L"change_logs_directory"))
+	else if (Str::eq_wide_string(key, U"change_logs_directory"))
 		settings->change_logs_folder = Instructions::set_path(val, settings);
-	else if (Str::eq_wide_string(key, L"contents_leafname"))
+	else if (Str::eq_wide_string(key, U"contents_leafname"))
 		settings->contents_leafname = Str::duplicate(val);
-	else if (Str::eq_wide_string(key, L"contents_expandable"))
+	else if (Str::eq_wide_string(key, U"contents_expandable"))
 		settings->contents_expandable = Instructions::set_yn(key, val, tfp);
-	else if (Str::eq_wide_string(key, L"css_source_file")) { settings->css_source_file = Instructions::set_file(val, settings); }
-	else if (Str::eq_wide_string(key, L"definitions_filename")) { settings->definitions_filename = Instructions::set_file(val, settings); }
-	else if (Str::eq_wide_string(key, L"definitions_index_filename")) {
+	else if (Str::eq_wide_string(key, U"css_source_file")) { settings->css_source_file = Instructions::set_file(val, settings); }
+	else if (Str::eq_wide_string(key, U"definitions_filename")) { settings->definitions_filename = Instructions::set_file(val, settings); }
+	else if (Str::eq_wide_string(key, U"definitions_index_filename")) {
 		settings->definitions_index_leafname = Str::duplicate(val); }
-	else if (Str::eq_wide_string(key, L"destination")) {
+	else if (Str::eq_wide_string(key, U"destination")) {
 		if (settings->destination_modifiable)
 			settings->destination = Instructions::set_path(val, settings);
 	}
-	else if (Str::eq_wide_string(key, L"examples_directory")) {
+	else if (Str::eq_wide_string(key, U"examples_directory")) {
 		settings->examples_directory = Instructions::set_path(val, settings); }
-	else if (Str::eq_wide_string(key, L"examples_alphabetical_leafname")) {
+	else if (Str::eq_wide_string(key, U"examples_alphabetical_leafname")) {
 		settings->examples_alphabetical_leafname = Str::duplicate(val); }
-	else if (Str::eq_wide_string(key, L"examples_granularity")) {
+	else if (Str::eq_wide_string(key, U"examples_granularity")) {
 		settings->examples_granularity = Instructions::set_range(key, val, 1, 3, tfp); }
-	else if (Str::eq_wide_string(key, L"examples_mode")) {
-		if (Str::eq_wide_string(val, L"open")) { settings->examples_mode = EXMODE_open_internal; }
-		else if (Str::eq_wide_string(val, L"openable")) { settings->examples_mode = EXMODE_openable_internal; }
+	else if (Str::eq_wide_string(key, U"examples_mode")) {
+		if (Str::eq_wide_string(val, U"open")) { settings->examples_mode = EXMODE_open_internal; }
+		else if (Str::eq_wide_string(val, U"openable")) { settings->examples_mode = EXMODE_openable_internal; }
 		else Errors::in_text_file("no such examples mode", tfp);
 	}
-	else if (Str::eq_wide_string(key, L"examples_numerical_leafname")) {
+	else if (Str::eq_wide_string(key, U"examples_numerical_leafname")) {
 		settings->examples_numerical_leafname = Str::duplicate(val); }
-	else if (Str::eq_wide_string(key, L"examples_thematic_leafname")) {
+	else if (Str::eq_wide_string(key, U"examples_thematic_leafname")) {
 		settings->examples_thematic_leafname = Str::duplicate(val); }
-	else if (Str::eq_wide_string(key, L"format")) {
-		if (Str::eq_wide_string(val, L"HTML")) { settings->format = HTML_FORMAT; }
-		else if (Str::eq_wide_string(val, L"text")) { settings->format = PLAIN_FORMAT; }
+	else if (Str::eq_wide_string(key, U"format")) {
+		if (Str::eq_wide_string(val, U"HTML")) { settings->format = HTML_FORMAT; }
+		else if (Str::eq_wide_string(val, U"text")) { settings->format = PLAIN_FORMAT; }
 		else Errors::in_text_file("no such format", tfp);
 	}
-	else if (Str::eq_wide_string(key, L"granularity")) { settings->granularity = Instructions::set_range(key, val, 1, 3, tfp); }
-	else if (Str::eq_wide_string(key, L"html_for_Inform_application")) {
+	else if (Str::eq_wide_string(key, U"granularity")) { settings->granularity = Instructions::set_range(key, val, 1, 3, tfp); }
+	else if (Str::eq_wide_string(key, U"html_for_Inform_application")) {
 		settings->html_for_Inform_application = Instructions::set_yn(key, val, tfp); }
-	else if (Str::eq_wide_string(key, L"images_path")) { settings->images_path = Instructions::set_path(val, settings); }
-	else if (Str::eq_wide_string(key, L"images_copy")) { settings->images_copy = Instructions::set_yn(key, val, tfp); }
-	else if (Str::eq_wide_string(key, L"inform_definitions_mode")) {
+	else if (Str::eq_wide_string(key, U"images_path")) { settings->images_path = Instructions::set_path(val, settings); }
+	else if (Str::eq_wide_string(key, U"images_copy")) { settings->images_copy = Instructions::set_yn(key, val, tfp); }
+	else if (Str::eq_wide_string(key, U"inform_definitions_mode")) {
 		settings->inform_definitions_mode = Instructions::set_yn(key, val, tfp); }
-	else if (Str::eq_wide_string(key, L"javascript")) { settings->javascript = Instructions::set_yn(key, val, tfp); }
-	else if (Str::eq_wide_string(key, L"link_to_extensions_index")) {
+	else if (Str::eq_wide_string(key, U"javascript")) { settings->javascript = Instructions::set_yn(key, val, tfp); }
+	else if (Str::eq_wide_string(key, U"link_to_extensions_index")) {
 		settings->link_to_extensions_index = Str::duplicate(val); }
-	else if (Str::eq_wide_string(key, L"manifest_leafname")) { settings->manifest_leafname = Str::duplicate(val); }
-	else if (Str::eq_wide_string(key, L"navigation")) {
+	else if (Str::eq_wide_string(key, U"manifest_leafname")) { settings->manifest_leafname = Str::duplicate(val); }
+	else if (Str::eq_wide_string(key, U"navigation")) {
 		settings->navigation = Nav::parse(val);
 		if (settings->navigation == NULL) Errors::in_text_file("no such navigation mode", tfp);
 	}
-	else if (Str::eq_wide_string(key, L"retina_images")) {
+	else if (Str::eq_wide_string(key, U"retina_images")) {
 		settings->retina_images = Instructions::set_yn(key, val, tfp); }
-	else if (Str::eq_wide_string(key, L"support_creation")) {
+	else if (Str::eq_wide_string(key, U"support_creation")) {
 		settings->support_creation = Instructions::set_yn(key, val, tfp); }
-	else if (Str::eq_wide_string(key, L"suppress_fonts")) {
+	else if (Str::eq_wide_string(key, U"suppress_fonts")) {
 		settings->suppress_fonts = Instructions::set_yn(key, val, tfp); }
-	else if (Str::eq_wide_string(key, L"toc_granularity")) {
+	else if (Str::eq_wide_string(key, U"toc_granularity")) {
 		settings->toc_granularity = Instructions::set_range(key, val, 1, 3, tfp); }
-	else if (Str::eq_wide_string(key, L"top_and_tail_sections")) {
+	else if (Str::eq_wide_string(key, U"top_and_tail_sections")) {
 		settings->top_and_tail_sections = Instructions::set_file(val, settings); }
-	else if (Str::eq_wide_string(key, L"top_and_tail")) { settings->top_and_tail = Instructions::set_file(val, settings); }
-	else if (Str::eq_wide_string(key, L"treat_code_as_verbatim")) {
+	else if (Str::eq_wide_string(key, U"top_and_tail")) { settings->top_and_tail = Instructions::set_file(val, settings); }
+	else if (Str::eq_wide_string(key, U"treat_code_as_verbatim")) {
 		settings->treat_code_as_verbatim = Instructions::set_yn(key, val, tfp); }
-	else if (Str::eq_wide_string(key, L"wrapper")) {
-		if (Str::eq_wide_string(val, L"EPUB")) { settings->wrapper = WRAPPER_epub; }
-		else if (Str::eq_wide_string(val, L"zip")) { settings->wrapper = WRAPPER_zip; }
-		else if (Str::eq_wide_string(val, L"none")) { settings->wrapper = WRAPPER_none; }
+	else if (Str::eq_wide_string(key, U"wrapper")) {
+		if (Str::eq_wide_string(val, U"EPUB")) { settings->wrapper = WRAPPER_epub; }
+		else if (Str::eq_wide_string(val, U"zip")) { settings->wrapper = WRAPPER_zip; }
+		else if (Str::eq_wide_string(val, U"none")) { settings->wrapper = WRAPPER_none; }
 		else Errors::in_text_file("no such wrapper", tfp);
 	}
-	else if (Str::eq_wide_string(key, L"XHTML")) { settings->XHTML = Instructions::set_yn(key, val, tfp); }
+	else if (Str::eq_wide_string(key, U"XHTML")) { settings->XHTML = Instructions::set_yn(key, val, tfp); }
 
 	else Errors::in_text_file("no such setting", tfp);
 
@@ -565,7 +565,7 @@ filename *Instructions::set_file(text_stream *val, settings_block *settings) {
 int Instructions::set_range(text_stream *key, text_stream *val,
 	int min, int max, text_file_position *tfp) {
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, val, L"%d+")) {
+	if (Regexp::match(&mr, val, U"%d+")) {
 		int v = Str::atoi(val, 0);
 		Regexp::dispose_of(&mr);
 		if ((v >= min) && (v <= max)) return v;
@@ -581,8 +581,8 @@ int Instructions::set_range(text_stream *key, text_stream *val,
 
 =
 int Instructions::set_yn(text_stream *key, text_stream *val, text_file_position *tfp) {
-	if (Str::eq_wide_string(val, L"yes")) { return 1; }
-	if (Str::eq_wide_string(val, L"no")) { return 0; }
+	if (Str::eq_wide_string(val, U"yes")) { return 1; }
+	if (Str::eq_wide_string(val, U"no")) { return 0; }
 	TEMPORARY_TEXT(ERM)
 	WRITE_TO(ERM, "'%S' must be 'yes' or 'no', not '%S'", key, val);
 	Errors::in_text_file_S(ERM, tfp);
@@ -608,7 +608,7 @@ void Instructions::create_ebook_metadata(text_stream *key, text_stream *value) {
 void Instructions::apply_ebook_metadata(ebook *E) {
 	dc_metadatum *dcm;
 	LOOP_OVER(dcm, dc_metadatum) {
-		wchar_t K[1024];
+		inchar32_t K[1024];
 		Str::copy_to_wide_string(K, dcm->dc_key, 1024);
 		Epub::attach_metadata(E, K, dcm->dc_val);
 	}

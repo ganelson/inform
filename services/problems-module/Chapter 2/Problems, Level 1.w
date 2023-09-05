@@ -159,7 +159,7 @@ void ProblemBuffer::output_problem_buffer_to(OUTPUT_STREAM, int indentation) {
 	@<In HTML mode, convert drawing-your-attention arrows@>;
 	@<In SIG mode, convert drawing-your-attention arrows@>;
 	for (; i<Str::len(PBUFF); i++) {
-		int c = Str::get_at(PBUFF, i);
+		inchar32_t c = Str::get_at(PBUFF, i);
 		@<In plain text mode, remove bold and italic HTML tags@>;
 		if ((html_flag == FALSE) && (c == SOURCE_REF_CHAR))
 			@<Issue plain text paraphrase of source reference@>
@@ -178,7 +178,7 @@ report at: we pick this out as the first source reference in the message.
 
 @<Extract details of the first source code reference, if there is one@> =
 	for (int i=0, f=0, L=Str::len(PBUFF); i<L; i++) {
-		int c = Str::get_at(PBUFF, i);
+		inchar32_t c = Str::get_at(PBUFF, i);
 		if (c == SOURCE_REF_CHAR) f++;
 		else if (f == 1) PUT_TO(first, c);
 		else if (f == 2) PUT_TO(second, c);
@@ -196,7 +196,7 @@ indentation. And similarly for |>++>|, used to mark continuations.
 Note that in HTML, this always opens one paragraph tag.
 
 @<In HTML mode, convert drawing-your-attention arrows@> =
-	if ((html_flag) && (Str::includes_wide_string_at(PBUFF, L">-->", i))) {
+	if ((html_flag) && (Str::includes_wide_string_at(PBUFF, U">-->", i))) {
 		if (problem_count > problem_count_at_last_in) {
 			HTML_TAG("hr");
 		}
@@ -204,25 +204,25 @@ Note that in HTML, this always opens one paragraph tag.
 		if (currently_issuing_a_warning) WRITE("<b>Warning.</b> ");
 		else WRITE("<b>Problem.</b> ");
 		i = 4;
-	} else if (Str::includes_wide_string_at(PBUFF, L">++>", i)) {
+	} else if (Str::includes_wide_string_at(PBUFF, U">++>", i)) {
 		if (html_flag) HTML_OPEN_WITH("p", "class=\"in2\"") else WRITE("  ");
 		i = 4;
-	} else if (Str::includes_wide_string_at(PBUFF, L">--->", i)) {
+	} else if (Str::includes_wide_string_at(PBUFF, U">--->", i)) {
 		if (html_flag) {
 			HTML_CLOSE("p"); HTML_TAG("hr");
 		}
 		problem_count_at_last_in = problem_count+1;
 		i = 5;
-	} else if (Str::includes_wide_string_at(PBUFF, L">+++>", i)) {
+	} else if (Str::includes_wide_string_at(PBUFF, U">+++>", i)) {
 		if (html_flag) HTML_OPEN_WITH("p", "halftightin3\"") else WRITE("  ");
 		i = 5;
-	} else if (Str::includes_wide_string_at(PBUFF, L">++++>", i)) {
+	} else if (Str::includes_wide_string_at(PBUFF, U">++++>", i)) {
 		if (html_flag) HTML_OPEN_WITH("p", "class=\"tightin3\"") else WRITE("  ");
 		i = 6;
 	} else if (html_flag) HTML_OPEN("p");
 
 @<In SIG mode, convert drawing-your-attention arrows@> =
-	if ((sig_mode) && (Str::includes_wide_string_at(PBUFF, L">-->", i))) {
+	if ((sig_mode) && (Str::includes_wide_string_at(PBUFF, U">-->", i))) {
 		WRITE("\033[1m");
 		if (Str::len(second) > 0) {
 			WRITE("%p%S:%S: ", HTML::get_link_abbreviation_path(), second, third);
@@ -247,23 +247,23 @@ out when writing to plain text format.
 			continue;
 		}
 		if ((c == '<') &&
-				((Str::includes_wide_string_at_insensitive(PBUFF, L"<i>", i)) ||
-				(Str::includes_wide_string_at_insensitive(PBUFF, L"<b>", i)) ||
-				(Str::includes_wide_string_at_insensitive(PBUFF, L"<img>", i)) ||
-				(Str::includes_wide_string_at_insensitive(PBUFF, L"<a>", i)) ||
-				(Str::includes_wide_string_at_insensitive(PBUFF, L"<font>", i)) ||
-				(Str::includes_wide_string_at_insensitive(PBUFF, L"<i ", i)) ||
-				(Str::includes_wide_string_at_insensitive(PBUFF, L"<b ", i)) ||
-				(Str::includes_wide_string_at_insensitive(PBUFF, L"<img ", i)) ||
-				(Str::includes_wide_string_at_insensitive(PBUFF, L"<a ", i)) ||
-				(Str::includes_wide_string_at_insensitive(PBUFF, L"<font ", i)) ||
-				(Str::includes_wide_string_at_insensitive(PBUFF, L"<span ", i)) ||
-				(Str::includes_wide_string_at_insensitive(PBUFF, L"</i>", i)) ||
-				(Str::includes_wide_string_at_insensitive(PBUFF, L"</b>", i)) ||
-				(Str::includes_wide_string_at_insensitive(PBUFF, L"</img>", i)) ||
-				(Str::includes_wide_string_at_insensitive(PBUFF, L"</a>", i)) ||
-				(Str::includes_wide_string_at_insensitive(PBUFF, L"</span>", i)) ||
-				(Str::includes_wide_string_at_insensitive(PBUFF, L"</font>", i)))) {
+				((Str::includes_wide_string_at_insensitive(PBUFF, U"<i>", i)) ||
+				(Str::includes_wide_string_at_insensitive(PBUFF, U"<b>", i)) ||
+				(Str::includes_wide_string_at_insensitive(PBUFF, U"<img>", i)) ||
+				(Str::includes_wide_string_at_insensitive(PBUFF, U"<a>", i)) ||
+				(Str::includes_wide_string_at_insensitive(PBUFF, U"<font>", i)) ||
+				(Str::includes_wide_string_at_insensitive(PBUFF, U"<i ", i)) ||
+				(Str::includes_wide_string_at_insensitive(PBUFF, U"<b ", i)) ||
+				(Str::includes_wide_string_at_insensitive(PBUFF, U"<img ", i)) ||
+				(Str::includes_wide_string_at_insensitive(PBUFF, U"<a ", i)) ||
+				(Str::includes_wide_string_at_insensitive(PBUFF, U"<font ", i)) ||
+				(Str::includes_wide_string_at_insensitive(PBUFF, U"<span ", i)) ||
+				(Str::includes_wide_string_at_insensitive(PBUFF, U"</i>", i)) ||
+				(Str::includes_wide_string_at_insensitive(PBUFF, U"</b>", i)) ||
+				(Str::includes_wide_string_at_insensitive(PBUFF, U"</img>", i)) ||
+				(Str::includes_wide_string_at_insensitive(PBUFF, U"</a>", i)) ||
+				(Str::includes_wide_string_at_insensitive(PBUFF, U"</span>", i)) ||
+				(Str::includes_wide_string_at_insensitive(PBUFF, U"</font>", i)))) {
 			while ((i<Str::len(PBUFF)) && (Str::get_at(PBUFF, i) != '>')) i++;
 			continue;
 		}

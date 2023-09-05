@@ -21,7 +21,7 @@ kind *K_performance_style = NULL;
 
 @ =
 int PerformanceStyles::new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
-	if (Str::eq_wide_string(name, L"PERFORMANCE_STYLE_TY")) {
+	if (Str::eq_wide_string(name, U"PERFORMANCE_STYLE_TY")) {
 		K_performance_style = new_base; return TRUE;
 	}
 	return FALSE;

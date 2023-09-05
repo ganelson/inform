@@ -152,7 +152,7 @@ void Requests::create_requested_material(void) {
 
 @<Copy a file into the release folder@> =
 	pathname *P = release_folder;
-	if (Str::eq_wide_string(req->details3, L"--") == FALSE)
+	if (Str::eq_wide_string(req->details3, U"--") == FALSE)
 		P = Pathnames::down(P, req->details3);
 	filename *write_to = Filenames::in(P, req->details2);
 	filename *from = Filenames::from_text(req->details1);
@@ -286,8 +286,8 @@ int cp_written = FALSE;
 void Requests::read_requested_ifile(text_stream *manifestline, text_file_position *tfp, void *state) {
 	if (cp_written == FALSE) { cp_written = TRUE; current_placeholder = Str::new(); }
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, manifestline, L" *(%c*?) *")) Str::copy(manifestline, mr.exp[0]);
-	if (Regexp::match(&mr, manifestline, L"%[(%c*)%]"))
+	if (Regexp::match(&mr, manifestline, U" *(%c*?) *")) Str::copy(manifestline, mr.exp[0]);
+	if (Regexp::match(&mr, manifestline, U"%[(%c*)%]"))
 		Str::copy(current_placeholder, mr.exp[0]);
 	else if (Str::len(current_placeholder) == 0)
 		@<We're outside placeholder mode, so it's a comment or a manifested filename@>
@@ -373,7 +373,7 @@ to the experts.
 @<Release an HTML page from the template into the website@> =
 	Placeholders::set_to(I"TEMPLATE", t, 0);
 	if (verbose_mode) PRINT("! Web page %S from template %S\n", name, t);
-	if (Str::eq_wide_string(name, L"source.html"))
+	if (Str::eq_wide_string(name, U"source.html"))
 		Websites::web_copy_source(from, release_folder);
 	else
 		Websites::web_copy(from, write_to);
@@ -459,9 +459,9 @@ void Requests::report_requested_material(text_stream *ph) {
 @<Itemise the blorb file, possibly mentioning pictures and sounds@> =
 	if ((no_pictures_included > 1) || (no_sounds_included > 0) || (no_data_files_included > 0))
 		Placeholders::append_to(ph,
-			Str::literal(L"<li>The blorb file <b>[STORYFILE]</b> ([BLORBFILESIZE]K in size, "
-				L"including [BLORBFILEPICTURES] figures(s), [BLORBFILESOUNDS] "
-				L"sound(s) and [BLORBFILEDATAFILES] data files(s))</li>"));
+			Str::literal(U"<li>The blorb file <b>[STORYFILE]</b> ([BLORBFILESIZE]K in size, "
+				U"including [BLORBFILEPICTURES] figures(s), [BLORBFILESOUNDS] "
+				U"sound(s) and [BLORBFILEDATAFILES] data files(s))</li>"));
 	else
 		Placeholders::append_to(ph, I"<li>The blorb file <b>[STORYFILE]</b> ([BLORBFILESIZE]K in size)</li>");
 
@@ -526,7 +526,7 @@ void Requests::report_requested_material(text_stream *ph) {
 					Placeholders::append_to(ph, filesize);
 					DISCARD_TEXT(filesize)
 				}
-				if (Str::eq_wide_string(req->details3, L"--") == FALSE) {
+				if (Str::eq_wide_string(req->details3, U"--") == FALSE) {
 					Placeholders::append_to(ph, I" to subfolder ");
 					Placeholders::append_to(ph, req->details3);
 				}
@@ -545,7 +545,7 @@ application, called |openUrl|.
 	Placeholders::append_to(ph, I"<p><center>");
 	if (launch_website) {
 		Placeholders::append_to(ph,
-			Str::literal(L"<a href=\"javascript:window.Project."
+			Str::literal(U"<a href=\"javascript:window.Project."
 				"openUrl('file://[**MATERIALSFOLDERPATHOPEN]/Release/index.html')\">"
 				"<img src='inform:/outcome_images/browse.png' border=0></a> home page"));
 	}
@@ -553,9 +553,9 @@ application, called |openUrl|.
 		Placeholders::append_to(ph, I" : ");
 	if (launch_play)
 		Placeholders::append_to(ph,
-			Str::literal(L"<a href=\"javascript:window.Project."
-				L"openUrl('file://[**MATERIALSFOLDERPATHOPEN]/Release/play.html')\">"
-				L"<img src='inform:/outcome_images/browse.png' border=0></a> play-in-browser page"));
+			Str::literal(U"<a href=\"javascript:window.Project."
+				U"openUrl('file://[**MATERIALSFOLDERPATHOPEN]/Release/play.html')\">"
+				U"<img src='inform:/outcome_images/browse.png' border=0></a> play-in-browser page"));
 	Placeholders::append_to(ph, I"</center></p>");
 
 @ Since Inblorb has no knowledge of what the Inform source text producing

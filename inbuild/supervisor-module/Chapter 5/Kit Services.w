@@ -368,13 +368,13 @@ out I6T template files tidily.
 
 @<Read rest of line as argument@> =
 	Str::clear(argument);
-	if (Characters::is_space_or_tab(cr) == FALSE) PUT_TO(argument, cr);
+	if (Characters::is_space_or_tab((inchar32_t) cr) == FALSE) PUT_TO(argument, (inchar32_t) cr);
 	int at_start = TRUE;
 	while (TRUE) {
 		@<Read next character from I6T stream@>;
 		if ((cr == 10) || (cr == 13) || (cr == EOF)) break;
-		if ((at_start) && (Characters::is_space_or_tab(cr))) continue;
-		PUT_TO(argument, cr); at_start = FALSE;
+		if ((at_start) && (Characters::is_space_or_tab((inchar32_t) cr))) continue;
+		PUT_TO(argument, (inchar32_t) cr); at_start = FALSE;
 	}
 	while (Characters::is_space_or_tab(Str::get_last_char(argument)))
 		Str::delete_last_character(argument);

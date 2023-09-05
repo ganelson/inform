@@ -57,7 +57,7 @@ text_stream *EqualitySchemas::interpret_equality(kind *left, kind *right) {
 
 	text_stream *cr = Kinds::Behaviour::get_comparison_routine(left);
 	if ((Str::len(cr) == 0) ||
-		(Str::eq_wide_string(cr, L"signed")) ||
-		(Str::eq_wide_string(cr, L"UnsignedCompare"))) return I"*=-*1 == *2";
+		(Str::eq_wide_string(cr, U"signed")) ||
+		(Str::eq_wide_string(cr, U"UnsignedCompare"))) return I"*=-*1 == *2";
 	return I"*=- *_1(*1, *2) == 0";
 }

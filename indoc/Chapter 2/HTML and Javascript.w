@@ -445,7 +445,7 @@ void HTMLUtilities::defn_unpack(OUTPUT_STREAM, text_stream *given_defn, volume *
 }
 
 @<Given alternates divided by an ampersand, recurse to unpack each in turn@> =
-	if (Regexp::match(&mr, given_defn, L"(%c*?) & (%c*)")) {
+	if (Regexp::match(&mr, given_defn, U"(%c*?) & (%c*)")) {
 		HTMLUtilities::defn_unpack(OUT, mr.exp[0], V, S, anchor);
 		HTML_TAG("br");
 		WRITE("<i>or:</i>&#160;&#160;&#160;");
@@ -456,8 +456,8 @@ void HTMLUtilities::defn_unpack(OUTPUT_STREAM, text_stream *given_defn, volume *
 
 @<Work out an index mark for this definition@> =
 	Str::copy(index_as, given_defn);
-	if (indoc_settings->inform_definitions_mode) Regexp::replace(index_as, L" ...%c*", NULL, 0);
-	Regexp::replace(index_as, L": *", NULL, 0);
+	if (indoc_settings->inform_definitions_mode) Regexp::replace(index_as, U" ...%c*", NULL, 0);
+	Regexp::replace(index_as, U": *", NULL, 0);
 	WRITE_TO(index_as, "=___=!definition");
 	Indexes::mark_index_term(index_as, V, S, anchor, NULL, NULL, NULL);
 
@@ -465,26 +465,26 @@ void HTMLUtilities::defn_unpack(OUTPUT_STREAM, text_stream *given_defn, volume *
 	TEMPORARY_TEXT(proto)
 	HTML::open(proto, "p", I"class='defnprototype'", __FILE__, __LINE__);
 	/* given alternative wordings, put only the first in boldface */
-	Regexp::replace(defn, L"(%i+?)/(%C+)", L"%0</b>/%1<b>", REP_REPEATING);
+	Regexp::replace(defn, U"(%i+?)/(%C+)", U"%0</b>/%1<b>", REP_REPEATING);
 	WRITE_TO(proto, "<b>%S</b>", defn);
 	HTML::close(proto, "p", __FILE__, __LINE__);
 	Str::copy(defn, proto);
 
 @<Set the kind of the result of the phrase in italic, not bold@> =
-	if (Regexp::match(&mr, defn, L"(%c*) ... (%c*?)</b>")) {
+	if (Regexp::match(&mr, defn, U"(%c*) ... (%c*?)</b>")) {
 		WRITE_TO(defn, "%S</b> ... <i>", mr.exp[0]);
-		Regexp::replace(mr.exp[1], L"<b>", NULL, REP_REPEATING);
-		Regexp::replace(mr.exp[1], L"</b>", NULL, REP_REPEATING);
+		Regexp::replace(mr.exp[1], U"<b>", NULL, REP_REPEATING);
+		Regexp::replace(mr.exp[1], U"</b>", NULL, REP_REPEATING);
 		WRITE_TO(defn, "%S</i>", mr.exp[1]);
 	}
 
 @<Specially set and specially index a phrase to decide a condition@> =
-	if ((Regexp::match(&mr, defn, L"<b>if (%c*)")) &&
-		(Regexp::match(NULL, defn, L"%c*a condition%c*"))) {
+	if ((Regexp::match(&mr, defn, U"<b>if (%c*)")) &&
+		(Regexp::match(NULL, defn, U"%c*a condition%c*"))) {
 		WRITE_TO(defn, "<i>if</i> <b>%S", mr.exp[0]);
-		Regexp::replace(index_as, L"if ", NULL, REP_ATSTART);
+		Regexp::replace(index_as, U"if ", NULL, REP_ATSTART);
 		text_stream *index_alph = NULL;
-		if (Regexp::match(&mr, index_as, L"%(%c*?%) (%c*)")) index_alph = mr.exp[0];
+		if (Regexp::match(&mr, index_as, U"%(%c*?%) (%c*)")) index_alph = mr.exp[0];
 		TEMPORARY_TEXT(term)
 		WRITE_TO(term, "%S=___=!if-definition", index_as);
 		Indexes::mark_index_term(term, V, S, anchor, NULL, NULL, index_alph);
@@ -492,11 +492,11 @@ void HTMLUtilities::defn_unpack(OUTPUT_STREAM, text_stream *given_defn, volume *
 	}
 
 @<Specially set and specially index a text substitution@> =
-	if (Regexp::match(&mr, defn, L"<b>say \"%[(%c*)%]\"</b>")) {
+	if (Regexp::match(&mr, defn, U"<b>say \"%[(%c*)%]\"</b>")) {
 		WRITE_TO(defn, "say \"[<b>%S</b>]\"", mr.exp[0]);
-		Regexp::replace(index_as, L"say ", NULL, REP_ATSTART);
+		Regexp::replace(index_as, U"say ", NULL, REP_ATSTART);
 		text_stream *index_alph = NULL;
-		if (Regexp::match(&mr, index_as, L"%[%(?:%(%c*?%) %)?(%c*)%]")) index_alph = mr.exp[0];
+		if (Regexp::match(&mr, index_as, U"%[%(?:%(%c*?%) %)?(%c*)%]")) index_alph = mr.exp[0];
 		TEMPORARY_TEXT(term)
 		WRITE_TO(term, "%S=___=!say-definition", index_as);
 		Indexes::mark_index_term(term, V, S, anchor, NULL, NULL, index_alph);
@@ -504,14 +504,14 @@ void HTMLUtilities::defn_unpack(OUTPUT_STREAM, text_stream *given_defn, volume *
 	}
 
 @<Tidy up the definition paragraph@> =
-	Regexp::replace(defn, L"<b></b>", NULL, REP_REPEATING);
-	Regexp::replace(defn, L"</b><b>", NULL, REP_REPEATING);
+	Regexp::replace(defn, U"<b></b>", NULL, REP_REPEATING);
+	Regexp::replace(defn, U"</b><b>", NULL, REP_REPEATING);
 
 	TEMPORARY_TEXT(star)
 	Str::copy(star, defn);
 	Str::clear(defn);
 	int bl = 0;
-	while (Regexp::match(&mr, star, L"(%c)(%c*)")) {
+	while (Regexp::match(&mr, star, U"(%c)(%c*)")) {
 		text_stream *ch = mr.exp[0]; Str::copy(star, mr.exp[1]);
 		if (Str::eq(ch, I"(")) { if (bl == 0) WRITE_TO(defn, "</b>"); bl++; }
 		WRITE_TO(defn, "%S", ch);
@@ -556,7 +556,7 @@ void HTMLUtilities::tt_helper(text_stream *line, text_file_position *tfp, void *
 	tt_helper_state *tths = (tt_helper_state *) v_tths;
 	Str::trim_white_space_at_end(line);
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line, L"(%c*?)%[TEXT%](%c*)")) {
+	if (Regexp::match(&mr, line, U"(%c*?)%[TEXT%](%c*)")) {
 		WRITE_TO(tths->top_text, "%S", mr.exp[0]);
 		HTML::begin_div_with_id(tths->top_text, "bodytext");
 		HTML::end_div(tths->tail_text);

@@ -76,7 +76,7 @@ parse_node *Name::name_property_array(instance *I, wording W, wording PW,
 		ve = PreformUtilities::find_corresponding_word(ve,
 			<second-person-possessive-pronoun-table>,
 			<first-person-possessive-pronoun-table>);
-		wchar_t *p = Vocabulary::get_exemplar(ve, FALSE);
+		inchar32_t *p = Vocabulary::get_exemplar(ve, FALSE);
 		TEMPORARY_TEXT(content)
 		WRITE_TO(content, "%w", p);
 		EmitArrays::dword_entry(content); entry_count++;

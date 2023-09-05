@@ -27,9 +27,9 @@ void CoreModule::start(void) {
 	naming_feature = Features::new(&Naming::start, I"naming", core_feature);
 	counting_feature = Features::new(&InstanceCounting::start, I"instance counting", core_feature);
 
-	Log::declare_aspect(TASK_QUEUE_DA, L"task queue", FALSE, FALSE);
-	Log::declare_aspect(INTER_DA, L"inter", FALSE, FALSE);
-	Log::declare_aspect(INFORM_INTER_DA, L"inform inter", FALSE, FALSE);
+	Log::declare_aspect(TASK_QUEUE_DA, U"task queue", FALSE, FALSE);
+	Log::declare_aspect(INTER_DA, U"inter", FALSE, FALSE);
+	Log::declare_aspect(INFORM_INTER_DA, U"inform inter", FALSE, FALSE);
 
 	Writers::register_writer_I('B', &CoreModule::writer);
 	CorePreform::set_core_internal_NTIs();

@@ -48,10 +48,10 @@ DECLARE_CLASS(star_invention)
 void KindsModule::start(void) {
 	Writers::register_writer('u', &Kinds::Textual::writer);
 	Writers::register_logger('Q', Kinds::Dimensions::logger);
-	Log::declare_aspect(KIND_CHANGES_DA, L"kind changes", FALSE, TRUE);
-	Log::declare_aspect(KIND_CHECKING_DA, L"kind checking", FALSE, FALSE);
-	Log::declare_aspect(KIND_CREATIONS_DA, L"kind creations", FALSE, FALSE);
-	Log::declare_aspect(MATCHING_DA, L"matching", FALSE, FALSE);
+	Log::declare_aspect(KIND_CHANGES_DA, U"kind changes", FALSE, TRUE);
+	Log::declare_aspect(KIND_CHECKING_DA, U"kind checking", FALSE, FALSE);
+	Log::declare_aspect(KIND_CREATIONS_DA, U"kind creations", FALSE, FALSE);
+	Log::declare_aspect(MATCHING_DA, U"matching", FALSE, FALSE);
 	KindsModule::set_internal_NTIs();
 }
 void KindsModule::end(void) {

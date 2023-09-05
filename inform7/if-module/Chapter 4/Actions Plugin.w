@@ -49,8 +49,8 @@ void ActionsPlugin::start(void) {
 	PluginCalls::plug(COMPILE_TEST_TAIL_PLUG, RTRules::actions_compile_test_tail);
 	PluginCalls::plug(NEW_RCD_NOTIFY_PLUG, ActionRules::new_rcd);
 
-	Vocabulary::set_flags(Vocabulary::entry_for_text(L"doing"), ACTION_PARTICIPLE_MC);
-	Vocabulary::set_flags(Vocabulary::entry_for_text(L"asking"), ACTION_PARTICIPLE_MC);
+	Vocabulary::set_flags(Vocabulary::entry_for_text(U"doing"), ACTION_PARTICIPLE_MC);
+	Vocabulary::set_flags(Vocabulary::entry_for_text(U"asking"), ACTION_PARTICIPLE_MC);
 }
 
 int ActionsPlugin::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {

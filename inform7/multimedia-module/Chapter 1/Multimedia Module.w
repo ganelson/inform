@@ -30,7 +30,7 @@ void MultimediaModule::start(void) {
 	internal_files_feature = Features::new(&InternalFiles::start, I"glulx internal files",
 		multimedia_feature);
 
-	Log::declare_aspect(MULTIMEDIA_CREATIONS_DA, L"figure creations", FALSE, FALSE);
+	Log::declare_aspect(MULTIMEDIA_CREATIONS_DA, U"figure creations", FALSE, FALSE);
 }
 void MultimediaModule::end(void) {
 }

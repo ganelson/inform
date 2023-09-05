@@ -126,7 +126,7 @@ where the slash indicates an alternative wording:
 		if (Lexer::word(i) == OPENBRACKET_V) bl++;
 		else if (Lexer::word(i) == CLOSEBRACKET_V) bl--;
 		else if (bl == 0) {
-			wchar_t *p;
+			inchar32_t *p;
 			if (phrase_mc == SAY_PHRASE_MC) p = Lexer::word_raw_text(i);
 			else p = Lexer::word_text(i);
 			for (int j=0; p[j]; j++)
@@ -171,15 +171,15 @@ make the result too slow, and in any case authors do not often do this.
 @<Splice up the A and B forms of the slashed word@> =
 	for (int k=0; k<j; k++) PUT_TO(a_form, p[k]);
 	for (int k=j+1; p[k]; k++) PUT_TO(b_form, p[k]);
-	if (Str::eq_wide_string(a_form, L"--")) Str::clear(a_form);
-	if (Str::eq_wide_string(b_form, L"--")) Str::clear(b_form);
+	if (Str::eq_wide_string(a_form, U"--")) Str::clear(a_form);
+	if (Str::eq_wide_string(b_form, U"--")) Str::clear(b_form);
 
 @ If we don't check this then hybrids like |To say/adjust (X - an object)| will
 confuse two fundamentally different sorts of phrase. ("Say" is allowed after the
 first word, though.)
 
 @<Make sure the A form isn't the S-word@> =
-	if ((Str::eq_wide_string(a_form, L"say")) &&
+	if ((Str::eq_wide_string(a_form, U"say")) &&
 		(i == Wordings::first_wn(W)) && (phrase_mc != SAY_PHRASE_MC))
 		if (idb != last_phrase_with_problem_on_prototype) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SaySlashed),

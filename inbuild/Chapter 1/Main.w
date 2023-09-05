@@ -349,7 +349,7 @@ inbuild_copy *Main::file_or_path_to_copy(text_stream *arg, int throwing_error) {
 	TEMPORARY_TEXT(ext)
 	int pos = Str::len(arg) - 1, dotpos = -1;
 	while (pos >= 0) {
-		wchar_t c = Str::get_at(arg, pos);
+		inchar32_t c = Str::get_at(arg, pos);
 		if (Platform::is_folder_separator(c)) break;
 		if (c == '.') dotpos = pos;
 		pos--;
@@ -448,98 +448,98 @@ other options to the selection defined here.
 
 @<Read the command line@> =	
 	CommandLine::declare_heading(
-		L"[[Purpose]]\n\n"
-		L"usage: inbuild [-TASK] TARGET1 TARGET2 ...\n");
-	CommandLine::declare_switch(COPY_TO_CLSW, L"copy-to", 2,
-		L"copy target(s) to nest X");
-	CommandLine::declare_switch(SYNC_TO_CLSW, L"sync-to", 2,
-		L"forcibly copy target(s) to nest X, even if prior version already there");
-	CommandLine::declare_boolean_switch(VERSIONS_IN_FILENAMES_CLSW, L"versions-in-filenames", 1,
-		L"append _v number to destination filenames on -copy-to or -sync-to", TRUE);
-	CommandLine::declare_switch(BUILD_CLSW, L"build", 1,
-		L"incrementally build target(s)");
-	CommandLine::declare_switch(REBUILD_CLSW, L"rebuild", 1,
-		L"completely rebuild target(s)");
-	CommandLine::declare_switch(INSPECT_CLSW, L"inspect", 1,
-		L"show target(s) but take no action");
-	CommandLine::declare_switch(INSTALL_CLSW, L"install", 1,
-		L"install extension within the Inform GUI apps");
-	CommandLine::declare_switch(UNINSTALL_CLSW, L"uninstall", 1,
-		L"remove extension within the Inform GUI apps");
-	CommandLine::declare_switch(GRAPH_CLSW, L"graph", 1,
-		L"show dependency graph of target(s) but take no action");
-	CommandLine::declare_switch(USE_NEEDS_CLSW, L"use-needs", 1,
-		L"show all the extensions, kits and so on needed to use");
-	CommandLine::declare_switch(BUILD_NEEDS_CLSW, L"build-needs", 1,
-		L"show all the extensions, kits and so on needed to build");
-	CommandLine::declare_switch(USE_LOCATE_CLSW, L"use-locate", 1,
-		L"show file paths of all the extensions, kits and so on needed to use");
-	CommandLine::declare_switch(BUILD_LOCATE_CLSW, L"build-locate", 1,
-		L"show file paths of all the extensions, kits and so on needed to build");
-	CommandLine::declare_switch(USE_MISSING_CLSW, L"use-missing", 1,
-		L"show the extensions, kits and so on which are needed to use but missing");
-	CommandLine::declare_switch(BUILD_MISSING_CLSW, L"build-missing", 1,
-		L"show the extensions, kits and so on which are needed to build but missing");
-	CommandLine::declare_switch(ARCHIVE_CLSW, L"archive", 1,
-		L"sync copies of all extensions, kits and so on needed for -project into Materials");
-	CommandLine::declare_switch(ARCHIVE_TO_CLSW, L"archive-to", 2,
-		L"sync copies of all extensions, kits and so on needed into nest X");
-	CommandLine::declare_switch(TOOLS_CLSW, L"tools", 2,
-		L"make X the directory of intools executables");
-	CommandLine::declare_boolean_switch(DRY_CLSW, L"dry", 1,
-		L"make this a dry run (print but do not execute shell commands)", FALSE);
-	CommandLine::declare_boolean_switch(BUILD_TRACE_CLSW, L"build-trace", 1,
-		L"show verbose reasoning during -build", FALSE);
-	CommandLine::declare_switch(MATCHING_CLSW, L"matching", 2,
-		L"apply to all works in nest(s) matching requirement X");
-	CommandLine::declare_switch(CONTENTS_OF_CLSW, L"contents-of", 2,
-		L"apply to all targets in the directory X");
-	CommandLine::declare_boolean_switch(RECURSIVE_CLSW, L"recursive", 1,
-		L"run -contents-of recursively to look through subdirectories too", FALSE);
-	CommandLine::declare_switch(VERIFY_REGISTRY_CLSW, L"verify-registry", 2,
-		L"verify roster.json metadata of registry in the directory X");
-	CommandLine::declare_switch(BUILD_REGISTRY_CLSW, L"build-registry", 2,
-		L"construct HTML menu pages for registry in the directory X");
-	CommandLine::declare_switch(PREPROCESS_HTML_CLSW, L"preprocess-html", 2,
-		L"construct HTML page based on X");
-	CommandLine::declare_switch(PREPROCESS_HTML_TO_CLSW, L"preprocess-html-to", 2,
-		L"set destination for -preprocess-html to be X");
-	CommandLine::declare_switch(PREPROCESS_APP_CLSW, L"preprocess-app", 2,
-		L"use CSS suitable for app platform X (macos, windows, linux)");
-	CommandLine::declare_boolean_switch(REPAIR_CLSW, L"repair", 1,
-		L"quietly fix missing or incorrect extension metadata", TRUE);
-	CommandLine::declare_switch(RESULTS_CLSW, L"results", 2,
-		L"write HTML report file to X (for use within Inform GUI apps)");
-	CommandLine::declare_boolean_switch(CONFIRMED_CLSW, L"confirmed", 1,
-		L"confirm installation in the Inform GUI apps", TRUE);
-	CommandLine::declare_boolean_switch(VERBOSE_CLSW, L"verbose", 1,
-		L"equivalent to -verbosity=1", FALSE);
-	CommandLine::declare_numerical_switch(VERBOSITY_CLSW, L"verbosity", 1,
-		L"how much explanation to print: lowest is 0 (default), highest is 3");
-	CommandLine::declare_switch(JSON_CLSW, L"json", 2,
-		L"write output of -inspect to a JSON file in X (or '-' for stdout)");
-	CommandLine::declare_switch(DOCUMENT_CLSW, L"document", 1,
-		L"(re-)generate documentation on this within current project");
-	CommandLine::declare_switch(DOCUMENT_FROM_CLSW, L"document-from", 2,
-		L"generate documentation from documentation source file X");
-	CommandLine::declare_switch(DOCUMENT_TO_CLSW, L"document-to", 2,
-		L"divert generated documentation to directory X");
-	CommandLine::declare_switch(MODERNISE_CLSW, L"modernise", 1,
-		L"update copies to the newest available format");
+		U"[[Purpose]]\n\n"
+		U"usage: inbuild [-TASK] TARGET1 TARGET2 ...\n");
+	CommandLine::declare_switch(COPY_TO_CLSW, U"copy-to", 2,
+		U"copy target(s) to nest X");
+	CommandLine::declare_switch(SYNC_TO_CLSW, U"sync-to", 2,
+		U"forcibly copy target(s) to nest X, even if prior version already there");
+	CommandLine::declare_boolean_switch(VERSIONS_IN_FILENAMES_CLSW, U"versions-in-filenames", 1,
+		U"append _v number to destination filenames on -copy-to or -sync-to", TRUE);
+	CommandLine::declare_switch(BUILD_CLSW, U"build", 1,
+		U"incrementally build target(s)");
+	CommandLine::declare_switch(REBUILD_CLSW, U"rebuild", 1,
+		U"completely rebuild target(s)");
+	CommandLine::declare_switch(INSPECT_CLSW, U"inspect", 1,
+		U"show target(s) but take no action");
+	CommandLine::declare_switch(INSTALL_CLSW, U"install", 1,
+		U"install extension within the Inform GUI apps");
+	CommandLine::declare_switch(UNINSTALL_CLSW, U"uninstall", 1,
+		U"remove extension within the Inform GUI apps");
+	CommandLine::declare_switch(GRAPH_CLSW, U"graph", 1,
+		U"show dependency graph of target(s) but take no action");
+	CommandLine::declare_switch(USE_NEEDS_CLSW, U"use-needs", 1,
+		U"show all the extensions, kits and so on needed to use");
+	CommandLine::declare_switch(BUILD_NEEDS_CLSW, U"build-needs", 1,
+		U"show all the extensions, kits and so on needed to build");
+	CommandLine::declare_switch(USE_LOCATE_CLSW, U"use-locate", 1,
+		U"show file paths of all the extensions, kits and so on needed to use");
+	CommandLine::declare_switch(BUILD_LOCATE_CLSW, U"build-locate", 1,
+		U"show file paths of all the extensions, kits and so on needed to build");
+	CommandLine::declare_switch(USE_MISSING_CLSW, U"use-missing", 1,
+		U"show the extensions, kits and so on which are needed to use but missing");
+	CommandLine::declare_switch(BUILD_MISSING_CLSW, U"build-missing", 1,
+		U"show the extensions, kits and so on which are needed to build but missing");
+	CommandLine::declare_switch(ARCHIVE_CLSW, U"archive", 1,
+		U"sync copies of all extensions, kits and so on needed for -project into Materials");
+	CommandLine::declare_switch(ARCHIVE_TO_CLSW, U"archive-to", 2,
+		U"sync copies of all extensions, kits and so on needed into nest X");
+	CommandLine::declare_switch(TOOLS_CLSW, U"tools", 2,
+		U"make X the directory of intools executables");
+	CommandLine::declare_boolean_switch(DRY_CLSW, U"dry", 1,
+		U"make this a dry run (print but do not execute shell commands)", FALSE);
+	CommandLine::declare_boolean_switch(BUILD_TRACE_CLSW, U"build-trace", 1,
+		U"show verbose reasoning during -build", FALSE);
+	CommandLine::declare_switch(MATCHING_CLSW, U"matching", 2,
+		U"apply to all works in nest(s) matching requirement X");
+	CommandLine::declare_switch(CONTENTS_OF_CLSW, U"contents-of", 2,
+		U"apply to all targets in the directory X");
+	CommandLine::declare_boolean_switch(RECURSIVE_CLSW, U"recursive", 1,
+		U"run -contents-of recursively to look through subdirectories too", FALSE);
+	CommandLine::declare_switch(VERIFY_REGISTRY_CLSW, U"verify-registry", 2,
+		U"verify roster.json metadata of registry in the directory X");
+	CommandLine::declare_switch(BUILD_REGISTRY_CLSW, U"build-registry", 2,
+		U"construct HTML menu pages for registry in the directory X");
+	CommandLine::declare_switch(PREPROCESS_HTML_CLSW, U"preprocess-html", 2,
+		U"construct HTML page based on X");
+	CommandLine::declare_switch(PREPROCESS_HTML_TO_CLSW, U"preprocess-html-to", 2,
+		U"set destination for -preprocess-html to be X");
+	CommandLine::declare_switch(PREPROCESS_APP_CLSW, U"preprocess-app", 2,
+		U"use CSS suitable for app platform X (macos, windows, linux)");
+	CommandLine::declare_boolean_switch(REPAIR_CLSW, U"repair", 1,
+		U"quietly fix missing or incorrect extension metadata", TRUE);
+	CommandLine::declare_switch(RESULTS_CLSW, U"results", 2,
+		U"write HTML report file to X (for use within Inform GUI apps)");
+	CommandLine::declare_boolean_switch(CONFIRMED_CLSW, U"confirmed", 1,
+		U"confirm installation in the Inform GUI apps", TRUE);
+	CommandLine::declare_boolean_switch(VERBOSE_CLSW, U"verbose", 1,
+		U"equivalent to -verbosity=1", FALSE);
+	CommandLine::declare_numerical_switch(VERBOSITY_CLSW, U"verbosity", 1,
+		U"how much explanation to print: lowest is 0 (default), highest is 3");
+	CommandLine::declare_switch(JSON_CLSW, U"json", 2,
+		U"write output of -inspect to a JSON file in X (or '-' for stdout)");
+	CommandLine::declare_switch(DOCUMENT_CLSW, U"document", 1,
+		U"(re-)generate documentation on this within current project");
+	CommandLine::declare_switch(DOCUMENT_FROM_CLSW, U"document-from", 2,
+		U"generate documentation from documentation source file X");
+	CommandLine::declare_switch(DOCUMENT_TO_CLSW, U"document-to", 2,
+		U"divert generated documentation to directory X");
+	CommandLine::declare_switch(MODERNISE_CLSW, U"modernise", 1,
+		U"update copies to the newest available format");
 
 	CommandLine::begin_group(MARKDOWN_SUITE_CLSG, I"for generating HTML from Markdown");
-	CommandLine::declare_switch(MARKDOWN_FROM_CLSW, L"markdown-from", 2,
-		L"generate HTML file from Markdown source file X");
-	CommandLine::declare_switch(MARKDOWN_TO_CLSW, L"markdown-to", 2,
-		L"set filename for single Markdown-generated HTML file to be X");
-	CommandLine::declare_switch(MARKDOWN_FROM_DIR_CLSW, L"markdown-from-dir", 2,
-		L"generate HTML files from all Markdown sources in X");
-	CommandLine::declare_switch(MARKDOWN_TO_DIR_CLSW, L"markdown-to-dir", 2,
-		L"generate HTML files from Markdown sources into X");
-	CommandLine::declare_switch(MARKDOWN_MODEL_CLSW, L"markdown-model", 2,
-		L"use this model file when generating HTML from Markdown ('none' for none)");
-	CommandLine::declare_switch(MARKDOWN_VARIATION_CLSW, L"markdown-variation", 2,
-		L"use dialect X of Markdown: 'CommonMark', 'GitHub', 'Inform', 'RTP'");
+	CommandLine::declare_switch(MARKDOWN_FROM_CLSW, U"markdown-from", 2,
+		U"generate HTML file from Markdown source file X");
+	CommandLine::declare_switch(MARKDOWN_TO_CLSW, U"markdown-to", 2,
+		U"set filename for single Markdown-generated HTML file to be X");
+	CommandLine::declare_switch(MARKDOWN_FROM_DIR_CLSW, U"markdown-from-dir", 2,
+		U"generate HTML files from all Markdown sources in X");
+	CommandLine::declare_switch(MARKDOWN_TO_DIR_CLSW, U"markdown-to-dir", 2,
+		U"generate HTML files from Markdown sources into X");
+	CommandLine::declare_switch(MARKDOWN_MODEL_CLSW, U"markdown-model", 2,
+		U"use this model file when generating HTML from Markdown ('none' for none)");
+	CommandLine::declare_switch(MARKDOWN_VARIATION_CLSW, U"markdown-variation", 2,
+		U"use dialect X of Markdown: 'CommonMark', 'GitHub', 'Inform', 'RTP'");
 	CommandLine::end_group();
 
 	Supervisor::declare_options();

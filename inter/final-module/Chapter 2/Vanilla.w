@@ -145,11 +145,11 @@ void Vanilla::splat(code_generation *gen, inter_tree_node *P) {
 void Vanilla::splat_matter(OUTPUT_STREAM, inter_tree *I, text_stream *S) {
 	int L = Str::len(S);
 	for (int i=0; i<L; i++) {
-		wchar_t c = Str::get_at(S, i);
+		inchar32_t c = Str::get_at(S, i);
 		if (c == URL_SYMBOL_CHAR) {
 			TEMPORARY_TEXT(T)
 			for (i++; i<L; i++) {
-				wchar_t c = Str::get_at(S, i);
+				inchar32_t c = Str::get_at(S, i);
 				if (c == URL_SYMBOL_CHAR) break;
 				PUT_TO(T, c);
 			}

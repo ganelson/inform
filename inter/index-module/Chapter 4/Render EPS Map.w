@@ -417,9 +417,9 @@ is "PsyNn".
 		for (j=Str::len(txt)-1; j>=0; j--)
 			if (Str::get_at(txt, j) == ' ') goto RemoveOne;
 		for (j=Str::len(txt)-1; j>=0; j--)
-			if (islower(Str::get_at(txt, j))) goto RemoveOne;
+			if (Characters::islower(Str::get_at(txt, j))) goto RemoveOne;
 		for (j=Str::len(txt)-1; j>=0; j--)
-			if (isupper(Str::get_at(txt, j)) == FALSE) goto RemoveOne;
+			if (Characters::isupper(Str::get_at(txt, j)) == FALSE) goto RemoveOne;
 		Str::truncate(txt, abbrev_to);
 		break;
 		RemoveOne: Str::delete_nth_character(txt, j);
@@ -565,12 +565,12 @@ void RenderEPSMap::EPS_compile_set_colour(OUTPUT_STREAM, text_stream *htmlcolour
 	WRITE("setrgbcolor %% From HTML colour %S\n", htmlcolour);
 }
 
-void RenderEPSMap::choose_colour_beam(OUTPUT_STREAM, int hex1, int hex2) {
+void RenderEPSMap::choose_colour_beam(OUTPUT_STREAM, inchar32_t hex1, inchar32_t hex2) {
 	int k = RenderEPSMap::hex_to_int(hex1)*16 + RenderEPSMap::hex_to_int(hex2);
 	WRITE("%.6g ", (double) (((float) k)/255.0));
 }
 
-int RenderEPSMap::hex_to_int(int hex) {
+int RenderEPSMap::hex_to_int(inchar32_t hex) {
 	switch(hex) {
 		case '0': return 0;
 		case '1': return 1;

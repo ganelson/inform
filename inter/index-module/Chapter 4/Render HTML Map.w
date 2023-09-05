@@ -395,14 +395,14 @@ from each other.)
 =
 void HTMLMap::compute_room_colours(index_session *session) {
 	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
-	wchar_t *some_map_colours[NO_REGION_COLOURS] = {
-		L"Pale Green", L"Light Blue", L"Plum",
-		L"Light Sea Green", L"Light Slate Blue", L"Navajo White",
-		L"Violet Red", L"Light Cyan", L"Light Coral", L"Light Pink",
-		L"Medium Aquamarine", L"Medium Blue", L"Medium Orchid",
-		L"Medium Purple", L"Medium Sea Green", L"Medium Slate Blue",
-		L"Medium Spring Green", L"Medium Turquoise", L"Medium Violet Red",
-		L"Light Golden Rod Yellow" };
+	inchar32_t *some_map_colours[NO_REGION_COLOURS] = {
+		U"Pale Green", U"Light Blue", U"Plum",
+		U"Light Sea Green", U"Light Slate Blue", U"Navajo White",
+		U"Violet Red", U"Light Cyan", U"Light Coral", U"Light Pink",
+		U"Medium Aquamarine", U"Medium Blue", U"Medium Orchid",
+		U"Medium Purple", U"Medium Sea Green", U"Medium Slate Blue",
+		U"Medium Spring Green", U"Medium Turquoise", U"Medium Violet Red",
+		U"Light Golden Rod Yellow" };
 
 	faux_instance *RG;
 	int regc = 0;
@@ -415,7 +415,7 @@ void HTMLMap::compute_room_colours(index_session *session) {
 		}
 
 	text_stream *default_room_col = Str::new();
-	WRITE_TO(default_room_col, "%w", HTML::translate_colour_name(L"Light Grey"));
+	WRITE_TO(default_room_col, "%w", HTML::translate_colour_name(U"Light Grey"));
 	faux_instance *R;
 	LOOP_OVER_FAUX_ROOMS(faux_set, R)
 		if (R->fimd.colour == NULL) {

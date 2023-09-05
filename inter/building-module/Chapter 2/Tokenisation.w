@@ -38,7 +38,7 @@ void Tokenisation::go(inter_schema *sch, text_stream *from, int pos, int abbrevi
 	text_stream *current_raw = Str::new();
 	int tokeniser_state = NO_TOKSTATE;
 	for (; pos<definition_length; pos++) {
-		int c = Str::get_at(from, pos);
+		inchar32_t c = Str::get_at(from, pos);
 		if (Characters::is_whitespace(c)) {
 			if (c == '\n') line_offset++;
 			if ((tokeniser_state == TOK_TOKSTATE) || (tokeniser_state == NO_TOKSTATE)) {
@@ -140,13 +140,13 @@ void Tokenisation::go(inter_schema *sch, text_stream *from, int pos, int abbrevi
 
 @<Process any escape character notation in single quotes@> =
 	for (int i=0; i<Str::len(current_raw); i++) {
-		wchar_t c = Str::get_at(current_raw, i);
+		inchar32_t c = Str::get_at(current_raw, i);
 		PUT_TO(unescaped, c);
 	}
 
 @<Process any escape character notation in double quotes@> =
 	for (int i=0; i<Str::len(current_raw); i++) {
-		wchar_t c = Str::get_at(current_raw, i);
+		inchar32_t c = Str::get_at(current_raw, i);
 		PUT_TO(unescaped, c);
 	}
 
@@ -166,7 +166,7 @@ void Tokenisation::go(inter_schema *sch, text_stream *from, int pos, int abbrevi
 	if (accept) {
 		@<Absorb raw material, if any@>;
 		@<Expand a fragment of Inform 7 text@>;
-	} else { int c = '('; @<Absorb a raw character@>; pos = save_pos; }
+	} else { inchar32_t c = '('; @<Absorb a raw character@>; pos = save_pos; }
 	DISCARD_TEXT(source_text_fragment)
 
 @ Note that the empty I7 interpolation is legal, but produces no token.
@@ -187,17 +187,17 @@ a "bracing".
 	int save_pos = pos++, accept = FALSE;
 	TEMPORARY_TEXT(bracing)
 	while (TRUE) {
-		int c = Str::get_at(from, pos);
+		inchar32_t c = Str::get_at(from, pos);
 		if (c == 0) break;
 		if (c == '}') { accept = TRUE; break; }
 		PUT_TO(bracing, c);
 		pos++;
 	}
-	int first = Str::get_first_char(bracing);
+	inchar32_t first = Str::get_first_char(bracing);
 	if ((accept) && (first != ' ') && (first != '\t') && (first != '\n') && (first != '|')) {
 		@<Absorb raw material, if any@>;
 		@<Parse a bracing into an inline command@>;
-	} else { int c = '{'; @<Absorb a raw character@>; pos = save_pos; }
+	} else { inchar32_t c = '{'; @<Absorb a raw character@>; pos = save_pos; }
 	DISCARD_TEXT(bracing)
 
 @ That's everything, then, except the one thing that counts: how to expand
@@ -212,129 +212,129 @@ a bracing.
 	@<Decompose the bracing@>;
 	if (Str::len(t->command) > 0) {
 		int c = unknown_ISINC, sc = no_ISINSC;
-		if (Str::eq_wide_string(t->command, L"primitive-definition")) {
+		if (Str::eq_wide_string(t->command, U"primitive-definition")) {
 			c = primitive_definition_ISINC;
-			if (Str::eq_wide_string(t->operand, L"repeat-through")) {
+			if (Str::eq_wide_string(t->operand, U"repeat-through")) {
 				sc = repeat_through_ISINSC;
-			} else if (Str::eq_wide_string(t->operand, L"repeat-through-list")) {
+			} else if (Str::eq_wide_string(t->operand, U"repeat-through-list")) {
 				sc = repeat_through_list_ISINSC;
-			} else if (Str::eq_wide_string(t->operand, L"number-of")) {
+			} else if (Str::eq_wide_string(t->operand, U"number-of")) {
 				sc = number_of_ISINSC;
-			} else if (Str::eq_wide_string(t->operand, L"random-of")) {
+			} else if (Str::eq_wide_string(t->operand, U"random-of")) {
 				sc = random_of_ISINSC;
-			} else if (Str::eq_wide_string(t->operand, L"total-of")) {
+			} else if (Str::eq_wide_string(t->operand, U"total-of")) {
 				sc = total_of_ISINSC;
-			} else if (Str::eq_wide_string(t->operand, L"extremal")) {
+			} else if (Str::eq_wide_string(t->operand, U"extremal")) {
 				sc = extremal_ISINSC;
-			} else if (Str::eq_wide_string(t->operand, L"function-application")) {
+			} else if (Str::eq_wide_string(t->operand, U"function-application")) {
 				sc = function_application_ISINSC;
-			} else if (Str::eq_wide_string(t->operand, L"description-application")) {
+			} else if (Str::eq_wide_string(t->operand, U"description-application")) {
 				sc = description_application_ISINSC;
-			} else if (Str::eq_wide_string(t->operand, L"solve-equation")) {
+			} else if (Str::eq_wide_string(t->operand, U"solve-equation")) {
 				sc = solve_equation_ISINSC;
-			} else if (Str::eq_wide_string(t->operand, L"switch")) {
+			} else if (Str::eq_wide_string(t->operand, U"switch")) {
 				sc = switch_ISINSC;
-			} else if (Str::eq_wide_string(t->operand, L"break")) {
+			} else if (Str::eq_wide_string(t->operand, U"break")) {
 				sc = break_ISINSC;
-			} else if (Str::eq_wide_string(t->operand, L"verbose-checking")) {
+			} else if (Str::eq_wide_string(t->operand, U"verbose-checking")) {
 				sc = verbose_checking_ISINSC;
 			}
-		} else if (Str::eq_wide_string(t->command, L"new")) {
+		} else if (Str::eq_wide_string(t->command, U"new")) {
 			c = new_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"new-list-of")) {
+		} else if (Str::eq_wide_string(t->command, U"new-list-of")) {
 			c = new_list_of_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"printing-routine")) {
+		} else if (Str::eq_wide_string(t->command, U"printing-routine")) {
 			c = printing_routine_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"ranger-routine")) {
+		} else if (Str::eq_wide_string(t->command, U"ranger-routine")) {
 			c = ranger_routine_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"indexing-routine")) {
+		} else if (Str::eq_wide_string(t->command, U"indexing-routine")) {
 			c = indexing_routine_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"next-routine")) {
+		} else if (Str::eq_wide_string(t->command, U"next-routine")) {
 			c = next_routine_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"previous-routine")) {
+		} else if (Str::eq_wide_string(t->command, U"previous-routine")) {
 			c = previous_routine_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"strong-kind")) {
+		} else if (Str::eq_wide_string(t->command, U"strong-kind")) {
 			c = strong_kind_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"weak-kind")) {
+		} else if (Str::eq_wide_string(t->command, U"weak-kind")) {
 			c = weak_kind_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"backspace")) {
+		} else if (Str::eq_wide_string(t->command, U"backspace")) {
 			c = backspace_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"erase")) {
+		} else if (Str::eq_wide_string(t->command, U"erase")) {
 			c = erase_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"open-brace")) {
+		} else if (Str::eq_wide_string(t->command, U"open-brace")) {
 			c = open_brace_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"close-brace")) {
+		} else if (Str::eq_wide_string(t->command, U"close-brace")) {
 			c = close_brace_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"label")) {
+		} else if (Str::eq_wide_string(t->command, U"label")) {
 			c = label_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"counter")) {
+		} else if (Str::eq_wide_string(t->command, U"counter")) {
 			c = counter_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"counter-storage")) {
+		} else if (Str::eq_wide_string(t->command, U"counter-storage")) {
 			c = counter_storage_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"counter-up")) {
+		} else if (Str::eq_wide_string(t->command, U"counter-up")) {
 			c = counter_up_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"counter-down")) {
+		} else if (Str::eq_wide_string(t->command, U"counter-down")) {
 			c = counter_down_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"counter-makes-array")) {
+		} else if (Str::eq_wide_string(t->command, U"counter-makes-array")) {
 			c = counter_makes_array_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"by-reference")) {
+		} else if (Str::eq_wide_string(t->command, U"by-reference")) {
 			c = by_reference_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"by-reference-blank-out")) {
+		} else if (Str::eq_wide_string(t->command, U"by-reference-blank-out")) {
 			c = by_reference_blank_out_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"reference-exists")) {
+		} else if (Str::eq_wide_string(t->command, U"reference-exists")) {
 			c = reference_exists_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"lvalue-by-reference")) {
+		} else if (Str::eq_wide_string(t->command, U"lvalue-by-reference")) {
 			c = lvalue_by_reference_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"by-value")) {
+		} else if (Str::eq_wide_string(t->command, U"by-value")) {
 			c = by_value_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"box-quotation-text")) {
+		} else if (Str::eq_wide_string(t->command, U"box-quotation-text")) {
 			c = box_quotation_text_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"try-action")) {
+		} else if (Str::eq_wide_string(t->command, U"try-action")) {
 			c = try_action_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"try-action-silently")) {
+		} else if (Str::eq_wide_string(t->command, U"try-action-silently")) {
 			c = try_action_silently_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"return-value")) {
+		} else if (Str::eq_wide_string(t->command, U"return-value")) {
 			c = return_value_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"return-value-from-rule")) {
+		} else if (Str::eq_wide_string(t->command, U"return-value-from-rule")) {
 			c = return_value_from_rule_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"property-holds-block-value")) {
+		} else if (Str::eq_wide_string(t->command, U"property-holds-block-value")) {
 			c = property_holds_block_value_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"mark-event-used")) {
+		} else if (Str::eq_wide_string(t->command, U"mark-event-used")) {
 			c = mark_event_used_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"rtp-code")) {
+		} else if (Str::eq_wide_string(t->command, U"rtp-code")) {
 			c = rtp_code_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"rtp-location")) {
+		} else if (Str::eq_wide_string(t->command, U"rtp-location")) {
 			c = rtp_location_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"my")) {
+		} else if (Str::eq_wide_string(t->command, U"my")) {
 			c = my_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"unprotect")) {
+		} else if (Str::eq_wide_string(t->command, U"unprotect")) {
 			c = unprotect_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"copy")) {
+		} else if (Str::eq_wide_string(t->command, U"copy")) {
 			c = copy_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"initialise")) {
+		} else if (Str::eq_wide_string(t->command, U"initialise")) {
 			c = initialise_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"matches-description")) {
+		} else if (Str::eq_wide_string(t->command, U"matches-description")) {
 			c = matches_description_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"now-matches-description")) {
+		} else if (Str::eq_wide_string(t->command, U"now-matches-description")) {
 			c = now_matches_description_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"arithmetic-operation")) {
+		} else if (Str::eq_wide_string(t->command, U"arithmetic-operation")) {
 			c = arithmetic_operation_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"say")) {
+		} else if (Str::eq_wide_string(t->command, U"say")) {
 			c = say_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"show-me")) {
+		} else if (Str::eq_wide_string(t->command, U"show-me")) {
 			c = show_me_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"segment-count")) {
+		} else if (Str::eq_wide_string(t->command, U"segment-count")) {
 			c = segment_count_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"final-segment-marker")) {
+		} else if (Str::eq_wide_string(t->command, U"final-segment-marker")) {
 			c = final_segment_marker_ISINC;
-		} else if (Str::eq_wide_string(t->command, L"list-together")) {
+		} else if (Str::eq_wide_string(t->command, U"list-together")) {
 			c = list_together_ISINC;
-			if (Str::eq_wide_string(t->operand, L"unarticled")) {
+			if (Str::eq_wide_string(t->operand, U"unarticled")) {
 				sc = unarticled_ISINSC;
-			} else if (Str::eq_wide_string(t->operand, L"articled")) {
+			} else if (Str::eq_wide_string(t->operand, U"articled")) {
 				sc = articled_ISINSC;
 			}
-		} else if (Str::eq_wide_string(t->command, L"rescale")) {
+		} else if (Str::eq_wide_string(t->command, U"rescale")) {
 			c = rescale_ISINC;
 		}
 		t->inline_command = c;
@@ -364,7 +364,7 @@ optional, operand in |operand2|.
 	if (Str::get_first_char(t->bracing) == '-') {
 		int portion = 1;
 		for (int i=1, L = Str::len(t->bracing); i<L; i++) {
-			int c = Str::get_at(t->bracing, i);
+			inchar32_t c = Str::get_at(t->bracing, i);
 			switch(portion) {
 				case 1:
 					if (c == ':') portion = 2;
@@ -412,7 +412,7 @@ of modifiers are allowed. See //calculus: Compilation Schemas//.
 
 @<Look for a possible abbreviated command@> =
 	int at = pos;
-	wchar_t c = Str::get_at(from, ++at);
+	inchar32_t c = Str::get_at(from, ++at);
 	int iss_bitmap = 0;
 	switch (c) {
 		case '!': I6Errors::issue_at_node(sch->node_tree, 
@@ -463,10 +463,10 @@ of modifiers are allowed. See //calculus: Compilation Schemas//.
 		I6Errors::issue_at_node(sch->node_tree, 
 			I"the '*-' schema notation has been abolished"); 
 	} else if (c == '*') {
-		int c = '*'; @<Absorb a raw character@>;
+		inchar32_t c = '*'; @<Absorb a raw character@>;
 		pos = at;
 	} else {
-		int c = '{'; @<Absorb a raw character@>;
+		inchar32_t c = '{'; @<Absorb a raw character@>;
 	}
 
 @ That leaves us with just the main case to handle: raw I6 code which is
@@ -494,7 +494,7 @@ off what we scanned through since the last time.
 	int L = Str::len(current_raw);
 	int c_start = 0, escaped = FALSE;
 	for (int p = 0; p < L; p++) {
-		wchar_t c1 = Str::get_at(current_raw, p), c2 = 0, c3 = 0;
+		inchar32_t c1 = Str::get_at(current_raw, p), c2 = 0, c3 = 0;
 		if (p < L-1) c2 = Str::get_at(current_raw, p+1);
 		if (p < L-2) c3 = Str::get_at(current_raw, p+2);
 
@@ -695,7 +695,7 @@ but speed is not quite important enough to make it worthwhile.
 		(Characters::isalpha(Str::get_at(T, 2)))) {
 		is = IDENTIFIER_ISTT;
 		LOOP_THROUGH_TEXT(P, T) {
-			wchar_t c = Str::get(P);
+			inchar32_t c = Str::get(P);
 			if ((c != '_') && (c != '#') && (!Tokenisation::identchar(c)))
 				is = RAW_ISTT;
 		}
@@ -703,7 +703,7 @@ but speed is not quite important enough to make it worthwhile.
 	if ((Str::get_at(T, 0) == '#') && (Characters::isalpha(Str::get_at(T, 1)))) {
 		is = IDENTIFIER_ISTT;
 		LOOP_THROUGH_TEXT(P, T) {
-			wchar_t c = Str::get(P);
+			inchar32_t c = Str::get(P);
 			if ((c != '_') && (c != '#') && (c != '$') && (!Tokenisation::identchar(c)))
 				is = RAW_ISTT;
 		}
@@ -711,7 +711,7 @@ but speed is not quite important enough to make it worthwhile.
 	if ((Str::get_at(T, 0) == '_') && (Characters::isalpha(Str::get_at(T, 1)))) {
 		is = IDENTIFIER_ISTT;
 		LOOP_THROUGH_TEXT(P, T) {
-			wchar_t c = Str::get(P);
+			inchar32_t c = Str::get(P);
 			if ((c != '_') && (c != '#') && (!Tokenisation::identchar(c)))
 				is = RAW_ISTT;
 		}
@@ -719,26 +719,26 @@ but speed is not quite important enough to make it worthwhile.
 	if (Characters::isalpha(Str::get_at(T, 0))) {
 		is = IDENTIFIER_ISTT;
 		LOOP_THROUGH_TEXT(P, T) {
-			wchar_t c = Str::get(P);
+			inchar32_t c = Str::get(P);
 			if ((c != '_') && (!Tokenisation::identchar(c)))
 				is = RAW_ISTT;
 		}
-		if (Str::begins_with_wide_string(T, L"QUOTED_INAME_0_")) which_quote = 0;
-		else if (Str::begins_with_wide_string(T, L"QUOTED_INAME_1_")) which_quote = 1;
+		if (Str::begins_with_wide_string(T, U"QUOTED_INAME_0_")) which_quote = 0;
+		else if (Str::begins_with_wide_string(T, U"QUOTED_INAME_1_")) which_quote = 1;
 		if (Str::eq(T, I"I7_string")) { Str::clear(T); WRITE_TO(T, "I7_String"); }
 		if (Str::eq(T, I"COMMA_WORD")) { Str::clear(T); WRITE_TO(T, "comma_word"); }
 	}
 	if (Characters::isdigit(Str::get_at(T, 0))) {
 		is = NUMBER_ISTT;
 		LOOP_THROUGH_TEXT(P, T) {
-			wchar_t c = Str::get(P);
+			inchar32_t c = Str::get(P);
 			if (!Characters::isdigit(c))
 				is = RAW_ISTT;
 		}
 	}
 	if (Str::get_at(T, 0) == '$') {
 		is = HEX_NUMBER_ISTT;
-		wchar_t c = Str::get_at(T, 1);
+		inchar32_t c = Str::get_at(T, 1);
 		if (c == '$') is = BIN_NUMBER_ISTT;
 		if (c == '+') is = REAL_NUMBER_ISTT;
 		if (c == '-') is = REAL_NUMBER_ISTT;
@@ -823,7 +823,7 @@ of it is deleted, and the newline replaced by a single space.
 @<Normalise the white space@> =
 	int run_start = -1, run_len = 0, run_includes = FALSE;
 	for (int i=0; i<Str::len(raw); i++) {
-		wchar_t c = Str::get_at(raw, i);
+		inchar32_t c = Str::get_at(raw, i);
 		if ((c == ' ') || (c == '\t') || (c == '\n')) {
 			if (run_start == -1) {
 				run_start = i;
@@ -850,7 +850,7 @@ mark. All other string escapes begin with |@|.
 @<De-escape raw into text@> =
 	for (int i=0; i<Str::len(raw); i++) {
 		@<De-escape the Inform 7 unicode escape@>;
-		wchar_t c = Str::get_at(raw, i);
+		inchar32_t c = Str::get_at(raw, i);
 		switch (c) {
 			case '^': PUT_TO(text, '\n'); break;
 			case '~': PUT_TO(text, '\"'); break;
@@ -885,7 +885,7 @@ a kit source file.
 	if (Str::includes_at(raw, i, I"[unicode ")) {
 		int unicode_point = 0;
 		for (int j=i+9; j<Str::len(raw); j++) {
-			wchar_t c = Str::get_at(raw, j);
+			inchar32_t c = Str::get_at(raw, j);
 			if (c == ']') {
 				unicode_point = Str::atoi(raw, i+9);
 				i = j;
@@ -894,7 +894,7 @@ a kit source file.
 			if (Characters::isdigit(c) == FALSE) break;
 		}
 		if (unicode_point > 0) {
-			PUT_TO(text, unicode_point);
+			PUT_TO(text, (inchar32_t) unicode_point);
 			continue;
 		}
 	}
@@ -907,11 +907,11 @@ and |skip| will count the total length of the escape, in raw characters.
 Thus for |@{2af4}| the |skip| count would be 7.
 
 @<Extract the escape token@> =
-	wchar_t d = Str::get_at(raw, i+1);
+	inchar32_t d = Str::get_at(raw, i+1);
 	if (d == '{') {
 		skip++;
 		while (Str::get_at(raw, i+skip)) {
-			wchar_t e = Str::get_at(raw, i+skip);
+			inchar32_t e = Str::get_at(raw, i+skip);
 			skip++;
 			if (e == '}') break;
 			PUT_TO(token, e);
@@ -920,7 +920,7 @@ Thus for |@{2af4}| the |skip| count would be 7.
 	} else if (d == '@') {
 		skip++;
 		while (Characters::isdigit(Str::get_at(raw, i+skip))) {
-			wchar_t e = Str::get_at(raw, i+skip);
+			inchar32_t e = Str::get_at(raw, i+skip);
 			skip++;
 			PUT_TO(token, e);
 		}
@@ -937,13 +937,13 @@ do is convert the token from a string to hex and then put it as a character.
 @<Expand hexadecimal Unicode value@> =
 	int N = 0;
 	LOOP_THROUGH_TEXT(pos, token) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		int D = Tokenisation::hex_val(c);
 		if (D == -1) { N = -1; break; }
 		N = 16*N + D;
 	}
 	if (N == -1) WRITE_TO(text, "?ERROR<%S>", token);
-	else PUT_TO(text, N);
+	else PUT_TO(text, (inchar32_t) N);
 
 @ Decimal notation is substantially more annoying, because it uses the ZSCII
 character set, not Unicode. ZSCII is (for our purposes at least) the same as
@@ -956,7 +956,7 @@ in the DM4.
 
 @<Expand decimal ZSCII value@> =
 	int N = Str::atoi(token, 0);
-	if (N<128) PUT_TO(text, N);
+	if ((N>0) && (N<128)) PUT_TO(text, (inchar32_t) N);
 	else {
 		switch (N) {
 			case 155: PUT_TO(text, 0xE4); break; /* a-diarhesis */
@@ -1040,8 +1040,8 @@ recognise both. For similar reasons, we recognise both |@/o| and |@\o| as
 a Scandinavian o-stroke.
 
 @<Expand TeX-style digraph@> =
-	wchar_t c = Str::get_at(token, 0);
-	wchar_t d = Str::get_at(token, 1);
+	inchar32_t c = Str::get_at(token, 0);
+	inchar32_t d = Str::get_at(token, 1);
 	switch (c) {
 		case '\'': /* these are acute accents */
 			switch (d) {
@@ -1219,10 +1219,10 @@ a Scandinavian o-stroke.
 @
 
 =
-int Tokenisation::hex_val(wchar_t c) {
-	if ((c >= '0') && (c <= '9')) return c - '0';
-	if ((c >= 'a') && (c <= 'f')) return c - 'a' + 10;
-	if ((c >= 'A') && (c <= 'F')) return c - 'A' + 10;
+int Tokenisation::hex_val(inchar32_t c) {
+	if ((c >= '0') && (c <= '9')) return (int) (c - '0');
+	if ((c >= 'a') && (c <= 'f')) return (int) (c - 'a' + 10);
+	if ((c >= 'A') && (c <= 'F')) return (int) (c - 'A' + 10);
 	return -1;
 }
 
@@ -1267,7 +1267,7 @@ void Tokenisation::de_escape_sq_text(text_stream *text) {
 
 @<Expand the literal text@> =
 	for (int i=0; i<Str::len(raw); i++) {
-		wchar_t c = Str::get_at(raw, i);
+		inchar32_t c = Str::get_at(raw, i);
 		if ((c == '/') && (Str::get_at(raw, i+1) == '/'))
 			@<Past this point escape characters do not apply@>;
 		if (c == '@') {
@@ -1295,7 +1295,7 @@ void Tokenisation::de_escape_sq_text(text_stream *text) {
 @ Lastly, this defines valid identifier characters:
 
 =
-int Tokenisation::identchar(wchar_t c) {
+int Tokenisation::identchar(inchar32_t c) {
 	if ((Characters::isalnum(c)) || (c == '`')) return TRUE;
 	return FALSE;
 }

@@ -19,7 +19,7 @@ In particular, the tangler of |inweb| replaces the |[[nonterminals]]| below with
 invocations of the |REGISTER_NONTERMINAL| and |INTERNAL_NONTERMINAL| macros.
 For example, it inserts the C line:
 = (text as C)
-	INTERNAL_NONTERMINAL(L"<any-integer>", any_integer_NTM, 1, 1);
+	INTERNAL_NONTERMINAL(U"<any-integer>", any_integer_NTM, 1, 1);
 =
 since this is an "internal" nonterminal; and the macro will then expand
 to code which sets up |any_integer_NTM| -- see below.
@@ -47,7 +47,7 @@ suppose //inweb// sees the following in the web it is tangling:
 =
 It then tangles this macro usage into //Nonterminals::register// above:
 = (text as C)
-	REGISTER_NONTERMINAL(L"<competitor>", competitor_NTM);
+	REGISTER_NONTERMINAL(U"<competitor>", competitor_NTM);
 =
 And it also tangles matching declarations for:
 (a) the global variable |competitor_NTM|, of type |nonterminal *|;
@@ -72,7 +72,7 @@ compositor function:
 
 @ For example, this might expand to:
 = (text as C)
-	competitor_NTM = Nonterminals::find(Vocabulary::entry_for_text(L"<competitor>"));
+	competitor_NTM = Nonterminals::find(Vocabulary::entry_for_text(U"<competitor>"));
 	competitor_NTM->compositor_fn = competitor_NTMC;
 =
 Note that it is absolutely necessary that |Nonterminals::find| does

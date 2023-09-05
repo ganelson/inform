@@ -68,7 +68,7 @@ void RTTestCommand::compilation_agent(compilation_subtask *t) {
 	int l = 0;
 	text_stream *p = test->text_of_script;
 	for (int i=0, L = Str::len(p); i<L; i++, l++)
-		if (Str::includes_wide_string_at(p, L"[']", i))
+		if (Str::includes_wide_string_at(p, U"[']", i))
 			l -= 2;
 	Hierarchy::apply_metadata_from_number(RTTestCommand::package(test),
 		TEST_LENGTH_MD_HL, (inter_ti) l);

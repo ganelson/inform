@@ -58,11 +58,11 @@ void InterpretIndex::read_structure(text_stream *text, text_file_position *tfp, 
 	index_session *session = (index_session *) state;
 	localisation_dictionary *D = Indexing::get_localisation(session);
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, text, L"page (%C+) (%C+)")) {
+	if (Regexp::match(&mr, text, U"page (%C+) (%C+)")) {
 		@<Register a new index page@>;
-	} else if (Regexp::match(&mr, text, L"contents (%C+) (%C+)")) {
+	} else if (Regexp::match(&mr, text, U"contents (%C+) (%C+)")) {
 		@<Register a new index page@>;
-	} else if (Regexp::match(&mr, text, L"element (%C+)")) {
+	} else if (Regexp::match(&mr, text, U"element (%C+)")) {
 		@<Register a new index element@>;
 	}
 	Regexp::dispose_of(&mr);

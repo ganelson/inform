@@ -71,9 +71,9 @@ inter_name *RTProperties::iname(property *prn) {
 		if (Str::len(prn->compilation_data.translation) > 0) {
 			TEMPORARY_TEXT(T)
 			LOOP_THROUGH_TEXT(pos, prn->compilation_data.translation) {
-				wchar_t c = Str::get(pos);
-				if ((isalpha(c)) || (Characters::isdigit(c)) || (c == '_'))
-					PUT_TO(T, (int) c);
+				inchar32_t c = Str::get(pos);
+				if ((Characters::isalpha(c)) || (Characters::isdigit(c)) || (c == '_'))
+					PUT_TO(T, c);
 				else
 					PUT_TO(T, '_');
 			}

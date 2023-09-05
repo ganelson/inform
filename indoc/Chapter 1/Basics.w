@@ -24,8 +24,8 @@ void Basics::end(void) {
 @e INSTRUCTIONS_DA
 
 @<Declare the debugging log aspects@> =
-	Log::declare_aspect(SYMBOLS_DA, L"symbols", FALSE, FALSE);
-	Log::declare_aspect(INSTRUCTIONS_DA, L"instructions", FALSE, FALSE);
+	Log::declare_aspect(SYMBOLS_DA, U"symbols", FALSE, FALSE);
+	Log::declare_aspect(INSTRUCTIONS_DA, U"instructions", FALSE, FALSE);
 
 @h Setting up the memory manager.
 We need to itemise the structures we'll want to allocate:

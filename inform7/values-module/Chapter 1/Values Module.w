@@ -28,13 +28,13 @@ COMPILE_WRITER(nonlocal_variable *, NonlocalVariables::log)
 void ValuesModule::start(void) {
 	Tables::Relations::start();
 	Writers::register_writer('I', &Instances::writer);
-	Log::declare_aspect(LITERAL_NOTATIONS_DA, L"literal notations", FALSE, FALSE);
-	Log::declare_aspect(OBJECT_CREATIONS_DA, L"object creations", FALSE, FALSE);
-	Log::declare_aspect(PHRASE_USAGE_DA, L"phrase usage", FALSE, FALSE);
-	Log::declare_aspect(SPECIFICITIES_DA, L"specificities", FALSE, FALSE);
-	Log::declare_aspect(TEXT_SUBSTITUTIONS_DA, L"text substitutions", FALSE, FALSE);
-	Log::declare_aspect(VARIABLE_CREATIONS_DA, L"variable creations", FALSE, FALSE);
-	Log::declare_aspect(TABLES_DA, L"table construction", FALSE, FALSE);
+	Log::declare_aspect(LITERAL_NOTATIONS_DA, U"literal notations", FALSE, FALSE);
+	Log::declare_aspect(OBJECT_CREATIONS_DA, U"object creations", FALSE, FALSE);
+	Log::declare_aspect(PHRASE_USAGE_DA, U"phrase usage", FALSE, FALSE);
+	Log::declare_aspect(SPECIFICITIES_DA, U"specificities", FALSE, FALSE);
+	Log::declare_aspect(TEXT_SUBSTITUTIONS_DA, U"text substitutions", FALSE, FALSE);
+	Log::declare_aspect(VARIABLE_CREATIONS_DA, U"variable creations", FALSE, FALSE);
+	Log::declare_aspect(TABLES_DA, U"table construction", FALSE, FALSE);
 	Memory::reason_name(UNICODE_DATA_MREASON, "Unicode data");
 	Memory::reason_name(LITERAL_PATTERN_MREASON, "Literal pattern storage");
 	REGISTER_WRITER('O', Instances::log);

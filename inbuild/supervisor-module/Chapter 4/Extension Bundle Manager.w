@@ -138,7 +138,7 @@ void ExtensionBundleManager::dismantle_name(text_stream *name,
 	TEMPORARY_TEXT(title)
 	int pos = Str::len(name) - 1, dotpos = -1;
 	while (pos >= 0) {
-		wchar_t c = Str::get_at(name, pos);
+		inchar32_t c = Str::get_at(name, pos);
 		if (Platform::is_folder_separator(c)) break;
 		if (c == '.') dotpos = pos;
 		pos--;
@@ -151,7 +151,7 @@ void ExtensionBundleManager::dismantle_name(text_stream *name,
 	}
 	semantic_version_number V = VersionNumbers::null();
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, title, L"(%c+)-v([0-9_]+)")) {
+	if (Regexp::match(&mr, title, U"(%c+)-v([0-9_]+)")) {
 		Str::clear(title);
 		WRITE_TO(title, "%S", mr.exp[0]);
 		LOOP_THROUGH_TEXT(pos, mr.exp[1])

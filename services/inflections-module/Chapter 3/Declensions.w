@@ -123,7 +123,7 @@ declension Declensions::decline_inner(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl
 					(pr->first_pt->next_pt == NULL) ||
 					(pr->first_pt->next_pt->ptoken_category != NONTERMINAL_PTC))
 					Declensions::error(nt, nl, I"line malformed");
-				wchar_t *gender_letter = Vocabulary::get_exemplar(pr->first_pt->ve_pt, FALSE);
+				inchar32_t *gender_letter = Vocabulary::get_exemplar(pr->first_pt->ve_pt, FALSE);
 				if ((gender_letter[0] == '*') ||
 					((gender_letter[0] == 'm') && (gen == MASCULINE_GENDER)) ||
 					((gender_letter[0] == 'f') && (gen == FEMININE_GENDER)) ||
@@ -207,7 +207,7 @@ declension Declensions::decline_from_groups(wording W, NATURAL_LANGUAGE_WORDS_TY
 	WRITE_TO(from, "%+W", W);
 	match_avinue *group_trie = PreformUtilities::define_trie(gnt, TRIE_END,
 		DefaultLanguage::get(nl));
-	wchar_t *result = Tries::search_avinue(group_trie, from);
+	inchar32_t *result = Tries::search_avinue(group_trie, from);
 	DISCARD_TEXT(from)
 	if (result == NULL) {
 		*found = FALSE;
@@ -231,11 +231,11 @@ declension Declensions::decline_from_groups(wording W, NATURAL_LANGUAGE_WORDS_TY
 }
 
 @<Set the group number@> =
-	group = result[0] - '0';
+	group = (int) (result[0] - '0');
 	if ((group <= 0) || (group > 9))
 		Declensions::error(nt, nl, I"noun declension grouper result not a group number");
 	if (result[1]) {
-		int u = result[1] - '0';
+		int u = (int) (result[1] - '0');
 		if ((u < 0) || (u > 9))
 			Declensions::error(nt, nl, I"noun declension grouper result not a group number");
 		group = group*10 + u;

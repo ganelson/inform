@@ -137,7 +137,7 @@ compatibility_specification *Compatibility::from_text(text_stream *text) {
 		error_in_syntax = TRUE;
 
 @<Parse out the prefix not@> =
-	if (Regexp::match(&mr, parse, L"not (%c+)")) {
+	if (Regexp::match(&mr, parse, U"not (%c+)")) {
 		Str::clear(parse);
 		WRITE_TO(parse, "%S", mr.exp[0]);
 		Str::trim_white_space(parse);
@@ -146,14 +146,14 @@ compatibility_specification *Compatibility::from_text(text_stream *text) {
 	}
 
 @<Remove the meaningless word for@> =
-	if (Regexp::match(&mr, parse, L"for (%c+)")) {
+	if (Regexp::match(&mr, parse, U"for (%c+)")) {
 		Str::clear(parse);
 		WRITE_TO(parse, "%S", mr.exp[0]);
 		Str::trim_white_space(parse);
 	}
 
 @<Parse out the suffix only@> =
-	if (Regexp::match(&mr, parse, L"(%c+) only")) {
+	if (Regexp::match(&mr, parse, U"(%c+) only")) {
 		Str::clear(parse);
 		WRITE_TO(parse, "%S", mr.exp[0]);
 		Str::trim_white_space(parse);
@@ -207,7 +207,7 @@ We end the sequence of tokens with a |NULL|, telling the token-parser that
 it has reached the end.
 
 @<Reduce the text to a sequence of tokens@> =
-	while (Regexp::match(&mr, text, L"(%C+) (%c+)")) {
+	while (Regexp::match(&mr, text, U"(%C+) (%c+)")) {
 		int comma = FALSE;
 		if (Str::get_last_char(mr.exp[0]) == ',') {
 			comma = TRUE;
@@ -231,11 +231,11 @@ trims; and otherwise returns |NOT_APPLICABLE| and leaves |T| unaltered.
 int Compatibility::parse_debugging(text_stream *T) {
 	int with = NOT_APPLICABLE;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, T, L"with debugging,* *(%c*)")) {
+	if (Regexp::match(&mr, T, U"with debugging,* *(%c*)")) {
 		Str::clear(T);
 		Str::copy(T, mr.exp[0]);
 		with = TRUE;
-	} else if (Regexp::match(&mr, T, L"without debugging,* *(%c*)")) {
+	} else if (Regexp::match(&mr, T, U"without debugging,* *(%c*)")) {
 		Str::clear(T);
 		Str::copy(T, mr.exp[0]);
 		with = FALSE;

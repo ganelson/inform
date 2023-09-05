@@ -22,8 +22,8 @@ void IndexModule::start(void) {
 	Memory::reason_name(INDEX_SORTING_MREASON, "index sorting");
 	Memory::reason_name(MAP_INDEX_MREASON, "map in the World index");
 	Memory::reason_name(SCENE_SORTING_MREASON, "scene index sorting");
-	Log::declare_aspect(SPATIAL_MAP_DA, L"spatial map", FALSE, FALSE);
-	Log::declare_aspect(SPATIAL_MAP_WORKINGS_DA, L"spatial map workings", FALSE, FALSE);
+	Log::declare_aspect(SPATIAL_MAP_DA, U"spatial map", FALSE, FALSE);
+	Log::declare_aspect(SPATIAL_MAP_WORKINGS_DA, U"spatial map workings", FALSE, FALSE);
 }
 void IndexModule::end(void) {
 }

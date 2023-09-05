@@ -29,7 +29,7 @@ scheme is expressed as a bitmap of features, each o which can be off or on.
 @d CT_EXPAND_APOSTROPHES_RAWLY 512 /* sometimes regard |'| as |"| */
 
 =
-void TranscodeText::from_wide_string(OUTPUT_STREAM, wchar_t *p, int options) {
+void TranscodeText::from_wide_string(OUTPUT_STREAM, inchar32_t *p, int options) {
 	int i, from = 0, to = Wide::len(p), esc_digit = FALSE;
 	if ((options & CT_DEQUOTE) && (p[0] == '"') && (p[to-1] == '"')) {
 		from++; to--;
@@ -101,7 +101,7 @@ void TranscodeText::from_wide_string(OUTPUT_STREAM, wchar_t *p, int options) {
 phrase invocation:
 
 =
-void TranscodeText::from_wide_string_for_emission(OUTPUT_STREAM, wchar_t *p) {
+void TranscodeText::from_wide_string_for_emission(OUTPUT_STREAM, inchar32_t *p) {
 	int i, from = 0, to = Wide::len(p);
 	if ((p[0] == '"') && (p[to-1] == '"')) {
 		from++; to--;
@@ -130,7 +130,7 @@ void TranscodeText::from_wide_string_for_emission(OUTPUT_STREAM, wchar_t *p) {
 @ And this one for the special conventions applying to box quotations:
 
 =
-void TranscodeText::bq_from_wide_string(OUTPUT_STREAM, wchar_t *p) {
+void TranscodeText::bq_from_wide_string(OUTPUT_STREAM, inchar32_t *p) {
 	int i, from = 0, to = Wide::len(p), esc_digit = FALSE;
 	if ((p[0] == '"') && (p[to-1] == '"')) {
 		from++; to--;
@@ -191,7 +191,7 @@ void TranscodeText::from_stream(OUTPUT_STREAM, text_stream *p, int options) {
 	}
 	if (options & CT_RAW) {
 		for (i=from; i<to; i++) {
-			wchar_t c = Str::get_at(p, i);
+			inchar32_t c = Str::get_at(p, i);
 			if ((i == from) && (options & CT_CAPITALISE))
 				WRITE("%c", (int) Characters::toupper(c));
 			else
@@ -199,7 +199,7 @@ void TranscodeText::from_stream(OUTPUT_STREAM, text_stream *p, int options) {
 		}
 	} else {
 		for (i=from; i<to; i++) {
-			wchar_t c = Str::get_at(p, i);
+			inchar32_t c = Str::get_at(p, i);
 			switch(c) {
 				case '\n':
 					if (options & CT_BOX_QUOTATION) WRITE("\"\n\"");
@@ -291,7 +291,7 @@ exceptional case.
 @d MAX_UNISUB_LENGTH 128
 
 =
-int TranscodeText::expand_unisub(OUTPUT_STREAM, wchar_t *p, int i) {
+int TranscodeText::expand_unisub(OUTPUT_STREAM, inchar32_t *p, int i) {
 	if ((p[i+1] == 'u') && (p[i+2] == 'n') && (p[i+3] == 'i') && (p[i+4] == 'c')
 		&& (p[i+5] == 'o') && (p[i+6] == 'd') && (p[i+7] == 'e') && (p[i+8] == ' ')) {
 		TEMPORARY_TEXT(substitution_buffer)
@@ -302,14 +302,14 @@ int TranscodeText::expand_unisub(OUTPUT_STREAM, wchar_t *p, int i) {
 		if (p[j] == ']') {
 			wording XW = Feeds::feed_text(substitution_buffer);
 			if (<s-unicode-character>(XW) == FALSE) return -1;
-			PUT(Rvalues::to_Unicode_point(<<rp>>));
+			PUT((inchar32_t) Rvalues::to_Unicode_point(<<rp>>));
 			return j;
 		} else return -1;
 	} else return -1;
 }
 
 int TranscodeText::expand_unisub_S(OUTPUT_STREAM, text_stream *p, int i) {
-	if (Str::includes_wide_string_at(p, L"unicode ", i+1)) {
+	if (Str::includes_wide_string_at(p, U"unicode ", i+1)) {
 		TEMPORARY_TEXT(substitution_buffer)
 		int j = i+9;
 		while (Str::get_at(p, j) == ' ') j++;
@@ -318,7 +318,7 @@ int TranscodeText::expand_unisub_S(OUTPUT_STREAM, text_stream *p, int i) {
 		if (Str::get_at(p, j) == ']') {
 			wording XW = Feeds::feed_text(substitution_buffer);
 			if (<s-unicode-character>(XW) == FALSE) return -1;
-			PUT(Rvalues::to_Unicode_point(<<rp>>));
+			PUT((inchar32_t) Rvalues::to_Unicode_point(<<rp>>));
 			return j;
 		} else return -1;
 	} else return -1;
@@ -329,7 +329,7 @@ int TranscodeText::expand_unisub_S(OUTPUT_STREAM, text_stream *p, int i) {
 =
 void TranscodeText::from_text_with_options(OUTPUT_STREAM, wording W, int opts, int raw) {
 	LOOP_THROUGH_WORDING(j, W) {
-		wchar_t *p;
+		inchar32_t *p;
 		if (raw) p = Lexer::word_raw_text(j); else p = Lexer::word_text(j);
 		TranscodeText::from_wide_string(OUT, p, opts);
 		if (j<Wordings::last_wn(W)) WRITE(" ");

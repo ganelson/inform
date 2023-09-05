@@ -334,7 +334,7 @@ void ToPhraseFamily::compile(imperative_defn_family *self,
 				(IDTypeData::token_contains_variable(&(idb->type_data), k) == FALSE)) {
 				current_sentence = ImperativeDefinitions::body_at(idb);
 				TEMPORARY_TEXT(var_letter)
-				PUT_TO(var_letter, 'A'+k-1);
+				PUT_TO(var_letter, (inchar32_t) ('A'+k-1));
 				Problems::quote_source(1, current_sentence);
 				Problems::quote_stream(2, var_letter);
 				StandardProblems::handmade_problem(Task::syntax_tree(),

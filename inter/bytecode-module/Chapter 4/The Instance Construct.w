@@ -112,7 +112,7 @@ void InstanceInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_l
 
 @<Find the enumerated type this will belong to@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, type_text, L"%((%c+)%)"))
+	if (Regexp::match(&mr, type_text, U"%((%c+)%)"))
 		inst_type = InterTypes::parse_simple(InterBookmark::scope(IBM), eloc, mr.exp[0], E);
 	Regexp::dispose_of(&mr);
 	if (*E) return;
@@ -120,7 +120,7 @@ void InstanceInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_l
 @<Find the instance name and enumerated value, if given@> =
 	text_stream *value_text = NULL;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, instance_text, L"(%i+) = (%c+)")) {
+	if (Regexp::match(&mr, instance_text, U"(%i+) = (%c+)")) {
 		instance_text = mr.exp[0]; value_text = mr.exp[1];
 	}
 	instance_s =

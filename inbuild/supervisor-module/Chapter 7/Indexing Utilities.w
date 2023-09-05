@@ -30,7 +30,7 @@ void IndexUtilities::general_link(OUTPUT_STREAM, text_stream *cl, text_stream *t
 void IndexUtilities::escape_HTML_characters_in(text_stream *text) {
 	TEMPORARY_TEXT(modified)
 	for (int i=0, L=Str::len(text); i<L; i++) {
-		int c = Str::get_at(text, i);
+		inchar32_t c = Str::get_at(text, i);
 		switch (c) {
 			case '\"': 		WRITE_TO(modified, "&quot;"); break;
 			case '<':		WRITE_TO(modified, "&lt;"); break;
@@ -66,9 +66,9 @@ emphasis; and are also used to mark headwords for indexing, as in
 =
 typedef struct span_notation {
 	int sp_purpose;							/* one of the |*_SPP| constants */
-	wchar_t sp_left[MAX_PATTERN_LENGTH]; 	/* wide C string: the start pattern */
+	inchar32_t sp_left[MAX_PATTERN_LENGTH]; 	/* wide C string: the start pattern */
 	int sp_left_len;
-	wchar_t sp_right[MAX_PATTERN_LENGTH];	/* wide C string: and end pattern */
+	inchar32_t sp_right[MAX_PATTERN_LENGTH];	/* wide C string: and end pattern */
 	int sp_right_len;
 	struct text_stream *sp_style;
 	CLASS_DEFINITION
@@ -112,34 +112,34 @@ void IndexUtilities::improve_alphabetisation(text_stream *sort_key) {
 	} else {
 		LOOP_THROUGH_TEXT(pos, sort_key)
 			Str::put(pos, Characters::tolower(Str::get(pos)));
-		Regexp::replace(sort_key, L"a ", NULL, REP_ATSTART);
-		Regexp::replace(sort_key, L"an ", NULL, REP_ATSTART);
-		Regexp::replace(sort_key, L"the ", NULL, REP_ATSTART);
+		Regexp::replace(sort_key, U"a ", NULL, REP_ATSTART);
+		Regexp::replace(sort_key, U"an ", NULL, REP_ATSTART);
+		Regexp::replace(sort_key, U"the ", NULL, REP_ATSTART);
 		LOOP_THROUGH_TEXT(pos, sort_key)
-			Str::put(pos, Characters::tolower(Characters::remove_wchar_t_accent(Str::get(pos))));
-		Regexp::replace(sort_key, L"%[ *%]", L"____SQUARES____", REP_REPEATING);
-		Regexp::replace(sort_key, L"%[", NULL, REP_REPEATING);
-		Regexp::replace(sort_key, L"%]", NULL, REP_REPEATING);
-		Regexp::replace(sort_key, L"____SQUARES____", L"[]", REP_REPEATING);
-		Regexp::replace(sort_key, L"%(", NULL, REP_REPEATING);
-		Regexp::replace(sort_key, L"%)", NULL, REP_REPEATING);
-		Regexp::replace(sort_key, L"1 ", L"one ", REP_ATSTART);
-		Regexp::replace(sort_key, L"2 ", L"two ", REP_ATSTART);
-		Regexp::replace(sort_key, L"3 ", L"three ", REP_ATSTART);
-		Regexp::replace(sort_key, L"4 ", L"four ", REP_ATSTART);
-		Regexp::replace(sort_key, L"5 ", L"five ", REP_ATSTART);
-		Regexp::replace(sort_key, L"6 ", L"six ", REP_ATSTART);
-		Regexp::replace(sort_key, L"7 ", L"seven ", REP_ATSTART);
-		Regexp::replace(sort_key, L"8 ", L"eight ", REP_ATSTART);
-		Regexp::replace(sort_key, L"9 ", L"nine ", REP_ATSTART);
-		Regexp::replace(sort_key, L"10 ", L"ten ", REP_ATSTART);
-		Regexp::replace(sort_key, L"11 ", L"eleven ", REP_ATSTART);
-		Regexp::replace(sort_key, L"12 ", L"twelve ", REP_ATSTART);
+			Str::put(pos, Characters::tolower(Characters::remove_accent(Str::get(pos))));
+		Regexp::replace(sort_key, U"%[ *%]", U"____SQUARES____", REP_REPEATING);
+		Regexp::replace(sort_key, U"%[", NULL, REP_REPEATING);
+		Regexp::replace(sort_key, U"%]", NULL, REP_REPEATING);
+		Regexp::replace(sort_key, U"____SQUARES____", U"[]", REP_REPEATING);
+		Regexp::replace(sort_key, U"%(", NULL, REP_REPEATING);
+		Regexp::replace(sort_key, U"%)", NULL, REP_REPEATING);
+		Regexp::replace(sort_key, U"1 ", U"one ", REP_ATSTART);
+		Regexp::replace(sort_key, U"2 ", U"two ", REP_ATSTART);
+		Regexp::replace(sort_key, U"3 ", U"three ", REP_ATSTART);
+		Regexp::replace(sort_key, U"4 ", U"four ", REP_ATSTART);
+		Regexp::replace(sort_key, U"5 ", U"five ", REP_ATSTART);
+		Regexp::replace(sort_key, U"6 ", U"six ", REP_ATSTART);
+		Regexp::replace(sort_key, U"7 ", U"seven ", REP_ATSTART);
+		Regexp::replace(sort_key, U"8 ", U"eight ", REP_ATSTART);
+		Regexp::replace(sort_key, U"9 ", U"nine ", REP_ATSTART);
+		Regexp::replace(sort_key, U"10 ", U"ten ", REP_ATSTART);
+		Regexp::replace(sort_key, U"11 ", U"eleven ", REP_ATSTART);
+		Regexp::replace(sort_key, U"12 ", U"twelve ", REP_ATSTART);
 		TEMPORARY_TEXT(x)
 		Str::copy(x, sort_key);
 		Str::clear(sort_key);
 		match_results mr = Regexp::create_mr();
-		while (Regexp::match(&mr, x, L"(%c*?)(%d+)(%c*)")) {
+		while (Regexp::match(&mr, x, U"(%c*?)(%d+)(%c*)")) {
 			WRITE_TO(sort_key, "%S", mr.exp[0]);
 			Str::copy(x, mr.exp[2]);
 			WRITE_TO(sort_key, "%08d", Str::atoi(mr.exp[1], 0));
@@ -151,9 +151,9 @@ void IndexUtilities::improve_alphabetisation(text_stream *sort_key) {
 
 @ =
 int letters_taken[26];
-void IndexUtilities::note_letter(wchar_t c) {
-	int i = c - (wchar_t) 'A';
-	if ((i>=0) && (i<26)) letters_taken[i] = TRUE;
+void IndexUtilities::note_letter(inchar32_t c) {
+	inchar32_t i = c - (inchar32_t) 'A';
+	if (i<26) letters_taken[i] = TRUE;
 }
 void IndexUtilities::alphabet_row(OUTPUT_STREAM, int sequence) {
 	switch (sequence) {
@@ -167,7 +167,7 @@ void IndexUtilities::alphabet_row(OUTPUT_STREAM, int sequence) {
 				if (letters_taken[i] == FALSE) {
 					if (faked == FALSE) { faked = TRUE; HTML_OPEN("p"); }
 					TEMPORARY_TEXT(singleton)
-					PUT_TO(singleton, 'A'+i);
+					PUT_TO(singleton, (inchar32_t) ('A'+i));
 					HTML::anchor(OUT, singleton);
 					DISCARD_TEXT(singleton)
 				}

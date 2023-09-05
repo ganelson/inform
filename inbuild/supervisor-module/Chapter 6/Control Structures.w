@@ -17,7 +17,7 @@ typedef struct control_structure_phrase {
 	int is_a_loop;
 	int requires_new_syntax;
 	int allow_run_on;
-	wchar_t *keyword;
+	inchar32_t *keyword;
 	CLASS_DEFINITION
 } control_structure_phrase;
 
@@ -31,7 +31,7 @@ control_structure_phrase *ControlStructures::new(text_stream *mnemonic) {
 	csp->used_at_stage = -1;
 	csp->requires_new_syntax = FALSE;
 	csp->allow_run_on = FALSE;
-	csp->keyword = L"<none>";
+	csp->keyword = U"<none>";
 	csp->is_a_loop = FALSE;
 	return csp;
 }
@@ -61,17 +61,17 @@ void ControlStructures::create_standard(void) {
 	switch_CSP->body_empty_except_for_subordinates = TRUE;
 	switch_CSP->indent_subblocks = TRUE;
 	switch_CSP->requires_new_syntax = TRUE;
-	switch_CSP->keyword = L"if";
+	switch_CSP->keyword = U"if";
 
 	if_CSP = ControlStructures::new(I"IF");
-	if_CSP->keyword = L"if";
+	if_CSP->keyword = U"if";
 
 	repeat_CSP = ControlStructures::new(I"RPT");
-	repeat_CSP->keyword = L"repeat";
+	repeat_CSP->keyword = U"repeat";
 	repeat_CSP->is_a_loop = TRUE;
 
 	while_CSP = ControlStructures::new(I"WHI");
-	while_CSP->keyword = L"while";
+	while_CSP->keyword = U"while";
 	while_CSP->is_a_loop = TRUE;
 
 	otherwise_CSP = ControlStructures::new(I"O");
@@ -185,9 +185,9 @@ int ControlStructures::permits_break(control_structure_phrase *csp) {
 	return FALSE;
 }
 
-wchar_t *ControlStructures::incipit(control_structure_phrase *csp) {
+inchar32_t *ControlStructures::incipit(control_structure_phrase *csp) {
 	if (csp) return csp->keyword;
-	return L"<none>";
+	return U"<none>";
 }
 
 control_structure_phrase *ControlStructures::detect(wording W) {

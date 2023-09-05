@@ -10,7 +10,7 @@ typedef struct inter_construct {
 	inter_ti construct_ID; /* used to identify this in bytecode */
 	struct text_stream *construct_name;
 
-	wchar_t recognition_regexp[MAX_RECOGNITION_REGEXP_LENGTH];
+	inchar32_t recognition_regexp[MAX_RECOGNITION_REGEXP_LENGTH];
 	struct text_stream *syntax;
 
 	int min_level; /* min node tree depth within its package */
@@ -238,34 +238,34 @@ void InterInstruction::specify_syntax(inter_construct *IC, text_stream *syntax) 
 	IC->syntax = syntax;
 	TEMPORARY_TEXT(regexp)
 	for (int i = 0; i < Str::len(syntax); i++) {
-		if (Str::includes_wide_string_at(syntax, L"OPTIONALIDENTIFIER", i)) {
+		if (Str::includes_wide_string_at(syntax, U"OPTIONALIDENTIFIER", i)) {
 			i += 17; WRITE_TO(regexp, "*(%%i*)");
-		} else if (Str::includes_wide_string_at(syntax, L"WHITESPACE", i)) {
+		} else if (Str::includes_wide_string_at(syntax, U"WHITESPACE", i)) {
 			i += 9;  WRITE_TO(regexp, " *");
-		} else if (Str::includes_wide_string_at(syntax, L"IDENTIFIER", i)) {
+		} else if (Str::includes_wide_string_at(syntax, U"IDENTIFIER", i)) {
 			i += 9;  WRITE_TO(regexp, "(%%C+)");
-		} else if (Str::includes_wide_string_at(syntax, L"_IDENTIFIER", i)) {
+		} else if (Str::includes_wide_string_at(syntax, U"_IDENTIFIER", i)) {
 			i += 10; WRITE_TO(regexp, "(_%%i+)");
-		} else if (Str::includes_wide_string_at(syntax, L".IDENTIFIER", i)) {
+		} else if (Str::includes_wide_string_at(syntax, U".IDENTIFIER", i)) {
 			i += 10; WRITE_TO(regexp, "(.%%i+)");
-		} else if (Str::includes_wide_string_at(syntax, L"!IDENTIFIER", i)) {
+		} else if (Str::includes_wide_string_at(syntax, U"!IDENTIFIER", i)) {
 			i += 10; WRITE_TO(regexp, "(!%%i+)");
-		} else if (Str::includes_wide_string_at(syntax, L"IDENTIFIER", i)) {
+		} else if (Str::includes_wide_string_at(syntax, U"IDENTIFIER", i)) {
 			i += 9; WRITE_TO(regexp, "(%%i+)");
-		} else if (Str::includes_wide_string_at(syntax, L"NUMBER", i)) {
+		} else if (Str::includes_wide_string_at(syntax, U"NUMBER", i)) {
 			i += 5; WRITE_TO(regexp, "(%%d+)");
-		} else if (Str::includes_wide_string_at(syntax, L"TOKENS", i)) {
+		} else if (Str::includes_wide_string_at(syntax, U"TOKENS", i)) {
 			i += 5; WRITE_TO(regexp, "(%%c+)");
-		} else if (Str::includes_wide_string_at(syntax, L"MINTOKENS", i)) {
+		} else if (Str::includes_wide_string_at(syntax, U"MINTOKENS", i)) {
 			i += 8; WRITE_TO(regexp, "(%%c+?)");
-		} else if (Str::includes_wide_string_at(syntax, L"TOKEN", i)) {
+		} else if (Str::includes_wide_string_at(syntax, U"TOKEN", i)) {
 			i += 4; WRITE_TO(regexp, "(%%C+)");
-		} else if (Str::includes_wide_string_at(syntax, L"TEXT", i)) {
+		} else if (Str::includes_wide_string_at(syntax, U"TEXT", i)) {
 			i += 3; WRITE_TO(regexp, "\"(%%c*)\"");
-		} else if (Str::includes_wide_string_at(syntax, L"ANY", i)) {
+		} else if (Str::includes_wide_string_at(syntax, U"ANY", i)) {
 			i += 2; WRITE_TO(regexp, "(%%c*)");
 		} else {
-			wchar_t c = Str::get_at(syntax, i);
+			inchar32_t c = Str::get_at(syntax, i);
 			if (c == '\'') c = '"';
 			PUT_TO(regexp, c);
 		}

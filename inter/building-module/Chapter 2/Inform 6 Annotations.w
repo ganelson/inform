@@ -68,7 +68,7 @@ int I6Annotations::unpack(text_stream *A, I6_annotation *IA, int allow_tail) {
 	int malformed = FALSE, state = NONPLUSSED_I6ASTATE;
 	int i = 0, name_length = 0;
 	for (; i<Str::len(A); i++) {
-		wchar_t c = Str::get_at(A, i);
+		inchar32_t c = Str::get_at(A, i);
 		if (Characters::is_whitespace(c)) {
 			if (state == BEFORE_I6ASTATE) malformed = TRUE;
 			if (state == NAME_I6ASTATE) state = AFTER_I6ASTATE;
@@ -87,12 +87,12 @@ int I6Annotations::unpack(text_stream *A, I6_annotation *IA, int allow_tail) {
 			int bl = 1; i++;
 			TEMPORARY_TEXT(term)
 			while (i<Str::len(A)) {
-				wchar_t d = Str::get_at(A, i);
+				inchar32_t d = Str::get_at(A, i);
 				if (state == QUOTED_I6ASTATE) {
 					if (d == '\\') {
 						i++; d = Str::get_at(A, i);
 					} else if (d == '\'') {
-						wchar_t n = Str::get_at(A, i+1);
+						inchar32_t n = Str::get_at(A, i+1);
 						if ((Characters::is_whitespace(n) == FALSE) && (n != ',') && (n != ')'))
 							malformed = TRUE;
 						state = AFTER_I6ASTATE; i++; continue;
@@ -100,7 +100,7 @@ int I6Annotations::unpack(text_stream *A, I6_annotation *IA, int allow_tail) {
 					PUT_TO(term, d);
 				} else {
 					if (d == '\'') {
-						wchar_t p = Str::get_at(A, i-1);
+						inchar32_t p = Str::get_at(A, i-1);
 						if ((Characters::is_whitespace(p) == FALSE) && (p != ',') && (p != '('))
 							malformed = TRUE;
 						state = QUOTED_I6ASTATE; i++; continue;
@@ -147,7 +147,7 @@ int I6Annotations::unpack(text_stream *A, I6_annotation *IA, int allow_tail) {
 			term->value = V;
 		}
 		for (int k=0, in_key=TRUE; k<Str::len(term); k++) {
-			wchar_t c = Str::get_at(term, k);
+			inchar32_t c = Str::get_at(term, k);
 			if (Characters::is_whitespace(c)) {
 				if (in_key) {
 					if (Str::len(K) == 0) continue;
@@ -168,7 +168,7 @@ int I6Annotations::unpack(text_stream *A, I6_annotation *IA, int allow_tail) {
 			WRITE_TO(K, "_");
 		}
 		for (int k=0; k<Str::len(K); k++) {
-			wchar_t c = Str::get_at(K, k);
+			inchar32_t c = Str::get_at(K, k);
 			if (k == 0) {
 				if ((c != '_') && (Characters::isalpha(c) == FALSE)) malformed = TRUE;
 			} else {

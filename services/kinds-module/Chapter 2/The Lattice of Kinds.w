@@ -221,7 +221,7 @@ kind variables:
 
 >> To add (new entry - K) to (L - list of values of kind K) ...
 
-This matches "add 23 to L" if "L" is a list of numbers, but not if it
+This matches "add 23 to U" if "L" is a list of numbers, but not if it
 is a list of times.
 
 Since kind variables can be changed only when matching phrase prototypes,
@@ -259,7 +259,7 @@ int kind_checker_mode = MATCH_KIND_VARIABLES_AS_SYMBOLS;
 sets the relevant entry in the above array but also creates a note that
 this has been done. (If a phrase is correctly matched by the specification
 matcher, a linked list of these notes is attached to the results: thus
-a match of "add 23 to L" in the example above would produce a successful
+a match of "add 23 to U" in the example above would produce a successful
 result plus a note that |K| has to be |list of numbers|.)
 
 =

@@ -241,7 +241,7 @@ after it is created, but before it is run:
 =
 Here |my_receiver| is a function. The default receiver looks like this:
 = (text as C)
-void i7_default_receiver(int id, wchar_t c, char *style) {
+void i7_default_receiver(int id, inchar32_t c, char *style) {
 	if (id == I7_BODY_TEXT_ID) fputc(c, stdout);
 }
 =

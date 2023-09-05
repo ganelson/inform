@@ -40,12 +40,12 @@ void AssertionsModule::start(void) {
 	REGISTER_WRITER('B', Tables::log);
 	REGISTER_WRITER('C', Tables::Columns::log);
 
-	Log::declare_aspect(ASSEMBLIES_DA, L"assemblies", FALSE, FALSE);
-	Log::declare_aspect(ASSERTIONS_DA, L"assertions", FALSE, TRUE);
-	Log::declare_aspect(IMPLICATIONS_DA, L"implications", FALSE, TRUE);
-	Log::declare_aspect(NOUN_RESOLUTION_DA, L"noun resolution", FALSE, FALSE);
-	Log::declare_aspect(PRONOUNS_DA, L"pronouns", FALSE, FALSE);
-	Log::declare_aspect(RELATION_DEFINITIONS_DA, L"relation definitions", FALSE, FALSE);
+	Log::declare_aspect(ASSEMBLIES_DA, U"assemblies", FALSE, FALSE);
+	Log::declare_aspect(ASSERTIONS_DA, U"assertions", FALSE, TRUE);
+	Log::declare_aspect(IMPLICATIONS_DA, U"implications", FALSE, TRUE);
+	Log::declare_aspect(NOUN_RESOLUTION_DA, U"noun resolution", FALSE, FALSE);
+	Log::declare_aspect(PRONOUNS_DA, U"pronouns", FALSE, FALSE);
+	Log::declare_aspect(RELATION_DEFINITIONS_DA, U"relation definitions", FALSE, FALSE);
 
 	InternalTests::make_test_available(I"refinery",
 		&Classifying::perform_refinery_internal_test, TRUE);

@@ -21,10 +21,10 @@ to be safely case insensitive comparison, provided that the content of |t|
 is also normalised.
 
 =
-int Word::compare_by_strcmp(int w, wchar_t *t) {
+int Word::compare_by_strcmp(int w, inchar32_t *t) {
 	return (Wide::cmp(Lexer::word_text(w), t) == 0);
 }
-int Word::compare_raw_by_strcmp(int w, wchar_t *t) {
+int Word::compare_raw_by_strcmp(int w, inchar32_t *t) {
 	return (Wide::cmp(Lexer::word_raw_text(w), t) == 0);
 }
 
@@ -38,7 +38,7 @@ allowed, allowing comments in text substitutions, but the result would be hard
 to read and tricky for the user interface applications to syntax-colour.
 
 =
-int Word::well_formed_text_routine(wchar_t *fw) {
+int Word::well_formed_text_routine(inchar32_t *fw) {
 	int i, escaped = NOT_APPLICABLE;
 	for (i=0; fw[i] != 0; i++) {
 		if (fw[i] == TEXT_SUBSTITUTION_BEGIN) {
@@ -55,7 +55,7 @@ int Word::well_formed_text_routine(wchar_t *fw) {
 	return TRUE;
 }
 
-int Word::perhaps_ill_formed_text_routine(wchar_t *fw) {
+int Word::perhaps_ill_formed_text_routine(inchar32_t *fw) {
 	int i;
 	for (i=0; fw[i] != 0; i++) {
 		if (fw[i] == TEXT_SUBSTITUTION_BEGIN) return TRUE;
@@ -77,7 +77,7 @@ int Word::unexpectedly_upper_case(int wn) {
 	if (compare_word(wn-1, FULLSTOP_V)) return FALSE;
 	if (compare_word(wn-1, PARBREAK_V)) return FALSE;
 	if (compare_word(wn-1, COLON_V)) return FALSE;
-	if (isupper(*(Lexer::word_raw_text(wn)))) {
+	if (Characters::isupper(*(Lexer::word_raw_text(wn)))) {
 		if (Word::text_ending_sentence(wn-1)) return FALSE;
 		return TRUE;
 	}
@@ -89,7 +89,7 @@ int Word::unexpectedly_upper_case(int wn) {
 =
 int Word::singly_quoted(int wn) {
 	if (wn<1) return FALSE;
-	wchar_t *p = Lexer::word_raw_text(wn);
+	inchar32_t *p = Lexer::word_raw_text(wn);
 	int qc = 0;
 	if (p[0] == '\'') qc++;
 	if ((Wide::len(p) > 1) && (p[Wide::len(p)-1] == '\'')) qc++;
@@ -101,7 +101,7 @@ it ends with punctuation, may also end the sentence which quotes it?
 
 =
 int Word::text_ending_sentence(int wn) {
-	wchar_t *p = Lexer::word_raw_text(wn);
+	inchar32_t *p = Lexer::word_raw_text(wn);
 	if (p[0] != '"') return FALSE;
 	p += Wide::len(p) - 2;
 	if ((p[0] == '.') && (p[1] == '"')) return TRUE;
@@ -123,8 +123,8 @@ initial or trailing spaces inside those quotes.
 
 =
 void Word::dequote(int wn) {
-	wchar_t *previous_text = Lexer::word_text(wn);
-	wchar_t *dequoted_text;
+	inchar32_t *previous_text = Lexer::word_text(wn);
+	inchar32_t *dequoted_text;
 	if (previous_text[0] != '"') return;
 	Lexer::set_word_raw_text(wn, Lexer::copy_to_memory(Lexer::word_raw_text(wn)));
 	dequoted_text = previous_text + 1;
@@ -174,7 +174,7 @@ have indefinitely long dictionary resolution anyway, and we had better do
 so because I6 rejects overlong text between single quotation marks.
 
 =
-void Word::compile_to_I6_dictionary(OUTPUT_STREAM, wchar_t *p, int pluralise) {
+void Word::compile_to_I6_dictionary(OUTPUT_STREAM, inchar32_t *p, int pluralise) {
 	int c, n = 0;
 	WRITE("'");
 	for (c=0; p[c] != 0; c++) {

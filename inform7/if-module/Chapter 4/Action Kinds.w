@@ -15,13 +15,13 @@ recognised by their Inter identifiers:
 
 =
 int ARvalues::new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
-	if (Str::eq_wide_string(name, L"ACTION_NAME_TY")) {
+	if (Str::eq_wide_string(name, U"ACTION_NAME_TY")) {
 		K_action_name = new_base; return TRUE;
 	}
-	if (Str::eq_wide_string(name, L"DESCRIPTION_OF_ACTION_TY")) {
+	if (Str::eq_wide_string(name, U"DESCRIPTION_OF_ACTION_TY")) {
 		K_description_of_action = new_base; return TRUE;
 	}
-	if (Str::eq_wide_string(name, L"STORED_ACTION_TY")) {
+	if (Str::eq_wide_string(name, U"STORED_ACTION_TY")) {
 		K_stored_action = new_base; return TRUE;
 	}
 	return FALSE;

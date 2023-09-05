@@ -224,7 +224,7 @@ typedef struct i7_mg_file_t {
 typedef struct i7_mg_stream_t {
 	FILE *to_file;
 	i7word_t to_file_id;
-	wchar_t *to_memory;
+	inchar32_t *to_memory;
 	size_t memory_used;
 	size_t memory_capacity;
 	i7word_t previous_id;
@@ -620,12 +620,12 @@ void i7_miniglk_stream_set_current(i7process_t *proc, i7word_t id) {
 characters are written to. The following implements |glk_put_char_stream|.
 
 = (text to inform7_clib.h)
-void i7_mg_put_to_stream(i7process_t *proc, i7word_t rock, wchar_t c);
+void i7_mg_put_to_stream(i7process_t *proc, i7word_t rock, inchar32_t c);
 void i7_miniglk_put_char_stream(i7process_t *proc, i7word_t stream_id, i7word_t x);
 =
 
 = (text to inform7_clib.c)
-void i7_mg_put_to_stream(i7process_t *proc, i7word_t rock, wchar_t c) {
+void i7_mg_put_to_stream(i7process_t *proc, i7word_t rock, inchar32_t c) {
 	i7_mg_stream_t *S =
 		&(proc->miniglk->memory_streams[proc->state.current_output_stream_ID]);
 	if (proc->receiver == NULL) fputc(c, stdout);
@@ -665,7 +665,7 @@ void i7_miniglk_put_char_stream(i7process_t *proc, i7word_t stream_id, i7word_t 
 		if (S->memory_used >= S->memory_capacity) {
 			size_t needed = 4*S->memory_capacity;
 			if (needed == 0) needed = 1024;
-			wchar_t *new_data = (wchar_t *) calloc(needed, sizeof(wchar_t));
+			inchar32_t *new_data = (inchar32_t *) calloc(needed, sizeof(inchar32_t));
 			if (new_data == NULL) {
 				fprintf(stderr, "Out of memory\n"); i7_fatal_exit(proc);
 			}
@@ -673,7 +673,7 @@ void i7_miniglk_put_char_stream(i7process_t *proc, i7word_t stream_id, i7word_t 
 			free(S->to_memory);
 			S->to_memory = new_data;
 		}
-		S->to_memory[S->memory_used++] = (wchar_t) x;
+		S->to_memory[S->memory_used++] = (inchar32_t) x;
 	}
 }
 
@@ -880,7 +880,7 @@ i7word_t i7_miniglk_request_line_event(i7process_t *proc, i7word_t window_id,
 	e.win_id = window_id;
 	e.val1 = 1;
 	e.val2 = 0;
-	wchar_t c; int pos = init_len;
+	inchar32_t c; int pos = init_len;
 	if (proc->sender == NULL) i7_benign_exit(proc);
 	char *s = (proc->sender)(proc->send_count++);
 	int i = 0;
@@ -907,7 +907,7 @@ i7word_t i7_miniglk_request_line_event_uni(i7process_t *proc, i7word_t window_id
 	e.win_id = window_id;
 	e.val1 = 1;
 	e.val2 = 0;
-	wchar_t c; int pos = init_len;
+	inchar32_t c; int pos = init_len;
 	if (proc->sender == NULL) i7_benign_exit(proc);
 	char *s = (proc->sender)(proc->send_count++);
 	int i = 0;

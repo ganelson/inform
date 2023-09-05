@@ -121,7 +121,7 @@ void RTLiteralPatterns::compilation_agent(compilation_subtask *t) {
 @<Compile Inter to print a character token within a literal pattern@> =
 	TEMPORARY_TEXT(T)
 	TEMPORARY_TEXT(tiny_string)
-	PUT_TO(tiny_string, (int) lp->lp_tokens[tc].token_char);
+	PUT_TO(tiny_string, lp->lp_tokens[tc].token_char);
 	TranscodeText::from_stream(T, tiny_string, CT_RAW);
 	DISCARD_TEXT(tiny_string)
 	EmitCode::inv(PRINT_BIP);
@@ -557,8 +557,8 @@ sets the |parsed_number| global to the value matched.
 
 @<Compile Inter to match a character token within a literal pattern@> =
 	@<Compile Inter to enter mid-word parsing if not already in it@>;
-	wchar_t lower_form = Characters::tolower(lp->lp_tokens[tc].token_char);
-	wchar_t upper_form = Characters::toupper(lp->lp_tokens[tc].token_char);
+	inchar32_t lower_form = Characters::tolower(lp->lp_tokens[tc].token_char);
+	inchar32_t upper_form = Characters::toupper(lp->lp_tokens[tc].token_char);
 
 	EmitCode::inv(IF_BIP);
 	EmitCode::down();

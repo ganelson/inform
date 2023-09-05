@@ -258,14 +258,14 @@ void Websites::copy_html_line(text_stream *line, text_file_position *tfp, void *
 
 void Websites::copy_html_line_r(text_stream *line, text_file_position *tfp, void *state) {
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line, L"(%c*?)%[(%c*?)%](%c*)")) {
+	if (Regexp::match(&mr, line, U"(%c*?)%[(%c*?)%](%c*)")) {
 		Websites::copy_html_line_r(mr.exp[0], tfp, state);
 		Placeholders::write(COPYTO, mr.exp[1]);
 		Websites::copy_html_line_r(mr.exp[2], tfp, state);
 		Regexp::dispose_of(&mr);
 		return;
 	}
-	if (Regexp::match(&mr, line, L"(%c*?)</head>(%c*)")) {
+	if (Regexp::match(&mr, line, U"(%c*?)</head>(%c*)")) {
 		Websites::copy_html_line_r(mr.exp[0], tfp, state);
 		Placeholders::write(COPYTO, I"INTERPRETERSCRIPTS");
 		WRITE_TO(COPYTO, "</head>");
@@ -383,20 +383,20 @@ unfairly called "dull"). We set |lv| accordingly.
 
 @<Look at the first word on the line to find the level of our interest@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line, L" *")) lv = EMPTY_LEVEL;
-	else if (Regexp::match(&mr, line, L" *(%C+)%c*?")) {
-		if (Str::eq_wide_string(mr.exp[0], L"table")) lv = TABLE_LEVEL;
+	if (Regexp::match(&mr, line, U" *")) lv = EMPTY_LEVEL;
+	else if (Regexp::match(&mr, line, U" *(%C+)%c*?")) {
+		if (Str::eq_wide_string(mr.exp[0], U"table")) lv = TABLE_LEVEL;
 		if (lc > position_of_documentation_bar) {
-			if (Str::eq_wide_string(mr.exp[0], L"chapter:")) lv = DOC_CHAPTER_LEVEL;
-			if (Str::eq_wide_string(mr.exp[0], L"section:")) lv = DOC_SECTION_LEVEL;
-			if (Str::eq_wide_string(mr.exp[0], L"example:")) lv = EXAMPLE_LEVEL;
+			if (Str::eq_wide_string(mr.exp[0], U"chapter:")) lv = DOC_CHAPTER_LEVEL;
+			if (Str::eq_wide_string(mr.exp[0], U"section:")) lv = DOC_SECTION_LEVEL;
+			if (Str::eq_wide_string(mr.exp[0], U"example:")) lv = EXAMPLE_LEVEL;
 		} else {
-			if (Str::eq_wide_string(mr.exp[0], L"volume")) lv = 1;
-			if (Str::eq_wide_string(mr.exp[0], L"book")) lv = 2;
-			if (Str::eq_wide_string(mr.exp[0], L"part")) lv = 3;
-			if (Str::eq_wide_string(mr.exp[0], L"chapter")) lv = 4;
-			if (Str::eq_wide_string(mr.exp[0], L"section")) lv = 5;
-			if (Regexp::match(&mr, line, L" *---- documentation ---- *")) lv = DOC_LEVEL;
+			if (Str::eq_wide_string(mr.exp[0], U"volume")) lv = 1;
+			if (Str::eq_wide_string(mr.exp[0], U"book")) lv = 2;
+			if (Str::eq_wide_string(mr.exp[0], U"part")) lv = 3;
+			if (Str::eq_wide_string(mr.exp[0], U"chapter")) lv = 4;
+			if (Str::eq_wide_string(mr.exp[0], U"section")) lv = 5;
+			if (Regexp::match(&mr, line, U" *---- documentation ---- *")) lv = DOC_LEVEL;
 		}
 	}
 	Regexp::dispose_of(&mr);

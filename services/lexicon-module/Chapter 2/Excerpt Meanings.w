@@ -460,8 +460,8 @@ from the one in:
 sensitivity.)
 
 @<Detect use of upper case on the first word of this new text substitution@> =
-	wchar_t *tx = Lexer::word_raw_text(Wordings::first_wn(W));
-	if ((tx[0]) && ((isupper(tx[0])) || (tx[1] == 0))) {
+	inchar32_t *tx = Lexer::word_raw_text(Wordings::first_wn(W));
+	if ((tx[0]) && ((Characters::isupper(tx[0])) || (tx[1] == 0))) {
 		vocabulary_entry *ucf = Vocabulary::make_case_sensitive(Lexer::word(Wordings::first_wn(W)));
 		if (!Characters::isupper(tx[0])) ucf = Vocabulary::get_lower_case_form(ucf);
 		Lexer::set_word(Wordings::first_wn(W), ucf);

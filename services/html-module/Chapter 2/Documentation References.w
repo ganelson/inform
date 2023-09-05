@@ -24,8 +24,8 @@ typedef struct documentation_ref {
 	int fragment_length; /* Number of bytes of fragment */
 	int sr_usage_count;
 	int ext_usage_count;
-	wchar_t *chapter_reference; /* Or |NULL| if no chapter name supplied */
-	wchar_t *section_reference; /* Or |NULL| if no section name supplied */
+	inchar32_t *chapter_reference; /* Or |NULL| if no chapter name supplied */
+	inchar32_t *section_reference; /* Or |NULL| if no section name supplied */
 	CLASS_DEFINITION
 } documentation_ref;
 
@@ -35,8 +35,8 @@ typedef struct documentation_ref {
 
 =
 void DocReferences::show_xref_in_problem(text_stream *OUT, text_stream *sigil) {
-	wchar_t *chap = NULL, *sec = NULL;
-	wchar_t *leaf = DocReferences::link_if_possible_once(
+	inchar32_t *chap = NULL, *sec = NULL;
+	inchar32_t *leaf = DocReferences::link_if_possible_once(
 		sigil, &chap, &sec);
 	if (leaf) {
 		HTML::open_indented_p(OUT, 2, "tight");
@@ -82,7 +82,7 @@ void DocReferences::read_xrefs_helper(text_stream *line,
 	}
 	if (from == -1) internal_error("malformed cross-references file");
 
-	wchar_t *chap = NULL, *sect = NULL;
+	inchar32_t *chap = NULL, *sect = NULL;
 	if ((Wordings::last_wn(W) >= from+1) && (Vocabulary::test_flags(from+1, TEXT_MC))) {
 		Word::dequote(from+1);
 		chap = Lexer::word_text(from+1);
@@ -129,13 +129,13 @@ int DocReferences::validate_if_possible(text_stream *temp) {
 @ And similarly, returning the page we link to:
 
 =
-wchar_t *DocReferences::link_if_possible_once(text_stream *temp, wchar_t **chap, wchar_t **sec) {
+inchar32_t *DocReferences::link_if_possible_once(text_stream *temp, inchar32_t **chap, inchar32_t **sec) {
 	DocReferences::read_xrefs();
 	documentation_ref *dr;
 	LOOP_OVER(dr, documentation_ref)
 		if (Str::eq(dr->doc_symbol, temp)) {
 			if (dr->used_already == FALSE) {
-				wchar_t *leaf = Lexer::word_text(dr->section);
+				inchar32_t *leaf = Lexer::word_text(dr->section);
 				*chap = dr->chapter_reference;
 				*sec = dr->section_reference;
 				LOOP_OVER(dr, documentation_ref)
@@ -208,7 +208,7 @@ void DocReferences::log_statistics(void) {
 	DocReferences::read_xrefs();
 	documentation_ref *dr;
 	LOOP_OVER(dr, documentation_ref)
-		if (Str::begins_with_wide_string(dr->doc_symbol, L"ph"))
+		if (Str::begins_with_wide_string(dr->doc_symbol, U"ph"))
 			LOG("USAGE: %S %d %d %d\n", dr->doc_symbol,
 				dr->usage_count, dr->sr_usage_count, dr->ext_usage_count);
 }
@@ -272,7 +272,7 @@ void DocReferences::doc_fragment_to(OUTPUT_STREAM, text_stream *fn) {
 	if ((dr) && (dr->fragment_at)) {
 		char *p = dr->fragment_at;
 		int i;
-		for (i=0; i<dr->fragment_length; i++) PUT(p[i]);
+		for (i=0; i<dr->fragment_length; i++) PUT((inchar32_t) p[i]);
 	}
 }
 
@@ -319,7 +319,7 @@ void DocReferences::doc_fragment_to(OUTPUT_STREAM, text_stream *fn) {
 					if (tracking) tracking->fragment_at = p+i+1;
 					break;
 				} else {
-					PUT_TO(rn, p[i+j]);
+					PUT_TO(rn, (inchar32_t) p[i+j]);
 				}
 			}
 			DISCARD_TEXT(rn)
