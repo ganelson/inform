@@ -1193,34 +1193,35 @@ text |bibliographic_sentence| and |in French| to the text |bracketed|. If not,
 the whole thing goes into |bibliographic_sentence| and |bracketed| is empty.
 
 @<Capture the opening sentence and its bracketed part@> =
-	int c, commented = FALSE, quoted = FALSE, rounded = FALSE, content_found = FALSE;
-	while ((c = TextFiles::utf8_fgetc(SF, NULL, NULL)) != EOF) {
+	inchar32_t c;
+	int commented = FALSE, quoted = FALSE, rounded = FALSE, content_found = FALSE;
+	while ((c = TextFiles::utf8_fgetc(SF, NULL, NULL)) != CH32EOF) {
 		if (c == 0xFEFF) continue; /* skip the optional Unicode BOM pseudo-character */
 		if (commented) {
 			if (c == ']') commented = FALSE;
 		} else {
 			if (quoted) {
-				if (rounded) PUT_TO(bracketed, (inchar32_t) c);
-				else PUT_TO(bibliographic_sentence, (inchar32_t) c);
+				if (rounded) PUT_TO(bracketed, c);
+				else PUT_TO(bibliographic_sentence, c);
 				if (c == '"') quoted = FALSE;
 			} else {
 				if (c == '[') commented = TRUE;
 				else {
-					if (Characters::is_whitespace((inchar32_t) c) == FALSE) content_found = TRUE;
+					if (Characters::is_whitespace(c) == FALSE) content_found = TRUE;
 					if (rounded) {
 						if (c == '"') quoted = TRUE;
 						if ((c == '\x0a') || (c == '\x0d') || (c == '\n')) c = ' ';
 						if (c == ')') rounded = FALSE;
-						else PUT_TO(bracketed, (inchar32_t) c);
+						else PUT_TO(bracketed, c);
 					} else {
 						if (c == '(') rounded = TRUE;
 						else {
 							if ((c == '\x0a') || (c == '\x0d') || (c == '\n')) {
 								if (content_found) break;
 								c = ' ';
-								PUT_TO(bibliographic_sentence, (inchar32_t) c);
+								PUT_TO(bibliographic_sentence, c);
 							} else {
-								PUT_TO(bibliographic_sentence, (inchar32_t) c);
+								PUT_TO(bibliographic_sentence, c);
 							}
 							if (c == '"') quoted = TRUE;
 						}

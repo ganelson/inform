@@ -195,7 +195,7 @@ But we want to restore the more natural spacing.
 
 @<Restore inter-word spaces unless this would be unnatural@> =
 	if ((i>from)
-		&& ((p[1] != 0) || (Lexer::is_punctuation((int) p[0]) == FALSE) ||
+		&& ((p[1] != 0) || (Lexer::is_punctuation(p[0]) == FALSE) ||
 			(p[0] == '(') || (p[0] == '{') || (p[0] == '}'))
 		&& (compare_word(i-1, OPENBRACKET_V)==FALSE))
 		PasteButtons::put_code_char(OUT, ' ');

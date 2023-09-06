@@ -45,7 +45,8 @@ source_file *TextFromFiles::feed_open_file_into_lexer(filename *F, FILE *handle,
 	sf->body_text = Str::new();
 	sf->torn_off_documentation = Str::new();
 	source_location top_of_file;
-	int cr, last_cr, next_cr, read_cr, newline_char = 0, torn_off = FALSE;
+	inchar32_t cr, last_cr, next_cr, read_cr, newline_char = 0;
+	int torn_off = FALSE;
 
 	unicode_file_buffer ufb = TextFiles::create_filtered_ufb(mode);
 
@@ -57,8 +58,8 @@ source_file *TextFromFiles::feed_open_file_into_lexer(filename *F, FILE *handle,
 
 	last_cr = ' '; cr = ' '; next_cr = TextFiles::utf8_fgetc(sf->handle, NULL, &ufb);
 	if (next_cr == 0xFEFF) next_cr = TextFiles::utf8_fgetc(sf->handle, NULL, &ufb); /* Unicode BOM code */
-	if (next_cr != EOF)
-		while (((read_cr = TextFiles::utf8_fgetc(sf->handle, NULL, &ufb)), next_cr) != EOF) {
+	if (next_cr != CH32EOF)
+		while (((read_cr = TextFiles::utf8_fgetc(sf->handle, NULL, &ufb)), next_cr) != CH32EOF) {
 			last_cr = cr; cr = next_cr; next_cr = read_cr;
 			switch(cr) {
 				case '\x0a':
@@ -78,9 +79,9 @@ source_file *TextFromFiles::feed_open_file_into_lexer(filename *F, FILE *handle,
 					break;
 			}
 			if (torn_off) {
-				PUT_TO(sf->torn_off_documentation, (inchar32_t) cr);
+				PUT_TO(sf->torn_off_documentation, cr);
 			} else {
-				PUT_TO(sf->body_text, (inchar32_t) cr);
+				PUT_TO(sf->body_text, cr);
 				Lexer::feed_triplet(last_cr, cr, next_cr);
 				torn_off = Lexer::detect_tear_off();
 			}
@@ -157,7 +158,7 @@ int TextFromFiles::word_count(int wc) {
 		/* outside quoted text, each lexer word not wholly composed of punctuation scores 1 */
 		if (Lexer::word(wc) != PARBREAK_V)
 			for (; *p != 0; p++)
-				if ((Lexer::is_punctuation((int) *p) == FALSE) && (*p != '|')) {
+				if ((Lexer::is_punctuation(*p) == FALSE) && (*p != '|')) {
 					N++;
 					break;
 				}

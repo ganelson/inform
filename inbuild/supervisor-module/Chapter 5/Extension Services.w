@@ -166,14 +166,15 @@ alone, and the version number is returned.
 by the local |\n| for good measure.
 
 @<Read the titling line of the extension and normalise its casing@> =
-	int c, commented_out = FALSE, quoted = FALSE, content_found = FALSE;
-	while ((c = TextFiles::utf8_fgetc(EXTF, NULL, NULL)) != EOF) {
+	inchar32_t c;
+	int commented_out = FALSE, quoted = FALSE, content_found = FALSE;
+	while ((c = TextFiles::utf8_fgetc(EXTF, NULL, NULL)) != CH32EOF) {
 		if (c == 0xFEFF) continue; /* skip the optional Unicode BOM pseudo-character */
 		if (commented_out) {
 			if (c == ']') commented_out = FALSE;		
 		} else if (quoted) {
 			if (c == '"') quoted = FALSE;
-			PUT_TO(titling_line, (inchar32_t) c);
+			PUT_TO(titling_line, c);
 		} else {
 			if (c == '[') commented_out = TRUE;
 			else {
@@ -181,10 +182,10 @@ by the local |\n| for good measure.
 				else if ((c == '\x0a') || (c == '\x0d') || (c == '\n')) {
 					if (content_found) break;
 					c = ' ';
-				} else if (Characters::is_whitespace((inchar32_t) c) == FALSE) {
+				} else if (Characters::is_whitespace(c) == FALSE) {
 					content_found = TRUE;
 				}
-				PUT_TO(titling_line, (inchar32_t) c);
+				PUT_TO(titling_line, c);
 			}
 		}
 	}
@@ -205,15 +206,16 @@ halfway through a line division combination like |0A 0D|, so that the first
 thing we read here is a meaningless |0D|.
 
 @<Read the rubric text, if any is present@> =
-	int c, found_start = FALSE;
-	while ((c = TextFiles::utf8_fgetc(EXTF, NULL, NULL)) != EOF) {
+	inchar32_t c;
+	int found_start = FALSE;
+	while ((c = TextFiles::utf8_fgetc(EXTF, NULL, NULL)) != CH32EOF) {
 		if ((c == '\x0a') || (c == '\x0d') || (c == '\n') || (c == '\t')) c = ' ';
 		if ((c != ' ') && (found_start == FALSE)) {
 			if (c == '"') found_start = TRUE;
 			else break;
 		} else {
 			if (c == '"') break;
-			if (found_start) PUT_TO(E->rubric_as_lexed, (inchar32_t) c);
+			if (found_start) PUT_TO(E->rubric_as_lexed, c);
 		}
 	}
 

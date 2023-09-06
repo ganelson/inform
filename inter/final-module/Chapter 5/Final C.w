@@ -418,7 +418,7 @@ typedef struct i7process_t {
 	int snapshot_pos;
 	jmp_buf execution_env;
 	int termination_code;
-	void (*receiver)(int id, inchar32_t c, char *style);
+	void (*receiver)(int id, wchar_t c, char *style);
 	int send_count;
 	char *(*sender)(int count);
 	void (*stylist)(struct i7process_t *proc, i7word_t which, i7word_t what);
@@ -479,7 +479,7 @@ a new process, so we must define those:
 
 = (text to inform7_clib.h)
 char *i7_default_sender(int count);
-void i7_default_receiver(int id, inchar32_t c, char *style);
+void i7_default_receiver(int id, wchar_t c, char *style);
 =
 
 The receiver and sender functions allow our textual I/O to be managed by external
@@ -493,7 +493,7 @@ The sender supplies us with textual commands. By default, it takes a typed (or
 of course piped) single line of text from the C |stdin| stream.
 
 = (text to inform7_clib.c)
-void i7_default_receiver(int id, inchar32_t c, char *style) {
+void i7_default_receiver(int id, wchar_t c, char *style) {
 	if (id == I7_BODY_TEXT_ID) fputc(c, stdout);
 }
 
@@ -537,13 +537,13 @@ but may in between the two supply its own receiver or sender:
 
 = (text to inform7_clib.h)
 void i7_set_process_receiver(i7process_t *proc,
-	void (*receiver)(int id, inchar32_t c, char *style), int UTF8);
+	void (*receiver)(int id, wchar_t c, char *style), int UTF8);
 void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count));
 =
 
 = (text to inform7_clib.c)
 void i7_set_process_receiver(i7process_t *proc,
-	void (*receiver)(int id, inchar32_t c, char *style), int UTF8) {
+	void (*receiver)(int id, wchar_t c, char *style), int UTF8) {
 	proc->receiver = receiver;
 	proc->use_UTF8 = UTF8;
 }

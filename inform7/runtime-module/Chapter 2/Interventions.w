@@ -79,7 +79,8 @@ perform them in the "wrong" order, what should the compiler do?
 =
 text_stream *Interventions::expand_bracket_plus(text_stream *S) {
 	text_stream *OUT = Str::new();
-	int col = 1, cr, sfp = 0;
+	int col = 1, sfp = 0;
+	inchar32_t cr;
 	TEMPORARY_TEXT(heading_name)
 	TEMPORARY_TEXT(command)
 	TEMPORARY_TEXT(argument)
@@ -87,7 +88,7 @@ text_stream *Interventions::expand_bracket_plus(text_stream *S) {
 		Str::clear(command);
 		Str::clear(argument);
 		@<Read next character@>;
-		NewCharacter: if (cr == EOF) break;
+		NewCharacter: if (cr == CH32EOF) break;
 		if (cr == '{') {
 			@<Read next character@>;
 			if (cr == '-') {
@@ -110,8 +111,8 @@ text_stream *Interventions::expand_bracket_plus(text_stream *S) {
 				goto NewCharacter;
 			}
 		}
-		if (OUT) PUT_TO(OUT, (inchar32_t) cr);
-	} while (cr != EOF);
+		if (OUT) PUT_TO(OUT, cr);
+	} while (cr != CH32EOF);
 	DISCARD_TEXT(command)
 	DISCARD_TEXT(argument)
 	DISCARD_TEXT(heading_name)
@@ -119,7 +120,7 @@ text_stream *Interventions::expand_bracket_plus(text_stream *S) {
 }
 
 @<Read next character@> =
-	cr = (int) Str::get_at(S, sfp); if (cr == 0) cr = EOF; else sfp++;
+	cr = Str::get_at(S, sfp); if (cr == 0) cr = CH32EOF; else sfp++;
 	col++; if ((cr == 10) || (cr == 13)) col = 0;
 
 @ Our biggest complication is that I7 expressions can be included in the I6
@@ -139,10 +140,10 @@ which can trigger an unwanted |(+|.
 	TEMPORARY_TEXT(i7_exp)
 	while (TRUE) {
 		@<Read next character@>;
-		if (cr == EOF) break;
+		if (cr == CH32EOF) break;
 		if ((cr == ')') && (Str::get_last_char(i7_exp) == '+')) {
 			Str::delete_last_character(i7_exp); break; }
-		PUT_TO(i7_exp, (inchar32_t) cr);
+		PUT_TO(i7_exp, cr);
 	}
 	wording W = Feeds::feed_text(i7_exp);
 	CSIInline::eval_bracket_plus_to_text(OUT, W);
@@ -154,10 +155,10 @@ which can trigger an unwanted |(+|.
 	int com_mode = TRUE;
 	while (TRUE) {
 		@<Read next character@>;
-		if ((cr == '}') || (cr == EOF)) break;
+		if ((cr == '}') || (cr == CH32EOF)) break;
 		if ((cr == ':') && (com_mode)) { com_mode = FALSE; continue; }
-		if (com_mode) PUT_TO(command, (inchar32_t) cr);
-		else PUT_TO(argument, (inchar32_t) cr);
+		if (com_mode) PUT_TO(command, cr);
+		else PUT_TO(argument, cr);
 	}
 
 @<Act on I6T command and argument@> =

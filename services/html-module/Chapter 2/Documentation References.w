@@ -296,8 +296,8 @@ void DocReferences::doc_fragment_to(OUTPUT_STREAM, text_stream *fn) {
 	int i = 0;
 	p[0] = 0;
 	while (TRUE) {
-		int c = TextFiles::utf8_fgetc(FRAGMENTS, NULL, NULL);
-		if (c == EOF) break;
+		inchar32_t c = TextFiles::utf8_fgetc(FRAGMENTS, NULL, NULL);
+		if (c == CH32EOF) break;
 		if (c == 0xFEFF) continue; /* the Unicode BOM non-character */
 		if (i == MAX_EXTENT_OF_FRAGMENTS) break;
 		p[i++] = (char) c;

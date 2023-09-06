@@ -91,7 +91,7 @@ characters cause word divisions, or signal literals.
 @d INFORM6_ESCAPE_END_1 '-'
 @d INFORM6_ESCAPE_END_2 ')'
 @d PARAGRAPH_BREAK U"|__" /* Inserted as a special word to mark paragraph breaks */
-@d UNICODE_CHAR_IN_STRING ((inchar32_t) 0x1b) /* To represent awkward characters in metadata only */
+@d UNICODE_CHAR_IN_STRING 0x1bu /* To represent awkward characters in metadata only */
 
 @ This is the standard set used for parsing source text.
 
@@ -374,9 +374,9 @@ As we have seen, the question of whether something is a punctuation mark
 or not depends slightly on the context:
 
 =
-int Lexer::is_punctuation(int c) {
+int Lexer::is_punctuation(inchar32_t c) {
 	for (int i=0; lexer_punctuation_marks[i]; i++)
-		if (c == (int) lexer_punctuation_marks[i])
+		if (c == lexer_punctuation_marks[i])
 			return TRUE;
 	return FALSE;
 }
@@ -490,12 +490,10 @@ The current situation of the lexer is specified by the collective values
 of all of the following. First, the start of the current word being
 recorded, and the current high water mark -- those are defined above.
 Second, we need the feeder machinery to maintain a variable telling us
-the previous character in the raw, un-respaced source. We need to be a
-little careful about the type of this: it needs to be an |int| so that it
-can on occasion hold the pseudo-character value |EOF|.
+the previous character in the raw, un-respaced source.
 
 =
-int lxs_previous_char_in_raw_feed; /* Preceding character in raw file read */
+inchar32_t lxs_previous_char_in_raw_feed; /* Preceding character in raw file read */
 
 @ There are four kinds of word: ordinary words, [comments in square brackets],
 "strings in double quotes," and |(- I6_inclusion_text -)|. The latter
@@ -541,7 +539,7 @@ always being "off").
 =
 void Lexer::reset_lexer(void) {
 	lexer_word = lexer_hwm;
-	lxs_previous_char_in_raw_feed = EOF;
+	lxs_previous_char_in_raw_feed = CH32EOF;
 
     /* reset the external states */
     lexer_wait_for_dashes = FALSE;
@@ -673,9 +671,9 @@ int Lexer::detect_tear_off(void) {
 }
 
 @ The feeder routine is required to send us a triple each time: |cr|
-must be a valid character (see above) and may not be |EOF|; |last_cr| must
-be the previous one or else perhaps |EOF| at the start of feed;
-while |next_cr| must be the next or else perhaps |EOF| at the end of feed.
+must be a valid character (see above) and may not be |CH32EOF|; |last_cr| must
+be the previous one or else perhaps |CH32EOF| at the start of feed;
+while |next_cr| must be the next or else perhaps |CH32EOF| at the end of feed.
 
 Spaces, often redundant, are inserted around punctuation unless one of the
 following exceptions holds:
@@ -697,7 +695,7 @@ Where the character following is a slash. (This is done essentially to make
 most common URLs glue up as single words.)
 
 =
-void Lexer::feed_triplet(int last_cr, int cr, int next_cr) {
+void Lexer::feed_triplet(inchar32_t last_cr, inchar32_t cr, inchar32_t next_cr) {
 	lxs_previous_char_in_raw_feed = last_cr;
 	int space = FALSE;
 	if (Lexer::is_punctuation(cr)) space = TRUE;
@@ -706,9 +704,9 @@ void Lexer::feed_triplet(int last_cr, int cr, int next_cr) {
 		if (next_cr == '/') space = FALSE;
 		else {
 			int lc = 0, nc = 0;
-			if (Characters::isdigit((inchar32_t) last_cr)) lc = 1;
+			if (Characters::isdigit(last_cr)) lc = 1;
 			if ((last_cr >= 'a') && (last_cr <= 'z')) lc = 2;
-			if (Characters::isdigit((inchar32_t) next_cr)) nc = 1;
+			if (Characters::isdigit(next_cr)) nc = 1;
 			if (next_cr == '-') nc = 1;
 			if ((next_cr >= 'a') && (next_cr <= 'z')) nc = 2;
 			if ((lc == 1) && (nc == 1)) space = FALSE;
@@ -754,7 +752,7 @@ surviving marbles is the sequence of characters starting at |lexer_word| and
 extending to |lexer_hwm-1|.
 
 =
-void Lexer::feed_char_into_lexer(int c) {
+void Lexer::feed_char_into_lexer(inchar32_t c) {
 	Lexer::ensure_lexer_hwm_can_be_raised_by(MAX_WORD_LENGTH, TRUE);
 
 	if (lxs_literal_mode) {
@@ -774,7 +772,7 @@ void Lexer::feed_char_into_lexer(int c) {
 	}
 
     /* otherwise record the current character as part of the word being built */
-	*(lexer_hwm++) = (inchar32_t) c;
+	*(lexer_hwm++) = c;
 
     if (lxs_scanning_text_substitution) {
         @<Force string division at the end of a text substitution, if necessary@>;
@@ -834,7 +832,7 @@ discarded. A paragraph break is converted into a special "divider" word.
 @<Line break outside a literal@> =
 	if (lxs_this_line_is_empty_so_far) {
 		for (int i=0; PARAGRAPH_BREAK[i]; i++)
-			Lexer::feed_char_into_lexer((int) PARAGRAPH_BREAK[i]);
+			Lexer::feed_char_into_lexer(PARAGRAPH_BREAK[i]);
 		Lexer::feed_char_into_lexer(' ');
 	}
 	lxs_this_line_is_empty_so_far = TRUE;
@@ -852,7 +850,7 @@ Inform print a paragraph break at run-time.
 @<Soak up whitespace around line breaks inside a literal string@> =
     if (lxs_string_soak_up_spaces_mode) {
         switch(c) {
-            case ' ': case '\t': c = (int) *(lexer_hwm-1); lexer_hwm--; break;
+            case ' ': case '\t': c = *(lexer_hwm-1); lexer_hwm--; break;
             case '\n':
                 *(lexer_hwm-1) = NEWLINE_IN_STRING;
                 c = NEWLINE_IN_STRING;
@@ -1028,7 +1026,7 @@ finished.
         case STRING_KW:
             if (c == STRING_END) {
                 lxs_string_soak_up_spaces_mode = FALSE;
-                *(lexer_hwm++) = (inchar32_t) c; /* record the |STRING_END| character as part of the word */
+                *(lexer_hwm++) = c; /* record the |STRING_END| character as part of the word */
                 lxs_literal_mode = FALSE;
             }
             break;

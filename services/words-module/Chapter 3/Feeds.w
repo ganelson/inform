@@ -57,10 +57,10 @@ wording Feeds::feed_C_string_full(inchar32_t *text, int expand, inchar32_t *nons
 	@<Set up the lexer@>;
 	lexer_break_at_slashes = break_at_slashes;
 	for (int i=0; text[i] != 0; i++) {
-		int last_cr, cr, next_cr;
-		if (i > 0) last_cr = (int) text[i-1]; else last_cr = EOF;
-		cr = (int) text[i];
-		if (cr != 0) next_cr = (int) text[i+1]; else next_cr = EOF;
+		inchar32_t last_cr, cr, next_cr;
+		if (i > 0) last_cr = text[i-1]; else last_cr = CH32EOF;
+		cr = text[i];
+		if (cr != 0) next_cr = text[i+1]; else next_cr = CH32EOF;
 		Lexer::feed_triplet(last_cr, cr, next_cr);
 	}
 	@<Extract results from the lexer@>;
@@ -69,10 +69,10 @@ wording Feeds::feed_C_string_full(inchar32_t *text, int expand, inchar32_t *nons
 wording Feeds::feed_text_full(text_stream *text, int expand, inchar32_t *nonstandard) {
 	@<Set up the lexer@>;
 	for (int i=0, L=Str::len(text); i<L; i++) {
-		int last_cr, cr, next_cr;
-		if (i > 0) last_cr = (int) Str::get_at(text, i-1); else last_cr = EOF;
-		cr = (int) Str::get_at(text, i);
-		if (cr != 0) next_cr = (int) Str::get_at(text, i+1); else next_cr = EOF;
+		inchar32_t last_cr, cr, next_cr;
+		if (i > 0) last_cr = Str::get_at(text, i-1); else last_cr = CH32EOF;
+		cr = Str::get_at(text, i);
+		if (cr != 0) next_cr = Str::get_at(text, i+1); else next_cr = CH32EOF;
 		Lexer::feed_triplet(last_cr, cr, next_cr);
 	}
 	@<Extract results from the lexer@>;

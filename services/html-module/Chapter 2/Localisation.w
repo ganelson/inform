@@ -87,26 +87,26 @@ int Localisation::stock_from_file(filename *localisation_file, localisation_dict
 	}
 	int col = 1, line = 1, nwsol = FALSE; /* "non white space on line" */
 	unicode_file_buffer ufb = TextFiles::create_ufb();
-	int cr; /* note that on some platforms |inchar32_t| is unable to hold |EOF| */
+	inchar32_t cr;
 	TEMPORARY_TEXT(key)
 	TEMPORARY_TEXT(value)
 	do {
 		@<Read next character@>;
-		if (cr == EOF) break;
+		if (cr == CH32EOF) break;
 		if ((cr == '#') && (nwsol == FALSE)) @<Read up to end of line as a comment@>
 		else if ((cr == '%') && (nwsol == FALSE)) @<Read up to the next white space as a key@>
-		else if (Characters::is_whitespace((inchar32_t) cr) == FALSE) nwsol = TRUE;
-		if (cr == EOF) break;
+		else if (Characters::is_whitespace(cr) == FALSE) nwsol = TRUE;
+		if (cr == CH32EOF) break;
 		if (Str::len(key) > 0) {
-			if ((Characters::is_whitespace((inchar32_t) cr) == FALSE) || (Str::len(value) > 0))
-				PUT_TO(value, (inchar32_t) cr);
+			if ((Characters::is_whitespace(cr) == FALSE) || (Str::len(value) > 0))
+				PUT_TO(value, cr);
 		} else {
-			if (Characters::is_whitespace((inchar32_t) cr) == FALSE) {
+			if (Characters::is_whitespace(cr) == FALSE) {
 				Localisation::error(localisation_file, line, col,
 					I"extraneous matter appears before first %key");
 			}
 		}
-	} while (cr != EOF);
+	} while (cr != CH32EOF);
 	if (Str::len(key) > 0) @<Write key-value pair@>;
 	DISCARD_TEXT(key)
 	DISCARD_TEXT(value)
@@ -125,13 +125,13 @@ int Localisation::stock_from_file(filename *localisation_file, localisation_dict
 	Str::clear(value);
 	while (TRUE) {
 		@<Read next character@>;
-		if ((cr == '=') || (cr == EOF)) break;
-		if (Characters::is_whitespace((inchar32_t) cr) == FALSE) PUT_TO(key, (inchar32_t) cr);
+		if ((cr == '=') || (cr == CH32EOF)) break;
+		if (Characters::is_whitespace(cr) == FALSE) PUT_TO(key, cr);
 	}
 	if (cr == '=') {
 		while (TRUE) {
 			@<Read next character@>;
-			if (Characters::is_whitespace((inchar32_t) cr)) continue;
+			if (Characters::is_whitespace(cr)) continue;
 			break;
 		}
 	}		
