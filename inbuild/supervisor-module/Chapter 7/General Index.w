@@ -515,6 +515,7 @@ void Indexes::write_general_index(OUTPUT_STREAM, compiled_documentation *cd) {
 
 void Indexes::write_general_index_inner(OUTPUT_STREAM, compiled_documentation *cd,
 	int just_examples) {
+	HTML_OPEN_WITH("div", "class=\"generalindex\"");
 	@<Construct sorting keys for the lemmas@>;
 	int NL = LinkedLists::len(cd->id.lemma_list);
 	index_lemma **lemma_list =
@@ -525,6 +526,7 @@ void Indexes::write_general_index_inner(OUTPUT_STREAM, compiled_documentation *c
 	@<Render the index in sorted order@>;
 	@<Give feedback in index testing mode@>;
 	Memory::I7_free(lemma_list, ARRAY_SORTING_MREASON, NL*((int) sizeof(index_lemma *)));
+	HTML_CLOSE("div");
 }
 
 int Indexes::sort_comparison(const void *ent1, const void *ent2) {
@@ -719,18 +721,22 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 		text_stream *link_class = I"indexlink";
 		if (volume_number > 0) link_class = I"indexlinkalt";
 		TEMPORARY_TEXT(link)
+		text_stream *A = ref->anchor;
 		if (S) {
 			for (int i=0; i<Str::len(S->stashed); i++) {
 				wchar_t c = Str::get_at(S->stashed, i);
 				if (c == ':') break;
 				if ((Characters::isdigit(c)) || (c == '.')) PUT_TO(link, c);
 			}
+			A = MarkdownVariations::URL_for_heading(S);
 		}
 		if (E) {
 			if (S) WRITE_TO(link, " ");
 			WRITE_TO(link, "ex %S", E->insignia);
+			A = E->URL;
 		}
-		IndexUtilities::general_link(OUT, link_class, ref->anchor, link);
+		if (Str::len(A) == 0) { LOG("Alert! No anchor for %S\n", link); }
+		IndexUtilities::general_link(OUT, link_class, A, link);
 		DISCARD_TEXT(link)
 	}
 
