@@ -327,11 +327,15 @@ been added yet.
 =
 [ RELATION_TY_SetValency rel val  kov filled cur handler ext;
 	filled = BlkValueRead(rel, RRV_FILLED);
-	if (filled) { RunTimeProblem(RTP_RELATIONCHANGEIMPOSSIBLE); rfalse; }
+	if (filled) { IssueRTP("ChangedImmutableRelation",
+		"This change of the relation's nature is impossible in play.",
+		BasicInformKitRTPs); rfalse; }
 	kov = BlkValueRead(rel, RRV_KIND);
 	if (val == RRVAL_EQUIV or RRVAL_SYM_V_TO_V or RRVAL_SYM_O_TO_O) {
 		if (KindBaseTerm(kov, 0) ~= KindBaseTerm(kov, 1)) {
-			RunTimeProblem(RTP_RELATIONCHANGEIMPOSSIBLE); rfalse;
+			IssueRTP("ChangedImmutableRelation",
+				"This change of the relation's nature is impossible in play.",
+				BasicInformKitRTPs); rfalse;
 		}
 	}
 	cur = BlkValueRead(rel, RRV_HANDLER);
@@ -343,7 +347,9 @@ been added yet.
 		RRVAL_EQUIV:		handler = EquivHashTableRelationHandler;
 		RRVAL_SYM_V_TO_V:	handler = ChooseRelationHandler(kov, true);
 		RRVAL_SYM_O_TO_O:	handler = Sym2in1HashTableRelationHandler;
-		default:			RunTimeProblem(RTP_RELATIONCHANGEIMPOSSIBLE); rfalse;
+		default:			IssueRTP("ChangedImmutableRelation",
+								"This change of the relation's nature is impossible in play.",
+								BasicInformKitRTPs); rfalse;
 	}
 	if (cur == handler) rtrue;
 	! adjust size when going to or from 2-in-1

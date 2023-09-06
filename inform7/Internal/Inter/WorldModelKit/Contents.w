@@ -17,7 +17,6 @@ Sections
 	Printing
 	WorldModel
 	MapRouteFinding
-	RTP
 	Time
 	Tests
 	Chronology

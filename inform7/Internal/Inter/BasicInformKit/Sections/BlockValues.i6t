@@ -550,8 +550,9 @@ unpleasant things at the I6 level.
 
 =
 [ BlkValueError reason;
+	IssueRTP("MemoryAllocationFailed",	
+    	"Memory allocation proved impossible.", BasicInformKitRTPs);
 	print "*** Value handling failed: ", (string) reason, " ***^";
-	RunTimeProblem(RTP_HEAPERROR);
 	@quit;
 ];
 
@@ -599,7 +600,12 @@ local variables.)
 
 [ StackFrameCreate size new;
 	new = I7SFRAME - WORDSIZE*size;
-	if (new < blockv_stack) { RunTimeProblem(RTP_HEAPERROR); @quit; }
+	if (new < blockv_stack) {
+		IssueRTP("MemoryAllocationFailed",
+    		"Memory allocation proved impossible.", BasicInformKitRTPs);
+		print "*** Stack frame of ", size, " could not be created ***^";
+		@quit;
+	}
 	I7SFRAME = new;
 ];
 

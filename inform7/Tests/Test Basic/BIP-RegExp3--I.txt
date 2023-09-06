@@ -6,11 +6,10 @@
   test 5: matching ()ef in def case sensitive --> <0> ef
   test 6: matching ()ef in def case sensitive --> <0> ef
   test 7: matching ()ef in def case sensitive --> <0> ef
-  test 8: compiling *a to error Quantifier follows nothing --> *** Regular expression error: quantifier misplaced ***
-  
-  *** Run-time problem P51
+  test 8: compiling *a to error Quantifier follows nothing -->
+  *** Run-time problem RegularExpressionMalformed: INTERNAL/Inter/BasicInformKit/RTPs
   *** Syntax error in regular expression.
-  
+  *** Regular expression error: quantifier misplaced ***
   test 9: compiling (*)b to error Quantifier follows nothing --> *** Regular expression error: quantifier misplaced ***
   test 10: matching $b in b case sensitive --> <2> --
   test 11: compiling a\ to error Search pattern not terminated --> *** Regular expression error: Search pattern not terminated ***

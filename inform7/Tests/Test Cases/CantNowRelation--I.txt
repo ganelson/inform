@@ -1,7 +1,6 @@
    Foo
-  *** Run-time problem P67
-  *** This operation can't be done with the relation 'is'.
-  
+  *** Run-time problem UsedAbstractRelation: INTERNAL/Inter/BasicInformKit/RTPs
+  *** Tried to make use of an abstract relation.
   Welcome
   An Interactive Fiction
   Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D

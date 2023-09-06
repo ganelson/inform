@@ -36,7 +36,8 @@ minus 1.
 	extent = creator.call(MStack_Top+2, 1);
 	if (extent == 0) rfalse;
 	if (MStack_Top + MAX_MSTACK_FRAME >= MSTACK_SIZE + 2) {
-		RunTimeProblem(RTP_MSTACKMEMORY, MSTACK_SIZE);
+		IssueRTP("MemoryStackRanOutOfSpace",	
+    		"The memory stack is exhausted.", BasicInformKitRTPs);
 		Mstack_Backtrace();
 		rfalse;
 	}

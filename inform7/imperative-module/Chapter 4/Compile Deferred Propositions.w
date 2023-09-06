@@ -1666,7 +1666,7 @@ pcalc_prop *DeferredPropositions::compile_loop_header(int var, local_variable *i
 			if (pdef->rtp_iname == NULL)
 				pdef->rtp_iname =
 					Hierarchy::make_iname_in(RTP_HL, InterNames::location(pdef->ppd_iname));
-			Calculus::Schemas::modify(&loop_schema, "if (RunTimeProblem(RTP_CANTITERATE, %n))",
+			Calculus::Schemas::modify(&loop_schema, "if (IssueIterationRTP(%n))",
 				pdef->rtp_iname);
 		}
 		proposition = Propositions::delete_atom(proposition, kind_position);

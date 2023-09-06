@@ -11,14 +11,14 @@
   
   >[1] e
   
-  *** Run-time problem P63
-  *** Tried to make the player part of something: the jelly monster.
-  
+  *** Run-time problem MadePlayerPartOfSomething: INTERNAL/Inter/WorldModelKit/RTPs
+  *** Tried to make the player part of something.
+  *** Tried to make the player part of the jelly monster.
   
   >[2] w
   
-  *** Run-time problem P63
-  *** Tried to make the player part of something: the parasitic cream blob.
-  
+  *** Run-time problem MadePlayerPartOfSomething: INTERNAL/Inter/WorldModelKit/RTPs
+  *** Tried to make the player part of something.
+  *** Tried to make the player part of the parasitic cream blob.
   
 > >

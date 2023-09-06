@@ -33,6 +33,6 @@ see above.
 			(string) struc-->AUXF_FILENAME, "': ",
 			(string) err_text, " ***^";
 	}
-	RunTimeProblem(RTP_FILEIOERROR);
+	IssueRTP("FileIOFailed", "Error handling external file.", BasicInformKitRTPs);
 	return 0;
 ];

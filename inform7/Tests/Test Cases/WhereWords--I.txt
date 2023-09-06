@@ -172,8 +172,9 @@
   
   
   
-  *** Run-time problem P53
-  *** Only backdrops can be moved to multiple places.
+  *** Run-time problem NonBackdropMovedToMultipleRooms: INTERNAL/Inter/WorldModelKit/RTPs
+  *** Only backdrops can be moved to multiple rooms or regions.
+  *** The marble is not a backdrop.
   
   Welcome
   An Interactive Fiction

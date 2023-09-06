@@ -258,11 +258,11 @@ Constant VTOVS_CACHE = 7;
 	vtov_structure-->VTOVS_CACHE_BROKEN = true; ! Mark any cache as broken
 	if (pr) {
 		if ((obj1 ofclass Object) && (obj1 provides pr)) i1 = obj1.pr;
-		else return RunTimeProblem(RTP_IMPREL, obj1, relation);
+		else return Relation_DomainProblem(obj1, relation);
 	} else i1 = obj1-1;
 	if (pr2) {
 		if ((obj2 ofclass Object) && (obj2 provides pr2)) i2 = obj2.pr2;
-		else return RunTimeProblem(RTP_IMPREL, obj2, relation);
+		else return Relation_DomainProblem(obj2, relation);
 	} else i2 = obj2-1;
 	pr = i1*(vtov_structure-->VTOVS_RIGHT_DOMAIN_SIZE) + i2;
 	i1 = IncreasingPowersOfTwo_TB-->(pr%16);
@@ -278,11 +278,11 @@ Constant VTOVS_CACHE = 7;
 	vtov_structure-->VTOVS_CACHE_BROKEN = true; ! Mark any cache as broken
 	if (pr) {
 		if ((obj1 ofclass Object) && (obj1 provides pr)) i1 = obj1.pr;
-		else return RunTimeProblem(RTP_IMPREL, obj1, relation);
+		else return Relation_DomainProblem(obj1, relation);
 	} else i1 = obj1-1;
 	if (pr2) {
 		if ((obj2 ofclass Object) && (obj2 provides pr2)) i2 = obj2.pr2;
-		else return RunTimeProblem(RTP_IMPREL, obj2, relation);
+		else return Relation_DomainProblem(obj2, relation);
 	} else i2 = obj2-1;
 	pr = i1*(vtov_structure-->VTOVS_RIGHT_DOMAIN_SIZE) + i2;
 	i1 = IncreasingPowersOfTwo_TB-->(pr%16);
@@ -297,16 +297,24 @@ Constant VTOVS_CACHE = 7;
 	if (sym && (obj2 > obj1)) { sym = obj1; obj1 = obj2; obj2 = sym; }
 	if (pr) {
 		if ((obj1 ofclass Object) && (obj1 provides pr)) i1 = obj1.pr;
-		else { RunTimeProblem(RTP_IMPREL, obj1, relation); rfalse; }
+		else { Relation_DomainProblem(obj1, relation); rfalse; }
 	} else i1 = obj1-1;
 	if (pr2) {
 		if ((obj2 ofclass Object) && (obj2 provides pr2)) i2 = obj2.pr2;
-		else { RunTimeProblem(RTP_IMPREL, obj2, relation); rfalse; }
+		else { Relation_DomainProblem(obj2, relation); rfalse; }
 	} else i2 = obj2-1;
 	pr = i1*(vtov_structure-->VTOVS_RIGHT_DOMAIN_SIZE) + i2;
 	i1 = IncreasingPowersOfTwo_TB-->(pr%16);
 	pr = pr/16 + 8;
 	if ((vtov_structure-->pr) & i1) rtrue; rfalse;
+];
+
+[ Relation_DomainProblem obj1 relation;
+	IssueRTP("RelationUsedOutsideDomain",
+		"Used a relation with something outside its domain", BasicInformKitRTPs);
+	print "*** Use of ", (the) obj1,
+		" violates '", (string) RlnGetF(relation, RR_DESCRIPTION), "'.^";
+	rtrue;
 ];
 
 @h Equivalence Relations.
@@ -784,7 +792,9 @@ Constant MAX_ROUTE_LENGTH = ICOUNT_OBJECT + 32;
 	}
 	if (from == to) return nothing;
 	if (((RlnGetF(relation, RR_PERMISSIONS)) & RELS_ROUTE_FIND) == 0) {
-		RunTimeProblem(RTP_ROUTELESS);
+		IssueRTP("RoutesThroughImplicitRelation",
+			"Attempt to find route or count steps through an implicit relation.",
+			BasicInformKitRTPs);
 		return nothing;
 	}
 	if (RlnGetF(relation, RR_STORAGE) == 0) return nothing;

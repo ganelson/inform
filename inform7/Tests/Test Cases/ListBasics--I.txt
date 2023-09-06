@@ -11,11 +11,10 @@
   After changing entry 3 to 208, L is now {200, 11, 208, 5, 0, -6}.
   After changing the two end entries, L is now {1, 11, 208, 5, 0, 6}.
   These, however, should fail as being out of range.
-  *** Couldn't write to list entry 0 of a list which has entries numbered from 1 to 6 ***
   
-  *** Run-time problem P50
+  *** Run-time problem AccessedNonExistentListItem: INTERNAL/Inter/BasicInformKit/RTPs
   *** Attempt to use list item which does not exist.
-  
+  *** Couldn't write to list entry 0 of a list which has entries numbered from 1 to 6 ***
   *** Couldn't write to list entry 7 of a list which has entries numbered from 1 to 6 ***
   L now contains two instances of 208: {1, 11, 208, 5, 0, 6, 208}.
   Both of which go after removing this value: {1, 11, 5, 0, 6}.

@@ -97,6 +97,8 @@ comprehensive list of what is there.)
 @e INDEX_OF_ENUM_VAL_HL
 @e INTEGERDIVIDE_HL
 @e INTEGERREMAINDER_HL
+@e ISSUECHANGEDRELATIONOUTSIDEDOMAIN_HL
+@e ISSUEUSEDABSTRACTRELATION_HL
 @e KINDATOMIC_HL
 @e LATEST_RULE_RESULT_HL
 @e LIST_ITEM_BASE_HL
@@ -167,12 +169,9 @@ comprehensive list of what is there.)
 @e RLNGETF_HL
 @e ROUNDOFFVALUE_HL
 @e RR_STORAGE_HL
-@e RTP_RELKINDVIOLATION_HL
-@e RTP_RELMINIMAL_HL
 @e RULEBOOKFAILS_HL
 @e RULEBOOKPARBREAK_HL
 @e RULEBOOKSUCCEEDS_HL
-@e RUNTIMEPROBLEM_HL
 @e SAY__N_HL
 @e SAY__P_HL
 @e SAY__PC_HL
@@ -193,7 +192,7 @@ comprehensive list of what is there.)
 
 @<Establish resources offered by BasicInformKit@> =
 	KIT_PROVIDED(ADJUSTPARAGRAPHPOINT_HL,             I"AdjustParagraphPoint")
-	KIT_PROVIDED(ARGUMENTTYPEFAILED_HL,               I"ArgumentTypeFailed")
+	KIT_PROVIDED(ARGUMENTTYPEFAILED_HL,               I"IssueTypecheckingRTP")
 	KIT_PROVIDED(AUXF_MAGIC_VALUE_HL,                 I"AUXF_MAGIC_VALUE")
 	KIT_PROVIDED(AUXF_STATUS_IS_CLOSED_HL,            I"AUXF_STATUS_IS_CLOSED")
 	KIT_PROVIDED(BLKVALUECOPY_HL,                     I"BlkValueCopy")
@@ -245,6 +244,8 @@ comprehensive list of what is there.)
 	KIT_PROVIDED(INDEX_OF_ENUM_VAL_HL,                I"IndexOfEnumVal");
 	KIT_PROVIDED(INTEGERDIVIDE_HL,                    I"IntegerDivide")
 	KIT_PROVIDED(INTEGERREMAINDER_HL,                 I"IntegerRemainder")
+	KIT_PROVIDED(ISSUECHANGEDRELATIONOUTSIDEDOMAIN_HL, I"IssueChangedRelationRTP")
+	KIT_PROVIDED(ISSUEUSEDABSTRACTRELATION_HL,        I"IssueAbstractRelationRTP")
 	KIT_PROVIDED(KINDATOMIC_HL,                       I"KindAtomic")
 	KIT_PROVIDED(LATEST_RULE_RESULT_HL,               I"latest_rule_result")
 	KIT_PROVIDED(LIST_ITEM_BASE_HL,                   I"LIST_ITEM_BASE")
@@ -316,12 +317,9 @@ comprehensive list of what is there.)
 	KIT_PROVIDED(RLNGETF_HL,                          I"RlnGetF")
 	KIT_PROVIDED(ROUNDOFFVALUE_HL,                    I"RoundOffValue")
 	KIT_PROVIDED(RR_STORAGE_HL,                       I"RR_STORAGE")
-	KIT_PROVIDED(RTP_RELKINDVIOLATION_HL,             I"RTP_RELKINDVIOLATION")
-	KIT_PROVIDED(RTP_RELMINIMAL_HL,                   I"RTP_RELMINIMAL")
 	KIT_PROVIDED(RULEBOOKFAILS_HL,                    I"RulebookFails")
 	KIT_PROVIDED(RULEBOOKPARBREAK_HL,                 I"RulebookParBreak")
 	KIT_PROVIDED(RULEBOOKSUCCEEDS_HL,                 I"RulebookSucceeds")
-	KIT_PROVIDED(RUNTIMEPROBLEM_HL,                   I"RunTimeProblem")
 	KIT_PROVIDED(SAY__N_HL,                           I"say__n")
 	KIT_PROVIDED(SAY__P_HL,                           I"say__p")
 	KIT_PROVIDED(SAY__PC_HL,                          I"say__pc")

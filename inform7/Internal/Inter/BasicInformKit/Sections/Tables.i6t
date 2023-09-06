@@ -53,7 +53,12 @@ nobody has got even close to it.)
 	no_cols = tab-->0;
 	for (i=1: i<=no_cols: i++)
 		if (col == ((tab-->i)-->1) & TB_COLUMN_NUMBER) return i;
-	if (f) { RunTimeProblem(RTP_TABLE_NOCOL, tab); return 0; }
+	if (f) {
+		IssueRTP("NonExistentTableColumn",
+	    	"No such column in this table.", BasicInformKitRTPs);
+		print "*** Attempt to look up a non-existent column in the table '",
+			(PrintTableName) tab, "'.^";
+	}
 	return 0;
 ];
 
@@ -337,7 +342,15 @@ general parsing routine.
 			if (lookup_col-->(i+COL_HSIZE) == lookup_value) return i;
 		}
 	}
-	return RunTimeProblem(RTP_TABLE_NOCORR, tab);
+	return IssueNoCorrespondenceRTP(tab);
+];
+
+[ IssueNoCorrespondenceRTP tab;
+	IssueRTP("NonExistentTableCorrespondence",
+	    "Could not find a correspondence in this table.", BasicInformKitRTPs);
+	print "*** Tried to look up a non-existent correspondence in the table '",
+		(PrintTableName) tab, "'.^";
+	rtrue;
 ];
 
 [ ExistsTableRowCorr tab col entry i k v f kov;
@@ -406,7 +419,7 @@ value in |C1|.
 			(CheckTableEntryIsBlank(tab,col1,i-COL_HSIZE))) continue;
 		return v;
 	}
-	return RunTimeProblem(RTP_TABLE_NOCORR, tab);
+	return IssueNoCorrespondenceRTP(tab);
 ];
 
 [ ExistsTableLookUpCorr tab col1 col2 lookup_value cola1 cola2 i j f;
@@ -442,10 +455,15 @@ an error if that doesn't exist.
 
 =
 [ TableLookUpEntry tab col index write_flag write_value v;
-	if (tab == 0) return RunTimeProblem(RTP_TABLE_NOTABLE2);
+	if (tab == 0) return IssueRTP("AccessedEntryWithNoRowSelected",
+		"Attempt to access an entry from a non-existent table.", BasicInformKitRTPs);
 	if (col >= 100) col=TableFindCol(tab, col, true);
 	if ((index < 1) || (index > TableRows(tab))) {
-		RunTimeProblem(RTP_TABLE_NOROW, tab, index); index = 1;
+		IssueRTP("NonExistentTableRow",
+	    	"No such row in this table.", BasicInformKitRTPs);
+		print "*** Attempt to look up a non-existent row in the table '",
+			(PrintTableName) tab, "'.^";
+		index = 1;
 	}
 	if (write_flag) {
 		switch(write_flag) {
@@ -465,7 +483,11 @@ an error if that doesn't exist.
 	}
 	v = ((tab-->col)-->(index+COL_HSIZE));
 	if ((v == TABLE_NOVALUE) && (CheckTableEntryIsBlank(tab,col,index))) {
-		RunTimeProblem(RTP_TABLE_NOENTRY, tab, col, index); rfalse;
+		IssueRTP("NonExistentTableEntry",
+	    	"No such entry in this table.", BasicInformKitRTPs);
+		print "** Tried to look up a non-existent entry at column ", col,
+			", row ", index, " of the table '", (PrintTableName) tab, "'.^";
+		rfalse;
 	}
 	return v;
 ];
@@ -502,21 +524,27 @@ a legal row number.)
 	rtrue;
 ];
 
+[ IssueNoTableToBlankRTP;
+	IssueRTP("BlankedOutRowFromNonExistentTable",
+	  	"No table to blank out a row from.", BasicInformKitRTPs);
+	rtrue;
+];
+
 [ TableBlankOutRow tab row k;
-	if (tab==0) return RunTimeProblem(RTP_TABLE_NOTABLE);
+	if (tab==0) return IssueNoTableToBlankRTP();
 	for (k=1:k<=tab-->0:k++)
 		ForceTableEntryBlank(tab, k, row);
 ];
 
 [ TableBlankOutColumn tab col n k;
-	if (tab==0) return RunTimeProblem(RTP_TABLE_NOTABLE);
+	if (tab==0) return IssueNoTableToBlankRTP();
 	n = TableRows(tab);
 	for (k=1:k<=n:k++)
 		ForceTableEntryBlank(tab, col, k);
 ];
 
 [ TableBlankOutAll tab n k;
-	if (tab==0) return RunTimeProblem(RTP_TABLE_NOTABLE);
+	if (tab==0) return IssueNoTableToBlankRTP();
 	n = TableRows(tab);
 	for (k=1:k<=n:k++)
 		TableBlankOutRow(tab, k);
@@ -538,7 +566,8 @@ a legal row number.)
 	i = TableRows(tab);
 	for (j=1:j<=i:j++)
 		if (TableRowIsBlank(tab, j)) return j;
-	RunTimeProblem(RTP_TABLE_NOMOREBLANKS, tab);
+	IssueRTP("BlankRowsRanOut", "Out of blank rows.", BasicInformKitRTPs);
+	print "*** Tried to choose a blank row in table '", (PrintTableName) tab, "'.^";
 	return i;
 ];
 
@@ -549,7 +578,13 @@ a legal row number.)
 [ TableRandomRow tab i j k;
 	i = TableRows(tab);
 	j = TableFilledRows(tab);
-	if (j==0) return RunTimeProblem(RTP_TABLE_NOROWS, tab);
+	if (j==0) {
+		IssueRTP("ChoseRandomRowFromBlankTable",
+	    	"This table is empty.", BasicInformKitRTPs);
+		print "*** Tried to choose a random row in an entirely blank table: table '",
+					(PrintTableName) tab, "'.^";
+		return 1;
+	}
 	if (j>1) j = random(j);
 	for (k=1:k<=i:k++) {
 		if (TableRowIsBlank(tab, k) == false) j--;
@@ -779,8 +814,13 @@ This is really only a front-end: it calls the sorting code at "Sort.i6t".
 [ TableSort tab col dir algorithm cf  i j k;
 	for (i=1:i<=tab-->0:i++) {
 		j = tab-->i; ! Address of column table
-		if ((j-->1) & TB_COLUMN_DONTSORTME)
-		    return RunTimeProblem(RTP_TABLE_CANTSORT, tab);
+		if ((j-->1) & TB_COLUMN_DONTSORTME) {
+			IssueRTP("SortedTableWithFixedOrdering",
+	  			"Tried to sort a table whose ordering is fixed.", BasicInformKitRTPs);
+			print "*** Tried to sort a table whose ordering must remain fixed: table '",
+					(PrintTableName) tab, "'.^";
+		    return;
+		}
 	}
 
 	if (cf) {
@@ -840,7 +880,7 @@ And this is how we unserialise again. It makes sense only on Glulx.
 	for (col=1:col<=tab-->0:col++) {
 		j = tab-->col; ! Address of column table
 		if (((j-->1) & TB_COLUMN_CANEXCHANGE) == 0)
-		    return RunTimeProblem(RTP_TABLE_CANTSAVE, tab);
+		    return IssueSavedUnstableTable(tab);
 	}
 	maxrow = TableRows(tab);
 	!print maxrow, " rows available.^";
@@ -908,9 +948,25 @@ And this is how we unserialise again. It makes sense only on Glulx.
 	while (ch == 9 or 32 or 10 or 13) ch = FileIO_GetC(auxf);
 	if (ch == -1) return;
 	.WontFit;
-	return RunTimeProblem(RTP_TABLE_WONTFIT, tab);
+	IssueRTP("ReadFileWhichDidNotFitTable",
+	  	"Table is not large enough for the data in this file.", BasicInformKitRTPs);
+	print "File being read has too many rows or columns to fit into table: table '",
+		(PrintTableName) tab, "'.^";
+	rtrue;
 	.NotTable;
-	return RunTimeProblem(RTP_TABLE_BADFILE, tab);
+	IssueRTP("ReadFileWhichIsNotASavedTable",
+	  	"File doesn't hold table data.", BasicInformKitRTPs);
+	print "File being read is not a previously saved table: table '",
+		(PrintTableName) tab, "'.^";
+	rtrue;
+];
+
+[ IssueSavedUnstableTable tab;
+	IssueRTP("SavedUnstableTable",
+	    "Data in this table cannot reliably be saved.", BasicInformKitRTPs);
+	print "*** Tried to save a table to a file whose data is unstable: table '",
+		(PrintTableName) tab, "'.^";
+	rtrue;
 ];
 
 @h Debugging.

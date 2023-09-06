@@ -409,8 +409,9 @@ the virtual machine.
 
 =
 [ FlexError reason;
+	IssueRTP("MemoryAllocationFailed",	
+    	"Memory allocation proved impossible.", BasicInformKitRTPs);
 	print "*** Memory ", (string) reason, " ***^";
-	RunTimeProblem(RTP_HEAPERROR);
 	@quit;
 ];
 

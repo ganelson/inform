@@ -82,10 +82,17 @@ The following is essentially a wrapper for |MoveObject| used by the relation
 		MoveObject(F, H);	
 	} else if ((F ofclass K2_thing or K1_room or K3_direction or K9_region) || 
 		(H ofclass K2_thing or K1_room or K3_direction or K9_region)) {
-		RunTimeProblem(RTP_HOLDINGISFORTHINGS, F, H);
+		IssueNonThingRTP(F, H);
 	} else {
 		move F to H;
 	}
+];
+
+[ IssueNonThingRTP X Y;
+	IssueRTP("UsedSpatialRelationOnNonThing",
+		"Holding, wearing and carrying are for things only.", WorldModelKitRTPs);
+	print "*** Attempted to move ", (the) X, " to ", (the) Y, ".^";
+	rtrue;
 ];
 
 [ RoomContainerOf obj;
@@ -96,7 +103,7 @@ The following is essentially a wrapper for |MoveObject| used by the relation
 	if ((F ofclass K2_thing) && (H ofclass K1_room)) {
 		MoveObject(F, H);
 	} else {
-		RunTimeProblem(RTP_HOLDINGISFORTHINGS, F, H);
+		IssueNonThingRTP(F, H);
 	}
 ];
 
@@ -185,7 +192,9 @@ laundry-basket in the Hall.
 		if (obj == real_location) rtrue;
 		rfalse;
 	}
-	RunTimeProblem(RTP_NOTINAROOM, obj);
+	IssueRTP("TestedInForNonRoomOrRegion",
+		"Can only test if the current location is in a room or region.", WorldModelKitRTPs);
+	print "*** ", (The) obj, " is neither.^";
 	rfalse;
 ];
 
@@ -228,7 +237,11 @@ would get the wrong result when B is a region.
 	else if ((F ofclass K9_region) && (T ofclass K9_region))
 		MoveObject(F, T);
 	else {
-		RunTimeProblem(RTP_BADCONTAINMENT, F, T);
+		IssueRTP("MadeIllegalContainment",
+	    	"Tried to put something into something else in an impossible way.",
+	    	WorldModelKitRTPs);
+		print "*** Attempted to put ", (the) F, " in ", (the) T, ".^";
+		rtrue;
 	}
 ];
 
@@ -260,7 +273,7 @@ This then is simpler, with no need for an iterator governing searches.
 	if ((F ofclass K2_thing) && (H ofclass K6_supporter)) {
 		MoveObject(F, H);
 	} else {
-		RunTimeProblem(RTP_HOLDINGISFORTHINGS, F, H);
+		IssueNonThingRTP(F, H);
 	}
 ];
 
@@ -279,7 +292,7 @@ Only people may carry, and something worn is not in this sense carried.
 		give H ~worn;
 		MoveObject(F, H);
 	} else {
-		RunTimeProblem(RTP_HOLDINGISFORTHINGS, F, H);
+		IssueNonThingRTP(F, H);
 	}
 ];
 
@@ -309,7 +322,7 @@ from play, then |worn| is removed.
 		if (X notin P) MoveObject(X, P, opt);
 		give X worn;
 	} else {
-		RunTimeProblem(RTP_HOLDINGISFORTHINGS, X, P);
+		IssueNonThingRTP(X, P);
 	}
 ];
 
@@ -345,7 +358,7 @@ attaching it: it cannot, of course, be the core of the resulting object.
 
 [ MakePart P Of First;
 	if ((P ofclass K2_thing) && ((Of == nothing) || (Of ofclass K2_thing))) {
-		if (P == player) return RunTimeProblem(RTP_CANTMAKEPART, Of);
+		if (P == player) return IssueMadePlayerPartOfSomething(Of);
 		if (parent(P)) remove P; give P ~worn;
 		if (Of == nothing) { DetachPart(P); return; }
 		if (P.component_parent) DetachPart(P);
@@ -353,7 +366,7 @@ attaching it: it cannot, of course, be the core of the resulting object.
 		First = Of.component_child;
 		Of.component_child = P; P.component_sibling = First;
 	} else {
-		RunTimeProblem(RTP_HOLDINGISFORTHINGS, P, Of);
+		IssueNonThingRTP(P, Of);
 	}
 ];
 
@@ -377,7 +390,8 @@ when moved.
 
 =
 +replacing(from BasicInformKit) [ MoveObject F T opt going_mode was L;
-	if (F == nothing) return RunTimeProblem(RTP_CANTMOVENOTHING);
+	if (F == nothing) return IssueRTP("NothingMoved",
+		"You can't move nothing.", WorldModelKitRTPs);
 	if (F ofclass K7_backdrop) {
 		if (T ofclass K9_region) {
 			give F ~absent; F.found_in = T.regional_found_in;
@@ -388,12 +402,28 @@ when moved.
 			give F ~absent; F.found_in = FoundEverywhere;
 			return;
 		}
-		return RunTimeProblem(RTP_BACKDROP, F, T);
+		IssueRTP("BackdropMoved",
+	    	"A backdrop can only be moved to a region.",
+	    	WorldModelKitRTPs);
+		print "*** Tried to move ", (the) F, " to ", (the) T, ".^";
+		rtrue;
 	}
-	if (F ofclass K4_door) return RunTimeProblem(RTP_CANTREMOVEDOORS);
-	if (T ofclass K9_region) return RunTimeProblem(RTP_NOTBACKDROP, F, T);
-	if (T == FoundEverywhere) return RunTimeProblem(RTP_BACKDROPONLY, F);
-	if (~~(F ofclass K2_thing)) return RunTimeProblem(RTP_NOTTHING, F, T);
+	if (F ofclass K4_door) return IssueRTP("RemovedDoorFromPlay",
+		"Tried to move a door.", WorldModelKitRTPs);
+	if (T ofclass K9_region) {
+		IssueRTP("NonBackdropMovedToRegion",
+	    	"Only a backdrop can be moved to a region.",
+	    	WorldModelKitRTPs);
+		print "*** Tried to move ", (the) F, " to ", (the) T, ".^";
+		rtrue;
+	}
+	if (T == FoundEverywhere) return IssueBackdropOnlyRTP(F);
+	if (~~(F ofclass K2_thing)) {
+		IssueRTP("NonThingMoved",
+	    	"Only things can move around.", WorldModelKitRTPs);
+		print "*** Tried to move ", (the) F, " to ", (the) T, ".^";
+		return;
+	}
 	if (F has worn) {
 		give F ~worn;
 		if (F in T) return;
@@ -403,7 +433,7 @@ when moved.
 		if (F == player) { PlayerTo(T, opt); return; }
 		if (IndirectlyContains(F, player)) {
 			L = LocationOf(T);
-			if (L == nothing) return RunTimeProblem(RTP_CANTBEOFFSTAGE);
+			if (L == nothing) return IssueMovedPlayerOffStage();
 			if (LocationOf(player) ~= L) {
 				was = parent(player);
 				move player to real_location;
@@ -416,15 +446,30 @@ when moved.
 	move F to T;
 ];
 
+[ IssueBackdropOnlyRTP obj;
+	IssueRTP("NonBackdropMovedToMultipleRooms",
+		"Only backdrops can be moved to multiple rooms or regions.", WorldModelKitRTPs);
+	print "*** ", (The) obj, " is not a backdrop.^";
+	rtrue;
+];
+
 [ RemoveFromPlay F;
-	if (F == nothing) return RunTimeProblem(RTP_CANTREMOVENOTHING);
-	if (F == player) return RunTimeProblem(RTP_CANTREMOVEPLAYER);
-	if (F ofclass K4_door) return RunTimeProblem(RTP_CANTREMOVEDOORS);
+	if (F == nothing) return IssueRTP("NothingRemoved",
+		"You can't remove nothing from play.", WorldModelKitRTPs);
+	if (F == player) return IssueRTP("RemovedPlayerFromPlay",
+		"You can't remove the player from play.", WorldModelKitRTPs);
+	if (F ofclass K4_door) return IssueRTP("RemovedDoorFromPlay",
+		"You can't remove a door from play.", WorldModelKitRTPs);
 	if (F ofclass K1_room) { SetRegionalContainment(F, nothing); return; }
-	if (IndirectlyContains(F, player)) return RunTimeProblem(RTP_CANTBEOFFSTAGE);
+	if (IndirectlyContains(F, player)) return IssueMovedPlayerOffStage();
 	give F ~worn; DetachPart(F);
 	if (F ofclass K7_backdrop) give F absent;
 	remove F;
+];
+
+[ IssueMovedPlayerOffStage;
+	return IssueRTP("MovedPlayerOffStage",
+		"You can't move the player off-stage.", WorldModelKitRTPs);
 ];
 
 @h On Stage.
@@ -463,7 +508,7 @@ witnessed where they need to be.
 =
 [ PlayerTo newplace flag L;
     L = LocationOf(newplace);
-   	if (L == nothing) return RunTimeProblem(RTP_CANTBEOFFSTAGE);
+   	if (L == nothing) return IssueMovedPlayerOffStage();
 	@push actor; actor = player;
     move player to newplace;
     location = L;
@@ -536,9 +581,20 @@ etc. -- in the source text.
 
 =
 [ ChangePlayer obj flag;
-	if (~~(obj ofclass K8_person)) return RunTimeProblem(RTP_CANTCHANGE, obj);
-	if (~~(OnStage(obj, -1))) return RunTimeProblem(RTP_CANTCHANGEOFFSTAGE, obj);
-	if (obj.component_parent) return RunTimeProblem(RTP_CANTMAKEPART, obj);
+	if (~~(obj ofclass K8_person)) {
+		IssueRTP("ChangedPlayerToNonPerson",
+	    	"A player can only be changed to a person.", WorldModelKitRTPs);
+		print "*** Tried to change player to ", (the) obj, ", which is not a person.^";
+		rtrue;
+	}
+	if (~~(OnStage(obj, -1))) {
+		IssueRTP("ChangedPlayerToOffStagePerson",
+			"Attempt to change the player to a person off-stage.",
+			WorldModelKitRTPs);
+		print "*** ", (The) obj, " is currently off-stage.^";	
+		rtrue;
+	}
+	if (obj.component_parent) return IssueMadePlayerPartOfSomething(obj);
 	if (obj == player) return;
 
     give player ~concealed;
@@ -558,6 +614,14 @@ etc. -- in the source text.
     location = LocationOf(player); real_location = location;
     MoveFloatingObjects();
     SilentlyConsiderLight();
+];
+
+[ IssueMadePlayerPartOfSomething obj;
+	IssueRTP("MadePlayerPartOfSomething",
+		"Tried to make the player part of something.",
+		WorldModelKitRTPs);
+	print "*** Tried to make the player part of ", (the) obj, ".^";
+	rtrue;
 ];
 
 @h Floating Objects.
@@ -623,7 +687,7 @@ are a bit more careful about the senses.
 ];
 
 [ MoveBackdrop bd D x address;
-	if (~~(bd ofclass K7_backdrop)) return RunTimeProblem(RTP_BACKDROPONLY, bd);
+	if (~~(bd ofclass K7_backdrop)) return IssueBackdropOnlyRTP(bd);
 	if (bd.#found_in > WORDSIZE) {
 		address = bd.&found_in;
 		address-->0 = D;
@@ -735,10 +799,14 @@ Note that map connections via doors are immutable.
 		return;
 	}
 	if (in_direction ofclass K4_door) {
-		RunTimeProblem(RTP_EXITDOOR, r1, dir);
+		IssueDoorMovedRTP(r1, dir);
 		return;
 	}
-	RunTimeProblem(RTP_NOEXIT, r1, dir);
+	IssueRTP("CouldNotChangeMapConnection",
+		"This map connection could not be changed.",
+		WorldModelKitRTPs);
+	print "Tried to change ", (the) dir, " exit of ", (the) r1,
+		", but it didn't seem to have such an exit to change.^";
 ];
 
 [ AssertMapUnconnection r1 dir r2 in_direction;
@@ -746,12 +814,18 @@ Note that map connections via doors are immutable.
 	in_direction = Map_Storage-->
 		((r1.IK1_Count)*No_Directions + dir.IK3_Count);
 	if (r1 ofclass K4_door) {
-		RunTimeProblem(RTP_EXITDOOR, r1, dir);
+		IssueDoorMovedRTP(r1, dir);
 		return;
 	}
 	if (in_direction == r2)
 		Map_Storage-->((r1.IK1_Count)*No_Directions + dir.IK3_Count) = 0;
 	return;
+];
+
+[ IssueDoorMovedRTP room dir;
+	IssueRTP("DoorMoved",
+		"Map connections to doors cannot be changed.", WorldModelKitRTPs);
+	rtrue;
 ];
 
 @h Adjacency Relation.
@@ -761,12 +835,19 @@ doors.
 =
 [ TestAdjacency R1 R2 i row;
 	if ((R1 == nothing) || (R2 == nothing)) rfalse;
-	if (R1 ofclass K9_region) RunTimeProblem(RTP_REGIONSNOTADJACENT, R1);
-	else if (R2 ofclass K9_region) RunTimeProblem(RTP_REGIONSNOTADJACENT, R2);
+	if (R1 ofclass K9_region) { IssueTestedAdjacencyRTP(R1); rfalse; }
+	else if (R2 ofclass K9_region) { IssueTestedAdjacencyRTP(R2); rfalse; }
 	row = (R1.IK1_Count)*No_Directions;
 	for (i=0: i<No_Directions: i++, row++)
 		if (Map_Storage-->row == R2) rtrue;
 	rfalse;
+];
+
+[ IssueTestedAdjacencyRTP region;
+	IssueRTP("TestedAdjacencyToRegion",
+	    "You can't test whether something is adjacent to a region.", WorldModelKitRTPs);
+	print "*** The region you tried this with was ", (the) region, ".^";
+	rtrue;
 ];
 
 @h Regional Containment Relation.
@@ -815,13 +896,21 @@ must either completely contain another region, or else have no overlap with it.)
 		((region ofclass K9_region) || (region == nothing))) {
 		o = region;
 		while (o) {
-			if (o == obj) return RunTimeProblem(RTP_DISALLOWEDREGIONCHANGE, obj, region);
+			if (o == obj) return IssueNoRegionChangeRTP(obj, region);
 			o = parent(o);
 		}
 		move obj to region;
 	} else if (TestRegionalContainment(obj, region) == false) {
-		RunTimeProblem(RTP_DISALLOWEDREGIONCHANGE, obj, region);
+		IssueNoRegionChangeRTP(obj, region);
 	}
+];
+
+[ IssueNoRegionChangeRTP obj region;
+	IssueRTP("ChangedRegionOfNonRoomOrRegion",
+		"Only rooms and regions can change region.",
+		WorldModelKitRTPs);
+	print "*** Attempted to move ", (the) obj, " to ", (the) region, ".^";
+	rtrue;
 ];
 
 @h Doors.

@@ -145,7 +145,9 @@ simple routine, but some are run by calling the three subroutines independently.
 
 =
 [ BeginActivity A o;
-	if (activities_sp == MAX_NESTED_ACTIVITIES) return RunTimeProblem(RTP_TOOMANYACTS);
+	if (activities_sp == MAX_NESTED_ACTIVITIES)
+		return IssueRTP("TooManyActivities",	
+    		"Too many activities are going on at once.", BasicInformKitRTPs);
 	activity_parameters_stack-->activities_sp = o;
 	activities_stack-->(activities_sp++) = A;
 	FixInhibitFlag();
@@ -177,7 +179,8 @@ simple routine, but some are run by calling the three subroutines independently.
 		MStack_DestroyAVVars(A);
 		return rv;
 	}
-	return RunTimeProblem(RTP_CANTEND);
+	return IssueRTP("EndedNonRunningActivity",	
+    	"Tried to end an activity which wasn't going on.", BasicInformKitRTPs);
 ];
 
 @h Abandon.
@@ -192,5 +195,6 @@ activity must be being run by calling the three stages individually, and
 		MStack_DestroyAVVars(A);
 		return;
 	}
-	return RunTimeProblem(RTP_CANTABANDON);
+	return IssueRTP("AbandonedNonRunningActivity",	
+    	"Tried to abandon an activity which wasn't going on.", BasicInformKitRTPs);
 ];
