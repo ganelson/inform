@@ -1,6 +1,6 @@
-Total memory consumption was 139495K = 136 MB
+Total memory consumption was 139573K = 136 MB
 
- ---- was used for 2127131 objects, in 374784 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2127132 objects, in 374785 frames in 0 x 800K = 0K = 0 MB:
 
     30.2%  inter_tree_node_array                    60 x 8192 = 491520 objects, 43255680 bytes
     19.4%  text_stream_array                        4925 x 100 = 492500 objects, 27737600 bytes
@@ -104,7 +104,7 @@ Total memory consumption was 139495K = 136 MB
      ----  nonlocal_variable                        94 objects, 20304 bytes
      ----  pipeline_step                            15 objects, 20280 bytes
      ----  action_name                              90 objects, 20160 bytes
-     ----  method                                   415 objects, 19920 bytes
+     ----  method                                   416 objects, 19968 bytes
      ----  timed_rules_rfd_data                     404 objects, 19392 bytes
      ----  build_vertex                             157 objects, 18840 bytes
      ----  instance                                 162 objects, 18144 bytes
@@ -260,9 +260,9 @@ Total memory consumption was 139495K = 136 MB
      ----  target_pragma_setting                    1 object, 40 bytes
      ----  loop_over_scope                          1 object, 40 bytes
 
-100.0% was used for memory not allocated for objects:
+99.9% was used for memory not allocated for objects:
 
-    62.3%  text stream storage                      89094656 bytes in 512549 claims
+    62.3%  text stream storage                      89173912 bytes in 512564 claims
      3.8%  dictionary storage                       5497920 bytes in 7767 claims
      ----  sorting                                  2624 bytes in 531 claims
      5.0%  source text                              7200000 bytes in 3 claims
@@ -270,7 +270,7 @@ Total memory consumption was 139495K = 136 MB
      0.1%  documentation fragments                  262144 bytes in 1 claim
      ----  linguistic stock array                   81920 bytes in 2 claims
      ----  small word set array                     105600 bytes in 22 claims
-     3.2%  inter symbols storage                    4572416 bytes in 28261 claims
+     3.1%  inter symbols storage                    4572416 bytes in 28261 claims
     11.7%  inter bytecode storage                   16757556 bytes in 15 claims
      4.3%  inter links storage                      6222976 bytes in 11 claims
      0.1%  inter tree location list storage         191232 bytes in 32 claims
@@ -280,5 +280,5 @@ Total memory consumption was 139495K = 136 MB
      ----  code generation workspace for objects    3528 bytes in 19 claims
      0.1%  emitter array storage                    281184 bytes in 2006 claims
 
--136.-6% was overhead - -195220160 bytes = -190644K = -186 MB
+-136.-5% was overhead - -195220208 bytes = -190644K = -186 MB
 

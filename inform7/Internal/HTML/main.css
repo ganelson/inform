@@ -399,6 +399,7 @@ div.definition p.defnprototype {
 	margin: 0;
 	padding: 0;
 	text-indent: 0;
+	font-weight: bold;
 }
 
 /* On Registry index pages (such as the Public Library), these are used for
@@ -441,3 +442,421 @@ p.registryaddition {
 	padding-left: 40px;
 	text-indent: -40px;
 }
+
+/* General index for inbuild-generated documents: */
+
+div.generalindex p {
+	font-size: 16px;
+	line-height: 20px;
+}
+
+div.generalindex td {
+	font-size: 16px;
+	line-height: 20px;
+}
+
+/* This is used for the horizontal row of link letters from A to Z */
+
+div.generalindex td.letterinrow {
+	width: 3.846%; /* 3.846 = 1/26 to pretty good accuracy */
+	height: 30px;
+	text-align: center;
+	vertical-align: middle;
+	background-color: #e0e0e0;	
+}
+
+div.generalindex td.letterinrow: hover {
+	background-color: #c0c0c0;	
+}
+
+/* This is used to hold the "majuscule" A-Z letters left of the alpha index */
+
+div.generalindex td.letterblock {
+	width: 38px;
+	text-align: left;
+	vertical-align: top;
+}
+
+/* Which contains links like so: */
+
+div.generalindex a.letterlink:link, div.generalindex a.letterlink:visited {
+	text-decoration: none;
+	color: #202020;
+	font-size: 0.75em;
+	font-weight: bold;
+}
+
+div.generalindex a.letterlink:hover, div.generalindex a.letterlink:active {
+	text-decoration: none;
+	color: #D00000;
+	font-size: 0.75em;
+	font-weight: bold;
+}
+
+/* A single letter of majuscule is held in this tinted box: */
+
+div.generalindex div.majuscule {
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	vertical-align: middle;
+	background-color: #808080;
+	display: table-cell;
+}
+
+/* But a wider text (such as used in other index headings) is held in this: */
+
+div.generalindex div.stretchymajuscule {
+	height: 30px;
+	text-align: center;
+	vertical-align: middle;
+	background-color: #808080;
+}
+
+/* Either way, the actual lettering inside uses this: */
+
+div.generalindex span.majusculelettering {
+	font-size: 0.75em;
+	color: #FFFFFF;
+}
+
+div.generalindex table.fullwidth {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+div.generalindex table.fullwidth td, div.generalindex table.fullwidth th {
+    padding: 0;
+}
+
+div.generalindex table.fullwidtharch {
+    border-spacing: 6px;
+    border-collapse: separate;
+	width: 100%;
+}
+
+div.generalindex table.fullwidtharch td, div.generalindex table.fullwidtharch th {
+    padding: 0;
+}
+
+div.generalindex table.indextable {
+	border-collapse: collapse;
+	width: 100%;
+	margin-top: 8px;
+}
+
+div.generalindex p.indexentry {
+	font-size: 0.8em;
+	margin-top: 0px;
+	margin-bottom: 4px;
+	text-indent: -2em;
+	padding-left: 2em;
+}
+
+div.generalindex a.indexlink {
+	color: #666;
+	text-decoration: none;
+	border-bottom: 1px dotted #666;
+}
+
+div.generalindex a.indexseelink {
+	text-decoration: none;
+	border-bottom: 1px dotted #666;
+}
+
+div.generalindex a.indexlinkalt {
+	color: #666;
+	text-decoration: none;
+	border-bottom: 1px dotted #666;
+	font-style: italic;
+}
+
+div.generalindex span.indexgloss {
+	font-size: 0.7em;
+	font-style: italic;
+	color: #088;
+}
+
+div.generalindex span.indexsee {
+	font-style: italic;
+	color: #666;
+}
+
+div.generalindex span.smoketest {
+	background-color: #000000;
+	color: #ffffff;
+	padding-left: 6px;
+	padding-right: 6px;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+div.generalindex span.indexstandard {
+}
+
+div.generalindex span.indexsource {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexsourcearg {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexsourceargbracketed {
+	color: #8080ff;
+	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	font-style: italic;
+}
+
+div.generalindex span.indexsourcepartbracketed {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexphrase {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexphrasebracketed {
+	color: #8080ff;
+	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	font-style: italic;
+}
+
+div.generalindex span.indexifphrase {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexifphrasebracketed {
+	color: #8080ff;
+	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	font-style: italic;
+}
+
+div.generalindex span.indexsayphrase {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexsayphrasebracketed {
+	color: #8080ff;
+	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	font-style: italic;
+}
+
+div.generalindex span.indexoutphrase {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexoutphrasebracketed {
+	color: #8080ff;
+	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	font-style: italic;
+}
+
+div.generalindex span.indexassert {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexassertbracketed {
+	color: #8080ff;
+	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	font-style: italic;
+}
+
+div.generalindex span.indexrb {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexrbbracketed {
+	color: #8080ff;
+	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	font-style: italic;
+}
+
+div.generalindex span.indexprop {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexpropbracketed {
+	color: #8080ff;
+	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	font-style: italic;
+}
+
+div.generalindex span.indexpropcat {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexpropcatbracketed {
+	color: #8080ff;
+	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	font-style: italic;
+}
+
+div.generalindex span.indexadj {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexadjbracketed {
+	color: #8080ff;
+	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	font-style: italic;
+}
+
+div.generalindex span.indexrelbracketed {
+	color: #8080ff;
+	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	font-style: italic;
+}
+
+div.generalindex span.indexrelcatbracketed {
+	color: #8080ff;
+	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	font-style: italic;
+}
+
+div.generalindex span.indexrelverb {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexglob {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexglobbracketed {
+	color: #8080ff;
+	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	font-style: italic;
+}
+
+div.generalindex span.indexactvar {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexactvarbracketed {
+	color: #8080ff;
+	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	font-style: italic;
+}
+
+div.generalindex span.indexconst {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexconstbracketed {
+	color: #8080ff;
+	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	font-style: italic;
+}
+
+div.generalindex span.indexaction {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexactionbracketed {
+	color: #8080ff;
+	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	font-style: italic;
+}
+
+div.generalindex span.indexactivity {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexactivitycat {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexdescactivity {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexexample {
+	font-style: italic;
+}
+
+div.generalindex span.indextitle {
+	font-style: italic;
+}
+
+div.generalindex span.indexofsourcebracketed {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexuseopt {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indextoken {
+	color: #000080;
+	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indextokenbracketed {
+	color: #8080ff;
+	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	font-style: italic;
+}
+
+div.generalindex span.indexcommand {
+	color: #186000;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indextestcmd {
+	color: #186000;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 0.9em;
+}
+
+div.generalindex span.indexcommandpartbracketed {
+	color: #186000;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 0.9em;
+}
+
