@@ -412,7 +412,7 @@ void DocumentationRenderer::render_example(OUTPUT_STREAM, compiled_documentation
 	} else {
 		IFM_example *E = RETRIEVE_POINTER_IFM_example(alt_EN->user_state);
 		HTML_OPEN_WITH("div", "class=\"markdowncontent\"");
-		InformFlavouredMarkdown::render_example_heading(OUT, E, TRUE);
+		InformFlavouredMarkdown::render_example_heading(OUT, E, NULL);
 		markdown_item *passage_node = alt_EN->down;
 		while (passage_node) {
 			Markdown::render_extended(OUT, passage_node,

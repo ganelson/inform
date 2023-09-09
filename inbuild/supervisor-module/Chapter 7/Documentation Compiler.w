@@ -106,6 +106,7 @@ For the Inform manual built in to the apps, there will be two volumes,
 =
 typedef struct cd_volume {
 	struct text_stream *title;
+	struct text_stream *label;
 	struct text_stream *home_URL;
 	struct linked_list *pagesets; /* of |cd_pageset| */
 	struct markdown_item *volume_item;
@@ -113,9 +114,10 @@ typedef struct cd_volume {
 } cd_volume;
 
 cd_volume *DocumentationCompiler::add_volume(compiled_documentation *cd, text_stream *title,
-	text_stream *home_URL) {
+	text_stream *label, text_stream *home_URL) {
 	cd_volume *vol = CREATE(cd_volume);
 	vol->title = Str::duplicate(title);
+	vol->label = Str::duplicate(label);
 	vol->home_URL = Str::duplicate(home_URL);
 	vol->pagesets = NEW_LINKED_LIST(cd_pageset);
 	vol->volume_item = NULL;
@@ -247,7 +249,7 @@ compiled_documentation *DocumentationCompiler::new_cd(pathname *P,
 	}
 	Indexes::add_indexing_notation(cd, NULL, NULL, I"standard", NULL);
 	if (LinkedLists::len(cd->volumes) == 0) {
-		cd_volume *implied = DocumentationCompiler::add_volume(cd, cd->title, I"index.html");
+		cd_volume *implied = DocumentationCompiler::add_volume(cd, cd->title, NULL, I"index.html");
 		DocumentationCompiler::add_page(implied, I"Documentation.md",
 			I"chapter*.html", CHAPTER_PAGESETBREAKING);
 	}
@@ -324,7 +326,7 @@ void DocumentationCompiler::read_layout_helper(text_stream *cl, text_file_positi
 		cd->example_URL_pattern = Str::duplicate(mr.exp[1]);
 	} else if (Regexp::match(&mr, cl, L" *pages: *(%c*?) *")) {
 		@<Act on a page-set declaration@>;
-	} else if (Regexp::match(&mr, cl, L" *volume: *\"(%c*?)\" to \"(%c*?)\"")) {
+	} else if (Regexp::match(&mr, cl, L" *volume: *\"(%c*?)\" or \"(%C+)\" to \"(%c*?)\"")) {
 		@<Act on a volume declaration@>;
 	} else if (Regexp::match(&mr, cl, L" *alphabetical index: *\"(%c*?)\" to \"(%c*?)\" *")) {
 		cd->index_title[ALPHABETICAL_EG_INDEX] = Str::duplicate(mr.exp[0]);
@@ -351,9 +353,9 @@ void DocumentationCompiler::read_layout_helper(text_stream *cl, text_file_positi
 }
 
 @<Act on a volume declaration@> =
-	if (Str::eq(mr.exp[1], I"index.html"))
+	if (Str::eq(mr.exp[2], I"index.html"))
 		DocumentationCompiler::layout_error(cd, I"a volume home page cannot be 'index.html'", cl, tfp);
-	DocumentationCompiler::add_volume(cd, mr.exp[0], mr.exp[1]);
+	DocumentationCompiler::add_volume(cd, mr.exp[0], mr.exp[1], mr.exp[2]);
 
 @<Act on a page-set declaration@> =
 	TEMPORARY_TEXT(src)
@@ -422,7 +424,8 @@ void DocumentationCompiler::read_layout_helper(text_stream *cl, text_file_positi
 
 	cd_volume *vol, *last_vol = NULL;
 	LOOP_OVER_LINKED_LIST(vol, cd_volume, cd->volumes) last_vol = vol;
-	if (last_vol == NULL) last_vol = DocumentationCompiler::add_volume(cd, cd->title, I"index.html");
+	if (last_vol == NULL)
+		last_vol = DocumentationCompiler::add_volume(cd, cd->title, NULL, I"index.html");
 
 	if (LinkedLists::len(cd->source_files) > 0) {
 		int counter = 0;
@@ -642,8 +645,11 @@ typedef struct example_scanning_state {
 	IFM_example *eg = InformFlavouredMarkdown::new_example(
 		ess.long_title, ess.desc, ess.star_count, LinkedLists::len(cd->examples));
 	eg->cue = stc->primary_placement;
+	eg->secondary_cue = stc->secondary_placement;
 	eg->ex_subtitle = ess.subtitle;
 	eg->ex_index = ess.index;
+	eg->primary_label = (primary)?(primary->label):NULL;
+	eg->secondary_label = (secondary)?(secondary->label):NULL;
 	ADD_TO_LINKED_LIST(eg, IFM_example, cd->examples);
 
 	stc->as_example = eg;

@@ -166,17 +166,6 @@ void Indexes::scan(compiled_documentation *cd) {
 	LOOP_OVER_LINKED_LIST(E, IFM_example, cd->examples)
 		Indexes::scan_r(cd, E->header, NULL, E, &volume_number);
 	if (LinkedLists::len(cd->id.lemma_list) > 0) cd->id.present_with_index = TRUE;
-	LOOP_OVER_LINKED_LIST(E, IFM_example, cd->examples) {
-		TEMPORARY_TEXT(term)
-		Indexes::extract_from_indexable_matter(term, cd, Str::duplicate(E->name));
-		Indexes::mark_index_term(cd, term, 0, NULL, E->URL, E, NULL, NULL, 1);
-		if (Str::len(E->ex_index) > 0) {
-			Str::clear(term);
-			Indexes::extract_from_indexable_matter(term, cd, Str::duplicate(E->ex_index));
-			Indexes::mark_index_term(cd, term, 0, NULL, E->URL, E, NULL, NULL, 2);
-		}
-		DISCARD_TEXT(term)
-	}
 }
 
 void Indexes::scan_r(compiled_documentation *cd, markdown_item *md, markdown_item **latest,
@@ -189,6 +178,18 @@ void Indexes::scan_r(compiled_documentation *cd, markdown_item *md, markdown_ite
 		if (md->type == INDEX_MARKER_MIT) {
 			Indexes::scan_indexingnotations(cd, md, md->details, md->stashed, *volume_number,
 				(latest)?(*latest):NULL, E);
+		}
+		if ((md->type == INFORM_EXAMPLE_HEADING_MIT) && (latest) && (*latest)) {
+			IFM_example *EG = RETRIEVE_POINTER_IFM_example(md->user_state);
+			TEMPORARY_TEXT(term)
+			Indexes::extract_from_indexable_matter(term, cd, Str::duplicate(EG->name));
+			Indexes::mark_index_term(cd, term, *volume_number, *latest, NULL, EG, NULL, NULL, 1);
+			if ((Str::len(EG->ex_index) > 0) && (Str::ne(EG->ex_index, EG->name))) {
+				Str::clear(term);
+				Indexes::extract_from_indexable_matter(term, cd, Str::duplicate(EG->ex_index));
+				Indexes::mark_index_term(cd, term, *volume_number, *latest, NULL, EG, NULL, NULL, 2);
+			}
+			DISCARD_TEXT(term)
 		}
 	}
 	for (markdown_item *ch = md->down; ch; ch=ch->next)
@@ -540,9 +541,9 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 	LOOP_OVER_LINKED_LIST(il, index_lemma, cd->id.lemma_list) {
 		TEMPORARY_TEXT(sort_key)
 		Str::copy(sort_key, il->term);
-
 		/* ensure subentries follow main entries */
-		Regexp::replace(sort_key, L": *", L"ZZZZZZZZZZZZZZZZZZZZZZ", REP_REPEATING);
+		if (Str::get_first_char(sort_key) != ':')
+			Regexp::replace(sort_key, L": *", L"ZZZZZZZZZZZZZZZZZZZZZZ", REP_REPEATING);
 		IndexUtilities::improve_alphabetisation(sort_key);
 
 		match_results mr = Regexp::create_mr();
@@ -554,14 +555,19 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 
 		TEMPORARY_TEXT(un)
 		Str::copy(un, sort_key);
-		Regexp::replace(un, L"%(%c*?%)", NULL, REP_REPEATING);
+		if ((Str::begins_with(sort_key, I"( )") == FALSE) &&
+			(Str::begins_with(sort_key, I"((-") == FALSE) &&
+			(Str::begins_with(sort_key, I"((+") == FALSE))
+			Regexp::replace(un, L"%(%c*?%)", NULL, REP_REPEATING);
 		Regexp::replace(un, L" ", NULL, REP_REPEATING);
-		Regexp::replace(un, L",", NULL, REP_REPEATING);
+		if (Str::get_first_char(sort_key) != ',')
+			Regexp::replace(un, L",", NULL, REP_REPEATING);
 		int f = ' ';
 		if (Characters::isalpha(Str::get_first_char(sort_key)))
 			f = Str::get_first_char(sort_key);
 		WRITE_TO(il->sorting_key, "%c_%S=___=%S=___=%07d",
 			f, un, sort_key, il->allocation_id);
+
 		DISCARD_TEXT(un)
 		DISCARD_TEXT(sort_key)
 		Regexp::dispose_of(&mr);
@@ -636,6 +642,13 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 		WRITE_TO(details, "class=\"indexentry\" style=\"margin-left: %dem;\"", 4*indent_level);
 		HTML::open(OUT, "p", details, __FILE__, __LINE__);
 		DISCARD_TEXT(details)
+		IFM_example *EG = NULL;
+		if (il->example_index_status > 0) {
+			index_reference *ref;
+			LOOP_OVER_LINKED_LIST(ref, index_reference, il->index_points)
+				if (ref->example)
+					EG = ref->example;
+		}
 		@<Render the lemma text@>;
 		@<Render the category gloss@>;
 		WRITE("&nbsp;&nbsp;");
@@ -661,11 +674,7 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 	for (int i=0, L = Str::len(untreated); i<L; i++) {
 		int c = Str::get_at(untreated, i);
 		if (c == '\\') {
-			int n = 0, d = 0, id = 0;
-			while (Characters::isdigit(id = Str::get_at(untreated, i+1))) {
-				i++, d++; n = n*10 + (id - '0');
-			}
-			if (n == 0) n = Str::get_at(untreated, ++i);
+			int n = Str::get_at(untreated, ++i);
 			if (n == '(') n = SAVED_OPEN_BRACKET;
 			if (n == ')') n = SAVED_CLOSE_BRACKET;
 			PUT_TO(lemma_wording, n);
@@ -673,6 +682,18 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 	}
 
 	if (ic->cat_bracketed) {
+		while (Regexp::match(&mr, lemma_wording, L"(%c*?)%(%(%+ %+%)%)(%c*)")) {
+			Str::clear(lemma_wording);
+			WRITE_TO(lemma_wording,
+				"%S<span class=\"index%Sbracketed\">%c+ +%c</span>%S",
+				mr.exp[0], category, SAVED_OPEN_BRACKET, SAVED_CLOSE_BRACKET, mr.exp[1]);
+		}
+		while (Regexp::match(&mr, lemma_wording, L"(%c*?)%(%(%- %-%)%)(%c*)")) {
+			Str::clear(lemma_wording);
+			WRITE_TO(lemma_wording,
+				"%S<span class=\"index%Sbracketed\">%c- -%c</span>%S",
+				mr.exp[0], category, SAVED_OPEN_BRACKET, SAVED_CLOSE_BRACKET, mr.exp[1]);
+		}
 		while (Regexp::match(&mr, lemma_wording, L"(%c*?)%((%c*?)%)(%c*)")) {
 			Str::clear(lemma_wording);
 			WRITE_TO(lemma_wording,
@@ -695,11 +716,17 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 	}
 
 @<Render the lemma text@> =
-	if (il->example_index_status == 1) HTML_OPEN("b");
+	if (il->example_index_status == 1) {
+		HTML_OPEN("b");
+		if (EG) HTML_OPEN_WITH("a", "href=\"%S\"", EG->URL);
+	}
 	WRITE("<span class=\"index%S\">", category);
 	WRITE("%S", lemma_wording);
 	HTML_CLOSE("span");
-	if (il->example_index_status == 1) HTML_CLOSE("b");
+	if (il->example_index_status == 1) {
+		if (EG) HTML_CLOSE("a");
+		HTML_CLOSE("b");
+	}
 
 @<Render the category gloss@> =
 	if (Str::len(ic->cat_glossed) > 0)
@@ -733,7 +760,7 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 		if (E) {
 			if (S) WRITE_TO(link, " ");
 			WRITE_TO(link, "ex %S", E->insignia);
-			A = E->URL;
+			if (EG == NULL) A = E->URL;
 		}
 		if (Str::len(A) == 0) { LOG("Alert! No anchor for %S\n", link); }
 		IndexUtilities::general_link(OUT, link_class, A, link);
