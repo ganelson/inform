@@ -55,7 +55,7 @@ inbuild_requirement *Requirements::from_text(text_stream *T,
 	inbuild_requirement *req = Requirements::anything();
 	int from = 0;
 	for (int at = 0; at < Str::len(T); at++) {
-		wchar_t c = Str::get_at(T, at);
+		inchar32_t c = Str::get_at(T, at);
 		if (c == ',') {
 			TEMPORARY_TEXT(initial)
 			Str::substr(initial, Str::at(T, from), Str::at(T, at));
@@ -84,7 +84,7 @@ void Requirements::impose_clause(inbuild_requirement *req, text_stream *T,
 	TEMPORARY_TEXT(term)
 	TEMPORARY_TEXT(value)
 	for (int at = 0; at < Str::len(T); at++) {
-		wchar_t c = Str::get_at(T, at);
+		inchar32_t c = Str::get_at(T, at);
 		if (c == '=') {
 			Str::substr(term, Str::start(T), Str::at(T, at));
 			Str::substr(value, Str::at(T, at+1), Str::end(T));

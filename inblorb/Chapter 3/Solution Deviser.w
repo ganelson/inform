@@ -171,7 +171,7 @@ void Solution::read_skein_line(text_stream *line, int pass) {
 void Solution::find_node_ID_in_tag(OUTPUT_STREAM, text_stream *line, char *tag) {
 	TEMPORARY_TEXT(prototype)
 	WRITE_TO(prototype, "%%c*?<%s nodeId=\"(%%c*?)\"%%c*", tag);
-	wchar_t prototype_Cs[128];
+	inchar32_t prototype_Cs[128];
 	Str::copy_to_wide_string(prototype_Cs, prototype, 128);
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, line, prototype_Cs)) Str::copy(OUT, mr.exp[0]);
@@ -187,7 +187,7 @@ int Solution::find_text_of_tag(OUTPUT_STREAM, text_stream *line, char *tag) {
 	TEMPORARY_TEXT(prototype)
 	WRITE_TO(prototype, "%%c*?>(%%c*?)</%s%%c*", tag);
 	match_results mr = Regexp::create_mr();
-	wchar_t prototype_Cs[128];
+	inchar32_t prototype_Cs[128];
 	Str::copy_to_wide_string(prototype_Cs, prototype, 128);
 	if (Regexp::match(&mr, line, prototype_Cs)) {
 		DISCARD_TEXT(prototype)
@@ -234,12 +234,12 @@ void Solution::undo_XML_escapes_in_string(text_stream *p) {
 @ Note that all other ampersand-escapes are passed through verbatim.
 
 @<We have identified an XML escape@> =
-	wchar_t c = 0;
-	if (Str::eq_wide_string(xml_escape, L"&lt;")) c = '<';
-	if (Str::eq_wide_string(xml_escape, L"&gt;")) c = '>';
-	if (Str::eq_wide_string(xml_escape, L"&amp;")) c = '&';
-	if (Str::eq_wide_string(xml_escape, L"&apos;")) c = '\'';
-	if (Str::eq_wide_string(xml_escape, L"&quot;")) c = '\"';
+	inchar32_t c = 0;
+	if (Str::eq_wide_string(xml_escape, U"&lt;")) c = '<';
+	if (Str::eq_wide_string(xml_escape, U"&gt;")) c = '>';
+	if (Str::eq_wide_string(xml_escape, U"&amp;")) c = '&';
+	if (Str::eq_wide_string(xml_escape, U"&apos;")) c = '\'';
+	if (Str::eq_wide_string(xml_escape, U"&quot;")) c = '\"';
 	if (c) { Str::put_at(p, j++, c); i += Str::len(xml_escape); continue; }
 
 @h Step 2: identify the relevant lines.

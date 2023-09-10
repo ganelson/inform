@@ -82,10 +82,10 @@ void Updater::definitions_helper(text_stream *line, text_file_position *tfp, voi
 	definitions_helper_state *dhs = (definitions_helper_state *) v_dhs;
 	Str::trim_white_space_at_end(line);
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line, L" *<!--definition of (%c*?)--%c*")) {
+	if (Regexp::match(&mr, line, U" *<!--definition of (%c*?)--%c*")) {
 		WRITE_TO(dhs->OUT, "*=%S=*\n", mr.exp[0]);
 		dhs->transcribe = TRUE;
-	} else if (Regexp::match(&mr, line, L" *<!--end definition--%c*")) {
+	} else if (Regexp::match(&mr, line, U" *<!--end definition--%c*")) {
 		dhs->transcribe = FALSE;
 	} else if (dhs->transcribe) WRITE_TO(dhs->OUT, "%S\n", line);
 	Regexp::dispose_of(&mr);

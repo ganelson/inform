@@ -297,7 +297,7 @@ from a text substitution.)
 
 	int announce = TRUE;
 	text_stream *latest = Problems::latest_sigil();
-	if (Str::eq_wide_string(latest, L"PM_AllInvsFailed")) announce = FALSE;
+	if (Str::eq_wide_string(latest, U"PM_AllInvsFailed")) announce = FALSE;
 
 	if (announce) @<Produce the I was trying... banner@>;
 	@<Produce the list of possibilities@>;
@@ -1746,9 +1746,9 @@ And here is where we check that "break" is indeed used only in a loop.
 @<Step (4I.h) Worry about using a phrase outside of the control structure it belongs to@> =
 	LOG_DASH("(4I.h)");
 	if (idb) {
-		wchar_t *required = IDTypeData::only_in(idb);
+		inchar32_t *required = IDTypeData::only_in(idb);
 		if (required) {
-			if (Wide::cmp(required, L"loop") == 0) {
+			if (Wide::cmp(required, U"loop") == 0) {
 				LOGIF(MATCHING, "Required to be inside loop body\n");
 				if (CodeBlocks::inside_a_loop_body() == FALSE) {
 					THIS_IS_AN_INTERESTING_PROBLEM {
@@ -1761,8 +1761,8 @@ And here is where we check that "break" is indeed used only in a loop.
 				}
 			} else {
 				LOGIF(MATCHING, "Required to be inside block '%w'\n", required);
-				wchar_t *actual = CodeBlocks::name_of_current_block();
-				if ((actual) && (Wide::cmp(actual, L"unless") == 0)) actual = L"if";
+				inchar32_t *actual = CodeBlocks::name_of_current_block();
+				if ((actual) && (Wide::cmp(actual, U"unless") == 0)) actual = U"if";
 				if ((actual == NULL) || (Wide::cmp(required, actual) != 0)) {
 					THIS_IS_AN_INTERESTING_PROBLEM {
 						Problems::quote_source(1, current_sentence);
@@ -3482,7 +3482,7 @@ int Dash::validate_parameter(parse_node *spec, kind *K) {
 int verbose_checking_state = FALSE;
 linked_list *packages_to_log_inter_from = NULL;
 
-void Dash::tracing_phrases(wchar_t *text) {
+void Dash::tracing_phrases(inchar32_t *text) {
 	if ((text) && (text[0])) {
 		TEMPORARY_TEXT(LT)
 		WRITE_TO(LT, "%w", text);

@@ -108,48 +108,48 @@ category:
 	ic->cat_name = Str::duplicate(name);
 	match_results mr = Regexp::create_mr();
 	ic->cat_glossed = Str::new();
-	if (Regexp::match(&mr, options, L"(%c*?) *%(\"(%c*?)\"%) *(%c*)")) {
+	if (Regexp::match(&mr, options, U"(%c*?) *%(\"(%c*?)\"%) *(%c*)")) {
 		ic->cat_glossed = Str::duplicate(mr.exp[1]);
 		Str::clear(options); WRITE_TO(options, "%S%S", mr.exp[0], mr.exp[2]);
 	}
 	ic->cat_prefix = Str::new();
-	if (Regexp::match(&mr, options, L"(%c*?) *%(prefix \"(%c*?)\"%) *(%c*)")) {
+	if (Regexp::match(&mr, options, U"(%c*?) *%(prefix \"(%c*?)\"%) *(%c*)")) {
 		ic->cat_prefix = Str::duplicate(mr.exp[1]);
 		Str::clear(options); WRITE_TO(options, "%S%S", mr.exp[0], mr.exp[2]);
 	}
 	ic->cat_suffix = Str::new();
-	if (Regexp::match(&mr, options, L"(%c*?) *%(suffix \"(%c*?)\"%) *(%c*)")) {
+	if (Regexp::match(&mr, options, U"(%c*?) *%(suffix \"(%c*?)\"%) *(%c*)")) {
 		ic->cat_suffix = Str::duplicate(mr.exp[1]);
 		Str::clear(options); WRITE_TO(options, "%S%S", mr.exp[0], mr.exp[2]);
 	}
 	ic->cat_under = Str::new();
-	if (Regexp::match(&mr, options, L"(%c*?) *%(under {(%c*?)}%) *(%c*)")) {
+	if (Regexp::match(&mr, options, U"(%c*?) *%(under {(%c*?)}%) *(%c*)")) {
 		Str::clear(options); WRITE_TO(options, "%S%S", mr.exp[0], mr.exp[2]);
 		ic->cat_under = Str::duplicate(mr.exp[1]);
 	}
 	ic->cat_alsounder = FALSE;
-	if (Regexp::match(&mr, options, L"(%c*?) *%(also under {(%c*?)}%) *(%c*)")) {
+	if (Regexp::match(&mr, options, U"(%c*?) *%(also under {(%c*?)}%) *(%c*)")) {
 		Str::clear(options); WRITE_TO(options, "%S%S", mr.exp[0], mr.exp[2]);
 		ic->cat_under = Str::duplicate(mr.exp[1]);
 		ic->cat_alsounder = TRUE;
 	}
 	ic->cat_inverted = FALSE;
-	if (Regexp::match(&mr, options, L"(%c*?) *%(invert%) *(%c*)")) {
+	if (Regexp::match(&mr, options, U"(%c*?) *%(invert%) *(%c*)")) {
 		ic->cat_inverted = TRUE;
 		Str::clear(options); WRITE_TO(options, "%S%S", mr.exp[0], mr.exp[1]);
 	}
 	ic->cat_bracketed = FALSE;
-	if (Regexp::match(&mr, options, L"(%c*?) *%(bracketed%) *(%c*)")) {
+	if (Regexp::match(&mr, options, U"(%c*?) *%(bracketed%) *(%c*)")) {
 		ic->cat_bracketed = TRUE;
 		Str::clear(options); WRITE_TO(options, "%S%S", mr.exp[0], mr.exp[1]);
 	}
 	ic->cat_unbracketed = FALSE;
-	if (Regexp::match(&mr, options, L"(%c*?) *%(unbracketed%) *(%c*)")) {
+	if (Regexp::match(&mr, options, U"(%c*?) *%(unbracketed%) *(%c*)")) {
 		ic->cat_bracketed = TRUE;
 		ic->cat_unbracketed = TRUE;
 		Str::clear(options); WRITE_TO(options, "%S%S", mr.exp[0], mr.exp[1]);
 	}
-	if (Regexp::match(NULL, options, L"%c*?%C%c*"))
+	if (Regexp::match(NULL, options, U"%c*?%C%c*"))
 		Errors::with_text("Unknown notation options: %S", options);
 	ic->cat_usage = 0;
 	Regexp::dispose_of(&mr);
@@ -201,10 +201,10 @@ void Indexes::scan_indexingnotations(compiled_documentation *cd, markdown_item *
 	match_results mr = Regexp::create_mr();
 	TEMPORARY_TEXT(see)
 	TEMPORARY_TEXT(alphabetise_as)
-	if (Regexp::match(&mr, term_to_index, L"(%c+?) *<-- *(%c+) *")) {
+	if (Regexp::match(&mr, term_to_index, U"(%c+?) *<-- *(%c+) *")) {
 		Str::copy(term_to_index, mr.exp[0]); Str::copy(see, mr.exp[1]);
 	}
-	if (Regexp::match(&mr, term_to_index, L"(%c+?) *--> *(%c+) *")) {
+	if (Regexp::match(&mr, term_to_index, U"(%c+?) *--> *(%c+) *")) {
 		Str::copy(term_to_index, mr.exp[0]); Str::copy(alphabetise_as, mr.exp[1]);
 	}
 	TEMPORARY_TEXT(lemma)
@@ -222,7 +222,7 @@ void Indexes::scan_indexingnotations(compiled_documentation *cd, markdown_item *
 	TEMPORARY_TEXT(smoke_test_text)
 	Indexes::process_category_options(smoke_test_text, cd, lemma, TRUE, 1);
 
-	while (Regexp::match(&mr, see, L" *(%c+) *<-- *(%c+?) *")) {
+	while (Regexp::match(&mr, see, U" *(%c+) *<-- *(%c+?) *")) {
 		Str::copy(see, mr.exp[0]);
 		TEMPORARY_TEXT(seethis)
 		Indexes::extract_from_indexable_matter(seethis, cd, mr.exp[1]);
@@ -240,9 +240,9 @@ void Indexes::scan_indexingnotations(compiled_documentation *cd, markdown_item *
 		DISCARD_TEXT(seethis)
 	}
 	if (indoc_settings_test_index_mode) {
-		Regexp::replace(smoke_test_text, L"=___=standard", L"", REP_REPEATING);
-		Regexp::replace(smoke_test_text, L"=___=(%C+)", L" %(%0%)", REP_REPEATING);
-		Regexp::replace(smoke_test_text, L":", L": ", REP_REPEATING);
+		Regexp::replace(smoke_test_text, U"=___=standard", U"", REP_REPEATING);
+		Regexp::replace(smoke_test_text, U"=___=(%C+)", U" %(%0%)", REP_REPEATING);
+		Regexp::replace(smoke_test_text, U":", U": ", REP_REPEATING);
 		md->type = PLAIN_MIT;
 		md->sliced_from = Str::duplicate(smoke_test_text);
 		md->from = 0; md->to = Str::len(smoke_test_text) - 1;
@@ -256,7 +256,7 @@ void Indexes::scan_indexingnotations(compiled_documentation *cd, markdown_item *
 
 void Indexes::extract_from_indexable_matter(OUTPUT_STREAM, compiled_documentation *cd, text_stream *text) {
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, text, L" *(%c+?) *: *(%c+) *")) {
+	if (Regexp::match(&mr, text, U" *(%c+?) *: *(%c+) *")) {
 		text_stream *head = mr.exp[0];
 		text_stream *tail = mr.exp[1];
 		Indexes::extract_from_indexable_matter(OUT, cd, head);
@@ -309,13 +309,13 @@ void Indexes::mark_index_term(compiled_documentation *cd, text_stream *given_ter
 	int example_index_status) {
 	TEMPORARY_TEXT(term)
 	Indexes::process_category_options(term, cd, given_term, TRUE, 4);
-	if ((Regexp::match(NULL, term, L"IGNORE=___=ME%c*")) ||
-		(Regexp::match(NULL, term, L"%c*:IGNORE=___=ME%c*"))) return;
+	if ((Regexp::match(NULL, term, U"IGNORE=___=ME%c*")) ||
+		(Regexp::match(NULL, term, U"%c*:IGNORE=___=ME%c*"))) return;
 	if (Str::len(alphabetise_as) > 0)
 		IndexUtilities::alphabetisation_exception(term, alphabetise_as);
 	Indexes::ensure_lemmas_exist(cd, term, example_index_status);
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, term, L"%c*=___=([^_]+?)")) {
+	if (Regexp::match(&mr, term, U"%c*=___=([^_]+?)")) {
 		text_stream *category = mr.exp[0];
 		if (Dictionaries::find(cd->id.categories_by_name, category)) {
 			indexing_category *ic = (indexing_category *)
@@ -324,8 +324,8 @@ void Indexes::mark_index_term(compiled_documentation *cd, text_stream *given_ter
 			if ((ic) && (ic->cat_alsounder == TRUE)) {
 				TEMPORARY_TEXT(processed_term)
 				Indexes::process_category_options(processed_term, cd, given_term, FALSE, 5);
-				if ((Regexp::match(NULL, processed_term, L"IGNORE=___=ME%c*")) ||
-					(Regexp::match(NULL, processed_term, L"%c*:IGNORE=___=ME%c*"))) return;
+				if ((Regexp::match(NULL, processed_term, U"IGNORE=___=ME%c*")) ||
+					(Regexp::match(NULL, processed_term, U"%c*:IGNORE=___=ME%c*"))) return;
 				Indexes::ensure_lemmas_exist(cd, processed_term, example_index_status);
 				Indexes::set_index_point(cd, processed_term, V, S, anchor, E, see,
 					example_index_status);
@@ -358,7 +358,7 @@ typedef struct index_reference {
 void Indexes::ensure_lemmas_exist(compiled_documentation *cd, text_stream *text,
 	int example_index_status) {
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, text, L" *(%c+) *: *(%c+?) *"))
+	if (Regexp::match(&mr, text, U" *(%c+) *: *(%c+?) *"))
 		Indexes::ensure_lemmas_exist(cd, mr.exp[0], example_index_status);
 	Regexp::dispose_of(&mr);
 	if (Dictionaries::find(cd->id.lemmas, text) == NULL) {
@@ -410,7 +410,7 @@ void Indexes::process_category_options(OUTPUT_STREAM, compiled_documentation *cd
 	text_stream *text, int allow_under, int n) {
 	match_results mr = Regexp::create_mr();
 	@<Break the text down into a colon-separated list of categories and process each@>;
-	if (Regexp::match(&mr, text, L"(%c*)=___=(%c*)")) {
+	if (Regexp::match(&mr, text, U"(%c*)=___=(%c*)")) {
 		text_stream *lemma = mr.exp[0];
 		text_stream *category = mr.exp[1];
 		@<Redirect category names starting with an exclamation@>;
@@ -424,7 +424,7 @@ void Indexes::process_category_options(OUTPUT_STREAM, compiled_documentation *cd
 }
 
 @<Break the text down into a colon-separated list of categories and process each@> =
-	if (Regexp::match(&mr, text, L" *(%c+?) *: *(%c+)")) {
+	if (Regexp::match(&mr, text, U" *(%c+?) *: *(%c+)")) {
 		Indexes::process_category_options(OUT, cd, mr.exp[0], TRUE, 7);
 		WRITE(":");
 		Indexes::process_category_options(OUT, cd, mr.exp[1], allow_under, 8);
@@ -462,9 +462,9 @@ else suppressed as unwanted (because the user didn't set up a redirection).
 "Mary, Queen of Scots" alone.
 
 @<Perform name inversion as necessary@> =
-	if ((ic->cat_inverted) && (Regexp::match(NULL, lemma, L"%c*,%c*") == FALSE)) {
+	if ((ic->cat_inverted) && (Regexp::match(NULL, lemma, U"%c*,%c*") == FALSE)) {
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, lemma, L"(%c*?) (%C+) *")) {
+		if (Regexp::match(&mr, lemma, U"(%c*?) (%C+) *")) {
 			Str::clear(lemma);
 			WRITE_TO(lemma, "%S, %S", mr.exp[1], mr.exp[0]);
 		}
@@ -543,26 +543,26 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 		Str::copy(sort_key, il->term);
 		/* ensure subentries follow main entries */
 		if (Str::get_first_char(sort_key) != ':')
-			Regexp::replace(sort_key, L": *", L"ZZZZZZZZZZZZZZZZZZZZZZ", REP_REPEATING);
+			Regexp::replace(sort_key, U": *", U"ZZZZZZZZZZZZZZZZZZZZZZ", REP_REPEATING);
 		IndexUtilities::improve_alphabetisation(sort_key);
 
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, sort_key, L"a/%C+ (%c*)")) Str::copy(sort_key, mr.exp[0]);
-		if (Regexp::match(&mr, sort_key, L"the/%C+ (%c*)")) Str::copy(sort_key, mr.exp[0]);
+		if (Regexp::match(&mr, sort_key, U"a/%C+ (%c*)")) Str::copy(sort_key, mr.exp[0]);
+		if (Regexp::match(&mr, sort_key, U"the/%C+ (%c*)")) Str::copy(sort_key, mr.exp[0]);
 
 		if (indoc_settings_index_alphabetisation_algorithm == WORD_ALPHABETIZATION)
-			Regexp::replace(sort_key, L" ", L"aaaaaaaaaaaaaaaaaaaaaa", REP_REPEATING);
+			Regexp::replace(sort_key, U" ", U"aaaaaaaaaaaaaaaaaaaaaa", REP_REPEATING);
 
 		TEMPORARY_TEXT(un)
 		Str::copy(un, sort_key);
 		if ((Str::begins_with(sort_key, I"( )") == FALSE) &&
 			(Str::begins_with(sort_key, I"((-") == FALSE) &&
 			(Str::begins_with(sort_key, I"((+") == FALSE))
-			Regexp::replace(un, L"%(%c*?%)", NULL, REP_REPEATING);
-		Regexp::replace(un, L" ", NULL, REP_REPEATING);
+			Regexp::replace(un, U"%(%c*?%)", NULL, REP_REPEATING);
+		Regexp::replace(un, U" ", NULL, REP_REPEATING);
 		if (Str::get_first_char(sort_key) != ',')
-			Regexp::replace(un, L",", NULL, REP_REPEATING);
-		int f = ' ';
+			Regexp::replace(un, U",", NULL, REP_REPEATING);
+		inchar32_t f = ' ';
 		if (Characters::isalpha(Str::get_first_char(sort_key)))
 			f = Str::get_first_char(sort_key);
 		WRITE_TO(il->sorting_key, "%c_%S=___=%S=___=%07d",
@@ -576,11 +576,11 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 @<Render the index in sorted order@> =
 	IndexUtilities::alphabet_row(OUT, 1);
 	HTML_OPEN_WITH("table", "class=\"indextable\"");
-	wchar_t current_incipit = 0;
+	inchar32_t current_incipit = 0;
 	for (int i=0; i<NL; i++) {
 		index_lemma *il = lemma_list[i];
 		if ((just_examples) && (il->example_index_status == 0)) continue;
-		wchar_t incipit = Str::get_first_char(il->sorting_key);
+		inchar32_t incipit = Str::get_first_char(il->sorting_key);
 		if (Characters::isalpha(incipit)) incipit = Characters::toupper(incipit);
 		else incipit = '#';
 		if (incipit != current_incipit) {
@@ -622,7 +622,7 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 	TEMPORARY_TEXT(category)
 	match_results mr = Regexp::create_mr();
 	Str::copy(term, il->term);
-	if (Regexp::match(&mr, term, L"(%c*)=___=(%c*)")) {
+	if (Regexp::match(&mr, term, U"(%c*)=___=(%c*)")) {
 		Str::copy(term, mr.exp[0]);
 		Str::copy(category, mr.exp[1]);
 	}
@@ -667,14 +667,14 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 @<Work out the wording and indentation level@> =
 	TEMPORARY_TEXT(untreated)
 	Str::copy(untreated, term);
-	while (Regexp::match(&mr, untreated, L"%c*?: *(%c+)")) {
+	while (Regexp::match(&mr, untreated, U"%c*?: *(%c+)")) {
 		Str::copy(untreated, mr.exp[0]); indent_level++;
 	}
 	IndexUtilities::escape_HTML_characters_in(untreated);
 	for (int i=0, L = Str::len(untreated); i<L; i++) {
-		int c = Str::get_at(untreated, i);
+		inchar32_t c = Str::get_at(untreated, i);
 		if (c == '\\') {
-			int n = Str::get_at(untreated, ++i);
+			inchar32_t n = Str::get_at(untreated, ++i);
 			if (n == '(') n = SAVED_OPEN_BRACKET;
 			if (n == ')') n = SAVED_CLOSE_BRACKET;
 			PUT_TO(lemma_wording, n);
@@ -682,35 +682,35 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 	}
 
 	if (ic->cat_bracketed) {
-		while (Regexp::match(&mr, lemma_wording, L"(%c*?)%(%(%+ %+%)%)(%c*)")) {
+		while (Regexp::match(&mr, lemma_wording, U"(%c*?)%(%(%+ %+%)%)(%c*)")) {
 			Str::clear(lemma_wording);
 			WRITE_TO(lemma_wording,
 				"%S<span class=\"index%Sbracketed\">%c+ +%c</span>%S",
 				mr.exp[0], category, SAVED_OPEN_BRACKET, SAVED_CLOSE_BRACKET, mr.exp[1]);
 		}
-		while (Regexp::match(&mr, lemma_wording, L"(%c*?)%(%(%- %-%)%)(%c*)")) {
+		while (Regexp::match(&mr, lemma_wording, U"(%c*?)%(%(%- %-%)%)(%c*)")) {
 			Str::clear(lemma_wording);
 			WRITE_TO(lemma_wording,
 				"%S<span class=\"index%Sbracketed\">%c- -%c</span>%S",
 				mr.exp[0], category, SAVED_OPEN_BRACKET, SAVED_CLOSE_BRACKET, mr.exp[1]);
 		}
-		while (Regexp::match(&mr, lemma_wording, L"(%c*?)%((%c*?)%)(%c*)")) {
+		while (Regexp::match(&mr, lemma_wording, U"(%c*?)%((%c*?)%)(%c*)")) {
 			Str::clear(lemma_wording);
 			WRITE_TO(lemma_wording,
 				"%S<span class=\"index%Sbracketed\">___openb___%S___closeb___</span>%S",
 				mr.exp[0], category, mr.exp[1], mr.exp[2]);
 		}
 		if (ic->cat_unbracketed) {
-			Regexp::replace(lemma_wording, L"___openb___", NULL, REP_REPEATING);
-			Regexp::replace(lemma_wording, L"___closeb___", NULL, REP_REPEATING);
+			Regexp::replace(lemma_wording, U"___openb___", NULL, REP_REPEATING);
+			Regexp::replace(lemma_wording, U"___closeb___", NULL, REP_REPEATING);
 		} else {
-			Regexp::replace(lemma_wording, L"___openb___", L"(", REP_REPEATING);
-			Regexp::replace(lemma_wording, L"___closeb___", L")", REP_REPEATING);
+			Regexp::replace(lemma_wording, U"___openb___", U"(", REP_REPEATING);
+			Regexp::replace(lemma_wording, U"___closeb___", U")", REP_REPEATING);
 		}
 	}
 
 	LOOP_THROUGH_TEXT(pos, lemma_wording) {
-		int d = Str::get(pos);
+		inchar32_t d = Str::get(pos);
 		if (d == SAVED_OPEN_BRACKET) Str::put(pos, '(');
 		if (d == SAVED_CLOSE_BRACKET) Str::put(pos, ')');
 	}
@@ -751,7 +751,7 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 		text_stream *A = ref->anchor;
 		if (S) {
 			for (int i=0; i<Str::len(S->stashed); i++) {
-				wchar_t c = Str::get_at(S->stashed, i);
+				inchar32_t c = Str::get_at(S->stashed, i);
 				if (c == ':') break;
 				if ((Characters::isdigit(c)) || (c == '.')) PUT_TO(link, c);
 			}
@@ -778,7 +778,7 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 		if (lc > 0) WRITE("also ");
 		HTML_CLOSE("span");
 		match_results mr2 = Regexp::create_mr();
-		while (Regexp::match(&mr2, seelist, L"(%c*?) *<-- *(%c*)")) {
+		while (Regexp::match(&mr2, seelist, U"(%c*?) *<-- *(%c*)")) {
 			if (sc++ > 0) { WRITE("; "); }
 
 			text_stream *see = mr2.exp[0];
@@ -786,9 +786,9 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 			index_lemma *ils = (index_lemma *) Dictionaries::read_value(cd->id.lemmas, see);
 			TEMPORARY_TEXT(url)
 			WRITE_TO(url, "#l%d", ils->allocation_id);
-			Regexp::replace(see, L"=___=%i+?:", L":", REP_REPEATING);
-			Regexp::replace(see, L"=___=%i+", NULL, REP_REPEATING);
-			Regexp::replace(see, L":", L": ", REP_REPEATING);
+			Regexp::replace(see, U"=___=%i+?:", U":", REP_REPEATING);
+			Regexp::replace(see, U"=___=%i+", NULL, REP_REPEATING);
+			Regexp::replace(see, U":", U": ", REP_REPEATING);
 			IndexUtilities::general_link(OUT, I"indexseelink", url, see);
 			DISCARD_TEXT(url)
 		}

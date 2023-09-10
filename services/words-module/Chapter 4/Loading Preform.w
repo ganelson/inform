@@ -23,7 +23,7 @@ int LoadPreform::load(filename *F, NATURAL_LANGUAGE_WORDS_TYPE *L) {
 lexer as is used for Inform itself, but using the following set of characters
 as word-breaking punctuation marks:
 
-@d PREFORM_PUNCTUATION_MARKS L"{}[]_^?&\\"
+@d PREFORM_PUNCTUATION_MARKS U"{}[]_^?&\\"
 
 =
 wording LoadPreform::feed_from_Preform_file(filename *F) {
@@ -84,22 +84,22 @@ vocabulary_entry *CAPITAL_L_V;
 
 @ =
 void LoadPreform::create_punctuation(void) {
-	AMPERSAND_V        = Vocabulary::entry_for_text(L"&");
-	BACKSLASH_V        = Vocabulary::entry_for_text(L"\\");
-	CARET_V            = Vocabulary::entry_for_text(L"^");
-	COLONCOLONEQUALS_V = Vocabulary::entry_for_text(L":" ":=");
-	QUESTIONMARK_V     = Vocabulary::entry_for_text(L"?");
-	QUOTEQUOTE_V       = Vocabulary::entry_for_text(L"\"\"");
-	SIXDOTS_V          = Vocabulary::entry_for_text(L"......");
-	THREEASTERISKS_V   = Vocabulary::entry_for_text(L"***");
-	THREEDOTS_V        = Vocabulary::entry_for_text(L"...");
-	THREEHASHES_V      = Vocabulary::entry_for_text(L"###");
-	UNDERSCORE_V       = Vocabulary::entry_for_text(L"_");
-	language_V         = Vocabulary::entry_for_text(L"language");
-    internal_V         = Vocabulary::entry_for_text(L"internal");
+	AMPERSAND_V        = Vocabulary::entry_for_text(U"&");
+	BACKSLASH_V        = Vocabulary::entry_for_text(U"\\");
+	CARET_V            = Vocabulary::entry_for_text(U"^");
+	COLONCOLONEQUALS_V = Vocabulary::entry_for_text(U":" ":=");
+	QUESTIONMARK_V     = Vocabulary::entry_for_text(U"?");
+	QUOTEQUOTE_V       = Vocabulary::entry_for_text(U"\"\"");
+	SIXDOTS_V          = Vocabulary::entry_for_text(U"......");
+	THREEASTERISKS_V   = Vocabulary::entry_for_text(U"***");
+	THREEDOTS_V        = Vocabulary::entry_for_text(U"...");
+	THREEHASHES_V      = Vocabulary::entry_for_text(U"###");
+	UNDERSCORE_V       = Vocabulary::entry_for_text(U"_");
+	language_V         = Vocabulary::entry_for_text(U"language");
+    internal_V         = Vocabulary::entry_for_text(U"internal");
 
-	CAPITAL_K_V        = Vocabulary::entry_for_text(L"k");
-	CAPITAL_L_V        = Vocabulary::entry_for_text(L"l");
+	CAPITAL_K_V        = Vocabulary::entry_for_text(U"k");
+	CAPITAL_L_V        = Vocabulary::entry_for_text(U"l");
 }
 
 @h Parsing Preform.
@@ -502,7 +502,7 @@ Lexer to have another try, but with |/| as a word-breaking character this time.
 So, for example, |AW| might then end up as |onions|, |/|, |shallots|.
 
 @<Expand the word range if the token text is slashed@> =
-	wchar_t *p = Lexer::word_raw_text(wn);
+	inchar32_t *p = Lexer::word_raw_text(wn);
 	int k, breakme = FALSE;
 	if (unescaped) {
 		@<Look out for production match numbers@>;
@@ -510,7 +510,7 @@ So, for example, |AW| might then end up as |onions|, |/|, |shallots|.
 			if ((k > 0) && (p[k] == '/'))
 				breakme = TRUE;
 	}
-	if (breakme) AW = Feeds::feed_C_string_full(p, FALSE, L"/", FALSE); /* break only at slashes */
+	if (breakme) AW = Feeds::feed_C_string_full(p, FALSE, U"/", FALSE); /* break only at slashes */
 
 @ Intercept |/a/| to |/z/| and |/aa/| to |/zz/|, which don't make ptokens at
 all, but simply change the production's match number.
@@ -518,12 +518,12 @@ all, but simply change the production's match number.
 @<Look out for production match numbers@> =
 	if ((p[0] == '/') && (Characters::islower(p[1])) &&
 		(p[2] == '/') && (p[3] == 0)) {
-		pr->match_number = p[1] - 'a';
+		pr->match_number = (int) (p[1] - 'a');
 		return NULL; /* i.e., contribute no token */
 	}
 	if ((p[0] == '/') && (Characters::islower(p[1])) && (p[2] == p[1]) &&
 		(p[3] == '/') && (p[4] == 0)) {
-		pr->match_number = p[1] - 'a' + 26;
+		pr->match_number = (int) (p[1] - 'a' + 26);
 		return NULL; /* i.e., contribute no token */
 	}
 
@@ -555,7 +555,7 @@ ptoken *LoadPreform::new_ptoken(vocabulary_entry *ve, int unescaped, nonterminal
 	ptoken *pt = CREATE(ptoken);
 	@<Begin with a blank ptoken@>;
 
-	wchar_t *p = Vocabulary::get_exemplar(ve, FALSE);
+	inchar32_t *p = Vocabulary::get_exemplar(ve, FALSE);
 	if ((unescaped) && (p) && (p[0] == '<') && (p[Wide::len(p)-1] == '>'))
 		@<This word is a nonterminal name@>
 	else

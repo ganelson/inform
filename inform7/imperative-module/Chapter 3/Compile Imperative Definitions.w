@@ -193,7 +193,7 @@ void CompileImperativeDefn::make_inline(id_body *idb, int inline_wn, int mor) {
 	idb->compilation_data.at_least_one_compiled_form_needed = FALSE;
 }
 
-wchar_t *CompileImperativeDefn::get_inline_definition(id_body *idb) {
+inchar32_t *CompileImperativeDefn::get_inline_definition(id_body *idb) {
 	if (idb->compilation_data.inline_wn < 0)
 		internal_error("tried to access inline definition of non-inline phrase");
 	return Lexer::word_text(idb->compilation_data.inline_wn);

@@ -41,13 +41,13 @@ void IFModule::start(void) {
 @e OBJECT_TREE_DA
 
 @<Register this module's debugging log aspects@> =
-	Log::declare_aspect(ACTION_CREATIONS_DA, L"action creations", FALSE, FALSE);
-	Log::declare_aspect(ACTION_PATTERN_COMPILATION_DA, L"action pattern compilation",
+	Log::declare_aspect(ACTION_CREATIONS_DA, U"action creations", FALSE, FALSE);
+	Log::declare_aspect(ACTION_PATTERN_COMPILATION_DA, U"action pattern compilation",
 		FALSE, FALSE);
-	Log::declare_aspect(ACTION_PATTERN_PARSING_DA, L"action pattern parsing", FALSE, FALSE);
-	Log::declare_aspect(GRAMMAR_DA, L"grammar", FALSE, FALSE);
-	Log::declare_aspect(GRAMMAR_CONSTRUCTION_DA, L"grammar construction", FALSE, FALSE);
-	Log::declare_aspect(OBJECT_TREE_DA, L"object tree", FALSE, FALSE);
+	Log::declare_aspect(ACTION_PATTERN_PARSING_DA, U"action pattern parsing", FALSE, FALSE);
+	Log::declare_aspect(GRAMMAR_DA, U"grammar", FALSE, FALSE);
+	Log::declare_aspect(GRAMMAR_CONSTRUCTION_DA, U"grammar construction", FALSE, FALSE);
+	Log::declare_aspect(OBJECT_TREE_DA, U"object tree", FALSE, FALSE);
 
 @<Register this module's debugging log writers@> =
 	REGISTER_WRITER('A', ActionPatterns::log);

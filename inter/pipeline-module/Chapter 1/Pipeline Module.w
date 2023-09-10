@@ -58,13 +58,13 @@ void PipelineModule::end(void) {
 
 @<Register this module's debugging log aspects@> =
 	Log::declare_aspect(TEMPLATE_READING_DA,
-		L"template reading", FALSE, FALSE);
+		U"template reading", FALSE, FALSE);
 	Log::declare_aspect(RESOLVING_CONDITIONAL_COMPILATION_DA,
-		L"resolving conditional compilation", FALSE, FALSE);
+		U"resolving conditional compilation", FALSE, FALSE);
 	Log::declare_aspect(EXTERNAL_SYMBOL_RESOLUTION_DA,
-		L"external symbol resolution", FALSE, FALSE);
+		U"external symbol resolution", FALSE, FALSE);
 	Log::declare_aspect(ELIMINATION_DA,
-		L"code elimination", FALSE, FALSE);
+		U"code elimination", FALSE, FALSE);
 
 @<Register this module's debugging log writers@> =
 	;

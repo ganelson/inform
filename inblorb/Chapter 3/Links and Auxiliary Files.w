@@ -74,7 +74,7 @@ list entry tags, for convenience of CSS styling.
 void Links::expand_AUXILIARY_variable(OUTPUT_STREAM) {
 	auxiliary_file *aux;
 	LOOP_OVER(aux, auxiliary_file) {
-		if (Str::eq_wide_string(aux->description, L"--") == FALSE) {
+		if (Str::eq_wide_string(aux->description, U"--") == FALSE) {
 			WRITE("<li>");
 			Links::download_link(OUT,
 				aux->description, aux->full_filename, aux->aux_leafname, aux->format);
@@ -101,13 +101,13 @@ This routine, then, handles either kind of link.
 =
 void Links::download_link(OUTPUT_STREAM, text_stream *desc, filename *F, text_stream *relative_url, text_stream *form) {
 	int size_up = TRUE;
-	if (Str::eq_wide_string(form, L"link")) size_up = FALSE;
+	if (Str::eq_wide_string(form, U"link")) size_up = FALSE;
 	WRITE("<a href=\"%S\">%S</a> ", relative_url, desc);
 	Websites::open_style(OUT, "filetype");
 	WRITE("(%S", form);
 	if (size_up) {
 		long int size = -1L;
-		if (Str::eq_wide_string(desc, L"Story File")) size = (long int) blorb_file_size;
+		if (Str::eq_wide_string(desc, U"Story File")) size = (long int) blorb_file_size;
 		else size = BinaryFiles::size(F);
 		if (size != -1L) @<Write a description of the rough file size@>
 	}

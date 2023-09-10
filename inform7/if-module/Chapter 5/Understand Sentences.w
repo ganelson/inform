@@ -517,7 +517,7 @@ to another section: here //CommandGrammars::remove_command// or //CommandGrammar
 void Understand::command_block(wording W, wording ASW) {
 	W = Wordings::last_word(W);
 	Word::dequote(Wordings::first_wn(W));
-	wchar_t *p = Lexer::word_text(Wordings::first_wn(W));
+	inchar32_t *p = Lexer::word_text(Wordings::first_wn(W));
 	for (int i=0; p[i]; i++)
 		if (p[i] == ' ') {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SpacyCommand),

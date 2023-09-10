@@ -21,7 +21,7 @@ misses out.
 
 <literal-real-in-digits> internal {
 	if ((Wordings::length(W) != 1) && (Wordings::length(W) != 3)) return FALSE;
-	wchar_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
+	inchar32_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
 	if (p) {
         int expo=0; double intv=0, fracv=0;
 		int expocount=0, intcount=0, fraccount=0;
@@ -68,7 +68,7 @@ misses out.
 	}
 
 @<Parse an exponent@> =
-	wchar_t *q = p + i;
+	inchar32_t *q = p + i;
 	int e_notation_used = FALSE;
 	if (Wordings::length(W) > 1) {
 		if (q[0] != 0) return FALSE;
@@ -89,7 +89,7 @@ misses out.
 	int exposign = 0;
 	if (q[i] == '+') i++; else if (q[i] == '-') { exposign = 1; i++; }
 	while (Characters::isdigit(q[i])) {
-		expo = 10*expo + (q[i] - '0');
+		expo = 10*expo + (int) (q[i] - '0');
 		expocount++;
 		i++;
 	}
@@ -102,7 +102,7 @@ misses out.
 		LiteralReals::wrong_notation(W);
 
 @ =
-int LiteralReals::ismultiplicationsign(wchar_t c) {
+int LiteralReals::ismultiplicationsign(inchar32_t c) {
 	if ((c == 'x') || (c == '*')) return TRUE;
 	return FALSE;
 }

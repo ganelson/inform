@@ -500,7 +500,7 @@ inter_symbol *InterSymbolsTable::URL_to_symbol(inter_tree *I, text_stream *URL) 
 		inter_package *at_P = I->root_package;
 		TEMPORARY_TEXT(C)
 		LOOP_THROUGH_TEXT(P, URL) {
-			wchar_t c = Str::get(P);
+			inchar32_t c = Str::get(P);
 			if (c == '/') {
 				if (Str::len(C) > 0) {
 					at_P = InterPackage::from_name(at_P, C);
@@ -527,7 +527,7 @@ inter_symbol *InterSymbolsTable::wire_to_URL(inter_tree *I, text_stream *URL,
 	if (S == NULL) {
 		TEMPORARY_TEXT(leaf)
 		LOOP_THROUGH_TEXT(pos, URL) {
-			wchar_t c = Str::get(pos);
+			inchar32_t c = Str::get(pos);
 			if (c == '/') Str::clear(leaf);
 			else PUT_TO(leaf, c);
 		}

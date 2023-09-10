@@ -258,8 +258,8 @@ Inform UI apps is really a command to //supervisor// not to |inform7|.
 =
 int Main::read_command_line(int argc, char *argv[]) {
 	CommandLine::declare_heading(
-		L"inform7: a compiler from source text to Inter code\n\n"
-		L"Usage: inform7 [OPTIONS]\n");
+		U"inform7: a compiler from source text to Inter code\n\n"
+		U"Usage: inform7 [OPTIONS]\n");
 
 	@<Register command-line arguments@>;
 	Supervisor::declare_options();
@@ -296,34 +296,34 @@ compiler via Delia scripts in |intest|.
 
 @<Register command-line arguments@> =
 	CommandLine::begin_group(INFORM_TESTING_CLSG, I"for testing and debugging inform7");
-	CommandLine::declare_boolean_switch(CRASHALL_CLSW, L"crash-all", 1,
-		L"intentionally crash on Problem messages, for backtracing", FALSE);
-	CommandLine::declare_boolean_switch(INDEX_CLSW, L"index", 1,
-		L"produce an Index", TRUE);
-	CommandLine::declare_boolean_switch(PROBLEMS_CLSW, L"problems", 1,
-		L"produce (an HTML) Problems report page", TRUE);
-	CommandLine::declare_boolean_switch(CENSUS_UPDATE_CLSW, L"census-update", 1,
-		L"withdrawn: previously, 'update the extensions census'", TRUE);
-	CommandLine::declare_boolean_switch(PROGRESS_CLSW, L"progress", 1,
-		L"display progress percentages", TRUE);
-	CommandLine::declare_boolean_switch(SIGILS_CLSW, L"sigils", 1,
-		L"print Problem message sigils", FALSE);
-	CommandLine::declare_boolean_switch(CHECK_RESOURCES_CLSW, L"resource-checking", 1,
-		L"check that figures, sounds and similar resources exist at compile-time", TRUE);
-	CommandLine::declare_boolean_switch(DIAGNOSTICS_CLSW, L"diagnostics", 2,
-		L"if no problems occur, write diagnostics files to directory X", FALSE);
-	CommandLine::declare_switch(REQUIRE_PROBLEM_CLSW, L"require-problem", 2,
-		L"return 0 unless exactly this Problem message is generated");
-	CommandLine::declare_switch(LOG_TO_PROJECT_CLSW, L"log-to-project", 2,
-		L"like -log X, but writing the debugging log into the project");
-	CommandLine::declare_switch(TEST_OUTPUT_CLSW, L"test-output", 2,
-		L"write output of internal tests to file X");
-	CommandLine::declare_boolean_switch(SILENCE_CLSW, L"silence", 1,
-		L"practice 'silence is golden': print only Unix-style errors", FALSE);
-	CommandLine::declare_boolean_switch(INBUILD_VERBOSE_CLSW, L"inbuild-verbose", 1,
-		L"equivalent to -inbuild-verbosity=1", FALSE);
-	CommandLine::declare_numerical_switch(INBUILD_VERBOSITY_CLSW, L"inbuild-verbosity", 1,
-		L"how much inbuild should explain: lowest is 0 (default), highest is 3");
+	CommandLine::declare_boolean_switch(CRASHALL_CLSW, U"crash-all", 1,
+		U"intentionally crash on Problem messages, for backtracing", FALSE);
+	CommandLine::declare_boolean_switch(INDEX_CLSW, U"index", 1,
+		U"produce an Index", TRUE);
+	CommandLine::declare_boolean_switch(PROBLEMS_CLSW, U"problems", 1,
+		U"produce (an HTML) Problems report page", TRUE);
+	CommandLine::declare_boolean_switch(CENSUS_UPDATE_CLSW, U"census-update", 1,
+		U"withdrawn: previously, 'update the extensions census'", TRUE);
+	CommandLine::declare_boolean_switch(PROGRESS_CLSW, U"progress", 1,
+		U"display progress percentages", TRUE);
+	CommandLine::declare_boolean_switch(SIGILS_CLSW, U"sigils", 1,
+		U"print Problem message sigils", FALSE);
+	CommandLine::declare_boolean_switch(CHECK_RESOURCES_CLSW, U"resource-checking", 1,
+		U"check that figures, sounds and similar resources exist at compile-time", TRUE);
+	CommandLine::declare_boolean_switch(DIAGNOSTICS_CLSW, U"diagnostics", 2,
+		U"if no problems occur, write diagnostics files to directory X", FALSE);
+	CommandLine::declare_switch(REQUIRE_PROBLEM_CLSW, U"require-problem", 2,
+		U"return 0 unless exactly this Problem message is generated");
+	CommandLine::declare_switch(LOG_TO_PROJECT_CLSW, U"log-to-project", 2,
+		U"like -log X, but writing the debugging log into the project");
+	CommandLine::declare_switch(TEST_OUTPUT_CLSW, U"test-output", 2,
+		U"write output of internal tests to file X");
+	CommandLine::declare_boolean_switch(SILENCE_CLSW, U"silence", 1,
+		U"practice 'silence is golden': print only Unix-style errors", FALSE);
+	CommandLine::declare_boolean_switch(INBUILD_VERBOSE_CLSW, U"inbuild-verbose", 1,
+		U"equivalent to -inbuild-verbosity=1", FALSE);
+	CommandLine::declare_numerical_switch(INBUILD_VERBOSITY_CLSW, U"inbuild-verbosity", 1,
+		U"how much inbuild should explain: lowest is 0 (default), highest is 3");
 	CommandLine::end_group();
 
 @ Three of the five options here actually configure the |problems| module

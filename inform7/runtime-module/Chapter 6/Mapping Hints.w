@@ -44,7 +44,7 @@ void RTMappingHints::compile(void) {
 	}
 }
 
-void RTMappingHints::apply_metadata_from_wide_string(package_request *P, int hl, wchar_t *wide) {
+void RTMappingHints::apply_metadata_from_wide_string(package_request *P, int hl, inchar32_t *wide) {
 	text_stream *S = Str::new();
 	if (wide) WRITE_TO(S, "%w", wide);
 	Hierarchy::apply_metadata(P, hl, S);

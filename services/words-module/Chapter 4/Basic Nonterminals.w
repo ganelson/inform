@@ -106,7 +106,7 @@ of text |""| is to provide a nonterminal matching it:
 =
 <empty-text> internal 1 {
 	if ((Wordings::nonempty(W)) &&
-		(Word::compare_by_strcmp(Wordings::first_wn(W), L"\"\""))) {
+		(Word::compare_by_strcmp(Wordings::first_wn(W), U"\"\""))) {
 		==> { Wordings::first_wn(W), - }; return TRUE;
 	}
 	==> { fail nonterminal };

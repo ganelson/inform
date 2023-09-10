@@ -112,11 +112,11 @@ void Scanner::create_volume(pathname *book_path, text_stream *leaf, text_stream 
 
  	if (Str::len(abbrev) == 0) {
  		int f = 0;
- 		if (Str::begins_with_wide_string(title, L"A ")) f = 2;
- 		else if (Str::begins_with_wide_string(title, L"An ")) f = 3;
- 		else if (Str::begins_with_wide_string(title, L"The ")) f = 4;
+ 		if (Str::begins_with_wide_string(title, U"A ")) f = 2;
+ 		else if (Str::begins_with_wide_string(title, U"An ")) f = 3;
+ 		else if (Str::begins_with_wide_string(title, U"The ")) f = 4;
  		for (int i=f; i<Str::len(title); i++) {
- 			int c = Str::get_at(title, i);
+ 			inchar32_t c = Str::get_at(title, i);
  			if (Characters::is_whitespace(c)) continue;
  			if ((c >= 'a') && (c <= 'z')) continue;
  			PUT_TO(abbrev, c);
@@ -174,8 +174,8 @@ void Scanner::scan_rawtext_helper(text_stream *nl, text_file_position *tfp,
 	void *v_sr) {
 	sr_helper_state *sr = (sr_helper_state *) v_sr;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, nl, L"(%c*?) ")) Str::copy(nl, mr.exp[0]);
-	if (Regexp::match(&mr, nl, L"%[(%c*?)%] (%c*)")) {
+	if (Regexp::match(&mr, nl, U"(%c*?) ")) Str::copy(nl, mr.exp[0]);
+	if (Regexp::match(&mr, nl, U"%[(%c*?)%] (%c*)")) {
 		section *S = CREATE(section);
 		S->next_section = NULL; S->previous_section = NULL;
 		S->begins_which_chapter = NULL;
@@ -194,7 +194,7 @@ void Scanner::scan_rawtext_helper(text_stream *nl, text_file_position *tfp,
 
 @<Strip away heading tags, but act on those filtering out the section@> =
 	match_results mr2 = Regexp::create_mr();
-	while (Regexp::match(&mr2, chi, L"{(%c*?:}(%c*)")) {
+	while (Regexp::match(&mr2, chi, U"{(%c*?:}(%c*)")) {
  		Str::copy(chi, mr2.exp[1]);
  		if (Symbols::perform_ifdef(mr2.exp[0]) == FALSE) {
  			Regexp::dispose_of(&mr);
@@ -202,13 +202,13 @@ void Scanner::scan_rawtext_helper(text_stream *nl, text_file_position *tfp,
  			return;
  		}
  	}
- 	while (Regexp::match(&mr2, stitle, L"(%c*) {%c*?} *")) Str::copy(stitle, mr2.exp[0]);
- 	if (Regexp::match(&mr2, stitle, L"(%c*?) ")) Str::copy(stitle, mr2.exp[0]);
+ 	while (Regexp::match(&mr2, stitle, U"(%c*) {%c*?} *")) Str::copy(stitle, mr2.exp[0]);
+ 	if (Regexp::match(&mr2, stitle, U"(%c*?) ")) Str::copy(stitle, mr2.exp[0]);
  	Regexp::dispose_of(&mr2);
 
 @<Deal with this as a chapter heading@> =
  	match_results mr2 = Regexp::create_mr();
- 	if (Regexp::match(&mr2, chi, L"Chapter: (%c*)")) {
+ 	if (Regexp::match(&mr2, chi, U"Chapter: (%c*)")) {
  		chapter *C = CREATE(chapter);
  		sr->owner->chapters[sr->ch++] = C;
  		sr->chs = 0;

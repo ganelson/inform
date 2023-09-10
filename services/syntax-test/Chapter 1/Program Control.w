@@ -15,12 +15,12 @@ int main(int argc, char **argv) {
 	WordsModule::start();
 	SyntaxModule::start();
 
-	CommandLine::declare_heading(L"syntax-test: a tool for testing the syntax module\n");
+	CommandLine::declare_heading(U"syntax-test: a tool for testing the syntax module\n");
 
-	CommandLine::declare_switch(TEST_TREE_CLSW, L"test-tree", 2,
-		L"test the syntax tree (from text in X)");
-	CommandLine::declare_switch(TEST_DIALOGUE_CLSW, L"test-dialogue", 2,
-		L"test a syntax tree with dialogue (from text in X)");
+	CommandLine::declare_switch(TEST_TREE_CLSW, U"test-tree", 2,
+		U"test the syntax tree (from text in X)");
+	CommandLine::declare_switch(TEST_DIALOGUE_CLSW, U"test-dialogue", 2,
+		U"test a syntax tree with dialogue (from text in X)");
 
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::ignore);
 

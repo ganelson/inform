@@ -14,12 +14,12 @@ int main(int argc, char **argv) {
 	Foundation::start(argc, argv);
 	WordsModule::start();
 
-	CommandLine::declare_heading(L"inexample: a tool for testing foundation facilities\n");
+	CommandLine::declare_heading(U"inexample: a tool for testing foundation facilities\n");
 
-	CommandLine::declare_switch(TEST_LEXER_CLSW, L"test-lexer", 2,
-		L"test lexing of natural language text from file X");
-	CommandLine::declare_switch(TEST_PREFORM_CLSW, L"test-preform", 2,
-		L"test Preform parsing a sample grammar against the text in file X");
+	CommandLine::declare_switch(TEST_LEXER_CLSW, U"test-lexer", 2,
+		U"test lexing of natural language text from file X");
+	CommandLine::declare_switch(TEST_PREFORM_CLSW, U"test-preform", 2,
+		U"test Preform parsing a sample grammar against the text in file X");
 
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::ignore);
 

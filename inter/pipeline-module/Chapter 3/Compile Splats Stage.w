@@ -196,21 +196,21 @@ meaningfully have a value, even though a third token is present.
 @<Parse text of splat for identifier and value@> =
 	text_stream *S = SplatInstruction::splatter(P);
 	if (directive == VERB_PLM) {
-		if (Regexp::match(&mr, S, L" *%C+ (%c*?) *; *")) {
+		if (Regexp::match(&mr, S, U" *%C+ (%c*?) *; *")) {
 			raw_identifier = I"assim_gv"; value = mr.exp[0];
 		} else {
 			LOG("Unable to parse start of VERB_PLM: '%S'\n", S); proceed = FALSE;
 		}
 	} else {
-		if (Regexp::match(&mr, S, L" *%C+ *(%C+?)(--> *%c*?) *; *")) {
+		if (Regexp::match(&mr, S, U" *%C+ *(%C+?)(--> *%c*?) *; *")) {
 			raw_identifier = mr.exp[0]; value = mr.exp[1];
-		} else if (Regexp::match(&mr, S, L" *%C+ *(%C+?)(-> *%c*?) *; *")) {
+		} else if (Regexp::match(&mr, S, U" *%C+ *(%C+?)(-> *%c*?) *; *")) {
 			raw_identifier = mr.exp[0]; value = mr.exp[1];
-		} else if (Regexp::match(&mr, S, L" *%C+ (%C*?) *; *")) {
+		} else if (Regexp::match(&mr, S, U" *%C+ (%C*?) *; *")) {
 			raw_identifier = mr.exp[0];
-		} else if (Regexp::match(&mr, S, L" *%C+ (%C*) *= *(%c*?) *; *")) {
+		} else if (Regexp::match(&mr, S, U" *%C+ (%C*) *= *(%c*?) *; *")) {
 			raw_identifier = mr.exp[0]; value = mr.exp[1];
-		} else if (Regexp::match(&mr, S, L" *%C+ (%C*) (%c*?) *; *")) {
+		} else if (Regexp::match(&mr, S, U" *%C+ (%C*) (%c*?) *; *")) {
 			raw_identifier = mr.exp[0]; value = mr.exp[1];
 		} else {
 			LOG("Unable to parse start of constant: '%S'\n", S); proceed = FALSE;
@@ -226,14 +226,14 @@ worry about that here.
 
 @<Parse text of splat for optional string and number@> =
 	text_stream *S = SplatInstruction::splatter(P);
-	if (Regexp::match(&mr, S, L" *%C+ \"(%C*)\" (%d+) *; *")) {
+	if (Regexp::match(&mr, S, U" *%C+ \"(%C*)\" (%d+) *; *")) {
 		origfilestr = mr.exp[0];
 		origline = Str::atoi(mr.exp[1], 0);
 	}
-	else if (Regexp::match(&mr, S, L" *%C+ \"(%C*)\" *; *")) {
+	else if (Regexp::match(&mr, S, U" *%C+ \"(%C*)\" *; *")) {
 		origfilestr = mr.exp[0];
 	}
-	else if (Regexp::match(&mr, S, L" *%C+ *; *")) {
+	else if (Regexp::match(&mr, S, U" *%C+ *; *")) {
 		/* bare "Origsource;" is okay */
 	}
 	else {
@@ -476,15 +476,15 @@ first to work out which of the several array formats this is, then the contents
 
 @<Work out the format of the array and the string of contents@> =
 	if (directive == ARRAY_PLM) {
-		if (Regexp::match(&mr, value, L" *--> *(%c*?) *")) {
+		if (Regexp::match(&mr, value, U" *--> *(%c*?) *")) {
 			conts = mr.exp[0];
-		} else if (Regexp::match(&mr, value, L" *-> *(%c*?) *")) {
+		} else if (Regexp::match(&mr, value, U" *-> *(%c*?) *")) {
 			conts = mr.exp[0]; as_bytes = TRUE;
-		} else if (Regexp::match(&mr, value, L" *table *(%c*?) *")) {
+		} else if (Regexp::match(&mr, value, U" *table *(%c*?) *")) {
 			conts = mr.exp[0]; bounded = TRUE;
-		} else if (Regexp::match(&mr, value, L" *buffer *(%c*?) *")) {
+		} else if (Regexp::match(&mr, value, U" *buffer *(%c*?) *")) {
 			conts = mr.exp[0]; as_bytes = TRUE; bounded = TRUE;
-		} else if (Regexp::match(&mr, value, L" *string *(%c*?) *")) {
+		} else if (Regexp::match(&mr, value, U" *string *(%c*?) *")) {
 			I6Errors::issue(
 				"cannot make array '%S': the 'string' initialiser is unsupported",
 				identifier);
@@ -509,7 +509,7 @@ see why other kits would, either.
 
 @<Compile the string of array contents into the pile of values@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, conts, L" *%[ *(%c*?) *%] *"))
+	if (Regexp::match(&mr, conts, U" *%[ *(%c*?) *%] *"))
 		@<Parse the new-style I6 array entry notation@>
 	else
 		@<Parse the old-style I6 array entry notation@>;
@@ -519,7 +519,7 @@ see why other kits would, either.
 	text_stream *entries = mr.exp[0];
 	int sq = FALSE, dq = FALSE, from = 0;
 	for (int i=0; i<Str::len(entries); i++) {
-		wchar_t c = Str::get_at(entries, i);
+		inchar32_t c = Str::get_at(entries, i);
 		if ((c == ';') && (sq == FALSE) && (dq == FALSE)) {
 			int to = i-1;
 			@<Eat off a chunk@>;
@@ -736,7 +736,7 @@ equating it to a function definition elsewhere.
 	while ((Str::in_range(spos)) && (Characters::is_whitespace(Str::get(spos))))
 		spos = Str::forward(spos);
 	while (Str::in_range(spos)) {
-		wchar_t c = Str::get(spos);
+		inchar32_t c = Str::get(spos);
 		if ((Characters::is_whitespace(c)) && (squoted == FALSE) &&
 			(dquoted == FALSE) && (bracketed == 0)) break;
 		if ((c == '\'') && (dquoted == FALSE)) squoted = (squoted)?FALSE:TRUE;
@@ -778,11 +778,11 @@ in this section.
 @<Parse the routine header@> =
 	text_stream *S = SplatInstruction::splatter(P);
 	int pos = 0;
-	if (Regexp::match(&mr, S, L" *%[ *([A-Za-z0-9_`]+) *; *(%c*)")) {
+	if (Regexp::match(&mr, S, U" *%[ *([A-Za-z0-9_`]+) *; *(%c*)")) {
 		raw_identifier = mr.exp[0]; body = mr.exp[1]; pos = mr.exp_at[1];
-	} else if (Regexp::match(&mr, S, L" *%[ *([A-Za-z0-9_`]+) *(%c*?); *(%c*)")) {
+	} else if (Regexp::match(&mr, S, U" *%[ *([A-Za-z0-9_`]+) *(%c*?); *(%c*)")) {
 		raw_identifier = mr.exp[0]; local_var_names = mr.exp[1]; body = mr.exp[2]; pos = mr.exp_at[2];
-	} else if (Regexp::match(&mr, S, L" *%[ *(%c+?) *; *(%c*)")) {
+	} else if (Regexp::match(&mr, S, U" *%[ *(%c+?) *; *(%c*)")) {
 		I6Errors::issue("invalid Inform 6 routine declaration: '%S'", mr.exp[0]);
 	} else {
 		text_stream *start = Str::duplicate(S);
@@ -814,7 +814,7 @@ supported only to avoid throwing errors.
 
 @<Parse the stub directive@> =
 	text_stream *S = SplatInstruction::splatter(P);
-	if (Regexp::match(&mr, S, L" *%C+ *([A-Za-z0-9_`]+) (%d+);%c*")) {
+	if (Regexp::match(&mr, S, U" *%C+ *([A-Za-z0-9_`]+) (%d+);%c*")) {
 		raw_identifier = mr.exp[0];
 		local_var_names = Str::new();
 		int N = Str::atoi(mr.exp[1], 0);
@@ -881,7 +881,7 @@ These have package types |_function| and |_code| respectively.
 		if (Str::len(value) == 0) break;
 		int invalid = FALSE;
 		for (int i=0; i<Str::len(value); i++) {
-			wchar_t c = Str::get_at(value, i);
+			inchar32_t c = Str::get_at(value, i);
 			if ((i == 0) && (Characters::isdigit(c))) invalid = TRUE;
 			if ((c != '_') && (Characters::isalnum(c) == FALSE) &&
 				(Characters::isdigit(c) == FALSE)) invalid = TRUE;
@@ -1078,7 +1078,7 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM,
 }
 
 @<Parse this as a literal character@> =
-	wchar_t c = Str::get_at(S, from + 1);
+	inchar32_t c = Str::get_at(S, from + 1);
 	return InterValuePairs::number((inter_ti) c);
 
 @<Parse this as a literal single quotation mark@> =
@@ -1122,7 +1122,8 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM,
 	return val;
 
 @<Attempt to parse this as a hex, binary or decimal literal@> =
-	int sign = 1, base = 10, bad = FALSE;
+	int sign = 1, bad = FALSE;
+	unsigned int base = 10;
 	if ((Str::get_at(S, from) == '(') && (Str::get_at(S, to) == ')')) { from++; to--; }
 	while (Characters::is_whitespace(Str::get_at(S, from))) from++;
 	while (Characters::is_whitespace(Str::get_at(S, to))) to--;
@@ -1137,7 +1138,7 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM,
 	LOOP_THROUGH_TEXT(pos, S) {
 		if (pos.index < from) continue;
 		if (pos.index > to) continue;
-		int c = Str::get(pos), d = 0;
+		inchar32_t c = Str::get(pos), d = 0;
 		if ((c >= 'a') && (c <= 'z')) d = c-'a'+10;
 		else if ((c >= 'A') && (c <= 'Z')) d = c-'A'+10;
 		else if ((c >= '0') && (c <= '9')) d = c-'0';
@@ -1199,7 +1200,7 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM,
 		return InterValuePairs::symbolic(IBM, RunningPipelines::ensure_symbol(step,
 			verb_directive_multiexcept_RPSYM, I"VERB_DIRECTIVE_MULTIEXCEPT"));
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, S, L"scope=([A-Za-z0-9_`]+)")) {
+	if (Regexp::match(&mr, S, U"scope=([A-Za-z0-9_`]+)")) {
 		inter_symbol *symb = Wiring::cable_end(Wiring::find_socket(I, mr.exp[0]));
 		if (symb) {
 			if (marker) *marker = FALSE;
@@ -1209,7 +1210,7 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM,
 			return InterValuePairs::number(1);
 		}
 	}
-	if (Regexp::match(&mr, S, L"noun=([A-Za-z0-9_`]+)")) {
+	if (Regexp::match(&mr, S, U"noun=([A-Za-z0-9_`]+)")) {
 		inter_symbol *symb = Wiring::cable_end(Wiring::find_socket(I, mr.exp[0]));
 		if (symb) {
 			if (marker) *marker = TRUE;

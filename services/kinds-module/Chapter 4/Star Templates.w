@@ -160,13 +160,13 @@ not matter, since such things never come into kind definitions.
 @ Only five wildcards are recognised:
 
 @<Transcribe the template wildcard@> =
-	if (Str::eq_wide_string(template_wildcard_buffer, L"kind"))
+	if (Str::eq_wide_string(template_wildcard_buffer, U"kind"))
 		@<Transcribe the kind's name@>
-	else if (Str::eq_wide_string(template_wildcard_buffer, L"lower-case-kind"))
+	else if (Str::eq_wide_string(template_wildcard_buffer, U"lower-case-kind"))
 		@<Transcribe the kind's name in lower case@>
-	else if (Str::eq_wide_string(template_wildcard_buffer, L"printing-routine"))
+	else if (Str::eq_wide_string(template_wildcard_buffer, U"printing-routine"))
 		@<Transcribe the kind's I6 printing routine@>
-	else if (Str::eq_wide_string(template_wildcard_buffer, L"comparison-routine"))
+	else if (Str::eq_wide_string(template_wildcard_buffer, U"comparison-routine"))
 		@<Transcribe the kind's I6 comparison routine@>
 	else
 		NeptuneFiles::error(template_wildcard_buffer,

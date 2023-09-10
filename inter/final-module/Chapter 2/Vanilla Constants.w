@@ -277,7 +277,7 @@ compiler to accommodate floating-point arithmetic.
 =
 uint32_t VanillaConstants::textual_real_to_uint32(text_stream *T) {
 	int at = 0;
-	wchar_t lookahead = Str::get_at(T, at++);
+	inchar32_t lookahead = Str::get_at(T, at++);
 	int expo=0; double intv=0, fracv=0;
 	int expocount=0, intcount=0, fraccount=0, signbit=0;
 	if (lookahead == '-') {
@@ -327,8 +327,8 @@ uint32_t VanillaConstants::textual_real_to_uint32(text_stream *T) {
 	return VanillaConstants::real_components_to_uint32(signbit, intv, fracv, expo);
 }
 
-int VanillaConstants::character_digit_value(wchar_t c) {
-	if ((c >= '0') && (c <= '9')) return c - '0';
+int VanillaConstants::character_digit_value(inchar32_t c) {
+	if ((c >= '0') && (c <= '9')) return (int) (c - '0');
 	return 10;
 }
 

@@ -87,7 +87,7 @@ match those in the specification, so this notation does not match the text
 typedef struct literal_pattern_token {
 	int new_word_at; /* does token start a new word? */
 	int lpt_type; /* one of the three constants defined above */
-	wchar_t token_char; /* |CHARACTER_LPT| only; the character to match */
+	inchar32_t token_char; /* |CHARACTER_LPT| only; the character to match */
 	int token_wn; /* |WORD_LPT| only; word number in source text of the prototype */
 } literal_pattern_token;
 
@@ -461,7 +461,7 @@ The |wpos| value $-1$ means that word |wn| has not yet been started.
 
 @<Try to match the excerpt against the whole prototype or up to an optional break@> =
 	int tc, wn = Wordings::first_wn(W), wpos = -1, ec = 0, matched_scaledown = 1, parsed_as_real = FALSE;
-	wchar_t *wd = Lexer::word_text(Wordings::first_wn(W));
+	inchar32_t *wd = Lexer::word_text(Wordings::first_wn(W));
 	for (tc=0; tc<lp->no_lp_tokens; tc++) {
 		if (wn > Wordings::last_wn(W)) {
 			if ((wpos == -1) /* i.e., if we are cleanly at a word boundary */
@@ -719,10 +719,10 @@ which is annoying. So we have a mechanism to suppress duplicates:
 @ A digit value in a given LPE:
 
 =
-int LiteralPatterns::simple_digit_value(wchar_t *p, int base) {
+int LiteralPatterns::simple_digit_value(inchar32_t *p, int base) {
 	return LiteralPatterns::digit_value(p, base, NULL, NULL, NULL);
 }
-int LiteralPatterns::digit_value(wchar_t *p, int base, text_stream *digits,
+int LiteralPatterns::digit_value(inchar32_t *p, int base, text_stream *digits,
 	literal_pattern_element_value_set *set, int *len) {
 	if (set) {
 		for (int i=0; i<LiteralPatterns::element_value_count(set); i++) {
@@ -740,7 +740,7 @@ int LiteralPatterns::digit_value(wchar_t *p, int base, text_stream *digits,
 		}
 		return -1;
 	} else if (Str::len(digits) == 0) {
-		wchar_t c = p[0];
+		inchar32_t c = p[0];
 		int r = -1;
 		int d = ((int) c - (int) '0');
 		if ((d >= 0) && (d < 10)) r = d;
@@ -758,7 +758,7 @@ int LiteralPatterns::digit_value(wchar_t *p, int base, text_stream *digits,
 		}
 		return -1;
 	} else {
-		wchar_t c = p[0];
+		inchar32_t c = p[0];
 		if (c)
 			for (int i=0; i<base; i++)
 				if (Str::get_at(digits, i) == c) {
@@ -977,7 +977,7 @@ note that the following uses the raw text of the word.
 	WRITE("%<N", lp->lp_tokens[tc].token_wn);
 
 @<Index a character token within a literal pattern@> =
-	HTML::put(OUT, (int) lp->lp_tokens[tc].token_char);
+	HTML::put(OUT, lp->lp_tokens[tc].token_char);
 
 @<Index an element token within a literal pattern@> =
 	if (Kinds::FloatingPoint::uses_floating_point(lp->kind_specified)) {
@@ -1232,7 +1232,7 @@ middle of either angle-escapes or the material in between.
 	lpe_notation_pos from = { Wordings::first_wn(NW), 0 };
 	for (int i=0; i<Wordings::length(NW); i++) {
 		int quoted = FALSE;
-		wchar_t *text = Lexer::word_raw_text(Wordings::first_wn(NW)+i);
+		inchar32_t *text = Lexer::word_raw_text(Wordings::first_wn(NW)+i);
 		for (int j=0; text[j]; j++)
 			if (text[j] == '\"') {
 				quoted = quoted?FALSE:TRUE;
@@ -1290,7 +1290,7 @@ material or else names for parts about which nothing else is said.
 	Str::trim_white_space(angles);
 	wording AW = Feeds::feed_text(angles);
 	if (<quoted-text>(AW)) {
-		wchar_t *literal_text = Lexer::word_raw_text(Wordings::first_wn(AW));
+		inchar32_t *literal_text = Lexer::word_raw_text(Wordings::first_wn(AW));
 		for (int x=1; x < Wide::len(literal_text) - 1; x++) {
 			literal_pattern_token new_token =
 				LiteralPatterns::lpt_new(CHARACTER_LPT, next_token_begins_word);
@@ -1322,7 +1322,7 @@ character ones.
 	if ((from.wn < to.wn) || ((from.wn == to.wn) && (from.char_pos <= to.char_pos))) {
 		wording NW = Wordings::new(from.wn, to.wn);
 		for (int i=0; i<Wordings::length(NW); i++) {
-			wchar_t *text_of_word = Lexer::word_raw_text(Wordings::first_wn(NW)+i);
+			inchar32_t *text_of_word = Lexer::word_raw_text(Wordings::first_wn(NW)+i);
 			int start_from = 0, finish_at = Wide::len(text_of_word)-1;
 			if (i == 0) start_from = from.char_pos;
 			if (i == Wordings::length(NW)-1) finish_at = to.char_pos;
@@ -1916,7 +1916,7 @@ literal_pattern_element_value_set *LiteralPatterns::parse_value_set(text_stream 
 	int err = FALSE, count = 0;
 	TEMPORARY_TEXT(term)
 	for (int i=0, state=1; i<Str::len(src); i++) {
-		wchar_t c = Str::get_at(src, i);
+		inchar32_t c = Str::get_at(src, i);
 		switch (state) {
 			case 1: /* waiting for term */
 				if (Characters::is_whitespace(c)) break;

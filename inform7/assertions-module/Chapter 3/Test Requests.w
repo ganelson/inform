@@ -116,7 +116,7 @@ more elaborate:
 
 @<Add script@> =
     Word::dequote(Wordings::first_wn(W));
-    wchar_t *p = Lexer::word_text(Wordings::first_wn(W));
+    inchar32_t *p = Lexer::word_text(Wordings::first_wn(W));
 	TestCommand::add_script_to_scenario(ts_being_created, p);
 
 @<Add in-test requirement@> =

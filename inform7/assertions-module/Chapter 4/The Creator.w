@@ -923,7 +923,7 @@ and an |COMMON_NOUN_NT| node, "nose".
 		}
 		if ((Wordings::nonempty(OW)) && (Wordings::nonempty(NW)) && (Wordings::empty(CW))) {
 			feed_t id = Feeds::begin();
-			Feeds::feed_C_string_expanding_strings(L" its ");
+			Feeds::feed_C_string_expanding_strings(U" its ");
 			Feeds::feed_wording(NW);
 			CW = Feeds::end(id);
 		}

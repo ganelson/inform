@@ -21,7 +21,7 @@ equals sign as one of its characters.
 =
 <s-plain-text-with-equals> internal {
 	LOOP_THROUGH_WORDING(i, W) {
-		wchar_t *p = Lexer::word_raw_text(i);
+		inchar32_t *p = Lexer::word_raw_text(i);
 		for (int j=0; p[j]; j++)
 			if (p[j] == '=') {
 				==> { -, Specifications::new_UNKNOWN(W) };

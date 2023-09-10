@@ -127,7 +127,7 @@ void Rawtext::process_large_helper(text_stream *rawl, text_file_position *tfp,
  	}
  	int shortened = Str::trim_white_space_at_end(rawl);
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, rawl, L"%[(%c*?)%] (%c*)"))
+	if (Regexp::match(&mr, rawl, U"%[(%c*?)%] (%c*)"))
 		@<Deal with a block heading@>
 	else if (rhs->skipping_current_block == FALSE) {
 		int suppress_p_tag = FALSE;
@@ -171,7 +171,7 @@ be the first section.
 
  	rhs->skipping_current_block = FALSE;
  	match_results mr2 = Regexp::create_mr();
- 	if (Regexp::match(&mr2, block_header, L"{(%c*?):}(%c*?)")) {
+ 	if (Regexp::match(&mr2, block_header, U"{(%c*?):}(%c*?)")) {
  		Str::copy(block_header, mr2.exp[1]);
  		if (Symbols::perform_ifdef(mr2.exp[0]) == FALSE) {
  			rhs->skipping_current_block = TRUE;
@@ -185,7 +185,7 @@ be the first section.
 		@<Take note of documentation references@>;
 		Str::copy(rhs->title_of_block_being_read, title);
 
-		if (Regexp::match(&mr2, block_header, L"Chapter: (%c*)")) {
+		if (Regexp::match(&mr2, block_header, U"Chapter: (%c*)")) {
 			++(rhs->no_chapters_read_in_current_rawtext);
 			@<Prepare to read a new chapter of rawtext@>;
 		}
@@ -198,7 +198,7 @@ be the first section.
 	[x] The footwear kind {kind_footwear}
 =
 @<Take note of documentation references@> =
- 	while (Regexp::match(&mr2, title, L"(%c*) {(%C+)} *")) {
+ 	while (Regexp::match(&mr2, title, U"(%c*) {(%C+)} *")) {
  		Str::copy(title, mr2.exp[0]);
  		Updater::add_reference_symbol(mr2.exp[1], rhs->V,
  			(rhs->V)?(rhs->V->sections[rhs->no_blocks_written]):NULL);
@@ -220,17 +220,17 @@ rectangles.)
  		CSS::expand_spannotations(rawl, MARKUP_SPP);
  	}
 
- 	if (indoc_settings->format == HTML_FORMAT) Regexp::replace(rawl, L"<(%c*?)>", L"&lt;%0&gt;", REP_REPEATING);
+ 	if (indoc_settings->format == HTML_FORMAT) Regexp::replace(rawl, U"<(%c*?)>", U"&lt;%0&gt;", REP_REPEATING);
 
- 	wchar_t *replacement = L"%1";
- 	if (indoc_settings->format == HTML_FORMAT) replacement = L"<span class=\"%0\">%1</span>";
- 	Regexp::replace(rawl, L"___mu___(%c*?)___mo___(%c*?)___mc___", replacement, REP_REPEATING);
+ 	inchar32_t *replacement = U"%1";
+ 	if (indoc_settings->format == HTML_FORMAT) replacement = U"<span class=\"%0\">%1</span>";
+ 	Regexp::replace(rawl, U"___mu___(%c*?)___mo___(%c*?)___mc___", replacement, REP_REPEATING);
 
 @ The notation |///6X12.txt///| means "insert the change log for build 6X12 here".
 It should be the only thing on its line.
 
 @<Deal with an insert-change-log notation@> =
- 	if (Regexp::match(&mr2, rawl, L"(%c*?)///(%c*?.txt)/// *")) {
+ 	if (Regexp::match(&mr2, rawl, U"(%c*?)///(%c*?.txt)/// *")) {
  		Str::copy(rawl, mr2.exp[0]);
  		if (indoc_settings->format == HTML_FORMAT) {
  			Str::clear(rawl);
@@ -254,8 +254,8 @@ void Rawtext::process_change_log_helper(text_stream *sml, text_file_position *tf
 	void *v_rawl) {
 	text_stream *rawl = (text_stream *) v_rawl;
 	if (indoc_settings->format == HTML_FORMAT) {
-		Regexp::replace(sml, L"<", L"&lt;", REP_REPEATING);
-		Regexp::replace(sml, L">", L"&gt;", REP_REPEATING);
+		Regexp::replace(sml, U"<", U"&lt;", REP_REPEATING);
+		Regexp::replace(sml, U">", U"&gt;", REP_REPEATING);
 	}
 	WRITE_TO(rawl, "%S\n", sml);
 }
@@ -271,13 +271,13 @@ though only one of these may appear in each line. If the form
 is used, then the image is styled as |img.classname|.
 
 @<Deal with an insert-image notation@> =
- 	while (Regexp::match(&mr2, rawl, L"(%c*?)///(%c*?)///(%c*)")) {
+ 	while (Regexp::match(&mr2, rawl, U"(%c*?)///(%c*?)///(%c*)")) {
  		text_stream *left = mr2.exp[0];
  		text_stream *name = mr2.exp[1];
  		text_stream *right = mr2.exp[2];
  		TEMPORARY_TEXT(cl)
  		match_results mr3 = Regexp::create_mr();
- 		if (Regexp::match(&mr3, name, L"(%c*?): *(%c*)")) {
+ 		if (Regexp::match(&mr3, name, U"(%c*?): *(%c*)")) {
  			Str::copy(cl, mr3.exp[0]); Str::copy(name, mr3.exp[1]);
   			Regexp::dispose_of(&mr3);
 		}
@@ -308,7 +308,7 @@ then act accordingly.
 @<Deal with paragraph tags@> =
 	match_results mr3 = Regexp::create_mr();
 	match_results mr4 = Regexp::create_mr();
-	while (Regexp::match(&mr3, rawl, L"{(%c*?)}(%c*)")) {
+	while (Regexp::match(&mr3, rawl, U"{(%c*?)}(%c*)")) {
  		text_stream *paragraph_tag = mr3.exp[0];
  		Str::copy(rawl, mr3.exp[1]);
 
@@ -333,7 +333,7 @@ throw the whole paragraph away. If we're generating for no specific platform
 (for example, for the Inform website), we keep the paragraph but annotate it.
 
 @<Deal with a conditional paragraph tag@> =
- 	if (Regexp::match(&mr4, paragraph_tag, L"(%c*):")) {
+ 	if (Regexp::match(&mr4, paragraph_tag, U"(%c*):")) {
  		if (Symbols::perform_ifdef(mr4.exp[0])) continue;
  		abandon_para = TRUE; break;
  	}
@@ -346,7 +346,7 @@ throw the whole paragraph away. If we're generating for no specific platform
 =
 
 @<Deal with a phrase definition paragraph tag@> =
- 	if (Regexp::match(&mr4, paragraph_tag, L"defn *(%c*?)")) {
+ 	if (Regexp::match(&mr4, paragraph_tag, U"defn *(%c*?)")) {
  		text_stream *defn = mr4.exp[0];
  		TEMPORARY_TEXT(head)
  		Str::copy(head, rawl);
@@ -359,7 +359,7 @@ throw the whole paragraph away. If we're generating for no specific platform
  		suppress_p_tag = TRUE;
  		continue;
  	}
- 	if (Str::eq_wide_string(paragraph_tag, L"end")) {
+ 	if (Str::eq_wide_string(paragraph_tag, U"end")) {
  		Str::clear(rawl);
  		HTMLUtilities::end_definition_box(rawl);
  		suppress_p_tag = TRUE;
@@ -367,7 +367,7 @@ throw the whole paragraph away. If we're generating for no specific platform
  	}
 
 @<Deal with a CSS-styling paragraph tag@> =
- 	if (Regexp::match(&mr4, paragraph_tag, L"(%c*)/")) {
+ 	if (Regexp::match(&mr4, paragraph_tag, U"(%c*)/")) {
  		Str::copy(css_style, mr4.exp[0]);
  		continue;
  	}
@@ -400,7 +400,7 @@ in tag elements into |&quot;| escapes.
  		Str::copy(dequotee, rawl);
  		Str::clear(rawl);
  		match_results mr4 = Regexp::create_mr();
- 		while (Regexp::match(&mr4, dequotee, L"(%c*?)<(%c*?)>(%c*)")) {
+ 		while (Regexp::match(&mr4, dequotee, U"(%c*?)<(%c*?)>(%c*)")) {
  			text_stream *L = mr4.exp[0]; text_stream *M = mr4.exp[1]; text_stream *R = mr4.exp[2];
  			Rawtext::escape_HTML_characters_in(L);
  			WRITE_TO(rawl, "%S<%S>", L, M);
@@ -415,7 +415,7 @@ void Rawtext::escape_HTML_characters_in(text_stream *text) {
  	if (indoc_settings->format == HTML_FORMAT) {
 		TEMPORARY_TEXT(modified)
 		for (int i=0, L=Str::len(text); i<L; i++) {
-			int c = Str::get_at(text, i);
+			inchar32_t c = Str::get_at(text, i);
 			switch (c) {
 				case '\"': 		WRITE_TO(modified, "&quot;"); break;
 				case '<':		WRITE_TO(modified, "&lt;"); break;

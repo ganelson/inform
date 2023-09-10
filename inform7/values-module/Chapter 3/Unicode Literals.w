@@ -205,7 +205,7 @@ divided by semicolons, and semicolon characters are illegal in any field.
 =
 void UnicodeLiterals::read_line(text_stream *text, text_file_position *tfp, void *vm) {
 	Str::trim_white_space(text);
-	wchar_t c = Str::get_first_char(text);
+	inchar32_t c = Str::get_first_char(text);
 	if (c == 0) return;
 	text_stream *name = Str::new();
 	TEMPORARY_TEXT(category)
@@ -224,7 +224,7 @@ void UnicodeLiterals::read_line(text_stream *text, text_file_position *tfp, void
 
 @<Parse the fields@> =
 	for (int i=0; i<Str::len(text); i++) {
-		wchar_t c = Str::get_at(text, i);
+		inchar32_t c = Str::get_at(text, i);
 		if (c == ';') field_number++;
 		else switch (field_number) {
 			case CODE_VALUE_UNICODE_DATA_FIELD:

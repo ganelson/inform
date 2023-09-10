@@ -143,26 +143,26 @@ better way to choose a virtual machine to compile to.
 
 @<Declare Inform-related options@> =
 	CommandLine::begin_group(INBUILD_INFORM_CLSG, I"for translating Inform source text to Inter");
-	CommandLine::declare_switch(PROJECT_CLSW, L"project", 2,
-		L"work within the Inform project X");
-	CommandLine::declare_switch(BASIC_CLSW, L"basic", 1,
-		L"use Basic Inform language");
-	CommandLine::declare_boolean_switch(DEBUG_CLSW, L"debug", 1,
-		L"compile with debugging features even on a Release", FALSE);
-	CommandLine::declare_boolean_switch(RELEASE_CLSW, L"release", 1,
-		L"compile a version suitable for a Release build", FALSE);
-	CommandLine::declare_textual_switch(FORMAT_CLSW, L"format", 1,
-		L"compile to the format X (default is Inform6/32)");
-	CommandLine::declare_switch(SOURCE_CLSW, L"source", 2,
-		L"use file X as the Inform source text");
-	CommandLine::declare_switch(O_CLSW, L"o", 2,
-		L"use file X as the compiled output (not for use with -project)");
-	CommandLine::declare_boolean_switch(CENSUS_CLSW, L"census", 1,
-		L"withdrawn: previously, 'perform an extensions census'", FALSE);
-	CommandLine::declare_boolean_switch(RNG_CLSW, L"rng", 1,
-		L"fix the random number generator of the story file (for testing)", FALSE);
-	CommandLine::declare_switch(CASE_CLSW, L"case", 2,
-		L"make any source links refer to the source in extension example X");
+	CommandLine::declare_switch(PROJECT_CLSW, U"project", 2,
+		U"work within the Inform project X");
+	CommandLine::declare_switch(BASIC_CLSW, U"basic", 1,
+		U"use Basic Inform language");
+	CommandLine::declare_boolean_switch(DEBUG_CLSW, U"debug", 1,
+		U"compile with debugging features even on a Release", FALSE);
+	CommandLine::declare_boolean_switch(RELEASE_CLSW, U"release", 1,
+		U"compile a version suitable for a Release build", FALSE);
+	CommandLine::declare_textual_switch(FORMAT_CLSW, U"format", 1,
+		U"compile to the format X (default is Inform6/32)");
+	CommandLine::declare_switch(SOURCE_CLSW, U"source", 2,
+		U"use file X as the Inform source text");
+	CommandLine::declare_switch(O_CLSW, U"o", 2,
+		U"use file X as the compiled output (not for use with -project)");
+	CommandLine::declare_boolean_switch(CENSUS_CLSW, U"census", 1,
+		U"withdrawn: previously, 'perform an extensions census'", FALSE);
+	CommandLine::declare_boolean_switch(RNG_CLSW, U"rng", 1,
+		U"fix the random number generator of the story file (for testing)", FALSE);
+	CommandLine::declare_switch(CASE_CLSW, U"case", 2,
+		U"make any source links refer to the source in extension example X");
 	CommandLine::end_group();
 
 @ Again, except for |-nest|, these go back to the mid-2010s.
@@ -177,16 +177,16 @@ better way to choose a virtual machine to compile to.
 
 @<Declare resource-related options@> =
 	CommandLine::begin_group(INBUILD_RESOURCES_CLSG, I"for locating resources in the file system");
-	CommandLine::declare_switch(NEST_CLSW, L"nest", 2,
-		L"add the nest at pathname X to the search list");
-	CommandLine::declare_switch(INTERNAL_CLSW, L"internal", 2,
-		L"use X as the location of built-in material such as the Standard Rules");
-	CommandLine::declare_switch(EXTERNAL_CLSW, L"external", 2,
-		L"use X as the user's home for installed material such as extensions");
-	CommandLine::declare_switch(DEPRECATED_EXTERNAL_CLSW, L"deprecated-external", 2,
-		L"same as -external X, but issues warnings if the nest is actually used");
-	CommandLine::declare_switch(TRANSIENT_CLSW, L"transient", 2,
-		L"(an option now withdrawn)");
+	CommandLine::declare_switch(NEST_CLSW, U"nest", 2,
+		U"add the nest at pathname X to the search list");
+	CommandLine::declare_switch(INTERNAL_CLSW, U"internal", 2,
+		U"use X as the location of built-in material such as the Standard Rules");
+	CommandLine::declare_switch(EXTERNAL_CLSW, U"external", 2,
+		U"use X as the user's home for installed material such as extensions");
+	CommandLine::declare_switch(DEPRECATED_EXTERNAL_CLSW, U"deprecated-external", 2,
+		U"same as -external X, but issues warnings if the nest is actually used");
+	CommandLine::declare_switch(TRANSIENT_CLSW, U"transient", 2,
+		U"(an option now withdrawn)");
 	CommandLine::end_group();
 
 @ These are all new in 2020. They are not formally shared with the |inter| tool,
@@ -201,14 +201,14 @@ but |-pipeline-file| and |-variable| have the same effect as they would there.
 
 @<Declare Inter-related options@> =
 	CommandLine::begin_group(INBUILD_INTER_CLSG, I"for tweaking code generation from Inter");
-	CommandLine::declare_switch(KIT_CLSW, L"kit", 2,
-		L"(an option now withdrawn)");
-	CommandLine::declare_switch(PIPELINE_CLSW, L"pipeline", 2,
-		L"specify code-generation pipeline by name (default is \"compile\")");
-	CommandLine::declare_switch(PIPELINE_FILE_CLSW, L"pipeline-file", 2,
-		L"specify code-generation pipeline as file X");
-	CommandLine::declare_switch(PIPELINE_VARIABLE_CLSW, L"variable", 2,
-		L"set pipeline variable X (in form name=value)");
+	CommandLine::declare_switch(KIT_CLSW, U"kit", 2,
+		U"(an option now withdrawn)");
+	CommandLine::declare_switch(PIPELINE_CLSW, U"pipeline", 2,
+		U"specify code-generation pipeline by name (default is \"compile\")");
+	CommandLine::declare_switch(PIPELINE_FILE_CLSW, U"pipeline-file", 2,
+		U"specify code-generation pipeline as file X");
+	CommandLine::declare_switch(PIPELINE_VARIABLE_CLSW, U"variable", 2,
+		U"set pipeline variable X (in form name=value)");
 	CommandLine::end_group();
 
 @ Use of the above options will cause the following global variables to be
@@ -310,7 +310,7 @@ of the parent. In practice, that will be true for |inform7| but not |inbuild|.
 
 @<Set a pipeline variable@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, arg, L"(%c+)=(%c+)")) {
+	if (Regexp::match(&mr, arg, U"(%c+)=(%c+)")) {
 		if (Str::get_first_char(arg) != '*') {
 			Errors::fatal("-variable names must begin with '*'");
 		} else {

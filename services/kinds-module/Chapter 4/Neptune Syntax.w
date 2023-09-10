@@ -150,11 +150,11 @@ single_kind_command NeptuneSyntax::parse_command(text_stream *whole_command,
 			constructor_described = NULL;
 		}
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, whole_command, L"invention (%C+) {")) {
+		if (Regexp::match(&mr, whole_command, U"invention (%C+) {")) {
 			StarTemplates::begin(mr.exp[0], tfp);
-		} else if (Regexp::match(&mr, whole_command, L"macro (#%C+) {")) {
+		} else if (Regexp::match(&mr, whole_command, U"macro (#%C+) {")) {
 			NeptuneMacros::begin(mr.exp[0], tfp);
-		} else if (Regexp::match(&mr, whole_command, L"(%C+) (%C+) (%C+) {")) {
+		} else if (Regexp::match(&mr, whole_command, U"(%C+) (%C+) (%C+) {")) {
 			int should_know = NOT_APPLICABLE;
 			if (Str::eq(mr.exp[0], I"new")) should_know = FALSE;
 			else if (Str::eq(mr.exp[0], I"builtin")) should_know = TRUE;
@@ -243,7 +243,7 @@ begin with those characters, but that doesn't matter for the things we need.
 
 @<Parse line into command and argument, divided by a colon@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, whole_command, L" *(%c+?) *: *(%c+?) *")) {
+	if (Regexp::match(&mr, whole_command, U" *(%c+?) *: *(%c+?) *")) {
 		Str::copy(command, mr.exp[0]);
 		Str::copy(argument, mr.exp[1]);
 		Regexp::dispose_of(&mr);
@@ -268,15 +268,15 @@ so we neglect it.
 	}
 
 @<Parse a boolean argument for a kind command@> =
-	if (Str::eq_wide_string(argument, L"yes")) stc.boolean_argument = TRUE;
-	else if (Str::eq_wide_string(argument, L"no")) stc.boolean_argument = FALSE;
+	if (Str::eq_wide_string(argument, U"yes")) stc.boolean_argument = TRUE;
+	else if (Str::eq_wide_string(argument, U"no")) stc.boolean_argument = FALSE;
 	else NeptuneFiles::error(command, I"boolean kind command takes yes/no argument", tfp);
 
 @<Parse a CCM argument for a kind command@> =
-	if (Str::eq_wide_string(argument, L"none")) stc.ccm_argument = NONE_CCM;
-	else if (Str::eq_wide_string(argument, L"literal")) stc.ccm_argument = LITERAL_CCM;
-	else if (Str::eq_wide_string(argument, L"quantitative")) stc.ccm_argument = NAMED_CONSTANT_CCM;
-	else if (Str::eq_wide_string(argument, L"special")) stc.ccm_argument = SPECIAL_CCM;
+	if (Str::eq_wide_string(argument, U"none")) stc.ccm_argument = NONE_CCM;
+	else if (Str::eq_wide_string(argument, U"literal")) stc.ccm_argument = LITERAL_CCM;
+	else if (Str::eq_wide_string(argument, U"quantitative")) stc.ccm_argument = NAMED_CONSTANT_CCM;
+	else if (Str::eq_wide_string(argument, U"special")) stc.ccm_argument = SPECIAL_CCM;
 	else {
 		NeptuneFiles::error(command,
 			I"kind command with unknown constant-compilation-method", tfp);
@@ -302,7 +302,7 @@ so we neglect it.
 
 @<Parse a constructor-name argument for a kind command@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, argument, L"(%c*?)>>>(%c+)")) {
+	if (Regexp::match(&mr, argument, U"(%c*?)>>>(%c+)")) {
 		Str::copy(argument, mr.exp[0]);
 		Str::copy(stc.textual_argument, mr.exp[1]);
 		Regexp::dispose_of(&mr);

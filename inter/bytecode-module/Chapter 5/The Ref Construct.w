@@ -58,7 +58,7 @@ void RefInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 	inter_error_location *eloc, inter_error_message **E) {
 	text_stream *type_text = NULL, *value_text = ilp->mr.exp[0];
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, value_text, L"%((%c+)%) (%c+)")) {
+	if (Regexp::match(&mr, value_text, U"%((%c+)%) (%c+)")) {
 		type_text = mr.exp[0];
 		value_text = mr.exp[1];
 	}

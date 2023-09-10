@@ -22,8 +22,8 @@ DECLARE_CLASS(excerpt_meaning)
 
 =
 void LexiconModule::start(void) {
-	Log::declare_aspect(EXCERPT_MEANINGS_DA, L"excerpt meanings", FALSE, FALSE);
-	Log::declare_aspect(EXCERPT_PARSING_DA, L"excerpt parsing", FALSE, FALSE);
+	Log::declare_aspect(EXCERPT_MEANINGS_DA, U"excerpt meanings", FALSE, FALSE);
+	Log::declare_aspect(EXCERPT_PARSING_DA, U"excerpt parsing", FALSE, FALSE);
 	Writers::register_logger('M', ExcerptMeanings::log);
 	@<Declare the tree annotations@>;
 }

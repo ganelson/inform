@@ -293,7 +293,7 @@ is trivial, since this happens only once per run.
 	text_stream *S = standard_inform7_primitives[i].signature;
 	TEMPORARY_TEXT(term)
 	while (p <= Str::len(S)) {
-		wchar_t c = Str::get_at(S, p);
+		inchar32_t c = Str::get_at(S, p);
 		if ((Characters::is_whitespace(c)) || (c == 0)) {
 			if ((Str::eq(term, I"->")) && (before_arrow)) before_arrow = FALSE;
 			else {

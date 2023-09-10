@@ -43,8 +43,8 @@ void WordsModule::start(void) {
 	Writers::register_writer('V', &Vocabulary::writer);      /* |%V| = write vocabulary entry */
 	Writers::register_writer_W('W', &Wordings::writer);      /* |%W| = write wording */
 
-	Log::declare_aspect(LEXICAL_OUTPUT_DA, L"lexical output", FALSE, FALSE);
-	Log::declare_aspect(VOCABULARY_DA, L"vocabulary", FALSE, FALSE);
+	Log::declare_aspect(LEXICAL_OUTPUT_DA, U"lexical output", FALSE, FALSE);
+	Log::declare_aspect(VOCABULARY_DA, U"vocabulary", FALSE, FALSE);
 
 	Writers::register_logger('f', WordAssemblages::log); /* |$f| = log word assemblage */
 	Writers::register_logger('v', Vocabulary::log);      /* |$v| = log vocabulary entry */

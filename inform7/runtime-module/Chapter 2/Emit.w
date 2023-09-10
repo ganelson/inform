@@ -214,7 +214,7 @@ inter_name *Emit::iname_constant(inter_name *con_iname, kind *K, inter_name *val
 is compiled.
 
 =
-void Emit::text_constant_from_wide_string(inter_name *con_iname, wchar_t *str) {
+void Emit::text_constant_from_wide_string(inter_name *con_iname, inchar32_t *str) {
 	inter_name *iname = TextLiterals::to_value(Feeds::feed_C_string(str));
 	Emit::named_generic_constant(con_iname,
 		Emit::to_value_pair_in_context(con_iname, iname));

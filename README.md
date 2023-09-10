@@ -68,7 +68,7 @@ Make a directory in which to work: let's call this `work`. Then:
 * If you have time (between 5 mins and 2 hours, depending on your system), `make check`
 to run the full suite of 2500 test cases.
 
-**Caution again**: `inform7` is written in standard C99, but is a challengingly
+**Caution again**: `inform7` is written in standard C11, but is a challengingly
 large task for a C compiler. In the past we have had difficulties using `gcc` to
 compile it, and although we believe these may now be resolved, we recommend compiling
 the core Inform tools with `clang` rather than `gcc` where possible.

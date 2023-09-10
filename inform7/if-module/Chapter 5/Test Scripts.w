@@ -65,11 +65,11 @@ void TestCommand::add_possession_to_scenario(test_scenario *test, instance *I) {
 		test->possessions[test->no_possessions++] = I;
 }
 
-void TestCommand::add_script_to_scenario(test_scenario *test, wchar_t *p) {
+void TestCommand::add_script_to_scenario(test_scenario *test, inchar32_t *p) {
     TEMPORARY_TEXT(individual_command)
     Str::clear(test->text_of_script);
     for (int i=0; p[i]; i++) {
-    	int c = Characters::tolower(p[i]);
+    	inchar32_t c = Characters::tolower(p[i]);
     	if (c == ' ') {
     		int l;
     		if (Str::len(individual_command) == 0) continue;
@@ -94,7 +94,7 @@ void TestCommand::add_script_to_scenario(test_scenario *test, wchar_t *p) {
 }
 
 @<Check an individual command@> =
-	if (Str::eq_wide_string(individual_command, L"undo")) {
+	if (Str::eq_wide_string(individual_command, U"undo")) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TestContainsUndo),
 			"this test script contains an UNDO command",
 			"which the story file has no way to automate the running of. "

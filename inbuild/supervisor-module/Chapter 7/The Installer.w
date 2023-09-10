@@ -726,7 +726,7 @@ void ExtensionInstaller::uninstall_icon(OUTPUT_STREAM) {
 	else
 		WRITE_TO(path, "%p", C->location_if_path);
 	LOOP_THROUGH_TEXT(pos, path) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if (c == '\\')
 			WRITE_TO(js_path, "\\\\");
 		else

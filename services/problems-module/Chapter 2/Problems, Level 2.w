@@ -224,11 +224,11 @@ void Problems::quote_text(int t, char *p) {
 void Problems::expand_text(OUTPUT_STREAM, void *p) {
 	WRITE("%s", (char *) p);
 }
-void Problems::quote_wide_text(int t, wchar_t *p) {
+void Problems::quote_wide_text(int t, inchar32_t *p) {
 	Problems::problem_quote(t, (void *) p, Problems::expand_wide_text);
 }
 void Problems::expand_wide_text(OUTPUT_STREAM, void *p) {
-	WRITE("%w", (wchar_t *) p);
+	WRITE("%w", (inchar32_t *) p);
 }
 void Problems::quote_nonterminal(int t, nonterminal *nt) {
 	Problems::problem_quote(t, (void *) nt, Problems::expand_nonterminal);
@@ -239,7 +239,7 @@ void Problems::expand_nonterminal(OUTPUT_STREAM, void *p) {
 	TEMPORARY_TEXT(name)
 	WRITE_TO(name, "%w", Vocabulary::get_exemplar(nt->nonterminal_id, FALSE));
 	LOOP_THROUGH_TEXT(pos, name) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if ((c == '<') || (c == '>')) c = '\'';
 		PUT(c);
 	}
@@ -442,7 +442,7 @@ on when the shortened form is the one being issued).
 			case 'P': PUT_TO(PBUFF, FORCE_NEW_PARA_CHAR); i++; continue;
 			case '%': PUT_TO(PBUFF, '%'); i++; continue;
 		}
-		if (Characters::isdigit((wchar_t) message[i+1])) {
+		if (Characters::isdigit((inchar32_t) message[i+1])) {
 			int t = ((int) (message[i+1]))-((int) '0'); i++;
 			if ((t>=1) && (t<=9)) {
 				if (problem_quotations[t].quotation_type == 'F')
@@ -455,7 +455,7 @@ on when the shortened form is the one being issued).
 			continue;
 		}
 	}
-	PUT_TO(PBUFF, message[i]);
+	PUT_TO(PBUFF, (inchar32_t) message[i]);
 
 @ This is where there is an explicit reference to a filename and line number.
 
@@ -520,7 +520,7 @@ ourselves, and must delegate to:
 
 @<Spool temporary stream text to the problem buffer@> =
 	LOOP_THROUGH_TEXT(pos, OUT) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if (c == '<') c = PROTECTED_LT_CHAR;
 		if (c == '>') c = PROTECTED_GT_CHAR;
 		if (c == '"') c = PROTECTED_QUOT_CHAR;

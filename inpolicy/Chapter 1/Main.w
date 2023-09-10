@@ -20,20 +20,20 @@ int main(int argc, char **argv) {
 	Foundation::start(argc, argv);
 	
 	CommandLine::declare_heading(
-		L"[[Purpose]]\n\n"
-		L"usage: inpolicy [options]\n");
+		U"[[Purpose]]\n\n"
+		U"usage: inpolicy [options]\n");
 
-	CommandLine::declare_switch(PROBLEMS_CLSW, L"check-problems", 1,
-		L"check problem test case coverage");
-	CommandLine::declare_switch(KIT_VERSIONS_CLSW, L"kit-versions", 1,
-		L"show version numbers of the built-in kits");
-	CommandLine::declare_switch(SYNC_KIT_VERSIONS_CLSW, L"sync-kit-versions", 1,
-		L"fix version numbers of the built-in kits to match core inform7 version");
+	CommandLine::declare_switch(PROBLEMS_CLSW, U"check-problems", 1,
+		U"check problem test case coverage");
+	CommandLine::declare_switch(KIT_VERSIONS_CLSW, U"kit-versions", 1,
+		U"show version numbers of the built-in kits");
+	CommandLine::declare_switch(SYNC_KIT_VERSIONS_CLSW, U"sync-kit-versions", 1,
+		U"fix version numbers of the built-in kits to match core inform7 version");
 
-	CommandLine::declare_boolean_switch(SILENCE_CLSW, L"silence", 1,
-		L"print nothing unless there's something wrong", FALSE);
-	CommandLine::declare_boolean_switch(VERBOSE_CLSW, L"verbose", 1,
-		L"explain what inpolicy is doing", FALSE);
+	CommandLine::declare_boolean_switch(SILENCE_CLSW, U"silence", 1,
+		U"print nothing unless there's something wrong", FALSE);
+	CommandLine::declare_boolean_switch(VERBOSE_CLSW, U"verbose", 1,
+		U"explain what inpolicy is doing", FALSE);
 
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::disallow);
 

@@ -49,7 +49,7 @@ inter_pair InterValuePairs::number(inter_ti N) {
 	return pair;
 }
 
-inter_pair InterValuePairs::number_in_base(inter_ti N, int b) {
+inter_pair InterValuePairs::number_in_base(inter_ti N, unsigned int b) {
 	inter_pair pair;
 	switch (b) {
 		case 2: pair.data_format = BINARY_IVAL; break;
@@ -69,14 +69,15 @@ inter_pair InterValuePairs::signed_number(int N) {
 }
 
 inter_pair InterValuePairs::number_from_I6_notation(text_stream *S) {
-	int sign = 1, base = 10, from = 0;
+	int sign = 1, from = 0;
+	unsigned int base = 10;
 	if (Str::prefix_eq(S, I"-", 1)) { sign = -1; from = 1; }
 	if (Str::prefix_eq(S, I"$", 1)) { base = 16; from = 1; }
 	if (Str::prefix_eq(S, I"$$", 2)) { base = 2; from = 2; }
 	long long int N = 0;
 	LOOP_THROUGH_TEXT(pos, S) {
 		if (pos.index < from) continue;
-		int c = Str::get(pos), d = 0;
+		inchar32_t c = Str::get(pos), d = 0;
 		if ((c >= 'a') && (c <= 'z')) d = c-'a'+10;
 		else if ((c >= 'A') && (c <= 'Z')) d = c-'A'+10;
 		else if ((c >= '0') && (c <= '9')) d = c-'0';

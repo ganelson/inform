@@ -10,8 +10,8 @@ values here aren't actually correct for any platform as they stand: in the
 |main| routine below, we set them as needed.
 
 =
-wchar_t *FONT_TAG = L"size=2"; /* contents of a |<font>| tag */
-wchar_t *JAVASCRIPT_PRELUDE = L"javascript:window.Project."; /* calling prefix */
+inchar32_t *FONT_TAG = U"size=2"; /* contents of a |<font>| tag */
+inchar32_t *JAVASCRIPT_PRELUDE = U"javascript:window.Project."; /* calling prefix */
 int escape_openUrl = FALSE, escape_fileUrl = FALSE;
 int reverse_slash_openUrl = FALSE, reverse_slash_fileUrl = FALSE;
 
@@ -98,13 +98,13 @@ int main(int argc, char *argv[]) {
 			blurb_filename, blorb_filename);
 
 @<Read the command-line switches@> =
-	CommandLine::declare_heading(L"inblorb: a releaser and packager for IF story files\n\n"
-		L"usage: inblorb [-options] [blurbfile [blorbfile]]\n");
+	CommandLine::declare_heading(U"inblorb: a releaser and packager for IF story files\n\n"
+		U"usage: inblorb [-options] [blurbfile [blorbfile]]\n");
 
-	CommandLine::declare_boolean_switch(VERBOSE_CLSW, L"verbose", 1,
-		L"print running notes on what's happening", FALSE);
-	CommandLine::declare_switch(PROJECT_CLSW, L"project", 2,
-		L"work within Inform project X");
+	CommandLine::declare_boolean_switch(VERBOSE_CLSW, U"verbose", 1,
+		U"print running notes on what's happening", FALSE);
+	CommandLine::declare_switch(PROJECT_CLSW, U"project", 2,
+		U"work within Inform project X");
 
 	int bare_words = 0;
 	CommandLine::read(argc, argv, &bare_words, &Main::switch, &Main::bareword);
@@ -160,7 +160,7 @@ since backslashes are escape characters in Javascript literals.
 
 @<Set platform-dependent HTML and Javascript variables@> =
 	#ifndef PLATFORM_WINDOWS
-		FONT_TAG = L"face=\"lucida grande,geneva,arial,tahoma,verdana,helvetica,helv\" size=2";
+		FONT_TAG = U"face=\"lucida grande,geneva,arial,tahoma,verdana,helvetica,helv\" size=2";
 		escape_openUrl = TRUE; /* we want |openUrl| to escape, and |fileUrl| not to */
 	#endif
 	#ifdef PLATFORM_WINDOWS
@@ -242,9 +242,9 @@ that's where they're used.
 		Placeholders::set_to(I"CBLORBSTATUSLOW", I"failed", 0);
 		Placeholders::set_to(I"CBLORBSTATUSIMAGE", I"inform:/outcome_images/cblorb_failed.png", 0);
 		Placeholders::set_to(I"CBLORBSTATUSTEXT",
-			Str::literal(L"Inform translated your source text as usual, to manufacture a 'story "
-				L"file': all of that worked fine. But the Release then went wrong, for "
-				L"the following reason:<p><ul>[CBLORBERRORS]</ul>"), 0
+			Str::literal(U"Inform translated your source text as usual, to manufacture a 'story "
+				U"file': all of that worked fine. But the Release then went wrong, for "
+				U"the following reason:<p><ul>[CBLORBERRORS]</ul>"), 0
 		);
 	} else {
 		Placeholders::set_to(I"CBLORBERRORS", I"No problems occurred", 0);
@@ -252,12 +252,12 @@ that's where they're used.
 		Placeholders::set_to(I"CBLORBSTATUSLOW", I"succeeded", 0);
 		Placeholders::set_to(I"CBLORBSTATUSIMAGE", I"file://[SMALLCOVER]", 0);
 		Placeholders::set_to(I"CBLORBSTATUSTEXT",
-			Str::literal(L"All went well. I've put the released material into the 'Release' subfolder "
-				L"of the Materials folder for the project: you can take a look with "
-				L"the menu option <b>Release &gt; Open Materials Folder</b> or by clicking "
-				L"the blue folders above.<p>"
-				L"Releases can range in size from a single blorb file to a medium-sized website. "
-				L"Here's what we currently have:<p>"), 0
+			Str::literal(U"All went well. I've put the released material into the 'Release' subfolder "
+				U"of the Materials folder for the project: you can take a look with "
+				U"the menu option <b>Release &gt; Open Materials Folder</b> or by clicking "
+				U"the blue folders above.<p>"
+				U"Releases can range in size from a single blorb file to a medium-sized website. "
+				U"Here's what we currently have:<p>"), 0
 		);
 		Requests::report_requested_material(I"CBLORBSTATUSTEXT");
 	}

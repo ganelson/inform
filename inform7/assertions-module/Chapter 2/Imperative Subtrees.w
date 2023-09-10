@@ -1083,10 +1083,10 @@ void ImperativeSubtrees::unroll_says(parse_node *cb_node, wording W, int depth) 
 
 @<Bite off a say term@> =
 	if ((Wordings::length(W) > 1) ||
-		(Wide::cmp(Lexer::word_text(Wordings::first_wn(W)), L"\"\"") != 0)) {
+		(Wide::cmp(Lexer::word_text(Wordings::first_wn(W)), U"\"\"") != 0)) {
 		if ((Wordings::length(W) == 1) &&
 			(Vocabulary::test_flags(Wordings::first_wn(W), TEXTWITHSUBS_MC)) && (depth == 0)) {
-			wchar_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
+			inchar32_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
 			@<Check that substitution does not contain suspicious punctuation@>;
 			TEMPORARY_TEXT(sub)
 			@<Write a form of the text bracketing substitutions with commas@>;

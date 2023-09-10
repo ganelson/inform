@@ -63,11 +63,11 @@ void BuildingModule::start(void) {
 
 @<Register this module's debugging log aspects@> =
 	Log::declare_aspect(SCHEMA_COMPILATION_DA,
-		L"schema compilation", FALSE, FALSE);
+		U"schema compilation", FALSE, FALSE);
 	Log::declare_aspect(SCHEMA_COMPILATION_DETAILS_DA,
-		L"schema compilation details", FALSE, FALSE);
+		U"schema compilation details", FALSE, FALSE);
 	Log::declare_aspect(PACKAGING_DA,
-		L"packaging", FALSE, FALSE);
+		U"packaging", FALSE, FALSE);
 
 @<Register this module's debugging log writers@> =
 	Writers::register_logger('1', InterSchemas::log);

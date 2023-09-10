@@ -419,7 +419,7 @@ in which the actual information is more or less hidden.
 				if (compare_word(i-1, OPENBRACKET_V)) space = FALSE;
 			}
 			if (space) WRITE(" ");
-			wchar_t *p = Lexer::word_raw_text(i);
+			inchar32_t *p = Lexer::word_raw_text(i);
 			int L = Wide::len(p);
 			if (L > STRING_TOLERANCE_LIMIT+5) {
 				for (int j=0; j<STRING_TOLERANCE_LIMIT/2; j++) PUT(p[j]);
@@ -441,10 +441,10 @@ in comments and I6 debugging routines, but we do need to use the I6 escape
 
 @<Write the stream in a raw form suitable for use in an I6 literal string@> =
 	LOOP_THROUGH_WORDING(j, W) {
-		wchar_t *str = Lexer::word_raw_text(j);
+		inchar32_t *str = Lexer::word_raw_text(j);
 		if (j>Wordings::first_wn(W)) WRITE(" ");
 		for (int k=0; str[k] != 0; k++) {
-			int c = str[k];
+			inchar32_t c = str[k];
 			switch (c) {
 				case '@': WRITE("@@"); break;
 				case '"': WRITE("~"); break;

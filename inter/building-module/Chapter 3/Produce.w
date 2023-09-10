@@ -502,7 +502,7 @@ void Produce::val_text(inter_tree *I, text_stream *S) {
 	Produce::val(I, K_value, InterValuePairs::from_text(Packaging::at(I), S));
 }
 
-void Produce::val_char(inter_tree *I, wchar_t c) {
+void Produce::val_char(inter_tree *I, inchar32_t c) {
 	Produce::val(I, K_value, InterValuePairs::number((inter_ti) c));
 }
 

@@ -109,7 +109,7 @@ We cache the text literal "the" rather than create it over and over.
 parse_node *text_of_word_the = NULL;
 void Naming::object_takes_definite_article(inference_subject *subj) {
 	if (text_of_word_the == NULL)
-		text_of_word_the = Rvalues::from_wording(Feeds::feed_C_string(L"\"the\""));
+		text_of_word_the = Rvalues::from_wording(Feeds::feed_C_string(U"\"the\""));
 	ValueProperties::assert(P_article, subj, text_of_word_the, LIKELY_CE);
 }
 
@@ -230,7 +230,7 @@ a comma, and that's caught here:
 		}
 		int begins_with_lower_case = FALSE;
 		if (Wordings::nonempty(W)) {
-			wchar_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
+			inchar32_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
 			if (Characters::islower(p[0])) begins_with_lower_case = TRUE;
 		}
 		@<Assert the I6 short-name property@>;
@@ -378,7 +378,7 @@ void Naming::compose_words_to_I6_naming_text(OUTPUT_STREAM, wording W, int cap,
 	if (Wordings::nonempty(W)) {
 		LOOP_THROUGH_WORDING(j, W) {
 			int your_here = <possessive-second-person>(Wordings::one_word(j));
-			wchar_t *p = Lexer::word_raw_text(j);
+			inchar32_t *p = Lexer::word_raw_text(j);
 			if (cap) {
 				if ((j==Wordings::first_wn(W)) && (your_here) && (your_flag)) {
 					PUT(Characters::toupper(p[0]));

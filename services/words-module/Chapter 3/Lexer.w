@@ -90,12 +90,12 @@ characters cause word divisions, or signal literals.
 @d INFORM6_ESCAPE_BEGIN_2 '-'
 @d INFORM6_ESCAPE_END_1 '-'
 @d INFORM6_ESCAPE_END_2 ')'
-@d PARAGRAPH_BREAK L"|__" /* Inserted as a special word to mark paragraph breaks */
-@d UNICODE_CHAR_IN_STRING ((wchar_t) 0x1b) /* To represent awkward characters in metadata only */
+@d PARAGRAPH_BREAK U"|__" /* Inserted as a special word to mark paragraph breaks */
+@d UNICODE_CHAR_IN_STRING 0x1bu /* To represent awkward characters in metadata only */
 
 @ This is the standard set used for parsing source text.
 
-@d STANDARD_PUNCTUATION_MARKS L".,:;?!(){}[]" /* Do not add to this list lightly! */
+@d STANDARD_PUNCTUATION_MARKS U".,:;?!(){}[]" /* Do not add to this list lightly! */
 
 @ This seems a good point to describe how best to syntax-colour source
 text, something which the user interfaces do on every platform. By
@@ -197,8 +197,8 @@ The lexer builds a small data structure for each individual word it reads.
 
 =
 typedef struct lexer_details {
-	wchar_t *lw_text; /* text of word after treatment to normalise */
-	wchar_t *lw_rawtext; /* original untouched text of word */
+	inchar32_t *lw_text; /* text of word after treatment to normalise */
+	inchar32_t *lw_rawtext; /* original untouched text of word */
 	struct source_location lw_source; /* where it was read from */
 	int lw_break; /* the divider (space, tab, etc.) preceding it */
 	struct vocabulary_entry *lw_identity; /* which distinct word */
@@ -227,10 +227,10 @@ lowest address up to (but not including) the "high water mark", a pointer
 in effect to the first free character.
 
 =
-wchar_t *lexer_workspace; /* Large area of contiguous memory for text */
-wchar_t *lexer_word; /* Start of current word in workspace */
-wchar_t *lexer_hwm; /* High water mark of workspace */
-wchar_t *lexer_workspace_end; /* Pointer to just past the end of the workspace: HWM must not exceed this */
+inchar32_t *lexer_workspace; /* Large area of contiguous memory for text */
+inchar32_t *lexer_word; /* Start of current word in workspace */
+inchar32_t *lexer_hwm; /* High water mark of workspace */
+inchar32_t *lexer_workspace_end; /* Pointer to just past the end of the workspace: HWM must not exceed this */
 
 void Lexer::start(void) {
 	lexer_wordcount = 0;
@@ -289,7 +289,7 @@ of lookahead:
 =
 void Lexer::ensure_lexer_hwm_can_be_raised_by(int n, int transfer_partial_word) {
 	if (lexer_hwm + n + 2 >= lexer_workspace_end) {
-		wchar_t *old_hwm = lexer_hwm;
+		inchar32_t *old_hwm = lexer_hwm;
 		int m = 1;
 		if (transfer_partial_word) {
 			m = (((int) (old_hwm - lexer_word) + n + 3)/TEXT_STORAGE_CHUNK_SIZE) + 1;
@@ -298,7 +298,7 @@ void Lexer::ensure_lexer_hwm_can_be_raised_by(int n, int transfer_partial_word) 
 		Lexer::allocate_lexer_workspace_chunk(m);
 		if (transfer_partial_word) {
 			*(lexer_hwm++) = ' ';
-			wchar_t *new_lword = lexer_hwm;
+			inchar32_t *new_lword = lexer_hwm;
 			while (lexer_word < old_hwm) {
 				*(lexer_hwm++) = *(lexer_word++);
 			}
@@ -311,7 +311,7 @@ void Lexer::ensure_lexer_hwm_can_be_raised_by(int n, int transfer_partial_word) 
 
 void Lexer::allocate_lexer_workspace_chunk(int multiplier) {
 	int extent = multiplier * TEXT_STORAGE_CHUNK_SIZE;
-	lexer_workspace = ((wchar_t *) (Memory::calloc(extent, sizeof(wchar_t), LEXER_TEXT_MREASON)));
+	lexer_workspace = ((inchar32_t *) (Memory::calloc(extent, sizeof(inchar32_t), LEXER_TEXT_MREASON)));
 	lexer_workspace_allocated += extent;
 	lexer_hwm = lexer_workspace;
 	lexer_workspace_end = lexer_workspace + extent;
@@ -324,11 +324,11 @@ of its argument, then: it should never be used while the lexer is actually
 running.
 
 =
-wchar_t *Lexer::copy_to_memory(wchar_t *p) {
+inchar32_t *Lexer::copy_to_memory(inchar32_t *p) {
 	Lexer::ensure_lexer_hwm_can_be_raised_by(Wide::len(p), FALSE);
-	wchar_t *q = lexer_hwm;
+	inchar32_t *q = lexer_hwm;
 	lexer_hwm = q + Wide::len(p) + 1;
-	wcscpy(q, p);
+	Wide::copy(q, p);
 	return q;
 }
 
@@ -363,7 +363,7 @@ documentation: it then drops out of this mode and back into normal running,
 so that subsequent words are lexed as usual.
 
 =
-wchar_t *lexer_punctuation_marks = L"";
+inchar32_t *lexer_punctuation_marks = U"";
 int lexer_divide_strings_at_text_substitutions; /* Break up text substitutions in quoted text */
 int lexer_allow_I6_escapes; /* Recognise |(-| and |-)| */
 int lexer_wait_for_dashes; /* Ignore all text until first |----| found */
@@ -374,7 +374,7 @@ As we have seen, the question of whether something is a punctuation mark
 or not depends slightly on the context:
 
 =
-int Lexer::is_punctuation(int c) {
+int Lexer::is_punctuation(inchar32_t c) {
 	for (int i=0; lexer_punctuation_marks[i]; i++)
 		if (c == lexer_punctuation_marks[i])
 			return TRUE;
@@ -440,19 +440,19 @@ void Lexer::set_word_location(int wn, source_location sl) {
 	lw_array[wn].lw_source = sl;
 }
 
-wchar_t *Lexer::word_raw_text(int wn) {
+inchar32_t *Lexer::word_raw_text(int wn) {
 	return lw_array[wn].lw_rawtext;
 }
 
-void Lexer::set_word_raw_text(int wn, wchar_t *rt) {
+void Lexer::set_word_raw_text(int wn, inchar32_t *rt) {
 	lw_array[wn].lw_rawtext = rt;
 }
 
-wchar_t *Lexer::word_text(int wn) {
+inchar32_t *Lexer::word_text(int wn) {
 	return lw_array[wn].lw_text;
 }
 
-void Lexer::set_word_text(int wn, wchar_t *rt) {
+void Lexer::set_word_text(int wn, inchar32_t *rt) {
 	lw_array[wn].lw_text = rt;
 }
 
@@ -490,12 +490,10 @@ The current situation of the lexer is specified by the collective values
 of all of the following. First, the start of the current word being
 recorded, and the current high water mark -- those are defined above.
 Second, we need the feeder machinery to maintain a variable telling us
-the previous character in the raw, un-respaced source. We need to be a
-little careful about the type of this: it needs to be an |int| so that it
-can on occasion hold the pseudo-character value |EOF|.
+the previous character in the raw, un-respaced source.
 
 =
-int lxs_previous_char_in_raw_feed; /* Preceding character in raw file read */
+inchar32_t lxs_previous_char_in_raw_feed; /* Preceding character in raw file read */
 
 @ There are four kinds of word: ordinary words, [comments in square brackets],
 "strings in double quotes," and |(- I6_inclusion_text -)|. The latter
@@ -541,7 +539,7 @@ always being "off").
 =
 void Lexer::reset_lexer(void) {
 	lexer_word = lexer_hwm;
-	lxs_previous_char_in_raw_feed = EOF;
+	lxs_previous_char_in_raw_feed = CH32EOF;
 
     /* reset the external states */
     lexer_wait_for_dashes = FALSE;
@@ -673,9 +671,9 @@ int Lexer::detect_tear_off(void) {
 }
 
 @ The feeder routine is required to send us a triple each time: |cr|
-must be a valid character (see above) and may not be |EOF|; |last_cr| must
-be the previous one or else perhaps |EOF| at the start of feed;
-while |next_cr| must be the next or else perhaps |EOF| at the end of feed.
+must be a valid character (see above) and may not be |CH32EOF|; |last_cr| must
+be the previous one or else perhaps |CH32EOF| at the start of feed;
+while |next_cr| must be the next or else perhaps |CH32EOF| at the end of feed.
 
 Spaces, often redundant, are inserted around punctuation unless one of the
 following exceptions holds:
@@ -697,7 +695,7 @@ Where the character following is a slash. (This is done essentially to make
 most common URLs glue up as single words.)
 
 =
-void Lexer::feed_triplet(int last_cr, int cr, int next_cr) {
+void Lexer::feed_triplet(inchar32_t last_cr, inchar32_t cr, inchar32_t next_cr) {
 	lxs_previous_char_in_raw_feed = last_cr;
 	int space = FALSE;
 	if (Lexer::is_punctuation(cr)) space = TRUE;
@@ -706,9 +704,9 @@ void Lexer::feed_triplet(int last_cr, int cr, int next_cr) {
 		if (next_cr == '/') space = FALSE;
 		else {
 			int lc = 0, nc = 0;
-			if (Characters::isdigit((wchar_t) last_cr)) lc = 1;
+			if (Characters::isdigit(last_cr)) lc = 1;
 			if ((last_cr >= 'a') && (last_cr <= 'z')) lc = 2;
-			if (Characters::isdigit((wchar_t) next_cr)) nc = 1;
+			if (Characters::isdigit(next_cr)) nc = 1;
 			if (next_cr == '-') nc = 1;
 			if ((next_cr >= 'a') && (next_cr <= 'z')) nc = 2;
 			if ((lc == 1) && (nc == 1)) space = FALSE;
@@ -754,7 +752,7 @@ surviving marbles is the sequence of characters starting at |lexer_word| and
 extending to |lexer_hwm-1|.
 
 =
-void Lexer::feed_char_into_lexer(int c) {
+void Lexer::feed_char_into_lexer(inchar32_t c) {
 	Lexer::ensure_lexer_hwm_can_be_raised_by(MAX_WORD_LENGTH, TRUE);
 
 	if (lxs_literal_mode) {
@@ -774,7 +772,7 @@ void Lexer::feed_char_into_lexer(int c) {
 	}
 
     /* otherwise record the current character as part of the word being built */
-	*(lexer_hwm++) = (wchar_t) c;
+	*(lexer_hwm++) = c;
 
     if (lxs_scanning_text_substitution) {
         @<Force string division at the end of a text substitution, if necessary@>;
@@ -877,7 +875,7 @@ is stored just below |lexer_hwm|.
 @<Complete the current word@> =
     *lexer_hwm++ = 0; /* terminate the current word as a C string */
 
-    if ((lexer_wait_for_dashes) && (Wide::cmp(lexer_word, L"----") == 0))
+    if ((lexer_wait_for_dashes) && (Wide::cmp(lexer_word, U"----") == 0))
         lexer_wait_for_dashes = FALSE; /* our long wait for documentation is over */
 
     if ((lexer_wait_for_dashes == FALSE) && (lxs_kind_of_word != COMMENT_KW)) {
@@ -989,8 +987,8 @@ throwing away the hyphen from the material of the current word.
             lxs_literal_mode = TRUE; lxs_kind_of_word = I6_INCLUSION_KW;
             /* because of spacing around punctuation outside literal mode, the |(| became a word */
             if (lexer_wordcount > 0) { /* this should always be true: just being cautious */
-                lw_array[lexer_wordcount-1].lw_text = L"(-"; /* change the previous word's text from |(| to |(-| */
-                lw_array[lexer_wordcount-1].lw_rawtext = L"(-";
+                lw_array[lexer_wordcount-1].lw_text = U"(-"; /* change the previous word's text from |(| to |(-| */
+                lw_array[lexer_wordcount-1].lw_rawtext = U"(-";
                 Vocabulary::identify_word(lexer_wordcount-1); /* and re-identify */
             }
             lexer_hwm--; /* erase the just-recorded |INFORM6_ESCAPE_BEGIN_2| character */
@@ -1028,7 +1026,7 @@ finished.
         case STRING_KW:
             if (c == STRING_END) {
                 lxs_string_soak_up_spaces_mode = FALSE;
-                *(lexer_hwm++) = (wchar_t) c; /* record the |STRING_END| character as part of the word */
+                *(lexer_hwm++) = c; /* record the |STRING_END| character as part of the word */
                 lxs_literal_mode = FALSE;
             }
             break;
@@ -1136,7 +1134,7 @@ texts in HTML. So the client is allowed to define |PROBLEM_WORDS_CALLBACK|
 to some routine of her own, gazumping this one.
 
 =
-void Lexer::lexer_problem_handler(int err, text_stream *details, wchar_t *word) {
+void Lexer::lexer_problem_handler(int err, text_stream *details, inchar32_t *word) {
 	#ifdef PROBLEM_WORDS_CALLBACK
 	PROBLEM_WORDS_CALLBACK(err, details, word);
 	#endif

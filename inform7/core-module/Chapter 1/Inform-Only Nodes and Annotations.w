@@ -126,7 +126,7 @@ indicating an owner) is a mere rvalue.
 @e NONLOCAL_VARIABLE_NT         /* "the location" */
 @e PROPERTY_VALUE_NT            /* "the carrying capacity of the cedarwood box" */
 @e TABLE_ENTRY_NT               /* "tonnage in row X of the Table of Corvettes" */
-@e LIST_ENTRY_NT                /* "item 4 in L" */
+@e LIST_ENTRY_NT                /* "item 4 in U" */
 
 @<Create the lvalue nodes@> =
 	NodeType::new(LOCAL_VARIABLE_NT, I"LOCAL_VARIABLE_NT", 					0, 0,		LVALUE_NCAT, 0);

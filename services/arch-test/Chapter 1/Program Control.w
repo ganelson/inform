@@ -13,10 +13,10 @@ int main(int argc, char **argv) {
 	Foundation::start(argc, argv);
 	ArchModule::start();
 
-	CommandLine::declare_heading(L"inexample: a tool for testing foundation facilities\n");
+	CommandLine::declare_heading(U"inexample: a tool for testing foundation facilities\n");
 
-	CommandLine::declare_switch(TEST_COMPATIBILITY_CLSW, L"test-compatibility", 2,
-		L"test compatibility checks against various target VMs");
+	CommandLine::declare_switch(TEST_COMPATIBILITY_CLSW, U"test-compatibility", 2,
+		U"test compatibility checks against various target VMs");
 
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::ignore);
 

@@ -139,7 +139,7 @@ set and the other hasn't.)
 @<Take note of casing on first word, in the few circumstances when we care@> =
 	#ifdef EM_CASE_SENSITIVITY_TEST_LEXICON_CALLBACK
 	if (EM_CASE_SENSITIVITY_TEST_LEXICON_CALLBACK(mc_bitmap)) {
-		wchar_t *tx = Lexer::word_raw_text(Wordings::first_wn(W));
+		inchar32_t *tx = Lexer::word_raw_text(Wordings::first_wn(W));
 		if ((tx[0]) && (Characters::isupper(tx[0])) &&
 			((tx[1] == 0) ||
 				(Vocabulary::used_case_sensitively(Lexer::word(Wordings::first_wn(W)))))) {

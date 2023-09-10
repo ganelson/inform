@@ -142,7 +142,7 @@ detects that this has happened, and sets |K_figure_name| to point to it.
 
 =
 int Figures::figures_new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
-	if (Str::eq_wide_string(name, L"FIGURE_NAME_TY")) {
+	if (Str::eq_wide_string(name, U"FIGURE_NAME_TY")) {
 		K_figure_name = new_base; return TRUE;
 	}
 	return FALSE;
@@ -204,8 +204,8 @@ int Figures::figures_new_named_instance_notify(instance *I) {
 description appears in the iFiction metadata for a project.
 
 =
-wchar_t *Figures::description_of_cover_art(void) {
-	if ((F_cover_art == NULL) || (F_cover_art->alt_description == -1)) return L"";
+inchar32_t *Figures::description_of_cover_art(void) {
+	if ((F_cover_art == NULL) || (F_cover_art->alt_description == -1)) return U"";
 	return Lexer::word_text(F_cover_art->alt_description);
 }
 
@@ -260,7 +260,7 @@ void Figures::write_blurb_commands(OUTPUT_STREAM) {
 	figures_data *figd;
 	LOOP_OVER(figd, figures_data)
 		if (figd->figure_number > 1) {
-			wchar_t *desc = L"";
+			inchar32_t *desc = U"";
 			if (figd->alt_description >= 0)
 				desc = Lexer::word_text(figd->alt_description);
 			if (Wide::len(desc) > 0)
@@ -281,6 +281,6 @@ void Figures::write_copy_commands(release_instructions *rel) {
 	LOOP_OVER(figd, figures_data)
 		if (figd->figure_number > 1)
 			ReleaseInstructions::add_aux_file(rel, figd->filename_of_image_file,
-				Task::released_figures_path(), L"--", SEPARATE_FIGURES_PAYLOAD);
+				Task::released_figures_path(), U"--", SEPARATE_FIGURES_PAYLOAD);
 }
 

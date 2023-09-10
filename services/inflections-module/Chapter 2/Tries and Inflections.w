@@ -9,7 +9,7 @@ which is where the asterisk notation is handled.
 
 =
 int Inflect::suffix(OUTPUT_STREAM, match_avinue *T, text_stream *from) {
-	wchar_t *result = Tries::search_avinue(T, from);
+	inchar32_t *result = Tries::search_avinue(T, from);
 	return Inflect::follow_suffix_instruction(OUT, from, result);
 }
 
@@ -19,9 +19,9 @@ had been |0| -- meaning "change nothing".
 
 =
 int Inflect::follow_suffix_instruction(OUTPUT_STREAM, text_stream *from,
-	wchar_t *instruction) {
+	inchar32_t *instruction) {
 	int success = TRUE;
-	if (instruction == NULL) { success = FALSE; instruction = L"0"; }
+	if (instruction == NULL) { success = FALSE; instruction = U"0"; }
 	TEMPORARY_TEXT(outcome)
 	@<Modify the original according to the instruction@>;
 	@<Write the output, interpreting plus signs as word breaks@>;
@@ -39,7 +39,7 @@ For example, the result |3ize| tells us to strike out the last 3 characters and
 add "ize".
 
 @<Modify the original according to the instruction@> =
-	int back = instruction[0] - '0';
+	int back = (int) (instruction[0] - '0');
 	if ((back < 0) || (back > 9)) {
 		WRITE_TO(outcome, "%w", instruction);
 	} else {
@@ -47,7 +47,7 @@ add "ize".
 			PUT_TO(outcome, Str::get_at(from, i));
 		int j = 1;
 		if (instruction[j] == '+') {
-			int last = Str::get_last_char(outcome); PUT_TO(outcome, last); j++;
+			inchar32_t last = Str::get_last_char(outcome); PUT_TO(outcome, last); j++;
 		}
 		for (; instruction[j]; j++) PUT_TO(outcome, instruction[j]);
 	}

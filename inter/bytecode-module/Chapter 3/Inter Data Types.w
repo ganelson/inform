@@ -408,7 +408,7 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 }
 
 @<Parse rulebook syntax@> =	
-	if (Regexp::match(&mr, text, L"rulebook of (%C+)")) {
+	if (Regexp::match(&mr, text, U"rulebook of (%C+)")) {
 		results->constructor_code = RULEBOOK_ITCONC;
 		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
 		InterTypes::add_operand_to_isstd(results, T, conts_type);
@@ -417,7 +417,7 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 	}
 
 @<Parse list syntax@> =
-	if (Regexp::match(&mr, text, L"list of (%C+)")) {
+	if (Regexp::match(&mr, text, U"list of (%C+)")) {
 		results->constructor_code = LIST_ITCONC;
 		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
 		InterTypes::add_operand_to_isstd(results, T, conts_type);
@@ -426,7 +426,7 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 	}
 
 @<Parse activity syntax@> =
-	if (Regexp::match(&mr, text, L"activity on (%C+)")) {
+	if (Regexp::match(&mr, text, U"activity on (%C+)")) {
 		results->constructor_code = ACTIVITY_ITCONC;
 		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
 		InterTypes::add_operand_to_isstd(results, T, conts_type);
@@ -435,7 +435,7 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 	}
 
 @<Parse column syntax@> =
-	if (Regexp::match(&mr, text, L"column of (%C+)")) {
+	if (Regexp::match(&mr, text, U"column of (%C+)")) {
 		results->constructor_code = COLUMN_ITCONC;
 		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
 		InterTypes::add_operand_to_isstd(results, T, conts_type);
@@ -444,7 +444,7 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 	}
 
 @<Parse table syntax@> =
-	if (Regexp::match(&mr, text, L"table of (%C+)")) {
+	if (Regexp::match(&mr, text, U"table of (%C+)")) {
 		results->constructor_code = TABLE_ITCONC;
 		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
 		InterTypes::add_operand_to_isstd(results, T, conts_type);
@@ -453,7 +453,7 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 	}
 
 @<Parse description syntax@> =
-	if (Regexp::match(&mr, text, L"description of (%C+)")) {
+	if (Regexp::match(&mr, text, U"description of (%C+)")) {
 		results->constructor_code = DESCRIPTION_ITCONC;
 		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
 		InterTypes::add_operand_to_isstd(results, T, conts_type);
@@ -462,7 +462,7 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 	}
 
 @<Parse relation syntax@> =
-	if (Regexp::match(&mr, text, L"relation of (%C+) to (%C+)")) {
+	if (Regexp::match(&mr, text, U"relation of (%C+) to (%C+)")) {
 		results->constructor_code = RELATION_ITCONC;
 		inter_type X_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
 		InterTypes::add_operand_to_isstd(results, T, X_type);
@@ -477,8 +477,8 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 	}
 
 @<Parse rule or function syntax@> =
-	if ((Regexp::match(&mr, text, L"(function) (%c+?) -> (%c+)")) ||
-		(Regexp::match(&mr, text, L"(rule) (%c+?) -> (%c+)"))) {
+	if ((Regexp::match(&mr, text, U"(function) (%c+?) -> (%c+)")) ||
+		(Regexp::match(&mr, text, U"(rule) (%c+?) -> (%c+)"))) {
 		if (Str::eq(mr.exp[0], I"function")) results->constructor_code = FUNCTION_ITCONC;
 		else results->constructor_code = RULE_ITCONC;
 		text_stream *from = mr.exp[1];
@@ -489,7 +489,7 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 				InterTypes::from_constructor_code(VOID_ITCONC));
 		} else {
 			match_results mr3 = Regexp::create_mr();
-			while (Regexp::match(&mr3, from, L" *(%C+) *(%c*)")) {
+			while (Regexp::match(&mr3, from, U" *(%C+) *(%c*)")) {
 				inter_type arg_type = InterTypes::parse_simple(T, eloc, mr3.exp[0], &E);
 				InterTypes::add_operand_to_isstd(results, T, arg_type);
 				if ((E) && (returned_E == NULL)) returned_E = E;
@@ -509,12 +509,12 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 	}
 
 @<Parse struct syntax@> =
-	if (Regexp::match(&mr, text, L"struct (%c+)")) {
+	if (Regexp::match(&mr, text, U"struct (%c+)")) {
 		results->constructor_code = STRUCT_ITCONC;
 		text_stream *elements = mr.exp[0];
 		inter_error_message *returned_E = NULL;
 		match_results mr3 = Regexp::create_mr();
-		while (Regexp::match(&mr3, elements, L" *(%C+) *(%c*)")) {
+		while (Regexp::match(&mr3, elements, U" *(%C+) *(%c*)")) {
 			inter_type arg_type = InterTypes::parse_simple(T, eloc, mr3.exp[0], &E);
 			if ((E) && (returned_E == NULL)) returned_E = E;
 			Str::copy(elements, mr3.exp[1]);
@@ -525,21 +525,21 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 	}
 
 @<Parse generic unary or binary syntax@> =
-	if (Regexp::match(&mr, text, L"unary-cov (%C+)")) {
+	if (Regexp::match(&mr, text, U"unary-cov (%C+)")) {
 		results->constructor_code = UNARY_COV_ITCONC;
 		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
 		InterTypes::add_operand_to_isstd(results, T, conts_type);
 		Regexp::dispose_of(&mr);
 		return E;
 	}
-	if (Regexp::match(&mr, text, L"unary-con (%C+)")) {
+	if (Regexp::match(&mr, text, U"unary-con (%C+)")) {
 		results->constructor_code = UNARY_CON_ITCONC;
 		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
 		InterTypes::add_operand_to_isstd(results, T, conts_type);
 		Regexp::dispose_of(&mr);
 		return E;
 	}
-	if (Regexp::match(&mr, text, L"binary-cov-cov (%C+) and (%C+)")) {
+	if (Regexp::match(&mr, text, U"binary-cov-cov (%C+) and (%C+)")) {
 		results->constructor_code = BINARY_COV_COV_ITCONC;
 		inter_type X_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
 		InterTypes::add_operand_to_isstd(results, T, X_type);
@@ -552,7 +552,7 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 		Regexp::dispose_of(&mr);
 		return E;
 	}
-	if (Regexp::match(&mr, text, L"binary-cov-con (%C+) and (%C+)")) {
+	if (Regexp::match(&mr, text, U"binary-cov-con (%C+) and (%C+)")) {
 		results->constructor_code = BINARY_COV_CON_ITCONC;
 		inter_type X_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
 		InterTypes::add_operand_to_isstd(results, T, X_type);
@@ -565,7 +565,7 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 		Regexp::dispose_of(&mr);
 		return E;
 	}
-	if (Regexp::match(&mr, text, L"binary-con-cov (%C+) and (%C+)")) {
+	if (Regexp::match(&mr, text, U"binary-con-cov (%C+) and (%C+)")) {
 		results->constructor_code = BINARY_CON_COV_ITCONC;
 		inter_type X_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
 		InterTypes::add_operand_to_isstd(results, T, X_type);
@@ -578,7 +578,7 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 		Regexp::dispose_of(&mr);
 		return E;
 	}
-	if (Regexp::match(&mr, text, L"binary-con-con (%C+) and (%C+)")) {
+	if (Regexp::match(&mr, text, U"binary-con-con (%C+) and (%C+)")) {
 		results->constructor_code = BINARY_CON_CON_ITCONC;
 		inter_type X_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
 		InterTypes::add_operand_to_isstd(results, T, X_type);

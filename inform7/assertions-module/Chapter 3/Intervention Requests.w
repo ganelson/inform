@@ -184,7 +184,7 @@ source_text_intervention *InterventionRequests::new_sti(parse_node *p) {
 	sti->stage = AFTER_LINK_STAGE;
 	sti->segment = NULL;
 	sti->part = NULL;
-	wchar_t *sf = Lexer::word_raw_text(Wordings::first_wn(Node::get_text(p)) + 2);
+	inchar32_t *sf = Lexer::word_raw_text(Wordings::first_wn(Node::get_text(p)) + 2);
 	sti->matter = Str::new();
 	WRITE_TO(sti->matter, "%w", sf);
 	sti->seg = NULL;

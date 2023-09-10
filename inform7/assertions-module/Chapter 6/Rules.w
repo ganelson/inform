@@ -156,7 +156,7 @@ rule *Rules::by_name(wording W) {
 @h The kind of a rule.
 Given that Inform authors can refer to (named) rules as constant values, they
 need to have kinds, and it is not obvious what those should be. Clearly
-some form of "K-based rule producing L" would be reasonable, but leaving K
+some form of "K-based rule producing U" would be reasonable, but leaving K
 and L just to be "value" -- as the earliest versions of Inform 7 did, in the
 mid-2000s -- would be indefinite. Constants should always have definite kinds,
 because otherwise kind inference will fail on phrases like:
@@ -577,7 +577,7 @@ void Rules::check_response_usages(void) {
 		}
 	if (c == 0) WRITE_TO(offers, "no lettered responses at all");
 	TEMPORARY_TEXT(letter)
-	PUT_TO(letter, 'A'+l);
+	PUT_TO(letter, (inchar32_t) ('A'+l));
 	current_sentence = R->responses[l].used;
 	Problems::quote_source(1, R->responses[l].used);
 	Problems::quote_wording(2, R->name);

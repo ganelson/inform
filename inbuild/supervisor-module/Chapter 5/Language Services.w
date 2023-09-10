@@ -200,11 +200,11 @@ inform_language *Languages::Preform_find(text_stream *name) {
 inform_language *Languages::find_for(text_stream *name, linked_list *search) {
 	text_stream *author = NULL;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, name, L"(%c+) [Ll]anguage by (%c+)")) {
+	if (Regexp::match(&mr, name, U"(%c+) [Ll]anguage by (%c+)")) {
 		name = mr.exp[0]; author = mr.exp[1];
-	} else if (Regexp::match(&mr, name, L"(%c+) by (%c+)")) {
+	} else if (Regexp::match(&mr, name, U"(%c+) by (%c+)")) {
 		name = mr.exp[0]; author = mr.exp[1];
-	} else if (Regexp::match(&mr, name, L"(%c+) [Ll]anguage")) {
+	} else if (Regexp::match(&mr, name, U"(%c+) [Ll]anguage")) {
 		name = mr.exp[0];
 	}
 	TEMPORARY_TEXT(title)

@@ -163,7 +163,7 @@ typedef struct inline_details {
 	int arithmetical_operation; /* |-1|, or one of the |*_OPERATION| constants */
 
 	int block_follows; /* for inline phrases only: followed by a begin... end block? */
-	wchar_t *only_in_loop; /* if not null, the phrase can only be used in this block */
+	inchar32_t *only_in_loop; /* if not null, the phrase can only be used in this block */
 } inline_details;
 
 @ Where:
@@ -613,7 +613,7 @@ void IDTypeData::make_id(inline_details *id, int op, int assgn, int let, int blk
 	if ((let == ASSIGNMENT_LET_PHRASE) && (no_lets_made++ >= 3)) let = NOT_A_LET_PHRASE;
 	id->let_phrase = let;
 	id->block_follows = blk;
-	if (only_in == -1) id->only_in_loop = L"loop";
+	if (only_in == -1) id->only_in_loop = U"loop";
 	else if (only_in > 0) id->only_in_loop = Lexer::word_text(only_in);
 }
 
@@ -668,7 +668,7 @@ int IDTypeData::is_assignment_phrase(id_body *idb) {
 	return idb->type_data.as_inline.assignment_phrase;
 }
 
-wchar_t *IDTypeData::only_in(id_body *idb) {
+inchar32_t *IDTypeData::only_in(id_body *idb) {
 	if (idb) return idb->type_data.as_inline.only_in_loop;
 	return NULL;
 }
@@ -793,7 +793,7 @@ void IDTypeData::write_HTML_representation(OUTPUT_STREAM,
 	}
 
 @<Describe a fixed word in the word sequence@> =
-	wchar_t *p = Lexer::word_raw_text(idtd->word_sequence[j]);
+	inchar32_t *p = Lexer::word_raw_text(idtd->word_sequence[j]);
 	int tinted = FALSE;
 	for (int i=0; p[i]; i++) {
 		if ((p[i] == '/') && (tinted == FALSE)) {

@@ -41,9 +41,9 @@ emphasis; and are also used to mark headwords for indexing, as in
 =
 typedef struct span_notation {
 	int sp_purpose;							/* one of the |*_SPP| constants */
-	wchar_t sp_left[MAX_PATTERN_LENGTH]; 	/* wide C string: the start pattern */
+	inchar32_t sp_left[MAX_PATTERN_LENGTH]; 	/* wide C string: the start pattern */
 	int sp_left_len;
-	wchar_t sp_right[MAX_PATTERN_LENGTH];	/* wide C string: and end pattern */
+	inchar32_t sp_right[MAX_PATTERN_LENGTH];	/* wide C string: and end pattern */
 	int sp_right_len;
 	struct text_stream *sp_style;
 	CLASS_DEFINITION
@@ -125,7 +125,7 @@ void CSS::construct_helper(text_stream *line, text_file_position *tfp,
 		CSS::expand_IMAGES(line);
 		WRITE("%S\n", line);
 	} else {
-		if (Regexp::match(NULL, line, L"%c*BEGIN%c*")) chs->tx_mode = TRUE;
+		if (Regexp::match(NULL, line, U"%c*BEGIN%c*")) chs->tx_mode = TRUE;
 	}
 }
 
@@ -134,9 +134,9 @@ all CSS files, but here we know that |base.css| is tidily written.
 
 @<Apply CSS modifications requested by the instructions@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line, L"(%c*?) *{"))
+	if (Regexp::match(&mr, line, U"(%c*?) *{"))
 		Str::copy(chs->this_style, mr.exp[0]);
-	else if (Regexp::match(&mr, line, L" *}")) {
+	else if (Regexp::match(&mr, line, U" *}")) {
 		Str::clear(chs->this_style); chs->this_style_tweaked = 0;
 	} else {
 		CSS_tweak_data *TD;
@@ -167,7 +167,7 @@ all CSS files, but here we know that |base.css| is tidily written.
 	if (TD->css_plus > 0) {
 		keep = TRUE;
 		match_results mr2 = Regexp::create_mr();
-		if (Regexp::match(&mr2, line, L" *(%C+):%c*")) {
+		if (Regexp::match(&mr2, line, U" *(%C+):%c*")) {
 			text_stream *tag = mr2.exp[0];
 			if (Str::includes(TD->css_tweak, tag)) keep = FALSE;
 		}
@@ -209,15 +209,15 @@ all CSS files, but here we know that |base.css| is tidily written.
 void CSS::expand_IMAGES(text_stream *text) {
 	match_results mr = Regexp::create_mr();
 	if (indoc_settings->suppress_fonts) {
-		while (Regexp::match(&mr, text, L"(%c*?)font-family:(%c*?);(%c*)")) {
+		while (Regexp::match(&mr, text, U"(%c*?)font-family:(%c*?);(%c*)")) {
 			text_stream *L = mr.exp[0], *M = NULL, *R = mr.exp[2];
-			if (Regexp::match(NULL, mr.exp[1], L"%c*monospace%c*")) M = I"___MONOSPACE___";
+			if (Regexp::match(NULL, mr.exp[1], U"%c*monospace%c*")) M = I"___MONOSPACE___";
 			Str::clear(text);
 			WRITE_TO(text, "%S%S%S", L, M, R);
 		}
-		Regexp::replace(text, L"___MONOSPACE___", L"font-family: monospace;", REP_REPEATING);
+		Regexp::replace(text, U"___MONOSPACE___", U"font-family: monospace;", REP_REPEATING);
 	}
-	while (Regexp::match(&mr, text, L"(%c*?)'IMAGES/(%c*?)'(%c*)")) {
+	while (Regexp::match(&mr, text, U"(%c*?)'IMAGES/(%c*?)'(%c*)")) {
 		text_stream *L = mr.exp[0], *name = mr.exp[1], *R = mr.exp[2];
 		Str::clear(text);
 		WRITE_TO(text, "%S'", L);
@@ -253,14 +253,14 @@ expression parser:
 
 =
 void CSS::make_regex_safe(text_stream *text) {
-	Regexp::replace(text, L"%%", L"%%%", REP_REPEATING);
-	Regexp::replace(text, L"%(", L"%%(", REP_REPEATING);
-	Regexp::replace(text, L"%)", L"%%)", REP_REPEATING);
-	Regexp::replace(text, L"%+", L"%%+", REP_REPEATING);
-	Regexp::replace(text, L"%*", L"%%*", REP_REPEATING);
-	Regexp::replace(text, L"%?", L"%%?", REP_REPEATING);
-	Regexp::replace(text, L"%[", L"%%[", REP_REPEATING);
-	Regexp::replace(text, L"%]", L"%%]", REP_REPEATING);
+	Regexp::replace(text, U"%%", U"%%%", REP_REPEATING);
+	Regexp::replace(text, U"%(", U"%%(", REP_REPEATING);
+	Regexp::replace(text, U"%)", U"%%)", REP_REPEATING);
+	Regexp::replace(text, U"%+", U"%%+", REP_REPEATING);
+	Regexp::replace(text, U"%*", U"%%*", REP_REPEATING);
+	Regexp::replace(text, U"%?", U"%%?", REP_REPEATING);
+	Regexp::replace(text, U"%[", U"%%[", REP_REPEATING);
+	Regexp::replace(text, U"%]", U"%%]", REP_REPEATING);
 }
 
 @ The following looks slow, but in fact there's no problem in practice.

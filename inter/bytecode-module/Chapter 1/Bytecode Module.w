@@ -83,12 +83,12 @@ void BytecodeModule::end(void) {
 @e CONSTANT_DEPTH_CALCULATION_DA
 
 @<Register this module's debugging log aspects@> =
-	Log::declare_aspect(INTER_MEMORY_DA, L"inter memory usage", FALSE, FALSE);
-	Log::declare_aspect(INTER_FILE_READ_DA, L"intermediate file reading", FALSE, FALSE);
-	Log::declare_aspect(INTER_BINARY_DA, L"inter binary", FALSE, FALSE);
-	Log::declare_aspect(INTER_SYMBOLS_DA, L"inter symbols", FALSE, FALSE);
-	Log::declare_aspect(INTER_CONNECTORS_DA, L"inter connectors", FALSE, FALSE);
-	Log::declare_aspect(CONSTANT_DEPTH_CALCULATION_DA, L"constant depth calculation", FALSE, FALSE);
+	Log::declare_aspect(INTER_MEMORY_DA, U"inter memory usage", FALSE, FALSE);
+	Log::declare_aspect(INTER_FILE_READ_DA, U"intermediate file reading", FALSE, FALSE);
+	Log::declare_aspect(INTER_BINARY_DA, U"inter binary", FALSE, FALSE);
+	Log::declare_aspect(INTER_SYMBOLS_DA, U"inter symbols", FALSE, FALSE);
+	Log::declare_aspect(INTER_CONNECTORS_DA, U"inter connectors", FALSE, FALSE);
+	Log::declare_aspect(CONSTANT_DEPTH_CALCULATION_DA, U"constant depth calculation", FALSE, FALSE);
 
 @<Register this module's debugging log writers@> =
 	Writers::register_logger('3', InterSymbol::log);

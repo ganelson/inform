@@ -518,7 +518,7 @@ as is necessary in JavaScript string literals.
 void Registries::write_escaped(OUTPUT_STREAM, text_stream *text, text_stream *escape) {
 	if (Str::eq(escape, I"quotes")) {
 		LOOP_THROUGH_TEXT(pos, text) {
-			wchar_t c = Str::get(pos);
+			inchar32_t c = Str::get(pos);
 			if (c == '\'') {
 				PUT('\\');
 				PUT('\'');
@@ -528,7 +528,7 @@ void Registries::write_escaped(OUTPUT_STREAM, text_stream *text, text_stream *es
 		}
 	} else if (Str::eq(escape, I"spaces")) {
 		LOOP_THROUGH_TEXT(pos, text) {
-			wchar_t c = Str::get(pos);
+			inchar32_t c = Str::get(pos);
 			if (c == ' ') {
 				WRITE("%%20");
 			} else {
@@ -537,7 +537,7 @@ void Registries::write_escaped(OUTPUT_STREAM, text_stream *text, text_stream *es
 		}
 	} else if (Str::eq(escape, I"both")) {
 		LOOP_THROUGH_TEXT(pos, text) {
-			wchar_t c = Str::get(pos);
+			inchar32_t c = Str::get(pos);
 			if (c == '\'') {
 				PUT('\\');
 				PUT('\'');

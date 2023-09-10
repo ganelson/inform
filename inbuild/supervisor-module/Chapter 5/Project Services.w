@@ -1070,7 +1070,7 @@ like Basic Inform or Standard Rules; and also any sentences in the
 @<First an implied super-heading for implied inclusions and the Options@> =
 	inclusions_heading = Node::new(HEADING_NT);
 	Node::set_text(inclusions_heading,
-		Feeds::feed_C_string_expanding_strings(L"Implied inclusions"));
+		Feeds::feed_C_string_expanding_strings(U"Implied inclusions"));
 	SyntaxTree::graft_sentence(proj->syntax_tree, inclusions_heading);
 	Headings::place_implied_level_0(proj->syntax_tree, inclusions_heading, proj->as_copy);
 
@@ -1126,7 +1126,7 @@ ready for those inventions (if in fact there are any).
 	int l = SyntaxTree::push_bud(proj->syntax_tree, proj->syntax_tree->root_node);
 	implicit_heading = Node::new(HEADING_NT);
 	Node::set_text(implicit_heading,
-		Feeds::feed_C_string_expanding_strings(L"Invented sentences"));
+		Feeds::feed_C_string_expanding_strings(U"Invented sentences"));
 	SyntaxTree::graft_sentence(proj->syntax_tree, implicit_heading);
 	Headings::place_implied_level_0(proj->syntax_tree, implicit_heading, proj->as_copy);
 	SyntaxTree::pop_bud(proj->syntax_tree, l);
@@ -1193,8 +1193,9 @@ text |bibliographic_sentence| and |in French| to the text |bracketed|. If not,
 the whole thing goes into |bibliographic_sentence| and |bracketed| is empty.
 
 @<Capture the opening sentence and its bracketed part@> =
-	int c, commented = FALSE, quoted = FALSE, rounded = FALSE, content_found = FALSE;
-	while ((c = TextFiles::utf8_fgetc(SF, NULL, NULL)) != EOF) {
+	inchar32_t c;
+	int commented = FALSE, quoted = FALSE, rounded = FALSE, content_found = FALSE;
+	while ((c = TextFiles::utf8_fgetc(SF, NULL, NULL)) != CH32EOF) {
 		if (c == 0xFEFF) continue; /* skip the optional Unicode BOM pseudo-character */
 		if (commented) {
 			if (c == ']') commented = FALSE;
@@ -1244,15 +1245,15 @@ But not always:
 
 @<The opening sentence is bibliographic, so scan it@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, bibliographic_sentence, L"\"([^\"]+)\" by \"([^\"]+)\"")) {
+	if (Regexp::match(&mr, bibliographic_sentence, U"\"([^\"]+)\" by \"([^\"]+)\"")) {
 		text_stream *title = mr.exp[0];
 		text_stream *author = mr.exp[1];
 		@<Set title and author@>;
-	} else if (Regexp::match(&mr, bibliographic_sentence, L"\"([^\"]+)\" by ([^\"]+)")) {
+	} else if (Regexp::match(&mr, bibliographic_sentence, U"\"([^\"]+)\" by ([^\"]+)")) {
 		text_stream *title = mr.exp[0];
 		text_stream *author = mr.exp[1];
 		@<Set title and author@>;
-	} else if (Regexp::match(&mr, bibliographic_sentence, L"\"([^\"]+)\"")) {
+	} else if (Regexp::match(&mr, bibliographic_sentence, U"\"([^\"]+)\"")) {
 		text_stream *title = mr.exp[0];
 		text_stream *author = NULL;
 		@<Set title and author@>;
@@ -1263,7 +1264,7 @@ But not always:
 	if (Str::len(bracketed) > 0) {
 		int okay = TRUE;
 		match_results mr2 = Regexp::create_mr();
-		while (Regexp::match(&mr2, bracketed, L"(%c+?),(%c+)")) {
+		while (Regexp::match(&mr2, bracketed, U"(%c+?),(%c+)")) {
 			okay = (okay && (Projects::parse_language_clauses(proj, mr2.exp[0])));
 			bracketed = Str::duplicate(mr2.exp[1]);
 		}
@@ -1296,15 +1297,15 @@ But not always:
 int Projects::parse_language_clauses(inform_project *proj, text_stream *clause) {
 	int verdict = FALSE;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, clause, L"(%c+?) in (%c+)")) {
+	if (Regexp::match(&mr, clause, U"(%c+?) in (%c+)")) {
 		text_stream *what = mr.exp[0];
 		text_stream *language_name = mr.exp[1];
 		verdict = Projects::parse_language_clause(proj, what, language_name);
-	} else if (Regexp::match(&mr, clause, L" *in (%c+)")) {
+	} else if (Regexp::match(&mr, clause, U" *in (%c+)")) {
 		text_stream *what = I"played";
 		text_stream *language_name = mr.exp[0];
 		verdict = Projects::parse_language_clause(proj, what, language_name);
-	} else if (Regexp::match(&mr, clause, L" *")) {
+	} else if (Regexp::match(&mr, clause, U" *")) {
 		verdict = TRUE;
 	}
 	Regexp::dispose_of(&mr);
@@ -1314,19 +1315,19 @@ int Projects::parse_language_clauses(inform_project *proj, text_stream *clause) 
 int Projects::parse_language_clause(inform_project *proj, text_stream *what, text_stream *language_name) {
 	match_results mr = Regexp::create_mr();
 	int verdict = FALSE;
-	if (Regexp::match(&mr, what, L"(%c+?), and (%c+)")) {
+	if (Regexp::match(&mr, what, U"(%c+?), and (%c+)")) {
 		verdict = ((Projects::parse_language_clause(proj, mr.exp[0], language_name)) &&
 					(Projects::parse_language_clause(proj, mr.exp[1], language_name)));
-	} else if (Regexp::match(&mr, what, L"(%c+?), (%c+)")) {
+	} else if (Regexp::match(&mr, what, U"(%c+?), (%c+)")) {
 		verdict = ((Projects::parse_language_clause(proj, mr.exp[0], language_name)) &&
 					(Projects::parse_language_clause(proj, mr.exp[1], language_name)));
-	} else if (Regexp::match(&mr, what, L"(%c+?) and (%c+)")) {
+	} else if (Regexp::match(&mr, what, U"(%c+?) and (%c+)")) {
 		verdict = ((Projects::parse_language_clause(proj, mr.exp[0], language_name)) &&
 					(Projects::parse_language_clause(proj, mr.exp[1], language_name)));
 	} else {
-		if (Regexp::match(&mr, what, L" *written *")) @<Set language of syntax@>
-		else if (Regexp::match(&mr, what, L" *played *")) @<Set language of play@>
-		else if (Regexp::match(&mr, what, L" *indexed *")) @<Set language of index@>
+		if (Regexp::match(&mr, what, U" *written *")) @<Set language of syntax@>
+		else if (Regexp::match(&mr, what, U" *played *")) @<Set language of play@>
+		else if (Regexp::match(&mr, what, U" *indexed *")) @<Set language of index@>
 	}
 	Regexp::dispose_of(&mr);
 	return verdict;

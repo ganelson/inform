@@ -246,8 +246,8 @@ we apply any defaults set in Neptune files.
 	con->comparison_routine = Str::new();
 	WRITE_TO(con->comparison_routine, "UnsignedCompare");
 	if ((con == CON_KIND_VARIABLE) || (con == CON_INTERMEDIATE) ||
-		((Str::eq_wide_string(source_name, L"NUMBER_TY")) ||
-			(Str::eq_wide_string(source_name, L"REAL_NUMBER_TY"))))
+		((Str::eq_wide_string(source_name, U"NUMBER_TY")) ||
+			(Str::eq_wide_string(source_name, U"REAL_NUMBER_TY"))))
 		con->dimensional_form =
 			Kinds::Dimensions::fundamental_unit_sequence(NULL);
 	else
@@ -497,7 +497,7 @@ int KindConstructors::is_an_enumeration(kind_constructor *con) {
 =
 int KindConstructors::uses_signed_comparisons(kind_constructor *kc) {
 	if (kc == NULL) return FALSE;
-	if (Str::eq_wide_string(kc->comparison_routine, L"signed")) return TRUE;
+	if (Str::eq_wide_string(kc->comparison_routine, U"signed")) return TRUE;
 	return FALSE;
 }
 
@@ -505,7 +505,7 @@ text_stream *KindConstructors::get_comparison_fn_identifier(kind_constructor *kc
 	if (kc == NULL) return NULL;
 	if ((KindConstructors::is_arithmetic_and_real(kc)) && (K_real_number))
 		return K_real_number->construct->comparison_routine;
-	if (Str::eq_wide_string(kc->comparison_routine, L"signed")) return NULL;
+	if (Str::eq_wide_string(kc->comparison_routine, U"signed")) return NULL;
 	return kc->comparison_routine;
 }
 

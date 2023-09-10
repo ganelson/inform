@@ -124,15 +124,15 @@ void Examples::examples_helper(text_stream *line, text_file_position *tfp, void 
 	E->ex_header_length++;
 	match_results mr = Regexp::create_mr();
 	if (tfp->line_count == 1) {
-		if (Regexp::match(&mr, line, L"Example *: *(%*+) (%c*)")) {
+		if (Regexp::match(&mr, line, U"Example *: *(%*+) (%c*)")) {
 			text_stream *asterisk_text = mr.exp[0];
 			text_stream *name = mr.exp[1];
 			E->ex_stars = Str::duplicate(asterisk_text);
 			int starc = 0;
-			if (Str::eq_wide_string(E->ex_stars, L"*")) starc=1;
-			if (Str::eq_wide_string(E->ex_stars, L"**")) starc=2;
-			if (Str::eq_wide_string(E->ex_stars, L"***")) starc=3;
-			if (Str::eq_wide_string(E->ex_stars, L"****")) starc=4;
+			if (Str::eq_wide_string(E->ex_stars, U"*")) starc=1;
+			if (Str::eq_wide_string(E->ex_stars, U"**")) starc=2;
+			if (Str::eq_wide_string(E->ex_stars, U"***")) starc=3;
+			if (Str::eq_wide_string(E->ex_stars, U"****")) starc=4;
 			if (starc == 0) {
 				Errors::in_text_file("star count for example must be * to ****", tfp);
 				starc = 1;
@@ -146,7 +146,7 @@ void Examples::examples_helper(text_stream *line, text_file_position *tfp, void 
 			Errors::in_text_file("first line should read 'Example: ** Title'", tfp);
 		}
 	} else {
-		if (Regexp::match(&mr, line, L"(%C+?) *: *(%c*)")) {
+		if (Regexp::match(&mr, line, U"(%C+?) *: *(%c*)")) {
 			text_stream *field = mr.exp[0];
 			text_stream *content = mr.exp[1];
 			if (Str::eq(field, I"Example")) {

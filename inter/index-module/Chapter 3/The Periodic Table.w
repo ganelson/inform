@@ -50,12 +50,12 @@ void Elements::periodic_table(OUTPUT_STREAM, index_page *current_page,
 
 	HTML_OPEN_WITH("div", "id=\"periodictable\"");
 	HTML_OPEN_WITH("table", "cellspacing=\"3\" border=\"0\" width=\"100%%\"");
-	if (Str::eq_wide_string(index_leaf, L"Welcome.html"))
+	if (Str::eq_wide_string(index_leaf, U"Welcome.html"))
 		@<Write the heading row of the surround@>;
 	HTML_CLOSE("table");
 	LOOP_OVER_LINKED_LIST(ip, index_page, L)
-		if (((Str::eq_wide_string(index_leaf, L"Welcome.html")) || (ip == current_page)) &&
-			(Str::eq_wide_string(ip->page_leafname, L"Welcome") == FALSE)) {
+		if (((Str::eq_wide_string(index_leaf, U"Welcome.html")) || (ip == current_page)) &&
+			(Str::eq_wide_string(ip->page_leafname, U"Welcome") == FALSE)) {
 			HTML_OPEN_WITH("table", "cellspacing=\"3\" border=\"0\" width=\"100%%\"");
 			@<Start a row of the periodic table@>;
 			index_element *ie;
@@ -65,7 +65,7 @@ void Elements::periodic_table(OUTPUT_STREAM, index_page *current_page,
 			HTML_CLOSE("table");
 		}
 	HTML_CLOSE("div");
-	if (Str::eq_wide_string(index_leaf, L"Welcome.html") == FALSE)
+	if (Str::eq_wide_string(index_leaf, U"Welcome.html") == FALSE)
 		@<Write the index elements@>;
 }
 
@@ -91,7 +91,7 @@ void Elements::periodic_table(OUTPUT_STREAM, index_page *current_page,
 	HTML_CLOSE("tr");
 
 @<Start a row of the periodic table@> =
-	if (Str::eq_wide_string(index_leaf, L"Welcome.html")) {
+	if (Str::eq_wide_string(index_leaf, U"Welcome.html")) {
 		HTML_OPEN("tr");
 		HTML_OPEN_WITH("td", "onclick=\"window.location='%S.html'; return false;\"",
 			ip->page_leafname);
@@ -199,31 +199,31 @@ void Elements::test_card(OUTPUT_STREAM, wording W, index_session *session) {
 
 =
 void Elements::render(OUTPUT_STREAM, text_stream *elt, index_session *session) {
-	if (Str::eq_wide_string(elt, L"A1")) { GroupedElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"A2")) { AlphabeticElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"Ar")) { ArithmeticElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"Bh")) { BehaviourElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"C"))  { ContentsElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"Cd")) { CardElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"Ch")) { ChartElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"Cm")) { CommandsElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"Ev")) { EventsElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"Fi")) { FiguresElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"Gz")) { GazetteerElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"In")) { InnardsElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"Lx")) { LexiconElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"Mp")) { MapElement::render(OUT, session, FALSE); return; }
-	if (Str::eq_wide_string(elt, L"MT")) { MapElement::render(OUT, session, TRUE); return; }
-	if (Str::eq_wide_string(elt, L"Ph")) { PhrasebookElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"Pl")) { PlotElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"Rl")) { RelationsElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"RS")) { RulesForScenesElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"St")) { StandardsElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"Tb")) { TablesElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"To")) { TokensElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"Vb")) { VerbsElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"Vl")) { ValuesElement::render(OUT, session); return; }
-	if (Str::eq_wide_string(elt, L"Xt")) { ExtrasElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"A1")) { GroupedElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"A2")) { AlphabeticElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"Ar")) { ArithmeticElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"Bh")) { BehaviourElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"C"))  { ContentsElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"Cd")) { CardElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"Ch")) { ChartElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"Cm")) { CommandsElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"Ev")) { EventsElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"Fi")) { FiguresElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"Gz")) { GazetteerElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"In")) { InnardsElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"Lx")) { LexiconElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"Mp")) { MapElement::render(OUT, session, FALSE); return; }
+	if (Str::eq_wide_string(elt, U"MT")) { MapElement::render(OUT, session, TRUE); return; }
+	if (Str::eq_wide_string(elt, U"Ph")) { PhrasebookElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"Pl")) { PlotElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"Rl")) { RelationsElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"RS")) { RulesForScenesElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"St")) { StandardsElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"Tb")) { TablesElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"To")) { TokensElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"Vb")) { VerbsElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"Vl")) { ValuesElement::render(OUT, session); return; }
+	if (Str::eq_wide_string(elt, U"Xt")) { ExtrasElement::render(OUT, session); return; }
 
 	HTML_OPEN("p"); WRITE("NO CONTENT"); HTML_CLOSE("p");
 }

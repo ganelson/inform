@@ -121,7 +121,7 @@ void ExternalFiles::register_file(wording W, wording FN) {
 	<external-file-sentence-object>(FN);
 	FN = Wordings::from(FN, <<r>>);
 	if (Wordings::empty(FN)) return;
-	wchar_t *p = Lexer::word_text(Wordings::first_wn(FN));
+	inchar32_t *p = Lexer::word_text(Wordings::first_wn(FN));
 	if (<external-file-sentence-subject>(W) == FALSE) internal_error("bad ef grammar");
 	wording NW = GET_RW(<external-file-name>, 1);
 	int format = <<r>>;
@@ -158,7 +158,7 @@ void ExternalFiles::register_file(wording W, wording FN) {
 			if ((i==0) || (p[i+1] == 0)) continue;
 		}
 		if (i>24) bad_filename = TRUE;
-		if ((isalpha(p[i])) || (Characters::isdigit(p[i]))) continue;
+		if ((Characters::isalpha(p[i])) || (Characters::isdigit(p[i]))) continue;
 		if ((format == INTERNAL_TEXT_FILE_NFSMF) ||
 			(format == INTERNAL_BINARY_FILE_NFSMF))
 			if ((p[i] == '.') || (p[i] == '_') || (p[i] == ' ')) continue;
@@ -194,7 +194,7 @@ by an unspecified other project, or by a project identified by its IFID.
 		for (j=1; (j<47) && (p[j]); j++) {
 			if ((p[j] == '"') && (p[j+1] == 0)) break;
 			PUT_TO(ifid_of_file, p[j]);
-			if ((isalpha(p[j])) || (Characters::isdigit(p[j]))) continue;
+			if ((Characters::isalpha(p[j])) || (Characters::isdigit(p[j]))) continue;
 			if (p[j] == '-') continue;
 			invalid = TRUE;
 			LOG("Objected to character %c\n", p[j]);
@@ -228,7 +228,7 @@ kind *K_external_file = NULL;
 
 @ =
 int ExternalFiles::files_new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
-	if (Str::eq_wide_string(name, L"EXTERNAL_FILE_TY")) {
+	if (Str::eq_wide_string(name, U"EXTERNAL_FILE_TY")) {
 		K_external_file = new_base; return TRUE;
 	}
 	return FALSE;

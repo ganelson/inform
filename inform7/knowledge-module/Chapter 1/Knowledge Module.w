@@ -49,14 +49,14 @@ void KnowledgeModule::start(void) {
 	REGISTER_WRITER('K', Rulebooks::log);
 	REGISTER_WRITER('n', Inferences::log_family)
 	REGISTER_WRITER('Y', Properties::log);
-	Log::declare_aspect(ACTIVITY_CREATIONS_DA, L"activity creations", FALSE, FALSE);
-	Log::declare_aspect(INFERENCES_DA, L"inferences", FALSE, TRUE);
-	Log::declare_aspect(OBJECT_COMPILATION_DA, L"object compilation", FALSE, FALSE);
-	Log::declare_aspect(PROPERTY_CREATIONS_DA, L"property creations", FALSE, FALSE);
-	Log::declare_aspect(PROPERTY_PROVISION_DA, L"property provision", FALSE, FALSE);
-	Log::declare_aspect(PROPERTY_TRANSLATIONS_DA, L"property translations", FALSE, FALSE);
-	Log::declare_aspect(RULE_ATTACHMENTS_DA, L"rule attachments", FALSE, FALSE);
-	Log::declare_aspect(RULEBOOK_COMPILATION_DA, L"rulebook compilation", FALSE, FALSE);
+	Log::declare_aspect(ACTIVITY_CREATIONS_DA, U"activity creations", FALSE, FALSE);
+	Log::declare_aspect(INFERENCES_DA, U"inferences", FALSE, TRUE);
+	Log::declare_aspect(OBJECT_COMPILATION_DA, U"object compilation", FALSE, FALSE);
+	Log::declare_aspect(PROPERTY_CREATIONS_DA, U"property creations", FALSE, FALSE);
+	Log::declare_aspect(PROPERTY_PROVISION_DA, U"property provision", FALSE, FALSE);
+	Log::declare_aspect(PROPERTY_TRANSLATIONS_DA, U"property translations", FALSE, FALSE);
+	Log::declare_aspect(RULE_ATTACHMENTS_DA, U"rule attachments", FALSE, FALSE);
+	Log::declare_aspect(RULEBOOK_COMPILATION_DA, U"rulebook compilation", FALSE, FALSE);
 	Memory::reason_name(INSTANCE_COUNTING_MREASON, "instance-of-kind counting");
 	Memory::reason_name(COMPILATION_SIZE_MREASON, "size estimates for compiled objects");
 	Memory::reason_name(OBJECT_COMPILATION_MREASON, "compilation workspace for objects");

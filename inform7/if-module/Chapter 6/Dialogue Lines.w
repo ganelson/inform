@@ -94,7 +94,7 @@ typedef struct dialogue_line {
 	int wn = Wordings::first_wn(dl->speech_text);
 	if (wn >= 0) {
 		int quote_marks = 0;
-		wchar_t *p = Lexer::word_text(wn);
+		inchar32_t *p = Lexer::word_text(wn);
 		for (int i=0; p[i]; i++)
 			if ((p[i] == '\'') &&
 				((i<=1) || (p[i+1] == '\"') ||

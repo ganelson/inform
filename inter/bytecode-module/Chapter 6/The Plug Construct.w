@@ -43,10 +43,10 @@ void PlugInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 	text_stream *equate_name = NULL;
 	int to_name = FALSE;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, equate_text, L"~~> \"(%C+)\"")) {
+	if (Regexp::match(&mr, equate_text, U"~~> \"(%C+)\"")) {
 		equate_name = mr.exp[0];
 		to_name = TRUE;
-	} else if (Regexp::match(&mr, equate_text, L"~~> (%C+)")) {
+	} else if (Regexp::match(&mr, equate_text, U"~~> (%C+)")) {
 		equate_name = mr.exp[0];
 	} else {
 		Regexp::dispose_of(&mr);

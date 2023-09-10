@@ -47,9 +47,9 @@ void Unit::test_articles(text_stream *arg) {
 
 =
 void Unit::test_declensions(text_stream *arg) {
-	vocabulary_entry *m_V = Vocabulary::entry_for_text(L"m");
-	vocabulary_entry *f_V = Vocabulary::entry_for_text(L"f");
-	vocabulary_entry *n_V = Vocabulary::entry_for_text(L"n");
+	vocabulary_entry *m_V = Vocabulary::entry_for_text(U"m");
+	vocabulary_entry *f_V = Vocabulary::entry_for_text(U"f");
+	vocabulary_entry *n_V = Vocabulary::entry_for_text(U"n");
 	filename *F = Filenames::from_text(arg);
 	source_file *sf = TextFromFiles::feed_into_lexer(F, NULL_GENERAL_POINTER);
 	if (sf == NULL) PRINT("File has failed to open\n");
@@ -130,7 +130,7 @@ void Unit::test_verbs(text_stream *arg) {
 				PRINT("Verb %W -->\n", W);
 				TEMPORARY_TEXT(T)
 				Conjugation::test(T, W, DefaultLanguage::get(NULL));
-				Regexp::replace(T, L"%^", L"\n", REP_REPEATING);
+				Regexp::replace(T, U"%^", U"\n", REP_REPEATING);
 				PRINT("%S\n", T);
 				DISCARD_TEXT(T)
 			} else {

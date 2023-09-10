@@ -127,7 +127,7 @@ int Calculus::QuasinumericRelations::schema(bp_family *self, int task, binary_pr
 					cr = Kinds::Behaviour::get_comparison_routine(K_real_number);
 				} else
 					cr = Kinds::Behaviour::get_comparison_routine(st[0]);
-				if ((Str::len(cr) == 0) || (Str::eq_wide_string(cr, L"signed"))) return FALSE;
+				if ((Str::len(cr) == 0) || (Str::eq_wide_string(cr, U"signed"))) return FALSE;
 
 				if (promote_left) {
 					if (bp == R_numerically_greater_than)

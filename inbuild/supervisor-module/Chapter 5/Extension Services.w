@@ -166,8 +166,9 @@ alone, and the version number is returned.
 by the local |\n| for good measure.
 
 @<Read the titling line of the extension and normalise its casing@> =
-	int c, commented_out = FALSE, quoted = FALSE, content_found = FALSE;
-	while ((c = TextFiles::utf8_fgetc(EXTF, NULL, NULL)) != EOF) {
+	inchar32_t c;
+	int commented_out = FALSE, quoted = FALSE, content_found = FALSE;
+	while ((c = TextFiles::utf8_fgetc(EXTF, NULL, NULL)) != CH32EOF) {
 		if (c == 0xFEFF) continue; /* skip the optional Unicode BOM pseudo-character */
 		if (commented_out) {
 			if (c == ']') commented_out = FALSE;		
@@ -205,8 +206,9 @@ halfway through a line division combination like |0A 0D|, so that the first
 thing we read here is a meaningless |0D|.
 
 @<Read the rubric text, if any is present@> =
-	int c, found_start = FALSE;
-	while ((c = TextFiles::utf8_fgetc(EXTF, NULL, NULL)) != EOF) {
+	inchar32_t c;
+	int found_start = FALSE;
+	while ((c = TextFiles::utf8_fgetc(EXTF, NULL, NULL)) != CH32EOF) {
 		if ((c == '\x0a') || (c == '\x0d') || (c == '\n') || (c == '\t')) c = ' ';
 		if ((c != ' ') && (found_start == FALSE)) {
 			if (c == '"') found_start = TRUE;
@@ -229,19 +231,19 @@ load the entire file.
 @<Parse the version, title, author and VM requirements from the titling line@> =
 	match_results mr = Regexp::create_mr();
 	if (Str::get_last_char(titling_line) == '.') Str::delete_last_character(titling_line);
-	if ((Regexp::match(&mr, titling_line, L"(%c*) Begin Here")) ||
-		(Regexp::match(&mr, titling_line, L"(%c*) Begins Here"))) {
+	if ((Regexp::match(&mr, titling_line, U"(%c*) Begin Here")) ||
+		(Regexp::match(&mr, titling_line, U"(%c*) Begins Here"))) {
 		Str::copy(titling_line, mr.exp[0]);
 	} else {
-		if ((Regexp::match(&mr, titling_line, L"(%c*) Start Here")) ||
-			(Regexp::match(&mr, titling_line, L"(%c*) Starts Here"))) {
+		if ((Regexp::match(&mr, titling_line, U"(%c*) Start Here")) ||
+			(Regexp::match(&mr, titling_line, U"(%c*) Starts Here"))) {
 			Str::copy(titling_line, mr.exp[0]);
 		}
 		Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1,
 			I"the opening line does not end 'begin(s) here'"));
 	}
 	@<Scan the version text, if any, and advance to the position past Version... Of@>;
-	if (Regexp::match(&mr, titling_line, L"The (%c*)")) Str::copy(titling_line, mr.exp[0]);
+	if (Regexp::match(&mr, titling_line, U"The (%c*)")) Str::copy(titling_line, mr.exp[0]);
 	@<Divide the remaining text into a claimed author name and title, divided by By@>;
 	@<Extract the VM requirements text, if any, from the claimed title@>;
 	Regexp::dispose_of(&mr);
@@ -252,7 +254,7 @@ other files, not to syntax-check all extensions to see if they would work
 if used.
 
 @<Scan the version text, if any, and advance to the position past Version... Of@> =
-	if (Regexp::match(&mr, titling_line, L"Version (%c*?) Of (%c*)")) {
+	if (Regexp::match(&mr, titling_line, U"Version (%c*?) Of (%c*)")) {
 		Str::copy(version_text, mr.exp[0]);
 		Str::copy(titling_line, mr.exp[1]);
 	}
@@ -265,7 +267,7 @@ not a situation we need to contend with.
 	int quote_found = FALSE, brackets_underflowed = FALSE, brackets_in_author = FALSE;
 	int which = 1, bl = 0;
 	for (int i=0; i<Str::len(titling_line); i++) {
-		wchar_t c = Str::get_at(titling_line, i);
+		inchar32_t c = Str::get_at(titling_line, i);
 		if (c == '(') { bl++; if (which == 2) brackets_in_author = TRUE; }
 		if (c == ')') { bl--; if (bl < 0) brackets_underflowed = TRUE; }
 		if (c == '\"') quote_found = TRUE;
@@ -298,7 +300,7 @@ not a situation we need to contend with.
 this is unambiguous.
 
 @<Extract the VM requirements text, if any, from the claimed title@> =
-	if (Regexp::match(&mr, claimed_title, L"(%c*?) *(%(%c*%))")) {
+	if (Regexp::match(&mr, claimed_title, U"(%c*?) *(%(%c*%))")) {
 		Str::copy(claimed_title, mr.exp[0]);
 		Str::copy(reqs, mr.exp[1]);
 	}
@@ -801,7 +803,7 @@ range, we flatten them from general ISO to plain ASCII.
 		E->as_copy->edition->work->author_name);
 	LOOP_THROUGH_TEXT(pos, synopsis)
 		Str::put(pos,
-			Characters::make_wchar_t_filename_safe(
+			Characters::make_filename_safe(
 				Str::get(pos)));
 
 @ Note that if there is an active project, then we are reading the extension

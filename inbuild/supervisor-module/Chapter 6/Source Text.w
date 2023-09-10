@@ -19,7 +19,7 @@ so we will simply store it in a global variable.
 
 =
 inbuild_copy *currently_lexing_into = NULL;
-void SourceText::lexer_problem_handler(int err, text_stream *desc, wchar_t *word) {
+void SourceText::lexer_problem_handler(int err, text_stream *desc, inchar32_t *word) {
 	if (err == MEMORY_OUT_LEXERERROR)
 		Errors::fatal("Out of memory: unable to create lexer workspace");
     if (currently_lexing_into) {

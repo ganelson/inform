@@ -56,7 +56,7 @@ The app can therefore assume that none of these problematic characters occur
 in raw form in the argument to |pasteCode|.
 
 =
-void PasteButtons::put_code_char(OUTPUT_STREAM, int c) {
+void PasteButtons::put_code_char(OUTPUT_STREAM, inchar32_t c) {
 	switch(c) {
 		case '\t': WRITE("[=0x0009=]"); return;
 		case '\n': case NEWLINE_IN_STRING: WRITE("[=0x000A=]"); return;
@@ -160,7 +160,7 @@ stops or more.
 	int close_I6_position = -1;
 	for (i=from; i<=to; i++) {
 		int j;
-		wchar_t *p = Lexer::word_raw_text(i);
+		inchar32_t *p = Lexer::word_raw_text(i);
 		if (Lexer::word(i) == PARBREAK_V) { /* marker for a paragraph break */
 			PasteButtons::put_code_char(OUT, '\n');
 			PasteButtons::put_code_char(OUT, '\n');

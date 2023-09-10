@@ -31,24 +31,24 @@ int main(int argc, char **argv) {
 	LoadPreform::load(S, NULL);
 
 	CommandLine::declare_heading(
-		L"linguistics-test: a tool for testing the linguistics module\n");
+		U"linguistics-test: a tool for testing the linguistics module\n");
 
-	CommandLine::declare_switch(TEST_DIAGRAMS_CLSW, L"diagram", 2,
-		L"test sentence diagrams from text in X");
-	CommandLine::declare_switch(RAW_DIAGRAMS_CLSW, L"raw", 2,
-		L"test raw sentence diagrams from text in X");
-	CommandLine::declare_switch(TRACE_DIAGRAMS_CLSW, L"trace", 2,
-		L"test raw sentence diagrams from text in X with tracing on");
-	CommandLine::declare_switch(VIABILITY_DIAGRAMS_CLSW, L"viability", 2,
-		L"show viability map for sentences in X");
-	CommandLine::declare_switch(SURGERY_CLSW, L"surgery", 2,
-		L"show surgeries performed on sentences in X");
-	CommandLine::declare_switch(VOCABULARY_CLSW, L"vocabulary", 2,
-		L"read vocabulary from file X for use in -diagram tests");
-	CommandLine::declare_switch(TEST_ARTICLES_CLSW, L"test-articles", 2,
-		L"test pronoun stock (ignoring X)");
-	CommandLine::declare_switch(TEST_PRONOUNS_CLSW, L"test-pronouns", 2,
-		L"test pronoun stock (ignoring X)");
+	CommandLine::declare_switch(TEST_DIAGRAMS_CLSW, U"diagram", 2,
+		U"test sentence diagrams from text in X");
+	CommandLine::declare_switch(RAW_DIAGRAMS_CLSW, U"raw", 2,
+		U"test raw sentence diagrams from text in X");
+	CommandLine::declare_switch(TRACE_DIAGRAMS_CLSW, U"trace", 2,
+		U"test raw sentence diagrams from text in X with tracing on");
+	CommandLine::declare_switch(VIABILITY_DIAGRAMS_CLSW, U"viability", 2,
+		U"show viability map for sentences in X");
+	CommandLine::declare_switch(SURGERY_CLSW, U"surgery", 2,
+		U"show surgeries performed on sentences in X");
+	CommandLine::declare_switch(VOCABULARY_CLSW, U"vocabulary", 2,
+		U"read vocabulary from file X for use in -diagram tests");
+	CommandLine::declare_switch(TEST_ARTICLES_CLSW, U"test-articles", 2,
+		U"test pronoun stock (ignoring X)");
+	CommandLine::declare_switch(TEST_PRONOUNS_CLSW, U"test-pronouns", 2,
+		U"test pronoun stock (ignoring X)");
 
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::ignore);
 

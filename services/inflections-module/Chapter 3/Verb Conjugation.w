@@ -270,14 +270,14 @@ and negative senses.
 
 @<Parse the slot selector@> =
 	vocabulary_entry *ve = selector->ve_pt;
-	wchar_t *p = Vocabulary::get_exemplar(ve, FALSE);
+	inchar32_t *p = Vocabulary::get_exemplar(ve, FALSE);
 	if (p[0] == 'a') active_set = TRUE;
 	if (p[0] == 'p') active_set = FALSE;
 	if (active_set == NOT_APPLICABLE)
 		Conjugation::error(base_text, tabulation, pr,
 			"tabulation row doesn't begin with 'a' or 'p'");
 	int at = 1;
-	if (Characters::isdigit(p[at])) { tense_set = p[at++]-'1'; }
+	if (Characters::isdigit(p[at])) { tense_set = (int) (p[at++]-'1'); }
 	if (p[at] == '+') { sense_set = 0; at++; }
 	else if (p[at] == '-') { sense_set = 1; at++; }
 	else if ((p[at] == '*') && (tense_set == -1) && (active_set == FALSE)) {
@@ -595,7 +595,7 @@ make use of the numbered verb forms if we want it to.
 
 @<A plus-plus-digit indicates auxiliary modal usage@> =
 	if (chunk->ptoken_category == FIXED_WORD_PTC) {
-		wchar_t *p = Vocabulary::get_exemplar(chunk->ve_pt, TRUE);
+		inchar32_t *p = Vocabulary::get_exemplar(chunk->ve_pt, TRUE);
 		if ((p[0] == '+') && (p[1] == '+') && (Characters::isdigit(p[2])) &&
 			(p[3] == 0)) {
 			if (modal_following) {
@@ -616,7 +616,7 @@ word_assemblage Conjugation::expand_with_endings(vocabulary_entry *ve,
 	word_assemblage *verb_forms) {
 	if (ve == NULL) return WordAssemblages::lit_0();
 
-	wchar_t *p = Vocabulary::get_exemplar(ve, TRUE);
+	inchar32_t *p = Vocabulary::get_exemplar(ve, TRUE);
 	int i;
 	for (i=0; p[i]; i++)
 		if ((i>0) && (p[i+1]) && ((p[i] == '+') || (p[i] == '~'))) {
@@ -670,8 +670,8 @@ word_assemblage Conjugation::shorten_with_contractions(word_assemblage wa) {
 	WordAssemblages::as_array(&wa, &words, &word_count);
 	int i;
 	for (i=0; i<word_count-1; i++) {
-		wchar_t *p = Vocabulary::get_exemplar(words[i], TRUE);
-		wchar_t *q = Vocabulary::get_exemplar(words[i+1], TRUE);
+		inchar32_t *p = Vocabulary::get_exemplar(words[i], TRUE);
+		inchar32_t *q = Vocabulary::get_exemplar(words[i+1], TRUE);
 		int j = Wide::len(p)-2;
 		if ((j >= 0) && (p[j] == '-') && (p[j+1] == '\'')) {
 			TEMPORARY_TEXT(TEMP)
@@ -702,8 +702,8 @@ word_assemblage Conjugation::shorten_with_contractions(word_assemblage wa) {
 and we construe "y" (but not "h" or "w") as a vowel.
 
 @<Decide whether a contraction is needed here@> =
-	int incipit = q[0];
-	int first = Characters::tolower((wchar_t) Characters::remove_accent(incipit));
+	inchar32_t incipit = q[0];
+	inchar32_t first = Characters::tolower(Characters::remove_accent(incipit));
 	if ((first == 'a') || (first == 'e') || (first == 'i') ||
 		(first == 'o') || (first == 'u') || (first == 'y'))
 		contract_this = TRUE;
@@ -733,21 +733,21 @@ These are a little harder: for example, |t2+| or |t3|.
 int Conjugation::ptoken_to_tense_indicator(ptoken *pt, int *set_sense) {
 	if ((pt) && (pt->ptoken_category == FIXED_WORD_PTC)) {
 		vocabulary_entry *ve = pt->ve_pt;
-		wchar_t *p = Vocabulary::get_exemplar(ve, FALSE);
+		inchar32_t *p = Vocabulary::get_exemplar(ve, FALSE);
 		if ((p[0] == 't') && (Characters::isdigit(p[1])) && (p[2] == 0)) {
-			int N = p[1] - '1' + 1;
+			int N = (int) (p[1] - '1' + 1);
 			if ((N >= 1) && (N <= NO_KNOWN_TENSES)) return N;
 		}
 		if ((p[0] == 't') && (Characters::isdigit(p[1])) &&
 			(p[2] == '+') && (p[3] == 0)) {
-			int N = p[1] - '1' + 1;
+			int N = (int) (p[1] - '1' + 1);
 			if ((N >= 1) && (N <= NO_KNOWN_TENSES)) {
 				*set_sense = 0; return N;
 			}
 		}
 		if ((p[0] == 't') && (Characters::isdigit(p[1])) &&
 			(p[2] == '-') && (p[3] == 0)) {
-			int N = p[1] - '1' + 1;
+			int N = (int) (p[1] - '1' + 1);
 			if ((N >= 1) && (N <= NO_KNOWN_TENSES)) {
 				*set_sense = 1; return N;
 			}
@@ -774,9 +774,9 @@ as |pattern|.
 =
 int Conjugation::compare_ve_with_tails(vocabulary_entry *ve, vocabulary_entry *pattern) {
 	if (ve == pattern) return TRUE;
-	wchar_t *p = Vocabulary::get_exemplar(pattern, FALSE);
+	inchar32_t *p = Vocabulary::get_exemplar(pattern, FALSE);
 	if (p[0] == '-') {
-		wchar_t *q = Vocabulary::get_exemplar(ve, FALSE);
+		inchar32_t *q = Vocabulary::get_exemplar(ve, FALSE);
 		int i, j = Wide::len(q)-(Wide::len(p)-1);
 		for (i=1; p[i]; i++, j++)
 			if ((j<0) || (p[i] != q[j]))

@@ -615,7 +615,7 @@ that would be "property name". Instead:
 			if ((E == NULL) || (E->as_copy->location_if_path == NULL))
 				@<Throw PM_RTPOnlyInExtensions@>
 			else {
-				wchar_t *p = Lexer::word_text(w1);
+				inchar32_t *p = Lexer::word_text(w1);
 				TEMPORARY_TEXT(pcode)
 				for (; *p; p++) if (*p != '"') PUT_TO(pcode, *p);
 				EmitCode::val_text(pcode);
@@ -643,7 +643,7 @@ that would be "property name". Instead:
 			if ((E == NULL) || (E->as_copy->location_if_path == NULL))
 				@<Throw PM_RTPOnlyInExtensions@>
 			else {
-				wchar_t *p = Lexer::word_text(w1);
+				inchar32_t *p = Lexer::word_text(w1);
 				TEMPORARY_TEXT(pcode)
 				for (; *p; p++) if (*p != '"') PUT_TO(pcode, *p);
 				pathname *P = Pathnames::down(E->as_copy->location_if_path, I"RTPs");
@@ -1026,7 +1026,7 @@ the second time it's simply printed.)
 
 @<Inline command "my"@> =
 	local_variable *lvar = NULL;
-	int n = Str::get_at(ist->operand, 0) - '0';
+	int n = (int) (Str::get_at(ist->operand, 0) - '0');
 	if ((Str::get_at(ist->operand, 1) == 0) && (n >= 0) && (n < 10))
 		@<A single digit as the name@>
 	else
@@ -1242,7 +1242,7 @@ or decrements. But be wary here, because |{-copy:S:+}| adds 1 to S, whereas
 @<Find what we are copying from, to and how@> =
 	TEMPORARY_TEXT(from_p)
 
-	int c = Str::get_first_char(ist->operand2);
+	inchar32_t c = Str::get_first_char(ist->operand2);
 	if (c == '+') { copy_form = 1; Str::copy_tail(from_p, ist->operand2, 1); }
 	else if (c == '-') { copy_form = -1; Str::copy_tail(from_p, ist->operand2, 1); }
 	else Str::copy(from_p, ist->operand2);
@@ -1574,7 +1574,7 @@ especially those involving complicated linguistic propositions.
 			CodeBlocks::emit_break();
 			break;
 		case verbose_checking_ISINSC: {
-			wchar_t *what = L"";
+			inchar32_t *what = U"";
 			if (tokens->tokens_count > 0) {
 				parse_node *aspect = tokens->token_vals[0];
 				if (Wordings::nonempty(Node::get_text(aspect))) {
@@ -1700,9 +1700,9 @@ To give up deciding:
 =
 kind *CSIInline::parse_bracing_operand_as_kind(text_stream *operand,
 	kind_variable_declaration *kvd) {
-	if (Str::eq_wide_string(operand, L"return-kind"))
+	if (Str::eq_wide_string(operand, U"return-kind"))
 		return Frames::get_kind_returned();
-	if (Str::eq_wide_string(operand, L"rule-return-kind"))
+	if (Str::eq_wide_string(operand, U"rule-return-kind"))
 		return Rulebooks::kind_from_context();
 	kind *kind_vars_inline[27];
 	for (int i=0; i<27; i++) kind_vars_inline[i] = NULL;

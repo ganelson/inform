@@ -36,7 +36,7 @@ The following routine writes the clickable source-reference icon, and
 is the only place in Inform where |source:| URLs are generated.
 
 =
-wchar_t source_link_case = 0;
+inchar32_t source_link_case = 0;
 void SourceLinks::set_case(text_stream *p) {
 	source_link_case = Characters::toupper(Str::get_first_char(p));
 }
@@ -72,6 +72,6 @@ void SourceLinks::link(OUTPUT_STREAM, source_location sl, int nonbreaking_space)
 	}
 
 @<Remove indication that the path is inside the Source directory@> =
-	if ((Str::begins_with_wide_string(fn, L"Source")) &&
+	if ((Str::begins_with_wide_string(fn, U"Source")) &&
 		(Platform::is_folder_separator(Str::get_at(fn, 6))))
 		Str::delete_n_characters(fn, 7);

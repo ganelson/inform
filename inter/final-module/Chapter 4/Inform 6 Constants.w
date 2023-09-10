@@ -166,7 +166,7 @@ they were any other arrays. Here goes:
 			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_multiexcept_RPSYM)) WRITE("multiexcept");
 			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_noun_filter_RPSYM)) marker = TRUE;
 			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_scope_filter_RPSYM)) marker = FALSE;
-			else if (Str::begins_with_wide_string(S, L"##")) @<Write without sharps@>
+			else if (Str::begins_with_wide_string(S, U"##")) @<Write without sharps@>
 			else {
 				if (marker == FALSE) WRITE("scope=");
 				if (marker == TRUE)  WRITE("noun=");
@@ -320,7 +320,7 @@ void I6TargetConstants::compile_dictionary_word(code_generator *gtr, code_genera
 	int n = 0;
 	WRITE("'");
 	LOOP_THROUGH_TEXT(pos, S) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if (c >= 0x100) WRITE("@{%04x}", c);
 		else {
 			switch(c) {
@@ -374,7 +374,7 @@ characters being written.
 
 @<Compile literal text in box mode@> =
 	LOOP_THROUGH_TEXT(pos, S) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if (c >= 0x100) WRITE("@{%04x}", c);
 		else {
 			switch(c) {
@@ -393,7 +393,7 @@ characters being written.
 
 @<Compile literal text in value mode@> =
 	LOOP_THROUGH_TEXT(pos, S) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if (c >= 0x100) WRITE("@{%04x}", c);
 		else {
 			switch(c) {
@@ -422,7 +422,7 @@ hexadecimal.
 @<Compile literal text in print-statement mode@> =
 	int esc_char = FALSE;
 	LOOP_THROUGH_TEXT(pos, S) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if (c >= 0x100) WRITE("@{%04x}", c);
 		else {
 			switch(c) {

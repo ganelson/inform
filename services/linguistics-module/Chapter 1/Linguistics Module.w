@@ -81,10 +81,10 @@ void LinguisticsModule::end(void) {
 }
 
 @<Register this module's debugging log aspects@> =
-	Log::declare_aspect(LINGUISTIC_STOCK_DA, L"linguistic stock", FALSE, FALSE);
-	Log::declare_aspect(TIME_PERIODS_DA, L"time periods", FALSE, FALSE);
-	Log::declare_aspect(VERB_USAGES_DA, L"verb usages", FALSE, TRUE);
-	Log::declare_aspect(VERB_FORMS_DA, L"verb forms", FALSE, TRUE);
+	Log::declare_aspect(LINGUISTIC_STOCK_DA, U"linguistic stock", FALSE, FALSE);
+	Log::declare_aspect(TIME_PERIODS_DA, U"time periods", FALSE, FALSE);
+	Log::declare_aspect(VERB_USAGES_DA, U"verb usages", FALSE, TRUE);
+	Log::declare_aspect(VERB_FORMS_DA, U"verb forms", FALSE, TRUE);
 
 @<Register this module's debugging log writers@> =
 	Writers::register_logger('t', Occurrence::log);

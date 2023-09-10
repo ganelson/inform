@@ -320,40 +320,40 @@ void DocumentationCompiler::read_layout_helper(text_stream *cl, text_file_positi
 	void *v_cd) {
 	compiled_documentation *cd = (compiled_documentation *) v_cd;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, cl, L" *#%c*")) { Regexp::dispose_of(&mr); return; }
-	if (Regexp::match(&mr, cl, L" *")) { Regexp::dispose_of(&mr); return; }
+	if (Regexp::match(&mr, cl, U" *#%c*")) { Regexp::dispose_of(&mr); return; }
+	if (Regexp::match(&mr, cl, U" *")) { Regexp::dispose_of(&mr); return; }
 
-	if (Regexp::match(&mr, cl, L" *contents: *(%c+?) to \"(%c*)\"")) {
+	if (Regexp::match(&mr, cl, U" *contents: *(%c+?) to \"(%c*)\"")) {
 		if (Str::eq(mr.exp[0], I"standard")) cd->duplex_contents_page = FALSE;
 		else if (Str::eq(mr.exp[0], I"duplex")) cd->duplex_contents_page = TRUE;
 		else DocumentationCompiler::layout_error(cd, I"'contents:' must be 'standard' or 'duplex'", cl, tfp);
 		cd->contents_URL_pattern = Str::duplicate(mr.exp[1]);
-	} else if (Regexp::match(&mr, cl, L" *examples: *(%c+?) to \"(%c*)\"")) {
+	} else if (Regexp::match(&mr, cl, U" *examples: *(%c+?) to \"(%c*)\"")) {
 		if (Str::eq(mr.exp[0], I"lettered")) cd->examples_lettered = TRUE;
 		else if (Str::eq(mr.exp[0], I"numbered")) cd->examples_lettered = FALSE;
 		else DocumentationCompiler::layout_error(cd, I"'examples:' must be 'lettered' or 'numbered'", cl, tfp);
 		cd->example_URL_pattern = Str::duplicate(mr.exp[1]);
-	} else if (Regexp::match(&mr, cl, L" *pages: *(%c*?) *")) {
+	} else if (Regexp::match(&mr, cl, U" *pages: *(%c*?) *")) {
 		@<Act on a page-set declaration@>;
-	} else if (Regexp::match(&mr, cl, L" *volume: *\"(%c*?)\" or \"(%C+)\" to \"(%c*?)\"")) {
+	} else if (Regexp::match(&mr, cl, U" *volume: *\"(%c*?)\" or \"(%C+)\" to \"(%c*?)\"")) {
 		@<Act on a volume declaration@>;
-	} else if (Regexp::match(&mr, cl, L" *alphabetical index: *\"(%c*?)\" to \"(%c*?)\" *")) {
+	} else if (Regexp::match(&mr, cl, U" *alphabetical index: *\"(%c*?)\" to \"(%c*?)\" *")) {
 		cd->index_title[ALPHABETICAL_EG_INDEX] = Str::duplicate(mr.exp[0]);
 		cd->index_URL_pattern[ALPHABETICAL_EG_INDEX] = Str::duplicate(mr.exp[1]);
 		cd->include_index[ALPHABETICAL_EG_INDEX] = TRUE;
-	} else if (Regexp::match(&mr, cl, L" *numerical index: *\"(%c*?)\" to \"(%c*?)\" *")) {
+	} else if (Regexp::match(&mr, cl, U" *numerical index: *\"(%c*?)\" to \"(%c*?)\" *")) {
 		cd->index_title[NUMERICAL_EG_INDEX] = Str::duplicate(mr.exp[0]);
 		cd->index_URL_pattern[NUMERICAL_EG_INDEX] = Str::duplicate(mr.exp[1]);
 		cd->include_index[NUMERICAL_EG_INDEX] = TRUE;
-	} else if (Regexp::match(&mr, cl, L" *thematic index: *\"(%c*?)\" to \"(%c*?)\" *")) {
+	} else if (Regexp::match(&mr, cl, U" *thematic index: *\"(%c*?)\" to \"(%c*?)\" *")) {
 		cd->index_title[THEMATIC_EG_INDEX] = Str::duplicate(mr.exp[0]);
 		cd->index_URL_pattern[THEMATIC_EG_INDEX] = Str::duplicate(mr.exp[1]);
 		cd->include_index[THEMATIC_EG_INDEX] = TRUE;
-	} else if (Regexp::match(&mr, cl, L" *general index: *\"(%c*?)\" to \"(%c*?)\" *")) {
+	} else if (Regexp::match(&mr, cl, U" *general index: *\"(%c*?)\" to \"(%c*?)\" *")) {
 		cd->index_title[GENERAL_INDEX] = Str::duplicate(mr.exp[0]);
 		cd->index_URL_pattern[GENERAL_INDEX] = Str::duplicate(mr.exp[1]);
 		cd->include_index[GENERAL_INDEX] = TRUE;
-	} else if (Regexp::match(&mr, cl, L" *index notation: *(%c*?) *")) {
+	} else if (Regexp::match(&mr, cl, U" *index notation: *(%c*?) *")) {
 		@<Act on an indexing notation@>;
 	} else {
 		DocumentationCompiler::layout_error(cd, I"unknown syntax in layout file", cl, tfp);
@@ -374,25 +374,25 @@ void DocumentationCompiler::read_layout_helper(text_stream *cl, text_file_positi
 
 	text_stream *set = mr.exp[0];
 	match_results mr2 = Regexp::create_mr();
-	if (Regexp::match(&mr2, set, L"(%c*) to \"(%c*?.html)\"")) {
+	if (Regexp::match(&mr2, set, U"(%c*) to \"(%c*?.html)\"")) {
 		Str::clear(dest); WRITE_TO(dest, "%S", mr2.exp[1]);
 		Str::clear(set); WRITE_TO(set, "%S", mr2.exp[0]);
-	} else if (Regexp::match(&mr2, set, L"(%c*) to \"(%c*?)\"")) {
+	} else if (Regexp::match(&mr2, set, U"(%c*) to \"(%c*?)\"")) {
 		DocumentationCompiler::layout_error(cd, I"destination file must have filename extension '.html'", cl, tfp);
 	}
-	if (Regexp::match(&mr2, set, L"(%c*) by sections")) {
+	if (Regexp::match(&mr2, set, U"(%c*) by sections")) {
 		breaking = SECTION_PAGESETBREAKING;
 		Str::clear(set); WRITE_TO(set, "%S", mr2.exp[0]);
-	} else if (Regexp::match(&mr2, set, L"(%c*) by chapters")) {
+	} else if (Regexp::match(&mr2, set, U"(%c*) by chapters")) {
 		breaking = CHAPTER_PAGESETBREAKING;
 		Str::clear(set); WRITE_TO(set, "%S", mr2.exp[0]);
-	} else if (Regexp::match(&mr2, set, L"(%c*) by %c*")) {
+	} else if (Regexp::match(&mr2, set, U"(%c*) by %c*")) {
 		DocumentationCompiler::layout_error(cd, I"pages may be split only 'by sections' or 'by chapters'", cl, tfp);
 		Str::clear(set); WRITE_TO(set, "%S", mr2.exp[0]);
 	}
-	if (Regexp::match(&mr2, set, L"\"(%c*?.md)\"")) {
+	if (Regexp::match(&mr2, set, U"\"(%c*?.md)\"")) {
 		Str::clear(src); WRITE_TO(src, "%S", mr2.exp[0]);
-	} else if (Regexp::match(&mr2, set, L"\"(%c*?)\"")) {
+	} else if (Regexp::match(&mr2, set, U"\"(%c*?)\"")) {
 		DocumentationCompiler::layout_error(cd, I"source file must have filename extension '.md'", cl, tfp);
 	} else {
 		DocumentationCompiler::layout_error(cd, I"unknown syntax in layout file", cl, tfp);
@@ -485,15 +485,15 @@ void DocumentationCompiler::read_layout_helper(text_stream *cl, text_file_positi
 @<Act on an indexing notation@> =
 	text_stream *tweak = mr.exp[0];
 	match_results mr2 = Regexp::create_mr();
-	if (Regexp::match(&mr2, tweak, L"^{(%C*)headword(%C*)} = (%C+) *(%c*)")) {
+	if (Regexp::match(&mr2, tweak, U"^{(%C*)headword(%C*)} = (%C+) *(%c*)")) {
 		Indexes::add_indexing_notation(cd, mr2.exp[0], mr2.exp[1], mr2.exp[2], mr2.exp[3]);
-	} else if (Regexp::match(&mr2, tweak, L"{(%C+?)} = (%C+) *(%c*)")) {
+	} else if (Regexp::match(&mr2, tweak, U"{(%C+?)} = (%C+) *(%c*)")) {
 		Indexes::add_indexing_notation_for_symbols(cd, mr2.exp[0], mr2.exp[1], mr2.exp[2]);
-	} else if (Regexp::match(&mr2, tweak, L"definition = (%C+) *(%c*)")) {
+	} else if (Regexp::match(&mr2, tweak, U"definition = (%C+) *(%c*)")) {
 		Indexes::add_indexing_notation_for_definitions(cd, mr2.exp[0], mr2.exp[1], NULL);
-	} else if (Regexp::match(&mr2, tweak, L"(%C+)-definition = (%C+) *(%c*)")) {
+	} else if (Regexp::match(&mr2, tweak, U"(%C+)-definition = (%C+) *(%c*)")) {
 		Indexes::add_indexing_notation_for_definitions(cd, mr2.exp[1], mr2.exp[2], mr2.exp[0]);
-	} else if (Regexp::match(&mr2, tweak, L"example = (%C+) *(%c*)")) {
+	} else if (Regexp::match(&mr2, tweak, U"example = (%C+) *(%c*)")) {
 		Indexes::add_indexing_notation_for_examples(cd, mr2.exp[0], mr2.exp[1]);
 	} else {
 		DocumentationCompiler::layout_error(cd, I"bad indexing notation", cl, tfp);
@@ -565,7 +565,7 @@ int DocumentationCompiler::detect_satellites(compiled_documentation *cd) {
 	if (D) {
 		TEMPORARY_TEXT(leafname)
 		while (Directories::next(D, leafname)) {
-			wchar_t first = Str::get_first_char(leafname), last = Str::get_last_char(leafname);
+			inchar32_t first = Str::get_first_char(leafname), last = Str::get_last_char(leafname);
 			if (Platform::is_folder_separator(last)) continue;
 			if (first == '.') continue;
 			if (first == '(') continue;
@@ -679,8 +679,8 @@ void DocumentationCompiler::read_example_helper(text_stream *text, text_file_pos
 	example_scanning_state *ess = (example_scanning_state *) v_state;
 	if (tfp->line_count == 1) {
 		match_results mr = Regexp::create_mr();
-		if ((Regexp::match(&mr, text, L"Example *: *(%**) *(%c+?)")) ||
-			(Regexp::match(&mr, text, L"Example *- *(%**) *(%c+?)"))) {
+		if ((Regexp::match(&mr, text, U"Example *: *(%**) *(%c+?)")) ||
+			(Regexp::match(&mr, text, U"Example *- *(%**) *(%c+?)"))) {
 			ess->star_count = Str::len(mr.exp[0]);
 			if (ess->star_count == 0) {
 				DocumentationCompiler::example_error(ess,
@@ -701,7 +701,7 @@ void DocumentationCompiler::read_example_helper(text_stream *text, text_file_pos
 	} else if (ess->past_header == FALSE) {
 		if (Str::is_whitespace(text)) { ess->past_header = TRUE; return; }
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, text, L"(%C+?) *: *(%c+?)")) {
+		if (Regexp::match(&mr, text, U"(%C+?) *: *(%c+?)")) {
 			if (Str::eq(mr.exp[0], I"Location")) ess->placement = Str::duplicate(mr.exp[1]);
 			else if (Str::eq(mr.exp[0], I"RecipeLocation")) ess->recipe_placement = Str::duplicate(mr.exp[1]);
 			else if (Str::eq(mr.exp[0], I"Subtitle")) ess->subtitle = Str::duplicate(mr.exp[1]);
@@ -781,7 +781,7 @@ void DocumentationCompiler::count_examples(compiled_documentation *cd) {
 	LOOP_OVER_LINKED_LIST(eg, IFM_example, cd->examples) {
 		Str::clear(eg->URL);
 		for (int i=0; i<Str::len(cd->example_URL_pattern); i++) {
-			wchar_t c = Str::get_at(cd->example_URL_pattern, i);
+			inchar32_t c = Str::get_at(cd->example_URL_pattern, i);
 			if (c == '#') WRITE_TO(eg->URL, "%S", eg->insignia);
 			else PUT_TO(eg->URL, c);
 		}
@@ -951,7 +951,7 @@ int DocumentationCompiler::divide_tree_by_sections(markdown_item *tree, text_str
 @<Divide by section here@> =
 	TEMPORARY_TEXT(leaf)
 	for (int i=0; i<Str::len(naming); i++) {
-		wchar_t c = Str::get_at(naming, i);
+		inchar32_t c = Str::get_at(naming, i);
 		if (c == '#') {
 			if (C > 0) WRITE_TO(leaf, "%d_", C);
 			WRITE_TO(leaf, "%d", N++);
@@ -969,7 +969,7 @@ int DocumentationCompiler::divide_tree_by_chapters(markdown_item *tree, text_str
 		if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) == 1)) {
 			TEMPORARY_TEXT(leaf)
 			for (int i=0; i<Str::len(naming); i++) {
-				wchar_t c = Str::get_at(naming, i);
+				inchar32_t c = Str::get_at(naming, i);
 				if (c == '#') WRITE_TO(leaf, "%d", N++);
 				else PUT_TO(leaf, c);
 			}

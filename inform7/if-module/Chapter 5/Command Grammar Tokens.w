@@ -52,10 +52,10 @@ mark: thus "get away/off/out" becomes
 "get" "away" / "off" / "out"
 =
 
-@d GRAMMAR_PUNCTUATION_MARKS L".,:;?!(){}[]/" /* note the slash */
+@d GRAMMAR_PUNCTUATION_MARKS U".,:;?!(){}[]/" /* note the slash */
 
 =
-wording CGTokens::break(wchar_t *text, int expand) {
+wording CGTokens::break(inchar32_t *text, int expand) {
 	@<Reject this if it contains punctuation@>;
 	wording TW = Feeds::feed_C_string_full(text, expand,
 		GRAMMAR_PUNCTUATION_MARKS, TRUE);
@@ -119,7 +119,7 @@ wording CGTokens::break(wchar_t *text, int expand) {
 
 @ =
 int CGTokens::numerical(int wn) {
-	wchar_t *text = Lexer::word_text(wn);
+	inchar32_t *text = Lexer::word_text(wn);
 	for (int i=0; i<Wide::len(text); i++)
 		if (Characters::isdigit(text[i]) == FALSE)
 			return FALSE;
@@ -130,7 +130,7 @@ int CGTokens::numerical(int wn) {
 
 =
 cg_token *CGTokens::tokenise(wording W) {
-	wchar_t *as_wide_string = Lexer::word_text(Wordings::first_wn(W));
+	inchar32_t *as_wide_string = Lexer::word_text(Wordings::first_wn(W));
 	wording TW = CGTokens::break(as_wide_string, TRUE);
 	cg_token *tokens = CGTokens::break_into_tokens(TW);
 	if (Wordings::empty(TW)) return NULL;

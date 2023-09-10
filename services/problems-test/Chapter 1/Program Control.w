@@ -15,10 +15,10 @@ int main(int argc, char **argv) {
 	SyntaxModule::start();
 	ProblemsModule::start();
 
-	CommandLine::declare_heading(L"problems-test: a tool for testing the problems module\n");
+	CommandLine::declare_heading(U"problems-test: a tool for testing the problems module\n");
 
-	CommandLine::declare_switch(TEST_PROBLEMS_CLSW, L"test-problems", 2,
-		L"test that problems can be issued");
+	CommandLine::declare_switch(TEST_PROBLEMS_CLSW, U"test-problems", 2,
+		U"test that problems can be issued");
 
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::ignore);
 

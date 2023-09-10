@@ -23,10 +23,10 @@ int main(int argc, char **argv) {
 	BuildingModule::start();
 	BytecodeModule::start();
 
-	CommandLine::declare_heading(L"building-test: a tool for testing the building module\n");
+	CommandLine::declare_heading(U"building-test: a tool for testing the building module\n");
 
-	CommandLine::declare_switch(TEST_CLSW, L"test", 2,
-		L"perform unit tests from file X");
+	CommandLine::declare_switch(TEST_CLSW, U"test", 2,
+		U"perform unit tests from file X");
 
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::ignore);
 

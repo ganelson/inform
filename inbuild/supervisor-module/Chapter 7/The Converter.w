@@ -95,7 +95,7 @@ into the main file and individual example files.
 		TEMPORARY_TEXT(line)
 		int indentation = 0, space_count = 0;
 		for (int i=0; i<Str::len(source); i++) {
-			wchar_t c = Str::get_at(source, i);
+			inchar32_t c = Str::get_at(source, i);
 			if (c == '\n') {
 				@<Line read@>;
 				Str::clear(line);
@@ -116,12 +116,12 @@ into the main file and individual example files.
 @<Line read@> =
 	Str::trim_white_space(line);
 	match_results mr = Regexp::create_mr();
-	if ((Regexp::match(&mr, line, L"Section *: *(%c+?)")) ||
-		(Regexp::match(&mr, line, L"Section *- *(%c+?)"))) {
+	if ((Regexp::match(&mr, line, U"Section *: *(%c+?)")) ||
+		(Regexp::match(&mr, line, U"Section *- *(%c+?)"))) {
 		if (pass == 1) section_count++;
 		if (pass == 2) @<End any example@>;
-	} else if ((Regexp::match(&mr, line, L"Chapter *: *(%c+?)")) ||
-		(Regexp::match(&mr, line, L"Chapter *- *(%c+?)"))) {
+	} else if ((Regexp::match(&mr, line, U"Chapter *: *(%c+?)")) ||
+		(Regexp::match(&mr, line, U"Chapter *- *(%c+?)"))) {
 		if (pass == 1) chapter_count++;
 		if (pass == 2) {
 			@<End any example@>;
@@ -129,8 +129,8 @@ into the main file and individual example files.
 		}
 	}
 	if (pass == 2) {
-		if ((Regexp::match(&mr, line, L"Example *: *(%**) *(%c+?)")) ||
-			(Regexp::match(&mr, line, L"Example *- *(%**) *(%c+?)")))
+		if ((Regexp::match(&mr, line, U"Example *: *(%**) *(%c+?)")) ||
+			(Regexp::match(&mr, line, U"Example *- *(%**) *(%c+?)")))
 			@<Deal with an example heading@>
 		else
 			@<Copy the line out to the appropriate file@>;
@@ -155,7 +155,7 @@ to sections.
 	text_stream *title = mr.exp[1];
 	text_stream *desc = NULL;
 	match_results mr2 = Regexp::create_mr();
-	if (Regexp::match(&mr2, title, L" *(%c+?) - *(%c+) *")) {
+	if (Regexp::match(&mr2, title, U" *(%c+?) - *(%c+) *")) {
 		title = mr2.exp[0];
 		desc = mr2.exp[1];
 	}
@@ -168,7 +168,7 @@ to sections.
 
 	TEMPORARY_TEXT(eleaf)
 	for (int i=0, last_was_ws=TRUE; i<Str::len(title); i++) {
-		wchar_t c = Str::get_at(title, i);
+		inchar32_t c = Str::get_at(title, i);
 		if (Characters::is_whitespace(c)) { last_was_ws = TRUE; continue; }
 		if (last_was_ws) c = Characters::toupper(c);
 		last_was_ws = FALSE;
@@ -198,7 +198,7 @@ are legal.
 @<Copy the line out to the appropriate file@> =
 	for (int i=0; i<indentation; i++) PUT_TO(dest, '\t');
 	match_results mr2 = Regexp::create_mr();
-	if ((indentation == 1) && (Regexp::match(&mr2, line, L"%* *: *(%c+?)"))) {
+	if ((indentation == 1) && (Regexp::match(&mr2, line, U"%* *: *(%c+?)"))) {
 		WRITE_TO(dest, "{*}%S\n", mr2.exp[0]);
 	} else {
 		WRITE_TO(dest, "%S\n", line);

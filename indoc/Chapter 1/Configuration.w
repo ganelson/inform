@@ -53,24 +53,24 @@ void Configuration::read_command_line(int argc, char **argv, settings_block *set
 
 @<Read the command line@> =
 	CommandLine::declare_heading(
-		L"indoc: a tool for rendering Inform documentation\n\n"
-		L"Usage: indoc [OPTIONS] TARGET\n"
-		L"where TARGET must be one of those set up in the instructions.\n");
+		U"indoc: a tool for rendering Inform documentation\n\n"
+		U"Usage: indoc [OPTIONS] TARGET\n"
+		U"where TARGET must be one of those set up in the instructions.\n");
 
-	CommandLine::declare_boolean_switch(VERBOSE_CLSW, L"verbose", 1,
-		L"explain what indoc is doing", FALSE);
-	CommandLine::declare_boolean_switch(TEST_INDEX_CLSW, L"test-index", 1,
-		L"test indexing", FALSE);
-	CommandLine::declare_switch(XREFS_CLSW, L"xrefs", 2,
-		L"write a file of documentation cross-references to filename X");
-	CommandLine::declare_switch(FROM_CLSW, L"from", 2,
-		L"use documentation in directory X (instead of 'Documentation' in cwd)");
-	CommandLine::declare_switch(TO_CLSW, L"to", 2,
-		L"redirect output to folder X (which must already exist)");
-	CommandLine::declare_switch(INSERTION_CLSW, L"insertion", 2,
-		L"insert HTML in file X at the top of each page head");
-	CommandLine::declare_switch(INSTRUCTIONS_CLSW, L"instructions", 2,
-		L"read further instructions from file X");
+	CommandLine::declare_boolean_switch(VERBOSE_CLSW, U"verbose", 1,
+		U"explain what indoc is doing", FALSE);
+	CommandLine::declare_boolean_switch(TEST_INDEX_CLSW, U"test-index", 1,
+		U"test indexing", FALSE);
+	CommandLine::declare_switch(XREFS_CLSW, U"xrefs", 2,
+		U"write a file of documentation cross-references to filename X");
+	CommandLine::declare_switch(FROM_CLSW, U"from", 2,
+		U"use documentation in directory X (instead of 'Documentation' in cwd)");
+	CommandLine::declare_switch(TO_CLSW, U"to", 2,
+		U"redirect output to folder X (which must already exist)");
+	CommandLine::declare_switch(INSERTION_CLSW, U"insertion", 2,
+		U"insert HTML in file X at the top of each page head");
+	CommandLine::declare_switch(INSTRUCTIONS_CLSW, U"instructions", 2,
+		U"read further instructions from file X");
 
 	if (CommandLine::read(argc, argv, &state, &Configuration::switch, &Configuration::bareword)
 		== FALSE) exit(0);

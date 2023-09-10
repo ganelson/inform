@@ -101,7 +101,7 @@ void KindCommands::apply(single_kind_command stc, kind_constructor *con) {
 	}
 	if (tcc == instance_KCC) {
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, stc.textual_argument, L" *(%c+?) *= *(%C+) *= *(%C+) *")) {
+		if (Regexp::match(&mr, stc.textual_argument, U" *(%c+?) *= *(%C+) *= *(%C+) *")) {
 			kind_constructor_instance *kci = CREATE(kind_constructor_instance);
 			kci->natural_language_name = Str::duplicate(mr.exp[0]);
 			kci->identifier = Str::duplicate(mr.exp[1]);
@@ -115,7 +115,7 @@ void KindCommands::apply(single_kind_command stc, kind_constructor *con) {
 				kci->value_specified = FALSE;
 			}
 			ADD_TO_LINKED_LIST(kci, kind_constructor_instance, con->instances);	
-		} else if (Regexp::match(&mr, stc.textual_argument, L" *(%c+?) *= *(%C+) *")) {
+		} else if (Regexp::match(&mr, stc.textual_argument, U" *(%c+?) *= *(%C+) *")) {
 			kind_constructor_instance *kci = CREATE(kind_constructor_instance);
 			kci->natural_language_name = Str::duplicate(mr.exp[0]);
 			kci->identifier = Str::duplicate(mr.exp[1]);
@@ -206,10 +206,10 @@ void KindCommands::apply(single_kind_command stc, kind_constructor *con) {
 			PUT_TO(wd, Str::get(pos)); pos = Str::forward(pos);
 		}
 		if (Str::len(wd) > 0) {
-			if (Str::eq_wide_string(wd, L"covariant")) con->variance[c] = COVARIANT;
-			else if (Str::eq_wide_string(wd, L"contravariant")) con->variance[c] = CONTRAVARIANT;
-			else if (Str::eq_wide_string(wd, L"optional")) con->tupling[c] = ALLOW_NOTHING_TUPLING;
-			else if (Str::eq_wide_string(wd, L"list")) con->tupling[c] = ARBITRARY_TUPLING;
+			if (Str::eq_wide_string(wd, U"covariant")) con->variance[c] = COVARIANT;
+			else if (Str::eq_wide_string(wd, U"contravariant")) con->variance[c] = CONTRAVARIANT;
+			else if (Str::eq_wide_string(wd, U"optional")) con->tupling[c] = ALLOW_NOTHING_TUPLING;
+			else if (Str::eq_wide_string(wd, U"list")) con->tupling[c] = ARBITRARY_TUPLING;
 			else NeptuneFiles::error(wd, I"illegal constructor-arity keyword", stc.origin);
 		}
 		DISCARD_TEXT(wd)
@@ -222,7 +222,8 @@ commands:
 =
 int KindCommands::parse_literal_number(text_stream *S, int *bad) {
 	*bad = FALSE;
-	int sign = 1, base = 10, from = 0, to = Str::len(S)-1;
+	int sign = 1, from = 0, to = Str::len(S)-1;
+	unsigned int base = 10;
 	if ((Str::get_at(S, from) == '(') && (Str::get_at(S, to) == ')')) { from++; to--; }
 	while (Characters::is_whitespace(Str::get_at(S, from))) from++;
 	while (Characters::is_whitespace(Str::get_at(S, to))) to--;
@@ -237,7 +238,7 @@ int KindCommands::parse_literal_number(text_stream *S, int *bad) {
 	LOOP_THROUGH_TEXT(pos, S) {
 		if (pos.index < from) continue;
 		if (pos.index > to) continue;
-		int c = Str::get(pos), d = 0;
+		inchar32_t c = Str::get(pos), d = 0;
 		if ((c >= 'a') && (c <= 'z')) d = c-'a'+10;
 		else if ((c >= 'A') && (c <= 'Z')) d = c-'A'+10;
 		else if ((c >= '0') && (c <= '9')) d = c-'0';

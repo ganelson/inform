@@ -238,7 +238,7 @@ We begin with lexical problems happening when the run is hardly begun:
 
 =
 void StandardProblems::lexical_problem(parse_node_tree *T, SIGIL_ARGUMENTS,
-	char *message, wchar_t *concerning, char *exp) {
+	char *message, inchar32_t *concerning, char *exp) {
 	ACT_ON_SIGIL
 	char *lexical_explanation =
 		"This is a low-level problem happening when I am still reading in the "

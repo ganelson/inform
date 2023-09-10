@@ -16,7 +16,7 @@ A "zbyte" is a byte from a Z-machine story file.
 =
 typedef struct release_instructions {
 	int release_website; /* Release along with a website? */
-	wchar_t *website_template_leafname; /* If so, the template name for it */
+	inchar32_t *website_template_leafname; /* If so, the template name for it */
 	int release_interpreter; /* Release along with an interpreter? */
 	struct text_stream *interpreter_template_leafname; /* If so, the template name for it */
 	int release_booklet; /* Release along with introductory booklet? */
@@ -43,7 +43,7 @@ typedef struct release_instructions {
 release_instructions *ReleaseInstructions::new_set(void) {
 	release_instructions *set = CREATE(release_instructions);
 	set->release_website = FALSE;
-	set->website_template_leafname = L"Standard";
+	set->website_template_leafname = U"Standard";
 	set->release_interpreter = FALSE;
 	set->interpreter_template_leafname = NULL;
 	set->release_booklet = FALSE;
@@ -92,7 +92,7 @@ typedef struct auxiliary_file {
 
 @ =
 void ReleaseInstructions::add_aux_file(release_instructions *rel,
-	filename *name, pathname *fold, wchar_t *desc, int payload) {
+	filename *name, pathname *fold, inchar32_t *desc, int payload) {
 	auxiliary_file *af = CREATE(auxiliary_file);
 	af->name_of_original_file = name;
 	af->folder_to_release_to = fold;
@@ -277,7 +277,7 @@ void ReleaseInstructions::handle_release_declaration_inner(parse_node *p) {
 			DISCARD_TEXT(leaf)
 			ReleaseInstructions::add_aux_file(my_instructions, A,
 				Task::release_path(),
-				L"--",
+				U"--",
 				payload);
 			break;
 		}
@@ -294,7 +294,7 @@ void ReleaseInstructions::handle_release_declaration_inner(parse_node *p) {
 			WRITE_TO(folder, "%N", Wordings::first_wn(FW));
 			pathname *P = Pathnames::down(Task::release_path(), folder);
 			DISCARD_TEXT(folder)
-			ReleaseInstructions::add_aux_file(my_instructions, A, P, L"--", payload);
+			ReleaseInstructions::add_aux_file(my_instructions, A, P, U"--", payload);
 			break;
 		}
 		case BOOKLET_PAYLOAD: my_instructions->release_booklet = TRUE; break;

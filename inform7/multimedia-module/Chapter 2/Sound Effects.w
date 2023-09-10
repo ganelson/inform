@@ -132,7 +132,7 @@ detects that this has happened, and sets |K_sound_name| to point to it.
 
 =
 int Sounds::new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
-	if (Str::eq_wide_string(name, L"SOUND_NAME_TY")) {
+	if (Str::eq_wide_string(name, U"SOUND_NAME_TY")) {
 		K_sound_name = new_base; return TRUE;
 	}
 	return FALSE;
@@ -217,7 +217,7 @@ void Sounds::write_blurb_commands(OUTPUT_STREAM) {
 	if (FEATURE_INACTIVE(sounds)) return;
 	sounds_data *sd;
 	LOOP_OVER(sd, sounds_data) {
-		wchar_t *desc = L"";
+		inchar32_t *desc = U"";
 		if (sd->alt_description >= 0)
 			desc = Lexer::word_text(sd->alt_description);
 		if (Wide::len(desc) > 0)
@@ -238,6 +238,6 @@ void Sounds::write_copy_commands(release_instructions *rel) {
 		ReleaseInstructions::add_aux_file(rel, 
 			sd->filename_of_sound_file,
 			Task::released_sounds_path(),
-			L"--",
+			U"--",
 			SEPARATE_SOUNDS_PAYLOAD);
 }

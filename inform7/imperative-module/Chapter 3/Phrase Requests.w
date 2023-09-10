@@ -58,7 +58,7 @@ we simply give in and throw a problem.
 	return symb;
 
 @<Extract an identifier from the inline definition@> =
-	wchar_t *p = CompileImperativeDefn::get_inline_definition(idb);
+	inchar32_t *p = CompileImperativeDefn::get_inline_definition(idb);
 	for (int i=0; p[i]; i++)
 		if (Characters::isalpha(p[i])) {
 			int j = 0;

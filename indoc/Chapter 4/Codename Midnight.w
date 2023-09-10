@@ -213,13 +213,13 @@ void Midnight::write_contents_page(navigation_design *self, volume *V) {
 	TEMPORARY_TEXT(xxx)
 	HTMLUtilities::get_tt_matter(xxx, 1, 1);
 	if (Str::len(xxx) > 0) {
-		Regexp::replace(xxx, L"%[SUBHEADING%]", NULL, 0);
-		wchar_t replacement[1024];
+		Regexp::replace(xxx, U"%[SUBHEADING%]", NULL, 0);
+		inchar32_t replacement[1024];
 		TEMPORARY_TEXT(rep)
 		WRITE_TO(rep, "<title>%S</title>", title);
 		Str::copy_to_wide_string(replacement, rep, 1024);
 		DISCARD_TEXT(rep)
-		Regexp::replace(xxx, L"<title>%c*</title>", replacement, REP_REPEATING);
+		Regexp::replace(xxx, U"<title>%c*</title>", replacement, REP_REPEATING);
 		WRITE("%S", xxx);
 	} else {
 		HTMLUtilities::begin_file(OUT, volumes[0]);
@@ -342,7 +342,7 @@ there are in practice about 25.
 	if (no_volumes == 1) WRITE_TO(theprefix, "<b>Chapter %d</b>", C->chapter_number);
 	else WRITE_TO(theprefix, "<b>%d</b>", C->chapter_number);
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, thetitle, L"Appendix: (%c*)")) {
+	if (Regexp::match(&mr, thetitle, U"Appendix: (%c*)")) {
 		Str::clear(theprefix); Str::copy(theprefix, I"Appendix");
 		Str::clear(thetitle); Str::copy(thetitle, mr.exp[0]);
 	}

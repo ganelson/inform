@@ -60,7 +60,7 @@ void FinalModule::end(void) {
 @e PROPERTY_ALLOCATION_DA
 
 @<Register this module's debugging log aspects@> =
-	Log::declare_aspect(PROPERTY_ALLOCATION_DA, L"property allocation", FALSE, FALSE);
+	Log::declare_aspect(PROPERTY_ALLOCATION_DA, U"property allocation", FALSE, FALSE);
 
 @<Register this module's debugging log writers@> =
 	;

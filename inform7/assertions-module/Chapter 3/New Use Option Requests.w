@@ -250,7 +250,7 @@ message is thrown.
 		if (Characters::isupper(Str::get_at(uo->symbol_name, 0)) == FALSE)
 			invalid = TRUE;
 		LOOP_THROUGH_TEXT(pos, uo->symbol_name) {
-			wchar_t c = Str::get(pos);
+			inchar32_t c = Str::get(pos);
 			if ((Characters::isupper(c) == FALSE) &&
 				(Characters::isdigit(c) == FALSE) &&
 				(c != '_'))
@@ -278,7 +278,7 @@ message is thrown.
 		if (Characters::isupper(Str::get_at(uo->kit_name, 0)) == FALSE)
 			invalid = TRUE;
 		LOOP_THROUGH_TEXT(pos, uo->kit_name) {
-			wchar_t c = Str::get(pos);
+			inchar32_t c = Str::get(pos);
 			if ((Characters::isupper(c) == FALSE) &&
 				(Characters::islower(c) == FALSE) &&
 				(Characters::isdigit(c) == FALSE))
@@ -356,7 +356,7 @@ void NewUseOptions::pragma_setting(parsed_use_option_setting *puos) {
 			PUT_TO(target, Str::get(pos));
 	if (Str::eq_insensitive(target, I"Inform6")) {
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, puos->content_of_pragma, L" *$(%C+)=(%d+);* *")) {
+		if (Regexp::match(&mr, puos->content_of_pragma, U" *$(%C+)=(%d+);* *")) {
 			int val = Str::atoi(mr.exp[1], 0);
 			NewUseOptions::memory_setting(mr.exp[0], val);
 		} else {

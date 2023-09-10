@@ -27,7 +27,7 @@ kind *K_internal_file = NULL;
 
 @ =
 int InternalFiles::files_new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
-	if (Str::eq_wide_string(name, L"INTERNAL_FILE_TY")) {
+	if (Str::eq_wide_string(name, U"INTERNAL_FILE_TY")) {
 		K_internal_file = new_base; return TRUE;
 	}
 	return FALSE;

@@ -27,13 +27,13 @@ kind *K_dialogue_choice = NULL;
 
 @ =
 int Dialogue::new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
-	if (Str::eq_wide_string(name, L"DIALOGUE_BEAT_TY")) {
+	if (Str::eq_wide_string(name, U"DIALOGUE_BEAT_TY")) {
 		K_dialogue_beat = new_base; return TRUE;
 	}
-	if (Str::eq_wide_string(name, L"DIALOGUE_LINE_TY")) {
+	if (Str::eq_wide_string(name, U"DIALOGUE_LINE_TY")) {
 		K_dialogue_line = new_base; return TRUE;
 	}
-	if (Str::eq_wide_string(name, L"DIALOGUE_CHOICE_TY")) {
+	if (Str::eq_wide_string(name, U"DIALOGUE_CHOICE_TY")) {
 		K_dialogue_choice = new_base; return TRUE;
 	}
 	return FALSE;

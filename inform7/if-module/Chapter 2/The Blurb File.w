@@ -46,7 +46,7 @@ the Blorb-file's filename won't be too long for the file system.
 		(VariableSubjects::has_initial_value_set(story_title_VAR))) {
 		BlurbFile::write_var_to_text(TEMP, story_title_VAR, TRUNCATE_BIBTEXT_MODE);
 		LOOP_THROUGH_TEXT(pos, TEMP) {
-			wchar_t c = Str::get(pos);
+			inchar32_t c = Str::get(pos);
 			if ((c == ':') || (c == '/') || (c == '\\') || (c == '.') ||
 				(c == '*') || (c == '#'))
 				Str::put(pos, '-');
@@ -246,7 +246,7 @@ file online.
 @<Give instructions to construct a website around the release@> =
 	WRITE("\n! Website instructions\n\n");
 	@<Tell Inblorb where to find the website templates@>;
-	if (Wide::cmp(rel->website_template_leafname, L"Classic") != 0) WRITE("css\n");
+	if (Wide::cmp(rel->website_template_leafname, U"Classic") != 0) WRITE("css\n");
 	WRITE("website \"%w\"\n", rel->website_template_leafname);
 
 @ The order here is significant, since Inblorb searches the folders in order,

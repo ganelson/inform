@@ -45,7 +45,7 @@ inter_error_message *PrimitiveInstruction::new(inter_bookmark *IBM, inter_symbol
 	inter_error_message *E = NULL;
 	text_stream *in = from;
 	match_results mr = Regexp::create_mr();
-	while (Regexp::match(&mr, in, L" *(%i+) *(%c*)")) {
+	while (Regexp::match(&mr, in, U" *(%i+) *(%c*)")) {
 		inter_ti lcat = PrimitiveInstruction::read_category(eloc, mr.exp[0], &E);
 		if (E) break;
 		if (lcat == 0) break;

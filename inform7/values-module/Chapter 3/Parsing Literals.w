@@ -32,9 +32,9 @@ literals anywhere.
 
 =
 <response-letter> internal 1 {
-	wchar_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
+	inchar32_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
 	if ((p) && (p[0] >= 'A') && (p[0] <= 'Z') && (p[1] == 0)) {
-		==> { p[0]-'A', - };
+		==> { (int) (p[0]-'A'), - };
 		return TRUE;
 	}
 	==> { fail nonterminal };
@@ -54,19 +54,19 @@ in principle be any number of people, colours, vehicles, and such.
 
 =
 <hexadecimal-number> internal 1 {
-	wchar_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
+	inchar32_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
 	inter_ti base = 16;
 	@<Parse a literal in this number base@>;
 }
 
 <octal-number> internal 1 {
-	wchar_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
+	inchar32_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
 	inter_ti base = 8;
 	@<Parse a literal in this number base@>;
 }
 
 <binary-number> internal 1 {
-	wchar_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
+	inchar32_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
 	inter_ti base = 2;
 	@<Parse a literal in this number base@>;
 }
@@ -75,15 +75,14 @@ in principle be any number of people, colours, vehicles, and such.
 	int i = 0;
 	inter_ti t = 0;
 	while (p[i]) {
-		int d = 0;
-		wchar_t c = p[i];
+		inchar32_t c = p[i], d = 0;
 		if ((c >= '0') && (c <= '9')) d = c - '0';
 		else if ((c >= 'a') && (c <= 'f')) d = c - 'a' + 10;
 		else if ((c >= 'A') && (c <= 'F')) d = c - 'A' + 10;
 		else {
 			==> { fail nonterminal };
 		}
-		if (d >= (int) base) {
+		if (d >= base) {
 			==> { fail nonterminal };
 		}
 		t = t*base + (inter_ti) d;

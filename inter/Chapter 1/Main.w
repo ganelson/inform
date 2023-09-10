@@ -151,35 +151,35 @@ int main(int argc, char **argv) {
 
 @<Read the command line@> =
 	CommandLine::declare_heading(
-		L"[[Purpose]]\n\n"
-		L"usage: inter file1 file2 ... [options]\n");
+		U"[[Purpose]]\n\n"
+		U"usage: inter file1 file2 ... [options]\n");
 
-	CommandLine::declare_switch(O_CLSW, L"o", 2,
-		L"code-generate to file X");
-	CommandLine::declare_textual_switch(FORMAT_CLSW, L"format", 1,
-		L"code-generate -o output to format X (default is Text)");
-	CommandLine::declare_switch(PIPELINE_CLSW, L"pipeline-text", 2,
-		L"specify pipeline textually, with X being a comma-separated list of stages");
-	CommandLine::declare_switch(PIPELINE_FILE_CLSW, L"pipeline-file", 2,
-		L"specify pipeline as file X");
-	CommandLine::declare_switch(PIPELINE_VARIABLE_CLSW, L"variable", 2,
-		L"set pipeline variable X (in form name=value)");
-	CommandLine::declare_switch(DOMAIN_CLSW, L"domain", 2,
-		L"specify folder to read/write inter files from/to");
-	CommandLine::declare_switch(INTERNAL_CLSW, L"internal", 2,
-		L"specify folder of internal Inform resources");
-	CommandLine::declare_switch(ARCHITECTURE_CLSW, L"architecture", 2,
-		L"generate Inter with architecture X");
-	CommandLine::declare_switch(BUILD_KIT_CLSW, L"build-kit", 2,
-		L"build Inter kit X for the current architecture");
-	CommandLine::declare_switch(CONSTRUCTS_CLSW, L"constructs", 1,
-		L"print out table of all constructs in the Inter language");
-	CommandLine::declare_switch(ANNOTATIONS_CLSW, L"annotations", 1,
-		L"print out table of all symbol annotations in the Inter language");
-	CommandLine::declare_switch(PRIMITIVES_CLSW, L"primitives", 1,
-		L"print out table of all primitive invocations in the Inter language");
-	CommandLine::declare_boolean_switch(TRACE_CLSW, L"trace", 1,
-		L"print out all pipeline steps as they are followed", FALSE);
+	CommandLine::declare_switch(O_CLSW, U"o", 2,
+		U"code-generate to file X");
+	CommandLine::declare_textual_switch(FORMAT_CLSW, U"format", 1,
+		U"code-generate -o output to format X (default is Text)");
+	CommandLine::declare_switch(PIPELINE_CLSW, U"pipeline-text", 2,
+		U"specify pipeline textually, with X being a comma-separated list of stages");
+	CommandLine::declare_switch(PIPELINE_FILE_CLSW, U"pipeline-file", 2,
+		U"specify pipeline as file X");
+	CommandLine::declare_switch(PIPELINE_VARIABLE_CLSW, U"variable", 2,
+		U"set pipeline variable X (in form name=value)");
+	CommandLine::declare_switch(DOMAIN_CLSW, U"domain", 2,
+		U"specify folder to read/write inter files from/to");
+	CommandLine::declare_switch(INTERNAL_CLSW, U"internal", 2,
+		U"specify folder of internal Inform resources");
+	CommandLine::declare_switch(ARCHITECTURE_CLSW, U"architecture", 2,
+		U"generate Inter with architecture X");
+	CommandLine::declare_switch(BUILD_KIT_CLSW, U"build-kit", 2,
+		U"build Inter kit X for the current architecture");
+	CommandLine::declare_switch(CONSTRUCTS_CLSW, U"constructs", 1,
+		U"print out table of all constructs in the Inter language");
+	CommandLine::declare_switch(ANNOTATIONS_CLSW, U"annotations", 1,
+		U"print out table of all symbol annotations in the Inter language");
+	CommandLine::declare_switch(PRIMITIVES_CLSW, U"primitives", 1,
+		U"print out table of all primitive invocations in the Inter language");
+	CommandLine::declare_boolean_switch(TRACE_CLSW, U"trace", 1,
+		U"print out all pipeline steps as they are followed", FALSE);
 
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::add_file);
 
@@ -209,7 +209,7 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 
 @<Add a pipeline variable to the dictionary@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, arg, L"(%c+)=(%c+)")) {
+	if (Regexp::match(&mr, arg, U"(%c+)=(%c+)")) {
 		if (Str::get_first_char(arg) != '*') {
 			Errors::fatal("-variable names must begin with '*'");
 		} else {

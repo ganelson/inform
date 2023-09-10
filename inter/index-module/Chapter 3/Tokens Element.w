@@ -88,7 +88,7 @@ void TokensElement::verb_definition(OUTPUT_STREAM, text_stream *T, text_stream *
 	int i = 1;
 	if (Str::len(T) < 2) return;
 	if (Str::len(trueverb) > 0) {
-		if (Str::eq_wide_string(trueverb, L"0") == FALSE) {
+		if (Str::eq_wide_string(trueverb, U"0") == FALSE) {
 			WRITE("%S", trueverb);
 			for (i=1; Str::get_at(T, i+1); i++) if (Str::get_at(T, i) == ' ') break;
 			for (; Str::get_at(T, i+1); i++) if (Str::get_at(T, i) != ' ') break;
@@ -96,7 +96,7 @@ void TokensElement::verb_definition(OUTPUT_STREAM, text_stream *T, text_stream *
 		}
 	}
 	for (; Str::get_at(T, i+1); i++) {
-		wchar_t c = Str::get_at(T, i);
+		inchar32_t c = Str::get_at(T, i);
 		switch(c) {
 			case '"': WRITE("&quot;"); break;
 			default: PUT_TO(OUT, c); break;

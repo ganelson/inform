@@ -310,7 +310,7 @@ table would be no different if it were not there.
 	if ((stopped == FALSE) && /* only look if we are not already at a division */
 		(no_stop_words == 0) && /* be sure not to elide two such texts in a row */
 		(sfsm->inside_table_mode == FALSE) && /* check that we are not scanning the body of a table */
-		(isupper(*(Lexer::word_raw_text(at)))) && /* and the current word begins with a capital letter */
+		(Characters::isupper(*(Lexer::word_raw_text(at)))) && /* and the current word begins with a capital letter */
 		(Word::text_ending_sentence(at-1))) { /* and the preceding one was quoted text ending in punctuation */
 		stop_character = 'X'; stopped = TRUE;
 	}

@@ -37,8 +37,8 @@ The meaning codes alluded to below are also used for excerpts of text
 typedef struct vocabulary_entry {
 	unsigned int flags; /* bitmap of "meaning codes" indicating possible usages */
 	int literal_number_value; /* evaluation as a literal number, if any */
-	wchar_t *exemplar; /* text of one instance of this word */
-	wchar_t *raw_exemplar; /* text of one instance in its raw untreated form */
+	inchar32_t *exemplar; /* text of one instance of this word */
+	inchar32_t *raw_exemplar; /* text of one instance in its raw untreated form */
 	int hash; /* hash code derived from text of word */
 	struct vocabulary_entry *next_in_vocab_hash; /* next in list with this hash */
 	struct vocabulary_entry *lower_case_form; /* or null if none exists */
@@ -72,24 +72,24 @@ vocabulary_entry *SEMICOLON_V = NULL;
 vocabulary_entry *STROKE_V = NULL;
 
 void Vocabulary::create_punctuation(void) {
-	CLOSEBRACE_V     = Vocabulary::entry_for_text(L"}");
-	CLOSEBRACKET_V   = Vocabulary::entry_for_text(L")");
-	COLON_V          = Vocabulary::entry_for_text(L":");
-	COMMA_V          = Vocabulary::entry_for_text(L",");
-	DOCUMENTATION_V  = Vocabulary::entry_for_text(L"documentation");
-	DOUBLEDASH_V     = Vocabulary::entry_for_text(L"--");
-	FORWARDSLASH_V   = Vocabulary::entry_for_text(L"/");
-	FULLSTOP_V       = Vocabulary::entry_for_text(L".");
-	LEFTARROW_V      = Vocabulary::entry_for_text(L"<-");
-	OPENBRACE_V      = Vocabulary::entry_for_text(L"{");
-	OPENBRACKET_V    = Vocabulary::entry_for_text(L"(");
-	OPENI6_V         = Vocabulary::entry_for_text(L"(-");
+	CLOSEBRACE_V     = Vocabulary::entry_for_text(U"}");
+	CLOSEBRACKET_V   = Vocabulary::entry_for_text(U")");
+	COLON_V          = Vocabulary::entry_for_text(U":");
+	COMMA_V          = Vocabulary::entry_for_text(U",");
+	DOCUMENTATION_V  = Vocabulary::entry_for_text(U"documentation");
+	DOUBLEDASH_V     = Vocabulary::entry_for_text(U"--");
+	FORWARDSLASH_V   = Vocabulary::entry_for_text(U"/");
+	FULLSTOP_V       = Vocabulary::entry_for_text(U".");
+	LEFTARROW_V      = Vocabulary::entry_for_text(U"<-");
+	OPENBRACE_V      = Vocabulary::entry_for_text(U"{");
+	OPENBRACKET_V    = Vocabulary::entry_for_text(U"(");
+	OPENI6_V         = Vocabulary::entry_for_text(U"(-");
 	PARBREAK_V       = Vocabulary::entry_for_text(PARAGRAPH_BREAK);
-	PLUS_V      	 = Vocabulary::entry_for_text(L"+");
-	QUADRUPLEDASH_V  = Vocabulary::entry_for_text(L"----");
-	RIGHTARROW_V     = Vocabulary::entry_for_text(L"->");
-	SEMICOLON_V      = Vocabulary::entry_for_text(L";");
-	STROKE_V         = Vocabulary::entry_for_text(L"|");
+	PLUS_V      	 = Vocabulary::entry_for_text(U"+");
+	QUADRUPLEDASH_V  = Vocabulary::entry_for_text(U"----");
+	RIGHTARROW_V     = Vocabulary::entry_for_text(U"->");
+	SEMICOLON_V      = Vocabulary::entry_for_text(U";");
+	STROKE_V         = Vocabulary::entry_for_text(U"|");
 }
 
 @ Each distinct word is to have a unique |vocabulary_entry| structure, and the
@@ -128,7 +128,7 @@ void Vocabulary::identify_word_range(wording W) {
 as otherwise its |lw_identity| points to the wrong vocabulary entry.
 
 =
-void Vocabulary::change_text_of_word(int wn, wchar_t *new) {
+void Vocabulary::change_text_of_word(int wn, inchar32_t *new) {
 	Lexer::set_word_text(wn, new);
 	Lexer::set_word_raw_text(wn, new);
 	Vocabulary::identify_word(wn);
@@ -138,7 +138,7 @@ void Vocabulary::change_text_of_word(int wn, wchar_t *new) {
 creator, and a debugging logger:
 
 =
-vocabulary_entry *Vocabulary::vocab_entry_new(wchar_t *text, int hash_code,
+vocabulary_entry *Vocabulary::vocab_entry_new(inchar32_t *text, int hash_code,
 	unsigned int flags, int val) {
 	vocabulary_entry *ve = CREATE(vocabulary_entry);
 	ve->exemplar = text; ve->raw_exemplar = text;
@@ -190,7 +190,7 @@ void Vocabulary::set_raw_exemplar_to_text(int wn) {
 structure:
 
 =
-wchar_t *Vocabulary::get_exemplar(vocabulary_entry *ve, int raw) {
+inchar32_t *Vocabulary::get_exemplar(vocabulary_entry *ve, int raw) {
 	if (raw) return ve->raw_exemplar;
 	else return ve->exemplar;
 }
@@ -322,9 +322,9 @@ they're treated more like literal texts and I6 inclusions.
 @d I6_HASH 2 /* the |(-| word introducing an I6 inclusion uniquely has this hash code */
 
 =
-int Vocabulary::hash_code_from_word(wchar_t *text) {
+int Vocabulary::hash_code_from_word(inchar32_t *text) {
     unsigned int hash_code = 0;
-    wchar_t *p = text;
+    inchar32_t *p = text;
     switch(*p) {
     	case '-': if (p[1] == 0) break; /* an isolated minus sign is text */
     		/* and otherwise fall through to... */
@@ -385,7 +385,7 @@ codes for any number, any text, or any I6 inclusion.
 =
 int no_vocabulary_entries = 0;
 
-vocabulary_entry *Vocabulary::entry_for_text(wchar_t *text) {
+vocabulary_entry *Vocabulary::entry_for_text(inchar32_t *text) {
 	vocabulary_entry *new_entry;
 	int hash_code = Vocabulary::hash_code_from_word(text), val = 0;
 	unsigned int f = 0;
@@ -448,7 +448,7 @@ Much the same, except that we enter a fragment of a word into lexical memory
 and then find its identity as if it were a whole word.
 
 =
-vocabulary_entry *Vocabulary::entry_for_partial_text(wchar_t *str, int from, int to) {
+vocabulary_entry *Vocabulary::entry_for_partial_text(inchar32_t *str, int from, int to) {
 	TEMPORARY_TEXT(TEMP)
 	for (int i=from; i<=to; i++) PUT_TO(TEMP, str[i]);
 	PUT_TO(TEMP, 0);
@@ -465,7 +465,7 @@ that we don't bother to police the finicky rules on which suffix should
 accompany which value (22nd not 22th, and so on).
 
 =
-int Vocabulary::an_ordinal_number(wchar_t *fw) {
+int Vocabulary::an_ordinal_number(inchar32_t *fw) {
 	for (int i=0; fw[i] != 0; i++)
 		if (!(Characters::isdigit(fw[i]))) {
 			if ((i>0) &&

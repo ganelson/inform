@@ -88,7 +88,7 @@ begins at the start of the text, after a hyphen, or after a bracket. Thus
 void Works::normalise_casing(text_stream *p) {
 	int boundary = TRUE;
 	LOOP_THROUGH_TEXT(pos, p) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if (boundary) Str::put(pos, Characters::toupper(c));
 		else Str::put(pos, Characters::tolower(c));
 		boundary = FALSE;
@@ -107,7 +107,7 @@ would both pass, whereas //Works::normalise_casing// would make them into
 void Works::normalise_casing_mixed(text_stream *p) {
 	int boundary = TRUE;
 	LOOP_THROUGH_TEXT(pos, p) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if (boundary) Str::put(pos, Characters::toupper(c));
 		boundary = FALSE;
 		if (c == ' ') boundary = TRUE;
@@ -246,7 +246,7 @@ void Works::begin_extension_link(OUTPUT_STREAM, inbuild_work *work, text_stream 
 
 void Works::escape_apostrophes(OUTPUT_STREAM, text_stream *S) {
 	LOOP_THROUGH_TEXT(pos, S) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if ((c == '\'') || (c == '\"') || (c == ' ') || (c == '&') ||
 			(c == '<') || (c == '>') || (c == '%'))
 			WRITE("%%%x", (int) c);

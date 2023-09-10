@@ -260,7 +260,7 @@ all zeros", and otherwise we look for a comma-separated list to fill it.
 			int err = FALSE, count = 0;
 			TEMPORARY_TEXT(term)
 			for (int i=0, state=1; i<Str::len(textual_description); i++) {
-				wchar_t c = Str::get_at(textual_description, i);
+				inchar32_t c = Str::get_at(textual_description, i);
 				switch (state) {
 					case 1: /* waiting for term */
 						if (c == ' ') break;
