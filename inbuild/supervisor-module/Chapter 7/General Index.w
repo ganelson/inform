@@ -543,7 +543,7 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 		Str::copy(sort_key, il->term);
 		/* ensure subentries follow main entries */
 		if (Str::get_first_char(sort_key) != ':')
-			Regexp::replace(sort_key, U": *", L"ZZZZZZZZZZZZZZZZZZZZZZ", REP_REPEATING);
+			Regexp::replace(sort_key, U": *", U"ZZZZZZZZZZZZZZZZZZZZZZ", REP_REPEATING);
 		IndexUtilities::improve_alphabetisation(sort_key);
 
 		match_results mr = Regexp::create_mr();
