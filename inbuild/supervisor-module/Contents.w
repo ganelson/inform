@@ -66,6 +66,7 @@ Chapter 7: Extension Management
 	The Converter
 	Documentation Compiler
 	Documentation Renderer
+	In-App Manuals
 	Making RTP Pages
 	Indexing Utilities
 	General Index

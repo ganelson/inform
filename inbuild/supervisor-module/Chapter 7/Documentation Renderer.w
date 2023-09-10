@@ -40,22 +40,29 @@ void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd, tex
 		Languages::set_default_directory(LP);
 	}
 	if (cd) {
-		text_stream *OUT = DocumentationRenderer::open_subpage(P, I"index.html");
+		text_stream *OUT = DocumentationRenderer::open_subpage(P, cd->contents_URL_pattern);
 		if (OUT) {
 			markdown_item *md = NULL;
 			if ((cd->markdown_content) && (cd->markdown_content->down) &&
 				(cd->markdown_content->down->down) &&
 				(cd->markdown_content->down->down->type == FILE_MIT)) {
 				filename *F = Markdown::get_filename(cd->markdown_content->down->down);
-				if (Str::eq(Filenames::get_leafname(F), I"index.html"))
+				if (Str::eq(Filenames::get_leafname(F), cd->contents_URL_pattern))
 					md = cd->markdown_content->down->down;
 			}
-			DocumentationRenderer::render_index_page(OUT, cd, md, extras);
+			if (cd->duplex_contents_page) {
+				InformPages::header(OUT, I"Contents", JAVASCRIPT_FOR_STANDARD_PAGES_IRES, NULL);
+				Manuals::duplex_contents_page(OUT, cd);
+			} else {
+				DocumentationRenderer::render_index_page(OUT, cd, md, extras);
+			}
 			DocumentationRenderer::close_subpage();
 		}
+		int vcount = 0;
 		for (markdown_item *vol = cd->markdown_content->down; vol; vol = vol->next) {
+			vcount++;
 			text_stream *home_URL = DocumentationCompiler::home_URL_at_volume_item(vol);
-			if (Str::ne(home_URL, I"index.html")) {
+			if (Str::ne(home_URL, cd->contents_URL_pattern)) {
 				text_stream *OUT = DocumentationRenderer::open_subpage(P, home_URL);
 				if (OUT) {
 					text_stream *volume_title = DocumentationCompiler::title_at_volume_item(cd, vol);
@@ -89,7 +96,7 @@ void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd, tex
 					if (Str::ne(Filenames::get_leafname(F), home_URL)) {
 						text_stream *OUT = DocumentationRenderer::open_subpage(P, Filenames::get_leafname(F));
 						if (OUT) {
-							DocumentationRenderer::render_chapter_page(OUT, cd, prev_md, md, md->next);
+							DocumentationRenderer::render_chapter_page(OUT, cd, prev_md, md, md->next, vcount);
 							DocumentationRenderer::close_subpage();
 						}
 					}
@@ -114,7 +121,12 @@ void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd, tex
 			if (cd->include_index[ix]) {
 				text_stream *OUT = DocumentationRenderer::open_subpage(P, cd->index_URL_pattern[ix]);
 				if (OUT) {
-					DocumentationRenderer::render_header(OUT, cd->title, cd->index_title[ix], cd->within_extension);
+					if (cd->duplex_contents_page) {
+						InformPages::header(OUT, I"Contents", JAVASCRIPT_FOR_STANDARD_PAGES_IRES, NULL);
+						Manuals::midnight_banner_for_indexes(OUT, cd, cd->index_title[ix]);
+					} else {
+						DocumentationRenderer::render_header(OUT, cd->title, cd->index_title[ix], cd->within_extension);
+					}
 					switch (ix) {
 						case GENERAL_INDEX:
 							Indexes::write_general_index(OUT, cd);
@@ -216,10 +228,22 @@ void DocumentationRenderer::render_example_page(OUTPUT_STREAM, compiled_document
 }
 
 void DocumentationRenderer::render_chapter_page(OUTPUT_STREAM, compiled_documentation *cd,
-	markdown_item *prev_file, markdown_item *file_marker, markdown_item *next_file) {
+	markdown_item *prev_file, markdown_item *file_marker, markdown_item *next_file,
+	int vcount) {
 	TEMPORARY_TEXT(title)
 	DocumentationRenderer::file_title(title, file_marker);
-	DocumentationRenderer::render_header(OUT, cd->title, title, cd->within_extension);
+	if (cd->duplex_contents_page) {
+		InformPages::header(OUT, title, JAVASCRIPT_FOR_ONE_EXTENSION_IRES, NULL);
+		Manuals::midnight_section_title(OUT, cd, Markdown::get_filename(prev_file),
+			title, Markdown::get_filename(next_file));
+		if (vcount == 1) {
+			HTML_OPEN_WITH("div", "class=\"duplexleftpage\"");
+		} else {
+			HTML_OPEN_WITH("div", "class=\"duplexrightpage\"");
+		}
+	} else {
+		DocumentationRenderer::render_header(OUT, cd->title, title, cd->within_extension);
+	}
 	DISCARD_TEXT(title)
 	HTML_OPEN_WITH("div", "class=\"markdowncontent\"");
 	Markdown::render_extended(OUT, file_marker, InformFlavouredMarkdown::variation());
@@ -238,6 +262,9 @@ void DocumentationRenderer::render_chapter_page(OUTPUT_STREAM, compiled_document
 		HTML_CLOSE("a");
 	}
 	@<Exit the small print@>;
+	if (cd->duplex_contents_page) {
+		HTML_CLOSE("div");
+	}
 	DocumentationRenderer::render_footer(OUT);
 }
 

@@ -860,3 +860,183 @@ div.generalindex span.indexcommandpartbracketed {
 	font-size: 0.9em;
 }
 
+/* In Midnight, there's a black status line at the top of each page, made
+as a "fullwidth" table which also has this class: */
+
+div.midnight, div.midnight td {
+	font-size: 16px;
+	line-height: 20px;
+}
+
+div.midnight table.fullwidth {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+div.midnight table.midnightblack {
+	background-color: #000000;
+}
+
+/* The table is a single row of three cells: */
+
+div.midnight td.midnightbannerleftcell {
+	height: 26px;
+	width: 38px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+div.midnight td.midnightbannercentrecell {
+	text-align: left;
+	vertical-align: middle;
+}
+
+div.midnight td.midnightbannerrightcell {
+	height: 26px;
+	width: 56px;
+	text-align: right;
+	vertical-align: middle;
+	white-space: nowrap;
+}
+
+/* Within the centre cell, the running-head text is styled with: */
+
+div.midnight span.midnightbannertext {
+	color: #FFFFFF; /* needs to match the colour of the papertint */
+	font-size: 0.75em;
+}
+
+/* Midnight pages end with a Previous - Contents - Next footer area, which is
+done with a table using the following cells */
+
+div.midnight td.footerprevious {
+	width: 33%;
+	text-align: left;
+}
+
+div.midnight td.footercontents {
+	width: 33%;
+	text-align: center;
+}
+
+div.midnight td.footernext {
+	width: 33%;
+	text-align: right;
+}
+
+/* Links in the footer are styled with: */
+
+div.midnight a.footerlink {
+	color: #808080;
+	font-size: 0.75em;
+}
+
+/* At the first section, e.g., there's no "previous", but this is used to
+style the unlinked word "Previous": */
+
+div.midnight span.footernonlink {
+	color: #000000;
+	font-size: 0.75em;
+}
+
+/* Midnight features an elaborate contents page in two columns. */
+
+div.midnight td.midnightlefthalfpage {
+	background-color: #eeeeee;
+	width: 50%;
+	text-align: left;
+	vertical-align: top;
+}
+
+div.midnight td.midnightrighthalfpage {
+	background-color: #ffffe5;
+	width: 50%;
+	text-align: left;
+	vertical-align: top;
+}
+
+/* There are A- and B-level subheadings: */
+
+div.midnight p.midnightcontentsA {
+	font-size: 0.8em;
+	margin-top: 2px;
+    margin-bottom: 0px;
+    text-indent: -3em;
+    margin-left: 3em;
+    margin-right: 1em;
+    padding-left: 15px;
+}
+
+div.midnight p.midnightcontentsB {
+	font-size: 0.75em;
+	margin-top: 2px;
+    margin-bottom: 0px;
+    text-indent: -2em;
+    margin-left: 4em;
+    margin-right: 1em;
+    padding-left: 6px;
+}
+
+div.midnight div.headingboxhigh {
+	position: relative;
+	height: 117px;
+	padding: 0px;
+	white-space:nowrap;
+	background: #eeeeee;  /* grey */
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	-webkit-font-smoothing: antialiased;
+}
+
+div.midnight .headingtext {
+	position: absolute;
+	top: -4px;
+	left: -1px;
+	width: 100%;
+	color: #222222;
+	padding: 14px 10px 0px 10px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+div.midnight .headingrubric {
+	position: absolute;
+	top: 36px;
+	width: 100%;
+	color: #222222;
+	padding: 0px 10px 0px 10px;
+	font-size: 11px;
+	font-weight: bold;
+}
+
+div.midnight a:link {										/* unvisited link */
+	text-decoration: none;
+	color: #202020;
+}
+div.midnight a:visited {									/* visited link */
+	text-decoration: none;
+	color: #202020;
+}
+div.midnight a:hover {										/* mouse over link */
+	text-decoration: none;
+	color: #D00000;
+}
+div.midnight a:active {										/* selected link */
+	text-decoration: none;
+	color: #D00000;
+}
+
+div.duplexleftpage {
+	background-color: #ffffff;
+}
+
+div.duplexrightpage {
+	background-color: #ffffe5;
+}
+
+img.thinbordered {
+	border-style: solid;
+	border-width: 1px;
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
