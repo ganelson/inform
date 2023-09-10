@@ -13,7 +13,7 @@ Some conveniences shared by our different forms of index.
 
 = (early code)
 int indoc_settings_test_index_mode = FALSE;
-int indoc_settings_index_alphabetisation_algorithm = WORD_ALPHABETIZATION;
+int indoc_settings_index_alphabetisation_algorithm = LETTER_ALPHABETIZATION;
 int indoc_settings_navigation_simplified_letter_rows = FALSE;
 int indoc_settings_wrapper = WRAPPER_none;
 

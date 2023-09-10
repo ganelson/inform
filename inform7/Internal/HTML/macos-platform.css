@@ -44,6 +44,7 @@
 
     --md-background-colour: #e3e6ea;
     --example-label-colour: #E0FFFF;
+    --example-see-also-colour: #E0E0E0;
     --light-border-colour: #d0d7de;
 }
 
@@ -667,16 +668,31 @@ span.documentationerror {
 
 /* For example box cues */
 
+div.examplebox:after {
+	content: "";
+	display: table;
+	clear: both;
+}
 div.examplebox div.exampleleft {
 	float: left;
 	box-sizing: border-box;
-	width: 52px;
+	width: 10%;
 	height: 30px;
 	padding: 8px 0;
+	text-align: center;
+}
+div.examplebox div.examplemiddle {
+	float: left;
+	box-sizing: border-box;
+	width: 80%;
 }
 div.examplebox div.exampleright {
-	margin-left: 60px;
+	float: left;
 	box-sizing: border-box;
+	width: 10%;
+	height: 30px;
+	padding: 8px 0;
+	text-align: center;
 }
 
 span.extensionexampleletter {
@@ -690,9 +706,28 @@ span.extensionexampleletter {
 	border-top-right-radius: 12px;
 	box-sizing: border-box;
 	padding-bottom: 4px;
-	padding-left: 20px;
-	padding-right: 20px;
+	padding-left: 8px;
+	padding-right: 8px;
 	padding-top: 4px;
+	min-width: 30px;
+	width: auto;
+}
+
+span.extensionexampleseealso {
+	color: var(--heading-panel-text-colour);
+	font-size: 14px;
+	font-style: italic;
+	background-color: var(--example-see-also-colour);
+	border-bottom-left-radius: 12px;
+	border-bottom-right-radius: 12px;
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+	box-sizing: border-box;
+	padding-bottom: 4px;
+	padding-left: 8px;
+	padding-right: 8px;
+	padding-top: 4px;
+	min-width: 30px;
 	width: auto;
 }
 
