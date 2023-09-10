@@ -68,6 +68,8 @@ typedef struct compiled_documentation {
 	struct linked_list *layout_errors; /* of |cd_layout_error| */
 
 	struct linked_list *volumes; /* of |cd_volume| */
+	struct text_stream *contents_URL_pattern;
+	int duplex_contents_page;
 
 	struct markdown_item *markdown_content;
 	struct md_links_dictionary *link_references;
@@ -270,6 +272,7 @@ compiled_documentation *DocumentationCompiler::new_cd(pathname *P,
 	cd->id = Indexes::new_indexing_data();
 	cd->examples_lettered = TRUE;
 	cd->example_URL_pattern = I"eg_#.html";
+	cd->contents_URL_pattern = I"index.html";
 	cd->index_URL_pattern[ALPHABETICAL_EG_INDEX] = I"alphabetical_index.html";
 	cd->index_URL_pattern[NUMERICAL_EG_INDEX] = I"numerical_index.html";
 	cd->index_URL_pattern[THEMATIC_EG_INDEX] = I"thematic_index.html";
@@ -284,6 +287,7 @@ compiled_documentation *DocumentationCompiler::new_cd(pathname *P,
 	cd->include_index[GENERAL_INDEX] = FALSE;
 	cd->layout_errors = NEW_LINKED_LIST(cd_layout_error);
 	cd->volumes = NEW_LINKED_LIST(cd_volume);
+	cd->duplex_contents_page = FALSE;
 	cd->source_files = NEW_LINKED_LIST(cd_source_file);
 	cd->domain = P;
 
@@ -319,7 +323,12 @@ void DocumentationCompiler::read_layout_helper(text_stream *cl, text_file_positi
 	if (Regexp::match(&mr, cl, L" *#%c*")) { Regexp::dispose_of(&mr); return; }
 	if (Regexp::match(&mr, cl, L" *")) { Regexp::dispose_of(&mr); return; }
 
-	if (Regexp::match(&mr, cl, L" *examples: *(%c+?) to \"(%c*)\"")) {
+	if (Regexp::match(&mr, cl, L" *contents: *(%c+?) to \"(%c*)\"")) {
+		if (Str::eq(mr.exp[0], I"standard")) cd->duplex_contents_page = FALSE;
+		else if (Str::eq(mr.exp[0], I"duplex")) cd->duplex_contents_page = TRUE;
+		else DocumentationCompiler::layout_error(cd, I"'contents:' must be 'standard' or 'duplex'", cl, tfp);
+		cd->contents_URL_pattern = Str::duplicate(mr.exp[1]);
+	} else if (Regexp::match(&mr, cl, L" *examples: *(%c+?) to \"(%c*)\"")) {
 		if (Str::eq(mr.exp[0], I"lettered")) cd->examples_lettered = TRUE;
 		else if (Str::eq(mr.exp[0], I"numbered")) cd->examples_lettered = FALSE;
 		else DocumentationCompiler::layout_error(cd, I"'examples:' must be 'lettered' or 'numbered'", cl, tfp);

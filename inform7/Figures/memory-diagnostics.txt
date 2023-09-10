@@ -1,4 +1,4 @@
-Total memory consumption was 139585K = 136 MB
+Total memory consumption was 139589K = 136 MB
 
  ---- was used for 2127144 objects, in 374797 frames in 0 x 800K = 0K = 0 MB:
 
@@ -182,14 +182,14 @@ Total memory consumption was 139585K = 136 MB
      ----  runtime_kind_structure                   13 objects, 1040 bytes
      ----  quantifier                               16 objects, 1024 bytes
      ----  web_md                                   7 objects, 1008 bytes
-     ----  named_rulebook_outcome                   15 objects, 960 bytes
      ----  pipeline_stage                           20 objects, 960 bytes
+     ----  named_rulebook_outcome                   15 objects, 960 bytes
      ----  JSON_pair_requirement                    29 objects, 928 bytes
      ----  control_structure_phrase                 12 objects, 864 bytes
-     ----  cached_understanding                     21 objects, 840 bytes
+     ----  compiled_documentation                   3 objects, 840 bytes
      ----  kit_configuration                        21 objects, 840 bytes
+     ----  cached_understanding                     21 objects, 840 bytes
      ----  phrase_option_array                      1 x 100 objects, 824 bytes
-     ----  compiled_documentation                   3 objects, 792 bytes
      ----  inform_kit                               7 objects, 784 bytes
      ----  copy_error                               7 objects, 784 bytes
      ----  internal_test                            15 objects, 720 bytes
@@ -197,10 +197,10 @@ Total memory consumption was 139585K = 136 MB
      ----  implication                              13 objects, 624 bytes
      ----  chapter_md                               7 objects, 616 bytes
      ----  code_generation                          1 object, 576 bytes
-     ----  inter_warehouse_room                     10 objects, 560 bytes
-     ----  inter_annotation_form                    14 objects, 560 bytes
      ----  generated_segment                        14 objects, 560 bytes
      ----  module                                   7 objects, 560 bytes
+     ----  inter_annotation_form                    14 objects, 560 bytes
+     ----  inter_warehouse_room                     10 objects, 560 bytes
      ----  rulebook_outcome                         17 objects, 544 bytes
      ----  small_word_set                           11 objects, 528 bytes
      ----  markdown_variation                       3 objects, 528 bytes
@@ -264,7 +264,7 @@ Total memory consumption was 139585K = 136 MB
 
 99.9% was used for memory not allocated for objects:
 
-    62.3%  text stream storage                      89187140 bytes in 512607 claims
+    62.3%  text stream storage                      89191168 bytes in 512638 claims
      3.8%  dictionary storage                       5497920 bytes in 7767 claims
      ----  sorting                                  2624 bytes in 531 claims
      5.0%  source text                              7200000 bytes in 3 claims
@@ -282,5 +282,5 @@ Total memory consumption was 139585K = 136 MB
      ----  code generation workspace for objects    3528 bytes in 19 claims
      0.1%  emitter array storage                    281184 bytes in 2006 claims
 
--136.-5% was overhead - -195223016 bytes = -190647K = -186 MB
+-136.-5% was overhead - -195223064 bytes = -190647K = -186 MB
 
