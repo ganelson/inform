@@ -42,7 +42,6 @@ function togglePopup(material_id) {
 <li><a href="../indocn.html">indoc</a></li>
 <li><a href="../inform6.html">inform6</a></li>
 <li><a href="../inpolicyn.html">inpolicy</a></li>
-<li><a href="../inrtpsn.html">inrtps</a></li>
 </ul><h2>Resources</h2><ul>
 <li><a href="../extensions.html">extensions</a></li>
 <li><a href="../kits.html">kits</a></li>
@@ -145,13 +144,13 @@ match any text.
 <span class="Preform-function-syntax">&lt;unary-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">internal</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">named_unary_predicate</span><span class="Preform-plain-syntax"> *</span><span class="Preform-identifier-syntax">nup</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-identifier-syntax">LOOP_OVER</span><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">nup</span><span class="Preform-plain-syntax">, </span><span class="Preform-reserved-syntax">named_unary_predicate</span><span class="Preform-plain-syntax">)</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-reserved-syntax">if</span><span class="Preform-plain-syntax"> (</span><a href="../words-module/3-wrd.html#SP13" class="function-link"><span class="Preform-function-syntax">Wordings::match</span></a><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">nup</span><span class="Preform-plain-syntax">-&gt;</span><span class="Preform-identifier-syntax">name</span><span class="Preform-plain-syntax">, </span><span class="Preform-identifier-syntax">W</span><span class="Preform-plain-syntax">)) {</span>
+<span class="Preform-plain-syntax">        </span><span class="Preform-reserved-syntax">if</span><span class="Preform-plain-syntax"> (</span><a href="../words-module/3-wrd.html#SP13" class="function-link"><span class="Preform-function-syntax">Wordings::match</span></a><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">nup</span><span class="Preform-plain-syntax">-&gt;</span><span class="Preform-element-syntax">name</span><span class="Preform-plain-syntax">, </span><span class="Preform-identifier-syntax">W</span><span class="Preform-plain-syntax">)) {</span>
 <span class="Preform-plain-syntax">            ==&gt; { -, </span><span class="Preform-identifier-syntax">nup</span><span class="Preform-plain-syntax">-&gt;</span><span class="Preform-element-syntax">up</span><span class="Preform-plain-syntax"> }; </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">TRUE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">        }</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li><li>The structure repl_var is accessed in 2/trs, 4/prp, 4/jsn, 3/tff, 1/sc, 2/art, 2/prn, 3/dmn, 5/smp and here.</li><li>The structure named_function is accessed in 2/trs, 4/prp, 4/jsn, 3/tff, 1/sc, 2/art, 2/prn, 3/dmn, 4/trm, 4/tcp, 5/smp and here.</li><li>The structure named_unary_predicate is accessed in 2/trs, 4/prp, 4/jsn, 3/tff, 1/sc, 2/art, 2/prn, 3/dmn, 5/smp and here.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li><li>The structure repl_var is accessed in 2/trs, 4/prp, 4/jsn, 5/mrk, 5/mv, 5/im, 3/tff, 1/sc, 2/art, 2/prn, 3/dmn, 5/smp and here.</li><li>The structure named_function is accessed in 2/trs, 4/prp, 4/jsn, 5/mrk, 5/mv, 5/im, 3/tff, 1/sc, 2/art, 2/prn, 3/dmn, 4/trm, 4/tcp, 5/smp and here.</li><li>The structure named_unary_predicate is accessed in 2/trs, 4/prp, 4/jsn, 5/mrk, 5/mv, 5/im, 3/tff, 1/sc, 2/art, 2/prn, 3/dmn, 5/smp and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. A sort of REPL. </b>The following function reads a file whose name is in <span class="extract"><span class="Preform-extract-syntax">arg</span></span>, feeds it into
 the lexer, builds a syntax tree of its sentences, and then walks through
 that tree, applying the Preform nonterminal &lt;declaration-line&gt; to each

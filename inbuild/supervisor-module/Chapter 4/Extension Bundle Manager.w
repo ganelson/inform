@@ -350,7 +350,8 @@ inbuild_copy *ExtensionBundleManager::claim_folder_as_copy(pathname *P, inbuild_
 			DISCARD_TEXT(subdir)
 		} else {
 			if (Str::ends_with(entry, I".md")) { doc_found = TRUE; continue; }
-			if (Str::eq(entry, I"layout.txt")) { doc_found = TRUE; continue; }
+			if (Str::eq(entry, I"contents.txt")) { doc_found = TRUE; continue; }
+			if (Str::eq(entry, I"sitemap.txt")) { doc_found = TRUE; continue; }
 			TEMPORARY_TEXT(error_text)
 			WRITE_TO(error_text,
 				"the 'Documentation' subdirectory of the extension directory '%S' contains a "

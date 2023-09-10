@@ -1,5 +1,5 @@
 100.0% in inform7 run
-     68.0% in compilation to Inter
+     67.6% in compilation to Inter
          46.3% in //Sequence::undertake_queued_tasks//
           4.4% in //MajorNodes::pre_pass//
           3.6% in //MajorNodes::pass_1//
@@ -10,10 +10,11 @@
           0.7% in //ImperativeDefinitions::compile_first_block//
           0.7% in //Sequence::undertake_queued_tasks//
           0.3% in //CompletionModule::compile//
+          0.3% in //InferenceSubjects::emit_all//
           0.3% in //MajorNodes::pass_2//
           0.3% in //Sequence::undertake_queued_tasks//
           0.3% in //World::stage_V//
-          4.8% not specifically accounted for
+          4.0% not specifically accounted for
      27.2% in running Inter pipeline
           8.8% in step 14/15: generate inform6 -> auto.inf
           6.9% in step 5/15: load-binary-kits
@@ -25,4 +26,4 @@
           0.3% in step 8/15: detect-indirect-calls
           2.2% not specifically accounted for
       4.0% in supervisor
-      0.8% not specifically accounted for
+      1.2% not specifically accounted for

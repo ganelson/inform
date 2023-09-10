@@ -42,7 +42,6 @@ function togglePopup(material_id) {
 <li><a href="../indocn.html">indoc</a></li>
 <li><a href="../inform6.html">inform6</a></li>
 <li><a href="../inpolicyn.html">inpolicy</a></li>
-<li><a href="../inrtpsn.html">inrtps</a></li>
 </ul><h2>Resources</h2><ul>
 <li><a href="../extensions.html">extensions</a></li>
 <li><a href="../kits.html">kits</a></li>
@@ -85,12 +84,12 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><a href="../words-module/4-lp.html#SP1" class="function-link"><span class="function-syntax">LoadPreform::load</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><a href="../../../inweb/foundation-module/3-cla.html#SP14" class="function-link"><span class="function-syntax">CommandLine::declare_heading</span></a><span class="plain-syntax">(</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"calculus-test: a tool for testing the calculus module\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">U</span><span class="string-syntax">"calculus-test: a tool for testing the calculus module\n"</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><a href="../../../inweb/foundation-module/3-cla.html#SP5" class="function-link"><span class="function-syntax">CommandLine::declare_switch</span></a><span class="plain-syntax">(</span><span class="constant-syntax">LOAD_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"load"</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"load kind definitions from file X"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="../../../inweb/foundation-module/3-cla.html#SP5" class="function-link"><span class="function-syntax">CommandLine::declare_switch</span></a><span class="plain-syntax">(</span><span class="constant-syntax">INTERPRET_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"interpret"</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"interpret REPL commands in file X"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../../../inweb/foundation-module/3-cla.html#SP5" class="function-link"><span class="function-syntax">CommandLine::declare_switch</span></a><span class="plain-syntax">(</span><span class="constant-syntax">LOAD_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">U</span><span class="string-syntax">"load"</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">U</span><span class="string-syntax">"load kind definitions from file X"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../../../inweb/foundation-module/3-cla.html#SP5" class="function-link"><span class="function-syntax">CommandLine::declare_switch</span></a><span class="plain-syntax">(</span><span class="constant-syntax">INTERPRET_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">U</span><span class="string-syntax">"interpret"</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">U</span><span class="string-syntax">"interpret REPL commands in file X"</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><a href="../../../inweb/foundation-module/3-cla.html#SP8" class="function-link"><span class="function-syntax">CommandLine::read</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="identifier-syntax">argv</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, &amp;</span><a href="1-pc.html#SP2" class="function-link"><span class="function-syntax">Main::respond</span></a><span class="plain-syntax">, &amp;</span><a href="1-pc.html#SP2" class="function-link"><span class="function-syntax">Main::ignore</span></a><span class="plain-syntax">);</span>
 

@@ -81,7 +81,7 @@ For example, it inserts the C line:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">INTERNAL_NONTERMINAL</span><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="string-syntax">"&lt;any-integer&gt;"</span><span class="plain-syntax">, </span><span class="identifier-syntax">any_integer_NTM</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">INTERNAL_NONTERMINAL</span><span class="plain-syntax">(</span><span class="identifier-syntax">U</span><span class="string-syntax">"&lt;any-integer&gt;"</span><span class="plain-syntax">, </span><span class="identifier-syntax">any_integer_NTM</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 </pre>
 <p class="commentary">since this is an "internal" nonterminal; and the macro will then expand
 to code which sets up <span class="extract"><span class="extract-syntax">any_integer_NTM</span></span> &mdash; see below.
@@ -114,7 +114,7 @@ suppose <a href="../../../inweb/index.html" class="internal">inweb</a> sees the 
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">REGISTER_NONTERMINAL</span><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="string-syntax">"&lt;competitor&gt;"</span><span class="plain-syntax">, </span><span class="identifier-syntax">competitor_NTM</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">REGISTER_NONTERMINAL</span><span class="plain-syntax">(</span><span class="identifier-syntax">U</span><span class="string-syntax">"&lt;competitor&gt;"</span><span class="plain-syntax">, </span><span class="identifier-syntax">competitor_NTM</span><span class="plain-syntax">);</span>
 </pre>
 <p class="commentary">And it also tangles matching declarations for:
 </p>
@@ -145,7 +145,7 @@ compositor function:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">competitor_NTM</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Nonterminals</span><span class="plain-syntax">::</span><span class="identifier-syntax">find</span><span class="plain-syntax">(</span><span class="identifier-syntax">Vocabulary</span><span class="plain-syntax">::</span><span class="identifier-syntax">entry_for_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="string-syntax">"&lt;competitor&gt;"</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">competitor_NTM</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Nonterminals</span><span class="plain-syntax">::</span><span class="identifier-syntax">find</span><span class="plain-syntax">(</span><span class="identifier-syntax">Vocabulary</span><span class="plain-syntax">::</span><span class="identifier-syntax">entry_for_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">U</span><span class="string-syntax">"&lt;competitor&gt;"</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">competitor_NTM</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">compositor_fn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">competitor_NTMC</span><span class="plain-syntax">;</span>
 </pre>
 <p class="commentary">Note that it is absolutely necessary that <span class="extract"><span class="extract-syntax">Nonterminals::find</span></span> does

@@ -145,10 +145,70 @@ void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd, tex
 					DocumentationRenderer::close_subpage();
 				}
 			}
+		if (Str::len(cd->xrefs_file_pattern) > 0) {
+			filename *XF = Filenames::in(P, cd->xrefs_file_pattern);
+			text_stream XR_struct;
+			text_stream *XR = &XR_struct;
+			if (STREAM_OPEN_TO_FILE(XR, XF, UTF8_ENC)) {
+				markdown_item *latest_file = NULL;
+				DocumentationRenderer::list_tags(XR, cd->markdown_content, &latest_file);
+				STREAM_CLOSE(XR);
+			}
+		}
 	}
 }
 
 @ =
+void DocumentationRenderer::list_tags(OUTPUT_STREAM, markdown_item *md,
+	markdown_item **latest_file) {
+	if (md->type == FILE_MIT) *latest_file = md;
+	if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) == 2)) {
+		TEMPORARY_TEXT(sname)
+		WRITE_TO(sname, "%S", md->stashed);
+		if (Str::begins_with(sname, I"Section ")) Str::delete_n_characters(sname, 8);
+		int N = DocumentationRenderer::list_actual_tags(OUT, md->down, 1);
+		N += DocumentationRenderer::list_actual_tags(OUT, md->down, 2);
+		if (N > 0) {
+			WRITE("_ ");
+			filename *F = Markdown::get_filename(*latest_file);
+			Filenames::write_unextended_leafname(OUT, F);
+			WRITE(" \"");
+			for (int i=0; i<Str::len(sname); i++) {
+				inchar32_t c = Str::get_at(sname, i);
+				if (c == ':') break;
+				PUT(c);
+			}
+			WRITE("\" \"");
+			for (int i=0, colon_count=0; i<Str::len(sname); i++) {
+				inchar32_t c = Str::get_at(sname, i);
+				if ((c == ':') && (colon_count++ == 0)) { PUT('.'); }
+				else { PUT(c); }
+			}
+			WRITE("\"\n");
+		}
+	}
+	for (markdown_item *ch = md->down; ch; ch = ch->next)
+		DocumentationRenderer::list_tags(OUT, ch, latest_file);
+}
+
+int DocumentationRenderer::list_actual_tags(OUTPUT_STREAM, markdown_item *md, int pass) {
+	int t = 0;
+	for (; md; md = md->next) {
+		if (md->type == HEADING_MARKER_MIT) {
+			int phrasal = FALSE;
+			if ((Str::begins_with(md->stashed, I"ph_")) || (Str::begins_with(md->stashed, I"phs_")))
+				phrasal = TRUE;
+			if (((pass == 1) && (phrasal == FALSE)) ||
+				((pass == 2) && (phrasal == TRUE))) {
+				t++;
+				WRITE("%S ", md->stashed);
+			}
+		}
+		if (md->down) t += DocumentationRenderer::list_actual_tags(OUT, md->down, pass);
+	}
+	return t;
+}
+
 void DocumentationRenderer::render_index_page(OUTPUT_STREAM, compiled_documentation *cd,
 	markdown_item *md, text_stream *extras) {
 	DocumentationRenderer::render_header(OUT, cd->title, NULL, cd->within_extension);

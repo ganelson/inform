@@ -70,6 +70,7 @@ typedef struct compiled_documentation {
 	struct linked_list *volumes; /* of |cd_volume| */
 	struct text_stream *contents_URL_pattern;
 	int duplex_contents_page;
+	struct text_stream *xrefs_file_pattern;
 
 	struct markdown_item *markdown_content;
 	struct md_links_dictionary *link_references;
@@ -110,6 +111,7 @@ typedef struct cd_volume {
 	struct text_stream *title;
 	struct text_stream *label;
 	struct text_stream *home_URL;
+	struct linked_list *source_files; /* Markdown source leafnames */
 	struct linked_list *pagesets; /* of |cd_pageset| */
 	struct markdown_item *volume_item;
 	CLASS_DEFINITION
@@ -121,10 +123,19 @@ cd_volume *DocumentationCompiler::add_volume(compiled_documentation *cd, text_st
 	vol->title = Str::duplicate(title);
 	vol->label = Str::duplicate(label);
 	vol->home_URL = Str::duplicate(home_URL);
+	vol->source_files = NEW_LINKED_LIST(text_stream);
 	vol->pagesets = NEW_LINKED_LIST(cd_pageset);
 	vol->volume_item = NULL;
 	ADD_TO_LINKED_LIST(vol, cd_volume, cd->volumes);
 	return vol;
+}
+
+cd_volume *DocumentationCompiler::find_volume(compiled_documentation *cd, text_stream *title) {
+	cd_volume *V;
+	LOOP_OVER_LINKED_LIST(V, cd_volume, cd->volumes)
+		if ((Str::eq_insensitive(title, V->title)) || (Str::eq_insensitive(title, V->label)))
+			return V;
+	return NULL;
 }
 
 text_stream *DocumentationCompiler::home_URL_at_volume_item(markdown_item *vol) {
@@ -219,7 +230,7 @@ int DocumentationCompiler::scold(OUTPUT_STREAM, compiled_documentation *cd) {
 	}
 	if (LinkedLists::len(cd->layout_errors) == 0) return FALSE;
 	HTML_OPEN("p");
-	WRITE("No documentation has been produced because the 'layout.txt' file was invalid:");
+	WRITE("No documentation has been produced because the 'contents.txt' or 'sitemap.txt' file was invalid:");
 	HTML_CLOSE("p");
 	HTML_OPEN("ul");
 	cd_layout_error *err;
@@ -252,8 +263,21 @@ compiled_documentation *DocumentationCompiler::new_cd(pathname *P,
 	Indexes::add_indexing_notation(cd, NULL, NULL, I"standard", NULL);
 	if (LinkedLists::len(cd->volumes) == 0) {
 		cd_volume *implied = DocumentationCompiler::add_volume(cd, cd->title, NULL, I"index.html");
-		DocumentationCompiler::add_page(implied, I"Documentation.md",
-			I"chapter*.html", CHAPTER_PAGESETBREAKING);
+		ADD_TO_LINKED_LIST(I"Documentation.md", text_stream, implied->source_files);
+	}
+	cd_volume *V;
+	LOOP_OVER_LINKED_LIST(V, cd_volume, cd->volumes) {
+		if ((LinkedLists::len(V->source_files) > 0) &&
+			(LinkedLists::len(V->pagesets) == 0)) {
+			text_stream *sf;
+			LOOP_OVER_LINKED_LIST(sf, text_stream, V->source_files) {
+				TEMPORARY_TEXT(dest)
+				if (LinkedLists::len(cd->volumes) > 1) WRITE_TO(dest, "%S_", V->label);
+				WRITE_TO(dest, "chapter#.html");
+				DocumentationCompiler::add_page(V, sf, dest, CHAPTER_PAGESETBREAKING);
+				DISCARD_TEXT(dest)
+			}
+		}
 	}
 	return cd;
 }
@@ -273,6 +297,7 @@ compiled_documentation *DocumentationCompiler::new_cd(pathname *P,
 	cd->examples_lettered = TRUE;
 	cd->example_URL_pattern = I"eg_#.html";
 	cd->contents_URL_pattern = I"index.html";
+	cd->xrefs_file_pattern = NULL;
 	cd->index_URL_pattern[ALPHABETICAL_EG_INDEX] = I"alphabetical_index.html";
 	cd->index_URL_pattern[NUMERICAL_EG_INDEX] = I"numerical_index.html";
 	cd->index_URL_pattern[THEMATIC_EG_INDEX] = I"thematic_index.html";
@@ -309,127 +334,63 @@ compiled_documentation *DocumentationCompiler::new_cd(pathname *P,
 	}
 
 @<Read the layout file, if there is one@> =
-	filename *layout_file = Filenames::in(P, I"layout.txt");
+	filename *layout_file = Filenames::in(P, I"contents.txt");
+	filename *sitemap_file = Filenames::in(P, I"sitemap.txt");
 	if (TextFiles::exists(layout_file))
 		TextFiles::read(layout_file, FALSE, "can't open layout file",
-			TRUE, DocumentationCompiler::read_layout_helper, NULL, cd);
+			TRUE, DocumentationCompiler::read_contents_helper, NULL, cd);
 	else if (Documentation_md_cdsf) Documentation_md_cdsf->used = TRUE;
+	if (TextFiles::exists(sitemap_file))
+		TextFiles::read(sitemap_file, FALSE, "can't open sitemap file",
+			TRUE, DocumentationCompiler::read_sitemap_helper, NULL, cd);
 
 @ =
-void DocumentationCompiler::read_layout_helper(text_stream *cl, text_file_position *tfp,
+void DocumentationCompiler::read_contents_helper(text_stream *cl, text_file_position *tfp,
 	void *v_cd) {
 	compiled_documentation *cd = (compiled_documentation *) v_cd;
+	Str::trim_white_space(cl);
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, cl, U" *#%c*")) { Regexp::dispose_of(&mr); return; }
 	if (Regexp::match(&mr, cl, U" *")) { Regexp::dispose_of(&mr); return; }
 
-	if (Regexp::match(&mr, cl, U" *contents: *(%c+?) to \"(%c*)\"")) {
-		if (Str::eq(mr.exp[0], I"standard")) cd->duplex_contents_page = FALSE;
-		else if (Str::eq(mr.exp[0], I"duplex")) cd->duplex_contents_page = TRUE;
-		else DocumentationCompiler::layout_error(cd, I"'contents:' must be 'standard' or 'duplex'", cl, tfp);
-		cd->contents_URL_pattern = Str::duplicate(mr.exp[1]);
-	} else if (Regexp::match(&mr, cl, U" *examples: *(%c+?) to \"(%c*)\"")) {
-		if (Str::eq(mr.exp[0], I"lettered")) cd->examples_lettered = TRUE;
-		else if (Str::eq(mr.exp[0], I"numbered")) cd->examples_lettered = FALSE;
-		else DocumentationCompiler::layout_error(cd, I"'examples:' must be 'lettered' or 'numbered'", cl, tfp);
-		cd->example_URL_pattern = Str::duplicate(mr.exp[1]);
-	} else if (Regexp::match(&mr, cl, U" *pages: *(%c*?) *")) {
-		@<Act on a page-set declaration@>;
-	} else if (Regexp::match(&mr, cl, U" *volume: *\"(%c*?)\" or \"(%C+)\" to \"(%c*?)\"")) {
+	if (Regexp::match(&mr, cl, U" *text: *(%c*?)")) {
+		@<Act on a text declaration@>;
+	} else if (Regexp::match(&mr, cl, U" *volume: *\"(%c*?)\" or \"(%C+)\"")) {
 		@<Act on a volume declaration@>;
-	} else if (Regexp::match(&mr, cl, U" *alphabetical index: *\"(%c*?)\" to \"(%c*?)\" *")) {
-		cd->index_title[ALPHABETICAL_EG_INDEX] = Str::duplicate(mr.exp[0]);
-		cd->index_URL_pattern[ALPHABETICAL_EG_INDEX] = Str::duplicate(mr.exp[1]);
-		cd->include_index[ALPHABETICAL_EG_INDEX] = TRUE;
-	} else if (Regexp::match(&mr, cl, U" *numerical index: *\"(%c*?)\" to \"(%c*?)\" *")) {
-		cd->index_title[NUMERICAL_EG_INDEX] = Str::duplicate(mr.exp[0]);
-		cd->index_URL_pattern[NUMERICAL_EG_INDEX] = Str::duplicate(mr.exp[1]);
-		cd->include_index[NUMERICAL_EG_INDEX] = TRUE;
-	} else if (Regexp::match(&mr, cl, U" *thematic index: *\"(%c*?)\" to \"(%c*?)\" *")) {
-		cd->index_title[THEMATIC_EG_INDEX] = Str::duplicate(mr.exp[0]);
-		cd->index_URL_pattern[THEMATIC_EG_INDEX] = Str::duplicate(mr.exp[1]);
-		cd->include_index[THEMATIC_EG_INDEX] = TRUE;
-	} else if (Regexp::match(&mr, cl, U" *general index: *\"(%c*?)\" to \"(%c*?)\" *")) {
-		cd->index_title[GENERAL_INDEX] = Str::duplicate(mr.exp[0]);
-		cd->index_URL_pattern[GENERAL_INDEX] = Str::duplicate(mr.exp[1]);
-		cd->include_index[GENERAL_INDEX] = TRUE;
-	} else if (Regexp::match(&mr, cl, U" *index notation: *(%c*?) *")) {
+	} else if (Regexp::match(&mr, cl, U" *index notation: *(%c*?)")) {
 		@<Act on an indexing notation@>;
 	} else {
-		DocumentationCompiler::layout_error(cd, I"unknown syntax in layout file", cl, tfp);
+		DocumentationCompiler::layout_error(cd, I"unknown syntax in content.txt file", cl, tfp);
 	}
 	Regexp::dispose_of(&mr);
 }
 
 @<Act on a volume declaration@> =
-	if (Str::eq(mr.exp[2], I"index.html"))
-		DocumentationCompiler::layout_error(cd, I"a volume home page cannot be 'index.html'", cl, tfp);
-	DocumentationCompiler::add_volume(cd, mr.exp[0], mr.exp[1], mr.exp[2]);
+	DocumentationCompiler::add_volume(cd, mr.exp[0], mr.exp[1], NULL);
 
-@<Act on a page-set declaration@> =
-	TEMPORARY_TEXT(src)
-	WRITE_TO(src, "Documentation.md");
-	TEMPORARY_TEXT(dest)
-	int breaking = NO_PAGESETBREAKING;
-
-	text_stream *set = mr.exp[0];
+@<Act on a text declaration@> =
+	text_stream *src = I"Documentation.md";
 	match_results mr2 = Regexp::create_mr();
-	if (Regexp::match(&mr2, set, U"(%c*) to \"(%c*?.html)\"")) {
-		Str::clear(dest); WRITE_TO(dest, "%S", mr2.exp[1]);
-		Str::clear(set); WRITE_TO(set, "%S", mr2.exp[0]);
-	} else if (Regexp::match(&mr2, set, U"(%c*) to \"(%c*?)\"")) {
-		DocumentationCompiler::layout_error(cd, I"destination file must have filename extension '.html'", cl, tfp);
-	}
-	if (Regexp::match(&mr2, set, U"(%c*) by sections")) {
-		breaking = SECTION_PAGESETBREAKING;
-		Str::clear(set); WRITE_TO(set, "%S", mr2.exp[0]);
-	} else if (Regexp::match(&mr2, set, U"(%c*) by chapters")) {
-		breaking = CHAPTER_PAGESETBREAKING;
-		Str::clear(set); WRITE_TO(set, "%S", mr2.exp[0]);
-	} else if (Regexp::match(&mr2, set, U"(%c*) by %c*")) {
-		DocumentationCompiler::layout_error(cd, I"pages may be split only 'by sections' or 'by chapters'", cl, tfp);
-		Str::clear(set); WRITE_TO(set, "%S", mr2.exp[0]);
-	}
-	if (Regexp::match(&mr2, set, U"\"(%c*?.md)\"")) {
-		Str::clear(src); WRITE_TO(src, "%S", mr2.exp[0]);
-	} else if (Regexp::match(&mr2, set, U"\"(%c*?)\"")) {
+	if (Regexp::match(&mr2, mr.exp[0], U"\"(%c*?.md)\"")) {
+		src = Str::duplicate(mr2.exp[0]);
+	} else if (Regexp::match(&mr2, mr.exp[0], U"\"(%c*?)\"")) {
 		DocumentationCompiler::layout_error(cd, I"source file must have filename extension '.md'", cl, tfp);
 	} else {
 		DocumentationCompiler::layout_error(cd, I"unknown syntax in layout file", cl, tfp);
 	}
 	Regexp::dispose_of(&mr2);
 
-	int hash_count = 0;
-	LOOP_THROUGH_TEXT(pos, dest) if (Str::get(pos) == '#') hash_count++;
-	if (hash_count == 0) {
-		if (breaking != NO_PAGESETBREAKING)
-			DocumentationCompiler::layout_error(cd,
-				I"destination must contain a '#' for where the chapter/section number goes", cl, tfp);
-	} else if (hash_count == 1) {
-		if (breaking == NO_PAGESETBREAKING)
-			DocumentationCompiler::layout_error(cd,
-				I"destination can only contain a '#' when breaking by chapters or sections", cl, tfp);
-	} else {
-		DocumentationCompiler::layout_error(cd,
-			I"destination can only contain only one '#', and only when breaking by chapters or sections", cl, tfp);
-	}
-
 	int slash_count = 0;
 	LOOP_THROUGH_TEXT(pos, src) if ((Str::get(pos) == '/') || (Str::get(pos) == '\\')) slash_count++;
-	LOOP_THROUGH_TEXT(pos, dest) if ((Str::get(pos) == '/') || (Str::get(pos) == '\\')) slash_count++;
 	if (slash_count > 0)
 		DocumentationCompiler::layout_error(cd,
-			I"neither source nor destination can contain slashes", cl, tfp);
+			I"text source cannot contain slash characters", cl, tfp);
 
-	int star_count_1 = 0, star_count_2 = 0;
+	int star_count_1 = 0;
 	LOOP_THROUGH_TEXT(pos, src) if (Str::get(pos) == '*') star_count_1++;
-	LOOP_THROUGH_TEXT(pos, dest) if (Str::get(pos) == '*') star_count_2++;
 	if (star_count_1 > 1)
 		DocumentationCompiler::layout_error(cd,
 			I"source can contain at most one '*'", cl, tfp);
-	else if (star_count_2 > star_count_1)
-		DocumentationCompiler::layout_error(cd,
-			I"destination can contain at most one '*', and only if source does", cl, tfp);
 
 	cd_volume *vol, *last_vol = NULL;
 	LOOP_OVER_LINKED_LIST(vol, cd_volume, cd->volumes) last_vol = vol;
@@ -452,21 +413,7 @@ void DocumentationCompiler::read_layout_helper(text_stream *cl, text_file_positi
 			}
 			if ((Str::begins_with(entry, prefix_must_be)) &&
 				(Str::ends_with(entry, suffix_must_be))) {
-				if (star_count_2 == 0)
-					DocumentationCompiler::add_page(last_vol, entry, dest, breaking);
-				else {
-					TEMPORARY_TEXT(expanded_dest)
-					for (int i=0; i<Str::len(dest); i++)
-						if (Str::get_at(dest, i) == '*') {
-							Str::substr(expanded_dest,
-								Str::at(entry, Str::len(prefix_must_be)),
-								Str::at(entry, Str::len(entry) - Str::len(suffix_must_be)));
-						} else {
-							PUT_TO(expanded_dest, Str::get_at(dest, i));
-						}
-					DocumentationCompiler::add_page(last_vol, entry, expanded_dest, breaking);
-					DISCARD_TEXT(expanded_dest)
-				}
+				ADD_TO_LINKED_LIST(entry, text_stream, last_vol->source_files);
 				counter++;
 				cdsf->used++;
 			}
@@ -477,10 +424,9 @@ void DocumentationCompiler::read_layout_helper(text_stream *cl, text_file_positi
 			DocumentationCompiler::layout_error(cd,
 				I"no Markdown file has a name matching this source", cl, tfp);
 	} else {
-		DocumentationCompiler::add_page(last_vol, src, dest, breaking);
+		ADD_TO_LINKED_LIST(I"Documentation.md", text_stream, last_vol->source_files);
 	}
 	DISCARD_TEXT(src)
-	DISCARD_TEXT(dest)
 
 @<Act on an indexing notation@> =
 	text_stream *tweak = mr.exp[0];
@@ -499,6 +445,137 @@ void DocumentationCompiler::read_layout_helper(text_stream *cl, text_file_positi
 		DocumentationCompiler::layout_error(cd, I"bad indexing notation", cl, tfp);
 	}
 	Regexp::dispose_of(&mr2);
+
+@
+
+=
+void DocumentationCompiler::read_sitemap_helper(text_stream *cl, text_file_position *tfp,
+	void *v_cd) {
+	compiled_documentation *cd = (compiled_documentation *) v_cd;
+	Str::trim_white_space(cl);
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, cl, U" *#%c*")) { Regexp::dispose_of(&mr); return; }
+	if (Regexp::match(&mr, cl, U" *")) { Regexp::dispose_of(&mr); return; }
+
+	if (Regexp::match(&mr, cl, U" *cross-references: to \"(%c*)\"")) {
+		cd->xrefs_file_pattern = Str::duplicate(mr.exp[0]);
+	} else if (Regexp::match(&mr, cl, U" *contents: *(%c+?) to \"(%c*)\"")) {
+		if (Str::eq(mr.exp[0], I"standard")) cd->duplex_contents_page = FALSE;
+		else if (Str::eq(mr.exp[0], I"duplex")) cd->duplex_contents_page = TRUE;
+		else DocumentationCompiler::layout_error(cd, I"'contents:' must be 'standard' or 'duplex'", cl, tfp);
+		cd->contents_URL_pattern = Str::duplicate(mr.exp[1]);
+	} else if (Regexp::match(&mr, cl, U" *examples: *(%c+?) to \"(%c*)\"")) {
+		if (Str::eq(mr.exp[0], I"lettered")) cd->examples_lettered = TRUE;
+		else if (Str::eq(mr.exp[0], I"numbered")) cd->examples_lettered = FALSE;
+		else DocumentationCompiler::layout_error(cd, I"'examples:' must be 'lettered' or 'numbered'", cl, tfp);
+		cd->example_URL_pattern = Str::duplicate(mr.exp[1]);
+	} else if (Regexp::match(&mr, cl, U" *pages: *(%c*?) *")) {
+		@<Act on a page-set declaration@>;
+	} else if (Regexp::match(&mr, cl, U" *volume contents: *\"(%c*?)\" to \"(%c*?)\"")) {
+		@<Act on a volume contents declaration@>;
+	} else if (Regexp::match(&mr, cl, U" *alphabetical index: *\"(%c*?)\" to \"(%c*?)\" *")) {
+		cd->index_title[ALPHABETICAL_EG_INDEX] = Str::duplicate(mr.exp[0]);
+		cd->index_URL_pattern[ALPHABETICAL_EG_INDEX] = Str::duplicate(mr.exp[1]);
+		cd->include_index[ALPHABETICAL_EG_INDEX] = TRUE;
+	} else if (Regexp::match(&mr, cl, U" *numerical index: *\"(%c*?)\" to \"(%c*?)\" *")) {
+		cd->index_title[NUMERICAL_EG_INDEX] = Str::duplicate(mr.exp[0]);
+		cd->index_URL_pattern[NUMERICAL_EG_INDEX] = Str::duplicate(mr.exp[1]);
+		cd->include_index[NUMERICAL_EG_INDEX] = TRUE;
+	} else if (Regexp::match(&mr, cl, U" *thematic index: *\"(%c*?)\" to \"(%c*?)\" *")) {
+		cd->index_title[THEMATIC_EG_INDEX] = Str::duplicate(mr.exp[0]);
+		cd->index_URL_pattern[THEMATIC_EG_INDEX] = Str::duplicate(mr.exp[1]);
+		cd->include_index[THEMATIC_EG_INDEX] = TRUE;
+	} else if (Regexp::match(&mr, cl, U" *general index: *\"(%c*?)\" to \"(%c*?)\" *")) {
+		cd->index_title[GENERAL_INDEX] = Str::duplicate(mr.exp[0]);
+		cd->index_URL_pattern[GENERAL_INDEX] = Str::duplicate(mr.exp[1]);
+		cd->include_index[GENERAL_INDEX] = TRUE;
+	} else {
+		DocumentationCompiler::layout_error(cd, I"unknown syntax in layout file", cl, tfp);
+	}
+	Regexp::dispose_of(&mr);
+}
+
+@<Act on a volume contents declaration@> =
+	if (Str::eq(mr.exp[1], I"index.html"))
+		DocumentationCompiler::layout_error(cd, I"a volume home page cannot be 'index.html'", cl, tfp);
+	cd_volume *V = DocumentationCompiler::find_volume(cd, mr.exp[0]);
+	if (V) V->home_URL = Str::duplicate(mr.exp[1]);
+	else DocumentationCompiler::layout_error(cd, I"unknown volume in sitemap file", cl, tfp);
+
+@<Act on a page-set declaration@> =
+	TEMPORARY_TEXT(dest)
+	int breaking = NO_PAGESETBREAKING;
+	cd_volume *V = NULL;
+
+	text_stream *set = mr.exp[0];
+	match_results mr2 = Regexp::create_mr();
+	if (Regexp::match(&mr2, set, U"(%c*) to \"(%c*?.html)\"")) {
+		Str::clear(dest); WRITE_TO(dest, "%S", mr2.exp[1]);
+		Str::clear(set); WRITE_TO(set, "%S", mr2.exp[0]);
+	} else if (Regexp::match(&mr2, set, U"(%c*) to \"(%c*?)\"")) {
+		DocumentationCompiler::layout_error(cd, I"destination file must have filename extension '.html'", cl, tfp);
+	}
+	if (Regexp::match(&mr2, set, U"(%c*) by sections")) {
+		breaking = SECTION_PAGESETBREAKING;
+		Str::clear(set); WRITE_TO(set, "%S", mr2.exp[0]);
+	} else if (Regexp::match(&mr2, set, U"(%c*) by chapters")) {
+		breaking = CHAPTER_PAGESETBREAKING;
+		Str::clear(set); WRITE_TO(set, "%S", mr2.exp[0]);
+	} else if (Regexp::match(&mr2, set, U"(%c*) by %c*")) {
+		DocumentationCompiler::layout_error(cd, I"pages may be split only 'by sections' or 'by chapters'", cl, tfp);
+		Str::clear(set); WRITE_TO(set, "%S", mr2.exp[0]);
+	}
+	if (Str::ne_insensitive(set, I"all")) {
+		V = DocumentationCompiler::find_volume(cd, mr.exp[0]);
+		if (V == NULL) DocumentationCompiler::layout_error(cd, I"unknown volume", cl, tfp);
+	}
+	Regexp::dispose_of(&mr2);
+	
+	int hash_count = 0;
+	LOOP_THROUGH_TEXT(pos, dest) if (Str::get(pos) == '#') hash_count++;
+	if (hash_count == 0) {
+		if (breaking != NO_PAGESETBREAKING)
+			DocumentationCompiler::layout_error(cd,
+				I"destination must contain a '#' for where the chapter/section number goes", cl, tfp);
+	} else if (hash_count == 1) {
+		if (breaking == NO_PAGESETBREAKING)
+			DocumentationCompiler::layout_error(cd,
+				I"destination can only contain a '#' when breaking by chapters or sections", cl, tfp);
+	} else {
+		DocumentationCompiler::layout_error(cd,
+			I"destination can only contain only one '#', and only when breaking by chapters or sections", cl, tfp);
+	}
+
+	int slash_count = 0;
+	LOOP_THROUGH_TEXT(pos, dest) if ((Str::get(pos) == '/') || (Str::get(pos) == '\\')) slash_count++;
+	if (slash_count > 0)
+		DocumentationCompiler::layout_error(cd,
+			I"no destination filename can (yet) contain slashes", cl, tfp);
+
+	int star_count_2 = 0;
+	LOOP_THROUGH_TEXT(pos, dest) if (Str::get(pos) == '*') star_count_2++;
+	if (star_count_2 > 1)
+		DocumentationCompiler::layout_error(cd,
+			I"destination can contain at most one '*'", cl, tfp);
+
+	cd_volume *W;
+	LOOP_OVER_LINKED_LIST(W, cd_volume, cd->volumes) {
+		if ((V == NULL) || (V == W)) {
+			text_stream *sf;
+			LOOP_OVER_LINKED_LIST(sf, text_stream, W->source_files) {
+				TEMPORARY_TEXT(expanded_dest)
+				for (int i=0; i<Str::len(dest); i++)
+					if (Str::get_at(dest, i) == '*') {
+						WRITE_TO(expanded_dest, "%S", sf);
+					} else {
+						PUT_TO(expanded_dest, Str::get_at(dest, i));
+					}
+				DocumentationCompiler::add_page(W, sf, expanded_dest, breaking);
+				DISCARD_TEXT(expanded_dest)
+			}
+		}
+	}
+	DISCARD_TEXT(dest)
 
 @ "Satellite test cases" is an umbrella term including both examples and test
 cases, all of which are tested when an extension (say) is tested.
