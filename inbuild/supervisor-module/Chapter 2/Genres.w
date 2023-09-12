@@ -194,7 +194,7 @@ VOID_METHOD_TYPE(GENRE_COPY_TO_NEST_MTID,
 
 =
 VOID_METHOD_TYPE(GENRE_DOCUMENT_MTID,
-	inbuild_genre *gen, inbuild_copy *C, pathname *dest)
+	inbuild_genre *gen, inbuild_copy *C, pathname *dest, filename *sitemap)
 
 @ This performs some sort of automatic-update to the latest format:
 

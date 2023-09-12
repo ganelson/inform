@@ -487,8 +487,9 @@ void ExtensionBundleManager::read_source_text_for(inbuild_genre *G, inbuild_copy
 @h Documentation.
 
 =
-void ExtensionBundleManager::document(inbuild_genre *gen, inbuild_copy *C, pathname *dest) {
-	Extensions::document(Extensions::from_copy(C), dest);
+void ExtensionBundleManager::document(inbuild_genre *gen, inbuild_copy *C, pathname *dest,
+	filename *sitemap) {
+	Extensions::document(Extensions::from_copy(C), dest, sitemap);
 }
 
 @h Modernisation.

@@ -13,9 +13,6 @@ usage: inbuild [-TASK] TARGET1 TARGET2 ...
 -no-confirmed                  don't confirm installation in the Inform GUI apps (default is -confirmed)
 -contents-of X                 apply to all targets in the directory X
 -copy-to X                     copy target(s) to nest X
--document                      (re-)generate documentation on this within current project
--document-from X               generate documentation from documentation source file X
--document-to X                 divert generated documentation to directory X
 -dry                           make this a dry run (print but do not execute shell commands) (default is -no-dry)
 -graph                         show dependency graph of target(s) but take no action
 -inspect                       show target(s) but take no action
@@ -65,6 +62,13 @@ for tweaking code generation from Inter:
   -pipeline X                  specify code-generation pipeline by name (default is "compile")
   -pipeline-file X             specify code-generation pipeline as file X
   -variable X                  set pipeline variable X (in form name=value)
+
+for generating extension or kit documentation:
+  -document                    (re-)generate documentation on this within current project
+  -document-from X             generate documentation from documentation in a single Markdown file X
+  -document-set X              generate documentation from a full documentation set in the path X
+  -document-sitemap X          use file X as the 'sitemap.txt' when generating documentation sets
+  -document-to X               divert generated documentation to directory X
 
 for generating HTML from Markdown:
   -markdown-from X             generate HTML file from Markdown source file X

@@ -11,11 +11,11 @@ We can compile either from a single one-off file:
 
 =
 compiled_documentation *DocumentationCompiler::compile_from_file(filename *F,
-	inform_extension *associated_extension) {
+	inform_extension *associated_extension, filename *sitemap) {
 	TEMPORARY_TEXT(temp)
 	TextFiles::write_file_contents(temp, F);
 	compiled_documentation *cd =
-		DocumentationCompiler::compile_from_text(temp, associated_extension);
+		DocumentationCompiler::compile_from_text(temp, associated_extension, sitemap);
 	DISCARD_TEXT(temp)
 	return cd;
 }
@@ -25,9 +25,9 @@ torn-off documentation is found:
 
 =
 compiled_documentation *DocumentationCompiler::compile_from_text(text_stream *scrap,
-	inform_extension *associated_extension) {
+	inform_extension *associated_extension, filename *sitemap) {
 	SVEXPLAIN(1, "(compiling documentation: %d chars)\n", Str::len(scrap));
-	compiled_documentation *cd = DocumentationCompiler::new_cd(NULL, associated_extension);
+	compiled_documentation *cd = DocumentationCompiler::new_cd(NULL, associated_extension, sitemap);
 	cd_volume *vol = FIRST_IN_LINKED_LIST(cd_volume, cd->volumes);
 	cd_pageset *page = FIRST_IN_LINKED_LIST(cd_pageset, vol->pagesets);
 	page->nonfile_content = scrap;
@@ -41,8 +41,8 @@ the documentation for a directory-format extension.
 
 =
 compiled_documentation *DocumentationCompiler::compile_from_path(pathname *P,
-	inform_extension *associated_extension) {
-	compiled_documentation *cd = DocumentationCompiler::new_cd(P, associated_extension);
+	inform_extension *associated_extension, filename *sitemap) {
+	compiled_documentation *cd = DocumentationCompiler::new_cd(P, associated_extension, sitemap);
 	DocumentationCompiler::compile_inner(cd);
 	return cd;
 }
@@ -252,15 +252,16 @@ int DocumentationCompiler::scold(OUTPUT_STREAM, compiled_documentation *cd) {
 
 =
 compiled_documentation *DocumentationCompiler::new_cd(pathname *P,
-	inform_extension *associated_extension) {
+	inform_extension *associated_extension, filename *sitemap) {
 	compiled_documentation *cd = CREATE(compiled_documentation);
 	@<Initialise the cd structure@>;
 	if (P) {
 		cd_source_file *Documentation_md_cdsf = NULL;
 		@<Find the possible Markdown source files@>;
-		@<Read the layout file, if there is one@>;
+		@<Read the contents and sitemap files, if they exist@>;
 	}
 	Indexes::add_indexing_notation(cd, NULL, NULL, I"standard", NULL);
+	Indexes::add_indexing_notation(cd, I"@", NULL, I"name", I"(invert)");
 	if (LinkedLists::len(cd->volumes) == 0) {
 		cd_volume *implied = DocumentationCompiler::add_volume(cd, cd->title, NULL, I"index.html");
 		ADD_TO_LINKED_LIST(I"Documentation.md", text_stream, implied->source_files);
@@ -333,15 +334,15 @@ compiled_documentation *DocumentationCompiler::new_cd(pathname *P,
 		}
 	}
 
-@<Read the layout file, if there is one@> =
+@<Read the contents and sitemap files, if they exist@> =
 	filename *layout_file = Filenames::in(P, I"contents.txt");
-	filename *sitemap_file = Filenames::in(P, I"sitemap.txt");
+	if (sitemap == NULL) sitemap = Filenames::in(P, I"sitemap.txt");
 	if (TextFiles::exists(layout_file))
 		TextFiles::read(layout_file, FALSE, "can't open layout file",
 			TRUE, DocumentationCompiler::read_contents_helper, NULL, cd);
 	else if (Documentation_md_cdsf) Documentation_md_cdsf->used = TRUE;
-	if (TextFiles::exists(sitemap_file))
-		TextFiles::read(sitemap_file, FALSE, "can't open sitemap file",
+	if (TextFiles::exists(sitemap))
+		TextFiles::read(sitemap, FALSE, "can't open sitemap file",
 			TRUE, DocumentationCompiler::read_sitemap_helper, NULL, cd);
 
 @ =
@@ -566,7 +567,9 @@ void DocumentationCompiler::read_sitemap_helper(text_stream *cl, text_file_posit
 				TEMPORARY_TEXT(expanded_dest)
 				for (int i=0; i<Str::len(dest); i++)
 					if (Str::get_at(dest, i) == '*') {
-						WRITE_TO(expanded_dest, "%S", sf);
+						for (int j=0; j<Str::len(sf)-3; j++)
+							PUT_TO(expanded_dest, Str::get_at(sf, j));
+						
 					} else {
 						PUT_TO(expanded_dest, Str::get_at(dest, i));
 					}

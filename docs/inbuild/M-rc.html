@@ -71,9 +71,6 @@ and those not documented in this manual are covered in that one.
 <span class="plain-syntax">-no-confirmed                  don't confirm installation in the Inform GUI apps (default is -confirmed)</span>
 <span class="plain-syntax">-contents-of X                 apply to all targets in the directory X</span>
 <span class="plain-syntax">-copy-to X                     copy target(s) to nest X</span>
-<span class="plain-syntax">-document                      (re-)generate documentation on this within current project</span>
-<span class="plain-syntax">-document-from X               generate documentation from documentation source file X</span>
-<span class="plain-syntax">-document-to X                 divert generated documentation to directory X</span>
 <span class="plain-syntax">-dry                           make this a dry run (print but do not execute shell commands) (default is -no-dry)</span>
 <span class="plain-syntax">-graph                         show dependency graph of target(s) but take no action</span>
 <span class="plain-syntax">-inspect                       show target(s) but take no action</span>
@@ -123,6 +120,13 @@ and those not documented in this manual are covered in that one.
 <span class="plain-syntax">  -pipeline X                  specify code-generation pipeline by name (default is "compile")</span>
 <span class="plain-syntax">  -pipeline-file X             specify code-generation pipeline as file X</span>
 <span class="plain-syntax">  -variable X                  set pipeline variable X (in form name=value)</span>
+
+<span class="plain-syntax">for generating extension or kit documentation:</span>
+<span class="plain-syntax">  -document                    (re-)generate documentation on this within current project</span>
+<span class="plain-syntax">  -document-from X             generate documentation from documentation in a single Markdown file X</span>
+<span class="plain-syntax">  -document-set X              generate documentation from a full documentation set in the path X</span>
+<span class="plain-syntax">  -document-sitemap X          use file X as the 'sitemap.txt' when generating documentation sets</span>
+<span class="plain-syntax">  -document-to X               divert generated documentation to directory X</span>
 
 <span class="plain-syntax">for generating HTML from Markdown:</span>
 <span class="plain-syntax">  -markdown-from X             generate HTML file from Markdown source file X</span>

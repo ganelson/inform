@@ -85,6 +85,9 @@ dictionary *categories_redirect = NULL; /* for the built-in categories only */
 
 =
 void Indexes::add_category(compiled_documentation *cd, text_stream *name, text_stream *options, text_stream *redirect) {
+	name = Str::duplicate(name);
+	options = Str::duplicate(options);
+	redirect = Str::duplicate(redirect);
 	if (Str::len(redirect) > 0) @<This is a redirection@>;
 	if (Dictionaries::find(cd->id.categories_by_name, name) == NULL) {
 		indexing_category *ic = CREATE(indexing_category);

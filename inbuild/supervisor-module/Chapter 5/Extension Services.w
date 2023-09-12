@@ -779,7 +779,7 @@ void Extensions::read_source_text_for(inform_extension *E) {
 	if (E->read_into_file) {
 		text_stream *doc = TextFromFiles::torn_off_documentation(E->read_into_file);
 		if (Str::len(doc) > 0)
-			E->documentation = DocumentationCompiler::compile_from_text(doc, E);
+			E->documentation = DocumentationCompiler::compile_from_text(doc, E, NULL);
 		else E->documentation = NULL;
 		E->read_into_file->your_ref = STORE_POINTER_inbuild_copy(E->as_copy);
 		@<Break the text into sentences@>;
@@ -835,7 +835,8 @@ source_location Extensions::top_line_location(inform_extension *E) {
 @ In directory extensions, documentation can be stored separately:
 
 =
-compiled_documentation *Extensions::get_documentation(inform_extension *E) {
+compiled_documentation *Extensions::get_documentation(inform_extension *E,
+	filename *sitemap) {
 	if (E == NULL) return NULL;
 	Copies::get_source_text(E->as_copy, I"getting documentation"); /* in the unlikely event this has not happened yet */
 	if (E->documentation_sought == FALSE) {
@@ -856,15 +857,15 @@ compiled_documentation *Extensions::get_documentation(inform_extension *E) {
 		Copies::attach_error(E->as_copy, CopyErrors::new_T(EXT_MISWORDED_CE, -1, error_text));
 		DISCARD_TEXT(error_text)					
 	} else {
-		E->documentation = DocumentationCompiler::compile_from_path(D, E);
+		E->documentation = DocumentationCompiler::compile_from_path(D, E, sitemap);
 	}
 
 @ And this serves the |-document| feature of inbuild:
 
 =
-void Extensions::document(inform_extension *E, pathname *dest) {
+void Extensions::document(inform_extension *E, pathname *dest, filename *sitemap) {
 	SVEXPLAIN(1, "(documenting %X to %p)\n", E->as_copy->edition->work, dest);
-	compiled_documentation *cd = Extensions::get_documentation(E);
+	compiled_documentation *cd = Extensions::get_documentation(E, sitemap);
 	DocumentationRenderer::as_HTML(dest, cd, NULL);
 }
 

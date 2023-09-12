@@ -22,6 +22,8 @@ pathname *preprocess_HTML_destination = NULL;
 text_stream *preprocess_HTML_app = NULL;
 inbuild_copy *to_install = NULL, *to_uninstall = NULL;
 filename *documentation_source = NULL;
+pathname *documentation_set = NULL;
+filename *documentation_sitemap = NULL;
 pathname *documentation_dest = NULL;
 
 typedef struct markdown_settings_struct {
@@ -54,6 +56,7 @@ int main(int argc, char **argv) {
 	if (to_install) @<Perform an extension installation@>
 	else if (to_uninstall) @<Perform an extension uninstallation@>
 	else if ((markdown_settings.from) || (markdown_settings.from_dir)) @<Make HTML@>
+	else if (documentation_set) @<Document from a set@>
 	else if (documentation_source) @<Document from a file@>
 	else @<Act on the targets@>;
 	@<Shut down the modules@>;
@@ -151,7 +154,14 @@ error in this case.
 	if (documentation_dest == NULL)
 		Errors::fatal("need to specify '-document-to' directory");
 	compiled_documentation *cd = DocumentationCompiler::compile_from_file(
-		documentation_source, NULL);
+		documentation_source, NULL, documentation_sitemap);
+	if (cd) DocumentationRenderer::as_HTML(documentation_dest, cd, NULL);
+
+@<Document from a set@> =
+	if (documentation_dest == NULL)
+		Errors::fatal("need to specify '-document-to' directory");
+	compiled_documentation *cd = DocumentationCompiler::compile_from_path(
+		documentation_set, NULL, documentation_sitemap);
 	if (cd) DocumentationRenderer::as_HTML(documentation_dest, cd, NULL);
 
 @ We make the function call |Supervisor::go_operational| to signal to |inbuild|
@@ -239,7 +249,7 @@ utility functions in the //supervisor// module, which we call.
 		case DOCUMENT_TTASK:
 			if (documentation_dest == NULL)
 				Errors::fatal("need to specify '-document-to' directory");
-			Copies::document(C, documentation_dest); break;
+			Copies::document(C, documentation_dest, documentation_sitemap); break;
 		case MODERNISE_TTASK: Copies::modernise(OUT, C); break;
 	}
 
@@ -432,10 +442,15 @@ other options to the selection defined here.
 @e VERBOSE_CLSW
 @e VERBOSITY_CLSW
 @e JSON_CLSW
+@e MODERNISE_CLSW
+
+@e DOCUMENTATION_SUITE_CLSG
+
 @e DOCUMENT_CLSW
 @e DOCUMENT_FROM_CLSW
+@e DOCUMENT_SET_CLSW
+@e DOCUMENT_SITEMAP_CLSW
 @e DOCUMENT_TO_CLSW
-@e MODERNISE_CLSW
 
 @e MARKDOWN_SUITE_CLSG
 
@@ -518,14 +533,22 @@ other options to the selection defined here.
 		U"how much explanation to print: lowest is 0 (default), highest is 3");
 	CommandLine::declare_switch(JSON_CLSW, U"json", 2,
 		U"write output of -inspect to a JSON file in X (or '-' for stdout)");
+	CommandLine::declare_switch(MODERNISE_CLSW, U"modernise", 1,
+		U"update copies to the newest available format");
+
+	CommandLine::begin_group(DOCUMENTATION_SUITE_CLSG,
+		I"for generating extension or kit documentation");
 	CommandLine::declare_switch(DOCUMENT_CLSW, U"document", 1,
 		U"(re-)generate documentation on this within current project");
 	CommandLine::declare_switch(DOCUMENT_FROM_CLSW, U"document-from", 2,
-		U"generate documentation from documentation source file X");
+		U"generate documentation from documentation in a single Markdown file X");
+	CommandLine::declare_switch(DOCUMENT_SET_CLSW, U"document-set", 2,
+		U"generate documentation from a full documentation set in the path X");
+	CommandLine::declare_switch(DOCUMENT_SITEMAP_CLSW, U"document-sitemap", 2,
+		U"use file X as the 'sitemap.txt' when generating documentation sets");
 	CommandLine::declare_switch(DOCUMENT_TO_CLSW, U"document-to", 2,
 		U"divert generated documentation to directory X");
-	CommandLine::declare_switch(MODERNISE_CLSW, U"modernise", 1,
-		U"update copies to the newest available format");
+	CommandLine::end_group();
 
 	CommandLine::begin_group(MARKDOWN_SUITE_CLSG, I"for generating HTML from Markdown");
 	CommandLine::declare_switch(MARKDOWN_FROM_CLSW, U"markdown-from", 2,
@@ -622,6 +645,8 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 				JSON_file_to_output = Filenames::from_text(arg);
 			break;
 		case DOCUMENT_FROM_CLSW: documentation_source = Filenames::from_text(arg); break;
+		case DOCUMENT_SET_CLSW: documentation_set = Pathnames::from_text(arg); break;
+		case DOCUMENT_SITEMAP_CLSW: documentation_sitemap = Filenames::from_text(arg); break;
 		case DOCUMENT_TO_CLSW: documentation_dest = Pathnames::from_text(arg); break;
 		
 		case MARKDOWN_FROM_CLSW: markdown_settings.from = Filenames::from_text(arg); break;

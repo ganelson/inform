@@ -342,8 +342,8 @@ void Copies::overwrite_error(inbuild_copy *C, inbuild_nest *N) {
 @ And |-document|:
 
 =
-void Copies::document(inbuild_copy *C, pathname *dest) {
-	VOID_METHOD_CALL(C->edition->work->genre, GENRE_DOCUMENT_MTID, C, dest);
+void Copies::document(inbuild_copy *C, pathname *dest, filename *sitemap) {
+	VOID_METHOD_CALL(C->edition->work->genre, GENRE_DOCUMENT_MTID, C, dest, sitemap);
 }
 
 @ And |-modernise|:

@@ -153,7 +153,7 @@ void ExtensionWebsite::document_extension(inform_extension *E, inform_project *p
 		if (F == NULL) return;
 		pathname *P = Filenames::up(F);
 		if (Pathnames::create_in_file_system(P) == 0) return;
-		compiled_documentation *doc = Extensions::get_documentation(E);
+		compiled_documentation *doc = Extensions::get_documentation(E, NULL);
 		TEMPORARY_TEXT(OUT)
 		#ifdef CORE_MODULE
 		TEMPORARY_TEXT(details)
@@ -222,7 +222,7 @@ void ExtensionWebsite::document_extension(inform_extension *E, inform_project *p
 	if (Pathnames::create_in_file_system(KP)) {
 		pathname *KD = Pathnames::down(K->as_copy->location_if_path, I"Documentation");
 		compiled_documentation *doc =
-			DocumentationCompiler::compile_from_path(KD, NULL);
+			DocumentationCompiler::compile_from_path(KD, NULL, NULL);
 		if (doc == NULL) {
 			text_stream *OUT = DocumentationRenderer::open_subpage(KP, I"index.html");
 			DocumentationRenderer::render_header(OUT, K->as_copy->edition->work->title, NULL, E);
