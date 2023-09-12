@@ -307,14 +307,14 @@ specifies that this is the cover art; it must also be declared with a
 
 @ Fourth, a command for adding static internal data files:
 = (text as Blurb)
-	data <id> <filename> format <format>
+	data <id> <filename> type <format>
 =
 Tells us to take the given data file and embed it into the blorb so that its
 contents can be read whenever the story is played. The "format" here can be
 either |TEXT| or |BINA|, meaning plain text or binary data.
 
 Exactly what |TEXT| means will depend on how the story file wants to read
-the file, but the convention used by Inform is that it should be UTF-8 plaib
+the file, but the convention used by Inform is that it should be UTF-8 plain
 text with Unix line breaks.
 
 Similarly, by |BINA| Inform understands a sequence of big-endian four-byte

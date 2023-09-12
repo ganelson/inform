@@ -883,7 +883,8 @@ capacity; and so is the number 0 itself.
 				(previous_token->eqn_type == OPEN_BRACKET_EQN))
 				token = Equations::enode_new_op(UNARY_MINUS_OPERATION);
 			else
-				token = Equations::enode_new_op(MINUS_OPERATION); break;
+				token = Equations::enode_new_op(MINUS_OPERATION);
+			break;
 		case '/': token = Equations::enode_new_op(DIVIDE_OPERATION); break;
 		case '*': token = Equations::enode_new_op(TIMES_OPERATION); break;
 		case '^': token = Equations::enode_new_op(POWER_OPERATION); break;
