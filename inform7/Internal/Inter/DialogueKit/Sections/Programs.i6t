@@ -585,7 +585,7 @@ This crude function prompts the player for a number from 1 to |max|, waits for
 this to be typed at the keyboard, then returns the choice made.
 
 =
-[ DirectorPickANumber max i j wa wl sign base digit_count n digit;
+[ DirectorPickANumber max i j wa wl sign base digit_count n digit ch;
     for (::) {
     	print ">";
         if (location == nothing || parent(player) == nothing) KeyboardPrimitive(buffer2, parse2);
@@ -596,20 +596,21 @@ this to be typed at the keyboard, then returns the choice made.
 		wl = parse2->4;
         #Ifnot;
         j = parse2-->0;
- 		wa = buffer2 + parse2-->3;
+ 		wa = buffer2 + WORDSIZE * parse2-->3;
 		wl = parse2-->2;
         #Endif;
         if (j) { ! at least one word entered
             sign = 1; base = 10; digit_count = 0;
-			if (wa->0 ~= '-' or '$' or '0' or '1' or '2' or '3' or '4'
-				or '5' or '6' or '7' or '8' or '9')
+			#Iftrue CHARSIZE == 1;
+			ch = wa->0;
+			#Ifnot;
+			ch = wa-->0;
+			#Endif; ! CHARSIZE
+			if (ch ~= '0' or '1' or '2' or '3' or '4' or '5' or '6' or '7' or '8' or '9')
 				jump Retry;
-			if (wa->0 == '-') { sign = -1; wl--; wa++; }
-			if (wl == 0) jump Retry;
 			n = 0;
 			while (wl > 0) {
-				if (wa->0 >= 'a') digit = wa->0 - 'a' + 10;
-				else digit = wa->0 - '0';
+				digit = ch - '0';
 				digit_count++;
 				switch (base) {
 					2:  if (digit_count == 17) jump Retry;
@@ -637,7 +638,12 @@ this to be typed at the keyboard, then returns the choice made.
 				}
 				if (digit >= 0 && digit < base) n = base*n + digit;
 				else jump Retry;
-				wl--; wa++;
+				wl--;
+				#Iftrue CHARSIZE == 1;
+				wa++;
+				#Ifnot;
+				wa = wa + WORDSIZE;
+				#Endif; ! CHARSIZE
 			}
 			n = n*sign;
 			if ((n < 1) || (n > max)) jump Retry;
