@@ -2,6 +2,7 @@ Glk version: 705
 Graphics window mouse input: false
 Grid window mouse input: false
 Timers: false
+Glk graphics: false
 Buffer window images: false
 Graphics window images: false
 Basic sounds: false

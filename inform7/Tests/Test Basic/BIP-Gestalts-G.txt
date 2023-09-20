@@ -3,7 +3,7 @@ To begin:
 	say "Graphics window mouse input: [whether or not graphics window mouse input is supported][line break]";
 	say "Grid window mouse input: [whether or not grid window mouse input is supported][line break]";
 	say "Timers: [whether or not timers are supported][line break]";
-	[say "Graphics: [whether or not graphics are supported][line break]";]
+	say "Glk graphics: [whether or not glk graphics are supported][line break]";
 	say "Buffer window images: [whether or not buffer window graphics are supported][line break]";
 	say "Graphics window images: [whether or not graphics window graphics are supported][line break]";
 	say "Basic sounds: [whether or not basic sounds are supported][line break]";
