@@ -120,7 +120,10 @@ A glk window can be requesting mouse input.
 The requesting mouse input property translates into Inter as "requesting_mouse".
 A glk window has a text called the suspended text input.
 The suspended text input property translates into Inter as "suspended_text_input".
-Include (- with suspended_text_buffer_addr 0, with suspended_text_buffer_maxlen 0 -) when defining a glk window.
+A glk window has a number called the suspended text input buffer address.
+The suspended text input buffer address property translates into Inter as "suspended_text_buffer_addr".
+A glk window has a number called the suspended text input buffer max length.
+The suspended text input buffer max length property translates into Inter as "suspended_text_buffer_maxlen".
 
 To suspend text input in (win - a glk window), without input echoing:
 	(- SuspendTextInput({win}, {phrase options}); -).
