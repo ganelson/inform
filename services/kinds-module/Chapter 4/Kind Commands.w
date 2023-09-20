@@ -253,4 +253,3 @@ int KindCommands::parse_literal_number(text_stream *S, int *bad) {
 	}
 	return -1;
 }
-

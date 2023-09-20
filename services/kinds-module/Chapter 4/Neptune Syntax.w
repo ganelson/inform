@@ -129,6 +129,27 @@ Each command is read in as text, parsed and stored into a modest structure.
 
 =
 kind_constructor *constructor_described = NULL;
+additional_property_set *additional_property_set_described = NULL;
+
+typedef struct additional_property_set {
+	struct text_stream *owner_name;
+	struct linked_list *properties; /* of |additional_property| */
+	CLASS_DEFINITION
+} additional_property_set;
+
+typedef struct additional_property {
+	int attr;
+	struct text_stream *property_name;
+	struct text_stream *value_text;
+	CLASS_DEFINITION
+} additional_property;
+
+additional_property_set *NeptuneSyntax::new_additional_property_set(text_stream *owner_name) {
+	additional_property_set *set = CREATE(additional_property_set);
+	set->owner_name = Str::duplicate(owner_name);
+	set->properties = NEW_LINKED_LIST(additional_property);
+	return set;
+}
 
 single_kind_command NeptuneSyntax::parse_command(text_stream *whole_command,
 	text_file_position *tfp) {
@@ -138,19 +159,26 @@ single_kind_command NeptuneSyntax::parse_command(text_stream *whole_command,
 	if (Str::eq(whole_command, I"}")) {
 		if (StarTemplates::recording()) StarTemplates::end(whole_command, tfp);
 		else if (NeptuneMacros::recording()) NeptuneMacros::end(tfp);
-		else constructor_described = NULL;
+		else {
+			constructor_described = NULL;
+			additional_property_set_described = NULL;
+		}
 		stc.completed = TRUE;
 	} else if (StarTemplates::recording()) {
 		StarTemplates::record_line(whole_command, tfp);
 		stc.completed = TRUE;
 	} else if (Str::get_last_char(whole_command) == '{') {
-		if (constructor_described) {
+		if ((constructor_described) || (additional_property_set_described)) {
 			NeptuneFiles::error(whole_command,
 				I"previous declaration not closed with '}'", tfp);
 			constructor_described = NULL;
+			additional_property_set_described = NULL;
 		}
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, whole_command, U"invention (%C+) {")) {
+		if (Regexp::match(&mr, whole_command, U"properties of (%c+) {")) {
+			additional_property_set_described =
+				NeptuneSyntax::new_additional_property_set(mr.exp[0]);
+		} else if (Regexp::match(&mr, whole_command, U"invention (%C+) {")) {
 			StarTemplates::begin(mr.exp[0], tfp);
 		} else if (Regexp::match(&mr, whole_command, U"macro (#%C+) {")) {
 			NeptuneMacros::begin(mr.exp[0], tfp);
@@ -169,7 +197,7 @@ single_kind_command NeptuneSyntax::parse_command(text_stream *whole_command,
 				else if (Str::eq(mr.exp[1], I"constructor")) group = PROPER_CONSTRUCTOR_GRP;
 				if (group < 0)
 					NeptuneFiles::error(whole_command,
-						I"must declare 'variable', 'protocol', 'base' or 'constructor'", tfp);
+						I"must declare 'variable', 'protocol', 'base' or 'constructor', or 'property'", tfp);
 				else {
 					text_stream *name = mr.exp[2];
 					@<Create a new constructor@>;
@@ -189,21 +217,11 @@ single_kind_command NeptuneSyntax::parse_command(text_stream *whole_command,
 		TEMPORARY_TEXT(argument)
 
 		@<Parse line into command and argument, divided by a colon@>;
-
-		@<Identify the command being used@>;
-
-		switch(stc.which_kind_command->operand_type) {
-			case BOOLEAN_KCA: @<Parse a boolean argument for a kind command@>; break;
-			case CCM_KCA: @<Parse a CCM argument for a kind command@>; break;
-			case CONSTRUCTOR_KCA: @<Parse a constructor-name argument for a kind command@>; break;
-			case MACRO_KCA: @<Parse a macro name argument for a kind command@>; break;
-			case NUMERIC_KCA: @<Parse a numeric argument for a kind command@>; break;
-			case TEMPLATE_KCA: @<Parse a template name argument for a kind command@>; break;
-			case TEXT_KCA: @<Parse a textual argument for a kind command@>; break;
-			case VOCABULARY_KCA: @<Parse a vocabulary argument for a kind command@>; break;
-		}
+		if (additional_property_set_described) @<Handle as an additional property setting@>
+		else @<Handle as a kind constructor setting@>;
 		DISCARD_TEXT(command)
 		DISCARD_TEXT(argument)
+		
 	}
 	return stc;
 }
@@ -249,6 +267,55 @@ begin with those characters, but that doesn't matter for the things we need.
 		Regexp::dispose_of(&mr);
 	} else {
 		NeptuneFiles::error(whole_command, I"kind command without argument", tfp);
+	}
+	Regexp::dispose_of(&mr);
+
+@<Handle as an additional property setting@> =
+	int attr = NOT_APPLICABLE;
+	if (Str::eq(command, I"attribute")) attr = TRUE;
+	if (Str::eq(command, I"property")) attr = FALSE;
+	if (attr == NOT_APPLICABLE) {
+		NeptuneFiles::error(whole_command,
+			I"only 'attribute' and 'property' commands are allowed here", tfp);
+	} else {
+		additional_property *ap = CREATE(additional_property);
+		ap->attr = attr;
+		match_results mr = Regexp::create_mr();
+		if (Regexp::match(&mr, argument, U"(%C+?) *= *(%c+)")) {
+			if (attr)
+				NeptuneFiles::error(whole_command,
+					I"only 'property' commands can use '='", tfp);
+			ap->property_name = Str::duplicate(mr.exp[0]);
+			ap->value_text = Str::duplicate(mr.exp[1]);
+		} else {
+			ap->property_name = Str::duplicate(argument);
+			ap->value_text = (attr)?I"1":I"0";
+		}
+		if (Str::get_first_char(ap->property_name) == '~') {
+			if (attr) {
+				Str::delete_first_character(ap->property_name);
+				ap->value_text = I"0";
+			} else {
+				NeptuneFiles::error(whole_command,
+					I"only 'attribute' commands can use '~'", tfp);
+			}
+		}
+		Regexp::dispose_of(&mr);
+		ADD_TO_LINKED_LIST(ap, additional_property, additional_property_set_described->properties);
+	}
+	stc.completed = TRUE;
+
+@<Handle as a kind constructor setting@> =
+	@<Identify the command being used@>;
+	switch(stc.which_kind_command->operand_type) {
+		case BOOLEAN_KCA: @<Parse a boolean argument for a kind command@>; break;
+		case CCM_KCA: @<Parse a CCM argument for a kind command@>; break;
+		case CONSTRUCTOR_KCA: @<Parse a constructor-name argument for a kind command@>; break;
+		case MACRO_KCA: @<Parse a macro name argument for a kind command@>; break;
+		case NUMERIC_KCA: @<Parse a numeric argument for a kind command@>; break;
+		case TEMPLATE_KCA: @<Parse a template name argument for a kind command@>; break;
+		case TEXT_KCA: @<Parse a textual argument for a kind command@>; break;
+		case VOCABULARY_KCA: @<Parse a vocabulary argument for a kind command@>; break;
 	}
 
 @ The following is clearly inefficient, but is not worth optimising. It makes

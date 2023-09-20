@@ -66,6 +66,51 @@ void World::stages_II_and_III(void) {
 		Assertions::Implications::consider_all(infs);
 	World::ask_plugins_at_stage(WORLD_STAGE_II);
 	World::ask_plugins_at_stage(WORLD_STAGE_III);
+	additional_property_set *set;
+	LOOP_OVER(set, additional_property_set) {
+		text_stream *O = set->owner_name;
+		wording W = Feeds::feed_text(O);
+		if (<k-kind>(W)) {
+			kind *K = <<rp>>;
+			additional_property *ap;
+			LOOP_OVER_LINKED_LIST(ap, additional_property, set->properties) {
+				LOG("I should give kind %u the prop %S = %S\n",
+					K, ap->property_name, ap->value_text);
+				property *P;
+				if (ap->attr) P = EitherOrProperties::new_nameless(ap->property_name);
+				else P = ValueProperties::new_nameless(ap->property_name, K_value);
+				inter_pair val = InterValuePairs::number_from_I6_notation(ap->value_text);
+				if (InterValuePairs::is_undef(val)) {
+					Problems::quote_stream(1, O);
+					Problems::quote_stream(2, ap->property_name);
+					Problems::quote_stream(3, ap->value_text);
+					StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+					Problems::issue_problem_segment(
+						"A Neptune file inside one of the kits you're using says "
+						"that the kind '%1' should have the Inter-level property '%2' "
+						"set to '%3', but I can't read that value.");
+					Problems::issue_problem_end();
+				}
+				int V = (int) InterValuePairs::to_number(val);
+				if (ap->attr) {
+					int parity = TRUE;
+					if (V == 0) parity = FALSE;
+					EitherOrProperties::assert(P, KindSubjects::from_kind(K), parity, LIKELY_CE);
+				} else {
+					parse_node *R = Rvalues::from_int(V, EMPTY_WORDING);
+					ValueProperties::assert(P, KindSubjects::from_kind(K), R, CERTAIN_CE);
+				}
+			}
+		} else {
+			Problems::quote_stream(1, O);
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+			Problems::issue_problem_segment(
+				"A Neptune file inside one of the kits you're using says "
+				"that the kind '%1' should have certain Inter-level properties, "
+				"but no such kind seems to exist.");
+			Problems::issue_problem_end();
+		}
+	}
 }
 
 @h Stage IV.
