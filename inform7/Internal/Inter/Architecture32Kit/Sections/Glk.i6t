@@ -156,11 +156,25 @@ Global current_glk_object_reference = 0;
 Functions for minimal Glk windows support.
 
 =
-[ CopyBackLineInputText win
-		buf ch i len txt uni;
+[ CopyBufferToLineInputText win len buf_type;
+	if (win.line_input_buffer_uni) {
+		buf_type = 4;
+		win.line_input_buffer_addr-->len = 0;
+	}
+	else {
+		buf_type = 1;
+		win.line_input_buffer_addr->len = 0;
+	}
+	BlkValueMassCopyFromArray(win.current_line_input, win.line_input_buffer_addr, buf_type, len + 1);
+];
+
+[ CopyLineInputTextToBuffer win
+		buf ch cp i len p txt uni;
 	buf = win.line_input_buffer_addr;
-	txt = win.current_line_input;
 	uni = win.line_input_buffer_uni;
+	txt = win.current_line_input;
+	cp = txt-->0;
+	p = TEXT_TY_Temporarily_Transmute(txt);
 	len = BlkValueLBCapacity(txt);
 	if (len > win.line_input_buffer_maxlen) {
 		len = win.line_input_buffer_maxlen;
@@ -178,6 +192,7 @@ Functions for minimal Glk windows support.
 			buf->i = '?';
 		}
 	}
+	TEXT_TY_Untransmute(txt, p, cp);
 	return i;
 ];
 
@@ -235,6 +250,11 @@ Global Glk_Event_Struct_val2;
 			Glk_Event_Struct_win = Unknown_Glk_Window;
 			FillInWindowDetails(Unknown_Glk_Window, event_struct-->1);
 		}
+
+		! If the current event type is line input, copy the buffer so I7 can access it
+		if (Glk_Event_Struct_type == evtype_LineInput) {
+			CopyBufferToLineInputText(Glk_Event_Struct_win, Glk_Event_Struct_val1);
+		}
 	}
 
 	! Run the glk event handling rules (but disable rules debugging because it crashes if keyboard input events are pending)
@@ -242,6 +262,11 @@ Global Glk_Event_Struct_val2;
 	debug_rules = false; ClearParagraphing(1);
 	FollowRulebook(GLK_EVENT_HANDLING_RB, Glk_Event_Struct_type, true);
 	@pull say__pc; @pull say__p; @pull debug_rules;
+
+	! If the current event type is line input, copy back the text from I7
+	if (Glk_Event_Struct_type == evtype_LineInput && Glk_Event_Struct_win) {
+		Glk_Event_Struct_val1 = CopyLineInputTextToBuffer(Glk_Event_Struct_win);
+	}
 
 	! Copy back to the original event structure
 	event_struct-->0 = Glk_Event_Struct_type;
@@ -281,25 +306,15 @@ requested.
 	return 0;
 ];
 
-[ glk_cancel_line_event win event
-		buf_type len win_obj;
+[ glk_cancel_line_event win event win_obj;
 	@push event;
 	@push win;
 	@glk 209 2 0;
 	if (event) {
 		win_obj = FindGlkWindowFromRefNum(win);
 		if (win_obj) {
-			len = event-->2;
-			if (win_obj.text_input_status == INPUT_STATUS_ACTIVE_LINE_UNI) {
-				buf_type = 4;
-				win_obj.line_input_buffer_addr-->len = 0;
-			}
-			else {
-				buf_type = 1;
-				win_obj.line_input_buffer_addr->len = 0;
-			}
 			win_obj.text_input_status = win_obj.text_input_status + 4;
-			BlkValueMassCopyFromArray(win_obj.current_line_input, win_obj.line_input_buffer_addr, buf_type, len + 1);
+			CopyBufferToLineInputText(win_obj, event-->2);
 		}
 	}
 	return 0;
@@ -415,9 +430,9 @@ input requests.
 		INPUT_STATUS_SUSPENDED_CHAR_UNI:
 			glk_request_char_event_uni(win.glk_ref);
 		INPUT_STATUS_SUSPENDED_LINE:
-			glk_request_line_event(win.glk_ref, win.line_input_buffer_addr, win.line_input_buffer_maxlen, CopyBackLineInputText(win));
+			glk_request_line_event(win.glk_ref, win.line_input_buffer_addr, win.line_input_buffer_maxlen, CopyLineInputTextToBuffer(win));
 		INPUT_STATUS_SUSPENDED_LINE_UNI:
-			glk_request_line_event_uni(win.glk_ref, win.line_input_buffer_addr, win.line_input_buffer_maxlen, CopyBackLineInputText(win));
+			glk_request_line_event_uni(win.glk_ref, win.line_input_buffer_addr, win.line_input_buffer_maxlen, CopyLineInputTextToBuffer(win));
 	}
 ];
 
