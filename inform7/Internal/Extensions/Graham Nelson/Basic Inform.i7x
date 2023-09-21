@@ -1690,6 +1690,9 @@ Definition: a glk event is dependent on the player rather than independent of th
 	it is mouse event or
 	it is hyperlink event.
 
+To set the/-- glk event type to (t - glk event):
+	(- SetGlkEventType({t}); -).
+
 First glk event handling rule (this is the update text input status rule):
 	if the glk event type is character event or the glk event type is line event:
 		now the text input status of the glk event window is inactive text input;
