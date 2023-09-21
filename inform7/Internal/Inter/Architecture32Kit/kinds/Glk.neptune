@@ -93,6 +93,7 @@ new base TEXT_INPUT_STATUS_TY {
 
 properties of glk window {
 	property: line_input_buffer_addr
+	property: line_input_buffer_curlen
 	property: line_input_buffer_maxlen
 	property: line_input_buffer_uni
 }

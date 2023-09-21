@@ -1612,6 +1612,43 @@ To decide what number is the width of (win - a glk window):
 To set (win - a glk window) cursor to row (row - a number) and/-- column (col - a number):
 	(- glk_window_move_cursor({win}.glk_ref, {col} - 1, {row} - 1); -).
 
+Chapter - Glk events
+
+The glk event handling rules is a glk event based rulebook.
+The glk event handling rules is accessible to Inter as "GLK_EVENT_HANDLING_RB".
+
+The glk event type is a glk event variable.
+The glk event type variable translates into Inter as "Glk_Event_Struct_type".
+The glk event window is a glk window variable.
+The glk event window variable translates into Inter as "Glk_Event_Struct_win".
+The glk event value 1 is a number variable.
+The glk event value 1 variable translates into Inter as "Glk_Event_Struct_val1".
+The glk event value 2 is a number variable.
+The glk event value 2 variable translates into Inter as "Glk_Event_Struct_val2".
+
+Definition: a glk event is dependent on the player rather than independent of the player if
+	it is character event or
+	it is line event or
+	it is mouse event or
+	it is hyperlink event.
+
+To set the/-- glk event type to (t - glk event):
+	(- SetGlkEventType({t}); -).
+
+To decide what text is the current line input of (w - glk window):
+	(- CopyWindowBufferToText({w}, {-new:text}) -).
+
+To set the current line input of (w - glk window) to (t - text):
+	(- CopyTextToWindowBuffer({w}, {-by-reference:t}); -).
+
+First glk event handling rule (this is the update text input status rule):
+	if the glk event type is character event or the glk event type is line event:
+		now the text input status of the glk event window is inactive text input;
+	if the glk event type is hyperlink event:
+		now the glk event window is not requesting hyperlink input;
+	if the glk event type is mouse event:
+		now the glk event window is not requesting mouse input;
+
 Chapter - Suspending and resuming input
 
 A glk window has a text input status.
@@ -1620,8 +1657,6 @@ A glk window can be requesting hyperlink input.
 The requesting hyperlink input property translates into Inter as "requesting_hyperlink".
 A glk window can be requesting mouse input.
 The requesting mouse input property translates into Inter as "requesting_mouse".
-A glk window has a text called the current line input.
-The current line input property translates into Inter as "current_line_input".
 
 To suspend text input in (win - a glk window), without input echoing:
 	(- SuspendTextInput({win}, {phrase options}); -).
@@ -1669,37 +1704,6 @@ The identify built in sound channels rule translates into Inter as "IDENTIFY_SCH
 
 The stop built in sound channels rule is listed in the glk object updating rules.
 The stop built in sound channels rule translates into Inter as "STOP_SCHANNELS_R".
-
-Chapter - Glk events
-
-The glk event handling rules is a glk event based rulebook.
-The glk event handling rules is accessible to Inter as "GLK_EVENT_HANDLING_RB".
-
-The glk event type is a glk event variable.
-The glk event type variable translates into Inter as "Glk_Event_Struct_type".
-The glk event window is a glk window variable.
-The glk event window variable translates into Inter as "Glk_Event_Struct_win".
-The glk event value 1 is a number variable.
-The glk event value 1 variable translates into Inter as "Glk_Event_Struct_val1".
-The glk event value 2 is a number variable.
-The glk event value 2 variable translates into Inter as "Glk_Event_Struct_val2".
-
-Definition: a glk event is dependent on the player rather than independent of the player if
-	it is character event or
-	it is line event or
-	it is mouse event or
-	it is hyperlink event.
-
-To set the/-- glk event type to (t - glk event):
-	(- SetGlkEventType({t}); -).
-
-First glk event handling rule (this is the update text input status rule):
-	if the glk event type is character event or the glk event type is line event:
-		now the text input status of the glk event window is inactive text input;
-	if the glk event type is hyperlink event:
-		now the glk event window is not requesting hyperlink input;
-	if the glk event type is mouse event:
-		now the glk event window is not requesting mouse input;
 
 Part Five - Adjectival Definitions
 
