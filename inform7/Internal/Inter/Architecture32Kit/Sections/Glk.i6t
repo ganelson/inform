@@ -281,6 +281,25 @@ Global Glk_Event_Struct_val2;
 	rfalse;
 ];
 
+@ |SetGlkEventType| helps us change the current event type, by ensuring that
+if there are any pending keyboard input requests they will be cancelled if the
+new event is a keyboard event. It does not however do anything if no keyboard
+input requests are pending, which means the new event could be ignored.
+
+=
+[ SetGlkEventType type;
+	if (type == evtype_CharInput or evtype_LineInput) {
+		if (Glk_Event_Struct_win.text_input_status == INPUT_STATUS_ACTIVE_CHAR or INPUT_STATUS_ACTIVE_CHAR_UNI) {
+			glk_cancel_char_event(Glk_Event_Struct_win.glk_ref);
+		}
+		else if (Glk_Event_Struct_win.text_input_status == INPUT_STATUS_ACTIVE_LINE or INPUT_STATUS_ACTIVE_LINE_UNI) {
+			glk_cancel_line_event(Glk_Event_Struct_win.glk_ref, gg_arguments);
+		}
+		Glk_Event_Struct_win.text_input_status = INPUT_STATUS_NONE;
+	}
+	Glk_Event_Struct_type = type;
+];
+
 @h Tracking input requests.
 These replaced versions of the glk versions track which types of input have been
 requested.
