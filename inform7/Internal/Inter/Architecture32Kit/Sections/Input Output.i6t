@@ -306,7 +306,7 @@ Constant UnicodeWhitespaceLen = 8;
         }
     }
 	! Manually echo the command if required
-	if (BasicInformKit`MANUAL_INPUT_ECHOING_CFGF) {
+	if (BasicInformKit`MANUAL_INPUT_ECHOING_CFGF && Cached_Glk_Gestalts-->gestalt_LineInputEcho) {
 		glk_set_style(style_Input);
 		glk_put_buffer_uni(a_buffer + WORDSIZE, a_buffer-->0);
 		glk_set_style(style_Normal);

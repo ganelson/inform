@@ -110,7 +110,7 @@ Global Pre_Startup_Text_Capture_Stream;
 			! If we can't even open one window, give in
 			quit;
 		}
-		if (BasicInformKit`MANUAL_INPUT_ECHOING_CFGF) {
+		if (BasicInformKit`MANUAL_INPUT_ECHOING_CFGF && Cached_Glk_Gestalts-->gestalt_LineInputEcho) {
 			glk_set_echo_line_event(gg_mainwin, 0);
 		}
 	} else {
