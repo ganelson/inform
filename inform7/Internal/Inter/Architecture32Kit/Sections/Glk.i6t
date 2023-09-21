@@ -14,8 +14,9 @@ Constant GLK_NULL 0;
 Array Cached_Glk_Gestalts --> (24 + 1);
 Array Cached_Glulx_Gestalts --> (13 + 1);
 
-Property suspended_text_buffer_addr;
-Property suspended_text_buffer_maxlen;
+Property line_input_buffer_addr;
+Property line_input_buffer_maxlen;
+Property line_input_buffer_uni;
 
 @h Glk object recovery.
 |GGRecoverObjects| handles recovering the Glk objects after restarting or restoring.
@@ -155,6 +156,31 @@ Global current_glk_object_reference = 0;
 Functions for minimal Glk windows support.
 
 =
+[ CopyBackLineInputText win
+		buf ch i len txt uni;
+	buf = win.line_input_buffer_addr;
+	txt = win.current_line_input;
+	uni = win.line_input_buffer_uni;
+	len = BlkValueLBCapacity(txt);
+	if (len > win.line_input_buffer_maxlen) {
+		len = win.line_input_buffer_maxlen;
+	}
+	for (i = 0: i < len: i++) {
+		ch = BlkValueRead(txt, i);
+		if (ch == 0) break;
+		if (uni) {
+			buf-->i = ch;
+		}
+		else if (ch <= $FF) {
+			buf->i = ch;
+		}
+		else {
+			buf->i = '?';
+		}
+	}
+	return i;
+];
+
 [ FindGlkWindowFromRefNum ref win;
 	if (ref ~= 0) {
 		for (win = K_Glk_Window_First: win: win = win.K_Glk_Window_Next) {
@@ -266,14 +292,14 @@ requested.
 			len = event-->2;
 			if (win_obj.text_input_status == INPUT_STATUS_ACTIVE_LINE_UNI) {
 				buf_type = 4;
-				win_obj.suspended_text_buffer_addr-->len = 0;
+				win_obj.line_input_buffer_addr-->len = 0;
 			}
 			else {
 				buf_type = 1;
-				win_obj.suspended_text_buffer_addr->len = 0;
+				win_obj.line_input_buffer_addr->len = 0;
 			}
 			win_obj.text_input_status = win_obj.text_input_status + 4;
-			BlkValueMassCopyFromArray(win_obj.suspended_text_input, win_obj.suspended_text_buffer_addr, buf_type, len + 1);
+			BlkValueMassCopyFromArray(win_obj.current_line_input, win_obj.line_input_buffer_addr, buf_type, len + 1);
 		}
 	}
 	return 0;
@@ -328,8 +354,9 @@ requested.
 	win_obj = FindGlkWindowFromRefNum(win);
 	if (win_obj) {
 		win_obj.text_input_status = INPUT_STATUS_ACTIVE_LINE;
-		win_obj.suspended_text_buffer_addr = buf;
-		win_obj.suspended_text_buffer_maxlen = maxlen;
+		win_obj.line_input_buffer_addr = buf;
+		win_obj.line_input_buffer_maxlen = maxlen;
+		win_obj.line_input_buffer_uni = false;
 	}
 	return 0;
 ];
@@ -343,8 +370,9 @@ requested.
 	win_obj = FindGlkWindowFromRefNum(win);
 	if (win_obj) {
 		win_obj.text_input_status = INPUT_STATUS_ACTIVE_LINE_UNI;
-		win_obj.suspended_text_buffer_addr = buf;
-		win_obj.suspended_text_buffer_maxlen = maxlen;
+		win_obj.line_input_buffer_addr = buf;
+		win_obj.line_input_buffer_maxlen = maxlen;
+		win_obj.line_input_buffer_uni = true;
 	}
 	return 0;
 ];
@@ -371,9 +399,9 @@ input requests.
 	else if (win.text_input_status == INPUT_STATUS_ACTIVE_LINE or INPUT_STATUS_ACTIVE_LINE_UNI) {
 		glk_cancel_line_event(win.glk_ref, gg_arguments);
 		! Manually echo the command if required
-		if (BasicInformKit`MANUAL_INPUT_ECHOING_CFGF && no_input_echoing == 0) {
+		if (BasicInformKit`MANUAL_INPUT_ECHOING_CFGF && Cached_Glk_Gestalts-->gestalt_LineInputEcho && no_input_echoing == 0) {
 			glk_set_style(style_Input);
-			print (TEXT_TY_Say) win.suspended_text_input;
+			print (TEXT_TY_Say) win.current_line_input;
 			glk_set_style(style_Normal);
 			glk_put_char(10); ! newline
 		}
@@ -387,31 +415,10 @@ input requests.
 		INPUT_STATUS_SUSPENDED_CHAR_UNI:
 			glk_request_char_event_uni(win.glk_ref);
 		INPUT_STATUS_SUSPENDED_LINE:
-			glk_request_line_event(win.glk_ref, win.suspended_text_buffer_addr, win.suspended_text_buffer_maxlen, CopySuspendedTextInputBack(win, 0));
+			glk_request_line_event(win.glk_ref, win.line_input_buffer_addr, win.line_input_buffer_maxlen, CopyBackLineInputText(win));
 		INPUT_STATUS_SUSPENDED_LINE_UNI:
-			glk_request_line_event_uni(win.glk_ref, win.suspended_text_buffer_addr, win.suspended_text_buffer_maxlen, CopySuspendedTextInputBack(win, 1));
+			glk_request_line_event_uni(win.glk_ref, win.line_input_buffer_addr, win.line_input_buffer_maxlen, CopyBackLineInputText(win));
 	}
-];
-
-[ CopySuspendedTextInputBack win uni
-		buf ch i len txt;
-	buf = win.suspended_text_buffer_addr;
-	txt = win.suspended_text_input;
-	len = BlkValueLBCapacity(txt);
-	for (i = 0: i < len: i++) {
-		ch = BlkValueRead(txt, i);
-		if (ch == 0) break;
-		if (uni) {
-			buf-->i = ch;
-		}
-		else if (ch <= $FF) {
-			buf->i = ch;
-		}
-		else {
-			buf->i = '?';
-		}
-	}
-	return i;
 ];
 
 @h Debugging verb.

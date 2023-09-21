@@ -1,3 +1,7 @@
+Test: BIP-Gestalts-G
+Language: Basic
+For: Glulx
+
 To begin:
 	say "Glk version: [glk version number in hexadecimal][line break]";
 	say "Graphics window mouse input: [whether or not graphics window mouse input is supported][line break]";
