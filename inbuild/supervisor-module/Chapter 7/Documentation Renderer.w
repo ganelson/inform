@@ -40,6 +40,7 @@ void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd, tex
 		Languages::set_default_directory(LP);
 	}
 	if (cd) {
+		DocumentationCompiler::watch_image_use(cd);
 		text_stream *OUT = DocumentationRenderer::open_subpage(P, cd->contents_URL_pattern);
 		if (OUT) {
 			markdown_item *md = NULL;
@@ -155,6 +156,15 @@ void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd, tex
 				STREAM_CLOSE(XR);
 			}
 		}
+		cd_image *cdim;
+		LOOP_OVER_LINKED_LIST(cdim, cd_image, cd->images)
+			if (cdim->used) {
+				pathname *Q = P;
+				if (Str::len(cdim->prefix) > 0) Q = Pathnames::down(Q, cdim->prefix);
+				Pathnames::create_in_file_system(Q);
+				filename *T = Filenames::in(Q, cdim->final_leafname);
+				BinaryFiles::copy(cdim->source, T, TRUE);
+			}
 	}
 }
 

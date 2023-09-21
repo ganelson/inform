@@ -15,6 +15,7 @@ which use this module:
 @e build_skill_CLASS
 @e build_step_CLASS
 @e build_vertex_CLASS
+@e cd_image_CLASS
 @e cd_layout_error_CLASS
 @e cd_pageset_CLASS
 @e cd_source_file_CLASS
@@ -56,6 +57,7 @@ DECLARE_CLASS(build_script)
 DECLARE_CLASS(build_skill)
 DECLARE_CLASS(build_step)
 DECLARE_CLASS(build_vertex)
+DECLARE_CLASS(cd_image)
 DECLARE_CLASS(cd_layout_error)
 DECLARE_CLASS(cd_pageset)
 DECLARE_CLASS(cd_source_file)

@@ -66,6 +66,8 @@ typedef struct compiled_documentation {
 	struct pathname *domain; /* where the documentation source is */
 	struct linked_list *source_files; /* of |cd_source_file| */
 	struct linked_list *layout_errors; /* of |cd_layout_error| */
+	struct linked_list *images; /* of |cd_image| */
+	struct text_stream *images_URL;
 
 	struct linked_list *volumes; /* of |cd_volume| */
 	struct text_stream *contents_URL_pattern;
@@ -248,6 +250,56 @@ int DocumentationCompiler::scold(OUTPUT_STREAM, compiled_documentation *cd) {
 	return TRUE;
 }
 
+@ "Images" are image files, that is, pictures.
+
+=
+typedef struct cd_image {
+	struct filename *source;
+	struct text_stream *final_leafname;
+	struct text_stream *prefix;
+	struct text_stream *correct_URL;
+	int used;
+	CLASS_DEFINITION
+} cd_image;
+
+void DocumentationCompiler::add_images(compiled_documentation *cd, pathname *figures,
+	text_stream *prefix) {
+	linked_list *L = Directories::listing(figures);
+	text_stream *entry;
+	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+		if (Platform::is_folder_separator(Str::get_last_char(entry)) == FALSE) {
+			cd_image *cdim = CREATE(cd_image);
+			cdim->source = Filenames::in(figures, entry);
+			LOOP_THROUGH_TEXT(pos, entry)
+				Str::put(pos, Characters::tolower(Str::get(pos)));
+			cdim->final_leafname = Str::duplicate(entry);
+			cdim->correct_URL = Str::new();
+			if (Str::len(prefix) > 0) {
+				WRITE_TO(cdim->correct_URL, "%S/%S", prefix, entry);
+			} else {
+				WRITE_TO(cdim->correct_URL, "%S", entry);
+			}
+			cdim->prefix = Str::duplicate(prefix);
+			cdim->used = FALSE;
+			ADD_TO_LINKED_LIST(cdim, cd_image, cd->images);
+			Markdown::create(cd->link_references, Str::duplicate(entry), cdim->correct_URL, NULL);
+		}
+	}
+}
+
+compiled_documentation *cd_being_watched_for_image_use = NULL;
+void DocumentationCompiler::watch_image_use(compiled_documentation *cd) {
+	cd_being_watched_for_image_use = cd;
+}
+void DocumentationCompiler::notify_image_use(text_stream *URL) {
+	if (cd_being_watched_for_image_use) {
+		cd_image *cdim;
+		LOOP_OVER_LINKED_LIST(cdim, cd_image, cd_being_watched_for_image_use->images)
+			if (Str::eq(URL, cdim->correct_URL))
+				cdim->used = TRUE;
+	}
+}
+
 @ And we can now create a new cd object.
 
 =
@@ -259,6 +311,7 @@ compiled_documentation *DocumentationCompiler::new_cd(pathname *P,
 		cd_source_file *Documentation_md_cdsf = NULL;
 		@<Find the possible Markdown source files@>;
 		@<Read the contents and sitemap files, if they exist@>;
+		DocumentationCompiler::add_images(cd, Pathnames::down(P, I"Images"), cd->images_URL);
 	}
 	Indexes::add_indexing_notation(cd, NULL, NULL, I"standard", NULL);
 	Indexes::add_indexing_notation(cd, I"@", NULL, I"name", I"(invert)");
@@ -316,7 +369,9 @@ compiled_documentation *DocumentationCompiler::new_cd(pathname *P,
 	cd->duplex_contents_page = FALSE;
 	cd->source_files = NEW_LINKED_LIST(cd_source_file);
 	cd->domain = P;
-
+	cd->images = NEW_LINKED_LIST(cd_image);
+	cd->images_URL = I"images";
+	
 @<Find the possible Markdown source files@> =
 	linked_list *L = Directories::listing(P);
 	text_stream *entry;
@@ -460,6 +515,8 @@ void DocumentationCompiler::read_sitemap_helper(text_stream *cl, text_file_posit
 
 	if (Regexp::match(&mr, cl, U" *cross-references: to \"(%c*)\"")) {
 		cd->xrefs_file_pattern = Str::duplicate(mr.exp[0]);
+	} else if (Regexp::match(&mr, cl, U" *images: to \"(%c*)\"")) {
+		cd->images_URL = Str::duplicate(mr.exp[0]);
 	} else if (Regexp::match(&mr, cl, U" *contents: *(%c+?) to \"(%c*)\"")) {
 		if (Str::eq(mr.exp[0], I"standard")) cd->duplex_contents_page = FALSE;
 		else if (Str::eq(mr.exp[0], I"duplex")) cd->duplex_contents_page = TRUE;
@@ -900,6 +957,7 @@ perform Phase II on everything.
 
 =
 void DocumentationCompiler::compile_inner(compiled_documentation *cd) {
+	DocumentationCompiler::watch_image_use(cd);
 	/* Phase I parsing */
 	DocumentationCompiler::Phase_I_on_volumes(cd);
 	DocumentationCompiler::detect_satellites(cd);
@@ -932,6 +990,7 @@ void DocumentationCompiler::compile_inner(compiled_documentation *cd) {
 	if (Indexes::indexing_occurred(cd)) cd->include_index[GENERAL_INDEX] = TRUE;
 	if (LinkedLists::len(cd->examples) >= 10) cd->include_index[NUMERICAL_EG_INDEX] = TRUE;
 	if (LinkedLists::len(cd->examples) >= 20) cd->include_index[ALPHABETICAL_EG_INDEX] = TRUE;
+	DocumentationCompiler::watch_image_use(NULL);
 }
 
 @ In addition to regular Phase I parsing of the content in the volumes, we
