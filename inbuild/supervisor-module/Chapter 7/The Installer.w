@@ -733,3 +733,22 @@ void ExtensionInstaller::uninstall_icon(OUTPUT_STREAM) {
 			PUT_TO(js_path, c);
 	}
 	DISCARD_TEXT(path)
+
+@
+
+=
+void ExtensionInstaller::open_test_link(OUTPUT_STREAM, inform_project *proj,
+	inform_extension *E, text_stream *intest_command, text_stream *intest_case) {
+	inbuild_copy *C = E->as_copy;
+	TEMPORARY_TEXT(js_path)
+	@<Get the extension path escaped for use in Javascript@>
+	HTML_OPEN_WITH("a",
+		"class=\"registrycontentslink\" href='javascript:project().test(\"%S\", \"%S\", \"%S\")'",
+		js_path, intest_command, intest_case);
+	DISCARD_TEXT(js_path)
+}
+
+void ExtensionInstaller::close_test_link(OUTPUT_STREAM, inform_project *proj,
+	inform_extension *E, text_stream *intest_command, text_stream *intest_case) {
+	HTML_CLOSE("a");
+}

@@ -33,7 +33,8 @@ void DocumentationRenderer::close_subpage(void) {
 except the examples, and then up to 26 pages holding the content of examples A to Z.
 
 =
-void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd, text_stream *extras) {
+void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd,
+	text_stream *extras, inform_project *proj) {
 	inbuild_nest *N = Supervisor::internal();
 	if (N) {
 		pathname *LP = Pathnames::down(Nests::get_location(N), I"PLs");
@@ -55,7 +56,7 @@ void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd, tex
 				InformPages::header(OUT, I"Contents", JAVASCRIPT_FOR_STANDARD_PAGES_IRES, NULL);
 				Manuals::duplex_contents_page(OUT, cd);
 			} else {
-				DocumentationRenderer::render_index_page(OUT, cd, md, extras);
+				DocumentationRenderer::render_index_page(OUT, cd, md, extras, proj);
 			}
 			DocumentationRenderer::close_subpage();
 		}
@@ -220,10 +221,10 @@ int DocumentationRenderer::list_actual_tags(OUTPUT_STREAM, markdown_item *md, in
 }
 
 void DocumentationRenderer::render_index_page(OUTPUT_STREAM, compiled_documentation *cd,
-	markdown_item *md, text_stream *extras) {
+	markdown_item *md, text_stream *extras, inform_project *proj) {
 	DocumentationRenderer::render_header(OUT, cd->title, NULL, cd->within_extension);
 	if (cd->associated_extension) {
-		DocumentationRenderer::render_extension_details(OUT, cd->associated_extension);
+		DocumentationRenderer::render_extension_details(OUT, cd->associated_extension, proj);
 	}
 
 	HTML_TAG("hr");
@@ -370,7 +371,8 @@ void DocumentationRenderer::render_footer(OUTPUT_STREAM) {
 extension.
 
 =
-void DocumentationRenderer::render_extension_details(OUTPUT_STREAM, inform_extension *E) {
+void DocumentationRenderer::render_extension_details(OUTPUT_STREAM, inform_extension *E,
+	inform_project *proj) {
 	inbuild_edition *edition = E->as_copy->edition;
 	inbuild_work *work = edition->work;
 
@@ -409,6 +411,28 @@ void DocumentationRenderer::render_extension_details(OUTPUT_STREAM, inform_exten
 		InformFlavouredMarkdown::render_text(OUT, C->parsed_from);
 		HTML_CLOSE("p");
 	}
+
+	compiled_documentation *cd = Extensions::get_documentation(E, NULL);
+	int no_egs = LinkedLists::len(cd->examples), no_cases = LinkedLists::len(cd->cases);
+
+	if ((proj) && (no_egs + no_cases > 0)) {
+		HTML_OPEN_WITH("p", "class=\"extensionsubheading\"");
+		WRITE("testing");
+		HTML_CLOSE("p");
+		HTML_OPEN("p");
+		WRITE("This extension provides ");
+		if (no_egs == 1) WRITE("one example");
+		if (no_egs > 1) WRITE("%d examples", no_egs);
+		if ((no_egs > 0) && (no_cases > 0)) WRITE(" and ");
+		if (no_cases == 1) WRITE("one test case");
+		if (no_cases > 1) WRITE("%d test cases", no_cases);
+		WRITE(". ");
+		ExtensionInstaller::open_test_link(OUT, proj, E, I"-test", I"all");
+		WRITE("test all");
+		ExtensionInstaller::close_test_link(OUT, proj, E, I"-test", I"all");
+		HTML_CLOSE("p");
+	}
+
 }
 
 @ Now for the Table of Contents, which shows chapters, sections and examples

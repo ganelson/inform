@@ -4,11 +4,40 @@ default: $COMPILEONLY = No
 default: $TESTCOMPILERINTERNALS = No
 default: $GENERATEINDEX = No
 default: $GENERATEDIAGNOSTICS = No
-default: $INTERNAL = inform7/Internal
 default: $TESTRELEASEMETADATA = No
 default: $SCRIPT =
 default: $LANGUAGE = Inform
 default: $COMPATIBLEWITH = all
+
+ifdef: $$I7COMPILER
+set: $I7 = $$I7COMPILER
+else:
+default: $I7 = inform7/Tangled/inform7
+endif
+
+ifdef: $$I6COMPILER
+set: $I6 = $$I6COMPILER
+else:
+default: $I6 = inform6/Tangled/inform6
+endif
+
+ifdef: $$GINTERPRETER
+set: $GINT = $$GINTERPRETER
+else:
+default: $GINT = inform6/Tests/Assistants/dumb-glulx/glulxe/glulxe
+endif
+
+ifdef: $$ZINTERPRETER
+set: $ZINT = $$ZINTERPRETER
+else:
+default: $ZINT = inform6/Tests/Assistants/dumb-frotz/dumb-frotz
+endif
+
+ifdef: $$internal
+set: $INTERNAL = $$internal
+else:
+default: $INTERNAL = inform7/Internal
+endif
 
 ! (1) Set $FORMAT to the full description of the language we will transpile to.
 
@@ -105,7 +134,6 @@ endif
 
 ! (5) The location of inform7 and where to write its console output.
 
-set: $I7 = inform7/Tangled/inform7
 set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
 set: $I7LOG = '$WORK/Example.inform/Build/Debug log.txt'
 
@@ -257,12 +285,12 @@ else
 
 	if: $FOR Glulx
 		default: $I6OPTIONS		= -E2SDwGx
-		default: $INTERPRETER	= inform6/Tests/Assistants/dumb-glulx/glulxe/glulxe
+		default: $INTERPRETER	= $GINT
 		default: $INTOPTIONS	= -u -q
 		set: $EXT               = ulx
 	else
 		default: $I6OPTIONS		= -E2SDwv8x
-		default: $INTERPRETER	= inform6/Tests/Assistants/dumb-frotz/dumb-frotz
+		default: $INTERPRETER	= $ZINT
 		default: $INTOPTIONS	= -w 1000
 		set: $EXT               = z8
 	endif
@@ -285,8 +313,6 @@ else
 	endif
 
 	if: $COMPILEONLY No
-		set: $I6 = inform6/Tangled/inform6
-
 		hash: $I6SOURCE
 		or: 'passed (matching cached I6 known to work)'
 

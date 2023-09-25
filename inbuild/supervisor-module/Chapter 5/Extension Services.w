@@ -866,7 +866,7 @@ compiled_documentation *Extensions::get_documentation(inform_extension *E,
 void Extensions::document(inform_extension *E, pathname *dest, filename *sitemap) {
 	SVEXPLAIN(1, "(documenting %X to %p)\n", E->as_copy->edition->work, dest);
 	compiled_documentation *cd = Extensions::get_documentation(E, sitemap);
-	DocumentationRenderer::as_HTML(dest, cd, NULL);
+	DocumentationRenderer::as_HTML(dest, cd, NULL, NULL);
 }
 
 @ When the extension source text was read from its |source_file|, we

@@ -74,11 +74,10 @@ if they would prefer that:
 
 =
 filename *InstalledFiles::varied_by_platform(pathname *models, text_stream *leafname) {
-	filename *F = NULL;
 	TEMPORARY_TEXT(variation)
 	WRITE_TO(variation, "%s-%S", PLATFORM_STRING, leafname);
 	/* NB: PLATFORM_STRING is a C string, so that %s is correct */
-	F = Filenames::in(models, variation);
+	filename *F = Filenames::in(models, variation);
 	if (TextFiles::exists(F) == FALSE) F = Filenames::in(models, leafname);
 	DISCARD_TEXT(variation)
 	return F;
@@ -119,11 +118,9 @@ filename *InstalledFiles::filename_for_platform(int ires, text_stream *platform)
 
 filename *InstalledFiles::varied_by_named_platform(pathname *models, text_stream *leafname,
 	text_stream *platform) {
-	filename *F = NULL;
 	TEMPORARY_TEXT(variation)
 	WRITE_TO(variation, "%S-%S", platform, leafname);
-	/* NB: PLATFORM_STRING is a C string, so that %s is correct */
-	F = Filenames::in(models, variation);
+	filename *F = Filenames::in(models, variation);
 	if (TextFiles::exists(F) == FALSE) F = Filenames::in(models, leafname);
 	DISCARD_TEXT(variation)
 	return F;

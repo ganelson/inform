@@ -171,7 +171,7 @@ void ExtensionWebsite::document_extension(inform_extension *E, inform_project *p
 			@<Add internals@>;
 		DISCARD_TEXT(details)
 		#endif
-		DocumentationRenderer::as_HTML(P, doc, OUT);
+		DocumentationRenderer::as_HTML(P, doc, OUT, proj);
 		DISCARD_TEXT(OUT)
 	}
 	E->documented_on_this_run = TRUE;
@@ -233,7 +233,7 @@ void ExtensionWebsite::document_extension(inform_extension *E, inform_project *p
 			DocumentationRenderer::close_subpage();
 		} else {
 			doc->within_extension = E;
-			DocumentationRenderer::as_HTML(KP, doc, NULL);
+			DocumentationRenderer::as_HTML(KP, doc, NULL, proj);
 		}
 	}
 

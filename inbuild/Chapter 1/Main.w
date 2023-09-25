@@ -155,14 +155,14 @@ error in this case.
 		Errors::fatal("need to specify '-document-to' directory");
 	compiled_documentation *cd = DocumentationCompiler::compile_from_file(
 		documentation_source, NULL, documentation_sitemap);
-	if (cd) DocumentationRenderer::as_HTML(documentation_dest, cd, NULL);
+	if (cd) DocumentationRenderer::as_HTML(documentation_dest, cd, NULL, NULL);
 
 @<Document from a set@> =
 	if (documentation_dest == NULL)
 		Errors::fatal("need to specify '-document-to' directory");
 	compiled_documentation *cd = DocumentationCompiler::compile_from_path(
 		documentation_set, NULL, documentation_sitemap);
-	if (cd) DocumentationRenderer::as_HTML(documentation_dest, cd, NULL);
+	if (cd) DocumentationRenderer::as_HTML(documentation_dest, cd, NULL, NULL);
 
 @ We make the function call |Supervisor::go_operational| to signal to |inbuild|
 that we want to start work now.
