@@ -568,7 +568,7 @@ button.dangerousbutton {
 }
 .markdowncontent code.inlinecode {
 	font-size: 90%;
-	font-family: SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; 
+	font-family: monospace;
 	background-color: var(--md-background-colour);
 	border-bottom-left-radius: 6px;
 	border-bottom-right-radius: 6px;
@@ -591,7 +591,7 @@ button.dangerousbutton {
 }
 
 .markdowncontent code.language-transcript {
-    font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	font-family: sans-serif;
 }
 
 .markdowncontent div.definition {
@@ -657,7 +657,7 @@ div.examplebox div.exampleright {
 
 span.extensionexampleletter {
 	color: var(--heading-panel-text-colour);
-	font-size: 14px;
+	font-size: 0.933rem; /* 14/12 * 100/125 */
 	font-weight: bold;
 	background-color: var(--example-label-colour);
 	border-bottom-left-radius: 12px;
