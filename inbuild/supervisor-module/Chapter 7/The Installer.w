@@ -339,27 +339,6 @@ void ExtensionInstaller::install(inbuild_copy *C, int confirmed, pathname *to_to
 	TEMPORARY_TEXT(trash_report)
 	@<Trash any identically-versioned copies currently present@>;
 	@<Copy the new one into place@>;
-	HTML_OPEN("p");
-	WRITE("This extension has now been installed in the materials folder for %S, as:", pname);
-	HTML_CLOSE("p");
-	HTML_OPEN("ul");
-	HTML_OPEN("li");
-	HTML_OPEN("p");
-	if (C->edition->work->genre == extension_bundle_genre) {
-		pathname *P = ExtensionBundleManager::pathname_in_nest(Projects::materials_nest(project), C->edition);
-		WRITE("the folder ");
-		HTML_OPEN("b");
-		Pathnames::to_text_relative(OUT, Pathnames::up(Projects::materials_path(project)), P);
-		HTML_CLOSE("b");
-	} else {
-		filename *F = ExtensionManager::filename_in_nest(Projects::materials_nest(project), C->edition);
-		WRITE("the file ");
-		HTML_OPEN("b");
-		Filenames::to_text_relative(OUT, F, Pathnames::up(Projects::materials_path(project)));
-		HTML_CLOSE("b");
-	}
-	HTML_CLOSE("li");
-	HTML_CLOSE("ul");
 	if (Str::len(trash_report) > 0) {
 		HTML_OPEN("p");
 		WRITE("Since an extension with the same title, author name and version number "
@@ -422,7 +401,51 @@ void ExtensionInstaller::install(inbuild_copy *C, int confirmed, pathname *to_to
 			no_trashed += ExtensionInstaller::trash(trash_report, project, search_result->copy, BM);
 
 @<Copy the new one into place@> =
-	Copies::copy_to(C, Projects::materials_nest(project), TRUE, BM);
+	if (Copies::copy_to(C, Projects::materials_nest(project), TRUE, BM) == 0) {
+		HTML_OPEN("p");
+		WRITE("This extension has now been installed in the materials folder for %S, as:", pname);
+		HTML_CLOSE("p");
+		HTML_OPEN("ul");
+		HTML_OPEN("li");
+		HTML_OPEN("p");
+		if (C->edition->work->genre == extension_bundle_genre) {
+			pathname *P = ExtensionBundleManager::pathname_in_nest(Projects::materials_nest(project), C->edition);
+			WRITE("the folder ");
+			HTML_OPEN("b");
+			Pathnames::to_text_relative(OUT, Pathnames::up(Projects::materials_path(project)), P);
+			HTML_CLOSE("b");
+		} else {
+			filename *F = ExtensionManager::filename_in_nest(Projects::materials_nest(project), C->edition);
+			WRITE("the file ");
+			HTML_OPEN("b");
+			Filenames::to_text_relative(OUT, F, Pathnames::up(Projects::materials_path(project)));
+			HTML_CLOSE("b");
+		}
+		HTML_CLOSE("li");
+		HTML_CLOSE("ul");
+	} else {
+		HTML_OPEN("p");
+		WRITE("A file-system error occurred when this was installed in the materials folder for %S, as:", pname);
+		HTML_CLOSE("p");
+		HTML_OPEN("ul");
+		HTML_OPEN("li");
+		HTML_OPEN("p");
+		if (C->edition->work->genre == extension_bundle_genre) {
+			pathname *P = ExtensionBundleManager::pathname_in_nest(Projects::materials_nest(project), C->edition);
+			WRITE("the folder ");
+			HTML_OPEN("b");
+			Pathnames::to_text_relative(OUT, Pathnames::up(Projects::materials_path(project)), P);
+			HTML_CLOSE("b");
+		} else {
+			filename *F = ExtensionManager::filename_in_nest(Projects::materials_nest(project), C->edition);
+			WRITE("the file ");
+			HTML_OPEN("b");
+			Filenames::to_text_relative(OUT, F, Pathnames::up(Projects::materials_path(project)));
+			HTML_CLOSE("b");
+		}
+		HTML_CLOSE("li");
+		HTML_CLOSE("ul");
+	}
 
 @h The uninstaller.
 This works in two stages, exactly like the installer, but it's much simpler.

@@ -155,12 +155,12 @@ pathname *KitManager::pathname_in_nest(inbuild_nest *N, inbuild_edition *E) {
 	return P;
 }
 
-void KitManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
+int KitManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
 	int syncing, build_methodology *meth) {
 	pathname *dest_kit = KitManager::pathname_in_nest(N, C->edition);
 	filename *dest_kit_metadata = Filenames::in(dest_kit, I"kit_metadata.json");
 	if (TextFiles::exists(dest_kit_metadata)) {
-		if (syncing == FALSE) { Copies::overwrite_error(C, N); return; }
+		if (syncing == FALSE) { Copies::overwrite_error(C, N); return 1; }
 	} else {
 		if (meth->methodology == DRY_RUN_METHODOLOGY) {
 			TEMPORARY_TEXT(command)
@@ -174,6 +174,7 @@ void KitManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest 
 			Pathnames::create_in_file_system(dest_kit);
 		}
 	}
+	int rv = 0;
 	if (meth->methodology == DRY_RUN_METHODOLOGY) {
 		TEMPORARY_TEXT(command)
 		WRITE_TO(command, "rsync -a --delete ");
@@ -182,8 +183,9 @@ void KitManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest 
 		WRITE_TO(STDOUT, "%S\n", command);
 		DISCARD_TEXT(command)
 	} else {
-		Pathnames::rsync(C->location_if_path, dest_kit);
+		rv = Pathnames::rsync(C->location_if_path, dest_kit);
 	}
+	return rv;
 }
 
 @h Build graph.

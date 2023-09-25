@@ -135,12 +135,12 @@ pathname *LanguageManager::pathname_in_nest(inbuild_nest *N, inbuild_edition *E)
 	return P;
 }
 
-void LanguageManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
+int LanguageManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
 	int syncing, build_methodology *meth) {
 	pathname *dest_language = LanguageManager::pathname_in_nest(N, C->edition);
 	filename *dest_language_metadata = Filenames::in(dest_language, I"about.txt");
 	if (TextFiles::exists(dest_language_metadata)) {
-		if (syncing == FALSE) { Copies::overwrite_error(C, N); return; }
+		if (syncing == FALSE) { Copies::overwrite_error(C, N); return 1; }
 	} else {
 		if (meth->methodology == DRY_RUN_METHODOLOGY) {
 			TEMPORARY_TEXT(command)
@@ -154,6 +154,7 @@ void LanguageManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_
 			Pathnames::create_in_file_system(dest_language);
 		}
 	}
+	int rv = FALSE;
 	if (meth->methodology == DRY_RUN_METHODOLOGY) {
 		TEMPORARY_TEXT(command)
 		WRITE_TO(command, "rsync -a --delete ");
@@ -162,6 +163,7 @@ void LanguageManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_
 		WRITE_TO(STDOUT, "%S\n", command);
 		DISCARD_TEXT(command)
 	} else {
-		Pathnames::rsync(C->location_if_path, dest_language);
+		rv = Pathnames::rsync(C->location_if_path, dest_language);
 	}
+	return rv;
 }

@@ -112,13 +112,13 @@ pathname *TemplateManager::pathname_in_nest(inbuild_nest *N, inbuild_edition *E)
 	return P;
 }
 
-void TemplateManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
+int TemplateManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
 	int syncing, build_methodology *meth) {
 	pathname *P = TemplateManager::pathname_in_nest(N, C->edition);
 	filename *canary1 = Filenames::in(P, I"(manifest).txt");
 	filename *canary2 = Filenames::in(P, I"index.html");
 	if ((TextFiles::exists(canary1)) || (TextFiles::exists(canary2))) {
-		if (syncing == FALSE) { Copies::overwrite_error(C, N); return; }
+		if (syncing == FALSE) { Copies::overwrite_error(C, N); return 1; }
 	} else {
 		if (meth->methodology == DRY_RUN_METHODOLOGY) {
 			TEMPORARY_TEXT(command)
@@ -132,6 +132,7 @@ void TemplateManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_
 			Pathnames::create_in_file_system(P);
 		}
 	}
+	int rv = 0;
 	if (meth->methodology == DRY_RUN_METHODOLOGY) {
 		TEMPORARY_TEXT(command)
 		WRITE_TO(command, "rsync -a --delete ");
@@ -140,6 +141,7 @@ void TemplateManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_
 		WRITE_TO(STDOUT, "%S\n", command);
 		DISCARD_TEXT(command)
 	} else {
-		Pathnames::rsync(C->location_if_path, P);
+		rv = Pathnames::rsync(C->location_if_path, P);
 	}
+	return rv;
 }

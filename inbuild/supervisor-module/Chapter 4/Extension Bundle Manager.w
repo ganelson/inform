@@ -436,12 +436,12 @@ pathname *ExtensionBundleManager::pathname_in_nest(inbuild_nest *N, inbuild_edit
 	return P;
 }
 
-void ExtensionBundleManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
+int ExtensionBundleManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
 	int syncing, build_methodology *meth) {
 	pathname *dest_eb = ExtensionBundleManager::pathname_in_nest(N, C->edition);
 	filename *dest_eb_metadata = Filenames::in(dest_eb, I"extension_metadata.json");
 	if (TextFiles::exists(dest_eb_metadata)) {
-		if (syncing == FALSE) { Copies::overwrite_error(C, N); return; }
+		if (syncing == FALSE) { Copies::overwrite_error(C, N); return 1; }
 	} else {
 		if (meth->methodology == DRY_RUN_METHODOLOGY) {
 			TEMPORARY_TEXT(command)
@@ -452,9 +452,11 @@ void ExtensionBundleManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, i
 		} else {
 			Pathnames::create_in_file_system(N->location);
 			Pathnames::create_in_file_system(ExtensionBundleManager::path_within_nest(N));
+			Pathnames::create_in_file_system(Pathnames::up(dest_eb));
 			Pathnames::create_in_file_system(dest_eb);
 		}
 	}
+	int rv = 0;
 	if (meth->methodology == DRY_RUN_METHODOLOGY) {
 		TEMPORARY_TEXT(command)
 		WRITE_TO(command, "rsync -a --delete ");
@@ -463,8 +465,9 @@ void ExtensionBundleManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, i
 		WRITE_TO(STDOUT, "%S\n", command);
 		DISCARD_TEXT(command)
 	} else {
-		Pathnames::rsync(C->location_if_path, dest_eb);
+		rv = Pathnames::rsync(C->location_if_path, dest_eb);
 	}
+	return rv;
 }
 
 @h Build graph.

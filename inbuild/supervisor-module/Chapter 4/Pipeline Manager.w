@@ -115,12 +115,12 @@ filename *PipelineManager::filename_in_nest(inbuild_nest *N, inbuild_edition *E)
 	return F;
 }
 
-void PipelineManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
+int PipelineManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
 	int syncing, build_methodology *meth) {
 	filename *F = PipelineManager::filename_in_nest(N, C->edition);
 
 	if (TextFiles::exists(F)) {
-		if (syncing == FALSE) { Copies::overwrite_error(C, N); return; }
+		if (syncing == FALSE) { Copies::overwrite_error(C, N); return 1; }
 	} else {
 		if (meth->methodology == DRY_RUN_METHODOLOGY) {
 			TEMPORARY_TEXT(command)
@@ -134,6 +134,7 @@ void PipelineManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_
 		}
 	}
 
+	int rv = 0;
 	if (meth->methodology == DRY_RUN_METHODOLOGY) {
 		TEMPORARY_TEXT(command)
 		WRITE_TO(command, "cp -f ");
@@ -144,4 +145,5 @@ void PipelineManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_
 	} else {
 		Filenames::copy_file(C->location_if_file, F);
 	}
+	return rv;
 }

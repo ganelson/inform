@@ -257,10 +257,11 @@ Now the task is to copy a project into place in a nest; or would be, if only
 projects lived there.
 
 =
-void ProjectBundleManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
+int ProjectBundleManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
 	int syncing, build_methodology *meth) {
 	Errors::with_text("projects (which is what '%S' is) cannot be copied to nests",
 		C->edition->work->title);
+	return 1;
 }
 
 @h Build graph.

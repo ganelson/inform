@@ -184,7 +184,7 @@ the Inbuild command-line options |-copy-to N| and |-sync-to N|.
 @e GENRE_COPY_TO_NEST_MTID
 
 =
-VOID_METHOD_TYPE(GENRE_COPY_TO_NEST_MTID,
+INT_METHOD_TYPE(GENRE_COPY_TO_NEST_MTID,
 	inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N, int syncing,
 	build_methodology *meth)
 

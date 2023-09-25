@@ -326,11 +326,14 @@ void Copies::archive(OUTPUT_STREAM, inbuild_copy *C, inbuild_nest *N, build_meth
 @ Now lastly |-copy-to N| and |-sync-to N|:
 
 =
-void Copies::copy_to(inbuild_copy *C, inbuild_nest *destination_nest, int syncing,
+int Copies::copy_to(inbuild_copy *C, inbuild_nest *destination_nest, int syncing,
 	build_methodology *meth) {
-	if (destination_nest)
-		VOID_METHOD_CALL(C->edition->work->genre, GENRE_COPY_TO_NEST_MTID, 
+	int rv = 0;
+	if (destination_nest) {
+		INT_METHOD_CALL(rv, C->edition->work->genre, GENRE_COPY_TO_NEST_MTID, 
 			C, destination_nest, syncing, meth);
+	}
+	return rv;
 }
 
 void Copies::overwrite_error(inbuild_copy *C, inbuild_nest *N) {
