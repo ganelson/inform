@@ -78,7 +78,7 @@ typedef struct compiled_documentation {
 	struct md_links_dictionary *link_references;
 	int empty;
 
-	struct linked_list *examples; /* of |satellite_test_case| */
+	struct linked_list *examples; /* of |IFM_example| */
 	struct text_stream *example_URL_pattern;
 	int examples_lettered; /* the alternative being, numbered */
 	struct linked_list *cases; /* of |satellite_test_case| */

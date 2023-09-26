@@ -1040,3 +1040,24 @@ img.thinbordered {
     margin-left: auto;
     margin-right: auto;
 }
+
+div.skeinreport p.skeinerror {
+	font-weight: bold;
+}
+
+div.skeinreport p.node {
+	margin: 0.75em;
+	padding: 0.75em;
+	border: 1px dotted #2f6fab;
+	background-color: #f9e9e9;
+}
+
+div.skeinreport span.deletion {
+	text-decoration: line-through;
+	text-decoration-color: red;
+}
+
+div.skeinreport span.insertion {
+	text-decoration: underline;
+	text-decoration-color: green;
+}

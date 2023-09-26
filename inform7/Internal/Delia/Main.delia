@@ -168,7 +168,7 @@ if: $TYPE problem
 	show: $A
 	show: i7 $A
 	exists: $I
-	or: 'produced Problem(s), but no ideal transcript existed'
+	or: 'produced Problem(s), but no blessed output exists to compare them with'
 	match problem: $A $I
 	or: 'produced the wrong Problem message(s)'
 else
@@ -330,7 +330,7 @@ else
 		show: transcript $A
 
 		exists: $I
-		or: 'translated successfully but no ideal transcript existed'
+		or: 'translated successfully but no blessed output exists to compare with'
 		if: $FOR Glulx
 			match glulxe transcript: $A $I
 			or: 'played incorrectly'

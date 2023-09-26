@@ -256,6 +256,54 @@ void DocumentationRenderer::render_index_page(OUTPUT_STREAM, compiled_documentat
 				DocumentationRenderer::render_toc_indexes(OUT, cd);
 				HTML_CLOSE("ul");
 			}
+
+			int no_cases = LinkedLists::len(cd->cases);
+			if ((proj) && (cd->associated_extension) && (no_cases > 0)) {
+				HTML_TAG("hr");
+				HTML_OPEN_WITH("p", "class=\"extensionsubheading\"");
+				WRITE("testing");
+				HTML_CLOSE("p");
+				HTML_OPEN("p");
+				WRITE("This extension provides ");
+				if (no_cases == 1) WRITE("one test case");
+				if (no_cases > 1) WRITE("%d test cases", no_cases);
+				WRITE(" which can be tried with the links tabulated here:");
+				HTML_CLOSE("p");
+				HTML_OPEN_WITH("div", "class=\"markdowncontent\"");
+				HTML_OPEN("table");
+				HTML_OPEN("tr");
+				HTML_OPEN_WITH("th", "align=\"left\"");
+				WRITE("Name of test");
+				HTML_CLOSE("th");
+				HTML_OPEN_WITH("th", "align=\"left\"");
+				WRITE("Source");
+				HTML_CLOSE("th");
+				HTML_OPEN_WITH("th", "align=\"left\"");
+				WRITE("Test");
+				HTML_CLOSE("th");
+				HTML_OPEN_WITH("th", "align=\"left\"");
+				WRITE("Bless");
+				HTML_CLOSE("th");
+				HTML_OPEN_WITH("th", "align=\"left\"");
+				WRITE("Rebless");
+				HTML_CLOSE("th");
+				HTML_OPEN_WITH("th", "align=\"left\"");
+				WRITE("Curse");
+				HTML_CLOSE("th");
+				HTML_CLOSE("tr");
+				satellite_test_case *stc;
+				LOOP_OVER_LINKED_LIST(stc, satellite_test_case, cd->cases) {
+					DocumentationRenderer::test_table_row(OUT, cd->associated_extension, proj,
+						(stc->as_example)?(stc->as_example->name):(stc->short_name),
+						stc->short_name, stc->as_example);
+				}
+				if (no_cases == 2)
+					DocumentationRenderer::test_table_row(OUT, cd->associated_extension, proj, I"both at once", I"all", NULL);
+				if (no_cases > 2)
+					DocumentationRenderer::test_table_row(OUT, cd->associated_extension, proj, I"all at once", I"all", NULL);
+				HTML_CLOSE("table");
+				HTML_CLOSE("div");
+			}
 			if (md) {
 				HTML_TAG("hr");
 				HTML_OPEN_WITH("p", "class=\"extensionsubheading\"");
@@ -411,28 +459,53 @@ void DocumentationRenderer::render_extension_details(OUTPUT_STREAM, inform_exten
 		InformFlavouredMarkdown::render_text(OUT, C->parsed_from);
 		HTML_CLOSE("p");
 	}
+}
 
-	compiled_documentation *cd = Extensions::get_documentation(E, NULL);
-	int no_egs = LinkedLists::len(cd->examples), no_cases = LinkedLists::len(cd->cases);
-
-	if ((proj) && (no_egs + no_cases > 0)) {
-		HTML_OPEN_WITH("p", "class=\"extensionsubheading\"");
-		WRITE("testing");
-		HTML_CLOSE("p");
-		HTML_OPEN("p");
-		WRITE("This extension provides ");
-		if (no_egs == 1) WRITE("one example");
-		if (no_egs > 1) WRITE("%d examples", no_egs);
-		if ((no_egs > 0) && (no_cases > 0)) WRITE(" and ");
-		if (no_cases == 1) WRITE("one test case");
-		if (no_cases > 1) WRITE("%d test cases", no_cases);
-		WRITE(". ");
-		ExtensionInstaller::open_test_link(OUT, proj, E, I"-test", I"all");
-		WRITE("test all");
-		ExtensionInstaller::close_test_link(OUT, proj, E, I"-test", I"all");
-		HTML_CLOSE("p");
+void DocumentationRenderer::test_table_row(OUTPUT_STREAM, inform_extension *E,
+	inform_project *proj, text_stream *title, text_stream *case_id, IFM_example *eg) {
+	HTML_OPEN("tr");
+	HTML_OPEN_WITH("td", "align=\"left\"");
+	if (Str::ne(case_id, I"all")) HTML_OPEN("em");
+	InformFlavouredMarkdown::render_text(OUT, title);
+	if (Str::ne(case_id, I"all")) HTML_CLOSE("em");
+	HTML_CLOSE("td");
+	HTML_OPEN_WITH("td", "align=\"left\"");
+	if (eg) {
+		TEMPORARY_TEXT(link)
+		WRITE_TO(link, "style=\"text-decoration: none\" href=\"%S#eg%S\"",
+			eg->URL, eg->insignia);
+		HTML::begin_span(OUT, I"indexblack");
+		HTML_OPEN_WITH("a", "%S", link);
+		WRITE("Example %S", eg->insignia);		
+		HTML_CLOSE("a");
+		HTML::end_span(OUT);
+		DISCARD_TEXT(link)		
+	} else {
+		WRITE("&mdash;");
 	}
-
+	
+	HTML_CLOSE("td");
+	HTML_OPEN_WITH("td", "align=\"left\"");
+	ExtensionInstaller::open_test_link(OUT, proj, E, I"-test", case_id);
+	WRITE("test");
+	ExtensionInstaller::close_test_link(OUT, proj, E, I"-test", case_id);
+	HTML_CLOSE("td");
+	HTML_OPEN_WITH("td", "align=\"left\"");
+	ExtensionInstaller::open_test_link(OUT, proj, E, I"-bless", case_id);
+	WRITE("bless");
+	ExtensionInstaller::close_test_link(OUT, proj, E, I"-bless", case_id);
+	HTML_CLOSE("td");
+	HTML_OPEN_WITH("td", "align=\"left\"");
+	ExtensionInstaller::open_test_link(OUT, proj, E, I"-rebless", case_id);
+	WRITE("rebless");
+	ExtensionInstaller::close_test_link(OUT, proj, E, I"-rebless", case_id);
+	HTML_CLOSE("td");
+	HTML_OPEN_WITH("td", "align=\"left\"");
+	ExtensionInstaller::open_test_link(OUT, proj, E, I"-curse", case_id);
+	WRITE("curse");
+	ExtensionInstaller::close_test_link(OUT, proj, E, I"-curse", case_id);
+	HTML_CLOSE("td");
+	HTML_CLOSE("tr");
 }
 
 @ Now for the Table of Contents, which shows chapters, sections and examples
