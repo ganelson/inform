@@ -813,6 +813,16 @@ forcetransfertemplates:
 forcetransferotherinternals:
 	{transfer-other-internals}
 
+{define: transfer-delia}
+	mkdir -p "$(INTERNAL)/Delia"
+	rm -f $(INTERNAL)/Delia/*
+	cp -R -f $(INFORM7WEB)/Internal/Delia $(INTERNAL)/Delia/..
+{end-define}
+
+.PHONY: forcetransferdelia
+forcetransferdeloa:
+	{transfer-delia}
+
 # -----------------------------------------------------------------------------
 # Incrementally copying the internal tree
 # This is super-awkward and probably should be dropped in favour of rsync, but
@@ -838,6 +848,7 @@ $(INTERNALEXEMPLUM): \
 		$(INFORM7WEB)/Internal/Languages/*/*.* \
 		$(INFORM7WEB)/Internal/Templates/*/*.* \
 		$(INFORM7WEB)/Internal/HTML/[A-Za-z]*.* \
+		$(INFORM7WEB)/Internal/Delia/[A-Za-z]*.* \
 		{repeat with: INTERPRETER in: {TEMPLATENAMES}}
 		$(INFORM7WEB)/Internal/Templates/{INTERPRETER}/[A-Za-z]*.* \
 		{end-repeat}
@@ -853,6 +864,7 @@ $(INTERNALEXEMPLUM): \
 	{transfer-templates}
 	{transfer-other-internals}
 	{transfer-images}
+	{transfer-delia}
 
 # =============================================================================
 
