@@ -1,3 +1,911 @@
+:root {
+    color-scheme: light dark;
+    --element-banner-background-colour: #eeeeee;
+    --heading-panel-background-colour: #eeeeee;
+    --heading-panel-text-colour: #222222;
+    --heading-panel-succeeded-background-colour: #E6FFE6;
+    --heading-panel-failed-background-colour: #f69Ca6;
+    --heading-panel-alt-text-colour: #ffffff;
+	--heading-panel-alt-background-colour: #808080;
+
+    --heading-row-background-colour: #e0e0e0;
+    --stripe-one-background-colour: #ffffff;
+    --stripe-two-background-colour: #f3f6fa;
+    --stripe-tinted-background-colour: #808080;
+
+	--index-plain-text-colour: #000000;
+	--index-tinted-text-colour: #808080;
+	--index-dark-text-colour: #505050;
+    --index-dull-red-colour: #800000;
+    --index-dull-blue-colour: #000080;
+    --index-dull-green-colour: #008000;
+    --index-map-room-border-colour: #000000;
+    --index-map-room-number-colour: #202020;
+    --index-response-letter-colour: #ffffff;
+    --index-response-letter-background-colour: #8080ff;
+    --index-response-text-colour: #000066;
+    --index-figure-background-colour: #6495ed;
+    --periodic-table-sidebar-colour: #888;
+    --periodic-table-sidebar-hover-colour: #222;
+    --periodic-table-element-text-colour: #ffffff;
+    --leaders-background-colour: white;
+    --library-card-title-colour: #803030;
+    --library-card-other-colour: #303030;
+    --index-more-box-background-colour: #e0e0e0;
+    --index-activity-contents-background-colour: #e8e0c0;
+    --registry-contents-silent-link-colour: #000000;
+    --registry-contents-passive-link-colour: #202020;
+    --registry-contents-active-link-colour: #D00000;
+
+    --extension-index-entry-colour: #404040;
+    --extension-index-name-colour: #ffffff;
+    --extension-index-error-colour: #ff8080;
+
+    --safe-button-background-colour: rgb(31, 136, 61);
+    --dangerous-button-background-colour: rgb(136, 31, 61);
+	--button-text-background-colour: #ffffff;
+	
+	--syntaxdefinition-colour: #000040;
+	--syntaxfunction-colour: #000040;
+	--syntaxreserved-colour: #000040;
+	--syntaxelement-colour: #000040;
+	--syntaxidentifier-colour: #000040;
+	--syntaxcharacter-colour: #000040;
+	--syntaxconstant-colour: #000040;
+	--syntaxstring-colour: #0000ff;
+	--syntaxplain-colour: #000040;
+	--syntaxextract-colour: #FF00e0;
+	--syntaxcomment-colour: #004000;
+
+    --paste-active-colour: #803030;
+    --paste-passive-colour: #303030;
+    --paste-background-colour: #f3f6fa;
+
+    --md-background-colour: #e3e6ea;
+    --md-transcript-background-colour: #f9e9e9;
+    --md-dashed-border-colour: #2f6fab;
+    --md-extract-box-colour: #e9f9e9;
+    --md-shaded-box-colour: #e9e9e9;
+    --md-transcript-deletion-colour: #ff0000;
+    --md-transcript-insertion-colour: #00ff00;
+    --example-label-colour: #E0FFFF;
+    --example-see-also-colour: #E0E0E0;
+    --light-border-colour: #d0d7de;
+    
+    --documentation-index-majuscule-letter-colour: #ffffff;
+    --documentation-index-majuscule-colour: #808080;
+    --documentation-index-see-colour: #666666;
+    --documentation-index-gloss-colour: #008080;
+    --documentation-index-a-colour: #000080;
+    --documentation-index-b-colour: #8080ff;
+    --documentation-index-c-colour: #186000;
+    --documentation-index-letter-active-bg-colour: #c0c0c0;
+    --documentation-index-letter-passive-bg-colour: #e0e0e0;
+
+    --problem-bad-colour: #800000;
+    --problem-good-colour: #008000;
+    --problem-phrase-colour: #808080;
+    --problem-token-colour: #e00060;
+    --problem-token-desc-colour: #4040ff;
+    --problem-token-value-colour: #ff4040;
+
+    --documentation-duplex-paper-colour: #000000;
+    --documentation-duplex-left-colour: #eeeeee;
+    --documentation-duplex-right-colour: #ffffe5;
+    --documentation-nav-heading-background-colour: #eeeeee; 
+    --documentation-nav-background-colour: #FFFFFF;
+    --documentation-nav-heading-colour: #222222;
+    --documentation-nav-active-link-colour: #D00000;
+    --documentation-nav-passive-link-colour: #202020;
+
+	--dotted-link-underline-colour: #666666;
+	--registry-section-colour: #666666;
+	--registry-button-text-colour: #000000;
+	--registry-builtin-text-colour: #888888;
+	--registry-installed-button-colour: #ffffff;
+	--registry-uninstalled-button-colour: #ffffdd;
+	--registry-button-border-colour: #000000;
+	--registry-button-revealer-colour: #444444;
+	--registry-button-update-colour: #aaddff;
+	--registry-button-revert-colour: #ddaaff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --element-banner-background-colour: #444444;
+    --heading-panel-background-colour: #444444;
+    --heading-panel-text-colour: #ffffff;
+    --heading-panel-succeeded-background-colour: #738073;
+    --heading-panel-failed-background-colour: #7b4e53;
+    --heading-panel-alt-text-colour: #000000;
+	--heading-panel-alt-background-colour: #808080;
+
+    --heading-row-background-colour: #707070;
+    --stripe-one-background-colour: #000000;
+    --stripe-two-background-colour: #090b0d;
+    --stripe-tinted-background-colour: #808080;
+
+	--index-plain-text-colour: #ffffff;
+	--index-tinted-text-colour: #808080;
+	--index-dark-text-colour: #B0B0B0;
+    --index-dull-red-colour: #c00000;
+    --index-dull-blue-colour: #4040c0;
+    --index-dull-green-colour: #40c040;
+    --index-map-room-border-colour: #ffffff;
+    --index-map-room-number-colour: #e0e0e0;
+    --index-response-letter-colour: #000000;
+    --index-response-letter-background-colour: #8080ff;
+    --index-response-text-colour: #ffffaa;
+    --index-figure-background-colour: #6495ed;
+    --periodic-table-sidebar-colour: #555;
+    --periodic-table-sidebar-hover-colour: #222;
+    --periodic-table-element-text-colour: #000000;
+    --leaders-background-colour: #121212;
+    --library-card-title-colour: #a05050;
+    --library-card-other-colour: #505050;
+    --index-more-box-background-colour: #444444;
+    --index-activity-contents-background-colour: #727060;
+    --registry-contents-silent-link-colour: #ffffff;
+    --registry-contents-passive-link-colour: #ffffff;
+    --registry-contents-active-link-colour: #40ffff;
+
+    --extension-index-entry-colour: #c0c0c0;
+    --extension-index-name-colour: #000000;
+    --extension-index-error-colour: #008080;
+   
+    --safe-button-background-colour: rgb(31, 136, 61);
+    --dangerous-button-background-colour: rgb(136, 31, 61);
+	--button-text-background-colour: #ffffff;
+ 	
+	--syntaxdefinition-colour: #e0e0ff;
+	--syntaxfunction-colour: #e0e0ff;
+	--syntaxreserved-colour: #e0e0ff;
+	--syntaxelement-colour: #e0e0ff;
+	--syntaxidentifier-colour: #e0e0ff;
+	--syntaxcharacter-colour: #e0e0ff;
+	--syntaxconstant-colour: #e0e0ff;
+	--syntaxstring-colour: #c0c0ef;
+	--syntaxplain-colour: #e0e0ff;
+	--syntaxextract-colour: #ff8000;
+	--syntaxcomment-colour: #e0e0ff;
+
+    --paste-active-colour: #a05050;
+    --paste-passive-colour: #505050;
+    --paste-background-colour: #090b0d;
+
+    --md-background-colour: #090b0d;
+    --md-transcript-background-colour: #091919;
+    --md-dashed-border-colour: #CfAf32;
+    --md-extract-box-colour: #1f111f;
+    --md-shaded-box-colour: #111111;
+    --md-transcript-deletion-colour: #ffdddd;
+    --md-transcript-insertion-colour: #ddffdd;
+    --example-label-colour: #FF2020;
+    --light-border-colour: #30373e;
+    
+    --documentation-index-majuscule-letter-colour: #000000;
+    --documentation-index-majuscule-colour: #808080;
+    --documentation-index-see-colour: #AAAAAA;
+    --documentation-index-gloss-colour: #ff8080;
+    --documentation-index-a-colour: #ffff80;
+    --documentation-index-b-colour: #808000;
+    --documentation-index-c-colour: #d8A0ff;
+    --documentation-index-letter-active-bg-colour: #3f3f3f;
+    --documentation-index-letter-passive-bg-colour: #202020;
+
+    --problem-bad-colour: #80ffff;
+    --problem-good-colour: #ff80ff;
+    --problem-phrase-colour: #808080;
+    --problem-token-colour: #20ffa0;
+    --problem-token-desc-colour: #C0C0ff;
+    --problem-token-value-colour: #00c0c0;
+
+    --documentation-duplex-paper-colour: #ffffff;
+    --documentation-duplex-left-colour: #111111;
+    --documentation-duplex-right-colour: #00001a;
+    --documentation-nav-heading-background-colour: #111111; 
+    --documentation-nav-background-colour: #000000;
+    --documentation-nav-heading-colour: #E0E0E0;
+    --documentation-nav-active-link-colour: #300000;
+    --documentation-nav-passive-link-colour: #E0E0E0;
+
+	--dotted-link-underline-colour: #AAAAAA;
+	--registry-section-colour: #AAAAAA;
+	--registry-button-text-colour: #ffffff;
+	--registry-builtin-text-colour: #777777;
+	--registry-installed-button-colour: #000000;
+	--registry-uninstalled-button-colour: #000022;
+	--registry-button-border-colour: #ffffff;
+	--registry-button-revealer-colour: #bbbbbb;
+	--registry-button-update-colour: #114400;
+	--registry-button-revert-colour: #224400;
+   }
+}
+
+/* The default font (family) and size */
+
+body, p, td {
+    font-family: var(--informdefault-fontfamily);
+    -webkit-font-smoothing: antialiased;
+    font-size: 0.8rem; /* 12/12 * 100/125 */
+}
+
+/* For fixed-point material within text, such as the typing on the Library Card index page */
+
+span.typewritten {
+    font-family: var(--informmonospaced-fontfamily);
+    font-size: 0.867rem; /* 13/12 * 100/125 */
+}
+
+/* For less important material: the small print */
+
+span.smaller {
+    font-size: 80%;
+}
+
+/* The "heading panel" is the coloured box, high up on the page. The colours
+vary depending on the page: for example, the style on a report of a translation
+with no problems is "headingpanelsucceeded", usually green, but if there were
+problems then "headingpanelfailed" is used, which is usually red. "headingpanel"
+itself is a more neutral grey by default. "headingpanelDark" is an alternative
+look to make the extensions index pages have some visual contrast with the others;
+by default they are a darker grey. */
+
+.headingpanel {
+    background: var(--heading-panel-background-colour);
+}
+.headingpanelsucceeded {
+    background: var(--heading-panel-succeeded-background-colour);
+}
+.headingpanelfailed {
+    background: var(--heading-panel-failed-background-colour);
+}
+.headingpanelalt {
+    background: var(--heading-panel-alt-background-colour);
+}
+
+/* Heading panels have two lines of text: an upper one in a larger size, and a
+lower one in a smaller. Again, the alt versions are meant to contrast.
+
+    Report on Translation: Succeeded                <-- headingpaneltext
+    Produced by Inform 10.1.0 (build 6U97)          <-- headingpanelrubric
+
+    Installed Extensions                            <-- headingpaneltextalt
+    Bundles of extra rules or phrases to...         <-- headingpanelrubricalt
+
+*/
+
+span.headingpaneltext {
+    color: var(--heading-panel-text-colour);
+    font-family: var(--informdefault-fontfamily);
+    -webkit-font-smoothing: antialiased;
+    font-size: 1.333rem; /* 20/12 * 100/125 */
+    font-weight: bold;
+}
+span.headingpaneltextalt {
+    color: var(--heading-panel-alt-text-colour);
+    font-family: var(--informdefault-fontfamily);
+    -webkit-font-smoothing: antialiased;
+    font-size: 1.333rem; /* 20/12 * 100/125 */
+    font-weight: bold;
+}
+
+span.headingpanelrubric {
+    color: var(--heading-panel-text-colour);
+    font-family: var(--informdefault-fontfamily);
+    -webkit-font-smoothing: antialiased;
+    font-size: 0.733rem; /* 11/12 * 100/125 */
+    font-weight: bold;
+}
+span.headingpanelrubricalt {
+    color: var(--heading-panel-alt-text-colour);
+    font-family: var(--informdefault-fontfamily);
+    -webkit-font-smoothing: antialiased;
+    font-size: 0.733rem; /* 11/12 * 100/125 */
+    font-weight: bold;
+}
+
+/* This styles the (usually white) text of the example numbers written inside
+oval blobs in the extension documentation, which mimic the look of the in-app
+documentation. */
+
+.oval, .oval td {
+    background-image:url('inform:/doc_images/ovoid.png');
+    color:white;
+}
+
+/* Styling used in the extension documentation indexes: */
+
+/* Used for extension names in the extensions pane of the app */
+
+span.extensioncensusentry {
+    color: var(--extension-index-name-colour);
+}
+
+span.extensionindexentry {
+    color: var(--extension-index-entry-colour);
+}
+
+span.extensionindexerror {
+	color: var(--extension-index-error-colour);
+}
+
+/* Seen in problem messages: */
+
+span.problemred {
+    color: var(--problem-bad-colour);
+}
+
+span.problemgreen {
+    color: var(--problem-good-colour);
+}
+
+span.phraseword {
+    color: var(--problem-phrase-colour);
+}
+
+span.phrasetokentext {
+    color: var(--problem-token-colour);
+}
+
+span.phrasetokendesctext {
+    color: var(--problem-token-desc-colour);
+}
+
+span.phrasetokenvaluetext {
+    color: var(--problem-token-value-colour);
+}
+
+/* Now we move on to styling used in the Index pages only: */
+
+/* The periodic table display has "sidebars", usually grey and taller than they
+are wide; they contain no text. */
+
+div.periodictablesidebarcolour {
+    background: var(--periodic-table-sidebar-colour);
+}
+div.periodictablesidebar:hover {
+    background: var(--periodic-table-sidebar-hover-colour);
+}
+
+/* The text of the element-abbreviation, such as "Lx" or "Ph", uses: */
+
+span.elementtext {
+    color: var(--periodic-table-element-text-colour);
+    font-size: 1.333rem; /* 20/12 * 100/125 */
+    font-weight: bold;
+}
+
+/* Similarly for the "atomic number" - a single digit - in the top left corner
+of these boxes: */
+
+span.elementnumbertext {
+    color: var(--periodic-table-element-text-colour);
+    font-size: 0.622rem; /* 7/12 * 96/72 * 100/125 */
+}
+
+/* For the text of the element title, to the right of the element box: */
+
+span.elementtitletext {
+    color: var(--periodic-table-element-text-colour);
+    font-size: 0.6rem; /* 9/12 * 100/125 */
+    font-weight: bold;
+}
+
+/* The banner at the top of each element: */
+
+table.elementbanner {
+    background: var(--element-banner-background-colour);
+}
+
+/* For the typewriting on the Library Card: */
+
+span.librarycardtitle {
+    color: var(--library-card-title-colour);
+}
+
+span.librarycardother {
+    color: var(--library-card-other-colour);
+}
+
+/* Generically used for "more details" boxes in the index: */
+
+table.indexmorebox {
+	background-color: var(--index-more-box-background-colour);
+    border-radius: 8px;
+}
+
+/* But not for activity contents: */
+
+table.indexactivitycontents {
+	background-color: var(--index-activity-contents-background-colour);
+    border-radius: 8px;
+}
+
+/* For responses in index entries about rules: */
+
+span.indexresponseletter {
+    color: var(--index-response-letter-colour);
+    font-family: var(--informmonospaced-fontfamily);
+    background-color: var(--index-response-letter-background-colour);
+}
+
+span.indexresponsetext {
+    color: var(--index-response-text-colour);
+}
+
+/* Used ubiquitously throughout the index for unemphasised text: */
+
+span.indexblack {
+	color: var(--index-plain-text-colour);
+}
+
+span.indexgrey {
+	color: var(--index-tinted-text-colour);
+}
+
+span.indexdarkgrey {
+    color: var(--index-dark-text-colour);
+}
+
+span.indexdullred {
+    color: var(--index-dull-red-colour);
+}
+
+span.indexdullgreen {
+    color: var(--index-dull-green-colour);
+}
+
+span.indexdullblue {
+    color: var(--index-dull-blue-colour);
+}
+
+/* Used in the numbering of levels of the World map in the Index */
+
+span.indexmaplevelnumbers {
+	color: var(--index-map-room-number-colour);
+}
+
+/* Used for the room squares in the World map in the Index (which is currently
+a table with one row of one column) */
+
+table.indexmaproom {
+	border-color: var(--index-map-room-border-colour);
+}
+
+/* Used e.g. for title rows in the Chart of basic kinds in the Index */
+
+tr.headingrow {
+	background-color: var(--heading-row-background-colour);
+}
+
+/* Standard rows have black text on striped background colours, these being
+the usual ones seen in Mac OS X applications such as iTunes. */
+
+tr.stripeone {
+	background-color: var(--stripe-one-background-colour);
+}
+
+tr.stripetwo {
+	background-color: var(--stripe-two-background-colour);
+}
+
+tr.tintedrow {
+	background-color: var(--stripe-tinted-background-colour);
+}
+
+/* In the Figures index, this is the background colour used behind images
+(though in fact it will only be visible if the image fails to load, or uses
+transparency): */
+
+div.figureindexbox {
+	background-color: var(--index-response-text-colour);
+}
+
+/* To get the book-contents-page style leaders on the Contents element of
+   the index to work, these must use the background colour of the body of
+   the page, whatever that is: */
+
+ul.leaders li.leaded span:first-child {
+    background: var(--leaders-background-colour);
+}
+ul.leaders li.leaded span + span {
+    background: var(--leaders-background-colour);
+}
+
+/* On Registry index pages (such as the Public Library), these are used for
+download buttons and the like: */
+
+span.registrybuttontext {
+	font-size: 0.733rem; /* 11/12 * 100/125 */
+	border-color: var(--registry-button-border-colour);
+}
+
+span.registryminibuttontext {
+	font-size: 0.667rem; /* 10/12 * 100/125 */
+	border-color: var(--registry-button-border-colour);
+}
+
+span.registrybuttonuninstalled {
+	color: var(--registry-button-text-colour);
+	background: var(--registry-uninstalled-button-colour);
+}
+
+span.registrybuttoninstalled {
+	color: var(--registry-button-text-colour);
+	background: var(--registry-installed-button-colour);
+	pointer-events: none;
+}
+
+span.registrybuttonbuiltin {
+	color: var(--registry-builtin-text-colour);
+	background: var(--registry-installed-button-colour);
+	pointer-events: none;
+}
+
+span.registrybuttonupdate {
+	color: var(--registry-button-text-colour);
+	background: var(--registry-button-update-colour);
+}
+
+span.registrybuttonrevert {
+	color: var(--registry-button-text-colour);
+	background: var(--registry-button-revert-colour);
+}
+
+span.registrybuttonrevealer {
+	color: var(--registry-button-text-colour);
+	background: var(--registry-button-revealer-colour);
+}
+
+/* Registry index section headings: */
+
+span.registrysectionname {
+    font-family: var(--informdefault-fontfamily);
+	-webkit-font-smoothing: antialiased;
+	font-size: 1.067rem; /* 16/12 * 100/125 */
+	line-height: 1.2rem; /* 18/12 * 100/125 */
+}
+span.registrysubsectionname {
+    font-family: var(--informdefault-fontfamily);
+	-webkit-font-smoothing: antialiased;
+	font-size: 0.933rem; /* 14/12 * 100/125 */
+	line-height: 1.067rem; /* 16/12 * 100/125 */
+}
+
+/* These are for the "mark" for a section, usually a section-symbol and number */
+
+span.registrysectionmark {
+    font-family: var(--informdefault-fontfamily);
+	-webkit-font-smoothing: antialiased;
+	font-size: 1.067rem; /* 16/12 * 100/125 */
+	line-height: 1.2rem; /* 18/12 * 100/125 */
+	var(--registry-section-colour);
+}
+span.registrysubsectionmark {
+    font-family: var(--informdefault-fontfamily);
+	-webkit-font-smoothing: antialiased;
+	font-size: 0.933rem; /* 14/12 * 100/125 */
+	line-height: 1.067rem; /* 16/12 * 100/125 */
+	var(--registry-section-colour);
+}
+
+/* Text of an item listed in a registry: */
+
+span.registryitemtext {
+    font-family: var(--informdefault-fontfamily);
+	-webkit-font-smoothing: antialiased;
+	font-size: 0.8rem; /* 12/12 * 100/125 */
+	line-height: 1.067rem; /* 16/12 * 100/125 */
+}
+
+/* And how the links in a registry index page behave: */
+
+a.registrysilentlink {
+	text-decoration: none;
+	color: var(--registry-contents-silent-link-colour);
+}
+a.registrybuttonlink {
+	text-decoration: none;
+}
+a.registrycontentslink:link {
+	text-decoration: none;
+	color: var(--registry-contents-passive-link-colour);
+}
+a.registrycontentslink:visited {
+	text-decoration: none;
+	color: var(--registry-contents-passive-link-colour);
+}
+a.registrycontentslink:hover {
+	text-decoration: none;
+	color: var(--registry-contents-active-link-colour);
+}
+a.registrycontentslink:active {
+	text-decoration: none;
+	color: var(--registry-contents-active-link-colour);
+}
+
+/* Buttons for use on inbuild results pages */
+
+button.safebutton {
+	background-color: var(--safe-button-background-colour);
+	border: none;
+	color: var(--button-text-background-colour);
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 1.067rem; /* 16/12 * 100/125 */
+	margin: 4px 2px;
+	cursor: pointer;
+}
+
+button.dangerousbutton {
+	background-color: var(--dangerous-button-background-colour);
+	border: none;
+	color: var(--button-text-background-colour);
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 1.067rem; /* 16/12 * 100/125 */
+	margin: 4px 2px;
+	cursor: pointer;
+}
+
+/* Used in rendering Markdown in extension documentation */
+
+.markdowncontent em { font-style: italic; }
+.markdowncontent strong { font-weight: bold; }
+.markdowncontent pre {
+	line-height: 1.067rem; /* 16/12 * 100/125 */
+}
+.markdowncontent code.inlinesourcetext {
+	font-size: 90%;
+	background-color: var(--md-background-colour);
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	box-sizing: border-box;
+	padding-bottom: 2.38px;
+	padding-left: 4.76px;
+	padding-right: 4.76px;
+	padding-top: 2.38px;
+	white-space: break-spaces;
+	width: auto;
+}
+.markdowncontent code.inlinetranscript {
+	background-color: var(--md-transcript-background-colour);
+	text-transform: uppercase;
+	font-size: 90%;
+	color: var(--syntaxextract-colour);
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	box-sizing: border-box;
+	padding-bottom: 2.38px;
+	padding-left: 4.76px;
+	padding-right: 4.76px;
+	padding-top: 2.38px;
+	white-space: break-spaces;
+	width: auto;
+}
+.markdowncontent code.inlinecode {
+	font-size: 90%;
+	font-family: var(--informcode-fontfamily);
+	background-color: var(--md-background-colour);
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	box-sizing: border-box;
+	padding-bottom: 2.38px;
+	padding-left: 4.76px;
+	padding-right: 4.76px;
+	padding-top: 2.38px;
+	white-space: break-spaces;
+	width: auto;
+}
+
+.markdowncontent div.extract-transcript {
+	margin: 0.75em;
+	padding: 0.75em;
+	border: 1px dotted var(--md-dashed-border-colour);
+	background-color: var(--md-transcript-background-colour);
+}
+
+.markdowncontent div.extract-problems {
+	margin: 0.75em;
+	padding: 0.75em;
+	border: 1px dotted var(--md-dashed-border-colour);
+	background-color: var(--md-extract-box-colour);
+}
+
+.markdowncontent code.language-transcript {
+    font-family: var(--informdefault-fontfamily);
+}
+
+.markdowncontent div.definition {
+	margin: 0.75em;
+	padding: 0.75em;
+	border: 1px dashed var(--md-dashed-border-colour);
+	background-color: var(--md-shaded-box-colour);
+}
+
+.markdowncontent div.definition p.defnprototype {
+	margin: 0;
+	padding: 0;
+	text-indent: 0;
+}
+
+.markdowncontent table {
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+.markdowncontent table th, .markdowncontent table td {
+	padding: 4px 10px;
+	border: 1px solid var(--light-border-colour);
+}
+
+/* Used in syntax-colouring for extension documentation */
+
+span.syntaxdefinition { color: var(--syntaxdefinition-colour); }
+span.syntaxfunction { color: var(--syntaxfunction-colour); }
+span.syntaxplain { color: var(--syntaxplain-colour); }
+span.syntaxelement { color: var(--syntaxelement-colour); }
+span.syntaxidentifier { color: var(--syntaxidentifier-colour); }
+span.syntaxcharacter { color: var(--syntaxcharacter-colour); }
+span.syntaxconstant { color: var(--syntaxconstant-colour); }
+span.syntaxstring { color: var(--syntaxstring-colour); }
+span.syntaxplain { color: var(--syntaxplain-colour); }
+span.syntaxextract { color: var(--syntaxextract-colour); }
+span.syntaxcomment { color: var(--syntaxcomment-colour); }
+
+p.documentationerrorbox {
+	padding: 6px;
+}
+span.documentationerror {
+	background-color: var(--dangerous-button-background-colour);
+	color: var(--button-text-background-colour);
+	padding: 15px 32px;
+	margin: 4px 2px;
+}
+
+/* For example box cues */
+
+div.examplebox:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+div.examplebox div.exampleleft {
+	float: left;
+	box-sizing: border-box;
+	width: 10%;
+	height: 30px;
+	padding: 8px 0;
+	text-align: center;
+}
+div.examplebox div.examplemiddle {
+	float: left;
+	box-sizing: border-box;
+	width: 80%;
+}
+div.examplebox div.exampleright {
+	float: left;
+	box-sizing: border-box;
+	width: 10%;
+	height: 30px;
+	padding: 8px 0;
+	text-align: center;
+}
+
+span.extensionexampleletter {
+	color: var(--heading-panel-text-colour);
+	font-size: 0.933rem; /* 14/12 * 100/125 */
+	font-weight: bold;
+	background-color: var(--example-label-colour);
+	border-bottom-left-radius: 12px;
+	border-bottom-right-radius: 12px;
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+	box-sizing: border-box;
+	padding-bottom: 4px;
+	padding-left: 8px;
+	padding-right: 8px;
+	padding-top: 4px;
+	min-width: 30px;
+	width: auto;
+}
+
+span.extensionexampleseealso {
+	color: var(--heading-panel-text-colour);
+	font-size: 0.933rem; /* 14/12 * 100/125 */
+	font-style: italic;
+	background-color: var(--example-see-also-colour);
+	border-bottom-left-radius: 12px;
+	border-bottom-right-radius: 12px;
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+	box-sizing: border-box;
+	padding-bottom: 4px;
+	padding-left: 8px;
+	padding-right: 8px;
+	padding-top: 4px;
+	min-width: 30px;
+	width: auto;
+}
+
+/* For outcome pages */
+
+.outcomeheadingpanellayout {
+	position: relative;
+	height: 56px;
+	padding: 0px;
+	white-space:nowrap;
+}
+.outcomeheadingtext {
+	position: absolute;
+	top: -4px;
+	left: -1px;
+	width: 100%;
+	padding: 14px 10px 0px 10px;
+}
+.outcomeheadingrubric {
+	position: absolute;
+	top: 36px;
+	width: 100%;
+	padding: 0px 10px 0px 10px;
+}
+
+div.outcomebox div.outcomeleft {
+	float: left;
+	box-sizing: border-box;
+	width: 100px;
+	height: 100px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+div.outcomebox div.outcomeright {
+	margin-left: 120px;
+	box-sizing: border-box;
+}
+
+/* New-style paste button */
+
+a.pastelink {
+	background-color: var(--paste-background-colour);
+	text-decoration: none;
+	font-size: 0.933rem; /* 14/12 * 100/125 */
+	padding: 2px;
+	padding-left: 6px;
+	padding-right: 6px;
+	border: solid 1px;
+}
+a.pastelink:link {
+	text-decoration: none;
+	color: var(--paste-passive-colour);
+	border-color: var(--paste-passive-colour);
+}
+a.pastelink:visited {
+	text-decoration: none;
+	color: var(--paste-passive-colour);
+	border-color: var(--paste-passive-colour);
+}
+a.pastelink:hover {
+	text-decoration: none;
+	color: var(--paste-active-colour);
+	border-color: var(--paste-active-colour);
+}
+a.pastelink:active {
+	text-decoration: none;
+	color: var(--paste-active-colour);
+	border-color: var(--paste-active-colour);
+}
+
 /* (1) General layout material */
 
 *, *:before, *:after {
@@ -391,8 +1299,8 @@ div.documentation blockquote {
 div.documentation div.definition {
 	margin: 0.75em;
 	padding: 0.75em;
-	border: 1px dashed #2f6fab;
-	background-color: #e9e9e9;
+	border: 1px dashed var(--md-dashed-border-colour);
+	background-color: var(--md-shaded-box-colour);
 }
 
 div.definition p.defnprototype {
@@ -462,11 +1370,11 @@ div.generalindex td.letterinrow {
 	height: 30px;
 	text-align: center;
 	vertical-align: middle;
-	background-color: #e0e0e0;	
+	background-color: var(--documentation-index-letter-passive-bg-colour);
 }
 
 div.generalindex td.letterinrow: hover {
-	background-color: #c0c0c0;	
+	background-color: var(--documentation-index-letter-active-bg-colour);
 }
 
 /* This is used to hold the "majuscule" A-Z letters left of the alpha index */
@@ -481,14 +1389,14 @@ div.generalindex td.letterblock {
 
 div.generalindex a.letterlink:link, div.generalindex a.letterlink:visited {
 	text-decoration: none;
-	color: #202020;
+	color: var(--documentation-nav-passive-link-colour);
 	font-size: 0.75em;
 	font-weight: bold;
 }
 
 div.generalindex a.letterlink:hover, div.generalindex a.letterlink:active {
 	text-decoration: none;
-	color: #D00000;
+	color: var(--documentation-nav-active-link-colour);
 	font-size: 0.75em;
 	font-weight: bold;
 }
@@ -500,7 +1408,7 @@ div.generalindex div.majuscule {
 	height: 30px;
 	text-align: center;
 	vertical-align: middle;
-	background-color: #808080;
+	background-color: var(--documentation-index-majuscule-colour);
 	display: table-cell;
 }
 
@@ -510,14 +1418,14 @@ div.generalindex div.stretchymajuscule {
 	height: 30px;
 	text-align: center;
 	vertical-align: middle;
-	background-color: #808080;
+	background-color: var(--documentation-index-majuscule-colour);
 }
 
 /* Either way, the actual lettering inside uses this: */
 
 div.generalindex span.majusculelettering {
 	font-size: 0.75em;
-	color: #FFFFFF;
+	color: var(--documentation-index-majuscule-letter-colour);
 }
 
 div.generalindex table.fullwidth {
@@ -554,259 +1462,250 @@ div.generalindex p.indexentry {
 }
 
 div.generalindex a.indexlink {
-	color: #666;
+	color: var(--dotted-link-underline-colour);
 	text-decoration: none;
-	border-bottom: 1px dotted #666;
+	border-bottom: 1px dotted var(--dotted-link-underline-colour);
 }
 
 div.generalindex a.indexseelink {
 	text-decoration: none;
-	border-bottom: 1px dotted #666;
+	border-bottom: 1px dotted var(--dotted-link-underline-colour);
 }
 
 div.generalindex a.indexlinkalt {
-	color: #666;
+	color: var(--dotted-link-underline-colour);
 	text-decoration: none;
-	border-bottom: 1px dotted #666;
+	border-bottom: 1px dotted var(--dotted-link-underline-colour);
 	font-style: italic;
 }
 
 div.generalindex span.indexgloss {
 	font-size: 0.7em;
 	font-style: italic;
-	color: #088;
+	color: var(--documentation-index-gloss-colour);
 }
 
 div.generalindex span.indexsee {
 	font-style: italic;
-	color: #666;
-}
-
-div.generalindex span.smoketest {
-	background-color: #000000;
-	color: #ffffff;
-	padding-left: 6px;
-	padding-right: 6px;
-	margin-left: 3px;
-	margin-right: 3px;
+	color: var(--documentation-index-see-colour);
 }
 
 div.generalindex span.indexstandard {
 }
 
 div.generalindex span.indexsource {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indexsourcearg {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indexsourceargbracketed {
-	color: #8080ff;
-	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	color: var(--documentation-index-b-colour);
+    font-family: var(--informdefault-fontfamily);
 	font-style: italic;
 }
 
 div.generalindex span.indexsourcepartbracketed {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indexphrase {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indexphrasebracketed {
-	color: #8080ff;
-	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	color: var(--documentation-index-b-colour);
+    font-family: var(--informdefault-fontfamily);
 	font-style: italic;
 }
 
 div.generalindex span.indexifphrase {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indexifphrasebracketed {
-	color: #8080ff;
-	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	color: var(--documentation-index-b-colour);
+    font-family: var(--informdefault-fontfamily);
 	font-style: italic;
 }
 
 div.generalindex span.indexsayphrase {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indexsayphrasebracketed {
-	color: #8080ff;
-	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	color: var(--documentation-index-b-colour);
+    font-family: var(--informdefault-fontfamily);
 	font-style: italic;
 }
 
 div.generalindex span.indexoutphrase {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indexoutphrasebracketed {
-	color: #8080ff;
-	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	color: var(--documentation-index-b-colour);
+    font-family: var(--informdefault-fontfamily);
 	font-style: italic;
 }
 
 div.generalindex span.indexassert {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indexassertbracketed {
-	color: #8080ff;
-	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	color: var(--documentation-index-b-colour);
+    font-family: var(--informdefault-fontfamily);
 	font-style: italic;
 }
 
 div.generalindex span.indexrb {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indexrbbracketed {
-	color: #8080ff;
-	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	color: var(--documentation-index-b-colour);
+    font-family: var(--informdefault-fontfamily);
 	font-style: italic;
 }
 
 div.generalindex span.indexprop {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indexpropbracketed {
-	color: #8080ff;
-	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	color: var(--documentation-index-b-colour);
+    font-family: var(--informdefault-fontfamily);
 	font-style: italic;
 }
 
 div.generalindex span.indexpropcat {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indexpropcatbracketed {
-	color: #8080ff;
-	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	color: var(--documentation-index-b-colour);
+    font-family: var(--informdefault-fontfamily);
 	font-style: italic;
 }
 
 div.generalindex span.indexadj {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indexadjbracketed {
-	color: #8080ff;
-	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	color: var(--documentation-index-b-colour);
+    font-family: var(--informdefault-fontfamily);
 	font-style: italic;
 }
 
 div.generalindex span.indexrelbracketed {
-	color: #8080ff;
-	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	color: var(--documentation-index-b-colour);
+    font-family: var(--informdefault-fontfamily);
 	font-style: italic;
 }
 
 div.generalindex span.indexrelcatbracketed {
-	color: #8080ff;
-	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	color: var(--documentation-index-b-colour);
+    font-family: var(--informdefault-fontfamily);
 	font-style: italic;
 }
 
 div.generalindex span.indexrelverb {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indexglob {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indexglobbracketed {
-	color: #8080ff;
-	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	color: var(--documentation-index-b-colour);
+    font-family: var(--informdefault-fontfamily);
 	font-style: italic;
 }
 
 div.generalindex span.indexactvar {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indexactvarbracketed {
-	color: #8080ff;
-	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	color: var(--documentation-index-b-colour);
+    font-family: var(--informdefault-fontfamily);
 	font-style: italic;
 }
 
 div.generalindex span.indexconst {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indexconstbracketed {
-	color: #8080ff;
-	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	color: var(--documentation-index-b-colour);
+    font-family: var(--informdefault-fontfamily);
 	font-style: italic;
 }
 
 div.generalindex span.indexaction {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indexactionbracketed {
-	color: #8080ff;
-	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	color: var(--documentation-index-b-colour);
+    font-family: var(--informdefault-fontfamily);
 	font-style: italic;
 }
 
 div.generalindex span.indexactivity {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indexactivitycat {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indexdescactivity {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
@@ -819,44 +1718,44 @@ div.generalindex span.indextitle {
 }
 
 div.generalindex span.indexofsourcebracketed {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indexuseopt {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indextoken {
-	color: #000080;
-	font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
+	color: var(--documentation-index-a-colour);
+    font-family: var(--informcode-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indextokenbracketed {
-	color: #8080ff;
-	font-family: "Lucida Grande", Geneva, Arial, Tahoma, Verdana, Helvetica, Helv;
+	color: var(--documentation-index-b-colour);
+    font-family: var(--informdefault-fontfamily);
 	font-style: italic;
 }
 
 div.generalindex span.indexcommand {
-	color: #186000;
-	font-family: Georgia, "Times New Roman", Times, serif;
+	color: var(--documentation-index-c-colour);
+	font-family: var(--informcommand-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indextestcmd {
-	color: #186000;
-	font-family: Georgia, "Times New Roman", Times, serif;
+	color: var(--documentation-index-c-colour);
+	font-family: var(--informcommand-fontfamily);
 	font-size: 0.9em;
 }
 
 div.generalindex span.indexcommandpartbracketed {
-	color: #186000;
-	font-family: Georgia, "Times New Roman", Times, serif;
+	color: var(--documentation-index-c-colour);
+	font-family: var(--informcommand-fontfamily);
 	font-size: 0.9em;
 }
 
@@ -874,7 +1773,7 @@ div.midnight table.fullwidth {
 }
 
 div.midnight table.midnightblack {
-	background-color: #000000;
+	background-color: var(--documentation-duplex-paper-colour);
 }
 
 /* The table is a single row of three cells: */
@@ -902,7 +1801,7 @@ div.midnight td.midnightbannerrightcell {
 /* Within the centre cell, the running-head text is styled with: */
 
 div.midnight span.midnightbannertext {
-	color: #FFFFFF; /* needs to match the colour of the papertint */
+	color: var(--documentation-nav-background-colour);
 	font-size: 0.75em;
 }
 
@@ -924,32 +1823,17 @@ div.midnight td.footernext {
 	text-align: right;
 }
 
-/* Links in the footer are styled with: */
-
-div.midnight a.footerlink {
-	color: #808080;
-	font-size: 0.75em;
-}
-
-/* At the first section, e.g., there's no "previous", but this is used to
-style the unlinked word "Previous": */
-
-div.midnight span.footernonlink {
-	color: #000000;
-	font-size: 0.75em;
-}
-
 /* Midnight features an elaborate contents page in two columns. */
 
 div.midnight td.midnightlefthalfpage {
-	background-color: #eeeeee;
+	background-color: var(--documentation-duplex-left-colour);
 	width: 50%;
 	text-align: left;
 	vertical-align: top;
 }
 
 div.midnight td.midnightrighthalfpage {
-	background-color: #ffffe5;
+	background-color: var(--documentation-duplex-right-colour);
 	width: 50%;
 	text-align: left;
 	vertical-align: top;
@@ -982,8 +1866,8 @@ div.midnight div.headingboxhigh {
 	height: 117px;
 	padding: 0px;
 	white-space:nowrap;
-	background: #eeeeee;  /* grey */
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	background: var(--documentation-nav-heading-background-colour);
+    font-family: var(--informdefault-fontfamily);
 	-webkit-font-smoothing: antialiased;
 }
 
@@ -992,7 +1876,7 @@ div.midnight .headingtext {
 	top: -4px;
 	left: -1px;
 	width: 100%;
-	color: #222222;
+    color: var(--documentation-nav-heading-colour);
 	padding: 14px 10px 0px 10px;
 	font-size: 20px;
 	font-weight: bold;
@@ -1002,7 +1886,7 @@ div.midnight .headingrubric {
 	position: absolute;
 	top: 36px;
 	width: 100%;
-	color: #222222;
+    color: var(--documentation-nav-heading-colour);
 	padding: 0px 10px 0px 10px;
 	font-size: 11px;
 	font-weight: bold;
@@ -1010,27 +1894,27 @@ div.midnight .headingrubric {
 
 div.midnight a:link {										/* unvisited link */
 	text-decoration: none;
-	color: #202020;
+	color: var(--documentation-nav-passive-link-colour);
 }
 div.midnight a:visited {									/* visited link */
 	text-decoration: none;
-	color: #202020;
+	color: var(--documentation-nav-passive-link-colour);
 }
 div.midnight a:hover {										/* mouse over link */
 	text-decoration: none;
-	color: #D00000;
+	color: var(--documentation-nav-active-link-colour);
 }
 div.midnight a:active {										/* selected link */
 	text-decoration: none;
-	color: #D00000;
+	color: var(--documentation-nav-active-link-colour);
 }
 
 div.duplexleftpage {
-	background-color: #ffffff;
+	background-color: var(--documentation-duplex-left-colour);
 }
 
 div.duplexrightpage {
-	background-color: #ffffe5;
+	background-color: var(--documentation-duplex-right-colour);
 }
 
 img.thinbordered {
@@ -1048,16 +1932,16 @@ div.skeinreport p.skeinerror {
 div.skeinreport p.node {
 	margin: 0.75em;
 	padding: 0.75em;
-	border: 1px dotted #2f6fab;
-	background-color: #f9e9e9;
+	border: 1px dotted var(--md-dashed-border-colour);
+	background-color: var(--md-transcript-background-colour);
 }
 
 div.skeinreport span.deletion {
 	text-decoration: line-through;
-	text-decoration-color: red;
+	text-decoration-color: var(--md-transcript-deletion-colour);
 }
 
 div.skeinreport span.insertion {
 	text-decoration: underline;
-	text-decoration-color: green;
+	text-decoration-color: var(--md-transcript-insertion-colour);
 }
