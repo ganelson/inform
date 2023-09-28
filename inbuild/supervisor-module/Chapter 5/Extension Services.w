@@ -838,7 +838,9 @@ source_location Extensions::top_line_location(inform_extension *E) {
 compiled_documentation *Extensions::get_documentation(inform_extension *E,
 	filename *sitemap) {
 	if (E == NULL) return NULL;
+	int was = SourceText::for_documentation_only(TRUE);
 	Copies::get_source_text(E->as_copy, I"getting documentation"); /* in the unlikely event this has not happened yet */
+	SourceText::for_documentation_only(was);
 	if (E->documentation_sought == FALSE) {
 		if (E->as_copy->location_if_path) {
 			pathname *D = Pathnames::down(E->as_copy->location_if_path, I"Documentation");

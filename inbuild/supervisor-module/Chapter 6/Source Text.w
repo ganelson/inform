@@ -45,6 +45,7 @@ int SourceText::for_documentation_only(int state) {
 source_file *SourceText::read_file(inbuild_copy *C, filename *F, text_stream *synopsis,
 	int primary) {
 	int documentation_only = source_reader_in_documentation_only_mode;
+
 	currently_lexing_into = C;
 	general_pointer ref = STORE_POINTER_inbuild_copy(NULL);
 	FILE *handle = Filenames::fopen(F, "r");

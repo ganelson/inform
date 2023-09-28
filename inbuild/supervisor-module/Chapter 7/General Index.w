@@ -168,7 +168,8 @@ void Indexes::scan(compiled_documentation *cd) {
 	IFM_example *E;
 	LOOP_OVER_LINKED_LIST(E, IFM_example, cd->examples)
 		Indexes::scan_r(cd, E->header, NULL, E, &volume_number);
-	if (LinkedLists::len(cd->id.lemma_list) > 0) cd->id.present_with_index = TRUE;
+	if (LinkedLists::len(cd->id.lemma_list) > LinkedLists::len(cd->examples))
+		cd->id.present_with_index = TRUE;
 }
 
 void Indexes::scan_r(compiled_documentation *cd, markdown_item *md, markdown_item **latest,
@@ -723,7 +724,7 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 		HTML_OPEN("b");
 		if (EG) HTML_OPEN_WITH("a", "href=\"%S\"", EG->URL);
 	}
-	WRITE("<span class=\"index%S\">", category);
+	HTML_OPEN_WITH("span", "class=\"index%S\"", category);
 	WRITE("%S", lemma_wording);
 	HTML_CLOSE("span");
 	if (il->example_index_status == 1) {
@@ -765,7 +766,6 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 			WRITE_TO(link, "ex %S", E->insignia);
 			if (EG == NULL) A = E->URL;
 		}
-		if (Str::len(A) == 0) { LOG("Alert! No anchor for %S\n", link); }
 		IndexUtilities::general_link(OUT, link_class, A, link);
 		DISCARD_TEXT(link)
 	}
