@@ -40,8 +40,6 @@ void CompletionModule::compile(void) {
 	target_vm *VM = Supervisor::current_vm();
 	if (VM == NULL) internal_error("target VM not set yet");
 	TEMPORARY_TEXT(vm)
-	TEMPORARY_TEXT(icon)
-	ExtensionIndex::plot_icon(icon, VM);
 	TargetVMs::write(vm, VM);
 	inter_name *iname = Hierarchy::find(VM_MD_HL);
 	Emit::text_constant(iname, vm);
@@ -50,7 +48,6 @@ void CompletionModule::compile(void) {
 		Emit::text_constant(iname, VM->VM_image);
 	}
 	DISCARD_TEXT(vm)
-	DISCARD_TEXT(icon)
 
 @<Plugin usage@> =
 	TEMPORARY_TEXT(inc)

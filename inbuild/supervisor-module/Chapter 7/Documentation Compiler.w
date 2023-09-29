@@ -28,10 +28,13 @@ compiled_documentation *DocumentationCompiler::compile_from_text(text_stream *sc
 	inform_extension *associated_extension, filename *sitemap) {
 	SVEXPLAIN(1, "(compiling documentation: %d chars)\n", Str::len(scrap));
 	compiled_documentation *cd = DocumentationCompiler::new_cd(NULL, associated_extension, sitemap);
+	cd->compiled_from_extension_scrap = TRUE;
 	cd_volume *vol = FIRST_IN_LINKED_LIST(cd_volume, cd->volumes);
 	cd_pageset *page = FIRST_IN_LINKED_LIST(cd_pageset, vol->pagesets);
 	page->nonfile_content = scrap;
 	DocumentationCompiler::compile_inner(cd);
+	LOG("CFY says:\n");
+	Markdown::debug_subtree(DL, cd->markdown_content);
 	return cd;
 }
 
@@ -68,6 +71,7 @@ typedef struct compiled_documentation {
 	struct linked_list *layout_errors; /* of |cd_layout_error| */
 	struct linked_list *images; /* of |cd_image| */
 	struct text_stream *images_URL;
+	int compiled_from_extension_scrap;
 
 	struct linked_list *volumes; /* of |cd_volume| */
 	struct text_stream *contents_URL_pattern;
@@ -366,6 +370,7 @@ compiled_documentation *DocumentationCompiler::new_cd(pathname *P,
 	cd->include_index[GENERAL_INDEX] = FALSE;
 	cd->layout_errors = NEW_LINKED_LIST(cd_layout_error);
 	cd->volumes = NEW_LINKED_LIST(cd_volume);
+	cd->compiled_from_extension_scrap = FALSE;
 	cd->duplex_contents_page = FALSE;
 	cd->source_files = NEW_LINKED_LIST(cd_source_file);
 	cd->domain = P;
@@ -979,12 +984,7 @@ void DocumentationCompiler::compile_inner(compiled_documentation *cd) {
 	/* Phase II parsing */
 	Markdown::parse_all_blocks_inline_using_extended(cd->markdown_content, NULL,
 		cd->link_references, InformFlavouredMarkdown::variation());
-	IFM_example *eg;
-	LOOP_OVER_LINKED_LIST(eg, IFM_example, cd->examples)
-		if (eg->header->down)
-			Markdown::parse_all_blocks_inline_using_extended(eg->header->down, NULL,
-				cd->link_references, InformFlavouredMarkdown::variation());
-	
+
 	/* Indexing */
 	Indexes::scan(cd);
 	if (Indexes::indexing_occurred(cd)) cd->include_index[GENERAL_INDEX] = TRUE;

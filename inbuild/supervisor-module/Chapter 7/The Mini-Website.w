@@ -158,8 +158,8 @@ void ExtensionWebsite::document_extension(inform_extension *E, inform_project *p
 		#ifdef CORE_MODULE
 		TEMPORARY_TEXT(details)
 		IndexExtensions::document_in_detail(details, E);
-		if (Str::len(details) > 0) {
-			HTML_TAG("hr"); /* ruled line at top of extras */
+/*		if (Str::len(details) > 0) {
+			HTML_TAG("hr");
 			HTML_OPEN_WITH("p", "class=\"extensionsubheading\"");
 			WRITE("defined these in the last run");
 			HTML_CLOSE("p");
@@ -167,8 +167,11 @@ void ExtensionWebsite::document_extension(inform_extension *E, inform_project *p
 			WRITE("%S", details);
 			HTML_CLOSE("div");
 		}
-		if (E->as_copy->edition->work->genre == extension_bundle_genre)
+*/
+		if (E->as_copy->edition->work->genre == extension_bundle_genre) {
 			@<Add internals@>;
+			if (proj) @<Add testing page@>;
+		}
 		DISCARD_TEXT(details)
 		#endif
 		DocumentationRenderer::as_HTML(P, doc, OUT, proj);
@@ -178,45 +181,23 @@ void ExtensionWebsite::document_extension(inform_extension *E, inform_project *p
 }
 
 @<Add internals@> =
-	HTML_TAG("hr"); /* ruled line at top of extras */
-	HTML_OPEN_WITH("p", "class=\"extensionsubheading\"");
-	WRITE("internals");
-	HTML_CLOSE("p");
-	HTML_OPEN("p");
-	WRITE("Metadata in JSON form ");
-	HTML_OPEN_WITH("a", "href=\"metadata.html\" class=\"registrycontentslink\"");
-	WRITE("can be read here");
-	HTML_CLOSE("a");
-	WRITE(".");
 	text_stream *MD = DocumentationRenderer::open_subpage(P, I"metadata.html");
 	TEMPORARY_TEXT(title)
 	WRITE_TO(title, "%X", E->as_copy->edition->work);
 	DocumentationRenderer::render_header(MD, title, I"Metadata", NULL);
 	DISCARD_TEXT(title)
 	ExtensionWebsite::write_metadata_page(MD, E);
+	DocumentationRenderer::close_subpage();
+
 	linked_list *L = NEW_LINKED_LIST(inbuild_nest);
 	inbuild_nest *N = Extensions::materials_nest(E);
 	ADD_TO_LINKED_LIST(N, inbuild_nest, L);
 	inbuild_requirement *req;
 	LOOP_OVER_LINKED_LIST(req, inbuild_requirement, E->kits) {
 		inform_kit *K = Kits::find_by_name(req->work->raw_title, L, NULL);
-		if (K) @<Link to documentation on K@>;
-	}
-	HTML_CLOSE("p");
-	DocumentationRenderer::close_subpage();
-	LOOP_OVER_LINKED_LIST(req, inbuild_requirement, E->kits) {
-		inform_kit *K = Kits::find_by_name(req->work->raw_title, L, NULL);
 		if (K) @<Create documentation on K@>;
 	}
-
-@<Link to documentation on K@> =
-	WRITE(" This extension includes the kit ");
-	HTML_OPEN_WITH("a", "href=\"%S/index.html\" class=\"registrycontentslink\"",
-		K->as_copy->edition->work->title);
-	WRITE("%S", K->as_copy->edition->work->title);
-	HTML_CLOSE("a");
-	WRITE(".");
-
+	
 @<Create documentation on K@> =
 	pathname *KP = Pathnames::down(P, req->work->raw_title);
 	if (Pathnames::create_in_file_system(KP)) {
@@ -237,6 +218,15 @@ void ExtensionWebsite::document_extension(inform_extension *E, inform_project *p
 		}
 	}
 
+@<Add testing page@> =
+	text_stream *MD = DocumentationRenderer::open_subpage(P, I"testing.html");
+	TEMPORARY_TEXT(title)
+	WRITE_TO(title, "%X", E->as_copy->edition->work);
+	DocumentationRenderer::render_header(MD, title, I"Testing", NULL);
+	DISCARD_TEXT(title)
+	ExtensionWebsite::write_testing_page(MD, doc, E, proj);
+	DocumentationRenderer::close_subpage();
+
 @ =
 void ExtensionWebsite::write_metadata_page(OUTPUT_STREAM, inform_extension *E) {
 	if (E->as_copy->metadata_record) {
@@ -253,6 +243,107 @@ void ExtensionWebsite::write_metadata_page(OUTPUT_STREAM, inform_extension *E) {
 		WRITE("For some reason, no JSON metadata is available for this extension.");
 		HTML_CLOSE("p");
 	}
+}
+
+@ =
+void ExtensionWebsite::write_testing_page(OUTPUT_STREAM, compiled_documentation *cd,
+	inform_extension *E, inform_project *proj) {
+	HTML_OPEN("p");
+	WRITE("The extension ");
+	Works::write_to_HTML_file(OUT, E->as_copy->edition->work, TRUE);
+	semantic_version_number V = E->as_copy->edition->version;
+	if (VersionNumbers::is_null(V)) WRITE(", which gives no version number");
+	else WRITE(", version %v", &V);
+	WRITE(", provides ");
+	int no_cases = LinkedLists::len(cd->cases);
+	if (no_cases == 0) WRITE("no test cases");
+	if (no_cases == 1) WRITE("one test case");
+	if (no_cases > 1) WRITE("%d test cases", no_cases);
+	if (no_cases > 0) {
+		WRITE(" which can be tried with the links tabulated here:");
+		HTML_CLOSE("p");
+		HTML_OPEN_WITH("div", "class=\"markdowncontent\"");
+		HTML_OPEN("table");
+		HTML_OPEN("tr");
+		HTML_OPEN_WITH("th", "align=\"left\"");
+		WRITE("Name of test");
+		HTML_CLOSE("th");
+		HTML_OPEN_WITH("th", "align=\"left\"");
+		WRITE("Source");
+		HTML_CLOSE("th");
+		HTML_OPEN_WITH("th", "align=\"left\"");
+		WRITE("Test");
+		HTML_CLOSE("th");
+		HTML_OPEN_WITH("th", "align=\"left\"");
+		WRITE("Bless");
+		HTML_CLOSE("th");
+		HTML_OPEN_WITH("th", "align=\"left\"");
+		WRITE("Rebless");
+		HTML_CLOSE("th");
+		HTML_OPEN_WITH("th", "align=\"left\"");
+		WRITE("Curse");
+		HTML_CLOSE("th");
+		HTML_CLOSE("tr");
+		satellite_test_case *stc;
+		LOOP_OVER_LINKED_LIST(stc, satellite_test_case, cd->cases) {
+			ExtensionWebsite::test_table_row(OUT, E, proj,
+				(stc->as_example)?(stc->as_example->name):(stc->short_name),
+				stc->short_name, stc->as_example);
+		}
+		if (no_cases == 2)
+			ExtensionWebsite::test_table_row(OUT, E, proj, I"both at once", I"all", NULL);
+		if (no_cases > 2)
+			ExtensionWebsite::test_table_row(OUT, E, proj, I"all at once", I"all", NULL);
+		HTML_CLOSE("table");
+		HTML_CLOSE("div");
+	}
+}
+
+void ExtensionWebsite::test_table_row(OUTPUT_STREAM, inform_extension *E,
+	inform_project *proj, text_stream *title, text_stream *case_id, IFM_example *eg) {
+	HTML_OPEN("tr");
+	HTML_OPEN_WITH("td", "align=\"left\"");
+	if (Str::ne(case_id, I"all")) HTML_OPEN("em");
+	InformFlavouredMarkdown::render_text(OUT, title);
+	if (Str::ne(case_id, I"all")) HTML_CLOSE("em");
+	HTML_CLOSE("td");
+	HTML_OPEN_WITH("td", "align=\"left\"");
+	if (eg) {
+		TEMPORARY_TEXT(link)
+		WRITE_TO(link, "style=\"text-decoration: none\" href=\"%S#eg%S\"",
+			eg->URL, eg->insignia);
+		HTML::begin_span(OUT, I"indexblack");
+		HTML_OPEN_WITH("a", "%S", link);
+		WRITE("Example %S", eg->insignia);		
+		HTML_CLOSE("a");
+		HTML::end_span(OUT);
+		DISCARD_TEXT(link)		
+	} else {
+		WRITE("&mdash;");
+	}
+	
+	HTML_CLOSE("td");
+	HTML_OPEN_WITH("td", "align=\"left\"");
+	ExtensionInstaller::open_test_link(OUT, proj, E, I"-test", case_id);
+	WRITE("test");
+	ExtensionInstaller::close_test_link(OUT, proj, E, I"-test", case_id);
+	HTML_CLOSE("td");
+	HTML_OPEN_WITH("td", "align=\"left\"");
+	ExtensionInstaller::open_test_link(OUT, proj, E, I"-bless", case_id);
+	WRITE("bless");
+	ExtensionInstaller::close_test_link(OUT, proj, E, I"-bless", case_id);
+	HTML_CLOSE("td");
+	HTML_OPEN_WITH("td", "align=\"left\"");
+	ExtensionInstaller::open_test_link(OUT, proj, E, I"-rebless", case_id);
+	WRITE("rebless");
+	ExtensionInstaller::close_test_link(OUT, proj, E, I"-rebless", case_id);
+	HTML_CLOSE("td");
+	HTML_OPEN_WITH("td", "align=\"left\"");
+	ExtensionInstaller::open_test_link(OUT, proj, E, I"-curse", case_id);
+	WRITE("curse");
+	ExtensionInstaller::close_test_link(OUT, proj, E, I"-curse", case_id);
+	HTML_CLOSE("td");
+	HTML_CLOSE("tr");
 }
 
 text_stream *EXW_breadcrumb_titles[5] = { NULL, NULL, NULL, NULL, NULL };

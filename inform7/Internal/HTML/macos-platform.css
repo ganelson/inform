@@ -1,6 +1,6 @@
 :root {
 	--informdefault-fontfamily: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	--informmonospaced-fontfamily: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+	--informmonospaced-fontfamily: SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 	--informcode-fontfamily: SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 	--informcommand-fontfamily: Georgia, "Times New Roman", Times, serif;
 }

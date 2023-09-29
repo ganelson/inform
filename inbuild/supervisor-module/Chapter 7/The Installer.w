@@ -718,28 +718,28 @@ void ExtensionInstaller::install_button(OUTPUT_STREAM, inform_project *proj,
 	inbuild_copy *C) {			
 	TEMPORARY_TEXT(js_path)
 	@<Get the extension path escaped for use in Javascript@>
-	HTML_OPEN_WITH("a", "class=\"registrycontentslink\" href='javascript:project().install(\"%S\")'", js_path);
+	HTML_OPEN_WITH("a", "class=\"actionlink\" href='javascript:project().install(\"%S\")'", js_path);
 	DISCARD_TEXT(js_path)
 	ExtensionInstaller::install_icon(OUT);
 	HTML_CLOSE("a");
 }
 
 void ExtensionInstaller::install_icon(OUTPUT_STREAM) {
-	WRITE("<span class=\"paste\">%c%c</span>", 0x2B06, 0xFE0F); /* Unicode "up arrow" */
+	WRITE("<span class=\"actionbutton\">install</span>");
 }
 
 void ExtensionInstaller::uninstall_button(OUTPUT_STREAM, inform_project *proj,
 	inbuild_copy *C) {
 	TEMPORARY_TEXT(js_path)
 	@<Get the extension path escaped for use in Javascript@>
-	HTML_OPEN_WITH("a", "class=\"registrycontentslink\" href='javascript:project().uninstall(\"%S\")'", js_path);
+	HTML_OPEN_WITH("a", "class=\"actionlink\" href='javascript:project().uninstall(\"%S\")'", js_path);
 	DISCARD_TEXT(js_path)
 	ExtensionInstaller::uninstall_icon(OUT);
 	HTML_CLOSE("a");
 }
 
 void ExtensionInstaller::uninstall_icon(OUTPUT_STREAM) {
-	WRITE("<span class=\"paste\">%c%c</span>", 0x2198, 0xFE0F); /* Unicode "down right arrow" */
+	WRITE("<span class=\"actionbutton\">uninstall</span>");
 }
 
 @<Get the extension path escaped for use in Javascript@> =

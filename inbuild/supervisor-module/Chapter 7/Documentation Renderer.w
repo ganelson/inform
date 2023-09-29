@@ -74,7 +74,7 @@ void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd,
 					WRITE("contents");
 					HTML_CLOSE("p");
 					HTML_OPEN_WITH("ul", "class=\"extensioncontents\"");
-					DocumentationRenderer::render_toc_r(OUT, vol, 0, FALSE);
+					DocumentationRenderer::render_toc_from(OUT, vol, FALSE);
 					DocumentationRenderer::close_subpage();
 					HTML_CLOSE("ul");
 					HTML_CLOSE("div");
@@ -86,7 +86,7 @@ void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd,
 							WRITE("introduction");
 							HTML_CLOSE("p");
 							HTML_OPEN_WITH("div", "class=\"markdowncontent\"");
-							Markdown::render_extended(OUT, vol->down, InformFlavouredMarkdown::variation());
+							DocumentationRenderer::render_extended(OUT, cd, vol->down);
 							HTML_CLOSE("div");
 						}
 					}
@@ -224,21 +224,21 @@ void DocumentationRenderer::render_index_page(OUTPUT_STREAM, compiled_documentat
 	markdown_item *md, text_stream *extras, inform_project *proj) {
 	DocumentationRenderer::render_header(OUT, cd->title, NULL, cd->within_extension);
 	if (cd->associated_extension) {
-		DocumentationRenderer::render_extension_details(OUT, cd->associated_extension, proj);
+		DocumentationRenderer::render_extension_details(OUT, cd, cd->associated_extension, proj);
+		HTML_TAG("hr");
 	}
 
-	HTML_TAG("hr");
 	if (DocumentationCompiler::scold(OUT, cd) == FALSE) {
-		HTML_OPEN_WITH("p", "class=\"extensionsubheading\"");
-		WRITE("documentation");
-		HTML_CLOSE("p");
 		if (cd->empty) {
 			HTML_OPEN("p");
-			InformFlavouredMarkdown::render_text(OUT, I"None is provided.");
+			InformFlavouredMarkdown::render_text(OUT, I"No documentation is provided.");
 			HTML_CLOSE("p");
 		} else {
 			if (LinkedLists::len(cd->volumes) == 1) {
-				DocumentationRenderer::render_toc(OUT, cd);
+				if (DocumentationRenderer::lowest_h(cd->markdown_content) <= 2) {
+					DocumentationRenderer::render_toc(OUT, cd);
+					HTML_TAG("hr");
+				}
 			} else {
 				HTML_OPEN("p");
 				InformFlavouredMarkdown::render_text(OUT, I"The following manuals are provided:");
@@ -255,62 +255,15 @@ void DocumentationRenderer::render_index_page(OUTPUT_STREAM, compiled_documentat
 				}
 				DocumentationRenderer::render_toc_indexes(OUT, cd);
 				HTML_CLOSE("ul");
+				HTML_TAG("hr");
 			}
 
-			int no_cases = LinkedLists::len(cd->cases);
-			if ((proj) && (cd->associated_extension) && (no_cases > 0)) {
-				HTML_TAG("hr");
-				HTML_OPEN_WITH("p", "class=\"extensionsubheading\"");
-				WRITE("testing");
-				HTML_CLOSE("p");
-				HTML_OPEN("p");
-				WRITE("This extension provides ");
-				if (no_cases == 1) WRITE("one test case");
-				if (no_cases > 1) WRITE("%d test cases", no_cases);
-				WRITE(" which can be tried with the links tabulated here:");
-				HTML_CLOSE("p");
-				HTML_OPEN_WITH("div", "class=\"markdowncontent\"");
-				HTML_OPEN("table");
-				HTML_OPEN("tr");
-				HTML_OPEN_WITH("th", "align=\"left\"");
-				WRITE("Name of test");
-				HTML_CLOSE("th");
-				HTML_OPEN_WITH("th", "align=\"left\"");
-				WRITE("Source");
-				HTML_CLOSE("th");
-				HTML_OPEN_WITH("th", "align=\"left\"");
-				WRITE("Test");
-				HTML_CLOSE("th");
-				HTML_OPEN_WITH("th", "align=\"left\"");
-				WRITE("Bless");
-				HTML_CLOSE("th");
-				HTML_OPEN_WITH("th", "align=\"left\"");
-				WRITE("Rebless");
-				HTML_CLOSE("th");
-				HTML_OPEN_WITH("th", "align=\"left\"");
-				WRITE("Curse");
-				HTML_CLOSE("th");
-				HTML_CLOSE("tr");
-				satellite_test_case *stc;
-				LOOP_OVER_LINKED_LIST(stc, satellite_test_case, cd->cases) {
-					DocumentationRenderer::test_table_row(OUT, cd->associated_extension, proj,
-						(stc->as_example)?(stc->as_example->name):(stc->short_name),
-						stc->short_name, stc->as_example);
-				}
-				if (no_cases == 2)
-					DocumentationRenderer::test_table_row(OUT, cd->associated_extension, proj, I"both at once", I"all", NULL);
-				if (no_cases > 2)
-					DocumentationRenderer::test_table_row(OUT, cd->associated_extension, proj, I"all at once", I"all", NULL);
-				HTML_CLOSE("table");
-				HTML_CLOSE("div");
-			}
 			if (md) {
-				HTML_TAG("hr");
-				HTML_OPEN_WITH("p", "class=\"extensionsubheading\"");
-				WRITE("introduction");
-				HTML_CLOSE("p");
 				HTML_OPEN_WITH("div", "class=\"markdowncontent\"");
-				Markdown::render_extended(OUT, md, InformFlavouredMarkdown::variation());
+				HTML_OPEN("h3");
+				WRITE("Documentation");
+				HTML_CLOSE("h3");
+				DocumentationRenderer::render_extended(OUT, cd, md);
 				HTML_CLOSE("div");
 			}
 		}
@@ -339,7 +292,7 @@ void DocumentationRenderer::render_index_page(OUTPUT_STREAM, compiled_documentat
 void DocumentationRenderer::render_example_page(OUTPUT_STREAM, compiled_documentation *cd,
 	IFM_example *egc) {
 	TEMPORARY_TEXT(title)
-	WRITE_TO(title, "Example %d", egc->number);
+	WRITE_TO(title, "Example %S", egc->insignia);
 	DocumentationRenderer::render_header(OUT, cd->title, title, cd->within_extension);
 	DISCARD_TEXT(title)
 	DocumentationRenderer::render_example(OUT, cd, egc);
@@ -365,7 +318,7 @@ void DocumentationRenderer::render_chapter_page(OUTPUT_STREAM, compiled_document
 	}
 	DISCARD_TEXT(title)
 	HTML_OPEN_WITH("div", "class=\"markdowncontent\"");
-	Markdown::render_extended(OUT, file_marker, InformFlavouredMarkdown::variation());
+	DocumentationRenderer::render_extended(OUT, cd, file_marker);
 	HTML_CLOSE("div");
 	@<Enter the small print@>;
 	if (prev_file) {
@@ -419,8 +372,8 @@ void DocumentationRenderer::render_footer(OUTPUT_STREAM) {
 extension.
 
 =
-void DocumentationRenderer::render_extension_details(OUTPUT_STREAM, inform_extension *E,
-	inform_project *proj) {
+void DocumentationRenderer::render_extension_details(OUTPUT_STREAM,
+	compiled_documentation *cd, inform_extension *E, inform_project *proj) {
 	inbuild_edition *edition = E->as_copy->edition;
 	inbuild_work *work = edition->work;
 
@@ -435,77 +388,80 @@ void DocumentationRenderer::render_extension_details(OUTPUT_STREAM, inform_exten
 	if (VersionNumbers::is_null(V)) WRITE(", which gives no version number");
 	else WRITE(", version %v", &V);
 	WRITE(".");
+
+	if (Str::len(E->extra_credit_as_lexed) > 0) {
+		WRITE(" &quot;");
+		InformFlavouredMarkdown::render_text(OUT, E->extra_credit_as_lexed);
+		WRITE(" &quot;");
+	}
+
+	if (Str::len(E->rubric_as_lexed) > 0) {
+		WRITE(" The author gives this summary description:");
+	}
 	HTML_CLOSE("p");
 
 	if (Str::len(E->rubric_as_lexed) > 0) {
-		HTML_OPEN("p");
+		HTML_OPEN("blockquote");
+		HTML_OPEN("em");
 		InformFlavouredMarkdown::render_text(OUT, E->rubric_as_lexed);
-		HTML_CLOSE("p");
+		HTML_CLOSE("em");
+		HTML_CLOSE("blockquote");
 	}
 
-	if (Str::len(E->extra_credit_as_lexed) > 0) {
-		HTML_OPEN("p");
-		HTML_OPEN("em");
-		InformFlavouredMarkdown::render_text(OUT, E->extra_credit_as_lexed);
-		HTML_CLOSE("em");
-		HTML_CLOSE("p");
+	HTML_OPEN("p");
+	WRITE("This page is for Inform authors wanting to use the extension.");
+	if (cd->compiled_from_extension_scrap == FALSE) {
+		WRITE(" If you want to maintain or modify it, you can also ");
+		HTML_OPEN_WITH("a", "href=\"metadata.html\" class=\"registrycontentslink\"");
+		WRITE("see technical metadata in JSON format");
+		HTML_CLOSE("a");
+		if ((proj) && (LinkedLists::len(cd->cases) > 0)) {
+			WRITE(", or ");
+			HTML_OPEN_WITH("a", "href=\"testing.html\" class=\"registrycontentslink\"");
+			WRITE("run its %d test case(s)", LinkedLists::len(cd->cases));
+			HTML_CLOSE("a");
+		}
+
+		int kc = 0;
+		linked_list *L = NEW_LINKED_LIST(inbuild_nest);
+		inbuild_nest *N = Extensions::materials_nest(E);
+		ADD_TO_LINKED_LIST(N, inbuild_nest, L);
+		inbuild_requirement *req;
+		LOOP_OVER_LINKED_LIST(req, inbuild_requirement, E->kits) {
+			inform_kit *K = Kits::find_by_name(req->work->raw_title, L, NULL);
+			if (K) {
+				if (kc++ == 0) WRITE(", or look at the Inter code it contains, in ");
+				else WRITE(" or ");
+				HTML_OPEN_WITH("a", "href=\"%S/index.html\" class=\"registrycontentslink\"",
+					K->as_copy->edition->work->title);
+				WRITE("%S", K->as_copy->edition->work->title);
+				HTML_CLOSE("a");
+			}
+		}
+		WRITE(".");
 	}
+	HTML_CLOSE("p");
+
 	compatibility_specification *C = E->as_copy->edition->compatibility;
 	if (Str::len(C->parsed_from) > 0) {
 		HTML_OPEN_WITH("p", "class=\"extensionsubheading\"");
 		WRITE("compatibility");
 		HTML_CLOSE("p");
 		HTML_OPEN("p");
-		InformFlavouredMarkdown::render_text(OUT, C->parsed_from);
+		WRITE("The extension says that it is &quot;");
+		TEMPORARY_TEXT(proviso)
+		WRITE_TO(proviso, "%S", C->parsed_from);
+		if ((Str::get_first_char(proviso) == '(') &&
+			(Str::get_last_char(proviso) == ')')) {
+			Str::delete_first_character(proviso);
+			Str::delete_last_character(proviso);
+		}
+		InformFlavouredMarkdown::render_text(OUT, proviso);
+		DISCARD_TEXT(proviso)
+		WRITE("&quot;. It can be used only if the choices you made on the Settings ");
+		WRITE("panel for your project match this.");
 		HTML_CLOSE("p");
 	}
-}
-
-void DocumentationRenderer::test_table_row(OUTPUT_STREAM, inform_extension *E,
-	inform_project *proj, text_stream *title, text_stream *case_id, IFM_example *eg) {
-	HTML_OPEN("tr");
-	HTML_OPEN_WITH("td", "align=\"left\"");
-	if (Str::ne(case_id, I"all")) HTML_OPEN("em");
-	InformFlavouredMarkdown::render_text(OUT, title);
-	if (Str::ne(case_id, I"all")) HTML_CLOSE("em");
-	HTML_CLOSE("td");
-	HTML_OPEN_WITH("td", "align=\"left\"");
-	if (eg) {
-		TEMPORARY_TEXT(link)
-		WRITE_TO(link, "style=\"text-decoration: none\" href=\"%S#eg%S\"",
-			eg->URL, eg->insignia);
-		HTML::begin_span(OUT, I"indexblack");
-		HTML_OPEN_WITH("a", "%S", link);
-		WRITE("Example %S", eg->insignia);		
-		HTML_CLOSE("a");
-		HTML::end_span(OUT);
-		DISCARD_TEXT(link)		
-	} else {
-		WRITE("&mdash;");
-	}
-	
-	HTML_CLOSE("td");
-	HTML_OPEN_WITH("td", "align=\"left\"");
-	ExtensionInstaller::open_test_link(OUT, proj, E, I"-test", case_id);
-	WRITE("test");
-	ExtensionInstaller::close_test_link(OUT, proj, E, I"-test", case_id);
-	HTML_CLOSE("td");
-	HTML_OPEN_WITH("td", "align=\"left\"");
-	ExtensionInstaller::open_test_link(OUT, proj, E, I"-bless", case_id);
-	WRITE("bless");
-	ExtensionInstaller::close_test_link(OUT, proj, E, I"-bless", case_id);
-	HTML_CLOSE("td");
-	HTML_OPEN_WITH("td", "align=\"left\"");
-	ExtensionInstaller::open_test_link(OUT, proj, E, I"-rebless", case_id);
-	WRITE("rebless");
-	ExtensionInstaller::close_test_link(OUT, proj, E, I"-rebless", case_id);
-	HTML_CLOSE("td");
-	HTML_OPEN_WITH("td", "align=\"left\"");
-	ExtensionInstaller::open_test_link(OUT, proj, E, I"-curse", case_id);
-	WRITE("curse");
-	ExtensionInstaller::close_test_link(OUT, proj, E, I"-curse", case_id);
-	HTML_CLOSE("td");
-	HTML_CLOSE("tr");
 }
 
 @ Now for the Table of Contents, which shows chapters, sections and examples
@@ -527,12 +483,12 @@ void DocumentationRenderer::render_toc(OUTPUT_STREAM, compiled_documentation *cd
 			WRITE("%S", vol->stashed);
 			HTML_CLOSE("b");
 			HTML_OPEN_WITH("ul", "class=\"extensioncontents\"");
-			DocumentationRenderer::render_toc_r(OUT, vol, 0, include_examples);
+			DocumentationRenderer::render_toc_from(OUT, vol, include_examples);
 			HTML_CLOSE("ul");
 			HTML_CLOSE("li");
 		}
 	} else {
-		DocumentationRenderer::render_toc_r(OUT, cd->markdown_content, 0, include_examples);
+		DocumentationRenderer::render_toc_from(OUT, cd->markdown_content, include_examples);
 	}
 	
 	DocumentationRenderer::render_toc_indexes(OUT, cd);
@@ -561,25 +517,40 @@ void DocumentationRenderer::link_to(OUTPUT_STREAM, markdown_item *md) {
 	HTML_OPEN_WITH("a", "style=\"text-decoration: none\" href=%S", ch);
 }
 
-void DocumentationRenderer::render_toc_r(OUTPUT_STREAM, markdown_item *md, int L,
+int DocumentationRenderer::lowest_h(markdown_item *md) {
+	int L = 10;
+	if (md->type == HEADING_MIT) L = Markdown::get_heading_level(md);
+	for (markdown_item *ch = md->down; ch; ch = ch->next)
+		if (DocumentationRenderer::lowest_h(ch) < L)
+			L = DocumentationRenderer::lowest_h(ch);
+	return L;
+}
+
+void DocumentationRenderer::render_toc_from(OUTPUT_STREAM, markdown_item *md,
 	int include_examples) {
+	int min_L = DocumentationRenderer::lowest_h(md);
+	DocumentationRenderer::render_toc_r(OUT, md, 0, min_L, include_examples);
+}
+
+void DocumentationRenderer::render_toc_r(OUTPUT_STREAM, markdown_item *md,
+	int L, int min_L, int include_examples) {
+	int adjustment = 0;
+	if (min_L == 2) adjustment = 1;
 	if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) <= 2)) {
-		if (L > 0) {
-			HTML_OPEN_WITH("li", "class=\"exco%d\"", Markdown::get_heading_level(md));
-			HTML::begin_span(OUT, I"indexblack");
-			HTML_OPEN("b");
-			DocumentationRenderer::link_to(OUT, md);
-			for (markdown_item *ch = md->down; ch; ch = ch->next)
-				Markdown::render_extended(OUT, ch, InformFlavouredMarkdown::variation());
-			HTML_CLOSE("a");
-			HTML_CLOSE("b");
-			HTML::end_span(OUT);
-			HTML_CLOSE("li");
-			WRITE("\n");
-		}
+		HTML_OPEN_WITH("li", "class=\"exco%d\"", Markdown::get_heading_level(md) - adjustment);
+		HTML::begin_span(OUT, I"indexblack");
+		HTML_OPEN("b");
+		DocumentationRenderer::link_to(OUT, md);
+		for (markdown_item *ch = md->down; ch; ch = ch->next)
+			DocumentationRenderer::render_extended(OUT, NULL, ch);
+		HTML_CLOSE("a");
+		HTML_CLOSE("b");
+		HTML::end_span(OUT);
+		HTML_CLOSE("li");
+		WRITE("\n");
 	}
 	if ((md->type == INFORM_EXAMPLE_HEADING_MIT) && (include_examples)) {
-		HTML_OPEN_WITH("li", "class=\"exco%d\"", L);
+		HTML_OPEN_WITH("li", "class=\"exco%d\"", L - adjustment);
 		IFM_example *E = RETRIEVE_POINTER_IFM_example(md->user_state);
 		TEMPORARY_TEXT(link)
 		WRITE_TO(link, "style=\"text-decoration: none\" href=\"%S#eg%S\"",
@@ -595,7 +566,7 @@ void DocumentationRenderer::render_toc_r(OUTPUT_STREAM, markdown_item *md, int L
 		WRITE("\n");
 	}
 	for (markdown_item *ch = md->down; ch; ch = ch->next)
-		DocumentationRenderer::render_toc_r(OUT, ch, L+1, include_examples);
+		DocumentationRenderer::render_toc_r(OUT, ch, L+1, min_L, include_examples);
 }
 
 void DocumentationRenderer::render_example(OUTPUT_STREAM, compiled_documentation *cd,
@@ -607,10 +578,10 @@ void DocumentationRenderer::render_example(OUTPUT_STREAM, compiled_documentation
 		IFM_example *E = RETRIEVE_POINTER_IFM_example(alt_EN->user_state);
 		HTML_OPEN_WITH("div", "class=\"markdowncontent\"");
 		InformFlavouredMarkdown::render_example_heading(OUT, E, NULL);
+
 		markdown_item *passage_node = alt_EN->down;
 		while (passage_node) {
-			Markdown::render_extended(OUT, passage_node,
-				InformFlavouredMarkdown::variation());
+			DocumentationRenderer::render_extended(OUT, cd, passage_node);
 			passage_node = passage_node->next;
 		}
 		HTML_CLOSE("div");
@@ -618,10 +589,19 @@ void DocumentationRenderer::render_example(OUTPUT_STREAM, compiled_documentation
 		if (egc->cue) {
 			WRITE("This example is drawn from ");
 			DocumentationRenderer::link_to(OUT, egc->cue);
-			Markdown::render_extended(OUT, egc->cue->down,
-				InformFlavouredMarkdown::variation());
+			DocumentationRenderer::render_extended(OUT, cd, egc->cue->down);
 			HTML_CLOSE("a");
 		}
 		@<Exit the small print@>;
 	}
+}
+
+void DocumentationRenderer::render_extended(OUTPUT_STREAM, compiled_documentation *cd,
+	markdown_item *md) {
+	if ((cd) && (cd->compiled_from_extension_scrap))
+		Markdown::render_bodied_extended(OUT, md,
+			InformFlavouredMarkdown::variation());
+	else
+		Markdown::render_extended(OUT, md,
+			InformFlavouredMarkdown::variation());
 }

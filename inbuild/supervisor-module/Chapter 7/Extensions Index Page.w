@@ -308,7 +308,7 @@ the usual ones seen in Mac OS X applications such as iTunes.
 @<Show a final titling row closing the census sorting@> =
 	@<Begin a tinted census line@>;
 	HTML::begin_span(OUT, I"smaller");
-	WRITE("%d extensions in total", no_entries_in_set);
+	WRITE("%d extension%s in total", no_entries_in_set, (no_entries_in_set == 1)?"":"s");
 	HTML::end_span(OUT);
 	@<End a tinted census line@>;
 
@@ -344,11 +344,24 @@ the usual ones seen in Mac OS X applications such as iTunes.
 	if (LinkedLists::len(res->copy->errors_reading_source_text) == 0) {
 		source_location sl = Extensions::top_line_location(E);
 		if (sl.file_of_origin) {
-			ExtensionIndex::add_to_key(key_list, REVEAL_SYMBOL,
-				I"See source text (left of title: the whole extension; right: where it is Included");
+			ExtensionIndex::add_to_key(key_list, REVEAL_SYMBOL, I"See source text");
 			SourceLinks::link(OUT, sl, FALSE);
 			WRITE(" ");
 		}
+	}
+
+	TEMPORARY_TEXT(link)
+	TEMPORARY_TEXT(URL)
+	filename *F = ExtensionWebsite::page_filename(proj, res->copy->edition, -1);
+	if (TextFiles::exists(F)) {
+		WRITE_TO(URL, "%f", ExtensionWebsite::page_filename_relative_to_materials(res->copy->edition, -1));
+		WRITE_TO(link, "href='inform:/");
+		Works::escape_apostrophes(link, URL);
+		WRITE_TO(link, "' style=\"text-decoration: none\"");
+	}
+
+	if (Str::len(link) > 0) {
+		HTML_OPEN_WITH("a", "%S class=\"registrycontentslink\"", link);
 	}
 	if (d != SORT_CE_BY_AUTHOR) {
 		WRITE("%S", res->copy->edition->work->raw_title);
@@ -357,19 +370,14 @@ the usual ones seen in Mac OS X applications such as iTunes.
 	} else {
 		WRITE("%S", res->copy->edition->work->raw_title);
 	}
+	if (Str::len(link) > 0) {
+		HTML_CLOSE("a");
+	}
 	HTML::end_span(OUT);
 
-	filename *F = ExtensionWebsite::page_filename(proj, res->copy->edition, -1);
-	if (TextFiles::exists(F)) {
+	if (Str::len(link) > 0) {
 		WRITE(" ");
-		TEMPORARY_TEXT(link)
-		TEMPORARY_TEXT(URL)
-		WRITE_TO(URL, "%f", ExtensionWebsite::page_filename_relative_to_materials(res->copy->edition, -1));
-		WRITE_TO(link, "href='inform:/");
-		Works::escape_apostrophes(link, URL);
-		WRITE_TO(link, "' style=\"text-decoration: none\"");
 		HTML_OPEN_WITH("a", "%S", link);
-		DISCARD_TEXT(link)
 		HTML_TAG_WITH("img", "%s", HELP_SYMBOL);
 		ExtensionIndex::add_to_key(key_list, HELP_SYMBOL, I"Documentation (click to read)");
 		HTML_CLOSE("a");
@@ -380,6 +388,11 @@ the usual ones seen in Mac OS X applications such as iTunes.
 		wording W = Node::get_text(at);
 		source_location sl = Lexer::word_location(Wordings::first_wn(W));
 		if (sl.file_of_origin) {
+			WRITE(" ");
+			HTML_OPEN("em");
+			WRITE("&mdash; included ");
+			HTML_CLOSE("em");
+			WRITE(" ");
 			SourceLinks::link(OUT, sl, TRUE);
 			ExtensionIndex::add_to_key(key_list, REVEAL_SYMBOL,
 				I"Open source (left of title: the whole extension; right: where it is Included");
@@ -412,19 +425,8 @@ the usual ones seen in Mac OS X applications such as iTunes.
 			}
 		}
 	}
-
-	compatibility_specification *C = res->copy->edition->compatibility;
-	if (Str::len(C->parsed_from) > 0)
-		@<Append icons which signify the VM requirements of the extension@>;
-
-@ VM requirements are parsed by feeding them into the lexer and calling the
-same routines as would be used when parsing headings about VM requirements
-in a normal run of Inform. Note that because the requirements are in round
-brackets, which the lexer will split off as distinct words, we can ignore
-the first and last word and just look at what is in between:
-
-@<Append icons which signify the VM requirements of the extension@> =
-	ExtensionIndex::write_icons(OUT, key_list, C);
+	DISCARD_TEXT(link)
+	DISCARD_TEXT(URL)
 
 @<Print column 2 of the census line@> =
 	HTML::begin_span(OUT, I"smaller");
@@ -475,7 +477,23 @@ the first and last word and just look at what is in between:
 @<Print the rubric line for this extension@> =
 	HTML::begin_span(OUT, I"smaller");
 	text_stream *R = Extensions::get_rubric(Extensions::from_copy(res->copy));
-	if (Str::len(R) > 0) WRITE("%S", R); else WRITE("--");
+	if (Str::len(R) > 0) InformFlavouredMarkdown::render_text(OUT, R);
+	compatibility_specification *C = res->copy->edition->compatibility;
+	if (Str::len(C->parsed_from) > 0) {
+		if (Str::len(R) > 0) WRITE(" ");
+		HTML_OPEN("b");
+		TEMPORARY_TEXT(proviso)
+		WRITE_TO(proviso, "%S", C->parsed_from);
+		if ((Str::get_first_char(proviso) == '(') &&
+			(Str::get_last_char(proviso) == ')')) {
+			Str::delete_first_character(proviso);
+			Str::delete_last_character(proviso);
+		}
+		InformFlavouredMarkdown::render_text(OUT, proviso);
+		DISCARD_TEXT(proviso)
+		HTML_CLOSE("b");
+	}
+
 	HTML::end_span(OUT);
 
 @ This is just too special-purpose to belong in the foundation module.
@@ -513,8 +531,6 @@ There is just no need to do this efficiently in either running time or memory.
 @d BUILT_IN_SYMBOL "border=\"0\" src=\"inform:/doc_images/builtin_ext.png\""
 @d PROJECT_SPECIFIC_SYMBOL "border=\"0\" src=\"inform:/doc_images/folder4.png\""
 @d LEGACY_AREA_SYMBOL "border=\"0\" src=\"inform:/doc_images/pspec_ext.png\""
-@d ARCH_16_SYMBOL "border=\"0\" src=\"inform:/doc_images/vm_z8.png\""
-@d ARCH_32_SYMBOL "border=\"0\" src=\"inform:/doc_images/vm_glulx.png\""
 
 =
 typedef struct extensions_key_item {
@@ -539,9 +555,22 @@ void ExtensionIndex::add_to_key(linked_list *L, char *URL, text_stream *gloss) {
 		eki->gloss = Str::duplicate(gloss);
 		eki->displayed = FALSE;
 		eki->ideograph = Str::new();
-		if (Str::eq(as_text, I"paste")) PasteButtons::paste_ideograph(eki->ideograph);
-		if (Str::eq(as_text, I"install")) ExtensionInstaller::install_icon(eki->ideograph);
-		if (Str::eq(as_text, I"uninstall")) ExtensionInstaller::uninstall_icon(eki->ideograph);
+		text_stream *OUT = eki->ideograph;
+		if (Str::eq(as_text, I"paste")) {
+			HTML_OPEN_WITH("span", "class=\"deadactionbutton\"");
+			PasteButtons::paste_ideograph(OUT);
+			HTML_CLOSE("span");
+		}
+		if (Str::eq(as_text, I"install"))  {
+			HTML_OPEN_WITH("span", "class=\"deadactionbutton\"");
+			ExtensionInstaller::install_icon(OUT);
+			HTML_CLOSE("span");
+		}
+		if (Str::eq(as_text, I"uninstall")) {
+			HTML_OPEN_WITH("span", "class=\"deadactionbutton\"");
+			ExtensionInstaller::uninstall_icon(OUT);
+			HTML_CLOSE("span");
+		}
 		ADD_TO_LINKED_LIST(eki, extensions_key_item, L);
 	}
 	DISCARD_TEXT(as_text)
@@ -553,7 +582,6 @@ void ExtensionIndex::render_key(OUTPUT_STREAM, linked_list *L) {
 	char *sequence[] = {
 		PROJECT_SPECIFIC_SYMBOL, BUILT_IN_SYMBOL, LEGACY_AREA_SYMBOL,
 		HELP_SYMBOL, REVEAL_SYMBOL, PASTE_SYMBOL, PROBLEM_SYMBOL,
-		ARCH_16_SYMBOL, ARCH_32_SYMBOL,
 		NULL };
 	for (int i=0; sequence[i] != NULL; i++) {
 		TEMPORARY_TEXT(as_text)
@@ -585,70 +613,6 @@ void ExtensionIndex::render_icon(OUTPUT_STREAM, extensions_key_item *eki) {
 	} else {
 		HTML_TAG_WITH("img", "%S", eki->image_URL);
 	}
-}
-
-@h Icons for virtual machines.
-And everything else is cosmetic: printing, or showing icons to signify,
-the current VM or some set of permitted VMs. The following plots the
-icon associated with a given minor VM, and explicates what the icons mean:
-
-=
-void ExtensionIndex::plot_icon(OUTPUT_STREAM, target_vm *VM) {
-	if (Str::len(VM->VM_image) > 0) {
-		HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/%S", VM->VM_image);
-		WRITE("&nbsp;");
-	}
-}
-
-@h Displaying VM restrictions.
-Given a word range, we describe the result as concisely as we can with a
-row of icons (but do not bother for the common case where some extension
-has no restriction on its use).
-
-=
-void ExtensionIndex::write_icons(OUTPUT_STREAM, linked_list *key_list,
-	compatibility_specification *C) {
-	int something_16 = FALSE, everything_16 = TRUE, something_32 = FALSE, everything_32 = TRUE;
-	target_vm *VM;
-	LOOP_OVER(VM, target_vm)
-		if (Architectures::is_16_bit(VM->architecture)) {
-			if (Compatibility::test(C, VM))
-				something_16 = TRUE;
-			else
-				everything_16 = FALSE;
-		} else {
-			if (Compatibility::test(C, VM))
-				something_32 = TRUE;
-			else
-				everything_32 = FALSE;
-		}
-	if ((everything_16) && (everything_32)) return;
-	if ((everything_16) && (something_32 == FALSE)) {
-		WRITE(" ");
-		HTML_TAG_WITH("img", "%s", ARCH_16_SYMBOL);
-		ExtensionIndex::add_to_key(key_list, ARCH_16_SYMBOL, I"Z-machine only (16-bit)");
-		return;
-	}
-	if ((everything_32) && (something_16 == FALSE)) {
-		WRITE(" ");
-		HTML_TAG_WITH("img", "%s", ARCH_32_SYMBOL);
-		ExtensionIndex::add_to_key(key_list, ARCH_32_SYMBOL, I"Glulx only (32-bit)");
-		return;
-	}
-	WRITE(" - %S ", C->parsed_from);
-	dictionary *shown_already = Dictionaries::new(16, TRUE);
-	LOOP_OVER(VM, target_vm)
-		if (Compatibility::test(C, VM)) {
-			text_stream *icon = VM->VM_image;
-			if (Str::len(icon) > 0) {
-				if (Dictionaries::find(shown_already, icon) == NULL) {
-					ExtensionIndex::plot_icon(OUT, VM);
-					WRITE_TO(Dictionaries::create_text(shown_already, icon), "X");
-					ExtensionIndex::add_to_key(key_list, ARCH_16_SYMBOL, I"Z-machine only (16-bit)");
-					ExtensionIndex::add_to_key(key_list, ARCH_32_SYMBOL, I"Glulx only (32-bit)");
-				}
-			}
-		}
 }
 
 @

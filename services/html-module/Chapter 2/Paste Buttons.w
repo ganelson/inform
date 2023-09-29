@@ -88,7 +88,7 @@ void PasteButtons::paste_text_using(OUTPUT_STREAM, text_stream *alt_stream,
 void PasteButtons::paste_inner(OUTPUT_STREAM, int from, int to, text_stream *alt_stream,
 	text_stream *paste_icon) {
 	TEMPORARY_TEXT(link)
-	WRITE_TO(link, "class=\"pastelink\" href=\"javascript:pasteCode(");
+	WRITE_TO(link, "class=\"actionlink\" href=\"javascript:pasteCode(");
 	PasteButtons::argument(link, from, to, alt_stream);
 	WRITE_TO(link, ")\"");
 	HTML_OPEN_WITH("a", "%S", link);
@@ -113,8 +113,7 @@ void PasteButtons::paste_text_new_style(OUTPUT_STREAM, text_stream *matter) {
 	WRITE("&nbsp;");
 }
 void PasteButtons::paste_ideograph(OUTPUT_STREAM) {
-	/* the Unicode for "place of interest", the Swedish castle which became the Apple action symbol */
-	WRITE("<span class=\"paste\">%cV</span>", 0x2318);
+	WRITE("<span class=\"actionbutton\">paste</span>");
 }
 
 @ In the following, the source of the text can be either a range of words

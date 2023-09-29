@@ -59,17 +59,16 @@
 
     --paste-active-colour: #803030;
     --paste-passive-colour: #303030;
-    --paste-background-colour: #f3f6fa;
+    --paste-background-colour: #FFD580;
 
     --md-background-colour: #e3e6ea;
     --md-transcript-background-colour: #f9e9e9;
     --md-dashed-border-colour: #2f6fab;
-    --md-extract-inform7-box-colour: #123456;
+    --md-extract-inform7-box-colour: #FFFDE0;
     --md-extract-problem-box-colour: #e9f9e9;
     --md-shaded-box-colour: #e9e9e9;
     --md-transcript-deletion-colour: #ff0000;
     --md-transcript-insertion-colour: #00ff00;
-    --example-label-colour: #E0FFFF;
     --example-see-also-colour: #E0E0E0;
     --light-border-colour: #d0d7de;
     
@@ -109,6 +108,12 @@
 	--registry-button-revealer-colour: #444444;
 	--registry-button-update-colour: #aaddff;
 	--registry-button-revert-colour: #ddaaff;
+
+	--example-cartouche-border-colour: #202030;
+	--example-cartouche-background-colour: #f4f4f4;
+    --example-cartouche-label-colour: #000000;
+    --example-cartouche-label-background-colour: #C0C0C0;
+	--example-cartouche-star-colour: #DFB700;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -182,7 +187,6 @@
     --md-shaded-box-colour: #111111;
     --md-transcript-deletion-colour: #ffdddd;
     --md-transcript-insertion-colour: #ddffdd;
-    --example-label-colour: #FF2020;
     --light-border-colour: #30373e;
     
     --documentation-index-majuscule-letter-colour: #000000;
@@ -221,6 +225,12 @@
 	--registry-button-revealer-colour: #bbbbbb;
 	--registry-button-update-colour: #114400;
 	--registry-button-revert-colour: #224400;
+
+	--example-cartouche-border-colour: #E0E0D0;
+	--example-cartouche-background-colour: #222211;
+    --example-cartouche-label-colour: #ffffff;
+    --example-cartouche-label-background-colour: #FF2020;
+	--example-cartouche-star-colour: #FFD700;
    }
 }
 
@@ -611,19 +621,23 @@ a.registrybuttonlink {
 	text-decoration: none;
 }
 a.registrycontentslink:link {
-	text-decoration: none;
+	text-decoration: underline;
+	text-decoration-style: dotted;
 	color: var(--registry-contents-passive-link-colour);
 }
 a.registrycontentslink:visited {
-	text-decoration: none;
+	text-decoration: underline;
+	text-decoration-style: dotted;
 	color: var(--registry-contents-passive-link-colour);
 }
 a.registrycontentslink:hover {
-	text-decoration: none;
+	text-decoration: underline;
+	text-decoration-style: dotted;
 	color: var(--registry-contents-active-link-colour);
 }
 a.registrycontentslink:active {
-	text-decoration: none;
+	text-decoration: underline;
+	text-decoration-style: dotted;
 	color: var(--registry-contents-active-link-colour);
 }
 
@@ -657,6 +671,10 @@ button.dangerousbutton {
 
 /* Used in rendering Markdown in extension documentation */
 
+.markdowncontent p {
+	line-height: 1.2rem; /* 18/12 * 100/125 */
+}
+
 .markdowncontent em { font-style: italic; }
 .markdowncontent strong { font-weight: bold; }
 .markdowncontent pre {
@@ -664,7 +682,8 @@ button.dangerousbutton {
 }
 .markdowncontent code.inlinesourcetext {
 	font-size: 90%;
-	background-color: var(--md-background-colour);
+	background-color: var(--md-extract-inform7-box-colour);
+	font-family: var(--informdefault-fontfamily);
 	border-bottom-left-radius: 6px;
 	border-bottom-right-radius: 6px;
 	border-top-left-radius: 6px;
@@ -674,12 +693,30 @@ button.dangerousbutton {
 	padding-left: 4.76px;
 	padding-right: 4.76px;
 	padding-top: 2.38px;
-	white-space: break-spaces;
+	white-space: nowrap;
 	width: auto;
 }
 .markdowncontent code.inlinetranscript {
 	background-color: var(--md-transcript-background-colour);
+	font-family: var(--informcode-fontfamily);
+	font-size: 90%;
+	color: var(--syntaxplain-colour);
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	box-sizing: border-box;
+	padding-bottom: 2.38px;
+	padding-left: 4.76px;
+	padding-right: 4.76px;
+	padding-top: 2.38px;
+	white-space: nowrap;
+	width: auto;
+}
+.markdowncontent code.inlinetranscriptcommand {
+	background-color: var(--md-transcript-background-colour);
 	text-transform: uppercase;
+	font-family: var(--informcode-fontfamily);
 	font-size: 90%;
 	color: var(--syntaxextract-colour);
 	border-bottom-left-radius: 6px;
@@ -691,7 +728,7 @@ button.dangerousbutton {
 	padding-left: 4.76px;
 	padding-right: 4.76px;
 	padding-top: 2.38px;
-	white-space: break-spaces;
+	white-space: nowrap;
 	width: auto;
 }
 .markdowncontent code.inlinecode {
@@ -707,7 +744,7 @@ button.dangerousbutton {
 	padding-left: 4.76px;
 	padding-right: 4.76px;
 	padding-top: 2.38px;
-	white-space: break-spaces;
+	white-space: nowrap;
 	width: auto;
 }
 
@@ -728,7 +765,7 @@ button.dangerousbutton {
 .markdowncontent blockquote.extract-inform7 {
 	padding: 0.75em;
 	border: 1px dotted var(--md-dashed-border-colour);
-	background-color: var(--md-extract-problem-box-colour);
+	background-color: var(--md-extract-inform7-box-colour);
 }
 
 .markdowncontent blockquote.extract-inform7 td, th {
@@ -789,6 +826,19 @@ span.documentationerror {
 
 /* For example box cues */
 
+div.examplebox {
+	margin-top: 6px;
+	padding-top: 4px;
+	border-width: 1px;
+	border-style: inset;
+	border-radius: 12px;
+	padding-bottom: 4px;
+	margin-bottom: 2px;
+	border-color: var(--example-cartouche-border-colour);
+	background-color: var(--example-cartouche-background-colour);
+	height: 100%;
+}
+
 div.examplebox:after {
 	content: "";
 	display: table;
@@ -816,22 +866,35 @@ div.examplebox div.exampleright {
 	text-align: center;
 }
 
+span.examplestars {
+	color: var(--example-cartouche-star-colour);
+}
+
+span.exampleword {
+    color: var(--index-dark-text-colour);
+    padding-right: 8px;
+}
+
+span.examplename {
+	color: var(--index-plain-text-colour);
+}
+
+span.exampledescription {
+	color: var(--index-plain-text-colour);
+}
+
 span.extensionexampleletter {
-	color: var(--heading-panel-text-colour);
+	color: var(--example-cartouche-label-colour);
 	font-size: 0.933rem; /* 14/12 * 100/125 */
 	font-weight: bold;
-	background-color: var(--example-label-colour);
-	border-bottom-left-radius: 12px;
-	border-bottom-right-radius: 12px;
-	border-top-left-radius: 12px;
-	border-top-right-radius: 12px;
+	border-width: 1px;
+	background-color: var(--example-cartouche-label-background-colour);
+	border-radius: 12px;
 	box-sizing: border-box;
 	padding-bottom: 4px;
-	padding-left: 8px;
-	padding-right: 8px;
+	padding-left: 12px;
+	padding-right: 12px;
 	padding-top: 4px;
-	min-width: 30px;
-	width: auto;
 }
 
 span.extensionexampleseealso {
@@ -889,34 +952,48 @@ div.outcomebox div.outcomeright {
 
 /* New-style paste button */
 
-a.pastelink {
+a.actionlink {
 	background-color: var(--paste-background-colour);
 	text-decoration: none;
-	font-size: 0.933rem; /* 14/12 * 100/125 */
+	font-size: 80%;
+	border-radius: 6px;
+	text-transform: uppercase;
 	padding: 2px;
 	padding-left: 6px;
 	padding-right: 6px;
 	border: solid 1px;
+	box-shadow: 2px 1px;
 }
-a.pastelink:link {
+a.actionlink:link {
 	text-decoration: none;
 	color: var(--paste-passive-colour);
 	border-color: var(--paste-passive-colour);
 }
-a.pastelink:visited {
+a.actionlink:visited {
 	text-decoration: none;
 	color: var(--paste-passive-colour);
 	border-color: var(--paste-passive-colour);
 }
-a.pastelink:hover {
+a.actionlink:hover {
 	text-decoration: none;
 	color: var(--paste-active-colour);
 	border-color: var(--paste-active-colour);
 }
-a.pastelink:active {
+a.actionlink:active {
 	text-decoration: none;
 	color: var(--paste-active-colour);
 	border-color: var(--paste-active-colour);
+}
+span.deadactionbutton {
+	background-color: var(--paste-background-colour);
+	text-decoration: none;
+	font-size: 80%;
+	border-radius: 6px;
+	text-transform: uppercase;
+	padding: 2px;
+	padding-left: 6px;
+	padding-right: 6px;
+	border: solid 1px;
 }
 
 /* (1) General layout material */
