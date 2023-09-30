@@ -390,7 +390,7 @@ the usual ones seen in Mac OS X applications such as iTunes.
 		if (sl.file_of_origin) {
 			WRITE(" ");
 			HTML_OPEN("em");
-			WRITE("&mdash; included ");
+			WRITE("&mdash; included here: ");
 			HTML_CLOSE("em");
 			WRITE(" ");
 			SourceLinks::link(OUT, sl, TRUE);

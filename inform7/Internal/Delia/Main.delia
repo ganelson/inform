@@ -137,17 +137,20 @@ endif
 set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
 set: $I7LOG = '$WORK/Example.inform/Build/Debug log.txt'
 
-! (6) Clearing any external files used by the test.
+! (6) Clearing any external files used by the test. Delia has no loops...
 
 ifdef: $EXTERNALFILES
-	if: $EXTERNALFILES ' *%C+.glkdata *'
-		step: rm -f `$EXTERNALFILES
+	if: $EXTERNALFILES ' *(%C+.glkdata) *'
+		remove: `$SUBEXPRESSION1
 	endif
-	if: $EXTERNALFILES ' *%C+.glkdata *%C+.glkdata *'
-		step: rm -f `$EXTERNALFILES
+	if: $EXTERNALFILES ' *(%C+.glkdata) (%C+.glkdata) *'
+		remove: `$SUBEXPRESSION1
+		remove: `$SUBEXPRESSION2
 	endif
-	if: $EXTERNALFILES ' *%C+.glkdata *%C+.glkdata *%C+.glkdata *'
-		step: rm -f `$EXTERNALFILES
+	if: $EXTERNALFILES ' *(%C+.glkdata) (%C+.glkdata) (%C+.glkdata) *'
+		remove: `$SUBEXPRESSION1
+		remove: `$SUBEXPRESSION2
+		remove: `$SUBEXPRESSION3
 	endif
 endif
 
@@ -349,13 +352,13 @@ endif
 
 ifdef: $EXTERNALFILES
 	if: $EXTERNALFILES ' *%C+.glkdata *'
-		step: rm -f `$EXTERNALFILES
+		remove: `$EXTERNALFILES
 	endif
 	if: $EXTERNALFILES ' *%C+.glkdata *%C+.glkdata *'
-		step: rm -f `$EXTERNALFILES
+		remove: `$EXTERNALFILES
 	endif
 	if: $EXTERNALFILES ' *%C+.glkdata *%C+.glkdata *%C+.glkdata *'
-		step: rm -f `$EXTERNALFILES
+		remove: `$EXTERNALFILES
 	endif
 endif
 
