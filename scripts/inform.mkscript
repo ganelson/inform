@@ -653,7 +653,8 @@ forceintegration: \
 		forcetransferotherinternals \
 		forcetransferdocumentation \
 		forcetransferoutcomepages \
-		forcetransfertemplates
+		forcetransfertemplates \
+		forcetransferdelia
 
 # -----------------------------------------------------------------------------
 # Copying part of the Inform toolchain into the app
@@ -820,7 +821,7 @@ forcetransferotherinternals:
 {end-define}
 
 .PHONY: forcetransferdelia
-forcetransferdeloa:
+forcetransferdelia:
 	{transfer-delia}
 
 # -----------------------------------------------------------------------------
