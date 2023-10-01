@@ -18,7 +18,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            &nbsp;&nbsp;col 2:&nbsp;&nbsp;<i>sets</i> citation&nbsp;<a class="pastelink" href="javascript:pasteCode('citation')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;col 2:&nbsp;&nbsp;<i>sets</i> citation&nbsp;<a class="actionlink" href="javascript:pasteCode('citation')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             texts property
@@ -26,7 +26,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            &nbsp;&nbsp;col 3:&nbsp;&nbsp;<i>sets</i> jersey&nbsp;<a class="pastelink" href="javascript:pasteCode('jersey')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;col 3:&nbsp;&nbsp;<i>sets</i> jersey&nbsp;<a class="actionlink" href="javascript:pasteCode('jersey')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             objects property
@@ -42,7 +42,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            &nbsp;&nbsp;col 1:&nbsp;&nbsp;Name&nbsp;<a class="pastelink" href="javascript:pasteCode('Name entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;col 1:&nbsp;&nbsp;Name&nbsp;<a class="actionlink" href="javascript:pasteCode('Name entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             of texts
@@ -50,7 +50,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            &nbsp;&nbsp;col 2:&nbsp;&nbsp;Accession&nbsp;<a class="pastelink" href="javascript:pasteCode('Accession entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;col 2:&nbsp;&nbsp;Accession&nbsp;<a class="actionlink" href="javascript:pasteCode('Accession entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             of numbers
@@ -58,7 +58,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            &nbsp;&nbsp;col 3:&nbsp;&nbsp;Family&nbsp;<a class="pastelink" href="javascript:pasteCode('Family entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;col 3:&nbsp;&nbsp;Family&nbsp;<a class="actionlink" href="javascript:pasteCode('Family entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             of dynasties
@@ -74,7 +74,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            &nbsp;&nbsp;col 1:&nbsp;&nbsp;Element&nbsp;<a class="pastelink" href="javascript:pasteCode('Element entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;col 1:&nbsp;&nbsp;Element&nbsp;<a class="actionlink" href="javascript:pasteCode('Element entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             of texts
@@ -82,7 +82,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            &nbsp;&nbsp;col 2:&nbsp;&nbsp;Symbol&nbsp;<a class="pastelink" href="javascript:pasteCode('Symbol entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;col 2:&nbsp;&nbsp;Symbol&nbsp;<a class="actionlink" href="javascript:pasteCode('Symbol entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             of texts
@@ -90,7 +90,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            &nbsp;&nbsp;col 3:&nbsp;&nbsp;Atomic number&nbsp;<a class="pastelink" href="javascript:pasteCode('Atomic number entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;col 3:&nbsp;&nbsp;Atomic number&nbsp;<a class="actionlink" href="javascript:pasteCode('Atomic number entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             of numbers
@@ -98,7 +98,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            &nbsp;&nbsp;col 4:&nbsp;&nbsp;Atomic weight&nbsp;<a class="pastelink" href="javascript:pasteCode('Atomic weight entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;col 4:&nbsp;&nbsp;Atomic weight&nbsp;<a class="actionlink" href="javascript:pasteCode('Atomic weight entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             of numbers
@@ -106,7 +106,7 @@
     </tr>
     <tr>
         <td align="left" valign="top">
-            &nbsp;&nbsp;col 5:&nbsp;&nbsp;Mystery&nbsp;<a class="pastelink" href="javascript:pasteCode('Mystery entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;col 5:&nbsp;&nbsp;Mystery&nbsp;<a class="actionlink" href="javascript:pasteCode('Mystery entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             of lists of numbers
@@ -130,7 +130,7 @@
                     </tr>
                     <tr>
                         <td align="left" valign="top">
-                            &nbsp;&nbsp;col 1:&nbsp;&nbsp;final question wording&nbsp;<a class="pastelink" href="javascript:pasteCode('final question wording entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;col 1:&nbsp;&nbsp;final question wording&nbsp;<a class="actionlink" href="javascript:pasteCode('final question wording entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
                         </td>
                         <td align="left" valign="top">
                             of texts
@@ -138,7 +138,7 @@
                     </tr>
                     <tr>
                         <td align="left" valign="top">
-                            &nbsp;&nbsp;col 2:&nbsp;&nbsp;only if victorious&nbsp;<a class="pastelink" href="javascript:pasteCode('only if victorious entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;col 2:&nbsp;&nbsp;only if victorious&nbsp;<a class="actionlink" href="javascript:pasteCode('only if victorious entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
                         </td>
                         <td align="left" valign="top">
                             of truth states
@@ -146,7 +146,7 @@
                     </tr>
                     <tr>
                         <td align="left" valign="top">
-                            &nbsp;&nbsp;col 3:&nbsp;&nbsp;topic&nbsp;<a class="pastelink" href="javascript:pasteCode('topic entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;col 3:&nbsp;&nbsp;topic&nbsp;<a class="actionlink" href="javascript:pasteCode('topic entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
                         </td>
                         <td align="left" valign="top">
                             of topics
@@ -154,7 +154,7 @@
                     </tr>
                     <tr>
                         <td align="left" valign="top">
-                            &nbsp;&nbsp;col 4:&nbsp;&nbsp;final response rule&nbsp;<a class="pastelink" href="javascript:pasteCode('final response rule entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;col 4:&nbsp;&nbsp;final response rule&nbsp;<a class="actionlink" href="javascript:pasteCode('final response rule entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
                         </td>
                         <td align="left" valign="top">
                             of rules
@@ -162,7 +162,7 @@
                     </tr>
                     <tr>
                         <td align="left" valign="top">
-                            &nbsp;&nbsp;col 5:&nbsp;&nbsp;final response activity&nbsp;<a class="pastelink" href="javascript:pasteCode('final response activity entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;col 5:&nbsp;&nbsp;final response activity&nbsp;<a class="actionlink" href="javascript:pasteCode('final response activity entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
                         </td>
                         <td align="left" valign="top">
                             of activities on objects
@@ -178,7 +178,7 @@
                     </tr>
                     <tr>
                         <td align="left" valign="top">
-                            &nbsp;&nbsp;col 1:&nbsp;&nbsp;notable-object&nbsp;<a class="pastelink" href="javascript:pasteCode('notable-object entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;col 1:&nbsp;&nbsp;notable-object&nbsp;<a class="actionlink" href="javascript:pasteCode('notable-object entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
                         </td>
                         <td align="left" valign="top">
                             of objects
@@ -186,7 +186,7 @@
                     </tr>
                     <tr>
                         <td align="left" valign="top">
-                            &nbsp;&nbsp;col 2:&nbsp;&nbsp;locale description priority&nbsp;<a class="pastelink" href="javascript:pasteCode('locale description priority entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;col 2:&nbsp;&nbsp;locale description priority&nbsp;<a class="actionlink" href="javascript:pasteCode('locale description priority entry')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
                         </td>
                         <td align="left" valign="top">
                             of numbers
