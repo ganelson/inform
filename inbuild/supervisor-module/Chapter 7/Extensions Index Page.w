@@ -416,12 +416,23 @@ the usual ones seen in Mac OS X applications such as iTunes.
 				WRITE(" ");
 				ExtensionInstaller::uninstall_button(OUT, proj, res->copy);
 				ExtensionIndex::add_to_key(key_list, UNINSTALL_SYMBOL, I"Remove from this project");
+				WRITE("&nbsp;");
 			}
 		} else {
 			if (Nests::get_tag(res->nest) == EXTERNAL_NEST_TAG) {
 				WRITE(" ");
 				ExtensionInstaller::install_button(OUT, proj, res->copy);
+				WRITE("&nbsp;");
 				ExtensionIndex::add_to_key(key_list, INSTALL_SYMBOL, I"Install to this project");
+			}
+		}
+		if (res->copy->location_if_file) {
+			if (Nests::get_tag(res->nest) == MATERIALS_NEST_TAG) {
+				WRITE(" ");
+				ExtensionInstaller::modernise_button(OUT, proj, res->copy);
+				WRITE("&nbsp;");
+				ExtensionIndex::add_to_key(key_list, MODERNISE_SYMBOL,
+					I"Convert this extension to the more modern directory format");
 			}
 		}
 	}
@@ -528,6 +539,7 @@ There is just no need to do this efficiently in either running time or memory.
 @d PASTE_SYMBOL "paste"
 @d INSTALL_SYMBOL "install"
 @d UNINSTALL_SYMBOL "uninstall"
+@d MODERNISE_SYMBOL "modernise"
 @d BUILT_IN_SYMBOL "border=\"0\" src=\"inform:/doc_images/builtin_ext.png\""
 @d PROJECT_SPECIFIC_SYMBOL "border=\"0\" src=\"inform:/doc_images/folder4.png\""
 @d LEGACY_AREA_SYMBOL "border=\"0\" src=\"inform:/doc_images/pspec_ext.png\""
@@ -569,6 +581,11 @@ void ExtensionIndex::add_to_key(linked_list *L, char *URL, text_stream *gloss) {
 		if (Str::eq(as_text, I"uninstall")) {
 			HTML_OPEN_WITH("span", "class=\"deadactionbutton\"");
 			ExtensionInstaller::uninstall_icon(OUT);
+			HTML_CLOSE("span");
+		}
+		if (Str::eq(as_text, I"modernise")) {
+			HTML_OPEN_WITH("span", "class=\"deadactionbutton\"");
+			ExtensionInstaller::modernise_icon(OUT);
 			HTML_CLOSE("span");
 		}
 		ADD_TO_LINKED_LIST(eki, extensions_key_item, L);

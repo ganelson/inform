@@ -742,6 +742,20 @@ void ExtensionInstaller::uninstall_icon(OUTPUT_STREAM) {
 	WRITE("<span class=\"actionbutton\">uninstall</span>");
 }
 
+void ExtensionInstaller::modernise_button(OUTPUT_STREAM, inform_project *proj,
+	inbuild_copy *C) {
+	TEMPORARY_TEXT(js_path)
+	@<Get the extension path escaped for use in Javascript@>
+	HTML_OPEN_WITH("a", "class=\"actionlink\" href='javascript:project().modernise(\"%S\")'", js_path);
+	DISCARD_TEXT(js_path)
+	ExtensionInstaller::modernise_icon(OUT);
+	HTML_CLOSE("a");
+}
+
+void ExtensionInstaller::modernise_icon(OUTPUT_STREAM) {
+	WRITE("<span class=\"actionbutton\">modernise</span>");
+}
+
 @<Get the extension path escaped for use in Javascript@> =
 	TEMPORARY_TEXT(path)
 	if (C->location_if_file)
@@ -775,3 +789,104 @@ void ExtensionInstaller::close_test_link(OUTPUT_STREAM, inform_project *proj,
 	inform_extension *E, text_stream *intest_command, text_stream *intest_case) {
 	HTML_CLOSE("a");
 }
+
+@h The moderniser.
+This works in two stages. First it is called with |confirmed| false,
+and it produces an HTML report on the feasibility of making the installation,
+with a clickable Confirm button. Then, assuming the user does click that button,
+the Installer is called again, with |confirmed| true. It takes action and also
+produces a second report.
+
+=
+void ExtensionInstaller::modernise(inbuild_copy *C, int confirmed, pathname *to_tool, int meth) {
+	inform_project *project = Supervisor::project_set_at_command_line();
+	if (project == NULL) Errors::fatal("-project not set at command line");
+	TEMPORARY_TEXT(pname)
+	WRITE_TO(pname, "'%S'", project->as_copy->edition->work->title);
+	text_stream *OUT = NULL;
+	if ((C->edition->work->genre == extension_genre) ||
+		(C->edition->work->genre == extension_bundle_genre)) {
+		@<Begin modernisation page@>;
+		if (OUT) {
+			if (confirmed) @<Make confirmed modernisation page@>
+			else @<Make unconfirmed modernisation page@>;
+			ExtensionInstaller::end();
+		}
+	}
+	DISCARD_TEXT(pname)
+}
+
+@<Begin modernisation page@> =
+	TEMPORARY_TEXT(desc)
+	TEMPORARY_TEXT(version)
+	Works::write(desc, C->edition->work);
+	semantic_version_number V = C->edition->version;
+	if (VersionNumbers::is_null(V)) {
+		WRITE_TO(version, "An extension");
+	} else {
+		WRITE_TO(version, "Version %v of an extension", &V);
+	}
+	OUT = ExtensionInstaller::begin(desc, version);
+	DISCARD_TEXT(desc)
+	DISCARD_TEXT(version)
+
+@<Make unconfirmed modernisation page@> =
+	HTML_OPEN("p");
+	WRITE("If you click the button below to confirm, I will 'modernise' this "
+		"extension. It's currently stored in the single file format which goes "
+		"back to the early 2000s, meaning that the extension occupies a single "
+		"file in the materials folder for this project:");
+	HTML_CLOSE("p");
+	HTML_OPEN("ul");
+	HTML_OPEN("li");
+	HTML_OPEN("b");
+	Filenames::to_text_relative(OUT, C->location_if_file,
+		Pathnames::up(Projects::materials_path(project)));
+	HTML_CLOSE("b");
+	HTML_CLOSE("li");
+	HTML_CLOSE("ul");
+	HTML_OPEN("p");
+	WRITE("When modernised, it will become a small directory in the same place, "
+		"with its name ending '.i7xd' not '.i7x'. It should then continue to work "
+		"as before.");
+	HTML_CLOSE("p");
+	HTML_OPEN("p");
+	WRITE("Only the copy of the extension in this project's materials folder "
+		"will be changed, so no other project should be affected.");
+	HTML_CLOSE("p");
+	HTML_OPEN("p");
+	WRITE("Just as a precaution, the old version will be moved to the trash for "
+		"this project, rather than actually deleted, but you shouldn't need it again.");
+	HTML_CLOSE("p");
+	HTML_OPEN_WITH("a", "href='javascript:project().confirmAction()'");
+	HTML_OPEN_WITH("button", "class=\"safebutton\"");
+	WRITE("Modernise %S", C->edition->work->title);
+	HTML_CLOSE("button");
+	HTML_CLOSE("a");
+
+@<Make confirmed modernisation page@> =
+	HTML_OPEN("p");
+	WRITE("Modernising:");
+	HTML_CLOSE("p");
+	TEMPORARY_TEXT(converter_report)
+	Extensions::modernise(Extensions::from_copy(C), converter_report);
+	HTML_OPEN("p");
+	HTML_OPEN("ul");
+	HTML_OPEN("li");
+	WRITE("%S", converter_report);
+	HTML_CLOSE("li");
+	HTML_CLOSE("ul");
+	HTML_CLOSE("p");
+	DISCARD_TEXT(converter_report)
+	
+	build_methodology *BM = BuildMethodology::new(Pathnames::up(to_tool), TRUE, meth);
+	TEMPORARY_TEXT(trash_report)
+	ExtensionInstaller::trash(trash_report, project, C, BM);
+	HTML_OPEN("p");
+	WRITE("Moving the single file form of extension to the trash folder for %S:", pname);
+	HTML_CLOSE("p");
+	HTML_OPEN("ul");
+	WRITE("%S", trash_report);
+	HTML_CLOSE("ul");
+	DISCARD_TEXT(trash_report)
+	ExtensionWebsite::update(project);

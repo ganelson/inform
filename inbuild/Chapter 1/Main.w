@@ -20,7 +20,7 @@ inbuild_registry *selected_registry = NULL;
 text_stream *filter_text = NULL;
 pathname *preprocess_HTML_destination = NULL;
 text_stream *preprocess_HTML_app = NULL;
-inbuild_copy *to_install = NULL, *to_uninstall = NULL;
+inbuild_copy *to_install = NULL, *to_uninstall = NULL, *to_modernise = NULL;
 filename *documentation_source = NULL;
 pathname *documentation_set = NULL;
 filename *documentation_sitemap = NULL;
@@ -55,6 +55,7 @@ int main(int argc, char **argv) {
 	@<Complete the list of targets@>;
 	if (to_install) @<Perform an extension installation@>
 	else if (to_uninstall) @<Perform an extension uninstallation@>
+	else if (to_modernise) @<Perform an extension modernisation@>
 	else if ((markdown_settings.from) || (markdown_settings.from_dir)) @<Make HTML@>
 	else if (documentation_set) @<Document from a set@>
 	else if (documentation_source) @<Document from a file@>
@@ -139,6 +140,12 @@ error in this case.
 	int use = SHELL_METHODOLOGY;
 	if (dry_run_mode) use = DRY_RUN_METHODOLOGY;
 	ExtensionInstaller::uninstall(to_uninstall, confirmed, path_to_inbuild, use);
+
+@<Perform an extension modernisation@> =
+	Supervisor::go_operational();
+	int use = SHELL_METHODOLOGY;
+	if (dry_run_mode) use = DRY_RUN_METHODOLOGY;
+	ExtensionInstaller::modernise(to_modernise, confirmed, path_to_inbuild, use);
 
 @<Make HTML@> =
 	if (markdown_settings.from) {
@@ -436,13 +443,16 @@ other options to the selection defined here.
 @e PREPROCESS_APP_CLSW
 @e REPAIR_CLSW
 @e RESULTS_CLSW
-@e INSTALL_CLSW
-@e UNINSTALL_CLSW
 @e CONFIRMED_CLSW
 @e VERBOSE_CLSW
 @e VERBOSITY_CLSW
 @e JSON_CLSW
 @e MODERNISE_CLSW
+
+@e APP_MANAGEMENT_SUITE_CLSG
+@e INSTALL_CLSW
+@e UNINSTALL_CLSW
+@e MODERNISER_CLSW
 
 @e DOCUMENTATION_SUITE_CLSG
 
@@ -477,10 +487,6 @@ other options to the selection defined here.
 		U"completely rebuild target(s)");
 	CommandLine::declare_switch(INSPECT_CLSW, U"inspect", 1,
 		U"show target(s) but take no action");
-	CommandLine::declare_switch(INSTALL_CLSW, U"install", 1,
-		U"install extension within the Inform GUI apps");
-	CommandLine::declare_switch(UNINSTALL_CLSW, U"uninstall", 1,
-		U"remove extension within the Inform GUI apps");
 	CommandLine::declare_switch(GRAPH_CLSW, U"graph", 1,
 		U"show dependency graph of target(s) but take no action");
 	CommandLine::declare_switch(USE_NEEDS_CLSW, U"use-needs", 1,
@@ -535,6 +541,16 @@ other options to the selection defined here.
 		U"write output of -inspect to a JSON file in X (or '-' for stdout)");
 	CommandLine::declare_switch(MODERNISE_CLSW, U"modernise", 1,
 		U"update copies to the newest available format");
+
+	CommandLine::begin_group(APP_MANAGEMENT_SUITE_CLSG,
+		I"for the use of the Inform GUI apps in managing extensions in materials folders");
+	CommandLine::declare_switch(INSTALL_CLSW, U"install", 1,
+		U"install extension within the Inform GUI apps");
+	CommandLine::declare_switch(UNINSTALL_CLSW, U"uninstall", 1,
+		U"remove extension within the Inform GUI apps");
+	CommandLine::declare_switch(MODERNISER_CLSW, U"run-moderniser", 1,
+		U"like '-modernise' but for use within the Inform GUI apps only");
+	CommandLine::end_group();
 
 	CommandLine::begin_group(DOCUMENTATION_SUITE_CLSG,
 		I"for generating extension or kit documentation");
@@ -635,6 +651,7 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case REPAIR_CLSW: repair_mode = val; break;
 		case INSTALL_CLSW: to_install = Main::file_or_path_to_copy(arg, TRUE); break;
 		case UNINSTALL_CLSW: to_uninstall = Main::file_or_path_to_copy(arg, TRUE); break;
+		case MODERNISER_CLSW: to_modernise = Main::file_or_path_to_copy(arg, TRUE); break;
 		case RESULTS_CLSW: ExtensionInstaller::set_filename(Filenames::from_text(arg)); break;
 		case CONFIRMED_CLSW: confirmed = val; break;
 		case VERBOSE_CLSW: Supervisor::set_verbosity(1); break;

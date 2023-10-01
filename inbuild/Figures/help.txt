@@ -16,7 +16,6 @@ usage: inbuild [-TASK] TARGET1 TARGET2 ...
 -dry                           make this a dry run (print but do not execute shell commands) (default is -no-dry)
 -graph                         show dependency graph of target(s) but take no action
 -inspect                       show target(s) but take no action
--install                       install extension within the Inform GUI apps
 -json X                        write output of -inspect to a JSON file in X (or '-' for stdout)
 -matching X                    apply to all works in nest(s) matching requirement X
 -modernise                     update copies to the newest available format
@@ -29,7 +28,6 @@ usage: inbuild [-TASK] TARGET1 TARGET2 ...
 -results X                     write HTML report file to X (for use within Inform GUI apps)
 -sync-to X                     forcibly copy target(s) to nest X, even if prior version already there
 -tools X                       make X the directory of intools executables
--uninstall                     remove extension within the Inform GUI apps
 -use-locate                    show file paths of all the extensions, kits and so on needed to use
 -use-missing                   show the extensions, kits and so on which are needed to use but missing
 -use-needs                     show all the extensions, kits and so on needed to use
@@ -62,6 +60,11 @@ for tweaking code generation from Inter:
   -pipeline X                  specify code-generation pipeline by name (default is "compile")
   -pipeline-file X             specify code-generation pipeline as file X
   -variable X                  set pipeline variable X (in form name=value)
+
+for the use of the Inform GUI apps in managing extensions in materials folders:
+  -install                     install extension within the Inform GUI apps
+  -run-moderniser              like '-modernise' but for use within the Inform GUI apps only
+  -uninstall                   remove extension within the Inform GUI apps
 
 for generating extension or kit documentation:
   -document                    (re-)generate documentation on this within current project

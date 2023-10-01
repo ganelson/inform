@@ -74,7 +74,6 @@ and those not documented in this manual are covered in that one.
 <span class="plain-syntax">-dry                           make this a dry run (print but do not execute shell commands) (default is -no-dry)</span>
 <span class="plain-syntax">-graph                         show dependency graph of target(s) but take no action</span>
 <span class="plain-syntax">-inspect                       show target(s) but take no action</span>
-<span class="plain-syntax">-install                       install extension within the Inform GUI apps</span>
 <span class="plain-syntax">-json X                        write output of -inspect to a JSON file in X (or '-' for stdout)</span>
 <span class="plain-syntax">-matching X                    apply to all works in nest(s) matching requirement X</span>
 <span class="plain-syntax">-modernise                     update copies to the newest available format</span>
@@ -87,7 +86,6 @@ and those not documented in this manual are covered in that one.
 <span class="plain-syntax">-results X                     write HTML report file to X (for use within Inform GUI apps)</span>
 <span class="plain-syntax">-sync-to X                     forcibly copy target(s) to nest X, even if prior version already there</span>
 <span class="plain-syntax">-tools X                       make X the directory of intools executables</span>
-<span class="plain-syntax">-uninstall                     remove extension within the Inform GUI apps</span>
 <span class="plain-syntax">-use-locate                    show file paths of all the extensions, kits and so on needed to use</span>
 <span class="plain-syntax">-use-missing                   show the extensions, kits and so on which are needed to use but missing</span>
 <span class="plain-syntax">-use-needs                     show all the extensions, kits and so on needed to use</span>
@@ -120,6 +118,11 @@ and those not documented in this manual are covered in that one.
 <span class="plain-syntax">  -pipeline X                  specify code-generation pipeline by name (default is "compile")</span>
 <span class="plain-syntax">  -pipeline-file X             specify code-generation pipeline as file X</span>
 <span class="plain-syntax">  -variable X                  set pipeline variable X (in form name=value)</span>
+
+<span class="plain-syntax">for the use of the Inform GUI apps in managing extensions in materials folders:</span>
+<span class="plain-syntax">  -install                     install extension within the Inform GUI apps</span>
+<span class="plain-syntax">  -run-moderniser              like '-modernise' but for use within the Inform GUI apps only</span>
+<span class="plain-syntax">  -uninstall                   remove extension within the Inform GUI apps</span>
 
 <span class="plain-syntax">for generating extension or kit documentation:</span>
 <span class="plain-syntax">  -document                    (re-)generate documentation on this within current project</span>
