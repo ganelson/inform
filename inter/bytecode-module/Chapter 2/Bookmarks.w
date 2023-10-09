@@ -32,7 +32,7 @@ we make use both of |inter_bookmark| and |inter_bookmark *| as types. So a
 function which simply needs to know where to do something will take the
 type |inter_bookmark| as an argument -- see //NodePlacement::move_to//, for
 example -- whereas a function which does something but then nudges the
-bookmark onwards will take an |inter_bookmark *|, as in the caee of
+bookmark onwards will take an |inter_bookmark *|, as in the case of
 //NodePlacement::move_to_moving_bookmark//.
 
 Dereferencing a bookmark pointer to a bookmark value is called taking a

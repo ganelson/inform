@@ -93,9 +93,8 @@ void ParsingStages::visit_insertions(inter_tree *I, inter_tree_node *P, void *st
 	text_stream *insertion = InsertInstruction::insertion(P);
 	rpi_state *rpis = (rpi_state *) state;
 	simple_tangle_docket *docket = rpis->docket;
-	inter_bookmark here = InterBookmark::after_this_node(P);
 	rpi_docket_state *docket_state = (rpi_docket_state *) docket->state;
-	docket_state->assimilation_point = &here;
+	docket_state->assimilation_point = InterBookmark::after_this_node(P);
 	docket_state->provenance = InsertInstruction::provenance(P);
 	SimpleTangler::tangle_text(docket, insertion);
 	text_stream *replacing = InsertInstruction::replacing(P);
@@ -120,7 +119,7 @@ in |K/Sections|.
 
 @ =
 typedef struct rpi_docket_state {
-	struct inter_bookmark *assimilation_point;
+	struct inter_bookmark assimilation_point;
 	struct text_stream *namespace;
 	struct text_provenance provenance;
 } rpi_docket_state;
@@ -129,9 +128,8 @@ typedef struct rpi_docket_state {
 	inter_package *assimilation_package =
 		step->pipeline->ephemera.assimilation_modules[step->tree_argument];
 	if (assimilation_package == NULL) assimilation_package = LargeScale::main_package(I);
-	inter_bookmark assimilation_point =
+	state.assimilation_point =
 		InterBookmark::at_end_of_this_package(assimilation_package);
-	state.assimilation_point = &assimilation_point;
 	state.namespace = namespacename;
 	state.provenance = Provenance::nowhere();
 	docket = SimpleTangler::new_docket(
@@ -417,7 +415,7 @@ the directive type as 0.
 	Regexp::dispose_of(&mr);
 
 @<Splat the directive@> =
-	inter_bookmark *IBM = state->assimilation_point;
+	inter_bookmark *IBM = &(state->assimilation_point);
 	PUT_TO(R, '\n');
 	filename *F = NULL;
 	inter_ti lc = 0;
