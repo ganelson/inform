@@ -80,6 +80,7 @@
 #define ReleaseVMUstring(ptr)  \
     (free_temp_ustring(ptr))
 
+#include <time.h>
 #include "glk.h"
 #include "glulxe.h"
 #include "gi_dispa.h"
@@ -178,6 +179,7 @@ static char *get_game_id(void);
 int init_dispatch()
 {
   int ix;
+  int randish;
   
   /* What with one thing and another, this *could* be called more than
      once. We only need to allocate the tables once. */
@@ -196,9 +198,10 @@ int init_dispatch()
     * sizeof(classtable_t *));
   if (!classes)
     return FALSE;
-    
+
+  randish = time(NULL) % 101;
   for (ix=0; ix<num_classes; ix++) {
-    classes[ix] = new_classtable((glulx_random() % (glui32)(101)) + 1);
+    classes[ix] = new_classtable(1+120*ix+randish);
     if (!classes[ix])
       return FALSE;
   }

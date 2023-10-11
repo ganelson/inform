@@ -1,6 +1,6 @@
 # Glulxe: the Glulx VM interpreter
 
-- Version 0.6.0
+- Version 0.6.1
 - Designed by Andrew Plotkin <erkyrath@eblong.com>
 - [Glulx home page][glulx]
 
@@ -14,8 +14,11 @@ the [Glk home page][glk].
 
 The Unix Makefile that comes with this package is designed to link any
 of the Unix libraries (CheapGlk, GlkTerm, RemGlk, etc.) You'll have to go
-into the Makefile and set three variables to find the library. There are
-instructions at the top of the Makefile. Then just type
+into the Makefile and set three variables to find the library. You'll also
+want to set the appropriate OS_* constants on the OPTIONS line. There are
+instructions at the top of the Makefile.
+
+Then just type
 
     make glulxe
 
@@ -116,6 +119,15 @@ Launch the game and pass in the input. The interpreter will process it,
 display the update, and then (without delay) exit.
 
 ## Version
+
+0.6.1 (Oct 9, 2023)
+
+- Added a --rngseed argument to fix the RNG setting from the command
+  line.
+- Changed the built-in RNG to xoshiro**. Added configuration defs to
+  use a native OS RNG where possible.
+- Fixed obscure corner case in pow(), powf() on some platforms.
+- Configuration improvements for Windows.
 
 0.6.0 (Jun 25, 2022):
 
@@ -276,7 +288,7 @@ display the update, and then (without delay) exit.
 
 ## Permissions
 
-The source code in this package is copyright 1999-2016 by Andrew Plotkin.
+The source code in this package is copyright 1999-2023 by Andrew Plotkin.
 It is distributed under the MIT license; see the "[LICENSE][]" file.
 
 [LICENSE]: ./LICENSE
