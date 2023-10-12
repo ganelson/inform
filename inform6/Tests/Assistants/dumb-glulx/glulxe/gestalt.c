@@ -15,7 +15,7 @@ glui32 do_gestalt(glui32 val, glui32 val2)
     return 0x00030103; /* Glulx spec version 3.1.3 */
 
   case gestulx_TerpVersion:
-    return 0x00000600; /* Glulxe version 0.6.0 */
+    return 0x00000601; /* Glulxe version 0.6.1 */
 
   case gestulx_ResizeMem:
 #ifdef FIXED_MEMSIZE
@@ -25,7 +25,9 @@ glui32 do_gestalt(glui32 val, glui32 val2)
 #endif /* FIXED_MEMSIZE */
 
   case gestulx_Undo:
-    return 1; /* We can handle saveundo and restoreundo. */
+    if (max_undo_level > 0)
+      return 1; /* We can handle saveundo and restoreundo. */
+    return 0; /* Got "--undo 0", so nope. */
 
   case gestulx_IOSystem:
     switch (val2) {

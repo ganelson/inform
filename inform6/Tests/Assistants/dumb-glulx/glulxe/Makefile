@@ -27,11 +27,21 @@ GLKMAKEFILE = Make.cheapglk
 #GLKLIBDIR = ../gtkglk
 #GLKMAKEFILE = ../Make.gtkglk
 
+# Also set an appropriate OS config in OPTIONS, below.
+#   -DOS_MAC for MacOS
+#   -DOS_WINDOWS for Windows
+#   -DOS_UNIX for Unix/Linux
+# For OS_UNIX, you probably also want to set a random number generator
+# option. These are unfortunately not very standardized across Unixes.
+# We recommend -DUNIX_RAND_GETRANDOM on Linux and -DUNIX_RAND_ARC4
+# on NetBSD.
+# (MacOS always uses ARC4, in case you were wondering.)
+
 # Pick a C compiler.
 CC = cc
 #CC = gcc
 
-OPTIONS = -g -Wall -Wmissing-prototypes -Wno-unused -DOS_UNIX
+OPTIONS = -g -Wall -Wmissing-prototypes -Wno-unused -DOS_MAC
 
 # Locate the libxml2 library. You only need these lines if you are using
 # the VM_DEBUGGER option. If so, uncomment these and set appropriately.

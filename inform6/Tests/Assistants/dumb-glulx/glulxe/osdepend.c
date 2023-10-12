@@ -14,18 +14,58 @@
    symbol. Code contributions welcome. 
 */
 
-/* Always use Glulxe's random number generator for MacOS and Windows.
-   For Unix and anything else, it is optional: define
-   COMPILE_RANDOM_CODE to use it.
-*/
-#if (defined(OS_MAC) || defined (WIN32)) && !defined(COMPILE_RANDOM_CODE)
-#define COMPILE_RANDOM_CODE
-#endif
 
-#ifdef COMPILE_RANDOM_CODE
-static glui32 lo_random(void);
-static void lo_seed_random(glui32 seed);
-#endif
+/* We have a slightly baroque random-number scheme. If the Glulx
+   @setrandom opcode is given seed 0, we use "true" randomness, from a
+   platform native RNG if possible. If @setrandom is given a nonzero
+   seed, we use a simple xoshiro128** RNG (provided below). The
+   use of a known algorithm aids cross-platform testing and debugging.
+   (Those being the cases where you'd set a nonzero seed.)
+
+   To define a native RNG, define the macros RAND_SET_SEED() (seed the
+   RNG with the clock or some other truly random source) and RAND_GET()
+   (grab a number). Note that RAND_SET_SEED() does not take an argument;
+   it is only called when seed=0. If RAND_GET() calls a non-seeded RNG
+   API (such as arc4random()), then RAND_SET_SEED() should be a no-op.
+
+   If RAND_SET_SEED/RAND_GET are not provided, we call back to the same
+   xoshiro128** RNG as before, but seeded from the system clock.
+*/
+
+static glui32 xo_random(void);
+static void xo_seed_random(glui32 seed);
+static void xo_seed_random_4(glui32 seed0, glui32 seed1, glui32 seed2, glui32 seed3);
+
+#ifdef OS_STDC
+
+#include <time.h>
+#include <stdlib.h>
+
+/* Allocate a chunk of memory. */
+void *glulx_malloc(glui32 len)
+{
+  return malloc(len);
+}
+
+/* Resize a chunk of memory. This must follow ANSI rules: if the
+   size-change fails, this must return NULL, but the original chunk
+   must remain unchanged. */
+void *glulx_realloc(void *ptr, glui32 len)
+{
+  return realloc(ptr, len);
+}
+
+/* Deallocate a chunk of memory. */
+void glulx_free(void *ptr)
+{
+  free(ptr);
+}
+
+/* Use our xoshiro128** as the native RNG, seeded from the clock. */
+#define RAND_SET_SEED() (xo_seed_random(time(NULL)))
+#define RAND_GET() (xo_random())
+
+#endif /* OS_STDC */
 
 #ifdef OS_UNIX
 
@@ -39,7 +79,7 @@ void *glulx_malloc(glui32 len)
 }
 
 /* Resize a chunk of memory. This must follow ANSI rules: if the
-   size-change fails, this must return NULL, but the original chunk 
+   size-change fails, this must return NULL, but the original chunk
    must remain unchanged. */
 void *glulx_realloc(void *ptr, glui32 len)
 {
@@ -52,34 +92,45 @@ void glulx_free(void *ptr)
   free(ptr);
 }
 
-/* Set the random-number seed; zero means use as random a source as
-   possible. */
-void glulx_setrandom(glui32 seed)
+#ifdef UNIX_RAND_ARC4
+
+/* Use arc4random() as the native RNG. It doesn't need to be seeded. */
+#define RAND_SET_SEED() (0)
+#define RAND_GET() (arc4random())
+
+#elif UNIX_RAND_GETRANDOM
+
+/* Use xoshiro128** as the native RNG, seeded from getrandom(). */
+#include <sys/random.h>
+
+static void rand_set_seed(void)
 {
-  if (seed == 0)
-    seed = time(NULL);
-#ifdef COMPILE_RANDOM_CODE
-  lo_seed_random(seed);
-#else
-  srandom(seed);
-#endif
+    glui32 seeds[4];
+    int res = getrandom(seeds, 4*sizeof(glui32), 0);
+    if (res < 0) {
+        /* Error; fall back to the clock. */
+        xo_seed_random(time(NULL));
+    }
+    else {
+        xo_seed_random_4(seeds[0], seeds[1], seeds[2], seeds[3]);
+    }
 }
 
-/* Return a random number in the range 0 to 2^32-1. */
-glui32 glulx_random()
-{
-#ifdef COMPILE_RANDOM_CODE
-  return (lo_random() << 16) ^ lo_random();
-#else
-  return (random() << 16) ^ random();
-#endif
-}
+#define RAND_SET_SEED() (rand_set_seed())
+#define RAND_GET() (xo_random())
+
+#else /* UNIX_RAND_... */
+
+/* Use our xoshiro128** as the native RNG, seeded from the clock. */
+#define RAND_SET_SEED() (xo_seed_random(time(NULL)))
+#define RAND_GET() (xo_random())
+
+#endif /* UNIX_RAND_... */
 
 #endif /* OS_UNIX */
 
 #ifdef OS_MAC
 
-/* The Glk library uses malloc/free liberally, so we might as well also. */
 #include <stdlib.h>
 
 /* Allocate a chunk of memory. */
@@ -89,7 +140,7 @@ void *glulx_malloc(glui32 len)
 }
 
 /* Resize a chunk of memory. This must follow ANSI rules: if the
-   size-change fails, this must return NULL, but the original chunk 
+   size-change fails, this must return NULL, but the original chunk
    must remain unchanged. */
 void *glulx_realloc(void *ptr, glui32 len)
 {
@@ -102,24 +153,17 @@ void glulx_free(void *ptr)
   free(ptr);
 }
 
-/* Return a random number in the range 0 to 2^32-1. */
-glui32 glulx_random()
-{
-  return (lo_random() << 16) ^ lo_random();
-}
-
-/* Set the random-number seed; zero means use as random a source as
-   possible. */
-void glulx_setrandom(glui32 seed)
-{
-  if (seed == 0)
-    seed = TickCount() ^ Random();
-  lo_seed_random(seed);
-}
+/* Use arc4random() as the native RNG. It doesn't need to be seeded. */
+#define RAND_SET_SEED() (0)
+#define RAND_GET() (arc4random())
 
 #endif /* OS_MAC */
 
-#ifdef WIN32
+#ifdef OS_WINDOWS
+
+#ifdef _MSC_VER /* For Visual C++, get rand_s() */
+#define _CRT_RAND_S
+#endif
 
 #include <time.h>
 #include <stdlib.h>
@@ -131,7 +175,7 @@ void *glulx_malloc(glui32 len)
 }
 
 /* Resize a chunk of memory. This must follow ANSI rules: if the
-   size-change fails, this must return NULL, but the original chunk 
+   size-change fails, this must return NULL, but the original chunk
    must remain unchanged. */
 void *glulx_realloc(void *ptr, glui32 len)
 {
@@ -144,63 +188,128 @@ void glulx_free(void *ptr)
   free(ptr);
 }
 
+#ifdef _MSC_VER /* Visual C++ */
+
+/* Do nothing, as rand_s() has no seed. */
+static void msc_srandom()
+{
+}
+
+/* Use the Visual C++ function rand_s() as the native RNG.
+   This calls the OS function RtlGetRandom(). */
+static glui32 msc_random()
+{
+  glui32 value;
+  rand_s(&value);
+  return value;
+}
+
+#define RAND_SET_SEED() (msc_srandom())
+#define RAND_GET() (msc_random())
+
+#else /* Other Windows compilers */
+
+/* Use our xoshiro128** as the native RNG, seeded from the clock. */
+#define RAND_SET_SEED() (xo_seed_random(time(NULL)))
+#define RAND_GET() (xo_random())
+
+#endif
+
+#endif /* OS_WINDOWS */
+
+
+/* If no native RNG is defined above, use the xoshiro128** implementation. */
+#ifndef RAND_SET_SEED
+#define RAND_SET_SEED() (xo_seed_random(time(NULL)))
+#define RAND_GET() (xo_random())
+#endif /* RAND_SET_SEED */
+
+static int rand_use_native = TRUE;
+
+/* Set the random-number seed, and also select which RNG to use.
+*/
+void glulx_setrandom(glui32 seed)
+{
+    if (seed == 0) {
+        rand_use_native = TRUE;
+        RAND_SET_SEED();
+    }
+    else {
+        rand_use_native = FALSE;
+        xo_seed_random(seed);
+    }
+}
+
 /* Return a random number in the range 0 to 2^32-1. */
 glui32 glulx_random()
 {
-  return (lo_random() << 16) ^ lo_random();
+    if (rand_use_native) {
+        return RAND_GET();
+    }
+    else {
+        return xo_random();
+    }
 }
 
-__declspec(dllimport) unsigned long __stdcall GetTickCount(void);
 
-/* Set the random-number seed; zero means use as random a source as
-possible. */
-void glulx_setrandom(glui32 seed)
+/* This is the "xoshiro128**" random-number generator and seed function.
+   Adapted from: https://prng.di.unimi.it/xoshiro128starstar.c
+   About this algorithm: https://prng.di.unimi.it/
+*/
+static uint32_t xo_table[4];
+
+static void xo_seed_random_4(glui32 seed0, glui32 seed1, glui32 seed2, glui32 seed3)
 {
-  if (seed == 0)
-    seed = GetTickCount() ^ time(NULL);
-  lo_seed_random(seed);
+    /* Set up the 128-bit state from four integers. Use this if you can get
+       four high-quality random values. */
+    xo_table[0] = seed0;
+    xo_table[1] = seed1;
+    xo_table[2] = seed2;
+    xo_table[3] = seed3;
 }
 
-#endif /* WIN32 */
-
-#ifdef COMPILE_RANDOM_CODE
-
-/* Here is a pretty standard random-number generator and seed function. */
-static glui32 lo_random(void);
-static void lo_seed_random(glui32 seed);
-static glui32 rand_table[55]; /* State for the RNG. */
-static int rand_index1, rand_index2;
-
-static glui32 lo_random()
+static void xo_seed_random(glui32 seed)
 {
-  rand_index1 = (rand_index1 + 1) % 55;
-  rand_index2 = (rand_index2 + 1) % 55;
-  rand_table[rand_index1] = rand_table[rand_index1] - rand_table[rand_index2];
-  return rand_table[rand_index1];
+    int ix;
+    /* Set up the 128-bit state from a single 32-bit integer. We rely
+       on a different RNG, SplitMix32. This isn't high-quality, but we
+       just need to get a bunch of bits into xo_table. */
+    for (ix=0; ix<4; ix++) {
+        seed += 0x9E3779B9;
+        glui32 s = seed;
+        s ^= s >> 15;
+        s *= 0x85EBCA6B;
+        s ^= s >> 13;
+        s *= 0xC2B2AE35;
+        s ^= s >> 16;
+        xo_table[ix] = s;
+    }
 }
 
-static void lo_seed_random(glui32 seed)
+static glui32 xo_random(void)
 {
-  glui32 k = 1;
-  int i, loop;
+    /* I've inlined the utility function:
+       rotl(x, k) => (x << k) | (x >> (32 - k))
+     */
+    
+    const uint32_t t1x5 = xo_table[1] * 5;
+    const uint32_t result = ((t1x5 << 7) | (t1x5 >> (32-7))) * 9;
 
-  rand_table[54] = seed;
-  rand_index1 = 0;
-  rand_index2 = 31;
-  
-  for (i = 0; i < 55; i++) {
-    int ii = (21 * i) % 55;
-    rand_table[ii] = k;
-    k = seed - k;
-    seed = rand_table[ii];
-  }
-  for (loop = 0; loop < 4; loop++) {
-    for (i = 0; i < 55; i++)
-      rand_table[i] = rand_table[i] - rand_table[ (1 + i + 30) % 55];
-  }
+    const uint32_t t1s9 = xo_table[1] << 9;
+
+    xo_table[2] ^= xo_table[0];
+    xo_table[3] ^= xo_table[1];
+    xo_table[1] ^= xo_table[2];
+    xo_table[0] ^= xo_table[3];
+
+    xo_table[2] ^= t1s9;
+
+    const uint32_t t3 = xo_table[3];
+    xo_table[3] =  ((t3 << 11) | (t3 >> (32-11)));
+
+    return result;
 }
 
-#endif /* COMPILE_RANDOM_CODE */
 
 #include <stdlib.h>
 
@@ -216,8 +325,6 @@ void glulx_sort(void *addr, int count, int size,
 #ifdef FLOAT_SUPPORT
 #include <math.h>
 
-#ifdef FLOAT_COMPILE_SAFER_POWF
-
 /* This wrapper handles all special cases, even if the underlying
    powf() function doesn't. */
 gfloat32 glulx_powf(gfloat32 val1, gfloat32 val2)
@@ -231,14 +338,20 @@ gfloat32 glulx_powf(gfloat32 val1, gfloat32 val2)
   return powf(val1, val2);
 }
 
-#else /* FLOAT_COMPILE_SAFER_POWF */
+#endif /* FLOAT_SUPPORT */
 
-/* This is the standard powf() function, unaltered. */
-gfloat32 glulx_powf(gfloat32 val1, gfloat32 val2)
+#ifdef DOUBLE_SUPPORT
+
+/* Same for pow(). */
+extern gfloat64 glulx_pow(gfloat64 val1, gfloat64 val2)
 {
-  return powf(val1, val2);
+  if (val1 == 1.0)
+    return 1.0;
+  else if ((val2 == 0.0) || (val2 == -0.0))
+    return 1.0;
+  else if ((val1 == -1.0) && isinf(val2))
+    return 1.0;
+  return pow(val1, val2);
 }
 
-#endif /* FLOAT_COMPILE_SAFER_POWF */
-
-#endif /* FLOAT_SUPPORT */
+#endif /* DOUBLE_SUPPORT */
