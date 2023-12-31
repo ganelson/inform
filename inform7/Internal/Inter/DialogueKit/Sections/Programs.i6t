@@ -515,17 +515,20 @@ too, even if the VM stack does for a while have a surprising state.
 [ DirectorInsteadAction; return DirectorDetectActionChoice(INSTEAD_OF_DSEL); ];
 [ DirectorAfterAction;   return DirectorDetectActionChoice(AFTER_DSEL);      ];
 
-[ DirectorDetectActionChoice stage N list was dc i fn chose suppress_otherwise;
+[ DirectorDetectActionChoice stage N list was dc i fn chose cht echt suppress_otherwise;
 	if (director_sp == 0) rfalse;
 	list = DirectorStackChoices-->(director_sp-1);
 	N = LIST_OF_TY_GetLength(list);
 	if (N == 0) rfalse;
 
 	if (debug_dialogue >= 2) { print "-- found: "; DirectorTraceStack(); }
-
+	echt = AFTER_DSEL;
 	for (i=1: i<=N: i++) {
 		dc = LIST_OF_TY_GetItem(list, i);
-		if ((DirectorChoiceType(dc) == OTHERWISE_DSEL) && (suppress_otherwise == false)) {
+		cht = DirectorChoiceType(dc);
+		! print "Stage ", stage, " choice ", i, "/", N, " cht ", cht, " echt ", echt, "^";
+		if (cht < echt) echt = cht;
+		if ((cht == OTHERWISE_DSEL) && (stage >= echt) && (suppress_otherwise == false)) {
 			chose = dc; break;
 		} else {
 			fn = DirectorChoiceRawContent(dc);
@@ -533,7 +536,7 @@ too, even if the VM stack does for a while have a surprising state.
 				if (DirectorChoiceType(dc) == stage) {
 					chose = dc; break;	
 				} else {
-					suppress_otherwise = true;
+					if (DirectorChoiceType(dc) ~= stage) suppress_otherwise = true;
 				}
 			}
 		}

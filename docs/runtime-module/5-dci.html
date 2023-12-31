@@ -292,6 +292,14 @@ function togglePopup(material_id) {
 <span class="plain-syntax">                </span><a href="2-ec.html#SP3" class="function-link"><span class="function-syntax">EmitCode::up</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">            </span><a href="2-ec.html#SP3" class="function-link"><span class="function-syntax">EmitCode::up</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">        }</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::quote_wording</span><span class="plain-syntax">(2, </span><span class="identifier-syntax">APW</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(...));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"This dialogue choice (%1) seems to depend on the action '%2', "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"but I can't make sense of what action that is."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><a href="2-ec.html#SP15" class="function-link"><span class="function-syntax">EmitCode::rfalse</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Functions::end</span><span class="plain-syntax">(</span><span class="identifier-syntax">save</span><span class="plain-syntax">);</span>

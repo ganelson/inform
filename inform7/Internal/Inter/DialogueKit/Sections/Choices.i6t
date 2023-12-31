@@ -58,9 +58,9 @@ Constant ENDING_FINALLY_SAYING_DSEL = 8; ! -> end the story finally saying "You 
 
                                          ! Offered choices:
 Constant TEXTUAL_DSEL = 9;               ! -- "Run out of the room screaming"
-Constant INSTEAD_OF_DSEL = 10;           ! -- instead of taking something
-Constant AFTER_DSEL = 11;                ! -- after examining the rabbit hole
-Constant BEFORE_DSEL = 12;               ! -- before taking the pocket watch
+Constant BEFORE_DSEL = 10;               ! -- before taking the pocket watch
+Constant INSTEAD_OF_DSEL = 11;           ! -- instead of taking something
+Constant AFTER_DSEL = 12;                ! -- after examining the rabbit hole
 Constant OTHERWISE_DSEL = 13;            ! -- otherwise
 
 @h Extracting choice data.

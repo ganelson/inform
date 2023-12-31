@@ -207,9 +207,9 @@ void DialogueChoices::write_dcc(OUTPUT_STREAM, int c) {
 @e ENDING_FINALLY_DSEL              /* -> end the story finally */
 @e ENDING_FINALLY_SAYING_DSEL       /* -> end the story finally saying "You have failed" */
 @e TEXTUAL_DSEL                     /* -- "Run out of the room screaming" */
+@e BEFORE_DSEL                      /* -- before taking the pocket watch */
 @e INSTEAD_OF_DSEL                  /* -- instead of taking something */
 @e AFTER_DSEL                       /* -- after examining the rabbit hole */
-@e BEFORE_DSEL                      /* -- before taking the pocket watch */
 @e OTHERWISE_DSEL                   /* -- otherwise */
 
 =
