@@ -106,6 +106,7 @@ void RTDialogueBeats::beat_compilation_agent(compilation_subtask *ct) {
 	@<Write the relevance entry@>;
 	@<Write the structure entry@>;
 	@<Write the scene entry@>;
+	@<Write the first speaker entry@>;
 	@<Write the speaker list@>;
 	EmitArrays::end(save);
 
@@ -146,6 +147,19 @@ void RTDialogueBeats::beat_compilation_agent(compilation_subtask *ct) {
 		EmitArrays::iname_entry(RTInstances::value_iname(Scenes::get_instance(db->as_scene)));
 	else
 		EmitArrays::numeric_entry(0);
+
+@<Write the first speaker entry@> =
+	int player_speaks = -1;
+	linked_list *L = NEW_LINKED_LIST(instance);
+	RTDialogueBeats::find_speakers_r(L, db->root, &player_speaks);
+	if (player_speaks == 0) EmitArrays::numeric_entry(1);
+	else if (LinkedLists::len(L) > 0) {
+		instance *I;
+		LOOP_OVER_LINKED_LIST(I, instance, L) {
+			EmitArrays::iname_entry(RTInstances::value_iname(I));
+			break;
+		}
+	} else EmitArrays::numeric_entry(0);
 
 @<Write the speaker list@> =
 	int player_speaks = -1;
