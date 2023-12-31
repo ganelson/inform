@@ -147,9 +147,12 @@ to test relevance to a single subject.
 [ DirectorBeatRelevant db;
 	return DirectorBeatRelevantTo(db, DialogueTopicPool);
 ];
-[ DirectorBeatRelevantTo db pool fn beatdata;
+[ DirectorBeatRelevantTo db pool fn beatdata i;
 	if ((db <= 0) || (db > NO_DIALOGUE_BEATS)) rfalse;
 	beatdata = TableOfDialogueBeats-->db;
+	! print "Is beat ", db, " relevant to any of ... ";
+	! for (i=0: pool-->i: i++) print (the) pool-->i, " ";
+	! print " ...?^";
 	fn = beatdata-->RELEVANCE_DBMETADATA;
 	if (fn) return (fn)(pool);
 	rfalse;

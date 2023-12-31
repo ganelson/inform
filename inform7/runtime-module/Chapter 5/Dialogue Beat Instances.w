@@ -352,6 +352,10 @@ void RTDialogueBeats::beat_compilation_agent(compilation_subtask *ct) {
 					} else {
 						pcalc_prop *prop = Descriptions::to_proposition(desc);
 						if (prop) {
+							if ((Binding::number_free(prop) == 0) &&
+								(Atoms::is_existence_quantifier(prop))) {
+								prop = prop->next;
+							}
 							TypecheckPropositions::type_check(prop,
 								TypecheckPropositions::tc_no_problem_reporting());
 							CompilePropositions::to_test_as_condition(
