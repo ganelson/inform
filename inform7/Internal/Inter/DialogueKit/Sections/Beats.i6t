@@ -212,5 +212,6 @@ and so on.
 [ PERFORM_OPENING_BEAT_R db;
 	db = InitialSituation-->START_BEAT_INIS;
 	if (db) DirectorPerformBeat(db);
+	line_performance_count = 0;
 	rfalse;
 ];

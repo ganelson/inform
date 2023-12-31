@@ -135,16 +135,17 @@ Purely for debugging purposes:
 			operand = (program-->(pc+1));
 			for (i=0: i<depth: i++) print "  ";
 			DirectorDisassembleInstruction(which, operand);
+			print "^";
 			pc = pc + 2;
 		}		
 	}
 ];
 [ DirectorDisassembleInstruction which operand;
 	switch (which) {
-		LINE_DCODEI: print "LINE ", (PrintDialogueLineName) operand, "^";
-		CHOICE_DCODEI: print "CHOICE ", (PrintDialogueChoiceName) operand, "^";
-		DECISION_DCODEI: print "DECISION of type ", operand, "^";
-		default: print "*** Unimplemented ***^";
+		LINE_DCODEI: print "LINE ", (PrintDialogueLineName) operand;
+		CHOICE_DCODEI: print "CHOICE ", (PrintDialogueChoiceName) operand;
+		DECISION_DCODEI: print "DECISION of type ", operand;
+		default: print "*** Unimplemented ***";
 	}
 ];
 

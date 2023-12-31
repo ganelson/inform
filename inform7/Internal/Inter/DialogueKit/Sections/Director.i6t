@@ -125,6 +125,7 @@ other hand, it only has to run once in every turn, so that may not matter.
 =
 [ DIALOGUE_DIRECTION_R db;
 	if (director_is_active) {
+		if (debug_dialogue >= 2) print "-- Director is active^";
 		if ((director_sp == 0) && (line_performance_count == 0)) {
 			for (db=1: db<=NO_DIALOGUE_BEATS: db++)
 				if ((DirectorBeatAccessible(db, player)) &&
