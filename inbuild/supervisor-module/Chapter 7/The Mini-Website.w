@@ -219,13 +219,15 @@ void ExtensionWebsite::document_extension(inform_extension *E, inform_project *p
 	}
 
 @<Add testing page@> =
-	text_stream *MD = DocumentationRenderer::open_subpage(P, I"testing.html");
-	TEMPORARY_TEXT(title)
-	WRITE_TO(title, "%X", E->as_copy->edition->work);
-	DocumentationRenderer::render_header(MD, title, I"Testing", NULL);
-	DISCARD_TEXT(title)
-	ExtensionWebsite::write_testing_page(MD, doc, E, proj);
-	DocumentationRenderer::close_subpage();
+	if (doc) {
+		text_stream *MD = DocumentationRenderer::open_subpage(P, I"testing.html");
+		TEMPORARY_TEXT(title)
+		WRITE_TO(title, "%X", E->as_copy->edition->work);
+		DocumentationRenderer::render_header(MD, title, I"Testing", NULL);
+		DISCARD_TEXT(title)
+		ExtensionWebsite::write_testing_page(MD, doc, E, proj);
+		DocumentationRenderer::close_subpage();
+	}
 
 @ =
 void ExtensionWebsite::write_metadata_page(OUTPUT_STREAM, inform_extension *E) {
