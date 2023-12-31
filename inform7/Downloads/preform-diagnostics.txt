@@ -9962,6 +9962,8 @@
           constraint CS = {10} extremes [1, 1]
         <s-type-expression> 
           constraint (none) extremes [1, infinity)
+        <s-value> 
+          constraint (none) extremes [1, infinity)
 
 <dialogue-choice-clause> nti 11 constraint (none) extremes [1, infinity)
     English:

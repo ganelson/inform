@@ -1,6 +1,6 @@
 Total memory consumption was 139587K = 136 MB
 
- ---- was used for 2127256 objects, in 374810 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2127258 objects, in 374812 frames in 0 x 800K = 0K = 0 MB:
 
     30.2%  inter_tree_node_array                    60 x 8192 = 491520 objects, 43255680 bytes
     19.4%  text_stream_array                        4926 x 100 = 492600 objects, 27743232 bytes
@@ -28,8 +28,8 @@ Total memory consumption was 139587K = 136 MB
      0.7%  adjective_meaning                        208 objects, 1030016 bytes
      0.7%  inter_schema_node                        9062 objects, 1014944 bytes
      0.6%  excerpt_meaning                          3165 objects, 987480 bytes
-     0.6%  production                               3985 objects, 924520 bytes
-     0.6%  ptoken                                   8652 objects, 899808 bytes
+     0.6%  production                               3986 objects, 924752 bytes
+     0.6%  ptoken                                   8653 objects, 899912 bytes
      0.6%  grammatical_usage                        3648 objects, 875520 bytes
      0.6%  individual_form                          2581 objects, 867216 bytes
      0.4%  unary_predicate_array                    17 x 1000 = 17000 objects, 680544 bytes
@@ -264,7 +264,7 @@ Total memory consumption was 139587K = 136 MB
 
 100.0% was used for memory not allocated for objects:
 
-    62.3%  text stream storage                      89188848 bytes in 512725 claims
+    62.3%  text stream storage                      89188904 bytes in 512725 claims
      3.8%  dictionary storage                       5497920 bytes in 7767 claims
      ----  sorting                                  2624 bytes in 531 claims
      5.0%  source text                              7200000 bytes in 3 claims
@@ -282,5 +282,5 @@ Total memory consumption was 139587K = 136 MB
      ----  code generation workspace for objects    3528 bytes in 19 claims
      0.1%  emitter array storage                    281184 bytes in 2006 claims
 
--136.-6% was overhead - -195265160 bytes = -190688K = -186 MB
+-136.-6% was overhead - -195265496 bytes = -190688K = -186 MB
 

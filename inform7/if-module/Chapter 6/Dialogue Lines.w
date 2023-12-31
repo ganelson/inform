@@ -285,12 +285,13 @@ void DialogueLines::decide_line_mentions(void) {
 <speaker-description> ::=
 	<definite-article> player |     ==> { TRUE, NULL }
 	player |                        ==> { TRUE, NULL }
-	<s-type-expression>             ==> { FALSE, RP[1] }
+	<s-type-expression> |           ==> { FALSE, RP[1] }
+	<s-value>                       ==> { NOT_APPLICABLE, RP[1] }
 
 @<Parse the speaker description@> =
 	wording S = dl->speaker_text;
-	if (<speaker-description>(S)) {
-		if (<<r>>) dl->speaker_is_player = TRUE;
+	if (<speaker-description>(S) == TRUE) {
+		if (<<r>> == TRUE) dl->speaker_is_player = TRUE;
 		else {
 			parse_node *desc = <<rp>>;
 			kind *K = Specifications::to_kind(desc);
@@ -322,7 +323,7 @@ void DialogueLines::decide_line_mentions(void) {
 @<Parse the interlocutor description@> =
 	wording S = dl->interlocutor_text;
 	if (<speaker-description>(S)) {
-		if (<<r>>) dl->interlocutor_is_player = TRUE;
+		if (<<r>> == TRUE) dl->interlocutor_is_player = TRUE;
 		else {
 			parse_node *desc = <<rp>>;
 			kind *K = Specifications::to_kind(desc);

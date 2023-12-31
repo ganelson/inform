@@ -238,16 +238,16 @@ moves an object to a new position in the object tree.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">DialogueOnSub</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">debug_dialogue</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="identifier-syntax">say__p</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="string-syntax">"Dialogue tracing now switched on. Type ~dialogue off~ to switch it off again,</span>
-<span class="string-syntax">     or ~dialogue all~ to include even dialogue which do not apply."</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="string-syntax">"(Dialogue tracing now switched on. Type ~dialogue off~ to switch it off again,</span>
+<span class="string-syntax">     or ~dialogue all~ to include even dialogue which does not apply.)"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 <span class="plain-syntax">[ </span><span class="identifier-syntax">DialogueAllSub</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">debug_dialogue</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">; </span><span class="identifier-syntax">say__p</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="string-syntax">"Dialogue tracing now switched to ~all~. Type ~dialogue off~ to switch it off again."</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="string-syntax">"(Dialogue tracing now switched to ~all~. Type ~dialogue off~ to switch it off again.)"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 <span class="plain-syntax">[ </span><span class="identifier-syntax">DialogueOffSub</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">debug_dialogue</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">say__p</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="string-syntax">"Dialogue tracing now switched off. Type ~dialogue~ to switch it on again."</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="string-syntax">"(Dialogue tracing now switched off. Type ~dialogue~ to switch it on again.)"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Scenes Command. </b>SCENES switches scene-change tracing on or off, and also shows the current position.

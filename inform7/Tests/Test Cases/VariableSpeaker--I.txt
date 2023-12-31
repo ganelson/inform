@@ -1,0 +1,30 @@
+   Cocktail Bar
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Cocktail Bar
+  You can see a server and Loretta here.
+  
+> >   Cocktail Bar
+  (Testing.)
+  
+  >[1] dialogue
+  (Dialogue tracing now switched on. Type "dialogue off" to switch it off again, or "dialogue all" to include even dialogue which does not apply.)
+  
+  >[2] talk about cocktails
+  -- Performing beat-1
+  The server rearranges items on her platter for balance.
+  
+  The server: "Should I take the mai tai away?"
+  
+  [(1) Loretta giving the mai tai to the server]
+  Loretta gives the mai tai to the server.
+  [(1) Loretta giving the mai tai to the server - succeeded]
+  
+  Loretta: "Thank you."
+  
+  The server: "You're very welcome."
+  
+  -- Performance of beat-1 ended
+> >

@@ -1,0 +1,22 @@
+Test: VariableSpeaker
+For: Z-Machine
+
+The Cocktail Bar is a room. Cocktails are a concept. The server and Loretta are women in the Cocktail Bar. A drink is a kind of thing. A drink can be full or empty. Loretta carries an empty drink called a mai tai.
+
+The last-named drink is a drink that varies. The chosen guest is a person that varies. The chosen guest is Loretta.
+
+Test me with "dialogue / talk about cocktails".
+
+The block giving rule does nothing.
+
+Section 1 - Bar talk (dialogue)
+
+(About cocktails. Spontaneous. Recurring. If the server can see someone who carries an empty drink.)
+
+Server (now the last-named drink is a random empty drink carried by a visible person; now the chosen guest is the holder of the last-named drink; without speaking): "The server rearranges items on her platter for balance."
+
+Server: "[one of]Want me to[or]Can I[or]Shall I[or]Should I[at random] [one of]take the empty[or]take that empty glass off your hands[or]take [the last-named drink] away[at random]?"
+
+The chosen guest (after giving the last-named drink to the server): "Thank you."
+
+Server: "You're very welcome."

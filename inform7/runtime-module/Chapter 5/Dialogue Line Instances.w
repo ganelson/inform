@@ -277,67 +277,13 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 @<Compile the speaker function@> =
 	packaging_state save = Functions::begin(RTDialogueLines::speaker_fn_iname(dl));
 	local_variable *speaker = LocalVariables::new_internal_commented(I"speaker", I"potential speaker");
-	inter_symbol *speaker_s = LocalVariables::declare(speaker);
-	parse_node *desc = dl->speaker_description;
-	instance *I = Rvalues::to_instance(desc);
-	EmitCode::inv(IF_BIP);
-	EmitCode::down();
-		if (I) {
-			EmitCode::inv(EQ_BIP);
-			EmitCode::down();
-				EmitCode::val_symbol(K_value, speaker_s);
-				EmitCode::val_iname(K_value, RTInstances::value_iname(I));
-			EmitCode::up();		
-		} else {
-			pcalc_prop *prop = Descriptions::to_proposition(desc);
-			if (prop) {
-				TypecheckPropositions::type_check(prop,
-					TypecheckPropositions::tc_no_problem_reporting());
-				CompilePropositions::to_test_as_condition(
-					Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, speaker), prop);
-			} else {
-				internal_error("cannot test");
-			}
-		}	
-		EmitCode::code();
-		EmitCode::down();
-			EmitCode::rtrue();
-		EmitCode::up();
-	EmitCode::up();					
-	EmitCode::rfalse();
+	RTDialogueLines::fn_body_matching(speaker, dl->speaker_description);
 	Functions::end(save);
 
 @<Compile the interlocutor function@> =
 	packaging_state save = Functions::begin(RTDialogueLines::interlocutor_fn_iname(dl));
 	local_variable *interlocutor = LocalVariables::new_internal_commented(I"interlocutor", I"potential interlocutor");
-	inter_symbol *interlocutor_s = LocalVariables::declare(interlocutor);
-	parse_node *desc = dl->interlocutor_description;
-	instance *I = Rvalues::to_instance(desc);
-	EmitCode::inv(IF_BIP);
-	EmitCode::down();
-		if (I) {
-			EmitCode::inv(EQ_BIP);
-			EmitCode::down();
-				EmitCode::val_symbol(K_value, interlocutor_s);
-				EmitCode::val_iname(K_value, RTInstances::value_iname(I));
-			EmitCode::up();		
-		} else {
-			pcalc_prop *prop = Descriptions::to_proposition(desc);
-			if (prop) {
-				TypecheckPropositions::type_check(prop,
-					TypecheckPropositions::tc_no_problem_reporting());
-				CompilePropositions::to_test_as_condition(
-					Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, interlocutor), prop);
-			} else {
-				internal_error("cannot test");
-			}
-		}	
-		EmitCode::code();
-		EmitCode::down();
-			EmitCode::rtrue();
-		EmitCode::up();
-	EmitCode::up();					
-	EmitCode::rfalse();
+	RTDialogueLines::fn_body_matching(interlocutor, dl->interlocutor_description);
 	Functions::end(save);
 
 @<Compile the mentioning function@> =
@@ -491,4 +437,72 @@ instance *RTDialogueLines::speaker_instance(dialogue_line *dl) {
 	if ((dl) && (dl->speaker_description))
 		return Rvalues::to_instance(dl->speaker_description);
 	return NULL;
+}
+
+@ This provides the body of a function to determine a speaker or interlocutor
+matching |desc|. It is called first with parameter |par| set to |nothing|,
+and returns either an object, or |nothing|, or the special value |true| to
+indicate that multiple objects might qualify. It can then be called again
+with |par| set to one such object to see if it does indeed qualify.
+
+=
+void RTDialogueLines::fn_body_matching(local_variable *par, parse_node *desc) {
+	inter_symbol *par_s = LocalVariables::declare(par);
+	instance *I = Rvalues::to_instance(desc);
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(EQ_BIP);
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, par_s);
+			EmitCode::val_false();
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
+			if (I) {
+				EmitCode::inv(RETURN_BIP);
+				EmitCode::down();
+					EmitCode::val_iname(K_value, RTInstances::value_iname(I));
+				EmitCode::up();
+			} else if (!((Specifications::is_description(desc)) || (Node::is(desc, TEST_VALUE_NT)))) {
+				EmitCode::inv(RETURN_BIP);
+				EmitCode::down();
+					CompileValues::to_code_val(desc);
+				EmitCode::up();
+			} else {
+				EmitCode::rtrue();
+			}
+		EmitCode::up();
+	EmitCode::up();
+	
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		if (I) {
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, par_s);
+				EmitCode::val_iname(K_value, RTInstances::value_iname(I));
+			EmitCode::up();		
+		} else if ((Specifications::is_description(desc)) || (Node::is(desc, TEST_VALUE_NT))) {
+			pcalc_prop *prop = Descriptions::to_proposition(desc);
+			if (prop) {
+				TypecheckPropositions::type_check(prop,
+					TypecheckPropositions::tc_no_problem_reporting());
+				CompilePropositions::to_test_as_condition(
+					Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, par), prop);
+			} else {
+				internal_error("cannot test");
+			}
+		} else {
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, par_s);
+				CompileValues::to_code_val(desc);
+			EmitCode::up();		
+		}
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::rtrue();
+		EmitCode::up();
+	EmitCode::up();					
+	EmitCode::rfalse();
 }

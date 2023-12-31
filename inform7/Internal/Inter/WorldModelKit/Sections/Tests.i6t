@@ -187,16 +187,16 @@ DIALOGUE changes the level of dialogue tracing.
 =
 [ DialogueOnSub;
 	debug_dialogue = 1; say__p = 1;
-	"Dialogue tracing now switched on. Type ~dialogue off~ to switch it off again,
-	 or ~dialogue all~ to include even dialogue which do not apply.";
+	"(Dialogue tracing now switched on. Type ~dialogue off~ to switch it off again,
+	 or ~dialogue all~ to include even dialogue which does not apply.)";
 ];
 [ DialogueAllSub;
 	debug_dialogue = 2; say__p = 1;
-	"Dialogue tracing now switched to ~all~. Type ~dialogue off~ to switch it off again.";
+	"(Dialogue tracing now switched to ~all~. Type ~dialogue off~ to switch it off again.)";
 ];
 [ DialogueOffSub;
 	debug_dialogue = 0; say__p = 1;
-	"Dialogue tracing now switched off. Type ~dialogue~ to switch it on again.";
+	"(Dialogue tracing now switched off. Type ~dialogue~ to switch it on again.)";
 ];
 
 @h Scenes Command.
