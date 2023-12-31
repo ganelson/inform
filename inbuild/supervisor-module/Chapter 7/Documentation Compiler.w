@@ -33,8 +33,6 @@ compiled_documentation *DocumentationCompiler::compile_from_text(text_stream *sc
 	cd_pageset *page = FIRST_IN_LINKED_LIST(cd_pageset, vol->pagesets);
 	page->nonfile_content = scrap;
 	DocumentationCompiler::compile_inner(cd);
-	LOG("CFY says:\n");
-	Markdown::debug_subtree(DL, cd->markdown_content);
 	return cd;
 }
 
