@@ -233,12 +233,10 @@ void DialogueLines::decide_line_mentions(void) {
 								property *prn = Rvalues::to_property(val);
 								if (Properties::is_either_or(prn)) {
 									@<Assert that the line has this property@>;
-									break;
 								}
 							}
 							if ((Specifications::is_description(val)) || (Node::is(val, TEST_VALUE_NT))) {
 								@<Assert that the line has this property value@>;
-								return;
 							}
 						}
 						dl->how_performed = PerformanceStyles::parse_style(A);
@@ -269,6 +267,7 @@ void DialogueLines::decide_line_mentions(void) {
 	prop = Propositions::concatenate(
 		Propositions::Abstract::prop_to_set_kind(K_dialogue_line), prop);
 	Assert::true_about(prop, subj, CERTAIN_CE);
+	break;
 
 @<Assert that the line has this property value@> =
 	pcalc_prop *prop = Descriptions::to_proposition(val);
@@ -276,7 +275,7 @@ void DialogueLines::decide_line_mentions(void) {
 		prop = Propositions::concatenate(
 			Propositions::Abstract::prop_to_set_kind(K_dialogue_line), prop);
 		Assert::true_about(prop, subj, CERTAIN_CE);
-		return;
+		break;
 	}
 
 @

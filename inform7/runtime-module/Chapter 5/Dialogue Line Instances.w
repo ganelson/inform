@@ -202,7 +202,10 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 	}
 
 @<Write the style entry@> =
-	EmitArrays::iname_entry(RTInstances::value_iname(dl->how_performed->as_instance));
+	if ((dl->how_performed) && (dl->how_performed->as_instance))
+		EmitArrays::iname_entry(RTInstances::value_iname(dl->how_performed->as_instance));
+	else
+		EmitArrays::numeric_entry(0);
 
 @<Write the mentioning entry@> =
 	int L = LinkedLists::len(dl->mentioning);

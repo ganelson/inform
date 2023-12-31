@@ -208,6 +208,12 @@ performance_style *PerformanceStyles::parse_style(wording CW) {
 	Problems::issue_problem_segment(
 		"The dialogue line %1 is apparently spoken in the style '%2', but that "
 		"doesn't seem to correspond to any style I know of.");
+	if (<action-pattern>(CW)) {
+		Problems::issue_problem_segment(
+			" (I notice that this text looks like an action, though. Maybe "
+			"you missed out the word 'before' or 'after' before the action, "
+			"to say whether the line is delivered before or after it takes place?)");
+	}
 	Problems::issue_problem_end();
 	return NULL;
 }

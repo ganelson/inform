@@ -292,6 +292,12 @@ will never be more than the number of dialogue lines in the story.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"The dialogue line %1 is apparently spoken in the style '%2', but that "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"doesn't seem to correspond to any style I know of."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;action-pattern&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">CW</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">            </span><span class="string-syntax">" (I notice that this text looks like an action, though. Maybe "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"you missed out the word 'before' or 'after' before the action, "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"to say whether the line is delivered before or after it takes place?)"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>

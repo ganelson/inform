@@ -327,12 +327,10 @@ so we can also deal with style clauses.
 <span class="plain-syntax">                                </span><span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Rvalues::to_property</span><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Properties::is_either_or</span><span class="plain-syntax">(</span><span class="identifier-syntax">prn</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">                                    </span><span class="named-paragraph-container code-font"><a href="6-dl.html#SP2_1" class="named-paragraph-link"><span class="named-paragraph">Assert that the line has this property</span><span class="named-paragraph-number">2.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">                                    </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                                }</span>
 <span class="plain-syntax">                            }</span>
 <span class="plain-syntax">                            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Specifications::is_description</span><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">)) || (</span><span class="identifier-syntax">Node::is</span><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="identifier-syntax">TEST_VALUE_NT</span><span class="plain-syntax">))) {</span>
 <span class="plain-syntax">                                </span><span class="named-paragraph-container code-font"><a href="6-dl.html#SP2_2" class="named-paragraph-link"><span class="named-paragraph">Assert that the line has this property value</span><span class="named-paragraph-number">2.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">                                </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                            }</span>
 <span class="plain-syntax">                        }</span>
 <span class="plain-syntax">                        </span><span class="identifier-syntax">dl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">how_performed</span><span class="plain-syntax"> = </span><a href="6-ps.html#SP13" class="function-link"><span class="function-syntax">PerformanceStyles::parse_style</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A</span><span class="plain-syntax">);</span>
@@ -366,6 +364,7 @@ so we can also deal with style clauses.
 <span class="plain-syntax">    </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Propositions::concatenate</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Propositions::Abstract::prop_to_set_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">K_dialogue_line</span><span class="plain-syntax">), </span><span class="identifier-syntax">prop</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Assert::true_about</span><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">subj</span><span class="plain-syntax">, </span><span class="identifier-syntax">CERTAIN_CE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-dl.html#SP2">&#167;2</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert that the line has this property value</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
@@ -377,7 +376,7 @@ so we can also deal with style clauses.
 <span class="plain-syntax">        </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Propositions::concatenate</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Propositions::Abstract::prop_to_set_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">K_dialogue_line</span><span class="plain-syntax">), </span><span class="identifier-syntax">prop</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Assert::true_about</span><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">subj</span><span class="plain-syntax">, </span><span class="identifier-syntax">CERTAIN_CE</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-dl.html#SP2">&#167;2</a>.</li></ul>
