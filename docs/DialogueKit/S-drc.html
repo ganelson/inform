@@ -168,7 +168,7 @@ first to speak. (Note that <span class="extract"><span class="extract-syntax">sp
 </pre>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Active dialogue. </b>In active mode only, the Director sometimes initiates conversation itself,
 and this is the rule doing that. In passive mode the rule does nothing.
-In stories with a lot of dialogue, this will be run quite slowly: on the
+In stories with a lot of dialogue, this will run quite slowly: on the
 other hand, it only has to run once in every turn, so that may not matter.
 </p>
 
@@ -181,9 +181,12 @@ other hand, it only has to run once in every turn, so that may not matter.
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">DirectorBeatAccessible</span><span class="plain-syntax">(</span><span class="identifier-syntax">db</span><span class="plain-syntax">, </span><span class="identifier-syntax">player</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">                    (</span><span class="identifier-syntax">DirectorBeatAvailable</span><span class="plain-syntax">(</span><span class="identifier-syntax">db</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">                    (</span><span class="identifier-syntax">DirectorBeatRelevant</span><span class="plain-syntax">(</span><span class="identifier-syntax">db</span><span class="plain-syntax">))) {</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">DirectorPerformBeat</span><span class="plain-syntax">(</span><span class="identifier-syntax">db</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">line_performance_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">                    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">GProperty</span><span class="plain-syntax">(</span><span class="identifier-syntax">DIALOGUE_BEAT_TY</span><span class="plain-syntax">, </span><span class="identifier-syntax">db</span><span class="plain-syntax">, </span><span class="identifier-syntax">voluntary</span><span class="plain-syntax">) == </span><span class="reserved-syntax">false</span><span class="plain-syntax">) ||</span>
+<span class="plain-syntax">                        (</span><span class="identifier-syntax">DirectorBeatFirstSpeaker</span><span class="plain-syntax">(</span><span class="identifier-syntax">db</span><span class="plain-syntax">) ~= </span><span class="identifier-syntax">player</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">                        </span><span class="identifier-syntax">DirectorPerformBeat</span><span class="plain-syntax">(</span><span class="identifier-syntax">db</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                        </span><span class="identifier-syntax">line_performance_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                        </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                    }</span>
 <span class="plain-syntax">                }</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">db</span><span class="plain-syntax">=1: </span><span class="identifier-syntax">db</span><span class="plain-syntax">&lt;=</span><span class="identifier-syntax">NO_DIALOGUE_BEATS</span><span class="plain-syntax">: </span><span class="identifier-syntax">db</span><span class="plain-syntax">++)</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">GProperty</span><span class="plain-syntax">(</span><span class="identifier-syntax">DIALOGUE_BEAT_TY</span><span class="plain-syntax">, </span><span class="identifier-syntax">db</span><span class="plain-syntax">, </span><span class="identifier-syntax">spontaneous</span><span class="plain-syntax">)) &amp;&amp;</span>

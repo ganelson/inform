@@ -1,6 +1,6 @@
 <preform-nonterminal> internal nti 28 constraint (none) extremes [1, 1]
 
-<if-start-of-paragraph> internal hits 1320/8640 nti 29 constraint (none) extremes [0, 0]
+<if-start-of-paragraph> internal hits 1320/8646 nti 29 constraint (none) extremes [0, 0]
 
 <if-not-cap> internal hits 4036/8296 nti 30 constraint (none) extremes [0, 0]
 
@@ -24,7 +24,7 @@
 
 <empty-text> internal nti 11 constraint (none) extremes [1, 1]
 
-<if-start-of-source-text> internal hits 2/13892 nti 12 constraint (none) extremes [0, 0]
+<if-start-of-source-text> internal hits 2/13898 nti 12 constraint (none) extremes [0, 0]
 
 <list-or-division> hits 0/18 nti 16 constraint DS = {16} extremes [3, infinity)
     English:
@@ -5446,12 +5446,12 @@
 
 <natural-language> internal nti 18 constraint (none) extremes [1, infinity)
 
-<dividing-sentence> hits 214/10970 nti 19 constraint DW = {12, 13} extremes [2, infinity)
+<dividing-sentence> hits 214/10976 nti 19 constraint DW = {12, 13} extremes [2, infinity)
     English:
         <if-start-of-paragraph> <heading> 
-          (hits 206/4306) (matched long text) constraint DS = {12} extremes [2, infinity)
+          (hits 206/4309) (matched long text) constraint DS = {12} extremes [2, infinity)
         <extension-end-marker-sentence> 
-          (hits 8/3633) (matched long text) constraint DS = {13} extremes [3, infinity)
+          (hits 8/3636) (matched long text) constraint DS = {13} extremes [3, infinity)
 
 <heading> hits 206/2612 nti 12 constraint DS = {12} extremes [2, infinity)
     English:
@@ -5470,35 +5470,35 @@
         section {...} 
           (hits 162/1262) (matched long text) constraint DS = {12} extremes [2, infinity)
 
-<extension-end-marker-sentence> hits 8/7266 nti 13 constraint DS = {13} extremes [3, infinity)
+<extension-end-marker-sentence> hits 8/7272 nti 13 constraint DS = {13} extremes [3, infinity)
     English:
         {...} begin/begins here 
-          (hits 4/3633) (matched long text) constraint DS = {13} extremes [3, infinity)
+          (hits 4/3636) (matched long text) constraint DS = {13} extremes [3, infinity)
         {...} end/ends here 
-          (hits 4/3629) (matched: 'the standard rules end here') constraint DS = {13} extremes [3, infinity)
+          (hits 4/3632) (matched: 'the standard rules end here') constraint DS = {13} extremes [3, infinity)
 
-<structural-sentence> hits 32/13892 nti 15 constraint (none) extremes [1, infinity)
+<structural-sentence> hits 32/13898 nti 15 constraint (none) extremes [1, infinity)
     English:
         <if-start-of-source-text> <quoted-text> 
           (hits 0/20) constraint (none) extremes [1, 1]
         <if-start-of-source-text> <quoted-text> {...} 
-          (hits 0/6926) constraint (none) extremes [2, infinity)
+          (hits 0/6929) constraint (none) extremes [2, infinity)
         <language-modifying-sentence> 
-          (hits 0/6756) constraint DS = {14} extremes [4, infinity)
+          (hits 0/6759) constraint DS = {14} extremes [4, infinity)
         * 
           constraint CS = {15} extremes [1, 1]
         * <quoted-text-without-subs> 
           constraint DS = {15} extremes [2, 2]
         <if-start-of-paragraph> table {...} 
-          (hits 14/6767) (matched long text) constraint DS = {15} extremes [2, infinity)
+          (hits 14/6770) (matched long text) constraint DS = {15} extremes [2, infinity)
         <if-start-of-paragraph> equation {...} 
-          (hits 0/6753) constraint DS = {15} extremes [2, infinity)
+          (hits 0/6756) constraint DS = {15} extremes [2, infinity)
         include the {...} by {...} 
-          (hits 0/6741) constraint DS = {15} extremes [5, infinity)
+          (hits 0/6744) constraint DS = {15} extremes [5, infinity)
         include {...} by {...} 
-          (hits 18/6753) (matched long text) constraint DS = {15} extremes [4, infinity)
+          (hits 18/6756) (matched long text) constraint DS = {15} extremes [4, infinity)
         include (- {...} 
-          (hits 0/6735) constraint DS = {15} extremes [3, infinity)
+          (hits 0/6738) constraint DS = {15} extremes [3, infinity)
 
 <comma-divisible-sentence> hits 9/2942 nti 16 constraint DS = {16} extremes [2, infinity)
     English:
@@ -5513,12 +5513,12 @@
         when {...} 
           (hits 4/1285) (matched: 'when scene begins is a scene based rulebook') constraint DS = {16} extremes [2, infinity)
 
-<language-modifying-sentence> hits 0/13512 nti 14 constraint DS = {14} extremes [4, infinity)
+<language-modifying-sentence> hits 0/13518 nti 14 constraint DS = {14} extremes [4, infinity)
     English:
         include (- {###} in the preform grammar 
           (hits 0/106) constraint DS = {14} extremes [7, 7]
         use {...} language element/elements 
-          (hits 0/6756) constraint DS = {14} extremes [4, infinity)
+          (hits 0/6759) constraint DS = {14} extremes [4, infinity)
 
 <heading-qualifier> hits 39/490 nti 22 constraint DS = {22} extremes [2, infinity)
     English:

@@ -1,6 +1,6 @@
 Total memory consumption was 139587K = 136 MB
 
- ---- was used for 2127258 objects, in 374812 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2127358 objects, in 374813 frames in 0 x 800K = 0K = 0 MB:
 
     30.2%  inter_tree_node_array                    60 x 8192 = 491520 objects, 43255680 bytes
     19.4%  text_stream_array                        4926 x 100 = 492600 objects, 27743232 bytes
@@ -17,7 +17,7 @@ Total memory consumption was 139587K = 136 MB
      1.5%  inter_schema_token                       14164 objects, 2152928 bytes
      1.4%  inter_name_generator_array               51 x 1000 = 51000 objects, 2041632 bytes
      1.3%  package_request                          21353 objects, 1879064 bytes
-     1.2%  vocabulary_entry_array                   163 x 100 = 16300 objects, 1830816 bytes
+     1.2%  vocabulary_entry_array                   164 x 100 = 16400 objects, 1842048 bytes
      1.1%  dict_entry_array                         501 x 100 = 50100 objects, 1619232 bytes
      1.0%  inter_symbols_table                      26887 objects, 1505672 bytes
      1.0%  match_trie_array                         11 x 1000 = 11000 objects, 1496352 bytes
@@ -282,5 +282,5 @@ Total memory consumption was 139587K = 136 MB
      ----  code generation workspace for objects    3528 bytes in 19 claims
      0.1%  emitter array storage                    281184 bytes in 2006 claims
 
--136.-6% was overhead - -195265496 bytes = -190688K = -186 MB
+-136.-6% was overhead - -195276728 bytes = -190699K = -186 MB
 

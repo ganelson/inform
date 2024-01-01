@@ -119,7 +119,7 @@ first to speak. (Note that |speaker| will often be the player.)
 @h Active dialogue.
 In active mode only, the Director sometimes initiates conversation itself,
 and this is the rule doing that. In passive mode the rule does nothing.
-In stories with a lot of dialogue, this will be run quite slowly: on the
+In stories with a lot of dialogue, this will run quite slowly: on the
 other hand, it only has to run once in every turn, so that may not matter.
 
 =
@@ -131,9 +131,12 @@ other hand, it only has to run once in every turn, so that may not matter.
 				if ((DirectorBeatAccessible(db, player)) &&
 					(DirectorBeatAvailable(db)) &&
 					(DirectorBeatRelevant(db))) {
-					DirectorPerformBeat(db);
-					line_performance_count = 0;
-					rfalse;
+					if ((GProperty(DIALOGUE_BEAT_TY, db, voluntary) == false) ||
+						(DirectorBeatFirstSpeaker(db) ~= player)) {
+						DirectorPerformBeat(db);
+						line_performance_count = 0;
+						rfalse;
+					}
 				}
 			for (db=1: db<=NO_DIALOGUE_BEATS: db++)
 				if ((GProperty(DIALOGUE_BEAT_TY, db, spontaneous)) &&

@@ -1267,6 +1267,8 @@ A dialogue beat can be recurring or non-recurring. A dialogue beat is usually
 non-recurring.
 A dialogue beat can be spontaneous or unspontaneous. A dialogue beat is usually
 unspontaneous.
+A dialogue beat can be voluntary or involuntary. A dialogue beat is usually
+voluntary.
 
 A dialogue line can be performed or unperformed. A dialogue line is usually
 unperformed.
@@ -1282,6 +1284,7 @@ non-recurring.
 
 The performed property is accessible to Inter as "performed".
 The spontaneous property is accessible to Inter as "spontaneous".
+The voluntary property is accessible to Inter as "voluntary".
 The recurring property is accessible to Inter as "recurring".
 
 To make (T - an object) a live conversational subject:
