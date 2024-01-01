@@ -271,7 +271,16 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 							EmitCode::up();
 						EmitCode::up();
 					}
-				}				
+				} else {
+					Problems::quote_source(1, current_sentence);
+					Problems::quote_wording(2, A);
+					StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+					Problems::issue_problem_segment(
+						"This dialogue line (%1) seems to be performed depending "
+						"on whether or not '%2', "
+						"but I can't make sense of that condition.");
+					Problems::issue_problem_end();
+				}
 				break;
 			}
 		}
