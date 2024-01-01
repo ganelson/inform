@@ -122,30 +122,37 @@ and this is the rule doing that. In passive mode the rule does nothing.
 In stories with a lot of dialogue, this will run quite slowly: on the
 other hand, it only has to run once in every turn, so that may not matter.
 
+Note that the rule always succeeds, even in the case when the Director
+finds nothing to perform.
+
 =
-[ DIALOGUE_DIRECTION_R db;
+[ DIALOGUE_DIRECTION_R db spontaneous_one chosen_one;
 	if (director_is_active) {
-		if (debug_dialogue >= 2) print "-- Director is active^";
 		if ((director_sp == 0) && (line_performance_count == 0)) {
 			for (db=1: db<=NO_DIALOGUE_BEATS: db++)
 				if ((DirectorBeatAccessible(db, player)) &&
-					(DirectorBeatAvailable(db)) &&
-					(DirectorBeatRelevant(db))) {
-					if ((GProperty(DIALOGUE_BEAT_TY, db, voluntary) == false) ||
-						(DirectorBeatFirstSpeaker(db) ~= player)) {
-						DirectorPerformBeat(db);
-						line_performance_count = 0;
-						rfalse;
+					(DirectorBeatAvailable(db))) {
+					if ((DirectorBeatRelevant(db)) &&
+						((GProperty(DIALOGUE_BEAT_TY, db, voluntary) == false) ||
+						(DirectorBeatFirstSpeaker(db) ~= player))) {
+						chosen_one = db;
+						break;
 					}
+					if ((spontaneous_one == 0) &&
+						(GProperty(DIALOGUE_BEAT_TY, db, spontaneous)))
+						spontaneous_one = db;
 				}
-			for (db=1: db<=NO_DIALOGUE_BEATS: db++)
-				if ((GProperty(DIALOGUE_BEAT_TY, db, spontaneous)) &&
-					(DirectorBeatAccessible(db, player))) {
-					DirectorEmptyLiveSubjectList();
-					DirectorPerformBeat(db);
-					line_performance_count = 0;
-					rfalse;
-				}
+			if ((chosen_one == 0) && (spontaneous_one)) {
+				if (debug_dialogue >= 2) print "-- Active director selects spontaneous beat^";
+				chosen_one = spontaneous_one;
+				DirectorEmptyLiveSubjectList();
+			} else if (chosen_one) {
+				if (debug_dialogue >= 2) print "-- Active director selects relevant beat^";
+			}
+			if (chosen_one) DirectorPerformBeat(chosen_one);
+			else if (debug_dialogue >= 2) print "-- Active director cannot find a beat^";
+		} else {
+			if (debug_dialogue >= 2) print "-- Director is active but too much else is going on^";
 		}
 	}
 	line_performance_count = 0;
