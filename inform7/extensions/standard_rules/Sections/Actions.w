@@ -3241,8 +3241,9 @@ Carry out an actor talking about an object (called T)
 		perform entry 1 of the other beats;
 		continue the action;
 	if the player is the actor:
-		say "There is no reply.";
+		say "There is no reply." (A);
 		stop the action;
 	otherwise:
-		say "[The actor] [talk] about [T].";
+		if the player can hear the actor:
+			say "[The actor] [talk] about [T]." (B);
 		stop the action.
