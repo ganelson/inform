@@ -8,6 +8,7 @@ active or inactive mode?
 
 =
 Global director_is_active = false;
+Global director_is_paused_for_command = false;
 Global line_performance_count = 0;
 
 [ DirectorActivate;
@@ -127,7 +128,7 @@ finds nothing to perform.
 
 =
 [ DIALOGUE_DIRECTION_R db spontaneous_one chosen_one;
-	if (director_is_active) {
+	if ((director_is_active) && (director_is_paused_for_command == false)) {
 		if ((director_sp == 0) && (line_performance_count == 0)) {
 			for (db=1: db<=NO_DIALOGUE_BEATS: db++)
 				if ((DirectorBeatAccessible(db, player)) &&

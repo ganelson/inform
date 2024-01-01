@@ -1,0 +1,27 @@
+   Woods
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Woods
+  You can see Snow White here.
+  
+> >   Woods
+  (Testing.)
+  
+  >[1] talk about mirror
+  "What do I look like in the magic mirror?" you ask. You had always assumed that the mirror showed the Queen what it showed you; that if you stood before the mirror with no bad intentions in your heart, without treason, then your innocent reflection would look back.
+  
+  True enough, you've avoided passing in front of it for the last day or two, since you and Snow White made your pact.
+  
+  "You stoop. You have a hunchback. Your reflection leers at the Queen. Once, it made an obscene suggestion." She licks the tips of her teeth daintily, the way she does when she's thinking. "I think she was pleased."
+  
+  >[2] no
+  "I do not lust after the Queen," you say.
+  
+  "Not much, anyway; no more than a man can help." It is as though she can read your thoughts. "The mirror is enchanted. That doesn't make it honest."
+  
+  >[3] talk about mirror
+  "Your question about the mirror betrays your ignorance. Suffice it to say you are not the first huntsman Her Majesty " - the title is practically spit - "has dispatched into the woods."  Thoughtfully she adds, "Though you would be the first to return."
+  
+> >

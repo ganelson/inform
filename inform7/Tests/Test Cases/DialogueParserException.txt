@@ -1,0 +1,34 @@
+Test: DialogueParserException
+For: Z-Machine
+
+Section 1 - Alabaster Scene
+        
+The Woods is a room. Snow White is a woman in the Woods.
+
+The mirror is a concept. Spoken angrily is a performance style.
+        
+Test me with " talk about mirror / no / talk about mirror".
+        
+Section 2 - Sample Chat (dialogue)
+        
+(About the mirror.)
+        
+Player: "'What do I look like in the magic mirror?' you ask. You had always assumed that the mirror showed the Queen what it showed you; that if you stood before the mirror with no bad intentions in your heart, without treason, then your innocent reflection would look back. 
+        
+True enough, you've avoided passing in front of it for the last day or two, since you and Snow White made your pact."
+        
+Snow White (spoken angrily): "'You stoop. You have a hunchback. Your reflection leers at the Queen. Once, it made an obscene suggestion.' She licks the tips of her teeth daintily, the way she does when she's thinking. 'I think she was pleased.'"
+        
+-- instead of saying no
+                
+	Player: "'I do not lust after the Queen,' you say."
+                
+	Snow White: "'Not much, anyway; no more than a man can help.' It is as though she can read your thoughts. 'The mirror is enchanted. That doesn't make it honest.'"
+
+-- otherwise
+                
+	Snow White (without speaking): "She watches you warily."
+        
+(Later. About the mirror.)
+        
+Snow White: "'Your question about the mirror betrays your ignorance. Suffice it to say you are not the first huntsman Her Majesty ' — the title is practically spit — 'has dispatched into the woods.'  Thoughtfully she adds, 'Though you would be the first to return.'"

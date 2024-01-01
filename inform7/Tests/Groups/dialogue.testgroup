@@ -39,6 +39,7 @@ PM_NotASpeaker
 Dialogue
 DialogueBeats
 BeatRelevance
+DialogueParserException
 VariableSpeaker
 LBW
 TalkingAbout

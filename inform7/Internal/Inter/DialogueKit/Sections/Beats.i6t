@@ -192,6 +192,7 @@ and so on.
 	if (debug_dialogue) {
 		print "-- Performance of ", (PrintDialogueBeatName) db, " ended^";
 	}
+	rfalse;
 ];
 
 [ DirectorBeatBeingPerformed db x;
