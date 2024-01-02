@@ -211,6 +211,12 @@ void DialogueChoices::write_dcc(OUTPUT_STREAM, int c) {
 @e INSTEAD_OF_DSEL                  /* -- instead of taking something */
 @e AFTER_DSEL                       /* -- after examining the rabbit hole */
 @e OTHERWISE_DSEL                   /* -- otherwise */
+@e CHOOSE_RANDOMLY_DSEL             /* -- choose randomly */
+@e SHUFFLE_THROUGH_DSEL             /* -- shuffle through */
+@e CYCLE_THROUGH_DSEL               /* -- cycle through */
+@e STEP_THROUGH_DSEL                /* -- step through */
+@e STEP_THROUGH_AND_STOP_DSEL       /* -- step through and stop */
+@e OR_DSEL                          /* -- or */
 
 =
 <dialogue-selection> ::=
@@ -227,7 +233,13 @@ void DialogueChoices::write_dcc(OUTPUT_STREAM, int c) {
 	after ... |                                       ==> { AFTER_DSEL, - }
 	before ... |                                      ==> { BEFORE_DSEL, - }
 	perform <definite-article> ... |                  ==> { PERFORM_DSEL, - }
-	perform ...                                       ==> { PERFORM_DSEL, - }
+	perform ... |                                     ==> { PERFORM_DSEL, - }
+	choose randomly |                                 ==> { CHOOSE_RANDOMLY_DSEL, - }
+	shuffle through |                                 ==> { SHUFFLE_THROUGH_DSEL, - }
+	cycle through |                                   ==> { CYCLE_THROUGH_DSEL, - }
+	step through |                                    ==> { STEP_THROUGH_DSEL, - }
+	step through and stop |                           ==> { STEP_THROUGH_AND_STOP_DSEL, - }
+	or                                                ==> { OR_DSEL, - }
 
 @ Each choice produces an instance of the kind |dialogue choice|, using the name
 given in its clauses if one was.
@@ -258,6 +270,19 @@ void DialogueChoices::decide_choice_performs(void) {
 	dialogue_choice *dc;
 	LOOP_OVER(dc, dialogue_choice) {
 		current_sentence = dc->choice_at;
+		if ((dc->selection_type == CHOOSE_RANDOMLY_DSEL) ||
+		    (dc->selection_type == SHUFFLE_THROUGH_DSEL) ||
+		    (dc->selection_type == CYCLE_THROUGH_DSEL) ||
+		    (dc->selection_type == STEP_THROUGH_DSEL) ||
+		    (dc->selection_type == STEP_THROUGH_AND_STOP_DSEL) ||
+		    (dc->selection_type == OR_DSEL)) {
+			pcalc_prop *prop = AdjectivalPredicates::new_atom_on_x(
+				EitherOrProperties::as_adjective(P_recurring), FALSE);
+			prop = Propositions::concatenate(
+				Propositions::Abstract::prop_to_set_kind(K_dialogue_choice), prop);
+			inference_subject *subj = Instances::as_subject(dc->as_instance);
+			Assert::true_about(prop, subj, CERTAIN_CE);
+		}
 		for (parse_node *clause = dc->choice_at->down; clause; clause = clause->next) {
 			if (Node::is(clause, DIALOGUE_CLAUSE_NT)) {
 				wording CW = Node::get_text(clause);

@@ -1316,6 +1316,9 @@ To decide what performance style is the current dialogue line style:
 To decide what number is the chosen dialogue number up to (N - number):
 	(- DirectorPickANumber({N}) -).
 
+To decide what number is the dialogue line performance count:
+	(- line_performance_count -).
+
 To perform (B - a dialogue beat):
 	(- DirectorPerformBeat({B}); -).
 

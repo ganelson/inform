@@ -41,5 +41,6 @@ DialogueBeats
 BeatRelevance
 DialogueParserException
 VariableSpeaker
+CyclingDialogue
 LBW
 TalkingAbout

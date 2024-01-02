@@ -1,0 +1,111 @@
+Test: CyclingDialogue
+For: Z-Machine
+
+The Cocktail Bar is a room. Cocktails are a concept. Party is a concept. The server and Loretta are women in the Cocktail Bar. The bartender, Patrick and Gareth are men in the Cocktail Bar. 
+
+A drink is a kind of thing. A drink can be full or empty. Loretta carries an empty drink called a mai tai. Patrick carries a full drink called the old-fashioned.
+
+A flavour is a kind of value. The flavours are mock, bitter, dry, semi-sweet, and sweet. A drink has a flavour. 
+
+The last-named drink is a drink that varies. The chosen guest is a person that varies. The chosen guest is Loretta.
+
+Test me with "talk about negroni / g / g / g / g / g / g / talk about martini / g / g / g / g / g / g / talk about scotch / g / g / g / g / g / g / talk about mojito / g / g / g / g / g / g / g / g / g / talk about gimlet / g / g / g / g / g / g / g / g / g".
+
+Some drinks are defined by the Table of Available Beverages.
+
+Table of Available Beverages
+drink	flavour
+a negroni	bitter
+a boulevardier	bitter
+a manhattan	semi-sweet
+a martini	dry
+a gimlet	semi-sweet
+a kamikaze	sweet
+a mojito	semi-sweet
+a cosmopolitan	sweet
+an appletini	sweet
+a whisky on the rocks	dry
+a Scotch	dry
+an aperol spritz	bitter
+a white russian	sweet
+a grasshopper	sweet
+a gin and tonic	semi-sweet	
+a last word	semi-sweet
+
+Understand "talk about [any drink]" as talking about.
+
+Carry out talking about a drink:
+	make the noun a live conversational subject.
+
+Section 1 - Bar talk (dialogue)
+
+(About a negroni. Recurring.)
+
+-- step through
+
+	Server (recurring): "One."
+
+-- or
+
+	Server (recurring): "Two."
+	
+-- or
+
+	Server (recurring): "Three."
+
+(About a martini. Recurring.)
+
+-- step through and stop
+
+	Server (recurring): "One."
+
+-- or
+
+	Server (recurring): "Two."
+	
+-- or
+
+	Server (recurring): "Three."
+
+(About a scotch. Recurring.)
+
+-- cycle through
+
+	Server (recurring): "One."
+
+-- or
+
+	Server (recurring): "Two."
+	
+-- or
+
+	Server (recurring): "Three."
+
+(About a mojito. Recurring.)
+
+-- shuffle through
+
+	Server (recurring): "One."
+
+-- or
+
+	Server (recurring): "Two."
+	
+-- or
+
+	Server (recurring): "Three."
+
+(About a gimlet. Recurring.)
+
+-- choose randomly
+
+	Server (recurring): "One."
+
+-- or
+
+	Server (recurring): "Two."
+	
+-- or
+
+	Server (recurring): "Three."
+

@@ -45,6 +45,7 @@ All of this must of course match what is compiled in //runtime: Dialogue Choice 
 Constant TYPE_DCMETADATA = 0;
 Constant AVAILABILITY_DCMETADATA = 1;
 Constant CONTENT_DCMETADATA = 2;
+Constant STATE_DCMETADATA = 3;
 
                                          ! Flow markers:
 Constant AGAIN_DSEL = 1;                 ! <-
@@ -62,6 +63,12 @@ Constant BEFORE_DSEL = 10;               ! -- before taking the pocket watch
 Constant INSTEAD_OF_DSEL = 11;           ! -- instead of taking something
 Constant AFTER_DSEL = 12;                ! -- after examining the rabbit hole
 Constant OTHERWISE_DSEL = 13;            ! -- otherwise
+Constant CHOOSE_RANDOMLY_DSEL = 14;      ! -- choose randomly
+Constant SHUFFLE_THROUGH_DSEL = 15;      ! -- shuffle through
+Constant CYCLE_THROUGH_DSEL = 16;        ! -- cycle through
+Constant STEP_THROUGH_DSEL = 17;         ! -- step through
+Constant STEP_THROUGH_AND_STOP_DSEL = 18; ! -- step through and stop
+Constant OR_DSEL = 19;                   ! -- or
 
 @h Extracting choice data.
 
@@ -86,6 +93,18 @@ Constant OTHERWISE_DSEL = 13;            ! -- otherwise
 	if ((dc <= 0) || (dc > NO_DIALOGUE_CHOICES)) return 0;
 	chdata = TableOfDialogueChoices-->dc;
 	return chdata-->TYPE_DCMETADATA;
+];
+
+[ DirectorReadChoiceState dc chdata;
+	if ((dc <= 0) || (dc > NO_DIALOGUE_CHOICES)) return 0;
+	chdata = TableOfDialogueChoices-->dc;
+	return chdata-->STATE_DCMETADATA;
+];
+
+[ DirectorWriteChoiceState dc val chdata;
+	if ((dc <= 0) || (dc > NO_DIALOGUE_CHOICES)) return;
+	chdata = TableOfDialogueChoices-->dc;
+	chdata-->STATE_DCMETADATA = val;
 ];
 
 [ DirectorChoiceRawContent dc chdata;

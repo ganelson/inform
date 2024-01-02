@@ -122,6 +122,11 @@ impossible to hit.
 @e TEXTUAL_DDT
 @e PARSED_COMMAND_DDT
 @e FLOW_CONTROL_DDT
+@e RANDOMISED_CONTROL_DDT
+@e SHUFFLE_CONTROL_DDT
+@e CYCLE_CONTROL_DDT
+@e STEP_CONTROL_DDT
+@e STEP_STOP_CONTROL_DDT
 
 =
 typedef struct dialogue_decision {
@@ -196,51 +201,78 @@ void DialogueNodes::examine_decisions_in_beat_r(dialogue_beat *db, dialogue_node
 	for (dialogue_node *c = dn, *prev = NULL; c; prev = c, c = c->next_node) {
 		if (c->if_decision) {
 			int t = -1;
-			dialogue_node *bad_otherwise = NULL, *mixed_choices = NULL;
-			for (dialogue_node *d = c->child_node; d; d = d->next_node) {
-				if (d->if_choice->selection_type == OTHERWISE_DSEL) {
-					if (t != PARSED_COMMAND_DDT) bad_otherwise = d;
-					if (d->next_node) bad_otherwise = d;
-				} else {
-					int ddt = DialogueNodes::decision_type(d);
-					if (t == -1) t = ddt;
-					else if (t != ddt) mixed_choices = d;
-				}
-			}
-			if (bad_otherwise) {
-				current_sentence = bad_otherwise->if_choice->choice_at;
-				StandardProblems::sentence_problem(Task::syntax_tree(),
-					_p_(PM_ChoiceOtherwiseUnexpected),
-					"this run of choices uses 'otherwise' unexpectedly",
-					"since 'otherwise' can only be used as the last option, and "
-					"only where the options are written in terms of actions.");
-			}
-			if (mixed_choices) {
-				current_sentence = mixed_choices->if_choice->choice_at;
-				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ChoicesMixed),
-					"this run of choices mixes up the possible sorts of choice",
-					"and should either all be action-dependent choices (perhaps "
-					"finishing with an 'otherwise'), or else all textual choices.");
-			}
-			if ((c->child_node) && (c->child_node->if_choice->selection_type == ANOTHER_CHOICE_DSEL)) {
-				if ((prev == NULL) || (prev->if_line) ||
-					(c->next_node == NULL) || (c->next_node->if_line)) {
-					current_sentence = c->child_node->if_choice->choice_at;
-					StandardProblems::sentence_problem(Task::syntax_tree(),
-						_p_(PM_ChoiceBlankRedundant),
-						"this use of '-> another choice' looks redundant",
-						"occurring at the start or end of a set of options. "
-						"'-> another choice' should be used only where there's "
-						"a need to mark a division point between two sets "
-						"of options running on from one to the other.");
-				}
-			}
-			c->if_decision->decision_type = t;
+			if (c->child_node) t = DialogueNodes::decision_type(c->child_node);
+			if ((t == RANDOMISED_CONTROL_DDT) ||
+				(t == SHUFFLE_CONTROL_DDT) ||
+				(t == CYCLE_CONTROL_DDT) ||
+				(t == STEP_CONTROL_DDT) ||
+				(t == STEP_STOP_CONTROL_DDT))
+				@<Apply the rules for an or-list@>
+			else
+				@<Apply the mixture rules@>;
 		}
 		DialogueNodes::examine_decisions_in_beat_r(db, c->child_node, c);
 	}
 }
 
+@<Apply the rules for an or-list@> =
+	for (dialogue_node *d = c->child_node->next_node; d; d = d->next_node)
+		if (d->if_choice->selection_type != OR_DSEL) {
+			current_sentence = d->if_choice->choice_at;
+			StandardProblems::sentence_problem(Task::syntax_tree(),
+				_p_(...),
+				"this is a run of choices where all choices other than the"
+				"first must be just '-- or'",
+				"since it is a list of alternatives.");
+		}
+	c->if_decision->decision_type = t;
+
+@<Apply the mixture rules@> =
+	int t = -1;
+	dialogue_node *bad_otherwise = NULL, *mixed_choices = NULL;
+	for (dialogue_node *d = c->child_node; d; d = d->next_node) {
+		if (d->if_choice->selection_type == OTHERWISE_DSEL) {
+			if (t != PARSED_COMMAND_DDT) bad_otherwise = d;
+			if (d->next_node) bad_otherwise = d;
+		} else {
+			int ddt = DialogueNodes::decision_type(d);
+			if (t == -1) t = ddt;
+			else if (t != ddt) mixed_choices = d;
+		}
+	}
+	if (bad_otherwise) {
+		current_sentence = bad_otherwise->if_choice->choice_at;
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_ChoiceOtherwiseUnexpected),
+			"this run of choices uses 'otherwise' unexpectedly",
+			"since 'otherwise' can only be used as the last option, and "
+			"only where the options are written in terms of actions.");
+	}
+	if (mixed_choices) {
+		current_sentence = mixed_choices->if_choice->choice_at;
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ChoicesMixed),
+			"this run of choices mixes up the possible sorts of choice",
+			"and should either all be action-dependent choices (perhaps "
+			"finishing with an 'otherwise'), or else all textual choices.");
+	}
+	if ((c->child_node) && (c->child_node->if_choice->selection_type == ANOTHER_CHOICE_DSEL)) {
+		if ((prev == NULL) || (prev->if_line) ||
+			(c->next_node == NULL) || (c->next_node->if_line)) {
+			current_sentence = c->child_node->if_choice->choice_at;
+			StandardProblems::sentence_problem(Task::syntax_tree(),
+				_p_(PM_ChoiceBlankRedundant),
+				"this use of '-> another choice' looks redundant",
+				"occurring at the start or end of a set of options. "
+				"'-> another choice' should be used only where there's "
+				"a need to mark a division point between two sets "
+				"of options running on from one to the other.");
+		}
+	}
+	c->if_decision->decision_type = t;
+
+@
+
+=
 void DialogueNodes::log_node_tree(dialogue_node *dn) {
 	for (; dn; dn=dn->next_node) {
 		DialogueNodes::log_node(dn); LOG("\n");
@@ -275,6 +307,12 @@ int DialogueNodes::decision_type(dialogue_node *dn) {
 		case AFTER_DSEL: return PARSED_COMMAND_DDT;
 		case BEFORE_DSEL: return PARSED_COMMAND_DDT;
 		case PERFORM_DSEL: return FLOW_CONTROL_DDT;
+		case CHOOSE_RANDOMLY_DSEL: return RANDOMISED_CONTROL_DDT;
+		case SHUFFLE_THROUGH_DSEL: return SHUFFLE_CONTROL_DDT;
+		case CYCLE_THROUGH_DSEL: return CYCLE_CONTROL_DDT;
+		case STEP_THROUGH_DSEL: return STEP_CONTROL_DDT;
+		case STEP_THROUGH_AND_STOP_DSEL: return STEP_STOP_CONTROL_DDT;
+		case OR_DSEL: return RANDOMISED_CONTROL_DDT;
 		default: internal_error("unimplemented DSEL");
 	}
 	return -1;

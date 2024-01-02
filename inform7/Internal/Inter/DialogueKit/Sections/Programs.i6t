@@ -58,6 +58,11 @@ Constant BLANK_DCODEDT = 1;
 Constant TEXTUAL_DCODEDT = 2;
 Constant PARSED_COMMAND_DCODEDT = 3;
 Constant FLOW_DCODEDT = 4;
+Constant RANDOMISED_CONTROL_DDT = 5;
+Constant SHUFFLE_CONTROL_DDT = 6;
+Constant CYCLE_CONTROL_DDT = 7;
+Constant STEP_CONTROL_DDT = 8;
+Constant STEP_STOP_CONTROL_DDT = 9;
 
 @h Containment.
 This enables us to implement the test for whether a given line or choice
@@ -149,6 +154,11 @@ Purely for debugging purposes:
 				TEXTUAL_DCODEDT: print "TEXTUAL";
 				PARSED_COMMAND_DCODEDT: print "PARSED";
 				FLOW_DCODEDT: print "FLOW";
+				RANDOMISED_CONTROL_DDT: print "RANDOMISED";
+				SHUFFLE_CONTROL_DDT: print "SHUFFLE";
+				CYCLE_CONTROL_DDT: print "CYCLE";
+				STEP_CONTROL_DDT: print "STEP";
+				STEP_STOP_CONTROL_DDT: print "STEP_STOP";
 				default: print "*** Unknown ***";
 			}
 		default: print "*** Unimplemented ***";
@@ -339,7 +349,7 @@ Note that this loop should never hit a |CHOICE_DCODEI| instruction, because
 those are always underneath |DECISION_DCODEI| instructions -- which it does hit.
 
 =
-[ DirectorRun program pc last_pc instruction operand depth next_instruction sc;
+[ DirectorRun program pc last_pc instruction operand operand_at depth next_instruction sc;
 	while (true) {
 		if (director_is_paused_for_command) return;
 
@@ -367,7 +377,8 @@ those are always underneath |DECISION_DCODEI| instructions -- which it does hit.
 		program = DirectorBeatGetProgram(DirectorStackBeat-->(director_sp-1));
 		instruction = (program-->pc)/100;
 		depth = (program-->pc)%100;
-		operand = program-->(pc+1);
+		operand_at = pc+1;
+		operand = program-->operand_at;
 
 		if (instruction == 0) { DirectorPop(); return; }
 		if (depth < DirectorStackMin-->(director_sp-1)) { DirectorPop(); return; }
@@ -394,7 +405,8 @@ those are always underneath |DECISION_DCODEI| instructions -- which it does hit.
 				DirectorExecuteLine(operand);
 			DECISION_DCODEI:
 				DirectorStackDecisionPC-->(director_sp-1) = last_pc;
-				DirectorExecuteDecision(operand);
+				program-->operand_at = (program-->operand_at)%100 + 
+					100*(DirectorExecuteDecision(operand%100, operand/100));
 			CHOICE_DCODEI:
 				print "*** Encountered CHOICE_DCODEI ***^";
 			default: "*** Bad D-code instruction ***";
@@ -431,14 +443,16 @@ and we silently return.
 
 We deal with |TEXTUAL_DCODEDT| and |FLOW_DCODEDT| decisions immediately, and
 empty the choices list as soon as we can. Perhaps surprisingly, we do nothing
-at all about a |PARSED_COMMAND_DCODEDT|. This function call nevertheless has
-an effect because it leaves the choices list on the stack, where it will cause
-the D-code interpreter to halt waiting for a command, to be re-entered later
-on when actions are processed.
+at all about a |PARSED_COMMAND_DCODEDT| except to signal a sort of exception.
+This function call nevertheless has an effect because it leaves the choices list
+on the stack, where it will cause the D-code interpreter to halt waiting for a
+command, to be re-entered later on when actions are processed.
+
+This function is passed a state value, and must return it (even if unchanged).
 
 =
-[ DirectorExecuteDecision decision dc count n spc list;
-	if (director_sp == 0) return;
+[ DirectorExecuteDecision decision state dc count n m spc list k;
+	if (director_sp == 0) return state;
 	list = DirectorStackChoices-->(director_sp-1);
 	DirectorListChoices(list);
 	count = LIST_OF_TY_GetLength(list);
@@ -449,7 +463,7 @@ on when actions are processed.
 			print "-- available options: "; LIST_OF_TY_Say(list); print "^";
 		}
 	}
-	if (count == 0) return;
+	if (count == 0) return state;
 
 	switch (decision) {
 		TEXTUAL_DCODEDT: 
@@ -458,7 +472,7 @@ on when actions are processed.
 			else {
 				BeginActivity(OFFERING_A_DIALOGUE_CHOICE, list);
 				if ((ForActivity(OFFERING_A_DIALOGUE_CHOICE, list)) &&
-					(RulebookFailed())) rfalse;
+					(RulebookFailed())) return state;
 				EndActivity(OFFERING_A_DIALOGUE_CHOICE, list);
 			}
 			DivideParagraphPoint();
@@ -478,9 +492,60 @@ on when actions are processed.
 			dc = LIST_OF_TY_GetItem(list, 1);
 			LIST_OF_TY_SetLength(list, 0);
 			DirectorFollowFlowMarker(dc);
+		RANDOMISED_CONTROL_DDT:
+			n = random(count);
+			dc = LIST_OF_TY_GetItem(list, n);
+			LIST_OF_TY_SetLength(list, 0);
+			DirectorExerciseChoice(dc);
+		SHUFFLE_CONTROL_DDT:
+			n = state;
+			if (n == 0) {
+				for (n=1: n<=count: n++)
+					DirectorWriteChoiceState(LIST_OF_TY_GetItem(list, n), 0);
+				n = count;
+			}
+			m = random(n);
+			n--; state = n;
+			for (n=1: n<=count: n++) {
+				dc = LIST_OF_TY_GetItem(list, n);
+				if (DirectorReadChoiceState(dc) == 0) {
+					m--;
+					if (m == 0) {
+						DirectorWriteChoiceState(dc, 1);
+						LIST_OF_TY_SetLength(list, 0);
+						DirectorExerciseChoice(dc);
+						return state;
+					}
+				}
+			}
+			LIST_OF_TY_SetLength(list, 0);
+		CYCLE_CONTROL_DDT:
+			n = state;
+			if (n < count) n++; else n = 1;
+			state = n;
+			dc = LIST_OF_TY_GetItem(list, n);
+			LIST_OF_TY_SetLength(list, 0);
+			DirectorExerciseChoice(dc);
+		STEP_CONTROL_DDT:
+			n = state;
+			if (n < count) {
+				n++; state = n;
+				dc = LIST_OF_TY_GetItem(list, n);
+				LIST_OF_TY_SetLength(list, 0);
+				DirectorExerciseChoice(dc);
+			} else {
+				LIST_OF_TY_SetLength(list, 0);
+			}
+		STEP_STOP_CONTROL_DDT:
+			n = state;
+			if (n < count) { n++; state = n; }
+			dc = LIST_OF_TY_GetItem(list, n);
+			LIST_OF_TY_SetLength(list, 0);
+			DirectorExerciseChoice(dc);
 		default:
-			"*** unimplemented dtd ***";
+			print "*** unimplemented dtd ", decision, " ***^";
 	}
+	return state;
 ];
 
 @h Listing choices for a decision.

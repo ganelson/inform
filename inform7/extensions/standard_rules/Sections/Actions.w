@@ -3236,10 +3236,12 @@ Carry out an actor talking about an object (called T)
 	(this is the first-declared beat rule):
 	if the leading beats is not empty:
 		perform entry 1 of the leading beats;
-		continue the action;
+		if the dialogue line performance count is greater than zero:
+			continue the action;
 	if the other beats is not empty:
 		perform entry 1 of the other beats;
-		continue the action;
+		if the dialogue line performance count is greater than zero:
+			continue the action;
 	if the player is the actor:
 		say "There is no reply." (A);
 		stop the action;

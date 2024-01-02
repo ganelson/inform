@@ -1,0 +1,135 @@
+   Cocktail Bar
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Cocktail Bar
+  You can see a server, Loretta, a bartender, Patrick and Gareth here.
+  
+> >   Cocktail Bar
+  (Testing.)
+  
+  >[1] talk about negroni
+  The server: "One."
+  
+  >[2] g
+  The server: "Two."
+  
+  >[3] g
+  The server: "Three."
+  
+  >[4] g
+  There is no reply.
+  
+  >[5] g
+  There is no reply.
+  
+  >[6] g
+  There is no reply.
+  
+  >[7] g
+  There is no reply.
+  
+  >[8] talk about martini
+  The server: "One."
+  
+  >[9] g
+  The server: "Two."
+  
+  >[10] g
+  The server: "Three."
+  
+  >[11] g
+  The server: "Three."
+  
+  >[12] g
+  The server: "Three."
+  
+  >[13] g
+  The server: "Three."
+  
+  >[14] g
+  The server: "Three."
+  
+  >[15] talk about scotch
+  The server: "One."
+  
+  >[16] g
+  The server: "Two."
+  
+  >[17] g
+  The server: "Three."
+  
+  >[18] g
+  The server: "One."
+  
+  >[19] g
+  The server: "Two."
+  
+  >[20] g
+  The server: "Three."
+  
+  >[21] g
+  The server: "One."
+  
+  >[22] talk about mojito
+  The server: "Two."
+  
+  >[23] g
+  The server: "Three."
+  
+  >[24] g
+  The server: "One."
+  
+  >[25] g
+  The server: "Two."
+  
+  >[26] g
+  The server: "Three."
+  
+  >[27] g
+  The server: "One."
+  
+  >[28] g
+  The server: "Three."
+  
+  >[29] g
+  The server: "One."
+  
+  >[30] g
+  The server: "Two."
+  
+  >[31] g
+  The server: "One."
+  
+  >[32] talk about gimlet
+  The server: "Two."
+  
+  >[33] g
+  The server: "Three."
+  
+  >[34] g
+  The server: "Three."
+  
+  >[35] g
+  The server: "Two."
+  
+  >[36] g
+  The server: "Three."
+  
+  >[37] g
+  The server: "One."
+  
+  >[38] g
+  The server: "Two."
+  
+  >[39] g
+  The server: "Two."
+  
+  >[40] g
+  The server: "One."
+  
+  >[41] g
+  The server: "Two."
+  
+> >

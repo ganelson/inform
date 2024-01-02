@@ -76,6 +76,7 @@ void RTDialogueChoices::choice_compilation_agent(compilation_subtask *ct) {
 	@<Write the type entry@>;
 	@<Write the availability entry@>;
 	@<Write the details entry@>;
+	@<Write the state word@>;
 	EmitArrays::end(save);
 
 	if (make_availability_function) @<Compile the available function@>;
@@ -148,6 +149,9 @@ void RTDialogueChoices::choice_compilation_agent(compilation_subtask *ct) {
 			EmitArrays::numeric_entry(0);
 			break;
 	}
+
+@<Write the state word@> =
+	EmitArrays::numeric_entry(0);
 
 @<Compile the available function@> =
 	packaging_state save = Functions::begin(RTDialogueChoices::available_fn_iname(dc));
