@@ -1,0 +1,20 @@
+Test: DialogueDuringScenes
+For: Z-Machine
+
+The Cocktail Bar is a room. 
+
+A lamp is a device in the bar. The lamp is switched on.
+
+Blackout is a scene. Blackout begins when the lamp is switched off. Blackout ends when the lamp is switched on.
+
+When play begins: make the dialogue director active.
+
+Test me with "z / switch lamp off / z".
+
+Section 1 - Night thoughts (dialogue during Blackout)
+
+(Spontaneous.)
+
+Narration: "Hey, where did the light go?"
+
+Player: "I abolished it."

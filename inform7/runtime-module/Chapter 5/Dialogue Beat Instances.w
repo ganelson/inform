@@ -124,7 +124,8 @@ void RTDialogueBeats::beat_compilation_agent(compilation_subtask *ct) {
 	if ((db->immediately_after) ||
 		(LinkedLists::len(db->some_time_after) > 0) ||
 		(LinkedLists::len(db->some_time_before) > 0) ||
-		(conditions > 0)) {
+		(conditions > 0) ||
+		(db->during_scene)) {
 		make_availability_function = TRUE;
 		EmitArrays::iname_entry(RTDialogueBeats::available_fn_iname(db));
 	} else {
@@ -179,11 +180,30 @@ void RTDialogueBeats::beat_compilation_agent(compilation_subtask *ct) {
 	local_variable *latest = LocalVariables::new_internal_commented(I"latest", I"most recently performed beat");
 	LocalVariables::set_kind(latest, K_dialogue_beat);
 	inter_symbol *latest_s = LocalVariables::declare(latest);
+	if (db->during_scene) @<Check the scene is currently playing@>;
 	if (db->immediately_after) @<Check the immediately after condition@>;
 	@<Check the after and before conditions@>;
 	@<Check the if and unless conditions@>;
 	EmitCode::rtrue();
 	Functions::end(save);
+
+@<Check the scene is currently playing@> =
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::inv(NE_BIP);
+		EmitCode::down();
+			EmitCode::inv(LOOKUP_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_object, Hierarchy::find(SCENE_STATUS_HL));
+				EmitCode::val_number((inter_ti) db->during_scene->allocation_id);
+			EmitCode::up();
+			EmitCode::val_number(1);
+		EmitCode::up();
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::rfalse();
+		EmitCode::up();
+	EmitCode::up();
 
 @<Check the immediately after condition@> =
 	EmitCode::inv(IF_BIP);

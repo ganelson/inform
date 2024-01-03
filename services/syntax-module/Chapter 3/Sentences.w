@@ -49,6 +49,7 @@ typedef struct syntax_fsm_state {
 	int inside_rule_mode;
 	int inside_table_mode;
 	int inside_dialogue_mode;
+	struct wording inside_dialogue_mode_during;
 	PROBLEM_REF_SYNTAX_TYPE *ref;
 	PROJECT_REF_SYNTAX_TYPE *project_ref;
 } syntax_fsm_state;
@@ -72,6 +73,7 @@ void Sentences::reset(syntax_fsm_state *sfsm, int is_extension,
 	sfsm->inside_rule_mode = FALSE;
 	sfsm->inside_table_mode = FALSE;
 	sfsm->inside_dialogue_mode = FALSE;
+	sfsm->inside_dialogue_mode_during = EMPTY_WORDING;
 	sfsm->skipping_material_at_level = -1;
 	sfsm->ref = ref;
 	sfsm->project_ref = project_ref;
@@ -336,6 +338,7 @@ or until reaching the end of the text: whichever comes first.
 =
 void Sentences::make_node(parse_node_tree *T, wording W, int stop_character) {
 	int heading_level = 0, entering_dialogue = FALSE;
+	wording entering_dialogue_for = EMPTY_WORDING;
 	int begins_or_ends = 0; /* 1 for "begins here", -1 for "ends here" */
 	parse_node *new;
 
@@ -354,6 +357,7 @@ void Sentences::make_node(parse_node_tree *T, wording W, int stop_character) {
 
 	if (heading_level > 0) {
 		sfsm->inside_dialogue_mode = entering_dialogue;
+		sfsm->inside_dialogue_mode_during = entering_dialogue_for;
 		@<Issue a problem message if the heading incorporates a line break@>;
 		@<Issue a problem message if the heading does not end with a line break@>;
 		@<Make a new HEADING node, possibly beginning to skip material@>;
@@ -397,14 +401,21 @@ important), or |-1| to mean that the sentence begins an extension, or
 		switch (<<r>>) {
 			case -1: if (sfsm->ext_pos != NO_EXTENSION_POS) begins_or_ends = 1; break;
 			case -2: if (sfsm->ext_pos != NO_EXTENSION_POS) begins_or_ends = -1; break;
+			case 6: 
+				heading_level = 5;
+				entering_dialogue = TRUE;
+				entering_dialogue_for = EMPTY_WORDING;
+				break;
+			case 7: 
+				heading_level = 5;
+				entering_dialogue = TRUE;
+				#ifdef SUPERVISOR_MODULE
+				entering_dialogue_for = GET_RW(<heading>, 2);
+				#endif
+				break;
 			default:
-				if (<<r>> == 6) {
-					heading_level = 5;
-					entering_dialogue = TRUE;
-				} else {
-					heading_level = <<r>>;
-					entering_dialogue = FALSE;
-				}
+				heading_level = <<r>>;
+				entering_dialogue = FALSE;
 				break;
 		}
 	}
@@ -730,6 +741,12 @@ order to catch improbable unmatched-bracket errors with tidy error messages.
 	Node::set_text(new, W);
 	Annotations::write_int(new, dialogue_level_ANNOT,
 		Lexer::indentation_level(Wordings::first_wn(W)));
+	if (Wordings::nonempty(sfsm->inside_dialogue_mode_during)) {
+		Annotations::write_int(new, dialogue_during_text_w1_ANNOT,
+			Wordings::first_wn(sfsm->inside_dialogue_mode_during));
+		Annotations::write_int(new, dialogue_during_text_w2_ANNOT,
+			Wordings::last_wn(sfsm->inside_dialogue_mode_during));
+	}
 	SyntaxTree::graft_sentence(T, new);
 	Sentences::add_dialogue_clauses(CW, T, new);
 	return;

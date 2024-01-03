@@ -1,0 +1,25 @@
+   Cocktail Bar
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Cocktail Bar
+  You can see a lamp here.
+  
+> >   Cocktail Bar
+  (Testing.)
+  
+  >[1] z
+  Time passes.
+  
+  >[2] switch lamp off
+  You switch the lamp off.
+  
+  Hey, where did the light go?
+  
+  You: "I abolished it."
+  
+  >[3] z
+  Time passes.
+  
+> >

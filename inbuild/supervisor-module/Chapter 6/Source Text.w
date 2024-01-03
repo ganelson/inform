@@ -240,6 +240,8 @@ and here goes:
 	chapter ... |                       ==> { 4, - }
 	section ... ( dialog ) |            ==> { 6, - }
 	section ... ( dialogue ) |          ==> { 6, - }
+	section ... ( dialog during ... ) |   ==> { 7, - }
+	section ... ( dialogue during ... ) | ==> { 7, - }
 	section ...                         ==> { 5, - }
 
 <extension-end-marker-sentence> ::=

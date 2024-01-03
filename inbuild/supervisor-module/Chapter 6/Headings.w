@@ -345,6 +345,8 @@ is determined.
 	unindexed |                              ==> { UNINDEXED_HQ, - }
 	dialogue |                               ==> { DIALOGUE_HQ, - }
 	dialog |                                 ==> { DIALOGUE_HQ, - }
+	dialogue during ... |                    ==> { DIALOGUE_HQ, - }
+	dialog during ... |                      ==> { DIALOGUE_HQ, - }
 	see { <quoted-text> } |                  ==> { EXTERNAL_HQ, - }
 	<platform-qualifier> |                   ==> { pass 1 }
 	<extension-qualifier>                    ==> { pass 1 }

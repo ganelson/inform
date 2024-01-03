@@ -15,6 +15,8 @@ The following annotations used by the syntax module.
 @e suppress_heading_dependencies_ANNOT /* int: ignore extension dependencies on this heading node */
 @e implied_heading_ANNOT /* int: set only for the heading of implied inclusions */
 @e dialogue_level_ANNOT /* int: for DIALOGUE_CUE and DIALOGUE_LINE nodes, indendation level */
+@e dialogue_during_text_w1_ANNOT /* |int|: first word of during scene wording */
+@e dialogue_during_text_w2_ANNOT /* |int|: first word of during scene wording */
 
 @d MAX_ANNOT_NUMBER (NO_DEFINED_ANNOT_VALUES+1)
 
@@ -30,6 +32,10 @@ void Annotations::begin(void) {
 		Annotations::write_implied_heading_ANNOT);
 	Annotations::declare_type(dialogue_level_ANNOT,
 		Annotations::write_dialogue_level_ANNOT);
+	Annotations::declare_type(
+		dialogue_during_text_w1_ANNOT, Annotations::write_dialogue_during_text_ANNOT);
+	Annotations::declare_type(
+		dialogue_during_text_w2_ANNOT, Annotations::do_not_write_dialogue_during_text_ANNOT);
 }
 
 void Annotations::write_heading_level_ANNOT(text_stream *OUT, parse_node *p) {
@@ -55,6 +61,17 @@ void Annotations::write_implied_heading_ANNOT(text_stream *OUT, parse_node *p) {
 void Annotations::write_dialogue_level_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Annotations::read_int(p, dialogue_level_ANNOT) >= 0)
 		WRITE(" {level %d}", Annotations::read_int(p, dialogue_level_ANNOT));
+}
+
+void Annotations::write_dialogue_during_text_ANNOT(text_stream *OUT, parse_node *p) {
+	int w1 = Annotations::read_int(p, dialogue_during_text_w1_ANNOT);
+	int w2 = Annotations::read_int(p, dialogue_during_text_w2_ANNOT);
+	wording W = Wordings::new(w1, w2);
+	if ((w1 > 0) && (Wordings::nonempty(W)))
+		WRITE(" {dialogue during text: %W}", W);
+}
+
+void Annotations::do_not_write_dialogue_during_text_ANNOT(text_stream *OUT, parse_node *p) {
 }
 
 @ Annotations are identified by type, which are enumerated constants, and
@@ -270,6 +287,8 @@ void Annotations::make_annotation_allowed_table(void) {
 	Annotations::allow(HEADING_NT, implied_heading_ANNOT);
 	Annotations::allow(SENTENCE_NT, language_element_ANNOT);
 	Annotations::allow(DIALOGUE_CUE_NT, dialogue_level_ANNOT);
+	Annotations::allow(DIALOGUE_CUE_NT, dialogue_during_text_w1_ANNOT);
+	Annotations::allow(DIALOGUE_CUE_NT, dialogue_during_text_w2_ANNOT);
 	Annotations::allow(DIALOGUE_CHOICE_NT, dialogue_level_ANNOT);
 	Annotations::allow(DIALOGUE_LINE_NT, dialogue_level_ANNOT);
 	#ifdef ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK

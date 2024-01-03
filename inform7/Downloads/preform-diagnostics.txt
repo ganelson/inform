@@ -5467,6 +5467,10 @@
           (hits 0/1179) constraint DS = {12} extremes [5, infinity)
         section {...} ( dialogue ) 
           (hits 0/1179) constraint DS = {12} extremes [5, infinity)
+        section {...} ( dialog during {...} ) 
+          (hits 0/1014) constraint DS = {12} extremes [7, infinity)
+        section {...} ( dialogue during {...} ) 
+          (hits 0/1014) constraint DS = {12} extremes [7, infinity)
         section {...} 
           (hits 162/1263) (matched long text) constraint DS = {12} extremes [2, infinity)
 
@@ -5543,6 +5547,10 @@
           constraint CS = {21} extremes [1, 1]
         dialog 
           constraint CS = {21} extremes [1, 1]
+        dialogue during {...} 
+          (hits 0/22) constraint DS = {21} extremes [3, infinity)
+        dialog during {...} 
+          (hits 0/22) constraint DS = {21} extremes [3, infinity)
         see {<quoted-text>} 
           constraint DS = {21} extremes [2, 2]
         <platform-qualifier> 

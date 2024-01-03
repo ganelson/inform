@@ -49,6 +49,12 @@ dialogue_beat *DialogueBeats::new(parse_node *PN) {
 	@<See if we are expecting a dialogue beat@>;
 	dialogue_beat *db = CREATE(dialogue_beat);
 	Node::set_beat_defined_here(PN, db);
+	wording DW = EMPTY_WORDING;
+	int w1 = Annotations::read_int(PN, dialogue_during_text_w1_ANNOT);
+	int w2 = Annotations::read_int(PN, dialogue_during_text_w2_ANNOT);
+	wording W = Wordings::new(w1, w2);
+	if ((w1 > 0) && (Wordings::nonempty(W))) DW = W;
+
 	@<Initialise the beat@>;
 
 	previous_dialogue_beat = current_dialogue_beat;
@@ -79,11 +85,13 @@ dialogue, so the internal error here should be impossible to hit.
 =
 typedef struct dialogue_beat {
 	struct wording beat_name;
-	struct wording scene_name;
 	struct parse_node *cue_at;
 	struct heading *under_heading;
 	struct instance *as_instance;
+	struct wording scene_name;
 	struct scene *as_scene;
+	struct wording during_scene_W;
+	struct scene *during_scene;
 	struct linked_list *required; /* of |instance| */
 	int starting_beat;
 	int requiring_nothing;
@@ -105,6 +113,8 @@ typedef struct dialogue_beat {
 	db->under_heading = dialogue_section_being_scanned;
 	db->as_instance = NULL;
 	db->as_scene = NULL;
+	db->during_scene = NULL;
+	db->during_scene_W = DW;
 	db->required = NEW_LINKED_LIST(instance);
 	db->starting_beat = FALSE;
 	db->requiring_nothing = FALSE;
@@ -294,6 +304,25 @@ void DialogueBeats::make_tied_scene(parse_node *p) {
 		Assert::true(prop, CERTAIN_CE);
 		db->as_scene = Scenes::from_named_constant(Instances::latest());
 		Scenes::set_beat(db->as_scene, db);
+	}
+	if ((db) && (Wordings::nonempty(db->during_scene_W))) {
+		wording W = db->during_scene_W;
+		scene *S = NULL;
+		if (<instance>(W)) {
+			instance *I = <<rp>>;
+			S = Scenes::from_named_constant(I);
+		}
+		if (S == NULL) {
+			Problems::quote_source(1, current_sentence);
+			Problems::quote_wording(2, W);
+			StandardProblems::handmade_problem(Task::syntax_tree(),
+				_p_(...));
+			Problems::issue_problem_segment(
+				"%1 would like to make a beat which, judging by its heading, "
+				"should be restricted to the scene '%2'. But there is no such scene.");
+			Problems::issue_problem_end();
+		}
+		db->during_scene = S;
 	}
 }
 

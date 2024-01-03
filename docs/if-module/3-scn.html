@@ -817,7 +817,7 @@ description. This is stored in the following scenes-feature corner of the
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The structure scenes_rcd_data is private to this section.</li></ul>
+<ul class="endnotetexts"><li>The structure scenes_rcd_data is accessed in 6/db and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29.  </b>The reason we store a whole specification, rather than a scene constant,
 here is that we sometimes want rules which happen during "a recurring scene",
 or some other description of scenes in general. But the following function
