@@ -13,7 +13,7 @@ The town's most popular gathering-place, the pool hall is decorated in honor of 
 
 An air conditioner sits in the corner, unhappily inert.
 
-You can see Lewis and Linnea here. The latter looks as though dipped in french vanilla.
+You can see Lewis and Linnea here. 
 
 >(Testing.)
 
@@ -41,7 +41,7 @@ You step into the mercifully air-conditioned surroundings of...
 Cold Comfort Ice Cream
 A poster fills one wall with the blazing promise of treats to come.
 
-You can see Vanessa here. 
+You can see Vanessa here. She looks as though dipped in french vanilla.
 
 Vanessa watches serenely as the metal door slides automatically back in place, sealing Cold Comfort.
 
@@ -55,10 +55,16 @@ The metal door opens from the other side. Antony comes through.
 
 Vanessa watches serenely as the metal door slides automatically back in place, sealing Cold Comfort.
 
+Vanessa sneezes on you!
+
+You feel itchy.
+
 >[6] ask vanessa for french vanilla
 "Do you have a coupon?" Vanessa demands. You admit you do not. "No french vanilla for you!"
 
-Antony trades in the coupon and receives a blackberry sorbet ice cream cone from Vanessa.
+Antony trades in the coupon and receives a dark chocolate ice cream cone from Vanessa.
+
+You feel itchy.
 
 >[7] ask vanessa for chocolate
 "Do you have a coupon?" Vanessa demands. You admit you do not. "No chocolate for you!"
@@ -67,6 +73,8 @@ Antony opens the metal door. He goes through.
 
 Vanessa watches serenely as the metal door slides automatically back in place, sealing Cold Comfort.
 
+You feel itchy.
+
 >[8] ask vanessa about flavors
 "The flavors are french vanilla, whole-bean vanilla, mint, chocolate, dark chocolate, chocolate chip, chocolate fudge, mint chocolate chip, chocolate chocolate chip, triple chocolate, white chocolate, white chocolate chip, aztec cocoa-chili, raspberry ripple, neapolitan, rum raisin, dulce de leche, strawberry chunk, rocky road, blackberry sorbet, lemon sherbet, lime ice, caramel swirl, mango, saffron silk, and cookie dough cream," she responds promptly, without needing to draw breath.
 
@@ -74,9 +82,13 @@ The metal door opens from the other side. Martin comes through.
 
 Vanessa watches serenely as the metal door slides automatically back in place, sealing Cold Comfort.
 
+You feel itchy.
+
 >[9] ask vanessa for chocolate chocolate chip
 "Do you have a coupon?" Vanessa demands. You admit you do not. "No chocolate chocolate chip for you!"
 
-Martin trades in the coupon and receives a rocky road ice cream cone from Vanessa.
+Martin trades in the coupon and receives a white chocolate chip ice cream cone from Vanessa.
+
+You feel itchy.
 
 >Are you sure you want to quit? 
