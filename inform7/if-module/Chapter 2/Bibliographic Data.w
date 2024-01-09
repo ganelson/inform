@@ -267,7 +267,8 @@ text_stream *BibliographicData::read_uuid(void) {
 	int c;
 	while (((c = fgetc(xf)) != EOF) /* the UUID file is plain text, not Unicode */
 		&& (uuid_read++ < MAX_UUID_LENGTH-1))
-		PUT_TO(uuid_text, Characters::toupper((inchar32_t) c));
+		if (Characters::is_Unicode_whitespace((inchar32_t) c) == FALSE)
+			PUT_TO(uuid_text, Characters::toupper((inchar32_t) c));
 	fclose(xf);
 	return uuid_text;
 }
