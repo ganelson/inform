@@ -36,6 +36,9 @@ and now poses a moral rather than gender-based question.
 
 ## Bug fixes
 
+- Fix for Jira bug [I7-2458](https://inform7.atlassian.net/browse/I7-2458)
+	"The uuid.txt file should be whitespace-stripped before use"
+	(see [Inweb commit 4557cc1](https://github.com/ganelson/inform/commit/4557cc1925aebd7f1d075ea458b76f6970df3d57))
 - Fix for Jira bug [I7-2416](https://inform7.atlassian.net/browse/I7-2416)
 	"Hyperbolic sinh and cosh each have the implementation the other needs"
 	([PR#126](https://github.com/ganelson/inform/pull/126))
