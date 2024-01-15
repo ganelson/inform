@@ -155,7 +155,7 @@ i7word_t i7_read_sword(i7process_t *proc, i7word_t array_address, i7word_t array
 		i7_fatal_exit(proc);
 	}
 	return             (i7word_t) data[byte_position + 1]  +
-	            0x100*((i7word_t) data[byte_position + 0]);
+	            0x100U*((i7word_t) data[byte_position + 0]);
 }
 
 i7word_t i7_read_word(i7process_t *proc, i7word_t array_address, i7word_t array_index) {
@@ -166,9 +166,9 @@ i7word_t i7_read_word(i7process_t *proc, i7word_t array_address, i7word_t array_
 		i7_fatal_exit(proc);
 	}
 	return             (i7word_t) data[byte_position + 3]  +
-	            0x100*((i7word_t) data[byte_position + 2]) +
-		      0x10000*((i7word_t) data[byte_position + 1]) +
-		    0x1000000*((i7word_t) data[byte_position + 0]);
+	            0x100U*((i7word_t) data[byte_position + 2]) +
+		      0x10000U*((i7word_t) data[byte_position + 1]) +
+		    0x1000000U*((i7word_t) data[byte_position + 0]);
 }
 void i7_write_byte(i7process_t *proc, i7word_t address, i7byte_t new_val) {
 	proc->state.memory[address] = new_val;
