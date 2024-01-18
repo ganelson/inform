@@ -80,9 +80,9 @@ such as:
 This specifies a leafname which must exist in one of the image sources
 mentioned above.
 
-@h Durham Core metadata.
+@h Dublin Core metadata.
 If the project needs to generate Epub books, then these will need to have
-some basic DC ("Durham Core") metadata supplied. For example:
+some basic DC ("Dublin Core") metadata supplied. For example:
 = (text)
 	dc:title: Inform - A Design System for Interactive Fiction
 	dc:creator: Graham Nelson and Emily Short
