@@ -54,7 +54,8 @@ void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd,
 			}
 			if (cd->duplex_contents_page) {
 				InformPages::header(OUT, I"Contents", JAVASCRIPT_FOR_STANDARD_PAGES_IRES, NULL);
-				Manuals::duplex_contents_page(OUT, cd);
+				if (DocumentationCompiler::scold(OUT, cd) == FALSE)
+					Manuals::duplex_contents_page(OUT, cd);
 			} else {
 				DocumentationRenderer::render_index_page(OUT, cd, md, extras, proj);
 			}
