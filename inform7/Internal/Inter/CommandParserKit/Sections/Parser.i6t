@@ -297,7 +297,7 @@ are above 32K. This only rarely happens, but it can.
 	#Endif;
 ];
 
-+replacing(from BasicInformKit) [ TextFromSnippet to_text snip w1 w2 from to num_chars;
++replacing(from BasicInformKit) [ TextFromSnippet to_txt snip w1 w2 from to num_chars;
 	w1·=·snip/100;·w2·=·w1·+·(snip%100)·-·1;
 	if·((w2<w1)·||·(w1<1)·||·(w2>WordCount()))·{
 		if·((w1·==·1)·&&·(w2·==·0))·rfalse;
