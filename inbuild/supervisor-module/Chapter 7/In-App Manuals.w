@@ -104,6 +104,7 @@ void Manuals::midnight_contents_column_banner(OUTPUT_STREAM, text_stream *title,
 }
 
 void Manuals::duplex_r(OUTPUT_STREAM, markdown_item *md, int column, int *extra_count) {
+	if (md == NULL) return;
 	if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) == 1)) {
 		if (*extra_count > 0) HTML::end_div(OUT);
 		int id = column*1000 + (*extra_count)++;
@@ -313,10 +314,12 @@ int Manuals::chapter_count(cd_volume *V) {
 }
 
 int Manuals::chapter_count_r(markdown_item *md, int count) {
-	if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) == 1)) count++;
-	if (md->type == MATERIAL_MIT) return count;
-	for (markdown_item *ch = md->down; ch; ch = ch->next)
-		count = Manuals::chapter_count_r(ch, count);
+	if (md) {
+		if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) == 1)) count++;
+		if (md->type == MATERIAL_MIT) return count;
+		for (markdown_item *ch = md->down; ch; ch = ch->next)
+			count = Manuals::chapter_count_r(ch, count);
+	}
 	return count;
 }
 

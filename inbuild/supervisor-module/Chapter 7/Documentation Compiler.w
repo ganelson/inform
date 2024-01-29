@@ -394,11 +394,12 @@ compiled_documentation *DocumentationCompiler::new_cd(pathname *P,
 
 @<Read the contents and sitemap files, if they exist@> =
 	filename *layout_file = Filenames::in(P, I"contents.txt");
-	if (sitemap == NULL) sitemap = Filenames::in(P, I"sitemap.txt");
 	if (TextFiles::exists(layout_file))
-		TextFiles::read(layout_file, FALSE, "can't open layout file",
+		TextFiles::read(layout_file, FALSE, "can't open contents file",
 			TRUE, DocumentationCompiler::read_contents_helper, NULL, cd);
 	else if (Documentation_md_cdsf) Documentation_md_cdsf->used = TRUE;
+
+	if (sitemap == NULL) sitemap = Filenames::in(P, I"sitemap.txt");
 	if (TextFiles::exists(sitemap))
 		TextFiles::read(sitemap, FALSE, "can't open sitemap file",
 			TRUE, DocumentationCompiler::read_sitemap_helper, NULL, cd);
@@ -873,13 +874,17 @@ void DocumentationCompiler::place_example_heading_items(compiled_documentation *
 			eg_header->user_state = STORE_POINTER_IFM_example(eg);
 			markdown_item *md = stc->primary_placement;
 			if (md == NULL) {
-				md = cd->markdown_content->down->down;
-				if (md->down == NULL) md->down = eg_header;
-				else {
-					md = md->down;
-					while ((md) && (md->next)) md = md->next;
-					eg_header->next = md->next; md->next = eg_header;
-				}		
+				md = cd->markdown_content;
+				if (md) md = md->down;
+				if (md) md = md->down;
+				if (md) {
+					if (md->down == NULL) md->down = eg_header;
+					else {
+						md = md->down;
+						while ((md) && (md->next)) md = md->next;
+						eg_header->next = md->next; md->next = eg_header;
+					}
+				}
 			} else {
 				if (md->next) md = md->next;
 				while ((md) && (md->next) && (md->next->type != HEADING_MIT)) md = md->next;

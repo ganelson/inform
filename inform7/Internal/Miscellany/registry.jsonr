@@ -4,6 +4,7 @@
 	?"standard-installation": boolean,
 	?"visible": boolean,
 	?"forum-thread": number,
+	?"directory-format": boolean,
 	"version": string,
 	"summary": string,
 	"time": string
