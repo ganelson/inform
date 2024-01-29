@@ -198,7 +198,13 @@ cast here is that a snippet can be turned into a text.
 We use a single routine to handle two kinds of format translation: a
 packed I6 string into an unpacked text, or a snippet into an unpacked text.
 
-In each case, what we do is simply to print out the value we have, but with
+In the case of translating a snippet into an unpacked text for Glulx,
+we must NOT use the print statement -- because this does not allow control characters
+such as tab, and would throw an error from the I6 veneer code into the string, making
+any further processing impossible.  We instead copy the block directly.
+Any control characters in the input can then be handled properly by I7 code.
+
+In other cases, what we do is simply to print out the value we have, but with
 the output stream set to memory rather than the screen. That gives us the
 character by character version, neatly laid out in an array, and all we have
 to do is to copy it into the text and add a null termination byte.
@@ -231,8 +237,8 @@ Global RawBufferSize = TEXT_TY_BufferSize;
 Global TEXT_TY_CastPrimitiveNesting = 0;
 
 @h Z Version.
-The two versions of this routine, one for each virtual machine, are in all
-important respects the same, but there are enough fiddly differences that
+The two versions of this routine, one for each virtual machine, have
+enough fiddly differences that
 it's clearer to give two definitions, so:
 
 =
@@ -273,6 +279,13 @@ it's clearer to give two definitions, so:
 
 	if (to_txt == 0) BlkValueError("no destination for cast");
 
+	if (from_snippet) {
+		! We MUST NOT use print opcodes in this case to avoid triggering
+		! errors in the I6 veneer code
+		TextFromSnippet(to_txt, from_value);
+		return;
+	}
+
 	buffer_size = (TEXT_TY_BufferSize + 2)*WORDSIZE;
 
 	RawBufferSize = TEXT_TY_BufferSize;
@@ -292,8 +305,7 @@ it's clearer to give two definitions, so:
 
 	@push say__p; @push say__pc;
 	ClearParagraphing(7);
-	if (from_snippet) print (PrintSnippet) from_value;
-	else print (PrintI6Text) from_value;
+	print (PrintI6Text) from_value;
 	@pull say__pc; @pull say__p;
 
 	results = buffer + buffer_size - 2*WORDSIZE;

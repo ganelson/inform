@@ -297,6 +297,22 @@ are above 32K. This only rarely happens, but it can.
 	#Endif;
 ];
 
++replacing(from BasicInformKit) [ TextFromSnippet to_text snip w1 w2 from to num_chars;
+	w1·=·snip/100;·w2·=·w1·+·(snip%100)·-·1;
+	if·((w2<w1)·||·(w1<1)·||·(w2>WordCount()))·{
+		if·((w1·==·1)·&&·(w2·==·0))·rfalse;
+		IssueRTP("ConvertedInvalidSnippetToText",
+			"Attempt·to·convert to text·a·snippet·value·which·is·currently·invalid.",
+			WorldModelKitRTPs);
+		print·"***·The·snippet·ran·from·words·",·w1,·"·to·",·w2,·".^";
+		rtrue;
+	}
+	from·=·WordAddress(w1);
+	to·=·WordAddress(w2)·+·CHARSIZE * (WordLength(w2)·-·1);
+	num_chars = (to - from) / CHARSIZE + 1;
+	BlkValueMassCopyFromArray(to_txt, WordAddress(w1), CHARSIZE, num_chars);
+];
+
 [ SpliceSnippet snip t i w1 w2 nextw at endsnippet newlen saved;
 	w1 = snip/100; w2 = w1 + (snip%100) - 1;
 	if ((w2<w1) || (w1<1)) {

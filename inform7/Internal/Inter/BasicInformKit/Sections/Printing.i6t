@@ -346,6 +346,7 @@ always is for non-Basic Inform projects.
 [ DrawStatusLine width posb; ]; ! No status line is displayed
 [ DefaultTopic; return 0; ]; ! Topics exist only in CommandParserKit
 [ PrintSnippet x; ]; ! Snippets exist only in CommandParserKit
+[ TextFromSnippet to_txt snip; ]; ! Snippets exist only in CommandParserKit
 [ PRINT_PROTAGONIST_INTERNAL_R; ]; ! There is no player in Basic Inform
 
 @ PNToVP() takes no arguments and returns the GNA (gender-noun-animation) for
