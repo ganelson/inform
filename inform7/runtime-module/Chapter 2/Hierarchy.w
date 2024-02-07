@@ -990,6 +990,7 @@ void Hierarchy::establish(void) {
 @e CHOICE_ARRAY_HL
 @e CHOICE_AVAILABLE_FN_HL
 @e CHOICE_ACTION_MATCH_FN_HL
+@e CHOICE_PERFORMANCE_FN_HL
 
 @<Establish instances@> =
 	submodule_identity *instances = LargeScale::register_submodule_identity(I"instances");
@@ -1107,6 +1108,7 @@ void Hierarchy::establish(void) {
 			H_C_U(CHOICE_ARRAY_HL,                          I"choice_data")
 			H_F_U(CHOICE_AVAILABLE_FN_HL,                   I"available_fn")
 			H_F_U(CHOICE_ACTION_MATCH_FN_HL,                I"action_match_fn")
+			H_F_U(CHOICE_PERFORMANCE_FN_HL,                 I"performance_fn")
 			H_F_U(INST_SHOWME_FN_HL,                        I"showme_fn")
 			H_BEGIN_AP(INLINE_PROPERTIES_HAP,               I"inline_property", I"_inline_property")
 				H_C_U(INLINE_PROPERTY_HL,                   I"inline")

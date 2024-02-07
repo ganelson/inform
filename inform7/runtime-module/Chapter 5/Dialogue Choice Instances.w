@@ -11,6 +11,7 @@ typedef struct dialogue_choice_compilation_data {
 	struct inter_name *choice_array_iname;
 	struct inter_name *available_fn_iname;
 	struct inter_name *action_match_fn_iname;
+	struct inter_name *performance_fn_iname;
 } dialogue_choice_compilation_data;
 
 dialogue_choice_compilation_data RTDialogueChoices::new(parse_node *PN, dialogue_choice *dc) {
@@ -19,6 +20,7 @@ dialogue_choice_compilation_data RTDialogueChoices::new(parse_node *PN, dialogue
 	dccd.choice_array_iname = NULL;
 	dccd.available_fn_iname = NULL;
 	dccd.action_match_fn_iname = NULL;
+	dccd.performance_fn_iname = NULL;
 	return dccd;
 }
 
@@ -46,6 +48,13 @@ inter_name *RTDialogueChoices::action_match_fn_iname(dialogue_choice *dc) {
 		dc->compilation_data.action_match_fn_iname =
 			Hierarchy::make_iname_in(CHOICE_ACTION_MATCH_FN_HL, RTDialogueChoices::package(dc));
 	return dc->compilation_data.action_match_fn_iname;
+}
+
+inter_name *RTDialogueChoices::performance_fn_iname(dialogue_choice *dc) {
+	if (dc->compilation_data.performance_fn_iname == NULL)
+		dc->compilation_data.performance_fn_iname =
+			Hierarchy::make_iname_in(CHOICE_PERFORMANCE_FN_HL, RTDialogueChoices::package(dc));
+	return dc->compilation_data.performance_fn_iname;
 }
 
 @h Compilation of dialogue.
@@ -80,6 +89,7 @@ void RTDialogueChoices::choice_compilation_agent(compilation_subtask *ct) {
 	EmitArrays::end(save);
 
 	if (make_availability_function) @<Compile the available function@>;
+	if (dc->to_perform_expression) @<Compile the performance function@>;
 	if (Wordings::nonempty(APW)) @<Compile the action-matching function@>;
 }
 
@@ -118,7 +128,10 @@ void RTDialogueChoices::choice_compilation_agent(compilation_subtask *ct) {
 			}
 			break;
 		case PERFORM_DSEL:
-			EmitArrays::iname_entry(RTInstances::value_iname(dc->to_perform->as_instance));
+			if (dc->to_perform)
+				EmitArrays::iname_entry(RTInstances::value_iname(dc->to_perform->as_instance));
+			else
+				EmitArrays::iname_entry(RTDialogueChoices::performance_fn_iname(dc));
 			break;
 		case INSTEAD_OF_DSEL:
 		case AFTER_DSEL:
@@ -202,6 +215,14 @@ void RTDialogueChoices::choice_compilation_agent(compilation_subtask *ct) {
 			}
 		}
 	}
+
+@<Compile the performance function@> =
+	packaging_state save = Functions::begin(RTDialogueChoices::performance_fn_iname(dc));
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+		CompileValues::to_code_val_of_kind(dc->to_perform_expression, K_dialogue_beat);
+	EmitCode::up();
+	Functions::end(save);
 
 @<Compile the action-matching function@> =
 	packaging_state save = Functions::begin(RTDialogueChoices::action_match_fn_iname(dc));

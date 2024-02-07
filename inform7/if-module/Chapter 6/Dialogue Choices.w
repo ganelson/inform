@@ -38,6 +38,7 @@ typedef struct dialogue_choice {
 	struct parse_node *selection;
 	struct wording selection_parameter;
 	struct dialogue_beat *to_perform;
+	struct parse_node *to_perform_expression;
 	struct dialogue_choice_compilation_data compilation_data;
 	int selection_type;
 	CLASS_DEFINITION
@@ -50,6 +51,7 @@ typedef struct dialogue_choice {
 	dc->selection = NULL;
 	dc->selection_parameter = EMPTY_WORDING;
 	dc->to_perform = NULL;
+	dc->to_perform_expression = NULL;
 	dc->selection_type = AGAIN_DSEL;
 	dc->compilation_data = RTDialogueChoices::new(PN, dc);
 
@@ -305,16 +307,20 @@ void DialogueChoices::decide_choice_performs(void) {
 				if (Wordings::match(dc->selection_parameter, db->beat_name))
 					dc->to_perform = db;
 			if (dc->to_perform == NULL) {
-				Problems::quote_source(1, current_sentence);
-				Problems::quote_wording(2, dc->selection_parameter);
-				StandardProblems::handmade_problem(Task::syntax_tree(),
-					_p_(PM_ChoicePerformsUnknown));
-				Problems::issue_problem_segment(
-					"The dialogue choice offered by %1 asks to perform the beat '%2', "
-					"but I don't recognise that as the name of any beat in the story.");
-				Problems::issue_problem_end();
-			} else {
-				LOG("Dialogue beat: $O\n", dc->to_perform->as_instance);
+				if (<s-value>(dc->selection_parameter)) {
+					parse_node *val = <<rp>>;
+					if (Dash::check_value(val, K_dialogue_beat) == ALWAYS_MATCH)
+						dc->to_perform_expression = val;
+				} else {
+					Problems::quote_source(1, current_sentence);
+					Problems::quote_wording(2, dc->selection_parameter);
+					StandardProblems::handmade_problem(Task::syntax_tree(),
+						_p_(PM_ChoicePerformsUnknown));
+					Problems::issue_problem_segment(
+						"The dialogue choice offered by %1 asks to perform the beat '%2', "
+						"but I don't recognise that as the name of any beat in the story.");
+					Problems::issue_problem_end();
+				}
 			}
 		}
 	}

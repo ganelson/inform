@@ -132,7 +132,7 @@ Constant OR_DSEL = 19;                   ! -- or
 	rtrue;
 ];
 
-[ DirectorFollowFlowMarker dc chdata;
+[ DirectorFollowFlowMarker dc chdata b;
 	if ((dc <= 0) || (dc > NO_DIALOGUE_CHOICES)) rfalse;
 	WriteGProperty(DIALOGUE_CHOICE_TY, dc, performed, true);
 	chdata = TableOfDialogueChoices-->dc;
@@ -152,7 +152,10 @@ Constant OR_DSEL = 19;                   ! -- or
 			if (chdata-->TYPE_DCMETADATA == ENDING_FINALLY_DSEL or ENDING_FINALLY_SAYING_DSEL)
 				story_complete = true;
 			rtrue;
-		PERFORM_DSEL: DirectorPerformBeat(chdata-->CONTENT_DCMETADATA); rtrue;
+		PERFORM_DSEL:
+			b = chdata-->CONTENT_DCMETADATA;
+			if (b ofclass Routine) b = b();
+			DirectorPerformBeat(b); rtrue;
 		default: print "*** Unimplemented choice ***^"; rfalse;
 	}
 	rtrue;
