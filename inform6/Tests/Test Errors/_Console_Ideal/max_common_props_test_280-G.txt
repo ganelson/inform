@@ -1,4 +1,4 @@
-Inform 6.36 (24th January 2022)
+Inform 6.42 for MacOS (10th February 2024)
 line 255: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
 > Property p252;
 line 256: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)

@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------------- */
 /*   "text" : Text translation, the abbreviations optimiser, the dictionary  */
 /*                                                                           */
-/*   Part of Inform 6.41                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2022                                 */
+/*   Part of Inform 6.42                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2024                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -92,11 +92,10 @@ static int unicode_entity_index(int32 unicode);
 abbreviation *abbreviations;             /* Allocated up to no_abbreviations */
 static memory_list abbreviations_memlist;
 
-/* Memory to hold the text of any abbreviation strings declared. This is
-   counted in units of MAX_ABBREV_LENGTH bytes. (An abbreviation must fit
-   in that many bytes, null included.)                                       */
-uchar *abbreviations_at;                 /* Allocated up to no_abbreviations */
-static memory_list abbreviations_at_memlist;
+/* Memory to hold the text of any abbreviation strings declared.             */
+static int32 abbreviations_totaltext;
+static char *abbreviations_text;  /* Allocated up to abbreviations_totaltext */
+static memory_list abbreviations_text_memlist;
 
 static int *abbreviations_optimal_parse_schedule;
 static memory_list abbreviations_optimal_parse_schedule_memlist;
@@ -124,6 +123,11 @@ uchar *translated_text;                /* Area holding translated strings
                                           static_strings_area below */
 static memory_list translated_text_memlist;
 
+static char *temp_symbol;              /* Temporary symbol name used while
+                                          processing "@(...)".               */
+static memory_list temp_symbol_memlist;
+
+
 static int32 text_out_pos;             /* The "program counter" during text
                                           translation: the next position to
                                           write Z-coded text output to       */
@@ -149,26 +153,26 @@ static int text_out_overflow;          /* During text translation, becomes
 /* ------------------------------------------------------------------------- */
 
 static void make_abbrevs_lookup(void)
-{   int bubble_sort, j, k, l; char p[MAX_ABBREV_LENGTH]; char *p1, *p2;
+{   int bubble_sort, j, k;
+    char *p1, *p2;
     do
     {   bubble_sort = FALSE;
         for (j=0; j<no_abbreviations; j++)
             for (k=j+1; k<no_abbreviations; k++)
-            {   p1=(char *)abbreviations_at+j*MAX_ABBREV_LENGTH;
-                p2=(char *)abbreviations_at+k*MAX_ABBREV_LENGTH;
+            {   p1=abbreviation_text(j);
+                p2=abbreviation_text(k);
                 if (strcmp(p1,p2)<0)
-                {   strcpy(p,p1); strcpy(p1,p2); strcpy(p2,p);
-                    l=abbreviations[j].value; abbreviations[j].value=abbreviations[k].value;
-                    abbreviations[k].value=l;
-                    l=abbreviations[j].quality; abbreviations[j].quality=abbreviations[k].quality;
-                    abbreviations[k].quality=l;
+                {
+                    abbreviation temp = abbreviations[j];
+                    abbreviations[j] = abbreviations[k];
+                    abbreviations[k] = temp;
                     bubble_sort = TRUE;
                 }
             }
     } while (bubble_sort);
 
     for (j=no_abbreviations-1; j>=0; j--)
-    {   p1=(char *)abbreviations_at+j*MAX_ABBREV_LENGTH;
+    {   p1=abbreviation_text(j);
         abbrevs_lookup[(uchar)p1[0]]=j;
         abbreviations[j].freq=0;
     }
@@ -193,9 +197,13 @@ static void make_abbrevs_lookup(void)
 static int try_abbreviations_from(unsigned char *text, int i, int from)
 {   int j, k; uchar *p, c;
     c=text[i];
-    for (j=from, p=(uchar *)abbreviations_at+from*MAX_ABBREV_LENGTH;
-         (j<no_abbreviations)&&(c==p[0]); j++, p+=MAX_ABBREV_LENGTH)
-    {   if (text[i+1]==p[1])
+    for (j=from;
+         j<no_abbreviations;
+         j++)
+    {
+        p=(uchar *)abbreviations_text+abbreviations[j].textpos;
+        if (c != p[0]) break;
+        if (text[i+1]==p[1])
         {   for (k=2; p[k]!=0; k++)
                 if (text[i+k]!=p[k]) goto NotMatched;
             if (!glulx_mode) {
@@ -209,18 +217,27 @@ static int try_abbreviations_from(unsigned char *text, int i, int from)
     return(-1);
 }
 
+/* Create an abbreviation. */
 extern void make_abbreviation(char *text)
 {
+    int alen;
+    int32 pos;
+    
     /* If -e mode is off, we won't waste space creating an abbreviation entry. */
     if (!economy_switch)
         return;
+
+    alen = strlen(text);
+    pos = abbreviations_totaltext;
     
     ensure_memory_list_available(&abbreviations_memlist, no_abbreviations+1);
-    ensure_memory_list_available(&abbreviations_at_memlist, no_abbreviations+1);
-    
-    strcpy((char *)abbreviations_at
-            + no_abbreviations*MAX_ABBREV_LENGTH, text);
+    ensure_memory_list_available(&abbreviations_text_memlist, pos+alen+1);
 
+    strcpy(abbreviations_text+pos, text);
+    abbreviations_totaltext += (alen+1);
+
+    abbreviations[no_abbreviations].textpos = pos;
+    abbreviations[no_abbreviations].textlen = alen;
     abbreviations[no_abbreviations].value = compile_string(text, STRCTX_ABBREV);
     abbreviations[no_abbreviations].freq = 0;
 
@@ -236,6 +253,19 @@ extern void make_abbreviation(char *text)
     no_abbreviations++;
 }
 
+/* Return a pointer to the (uncompressed) abbreviation text.
+   This should be treated as temporary; it is only valid until the next
+   make_abbreviation() call. */
+extern char *abbreviation_text(int num)
+{
+    if (num < 0 || num >= no_abbreviations) {
+        compiler_error("Invalid abbrev for abbreviation_text()");
+        return "";
+    }
+    
+    return abbreviations_text + abbreviations[num].textpos;
+}
+
 /* ------------------------------------------------------------------------- */
 /*   The front end routine for text translation.                             */
 /*   strctx indicates the purpose of the string. This is mostly used for     */
@@ -243,6 +273,18 @@ extern void make_abbreviation(char *text)
 /*   specially during compilation.                                           */
 /* ------------------------------------------------------------------------- */
 
+/* TODO: When called from a print statement (parse_print()), it would be
+   nice to detect if the generated string is exactly one character. In that
+   case, we could return the character value and a flag to indicate the
+   caller could use @print_char/@streamchar/@new_line/@streamunichar
+   instead of printing a compiled string.
+
+   We'd need a new STRCTX value or two to distinguish direct-printed strings
+   from referenceable strings.
+
+   Currently, parse_print() checks for the "^" case manually, which is a
+   bit icky. */   
+   
 extern int32 compile_string(char *b, int strctx)
 {   int32 i, j, k;
     uchar *c;
@@ -412,7 +454,9 @@ static void write_z_char_g(int i)
 /* Helper routine to compute the weight, in units, of a character handled by the Z-Machine */
 static int zchar_weight(int c)
 {
-    int lookup = iso_to_alphabet_grid[c];
+    int lookup;
+    if (c == ' ') return 1;
+    lookup = iso_to_alphabet_grid[c];
     if (lookup < 0) return 4;
     if (lookup < 26) return 1;
     return 2;
@@ -530,9 +574,12 @@ extern int32 translate_text(int32 p_limit, char *s_text, int strctx)
             {
                 c = text_in[j];
                 /* Loop on all abbreviations starting with what is in c. */
-                for (k=from, q=(uchar *)abbreviations_at+from*MAX_ABBREV_LENGTH;
-                    (k<no_abbreviations)&&(c==q[0]); k++, q+=MAX_ABBREV_LENGTH)
-                {   
+                for (k=from;
+                     k<no_abbreviations;
+                     k++)
+                {
+                    q=(uchar *)abbreviations_text+abbreviations[k].textpos;
+                    if (c!=q[0]) break;
                     /* Let's compare; we also keep track of the length of the abbreviation. */
                     for (l=1; q[l]!=0; l++)
                     {    if (text_in[j+l]!=q[l]) {goto NotMatched;}
@@ -589,7 +636,7 @@ extern int32 translate_text(int32 p_limit, char *s_text, int strctx)
             ((j = abbreviations_optimal_parse_schedule[i]) != -1))
         {
             /* Fill with 1s, which will get ignored by everyone else. */
-            uchar *p = (uchar *)abbreviations_at+j*MAX_ABBREV_LENGTH;
+            uchar *p = (uchar *)abbreviation_text(j);
             for (k=0; p[k]!=0; k++) text_in[i+k]=1;
             /* Actually write the abbreviation in the story file. */
             abbreviations[j].freq++;
@@ -650,31 +697,32 @@ advance as part of 'Zcharacter table':", unicode);
             else if (text_in[i+1]=='(')
             {
                 /*   @(...) (dynamic string)   */
-                char dsymbol[MAX_IDENTIFIER_LENGTH+1];
                 int len = 0, digits = 0;
                 i += 2;
                 /* This accepts "12xyz" as a symbol, which it really isn't,
                    but that just means it won't be found. */
-                while ((text_in[i] == '_' || isalnum(text_in[i])) && len < MAX_IDENTIFIER_LENGTH) {
+                while ((text_in[i] == '_' || isalnum(text_in[i]))) {
                     char ch = text_in[i++];
                     if (isdigit(ch)) digits++;
-                    dsymbol[len++] = ch;
+                    ensure_memory_list_available(&temp_symbol_memlist, len+1);
+                    temp_symbol[len++] = ch;
                 }
-                dsymbol[len] = '\0';
+                ensure_memory_list_available(&temp_symbol_memlist, len+1);
+                temp_symbol[len] = '\0';
                 j = -1;
-                /* We would like to parse dsymbol as *either* a decimal
+                /* We would like to parse temp_symbol as *either* a decimal
                    number or a constant symbol. */
                 if (text_in[i] != ')' || len == 0) {
                     error("'@(...)' abbreviation must contain a symbol");
                 }
                 else if (digits == len) {
                     /* all digits; parse as decimal */
-                    j = atoi(dsymbol);
+                    j = atoi(temp_symbol);
                 }
                 else {
-                    int sym = symbol_index(dsymbol, -1);
-                    if ((symbols[sym].flags & UNKNOWN_SFLAG) || symbols[sym].type != CONSTANT_T || symbols[sym].marker) {
-                        error_named("'@(...)' abbreviation expected a known constant value, but contained", dsymbol);
+                    int sym = get_symbol_index(temp_symbol);
+                    if (sym < 0 || (symbols[sym].flags & UNKNOWN_SFLAG) || symbols[sym].type != CONSTANT_T || symbols[sym].marker) {
+                        error_named("'@(...)' abbreviation expected a known constant value, but contained", temp_symbol);
                     }
                     else {
                         symbols[sym].flags |= USED_SFLAG;
@@ -823,7 +871,7 @@ advance as part of 'Zcharacter table':", unicode);
       if ((economy_switch) && (compression_switch) && (!is_abbreviation)
         && ((k=abbrevs_lookup[text_in[i]])!=-1)
         && ((j=try_abbreviations_from(text_in, i, k)) != -1)) {
-        char *cx = (char *)abbreviations_at+j*MAX_ABBREV_LENGTH;
+        char *cx = abbreviation_text(j);
         i += (strlen(cx)-1);
         write_z_char_g('@');
         write_z_char_g('A');
@@ -849,31 +897,32 @@ string.");
           while (isdigit(text_in[i])) i++; i--;
         }
         else if (text_in[i+1]=='(') {
-            char dsymbol[MAX_IDENTIFIER_LENGTH+1];
             int len = 0, digits = 0;
             i += 2;
             /* This accepts "12xyz" as a symbol, which it really isn't,
                but that just means it won't be found. */
-            while ((text_in[i] == '_' || isalnum(text_in[i])) && len < MAX_IDENTIFIER_LENGTH) {
+            while ((text_in[i] == '_' || isalnum(text_in[i]))) {
                 char ch = text_in[i++];
                 if (isdigit(ch)) digits++;
-                dsymbol[len++] = ch;
+                ensure_memory_list_available(&temp_symbol_memlist, len+1);
+                temp_symbol[len++] = ch;
             }
-            dsymbol[len] = '\0';
+            ensure_memory_list_available(&temp_symbol_memlist, len+1);
+            temp_symbol[len] = '\0';
             j = -1;
-            /* We would like to parse dsymbol as *either* a decimal
+            /* We would like to parse temp_symbol as *either* a decimal
                number or a constant symbol. */
             if (text_in[i] != ')' || len == 0) {
                 error("'@(...)' abbreviation must contain a symbol");
             }
             else if (digits == len) {
                 /* all digits; parse as decimal */
-                j = atoi(dsymbol);
+                j = atoi(temp_symbol);
             }
             else {
-                int sym = symbol_index(dsymbol, -1);
-                if ((symbols[sym].flags & UNKNOWN_SFLAG) || symbols[sym].type != CONSTANT_T || symbols[sym].marker) {
-                    error_named("'@(...)' abbreviation expected a known constant value, but contained", dsymbol);
+                int sym = get_symbol_index(temp_symbol);
+                if (sym < 0 || (symbols[sym].flags & UNKNOWN_SFLAG) || symbols[sym].type != CONSTANT_T || symbols[sym].marker) {
+                    error_named("'@(...)' abbreviation expected a known constant value, but contained", temp_symbol);
                 }
                 else {
                     symbols[sym].flags |= USED_SFLAG;
@@ -1371,7 +1420,7 @@ static void compress_makebits(int entnum, int depth, int prevbit,
     compression_table_size += 2;
     break;
   case 3:
-    cx = (char *)abbreviations_at + ent->u.val*MAX_ABBREV_LENGTH;
+    cx = abbreviation_text(ent->u.val);
     compression_table_size += (1 + 1 + strlen(cx));
     break;
   case 4:
@@ -1410,11 +1459,26 @@ typedef struct optab_s
     int32  popularity;
     int32  score;
     int32  location;
-    char text[MAX_ABBREV_LENGTH];
+    char  *text; /* allocated to textsize, min 4 */
+    int32  textsize;
 } optab;
 static int32 MAX_BESTYET;
 static optab *bestyet; /* High-score entries (up to MAX_BESTYET used/allocated) */
 static optab *bestyet2; /* The selected entries (up to selected used; allocated to MAX_ABBREVS) */
+
+static void optab_copy(optab *dest, const optab *src)
+{
+    dest->length = src->length;
+    dest->popularity = src->popularity;
+    dest->score = src->score;
+    dest->location = src->location;
+    if (src->length+1 > dest->textsize) {
+        int32 oldsize = dest->textsize;
+        dest->textsize = (src->length+1)*2;
+        my_realloc(&dest->text, oldsize, dest->textsize, "bestyet2.text");
+    }
+    strcpy(dest->text, src->text);
+}
 
 static int pass_no;
 
@@ -1446,7 +1510,7 @@ static void optimise_pass(void)
             for (j=0; j<tlbtab[i].occurrences; j++)
             {   for (j2=0; j2<tlbtab[i].occurrences; j2++) grandflags[j2]=1;
                 nl=2; noflags=tlbtab[i].occurrences;
-                while ((noflags>=2)&&(nl<MAX_ABBREV_LENGTH-1))
+                while (noflags>=2)
                 {   nl++;
                     for (j2=0; j2<nl; j2++)
                         if (opttext[grandtable[tlbtab[i].intab+j]+j2]=='\n')
@@ -1549,7 +1613,24 @@ extern void optimise_abbreviations(void)
     MAX_BESTYET = 4 * MAX_ABBREVS;
     
     bestyet=my_calloc(sizeof(optab), MAX_BESTYET, "bestyet");
+    for (i=0; i<MAX_BESTYET; i++) {
+        bestyet[i].length = 0;
+        bestyet[i].popularity = 0;
+        bestyet[i].score = 0;
+        bestyet[i].location = 0;
+        bestyet[i].textsize = 4;
+        bestyet[i].text = my_malloc(bestyet[i].textsize, "bestyet.text");
+    }
+
     bestyet2=my_calloc(sizeof(optab), MAX_ABBREVS, "bestyet2");
+    for (i=0; i<MAX_ABBREVS; i++) {
+        bestyet2[i].length = 0;
+        bestyet2[i].popularity = 0;
+        bestyet2[i].score = 0;
+        bestyet2[i].location = 0;
+        bestyet2[i].textsize = 4;
+        bestyet2[i].text = my_malloc(bestyet2[i].textsize, "bestyet2.text");
+    }
 
     bestyet2[0].text[0]='.';
     bestyet2[0].text[1]=' ';
@@ -1661,6 +1742,11 @@ extern void optimise_abbreviations(void)
             if (bestyet[i].score!=0)
             {   available++;
                 nl=bestyet[i].length;
+                if (nl+1 > bestyet[i].textsize) {
+                    int32 oldsize = bestyet[i].textsize;
+                    bestyet[i].textsize = (nl+1)*2;
+                    my_realloc(&bestyet[i].text, oldsize, bestyet[i].textsize, "bestyet.text");
+                }
                 for (j2=0; j2<nl; j2++) bestyet[i].text[j2]=
                     opttext[bestyet[i].location+j2];
                 bestyet[i].text[nl]=0;
@@ -1685,7 +1771,7 @@ extern void optimise_abbreviations(void)
             if (max>0)
             {
                 char testtext[4];
-                bestyet2[selected++]=bestyet[maxat];
+                optab_copy(&bestyet2[selected++], &bestyet[maxat]);
 
                 if (optabbrevs_trace_setting >= 1) {
                     printf(
@@ -1800,14 +1886,11 @@ int dict_entries;                     /* Total number of records entered     */
 /*   In modifying the compiler for Glulx, I found it easier to discard the   */
 /*   typedef, and operate directly on uchar arrays of length DICT_WORD_SIZE. */
 /*   In Z-code, DICT_WORD_SIZE will be 6, so the Z-code compiler will work   */
-/*   as before. In Glulx, it can be any value up to MAX_DICT_WORD_SIZE.      */
-/*   (That limit is defined as 40 in the header; it exists only for a few    */
-/*   static buffers, and can be increased without using significant memory.) */
+/*   as before. In Glulx, it can be any value.                               */
 /*                                                                           */
-/*   ...Well, that certainly bit me on the butt, didn't it. In further       */
-/*   modifying the compiler to generate a Unicode dictionary, I have to      */
-/*   store four-byte values in the uchar array. This is handled by making    */
-/*   the array size DICT_WORD_BYTES (which is DICT_WORD_SIZE*DICT_CHAR_SIZE).*/
+/*   In further modifying the compiler to generate a Unicode dictionary,     */
+/*   I have to store four-byte values in the uchar array. We make the array  */
+/*   size DICT_WORD_BYTES (which is DICT_WORD_SIZE*DICT_CHAR_SIZE).          */
 /*   Then we store the 32-bit character value big-endian. This lets us       */
 /*   continue to compare arrays bytewise, which is a nice simplification.    */
 /* ------------------------------------------------------------------------- */
@@ -1827,14 +1910,17 @@ extern void copy_sorts(uchar *d1, uchar *d2)
         d1[i] = d2[i];
 }
 
-static uchar prepared_sort[MAX_DICT_WORD_BYTES];     /* Holds the sort code
-                                                        of current word */
+static memory_list prepared_sort_memlist;
+static uchar *prepared_sort;    /* Holds the sort code of current word */
 
-static int number_and_case;
+static int prepared_dictflags_pos;  /* Dict flags set by the current word */
+static int prepared_dictflags_neg;  /* Dict flags *not* set by the word */
 
 /* Also used by verbs.c */
 static void dictionary_prepare_z(char *dword, uchar *optresult)
-{   int i, j, k, k2, wd[13]; int32 tot;
+{   int i, j, k, k2, wd[13];
+    int32 tot;
+    int negflag;
 
     /* A rapid text translation algorithm using only the simplified rules
        applying to the text of dictionary entries: first produce a sequence
@@ -1842,22 +1928,50 @@ static void dictionary_prepare_z(char *dword, uchar *optresult)
 
     int dictsize = (version_number==3) ? 6 : 9;
 
-    number_and_case = 0;
+    prepared_dictflags_pos = 0;
+    prepared_dictflags_neg = 0;
 
-    for (i=0, j=0; dword[j]!=0; i++, j++)
-    {   if ((dword[j] == '/') && (dword[j+1] == '/'))
-        {   for (j+=2; dword[j] != 0; j++)
-            {   switch(dword[j])
-                {   case 'p': number_and_case |= 4;  break;
+    for (i=0, j=0; dword[j]!=0; j++)
+    {
+        if ((dword[j] == '/') && (dword[j+1] == '/'))
+        {
+            /* The rest of the word is dict flags. Run through them. */
+            negflag = FALSE;
+            for (j+=2; dword[j] != 0; j++)
+            {
+                switch(dword[j])
+                {
+                    case '~':
+                        if (!dword[j+1])
+                            error_named("'//~' with no flag character (pn) in dict word", dword);
+                        negflag = !negflag;
+                        break;
+                    case 'p':
+                        if (!negflag)
+                            prepared_dictflags_pos |= 4;
+                        else
+                            prepared_dictflags_neg |= 4;
+                        negflag = FALSE;
+                        break;
+                    case 'n':
+                        if (!negflag)
+                            prepared_dictflags_pos |= 128;
+                        else
+                            prepared_dictflags_neg |= 128;
+                        negflag = FALSE;
+                        break;
                     default:
-                        error_named("Expected 'p' after '//' \
-to give number of dictionary word", dword);
+                        error_named("Expected flag character (pn~) after '//' in dict word", dword);
                         break;
                 }
             }
             break;
         }
-        if (i>=dictsize) break;
+
+        /* LONG_DICT_FLAG_BUG emulates the old behavior where we stop looping
+           at dictsize. */
+        if (LONG_DICT_FLAG_BUG && i>=dictsize)
+            break;
 
         k=(int) dword[j];
         if (k==(int) '\'')
@@ -1888,26 +2002,37 @@ apostrophe in", dword);
                 char_error("Character can be printed but not input:", k);
             else
             {   /* Use 4 more Z-chars to encode a ZSCII escape sequence      */
-
-                wd[i++] = 5; wd[i++] = 6;
+                if (i<dictsize)
+                    wd[i++] = 5;
+                if (i<dictsize)
+                    wd[i++] = 6;
                 k2 = -k2;
-                wd[i++] = k2/32; wd[i] = k2%32;
+                if (i<dictsize)
+                    wd[i++] = k2/32;
+                if (i<dictsize)
+                    wd[i++] = k2%32;
             }
         }
         else
         {   alphabet_used[k2] = 'Y';
-            if ((k2/26)!=0)
+            if ((k2/26)!=0 && i<dictsize)
                 wd[i++]=3+(k2/26);            /* Change alphabet for symbols */
-            wd[i]=6+(k2%26);                  /* Write the Z character       */
+            if (i<dictsize)
+                wd[i++]=6+(k2%26);            /* Write the Z character       */
         }
     }
 
-    /* Fill up to the end of the dictionary block with PAD characters        */
+    if (i > dictsize)
+        compiler_error("dict word buffer overflow");
+
+    /* Fill up to the end of the dictionary block with PAD characters
+       (for safety, we right-pad to 9 chars even in V3)                      */
 
     for (; i<9; i++) wd[i]=5;
 
     /* The array of Z-chars is converted to two or three 2-byte blocks       */
-
+    ensure_memory_list_available(&prepared_sort_memlist, DICT_WORD_BYTES);
+    
     tot = wd[2] + wd[1]*(1<<5) + wd[0]*(1<<10);
     prepared_sort[1]=tot%0x100;
     prepared_sort[0]=(tot/0x100)%0x100;
@@ -1934,25 +2059,48 @@ static void dictionary_prepare_g(char *dword, uchar *optresult)
 { 
   int i, j, k;
   int32 unicode;
+  int negflag;
 
-  number_and_case = 0;
+  prepared_dictflags_pos = 0;
+  prepared_dictflags_neg = 0;
 
-  for (i=0, j=0; (dword[j]!=0); i++, j++) {
+  for (i=0, j=0; (dword[j]!=0); j++) {
     if ((dword[j] == '/') && (dword[j+1] == '/')) {
+      /* The rest of the word is dict flags. Run through them. */
+      negflag = FALSE;
       for (j+=2; dword[j] != 0; j++) {
         switch(dword[j]) {
+        case '~':
+            if (!dword[j+1])
+                error_named("'//~' with no flag character (pn) in dict word", dword);
+            negflag = !negflag;
+            break;
         case 'p':
-          number_and_case |= 4;  
-          break;
+            if (!negflag)
+                prepared_dictflags_pos |= 4;
+            else
+                prepared_dictflags_neg |= 4;
+            negflag = FALSE;
+            break;
+        case 'n':
+            if (!negflag)
+                prepared_dictflags_pos |= 128;
+            else
+                prepared_dictflags_neg |= 128;
+            negflag = FALSE;
+            break;
         default:
-          error_named("Expected 'p' after '//' \
-to give gender or number of dictionary word", dword);
+          error_named("Expected flag character (pn~) after '//' in dict word", dword);
           break;
         }
       }
       break;
     }
-    if (i>=DICT_WORD_SIZE) break;
+
+    /* LONG_DICT_FLAG_BUG emulates the old behavior where we stop looping
+       at DICT_WORD_SIZE. */
+    if (LONG_DICT_FLAG_BUG && i>=DICT_WORD_SIZE)
+        break;
 
     k= ((unsigned char *)dword)[j];
     if (k=='\'') 
@@ -1983,17 +2131,27 @@ Define DICT_CHAR_SIZE=4 for a Unicode-compatible dictionary.");
     if (k >= (unsigned)'A' && k <= (unsigned)'Z')
       k += ('a' - 'A');
 
+    ensure_memory_list_available(&prepared_sort_memlist, DICT_WORD_BYTES);
+    
     if (DICT_CHAR_SIZE == 1) {
-      prepared_sort[i] = k;
+      if (i<DICT_WORD_SIZE)
+        prepared_sort[i++] = k;
     }
     else {
-      prepared_sort[4*i]   = (k >> 24) & 0xFF;
-      prepared_sort[4*i+1] = (k >> 16) & 0xFF;
-      prepared_sort[4*i+2] = (k >>  8) & 0xFF;
-      prepared_sort[4*i+3] = (k)       & 0xFF;
+      if (i<DICT_WORD_SIZE) {
+        prepared_sort[4*i]   = (k >> 24) & 0xFF;
+        prepared_sort[4*i+1] = (k >> 16) & 0xFF;
+        prepared_sort[4*i+2] = (k >>  8) & 0xFF;
+        prepared_sort[4*i+3] = (k)       & 0xFF;
+        i++;
+      }
     }
   }
 
+  if (i > DICT_WORD_SIZE)
+    compiler_error("dict word buffer overflow");
+
+  /* Right-pad with zeroes */
   if (DICT_CHAR_SIZE == 1) {
     for (; i<DICT_WORD_SIZE; i++)
       prepared_sort[i] = 0;
@@ -2112,22 +2270,28 @@ static int dictionary_find(char *dword)
 }
 
 /* ------------------------------------------------------------------------- */
-/*  Add "dword" to the dictionary with (x,y,z) as its data fields; unless    */
-/*  it already exists, in which case OR the data with (x,y,z)                */
+/*  Add "dword" to the dictionary with (flag1,flag2,flag3) as its data       */
+/*  fields; unless it already exists, in which case OR the data fields with  */
+/*  those flags.                                                             */
 /*                                                                           */
 /*  These fields are one byte each in Z-code, two bytes each in Glulx.       */
 /*                                                                           */
 /*  Returns: the accession number.                                           */
 /* ------------------------------------------------------------------------- */
 
-extern int dictionary_add(char *dword, int x, int y, int z)
+extern int dictionary_add(char *dword, int flag1, int flag2, int flag3)
 {   int n; uchar *p;
     int ggfr = 0, gfr = 0, fr = 0, r = 0;
     int ggf = VACANT, gf = VACANT, f = VACANT, at = root;
     int a, b;
     int res=((version_number==3)?4:6);
 
+    /* Fill in prepared_sort and prepared_dictflags. */
     dictionary_prepare(dword, NULL);
+
+    /* Adjust flag1 according to prepared_dictflags. */
+    flag1 &= (~prepared_dictflags_neg);
+    flag1 |= prepared_dictflags_pos;
 
     if (root == VACANT)
     {   root = 0; goto CreateEntry;
@@ -2139,17 +2303,15 @@ extern int dictionary_add(char *dword, int x, int y, int z)
         {
             if (!glulx_mode) {
                 p = dictionary+7 + at*DICT_ENTRY_BYTE_LENGTH + res;
-                p[0]=(p[0])|x; p[1]=(p[1])|y;
+                p[0] |= flag1; p[1] |= flag2;
                 if (!ZCODE_LESS_DICT_DATA)
-                    p[2]=(p[2])|z;
-                if (x & 128) p[0] = (p[0])|number_and_case;
+                    p[2] |= flag3;
             }
             else {
                 p = dictionary+4 + at*DICT_ENTRY_BYTE_LENGTH + DICT_ENTRY_FLAG_POS;
-                p[0]=(p[0])|(x/256); p[1]=(p[1])|(x%256); 
-                p[2]=(p[2])|(y/256); p[3]=(p[3])|(y%256); 
-                p[4]=(p[4])|(z/256); p[5]=(p[5])|(z%256);
-                if (x & 128) p[1] = (p[1]) | number_and_case;
+                p[0] |= (flag1/256); p[1] |= (flag1%256); 
+                p[2] |= (flag2/256); p[3] |= (flag2%256); 
+                p[4] |= (flag3/256); p[5] |= (flag3%256);
             }
             return at;
         }
@@ -2257,9 +2419,8 @@ extern int dictionary_add(char *dword, int x, int y, int z)
         p[2]=prepared_sort[2]; p[3]=prepared_sort[3];
         if (version_number > 3)
           {   p[4]=prepared_sort[4]; p[5]=prepared_sort[5]; }
-        p[res]=x; p[res+1]=y;
-        if (!ZCODE_LESS_DICT_DATA) p[res+2]=z;
-        if (x & 128) p[res] = (p[res])|number_and_case;
+        p[res]=flag1; p[res+1]=flag2;
+        if (!ZCODE_LESS_DICT_DATA) p[res+2]=flag3;
 
         dictionary_top += DICT_ENTRY_BYTE_LENGTH;
 
@@ -2275,11 +2436,9 @@ extern int dictionary_add(char *dword, int x, int y, int z)
           p[i] = prepared_sort[i];
         
         p += DICT_WORD_BYTES;
-        p[0] = 0; p[1] = x;
-        p[2] = y/256; p[3] = y%256;
-        p[4] = 0; p[5] = z;
-        if (x & 128) 
-          p[1] |= number_and_case;
+        p[0] = (flag1/256); p[1] = (flag1%256);
+        p[2] = (flag2/256); p[3] = (flag2%256);
+        p[4] = (flag3/256); p[5] = (flag3%256);
         
         dictionary_top += DICT_ENTRY_BYTE_LENGTH;
 
@@ -2499,11 +2658,13 @@ static void recursively_show_z(int node, int level)
 
         flags = (int) p[res];
         if (flags & 128)
-        {   printf("noun ");
-            if (flags & 4)  printf("p"); else printf(" ");
-            printf(" ");
-        }
-        else printf("       ");
+            printf("noun ");
+        else
+            printf("     ");
+        if (flags & 4)
+            printf("p ");
+        else
+            printf("  ");
         if (flags & 8)
         {   if (grammar_version_number == 1)
                 printf("preposition:%d  ", (int) p[res+2]);
@@ -2558,11 +2719,13 @@ static void recursively_show_g(int node, int level)
             for (i=0; i<DICT_ENTRY_BYTE_LENGTH; i++) printf("%02x ",p[i]);
         }
         if (flags & 128)
-        {   printf("noun ");
-            if (flags & 4)  printf("p"); else printf(" ");
-            printf(" ");
-        }
-        else printf("       ");
+            printf("noun ");
+        else
+            printf("     ");
+        if (flags & 4)
+            printf("p ");
+        else
+            printf("  ");
         if (flags & 8)
         {   printf("preposition    ");
         }
@@ -2658,6 +2821,8 @@ extern void init_text_vars(void)
     grandtable = NULL;
     grandflags = NULL;
 
+    translated_text = NULL;
+    temp_symbol = NULL;
     all_text = NULL;
 
     for (j=0; j<256; j++) abbrevs_lookup[j] = -1;
@@ -2669,6 +2834,7 @@ extern void init_text_vars(void)
     dtree = NULL;
     final_dict_order = NULL;
     dict_sort_codes = NULL;
+    prepared_sort = NULL;
     dict_entries=0;
 
     static_strings_area = NULL;
@@ -2684,6 +2850,7 @@ extern void init_text_vars(void)
 extern void text_begin_pass(void)
 {   abbrevs_lookup_table_made = FALSE;
     no_abbreviations=0;
+    abbreviations_totaltext=0;
     total_chars_trans=0; total_bytes_trans=0;
     all_text_top=0;
     dictionary_begin_pass();
@@ -2705,6 +2872,10 @@ extern void text_allocate_arrays(void)
         sizeof(uchar), 8000, (void**)&translated_text,
         "translated text holding area");
     
+    initialise_memory_list(&temp_symbol_memlist,
+        sizeof(char), 32, (void**)&temp_symbol,
+        "temporary symbol name");
+    
     initialise_memory_list(&all_text_memlist,
         sizeof(char), 0, (void**)&all_text,
         "transcription text for optimise");
@@ -2713,8 +2884,8 @@ extern void text_allocate_arrays(void)
         sizeof(uchar), 128, (void**)&static_strings_area,
         "static strings area");
     
-    initialise_memory_list(&abbreviations_at_memlist,
-        MAX_ABBREV_LENGTH, 64, (void**)&abbreviations_at,
+    initialise_memory_list(&abbreviations_text_memlist,
+        sizeof(char), 64, (void**)&abbreviations_text,
         "abbreviation text");
 
     initialise_memory_list(&abbreviations_memlist,
@@ -2734,6 +2905,9 @@ extern void text_allocate_arrays(void)
     initialise_memory_list(&dict_sort_codes_memlist,
         sizeof(uchar), 1500*DICT_WORD_BYTES, (void**)&dict_sort_codes,
         "dictionary sort codes");
+    initialise_memory_list(&prepared_sort_memlist,
+        sizeof(uchar), DICT_WORD_BYTES, (void**)&prepared_sort,
+        "prepared sort buffer");
 
     final_dict_order = NULL; /* will be allocated at sort_dictionary() time */
 
@@ -2792,11 +2966,12 @@ extern void extract_all_text()
 extern void text_free_arrays(void)
 {
     deallocate_memory_list(&translated_text_memlist);
+    deallocate_memory_list(&temp_symbol_memlist);
     
     deallocate_memory_list(&all_text_memlist);
     
     deallocate_memory_list(&low_strings_memlist);
-    deallocate_memory_list(&abbreviations_at_memlist);
+    deallocate_memory_list(&abbreviations_text_memlist);
     deallocate_memory_list(&abbreviations_memlist);
 
     deallocate_memory_list(&abbreviations_optimal_parse_schedule_memlist);
@@ -2804,6 +2979,7 @@ extern void text_free_arrays(void)
 
     deallocate_memory_list(&dtree_memlist);
     deallocate_memory_list(&dict_sort_codes_memlist);
+    deallocate_memory_list(&prepared_sort_memlist);
     my_free(&final_dict_order, "final dictionary ordering table");
 
     deallocate_memory_list(&dictionary_memlist);
@@ -2820,6 +2996,18 @@ extern void text_free_arrays(void)
 extern void ao_free_arrays(void)
 {
     /* Called only after optimise_abbreviations() runs. */
+
+    int32 i;
+    if (bestyet) {
+        for (i=0; i<MAX_BESTYET; i++) {
+            my_free(&bestyet[i].text, "bestyet.text");
+        }
+    }
+    if (bestyet2) {
+        for (i=0; i<MAX_ABBREVS; i++) {
+            my_free(&bestyet2[i].text, "bestyet2.text");
+        }
+    }
     
     my_free (&opttext,"stashed transcript for optimisation");
     my_free (&bestyet,"bestyet");

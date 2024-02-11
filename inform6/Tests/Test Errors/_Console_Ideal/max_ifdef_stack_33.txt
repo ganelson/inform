@@ -1,4 +1,4 @@
-Inform 6.36 (24th January 2022)
+Inform 6.42 for MacOS (10th February 2024)
 line 38: Error:  'If' directives nested too deeply
 > #ifdef FOO;
 line 72: Error:  'Endif' without matching 'If...'

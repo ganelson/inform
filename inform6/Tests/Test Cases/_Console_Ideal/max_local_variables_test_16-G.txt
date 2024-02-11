@@ -1,4 +1,4 @@
-Inform 6.36 (24th January 2022)
+Inform 6.42 for MacOS (10th February 2024)
 line 3: Warning:  Local variable "p0" declared but not used
 line 3: Warning:  Local variable "p1" declared but not used
 line 3: Warning:  Local variable "p2" declared but not used

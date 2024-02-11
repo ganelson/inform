@@ -1,4 +1,4 @@
-Inform 6.36 (24th January 2022)
-line 2: Error:  Only dynamic strings @00 to @31 may be used, because $MAX_DYNAMIC_STRINGS has its default value of 32. Increase MAX_DYNAMIC_STRINGS.
+Inform 6.42 for MacOS (10th February 2024)
+line 2: Error:  Only dynamic strings @(00) to @(31) may be used, because $MAX_DYNAMIC_STRINGS has its default value of 32. Increase MAX_DYNAMIC_STRINGS.
 >  string 32 "foo"
 Compiled with 1 error (no output)

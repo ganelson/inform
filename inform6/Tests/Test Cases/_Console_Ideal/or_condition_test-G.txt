@@ -1,4 +1,4 @@
-Inform 6.36 (24th January 2022)
+Inform 6.42 for MacOS (10th February 2024)
 line 259: Warning:  The behavior of (<= or) may be unexpected.
 >  if (val <= arg1 or arg2)
 line 272: Warning:  The behavior of (<= or) may be unexpected.

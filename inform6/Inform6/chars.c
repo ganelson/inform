@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------------- */
 /*   "chars" : Character set mappings and the Z-machine alphabet table       */
 /*                                                                           */
-/*   Part of Inform 6.41                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2022                                 */
+/*   Part of Inform 6.42                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2024                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 /*  Inform uses six different character representations:                     */
@@ -322,8 +322,9 @@ static void read_source_to_iso_file(uchar *uccg)
 /*                                                                           */
 /*      00         remains 0 (meaning "end of file")                         */
 /*      TAB        becomes SPACE                                             */
+/*      0a         remains '\n'                                              */
 /*      0c         ("form feed") becomes '\n'                                */
-/*      0d         becomes '\n'                                              */
+/*      0d         remains '\r'                                              */
 /*      other control characters become '?'                                  */
 /*      7f         becomes '?'                                               */
 /*      80 to 9f   become '?'                                                */
@@ -346,7 +347,7 @@ static void make_source_to_iso_grid(void)
         for (n=1; n<32; n++) source_to_iso_grid[n] = '?';
         source_to_iso_grid[10] = '\n';
         source_to_iso_grid[12] = '\n';
-        source_to_iso_grid[13] = '\n';
+        source_to_iso_grid[13] = '\r';
         source_to_iso_grid[127] = '?';
         source_to_iso_grid[TAB_CHARACTER] = ' ';
 

@@ -1,10 +1,10 @@
 /* ------------------------------------------------------------------------- */
 /*   Header file for Inform:  Z-machine ("Infocom" format) compiler          */
 /*                                                                           */
-/*                              Inform 6.41                                  */
+/*                              Inform 6.42                                  */
 /*                                                                           */
 /*   This header file and the others making up the Inform source code are    */
-/*   copyright (c) Graham Nelson 1993 - 2022                                 */
+/*   copyright (c) Graham Nelson 1993 - 2024                                 */
 /*                                                                           */
 /*   Manuals for this language are available from the IF-Archive at          */
 /*   https://www.ifarchive.org/                                              */
@@ -31,8 +31,8 @@
 /* ------------------------------------------------------------------------- */
 
 /* For releases, set to the release date in the form "1st January 2000" */
-#define RELEASE_DATE "22nd July 2022"
-#define RELEASE_NUMBER 1641
+#define RELEASE_DATE "10th February 2024"
+#define RELEASE_NUMBER 1642
 #define GLULX_RELEASE_NUMBER 38
 #define VNUMBER RELEASE_NUMBER
 
@@ -567,14 +567,14 @@
 
 
 #define ReadInt32(ptr)                               \
-  (   (((int32)(((uchar *)(ptr))[0])) << 24)         \
-    | (((int32)(((uchar *)(ptr))[1])) << 16)         \
-    | (((int32)(((uchar *)(ptr))[2])) <<  8)         \
-    | (((int32)(((uchar *)(ptr))[3]))      ) )
+  (   (((uint32)(((uchar *)(ptr))[0])) << 24)         \
+    | (((uint32)(((uchar *)(ptr))[1])) << 16)         \
+    | (((uint32)(((uchar *)(ptr))[2])) <<  8)         \
+    | (((uint32)(((uchar *)(ptr))[3]))      ) )
 
 #define ReadInt16(ptr)                               \
-  (   (((int32)(((uchar *)(ptr))[0])) << 8)          \
-    | (((int32)(((uchar *)(ptr))[1]))     ) )
+  (   (((uint32)(((uchar *)(ptr))[0])) << 8)          \
+    | (((uint32)(((uchar *)(ptr))[1]))     ) )
 
 #define WriteInt32(ptr, val)                         \
   ((ptr)[0] = (uchar)(((int32)(val)) >> 24),         \
@@ -599,10 +599,6 @@
 /* ------------------------------------------------------------------------- */
 
 #define  MAX_ERRORS            100
-#define  MAX_IDENTIFIER_LENGTH  32
-#define  MAX_ABBREV_LENGTH      64
-#define  MAX_DICT_WORD_SIZE     40
-#define  MAX_DICT_WORD_BYTES    (40*4)
 #define  MAX_NUM_ATTR_BYTES     39
 #define  MAX_VERB_WORD_SIZE    120
 
@@ -647,10 +643,12 @@ typedef struct memory_list_s
     size_t count;       /* number of items allocated */
 } memory_list;
 
-typedef struct identstruct_s
-{
-    char text[MAX_IDENTIFIER_LENGTH+1];
-} identstruct;
+typedef struct brief_location_s
+{   int32 file_index;
+    int32 line_number;
+    int32 orig_file_index;
+    int32 orig_line_number;
+} brief_location;
 
 typedef struct assembly_operand_t
 {   int   type;     /* ?_OT value */
@@ -670,8 +668,11 @@ typedef struct variableinfo_s {
 
 typedef struct verbt {
     int lines;
-    int *l; /* alloced array */
+    int *l; /* alloced array of grammar line indexes
+               (positions in grammar_lines[]) */
     int size; /* allocated size of l */
+    brief_location line; /* originally defined at */
+    int used; /* only set at locate_dead_grammar_lines() time */
 } verbt;
 
 typedef struct actioninfo_s {
@@ -762,6 +763,8 @@ typedef struct abbreviation_s {
     int value;
     int quality;
     int freq;
+    int textpos; /* in abbreviations_text */
+    int textlen;
 } abbreviation;
 
 typedef struct maybe_file_position_S
@@ -789,13 +792,6 @@ typedef struct debug_locations_s
     int reference_count;
 } debug_locations;
 
-typedef struct brief_location_s
-{   int32 file_index;
-    int32 line_number;
-    int32 orig_file_index;
-    int32 orig_line_number;
-} brief_location;
-
 typedef struct debug_location_beginning_s
 {   debug_locations *head;
     int32 beginning_byte_index;
@@ -819,6 +815,7 @@ typedef struct lexeme_data_s {
     char *text;  /* points at lextexts array */
     int32 value;
     int type;    /* a *_TT value */
+    int newsymbol; /* (for SYMBOL_TT) this token created the symbol */
     debug_location location;
     int lextext; /* index of text string in lextexts */
     int context; /* lexical context used to interpret this token */
@@ -1115,6 +1112,8 @@ typedef struct operator_s
 #define picture_table_zc 115
 #define print_unicode_zc 116
 #define check_unicode_zc 117
+#define set_true_colour_zc 118
+#define buffer_screen_zc 119
 
 
 /* ------------------------------------------------------------------------- */
@@ -1223,12 +1222,23 @@ typedef struct operator_s
 #define dstore_gm 3
 
 
-#define SYMBOL_TT    0                      /* value = index in symbol table */
-#define NUMBER_TT    1                      /* value = the number            */
-#define DQ_TT        2                      /* no value                      */
-#define SQ_TT        3                      /* no value                      */
-#define SEP_TT       4                      /* value = the _SEP code         */
-#define EOF_TT       5                      /* no value                      */
+#define SYMBOL_TT    0                      /* symbol.
+                                               value = index in symbol table */
+#define NUMBER_TT    1                      /* number (including hex, float,
+                                               etc).
+                                               value = the number            */
+#define DQ_TT        2                      /* double-quoted string.
+                                               no value; look at the text    */
+#define SQ_TT        3                      /* single-quoted string.
+                                               no value                      */
+#define UQ_TT        4                      /* unquoted string; only when
+                                               dont_enter_into_symbol_table
+                                               is true.
+                                               no value                      */
+#define SEP_TT       5                      /* separator (punctuation).
+                                               value = the _SEP code         */
+#define EOF_TT       6                      /* end of file.
+                                               no value                      */
 
 #define STATEMENT_TT      100               /* a statement keyword           */
 #define SEGMENT_MARKER_TT 101               /* with/has/class etc.           */
@@ -1275,22 +1285,25 @@ typedef struct operator_s
 /*   Symbol flag definitions (in no significant order)                       */
 /* ------------------------------------------------------------------------- */
 
-#define UNKNOWN_SFLAG  1
-#define REPLACE_SFLAG  2
-#define USED_SFLAG     4
-#define DEFCON_SFLAG   8
-#define STUB_SFLAG     16
-#define IMPORT_SFLAG   32
-#define EXPORT_SFLAG   64
-#define ALIASED_SFLAG  128
+#define UNKNOWN_SFLAG  1     /* no definition known */
+#define REPLACE_SFLAG  2     /* routine marked for Replace */
+#define USED_SFLAG     4     /* referred to in code */
+#define DEFCON_SFLAG   8     /* defined by Default */
+#define STUB_SFLAG     16    /* defined by Stub */
+#define UNHASHED_SFLAG 32    /* removed from hash chain */
+#define DISCARDED_SFLAG 64   /* removed and should never have been used */
+#define ALIASED_SFLAG  128   /* defined as property/attribute alias name */
 
-#define CHANGE_SFLAG   256
-#define SYSTEM_SFLAG   512
-#define INSF_SFLAG     1024
-#define UERROR_SFLAG   2048
-#define ACTION_SFLAG   4096
-#define REDEFINABLE_SFLAG  8192
-#define STAR_SFLAG    16384
+#define CHANGE_SFLAG   256   /* defined by Default with a value,
+                                or symbol has a backpatchable value */
+#define SYSTEM_SFLAG   512   /* created by compiler */
+#define INSF_SFLAG     1024  /* created in System_File */
+#define UERROR_SFLAG   2048  /* "No such constant" error issued */
+#define ACTION_SFLAG   4096  /* action name constant (Foo_A) */
+#define REDEFINABLE_SFLAG  8192  /* built-in symbol that can be redefined
+                                    by the user */
+#define STAR_SFLAG    16384  /* function defined with "*" or property named
+                                "foo_to" */
 
 /* ------------------------------------------------------------------------- */
 /*   Symbol type definitions                                                 */
@@ -1917,7 +1930,9 @@ typedef struct operator_s
 #define OBJECT_MV             16     /* Ref to internal object number */
 #define STATIC_ARRAY_MV       17     /* Ref to internal static array address */
 
-#define LARGEST_BPATCH_MV     17     /* Larger marker values are never written
+#define ERROR_MV              18     /* An error was reported while
+                                        generating this value */
+#define LARGEST_BPATCH_MV     18     /* Larger marker values are never written
                                         to backpatch tables */
 
 /* Values 32-35 were used only for module import/export. */
@@ -2139,7 +2154,7 @@ extern void assemble_label_no(int n);
 extern int assemble_forward_label_no(int n);
 extern void assemble_jump(int n);
 extern void define_symbol_label(int symbol);
-extern int32 assemble_routine_header(int no_locals, int debug_flag,
+extern int32 assemble_routine_header(int debug_flag,
     char *name, int embedded_flag, int the_symbol);
 extern void assemble_routine_end(int embedded_flag, debug_locations locations);
 
@@ -2245,6 +2260,7 @@ extern int32 zcode_backpatch_size, staticarray_backpatch_size,
 extern int   backpatch_marker, backpatch_error_flag;
 
 extern char *describe_mv(int mval);
+extern char *describe_mv_short(int mval);
 
 extern int32 backpatch_value(int32 value);
 extern void  backpatch_zmachine_image_z(void);
@@ -2287,7 +2303,7 @@ extern void  make_upper_case(char *str);
 
 extern brief_location routine_starts_line;
 
-extern int  no_routines, no_named_routines, no_locals, no_termcs;
+extern int  no_routines, no_named_routines, no_termcs;
 extern int  terminating_characters[];
 
 extern int  parse_given_directive(int internal_flag);
@@ -2304,29 +2320,35 @@ extern int  no_errors, no_warnings, no_suppressed_warnings, no_compiler_errors;
 extern ErrorPosition ErrorReport;
 
 extern void fatalerror(char *s) NORETURN;
+extern void fatalerror_fmt(const char *format, ...) NORETURN;
 extern void fatalerror_named(char *s1, char *s2) NORETURN;
-extern void memory_out_error(int32 size, int32 howmany, char *name) NORETURN;
-extern void error_max_dynamic_strings(int index);
-extern void error_max_abbreviations(int index);
+extern void fatalerror_memory_out(int32 size, int32 howmany, char *name) NORETURN;
+
 extern void error(char *s);
+extern void error_fmt(const char *format, ...);
 extern void error_named(char *s1, char *s2);
-extern void error_numbered(char *s1, int val);
 extern void error_named_at(char *s1, char *s2, brief_location report_line);
 extern void ebf_error(char *s1, char *s2);
+extern void ebf_curtoken_error(char *s);
 extern void ebf_symbol_error(char *s1, char *name, char *type, brief_location report_line);
 extern void char_error(char *s, int ch);
 extern void unicode_char_error(char *s, int32 uni);
-extern void no_such_label(char *lname);
+extern void error_max_dynamic_strings(int index);
+extern void error_max_abbreviations(int index);
+
 extern void warning(char *s);
-extern void warning_numbered(char *s1, int val);
+extern void warning_fmt(const char *format, ...);
 extern void warning_named(char *s1, char *s2);
+extern void warning_at(char *name, brief_location report_line);
 extern void symtype_warning(char *context, char *name, char *type, char *wanttype);
 extern void dbnu_warning(char *type, char *name, brief_location report_line);
 extern void uncalled_routine_warning(char *type, char *name, brief_location report_line);
 extern void obsolete_warning(char *s1);
+
 extern int  compiler_error(char *s);
 extern int  compiler_error_named(char *s1, char *s2);
 extern void print_sorry_message(void);
+extern char *current_location_text(void);
 
 #ifdef ARC_THROWBACK
 extern int  throwback_switch;
@@ -2364,9 +2386,10 @@ extern int glulx_system_constant_list[];
 extern int32 value_of_system_constant(int t);
 extern char *name_of_system_constant(int t);
 extern void clear_expression_space(void);
-extern void show_tree(assembly_operand AO, int annotate);
+extern void show_tree(const assembly_operand *AO, int annotate);
 extern assembly_operand parse_expression(int context);
 extern int test_for_incdec(assembly_operand AO);
+extern int  test_constant_op_list(const assembly_operand *AO, assembly_operand *ops_found, int max_ops_found);
 
 /* ------------------------------------------------------------------------- */
 /*   Extern definitions for "files"                                          */
@@ -2458,7 +2481,7 @@ extern int
 extern int oddeven_packing_switch;
 
 extern int glulx_mode, compression_switch;
-extern int32 requested_glulx_version;
+extern int32 requested_glulx_version, final_glulx_version;
 
 extern int error_format,    store_the_text,       asm_trace_setting,
     expr_trace_setting,     tokens_trace_setting,
@@ -2498,7 +2521,8 @@ extern int  total_source_line_count;
 extern int  dont_enter_into_symbol_table;
 extern int  return_sp_as_variable;
 extern int  next_token_begins_syntax_line;
-extern identstruct *local_variable_names;
+extern int  no_locals;
+extern int *local_variable_name_offsets;
 
 extern int32 token_value;
 extern int   token_type;
@@ -2511,10 +2535,15 @@ extern void discard_token_location(debug_location_beginning beginning);
 extern debug_locations get_token_location_end(debug_location_beginning beginning);
 
 extern void describe_token_triple(const char *text, int32 value, int type);
+#define describe_current_token() describe_token_triple(token_text, token_value, token_type)
 /* The describe_token() macro works on both token_data and lexeme_data structs. */
 #define describe_token(t) describe_token_triple((t)->text, (t)->value, (t)->type)
 
 extern void construct_local_variable_tables(void);
+extern void clear_local_variables(void);
+extern void add_local_variable(char *name);
+extern char *get_local_variable_name(int index);
+
 extern void declare_systemfile(void);
 extern int  is_systemfile(void);
 extern void report_errors_at_current_line(void);
@@ -2552,9 +2581,12 @@ extern int MAX_LOCAL_VARIABLES;
 extern int DICT_WORD_SIZE, DICT_CHAR_SIZE, DICT_WORD_BYTES;
 extern int ZCODE_HEADER_EXT_WORDS, ZCODE_HEADER_FLAGS_3;
 extern int ZCODE_LESS_DICT_DATA;
+extern int ZCODE_MAX_INLINE_STRING;
 extern int NUM_ATTR_BYTES, GLULX_OBJECT_EXT_BYTES;
 extern int WARN_UNUSED_ROUTINES, OMIT_UNUSED_ROUTINES;
 extern int STRIP_UNREACHABLE_LABELS;
+extern int OMIT_SYMBOL_TABLE;
+extern int LONG_DICT_FLAG_BUG;
 extern int TRANSCRIPT_FORMAT;
 
 /* These macros define offsets that depend on the value of NUM_ATTR_BYTES.
@@ -2637,8 +2669,8 @@ extern char *typename(int type);
 extern int hash_code_from_string(char *p);
 extern int strcmpcis(char *p, char *q);
 extern int get_symbol_index(char *p);
-extern int symbol_index(char *lexeme_text, int hashcode);
-extern void end_symbol_scope(int k);
+extern int symbol_index(char *lexeme_text, int hashcode, int *created);
+extern void end_symbol_scope(int k, int neveruse);
 extern void describe_symbol(int k);
 extern void list_symbols(int level);
 extern void assign_marked_symbol(int index, int marker, int32 value, int type);
@@ -2681,6 +2713,7 @@ extern void  parse_code_block(int break_label, int continue_label,
 
 extern void  match_close_bracket(void);
 extern void  parse_statement(int break_label, int continue_label);
+extern void  parse_statement_singleexpr(assembly_operand AO);
 extern int   parse_label(void);
 
 /* ------------------------------------------------------------------------- */
@@ -2725,7 +2758,6 @@ extern int32 low_strings_top;
 
 extern int   no_abbreviations;
 extern int   abbrevs_lookup_table_made, is_abbreviation;
-extern uchar *abbreviations_at;
 extern abbreviation *abbreviations;
 
 extern int32 total_chars_trans, total_bytes_trans,
@@ -2793,6 +2825,7 @@ extern int32 compile_string(char *b, int strctx);
 extern int32 translate_text(int32 p_limit, char *s_text, int strctx);
 extern void  optimise_abbreviations(void);
 extern void  make_abbreviation(char *text);
+extern char *abbreviation_text(int num);
 extern void  show_dictionary(int level);
 extern void  word_to_ascii(uchar *p, char *result);
 extern void  print_dict_word(int node);
@@ -2835,6 +2868,7 @@ extern int32 *grammar_token_routine,
 extern void find_the_actions(void);
 extern void make_fake_action(void);
 extern assembly_operand action_of_name(char *name);
+extern void locate_dead_grammar_lines(void);
 extern void make_verb(void);
 extern void extend_verb(void);
 extern void list_verb_table(void);

@@ -1,4 +1,4 @@
-Inform 6.36 (24th January 2022)
+Inform 6.42 for MacOS (10th February 2024)
 line 4: Warning:  Array "a_1" declared but not used
 line 5: Warning:  Array "a_2" declared but not used
 line 6: Warning:  Array "a_3" declared but not used

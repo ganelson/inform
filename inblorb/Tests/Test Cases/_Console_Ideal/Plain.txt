@@ -1,5 +1,5 @@
 ! inblorb 99.99 [executing on Thursday 28 April 2016 at 11:00.00]
 ! The blorb spell (safely protect a small object as though in a strong box).
-! Release folder: </Users/gnelson/Natural Inform/intest/Workspace/T4/Example.materials/Release>
-Copy blorb to: [[/Users/gnelson/Natural Inform/intest/Workspace/T4/Example.materials/Release/story.gblorb]]
+! Release folder: </Users/gnelson/Natural Inform/intest/Workspace/T0/Example.materials/Release>
+Copy blorb to: [[/Users/gnelson/Natural Inform/intest/Workspace/T0/Example.materials/Release/story.gblorb]]
 ! Completed: wrote blorb file with 1 picture(s), 0 sound(s), 0 data file(s)

@@ -2,8 +2,8 @@
 /*   "bpatch" : Keeps track of, and finally acts on, backpatch markers,      */
 /*              correcting symbol values not known at compilation time       */
 /*                                                                           */
-/*   Part of Inform 6.41                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2022                                 */
+/*   Part of Inform 6.42                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2024                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -34,6 +34,7 @@ extern char *describe_mv(int mval)
         case IROUTINE_MV:   return("routine");
         case VROUTINE_MV:   return("veneer routine");
         case ARRAY_MV:      return("internal array");
+        case STATIC_ARRAY_MV:  return("internal static array");
         case NO_OBJS_MV:    return("the number of objects");
         case INHERIT_MV:    return("inherited common p value");
         case INDIVPT_MV:    return("indiv prop table address");
@@ -49,8 +50,51 @@ extern char *describe_mv(int mval)
         case ACTION_MV:     return("action");
         case OBJECT_MV:     return("internal object");
 
+        /* Only occurs secondary to another reported error */
+        case ERROR_MV:      return("error");
+
     }
     return("** No such MV **");
+}
+
+extern char *describe_mv_short(int mval)
+{   switch(mval)
+    {   case NULL_MV:       return("");
+
+        /*  Marker values used in ordinary story file backpatching  */
+
+        case DWORD_MV:      return("dict");
+        case STRING_MV:     return("str");
+        case INCON_MV:      return("syscon");
+        case IROUTINE_MV:   return("rtn");
+        case VROUTINE_MV:   return("vrtn");
+        case ARRAY_MV:      return("arr");
+        case STATIC_ARRAY_MV:  return("stat-arr");
+        case NO_OBJS_MV:    return("obj-count");
+        case INHERIT_MV:    return("inh-com");
+        case INDIVPT_MV:    return("indiv-ptab");
+        case INHERIT_INDIV_MV: return("inh-indiv");
+        case MAIN_MV:       return("main");
+        case SYMBOL_MV:     return("sym");
+
+        /*  Additional marker values used in Glulx backpatching
+            (IDENT_MV is not really used at all any more) */
+
+        case VARIABLE_MV:   return("glob");
+        case IDENT_MV:      return("prop");
+        case ACTION_MV:     return("action");
+        case OBJECT_MV:     return("obj");
+
+        case LABEL_MV:      return("lbl");
+        case DELETED_MV:    return("del");
+
+        /* Only occurs secondary to another reported error */
+        case ERROR_MV:      return("err");
+
+    }
+    if (mval >= BRANCH_MV && mval < BRANCHMAX_MV) return "br";
+    
+    return("???");
 }
 
 /* ------------------------------------------------------------------------- */
@@ -130,9 +174,17 @@ static int32 backpatch_value_z(int32 value)
             value += individuals_offset;
             break;
         case MAIN_MV:
-            value = symbol_index("Main", -1);
-            if (symbols[value].type != ROUTINE_T)
+            value = get_symbol_index("Main");
+            if (value < 0 || (symbols[value].flags & UNKNOWN_SFLAG)) {
                 error("No 'Main' routine has been defined");
+                value = 0;
+                break;
+            }
+            if (symbols[value].type != ROUTINE_T) {
+                ebf_symbol_error("'Main' routine", symbols[value].name, typename(symbols[value].type), symbols[value].line);
+                value = 0;
+                break;
+            }
             symbols[value].flags |= USED_SFLAG;
             value = symbols[value].value;
             if (OMIT_UNUSED_ROUTINES)
@@ -277,9 +329,17 @@ static int32 backpatch_value_g(int32 value)
             value += individuals_offset;
             break;
         case MAIN_MV:
-            value = symbol_index("Main", -1);
-            if (symbols[value].type != ROUTINE_T)
+            value = get_symbol_index("Main");
+            if (value < 0 || (symbols[value].flags & UNKNOWN_SFLAG)) {
                 error("No 'Main' routine has been defined");
+                value = 0;
+                break;
+            }
+            if (symbols[value].type != ROUTINE_T) {
+                ebf_symbol_error("'Main' routine", symbols[value].name, typename(symbols[value].type), symbols[value].line);
+                value = 0;
+                break;
+            }
             symbols[value].flags |= USED_SFLAG;
             value = symbols[value].value;
             if (OMIT_UNUSED_ROUTINES)

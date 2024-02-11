@@ -1,5 +1,0 @@
-Inform 6.36 (24th January 2022)
-line 4: Error:  Name exceeds the maximum length of 32 characters: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxy"
-> Global xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxy
-line 4: Warning:  Global variable "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" declared but not used
-Compiled with 1 error and 1 warning (no output)

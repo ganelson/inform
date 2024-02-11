@@ -2,8 +2,8 @@
 /*   "verbs" :  Manages actions and grammar tables; parses the directives    */
 /*              Verb and Extend.                                             */
 /*                                                                           */
-/*   Part of Inform 6.41                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2022                                 */
+/*   Part of Inform 6.42                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2024                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -97,8 +97,10 @@ static memory_list English_verbs_given_memlist;
   int32   *adjectives; /* Allocated to no_adjectives */
   static memory_list adjectives_memlist;
 
-  static uchar *adjective_sort_code; /* Allocated to no_adjectives*DICT_WORD_BYTES */
+  static uchar *adjective_sort_code; /* Allocated to no_adjectives*DICT_WORD_BYTES, except it's sometimes no_adjectives+1 because we can bump it tentatively */
   static memory_list adjective_sort_code_memlist;
+
+  static memory_list action_symname_memlist; /* Used for temporary symbols */
 
 /* ------------------------------------------------------------------------- */
 /*   Tracing for compiler maintenance                                        */
@@ -300,28 +302,34 @@ static void new_action(char *b, int c)
         At present just a hook for some tracing code.                        */
 
     if (printactions_switch)
-        printf("Action '%s' is numbered %d\n",b,c);
+        printf("%s: Action '%s' is numbered %d\n", current_location_text(), b, c);
 }
 
 /* Note that fake actions are numbered from a high base point upwards;
    real actions are numbered from 0 upward in GV2.                           */
 
 extern void make_fake_action(void)
-{   int i;
-    char action_sub[MAX_IDENTIFIER_LENGTH+4];
+{   char *action_sub;
+    int i;
     debug_location_beginning beginning_debug_location =
         get_token_location_beginning();
 
     get_next_token();
     if (token_type != SYMBOL_TT)
     {   discard_token_location(beginning_debug_location);
-        ebf_error("new fake action name", token_text);
+        ebf_curtoken_error("new fake action name");
         panic_mode_error_recovery(); return;
     }
+
+    /* Enough space for "token__A". */
+    ensure_memory_list_available(&action_symname_memlist, strlen(token_text)+4);
+    action_sub = action_symname_memlist.data;
+    strcpy(action_sub, token_text);
+    strcat(action_sub, "__A");
+    
     /* Action symbols (including fake_actions) may collide with other kinds of symbols. So we don't check that. */
 
-    snprintf(action_sub, MAX_IDENTIFIER_LENGTH+4, "%s__A", token_text);
-    i = symbol_index(action_sub, -1);
+    i = symbol_index(action_sub, -1, NULL);
 
     if (!(symbols[i].flags & UNKNOWN_SFLAG))
     {   discard_token_location(beginning_debug_location);
@@ -354,12 +362,17 @@ extern assembly_operand action_of_name(char *name)
     /*  Returns the action number of the given name, creating it as a new
         action name if it isn't already known as such.                       */
 
-    char action_sub[MAX_IDENTIFIER_LENGTH+4];
+    char *action_sub;
     int j;
     assembly_operand AO;
 
-    snprintf(action_sub, MAX_IDENTIFIER_LENGTH+4, "%s__A", name);
-    j = symbol_index(action_sub, -1);
+    /* Enough space for "name__A". */
+    ensure_memory_list_available(&action_symname_memlist, strlen(name)+4);
+    action_sub = action_symname_memlist.data;
+    strcpy(action_sub, name);
+    strcat(action_sub, "__A");
+    
+    j = symbol_index(action_sub, -1, NULL);
 
     if (symbols[j].type == FAKE_ACTION_T)
     {   INITAO(&AO);
@@ -398,24 +411,29 @@ extern assembly_operand action_of_name(char *name)
 
 extern void find_the_actions(void)
 {   int i; int32 j;
-    char action_name[MAX_IDENTIFIER_LENGTH+4];
-    char action_sub[MAX_IDENTIFIER_LENGTH+4];
 
     for (i=0; i<no_actions; i++)
-    {   strcpy(action_name, symbols[actions[i].symbol].name);
-        action_name[strlen(action_name) - 3] = '\0'; /* remove "__A" */
+    {
+        /* The name looks like "action__A". We're going to convert that to
+           "actionSub". Allocate enough space for both. */
+        int namelen = strlen(symbols[actions[i].symbol].name);
+        char *action_sub, *action_name;
+        ensure_memory_list_available(&action_symname_memlist, 2*(namelen+1));
+        action_sub = action_symname_memlist.data;
+        action_name = (char *)action_symname_memlist.data + (namelen+1);
+        
+        strcpy(action_name, symbols[actions[i].symbol].name);
+        action_name[namelen - 3] = '\0'; /* remove "__A" */
         strcpy(action_sub, action_name);
         strcat(action_sub, "Sub");
-        j = symbol_index(action_sub, -1);
+        j = symbol_index(action_sub, -1, NULL);
         if (symbols[j].flags & UNKNOWN_SFLAG)
         {
             error_named_at("No ...Sub action routine found for action:", action_name, symbols[actions[i].symbol].line);
         }
-        else
-        if (symbols[j].type != ROUTINE_T)
+        else if (symbols[j].type != ROUTINE_T)
         {
-            error_named_at("No ...Sub action routine found for action:", action_name, symbols[actions[i].symbol].line);
-            error_named_at("-- ...Sub symbol found, but not a routine:", action_sub, symbols[j].line);
+            ebf_symbol_error("action's ...Sub routine", action_sub, typename(symbols[j].type), symbols[j].line);
         }
         else
         {   actions[i].byte_offset = symbols[j].value;
@@ -439,8 +457,8 @@ static int make_adjective(char *English_word)
         This routine is used only in grammar version 1: the corresponding
         table is left empty in GV2.                                          */
 
+    uchar *new_sort_code;
     int i; 
-    uchar new_sort_code[MAX_DICT_WORD_BYTES];
 
     if (no_adjectives >= 255) {
         error("Grammar version 1 cannot support more than 255 prepositions");
@@ -451,9 +469,13 @@ static int make_adjective(char *English_word)
         error("Grammar version 1 cannot be used with ZCODE_LESS_DICT_DATA");
         return 0;
     }
+
+    /* Allocate the extra space even though we might not need it. We'll use
+       the prospective new adjective_sort_code slot as a workspace. */
     ensure_memory_list_available(&adjectives_memlist, no_adjectives+1);
     ensure_memory_list_available(&adjective_sort_code_memlist, (no_adjectives+1) * DICT_WORD_BYTES);
 
+    new_sort_code = adjective_sort_code+no_adjectives*DICT_WORD_BYTES;
     dictionary_prepare(English_word, new_sort_code);
     for (i=0; i<no_adjectives; i++)
         if (compare_sorts(new_sort_code,
@@ -461,8 +483,6 @@ static int make_adjective(char *English_word)
             return(0xff-i);
     adjectives[no_adjectives]
         = dictionary_add(English_word,8,0,0xff-no_adjectives);
-    copy_sorts(adjective_sort_code+no_adjectives*DICT_WORD_BYTES,
-        new_sort_code);
     return(0xff-no_adjectives++);
 }
 
@@ -525,7 +545,7 @@ static char *find_verb_by_number(int num)
     p=English_verb_list;
     while (p < English_verb_list+English_verb_list_size)
     {
-        int val = (p[1] << 8) | p[2];
+        int val = ((uchar)p[1] << 8) | (uchar)p[2];
         if (val == num) {
             return p+3;
         }
@@ -548,11 +568,10 @@ static void register_verb(char *English_verb, int number)
 
     /* We set a hard limit of MAX_VERB_WORD_SIZE=120 because the
        English_verb_list table stores length in a leading byte. (We could
-       raise that to 250, really, but there's little point when
-       MAX_DICT_WORD_SIZE is 40.) */
+       raise that to 250, really.) */
     entrysize = strlen(English_verb)+4;
     if (entrysize > MAX_VERB_WORD_SIZE+4)
-        error_numbered("Verb word is too long -- max length is", MAX_VERB_WORD_SIZE);
+        error_fmt("Verb word is too long -- max length is %d", MAX_VERB_WORD_SIZE);
     ensure_memory_list_available(&English_verb_list_memlist, English_verb_list_size + entrysize);
     top = English_verb_list + English_verb_list_size;
     English_verb_list_size += entrysize;
@@ -579,9 +598,42 @@ static int get_verb(void)
         return j;
     }
 
-    ebf_error("an English verb in quotes", token_text);
+    ebf_curtoken_error("an English verb in quotes");
 
     return -1;
+}
+
+void locate_dead_grammar_lines()
+{
+    /* Run through the grammar table and check whether each entry is
+       associated with a verb word. (Some might have been detached by
+       "Extend only".)
+    */
+    int verb;
+    char *p;
+
+    for (verb=0; verb<no_Inform_verbs; verb++) {
+        Inform_verbs[verb].used = FALSE;
+    }
+    
+    p=English_verb_list;
+    while (p < English_verb_list+English_verb_list_size)
+    {
+        verb = ((uchar)p[1] << 8) | (uchar)p[2];
+        if (verb < 0 || verb >= no_Inform_verbs) {
+            error_named("An entry in the English verb list had an invalid verb number", p+3);
+        }
+        else {
+            Inform_verbs[verb].used = TRUE;
+        }
+        p=p+(uchar)p[0];
+    }
+
+    for (verb=0; verb<no_Inform_verbs; verb++) {
+        if (!Inform_verbs[verb].used) {
+            warning_at("Verb declaration no longer has any verbs associated. Use \"Extend replace\" instead of \"Extend only\"?", Inform_verbs[verb].line);
+        }
+    }
 }
 
 /* ------------------------------------------------------------------------- */
@@ -639,7 +691,7 @@ static int grammar_line(int verbnum, int line)
     }
     if (!((token_type == SEP_TT) && (token_value == TIMES_SEP)))
     {   discard_token_location(beginning_debug_location);
-        ebf_error("'*' divider", token_text);
+        ebf_curtoken_error("'*' divider");
         panic_mode_error_recovery();
         return FALSE;
     }
@@ -667,12 +719,12 @@ static int grammar_line(int verbnum, int line)
         bytecode = 0; wordcode = 0;
         if ((token_type == SEP_TT) && (token_value == SEMICOLON_SEP))
         {   discard_token_location(beginning_debug_location);
-            ebf_error("'->' clause", token_text);
+            ebf_curtoken_error("'->' clause");
             return FALSE;
         }
         if ((token_type == SEP_TT) && (token_value == ARROW_SEP))
         {   if (last_was_slash && (grammar_token>0))
-                ebf_error("grammar token", token_text);
+                ebf_curtoken_error("grammar token");
             break;
         }
 
@@ -681,7 +733,7 @@ static int grammar_line(int verbnum, int line)
         {   if (grammar_version_number == 1)
                 error("'/' can only be used with Library 6/3 or later");
             if (last_was_slash)
-                ebf_error("grammar token or '->'", token_text);
+                ebf_curtoken_error("grammar token or '->'");
             else
             {   last_was_slash = TRUE;
                 slash_mode = TRUE;
@@ -711,7 +763,7 @@ static int grammar_line(int verbnum, int line)
                      if ((token_type != SYMBOL_TT)
                          || (symbols[token_value].type != ROUTINE_T))
                      {   discard_token_location(beginning_debug_location);
-                         ebf_error("routine name after 'noun='", token_text);
+                         ebf_curtoken_error("routine name after 'noun='");
                          panic_mode_error_recovery();
                          return FALSE;
                      }
@@ -766,7 +818,7 @@ are using Library 6/3 or later");
                  get_next_token();
                  if (!((token_type==SEP_TT)&&(token_value==SETEQUALS_SEP)))
                  {   discard_token_location(beginning_debug_location);
-                     ebf_error("'=' after 'scope'", token_text);
+                     ebf_curtoken_error("'=' after 'scope'");
                      panic_mode_error_recovery();
                      return FALSE;
                  }
@@ -775,7 +827,7 @@ are using Library 6/3 or later");
                  if ((token_type != SYMBOL_TT)
                      || (symbols[token_value].type != ROUTINE_T))
                  {   discard_token_location(beginning_debug_location);
-                     ebf_error("routine name after 'scope='", token_text);
+                     ebf_curtoken_error("routine name after 'scope='");
                      panic_mode_error_recovery();
                      return FALSE;
                  }
@@ -852,9 +904,9 @@ tokens in any line (unless you're compiling with library 6/3 or later)");
     get_next_token();
     dont_enter_into_symbol_table = FALSE;
 
-    if (token_type != DQ_TT)
+    if (token_type != UQ_TT)
     {   discard_token_location(beginning_debug_location);
-        ebf_error("name of new or existing action", token_text);
+        ebf_curtoken_error("name of new or existing action");
         panic_mode_error_recovery();
         return FALSE;
     }
@@ -944,7 +996,7 @@ extern void make_verb(void)
     }
 
     if (no_given == 0)
-    {   ebf_error("English verb in quotes", token_text);
+    {   ebf_curtoken_error("English verb in quotes");
         panic_mode_error_recovery(); return;
     }
 
@@ -955,7 +1007,7 @@ extern void make_verb(void)
         if (Inform_verb == -1) return;
         get_next_token();
         if (!((token_type == SEP_TT) && (token_value == SEMICOLON_SEP)))
-            ebf_error("';' after English verb", token_text);
+            ebf_curtoken_error("';' after English verb");
     }
     else
     {   verb_equals_form = FALSE;
@@ -963,11 +1015,17 @@ extern void make_verb(void)
             error("Z-code is limited to 255 verbs.");
             panic_mode_error_recovery(); return;
         }
+        if (no_Inform_verbs >= 65535) {
+            error("Inform is limited to 65535 verbs.");
+            panic_mode_error_recovery(); return;
+        }
         ensure_memory_list_available(&Inform_verbs_memlist, no_Inform_verbs+1);
         Inform_verb = no_Inform_verbs;
         Inform_verbs[no_Inform_verbs].lines = 0;
         Inform_verbs[no_Inform_verbs].size = 4;
         Inform_verbs[no_Inform_verbs].l = my_malloc(sizeof(int) * Inform_verbs[no_Inform_verbs].size, "grammar lines for one verb");
+        Inform_verbs[no_Inform_verbs].line = get_brief_location(&ErrorReport);
+        Inform_verbs[no_Inform_verbs].used = FALSE;
     }
 
     for (i=0, pos=0; i<no_given; i++) {
@@ -1019,6 +1077,10 @@ extern void extend_verb(void)
             error("Z-code is limited to 255 verbs.");
             panic_mode_error_recovery(); return;
         }
+        if (no_Inform_verbs >= 65535) {
+            error("Inform is limited to 65535 verbs.");
+            panic_mode_error_recovery(); return;
+        }
         ensure_memory_list_available(&Inform_verbs_memlist, no_Inform_verbs+1);
         l = -1;
         while (get_next_token(),
@@ -1048,6 +1110,8 @@ extern void extend_verb(void)
         Inform_verbs[no_Inform_verbs].l = my_malloc(sizeof(int) * Inform_verbs[no_Inform_verbs].size, "grammar lines for one verb");
         for (k=0; k<l; k++)
             Inform_verbs[no_Inform_verbs].l[k] = Inform_verbs[Inform_verb].l[k];
+        Inform_verbs[no_Inform_verbs].line = get_brief_location(&ErrorReport);
+        Inform_verbs[no_Inform_verbs].used = FALSE;
         Inform_verb = no_Inform_verbs++;
     }
     else
@@ -1071,7 +1135,7 @@ extern void extend_verb(void)
             extend_mode = EXTEND_LAST;
 
         if (extend_mode==0)
-        {   ebf_error("'replace', 'last', 'first' or '*'", token_text);
+        {   ebf_curtoken_error("'replace', 'last', 'first' or '*'");
             extend_mode = EXTEND_LAST;
         }
     }
@@ -1166,6 +1230,10 @@ extern void verbs_allocate_arrays(void)
         sizeof(uchar), 50*DICT_WORD_BYTES, (void**)&adjective_sort_code,
         "adjective sort codes");
 
+    initialise_memory_list(&action_symname_memlist,
+        sizeof(uchar), 32, NULL,
+        "action temporary symbols");
+    
     initialise_memory_list(&English_verb_list_memlist,
         sizeof(char), 2048, (void**)&English_verb_list,
         "register of verbs");
@@ -1188,6 +1256,7 @@ extern void verbs_free_arrays(void)
     deallocate_memory_list(&grammar_token_routine_memlist);
     deallocate_memory_list(&adjectives_memlist);
     deallocate_memory_list(&adjective_sort_code_memlist);
+    deallocate_memory_list(&action_symname_memlist);
     deallocate_memory_list(&English_verb_list_memlist);
     deallocate_memory_list(&English_verbs_given_memlist);
 }

@@ -1,4 +1,4 @@
-Inform 6.36 (24th January 2022)
+Inform 6.42 for MacOS (10th February 2024)
 line 28: Warning:  Abbreviation does not save any characters: "be"
 > Abbreviate "be"
 line 33: Warning:  Abbreviation does not save any characters: "by"

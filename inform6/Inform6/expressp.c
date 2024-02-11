@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------------- */
 /*   "expressp" :  The expression parser                                     */
 /*                                                                           */
-/*   Part of Inform 6.41                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2022                                 */
+/*   Part of Inform 6.42                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2024                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -53,6 +53,8 @@ static int comma_allowed, arrow_allowed, superclass_allowed,
            etoken_count, inserting_token, bracket_level;
 
 int system_function_usage[NUMBER_SYSTEM_FUNCTIONS];
+
+static void check_system_constant_available(int);
 
 static int get_next_etoken(void)
 {   int v, symbol = 0, mark_symbol_as_used = FALSE,
@@ -311,8 +313,8 @@ but not used as a value:", unicode);
 
                     current_token.text += 3;
                     current_token.type = SYMBOL_TT;
-                    symbol = symbol_index(current_token.text, -1);
-                    if (symbols[symbol].type != GLOBAL_VARIABLE_T) {
+                    symbol = get_symbol_index(current_token.text);
+                    if (symbol < 0 || symbols[symbol].type != GLOBAL_VARIABLE_T) {
                         ebf_error(
                         "global variable name after '#g$'",
                         current_token.text);
@@ -363,7 +365,7 @@ but not used as a value:", unicode);
                         "'#r$Routine' can now be written just 'Routine'");
                     current_token.text += 3;
                     current_token.type = SYMBOL_TT;
-                    current_token.value = symbol_index(current_token.text, -1);
+                    current_token.value = symbol_index(current_token.text, -1, NULL);
                     goto ReceiveSymbol;
 
                 case HASHWDOLLAR_SEP:
@@ -375,13 +377,14 @@ but not used as a value:", unicode);
                     get_next_token();
                     system_constants.enabled = FALSE;
                     if (token_type != SYSTEM_CONSTANT_TT)
-                    {   ebf_error(
-                        "'r$', 'n$', 'g$' or internal Inform constant name after '#'",
-                        token_text);
+                    {   ebf_curtoken_error(
+                        "'r$', 'n$', 'g$' or internal Inform constant name after '#'");
                         break;
                     }
                     else
-                    {   current_token.type   = token_type;
+                    {
+                        check_system_constant_available(token_value);
+                        current_token.type   = token_type;
                         current_token.value  = token_value;
                         current_token.text   = token_text;
                         current_token.marker = INCON_MV;
@@ -459,27 +462,31 @@ but not used as a value:", unicode);
     return TRUE;
 }
 
-/* --- Operator precedences ------------------------------------------------ */
+/* --- Operator precedences and error values-------------------------------- */
 
 #define LOWER_P   101
 #define EQUAL_P   102
 #define GREATER_P 103
 
-#define e1        1       /* Missing operand error                */
-#define e2        2       /* Unexpected close bracket             */
-#define e3        3       /* Missing operator error               */
-#define e4        4       /* Expression ends with an open bracket */
-#define e5        5       /* Associativity illegal error          */
+#define BYPREC     -1       /* Compare the precedence of two operators */
 
-const int prec_table[] = {
+#define NOVAL_E     1       /* Missing operand error                */
+#define CLOSEB_E    2       /* Unexpected close bracket             */
+#define NOOP_E      3       /* Missing operator error               */
+#define OPENB_E     4       /* Expression ends with an open bracket */
+#define ASSOC_E     5       /* Associativity illegal error          */
 
-/* a .......... (         )           end       op          term             */
+const int prec_table[49] = {
 
-/* b  (    */   LOWER_P,  e3,         LOWER_P,  LOWER_P,    e3,
-/* .  )    */   EQUAL_P,  GREATER_P,  e2,       GREATER_P,  GREATER_P,
-/* .  end  */   e4,       GREATER_P,  e1,       GREATER_P,  GREATER_P,
-/* .  op   */   LOWER_P,  GREATER_P,  LOWER_P,  -1,         GREATER_P,
-/* .  term */   LOWER_P,  e3,         LOWER_P,  LOWER_P,    e3
+/*   a .......   (         )           end       op:pre      op:bin      op:post     term      */
+
+/* b  (    */    LOWER_P,  NOOP_E,     LOWER_P,  LOWER_P,    LOWER_P,    NOOP_E,     NOOP_E,
+/* .  )    */    EQUAL_P,  GREATER_P,  CLOSEB_E, GREATER_P,  GREATER_P,  GREATER_P,  GREATER_P,
+/* .  end  */    OPENB_E,  GREATER_P,  NOVAL_E,  GREATER_P,  GREATER_P,  GREATER_P,  GREATER_P,
+/* .  op:pre  */ LOWER_P,  NOOP_E,     LOWER_P,  BYPREC,     BYPREC,     NOOP_E,     NOOP_E,
+/* .  op:bin  */ LOWER_P,  GREATER_P,  LOWER_P,  BYPREC,     BYPREC,     BYPREC,     GREATER_P,
+/* .  op:post */ LOWER_P,  GREATER_P,  LOWER_P,  BYPREC,     BYPREC,     BYPREC,     GREATER_P,
+/* .  term */    LOWER_P,  NOOP_E,     LOWER_P,  LOWER_P,    LOWER_P,    NOOP_E,     NOOP_E
 
 };
 
@@ -488,7 +495,7 @@ static int find_prec(const token_data *a, const token_data *b)
     /*  We are comparing the precedence of tokens  a  and  b
         (where a occurs to the left of b).  If the expression is correct,
         the only possible values are GREATER_P, LOWER_P or EQUAL_P;
-        if it is malformed then one of e1 to e5 results.
+        if it is malformed then one of the *_E results.
 
         Note that this routine is not symmetrical and that the relation
         is not trichotomous.
@@ -499,25 +506,50 @@ static int find_prec(const token_data *a, const token_data *b)
             a GREATER_P a   if a left-associative
     */
 
-    int i, j, l1, l2;
+    int ai, bi, j, l1, l2;
 
+    /*   Select a column and row in prec_table, based on the type of
+         a and b. If a/b is an operator, we have to distinguish three
+         columns/rows depending on whether the operator is prefix,
+         postfix, or neither.
+    */
+    
     switch(a->type)
-    {   case SUBOPEN_TT:  i=0; break;
-        case SUBCLOSE_TT: i=1; break;
-        case ENDEXP_TT:   i=2; break;
-        case OP_TT:       i=3; break;
-        default:          i=4; break;
+    {   case SUBOPEN_TT:  ai=0; break;
+        case SUBCLOSE_TT: ai=1; break;
+        case ENDEXP_TT:   ai=2; break;
+        case OP_TT:
+            if (operators[a->value].usage == PRE_U)
+                ai=3;
+            else if (operators[a->value].usage == POST_U)
+                ai=5;
+            else
+                ai=4;
+            break;
+        default:          ai=6; break;
     }
     switch(b->type)
-    {   case SUBOPEN_TT:  i+=0; break;
-        case SUBCLOSE_TT: i+=5; break;
-        case ENDEXP_TT:   i+=10; break;
-        case OP_TT:       i+=15; break;
-        default:          i+=20; break;
+    {   case SUBOPEN_TT:  bi=0; break;
+        case SUBCLOSE_TT: bi=1; break;
+        case ENDEXP_TT:   bi=2; break;
+        case OP_TT:
+            if (operators[b->value].usage == PRE_U)
+                bi=3;
+            else if (operators[b->value].usage == POST_U)
+                bi=5;
+            else
+                bi=4;
+            break;
+        default:          bi=6; break;
     }
+    
+    j = prec_table[ai+7*bi];
+    if (j != BYPREC) return j;
 
-    j = prec_table[i]; if (j != -1) return j;
-
+    /* BYPREC is the (a=OP, b=OP) cases. We must compare the precedence of the
+       two operators.
+       (We've already eliminated invalid cases like (a++ --b).)
+    */
     l1 = operators[a->value].precedence;
     l2 = operators[b->value].precedence;
     if (operators[b->value].usage == PRE_U) return LOWER_P;
@@ -537,7 +569,7 @@ static int find_prec(const token_data *a, const token_data *b)
     switch(operators[a->value].associativity)
     {   case L_A: return GREATER_P;
         case R_A: return LOWER_P;
-        case 0:   return e5;
+        case 0:   return ASSOC_E;
     }
     return GREATER_P;
 }
@@ -593,8 +625,32 @@ int z_system_constant_list[] =
       grammar_table_SC,
       -1 };
 
+static void check_system_constant_available(int t)
+{
+    if (OMIT_SYMBOL_TABLE) {
+        /* Certain system constants refer to the symbol table, which
+           is meaningless if OMIT_SYMBOL_TABLE is set. */
+        switch(t)
+        {
+            case identifiers_table_SC:
+            case attribute_names_array_SC:
+            case property_names_array_SC:
+            case action_names_array_SC:
+            case fake_action_names_array_SC:
+            case array_names_offset_SC:
+            case global_names_array_SC:
+            case routine_names_array_SC:
+            case constant_names_array_SC:
+                error_named("OMIT_SYMBOL_TABLE omits system constant", system_constants.keywords[t]);
+            default:
+                break;
+        }
+    }
+}
+
 static int32 value_of_system_constant_z(int t)
-{   switch(t)
+{
+    switch(t)
     {   case adjectives_table_SC:
             return adjectives_offset;
         case actions_table_SC:
@@ -1029,7 +1085,7 @@ static void add_bracket_layer_to_emitter_stack(int depth)
 {   /* There's no point in tracking bracket layers that don't fence off any values. */
     if (emitter_sp < depth + 1) return;
     if (expr_trace_level >= 2)
-        printf("Adding bracket layer\n");
+        printf("Adding bracket layer (depth %d)\n", depth);
     ++emitter_stack[emitter_sp-depth-1].bracket_count;
 }
 
@@ -1202,7 +1258,7 @@ static void emit_token(const token_data *t)
                 default:
                     warning("Property name in expression is not qualified by object");
             }
-        } /* if (is_property_t */
+        }
     }
 
     switch(arity)
@@ -1210,7 +1266,12 @@ static void emit_token(const token_data *t)
             o1 = emitter_stack[emitter_sp - 1].op;
             if ((o1.marker == 0) && is_constant_ot(o1.type))
             {   switch(t->value)
-                {   case UNARY_MINUS_OP: x = -o1.value; goto FoldConstant;
+                {   case UNARY_MINUS_OP:
+                        if ((uint32)o1.value == 0x80000000)
+                          x = 0x80000000;
+                        else
+                          x = -o1.value;
+                        goto FoldConstant;
                     case ARTNOT_OP: 
                          if (!glulx_mode)
                              x = (~o1.value) & 0xffff;
@@ -1377,23 +1438,24 @@ static void emit_token(const token_data *t)
        for 32-bit arithmetic. */
 
     if (!glulx_mode && ((x<-32768) || (x > 32767)))
-    {   char folding_error[40];
+    {
         int32 ov1 = (o1.value >= 0x8000) ? (o1.value - 0x10000) : o1.value;
         int32 ov2 = (o2.value >= 0x8000) ? (o2.value - 0x10000) : o2.value;
+        char op = '?';
         switch(t->value)
         {
             case PLUS_OP:
-                sprintf(folding_error, "%d + %d = %d", ov1, ov2, x);
+                op = '+';
                 break;
             case MINUS_OP:
-                sprintf(folding_error, "%d - %d = %d", ov1, ov2, x);
+                op = '-';
                 break;
             case TIMES_OP:
-                sprintf(folding_error, "%d * %d = %d", ov1, ov2, x);
+                op = '*';
                 break;
         }
-        error_named("Signed arithmetic on compile-time constants overflowed \
-the range -32768 to +32767:", folding_error);
+        error_fmt("Signed arithmetic on compile-time constants overflowed \
+the range -32768 to +32767 (%d %c %d = %d)", ov1, op, ov2, x);
     }
 
     FoldConstant:
@@ -1466,10 +1528,10 @@ static void show_node(int n, int depth, int annotate)
     if (ET[n].right != -1) show_node(ET[n].right, depth, annotate);
 }
 
-extern void show_tree(assembly_operand AO, int annotate)
-{   if (AO.type == EXPRESSION_OT) show_node(AO.value, 0, annotate);
+extern void show_tree(const assembly_operand *AO, int annotate)
+{   if (AO->type == EXPRESSION_OT) show_node(AO->value, 0, annotate);
     else
-    {   printf("Constant: "); print_operand(&AO, annotate);
+    {   printf("Constant: "); print_operand(AO, annotate);
         printf("\n");
     }
 }
@@ -1869,8 +1931,11 @@ extern assembly_operand parse_expression(int context)
         is constant and thus known at compile time.
 
         If an error has occurred in the expression, which recovery from was
-        not possible, then the return is (short constant) 0.  This should
-        minimise the chance of a cascade of further error messages.
+        not possible, then the return is (short constant) 0 with marker
+        value ERROR_MV.  The caller may check for this marker value to
+        decide whether to (e.g.) stop reading array values. Otherwise, it
+        will just be treated as a zero, which should minimise the chance
+        of a cascade of further error messages.
     */
 
     token_data a, b, pop; int i;
@@ -1912,7 +1977,8 @@ extern assembly_operand parse_expression(int context)
     directives.enabled = FALSE;
 
     if (get_next_etoken() == FALSE)
-    {   ebf_error("expression", token_text);
+    {   ebf_curtoken_error("expression");
+        AO.marker = ERROR_MV;
         return AO;
     }
 
@@ -1926,6 +1992,7 @@ extern assembly_operand parse_expression(int context)
 
         if (sr_sp == 0)
         {   compiler_error("SR error: stack empty");
+            AO.marker = ERROR_MV;
             return(AO);
         }
 
@@ -1935,10 +2002,12 @@ extern assembly_operand parse_expression(int context)
         {   if (emitter_sp == 0)
             {   error("No expression between brackets '(' and ')'");
                 put_token_back();
+                AO.marker = ERROR_MV;
                 return AO;
             }
             if (emitter_sp > 1)
             {   compiler_error("SR error: emitter stack overfull");
+                AO.marker = ERROR_MV;
                 return AO;
             }
 
@@ -1946,7 +2015,7 @@ extern assembly_operand parse_expression(int context)
             if (AO.type == EXPRESSION_OT)
             {   if (expr_trace_level >= 3)
                 {   printf("Tree before lvalue checking:\n");
-                    show_tree(AO, FALSE);
+                    show_tree(&AO, FALSE);
                 }
                 if (!glulx_mode)
                     check_property_operator(AO.value);
@@ -1966,6 +2035,7 @@ extern assembly_operand parse_expression(int context)
             if (context == CONSTANT_CONTEXT)
                 if (!is_constant_ot(AO.type))
                 {   AO = zero_operand;
+                    AO.marker = ERROR_MV;
                     ebf_error("constant", "<expression>");
                 }
             put_token_back();
@@ -1975,7 +2045,7 @@ extern assembly_operand parse_expression(int context)
 
         switch(find_prec(&a,&b))
         {
-            case e5:                 /* Associativity error                  */
+            case ASSOC_E:            /* Associativity error                  */
                 error_named("Brackets mandatory to clarify order of:",
                     a.text);
 
@@ -2035,8 +2105,10 @@ extern assembly_operand parse_expression(int context)
                 } while (find_prec(&sr_stack[sr_sp-1], &pop) != LOWER_P);
                 break;
 
-            case e1:                 /* Missing operand error                */
+            case NOVAL_E:            /* Missing operand error                */
                 error_named("Missing operand after", a.text);
+                /* We insert a "0" token so that the rest of the expression
+                   can be compiled. */
                 put_token_back();
                 current_token.type = NUMBER_TT;
                 current_token.value = 0;
@@ -2044,13 +2116,15 @@ extern assembly_operand parse_expression(int context)
                 current_token.text = "0";
                 break;
 
-            case e2:                 /* Unexpected close bracket             */
+            case CLOSEB_E:           /* Unexpected close bracket             */
                 error("Found '(' without matching ')'");
                 get_next_etoken();
                 break;
 
-            case e3:                 /* Missing operator error               */
-                error("Missing operator: inserting '+'");
+            case NOOP_E:             /* Missing operator error               */
+                error_named("Missing operator after", a.text);
+                /* We insert a "+" token so that the rest of the expression
+                   can be compiled. */
                 put_token_back();
                 current_token.type = OP_TT;
                 current_token.value = PLUS_OP;
@@ -2058,7 +2132,7 @@ extern assembly_operand parse_expression(int context)
                 current_token.text = "+";
                 break;
 
-            case e4:                 /* Expression ends with an open bracket */
+            case OPENB_E:            /* Expression ends with an open bracket */
                 error("Found '(' without matching ')'");
                 sr_sp--;
                 break;
@@ -2084,6 +2158,80 @@ extern int test_for_incdec(assembly_operand AO)
     if (ET[ET[AO.value].down].down != -1) return 0;
     if (!is_variable_ot(ET[ET[AO.value].down].value.type)) return 0;
     return s*(ET[ET[AO.value].down].value.value);
+}
+
+
+/* Determine if the operand (a parsed expression) is a constant (as
+   per is_constant_ot()) or a comma-separated list of such constants.
+   
+   "(1)" and "(1,2,3)" both count, and even "((1,2),3)", but
+   not "(1,(2,3))"; the list must be left-associated.
+
+   Backpatched constants (function names, etc) are acceptable, as are
+   folded constant expressions. Variables are right out.
+
+   The constants are stored in the ops_found array, up to a maximum of
+   max_ops_found. For Inform parsing reasons, the array list is backwards
+   from the order found.
+
+   Returns the number of constants found. If the expression is not a list of
+   constants, returns zero.
+   
+   (The return value may be more than max_ops_found, in which case we weren't
+   able to return them all in the array.)
+*/
+extern int test_constant_op_list(const assembly_operand *AO, assembly_operand *ops_found, int max_ops_found)
+{
+    int count = 0;
+    int n;
+
+    if (AO->type != EXPRESSION_OT) {
+        if (!is_constant_ot(AO->type))
+            return 0;
+
+        if (ops_found && max_ops_found > 0)
+            ops_found[0] = *AO;
+        return 1;
+    }
+
+    n = AO->value;
+
+    /* For some reason the top node is always a COMMA with no .right,
+       just a .down. Should we rely on this? For now yes. */
+
+    if (operators[ET[n].operator_number].token_value != COMMA_SEP)
+        return 0;
+    if (ET[n].right != -1)
+        return 0;
+    n = ET[n].down;
+
+    while (TRUE) {
+        if (ET[n].right != -1) {
+            if (ET[ET[n].right].down != -1)
+                return 0;
+            if (!is_constant_ot(ET[ET[n].right].value.type))
+                return 0;
+            
+            if (ops_found && max_ops_found > count)
+                ops_found[count] = ET[ET[n].right].value;
+            count++;
+        }
+
+        if (ET[n].down == -1) {
+            if (!is_constant_ot(ET[n].value.type))
+                return 0;
+            
+            if (ops_found && max_ops_found > count)
+                ops_found[count] = ET[n].value;
+            count++;
+            return count;
+        }
+        
+        if (operators[ET[n].operator_number].token_value != COMMA_SEP)
+            return 0;
+
+        n = ET[n].down;
+    }
 }
 
 /* ========================================================================= */

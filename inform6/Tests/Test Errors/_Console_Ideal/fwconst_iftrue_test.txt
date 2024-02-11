@@ -1,4 +1,4 @@
-Inform 6.36 (24th January 2022)
+Inform 6.42 for MacOS (10th February 2024)
 line 90: Error:  This condition can't be determined
 >  #iftrue FORWARD_CONSTANT_A;
 line 96: Error:  This condition can't be determined

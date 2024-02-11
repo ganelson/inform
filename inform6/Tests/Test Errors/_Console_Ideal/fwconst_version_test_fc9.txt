@@ -1,4 +1,4 @@
-Inform 6.36 (24th January 2022)
+Inform 6.42 for MacOS (10th February 2024)
 line 1: Error:  The version number must be in the range 3 to 8
 > Version FORWARD_CONSTANT;
 Compiled with 1 error (no output)

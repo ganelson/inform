@@ -1,4 +1,4 @@
-Inform 6.36 (24th January 2022)
+Inform 6.42 for MacOS (10th February 2024)
 line 6: Warning:  Property "p0" declared but not used
 line 7: Warning:  Property "p1" declared but not used
 line 8: Warning:  Property "p2" declared but not used

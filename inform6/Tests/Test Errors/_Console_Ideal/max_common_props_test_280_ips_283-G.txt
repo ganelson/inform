@@ -1,4 +1,4 @@
-Inform 6.36 (24th January 2022)
+Inform 6.42 for MacOS (10th February 2024)
 line 282: Error:  All 280 properties already declared (increase INDIV_PROP_START to get more)
 > Property p279;
 line 3: Warning:  Property "p0" declared but not used

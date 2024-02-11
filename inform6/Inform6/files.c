@@ -7,8 +7,8 @@
 /*             routines in "inform.c", since they are tied up with ICL       */
 /*             settings and are very host OS-dependent.                      */
 /*                                                                           */
-/*   Part of Inform 6.41                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2022                                 */
+/*   Part of Inform 6.42                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2024                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -27,7 +27,7 @@ int32 total_chars_read;                 /* Characters read in (from all
 static int checksum_low_byte,           /* For calculating the Z-machine's   */
            checksum_high_byte;          /* "verify" checksum                 */
 
-static int32 checksum_long;             /* For the Glulx checksum,           */
+static uint32 checksum_long;             /* For the Glulx checksum,          */
 static int checksum_count;              /* similarly                         */
 
 /* ------------------------------------------------------------------------- */
@@ -102,7 +102,7 @@ extern void load_sourcefile(char *filename_given, int same_directory_flag)
     do
     {   x = translate_in_filename(x, name, filename_given, same_directory_flag,
                 (total_files==0)?1:0);
-        handle = fopen(name,"r");
+        handle = fopen(name,"rb");
     } while ((handle == NULL) && (x != 0));
 
     InputFiles[total_files].filename = my_malloc(strlen(name)+1, "filename storage");
@@ -287,16 +287,16 @@ static void sf_put(int c)
 
       switch (checksum_count) {
       case 0:
-        checksum_long += (((int32)(c & 0xFF)) << 24);
+        checksum_long += (((uint32)(c & 0xFF)) << 24);
         break;
       case 1:
-        checksum_long += (((int32)(c & 0xFF)) << 16);
+        checksum_long += (((uint32)(c & 0xFF)) << 16);
         break;
       case 2:
-        checksum_long += (((int32)(c & 0xFF)) << 8);
+        checksum_long += (((uint32)(c & 0xFF)) << 8);
         break;
       case 3:
-        checksum_long += ((int32)(c & 0xFF));
+        checksum_long += ((uint32)(c & 0xFF));
         break;
       }
       
@@ -344,7 +344,7 @@ static void output_compression(int entnum, int32 *size, int *count)
     (*size) += 1;
     break;
   case 3:
-    cx = (char *)abbreviations_at + ent->u.val*MAX_ABBREV_LENGTH;
+    cx = abbreviation_text(ent->u.val);
     while (*cx) {
       sf_put(*cx);
       cx++;
@@ -606,7 +606,6 @@ static void output_file_z(void)
 static void output_file_g(void)
 {   char new_name[PATHLEN];
     int32 size, i, j, offset;
-    int32 VersionNum;
     uint32 code_length, size_before_code, next_cons_check;
     int use_function;
     int first_byte_of_triple, second_byte_of_triple, third_byte_of_triple;
@@ -633,35 +632,33 @@ static void output_file_g(void)
 
     /* Determine the version number. */
 
-    VersionNum = 0x00020000;
+    final_glulx_version = 0x00020000;
 
     /* Increase for various features the game may have used. */
     if (no_unicode_chars != 0 || (uses_unicode_features)) {
-      VersionNum = 0x00030000;
+      final_glulx_version = 0x00030000;
     }
     if (uses_memheap_features) {
-      VersionNum = 0x00030100;
+      final_glulx_version = 0x00030100;
     }
     if (uses_acceleration_features) {
-      VersionNum = 0x00030101;
+      final_glulx_version = 0x00030101;
     }
     if (uses_float_features) {
-      VersionNum = 0x00030102;
+      final_glulx_version = 0x00030102;
     }
     if (uses_double_features || uses_extundo_features) {
-      VersionNum = 0x00030103;
+      final_glulx_version = 0x00030103;
     }
 
     /* And check if the user has requested a specific version. */
     if (requested_glulx_version) {
-      if (requested_glulx_version < VersionNum) {
-        static char error_message_buff[256];
-        sprintf(error_message_buff, "Version 0x%08lx requested, but \
-game features require version 0x%08lx", (long)requested_glulx_version, (long)VersionNum);
-        warning(error_message_buff);
+      if (requested_glulx_version < final_glulx_version) {
+        warning_fmt("Version 0x%08lx requested, but game features require version 0x%08lx",
+                    (long)requested_glulx_version, (long)final_glulx_version);
       }
       else {
-        VersionNum = requested_glulx_version;
+        final_glulx_version = requested_glulx_version;
       }
     }
 
@@ -674,10 +671,10 @@ game features require version 0x%08lx", (long)requested_glulx_version, (long)Ver
     sf_put('u');
     sf_put('l');
     /* Version number. */
-    sf_put((VersionNum >> 24));
-    sf_put((VersionNum >> 16));
-    sf_put((VersionNum >> 8));
-    sf_put((VersionNum));
+    sf_put((final_glulx_version >> 24));
+    sf_put((final_glulx_version >> 16));
+    sf_put((final_glulx_version >> 8));
+    sf_put((final_glulx_version));
     /* RAMSTART */
     sf_put((Write_RAM_At >> 24));
     sf_put((Write_RAM_At >> 16));
@@ -1207,9 +1204,9 @@ extern void open_transcript_file(char *what_of)
 
     transcript_open = TRUE;
 
-    sprintf(topline_buffer, "Transcript of the text of \"%s\"", what_of);
+    snprintf(topline_buffer, 256, "Transcript of the text of \"%s\"", what_of);
     write_to_transcript_file(topline_buffer, STRCTX_INFO);
-    sprintf(topline_buffer, "[From %s]", banner_line);
+    snprintf(topline_buffer, 256, "[From %s]", banner_line);
     write_to_transcript_file(topline_buffer, STRCTX_INFO);
     if (TRANSCRIPT_FORMAT == 1) {
         write_to_transcript_file("[I:info, G:game text, V:veneer text, L:lowmem string, A:abbreviation, D:dict word, O:object name, S:symbol, X:infix]", STRCTX_INFO);
@@ -1229,10 +1226,22 @@ extern void close_transcript_file(void)
 {   char botline_buffer[256];
     char sn_buffer[7];
 
-    write_serial_number(sn_buffer);
-    sprintf(botline_buffer, "[End of transcript: release %d, serial %s]",
-        release_number, sn_buffer);
     write_to_transcript_file("",  STRCTX_INFO);
+
+    if (!glulx_mode) {
+        snprintf(botline_buffer, 256, "[Compiled Z-machine version %d]", version_number);
+    }
+    else {
+        int32 major = (final_glulx_version >> 16) & 0xFFFF;
+        int32 minor = (final_glulx_version >> 8) & 0xFF;
+        int32 patch = final_glulx_version & 0xFF;
+        snprintf(botline_buffer, 256, "[Compiled Glulx version %d.%d.%d]", major, minor, patch);
+    }
+    write_to_transcript_file(botline_buffer, STRCTX_INFO);
+    
+    write_serial_number(sn_buffer);
+    snprintf(botline_buffer, 256, "[End of transcript: release %d, serial %s]",
+        release_number, sn_buffer);
     write_to_transcript_file(botline_buffer, STRCTX_INFO);
     write_to_transcript_file("",  STRCTX_INFO);
 

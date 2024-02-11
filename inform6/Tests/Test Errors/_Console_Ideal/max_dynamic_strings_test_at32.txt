@@ -1,5 +1,5 @@
-Inform 6.36 (24th January 2022)
-line 5: Error:  Only dynamic strings @00 to @31 may be used, because $MAX_DYNAMIC_STRINGS has its default value of 32. Increase MAX_DYNAMIC_STRINGS.
+Inform 6.42 for MacOS (10th February 2024)
+line 5: Error:  Only dynamic strings @(00) to @(31) may be used, because $MAX_DYNAMIC_STRINGS has its default value of 32. Increase MAX_DYNAMIC_STRINGS.
 > Constant str32 = "@32";
 line 4: Warning:  Defined constant "str0" declared but not used
 line 5: Warning:  Defined constant "str32" declared but not used

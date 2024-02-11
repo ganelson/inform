@@ -1,4 +1,4 @@
-Inform 6.36 (24th January 2022)
+Inform 6.42 for MacOS (10th February 2024)
 line 26: Error:  A 'Version' directive must come before the first routine definition.
 > Version 3;
 Compiled with 1 error (no output)

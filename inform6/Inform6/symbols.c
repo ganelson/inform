@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------------- */
 /*   "symbols" :  The symbols table; creating stock of reserved words        */
 /*                                                                           */
-/*   Part of Inform 6.41                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2022                                 */
+/*   Part of Inform 6.42                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2024                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -56,10 +56,13 @@ symbolinfo *symbols;                           /* Allocated up to no_symbols */
 static memory_list symbols_memlist;
 symboldebuginfo *symbol_debug_info;            /* Allocated up to no_symbols */
 static memory_list symbol_debug_info_memlist;
+static char *temp_symbol_buf;        /* used in write_the_identifier_names() */
+static memory_list temp_symbol_buf_memlist;
 
 /* ------------------------------------------------------------------------- */
 /*   Memory to hold the text of symbol names: note that this memory is       */
-/*   allocated as needed in chunks of size SYMBOLS_CHUNK_SIZE.               */
+/*   allocated as needed in chunks of size SYMBOLS_CHUNK_SIZE. (Or           */
+/*   larger, if needed for a particularly enormous symbol.)                  */
 /* ------------------------------------------------------------------------- */
 
 #define SYMBOLS_CHUNK_SIZE (4096)
@@ -224,10 +227,16 @@ extern int get_symbol_index(char *p)
     return -1;
 }
 
-extern int symbol_index(char *p, int hashcode)
+extern int symbol_index(char *p, int hashcode, int *created)
 {
     /*  Return the index in the symbols array of symbol "p", creating a
-        new symbol with that name if it isn't already there.
+        new symbol with that name if it isn't already there. This
+        always returns a valid symbol index.
+
+        The optional created argument receives TRUE if the symbol
+        was newly created.
+
+        Pass in the hashcode of p if you know it, or -1 if you don't.
 
         New symbols are created with flag UNKNOWN_SFLAG, value 0x100
         (a 2-byte quantity in Z-machine terms) and type CONSTANT_T.
@@ -251,6 +260,7 @@ extern int symbol_index(char *p, int hashcode)
         {
             if (track_unused_routines)
                 df_note_function_symbol(this);
+            if (created) *created = FALSE;
             return this;
         }
         if (new_entry > 0) break;
@@ -260,7 +270,7 @@ extern int symbol_index(char *p, int hashcode)
     } while (this != -1);
 
     if (symdef_trace_setting)
-        printf("Encountered symbol %d '%s'\n", no_symbols, p);
+        printf("%s: Encountered symbol %d '%s'\n", current_location_text(), no_symbols, p);
     
     ensure_memory_list_available(&symbols_memlist, no_symbols+1);
     if (debugfile_switch)
@@ -276,18 +286,19 @@ extern int symbol_index(char *p, int hashcode)
     }
 
     len = strlen(p);
-    if (symbols_free_space+len+1 >= symbols_ceiling)
-    {   symbols_free_space
-            = my_malloc(SYMBOLS_CHUNK_SIZE, "symbol names chunk");
-        symbols_ceiling = symbols_free_space + SYMBOLS_CHUNK_SIZE;
+    if (!symbols_free_space || symbols_free_space+len+1 >= symbols_ceiling)
+    {
+        /* Allocate a new chunk whose size is big enough for the current
+           symbol, or SYMBOLS_CHUNK_SIZE, whichever is greater. */
+        int chunklen = SYMBOLS_CHUNK_SIZE;
+        if (chunklen < len+1)
+            chunklen = len+1;
+        symbols_free_space
+            = my_malloc(chunklen, "symbol names chunk");
+        symbols_ceiling = symbols_free_space + chunklen;
         ensure_memory_list_available(&symbol_name_space_chunks_memlist, no_symbol_name_space_chunks+1);
         symbol_name_space_chunks[no_symbol_name_space_chunks++]
             = symbols_free_space;
-        if (symbols_free_space+len+1 >= symbols_ceiling)
-        {
-            /* This should be impossible, since SYMBOLS_CHUNK_SIZE > MAX_IDENTIFIER_LENGTH. */
-            fatalerror("Symbol exceeds the maximum possible length");
-        }
     }
 
     strcpy(symbols_free_space, p);
@@ -309,17 +320,29 @@ extern int symbol_index(char *p, int hashcode)
 
     if (track_unused_routines)
         df_note_function_symbol(no_symbols);
+    if (created) *created = TRUE;
     return(no_symbols++);
 }
 
-extern void end_symbol_scope(int k)
+extern void end_symbol_scope(int k, int neveruse)
 {
     /* Remove the given symbol from the hash table, making it
-       invisible to symbol_index. This is used by the Undef directive.
-       If the symbol is not found, this silently does nothing.
+       invisible to symbol_index. This is used by the Undef directive
+       and put_token_back().
+
+       If you know the symbol has never been used, set neveruse and
+       it will be flagged as an error if it *is* used.
+       
+       If the symbol is not found in the hash table, this silently does
+       nothing.
     */
 
     int j;
+    
+    symbols[k].flags |= UNHASHED_SFLAG;
+    if (neveruse)
+        symbols[k].flags |= DISCARDED_SFLAG;
+        
     j = hash_code_from_string(symbols[k].name);
     if (start_of_list[j] == k)
     {   start_of_list[j] = symbols[k].next_entry;
@@ -375,8 +398,8 @@ static void describe_flags(int flags)
     if (flags & USED_SFLAG)     printf("(used) ");
     if (flags & DEFCON_SFLAG)   printf("(Defaulted) ");
     if (flags & STUB_SFLAG)     printf("(Stubbed) ");
-    if (flags & IMPORT_SFLAG)   printf("(Imported) ");
-    if (flags & EXPORT_SFLAG)   printf("(Exported) ");
+    if (flags & UNHASHED_SFLAG) printf("(not in hash chain) ");
+    if (flags & DISCARDED_SFLAG)  printf("(removed, do not use) ");
     if (flags & ALIASED_SFLAG)  printf("(aliased) ");
     if (flags & CHANGE_SFLAG)   printf("(value will change) ");
     if (flags & SYSTEM_SFLAG)   printf("(System) ");
@@ -514,15 +537,22 @@ extern void issue_unused_warnings(void)
     }
     /*  Now back to mark anything necessary as used  */
 
-    i = symbol_index("Main", -1);
-    if (!(symbols[i].flags & UNKNOWN_SFLAG)) symbols[i].flags |= USED_SFLAG;
+    i = get_symbol_index("Main");
+    if (i >= 0 && !(symbols[i].flags & UNKNOWN_SFLAG)) {
+        symbols[i].flags |= USED_SFLAG;
+    }
 
     for (i=0;i<no_symbols;i++)
     {   if (((symbols[i].flags
-             & (SYSTEM_SFLAG + UNKNOWN_SFLAG + EXPORT_SFLAG
+             & (SYSTEM_SFLAG + UNKNOWN_SFLAG
                 + INSF_SFLAG + USED_SFLAG + REPLACE_SFLAG)) == 0)
-             && (symbols[i].type != OBJECT_T))
+             && (symbols[i].type != OBJECT_T)) {
             dbnu_warning(typename(symbols[i].type), symbols[i].name, symbols[i].line);
+        }
+        if ((symbols[i].flags & DISCARDED_SFLAG)
+            && (symbols[i].flags & USED_SFLAG)) {
+            error_named_at("Symbol was removed from the symbol table, but seems to be in use anyway", symbols[i].name, symbols[i].line);
+        }
     }
 }
 
@@ -539,7 +569,7 @@ extern void issue_debug_symbol_warnings(void)
 
 /* ------------------------------------------------------------------------- */
 /*   These are arrays used only during story file creation, and not          */
-/*   allocated until then.                                                   */
+/*   allocated until just before write_the_identifier_names() time.          */
 
        int32 *individual_name_strings; /* Packed addresses of Z-encoded
                                           strings of the names of the
@@ -550,7 +580,7 @@ extern void issue_debug_symbol_warnings(void)
        int32 *array_name_strings;      /* Ditto for arrays                   */
 
 extern void write_the_identifier_names(void)
-{   int i, j, k, t, null_value; char idname_string[256];
+{   int i, j, k, t, null_value;
     static char unknown_attribute[20] = "<unknown attribute>";
 
     for (i=0; i<no_individual_properties; i++)
@@ -566,114 +596,133 @@ extern void write_the_identifier_names(void)
         if ((t == INDIVIDUAL_PROPERTY_T) || (t == PROPERTY_T))
         {   if (symbols[i].flags & ALIASED_SFLAG)
             {   if (individual_name_strings[symbols[i].value] == 0)
-                {   sprintf(idname_string, "%s", symbols[i].name);
+                {
+                    int sleni = strlen(symbols[i].name);
+                    ensure_memory_list_available(&temp_symbol_buf_memlist, sleni+1);
+                    sprintf(temp_symbol_buf, "%s", symbols[i].name);
 
                     for (j=i+1, k=0; (j<no_symbols && k<3); j++)
                     {   if ((symbols[j].type == symbols[i].type)
                             && (symbols[j].value == symbols[i].value))
-                        {   sprintf(idname_string+strlen(idname_string),
+                        {
+                            int slenj = strlen(symbols[j].name);
+                            ensure_memory_list_available(&temp_symbol_buf_memlist, strlen(temp_symbol_buf)+1+slenj+1);
+                            sprintf(temp_symbol_buf+strlen(temp_symbol_buf),
                                 "/%s", symbols[j].name);
                             k++;
                         }
                     }
 
                     individual_name_strings[symbols[i].value]
-                        = compile_string(idname_string, STRCTX_SYMBOL);
+                        = compile_string(temp_symbol_buf, STRCTX_SYMBOL);
                 }
             }
             else
-            {   sprintf(idname_string, "%s", symbols[i].name);
-
+            {
                 individual_name_strings[symbols[i].value]
-                    = compile_string(idname_string, STRCTX_SYMBOL);
+                    = compile_string(symbols[i].name, STRCTX_SYMBOL);
             }
         }
         if (t == ATTRIBUTE_T)
-        {   if (symbols[i].flags & ALIASED_SFLAG)
+        {
+            if (symbols[i].flags & ALIASED_SFLAG)
             {   if (attribute_name_strings[symbols[i].value] == null_value)
-                {   sprintf(idname_string, "%s", symbols[i].name);
+                {
+                    int sleni = strlen(symbols[i].name);
+                    ensure_memory_list_available(&temp_symbol_buf_memlist, sleni+1);
+                    sprintf(temp_symbol_buf, "%s", symbols[i].name);
 
                     for (j=i+1, k=0; (j<no_symbols && k<3); j++)
                     {   if ((symbols[j].type == symbols[i].type)
                             && (symbols[j].value == symbols[i].value))
-                        {   sprintf(idname_string+strlen(idname_string),
+                        {
+                            int slenj = strlen(symbols[j].name);
+                            ensure_memory_list_available(&temp_symbol_buf_memlist, strlen(temp_symbol_buf)+1+slenj+1);
+                            sprintf(temp_symbol_buf+strlen(temp_symbol_buf),
                                 "/%s", symbols[j].name);
                             k++;
                         }
                     }
 
                     attribute_name_strings[symbols[i].value]
-                        = compile_string(idname_string, STRCTX_SYMBOL);
+                        = compile_string(temp_symbol_buf, STRCTX_SYMBOL);
                 }
             }
             else
-            {   sprintf(idname_string, "%s", symbols[i].name);
-
+            {
                 attribute_name_strings[symbols[i].value]
-                    = compile_string(idname_string, STRCTX_SYMBOL);
+                    = compile_string(symbols[i].name, STRCTX_SYMBOL);
             }
         }
+        
         if (symbols[i].flags & ACTION_SFLAG)
-        {   sprintf(idname_string, "%s", symbols[i].name);
-            idname_string[strlen(idname_string)-3] = 0;
+        {
+            int sleni = strlen(symbols[i].name);
+            ensure_memory_list_available(&temp_symbol_buf_memlist, sleni+1);
+            sprintf(temp_symbol_buf, "%s", symbols[i].name);
+            temp_symbol_buf[strlen(temp_symbol_buf)-3] = 0;
 
             if (debugfile_switch)
             {   debug_file_printf("<action>");
                 debug_file_printf
-                    ("<identifier>##%s</identifier>", idname_string);
+                    ("<identifier>##%s</identifier>", temp_symbol_buf);
                 debug_file_printf("<value>%d</value>", symbols[i].value);
                 debug_file_printf("</action>");
             }
 
             action_name_strings[symbols[i].value]
-                = compile_string(idname_string, STRCTX_SYMBOL);
+                = compile_string(temp_symbol_buf, STRCTX_SYMBOL);
         }
     }
 
     for (i=0; i<no_symbols; i++)
     {   if (symbols[i].type == FAKE_ACTION_T)
-        {   sprintf(idname_string, "%s", symbols[i].name);
-            idname_string[strlen(idname_string)-3] = 0;
+        {
+            int sleni = strlen(symbols[i].name);
+            ensure_memory_list_available(&temp_symbol_buf_memlist, sleni+1);
+            sprintf(temp_symbol_buf, "%s", symbols[i].name);
+            temp_symbol_buf[strlen(temp_symbol_buf)-3] = 0;
 
             action_name_strings[symbols[i].value
                     - ((grammar_version_number==1)?256:4096) + no_actions]
-                = compile_string(idname_string, STRCTX_SYMBOL);
+                = compile_string(temp_symbol_buf, STRCTX_SYMBOL);
         }
     }
 
     for (j=0; j<no_arrays; j++)
-    {   i = arrays[j].symbol;
-        sprintf(idname_string, "%s", symbols[i].name);
-
+    {
+        i = arrays[j].symbol;
         array_name_strings[j]
-            = compile_string(idname_string, STRCTX_SYMBOL);
+            = compile_string(symbols[i].name, STRCTX_SYMBOL);
     }
-  if (define_INFIX_switch)
-  { for (i=0; i<no_symbols; i++)
-    {   if (symbols[i].type == GLOBAL_VARIABLE_T)
-        {   sprintf(idname_string, "%s", symbols[i].name);
-            array_name_strings[no_arrays + symbols[i].value -16]
-                = compile_string(idname_string, STRCTX_SYMBOL);
+    
+    if (define_INFIX_switch)
+    {
+        for (i=0; i<no_symbols; i++)
+        {   if (symbols[i].type == GLOBAL_VARIABLE_T)
+            {
+                array_name_strings[no_arrays + symbols[i].value -16]
+                    = compile_string(symbols[i].name, STRCTX_SYMBOL);
+            }
         }
-    }
-
-    for (i=0; i<no_named_routines; i++)
-    {   sprintf(idname_string, "%s", symbols[named_routine_symbols[i]].name);
+        
+        for (i=0; i<no_named_routines; i++)
+        {
             array_name_strings[no_arrays + no_globals + i]
-                = compile_string(idname_string, STRCTX_SYMBOL);
-    }
-
-    for (i=0, no_named_constants=0; i<no_symbols; i++)
-    {   if (((symbols[i].type == OBJECT_T) || (symbols[i].type == CLASS_T)
-            || (symbols[i].type == CONSTANT_T))
-            && ((symbols[i].flags & (UNKNOWN_SFLAG+ACTION_SFLAG))==0))
-        {   sprintf(idname_string, "%s", symbols[i].name);
-            array_name_strings[no_arrays + no_globals + no_named_routines
-                + no_named_constants++]
-                = compile_string(idname_string, STRCTX_SYMBOL);
+                = compile_string(symbols[named_routine_symbols[i]].name, STRCTX_SYMBOL);
+        }
+        
+        for (i=0, no_named_constants=0; i<no_symbols; i++)
+        {   if (((symbols[i].type == OBJECT_T) || (symbols[i].type == CLASS_T)
+                 || (symbols[i].type == CONSTANT_T))
+                && ((symbols[i].flags & (UNKNOWN_SFLAG+ACTION_SFLAG))==0))
+            {
+                array_name_strings[no_arrays + no_globals + no_named_routines
+                                   + no_named_constants++]
+                    = compile_string(symbols[i].name, STRCTX_SYMBOL);
+            }
         }
     }
-  }
 
     veneer_mode = FALSE;
 }
@@ -696,7 +745,7 @@ extern void assign_symbol(int index, int32 value, int type)
     assign_symbol_base(index, value, type);
     symbols[index].marker = 0;
     if (symdef_trace_setting)
-        printf("Defined symbol %d '%s' as %d (%s)\n", index, symbols[index].name, value, typename(type));
+        printf("%s: Defined symbol %d '%s' as %d (%s)\n", current_location_text(), index, symbols[index].name, value, typename(type));
 }
 
 extern void assign_marked_symbol(int index, int marker, int32 value, int type)
@@ -704,7 +753,7 @@ extern void assign_marked_symbol(int index, int marker, int32 value, int type)
     assign_symbol_base(index, value, type);
     symbols[index].marker = marker;
     if (symdef_trace_setting)
-        printf("Defined symbol %d '%s' as %s %d (%s)\n", index, symbols[index].name, describe_mv(marker), value, typename(type));
+        printf("%s: Defined symbol %d '%s' as %s %d (%s)\n", current_location_text(), index, symbols[index].name, describe_mv(marker), value, typename(type));
 }
 
 static void emit_debug_information_for_predefined_symbol
@@ -756,7 +805,7 @@ static void emit_debug_information_for_predefined_symbol
 }
 
 static void create_symbol(char *p, int32 value, int type)
-{   int i = symbol_index(p, -1);
+{   int i = symbol_index(p, -1, NULL);
     if (!(symbols[i].flags & (UNKNOWN_SFLAG + REDEFINABLE_SFLAG))) {
         /* Symbol already defined! */
         if (symbols[i].value == value && symbols[i].type == type) {
@@ -776,7 +825,7 @@ static void create_symbol(char *p, int32 value, int type)
 }
 
 static void create_rsymbol(char *p, int value, int type)
-{   int i = symbol_index(p, -1);
+{   int i = symbol_index(p, -1, NULL);
     /* This is only called for a few symbols with known names.
        They will not collide. */
     symbols[i].value = value; symbols[i].type = type; symbols[i].line = blank_brief_location;
@@ -802,7 +851,7 @@ static void stockup_symbols(void)
         create_rsymbol("Grammar__Version", 1, CONSTANT_T);
     else
         create_rsymbol("Grammar__Version", 2, CONSTANT_T);
-    grammar_version_symbol = symbol_index("Grammar__Version", -1);
+    grammar_version_symbol = get_symbol_index("Grammar__Version");
 
     if (runtime_error_checking_switch)
         create_rsymbol("STRICT_MODE",0, CONSTANT_T);
@@ -814,6 +863,9 @@ static void stockup_symbols(void)
     {   create_rsymbol("INFIX",      0, CONSTANT_T);
         create_symbol("infix__watching", 0, ATTRIBUTE_T);
     }
+
+    if (OMIT_SYMBOL_TABLE)
+        create_symbol("OMIT_SYMBOL_TABLE", 0, CONSTANT_T);
 
     create_symbol("WORDSIZE",        WORDSIZE, CONSTANT_T);
     /* DICT_ENTRY_BYTES must be REDEFINABLE_SFLAG because the Version directive can change it. */
@@ -1223,15 +1275,15 @@ extern void locate_dead_functions(void)
        issue_unused_warnings(). But for the sake of thoroughness,
        we'll mark them specially. */
 
-    ix = symbol_index("Main__", -1);
-    if (symbols[ix].type == ROUTINE_T) {
+    ix = get_symbol_index("Main__");
+    if (ix >= 0 && symbols[ix].type == ROUTINE_T) {
         uint32 addr = symbols[ix].value * (glulx_mode ? 1 : scale_factor);
         tofunc = df_function_for_address(addr);
         if (tofunc)
             tofunc->usage |= DF_USAGE_MAIN;
     }
-    ix = symbol_index("Main", -1);
-    if (symbols[ix].type == ROUTINE_T) {
+    ix = get_symbol_index("Main");
+    if (ix >= 0 && symbols[ix].type == ROUTINE_T) {
         uint32 addr = symbols[ix].value * (glulx_mode ? 1 : scale_factor);
         tofunc = df_function_for_address(addr);
         if (tofunc)
@@ -1524,11 +1576,12 @@ extern void init_symbols_vars(void)
     symbols = NULL;
     start_of_list = NULL;
     symbol_debug_info = NULL;
+    temp_symbol_buf = NULL;
 
     symbol_name_space_chunks = NULL;
     no_symbol_name_space_chunks = 0;
-    symbols_free_space=NULL;
-    symbols_ceiling=NULL;
+    symbols_free_space = NULL;
+    symbols_ceiling = NULL;
 
     no_symbols = 0;
 
@@ -1568,6 +1621,11 @@ extern void symbols_allocate_arrays(void)
             sizeof(symboldebuginfo), 6400, (void**)&symbol_debug_info,
             "symbol debug backpatch info");
     }
+    
+    initialise_memory_list(&temp_symbol_buf_memlist,
+        sizeof(char), 64, (void**)&temp_symbol_buf,
+        "temporary symbol name");
+        
     start_of_list = my_calloc(sizeof(int32), HASH_TAB_SIZE,
                      "hash code list beginnings");
 
@@ -1621,6 +1679,8 @@ extern void symbols_free_arrays(void)
     {
         deallocate_memory_list(&symbol_debug_info_memlist);
     }
+    deallocate_memory_list(&temp_symbol_buf_memlist);
+    
     my_free(&start_of_list, "hash code list beginnings");
 
     if (symbol_replacements)

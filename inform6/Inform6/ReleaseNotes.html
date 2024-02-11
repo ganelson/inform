@@ -15,7 +15,8 @@ to implement has been governed by two factors:
 <li><p>Avoidance of changes which might cause existing games to misbehave; and
 <li><p>Minimisation of features which would require updates to the <i>Inform Designer&rsquo;s Manual</i>.
 </ul>
-Since the first release of the Inform 6.3 compiler, the Inform 6 library has been split into a separate project,
+Older release notes (Inform 6.30 through 6.36) are <a href="https://inform-fiction.org/manual/ReleaseNotes-6.3x.html">archived here</a>.
+<p>Since the first release of the Inform 6.3 compiler, the Inform 6 library has been split into a separate project,
 maintained at <a href="https://gitlab.com/DavidGriffith/inform6lib">https://gitlab.com/DavidGriffith/inform6lib</a>.
 
 <h2>Acknowledgements</h2>
@@ -24,6 +25,137 @@ suggestions, providing support and facilities, testing, and so on &mdash; for th
 listed. So instead, this is a general thank-you to everybody who has made this release happen, and 
 specific ones to Graham Nelson for permitting it in the first place, and to Andrew Plotkin, who is responsible
 for most of the actual changes to the compiler code.
+
+<h2>Inform 6.42</h2>
+These are the changes delivered in version 6.42 of the Inform compiler.
+
+<h3>Features added</h3>
+<ul>
+<li><p>The compiler can now handle switch cases which are expressions, rather than just looking for bare literals
+and symbols. The expression must still evaluate to a constant, but now parentheses and constant-folded arithmetic
+are handled:
+<pre>
+  Constant CONST = 5;
+
+  ! These have always worked.
+  switch (x) {
+    0: return 0;
+    1: return 1;
+    -2: return -2;
+  }
+
+  ! These now also work.
+  switch (x) {
+    (0): return 0;
+    (-(1)): return -1;
+    (CONST): return 5;
+    (CONST+1): return 6;
+  }
+</pre>
+For backwards compatibility, the expression must be wrapped in parens, so <tt>-(1):</tt> is not a valid case. Lists
+of expressions are also supported. Expression parsing applies as long as the first value is wrapped in parens.
+Wrapping the entire list in parens also works:
+<pre>
+  switch (x) {
+    1, 2, 3: return 0;                   ! old style
+    (4), (CONST), (CONST+1): return 1;   ! new style
+    (10), CONST+6, CONST+7: return 2;    ! this also works
+    (20, CONST+16, CONST+17): return 3;  ! as does this
+  }
+</pre>
+Note that the <tt>to</tt> keyword does not support expressions. You cannot say <tt>(CONST) to (CONST+5):</tt>
+as a case. Also, case expressions only work within a switch statement. Top-level action cases must still be bare
+action names.
+<li><p>Inform identifiers can now be any length, and the entire identifier is significant. Dictionary words can also
+be any length. The DICT_WORD_SIZE limit still applies, but now dictionary words are silently trimmed to DICT_WORD_SIZE.
+For Glulx, DICT_WORD_SIZE can now be increased without limit.
+<li><p>Arbitrary bytes and words can be compiled into the game, using two new statements:
+<pre>
+  @ -> BYTE BYTE BYTE ...;
+  @ --> WORD WORD WORD ...;
+</pre>
+The given bytes or words are directly copied out into the function. (Words are two bytes in Z-code, and four bytes in
+Glulx.) The compiler assumes that the data forms valid opcodes, but does nothing to verify this. Bytes must be numeric
+constants, while words are either numeric constants or symbols, such as the name of a function.
+<li><p>A new setting exists to omit the symbol names table, <tt>$OMIT_SYMBOL_TABLE</tt>. The symbol names table
+contains the names of all properties, attributes, fake actions, and arrays as strings, and is generally only used by
+debug library code and debug veneer error messages. When <tt>$OMIT_SYMBOL_TABLE=1</tt> is set:
+ <ul>
+ <li>The symbol names table is omitted from the game file, for both Glulx and Z-code.
+ <li>The <tt>print (property) p</tt> statement will print <tt>&lt;number 72&gt;</tt> (etc.) instead of the property name.
+ <li>The runtime error for a non-existent property <tt>(obj has no property prop to read)</tt> will similarly print
+ a number instead of the property name.
+ <li>The runtime error for array overflow <tt>(tried to read from -->5 in the array "arr"...)</tt> will omit the
+ array name.
+ <li>The following system constants are not available, and trying to use one is a compile-time error:
+ <tt>#identifiers_table</tt>, <tt>#attribute_names_array</tt>, <tt>#property_names_array</tt>, <tt>#action_names_array</tt>,
+ <tt>#fake_action_names_array</tt>, <tt>#array_names_offset</tt>, <tt>#global_names_array</tt>, <tt>#routine_names_array</tt>,
+ <tt>#constant_names_array</tt>.
+ </ul><br>
+Note that the Inform 6 library uses <tt>#identifiers_table</tt> for some debugging verbs, and the Infix library
+extension uses all the affected constants. To update such code, the relevant logic that uses these symbol names and
+constants would be put in a <tt>#Ifndef OMIT_SYMBOL_TABLE;</tt> block.
+<li><p>A new setting <tt>$ZCODE_MAX_INLINE_STRING</tt> has been added to determine how long a string can be and still
+be compiled to a <tt>@print</tt> opcode, rather than be added to the string segment and compiled to a <tt>@print_paddr</tt>
+opcode. This setting has a default value of 32, which matches the previous behaviour of the compiler, where this limit
+was hard-coded at 32 characters.
+<li><p>The <tt>Abbreviate</tt> directive now accepts abbreviations of any length.
+<li><p>The <tt>-u</tt> option, which computes abbreviations, can now generate abbreviations of any length.
+<li><p>Inform is now able to correctly set the plural flag on long dictionary words (e.g. <tt>'directions//p'</tt>).
+However, due to the way Inform 7 has defined plural kind names in the past, fixing this will affect the parsing of
+Inform 7 games if the output Inform 6 code is then compiled with a version of Inform 6 that fixes this issue. As a result,
+there is a new setting <tt>$LONG_DICT_FLAG_BUG</tt>, which defaults to 1. The new behaviour is only enabled if this setting
+is set to 0.
+<li><p>Flags for dictionary words now include setting the NOUN flag, and also provides a way to explicitly not set a
+flag. The possible choices are:
+ <ul>
+  <li><tt>//p</tt> sets the PLURAL flag (bit 2)
+  <li><tt>//n</tt> sets the NOUN flag (bit 7)
+  <li><tt>//~p</tt> means do not set the PLURAL flag at this point
+  <li><tt>//~n</tt> means do not set the NOUN flag at this point
+ </ul>
+<br>Dictionary words used in most contexts default to <tt>//n</tt>.
+<li><p>The <tt>--trace PROPS</tt> and <tt>--trace SYMDEF</tt> options now display the line number that each property
+or symbol is defined at.
+<li><p>The <tt>--trace ASM=2</tt> option now shows backpatch markers as a short descriptive string, rather than as a
+number.
+<li><p>The statement <tt>print "^";</tt> now compiles to a single opcode (<tt>@new_line</tt> for Z-code, or
+<tt>@streamchar 10</tt> for Glulx) rather than printing a one character string.
+<li><p>For Glulx, with strict mode turned off, <tt>print (char) X;</tt> compiles to either <tt>@streamchar X</tt> or
+<tt>@streamunichar X</tt>, depending on whether X is a compile-time constant less than 256, or not.
+<li><p>Grammar table lines entries which have no verb are now omitted. When this occurs a warning is printed, as this
+most likely indicates an oversight in the game's source code.
+<li><p>Error messages about invalid tokens are now more informative.
+<li><p>Inform now handles line breaks itself, rather than relying on the C standard library. This gives consistent
+handling of Windows and Unix style line breaks on all platforms.
+<li><p>The output file "gametext.txt" now includes the Z-code or Glulx version being compiled to.
+<li><p>The Z-Machine opcodes added in revision 1.1 of the Z-Machine Specification Standard, <tt>set_true_colour</tt>
+and <tt>buffer_screen</tt>, are now supported.
+</ul>
+
+<h3>Bugs fixed</h3>
+<ul>
+<li><p>The Glulx build-in function <b>random(x)</b> built-in function now follows the DM4 specification: if <b>x</b>
+is positive, the function returns the result of <tt>1+(@random x)</tt>; if zero or negative, <tt>@setrandom x</tt> is called.
+<li><p>In several places (local variable declarations, action names and the <tt>Switches</tt> directive) the compiler would
+accept quoted strings and then ignore the quotes. This is now an error.
+<li><p>The case of a property having too many entries is now always an error, and is checked correctly in the case
+of compiling to Z-code V3.
+<li><p>An unclosed double quote at the end of a source file no longer causes the compiler to hang.
+<li><p>A number of issues relating to error messages giving incorrect information have been fixed by improving how the
+compiler handles backtracking through parsed symbols in some tricky cases.
+<li><p>The Z-code version of the veneer function <tt>Box__Routine</tt> (which is used in the implementation of the
+<tt>box</tt> statement) now contains a check to prevent calling the <tt>@set_cursor</tt> opcode with negative
+co-ordinates.
+<li><p>The veneer functions <tt>RA__Pr()</tt>, <tt>RL__Pr()</tt> and <tt>CP__Tab()</tt> are now correct for Z-code V3.
+<li><p>Errors in the declaration of arrays could sometimes cause the compiler to emit a large number of error messages,
+this is now fixed so that only the initial error is printed.
+<li><p>Invalid expressions like <tt>(a++ b)</tt>, <tt>(a ~b)</tt>, <tt>(a++ ~b)</tt>, and <tt>(a++ --b)</tt> previously
+caused an internal compiler error, but now produce a sensible error message.
+<li><p>When computing abbreviations, the space character is now correctly treated as only occupying one byte, not four.
+<li><p>The argument supplied to the Z-machine opcode <tt>@jump</tt> is now interpreted correctly. Previously this was
+only done properly for the <tt>jump</tt> statement, not the opcode.
+</ul>
 
 <h2>Inform 6.41</h2>
 These are the changes delivered in version 6.41 of the Inform compiler.

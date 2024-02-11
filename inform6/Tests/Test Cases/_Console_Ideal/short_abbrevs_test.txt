@@ -1,10 +1,1 @@
-Inform 6.36 (24th January 2022)
-line 6: Warning:  Abbreviation does not save any characters: "x"
-> Abbreviate "x"
-line 9: Warning:  Abbreviation does not save any characters: "yz"
-> Abbreviate "yz"
-line 18: Warning:  Abbreviation does not save any characters: "5"
-> Abbreviate "5"
-line 21: Warning:  Abbreviation does not save any characters: "G"
-> Abbreviate "G"
-Compiled with 4 warnings
+Inform 6.42 for MacOS (10th February 2024)

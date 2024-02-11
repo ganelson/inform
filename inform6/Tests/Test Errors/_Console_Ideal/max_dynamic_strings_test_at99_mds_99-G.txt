@@ -1,6 +1,5 @@
-Inform 6.36 (24th January 2022)
-"", line 0: Warning:  MAX_ABBREVS plus MAX_DYNAMIC_STRINGS must be 96 in Z-code; resetting both
-line 5: Error:  Only dynamic strings @00 to @95 may be used in Z-code
+Inform 6.42 for MacOS (10th February 2024)
+line 5: Error:  Only dynamic strings @(00) to @(98) may be used, because $MAX_DYNAMIC_STRINGS has been set to 99. Increase MAX_DYNAMIC_STRINGS.
 > Constant str99 = "@99";
 line 4: Warning:  Defined constant "str0" declared but not used
 line 5: Warning:  Defined constant "str99" declared but not used

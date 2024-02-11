@@ -1,4 +1,4 @@
-Inform 6.36 (24th January 2022)
+Inform 6.42 for MacOS (10th February 2024)
 line 35: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
 > Property p28;
 line 36: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)

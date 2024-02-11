@@ -3,8 +3,8 @@
 /*              by the compiler (e.g. DefArt) which the program doesn't      */
 /*              provide                                                      */
 /*                                                                           */
-/*   Part of Inform 6.41                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2022                                 */
+/*   Part of Inform 6.42                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2024                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -33,9 +33,10 @@ extern void compile_initial_routine(void)
   int32 j;
     assembly_operand AO;
 
-    j = symbol_index("Main__", -1);
+    j = symbol_index("Main__", -1, NULL);
+    clear_local_variables();
     assign_symbol(j,
-        assemble_routine_header(0, FALSE, "Main__", FALSE, j),
+        assemble_routine_header(FALSE, "Main__", FALSE, j),
         ROUTINE_T);
     symbols[j].flags |= SYSTEM_SFLAG + USED_SFLAG;
     if (trace_fns_setting==3) symbols[j].flags |= STAR_SFLAG;
@@ -111,6 +112,7 @@ static VeneerRoutine VRs_z[VENEER_ROUTINES] =
          w = 0 -> 33;\
          if (w == 0) w=80;\
          w2 = (w - maxw)/2;\
+         if (w2 < 3) w2 = 3;\
          style reverse;\
          @sub w2 2 -> w;\
          line = 5;\
@@ -198,11 +200,16 @@ static VeneerRoutine VRs_z[VENEER_ROUTINES] =
                  prop = (i-->0) & $7fff;\
              }\
          }",
-        "p = #identifiers_table;\
+        "#IFDEF OMIT_SYMBOL_TABLE;\
+         p = size = 0;\
+         print \"<number \", prop, \">\";\
+         #IFNOT;\
+         p = #identifiers_table;\
          size = p-->0;\
          if (prop<=0 || prop>=size || p-->prop==0)\
              print \"<number \", prop, \">\";\
          else print (string) p-->prop;\
+         #ENDIF;\
          ]", "", "", "", ""
     },
 
@@ -253,6 +260,10 @@ static VeneerRoutine VRs_z[VENEER_ROUTINES] =
 
         "CA__Pr",
         "obj id a b c d e f x y z s s2 n m;\
+         #IFV3;\
+         #Message error \"Object message calls are not supported in v3.\";\
+         obj = id = a = b = c = d = e = f = x = y = z = s = s2 = n = m = 0;\
+         #IFNOT;\
          if (obj < 1 || obj > #largest_object-255)\
          {   switch(Z__Region(obj))\
              { 2: if (id == call)\
@@ -314,6 +325,7 @@ static VeneerRoutine VRs_z[VENEER_ROUTINES] =
         default: return x-->m;\
             }\
          }\
+         #ENDIF;\
          rfalse;\
          ]"
     },
@@ -404,7 +416,11 @@ static VeneerRoutine VRs_z[VENEER_ROUTINES] =
              identifier = (identifier & $3f00) / $100;\
              if (~~(obj ofclass cla)) rfalse; i=0-->5;\
              if (cla == 2) return i+2*identifier-2;\
+             #IFV3;\
+             i = (i+60+cla*9)-->0;\
+             #IFNOT;\
              i = 0-->((i+124+cla*14)/2);\
+             #ENDIF;\
              i = CP__Tab(i + 2*(0->i) + 1, -1)+6;\
              return CP__Tab(i, identifier);\
          }\
@@ -425,16 +441,23 @@ static VeneerRoutine VRs_z[VENEER_ROUTINES] =
     },
     {
         /*  RL__Pr:  read the property length of an individual property value,
-                     returning 0 if it isn't provided by the given object    */
+                     returning 0 if it isn't provided by the given object.
+                     This is also used for inherited values (of the form
+                     class::prop). */
 
         "RL__Pr",
         "obj identifier x;\
          if (identifier<64 && identifier>0) return obj.#identifier;\
          x = obj..&identifier;\
          if (x==0) rfalse;\
-         if (identifier&$C000==$4000)\
+         if (identifier&$C000==$4000) {\
+             #IFV3;\
+             return 1+((x-1)->0)/$20;\
+             #IFNOT;\
              switch (((x-1)->0)&$C0)\
              {  0: return 1;  $40: return 2;  $80: return ((x-1)->0)&$3F; }\
+             #ENDIF;\
+         }\
          return (x-1)->0;\
          ]", "", "", "", "", ""
     },
@@ -570,8 +593,13 @@ static VeneerRoutine VRs_z[VENEER_ROUTINES] =
          \" in the\"; switch(size&7){0,1:q=0; 2:print \" string\";\
          q=1; 3:print \" table\";q=1; 4:print \" buffer\";q=WORDSIZE;} \
          if(size&16) print\" (->)\"; if(size&8) print\" (-->)\";\
+         #IFDEF OMIT_SYMBOL_TABLE;\
+         \" array which has entries \", q, \" up to \",id,\" **]\";\
+         #IFNOT;\
          \" array ~\", (string) #array_names_offset-->p,\
-         \"~, which has entries \", q, \" up to \",id,\" **]\"; }\
+         \"~, which has entries \", q, \" up to \",id,\" **]\";\
+         #ENDIF;\
+         }\
          if (crime >= 24 && crime <=27) { if (crime<=25) print \"read\";\
          else print \"write\"; print \" outside memory using \";\
          switch(crime) { 24,26:\"-> **]\"; 25,27:\"--> **]\"; } }\
@@ -605,10 +633,12 @@ static VeneerRoutine VRs_z[VENEER_ROUTINES] =
          \", but it is longer than 2 bytes so you cannot use ~.~\";\
          else\
          {   print \" has no property \", (property) id;\
+             #IFNDEF OMIT_SYMBOL_TABLE;\
              p = #identifiers_table;\
              size = p-->0;\
              if (id<0 || id>=size)\
                  print \" (and nor has any other object)\";\
+             #ENDIF;\
          }\
          print \" to \", (string) crime, \" **]^\";\
          ]", ""
@@ -674,6 +704,16 @@ static VeneerRoutine VRs_z[VENEER_ROUTINES] =
 
         "CP__Tab",
         "x id n l;\
+         #IFV3;\
+         while (1)\
+         {   n = x->0;\
+             if (n == 0) break;\
+             x++;\
+             if (id == (n & $1f)) return x;\
+             l = (n/$20)+1;\
+             x = x + l;\
+         }\
+         #IFNOT;\
          while ((n=0->x) ~= 0)\
          {   if (n & $80) { x++; l = (0->x) & $3f; }\
              else { if (n & $40) l=2; else l=1; }\
@@ -681,12 +721,17 @@ static VeneerRoutine VRs_z[VENEER_ROUTINES] =
              if ((n & $3f) == id) return x;\
              x = x + l;\
          }\
+         #ENDIF;\
          if (id<0) return x+1; rfalse; ]", "", "", "", "", ""
     },
     {   /*  Cl__Ms:   the five message-receiving properties of Classes       */
 
         "Cl__Ms",
         "obj id y a b c d x;\
+         #IFV3;\
+         #Message error \"Class messages are not supported in v3.\";\
+         obj = id = y = a = b = c = d = x = 0;\
+         #IFNOT;\
          switch(id)\
          {   create:\
                  if (children(obj)<=1) rfalse; x=child(obj);\
@@ -717,6 +762,7 @@ static VeneerRoutine VRs_z[VENEER_ROUTINES] =
                  { RT__Err(\"copy\", b, -obj); rfalse; }\
                  Copy__Primitive(a, b); rfalse;\
          }\
+         #ENDIF;\
          ]", "", "", ""
     },
     {   /*  RT__ChT:  check at run-time that a proposed object move is legal
@@ -973,6 +1019,10 @@ static VeneerRoutine VRs_g[VENEER_ROUTINES] =
              print (name) cla, \"::\";\
              @ushiftr prop 16 prop;\
            }\
+           #IFDEF OMIT_SYMBOL_TABLE;\
+           ptab = maxcom = minind = maxind = str = 0;\
+           print \"<number \", prop, \">\";\
+           #IFNOT;\
            ptab = #identifiers_table;\
            maxcom = ptab-->1;\
            minind = INDIV_PROP_START;\
@@ -988,6 +1038,7 @@ static VeneerRoutine VRs_g[VENEER_ROUTINES] =
              print (string) str;\
            else\
              print \"<number \", prop, \">\";\
+           #ENDIF;\
          ]", "", "", "", "", ""
     },
 
@@ -1416,8 +1467,13 @@ static VeneerRoutine VRs_g[VENEER_ROUTINES] =
          \" in the\"; switch(size&7){0,1:q=0; 2:print \" string\";\
          q=1; 3:print \" table\";q=1; 4:print \" buffer\";q=WORDSIZE;} \
          if(size&16) print\" (->)\"; if(size&8) print\" (-->)\";\
+         #IFDEF OMIT_SYMBOL_TABLE;\
+         \" array which has entries \", q, \" up to \",id,\" **]\";\
+         #IFNOT;\
          \" array ~\", (string) #array_names_offset-->(p+1),\
-         \"~, which has entries \", q, \" up to \",id,\" **]\"; }\
+         \"~, which has entries \", q, \" up to \",id,\" **]\";\
+         #ENDIF;\
+         }\
          if (crime >= 24 && crime <=27) { if (crime<=25) print \"read\";\
          else print \"write\"; print \" outside memory using \";\
          switch(crime) { 24,26:\"-> **]\"; 25,27:\"--> **]\"; } }\
@@ -1449,10 +1505,12 @@ static VeneerRoutine VRs_g[VENEER_ROUTINES] =
          if (id<0) print \"is not of class \", (name) -id;",
         "else\
          {   print \" has no property \", (property) id;\
+             #IFNDEF OMIT_SYMBOL_TABLE;\
              p = #identifiers_table;\
              size = INDIV_PROP_START + p-->3;\
              if (id<0 || id>=size)\
                  print \" (and nor has any other object)\";\
+             #ENDIF;\
          }\
          print \" to \", (string) crime, \" **]^\";\
          ]", ""
@@ -2190,15 +2248,16 @@ static void compile_symbol_table_routine(void)
 {   int32 j, nl, arrays_l, routines_l, constants_l;
     assembly_operand AO, AO2, AO3;
 
+    clear_local_variables();
     /* Assign local var names for the benefit of the debugging information 
        file. (We don't set local_variable.keywords because we're not
        going to be parsing any code.) */
-    strcpy(local_variable_names[0].text, "dummy1");
-    strcpy(local_variable_names[1].text, "dummy2");
+    add_local_variable("dummy1");
+    add_local_variable("dummy2");
 
-    veneer_mode = TRUE; j = symbol_index("Symb__Tab", -1);
+    veneer_mode = TRUE; j = symbol_index("Symb__Tab", -1, NULL);
     assign_symbol(j,
-        assemble_routine_header(2, FALSE, "Symb__Tab", FALSE, j),
+        assemble_routine_header(FALSE, "Symb__Tab", FALSE, j),
         ROUTINE_T);
     symbols[j].flags |= SYSTEM_SFLAG + USED_SFLAG;
     if (trace_fns_setting==3) symbols[j].flags |= STAR_SFLAG;
@@ -2350,7 +2409,7 @@ extern void compile_veneer(void)
     {   try_veneer_again = FALSE;
         for (i=0; i<VENEER_ROUTINES; i++)
         {   if (veneer_routine_needs_compilation[i] == VR_CALLED)
-            {   j = symbol_index(VRs[i].name, -1);
+            {   j = symbol_index(VRs[i].name, -1, NULL);
                 if (symbols[j].flags & UNKNOWN_SFLAG)
                 {   veneer_mode = TRUE;
                     strcpy(veneer_source_area, VRs[i].source1);

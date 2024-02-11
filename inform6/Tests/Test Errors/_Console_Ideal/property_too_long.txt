@@ -1,8 +1,8 @@
-Inform 6.36 (24th January 2022)
-File "inform6/Tests/Test Errors/property_too_long.inf"; Line 4	# Error:  Limit (of 32 values) exceeded for property "prop"
+Inform 6.42 for MacOS (10th February 2024)
+line 4: Error:  Limit (of 32 values) exceeded for property "prop"
 >  with prop 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 2  ...etc
-File "inform6/Tests/Test Errors/property_too_long.inf"; Line 4	# Error:  Expected 'with', 'has' or 'class' in object/class definition but found "32"
+line 4: Error:  Expected 'with', 'has' or 'class' in object/class definition but found "32"
 >  with prop 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 2  ...etc
-File "inform6/Tests/Test Errors/property_too_long.inf"; Line 4	# Error:  Expected directive, '[' or class name but found ;
+line 4: Error:  Expected directive, '[' or class name but found ;
 >  with prop 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 2  ...etc
 Compiled with 3 errors (no output)

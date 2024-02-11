@@ -1,6 +1,10 @@
 !% -Cu
 !% $ZCODE_LESS_DICT_DATA=1;
+!% $LONG_DICT_FLAG_BUG=0;
 !% $OMIT_UNUSED_ROUTINES=1;
+#ifndef VN_1642;
+#message fatalerror "Inform 7 generates code requiring Inform 6.42 or later";
+#endif;
 Constant Grammar__Version 2;
 Global debug_flag;
 Global or_tmp_var;
@@ -11,7 +15,7 @@ Constant Budger = 32738;
 Constant Danza = (2 + 34);
 Constant Sahara = (Danza + Bidger + 1);
 #Ifdef TARGET_ZCODE;
-#OrigSource "inter/final-module/Chapter 4/Final Inform 6.w" 162;
+#OrigSource "inter/final-module/Chapter 4/Final Inform 6.w" 166;
 Global max_z_object;
 #Ifdef Z__Region;
 [ OC__Cl obj cla j a n objflag;

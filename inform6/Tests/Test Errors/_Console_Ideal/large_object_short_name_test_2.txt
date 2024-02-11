@@ -1,4 +1,4 @@
-Inform 6.36 (24th January 2022)
-line 4: Error:  Short name of object (in quotes) exceeded 765 characters
+Inform 6.42 for MacOS (10th February 2024)
+line 4: Error:  Short name of object (in quotes) exceeded 765 Z-characters
 > Object foo "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  ...etc
 Compiled with 1 error (no output)

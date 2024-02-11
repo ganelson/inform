@@ -2,8 +2,8 @@
 /*   "errors" : Warnings, errors and fatal errors                            */
 /*              (with error throwback code for RISC OS machines)             */
 /*                                                                           */
-/*   Part of Inform 6.41                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2022                                 */
+/*   Part of Inform 6.42                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2024                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -158,6 +158,14 @@ static char *location_text(brief_location report_line)
     return other_pos_buff;
 }
 
+char *current_location_text(void)
+{
+    /* Convert the current lexer location to a brief string.
+       (Called by some trace messages.)
+       This uses the static buffer other_pos_buff. */
+    return location_text(get_brief_location(&ErrorReport));
+}
+
 static void ellipsize_error_message_buff(void)
 {
     /* If the error buffer was actually filled up by a message, it was
@@ -191,13 +199,23 @@ extern void fatalerror(char *s)
     exit(1);
 }
 
+extern void fatalerror_fmt(const char *format, ...)
+{
+    va_list argument_pointer;
+    va_start(argument_pointer, format);
+    vsnprintf(error_message_buff, ERROR_BUFLEN, format, argument_pointer);
+    va_end(argument_pointer);
+    ellipsize_error_message_buff();
+    fatalerror(error_message_buff);
+}
+
 extern void fatalerror_named(char *m, char *fn)
 {   snprintf(error_message_buff, ERROR_BUFLEN, "%s \"%s\"", m, fn);
     ellipsize_error_message_buff();
     fatalerror(error_message_buff);
 }
 
-extern void memory_out_error(int32 size, int32 howmany, char *name)
+extern void fatalerror_memory_out(int32 size, int32 howmany, char *name)
 {   if (howmany == 1)
         snprintf(error_message_buff, ERROR_BUFLEN,
             "Run out of memory allocating %d bytes for %s", size, name);
@@ -265,15 +283,18 @@ extern void error(char *s)
     message(1,s);
 }
 
-extern void error_named(char *s1, char *s2)
-{   snprintf(error_message_buff, ERROR_BUFLEN,"%s \"%s\"",s1,s2);
+extern void error_fmt(const char *format, ...)
+{
+    va_list argument_pointer;
+    va_start(argument_pointer, format);
+    vsnprintf(error_message_buff, ERROR_BUFLEN, format, argument_pointer);
+    va_end(argument_pointer);
     ellipsize_error_message_buff();
     error(error_message_buff);
 }
 
-extern void error_numbered(char *s1, int val)
-{
-    snprintf(error_message_buff, ERROR_BUFLEN,"%s %d.",s1,val);
+extern void error_named(char *s1, char *s2)
+{   snprintf(error_message_buff, ERROR_BUFLEN,"%s \"%s\"",s1,s2);
     ellipsize_error_message_buff();
     error(error_message_buff);
 }
@@ -292,12 +313,31 @@ extern void error_named_at(char *s1, char *s2, brief_location report_line)
     ErrorReport = E; concise_switch = i;
 }
 
-extern void no_such_label(char *lname)
-{   error_named("No such label as",lname);
-}
-
 extern void ebf_error(char *s1, char *s2)
 {   snprintf(error_message_buff, ERROR_BUFLEN, "Expected %s but found %s", s1, s2);
+    ellipsize_error_message_buff();
+    error(error_message_buff);
+}
+
+extern void ebf_curtoken_error(char *s)
+{
+    /* This is "Expected (s) but found (the current token_text)". We use
+       token_type as a hint for how to display token_text. */
+    
+    if (token_type == DQ_TT) {
+        snprintf(error_message_buff, ERROR_BUFLEN, "Expected %s but found string \"%s\"", s, token_text);
+    }
+    else if (token_type == SQ_TT && strlen(token_text)==1) {
+        snprintf(error_message_buff, ERROR_BUFLEN, "Expected %s but found char '%s'", s, token_text);
+    }
+    else if (token_type == SQ_TT) {
+        snprintf(error_message_buff, ERROR_BUFLEN, "Expected %s but found dict word '%s'", s, token_text);
+    }
+    else {
+        /* Symbols, unquoted strings, and numbers can be printed directly. EOF will have "<end of file>" in token_text. */
+        snprintf(error_message_buff, ERROR_BUFLEN, "Expected %s but found %s", s, token_text);
+    }
+    
     ellipsize_error_message_buff();
     error(error_message_buff);
 }
@@ -394,9 +434,13 @@ extern void warning(char *s1)
     message(2,s1);
 }
 
-extern void warning_numbered(char *s1, int val)
-{   if (nowarnings_switch) { no_suppressed_warnings++; return; }
-    snprintf(error_message_buff, ERROR_BUFLEN,"%s %d.", s1, val);
+extern void warning_fmt(const char *format, ...)
+{
+    va_list argument_pointer;
+    if (nowarnings_switch) { no_suppressed_warnings++; return; }
+    va_start(argument_pointer, format);
+    vsnprintf(error_message_buff, ERROR_BUFLEN, format, argument_pointer);
+    va_end(argument_pointer);
     ellipsize_error_message_buff();
     message(2,error_message_buff);
 }
@@ -407,6 +451,19 @@ extern void warning_named(char *s1, char *s2)
     snprintf(error_message_buff, ERROR_BUFLEN,"%s \"%s\"", s1, s2);
     ellipsize_error_message_buff();
     message(2,error_message_buff);
+}
+
+extern void warning_at(char *name, brief_location report_line)
+{   int i;
+    ErrorPosition E = ErrorReport;
+    if (nowarnings_switch) { no_suppressed_warnings++; return; }
+    export_brief_location(report_line, &ErrorReport);
+    snprintf(error_message_buff, ERROR_BUFLEN, "%s", name);
+    ellipsize_error_message_buff();
+    i = concise_switch; concise_switch = TRUE;
+    message(2,error_message_buff);
+    concise_switch = i;
+    ErrorReport = E;
 }
 
 extern void symtype_warning(char *context, char *name, char *type, char *wanttype)

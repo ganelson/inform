@@ -1,4 +1,10 @@
-Inform 6.36 (24th January 2022)
+Inform 6.42 for MacOS (10th February 2024)
+line 45: Warning:  In "give" statement, expected Attribute but found Dictionary word
+>  give obj 'word';
+line 46: Warning:  In "give" statement, expected Object but found Dictionary word
+>  give 'word' attr1
+line 51: Warning:  In function call, expected Routine but found Object "obj"
+>  give obj (obj+1);
 line 60: Warning:  Bare property name found. "self.prop" intended?
 >  give obj cprop;
 line 60: Warning:  In "give" statement, expected Attribute but found Property "cprop"
@@ -77,6 +83,8 @@ line 135: Warning:  In "move" statement, expected Object but found Individual pr
 >  move arr to iprop1;
 line 136: Warning:  In "move" statement, expected Object but found Class "cla"
 >  move cla to obj;
+line 142: Warning:  In "remove" statement, expected Object but found Dictionary word
+>  remove 'dict';
 line 146: Warning:  In "remove" statement, expected Object but found Routine "func"
 >  remove func;
 line 147: Warning:  In "remove" statement, expected Object but found Array "arr"
@@ -149,4 +157,4 @@ line 256: Warning:  In ".#" expression, expected Property but found Routine "fun
 >  loc = obj.#func;
 line 257: Warning:  In ".#" expression, expected Property but found Object "obj"
 >  loc = cla.#obj;
-Compiled with 75 warnings
+Compiled with 79 warnings

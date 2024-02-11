@@ -2,8 +2,8 @@
 /*   "inform" :  The top level of Inform: switches, pathnames, filenaming    */
 /*               conventions, ICL (Inform Command Line) files, main          */
 /*                                                                           */
-/*   Part of Inform 6.41                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2022                                 */
+/*   Part of Inform 6.42                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2024                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -34,7 +34,9 @@ int version_number,      /* 3 to 8 (Z-code)                                  */
 int32 scale_factor,      /* packed address multiplier                        */
     length_scale_factor; /* length-in-header multiplier                      */
 
-int32 requested_glulx_version;
+int32 requested_glulx_version; /* version requested via -v switch            */
+int32 final_glulx_version;     /* requested version combined with game
+                                  feature requirements                       */
 
 extern void select_version(int vn)
 {   version_number = vn;
@@ -141,17 +143,17 @@ static void select_target(int targ)
 
     if (INDIV_PROP_START < 256) {
         INDIV_PROP_START = 256;
-        warning_numbered("INDIV_PROP_START should be at least 256 in Glulx. Setting to", INDIV_PROP_START);
+        warning_fmt("INDIV_PROP_START should be at least 256 in Glulx; setting to %d", INDIV_PROP_START);
     }
 
     if (NUM_ATTR_BYTES % 4 != 3) {
       NUM_ATTR_BYTES += (3 - (NUM_ATTR_BYTES % 4)); 
-      warning_numbered("NUM_ATTR_BYTES must be a multiple of four, plus three. Increasing to", NUM_ATTR_BYTES);
+      warning_fmt("NUM_ATTR_BYTES must be a multiple of four, plus three; increasing to %d", NUM_ATTR_BYTES);
     }
 
     if (DICT_CHAR_SIZE != 1 && DICT_CHAR_SIZE != 4) {
       DICT_CHAR_SIZE = 4;
-      warning_numbered("DICT_CHAR_SIZE must be either 1 or 4. Setting to", DICT_CHAR_SIZE);
+      warning_fmt("DICT_CHAR_SIZE must be either 1 or 4; setting to %d", DICT_CHAR_SIZE);
     }
   }
 
@@ -160,17 +162,10 @@ static void select_target(int targ)
     MAX_LOCAL_VARIABLES = MAX_KEYWORD_GROUP_SIZE;
   }
 
-  if (DICT_WORD_SIZE > MAX_DICT_WORD_SIZE) {
-    DICT_WORD_SIZE = MAX_DICT_WORD_SIZE;
-    warning_numbered(
-      "DICT_WORD_SIZE cannot exceed MAX_DICT_WORD_SIZE; resetting", 
-      MAX_DICT_WORD_SIZE);
-    /* MAX_DICT_WORD_SIZE can be increased in header.h without fear. */
-  }
   if (NUM_ATTR_BYTES > MAX_NUM_ATTR_BYTES) {
     NUM_ATTR_BYTES = MAX_NUM_ATTR_BYTES;
-    warning_numbered(
-      "NUM_ATTR_BYTES cannot exceed MAX_NUM_ATTR_BYTES; resetting",
+    warning_fmt(
+      "NUM_ATTR_BYTES cannot exceed MAX_NUM_ATTR_BYTES; resetting to %d",
       MAX_NUM_ATTR_BYTES);
     /* MAX_NUM_ATTR_BYTES can be increased in header.h without fear. */
   }
@@ -341,6 +336,7 @@ static void reset_switch_settings(void)
     compression_switch = TRUE;
     glulx_mode = FALSE;
     requested_glulx_version = 0;
+    final_glulx_version = 0;
 
     /* These aren't switches, but for clarity we reset them too. */
     asm_trace_level = 0;
@@ -1028,6 +1024,7 @@ static void run_pass(void)
     sort_dictionary();
     if (track_unused_routines)
         locate_dead_functions();
+    locate_dead_grammar_lines();
     construct_storyfile();
 }
 
@@ -1115,13 +1112,13 @@ disabling -X switch\n");
 
     run_pass();
 
+    if (no_errors==0) { output_file(); output_has_occurred = TRUE; }
+    else { output_has_occurred = FALSE; }
+
     if (transcript_switch)
     {   write_dictionary_to_transcript();
         close_transcript_file();
     }
-
-    if (no_errors==0) { output_file(); output_has_occurred = TRUE; }
-    else { output_has_occurred = FALSE; }
 
     if (debugfile_switch)
     {   end_debug_file();
@@ -1156,7 +1153,7 @@ static void cli_print_help(int help_level)
     printf(
 "\nThis program is a compiler of Infocom format (also called \"Z-machine\")\n\
 story files, as well as \"Glulx\" story files:\n\
-Copyright (c) Graham Nelson 1993 - 2022.\n\n");
+Copyright (c) Graham Nelson 1993 - 2024.\n\n");
 
    /* For people typing just "inform", a summary only: */
 
@@ -1529,6 +1526,16 @@ static int strcpyupper(char *to, char *from, int max)
 static void execute_icl_command(char *p);
 static int execute_dashdash_command(char *p, char *p2);
 
+/* Open a file and see whether the initial lines match the "!% ..." format
+   used for ICL commands. Stop when we reach a line that doesn't.
+   
+   This does not do line break conversion. It just reads to the next
+   \n (and ignores \r as whitespace). Therefore it will work on Unix and
+   DOS source files, but fail to cope with Mac-Classic (\r) source files.
+   I am not going to worry about this, because files from the Mac-Classic
+   era shouldn't have "!%" lines; that convention was invented well after
+   Mac switched over to \n format.
+ */
 static int execute_icl_header(char *argname)
 {
   FILE *command_file;
@@ -1541,7 +1548,7 @@ static int execute_icl_header(char *argname)
 
   do
     {   x = translate_in_filename(x, filename, argname, 0, 1);
-        command_file = fopen(filename,"r");
+        command_file = fopen(filename,"rb");
     } while ((command_file == NULL) && (x != 0));
   if (!command_file) {
     /* Fail silently. The regular compiler will try to open the file

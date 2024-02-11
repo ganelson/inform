@@ -1,3 +1,3 @@
-Inform 6.36 (24th January 2022)
+Inform 6.42 for MacOS (10th February 2024)
 "", line 0: Error:  "SW__VAR" is a name already in use and may not be used as a new symbol (Global variable "SW__VAR" was defined at compiler setup)
 Compiled with 1 error (no output)

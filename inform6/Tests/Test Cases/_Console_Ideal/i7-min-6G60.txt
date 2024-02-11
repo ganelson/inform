@@ -1,4 +1,4 @@
-Inform 6.36 (24th January 2022)
+Inform 6.42 for MacOS (10th February 2024)
 The Inform 6 memory setting "MAX_ARRAYS" is no longer needed and has been withdrawn.
 The Inform 6 memory setting "MAX_CLASSES" is no longer needed and has been withdrawn.
 The Inform 6 memory setting "MAX_VERBS" is no longer needed and has been withdrawn.
@@ -107,6 +107,8 @@ line 9753: Warning:  Entry in '->', 'string' or 'buffer' array not in range 0 to
 >   NULL NULL
 line 9753: Warning:  Entry in '->', 'string' or 'buffer' array not in range 0 to 255
 >   NULL NULL;
+line 10103: Warning:  This statement can never be reached
+>     say__p = 1;
 line 10375: Warning:  This statement can never be reached
 >    rfalse;
 line 10530: Warning:  '=' used as condition: '==' intended?
@@ -123,16 +125,10 @@ line 11149: Warning:  This statement can never be reached
 >    rfalse;
 line 11191: Warning:  This statement can never be reached
 >       RulebookSucceeds();
-line 11192: Warning:  This statement can never be reached
->    rfalse;
 line 11383: Warning:  This statement can never be reached
 >       RulebookSucceeds();
-line 11384: Warning:  This statement can never be reached
->    rfalse;
 line 11422: Warning:  This statement can never be reached
 >       RulebookSucceeds();
-line 11423: Warning:  This statement can never be reached
->    rfalse;
 line 11458: Warning:  This statement can never be reached
 >       RulebookSucceeds();
 line 11477: Warning:  This statement can never be reached
@@ -503,6 +499,14 @@ line 26667: Warning:  Local variable "w" declared but not used
 line 26682: Warning:  Local variable "group_wn" declared but not used
 line 26682: Warning:  Local variable "w" declared but not used
 line 26706: Warning:  Local variable "v" declared but not used
+line 26731: Warning:  This statement can never be reached
+>                 if (Rel_Handler_63(rr, RELS_TEST, Z1, X)) {
+line 26748: Warning:  This statement can never be reached
+>                 if (Rel_Handler_63(rr, RELS_TEST, Z1, X)) {
+line 26758: Warning:  This statement can never be reached
+>                     if (Rel_Handler_63(rr, RELS_TEST, Z1, Z3)) {
+line 26766: Warning:  This statement can never be reached
+>                     if (Rel_Handler_63(rr, RELS_TEST, Z1, Z3)) {
 line 26717: Warning:  Local variable "Z2" declared but not used
 line 26717: Warning:  Local variable "Z4" declared but not used
 line 26788: Warning:  Local variable "Z2" declared but not used
@@ -514,6 +518,8 @@ line 26914: Warning:  Local variable "x_ix" declared but not used
 line 27023: Warning:  Local variable "x_ix" declared but not used
 line 27051: Warning:  Local variable "x_ix" declared but not used
 line 27079: Warning:  Local variable "x_ix" declared but not used
+line 27094: Warning:  This statement can never be reached
+>         if ((actor == HolderOf(x))){
 line 27092: Warning:  Local variable "x_ix" declared but not used
 line 27121: Warning:  Local variable "x_ix" declared but not used
 line 27134: Warning:  Local variable "x_ix" declared but not used
@@ -587,16 +593,16 @@ line 31329: Warning:  Local variable "a" declared but not used
 line 31329: Warning:  Local variable "b" declared but not used
 line 31329: Warning:  Local variable "c" declared but not used
 line 31330: Warning:  Local variable "comb" declared but not used
-line 31482: Warning:  Local variable "relation" declared but not used
-line 31482: Warning:  Local variable "X" declared but not used
-line 31482: Warning:  Local variable "Y" declared but not used
-line 34511: Warning:  Local variable "t" declared but not used
-line 34511: Warning:  Local variable "a" declared but not used
-line 34511: Warning:  Local variable "b" declared but not used
-line 34511: Warning:  Local variable "c" declared but not used
-line 34513: Warning:  Local variable "comb" declared but not used
-line 34515: Warning:  Local variable "rel" declared but not used
-line 34515: Warning:  Local variable "txt" declared but not used
+line 31410: Warning:  Local variable "relation" declared but not used
+line 31410: Warning:  Local variable "X" declared but not used
+line 31410: Warning:  Local variable "Y" declared but not used
+line 32934: Warning:  Local variable "t" declared but not used
+line 32934: Warning:  Local variable "a" declared but not used
+line 32934: Warning:  Local variable "b" declared but not used
+line 32934: Warning:  Local variable "c" declared but not used
+line 32935: Warning:  Local variable "comb" declared but not used
+line 32936: Warning:  Local variable "rel" declared but not used
+line 32936: Warning:  Local variable "txt" declared but not used
 line 30: Warning:  Defined constant "LIBRARY_VERSION" declared but not used
 line 48: Warning:  Routine "ShowFullExtensionVersions" declared but not used
 line 54: Warning:  Defined constant "DynamicMemoryAllocation" declared but not used
@@ -1522,41 +1528,41 @@ line 27808: Warning:  Routine "DebugHeap" declared but not used
 line 28011: Warning:  Routine "BlkValueReadFromFile" declared but not used
 line 31180: Warning:  Routine "LIST_OF_TY_FindItem" declared but not used
 line 31335: Warning:  Defined constant "RRV_NAME" declared but not used
-line 31337: Warning:  Defined constant "RRV_PERMISSIONS" declared but not used
-line 31339: Warning:  Defined constant "RRV_STORAGE" declared but not used
-line 31341: Warning:  Defined constant "RRV_KIND" declared but not used
-line 31343: Warning:  Defined constant "RRV_HANDLER" declared but not used
-line 31345: Warning:  Defined constant "RRV_DESCRIPTION" declared but not used
-line 31347: Warning:  Defined constant "RRV_USED" declared but not used
-line 31349: Warning:  Defined constant "RRV_FILLED" declared but not used
-line 31351: Warning:  Defined constant "RRV_DATA_BASE" declared but not used
-line 31357: Warning:  Defined constant "RRVAL_V_TO_V" declared but not used
-line 31359: Warning:  Defined constant "RRVAL_V_TO_O" declared but not used
-line 31361: Warning:  Defined constant "RRVAL_O_TO_V" declared but not used
-line 31363: Warning:  Defined constant "RRVAL_O_TO_O" declared but not used
-line 31365: Warning:  Defined constant "RRVAL_EQUIV" declared but not used
-line 31367: Warning:  Defined constant "RRVAL_SYM_V_TO_V" declared but not used
-line 31369: Warning:  Defined constant "RRVAL_SYM_O_TO_O" declared but not used
-line 31375: Warning:  Defined constant "RRF_USED" declared but not used
-line 31377: Warning:  Defined constant "RRF_DELETED" declared but not used
-line 31379: Warning:  Defined constant "RRF_SINGLE" declared but not used
-line 31381: Warning:  Defined constant "RRF_HASX" declared but not used
-line 31383: Warning:  Defined constant "RRF_HASY" declared but not used
-line 31385: Warning:  Defined constant "RRF_ENTKEYX" declared but not used
-line 31387: Warning:  Defined constant "RRF_ENTKEYY" declared but not used
-line 31413: Warning:  Defined constant "RELS_COPY" declared but not used
-line 31415: Warning:  Defined constant "RELS_DESTROY" declared but not used
-line 31437: Warning:  Defined constant "RLANY_GET_Y" declared but not used
-line 31451: Warning:  Defined constant "RLIST_ALL_PAIRS" declared but not used
-line 31456: Warning:  Defined constant "RRP_MIN_SIZE" declared but not used
-line 31458: Warning:  Defined constant "RRP_PERTURB_SHIFT" declared but not used
-line 31460: Warning:  Defined constant "RRP_RESIZE_SMALL" declared but not used
-line 31462: Warning:  Defined constant "RRP_RESIZE_LARGE" declared but not used
-line 31464: Warning:  Defined constant "RRP_LARGE_IS" declared but not used
-line 31466: Warning:  Defined constant "RRP_CROWDED_IS" declared but not used
-line 31471: Warning:  Routine "RelationTest" declared but not used
-line 31482: Warning:  Routine "EmptyRelationHandler" declared but not used
-line 34515: Warning:  Routine "RELATION_TY_Name" declared but not used
-line 34534: Warning:  Array "ResourceIDsOfFigures" declared but not used
-line 34536: Warning:  Array "ResourceIDsOfSounds" declared but not used
-Compiled with 1403 warnings
+line 31336: Warning:  Defined constant "RRV_PERMISSIONS" declared but not used
+line 31337: Warning:  Defined constant "RRV_STORAGE" declared but not used
+line 31338: Warning:  Defined constant "RRV_KIND" declared but not used
+line 31339: Warning:  Defined constant "RRV_HANDLER" declared but not used
+line 31340: Warning:  Defined constant "RRV_DESCRIPTION" declared but not used
+line 31341: Warning:  Defined constant "RRV_USED" declared but not used
+line 31342: Warning:  Defined constant "RRV_FILLED" declared but not used
+line 31343: Warning:  Defined constant "RRV_DATA_BASE" declared but not used
+line 31346: Warning:  Defined constant "RRVAL_V_TO_V" declared but not used
+line 31347: Warning:  Defined constant "RRVAL_V_TO_O" declared but not used
+line 31348: Warning:  Defined constant "RRVAL_O_TO_V" declared but not used
+line 31349: Warning:  Defined constant "RRVAL_O_TO_O" declared but not used
+line 31350: Warning:  Defined constant "RRVAL_EQUIV" declared but not used
+line 31351: Warning:  Defined constant "RRVAL_SYM_V_TO_V" declared but not used
+line 31352: Warning:  Defined constant "RRVAL_SYM_O_TO_O" declared but not used
+line 31355: Warning:  Defined constant "RRF_USED" declared but not used
+line 31356: Warning:  Defined constant "RRF_DELETED" declared but not used
+line 31357: Warning:  Defined constant "RRF_SINGLE" declared but not used
+line 31358: Warning:  Defined constant "RRF_HASX" declared but not used
+line 31359: Warning:  Defined constant "RRF_HASY" declared but not used
+line 31360: Warning:  Defined constant "RRF_ENTKEYX" declared but not used
+line 31361: Warning:  Defined constant "RRF_ENTKEYY" declared but not used
+line 31374: Warning:  Defined constant "RELS_COPY" declared but not used
+line 31375: Warning:  Defined constant "RELS_DESTROY" declared but not used
+line 31386: Warning:  Defined constant "RLANY_GET_Y" declared but not used
+line 31393: Warning:  Defined constant "RLIST_ALL_PAIRS" declared but not used
+line 31396: Warning:  Defined constant "RRP_MIN_SIZE" declared but not used
+line 31397: Warning:  Defined constant "RRP_PERTURB_SHIFT" declared but not used
+line 31398: Warning:  Defined constant "RRP_RESIZE_SMALL" declared but not used
+line 31399: Warning:  Defined constant "RRP_RESIZE_LARGE" declared but not used
+line 31400: Warning:  Defined constant "RRP_LARGE_IS" declared but not used
+line 31401: Warning:  Defined constant "RRP_CROWDED_IS" declared but not used
+line 31404: Warning:  Routine "RelationTest" declared but not used
+line 31410: Warning:  Routine "EmptyRelationHandler" declared but not used
+line 32936: Warning:  Routine "RELATION_TY_Name" declared but not used
+line 32947: Warning:  Array "ResourceIDsOfFigures" declared but not used
+line 32949: Warning:  Array "ResourceIDsOfSounds" declared but not used
+Compiled with 1406 warnings

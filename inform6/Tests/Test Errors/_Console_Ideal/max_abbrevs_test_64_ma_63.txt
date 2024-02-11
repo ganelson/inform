@@ -1,4 +1,4 @@
-Inform 6.36 (24th January 2022)
+Inform 6.42 for MacOS (10th February 2024)
 line 64: Error:  The number of abbreviations has exceeded MAX_ABBREVS. Increase MAX_ABBREVS.
 > Abbreviate "63"
 Compiled with 1 error (no output)

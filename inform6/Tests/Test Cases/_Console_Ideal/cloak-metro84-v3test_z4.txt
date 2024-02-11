@@ -1,1 +1,6 @@
-Inform 6.36 (24th January 2022)
+Inform 6.42 for MacOS (10th February 2024)
+line 2039: Warning:  This statement can never be reached
+>    m=#adjectives_table;
+line 3814: Warning:  This statement can never be reached
+>            if (n==2) {print "That's already "; if (x1==1) "on."; els  ...etc
+Compiled with 2 warnings

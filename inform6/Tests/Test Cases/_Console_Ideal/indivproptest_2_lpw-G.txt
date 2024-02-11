@@ -1,4 +1,4 @@
-Inform 6.36 (24th January 2022)
+Inform 6.42 for MacOS (10th February 2024)
 line 111: Warning:  Obsolete usage: all properties are now automatically 'long'
 > Property long individual iprop
 Compiled with 1 warning

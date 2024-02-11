@@ -1,4 +1,4 @@
-Inform 6.36 (24th January 2022)
+Inform 6.42 for MacOS (10th February 2024)
 line 4: Warning:  Defined constant "str0" declared but not used
 line 5: Warning:  Defined constant "str99" declared but not used
 Compiled with 2 warnings

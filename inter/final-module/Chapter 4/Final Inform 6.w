@@ -132,6 +132,9 @@ See the Inform 6 Technical Manual for more on these oddities.
 @<Compile some I6 oddities@> =
 	segmentation_pos saved = CodeGen::select(gen, compiler_versioning_matter_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#ifndef VN_1642;\n");
+	WRITE("#message fatalerror \"Inform 7 generates code requiring Inform 6.42 or later\";\n");
+	WRITE("#endif;\n");	
 	WRITE("Constant Grammar__Version 2;\n");
 	WRITE("Global debug_flag;\n");
 	WRITE("Global or_tmp_var;\n");
@@ -140,6 +143,7 @@ See the Inform 6 Technical Manual for more on these oddities.
 	OUT = CodeGen::current(gen);
 	WRITE("!%% -Cu\n");
 	WRITE("!%% $ZCODE_LESS_DICT_DATA=1;\n");
+	WRITE("!%% $LONG_DICT_FLAG_BUG=0;\n");
 	if (omit_ur) WRITE("!%% $OMIT_UNUSED_ROUTINES=1;\n");
 	CodeGen::deselect(gen, saved);
 

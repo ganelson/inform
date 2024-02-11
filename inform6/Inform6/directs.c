@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------------- */
 /*   "directs" : Directives (# commands)                                     */
 /*                                                                           */
-/*   Part of Inform 6.41                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2022                                 */
+/*   Part of Inform 6.42                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2024                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -10,7 +10,6 @@
 
 int no_routines,                   /* Number of routines compiled so far     */
     no_named_routines,             /* Number not embedded in objects         */
-    no_locals,                     /* Number of locals in current routine    */
     no_termcs;                     /* Number of terminating characters       */
 int terminating_characters[32];
 
@@ -26,23 +25,23 @@ static int ifdef_stack[MAX_IFDEF_STACK], ifdef_sp;
 
 /* ------------------------------------------------------------------------- */
 
-static int ebf_error_recover(char *s1, char *s2)
+static int ebf_error_recover(char *s1)
 {
-    /* Display an "expected... but found..." error, then skim forward
-       to the next semicolon and return FALSE. This is such a common
-       case in parse_given_directive() that it's worth a utility
-       function. You will see many error paths that look like:
+    /* Display an "expected... but found (current token)" error, then
+       skim forward to the next semicolon and return FALSE. This is
+       such a common case in parse_given_directive() that it's worth a
+       utility function. You will see many error paths that look like:
           return ebf_error_recover(...);
     */
-    ebf_error(s1, s2);
+    ebf_curtoken_error(s1);
     panic_mode_error_recovery();
     return FALSE;
 }
 
-static int ebf_symbol_error_recover(char *s1, char *name, char *type, brief_location report_line)
+static int ebf_symbol_error_recover(char *s1, char *type, brief_location report_line)
 {
     /* Same for ebf_symbol_error(). */
-    ebf_symbol_error(s1, name, type, report_line);
+    ebf_symbol_error(s1, token_text, type, report_line);
     panic_mode_error_recovery();
     return FALSE;
 }
@@ -109,13 +108,7 @@ extern int parse_given_directive(int internal_flag)
                panic_mode_error_recovery(); return FALSE;
            }
            if (token_type != DQ_TT)
-           {   return ebf_error_recover("abbreviation string", token_text);
-           }
-           /* Abbreviation string with null must fit in a MAX_ABBREV_LENGTH
-              array. */
-           if (strlen(token_text)>=MAX_ABBREV_LENGTH)
-           {   error_named("Abbreviation too long", token_text);
-               continue;
+           {   return ebf_error_recover("abbreviation string");
            }
            make_abbreviation(token_text);
         } while (TRUE);
@@ -154,12 +147,12 @@ extern int parse_given_directive(int internal_flag)
 
         if (token_type != SYMBOL_TT)
         {   discard_token_location(beginning_debug_location);
-            return ebf_error_recover("new constant name", token_text);
+            return ebf_error_recover("new constant name");
         }
 
         if (!(symbols[i].flags & (UNKNOWN_SFLAG + REDEFINABLE_SFLAG)))
         {   discard_token_location(beginning_debug_location);
-            return ebf_symbol_error_recover("new constant name", token_text, typename(symbols[i].type), symbols[i].line);
+            return ebf_symbol_error_recover("new constant name", typename(symbols[i].type), symbols[i].line);
         }
 
         assign_symbol(i, 0, CONSTANT_T);
@@ -237,7 +230,7 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
     case DEFAULT_CODE:
         get_next_token();
         if (token_type != SYMBOL_TT)
-            return ebf_error_recover("name", token_text);
+            return ebf_error_recover("name");
 
         i = -1;
         if (symbols[token_value].flags & UNKNOWN_SFLAG)
@@ -283,7 +276,7 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
          */
         get_next_token();
         if (token_type != SQ_TT && token_type != DQ_TT)
-            return ebf_error_recover("dictionary word", token_text);
+            return ebf_error_recover("dictionary word");
 
         {
             char *wd = token_text;
@@ -387,7 +380,7 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
       DefCondition:
         get_next_token();
         if (token_type != SYMBOL_TT)
-            return ebf_error_recover("symbol name", token_text);
+            return ebf_error_recover("symbol name");
 
         /* Special case: a symbol of the form "VN_nnnn" is considered
            defined if the compiler version number is at least nnnn.
@@ -493,7 +486,7 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
     HashIfCondition:
         get_next_token();
         if (!((token_type == SEP_TT) && (token_value == SEMICOLON_SEP)))
-            return ebf_error_recover("semicolon after 'If...' condition", token_text);
+            return ebf_error_recover("semicolon after 'If...' condition");
 
         if (ifdef_sp >= MAX_IFDEF_STACK) {
             error("'If' directives nested too deeply");
@@ -557,13 +550,13 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
     case INCLUDE_CODE:
         get_next_token();
         if (token_type != DQ_TT)
-            return ebf_error_recover("filename in double-quotes", token_text);
+            return ebf_error_recover("filename in double-quotes");
 
         {   char *name = token_text;
 
             get_next_token();
             if (!((token_type == SEP_TT) && (token_value == SEMICOLON_SEP)))
-                ebf_error("semicolon ';' after Include filename", token_text);
+                ebf_curtoken_error("semicolon ';' after Include filename");
 
             if (strcmp(name, "language__") == 0)
                  load_sourcefile(Language_Name, 0);
@@ -597,13 +590,13 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
         }
         get_next_token(); i = token_value;
         if (token_type != SYMBOL_TT)
-            return ebf_error_recover("new low string name", token_text);
+            return ebf_error_recover("new low string name");
         if (!(symbols[i].flags & UNKNOWN_SFLAG))
-            return ebf_symbol_error_recover("new low string name", token_text, typename(symbols[i].type), symbols[i].line);
+            return ebf_symbol_error_recover("new low string name", typename(symbols[i].type), symbols[i].line);
 
         get_next_token();
         if (token_type != DQ_TT)
-            return ebf_error_recover("literal string in double-quotes", token_text);
+            return ebf_error_recover("literal string in double-quotes");
 
         assign_symbol(i, compile_string(token_text, STRCTX_LOWSTRING), CONSTANT_T);
         break;
@@ -634,26 +627,25 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
         if ((token_type == DIR_KEYWORD_TT) && (token_value == ERROR_DK))
         {   get_next_token();
             if (token_type != DQ_TT)
-            {   return ebf_error_recover("error message in double-quotes", token_text);
+            {   return ebf_error_recover("error message in double-quotes");
             }
             error(token_text); break;
         }
         if ((token_type == DIR_KEYWORD_TT) && (token_value == FATALERROR_DK))
         {   get_next_token();
             if (token_type != DQ_TT)
-            {   return ebf_error_recover("fatal error message in double-quotes", token_text);
+            {   return ebf_error_recover("fatal error message in double-quotes");
             }
             fatalerror(token_text); break;
         }
         if ((token_type == DIR_KEYWORD_TT) && (token_value == WARNING_DK))
         {   get_next_token();
             if (token_type != DQ_TT)
-            {   return ebf_error_recover("warning message in double-quotes", token_text);
+            {   return ebf_error_recover("warning message in double-quotes");
             }
             warning(token_text); break;
         }
-        return ebf_error_recover("a message in double-quotes, 'error', 'fatalerror' or 'warning'",
-            token_text);
+        return ebf_error_recover("a message in double-quotes, 'error', 'fatalerror' or 'warning'");
         break;
 
     /* --------------------------------------------------------------------- */
@@ -702,16 +694,14 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
             get_next_token();
             if (!((token_type == SEP_TT) && (token_value == SEMICOLON_SEP))) {
                 if (token_type != DQ_TT) {
-                    return ebf_error_recover("a file name in double-quotes",
-                        token_text);
+                    return ebf_error_recover("a file name in double-quotes");
                 }
                 origsource_file = token_text;
 
                 get_next_token();
                 if (!((token_type == SEP_TT) && (token_value == SEMICOLON_SEP))) {
                     if (token_type != NUMBER_TT) {
-                        return ebf_error_recover("a file line number",
-                            token_text);
+                        return ebf_error_recover("a file line number");
                     }
                     origsource_line = token_value;
                     if (origsource_line < 0)
@@ -720,8 +710,7 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
                     get_next_token();
                     if (!((token_type == SEP_TT) && (token_value == SEMICOLON_SEP))) {
                         if (token_type != NUMBER_TT) {
-                            return ebf_error_recover("a file line number",
-                                token_text);
+                            return ebf_error_recover("a file line number");
                         }
                         origsource_char = token_value;
                         if (origsource_char < 0)
@@ -792,9 +781,9 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
         }
 
         if (token_type != SYMBOL_TT)
-            return ebf_error_recover("name of routine to replace", token_text);
+            return ebf_error_recover("name of routine to replace");
         if (!(symbols[token_value].flags & UNKNOWN_SFLAG))
-            return ebf_error_recover("name of routine not yet defined", token_text);
+            return ebf_error_recover("name of routine not yet defined");
 
         symbols[token_value].flags |= REPLACE_SFLAG;
 
@@ -811,7 +800,7 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
         }
 
         if (token_type != SYMBOL_TT || !(symbols[token_value].flags & UNKNOWN_SFLAG))
-            return ebf_error_recover("semicolon ';' or new routine name", token_text);
+            return ebf_error_recover("semicolon ';' or new routine name");
 
         /* Define the original-form symbol as a zero constant. Its
            value will be overwritten later, when we define the
@@ -849,7 +838,7 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
         directive_keywords.enabled = FALSE;
         if ((token_type != DIR_KEYWORD_TT)
             || ((token_value != SCORE_DK) && (token_value != TIME_DK)))
-            return ebf_error_recover("'score' or 'time' after 'statusline'", token_text);
+            return ebf_error_recover("'score' or 'time' after 'statusline'");
         if (token_value == SCORE_DK) statusline_flag = SCORE_STYLE;
         else statusline_flag = TIME_STYLE;
         break;
@@ -865,7 +854,7 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
         get_next_token();
         df_dont_note_global_symbols = FALSE;
         if (token_type != SYMBOL_TT)
-            return ebf_error_recover("routine name to stub", token_text);
+            return ebf_error_recover("routine name to stub");
 
         i = token_value; flag = FALSE;
 
@@ -876,7 +865,7 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
 
         get_next_token(); k = token_value;
         if (token_type != NUMBER_TT)
-            return ebf_error_recover("number of local variables", token_text);
+            return ebf_error_recover("number of local variables");
         if ((k>4) || (k<0))
         {   error("Must specify 0 to 4 local variables for 'Stub' routine");
             k = 0;
@@ -890,13 +879,14 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
                 (We don't set local_variable.keywords because we're not
                 going to be parsing any code.)                               */
 
-            strcpy(local_variable_names[0].text, "dummy1");
-            strcpy(local_variable_names[1].text, "dummy2");
-            strcpy(local_variable_names[2].text, "dummy3");
-            strcpy(local_variable_names[3].text, "dummy4");
+            clear_local_variables();
+            if (k >= 1) add_local_variable("dummy1");
+            if (k >= 2) add_local_variable("dummy2");
+            if (k >= 3) add_local_variable("dummy3");
+            if (k >= 4) add_local_variable("dummy4");
 
             assign_symbol(i,
-                assemble_routine_header(k, FALSE, symbols[i].name, FALSE, i),
+                assemble_routine_header(FALSE, symbols[i].name, FALSE, i),
                 ROUTINE_T);
 
             /*  Ensure the return value of a stubbed routine is false,
@@ -924,8 +914,8 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
         dont_enter_into_symbol_table = TRUE;
         get_next_token();
         dont_enter_into_symbol_table = FALSE;
-        if (token_type != DQ_TT)
-            return ebf_error_recover("string of switches", token_text);
+        if (token_type != UQ_TT)
+            return ebf_error_recover("string of switches");
         if (!ignore_switches_switch)
         {
             if (constant_made_yet) {
@@ -997,7 +987,7 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
            'on' and 'off' are trace keywords. */
         
         if (token_type != TRACE_KEYWORD_TT)
-            return ebf_error_recover("debugging keyword", token_text);
+            return ebf_error_recover("debugging keyword");
 
         trace_keywords.enabled = TRUE;
 
@@ -1087,7 +1077,7 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
     case UNDEF_CODE:
         get_next_token();
         if (token_type != SYMBOL_TT)
-            return ebf_error_recover("symbol name", token_text);
+            return ebf_error_recover("symbol name");
 
         if (symbols[token_value].flags & UNKNOWN_SFLAG)
         {   break; /* undef'ing an undefined constant is okay */
@@ -1101,7 +1091,10 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
         if (debugfile_switch)
         {   write_debug_undef(token_value);
         }
-        end_symbol_scope(token_value);
+        /* We remove it from the symbol table. But previous uses of the symbol
+           were valid, so we don't set neverused true. We also mark it
+           USED so that it can't trigger "symbol not used" warnings. */
+        end_symbol_scope(token_value, FALSE);
         symbols[token_value].flags |= USED_SFLAG;
         break;
 
@@ -1159,8 +1152,8 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
                    version.
                    The calculation here is repeated from select_target(). */
                 DICT_ENTRY_BYTE_LENGTH = ((version_number==3)?7:9) - (ZCODE_LESS_DICT_DATA?1:0);
-                debtok = symbol_index("DICT_ENTRY_BYTES", -1);
-                if (!(symbols[debtok].flags & UNKNOWN_SFLAG))
+                debtok = get_symbol_index("DICT_ENTRY_BYTES");
+                if (debtok >= 0 && !(symbols[debtok].flags & UNKNOWN_SFLAG))
                 {
                     if (!(symbols[debtok].flags & REDEFINABLE_SFLAG))
                     {
@@ -1196,18 +1189,18 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
                 new_alphabet(token_text, 0);
                 get_next_token();
                 if (token_type != DQ_TT)
-                    return ebf_error_recover("double-quoted alphabet string", token_text);
+                    return ebf_error_recover("double-quoted alphabet string");
                 new_alphabet(token_text, 1);
                 get_next_token();
                 if (token_type != DQ_TT)
-                    return ebf_error_recover("double-quoted alphabet string", token_text);
+                    return ebf_error_recover("double-quoted alphabet string");
                 new_alphabet(token_text, 2);
             break;
 
             case SQ_TT:
                 map_new_zchar(text_to_unicode(token_text));
                 if (token_text[textual_form_length] != 0)
-                    return ebf_error_recover("single character value", token_text);
+                    return ebf_error_recover("single character value");
             break;
 
             case DIR_KEYWORD_TT:
@@ -1228,13 +1221,11 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
                                 new_zscii_character(text_to_unicode(token_text),
                                     plus_flag);
                                 if (token_text[textual_form_length] != 0)
-                                    return ebf_error_recover("single character value",
-                                        token_text);
+                                    return ebf_error_recover("single character value");
                                 plus_flag = TRUE;
                                 break;
                             default:
-                                return ebf_error_recover("character or Unicode number",
-                                    token_text);
+                                return ebf_error_recover("character or Unicode number");
                         }
                         get_next_token();
                     }
@@ -1251,8 +1242,7 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
                                     = token_value;
                                 break;
                             default:
-                                return ebf_error_recover("ZSCII number",
-                                    token_text);
+                                return ebf_error_recover("ZSCII number");
                         }
                         get_next_token();
                     }
@@ -1260,13 +1250,12 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
                     break;
                 default:
                     return ebf_error_recover("'table', 'terminating', \
-a string or a constant",
-                        token_text);
+a string or a constant");
             }
                 break;
             default:
                 return ebf_error_recover("three alphabet strings, \
-a 'table' or 'terminating' command or a single character", token_text);
+a 'table' or 'terminating' command or a single character");
         }
         break;
 
@@ -1279,7 +1268,7 @@ a 'table' or 'terminating' command or a single character", token_text);
 
     get_next_token();
     if ((token_type != SEP_TT) || (token_value != SEMICOLON_SEP))
-    {   ebf_error("';'", token_text);
+    {   ebf_curtoken_error("';'");
         /* Put the non-semicolon back. We will continue parsing from
            that point, in hope that it's the start of a new directive.
            (This recovers cleanly from a missing semicolon at the end
@@ -1301,7 +1290,6 @@ extern void init_directs_vars(void)
 extern void directs_begin_pass(void)
 {   no_routines = 0;
     no_named_routines = 0;
-    no_locals = 0;
     no_termcs = 0;
     constant_made_yet = FALSE;
     ifdef_sp = 0;

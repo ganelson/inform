@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------------- */
 /*   "memory" : Memory management and ICL memory setting commands            */
 /*                                                                           */
-/*   Part of Inform 6.41                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2022                                 */
+/*   Part of Inform 6.42                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2024                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -12,7 +12,7 @@ size_t malloced_bytes=0;               /* Total amount of memory allocated   */
 
 /* Wrappers for malloc(), realloc(), etc.
 
-   Note that all of these functions call memory_out_error() on failure.
+   Note that all of these functions call fatalerror_memory_out() on failure.
    This is a fatal error and does not return. However, we check my_malloc()
    return values anyway as a matter of good habit.
  */
@@ -26,7 +26,7 @@ extern void *my_malloc(size_t size, char *whatfor)
     if (size==0) return(NULL);
     c=(char _huge *)halloc(size,1);
     malloced_bytes+=size;
-    if (c==0) memory_out_error(size, 1, whatfor);
+    if (c==0) fatalerror_memory_out(size, 1, whatfor);
     return(c);
 }
 
@@ -39,7 +39,7 @@ extern void my_realloc(void *pointer, size_t oldsize, size_t size,
     }
     c=halloc(size,1);
     malloced_bytes+=(size-oldsize);
-    if (c==0) memory_out_error(size, 1, whatfor);
+    if (c==0) fatalerror_memory_out(size, 1, whatfor);
     if (memout_switch)
         printf("Increasing allocation from %ld to %ld bytes for %s was (%08lx) now (%08lx)\n",
             (long int) oldsize, (long int) size, whatfor,
@@ -58,7 +58,7 @@ extern void *my_calloc(size_t size, size_t howmany, char *whatfor)
     if ((size*howmany) == 0) return(NULL);
     c=(void _huge *)halloc(howmany*size,1);
     malloced_bytes+=size*howmany;
-    if (c==0) memory_out_error(size, howmany, whatfor);
+    if (c==0) fatalerror_memory_out(size, howmany, whatfor);
     return(c);
 }
 
@@ -71,7 +71,7 @@ extern void my_recalloc(void *pointer, size_t size, size_t oldhowmany,
     }
     c=(void _huge *)halloc(size*howmany,1);
     malloced_bytes+=size*(howmany-oldhowmany);
-    if (c==0) memory_out_error(size, howmany, whatfor);
+    if (c==0) fatalerror_memory_out(size, howmany, whatfor);
     if (memout_switch)
         printf("Increasing allocation from %ld to %ld bytes: array (%ld entries size %ld) for %s was (%08lx) now (%08lx)\n",
             ((long int)size) * ((long int)oldhowmany),
@@ -90,10 +90,10 @@ extern void *my_malloc(size_t size, char *whatfor)
     if (size==0) return(NULL);
     c=malloc(size);
     malloced_bytes+=size;
-    if (c==0) memory_out_error(size, 1, whatfor);
+    if (c==0) fatalerror_memory_out(size, 1, whatfor);
     if (memout_switch)
-        printf("Allocating %ld bytes for %s at (%08lx)\n",
-            (long int) size,whatfor,(long int) c);
+        printf("Allocating %ld bytes for %s at (%p)\n",
+            (long int) size, whatfor, c);
     return(c);
 }
 
@@ -106,12 +106,10 @@ extern void my_realloc(void *pointer, size_t oldsize, size_t size,
     }
     c=realloc(*(int **)pointer,  size);
     malloced_bytes+=(size-oldsize);
-    if (c==0) memory_out_error(size, 1, whatfor);
+    if (c==0) fatalerror_memory_out(size, 1, whatfor);
     if (memout_switch)
-        printf("Increasing allocation from %ld to %ld bytes for %s was (%08lx) now (%08lx)\n",
-            (long int) oldsize, (long int) size, whatfor,
-            (long int) (*(int **)pointer), 
-            (long int) c);
+        printf("Increasing allocation from %ld to %ld bytes for %s was (%p) now (%p)\n",
+            (long int) oldsize, (long int) size, whatfor, pointer, c);
     *(int **)pointer = c;
 }
 
@@ -120,13 +118,12 @@ extern void *my_calloc(size_t size, size_t howmany, char *whatfor)
     if (size*howmany==0) return(NULL);
     c=calloc(howmany, size);
     malloced_bytes+=size*howmany;
-    if (c==0) memory_out_error(size, howmany, whatfor);
+    if (c==0) fatalerror_memory_out(size, howmany, whatfor);
     if (memout_switch)
         printf("Allocating %ld bytes: array (%ld entries size %ld) \
-for %s at (%08lx)\n",
+for %s at (%p)\n",
             ((long int)size) * ((long int)howmany),
-            (long int)howmany,(long int)size,whatfor,
-            (long int) c);
+            (long int)howmany,(long int)size, whatfor, c);
     return(c);
 }
 
@@ -139,13 +136,13 @@ extern void my_recalloc(void *pointer, size_t size, size_t oldhowmany,
     }
     c=realloc(*(int **)pointer, size*howmany); 
     malloced_bytes+=size*(howmany-oldhowmany);
-    if (c==0) memory_out_error(size, howmany, whatfor);
+    if (c==0) fatalerror_memory_out(size, howmany, whatfor);
     if (memout_switch)
-        printf("Increasing allocation from %ld to %ld bytes: array (%ld entries size %ld) for %s was (%08lx) now (%08lx)\n",
+        printf("Increasing allocation from %ld to %ld bytes: array (%ld entries size %ld) for %s was (%p) now (%p)\n",
             ((long int)size) * ((long int)oldhowmany),
             ((long int)size) * ((long int)howmany),
             (long int)howmany, (long int)size, whatfor,
-            (long int) *(int **)pointer, (long int) c);
+            pointer, c);
     *(int **)pointer = c;
 }
 
@@ -155,8 +152,8 @@ extern void my_free(void *pointer, char *whatitwas)
 {
     if (*(int **)pointer != NULL)
     {   if (memout_switch)
-            printf("Freeing memory for %s at (%08lx)\n",
-                whatitwas, (long int) (*(int **)pointer));
+            printf("Freeing memory for %s at (%p)\n",
+                whatitwas, pointer);
 #ifdef PC_QUICKC
         hfree(*(int **)pointer);
 #else
@@ -264,6 +261,7 @@ int DICT_WORD_BYTES; /* DICT_WORD_SIZE*DICT_CHAR_SIZE */
 int ZCODE_HEADER_EXT_WORDS; /* (zcode 1.0) requested header extension size */
 int ZCODE_HEADER_FLAGS_3; /* (zcode 1.1) value to place in Flags 3 word */
 int ZCODE_LESS_DICT_DATA; /* (zcode) use 2 data bytes per dict word instead of 3 */
+int ZCODE_MAX_INLINE_STRING; /* (zcode) length of string literals that can be inlined */
 int NUM_ATTR_BYTES;
 int GLULX_OBJECT_EXT_BYTES; /* (glulx) extra bytes for each object record */
 int32 MAX_STACK_SIZE;
@@ -271,6 +269,8 @@ int32 MEMORY_MAP_EXTENSION;
 int WARN_UNUSED_ROUTINES; /* 0: no, 1: yes except in system files, 2: yes always */
 int OMIT_UNUSED_ROUTINES; /* 0: no, 1: yes */
 int STRIP_UNREACHABLE_LABELS; /* 0: no, 1: yes (default) */
+int OMIT_SYMBOL_TABLE; /* 0: no, 1: yes */
+int LONG_DICT_FLAG_BUG; /* 0: no bug, 1: bug (default for historic reasons) */
 int TRANSCRIPT_FORMAT; /* 0: classic, 1: prefixed */
 
 /* The way memory sizes are set causes great nuisance for those parameters
@@ -302,6 +302,8 @@ static void list_memory_sizes(void)
       printf("|  %25s = %-7d |\n","ZCODE_HEADER_FLAGS_3",ZCODE_HEADER_FLAGS_3);
     if (!glulx_mode)
       printf("|  %25s = %-7d |\n","ZCODE_LESS_DICT_DATA",ZCODE_LESS_DICT_DATA);
+    if (!glulx_mode)
+      printf("|  %25s = %-7d |\n","ZCODE_MAX_INLINE_STRING",ZCODE_MAX_INLINE_STRING);
     printf("|  %25s = %-7d |\n","INDIV_PROP_START", INDIV_PROP_START);
     if (glulx_mode)
       printf("|  %25s = %-7d |\n","MEMORY_MAP_EXTENSION",
@@ -316,6 +318,8 @@ static void list_memory_sizes(void)
     printf("|  %25s = %-7d |\n","WARN_UNUSED_ROUTINES",WARN_UNUSED_ROUTINES);
     printf("|  %25s = %-7d |\n","OMIT_UNUSED_ROUTINES",OMIT_UNUSED_ROUTINES);
     printf("|  %25s = %-7d |\n","STRIP_UNREACHABLE_LABELS",STRIP_UNREACHABLE_LABELS);
+    printf("|  %25s = %-7d |\n","OMIT_SYMBOL_TABLE",OMIT_SYMBOL_TABLE);
+    printf("|  %25s = %-7d |\n","LONG_DICT_FLAG_BUG",LONG_DICT_FLAG_BUG);
     printf("+--------------------------------------+\n");
 }
 
@@ -336,6 +340,7 @@ extern void set_memory_sizes(void)
     ZCODE_HEADER_EXT_WORDS = 3;
     ZCODE_HEADER_FLAGS_3 = 0;
     ZCODE_LESS_DICT_DATA = 0;
+    ZCODE_MAX_INLINE_STRING = 32;
     GLULX_OBJECT_EXT_BYTES = 0;
     MEMORY_MAP_EXTENSION = 0;
     /* We estimate the default Glulx stack size at 4096. That's about
@@ -347,6 +352,8 @@ extern void set_memory_sizes(void)
     OMIT_UNUSED_ROUTINES = 0;
     WARN_UNUSED_ROUTINES = 0;
     STRIP_UNREACHABLE_LABELS = 1;
+    OMIT_SYMBOL_TABLE = 0;
+    LONG_DICT_FLAG_BUG = 1;
     TRANSCRIPT_FORMAT = 0;
 
     adjust_memory_sizes();
@@ -419,6 +426,12 @@ static void explain_parameter(char *command)
   rather than three. (Z-code only.)\n");
         return;
     }
+    if (strcmp(command,"ZCODE_MAX_INLINE_STRING")==0)
+    {   printf(
+"  ZCODE_MAX_INLINE_STRING is the length beyond which string literals cannot\n\
+  be inlined in assembly opcodes. (Z-code only.)\n");
+        return;
+    }
     if (strcmp(command,"GLULX_OBJECT_EXT_BYTES")==0)
     {   printf(
 "  GLULX_OBJECT_EXT_BYTES is an amount of additional space to add to each \n\
@@ -489,6 +502,21 @@ static void explain_parameter(char *command)
 "  STRIP_UNREACHABLE_LABELS, if set to 1, will skip labels in unreachable \n\
   statements. Jumping to a skipped label is an error. If 0, all labels \n\
   will be compiled, at the cost of less optimized code. The default is 1.\n");
+        return;
+    }
+    if (strcmp(command,"OMIT_SYMBOL_TABLE")==0)
+    {
+        printf(
+"  OMIT_SYMBOL_TABLE, if set to 1, will skip compiling debug symbol names \n\
+  into the game file.\n");
+        return;
+    }
+    if (strcmp(command,"LONG_DICT_FLAG_BUG")==0)
+    {
+        printf(
+"  LONG_DICT_FLAG_BUG, if set to 0, will fix the old bug which ignores \n\
+  the '//p' flag in long dictionary words. If 1, the buggy behavior is \n\
+  retained.\n");
         return;
     }
     if (strcmp(command,"SERIAL")==0)
@@ -616,6 +644,7 @@ static void set_trace_option(char *command)
         printf("  FREQ: show how efficient abbreviations were (same as -f)\n    (only meaningful with -e)\n");
         printf("  MAP: print memory map of the virtual machine (same as -z)\n");
         printf("    MAP=2: also show percentage of VM that each segment occupies\n");
+        printf("    MAP=3: also show number of bytes that each segment occupies\n");
         printf("  MEM: show internal memory allocations\n");
         printf("  OBJECTS: display the object table\n");
         printf("  PROPS: show attributes and properties defined\n");
@@ -788,6 +817,8 @@ extern void memory_command(char *command)
                 ZCODE_HEADER_FLAGS_3=j, flag=1;
             if (strcmp(command,"ZCODE_LESS_DICT_DATA")==0)
                 ZCODE_LESS_DICT_DATA=j, flag=1;
+            if (strcmp(command,"ZCODE_MAX_INLINE_STRING")==0)
+                ZCODE_MAX_INLINE_STRING=j, flag=1;
             if (strcmp(command,"GLULX_OBJECT_EXT_BYTES")==0)
                 GLULX_OBJECT_EXT_BYTES=j, flag=1;
             if (strcmp(command,"MAX_STATIC_DATA")==0)
@@ -895,6 +926,18 @@ extern void memory_command(char *command)
                 STRIP_UNREACHABLE_LABELS=j, flag=1;
                 if (STRIP_UNREACHABLE_LABELS > 1 || STRIP_UNREACHABLE_LABELS < 0)
                     STRIP_UNREACHABLE_LABELS = 1;
+            }
+            if (strcmp(command,"OMIT_SYMBOL_TABLE")==0)
+            {
+                OMIT_SYMBOL_TABLE=j, flag=1;
+                if (OMIT_SYMBOL_TABLE > 1 || OMIT_SYMBOL_TABLE < 0)
+                    OMIT_SYMBOL_TABLE = 1;
+            }
+            if (strcmp(command,"LONG_DICT_FLAG_BUG")==0)
+            {
+                LONG_DICT_FLAG_BUG=j, flag=1;
+                if (LONG_DICT_FLAG_BUG > 1 || LONG_DICT_FLAG_BUG < 0)
+                    LONG_DICT_FLAG_BUG = 1;
             }
             if (strcmp(command,"SERIAL")==0)
             {

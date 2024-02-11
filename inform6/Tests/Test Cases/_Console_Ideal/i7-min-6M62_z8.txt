@@ -1,4 +1,4 @@
-Inform 6.36 (24th January 2022)
+Inform 6.42 for MacOS (10th February 2024)
 The Inform 6 memory setting "ALLOC_CHUNK_SIZE" is no longer needed and has been withdrawn.
 The Inform 6 memory setting "MAX_ARRAYS" is no longer needed and has been withdrawn.
 The Inform 6 memory setting "MAX_CLASSES" is no longer needed and has been withdrawn.
@@ -102,6 +102,8 @@ line 11139: Warning:  Entry in '->', 'string' or 'buffer' array not in range 0 t
 >   NULL NULL
 line 11139: Warning:  Entry in '->', 'string' or 'buffer' array not in range 0 to 255
 >   NULL NULL;
+line 11662: Warning:  This statement can never be reached
+>     say__p = 1;
 line 11961: Warning:  This statement can never be reached
 >     rfalse;
 line 12155: Warning:  '=' used as condition: '==' intended?
@@ -122,16 +124,10 @@ line 12775: Warning:  This statement can never be reached
 >     rfalse;
 line 12813: Warning:  This statement can never be reached
 >     RulebookSucceeds();
-line 12814: Warning:  This statement can never be reached
->     rfalse;
 line 12954: Warning:  This statement can never be reached
 >     RulebookSucceeds();
-line 12955: Warning:  This statement can never be reached
->     rfalse;
 line 12987: Warning:  This statement can never be reached
 >     RulebookSucceeds();
-line 12988: Warning:  This statement can never be reached
->     rfalse;
 line 13037: Warning:  This statement can never be reached
 >     RulebookSucceeds();
 line 13056: Warning:  This statement can never be reached
@@ -567,6 +563,8 @@ line 40161: Warning:  Local variable "x_ix" declared but not used
 line 40197: Warning:  Local variable "x_ix" declared but not used
 line 40233: Warning:  Local variable "x_ix" declared but not used
 line 40269: Warning:  Local variable "x_ix" declared but not used
+line 40292: Warning:  This statement can never be reached
+>         if ((actor == HolderOf(x))){
 line 40286: Warning:  Local variable "x_ix" declared but not used
 line 40321: Warning:  Local variable "x_ix" declared but not used
 line 40338: Warning:  Local variable "x_ix" declared but not used
@@ -704,6 +702,14 @@ line 46236: Warning:  This statement can never be reached
 >         RELS_ASSERT_FALSE: rfalse; rtrue;
 line 46170: Warning:  Local variable "Z2" declared but not used
 line 46170: Warning:  Local variable "Z4" declared but not used
+line 46259: Warning:  This statement can never be reached
+>                 if (Rel_Handler_17(rr, RELS_TEST, Z1, X)) {
+line 46279: Warning:  This statement can never be reached
+>                 if (Rel_Handler_17(rr, RELS_TEST, Z1, X)) {
+line 46294: Warning:  This statement can never be reached
+>                 for (Z3=IK2_First:
+line 46302: Warning:  This statement can never be reached
+>                 for (Z3=IK2_First:
 line 46311: Warning:  This statement can never be reached
 >         RELS_ASSERT_FALSE: rfalse; rtrue;
 line 46245: Warning:  Local variable "Z2" declared but not used
@@ -739,6 +745,14 @@ line 46805: Warning:  Local variable "Z2" declared but not used
 line 46805: Warning:  Local variable "Z4" declared but not used
 line 46878: Warning:  Local variable "Z2" declared but not used
 line 46878: Warning:  Local variable "Z4" declared but not used
+line 46974: Warning:  This statement can never be reached
+>                 if (Rel_Handler_67(rr, RELS_TEST, X, Z1)) {
+line 46991: Warning:  This statement can never be reached
+>                 if (Rel_Handler_67(rr, RELS_TEST, X, Z1)) {
+line 47001: Warning:  This statement can never be reached
+>                     if (Rel_Handler_67(rr, RELS_TEST, Z1, Z3)) {
+line 47009: Warning:  This statement can never be reached
+>                     if (Rel_Handler_67(rr, RELS_TEST, Z1, Z3)) {
 line 46951: Warning:  Local variable "Z2" declared but not used
 line 46951: Warning:  Local variable "Z4" declared but not used
 line 47030: Warning:  Local variable "Z2" declared but not used
@@ -887,6 +901,8 @@ line 48847: Warning:  Using '-->' to access a -> or string array
 >   for (B = Flex_Heap-->BLK_NEXT:
 line 48853: Warning:  Using '-->' to access a -> or string array
 >   Flex_Heap-->BLK_NEXT = newblock;
+line 48860: Warning:  This statement can never be reached
+>  rtrue;
 line 48865: Warning:  Using '-->' to access a -> or string array
 >  for (txb=Flex_Heap-->BLK_NEXT:
 line 48904: Warning:  Using '-->' to access a -> or string array
@@ -1622,4 +1638,4 @@ line 54153: Warning:  Routine "RELATION_TY_Distinguish" declared but not used
 line 54173: Warning:  Routine "RELATION_TY_Name" declared but not used
 line 55662: Warning:  Array "ResourceIDsOfFigures" declared but not used
 line 55664: Warning:  Array "ResourceIDsOfSounds" declared but not used
-Compiled with 1455 warnings
+Compiled with 1463 warnings

@@ -3,8 +3,8 @@
 /*               of dynamic memory, gluing together all the required         */
 /*               tables.                                                     */
 /*                                                                           */
-/*   Part of Inform 6.41                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2022                                 */
+/*   Part of Inform 6.42                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2024                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -99,17 +99,23 @@ extern void write_serial_number(char *buffer)
         the ability to work out today's date                                 */
 
     time_t tt;  tt=time(0);
-    if (serial_code_given_in_program)
+    if (serial_code_given_in_program) {
         strcpy(buffer, serial_code_buffer);
-    else
+    }
+    else {
 #ifdef TIME_UNAVAILABLE
         sprintf(buffer,"970000");
 #else
-        strftime(buffer,10,"%y%m%d",localtime(&tt));
+        /* Write a six-digit date, null-terminated. Fall back to "970000"
+           if that fails. */
+        int len = strftime(buffer,7,"%y%m%d",localtime(&tt));
+        if (len != 6)
+            sprintf(buffer,"970000");
 #endif
+    }
 }
 
-static char percentage_buffer[32];
+static char percentage_buffer[64];
 
 static char *show_percentage(int32 x, int32 total)
 {
@@ -119,8 +125,11 @@ static char *show_percentage(int32 x, int32 total)
     else if (x == 0) {
         sprintf(percentage_buffer, "  ( --- )");
     }
-    else {
+    else if (memory_map_setting < 3) {
         sprintf(percentage_buffer, "  (%.1f %%)", (float)x * 100.0 / (float)total);
+    }
+    else {
+        sprintf(percentage_buffer, "  (%.1f %%, %d bytes)", (float)x * 100.0 / (float)total, x);
     }
     return percentage_buffer;
 }
@@ -133,6 +142,7 @@ static char *version_name(int v)
         case 4: return "Plus";
         case 5: return "Advanced";
         case 6: return "Graphical";
+        case 7: return "Extended Alternate";
         case 8: return "Extended";
     }
     return "experimental format";
@@ -250,31 +260,34 @@ static void construct_storyfile_z(void)
           grammar_table_at=0, charset_at=0, headerext_at=0,
           terminating_chars_at=0, unicode_at=0, id_names_length=0,
           static_arrays_at=0;
+    int32 rough_size;
     int skip_backpatching = FALSE;
     char *output_called = "story file";
 
     ASSERT_ZCODE();
 
-    individual_name_strings =
-        my_calloc(sizeof(int32), no_individual_properties,
-            "identifier name strings");
-    action_name_strings =
-        my_calloc(sizeof(int32), no_actions + no_fake_actions,
-            "action name strings");
-    attribute_name_strings =
-        my_calloc(sizeof(int32), 48,
-            "attribute name strings");
-    array_name_strings =
-        my_calloc(sizeof(int32),
-            no_symbols,
-            "array name strings");
+    if (!OMIT_SYMBOL_TABLE) {
+        individual_name_strings =
+            my_calloc(sizeof(int32), no_individual_properties,
+                      "identifier name strings");
+        action_name_strings =
+            my_calloc(sizeof(int32), no_actions + no_fake_actions,
+                      "action name strings");
+        attribute_name_strings =
+            my_calloc(sizeof(int32), 48,
+                      "attribute name strings");
+        array_name_strings =
+            my_calloc(sizeof(int32),
+                      no_symbols,
+                      "array name strings");
 
-    write_the_identifier_names();
+        write_the_identifier_names();
+    }
 
     /*  We now know how large the buffer to hold our construction has to be  */
 
-    zmachine_paged_memory = my_malloc(rough_size_of_paged_memory_z(),
-        "output buffer");
+    rough_size = rough_size_of_paged_memory_z();
+    zmachine_paged_memory = my_malloc(rough_size, "output buffer");
 
     /*  Foolish code to make this routine compile on all ANSI compilers      */
 
@@ -284,7 +297,8 @@ static void construct_storyfile_z(void)
         points its value will be recorded for milestones like
         "dictionary table start".  It begins at 0x40, just after the header  */
 
-    mark = 0x40;
+    for (mark=0; mark<0x40; mark++)
+        p[mark] = 0x0;
 
     /*  ----------------- Low Strings and Abbreviations -------------------- */
 
@@ -431,7 +445,7 @@ static void construct_storyfile_z(void)
 
     identifier_names_offset = mark;
 
-    if (TRUE)
+    if (!OMIT_SYMBOL_TABLE)
     {   p[mark++] = no_individual_properties/256;
         p[mark++] = no_individual_properties%256;
         for (i=1; i<no_individual_properties; i++)
@@ -465,6 +479,17 @@ static void construct_storyfile_z(void)
 
         id_names_length = (mark - identifier_names_offset)/2;
     }
+    else {
+        attribute_names_offset = mark;
+        action_names_offset = mark;
+        fake_action_names_offset = mark;
+        array_names_offset = mark;
+        global_names_offset = mark;
+        routine_names_offset = mark;
+        constant_names_offset = mark;
+        id_names_length = 0;
+    }
+    
     routine_flags_array_offset = mark;
 
     if (define_INFIX_switch)
@@ -517,6 +542,12 @@ table format requested (producing number 2 format instead)");
     for (i=0; i<no_Inform_verbs; i++)
     {   p[grammar_table_at + i*2] = (mark/256);
         p[grammar_table_at + i*2 + 1] = (mark%256);
+        if (!Inform_verbs[i].used) {
+            /* This verb was marked unused at locate_dead_grammar_lines()
+               time. Omit the grammar lines. */
+            p[mark++] = 0;
+            continue;
+        }
         p[mark++] = Inform_verbs[i].lines;
         for (j=0; j<Inform_verbs[i].lines; j++)
         {   k = Inform_verbs[i].l[j];
@@ -637,8 +668,11 @@ or less.");
     }
 
     /*  -------------------------- Code Area ------------------------------- */
-    /*  (From this point on we don't write any more into the "p" buffer.)    */
+    /*  (From this point on we don't write any higher into the "p" buffer.)  */
     /*  -------------------------------------------------------------------- */
+
+    if (mark > rough_size)
+        compiler_error("Paged size exceeds rough estimate.");
 
     Write_Code_At = mark;
     if (!OMIT_UNUSED_ROUTINES) {
@@ -684,11 +718,10 @@ or less.");
     }
 
     if (excess > 0)
-    {   char memory_full_error[80];
-        sprintf(memory_full_error,
+    {
+        fatalerror_fmt(
             "The %s exceeds version-%d limit (%dK) by %d bytes",
              output_called, version_number, limit, excess);
-        fatalerror(memory_full_error);
     }
 
     /*  --------------------------- Offsets -------------------------------- */
@@ -722,26 +755,24 @@ or less.");
          */
         excess = code_length + code_offset - (scale_factor*((int32) 0x10000L));
         if (excess > 0)
-        {   char code_full_error[80];
-            sprintf(code_full_error,
+        {
+            fatalerror_fmt(
                 "The code area limit has been exceeded by %d bytes",
                  excess);
-            fatalerror(code_full_error);
         }
 
         excess = strings_length + strings_offset - (scale_factor*((int32) 0x10000L));
         if (excess > 0)
-        {   char strings_full_error[140];
+        {
             if (oddeven_packing_switch)
-                sprintf(strings_full_error,
+                fatalerror_fmt(
                     "The strings area limit has been exceeded by %d bytes",
                      excess);
             else
-                sprintf(strings_full_error,
+                fatalerror_fmt(
                     "The code+strings area limit has been exceeded by %d bytes. \
  Try running Inform again with -B on the command line.",
                      excess);
-            fatalerror(strings_full_error);
         }
     }
     else
@@ -835,12 +866,15 @@ or less.");
 
     if (!skip_backpatching)
     {   backpatch_zmachine_image_z();
-        for (i=1; i<id_names_length; i++)
-        {   int32 v = 256*p[identifier_names_offset + i*2]
-                      + p[identifier_names_offset + i*2 + 1];
-            if (v!=0) v += strings_offset/scale_factor;
-            p[identifier_names_offset + i*2] = v/256;
-            p[identifier_names_offset + i*2 + 1] = v%256;
+
+        if (!OMIT_SYMBOL_TABLE) {
+            for (i=1; i<id_names_length; i++)
+            {   int32 v = 256*p[identifier_names_offset + i*2]
+                    + p[identifier_names_offset + i*2 + 1];
+                if (v!=0) v += strings_offset/scale_factor;
+                p[identifier_names_offset + i*2] = v/256;
+                p[identifier_names_offset + i*2 + 1] = v%256;
+            }
         }
 
         mark = actions_at;
@@ -1029,6 +1063,7 @@ static void construct_storyfile_g(void)
           abbrevs_at, prop_defaults_at, object_tree_at, object_props_at,
           grammar_table_at, arrays_at, static_arrays_at;
     int32 threespaces, code_length;
+    int32 rough_size;
 
     ASSERT_GLULX();
 
@@ -1053,8 +1088,8 @@ static void construct_storyfile_g(void)
 
     /*  We now know how large the buffer to hold our construction has to be  */
 
-    zmachine_paged_memory = my_malloc(rough_size_of_paged_memory_g(),
-        "output buffer");
+    rough_size = rough_size_of_paged_memory_g();
+    zmachine_paged_memory = my_malloc(rough_size, "output buffer");
 
     /*  Foolish code to make this routine compile on all ANSI compilers      */
 
@@ -1233,62 +1268,70 @@ static void construct_storyfile_g(void)
        number of actions
     */
 
-    identifier_names_offset = mark;
-    mark += 32; /* eight pairs of values, to be filled in. */
-
-    WriteInt32(p+identifier_names_offset+0, Write_RAM_At + mark);
-    WriteInt32(p+identifier_names_offset+4, no_properties);
-    for (i=0; i<no_properties; i++) {
-      j = individual_name_strings[i];
-      if (j)
-        j = Write_Strings_At + compressed_offsets[j-1];
-      WriteInt32(p+mark, j);
+    if (!OMIT_SYMBOL_TABLE) {
+      identifier_names_offset = mark;
+      mark += 32; /* eight pairs of values, to be filled in. */
+  
+      WriteInt32(p+identifier_names_offset+0, Write_RAM_At + mark);
+      WriteInt32(p+identifier_names_offset+4, no_properties);
+      for (i=0; i<no_properties; i++) {
+        j = individual_name_strings[i];
+        if (j)
+          j = Write_Strings_At + compressed_offsets[j-1];
+        WriteInt32(p+mark, j);
+        mark += 4;
+      }
+  
+      WriteInt32(p+identifier_names_offset+8, Write_RAM_At + mark);
+      WriteInt32(p+identifier_names_offset+12, 
+        no_individual_properties-INDIV_PROP_START);
+      for (i=INDIV_PROP_START; i<no_individual_properties; i++) {
+        j = individual_name_strings[i];
+        if (j)
+          j = Write_Strings_At + compressed_offsets[j-1];
+        WriteInt32(p+mark, j);
+        mark += 4;
+      }
+  
+      WriteInt32(p+identifier_names_offset+16, Write_RAM_At + mark);
+      WriteInt32(p+identifier_names_offset+20, NUM_ATTR_BYTES*8);
+      for (i=0; i<NUM_ATTR_BYTES*8; i++) {
+        j = attribute_name_strings[i];
+        if (j)
+          j = Write_Strings_At + compressed_offsets[j-1];
+        WriteInt32(p+mark, j);
+        mark += 4;
+      }
+  
+      WriteInt32(p+identifier_names_offset+24, Write_RAM_At + mark);
+      WriteInt32(p+identifier_names_offset+28, no_actions + no_fake_actions);
+      action_names_offset = mark;
+      fake_action_names_offset = mark + 4*no_actions;
+      for (i=0; i<no_actions + no_fake_actions; i++) {
+        j = action_name_strings[i];
+        if (j)
+          j = Write_Strings_At + compressed_offsets[j-1];
+        WriteInt32(p+mark, j);
+        mark += 4;
+      }
+  
+      array_names_offset = mark;
+      WriteInt32(p+mark, no_arrays);
       mark += 4;
+      for (i=0; i<no_arrays; i++) {
+        j = array_name_strings[i];
+        if (j)
+          j = Write_Strings_At + compressed_offsets[j-1];
+        WriteInt32(p+mark, j);
+        mark += 4;
+      }
     }
-
-    WriteInt32(p+identifier_names_offset+8, Write_RAM_At + mark);
-    WriteInt32(p+identifier_names_offset+12, 
-      no_individual_properties-INDIV_PROP_START);
-    for (i=INDIV_PROP_START; i<no_individual_properties; i++) {
-      j = individual_name_strings[i];
-      if (j)
-        j = Write_Strings_At + compressed_offsets[j-1];
-      WriteInt32(p+mark, j);
-      mark += 4;
+    else {
+      identifier_names_offset = mark;
+      action_names_offset = mark;
+      fake_action_names_offset = mark;
+      array_names_offset = mark;
     }
-
-    WriteInt32(p+identifier_names_offset+16, Write_RAM_At + mark);
-    WriteInt32(p+identifier_names_offset+20, NUM_ATTR_BYTES*8);
-    for (i=0; i<NUM_ATTR_BYTES*8; i++) {
-      j = attribute_name_strings[i];
-      if (j)
-        j = Write_Strings_At + compressed_offsets[j-1];
-      WriteInt32(p+mark, j);
-      mark += 4;
-    }
-
-    WriteInt32(p+identifier_names_offset+24, Write_RAM_At + mark);
-    WriteInt32(p+identifier_names_offset+28, no_actions + no_fake_actions);
-    action_names_offset = mark;
-    fake_action_names_offset = mark + 4*no_actions;
-    for (i=0; i<no_actions + no_fake_actions; i++) {
-      j = action_name_strings[i];
-      if (j)
-        j = Write_Strings_At + compressed_offsets[j-1];
-      WriteInt32(p+mark, j);
-      mark += 4;
-    }
-
-    array_names_offset = mark;
-    WriteInt32(p+mark, no_arrays);
-    mark += 4;
-    for (i=0; i<no_arrays; i++) {
-      j = array_name_strings[i];
-      if (j)
-        j = Write_Strings_At + compressed_offsets[j-1];
-      WriteInt32(p+mark, j);
-      mark += 4;
-    }    
 
     individuals_offset = mark;
 
@@ -1310,6 +1353,12 @@ table format requested (producing number 2 format instead)");
     for (i=0; i<no_Inform_verbs; i++) {
       j = mark + Write_RAM_At;
       WriteInt32(p+(grammar_table_at+4+i*4), j);
+      if (!Inform_verbs[i].used) {
+          /* This verb was marked unused at locate_dead_grammar_lines()
+             time. Omit the grammar lines. */
+          p[mark++] = 0;
+          continue;
+      }
       p[mark++] = Inform_verbs[i].lines;
       for (j=0; j<Inform_verbs[i].lines; j++) {
         int tok;
@@ -1371,6 +1420,9 @@ table format requested (producing number 2 format instead)");
 
     RAM_Size = mark;
 
+    if (RAM_Size > rough_size)
+        compiler_error("RAM size exceeds rough estimate.");
+    
     Out_Size = Write_RAM_At + RAM_Size;
 
     /*  --------------------------- Offsets -------------------------------- */
@@ -1577,18 +1629,23 @@ static void display_frequencies()
     
     for (i=0; i<no_abbreviations; i++) {
         int32 saving;
+        char *astr;
         if (!glulx_mode)
             saving = 2*((abbreviations[i].freq-1)*abbreviations[i].quality)/3;
         else
             saving = (abbreviations[i].freq-1)*abbreviations[i].quality;
+
+        astr = abbreviation_text(i);
+        /* Print the abbreviation text, left-padded to ten spaces, with
+           spaces replaced by underscores. */
+        for (j=strlen(astr); j<10; j++) {
+            putchar(' ');
+        }
+        for (j=0; astr[j]; j++) {
+            putchar(astr[j] == ' ' ? '_' : astr[j]);
+        }
         
-        char abbrev_string[MAX_ABBREV_LENGTH];
-        strcpy(abbrev_string,
-               (char *)abbreviations_at+i*MAX_ABBREV_LENGTH);
-        for (j=0; abbrev_string[j]!=0; j++)
-            if (abbrev_string[j]==' ') abbrev_string[j]='_';
-        
-        printf("%10s %5d/%5d   ",abbrev_string,abbreviations[i].freq, saving);
+        printf(" %5d/%5d   ", abbreviations[i].freq, saving);
         
         if ((i%3)==2) printf("\n");
     }

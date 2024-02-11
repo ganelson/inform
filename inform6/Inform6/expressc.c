@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------------- */
 /*   "expressc" :  The expression code generator                             */
 /*                                                                           */
-/*   Part of Inform 6.41                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2022                                 */
+/*   Part of Inform 6.42                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2024                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -1071,10 +1071,16 @@ static assembly_operand check_nonzero_at_runtime_g(assembly_operand AO1,
     /* Test if inside the "Class" object... */
     INITAOTV(&AO3, BYTECONSTANT_OT, GOBJFIELD_PARENT());
     assembleg_3(aload_gc, AO, AO3, stack_pointer);
-    ln = symbol_index("Class", -1);
-    AO3.value = symbols[ln].value;
-    AO3.marker = OBJECT_MV;
-    AO3.type = CONSTANT_OT;
+    ln = get_symbol_index("Class");
+    if (ln < 0) {
+        error("No 'Class' object found");
+        AO3 = zero_operand;
+    }
+    else {
+        AO3.value = symbols[ln].value;
+        AO3.marker = OBJECT_MV;
+        AO3.type = CONSTANT_OT;
+    }
     assembleg_2_branch(jne_gc, stack_pointer, AO3, passed_label);
   }
   
@@ -1092,10 +1098,16 @@ static assembly_operand check_nonzero_at_runtime_g(assembly_operand AO1,
   }
   else {
     /* Build the symbol for "Object" */
-    ln = symbol_index("Object", -1);
-    AO2.value = symbols[ln].value;
-    AO2.marker = OBJECT_MV;
-    AO2.type = CONSTANT_OT;
+    ln = get_symbol_index("Object");
+    if (ln < 0) {
+        error("No 'Object' object found");
+        AO2 = zero_operand;
+    }
+    else {
+        AO2.value = symbols[ln].value;
+        AO2.marker = OBJECT_MV;
+        AO2.type = CONSTANT_OT;
+    }
     if (check_sp) {
       /* Push "Object" */
       assembleg_store(AO1, AO2);
@@ -2630,11 +2642,48 @@ static void generate_code_from(int n, int void_flag)
                             assembleg_2(random_gc, AO, stack_pointer);
                             assembleg_3(aload_gc, AO2, stack_pointer, Result);
                          }
+                         else if (is_constant_ot(ET[ET[below].right].value.type) && ET[ET[below].right].value.marker == 0) {
+                           /* One argument, value known at compile time */
+                           int32 arg = ET[ET[below].right].value.value; /* signed */
+                           if (arg > 0) {
+                             assembly_operand AO;
+                             INITAO(&AO);
+                             AO.value = arg;
+                             set_constant_ot(&AO);
+                             assembleg_2(random_gc,
+                               AO, stack_pointer);
+                             assembleg_3(add_gc, stack_pointer, one_operand,
+                               Result);
+                           }
+                           else {
+                             /* This handles zero or negative */
+                             assembly_operand AO;
+                             INITAO(&AO);
+                             AO.value = -arg;
+                             set_constant_ot(&AO);
+                             assembleg_1(setrandom_gc,
+                               AO);
+                             assembleg_store(Result, zero_operand);
+                           }
+                         }
                          else {
+                           /* One argument, not known at compile time */
+                           int ln, ln2;
+                           assembleg_store(temp_var1, ET[ET[below].right].value);
+                           ln = next_label++;
+                           ln2 = next_label++;
+                           assembleg_2_branch(jle_gc, temp_var1, zero_operand, ln);
                            assembleg_2(random_gc,
-                             ET[ET[below].right].value, stack_pointer);
+                             temp_var1, stack_pointer);
                            assembleg_3(add_gc, stack_pointer, one_operand,
                              Result);
+                           assembleg_0_branch(jump_gc, ln2);
+                           assemble_label_no(ln);
+                           assembleg_2(neg_gc, temp_var1, stack_pointer);
+                           assembleg_1(setrandom_gc,
+                             stack_pointer);
+                           assembleg_store(Result, zero_operand);
+                           assemble_label_no(ln2);
                          }
                          break;
 
@@ -2988,7 +3037,7 @@ assembly_operand code_generate(assembly_operand AO, int context, int label)
     }
 
     if (expr_trace_level >= 2)
-    {   printf("Raw parse tree:\n"); show_tree(AO, FALSE);
+    {   printf("Raw parse tree:\n"); show_tree(&AO, FALSE);
     }
 
     if (context == CONDITION_CONTEXT)
@@ -3008,7 +3057,7 @@ assembly_operand code_generate(assembly_operand AO, int context, int label)
             default: printf("* ILLEGAL *"); break;
         }
         printf(" context with annotated tree:\n");
-        show_tree(AO, TRUE);
+        show_tree(&AO, TRUE);
     }
 
     generate_code_from(AO.value, (context==VOID_CONTEXT));

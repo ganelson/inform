@@ -1,1 +1,10 @@
-Inform 6.36 (24th January 2022)
+Inform 6.42 for MacOS (10th February 2024)
+line 119: Warning:  This statement can never be reached
+>  print "(BUG, should not get here.)^"
+line 132: Warning:  This statement can never be reached
+>  print "(BUG, should not get here.)^"
+line 144: Warning:  This statement can never be reached
+>  print "(BUG, should not get here.)^"
+line 156: Warning:  This statement can never be reached
+>  print "(BUG, should not get here.)^"
+Compiled with 4 warnings

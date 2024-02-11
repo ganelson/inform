@@ -3,8 +3,8 @@
 /*               likewise global variables, which are in some ways a         */
 /*               simpler form of the same thing.                             */
 /*                                                                           */
-/*   Part of Inform 6.41                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2022                                 */
+/*   Part of Inform 6.42                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2024                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -279,7 +279,7 @@ extern void make_global()
     int name_length;
     assembly_operand AO;
 
-    int32 globalnum;
+    uint32 globalnum;
     int32 global_symbol;
     debug_location_beginning beginning_debug_location =
         get_token_location_beginning();
@@ -309,7 +309,7 @@ extern void make_global()
 
     if (token_type != SYMBOL_TT)
     {   discard_token_location(beginning_debug_location);
-        ebf_error("new global variable name", token_text);
+        ebf_curtoken_error("new global variable name");
         panic_mode_error_recovery(); return;
     }
 
@@ -400,7 +400,7 @@ extern void make_global()
                 4*globalnum);
     }
     
-    if (globalnum < 0 || globalnum >= global_initial_value_memlist.count)
+    if (globalnum >= global_initial_value_memlist.count)
         compiler_error("Globalnum out of range");
     global_initial_value[globalnum] = AO.value;
     
@@ -443,7 +443,7 @@ extern void make_array()
 
     if (token_type != SYMBOL_TT)
     {   discard_token_location(beginning_debug_location);
-        ebf_error("new array name", token_text);
+        ebf_curtoken_error("new array name");
         panic_mode_error_recovery(); return;
     }
 
@@ -479,7 +479,7 @@ extern void make_array()
     if ((token_type == SEP_TT) && (token_value == SEMICOLON_SEP))
     {
         discard_token_location(beginning_debug_location);
-        ebf_error("array definition", token_text);
+        ebf_curtoken_error("array definition");
         put_token_back();
         return;
     }
@@ -503,8 +503,7 @@ extern void make_array()
              array_type = BUFFER_ARRAY;
     else
     {   discard_token_location(beginning_debug_location);
-        ebf_error
-            ("'->', '-->', 'string', 'table' or 'buffer'", token_text);
+        ebf_curtoken_error("'->', '-->', 'string', 'table' or 'buffer'");
         panic_mode_error_recovery();
         return;
     }
@@ -619,6 +618,8 @@ extern void make_array()
                 put_token_back();
 
                 AO = parse_expression(ARRAY_CONTEXT);
+                if (AO.marker == ERROR_MV)
+                    break;
 
                 if (i == 0)
                 {   get_next_token();
@@ -643,7 +644,7 @@ extern void make_array()
 
             get_next_token();
             if (token_type != DQ_TT)
-            {   ebf_error("literal text in double-quotes", token_text);
+            {   ebf_curtoken_error("literal text in double-quotes");
                 token_text = "error";
             }
 
@@ -692,6 +693,7 @@ advance as part of 'Zcharacter table':", unicode);
             i = 0;
             while (TRUE)
             {
+                assembly_operand AO;
                 /* This isn't the start of a statement, but it's safe to
                    release token texts anyway. Expressions in an array
                    list are independent of each other. */
@@ -706,11 +708,14 @@ advance as part of 'Zcharacter table':", unicode);
                         been missed, and the programmer is now starting
                         a new routine                                        */
 
-                    ebf_error("']'", token_text);
+                    ebf_curtoken_error("']'");
                     put_token_back(); break;
                 }
                 put_token_back();
-                array_entry(i, is_static, parse_expression(ARRAY_CONTEXT));
+                AO = parse_expression(ARRAY_CONTEXT);
+                if (AO.marker == ERROR_MV)
+                    break;
+                array_entry(i, is_static, AO);
                 i++;
             }
     }
@@ -851,7 +856,7 @@ extern void arrays_allocate_arrays(void)
         "global variable values");
 
     initialise_memory_list(&current_array_name,
-        sizeof(char), MAX_IDENTIFIER_LENGTH+1, NULL,
+        sizeof(char), 32, NULL,
         "array name currently being defined");
 }
 
