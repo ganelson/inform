@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
 /*   "expressp" :  The expression parser                                     */
 /*                                                                           */
-/*   Part of Inform 6.42                                                     */
+/*   Part of Inform 6.43                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2024                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -863,7 +863,7 @@ static int evaluate_term(const token_data *t, assembly_operand *o)
                  o->type = LONG_CONSTANT_OT;
              else
                  o->type = CONSTANT_OT;
-             o->value = dictionary_add(t->text, 0x80, 0, 0);
+             o->value = dictionary_add(t->text, NOUN_DFLAG, 0, 0);
              return(TRUE);
         case DQ_TT:
              /*  Create as a static string  */
@@ -964,20 +964,20 @@ static int evaluate_term(const token_data *t, assembly_operand *o)
                     to expect one-byte fields, even though the compiler
                     generates a dictionary with room for two. */
                  case dict_par1_SC:
-                     o->type = BYTECONSTANT_OT;
                      o->marker = 0;
-                     v = DICT_ENTRY_FLAG_POS+1;
-                     break;
+                     o->value = DICT_ENTRY_FLAG_POS+1;
+                     set_constant_ot(o);
+                     return TRUE;
                  case dict_par2_SC:
-                     o->type = BYTECONSTANT_OT;
                      o->marker = 0;
-                     v = DICT_ENTRY_FLAG_POS+3;
-                     break;
+                     o->value = DICT_ENTRY_FLAG_POS+3;
+                     set_constant_ot(o);
+                     return TRUE;
                  case dict_par3_SC:
-                     o->type = BYTECONSTANT_OT;
                      o->marker = 0;
-                     v = DICT_ENTRY_FLAG_POS+5;
-                     break;
+                     o->value = DICT_ENTRY_FLAG_POS+5;
+                     set_constant_ot(o);
+                     return TRUE;
 
                  case lowest_attribute_number_SC:
                  case lowest_action_number_SC:

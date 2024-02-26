@@ -6,7 +6,7 @@
 /*                    checks syntax and translates such directives into      */
 /*                    specifications for the object-maker.                   */
 /*                                                                           */
-/*   Part of Inform 6.42                                                     */
+/*   Part of Inform 6.43                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2024                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -1308,7 +1308,7 @@ the names \"%s\" and \"%s\" actually refer to the same property",
 
             if ((!individual_property) &&
                 (property_number==1) && (token_type == DQ_TT))
-            {   AO.value = dictionary_add(token_text, 0x80, 0, 0);
+            {   AO.value = dictionary_add(token_text, NOUN_DFLAG, 0, 0);
                 AO.type = LONG_CONSTANT_OT;
                 AO.marker = DWORD_MV;
             }
@@ -1573,7 +1573,7 @@ the names \"%s\" and \"%s\" actually refer to the same property",
 
             if ((!individual_property) &&
                 (property_number==1) && (token_type == DQ_TT))
-            {   AO.value = dictionary_add(token_text, 0x80, 0, 0);
+            {   AO.value = dictionary_add(token_text, NOUN_DFLAG, 0, 0);
                 AO.type = CONSTANT_OT; 
                 AO.marker = DWORD_MV;
             }

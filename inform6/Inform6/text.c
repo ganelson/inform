@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
 /*   "text" : Text translation, the abbreviations optimiser, the dictionary  */
 /*                                                                           */
-/*   Part of Inform 6.42                                                     */
+/*   Part of Inform 6.43                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2024                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -1847,17 +1847,12 @@ extern void optimise_abbreviations(void)
 /* ------------------------------------------------------------------------- */
 /*                                                                           */
 /*   Further notes about the data fields...                                  */
-/*   The flags are currently:                                                */
-/*     bit 0: word is used as a verb (in verb grammar)                       */
-/*     bit 1: word is used as a meta verb                                    */
-/*     bit 2: word is plural (set by '//p')                                  */
-/*     bit 3: word is used as a preposition (in verb grammar)                */
-/*     bit 6: set for all verbs, but not used by the parser?                 */
-/*     bit 7: word is used as a noun (set for every word that appears in     */
-/*       code or in an object property)                                      */
+/*                                                                           */
+/*   The flags in the first field are as defined in header.h                 */
+/*   (*_DFLAG values).                                                       */
 /*                                                                           */
 /*   In grammar version 2, the third field (adjectivenumber) is unused (and  */
-/*   zero).                                                                  */
+/*   zero). It may be omitted entirely with the ZCODE_LESS_DICT_DATA option. */
 /*                                                                           */
 /*   The compiler generates special constants #dict_par1, #dict_par2,        */
 /*   #dict_par3 to refer to the byte offsets of the three fields. In         */
@@ -1943,25 +1938,32 @@ static void dictionary_prepare_z(char *dword, uchar *optresult)
                 {
                     case '~':
                         if (!dword[j+1])
-                            error_named("'//~' with no flag character (pn) in dict word", dword);
+                            error_named("'//~' with no flag character (psn) in dict word", dword);
                         negflag = !negflag;
                         break;
                     case 'p':
                         if (!negflag)
-                            prepared_dictflags_pos |= 4;
+                            prepared_dictflags_pos |= PLURAL_DFLAG;
                         else
-                            prepared_dictflags_neg |= 4;
+                            prepared_dictflags_neg |= PLURAL_DFLAG;
+                        negflag = FALSE;
+                        break;
+                    case 's':
+                        if (!negflag)
+                            prepared_dictflags_pos |= SING_DFLAG;
+                        else
+                            prepared_dictflags_neg |= SING_DFLAG;
                         negflag = FALSE;
                         break;
                     case 'n':
                         if (!negflag)
-                            prepared_dictflags_pos |= 128;
+                            prepared_dictflags_pos |= NOUN_DFLAG;
                         else
-                            prepared_dictflags_neg |= 128;
+                            prepared_dictflags_neg |= NOUN_DFLAG;
                         negflag = FALSE;
                         break;
                     default:
-                        error_named("Expected flag character (pn~) after '//' in dict word", dword);
+                        error_named("Expected flag character (psn~) after '//' in dict word", dword);
                         break;
                 }
             }
@@ -2072,25 +2074,32 @@ static void dictionary_prepare_g(char *dword, uchar *optresult)
         switch(dword[j]) {
         case '~':
             if (!dword[j+1])
-                error_named("'//~' with no flag character (pn) in dict word", dword);
+                error_named("'//~' with no flag character (psn) in dict word", dword);
             negflag = !negflag;
             break;
         case 'p':
             if (!negflag)
-                prepared_dictflags_pos |= 4;
+                prepared_dictflags_pos |= PLURAL_DFLAG;
             else
-                prepared_dictflags_neg |= 4;
+                prepared_dictflags_neg |= PLURAL_DFLAG;
+            negflag = FALSE;
+            break;
+        case 's':
+            if (!negflag)
+                prepared_dictflags_pos |= SING_DFLAG;
+            else
+                prepared_dictflags_neg |= SING_DFLAG;
             negflag = FALSE;
             break;
         case 'n':
             if (!negflag)
-                prepared_dictflags_pos |= 128;
+                prepared_dictflags_pos |= NOUN_DFLAG;
             else
-                prepared_dictflags_neg |= 128;
+                prepared_dictflags_neg |= NOUN_DFLAG;
             negflag = FALSE;
             break;
         default:
-          error_named("Expected flag character (pn~) after '//' in dict word", dword);
+          error_named("Expected flag character (psn~) after '//' in dict word", dword);
           break;
         }
       }
@@ -2292,6 +2301,14 @@ extern int dictionary_add(char *dword, int flag1, int flag2, int flag3)
     /* Adjust flag1 according to prepared_dictflags. */
     flag1 &= (~prepared_dictflags_neg);
     flag1 |= prepared_dictflags_pos;
+
+    if (DICT_IMPLICIT_SINGULAR) {
+        /* If we have //n but not //p, that implies //s. Unless //s is
+           explicitly forbidden. */
+        if ((flag1 & NOUN_DFLAG) && !(flag1 & PLURAL_DFLAG) && !(prepared_dictflags_neg & SING_DFLAG)) {
+            flag1 |= SING_DFLAG;
+        }
+    }
 
     if (root == VACANT)
     {   root = 0; goto CreateEntry;
@@ -2657,22 +2674,28 @@ static void recursively_show_z(int node, int level)
         }
 
         flags = (int) p[res];
-        if (flags & 128)
+        if (flags & NOUN_DFLAG)
             printf("noun ");
         else
             printf("     ");
-        if (flags & 4)
+        if (flags & PLURAL_DFLAG)
             printf("p ");
         else
             printf("  ");
-        if (flags & 8)
+        if (flags & SING_DFLAG)
+            printf("s ");
+        else
+            printf("  ");
+        if (flags & PREP_DFLAG)
         {   if (grammar_version_number == 1)
                 printf("preposition:%d  ", (int) p[res+2]);
             else
                 printf("preposition    ");
         }
-        if ((flags & 3) == 3) printf("metaverb:%d  ", (int) p[res+1]);
-        else if ((flags & 3) == 1) printf("verb:%d  ", (int) p[res+1]);
+        if ((flags & METAVERB_DFLAG) == METAVERB_DFLAG)
+            printf("metaverb:%d  ", (int) p[res+1]);
+        else if ((flags & METAVERB_DFLAG) == VERB_DFLAG)
+            printf("verb:%d  ", (int) p[res+1]);
         printf("\n");
     }
 
@@ -2718,19 +2741,24 @@ static void recursively_show_g(int node, int level)
         if (level >= 2) {
             for (i=0; i<DICT_ENTRY_BYTE_LENGTH; i++) printf("%02x ",p[i]);
         }
-        if (flags & 128)
+        if (flags & NOUN_DFLAG)
             printf("noun ");
         else
             printf("     ");
-        if (flags & 4)
+        if (flags & PLURAL_DFLAG)
             printf("p ");
         else
             printf("  ");
-        if (flags & 8)
-        {   printf("preposition    ");
-        }
-        if ((flags & 3) == 3) printf("metaverb:%d  ", verbnum);
-        else if ((flags & 3) == 1) printf("verb:%d  ", verbnum);
+        if (flags & SING_DFLAG)
+            printf("s ");
+        else
+            printf("  ");
+        if (flags & PREP_DFLAG)
+            printf("preposition    ");
+        if ((flags & METAVERB_DFLAG) == METAVERB_DFLAG)
+            printf("metaverb:%d  ", verbnum);
+        else if ((flags & METAVERB_DFLAG) == VERB_DFLAG)
+            printf("verb:%d  ", verbnum);
         printf("\n");
     }
 

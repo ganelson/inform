@@ -1,6 +1,6 @@
 # Inform 7
 
-[Version](notes/versioning.md): 10.2.0-beta+6X35 'Krypton' (11 February 2024)
+[Version](notes/versioning.md): 10.2.0-beta+6X36 'Krypton' (26 February 2024)
 
 ## About Inform
 
@@ -180,7 +180,7 @@ Stable versions of the following are periodically copied into this repository,
 but this is not where development on them is done, and no pull requests will
 be accepted. (Note that these are not git submodules.)
 
-* inform6 - The Inform 6 compiler (used by I7 as a code generator). - __1642__ - from [https://github.com/DavidKinder/Inform6], maintained by [David Kinder](https://github.com/DavidKinder)
+* inform6 - The Inform 6 compiler (used by I7 as a code generator). - __1643__ - from [https://github.com/DavidKinder/Inform6], maintained by [David Kinder](https://github.com/DavidKinder)
 	* inform6/Tests/Assistants/dumb-frotz - A dumb-terminal Z-machine interpreter. - unversioned: modified from [Alembic Petrofsky's 1998 Teletype port of Frotz](https://github.com/sussman/ircbot-collection/tree/master/dumb-frotz)
 	* inform6/Tests/Assistants/dumb-glulx/glulxe - A dumb-terminal Glulx interpreter. - __0.6.1__ - [erkyrath/glulxe](https://github.com/erkyrath/glulxe), maintained by [Andrew Plotkin](https://github.com/erkyrath)
 	* inform6/Tests/Assistants/dumb-glulx/cheapglk - A basic Glk implementation to support dumb-glulxe. - __1.0.6.__ - [erkyrath/cheapglk](https://github.com/erkyrath/cheapglk), maintained by [Andrew Plotkin](https://github.com/erkyrath)

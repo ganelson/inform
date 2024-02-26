@@ -165,11 +165,11 @@ After each instance of the multiply-giving action, we need to clear the variable
 
 	The player carries a knitted cap. The price of the knitted cap is $2.
 
-	Test me with "test dollars / purloin three dollars / test multi-line / purloin three dollars / purloin pie / purloin cap / test specificity / purloin three dollars / test largesse / test mixed-gift".
+	Test me with "test monetary / purloin three dollars / test multi-line / purloin three dollars / purloin pie / purloin cap / test specificity / purloin three dollars / test largesse / test mixed-gift".
 
 	Test multi-line with "give dollar and pie to attendant. give dollars and cap to attendant".
 
-	Test dollars with "drop all / give dollar to Morgue Attendant / give dollars to Morgue Attendant / get dollars / give dollars to morgue attendant / purloin three dollars / drop dollars / give dollars to Morgue Attendant".
+	Test monetary with "drop all / give dollar to Morgue Attendant / give dollars to Morgue Attendant / get dollars / give dollars to morgue attendant / purloin three dollars / drop dollars / give dollars to Morgue Attendant".
 
 	Test specificity with "give three dollars to Morgue Attendant".
 

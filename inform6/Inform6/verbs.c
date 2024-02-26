@@ -2,7 +2,7 @@
 /*   "verbs" :  Manages actions and grammar tables; parses the directives    */
 /*              Verb and Extend.                                             */
 /*                                                                           */
-/*   Part of Inform 6.42                                                     */
+/*   Part of Inform 6.43                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2024                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -482,7 +482,7 @@ static int make_adjective(char *English_word)
           adjective_sort_code+i*DICT_WORD_BYTES) == 0)
             return(0xff-i);
     adjectives[no_adjectives]
-        = dictionary_add(English_word,8,0,0xff-no_adjectives);
+        = dictionary_add(English_word,PREP_DFLAG,0,0xff-no_adjectives);
     return(0xff-no_adjectives++);
 }
 
@@ -750,7 +750,7 @@ static int grammar_line(int verbnum, int line)
                  bytecode = make_adjective(token_text);
              else
              {   bytecode = 0x42;
-                 wordcode = dictionary_add(token_text, 8, 0, 0);
+                 wordcode = dictionary_add(token_text, PREP_DFLAG, 0, 0);
              }
         }
         else if ((token_type==DIR_KEYWORD_TT)&&(token_value==NOUN_DK))
@@ -1031,7 +1031,7 @@ extern void make_verb(void)
     for (i=0, pos=0; i<no_given; i++) {
         char *wd = English_verbs_given+pos;
         dictionary_add(wd,
-            0x41 + ((meta_verb_flag)?0x02:0x00),
+            VERB_DFLAG + BIT6_DFLAG + ((meta_verb_flag)?META_DFLAG:NONE_DFLAG),
             (glulx_mode)?(0xffff-Inform_verb):(0xff-Inform_verb), 0);
         register_verb(wd, Inform_verb);
         pos += (strlen(wd) + 1);

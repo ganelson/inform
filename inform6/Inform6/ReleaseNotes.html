@@ -26,6 +26,21 @@ listed. So instead, this is a general thank-you to everybody who has made this r
 specific ones to Graham Nelson for permitting it in the first place, and to Andrew Plotkin, who is responsible
 for most of the actual changes to the compiler code.
 
+<h2>Inform 6.43</h2>
+These are the changes delivered in version 6.42 of the Inform compiler.
+
+<h3>Features added</h3>
+<ul>
+<li><p>A new dictionary flag has been introduced, "singular", which is set for any non that is not a plural.
+This can be explicitly set or not set in a dictionary word with the <tt>'//s'</tt> syntax, i.e. <tt>'word//s'</tt> to set it,
+or <tt>'word//~s'</tt> to not set it.
+</ul>
+
+<h3>Bugs fixed</h3>
+<ul>
+<li><p>Dictionary flags were being set incorrectly when <tt>$DICT_WORD_SIZE</tt> was set sufficiently large.
+</ul>
+
 <h2>Inform 6.42</h2>
 These are the changes delivered in version 6.42 of the Inform compiler.
 
@@ -135,7 +150,7 @@ and <tt>buffer_screen</tt>, are now supported.
 
 <h3>Bugs fixed</h3>
 <ul>
-<li><p>The Glulx build-in function <b>random(x)</b> built-in function now follows the DM4 specification: if <b>x</b>
+<li><p>The Glulx <b>random(x)</b> built-in function now follows the DM4 specification: if <b>x</b>
 is positive, the function returns the result of <tt>1+(@random x)</tt>; if zero or negative, <tt>@setrandom x</tt> is called.
 <li><p>In several places (local variable declarations, action names and the <tt>Switches</tt> directive) the compiler would
 accept quoted strings and then ignore the quotes. This is now an error.

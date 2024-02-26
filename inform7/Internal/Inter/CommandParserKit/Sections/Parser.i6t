@@ -3769,17 +3769,24 @@ if it was a match because of inadequate input).
     }
 
 	threshold = 1;
-	dict_flags_of_noun = (w->#dict_par1) & $$01110100;
+	dict_flags_of_noun = RelevantNounBits(w);
 	w = NextWord();
 	while (Refers(obj, wn-1)) {
 		threshold++;
 		if (w)
-		   dict_flags_of_noun = dict_flags_of_noun | ((w->#dict_par1) & $$01110100);
+		   dict_flags_of_noun = dict_flags_of_noun | (RelevantNounBits(w));
 		w = NextWord();
 	}
 
     k = threshold;
     jump MMbyPN;
+];
+
+[ RelevantNounBits w b;
+	if (w == 0) return 0;
+	b = w->#dict_par1;
+	if (b & $$10000) return b & $$01110000;
+	return b & $$01110100;
 ];
 
 @h Refers.
@@ -3933,7 +3940,7 @@ Manual}, 4th edition.
 	for (i=0:i<n:i++) {
 		w = NextWordStopped();
 		if (w == 0 or THEN1__WD or COMMA_WORD or -1) break;
-		if ((w->#dict_par1) & $$00000100) {
+		if ((RelevantNounBits(w)) & $$00000100) {
 			parser_action = ##PluralFound;
 			outcome = true;
 		}

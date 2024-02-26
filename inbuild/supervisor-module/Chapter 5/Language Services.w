@@ -21,8 +21,8 @@ typedef struct inform_language {
 	struct wording instance_name; /* instance name, e.g., "German language" */
 	struct instance *nl_instance; /* instance, e.g., "German language" */
 	struct text_stream *iso_code; /* e.g., "fr" or "de" */
-	struct text_stream *translated_name; /* e.g., "Français" or "Deutsch" */
-	struct text_stream *native_cue; /* e.g., "en français" or "in deutscher Sprache" */
+	struct text_stream *translated_name; /* e.g., "Deutsch" */
+	struct text_stream *native_cue; /* e.g., "in deutscher Sprache" */
 	struct inform_extension *belongs_to; /* if it does belong to an extension */
 	int adaptive_person; /* which person text substitutions are written from */
 	int Preform_loaded; /* has a Preform syntax definition been read for this? */

@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
 /*   "memory" : Memory management and ICL memory setting commands            */
 /*                                                                           */
-/*   Part of Inform 6.42                                                     */
+/*   Part of Inform 6.43                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2024                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -270,6 +270,7 @@ int WARN_UNUSED_ROUTINES; /* 0: no, 1: yes except in system files, 2: yes always
 int OMIT_UNUSED_ROUTINES; /* 0: no, 1: yes */
 int STRIP_UNREACHABLE_LABELS; /* 0: no, 1: yes (default) */
 int OMIT_SYMBOL_TABLE; /* 0: no, 1: yes */
+int DICT_IMPLICIT_SINGULAR; /* 0: no, 1: yes */
 int LONG_DICT_FLAG_BUG; /* 0: no bug, 1: bug (default for historic reasons) */
 int TRANSCRIPT_FORMAT; /* 0: classic, 1: prefixed */
 
@@ -319,6 +320,7 @@ static void list_memory_sizes(void)
     printf("|  %25s = %-7d |\n","OMIT_UNUSED_ROUTINES",OMIT_UNUSED_ROUTINES);
     printf("|  %25s = %-7d |\n","STRIP_UNREACHABLE_LABELS",STRIP_UNREACHABLE_LABELS);
     printf("|  %25s = %-7d |\n","OMIT_SYMBOL_TABLE",OMIT_SYMBOL_TABLE);
+    printf("|  %25s = %-7d |\n","DICT_IMPLICIT_SINGULAR",DICT_IMPLICIT_SINGULAR);
     printf("|  %25s = %-7d |\n","LONG_DICT_FLAG_BUG",LONG_DICT_FLAG_BUG);
     printf("+--------------------------------------+\n");
 }
@@ -353,6 +355,7 @@ extern void set_memory_sizes(void)
     WARN_UNUSED_ROUTINES = 0;
     STRIP_UNREACHABLE_LABELS = 1;
     OMIT_SYMBOL_TABLE = 0;
+    DICT_IMPLICIT_SINGULAR = 0;
     LONG_DICT_FLAG_BUG = 1;
     TRANSCRIPT_FORMAT = 0;
 
@@ -509,6 +512,14 @@ static void explain_parameter(char *command)
         printf(
 "  OMIT_SYMBOL_TABLE, if set to 1, will skip compiling debug symbol names \n\
   into the game file.\n");
+        return;
+    }
+    if (strcmp(command,"DICT_IMPLICIT_SINGULAR")==0)
+    {
+        printf(
+"  DICT_IMPLICIT_SINGULAR, if set to 1, will cause dict words in noun \n\
+  context to have the '//s' flag if the '//p' flag is not set. \n\
+  retained.\n");
         return;
     }
     if (strcmp(command,"LONG_DICT_FLAG_BUG")==0)
@@ -932,6 +943,12 @@ extern void memory_command(char *command)
                 OMIT_SYMBOL_TABLE=j, flag=1;
                 if (OMIT_SYMBOL_TABLE > 1 || OMIT_SYMBOL_TABLE < 0)
                     OMIT_SYMBOL_TABLE = 1;
+            }
+            if (strcmp(command,"DICT_IMPLICIT_SINGULAR")==0)
+            {
+                DICT_IMPLICIT_SINGULAR=j, flag=1;
+                if (DICT_IMPLICIT_SINGULAR > 1 || DICT_IMPLICIT_SINGULAR < 0)
+                    DICT_IMPLICIT_SINGULAR = 1;
             }
             if (strcmp(command,"LONG_DICT_FLAG_BUG")==0)
             {
