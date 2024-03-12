@@ -64,7 +64,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">Architecture32Kit</a></li><li><b>Input Output Template</b></li></ul></div>
 <p class="purpose">Access to the keyboard and to textual windows.</p>
 
-<ul class="toc"><li><a href="S-io.html#SP1">&#167;1. Rocks</a></li><li><a href="S-io.html#SP2">&#167;2. Transcript support</a></li><li><a href="S-io.html#SP3">&#167;3. Variables and Arrays</a></li><li><a href="S-io.html#SP4">&#167;4. Dictionary words</a></li><li><a href="S-io.html#SP5">&#167;5. Keyboard Input</a></li><li><a href="S-io.html#SP6">&#167;6. Buffer Functions</a></li><li><a href="S-io.html#SP7">&#167;7. Dictionary Functions</a></li><li><a href="S-io.html#SP8">&#167;8. Command Tables</a></li><li><a href="S-io.html#SP9">&#167;9. Extracting Verb Numbers</a></li><li><a href="S-io.html#SP10">&#167;10. Action functions</a></li><li><a href="S-io.html#SP11">&#167;11. Glulx-Only Printing Routines</a></li><li><a href="S-io.html#SP12">&#167;12. The Screen</a></li><li><a href="S-io.html#SP13">&#167;13. Window Colours</a></li><li><a href="S-io.html#SP14">&#167;14. Main Window</a></li><li><a href="S-io.html#SP15">&#167;15. Status Line</a></li><li><a href="S-io.html#SP16">&#167;16. Quotation Boxes</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-io.html#SP1">&#167;1. Rocks</a></li><li><a href="S-io.html#SP2">&#167;2. Transcript support</a></li><li><a href="S-io.html#SP3">&#167;3. Dictionary Parameters</a></li><li><a href="S-io.html#SP4">&#167;4. Variables and Arrays</a></li><li><a href="S-io.html#SP5">&#167;5. Dictionary words</a></li><li><a href="S-io.html#SP6">&#167;6. Keyboard Input</a></li><li><a href="S-io.html#SP7">&#167;7. Buffer Functions</a></li><li><a href="S-io.html#SP8">&#167;8. Dictionary Functions</a></li><li><a href="S-io.html#SP9">&#167;9. Command Tables</a></li><li><a href="S-io.html#SP10">&#167;10. Extracting Verb Numbers</a></li><li><a href="S-io.html#SP11">&#167;11. Action functions</a></li><li><a href="S-io.html#SP12">&#167;12. Glulx-Only Printing Routines</a></li><li><a href="S-io.html#SP13">&#167;13. The Screen</a></li><li><a href="S-io.html#SP14">&#167;14. Window Colours</a></li><li><a href="S-io.html#SP15">&#167;15. Main Window</a></li><li><a href="S-io.html#SP16">&#167;16. Status Line</a></li><li><a href="S-io.html#SP17">&#167;17. Quotation Boxes</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Rocks. </b>These are unique ID codes used to mark resources; think of them as inedible
 cookies.
@@ -126,13 +126,25 @@ only if scripting is on: this always succeeds.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Variables and Arrays. </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Dictionary Parameters. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DICT_ENTRY_BYTES</span><span class="plain-syntax"> = </span><span class="constant-syntax">12</span><span class="plain-syntax">+</span><span class="identifier-syntax">DICT_WORD_SIZE</span><span class="plain-syntax">*</span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> #</span><span class="identifier-syntax">dict_par1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">DICT_WORD_SIZE</span><span class="plain-syntax">*</span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">+4+1;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> #</span><span class="identifier-syntax">dict_par2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">DICT_WORD_SIZE</span><span class="plain-syntax">*</span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">+4+3;</span>
 
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DICTPAR1_VERB</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DICTPAR1_META</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DICTPAR1_PLURAL</span><span class="plain-syntax"> = </span><span class="constant-syntax">4</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DICTPAR1_PREP</span><span class="plain-syntax"> = </span><span class="constant-syntax">8</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DICTPAR1_SING</span><span class="plain-syntax"> = </span><span class="constant-syntax">16</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DICTPAR1_BIT6</span><span class="plain-syntax"> = </span><span class="constant-syntax">32</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DICTPAR1_TRUNC</span><span class="plain-syntax"> = </span><span class="constant-syntax">64</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DICTPAR1_NOUN</span><span class="plain-syntax"> = </span><span class="constant-syntax">128</span><span class="plain-syntax">;</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Variables and Arrays. </b></p>
+
+<pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">gg_event</span><span class="plain-syntax"> --&gt; </span><span class="constant-syntax">4</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">gg_arguments</span><span class="plain-syntax"> </span><span class="identifier-syntax">buffer</span><span class="plain-syntax"> </span><span class="constant-syntax">28</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">gg_mainwin</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -154,7 +166,7 @@ only if scripting is on: this always succeeds.
 <span class="reserved-syntax">Array</span><span class="plain-syntax">  </span><span class="identifier-syntax">parse</span><span class="plain-syntax">     --&gt; </span><span class="identifier-syntax">PARSE_BUFFER_LEN</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Array</span><span class="plain-syntax">  </span><span class="identifier-syntax">parse2</span><span class="plain-syntax">    --&gt; </span><span class="identifier-syntax">PARSE_BUFFER_LEN</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Dictionary words. </b>This tests whether an address is probably that of a dictionary word. It's used
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Dictionary words. </b>This tests whether an address is probably that of a dictionary word. It's used
 only for debugging output, so the false positives here really do not matter.
 </p>
 
@@ -164,7 +176,7 @@ only for debugging output, so the false positives here really do not matter.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Keyboard Input. </b>The VM must provide three routines for keyboard input:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Keyboard Input. </b>The VM must provide three routines for keyboard input:
 </p>
 
 <ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">VM_KeyChar()</span></span> waits for a key to be pressed and then returns the
@@ -330,7 +342,7 @@ to document all of that.
 <span class="character-syntax">    }</span>
 <span class="character-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Buffer Functions. </b>A "buffer", in this sense, is an array containing a stream of characters
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Buffer Functions. </b>A "buffer", in this sense, is an array containing a stream of characters
 typed from the keyboard; a "parse buffer" is an array which resolves this
 into individual words, pointing to the relevant entries in the dictionary
 structure. Because each VM has its own format for each of these arrays (not
@@ -463,7 +475,7 @@ languages of play, and is not called in the template.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">b</span><span class="plain-syntax">--&gt;0 &lt; </span><span class="identifier-syntax">INPUT_BUFFER_LEN</span><span class="plain-syntax">) (</span><span class="identifier-syntax">b</span><span class="plain-syntax">--&gt;0)++;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Dictionary Functions. </b>Again, the dictionary structure is differently arranged on the different VMs.
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Dictionary Functions. </b>Again, the dictionary structure is differently arranged on the different VMs.
 This is a data structure containing, in compressed form, the text of all the
 words to be recognised by tokenisation (above). In I6 for Glulx, a dictionary
 word is represented at run-time by its record's address in the dictionary.
@@ -500,7 +512,7 @@ since, on Glulx, they are the same, these are each the identity function.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Command Tables. </b>The VM is also generated containing a data structure for the grammar
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Command Tables. </b>The VM is also generated containing a data structure for the grammar
 produced by I6's <span class="extract"><span class="extract-syntax">Verb</span></span> and <span class="extract"><span class="extract-syntax">Extend</span></span> directives: this is essentially a
 list of command verbs such as DROP or PUSH, together with a list of
 synonyms, and then the grammar for the subsequent commands to be
@@ -522,7 +534,7 @@ recognised by the parser.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Extracting Verb Numbers. </b>A long tale of woe lies behind the following. Infocom games stored verb numbers
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Extracting Verb Numbers. </b>A long tale of woe lies behind the following. Infocom games stored verb numbers
 in a single byte in dictionary entries, but they did so counting downwards, so
 that verb number 0 was stored as 255, 1 as 254, and so on. Inform followed
 suit so that debugging of Inform 1 could be aided by using the then-available
@@ -546,7 +558,7 @@ routine was added to concentrate lookups of this field in one place.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbnum</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Action functions. </b>This looks up the address of a function like <span class="extract"><span class="extract-syntax">TakeSub</span></span> from the table of
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Action functions. </b>This looks up the address of a function like <span class="extract"><span class="extract-syntax">TakeSub</span></span> from the table of
 "action subroutines".
 </p>
 
@@ -559,7 +571,7 @@ compared to the Z-machine's: hence the <span class="extract"><span class="extrac
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> #</span><span class="identifier-syntax">actions_table</span><span class="plain-syntax">--&gt;(</span><span class="identifier-syntax">act</span><span class="plain-syntax">+1);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Glulx-Only Printing Routines. </b>Partly because of the smallness of the range of representable values in
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Glulx-Only Printing Routines. </b>Partly because of the smallness of the range of representable values in
 the Z-machine, there is little run-time type-checking that can be done:
 for instance a dictionary address cannot be distinguished from a function
 address because they are encoded differently, so that a function address
@@ -712,7 +724,7 @@ set stored here is once again ZSCII, not Unicode.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">AnyToStrArr</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. The Screen. </b>Our generic screen model is that the screen is made up of windows: we tend
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. The Screen. </b>Our generic screen model is that the screen is made up of windows: we tend
 to refer only to two of these, the main window and the status line, but
 others may also exist from time to time. Windows have unique ID numbers:
 the special window ID \(-1\) means "all windows" or "the entire screen",
@@ -749,7 +761,7 @@ make little sense there.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">gg_arguments</span><span class="plain-syntax">--&gt;0;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Window Colours. </b>Our generic screen model is that the screen is made up of windows, each of
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Window Colours. </b>Our generic screen model is that the screen is made up of windows, each of
 which can have its own foreground and background colours.
 </p>
 
@@ -817,7 +829,7 @@ which is greatly superior in this respect).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">$ff0000</span><span class="plain-syntax">*(</span><span class="identifier-syntax">c</span><span class="plain-syntax">&amp;1) + </span><span class="constant-syntax">$ff00</span><span class="plain-syntax">*(</span><span class="identifier-syntax">c</span><span class="plain-syntax">&amp;2 ~= </span><span class="constant-syntax">0</span><span class="plain-syntax">) + </span><span class="constant-syntax">$ff</span><span class="plain-syntax">*(</span><span class="identifier-syntax">c</span><span class="plain-syntax">&amp;4 ~= </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Main Window. </b>The part of the screen on which commands and responses are printed, which
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Main Window. </b>The part of the screen on which commands and responses are printed, which
 ordinarily occupies almost all of the screen area.
 </p>
 
@@ -831,7 +843,7 @@ status line, to the main window.
 <span class="plain-syntax">    </span><span class="identifier-syntax">statuswin_current</span><span class="plain-syntax">=0;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Status Line. </b>Despite the name, the status line need not be a single line at the top of
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Status Line. </b>Despite the name, the status line need not be a single line at the top of
 the screen: that's only the conventional default arrangement. It can expand
 to become the equivalent of an old-fashioned VT220 terminal, with menus
 and grids and mazes displayed lovingly in character graphics, or it can
@@ -867,7 +879,7 @@ line; line 2 is underneath, and so on; columns are similarly numbered from
 <span class="plain-syntax">    </span><span class="identifier-syntax">statuswin_current</span><span class="plain-syntax">=1;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Quotation Boxes. </b>On the Z-machine, quotation boxes are produced by stretching the status line,
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Quotation Boxes. </b>On the Z-machine, quotation boxes are produced by stretching the status line,
 but on Glulx they usually occupy windows of their own. If it isn't possible
 to create such a window, so that <span class="extract"><span class="extract-syntax">gg_quotewin</span></span> is zero below, the quotation
 text just appears in the main window.

@@ -1030,8 +1030,11 @@ extern void make_verb(void)
 
     for (i=0, pos=0; i<no_given; i++) {
         char *wd = English_verbs_given+pos;
+        int flags = VERB_DFLAG
+            + (DICT_TRUNCATE_FLAG ? NONE_DFLAG : TRUNC_DFLAG)
+            + (meta_verb_flag ? META_DFLAG : NONE_DFLAG);
         dictionary_add(wd,
-            VERB_DFLAG + BIT6_DFLAG + ((meta_verb_flag)?META_DFLAG:NONE_DFLAG),
+            flags,
             (glulx_mode)?(0xffff-Inform_verb):(0xff-Inform_verb), 0);
         register_verb(wd, Inform_verb);
         pos += (strlen(wd) + 1);

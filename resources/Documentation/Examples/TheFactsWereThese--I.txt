@@ -11,7 +11,7 @@
 > >   Morgue Office
   (Testing.)
   
-  >[1] test monetary
+  >[1] test dollars
   (Testing.)
   
   >[2] drop all

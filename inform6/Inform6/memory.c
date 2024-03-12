@@ -271,6 +271,7 @@ int OMIT_UNUSED_ROUTINES; /* 0: no, 1: yes */
 int STRIP_UNREACHABLE_LABELS; /* 0: no, 1: yes (default) */
 int OMIT_SYMBOL_TABLE; /* 0: no, 1: yes */
 int DICT_IMPLICIT_SINGULAR; /* 0: no, 1: yes */
+int DICT_TRUNCATE_FLAG; /* 0: no, 1: yes */
 int LONG_DICT_FLAG_BUG; /* 0: no bug, 1: bug (default for historic reasons) */
 int TRANSCRIPT_FORMAT; /* 0: classic, 1: prefixed */
 
@@ -321,6 +322,7 @@ static void list_memory_sizes(void)
     printf("|  %25s = %-7d |\n","STRIP_UNREACHABLE_LABELS",STRIP_UNREACHABLE_LABELS);
     printf("|  %25s = %-7d |\n","OMIT_SYMBOL_TABLE",OMIT_SYMBOL_TABLE);
     printf("|  %25s = %-7d |\n","DICT_IMPLICIT_SINGULAR",DICT_IMPLICIT_SINGULAR);
+    printf("|  %25s = %-7d |\n","DICT_TRUNCATE_FLAG",DICT_TRUNCATE_FLAG);
     printf("|  %25s = %-7d |\n","LONG_DICT_FLAG_BUG",LONG_DICT_FLAG_BUG);
     printf("+--------------------------------------+\n");
 }
@@ -356,6 +358,7 @@ extern void set_memory_sizes(void)
     STRIP_UNREACHABLE_LABELS = 1;
     OMIT_SYMBOL_TABLE = 0;
     DICT_IMPLICIT_SINGULAR = 0;
+    DICT_TRUNCATE_FLAG = 0;
     LONG_DICT_FLAG_BUG = 1;
     TRANSCRIPT_FORMAT = 0;
 
@@ -518,8 +521,15 @@ static void explain_parameter(char *command)
     {
         printf(
 "  DICT_IMPLICIT_SINGULAR, if set to 1, will cause dict words in noun \n\
-  context to have the '//s' flag if the '//p' flag is not set. \n\
-  retained.\n");
+  context to have the '//s' flag if the '//p' flag is not set. \n");
+        return;
+    }
+    if (strcmp(command,"DICT_TRUNCATE_FLAG")==0)
+    {
+        printf(
+"  DICT_TRUNCATE_FLAG, if set to 1, will set bit 6 of a dict word if the \n\
+  word is truncated (extends beyond DICT_WORD_SIZE). If 0, bit 6 will be \n\
+  set for verbs (legacy behavior). \n");
         return;
     }
     if (strcmp(command,"LONG_DICT_FLAG_BUG")==0)
@@ -765,7 +775,7 @@ static void set_trace_option(char *command)
    really about memory allocation.
 */
 extern void memory_command(char *command)
-{   int i, k, flag=0; int32 j;
+{   int i, k;
 
     for (k=0; command[k]!=0; k++)
         if (islower(command[k])) command[k]=toupper(command[k]);
@@ -786,7 +796,10 @@ extern void memory_command(char *command)
     
     for (i=0; command[i]!=0; i++)
     {   if (command[i]=='=')
-        {   command[i]=0;
+        {
+            int flag = 0;
+            int32 j = 0;
+            command[i]=0;
             if (!parse_memory_setting(command+i+1, command, &j)) {
                 return;
             }
@@ -949,6 +962,12 @@ extern void memory_command(char *command)
                 DICT_IMPLICIT_SINGULAR=j, flag=1;
                 if (DICT_IMPLICIT_SINGULAR > 1 || DICT_IMPLICIT_SINGULAR < 0)
                     DICT_IMPLICIT_SINGULAR = 1;
+            }
+            if (strcmp(command,"DICT_TRUNCATE_FLAG")==0)
+            {
+                DICT_TRUNCATE_FLAG=j, flag=1;
+                if (DICT_TRUNCATE_FLAG > 1 || DICT_TRUNCATE_FLAG < 0)
+                    DICT_TRUNCATE_FLAG = 1;
             }
             if (strcmp(command,"LONG_DICT_FLAG_BUG")==0)
             {

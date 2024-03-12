@@ -323,9 +323,9 @@ out the I6 command verb grammar for the supplied command.
 =
 [ ShowVerbSub address lines meta i x;
 	wn = 2; x = NextWordStopped();
-    if (x == 0 || ((x->#dict_par1) & 1) == 0)
+    if (x == 0 || ((x->#dict_par1) & DICTPAR1_VERB) == 0)
         "Try typing ~showverb~ and then the name of a verb.";
-    meta = ((x->#dict_par1) & 2)/2;
+    meta = ((x->#dict_par1) & DICTPAR1_META)/2;
     i = DictionaryWordToVerbNum(x);
     address = VM_CommandTableAddress(i);
     lines = address->0;

@@ -145,6 +145,7 @@ See the Inform 6 Technical Manual for more on these oddities.
 	WRITE("!%% $ZCODE_LESS_DICT_DATA=1;\n");
 	WRITE("!%% $LONG_DICT_FLAG_BUG=0;\n");
 	WRITE("!%% $DICT_IMPLICIT_SINGULAR=1;\n");
+	WRITE("!%% $DICT_TRUNCATE_FLAG=1;\n");
 	if (omit_ur) WRITE("!%% $OMIT_UNUSED_ROUTINES=1;\n");
 	CodeGen::deselect(gen, saved);
 

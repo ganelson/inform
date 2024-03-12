@@ -1295,8 +1295,9 @@ typedef struct operator_s
                            /* (DICT_IMPLICIT_SINGULAR sets this for all
                               non-plural nouns) */
 #define BIT5_DFLAG    32   /* not used */
-#define BIT6_DFLAG    64   /* set for verbs, for historical reasons only --
-                              not used */
+#define TRUNC_DFLAG   64   /* if DICT_TRUNCATE_FLAG, indicates truncated
+                              dict words; otherwise, set for verbs, for
+                              historical reasons only */
 #define NOUN_DFLAG    128  /* used as a noun (set by '//n') */
                            /* (set for every word that appears outside
                               of verb grammar) */
@@ -2607,6 +2608,7 @@ extern int WARN_UNUSED_ROUTINES, OMIT_UNUSED_ROUTINES;
 extern int STRIP_UNREACHABLE_LABELS;
 extern int OMIT_SYMBOL_TABLE;
 extern int DICT_IMPLICIT_SINGULAR;
+extern int DICT_TRUNCATE_FLAG;
 extern int LONG_DICT_FLAG_BUG;
 extern int TRANSCRIPT_FORMAT;
 

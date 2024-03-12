@@ -61,13 +61,25 @@ Global gg_scriptstr = 0;
 	rtrue;
 ];
 
-@h Variables and Arrays.
+@h Dictionary Parameters.
 
 =
 Constant DICT_ENTRY_BYTES = 12+DICT_WORD_SIZE*WORDSIZE;
 Constant #dict_par1 = DICT_WORD_SIZE*WORDSIZE+4+1;
 Constant #dict_par2 = DICT_WORD_SIZE*WORDSIZE+4+3;
 
+Constant DICTPAR1_VERB = 1;
+Constant DICTPAR1_META = 2;
+Constant DICTPAR1_PLURAL = 4;
+Constant DICTPAR1_PREP = 8;
+Constant DICTPAR1_SING = 16;
+Constant DICTPAR1_BIT6 = 32;
+Constant DICTPAR1_TRUNC = 64;
+Constant DICTPAR1_NOUN = 128;
+
+@h Variables and Arrays.
+
+=
 Array gg_event --> 4;
 Array gg_arguments buffer 28;
 Global gg_mainwin = 0;

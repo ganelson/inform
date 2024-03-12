@@ -159,8 +159,7 @@ Global take_all_rule;               ! Slightly different rules apply to "take al
                                     ! pragmatically useful results
                                     ! (Not a flag: possible values 0, 1, 2)
 
-Global dict_flags_of_noun;          ! Of the noun currently being parsed
-                                    ! (a bitmap in #dict_par1 format)
+Global current_noun_is_plural;      ! True or false
 Global pronoun__word;               ! Saved value
 Global pronoun__obj;                ! Saved value
 
@@ -854,7 +853,7 @@ Is the command a direction name, and so an implicit GO? If so, go to (K).
     ! If the first word is not listed as a verb, it must be a direction
     ! or the name of someone to talk to
 
-    if (verb_word == 0 || ((verb_word->#dict_par1) & 1) == 0) {
+    if (verb_word == 0 || ((verb_word->#dict_par1) & DICTPAR1_VERB) == 0) {
         ! So is the first word an object contained in the special object "compass"
         ! (i.e., a direction)?  This needs use of NounDomain, a routine which
         ! does the object matching, returning the object number, or 0 if none found,
@@ -913,7 +912,7 @@ Is anyone being addressed?
 	scope_reason = PARSING_REASON;
 	if (l == REPARSE_CODE) jump ReParse;
 	if (l == 0) {
-		if (verb_word && ((verb_word->#dict_par1) & 1)) jump NotConversation;
+		if (verb_word && ((verb_word->#dict_par1) & DICTPAR1_VERB)) jump NotConversation;
 		best_etype = MISSINGPERSON_PE; jump GiveError;
 	}
 
@@ -931,7 +930,7 @@ Is anyone being addressed?
 	! name and the comma (eg, throw out "dwarf sdfgsdgs, go north").
 
 	if (wn ~= j) {
-		if (verb_word && ((verb_word->#dict_par1) & 1)) jump NotConversation;
+		if (verb_word && ((verb_word->#dict_par1) & DICTPAR1_VERB)) jump NotConversation;
 		best_etype = TOTALK_PE; jump GiveError;
 	}
 
@@ -967,7 +966,7 @@ Get the verb: try all the syntax lines for that verb.
 
 =
 	.NotConversation;
-	if (verb_word == 0 || ((verb_word->#dict_par1) & 1) == 0) {
+	if (verb_word == 0 || ((verb_word->#dict_par1) & DICTPAR1_VERB) == 0) {
 		verb_word = UnknownVerb(verb_word);
 		if (verb_word ~= 0) jump VerbAccepted;
 		best_etype = VERB_PE;
@@ -978,7 +977,7 @@ Get the verb: try all the syntax lines for that verb.
     ! We now definitely have a verb, not a direction, whether we got here by the
     ! "take ..." or "person, take ..." method.  Get the meta flag for this verb:
 
-    meta = ((verb_word->#dict_par1) & 2)/2;
+    meta = ((verb_word->#dict_par1) & DICTPAR1_META)/2;
 
     ! You can't order other people to "full score" for you, and so on...
 
@@ -1101,7 +1100,7 @@ and similarly for |multiinside|.
                         do {
                             l = NextWord();
                         } until ((wn > num_words) ||
-                                 (l && (l->#dict_par1) & 8 ~= 0));
+                                 (l && (l->#dict_par1) & DICTPAR1_PREP ~= 0));
 
                         if (wn > num_words) {
                             #Ifdef DEBUG;
@@ -1127,9 +1126,9 @@ and similarly for |multiinside|.
                                 do {
                                     l = NextWord();
                                 } until ((wn >= num_words) ||
-                                         (l && (l->#dict_par1) & 8 ~= 0));
+                                         (l && (l->#dict_par1) & DICTPAR1_PREP ~= 0));
 
-                                if (l && (l->#dict_par1) & 8) continue;
+                                if (l && (l->#dict_par1) & DICTPAR1_PREP) continue;
 
                                 ! lookahead failed
                                 #Ifdef DEBUG;
@@ -2468,8 +2467,7 @@ because we want to allow duplicates).
         j = wn; first_word = LanguageIsVerb(buffer2, parse2, 1); wn = j;
     }
     if (first_word ~= 0) {
-        j = first_word->#dict_par1;
-        if ((0 ~= j&1) && ~~LanguageVerbMayBeName(first_word)) {
+        if (((first_word->#dict_par1) & DICTPAR1_VERB) && ~~LanguageVerbMayBeName(first_word)) {
             VM_CopyBuffer(buffer, buffer2);
             jump RECONSTRUCT_INPUT;
         }
@@ -2553,8 +2551,7 @@ because we want to allow duplicates).
     ! parser to get on with and forget about the question...
 
     if (first_word ~= 0) {
-        j = first_word->#dict_par1;
-        if ((0 ~= j&1) && ~~LanguageVerbMayBeName(first_word)) {
+        if (((first_word->#dict_par1) & DICTPAR1_VERB) && ~~LanguageVerbMayBeName(first_word)) {
             VM_CopyBuffer(buffer, buffer2);
             jump RECONSTRUCT_INPUT;
         }
@@ -3701,15 +3698,14 @@ if it was a match because of inadequate input).
 
 	if (nomatch && obj == 0) return 0;
 
-    dict_flags_of_noun = 0;
+    current_noun_is_plural = false;
 
 !  If input has run out then always match, with only quality 0 (this saves
 !  time).
 
     if (wn > num_words) {
     	if (nomatch) return 0;
-        if (indef_mode ~= 0)
-            dict_flags_of_noun = $$01110000;  ! Reject "plural" bit
+        if (indef_mode ~= 0) current_noun_is_plural = false;
         MakeMatch(obj,0);
         #Ifdef DEBUG;
         if (parser_trace >= 5) print "    Matched (0)^";
@@ -3728,10 +3724,9 @@ if it was a match because of inadequate input).
 
           .MMbyPN;
 
-            if (parser_action == ##PluralFound)
-                dict_flags_of_noun = dict_flags_of_noun | 4;
+            if (parser_action == ##PluralFound) current_noun_is_plural = true;
 
-            if (dict_flags_of_noun & 4) {
+            if (current_noun_is_plural) {
                 if (~~allow_plurals) k = 0;
                 else {
                     if (indef_mode == 0) {
@@ -3769,12 +3764,12 @@ if it was a match because of inadequate input).
     }
 
 	threshold = 1;
-	dict_flags_of_noun = RelevantNounBits(w);
+	current_noun_is_plural = TreatNounAsPlural(w);
 	w = NextWord();
 	while (Refers(obj, wn-1)) {
 		threshold++;
 		if (w)
-		   dict_flags_of_noun = dict_flags_of_noun | (RelevantNounBits(w));
+		   current_noun_is_plural = current_noun_is_plural | (TreatNounAsPlural(w));
 		w = NextWord();
 	}
 
@@ -3782,11 +3777,14 @@ if it was a match because of inadequate input).
     jump MMbyPN;
 ];
 
-[ RelevantNounBits w b;
-	if (w == 0) return 0;
-	b = w->#dict_par1;
-	if (b & $$10000) return b & $$01110000;
-	return b & $$01110100;
+[ TreatNounAsPlural w b;
+	if (w) {
+		b = w->#dict_par1;
+!		if (b & DICTPAR1_SING) rfalse;
+		if (b & DICTPAR1_TRUNC) rfalse;
+		if (b & DICTPAR1_PLURAL) rtrue;
+	}
+	rfalse;
 ];
 
 @h Refers.
@@ -3842,7 +3840,7 @@ if it is a pronoun,
     for (j=1 : j<=s : j=j+3)
         if (i == LanguagePronouns-->j)
             return j+2;
-    if ((i->#dict_par1)&128 == 0) rfalse;
+    if ((i->#dict_par1) & DICTPAR1_NOUN == 0) rfalse;
     return i;
 ];
 
@@ -3940,7 +3938,7 @@ Manual}, 4th edition.
 	for (i=0:i<n:i++) {
 		w = NextWordStopped();
 		if (w == 0 or THEN1__WD or COMMA_WORD or -1) break;
-		if ((RelevantNounBits(w)) & $$00000100) {
+		if (TreatNounAsPlural(w)) {
 			parser_action = ##PluralFound;
 			outcome = true;
 		}
@@ -4130,7 +4128,7 @@ Array alt_match_list --> (MATCH_LIST_WORDS+1);
 		while (wn <= num_words) {
 			l = NextWordStopped(); wn--;
 			if (l == THEN1__WD) break;
-			if ( (l ~= -1 or 0) && (l->#dict_par1) &8 ) { wn++; continue; }	! if preposition
+			if ((l ~= -1 or 0) && (l->#dict_par1) & DICTPAR1_PREP) { wn++; continue; }	! if preposition
 			if (l == ALL1__WD or ALL2__WD or ALL3__WD or ALL4__WD or ALL5__WD) { wn++; continue; }
 			SafeSkipDescriptors();
 			! save the current match state

@@ -31,9 +31,15 @@ These are the changes delivered in version 6.42 of the Inform compiler.
 
 <h3>Features added</h3>
 <ul>
-<li><p>A new dictionary flag has been introduced, "singular", which is set for any non that is not a plural.
+<li><p>A new dictionary word flag has been introduced, "singular", which is set for any noun that is not a plural.
 This can be explicitly set or not set in a dictionary word with the <tt>'//s'</tt> syntax, i.e. <tt>'word//s'</tt> to set it,
 or <tt>'word//~s'</tt> to not set it.
+<li><p>A new setting <tt>$DICT_TRUNCATE_FLAG</tt> has been added. If this is set to 1, then bit 6 of the dictionary
+word flag is set for any word whose source code definition is truncated to fit in the dictionary. In <tt>--trace dict</tt>
+listings, this is shown as "tr" when the flag is set.
+Without this option, bit 6 of the dictionary word flag is set for all verbs (which is the old behavior, redundant with bit 1).
+If the compiler truncates only the <tt>//p</tt> flag (as in <tt>$LONG_DICT_FLAG_BUG</tt>), that does not count as truncating
+the dictionary word: the only relevant test is whether or not characters were dropped.
 </ul>
 
 <h3>Bugs fixed</h3>

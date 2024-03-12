@@ -27,12 +27,24 @@ only if scripting is on.
 	rtrue;
 ];
 
-@h Variables and Arrays.
+@h Dictionary Parameters.
 
 =
 Constant #dict_par1 = 6;
 Constant #dict_par2 = 7;
 
+Constant DICTPAR1_VERB = 1;
+Constant DICTPAR1_META = 2;
+Constant DICTPAR1_PLURAL = 4;
+Constant DICTPAR1_PREP = 8;
+Constant DICTPAR1_SING = 16;
+Constant DICTPAR1_BIT6 = 32;
+Constant DICTPAR1_TRUNC = 64;
+Constant DICTPAR1_NOUN = 128;
+
+@h Variables and Arrays.
+
+=
 Global xcommsdir; ! true if command recording is on
 
 Constant INPUT_BUFFER_LEN = 120; ! Length of buffer array

@@ -1923,6 +1923,14 @@ static void dictionary_prepare_z(char *dword, uchar *optresult)
 
     int dictsize = (version_number==3) ? 6 : 9;
 
+    /* Flag to set if a dict word is truncated. We only do this if
+       DICT_TRUNCATE_FLAG, however. */
+    int truncflag = (DICT_TRUNCATE_FLAG ? TRUNC_DFLAG : NONE_DFLAG);
+
+    /* Will be set to suppress dict flags if we're past the size limit.
+       But only if LONG_DICT_FLAG_BUG. */
+    int truncbug = FALSE;
+
     prepared_dictflags_pos = 0;
     prepared_dictflags_neg = 0;
 
@@ -1934,6 +1942,7 @@ static void dictionary_prepare_z(char *dword, uchar *optresult)
             negflag = FALSE;
             for (j+=2; dword[j] != 0; j++)
             {
+                if (truncbug) continue; /* do not set flags */
                 switch(dword[j])
                 {
                     case '~':
@@ -1973,7 +1982,7 @@ static void dictionary_prepare_z(char *dword, uchar *optresult)
         /* LONG_DICT_FLAG_BUG emulates the old behavior where we stop looping
            at dictsize. */
         if (LONG_DICT_FLAG_BUG && i>=dictsize)
-            break;
+            truncbug = TRUE;
 
         k=(int) dword[j];
         if (k==(int) '\'')
@@ -2003,7 +2012,8 @@ apostrophe in", dword);
         {   if ((k2 == -5) || (k2 <= -0x100))
                 char_error("Character can be printed but not input:", k);
             else
-            {   /* Use 4 more Z-chars to encode a ZSCII escape sequence      */
+            {   /* Use 4 more Z-chars to encode a ZSCII escape sequence.
+                   If the last character can't be written, set TRUNC flag. */
                 if (i<dictsize)
                     wd[i++] = 5;
                 if (i<dictsize)
@@ -2013,6 +2023,8 @@ apostrophe in", dword);
                     wd[i++] = k2/32;
                 if (i<dictsize)
                     wd[i++] = k2%32;
+                else
+                    prepared_dictflags_pos |= truncflag;
             }
         }
         else
@@ -2021,6 +2033,8 @@ apostrophe in", dword);
                 wd[i++]=3+(k2/26);            /* Change alphabet for symbols */
             if (i<dictsize)
                 wd[i++]=6+(k2%26);            /* Write the Z character       */
+            else
+                prepared_dictflags_pos |= truncflag;
         }
     }
 
@@ -2063,6 +2077,14 @@ static void dictionary_prepare_g(char *dword, uchar *optresult)
   int32 unicode;
   int negflag;
 
+  /* Flag to set if a dict word is truncated. We only do this if
+     DICT_TRUNCATE_FLAG, however. */
+  int truncflag = (DICT_TRUNCATE_FLAG ? TRUNC_DFLAG : NONE_DFLAG);
+
+  /* Will be set to suppress dict flags if we're past the size limit.
+     But only if LONG_DICT_FLAG_BUG. */
+  int truncbug = FALSE;
+
   prepared_dictflags_pos = 0;
   prepared_dictflags_neg = 0;
 
@@ -2071,6 +2093,7 @@ static void dictionary_prepare_g(char *dword, uchar *optresult)
       /* The rest of the word is dict flags. Run through them. */
       negflag = FALSE;
       for (j+=2; dword[j] != 0; j++) {
+        if (truncbug) continue; /* do not set flags */
         switch(dword[j]) {
         case '~':
             if (!dword[j+1])
@@ -2109,7 +2132,7 @@ static void dictionary_prepare_g(char *dword, uchar *optresult)
     /* LONG_DICT_FLAG_BUG emulates the old behavior where we stop looping
        at DICT_WORD_SIZE. */
     if (LONG_DICT_FLAG_BUG && i>=DICT_WORD_SIZE)
-        break;
+        truncbug = TRUE;
 
     k= ((unsigned char *)dword)[j];
     if (k=='\'') 
@@ -2145,6 +2168,8 @@ Define DICT_CHAR_SIZE=4 for a Unicode-compatible dictionary.");
     if (DICT_CHAR_SIZE == 1) {
       if (i<DICT_WORD_SIZE)
         prepared_sort[i++] = k;
+      else
+        prepared_dictflags_pos |= truncflag;          
     }
     else {
       if (i<DICT_WORD_SIZE) {
@@ -2153,6 +2178,9 @@ Define DICT_CHAR_SIZE=4 for a Unicode-compatible dictionary.");
         prepared_sort[4*i+2] = (k >>  8) & 0xFF;
         prepared_sort[4*i+3] = (k)       & 0xFF;
         i++;
+      }
+      else {
+        prepared_dictflags_pos |= truncflag;          
       }
     }
   }
@@ -2686,15 +2714,21 @@ static void recursively_show_z(int node, int level)
             printf("s ");
         else
             printf("  ");
+        if (DICT_TRUNCATE_FLAG) {
+            if (flags & TRUNC_DFLAG)
+                printf("tr ");
+            else
+                printf("   ");
+        }
         if (flags & PREP_DFLAG)
         {   if (grammar_version_number == 1)
                 printf("preposition:%d  ", (int) p[res+2]);
             else
                 printf("preposition    ");
         }
-        if ((flags & METAVERB_DFLAG) == METAVERB_DFLAG)
-            printf("metaverb:%d  ", (int) p[res+1]);
-        else if ((flags & METAVERB_DFLAG) == VERB_DFLAG)
+        if (flags & META_DFLAG)
+            printf("meta");
+        if (flags & VERB_DFLAG)
             printf("verb:%d  ", (int) p[res+1]);
         printf("\n");
     }
@@ -2753,11 +2787,17 @@ static void recursively_show_g(int node, int level)
             printf("s ");
         else
             printf("  ");
+        if (DICT_TRUNCATE_FLAG) {
+            if (flags & TRUNC_DFLAG)
+                printf("tr ");
+            else
+                printf("   ");
+        }
         if (flags & PREP_DFLAG)
             printf("preposition    ");
-        if ((flags & METAVERB_DFLAG) == METAVERB_DFLAG)
-            printf("metaverb:%d  ", verbnum);
-        else if ((flags & METAVERB_DFLAG) == VERB_DFLAG)
+        if (flags & META_DFLAG)
+            printf("meta");
+        if (flags & VERB_DFLAG)
             printf("verb:%d  ", verbnum);
         printf("\n");
     }
