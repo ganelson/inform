@@ -28,6 +28,15 @@ only if scripting is on.
 ];
 
 @h Dictionary Parameters.
+Each word in the dictionary data structure has two metadata fields, known
+for traditional Inform 6 reasons as "dictionary parameters 1 and 2". Number 1
+is a bitmap: some of the higher bits are written by the I6 compiler only when
+certain compile options are set, but they will be for the code which I7
+generates. Bit 6 is currently never written by I6; bit 5, marking singular
+nouns, is never used by this parser.
+
+(For speed reasons, reading of |DICTPAR1_NOUN| and |DICTPAR1_PREP| is done
+directly by |ParserKit| rather than by calling functions here.)
 
 =
 Constant #dict_par1 = 6;
@@ -41,6 +50,38 @@ Constant DICTPAR1_SING = 16;
 Constant DICTPAR1_BIT6 = 32;
 Constant DICTPAR1_TRUNC = 64;
 Constant DICTPAR1_NOUN = 128;
+
+[ WordMarkedAsVerb w;
+	if ((w) && ((w->#dict_par1) & DICTPAR1_VERB)) rtrue;
+	rfalse;
+];
+
+[ WordMarkedAsMeta w;
+	if ((w) && ((w->#dict_par1) & DICTPAR1_META)) rtrue;
+	rfalse;
+];
+
+[ WorkMarkedAsUntruncatedPlural w b;
+	if (w) {
+		b = w->#dict_par1;
+		if (b & DICTPAR1_TRUNC) rfalse;
+		if (b & DICTPAR1_PLURAL) rtrue;
+	}
+	rfalse;
+];
+
+@h Extracting Verb Numbers.
+Infocom games stored verb numbers in a single byte in dictionary entries, but
+they did so counting downwards, so that verb number 0 was stored as 255, 1 as
+254, and so on. Inform followed suit so that debugging of Inform 1 could be
+aided by using the then-available tools for dumping dictionaries from Infocom
+story files; by using the Infocom format for dictionary tables, Inform's life
+was easier.
+
+=
+[ DictionaryWordToVerbNum w;
+	return $ff-(w->#dict_par2);
+];
 
 @h Variables and Arrays.
 
@@ -201,26 +242,6 @@ recognised by the parser.
     for (j=0 : j<(da+5)-->0 : j++)
         if (da->(j*DICT_ENTRY_BYTES + 14) == $ff-i)
         	print "'", (address) VM_NumberToDictionaryAddress(j), "' ";
-];
-
-@h Extracting Verb Numbers.
-A long tale of woe lies behind the following. Infocom games stored verb numbers
-in a single byte in dictionary entries, but they did so counting downwards, so
-that verb number 0 was stored as 255, 1 as 254, and so on. Inform followed
-suit so that debugging of Inform 1 could be aided by using the then-available
-tools for dumping dictionaries from Infocom story files; by using the Infocom
-format for dictionary tables, Inform's life was easier.
-
-But there was an implicit restriction there of 255 distinct verbs (not 256
-since not all words were verbs). When Glulx raised almost all of the Z-machine
-limits, it made space for 65535 verbs instead of 255, but it appears that
-nobody remembered to implement this in I6-for-Glulx and the Glulx form of
-the I6 library. This was only put right in March 2009, and the following
-routine was added to concentrate lookups of this field in one place.
-
-=
-[ DictionaryWordToVerbNum dword;
-	return $ff-(dword->#dict_par2);
 ];
 
 @h Action functions.

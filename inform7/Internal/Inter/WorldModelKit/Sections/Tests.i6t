@@ -321,17 +321,16 @@ SHOWVERB is a holdover from old I6 days, but still quite useful. It writes
 out the I6 command verb grammar for the supplied command.
 
 =
-[ ShowVerbSub address lines meta i x;
+[ ShowVerbSub address lines i x;
 	wn = 2; x = NextWordStopped();
-    if (x == 0 || ((x->#dict_par1) & DICTPAR1_VERB) == 0)
+    if (WordMarkedAsVerb(x) == false)
         "Try typing ~showverb~ and then the name of a verb.";
-    meta = ((x->#dict_par1) & DICTPAR1_META)/2;
     i = DictionaryWordToVerbNum(x);
     address = VM_CommandTableAddress(i);
     lines = address->0;
     address++;
     print "Verb ";
-    if (meta) print "meta ";
+    if (WordMarkedAsMeta(x)) print "meta ";
     VM_PrintCommandWords(i);
     new_line;
     if (lines == 0) print "has no grammar lines.^";

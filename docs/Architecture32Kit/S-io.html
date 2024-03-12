@@ -64,7 +64,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">Architecture32Kit</a></li><li><b>Input Output Template</b></li></ul></div>
 <p class="purpose">Access to the keyboard and to textual windows.</p>
 
-<ul class="toc"><li><a href="S-io.html#SP1">&#167;1. Rocks</a></li><li><a href="S-io.html#SP2">&#167;2. Transcript support</a></li><li><a href="S-io.html#SP3">&#167;3. Dictionary Parameters</a></li><li><a href="S-io.html#SP4">&#167;4. Variables and Arrays</a></li><li><a href="S-io.html#SP5">&#167;5. Dictionary words</a></li><li><a href="S-io.html#SP6">&#167;6. Keyboard Input</a></li><li><a href="S-io.html#SP7">&#167;7. Buffer Functions</a></li><li><a href="S-io.html#SP8">&#167;8. Dictionary Functions</a></li><li><a href="S-io.html#SP9">&#167;9. Command Tables</a></li><li><a href="S-io.html#SP10">&#167;10. Extracting Verb Numbers</a></li><li><a href="S-io.html#SP11">&#167;11. Action functions</a></li><li><a href="S-io.html#SP12">&#167;12. Glulx-Only Printing Routines</a></li><li><a href="S-io.html#SP13">&#167;13. The Screen</a></li><li><a href="S-io.html#SP14">&#167;14. Window Colours</a></li><li><a href="S-io.html#SP15">&#167;15. Main Window</a></li><li><a href="S-io.html#SP16">&#167;16. Status Line</a></li><li><a href="S-io.html#SP17">&#167;17. Quotation Boxes</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-io.html#SP1">&#167;1. Rocks</a></li><li><a href="S-io.html#SP2">&#167;2. Transcript support</a></li><li><a href="S-io.html#SP3">&#167;3. Dictionary Parameters</a></li><li><a href="S-io.html#SP4">&#167;4. Extracting Verb Numbers</a></li><li><a href="S-io.html#SP5">&#167;5. Variables and Arrays</a></li><li><a href="S-io.html#SP6">&#167;6. Dictionary words</a></li><li><a href="S-io.html#SP7">&#167;7. Keyboard Input</a></li><li><a href="S-io.html#SP8">&#167;8. Buffer Functions</a></li><li><a href="S-io.html#SP9">&#167;9. Dictionary Functions</a></li><li><a href="S-io.html#SP10">&#167;10. Command Tables</a></li><li><a href="S-io.html#SP11">&#167;11. Action functions</a></li><li><a href="S-io.html#SP12">&#167;12. Glulx-Only Printing Routines</a></li><li><a href="S-io.html#SP13">&#167;13. The Screen</a></li><li><a href="S-io.html#SP14">&#167;14. Window Colours</a></li><li><a href="S-io.html#SP15">&#167;15. Main Window</a></li><li><a href="S-io.html#SP16">&#167;16. Status Line</a></li><li><a href="S-io.html#SP17">&#167;17. Quotation Boxes</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Rocks. </b>These are unique ID codes used to mark resources; think of them as inedible
 cookies.
@@ -126,7 +126,17 @@ only if scripting is on: this always succeeds.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Dictionary Parameters. </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Dictionary Parameters. </b>Each word in the dictionary data structure has two metadata fields, known
+for traditional Inform 6 reasons as "dictionary parameters 1 and 2". Number 1
+is a bitmap: some of the higher bits are written by the I6 compiler only when
+certain compile options are set, but they will be for the code which I7
+generates. Bit 6 is currently never written by I6; bit 5, marking singular
+nouns, is never used by this parser.
+</p>
+
+<p class="commentary">(For speed reasons, reading of <span class="extract"><span class="extract-syntax">DICTPAR1_NOUN</span></span> and <span class="extract"><span class="extract-syntax">DICTPAR1_PREP</span></span> is done
+directly by <span class="extract"><span class="extract-syntax">ParserKit</span></span> rather than by calling functions here.)
+</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DICT_ENTRY_BYTES</span><span class="plain-syntax"> = </span><span class="constant-syntax">12</span><span class="plain-syntax">+</span><span class="identifier-syntax">DICT_WORD_SIZE</span><span class="plain-syntax">*</span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">;</span>
@@ -141,8 +151,51 @@ only if scripting is on: this always succeeds.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DICTPAR1_BIT6</span><span class="plain-syntax"> = </span><span class="constant-syntax">32</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DICTPAR1_TRUNC</span><span class="plain-syntax"> = </span><span class="constant-syntax">64</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DICTPAR1_NOUN</span><span class="plain-syntax"> = </span><span class="constant-syntax">128</span><span class="plain-syntax">;</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">WordMarkedAsVerb</span><span class="plain-syntax"> </span><span class="identifier-syntax">w</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">w</span><span class="plain-syntax">) &amp;&amp; ((</span><span class="identifier-syntax">w</span><span class="plain-syntax">-&gt;#</span><span class="identifier-syntax">dict_par1</span><span class="plain-syntax">) &amp; </span><span class="identifier-syntax">DICTPAR1_VERB</span><span class="plain-syntax">)) </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">WordMarkedAsMeta</span><span class="plain-syntax"> </span><span class="identifier-syntax">w</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">w</span><span class="plain-syntax">) &amp;&amp; ((</span><span class="identifier-syntax">w</span><span class="plain-syntax">-&gt;#</span><span class="identifier-syntax">dict_par1</span><span class="plain-syntax">) &amp; </span><span class="identifier-syntax">DICTPAR1_META</span><span class="plain-syntax">)) </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">WorkMarkedAsUntruncatedPlural</span><span class="plain-syntax"> </span><span class="identifier-syntax">w</span><span class="plain-syntax"> </span><span class="identifier-syntax">b</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">w</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">b</span><span class="plain-syntax"> = </span><span class="identifier-syntax">w</span><span class="plain-syntax">-&gt;#</span><span class="identifier-syntax">dict_par1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">b</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">DICTPAR1_TRUNC</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">b</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">DICTPAR1_PLURAL</span><span class="plain-syntax">) </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Variables and Arrays. </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Extracting Verb Numbers. </b>A long tale of woe lies behind the following. Infocom games stored verb numbers
+in a single byte in dictionary entries, but they did so counting downwards, so
+that verb number 0 was stored as 255, 1 as 254, and so on. Inform followed
+suit so that debugging of Inform 1 could be aided by using the then-available
+tools for dumping dictionaries from Infocom story files; by using the Infocom
+format for dictionary tables, Inform's life was easier.
+</p>
+
+<p class="commentary">But there was an implicit restriction there of 255 distinct verbs (not 256
+since not all words were verbs). When Glulx raised almost all of the Z-machine
+limits, it made space for 65535 verbs instead of 255, but it appears that
+nobody remembered to implement this in I6-for-Glulx and the Glulx form of
+the I6 library. This was only put right in March 2009, and the following
+routine was added to concentrate lookups of this field in one place.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">[ </span><span class="identifier-syntax">DictionaryWordToVerbNum</span><span class="plain-syntax"> </span><span class="identifier-syntax">w</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbnum</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">w</span><span class="plain-syntax"> = </span><span class="identifier-syntax">w</span><span class="plain-syntax"> + #</span><span class="identifier-syntax">dict_par2</span><span class="plain-syntax"> - </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    @</span><span class="identifier-syntax">aloads</span><span class="plain-syntax"> </span><span class="identifier-syntax">w</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbnum</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">verbnum</span><span class="plain-syntax"> = </span><span class="constant-syntax">$ffff</span><span class="plain-syntax">-</span><span class="identifier-syntax">verbnum</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbnum</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Variables and Arrays. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">gg_event</span><span class="plain-syntax"> --&gt; </span><span class="constant-syntax">4</span><span class="plain-syntax">;</span>
@@ -166,7 +219,7 @@ only if scripting is on: this always succeeds.
 <span class="reserved-syntax">Array</span><span class="plain-syntax">  </span><span class="identifier-syntax">parse</span><span class="plain-syntax">     --&gt; </span><span class="identifier-syntax">PARSE_BUFFER_LEN</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Array</span><span class="plain-syntax">  </span><span class="identifier-syntax">parse2</span><span class="plain-syntax">    --&gt; </span><span class="identifier-syntax">PARSE_BUFFER_LEN</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Dictionary words. </b>This tests whether an address is probably that of a dictionary word. It's used
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Dictionary words. </b>This tests whether an address is probably that of a dictionary word. It's used
 only for debugging output, so the false positives here really do not matter.
 </p>
 
@@ -176,7 +229,7 @@ only for debugging output, so the false positives here really do not matter.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Keyboard Input. </b>The VM must provide three routines for keyboard input:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Keyboard Input. </b>The VM must provide three routines for keyboard input:
 </p>
 
 <ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">VM_KeyChar()</span></span> waits for a key to be pressed and then returns the
@@ -342,7 +395,7 @@ to document all of that.
 <span class="character-syntax">    }</span>
 <span class="character-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Buffer Functions. </b>A "buffer", in this sense, is an array containing a stream of characters
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Buffer Functions. </b>A "buffer", in this sense, is an array containing a stream of characters
 typed from the keyboard; a "parse buffer" is an array which resolves this
 into individual words, pointing to the relevant entries in the dictionary
 structure. Because each VM has its own format for each of these arrays (not
@@ -475,7 +528,7 @@ languages of play, and is not called in the template.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">b</span><span class="plain-syntax">--&gt;0 &lt; </span><span class="identifier-syntax">INPUT_BUFFER_LEN</span><span class="plain-syntax">) (</span><span class="identifier-syntax">b</span><span class="plain-syntax">--&gt;0)++;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Dictionary Functions. </b>Again, the dictionary structure is differently arranged on the different VMs.
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Dictionary Functions. </b>Again, the dictionary structure is differently arranged on the different VMs.
 This is a data structure containing, in compressed form, the text of all the
 words to be recognised by tokenisation (above). In I6 for Glulx, a dictionary
 word is represented at run-time by its record's address in the dictionary.
@@ -512,7 +565,7 @@ since, on Glulx, they are the same, these are each the identity function.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Command Tables. </b>The VM is also generated containing a data structure for the grammar
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Command Tables. </b>The VM is also generated containing a data structure for the grammar
 produced by I6's <span class="extract"><span class="extract-syntax">Verb</span></span> and <span class="extract"><span class="extract-syntax">Extend</span></span> directives: this is essentially a
 list of command verbs such as DROP or PUSH, together with a list of
 synonyms, and then the grammar for the subsequent commands to be
@@ -532,30 +585,6 @@ recognised by the parser.
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">DictionaryWordToVerbNum</span><span class="plain-syntax">(</span><span class="identifier-syntax">wd</span><span class="plain-syntax">) == </span><span class="identifier-syntax">i</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"'"</span><span class="plain-syntax">, (</span><span class="identifier-syntax">address</span><span class="plain-syntax">) </span><span class="identifier-syntax">wd</span><span class="plain-syntax">, </span><span class="string-syntax">"' "</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">];</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Extracting Verb Numbers. </b>A long tale of woe lies behind the following. Infocom games stored verb numbers
-in a single byte in dictionary entries, but they did so counting downwards, so
-that verb number 0 was stored as 255, 1 as 254, and so on. Inform followed
-suit so that debugging of Inform 1 could be aided by using the then-available
-tools for dumping dictionaries from Infocom story files; by using the Infocom
-format for dictionary tables, Inform's life was easier.
-</p>
-
-<p class="commentary">But there was an implicit restriction there of 255 distinct verbs (not 256
-since not all words were verbs). When Glulx raised almost all of the Z-machine
-limits, it made space for 65535 verbs instead of 255, but it appears that
-nobody remembered to implement this in I6-for-Glulx and the Glulx form of
-the I6 library. This was only put right in March 2009, and the following
-routine was added to concentrate lookups of this field in one place.
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">DictionaryWordToVerbNum</span><span class="plain-syntax"> </span><span class="identifier-syntax">dword</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbnum</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">dword</span><span class="plain-syntax"> = </span><span class="identifier-syntax">dword</span><span class="plain-syntax"> + #</span><span class="identifier-syntax">dict_par2</span><span class="plain-syntax"> - </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    @</span><span class="identifier-syntax">aloads</span><span class="plain-syntax"> </span><span class="identifier-syntax">dword</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbnum</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">verbnum</span><span class="plain-syntax"> = </span><span class="constant-syntax">$ffff</span><span class="plain-syntax">-</span><span class="identifier-syntax">verbnum</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbnum</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Action functions. </b>This looks up the address of a function like <span class="extract"><span class="extract-syntax">TakeSub</span></span> from the table of

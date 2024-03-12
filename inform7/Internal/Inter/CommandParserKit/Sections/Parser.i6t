@@ -853,7 +853,7 @@ Is the command a direction name, and so an implicit GO? If so, go to (K).
     ! If the first word is not listed as a verb, it must be a direction
     ! or the name of someone to talk to
 
-    if (verb_word == 0 || ((verb_word->#dict_par1) & DICTPAR1_VERB) == 0) {
+    if (WordMarkedAsVerb(verb_word) == false) {
         ! So is the first word an object contained in the special object "compass"
         ! (i.e., a direction)?  This needs use of NounDomain, a routine which
         ! does the object matching, returning the object number, or 0 if none found,
@@ -912,7 +912,7 @@ Is anyone being addressed?
 	scope_reason = PARSING_REASON;
 	if (l == REPARSE_CODE) jump ReParse;
 	if (l == 0) {
-		if (verb_word && ((verb_word->#dict_par1) & DICTPAR1_VERB)) jump NotConversation;
+		if (WordMarkedAsVerb(verb_word)) jump NotConversation;
 		best_etype = MISSINGPERSON_PE; jump GiveError;
 	}
 
@@ -930,7 +930,7 @@ Is anyone being addressed?
 	! name and the comma (eg, throw out "dwarf sdfgsdgs, go north").
 
 	if (wn ~= j) {
-		if (verb_word && ((verb_word->#dict_par1) & DICTPAR1_VERB)) jump NotConversation;
+		if (WordMarkedAsVerb(verb_word)) jump NotConversation;
 		best_etype = TOTALK_PE; jump GiveError;
 	}
 
@@ -966,7 +966,7 @@ Get the verb: try all the syntax lines for that verb.
 
 =
 	.NotConversation;
-	if (verb_word == 0 || ((verb_word->#dict_par1) & DICTPAR1_VERB) == 0) {
+	if (WordMarkedAsVerb(verb_word) == false) {
 		verb_word = UnknownVerb(verb_word);
 		if (verb_word ~= 0) jump VerbAccepted;
 		best_etype = VERB_PE;
@@ -977,7 +977,7 @@ Get the verb: try all the syntax lines for that verb.
     ! We now definitely have a verb, not a direction, whether we got here by the
     ! "take ..." or "person, take ..." method.  Get the meta flag for this verb:
 
-    meta = ((verb_word->#dict_par1) & DICTPAR1_META)/2;
+    meta = WordMarkedAsMeta(verb_word);
 
     ! You can't order other people to "full score" for you, and so on...
 
@@ -2466,11 +2466,9 @@ because we want to allow duplicates).
     if (first_word == 0) {
         j = wn; first_word = LanguageIsVerb(buffer2, parse2, 1); wn = j;
     }
-    if (first_word ~= 0) {
-        if (((first_word->#dict_par1) & DICTPAR1_VERB) && ~~LanguageVerbMayBeName(first_word)) {
-            VM_CopyBuffer(buffer, buffer2);
-            jump RECONSTRUCT_INPUT;
-        }
+    if ((WordMarkedAsVerb(first_word)) && ~~LanguageVerbMayBeName(first_word)) {
+        VM_CopyBuffer(buffer, buffer2);
+        jump RECONSTRUCT_INPUT;
     }
 
     ! Now we insert the answer into the original typed command, as
@@ -2550,11 +2548,9 @@ because we want to allow duplicates).
     ! Once again, if the reply looks like a command, give it to the
     ! parser to get on with and forget about the question...
 
-    if (first_word ~= 0) {
-        if (((first_word->#dict_par1) & DICTPAR1_VERB) && ~~LanguageVerbMayBeName(first_word)) {
-            VM_CopyBuffer(buffer, buffer2);
-            jump RECONSTRUCT_INPUT;
-        }
+    if ((WordMarkedAsVerb(first_word)) && ~~LanguageVerbMayBeName(first_word)) {
+        VM_CopyBuffer(buffer, buffer2);
+    	jump RECONSTRUCT_INPUT;
     }
 
     ! ...but if we have a genuine answer, then:
@@ -3764,27 +3760,17 @@ if it was a match because of inadequate input).
     }
 
 	threshold = 1;
-	current_noun_is_plural = TreatNounAsPlural(w);
+	current_noun_is_plural = WorkMarkedAsUntruncatedPlural(w);
 	w = NextWord();
 	while (Refers(obj, wn-1)) {
 		threshold++;
 		if (w)
-		   current_noun_is_plural = current_noun_is_plural | (TreatNounAsPlural(w));
+		   current_noun_is_plural = current_noun_is_plural | (WorkMarkedAsUntruncatedPlural(w));
 		w = NextWord();
 	}
 
     k = threshold;
     jump MMbyPN;
-];
-
-[ TreatNounAsPlural w b;
-	if (w) {
-		b = w->#dict_par1;
-!		if (b & DICTPAR1_SING) rfalse;
-		if (b & DICTPAR1_TRUNC) rfalse;
-		if (b & DICTPAR1_PLURAL) rtrue;
-	}
-	rfalse;
 ];
 
 @h Refers.
@@ -3938,7 +3924,7 @@ Manual}, 4th edition.
 	for (i=0:i<n:i++) {
 		w = NextWordStopped();
 		if (w == 0 or THEN1__WD or COMMA_WORD or -1) break;
-		if (TreatNounAsPlural(w)) {
+		if (WorkMarkedAsUntruncatedPlural(w)) {
 			parser_action = ##PluralFound;
 			outcome = true;
 		}
@@ -4128,7 +4114,7 @@ Array alt_match_list --> (MATCH_LIST_WORDS+1);
 		while (wn <= num_words) {
 			l = NextWordStopped(); wn--;
 			if (l == THEN1__WD) break;
-			if ((l ~= -1 or 0) && (l->#dict_par1) & DICTPAR1_PREP) { wn++; continue; }	! if preposition
+			if ((l ~= -1 or 0) && (l->#dict_par1) & DICTPAR1_PREP) { wn++; continue; }
 			if (l == ALL1__WD or ALL2__WD or ALL3__WD or ALL4__WD or ALL5__WD) { wn++; continue; }
 			SafeSkipDescriptors();
 			! save the current match state
