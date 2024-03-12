@@ -1053,13 +1053,11 @@ fairly thorough description of its output, which is written into the
 <span class="plain-syntax">    .</span><span class="identifier-syntax">VerbAccepted</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">We now definitely have a verb, not a direction, whether we got here by the</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">"take ..." or "person, take ..." method.  Get the meta flag for this verb:</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">meta</span><span class="plain-syntax"> = </span><span class="identifier-syntax">WordMarkedAsMeta</span><span class="plain-syntax">(</span><span class="identifier-syntax">verb_word</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">"take ..." or "person, take ..." method.</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">You can't order other people to "full score" for you, and so on...</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">meta</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">actor</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">player</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">WordMarkedAsMeta</span><span class="plain-syntax">(</span><span class="identifier-syntax">verb_word</span><span class="plain-syntax">) &amp;&amp; </span><span class="identifier-syntax">actor</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">player</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">best_etype</span><span class="plain-syntax"> = </span><span class="identifier-syntax">VERB_PE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">meta</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">jump</span><span class="plain-syntax"> </span><span class="identifier-syntax">GiveError</span><span class="plain-syntax">;</span>

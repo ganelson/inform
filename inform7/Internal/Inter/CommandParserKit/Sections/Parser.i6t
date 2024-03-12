@@ -975,13 +975,11 @@ Get the verb: try all the syntax lines for that verb.
 	.VerbAccepted;
 
     ! We now definitely have a verb, not a direction, whether we got here by the
-    ! "take ..." or "person, take ..." method.  Get the meta flag for this verb:
-
-    meta = WordMarkedAsMeta(verb_word);
+    ! "take ..." or "person, take ..." method.
 
     ! You can't order other people to "full score" for you, and so on...
 
-    if (meta == 1 && actor ~= player) {
+    if (WordMarkedAsMeta(verb_word) && actor ~= player) {
         best_etype = VERB_PE;
         meta = 0;
         jump GiveError;
