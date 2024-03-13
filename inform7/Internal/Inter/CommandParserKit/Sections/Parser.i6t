@@ -3934,12 +3934,38 @@ Manual}, 4th edition.
 @h Pronoun Handling.
 
 =
+[ GetGNABitfield obj g gn;
+  ! First calculate three-bit gender field
+  g = 0;
+  if ( obj has neuter ) {
+    g = g + 1;  ! bit position 0
+    }
+  if ( obj has female ) {
+    g = g + 2;  ! bit position 1
+    }
+  if ( obj has male ) {
+    g = g + 4;  ! bit position 2
+    }
+  gn = 0;
+  if ( obj has ambigpluralname  ) {
+    gn = g * 9;  ! plural in low significant digits, plus singular shifted three to the left
+  } else if ( obj has pluralname ) {
+    gn = gn + g;  ! plural is in low significant digits
+  } else {  ! obj is singular-named
+    gn = gn + g * 8;  ! singular is shifted 3 to the left
+  }
+  if ( obj has animate ) {
+    return gn * 64; ! shift 6 to the left for animate objects
+    }
+  return gn;  ! shift 0
+];
+
 [ SetPronoun dword value x;
     for (x=1 : x<=LanguagePronouns-->0 : x=x+3)
         if (LanguagePronouns-->x == dword) {
             LanguagePronouns-->(x+2) = value; return;
         }
-    RunTimeError(14);
+    RunTimeError(12);
 ];
 
 [ PronounValue dword x;
@@ -3954,20 +3980,19 @@ Manual}, 4th edition.
 [ PronounNotice obj x bm g;
     if (obj == player) return;
 
-	g = (GetGNAOfObject(obj));
-
-    bm = PowersOfTwo_TB-->g;
+    bm = GetGNABitfield(obj);
     for (x=1 : x<=LanguagePronouns-->0 : x=x+3)
         if (bm & (LanguagePronouns-->(x+1)) ~= 0)
             LanguagePronouns-->(x+2) = obj;
+];
 
-	if (((g % 6) < 3) && (obj has ambigpluralname)) {
-		g = g + 3;
-		bm = PowersOfTwo_TB-->g;
-		for (x=1 : x<=LanguagePronouns-->0 : x=x+3)
-			if (bm & (LanguagePronouns-->(x+1)) ~= 0)
-				LanguagePronouns-->(x+2) = obj;
-	}
+[ PronounUnNotice obj x bm;
+    if (obj == player) return;
+
+    bm = GetGNABitfield(obj);
+    for (x=1 : x < (LanguagePronouns-->0 - 2) : x=x+3)
+        if ((bm & (LanguagePronouns-->(x+1)) == 0) && (LanguagePronouns-->(x+2) == obj))
+            LanguagePronouns-->(x+2) = NULL;
 ];
 
 [ PronounNoticeHeldObjects x;

@@ -696,6 +696,39 @@ A backdrop is usually scenery.
 A backdrop is always fixed in place.
 A backdrop is never pushable between rooms.
 
+@h Gender.
+Gramatical gender is somewhat complex in English, and 19th-century binary
+gender assumptions are not justifiable any more.  Male, female, and neuter are
+three either-or properties (also present in the I6 library), which can be assigned
+independently.  These determine whether the object is matched when the player uses
+the pronouns HIM, HER, or IT.  In addition, the "ambiguously plural" property
+determines whether the object is matched when the player uses the pronoun THEM.
+
+The defaults follow a principle of least surprise for the player.
+A thing is usually neuter: IT, not HIM or HER.
+However, the story writer can override this as desired
+(making a ship match HER and IT, for example).
+
+When the game prints a pronoun, however, it has to pick one.  If a thing is neuter
+as well as male or female, IT will take priority when
+printing pronouns (useful for the aforementioned ship), unless
+"prefer neuter gender" is set to false.  If a thing is male and female, the
+"preferred animate gender" will be used for printing pronouns, which defaults to
+male, but can be changed.  See the English Language extension for more details.
+
+See below for the defaults for people.
+
+=
+Section 11a - Gender
+
+An object can be neuter.  An object is usually not neuter.
+An object can be male.  An object is usually not male.
+An object can be female.  An object is usually not female.
+
+A thing is usually neuter.
+A thing is usually not male.
+A thing is usually not female.
+
 @h People.
 From a compilation point of view, people are surprisingly easy to deal with.
 It may well be argued that this is because the I6 world model is so sketchy
@@ -703,40 +736,47 @@ in modelling them, but that may actually be a good thing, because it's not at
 all obvious that any single model will be sensible for what different
 authors want to do with their characters.
 
-On gender, see also the "man" and "woman" kinds below. Note that we have
-three gender choices available -- male, female and neuter -- but these are,
-for historical reasons to do with how gender is handled by the I6 library,
-managed using either/or properties rather than a single three-way value
-property. This doesn't in practice cause trouble. (Specifying something as
-neuter overrides the male/female choice, if anyone does both for the same
-object, but in practice nobody does.) When nothing is said about a person's
-gender, it is assumed male, though this is used only linguistically (for
-instance, the pronoun HIM can be used in commands about the object, rather
-than HER or IT). There has to be some convention here, and in a case where
-we don't know our linguistic ground, opting for the least surprising
-behaviour seems wisest.
-
 The Inform compiler automatically applies the either-or property |animate|
 and the valued property |before| to a person, giving that value as just
 |NULL|. This allows any person to become the protagonist during play
 (using I6's |ChangePlayer| routine).
 
 =
-Section 11 - People
+Section 11b - People
 
 The specification of person is "Despite the name, not necessarily a human
 being, but anything animate enough to envisage having a conversation with, or
 bartering with."
 
-A person can be female or male. A person is usually male.
-A person can be neuter. A person is usually not neuter.
-
 A person has a number called carrying capacity.
 The carrying capacity of a person is usually 100.
 
-A person can be transparent. A person is always transparent.
+A person can be transparent. A person is usually transparent.
 
-@ One among the people is special: the enigmatic default protagonist, whose
+@h Gender of People
+
+A person without further specifications is usually male and female and
+ambiguously plural (matching HIM, HER, or THEM, but not IT).
+
+This follows a principle of least surprise for the player: if the player sees
+a mysterious person, they can refer to them as HIM, HER, or THEM.
+However, the story writer can override this as desired.
+See also the "man" and "woman" kinds below.
+
+When the game goes to print a pronoun for a generic person, it has to pick one.
+For historical reasons, and to maintain compatibility, it will default to HIM.
+This can be overridden; see the English Language extension for details.
+
+=
+Section 11c - Gender of People
+
+A person is usually male.
+A person is usually female.
+A person is usually not neuter.
+A person is usually ambiguously plural.
+
+@h Yourself
+One among the people is special: the enigmatic default protagonist, whose
 name is not "player" but "yourself". (The I6 library requires this object to
 be created as |selfobj|, but that's not a name that is ever printed or parsed:
 it's a constant value used only in I6 source code.)
@@ -757,15 +797,23 @@ player is "your dreary self".") The Inform compiler automatically generates
 that property for the "yourself" object, so we need do nothing here.
 
 =
+Section 11d - Yourself
+
 The yourself is an undescribed person. The yourself is proper-named.
 
 The yourself is privately-named.
 Understand "your former self" or "my former self" or "former self" or
 	"former" as yourself when the player is not yourself.
 
-The description of yourself is usually "As good-looking as ever."
-
 The yourself object is accessible to Inter as "selfobj".
+
+@h Description of Yourself
+Extension and story writers frequently want to override the description of yourself.
+
+=
+Section 11e - Description of Yourself
+
+The description of yourself is usually "As good-looking as ever."
 
 @h Non-fundamental kinds.
 We have now finished defining the nine fundamental kinds which Inform requires
@@ -819,6 +867,9 @@ children to qualify in these categories.)
 Anyway, we set out the Anglo-Saxon plurals, and then declare these kinds
 purely in terms of gender: they have no distinguishing behaviour.
 
+The gender behavior here is defined with "usually", so that it can be overridden
+if the story author so chooses.  A man will match "HIM" and a woman will match "HER".
+
 =
 Section 12 - Animals, men and women
 
@@ -826,11 +877,17 @@ The plural of man is men. The plural of woman is women.
 
 A man is a kind of person.
 The specification of man is "Represents a man or boy."
-A man is always male. A man is never neuter.
+A man is usually male.
+A man is usually not female.
+A man is usually not neuter.
+A man is usually not ambiguously plural.
 
 A woman is a kind of person.
 The specification of woman is "Represents a woman or girl."
-A woman is always female. A woman is never neuter.
+A woman is usually female.
+A woman is usually not male.
+A woman is usually not neuter.
+A woman is usually not ambiguously plural.
 
 @ But what about "animal"? Animals turn up often in IF, and of course
 domestic animals have been part of human society since prehistoric times:
@@ -847,11 +904,17 @@ because that sounds like an insistent assertion of rights and thus a quite
 different sort of statement. (Don't drown that Labrador! He's a person.)
 
 As can be seen from the tiny definition of "animal", though, it's really
-nothing more than a name for a position in the kinds hierarchy. There is
-not even any implication for gender.
+nothing more than a name for a position in the kinds hierarchy.
+
+By default an animal is neuter, matching only IT.
+As always, this can be overriden by the story author.
 
 =
 An animal is a kind of person.
+An animal is usually not male.
+An animal is usually not female.
+An animal is usually neuter.
+An animal is usually not ambiguously plural.
 
 The specification of animal is "Represents an animal, or at any rate a
 non-human living creature reasonably large and possible to interact with: a
@@ -1002,6 +1065,7 @@ The undescribed property is defined by Inter as "concealed".
 The edible property is defined by Inter as "edible".
 The enterable property is defined by Inter as "enterable".
 The female property is defined by Inter as "female".
+The male property is defined by Inter as "male".
 The mentioned property is defined by Inter as "mentioned".
 The lit property is defined by Inter as "light".
 The lighted property is defined by Inter as "light".

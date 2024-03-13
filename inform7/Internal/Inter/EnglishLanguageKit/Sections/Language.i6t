@@ -81,9 +81,9 @@ Array LanguagePronouns table
   !             s  p  s  p
   !             mfnmfnmfnmfn
 
-    'it'      $$001000111000                    NULL
-    'him'     $$100000000000                    NULL
-    'her'     $$010000000000                    NULL
+    'it'      $$001000001000                    NULL
+    'him'     $$100000100000                    NULL
+    'her'     $$010000010000                    NULL
     'them'    $$000111000111                    NULL;
 
 @h Descriptors.
