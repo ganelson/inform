@@ -29,6 +29,16 @@ void DocumentationRenderer::close_subpage(void) {
 	DOCF = NULL;
 }
 
+@
+
+=
+typedef struct cd_manifest_item {
+	struct filename *source;
+	struct text_stream *label;
+	struct text_stream *title;
+	CLASS_DEFINITION
+} cd_manifest_item;
+
 @ Our tree is turned into a tiny website, with a single index page for everything
 except the examples, and then up to 26 pages holding the content of examples A to Z.
 
@@ -61,6 +71,7 @@ void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd,
 			}
 			DocumentationRenderer::close_subpage();
 		}
+		linked_list *manifest = NEW_LINKED_LIST(cd_manifest_item);
 		int vcount = 0;
 		for (markdown_item *vol = cd->markdown_content->down; vol; vol = vol->next) {
 			vcount++;
@@ -97,6 +108,19 @@ void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd,
 				if (md->type == FILE_MIT) {
 					filename *F = Markdown::get_filename(md);
 					if (Str::ne(Filenames::get_leafname(F), home_URL)) {
+						cd_manifest_item *item = CREATE(cd_manifest_item);
+						item->source = F;
+						item->label = I"-";
+						item->title = I"-";
+						if ((md->down) && (md->down->type == HEADING_MIT))
+							item->title = Str::duplicate(md->down->stashed);
+						match_results mr = Regexp::create_mr();
+						if ((Regexp::match(&mr, item->title, U"Chapter (%C+):%c*")) ||
+							(Regexp::match(&mr, item->title, U"Section (%C+):%c*"))) { 
+							item->label = Str::duplicate(mr.exp[0]);
+						}
+						Regexp::dispose_of(&mr);
+						ADD_TO_LINKED_LIST(item, cd_manifest_item, manifest);
 						text_stream *OUT = DocumentationRenderer::open_subpage(P, Filenames::get_leafname(F));
 						if (OUT) {
 							DocumentationRenderer::render_chapter_page(OUT, cd, prev_md, md, md->next, vcount);
@@ -156,6 +180,17 @@ void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd,
 				markdown_item *latest_file = NULL;
 				DocumentationRenderer::list_tags(XR, cd->markdown_content, &latest_file);
 				STREAM_CLOSE(XR);
+			}
+		}
+		if (Str::len(cd->manifest_file_pattern) > 0) {
+			filename *MF = Filenames::in(P, cd->manifest_file_pattern);
+			text_stream M_struct;
+			text_stream *M = &M_struct;
+			if (STREAM_OPEN_TO_FILE(M, MF, UTF8_ENC)) {
+				cd_manifest_item *item;
+				LOOP_OVER_LINKED_LIST(item, cd_manifest_item, manifest)
+					WRITE_TO(M, "%f: %S  %S\n", item->source, item->label, item->title);
+				STREAM_CLOSE(M);
 			}
 		}
 		cd_image *cdim;

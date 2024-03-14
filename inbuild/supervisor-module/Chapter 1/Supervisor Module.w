@@ -17,6 +17,7 @@ which use this module:
 @e build_vertex_CLASS
 @e cd_image_CLASS
 @e cd_layout_error_CLASS
+@e cd_manifest_item_CLASS
 @e cd_pageset_CLASS
 @e cd_source_file_CLASS
 @e cd_volume_CLASS
@@ -59,6 +60,7 @@ DECLARE_CLASS(build_step)
 DECLARE_CLASS(build_vertex)
 DECLARE_CLASS(cd_image)
 DECLARE_CLASS(cd_layout_error)
+DECLARE_CLASS(cd_manifest_item)
 DECLARE_CLASS(cd_pageset)
 DECLARE_CLASS(cd_source_file)
 DECLARE_CLASS(cd_volume)

@@ -75,6 +75,7 @@ typedef struct compiled_documentation {
 	struct text_stream *contents_URL_pattern;
 	int duplex_contents_page;
 	struct text_stream *xrefs_file_pattern;
+	struct text_stream *manifest_file_pattern;
 
 	struct markdown_item *markdown_content;
 	struct md_links_dictionary *link_references;
@@ -135,9 +136,14 @@ cd_volume *DocumentationCompiler::add_volume(compiled_documentation *cd, text_st
 }
 
 cd_volume *DocumentationCompiler::find_volume(compiled_documentation *cd, text_stream *title) {
+	text_stream *to_match = Str::duplicate(title);
+	if ((Str::get_first_char(to_match) == '\"') && (Str::get_last_char(to_match) == '\"')) {
+		Str::delete_first_character(to_match);
+		Str::delete_last_character(to_match);
+	}
 	cd_volume *V;
 	LOOP_OVER_LINKED_LIST(V, cd_volume, cd->volumes)
-		if ((Str::eq_insensitive(title, V->title)) || (Str::eq_insensitive(title, V->label)))
+		if ((Str::eq_insensitive(to_match, V->title)) || (Str::eq_insensitive(to_match, V->label)))
 			return V;
 	return NULL;
 }
@@ -354,6 +360,7 @@ compiled_documentation *DocumentationCompiler::new_cd(pathname *P,
 	cd->example_URL_pattern = I"eg_#.html";
 	cd->contents_URL_pattern = I"index.html";
 	cd->xrefs_file_pattern = NULL;
+	cd->manifest_file_pattern = NULL;
 	cd->index_URL_pattern[ALPHABETICAL_EG_INDEX] = I"alphabetical_index.html";
 	cd->index_URL_pattern[NUMERICAL_EG_INDEX] = I"numerical_index.html";
 	cd->index_URL_pattern[THEMATIC_EG_INDEX] = I"thematic_index.html";
@@ -519,6 +526,8 @@ void DocumentationCompiler::read_sitemap_helper(text_stream *cl, text_file_posit
 
 	if (Regexp::match(&mr, cl, U" *cross-references: to \"(%c*)\"")) {
 		cd->xrefs_file_pattern = Str::duplicate(mr.exp[0]);
+	} else if (Regexp::match(&mr, cl, U" *manifest: to \"(%c*)\"")) {
+		cd->manifest_file_pattern = Str::duplicate(mr.exp[0]);
 	} else if (Regexp::match(&mr, cl, U" *images: to \"(%c*)\"")) {
 		cd->images_URL = Str::duplicate(mr.exp[0]);
 	} else if (Regexp::match(&mr, cl, U" *contents: *(%c+?) to \"(%c*)\"")) {
@@ -589,7 +598,14 @@ void DocumentationCompiler::read_sitemap_helper(text_stream *cl, text_file_posit
 	}
 	if (Str::ne_insensitive(set, I"all")) {
 		V = DocumentationCompiler::find_volume(cd, mr.exp[0]);
-		if (V == NULL) DocumentationCompiler::layout_error(cd, I"unknown volume", cl, tfp);
+		if (V == NULL) {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err, "No such volume as '%S': list of known volumes =", mr.exp[0]);
+			LOOP_OVER_LINKED_LIST(V, cd_volume, cd->volumes)
+				WRITE_TO(err, " '%S'", V->title);
+			DocumentationCompiler::layout_error(cd, err, cl, tfp);
+			DISCARD_TEXT(err)
+		}
 	}
 	Regexp::dispose_of(&mr2);
 	
