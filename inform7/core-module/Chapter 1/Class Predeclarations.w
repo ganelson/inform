@@ -178,6 +178,7 @@ DECLARE_CLASS(value_property_data)
 @e pcalc_prop_deferral_CLASS
 @e stack_frame_box_CLASS
 @e local_block_value_CLASS
+@e local_parking_lot_CLASS
 
 =
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(invocation_options, 100)
@@ -188,6 +189,7 @@ DECLARE_CLASS(past_tense_condition_record)
 DECLARE_CLASS(pcalc_prop_deferral)
 DECLARE_CLASS(stack_frame_box)
 DECLARE_CLASS(local_block_value)
+DECLARE_CLASS(local_parking_lot)
 
 @ //runtime// --
 

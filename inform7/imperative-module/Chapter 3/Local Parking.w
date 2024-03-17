@@ -35,37 +35,51 @@ parking getting in each other's way.
 @ This compiles the necessary code before the call to B:
 
 =
-int LocalParking::park(stack_frame *frame) {
+int LocalParking::park(stack_frame *frame, local_parking_lot *lot) {
 	int NC = 0;
 	local_variable *lvar;
 	LOOP_OVER_LOCALS_IN_FRAME(lvar, frame) NC++;
-	inter_name *park = LocalParking::array((NC<2)?2:NC);
-	inter_ti j = 0;
-	LOOP_OVER_LOCALS_IN_FRAME(lvar, frame) {
-		EmitCode::inv(SEQUENTIAL_BIP);
-		EmitCode::down();
-			EmitCode::inv(STORE_BIP);
+	if (NC > 0) {
+		inter_name *park = LocalParking::array(NC, lot);
+		inter_ti j = 0;
+		LOOP_OVER_LOCALS_IN_FRAME(lvar, frame) {
+			EmitCode::inv(SEQUENTIAL_BIP);
 			EmitCode::down();
-				EmitCode::reference();
+				EmitCode::inv(STORE_BIP);
 				EmitCode::down();
-					EmitCode::inv(LOOKUP_BIP);
+					EmitCode::reference();
 					EmitCode::down();
-						EmitCode::val_iname(K_value, park);
-						EmitCode::val_number(j++);
+						EmitCode::inv(LOOKUP_BIP);
+						EmitCode::down();
+							EmitCode::val_iname(K_value, park);
+							EmitCode::val_number(j++);
+						EmitCode::up();
 					EmitCode::up();
+					inter_symbol *lvar_s = LocalVariables::declare(lvar);
+					EmitCode::val_symbol(K_value, lvar_s);
 				EmitCode::up();
-				inter_symbol *lvar_s = LocalVariables::declare(lvar);
-				EmitCode::val_symbol(K_value, lvar_s);
-			EmitCode::up();
+		}
 	}
 	return NC;
+}
+
+int LocalParking::park_with_private_lot(stack_frame *frame, rule *R, int marker) {
+	int NC = 0;
+	local_variable *lvar;
+	LOOP_OVER_LOCALS_IN_FRAME(lvar, frame) NC++;
+	if (NC > 0) {
+		local_parking_lot *lot = Responses::enable_private_parking(R, marker);
+		LocalParking::array(NC, lot);
+		return LocalParking::park(frame, lot);
+	}
+	return 0;
 }
 
 @ And this compiles the retrieval code just after B begins:
 
 =
-void LocalParking::retrieve(stack_frame *frame) {
-	inter_name *park = LocalParking::array(0);
+void LocalParking::retrieve(stack_frame *frame, local_parking_lot *lot) {
+	inter_name *park = LocalParking::array(0, lot);
 	inter_ti j=0;
 	local_variable *lvar;
 	LOOP_OVER_LOCALS_IN_FRAME(lvar, frame) {
@@ -81,35 +95,59 @@ void LocalParking::retrieve(stack_frame *frame) {
 	}
 }
 
-@ We just need |park| to be large enough for the maximum number of cars ever
-needing to be parked:
+@ We support multiple different parking lots, though we almost always use a
+single shared parking lot when we can prove that the values in it will not be
+corrupted before use.
 
 =
-int size_of_local_parking_area = 0;
-inter_name *LocalParking::array(int N) {
-	if (N > size_of_local_parking_area) size_of_local_parking_area = N;
-	return Hierarchy::find(LOCALPARKING_HL);
+typedef struct local_parking_lot {
+	int capacity;
+	struct inter_name *storage_iname;
+	CLASS_DEFINITION
+} local_parking_lot;
+
+local_parking_lot *shared_parking = NULL;
+
+local_parking_lot *LocalParking::new_lot(inter_name *iname) {
+	local_parking_lot *lot = CREATE(local_parking_lot);
+	lot->capacity = 2;
+	lot->storage_iname = iname;
+	return lot;
 }
 
-@ We also sometimes need the same park to hold returned callings from deferred
-propositions; and that needs to be large enough to hold values of up to 26
-variables, plus a single other value.
+@ So, then, this returns the array to use for storage, ensuring that it has
+a capacity of at least |N|, and therefore has entries in the range |0 <= x < N|.
+
+=
+inter_name *LocalParking::array(int N, local_parking_lot *lot) {
+	if (lot == NULL) {
+		if (shared_parking == NULL)
+			shared_parking = LocalParking::new_lot(Hierarchy::find(LOCALPARKING_HL));
+		lot = shared_parking;
+	}
+	if (N > lot->capacity) lot->capacity = N;
+	return lot->storage_iname;
+}
+
+@ We also sometimes use the shared parking lot to hold returned callings from
+deferred propositions; and that needs to be large enough to hold values of
+up to 26 variables, plus a single other value.
 
 =
 inter_name *LocalParking::callings(void) {
-	return LocalParking::array(27);
+	return LocalParking::array(27, NULL);
 }
 
-@ So this makes a suitably-sized car park, if one is needed at all:
+@ The parking lot(s) is/are initialised to arrays of zero values: their
+contents are meaningless at the start of execution.
 
 =
 void LocalParking::compile_array(void) {
-	if (size_of_local_parking_area > 0) {
-		inter_name *iname = LocalParking::array(0);
-		packaging_state save = EmitArrays::begin_word(iname, K_value);
-		for (int i=0; i<size_of_local_parking_area; i++)
-			EmitArrays::numeric_entry(0);
+	local_parking_lot *lot;
+	LOOP_OVER(lot, local_parking_lot) {
+		packaging_state save = EmitArrays::begin_word(lot->storage_iname, K_value);
+		for (int i=0; i<lot->capacity; i++) EmitArrays::numeric_entry(0);
 		EmitArrays::end(save);
-		Hierarchy::make_available(iname);
+//		Hierarchy::make_available(lot->storage_iname);
 	}
 }

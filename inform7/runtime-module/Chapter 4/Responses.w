@@ -43,6 +43,8 @@ typedef struct response_message {
 	struct inter_name *value_iname;
 	struct inter_name *constant_iname;
 	struct inter_name *launcher_iname;
+	struct inter_name *parking_iname;
+	struct local_parking_lot *parking_lot;
 	struct inter_name *value_md_iname;
 	struct inter_name *rule_md_iname;
 	struct inter_name *marker_md_iname;
@@ -76,6 +78,8 @@ response_message *Responses::response_cue(rule *R, int marker, wording W, stack_
 	package_request *PR = Hierarchy::package_within(RESPONSES_HAP, RTRules::package(R));
 	resp->constant_iname = Hierarchy::make_iname_in(AS_CONSTANT_HL, PR);
 	resp->value_iname = Hierarchy::make_iname_in(AS_BLOCK_CONSTANT_HL, PR);
+	resp->parking_iname = Hierarchy::make_iname_in(PARKING_ARRAY_HL, PR);
+	resp->parking_lot = NULL;
 	resp->launcher_iname = Hierarchy::make_iname_in(LAUNCHER_HL, PR);
 	resp->value_md_iname = Hierarchy::make_iname_in(RESP_VALUE_MD_HL, PR);
 	resp->rule_md_iname = Hierarchy::make_iname_in(RULE_MD_HL, PR);
@@ -110,6 +114,22 @@ inter_name *Responses::response_constant_iname(rule *R, int marker) {
 	return resp->constant_iname;
 }
 
+local_parking_lot *Responses::enable_private_parking(rule *R, int marker) {
+	response_message *resp = Rules::get_response(R, marker);
+	if (resp) {
+		if (resp->parking_lot == NULL)
+			resp->parking_lot = LocalParking::new_lot(resp->parking_iname);
+		return resp->parking_lot;
+	}
+	return NULL;
+}
+
+local_parking_lot *Responses::parking_lot(rule *R, int marker) {
+	response_message *resp = Rules::get_response(R, marker);
+	if (resp == NULL) return NULL;
+	return resp->parking_lot;
+}
+
 stack_frame *Responses::frame_for_response(rule *R, int marker) {
 	response_message *resp = Rules::get_response(R, marker);
 	if (resp == NULL) return NULL;
@@ -133,9 +153,9 @@ retrieved.
 =
 void Responses::set_via_source_text(value_holster *VH, rule *R, int marker, wording SW) {
 	stack_frame *frame = Frames::current_stack_frame();
-	int downs = LocalParking::park(frame);
 	response_message *resp =
 		Responses::response_cue(R, marker, SW, Frames::boxed_frame(frame));
+	int downs = LocalParking::park_with_private_lot(frame, R, marker);
 	EmitCode::val_iname(K_value, Responses::response_launcher_iname(resp));
 	while (downs > 0) { EmitCode::up(); downs--; }
 }

@@ -1736,6 +1736,7 @@ void Hierarchy::establish(void) {
 @e RESPONSES_HAP
 @e AS_CONSTANT_HL
 @e AS_BLOCK_CONSTANT_HL
+@e PARKING_ARRAY_HL
 @e LAUNCHER_HL
 @e RESP_VALUE_MD_HL
 @e RULE_MD_HL
@@ -1774,6 +1775,7 @@ void Hierarchy::establish(void) {
 				H_C_U(GROUP_HL,               I"^group")
 				H_C_U(AS_CONSTANT_HL,         I"response_id")
 				H_C_U(AS_BLOCK_CONSTANT_HL,   I"as_block_constant")
+				H_C_U(PARKING_ARRAY_HL,       I"response_local_parking")
 				H_F_U(LAUNCHER_HL,            I"launcher")
 			H_END
 			H_BEGIN_AP(RULE_APPLICABILITY_CONDITIONS_HAP, I"applicability_condition", I"_applicability_condition")

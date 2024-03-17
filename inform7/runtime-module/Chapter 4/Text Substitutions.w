@@ -95,7 +95,7 @@ case of a response to a rule, since those are never perishable.
 		EmitCode::val_iname(K_value, tin);
 	} else {
 		if (frame == NULL) frame = Frames::current_stack_frame();
-		int downs = LocalParking::park(frame);
+		int downs = LocalParking::park(frame, NULL);
 		frame = Frames::boxed_frame(frame);
 		@<Make the TS@>;
 		inter_name *tin = TextSubstitutions::value_iname(ts);
@@ -304,7 +304,9 @@ the start temporarily to insert this extra code.
 @<Insert code at start of function to retrieve parked values@> =
 	Produce::push_new_code_position(Emit::tree(),
 		Produce::function_body_start_bookmark(Emit::tree()));
-	LocalParking::retrieve(frame);
+	local_parking_lot *lot = 
+		Responses::parking_lot(ts->responding_to_rule, ts->responding_to_marker);
+	LocalParking::retrieve(frame, lot);
 	Produce::pop_code_position(Emit::tree());
 
 @h It may be worth adding.
