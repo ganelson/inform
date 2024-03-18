@@ -3951,23 +3951,25 @@ Manual}, 4th edition.
 
 [ ResetVagueWords obj; PronounNotice(obj); ];
 
-[ PronounNotice obj x bm g;
-    if (obj == player) return;
+[ PronounNotice obj g;
+    if ((obj ~= player) && (obj ofclass Object)) {
+		g = (GetGNAOfObject(obj));
+		if (obj has ambigpluralname) {
+			if ((g % 6) >= 3) g = g - 3;
+			PronounNoticeFromGNA(obj, g);   ! Singular form of the original GNA
+			PronounNoticeFromGNA(obj, g+3); ! Plural form of the original GNA
+		} else {
+			PronounNoticeFromGNA(obj, g);
+		}
+	}
+];
 
-	g = (GetGNAOfObject(obj));
-
+[ PronounNoticeFromGNA obj g
+	x bm;
     bm = PowersOfTwo_TB-->g;
     for (x=1 : x<=LanguagePronouns-->0 : x=x+3)
         if (bm & (LanguagePronouns-->(x+1)) ~= 0)
             LanguagePronouns-->(x+2) = obj;
-
-	if (((g % 6) < 3) && (obj has ambigpluralname)) {
-		g = g + 3;
-		bm = PowersOfTwo_TB-->g;
-		for (x=1 : x<=LanguagePronouns-->0 : x=x+3)
-			if (bm & (LanguagePronouns-->(x+1)) ~= 0)
-				LanguagePronouns-->(x+2) = obj;
-	}
 ];
 
 [ PronounNoticeHeldObjects x;
