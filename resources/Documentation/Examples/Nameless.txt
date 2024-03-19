@@ -5,26 +5,26 @@ Index: ASK someone ABOUT an object the same as SHOW
 Description: ASKing someone about an object rather than about a topic.
 For: Z-Machine
 
-By default, ASK SOMEONE ABOUT... applies only to a text token. We might want also to offer the player the option of asking characters about pieces of physical evidence. This example implements an ASK PERSON ABOUT THING command that is mostly synonymous with SHOW, with the added nuance that the player can ask about things that are not currently visible, as long as they have encountered them at some time in the past.
+By default, ``ask someone about``... applies only to a text token. We might want also to offer the player the option of asking characters about pieces of physical evidence. This example implements an ``ask person about thing`` command that is mostly synonymous with ``show``, with the added nuance that the player can ask about things that are not currently visible, as long as they have encountered them at some time in the past.
 
 	{*}"Nameless"
-
+	
 	The Black Chamber is a room. "Despite its menacing name, it is quite an ordinary room, underlying the post office above. Here letters are brought each day, unsealed, transcribed, resealed, and sent again on their way; their contents then analyzed and recorded."
-
+	
 	The Nameless Advisor is a woman in the Black Chamber. "A woman whose name has never been disclosed to you sits at the window, writing numbers on a sheet of paper." The Advisor carries a sheet of paper. Understand "woman" as the nameless advisor.
-
+	
 	The player carries a letter from the emperor. The description of the letter is "Though its origin is obvious, its meaning is secret: the letters are an inexplicable jumble."
 
 Now we create our new action, "interrogating it about". We write the grammar lines so that we can show any object in sight to someone, but also ask someone about any object that we have ever interacted with in the game, whether it is currently visible or not.
 
 	{**}A thing can be known or unknown. The Nameless Advisor is known.
-
+	
 	Understand "ask [someone] about [any known thing]" as interrogating it about. interrogating it about is an action applying to two visible things.
 
 Now we replace and redirect the showing action. This gets rid of the requirement in the default library that the player be holding anything they show to another character:
 
 	{**}Understand the commands "show" and "display" and "present" as something new.
-
+	
 	Understand "show [something] to [someone]" or "display [something] to [someone]" or "present [something] to [someone]" as interrogating it about (with nouns reversed). Understand "show [someone] [something]" as interrogating it about.
 
 This bit keeps track of what the player has seen, for the purposes of "any known thing":
@@ -40,15 +40,15 @@ Now redirect all asking to a topic table, and all interrogating to an object tab
 
 	{**}Instead of asking Nameless Advisor about a topic listed in the Table of Nameless Advisor Topics:
 		say "[reply entry][paragraph break]".
-
+	
 	Instead of interrogating Nameless Advisor about an item listed in the Table of Nameless Advisor Items:
 		say "[reply entry][paragraph break]".
-
+	
 	Table of Nameless Advisor Items
 	item	reply
 	letter	"'It is enciphered,' she remarks[if the advisor can see the letter], glancing over the contents[otherwise], after you have offered a detailed description[end if]. 'A substitution cipher of some complexity, I believe.'"
 	Advisor	"She listens to your inquiries about her identity and parentage with a placid smile, but does not answer."
-
+	
 	Table of Nameless Advisor Topics
 	topic	reply
 	"cipher"	"'I know many dozens of ciphers,' she replies, smiling in a disquieting way."
@@ -61,9 +61,10 @@ And just so that we can test what happens when asking someone about something ou
 ...and something unknown:
 
 	{**}The poisonous apple is a thing.
-
+	
 	Test me with "test sight / test knowledge".
-
+	
 	Test sight with "i / x letter / ask Nameless Advisor about cipher / show cipher to Nameless Advisor / ask Nameless Advisor about the letter / show the letter to Nameless Advisor / show Nameless Advisor the letter".
-
+	
 	Test knowledge with "open safe box / put letter in safe box / close safe box / ask Nameless Advisor about the letter / show the letter to Nameless Advisor / ask Nameless Advisor about the apple".
+

@@ -10,9 +10,9 @@ Occasionally we want to print something as our first screen and then pause the g
 We can tidy this up in the "starting the virtual machine" activity, by temporarily changing the status line content. We will not provide game-pausing code here, because that is easily done by extension; so:
 
 	{*}"Blankness"
-
+	
 	Include Basic Screen Effects by Emily Short.
-
+	
 	When play begins:
 		say "take me home";
 		wait for any key;
@@ -22,11 +22,12 @@ We can tidy this up in the "starting the virtual machine" activity, by temporari
 		pause the game;
 		now the left hand status line is "[location]";
 		now the right hand status line is "[turn count]".
-
+	
 	Before starting the virtual machine:
 		now the left hand status line is "";
 		now the right hand status line is "".
-
+	
 	Paradise City is a room. The description of Paradise City is "The grass is green and the girls are pretty."
 
 Quite a modest effect, but occasionally useful.
+

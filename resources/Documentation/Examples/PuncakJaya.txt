@@ -2,7 +2,7 @@ Example: * Puncak Jaya
 Location: Understanding things by their relations
 RecipeLocation: Memory and Knowledge
 Index: Characters referred to when absent
-Description: When a character is not visible, responding to such commands as EXAMINE PETER and PETER, HELLO with a short note that the person in question is no longer visible.
+Description: When a character is not visible, responding to such commands as ``examine peter`` and ``peter, hello`` with a short note that the person in question is no longer visible.
 For: Z-Machine
 
 By default, when something is not present, Inform does not allow a player to refer to it. But there are times when we might like to acknowledge that the thing mentioned in a command does exist somewhere in the game; it just happens not to be on hand right now.
@@ -10,36 +10,37 @@ By default, when something is not present, Inform does not allow a player to ref
 One way to do this is to make an object that appears everywhere and responds to the name of its owner only when the owner itself is not in view.
 
 	{*}"Puncak Jaya"
-
+	
 	A ghost is a kind of person. A man-ghost is a kind of ghost. A man-ghost is always male. A woman-ghost is a kind of ghost. A woman-ghost is always female.
 
-We make the ghost a person rather than some other kind of thing so that it will be able to respond to commands such as KISS BOB or (even trickier) BOB, JUMP: if Inform did not recognize the ghost as an animate creature, it would not accept such input.
+We make the ghost a person rather than some other kind of thing so that it will be able to respond to commands such as ``kiss bob`` or (even trickier) ``bob``, ``jump``: if Inform did not recognise the ghost as an animate creature, it would not accept such input.
 
 	{**}Representation relates one ghost to one person. The verb to represent means the representation relation.
-
+	
 	One man-ghost represents every man. One woman-ghost represents every woman.
 
-This is, technically, an assembly -- except instead of saying that every device has a button part, or that there are three daffodils in every garden room, the assembly is based on a non-physical relation that we just designed.
+This is, technically, an assembly – except instead of saying that every device has a button part, or that there are three daffodils in every garden room, the assembly is based on a non-physical relation that we just designed.
 
 Based on the "representation" relation, we now devise a conditional relation that applies only when the represented thing is not itself in view:
 
 	{**}Indication relates a ghost (called X) to a person (called Y) when X represents Y and Y is not visible.
-
+	
 	Understand "[something related by indication]" as a ghost.
-
+	
 	When play begins:
 		now every ghost is in the concept-repository.
-
+	
 	Instead of doing something to a ghost:
 		say "You seem to have left [a random person which is represented by the noun] behind."
-
+	
 	Instead of doing something when the second noun is a ghost:
 		say "You seem to have left [a random person which is represented by the second noun] behind."
-
+	
 	The concept-repository is an open unopenable transparent container. It is part of the air. The air is a backdrop. It is everywhere.
-
+	
 	Base of Puncak Jaya is a room. Temple, Kippax, and Huizenga are men in Base. Peak of Puncak Jaya is above Base of Puncak Jaya.
-
+	
 	Test me with "x kippax / up / x kippax / kiss kippax / kippax, hello".
 
 Further complications of this example might require that the player meet a character before being able to refer to them.
+

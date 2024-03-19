@@ -8,42 +8,41 @@ For: Z-Machine
 Suppose we want to write a game in which there are a number of chests. Each of these chests will be a container, but have a lid which is a supporter.
 
 	{*}"U-Stor-It"
-
+	
 	Section 1 - Assemblies and Supporters
-
+	
 	A chest is a kind of container. A chest is always openable. A chest is usually fixed in place. A chest is usually closed. The specification of a chest is "Represents a container with a separately implemented lid; the lid is itself a supporter."
-
+	
 	A lid is a kind of supporter. A lid is part of every chest. The specification of a lid is "A supporter attached to a chest, which can only support things when the chest is closed."
 
 (The "specification" of a kind is not really a property, and is used instead to describe the kind in the Index. So the text of these specifications is never found in the game.) Of course, this doesn't get us very far. We will also want the game to correctly interpret variations on "open the chest" and "close the lid", redirecting actions appropriately.
 
 	{**}Section 2 - Opening and closing
-
+	
 	Before opening a lid which is part of a chest (called the item):
 		try opening the item instead.
-
+	
 	Before closing a lid which is part of a chest (called the item):
 		try closing the item instead.
-
+	
 	Before opening a chest (called the box) when something is on a lid (called the obstruction) which is part of the box:
 		repeat with item running through things on the obstruction:
 			say "(first removing [the item])";
 			try taking the item.
-
+	
 	Instead of opening a chest when something is on a lid (called the item) which is part of the noun:
 		say "You'd have to remove [the list of things on the item] from the lid first." instead.
-
+	
 	Instead of looking under a lid which is part of a chest (called the item):
 		try opening the item.
-
 
 We may also want to be able to deal with "put in" and "put on" appropriately, even if the player names the wrong part of the object:
 
 	{**}Section 3 - Insertion and Support
-
+	
 	Before inserting something into a lid which is part of a chest (called the item):
 		try inserting the noun into the item instead.
-
+	
 	Before putting something on a chest when a lid (called the item) is part of the second noun:
 		try putting the noun on the item instead.
 
@@ -52,17 +51,17 @@ Furthermore, we don't want the player to be able to put things on the lid while 
 	{**}Before putting something on a lid which is part of an open chest (called the item):
 		say "(first closing [the item])";
 		try closing the item.
-
+	
 	Instead of putting something on a lid which is part of an open chest (called the item):
 		say "[The item] would need to be closed first."
 
 And then we may also want a couple of rules for describing our assembled object nicely:
 
 	{**}Section 4 - Description in Rooms
-
+	
 	Instead of examining a closed chest when something is on a lid (called the top) which is part of the noun:
 		say "[The noun] is closed, and there [is-are a list of things on the top] on top."
-
+	
 	After printing the name of a chest (called the item) while listing contents of a room:
 		if a lid (called the second item) which supports something is part of the item:
 			say " (on which [is-are a list of things on the second item])";
@@ -71,11 +70,12 @@ And then we may also want a couple of rules for describing our assembled object 
 Now we are free to create entire treasure rooms at a single blow:
 
 	{**}Section 5 - U-Stor-It Facility
-
+	
 	The U-Stor-It Facility is a room. The sea trunk, the shipping crate, and a metal box are chests in the U-Stor-It Facility. The metal box contains a sapphire, a gold coin, and a signed photograph of Babe Ruth.
 
 Even though we have never explicitly defined it, the metal box has a "metal box's lid", which we can use at need.
 
 	{**}The metal box's lid supports a small card. The description of the small card is "It reads, 'Back in 5 mins - Pandora.'"
-
+	
 	Test me with "open trunk / x card / open metal box / put all in metal box / get card / put card on box".
+

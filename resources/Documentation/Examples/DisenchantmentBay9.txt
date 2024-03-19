@@ -1,5 +1,4 @@
 Example: * Disenchantment Bay 9
-Subtitle: The Captain
 Location: Men, women and animals
 RecipeLocation: Disenchantment Bay
 Index: Disenchantment Bay 9. The Captain
@@ -9,3 +8,4 @@ For: Untestable
 Now finally we can put a Captain in the boat:
 
 	{*}The Captain is a man in the Cabin. "The captain sits at the wheel, steering the boat and occasionally checking the radar readout."
+

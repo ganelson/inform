@@ -36,4 +36,5 @@ A relation which has all three properties of being reflexive, symmetric and tran
 
 	Nationality relates people to each other in groups.
 
-This language - "in groups" - relies on the standard theorem that every equivalence relation on a set naturally defines a partition of that set, and vice versa. The "groups" referred to are what are normally called "equivalence classes". (Inform does little with these equivalence classes: it might be interesting to do so, in effect forming quotient kinds.)
+This language–"in groups"–relies on the standard theorem that every equivalence relation on a set naturally defines a partition of that set, and vice versa. The "groups" referred to are what are normally called "equivalence classes". (Inform does little with these equivalence classes: it might be interesting to do so, in effect forming quotient kinds.)
+

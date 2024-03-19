@@ -1,14 +1,14 @@
 Example: * Curare
 Location: Descriptions as values
 RecipeLocation: Varying What Is Written
-Index: Cyclical randomization of named objects
+Index: Cyclical randomisation of named objects
 Description: A phrase that chooses and names the least-recently selected item from the collection given, allowing the text to cycle semi-randomly through a group of objects.
 For: Z-Machine
 
 	{*}"Curare"
-
+	
 	A thing has a number called the last use. The last use of a thing is usually 0.
-
+	
 	Definition: a thing is old if its last use is 12 or less.
 
 The actual number chosen in this definition is pretty much irrelevant: the main thing is that we want to establish relative values. The lower the "last use" number of an item, the older that item should be understood to be, as we see here:
@@ -23,10 +23,11 @@ This phrase will select, from the collection of objects passed to it, the one th
 	{**}After taking inventory:
 		say "You stare morosely at [the cyclically random thing carried by the player], wondering what you're ever going to find to do with it."
 
-We could have said "You stare morosely at [the oldest thing carried by the player]" here, but doing so would not have set the "last use" property correctly, so we would not get the cycling behavior that we're looking for.
+We could have said "You stare morosely at [the oldest thing carried by the player]" here, but doing so would not have set the "last use" property correctly, so we would not get the cycling behaviour that we're looking for.
 
 	{**}The Evidence Room is a room. Some shelves are scenery supporters in the Evidence Room. A box is a kind of container which is open and not openable. On the shelves is a box.  It contains a deformed bullet and a driver's license.
-
+	
 	The player carries a steel fish hook, a Chinese passport, a tube of synthetic curare, and an envelope full of Euros.
-
+	
 	Test me with "i / i / i / i / i / i / get all from box / i / i / i".
+

@@ -5,19 +5,19 @@ Index: LOCK and UNLOCK with altered carrying requirements
 Description: Creating an amulet of tumblers that can be used to lock and unlock things even when it is worn, overriding the usual requirement that keys be carried.
 For: Z-Machine
 
-Under most circumstances, locking and unlocking require the player to be carrying the key they use to unlock something. This makes sense -- unless the key is on a keychain, or on a chain around their neck, for instance. So here we explore one way to circumstantially override the carrying requirements, while still making sure that the player cannot unlock the door if the unlocking tool is nowhere in sight.
+Under most circumstances, locking and unlocking require the player to be carrying the key they use to unlock something. This makes sense – unless the key is on a keychain, or on a chain around their neck, for instance. So here we explore one way to circumstantially override the carrying requirements, while still making sure that the player cannot unlock the door if the unlocking tool is nowhere in sight.
 
 In essence, we are rewriting the carrying requirements rule with a different one of our own devising, and swapping it in only at those moments when it is correct to do so.
 
 	{*}"Slogar's Revenge"
-
+	
 	Section 1 - Procedure
-
+	
 	The amulet carrying rule substitutes for the carrying requirements rule when locking something with the Amulet of Tumblers.
-
+	
 	The amulet carrying rule substitutes for the carrying requirements rule when unlocking something with the Amulet of Tumblers.
 
-We can now replace the usual behavior of the carrying requirements rule (to check whether the player is carrying something and, if not, to generate an implicit take) with a similar rule of our own; note that "if the player has the second noun" is a more compact way to write "if the player carries the second noun or the player wears the second noun":
+We can now replace the usual behaviour of the carrying requirements rule (to check whether the player is carrying something and, if not, to generate an implicit take) with a similar rule of our own; note that "if the player has the second noun" is a more compact way to write "if the player carries the second noun or the player wears the second noun":
 
 	{**}This is the amulet carrying rule:
 		if the player has the second noun:
@@ -26,17 +26,18 @@ We can now replace the usual behavior of the carrying requirements rule (to chec
 		try silently taking the second noun;
 		if the player is not carrying the second noun:
 			stop the action;
-
+	
 	Section 2 - Scenario
-
+	
 	The Daunting Dungeon is a room.
-
+	
 	West of the Daunting Dungeon is the Disturbing Door. The Disturbing Door is a door. West of the Disturbing Door is the Fallow Field.
-
+	
 	The Disturbing Door is closed and locked.
-
+	
 	The player wears the Amulet of Tumblers. The Amulet of Tumblers unlocks the Disturbing Door.
-
+	
 	Test me with "unlock disturbing door with amulet / open door / west / remove amulet / close door / lock disturbing door with amulet / drop amulet / unlock disturbing door with amulet".
 
-For a more systematic handling of the keychain problem (and a number of other refinements to the behavior of doors), see the Locksmith extension included with Inform.
+For a more systematic handling of the keychain problem (and a number of other refinements to the behaviour of doors), see the Locksmith extension included with Inform.
+

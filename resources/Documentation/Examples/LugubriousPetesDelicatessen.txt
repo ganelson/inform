@@ -8,9 +8,9 @@ For: Z-Machine
 First, to set the scene:
 
 	{*}"Lugubrious Pete's Delicatessen"
-
+	
 	The Supermarket is west of the Delicatessen Counter. Lugubrious Pete is in the Delicatessen. "Lugubrious Pete, dolefully slicing meats and cheeses, serves at the counter." Alice, Beth, Gemma, Delia, and Eliza are women in the Supermarket.
-
+	
 	The deli queue is a list of objects that varies.
 
 Two processes compete here: one that fills the queue, the other which will empty it. The first process is the one which brings shoppers in to the counter, joining the back of the queue, which is where "add ... to ..." puts new entries by default:
@@ -30,9 +30,9 @@ The competing process is the one which serves shoppers and thus gets rid of them
 		if the player is in the Supermarket, say "[customer] emerges cheerfully from the Delicatessen Counter, and goes about her regular shopping.";
 		now the customer is in the Supermarket;
 		remove entry 1 from the deli queue.
-
+	
 	Instead of waiting in the Delicatessen when the number of entries in the deli queue is not 0, say "Time passes, for [deli queue] quite as much as for yourself."
-
+	
 	Test me with "wait / wait / wait / east / wait / wait / wait / wait / wait".
 
 That completes the example, but here is a variation to show that queues need not empty from the front. The Deli already looks a pretty sexist establishment, with the customers all being women, but it is about to get a whole lot worse:
@@ -52,3 +52,4 @@ We could then rewrite the service rule like so:
 		remove the customer from the deli queue.
 
 It is now heartbreakingly difficult for Alice to obtain her sliced chorizo sausage.
+

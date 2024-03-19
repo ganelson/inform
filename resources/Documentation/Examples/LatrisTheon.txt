@@ -1,6 +1,6 @@
 Example: *** Latris Theon
 Location: Giving instructions to other people
-RecipeLocation: Traveling Characters
+RecipeLocation: Travelling Characters
 Index: Person who finds a path to a destination specified by player
 Description: A person who can accept instructions to go to new destinations and move towards them according to the most reasonable path.
 For: Z-Machine
@@ -8,20 +8,20 @@ For: Z-Machine
 To begin with, we create an action for going to a named place. All that this action will do is to change that person's hoped-for destination: the actual moving around comes later.
 
 	{*}"Latris Theon"
-
+	
 	A person has a room called destination.
-
+	
 	Understand "go to [any room]" as going vaguely.
-
+	
 	Going vaguely is an action applying to one visible thing.
-
+	
 	Carry out someone going vaguely:
 		now the destination of the person asked is the noun.
-
+	
 	Report someone going vaguely:
 		say "[The person asked] looks amused, but accepts the commission to go to [the noun]."
 
-It stands to reason the player plays Zeus or at the very least Apollo, but let's not let this go to the player's head. Note that the following rule applies to the player, but not to anyone else, so HERMES, GO TO ATHENS will work but GO TO ATHENS will not.
+It stands to reason the player plays Zeus or at the very least Apollo, but let's not let this go to the player's head. Note that the following rule applies to the player, but not to anyone else, so ``hermes, go to athens`` will work but ``go to athens`` will not.
 
 	{**}Carry out going vaguely:
 		say "You're too thoroughly lost."
@@ -29,17 +29,18 @@ It stands to reason the player plays Zeus or at the very least Apollo, but let's
 And finally we recreate Greece and one of its heroes.
 
 	{**}Corinth is a room. Athens is east of Corinth. Epidaurus is southeast of Corinth and east of Mycenae. Mycenae is south of Corinth. Olympia is west of Mycenae. Argos is south of Mycenae. Thebes is northwest of Athens. Pylos is south of Olympia. Sparta is east of Pylos and south of Argos. Delphi is northwest of Thebes.
-
+	
 	Hermes is a man in Corinth. The destination of Hermes is Corinth. [So he is initially happy where he is.] Persuasion rule for asking Hermes to try going vaguely: persuasion succeeds. [But he is open to suggestions.]
-
+	
 	Every turn when the destination of Hermes is not the location of Hermes:
 		let the right direction be the best route from the location of Hermes to the destination of Hermes;
 		try Hermes going the right direction.
-
+	
 	Test me with "hermes, go to athens / e".
 
-It simplifies matters that our map of Greece makes it possible to reach any location from any other location, by some sequence of movements: if there were an isolated location -- say, Crete -- with no map connection to the mainland, then we would have to worry about the "right direction" not being a direction at all. The following version of Hermes' trekking rule is protected against the possibility:
+It simplifies matters that our map of Greece makes it possible to reach any location from any other location, by some sequence of movements: if there were an isolated location – say, Crete – with no map connection to the mainland, then we would have to worry about the "right direction" not being a direction at all. The following version of Hermes' trekking rule is protected against the possibility:
 
 	Every turn when the destination of Hermes is not the location of Hermes:
 		let the right direction be the best route from the location of Hermes to the destination of Hermes;
 		if the right direction is a direction, try Hermes going the right direction.
+

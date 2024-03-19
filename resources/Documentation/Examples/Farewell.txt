@@ -2,15 +2,15 @@ Example: ** Farewell
 Location: Varying which table to look at
 RecipeLocation: Saying Complicated Things
 Index: Conversation system with recap of past exchanges
-Description: People who respond to conversational gambits, summarize what they said before if asked again, and provide recap of conversation that is past.
+Description: People who respond to conversational gambits, summarise what they said before if asked again, and provide recap of conversation that is past.
 For: Z-Machine
 
 We begin with the idea that each person comes with their own table of things to say:
 
 	{*}"Farewell"
-
+	
 	A person has a table name called conversation.
-
+	
 	Instead of asking someone about something:
 		let the source be the conversation of the noun;
 		if topic understood is a topic listed in source:
@@ -27,12 +27,12 @@ For the sake of simplicity, we'll conflate asking and telling here, though it wo
 	{**}Instead of telling someone about something:
 		try asking the noun about it.
 
-Now we might want to add a recap command to review conversation that has already occurred.
+Now we might want to add a ``recap`` command to review conversation that has already occurred.
 
 	{**}Definition: a person is other if it is not the player.
-
+	
 	Understand "recap" or "recall" or "review" as recalling conversations.
-
+	
 	Recalling conversations is an action applying to nothing.
 
 Since we've been recording the turn count of each conversation bit, we can even present these in order by sorting the tables first.
@@ -53,17 +53,17 @@ Since we've been recording the turn count of each conversation bit, we can even 
 Now it remains only to create a couple of characters and provide them both with something to say:
 
 	{**} The Farewell Bend Cafe is a room. "Beautiful Farewell Bend, Idaho -- or is it Oregon? An almost-abandoned truckstop, in any case, on one of those interminable American east-west highways."
-
+	
 	Tina is a woman in the Farewell Bend Cafe. The conversation of Tina is the Table of Tina's Chatter. "Tina the waitress is slowly pouring coffee from the pot with a black neck into the pot with an orange neck."
-
+	
 	George is a man in the Farewell Bend Cafe. The conversation of George is the Table of George's Chatter. "There is also a large man at table five. The tattoo on his arm says George. For the moment we will assume that it is his own name and not someone else's."
-
+	
 	Table of Tina's Chatter
 	topic	reply	summary	turn stamp
 	"aasvogel"	"'Oh, it's a vulture.'"	"that an aasvogel is a vulture"	a number
 	"acaudate"	"She shrugs, mid-pour. 'Means something doesn't have a tail.'"	"that acaudate means 'tailless'"	--
 	"absorptiometer"	"'It's a thing that measures the solubility of gases in a liquid,' she explains gently, as to a child."	"that an absorptiometer measures solubility of gasses in a liquid"	--
-
+	
 	Table of George's Chatter
 	topic	reply	summary	turn stamp
 	"baccaceous"	"'Something that has or bears berries,' says George, without looking up."	"that baccaceous means berry-bearing or berry-like"	a number
@@ -77,7 +77,8 @@ As always, we can override specific words, too:
 	{**}Instead of asking Tina about "advertisement" for the first time:
 		say "Tina looks embarrassed. 'Of course! I almost forgot.' She hands you a brochure.";
 		move the brochure to the player.
-
+	
 	The encyclopedia sales brochure is a thing. The description is "A glossy flyer indicating that you can receive a free Volume A-Aalto of the New Idahoan Encyclopedia Set if you send back the business reply card, and then have the option of purchasing the remaining volumes at a very very reasonable price."
-
+	
 	Test me with "recap / ask tina about aasvogel / recap / ask george about baccaceous / ask tina about absorptiometer / recap / ask tina about advertisement / read brochure".
+

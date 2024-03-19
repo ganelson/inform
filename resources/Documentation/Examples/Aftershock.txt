@@ -2,19 +2,19 @@ Example: *** Aftershock
 Location: New activities
 RecipeLocation: Televisions and Radios
 Index: Radios and other devices active when switched on
-Description: Modifying the rules for examining a device so that all devices have some specific behavior when switched on, which is described at various times.
+Description: Modifying the rules for examining a device so that all devices have some specific behaviour when switched on, which is described at various times.
 For: Z-Machine
 
-The built-in behavior of Inform is to print a line after a device is examined, saying whether the item is on or off. This is often inappropriate, and we could simply turn off that behavior in general by instructing Inform to ignore the "examine devices rule" (see the chapter on rulebooks).
+The built-in behaviour of Inform is to print a line after a device is examined, saying whether the item is on or off. This is often inappropriate, and we could simply turn off that behaviour in general by instructing Inform to ignore the "examine devices rule" (see the chapter on [Rulebooks]).
 
 Perhaps, though, we would like continue to have a short passage about the action of any switched on device; we'd just like a little more control over what it says from time to time. And in that case, we might change the rule to give a new activity control over that portion of the description:
 
 	{*}"Aftershock"
-
+	
 	Section 1 - Showing actions
-
+	
 	Showing action of something is an activity.
-
+	
 	Rule for showing action of something (called item):
 		if the item is switched on, say "[The item] is switched on.";
 		otherwise say "[The item] is switched off."
@@ -22,13 +22,13 @@ Perhaps, though, we would like continue to have a short passage about the action
 Borrowing from the rulebooks chapter, we can replace the standard "examine devices" rule with something that uses this activity.
 
 	{**}The new described devices rule is listed instead of the examine devices rule in the carry out examining rules.
-
+	
 	This is the new described devices rule:
 		if the noun is a device:
 			carry out the showing action activity with the noun;
 			now examine text printed is true.
 
-Thus far we have essentially replicated the original behavior, but we've made it possible to write specialized behavior for devices, and to invoke that behavior in other places:
+Thus far we have essentially replicated the original behaviour, but we've made it possible to write specialised behaviour for devices, and to invoke that behaviour in other places:
 
 	{**}Report switching on something:
 		say "You flip a switch. ";
@@ -37,30 +37,30 @@ Thus far we have essentially replicated the original behavior, but we've made it
 This might be useful for an electric lamp kind:
 
 	{**}Section 2 - Electric Lamps
-
+	
 	An electric lamp is a kind of device.
-
+	
 	Rule for showing action of an electric lamp (called item):
 		if the item is switched on, say "[The item] is lit[if the number of visible lit things is greater than 1], competing with [the list of visible lit things which are not the item][end if].";
 		otherwise say "[The item] is dark."
-
+	
 	Carry out switching on an electric lamp: now the noun is lit. Carry out switching off an electric lamp: now the noun is unlit.
-
+	
 	{**}Section 2 - The Scenario
-
+	
 	The time of day is 3:47 AM. When play begins, now the right hand status line is "[time of day]".
-
+	
 	The Downstairs Hallway is a dark room. "The only room in the house with no furniture and almost nothing on the walls. At times like this you always notice the crack in the plaster, originating near the light fixture and running almost all the way to the wall."
-
+	
 	A plastic jug of filtered water is in the Downstairs Hallway. The description is "Five gallons, not that that will last you very long, hot as it has been lately."
-
+	
 	The crack is scenery in the Hallway. The description is "No, the ceiling isn't going to fall on you today."
-
+	
 	The light fixture is an electric lamp in the Hallway. It is switched on, lit, and scenery. The description is "A plain globe of frosted glass containing the light bulb. Nothing special, and you never think about it except when, as now, you are forced to spend hours in this room."
-
+	
 	The flashlight is an electric lamp carried by the player. The description is "A shiny red flashlight." The portable radio is a device carried by the player. The description is "A small battery-operated radio which you received for free with your subscription to US News & World Report. It has served you well through many earthquakes past."
 
-And with our activity, we can override the flashlight's electric lamp behavior with new behavior:
+And with our activity, we can override the flashlight's electric lamp behaviour with new behaviour:
 
 	{**}Rule for showing action of the flashlight:
 		if the flashlight is switched on, say "A strong, narrow beam of light shines from the flashlight.";
@@ -71,8 +71,9 @@ And with our activity, we can override the flashlight's electric lamp behavior w
 	{**}Rule for showing action of the radio:
 		if the radio is switched on, say "Through the static, you pick up pieces of discussion: a 6.7 on the Richter scale, epicenter... something about Topanga... but it crackles out again.";
 		otherwise say "The radio is silent. You're saving the batteries."
-
+	
 	Instead of listening in the presence of the switched on radio:
 		carry out the showing action activity with the radio instead.
-
+	
 	Test me with "examine light / switch light off / switch flashlight on / switch radio on / examine radio / examine flashlight".
+

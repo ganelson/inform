@@ -10,25 +10,25 @@ In a work of interactive fiction that involves many new discoveries, we might wa
 One approach to this is to create a model of the facts we want the player to find out, and attach some narrative text to each. When a fact becomes relevant to the story, that narrative text is shown to the player. So:
 
 	{*}"Casino Banale"
-
+	
 	Section 1 - Procedure
 
 First we create the concept of facts, and the idea that facts can make some things more important than others.
 
 	{**}A fact is a kind of thing. A fact can be known or unknown. A fact can be ready to learn or hidden. A fact has some text called the narration.
-
+	
 	Definition: a thing is narratively significant if it conveys an interesting fact.
-
+	
 	Definition: a thing is narratively dull if it is not narratively significant.
-
+	
 	Conveyance relates various things to various facts. The verb to convey means the conveyance relation.
-
+	
 	Definition: a fact is interesting if it is unknown and it is ready to learn.
 
 Now, we also need a way to tell Inform to introduce certain new facts when the right previous ones have been introduced. We'll create a "following" relation, according to which a new fact can be told to the player when the player has already learned all the facts it follows. This way, we can simulate the effect of putting together several pieces of evidence to come to a conclusion:
 
 	{**}Following relates various facts to various facts. The verb to follow means the following relation.
-
+	
 	To say (new fact - a fact):
 		say "[narration of the new fact]";
 		now the new fact is known;
@@ -40,12 +40,12 @@ Next we need a way for the game to introduce these new facts. Let's say we want 
 
 	{**}After examining something which conveys an interesting fact (called discovery):
 		say "[discovery][paragraph break]".
-
+	
 	After choosing notable locale objects:
 		repeat through the Table of Locale Priorities:
 			if the notable-object entry is narratively significant:
 				set the locale priority of the notable-object entry to 1.
-
+	
 	For writing a paragraph about a narratively significant thing (called item):
 		now the item is mentioned;
 		let chosen fact be a random interesting fact which is conveyed by the item;
@@ -56,41 +56,42 @@ The "after choosing notable locale objects" line here handles things so that any
 And finally, we need to give the player a little evidence to piece together:
 
 	{**}Section 2 - Scenario
-
+	
 	The Casino is a room.
-
+	
 	Frince is a man in the Casino. The description is "Frince is a friend of yours -- if you reckon friendship on the same terms that one reckons a cat as a pet. He spends time with you when he wants to, but if your wishes or convenience ever run counter to a whim of his, it's the whim that wins. Always. [paragraph break]He's also wearing a somewhat ludicrous shirt."
-
+	
 	Frince wears a ludicrous shirt. The description of the ludicrous shirt is "Fine white fabric with satiny white pinstripes: it's that expensive, effeminate look that Frince is so fond of, and which -- combined with his name -- gives people completely the wrong idea about him."
-
+	
 	Tim is a man in the Casino. The description is "You don't know Tim well. Kind of wall-flowerish. The only thing that seems to excite him is craps."
-
+	
 	Penny is a woman in the Casino. The description is "Loud. Brash. Hot, probably, if you can look past the loud and brash."
-
+	
 	Rule for writing a paragraph about a narratively dull person:
 		let is-are-n be "is";
 		if the number of unmentioned narratively dull people is not 1:
 			let is-are-n be "are";
 		say "[A list of unmentioned narratively dull people] [is-are-n] [one of]watching the croupier[or]following the spin of the roulette[or]chattering[at random][one of] breathlessly[or] impatiently[or][at random]."
-
+	
 	Penny-annoying is a fact.
 		It is ready to learn.
 		The narration is "[if looking]Penny grimaces at you-- [end if]Penny is the same woman who stepped on your toe in the buffet line. The third time, she blurted, 'You have big shoes, don't you?'"
 		Penny conveys penny-annoying.
-
+	
 	lipstick-smudges is a fact.
 		It is ready to learn.
 		The narration is "There are a couple of smudges of coral-colored lipstick on the collar."
 		The ludicrous shirt conveys lipstick-smudges.
-
+	
 	penny-wears-coral is a fact.
 		It follows penny-annoying.
 		The narration is "[if looking]Penny catches your eye again. [end if]The bright coral lipstick was really not a wise choice."
 		Penny conveys penny-wears-coral.
-
+	
 	Affair-with-penny is a fact.
 		It follows lipstick-smudges and penny-wears-coral.
 		The narration is "You avoid [if examining Frince]his[otherwise]Frince's[end if] eye. You need some time to adjust to the image of him making out with Penny in a storage closet before you can talk to him without appalled giggling."
 		Frince conveys affair-with-Penny.
-
+	
 	Test me with "x penny / x frince / x shirt / look".
+

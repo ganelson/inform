@@ -5,21 +5,23 @@ Index: Allowing the player to describe the main character before starting play
 Description: Letting the player pick a gender (or perhaps other characteristics) before starting play.
 For: Z-Machine
 
+[ZL: This example should either be cut or should accept "neither" ]::
+
 The "reading a command" activity is rather advanced; for the moment, what we need to understand is that we're intervening in commands at the start of play and insisting that the player's first instruction to the game consist of a choice of gender. After that point, the gender will be set and play will proceed as normal.
 
 In order to do the parsing, we define gender as a kind of value, and give several alternate names to each gender.
 
 	{*}"Baritone, Bass"
-
+	
 	Getting Started is a room.
-
+	
 	Gender is a kind of value. The genders are masculine, feminine, and unknown. Understand "male" or "man" or "M" as masculine. Understand "female" or "woman" or "F" as feminine.
-
+	
 	A person has a gender. The gender of the player is unknown.
-
+	
 	When play begins:
 		now the command prompt is "Please choose a gender for your character. >".
-
+	
 	After reading a command when the gender of the player is unknown:
 		if the player's command includes "[gender]":
 			now the gender of the player is the gender understood;
@@ -35,12 +37,12 @@ In order to do the parsing, we define gender as a kind of value, and give severa
 		otherwise:
 			say "Sorry, we're not ready to go on yet. [run paragraph on]";
 			reject the player's command.
-
+	
 	Sandy Beach is a room.
-
+	
 	Instead of examining the player when the player is female:
 		say "Congratulations, you are a girl!"
-
+	
 	Instead of examining the player when the player is male:
 		say "Congratulations, you are a boy!"
 
@@ -52,3 +54,4 @@ and use a "construction stage" variable to keep track of the current stage of ch
 
 	After reading a command when the current construction stage is choosing a vocal range:
 		...
+

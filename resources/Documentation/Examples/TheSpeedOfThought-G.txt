@@ -7,36 +7,36 @@ For: Glulx
 
 Suppose that we have a number of objects in the game that are sized in some conventional unit (such as meters), but which we would like to describe in slightly less formal terms. To do this, we will start with measurements as defined in the built-in extension Metric Units, so we don't have to recreate all these.
 
-We'll add our own set of "conceptual units" -- things we're familiar with in real life. As we'll see below, Inform will automatically choose a unit of the right order to express a given distance if we tell it to print a length "in conceptual units".
+We'll add our own set of "conceptual units" – things we're familiar with in real life. As we'll see below, Inform will automatically choose a unit of the right order to express a given distance if we tell it to print a length "in conceptual units".
 
 Note: the following will compile only if you have settings set for Glulx. (To change this, go to the Settings panel and click on the Glulx option.) The Glulx virtual machine is capable of handling larger numbers than the Z-machine.
 
 	{*}"The Speed of Thought"
-
+	
 	Section 1 - Procedure
-
+	
 	Include Metric Units by Graham Nelson.
-
+	
 	1 quarter (in conceptual units, in quarters, singular) or 2 quarters (in conceptual units, in quarters, plural) specifies a length equivalent to 24mm.
 	1 pencil (in conceptual units, in pencils, singular) or 2 pencils (in conceptual units, in pencils, plural) specifies a length equivalent to 18cm.
 	1 bathtub (in conceptual units, in bathtubs, singular) or 2 bathtubs (in conceptual units, in bathtubs, plural) specifies a length equivalent to 152cm.
 	1 Olympic swimming pool (in conceptual units, in Olympic swimming pools, singular) or 2 Olympic swimming pools (in conceptual units, in Olympic swimming pools, plural) specifies a length equivalent to 50 meters.
 	1 Empire state building (in conceptual units, in Empire State buildings, singular) or 2 Empire State buildings (in conceptual units, in Empire State buildings, plural) specifies a length equivalent to 443m.
-
+	
 	1 credit card (in conceptual units, in credit cards, singular) or 2 credit cards (in conceptual units, in credit cards, plural) specifies an area equivalent to 46 sq cm.
 	1 letter sheet (in conceptual units, in letter sheets, singular) or 2 letter sheets (in conceptual units, in letter sheets, plural) specifies an area equivalent to 603 sq cm.
 	1 queen-sized mattress (in conceptual units, in queen-sized mattresses, singular) or 2 queen-sized mattresses (in conceptual units, in queen-sized mattresses, plural) specifies an area equivalent to 3 square meters.
 	1 football field (in conceptual units, in football fields, singular) or 2 football fields (in conceptual units, in football fields, plural) specifies an area equivalent to 5351 square meters.
-
+	
 	Understand "report [something]" as reporting. Reporting is an action applying to one thing.
-
+	
 	Check reporting:
 		if the noun is not a fact:
 			say "The public doesn't want to hear about [the noun]." instead.
-
+	
 	Carry out reporting:
 		now the noun is nowhere.
-
+	
 	Report reporting:
 		if the extent of the noun is greater than 0mm and the surface of the noun is greater than 0 sq cm:
 			contextualize "'[The noun] has a length of [about] [extent of the noun in conceptual units] and an area of [about] [surface of the noun in conceptual units].'";
@@ -46,47 +46,47 @@ Note: the following will compile only if you have settings set for Glulx. (To ch
 			contextualize "'[The noun] has an area of [about] [surface of the noun in conceptual units].'";
 		otherwise:
 			say "'[The noun] is... pretty hard to imagine,' you say weakly. That's not going to go over well."
-
+	
 	To say about:
 		say "[one of]roughly[or]about[or]around[or]approximately[at random]";
-
+	
 	To contextualize (chosen information - text):
 		say "[one of]You turn to the camera and speak:[or][or]Turning to another camera angle, you add:[or][stopping] ";
 		say "[chosen information] ";
 		say "[one of][line break][or]Right now the station will be cutting over to a visual of that.[or][line break][or]Pity the kids in audiovisual who have to scare that image together in a hurry.[or]You smile brightly.[stopping]";
-
+	
 	Section 2 - Scenario
-
+	
 	The Science Journalism Desk is a room. "From here you, the Science Anchor, have the privilege of reporting the latest and most fascinating stories to an eager public."
-
+	
 	After looking:
 		try thinking.
-
+	
 	Instead of thinking:
 		say "Currently you have to report on the International Space Station. Your story could include [the list of facts carried by the player]."
-
+	
 	Instead of taking inventory:
 		say "It looks foolish to be fiddling with your possessions on camera."
-
+	
 	Instead of dropping a fact:
 		say "You decide to omit [the noun] from your lineup.";
 		now the noun is nowhere.
-
+	
 	A fact is a kind of thing. Every fact is carried by the player. A fact has a length called the extent. A fact has an area called the surface.
-
+	
 	The experiment module is a fact. The extent is 1116cm.
 	The logistics module is a fact. The extent is 421cm.
 	The solar array is a fact. The surface is 375 sq m. The extent is 58m.
 	An individual solar cell is a fact. The surface is 8 sq cm.
 	The orbit height is a fact.
-
+	
 	Report reporting the orbit height:
 		contextualize "'The station orbits at heights between [about] [278km in conceptual units] and [460km in conceptual units] above the earth.'" instead.
-
+	
 	Every turn:
 		if the player carries no facts:
 			say "And that's all! The channel cuts to weather.";
 			end the story saying "Time for lunch".
-
+	
 	Test me with "report experiment module / report logistics / report height / report array / report solar cell".
 

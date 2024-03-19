@@ -8,13 +8,13 @@ For: Z-Machine
 This time we're going to assume that the player can see into any room that is on a line of sight within one or two steps of travel.
 
 	{*}"Stately Gardens"
-
+	
 	Chapter 1 - Laying Out Rooms
-
+	
 	A room can be indoors or outdoors.
-
+	
 	Use full-length room descriptions.
-
+	
 	After deciding the scope of the player:
 		repeat with the way running through directions:
 			let first step be the room the way from the location;
@@ -31,7 +31,7 @@ The obelisk is so large that it can be seen from every room. If we had a number 
 Now, we set things up so that the surrounding areas are described automatically as part of the room description:
 
 	{**}Building description is a truth state that varies. Building description is false.
-
+	
 	After looking when the location is an outdoors room:
 		now count of sentences is 0;
 		now building description is true;
@@ -50,36 +50,36 @@ But perhaps there are a few rooms where we do not wish that to happen, so we'll 
 
 	{**}After looking in the rose garden:
 		say "Otherwise, you are quite cut off.".
-
+	
 	After looking in the Ha-ha:
 		do nothing.
 
 And suppose we want to allow the player to look in any direction:
 
 	{**}Understand "look [direction]" or "look to/toward [direction]" as facing.
-
+	
 	Facing is an action applying to one visible thing.
-
+	
 	Carry out facing:
 		let the viewed item be the room noun from the location;
 		if the viewed item is not a room:
 			if the location is indoors, say "Your view is restricted by the lack of doors or windows in that direction." instead;
 			otherwise say "You can't see anything promising that way." instead;
 		try looking toward the viewed item.
-
+	
 	Instead of facing up:
 		say "Above you is bright sky."
 
 We also need to tell distant rooms how to describe themselves.
 
 	{**}Understand "look toward [any adjacent room]" as looking toward.
-
+	
 	Looking toward is an action applying to one visible thing.
-
+	
 	Check looking toward a room which does not contain something mentionable:
 		if building description is false:
 			say "You can't make out anything of interest that way." instead.
-
+	
 	Carry out looking toward:
 		now every thing is unmentioned;
 		now the chosen direction is the best route from the location to the noun;
@@ -110,16 +110,16 @@ And again, some exception needs to be made for seeing what's in the dip in the g
 			choose row count of sentences in the Table of Distance Sentences;
 			say "[there entry] [run paragraph on]".
 
-The following is to account for cases where the player types "look toward obelisk" or similar, rather than looking toward a room:
+The following is to account for cases where the player types ``look toward obelisk`` or similar, rather than looking toward a room:
 
 	{**}Understand "look toward [something]" as examining.
 
 The following is arguably an unnecessary refinement, but the listing of items in the distance gets a bit repetitive unless we vary the sentence structure.
 
 	{**}Chosen direction is a direction that varies.
-
+	
 	Count of sentences is a number that varies.
-
+	
 	Table of Distance Sentences
 	both	here	there
 	"From here, you make out [a list of mentionable things in the noun] a little way [chosen direction], and, further on, [a list of mentionable things in the second noun]."	"From here, you make out [a list of mentionable things in the noun] [if the noun is not adjacent to the location]some distance [end if]to [the chosen direction]."	"From here, you make out [a list of mentionable things in the second noun] some distance [chosen direction]."
@@ -134,28 +134,28 @@ The following is arguably an unnecessary refinement, but the listing of items in
 Now, our ability to view things at a distance should be determined by the size of the things we're trying to see:
 
 	{**}Chapter 2 - Height
-
+	
 	A height is a kind of value. 10 feet 11 inches specifies a height. 10 feet 11 specifies a height. The verb to stand means the height property. The verb to measure means the height property. A thing has a height. The height of a thing is usually 3 feet 0.
-
+	
 	Definition: a thing is tiny if its height is 0 feet 6 inches or less.
-
+	
 	Definition: a thing is short if its height is 3 feet 0 or less.
-
+	
 	Definition: a thing is tall if its height is 6 feet 0 or more.
-
+	
 	The height of a man is usually 5 feet 10 inches. The height of a woman is usually 5 feet 6 inches.
-
+	
 	Definition: a thing is monumental if it is taller than 25 feet 0 inches.
-
+	
 	Definition: a thing is mentionable if it stands tall enough to see.
-
+	
 	To decide whether (item - a thing) stands tall enough to see:
 		if the item is in the Rose Garden and the item is shorter than the roses, no;
 		if the item is mentioned, no;
 		if the item is in an adjacent room and item is taller than 2 feet 0, yes;
 		if the item is taller than 4 feet 0, yes;
 		no.
-
+	
 	Instead of examining something which is within a room (called the space) which is not the location:
 		if the location is adjacent to the space:
 			if the noun is tiny, say "It is too far from here for you to make out much detail about [the noun]." instead;
@@ -171,21 +171,21 @@ Now, our ability to view things at a distance should be determined by the size o
 We might also want to be able to override, manually, the way distant things are described.
 
 	{**}Writing a distant paragraph about something is an activity.
-
+	
 	Rule for writing a distant paragraph about the lily pond:
 		if the second noun is a room and something mentionable is in the second noun, say "A [lily pond], [chosen direction], patchily reflects [a list of mentionable things in the second noun] on the far side. [run paragraph on]";
 		otherwise say "To [the chosen direction], [a lily pond] shimmers in the sunlight. [run paragraph on]"
-
+	
 	Rule for writing a distant paragraph about the roses:
 		if something in the Rose Garden is taller than the roses,
 			say "Over the tops of [the roses], [chosen direction], you see [a list of mentionable things in the rose garden]. [run paragraph on]";
 		otherwise say "Immediately [chosen direction] is [the roses]. [run paragraph on]"
-
+	
 	Rule for writing a distant paragraph about the obelisk:
 		if a mentionable thing in the Upper Terrace is shorter than the obelisk,
 			say "A stupidly grand [obelisk], [chosen direction], towers over [a list of mentionable things in the Upper Terrace]. [run paragraph on]";
 		otherwise say "To [the chosen direction], you can't help noticing [the obelisk], which is much larger than any object really needs to be. [run paragraph on]".
-
+	
 	After writing a distant paragraph about something:
 		increment the count of sentences.
 
@@ -195,17 +195,17 @@ Moreover, proximate things might have special descriptions too.
 		if the location is the Gravel Circle,
 			say "Abandoned in the gravel [is-are a list of unmentioned tiny things in the location]. [run paragraph on]";
 		otherwise say "Half trampled into the grass, and easy to miss, [is-are a list of unmentioned tiny things in the location]. [run paragraph on]"
-
+	
 	Before doing something other than examining or approaching to something which is not within the location:
 		if the player has the noun, continue the action;
 		say "(first going over to [the noun])[line break]";
 		try approaching the noun;
 		if the noun is not within the location, stop the action.
-
+	
 	Understand "go toward/to/towards/near [something]" or "approach [something]" as approaching.
-
+	
 	Approaching is an action applying to one visible thing.
-
+	
 	Check approaching:
 		if the player is in something, say "You'll have to get up." instead;
 		if the noun is within the location, say "You're as close to [the noun] as you can get." instead;
@@ -214,13 +214,13 @@ Moreover, proximate things might have special descriptions too.
 		let way be the best route from the location to the space;
 		unless way is a direction,
 			say "You can't see how to get over there from here." instead.
-
+	
 	To head to (space - a room):
 		let the way be the best route from the location to the space;
 		if the space is adjacent to the location,
 			try going way;
 		otherwise silently try going way.
-
+	
 	Carry out approaching:
 		let space be the location of the noun;
 		while the space is not the location:
@@ -229,15 +229,15 @@ Moreover, proximate things might have special descriptions too.
 This is a bit primitive, since if we had an occasion where going was blocked, we could get stuck in a loop. So we would need to be careful, but for this example it won't arise.
 
 	{**}Going state is a truth state that varies. Going state is false.
-
+	
 	Check going:
 		now going state is true.
-
+	
 	The description of a room is usually "[if going state is true]You drift [noun] across the open lawn[direction relative to obelisk]. [end if]An absolutely phenomenal quantity of manicured turf stretches from where you stand in almost every direction."
-
+	
 	Before reading a command:
 		now going state is false.
-
+	
 	To say direction relative to obelisk:
 		if obelisk is in the location:
 			say ", as though drawn magnetically to the foot of the monument";
@@ -245,55 +245,56 @@ This is a bit primitive, since if we had an occasion where going was blocked, we
 			let way be the best route from the location to the Upper Terrace;
 			if way is the noun, say ", drawn towards [the obelisk]";
 			if the way is the opposite of the noun, say ", keeping [the obelisk] more or less at your back".
-
+	
 	Chapter 3 - The Grounds
-
+	
 	When play begins:
 		now the left hand status line is "Idyllic";
 		now the right hand status line is " ".
-
+	
 	The Gravel Circle, the Ha-ha, the Sheep Field, the Open Lawn, the Croquet Ground, the Rose Garden, the Upper Terrace, the Middle Terrace, and the Lower Terrace are outdoors.
-
+	
 	The Middle Terrace is north of the Lower Terrace and south of the Upper Terrace. The lily pond is fixed in place in the Middle Terrace."You [if going state is true]come to[otherwise]are at[end if] the north edge of a perfectly round lily pond, bordered with stones. Its surface patchily reflects [the marble anteater] on the south bank." A tent peg and a wilted orchid are in the Middle Terrace. The tent peg measures 0 feet 6. The orchid measures 0 feet 4.
-
+	
 	The description of the Lower Terrace is "[if going state is true]You climb [noun] up a small hillock[direction relative to obelisk][otherwise]You stand on a short, round, entirely artificial hillock[end if]."
-
+	
 	The marble anteater is a fixed in place thing in the Lower Terrace. The height of marble anteater is 6 feet 2 inches."A marble anteater stands on a pedestal at the top of the hill. In the bright sunlight the white marble makes a striking contrast with [the obelisk] in the distance." The description is "The anteater is very much more than life-size."
-
+	
 	The obelisk of black granite is a fixed in place thing in the Upper Terrace."Now that you are at the foot of it, you can properly appreciate the stupid immensity of the obelisk, pointing stonily at heaven." The height of the obelisk is 50 feet 0 inches. The description of the obelisk is "It stands ridiculously tall, and has an inscription on the face."
-
+	
 	The inscription is part of the obelisk. The height of the inscription is 0 feet 3 inches. The description of the inscription is "You can't read the squirming, pointed letters, but they make you uneasy.".
-
+	
 	The Gravel Circle is west of the Upper Terrace, northwest of the Middle Terrace, and north of the Croquet Ground. The description of the Gravel Circle is "[if going state is true]You head [noun] until the lawn thins and[otherwise]Here the lawn[end if] gives way to a circle of raked gravel, which crunches pleasingly beneath you."
-
+	
 	Instead of going northwest in the Upper Terrace, try going north.
-
+	
 	The Ha-ha is north of the Gravel Circle and northwest of the Upper Terrace. The description of the Ha-ha is "[if going state is true]The land dips here so suddenly that you do not know the dip is there until you're in it; but it prevents livestock from crossing barriers, and that is the important thing[otherwise]You are at the base of a steep-sided depression, so the lawn continues north and south more or less at the level of your head[end if].
-
+	
 	The tip of [the obelisk] is the only thing you can make out from this depression, off to the southeast.". North of the Ha-ha is the Sheep Field. In the Sheep Field is an animal called a black sheep. The black sheep stands 4 feet 3 inches."A black sheep grazes placidly nearby." The description of the black sheep is "It reminds you of your Uncle Tim."
-
+	
 	Before going from the Ha-ha:
 		say "It's a bit of a scramble to get back up the side of the depression, and you keep slipping in the damp grass. But you manage at last."
-
+	
 	The Rose Garden is  southwest of the Lower Terrace. The thicket of red roses is a fixed in place thing in the Rose Garden. The thicket stands 4 feet 2 inches."Heavy red roses grow over a roughly horseshoe-shaped wall around you. Over this barrier, the head of [the marble anteater] is visible to the northwest, and the tip of [the obelisk] in the distance."
-
+	
 	The description of the Rose Garden is "[if going state is true]You slip [noun] into the enclosure of the rose garden. [end if]The rest of the park, and the world, seems muted and quiet."
-
+	
 	Instead of smelling the rose garden: try smelling the roses. Instead of smelling the roses, say "The smell tickles the back of your throat and makes you want to cough."
-
+	
 	Instead of listening to the rose garden:
 		say "You can't hear anything at all."
-
+	
 	The Open Lawn is north of the Rose Garden, west of the Lower Terrace, and southwest of the Middle Terrace. The Croquet Ground is north of the Open Lawn, west of the Middle Terrace, southwest of the Upper Terrace, and northwest of the Lower Terrace.
-
+	
 	A discarded champagne cork is in the Open Lawn. It stands 0 feet 2 inches.
-
+	
 	A stone bench is an enterable supporter in the Croquet Ground. It stands 3 feet 8 inches."There is a stone bench here -- a sort of stone sofa, really, with nymphs disporting themselves on the arms and back." The description of the bench is "It used to be a Roman sarcophagus -- hence the nymphs -- but someone has thoughtfully recarved it as lawn furniture."
-
+	
 	The half-size Bentley is a vehicle in the Gravel Circle."A sort of child's-toy version of a Bentley is parked [if something parkable is in the location]beside [the tallest parkable thing in the location][otherwise]close at hand[end if]." The description of the half-size Bentley is "Of beautiful and unambiguously luxurious lines, but sized down to hold only one or (at a stretch) two people, and powered by electricity." The half-size Bentley stands 3 feet 6 inches.
-
+	
 	Definition: a thing is parkable if it is not a person and it is not the Bentley.
-
+	
 	Instead of touching the obelisk, say "Though it is black stone in sunlight, the obelisk is very cold to the touch."
-
+	
 	Test me with "look east / look toward obelisk / s / s / e / sw / ne / n / n / w / n / n / examine obelisk / touch obelisk / read inscription".
+

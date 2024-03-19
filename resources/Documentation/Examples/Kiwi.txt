@@ -10,18 +10,18 @@ Suppose we want there to be some high shelves in our game, which the player can'
 In order to resolve this, we want to set up a raised supporter kind. When something is on a raised supporter, it should be mentioned to the player only if the player is in the right position (i.e., standing on something) and otherwise omitted from the description entirely.
 
 	{*}"Kiwi"
-
+	
 	Section 1 - Procedure
-
+	
 	A raised supporter is a kind of supporter.
-
+	
 	For printing a locale paragraph about a raised supporter (called the high place):
 		if the player is on a supporter (called the riser):
 			say "Up on [the high place] (and only visible because you're on [the riser]) [is-are a list of things on the high place].";
 		otherwise:
 			say "The [high place] is above you."
 
-Note that here we don't continue the activity because we want to completely replace the normal behavior of describing what is on supporters.
+Note that here we don't continue the activity because we want to completely replace the normal behaviour of describing what is on supporters.
 
 	{**}Definition: a thing (called target item) is out of reach:
 		if the player is on a supporter, no;
@@ -44,30 +44,30 @@ And raised supporters shouldn't be searchable from the ground either:
 	{**}Instead of searching or examining a raised supporter when the player is not on a supporter:
 		say "You can't see from down here."
 
-Finally, we need to tackle the case where the player types GET ALL FROM SHELF, because we don't want to list the objects up there if the player can't even see them. We use a rule for deciding whether all includes in order to tell Inform not to consider items that can't be reached, and then we adjust the parser error so that it's a little more instructive than "There are none at all available!", which is what the response would otherwise be:
+Finally, we need to tackle the case where the player types ``get all from shelf``, because we don't want to list the objects up there if the player can't even see them. We use a rule for deciding whether all includes in order to tell Inform not to consider items that can't be reached, and then we adjust the parser error so that it's a little more instructive than "There are none at all available!", which is what the response would otherwise be:
 
 	{**}Disallowed-all is a truth state that varies. Disallowed-all is false.
-
+	
 	Rule for deciding whether all includes an out of reach thing:
 		now disallowed-all is true;
 		it does not.
-
+	
 	Rule for printing a parser error when the latest parser error is the nothing to do error and the player is not on a supporter:
 		if disallowed-all is true:
 			say "Whatever might be up there, you can't see or reach from down here.";
 		otherwise:
 			make no decision.
-
+	
 	A first action-processing rule:
 		now disallowed-all is false.
-
+	
 	Section 2 - Scenario
-
+	
 	The Bottom of the Nursery is a room. "Ever since you ate that mysterious cake, you've been even shorter than usual."
-
+	
 	The high shelf is a raised supporter in the Nursery. It is scenery. On the high shelf are a kiwi-green ball and a stuffed dodo.
-
+	
 	The step-ladder is an enterable supporter in the Nursery. Understand "ladder" as the step-ladder.
-
+	
 	Test me with "x shelf / search shelf / get dodo / get all from shelf / stand on ladder / get all from shelf / search shelf / get off / put all on shelf / get all from shelf / stand on ladder / put all on shelf".
 

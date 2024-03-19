@@ -1,5 +1,4 @@
 Example: * Disenchantment Bay 11
-Subtitle: The player's backpack
 Location: The player's holdall
 RecipeLocation: Disenchantment Bay
 Index: Disenchantment Bay 11. The player's backpack
@@ -23,3 +22,4 @@ Perhaps mercifully, items which are worn are not counted against the player's ca
 This capacity system makes a compromise between the realistic and the absurd: on the one hand, it acknowledges that people can't carry an infinite number of items in their hands, while at the same time providing a sack that can.
 
 Many games will have no use for object-juggling of this kind at all; others will want to be much more rigorous about questions of capacity and volume. Fortunately, it is easy to leave the whole business out by assigning no carrying capacity to anything.
+

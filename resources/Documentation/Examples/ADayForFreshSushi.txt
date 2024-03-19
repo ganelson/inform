@@ -5,188 +5,187 @@ Index: Person who comments on the player's every action
 Description: A complete story by Emily Short, called "A Day for Fresh Sushi", rewritten using Inform 7. Noteworthy is the snarky commenter who remarks on everything the player does, but only the first time each action is performed.
 For: Z-Machine
 
-The following is an almost-completely-faithful rewrite of Emily Short's "A Day for Fresh Sushi", which was originally written using the (very different) Inform 6 programming language. The -- let us be honest and call it a gimmick -- of this game is the evil fish, who has some unpleasant remark to offer on pretty much every action. But the effect would wear off fast if he repeated himself, so these comments need to be single-use only.
+The following is an almost-completely-faithful rewrite of Emily Short's "A Day for Fresh Sushi", which was originally written using the (very different) Inform 6 programming language. The – let us be honest and call it a gimmick – of this game is the evil fish, who has some unpleasant remark to offer on pretty much every action. But the effect would wear off fast if he repeated himself, so these comments need to be single-use only.
 
 Inform 7's repeated action syntax makes it much tidier to write the same scenario, so:
 
 	{*}"A Day For Fresh Sushi" by Emily Short.
-
+	
 	Use scoring.
-
+	
 	The story headline is "Your basic surreal gay fish romance".
-
+	
 	The Studio is a room. "[if visited]Decorated with Britney's signature flair. It was her innate sense of style that first made you forgive her that ludicrous name. And here it is displayed to the fullest: deep-hued drapes on the walls, the windows flung open with their stunning view of old Vienna, the faint smell of coffee that clings to everything. Her easel stands over by the windows, where the light is brightest.[otherwise]This is Britney's studio. You haven't been around here for a while, because of how busy you've been with work, and she's made a few changes -- the aquarium in the corner, for instance. But it still brings back a certain emotional sweetness from the days when you had just met for the first time... when you used to spend hours on the sofa...
-
+	
 	You shake your head. No time for fantasy. Must feed fish.[end if]"
-
+	
 	Instead of smelling the Studio:
 		say "The evil fish notices you sniffing the air. 'Vanilla Raspberry Roast,' it remarks. 'You really miss her, don't you.'
-
+	
 	You glance over, startled, but the fish's mouth is open in a piscine equivalent of a laugh. You stifle the urge to skewer the thing..."
-
+	
 	Instead of jumping:
 		say "'Er,' says the fish. 'Does that, like, EVER help??'"
-
+	
 	Instead of going nowhere:
 		say "You can't leave until you've fed the fish. Otherwise, he'll complain, and you will never hear the end of it."
-
+	
 	The cabinet is an openable closed container in the Studio. It is fixed in place. "A huge cabinet, in the guise of an armoire, stands between the windows." The description is "Large, and with a bit of an Art Nouveau theme going on in the shape of the doors." Understand "armoire" as the cabinet.
-
+	
 	Instead of looking under the cabinet for the first time:
 		say "'Dustbunnies,' predicts the fish, with telling accuracy. It executes what for all the world looks like a fishy shudder. 'Lemme tell you, one time I accidentally flopped outta the tank, and I was TWO HOURS on the floor with those things STARING ME IN THE NOSE. It was frightening.'"
-
+	
 	After opening the cabinet for the first time:
 		say "'There ya go,' says the fish. 'The girl is getting WARMER.'"
-
+	
 	After closing the cabinet for the first time:
 		if the fish food is not found, say "'Ooh, what do you think, Bob? I think we're going to have to dock the girl a few points. HAVE ANOTHER LOOK, sweetcakes, there's a doll.'"
-
+	
 	The cabinet contains some paints and some cloths. The description of the paints is "A bunch of tubes of oil paint, most of them in some state of grunginess, some with the tops twisted partway off."
-
+	
 	After taking the paints for the first time:
 		say "'Boy,' says the fish, apparently to himself, 'I sure hope that's some food she's finding for me in there. You know, the yummy food in the ORANGE CAN.'"
-
+	
 	After examining the paints for the first time:
 		say "'Tons of useful stuff in there,' hollers in the fish, in a syncopated burble."
-
+	
 	The description of the cloths is "Various colors of drapery that Britney uses to set up backgrounds and clothe her models. She does a lot of portraiture, so this comes in handy. It's all a big messy wad at the moment. Organized is not her middle name." Understand "drapery" or "cloth" as the cloths. The indefinite article of the cloths is "a heap of". [see 3.17]
-
+	
 	Instead of searching or looking under the cloths for the first time:
 		now the player is carrying the fish food;
 		now the fish food is found;
 		say "Poking around the cloths reveals -- ha HA! -- a vehemently orange can of fish food."
-
+	
 	Instead of showing the cloths to the fish:
 		say "'What are you, some kind of sadist? I don't want to see a bunch of cloths! What kind of f'ing good, 'scuse my French, is that supposed to do me? I don't even wear pants for God's sake!'
-
+	
 	He really looks upset. You start wondering whether apoplexy is an ailment common to fish."
-
+	
 	After examining cloths for the first time:
 		say "'Whatcha looking at? I can't see through the doors, you know.'"
-
+	
 	There is a can of fish food. Understand "canister" as the can. The description is "A vehemently orange canister of fish food." The fish food can be found or hidden. The fish food is hidden.
-
+	
 	Instead of giving the can to the fish:
 		say "'I don't want the whole can, GeniusChyk. Just feed me and we'll ALL be happy, 'kay?"
-
+	
 	Instead of showing the can to the fish:
 		say "'That's the ticket, sweetie! Bring it on.'"
-
+	
 	Instead of opening the can:
 		say "'Oh, for--!' The evil fish breaks out in exasperation and hives. 'Screw the screwing around with the screwtop. SHE never has to do that.'
-
+	
 	'Well, SHE is not here,' you reply. 'What do you suggest?'
-
+	
 	'>FEED FISH<' says the fish promptly, making fishy faces and pointing at you with his fin. 'Simplicity. Try it.'"
-
+	
 	Instead of inserting the can into something:
 		say "'HelLLLOOO,' screams the fish. 'Whatever happened to FEEDING MEEE?'"
-
+	
 	The easel is a supporter in the Studio. It is scenery. On the easel is a painting. Understand "portrait" or "image" as the painting.
-
+	
 	The description of the painting is "Only partway finished, but you can tell what it is: Britney's mother. You only met the old woman once, before she faded out of existence in a little hospice in Salzburg.
-
+	
 	In the picture, her hands are grasping tightly at a small grey bottle, the pills to which she became addicted in her old age, and strange, gargoyle-like forms clutch at her arms and whisper in her ears.
-
+	
 	But the disturbing thing, the truly awful thing, is the small figure of Britney herself, down in the corner, unmistakable: she is walking away. Her back turned.
-
+	
 	You thought she'd finally talked this out, but evidently not. Still feels guilty for leaving. You only barely stop yourself from tracing, with your finger, those tiny slumped shoulders..."
-
+	
 	Instead of taking the painting, say "No, you'd better leave it. It'd freak her out if you moved it."
-
+	
 	Before examining the painting for the first time:
 		say "A ferocious banging from the aquarium attracts your attention as you go to look at the painting. 'Hey!' screams the fish. 'She doesn't like strangers looking at her paintings before they're DOONNNE!'
-
+	
 	'Shut up, you,' you reply casually. 'I'm not a stranger.' But the fish puts you off a little bit, and your heart is already in your mouth before you see the painting itself...".
-
+	
 	Instead of examining the painting more than once:
 		say "Once is really enough. It's pretty much embedded in your consciousness now."
-
+	
 	After doing something to the painting:
 		say "'So what's it of?' asks the fish, as you turn away. 'She never asks if I want to see them, you know?'
-
+	
 	'Her mother,' you respond without thinking.
-
+	
 	'Yeah? Man. I never knew my mother. Eggs, that's the way to go.'"
-
+	
 	The window is scenery in the Studio. The window can be openable. The window can be open. It is openable and closed. Understand "windows" as the window. The description of the window is "[if open]Through the windows you get a lovely view of the street outside. At the moment, the glass is thrown open, and a light breeze is blowing through.[otherwise]Through the windows, you get a lovely view of the street outside -- the little fountain on the corner, the slightly dilapidated but nonetheless magnificent Jugendstil architecture of the facing building. The glass itself is shut, however.[end if]"
-
+	
 	After opening the window for the first time:
 		say "'Thank god some air,' says the fish. 'Man, it was getting hard to breathe in here.' Two beats pass. 'Oh wait.'"
-
+	
 	The table is scenery in the Studio. On the table is a vase. The vase is an open container. It is not openable.
-
+	
 	The description of the table is "A monstrosity of poor taste and bad design: made of some heavy, French-empire sort of wood, with a single pillar for a central leg, carved in the image of Poseidon surrounded by nymphs. It's all scaley, and whenever you sit down, the trident has a tendency to stab you in the knee. But Britney assures you it's worth a fortune." The description of the vase is "A huge vase -- what you saw once described in a Regency romance as an epergne, maybe -- something so big that it would block someone sitting at the table from seeing anyone else also sitting at the table. But it does function nicely as a receptacle for hugeass bouquets of flowers."
-
+	
 	Instead of looking under the table for the first time:
 		say "'You're not going to find anything down there,' whines the fish. 'I mean, c'mon. It's the fricking floor. Please tell me you can see that. I can see that. I'm a myopic fish in a tank ten feet away and I can tell you there is nothing there but floor.'"
-
+	
 	After examining the table:
 		say "'That there is MY PA,' says the fish, pointing at the scaley triton figure with one fin."
-
+	
 	Instead of inserting something which is not the bouquet into the vase:
 	say "'Okay, so, what were you, raised in a barn? Normal folks like to use that for flowers. Or so I've observed.'"
-
+	
 	After inserting the bouquet into the vase for the first time:
 		say "You settle the flowers into the vase and arrange them so that they look sprightly.
-
+	
 	'Oooh,' says the fish. 'No one ever changes the plant life in HERE. It's the same seaw--'
-
+	
 	'Cut me a break and cork it,' you reply tartly."
-
+	
 	The player is carrying a telegram, a bouquet, and a lingerie bag. The player is wearing a chef hat.
-
+	
 	The description of the telegram is "A telegram, apparently. And dated three days ago. [fixed letter spacing]TRIUMPH OURS STOP BACK SOON STOP BE SURE TO FEED FISH STOP[variable letter spacing]". [For printing options see 4.13.] Understand "yellow paper" as the telegram.
-
-
+	
 	After examining the telegram for the first time:
 		say "'So,' blubs the evil fish. 'How about it? Little food over here?'"
-
+	
 	After examining the telegram:
 		choose a random row in the Table of Insulting Fish Comments;
 		say "[comment entry][paragraph break]".
-
+	
 	Table of Insulting Fish Comments
 	comment
 	"'Yeah, yeah,' says the fish. 'You having some trouble with the message, there? Confused? Something I could clear up for you?'"
 	"'Oookay, genius kid has some troubles in the reading comprehension department.' The fish taps his head meaningfully against the side of the tank. 'I'm so hungry I could eat my way out, you get my meaning?'"
 	"'I'll translate for you,' screams the fish in toothy fury. 'It says GIVE FOOD TO FISH!! How much more HELP do you NEED???"
-
+	
 	The description of the chef hat is "A big white chef hat of the kind worn by chefs. In this case, you. Just goes to show what a hurry you were in on the way out of the restaurant." Understand "big" or "white" or "chefs" or "chef's" as the chef hat. [Inform knows that this is clothing because the player starts out wearing it, so there's no need to say so separately.]
-
+	
 	The aquarium is a transparent open container in the Studio. It is not openable. "In one corner of the room, a large aquarium bubbles in menacing fashion." The description of the aquarium is "A very roomy aquarium, large enough to hold quite a variety of colorful sealife -- if any yet survived." Understand "tank" as the aquarium.
-
+	
 	The aquarium contains some gravel and some seaweed. Understand "little rocks" as the gravel. Understand "weed" as the seaweed. The description of the gravel is "A lot of very small grey rocks." The description of the seaweed is "Fake plastic seaweed of the kind generally bought in stores for exactly this purpose."
-
+	
 	The examine containers rule does nothing when examining the aquarium.
-
+	
 	After examining the gravel for the first time:
 		say "The fish notices your gaze; makes a pathetic mime of trying to find little flakes of remaining food amongst the gravel."
-
+	
 	After examining the seaweed for the first time:
 		say "'Nice, hunh?' blubs the fish, taking a stabbing bite out of one just by way of demonstration. 'Look so good I could eat it.'"
-
+	
 	The aquarium contains an animal called an evil fish. The description of the fish is "Even if you had had no prior experience with him, you would be able to see at a glance that this is an evil fish. From his sharkish nose to his razor fins, every inch of his compact body exudes hatred and danger."
-
+	
 	Instead of taking the evil fish:
 		say "The fish swims adroitly out of range of your bare hand. 'Hey,' he says, and the bubbles of his breath brush against your fingers. 'Count yourself lucky I don't bite you right now, you stinking mammal.'"
-
+	
 	Instead of attacking the evil fish:
 		say "Oh, it's tempting. But it would get you in a world of hurt later on."
-
+	
 	Instead of kissing the evil fish:
 		say "You're saving all your lovin for someone a lot cuddlier."
-
+	
 	After examining the evil fish for the first time:
 		say "The fish glares at you, as though to underline this point."
-
+	
 	After examining the evil fish for the second time:
 		say "'If you're looking for signs of malnutrition,' says the fish, 'LOOK NO FURTHER!!' And it sucks in its gills until you can see its ribcage."
-
+	
 	An every turn rule:
 		choose a random row in the Table of Fish Banter;
 		say "[comment entry][paragraph break]".
-
+	
 	Table of Fish Banter
 	comment	used
 	"'Hey, nice SKIN TONE,' shouts the evil fish. His words reach you in a spitting gurgle of aquarium water. 'You gone over to a pure eggplant diet these days?'"	0
@@ -194,48 +193,48 @@ Inform 7's repeated action syntax makes it much tidier to write the same scenari
 	"The evil fish darts to the bottom of the tank and moves the gravel around with his nose."	0
 	"The evil fish is swimming around the tank in lazy circles."	0
 	"The evil fish begins to butt his pointy nose against the glass walls of the tank."	0
-
+	
 	The description of the bouquet is "Okay, so it's silly and sentimental and no doubt a waste of money, of which there is never really enough, but: you miss her. You've missed her since ten seconds after she stepped aboard the shuttle to Luna Prime, and when you saw these -- her favorites, pure golden tulips like springtime -- you had to have them." Understand "flowers" or "tulip" or "tulips" as the bouquet.
-
+	
 	After examining the bouquet for the first time:
-		say "'Oh, you shouldn't have,' says the fish. 'For me??'
-		You just respond with a livid glare."
-
+		say "'Oh, you shouldn't have,' says the fish. 'For me??'	You just respond with a livid glare."
+	
 		Instead of smelling the bouquet for the first time:
 			say "'Mmm-mm,' says the fish. 'Damn, I sure wish I had olfactory abilities. Hey, if I did, I might be even better at noticing the presence or absence of FOOD.'"
-
+	
 		The description of the lingerie bag is "You grant yourself the satisfaction of a little peek inside. You went with a pale, silky ivory this time -- it has that kind of sophisticated innocence, and it goes well with the purple of your skin. A small smirk of anticipation crosses your lips."
-
+	
 		After examining the lingerie bag for the first time:
 			say "'What's in THERE?' asks the fish. 'Didja bring me take-out? I don't mind Chinese. They eat a lot of carp, but what do I care? I'm not a carp. Live and let live is what I s--'
-
+	
 	'It's NOT take-out.' You stare the fish down and for once he actually backstrokes a stroke or two. 'It's PRIVATE.'"
-
+	
 	After examining the lingerie bag for the second time:
 		say "'If it's not take-out, I don't see the relevance!' shouts the fish. 'Food is what you want in this situation. Food for MEEEE.'"
-
+	
 	Understand the command "feed" as something new.
-
+	
 	Understand "feed [something]" as feeding.
-
+	
 	Feeding is an action applying to one visible thing.
-
+	
 	Check feeding:
 		if the noun is not the evil fish, say "That doesn't make much sense." instead;
 		if the player is not carrying the fish food, say "You need the fish food first." instead.
-
+	
 	Carry out feeding:
 		increment the score;
 		say "Triumphantly, you dump the remaining contents of the canister of fish food into the tank. It floats on the surface like scum, but the fish for once stops jawing and starts eating. Like a normal fish. Blub, blub.[paragraph break]";
 		say  "[bold type]  *** TWO HOURS LATER ***[roman type][paragraph break]'So,' Britney says, tucking a strand of hair behind your ear, 'where shall we go for dinner? Since I made the big bucks on this trip, it's my treat. Anywhere you like.'[paragraph break]'I've had a hankering all day,' you admit, as the two of you turn from the shuttle platform and head toward the bank of taxis. 'I could really go for some sashimi right now.'";
 		end the story finally.
-
+	
 	Before feeding the fish food:
 		try feeding the evil fish instead.
-
+	
 	When play begins:
 		say "You're on the run. You've got a million errands to do -- your apartment to get cleaned up, the fish to feed, lingerie to buy, Britney's shuttle to meet-- [paragraph break]The fish. You almost forgot. And it's in the studio, halfway across town from anywhere else you have to do. Oh well, you'll just zip over, take care of it, and hop back on the El. This'll be over in no time.[paragraph break]Don't you just hate days where you wake up the wrong color?[paragraph break]".
-
+	
 	The maximum score is 1.
-
+	
 	Test me with "x fish / g / kiss fish / x aquarium / x gravel / x seaweed / i / x telegram / x bouquet / smell bouquet / x lingerie / g / x hat / x window / open window / x painting / g / x cabinet / open cabinet / x cloths / search cloths / open food / feed fish".
+

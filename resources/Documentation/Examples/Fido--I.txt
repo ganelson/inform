@@ -1,7 +1,7 @@
    Back Yard
   Fido
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Back Yard
   You can see a dog here.
@@ -9,7 +9,7 @@
 > >   Back Yard
   (Testing.)
   
-  >[1] name the dog fido
+  >[1] name the dog "fido"
   The dog is now known as fido.
   
   >[2] name the dog lawrence

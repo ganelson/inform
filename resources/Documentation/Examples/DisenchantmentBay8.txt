@@ -1,5 +1,4 @@
 Example: ** Disenchantment Bay 8
-Subtitle: Pushable chest of ice
 Location: Vehicles and pushable things
 RecipeLocation: Disenchantment Bay
 Index: Disenchantment Bay 8. Pushable chest of ice
@@ -15,3 +14,4 @@ This anticipates a later chapter, but it would probably be a good idea to hint t
 	{**}Instead of taking the chest: say "It's too heavy to lift, but you might be able to push it, and just inch it over the frame of the door."
 
 Otherwise, attempts to pick it up will just reply with "That's fixed in place."
+

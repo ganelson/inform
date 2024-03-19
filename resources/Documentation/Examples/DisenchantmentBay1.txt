@@ -1,5 +1,4 @@
 Example: * Disenchantment Bay 1
-Subtitle: The charter boat
 Location: Properties depend on kind
 RecipeLocation: Disenchantment Bay
 Index: The charter boat
@@ -10,10 +9,10 @@ To begin with the title:
 
 	{*}"Disenchantment Bay"
 
-There are many Disenchantment Bays across the world, named by eighteenth-century ships' captains - one in Antarctica, another in Tasmania, for instance. The most famous is probably the one where Lewis and Clark's expedition broke through to the Pacific. But ours is the one in Alaska, named in 1791 by a Spanish navigator who had hoped it might lead to the fabled Northwest Passage, and all of this history is beside the point since the game is set in the present day.
+There are many Disenchantment Bays across the world, named by eighteenth-century ships' captains–one in Antarctica, another in Tasmania, for instance. The most famous is probably the one where Lewis and Clark's expedition broke through to the Pacific. But ours is the one in Alaska, named in 1791 by a Spanish navigator who had hoped it might lead to the fabled Northwest Passage, and all of this history is beside the point since the game is set in the present day.
 
 	{**}The Cabin is a room.  "The front of the small cabin is entirely occupied with navigational instruments, a radar display, and radios for calling back to shore. Along each side runs a bench with faded blue vinyl cushions, which can be lifted to reveal the storage space underneath. A glass case against the wall contains several fishing rods.
-
+	
 	Scratched windows offer a view of the surrounding bay, and there is a door south to the deck. A sign taped to one wall announces the menu of tours offered by the Yakutat Charter Boat Company."
 
 We might want to start with the glass case.
@@ -32,6 +31,6 @@ Using "some" rather than "a" or "the" tells Inform that the cushions are to be r
 
 	{**}The bench is enterable.
 
-And now a short script, so that if we type TEST ME, we experiment with the case and bench:
+And now a short script, so that if we type ``test me``, we experiment with the case and bench:
 
 	{**}Test me with "examine case / get rods / open case / get rods / sit on bench / take cushions / get up"

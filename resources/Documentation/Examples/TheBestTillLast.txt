@@ -8,42 +8,42 @@ For: Z-Machine
 If a single command asks to do many things, some dull and some exciting, we may want to save the good ones for the end.
 
 	{*}"The Best Till Last"
-
+	
 	The Funky Ignition Lounge is a room. "This is where all evenings end." The stick of gelignite, the solid magnesium footstool, the vetiver candle, and the vodka bottle are here.
-
+	
 	The burn description of the vetiver candle is "It burns right down, expensively but gothically."
-
+	
 	The player carries an inexpensive firework. The description of the firework is "It is a cardboard tube with red and green stripes along the outside, and a fuse sticking out of the end." The burn description of the firework is "It ignites gloriously! You take a few hasty steps back in order to avoid burning yourself, and not a moment too soon. Red and green sparks fly out of the tube, and there's a whistling noise punctuated by several loud cracks."
-
+	
 	The player carries a lighter. The description of the lighter is "You don't smoke, but you like to have access to flame now and then anyway."
-
+	
 	Burning it with is an action applying to one thing and one carried thing.
-
+	
 	Understand "burn [things] with [something preferably held]" as burning it with.
-
+	
 	The block burning rule is not listed in any rulebook.
-
+	
 	A thing has some text called the burn description.
-
+	
 	Check burning something:
 		if the player carries the lighter:
 			try burning the noun with the lighter;
 		else:
 			try burning the noun with the noun.
-
+	
 	Check burning something with something when the second noun is not the lighter:
 		say "Your trusty lighter is the best flame source available to you." instead.
-
+	
 	Check burning something with something:
 		if the burn description of the noun is "":
 			say "Best not." instead.
-
+	
 	Carry out burning something with something:
 		now the noun is nowhere.
-
+	
 	Report burning something with something:
 		say "[burn description of the noun][line break]".
-
+	
 	A multiple action processing rule when the action name part of the current action is the burning it with action (this is the orderly burn rule):
 		let L be the multiple object list;
 		let dull list be a list of objects;
@@ -56,5 +56,6 @@ If a single command asks to do many things, some dull and some exciting, we may 
 		let F be the dull list;
 		add fun list to F;
 		alter the multiple object list to F.
-
+	
 	Test me with "burn all with lighter".
+

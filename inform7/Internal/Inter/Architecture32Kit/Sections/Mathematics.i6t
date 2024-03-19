@@ -20,6 +20,15 @@ addresses, we need to compare them with the following routine, which returns
 	return 0;
 ];
 
+@h Fully random word.
+This should be our best try at a single word consisting of 32 uniformly random bits.
+
+=
+[ FullyRandomWord w;
+	@random 0 w;
+	return w;
+];
+
 @h Integer square root.
 Although this routine performs integer square root, it does so using Glulx's
 floating-point operations if available (with code contributed by Andrew

@@ -8,45 +8,46 @@ For: Z-Machine
 Suppose we want to understand shipboard directions, but only when the player is aboard a vessel.
 
 	{*}"Fore"
-
+	
 	Section 1 - Procedure
-
+	
 	The starboard is a direction. The starboard has opposite port. Understand "s" as starboard when the location is nautical.
-
+	
 	The port is a direction. The port has opposite starboard. Understand "p" as port when the location is nautical.
-
+	
 	The fore is a direction. The fore has opposite aft. Understand "f" as fore when the location is nautical.
-
+	
 	The aft is a direction. The aft has opposite fore. Understand "a" as aft when the location is nautical.
-
+	
 	Does the player mean going a nautical direction when the location is nautical: it is very likely.
-
+	
 	Index map with fore mapped as north. Index map with aft mapped as south. Index map with port mapped as west. Index map with starboard mapped as east.
 
-And we can even add new ways to talk about the ways things are mapped, borrowing from the Relations chapter. The following will allow us to use "is abaft of" as well as "is aft of":
+And we can even add new ways to talk about the ways things are mapped, borrowing from the [Relations] chapter. The following will allow us to use "is abaft of" as well as "is aft of":
 
 	{**}[The verb to be abaft of means the mapping aft relation.]
 
-Now, to prevent the player from using NORTH onboard ship, or AFT on land:
+Now, to prevent the player from using ``north`` onboard ship, or ``aft`` on land:
 
 	{**}A room can be nautical or earthbound. A room is usually not nautical. A direction can be nautical or earthbound. A direction is usually not nautical. Starboard, port, fore, aft, up, down, the inside and the outside are nautical.
-
+	
 	Before going a nautical direction when the location is not nautical, say "Nautical directions can only be used on board ship."
-
+	
 	Before going an earthbound direction when the location is nautical, say "Compass directions make no sense on board ship, but you can use [list of nautical directions] instead." instead.
-
+	
 	Section 2 - Scenario
-
+	
 	The Fish Room is aft of the Spirit Room. Starboard of the Fish Room is the After Powder Magazine. The Bread Room is aft of the After Powder Magazine.
-
+	
 	The Fish Room, the Spirit Room, the Bread Room, and the After Powder Magazine are nautical.
-
+	
 	The description of the Fish Room is "Absurd quantities of salt fish are kept here, and periodically visited by the cook or someone serving him. It is otherwise an unexceptional little chamber, so far below the waterline that there are no portholes and no external light of any kind. [paragraph break]A narrow doorway leads forward into the Spirit Room, and the After Powder Magazine is starboard."
-
+	
 	The description of the Spirit Room is "Despite its ghostly name, this is little more than a closet down at the very navel of the ship, in which alcohol is kept: both for purifying wounds and for drinking. Under normal circumstances there is a guard posted here at every hour, lest anyone take to raiding the larder. The current absence of the guard marine strikes you as a very bad sign indeed. [paragraph break]The only way out is aft."
-
+	
 	The description of the Bread Room is "The Bread Room is not only tiny from side to side and front to back: it is also about half the height of a proper room, and the floor slopes up very steeply with the curve of the hull. [paragraph break]What is kept here would not, on land, be dignified by the name of bread: it's hard tack, punishing to the teeth, dry on the tongue, and usually a home to weevils before half the journey is done. [paragraph break]More headroom, and access to the rest of the ship, lies fore through the After Powder Magazine."
-
+	
 	The description of the After Powder Magazine is "Kept in near darkness because no one with any sense would bring a naked flame down here: when necessary, it can be lit with a single small lantern made of very thick glass and sealed to keep the sparks within. Sacks of powder are passed up into the higher levels of the ship by the scrubby little boys called 'powder monkeys' -- but none such are here now."
-
+	
 	Test me with "north / aft / fore".
+

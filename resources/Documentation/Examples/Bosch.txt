@@ -2,19 +2,19 @@ Example: * Bosch
 Location: Stored actions
 RecipeLocation: Scoring
 Index: FULL SCORE using a list of stored actions
-Description: Creating a list of actions that will earn the player points, and using this both to change the score and to give FULL SCORE reports.
+Description: Creating a list of actions that will earn the player points, and using this both to change the score and to give ``full score`` reports.
 For: Z-Machine
 
 We could, if we wanted, make a table of stored actions all of which represent things that will earn points for the player. For instance:
 
 	{*}"Bosch"
-
+	
 	Use scoring.
-
+	
 	The Garden of Excess is a room. The gilded lily is an edible thing in the Garden of Excess.
-
+	
 	The Pathway to Desire is west of the Garden of Excess. The emerald leaf is in the Pathway.
-
+	
 	Table of Valuable Actions
 	relevant action	point value	turn stamp
 	taking the emerald leaf	15	-1
@@ -23,19 +23,19 @@ We could, if we wanted, make a table of stored actions all of which represent th
 (And our list would presumably continue from there, in the full game.)
 
 	{**}The maximum score is 25.
-
+	
 	After doing something:
 		repeat through Table of Valuable Actions:
 			if the current action is the relevant action entry and turn stamp entry is less than 0:
 				now the turn stamp entry is the turn count;
 				increase the score by the point value entry;
 		continue the action.
-
+	
 	Understand "full score" or "full" as requesting the complete score. Requesting the complete score is an action out of world.
-
+	
 	Check requesting the complete score:
 		if the score is 0, say "You have not yet achieved anything of note." instead.
-
+	
 	Carry out requesting the complete score:
 		say "So far you have received points for the following: [line break]";
 		sort the Table of Valuable Actions in turn stamp order;
@@ -43,7 +43,8 @@ We could, if we wanted, make a table of stored actions all of which represent th
 			if the turn stamp entry is greater than 0:
 				say "[line break]  [relevant action entry]: [point value entry] points";
 		say line break.
-
+	
 	Test me with "eat lily / w / full score / get leaf / full".
 
 This system is tidy, but limited: we cannot give actions interesting names in the score list, like "seducing the pirate's daughter" or "collecting a valuable artifact". So it will not be ideal in all situations, but it has the virtue of being easy to extend, and of listing all of the player's successes in the order in which they occurred in their play-through.
+

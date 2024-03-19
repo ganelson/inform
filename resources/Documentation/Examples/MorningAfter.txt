@@ -8,24 +8,25 @@ For: Z-Machine
 Suppose we want to make the player's life slightly easier by examining everything they pick up, if they haven't already examined it.
 
 	{*}"Morning After"
-
+	
 	A thing can be examined or unexamined.
-
+	
 	After taking something unexamined:
 		say "Taken. [run paragraph on]";
 		try examining the noun.
-
+	
 	Carry out examining something:
 		now the noun is examined.
 
-Carry out rules are explained in more detail in the chapter on advanced action handling. For now, it may be enough to know that what we put into this carry out rule for examining will happen any time anything is examined, but that it will not interfere with the rest of the predefined behavior of the action. The player will still see the object description and so on, as usual.
+Carry out rules are explained in more detail in the chapter on [Advanced Actions]. For now, it may be enough to know that what we put into this carry out rule for examining will happen any time anything is examined, but that it will not interfere with the rest of the predefined behaviour of the action. The player will still see the object description and so on, as usual.
 
 	{**}The Red Door Saloon is a room. "This old place is in pretty bad shape since the mine shut down. Now there's not much to see but the pair of deep gouges in the floorboards where they dragged away the Sheriff's corpse with the spurs still on."
-
+	
 	Jed is a man in the Red Door Saloon. "At 8:30 AM the only person around is old Jed, collecting his hangover cure."
-
+	
 	The pistol is a thing in the Red Door Saloon. The description of the pistol is "It ain't too accurate, but for two dollars you can't expect much."
-
+	
 	The hangover cure is a thing in the Red Door Saloon. The description of the hangover cure is "Two yellow egg-yolks unbroken in a red-brown liquid. Yep."
-
+	
 	Test me with "x pistol / get all".
+

@@ -8,9 +8,9 @@ For: Z-Machine
 "Basic Help Menu" is an extension that uses tables to provide a menu of instructions. Suppose we wanted to include this menu in our own game, but add a few custom menu items of our own:
 
 	{*}"Food Network Interactive"
-
+	
 	Include Basic Screen Effects by Emily Short. Include Menus by Emily Short. Include Basic Help Menu by Emily Short.
-
+	
 	Table of Basic Help Options (continued)
 	title	subtable	description	toggle
 	"Recipes in This Game"	Table of Recipes	--	--
@@ -24,7 +24,8 @@ And since we've promised a sub-menu of recipes:
 	title	subtable	description	toggle
 	"Salmon Tartare"	--	"First, be sure to buy extremely fresh salmon. Raw fish should be served on the day it was caught, if possible. To guarantee this, visit an Asian supermarket or specialty store, and buy salmon marked 'sashimi grade'..."	--
 	"Pecan Brownies"	--	"Begin by shelling half a pound of pecans..."	--
-
+	
 	Whole Foods is a room.
 
-To test it, type HELP and then experiment.
+To test it, type ``help`` and then experiment.
+

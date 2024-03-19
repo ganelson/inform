@@ -6,38 +6,41 @@ Description: A hypnotist who can make people obedient and then set them free aga
 For: Z-Machine
 
 	{*}"The Hypnotist of Blois"
-
+	
 	A person is either hypnotized or alert. A person is usually alert.
-
+	
 	Persuasion rule for asking a hypnotized person to try doing something:
 		persuasion succeeds.
-
+	
 	Understand "hypnotize [someone]" as hypnotizing.
-
+	
 	Hypnotizing is an action applying to one thing.
-
+	
 	Check hypnotizing:
 		if the noun is hypnotized, say "Already done." instead.
-
+	
 	Carry out hypnotizing:
 		now the noun is hypnotized.
-
+	
 	Report hypnotizing:
 		say "[The noun] slips under your control."
-
+	
 	Instead of waking someone hypnotized:
 		now the noun is alert;
 		say "[The noun] returns abruptly to consciousness."
 
-We will learn more about check rules for other characters shortly, but the following prevents the hypnosis patient from trying to hypnotize us in turn:
+[ZL: "shortly" reference awkward]::
+
+We will learn more about check rules for other characters shortly, but the following prevents the hypnosis patient from trying to hypnotise us in turn:
 
 	{**}Check someone hypnotizing someone:
 		stop the action.
-
+	
 	Maison de la Magie is a room. "In a darkened room, a few hundreds of paces from the chateau of Blois, you give to tourists three shows a day: displaying to them power they do not comprehend and spectacles they do not deserve."
-
+	
 	A volunteer is a woman in the Maison. "A volunteer from the audience stands facing you, [if alert]skeptically awaiting hypnosis[otherwise]her face worshipful and obedient[end if]." The printed name of the volunteer is "volunteer from the audience". The description is "A distracted, susceptible woman." The volunteer wears a t-shirt and a baseball hat.
-
+	
 	The player wears a top hat and a cape.
-
+	
 	Test me with "volunteer, remove hat / hypnotize volunteer / look / volunteer, remove hat / wake volunteer / volunteer, wear hat".
+

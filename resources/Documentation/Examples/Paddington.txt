@@ -2,31 +2,31 @@ Example: ** Paddington
 Location: Check, carry out, report
 RecipeLocation: Glass and Other Damage-Prone Substances
 Index: CUT [something] WITH [something] command
-Description: A CUT [something] WITH [something] command which acts differently on different types of objects.
+Description: A ``cut`` [something] ``with`` [something] command which acts differently on different types of objects.
 For: Z-Machine
 
-Suppose we intend a game in which the player needs to cut things open on a regular basis. We'll want to check whether they have the proper tools handy, and deal graciously with commands such as CUT [something] when no tool is specified. So:
+Suppose we intend a game in which the player needs to cut things open on a regular basis. We'll want to check whether they have the proper tools handy, and deal graciously with commands such as ``cut`` [something] when no tool is specified. So:
 
 	{*}"Paddington"
-
+	
 	A blade is a kind of thing.
-
+	
 	Understand "cut [something] with [something]" as cutting it with.
-
+	
 	Instead of cutting something:
 		if a blade (called the edge) is held by the player,
 			try cutting the noun with the edge;
 		otherwise say "Your fingernails are not sharp enough."
-
+	
 	Cutting it with is an action applying to two things.
-
+	
 	Check cutting it with:
 		if the noun is a person, say "That would hurt." instead;
 		if the second noun is not a blade, say "[The second noun] has not got enough of a blade." instead.
-
+	
 	Carry out cutting it with:
 		increment the count of rips of the noun.
-
+	
 	Report cutting it with:
 		say "You slash [the noun] with [the second noun]."
 
@@ -48,7 +48,7 @@ Now our rule will occur whenever a container is cut, but play will still go on t
 
 	{**}Carry out cutting something which is part of something with something:
 		move the noun to the player.
-
+	
 	Carry out cutting the quilt with something:
 		now the description of the quilt is "Horribly tattered."
 
@@ -61,16 +61,17 @@ For that matter, we might want to add a report rule as well, to occur after the 
 This time we do not add the condition to the rule (i.e., Report cutting an open noun...) If we did, this report rule would be more specific than the general report rule, and would occur first.
 
 	{**}The Safehouse is a room.
-
+	
 	The teddy bear is a closed thing in the Safehouse. The description is "Fluffy[if the head is part of the bear], with an outsized head[otherwise], but headless[end if]." The head is a closed part of the teddy bear. In the bear is a large wad of stuffing. In the head are a small wad of stuffing and a packet of smuggled diamonds.
-
+	
 	The quilt is in the Safehouse. The description is "An old but comforting quilt."
-
+	
 	The player carries a blade called a switchblade.
 
 Here is a final nicety to get rid of the "which is closed" statement on our closed unopenable teddy bear, using an "activity" rule:
 
 	{**}After printing the name of a closed unopenable container:
 		omit contents in listing.
-
+	
 	Test me with "cut quilt with bear / cut quilt with switchblade / examine quilt / cut bear with switchblade / again / examine bear / cut head with switchblade / get diamonds / mourn loss of innocence".
+

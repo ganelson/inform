@@ -2,23 +2,23 @@ Example: * Finality
 Location: Printing the player's obituary
 RecipeLocation: Ending The Story
 Index: UNDO not mentioned in the final question
-Description: Not mentioning UNDO in the final set of options.
+Description: Not mentioning ``undo`` in the final set of options.
 For: Z-Machine
 
-By default, Inform reminds the player that they have the option of typing UNDO after a story-ending action. This is generally good practice, especially for the sake of novice players who might not be aware of this possibility otherwise, and might be frustrated by a loss they could easily step back from.
+By default, Inform reminds the player that they have the option of typing ``undo`` after a story-ending action. This is generally good practice, especially for the sake of novice players who might not be aware of this possibility otherwise, and might be frustrated by a loss they could easily step back from.
 
 Just occasionally, though, we may decide that the player does not deserve any such notification:
 
 	{*}"Finality"
-
+	
 	Cliff Edge is a room. "This narrow strip overlooks a gorge many hundreds of feet deep, at whose bottom is a river of molten lava. The walls of the gorge are lined with poison-tipped spikes. Furthermore, the birds that inhabit this valley spit balls of fire. Good thing you're safe up here."
 
-The Table of Final Question Options determines what options are to be given to the player after the story ends. We can change what is mentioned there by altering the entries. (The example Jamaica 1688 explains this table in more detail, and demonstrates some other things that we might do with it.)
+The Table of Final Question Options determines what options are to be given to the player after the story ends. We can change what is mentioned there by altering the entries. (The example [Jamaica 1688] explains this table in more detail, and demonstrates some other things that we might do with it.)
 
 	{**}When play begins:
 		choose row with a final response rule of immediately undo rule in the Table of Final Question Options;
 		blank out the final question wording entry.
-
+	
 	Instead of jumping:
 		say "If you insist.";
 		end the story.
@@ -26,5 +26,6 @@ The Table of Final Question Options determines what options are to be given to t
 And if we decided that we didn't want the player to be able to undo the command at all, we should add the use option
 
 	{**}Use undo prevention.
-
+	
 	Test me with "jump".
+

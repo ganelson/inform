@@ -6,14 +6,15 @@ Description: A radio that produces a cycle of output using varying text.
 For: Z-Machine
 
 	{*}"Radio Daze" by Jon Ingold
-
+	
 	The Living Room is a room. "A long couch, set up so you can see your wireless set. Not that you need to see it, of course."
-
+	
 	The long couch is an enterable scenery supporter in the living room. Instead of entering the long couch when the radio was switched off, say "Better turn the radio on before you get comfortable." Report entering the couch: say "You settle yourself down to listen." instead. Instead of listening when the radio is switched on, stop the action.
-
+	
 	The radio is a device in the living room. The radio is switched off. "[if switched on]The radio burbles on[otherwise]The radio is off[end if]." Check switching off the radio when the player is on the long couch: say "You can't reach the radio from here." instead.
-
+	
 	Every turn when the radio is switched on:
 		say "[one of]Two characters in the radio play have begun an argument[or]The argument continues[or]The play continues[stopping]: [one of]'Did not!'[or]'Did too!'[or]'Did I?'[or]'You did!'[or]'I couldn't have, Martha!'[or]'But you did, Tom!'[cycling]"
-
+	
 	Test me with "sit on couch / turn on radio / sit on couch/ listen / g / g / g / g / g".
+

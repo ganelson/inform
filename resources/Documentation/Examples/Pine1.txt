@@ -1,46 +1,46 @@
 Example: * Pine 1
-Subtitle: Waking the Princess
 Location: Creating a scene
 RecipeLocation: Reactive Characters
 Index: Pine 1. Waking the Princess
 Description: Pine: Using a scene to watch for the solution of a puzzle, however arrived-at by the player.
 For: Z-Machine
 
-Because scene rules are checked every turn, they can be useful for designing puzzles which have multiple solutions. Instead of deciding the puzzle is "solved" when the player does a certain action, we set up a scene that checks to see whether the player has achieved a certain outcome -- however they accomplished it.
+Because scene rules are checked every turn, they can be useful for designing puzzles which have multiple solutions. Instead of deciding the puzzle is "solved" when the player does a certain action, we set up a scene that checks to see whether the player has achieved a certain outcome – however they accomplished it.
 
 For instance, in this scenario, we're waiting for Sleeping Beauty to wake up, and it doesn't much matter how...
 
 	{*}"Pine"
-
+	
 	A person can be asleep or awake. A person can be active or passive.
-
+	
 	The Spinning Tower is a room. "A remote corner of the old castle, reserved for spinning and weaving tasks."
-
+	
 	Sleeping Beauty is an asleep woman in the Spinning Tower. "[if asleep]Sleeping Beauty lies here, oblivious to your presence[otherwise]Sleeping Beauty stands beside you, looking a little confused[end if]." The description is "She is even more magnificent than the rumors suggested." Understand "woman" or "girl" or "princess" or "lady" as Sleeping Beauty.
-
+	
 	Discovery is a scene. Discovery begins when play begins. Discovery ends when Sleeping Beauty is awake. Marriage Proposal is a scene. Marriage Proposal begins when Discovery ends.
-
+	
 	When Discovery ends: say "Throughout the palace you can hear the other sounds of stirring and movement as the spell of centuries is broken."
-
+	
 	Instead of waking an awake person: say "Redundant."
-
+	
 	Instead of waking an asleep person: say "Yes, but how?"
-
+	
 	Instead of attacking an asleep person:
 		now the noun is awake;
 		say "[The noun] sits bolt upright. 'Hey! Ow!' So much for that true love's kiss nonsense."
-
+	
 	Instead of kissing an asleep person:
 		now the noun is awake;
 		say "[The noun] slowly stirs to wakefulness!"
-
+	
 	Instead of throwing water at an asleep person:
 		now the second noun is awake;
 		now the noun is nowhere;
 		say "You pour out [the noun] on [the second noun].
-
+	
 	[The second noun] wakes, shuddering. 'Agh! I had a terrible dream about drowning and then-- Hey!'"
-
+	
 	The player carries a jug of water. Understand "pour [something] on [something]" or "splash [something] at/on [something]" as throwing it at.
-
+	
 	Test me with "x beauty / wake beauty / pour water on beauty".
+

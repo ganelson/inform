@@ -8,40 +8,40 @@ For: Z-Machine
 Typically games which keep track of the player's wealth need only do so as an abstract number, but occasionally it becomes useful to represent money as physical coins and bills. Here is an example that does exactly that:
 
 	{*}"Nickel and Dimed"
-
+	
 	Section 1 - Currency
-
+	
 	Price is a kind of value. $10.99 specifies a price with parts dollars and cents. A thing has a price. The price of a thing is usually $0.00.
-
+	
 	Money is a kind of thing. Coin is a kind of money.
-
+	
 	A dollar bill is a kind of money. The price of a dollar bill is $1.00. The printed name of a dollar bill is "dollar bill". Rule for printing the plural name of a dollar bill: say "dollar bills". The description of a dollar bill is "It has George Washington's head on the front, which with a bit of creative folding can be scrunched to look like a mushroom. All important things really are learned in kindergarten."
-
+	
 	A five-dollar bill is a kind of money. The price of a five-dollar bill is $5.00. Understand "five" or "five dollar" as the five-dollar bill. The description of a five-dollar bill is "Abraham Lincoln. He looks slightly less dignified here than he does on the penny."
-
+	
 	A hundred-dollar bill is a kind of money. The price of the hundred-dollar bill is $100.00. Understand "hundred" or "hundred dollar" as the hundred-dollar bill. Understand "dollar" as the dollar bill. The description of a hundred-dollar bill is "It's got Benjamin Franklin, who always gets shafted: a denomination too large for anyone to carry conveniently, and a lot of local fame in Philadelphia."
 
 Our choice of understand rules guarantees that "five dollar" will be understood as the five, but "dollar" alone as the single. We will learn more about "understand" in later chapters, but here is a test to check the functionality:
 
 	{**}Test bills with "x hundred dollar bill / x five dollar bill / x hundred / x five / x dollar / x dollar bill".
-
+	
 	A quarter is a kind of coin. The price of a quarter is $0.25. The description of a quarter is "One of the old-fashioned variety, not a state quarter."
-
+	
 	A dime is a kind of coin. The price of a dime is $0.10. The description of a dime is "Franklin Roosevelt, trying not to look too annoyed that his coin is so small and thin."
-
+	
 	A nickel is a kind of coin. The price of a nickel is $0.05. The description of a nickel is "A chubby coin, but you've always liked Thomas Jefferson, and the Monticello on the back is a nice touch."
-
+	
 	A penny is a kind of coin. The price of a penny is $0.01. The description of the penny is "A profile of Abe Lincoln. Sometime soon they'll stop minting these, you're sure of it."
-
+	
 	Section 2 - Ownership
-
+	
 	Ownership relates one person (called the owner) to various things. The verb to own means the ownership relation.
-
+	
 	Definition: a thing is owned if the player owns it.
-
+	
 	Instead of buying something which is owned by the player:
 		say "You already own [the noun]."
-
+	
 	Instead of going somewhere when the player encloses something (called the stolen goods) which is not owned by the player:
 		if the owner of the stolen goods is not a person:
 			now the player owns the stolen goods;
@@ -49,43 +49,43 @@ Our choice of understand rules guarantees that "five dollar" will be understood 
 		if the owner of the stolen goods can see the player,
 			say "'Hey there buddy, not so fast,' says [the owner of the stolen goods]. 'You going to buy [the stolen goods] first, or am I gonna call the cops?'";
 		otherwise continue the action.
-
+	
 	After taking inventory:
 		say "Altogether, you've got [the player's cash] on your person."
-
+	
 	To decide what price is the player's cash:
 		let sum be the total price of money enclosed by the player;
 		decide on sum.
-
+	
 	To decide what price is the sum in (item - a container):
 		let sum be the total price of the money in the item;
 		decide on sum.
-
+	
 	When play begins: now every thing carried by the player is owned by the player.
-
+	
 	Section 3 - Purchasing and Sales
-
+	
 	Definition: a thing is worthless if the price of it is $0.00. Definition: a thing is valuable if it is not worthless.
-
+	
 	A thing can be for sale.
-
+	
 	Rule for printing room description details of something (called target) which is for sale (this is the disclose prices in room description rule): say " ([price of the target])".
-
+	
 	Before listing contents: group money together giving articles.
-
+	
 	Instead of examining a for sale thing (this is the describe things by price rule):
 		say "[The noun] costs [the price of the noun], payable to [the owner of the noun]."
 
 The cashbox is a theoretical construct, not something the player will ever encounter in the course of the game. It contains all the money that is available for non-player characters to use in making change. If we wanted, we could give each character their own stash of change, but this would increase the likelihood that any given person would run out of cash to make change with. (And in this example there is only one vendor anyway.)
 
 	{**}The cashbox is a container. The cashbox contains 10 pennies. The cashbox contains 10 nickels.  The cashbox contains 10 dimes.  The cashbox contains 10 quarters.  The cashbox contains 10 dollar bills.  The cashbox contains 10 five-dollar bills.
-
+	
 	The block buying rule is not listed in the check buying rules.
-
+	
 	Check buying something:
 		if the noun is not for sale, say "[The owner of the noun] does not want to sell you [the noun]." instead;
 		if the player's cash is less than the price of the noun, say "You can't afford the asking price of [the price of the noun] for [the noun]." instead.
-
+	
 	Carry out buying something:
 		let sum paid be $0.00;
 		while sum paid is less than the price of the noun:
@@ -117,21 +117,21 @@ The cashbox is a theoretical construct, not something the player will ever encou
 			say "'Here ya go,' says [the owner of the noun], handing [the noun] to you. [run paragraph on]";
 			move the noun to the player;
 		now the player owns the noun.
-
+	
 	Money can be spent or fresh.
-
+	
 	Report buying something:
 		if the player owns the noun,
 			say "Your transaction is now complete, leaving you with [the player's cash]."
 
-We've skipped over defining what makes a denomination the best for a given transaction, so we'd better do that now. Our goal is to avoid ever having the player gratuitously overpay -- they should always offer the smallest amount of money that will meet the price of what they're buying.
+We've skipped over defining what makes a denomination the best for a given transaction, so we'd better do that now. Our goal is to avoid ever having the player gratuitously overpay – they should always offer the smallest amount of money that will meet the price of what they're buying.
 
-We also assume that all money "enclosed by the buyer" -- that is, somewhere in the buyer's possession -- is available for use. This might not be true in a game where the player could pick up, say, a sealed lucite container with a ten-dollar bill inside; in that case we would have to define our terms more rigorously, perhaps by requiring that the bills be both enclosed and touchable by the buyer. The touchability check adds an extra layer of calculation, however, and since it is not necessary in this example (and probably not in most other cases either), we'll leave it out:
+We also assume that all money "enclosed by the buyer" – that is, somewhere in the buyer's possession – is available for use. This might not be true in a game where the player could pick up, say, a sealed lucite container with a ten-dollar bill inside; in that case we would have to define our terms more rigorously, perhaps by requiring that the bills be both enclosed and touchable by the buyer. The touchability check adds an extra layer of calculation, however, and since it is not necessary in this example (and probably not in most other cases either), we'll leave it out:
 
 	{**}Definition: money is costly if its price is $2.50 or more. Definition: money is cheap if its price is $0.99 or less.
-
+	
 	Functional relation is a kind of value. The functional relations are overpayment, underpayment and irrelevant. Money has a functional relation.
-
+	
 	To decide what money is the best money from (buyer - a thing) for (cost - a price):
 		repeat with bill offered running through money:
 			if the bill offered is enclosed by the buyer:
@@ -140,8 +140,7 @@ We also assume that all money "enclosed by the buyer" -- that is, somewhere in t
 				otherwise now the functional relation of the bill offered is underpayment;
 			otherwise:
 				now the functional relation of the bill offered is irrelevant;
-		[say "underpayment: [a list of underpayment money]
-		overpayment: [a list of overpayment money]";]
+		[say "underpayment: [a list of underpayment money]	overpayment: [a list of overpayment money]";]
 		if the total price of underpayment money is less than the cost:
 			decide on the cheapest money which is overpayment;
 		otherwise:
@@ -151,53 +150,53 @@ Notice the "say underpayment/overpayment section..." noted out, above. This is f
 
 	{**}Instead of giving money to someone:
 		say "Best to keep the transaction simple by buying whatever you want."
-
+	
 	Section 4 - The Scenario
-
+	
 	The player carries 2 dollar bills. The player carries a nickel. The player carries 2 pennies. The player carries a five-dollar bill. The player carries 1 hundred-dollar bill.
-
+	
 	The Subway Station is a room.
-
+	
 	The Bitterly Cold Street is north of the Subway Station. "Even though there is no actual snow or ice, the street is about as cold as you can stand, for which reason walking the twenty blocks uptown is not an acceptable option." The Bitterly Cold Street contains a dollar bill.
-
+	
 	The newspaper man is a man in the Subway Station. "A newspaper man in a knit cap and fingerless gloves is hopping up and down behind his stand[if the turn count is 1]. Cold weather, caffeine overdose, or mental illness? You may never know. Welcome to New York[end if]." The description is "Eye contact with strangers is something to avoid around here."
-
+	
 	The stand is a supporter in the Station. The stand is scenery.
-
+	
 	A copy of the New York Times is on the stand. The price of the New York Times is $1.25.
-
+	
 	A pack of gum is on the stand. The price of the gum is $0.40.
-
+	
 	A paperback novel is on the stand. The price of the paperback novel is $7.99.
-
+	
 	A packet of trading cards is on the stand. The price of the packet is $0.99.
-
+	
 	When play begins:
 		now every thing on the stand is owned by the newspaper man;
 		now every thing on the stand is for sale.
 
-We could have done all that by hand, but the initialization requires a little less work.
+We could have done all that by hand, but the initialisation requires a little less work.
 
 	{**}The ticket machine is a container in the Subway Station. It is fixed in place. The description of the ticket machine is "An LED screen on the front instructs you to insert [remaining ticket total] to complete your purchase. You also notice that the NO CHANGE light is lit up." The light is part of the ticket machine. The printed name of the light is "no change light". Understand "no change" or "no change light" as the light.
-
+	
 	The description of the light is "In the whole of your recollection, the ticket machine has actually had change a total of twice. Usually, as now, the no-change light gleams angrily, daring you to put in more than you owe." A cash return button is part of the ticket machine. Instead of pushing the cash return button: say "The ticket machine regurgitates [the list of things in the ticket machine]."; now every thing in the ticket machine is carried by the player. Instead of taking something which is in the ticket machine: say "The ticket machine has swallowed your money, but it can be retrieved (you hope) with the cash return button."
-
+	
 	Instead of inserting a hundred-dollar bill into the ticket machine:
 		say "What, are you nuts?"
-
+	
 	To decide what price is the remaining ticket total:
 		let absolute cost be $2.25;
 		let remaining cost be absolute cost minus the total price of things in the ticket machine;
 		if remaining cost is less than $0.00, decide on $0.00;
 		decide on remaining cost.
-
+	
 	Instead of inserting something which is not money into the ticket machine: say "The ticket machine only accepts money, not other tokens of your esteem and regard."
-
+	
 	Instead of inserting a penny into the ticket machine:
 		say "The penny rattles out again mockingly: not even the ticket machine thinks these are worth anything."
-
+	
 	A subway pass is a kind of thing. 15 subway passes are in the cashbox. The description of a subway pass is usually "A rectangle of thick lavender paper with a black magnetic stripe running up the back side. It is good for one trip on the subway."
-
+	
 	After inserting something into the ticket machine:
 		if the remaining ticket total is $0.00:
 			let purchased ticket be a random subway pass in the cashbox;
@@ -213,17 +212,18 @@ And because even though the ticket machine is a container, we don't want to say 
 
 	{**}Rule for printing room description details of the ticket machine:
 		do nothing instead.
-
+	
 	Test me with "buy novel / n / get dollar / s / buy novel".
 
 After all that, we should probably give the player a chance to win, as well:
 
 	{**}The turnstile is south of the Subway Station. "A turnstile is all that separates you from the subway platform stairs." The turnstile is north of the Platform. The turnstile is a door. Before going down in the presence of the turnstile, try going south instead. The turnstile is openable. The turnstile is open.
-
+	
 	Instead of going through the turnstile when the player carries a subway pass: say "You enter the turnstile and begin your journey uptown..."; end the story finally saying "At last". Instead of going through the turnstile: say "You can't go through the turnstile without a subway pass. They're very strict about this."
-
+	
 	Instead of inserting money into the turnstile: say "The turnstile takes passes, not money." Instead of inserting a subway pass into the turnstile, try entering the turnstile.
-
+	
 	Test more with "buy times / put all but five-dollar bill in machine / press button / buy gum / buy cards / i / put dollar in machine / g / put quarter in machine / i / d".
 
 In fairness to the Metropolitan Transit Authority, we should admit that most of the ticketing machines in the real New York subway are better than this, and will accept, say, a debit card. But that would be so much less exciting to implement.
+

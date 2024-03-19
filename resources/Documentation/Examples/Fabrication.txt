@@ -8,57 +8,58 @@ For: Z-Machine
 When we make a new kind of value, the new named values can themselves have properties. That is convenient because, for instance, we might want to associate a material (itself the property of an object) with certain features, such as price.
 
 	{*}"Fabrication"
-
+	
 	Section 1 - Procedure
-
+	
 	A material is a kind of value. The materials are silk, velvet, cotton, and wool.
-
+	
 	Price is a kind of value. $1.99 specifies a price.
-
+	
 	Area is a kind of value. 5 sq yards specifies an area.
-
+	
 	Cost is a kind of value.. $1.99 per sq yard specifies a cost.  A cost times an area specifies a price.
-
+	
 	A material has a cost.
-
+	
 	The cost of silk is usually $5.75 per sq yard. The cost of velvet is usually $9.50 per sq yard. The cost of cotton is usually $2.29 per sq yard. The cost of wool is usually $4.75 per sq yard.
-
+	
 	A pattern is a kind of thing. A pattern has a material. A pattern has an area. A pattern has a price. The price of a pattern is usually $9.99. Understand "pattern" as a pattern. Understand "patterns" as the plural of a pattern.
-
+	
 	After printing the name of a pattern:
 		if planning:
 			do nothing;
 		otherwise:
 			say " pattern".
-
+	
 	To decide what price is the material price of (chosen item - pattern):
 		let C be the cost of the material of the chosen item;
 		let A be the area of the chosen item;
 		decide on C * A.
-
+	
 	To decide what price is the overall price of (chosen item - pattern):
 		let P be the price of the chosen item;
 		let M be the material price of the chosen item;
 		decide on P + M.
-
+	
 	Understand "plan [material] [pattern]" as planning it for.
-
+	
 	Planning it for is an action applying to one material and one thing.
-
+	
 	Carry out planning it for:
 		now the material of the second noun is the material understood.
-
+	
 	Report planning it for:
 		say "You lay plans for a [material understood] [second noun], running [material price of the second noun] for materials and [price of the second noun] for the pattern itself, for a total of [overall price of the second noun]."
-
+	
 	Section 2 - Scenario
-
+	
 	Joanne's Fabrics is a room. Joanne's Fabrics contains a pattern bin.
-
+	
 	The cape is a pattern. The material of the cape is velvet. The area of the cape is 9 sq yards.
-
+	
 	The bodice is a pattern. The material of the bodice is silk. The area of the bodice is 2 sq yards. The price of the bodice is $11.99.
-
+	
 	The cape and the bodice are in the pattern bin.
-
+	
 	Test me with "plan silk bodice / plan velvet bodice / plan velvet cape / plan wool cape".
+

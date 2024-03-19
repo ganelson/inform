@@ -8,9 +8,9 @@ For: Z-Machine
 Suppose we want a deck of cards which the player can shuffle and draw from. Our first (rather tedious) task is merely to set up the deck as a table:
 
 	{*}"Jokers Wild"
-
+	
 	Suit is a kind of value. The suits are hearts, clubs, diamonds, and spades.
-
+	
 	Table of Cards
 	suit	value
 	diamonds	1
@@ -71,7 +71,7 @@ We're going to describe the higher numbers as face cards, so it helps to write a
 	{**}To say (count - a number) as a card value:
 		choose row with a value of count in the Table of Value Names;
 		say "[term entry]".
-
+	
 	Table of Value Names
 	value	term
 	1	"ace"
@@ -91,23 +91,23 @@ We're going to describe the higher numbers as face cards, so it helps to write a
 Now we get the shuffling of the deck from "sort in random order", so:
 
 	{**}Understand "shuffle" as shuffling. Shuffling is an action applying to nothing.
-
+	
 	Carry out shuffling:
 		sort the Table of Cards in random order;
 		say "You expertly rearrange the cards.".
-
+	
 	When play begins:
 		sort the Table of Cards in random order.
 
 This will continue to work properly even as the deck is partially depleted. Speaking of which, suppose we want the player to be able to toss the cards one-by-one into a hat. They are going to need to be removed from the deck, so:
 
 	{**}Understand "toss" or "toss a card" or "toss card" as tossing.
-
+	
 	Tossing is an action applying to nothing.
-
+	
 	Check tossing:
 		if the number of filled rows in the Table of Cards is 0, say "The deck is empty." instead.
-
+	
 	Carry out tossing:
 		repeat through the Table of Cards:
 			let new value be value entry;
@@ -119,9 +119,10 @@ This will continue to work properly even as the deck is partially depleted. Spea
 If we wanted to simulate a slightly more stimulating game, we could instead have a second table to represent the player's hand of cards and record each card drawn. That would get long for the purposes of example, however, so instead we will just admit that the player's life is an empty husk of existence:
 
 	{**}The Empty Room is a room. "It has come to this: sitting on the bare floor of Lulu's apartment with nothing to amuse you but a deck of cards and the top hat from last year's act. You reckon [the number of filled rows in the Table of Cards in words] cardtosses are all that stand between you and the utter pointlessness of existence.
-
+	
 	Once again you curse Lulu for running off with that joker."
-
+	
 	The player is carrying the deck of cards. The top hat is an open container in the Empty Room. It is scenery.
-
+	
 	Test me with "toss / again / again / again / again / again / again / again".
+

@@ -5,66 +5,67 @@ Index: Random distribution at the start of play
 Description: It's tempting to use "now..." to distribute items randomly at the start of play, but we need to be a little cautious about how we do that.
 For: Z-Machine
 
-Suppose we want a game in which each scenario starts with the characters wearing hats -- randomly passed out. We might be tempted to write our scenario like this:
+Suppose we want a game in which each scenario starts with the characters wearing hats – randomly passed out. We might be tempted to write our scenario like this:
 
 	{*}"Hatless"
-
+	
 	The Costumery is a room. Larry, Curly, and Moe are men in the Costumery. Janine is a woman in the Costumery.
-
+	
 	Rule for writing a paragraph about a person (called the target) who wears a hat (called attire):
 		say "[The target] is here, looking stylish in [an attire]."
-
+	
 	Rule for writing a paragraph about a hatless person (called the target):
 		say "[The target] mopes about, hatless."
-
+	
 	A hat is a kind of thing. A hat is always wearable. Definition: a person is hatless if they are not the player and they do not wear a hat.
-
+	
 	The indigo bowler, the polka-dotted fedora, the pink beret, and the scarlet cloche are hats.
-
+	
 	When play begins:
 		now every hat is worn by a random hatless person.
 
-And we might hope that this would choose a new hatless person for each hat, but we would be wrong. It will instead choose one hatless person and put all the hats on that one person -- and everyone else has to go bare-headed. That's clearly no good. Let's try again:
+And we might hope that this would choose a new hatless person for each hat, but we would be wrong. It will instead choose one hatless person and put all the hats on that one person – and everyone else has to go bare-headed. That's clearly no good. Let's try again:
 
 	{*}"Hatless 2"
-
+	
 	The Costumery is a room. Larry, Curly, and Moe are men in the Costumery. Janine is a woman in the Costumery.
-
+	
 	Rule for writing a paragraph about a person (called the target) who wears a hat (called attire):
 		say "[The target] is here, looking stylish in [an attire]."
-
+	
 	Rule for writing a paragraph about a hatless person (called the target):
 		say "[The target] mopes about, hatless."
-
+	
 	A hat is a kind of thing. A hat is always wearable. Definition: a person is hatless if they are not the player and they do not wear a hat.
-
+	
 	The indigo bowler, the polka-dotted fedora, the pink beret, and the scarlet cloche are hats.
-
+	
 	When play begins:
 		now every hatless person wears a random hat.
 
-But this selects one random hat and assigns it to each hatless person in turn -- so it will only wind up being worn by the last of them (since Inform knows that only one person can wear a hat at a time).
+But this selects one random hat and assigns it to each hatless person in turn – so it will only wind up being worn by the last of them (since Inform knows that only one person can wear a hat at a time).
 
 In this case, we do have to expand out our loop so that the game makes an explicit distribution:
 
 	{*}"Hatless 3"
-
+	
 	The Costumery is a room. Larry, Curly, and Moe are men in the Costumery. Janine is a woman in the Costumery.
-
+	
 	Rule for writing a paragraph about a person (called the target) who wears a hat (called attire):
 		say "[The target] is here, looking stylish in [an attire]."
-
+	
 	Rule for writing a paragraph about a hatless person (called the target):
 		say "[The target] mopes about, hatless."
-
+	
 	A hat is a kind of thing. A hat is always wearable. Definition: a person is hatless if they are not the player and they do not wear a hat.
-
+	
 	The indigo bowler, the polka-dotted fedora, the pink beret, and the scarlet cloche are hats.
-
+	
 	When play begins:
 		repeat with item running through hats:
 			now the item is worn by a random hatless person.
 
-Each time Inform considers the instruction "now the item is worn by a random hatless person", there is one fewer such person to choose from -- so we can guarantee that the hats are distributed one per customer and that all hats are distributed.
+Each time Inform considers the instruction "now the item is worn by a random hatless person", there is one fewer such person to choose from – so we can guarantee that the hats are distributed one per customer and that all hats are distributed.
 
 Hatless 3 is only guaranteed to work because the number of hats is less than or equal to the number of people; otherwise the final use of random will return "nothing" and then a problem message will appear during play.
+

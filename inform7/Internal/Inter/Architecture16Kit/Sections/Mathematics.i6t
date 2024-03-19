@@ -19,6 +19,15 @@ addresses, we need to compare them with the following routine, which returns
     return -1;
 ];
 
+@h Fully random word.
+This should be our best try at a single word consisting of 16 uniformly
+random bits. |random($100)-1| is a fully random byte.
+
+=
+[ FullyRandomWord;
+	return (random($100)-1)*$100 + (random($100)-1);
+];
+
 @h Integer roots.
 We are unable to provide VM support for taking square or cube roots rapidly:
 

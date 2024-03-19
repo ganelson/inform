@@ -8,16 +8,16 @@ For: Z-Machine
 In this example, we want the names of rooms to be asterisked out if the player wanders around without the benefit of a candle. We can do this by treating the room names as text, then replacing every letter:
 
 	{*}"Blackout"
-
+	
 	Tiny Room is a dark room. Absurdly Long-Named Room is a dark room. It is west of Tiny Room.
-
+	
 	The Candle Factory is north of Tiny Room. It contains a beeswax candle. The beeswax candle is lit.
-
+	
 	Rule for printing the name of a dark room:
 		let N be "[location]";
 		replace the regular expression "\w" in N with "*";
 		say "[N]".
-
+	
 	Test me with "w / look / e / n / get candle / s / w".
 
 Notice that the hyphen in the Absurdly Long-Named Room does not get replaced. We could replace even that, if we liked, with
@@ -25,3 +25,4 @@ Notice that the hyphen in the Absurdly Long-Named Room does not get replaced. We
 		replace the regular expression "\S" in N with "*";
 
 which would catch every character that is not a space.
+

@@ -2,57 +2,55 @@ Example: *** In Fire or in Flood
 Location: New rulebooks
 RecipeLocation: Fire
 Index: BURN command, and flammable objects
-Description: A BURN command; flammable objects which light other items in their vicinity and can burn for different periods of time; the possibility of having parts or contents of a flaming item which survive being burnt.
+Description: A ``burn`` command; flammable objects which light other items in their vicinity and can burn for different periods of time; the possibility of having parts or contents of a flaming item which survive being burnt.
 For: Z-Machine
 
-
 	{*}"In Fire or in Flood"
-
+	
 	Part I - Rules for combustion
-
+	
 	Heat is a kind of value. The heats are whole, damp, and flaming. A thing has a heat. A thing is usually whole.
-
+	
 	A thing has a number called endurance. The endurance of a thing is usually 5. A thing has a number called turns of burning. A thing can be flammable or flame-retardant.
-
+	
 	Before printing the name of something flaming:
 		say "flaming ".
-
+	
 	Before burning something when the player is not carrying something flaming:
 		if a flaming portable thing (called the lighter) is touchable:
 			say "(with [the lighter], which you first take)[command clarification break]";
 			try taking the lighter.
-
+	
 	Instead of burning something when the player is not carrying something flaming:
 		say "You would first need a fire source."
-
+	
 	Instead of burning something flame-retardant:
 		say "[The noun] is not the sort of thing that catches fire."
-
+	
 	Instead of burning something flammable when the player is carrying something flaming (called the flame source):
 		say "You light [the noun] with [the flame source].";
 		now the heat of the noun is flaming.
-
+	
 	Instead of burning something when the player is in the noun:
 		say "That seems dangerous given that you yourself are in [the noun]."
-
+	
 	Instead of burning something when the player is on the noun:
 		say "That seems dangerous given that you yourself are on [the noun]."
-
+	
 	Instead of examining something:
 		say "Hm, the [printed name] appears to be [heat]."
-
+	
 	Before taking a flaming thing:
 		let turns remaining be the endurance of the noun minus the turns of burning of the noun;
 		if turns remaining is less than two, say "There's no portion of [the noun] sufficiently cool for you to pick up." instead.
 
-
-But that's only a small part of the battle. The thing about fire is that it keeps on doing fiery things even when the player is otherwise occupied: destroying items that are on fire, and spreading to other things nearby. So we need a set of rules for the fire's behavior.
+But that's only a small part of the battle. The thing about fire is that it keeps on doing fiery things even when the player is otherwise occupied: destroying items that are on fire, and spreading to other things nearby. So we need a set of rules for the fire's behaviour.
 
 	{**}Every turn when something is flaming:
 		follow the fire rules.
-
+	
 	The fire rules is a rulebook.
-
+	
 	A fire rule (this is the can't hold flaming objects rule):
 		repeat with item running through flaming things:
 			if the item is held by the player:
@@ -61,12 +59,12 @@ But that's only a small part of the battle. The thing about fire is that it keep
 					say "[The item] becomes too hot to hold! ";
 					try dropping the item;
 					if the item is held by the player, say "This is certainly painful."
-
+	
 	A fire rule (this is the flames spread rule):
 		repeat with item running through flaming things:
 			if the turns of burning of the item is one:
 				spread the flames from the item.
-
+	
 	A fire rule (this is the fire destroys things rule):
 		now started printing is false;
 		repeat with item running through flaming things:
@@ -84,7 +82,7 @@ This sort of flexibility is especially useful in the context of extensions. Some
 The contact between things is a critical factor when it comes to fire, so we might add a couple of conditional relations do determine what is touching what.
 
 	{**}Reliance relates a thing (called X) to a thing (called Y) when X is part of Y or X is in Y or X is on Y. The verb to be relying on means the reliance relation.
-
+	
 	Contact relates a thing (called X) to a thing (called Y) when X is relying on Y or Y is relying on X. The verb to be joined to means the contact relation.
 
 Having these at our disposal makes it much tidier to write what happens next:
@@ -96,9 +94,9 @@ Having these at our disposal makes it much tidier to write what happens next:
 				now started printing is true;
 				say "Flames engulf [the list of flammable whole things which are joined to the item].";
 			now all the flammable whole things joined to the item are flaming.
-
+	
 	Started printing is a truth state that varies. Started printing is false.
-
+	
 	To destroy (item - a thing):
 		let home be the holder of the item;
 		if the item is part of something (called the superstructure), let home be the holder of the superstructure;
@@ -110,7 +108,7 @@ Having these at our disposal makes it much tidier to write what happens next:
 		now the item is nowhere;
 		now the item is damp;
 		now every flaming thing which is part of the item is damp.
-
+	
 	To destroy (item - a door):
 		let home be the holder of the item;
 		if item is visible:
@@ -120,50 +118,50 @@ Having these at our disposal makes it much tidier to write what happens next:
 		now the item is damp;
 		now the item is open;
 		now the item is unopenable.
-
+	
 	Before printing the name of a damp door:
 		say "burnt-out frame of ".
-
+	
 	Instead of opening or closing a damp door:
 		say "[The noun] can no longer be opened or closed in any meaningful sense."
-
+	
 	Instead of doing something other than examining or dropping to a flaming thing when the turns of burning of the noun is greater than 1:
 		say "Fire has too thoroughly engulfed [the noun] for that to be a good idea."
-
+	
 	Instead of taking something when the noun is in a flaming thing (called the receptacle):
 		say "You don't quite dare reach into [the receptacle]."
-
+	
 	Instead of touching something which is within a flaming thing (called the receptacle):
 		say "It seems a little risky since [the receptacle] is on fire."
-
+	
 	Instead of turning something when the noun is contained in a flaming thing (called the receptacle):
 		say "It seems a little risky since [the receptacle] is on fire."
-
+	
 	Instead of pushing or pulling something when the noun is inside a flaming thing (called the receptacle):
 		say "[The receptacle] deters you."
-
+	
 	Before burning something which is in a container when the holder of the noun contains the player:
 		say "This could make things toasty for you..."
 
 And that completes the rules which cover burning: things can catch fire, fire will spread, and gradually consume the world in flames. All of that was general and could be used in any setting, but we now provide a small game to show it off.
 
 	{**}Part II - Escape from the Library of the Dead
-
+	
 	The Library of the Dead is a room. "This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out."
-
+	
 	The desk is a flammable supporter in the Library. A drawer is part of the desk. The drawer is a flammable closed container. It is openable, lockable, and locked. The desk is scenery.
-
+	
 	A box is in the Library. A metal hinge is part of the box. The hinge is flame-retardant. The box is open, flammable, and openable. The shroud of Laertes is a flammable thing in the box.
-
+	
 	Instead of examining something when something is part of the noun:
 		say "You note [the list of things which are part of the noun]."
-
+	
 	The world's last manuscript of the Psychagogoi by Aeschylus is on the desk. The manuscript is flammable. The manuscript has endurance 1.
-
+	
 	The torch is a flammable flaming thing carried by the player. It has endurance 60. The asbestos sack is a flame-retardant player's holdall in the drawer.
-
+	
 	The trapdoor is up of the Library and east of the Plaza. The trapdoor is a door. It is flammable, closed, lockable, and locked. "A trapdoor in the ceiling is your only hope of escape[if flaming]. Fortunately, it is rapidly burning through[end if]." The trapdoor has endurance 15.
-
+	
 	Instead of going through the closed trapdoor, say "[The trapdoor] is closed."
 
 We can then add a special fire rule to handle the trapdoor, which will be called as part of the same sequence. Again, this would be most important if the fire rules were part of a standard extension, and the trapdoor fire rule the author's own addition.
@@ -174,9 +172,10 @@ We can then add a special fire rule to handle the trapdoor, which will be called
 			if the caught thing is a thing:
 				say "A spark from [the trapdoor] catches [the caught thing]!";
 				now the caught thing is flaming.
-
+	
 	Instead of going to the Plaza:
 		say "Out at last!";
 		end the story finally.
-
+	
 	Test me with "get manuscript / get shroud / light desk / look / g / open drawer / look / g / g / g / get sack / put shroud in sack / put manuscript in sack / close sack / light trapdoor / look / g / g / g / g / g / g / g / g / g / g / g / g / g / g / up".
+

@@ -226,12 +226,31 @@ a random number between 17 and 4 is the same thing as a random number
 between 4 and 17, and there is therefore no pair of $n$ and $m$ corresponding
 to an empty range of values.
 
+The following trick, devised by Zed Lopez in 2023, is designed to work even
+when the range width (here called $s$) is larger than the maximum signed
+integer size, so that the signed comparison $s > 0$ fails. In that case, it
+appears alarmingly to go into an infinite loop, but the loop terminates with
+a probability of at least 0.5 on each iteration. Even in the worst case of the
+range, the expected number of iterations is only 2, and the probability of taking
+more than 50 iterations is less than 0.0000000000000001, which is obviously
+negligible. But we check the iteration count anyway in case a rigged random
+number generator is being used, e.g. for story testing purposes, which happens
+to be biased in a really unlucky way for us.
+
 =
-[ GenerateRandomNumber n m s;
-	if (n==m) return n;
-	if (n>m) { s = n; n = m; m = s; }
-	n--;
-	return random(m-n) + n;
+[ GenerateRandomNumber n m s it;
+    if (n==m) return n;
+    if (n>m) { s = n; n = m; m = s; }
+    n--;
+    s = m - n;
+    if (s > 0) return random(s) + n;
+    n++;
+    do {
+		s = FullyRandomWord();
+		if ((s >= n) && (s <= m)) return s;
+		it++;
+    } until (it > 50);
+    return n;
 ];
 Constant R_DecimalNumber = GenerateRandomNumber;
 Constant R_PrintTimeOfDay = GenerateRandomNumber;

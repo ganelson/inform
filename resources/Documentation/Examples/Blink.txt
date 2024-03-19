@@ -8,12 +8,12 @@ For: Z-Machine
 Suppose we are writing a game in which the mood of the piece changes, and we would like to have lots of descriptions that vary according to its current state. We might in that case want to create our own "by atmosphere" token, to control text variations, like this:
 
 	{*}"Blink"
-
+	
 	Atmosphere is a kind of value. The atmospheres are normal, melancholy, and creepy.
-
+	
 	The current atmosphere is an atmosphere that varies.
 	The current atmosphere variable is defined by Inter as "current_atmosphere".
-
+	
 	To say by atmosphere -- ending say_one_of with marker I7_SOO_ATM:
 		(- {-close-brace} -).
 
@@ -29,10 +29,10 @@ Since we're operating within the untyped Inform 6, we can make use of the fact t
 And that concludes the hard part. Now to test that it works:
 
 	{**}The Flat is a room. "A small [one of]but cozy[or]depressing[or]imprisoning[by atmosphere] flat. Outside the window, the sun is [one of][or][or]apparently [by atmosphere]shining and there is a brisk breeze through the leaves of the birch trees. [one of]It would be quite nice weather for a walk[or]The rest of the world apparently has no appreciation of what you suffer[or]It all looks deceptively normal[by atmosphere]."
-
+	
 	Instead of waiting when the current atmosphere is normal:
 		say "Everything stretches wide and flat for just a moment, as though all the world around you were painted on a thin rubber sheet that is being [italic type]stretched[roman type]. Then it snaps back into place, leaving your ears ringing. But that little glitch was enough to warn you. Someone is tampering with space-time again. Someone very close by.";
 		now the current atmosphere is creepy.
-
+	
 	Test me with "look / z / look".
 

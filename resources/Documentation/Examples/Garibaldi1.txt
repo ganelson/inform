@@ -1,5 +1,4 @@
 Example: *** Garibaldi 1
-Subtitle: Readout of all doors in the game
 Location: Doors
 RecipeLocation: Doors, Staircases, and Bridges
 Index: Garibaldi 1. Readout of all doors in the game
@@ -9,9 +8,9 @@ For: Z-Machine
 Suppose we would like to allow the player to view the status of all the doors functioning in the game; and we want to identify those doors by mentioning which two rooms they connect. The following uses some techniques that will be covered in later chapters, but the basic idea may be obvious:
 
 	{*}"Garibaldi"
-
+	
 	The security readout is a device. The description of the readout is "The screen is blank."
-
+	
 	Instead of examining the switched on security readout:
 		say "The screen reads: [fixed letter spacing]";
 		say line break;
@@ -24,11 +23,12 @@ Suppose we would like to allow the player to view the status of all the doors fu
 It is more or less arbitrary which room winds up as the "front side" and which as the "back", but in this case it hardly matters.
 
 	{**}The player carries the security readout.
-
+	
 	The Docking Bay is a room. The inner airlock is a door. It is north of the Docking Bay and south of the Zocalo. The inner airlock is lockable and unlocked.  The outer airlock is lockable and locked. It is a door. It is south of the Docking Bay and north of Space.
-
+	
 	The quarantine seal is a door. It is west of the Zocalo and east of Medlab. Quarantine seal is locked.
-
+	
 	The security pass unlocks the inner airlock. The player carries the security pass.
-
+	
 	Test me with "x readout / turn on readout / x readout / lock inner airlock with security pass / x readout".
+

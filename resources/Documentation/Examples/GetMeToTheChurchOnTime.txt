@@ -8,36 +8,37 @@ For: Z-Machine
 Inform's default handling of wearable things does not make any rules about what can be worn together. Suppose, however, we have a game in which there are a large number of different garments, and we want to keep the player from wearing (say) more than one pair of pants at once:
 
 	{*}"Get Me to the Church on Time"
-
+	
 	A pair of pants and a shirt are kinds of thing. A pair of pants and a shirt are usually wearable.
-
+	
 	Some golf pants are a pair of pants. The description is "Checked in red and green, with tiny frolicking gophers every few inches."
-
+	
 	Some tuxedo trousers are a pair of pants. The description is "Black, pressed, and slimming."
-
+	
 	The frilly shirt is a shirt. The description of the frilly shirt is "She insisted."
-
+	
 	The polo shirt is a shirt. The description is "Turquoise and bright yellow, the colors selected by your golfing buddies."
-
+	
 	The player wears the golf pants and the polo shirt. The player carries the tuxedo trousers and the frilly shirt.
-
+	
 	The Wedding Chapel Dressing Room is a room. "The bride's dressing room is a lavish suite with closets, hangers, dressmaker's dummies, boxes of straight pins and sewing notions, combs, lotions, brushes, and hair fixatives, plus room for  fifteen female attendants and a photographer. Before they shoved you out of the room you even got a glimpse of a small reference library including '1001 French Braids' and 'Corset-Lacing For Beginners.'
-
+	
 	This is the groom's dressing room. You get a framed photograph of Elvis, a dusty mirror, and the floor space of an average toilet stall."
-
+	
 	The dusty mirror and the photograph of Elvis are scenery in the Dressing Room. The description of the mirror is "You can't really get more than a silhouette impression of yourself." The description of Elvis is "He reminds you that you'd better get out there before the organist switches to Hound Dog."
 
 And now the rule itself, borrowed from a later chapter:
 
 	{**}Instead of wearing a pair of pants when the player is wearing a pair of pants (called the wrong trousers):
 		say "You'll have to take off [the wrong trousers] first."
-
+	
 	Instead of wearing a shirt when the player is wearing a shirt (called the wrong top):
 		say "You'll have to take off [the wrong top] first."
-
+	
 	When play begins:
 		say "From the other side of the door, you hear the organist move on from his instrumental interpretation of 'I Wanna Hold Your Hand' to a somewhat more spirited rendition of 'Help! I Need Somebody!'. Okay, okay, but you've been rushing things along since the 16th fairway, and you can't be more than a half-hour late... Surely that mother of hers can't blame you for that?"
-
+	
 	Test me with "i / x trousers / wear trousers / x golf pants / take off golf pants / wear trousers / x frilly shirt / x polo shirt / wear frilly shirt / doff polo shirt / wear frilly shirt".
 
-If we wanted to, we could make similar kinds for hats, shoes, and so on, and have a simple but effective system of clothing. A more complicated treatment might keep track of layering and describe the player's outfit differently depending on which clothes were outermost -- an example for a later chapter.
+If we wanted to, we could make similar kinds for hats, shoes, and so on, and have a simple but effective system of clothing. A more complicated treatment might keep track of layering and describe the player's outfit differently depending on which clothes were outermost – an example for a later chapter ([What Not to Wear]).
+

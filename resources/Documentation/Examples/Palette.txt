@@ -1,6 +1,6 @@
 Example: * Palette
 Location: Understanding values
-RecipeLocation: Painting and Labeling Devices
+RecipeLocation: Painting and Labelling Devices
 Index: Colour names for exotic pigments
 Description: An artist's workshop in which the canvas can be painted in any colour, and where painterly names for pigments ("cerulean") are accepted alongside everyday ones ("blue").
 For: Z-Machine
@@ -8,17 +8,18 @@ For: Z-Machine
 There are hundreds of traditional pigments, from lampblack to burnt sienna, so we will confine ourselves to just two:
 
 	{*}"Palette"
-
+	
 	The Atelier is a room. "The floridly untidy loft space used by a moderately unsuccessful artist (you, that is)." The canvas, palette and paint brush are here. Understand "painting" as the canvas.
-
+	
 	Colour is a kind of value. The colours are white, red, blue and green.
-
+	
 	The canvas has a colour. The canvas is white. The printed name of the canvas is "largely [colour] canvas".
-
+	
 	Painting is an action applying to one thing and one colour. Check painting: if the noun is not the canvas, say "Centuries of tradition suggest that canvas is the natural home of paint." instead. Carry out painting: now the colour of the canvas is the colour understood. Report painting: say "You splash away at the now [canvas]."
-
+	
 	Understand "paint [something] [a colour]" as painting.
-
+	
 	Understand "calico" as white. Understand "cerulean" or "cerulean blue" as blue.
-
+	
 	Test me with "examine canvas / paint canvas red / examine canvas / paint canvas cerulean / examine canvas".
+

@@ -8,14 +8,14 @@ For: Z-Machine
 Suppose we want a character who carries hidden objects, but only while they are wearing their jacket. If we deprive them of this, their other possessions become known. Furthermore, if we ever search them, their possessions also become known, and can thereafter be mentioned by us.
 
 	{*}"Search and Seizure"
-
+	
 	Size is a kind of value. The sizes are small, medium, and large. A thing has a size. A thing is usually small.
-
+	
 	A thing can be licit or contraband. A thing is usually licit.
-
+	
 	A thing can be discovered or secret. A thing is usually secret.
 
-Now, we want the character to be able to hide small things if they have some sort of concealing garment on. We also want to be able to see anything that the player has already found once, perhaps by using the >SEARCH PERSON command. So:
+Now, we want the character to be able to hide small things if they have some sort of concealing garment on. We also want to be able to see anything that the player has already found once, perhaps by using the ``search person`` command. So:
 
 	{**}Rule for deciding the concealed possessions of someone (called the suspect):
 		if the particular possession is discovered, no;
@@ -25,16 +25,16 @@ Now, we want the character to be able to hide small things if they have some sor
 The following rule, borrowed from a later chapter, assures that any items that are ever mentioned to the player will be treated as known from then on:
 
 	{**}Before printing the name of something (called discovery): now the discovery is discovered.
-
+	
 	The Customs House is a room. The smuggler is a man in the Customs House. The smuggler wears a leather jacket. He carries a bottle of Altairan rum, some raspberries, and a laser pistol. The pistol is large. The jacket is large. The rum and the raspberries are contraband. The description of the smuggler is "He has a bestubbled chin and a sinister eye."
-
+	
 	The tourist is a woman in the customs house. The description is "The type who walks off home with a dozen contraband items in her pocket not because she means to steal things but because she's too stupid to understand that the law applies to herself." She wears a tight-fitting dress. The dress is large. The tourist carries a grapevine and an archaeological artifact. The grapevine is large and contraband. The artifact is contraband.
-
+	
 	Report examining someone: say "[The noun] is [if the noun is wearing something]wearing [a list of unconcealed things worn by the noun] and [end if]carrying [a list of unconcealed things carried by the noun]."
-
+	
 	Report examining someone who is concealing something contraband:
 		say "[The noun] looks nervous. You can just tell."
-
+	
 	Report examining someone who is carrying an unconcealed contraband thing:
 		say "Your eye goes at once to [the list of unconcealed contraband things carried by the noun] which [the noun] is unable to hide";
 		if an unconcealed licit thing is had by the noun, say ", though [if the noun is female]s[end if]he also has [a list of unconcealed licit things had by the noun]";
@@ -44,24 +44,25 @@ Notice that we can talk about what the smuggler wears, what he carries, and what
 
 	{**}Instead of searching someone:
 		say "[The noun] is revealed to be carrying [a list of things carried by the noun]."
-
+	
 	Instead of confiscating the dress:
 		say "You are not allowed to perform strip-searches in the public customs area."
-
+	
 	Understand "confiscate [something]" as confiscating.
-
+	
 	Confiscating is an action applying to one thing.
-
+	
 	Check confiscating:
 		unless the noun is had by someone who is not the player:
 			say "You can only confiscate other people's possessions." instead.
-
+	
 	Carry out confiscating:
 		now the noun is carried by the player.
-
+	
 	Report confiscating:
 		say "Through the authority vested in you by the power of the Sovereign of Centauri Proxima, you make [the noun] your own."
-
+	
 	Test me with "x smuggler / search smuggler / x smuggler / confiscate jacket / x smuggler / confiscate rum / confiscate pistol / x smuggler / confiscate raspberries / x smuggler".
-
+	
 	Test more with "x tourist / confiscate dress / confiscate grapevine / x tourist / search tourist / confiscate artifact / x tourist".
+

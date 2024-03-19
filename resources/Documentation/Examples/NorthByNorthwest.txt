@@ -2,7 +2,7 @@ Example: ** North by Northwest
 Location: Reading a command
 RecipeLocation: Varying What Is Read
 Index: North-northwest and similar directions
-Description: Creating additional compass directions between those that already exist (for instance, NNW) -- and dealing with an awkwardness that arises when the player tries to type "north-northwest". The example demonstrates a way around the nine-character limit on parsed words.
+Description: Creating additional compass directions between those that already exist (for instance, ``nnw``) -- and dealing with an awkwardness that arises when the player tries to type ``north-northwest``. The example demonstrates a way around the default nine-character limit on parsed words.
 For: Z-Machine
 
 Suppose we wanted to add intermediate compass directions such as north-northwest to our game. Because of the limitations of the index map, we won't be able to view these connections on the world map, but we can certainly create them, and use them in route-finding, just like other directions.
@@ -10,23 +10,23 @@ Suppose we wanted to add intermediate compass directions such as north-northwest
 Here's how we'd set up such a thing:
 
 	{*}"North by Northwest"
-
+	
 	Section 1 - Procedure
-
+	
 	The north-northwest is a direction. North-northwest has opposite south-southeast. Understand "n-nw" or "nnw" as north-northwest.
-
+	
 	The north-northeast is a direction. North-northeast has opposite south-southwest. Understand "n-ne" or "nne" as north-northeast.
-
+	
 	The south-southwest is a direction. South-southwest has opposite north-northeast. Understand "s-sw" or "ssw" as north-northwest.
-
+	
 	The south-southeast is a direction. South-southeast has opposite north-northwest. Understand "s-se" or "sse" as south-southeast.
-
+	
 	The west-northwest is a direction. West-northwest has opposite east-southeast. Understand "w-nw" or "wnw" as west-northwest.
-
+	
 	The east-northeast is a direction. East-northeast has opposite west-southwest. Understand "e-ne" or "ene" as east-northeast.
-
+	
 	The west-southwest is a direction. West-southwest has opposite east-northeast. Understand "w-sw" or "wsw" as west-northwest.
-
+	
 	The east-southeast is a direction. East-southeast has opposite west-northwest. Understand "e-se" or "ese" as east-southeast.
 
 A complication arises because we reach the 9-character limit: Inform truncates the names of objects to nine characters before trying to understand them. To make matters worse, the hyphen (and other punctuation marks) count as two letters. So both north-northwest and north-northeast will get truncated to "north-no", and be indistinguishable when the player types them.
@@ -43,21 +43,21 @@ If we're compiling to the Z-machine, however, we'll have to resort to some manip
 		replace the text "west" in N with "w";
 		change the text of the player's command to N.
 
-For more on the use of text, see the Advanced Text chapter.
+For more on the use of text, see the [Advanced Text] chapter.
 
 	{**}Section 2 - Scenario
-
+	
 	The Empty Field is north-northwest of the Deserted Road.
-
+	
 	A crop-dusting plane is a backdrop. It is not scenery. It is in the Deserted Road and Empty Field. The initial appearance of the crop-dusting plane is "[one of]In the distance[or]Approaching faster and faster[or]Flying ominously low and directly towards you[or]Immediately overhead[or]Circling around for another approach[cycling] is a standard crop-dusting plane."
-
+	
 	After looking:
 		say "From here you can run to [the list of adjacent rooms]."
-
+	
 	Rule for printing the name of a room (called the target) which is not the location while looking:
 		let chosen direction be the best route from the location to the target;
 		say "[chosen direction]".
-
+	
 	Test me with "sse / north-northwest".
 
 In practice, this is going to be overkill for almost all games: most players already find eight compass directions plus up and down to be enough (or more than enough) to keep track of. But the option exists, in case there is a compelling reason to use it.

@@ -12,13 +12,16 @@ In a game with many staircases, we might want:
 Defining the staircase this way means that we will never be able to get away with (for instance) a folding ladder into the attic which is sometimes closed up. So alternatively we might do
 
 	{*}"Something Narsty"
-
+	
 	A staircase is a kind of door. A staircase is usually open. A staircase is seldom openable.
 
-We could then write a rule so that whenever the player types CLIMB [any staircase], the command is diverted to an enter command, while all other doors refuse to respond to such treatment. Still, this kind is now usable, as we see in this trivial example:
+[ZL: arguable what the right styling for "any staircase" is]::
+
+We could then write a rule so that whenever the player types ``climb [any staircase]``, the command is diverted to an enter command, while all other doors refuse to respond to such treatment. Still, this kind is now usable, as we see in this trivial example:
 
 	{**}The ladder is a staircase. It is above the Woodshed and below the Scary Loft.
-
+	
 	Test me with "up".
 
 But these are refinements for a later chapter.
+

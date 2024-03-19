@@ -1,7 +1,7 @@
 Example: ** Fun with Participles
 Location: More on adapting verbs
 RecipeLocation: Varying What Is Written
-Index: Describing ongoing character behavior with participles
+Index: Describing ongoing character behaviour with participles
 Description: Creating dynamic room descriptions that contain sentences such as "Clark is here, wasting time" or "Clark is here, looking around" depending on Clark's idle activity.
 For: Z-Machine
 
@@ -12,33 +12,33 @@ In this example, we give non-player characters actions to perform and then have 
 We start by establishing the idea that a verb can describe a particular action:
 
 	{*}"Fun with Participles"
-
+	
 	Section 1 - Descriptive Functionality
-
+	
 	Describing relates various verbs to various action names. The verb to describe means the describing relation.
-
+	
 	To look around is a verb. The verb look around describes the looking action.
-
+	
 	To stand about is a verb. The verb stand about describes the waiting action. To look bored is a verb. The verb look bored describes the waiting action. To waste time is a verb. The verb waste time describes the waiting action.
-
+	
 	To jump is a verb. To leap is a verb. To pirouette is a verb. The verb jump describes the jumping action. The verb leap describes the jumping action. The verb pirouette describes the jumping action.
 
 Now we need to give every character some sort of idle activity. By default, we'll have people just be waiting, but allow for that idle activity to change into something more interesting if the player has told them to do something else.
 
 	{**}A person has an action name called the current idle. The current idle of a person is usually the waiting action.
-
+	
 	Rule for writing a paragraph about someone  (called chosen person) when a verb describes the current idle of the chosen person:
 		say "[The chosen person] [are] here, [present participle of a random verb that describes (the current idle of the chosen person)]."
-
+	
 	Instead of someone doing something:
 		now the current idle of the person asked is (the action name part of the current action);
 		continue the action.
-
+	
 	A persuasion rule:
 		persuasion succeeds.
-
+	
 	Section 2 - Scenario
-
+	
 	Lab is a room. The fedora is a wearable thing in the Lab. Clark is a man in the Lab.
 
 And just to give past participles a test-drive as well, let's make Clark a bit of a drama king:
@@ -46,6 +46,6 @@ And just to give past participles a test-drive as well, let's make Clark a bit o
 	{**}After Clark doing something when a verb describes (the action name part of the current action):
 		say "'Fine, have it your way!' Clark exclaims. 'But I have [past participle of a random verb that describes (the action name part of the current action)] for the last time!'";
 		rule succeeds.
-
+	
 	Test me with "look / Clark, jump / look / Clark, look / look / Clark, wait".
 

@@ -2,7 +2,7 @@ Example: ** Trieste
 Location: Table amendments
 RecipeLocation: Helping and Hinting
 Index: HELP command with specific set of topics
-Description: Table amendment to adjust HELP commands provided for the player.
+Description: Table amendment to adjust ``help`` commands provided for the player.
 For: Z-Machine
 
 Suppose we are using an extension in which another author has defined some help topics for the player, and we want to amend them for our game.
@@ -10,29 +10,29 @@ Suppose we are using an extension in which another author has defined some help 
 We'll start with the portion of the text that we have inherited from the extension:
 
 	{*}"Trieste"
-
+	
 	Section 1 - Procedure
-
+	
 	A help-topic is a kind of value. Some help-topics are defined by the Table of Standard Instructions.
-
+	
 	Table of Standard Instructions
 	help-topic	reply
 	commands	"This game recognizes 150 common commands for forms of military attack. These include..."
 	saving	"To save the game, type SAVE. You will be prompted to supply a file-name for your saved game. If you'd like to return to play at that point again later, RESTORE the saved game."
-
+	
 	Understand "help [help-topic]" as asking for help about. Asking for help about is an action out of world, applying to one help-topic.
 	Understand "help" or "help [text]" as a mistake ("Help is available on the following topics: [help-topics list]").
-
+	
 	To say help-topics list:
 		repeat through the Table of Standard Instructions:
 			say "[line break]  [help-topic entry]";
-
+	
 	Carry out asking for help about:
 		repeat through the Table of Standard Instructions:
 			if the help-topic understood is the help-topic entry:
 				say "[reply entry][paragraph break]";
 				break.
-
+	
 	Section 2 - Scenario
 
 Now, let's imagine our game is a special one in which only a very limited supply of moves are allowed. In that case, we'll want to replace the information on commands:
@@ -40,12 +40,13 @@ Now, let's imagine our game is a special one in which only a very limited supply
 	{**}Table of Standard Instructions (amended)
 	help-topic	reply
 	commands	"The only commands this game recognizes are HOLD, MOVE, CONVOY, SUPPORT MOVE, and SUPPORT HOLD. No others are necessary."
-
+	
 	Board Room is a room. Mark is a man in the Board Room. "Russia (played by Mark) is also hovering over the board."
-
+	
 	Guest Bathroom is south of Board Room. Lena and Rob are in the Guest Bathroom. Lena is a woman. Rob is a man.
-
+	
 	Rule for writing a paragraph about Lena when Lena is in the Guest Bathroom and Rob is in the Guest Bathroom:
 		say "[Lena] (Italy) and [Rob] (Great Britain) are having a hushed conversation while leaning against your good towels. They stop and stare at you when you come in."
-
+	
 	Test me with "help / help commands / help saving".
+

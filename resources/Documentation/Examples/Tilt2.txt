@@ -1,5 +1,4 @@
 Example: *** Tilt 2
-Subtitle: Identifying poker hands
 Location: Rulebooks producing values
 RecipeLocation: Dice and Playing Cards
 Index: Tilt 2. Identifying poker hands
@@ -10,27 +9,27 @@ In our previous implementations of playing cards, we've gotten as far as creatin
 
 Here we take on the job of writing an inventory listing for a poker hand that will reflect the real value of what the player has drawn. To do this, we create a rulebook to sort and assess the cards in the player's hand; its possible return values are limited to the kinds of poker hands that exist, from "high card" to "royal flush".
 
-The first three sections, creating the deck of cards and the means to parse their names, are identical to those we've already seen in Tilt 1; new material begins at section 4.
+The first three sections, creating the deck of cards and the means to parse their names, are identical to those we've already seen in [Tilt 1]; new material begins at section 4.
 
 For the purposes of demonstration, we're simulating something akin to five-card draw without wilds; stud or hold-em variations would add some other complexities.
 
 	{*}"Tilt"
-
+	
 	Section 1 - Cards
-
+	
 	Suit is a kind of value. The suits are hearts, clubs, diamonds, and spades. Understand "heart" as hearts. Understand "club" as clubs. Understand "diamond" as diamonds. Understand "spade" as spades.
-
+	
 	A card is a kind of thing.  A card has a suit. A card has a number called rank. Understand the suit property as describing a card. Understand the rank property as describing a card.
-
+	
 	52 cards are in the card repository.
-
+	
 	To say (count - a number) as a card value:
 		choose row count in the Table of Value Names;
 		say "[term entry]".
-
+	
 	Rule for printing the name of a card (called target):
 		say "[rank of the target as a card value] of [suit of the target]"
-
+	
 	Table of Value Names
 	term	value	topic
 	"ace"	"1"	"ace/A/one"
@@ -46,7 +45,7 @@ For the purposes of demonstration, we're simulating something akin to five-card 
 	"jack"	"11"	"jack/knave/J"
 	"queen"	"12"	"queen/Q"
 	"king"	"13"	"king/K"
-
+	
 	After reading a command:
 		if the player's command includes "of [suit]":
 			while the player's command includes "of":
@@ -54,10 +53,10 @@ For the purposes of demonstration, we're simulating something akin to five-card 
 		repeat through the Table of Value Names:
 			while the player's command includes topic entry:
 				replace the matched text with value entry.
-
+	
 	When play begins:
 		reconstitute deck.
-
+	
 	To reconstitute deck:
 		let current suit be hearts;
 		now every card is in the card repository;
@@ -68,66 +67,65 @@ For the purposes of demonstration, we're simulating something akin to five-card 
 				now suit of item is current suit;
 				now item is in the deck of cards;
 			now current suit is the suit after the current suit.
-
+	
 	Section 2 - The Deck and the Discard Pile
-
+	
 	The Empty Room is a room. "Nothing to see here."
-
+	
 	The deck of cards is in the Empty Room. It is a closed unopenable container. The description is "A standard poker deck."
-
+	
 	The discard pile is a closed unopenable container. The description is "Cards in this game are discarded face-down, so the discard pile is not very interesting to see. All you can observe is that it currently contains [if the number of cards which are in the discard pile is less than ten][the number of cards which are in the discard pile in words][otherwise]about [the rounded number of cards which are in the discard pile in words][end if] card[s]."
-
+	
 	To decide what number is the rounded number of (described set - a description of objects):
 		let N be the number of members of the described set;
 		let R be N divided by 5;
 		let total be R times 5;
 		decide on total.
-
+	
 	Rule for printing room description details of something: do nothing instead.
-
+	
 	Section 3 - Drawing and Discarding Actions
-
+	
 	Understand the commands "take" and "carry" and "hold" and "get" and "drop" and "throw" and "discard" as something new.
-
+	
 	Understand "take [text]" or "get [text]" or "drop [text]" as a mistake ("Here, you only draw and discard. Nothing else matters at the moment.").
-
+	
 	Understand "draw" or "draw card" or "draw a card" as drawing. Drawing is an action applying to nothing. The drawing action has an object called the card drawn.
-
+	
 	Setting action variables for drawing:
 		now the card drawn is a random card which is in the deck of cards.
-
+	
 	Check drawing:
 		if the card drawn is nothing, say "The deck is completely depleted." instead.
-
+	
 	Check drawing:
 		if the number of cards carried by the player is greater than four,
 			say "This is a five-card game; you must discard something before drawing anything further." instead.
-
+	
 	Carry out drawing:
 		move the card drawn to the player.
-
+	
 	Report drawing:
 		say "You draw [a card drawn]."
-
-
+	
 	Understand "discard [card]" as discarding. Discarding is an action applying to one thing.
-
+	
 	Check discarding:
 		if the player does not carry the noun, say "You can only discard cards from your own hand." instead.
-
+	
 	Carry out discarding:
 		now the noun is in the discard pile;
 		if the discard pile is not visible, move the discard pile to the location.
-
+	
 	Report discarding:
 		say "You toss [the noun] nonchalantly onto the discard pile."
 
 New material begins here. We want to start by grouping cards together, but identifying poker hands only if the player holds a full five cards.
 
 	{**}Section 4 - Assessing Hands
-
+	
 	Before listing contents while taking inventory: group cards together.
-
+	
 	Before grouping together cards:
 		if the number of cards carried by the player is 5:
 			say "[run paragraph on]";
@@ -138,38 +136,38 @@ New material begins here. We want to start by grouping cards together, but ident
 		otherwise:
 			say "[number of cards carried by the player in words] assorted cards";
 		say " (".
-
+	
 	Rule for grouping together cards:
 		say "[list hand]".
-
+	
 	To say list hand:
 		let chosen card be the first thing held by the player;
 		while chosen card is a card:
 			say "[chosen card]";
 			now chosen card is the next thing held after chosen card;
 			if chosen card is a card, say ", ".
-
+	
 	After grouping together cards:
 		say ")".
 
 The ranking of poker hands traditionally depends on three features: 1) whether all the cards are of the same suit (flush); 2) whether the cards constitute a numerical run of ranks (straight); and 3) how many cards or sets of cards are of matching rank (pairs, three of a kind, and four of a kind). Here we will start by assessing our hand to determine these qualities:
 
 	{**}The hand-ranking rules is a rulebook. The hand-ranking rules have outcomes royal flush, straight flush, four of a kind, full house, flush, straight, three of a kind, two pairs, pair, high card.
-
+	
 	The hand-ranking rulebook has a truth state called the flushness.
 	The hand-ranking rulebook has a truth state called the straightness.
-
+	
 	The hand-ranking rulebook has a number called the pair count.
 	The hand-ranking rulebook has a number called the triple count.
 	The hand-ranking rulebook has a number called the quadruple count.
 
-For convenience in identifying hand features, and for elegance when we print the hand-listing, we start by sorting the cards in the player's hand so that the high-ranked cards are listed first. It is rare that we want to concern ourselves with this, but as we saw in the section on "Looking at containment by hand" in the chapter on Change, Inform keeps an ordered list of the items inside any given container; so it does order the objects in the player's hand, and the ordering depends on which things were added to the hand most recently. By moving something to the player's hand again (even if it was already there), we change this ordering, and wind up with a sorted hand.
+For convenience in identifying hand features, and for elegance when we print the hand-listing, we start by sorting the cards in the player's hand so that the high-ranked cards are listed first. It is rare that we want to concern ourselves with this, but as we saw in the section on [Looking at containment by hand] in the chapter on [Change], Inform keeps an ordered list of the items inside any given container; so it does order the objects in the player's hand, and the ordering depends on which things were added to the hand most recently. By moving something to the player's hand again (even if it was already there), we change this ordering, and wind up with a sorted hand.
 
 	{**}A card can be sorted or unsorted. A card is usually unsorted.
-
+	
 	Definition: a card is high if its rank is 11 or more.
 	Definition: a card is low if its rank is 4 or less.
-
+	
 	A hand-ranking rule (this is the initial sort rule):
 		now every card is unsorted;
 		while the player carries an unsorted card:
@@ -200,7 +198,7 @@ Now we check for straights; this is slightly complicated by the fact that an ace
 And finally, we need to identify any groups of cards of the same rank. We want to know how many groups there are and how large each group is (though in practice there can only be one group of three or four in a standard-sized poker hand). We also want to mark any grouped cards so that we can move them to the front of the player's hand when we take inventory.
 
 	{**}A card can be quadrupled, tripled, paired or uncombined.
-
+	
 	Test rank is a number that varies. Definition: a card is matching if its rank is the test rank.
 
 This definition is a convenience so that we don't have to write so many explicit loops in the following rule:
@@ -230,20 +228,20 @@ Next we tweak our sorting to reflect the make-up of the hand. There are two reas
 		unless the straightness is true and the lowest card carried by the player is an ace card and the rank of the highest card carried by the player is 5,
 			now every ace card which is carried by the player is carried by the player;
 		if sort-debugging is true, say "-- after ace movement rule: [list hand]".
-
+	
 	A hand-ranking rule (this is the move pairs forward rule):
 		while the player carries a paired card:
 			let selection be the lowest paired card which is carried by the player;
 			move the selection to the player;
 			now the selection is uncombined;
 		if sort-debugging is true, say "-- after pairs movement: [list hand]".
-
+	
 	A hand-ranking rule (this is the raise ace pairs rule):
 		if the player carries exactly two ace cards:
 			repeat with item running through ace cards which are carried by the player:
 				move item to the player;
 		if sort-debugging is true, say "-- after paired-ace movement: [list hand]".
-
+	
 	A hand-ranking rule (this is the move multiples forward rule):
 		while the player carries a tripled card:
 			let selection be the lowest tripled card which is carried by the player;
@@ -254,7 +252,7 @@ Next we tweak our sorting to reflect the make-up of the hand. There are two reas
 			move the selection to the player;
 			now the selection is uncombined;
 		if sort-debugging is true, say "-- after multiples movement rule: [list hand]".
-
+	
 	Definition: a card is ace if its rank is 1.
 	Definition: a card is king if its rank is 13.
 
@@ -262,31 +260,31 @@ Now, having determined the salient qualities of our hand, we run through rules i
 
 	{**}A hand-ranking rule (this is the royal-flush rule):
 		if flushness is true and straightness is true and the highest card carried by the player is king and the lowest card carried by the player is ace, royal flush.
-
+	
 	A hand-ranking rule (this is the straight-flushes rule):
 		if flushness is true and straightness is true, straight flush.
-
+	
 	A hand-ranking rule (this is the four-of-a-kind rule):
 		if the quadruple count is 1, four of a kind.
-
+	
 	A hand-ranking rule (this is the full-house rule):
 		if the pair count is 1 and the triple count is 1, full house.
-
+	
 	A hand-ranking rule (this is the flushes rule):
 		if flushness is true, flush.
-
+	
 	A hand-ranking rule (this is the straights rule):
 		if straightness is true, straight.
-
+	
 	A hand-ranking rule (this is the three-of-a-kind rule):
 		if triple count is 1, three of a kind.
-
+	
 	A hand-ranking rule (this is the two-pair rule):
 		if the pair count is 2, two pairs.
-
+	
 	A hand-ranking rule (this is the pair rule):
 		if the pair count is 1, pair.
-
+	
 	A hand-ranking rule (this is the default rule):
 		high card.
 
@@ -294,21 +292,21 @@ And finally, we need to define our debugging variable here, even though we won't
 
 	{**}Sort-debugging is a truth state that varies.
 
-For many examples, a test-me script is enough to prove that the example does what it ought. This example, though, is a bit more complicated, and hard to test randomly. The remainder of the source here shows how we might write a test to verify the desired behavior of our rulebook. Those who are only interested in the rulebook itself can stop reading at this point.
+For many examples, a test-me script is enough to prove that the example does what it ought. This example, though, is a bit more complicated, and hard to test randomly. The remainder of the source here shows how we might write a test to verify the desired behaviour of our rulebook. Those who are only interested in the rulebook itself can stop reading at this point.
 
 	{**}Section 5 - Testing hand identification - Not for release
 
 For the sake of testing our rules, we provide an apparatus that will load the player's hand up with sample hands of each kind, then show the result to make sure that the hand is being correctly identified.
 
 	{**}Understand "debug sorting" as debugging hand sorting. Debugging hand sorting is an action out of world.
-
+	
 	Carry out debugging hand sorting:
 		if sort-debugging is false, now sort-debugging is true;
 		otherwise now sort-debugging is false.
-
+	
 	Report debugging hand sorting:
 		say "Sort debugging is now [if sort-debugging is true]on[otherwise]off[end if]."
-
+	
 	Test me with "draw / g / g / g / g / force hand / g / g / g / g / g / g / g / g / g / g / g / g".
 
 The somewhat rough-and-ready principle of this table is that we will overwrite the cards in the player's hand by resetting their ranks and suits; every five rows of the table represent a new poker hand for the game to attempt to sort and identify. These include one example of each of the major kinds of poker hand, plus a couple of variations involving aces which test the special sorting rules.
@@ -375,11 +373,11 @@ The somewhat rough-and-ready principle of this table is that we will overwrite t
 	spades	3
 	diamonds	4
 	diamonds	5
-
+	
 	Understand "force hand" as forcing a hand. Forcing a hand is an action out of world.
-
+	
 	Current marker is a number that varies.
-
+	
 	Carry out forcing a hand:
 		repeat with item running through cards which are carried by the player:
 			increment current marker;
@@ -387,6 +385,7 @@ The somewhat rough-and-ready principle of this table is that we will overwrite t
 			choose row current marker in the Table of Testing Hands;
 			now the suit of item is the set suit entry;
 			now the rank of item is the set rank entry.
-
+	
 	Report forcing a hand:
 		try taking inventory.
+

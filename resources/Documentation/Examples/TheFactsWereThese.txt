@@ -2,23 +2,23 @@ Example: ** The Facts Were These
 Location: Lengthening or shortening a list
 RecipeLocation: Actions on Multiple Objects
 Index: GIVE extended to multiple objects at once
-Description: Creating a variant GIVE action that lets the player give multiple objects simultaneously with commands like GIVE ALL TO ATTENDANT or GIVE THREE DOLLARS TO ATTENDANT or GIVE PIE AND HAT TO ATTENDANT. The attendant accepts the gifts only if their total combined value matches some minimum amount.
+Description: Creating a variant ``give`` action that lets the player give multiple objects simultaneously with commands like ``give all to attendant`` or ``give three dollars to attendant`` or ``give pie and hat to attendant``. The attendant accepts the gifts only if their total combined value matches some minimum amount.
 For: Z-Machine
 
-Occasionally it happens that we want to process an action on multiple items differently than we would if the player had just typed each of the individual actions separately. In this example, the reason is that we can only successfully GIVE items when their combined value passes a certain threshold amount; otherwise the recipient will reject them.
+Occasionally it happens that we want to process an action on multiple items differently than we would if the player had just typed each of the individual actions separately. In this example, the reason is that we can only successfully ``give`` items when their combined value passes a certain threshold amount; otherwise the recipient will reject them.
 
 This works as an implementation of money, if we give value only to cash objects (though several other implementations of cash are available, most of which are simpler and more efficient). We could also imagine a mechanic like this being used for a bargaining or auction game as well, given a society that deals in objects rather than credits.
 
 In order to consider all the items in the gift at once, we create an action that applies to multiple objects, but will in fact test the whole object collection during the first pass and print a definitive answer to whether the action succeeded. All subsequent times the game consults the rulebook will be stopped at the very beginning. No further processing will occur or output be printed.
 
 	{*}"The Facts Were These"
-
+	
 	Section 1 - Procedure
 
 We start by creating the idea that everything in the game has a monetary value:
 
 	{**}A price is a kind of value. $10 specifies a price. A thing has a price.
-
+	
 	Understand "give [things preferably held] to [someone]" as multiply-giving it to. Understand "give [things] to [someone]" as multiply-giving it to.  Multiply-giving it to is an action applying to two things.
 
 A subtlety here: we say "things preferably held" to prefer items that the player is holding (so if the player has two dollars in hand and a third lies on the ground, they will use just the two they have).
@@ -34,7 +34,7 @@ This is for record-keeping purposes so that we can print an attractive list of w
 	{**}First check multiply-giving it to:
 		if already gave at the office is true:
 			stop the action.
-
+	
 	Already gave at the office is a truth state that varies.
 
 "Already gave at the office" is the perhaps-excessively-named flag that keeps track of whether we've already done this action once.
@@ -65,7 +65,7 @@ The following rule is longish because it processes the entire list at once, gene
 			now already gave at the office is true;
 			say "[The second noun] angrily rejects your piffling bribe.[paragraph break]" instead.
 
-The bit about making some items "marked for listing", above, rather than printing the list directly, is that using the "[the list of....]" syntax guarantees that Inform will respect grouping rules in writing its description. For instance, if the player has automatically taken all three dollars, the output will say "the three dollars" instead of "the dollar, the dollar, and the dollar."
+The bit about making some items "marked for listing", above, rather than printing the list directly, is that using the `"[the list of....]"` syntax guarantees that Inform will respect grouping rules in writing its description. For instance, if the player has automatically taken all three dollars, the output will say "the three dollars" instead of "the dollar, the dollar, and the dollar."
 
 	{**}Carry out multiply-giving it to:
 		let L be the multiple object list;
@@ -73,55 +73,55 @@ The bit about making some items "marked for listing", above, rather than printin
 			now the second noun carries the item;
 			now the item is given;
 		now already gave at the office is true;
-
+	
 	Report multiply-giving it to:
 		say "[The second noun] rather shamefacedly tucks [the list of given things] away into a pocket.[paragraph break]".
 
-Now we create our own variation of implicitly taking in order to customize the output for the multiply-giving action. The "ungivability rules" should disallow any object that the player absolutely cannot take, because we want "carry out the implicitly taking activity" to succeed every time -- and therefore not print out any less-attractive results from implicit takes that don't succeed. Otherwise, the player's GIVE TREE AND DOG TO ATTENDANT might produce the reply "That's fixed in place" -- without specifying which object is fixed in place.
+Now we create our own variation of implicitly taking in order to customise the output for the multiply-giving action. The "ungivability rules" should disallow any object that the player absolutely cannot take, because we want "carry out the implicitly taking activity" to succeed every time – and therefore not print out any less-attractive results from implicit takes that don't succeed. Otherwise, the player's ``give tree and dog to attendant`` might produce the reply "That's fixed in place" – without specifying which object is fixed in place.
 
 Because of the way this works, we will want to be careful: if we have any "instead of taking..." rules for special objects in the game, we should be sure to mirror those with an ungivability rule to print something more suitable in the case that the player tries taking that object as part of the multiple giving action.
 
 	{**}The ungivability rules are an object-based rulebook.
-
+	
 	An ungivability rule for a person:
 		now already gave at the office is true;
 		say "Slavery is illegal.[paragraph break]" instead.
-
+	
 	An ungivability rule for something (called the item) which is enclosed by someone who is not the player:
 		now already gave at the office is true;
 		say "[The item] [aren't] yours to give.[paragraph break]" instead.
-
+	
 	An ungivability rule for something which encloses the player:
 		now already gave at the office is true;
 		say "You don't want to end up as part of the gift.[paragraph break]" instead;
-
+	
 	An ungivability rule for something (called the item) which is part of something:
 		now already gave at the office is true;
 		say "[The item] [are] attached to [a random thing which incorporates the item][paragraph break]" instead.
-
+	
 	An ungivability rule for something (called the item) which is scenery:
 		now already gave at the office is true;
 		say "[The item] [are] unremovable.[paragraph break]" instead.
-
+	
 	An ungivability rule for something (called the item) which is fixed in place:
 		now already gave at the office is true;
 		say "[The item] [are] fixed in place.[paragraph break]" instead.
-
+	
 	An ungivability rule for a direction (called the item):
 		now already gave at the office is true;
 		say "[The item] [are] not susceptible to giving.[paragraph break]" instead.
-
+	
 	Rule for implicitly taking something (called target) while multiply-giving:
 		silently try taking the target;
 		if the player carries the target:
 			add the target to the recently-collected list.
-
+	
 	The recently-collected list is a list of objects that varies.
 
 And since we don't want to list the individual objects separately:
 
 	{**}The selectively announce items from multiple object lists rule is listed instead of the announce items from multiple object lists rule in the action-processing rules.
-
+	
 	This is the selectively announce items from multiple object lists rule:
 		if multiply-giving:
 			do nothing;
@@ -138,44 +138,44 @@ And now, since this ought to work symmetrically if the player provides just one 
 As we've seen elsewhere, the giving action by default returns a refusal, but is also written to start working if we remove the blockage. So we do that here, and revise the report rule to match the report rule we have for multiple giving.
 
 	{**}The block giving rule is not listed in any rulebook.
-
+	
 	The new report giving rule is listed instead of the standard report giving rule in the report giving it to rules.
-
+	
 	This is the new report giving rule:
 		say "[The second noun] rather shamefacedly tucks [the noun] away into a pocket."
 
-After each instance of the multiply-giving action, we need to clear the variables we used to track its state. We could do this in "Before reading a command", but that's unsafe because the player might type GIVE PIE AND CAP TO ATTENDANT. GIVE DOLLARS TO ATTENDANT. all on a single line, and we would like to be able to clear the variables between one action and the next. The correct place to attach this behavior is immediately before the generate action rule, thus:
+After each instance of the multiply-giving action, we need to clear the variables we used to track its state. We could do this in "Before reading a command", but that's unsafe because the player might type ``give pie and cap to attendant. give dollars to attendant``. all on a single line, and we would like to be able to clear the variables between one action and the next. The correct place to attach this behaviour is immediately before the generate action rule, thus:
 
 	{**}The before-generation rule is listed before the generate action rule in the turn sequence rules.
-
+	
 	This is the before-generation rule:
 		now every thing is ungiven;
 		now already gave at the office is false;
 		truncate the recently-collected list to 0 entries.
-
+	
 	Section 2 - Scenario
-
+	
 	The Morgue Office is a room. "This is not the Morgue itself; this is only its outer office. The familiar room full of silver drawers and cold air lies beyond."
-
+	
 	The Morgue Attendant is a man in the Morgue Office. "The Attendant has seen you come through a number of times, and is becoming suspicious of your abiding interest in dead people." The description is "The Morgue Attendant is fifty-four years, six months, five days, and three minutes old." The price of the Morgue Attendant is $3.
-
+	
 	A dollar is a kind of thing. The player carries three dollars.  The price of a dollar is always $1.
-
+	
 	The player carries a miniature rhubarb pie. The price of the miniature rhubarb pie is $5.
-
+	
 	The player carries a knitted cap. The price of the knitted cap is $2.
-
+	
 	Test me with "test dollars / purloin three dollars / test multi-line / purloin three dollars / purloin pie / purloin cap / test specificity / purloin three dollars / test largesse / test mixed-gift".
-
+	
 	Test multi-line with "give dollar and pie to attendant. give dollars and cap to attendant".
-
+	
 	Test dollars with "drop all / give dollar to Morgue Attendant / give dollars to Morgue Attendant / get dollars / give dollars to morgue attendant / purloin three dollars / drop dollars / give dollars to Morgue Attendant".
-
+	
 	Test specificity with "give three dollars to Morgue Attendant".
-
+	
 	Test largesse with "give pie to Morgue Attendant".
-
+	
 	Test mixed-gift with "give dollar and cap to Morgue Attendant / get cap / give dollar and cap to morgue attendant / give me and dollar to attendant".
 
-PURLOIN, used in the tests here, is a special debugging command that allows the player to acquire objects that wouldn't otherwise be possible to take. It is only active in non-release versions of the story. For more about debugging commands, see the chapter on Testing and Debugging.
+``purloin``, used in the tests here, is a special debugging command that allows the player to acquire objects that wouldn't otherwise be possible to take. It is only active in non-release versions of the story. For more about debugging commands, see the chapter on [Testing and Debugging].
 

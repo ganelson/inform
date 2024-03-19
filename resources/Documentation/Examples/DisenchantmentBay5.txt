@@ -1,5 +1,4 @@
 Example: * Disenchantment Bay 5
-Subtitle: Cabin door and deck
 Location: Doors
 RecipeLocation: Disenchantment Bay
 Index: Disenchantment Bay 5. Cabin door and deck
@@ -11,3 +10,4 @@ We mentioned that there is a door out to the deck in our example. The following 
 	{*}The cabin door is south of the Cabin and north of the Deck. It is a door and scenery.
 
 Now Inform has constructed a generic room called "Deck" to the south. It has neither a description nor any contents yet, but we could fix that in time. It does have a view of the glacier, though, since we defined the glacier view to be everywhere.
+

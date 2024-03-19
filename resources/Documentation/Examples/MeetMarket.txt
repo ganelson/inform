@@ -5,37 +5,38 @@ Index: Relations applying to multiple values of the same kind
 Description: A case in which relations give characters multiple values of the same kind.
 For: Z-Machine
 
-We have already seen that we can give things value properties -- a lamp has a brightness, for instance. Relations give us additional flexibility: since we may relate various things to various values, it is possible to describe a thing as having more than one value at the same time.
+We have already seen that we can give things value properties – a lamp has a brightness, for instance. Relations give us additional flexibility: since we may relate various things to various values, it is possible to describe a thing as having more than one value at the same time.
 
 To demonstrate:
 
 	{*}"Meet Market" by "K M and Eric Rossing"
-
+	
 	Feature is a kind of value.  The features are snub-nosed, gangly, comely, bright-eyed, and sulky.
-
+	
 	Appearance relates various persons to various features.  The verb to appear means the appearance relation.
-
+	
 	Meet Market is a room.
-
+	
 	Bob, Carol, Ted, and Alice are people in the Meet Market.
-
+	
 	Bob appears snub-nosed and gangly.
-
+	
 	Ted appears sulky and snub-nosed.
-
+	
 	Carol appears comely and bright-eyed.
-
+	
 	Alice appears bright-eyed and comely.
-
+	
 	Yourself appears sulky and gangly.
-
+	
 	Instead of looking:
 		say "The snub-nosed ones: [list of people who appear snub-nosed][line break]";
 		say "The gangly ones: [list of people who appear gangly][line break]";
 		say "The comely ones: [list of people who appear comely][line break]";
 		say "The bright-eyed ones: [list of people who appear bright-eyed][line break]";
 		say "The sulky ones: [list of people who appear sulky][paragraph break]".
-
+	
 	Test me with "look".
 
-The same logic might be used to provide characters who have complex mood states: a person might be angry and sad, not merely one or the other -- feelings being what they are.
+The same logic might be used to provide characters who have complex mood states: a person might be angry and sad, not merely one or the other – feelings being what they are.
+

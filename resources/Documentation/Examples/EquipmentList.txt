@@ -5,6 +5,8 @@ Index: INVENTORY wide and tall
 Description: Overview of all the phrase options associated with listing, and examples of how to change the inventory list into some other standard formats.
 For: Z-Machine
 
+[ZL: "above" is weird given reader might not have been in WI ]::
+
 Most of the phrase options above are relatively self-explanatory; a few are less so. Here is an overview:
 
 "With newlines" tells Inform to put a new line before each listed object. Indented tells it to indent contents of objects, when listing these.
@@ -29,19 +31,19 @@ Most of the phrase options above are relatively self-explanatory; a few are less
 
 Finally, "with extra indentation" means that the whole list should be indented slightly, in emulation of the default inventory listing.
 
-With this information, we can try rewriting the inventory behavior to emulate the standard or to explore alternate versions:
+With this information, we can try rewriting the inventory behaviour to emulate the standard or to explore alternate versions:
 
 	{*}"Equipment List"
-
+	
 	The Watery Room is a room. The player carries a snorkel and a waterproof sack. The waterproof sack contains an undersea map, a diving guide, a cup, and 500 Argentine pesos. The cup contains a worm. The player wears a swimsuit and a pair of flippers. The sack is openable and open.
-
+	
 	Inventory listing style is a kind of value. The inventory listing styles are tall, wide, curt, minimal, divided tall, and divided wide. Current inventory listing style is an inventory listing style that varies.
-
+	
 	Understand "inventory [inventory listing style]" as requesting styled inventory. Requesting styled inventory is an action applying to an inventory listing style. It is an action out of world.
-
+	
 	Carry out requesting styled inventory:
 		now current inventory listing style is the inventory listing style understood.
-
+	
 	Report requesting styled inventory:
 		say "Inventory listing is now set to [current inventory listing style]."
 
@@ -107,5 +109,6 @@ And similarly for a tall divided inventory:
 			now all things worn by the player are marked for listing;
 			say "You are wearing: [line break]";
 			list the contents of the player, with newlines, indented, including contents, with extra indentation, listing marked items only.
-
+	
 	Test me with "i / inventory wide / i / inventory curt / i / close sack / i / open sack / inventory minimal / i / close sack / i / open sack / inventory divided wide / i / inventory divided tall / i / drop all / i / take all / take off swimsuit / take off flippers / i / i divided wide / i / wear swimsuit / drop all / i".
+

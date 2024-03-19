@@ -1,5 +1,4 @@
 Example: *** Four Stars 1
-Subtitle: Dark room which relies on other senses when light is off
 Location: Printing the description of a dark room
 RecipeLocation: Lighting
 Index: Four Stars 1. Dark room which relies on other senses when light is off
@@ -7,104 +6,102 @@ Description: An elaboration of the idea that when light is absent, the player sh
 For: Z-Machine
 
 	{*}"Four Stars"
-
+	
 	A thing has some text called sound. The sound of a thing is usually "silence".
-
+	
 	The report listening rule is not listed in the report listening to rules.
-
+	
 	Carry out listening to something:
 		say "From [the noun] you hear [the sound of the noun]."
-
+	
 	Instead of listening to a room:
 		if an audible thing can be touched by the player, say "You hear [the list of audible things which can be touched by the player].";
 		otherwise say "A merciful peace prevails."
-
+	
 	Definition: a thing is audible if the sound of it is not "silence".
-
+	
 	Before printing the name of something audible while listening to a room:
 		say "[sound] from the "
-
-
+	
 	A thing has some text called scent. The scent of a thing is usually "nothing".
-
+	
 	The report smelling rule is not listed in the report smelling rulebook.
-
+	
 	Carry out smelling something:
 		say "From [the noun] you smell [scent of the noun]."
-
+	
 	Instead of smelling a room:
 		if a scented thing can be touched by the player, say "You smell [the list of scented things which can be touched by the player].";
 		otherwise say "The place is blissfully odorless."
-
+	
 	Definition: a thing is scented if the scent of it is not "nothing".
-
+	
 	Before printing the name of something scented while smelling a room: say "[scent] from the "
-
-
+	
 	The Waning Moon Resort is a dark room. "A spacious room with a flagstone floor, and a dreamcatcher hung over the king-size bed." The dreamcatcher is scenery in the Resort. The description is "The usual web of threads and crystals, feathers and beads." Instead of taking the dreamcatcher, say "Ah, ah -- you might be tempted to take it as a souvenir, except that the price list in the minibar clearly states they charge $65 apiece if you walk off with one. Cheaper than stealing the Frette bathrobes, but still probably not a good idea."
-
+	
 	The king-size bed is an enterable supporter in the Resort. The description is "200-thread-count Egyptian cotton sheets, according to the website. You would make fun, only they really are extraordinarily comfortable." The player is on the bed. A Lindt chocolate is on the bed. It is edible. The scent of the chocolate is "chocolate-hazelnut smell".
-
+	
 	Instead of exiting: say "You are too weary to move."
-
+	
 	The suitcase is an openable closed container in the Resort.
-
+	
 	An electric light is a kind of device. Carry out switching on an electric light: now the noun is lit. Carry out switching off an electric light: now the noun is unlit. Understand "light" as an electric light.
-
+	
 	The solar lamp is an electric light in Waning Moon Resort. The description is "Specially designed to give light in a spectrum resembling sunlight, to improve the mood and make a person energetic." The lamp is switched on and lit.
-
+	
 	An electric noisemaker is a kind of device. An electric noisemaker has some text called usual sound. The usual sound of an electric noisemaker is usually "beepbeepbeep". Carry out switching on an electric noisemaker: now the sound of the noun is the usual sound of the noun. Report switching on an electric noisemaker: say "[The noun] goes [usual sound of the noun]!" instead. Report switching off an electric noisemaker: say "You switch off [the noun], silencing the [usual sound of the noun]." instead.
-
+	
 	Carry out switching off an electric noisemaker: now the sound of the noun is "silence".
-
+	
 	The bedside table is in the Resort. The table supports a potted plant and a Bose speaker. The scent of the potted plant is "rosemary"
-
+	
 	The Bose speaker is an electric noisemaker. The usual sound of the speaker is "soothing whalesong". The sound of the speaker is "soothing whalesong". The speaker is switched on.
-
+	
 	Instead of touching a device: say "You feel the surface of [the noun] and discover the switch."
-
+	
 	Instead of touching a scented thing: say "The brush of your fingers stirs loose a fresh cloud of [scent of the noun] smell."
-
+	
 	Rule for printing the description of a dark room: try listening; try smelling; rule succeeds.
-
+	
 	Instead of examining an audible thing while in darkness: try listening to the noun. Instead of examining something while in darkness: try touching the noun.
-
+	
 	Before touching something when in darkness:
 		say "You grope about..."
-
+	
 	After inserting the plant into something:
 		say "You unceremoniously dump [the noun] into [the second noun], hoping it sustains no important damage thereby."
-
+	
 	Before printing the name of a dark room: if the player can touch an audible thing, say "Noisy "; if the player can touch a scented thing, say "Perfumed ".
-
+	
 	Visibility rule when in darkness:
 		if examining something, there is sufficient light;
 		there is insufficient light.
-
+	
 	Rule for printing the announcement of darkness: say "It is now pleasantly lightless in here." instead.
-
+	
 	Rule for deciding the scope of the player while in darkness: place the location in scope.
-
+	
 	To decide whether in daylight:
 		if in darkness, no;
 		yes.
-
+	
 	Instead of sleeping when in daylight:
 		say "You've never been able to sleep with the light on."
-
+	
 	Instead of sleeping when the player can touch an audible thing (called the irritant):
 		say "The steady [sound of the irritant] from [the irritant] prevents your slumber."
-
+	
 	Instead of sleeping when the player can touch a scented thing (called the irritant):
 		if the irritant is chocolate, say "The smell of chocolate continues to tantalize you, keeping you from sleep.";
 		otherwise say "You sniffle. [The irritant] is probably acting on your allergies."
-
+	
 	Instead of sleeping:
 		say "You slip easily into the arms of Morpheus.";
 		end the story finally saying "At last..."
-
-
+	
 	When play begins:
 		say "You have at last escaped from the airport and gotten through customs; survived an unnerving taxi ride over icy highways; stared down the impertinent concierge; endured the bellhop's catalog of features in your room; and achieved, finally, a moment of peace. Time for a good night's slumber!"
-
+	
 	Test me with "x dreamcatcher / switch lamp off / look / sleep / eat chocolate / sleep / get plant / examine plant / open suitcase / put plant in suitcase / close suitcase / sleep / look / examine bose / switch bose off / sleep".
+

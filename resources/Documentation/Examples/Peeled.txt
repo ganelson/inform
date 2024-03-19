@@ -8,38 +8,39 @@ For: Z-Machine
 Suppose we have a situation where the player is in darkness, but is allowed to feel and interact with (except for examining) any large objects. In that case, we write a scope rule that puts those large objects into scope all the time, and trust the "requires light" aspect of verbs like examining to prevent the player from doing any actions that they shouldn't:
 
 	{*}"Peeled"
-
+	
 	A thing can be large or small.
-
+	
 	Before touching a large thing when in darkness: say "You grope for [the noun]..."
-
+	
 	After deciding the scope of the player:
 		repeat with item running through large things in the location:
 			place item in scope.
-
+	
 	Some generic surroundings are backdrop. They are everywhere. Understand "walls" or "wall" or "ceiling" or "ground" or "floor" or "area" or "room" or "here" as the generic surroundings. Instead of touching the generic surroundings: say "You encounter nothing extraordinary." Instead of touching the generic surroundings when in darkness: say "You try feeling your way around and reach [a list of large things in the location]." After deciding the scope of the player when in darkness: place the surroundings in scope.
-
+	
 	The Room of Mystery is a dark room. The bearskin rug is a large thing in the Room of Mystery. Instead of touching the rug: say "It feels furry!"
-
+	
 	The peeled grape is a small thing in the Room of Mystery. Instead of touching the peeled grape: say "Gosh, is that an eyeball?"
-
+	
 	Test me with "feel floor / feel rug / eat rug / examine rug / get grape".
 
 Sadly, because the grape is small, the player will never encounter this horror.
 
 Alternatively, suppose we have a situation in which the player can use one command to interact with a kind of thing that isn't normally in scope. It's usually most convenient to write the "understand" rule appropriately rather than use the scope activity.
 
-(Note that we define "inquiring about" as applying to one *visible* thing; otherwise we would be required to be able to touch the catsuit in order to inquire about it. More on this restriction may be found in the Advanced Actions chapter on the topic of visible, touchable, and carried things.)
+(Note that we define "inquiring about" as applying to one *visible* thing; otherwise we would be required to be able to touch the catsuit in order to inquire about it. More on this restriction may be found in the [Advanced Actions] chapter on the topic of visible, touchable, and carried things.)
 
 	{*}"Peeled"
-
+	
 	Mr Steed's Flat is a room.
-
+	
 	Understand "ask about [any subject]" as inquiring about. A subject is a kind of thing. The skintight catsuit is a subject. Inquiring about is an action applying to one visible thing.
-
+	
 	Carry out inquiring about something:
 		say "'What can you tell me about [the noun]?' you demand. Mr Steed raises his eyebrows, but does not reply."
-
+	
 	Test me with "ask about catsuit / x catsuit".
 
 All this said, there do arise certain complex situations when we want an activity-specific scoping.
+

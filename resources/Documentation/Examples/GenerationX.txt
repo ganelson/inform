@@ -6,34 +6,34 @@ Description: A person who goes along with the player's instructions, but relucta
 For: Z-Machine
 
 	{*}"Generation X"
-
+	
 	The Volunteer Center is a room. "A fairly spartan office, though there are a few attractive posters from advertising campaigns of the past, and an ominous map charting the deforestation of Brazil."
-
+	
 	The desk is scenery in the Volunteer Center. "Your standard metal desk, with a drawer for postal supplies and the like." On the desk is a pile of leaflets and a pile of business cards. The power stapler is a device on the desk. A drawer is part of the desk. It is openable and closed. In the drawer are a sponge and a roll of bulk-mail stamps.
-
+	
 	Instead of doing something:
 		if examining, continue the action;
 		if searching, continue the action;
 		if looking, continue the action;
 		if asking Jenna to try doing something, continue the action;
 		say "The whole point of this exercise is to train Jenna. Once you have her on the envelope-stuffing, you can go make some calls."
-
+	
 	Instead of answering Jenna that something:
 		say "You're going to have to break the instructions down to the simplest ones possible, given that she's in the mood to misunderstand on purpose."
-
+	
 	A cardboard box is in the Center. In the cardboard box is a pile of empty envelopes. The box is openable and closed. The description is "A recycling symbol is prominent on the side, which makes you feel a little bit better about using a mailing campaign for this cause."
-
+	
 	Jenna is a woman in the Volunteer Center. "Your daughter Jenna is here, barely visible through the cloud of resentment." The description is "Jenna [if jenna carries something]has [the list of things carried by Jenna][otherwise]returns your stare, with added hostility[end if]."
-
+	
 	A persuasion rule for asking Jenna to try doing something: persuasion succeeds.
-
+	
 	Unsuccessful attempt by Jenna doing something:
 		repeat through Table of Retorts:
 			if the reason the action failed is the cause entry:
 				say "[response entry][paragraph break]";
 				rule succeeds;
 		say "'I don't see how I'm supposed to do that, Mom,' Jenna says."
-
+	
 	Table of Retorts
 	cause	response
 	can't take yourself rule	"'Is that like 'get a grip on yourself' or something?' Jenna asks, momentarily diverted."
@@ -49,10 +49,10 @@ For: Z-Machine
 	can't switch on what's already on rule	"[already done]"
 	can't unlock what's already unlocked rule	"[already done]"
 	can't lock what's already locked rule	"[already done]"
-
+	
 	To say physical impossibility:
 		say "'Maybe you should've brought someone a little stronger,' Jenna says. 'Like the Incredible Hulk.' "
-
+	
 	To say already done:
 		repeat through Table of Bored Remarks:
 			say "[response entry]";
@@ -60,7 +60,7 @@ For: Z-Machine
 			rule succeeds;
 		say "'Okay, I'm going to be, like, in the car,' says Jenna. 'Outside.' ";
 		end the story saying "Jenna has gotten fed up".
-
+	
 	Table of Bored Remarks
 	response
 	"'Did that,' says Jenna."
@@ -68,5 +68,6 @@ For: Z-Machine
 	"'Yeah, Mom, I already did that, okay?'"
 	"'Look, if I have to be here doing dumb stuff, could you at least tell me to do stuff that isn't already done?' Jenna asks wearily."
 	"Jenna gives a great upward sigh, riffling her bangs. 'Once again... there is totally no point.'"
-
+	
 	Test me with "e / x jenna / jenna, get stapler / jenna, get stapler / x jenna / jenna, drop stapler / jenna, drop stapler / jenna, open box / jenna, open box / jenna, switch stapler on / jenna, switch stapler on / jenna, take desk / jenna, open box / jenna, open box".
+

@@ -17,20 +17,20 @@ than
 Repeat comes in handy when we have something a bit more complicated to do with each item:
 
 	{*}"Strictly Ballroom"
-
+	
 	A person can be alert or occupied. A person is usually alert.
-
+	
 	When play begins:
 		now the player is occupied.
-
+	
 	Dance is a kind of value. The dances are waltzes, polkas, cha-chas, charlestons, fox-trots, tangos, lambadas, and two-steps.
-
+	
 	The current round is a dance that varies.
-
+	
 	Manner is a kind of value. The manners are swiftly, primly, energetically, suavely, seductively, elegantly, and badly.
-
+	
 	Every turn: now the current round is a random dance.
-
+	
 	Every turn:
 		repeat with dancer running through people who are not the player:
 			if dancer is alert:
@@ -48,13 +48,14 @@ Notice we did not say "repeat with dancer running through alert people who are n
 After all the partners are assigned, we can set up for the next turn by making everyone alert again, and for this we do not need "repeat":
 
 	{**}Every turn: now every person is alert; now the player is occupied.
-
+	
 	Before doing something to someone: now the noun is occupied.
-
+	
 	Before doing something when the second noun is a person: now the second noun is occupied.
-
+	
 	Instead of doing something to someone: say "You successfully distract [the noun]."
-
+	
 	The Pacific Ballroom is a room. "A rather utilitarian space at the moment, since this is a class and not a party." Timmy, Tommy, Joey, George, Mary, Martha, Yvette, McQueen, Linus, and Patricia are people in the Pacific Ballroom.
-
+	
 	Test me with "z / ask linus about blanket / z / z".
+

@@ -1,8 +1,8 @@
 Example: * Bee Chambers
 Location: Now...
 RecipeLocation: Map
-Index: Maze with randomized room links
-Description: A maze with directions between rooms randomized at the start of play.
+Index: Maze with randomised room links
+Description: A maze with directions between rooms randomised at the start of play.
 For: Z-Machine
 
 Mazes are a traditional element of interactive fiction, often consisting of apparently identical rooms with exits that do not work reciprocally and which cause confusion.
@@ -10,11 +10,11 @@ Mazes are a traditional element of interactive fiction, often consisting of appa
 The methods of mapping mazes are now fairly well understood and mazes themselves tend to be regarded as tiresome rather than enjoyable by a large portion of the playing audience. However, if we did want to ignore the common wisdom and create a maze, randomly generated at the start of play, here would be one way to go about it:
 
 	{*}"Maze of Gloom"
-
+	
 	A Bee Chamber is a kind of room. The printed name of a Bee Chamber is usually "Hexagonal Room". The description of a Bee Chamber is usually "Waxy, translucent walls surround you on six sides; the floor and ceiling are made of the same material, gently uneven. There are exits in every direction, cut into the faces or the corners."
-
+	
 	Bee1, Bee2, Bee3, Bee4, Bee5, Bee6, Bee7, Bee8, Bee9, and Bee10 are Bee Chambers.
-
+	
 	When play begins:
 		now right hand status line is "[number of visited rooms]/[number of rooms]";
 		repeat with place running through Bee Chambers:
@@ -30,5 +30,6 @@ The methods of mapping mazes are now fairly well understood and mazes themselves
 			now a random Bee Chamber is mapped below place;
 			now a random Bee Chamber is mapped inside place;
 			now a random Bee Chamber is mapped outside place.
-
+	
 	Test me with "in / out / up / down / n / ne / nw / e / w / sw / se / s".
+

@@ -6,17 +6,18 @@ Description: Three basic ways to inject random or not-so-random variations into 
 For: Glulx
 
 	{*}"M. Melmoth's Duel"
-
+	
 	Saint-Germain-des-Prés is a room. "Haunt of artists, of the coffee-drinking sort, and of cafés, of the artist-haunted sort, you once again find yourself outside M. Melmoth's hotel. Today [one of]the recently-fallen rain runs down the gutters of the 6th[or]sunlight glints even off the blackened windows of the Abbey[or]crowds of vulgar children play chase around the lampposts[at random], and you long to be indoors."
-
+	
 	The Hôtel d'Alsace is inside from Saint-Germain-des-Prés. "Typical. Oscar writes you a letter announcing his own imminent demise - 'My wallpaper and I are fighting a duel to the death. One or other of us has got to go.' - and then you get there and he's out, no doubt procuring paint the colour of absinthe, if he isn't procuring the painter."
-
+	
 	Tint is a kind of value. The tints are green, aquamarine and darkish purple.
-
+	
 	The wallpaper is fixed in place in the Hôtel. The wallpaper has a tint. "In this light, the wallpaper has a distinctly [tint of the wallpaper] wash. [if the tint of the wallpaper is darkish purple]You particularly dislike purple.[end if]"
-
+	
 	Before going to the Hôtel: now the wallpaper is a random tint.
-
+	
 	After going from the Hôtel, say "You leave, shaking your head. But within twenty-four hours, you are back, as you always knew you would be."
-
+	
 	Test me with "in / out / look / in / out / look".
+

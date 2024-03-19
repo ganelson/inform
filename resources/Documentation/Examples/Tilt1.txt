@@ -1,5 +1,4 @@
 Example: *** Tilt 1
-Subtitle: Deck of cards that can be referred to by name
 Location: Understanding things by their properties
 RecipeLocation: Dice and Playing Cards
 Index: Tilt 1. Deck of cards that can be referred to by name
@@ -13,24 +12,24 @@ A more sensible way is to make 52 identical card objects, assign them ranks and 
 So:
 
 	{*}"Tilt"
-
+	
 	Section 1 - Cards
-
+	
 	Suit is a kind of value. The suits are hearts, clubs, diamonds, and spades. Understand "heart" as hearts. Understand "club" as clubs. Understand "diamond" as diamonds. Understand "spade" as spades. [Providing the singular forms means that Inform will also understand >EXAMINE SPADE, >DISCARD CLUB, and so on.]
-
+	
 	A card is a kind of thing.  A card has a suit. A card has a number called rank. Understand the suit property as describing a card. Understand the rank property as describing a card.
-
+	
 	52 cards are in the card repository.
 
-Now, we're going to describe the higher numbers as face cards, so it helps to write a new "to say" phrase, just as we did in Jokers Wild. (A subsequent version of this example shows how to print card values with red and black symbols representing the different suits; see "Tilt 3".)
+Now, we're going to describe the higher numbers as face cards, so it helps to write a new "to say" phrase, just as we did in [Jokers Wild]. (A subsequent version of this example shows how to print card values with red and black symbols representing the different suits; see [Tilt 3].)
 
 	{**}To say (count - a number) as a card value:
 		choose row count in the Table of Value Names;
 		say "[term entry]".
-
+	
 	Rule for printing the name of a card (called target):
 		say "[rank of the target as a card value] of [suit of the target]"
-
+	
 	Table of Value Names
 	term	value	topic
 	"ace"	"1"	"ace/A/one"
@@ -47,7 +46,7 @@ Now, we're going to describe the higher numbers as face cards, so it helps to wr
 	"queen"	"12"	"queen/Q"
 	"king"	"13"	"king/K"
 
-This is enough already to let inform understand things like "ten clubs", but we want to add a couple of refinements. For one thing, we'd like to accept "of" when it appears in phrases such as "ten of clubs" (but not generically otherwise); for another, we'd like the player to be able to use various names for ranks. To this end, we need to borrow from the Activities chapter and modify the player's command before attempting to understand it:
+This is enough already to let inform understand things like "ten clubs", but we want to add a couple of refinements. For one thing, we'd like to accept "of" when it appears in phrases such as "ten of clubs" (but not generically otherwise); for another, we'd like the player to be able to use various names for ranks. To this end, we need to borrow from the [Activities] chapter and modify the player's command before attempting to understand it:
 
 	{**}After reading a command:
 		if the player's command includes "of [suit]":
@@ -64,7 +63,7 @@ Now to set up the deck at the outset. With some intelligent looping, we avoid ha
 
 	{**}When play begins:
 		reconstitute deck.
-
+	
 	To reconstitute deck:
 		let current suit be hearts;
 		now every card is in the card repository;
@@ -79,13 +78,13 @@ Now to set up the deck at the outset. With some intelligent looping, we avoid ha
 And now we need a simple setting and some actions to manipulate the deck with:
 
 	{**}Section 2 - The Deck and the Discard Pile
-
+	
 	The Empty Room is a room. "Nothing to see here."
-
+	
 	The deck of cards is in the Empty Room. It is a closed unopenable container. The description is "A standard poker deck."
-
+	
 	The discard pile is a closed unopenable container. The description is "Cards in this game are discarded face-down, so the discard pile is not very interesting to see. All you can observe is that it currently contains [if the number of cards which are in the discard pile is less than ten][the number of cards which are in the discard pile in words][otherwise]about [the rounded number of cards which are in the discard pile in words][end if] card[s]."
-
+	
 	To decide what number is the rounded number of (described set - a description of objects):
 		let N be the number of members of the described set;
 		let R be N divided by 5;
@@ -94,50 +93,49 @@ And now we need a simple setting and some actions to manipulate the deck with:
 
 The above phrase rounds a number to the nearest five, because it seems unrealistic for the player to be able to count a large number of cards in the discard pile at a single glance.
 
-This next bit is an optional borrowing from the Activities chapter: we want to prevent Inform printing things like "You can see a discard pile (closed) here.", since we don't want the player to think of the piles as containers, even though Inform thinks of them in those terms.
+This next bit is an optional borrowing from the [Activities] chapter: we want to prevent Inform printing things like "You can see a discard pile (closed) here.", since we don't want the player to think of the piles as containers, even though Inform thinks of them in those terms.
 
 	{**}Rule for printing room description details of something: do nothing instead.
 
 Finally, we want the player to use "draw" and "discard" to manipulate their hand of cards:
 
 	{**}Section 3 - Drawing and Discarding Actions
-
+	
 	Understand the commands "take" and "carry" and "hold" and "get" and "drop" and "throw" and "discard" as something new.
-
+	
 	Understand "take [text]" or "get [text]" or "drop [text]" as a mistake ("Here, you only draw and discard. Nothing else matters at the moment.").
-
+	
 	Understand "draw" or "draw card" or "draw a card" as drawing. Drawing is an action applying to nothing. The drawing action has an object called the card drawn.
-
+	
 	Setting action variables for drawing:
 		now the card drawn is a random card which is in the deck of cards.
-
+	
 	Check drawing:
 		if the card drawn is nothing, say "The deck is completely depleted." instead.
-
+	
 	Check drawing:
 		if the number of cards carried by the player is greater than four,
 			say "This is a five-card game; you must discard something before drawing anything further." instead.
-
+	
 	Carry out drawing:
 		move the card drawn to the player.
-
+	
 	Report drawing:
 		say "You draw [a card drawn]."
-
-
+	
 	Understand "discard [card]" as discarding. Discarding is an action applying to one thing.
-
+	
 	Check discarding:
 		if the player does not carry the noun, say "You can only discard cards from your own hand." instead.
-
+	
 	Carry out discarding:
 		now the noun is in the discard pile;
 		if the discard pile is not visible, move the discard pile to the location.
-
+	
 	Report discarding:
 		say "You toss [the noun] nonchalantly onto the discard pile."
-
+	
 	Seeding is an action out of world. Understand "seed" as seeding. Carry out seeding: seed the random-number generator with 5681.
-
+	
 	Test me with "seed / draw / g / g / g / g / i / discard seven of spades / draw / discard six / draw / i / discard hearts / discard six of diamonds card / draw / draw / i / discard spades card / draw / discard king card".
 

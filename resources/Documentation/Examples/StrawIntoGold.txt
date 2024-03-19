@@ -6,16 +6,16 @@ Description: Creating a Rumpelstiltskin character who is always referred to as "
 For: Z-Machine
 
 	{*}"Straw Into Gold"
-
+	
 	The Cell is a room. Rumpelstiltskin is an improper-named man in the Cell.  Rumpelstiltskin can be identified or unidentified. Rumpelstiltskin is unidentified.
-
+	
 	R-name is a kind of value. The R-names are dwarf, guy, dude, and man-thing. Rumpelstiltskin has an R-name. Understand "[R-name]" as Rumpelstiltskin.
 
 Our example is slightly complicated by the fact that "man" is a name already known to Inform, so we can't re-use it as a kind of value. This is possible to work around, though:
 
 	{**}Understand "man" as man-thing.
 
-Now we borrow from the Activities chapter to look at the exact wording of the player's command:
+Now we borrow from the [Activities] chapter to look at the exact wording of the player's command:
 
 	{**}After reading a command:
 		if the player's command includes "[R-name]",
@@ -23,12 +23,12 @@ Now we borrow from the Activities chapter to look at the exact wording of the pl
 		if the player's command includes "Rumpelstiltskin":
 			now Rumpelstiltskin is identified;
 			now Rumpelstiltskin is proper-named.
-
+	
 	Rule for printing the name of Rumpelstiltskin when Rumpelstiltskin is unidentified:
 		if the R-name of Rumpelstiltskin is man-thing:
 			say "man";
 		otherwise:
 			say "[R-name]".
-
+	
 	Test me with "x dwarf / x guy / x dude / look / x rumpelstiltskin / look / x man".
 

@@ -8,9 +8,9 @@ For: Z-Machine
 Let's start with results from the 2020 Summer Olympic Games:
 
 	{*}"Olympic Medals"
-
+	
 	The Tally Room is a room. "Here we count the event results as they come in and update that most important table of all, the Table of Olympic Medals."
-
+	
 	Table of Olympic Medals
 	Country	Gold	Silver	Bronze
 	"Australia"	17	7	22
@@ -40,12 +40,12 @@ Olympic medal results are conventionally listed according to the number of gold 
 		if bronze in row Y of T < bronze in row X of T:
 			decide on -1;
 		decide on 0;
-
+	
 	When play begins:
 		sort Table of Olympic Medals with ranked medal comparison;
 		showme the contents of the Table of Olympic Medals;
 
-But this isn't great for Italy - are France's two more silver medals really so much more significant than Italy's nine more bronze medals? Let's sort this table by the total number of medals, so that Italy can sit in proud seventh place.
+But this isn't great for Italy–are France's two more silver medals really so much more significant than Italy's nine more bronze medals? Let's sort this table by the total number of medals, so that Italy can sit in proud seventh place.
 
 	{**}To decide which number is the total medal comparison of (T - table name) rows (X - a number) and (Y - a number) (this is total medal comparison):
 		choose row X in T;
@@ -53,7 +53,8 @@ But this isn't great for Italy - are France's two more silver medals really so m
 		choose row Y in T;
 		let total Y be the gold entry + silver entry + bronze entry;
 		decide on total Y - total X;
-
+	
 	When play begins:
 		sort Table of Olympic Medals with total medal comparison;
 		showme the contents of the Table of Olympic Medals;
+

@@ -6,9 +6,9 @@ Description: A simple exercise in printing the names of random numbers, comparin
 For: Z-Machine
 
 	{*}"Numberless"
-
+	
 	The Rambling Warren is a room.
-
+	
 	When play begins:
 		let N be a random number between 1 and 5;
 		if N is 1:
@@ -31,20 +31,20 @@ The more compact way to do this is to create a list of values that our number co
 			-- 7: say "The number of the day is seven!";
 			-- otherwise: say "Today's magic number is boring."
 
-
-As a final option, we can use a construction we've seen only briefly before now: a table. The use of tables will be explained more fully in their own chapter, but here we see in brief that we can assign a number of values to one column of a table and then use that table to look up output:
+As a final option, we can use a construction we've seen only briefly before now: a table. The use of [Tables] will be explained more fully in their own chapter, but here we see in brief that we can assign a number of values to one column of a table and then use that table to look up output:
 
 	{**}When play begins:
 		let X be a random number between 11 and 14;
 		if X is a number listed in the Table of Switching, say "[output entry][paragraph break]";
 		otherwise say "X is greater than the number of your noses!"
-
+	
 	Table of Switching
 	number	output
 	11	"X is eleven!"
 	12	"X is twelve!"
 	13	"X is thirteen!"
-
+	
 	Test me with "z".
 
 As we shall see, things other than text can be stored in tables, so we could also use a table as a way to look up objects or even rules to carry out.
+

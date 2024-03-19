@@ -10,7 +10,7 @@ Suppose we have a location that makes the player uncomfortable, and we want its 
 We start with an ordinary room:
 
 	{*}"Infiltration"
-
+	
 	The Wasteland is a room. "In its more distant reaches, the Wasteland has a kind of austere beauty, but here beside the Secure Zone it is the worst of all possible worlds. Barrels of toxins are stacked the regulation hundred and fifty feet out; more traditional garbage has simply been flung over the wall, and this category includes one or two corpses roughly and inadequately disguised by black plastic bags. The wall itself has become a canvas for outcasts and exiles, and is covered with obscene paintings, lewd remarks about the inhabitants of the Secure Zone, and a few maudlin epitaphs."
 
 Now the door, which will change from saying "leads inside..." to "leads back inside..." when this becomes appropriate:
@@ -20,13 +20,14 @@ Now the door, which will change from saying "leads inside..." to "leads back ins
 Here we haven't used any conditions that we didn't know about in previous sections: the portal line only reflects whether the Zone has been visited never or visited once. But the Secure Zone itself makes use of the number of times visited:
 
 	{**}The Secure Zone has the description "[if the player is in the Zone for the second time]Re-entering the Zone has not made you any more comfortable inside. [end if]Despite your carefully-chosen outfit and the walk you have been practicing, you are sure those inside can tell you don't belong. Not that very many people are visible here[if the player is in the Zone for more than the second time] -- the place seems more desolate than ever[end if]."
-
+	
 	Instead of going west in the Wasteland, try going inside. Instead of going east in the Secure Zone, try going outside.
 
 And finally, to be sure that the player does see our fancy changing descriptions:
 
 	{**}Use full-length room descriptions.
-
+	
 	Test me with "look / open portal / w / look / e / look / w / e / w".
 
 Notice that the description of the Secure Zone changes from visit to visit, but that looking repeatedly during a single visit changes nothing.
+

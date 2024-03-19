@@ -8,71 +8,71 @@ For: Z-Machine
 Suppose we have a conversation system in which it is important to keep track of which subjects the player has heard mentioned. If we're careful to mark subjects in brackets, we can use the "printing the name of" activity to record which things have been mentioned so far:
 
 	{*}"Chronic Hinting Syndrome"
-
+	
 	A subject is a kind of thing.
-
+	
 	Knowledge relates various people to various subjects. The verb to know means the knowledge relation.
-
+	
 	Awareness relates various people to various subjects. The verb to be aware of means the awareness relation.
-
+	
 	Definition: a subject is pending if the player is aware of it and it is not known by the player.
-
+	
 	Instead of thinking:
 		if the number of pending subjects is 0, say "You have no fresh leads at the moment.";
 		otherwise say "You recall that thus far you have not followed up with questions about [the list of pending subjects]."
-
+	
 	After printing the name of a subject (called idea):
 		now the player is aware of the idea.
 
 Now suppose that as an added convenience for the player, we let them turn on a mode in which useful conversation topics are always automatically highlighted in the text, so they don't waste time trying to follow up dead leads:
 
 	{**}Setting is a kind of value. The settings are bright and dull. Understand "on" as bright. Understand "off" as dull.
-
+	
 	Highlighting is a setting that varies. Highlighting is dull.
-
+	
 	Understand "highlighting [setting]" as setting highlighting. Setting highlighting is an action out of world, applying to one setting.
-
+	
 	Carry out setting highlighting:
 		now highlighting is the setting understood.
-
+	
 	Report setting highlighting:
 		say "Highlighting is now [if highlighting is dull]off[otherwise]on[end if]."
-
+	
 	Before printing the name of a subject (called idea) when highlighting is bright:
 		unless the player knows the idea:
 			say "[bold type]".
-
+	
 	After printing the name of a subject when highlighting is bright:
 		say "[roman type]".
 
 ...And the rest is peripheral.
 
 	{**}The Sickbay is a room. "A place arranged for Nathan's comfort, since his sickness has been prolonged and because he becomes so irritating when not comfortable." The Hallway is outside from the Sickbay.
-
+	
 	A supporter can be untried or rejected. A supporter is usually untried.
-
+	
 	The Sickbay contains a wobbly pedestal, a table, and a sickbed. Understand "bed" as the sickbed. The pedestal, the table, and the sickbed are supporters. Nathan is a man on the sickbed. The sickbed is scenery. The initial appearance of the wobbly pedestal is "A wobbly pedestal near the door has sometimes been known to support vases of flowers, but is currently bare." The initial appearance of the table is "There is also a table of a more ordinary sort."
-
+	
 	Nathan can be active or passive.
-
+	
 	After printing the name of Nathan: now Nathan is passive.
-
+	
 	Instead of putting the sculpture on the table:
 		now the table is rejected;
 		say "'[Not there],' [Nathan] snaps. 'The table is way too far from the sickbed.'"
-
+	
 	Instead of putting the sculpture on the sickbed:
 		now the sickbed is rejected;
 		say "'[Not there],' [Nathan] rebukes you. 'You don't want me knocking it over if I roll around. In pain.'"
-
+	
 	Instead of putting the sculpture on the pedestal:
 		now the pedestal is rejected;
 		say "The pedestal starts to wobble so ominously that you don't dare let go.
-
+	
 	'[Not there],' says [Nathan]. 'That thing is falling apart.'"
-
+	
 	Before putting something on the down: try dropping the noun instead.
-
+	
 	To say not there:
 		if all the supporters are rejected:
 			say "Look, the floor would be fine";
@@ -80,84 +80,84 @@ Now suppose that as an added convenience for the player, we let them turn on a m
 			say "Yeah, anywhere but there, I'm afraid";
 		otherwise:
 			say "Come on, use your head -- I can't be watching you all the time, I'm sick".
-
+	
 	Instead of going outside when the player is carrying the sculpture:
 		say "You've still got this sculpture to get rid of."
-
+	
 	Instead of going outside when the breakage is pending:
 		say "You can't very well smash in front of [Nathan] his prize sculpture and then just scamper off without saying something. Appealing though the thought is at the moment."
-
+	
 	Instead of going outside when a subject which is not the breakage is pending:
 		say "'Yeah, go ahead,' says [Nathan], with a martyr-like air. 'It's probably best that you don't hear about [the random pending subject]. It's not something I'd go into normally.'"
-
+	
 	The breakage is a subject. The description is "It's not a big deal. I'll just buy a new [mental wave generator].' A slight awkward pause. 'I mean, this one was a [gift], but don't worry about it". Understand "accident" or "smashing" or "breaking" or "shard" or "mishap" or "shards" or "mistake" as the breakage. Understand "sculpture" as the breakage when the player is not carrying the sculpture.
-
+	
 	Instead of saying sorry in the presence of Nathan when the player is aware of the breakage:
 		try asking Nathan about the matter of breakage.
-
+	
 	Instead of asking Nathan to try saying sorry when the player is aware of the breakage:
 		try asking Nathan about the matter of breakage.
-
+	
 	The mental wave generator is a subject. The description is "They're kind of expensive but I can save up. I really need one, though, because of my [dreams]".
-
+	
 	The dreams is a subject. The description is "They're not the kind of dream you want to have.' He closes his eyes and contemplates these undesirable dreams. 'Have you ever woken up convinced you were dead? No, probably not. Well... At any rate, I need the [generator]. Oh, don't worry, they're expensive but not so expensive that I won't be able to save up for another, in a few months".
-
+	
 	The gift is a subject. The description is "[The mental wave generator] was a present from a girl named [Shari]. Actually I'm not sure she'd take to being called a girl".
-
+	
 	Shari is a subject. The description is "Look, let's just not go into it, okay? I don't really want to relive all that right now. I still have a six-inch [scar] shaped like a banana in the middle of my back".
-
+	
 	The scar is a subject.
-
+	
 	Instead of asking Nathan about the matter of the scar:
 		say "Nathan clears his throat, lowers his voice, and begins to tell you the story...";
 		end the story saying "End of Demo -- Register to Continue!!"
-
+	
 	Understand "ask [someone] about [any subject]" as asking it about the matter of.
-
+	
 	Asking it about the matter of is an action applying to one thing and one visible thing.
-
+	
 	Check asking it about the matter of:
 		if the player is not aware of the second noun, say "What [second noun]?" instead;
 		if the noun does not know the second noun, say "'I've no idea,' replies [the noun]." instead;
 		if the player knows the second noun, say "You've already covered that. The response was '[description of the second noun].'" instead.
-
+	
 	Carry out asking it about the matter of:
 		now the player knows the second noun.
-
+	
 	Report asking it about the matter of:
 		say "'[description of the second noun],' says [the noun]."
-
+	
 	Instead of telling Nathan about something:
 		say "He pinches the bridge of his nose. 'I can't really follow this right now,' he says. 'I'm sorry.'"
-
+	
 	Instead of asking Nathan about something:
 		say "He shrugs weakly."
-
+	
 	When play begins:
 		say "'Just put that down anywhere,' says [Nathan], as you come into the room. He's sitting in the sickbed with his legs straight out in front of him. 'I don't care where.' His voice is weak, but it sharpens up for the last remark: 'And don't make a lot of noise about it.'
-
+	
 	Considering that he woke you from a sound slumber to beg you to bring this thing over, his attitude is a bit much. You stare dubiously at the awkward crystal sculpture in your hands.";
 		now Nathan knows every subject.
-
+	
 	Instead of asking Nathan about something while the player carries the sculpture, say "[Nathan] moans dramatically and refuses to be drawn into conversation."
-
+	
 	The player is carrying an awkward crystal sculpture. Understand "objet" or "objet de hideous" as the sculpture. The description of the sculpture is "It might possibly be natural, or it might be man-made. It might appeal to someone, but it is certainly not to your tastes."
-
+	
 	Instead of showing the sculpture to Nathan:
 		say "'Please put it anywhere,' he says."
-
+	
 	Instead of giving the sculpture to Nathan:
 		say "'No, it doesn't work if I touch it. That's why I couldn't-- well, just put it down.'"
-
+	
 	After dropping the sculpture:
 		now the player is aware of the breakage;
 		now the sculpture is nowhere;
 		say "You are incredibly careful, but somehow the sculpture slips -- you might almost say slithers -- from your fingers and crashes into a thousand shards at the feet of [Nathan].
-
+	
 	There is a tense silence."
-
+	
 	Before reading a command: now Nathan is active.
-
+	
 	Every turn while not asking:
 		if Nathan is passive, rule succeeds;
 		if the player is carrying the sculpture:
@@ -171,7 +171,7 @@ Now suppose that as an added convenience for the player, we let them turn on a m
 		if a subject is pending:
 			choose a random row in the Table of Offhand Reminiscences;
 			say "[line entry][paragraph break]".
-
+	
 	Table of Offhand Reminiscences
 	line
 	"'It actually is kind of a funny story about [the random pending subject],' [Nathan] remarks casually."
@@ -180,5 +180,6 @@ Now suppose that as an added convenience for the player, we let them turn on a m
 	"'I don't know why I brought up [the random pending subject] just now,' [Nathan] comments. 'Don't mention it to anyone, if you don't mind.'"
 	"'Okay, see, the thing about [the random pending subject] is...'  [paragraph break]'Yes?' you ask, on cue.[paragraph break]'...never mind.'"
 	"[Nathan] makes an explosive exasperated sound. 'Don't you want to ask me about [the random pending subject]?' he demands."
-
+	
 	Test me with "highlighting bright / put sculpture on pedestal / put it on table / put it on sickbed / drop it / think / ask nathan about breakage / think / ask him about generator / ask him about dreams / ask him about gift / ask him about shari / ask him about scar".
+

@@ -1,18 +1,18 @@
 Example: *** Uptown Girls
 Location: Randomness
 RecipeLocation: Passers-By, Weather and Astronomical Events
-Index: Randomized pedestrian passer-by
+Index: Randomised pedestrian passer-by
 Description: A stream of random pedestrians who go by the player.
 For: Z-Machine
 
 Suppose we have an urban space we want to populate with random women walking by. These should have a range of characteristics and not always be described in the same way; after having noticed one, the player should be able to look at the passers-by further, until another pedestrian crosses their path.
 
 	{*}"Uptown Girls"
-
+	
 	Riverside Drive is a room. "There's a pleasant late-afternoon view of the Hudson, and a snap in the air, and you would rather be here than anywhere."
-
+	
 	Instead of going a direction, say "Oh, you know where you're going; no need to deviate from the usual path."
-
+	
 	Instead of waiting, say "You stroll along enjoying the November crispness."
 
 It gets a little annoying to have a random event occurring every single turn of play, so let's introduce some randomness to determine how often the message appears:
@@ -21,7 +21,7 @@ It gets a little annoying to have a random event occurring every single turn of 
 		reset passerby;
 		choose a random row in the Table of Atmospheric Events;
 		say "[event entry][paragraph break]"
-
+	
 	Table of Atmospheric Events
 	event
 	"Slowly [a passerby] strolls by, turning to look at you as she passes."
@@ -31,18 +31,18 @@ It gets a little annoying to have a random event occurring every single turn of 
 	"There's a ruckus as one of the ubiquitous taxis nearly collides with [a passerby] crossing the street."
 	"[The passerby] beside you waves to a friend across the street."
 	"To your left, [a passerby] drops her purse, and swears as she retrieves it."
-
+	
 	Hair color is a kind of value. A person has hair color. the hair colors are red-headed, brunette, blonde.
-
+	
 	Height is a kind of value. A person has height. The heights are tall, medium-height, short.
-
+	
 	Grooming is a kind of value. A person has grooming. The groomings are messy and tidy.
-
+	
 	To reset passerby:
 		now the hair color of the passerby is a random hair color;
 		now the height of the passerby is a random height;
 		now the grooming of the passerby is a random grooming.
-
+	
 	The passerby is a woman in Riverside Drive. The passerby is scenery. Understand "woman" or "lady" as the passerby. The printed name of the passerby is "[one of]woman[or]lady[purely at random]".
 
 At this point we borrow some techniques from later to describe the woman with a random combination of characteristics, and to let the player refer to her by those traits:
@@ -51,7 +51,7 @@ At this point we borrow some techniques from later to describe the woman with a 
 		if a random chance of 1 in 4 succeeds, say "[height] ";
 		if a random chance of 1 in 4 succeeds, say "[grooming] ";
 		if a random chance of 1 in 4 succeeds, say "[hair color] ".
-
+	
 	Understand the hair color property as describing the passerby. Understand the height property as describing the passerby. Understand the grooming property as describing the passerby.
 
 If we also wanted each of those combinations to mean some more specifically-described woman:
@@ -59,7 +59,7 @@ If we also wanted each of those combinations to mean some more specifically-desc
 	{**}Instead of examining a passerby:
 		repeat through Table of Passerby Descriptions:
 			if hair entry is the hair color of the passerby and height entry is the height of the passerby and grooming entry is the grooming of the passerby, say "[description entry][paragraph break]".
-
+	
 	Table of Passerby Descriptions
 	hair	height	grooming	description
 	red-headed	tall	messy	"An older woman with long red hippie-hair poking out of a ponytail in straggles, and bent to hide how tall she is."
@@ -80,5 +80,6 @@ If we also wanted each of those combinations to mean some more specifically-desc
 	blonde	tall	tidy	"Elfin and severe, with perfectly straight hair falling to the middle of the back."
 	blonde	medium-height	tidy	"A rounded, Marilyn-esque blonde."
 	blonde	short	tidy	 "Pin-precise in a blue-and-white striped suit and a boyish haircut."
-
+	
 	Test me with "z / z / x passerby / z / z / x passerby".
+

@@ -2,28 +2,28 @@ Example: **** Under Contract
 Location: Making actions work for other people
 RecipeLocation: Obedient Characters
 Index: Person who obeys almost all instructions
-Description: Creating a person who accepts most instructions and reacts correctly when a request leads implicitly to inappropriate behavior.
+Description: Creating a person who accepts most instructions and reacts correctly when a request leads implicitly to inappropriate behaviour.
 For: Z-Machine
 
 	{*}"Under Contract"
-
+	
 	The Sound Stage is a room. The description is "A somewhat creaky and unconvincing reproduction of the docks of San Francisco."
-
+	
 	Clark Gable is a man in the Sound Stage. "Clark is here, carrying [the list of things carried by Clark][if Clark wears anything] and wearing [the list of things worn by Clark][end if]." Clark carries a swagger stick. Clark carries an open openable player's holdall called a briefcase. The briefcase contains a signed contract. Clark wears a fedora and a pair of pants. A handle is part of the briefcase.
-
+	
 	The player carries an open openable player's holdall called a frilly bag. The carrying capacity of the player is 2. The player wears a sparkly scarf and a slinky dress. A strap is part of the bag. The tent is a portable enterable container.
-
+	
 	Instead of taking off the slinky dress: say "Rowr! Not that kind of movie, babe."
-
+	
 	Instead of taking off the pants: say "That's not your job, whatever the society pages might suggest."
-
+	
 	Unsuccessful attempt by Clark doing something:
 		repeat through table of Clark Retorts:
 			if the reason the action failed is the cause entry:
 				say "[response entry][paragraph break]";
 				rule succeeds;
 		say "'I don't think that's in the script,' says Clark dubiously."
-
+	
 	Table of Clark Retorts
 	cause	response
 	can't take yourself rule	"'I'm always self-possessed,' Clark remarks. You've heard that line before, but it sounds so much more convincing from him."
@@ -60,21 +60,21 @@ For: Z-Machine
 	can't switch on what's already on rule	"[already done]"
 	can't unlock what's already unlocked rule	"[already done]"
 	can't lock what's already locked rule	"[already done]"
-
+	
 	To say already done:
 		repeat through Table of Clark's Bored Remarks:
 			say "[response entry]";
 			blank out the whole row;
 			rule succeeds;
 		say "'Already done.' "
-
+	
 	Table of Clark's Bored Remarks
 	response
 	"'I have anticipated your every demand.'"
 	"'We've been through this part of the script already,' Clark remarks, with just a hint of creeping tedium."
 	"'Right right, already taken care of...'"
 	"'I'm a believer in rehearsal,' Clark says, sounding more bored than ever, 'but we really have got all this done already.'"
-
+	
 	To say salacious retort:
 		repeat through Table of Clark's Flirtatious Remarks:
 			say "[response entry]";
@@ -82,7 +82,7 @@ For: Z-Machine
 			rule succeeds;
 		say "Clark, driven past the point of endurance, seizes you in his arms and kisses you.";
 		end the story finally.
-
+	
 	Table of Clark's Flirtatious Remarks
 	response
 	"Clark allows his mustache to quirk at the suggestion."
@@ -91,67 +91,66 @@ For: Z-Machine
 	"'I'd feel so... bare,' Clark says, with a sidelong look at you."
 	"'You first,' says Clark."
 	"Clark's stare is intense. You may be on the verge of breaking him."
-
-
+	
 	To say physical impossibility:
 		repeat through Table of Clark's Frustrated Denials:
 			say "[response entry]";
 			blank out the whole row;
 			rule succeeds;
 		say "Clark makes a helpless gesture about his ability to move himself, or parts of himself, through solid objects. "
-
+	
 	Table of Clark's Frustrated Denials
 	response
 	"Clark frowns. 'I can't reach through things -- unless you were planning a special effect?'"
 	 "'Look,' says Clark. 'If you want a stage magician, hire one.'"
 	"Clark just groans."
 	"Clark says drily, 'Is this in the script, or are we doing improvisation now?'"
-
+	
 	The block giving rule is not listed in the check giving it to rules. The block showing rule is not listed in the check showing it to rules. The report smelling rule is not listed in the report smelling rules. The report listening rule is not listed in the report listening to rules.
-
+	
 	Carry out listening to something:
 		do nothing.
-
+	
 	Report listening to something: say "Your attention bears no interesting result."
-
+	
 	Carry out smelling something:
 		do nothing.
-
+	
 	Report smelling something:  say "Your attention bears no interesting result."
-
+	
 	Report someone listening to something: say "[The person asked] concentrates, listening."
-
+	
 	Report someone smelling something: say "[The person asked] sniffs at [the noun]."
-
+	
 	Instead of asking someone for something: try asking the noun to try giving the second noun to the player.
-
+	
 	Carry out showing something to someone: say "You reveal [the noun] to [the second noun]."
-
+	
 	Carry out Clark showing something to someone:
 		if the second noun is the player:
 			say "Clark shows you [the noun]. [run paragraph on]";
 			try examining the noun;
 		otherwise:
 			say "Clark reveals [the noun] to [the second noun]."
-
+	
 	Instead of asking someone to try saying yes: try saying yes. Instead of asking someone to try saying no: try saying no. Instead of asking someone to try saying sorry, try saying sorry.
 
 And now we make Clark a very amenable type:
 
 	{**}A persuasion rule for asking people to try doing something: persuasion succeeds.
 
-There are quite a few actions for which no automatic other-character behavior is provided at all, because they always end in failure when the player tries them. Currently the response is not very interesting. Let's spice it up a bit:
+There are quite a few actions for which no automatic other-character behaviour is provided at all, because they always end in failure when the player tries them. Currently the response is not very interesting. Let's spice it up a bit:
 
 	{**}Burning something is useless action. Waking up is useless action. Thinking is useless action. Cutting is useless action. Jumping is useless action. Tying something to something is useless action. Drinking something is useless action. Swinging is useless action.  Rubbing is useless action. Setting something to something is useless action. Waving hands is useless action. Buying is useless action. Climbing is useless action. Sleeping is useless action. Kissing is useless action. Throwing something at something is useless action. Attacking is useless action. Asking something about something is useless action. Telling something about something is useless action. Answering something that something is useless action. Waking something is useless action.
-
+	
 	A persuasion rule for asking people to try useless action:
 		say "Clark Gable frowns. 'I don't mean to be difficult, but I can't see any point in that.'";
 		persuasion fails.
-
+	
 	A persuasion rule for asking Clark to try taking off the pants:
 		say "He gives you a look of mocking exasperation. Apparently you'll have to take a (slightly) more subtle approach.";
 		persuasion fails.
-
+	
 		Check someone giving something to someone (this is the can't give worn items rule):
 			if the person asked wears the noun, stop the action.
 
@@ -162,3 +161,4 @@ And because we do not want Clark automatically taking off the pants as the resul
 We know that this can only come about as a default action, because we have arranged matters so that he cannot be persuaded directly.
 
 	{**}Test me with "give dress to clark / clark, take off pants / clark, eat pants / clark, give me the pants / clark, drop pants / clark, put the pants in the briefcase / again / g / g / g"
+

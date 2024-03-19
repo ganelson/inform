@@ -1,5 +1,4 @@
 Example: *** Pine 2
-Subtitle: Chatting with the Princess
 Location: Linking scenes together
 RecipeLocation: Characters Following a Script
 Index: Pine 2. Chatting with the Princess
@@ -7,61 +6,61 @@ Description: Pine: Adding a conversation with the princess, in which a basic set
 For: Z-Machine
 
 	{*}"Pine"
-
+	
 	A person can be asleep or awake. A person can be active or passive.
-
+	
 	The Spinning Tower is a room. "A remote corner of the old castle, reserved for spinning and weaving tasks."
-
+	
 	Sleeping Beauty is an asleep woman in the Spinning Tower. "[if asleep]Sleeping Beauty lies here, oblivious to your presence[otherwise]Sleeping Beauty stands beside you, looking a little confused[end if]." The description is "She is even more magnificent than the rumors suggested." Understand "woman" or "girl" or "princess" or "lady" as Sleeping Beauty.
-
+	
 	Discovery is a scene. Discovery begins when play begins. Discovery ends when Sleeping Beauty is awake. Marriage Proposal is a scene. Marriage Proposal begins when Discovery ends.
-
+	
 	When Discovery ends: say "Throughout the palace you can hear the other sounds of stirring and movement as the spell of centuries is broken."
-
+	
 	Instead of waking an awake person: say "Redundant."
-
+	
 	Instead of waking an asleep person: say "Yes, but how?"
-
+	
 	Instead of attacking an asleep person:
 		now the noun is awake;
 		say "[The noun] sits bolt upright. 'Hey! Ow!' So much for that true love's kiss nonsense."
-
+	
 	Instead of kissing an asleep person:
 		now the noun is awake;
 		say "[The noun] slowly stirs to wakefulness!"
-
+	
 	Instead of throwing water at an asleep person:
 		now the second noun is awake;
 		now the noun is nowhere;
 		say "You pour out [the noun] on [the second noun].
-
+	
 	[The second noun] wakes, shuddering. 'Agh! I had a terrible dream about drowning and then-- Hey!'"
-
+	
 	The player carries a jug of water. Understand "pour [something] on [something]" or "splash [something] at/on [something]" as throwing it at.
 
-So much, we had before. Now, suppose we want a conversation style which allows the player to move conversation forward by asking appropriate questions, but which will keep moving forward even if he doesn't. To this end, we provide a table -- a borrowing from a later chapter. In the table, we record two ways of performing each conversation bit, one which reflects the player's participation, and one in which the character moves things onward:
+So much, we had before. Now, suppose we want a conversation style which allows the player to move conversation forward by asking appropriate questions, but which will keep moving forward even if he doesn't. To this end, we provide a table – a borrowing from a later chapter, [Tables]. In the table, we record two ways of performing each conversation bit, one which reflects the player's participation, and one in which the character moves things onward:
 
 	{**}Table of Conversation
 	topic	reply	quip
 	"dream/dreams/nightmare/nightmares/sleep"	"'Sleep well?' you ask solicitously.
-
+	
 	'Not really,' she replies, edging away from you. So much for that angle."	"'Ghastly nightmares,' she remarks. You nod politely."
 	"marriage/love/wedding/boyfriend/beau/lover"	"'So,' you say. 'This is a little weird since we just met, but, um. Would you like to get married?'
-
+	
 	She looks at you nervously. 'Do I have to?'"	"'I, er,' she says. 'I hope I'm not supposed to marry you or something.'"
 	"marriage/love/wedding/boyfriend/beau/lover"	"'I was told I was going to marry you and inherit the kingdom,' you say, apologetically. 'Would that be very bad?'
-
+	
 	'Oh, it's not you -- I'm seeing someone,' she says, smiling quickly.
-
+	
 	You try to think how to point out that it's been a hundred years since she last saw her boyfriend."	"'Do you think I could go look for someone? I'm seeing him, you see, and I think I've been... sick... for a while, so he might be worried.'
-
+	
 	You try to think how to point out that it's been a hundred years since she last saw her boyfriend."
 	"marriage/love/wedding/boyfriend/beau/lover"	"'You've been up here for a hundred years,' you say. An unpleasant thought occurs to you. 'Was your young man in the castle somewhere?'
-
+	
 	She shakes her head mutely."	"She goes to the window and looks out at the now-fading thicket of briar. 'That took a while to grow,' she observes. 'I've been up here longer than I thought.'
-
+	
 	You shrug, uncomfortable."
-
+	
 	Instead of asking an awake beauty about a topic listed in the Table of Conversation:
 		now Beauty is passive;
 		say "[reply entry][paragraph break]";
@@ -70,12 +69,12 @@ So much, we had before. Now, suppose we want a conversation style which allows t
 The "now Beauty is passive" line prevents her from making any conversation of her own on a turn when we've spoken to her. This keeps the conversation from progressing too quickly.
 
 	{**}Instead of telling an awake beauty about something: try asking the noun about it.
-
+	
 	Instead of asking an asleep person about something:
 		say "[The noun] snores."
-
+	
 	Marriage Proposal ends when the number of filled rows in the Table of Conversation is 0.
-
+	
 	Every turn during Marriage Proposal:
 		if Beauty is active:
 			repeat through Table of Conversation:
@@ -86,9 +85,10 @@ The "now Beauty is passive" line prevents her from making any conversation of he
 After we've generated any spontaneous conversation, we return her to her regular active state.
 
 	{**}Every turn: now Beauty is active.
-
+	
 	When Marriage Proposal ends: end the story saying "This is going to take some explaining."
-
+	
 	Test me with "x beauty / wake beauty / pour water on beauty / ask beauty about sleep / z / ask beauty about marriage".
 
 Now we have a scenario in which the player can ask her some questions out of order if they really want to, but the scene will not end until the basic conversation topics have been exhausted. If we wanted to add some other chit-chat, not as part of the main conversation strand, but by way of optional enrichment, we might make a second conversation table and record alternative outcomes in it.
+

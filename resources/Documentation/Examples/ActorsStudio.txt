@@ -8,36 +8,36 @@ For: Z-Machine
 Here we construct a video camera to track and play back actions:
 
 	{*}"The Actor's Studio"
-
+	
 	Section 1 - The Video Camera
-
+	
 	The video camera is a thing carried by the player.
-
+	
 	Table of Videotape
 	recorded action	time stamp
 	waiting	9:00 AM
 	with 25 blank rows.
-
+	
 	Mode is a kind of value. The modes are idle, recording, and playing back. The video camera has a mode. The video camera is idle.
-
+	
 	Understand "play back" as playing back. Instead of switching on the camera, try tuning the camera to recording. Instead of switching off the camera, try tuning the camera to idle.
-
+	
 	The description of the video camera is "It is currently [mode]; its available settings are idle, recording, and playing back."
-
+	
 	Understand "set [camera] to [a mode]" as tuning it to. Tuning it to is an action applying to one thing and one mode.
-
+	
 	Instead of setting the camera to something:
 		say "The available settings are idle, recording, and playing back."
-
+	
 	Check tuning it to:
 		if the noun is not the camera, say "Only the video camera can be set to [the mode understood]." instead.
-
+	
 	Carry out tuning it to:
 		now the mode of the noun is the mode understood.
-
+	
 	Report tuning it to:
 		say "You set [the noun] to [mode understood]."
-
+	
 	After an actor doing something when the video camera is recording:
 		if the current action is tuning the video camera to recording, make no decision;
 		if the number of blank rows in the Table of Videotape is greater than zero:
@@ -48,7 +48,7 @@ Here we construct a video camera to track and play back actions:
 			now the video camera is idle;
 			say "The video camera runs out of recording memory and switches off.";
 		continue the action.
-
+	
 	Every turn when the video camera is playing back:
 		say "On the camera screen, you see [run paragraph on]";
 		let starting playback be false;
@@ -59,13 +59,14 @@ Here we construct a video camera to track and play back actions:
 				blank out the whole row;
 		if starting playback is false, say "only static.";
 		otherwise say paragraph break.
-
+	
 	Section 2 - The Scenario
-
+	
 	The Actor's Studio is a room. Lucas is a man in the Actor's Studio. Persuasion rule: persuasion succeeds.
-
+	
 	The Studio contains an edible thing called a croissant.
-
+	
 	Test me with "set camera to recording / x lucas / lucas, take inventory / lucas, eat croissant / set camera to playing back / z".
 
 Notice that both Lucas' implied taking action (picking up the croissant) and his eating action are recorded on the same move.
+

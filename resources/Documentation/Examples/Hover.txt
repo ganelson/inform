@@ -8,20 +8,20 @@ For: Z-Machine
 Suppose we want the player to see a modified room description when he's viewing the place from inside a vehicle. There are several conceivable ways of doing this; the example here shows a rather advanced way, but is very flexible and will let us write all sorts of special cases.
 
 	{*}"Hover"
-
+	
 	Use full-length room descriptions.
-
+	
 	Emerald City is a room. "All the buildings are spires and none of them have doors." The Vast Desert is west of Emerald City. "[if the player is in a vehicle]Outside, a[otherwise]A[end if] trackless waste stretches as far as the eye can see in every direction."
-
+	
 	The hover-bubble is a vehicle in the Emerald City. "Your hover-bubble awaits." The description is "The hover-bubble is a clear globe-shaped vehicle capable of transporting you anywhere you could walk, but faster."  Understand "bubble" as the hover-bubble. The hover-bubble contains a chocolate wrapper and a parking ticket.
 
-Here's the tricky part, which relies on material from the chapters on Activities and Rulebooks:
+Here's the tricky part, which relies on material from the chapters on [Activities] and [Rulebooks]:
 
 	{**}The container interior rule is listed before the room description body text rule in the carry out looking rules.
-
+	
 	This is the container interior rule:
 		if the actor is the player and the player is in an enterable thing (called current cage), carry out the describing the interior activity with the current cage.
-
+	
 	Describing the interior of something is an activity.
 
 Now we've done that, we can write a "rule for describing the interior" of something, which will print whatever we like:
@@ -33,11 +33,12 @@ In fact, as a special refinement, we could even say:
 
 	{**}Rule for describing the interior of the hover-bubble when the hover-bubble contains more than one thing:
 		say "The hover-bubble is transparent, but tints everything outside very faintly lavender. Beside you you can see [a list of other things in the hover-bubble]."
-
+	
 	Definition: a thing is other if it is not the player.
-
+	
 	Rule for listing nondescript items of the hover-bubble when the player is in the hover-bubble: do nothing.
-
+	
 	Test me with "get in bubble / look / west / take all / look / get out / east".
 
 And now anything that's beside us in the vehicle will be described during that first paragraph, rather than later on.
+

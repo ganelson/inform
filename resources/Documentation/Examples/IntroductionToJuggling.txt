@@ -12,24 +12,24 @@ Suppose we have a whole catalog-full of equipment that the player might want to 
 We allow things to have prices, and the player's price to indicate how much money the player has:
 
 	{**}Section 1 - Mail-ordering defined
-
+	
 	Price is a kind of value. $100.99 specifies a price.
-
+	
 	The player has a price. The price of the player is $60.00.
 
-Because we're allowing the player to order things that they can't currently see, we need to borrow a special kind of grammar from the Understanding chapter. All our orderable items in this example are toys, so "any toy" means any object of the toy kind, whether or not it is in view at the moment:
+Because we're allowing the player to order things that they can't currently see, we need to borrow a special kind of grammar from the [Understanding] chapter. All our orderable items in this example are toys, so "any toy" means any object of the toy kind, whether or not it is in view at the moment:
 
 	{**}Understand "buy [any toy]" as ordering. Understand the command "order" as something new. Understand the command "order" as "buy".
-
+	
 	Ordering is an action applying to one visible thing.
-
+	
 	Check ordering:
 		if the cost of the noun is greater than the price of the player, say "You only have [price of the player], while [the noun] would cost [cost of the noun]." instead.
-
+	
 	Carry out ordering:
 		move the noun to the player;
 		decrease the price of the player by the cost of the noun.
-
+	
 	Report ordering:
 		say "You order [a noun], which is delivered instantly."
 
@@ -43,11 +43,11 @@ So much for the general rules for this scenario. Now we move on to particulars: 
 Since we are going to use price and difficulty in the table that defines our juggling equipment, we need to mention these kinds of value before the line that says how toys are defined.
 
 	{**}Section 2 - The Scenario
-
+	
 	Difficulty is a kind of value. The difficulties are easy, moderate, hard. The player has a difficulty. The difficulty of the player is easy.
-
+	
 	The plural of toy is toys. A toy is a kind of thing. Some toys are defined by the Table of Juggling Equipment.
-
+	
 	Table of Juggling Equipment
 	toy	cost	restriction	description	difficulty	outcome
 	an economy bounce ball set	$10.00	"comes in set of three"	"A fairly ordinary rubber ball, solid color."	moderate	"You create of the balls a cascade of moving color."
@@ -61,14 +61,14 @@ Since we are going to use price and difficulty in the table that defines our jug
 Notice that we are allowed to define "description" and other already-known properties in the table as well.
 
 	{**}Backstage is a room. "A muffled black room with felt on the floors and walls. A glowing sign over the stage door says SHOW IN PROGRESS."
-
+	
 	The Juggling Equipment Catalog is a thing in Backstage.
-
+	
 	Instead of examining the Catalog:
 		say "You read through the offerings, including: [paragraph break]";
 		repeat through Table of Juggling Equipment:
 			say "[bold type][toy entry][roman type]: [description entry] [cost entry], [restriction entry]. [paragraph break]".
-
+	
 	When play begins:
 		now right hand status line is "Budget: [price of the player]";
 		now left hand status line is "[location], feeling [if the difficulty of player is easy]incompetent[end if][if the difficulty of player is moderate]moderately skilled[end if][if the difficulty of player is hard]highly skilled[end if]".
@@ -76,22 +76,23 @@ Notice that we are allowed to define "description" and other already-known prope
 And of course this will be no fun unless the player is allowed to use the equipment:
 
 	{**}Understand "juggle [something]" as juggling.
-
+	
 	Juggling is an action applying to one thing.
-
+	
 	Check juggling:
 		if the noun is not a toy listed in the Table of Juggling Equipment, say "You can't juggle [a noun]!" instead;
 		if the difficulty of the noun is greater than the difficulty of the player, say "You're not quite ready to juggle something like [the noun]. Better to start with an easier toy." instead.
-
+	
 	Carry out juggling:
 		if a random chance of 1 in 3 succeeds:
 			if the difficulty of the player is less than hard and the difficulty of the player is the difficulty of the noun:
 				now the difficulty of the player is the difficulty after the difficulty of the player.
-
+	
 	Report juggling:
 		say "[outcome of the noun][paragraph break]".
-
+	
 	Instead of burning the fireball set:
 		say "It will flame by itself when you use it."
-
+	
 	Test me with "read catalog / buy economy / buy beanbag / juggle economy / juggle beanbag / juggle beanbag / juggle beanbag / juggle beanbag / juggle beanbag / juggle beanbag / juggle economy / juggle economy / juggle economy / buy fireball set / juggle fireball".
+

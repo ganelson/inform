@@ -5,29 +5,29 @@ Index: Identifying nouns by the last thing done to them
 Description: We create phrases such as "the box we took" and "the newspaper Clark looked at" based on what has already happened in the story.
 For: Z-Machine
 
-The examples Variety and Narrative Register show how verbs can be associated with particular actions. Here, we use the same principle so that we can report to the player what was last done to a particular object, either by the player or by someone else.
+The examples [Variety] and [Narrative Register] show how verbs can be associated with particular actions. Here, we use the same principle so that we can report to the player what was last done to a particular object, either by the player or by someone else.
 
-To do this, we need to use the idea of stored actions from the Advanced Actions chapter.
+To do this, we need to use the idea of [stored actions] from the [Advanced Actions] chapter.
 
 	{*}"History Lab"
-
+	
 	Section 1 - Procedure
-
+	
 	An object has an action called the last action.
-
+	
 	Describing relates various verbs to various action names. The verb to describe means the describing relation.
-
+	
 	To take is a verb. The verb take describes the taking action.
 	To drop is a verb. The verb drop describes the dropping action.
 	To look at is a verb. The verb look at describes the examining action.
 	To examine is a verb. The verb examine describes the examining action.
-
+	
 	After an actor doing something to something:
 		if a verb describes the action name part of the current action:
 			now the indefinite article of the noun is "the";
 			now the last action of the noun is the current action;
 		continue the action.
-
+	
 	After printing the name of something (called item):
 		if the last action of the item is not waiting and the last action of the item is not the current action:
 			let chosen action-name be the action name part of the last action of the item;
@@ -35,14 +35,15 @@ To do this, we need to use the idea of stored actions from the Advanced Actions 
 			if a verb describes the chosen action-name:
 				let the chosen verb be a random verb that describes the chosen action-name;
 				say " [if the chosen actor is the player][we][else][chosen actor][end if] [adapt chosen verb in past tense]";
-
+	
 	Section 2 - Scenario
-
+	
 	Lab is a room. It contains a box. The box contains a newspaper. Clark is a man in the Lab.
-
+	
 	A persuasion rule:
 		persuasion succeeds.
-
+	
 	Test me with "x box / look / x newspaper / look / clark, x newspaper / clark, get box / clark, drop box / look / take box / i / smell box / i".
 
 Notice that smelling the box does not change the box's description because we haven't gotten around to defining a smell or sniff verb.
+

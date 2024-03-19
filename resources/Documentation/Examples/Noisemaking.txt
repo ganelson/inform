@@ -5,46 +5,47 @@ Index: Observation stage after report
 Description: Creating a stage after the report stage of an action, during which other characters may observe and react.
 For: Z-Machine
 
-Suppose the current sequence of action handling is not quite enough for us: we'd also like to have a stage after reporting, where other characters can react to the player character's behavior after it has already happened and been reported on screen. Having such a stage is unlike using "after", because after occurs before reports and prevents them from being printed. So, for instance, we could allow the player to do any of a range of different actions that make loud noises, and have a nervous bird that reacts to all of them by flying away afterward.
+Suppose the current sequence of action handling is not quite enough for us: we'd also like to have a stage after reporting, where other characters can react to the player character's behaviour after it has already happened and been reported on screen. Having such a stage is unlike using "after", because after occurs before reports and prevents them from being printed. So, for instance, we could allow the player to do any of a range of different actions that make loud noises, and have a nervous bird that reacts to all of them by flying away afterward.
 
-To do this, we can add a new rule into the specific action-processing rules. (For a list of these, see the Rules index.) Moving rules around and adding new ones requires syntax that we will learn in the chapter on Rulebooks, but the present example is fairly straightforward:
+To do this, we can add a new rule into the specific action-processing rules. (For a list of these, see the Rules index.) Moving rules around and adding new ones requires syntax that we will learn in the chapter on [Rulebooks], but the present example is fairly straightforward:
 
 	{*}"Noisemaking"
-
+	
 	Section 1 - Procedure
-
+	
 	The other-player response rule is listed after the report stage rule in the specific action-processing rules.
-
+	
 	This is the other-player response rule:
 		follow the observation rules.
-
+	
 	The observation rules is a rulebook.
-
+	
 	Section 2 - Scenario
-
+	
 	Country Lane is a room. West of Country Lane is Outside the Farmhouse. East of Country Lane is Village Center. North of Country Lane is Open Field.
-
+	
 	The player carries a drum.
-
+	
 	The black crow is an animal in Country Lane.
-
+	
 	Singing is an action applying to nothing. Understand "sing" as singing.
-
+	
 	Report singing:
 		say "You hum a little ditty."
-
+	
 	Singing is a loud action.
-
+	
 	Attacking the drum is a loud action.
-
+	
 	The block attacking rule is not listed in any rulebook.
-
+	
 	Report attacking something:
 		say "THWACK!"
-
+	
 	An observation rule for loud action in the presence of the black crow:
 		let N be a random adjacent room;
 		if N is a room, move the black crow to N;
 		say "The crow, startled, flies off to [N]."
-
+	
 	Test me with "sing / g / n / hit drum".
+

@@ -8,21 +8,21 @@ For: Z-Machine
 First we define the events, and then we create a phrase to schedule them:
 
 	{*}"Totality"
-
+	
 	At the time when the penumbra appears:
 		say "The sunlight dies away to an eerie, brownish penumbra."
-
+	
 	At the time when the eclipse begins:
 		say "The moon passes across the disc of the sun, plunging the world into darkness.";
 		now the Chamber is dark.
-
+	
 	At the time when the eclipse ends:
 		say "The moon passes away from the sun, and a gloomy penumbral light returns.";
 		now the Chamber is lighted.
-
+	
 	At the time when normal sunlight returns:
 		say "The sun shines once more bright in the sky, not to be eclipsed again on this spot for another thirty-seven years."
-
+	
 	To schedule an eclipse for (totality - a time):
 		the penumbra appears at two minutes before totality;
 		the eclipse begins at totality;
@@ -32,11 +32,12 @@ First we define the events, and then we create a phrase to schedule them:
 Now we make use of the new phrase:
 
 	{**}When play begins, schedule an eclipse for 3:27 PM.
-
+	
 	The Chamber is a room.
-
+	
 	The time of day is 3:25 PM.
-
+	
 	Test me with "z / z / z / z / z / z / z / z / z".
 
 We shall see much more about creating phrases later. Their advantage is that they enable a complicated sequence of operations to be given a meaningful name, and that they can be re-used many times as needed.
+

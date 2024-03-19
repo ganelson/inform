@@ -8,9 +8,9 @@ For: Z-Machine
 Suppose we would like to allow the player to make a fundamental choice at the beginning of the game, and outside the main parsing sequence. "When play begins" seems like a good place to put this.
 
 	{*}"Good or Evil"
-
+	
 	A person can be good or evil.
-
+	
 	When play begins:
 		say "Should your character be good or evil? >";
 		if good wins, now the player is good;
@@ -21,9 +21,9 @@ Now a piece of Inform 6 code handles the unusual input. It's not necessary to un
 
 	{**}To decide whether good wins:
 		(- Question('good','G//','goody','evil','E//','bad') -)
-
+	
 	Include (-
-
+	
 	[ Question pos1 pos2 pos3 neg1 neg2 neg3 first_word_typed;
 		while (true) {
 			VM_ReadKeyboard(buffer, parse);
@@ -33,13 +33,14 @@ Now a piece of Inform 6 code handles the unusual input. It's not necessary to un
 			print "Please choose ", (address) pos1, " or ", (address) neg1, ". > ";
 		}
 	];
-
+	
 	-)
-
+	
 	Instead of examining the player when the player is evil:
 		say "It's clear from the look in your eye that you are evil!"
-
+	
 	Instead of examining the player when the player is good:
 		say "It's clear from the look in your eye that you are good."
-
+	
 	The Room of Self-Knowledge is a room. "Mirrors cover every available wall-surface of this hexagonal chamber, allowing you to examine yourself from all angles."
+

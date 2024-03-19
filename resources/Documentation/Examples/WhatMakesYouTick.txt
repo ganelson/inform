@@ -7,22 +7,22 @@ For: Z-Machine
 
 Suppose we want to let the player build a fishing pole out of three parts: a hook, a string, and a stick.
 
-There are several things we must account for here. One is that our combination verb should be insensitive to ordering: it shouldn't matter whether the player types COMBINE STICK WITH STRING or COMBINE STRING WITH STICK.
+There are several things we must account for here. One is that our combination verb should be insensitive to ordering: it shouldn't matter whether the player types ``combine stick with string`` or ``combine string with stick``.
 
 Second, we need to make sure that our implementation handles intervening stages of assembly gracefully. The player should be able to combine string and hook first, or string and stick first, and be able to complete the assembly in either case.
 
-Our implementation here uses a table of lists to determine which combinations of inputs should produce which result object. Because we sort our lists before comparing them, we guarantee that the player's ordering doesn't matter: COMBINE STICK WITH STRING will have the same effect as COMBINE STRING WITH STICK.
+Our implementation here uses a table of lists to determine which combinations of inputs should produce which result object. Because we sort our lists before comparing them, we guarantee that the player's ordering doesn't matter: ``combine stick with string`` will have the same effect as ``combine string with stick``.
 
 What's more, our implementation could be expanded to account for many other assemblages, if we wanted object-building to be a running theme of puzzles in our game.
 
 	{*}"What Makes You Tick"
-
+	
 	Understand "combine [something] with [something]" as combining it with. Combining it with is an action applying to two carried things. Understand the command "connect" as "combine".
-
+	
 	Understand the command "attach" as something new. Understand "attach [something] to [something]" as combining it with.
-
+	
 	The combining it with action has an object called the item built.
-
+	
 	Setting action variables for combining something with something:
 		let X be a list of objects;
 		add the noun to X;
@@ -33,30 +33,31 @@ What's more, our implementation could be expanded to account for many other asse
 			sort Y;
 			if X is Y:
 				now the item built is the result entry.
-
+	
 	Check combining it with:
 		if the item built is nothing or the item built is not in limbo,
 			say "You can't combine [the noun] and [the second noun] into anything useful." instead.
-
+	
 	Carry out combining it with:
 		move the item built to the holder of the noun;
 		now the noun is nowhere;
 		now the second noun is nowhere.
-
+	
 	Report combining it with:
 		say "You now have [an item built]."
-
+	
 	Limbo is a container. Limbo contains a hookless fishing pole, a hooked line, and a complete fishing pole.
-
+	
 	Streamside is a room. The player carries a stick, a wire hook, and a string.
-
+	
 	Table of Outcome Objects
 	component list	result
 	{stick, string}	hookless fishing pole
 	{wire hook, string}	hooked line
 	{hooked line, stick}	complete fishing pole
 	{hookless fishing pole, wire hook}	complete fishing pole
-
+	
 	Test me with "combine stick with string / i / combine pole with hook / i".
 
-This kind of implementation makes sense if we don't intend the player to take the fishing pole apart again, or to refer to any of its component parts once it is built. For an alternate approach that does allow assembled objects to be taken apart again, see "Some Assembly Required".
+This kind of implementation makes sense if we don't intend the player to take the fishing pole apart again, or to refer to any of its component parts once it is built. For an alternate approach that does allow assembled objects to be taken apart again, see [Some Assembly Required].
+

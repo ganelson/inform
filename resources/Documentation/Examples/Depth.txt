@@ -8,11 +8,11 @@ For: Z-Machine
 In the following, we pretend that every item has a cuboidal shape. Every thing has a length, width and depth, while a "measured container" also has interior dimensions. (Thus a 10x10x10 container with 1cm-thick sides might have interior dimensions 9x9x9.)
 
 	{*}"Depth"
-
+	
 	A length is a kind of value. 10 cm specifies a length. An area is a kind of value. 10 sq cm specifies an area. A length times a length specifies an area. A volume is a kind of value. 10 cu cm specifies a volume. A length times an area specifies a volume.
-
+	
 	A thing has a length called height. A thing has a length called width. A thing has a length called depth. The height of a thing is usually 10 cm. The width of a thing is usually 10 cm. The depth of a thing is usually 10 cm.
-
+	
 	To decide what volume is the exterior volume of (item - a thing):
 		let base area be the height of the item multiplied by the width of the item;
 		let base volume be the base area multiplied by the depth of the item;
@@ -25,7 +25,7 @@ In order to see how these shapes might fit together spatially, we need to work o
 		if the width of the item is greater than the long side, now the long side is the width of the item;
 		if the depth of the item is greater than the long side, now the long side is the depth of the item;
 		decide on the long side.
-
+	
 	To decide what length is the middling dimension of (item - a thing):
 		let longer side be the height of item;
 		let shorter side be the width of item;
@@ -35,7 +35,7 @@ In order to see how these shapes might fit together spatially, we need to work o
 		if the depth of the item is greater than the longer side, decide on the longer side;
 		if the depth of the item is less than the shorter side, decide on the shorter side;
 		decide on the depth of the item.
-
+	
 	To decide what length is the shortest dimension of (item - a thing):
 		let short side be the height of item;
 		if the width of the item is less than the short side, now the short side is the width of the item;
@@ -48,17 +48,17 @@ When testing this example, the author made use of the following: it's no longer 
 		say "[the item] - height [height of the item], width [width of the item], depth [depth of the item].";
 		say "largest side [largest dimension of the item], middling [middling dimension of the item], smallest [shortest dimension of the item]."
 
-We now introduce a new kind: a measured container, which not only has exterior dimensions - the height, width and depth which every thing now has - but also interior measurements. A convenient way to do calculations with the hollow interior is to regard it as if it were a solid shape in its own right, and we do this with the aid of something out of world, which the player never sees: the "imaginary cuboid", which is made into the shape of whatever measured container's interior is being thought about.
+We now introduce a new kind: a measured container, which not only has exterior dimensions–the height, width and depth which every thing now has–but also interior measurements. A convenient way to do calculations with the hollow interior is to regard it as if it were a solid shape in its own right, and we do this with the aid of something out of world, which the player never sees: the "imaginary cuboid", which is made into the shape of whatever measured container's interior is being thought about.
 
 	{**}A measured container is a kind of container. A measured container has a length called interior height. A measured container has a length called interior width. A measured container has a length called interior depth.
-
+	
 	There is an imaginary cuboid.
-
+	
 	To imagine the interior of (receptacle - a measured container) as a cuboid:
 		now the height of the imaginary cuboid is the interior height of the receptacle;
 		now the width of the imaginary cuboid is the interior width of the receptacle;
 		now the depth of the imaginary cuboid is the interior depth of the receptacle.
-
+	
 	To decide what volume is the interior volume of (receptacle - a measured container):
 		imagine the interior of the receptacle as a cuboid;
 		decide on the exterior volume of the imaginary cuboid.
@@ -85,19 +85,20 @@ If we only constrained volume, a 140 cm-long fishing rod could fit into a 12 cm 
 And finally a situation to try out these rules.
 
 	{**}The Cubist Lab is a room. "A laboratory which, as the art critic Louis Vauxcelles said about Braque's paintings in 1908, is full of little cubes: everyday objects rendered as if cuboidal."
-
+	
 	The box is a measured container. The interior height is 10 cm. The interior depth is 5 cm. The interior width is 6 cm. The player carries the box.
-
+	
 	A pebble is a kind of thing. The height is usually 2 cm. The depth is usually 2 cm. The width is usually 2 cm. The player carries 25 pebbles.
-
+	
 	A red rubber ball is carried by the player. The depth is 5 cm. The width is 5 cm. The height is 5 cm.
 	An arrow is carried by the player. The height is 40 cm. The width is 1 cm. The depth is 1 cm.
 	A crusty baguette is carried by the player. The height is 80 cm. The width is 4 cm. The depth is 5 cm.
 	A child's book is carried by the player. The height is 1 cm. The width is 9 cm. The depth is 9 cm.
 	A featureless white cube is carried by the player. The height is 6 cm. The width is 6 cm. The depth is 6 cm.
-
+	
 	Test me with "put arrow in box / put book in box / put cube in box / put ball in box / put baguette in box / put pebbles in box".
 
 Several warnings about this. First, the numbers can't go very high (if the Settings for the project set the story file format to the Z-machine): while the volume can in theory go to 32,767, in practice this equates to an object 32 cm on a side, which is not very large. One way to avoid this is to use the Glulx format, allowing for sizes in excess of 10 m on a side: or we could simply scale the dimensions to suit our purposes, using a decimeter (10 cm) as the basic unit of measurement, for instance.
 
 Second, the system will require a height, width, and depth for every portable object in the game, which is a large commitment to data entry; it may become tiresome. So it is probably not worth bothering with this kind of simulation unless it is going to be genuinely significant.
+

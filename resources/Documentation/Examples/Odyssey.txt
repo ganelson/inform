@@ -1,14 +1,14 @@
 Example: ** Odyssey
 Location: Adding and removing rows
-RecipeLocation: Traveling Characters
+RecipeLocation: Travelling Characters
 Index: Person who moves on a pre-determined path
 Description: A person who follows a path predetermined and stored in a table, and who can be delayed if the player tries to interact with her.
 For: Z-Machine
 
 	{*}"Odyssey"
-
+	
 	Corinth is a room. Athens is east of Corinth. Epidaurus is southeast of Corinth and east of Mycenae. Mycenae is south of Corinth. Olympia is west of Mycenae. Argos is south of Mycenae. Thebes is northwest of Athens. Pylos is south of Olympia. Sparta is east of Pylos and south of Argos. Delphi is northwest of Thebes.
-
+	
 	Athena is a woman in Athens.
 
 Athena will proceed, unless delayed, through a list of locations stored in a simple table. Rather than using Inform's route-finding abilities ("the best route from..."), we simply move Athena from one location to the next, not even using the going action: she moves in mysterious ways, as befits a goddess.
@@ -21,7 +21,7 @@ Athena will proceed, unless delayed, through a list of locations stored in a sim
 	Athens
 	Corinth
 	Mycenae
-
+	
 	Every turn when Athena is active:
 		repeat through the Table of Athena's Movement:
 			let last space be the location of Athena;
@@ -36,14 +36,14 @@ By blanking out the table line by line, we make sure that we never lose our plac
 Since we want the player to be able to talk to Athena, we need a way to stall her in her path, as well.
 
 	{**}Athena can be active or passive. Athena is active.
-
+	
 	Before doing something to Athena:
 		now Athena is passive;
 		say "Athena waits around patiently, though you can tell she would like to leave..."
-
+	
 	Instead of telling Athena about something:
 		say "She watches you patiently as though to say that she already knows."
-
+	
 	Instead of asking Athena about something:
 		say "Her response is inscrutably ancient and Greek. Afterwards you remember only the flash of bright eyes."
 
@@ -51,5 +51,6 @@ Finally, we do need to wake Athena up again if she has become passive. The follo
 
 	{**}Every turn when Athena is passive:
 		now Athena is active.
-
+	
 	Test me with "east / northwest / wait / examine athena / wait".
+

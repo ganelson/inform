@@ -8,7 +8,7 @@ For: Z-Machine
 The "reading a command" activity is not the only point at which we can interact with snippets, as it happens; it is merely the most useful. "The player's command" can be consulted at other points, however, as in this example of your somewhat deaf (or distracted, or simply cussed) Aunt:
 
 	{*}"Complimentary Peanuts"
-
+	
 	Instead of asking Aunt Martha to try doing something:
 		repeat through Table of Aunt Martha's Commentary:
 			if player's command includes topic entry:
@@ -22,7 +22,7 @@ The topic understood is also a snippet, so that whenever one has been generated,
 	Telling someone about something is speech.
 	Answering someone that something is speech.
 	Asking someone for something is speech.
-
+	
 	Instead of speech when the noun is Aunt Martha:
 		repeat through Table of Aunt Martha's commentary:
 			if the topic understood includes topic entry:
@@ -30,29 +30,32 @@ The topic understood is also a snippet, so that whenever one has been generated,
 				rule succeeds;
 		say "'Hmmf,' says Aunt Martha."
 
-This is superior to checking "the player's command" because we do not want ASK MARTHA ABOUT FRENCH FRIES to trigger the "Martha" keyword, only the "french fries" keywords.
+This is superior to checking "the player's command" because we do not want ``ask martha about french fries`` to trigger the "Martha" keyword, only the "french fries" keywords.
 
 	{**}The Empyrean Shuttle Bay is a room. "From here you have an excellent view of the colony world, which looks... well, it looks discouragingly orange. But terraforming is in progress."
-
+	
 	Aunt Martha is a woman in the Empyrean Shuttle Bay. A gleaming shuttle and a stack of rations are in the Shuttle Bay. The shuttle is a vehicle. "Your shuttle awaits."
-
+	
 	Table of Aunt Martha's Commentary
 	topic	commentary
 	"shuttle"	"'Shuttles! I hate shuttles,' Aunt Martha grumbles. 'Give me an airplane! AIRPLANE.'"
 	"airplane/airport"	"'Those were the days,' Aunt Martha agrees, plainly reliving the days when she wore a blue-and-white uniform and passed out packets of salted pretzels."
 	"rations"	"'Do you think there are any peanuts in there?' she asks in a wistful tone."
-
+	
 	Test me with "martha, get in the shuttle / martha, for pity's sake, do you see an airplane around here? / martha, pass me the rations".
 
 This means that Martha will respond to keywords regardless of the setting in which they occur. For instance:
 
-	>martha, get in the shuttle
-	"Shuttles! I hate shuttles," Aunt Martha grumbles. "Give me an airplane! AIRPLANE."
+``` transcript
+>martha, get in the shuttle
+"Shuttles! I hate shuttles," Aunt Martha grumbles. "Give me an airplane! AIRPLANE."
 
-	>martha, for pity's sake, do you see an airplane around here?
-	"Those were the days," Aunt Martha agrees, plainly reliving the days when she wore a blue-and-white uniform and passed out packets of salted peanuts.
+>martha, for pity's sake, do you see an airplane around here?
+"Those were the days," Aunt Martha agrees, plainly reliving the days when she wore a blue-and-white uniform and passed out packets of salted peanuts.
 
-	>martha, pass me the rations
-	"Do you think there are any peanuts in there?" she asks in a wistful tone.
+>martha, pass me the rations
+"Do you think there are any peanuts in there?" she asks in a wistful tone.
+```
 
 This is not the stuff of which Loebner-winning chatbots are made, admittedly, but it is occasionally a useful alternative to stricter modes of command-parsing.
+

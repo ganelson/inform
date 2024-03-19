@@ -6,13 +6,13 @@ Description: A systematic way to allow objects in certain places to be described
 For: Z-Machine
 
 	{*}"The Eye of the Idol"
-
+	
 	Section 1 - Reusable Material
 
 We start by defining relations that let us know where items "belong", with the understanding that if something is where it belongs, it will be described in the main room description and therefore should not be separately listed. Thus:
 
 	{**}Positioning relates various things to various things. The verb to be placed in means the positioning relation. The verb to be placed on implies the positioning relation.
-
+	
 	Room-positioning relates various things to various rooms. The verb to be room-placed in means the room-positioning relation.
 
 We can't make relations relate various objects to various objects, and rooms are not things, so two separate cases are necessary. An alternative approach would be to say "A thing has an object called the initial placement", which would allow a thing to have an initial placement that was a room, a supporter, or a container; an advantage of using relations, though, is that that way we can if we like specify multiple placements for the same object, so that, e.g., a sparkling diamond can be described in the main description paragraph as "half-buried in dust" in the beginning of the game, and then at the end as "in the eye of the idol" at the end.
@@ -23,7 +23,7 @@ Now we define, based on these relations, an "in-place" adjective, which will ide
 		if the prop is in the location and the prop is room-placed in the location, yes;
 		if the holder of the prop is a thing and the prop is placed in the holder of the prop, yes;
 		no.
-
+	
 	Definition: a thing is out-of-place if it is not in-place.
 
 With that done, removing these items automatically from the room description is actually pretty easy:
@@ -31,7 +31,7 @@ With that done, removing these items automatically from the room description is 
 	{**}Before listing nondescript items:
 		now every marked for listing in-place thing is not marked for listing.
 
-One tricky case remains: when something is placed on a supporter that is scenery, it can be mentioned even if we have marked that object "not marked for listing". What matters here is not whether the object itself is marked for listing but whether the supporter has been "mentioned". (A fuller description of how room descriptions are assembled is available in the Looking section of the Commands chapter in the Recipe Book.) So let's also add a feature whereby we can easily suppress the descriptions of these supporters when appropriate:
+One tricky case remains: when something is placed on a supporter that is scenery, it can be mentioned even if we have marked that object "not marked for listing". What matters here is not whether the object itself is marked for listing but whether the supporter has been "mentioned". (A fuller description of how room descriptions are assembled is available in the [Looking] section of the [Commands] chapter in the Recipe Book.) So let's also add a feature whereby we can easily suppress the descriptions of these supporters when appropriate:
 
 	{**}A supporter can be quiet.
 
@@ -46,20 +46,20 @@ A quiet supporter is one that is never mentioned itself and which only mentions 
 
 Notice that we can still override this with writing a paragraph rules about specific supporters in our game, if we decide that we want something a little different in some cases.
 
-We would find, though, that this alone doesn't do the trick and that in-place things were still listed. The RULES command could tell us that they were being printed by the "describe what's on mentioned supporters in room descriptions rule" (a Standard Rule in the "for printing a locale paragraph about a thing rulebook). And so we deactivate it for this case:
+We would find, though, that this alone doesn't do the trick and that in-place things were still listed. The ``rules`` command could tell us that they were being printed by the "describe what's on mentioned supporters in room descriptions rule" (a Standard Rule in the "for printing a locale paragraph about a thing rulebook). And so we deactivate it for this case:
 
 	{**}The describe what's on mentioned supporters in room descriptions rule does nothing when the supporter in question is quiet.
 
 Now, an example to test this out:
 
 	{**}Section 2 - A Sample Scenario
-
+	
 	The Sand-Floored Chamber is a room. "The constant wind has filled this chamber with a layer of fine red sand, as soft as powder snow[if the diamond is in the Sand-floored Chamber]. Something sparkling is half-buried in the corner[end if]. A doorway lies open to the north."
-
+	
 	The sparkling diamond is in the Sand-floored Chamber. The sparkling diamond is room-placed in the Sand-floored Chamber. The description is "It is a vast diamond; the front is faceted, the back smoothed to fit in some sort of socket."
-
+	
 	The Hexagonal Temple is north of the Sand-Floored Chamber. "The temple walls are great ashlar blocks rising to a hundred feet overhead, perhaps more; the roof is a scarlet awning only, through which the sun filters down in blood hues. Overseeing all is a sculpture in stone and ivory[if the sparkling diamond is in the idol's eye], in whose single eye a vast diamond gleams[end if][mat-and-incense text].".
-
+	
 	To say mat-and-incense text:
 		if the mat is in the Temple and the incense stick is on the pedestal:
 			say ". A prayer mat at the idol's feet, and an incense stick still burning on the pedestal, indicate that someone was only recently consigning her grievances to the care of the deity";
@@ -71,11 +71,12 @@ Now, an example to test this out:
 We could have done all this with text conditions in the main room description, but it becomes difficult to read when there are too many conditions operating in the same text property, so we break it out into a clearer set of conditions.
 
 	{**}The idol is scenery in the Hexagonal Temple. Understand "sculpture" or "stone" or "ivory" as the idol. The description is "The idol is perhaps three times the height of an ordinary man."
-
+	
 	The idol's eye is part of the idol. It is a container. The description is "[if the diamond is in the idol's eye]It gleams with purpose and righteous wrath[otherwise]A round socket in the center of the idol's forehead from which something seems to be missing[end if]."
-
+	
 	The pedestal is a quiet supporter in the Hexagonal Temple. On the pedestal is an incense stick. The incense stick is placed on the pedestal.
-
+	
 	A mat is in the Hexagonal Temple. It is room-placed in the Hexagonal Temple. The description is "Woven of assorted grasses."
-
+	
 	Test me with "get diamond / look / n / get mat / look / drop diamond / look / get diamond / put diamond in eye / look / get incense / look / drop mat / look / get mat / put mat on pedestal / look / put incense on pedestal / look".
+

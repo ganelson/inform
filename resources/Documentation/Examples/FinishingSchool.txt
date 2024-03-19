@@ -1,6 +1,6 @@
 Example: * Finishing School
 Location: Defining new adjectives
-RecipeLocation: Characterization
+RecipeLocation: Characterisation
 Index: Another, distinct from the player
 Description: The "another" adjective for rules such as "in the presence of another person".
 For: Z-Machine
@@ -10,18 +10,19 @@ It is often useful to write action rules which apply only when the player is obs
 A convenient way around this problem is to define an "other" adjective:
 
 	{*}"Finishing School"
-
+	
 	The apple is an edible thing carried by the player.
-
+	
 	The Hall is a room. Miss Wicket is a woman in the Hall.
-
+	
 	The Dormitory is south of the Hall.
-
+	
 	Definition: a person is another if it is not the player.
-
+	
 	Instead of eating something in the presence of another person:
 		say "Your mannerly upbringing prevents you from eating without a fork or knife in front of someone."
-
+	
 	Test me with "eat apple / south / eat apple".
 
 If we did not have "another" here, Inform would interpret even the player as a possible schoolmarm, leading to such lines as "yourself stares at you coldly...". Clearly not quite the thing.
+

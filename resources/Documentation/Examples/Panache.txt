@@ -10,40 +10,40 @@ If we have a plot that branches and has multiple kinds of outcome, we might well
 We begin with a bit of setup:
 
 	{*}"Panache"
-
+	
 	The player is in a room called Beneath Roxane's Balcony. Christian is a man in the Balcony. "Christian stands in a spot of moonlight and tries to avoid too obviously glancing at the shadows that conceal you." The description of Christian is "Like you, Christian loves Roxane. Unlike you, he is handsome enough to receive her favor in return. He is the beauty to your brain."
-
+	
 	Roxane is a woman in the Balcony. "Above you in the night is Roxane." Roxane can be wooed, skeptical, confused, or annoyed. Roxane is skeptical. The description of Roxane is "The brightest, the most radiant of women -- and in love with an utter fool."
-
+	
 	Empty Street is a room. "No one is about at this hour, all alone under a pale moon."
-
+	
 	Telling someone about something is speech. Asking someone about something is speech. Answering someone that something is speech.
 
-This next portion borrows from the Advanced Actions chapter to allow us to command Christian to do things:
+This next portion borrows from the [Advanced Actions] chapter to allow us to command Christian to do things:
 
 	{**}A persuasion rule for asking Christian to try speech: persuasion succeeds.
-
+	
 	Carry out Christian answering someone that something:
 		now Roxane is wooed;
 		say "'[noun], [the topic understood].'"
-
+	
 	Carry out Christian answering the player that something:
 		say "Christian parrots your words back to you." instead.
-
+	
 	Carry out Christian telling a skeptical Roxane about something:
 		now Roxane is confused;
 		say "Christian turns to [the noun]. 'I must tell you about [the topic understood],' he says, and comes to a halt, looking at you for further direction.
-
+	
 		Perhaps you'd better give him exact lines to say. Surely he can't mess up an instruction like 'say hello to Roxane.'" instead.
-
+	
 	Carry out Christian asking a skeptical Roxane about something:
 		now Roxane is confused;
 		say "'So,' says Christian nervously to [the noun]. 'Did you know about [the topic understood]?' But Roxane merely seems puzzled." instead.
-
+	
 	Carry out Christian telling a confused Roxane about something:
 		now Roxane is annoyed;
 		say "Christian begins rambling on witlessly about [the topic understood]." instead.
-
+	
 	Carry out Christian asking a confused Roxane about something:
 		now Roxane is annoyed;
 		say "Christian puts another confused question about [the topic understood]." instead.
@@ -51,47 +51,48 @@ This next portion borrows from the Advanced Actions chapter to allow us to comma
 And now we have enough material to begin writing the scenes:
 
 	{**}Courting Roxane is a scene. Courting Roxane begins when play begins. Courting Roxane ends in success when Roxane is wooed. Courting Roxane ends in failure when Roxane is annoyed.
-
+	
 	When Courting Roxane ends in success:
 		record "Seduction by Proxy" in the Table of Events;
 		say "Roxane, deeply moved by this sentiment, invites Christian up to her balcony. He scrambles up the ivy and disappears into her bedroom; the last thing you hear is a girlish giggle from above.";
 		now Roxane is nowhere; now Christian is nowhere;
 		move the player to Empty Street.
-
+	
 	When Courting Roxane ends in failure:
 		record "Ruining Christian's Chances" in the Table of Events;
 		say "Roxane sighs heavily and goes back into her room, slamming the door behind her.
-
+	
 	'Thanks very much,' says Christian to you, striding off down the street.";
 		now Roxane is nowhere; now Christian is nowhere;
 		move the player to Empty Street.
-
+	
 	Sulky Ramble is a scene. Sulky Ramble begins when Courting Roxane ends in success. Sulky Ramble ends when the time since Sulky Ramble began is 2 minutes. When Sulky Ramble ends: record "Wandering the Streets, Sulking" in the Table of Events.
-
+	
 	Every turn during Sulky Ramble:
 		say "You find yourself kicking fenceposts quite without thinking about it."
-
+	
 	Smug Ramble is a scene. Smug Ramble begins when Courting Roxane ends in failure. Smug Ramble ends when the time since Smug Ramble began is 2 minutes. When Smug Ramble ends: record "Wandering the Streets, Exultant" in the Table of Events; say "Of course, you will regret this soon enough."
-
+	
 	Every turn during Smug Ramble:
 		say "You find yourself smiling fiercely at the moon."
-
+	
 	To record (occurrence - text) in (target table - a table name):
 		choose a blank row in the target table;
 		now the event entry is the occurrence.
-
+	
 	Table of Events
 	event
 	"A Duel of Insults"
 	with 30 blank rows.
-
+	
 	The plot summary rule is listed instead of the announce the score rule in the carry out requesting the score rules.
-
+	
 	This is the plot summary rule:
 		say "The Plot So Far: [paragraph break]";
 		let act number be 0;
 		repeat through the table of Events:
 			increment act number;
 			say "  Act [act number]: [event entry][line break]".
-
+	
 	Test me with "christian, ask roxane about love / christian, say your breath smells like ripe taleggio to roxane / score / z / z / score".
+

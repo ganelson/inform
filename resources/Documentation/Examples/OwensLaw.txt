@@ -2,33 +2,33 @@ Example: *** Owen's Law
 Location: New conditions, new adjectives
 RecipeLocation: Going, Pushing Things in Directions
 Index: GO OUT and GO IN determine most appropriate direction if none is defined
-Description: OUT always means "move to an outdoors room, or else to a room with more exits than this one has"; IN always means the opposite.
+Description: ``out`` always means "move to an outdoors room, or else to a room with more exits than this one has"; ``in`` always means the opposite.
 For: Z-Machine
 
-Suppose we want the game to interpret "GO OUT" as "move towards an outdoors room, or towards a room with more exits than the current room", while "GO IN" means "move toward a room with fewer exits, or towards an indoors room". Thus going in repeatedly within a building would lead towards dead-ends, while going out repeatedly would lead towards the center of the building and then towards an exit to the outside world.
+Suppose we want the game to interpret ``go out`` as "move towards an outdoors room, or towards a room with more exits than the current room", while ``go in`` means "move toward a room with fewer exits, or towards an indoors room". Thus going in repeatedly within a building would lead towards dead-ends, while going out repeatedly would lead towards the center of the building and then towards an exit to the outside world.
 
 We start by encoding these rules as definitions:
 
 	{*}"Owen's Law"
-
+	
 	A room can be indoors or outdoors. A room is usually indoors.
-
+	
 	Definition: a room is outward:
 		if it is not adjacent, no;
 		if it is indoors and the location is outdoors, no;
 		if it is outdoors and the location is indoors, yes;
 		if the number of rooms adjacent to it is greater than the number of rooms adjacent to the location, yes;
 		otherwise no.
-
+	
 	Definition: a room is inward:
 		if it is not adjacent, no;
 		if it is outdoors and the location is indoors, no;
 		if it is indoors and the location is outdoors, yes;
 		if the number of rooms adjacent to it is less than the number of rooms adjacent to the location, yes;
 		otherwise no.
-
+	
 	Instead of going nowhere when the noun is outside: try exiting.
-
+	
 	Instead of exiting when the player is in a room:
 		if at least one room is outward:
 			let the destination be a random outward room;
@@ -38,7 +38,7 @@ We start by encoding these rules as definitions:
 		otherwise:
 			say "It's not entirely obvious which way you mean. ";
 			carry out the listing available exits activity.
-
+	
 	Instead of going inside when the room inside from the location is not a room and at least one room is inward:
 		if more than one room is inward:
 			carry out the listing available exits activity;
@@ -47,14 +47,14 @@ We start by encoding these rules as definitions:
 			let the way be the best route from the location to the destination;
 			say "(that is, [way])[command clarification break]";
 			try going the way instead.
-
+	
 	Instead of going nowhere:
 		carry out the listing available exits activity.
 
 This "listing available exits" is a refinement borrowed from a future chapter, which allows us to specify special listing and printing rules:
 
 	{**}Listing available exits is an activity.
-
+	
 	Rule for listing available exits:
 		if going inside and an adjacent room is inward:
 			say "From here 'in' could reasonably mean [a list of adjacent inward rooms].";
@@ -63,20 +63,21 @@ This "listing available exits" is a refinement borrowed from a future chapter, w
 			say "From here 'out' could reasonably mean [a list of outward adjacent rooms].";
 			rule succeeds;
 		say "From here you can go [a list of adjacent rooms]."
-
+	
 	Before printing the name of a room (called the target) while listing available exits:
 		let aim be the best route from the location to the target;
 		say "[aim] to the ".
-
+	
 	Rule for printing the name of an unvisited room which is not the location:
 		say "unknown location".
-
+	
 	Dune is an outdoors room. "Hundreds of feet of dune stretch west to the beach, crisscrossed with dune-buggy tracks and the footprints of birds. To the east is a low-lying, boxy concrete installation."
-
+	
 	Ocean Shores Military Installation is east of the Dune. It is an outdoors room. "The World War II emplacements, built in case of Japanese invasion, have never been destroyed, though with all the weapons and furnishings gone it is difficult to make much sense of the original structure. A doorway leads west into concrete-lined darkness; a rusty but reliable ladder ascends to a walkway overlooking the sea."
-
+	
 	Walkway is above Ocean Shores Military Installation. "From here you have a long view of the dunes and the Pacific Ocean, complete with the rotting hull of a long-stranded vessel."
-
+	
 	Dark Echoing Room is inside from Ocean Shores Military Installation. Dank Dripping Room is east of Dark Echoing Room. Narrow Room is south of Dark Echoing Room. Small Sealed Chamber is north of Dark Echoing Room. Room Smelling of Animal Urine is north of Dank Dripping Room. The description of a room is usually "It is dark in here, and feels unsafe."
-
+	
 	Test me with "e / u / d / in / s / out / n / out / e / in / out / out / out".
+

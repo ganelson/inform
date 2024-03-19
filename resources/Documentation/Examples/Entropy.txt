@@ -6,34 +6,35 @@ Description: All objects in the game have a heat, but if not kept insulated they
 For: Z-Machine
 
 	{*}"Entropy"
-
+	
 	Heat is a kind of value. The heats are frosty, cold, cool, room temperature, warm, hot, and scalding. Everything has a heat. The heat of a thing is usually room temperature.
-
+	
 	Every turn:
 		repeat with item running through things which are not in an insulated container:
 			if the heat of the item is greater than room temperature, now the heat of the item is the heat before the heat of the item;
 			if the heat of the item is less than room temperature, now the heat of the item is the heat after the heat of the item.
-
+	
 	Definition: a container is insulated if it is closed and it is opaque.
-
+	
 	The vacuum thermos is an opaque closed openable container carried by the player. In the vacuum thermos is a frosty thing called an ice cube.
-
+	
 	Every turn:
 		if the heat of the ice cube is greater than cold:
 			if the ice cube is visible, say "The ice cube melts! 'HA ha,' says Maxwell, in a very unsporting, some might say demonic, way.";
 			now the ice cube is nowhere.
-
+	
 	Before printing the name of something: say "[heat] ".
-
+	
 	Equilibrium is a room. "A perfectly smooth chamber sealed from the outside world. You can't at this moment work out where the exit is, though possibly that is just because the lighting is so very very even and diffuse. And doesn't come from anywhere that you can see, either."
-
+	
 	Maxwell is a man in Equilibrium.  "Maxwell perches awkwardly on a stool across from you[if Maxwell has something], holding [a list of things carried by Maxwell][end if]." He is carrying a box of Chinese food. The Chinese food is scalding. "A discarded [item described] lies on the floor." The description of Maxwell is "He has the faintly peevish look of one who has not been properly fed."
-
+	
 	Every turn when Maxwell has the food:
 		if the heat of the Chinese food is greater than warm, say "Maxwell takes a bite, and swears.";
 		if the heat of the Chinese food is warm, say "Maxwell eats as fast as he can, enjoying the food while it's at just the right temperature.";
 		if the heat of the Chinese food is less than warm:
 			say "Maxwell sadly stabs at his leftovers with a chopstick, but does not try to eat any more.";
 			move the food to the location.
-
+	
 	Test me with "z / z / open thermos / close thermos / open thermos".
+

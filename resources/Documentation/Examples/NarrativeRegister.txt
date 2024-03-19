@@ -5,22 +5,22 @@ Index: Describing action outcomes using an adaptive random choice of verb
 Description: Suppose we want all of our action responses to vary depending on some alterable quality of the narrator, so that sometimes they're slangy, sometimes pompous or archaic.
 For: Z-Machine
 
-As we saw in "Variety", we can associate verbs with particular actions and call them up as needed. If we do that, though, we can also store additional information about those verbs and use that information to select the ideal verb to use in a particular situation.
+As we saw in [Variety], we can associate verbs with particular actions and call them up as needed. If we do that, though, we can also store additional information about those verbs and use that information to select the ideal verb to use in a particular situation.
 
 In this example, we create a table of verbs and their meanings, together with some connotative information. Each time we report an action, we then score all the available verbs to decide which is the most suitable to use at the moment.  This allows us to change the narrator's diction change mid-game and have the action descriptions change as well.
 
 Moreover, because we're using adaptive verbs, these responses will automatically inflect properly even if we change the story tense and viewpoint.
 
 	{*}"Narrative Register"
-
+	
 	Section 1 - Descriptive Functionality
-
+	
 	Describing relates various verbs to various action names. The verb to describe means the describing relation.
-
+	
 	To take is a verb. To acquire is a verb. To get is a verb. To gain is a verb. To obtain is a verb. To pick up is a verb. To bag is a verb. To procure is a verb. To score is a verb. To grab is a verb. To snag is a verb. To snatch is a verb. To collect is a verb.
-
+	
 	To drop is a verb. To put down is a verb. To discard is a verb. To throw away is a verb. To dispose of is a verb. To set down is a verb. To toss aside is a verb. To ditch is a verb. To abandon is a verb. To dump is a verb. To jettison is a verb. To abjure is a verb. To foresake is a verb. To dispense with is a verb.
-
+	
 	After an actor doing something to something when a verb describes (the action name part of the current action) (this is the apply random verbs to describing actions rule):
 		score the relevant verbs;
 		sort the Table of Verb Meanings in reverse relevance order;
@@ -32,10 +32,10 @@ Moreover, because we're using adaptive verbs, these responses will automatically
 				say "[The actor] [verb rendering applied to (word entry)] [the noun].";
 				erase relevance;
 				rule succeeds.
-
+	
 	To decide which text is the rendering of (V - verb) (this is verb rendering):
 		decide on "[adapt V]".
-
+	
 	To score the relevant verbs:
 		repeat through the Table of Verb Meanings:
 			if the meaning entry is (the action name part of the current action):
@@ -45,25 +45,24 @@ Moreover, because we're using adaptive verbs, these responses will automatically
 						increase relevance entry by 1;
 					otherwise:
 						decrease relevance entry by 1.
-
+	
 	To erase relevance:
 		repeat through Table of Verb Meanings:
 			now relevance entry is 0.
-
-
+	
 	A tonality is a kind of value. The tonalities are pompous, archaic, slangy, upbeat, downbeat.
-
+	
 	Connoting relates various verbs to various tonalities. The verb to connote means the connoting relation.
-
+	
 	The current register is a list of tonalities that varies. The current register is { }.
-
+	
 	When play begins:
 		repeat through the Table of Verb Meanings:
 			now the word entry describes the meaning entry;
 			now relevance entry is 0;
 			repeat with chosen tone running through the connotations entry:
 				now the word entry connotes the chosen tone.
-
+	
 	Table of Verb Meanings
 	word	meaning	connotations	relevance ( a number )
 	the verb take	the taking action	{ }
@@ -93,11 +92,11 @@ Moreover, because we're using adaptive verbs, these responses will automatically
 	the verb foresake	the dropping action	{ archaic }
 	the verb jettison	the dropping action	{ pompous }
 	the verb dispense with	the dropping action	{ pompous }
-
+	
 	Section 2 - Changing Tone Mid-Game
-
+	
 	Understand "new tone" as changing the tone. Changing the tone is an action out of world.
-
+	
 	Carry out changing the tone:
 		now the current register is { };
 		if a random chance of 1 in 4 succeeds:
@@ -106,10 +105,10 @@ Moreover, because we're using adaptive verbs, these responses will automatically
 		let rando be a random tonality;
 		add rando to the current register, if absent;
 		say "Your narrator will now be [rando]."
-
-
+	
 	Section 3 - Scenario
-
+	
 	Lab is a room. The table is here. The bat and the ball are on the table.
-
+	
 	Test me with "get ball / drop ball / get bat / drop bat / new tone / get all / drop all / new tone / get all / drop all".
+

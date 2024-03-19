@@ -2,18 +2,18 @@ Example: ** Camp Bethel
 Location: Text with random alternatives
 RecipeLocation: Liveliness
 Index: People who do new things each time the player looks
-Description: Creating characters who change their behavior from turn to turn, and a survey of other common uses for alternative texts.
+Description: Creating characters who change their behaviour from turn to turn, and a survey of other common uses for alternative texts.
 For: Z-Machine
 
 	{*}"Camp Bethel"
-
+	
 	Camp Bethel Kitchen is a room.
 
-One use for text alternatives is to change the description of a room after first visiting. We've already seen, in the example "Slightly Wrong", how to do this with "[if visited] ... [otherwise] ... [end if]". But since the first description is printed once and the second description on all subsequent occasions, we could equally well write
+One use for text alternatives is to change the description of a room after first visiting. We've already seen, in the example [Slightly Wrong], how to do this with "[if visited] ... [otherwise] ... [end if]". But since the first description is printed once and the second description on all subsequent occasions, we could equally well write
 
 	{**}The description of Camp Kitchen is "[one of]You've never been into the kitchen before, though you've spent many an hour in the dining lodge. The place is larger than you would have expected, and it has none of the fake rustic touches of the rest of the camp[or]A tidy, efficient industrial kitchen, without any of the kitsch rusticity found elsewhere[stopping]."
 
-We might also want to liven up the behavior of people and animals, who are probably not doing the exact same thing every time we glance in their direction. There are more complex techniques for modeling the behavior of characters, as we will see in the chapters on Advanced Actions and Activities; but if we just want some textual variety, we might write something like:
+We might also want to liven up the behaviour of people and animals, who are probably not doing the exact same thing every time we glance in their direction. There are more complex techniques for modeling the behaviour of characters, as we will see in the chapters on [Advanced Actions] and [Activities]; but if we just want some textual variety, we might write something like:
 
 	{**}Jeremy is a man in the Camp Bethel Kitchen. "Jeremy stands at his station, [one of]peeling white onions[or]briskly dicing onions[or]chopping celery[or]peeling carrots[or]tying fresh herbs together with string[or]putting all the vegetables into a large stock pot[or]watching over his boiling vegetable stock[cycling]."
 
@@ -24,12 +24,12 @@ And since (textual variation or not) we do want the player to be able to see all
 Jeremy is following a sequence of actions to do an implied task (still somewhat robotically, but it will do for now). Animals might be a bit more capricious, though:
 
 	{**}Fluffy is an animal in the Camp Bethel Kitchen. "[one of]Fluffy is chasing its tail[or]Fluffy is staring out the window[or]Fluffy is rubbing itself against your leg[purely at random]."
-
+	
 	A housefly is an animal in the Camp Bethel Kitchen. "A large housefly [one of]lands on a countertop[or]flies around noisily[or]circles Jeremy's chef hat[at random]."
 
 The housefly's description is merely "at random" rather than "purely at random" because we want to show it doing a different thing each turn, whereas Fluffy could plausibly stare out the window for five turns in a row.
 
-There are more complex ways to change and override the initial descriptions of people and things; if text alternatives do not get us far enough, we can turn to the "rule for writing a paragraph about," documented in the Activities chapter.
+There are more complex ways to change and override the initial descriptions of people and things; if text alternatives do not get us far enough, we can turn to the "rule for writing a paragraph about," documented in the [Activities] chapter.
 
 Another frequent use of text alternatives is to give characters a bit of variety in things they're likely to say many times in the course of a game:
 
@@ -46,4 +46,5 @@ Notice that, in that last line, our first option is entirely blank. If we put no
 
 	{**}Test me with "look / g / g / g / ask Jeremy about his feelings for me / ask jeremy about his amnesia / tell Jeremy about my unborn child".
 
-As this example (alas) reveals, text alternatives will not go all the way toward making our characters into compelling conversationalists; we will have to wait until we know more about Actions. But at least we have abolished the default responses, and given Jeremy a touch of personality, however witless.
+As this example (alas) reveals, text alternatives will not go all the way toward making our characters into compelling conversationalists; we will have to wait until we know more about actions. But at least we have abolished the default responses, and given Jeremy a touch of personality, however witless.
+
