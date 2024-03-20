@@ -272,7 +272,7 @@ way or another (though not necessarily in "death").
 Briefly, the startup phase takes us to the end of the room description
 after the banner is printed. The turn sequence covers a complete turn,
 and runs through from prompting the player for a command to notifying
-him of any change in score which occurred. The shutdown rules then go
+them of any change in score which occurred. The shutdown rules then go
 from printing the obituary text, through final score, to the question
 about quitting or restarting.
 
@@ -654,8 +654,8 @@ and act accordingly if so.
 
 (-i) Gives the "handled" property to everything carried or worn by the player.
 (-ii) Changes the current player's holdall in use, if necessary. (That's to
-say: if the player has dropped his previous player's holdall, we try to find a
-new one to use from his remaining possessions.)
+say: if the player has dropped their previous player's holdall, we try to find a
+new one to use from their remaining possessions.)
 
 (k) The "notify score changes rule" tells the player if the score has changed
 during the turn, or rather, since the last time either this rule or the startup
@@ -973,8 +973,8 @@ The work out details of specific action rule is defined by Inter as
 
 @h Player's action awareness.
 This rulebook decides whether or not an action by somebody should be routinely
-reported to the player: is he aware of it having taken place? If the rulebook
-positively succeeds then he is, and otherwise not.
+reported to the player: are they aware of it having taken place? If the rulebook
+positively succeeds then they are, and otherwise not.
 
 =
 A player's action awareness rule
@@ -993,7 +993,7 @@ A player's action awareness rule
 @h Accessibility.
 The "accessibility" rulebook is not very visible to users: it's another
 behind-the-scenes rulebook for managing the decision as to whether the actor
-can touch any items which the intended action requires him to be able to
+can touch any items which the intended action requires them to be able to
 reach.
 
 In its default configuration, it contains only the "access through barriers"
