@@ -390,9 +390,12 @@ destroyed with |BlkValueFree| before being overwritten as the items shuffle down
 =
 [ LIST_OF_TY_RemoveValue list v forgive i j no_items odsize f cf delendum;
 	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) rfalse;
+	! Force the list to be mutable, which will otherwise only happen in the
+	! BlkValueWrite after BlkValueFree, resulting in an error when making the list
+	! mutable has to copy the freed eleemnts.
+	BlkMakeMutable(list);
 	cf = LIST_OF_TY_ComparisonFn(list);
 	no_items = BlkValueRead(list, LIST_LENGTH_F); odsize = no_items;
-	BlkValueWrite(list, LIST_LENGTH_F, no_items); ! Forces the list to be mutable
 	for (i=0: i<no_items: i++) {
 		delendum = BlkValueRead(list, i+LIST_ITEM_BASE);
 		if (cf == 0 or UnsignedCompare)
@@ -433,6 +436,10 @@ as the list shuffles down to fill the void.
 =
 [ LIST_OF_TY_RemoveItemRange list from to forgive i d no_items;
 	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) rfalse;
+	! Force the list to be mutable, which will otherwise only happen in the
+	! BlkValueWrite after BlkValueFree, resulting in an error when making the list
+	! mutable has to copy the freed eleemnts.
+	BlkMakeMutable(list);
 	no_items = BlkValueRead(list, LIST_LENGTH_F);
 	if ((from > to) || (from <= 0) || (to > no_items)) {
 		if (forgive) {
@@ -475,6 +482,10 @@ happened in this situation to be unhelpful.
 =
 [ LIST_OF_TY_Remove_List list rlist i j k v w no_items odsize rsize cf f;
 	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) rfalse;
+	! Force the list to be mutable, which will otherwise only happen in the
+	! BlkValueWrite after BlkValueFree, resulting in an error when making the list
+	! mutable has to copy the freed eleemnts.
+	BlkMakeMutable(list);
 	no_items = BlkValueRead(list, LIST_LENGTH_F); odsize = no_items;
 	rsize = BlkValueRead(rlist, LIST_LENGTH_F);
 	cf = LIST_OF_TY_ComparisonFn(list);
@@ -536,6 +547,9 @@ if |truncation_end| is 1, or from the start if it is $-1$.
 	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
 	if (newsize < 0) return IssueRTP("ResizedListToNegativeSize",	
     		"Attempt to resize list to negative size.", BasicInformKitRTPs);
+	! Force the list to be mutable, which will otherwise only happen in the
+	! BlkValueWrite after BlkValueFree, resulting in an error when making the list
+	! mutable has to copy the freed eleemnts.
 	BlkMakeMutable(list);
 	no_items = BlkValueRead(list, LIST_LENGTH_F);
 	if (no_items < newsize) {
