@@ -20,6 +20,7 @@ is on the table". For now, though, we treat it as a noun.
 	<s-rulebook-outcome-name> outcome |           ==> { pass 1 }
 	<s-use-option-name> option |                  ==> { pass 1 }
 	verb <instance-of-verb> |                     ==> @<Compose verb ML@>
+	verb <instance-of-infinitive-form> |          ==> @<Compose verb ML@>
 	<s-rule-name> response ( <response-letter> )  ==> @<Compose response ML@>
 
 @<Compose verb ML@> =
