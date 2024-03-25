@@ -305,6 +305,16 @@
 %Index.Elements.St.TurnSequenceRules = Turn sequence rules
 %Index.Elements.St.ShutdownRules = Shutdown rules
 
+%Index.Elements.St.GlkHeading = Glk rules
+%Index.Elements.St.GlkRubric = Rulebooks for handling the Glk systems.
+%Index.Elements.St.ResetGlkReferencesRules = Reset glk references rules
+%Index.Elements.St.IdentifyWindowsRules = Identify glk windows rules
+%Index.Elements.St.IdentifyStreamsRules = Identify glk streams rules
+%Index.Elements.St.IdentifyFilerefsRules = Identify glk filerefs rules
+%Index.Elements.St.IdentifySchannelsRules = Identify glk sound channels rules
+%Index.Elements.St.GlkObjectUpdatingRules = Glk object updating rules
+%Index.Elements.St.GlkEventHandlingRules = Glk event handling rules
+
 %Index.Elements.St.CheckRules =
 	Check rules are tied to specific actions, and there are too many to index here.
 	For instance, the check taking rules can only ever affect the taking action, so

@@ -9,7 +9,7 @@ requirements is not met an error message will be shown before quitting.
 
 =
 [ VM_Check_Functionality res;
-	@gestalt 4 2 res; ! Test if this interpreter has Glk...
+	@gestalt GLULX_GESTALT_IOSystem 2 res; ! Test if this interpreter has Glk...
 	if (res == 0) quit; ! ...without which there would be nothing we could do
 
 	! Set the VM's I/O system to be Glk.
@@ -19,7 +19,7 @@ requirements is not met an error message will be shown before quitting.
 		Fatal_Error("This storyfile can only be run in an unicode interpreter.");
 	}
 
-	@gestalt 11 0 res; ! Test if this interpreter supports real numbers...
+	@gestalt GLULX_GESTALT_Float 0 res; ! Test if this interpreter supports real numbers...
 	if (res == 0) {
 		Fatal_Error("This storyfile can only be run in a Glulx interpreter that supports floating-point arithmetic.");
 	}
@@ -85,36 +85,53 @@ Global Pre_Startup_Text_Capture_Stream;
 	rfalse;
 ];
 
-[ OPEN_BUILT_IN_WINDOWS_R res sty;
+[ SET_DEFAULT_STYLEHINTS_R sty;
+	! Main window
+	! Left-justify the header style
+	glk_stylehint_set(wintype_TextBuffer, style_Header, stylehint_Justification, 0);
+	! Try to make emphasized type in italics and not boldface
+	glk_stylehint_set(wintype_TextBuffer, style_Emphasized, stylehint_Weight, 0);
+	glk_stylehint_set(wintype_TextBuffer, style_Emphasized, stylehint_Oblique, 1);
+	! All status window styles should be reversed
+	for (sty = 0: sty < style_NUMSTYLES: sty++) {
+		glk_stylehint_set(wintype_TextGrid, sty, stylehint_ReverseColor, 1);
+	}
+	rfalse;
+];
+
+[ OPEN_BUILT_IN_WINDOWS_R;
 	! gg_mainwin and gg_storywin might already be set. If not, create them.
 
 	if (gg_mainwin == 0) {
 		! Open the story window.
-		! Left-justify the header style
-		glk_stylehint_set(wintype_TextBuffer, style_Header, stylehint_Justification, 0);
-		! Try to make emphasized type in italics and not boldface
-		glk_stylehint_set(wintype_TextBuffer, style_Emphasized, stylehint_Weight, 0);
-		glk_stylehint_set(wintype_TextBuffer, style_Emphasized, stylehint_Oblique, 1);
 		gg_mainwin = glk_window_open(0, 0, 0, wintype_TextBuffer, GG_MAINWIN_ROCK);
+		Main_Window.glk_ref = gg_mainwin;
 		if (gg_mainwin == 0) {
 			! If we can't even open one window, give in
 			quit;
+		}
+		if (BasicInformKit`MANUAL_INPUT_ECHOING_CFGF && Cached_Glk_Gestalts-->gestalt_LineInputEcho) {
+			glk_set_echo_line_event(gg_mainwin, 0);
 		}
 	} else {
 		! There was already a story window. We should erase it.
 		glk_window_clear(gg_mainwin);
 	}
 
-	if (gg_statuswin == 0) {
-		statuswin_cursize = statuswin_size;
-		for (sty=0: sty < style_NUMSTYLES: sty++) {
-			glk_stylehint_set(wintype_TextGrid, sty, stylehint_ReverseColor, 1);
+	if (BasicInformKit`NO_STATUS_WINDOW_CFGF == 0) {
+		if (gg_statuswin == 0) {
+			statuswin_cursize = statuswin_size;
+			gg_statuswin =
+				glk_window_open(gg_mainwin, winmethod_Fixed + winmethod_Above,
+					statuswin_cursize, wintype_TextGrid, GG_STATUSWIN_ROCK);
 		}
-		gg_statuswin =
-			glk_window_open(gg_mainwin, winmethod_Fixed + winmethod_Above,
-				statuswin_cursize, wintype_TextGrid, GG_STATUSWIN_ROCK);
 	}
-	! It's possible that the status window couldn't be opened, in which case
+	else if (gg_statuswin) {
+		glk_window_close(gg_statuswin, GLK_NULL);
+		gg_statuswin = 0;
+	}
+	Status_Window.glk_ref = gg_statuswin;
+	! It's possible that the status window is not open, in which case
 	! gg_statuswin is now zero. We must allow for that later on.
 
 	glk_set_window(gg_mainwin);

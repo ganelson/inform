@@ -19,6 +19,7 @@ void StandardsElement::render(OUTPUT_STREAM, index_session *session) {
 	@<Index the segment for the accessibility rulebooks@>;
 	@<Index the segment for the light and darkness rulebooks@>;
 	@<Index the segment for the top-level rulebooks@>;
+	@<Index the segment for the glk rulebooks@>;
 	@<Index the segment for the action processing rulebooks@>;
 	@<Index the segment for the responses@>;
 }
@@ -38,6 +39,24 @@ void StandardsElement::render(OUTPUT_STREAM, index_session *session) {
 	StandardsElement::activity(OUT, inv, I"AMUSING_A_VICTORIOUS_PLAYER_ACT", 2, session);
 	StandardsElement::activity(OUT, inv, I"PRINTING_PLAYERS_OBITUARY_ACT", 2, session);
 	StandardsElement::activity(OUT, inv, I"DEALING_WITH_FINAL_QUESTION_ACT", 2, session);
+
+@<Index the segment for the glk rulebooks@> =
+	StandardsElement::subhead(OUT, LD,
+		I"Index.Elements.St.GlkHeading", I"Index.Elements.St.GlkRubric");
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.ResetGlkReferencesRules", NULL,
+		IndexRules::find_rulebook(inv, I"RESET_GLK_REFERENCES_RB"), NULL, 1, TRUE, session);
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.IdentifyWindowsRules", NULL,
+		IndexRules::find_rulebook(inv, I"IDENTIFY_WINDOWS_RB"), NULL, 1, TRUE, session);
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.IdentifyStreamsRules", NULL,
+		IndexRules::find_rulebook(inv, I"IDENTIFY_STREAMS_RB"), NULL, 1, TRUE, session);
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.IdentifyFilerefsRules", NULL,
+		IndexRules::find_rulebook(inv, I"IDENTIFY_FILEREFS_RB"), NULL, 1, TRUE, session);
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.IdentifySchannelsRules", NULL,
+		IndexRules::find_rulebook(inv, I"IDENTIFY_SCHANNELS_RB"), NULL, 1, TRUE, session);
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.GlkObjectUpdatingRules", NULL,
+		IndexRules::find_rulebook(inv, I"GLK_OBJECT_UPDATING_RB"), NULL, 1, TRUE, session);
+	IndexRules::rulebook_box(OUT, inv, I"Index.Elements.St.GlkEventHandlingRules", NULL,
+		IndexRules::find_rulebook(inv, I"GLK_EVENT_HANDLING_RB"), NULL, 1, TRUE, session);
 
 @<Index the segment for the sequence of play rulebooks@> =
 	StandardsElement::subhead(OUT, LD,

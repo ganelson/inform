@@ -7,6 +7,22 @@ The 32-bit architecture is currently the default targeted by Inform, and is
 used both for programs compiled via Inform 6 to the Glulx virtual machine, and
 also for programs compiled via C.
 
+@h Glulx gestalts.
+While most Glulx gestalts are defined in the Glk.neptune file, a few would not
+make sense as an kind of value, and are defined here instead.
+
+=
+Constant GLULX_GESTALT_GlulxVersion = 0;
+Constant GLULX_GESTALT_TerpVersion  = 1;
+Constant GLULX_GESTALT_IOSystem     = 4;
+Constant GLULX_GESTALT_MAllocHeap   = 8;
+Constant GLULX_GESTALT_AccelFunc    = 10;
+
+[ Glulx_Gestalt sel arg res;
+	@gestalt sel arg res;
+	return res;
+];
+
 @h Header layout.
 The VM is expected to contain certain special constants and variables at fixed
 position in its "header"; the addresses of these are given below.
@@ -64,14 +80,14 @@ is viable on recent revisions of Glulx.
 
 =
 [ VM_AllocateMemory amount i;
-	@gestalt 7 0 i;
+	@gestalt GLULX_GESTALT_MAlloc 0 i;
 	if (i == 0) return i;
 	@malloc amount i;
 	return i;
 ];
 
 [ VM_FreeMemory address i;
-	@gestalt 7 0 i;
+	@gestalt GLULX_GESTALT_MAlloc 0 i;
 	if (i == 0) return;
 	@mfree address;
 ];
