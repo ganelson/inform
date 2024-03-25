@@ -12,7 +12,9 @@ Understand "take [things]" as taking.
 Understand "take off [something]" as taking off.
 Understand "take [something] off" as taking off.
 Understand "take [things inside] from [something]" as removing it from.
+Understand "take [something] from [something]" as removing it from. [For better error messages.]
 Understand "take [things inside] off [something]" as removing it from.
+Understand "take [something] off [something]" as removing it from. [For better error messages.]
 Understand "take inventory" as taking inventory.
 Understand the commands "carry" and "hold" as "take".
 
@@ -22,6 +24,7 @@ Understand "get [things]" as taking.
 Understand "get in/into/on/onto [something]" as entering.
 Understand "get off/down [something]" as getting off.
 Understand "get [things inside] from [something]" as removing it from.
+Understand "get [something] from [something]" as removing it from. [For better error messages.]
 
 Understand "pick up [things]" or "pick [things] up" as taking.
 
@@ -30,6 +33,7 @@ Understand "stand on [something]" as entering.
 
 Understand "remove [something preferably held]" as taking off.
 Understand "remove [things inside] from [something]" as removing it from.
+Understand "remove [something] from [something]" as removing it from. [For better error messages.]
 
 Understand "shed [something preferably held]" as taking off.
 Understand the commands "doff" and "disrobe" as "shed".
