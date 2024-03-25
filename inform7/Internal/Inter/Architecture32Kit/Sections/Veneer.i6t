@@ -7,6 +7,11 @@ which uses them to replace its default "veneer" functions. If we're compiling
 to something other than Inform 6, though, they are just strangely-named functions,
 and do no harm.
 
+The replacement of RT__ChPrintC is necessary to allow Unicode control characters (including tab)
+typed at the command line to be printed into internal buffers in Inform 7.
+The standard Inform 6 veneer routine will put an error message into the buffer instead, which is
+a highly undesirable and confusing error condition.
+
 =
 [ Unsigned__Compare x y;
 	@jleu x y ?lesseq;
@@ -26,4 +31,8 @@ and do no harm.
 [ RT__ChLDB x y;
 	@aloadb x y sp;
 	@return sp;
+];
+
+[ RT__ChPrintC c;
+	@streamunichar c;
 ];
