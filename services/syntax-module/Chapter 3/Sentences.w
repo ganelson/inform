@@ -169,21 +169,7 @@ since their entries are governed by different lexical and semantic rules.)
 		sfsm->inside_table_mode = FALSE;
 
 @ We now come to the definition of a sentence break, which is more complicated
-than might have been expected.
-
-For one thing, a run of sentence divisions is treated as a single division,
-only the last of which is the one which counts. This looks odd at first sight,
-because it means that Inform considers
-
->> The cat is on the table;.
-
-to be a valid sentence, equivalent to
-
->> The cat is on the table.
-
-But it has the advantage that it enables us to avoid being pointlessly strict
-over the punctuation which precedes a paragraph break. Some people like to
-write paragraphs like this:
+than might have been expected. Some people like to write paragraphs like this:
 = (text as Inform 7)
 	Before going north:
 	    say "Northward ho!";
