@@ -72,6 +72,7 @@ again shown in the adjectives defined here:
 
 =
 Definition: Something is visible rather than invisible if the player can see it.
+Definition: Something is audible rather than inaudible if the player can hear it.
 Definition: Something is touchable rather than untouchable if the player can touch it.
 
 @ While many of the world-modelling assumptions in I7 are carried over from
