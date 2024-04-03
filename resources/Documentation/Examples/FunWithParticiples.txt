@@ -5,7 +5,7 @@ Index: Describing ongoing character behaviour with participles
 Description: Creating dynamic room descriptions that contain sentences such as "Clark is here, wasting time" or "Clark is here, looking around" depending on Clark's idle activity.
 For: Z-Machine
 
-Mostly the Standard Rules use verbs adapted to finite forms ("she jumped", "we take the hammer", and so on). But Inform can also produce participles to describe actions that are ongoing: "he is carrying the fedora" or "taking the hammer..."
+Mostly the Standard Rules use verbs adapted to finite forms (``she jumped``, ``we take the hammer``, and so on). But Inform can also produce participles to describe actions that are ongoing: ``he is carrying the fedora`` or ``taking the hammer...``
 
 In this example, we give non-player characters actions to perform and then have Inform dynamically describe what they're doing when the player chooses to look.
 

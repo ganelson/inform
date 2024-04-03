@@ -2,7 +2,7 @@ Example: **** Air Conditioning is Standard
 Location: Writing a paragraph about
 RecipeLocation: Event Scheduling
 Index: Paragraphs of flexible descriptions
-Description: Uses "writing a paragraph about" to make person and object descriptions that vary considerably depending on what else is going on in the room, including some randomised NPC interactions with objects or with each other.
+Description: Uses `writing a paragraph about` to make person and object descriptions that vary considerably depending on what else is going on in the room, including some randomised NPC interactions with objects or with each other.
 For: Z-Machine
 
 	{*}"Air Conditioning is Standard"

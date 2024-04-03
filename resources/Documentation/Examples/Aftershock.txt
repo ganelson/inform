@@ -5,7 +5,7 @@ Index: Radios and other devices active when switched on
 Description: Modifying the rules for examining a device so that all devices have some specific behaviour when switched on, which is described at various times.
 For: Z-Machine
 
-The built-in behaviour of Inform is to print a line after a device is examined, saying whether the item is on or off. This is often inappropriate, and we could simply turn off that behaviour in general by instructing Inform to ignore the "examine devices rule" (see the chapter on [Rulebooks]).
+The built-in behaviour of Inform is to print a line after a device is examined, saying whether the item is on or off. This is often inappropriate, and we could simply turn off that behaviour in general by instructing Inform to ignore the `examine devices rule` (see the chapter on [Rulebooks]).
 
 Perhaps, though, we would like continue to have a short passage about the action of any switched on device; we'd just like a little more control over what it says from time to time. And in that case, we might change the rule to give a new activity control over that portion of the description:
 
@@ -19,7 +19,7 @@ Perhaps, though, we would like continue to have a short passage about the action
 		if the item is switched on, say "[The item] is switched on.";
 		otherwise say "[The item] is switched off."
 
-Borrowing from the rulebooks chapter, we can replace the standard "examine devices" rule with something that uses this activity.
+Borrowing from the rulebooks chapter, we can replace the standard `examine devices rule` with something that uses this activity.
 
 	{**}The new described devices rule is listed instead of the examine devices rule in the carry out examining rules.
 	

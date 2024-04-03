@@ -27,10 +27,10 @@ We get a similar set of guesses if we write
 
 	{**}The bench is in the cabin. On the bench are some blue vinyl cushions.
 
-Using "some" rather than "a" or "the" tells Inform that the cushions are to be referred to as a plural object in the future. And because of the "on the bench..." phrase, Inform will guess that the bench is a supporter and that it is fixed in place and cannot be moved from room to room. We do have to tell it that the bench can be sat on, though:
+Using `some` rather than `a` or `the` tells Inform that the cushions are to be referred to as a plural object in the future. And because of the `on the bench` wording, Inform will guess that the bench is a `supporter` and that it is `fixed in place` and cannot be moved from room to room. We do have to tell it that the bench can be sat on, though:
 
 	{**}The bench is enterable.
 
-And now a short script, so that if we type ``test me``, we experiment with the case and bench:
+And now a short script, so that if we type ``TEST ME``, we experiment with the case and bench:
 
 	{**}Test me with "examine case / get rods / open case / get rods / sit on bench / take cushions / get up"

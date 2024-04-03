@@ -2,7 +2,7 @@ Example: ** Anteaters
 Location: Stored actions
 RecipeLocation: Remembering, Converting and Combining Actions
 Index: Device to remember and play back actions
-Description: The player carries a gizmo that is able to record actions performed by the player, then force them to repeat those actions when the gizmo is dropped. This includes storing actions that apply to topics, as in "look up anteater colonies in the guide".
+Description: The player carries a gizmo that is able to record actions performed by the player, then force them to repeat those actions when the gizmo is dropped. This includes storing actions that apply to topics, as in ``LOOK UP ANTEATER COLONIES IN THE GUIDE``.
 For: Z-Machine
 
 	{*}"Anteaters"

@@ -2,7 +2,7 @@ Example: *** Costa Rican Ornithology
 Location: Reading and talking
 RecipeLocation: Reading Matter
 Index: Book with various contents
-Description: A fully-implemented book, answering questions from a table of data, and responding to failed consultation with a custom message such as "You flip through the Guide to Central American Birds, but find no reference to penguins."
+Description: A fully-implemented book, answering questions from a table of data, and responding to failed consultation with a custom message such as ``You flip through the Guide to Central American Birds, but find no reference to penguins.``
 For: Z-Machine
 
 The following relies on quite a number of features we haven't met yet: tables, rules for printing names, instructions for understanding the player's commands. It is offered simply as an example of how a fully implemented book might be handled in Inform.

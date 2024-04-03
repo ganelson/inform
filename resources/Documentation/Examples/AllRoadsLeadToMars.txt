@@ -2,7 +2,7 @@ Example: * All Roads Lead to Mars
 Location: Adjacent rooms and routes through the map
 RecipeLocation: Map
 Index: Rooms player is forced to visit in order
-Description: Layout where the player is allowed to wander any direction he likes, and the map will arrange itself in order so that he finds the correct "next" location.
+Description: Layout where the player is allowed to wander any direction he likes, and the map will arrange itself in order so that he finds the correct next location.
 For: Z-Machine
 
 Suppose we want to allow the player to wander freely in any direction, but ourselves maintain control over the order in which they encounter the rooms. This sort of effect emphasises the order of the story-telling over any kind of rigorous simulation of space; on multiple play-throughs, the player might not find all the same rooms in the same locations.

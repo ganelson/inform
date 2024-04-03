@@ -7,7 +7,7 @@ For: Z-Machine
 
 Inform's default assumption is that if a player on an enterable object drops something, the dropped article winds up beside them on the same supporter or in the same container. This makes lots of sense for a dais, say, or a king-sized bed. It's a little less sensible if the enterable supporter in question is a bar stool or the like. So suppose we want to add a new kind of supporter called a perch, where everything dropped lands on the floor.
 
-There are actually several ways of implementing this, but one of them is to reach right into the drop action and replace the "standard dropping rule" with a different one of our own invention – like this:
+There are actually several ways of implementing this, but one of them is to reach right into the `dropping` action and replace the `standard dropping rule` with a different one of our own invention – like this:
 
 	{*}"Swigmore U."
 	

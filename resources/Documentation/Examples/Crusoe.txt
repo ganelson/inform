@@ -5,11 +5,11 @@ Index: Printing the description of something activity
 Description: Adding a "printing the description of something" activity.
 For: Z-Machine
 
-Suppose we want to add rules so that any time we examine a charred object (and most of our objects can be charred), a line about the charring is appended to the end of the object description. We could use "after examining...", but perhaps we would prefer for the sentence about the charring not to appear in its own paragraph.
+Suppose we want to add rules so that any time we examine a charred object (and most of our objects can be charred), a line about the charring is appended to the end of the object description. We could use `after examining...`, but perhaps we would prefer for the sentence about the charring not to appear in its own paragraph.
 
-This is an ideal occasion for a new activity. We look at the action index for "examining" to identify the rule that causes the old behaviour (in this case, the "standard examining rule"); replace this with a new rule that calls our activity; and write our "printing the description" activity in such a way that it uses an object's description without forcing a paragraph return afterward.
+This is an ideal occasion for a new activity. We look at the action index for `examining` to identify the rule that causes the old behaviour (in this case, the `standard examining rule`); replace this with a new rule that calls our activity; and write our `printing the description` activity in such a way that it uses an object's description without forcing a paragraph return afterward.
 
-Then we will use "after printing the description" to add our line about charring, and make sure that the paragraph return does occur before the prompt.
+Then we will use `after printing the description` to add our line about charring, and make sure that the paragraph return does occur before the prompt.
 
 So:
 
@@ -19,7 +19,7 @@ So:
 	
 	The fancy examining rule is listed instead of the standard examining rule in the carry out examining rules.
 
-This instruction replaces a normal piece of the examine action, the standard examining rule, with another one of our own devising. (The replacement of the standard examining rule will be explained in more detail in the chapter on [Rulebooks].)
+This instruction replaces a normal piece of the examine action, the `standard examining rule`, with another one of our own devising. (The replacement of the standard examining rule will be explained in more detail in the chapter on [Rulebooks].)
 
 	{**}Printing the description of something is an activity.
 	
@@ -27,7 +27,7 @@ This instruction replaces a normal piece of the examine action, the standard exa
 		carry out the printing the description activity with the noun;
 		rule succeeds.
 
-All we have done here is enclose what is usually just a rule inside an activity. This means that we can now write before and after rules for the activity, and also add special instructions like "Rule for printing the name of something while printing the description of something" – this may not be likely to arise often, but Inform now has the concept of "printing the description of something" as a separate context of action. Next we add the modification that lets us append to the description without a new line:
+All we have done here is enclose what is usually just a rule inside an activity. This means that we can now write before and after rules for the activity, and also add special instructions like `Rule for printing the name of something while printing the description of something` – this may not be likely to arise often, but Inform now has the concept of `printing the description of something` as a separate context of action. Next we add the modification that lets us append to the description without a new line:
 
 	{**}Rule for printing the description of something (called item):
 		if the description of the item is not "":
@@ -35,16 +35,16 @@ All we have done here is enclose what is usually just a rule inside an activity.
 		otherwise:
 			say "You see nothing special about [the item]. [run paragraph on]".
 
-"run paragraph on" here will mean that we do not get a paragraph break following the description, even if it ends with a period. We also insert a space, so that our follow-on comments will be properly punctuated.
+`run paragraph on` here will mean that we do not get a paragraph break following the description, even if it ends with a period. We also insert a space, so that our follow-on comments will be properly punctuated.
 
 	{**}After printing the description of something charred:
 		say "It is charred." instead.
 
-The instead at the end of this line stops Inform for going on with any other "after printing the description of..." rules.
+The `instead` at the end of this line stops Inform for going on with any other `after printing the description of...` rules.
 
-The standard library also has rules for printing additional text about containers and supporters with visible contents, and devices that are switched on; with this current system, we could add those as "after printing the description" rules as well, building up a complete paragraph if we wanted. But for simplicity we won't exemplify all of that here. The effects would be much the same as with the "charred" line.
+The Standard Rules also have rules for printing additional text about containers and supporters with visible contents, and devices that are switched on; with this current system, we could add those as `after printing the description` rules as well, building up a complete paragraph if we wanted. But for simplicity we won't exemplify all of that here. The effects would be much the same as with the "charred" line.
 
-Now, because we want to make sure that we always do get a paragraph break after our description, we add this rule last after all the other rules. "Last" and "first" rules are covered in more detail in the chapter on [Rulebooks].
+Now, because we want to make sure that we always do get a paragraph break after our description, we add this rule last after all the other rules. `Last` and `first` rules are covered in more detail in the chapter on [Rulebooks].
 
 	{**}Last after printing the description of something:
 		say paragraph break.
@@ -65,12 +65,12 @@ Now, because we want to make sure that we always do get a paragraph break after 
 	
 	Instead of burning the grain of sand: say "You drop the grain into the fire pit, where it becomes indistinguishable from all the others."; now the grain of sand is nowhere. Instead of dropping the grain of sand: now the grain of sand is nowhere; say "You return the grain of sand to its brethren."
 
-The player's description is handled in an unusual way, and this will produce a space paragraph break there where it should not. Instead, therefore, we will add an instead for examining the player (probably a good idea anyway):
+The player's description is handled in an unusual way, and this will produce a space paragraph break there where it should not. Instead, therefore, we will add an `instead` for examining the player (probably a good idea anyway):
 
 	{**}Instead of examining the player:
 		say "You are sunburned and there is sand in cracks you didn't know existed."
 	
 	Test me with "i / x stick / x bottle / x sand / x paper / x me / burn stick / x stick / burn paper / x paper".
 
-The "printing a description" activity may be useful for other games, and can be imported just by lifting section 1.
+The `printing a description` activity may be useful for other games, and can be imported just by lifting section 1.
 

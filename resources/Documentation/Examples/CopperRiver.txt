@@ -9,7 +9,7 @@ In a very dense environment, we might want to offer the player room descriptions
 
 There are a wide range of possible reasons to do this – to shift the narrative emphasis, to change the mood of the game by highlighting different parts of the environment, to show the game from the perspective of different viewpoint characters – but in the following example, our goal is to show the player only the objects that are currently useful for puzzles.
 
-To do this, we need some notion of what puzzles are currently available and unsolved, so we make an "unsolved" adjective; we also need to know which things solve the puzzle, so we create a "resolving" relation, to indicate which objects resolve which problems.
+To do this, we need some notion of what puzzles are currently available and unsolved, so we make an `unsolved` adjective; we also need to know which things solve the puzzle, so we create a `resolving` relation, to indicate which objects resolve which problems.
 
 Given that information, we can create rules about which objects in the game world are currently interesting, which are currently dull, and describe accordingly:
 

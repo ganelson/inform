@@ -17,7 +17,7 @@ We allow things to have prices, and the player's price to indicate how much mone
 	
 	The player has a price. The price of the player is $60.00.
 
-Because we're allowing the player to order things that they can't currently see, we need to borrow a special kind of grammar from the [Understanding] chapter. All our orderable items in this example are toys, so "any toy" means any object of the toy kind, whether or not it is in view at the moment:
+Because we're allowing the player to order things that they can't currently see, we need to borrow a special kind of grammar from the [Understanding] chapter. All our orderable items in this example are toys, so `any toy` means any object of the toy kind, whether or not it is in view at the moment:
 
 	{**}Understand "buy [any toy]" as ordering. Understand the command "order" as something new. Understand the command "order" as "buy".
 	
@@ -58,7 +58,7 @@ Since we are going to use price and difficulty in the table that defines our jug
 	a stage ball set	$13.50	"comes in set of three"	"Not much different in appearance from the economy bounce ball, but larger so as to be visible from a stage."	moderate	"You create of the balls a cascade of moving color, visible from quite a distance."
 	a fireball set	$33.00	"will not be sold to minors"	"A ball has wicking and a fuel-source inside so that it will burn while being juggled."	hard	"You juggle the fireballs rapidly, careful never to hold any of them a moment longer than necessary."
 
-Notice that we are allowed to define "description" and other already-known properties in the table as well.
+Notice that we are allowed to define `description` and other already-known properties in the table as well.
 
 	{**}Backstage is a room. "A muffled black room with felt on the floors and walls. A glowing sign over the stage door says SHOW IN PROGRESS."
 	

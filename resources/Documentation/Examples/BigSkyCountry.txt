@@ -61,5 +61,5 @@ In a fuller implementation of this game, we might make it possible to get by the
 			resume the story;
 			try looking.
 
-"If the player consents" is just a convenient way to ask a yes/no question that the player must answer before going on with the game.
+`If the player consents` is just a convenient way to ask a yes/no question that the player must answer before going on with the game.
 

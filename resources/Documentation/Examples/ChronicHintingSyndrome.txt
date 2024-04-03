@@ -5,7 +5,7 @@ Index: Hints leading the player through conversation
 Description: Using name-printing rules to keep track of whether the player knows about objects, and also to highlight things they might want to follow up.
 For: Z-Machine
 
-Suppose we have a conversation system in which it is important to keep track of which subjects the player has heard mentioned. If we're careful to mark subjects in brackets, we can use the "printing the name of" activity to record which things have been mentioned so far:
+Suppose we have a conversation system in which it is important to keep track of which subjects the player has heard mentioned. If we're careful to mark subjects in brackets, we can use the `printing the name of` activity to record which things have been mentioned so far:
 
 	{*}"Chronic Hinting Syndrome"
 	

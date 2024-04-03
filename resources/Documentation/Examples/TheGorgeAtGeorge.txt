@@ -2,7 +2,7 @@ Example: * The Gorge at George
 Location: Understanding mistakes
 RecipeLocation: Getting Started with Conversation
 Index: TALK TO usage corrected
-Description: If the player tries to ``talk to`` a character, suggest alternative modes of conversation.
+Description: If the player tries to ``TALK TO`` a character, suggest alternative modes of conversation.
 For: Z-Machine
 
 	{*}"Gorge at George"

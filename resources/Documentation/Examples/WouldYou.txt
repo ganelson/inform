@@ -15,7 +15,7 @@ For instance, if we want to give some objects a flavour:
 	
 	A food is a kind of thing that is edible. Food has some text called flavor. The flavor of food is usually "Tolerable."
 
-Things are, in general, not edible by default, so we have to make them edible specifically in order to allow them to be eaten by the player. Here we've defined food to be edible by default, and we have given it a standard piece of flavour text.
+Things are, in general, not `edible` by default, so we have to give them that property in order to allow them to be eaten by the player. Here we've defined food to be `edible` by default, and we have given it a standard piece of flavour text.
 
 	{**}The ham and the green eggs are food. The flavor of the green eggs is "Delicious!"
 	
@@ -23,9 +23,9 @@ Things are, in general, not edible by default, so we have to make them edible sp
 		if the noun provides the property flavor, say "[the flavor of the noun][paragraph break]";
 		otherwise say "It's [noun]-flavored."
 
-Note that we use "if the noun provides a flavour..." to make sure that the property exists before attempting to use it. Otherwise, there is the risk that we will try to print a property that does not exist, resulting in errors in the game.
+Note that we use `if the noun provides a flavour...` to make sure that the property exists before attempting to use it. Otherwise, there is the risk that we will try to print a property that does not exist, resulting in errors in the game.
 
-We will only get the "It's [noun]-flavoured." response if we successfully eat something that is not a food and does not have flavour text. To test this feature, let's suppose something that isn't exactly food but can theoretically be chewed on:
+We will only get the `"It's [noun]-flavoured."` response if we successfully eat something that is not a food and does not have flavour text. To test this feature, let's suppose something that isn't exactly food but can theoretically be chewed on:
 
 	{**}The player carries some paper. The paper is edible.
 	

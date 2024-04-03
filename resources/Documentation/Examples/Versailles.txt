@@ -12,18 +12,14 @@ For instance, suppose we wanted to create a mirror in which the player would see
 	Instead of searching the mirror:
 		say "You see [a random thing in the location] reflected back at you."
 
-This is the same as "a random thing which is in the location": phrase "in..." can be used briefly in Inform as it can in English. (The verb "to be in" means the reversed containment relation.)
+This is the same as `a random thing which is in the location`: phrase `in...` can be used briefly in Inform as it can in English. (The verb `to be in` means the reversed containment relation.)
 
 But, on a little more thought, we might want to expand on this: the mirror perhaps should reflect not only things that are in the room, but anything that the player can see (even if it's on a supporter or carried by someone). So then we might instead write
 
 	Instead of searching the mirror:
 		say "You see [a random visible thing] reflected back at you."
 
-There's still a risk, though, that this will produce the response
-
-	You see the mirror reflected back at you.
-
-because, of course, the mirror is itself visible. So instead we might write
+There's still a risk, though, that this will produce the response ``You see the mirror reflected back at you.`` because, of course, the mirror is itself visible. So instead we might write
 
 	Instead of searching the mirror:
 		say "You see [a random visible thing which is not the mirror] reflected back at you."
@@ -43,7 +39,7 @@ because, of course, the mirror is itself visible. So instead we might write
 	
 	Test me with "x mirror / look in mirror / g".
 
-A final note: we use "searching" here because Inform understands both ``search thing`` and ``look in thing`` as the searching action, and the player is most likely to type ``look in mirror`` in order to see the reflection there. In the absence of an example, we can discover the relationship between actions and their command vocabulary in one of two ways. A complete list of actions and the vocabulary associated with them is available in the Actions index. Alternatively, we can type ``actions`` at a prompt, followed by ``look in mirror``, and get the response
+A final note: we use "searching" here because Inform understands both ``SEARCH THING`` and ``LOOK IN THING`` as the searching action, and the player is most likely to type ``LOOK IN MIRROR`` in order to see the reflection there. In the absence of an example, we can discover the relationship between actions and their command vocabulary in one of two ways. A complete list of actions and the vocabulary associated with them is available in the Actions index. Alternatively, we can type ``ACTIONS`` at a prompt, followed by ``LOOK IN MIRROR``, and get the response
 
 	[searching the mirror]
 	You find nothing of interest.

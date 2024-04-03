@@ -17,7 +17,7 @@ In essence, we are rewriting the carrying requirements rule with a different one
 	
 	The amulet carrying rule substitutes for the carrying requirements rule when unlocking something with the Amulet of Tumblers.
 
-We can now replace the usual behaviour of the carrying requirements rule (to check whether the player is carrying something and, if not, to generate an implicit take) with a similar rule of our own; note that "if the player has the second noun" is a more compact way to write "if the player carries the second noun or the player wears the second noun":
+We can now replace the usual behaviour of the `carrying requirements rule` (to check whether the player is carrying something and, if not, to generate an implicit take) with a similar rule of our own; note that `if the player has the second noun` is a more compact way to write `if the player carries the second noun or the player wears the second noun`:
 
 	{**}This is the amulet carrying rule:
 		if the player has the second noun:
@@ -39,5 +39,5 @@ We can now replace the usual behaviour of the carrying requirements rule (to che
 	
 	Test me with "unlock disturbing door with amulet / open door / west / remove amulet / close door / lock disturbing door with amulet / drop amulet / unlock disturbing door with amulet".
 
-For a more systematic handling of the keychain problem (and a number of other refinements to the behaviour of doors), see the Locksmith extension included with Inform.
+For a more systematic handling of the keychain problem (and a number of other refinements to the behaviour of doors), see the extension Locksmith by Emily Short.
 

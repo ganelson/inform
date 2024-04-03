@@ -76,7 +76,7 @@ Now with a bit of fiddling we can also teach Inform to recognise descriptors suc
 		decrease the length of the noun by 1 inch;
 		say "You end up with [a noun], as some is taken up by the knot."
 
-This is still a little incomplete because we cannot refer to strings by their lengths, as in "the 2 inch string" and so on. To do this, we borrow a line from the chapter on [Understanding]:
+This is still a little incomplete because we cannot refer to strings by their lengths, as in ``THE 2 INCH STRING`` and so on. To do this, we borrow a line from the chapter on [Understanding]:
 
 	{**}Understand the length property as referring to a string.
 	

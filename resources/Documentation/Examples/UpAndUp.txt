@@ -13,7 +13,7 @@ Sometimes when a player moves from one room to another, we want to imply that a 
 	
 	The description of the Endless Tower is "From up here the Plain of the Skull seems only a small bald patch: the world is round and most of it is covered with trees. Far off to the southwest is a shimmering surface that might be water; but there are no signs of cities or civilizations, only the lizard-skeletons."
 
-And now we borrow from the instructions on Actions to create our actual message. "Before..." introduces a rule that occurs when the player tries to do something; in this case, we will make a Before rule for going to the tower.
+And now we borrow from the instructions on Actions to create our actual message. `Before` introduces a rule that occurs when the player tries to do something; in this case, we will make a Before rule for going to the tower.
 
 	{**}Before going to the Endless Tower:
 		say "You climb... and climb... and climb... The sun sets. The moon rises. The wind begins to blow. You continue to climb..."

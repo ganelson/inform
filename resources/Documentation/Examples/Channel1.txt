@@ -7,8 +7,8 @@ For: Z-Machine
 
 We might want to allow every television to be tuned to a channel (a number property) which the player could refer to, so that
 
-- ``watch channel 13``
-- ``turn off channel 4``
+- ``WATCH CHANNEL 13``
+- ``TURN OFF CHANNEL 4``
 
 would be directed to the appropriate television object, if any television is turned on and tuned to the correct station. We might now write:
 

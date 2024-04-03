@@ -5,31 +5,29 @@ Index: INVENTORY wide and tall
 Description: Overview of all the phrase options associated with listing, and examples of how to change the inventory list into some other standard formats.
 For: Z-Machine
 
-[ZL: "above" is weird given reader might not have been in WI ]::
+Most of the phrase options for listing items are relatively self-explanatory; a few are less so. Here is an overview:
 
-Most of the phrase options above are relatively self-explanatory; a few are less so. Here is an overview:
+`With newlines` tells Inform to put a new line before each listed object. Indented tells it to indent contents of objects, when listing these.
 
-"With newlines" tells Inform to put a new line before each listed object. Indented tells it to indent contents of objects, when listing these.
+`Giving inventory information` means to append information such as (closed) or (being worn) to objects.
 
-"Giving inventory information" means to append information such as (closed) or (being worn) to objects.
+`As a sentence` means to put ``and`` before the last object and commas between them; this is usually not used in conjunction with newline listing. `As a sentence` obeys whatever conventions about the use of the serial comma we may have established with the `Use serial comma` option.
 
-"As a sentence" means to put "and" before the last object and commas between them; this is usually not used in conjunction with newline listing. "As a sentence" obeys whatever conventions about the use of the serial comma we may have established with the "Use serial comma" option.
+`Including contents` means to list the contents of open or transparent containers and all supporters, whereas including all contents means to list the contents of all containers, even opaque closed ones.
 
-"Including contents" means to list the contents of open or transparent containers and all supporters, whereas including all contents means to list the contents of all containers, even opaque closed ones.
+`Tersely`, perhaps unexpectedly, puts parentheses around objects listed as the contents of other objects.
 
-"Tersely", perhaps unexpectedly, puts parentheses around objects listed as the contents of other objects.
+`Giving brief inventory information` omits most of the inventory tags, such as ``(open)`` and ``(worn)``, but does list ``(closed)`` for closed containers which might not otherwise be obviously openable.
 
-"Giving brief inventory information" omits most of the inventory tags, such as "(open)" and "(worn)", but does list "(closed)" for closed containers which might not otherwise be obviously openable.
+`Using the definite article` means prefixing objects with ``the``, if applicable, rather than ``a``.
 
-"Using the definite article" means prefixing objects with "the", if applicable, rather than "a".
+`Listing marked items only` means including only objects that have already been declared `marked for listing`.
 
-"Listing marked items only" means including only objects that have already been declared "marked for listing".
+`Prefacing with is-are` means that Inform will write ``is`` before the list if it contains only one item, and ``are`` if the list contains more than one.
 
-"Prefacing with is-are" means that Inform will write "is" before the list if it contains only one item, and "are" if the list contains more than one.
+`Not listing concealed items` means to omit from the list anything which is scenery.
 
-"Not listing concealed items" means to omit from the list anything which is scenery.
-
-Finally, "with extra indentation" means that the whole list should be indented slightly, in emulation of the default inventory listing.
+Finally, `with extra indentation` means that the whole list should be indented slightly, in emulation of the default inventory listing.
 
 With this information, we can try rewriting the inventory behaviour to emulate the standard or to explore alternate versions:
 
@@ -62,7 +60,7 @@ Here we offer the alternative of listing everything together as a paragraph:
 		list the contents of the player, giving inventory information, as a sentence, including contents;
 		say "."
 
-This may be unsatisfactory, however. Items that are inside other items are not set off from those merely carried by the player. One way around this is to use terse listing, giving such descriptions as "a waterproof sack (in which are an undersea map, a diving guide, a cup (in which is a worm) and a 500 Argentine pesos)" as opposed to the more confusing " a waterproof sack (open), inside which are an undersea map, a diving guide, a cup, inside which is a worm and a 500 Argentine pesos".
+This may be unsatisfactory, however. Items that are inside other items are not set off from those merely carried by the player. One way around this is to use terse listing, giving such descriptions as ``a waterproof sack (in which are an undersea map, a diving guide, a cup (in which is a worm) and a 500 Argentine pesos)`` as opposed to the more confusing `` a waterproof sack (open), inside which are an undersea map, a diving guide, a cup, inside which is a worm and a 500 Argentine pesos``.
 
 	{**}Instead of taking inventory when current inventory listing style is curt:
 		if the number of things enclosed by the player is 0, say "You are empty-handed." instead;
@@ -70,7 +68,7 @@ This may be unsatisfactory, however. Items that are inside other items are not s
 		list the contents of the player, tersely, giving brief inventory information, as a sentence, including contents;
 		say "."
 
-If, using the above style, we close the sack, we will still get "(closed)" after the sack's listing. The following minimalist listing style abolishes even that nicety:
+If, using the above style, we close the sack, we will still get ``(closed)`` after the sack's listing. The following minimalist listing style abolishes even that nicety:
 
 	{**}Instead of taking inventory when current inventory listing style is minimal:
 		if the number of things enclosed by the player is 0, say "You are empty-handed." instead;
@@ -78,7 +76,7 @@ If, using the above style, we close the sack, we will still get "(closed)" after
 		list the contents of the player, tersely, as a sentence, including contents;
 		say "."
 
-If we want to list worn things separately from carried things, we have occasion to put "listing marked items only" to work:
+If we want to list worn things separately from carried things, we have occasion to put `listing marked items only` to work:
 
 	{**}Instead of taking inventory when the current inventory listing style is divided wide:
 		if the number of things enclosed by the player is 0, say "You are empty-handed." instead;

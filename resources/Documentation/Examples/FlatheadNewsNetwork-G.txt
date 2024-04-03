@@ -37,9 +37,7 @@ As far as the story file is concerned, then, it sends a request down the communi
 
 Now for the RSS-script program. The following provides a crude but workable program suitable for running as a Perl script on a system which provides the standard Internet fetching program "curl": Mac OS X, for instance. (If you have OS X, you can paste the following into a (Unix-format) text file called "rss-script.pl", place it in your home folder, open the Terminal utility, type "perl rss-script.pl", and then hide the Terminal window again.)
 
-[ZL: generic styling...]::
-
-```
+``` perl
 for (;;) { # repeat forever:
 	system("sleep 1"); # wait 1 second
 	open REQUEST, "rssrequest.glkdata" or next;

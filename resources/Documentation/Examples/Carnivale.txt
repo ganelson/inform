@@ -30,7 +30,7 @@ As the descriptions make clear, the ferris wheel should be visible from everywhe
 
 as it normally would.
 
-Now, by default, if the player were to type ``touch ferris wheel`` while in another room, the story would respond
+Now, by default, if the player were to type ``TOUCH FERRIS WHEEL`` while in another room, the story would respond
 
 	You can't reach into By the Wheel.
 
@@ -40,7 +40,7 @@ This may not be quite what we want, but we can replace this text with our own re
 		say "You can only look from this distance.";
 		deny access.
 
-And because our accessibility rules are considered before the "Instead" phase, we can write the following rule confident that it will apply only when the player is in fact in range to touch the ferris wheel:
+And because our accessibility rules are considered before the `Instead` phase, we can write the following rule confident that it will apply only when the player is in fact in range to touch the ferris wheel:
 
 	{**}Instead of touching the ferris wheel:
 		say "You don't dare: it's spinning too fast."

@@ -7,11 +7,11 @@ For: Z-Machine
 
 Suppose we want to let the player build a fishing pole out of three parts: a hook, a string, and a stick.
 
-There are several things we must account for here. One is that our combination verb should be insensitive to ordering: it shouldn't matter whether the player types ``combine stick with string`` or ``combine string with stick``.
+There are several things we must account for here. One is that our combination verb should be insensitive to ordering: it shouldn't matter whether the player types ``COMBINE STICK WITH STRING`` or ``COMBINE STRING WITH STICK``.
 
 Second, we need to make sure that our implementation handles intervening stages of assembly gracefully. The player should be able to combine string and hook first, or string and stick first, and be able to complete the assembly in either case.
 
-Our implementation here uses a table of lists to determine which combinations of inputs should produce which result object. Because we sort our lists before comparing them, we guarantee that the player's ordering doesn't matter: ``combine stick with string`` will have the same effect as ``combine string with stick``.
+Our implementation here uses a table of lists to determine which combinations of inputs should produce which result object. Because we sort our lists before comparing them, we guarantee that the player's ordering doesn't matter: ``COMBINE STICK WITH STRING`` will have the same effect as ``COMBINE STRING WITH STICK``.
 
 What's more, our implementation could be expanded to account for many other assemblages, if we wanted object-building to be a running theme of puzzles in our game.
 

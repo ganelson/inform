@@ -5,7 +5,7 @@ Index: Escape action for non-player characters only
 Description: An escaping action which means "go to any room you can reach from here", and is only useful to non-player characters.
 For: Z-Machine
 
-It will sometimes be handy to write actions that are only available to the non-player characters and not to the player. To do this, we just define an action which has no "understand": the player will never be able to specify this command himself, but other characters can try it.
+It will sometimes be handy to write actions that are only available to the non-player characters and not to the player. To do this, we just define an action which has no `Understand`: the player will never be able to specify this command himself, but other characters can try it.
 
 This is particularly useful for creating abstract or general actions for when we want a character to eat something, wear something, or go somewhere, but aren't too particular as to what the object is; as here, where we just want Clark to move away from the kryptonite, regardless of direction:
 

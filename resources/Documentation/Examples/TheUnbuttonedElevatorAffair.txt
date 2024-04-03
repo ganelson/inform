@@ -17,8 +17,10 @@ This is very simple. The interior of the elevator is a single room, but which is
 	
 	After going to the Secret Elevator:
 		say "The doors automatically close, there is a rush of motion, and they open again.";
-		if UNCLE Headquarters is mapped west of the Secret Elevator, now Del Floria's Tailor Shop is mapped west of the Secret Elevator;
-		otherwise now UNCLE Headquarters is mapped west of the Secret Elevator;
+		if UNCLE Headquarters is mapped west of the Secret Elevator:
+			now Del Floria's Tailor Shop is mapped west of the Secret Elevator;
+		otherwise:
+			now UNCLE Headquarters is mapped west of the Secret Elevator;
 		continue the action.
 	
 	Test me with "east / west / east / west".

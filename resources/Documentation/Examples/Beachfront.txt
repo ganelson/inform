@@ -29,7 +29,7 @@ Here we've changed the property of the envelope to keep track of the fact that i
 	{**}Instead of searching the desk:
 		say "Further investigation of the desk reveals nothing else suspicious."
 
-Notice that we have two rules that apply to "searching the desk", but one of them has a more specific set of parameters ("when the envelope is lost"). This means that Inform will consult that rule first and use it if it applies; it will only carry out our plain vanilla "instead of searching the desk" rule when the more restricted rule is not relevant.
+Notice that we have two rules that apply to `searching the desk`, but one of them has a more specific set of parameters (`when the envelope is lost`). This means that Inform will consult that rule first and use it if it applies; it will only carry out our plain vanilla `instead of searching the desk` rule when the more restricted rule is not relevant.
 
 	{**}Test me with "x envelope / x desk / search desk / look / get envelope / x envelope".
 

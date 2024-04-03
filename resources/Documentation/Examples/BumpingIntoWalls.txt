@@ -19,7 +19,7 @@ Now we build in the instruction for what Inform should say if the player tries t
 		if the count of exits is 1, say "From here, the only way out is [list of viable directions].";
 		otherwise say "From here, the viable exits are [list of viable directions]."
 
-There is no theoretical reason why we have to define "count of exits" here: we could, if we wanted, just say "if the number of viable directions is 0", "if the number of viable directions is 1", and so on. However, each calculation of a "viable direction" takes a bit of computing power, so there is some slight savings in not requiring the game to count viable directions more than once in this routine.
+There is no theoretical reason why we have to define `count of exits` here: we could, if we wanted, just say `if the number of viable directions is 0`, `if the number of viable directions is 1`, and so on. However, each calculation of a `viable direction` takes a bit of computing power, so there is some slight savings in not requiring the game to count viable directions more than once in this routine.
 
 	{**}Dome is a room. North of Dome is North Chapel. South of the Dome is South Chapel. West of the Dome is Western End. Quiet Corner is northwest of the Dome, north of Western End, and west of North Chapel. Loud Corner is east of North Chapel, northeast of Dome, and north of Eastern End. Eastern End is north of Dim Corner and east of Dome. Dim Corner is southeast of Dome and east of South Chapel. Ruined Corner is southwest of Dome, west of South Chapel, and south of Western End.
 	

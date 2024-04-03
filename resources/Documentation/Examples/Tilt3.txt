@@ -32,7 +32,7 @@ The Basic Screen Effects extension bundled with Inform includes mechanisms to ch
 	
 	Section 0G (for Glulx only)
 
-Under Glulx, we need slightly more set-up: Glulx requires that we define special user font styles when we plan to make display changes. A fuller discussion of this (and of how to define new colours) appears in the documentation of "Glulx Text Effects", but an implementation sufficient to our purposes would be
+Under Glulx, we need slightly more set-up: Glulx requires that we define special user font styles when we plan to make display changes. A fuller discussion of this (and of how to define new colours) appears in the documentation of `Glulx Text Effects by Emily Short`, but an implementation sufficient to our purposes would be
 
 	{**}Include Glulx Text Effects by Emily Short.
 	

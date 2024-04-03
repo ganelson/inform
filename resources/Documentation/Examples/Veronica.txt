@@ -5,7 +5,7 @@ Index: Regions, travelling from
 Description: An effect that occurs only when the player leaves a region entirely.
 For: Z-Machine
 
-Suppose that we want to have something happen when the player leaves a region we've defined. "Instead of going from (the region)..." will not suffice for this, because this rule will be invoked every time the player successfully leaves a room within the region, whether or not they are going to a room that is also in the same region.
+Suppose that we want to have something happen when the player leaves a region we've defined. `Instead of going from (the region)...` will not suffice for this, because this rule will be invoked every time the player successfully leaves a room within the region, whether or not they are going to a room that is also in the same region.
 
 Instead we need a rule that is a bit more specific, like this:
 

@@ -5,7 +5,7 @@ Index: Menu of numerical options
 Description: Offering the player a choice of numbered options at certain times, without otherwise interfering with their ability to give regular commands.
 For: Z-Machine
 
-Now and then in IF there is a situation where we need to ask the player for a numbered choice rather than an ordinary action command. What's more, that numbered choice might change during the game, so we don't want to just hard-wire the meanings of "1", "2", and "3" whenever the player types them.
+Now and then in IF there is a situation where we need to ask the player for a numbered choice rather than an ordinary action command. What's more, that numbered choice might change during the game, so we don't want to just hard-wire the meanings of ``1``, ``2``, and ``3`` whenever the player types them.
 
 A better trick is to keep a list or table (we'll use a table here because it involves slightly less overhead) recording what the player's numerical choices currently mean. Then every time the player selects a number, the table is consulted, and if the number corresponds to something, the player's choice is acted on.
 

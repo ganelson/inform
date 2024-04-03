@@ -2,23 +2,21 @@ Example: ** Formicidae
 Location: Lists of objects
 RecipeLocation: Actions on Multiple Objects
 Index: Controlling the order in which multiple-object actions occur
-Description: Manipulating the order in which items are handled after ``take all``.
+Description: Manipulating the order in which items are handled after ``TAKE ALL``.
 For: Z-Machine
 
-Suppose we have an item that produces an interesting result the first time the player lifts it – a rock with dangerous ants revealed underneath. The effect of the surprise is a little weakened, though, if the player sees that response as the result of a ``take all``, when it might be printed like this:
+Suppose we have an item that produces an interesting result the first time the player lifts it – a rock with dangerous ants revealed underneath. The effect of the surprise is a little weakened, though, if the player sees that response as the result of a ``TAKE ALL``, when it might be printed like this:
 
-``` transcript
->[3] get all
-tent peg: Taken.
-water flask: Taken.
-trading permit: Taken.
-innocent-looking rock: You reach for the rock and turn it over to reveal a thriving colony of flesh-eating ants. Needless to say, you drop the rock and jump back with a decidedly effeminate scream. They can probably hear you all the way back in the base camp.
-rusty nail: Taken.
+	> GET ALL
+	tent peg: Taken.
+	water flask: Taken.
+	trading permit: Taken.
+	innocent-looking rock: You reach for the rock and turn it over to reveal a thriving colony of flesh-eating ants. Needless to say, you drop the rock and jump back with a decidedly effeminate scream. They can probably hear you all the way back in the base camp.
+	rusty nail: Taken.
 
-[Your score has just gone down by two points.]
-```
+	[Your score has just gone down by two points.]
 
-The calm response to "rusty nail" looks odd now, and the score change is disconnected from the event that caused it.
+The calm response to ``rusty nail`` looks odd now, and the score change is disconnected from the event that caused it.
 
 To manage this, we might institute a system so that interesting objects are handled last in their list, like so:
 
@@ -62,5 +60,5 @@ To manage this, we might institute a system so that interesting objects are hand
 	
 	Test me with "get peg / drop peg / get all / get rock".
 
-Note that while one could also manipulate the object list to add or remove items at this stage, there's a simpler way to control what Inform considers ``all`` to mean in commands: see the activity [Deciding whether all includes] in the [Activities] chapter.
+Note that while one could also manipulate the object list to add or remove items at this stage, there's a simpler way to control what Inform considers ``ALL`` to mean in commands: see the activity [Deciding whether all includes] in the [Activities] chapter.
 

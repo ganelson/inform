@@ -5,7 +5,7 @@ Index: Conversation based on keyword recognition
 Description: A character who responds to keywords in the player's instructions and remarks, even if there are other words included.
 For: Z-Machine
 
-The "reading a command" activity is not the only point at which we can interact with snippets, as it happens; it is merely the most useful. "The player's command" can be consulted at other points, however, as in this example of your somewhat deaf (or distracted, or simply cussed) Aunt:
+The `reading a command` activity is not the only point at which we can interact with snippets, as it happens; it is merely the most useful. `The player's command` can be consulted at other points, however, as in this example of your somewhat deaf (or distracted, or simply cussed) Aunt:
 
 	{*}"Complimentary Peanuts"
 	
@@ -16,7 +16,7 @@ The "reading a command" activity is not the only point at which we can interact 
 				rule succeeds;
 		say "'Hmmf,' says Aunt Martha."
 
-The topic understood is also a snippet, so that whenever one has been generated, we can treat it in the same way as "the player's command":
+The topic understood is also a snippet, so that whenever one has been generated, we can treat it in the same way as `the player's command`:
 
 	{**}Asking someone about something is speech.
 	Telling someone about something is speech.
@@ -30,7 +30,7 @@ The topic understood is also a snippet, so that whenever one has been generated,
 				rule succeeds;
 		say "'Hmmf,' says Aunt Martha."
 
-This is superior to checking "the player's command" because we do not want ``ask martha about french fries`` to trigger the "Martha" keyword, only the "french fries" keywords.
+This is superior to checking `the player's command` because we do not want ``ASK MARTHA ABOUT FRENCH FRIES`` to trigger the ``MARTHA`` keyword, only the ``FRENCH FRIES`` keywords.
 
 	{**}The Empyrean Shuttle Bay is a room. "From here you have an excellent view of the colony world, which looks... well, it looks discouragingly orange. But terraforming is in progress."
 	
@@ -46,16 +46,14 @@ This is superior to checking "the player's command" because we do not want ``ask
 
 This means that Martha will respond to keywords regardless of the setting in which they occur. For instance:
 
-``` transcript
->martha, get in the shuttle
-"Shuttles! I hate shuttles," Aunt Martha grumbles. "Give me an airplane! AIRPLANE."
+	> MARTHA, GET IN THE SHUTTLE
+	"Shuttles! I hate shuttles," Aunt Martha grumbles. "Give me an airplane! AIRPLANE."
 
->martha, for pity's sake, do you see an airplane around here?
-"Those were the days," Aunt Martha agrees, plainly reliving the days when she wore a blue-and-white uniform and passed out packets of salted peanuts.
+	> MARTHA, FOR PITY'S SAKE, DO YOU SEE AN AIRPLANE AROUND HERE?
+	"Those were the days," Aunt Martha agrees, plainly reliving the days when she wore a blue-and-white uniform and passed out packets of salted peanuts.
 
->martha, pass me the rations
-"Do you think there are any peanuts in there?" she asks in a wistful tone.
-```
+	> MARTHA, PASS ME THE RATIONS
+	"Do you think there are any peanuts in there?" she asks in a wistful tone.
 
 This is not the stuff of which Loebner-winning chatbots are made, admittedly, but it is occasionally a useful alternative to stricter modes of command-parsing.
 

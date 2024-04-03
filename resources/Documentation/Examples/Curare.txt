@@ -11,7 +11,7 @@ For: Z-Machine
 	
 	Definition: a thing is old if its last use is 12 or less.
 
-The actual number chosen in this definition is pretty much irrelevant: the main thing is that we want to establish relative values. The lower the "last use" number of an item, the older that item should be understood to be, as we see here:
+The actual number chosen in this definition is pretty much irrelevant: the main thing is that we want to establish relative values. The lower the `last use` number of an item, the older that item should be understood to be, as we see here:
 
 	{**}To decide which thing is cyclically random (collection - a description of objects):
 		let choice be the oldest member of the collection;
@@ -23,7 +23,7 @@ This phrase will select, from the collection of objects passed to it, the one th
 	{**}After taking inventory:
 		say "You stare morosely at [the cyclically random thing carried by the player], wondering what you're ever going to find to do with it."
 
-We could have said "You stare morosely at [the oldest thing carried by the player]" here, but doing so would not have set the "last use" property correctly, so we would not get the cycling behaviour that we're looking for.
+We could have said `"You stare morosely at [the oldest thing carried by the player]"` here, but doing so would not have set the `last use` property correctly, so we would not get the cycling behaviour that we're looking for.
 
 	{**}The Evidence Room is a room. Some shelves are scenery supporters in the Evidence Room. A box is a kind of container which is open and not openable. On the shelves is a box.  It contains a deformed bullet and a driver's license.
 	

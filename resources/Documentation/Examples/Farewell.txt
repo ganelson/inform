@@ -27,7 +27,7 @@ For the sake of simplicity, we'll conflate asking and telling here, though it wo
 	{**}Instead of telling someone about something:
 		try asking the noun about it.
 
-Now we might want to add a ``recap`` command to review conversation that has already occurred.
+Now we might want to add a ``RECAP`` command to review conversation that has already occurred.
 
 	{**}Definition: a person is other if it is not the player.
 	

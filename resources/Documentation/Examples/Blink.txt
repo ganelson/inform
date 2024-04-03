@@ -2,10 +2,10 @@ Example: * Blink
 Location: To say one of
 RecipeLocation: Varying What Is Written
 Index: Creating our own text variations rules
-Description: Making a "by atmosphere" token, allowing us to design our own text variations such as "[one of]normal[or]gloomy[or]scary[by atmosphere]".
+Description: Making a `by atmosphere` token, allowing us to design our own text variations such as `"[one of]normal[or]gloomy[or]scary[by atmosphere]"`.
 For: Z-Machine
 
-Suppose we are writing a game in which the mood of the piece changes, and we would like to have lots of descriptions that vary according to its current state. We might in that case want to create our own "by atmosphere" token, to control text variations, like this:
+Suppose we are writing a game in which the mood of the piece changes, and we would like to have lots of descriptions that vary according to its current state. We might in that case want to create our own `"[by atmosphere]"` token, to control text variations, like this:
 
 	{*}"Blink"
 	
@@ -17,7 +17,7 @@ Suppose we are writing a game in which the mood of the piece changes, and we wou
 	To say by atmosphere -- ending say_one_of with marker I7_SOO_ATM:
 		(- {-close-brace} -).
 
-Since we're operating within the untyped Inform 6, we can make use of the fact that kinds of value are (internally) just constants, enumerated in the same order in which they were originally defined. In other words, "normal" at the I6 level translates to 1, "melancholy" to 2, and "creepy" to 3; so we can return the value of the current atmosphere, and thereby select option 1, 2, or 3:
+Since we're operating within the untyped Inform 6, we can make use of the fact that kinds of value are (internally) just constants, enumerated in the same order in which they were originally defined. In other words, `normal` at the I6 level translates to 1, `melancholy` to 2, and `creepy` to 3; so we can return the value of the current atmosphere, and thereby select option 1, 2, or 3:
 
 	{**}Include (-
 	Global current_atmosphere = 1;

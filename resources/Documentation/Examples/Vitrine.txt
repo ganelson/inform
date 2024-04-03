@@ -13,7 +13,7 @@ For: Z-Machine
 	
 	Curtains are so last year."
 
-Note the "can be transparent" line. Devices ordinarily are not allowed to have transparency or opaqueness, but we can make an exception in this case. Without that line, attempts to change the transparency of the window will fail.
+Note the `can be transparent` line. Devices ordinarily are not allowed to have transparency or opaqueness, but we can make an exception in this case. Without that line, attempts to change the transparency of the window will fail.
 
 	{**}Carry out switching off the window: now the window is transparent.
 	

@@ -5,7 +5,7 @@ Index: Clocks that can be SET TO any time
 Description: A clock kind that can be set to any time using "the time understood"; may be turned on and off; and will advance itself only when running. Time on the face is also reported differently depending on whether the clock is analog or digital.
 For: Z-Machine
 
-Time can also be understood as a token, and the time parsed will be recorded as "the time understood". So therefore, if we wish for clocks which may be set:
+Time can also be understood as a token, and the time parsed will be recorded as `the time understood`. So therefore, if we wish for clocks which may be set:
 
 	{*}"Tom's Midnight Garden"
 	

@@ -25,7 +25,7 @@ First we create the concept of facts, and the idea that facts can make some thin
 	
 	Definition: a fact is interesting if it is unknown and it is ready to learn.
 
-Now, we also need a way to tell Inform to introduce certain new facts when the right previous ones have been introduced. We'll create a "following" relation, according to which a new fact can be told to the player when the player has already learned all the facts it follows. This way, we can simulate the effect of putting together several pieces of evidence to come to a conclusion:
+Now, we also need a way to tell Inform to introduce certain new facts when the right previous ones have been introduced. We'll create a `following` relation, according to which a new fact can be told to the player when the player has already learned all the facts it follows. This way, we can simulate the effect of putting together several pieces of evidence to come to a conclusion:
 
 	{**}Following relates various facts to various facts. The verb to follow means the following relation.
 	
@@ -51,7 +51,7 @@ Next we need a way for the game to introduce these new facts. Let's say we want 
 		let chosen fact be a random interesting fact which is conveyed by the item;
 		say "[chosen fact][paragraph break]".
 
-The "after choosing notable locale objects" line here handles things so that any interesting conclusions we want to draw are always given first, followed by the less interesting description.
+The `after choosing notable locale objects` line here handles things so that any interesting conclusions we want to draw are always given first, followed by the less interesting description.
 
 And finally, we need to give the player a little evidence to piece together:
 

@@ -13,7 +13,7 @@ First, to set the scene:
 	
 	The deli queue is a list of objects that varies.
 
-Two processes compete here: one that fills the queue, the other which will empty it. The first process is the one which brings shoppers in to the counter, joining the back of the queue, which is where "add ... to ..." puts new entries by default:
+Two processes compete here: one that fills the queue, the other which will empty it. The first process is the one which brings shoppers in to the counter, joining the back of the queue, which is where `add ... to ...` puts new entries by default:
 
 	{**}Every turn when a woman is in the Supermarket and a random chance of 2 in 3 succeeds (this is the customer arriving rule):
 		let the customer be a random woman in the Supermarket;

@@ -7,9 +7,9 @@ For: Z-Machine
 
 Suppose we're simulating a situation where the player needs to travel through lit areas only, but we want to give them some hints about which way might be safe. Here we'll find our best route through light-filled rooms.
 
-The slightly tricky part is that it's not necessarily easy to tell whether a room has a lamp in it. We may say "if the Crypt is lighted", but that only tells us whether it has been declared to be inherently lighted or dark, not whether it happens to contain a light source that the player would be able to see if they went in.
+The slightly tricky part is that it's not necessarily easy to tell whether a room has a lamp in it. We may say `if the Crypt is lighted`, but that only tells us whether it has been declared to be inherently lighted or dark, not whether it happens to contain a light source that the player would be able to see if they went in.
 
-The easiest way to get around this is to create an object – the light-meter; place it in the target location; and check whether it "can see" a lit object. This preserves all the usual rules about open and closed containers, transparency, etc.
+The easiest way to get around this is to create an object – the light-meter; place it in the target location; and check whether it `can see` a lit object. This preserves all the usual rules about open and closed containers, transparency, etc.
 
 	{*}"Unblinking"
 	

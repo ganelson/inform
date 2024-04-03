@@ -15,7 +15,7 @@ And then write a general rule.
 
 	{**}Before speech in the presence of an ungreeted person: try waving hands.
 
-One complication is that "asking someone to try doing something", which describes commands such as ``fred, go south``, cannot be made into a kind of action. This requires its own rule:
+One complication is that `asking someone to try doing something`, which describes commands such as ``FRED, GO SOUTH``, cannot be made into a kind of action. This requires its own rule:
 
 	{**}Before asking someone to try doing something in the presence of an ungreeted person: try waving hands.
 

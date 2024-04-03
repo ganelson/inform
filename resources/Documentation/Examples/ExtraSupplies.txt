@@ -5,7 +5,7 @@ Index: Faux-infinite supply of red pens
 Description: A supply of red pens from which the player can take another pen only if he doesn't already have one somewhere in the game world.
 For: Z-Machine
 
-Suppose we have a supply closet in our game from which the player is allowed to take red pens. To keep modeling simple, we only allow them to have one in play at a time, and we test this by seeing whether the red pen is "off-stage" before moving it to their possession.
+Suppose we have a supply closet in our game from which the player is allowed to take red pens. To keep modeling simple, we only allow them to have one in play at a time, and we test this by seeing whether the red pen is `off-stage` before moving it to their possession.
 
 This approach might seem no different from having a single red pen sitting in the closet, but it may be preferable, for two reasons. First, it's not very plausible for a supply closet to contain nothing but a single red pen (well, assuming a well-regulated supplier, anyway); and second, it gives the player a way to get a new red pen should the original be destroyed in a tragic handwriting accident.
 

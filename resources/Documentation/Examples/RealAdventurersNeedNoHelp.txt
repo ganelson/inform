@@ -5,7 +5,7 @@ Index: Hint access able to be turned off for the duration of the game
 Description: Allowing the player to turn off all access to hints for the duration of a game, in order to avoid the temptation to rely on them overmuch.
 For: Z-Machine
 
-Suppose we have an action called "asking for help" that gives the player some hints on request. We've also made it possible to turn this feature off, if the player would like to discourage himself from using the hints too much. Now we need a value that varies to keep track of whether hints are currently permitted or currently not permitted. So we might write:
+Suppose we have an action called `asking for help` that gives the player some hints on request. We've also made it possible to turn this feature off, if the player would like to discourage himself from using the hints too much. Now we need a value that varies to keep track of whether hints are currently permitted or currently not permitted. So we might write:
 
 	{*}"Real Adventurers Need No Help"
 	
@@ -13,7 +13,7 @@ Suppose we have an action called "asking for help" that gives the player some hi
 	
 	Hint usage is a permission that varies. Hint usage is allowed.
 
-And under the right circumstances, we change hint usage to denied:
+And under the right circumstances, we change `hint usage` to `denied`:
 
 	{**}Check asking for help for the first time:
 		say "Sometimes the temptation to rely on hints becomes overwhelming, and you may prefer to turn off hints now. If you do so, your further requests for guidance will be unavailing. Turn off hints? >";

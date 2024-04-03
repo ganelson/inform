@@ -31,7 +31,7 @@ Notice that the following two scenarios do not have the same effect:
 	
 	Test me with "x me / x killer / touch killer / smell mace".
 
-But notice that because we specified "with something", actions that take no object (like sing) are still not affected.
+But notice that because we specified `with something`, actions that take no object (like `singing`) are still not affected.
 
 The most strict statement would be
 

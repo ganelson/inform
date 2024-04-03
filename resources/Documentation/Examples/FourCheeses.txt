@@ -1,5 +1,5 @@
 Example: *** Four Cheeses
-Location: Making reciprocal relations
+Location: Making symmetric relations
 RecipeLocation: Telephones
 Index: Telephones reaching distant parties
 Description: A system of telephones on which the player can call distant persons and have conversations.
@@ -31,7 +31,7 @@ Because we've said that connection is a reciprocal, one-to-one relationship, Inf
 	{**}Report calling it on:
 		say "'Hello?' says [the other party of the player]."
 
-To avoid annoyance, we should also let the player use ``call [####]`` as well as ``call [####] on telephone``. A rule from the chapter on [Activities] comes in handy here:
+To avoid annoyance, we should also let the player use ``CALL [####]`` as well as ``CALL [####] ON TELEPHONE``. A rule from the chapter on [Activities] comes in handy here:
 
 	{**}Rule for supplying a missing second noun while calling something on:
 		assign a phone.
@@ -108,7 +108,7 @@ A note about this scope addition: the player can refer to the other party whenev
 
 Furthermore, the player can't actually do anything to that person that requires touching. That's because of the reaching inside rules, which govern whether the player can reach through intervening barriers such as rooms. (See the [Advanced Actions] chapter for more about [changing reachability].) There are two things we might want to be careful about, though.
 
-First, we should specifically disallow the player from looking at the person on the other end of the line. Since sight doesn't require touching, the reaching inside rules will not be consulted about a command such as ``examine boss`` or ``look under boss``. We can, however, intervene in such cases using the visibility rules, which are consulted for any actions that "require light" (including ``examine`` and ``look under``). Here again we borrow some options from the [Advanced Actions] chapter:
+First, we should specifically disallow the player from looking at the person on the other end of the line. Since sight doesn't require touching, the reaching inside rules will not be consulted about a command such as ``EXAMINE BOSS`` or ``LOOK UNDER BOSS``. We can, however, intervene in such cases using the visibility rules, which are consulted for any actions that "require light" (including ``EXAMINE`` and ``LOOK UNDER``). Here again we borrow some options from the [Advanced Actions] chapter:
 
 	{**}To decide whether acting through the line:
 		if the noun is something and the location of the noun is not the location of the player:
@@ -123,7 +123,7 @@ First, we should specifically disallow the player from looking at the person on 
 	Rule for printing a refusal to act in the dark when acting through the line:
 		say "You're not on a video phone, so you can only hear." instead.
 
-Second, though the existing reaching inside rules are adequate to stop us from touching the person on the other end of the line, the response that's currently printed is a bit generic: it just says "You can't reach into [the room containing the person]." Let's add our own custom reply, instead:
+Second, though the existing `reaching inside rules` are adequate to stop us from touching the person on the other end of the line, the response that's currently printed is a bit generic: it just says "You can't reach into [the room containing the person]." Let's add our own custom reply, instead:
 
 	{**}A rule for reaching inside a room (called destination):
 		if the other party of the player is enclosed by the destination:

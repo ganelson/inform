@@ -2,30 +2,40 @@ Example: *** Democratic Process
 Location: Before rules
 RecipeLocation: Taking, Dropping, Inserting and Putting
 Index: PUT and INSERT automatically TAKE first
-Description: Make ``put`` and ``insert`` commands automatically take objects if the player is not holding them.
+Description: Making something happen automatically before an item is put into a box.
 For: Z-Machine
 
-[ZL: https://inform7.atlassian.net/browse/I7-2348 This refers to outdated behaviour ]::
-
-"Stop" and "Continue" are most useful when we need to write rules that will have to stop the action some of the time but at other times let it pass; so for instance:
+`stop the action` is most useful when we need to write rules that will have to stop the action some of the time but at other times let it pass. For example, let's create a polling station, where the idea is to ``TAKE BALLOT``, ``VOTE``, and then ``PUT BALLOT IN MACHINE``:
 
 	{*}"Democratic Process"
 	
-	Before inserting something which is not carried by the player into something:
-		if the noun is in the second noun, say "Already done." instead;
-		say "(first taking [the noun])[line break]";
-		silently try taking the noun;
-		if the player is not holding the noun, stop the action.
-	
-	Before putting something which is not carried by the player on something:
-		if the noun is on the second noun, say "Already done." instead;
-		say "(first taking [the noun])[line break]";
-		silently try taking the noun;
-		if the player is not holding the noun, stop the action.
-	
 	The Assembly Room is a room. "On most days, this room is used for elementary school assemblies; at the moment, it serves as a voting place." The ballot is on the desk. The desk is in the Assembly Room.
-	
-	The machine is a container in the Assembly Room. "On the ballot machine is a sign which reads 'PUT BALLOTS IN ME :)'." Understand "ballot machine" as the machine.
-	
-	Test me with "put ballot in machine".
 
+	The ballot can be marked or unmarked. The description of the ballot is "The old-fashioned sort you mark by hand.[if the ballot is marked] A cross in a deranged hand is written next to 'Hiram Q. Flathead IV'."
+
+	The machine is a container in the Assembly Room. "On the ballot machine is a sign which reads 'PUT BALLOTS IN ME :)'." Understand "ballot machine" as the machine.
+
+	Voting is an action applying to nothing. Understand "vote" as voting.
+
+	Check voting:
+		if the ballot is marked, say "Not for another four years, thank you."
+
+	Carry out voting:
+		now the ballot is marked.
+
+	Report voting:
+		say "You perform your solemn duty, nobly inking in a cross."
+
+We need some rules to prevent blank ballots being put into the machine. A neat way to do that is to automate the process, so that ``PUT BALLOT IN MACHINE`` automatically triggers ``VOTE``, and ``VOTE`` in turn automatically takes the ballot if the player hasn't got it:
+
+	{**}Before inserting the unmarked ballot into something:
+		say "(first writing in your vote)[line break]";
+		try voting;
+		if the ballot is unmarked, stop the action.
+
+	Before voting when the player is not carrying the ballot:
+		say "(first taking [the ballot])[line break]";
+		silently try taking the ballot;
+		if the player is not carrying the ballot, stop the action.
+
+	Test me with "put ballot in machine".

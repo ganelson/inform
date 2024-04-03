@@ -5,7 +5,7 @@ Index: Asking the player to choose to be good or evil
 Description: Asking the player to select whether to be a good or evil character to begin play.
 For: Z-Machine
 
-Suppose we would like to allow the player to make a fundamental choice at the beginning of the game, and outside the main parsing sequence. "When play begins" seems like a good place to put this.
+Suppose we would like to allow the player to make a fundamental choice at the beginning of the game, and outside the main parsing sequence. `When play begins` seems like a good place to put this.
 
 	{*}"Good or Evil"
 	
@@ -17,7 +17,7 @@ Suppose we would like to allow the player to make a fundamental choice at the be
 		otherwise now the player is evil;
 		say paragraph break.
 
-Now a piece of Inform 6 code handles the unusual input. It's not necessary to understand this to use it, and the code should work for any question you'd like to ask the player. The first three words in quotation marks ('good', 'G', 'goody'...) correspond to positive feedback; the later three words correspond to negative feedback. So "to decide whether good wins" will be true if the player types one of the first three, and false if they type one of the last three.
+Now a piece of Inform 6 code handles the unusual input. It's not necessary to understand this to use it, and the code should work for any question you'd like to ask the player. The first three words in quotation marks ('good', 'G', 'goody'...) correspond to positive feedback; the later three words correspond to negative feedback. So `to decide whether good wins` will be true if the player types one of the first three, and false if they type one of the last three.
 
 	{**}To decide whether good wins:
 		(- Question('good','G//','goody','evil','E//','bad') -)

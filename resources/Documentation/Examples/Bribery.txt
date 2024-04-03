@@ -2,16 +2,16 @@ Example: ** Bribery
 Location: New rules
 RecipeLocation: Barter and Exchange
 Index: GIVE command extended
-Description: A ``give`` command that gets rid of Inform's default refusal message in favor of something a bit more sophisticated.
+Description: A ``GIVE`` command that gets rid of Inform's default refusal message in favor of something a bit more sophisticated.
 For: Z-Machine
 
-If we want to rewrite the functionality of a command that usually ends with a "block..." rule, we will have to begin by turning the blocking off.
+If we want to rewrite the functionality of a command that usually ends with a `block...` rule, we will have to begin by turning the blocking off.
 
 	{*}"Bribery"
 	
 	The block giving rule is not listed in the check giving it to rules.
 
-As it happens, correct behaviour is built into the ``give`` command once "block giving" is turned off, so we do not have to write a replacement report or carry-out rule; the object will be transferred to the possession of the caterpillar. But we do want to adjust the action just a little so that our gift cheers up the recipient:
+As it happens, correct behaviour is built into the ``GIVE`` command once the `block giving rule` is turned off, so we do not have to write a replacement report or carry-out rule; the object will be transferred to the possession of the caterpillar. But we do want to adjust the action just a little so that our gift cheers up the recipient:
 
 	{**}Carry out giving (this is the gratitude for gifts rule): improve the mood of the second noun.
 	

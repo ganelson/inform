@@ -2,10 +2,10 @@ Example: * Anchorite
 Location: New commands for old grammar
 RecipeLocation: Entering and Exiting, Sitting and Standing
 Index: GET DOWN and DOWN understood as EXIT
-Description: By default, Inform understands ``get off``, ``get up``, or ``get out`` when the player is sitting or standing on an enterable object. We might also want to add ``get down`` and ``down`` as exit commands, though.
+Description: By default, Inform understands ``GET OFF``, ``GET UP``, or ``GET OUT`` when the player is sitting or standing on an enterable object. We might also want to add ``GET DOWN`` and ``DOWN`` as exit commands, though.
 For: Z-Machine
 
-With ``get down``, we can replace the whole command, which will not interfere with the normal function of the ``take`` verb, or allow the player to attempt to ``get`` any other directions:
+With ``GET DOWN``, we can replace the whole command, which will not interfere with the normal function of the ``TAKE`` verb, or allow the player to attempt to ``GET`` any other directions:
 
 	{*}"Anchorite"
 	
@@ -13,7 +13,7 @@ With ``get down``, we can replace the whole command, which will not interfere wi
 	
 	Understand "get down" as exiting.
 
-This doesn't cover the case where the player just types ``down``, and we don't want to preempt the normal operation of the ``go`` action here. So instead of writing a new understand instruction, we might catch this one at the action-processing level:
+This doesn't cover the case where the player just types ``DOWN``, and we don't want to preempt the normal operation of the ``GO`` action here. So instead of writing a new understand instruction, we might catch this one at the action-processing level:
 
 	{**}Instead of going down when the player is on a supporter:
 		try exiting.

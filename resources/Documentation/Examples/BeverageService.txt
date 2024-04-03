@@ -5,7 +5,7 @@ Index: DRINKing a potion which then goes away
 Description: A potion that the player can drink.
 For: Z-Machine
 
-Some kinds of game objects – food, for instance – can only sensibly be used once, and should then be destroyed. The ``eat`` command already implements this, but suppose we also had a category of drinkable potions:
+Some kinds of game objects – food, for instance – can only sensibly be used once, and should then be destroyed. The ``EAT`` command already implements this, but suppose we also had a category of drinkable potions:
 
 	{*}"Beverage Service"
 	

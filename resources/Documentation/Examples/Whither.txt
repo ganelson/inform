@@ -5,7 +5,7 @@ Index: Door described and parsed differently depending on where it is
 Description: A door whose description says where it leads; and which automatically understands references such as "the west door" and "the east door" depending on which direction it leads from the location.
 For: Z-Machine
 
-Here we expand on the simple examples [When?] and [Whence?]; this time we want the player to be able to refer to doors by their directions, as in "the west door" when the door in question does in fact lead west.
+Here we expand on the simple examples [When?] and [Whence?]; this time we want the player to be able to refer to doors by their directions, as in ``THE WEST DOOR`` when the door in question does in fact lead west.
 
 	{*}"Whither?"
 	

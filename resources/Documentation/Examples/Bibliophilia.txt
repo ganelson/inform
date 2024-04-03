@@ -37,19 +37,14 @@ Suppose we want a bookshelf with a very large number of books on it. They aren't
 	
 	Test me with "south / examine ocd / examine books / examine books / examine plato / n / x hercules / s / x hercules".
 
-Now if we type ``x hercules`` in the Lounge, we will get
+Now if we type ``X HERCULES`` in the Lounge, we will get
 
-``` transcript
->x hercules
-You can't see any such thing.
-```
+	> X HERCULES
+	You can't see any such thing.
 
 thanks to our somewhat slovenly implementation of the Lounge scenery; but in the Reading Room,
 
-``` transcript
->x hercules
-You can't find any such text.
-```
+	> X HERCULES
+	You can't find any such text.
 
 In practice we might also want to extend our coverage somewhat to handle a case where the player tried to take books from the bookshelf: currently that would not be understood.
-

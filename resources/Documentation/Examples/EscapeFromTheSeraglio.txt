@@ -1,8 +1,8 @@
 Example: ** Escape from the Seraglio
-Location: Two rulebooks used internally
+Location: The internal rulebooks which keep stories running
 RecipeLocation: Actions on Multiple Objects
 Index: Multiple-object actions given modified descriptions
-Description: Replacing the usual response to ``take all`` so that instead of output such as "grapes: Taken. orange: Taken.", Inform produces variable responses in place of "grapes:".
+Description: Replacing the usual response to ``TAKE ALL`` so that instead of output such as "grapes: Taken. orange: Taken.", Inform produces variable responses in place of "grapes:".
 For: Z-Machine
 
 	{*}"Escape from the Seraglio"

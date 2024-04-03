@@ -5,11 +5,11 @@ Index: Photographs referred to by subject matter
 Description: An instant camera that spits out photographs of anything the player chooses to take a picture of.
 For: Z-Machine
 
-We start by creating a camera and a photograph object. As usual when we want to have a kind of object that can be dispensed in bulk, we start off with a bunch of identical instances of the object out of play (in this case, kept in an out-of-play container called "film roll"); we can then move them into play and give them characteristics when they're needed.
+We start by creating a camera and a photograph object. As usual when we want to have a kind of object that can be dispensed in bulk, we start off with a bunch of identical instances of the object out of play (in this case, kept in an out-of-play container called `film roll`); we can then move them into play and give them characteristics when they're needed.
 
 Each photograph can depict exactly one thing – we're assuming that the player is not a landscape photographer here – so we create a relation to indicate what is shown by each photograph. We'll then use that relation to determine how photographs are described, named, and parsed:
 
-	{*}"Claims Adjustment"
+	{*}`Claims Adjustment`
 	
 	A photograph is a kind of thing. 36 photographs are in the film roll.
 	

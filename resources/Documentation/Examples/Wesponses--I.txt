@@ -1,7 +1,7 @@
    Office
   Wesponses
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Office
   You can see Barry Kripke hewe.
@@ -15,13 +15,16 @@
   >[2] x barry
   You see nothing special about Bawwy Kwipke.
   
-  >[3] listen
+  >[3] get badge
+  That seems to belong to Bawwy Kwipke.
+  
+  >[4] listen
   You heaw nothing unexpected.
   
-  >[4] waffle
+  >[5] waffle
   That's not a vewb I wecognise.
   
-  >[5] jump
+  >[6] jump
   You jump on the spot.
   
 > >

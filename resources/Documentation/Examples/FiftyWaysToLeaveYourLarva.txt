@@ -14,7 +14,7 @@ We can use these substitutions to put together fairly complicated variations wit
 	Instead of kissing someone:
 		say "'[denial], [insult]! [boast]!'";
 
-In this context, [denial] is understood to refer to the denial property of the noun – but we could spell it out with "denial of the noun" if we wanted to.
+In this context, `denial` is understood to refer to the denial property of the noun – but we could spell it out with `denial of the noun` if we wanted to.
 
 	{**}A person has some text called denial. The denial of a person is usually "Stand back". The denial of Drone is "You forget yourself"
 	

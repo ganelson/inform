@@ -20,7 +20,7 @@ Suppose we have a complete Encyclopedia in our game. The player is allowed to pi
 	Instead of examining a collective:
 		say "[The noun] consists of [the list of things which are part of the noun]."
 
-Now the real work begins. One reason to make this an activity is that we might easily want to override it for specific objects; for instance, the generic collecting activity here would not deal properly with collectives of clothing where some items might be worn and others not. In that case, we would want to write another, more specific "collecting" activity to handle the complexities of fashion.
+Now the real work begins. One reason to make this an activity is that we might easily want to override it for specific objects; for instance, the generic collecting activity here would not deal properly with collectives of clothing where some items might be worn and others not. In that case, we would want to write another, more specific `collecting` activity to handle the complexities of fashion.
 
 	{**}Collecting something is an activity.
 	

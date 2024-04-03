@@ -5,7 +5,7 @@ Index: Rooms with sounds of nearby water, illuminated by flickering light
 Description: A small map of dead ends, in which the sound of an underground river has different strengths in different caves.
 For: Z-Machine
 
-This example creates a kind of room, "dead end", and gives each a textual description called its "river sound". Note the use of a text substitution to fill in the appropriate river sound text in each dead end.
+This example creates a kind of room, `dead end`, and gives each a textual description called its `river sound`. Note the use of a text substitution to fill in the appropriate `river sound` text in each `dead end`.
 
 	{*}"The Undertomb"
 	

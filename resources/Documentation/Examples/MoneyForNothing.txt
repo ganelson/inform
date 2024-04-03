@@ -2,7 +2,7 @@ Example: ** Money for Nothing
 Location: Arithmetic with units
 RecipeLocation: Money
 Index: OFFER price FOR command allowing player to bargain
-Description: An ``offer`` price ``for`` command, allowing the player to bargain with a flexible seller.
+Description: An ``OFFER PRICE FOR`` command, allowing the player to bargain with a flexible seller.
 For: Z-Machine
 
 	{*}"Money for Nothing"

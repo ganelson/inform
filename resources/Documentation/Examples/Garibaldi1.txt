@@ -20,7 +20,7 @@ Suppose we would like to allow the player to view the status of all the doors fu
 		say variable letter spacing;
 		say paragraph break.
 
-It is more or less arbitrary which room winds up as the "front side" and which as the "back", but in this case it hardly matters.
+It is more or less arbitrary which room winds up as the `front side` and which as the `back`, but in this case it hardly matters.
 
 	{**}The player carries the security readout.
 	

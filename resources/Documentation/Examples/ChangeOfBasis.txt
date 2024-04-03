@@ -11,9 +11,9 @@ Suppose we want to allow the player to go to sleep some of the time:
 	
 	A person is either awake or asleep. A person is usually awake.
 
-The important thing to note here is that it does not work to say "the player is either asleep or awake". This is because the player is not necessarily one specific person or thing during the game: the identity of the player can be changed, as we will see later.
+The important thing to note here is that it does not work to say `the player is either asleep or awake`. This is because the player is not necessarily one specific person or thing during the game: the identity of the player can be changed, as we will see later.
 
-So if we want to make rules about the properties of the player, we should attach these rules to the "person" kind.
+So if we want to make rules about the properties of the player, we should attach these rules to the `person` kind.
 
 	{**}Linear Algebra Class is a room. "The blackboard is covered with square arrangements of numbers. These are supposed to convey something to you, but mostly you're finding them soporific."
 

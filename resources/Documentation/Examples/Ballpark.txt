@@ -2,10 +2,10 @@ Example: *** Ballpark
 Location: Text with numbers
 RecipeLocation: Varying What Is Written
 Index: Saying a number in round numbers
-Description: A new "to say" definition which allows the author to say "[a number in round numbers]" and get verbal descriptions like "a couple of" or "a few" as a result.
+Description: A new `to say` definition which allows the author to say `"[a number in round numbers]"` and get verbal descriptions like ``a couple of`` or ``a few`` as a result.
 For: Z-Machine
 
-Sometimes it is more sensible to describe numbers roughly than in exact terms. For instance, we might want to have our player perceive "many people" rather than "forty-two people" on entering a room. To achieve this, we might write our own "to say" phrase.
+Sometimes it is more sensible to describe numbers roughly than in exact terms. For instance, we might want to have our player perceive ``many people`` rather than ``forty-two people`` on entering a room. To achieve this, we might write our own `to say` phrase.
 
 	{*}"Ballpark"
 	
@@ -15,7 +15,7 @@ Sometimes it is more sensible to describe numbers roughly than in exact terms. F
 				say "[approximation entry]";
 				rule succeeds.
 
-[Phrases] will be explained more thoroughly in a later chapter, but as we have already seen in the examples, we can make a "To say..." phrase that will allow us to create our own text substitutions. In this case, we are going to replace the specific number with a vaguer one chosen from a chart, so:
+[Phrases] will be explained more thoroughly in a later chapter, but as we have already seen in the examples, we can make a `To say...` phrase that will allow us to create our own text substitutions. In this case, we are going to replace the specific number with a vaguer one chosen from a chart, so:
 
 	{**}Table of Numerical Approximation
 	threshold	approximation
@@ -27,7 +27,7 @@ Sometimes it is more sensible to describe numbers roughly than in exact terms. F
 	21	"many"
 	1000	"lots and lots of"
 
-The idea here is that we will work our way through the table until we hit a line where the threshold number is higher than the number we want to express, and then print that output: so if we have less than one item, we'll print "no"; if we have more than none but less than two, we'll print "one"; if we have less than three, we'll print "a couple of"; if we have three, four, or five (but not six), we'll print "a few."
+The idea here is that we will work our way through the table until we hit a line where the threshold number is higher than the number we want to express, and then print that output: so if we have less than one item, we'll print ``no``; if we have more than none but less than two, we'll print ``one``; if we have less than three, we'll print ``a couple of``; if we have three, four, or five (but not six), we'll print ``a few.``
 
 	{**}A room has a number called the population. The population of a room is usually 0. The description of a room is usually "You observe [population of the location in round numbers] [if population of the location is 1]person [otherwise]people [end if]here.".
 	

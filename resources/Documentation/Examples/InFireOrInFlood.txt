@@ -2,7 +2,7 @@ Example: *** In Fire or in Flood
 Location: New rulebooks
 RecipeLocation: Fire
 Index: BURN command, and flammable objects
-Description: A ``burn`` command; flammable objects which light other items in their vicinity and can burn for different periods of time; the possibility of having parts or contents of a flaming item which survive being burnt.
+Description: A ``BURN`` command; flammable objects which light other items in their vicinity and can burn for different periods of time; the possibility of having parts or contents of a flaming item which survive being burnt.
 For: Z-Machine
 
 	{*}"In Fire or in Flood"

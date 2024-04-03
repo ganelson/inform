@@ -302,7 +302,7 @@ forcekits:
 # Target "tools"
 # -----------------------------------------------------------------------------
 # "make tools" builds all of the tools incrementally, i.e., only as necessary.
-# Note the use of repeat to make a list: $(INBLORBX) $(INDOCX) ..., etc.
+# Note the use of repeat to make a list: $(INBLORBX) $(INBUILDX) ..., etc.
 
 .PHONY: tools
 tools: {components type: tool}$({SYMBOL}X) {end-components}$(INFORM6X)
@@ -569,37 +569,6 @@ clean:
 .PHONY: purge
 purge:
 	{ask-each-tool-makefile to: purge}
-
-# -----------------------------------------------------------------------------
-# Target "ebooks"
-# -----------------------------------------------------------------------------
-# "make ebooks" generates the two Inform ebook files in ePub format.
-# One combines the manuals Writing with Inform and The Inform Recipe Book into
-# a single volume, while the other holds the collected change logs.
-# -----------------------------------------------------------------------------
-
-{define: clean-ebooks}
-	rm -f resources/Documentation/Output/OEBPS/images/*
-	rm -f resources/Documentation/Output/OEBPS/*.*
-	rm -f resources/Documentation/Output/META-INF/container.xml
-	rm -f resources/Documentation/Output/mimetype
-	rm -f resources/Documentation/Output/*.*
-	rm -f resources/Changes/Output/OEBPS/images/*
-	rm -f resources/Changes/Output/OEBPS/*.*
-	rm -f resources/Changes/Output/META-INF/container.xml
-	rm -f resources/Changes/Output/mimetype
-	rm -f resources/Changes/Output/*.*
-{end-define}
-
-{set name: EBOOKSLIST value: Documentation, Changes}
-
-.PHONY: ebooks
-ebooks:
-	$(call clean-ebooks)
-	{repeat with: EBOOK in: {EBOOKSLIST}}
-	$(INDOCX) -from resources/{EBOOK} ebook
-	$(call clean-ebooks)
-	{end-repeat}
 
 # =============================================================================
 # From here on, everything is to do with integration: that is, with copying files
@@ -958,16 +927,14 @@ forcetransferadvice:
 
 {define: compile-inapp-documentation}
 	mkdir -p $(BUILTINHTMLINNER)
-	$(INDOCX) -from resources/Documentation -xrefs '$(INFORM7WEB)/Internal/HTML/xrefs.txt' $(INDOCOPTS)
-ifdef INTERNAL
-	cp -f $(INFORM7WEB)/Internal/HTML/xrefs.txt "$(INTERNAL)/HTML"
-endif
+	$(INBUILDX) -document-set resources/Documentation -document-to $(BUILTINHTMLINNER)
+	cp -f $(BUILTINHTMLINNER)/xrefs.txt $(BUILTINHTML)
 {end-define}
 
 .PHONY: transferdocumentation
 transferdocumentation: $(BUILTINHTMLINNER)/index.html
 
-$(BUILTINHTMLINNER)/index.html: resources/Documentation/*.txt resources/Documentation/Examples/*.txt
+$(BUILTINHTMLINNER)/index.html: resources/Documentation/*.txt resources/Documentation/*.md resources/Documentation/Examples/*.txt
 	{compile-inapp-advice}
 	{compile-inapp-documentation}
 

@@ -1,0 +1,162 @@
+volume: "Writing with Inform" or "WWI"
+text: "Writing with Inform.md"
+
+volume: "The Recipe Book" or "RB"
+text: "The Recipe Book.md"
+
+# Define all the index notations. Most of these have the form "headword+KEY+",
+# because that's easy to read. A couple of the most commonly used also have
+# magic prefix symbols.
+
+# All of these categories are going to come down to a handful of display
+# styles:
+# - normal
+# - dark blue monospace (for terms that appear in I7 source)
+# - light blue italics (for bracketed arguments in I7 source terms)
+# - dark green serif (for words that appear in player commands)
+
+# Note that the manual itself uses dark blue indented blocks, but not
+# monospace, to display I7 source. We don't have the opportunity to indent,
+# so we use the monospace font to distinguish it.
+
+# General source-text category. Used for all sorts of cases. (Thus, no
+# label is attached.)
+index notation: ^{headword+source+} = source
+index notation: ^{|headword} = source
+
+# Category for player commands.
+index notation: ^{headword+command+} = command
+index notation: ^{>headword} = command
+
+# Category for people's names.
+index notation: ^{headword+name+} = name (invert)
+# index notation: ^{@headword} = name (invert)
+
+# For source text which will include bracketed arguments.
+# (The brackets are displayed.)
+index notation: ^{headword+sourcearg+} = sourcearg (bracketed)
+
+# For terms which will contain just a few source-text words in a normal line.
+# (Here, in contrast, the brackets are markup -- they are not displayed.)
+index notation: ^{headword+sourcepart+} = sourcepart (unbracketed)
+
+# For terms which will contain just a few player-command words in a normal
+# line.
+index notation: ^{headword+commandpart+} = commandpart (unbracketed)
+
+# Category for terms labelled "user interface".
+index notation: ^{headword+ui+} = ui ("user interface")
+
+# Category for terms labelled "use option".
+index notation: ^{headword+useopt+} = useopt ("use option")
+
+# Category for terms labelled "of source text". Words may be bracketed for
+# the source-text style.
+index notation: ^{headword+ofsource+} = ofsource ("of source text") (unbracketed)
+
+# Category of terms labelled "bibliographic data".
+index notation: ^{headword+biblio+} = biblio ("bibliographic data")
+
+# Category of terms labelled "web site".
+index notation: ^{headword+web+} = web ("web site")
+
+# Category of terms which are titles, so should be in italics. (No label,
+# because it could be a title of any sort of thing.)
+index notation: ^{headword+title+} = title
+
+# Category of terms labelled "extension".
+index notation: ^{headword+ext+} = ext ("extension")
+
+# For player commands labelled "testing command".
+index notation: ^{headword+testcmd+} = testcmd ("testing command")
+
+# For kinds (source text style).
+index notation: ^{headword+kind+} = kind ("kind")
+
+# For top-level assertions, with bracketed arguments.
+index notation: ^{headword+assert+} = assert ("assertion") (bracketed)
+
+# For rulebooks, with bracketed arguments. (Not rulebook arguments per se,
+# but parameterized cases like "check (action)".)
+index notation: ^{headword+rb+} = rb ("rulebook") (bracketed)
+
+# For phrases, with bracketed arguments. Note that there is a prefix form
+# for this one.
+index notation: ^{headword+phr+} = phrase ("phrase") (bracketed)
+index notation: ^{+to+headword} = phrase ("phrase") (bracketed)
+
+# For "say" phrases, with bracketed arguments. With prefix form.
+index notation: ^{headword+sayphr+} = sayphrase ("say phrase") (bracketed)
+index notation: ^{+tosay+headword} = sayphrase ("say phrase") (bracketed)
+
+# For "if" phrases, with bracketed arguments. With prefix form.
+index notation: ^{headword+ifphr+} = ifphrase ("if phrase") (bracketed)
+index notation: ^{+toif+headword} = ifphrase ("if phrase") (bracketed)
+
+# For "outcome" phrases (e.g. "it is likely"). The bracketed argument
+# is the rulebook name to which the outcome applies.
+index notation: ^{headword+outphr+} = outphrase ("outcome phrase") (bracketed)
+index notation: ^{+toout+headword} = outphrase ("outcome phrase") (bracketed)
+
+# For properties (source text style).
+index notation: ^{headword+prop+} = prop ("property") (bracketed)
+
+# For properties (source text style), auto-filed into "properties: catalogue".
+# This has no label, because the group term is sufficient.
+index notation: ^{headword+propcat+} = propcat (bracketed) (under {properties: catalogue})
+
+# For adjectives, with bracketed arguments (the kind the adj applies to).
+index notation: ^{headword+adj+} = adj ("adjective") (bracketed)
+
+# For relations. We permit bracketed arguments for the odd case of
+# "mapping (direction)".
+index notation: ^{headword+rel+} = rel ("relation") (bracketed)
+
+# For relations, auto-filed into "relations: predefined". No label.
+index notation: ^{headword+relcat+} = relcat (under {relations: predefined}) (bracketed)
+
+# For relation verbs.
+index notation: ^{headword+relverb+} = relverb ("relation verb")
+
+# For global variables, with type. We conventionally format this as
+# "{VARNAME (-- TYPE)}", using an em-dash inside the brackets.
+index notation: ^{headword+glob+} = glob ("global variable") (unbracketed)
+
+# For action variables, with type. We conventionally format this as
+# "{VARNAME (-- TYPE)}", using an em-dash inside the brackets.
+index notation: ^{headword+actvar+} = actvar ("action variable") (unbracketed)
+
+# For constants, with type. We conventionally format this as
+# "{CONSTNAME (-- TYPE)}", using an em-dash inside the brackets.
+index notation: ^{headword+const+} = const ("constant") (unbracketed)
+
+# For actions. We generally use the short form ("taking") unless the action
+# has two arguments, in which case we mention the first one
+# ("asking (actor) about").
+index notation: ^{headword+action+} = action ("action") (bracketed)
+
+# For activities.
+index notation: ^{headword+activity+} = activity ("activity")
+
+# Another entry for activities, auto-filed into "activities: catalogue".
+index notation: ^{headword+activitycat+} = activitycat (under {activities: catalogue})
+
+# One more for activities. Enough of them fit in this subgroup that it's
+# worth having a special tag.
+index notation: ^{headword+descactivity+} = descactivity (under {descriptions (displayed): activities})
+
+# For tokens of understanding. (Square brackets are generated for the
+# index listing.)
+index notation: ^{headword+token+} = token ("grammar token") (bracketed) (prefix "[") (suffix "]")
+
+# Auto-generated entries for each activity.
+index notation: {act_} = activity ("activity")
+
+# Another auto-generated entry for activities, auto-filed into
+# "activities: catalogue".
+index notation: {act_} = activitycat (under {activities: catalogue})
+
+index notation: definition = phrase ("phrase") (bracketed)
+index notation: if-definition = ifphrase ("if phrase") (bracketed)
+index notation: say-definition = sayphrase ("say phrase") (bracketed)
+index notation: example = example ("example")

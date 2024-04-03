@@ -34,7 +34,7 @@ This would be a bit bare if we didn't provide the player with some sort of conte
 	{**}Before reading a command while the turn count is 1:
 		say "CHORUS: O suitably-attired-in-leather-boots	Head of a traveller, wherefore seeking whom	Whence by what way how purposed art thou come	To this well-nightingaled vicinity?	My object in inquiring is to know.	But if you happen to be deaf and dumb	And do not understand a word I say,	Then wave your hand, to signify as much."
 
-This "turn count" condition is why it was useful to follow the advance time rule in "after reading a command": the game (or drama, if you like) will continue to count moves elapsed even though the rest of Inform's command parsing and world model is being ignored. In a longer and more ambitious implementation of this idea, we might want to allow scenes to govern the behaviour and responses of the Chorus.
+This `turn count` condition is why it was useful to follow the advance time rule in `after reading a command`: the game (or drama, if you like) will continue to count moves elapsed even though the rest of Inform's command parsing and world model is being ignored. In a longer and more ambitious implementation of this idea, we might want to allow scenes to govern the behaviour and responses of the Chorus.
 
 And then to give the whole exchange a play's format:
 
@@ -47,5 +47,5 @@ And then to give the whole exchange a play's format:
 		now left hand status line is "Fragment of a Greek Tragedy";
 		now right hand status line is "A. E. Housman".
 
-(Because this example manipulates commands outside of the normal parser, the mechanism for ``test`` will not work here. Try typing commands such as: ``tell chorus about journey`` / ``tell chorus about feet`` / ``tell chorus about shropshire`` / ``tell chorus about zeus``)
+(Because this example manipulates commands outside of the normal parser, the mechanism for ``TEST`` will not work here. Try typing commands such as: ``TELL CHORUS ABOUT JOURNEY`` / ``TELL CHORUS ABOUT FEET`` / ``TELL CHORUS ABOUT SHROPSHIRE`` / ``TELL CHORUS ABOUT ZEUS``)
 

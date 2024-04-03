@@ -2,14 +2,14 @@ Example: * Verbosity 2
 Location: Listing rules explicitly
 RecipeLocation: Looking
 Index: Verbosity 2. Full-length descriptions mandatory
-Description: Making rooms give full descriptions each time we enter, even if we have visited before, and disallowing player use of ``brief`` and ``superbrief``.
+Description: Making rooms give full descriptions each time we enter, even if we have visited before, and disallowing player use of ``BRIEF`` and ``SUPERBRIEF``.
 For: Z-Machine
 
 Suppose that we want the player always to see full room descriptions, even if they try to reset the defaults – perhaps because there is vital information there which they will miss if they turn off full-length room descriptions.
 
-To do this, we might want to remove the standard behaviour of the three actions associated with ``brief``, ``superbrief``, and ``verbose``, replacing them with explanatory messages about how the game behaves. We cannot use Instead to override these actions, because Instead rules do not apply to actions out of world. Instead, we will want to remove and replace the carry out rules.
+To do this, we might want to remove the standard behaviour of the three actions associated with ``BRIEF``, ``SUPERBRIEF``, and ``VERBOSE``, replacing them with explanatory messages about how the game behaves. We cannot use Instead to override these actions, because Instead rules do not apply to actions out of world. Instead, we will want to remove and replace the carry out rules.
 
-We can do this easily by going to the Actions Index, looking up the detail panel for, say, "preferring abbreviated room descriptions", and click the "unlist" button to paste in the sentence that will remove this rule from the rulebook.
+We can do this easily by going to the Actions Index, looking up the detail panel for, say, `preferring abbreviated room descriptions`, and click the "unlist" button to paste in the sentence that will remove this rule from the rulebook.
 
 Let's remove all three of the carry out rules and substitute our own:
 

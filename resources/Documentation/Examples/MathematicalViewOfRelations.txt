@@ -30,11 +30,11 @@ calculates the transitive closure of adjacency. Here, though, the way we normall
 
 	Accessibility relates a room (called A) to a room (called B) when the number of moves from B to A is at least 0.
 
-which is reflexive as well as transitive. The usefulness of Inform's "next step via R from A to B" construction, in a wide variety of settings, reflects the importance of transitivity as an idea.
+which is reflexive as well as transitive. The usefulness of Inform's `next step via R from A to B` construction, in a wide variety of settings, reflects the importance of transitivity as an idea.
 
 A relation which has all three properties of being reflexive, symmetric and transitive is called an "equivalence relation". (If all the map connections are two-way, then the accessibility relation above is symmetric and therefore a full equivalence relation: but if not, it may not be.) Inform has a special construction for making equivalence relations:
 
 	Nationality relates people to each other in groups.
 
-This language–"in groups"–relies on the standard theorem that every equivalence relation on a set naturally defines a partition of that set, and vice versa. The "groups" referred to are what are normally called "equivalence classes". (Inform does little with these equivalence classes: it might be interesting to do so, in effect forming quotient kinds.)
+This language–`in groups`–relies on the standard theorem that every equivalence relation on a set naturally defines a partition of that set, and vice versa. The `groups` referred to are what are normally called "equivalence classes". (Inform does little with these equivalence classes: it might be interesting to do so, in effect forming quotient kinds.)
 

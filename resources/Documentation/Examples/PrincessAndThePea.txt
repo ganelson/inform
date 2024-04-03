@@ -1,5 +1,5 @@
 Example: * Princess and the Pea
-Location: Begin and end
+Location: Grouping phrases together
 RecipeLocation: Furniture
 Index: Finding the bottom of a pile
 Description: The player is unable to sleep on a mattress (or stack of mattresses) because the bottom one has something uncomfortable under it.

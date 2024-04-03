@@ -5,7 +5,7 @@ Index: ASK someone ABOUT an object the same as SHOW
 Description: ASKing someone about an object rather than about a topic.
 For: Z-Machine
 
-By default, ``ask someone about``... applies only to a text token. We might want also to offer the player the option of asking characters about pieces of physical evidence. This example implements an ``ask person about thing`` command that is mostly synonymous with ``show``, with the added nuance that the player can ask about things that are not currently visible, as long as they have encountered them at some time in the past.
+By default, ``ASK SOMEONE ABOUT ...`` applies only to a text token. We might want also to offer the player the option of asking characters about pieces of physical evidence. This example implements an ``ASK PERSON ABOUT THING`` command that is mostly synonymous with ``SHOW``, with the added nuance that the player can ask about things that are not currently visible, as long as they have encountered them at some time in the past.
 
 	{*}"Nameless"
 	
@@ -27,7 +27,7 @@ Now we replace and redirect the showing action. This gets rid of the requirement
 	
 	Understand "show [something] to [someone]" or "display [something] to [someone]" or "present [something] to [someone]" as interrogating it about (with nouns reversed). Understand "show [someone] [something]" as interrogating it about.
 
-This bit keeps track of what the player has seen, for the purposes of "any known thing":
+This bit keeps track of what the player has seen, for the purposes of `any known thing`:
 
 	{**}Before printing the name of something (called the target): now the target is known.
 

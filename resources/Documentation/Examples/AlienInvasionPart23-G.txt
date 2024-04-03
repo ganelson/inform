@@ -24,7 +24,7 @@ Suppose that we have a series of games each of which allows the player to select
 		if File of Preferences exists:
 			read File of Preferences into the Table of Preference Settings;
 		choose row 1 in the Table of Preference Settings;
-		say "(The current puzzle difficulty is set to [challenge level entry].)";
+		say "(The current puzzle difficulty is set to [challenge level entry].)"
 	
 	Check quitting the game:
 		write File of Preferences from the Table of Preference Settings.
@@ -37,5 +37,5 @@ Suppose that we have a series of games each of which allows the player to select
 
 Our preference file is restricted to a single option here for simplicity's sake, but we could keep track of more information – whether the player preferred verbose or brief room descriptions, screen configurations, and so on.
 
-If we were disposed to be somewhat crueler, we could use a similar method to make the player finish each episode of the series in order to "unlock" the next. All we would need to do is store a numerical password in our preferences file when the player finished a given level; the next level would check, say, the Table of Completed Levels for that password, and refuse to play unless the right number were present.
+If we were disposed to be somewhat crueler, we could use a similar method to make the player finish each episode of the series in order to unlock the next. All we would need to do is store a numerical password in our preferences file when the player finished a given level; the next level would check, say, the Table of Completed Levels for that password, and refuse to play unless the right number were present.
 

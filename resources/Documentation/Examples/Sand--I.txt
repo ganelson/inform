@@ -3,7 +3,7 @@
   
   Sand
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Closet
   You can see three lentils, fourteen black-eyed peas, a round tin (in which are seventeen lentils) and a square tin (in which are twenty black-eyed peas) here.
@@ -40,26 +40,26 @@
   Done.
   black-eyed pea: (first taking the black-eyed pea)
   Done.
-  black-eyed pea: Already done.
-  black-eyed pea: Already done.
-  black-eyed pea: Already done.
-  black-eyed pea: Already done.
-  black-eyed pea: Already done.
-  black-eyed pea: Already done.
-  black-eyed pea: Already done.
-  black-eyed pea: Already done.
-  black-eyed pea: Already done.
-  black-eyed pea: Already done.
-  black-eyed pea: Already done.
-  black-eyed pea: Already done.
-  black-eyed pea: Already done.
-  black-eyed pea: Already done.
-  black-eyed pea: Already done.
-  black-eyed pea: Already done.
-  black-eyed pea: Already done.
-  black-eyed pea: Already done.
-  black-eyed pea: Already done.
-  black-eyed pea: Already done.
+  black-eyed pea: The black-eyed pea is already there.
+  black-eyed pea: The black-eyed pea is already there.
+  black-eyed pea: The black-eyed pea is already there.
+  black-eyed pea: The black-eyed pea is already there.
+  black-eyed pea: The black-eyed pea is already there.
+  black-eyed pea: The black-eyed pea is already there.
+  black-eyed pea: The black-eyed pea is already there.
+  black-eyed pea: The black-eyed pea is already there.
+  black-eyed pea: The black-eyed pea is already there.
+  black-eyed pea: The black-eyed pea is already there.
+  black-eyed pea: The black-eyed pea is already there.
+  black-eyed pea: The black-eyed pea is already there.
+  black-eyed pea: The black-eyed pea is already there.
+  black-eyed pea: The black-eyed pea is already there.
+  black-eyed pea: The black-eyed pea is already there.
+  black-eyed pea: The black-eyed pea is already there.
+  black-eyed pea: The black-eyed pea is already there.
+  black-eyed pea: The black-eyed pea is already there.
+  black-eyed pea: The black-eyed pea is already there.
+  black-eyed pea: The black-eyed pea is already there.
   
   >[2] put lentils in round tin
   lentil: (first taking the lentil)
@@ -68,23 +68,23 @@
   Done.
   lentil: (first taking the lentil)
   Done.
-  lentil: Already done.
-  lentil: Already done.
-  lentil: Already done.
-  lentil: Already done.
-  lentil: Already done.
-  lentil: Already done.
-  lentil: Already done.
-  lentil: Already done.
-  lentil: Already done.
-  lentil: Already done.
-  lentil: Already done.
-  lentil: Already done.
-  lentil: Already done.
-  lentil: Already done.
-  lentil: Already done.
-  lentil: Already done.
-  lentil: Already done.
+  lentil: The lentil is already there.
+  lentil: The lentil is already there.
+  lentil: The lentil is already there.
+  lentil: The lentil is already there.
+  lentil: The lentil is already there.
+  lentil: The lentil is already there.
+  lentil: The lentil is already there.
+  lentil: The lentil is already there.
+  lentil: The lentil is already there.
+  lentil: The lentil is already there.
+  lentil: The lentil is already there.
+  lentil: The lentil is already there.
+  lentil: The lentil is already there.
+  lentil: The lentil is already there.
+  lentil: The lentil is already there.
+  lentil: The lentil is already there.
+  lentil: The lentil is already there.
   
   
   

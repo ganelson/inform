@@ -61,7 +61,7 @@ Suppose we want to ask the player a question where they might say yes or no in r
 		say "You lower your eyes and refuse petulantly, hoping to stir him to a more ardent repetition of these same requests. But then -- alack! -- he says 'I see how it is!' in a strangled voice, and strides from the room!";
 		end the story saying "A fatal error!"
 
-And since the player might ``say yes to spruce``, we had better reroute the relevant options:
+And since the player might ``SAY YES TO SPRUCE``, we had better reroute the relevant options:
 
 	{**}Instead of answering Mr Spruce that "no", try saying no.
 	

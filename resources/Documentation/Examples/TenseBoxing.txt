@@ -39,9 +39,9 @@ Here we have a box that prints out its current state and its history each time w
 		say "You now close the box.";
 		assess the box.
 
-Note that "was..." and "was not..." and so on may describe conditions more complicated than simple properties: we could equally well ask "if the box has been in the sack", "if the box had been carried by the player", and so on.
+Note that `was` and `was not` and so on may describe conditions more complicated than simple properties: we could equally well ask `if the box has been in the sack`, `if the box had been carried by the player`, and so on.
 
-The past ("if the box was...") and past perfect ("if the box had been...") are especially useful for cases where we want to report on an action after the state of the item has changed; so, for instance:
+The past (`if the box was...`) and past perfect (`if the box had been...`) are especially useful for cases where we want to report on an action after the state of the item has changed; so, for instance:
 
 	{**}After taking the mysterious box:
 		if the box had not been carried by the player, say "You lift the mysterious box for the first time.";
@@ -49,9 +49,9 @@ The past ("if the box was...") and past perfect ("if the box had been...") are e
 	
 	Test me with "open box / close box / open box / take box / drop box / take box".
 
-This is in many respects similar to a rule beginning "After taking the mysterious box for the first time...", but it is superior in most circumstances, for two reasons.
+This is in many respects similar to a rule beginning `After taking the mysterious box for the first time...`, but it is superior in most circumstances, for two reasons.
 
-First, it will respond correctly even if the player has somehow carried the box before without taking it explicitly: for instance, if another character gave them the box, if the box were moved into their inventory as a result of another action, or if the player carried the box at the start of play. Inform begins its reckoning of time when the game begins, so if the box is defined as being open at the outset, "if the box has been open" will always be true.
+First, it will respond correctly even if the player has somehow carried the box before without taking it explicitly: for instance, if another character gave them the box, if the box were moved into their inventory as a result of another action, or if the player carried the box at the start of play. Inform begins its reckoning of time when the game begins, so if the box is defined as being open at the outset, `if the box has been open` will always be true.
 
-Second, "after taking... for the first time" fires only the first time the player attempts to take something. If the player tried to take the box, failed, and then tried again later, the "for the first time..." rule would not fire; our "if the box has not been carried..." rule would.
+Second, `after taking... for the first time` fires only the first time the player attempts to take something. If the player tried to take the box, failed, and then tried again later, the `for the first time...` rule would not fire; our `if the box has not been carried...` rule would.
 

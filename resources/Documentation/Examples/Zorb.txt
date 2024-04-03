@@ -9,7 +9,7 @@ There are two aspects of Inform's handling of pushable objects that are particul
 
 Second, Inform by default assumes that it is impossible to push objects in up or down directions. This makes lots of sense if the player is trying to push a wheelbarrow up a ladder; it makes less sense if instead we're pushing a ball up a slope.
 
-We solve both problems with some syntax borrowed from the chapter on [Rulebooks]: in the first case, we replace the old rule with a new one with more friendly phrasing; in the second, we remove the rule entirely. More about how to do this is described in the rulebooks chapter; and in general we can find out what rules contribute to any given action by looking at the Actions index. In this case, the action is "pushing it to", which has its own set of prerequisites (called check rules) that make sure the object can safely be pushed, before turning processing over to the going action.
+We solve both problems with some syntax borrowed from the chapter on [Rulebooks]: in the first case, we replace the old rule with a new one with more friendly phrasing; in the second, we remove the rule entirely. More about how to do this is described in the rulebooks chapter; and in general we can find out what rules contribute to any given action by looking at the Actions index. In this case, the action is `pushing it to`, which has its own set of prerequisites (called check rules) that make sure the object can safely be pushed, before turning processing over to the going action.
 
 	{*}"Zorb"
 	

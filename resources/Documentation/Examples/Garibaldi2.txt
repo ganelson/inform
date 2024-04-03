@@ -5,7 +5,9 @@ Index: Garibaldi 2. Coloured text styles
 Description: Adding coloured text to the example of door-status readouts.
 For: Z-Machine
 
-The extension "Basic Screen Effects" provides a few more type styles, in the form of coloured lettering. The colours available are red, yellow, green, blue, white, magenta, and cyan, as well as the usual black; and to restore the player's default screen colour, we say "default letters".
+The extension `Basic Screen Effects by Emily Short` provides a few more type styles, in the form of coloured lettering. The colours available are red, yellow, green, blue, white, magenta, and cyan, as well as the usual black; and to restore the player's default screen colour, we say `"[default letters]"`.
+
+Note that this example _only_ works if the Settings for it are set to the Z-machine story file format: it does not work on the default Glulx setting, which has a different screen arrangement.
 
 Thus if we wanted to highlight locked and unlocked doors in our security readout example:
 
@@ -33,6 +35,3 @@ Thus if we wanted to highlight locked and unlocked doors in our security readout
 	The security pass unlocks the inner airlock. The player carries the security pass.
 	
 	Test me with "x readout / turn on readout / x readout / lock inner airlock with security pass / x readout".
-
-Note that this extension does not currently produce the desired effects when compiling with the Glulx setting; to see it working, make sure that the settings tab is set to compile to the Z-machine.
-

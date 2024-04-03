@@ -25,5 +25,5 @@ Suppose we want to assign scores for a whole range of objects the player might p
 	
 	Test me with "take all".
 
-"Blank out the whole row" removes the line from the table, so that each award will occur only once. The player will not be able to earn more and more points by dropping and taking the same item again.
+`Blank out the whole row` removes the line from the table, so that each award will occur only once. The player will not be able to earn more and more points by dropping and taking the same item again.
 

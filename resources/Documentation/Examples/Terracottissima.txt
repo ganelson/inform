@@ -2,10 +2,10 @@ Example: ** Terracottissima
 Location: Understanding things by their properties
 RecipeLocation: Glass and Other Damage-Prone Substances
 Index: Broken and unbroken flowerpots
-Description: The flowerpots once again, but this time arranged so that after the first breakage all undamaged pots are said to be "unbroken", to distinguish them from the others.
+Description: The flowerpots once again, but this time arranged so that after the first breakage all undamaged pots are said to be `unbroken`, to distinguish them from the others.
 For: Z-Machine
 
-This easiest way to do this uses the "printing the name of" activity, which will come up in the following chapter:
+This easiest way to do this uses the `printing the name of` activity, which will come up in the following chapter:
 
 	{*}"Terracottissima"
 	

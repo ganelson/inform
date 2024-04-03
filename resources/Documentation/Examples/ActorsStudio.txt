@@ -68,5 +68,5 @@ Here we construct a video camera to track and play back actions:
 	
 	Test me with "set camera to recording / x lucas / lucas, take inventory / lucas, eat croissant / set camera to playing back / z".
 
-Notice that both Lucas' implied taking action (picking up the croissant) and his eating action are recorded on the same move.
+Notice that both Lucas's implied taking action (picking up the croissant) and his eating action are recorded on the same move.
 

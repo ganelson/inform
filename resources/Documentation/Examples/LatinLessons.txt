@@ -5,7 +5,7 @@ Index: Missing nouns supplied in commands to characters
 Description: Supplying missing nouns and second nouns for other characters besides the player.
 For: Z-Machine
 
-If we're defining actions for other characters to follow, we may want to include them in our "rule for supplying a missing noun". We can do this if we write our "while..." clause to apply to any actor, as follows:
+If we're defining actions for other characters to follow, we may want to include them in our `rule for supplying a missing noun`. We can do this if we write our `while...` clause to apply to any actor, as follows:
 
 	{*}"Latin Lessons"
 	

@@ -5,7 +5,7 @@ Index: Letters described as a group
 Description: Letters which are described differently as a group, depending on whether the player has read none, some, or all of them, and on whether they are alike or unlike.
 For: Z-Machine
 
-In this scenario, the player starts with a bag full of unsorted letters. These can be polite or rude, but they won't know which until they have examined them. What's more, they are allowed to sort the letters, in which case a group of letters will be shown as (for instance) "two polite letters"; but a group of mixed letters, even if they have all been read, will be called "unsorted letters".
+In this scenario, the player starts with a bag full of unsorted letters. These can be polite or rude, but they won't know which until they have examined them. What's more, they are allowed to sort the letters, in which case a group of letters will be shown as (for instance) "two polite letters"; but a group of mixed letters, even if they have all been read, will be called `unsorted letters`.
 
 Further, the player should be allowed to refer to sorted letters by tone, but not unsorted letters.
 
@@ -76,7 +76,7 @@ And finally, we will assume by default that anything other than examining or tak
 		if we have examined the subject, it is likely;
 		it is unlikely.
 
-And we would also like to understand properties under the same circumstances as printing – a letter will be identifiable as "polite" if it's already been read and it is either by itself or in a sorted stack of polite letters, but otherwise not. What's more, to make it possible to disambiguate commands in the other direction, we'll call any unsorted letter "random", to represent that the player doesn't know what it is.
+And we would also like to understand properties under the same circumstances as printing – a letter will be identifiable as ``POLITE`` if it's already been read and it is either by itself or in a sorted stack of polite letters, but otherwise not. What's more, to make it possible to disambiguate commands in the other direction, we'll call any unsorted letter ``RANDOM``, to represent that the player doesn't know what it is.
 
 	{**}Understand the tone property as referring to a letter when the item described is grouped. Understand "random" as a letter when the item described is ungrouped.
 	
@@ -87,5 +87,5 @@ And we would also like to understand properties under the same circumstances as 
 	
 	Test me with "inventory / examine letter / get letter / i / put letter in ceo box / inventory / get letter / x letter / g / g / i / x letter / g / g / i / put letter in hold box / get letter / g / g / i".
 
-That last "repeat" is merely a device to shuffle the order of items in the satchel so that the player will not always encounter the letters in a neatly presorted order, despite our defining them that way. (Of course, that means that the test produced by ``test me`` cannot be very exciting...)
+That last "repeat" is merely a device to shuffle the order of items in the satchel so that the player will not always encounter the letters in a neatly presorted order, despite our defining them that way. (Of course, that means that the test produced by ``TEST ME`` cannot be very exciting...)
 

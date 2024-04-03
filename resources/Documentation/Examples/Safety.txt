@@ -2,7 +2,7 @@ Example: * Safety
 Location: Actions applying to kinds of value
 RecipeLocation: Bags, Bottles, Boxes and Safes
 Index: Safe that can be opened with a combination
-Description: A safe whose dial can be turned with ``spin safe to`` 1131, and which will open only with the correct combination.
+Description: A safe whose dial can be turned with ``SPIN SAFE TO`` 1131, and which will open only with the correct combination.
 For: Z-Machine
 
 	{*}"Safety"

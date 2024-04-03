@@ -2,16 +2,14 @@ Example: *** Delicious, Delicious Rocks
 Location: Check, carry out, report
 RecipeLocation: Food
 Index: Sanity-check stage before the Before rules
-Description: Adding a "sanity-check" stage to decide whether an action makes any sense, which occurs before any before rules, implicit taking, or check rules.
+Description: Adding a sanity-check stage to decide whether an action makes any sense, which occurs before any before rules, implicit taking, or check rules.
 For: Z-Machine
 
 In some cases, we may want to add new stages to action processing. One possibility is a stage where we check the sanity of what the player is trying to do before executing any of the other commands; so that we avoid, for instance
 
-``` transcript
->eat rock
-(first taking the rock)
-That's plainly inedible.
-```
+	> EAT ROCK
+	(first taking the rock)
+	That's plainly inedible.
 
 Here is how we might insert such a stage in our action processing, using rulebook manipulation.
 
@@ -42,5 +40,5 @@ It is of course possible to get the same effect with
 	Before eating an inedible thing:
 		say "Your digestion is so delicate -- you're sure [the noun] wouldn't agree with you." instead.
 
-...and in a small game with few rules, there's not much reason to add an extra stage. The ability to modify the stages of action processing becomes useful when we have a fairly large game with sophisticated modeling and want to be sure that some kinds of message (such as the sanity-check) are always handled before other things that we might be doing at the before stage (such as generating implicit actions like opening doors before going through them).
+...and in a small game with few rules, there's not much reason to add an extra stage. The ability to modify the stages of action processing becomes useful when we have a fairly large game with sophisticated modeling and want to be sure that some kinds of message (such as the `sanity-check`) are always handled before other things that we might be doing at the before stage (such as generating implicit actions like opening doors before going through them).
 

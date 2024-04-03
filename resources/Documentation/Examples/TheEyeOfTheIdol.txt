@@ -17,7 +17,7 @@ We start by defining relations that let us know where items "belong", with the u
 
 We can't make relations relate various objects to various objects, and rooms are not things, so two separate cases are necessary. An alternative approach would be to say "A thing has an object called the initial placement", which would allow a thing to have an initial placement that was a room, a supporter, or a container; an advantage of using relations, though, is that that way we can if we like specify multiple placements for the same object, so that, e.g., a sparkling diamond can be described in the main description paragraph as "half-buried in dust" in the beginning of the game, and then at the end as "in the eye of the idol" at the end.
 
-Now we define, based on these relations, an "in-place" adjective, which will identify whether something is in a location which will specially describe it:
+Now we define, based on these relations, an `in-place` adjective, which will identify whether something is in a location which will specially describe it:
 
 	{**}Definition: a thing (called prop) is in-place:
 		if the prop is in the location and the prop is room-placed in the location, yes;
@@ -31,7 +31,7 @@ With that done, removing these items automatically from the room description is 
 	{**}Before listing nondescript items:
 		now every marked for listing in-place thing is not marked for listing.
 
-One tricky case remains: when something is placed on a supporter that is scenery, it can be mentioned even if we have marked that object "not marked for listing". What matters here is not whether the object itself is marked for listing but whether the supporter has been "mentioned". (A fuller description of how room descriptions are assembled is available in the [Looking] section of the [Commands] chapter in the Recipe Book.) So let's also add a feature whereby we can easily suppress the descriptions of these supporters when appropriate:
+One tricky case remains: when something is placed on a supporter that is scenery, it can be mentioned even if we have marked that object `not marked for listing`. What matters here is not whether the object itself is marked for listing but whether the supporter has been `mentioned`. (A fuller description of how room descriptions are assembled is available in the [Looking] section of the [Commands] chapter in the Recipe Book.) So let's also add a feature whereby we can easily suppress the descriptions of these supporters when appropriate:
 
 	{**}A supporter can be quiet.
 
@@ -46,7 +46,7 @@ A quiet supporter is one that is never mentioned itself and which only mentions 
 
 Notice that we can still override this with writing a paragraph rules about specific supporters in our game, if we decide that we want something a little different in some cases.
 
-We would find, though, that this alone doesn't do the trick and that in-place things were still listed. The ``rules`` command could tell us that they were being printed by the "describe what's on mentioned supporters in room descriptions rule" (a Standard Rule in the "for printing a locale paragraph about a thing rulebook). And so we deactivate it for this case:
+We would find, though, that this alone doesn't do the trick and that in-place things were still listed. The ``RULES`` command could tell us that they were being printed by the "describe what's on mentioned supporters in room descriptions rule" (a Standard Rule in the "for printing a locale paragraph about a thing rulebook). And so we deactivate it for this case:
 
 	{**}The describe what's on mentioned supporters in room descriptions rule does nothing when the supporter in question is quiet.
 

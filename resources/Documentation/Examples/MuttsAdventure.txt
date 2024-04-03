@@ -5,7 +5,7 @@ Index: Awarding points for visiting a room
 Description: Awarding points for visiting a room for the first time.
 For: Z-Machine
 
-Suppose we want to reward the player the first time he reaches a given room. The "unvisited" attribute is useful for this: unlike such constructions as "going to a room for the first time", it doesn't develop false positives when the player has merely tried to go to the room in question. "Every turn when the player is in a room for the first time" is also unhelpful, because it continues to be true as long as the player is in a room on his first visit there.
+Suppose we want to reward the player the first time he reaches a given room. The `unvisited` attribute is useful for this: unlike such constructions as `going to a room for the first time`, it doesn't develop false positives when the player has merely tried to go to the room in question. `Every turn when the player is in a room for the first time` is also unhelpful, because it continues to be true as long as the player is in a room on his first visit there.
 
 	{*}"Mutt's Adventure"
 	

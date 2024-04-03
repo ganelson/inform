@@ -7,7 +7,7 @@ For: Z-Machine
 
 Our previous experiments into liquid have not dealt with the possibility of mixing components, but that is because for most games, tracking the details of mixture is overkill.
 
-But let's suppose that this time we do want to have mixed liquids; moreover, we want a way to describe the mixtures to the player inventively, so that if they hit specific combinations those combinations are recognised: calling the result a martini, say, rather than just "a mixture of vodka and vermouth".
+But let's suppose that this time we do want to have mixed liquids; moreover, we want a way to describe the mixtures to the player inventively, so that if they hit specific combinations those combinations are recognised: calling the result a martini, say, rather than just ``a mixture of vodka and vermouth``.
 
 The implementation that follows relies on a fairly simple idea from linear algebra. Any given liquid can be expressed as a vector in N-space, where N is the number of available ingredients and the length of the vector depends on how much of each ingredient is used; then we find the recipe that best describes the liquid by taking the dot product of our liquid vector with a bunch of sample vectors and selecting the one with the largest result.
 
@@ -41,7 +41,7 @@ Any implementation involving a large number of place values is always a bit chal
 	
 	Nominal descriptor is a kind of value. The Nominal descriptors are creme de menthe, vodka, creme de cacao, grasshopper, chocolate vodka, mint vodka, chocolate martini, mintini, chocolate mint martini.
 
-Our table of mixtures is expressed in parts: so if a recipe contains one part X and two parts Y, we would put "1" in the first column and "2" in the second column.
+Our table of mixtures is expressed in parts: so if a recipe contains one part X and two parts Y, we would put `1` in the first column and `2` in the second column.
 
 	{**}Table of Mixtures
 	rating	creme de menthe comp	vodka comp	cacao comp	adjectival descriptor	nominal descriptor

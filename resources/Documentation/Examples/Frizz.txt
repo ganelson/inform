@@ -73,7 +73,7 @@ Suppose we have some items that get wet in contact with other damp things; in pa
 	
 	The Stairwell is above the Kitchen. "Halfway up and halfway down." The airing cupboard is a container in the Stairwell. "An airing cupboard here contains the heating system, and is the ideal place for restoring wet items to a dry state." The airing cupboard is fixed in place.
 
-Now: whenever the player definitely touches something, we want to follow certain rules about the transfer of liquid. These rules need to come after an action's check rules (to make sure the action really occurs) and before the carry out rules (so that nothing has moved or changed yet). So we'll borrow from the chapter on [Rulebooks] to create a whole new stage to the action, occurring between the check and the carry out phases:
+Now: whenever the player definitely touches something, we want to follow certain rules about the transfer of liquid. These rules need to come after an action's `check` rules (to make sure the action really occurs) and before the `carry out` rules (so that nothing has moved or changed yet). So we'll borrow from the chapter on [Rulebooks] to create a whole new stage to the action, occurring between the `check` and the `carry out` phases:
 
 	{**}The post-check rules are a rulebook.
 	

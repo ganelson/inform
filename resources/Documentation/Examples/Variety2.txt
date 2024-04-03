@@ -5,7 +5,7 @@ Index: Describing action outcomes using a random choice of verb or describing th
 Description: This builds on the Variety example to add responses such as "You are now carrying the fedora" that describe relations that result from a given verb, as alternate responses.
 For: Z-Machine
 
-Some of our default actions establish relations between items in the world, and reporting on the relation ("You are now carrying the fedora") can be a valid response alongside reporting on the action itself ("You take the fedora").
+Some of our default actions establish relations between items in the world, and reporting on the relation (``You are now carrying the fedora``) can be a valid response alongside reporting on the action itself (``You take the fedora``).
 
 To do this, we need to teach Inform explicitly which relations are the results of actions, then check this when reporting on actions:
 

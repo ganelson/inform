@@ -60,7 +60,8 @@ the problem message test cases, so we observe them.
 void Coverage::which_problems_have_test_cases(void) {
 	filename *CAT = Filenames::in(path_to_inpolicy_workspace, I"cases.txt");
 	TEMPORARY_TEXT(COMMAND)
-	WRITE_TO(COMMAND, "..%cintest%cTangled%cintest inform7 -catalogue ", FOLDER_SEPARATOR, FOLDER_SEPARATOR, FOLDER_SEPARATOR);
+	WRITE_TO(COMMAND, "..%cintest%cTangled%cintest inform7 -catalogue ",
+		FOLDER_SEPARATOR, FOLDER_SEPARATOR, FOLDER_SEPARATOR);
 	Shell::redirect(COMMAND, CAT);
 	if (Shell::run(COMMAND)) Errors::fatal("can't run intest to harvest cases");
 	DISCARD_TEXT(COMMAND)
@@ -83,7 +84,7 @@ to problem messages:
 void Coverage::which_problems_are_referenced(void) {
 	pathname *D = Pathnames::from_text(I"resources");
 	D = Pathnames::down(D, I"Documentation");
-	filename *WWI = Filenames::in(D, I"Writing with Inform.txt");
+	filename *WWI = Filenames::in(D, I"Writing with Inform.md");
 	TextFiles::read(WWI, FALSE, "unable to read 'Writing with Inform' source text", TRUE,
 		&Coverage::xref_harvester, NULL, NULL);
 }

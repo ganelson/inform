@@ -2,7 +2,7 @@ Example: * Merlin
 Location: Topic columns
 RecipeLocation: Background
 Index: REMEMBER command keyed to topics
-Description: A ``remember`` command which accepts any text and looks up a response in a table of recollections.
+Description: A ``REMEMBER`` command which accepts any text and looks up a response in a table of recollections.
 For: Z-Machine
 
 	{*}"Merlin"

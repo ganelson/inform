@@ -5,7 +5,7 @@ Index: Describing action outcomes using a random choice of verb
 Description: Suppose we want all of our action responses to display some randomised variety. We could do this by laboriously rewriting all of the response texts, but this example demonstrates an alternative.
 For: Z-Machine
 
-Verbs can be related to other things by relations. We've seen that it's possible for a verb to "mean" a relationship. But we can also create a relation between verbs and action names. For instance, we can tell Inform that "take", "get", and "acquire" are all valid ways to describe taking, and then allow it to pick a verb randomly to describe whatever action just occurred, based on its action name.
+Verbs can be related to other things by relations. We've seen that it's possible for a verb to `mean` a relationship. But we can also create a relation between verbs and action names. For instance, we can tell Inform that ``TAKE``, ``GET``, and ``ACQUIRE`` are all valid ways to describe taking, and then allow it to pick a verb randomly to describe whatever action just occurred, based on its action name.
 
 	{*}"Variety"
 	

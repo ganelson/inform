@@ -21,7 +21,7 @@ Typically games which keep track of the player's wealth need only do so as an ab
 	
 	A hundred-dollar bill is a kind of money. The price of the hundred-dollar bill is $100.00. Understand "hundred" or "hundred dollar" as the hundred-dollar bill. Understand "dollar" as the dollar bill. The description of a hundred-dollar bill is "It's got Benjamin Franklin, who always gets shafted: a denomination too large for anyone to carry conveniently, and a lot of local fame in Philadelphia."
 
-Our choice of understand rules guarantees that "five dollar" will be understood as the five, but "dollar" alone as the single. We will learn more about "understand" in later chapters, but here is a test to check the functionality:
+Our choice of understand rules guarantees that ``FIVE DOLLAR`` will be understood as the five, but ``DOLLAR`` alone as the single. We will learn more about `Understand` in later chapters, but here is a test to check the functionality:
 
 	{**}Test bills with "x hundred dollar bill / x five dollar bill / x hundred / x five / x dollar / x dollar bill".
 	
@@ -126,7 +126,7 @@ The cashbox is a theoretical construct, not something the player will ever encou
 
 We've skipped over defining what makes a denomination the best for a given transaction, so we'd better do that now. Our goal is to avoid ever having the player gratuitously overpay – they should always offer the smallest amount of money that will meet the price of what they're buying.
 
-We also assume that all money "enclosed by the buyer" – that is, somewhere in the buyer's possession – is available for use. This might not be true in a game where the player could pick up, say, a sealed lucite container with a ten-dollar bill inside; in that case we would have to define our terms more rigorously, perhaps by requiring that the bills be both enclosed and touchable by the buyer. The touchability check adds an extra layer of calculation, however, and since it is not necessary in this example (and probably not in most other cases either), we'll leave it out:
+We also assume that all money `enclosed by the buyer` – that is, somewhere in the buyer's possession – is available for use. This might not be true in a game where the player could pick up, say, a sealed lucite container with a ten-dollar bill inside; in that case we would have to define our terms more rigorously, perhaps by requiring that the bills be both enclosed and touchable by the buyer. The touchability check adds an extra layer of calculation, however, and since it is not necessary in this example (and probably not in most other cases either), we'll leave it out:
 
 	{**}Definition: money is costly if its price is $2.50 or more. Definition: money is cheap if its price is $0.99 or less.
 	
@@ -146,7 +146,7 @@ We also assume that all money "enclosed by the buyer" – that is, somewhere in 
 		otherwise:
 			decide on the costliest money which is underpayment.
 
-Notice the "say underpayment/overpayment section..." noted out, above. This is for debugging purposes: when writing complex code, it is sometimes useful to put in lines that will say explicitly what is going on. We can enclose them in brackets and Inform will ignore them as though they were comments; if we run into any problems with the code later, we can erase the brackets and see the diagnostic printed to the screen as we play.
+Notice the `say underpayment/overpayment section...` noted out, above. This is for debugging purposes: when writing complex code, it is sometimes useful to put in lines that will say explicitly what is going on. We can enclose them in brackets and Inform will ignore them as though they were comments; if we run into any problems with the code later, we can erase the brackets and see the diagnostic printed to the screen as we play.
 
 	{**}Instead of giving money to someone:
 		say "Best to keep the transaction simple by buying whatever you want."

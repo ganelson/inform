@@ -1,29 +1,16 @@
 Title: Navigation page for Indoc
 Author: Graham Nelson
 
-@ Indoc is not part of the main Inform compiler and is not shipped inside the
-Inform apps. Instead, it's used as a stand-alone command-line tool by the
-maintainers of Inform: it generates the formatted documentation about the
-language which is used both inside the apps and on the project website. (So,
-although Indoc is not included in the apps, its output is.)
+@ Indoc is now deprecated, and is likely to be removed from this repository
+at some future point. Until early 2024 it was used as a stand-alone command-line
+tool by the maintainers of Inform to generate formatted documentation about the
+language for use inside the apps and on the project website. This is now done
+by //inbuild//, and no further work will be done on //indoc//.
 
 Indoc is a single literate program, and is not divided into modules.
 
 (*) The contents page for the Indoc web is here: //indoc//.
 
 (*) See //indoc: Manual// and //indoc: Reference Card// for usage.
-
-(*) In particular, //indoc: Documentation Markup// explains how the two books
-supplied with Inform are marked up.
-
-@ The texts of the manuals and examples supplied inside the Inform app are
-stored elsewhere in the repository.[1]
-
-(*) See: //https://github.com/ganelson/inform/resources/Documentation/
-
-[1] In principle, Indoc could be used with other books entirely, and the author
-has sometimes used it as a quick way to turn text files into ePub ebooks. But
-it's a non-goal to make it a super-duper general purpose documentation maker:
-there are plenty of those in existence already.
 
 @ Indoc contains the basic //foundation// library, but none of the //services//.

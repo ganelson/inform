@@ -5,7 +5,7 @@ Index: Person who answers what, where, and when questions differently
 Description: Allowing the player to use question words, and using that information to modify the response given by the other character.
 For: Z-Machine
 
-Suppose we want the player to ask questions of slightly more complexity–we might want to build in a system that understood "who", "what", "where", and "when", for instance. We could use a topic table for this, too:
+Suppose we want the player to ask questions of slightly more complexity–we might want to build in a system that understood ``WHO``, ``WHAT``, ``WHERE``, and ``WHEN``, for instance. We could use a topic table for this, too:
 
 	{*}"The Queen of Sheba"
 	
@@ -26,7 +26,7 @@ Suppose we want the player to ask questions of slightly more complexity–we mig
 	"Solomon/he/himself"	who	"'As you see,' he says, holding out his arms to each side."
 	"Solomon/he/himself"	what	"'I am an ordinary man,' he answers."
 
-One of the nice things about this system is that it only resets the "current question" when we get a new question word. For instance, this test will produce different replies to the question about Solomon himself, because the second time he is still in the mode of answering "what" questions:
+One of the nice things about this system is that it only resets the `current question` when we get a new question word. For instance, this test will produce different replies to the question about Solomon himself, because the second time he is still in the mode of answering ``WHAT`` questions:
 
 	{**}Test me with "ask solomon about himself / ask solomon what rain is / ask solomon about himself".
 
@@ -60,7 +60,7 @@ Now, this last bit requires some trickery from later chapters, particularly thos
 	
 	Understand "ask [someone] [text]" as asking it about.
 
-And now we have a game that will accept (though not always respond very sensibly to) questions of almost any form we might put to another character: ``ask solomon what rain is`` will be answered, but then again, it won't be distinguished from, say, ``ask solomon whether this persistent rain is a divine punishment or what``.
+And now we have a game that will accept (though not always respond very sensibly to) questions of almost any form we might put to another character: ``ASK SOLOMON WHAT RAIN IS`` will be answered, but then again, it won't be distinguished from, say, ``ASK SOLOMON WHETHER THIS PERSISTENT RAIN IS A DIVINE PUNISHMENT OR WHAT``.
 
-All the same, a system that allowed the player a bit more specification of questions than simple keyword-use might be useful in a mystery game, for instance, where we might want to let our detective conduct inquiries into specific details. An alternative approach to the rather free one above would be to force the player to use only questions of the form ``what is rain``? or ``who are you``?: this would cut down on false-positive matches. But we might still choose to store the responses in a table of this type.
+All the same, a system that allowed the player a bit more specification of questions than simple keyword-use might be useful in a mystery game, for instance, where we might want to let our detective conduct inquiries into specific details. An alternative approach to the rather free one above would be to force the player to use only questions of the form ``WHAT IS RAIN``? or ``WHO ARE YOU``?: this would cut down on false-positive matches. But we might still choose to store the responses in a table of this type.
 

@@ -47,7 +47,7 @@ Suppose we are modeling a complex society seething with interpersonal relations 
 	
 	Georgiana is related to Darcy.
 
-Now we want ways to set and unset all of these relations. (In the interests of thoroughness, we may get a bit far-fetched here. It is not recommended in practice that we make the player guess the verb "traduce".)
+Now we want ways to set and unset all of these relations. (In the interests of thoroughness, we may get a bit far-fetched here. It is not recommended in practice that we make the player guess the verb ``TRADUCE``.)
 
 	{**}Section 2 - Setting and Unsetting Love (1-1)
 	
@@ -258,7 +258,7 @@ And finally, setting groups:
 	Report forcing it to disown:
 		say "Now [the second noun] is related to [the list of people who are related to the second noun], and [the noun] is related to [the list of people who are related to the noun]."
 
-Notice that when we say "the second noun is not related", we remove that person from the group: they are now in a separate group of their own, while the rest of the group's members remain related to one another.
+Notice that when we say `the second noun is not related`, we remove that person from the group: they are now in a separate group of their own, while the rest of the group's members remain related to one another.
 
 And finally, a long litany of test cases, complete with the relations lists:
 

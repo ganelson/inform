@@ -5,7 +5,7 @@ Index: Characters renamed in play
 Description: Changing the name of a character in the middle of play, removing the article.
 For: Z-Machine
 
-Suppose that we want a character who starts out with a general epithet ("the bearded man") but is later introduced to the player properly ("Japheth"). In that case, we want to be able to tell Inform to stop using an article once the character has been given a proper name. We can do this like so:
+Suppose that we want a character who starts out with a general epithet (``the bearded man``) but is later introduced to the player properly (``Japheth``). In that case, we want to be able to tell Inform to stop using an article once the character has been given a proper name. We can do this like so:
 
 	{*}"Gopher-wood"
 	

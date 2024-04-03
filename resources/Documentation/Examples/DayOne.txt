@@ -49,7 +49,7 @@ And to add a few additional details:
 	{**}Instead of doing something other than waiting, looking, listening or examining during Lecture:
 		say "Dr Freitag glares at you so fiercely that you are frozen into inaction."
 
-Notice the careful phrasing of "doing something other than..." so that we do not mention the objects; if we had written "something other than listening to something...", the instead rule would match only action patterns which involved a noun. We state the rule more generally so that it will also match nounless commands such as ``jump`` and ``sing``, since Freitag will probably take a dim view of those as well.
+Notice the careful phrasing of `doing something other than...` so that we do not mention the objects; if we had written `something other than listening to something...`, the instead rule would match only action patterns which involved a noun. We state the rule more generally so that it will also match nounless commands such as ``JUMP`` and ``SING``, since Freitag will probably take a dim view of those as well.
 
 	{**}When Lecture ends:
 		now Freitag is nowhere;

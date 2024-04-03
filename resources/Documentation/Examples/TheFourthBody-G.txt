@@ -26,7 +26,7 @@ We'll first invent a general system for writing text into notebooks, by creating
 	To read (pad - a jotter):
 		say "You read: [paragraph break][text of the text file of the pad]".
 
-This is all as might be expected, except perhaps for the business of the "currently erased jotter". Why copy "pad" into this–why not simply write `"[heading of the pad]"`? The answer is that "pad" is a temporary "let" value, and cannot be used inside other phrases, such as the "write ... to ..." phrase.
+This is all as might be expected, except perhaps for the business of the `currently erased jotter`. Why copy `pad` into this–why not simply write `"[heading of the pad]"`? The answer is that `pad` is a temporary `let` value, and cannot be used inside other phrases, such as the `write ... to ...` phrase.
 
 We want to erase any jotters when play begins, as otherwise text left over from any previous games will still be visible:
 
@@ -34,7 +34,7 @@ We want to erase any jotters when play begins, as otherwise text left over from 
 		repeat with pad running through jotters:
 			erase the pad.
 
-Now we need to create rules to allow the player to control reading, writing and erasing. Reading we will handle with the ordinary examining action, but we create new actions for writing and erasing. A nice little trick allows ``write whatever`` to default to writing ``whatever`` in a notebook being carried.
+Now we need to create rules to allow the player to control reading, writing and erasing. Reading we will handle with the ordinary examining action, but we create new actions for writing and erasing. A nice little trick allows ``WRITE WHATEVER`` to default to writing ``WHATEVER`` in a notebook being carried.
 
 	{**}Instead of examining a used jotter (called the pad):
 		read the pad.

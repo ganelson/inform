@@ -29,9 +29,9 @@ Next, some grammar to allow the player to use this action:
 	
 	Understand "shoot [something] at [something]" as shooting it with (with nouns reversed). Understand "fire [gun] at [something ungunlike]" as shooting it with (with nouns reversed). Understand "fire at [something ungunlike] with [gun]" as shooting it with. Understand "fire at [something] with [something]" as shooting it with.
 
-Strictly speaking, we only need these last grammar lines (with "understand shoot something...") in order to define an action that the player can take. Adding more grammar lines means that Inform will try to match the most specific ones first, which is useful when the player types something ambiguous and there is one choice that obviously fits this action better than the others. See the chapter on [Understanding] for a further discussion.
+Strictly speaking, we only need these last grammar lines (with `Understand "shoot [something]..."`) in order to define an action that the player can take. Adding more grammar lines means that Inform will try to match the most specific ones first, which is useful when the player types something ambiguous and there is one choice that obviously fits this action better than the others. See the chapter on [Understanding] for a further discussion.
 
-Here we get to use "now..." to give it its destructive effect:
+Here we get to use `now` to give it its destructive effect:
 
 	{**}Carry out shooting something with something:
 		say "ZAP! [The noun] twinkles out of existence! [if something is part of the noun][The list of things which are part of the noun] clatter to the ground! [end if][paragraph break]";

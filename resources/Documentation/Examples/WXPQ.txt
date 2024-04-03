@@ -10,9 +10,9 @@ The parser error "That noun did not make sense in this context" arises instead o
 	Understand "go to [any room]" as going directly to.
 	Understand "talk about [any subject]" as discussing.
 
-...and so on. The idea here is that "You can't see any such thing" isn't a sensible rejoinder when the player doesn't really need to be able to see the object.
+...and so on. The idea here is that ``You can't see any such thing`` isn't a sensible rejoinder when the player doesn't really need to be able to see the object.
 
-Nonetheless, "That noun did not make sense..." is itself a fairly dry and uninformative response, and we may want to override it to something more appropriate for the specific kind of context in which it might appear. For instance:
+Nonetheless, ``That noun did not make sense...`` is itself a fairly dry and uninformative response, and we may want to override it to something more appropriate for the specific kind of context in which it might appear. For instance:
 
 	{*}"WXPQ"
 	
@@ -30,7 +30,7 @@ Nonetheless, "That noun did not make sense..." is itself a fairly dry and uninfo
 	
 	Test me with "discuss Elvis / discuss Kennedy / discuss chocolate / discuss narratology vs ludology debate".
 
-Note that this solution works as simply as it does because we only have one command in the game that can apply to an `"[any]"` token. If we had several, we'd need to distinguish between the parser error attached to "discuss" and the parser error attached to "go to" (for instance). In that case, we might instead write something like
+Note that this solution works as simply as it does because we only have one command in the game that can apply to an `"[any]"` token. If we had several, we'd need to distinguish between the parser error attached to ``DISCUSS`` and the parser error attached to ``GO TO`` (for instance). In that case, we might instead write something like
 
 	Rule for printing a parser error when the latest parser error is the noun did not make sense in that context error:
 	if the player's command includes "go":

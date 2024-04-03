@@ -7,7 +7,7 @@ For: Z-Machine
 
 By default, the description of a room is printed every time the player enters a room.
 
-On a device with very limited screen space, however, we might wish to supplant that behaviour with "brief" descriptions. In Brief mode, Inform prints room descriptions only when the player enters that room for the first time. Afterwards, the text is skipped, for brevity, though the player can see it again at any time by typing ``look``.
+On a device with very limited screen space, however, we might wish to supplant that behaviour with `brief` descriptions. In Brief mode, Inform prints room descriptions only when the player enters that room for the first time. Afterwards, the text is skipped, for brevity, though the player can see it again at any time by typing ``LOOK``.
 
 As we saw in the previous chapter, we can set "use options" to control certain aspects of the player's experience. One of the use options is the option to
 
@@ -27,9 +27,9 @@ which changes the defaults so that the description of a room is printed only the
 	
 	Test me with "west / east".
 
-If we type ``test me`` during play, these commands will be carried out automatically, and we can see that when we return to the Research Wing, the description is not given a second time.
+If we type ``TEST ME`` during play, these commands will be carried out automatically, and we can see that when we return to the Research Wing, the description is not given a second time.
 
-Some notes: the player can also turn full-length descriptions on or off with the commands ``verbose`` and ``brief``, or set a minimal-description setting with the command ``superbrief``. This power still belongs to the player even if we have set the use option to show brief room descriptions by default.
+Some notes: the player can also turn full-length descriptions on or off with the commands ``VERBOSE`` and ``BRIEF``, or set a minimal-description setting with the command ``SUPERBRIEF``. This power still belongs to the player even if we have set the use option to show brief room descriptions by default.
 
 Moreover, we can ourselves check what the state of the descriptions is, with
 

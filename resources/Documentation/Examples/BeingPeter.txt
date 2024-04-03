@@ -37,7 +37,7 @@ Here we want Inform to consult every appropriate attitude rule until it gets to 
 	An attitude rule:
 		if the player wears the top hat, she gets angry.
 
-Now, as we saw, the 'no outcome' result will never be returned and printed as Maggie's reaction, precisely because it is "no outcome". Therefore, we provide a final attitude rule which will give her a default response to all statements:
+Now, as we saw, the "no outcome" result will never be returned and printed as Maggie's reaction, precisely because it is "no outcome". Therefore, we provide a final attitude rule which will give her a default response to all statements:
 
 	{**}The last attitude rule:
 		she is only mildly annoyed.

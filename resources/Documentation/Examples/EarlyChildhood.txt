@@ -25,7 +25,7 @@ But a kind cannot change during play, so this will not do. Instead, the colour w
 	
 	Test me with "look / get red block".
 
-Which is fine, so far as it goes, but the colour property is not at all visible to the player, who simply sees "eleven blocks". We thought of colour as being something outwardly apparent, but Inform does not know this. To achieve a better effect, we will need features from distant chapters. The first is an activity called "printing the name of":
+Which is fine, so far as it goes, but the colour property is not at all visible to the player, who simply sees ``eleven blocks``. We thought of colour as being something outwardly apparent, but Inform does not know this. To achieve a better effect, we will need features from distant chapters. The first is an `activity` called `printing the name of`:
 
 	{*}"Early Childhood 3"
 	
@@ -35,7 +35,7 @@ Which is fine, so far as it goes, but the colour property is not at all visible 
 	
 	Test me with "look / get red block".
 
-This too, however, is unsatisfactory. The individual blocks are correctly described, but we are unable to distinguish them during play: we cannot type ``take a green block``, for instance. And because the blocks are indistinguishable in play, they are still massed together as "eleven blocks" in room descriptions. We need to go one step further:
+This too, however, is unsatisfactory. The individual blocks are correctly described, but we are unable to distinguish them during play: we cannot type ``TAKE A GREEN BLOCK``, for instance. And because the blocks are indistinguishable in play, they are still massed together as ``eleven blocks`` in room descriptions. We need to go one step further:
 
 	{*}"Early Childhood 4"
 	

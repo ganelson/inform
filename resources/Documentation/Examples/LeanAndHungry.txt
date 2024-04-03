@@ -27,7 +27,7 @@ Now we make the rule that governs the gentleman's behaviour. Here we're going to
 	Report the gentleman taking something:
 			say "[The gentleman] slyly acquires [the noun] and tucks it into his pocket." instead.
 
-That "not carried by a person" prevents the gentleman from stealing from the player (or, less plausibly, from himself). If we did want him to pick pockets, we could just have said "which is not carried by the gentleman".
+That `not carried by a person` prevents the gentleman from stealing from the player (or, less plausibly, from himself). If we did want him to pick pockets, we could just have said `which is not carried by the gentleman`.
 
 	{**}The player is carrying a coin, a bust of Abraham Lincoln, a bottle of sherry, a small pistol, and a wad of Confederate cash. The coin is gold. The pistol is silver.
 	

@@ -5,9 +5,9 @@ Index: Enterable objects
 Description: Examples of a container and a supporter that can be entered, as well as nested rooms.
 For: Z-Machine
 
-Within a room, we might have containers and supporters that a player can enter. A chair, stool, table, dais, or pedestal would be an enterable supporter (anything we would describe a person as being "on"); a cage, hammock, or booth would be an enterable container (because we would describe the person as being "inside").
+Within a room, we might have containers and supporters that a player can enter. A chair, stool, table, dais, or pedestal would be an enterable supporter (anything we would describe a person as being `on`); a cage, hammock, or booth would be an enterable container (because we would describe the person as being `inside`).
 
-When the player is in or on something, they are able to see the rest of the contents of the room, but a note such as "(in the hammock)" or "(on the poster bed)" is added to the room title when they look around.
+When the player is in or on something, they are able to see the rest of the contents of the room, but a note such as ``(in the hammock)`` or ``(on the poster bed)`` is added to the room title when they look around.
 
 Here is an example to show off the possibilities:
 
@@ -15,7 +15,7 @@ Here is an example to show off the possibilities:
 	
 	The Center Ring is a room. The cage is in the Center Ring. A lion is an animal in the cage. The cage is enterable, openable, transparent, and closed.
 
-Notice that we made the cage transparent. Strictly speaking it is not made of transparent materials, but we can see into (or out of) a closed cage due to the gaps between the bars, so that from Inform's point of view a cage behaves much like a large sturdy glass box. (If we really wanted to make a distinction between, say, an airtight container and one with perforations, we could do so, but Inform does not model such nuances by default.) If a container is not transparent, we can see into and out of it only when it is open.
+Notice that we made the cage `transparent`. Strictly speaking it is not made of transparent materials, but we can see into (or out of) a closed cage due to the gaps between the bars, so that from Inform's point of view a cage behaves much like a large sturdy glass box. (If we really wanted to make a distinction between, say, an airtight container and one with perforations, we could do so, but Inform does not model such nuances by default.) If a container is not `transparent`, we can see into and out of it only when it is open.
 
 Supporters are a bit more straightforward because there is no circumstance in which they separate the player from the rest of the world:
 
@@ -33,7 +33,7 @@ This last bit is an entirely unnecessary bit of local colour, but if we're going
 		if a random chance of 1 in 2 succeeds, say "The lion eyes you with obvious discontent.";
 		otherwise say "Though the lion does not move, you are aware that it is watching you closely."
 
-Randomness is explained more completely in the chapter on [Change], and every turn rules in the chapter on [Time].
+Randomness is explained more completely in the chapter on [Change], and `every turn` rules in the chapter on [Time].
 
 Finally, we might want a container whose interior is modeled as its own separate room: say, a magician's booth in which volunteers are made to disappear.
 
@@ -43,7 +43,7 @@ Now we create our other location:
 
 	{**}Inside from the Center Ring is the Starry Vastness.
 
-...which handles the case of the player typing ``in``. (We will not assume by default that they want to get into the cage with the lion, this being obviously perilous.) But we also want to make sure that the player who types ``enter booth`` winds up in the same place, so we should add:
+...which handles the case of the player typing ``IN``. (We will not assume by default that they want to get into the cage with the lion, this being obviously perilous.) But we also want to make sure that the player who types ``ENTER BOOTH`` winds up in the same place, so we should add:
 
 	{**}Instead of entering the magician's booth: try going inside.
 	

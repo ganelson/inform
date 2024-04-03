@@ -2,7 +2,7 @@ Example: * Frozen Assets
 Location: Arithmetic with units
 RecipeLocation: Money
 Index: BUY command and a system of money
-Description: A treatment of money which keeps track of how much the player has on them, and a ``buy`` command which lets them go shopping.
+Description: A treatment of money which keeps track of how much the player has on them, and a ``BUY`` command which lets them go shopping.
 For: Z-Machine
 
 In our brave new world, everything will have a price, so we had better spell this out.

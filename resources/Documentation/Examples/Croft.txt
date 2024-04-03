@@ -41,7 +41,7 @@ Suppose that we have a design in which the player spends lots of time on enterab
 		otherwise say "[The actor] leaps gracefully across the distance...";
 		move the actor to the holder of the noun, without printing a room description.
 
-Because this rule occurs before the "implicitly pass through other barriers rule", that rule will not occur when we move from platform to platform; we'll use our own custom rule instead.
+Because this rule occurs before the `implicitly pass through other barriers rule`, that rule will not occur when we move from platform to platform; we'll use our own custom rule instead.
 
 	{**}Rule for setting action variables for entering:
 		now the place left is the holder of the actor.

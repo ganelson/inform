@@ -15,7 +15,7 @@ Suppose we want to let the player kill characters, leaving behind corpses.
 	
 	The description of Lydia's body is "Long, long legs and no attitude at all." The initial appearance of Lydia's body is "Lydia's corpse is sprawled at your feet."
 
-Using our "part of every person..." line, we've conveniently assigned one body per person. Since we're going to separate people from their bodies when the bodies die, though, we also want a more permanent relation that will help us keep track of which bodies used to belong to which people:
+Using our `part of every person...` line, we've conveniently assigned one body per person. Since we're going to separate people from their bodies when the bodies die, though, we also want a more permanent relation that will help us keep track of which bodies used to belong to which people:
 
 	{**}Spirit-possession relates one person to one body. The verb to be owner of means the spirit-possession relation.
 	
@@ -24,7 +24,7 @@ Using our "part of every person..." line, we've conveniently assigned one body p
 			let the corpse be a random body which is part of the victim;
 			now the victim is owner of the corpse.
 
-When Lydia is alive, we want ``touch lydia's body`` to mean the same thing as ``touch lydia``, so we use the setting action variables rules as a convenient point at which to reassign the action:
+When Lydia is alive, we want ``TOUCH LYDIA'S BODY`` to mean the same thing as ``TOUCH LYDIA``, so we use the setting action variables rules as a convenient point at which to reassign the action:
 
 	{**}Setting action variables when the noun is a body which is part of a person (called owner):
 		now the noun is the owner.
@@ -32,20 +32,20 @@ When Lydia is alive, we want ``touch lydia's body`` to mean the same thing as ``
 	Setting action variables when the second noun is a body which is part of a person (called owner):
 		now the second noun is the owner.
 
-This doesn't change Inform's idea about what action is being performed; just about the object it's being performed on. The rest of the action will now proceed as if the player had typed ``touch lydia``.
+This doesn't change Inform's idea about what action is being performed; just about the object it's being performed on. The rest of the action will now proceed as if the player had typed ``TOUCH LYDIA``.
 
-Along similar lines, once Lydia is dead, we want ``move lydia`` to mean ``move lydia's body`` if the body is in view:
+Along similar lines, once Lydia is dead, we want ``MOVE LYDIA`` to mean ``MOVE LYDIA'S BODY`` if the body is in view:
 
 	{**}Setting action variables when the noun is a dead person and the noun is owner of a visible body (called the mortal remains):
 		now the noun is the mortal remains.
 
-The trick is, though, that ``move lydia`` will only be understood if there is something called Lydia that the player can see and refer to, even after she's dead. There are various ways to do this, but the least painful here will be to make the deceased Lydia permanently visible, by putting her in an always-accessible backdrop. The backdrop itself will never be mentioned in the game, and we should make its name something that the player is unlikely to type casually; we don't want the player to interact with it directly. So:
+The trick is, though, that ``MOVE LYDIA`` will only be understood if there is something called Lydia that the player can see and refer to, even after she's dead. There are various ways to do this, but the least painful here will be to make the deceased Lydia permanently visible, by putting her in an always-accessible backdrop. The backdrop itself will never be mentioned in the game, and we should make its name something that the player is unlikely to type casually; we don't want the player to interact with it directly. So:
 
 	{**}The worldview is a privately-named backdrop. It is everywhere. The spirit-world is a privately-named transparent closed unopenable container. It is part of the worldview.
 	
 	Definition: a person is dead if they are in the spirit-world.
 
-It's also possible that the player will type something like ``x lydia`` when Lydia's corpse is not in view, so we should have an appropriate answer to that as well:
+It's also possible that the player will type something like ``X LYDIA`` when Lydia's corpse is not in view, so we should have an appropriate answer to that as well:
 
 	{**}Before doing something to a dead person:
 		say "[The noun] is dead; or had you blocked that out?" instead.
@@ -60,7 +60,7 @@ Now we define the attack itself, which should discard the body, move the spirit 
 		move the noun to the spirit-world;
 		say "With a single blow, you rid the world of [the noun]."
 
-And finally a trick borrowed from the chapter on [Understanding], so that we can refer to "Lydia's body" while Lydia is alive, but "Lydia's corpse" only after Lydia has died:
+And finally a trick borrowed from the chapter on [Understanding], so that we can refer to ``LYDIA'S BODY`` while Lydia is alive, but ``LYDIA'S CORPSE`` only after Lydia has died:
 
 	{**}Understand "corpse" as a body when the item described is not part of a person.
 	

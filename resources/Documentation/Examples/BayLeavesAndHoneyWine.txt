@@ -24,7 +24,7 @@ In many previous examples, we have sent hapless deities wandering around a map o
 		room-name-length set to 25,
 		room-shape set to "circle".
 
-This produces a line-and-dot map, where the names of rooms do not appear inside the city-circles, but rather (thanks to "room-name-offset") off to one side. We specify a long room-name-length because we want all the names of the cities spelled out in full; and we make all the elements white because we intend to place them over a black background layer.
+This produces a line-and-dot map, where the names of rooms do not appear inside the city-circles, but rather (thanks to `room-name-offset`) off to one side. We specify a long room-name-length because we want all the names of the cities spelled out in full; and we make all the elements white because we intend to place them over a black background layer.
 
 We can then superimpose this on a vector map of Greece and tweak the exact positions of cities a little by hand (in Adobe Illustrator, as it happens, but other programs would also allow this level of editing). The result:
 

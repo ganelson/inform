@@ -5,7 +5,7 @@ Index: Extension design advice
 Description: Exemplifying the kind of source we might use in writing extensions for kitchen and bathroom appliances.
 For: Z-Machine
 
-Suppose we want to write an extension or other portable code which defines a "kitchen" kind of room and a "bathroom" kind of room. All kitchen rooms we create in the future will automatically contain standard kitchen appliances: fridge, freezer, sink with taps, counters, cabinets, and a stovetop with built-in oven. Similarly, all bathrooms will have sinks, baths, cabinets, and toilets, and respond to some standard interactions.
+Suppose we want to write an extension or other portable code which defines a `kitchen` kind of room and a `bathroom` kind of room. All kitchen rooms we create in the future will automatically contain standard kitchen appliances: fridge, freezer, sink with taps, counters, cabinets, and a stovetop with built-in oven. Similarly, all bathrooms will have sinks, baths, cabinets, and toilets, and respond to some standard interactions.
 
 We would do this with a standard assembly:
 
@@ -19,7 +19,7 @@ We would do this with a standard assembly:
 	
 	A freezer compartment is a kind of container. A freezer compartment is usually closed and openable. A freezer compartment is part of every refrigerator.
 
-Now: we're going to want many of the items in our kitchen to have switches, and to handle input sensibly regardless of whether the player types ``turn on stove`` or ``turn on stove switch``. (This is apparently a stove with only one burner.) For convenience, we'll define an "includes" relation:
+Now: we're going to want many of the items in our kitchen to have switches, and to handle input sensibly regardless of whether the player types ``TURN ON STOVE`` or ``TURN ON STOVE SWITCH``. (This is apparently a stove with only one burner.) For convenience, we'll define an "includes" relation:
 
 	{**}Inclusion relates a thing (called X) to a thing (called Y) when Y is part of X. The verb to include means the inclusion relation.
 	

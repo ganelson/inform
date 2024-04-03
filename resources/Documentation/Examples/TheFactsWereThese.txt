@@ -2,10 +2,10 @@ Example: ** The Facts Were These
 Location: Lengthening or shortening a list
 RecipeLocation: Actions on Multiple Objects
 Index: GIVE extended to multiple objects at once
-Description: Creating a variant ``give`` action that lets the player give multiple objects simultaneously with commands like ``give all to attendant`` or ``give three dollars to attendant`` or ``give pie and hat to attendant``. The attendant accepts the gifts only if their total combined value matches some minimum amount.
+Description: Creating a variant ``GIVE`` action that lets the player give multiple objects simultaneously with commands like ``GIVE ALL TO ATTENDANT`` or ``GIVE THREE DOLLARS TO ATTENDANT`` or ``GIVE PIE AND HAT TO ATTENDANT``. The attendant accepts the gifts only if their total combined value matches some minimum amount.
 For: Z-Machine
 
-Occasionally it happens that we want to process an action on multiple items differently than we would if the player had just typed each of the individual actions separately. In this example, the reason is that we can only successfully ``give`` items when their combined value passes a certain threshold amount; otherwise the recipient will reject them.
+Occasionally it happens that we want to process an action on multiple items differently than we would if the player had just typed each of the individual actions separately. In this example, the reason is that we can only successfully ``GIVE`` items when their combined value passes a certain threshold amount; otherwise the recipient will reject them.
 
 This works as an implementation of money, if we give value only to cash objects (though several other implementations of cash are available, most of which are simpler and more efficient). We could also imagine a mechanic like this being used for a bargaining or auction game as well, given a society that deals in objects rather than credits.
 
@@ -21,11 +21,11 @@ We start by creating the idea that everything in the game has a monetary value:
 	
 	Understand "give [things preferably held] to [someone]" as multiply-giving it to. Understand "give [things] to [someone]" as multiply-giving it to.  Multiply-giving it to is an action applying to two things.
 
-A subtlety here: we say "things preferably held" to prefer items that the player is holding (so if the player has two dollars in hand and a third lies on the ground, they will use just the two they have).
+A subtlety here: we say `things preferably held` to prefer items that the player is holding (so if the player has two dollars in hand and a third lies on the ground, they will use just the two they have).
 
 The second grammar line allows Inform to match things that aren't held if it can't make up the list from things that are. If all three dollars are on the ground, the player can pick them up before spending them.
 
-We do not, however, make multiply-giving apply to a "carried" item, because that will generate implicit takes of those items in a way that will mess up our action reporting. Instead, we're going to build the implicit takes into the system in a different way, one that permits us to collate the reports more attractively and print a short, one-sentence list of anything that the player had to pick up.
+We do not, however, make multiply-giving apply to a `carried` item, because that will generate implicit takes of those items in a way that will mess up our action reporting. Instead, we're going to build the implicit takes into the system in a different way, one that permits us to collate the reports more attractively and print a short, one-sentence list of anything that the player had to pick up.
 
 	{**}A thing can be given or ungiven. A thing is usually ungiven.
 
@@ -37,7 +37,7 @@ This is for record-keeping purposes so that we can print an attractive list of w
 	
 	Already gave at the office is a truth state that varies.
 
-"Already gave at the office" is the perhaps-excessively-named flag that keeps track of whether we've already done this action once.
+`Already gave at the office` is the perhaps-excessively-named flag that keeps track of whether we've already done this action once.
 
 	{**}Check multiply-giving something to the player:
 			now already gave at the office is true;
@@ -65,7 +65,7 @@ The following rule is longish because it processes the entire list at once, gene
 			now already gave at the office is true;
 			say "[The second noun] angrily rejects your piffling bribe.[paragraph break]" instead.
 
-The bit about making some items "marked for listing", above, rather than printing the list directly, is that using the `"[the list of....]"` syntax guarantees that Inform will respect grouping rules in writing its description. For instance, if the player has automatically taken all three dollars, the output will say "the three dollars" instead of "the dollar, the dollar, and the dollar."
+The bit about making some items `marked for listing`, above, rather than printing the list directly, is that using the `"[the list of....]"` syntax guarantees that Inform will respect grouping rules in writing its description. For instance, if the player has automatically taken all three dollars, the output will say ``the three dollars`` instead of ``the dollar, the dollar, and the dollar.``
 
 	{**}Carry out multiply-giving it to:
 		let L be the multiple object list;
@@ -77,9 +77,9 @@ The bit about making some items "marked for listing", above, rather than printin
 	Report multiply-giving it to:
 		say "[The second noun] rather shamefacedly tucks [the list of given things] away into a pocket.[paragraph break]".
 
-Now we create our own variation of implicitly taking in order to customise the output for the multiply-giving action. The "ungivability rules" should disallow any object that the player absolutely cannot take, because we want "carry out the implicitly taking activity" to succeed every time – and therefore not print out any less-attractive results from implicit takes that don't succeed. Otherwise, the player's ``give tree and dog to attendant`` might produce the reply "That's fixed in place" – without specifying which object is fixed in place.
+Now we create our own variation of implicitly taking in order to customise the output for the multiply-giving action. The `ungivability rules` should disallow any object that the player absolutely cannot take, because we want `carry out the implicitly taking activity` to succeed every time – and therefore not print out any less-attractive results from implicit takes that don't succeed. Otherwise, the player's ``GIVE TREE AND DOG TO ATTENDANT`` might produce the reply ``That's fixed in place`` – without specifying which object is fixed in place.
 
-Because of the way this works, we will want to be careful: if we have any "instead of taking..." rules for special objects in the game, we should be sure to mirror those with an ungivability rule to print something more suitable in the case that the player tries taking that object as part of the multiple giving action.
+Because of the way this works, we will want to be careful: if we have any `instead of taking...` rules for special objects in the game, we should be sure to mirror those with an ungivability rule to print something more suitable in the case that the player tries taking that object as part of the multiple giving action.
 
 	{**}The ungivability rules are an object-based rulebook.
 	
@@ -144,7 +144,7 @@ As we've seen elsewhere, the giving action by default returns a refusal, but is 
 	This is the new report giving rule:
 		say "[The second noun] rather shamefacedly tucks [the noun] away into a pocket."
 
-After each instance of the multiply-giving action, we need to clear the variables we used to track its state. We could do this in "Before reading a command", but that's unsafe because the player might type ``give pie and cap to attendant. give dollars to attendant``. all on a single line, and we would like to be able to clear the variables between one action and the next. The correct place to attach this behaviour is immediately before the generate action rule, thus:
+After each instance of the multiply-giving action, we need to clear the variables we used to track its state. We could do this in `Before reading a command`, but that's unsafe because the player might type ``GIVE PIE AND CAP TO ATTENDANT. GIVE DOLLARS TO ATTENDANT``. all on a single line, and we would like to be able to clear the variables between one action and the next. The correct place to attach this behaviour is immediately before the generate action rule, thus:
 
 	{**}The before-generation rule is listed before the generate action rule in the turn sequence rules.
 	
@@ -177,5 +177,5 @@ After each instance of the multiply-giving action, we need to clear the variable
 	
 	Test mixed-gift with "give dollar and cap to Morgue Attendant / get cap / give dollar and cap to morgue attendant / give me and dollar to attendant".
 
-``purloin``, used in the tests here, is a special debugging command that allows the player to acquire objects that wouldn't otherwise be possible to take. It is only active in non-release versions of the story. For more about debugging commands, see the chapter on [Testing and Debugging].
+``PURLOIN``, used in the tests here, is a special debugging command that allows the player to acquire objects that wouldn't otherwise be possible to take. It is only active in non-release versions of the story. For more about debugging commands, see the chapter on [Testing and Debugging].
 

@@ -5,7 +5,7 @@ Index: Using lists as sets
 Description: In this fiendishly difficult puzzle, which may perhaps owe some inspiration to a certain BBC Radio panel game (1967-), a list is used as a set of actions to help enforce the rule that the player must keep going for ten turns without hesitation, repetition, or deviating from the subject on the card.
 For: Z-Machine
 
-There is very little to this, in fact. The tricky rule to enforce is Repetition: the player is forbidden to repeat any previously tried action. We keep track of this by keeping a set of past actions, which for want of a better term is called the "tally". All we need to do is:
+There is very little to this, in fact. The tricky rule to enforce is Repetition: the player is forbidden to repeat any previously tried action. We keep track of this by keeping a set of past actions, which for want of a better term is called the `tally`. All we need to do is:
 
 	if the current action is listed in the tally, challenge for "Repetition of [the current action]!";
 	otherwise add the current action to the tally.

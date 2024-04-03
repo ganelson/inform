@@ -36,7 +36,7 @@ Now, let's look at some items put in a specific order. Things with low priority 
 			set the locale priority of the item to 0; [don't list at all]
 		continue the activity.
 
-An important cautionary note: priorities are only honoured if the objects are going to get their own paragraphs (with "writing a paragraph about..." or because they have initial appearances). Priorities do not affect the order in which items appear in the final "You can see..." list, except that items with priority 0 or lower are omitted. (If we want to order the items in that list, we may want to resort to the Complex Listing extension by Emily Short.)
+An important cautionary note: priorities are only honoured if the objects are going to get their own paragraphs (with `writing a paragraph about...` or because they have initial appearances). Priorities do not affect the order in which items appear in the final ``You can see...`` list, except that items with priority 0 or lower are omitted. (If we want to order the items in that list, we may want to resort to the Complex Listing extension by Emily Short.)
 
 There are further refinements available to us: for instance, we could make some things that are only visible if the player is raised above ground level.
 
@@ -47,7 +47,7 @@ There are further refinements available to us: for instance, we could make some 
 					set the locale priority of the item to 0; [remove objects that can only be seen from higher objects.]
 		continue the activity.
 
-It may also be useful to know about the "parameter-object", which refers to the thing whose contents we are currently describing: the standard rules consider how to describe the contents of the location and then also check the contents of any supporter or container the player may be inside, so in the first case "parameter-object" would be the location, and then in the second the supporter in question.
+It may also be useful to know about the `parameter-object`, which refers to the thing whose contents we are currently describing: the standard rules consider how to describe the contents of the location and then also check the contents of any supporter or container the player may be inside, so in the first case `parameter-object` would be the location, and then in the second the supporter in question.
 
 In practice this is rarely useful, but should we need to change priorities in the case of both player and object being inside a particular container, we might make use of it, for instance:
 
@@ -60,7 +60,7 @@ In practice this is rarely useful, but should we need to change priorities in th
 					set the locale priority of the item to 10; [remove objects that can only be seen from higher objects.]
 		continue the activity.
 
-The other thing to note is that by default that final collection of generic objects ("You can also see...") appears at the end, regardless of the priority of everything else. If we really wanted to, though, we could force something to appear even after that paragraph, by adding a new listing rule to the locale description rules:
+The other thing to note is that by default that final collection of generic objects (``You can also see...``) appears at the end, regardless of the priority of everything else. If we really wanted to, though, we could force something to appear even after that paragraph, by adding a new listing rule to the locale description rules:
 
 	{**}After choosing notable locale objects (this is the latest-described items priority rule):
 		repeat with item running through latest-described things:
@@ -97,7 +97,7 @@ In order for the priorities we just set to be interesting, let's give out some i
 	Rule for writing a paragraph about the leaf: say "Look, there's [a leaf][unless the leaf is in the location] on [the holder of the leaf][end if]!"
 	Rule for writing a paragraph about an icky thing (called icky item) which is on something which supports the player: say "Ew, [an icky item] is right next to you."
 
-This procedure also means (as you can test by experiment) that after the late edition has been picked up and dropped again, it lists in no special order in the "you can see..." paragraph (since initial appearances only print when the object has not yet been moved).
+This procedure also means (as you can test by experiment) that after the late edition has been picked up and dropped again, it lists in no special order in the ``You can see...`` paragraph (since initial appearances only print when the object has not yet been moved).
 
 	{**}The afterthought is a thing in the Priority Lab. It is latest-described.
 	

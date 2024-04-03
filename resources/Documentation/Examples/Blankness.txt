@@ -5,9 +5,9 @@ Index: Blanking the status line before play
 Description: Emptying the status line during the first screen of the game.
 For: Z-Machine
 
-Occasionally we want to print something as our first screen and then pause the game. By default, Inform will print a rather odd status line, with "You" on the left side and "0" on the right. This is because the left hand status line is set to display the location, but (because we're not done with the when-play-begins rules) the player has not yet even been moved to a room.
+Occasionally we want to print something as our first screen and then pause the game. By default, Inform will print a rather odd status line, with ``You`` on the left side and ``0`` on the right. This is because the left hand status line is set to display the location, but (because we're not done with the when-play-begins rules) the player has not yet even been moved to a room.
 
-We can tidy this up in the "starting the virtual machine" activity, by temporarily changing the status line content. We will not provide game-pausing code here, because that is easily done by extension; so:
+We can tidy this up in the `starting the virtual machine` activity, by temporarily changing the status line content. We will not provide game-pausing code here, because that is easily done by extension; so:
 
 	{*}"Blankness"
 	

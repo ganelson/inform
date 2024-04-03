@@ -5,7 +5,7 @@ Index: Standard IF demonstration
 Description: Implementation of "Cloak of Darkness", a simple example game that for years has been used to demonstrate the features of IF languages.
 For: Z-Machine
 
-"Cloak of Darkness" is a brief example game that has been implemented in nearly every IF system currently used. It hasn't got much claim to complexity or richness, but it does exemplify many of the standard things one might want an IF language to be able to do: define descriptions and the results of actions, assign synonyms to nouns, create new verbs, handle darkness, track repeated acts, and so on.
+_Cloak of Darkness_ is a brief example game that has been implemented in nearly every IF system currently used. It hasn't got much claim to complexity or richness, but it does exemplify many of the standard things one might want an IF language to be able to do: define descriptions and the results of actions, assign synonyms to nouns, create new verbs, handle darkness, track repeated acts, and so on.
 
 Here is what the game looks like in Inform:
 
@@ -23,13 +23,13 @@ Whatever room we define first becomes the starting room of the game, in the abse
 	
 	Instead of going north in the Foyer, say "You've only just arrived, and besides, the weather outside seems to be getting worse."
 
-We can add more rooms by specifying their relation to the first room. Unless we say otherwise, the connection will automatically be bidirectional, so "The Cloakroom is west of the Foyer" will also mean "The Foyer is east of the Cloakroom":
+We can add more rooms by specifying their relation to the first room. Unless we say otherwise, the connection will automatically be bidirectional, so `The Cloakroom is west of the Foyer` will also mean `The Foyer is east of the Cloakroom`:
 
 	{**}The Cloakroom is west of the Foyer. "The walls of this small room were clearly once lined with hooks, though now only one remains. The exit is a door to the east."
 	
 	In the Cloakroom is a supporter called the small brass hook. The hook is scenery. Understand "peg" as the hook.
 
-Inform will automatically understand any words in the object definition ("small", "brass", and "hook", in this case), but we can add extra synonyms with this sort of Understand command.
+Inform will automatically understand any words in the object definition (``SMALL``, ``BRASS``, and ``HOOK``, in this case), but we can add extra synonyms with this sort of Understand command.
 
 	{**}The description of the hook is "It's just a small brass hook, [if something is on the hook]with [a list of things on the hook] hanging on it[otherwise]screwed to the wall[end if]."
 
@@ -41,7 +41,7 @@ This description is general enough that, if we were to add other hangable items 
 	
 	Neatness is a kind of value. The neatnesses are neat, scuffed, and trampled. The message has a neatness. The message is neat.
 
-We could if we wished use a number to indicate how many times the player has stepped on the message, but Inform also makes it easy to add descriptive properties of this sort, so that the code remains readable even when the reader does not know what "the number of the message" might mean.
+We could if we wished use a number to indicate how many times the player has stepped on the message, but Inform also makes it easy to add descriptive properties of this sort, so that the code remains readable even when the reader does not know what `the number of the message` might mean.
 
 	{**}Instead of examining the message:
 		increment score;
@@ -91,5 +91,5 @@ This defines an object which is worn at the start of play. Because we have said 
 	
 	Test me with "s / n / w / inventory / hang cloak on hook / e / s / read message".
 
-And that's all. As always, type ``test me`` to watch the scenario play itself out.
+And that's all. As always, type ``TEST ME`` to watch the scenario play itself out.
 

@@ -5,7 +5,7 @@ Index: Supporter from which the player cannot take things
 Description: A grill, from which the player is not allowed to take anything lest they're burned.
 For: Z-Machine
 
-Descriptions of objects can be used in "Instead" rules: we can not only say "Instead of taking the steak", but also "Instead of taking something" or "Instead of taking something which is on the grill".
+Descriptions of objects can be used in `Instead` rules: we can not only say `Instead of taking the steak`, but also `Instead of taking something` or `Instead of taking something which is on the grill`.
 
 That last rule is useful if, for example, we want to prevent the player from interacting with anything on a specific supporter:
 
@@ -20,7 +20,7 @@ That last rule is useful if, for example, we want to prevent the player from int
 	
 	Test me with "get steak / get all from grill / get all".
 
-We could just as easily adapt this rule to affect a container: "Instead of taking something which is in the ice chest," for example.
+We could just as easily adapt this rule to affect a container: `Instead of taking something which is in the ice chest`, for example.
 
-Note also that in older versions of Inform, the pattern "get all from..." was treated differently from "get steak", and had to be accounted for separately. This is no longer the case; this instead of taking... rule will handle all the phrasings which the player might use to try to acquire this object.
+Note also that in older versions of Inform, the pattern ``GET ALL FROM...`` was treated differently from ``GET STEAK``, and had to be accounted for separately. This is no longer the case; this `instead of taking` rule will handle all the phrasings which the player might use to try to acquire this object.
 

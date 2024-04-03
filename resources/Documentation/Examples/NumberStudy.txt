@@ -25,5 +25,5 @@ This is the same case given above, but expanded just slightly to demonstrate tha
 		repeat with R running through L:
 			chart R.
 
-As this shows, we can even form lists of relations. The kind of L is "list of relations of numbers".
+As this shows, we can even form lists of relations. The kind of `L` is `list of relations of numbers`.
 

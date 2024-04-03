@@ -2,12 +2,12 @@ Example: ** Lanista 2
 Location: Overriding existing commands
 RecipeLocation: Combat and Death
 Index: Lanista 2. Randomised Combat with Weapons
-Description: Randomised combat in which the damage done depends on what weapons the characters are wielding, and in which an ``attack it with`` action is created to replace regular attacking. Also folds a new ``diagnose`` command into the system.
+Description: Randomised combat in which the damage done depends on what weapons the characters are wielding, and in which an ``ATTACK IT WITH`` action is created to replace regular attacking. Also folds a new ``DIAGNOSE`` command into the system.
 For: Z-Machine
 
-In [Lanista 1], we explored a way to create a randomised combat system. That system didn't allow for multiple weapons, though. Here we explore how to create an ``attack it with`` action that will let the player choose between weapons with different maximum powers.
+In [Lanista 1], we explored a way to create a randomised combat system. That system didn't allow for multiple weapons, though. Here we explore how to create an ``ATTACK IT WITH`` action that will let the player choose between weapons with different maximum powers.
 
-We're also going to rewrite that original "instead of attacking:" rule into an attacking it with action that can be performed equally by the player or by any of the player's enemies.
+We're also going to rewrite that original `instead of attacking:` rule into an attacking it with action that can be performed equally by the player or by any of the player's enemies.
 
 	{*}"Lanista, Part Two"
 	
@@ -19,7 +19,7 @@ We're also going to rewrite that original "instead of attacking:" rule into an a
 	
 	The maximum hit points of the player is 35. The maximum hit points of the gladiator is 25.
 
-In our simpler version of this example we set the current hit points by hand, but in a game with many characters this would get dull and repetitive, so here we'll use a "when play begins" to set all current hit point values automatically to maximum:
+In our simpler version of this example we set the current hit points by hand, but in a game with many characters this would get dull and repetitive, so here we'll use a `when play begins` to set all current hit point values automatically to maximum:
 
 	{**}When play begins:
 		repeat with victim running through people:
@@ -47,13 +47,13 @@ In our simpler version of this example we set the current hit points by hand, bu
 	
 	Section 4 - Attacking it with
 
-In our new system, we want to specify what is being used for an attack. This means that we need to create a new "attacking it with" action, and also that we should disable the existing "attacking..." command.
+In our new system, we want to specify what is being used for an attack. This means that we need to create a new `attacking it with` action, and also that we should disable the existing `attacking...` command.
 
-Here's why: If we leave the default attack command in place, Inform will continue to accept commands like ``attack gladiator``, but reply foolishly with the default "Violence is not the answer..." response.
+Here's why: If we leave the default attack command in place, Inform will continue to accept commands like ``ATTACK GLADIATOR``, but reply foolishly with the default ``Violence is not the answer...`` response.
 
-A somewhat better approach would be to change the reply of ``attack gladiator`` to say something like "You must specify a weapon to attack with." But this is still less than ideal, because it means that the player has to then rewrite the entire command. If, on the other hand, we take out ``attack gladiator`` entirely, the game will always prompt "What do you want to attack the gladiator with?" – which teaches the player the correct command structure for this particular game, and avoids pretending to understand any command that is not meaningful within this game.
+A somewhat better approach would be to change the reply of ``ATTACK GLADIATOR`` to say something like ``You must specify a weapon to attack with.`` But this is still less than ideal, because it means that the player has to then rewrite the entire command. If, on the other hand, we take out ``ATTACK GLADIATOR`` entirely, the game will always prompt ``What do you want to attack the gladiator with?`` – which teaches the player the correct command structure for this particular game, and avoids pretending to understand any command that is not meaningful within this game.
 
-This is a little bit of work because ``attack`` has a lot of synonyms in the default library, but if we look through the actions index we can find them all:
+This is a little bit of work because ``ATTACK`` has a lot of synonyms in the default library, but if we look through the actions index we can find them all:
 
 	{**}Understand the commands "attack" and "punch" and "destroy" and "kill" and "murder" and "hit" and "thump" and "break" and "smash" and "torture" and "wreck" as something new.
 
@@ -61,11 +61,11 @@ Now we make our new command:
 
 	{**}Attacking it with is an action applying to one visible thing and one carried thing. Understand "attack [someone] with [something preferably held]" as attacking it with.
 
-Note that we've specified "one carried thing", because we want the player to pick up a weapon to use if necessary. And now we assign all the old attack vocabulary to apply to the new command:
+Note that we've specified `one carried thing`, because we want the player to pick up a weapon to use if necessary. And now we assign all the old attack vocabulary to apply to the new command:
 
 	{**}Understand the commands "punch" and "destroy" and "kill" and "murder" and "hit" and "thump" and "break" and "smash" and "torture" and "wreck" as "attack".
 
-This may seem counter-intuitive, but order of source code matters here: we first get rid of the old, default vocabulary, then define our new action, then make the vocabulary apply to that new action. Inform will now understand ``hit gladiator with trident``, ``break gladiator with trident``, and so on.
+This may seem counter-intuitive, but order of source code matters here: we first get rid of the old, default vocabulary, then define our new action, then make the vocabulary apply to that new action. Inform will now understand ``HIT GLADIATOR WITH TRIDENT``, ``BREAK GLADIATOR WITH TRIDENT``, and so on.
 
 Our new action is also a perfect place to use an action variable: we're going to need to choose an amount of damage done and refer to that several times in our action rules. So let's set that up first:
 
@@ -91,7 +91,7 @@ Our new action is also a perfect place to use an action variable: we're going to
 		if the noun is dead and the noun is not the player:
 			now the noun is nowhere.
 
-Though our checks and carry-out rules are similar regardless of who is acting, we're going to want actions to be described differently for different actors, so we'll use separate "report attacking" and "report someone attacking" rules. We'll also make some special cases for when the character has died as a result of the attack:
+Though our `check` and `carry out` rules are similar regardless of who is acting, we're going to want actions to be described differently for different actors, so we'll use separate `report attacking` and `report someone attacking` rules. We'll also make some special cases for when the character has died as a result of the attack:
 
 	{**}Report attacking a dead person with something (this is the death-report priority rule):
 		say "You attack with [the second noun], killing [the noun]!" instead.
@@ -119,7 +119,4 @@ Though our checks and carry-out rules are similar regardless of who is acting, w
 	
 	Test me with "hit gladiator with mace / kill gladiator / drop mace / attack gladiator / attack gladiator with mace / g / g".
 
-[ZL: link to Reliques? ]::
-
-Those devoted to role-playing will note that our form of randomisation is still pretty naive: most ``rpg`` systems use multiple dice in order to create more interesting probability curves. For a system that simulates actual dice-rolling, see the full "Reliques of Tolti-Aph" game.
-
+Those devoted to role-playing will note that our form of randomisation is still pretty naive: most of those systems use multiple dice in order to create more interesting probability curves.

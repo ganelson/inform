@@ -11,7 +11,7 @@ For: Z-Machine
 	
 	Athena is a woman in Athens.
 
-Athena will proceed, unless delayed, through a list of locations stored in a simple table. Rather than using Inform's route-finding abilities ("the best route from..."), we simply move Athena from one location to the next, not even using the going action: she moves in mysterious ways, as befits a goddess.
+Athena will proceed, unless delayed, through a list of locations stored in a simple table. Rather than using Inform's route-finding abilities (`the best route from...`), we simply move Athena from one location to the next, not even using the going action: she moves in mysterious ways, as befits a goddess.
 
 	{**}Table of Athena's Movement
 	destination

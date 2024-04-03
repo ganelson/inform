@@ -5,7 +5,7 @@ Index: INVENTORY handling of properties made more flexible
 Description: Replacing Inform's default printing of properties such as "(closed)", "(open and providing light)", etc., with our own, more flexible variation.
 For: Z-Machine
 
-As we've seen in earlier examples such as [Equipment List], it is possible to vary the way Inform creates inventory listings in general (to create lists that look more like paragraphs of prose, lists divided between what the player is wearing and what they aren't, and so on). We can also use activities to alter the printing of specific objects' names and contents, as with the "omit contents in listing" feature after printing the name of something.
+As we've seen in earlier examples such as [Equipment List], it is possible to vary the way Inform creates inventory listings in general (to create lists that look more like paragraphs of prose, lists divided between what the player is wearing and what they aren't, and so on). We can also use activities to alter the printing of specific objects' names and contents, as with the `omit contents in listing` feature after printing the name of something.
 
 We may find, however, that we would like a great deal more control over Inform's printing of inventory details, not just as a special effect for a few items, but throughout the game.
 
@@ -21,7 +21,7 @@ We start by turning off Inform's native property writer:
 		say "You are carrying: [line break]";
 		list the contents of the player, with newlines, indented, including contents, with extra indentation.
 
-This is very much like the library's standard behaviour, but with the exception that "giving inventory information" or even "giving brief inventory information" are omitted. Here's how we supplant it:
+This is very much like the library's standard behaviour, but with the exception that `giving inventory information` or even `giving brief inventory information` are omitted. Here's how we supplant it:
 
 	{**}After printing the name of something (called target) while taking inventory:
 		follow the property-aggregation rules for the target.
@@ -55,7 +55,7 @@ Now, our property-aggregation rulebook is going to look at a given object and de
 			rule succeeds;
 		rule fails.
 
-Notice that we don't need to write any rules about how to print that list of text: because Inform is printing out a list, it will automatically insert commas, spaces, and the word "and" where appropriate; and it will automatically follow the "use serial comma" option, if we have it set.
+Notice that we don't need to write any rules about how to print that list of text: because Inform is printing out a list, it will automatically insert commas, spaces, and the word ``and`` where appropriate; and it will automatically follow the `use serial comma` option, if we have it set.
 
 Now we're free to meddle. Let's give the player a bunch of possessions that will be listed in interesting ways in inventory:
 
@@ -72,14 +72,14 @@ Now we're free to meddle. Let's give the player a bunch of possessions that will
 	
 	The player carries an oyster. The oyster contains a pearl. The oyster is openable.
 
-Now suppose that we don't want the oyster to say "closed" when it's closed. Instead, we'd like it to say "clamped shut". As this is the only property the oyster will ever have, we can simply override its whole property-aggregation rulebook:
+Now suppose that we don't want the oyster to say ``closed`` when it's closed. Instead, we'd like it to say ``clamped shut``. As this is the only property the oyster will ever have, we can simply override its whole property-aggregation rulebook:
 
 	{**}A property-aggregation rule for the oyster:
 		if the oyster is closed:
 			say " (clamped shut)";
 		rule succeeds.
 
-That's fine for the oyster because "clamped shut" is the only property it'll ever have. What if we'd like instead just to revise the way the sack (and only the sack) gets described as providing light?
+That's fine for the oyster because ``clamped shut`` is the only property it'll ever have. What if we'd like instead just to revise the way the sack (and only the sack) gets described as providing light?
 
 	{**}The sacklight rule is listed after the mention lit objects rule in the property-aggregation rules.
 	
@@ -107,7 +107,7 @@ We might also wish to add a systematic feature across the board to include a new
 	
 	Test me with "i / close oyster / i  / turn on flashlight / i / take off flashlight / i / turn off flashlight / i / close sack / i / open sack / i / take all from sack / i / close sack / i  / wear sack / i / enchant sack / i / open sack / put all in sack / i / close sack / i".
 
-Further variations are possible as well: if we used a "before printing the name..." rather than an "after printing the name..." rule, we could automatically generate lines like "an open and empty phosphorescent plastic sack", removing some of the artificiality of the parentheses.
+Further variations are possible as well: if we used a `before printing the name...` rather than an `after printing the name...` rule, we could automatically generate lines like ``an open and empty phosphorescent plastic sack``, removing some of the artificiality of the parentheses.
 
 Or we could add more logic to the rules about which properties are mentioned, so that some features of objects were mentioned in inventory only if the player was wearing the correct detection device, like so:
 

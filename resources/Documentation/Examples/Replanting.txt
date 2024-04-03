@@ -5,7 +5,7 @@ Index: TAKE scenery producing a custom response
 Description: Changing the response when the player tries to take something that is scenery.
 For: Z-Machine
 
-By default, ``take oak`` in the example above will produce the response "That's hardly portable." This is fine under many circumstances, but also a bit generic, so we might want to override it for a specific game.
+By default, ``TAKE OAK`` in the example above will produce the response ``That's hardly portable.`` This is fine under many circumstances, but also a bit generic, so we might want to override it for a specific game.
 
 	{*}"Replanting"
 	
@@ -15,7 +15,6 @@ By default, ``take oak`` in the example above will produce the response "That's 
 	
 	Test me with "take oak".
 
-Here we've used an "instead" rule; we will learn more about these in [Basic Actions]. This allows us to define our own results for taking an object.
+Here we've used an `instead` rule; we will learn more about these in [Basic Actions]. This allows us to define our own results for taking an object.
 
-Note: "scenery" is a property of an object (about which we will hear more later). So when we use it in rules, we can talk about "some scenery", "something that is scenery", or even "a scenery thing" – the last one doesn't sound much like English, but is a more plausible construction with other adjectives.
-
+Note: `scenery` is a property of an object (about which we will hear more later). So when we use it in rules, we can talk about `some scenery`, `something that is scenery`, or even `a scenery thing` – the last construction doesn't sound much like English, but works better with other adjectives, as in the example `a portable thing`.

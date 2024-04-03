@@ -5,7 +5,7 @@ Index: Shifting alliances among people
 Description: People are to be grouped into alliances. To kiss someone is to join their faction, which may make a grand alliance; to strike them is to give notice of quitting, and to become a lone wolf.
 For: Z-Machine
 
-The following is best tested by experimentally kissing and/or attacking, and typing ``relations`` after every change to see the effect.
+The following is best tested by experimentally kissing and/or attacking, and typing ``RELATIONS`` after every change to see the effect.
 
 	{*}"Unthinkable Alliances"
 	

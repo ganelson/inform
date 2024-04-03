@@ -17,7 +17,7 @@ We begin with the location and its fittings, and we create a kind of value which
 	
 	The box is an enterable supporter in Nook Obscure. The current box position is an internal position that varies. The current box position is near the bed. "Your packing case, stamped W. WORDSWORTH (KENDAL), is [current box position]." Instead of taking the box, say "It is filled with your peerless rock collection and too heavy to lift, but could be pushed." Instead of opening the box, say "It is securely nailed shut."
 
-We create an action, "pushing it over to", for pushing a box around on the floor of a single location. (Calling this "pushing it over to" prevents clashes with the existing "pushing it to" action, which is for pushing things from one room to another.) Almost half of the text which defines the action is concerned with the two action variables, but they make the implementation of everything else so much easier that we end up writing less than if we hadn't used them.
+We create an action, `pushing it over to`, for pushing a box around on the floor of a single location. (Calling this `pushing it over to` prevents clashes with the existing `pushing it to` action, which is for pushing things from one room to another.) Almost half of the text which defines the action is concerned with the two action variables, but they make the implementation of everything else so much easier that we end up writing less than if we hadn't used them.
 
 	{**}Understand "push [box]" as a mistake ("You can push the box to the window, the bed or the shelf.").
 	

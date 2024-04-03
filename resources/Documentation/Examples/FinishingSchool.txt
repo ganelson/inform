@@ -5,9 +5,9 @@ Index: Another, distinct from the player
 Description: The "another" adjective for rules such as "in the presence of another person".
 For: Z-Machine
 
-It is often useful to write action rules which apply only when the player is observed by a third party. "In the presence of a person", however, will react even if only the player is in the room, because the player is, of course, a person as well.
+It is often useful to write action rules which apply only when the player is observed by a third party. `In the presence of a person`, however, will react even if only the player is in the room, because the player is, of course, a person as well.
 
-A convenient way around this problem is to define an "other" adjective:
+A convenient way around this problem is to define an `another` adjective:
 
 	{*}"Finishing School"
 	
@@ -24,5 +24,5 @@ A convenient way around this problem is to define an "other" adjective:
 	
 	Test me with "eat apple / south / eat apple".
 
-If we did not have "another" here, Inform would interpret even the player as a possible schoolmarm, leading to such lines as "yourself stares at you coldly...". Clearly not quite the thing.
+If we did not have `another` here, Inform would interpret even the player as a possible schoolmarm, leading to such lines as ``yourself stares at you coldly...``. Clearly not quite the thing.
 

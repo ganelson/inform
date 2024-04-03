@@ -5,17 +5,17 @@ Index: Modifying and re-parsing an entered command
 Description: Determining that the command the player typed is invalid, editing it, and re-examining it to see whether it now reads correctly.
 For: Z-Machine
 
-Novice players of interactive fiction, unfamiliar with its conventions, will often try to add extra phrases to a command that the game cannot properly parse: ``hit door with fist``, for instance, instead of ``hit door``.
+Novice players of interactive fiction, unfamiliar with its conventions, will often try to add extra phrases to a command that the game cannot properly parse: ``HIT DOOR WITH FIST``, for instance, instead of ``HIT DOOR``.
 
 While we can deal with some of these instances by expanding our range of actions, at some point it becomes impossible to account for all the possible prepositional phrases that the player might want to tack on. So what do we do if we want to handle those appended bits of text sensibly?
 
-We could go through and remove any piece of text containing "with ..." from the end of a player's command; the problem with that is that it overzealously lops off the ends of valid commands like ``unlock door with key``, as well. So clearly we don't want to do this as part of the "After reading a command..." stage.
+We could go through and remove any piece of text containing `with ...` from the end of a player's command; the problem with that is that it overzealously lops off the ends of valid commands like ``UNLOCK DOOR WITH KEY``, as well. So clearly we don't want to do this as part of the `After reading a command...` stage.
 
 A better time to cut off the offending text is right before issuing a parser error. At that point, Inform has already determined that it definitely cannot parse the instruction as given, so we know that there's something wrong with it.
 
 The next problem, though, is that after we've edited the player's text we want to feed the corrected version back to Inform and try once more to interpret it.
 
-This is where we have a valid reason to write a new "rule for reading a command". We will tell Inform that when we have just corrected the player's input to something new, it should not ask for a new command (by printing a prompt and waiting for another line of input); it should instead paste our stored corrected command back into "the player's command" and proceed as though that new text had just been typed.
+This is where we have a valid reason to write a new `rule for reading a command`. We will tell Inform that when we have just corrected the player's input to something new, it should not ask for a new command (by printing a prompt and waiting for another line of input); it should instead paste our stored corrected command back into `the player's command` and proceed as though that new text had just been typed.
 
 Thanks to John Clemens for the specifics of the implementation.
 
@@ -51,5 +51,5 @@ Thanks to John Clemens for the specifics of the implementation.
 	
 	Test me with "attack troll with sword / unlock chest with sword / attack troll as a test".
 
-A caveat about using this method in a larger game: "parser error flag" will not automatically control the behaviour of any rules we might have written for Before reading a command... or After reading a command..., so they may now fire at inappropriate times. It is a good idea to check for parser error flag in those rules as well.
+A caveat about using this method in a larger game: `parser error flag` will not automatically control the behaviour of any rules we might have written for Before reading a command... or After reading a command..., so they may now fire at inappropriate times. It is a good idea to check for parser error flag in those rules as well.
 

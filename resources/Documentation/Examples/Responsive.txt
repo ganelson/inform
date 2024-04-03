@@ -9,7 +9,7 @@ The most straightforward way to alter the response text for something in the sta
 
 Clicking on the speech bubble will show what the current response text is, and give us an option called "set".
 
-If we click "set", this will automatically paste in the response name that we need to change. We can put this inside a "when play begins" rule in order to make that change take effect from the start of the game, like so:
+If we click "set", this will automatically paste in the response name that we need to change. We can put this inside a `when play begins` rule in order to make that change take effect from the start of the game, like so:
 
 	{*}"Responsive"
 	

@@ -23,5 +23,5 @@ On the other hand, beware that this would not work as desired:
 	
 	Test me with "listen to message / look".
 
-The reason is that our Instead rule has pre-empted normal listening, so Inform considers that we have never successfully heard the message. The moral here is that "if we have..." is useful for tracking events that otherwise proceeded completely normally (picking up ordinary objects, examining things); if we have used instead to make some change, we will have to use a different approach to record that the event did occur as scheduled.
+The reason is that our `Instead` rule has pre-empted normal listening, so Inform considers that we have never successfully heard the message. The moral here is that `if we have...` is useful for tracking events that otherwise proceeded completely normally (picking up ordinary objects, examining things); if we have used instead to make some change, we will have to use a different approach to record that the event did occur as scheduled.
 

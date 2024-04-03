@@ -7,6 +7,8 @@ For: Z-Machine
 
 Making major changes to display features, such as the construction of the status line, sometimes requires that we rely on Inform 6 in bulk; here is how we might produce the Trinity-style status line, with the location centered at the top center of the screen.
 
+Note that this example _only_ works if the Settings for it are set to the Z-machine story file format: it does not work on the default Glulx setting, which has a different screen arrangement.
+
 	{*}"Corner of No and Where"
 	
 	No is a room. Where is west of No.

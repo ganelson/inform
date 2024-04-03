@@ -5,9 +5,9 @@ Index: Food with ingredients affecting the player
 Description: A soup to which the player can add ingredients, which will have different effects when the player eats.
 For: Z-Machine
 
-A thing can have a rule as a property, if we like. Here we are going to allow the player to make a soup whose effects will depend on its ingredients. Each ingredient will have its own "food effect" rule, to be followed when the food is eaten.
+A thing can have a rule as a property, if we like. Here we are going to allow the player to make a soup whose effects will depend on its ingredients. Each ingredient will have its own `food effect` rule, to be followed when the food is eaten.
 
-Note that there are other, slightly less cumbersome ways to do the same thing – we will see in the chapter on [Rulebooks] that we could make a "food effects rulebook" and then write a number of rules such as "food effects rule for carrots" or "food effects rule for the stone". Nonetheless, we demonstrate rules-as-properties here for the sake of thoroughness.
+Note that there are other, slightly less cumbersome ways to do the same thing – we will see in the chapter on [Rulebooks] that we could make a `food effects rulebook` and then write a number of rules such as `food effects rule for carrots` or `food effects rule for the stone`. Nonetheless, we demonstrate rules-as-properties here for the sake of thoroughness.
 
 So:
 

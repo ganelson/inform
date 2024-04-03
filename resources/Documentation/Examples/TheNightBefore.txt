@@ -2,7 +2,7 @@ Example: *** The Night Before
 Location: Assemblies and body parts
 RecipeLocation: The Human Body
 Index: Disambiguating body parts
-Description: Instructing Inform to prefer different interpretations of ``examine nose``, depending on whether the player is alone, in company, or with Rudolph the Red-nosed Reindeer.
+Description: Instructing Inform to prefer different interpretations of ``EXAMINE NOSE``, depending on whether the player is alone, in company, or with Rudolph the Red-nosed Reindeer.
 For: Z-Machine
 
 Suppose that we're going to give every person in the game a nose, but we want references to a nose always to mean the nose of someone *else*, if the player is with one other person. Moreover, on some occasions we're going to be in sight of Rudolph, so actions directed at an unspecified nose should always prefer his.
@@ -30,7 +30,7 @@ Next, we'll teach Inform some vocabulary to distinguish between the player and e
 	Instead of examining a selfish nose:
 		say "You cross your eyes, but can't get a good look."
 
-Here is the part that actually determines the preferences. "Does the player mean..." can result in five outcomes: "it is very unlikely", "it is unlikely", "it is possible" (the neutral default), "it is likely", and "it is very likely". This is discussed in greater detail in the Understanding chapter. Here, we want to discourage references to the player's own nose and encourage references to the nose of Rudolph, so:
+Here is the part that actually determines the preferences. `Does the player mean...` can result in five outcomes: `it is very unlikely`, `it is unlikely`, `it is possible` (the neutral default), `it is likely`, and `it is very likely`. This is discussed in greater detail in the Understanding chapter. Here, we want to discourage references to the player's own nose and encourage references to the nose of Rudolph, so:
 
 	{**}Does the player mean doing something when the noun is a selfish nose or the second noun is a selfish nose: it is very unlikely.
 	

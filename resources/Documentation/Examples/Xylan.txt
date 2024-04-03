@@ -47,5 +47,5 @@ And finally, we could try adding instructions explicitly:
 
 ...though of course in fact these other commands won't be available until we define them, too.
 
-This last approach, defining all the extra commands up front, is especially useful if these commands are very technical or unusual; if they are needed early in the game, before you've a chance to educate the player; or if they are not suggested by any in-game objects. A player who encounters a tool with an obvious use, such as a hairbrush, will likely think of trying to ``brush`` things with it. It's harder to rely on them guessing actions that are both outside the range of usual commands and unrelated to any of the visible props, however.
+This last approach, defining all the extra commands up front, is especially useful if these commands are very technical or unusual; if they are needed early in the game, before you've a chance to educate the player; or if they are not suggested by any in-game objects. A player who encounters a tool with an obvious use, such as a hairbrush, will likely think of trying to ``BRUSH`` things with it. It's harder to rely on them guessing actions that are both outside the range of usual commands and unrelated to any of the visible props, however.
 

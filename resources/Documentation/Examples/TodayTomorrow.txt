@@ -5,7 +5,7 @@ Index: Concealed pet who would yip at you if it could see you
 Description: A few notes on "In the presence of" and how it interacts with concealed objects.
 For: Z-Machine
 
-Rules about concealment will affect "in the presence of", too. For instance, suppose we have a man with a pocket pet:
+Rules about concealment will affect `in the presence of`, too. For instance, suppose we have a man with a pocket pet:
 
 	{*}"Today Tomorrow"
 	

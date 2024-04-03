@@ -58,7 +58,7 @@ How will ghosts manifest themselves? Because this is only a small example, we wi
 		repeat through the Table of Ghostly Presences in reverse sequence order:
 			if the haunted position entry is the coordinates of the location, say "You sense the ghostly presence of an adventurer, [manner of death entry] with a score of [score at death entry] in [turns at death entry] turns."
 
-(For instance, "You sense the ghostly presence of an adventurer, buried by a rockfall with a score of 10 in 5 turns.") That just leaves the rule for bumping off the player. When the Table is full, and there are already 20 ghosts, the one who died longest ago (with the lowest sequence count) is eliminated, and that row blanked out. (This will always be row 1 since we sorted the table in sequence order on reading it in.)
+(For instance, ``You sense the ghostly presence of an adventurer, buried by a rockfall with a score of 10 in 5 turns.``) That just leaves the rule for bumping off the player. When the Table is full, and there are already 20 ghosts, the one who died longest ago (with the lowest sequence count) is eliminated, and that row blanked out. (This will always be row 1 since we sorted the table in sequence order on reading it in.)
 
 	{**}To have the player (sticky end - a demise):
 		let the new sequence number be 0;

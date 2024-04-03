@@ -5,7 +5,7 @@ Index: Continuous space, simple
 Description: A lawn made up of several rooms, with part of the description written automatically.
 For: Z-Machine
 
-Sometimes we want to make a list of something too complicated to express in a say list... phrase. When this happens, we can instead mark all the items we want to mention as "marked for listing".
+Sometimes we want to make a list of something too complicated to express in a say list... phrase. When this happens, we can instead mark all the items we want to mention as `marked for listing`.
 
 In this case, we have a lawn area made up of four rooms. We want each room to automatically describe the directions leading to the other parts of the lawn. To do this, we will first determine which directions are relevant and mark those for listing, then list them.
 

@@ -23,7 +23,7 @@ If we tried the text above in Inform, we would find ourselves in the Hay-Strewn 
 
 Now the Corridor contains just two people, and we arrive on the scene as Maleska, with only Teresa facing us.
 
-At the end of every turn we will use the 'now the player is...' phrase. (This looks as if it simply changes the value of "player": which it does, but it also carries out a complicated operation behind the scenes to effect the switch.)
+At the end of every turn we will use the `now the player is...` phrase. (This looks as if it simply changes the value of `player`: which it does, but it also carries out a complicated operation behind the scenes to effect the switch.)
 
 	{**}Every turn:
 		if the player is Maleska, now the player is Teresa;
@@ -40,7 +40,7 @@ In this small example, strength is not used for anything, except that we will di
 		now the left hand status line is "[player]";
 		now the right hand status line is "STR: [strength of the player]".
 
-That last rule doesn't quite do what we might have expected. When we print `"[player]"`, we find that Inform usually prints "yourself". This is because Inform says "you" to mean Teresa when talking to the player-being-Teresa, and likewise for Maleska. We want to override that in this particular story, because the rapid switches of personality are otherwise hard to follow. So:
+That last rule doesn't quite do what we might have expected. When we print `"[player]"`, we find that Inform usually prints ``yourself``. This is because Inform says ``you`` to mean Teresa when talking to the player-being-Teresa, and likewise for Maleska. We want to override that in this particular story, because the rapid switches of personality are otherwise hard to follow. So:
 
 	{**}Rule for printing the name of Teresa: say "Teresa".
 	

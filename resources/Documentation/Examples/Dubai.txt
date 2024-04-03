@@ -5,8 +5,6 @@ Index: An elevator which takes the player to alternate floors
 Description: An elevator which connects any of 27 floors in a luxury hotel.
 For: Z-Machine
 
-[ZL: The peril of topical references! the Burj al-Arab is now just #5! https://en.wikipedia.org/wiki/List_of_tallest_hotels ]::
-
 The problem of implementing an elevator that opens onto a large number of floors often challenges novice interactive fiction authors. It also raises a fundamental design problem – how to implement a large building in an interesting way. It is tempting to write a hotel with an elevator and innumerable tedious and identical floors just for the sake of realism; in many cases it is a better idea simply to omit any locations that contribute nothing to the story or the play of the game.
 
 In charity, though, let us assume that the author has a legitimate reason for wanting to implement an elevator that opens onto some generic floors. We will go whole-hog, and set this in the world's tallest hotel: Burj al-Arab, Dubai.
@@ -117,7 +115,7 @@ Alternatively:
 		repeat with item running through portable things enclosed by the Generic Floor:
 			clear the item.
 
-The "enclosed by" line clears even things left on, say, small un-portable side-tables or whatever; but because we do "in" first, we make sure to move any containers or supporters undisturbed. The next bit could be more tidily incorporated into our previous "before going outside" rule, but since we are writing this code to be optionally pasted onto the end of the first bit, we'll express the rule separately:
+The `enclosed by` line clears even things left on, say, small un-portable side-tables or whatever; but because we do `in` first, we make sure to move any containers or supporters undisturbed. The next bit could be more tidily incorporated into our previous `before going outside` rule, but since we are writing this code to be optionally pasted onto the end of the first bit, we'll express the rule separately:
 
 	{**}Before going outside in the Lift when something is in Limbo:
 		unless there is a floor corresponding to a level of the current level of the Lift in the Table of Floors:
@@ -136,5 +134,4 @@ The "enclosed by" line clears even things left on, say, small un-portable side-t
 
 And now we have a situation in which the player's valuables are left untouched wherever in the hotel they happen to abandon them.
 
-Incidentally, this example was almost set in an entirely different location: the largest hotel in the world may some day be the Ryugyong Hotel in Pyongyang, North Korea, with its 105 floors – but for some years construction halted at the creation of the building's huge concrete shell.
-
+[A historical footnote. When this example was first written, the race to be the tallest hotel in the world seemed to be between the Burj al-Arab and the Ryugyong Hotel in Pyongyang, North Korea, with its 105 floors, but as of 2024 that remains vacant and unfinished. The Burj al-Arab has now fallen to fifth place in the world, and fourth place in Dubai, which says something about who builds tall hotels.] 

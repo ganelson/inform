@@ -5,7 +5,7 @@ Index: Changing the final question after victory
 Description: Adding a feature to the final question after victory, so that the player can choose to reveal notes about items in the game.
 For: Z-Machine
 
-The options offered to the player at the end of the game are listed in the Table of Final Question Options, which means that we can add to them simply by continuing the table; what's more, the table gives us the opportunity to create a "final response rule", a rule that the game should follow in order to parse the player's input at this point.
+The options offered to the player at the end of the game are listed in the `Table of Final Question Options`, which means that we can add to them simply by continuing the table; what's more, the table gives us the opportunity to create a `final response rule`, a rule that the game should follow in order to parse the player's input at this point.
 
 So, for instance, if we wanted the player to be allowed to ask for notes about any of the rooms, characters, or objects in a historical game:
 

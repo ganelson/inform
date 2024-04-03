@@ -2,7 +2,7 @@ Example: ** North by Northwest
 Location: Reading a command
 RecipeLocation: Varying What Is Read
 Index: North-northwest and similar directions
-Description: Creating additional compass directions between those that already exist (for instance, ``nnw``) -- and dealing with an awkwardness that arises when the player tries to type ``north-northwest``. The example demonstrates a way around the default nine-character limit on parsed words.
+Description: Creating additional compass directions between those that already exist (for instance, ``NNW``) -- and dealing with an awkwardness that arises when the player tries to type ``NORTH-NORTHWEST``. The example demonstrates a way around the default nine-character limit on parsed words.
 For: Z-Machine
 
 Suppose we wanted to add intermediate compass directions such as north-northwest to our game. Because of the limitations of the index map, we won't be able to view these connections on the world map, but we can certainly create them, and use them in route-finding, just like other directions.
@@ -29,7 +29,7 @@ Here's how we'd set up such a thing:
 	
 	The east-southeast is a direction. East-southeast has opposite west-northwest. Understand "e-se" or "ese" as east-southeast.
 
-A complication arises because we reach the 9-character limit: Inform truncates the names of objects to nine characters before trying to understand them. To make matters worse, the hyphen (and other punctuation marks) count as two letters. So both north-northwest and north-northeast will get truncated to "north-no", and be indistinguishable when the player types them.
+A complication arises because we reach the 9-character limit: Inform truncates the names of objects to nine characters before trying to understand them. To make matters worse, the hyphen (and other punctuation marks) count as two letters. So both north-northwest and north-northeast will get truncated to ``NORTH-NO``, and be indistinguishable when the player types them.
 
 When we are compiling for Glulx, the limit is easily changed with a single line, setting the use option called "dictionary resolution". For instance, if we wanted to raise the limit so that it is at least 15, we would simply write "Use dictionary resolution of 15."
 
@@ -62,4 +62,4 @@ For more on the use of text, see the [Advanced Text] chapter.
 
 In practice, this is going to be overkill for almost all games: most players already find eight compass directions plus up and down to be enough (or more than enough) to keep track of. But the option exists, in case there is a compelling reason to use it.
 
-(Note also that we are allowed to use multi-word direction names, so we could  have called the directions "north by northwest", "north by northeast", and so on. This example deliberately takes the hard way in order to show how to resolve the nine-character problem.)
+(Note also that we are allowed to use multi-word direction names, so we could have called the directions "north by northwest", "north by northeast", and so on. This example deliberately takes the hard way in order to show how to resolve the nine-character problem.)

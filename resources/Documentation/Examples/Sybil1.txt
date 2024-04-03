@@ -2,7 +2,7 @@ Example: * Sybil 1
 Location: Reading and talking
 RecipeLocation: Saying Simple Things
 Index: Sybil 1. ASK, TELL, and ANSWER conflated
-Description: Direct all ``ask``, ``tell``, and ``answer`` commands to ``ask``, and accept multiple words for certain cases.
+Description: Direct all ``ASK``, ``TELL``, and ``ANSWER`` commands to ``ASK``, and accept multiple words for certain cases.
 For: Z-Machine
 
 Sometimes we do not particularly want to deal with all the variations on asking, telling, or answering someone something, but want to direct everything to a single conversational command:
@@ -15,7 +15,7 @@ Sometimes we do not particularly want to deal with all the variations on asking,
 	
 	Instead of asking the Sybil about "persians", say "She nods gravely."
 
-And similarly, a difference between ``give`` and ``show`` is sometimes overkill:
+And similarly, a difference between ``GIVE`` and ``SHOW`` is sometimes overkill:
 
 	{**}Instead of showing something to someone, try giving the noun to the second noun.
 	
@@ -25,11 +25,11 @@ It is also often the case that we want to accept more than one form of a term. F
 
 	{**}Instead of asking the Sybil about "Darius/king", say "Her smile unnerves you."
 
-will match either "Darius" or "king". If necessary, we can go a step further and define our own token to match a variety of phrases, like this:
+will match either ``DARIUS`` or ``KING``. If necessary, we can go a step further and define our own token to match a variety of phrases, like this:
 
 	{**}Understand "Athenians/Spartans/Greeks" or "hoplite army/forces" as "[Greeks]". Instead of asking the Sybil about "[Greeks]", say "She looks encouraging."
 
-The token `"[Greeks]"` will match all of "Athenians", "Spartans", "Greeks", "hoplite army", or "hoplite forces". It will not match "hoplite" or "forces" alone; it is important to note that the / divides individual words which are understood equivalently, but does not define entire phrases as equivalent. More about how Inform understands specific phrases can be found in the chapter on [Understanding].
+The token `"[Greeks]"` will match all of ``ATHENIANS``, ``SPARTANS``, ``GREEKS``, ``HOPLITE ARMY``, or ``HOPLITE FORCES``. It will not match ``HOPLITE`` or ``FORCES`` alone; it is important to note that the / divides individual words which are understood equivalently, but does not define entire phrases as equivalent. More about how Inform understands specific phrases can be found in the chapter on [Understanding].
 
 	{**}Test me with "test one / test two".
 	

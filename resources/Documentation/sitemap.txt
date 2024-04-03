@@ -1,0 +1,18 @@
+contents: duplex to "index.html"
+
+volume contents: "Writing with Inform" to "WI_index.html"
+pages: "Writing with Inform" by sections to "WI_#.html"
+
+volume contents: "The Recipe Book" to "RB_index.html"
+pages: "The Recipe Book" by sections to "RB_#.html"
+
+alphabetical index: "Alphabetical Index of Examples" to "alphabetical_index.html"
+numerical index: "Examples in Numerical Order" to "numerical_index.html"
+thematic index: "Examples in Thematic Order" to "thematic_index.html"
+general index: "General Index" to "general_index.html"
+
+examples: numbered to "eg_#.html"
+
+cross-references: to "xrefs.txt"
+
+manifest: to "manifest.txt"

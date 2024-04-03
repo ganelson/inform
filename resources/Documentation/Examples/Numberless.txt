@@ -20,7 +20,7 @@ For: Z-Machine
 		otherwise:
 			say "N is more than the number of your toes."
 
-The final "otherwise" here will fire only if none of the earlier conditions applies; we could leave it out and print nothing in the case that N is 4 or 5.
+The final `otherwise` here will fire only if none of the earlier conditions applies; we could leave it out and print nothing in the case that N is 4 or 5.
 
 The more compact way to do this is to create a list of values that our number could match; in many programming languages this is called a switch statement. For example:
 

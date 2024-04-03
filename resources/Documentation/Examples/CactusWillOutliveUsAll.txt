@@ -18,7 +18,7 @@ For: Z-Machine
 				say "It looks as if [the DK] was the death knell for [the victim], who looks startled, then nonexistent.";
 				now the victim is nowhere.
 
-If we leave it at that, then pulling the cactus will kill Luckless Luke but then say "Nothing obvious happens.", which seems like a bit of an anti-climax. So we add a special case response for that one:
+If we leave it at that, then pulling the cactus will kill Luckless Luke but then say ``Nothing obvious happens.``, which seems like a bit of an anti-climax. So we add a special case response for that one:
 
 	{**}After pulling the cactus when Luckless Luke was in the location:
 		say "That's a real shame."

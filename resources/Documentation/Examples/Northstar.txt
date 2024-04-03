@@ -2,10 +2,10 @@ Example: ** Northstar
 Location: Replacements
 RecipeLocation: Obedient Characters
 Index: ASK person TO do something, understood
-Description: Making Inform understand ``ask josh to take inventory`` as ``josh, take inventory``. This requires us to use a regular expression on the player's command, replacing some of the content.
+Description: Making Inform understand ``ASK JOSH TO TAKE INVENTORY`` as ``JOSH, TAKE INVENTORY``. This requires us to use a regular expression on the player's command, replacing some of the content.
 For: Z-Machine
 
-Most of the time, Inform understands commands to other characters when they take the form ``josh, take inventory`` or ``joan, wear the armor``. But novice players might also try commands of the form ``ask josh to take inventory`` or ``order joan to wear the armor``.
+Most of the time, Inform understands commands to other characters when they take the form ``JOSH, TAKE INVENTORY`` or ``JOAN, WEAR THE ARMOR``. But novice players might also try commands of the form ``ASK JOSH TO TAKE INVENTORY`` or ``ORDER JOAN TO WEAR THE ARMOR``.
 
 The easiest way to make Inform understand such commands is to meddle directly with the player's command, changing it into the format that the game will understand, as here:
 

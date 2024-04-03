@@ -5,7 +5,7 @@ Index: Death message replaced
 Description: Completely replacing the endgame text and stopping the game without giving the player a chance to restart or restore.
 For: Z-Machine
 
-Occasionally, a piece of IF is sufficiently serious that it feels bathetic to offer the player the usual restore-restart-undo-quit options at the end. The following would replace "\*\*\* You have died \*\*\*" with a centered epitaph, then quit the game when the player hits a key.
+Occasionally, a piece of IF is sufficiently serious that it feels bathetic to offer the player the usual restore-restart-undo-quit options at the end. The following would replace ``*** You have died ***`` with a centered epitaph, then quit the game when the player hits a key.
 
 This example relies on a standard extension to avoid any fancy programming:
 

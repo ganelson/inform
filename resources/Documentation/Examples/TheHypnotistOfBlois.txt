@@ -29,9 +29,7 @@ For: Z-Machine
 		now the noun is alert;
 		say "[The noun] returns abruptly to consciousness."
 
-[ZL: "shortly" reference awkward]::
-
-We will learn more about check rules for other characters shortly, but the following prevents the hypnosis patient from trying to hypnotise us in turn:
+The following prevents the hypnosis patient from trying to hypnotise us in turn. Note that `check someone hypnotizing someone` effectively stops anybody other than the player-character from performing this action.
 
 	{**}Check someone hypnotizing someone:
 		stop the action.

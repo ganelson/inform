@@ -16,13 +16,10 @@ We can change the directions in the map in mid-game, though in practice this is 
 	Amid the Cheering Throng is a room.
 	
 	Instead of pushing the button for the first time:
-		change the east exit of the Challenger's Waiting Room to Amid the Cheering Throng;
-		change the west exit of the Cheering Throng to the Challenger's Waiting Room;
+		now the Challenger's Waiting Room is west from Amid the Cheering Throng;
+		now Amid the Cheering Throng is east from the Challenger's Waiting Room;
 		say "With a groan of gears, the east wall swings open! If you've lost now, well, you've lost..."
 	
 	Test me with "e / push button / e / w".
 
-Our instructions about pushing the button will be further explained in the chapter on [Actions], but the thing to note here is that we can "change (whatever) exit" in order to set or re-set map directions. Notice that we have to set both directions explicitly: changing the east exit of the Waiting Room does not automatically also change the west exit of Amid the Cheering Throng.
-
-This allows greater flexibility in our games but does require an extra line or so of work.
-
+Our instructions about pushing the button will be further explained in the chapter on [Actions], but the thing to note here is the use of `now` to change the map connections. Notice that we have to set both directions explicitly: changing the east exit of the Waiting Room does not automatically also change the west exit of Amid the Cheering Throng.

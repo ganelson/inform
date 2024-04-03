@@ -5,11 +5,11 @@ Index: Lighting and relighting a candle
 Description: A candle which reacts to lighting and blowing actions differently depending on whether it has already been lit once.
 For: Z-Machine
 
-	"Sire," said the Minister of the Interior to Napoleon, "yesterday I saw the most intrepid man in your Empire." - "What man is that?" said the Emperor brusquely, "and what has he done?" - "He wants to do something, Sire." - "What is it?" - "To visit the sewers of Paris."
-	
-	This man existed and his name was Bruneseau.
-	
-	- Victor Hugo, Les Miserables
+> "Sire," said the Minister of the Interior to Napoleon, "yesterday I saw the most intrepid man in your Empire." - "What man is that?" said the Emperor brusquely, "and what has he done?" - "He wants to do something, Sire." - "What is it?" - "To visit the sewers of Paris."
+> 	
+> This man existed and his name was Bruneseau.
+> 	
+> - Victor Hugo, Les Miserables
 
 Let's say that our intrepid explorer has a candle that can be lit and blown out again, and should accordingly appear unlit, burning, or partly burnt:
 
@@ -47,5 +47,5 @@ Let's say that our intrepid explorer has a candle that can be lit and blown out 
 	
 	Test me with "x candle / light candle / x candle / blow out candle / x candle".
 
-We must be careful: "if the noun was lit" would throw errors because past-tense rules can only be applied to specific items, not to variables that could be anything.
+We must be careful: `if the noun was lit` would throw errors because past-tense rules can only be applied to specific items, not to variables that could be anything.
 

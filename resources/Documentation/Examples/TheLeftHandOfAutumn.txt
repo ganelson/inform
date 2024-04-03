@@ -11,8 +11,8 @@ In this case, one of the things the player might like to be able to do is look a
 
 To make this happen, we need to do several things:
 
-1. we need to create a version of the ``examine`` command that can apply to multiple objects at once.
-2. we need to correct the way Inform normally deals with multiple-object commands, because we want our group description to print only one time, and we want to avoid stubs such as "pear: ... apple: ..." before or after the group description.
+1. we need to create a version of the ``EXAMINE`` command that can apply to multiple objects at once.
+2. we need to correct the way Inform normally deals with multiple-object commands, because we want our group description to print only one time, and we want to avoid stubs such as ``pear: ... apple: ...`` before or after the group description.
 3. we need to define a way for Inform to identify interesting groups and describe them.
 
 	{*}"The Left Hand of Autumn"
@@ -52,7 +52,7 @@ Now for step 2, overriding Inform's usual output of names of objects:
 	
 	Definition: a thing is matched if it is listed in the multiple object list.
 
-We'll save our "to describe" phrase until Section 2, when we can give the game specific instructions about how to report different lists of objects.
+We'll save our `to describe` phrase until Section 2, when we can give the game specific instructions about how to report different lists of objects.
 
 Now, the player might also want to be able to refer to a group of item by some kind of group name, so let's add the option of creating a Table of Collective Names which will interpret these:
 
@@ -67,7 +67,7 @@ Now, the player might also want to be able to refer to a group of item by some k
 	Report taking something:
 		say "You pick up [the noun]." instead.
 
-And as a bit of polish, because we'd like ``search table`` to have the same effect as ``examine all on table``:
+And as a bit of polish, because we'd like ``SEARCH TABLE`` to have the same effect as ``EXAMINE ALL ON TABLE``:
 
 	{**}Understand "look on [something]" as searching.
 	
@@ -110,7 +110,7 @@ Now we define a few actual lists of items:
 		sort glove list;
 		sort the arcane list.
 
-We sort the lists so that regardless of how we change the rest of the code (and the order in which objects are coded), the resulting list will always be in sorted order and ready to compare with the list of items the player wants to look at. And thanks to the "Reading a command" code we wrote earlier, we can also teach the game to understand the player's references to "the left hand of autumn" as a specific collection of items.
+We sort the lists so that regardless of how we change the rest of the code (and the order in which objects are coded), the resulting list will always be in sorted order and ready to compare with the list of items the player wants to look at. And thanks to the `Reading a command` code we wrote earlier, we can also teach the game to understand the player's references to ``THE LEFT HAND OF AUTUMN`` as a specific collection of items.
 
 	{**}Table of Collective Names
 	name-text	relevant list

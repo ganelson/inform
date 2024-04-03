@@ -11,7 +11,7 @@ That means that it isn't safe to rely on a phrase like
 
 	if an open door is in the location of Bernard
 
-because, even if Bernard's location is connected by doors to other places, the actual representation of that door may not be "in" Bernard's location, from the model's point of view, at this exact moment.
+because, even if Bernard's location is connected by doors to other places, the actual representation of that door may not be `in` Bernard's location, from the model's point of view, at this exact moment.
 
 This does not, of course, mean that we can't ask this question; just that we have to be a little cleverer about how we phrase it. Every door has properties that correspond to the two locations
 

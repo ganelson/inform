@@ -5,19 +5,7 @@ Index: Name of a dog set by the player
 Description: A dog the player can name and un-name at will.
 For: Z-Machine
 
-Suppose we'd like to have a dog which the player is allowed to name himself. We'd like to deal correctly with both
-
-``` transcript
->name the dog fido
-```
-
-and
-
-``` transcript
->name the dog "fido"
-```
-
-so we'll also need to strip quotation marks out of the command. We can do this as follows:
+Suppose we'd like to have a dog which the player is allowed to name himself. We'd like to deal correctly with both ``NAME THE DOG FIDO`` and ``NAME THE DOG "FIDO"`` so we'll also need to strip quotation marks out of the command. We can do this as follows:
 
 	{*}"Fido"
 	

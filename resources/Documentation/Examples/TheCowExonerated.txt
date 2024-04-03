@@ -11,7 +11,7 @@ Burned objects other than matches should be removed from play instantly (just as
 
 Matches should be described to show whether they are burning or extinguished, and when the parser chooses one of several identical matches, it should make very clear which match it has selected.
 
-The game must sensibly select and, if necessary, automatically light new matches to carry out a ``burn thing`` command.
+The game must sensibly select and, if necessary, automatically light new matches to carry out a ``BURN THING`` command.
 
 The matches must burn for a set number of turns before going out, never to be used again.
 
@@ -64,7 +64,7 @@ This last function appears down in Section 3, if we wish to skip ahead and look 
 	
 	Section 2 - Matches
 
-The word "matches" is used by Inform to compare snippets of text (see [Reading a command] in the [Activities] chapter). This can sometimes cause awkwardness if we also have a kind called "match", so for the occasion we will give our matches a more specialised name, never visible to the player:
+The word ``MATCHES`` is used by Inform to compare snippets of text (see [Reading a command] in the [Activities] chapter). This can sometimes cause awkwardness if we also have a kind called "match", so for the occasion we will give our matches a more specialised name, never visible to the player:
 
 	{**}A strikable-match is a kind of thing. The plural of strikable-match is s-matches.
 	

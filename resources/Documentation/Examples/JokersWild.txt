@@ -66,7 +66,7 @@ Suppose we want a deck of cards which the player can shuffle and draw from. Our 
 	clubs	12
 	clubs	13
 
-We're going to describe the higher numbers as face cards, so it helps to write a new "to say" phrase.
+We're going to describe the higher numbers as face cards, so it helps to write a new `to say` phrase.
 
 	{**}To say (count - a number) as a card value:
 		choose row with a value of count in the Table of Value Names;
@@ -88,7 +88,7 @@ We're going to describe the higher numbers as face cards, so it helps to write a
 	12	"queen"
 	13	"king"
 
-Now we get the shuffling of the deck from "sort in random order", so:
+Now we get the shuffling of the deck from `sort in random order`, so:
 
 	{**}Understand "shuffle" as shuffling. Shuffling is an action applying to nothing.
 	

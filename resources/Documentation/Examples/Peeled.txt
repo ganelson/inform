@@ -5,7 +5,7 @@ Index: Scope approaches compared
 Description: Two different approaches to adjusting what the player can interact with, compared.
 For: Z-Machine
 
-Suppose we have a situation where the player is in darkness, but is allowed to feel and interact with (except for examining) any large objects. In that case, we write a scope rule that puts those large objects into scope all the time, and trust the "requires light" aspect of verbs like examining to prevent the player from doing any actions that they shouldn't:
+Suppose we have a situation where the player is in darkness, but is allowed to feel and interact with (except for examining) any large objects. In that case, we write a scope rule that puts those large objects into scope all the time, and trust the `requires light` aspect of verbs like examining to prevent the player from doing any actions that they shouldn't:
 
 	{*}"Peeled"
 	
@@ -27,9 +27,9 @@ Suppose we have a situation where the player is in darkness, but is allowed to f
 
 Sadly, because the grape is small, the player will never encounter this horror.
 
-Alternatively, suppose we have a situation in which the player can use one command to interact with a kind of thing that isn't normally in scope. It's usually most convenient to write the "understand" rule appropriately rather than use the scope activity.
+Alternatively, suppose we have a situation in which the player can use one command to interact with a kind of thing that isn't normally in scope. It's usually most convenient to write the `understand` rule appropriately rather than use the scope activity.
 
-(Note that we define "inquiring about" as applying to one *visible* thing; otherwise we would be required to be able to touch the catsuit in order to inquire about it. More on this restriction may be found in the [Advanced Actions] chapter on the topic of visible, touchable, and carried things.)
+(Note that we define `inquiring about` as applying to one *visible* thing; otherwise we would be required to be able to touch the catsuit in order to inquire about it. More on this restriction may be found in the [Advanced Actions] chapter on the topic of visible, touchable, and carried things.)
 
 	{*}"Peeled"
 	

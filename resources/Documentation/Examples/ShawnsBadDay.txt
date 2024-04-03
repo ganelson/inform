@@ -2,7 +2,7 @@ Example: * Shawn's Bad Day
 Location: Standard tokens of grammar
 RecipeLocation: Actions on Multiple Objects
 Index: EXAMINE multiple things at once
-Description: Allowing the player to ``examine all``.
+Description: Allowing the player to ``EXAMINE ALL``.
 For: Z-Machine
 
 We can add the handling of multiple objects to an existing action simply by adding in a line of grammar using `"[things]"`. In response, Inform will consider every object accepted by the token, and perform the action once for each of those objects. Thus:

@@ -2,7 +2,7 @@ Example: ** Beekeeper's Apprentice
 Location: Line breaks and paragraph breaks
 RecipeLocation: Examining
 Index: Examining everything at once
-Description: Making the ``search`` command examine all the scenery in the current location.
+Description: Making the ``SEARCH`` command examine all the scenery in the current location.
 For: Z-Machine
 
 We have to create a suitable action and say what it does, and to repeat what we do through all the scenery items. That needs material from subsequent chapters, but is quite ordinary Inform all the same:
@@ -28,12 +28,10 @@ We have to create a suitable action and say what it does, and to repeat what we 
 
 The reason for this example is to show the use of saying `"[run paragraph on]"`. It means we have output such as:
 
-``` transcript
->search
-hive: The honeycombed hive is all around you, thrumming with life.
+	> SEARCH
+	hive: The honeycombed hive is all around you, thrumming with life.
 
-honey: Wax-sealed honey has been cached in many of the hexagonal nurseries.
-```
+	honey: Wax-sealed honey has been cached in many of the hexagonal nurseries.
 
-Without the running on, the prompts "hive:" and "honey:" would be separated from the descriptions following them, which would look a little odd.
+Without the running on, the labels ``hive:`` and ``honey:`` would be separated from the descriptions following them, which would look a little odd.
 

@@ -7,7 +7,7 @@ For: Z-Machine
 
 Suppose we want to let the player explicitly sit, stand, or lie down on different enterable objects. (Normally Inform treats all these actions as entering, but there may be cases where we want to distinguish between the player sitting on a chair and the player standing on it.)
 
-Our implementation gives each kind of enterable a range of allowed postures, and one preferred posture. If the player enters the supporter or container without specifying a posture (as in ``enter chair``), they will be put in the preferred posture. If they explicitly say, e.g., ``stand on chair``, they will be put in the standing position as long as standing is a posture that suits the chair.
+Our implementation gives each kind of enterable a range of allowed postures, and one preferred posture. If the player enters the supporter or container without specifying a posture (as in ``ENTER CHAIR``), they will be put in the preferred posture. If they explicitly say, e.g., ``STAND ON CHAIR``, they will be put in the standing position as long as standing is a posture that suits the chair.
 
 	{*}"Slouching"
 	

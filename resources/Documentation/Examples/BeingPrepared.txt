@@ -15,7 +15,7 @@ For: Z-Machine
 		let target be a random pocket which is part of the noun;
 		say "[The target] contains [a list of things in the target]."
 
-Now we've created the rules that will govern any specific jackets we might happen to put in our game: each one will always have one pocket, which will be able to contain no more than two things. The description of "a list of things" is text with a list, which we will learn about further in a few sections.
+Now we've created the rules that will govern any specific jackets we might happen to put in our game: each one will always have one pocket, which will be able to contain no more than two things. The description of `a list of things` is text with a list, which we will learn about further in a few sections.
 
 Next we might want to create the environment and an actual example of the jacket kind:
 

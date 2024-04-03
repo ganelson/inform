@@ -11,7 +11,7 @@ For: Z-Machine
 	
 	R-name is a kind of value. The R-names are dwarf, guy, dude, and man-thing. Rumpelstiltskin has an R-name. Understand "[R-name]" as Rumpelstiltskin.
 
-Our example is slightly complicated by the fact that "man" is a name already known to Inform, so we can't re-use it as a kind of value. This is possible to work around, though:
+Our example is slightly complicated by the fact that `man` is a name already known to Inform, so we can't re-use it as a kind of value. This is possible to work around, though:
 
 	{**}Understand "man" as man-thing.
 

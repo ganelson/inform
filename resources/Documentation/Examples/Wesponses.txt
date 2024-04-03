@@ -5,15 +5,13 @@ Index: Altering response text programmatically
 Description: Parser messages that are delivered with a speech impediment.
 For: Z-Machine
 
-[ZL: https://inform7.atlassian.net/browse/I7-2388 ]::
-
 If we want to change individual responses to player action, then the best thing to do is to use the response facility to modify those selections, as shown in the chapter on [Responses].
 
 However, suppose what we want is to give the parser a speech impediment that slightly alters all of the responses it issues. For this purpose, we might need to do a bit of text replacement...
 
 	{*}"Wesponses"
 	
-	The Office is a room. Barry Kripke is a man in the Office.
+	The Office is a room. Barry Kripke is a man in the Office. Kripke carries a badge.
 	
 	The response inhibition is initially false.
 	
@@ -25,11 +23,11 @@ However, suppose what we want is to give the parser a speech impediment that sli
 		replace the text "R" in output with "W";
 		say "[output]".
 	
-	Test me with "i / x barry / listen / waffle / jump"
+	Test me with "i / x barry / get badge / listen / waffle / jump"
 
 Notice that this doesn't affect the printed names of objects in the room description or other kinds of output text – only those that are issued by the response mechanism.
 
-It would also not work to try to give our parser a nervous personality by simply adding "Um, " to the beginning of each response, because responses are not guaranteed to be full standalone sentences. For example, we could imagine writing
+It would also not work to try to give our parser a nervous personality by simply adding ``Um, `` to the beginning of each response, because responses are not guaranteed to be full standalone sentences. For example, we could imagine writing
 
 	Rule for issuing the response text of a response (called R) when response inhibition is false:
 		now response inhibition is true;

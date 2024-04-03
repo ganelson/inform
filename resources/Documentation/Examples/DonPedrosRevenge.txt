@@ -5,7 +5,7 @@ Index: Command prompt changing to reflect state of combat
 Description: Combat scenario in which the player's footing and position changes from move to move, and the command prompt also changes to reflect that.
 For: Z-Machine
 
-Suppose our game features a detailed simulated combat between the player character and an opponent. The player character might have several weapons available, and several types of attack available; and at any given time they might be perched up in the rigging of his ship, standing on the open deck, or boxed in between some barrels. Their options will vary depending on their position, and obviously it would detract from the pacing to make them keep ``look``ing in the middle of combat for a reminder of where they are. Instead, we'll roll this information into the command prompt:
+Suppose our game features a detailed simulated combat between the player character and an opponent. The player character might have several weapons available, and several types of attack available; and at any given time they might be perched up in the rigging of his ship, standing on the open deck, or boxed in between some barrels. Their options will vary depending on their position, and obviously it would detract from the pacing to make them keep ``LOOK``ing in the middle of combat for a reminder of where they are. Instead, we'll roll this information into the command prompt:
 
 	{*}"Don Pedro's Revenge"
 	

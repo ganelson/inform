@@ -23,11 +23,11 @@ Suppose we want to understand shipboard directions, but only when the player is 
 	
 	Index map with fore mapped as north. Index map with aft mapped as south. Index map with port mapped as west. Index map with starboard mapped as east.
 
-And we can even add new ways to talk about the ways things are mapped, borrowing from the [Relations] chapter. The following will allow us to use "is abaft of" as well as "is aft of":
+And we can even add new ways to talk about the ways things are mapped, borrowing from the [Relations] chapter. The following will allow us to use `is abaft of` as well as `is aft of`:
 
 	{**}[The verb to be abaft of means the mapping aft relation.]
 
-Now, to prevent the player from using ``north`` onboard ship, or ``aft`` on land:
+Now, to prevent the player from using ``NORTH`` onboard ship, or ``AFT`` on land:
 
 	{**}A room can be nautical or earthbound. A room is usually not nautical. A direction can be nautical or earthbound. A direction is usually not nautical. Starboard, port, fore, aft, up, down, the inside and the outside are nautical.
 	

@@ -5,7 +5,7 @@ Index: Case change for text produced by to say phrases
 Description: Using case changes on any text produced by a "to say..." phrase.
 For: Z-Machine
 
-We can now change the case of any text produced by a "to say..." phrase. This is often useful when we would like to make use of a standard say phrase in some new context. Say, for instance, that we would like to `"[is-are the list...]"` in a context that needs the first letter to be capitalised.
+We can now change the case of any text produced by a `to say...` phrase. This is often useful when we would like to make use of a standard say phrase in some new context. Say, for instance, that we would like to `"[is-are the list...]"` in a context that needs the first letter to be capitalised.
 
 We could write a new say phrase, such as "to say is-are the list of (N–a description of objects) in sentence capitalisation"; but there is an easier way, and that is to set a text variable to the output of the to say phrase, and then print that text in the case of our choice.
 

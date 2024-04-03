@@ -5,7 +5,7 @@ Index: Staircase kind of door which diverts the CLIMB command
 Description: A refinement of our staircase kind which can be climbed.
 For: Z-Machine
 
-Presumably all staircase-type connections between rooms should respond when the player says ``climb stairs`` (or the equivalent). So
+Presumably all staircase-type connections between rooms should respond when the player says ``CLIMB STAIRS`` (or the equivalent). So
 
 	{*}"Hayseed"
 	

@@ -19,10 +19,8 @@ Using the compass directions in commands is a little bit finicky because directi
 
 will give us
 
-``` transcript
->turn light northeast
-You must name something more substantial.
-```
+	> TURN LIGHT NORTHEAST
+	You must name something more substantial.
 
 To avoid this mystifying result:
 

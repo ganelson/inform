@@ -14,7 +14,7 @@ For: Z-Machine
 	After examining something when the label is part of the noun:
 		say "A bright red sticky label is attached to [the noun]!"
 
-Here is the essential point: whenever we ``attach label to`` something, it becomes part of that object.
+Here is the essential point: whenever we ``ATTACH LABEL TO`` something, it becomes part of that object.
 
 	{**}Instead of tying the red sticky label to something:
 		now the red sticky label is part of the second noun;
@@ -50,7 +50,7 @@ Much of the rest is just tidying to make sure that the player's commands are red
 	
 	Understand the commands "stick" or "apply" as "tie".
 
-We could have created a new "sticking" action, but to keep the example short we will use the built-in "tying" action instead, and respond to the command ``stick`` just as if it were ``tie``.
+We could have created a new `sticking` action, but to keep the example short we will use the built-in `tying it to` action instead, and respond to the command ``STICK`` just as if it were ``TIE``.
 
 	{**}Understand "peel [something]" or "peel off [something]" as taking.
 	

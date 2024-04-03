@@ -2,7 +2,7 @@ Example: * Spellbreaker
 Location: Out of world actions
 RecipeLocation: Saving and Undoing
 Index: A room where the game cannot be saved
-Description: P. David Lebling's classic "Spellbreaker" (1986) includes a room where the game cannot be saved: here is an Inform implementation.
+Description: P. David Lebling's classic _Spellbreaker_ (1986) includes a room where the game cannot be saved: here is an Inform implementation.
 For: Untestable
 
 The answer is easy, but there is a trap:
@@ -11,5 +11,5 @@ The answer is easy, but there is a trap:
 
 The trap is that "Before saving the game...", which might have been our first guess, does not work: because out of world actions are exempt from Before, Instead and After rules.
 
-"Spellbreaker" pulls this unpleasant, but in context witty, stunt as part of a situation which is engineered to force the player to reason through a weighing-objects puzzle using the perfect strategy rather than by guesswork. The illusion that the situation is fair–not rigged against the player, that is–would collapse if the player could save the game and keep retrying possibilities in the light of knowledge gained from earlier attempts. The moral of this story is that any attempt to use in-world situations to influence out-of-world commands should be *extremely uncommon*.
+_Spellbreaker_ pulls this unpleasant, but in context witty, stunt as part of a situation which is engineered to force the player to reason through a weighing-objects puzzle using the perfect strategy rather than by guesswork. The illusion that the situation is fair–not rigged against the player, that is–would collapse if the player could save the game and keep retrying possibilities in the light of knowledge gained from earlier attempts. The moral of this story is that any attempt to use in-world situations to influence out-of-world commands should be *extremely uncommon*.
 

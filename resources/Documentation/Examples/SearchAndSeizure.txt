@@ -15,7 +15,7 @@ Suppose we want a character who carries hidden objects, but only while they are 
 	
 	A thing can be discovered or secret. A thing is usually secret.
 
-Now, we want the character to be able to hide small things if they have some sort of concealing garment on. We also want to be able to see anything that the player has already found once, perhaps by using the ``search person`` command. So:
+Now, we want the character to be able to hide small things if they have some sort of concealing garment on. We also want to be able to see anything that the player has already found once, perhaps by using the ``SEARCH PERSON`` command. So:
 
 	{**}Rule for deciding the concealed possessions of someone (called the suspect):
 		if the particular possession is discovered, no;
@@ -40,7 +40,7 @@ The following rule, borrowed from a later chapter, assures that any items that a
 		if an unconcealed licit thing is had by the noun, say ", though [if the noun is female]s[end if]he also has [a list of unconcealed licit things had by the noun]";
 		say "." instead.
 
-Notice that we can talk about what the smuggler wears, what he carries, and what he "has": things the smuggler has can be either worn or carried, so the phrase is useful if we don't care to make that distinction.
+Notice that we can talk about what the smuggler `wears`, what he `carries`, and what he `has`: things the smuggler has can be either worn or carried, so the phrase is useful if we don't care to make that distinction.
 
 	{**}Instead of searching someone:
 		say "[The noun] is revealed to be carrying [a list of things carried by the noun]."

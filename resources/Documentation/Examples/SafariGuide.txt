@@ -5,7 +5,7 @@ Index: GO TO ROOM with automatic door-handling en route
 Description: The same functionality, but making the player continue to move until they reach their destination or a barrier, handling all openable doors on the way.
 For: Z-Machine
 
-The foregoing example moves the player one location towards his destination, and requires that rooms have been visited before. But suppose we wanted to be a bit more lenient about movement, and let the player make as many steps as necessary per turn. We will also show consideration about doors, using the "Locksmith" extension supplied with Inform. (Now every time the code attempts opening a door, unlocking rules will also be invoked.)
+The foregoing example moves the player one location towards his destination, and requires that rooms have been visited before. But suppose we wanted to be a bit more lenient about movement, and let the player make as many steps as necessary per turn. We will also show consideration about doors, using the extension `Locksmith by Emily Short`. (Now every time the code attempts opening a door, unlocking rules will also be invoked.)
 
 	{*}"Safari Guide"
 	

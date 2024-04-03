@@ -5,7 +5,7 @@ Index: Checking for missed properties
 Description: Testing to make sure that all objects have been given descriptions.
 For: Z-Machine
 
-It may occasionally be useful to check whether all objects in our game have a given property. Here we have a "not for release" section that will run at the start of the game and alert us to any objects lacking description:
+It may occasionally be useful to check whether all objects in our game have a given property. Here we have a `not for release` section that will run at the start of the game and alert us to any objects lacking description:
 
 	{*}"Bic"
 	

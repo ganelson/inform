@@ -31,7 +31,7 @@ The order in which we define these things is fairly open. We could also define a
 
 	{**}A sign is scenery in the Cabin. The description is "You can get half-day and full-day sight-seeing tours, and half-day and full-day fishing trips."
 
-Where "the description" is assumed to refer to the thing most recently defined, if no object is specified.
+Where `the description` is assumed to refer to the thing most recently defined, if no object is specified.
 
 	{**}The view of the Malaspina glacier is a backdrop. It is everywhere. The description is "The Malaspina glacier covers much of the nearby slope, and -- beyond it -- an area as large as Rhode Island."
 	

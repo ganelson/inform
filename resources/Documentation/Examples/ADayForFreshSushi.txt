@@ -5,7 +5,7 @@ Index: Person who comments on the player's every action
 Description: A complete story by Emily Short, called "A Day for Fresh Sushi", rewritten using Inform 7. Noteworthy is the snarky commenter who remarks on everything the player does, but only the first time each action is performed.
 For: Z-Machine
 
-The following is an almost-completely-faithful rewrite of Emily Short's "A Day for Fresh Sushi", which was originally written using the (very different) Inform 6 programming language. The – let us be honest and call it a gimmick – of this game is the evil fish, who has some unpleasant remark to offer on pretty much every action. But the effect would wear off fast if he repeated himself, so these comments need to be single-use only.
+The following is an almost-completely-faithful rewrite of Emily Short's _A Day for Fresh Sushi_, which was originally written using the (very different) Inform 6 programming language. The – let us be honest and call it a gimmick – of this game is the evil fish, who has some unpleasant remark to offer on pretty much every action. But the effect would wear off fast if he repeated himself, so these comments need to be single-use only.
 
 Inform 7's repeated action syntax makes it much tidier to write the same scenario, so:
 

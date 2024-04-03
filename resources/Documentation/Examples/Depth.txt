@@ -5,7 +5,7 @@ Index: Containers that calculate internal volume and available room
 Description: Receptacles that calculate internal volume and the amount of room available, and  cannot be overfilled.
 For: Z-Machine
 
-In the following, we pretend that every item has a cuboidal shape. Every thing has a length, width and depth, while a "measured container" also has interior dimensions. (Thus a 10x10x10 container with 1cm-thick sides might have interior dimensions 9x9x9.)
+In the following, we pretend that every item has a cuboidal shape. Every thing has a length, width and depth, while a `measured container` also has interior dimensions. (Thus a 10x10x10 container with 1cm-thick sides might have interior dimensions 9x9x9.)
 
 	{*}"Depth"
 	
@@ -48,7 +48,7 @@ When testing this example, the author made use of the following: it's no longer 
 		say "[the item] - height [height of the item], width [width of the item], depth [depth of the item].";
 		say "largest side [largest dimension of the item], middling [middling dimension of the item], smallest [shortest dimension of the item]."
 
-We now introduce a new kind: a measured container, which not only has exterior dimensions–the height, width and depth which every thing now has–but also interior measurements. A convenient way to do calculations with the hollow interior is to regard it as if it were a solid shape in its own right, and we do this with the aid of something out of world, which the player never sees: the "imaginary cuboid", which is made into the shape of whatever measured container's interior is being thought about.
+We now introduce a new kind: a measured container, which not only has exterior dimensions–the height, width and depth which every thing now has–but also interior measurements. A convenient way to do calculations with the hollow interior is to regard it as if it were a solid shape in its own right, and we do this with the aid of something out of world, which the player never sees: the `imaginary cuboid`, which is made into the shape of whatever measured container's interior is being thought about.
 
 	{**}A measured container is a kind of container. A measured container has a length called interior height. A measured container has a length called interior width. A measured container has a length called interior depth.
 	

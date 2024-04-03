@@ -13,7 +13,7 @@ We start with an ordinary room:
 	
 	The Wasteland is a room. "In its more distant reaches, the Wasteland has a kind of austere beauty, but here beside the Secure Zone it is the worst of all possible worlds. Barrels of toxins are stacked the regulation hundred and fifty feet out; more traditional garbage has simply been flung over the wall, and this category includes one or two corpses roughly and inadequately disguised by black plastic bags. The wall itself has become a canvas for outcasts and exiles, and is covered with obscene paintings, lewd remarks about the inhabitants of the Secure Zone, and a few maudlin epitaphs."
 
-Now the door, which will change from saying "leads inside..." to "leads back inside..." when this becomes appropriate:
+Now the door, which will change from saying ``leads inside...`` to ``leads back inside...`` when this becomes appropriate:
 
 	{**}The portal is a door. It is inside from the Wasteland and outside from the Secure Zone. "[if the player is in the Wasteland]To the west, a[otherwise]A[end if] portal in the cinder-block and barbed wire wall leads[if the player is in the Wasteland and the Zone is visited] back[end if] [if the player is in the Wasteland]inside[otherwise]outside[end if]."
 

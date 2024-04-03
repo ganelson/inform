@@ -5,7 +5,7 @@ Index: Doors that open automatically
 Description: All doors in the game automatically attempt to open if the player approaches them when they are closed.
 For: Z-Machine
 
-"Called" is quite useful in the context of rules about going, since go rules often refer to things other than the noun the player typed. For instance, suppose we want to have doors which politely open when the player tries to pass through them:
+`Called` is quite useful in the context of rules about going, since go rules often refer to things other than the noun the player typed. For instance, suppose we want to have doors which politely open when the player tries to pass through them:
 
 	{*}"Higher Calling"
 	

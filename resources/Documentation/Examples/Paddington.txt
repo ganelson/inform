@@ -2,10 +2,10 @@ Example: ** Paddington
 Location: Check, carry out, report
 RecipeLocation: Glass and Other Damage-Prone Substances
 Index: CUT [something] WITH [something] command
-Description: A ``cut`` [something] ``with`` [something] command which acts differently on different types of objects.
+Description: A ``CUT [SOMETHING] WITH [SOMETHING]`` command which acts differently on different types of objects.
 For: Z-Machine
 
-Suppose we intend a game in which the player needs to cut things open on a regular basis. We'll want to check whether they have the proper tools handy, and deal graciously with commands such as ``cut`` [something] when no tool is specified. So:
+Suppose we intend a game in which the player needs to cut things open on a regular basis. We'll want to check whether they have the proper tools handy, and deal graciously with commands such as ``CUT [something]`` when no tool is specified. So:
 
 	{*}"Paddington"
 	
@@ -38,7 +38,7 @@ Moreover, because open containers normally list their contents when examined but
 
 	{**}The examine containers rule does nothing when examining the teddy bear.
 
-So far, so good. But suppose that we'd like cutting also to make containers be permanently open and impossible to close again. We could write an "instead" rule, but that would mean that only our instead instructions would take effect, overriding the normal cutting it with rules entirely. Better would be to add a second carry out rule:
+So far, so good. But suppose that we'd like cutting also to make containers be permanently open and impossible to close again. We could write an `instead` rule, but that would mean that only our instead instructions would take effect, overriding the normal cutting it with rules entirely. Better would be to add a second carry out rule:
 
 	{**}Carry out cutting a container with something:
 		now the noun is open;
@@ -52,7 +52,7 @@ Now our rule will occur whenever a container is cut, but play will still go on t
 	Carry out cutting the quilt with something:
 		now the description of the quilt is "Horribly tattered."
 
-For that matter, we might want to add a report rule as well, to occur after the "You slash..." rule, so that every time the player cuts something open which has contents, the contents will be listed.
+For that matter, we might want to add a report rule as well, to occur after the ``You slash...`` rule, so that every time the player cuts something open which has contents, the contents will be listed.
 
 	{**}Report cutting it with:
 		if the noun is open and the noun contains something,
@@ -68,7 +68,7 @@ This time we do not add the condition to the rule (i.e., Report cutting an open 
 	
 	The player carries a blade called a switchblade.
 
-Here is a final nicety to get rid of the "which is closed" statement on our closed unopenable teddy bear, using an "activity" rule:
+Here is a final nicety to get rid of the ``which is closed`` statement on our closed unopenable teddy bear, using an `activity` rule:
 
 	{**}After printing the name of a closed unopenable container:
 		omit contents in listing.

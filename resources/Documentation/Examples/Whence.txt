@@ -7,7 +7,7 @@ For: Z-Machine
 
 It would be fairly tedious reading to have a large game full of doors that describe themselves this way. Nonetheless, if we insisted we could use our knowledge of the map as leverage to make every door in the game describe itself automatically.
 
-To do this, we make use of the phrase "direction of (the door) from (a room)" – in this case, the direction of the door we're looking at when viewed from the player's location. Thus:
+To do this, we make use of the phrase `direction of (the door) from (a room)` – in this case, the direction of the door we're looking at when viewed from the player's location. Thus:
 
 	{*}"Whence?"
 	
@@ -17,5 +17,5 @@ To do this, we make use of the phrase "direction of (the door) from (a room)" �
 	
 	Test me with "w / e".
 
-Yet a further variation on this, which can automatically understand "the east door" and "the west door" when appropriate, may be found in the example [Whither?].
+Yet a further variation on this, which can automatically understand ``THE EAST DOOR`` and ``THE WEST DOOR`` when appropriate, may be found in the example [Whither?].
 

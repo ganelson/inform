@@ -24,9 +24,9 @@ We need to designate certain rooms as roads. Since the status of being a road wi
 
 (In the course of the writing of Inform 7, much of Trafalgar Square was pedestrianised, making this example already out of date.)
 
-A further technical note: notice "going by a vehicle" in the above rule, rather than "going by something". A rule such as "Instead of going by something..." will be matched whenever the player tries to go some direction while in an enterable object, whether or not that object is actually capable of movement. This is sometimes useful, but in this case we want the warning to apply only when the player is in a vehicle; if we added Trafalgar Square's statue bases to the scenario, we would not want
+A further technical note: notice `going by a vehicle` in the above rule, rather than `going by something`. A rule such as `Instead of going by something...` will be matched whenever the player tries to go some direction while in an enterable object, whether or not that object is actually capable of movement. This is sometimes useful, but in this case we want the warning to apply only when the player is in a vehicle; if we added Trafalgar Square's statue bases to the scenario, we would not want
 
 	You can't drive the pedestal off-road.
 
-So we restrict the rule to "Instead of going by a vehicle..."
+So we restrict the rule to `Instead of going by a vehicle...`
 

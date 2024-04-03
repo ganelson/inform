@@ -7,20 +7,18 @@ For: Glulx
 
 The implementation here is much like that of the previous example, except that we allow the player to write their notebook input as a separate command, leading to an exchange such as
 
-``` transcript
->write in my notebook
-You open your notebook and prepare to write in it.
+	> WRITE IN MY NOTEBOOK
+	You open your notebook and prepare to write in it.
 
->>Am beginning to think that HT and BGG are in this together.
-You finish writing and fold your notebook away.
+	>>Am beginning to think that HT and BGG are in this together.
+	You finish writing and fold your notebook away.
 
->read my notebook
-You read:
+	> READ MY NOTEBOOK
+	You read:
 
-Wednesday morning
+	Wednesday morning
 
-Am beginning to think that HT and BGG are in this together.
-```
+	Am beginning to think that HT and BGG are in this together.
 
 The opening is much as before:
 
@@ -66,7 +64,7 @@ The opening is much as before:
 	Report writing in:
 		say "You open [the noun] and prepare to write in it."
 
-Now what happens is that the player, having typed ``write in notebook``, will be faced with a ">>" prompt instead of the usual ">": a sign that the input mode has changed.
+Now what happens is that the player, having typed ``WRITE IN NOTEBOOK``, will be faced with a `>>` prompt instead of the usual `>`: a sign that the input mode has changed.
 
 The next code is to react to reading a command. Whatever the player types at the >> prompt when the target jotter is set will now be recorded in the notebook, though with a character limit of about 60-100 characters depending on how much upper-case and punctuation they use. (There are ways to lift the character length restriction as well, but they would take us into deeper waters.)
 

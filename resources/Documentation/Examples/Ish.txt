@@ -2,7 +2,7 @@ Example: * Ish.
 Location: The text token
 RecipeLocation: Helping and Hinting
 Index: HELP with a simple menu
-Description: A (very) simple ``help`` command, using tokens to accept and interpret the player's  text whatever it might be.
+Description: A (very) simple ``HELP`` command, using tokens to accept and interpret the player's  text whatever it might be.
 For: Z-Machine
 
 	{*}"Ish."
@@ -17,7 +17,7 @@ We can, when necessary, accept any text at all as a token:
 	
 	Getting help about is an action applying to one topic.
 
-After that, we can use "the topic understood" to refer to the text we read:
+After that, we can use `the topic understood` to refer to the text we read:
 
 	{**}Carry out getting help about:
 		if the topic understood is a topic listed in the Table of Standard Help:

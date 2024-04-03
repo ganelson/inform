@@ -35,7 +35,7 @@ We are, however, obsessive about historical accuracy, so we provide a table of p
 				rule succeeds;
 		say "absolutely no one".
 
-It is possible to look up a row corresponding to, say, a specific year value using "listed in", but repeat through is convenient here because we know that we will never wind up trying to print entries when no row can be successfully selected.
+It is possible to look up a row corresponding to, say, a specific year value using `listed in`, but repeat through is convenient here because we know that we will never wind up trying to print entries when no row can be successfully selected.
 
 	{**}Table of Occupations and People
 	Trade	nickname	family	Date attested

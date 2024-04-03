@@ -15,7 +15,7 @@ The result will be that if the player ever moves to another location, the charac
 	
 	Count Dracula is a man in the Attic.
 
-In the following condition, we could also have written "if the location of Count Dracula is not the location", because "location" by itself is always understood to be the player's location. But it seemed better for clarity to write it this way:
+In the following condition, we could also have written `if the location of Count Dracula is not the location`, because `location` by itself is always understood to be the player's location. But it seemed better for clarity to write it this way:
 
 	{**}Every turn:
 		if the location of Count Dracula is not the location of the player:

@@ -2,18 +2,18 @@ Example: * Pages
 Location: Understanding kinds of value
 RecipeLocation: Reading Matter
 Index: Book with numbered pages
-Description: A book with pages that can be read by number (as in "read page 3 in...") and which accepts relative page references as well (such as "read the last page of...", "read the next page", and so on).
+Description: A book with pages that can be read by number (as in "READ PAGE 3 IN...") and which accepts relative page references as well (such as "read the last page of...", "read the next page", and so on).
 For: Z-Machine
 
 Suppose we have a book that the player must consult page-by-page, and we want to be able to accept all of the following input:
 
-- ``read book`` [to choose a random page and read it]
-- ``read page 1 in book``
-- ``read page 2``
-- ``read the last page of the book``
-- ``read the next page``
-- ``read previous page in book``
-- ``read the first page``
+- ``READ BOOK`` [to choose a random page and read it]
+- ``READ PAGE 1 IN BOOK``
+- ``READ PAGE 2``
+- ``READ THE LAST PAGE OF THE BOOK``
+- ``READ THE NEXT PAGE``
+- ``READ PREVIOUS PAGE IN BOOK``
+- ``READ THE FIRST PAGE``
 
 One approach would be to write many different understand rules and actions: one action for reading randomly, one for reading a specific page, one for reading the first page, one for reading the previous page, one for reading the next page, and one for reading the last page. But this gets tedious to construct and maintain.
 

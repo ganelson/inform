@@ -1,13 +1,11 @@
 Example: * Timeless
-Location: Two rulebooks used internally
+Location: The internal rulebooks which keep stories running
 RecipeLocation: The Passage Of Time
 Index: Instant EXAMINE and LOOK
 Description: A set of actions which do not take any game time at all.
 For: Z-Machine
 
-[ZL: https://inform7.atlassian.net/browse/I7-2402 ]::
-
-In a game with tight timing, it is sometimes friendliest to the player to let them ``look`` and ``examine`` as much as necessary without being penalised.
+In a game with tight timing, it is sometimes friendliest to the player to let them ``LOOK`` and ``EXAMINE`` as much as necessary without being penalised.
 
 	{*}"Timeless"
 	
@@ -15,11 +13,14 @@ In a game with tight timing, it is sometimes friendliest to the player to let th
 
 Now we need a rule which, just at the right moment, stops the turn sequence rulebook in the cast of our new fast-acting actions:
 
-	{**}The take visual actions out of world rule is listed before the every turn stage rule in the turn sequence rules.
+	{**}The take visual actions out of world rule is listed before the early scene changing stage rule in the turn sequence rules.
 	
-	This is the take visual actions out of world rule: if acting fast, rule succeeds.
+	This is the take visual actions out of world rule:
+		if acting fast, rule succeeds.
 
-Thus the rest of the turn sequence rulebook is omitted for looking or examining: in effect, they become out-of-world actions like "saving the game". If we wanted to add, say, taking inventory to the list of instant activities, we would just need to define it as acting fast, too.
+It seems odd to talk about any rule in the turn sequence rulebook succeeding or failing, because under normal circumstances each rule ends with no decision, so that the rulebook is never halted midway through. We've broken that convention here, because under some circumstances the `take visual actions out of world rule` can now succeed. If it does, the turn sequence is halted. (It would have been just as effective to write `rule fails`, because that also halts the rulebook. It makes no difference to us whether it halts happily or unhappily, just as long as it halts.) If the player is not `acting fast`, then the rule finishes without either succeeding or failing, and so the rulebook continues as normal.
+
+The practical effect is that the rest of the turn sequence rulebook is omitted for looking or examining: in effect, they become out-of-world actions like "saving the game". If we wanted to add, say, taking inventory to the list of instant activities, we would just need to define it as acting fast, too.
 
 Now the scenario for testing:
 

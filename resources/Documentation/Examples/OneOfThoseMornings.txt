@@ -1,8 +1,8 @@
 Example: * One of Those Mornings
-Location: Understanding any, understanding rooms
+Location: Scope
 RecipeLocation: Background
 Index: FIND command
-Description: A ``find`` command that allows the player to find a lost object anywhere
+Description: A ``FIND`` command that allows the player to find a lost object anywhere
 For: Z-Machine
 
 Suppose that, contrary to the usual rules of interactive fiction, we want to allow the player to discover the locations of things they haven't actually seen yet:
@@ -19,9 +19,9 @@ Suppose that, contrary to the usual rules of interactive fiction, we want to all
 		otherwise:
 			say "You left [the noun] [if the noun is on a supporter]on[otherwise]in[end if] [the holder of the noun]."
 
-The holder of the noun can be a room, a supporter, or a container: the phrase is not picky. We would want to be a little more careful if it were ever possible for an item to have been "removed from play" in our game, since then the holder could be nothing, and that would have odd results. In this particular example, though, that will not arise.
+The holder of the noun can be a room, a supporter, or a container: the phrase is not picky. We would want to be a little more careful if it were ever possible for an item to have been `removed from play` in our game, since then the holder could be nothing, and that would have odd results. In this particular example, though, that will not arise.
 
-And that's it, as far as the ``find`` command goes. The rest is local colour.
+And that's it, as far as the ``FIND`` command goes. The rest is local colour.
 
 	{**}The Exhibition Room is a room. It contains a closed locked lockable transparent openable container called the display case. The display case contains a priceless pearl. The display case is scenery. The description of the Exhibition Room is "By far the finest thing in the room is a priceless pearl in a glass display case. It should of course be yours[if key is not visible], if only you can remember where you hid the key[end if]."
 	

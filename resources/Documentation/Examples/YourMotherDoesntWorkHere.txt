@@ -5,7 +5,7 @@ Index: Using lists as stacks
 Description: Your hard-working mother uses a list as a stack: urgent tasks are added to the end of the list, interrupting longer-term plans.
 For: Z-Machine
 
-Suppose the player's mother is supposed to be cleaning the living room, but she can be interrupted by the need to pick up things the player has dropped. New tasks are added to the end of her "current plan" list; every turn, she attempts to do whatever is the last entry on that list.
+Suppose the player's mother is supposed to be cleaning the living room, but she can be interrupted by the need to pick up things the player has dropped. New tasks are added to the end of her `current plan` list; every turn, she attempts to do whatever is the last entry on that list.
 
 	{*}"Your Mother Doesn't Work Here"
 	

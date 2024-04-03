@@ -2,10 +2,10 @@ Example: * Minimal Movement
 Location: Supplying a missing noun/second noun
 RecipeLocation: Going, Pushing Things in Directions
 Index: GO equivalent to GO OUT
-Description: Supplying a default direction for "go", so that "leave", "go", etc., are always interpreted as "out".
+Description: Supplying a default direction for ``GO``, so that ``LEAVE``, ``GO``, etc., are always interpreted as ``OUT``.
 For: Z-Machine
 
-Sometimes it would be nice to respond a little more sensitively to a vague command such as "leave" – converting it, perhaps, to a "go out" command.
+Sometimes it would be nice to respond a little more sensitively to a vague command such as ``LEAVE`` – converting it, perhaps, to a ``GO OUT`` command.
 
 	{*}"Minimal Movement"
 	

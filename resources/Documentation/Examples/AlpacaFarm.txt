@@ -2,7 +2,7 @@ Example: * Alpaca Farm
 Location: New commands for old grammar
 RecipeLocation: Clarification and Correction
 Index: USE action which divines rational behaviour for a wide range of possible nouns
-Description: A generic ``use`` action which behaves sensibly with a range of different objects.
+Description: A generic ``USE`` action which behaves sensibly with a range of different objects.
 For: Z-Machine
 
 This example takes the ordering of grammar lines to its logical extreme, sorting the player's input into different categories depending on the kind and condition of the objects mentioned.
@@ -50,5 +50,5 @@ This example takes the ordering of grammar lines to its logical extreme, sorting
 	
 	Test me with "use gate / use blower / use nippers / use brush / use apple / remove sombrero / use sombrero".
 
-Whether we actually want a ``use`` action is a subject of some theoretical debate in the IF community. On the one hand, it helps avoid guess-the-verb problems where the player cannot figure out what term to use in order to express a fairly simple idea. On the other, it encourages the player to think that all items have one and exactly one use, rather than getting them to consider the range of possibilities that arise from having a complex vocabulary.
+Whether we actually want a ``USE`` action is a subject of some theoretical debate in the IF community. On the one hand, it helps avoid guess-the-verb problems where the player cannot figure out what term to use in order to express a fairly simple idea. On the other, it encourages the player to think that all items have one and exactly one use, rather than getting them to consider the range of possibilities that arise from having a complex vocabulary.
 

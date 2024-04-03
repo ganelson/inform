@@ -5,7 +5,7 @@ Index: Observation stage after report
 Description: Creating a stage after the report stage of an action, during which other characters may observe and react.
 For: Z-Machine
 
-Suppose the current sequence of action handling is not quite enough for us: we'd also like to have a stage after reporting, where other characters can react to the player character's behaviour after it has already happened and been reported on screen. Having such a stage is unlike using "after", because after occurs before reports and prevents them from being printed. So, for instance, we could allow the player to do any of a range of different actions that make loud noises, and have a nervous bird that reacts to all of them by flying away afterward.
+Suppose the current sequence of action handling is not quite enough for us: we'd also like to have a stage after reporting, where other characters can react to the player character's behaviour after it has already happened and been reported on screen. Having such a stage is unlike using `after`, because after occurs before reports and prevents them from being printed. So, for instance, we could allow the player to do any of a range of different actions that make loud noises, and have a nervous bird that reacts to all of them by flying away afterward.
 
 To do this, we can add a new rule into the specific action-processing rules. (For a list of these, see the Rules index.) Moving rules around and adding new ones requires syntax that we will learn in the chapter on [Rulebooks], but the present example is fairly straightforward:
 

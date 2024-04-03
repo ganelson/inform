@@ -5,7 +5,7 @@ Index: LISTEN command extended
 Description: Things are all assigned their own noise (or silence). Listening to the room in general reports on all the things that are currently audible.
 For: Z-Machine
 
-This example involves redesigning the ``listen`` command, removing its built-in function and replacing that with something more ambitious. We will learn more about how to do this later on.
+This example involves redesigning the ``LISTEN`` command, removing its built-in function and replacing that with something more ambitious. We will learn more about how to do this later on.
 
 	{*}"The Art of Noise"
 	

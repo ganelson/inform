@@ -24,7 +24,7 @@ Here's the tricky part, which relies on material from the chapters on [Activitie
 	
 	Describing the interior of something is an activity.
 
-Now we've done that, we can write a "rule for describing the interior" of something, which will print whatever we like:
+Now we've done that, we can write a `rule for describing the interior of` something, which will print whatever we like:
 
 	{**}Rule for describing the interior of the hover-bubble:
 		say "The hover-bubble is transparent, but tints everything outside very faintly lavender."

@@ -2,7 +2,7 @@ Example: * Bad Hair Day
 Location: Instead rules
 RecipeLocation: Characterisation
 Index: Examining the player
-Description: Change the player's appearance in response to ``examine me``.
+Description: Change the player's appearance in response to ``EXAMINE ME``.
 For: Z-Machine
 
 	{*}"Bad Hair Day"

@@ -9,7 +9,7 @@ For: Z-Machine
 	
 	Camp Bethel Kitchen is a room.
 
-One use for text alternatives is to change the description of a room after first visiting. We've already seen, in the example [Slightly Wrong], how to do this with "[if visited] ... [otherwise] ... [end if]". But since the first description is printed once and the second description on all subsequent occasions, we could equally well write
+One use for text alternatives is to change the description of a room after first visiting. We've already seen, in the example [Slightly Wrong], how to do this with `"[if visited] ... [otherwise] ... [end if]"`. But since the first description is printed once and the second description on all subsequent occasions, we could equally well write
 
 	{**}The description of Camp Kitchen is "[one of]You've never been into the kitchen before, though you've spent many an hour in the dining lodge. The place is larger than you would have expected, and it has none of the fake rustic touches of the rest of the camp[or]A tidy, efficient industrial kitchen, without any of the kitsch rusticity found elsewhere[stopping]."
 
@@ -27,9 +27,9 @@ Jeremy is following a sequence of actions to do an implied task (still somewhat 
 	
 	A housefly is an animal in the Camp Bethel Kitchen. "A large housefly [one of]lands on a countertop[or]flies around noisily[or]circles Jeremy's chef hat[at random]."
 
-The housefly's description is merely "at random" rather than "purely at random" because we want to show it doing a different thing each turn, whereas Fluffy could plausibly stare out the window for five turns in a row.
+The housefly's description is merely `at random` rather than `purely at random` because we want to show it doing a different thing each turn, whereas Fluffy could plausibly stare out the window for five turns in a row.
 
-There are more complex ways to change and override the initial descriptions of people and things; if text alternatives do not get us far enough, we can turn to the "rule for writing a paragraph about," documented in the [Activities] chapter.
+There are more complex ways to change and override the initial descriptions of people and things; if text alternatives do not get us far enough, we can turn to the `rule for writing a paragraph about` documented in the [Activities] chapter.
 
 Another frequent use of text alternatives is to give characters a bit of variety in things they're likely to say many times in the course of a game:
 

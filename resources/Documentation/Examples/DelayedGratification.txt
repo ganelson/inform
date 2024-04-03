@@ -2,7 +2,7 @@ Example: ** Delayed Gratification
 Location: Named rules and rulebooks
 RecipeLocation: Waiting, Sleeping
 Index: WAIT UNTIL [time] command
-Description: A ``wait until`` [time] command which advances until the game clock reaches the correct hour.
+Description: A ``WAIT UNTIL [time]`` command which advances until the game clock reaches the correct hour.
 For: Z-Machine
 
 	{*}"Delayed Gratification"

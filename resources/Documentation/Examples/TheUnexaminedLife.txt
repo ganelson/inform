@@ -90,11 +90,11 @@ Now we have these general hints written, but we want to pre-empt them if the pla
 		if player consents:
 			try hinting about the ultimate location of the noun.
 
-And this business of "seen" things requires, of course, that we keep track:
+And this business of `seen` things requires, of course, that we keep track:
 
 	{**}A thing can be seen or unseen. A thing is usually unseen. The player is seen. After printing the name of something (called target): now the target is seen.
 
-That "After printing..." rule means that as soon as the game automatically prints the name of an object, it tags that object as having been "seen" by the player. This requires just a little care on our part, that we never mention an object without using the game's printing rules. Still, it is much easier than most other possible forms of bookkeeping.
+That `After printing...` rule means that as soon as the game automatically prints the name of an object, it tags that object as having been `seen` by the player. This requires just a little care on our part, that we never mention an object without using the game's printing rules. Still, it is much easier than most other possible forms of bookkeeping.
 
 We also need to deal with the question of whether the player has examined an object, for those objects whose descriptions carry vital information:
 
@@ -164,7 +164,7 @@ Now we can add specific hints to replace the generic ones:
 	{**}Carry out hinting about the tomb:
 		say "The lids are heavy, but you can open them when you carry the pry bar."
 
-The rest of the hint system ensures that the player will not see this final suggestion until they have the pry bar, since the tomb "requires" the pry bar. Having the hint there doesn't excuse us from providing some alternate wording in case the player solves this not-very-difficult conundrum on his own, though:
+The rest of the hint system ensures that the player will not see this final suggestion until they have the pry bar, since the tomb `requires` the pry bar. Having the hint there doesn't excuse us from providing some alternate wording in case the player solves this not-very-difficult conundrum on his own, though:
 
 	{**}Understand "pry [something] with [something preferably held]" as unlocking it with. Understand the commands "lever" or "prise" as "pry".
 	
@@ -219,7 +219,7 @@ The rest of the hint system ensures that the player will not see this final sugg
 	
 	Test me with "hint about wight / north / get bar / south / open tomb / get dagger / south / hint about wight / read inscription / hint about wight / attack wight / throw dagger at wight / south".
 
-Note that, if using ``test me`` to run through the solution on the Z-machine, we will have to answer a few yes/no questions along the way.
+Note that, if using ``TEST ME`` to run through the solution on the Z-machine, we will have to answer a few yes/no questions along the way.
 
 For Glulx, the code should instead read something like
 

@@ -5,7 +5,7 @@ Index: Dark rooms given non-standard description
 Description: Changing the way dark rooms are described to avoid the standard Inform phrasing.
 For: Z-Machine
 
-Inform automatically keeps track of light and darkness, handling such questions as whether a room is lit, whether the player can see any light sources, etc., and then managing the descriptions accordingly. When the room is dark and no light sources are visible, the player is said to be "in darkness".
+Inform automatically keeps track of light and darkness, handling such questions as whether a room is lit, whether the player can see any light sources, etc., and then managing the descriptions accordingly. When the room is dark and no light sources are visible, the player is said to be `in darkness`.
 
 If we don't specify otherwise, Inform will describe our surroundings in a dark room thus:
 

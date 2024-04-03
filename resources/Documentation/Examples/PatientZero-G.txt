@@ -510,7 +510,7 @@ This is a light variation of a previous example, but we use it here because it i
 		while player's command includes "the":
 			cut the matched text.
 
-This strips 'the' out of the command, so that ``ask person about the rain`` will be understood as well as ``ask person about rain``.
+This strips 'the' out of the command, so that ``ASK PERSON ABOUT THE RAIN`` will be understood as well as ``ASK PERSON ABOUT RAIN``.
 
 Now we try something a bit unusual. Inform on its own will report each action on its own line, so that each character who walks into or out of a room will be described in a separate paragraph. This is usually fine, but in a game with a lot of characters moving around simultaneously, it can become a bit overwhelming. Instead, we may want to condense these reports into a single line, such as "Ben and Jerry enter from the south". The following accomplishes that goal by replacing some of the reporting rules, storing the information in a table, and then reading the table back later, once all the character movement has been resolved and the reports can usefully be collated:
 

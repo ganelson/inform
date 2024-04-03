@@ -55,7 +55,7 @@ To add a new activity to an existing Inform rule, we need to do three things:
 
 1) Define our new activity.
 
-2) Give a basic rule that says what is supposed to happen when that activity occurs, as in "Rule for..."
+2) Give a basic rule that says what is supposed to happen when that activity occurs, as in `Rule for...`
 
 3) Replace the existing rule in Inform's rulebooks with a new one that calls on our activity.
 
@@ -97,7 +97,7 @@ Now we do the same thing to room descriptions.
 
 Our replacement rule this time around is a little bit trickier just because the rule that we're replacing is a complicated one: describing a room already checks to see whether there's light to see by, whether the player has turned off room descriptions when entering a room for the second time, and whether the player character is (say) inside a closed box they can't see out of.
 
-But all of those details are re-copied from the standard rules, and the important thing is that, at the end, we again carry out our activity.
+But all of those details are re-copied from the Standard Rules, and the important thing is that, at the end, we again carry out our activity.
 
 	{**}This is the activity-based room description body text rule:
 		if the visibility level count is 0:

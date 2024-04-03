@@ -44,7 +44,7 @@ And raised supporters shouldn't be searchable from the ground either:
 	{**}Instead of searching or examining a raised supporter when the player is not on a supporter:
 		say "You can't see from down here."
 
-Finally, we need to tackle the case where the player types ``get all from shelf``, because we don't want to list the objects up there if the player can't even see them. We use a rule for deciding whether all includes in order to tell Inform not to consider items that can't be reached, and then we adjust the parser error so that it's a little more instructive than "There are none at all available!", which is what the response would otherwise be:
+Finally, we need to tackle the case where the player types ``GET ALL FROM SHELF``, because we don't want to list the objects up there if the player can't even see them. We use a rule for deciding whether all includes in order to tell Inform not to consider items that can't be reached, and then we adjust the parser error so that it's a little more instructive than ``There are none at all available!``, which is what the response would otherwise be:
 
 	{**}Disallowed-all is a truth state that varies. Disallowed-all is false.
 	

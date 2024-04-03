@@ -5,7 +5,7 @@ Index: Using lists as rings
 Description: Retrieving items from an airport luggage carousel is such fun, how can we resist simulating it, using a list as a ring buffer?
 For: Z-Machine
 
-The only point we need to be careful about is that the carousel is simulated twice over, in the following text: once in the built-in way that objects are inside other objects, so that the luggage items are objects contained in the carousel object; but then again by the "circle of misery" list, a ring buffer keeping track of what order things are in. We need to be careful that these two records do not fall out of synchrony: anything put into the carousel must be added to the list, anything taken out must be removed. (In fact we forbid things to be added, for simplicity's sake.)
+The only point we need to be careful about is that the carousel is simulated twice over, in the following text: once in the built-in way that objects are inside other objects, so that the luggage items are objects contained in the carousel object; but then again by the `circle of misery` list, a ring buffer keeping track of what order things are in. We need to be careful that these two records do not fall out of synchrony: anything put into the carousel must be added to the list, anything taken out must be removed. (In fact we forbid things to be added, for simplicity's sake.)
 
 	{*}"Circle Of Misery"
 	

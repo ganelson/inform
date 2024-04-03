@@ -5,7 +5,7 @@ Index: Understanding names of things, basic
 Description: Allowing the player to use different synonyms to refer to something.
 For: Z-Machine
 
-Sometimes we create objects that we want the player to be able to call by different names: a television that should also answer to ``tv`` and ``telly``, for instance, or a refrigerator the player might also call ``fridge``. In this case, we can use instructions like
+Sometimes we create objects that we want the player to be able to call by different names: a television that should also answer to ``TV`` and ``TELLY``, for instance, or a refrigerator the player might also call ``FRIDGE``. In this case, we can use instructions like
 
 	Understand "tv" and "telly" as the television.
 

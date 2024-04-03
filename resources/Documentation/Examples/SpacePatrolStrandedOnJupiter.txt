@@ -1,4 +1,4 @@
-Example: ** Space Patrol - Stranded on Jupiter!
+Example: ** Space Patrol - Stranded on Jupiter
 Location: During scenes
 RecipeLocation: Scene Changes
 Index: Commercial break

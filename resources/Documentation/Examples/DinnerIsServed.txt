@@ -15,7 +15,7 @@ For: Z-Machine
 
 Here's the part that allows reaching through the window.
 
-We replace the usual rule that says the player can never reach into a room with one that more specifically checks whether we are trying to reach through the window. If we aren't, we return the usual refusal. If we are, we return a custom refusal if the window is closed ("You can't reach through the closed window"), but allow access if the window is open.
+We replace the usual rule that says the player can never reach into a room with one that more specifically checks whether we are trying to reach through the window. If we aren't, we return the usual refusal. If we are, we return a custom refusal if the window is closed (``You can't reach through the closed window``), but allow access if the window is open.
 
 	{**}The can't reach through closed window rule is listed instead of the can't reach inside rooms rule in the reaching inside rules.
 	

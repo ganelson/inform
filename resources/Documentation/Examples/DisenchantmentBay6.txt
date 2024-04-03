@@ -9,5 +9,5 @@ It stands to reason that the captain wouldn't let just anyone meddle with his fi
 
 	{*}The Cabin contains a glass case. In the glass case is a collection of fishing rods. The case is closed, transparent, openable, lockable, and locked. The case is scenery. The small silver key unlocks the case.
 
-Now there's a silver key that will unlock it – though since we haven't said where the key is, the player will never be able to find it in the game. (If we look at the World index, we find "small silver key" right at the bottom, not inside any of the rooms. That is as good as not existing at all – though we usually use the term "out of play" – but as we will later see, it is possible to have things initially out of play but brought into existence later on.)
+Now there's a silver key that will unlock it – though since we haven't said where the key is, the player will never be able to find it in the game. (If we look at the World index, we find `small silver key` right at the bottom, not inside any of the rooms. That is as good as not existing at all – though we usually use the term `out of play` – but as we will later see, it is possible to have things initially out of play but brought into existence later on.)
 

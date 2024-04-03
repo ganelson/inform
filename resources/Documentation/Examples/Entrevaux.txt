@@ -19,15 +19,15 @@ To this end, we might extend Inform's default handling of scenes so that each sc
 	
 	A scene has a list of objects called the inventory props.
 
-The starting location is the room to which the player should be moved; scenery props are things that need to be put there when the scene begins; inventory props, things that are given to the player when the scene begins; and the description some printed text to introduce the new scene. We may still occasionally need to have recourse to special "When the Dancing-Lesson begins..." rules for individual scenes, but for the most part this allows us to set scenes up in a consistent and predictable way.
+The starting location is the room to which the player should be moved; scenery props are things that need to be put there when the scene begins; inventory props, things that are given to the player when the scene begins; and the description some printed text to introduce the new scene. We may still occasionally need to have recourse to special `When the Dancing-Lesson begins...` rules for individual scenes, but for the most part this allows us to set scenes up in a consistent and predictable way.
 
-Another point that might be slightly less obvious: sometimes we want to announce a change of location to the player when the scene starts, and sometimes we don't. In particular any scene that starts "when play begins" should probably not explicitly describe the entered room, since that would duplicate the description automatically produced on the first turn of play. So we add a property to track whether any given scene should be announcing its location:
+Another point that might be slightly less obvious: sometimes we want to announce a change of location to the player when the scene starts, and sometimes we don't. In particular any scene that starts `when play begins` should probably not explicitly describe the entered room, since that would duplicate the description automatically produced on the first turn of play. So we add a property to track whether any given scene should be announcing its location:
 
 	{**}A scene can be location-silent or location-loud.
 
 And let's say that we also want to announce each new scene as another "chapter" of the game in play, with a pause before the scene begins.
 
-Here we include "Basic Screen Effects" because it will allow us to pause the game for a keypress, then clear the screen before each new chapter:
+Here we include `Basic Screen Effects` because it will allow us to pause the game for a keypress, then clear the screen before each new chapter:
 
 	{**}Include Basic Screen Effects by Emily Short.
 	

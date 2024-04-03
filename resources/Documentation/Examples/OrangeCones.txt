@@ -7,7 +7,7 @@ For: Z-Machine
 
 Because we can invent our own adjectives (see the chapter on [Phrases]), we can make the conditions for a backdrop as simple or as complicated as we like.
 
-In this scenario, we want the player to be able to take, move, and drop orange traffic cones to seal off one street or another. So we create our own "accessible" adjective as follows:
+In this scenario, we want the player to be able to take, move, and drop orange traffic cones to seal off one street or another. So we create our own `accessible` adjective as follows:
 
 	Definition: a road is accessible if the orange cones are not in it.
 

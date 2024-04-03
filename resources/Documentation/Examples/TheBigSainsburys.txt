@@ -2,24 +2,20 @@ Example: * The Big Sainsbury's
 Location: Implicitly taking something
 RecipeLocation: The Passage Of Time
 Index: Implicit takes require time
-Description: Making implicit takes add a minute to the clock, just as though the player had typed ``take thing`` explicitly.
+Description: Making implicit takes add a minute to the clock, just as though the player had typed ``TAKE THING`` explicitly.
 For: Z-Machine
 
 Implicit takes are a convenience to players; in general, we would like to avoid asking players to type any more obvious commands than strictly necessary, while allowing the computer to guess as much as it safely can.
 
 Occasionally, though, we have designed a timed puzzle in which the player has a limited number of moves in which to accomplish their objectives. In that case, the implicit take complicates matters, because it means that a player who types
 
-``` transcript
->eat gateau
-(first taking the gateau...)
-```
+	> EAT GATEAU
+	(first taking the gateau...)
 
 gets away with a spare move compared to the precise but naïf dupe who types
 
-``` transcript
->take gateau
->eat gateau
-```
+	> TAKE GATEAU
+	> EAT GATEAU
 
 ...and really, that doesn't seem quite fair. The way to fix this problem is to fill in the extra minute on the clock during the implicit take; and that is indeed what we do in the following example.
 

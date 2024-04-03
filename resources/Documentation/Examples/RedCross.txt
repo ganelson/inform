@@ -2,7 +2,7 @@ Example: * Red Cross
 Location: New actions
 RecipeLocation: Combat and Death
 Index: DIAGNOSE command
-Description: A ``diagnose`` command which allows the player to check on the health of someone.
+Description: A ``DIAGNOSE`` command which allows the player to check on the health of someone.
 For: Z-Machine
 
 	{*}"Red Cross"

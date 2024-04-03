@@ -65,7 +65,7 @@ In this case, we do have to expand out our loop so that the game makes an explic
 		repeat with item running through hats:
 			now the item is worn by a random hatless person.
 
-Each time Inform considers the instruction "now the item is worn by a random hatless person", there is one fewer such person to choose from – so we can guarantee that the hats are distributed one per customer and that all hats are distributed.
+Each time Inform considers the instruction `now the item is worn by a random hatless person`, there is one fewer such person to choose from – so we can guarantee that the hats are distributed one per customer and that all hats are distributed.
 
-Hatless 3 is only guaranteed to work because the number of hats is less than or equal to the number of people; otherwise the final use of random will return "nothing" and then a problem message will appear during play.
+Hatless 3 is only guaranteed to work because the number of hats is less than or equal to the number of people; otherwise the final use of random will return `nothing` and then a problem message will appear during play.
 

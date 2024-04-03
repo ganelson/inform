@@ -35,7 +35,7 @@ The following example makes fairly ample use of material that we haven't seen ye
 	
 	A battery compartment is a kind of container. A battery compartment is usually closed and openable. One battery compartment is part of every device. Instead of inserting something which is not a battery into a battery compartment, say "Only batteries should go in a battery compartment."
 
-And to get rid of annoying messages like "Which would you like to close, the flashlight or the flashlight's battery compartment?" when only the compartment is closable, we might add some understanding instructions:
+And to get rid of annoying messages like ``Which would you like to close, the flashlight or the flashlight's battery compartment?`` when only the compartment is closable, we might add some understanding instructions:
 
 	{**}Understand "turn on [device]" as switching on.
 	
@@ -98,7 +98,7 @@ And this last bit, borrowed from the chapter on [Understanding], adds some speci
 
 	{**}Does the player mean doing something other than searching to a battery compartment: it is unlikely. [We discourage Inform from choosing a compartment when the player uses just the name of a device or the word 'battery'.]
 
-We also need to deal with commands like ``put battery in flashlight``, where Inform might construe ``battery`` as the D battery, the flashlight's battery compartment, or the cassette recorder's battery compartment – and might also construe ``flashlight`` as either the flashlight's battery compartment or the flashlight itself.
+We also need to deal with commands like ``PUT BATTERY IN FLASHLIGHT``, where Inform might construe ``BATTERY`` as the D battery, the flashlight's battery compartment, or the cassette recorder's battery compartment – and might also construe ``FLASHLIGHT`` as either the flashlight's battery compartment or the flashlight itself.
 
 	{**}Does the player mean inserting into a battery compartment:
 		if the noun is nothing:

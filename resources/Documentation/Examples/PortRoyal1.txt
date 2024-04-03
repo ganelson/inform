@@ -19,13 +19,13 @@ For subsequent rooms, we do not have to say explicitly that they are rooms, as l
 	
 	Water Lane runs south toward Queen Street, and facing onto it is the New Prison -- which, in the way of these things, is neither.  It did serve in that capacity for a time, and in a measure of the villainy which has been usual in Port Royal from its earliest days, it is nearly the largest building in the town."
 
-If we have some concern that the room name will be confused with an existing name, we can be more explicit about it using "called":
+If we have some concern that the room name will be confused with an existing name, we can be more explicit about it using `called`:
 
 	{**}East of Water Lane is a room called Thames Street at the Wherry Bridge.  Thames Street at the Wherry Bridge has the description "To the southwest is the fishmarket; directly across the street is the entrance to a private alley through a brick archway."
 	
 	The Private Alley is south of Thames Street at the Wherry Bridge. "You're just outside the tavern the Feathers. To the north, under a pretty little archway, is the active mayhem of Thames Street, but the alley narrows down to a dead end a little distance to the south."
 
-And now we get "inside", which generates a space treated as its own area on the map.
+And now we get `inside`, which generates a space treated as its own area on the map.
 
 	{**}The Feathers is inside from the Private Alley.  "Newly built with brick, replacing the older Feathers tavern that used to stand here. It sells wines in quantity, as well as serving them directly, and the goods are always of the best quality. There's a room upstairs for those wanting to stay the night." The Feathers Bedroom is above the Feathers.
 
@@ -37,9 +37,9 @@ For efficiency, we can also write multiple sets of connections at once:
 
 	{**}Queen Street East is east of Queen Street Middle and south of Private Alley.
 
-Clicking Go will translate this description into a sketchy but working simulation of Port Royal, in which we can type movement commands like ``east`` or ``south`` to explore the streets. Looking at the World tab of the Index, we can also see a schematic map of the simulation as it currently stands. Like the rest of the Index, this is provided entirely for the author's benefit, and is not visible to the player. (Though if we do decide that we want players to have access to a printed map while they play, Inform can help: we will return to the layout of Port Royal in the chapter on [Publishing].)
+Clicking Go will translate this description into a sketchy but working simulation of Port Royal, in which we can type movement commands like ``EAST`` or ``SOUTH`` to explore the streets. Looking at the World tab of the Index, we can also see a schematic map of the simulation as it currently stands. Like the rest of the Index, this is provided entirely for the author's benefit, and is not visible to the player. (Though if we do decide that we want players to have access to a printed map while they play, Inform can help: we will return to the layout of Port Royal in the chapter on [Publishing].)
 
-The following Test command allows us to type ``test me`` and explore the map we just devised:
+The following Test command allows us to type ``TEST ME`` and explore the map we just devised:
 
 	{**}Test me with "s / e / e / s / in".
 

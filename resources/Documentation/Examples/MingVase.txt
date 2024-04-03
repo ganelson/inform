@@ -2,7 +2,7 @@ Example: * Ming Vase
 Location: The noun and the second noun
 RecipeLocation: Glass and Other Damage-Prone Substances
 Index: ATTACK and DROP break fragile things
-Description: ``attack`` or ``drop`` break and remove fragile items from play.
+Description: ``ATTACK`` or ``DROP`` break and remove fragile items from play.
 For: Z-Machine
 
 In emulation of a certain annoying aspect of the original Adventure, in which there is a Ming vase that cannot safely be dropped:

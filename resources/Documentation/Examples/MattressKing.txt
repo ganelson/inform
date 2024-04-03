@@ -2,7 +2,7 @@ Example: * Mattress King
 Location: Going by, going through, going with
 RecipeLocation: Going, Pushing Things in Directions
 Index: PUSH something a direction with extra phrasing
-Description: Adding extra phrasing to the action to ``push`` something in a direction.
+Description: Adding extra phrasing to the action to ``PUSH`` something in a direction.
 For: Z-Machine
 
 By default, when the player pushes something a direction, Inform checks to make sure that the object is pushable between rooms. If not, it blocks the action; if so, it carries out a normal going action with the pushed object taken along.

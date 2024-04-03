@@ -5,14 +5,12 @@ Index: Four Stars 2. Scope for listening different from scope for seeing
 Description: Using "deciding the scope" to change the content of lists such as "the list of audible things which can be touched by the player".
 For: Z-Machine
 
-As we have seen, a well-written understand rule will often solve the problem of allowing the player to apply specific actions to objects not normally in scope. When we need to adjust scope for some other reason than reading the player's command, though, "deciding the scope of..." may come in handy.
+As we have seen, a well-written understand rule will often solve the problem of allowing the player to apply specific actions to objects not normally in scope. When we need to adjust scope for some other reason than reading the player's command, though, `deciding the scope of...` may come in handy.
 
 For instance, suppose we wanted to extend [Four Stars 1] to add a tomcat on the balcony that will be heard whenever the player listens from the next room, as in:
 
-``` transcript
->listen
-You hear the soothing whalesong from the Bose speaker and the yowling from the tomcat.
-```
+	> LISTEN
+	You hear the soothing whalesong from the Bose speaker and the yowling from the tomcat.
 
 To do this, we need to make sure that in the rule that assembles our listening description,
 
@@ -20,7 +18,7 @@ To do this, we need to make sure that in the rule that assembles our listening d
 		if an audible thing can be touched by the player, say "You hear [the list of audible things which can be touched by the player].";
 		otherwise say "A merciful peace prevails."
 
-now includes the tomcat in the "list of audible things which can be touched by the player".
+now includes the tomcat in the `list of audible things which can be touched by the player`.
 
 To this end, we're going to change the way we assess scope, but only during the listening action. Otherwise the tomcat remains in the other room and off-limits. The new source text is marked out below:
 

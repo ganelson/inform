@@ -14,7 +14,7 @@ Suppose we're particularly mechanically-minded and would like a game in which al
 	Instead of pushing an on/off button which is part of a switched off device (called the machine):
 		try switching on the machine.
 
-Here we are making a rule about how our hypothetical buttons will interact with the machines to which they belong. Instead of pushing... is a rule that pertains to actions, and we will learn more about these in the chapter on [Actions]. "...which is part of a switched off device" provides a specific circumstance–this is only to apply to buttons that are stuck to a machines that can be turned on or off. "(called the machine)" tells Inform that if it finds such a device, it should thereafter refer to it as "the machine." (The called syntax is explained further in the chapter on [Change].)
+Here we are making a rule about how our hypothetical buttons will interact with the machines to which they belong. `Instead of pushing` is a rule that pertains to actions, and we will learn more about these in the chapter on [Actions]. `...which is part of a switched off device` provides a specific circumstance–this is only to apply to buttons that are stuck to a machines that can be turned on or off. `(called the machine)` tells Inform that if it finds such a device, it should thereafter refer to it as ``the machine``. (The `called` syntax is explained further in the chapter on [Change].)
 
 A set of three more rules will complete our instructions about using buttons to control devices:
 
@@ -49,5 +49,5 @@ It may be that we want (as an added nuance) to add other names for these items. 
 	
 	Understand "model train" or "model" or "train" as "[train]". Understand "[train] button" or  "button on [train]" as the model train's button.
 
-In the second case, we are defining [train] to mean any of the three phrases "train", "model", and "model train"; so "[train] button" will match "model train button" or "train button" or "model button" equally well. See the chapter on [Understanding] for more on how to create alternative phrasings for the player to use.
+In the second case, we are defining `[train]` to mean any of the three phrases ``TRAIN``, ``MODEL``, and ``MODEL TRAIN``; so `"[train] button"` will match ``MODEL TRAIN BUTTON`` or ``TRAIN BUTTON`` or ``MODEL BUTTON`` equally well. See the chapter on [Understanding] for more on how to create alternative phrasings for the player to use.
 

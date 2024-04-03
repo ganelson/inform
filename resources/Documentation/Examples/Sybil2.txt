@@ -2,10 +2,10 @@ Example: ** Sybil 2
 Location: Reading and talking
 RecipeLocation: Saying Simple Things
 Index: Sybil 2. YES and NO directed to people
-Description: Making the character understand ``yes``, ``say yes to character``, ``tell character yes``, ``answer yes``, and ``character, yes``.
+Description: Making the character understand ``YES``, ``SAY YES TO CHARACTER``, ``TELL CHARACTER YES``, ``ANSWER YES``, and ``CHARACTER, YES``.
 For: Z-Machine
 
-Inform already understands ``yes``, ``no``, and ``sorry`` as commands in their own right, which can make things a little sticky when we want a character to ask a question of the player. The most important thing is not to cover some of the possible phrasings while ignoring others.
+Inform already understands ``YES``, ``NO``, and ``SORRY`` as commands in their own right, which can make things a little sticky when we want a character to ask a question of the player. The most important thing is not to cover some of the possible phrasings while ignoring others.
 
 	{*}"Replies"
 	
@@ -24,7 +24,7 @@ Inform already understands ``yes``, ``no``, and ``sorry`` as commands in their o
 	Instead of saying sorry in the presence of the Sybil:
 		say "She looks bored."
 
-The complexity arises from the fact that we want to handle both ``yes`` and ``sybil, yes``. If we only had the latter, 'yes' would be treated as a text given to the Sybil, just as in the commands ``say yes to sybil`` or ``answer yes``. But because we have defined it as a command (so that the player can use it independently), ``sybil, yes`` is understood as an order to the Sybil to do the ``yes`` action.
+The complexity arises from the fact that we want to handle both ``YES`` and ``SYBIL, YES``. If we only had the latter, 'yes' would be treated as a text given to the Sybil, just as in the commands ``SAY YES TO SYBIL`` or ``ANSWER YES``. But because we have defined it as a command (so that the player can use it independently), ``SYBIL, YES`` is understood as an order to the Sybil to do the ``YES`` action.
 
 Fortunately, we can redirect everything, as here, so that the results wind up the same.
 
