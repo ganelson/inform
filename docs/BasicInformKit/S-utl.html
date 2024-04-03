@@ -293,12 +293,32 @@ between 4 and 17, and there is therefore no pair of \(n\) and \(m\) correspondin
 to an empty range of values.
 </p>
 
+<p class="commentary">The following trick, devised by Zed Lopez in 2023, is designed to work even
+when the range width (here called \(s\)) is larger than the maximum signed
+integer size, so that the signed comparison \(s &gt; 0\) fails. In that case, it
+appears alarmingly to go into an infinite loop, but the loop terminates with
+a probability of at least 0.5 on each iteration. Even in the worst case of the
+range, the expected number of iterations is only 2, and the probability of taking
+more than 50 iterations is less than 0.0000000000000001, which is obviously
+negligible. But we check the iteration count anyway in case a rigged random
+number generator is being used, e.g. for story testing purposes, which happens
+to be biased in a really unlucky way for us.
+</p>
+
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">GenerateRandomNumber</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> </span><span class="identifier-syntax">m</span><span class="plain-syntax"> </span><span class="identifier-syntax">s</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">GenerateRandomNumber</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> </span><span class="identifier-syntax">m</span><span class="plain-syntax"> </span><span class="identifier-syntax">s</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax">==</span><span class="identifier-syntax">m</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax">&gt;</span><span class="identifier-syntax">m</span><span class="plain-syntax">) { </span><span class="identifier-syntax">s</span><span class="plain-syntax"> = </span><span class="identifier-syntax">n</span><span class="plain-syntax">; </span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">m</span><span class="plain-syntax">; </span><span class="identifier-syntax">m</span><span class="plain-syntax"> = </span><span class="identifier-syntax">s</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">n</span><span class="plain-syntax">--;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="reserved-syntax">random</span><span class="plain-syntax">(</span><span class="identifier-syntax">m</span><span class="plain-syntax">-</span><span class="identifier-syntax">n</span><span class="plain-syntax">) + </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">s</span><span class="plain-syntax"> = </span><span class="identifier-syntax">m</span><span class="plain-syntax"> - </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">s</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="reserved-syntax">random</span><span class="plain-syntax">(</span><span class="identifier-syntax">s</span><span class="plain-syntax">) + </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">n</span><span class="plain-syntax">++;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">do</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">s</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FullyRandomWord</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">s</span><span class="plain-syntax"> &gt;= </span><span class="identifier-syntax">n</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">s</span><span class="plain-syntax"> &lt;= </span><span class="identifier-syntax">m</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">s</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">it</span><span class="plain-syntax">++;</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">until</span><span class="plain-syntax"> (</span><span class="identifier-syntax">it</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">50</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">R_DecimalNumber</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GenerateRandomNumber</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">R_PrintTimeOfDay</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GenerateRandomNumber</span><span class="plain-syntax">;</span>

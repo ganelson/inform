@@ -1593,7 +1593,7 @@ The return values are:
 (a) |GPR_REPARSE| for "I have rewritten the command, please re-parse from scratch";
 (b) |GPR_PREPOSITION| for "token accepted with no result";
 (c) $-256 + x$ for "please parse |ParseToken(ELEMENTARY_TT, x)| instead";
-(d) 0 for "token accepted, result is the multiple object list";
+(d) |GPR_MULTIPLE| for "token accepted, result is the multiple object list";
 (e) 1 for "token accepted, result is the number in |parsed_number|";
 (f) an object number for "token accepted with this object as result";
 (g) $-1$ for "token rejected".

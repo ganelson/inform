@@ -1,4 +1,4 @@
-adjective: 140 items
+adjective: 142 items
 article: 2 items
 noun: 2395 items
 pronoun: 8 items
@@ -6,7 +6,7 @@ preposition: 274 items
 determiner: 22 items
 verb: 109 items
 verb_form: 388 items
-total in all categories: 3338
+total in all categories: 3340
 
 adjective: 'even'
 adjective: 'odd'
@@ -40,6 +40,8 @@ adjective: 'carried'
 adjective: 'held'
 adjective: 'visible'
 adjective: 'invisible'
+adjective: 'audible'
+adjective: 'inaudible'
 adjective: 'touchable'
 adjective: 'untouchable'
 adjective: 'concealed'
