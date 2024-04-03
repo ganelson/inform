@@ -11,7 +11,7 @@ typedef struct action_naming_data {
 	struct wording present_name; /* such as "dropping" or "removing it from" */
 	struct wording past_name; /* such as "dropped" or "removed it from" */
 	int it_optional; /* noun optional when describing the second noun? */
-	int abbreviable; /* preposition optional when describing the second noun? */
+	int abbreviable; /* preposition optional after the first noun, if there's no second? */
 } action_naming_data;
 
 @ Here, the default settings are made from |W|. The past tense form is made
