@@ -2,7 +2,7 @@
     "is": {
         "type": "kit",
         "title": "Architecture32Kit",
-        "version": "10.2.0-beta+6X39"
+        "version": "10.2.0-beta+6X40"
     },
     "compatibility": "32-bit",
     "kit-details": {
