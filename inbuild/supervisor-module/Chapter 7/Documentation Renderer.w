@@ -329,7 +329,10 @@ void DocumentationRenderer::render_example_page(OUTPUT_STREAM, compiled_document
 	IFM_example *egc) {
 	TEMPORARY_TEXT(title)
 	WRITE_TO(title, "Example %S", egc->insignia);
-	DocumentationRenderer::render_header(OUT, cd->title, title, cd->within_extension);
+	if ((cd->associated_extension) || (cd->within_extension))
+		DocumentationRenderer::render_header(OUT, cd->title, title, cd->within_extension);
+	else
+		InformPages::header(OUT, title, JAVASCRIPT_FOR_ONE_EXTENSION_IRES, NULL);
 	DISCARD_TEXT(title)
 	DocumentationRenderer::render_example(OUT, cd, egc);
 	DocumentationRenderer::render_footer(OUT);
@@ -622,10 +625,12 @@ void DocumentationRenderer::render_example(OUTPUT_STREAM, compiled_documentation
 		}
 		HTML_CLOSE("div");
 		@<Enter the small print@>;
-		if (egc->cue) {
+		markdown_item *origin = (egc->cue)?(egc->cue->down):NULL;
+		while ((origin) && (origin->type == HEADING_MARKER_MIT)) origin = origin->next;
+		if (origin) {
 			WRITE("This example is drawn from ");
 			DocumentationRenderer::link_to(OUT, egc->cue);
-			DocumentationRenderer::render_extended(OUT, cd, egc->cue->down);
+			DocumentationRenderer::render_extended(OUT, cd, origin);
 			HTML_CLOSE("a");
 		}
 		@<Exit the small print@>;

@@ -30,7 +30,7 @@ index notation: ^{>headword} = command
 
 # Category for people's names.
 index notation: ^{headword+name+} = name (invert)
-# index notation: ^{@headword} = name (invert)
+index notation: ^{@headword} = name (invert)
 
 # For source text which will include bracketed arguments.
 # (The brackets are displayed.)

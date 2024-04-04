@@ -921,7 +921,7 @@ The grating really does come in between the two rooms: the grating is what lies 
 then Inform would say that this is a contradiction: we said the Undertomb was east of the Orchard, but then we said that the grating was east of the Orchard.
 Inform's `door` kind can be used for all manner of conduits, so the word door need not be taken literally. In Ursula K. Le Guin's beguiling novel _The Tombs of Atuan_ (1970), from which the above rooms are stolen, it is not a grating which interposes, but:
 
-^^{@Le Guin, Ursula K.}
+^^{@Ursula K. Le Guin}
 
 	The red rock stair is east of the Orchard and above the Undertomb. The stair is an open door. The stair is not openable.
 

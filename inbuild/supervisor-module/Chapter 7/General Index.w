@@ -186,11 +186,11 @@ void Indexes::scan_r(compiled_documentation *cd, markdown_item *md, markdown_ite
 		if ((md->type == INFORM_EXAMPLE_HEADING_MIT) && (latest) && (*latest)) {
 			IFM_example *EG = RETRIEVE_POINTER_IFM_example(md->user_state);
 			TEMPORARY_TEXT(term)
-			Indexes::extract_from_indexable_matter(term, cd, Str::duplicate(EG->name));
+			Indexes::extract_from_indexable_matter(term, cd, Str::duplicate(EG->name), NULL);
 			Indexes::mark_index_term(cd, term, *volume_number, *latest, NULL, EG, NULL, NULL, 1);
 			if ((Str::len(EG->ex_index) > 0) && (Str::ne(EG->ex_index, EG->name))) {
 				Str::clear(term);
-				Indexes::extract_from_indexable_matter(term, cd, Str::duplicate(EG->ex_index));
+				Indexes::extract_from_indexable_matter(term, cd, Str::duplicate(EG->ex_index), NULL);
 				Indexes::mark_index_term(cd, term, *volume_number, *latest, NULL, EG, NULL, NULL, 2);
 			}
 			DISCARD_TEXT(term)
@@ -212,7 +212,7 @@ void Indexes::scan_indexingnotations(compiled_documentation *cd, markdown_item *
 		Str::copy(term_to_index, mr.exp[0]); Str::copy(alphabetise_as, mr.exp[1]);
 	}
 	TEMPORARY_TEXT(lemma)
-	Indexes::extract_from_indexable_matter(lemma, cd, term_to_index);
+	Indexes::extract_from_indexable_matter(lemma, cd, term_to_index, (carets==1)?(md->next):NULL);
 
 	if ((V > 0) && (E)) {
 		V = 0; S = NULL; E = NULL;
@@ -229,7 +229,7 @@ void Indexes::scan_indexingnotations(compiled_documentation *cd, markdown_item *
 	while (Regexp::match(&mr, see, U" *(%c+) *<-- *(%c+?) *")) {
 		Str::copy(see, mr.exp[0]);
 		TEMPORARY_TEXT(seethis)
-		Indexes::extract_from_indexable_matter(seethis, cd, mr.exp[1]);
+		Indexes::extract_from_indexable_matter(seethis, cd, mr.exp[1], NULL);
 		Indexes::mark_index_term(cd, seethis, -1, NULL, NULL, NULL, lemma, NULL, FALSE);
 		WRITE_TO(smoke_test_text, " <-- ");
 		Indexes::process_category_options(smoke_test_text, cd, seethis, TRUE, 2);
@@ -237,7 +237,7 @@ void Indexes::scan_indexingnotations(compiled_documentation *cd, markdown_item *
 	}
 	if (Str::len(see) > 0) {
 		TEMPORARY_TEXT(seethis)
-		Indexes::extract_from_indexable_matter(seethis, cd, see);
+		Indexes::extract_from_indexable_matter(seethis, cd, see, NULL);
 		Indexes::mark_index_term(cd, seethis, -1, NULL, NULL, NULL, lemma, NULL, FALSE);
 		WRITE_TO(smoke_test_text, " <-- ");
 		Indexes::process_category_options(smoke_test_text, cd, seethis, TRUE, 3);
@@ -258,14 +258,15 @@ void Indexes::scan_indexingnotations(compiled_documentation *cd, markdown_item *
 	Regexp::dispose_of(&mr);
 }
 
-void Indexes::extract_from_indexable_matter(OUTPUT_STREAM, compiled_documentation *cd, text_stream *text) {
+void Indexes::extract_from_indexable_matter(OUTPUT_STREAM, compiled_documentation *cd,
+	text_stream *text, markdown_item *plain_md) {
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, text, U" *(%c+?) *: *(%c+) *")) {
 		text_stream *head = mr.exp[0];
 		text_stream *tail = mr.exp[1];
-		Indexes::extract_from_indexable_matter(OUT, cd, head);
+		Indexes::extract_from_indexable_matter(OUT, cd, head, NULL);
 		WRITE(":");
-		Indexes::extract_from_indexable_matter(OUT, cd, tail);
+		Indexes::extract_from_indexable_matter(OUT, cd, tail, NULL);
 		Regexp::dispose_of(&mr);
 		return;
 	}
@@ -281,6 +282,10 @@ void Indexes::extract_from_indexable_matter(OUTPUT_STREAM, compiled_documentatio
 					for (int j=SN->sp_left_len, L=Str::len(trimmed); j<L-SN->sp_right_len; j++)
 						PUT(Str::get_at(trimmed, j));
 					WRITE("=___=%S", SN->sp_style);
+					if ((plain_md) && (plain_md->type == PLAIN_MIT)) {
+						plain_md->from += SN->sp_left_len;
+						plain_md->to -= SN->sp_right_len;
+					}
 					claimed = TRUE; break;
 				}
 	DISCARD_TEXT(trimmed)
@@ -495,7 +500,7 @@ might be placed as as a subentry of "Kings".
 		TEMPORARY_TEXT(old_lemma)
 		Str::copy(old_lemma, lemma);
 
-		Indexes::extract_from_indexable_matter(extracted, cd, ic->cat_under);
+		Indexes::extract_from_indexable_matter(extracted, cd, ic->cat_under, NULL);
 		Indexes::process_category_options(icu, cd, extracted, FALSE, 9);
 		Str::clear(lemma);
 		WRITE_TO(lemma, "%S:%S", icu, old_lemma);
