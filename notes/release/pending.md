@@ -36,6 +36,9 @@ and now poses a moral rather than gender-based question.
 
 ## Bug fixes
 
+- Fix for Jira bug [I7-2460](https://inform7.atlassian.net/browse/I7-2460)
+	"Standard 'deciding whether all include' rules don't apply to an actor."
+	([PR#138](https://github.com/ganelson/inform/pull/138))
 - Fix for Jira bug [I7-2458](https://inform7.atlassian.net/browse/I7-2458)
 	"The uuid.txt file should be whitespace-stripped before use"
 	(see [Inweb commit 4557cc1](https://github.com/ganelson/inform/commit/4557cc1925aebd7f1d075ea458b76f6970df3d57))
@@ -163,6 +166,9 @@ and now poses a moral rather than gender-based question.
 	"Documentation recommends scene code that causes soft lock" (about times
 	since scene ending sometimes being negative)
 	([PR#109](https://github.com/ganelson/inform/pull/109))
+- Fix for Jira bug [I7-2021](https://inform7.atlassian.net/browse/I7-2021) = Mantis 2058
+	"Multiple 'take all' in an empty room causes a 'Too many activities are going on at once.' error"
+	([PR#139](https://github.com/ganelson/inform/pull/139))
 - Fix for Jira bug [I7-1973](https://inform7.atlassian.net/browse/I7-1973) = Mantis 2009
 	"Standard 'deciding whether all include' rules don't apply to an actor."
 	([PR#113](https://github.com/ganelson/inform/pull/113))

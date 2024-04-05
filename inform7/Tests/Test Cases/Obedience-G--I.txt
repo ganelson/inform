@@ -438,7 +438,9 @@ chains: [(1) Clark Gable removing the chains from the cage]
 [asking Clark Gable to try removing the chains from the cage - succeeded]
 
 >** take bone from cage
-You can't see any such thing.
+[removing the bone from the cage]
+But it isn't there now.
+[removing the bone from the cage - failed the can't remove what's not inside rule]
 
 >** i
 [taking inventory]
@@ -455,9 +457,12 @@ You are carrying:
 [taking inventory - succeeded]
 
 >** clark, take bone from cage
-[answering Clark Gable that "take bone from cage"]
-There is no reply.
-[answering Clark Gable that "take bone from cage" - succeeded]
+[asking Clark Gable to try removing the bone from the cage]
+[(1) Clark Gable removing the bone from the cage]
+[(1) Clark Gable removing the bone from the cage - failed the can't remove what's not inside rule]
+
+"I don't think that's in the script," says Clark dubiously.
+[asking Clark Gable to try removing the bone from the cage - succeeded]
 
 >** get all from clark
 (Clark Gable)
