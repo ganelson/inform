@@ -2337,10 +2337,12 @@ because we want to allow duplicates).
 			if (context == MULTI_TOKEN or MULTIHELD_TOKEN or
 				MULTIEXCEPT_TOKEN or MULTIINSIDE_TOKEN or
 				NOUN_TOKEN or HELD_TOKEN or CREATURE_TOKEN) {
+				j = 0;
 				BeginActivity(DECIDING_WHETHER_ALL_INC_ACT, i);
 				if ((ForActivity(DECIDING_WHETHER_ALL_INC_ACT, i)) &&
-					(RulebookFailed())) rfalse;
+					(RulebookFailed())) j = 1;
 				EndActivity(DECIDING_WHETHER_ALL_INC_ACT, i);
+				if (j == 1) rfalse;
 			}
 		}
     }
