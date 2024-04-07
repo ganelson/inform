@@ -928,7 +928,9 @@ forcetransferadvice:
 {define: compile-inapp-documentation}
 	mkdir -p $(BUILTINHTMLINNER)
 	$(INBUILDX) -document-set resources/Documentation -document-to $(BUILTINHTMLINNER)
+	ifneq "$(BUILTINHTMLINNER)" "$(BUILTINHTML)"
 	cp -f $(BUILTINHTMLINNER)/xrefs.txt $(BUILTINHTML)
+	endif
 {end-define}
 
 .PHONY: transferdocumentation
