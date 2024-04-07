@@ -781,34 +781,34 @@ ROOT_NT
                 PROPER_NOUN_NT'blank' {refined} {refers: infs'blank'} {eval: CONSTANT_NT'blank' {kind: room} {instance: I108'blank'} {enumeration: 0}}
                 RELATIONSHIP_NT'contains' {meaning: is-in} {refined}
                     AND_NT
-                        PROPER_NOUN_NT {refers: infs413} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I109} {enumeration: 0}} {created here}
+                        PROPER_NOUN_NT {refers: infs414} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I109} {enumeration: 0}} {created here}
                         AND_NT
-                            PROPER_NOUN_NT {refers: infs414} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I110} {enumeration: 0}} {created here}
+                            PROPER_NOUN_NT {refers: infs415} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I110} {enumeration: 0}} {created here}
                             AND_NT
-                                PROPER_NOUN_NT {refers: infs415} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I111} {enumeration: 0}} {created here}
+                                PROPER_NOUN_NT {refers: infs416} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I111} {enumeration: 0}} {created here}
                                 AND_NT
-                                    PROPER_NOUN_NT {refers: infs416} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I112} {enumeration: 0}} {created here}
+                                    PROPER_NOUN_NT {refers: infs417} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I112} {enumeration: 0}} {created here}
                                     AND_NT
-                                        PROPER_NOUN_NT {refers: infs417} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I113} {enumeration: 0}} {created here}
+                                        PROPER_NOUN_NT {refers: infs418} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I113} {enumeration: 0}} {created here}
                                         AND_NT
-                                            PROPER_NOUN_NT {refers: infs418} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I114} {enumeration: 0}} {created here}
+                                            PROPER_NOUN_NT {refers: infs419} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I114} {enumeration: 0}} {created here}
                                             AND_NT
-                                                PROPER_NOUN_NT {refers: infs419} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I115} {enumeration: 0}} {created here}
+                                                PROPER_NOUN_NT {refers: infs420} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I115} {enumeration: 0}} {created here}
                                                 AND_NT
-                                                    PROPER_NOUN_NT {refers: infs420} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I116} {enumeration: 0}} {created here}
+                                                    PROPER_NOUN_NT {refers: infs421} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I116} {enumeration: 0}} {created here}
                                                     AND_NT
-                                                        PROPER_NOUN_NT {refers: infs421} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I117} {enumeration: 0}} {created here}
+                                                        PROPER_NOUN_NT {refers: infs422} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I117} {enumeration: 0}} {created here}
                                                         AND_NT
-                                                            PROPER_NOUN_NT {refers: infs422} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I118} {enumeration: 0}} {created here}
+                                                            PROPER_NOUN_NT {refers: infs423} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I118} {enumeration: 0}} {created here}
                                                             AND_NT
-                                                                PROPER_NOUN_NT {refers: infs423} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I119} {enumeration: 0}} {created here}
+                                                                PROPER_NOUN_NT {refers: infs424} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I119} {enumeration: 0}} {created here}
                                                                 AND_NT
-                                                                    PROPER_NOUN_NT {refers: infs424} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I120} {enumeration: 0}} {created here}
+                                                                    PROPER_NOUN_NT {refers: infs425} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I120} {enumeration: 0}} {created here}
                                                                     AND_NT
-                                                                        PROPER_NOUN_NT {refers: infs425} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I121} {enumeration: 0}} {created here}
+                                                                        PROPER_NOUN_NT {refers: infs426} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I121} {enumeration: 0}} {created here}
                                                                         AND_NT
-                                                                            PROPER_NOUN_NT {refers: infs426} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I122} {enumeration: 0}} {created here}
-                                                                            PROPER_NOUN_NT {refers: infs427} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I123} {enumeration: 0}} {created here}
+                                                                            PROPER_NOUN_NT {refers: infs427} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I122} {enumeration: 0}} {created here}
+                                                                            PROPER_NOUN_NT {refers: infs428} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I123} {enumeration: 0}} {created here}
         HEADING_NT'section 4 - other players' {heading 5} {under: H5'section 4 - other players'} {unit: 3}
             SENTENCE_NT'vanessa is a woman in cold comfort' {unit: 3} {classified}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
@@ -842,10 +842,10 @@ ROOT_NT
                 PROPER_NOUN_NT'lewis' {refined} {refers: infs'lewis'} {eval: CONSTANT_NT'lewis' {kind: man} {instance: I128'lewis'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
                     AND_NT
-                        PROPER_NOUN_NT {refers: infs433} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I129} {enumeration: 0}} {created here}
+                        PROPER_NOUN_NT {refers: infs434} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I129} {enumeration: 0}} {created here}
                         AND_NT
-                            PROPER_NOUN_NT {refers: infs434} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I130} {enumeration: 0}} {created here}
-                            PROPER_NOUN_NT {refers: infs435} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I131} {enumeration: 0}} {created here}
+                            PROPER_NOUN_NT {refers: infs435} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I130} {enumeration: 0}} {created here}
+                            PROPER_NOUN_NT {refers: infs436} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I131} {enumeration: 0}} {created here}
             SENTENCE_NT'lewis carries a book called idiot's guide to dating' {unit: 3} {classified} {interpretation of subject: infs'lewis'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'lewis' {refined} {refers: infs'lewis'} {eval: CONSTANT_NT'lewis' {kind: man} {instance: I128'lewis'} {enumeration: 0}}
@@ -874,7 +874,7 @@ ROOT_NT
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'gene' {refined} {refers: infs'gene'} {eval: CONSTANT_NT'gene' {kind: man} {instance: I136'gene'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT {refers: infs441} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I137} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT {refers: infs442} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I137} {enumeration: 0}} {created here}
             SENTENCE_NT'gene carries a dvd called casablanca' {unit: 3} {classified} {interpretation of subject: infs'gene'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'gene' {refined} {refers: infs'gene'} {eval: CONSTANT_NT'gene' {kind: man} {instance: I136'gene'} {enumeration: 0}}
@@ -884,7 +884,7 @@ ROOT_NT
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'gene' {refined} {refers: infs'gene'} {eval: CONSTANT_NT'gene' {kind: man} {instance: I136'gene'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT {refers: infs443} {eval: CONSTANT_NT {kind: coupon} {instance: I139} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT {refers: infs444} {eval: CONSTANT_NT {kind: coupon} {instance: I139} {enumeration: 0}} {created here}
             SENTENCE_NT'rhoda is a woman in marciony street' {unit: 3} {classified} {interpretation of subject: infs'gene'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'rhoda' {refined} {refers: infs'rhoda'} {eval: CONSTANT_NT'rhoda' {kind: object} {instance: I140'rhoda'} {enumeration: 0}} {created here}
@@ -917,7 +917,7 @@ ROOT_NT
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'martin' {refined} {refers: infs'martin'} {eval: CONSTANT_NT'martin' {kind: man} {instance: I144'martin'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT {refers: infs450} {eval: CONSTANT_NT {kind: coupon} {instance: I146} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT {refers: infs451} {eval: CONSTANT_NT {kind: coupon} {instance: I146} {enumeration: 0}} {created here}
             SENTENCE_NT'antony is a man in movie rental' {unit: 3} {classified} {interpretation of subject: infs'martin'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'antony' {refined} {refers: infs'antony'} {eval: CONSTANT_NT'antony' {kind: object} {instance: I147'antony'} {enumeration: 0}} {created here}
@@ -926,7 +926,7 @@ ROOT_NT
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'antony' {refined} {refers: infs'antony'} {eval: CONSTANT_NT'antony' {kind: man} {instance: I147'antony'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT {refers: infs452} {eval: CONSTANT_NT {kind: coupon} {instance: I148} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT {refers: infs453} {eval: CONSTANT_NT {kind: coupon} {instance: I148} {enumeration: 0}} {created here}
             SENTENCE_NT'antony carries a stamped envelope called a postcard' {unit: 3} {classified} {interpretation of subject: infs'antony'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'antony' {refined} {refers: infs'antony'} {eval: CONSTANT_NT'antony' {kind: man} {instance: I147'antony'} {enumeration: 0}}
@@ -946,24 +946,24 @@ ROOT_NT
                 PROPER_NOUN_NT'shelby' {refined} {refers: infs'shelby'} {eval: CONSTANT_NT'shelby' {kind: man} {instance: I150'shelby'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
                     AND_NT
-                        PROPER_NOUN_NT {refers: infs456} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I152} {enumeration: 0}} {created here}
+                        PROPER_NOUN_NT {refers: infs457} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I152} {enumeration: 0}} {created here}
                         AND_NT
-                            PROPER_NOUN_NT {refers: infs457} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I153} {enumeration: 0}} {created here}
+                            PROPER_NOUN_NT {refers: infs458} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I153} {enumeration: 0}} {created here}
                             AND_NT
-                                PROPER_NOUN_NT {refers: infs458} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I154} {enumeration: 0}} {created here}
+                                PROPER_NOUN_NT {refers: infs459} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I154} {enumeration: 0}} {created here}
                                 AND_NT
-                                    PROPER_NOUN_NT {refers: infs459} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I155} {enumeration: 0}} {created here}
-                                    PROPER_NOUN_NT {refers: infs460} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I156} {enumeration: 0}} {created here}
+                                    PROPER_NOUN_NT {refers: infs460} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I155} {enumeration: 0}} {created here}
+                                    PROPER_NOUN_NT {refers: infs461} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I156} {enumeration: 0}} {created here}
             SENTENCE_NT'shelby carries an ice cream cone' {unit: 3} {classified} {interpretation of subject: infs'shelby'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shelby' {refined} {refers: infs'shelby'} {eval: CONSTANT_NT'shelby' {kind: man} {instance: I150'shelby'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT {refers: infs461} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I157} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT {refers: infs462} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I157} {enumeration: 0}} {created here}
             SENTENCE_NT'shelby carries a coupon' {unit: 3} {classified} {interpretation of subject: infs'shelby'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shelby' {refined} {refers: infs'shelby'} {eval: CONSTANT_NT'shelby' {kind: man} {instance: I150'shelby'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT {refers: infs462} {eval: CONSTANT_NT {kind: coupon} {instance: I158} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT {refers: infs463} {eval: CONSTANT_NT {kind: coupon} {instance: I158} {enumeration: 0}} {created here}
             SENTENCE_NT'christopher is a man in the library' {unit: 3} {classified} {interpretation of subject: infs'shelby'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'christopher' {refined} {refers: infs'christopher'} {eval: CONSTANT_NT'christopher' {kind: object} {instance: I159'christopher'} {enumeration: 0}} {created here}

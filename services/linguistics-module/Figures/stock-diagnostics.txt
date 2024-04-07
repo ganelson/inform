@@ -1,12 +1,12 @@
 adjective: 142 items
 article: 2 items
-noun: 2395 items
+noun: 2396 items
 pronoun: 8 items
 preposition: 274 items
 determiner: 22 items
 verb: 109 items
 verb_form: 388 items
-total in all categories: 3340
+total in all categories: 3341
 
 adjective: 'even'
 adjective: 'odd'
@@ -776,6 +776,7 @@ noun: common: 'supporter'
 noun: common: 'backdrop'
 noun: common: 'person'
 noun: common: 'region'
+noun: common: 'concept'
 noun: proper: 'privately-named'
 noun: proper: 'property privately-named'
 noun: proper: 'publicly-named'

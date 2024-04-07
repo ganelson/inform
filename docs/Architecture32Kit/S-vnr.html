@@ -56,6 +56,12 @@ to something other than Inform 6, though, they are just strangely-named function
 and do no harm.
 </p>
 
+<p class="commentary">The replacement of RT__ChPrintC is necessary to allow Unicode control characters (including tab)
+typed at the command line to be printed into internal buffers in Inform 7.
+The standard Inform 6 veneer routine will put an error message into the buffer instead, which is
+a highly undesirable and confusing error condition.
+</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">Unsigned__Compare</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">y</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    @</span><span class="identifier-syntax">jleu</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">y</span><span class="plain-syntax"> ?</span><span class="identifier-syntax">lesseq</span><span class="plain-syntax">;</span>
@@ -75,6 +81,10 @@ and do no harm.
 <span class="plain-syntax">[ </span><span class="identifier-syntax">RT__ChLDB</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">y</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    @</span><span class="identifier-syntax">aloadb</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">y</span><span class="plain-syntax"> </span><span class="identifier-syntax">sp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    @</span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">sp</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">RT__ChPrintC</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    @</span><span class="identifier-syntax">streamunichar</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
