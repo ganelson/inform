@@ -15922,6 +15922,36 @@ Fortunately, Inform has a lively and helpful community of users who are often wi
 
 The user community is also a good place to find beta-testers who can try out our work and give feedback.
 
+## Source control, git and GitHub
+
+In recent years, "source control" has gone from being something which only professional programmers use to being more mainstream. The idea is to safeguard the source code for a program — or, really, anything written in plain text — in a "repository". It's then possible to keep track of which version of a program is the current one, to try experimental changes, to have other people contribute fixes or additions, and so on.
+
+Inform projects and extensions are, of course, programs too, and some Inform users have been placing them under source control for many years now. Fashion in source-control systems comes and goes — ```RCS```, ```mercurial```, ```perforce```, ```subversion```, and so on — but ```git``` is now fairly dominant. Though it is a notoriously difficult set of command-line tools to master, it is well served by more user-friendly front end apps for MacOS, Windows or Linux, and by the website:
+
+	https://www.github.com
+
+In fact, the source code for the Inform compiler and surrounding tools is itself a ```git``` repository at GitHub:
+
+	https://github.com/ganelson/inform
+
+There are many beginner's guides to ```git``` already, so this is not the place for that. But a brief note about ```.gitignore``` is in order.
+
+An Inform project, say "Agitation", is stored as two directories side by side: the so-called project folder, ```Agitation.inform```, and the materials folder, ```Agitation.materials```. (On MacOS, ```Agitation.inform``` looks and behaves like a single file in the Finder, but it is in fact a directory.) Some of the contents of these directories are things which must be kept permanently — the source text, pictures used, the IFID, and such — and some is ephemera which should be regenerated as needed — story files resulting from compilation, index HTML files, released websites, and such.
+
+It's clumsy to allow ```git``` repositories to contain these ephemeral, always-changing files, because then the repositories seem to be constantly churning with changes which aren't in fact meaningful. ```git``` therefore provides for a repository to contain an optional file called ```.gitignore``` which lists the _unimportant_ files, the ones which, in fact, ```git``` should ignore. Because ```.gitignore``` is a filename beginning with a full stop, it's a file which is invisible to casual users on some platforms (for example, by default the MacOS Finder does not display such files). This makes it a nuisance to change.
+
+Inform therefore automatically creates (or modifies) two ```.gitignore``` files whenever it compiles a project. One each is placed inside the project and materials folders, with sensible settings for each. These settings are placed in a so-called "stanza" between comment lines in the ```.gitignore``` files, like so:
+
+	# This stanza written automatically by inform7
+	...
+	# End of stanza written automatically by inform7
+
+This is usually exactly what is needed. If a ```.gitignore``` file is already present, Inform adds or updates this stanzas, leaving the rest of the file alone. But if even that is troublesome, adding this comment line:
+
+	# No stanza written automatically by inform7
+
+anywhere in the ```.gitignore``` file will tell Inform not to modify the file, and in particular not to add the usual stanza. It will be as if this feature of Inform did not exist for the project.
+
 # Releasing
 
 ## The finished product
