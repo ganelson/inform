@@ -931,6 +931,9 @@ forcetransferadvice:
 ifneq "$(BUILTINHTMLINNER)" "$(BUILTINHTML)"
 	cp -f $(BUILTINHTMLINNER)/xrefs.txt $(BUILTINHTML)
 endif
+ifneq "$(BUILTINHTMLINNER)" "inform7/Internal/HTML"
+	cp -f $(BUILTINHTMLINNER)/xrefs.txt inform7/Internal/HTML
+endif
 {end-define}
 
 .PHONY: transferdocumentation

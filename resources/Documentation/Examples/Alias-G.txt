@@ -1,5 +1,5 @@
 Example: *** Alias
-Location: Numbers and real numbers
+Location: Real numbers
 RecipeLocation: Telephones
 Index: Telephones with standard American-length phone numbers
 Description: A telephone with phone numbers of the standard American seven-digit length.

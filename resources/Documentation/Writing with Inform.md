@@ -2237,6 +2237,20 @@ We can avoid this using the special substitution:
 
 This only solves one case, but it's memorable, and the case is one which turns up often.
 
+Sometimes it's good to pad numbers out so that they occupy a fixed number of digits:
+
+> phrase: {phs_indigits} say "[(number) in (number) digit/digits]"
+>
+> This text substitution writes out the number in decimal, with leading zeroes as needed so that it will not be shorter than the given number of digits. Example:
+>
+>     "'Do stop flirting, [agent number in 3 digits],' says M."
+>
+> might render the number `7` as ``007`` not ``7``; `1860`, a lesser agent despite the larger number, would come out as ``1860``; and `0` as ``000``. Note that the number is printed _unsigned_, since minus signs don't really make sense when padding with zeroes. So `-5` is printed, perhaps unexpectedly, as ``4294967281`` (if the Glulx setting is used, as it is by default).
+
+### See Also
+
+- [Numbers, ranges, overflows, and number bases] for how to deal with writing numbers in binary or hexadecimal, and a little more on unsigned numbers.
+
 ## Text with lists
 
 ^^{text substitutions: lists} ^^{lists: displaying} ^^{punctuation: comma: displaying serial comma} ^^{|,: displaying serial comma} ^^{use options: catalogue: |the serial comma} ^^{serial comma+useopt+} ^^{definite articles: when displaying lists} ^^{indefinite articles: when displaying lists} ^^{|a / an / the --> a: in displaying lists} ^^{|an / a / the --> an: in displaying lists} ^^{|the / a / an --> the: in displaying lists} ^^{case sensitivity: in text substitutions with lists}
@@ -8420,27 +8434,92 @@ Inform lets us use plain numbers if we want to, but it also allows us to create 
 
 That kind of definition, and the consequences, will be the subject of this chapter. But we will first look a little harder at the two numerical kinds of value we get for free: `number` and `real number`.
 
-## Numbers and real numbers {kind_number} {kind_real_number} {PM_InequalityFailed} {PM_CantEquateValues} {PM_EvenOverflow-G} {PM_ZMachineOverflow} {PM_ElementOverflow} {PM_LiteralOverflow}
+## Numbers, ranges, overflows, and number bases {kind_number} {PM_ZMachineOverflow} {PM_ElementOverflow} {PM_LiteralOverflow}
 
-^^{numbers <-- integers} ^^{real numbers <-- floating-point <-- decimals} ^^{numbers: real numbers} ^^{Z-machine: real numbers not available} ^^{Glulx: real numbers available} ^^{limits: of numeric values} ^^{numbers: limits of numeric values} ^^{Z-machine: numeric limits} ^^{Glulx: numeric limits} ^^{virtual machine: numeric limits} ^^{real numbers: limits of numeric values} ^^{scientific notation} ^^{pi (- real number)+const+} ^^{e (- real number)+const+} ^^{case sensitivity: in real number constants} ^^{use options: catalogue: |engineering notation} ^^{engineering notation+useopt+}
+What Inform calls a `number` is a whole number, positive, negative or zero. Numbers from `zero` to `twelve` may also be written out in words, but all others must be written as numerals. So `twelve` or `12`, but `13` only.
 
-Inform uses two different kinds of numerical quantity: `number` and `real number`. Neither is better than the other: they're different approaches, each good for a different purpose.
-
-What Inform calls a `number` is a whole number, positive, negative or zero. The range of numbers we can hold is not unlimited – if the format Setting for a project is the Z-machine, then we have:
-
-	-32768, -32767, ..., -3, -2, -1, 0, 1, 2, 3, ..., 32767
-
-and if it is set to Glulx, then we have:
+For efficiency reasons, only a limited range of whole numbers close to 0 can be stored as a `number`, but in practice that range is large enough for all everyday purposes:
 
 	-2147483648, -2147483647, ..., -3, -2, -1, 0, 1, 2, 3, ..., 2147483647
 
-Numbers from zero to twelve may be written out, but larger ones must be written as numerals. So `twelve` or `12`, but `13` only.
+If the Settings for a project make it use the very memory-constrained Z-machine format, this number range is very much smaller, which is one reason Z should only be used when absolutely necessary:
 
-If we're using Glulx, Inform also has `real numbers` such as
+	-32768, -32767, ..., -3, -2, -1, 0, 1, 2, 3, ..., 32767
 
-	2.1718, 4.0, -1633.9
+By default, all projects use Glulx, though, and the examples of numbers below assume that.
 
-which are not restricted to whole numbers, but which are stored only approximately: only about six to nine decimal digits can be relied on. For example,
+This limited range raises the question: what happens if we take the theoretical maximum, `2147483647`, and add `1` to it? This is _not_ a run-time problem: "overflows" like this are entirely legal. The result is in fact `-2147483648`.  So, for example, the condition `N is less than N plus 1` is true for every number `N` _except_ `2147483647`.
+
+What is going on here is that the number line described above is really more of a circle, and this is the point where we loop back to the beginning. This strange-looking phenomenon has to do with the standard way numbers are stored inside computers: see, for example, the Wikipedia page on _two's complement_ for an explanation of why this is done.
+
+It is also possible to print back a `number` in _unsigned form_, using this phrase:
+
+> phrase: {phs_inunsigneddecimal} say "[(number) in unsigned decimal]"
+>
+> This text substitution writes out the number in unsigned decimal, following the two's complement system, so that negative numbers close to zero appear large. Examples:
+> 
+> value         | as said in unsigned decimal
+> ------------- | ---------------------------
+> `-2147483648` | ``2147483648``
+> ...           | ...
+> `-2`          | ``4294967284``
+> `-1`          | ``4294967285``
+> `0`           | ``0``
+> `1`           | ``1``
+> ...           | ...
+> `2147483647`  | ``2147483647``
+
+These notations so far are all in base 10, that is, they use the decimal digits `0`, `1`, ..., `9`, sometimes with a minus sign `-` in front. But Inform allows us to type numbers in the source text which use three other bases as alternatives. For example:
+
+	hexadecimal 4EF12C
+	binary 001110101101
+	octal 077
+
+all produce `number` values, and are exactly equivalent to writing `5173548`, `941` and `63` respectively. Hexadecimal is base 16, using the letters `A` to `F` for the six further digits past `9`; octal is base 8, using only the digits `0` to `7`; and binary is base 2, using only `0` and `1`. Three notes to bear in mind:
+
+1) Negative numbers cannot be written in these bases, so `hexadecimal -4EF12C` throws a problem message.
+
+2) Numbers in binary, octal or hexadecimal are read as _unsigned_. So `hexadecimal FFFFFFFF` is allowed, but produces the same number as `-1`; `hexadecimal FFFFFFFE` is equivalent to `-2`; and so on. In hexadecimal notation, our extreme `number` values of -2147483648 and 2147483647 are `hexadecimal 80000000` and `hexadecimal 7FFFFFFF`, respectively. 
+
+3) Leading zeroes are allowed in binary, octal or hexadecimal, so that `hexadecimal 01FF` is legal, even though the same trick in decimal (`0004`, say) is not.
+
+We can also print back numbers in other number bases:
+
+> phrase: {phs_inbase} say "[(number) in (base)]"
+>
+> This text substitution writes out the number in the given number base, which must be between 2 and 36. Bases can be written as `base 2`, ..., `base 36`, or as `binary` (equivalent to `base 2`), `octal` (equals `base 8`), `decimal` (equals `base 10`) or `hexadecimal` (equals `base 16`). The number is printed unsigned _unless the base is 10_, in which case it is signed. If the digits 10 to 35 are needed, they are printed as upper-case letters.
+> 
+> For example, `"[14302 in binary]."` produces ``11011111011110`` and `"[14302 in hexadecimal]."` produces ``37DE``.
+> 
+> The extreme example is the number `-1` which, provided the default Glulx setting is used for a project, prints as ``FFFFFFFF`` in hexadecimal, ``-1`` in decimal, ``37777777777`` in octal, ``11111111111111111111111111111111`` in binary, ``102002022201221111200`` in base 3 and ``1Z141Y3`` in base 36.
+>
+> If a project uses the Glulx setting, as is the default, then all numbers fit exactly into 8 hexadecimal digits, or 32 binary ones; with the Z-machine setting, numbers fit into 4 hexadecimal digits, or 16 binary ones.
+
+These too can be padded with zeroes:
+
+> phrase: {phs_inbaseindigits} say "[(number) in (number) (base) digit/digits]"
+>
+> This text substitution writes out the number in the given number base, which must be between 2 and 36, padding with initial zeroes to ensure that the result is at least the given number of digits in length. The number is printed unsigned, whatever the number base.
+> 
+> For example, `"[232 in 4 decimal digits]."` produces ``0232`` and `"[232 in 4 hexadecimal digits]."` produces ``00E8``.
+
+Lastly, for completeness, we also provide:
+
+> phrase: {phs_inunsigneddecimaldigits} say "[(number) in (number) unsigned decimal digit/digits]"
+>
+> This text substitution writes out the number in unsigned decimal, in such a way that numbers normally considered decimal appear large, padding with initial zeroes to ensure that the result is at least the given number of digits in length.
+
+To reiterate, though: all these different notations for typing in, and for saying back, whole numbers are all to do with a single kind, `number`. Unlike some programming languages, Inform has no kind for "unsigned integer", nor for "integer which should always be written in binary".
+
+But it does also provide a `real number` kind, and that's where we go next. Those are always written in a signed way, and always use decimal digits.
+
+## Real numbers {kind_real_number} {PM_InequalityFailed} {PM_CantEquateValues} {PM_EvenOverflow-G}
+
+^^{numbers <-- integers} ^^{real numbers <-- floating-point <-- decimals} ^^{numbers: real numbers} ^^{Z-machine: real numbers not available} ^^{Glulx: real numbers available} ^^{limits: of numeric values} ^^{numbers: limits of numeric values} ^^{Z-machine: numeric limits} ^^{Glulx: numeric limits} ^^{virtual machine: numeric limits} ^^{real numbers: limits of numeric values} ^^{scientific notation} ^^{pi (- real number)+const+} ^^{e (- real number)+const+} ^^{case sensitivity: in real number constants} ^^{use options: catalogue: |engineering notation} ^^{engineering notation+useopt+}
+
+Inform uses two different kinds of numerical quantity: `number` and `real number`. Neither is better than the other: they're different approaches, each good for a different purpose. (Note that `real numbers` are _not_ available on the Z-machine, so a project needs to use the default Glulx setting to use them. In this section, we'll assume that.)
+
+`real numbers` beat `numbers` in two ways: they can hold values which lie between two integers, like `2.1718`, or `-1633.9`; and they can hold truly huge or tiny values, using "scientific notation" (see below). On the other hand, `real number` values are approximate, in a way which sometimes has to be delicately worried about. Only about the six to nine most significant decimal digits can be relied on. For example,
 
 	showme 1.2345654321;
 	showme 1.2345667890;
@@ -8452,23 +8531,29 @@ real number: 1.23457
 real number: 1.23457
 ```
 
-because these two numbers are so close together that Inform can't tell them apart. But we do also get the ability to represent enormously large or small quantities, and to help with that, Inform can read and write "scientific notation". For example,
+because these two numbers are so close together that Inform can't tell them apart. All `real number` values are a little fuzzy, and this fuzziness will lead to increasing numerical inaccuracy if enough calculations are done. Looked at with a careful eye, there is something treacherous about floating-point arithmetic on computers: and yet in practice, for all everyday purposes, `real numbers` work just fine.
+
+Inform recognises `4` as a `number` because of the lack of a decimal point `.`; the _approximate_ equivalent as a `real number` can be written as `4.0`.
+
+Scientific notation in Inform looks like so:
 
 	let Avogadro's number be 6.022141 x 10^23;
 
-is equivalent to typing
+which is equivalent to typing
 
 	let Avogadro's number be 602214100000000000000000.0;
 
-The `x 10^23` part tells Inform that the decimal point belongs 23 places to the left of where it's written. (In scientific papers, the 23 would be printed as a superscript – it's 10 to the power 23 – but that's not convenient to type in to the source text, so we use the `^` symbol to indicate superscript.) The range we can hold is roughly:
+The `x 10^23` part tells Inform that the decimal point belongs 23 places to the left of where it's written. (In scientific papers, the 23 would be printed as a superscript – it's 10 raised to the power 23 – but that's not convenient to type in to the source text, so we use the `^` symbol to indicate superscript.)
 
-> 1.18 x 10^−38 to 3.4 x 10^38
+The range that a `real number` can hold is roughly:
 
-It's hard to convey just how enormously different these two numbers are: if we used them to measure widths in meters, one would be a hundred trillion trillion times smaller than an atom, the other a billion times larger than the entire visible universe. Scientific notation is the ultimate adjustable spanner.
+	1.18 x 10^−38, ..., 3.4 x 10^38
+
+It's hard to convey just how enormously different these two numbers are. If we used them to measure widths in meters, one would be a hundred trillion trillion times smaller than an atom, the other a billion times larger than the entire visible universe. Scientific notation is the ultimate adjustable spanner.
 
 ^^{@Leonhard Euler}
 
-Inform also allows the two most famous real numbers in mathematics to be given by their names, `pi` and `e`, which are close to 3.14159265 and 2.7182818 respectively. (Lower case letters must be used: these can't be written `Pi` or `E`. Euler's constant gamma, always in the bronze medal position, will have to be written out longhand as 0.5772156649.)
+Inform also allows the two most famous real numbers in mathematics to be given by their names, `pi` and `e`, which are close to `3.14159265` and `2.7182818` respectively. (Lower case letters must be used: these can't be written `Pi` or `E`. Euler's constant gamma, always in the bronze medal position, will have to be written out longhand as `0.5772156649`.)
 
 Most computer programming languages traditionally write floating-point numbers using the E notation, like so:
 
@@ -8519,12 +8604,7 @@ makes no sense. But we can explicitly convert them:
 >
 > because 2147483647 is the highest value a `number` can have.
 
-Finally, real number can also store two interesting not-really-number sorts of value. First, we have
-
-- plus infinity
-- minus infinity
-
-which are used to keep track of what happens when we divide by really small quantities. It's mathematically impossible to divide by 0, but this can be hard to avoid when we're using real numbers, because they're only approximately stored – so it's not always possible to say whether they're exactly 0 or not. So in real number arithmetic,
+Finally, real number can also store two interesting not-really-number sorts of value. First, we have `plus infinity` and `minus infinity`, which are used to keep track of what happens when we divide by really small quantities. It's mathematically impossible to divide by 0, but this can be hard to avoid when we're using real numbers, because they're only approximately stored – so it's not always possible to say whether they're exactly 0 or not. So in real number arithmetic,
 
 	showme 1.0 divided by 0.0;
 
@@ -8536,7 +8616,7 @@ does. Instead, it produces `plus infinity`. Infinity behaves roughly the way we 
 
 	plus infinity to the nearest whole number
 
-and evaluates of course to 2147483647. We can use the adjectives `infinite` and `finite` to talk about these numbers: plus infinity and minus infinity are infinite, everything else is finite.
+and evaluates of course to 2147483647. We can use the adjectives `infinite` and `finite` to talk about these numbers: `plus infinity` and `minus infinity` are `infinite`, everything else is `finite`.
 
 The same problem occurs for calculations like square roots. It's impossible to take the square root of a negative number, but we don't want to throw a run-time problem, because approximation means we can't always guarantee to stay the right side of 0. So for a few calculations like this, Inform generates what's called a `nonexistent` real number. We can use the adjectives nonexistent or existent to talk about this. Every number mentioned on this page so far is `existent`, including the infinities. The only way to get a nonexistent number is to carry out an impossible mathematical operation such as
 

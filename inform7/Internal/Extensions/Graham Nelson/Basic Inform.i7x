@@ -234,43 +234,56 @@ To showme (val - value)
 	(documented at ph_showme):
 	(- {-show-me:val} -).
 
-To say (N - a number) in hexadecimal:
+To say (N - a number) in hexadecimal
+	(documented at phs_inbase):
 	(- PrintInBase({N}, 16); -).
 
-To say (N - a number) in decimal:
+To say (N - a number) in decimal
+	(documented at phs_inbase):
 	(- PrintInBase({N}, 10); -).
 
-To say (N - a number) in octal:
+To say (N - a number) in octal
+	(documented at phs_inbase):
 	(- PrintInBase({N}, 8); -).
 
-To say (N - a number) in binary:
+To say (N - a number) in binary
+	(documented at phs_inbase):
 	(- PrintInBase({N}, 2); -).
 
-To say (N - a number) in base (B - a number):
+To say (N - a number) in base (B - a number)
+	(documented at phs_inbase):
 	(- PrintInBase({N}, {B}); -).
 
-To say (N - a number) in (M - a number) digit/digits:
+To say (N - a number) in (M - a number) digit/digits
+	(documented at phs_indigits):
 	(- PrintInBase({N}, 10, {M}); -).
 
-To say (N - a number) in (M - a number) hexadecimal digit/digits:
+To say (N - a number) in (M - a number) hexadecimal digit/digits
+	(documented at phs_inbaseindigits):
 	(- PrintInBase({N}, 16, {M}); -).
 
-To say (N - a number) in (M - a number) decimal digit/digits:
+To say (N - a number) in (M - a number) decimal digit/digits
+	(documented at phs_inbaseindigits):
 	(- PrintInBase({N}, 10, {M}); -).
 
-To say (N - a number) in (M - a number) octal digit/digits:
+To say (N - a number) in (M - a number) octal digit/digits
+	(documented at phs_inbaseindigits):
 	(- PrintInBase({N}, 8, {M}); -).
 
-To say (N - a number) in (M - a number) binary digit/digits:
+To say (N - a number) in (M - a number) binary digit/digits
+	(documented at phs_inbaseindigits):
 	(- PrintInBase({N}, 2, {M}); -).
 
-To say (N - a number) in (M - a number) base (B - a number) digit/digits:
+To say (N - a number) in (M - a number) base (B - a number) digit/digits
+	(documented at phs_inbaseindigits):
 	(- PrintInBase({N}, {B}, {M}); -).
 
-To say (N - a number) in unsigned decimal:
+To say (N - a number) in unsigned decimal
+	(documented at phs_inunsigneddecimal):
 	(- PrintInBase({N}, 10, 1); -).
 
-To say (N - a number) in (M - a number) unsigned decimal digit/digits:
+To say (N - a number) in (M - a number) unsigned decimal digit/digits
+	(documented at phs_inunsigneddecimaldigits):
 	(- PrintInBase({N}, 10, {M}); -).
 
 Section 2 - Saying Names
