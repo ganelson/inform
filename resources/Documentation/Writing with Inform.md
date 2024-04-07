@@ -351,7 +351,7 @@ Finally, headings are used when working out what a name refers to. Suppose the s
 
 and not have the pillow mysteriously turn up on the `camp bed`, which hasn't been mentioned for a long time.
 
-## The ``SHOWME`` command
+## The SHOWME command
 
 ^^{SHOWME+testcmd+} ^^{testing commands: >SHOWME} ^^{Map page of Index panel+ui+} ^^{user interface: Index panel: Map page} ^^{Index panel+ui+: Map page} ^^{user interface: Release button} ^^{Release button+ui+}
 
@@ -376,10 +376,10 @@ Much of this can be seen, and seen more easily, in the World tab of the Index pa
 
 ### See Also
 
-- [The ``TEST`` command] for another frequently-used testing command.
-- [High-level debugging commands] for the full roster of them.
+- [The TEST command] for another frequently-used testing command.
+- [Testing commands to inspect the situation] for the full roster of them.
 
-## The ``TEST`` command {PM_TestMultiWord} {PM_TestDuplicate} {PM_TestBadRequirements} {PM_TestContainsUndo} {PM_TestCommandTooLong} {PM_TestDoubleWith} {PM_UnknownInternalTest}
+## The TEST command {PM_TestMultiWord} {PM_TestDuplicate} {PM_TestBadRequirements} {PM_TestContainsUndo} {PM_TestCommandTooLong} {PM_TestDoubleWith} {PM_UnknownInternalTest}
 
 ^^{TEST+testcmd+} ^^{testing commands: >TEST} ^^{transcripts: creating with the TEST command} ^^{test (test name) with (commands)+assert+} ^^{PURLOIN+testcmd+} ^^{testing commands: >PURLOIN}
 
@@ -411,20 +411,11 @@ Or we might want to say both:
 
 (Single quotation marks in test scripts are interpreted the same way in test scripts as they are in other text: that is, they are sometimes read as double-quotes unless they appear to be present as apostrophes. The notation `[']` forces a single quotation mark if necessary. Similarly, `[/]` forces a literal forward slash, and prevents the `/` from being read as dividing up two commands.)
 
-Sometimes when testing it's convenient to get hold of something not easily available at the moment. The testing command ``PURLOIN`` does this:
-
-``` transcript
-The jewelled Turkish clockwork hat is in the sealed glass box.
-
-> PURLOIN HAT
-[Purloined.]
-```
-
-This can also make test scripts shorter, but of course it's important to make sure that people without ``PURLOIN`` powers can still play through.
+A word of warning: if the _first_ command in the test is ``AGAIN``, that will likely repeat the ``TEST`` command, sending Inform round in circles forever. But something like `"give tribute to minotaur / again"` is safe enough.
 
 ### See Also
 
-- [High-level debugging commands] for the full set of testing commands.
+- [Testing commands to inspect the situation] for the full set of testing commands.
 
 ## Material not for release
 
@@ -15704,6 +15695,50 @@ The opening character is an asterisk if the file is currently ready, a hyphen if
 
 # Testing and Debugging
 
+## A recap on TEST and showme
+
+^^{TEST+testcmd+} ^^{testing commands: >TEST} ^^{test (test name) with (commands)+assert+}
+
+Testing the story is such a basic part of writing it that we have already seen small tests many times in this manual.
+
+In particular, the ``TEST`` command is invaluable. This needs the source text to have set up a script already, say like this:
+
+	Test dinner with "eat bread / eat soup / eat butter" in the Ship Cafeteria.
+
+And then ``TEST DINNER`` will shift the player to the Ship Cafeteria and run through the three typed commands ``EAT BREAD``, ``EAT SOUP`` and ``EAT BUTTER`` in turn.
+
+Something else already seen is the ability to have phrases or rules log the current value of something into the transcript of the story. Many of the most annoying bugs come about because we're making some assumptions about what's true in the story world that differ from Inform's assumptions. When that happens, we may need to add something to the source to check that the variables are set to what we think, that certain parts of the source are being reached, and so on.
+
+For instance, suppose we have a phrase like this:
+
+	To say key score:
+		let count be the number of keys which are not carried by the player;
+		if count is greater than 2 and the player is timid:
+			say "You're still missing a lot of keys, bucko!"
+
+Now, we expect this to print something, but perhaps it's not doing so when we had anticipated that it would. At some point when we think the `count` is greater than 2 and the player is `timid`, at least one of those things is not true. An easy way to check up on this is to add a showme line to the source, like so:
+
+	To say key score:
+		let count be the number of keys which are not carried by the player;
+		showme count;
+		showme whether or not the player is timid;
+		if count is greater than 2 and the player is timid:
+			say "You're still missing a lot of keys, bucko!"
+
+and this will then check the relevant number and print it to screen when this phrase is called, like so
+
+``` transcript
+"count" = number: 1
+"whether or not the player is timid" = truth state: true
+```
+
+In this case, it looks as if there's no problem over timidity, but that the `count` is not high enough to trigger the text, so we can concentrate on working out why that might be. Maybe we didn't correctly define something as a `key`, for instance.
+
+### See Also
+
+- [The TEST command] for the full story on this.
+- [The showme phrase] for more on `showme`.
+
 ## Checking against the Index
 
 ^^{user interface: Index panel: checking story correctness} ^^{Index panel+ui+: checking story correctness} ^^{testing commands: checking story correctness in the Index}
@@ -15726,54 +15761,15 @@ A human reader wouldn't make this mistake, but Inform hasn't actually registered
 
 When an error appears in the Index, there is often a link back to the source text that defined that room or object. If not, there's often at least some information about what rule or phrase might be responsible for it.
 
-## Debugging features to use in source
+## Testing commands to inspect the situation
 
-^^{TEST+testcmd+} ^^{testing commands: >TEST} ^^{test (test name) with (commands)+assert+} ^^{SHOWME+testcmd+} ^^{testing commands: >SHOWME}
+^^{SHOWME+testcmd+} ^^{testing commands: >SHOWME} ^^{ACTIONS+testcmd+} ^^{testing commands: >ACTIONS} ^^{Actions page of Index panel+ui+} ^^{user interface: Index panel: Actions page} ^^{Index panel+ui+: Actions page} ^^{RULES+testcmd+} ^^{testing commands: >RULES} ^^{SCENES+testcmd+} ^^{testing commands: >SCENES} ^^{RELATIONS+testcmd+} ^^{testing commands: >RELATIONS} ^^{RESPONSES+testcmd+} ^^{testing commands: >RESPONSES} ^^{responses (library messages): listing during development} ^^{magic words}
 
-The ``TEST`` command is an extremely useful way of managing a story and continuing to verify that it does everything we want. We can create new test commands of the form
+In this and the following sections, we run through the testing commands which authors can use, but which are not present in a released story. ``TEST`` has already been covered: see [The TEST command].
 
-	Test me with "up / kill captain eo".
-	Test eo with "zap eo" holding the ray gun.
-	Test dinner with "eat bread / eat soup / eat butter" in the Ship Cafeteria.
+We'll begin with some ways to inspect what is happening in the story, but without changing it, using ``SHOWME``, ``ACTIONS``, ``RULES``, ``SCENES``, ``RELATIONS`` and ``RESPONSES``.
 
-and we are free to have as many of these tests as we would like. Test commands can call other tests, as well, so we might have a test command such as
-
-	Test megatest with "test me / test eo".
-
-A word of warning: if the first command in the test is ``AGAIN``, that will likely repeat the ``TEST`` command, sending Inform round in circles forever.
-
-For complicated objects and commands, sometimes it's a good idea to develop the test commands at the same time that we're writing the source code itself. Each time we add a new rule or piece of behaviour, we also add to that object's special test command something that will put that new feature to the test. This means that we can keep running the test command as we work and verify that everything is behaving as expected.
-
-Sometimes we need to get a look at what is happening within the source itself. Many of the most annoying bugs come about because we're making some assumptions about what's true in the story world that differ from Inform's assumptions. When that happens, we may need to add something to the source to check that the variables are set to what we think, that certain parts of the source are being reached, and so on.
-
-For instance, suppose we have a phrase like this:
-
-	To say key score:
-		let count be the number of keys which are not carried by the player;
-		if count is greater than 2 and the player is timid:
-			say "You're still missing a lot of keys, bucko!"
-
-Now, we expect this to print something, but perhaps it's not doing so when we had anticipated that it would. At some point when we think the `count` is greater than 2 and the player is `timid`, at least one of those things is not true. An easy way to check up on this is to add a showme line to the source, like so:
-
-	To say key score:
-		let count be the number of keys which are not carried by the player;
-		showme count;
-		if count is greater than 2 and the player is timid:
-			say "You're still missing a lot of keys, bucko!"
-
-and this will then check the relevant number and print it to screen when this phrase is called, like so
-
-``` transcript
-"count" = number: 1
-```
-
-In this case, it looks like the `count` is not high enough to trigger the text, so we can concentrate on working out why that might be. Maybe we didn't correctly define something as a `key`, for instance.
-
-## High-level debugging commands
-
-^^{SHOWME+testcmd+} ^^{testing commands: >SHOWME} ^^{ACTIONS+testcmd+} ^^{testing commands: >ACTIONS} ^^{Actions page of Index panel+ui+} ^^{user interface: Index panel: Actions page} ^^{Index panel+ui+: Actions page} ^^{RULES+testcmd+} ^^{testing commands: >RULES} ^^{SCENES+testcmd+} ^^{testing commands: >SCENES} ^^{RANDOM+testcmd+} ^^{testing commands: >RANDOM} ^^{randomness: seeding the generator} ^^{RELATIONS+testcmd+} ^^{testing commands: >RELATIONS} ^^{RESPONSES+testcmd+} ^^{testing commands: >RESPONSES} ^^{responses (library messages): listing during development}
-
-If an object is not responding in the way we expect, it may be that we're wrong about where it is or about some of its current properties or relations. We can find our current location and the things around us by typing
+``SHOWME``. We can find our current location and the things around us by typing
 
 	> SHOWME
 	Boudoir - room
@@ -15795,7 +15791,7 @@ and similarly we can inquire about the status of a particular object during play
 
 This will work even if we're not in the same location as the object we want shown.
 
-Another common type of problem is one in which we type a command but Inform does not perform the action that we were expecting as a result. In some cases, this is because the command we're typing is actually triggering some other action. An easy way to check on this is to type ``ACTIONS`` before issuing the command that is behaving unsatisfactorily. Thus:
+``ACTIONS`` is intended to help with a common type of problem: we type a command but Inform does not perform the action that we were expecting. In some cases, this is because the command we're typing is actually triggering some other action. An easy way to check on this is to type ``ACTIONS`` before issuing the command that is behaving unsatisfactorily. Thus:
 
 	> ACTIONS
 	Actions listing on.
@@ -15807,7 +15803,9 @@ Another common type of problem is one in which we type a command but Inform does
 
 This tells us how Inform interpreted our input and whether the action was successful or failed for some reason. If the command is being understood as a different command than we expected, that may mean that we have made a mistake in our Understand instructions, and need to double-check these.
 
-Sometimes, however, the action is being correctly understood, but the action rules that are firing are producing a result other than we'd like. If we want to see which rules are running, we can type
+``ACTIONS OFF`` stops this logging again.
+
+``RULES`` tends to produce rather more output, because it shows exactly which rules are run. Actions are processed with a long series of rules, and it can be helpful to know exactly which ones run and in what order. For example:
 
 	> RULES
 	Rules tracing now switched on. Type "rules off" to switch it off again, or "rules all" to include even rules which do not apply.
@@ -15834,13 +15832,11 @@ Sometimes, however, the action is being correctly understood, but the action rul
 	[Rule "notify score changes rule" applies.]
 	>
 
-As we can see, ``RULES`` produces a lot of output, much of which is probably irrelevant to whatever problem we're tracking down. Nonetheless, knowing exactly which rule is printing undesirable output is helpful, especially if that rule comes out of an extension or some other source that we did not write ourselves: this output has told us that the text we saw came from the `report jumping rule`.
+As we can see, ``RULES`` produces a lot of output, much of which is probably irrelevant. Nonetheless, knowing exactly which rule is printing undesirable output is helpful, especially if that rule comes out of an extension or some other source that we did not write ourselves: this output has told us that the text we saw came from the `report jumping rule`.
 
 To find out more about what is going on in specific rules, we can also turn to the Index tab under Actions and click through to that specific action. From there we will be able to see which rules are included, what responses they're writing, and where they were defined in the source text.
 
 ``SCENES`` lists which scenes are currently playing and which are complete. This is valuable if scene-triggered events are not happening when we expect them to.
-
-``RANDOM`` sets the random number generator to a predictable seed. If we include this in a test command, it will guarantee that the subsequent behaviour of the story is consistent across multiple playthroughs, which is helpful if we're trying to test something to do with, say, randomly wandering non-player characters.
 
 ``RELATIONS`` lists all the relations defined in the story, except for things like support and containment that are part of the world model and are so numerous that the output would be overwhelming.
 
@@ -15848,11 +15844,21 @@ To find out more about what is going on in specific rules, we can also turn to t
 
 If, however, we want a rapid overview of all the responses provided by a given extension (perhaps an extension we are ourselves writing), the ``RESPONSES`` command can be a help.
 
-## Low-level debugging commands
+## Testing commands for cheating
 
-^^{SHOWME+testcmd+} ^^{testing commands: >SHOWME} ^^{PURLOIN+testcmd+} ^^{testing commands: >PURLOIN} ^^{ABSTRACT+testcmd+} ^^{testing commands: >ABSTRACT} ^^{GONEAR+testcmd+} ^^{testing commands: >GONEAR} ^^{>VERIFY} ^^{SHOWTREE+testcmd+} ^^{testing commands: >SHOWTREE} ^^{SCOPE+testcmd+} ^^{testing commands: >SCOPE} ^^{SHOWHEAP+testcmd+} ^^{testing commands: >SHOWHEAP} ^^{SHOWVERB+testcmd+} ^^{testing commands: >SHOWVERB} ^^{TRACE+testcmd+} ^^{testing commands: >TRACE} ^^{magic words}
+^^{PURLOIN+testcmd+} ^^{testing commands: >PURLOIN} ^^{BANISH+testcmd+} ^^{testing commands: >BANISH} ^^{ABSTRACT+testcmd+} ^^{testing commands: >ABSTRACT} ^^{GONEAR+testcmd+} ^^{testing commands: >GONEAR} 
 
-There are also several debugging commands going back to the early days of interactive fiction, and relating in a simple way to objects and places. These can still come in handy for a quick and dirty resolution of a problem during gameplay, and are as follows.
+Inform also provides testing commands which allow the author to "cheat", that is, to make things happen in the story which are outside the usual rules. It often happens that we just want to check one point, deep inside the story, and would like to get there without wasting any time replaying everything else which is working fine.
+
+For cheating, then, non-release versions of Inform stories offer the commands ``GONEAR``, ``PURLOIN``, ``ABSTRACT``, ``BANISH``,
+
+``GONEAR`` transports the player instantly to the room which encloses the named object. For a door or a backdrop, multiple rooms may do, and gonear then usually chooses the first room one. For example:
+
+	> GONEAR GRAIN
+	Fertile Plain
+	You can see some grain here.
+
+Of course this relies on the grain being somewhere specific in the story. It's possible to type ``GONEAR NORTH`` and produce a run-time problem, ``You can't move the player off-stage.``, because the `direction` object for north has no specific location to be near. The same will happen if we try ``GONEAR`` on something off-stage.
 
 ``PURLOIN`` moves an object to your possession, no matter where it is on the map, like so:
 
@@ -15885,15 +15891,26 @@ Bar
 You can see a table (on which is a key) here.
 ```
 
-``GONEAR`` transports the player instantly to the room which encloses the named object. For a door or a backdrop, multiple rooms may do, and gonear then usually chooses the first room one. For example:
+``BANISH`` removes something from play, and is one way to bulldoze through obstacles. For example:
 
-	> GONEAR GRAIN
-	Fertile Plain
-	You can see some grain here.
+	> EAST
+	The bearded guy wants to be paid his winnings first.
 
-As a debugging command, this isn't protected in the ways that commands usually are. It's possible to type ``GONEAR NORTH`` and produce a run-time error when Inform tries to move the player into the object that represents the compass. Again, except in cases where we're tracing a problem very deep in an already running story, it is usually more practical to write a test command to put the player in the correct situation, as in
+	> BANISH GUY
+	[Banished.]
 
-	Test me with "eat grain" in the Fertile Plain.
+	> EAST
+	Main Street
+
+Of course, there is no guarantee that any of these commands will make life better or that they won't crash the story or put it into an unwinnable state.
+
+## Low-level testing commands
+
+^^{RANDOM+testcmd+} ^^{testing commands: >RANDOM} ^^{randomness: seeding the generator} ^^{>VERIFY} ^^{SHOWTREE+testcmd+} ^^{testing commands: >SHOWTREE} ^^{SCOPE+testcmd+} ^^{testing commands: >SCOPE} ^^{SHOWHEAP+testcmd+} ^^{testing commands: >SHOWHEAP} ^^{SHOWVERB+testcmd+} ^^{testing commands: >SHOWVERB} ^^{TRACE+testcmd+} ^^{testing commands: >TRACE}
+
+The remaining commands are for expert users only, and are very miscellaneous.
+
+``RANDOM`` sets the random number generator to a predictable seed. If we include this in a test command, it will guarantee that the subsequent behaviour of the story is consistent across multiple playthroughs, which is helpful if we're trying to test something to do with, say, randomly wandering non-player characters.
 
 ``VERIFY`` checks that the story file is intact rather than damaged, but it is hard to think of an occasion when this would be likely to arise within the Inform application. The command is a holdover from a time when data transfer was much slower and more error-prone, and it was plausible to have a story file of just a few hundred KB corrupted during transmission.
 
@@ -15910,15 +15927,13 @@ You can see a table here.
 2: a table (574759)
 ```
 
-The following numbers are object IDs for these objects, which can distinguish items with identical names. It is likely that the output of this will not be terribly interesting or different from checking ``SHOWME``, except in cases where the author is deliberately changing the scope to be something other than `the set of things that are visible in the room with the player right now`. This usually involves the Deciding the scope of something activity (see the chapter on [Activities]).
+The bracketed numbers are object IDs for these objects, which can distinguish items with identical names. It is likely that the output of this will not be terribly interesting or different from checking ``SHOWME``, except in cases where the author is deliberately changing the scope to be something other than `the set of things that are visible in the room with the player right now`. This usually involves the `Deciding the scope of something` activity (see the chapter on [Activities]).
 
 ``SHOWHEAP`` shows how many bytes are currently free. This can sometimes to be helpful to tell when memory is slowly leaking due to a bug.
 
-``SHOWVERB`` (verbname) lists the Understand information associated with a particular verb. Similar information, in a vastly more palatable form, is available in Index / Actions / Commands, so the one time ``SHOWVERB`` becomes useful is when Inform is considering the understand lines in the wrong order and producing a result we didn't want: ``SHOWVERB`` will show us the order in which the lines are being assessed. The challenge will then be to add conditions to the Understand lines to move them into the correct order.
+``SHOWVERB [VERB]`` lists the Understand information associated with a particular verb: for example, ``SHOWVERB TAKE``. Similar information, in a vastly more palatable form, is available in Index / Actions / Commands, so the one time ``SHOWVERB`` becomes useful is when Inform is considering the understand lines in the wrong order and producing a result we didn't want: ``SHOWVERB`` will show us the order in which the lines are being assessed. The challenge will then be to add conditions to the `Understand` lines to move them into the correct order.
 
-Finally, ``TRACE`` (and its more advanced stages ``TRACE 2``, ``TRACE 3`` and so on up to 6) will reveal things, more things than we ever wanted to know, about the assumptions being made by the parser when it takes in a command. In practice this information is almost never useful to an Inform author.
-
-There is no guarantee that any of these commands will make life better or that they won't crash the story or put it into an unwinnable state. There is also no absolute guarantee that they won't be withdrawn entirely from future versions of Inform. Consider them as Old High Magic, and treat accordingly.
+Finally, ``TRACE`` (and its more advanced stages ``TRACE 2``, ``TRACE 3`` and so on up to ``TRACE 6``) will reveal things, more things than we ever wanted to know, about the assumptions being made by the command parser when it takes in a command. In practice this information is almost never useful to an Inform author.
 
 ## Adding new testing verbs and Release for Testing
 
