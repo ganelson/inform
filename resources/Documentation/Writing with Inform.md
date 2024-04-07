@@ -2681,7 +2681,12 @@ Caution should be used with such characters outside of quotation marks: the outc
 
 	The Churchyard is a room. The printed name of the Churchyard is "Łodz Churchyard".
 
-It should also be remembered that the player may not be able to type such characters in commands, or may have difficulty working out how to. (On the Z-machine, it will not be recognised even if typed: on Glulx, it may work.)
+It should also be remembered that the player may not be able to type such characters in commands, or may have difficulty working out how to. Still, recent improvements to the Glulx virtual machine, which is used by Inform by default to run stories, allow this sort of thing to work:
+
+	Understand "βράχος" as the rock.
+	Understand "παίρνω [things]" as taking.
+
+If the Z-machine setting is used, this definitely will not work.
 
 (d) **Characters which might work in quoted text, or might not**. The Arabic and Hebrew alphabets are fairly likely to be available, but right-to-left support for them is another matter; miscellaneous symbols are sometimes legible to the player, sometimes not. Other alphabets are chancier still. (If a work of IF depends on these being visible, it may be necessary to instruct players to use specific interpreters, or to test that the effect looks right in multiple browsers on each of MacOS, Windows and Linux.)
 
