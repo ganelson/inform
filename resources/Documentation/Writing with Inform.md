@@ -1526,6 +1526,9 @@ These are the two ways in which writers size up the world, so Inform provides bo
 
 ## Abstract objects and concepts
 
+^^{kinds: catalogue: abstract object} ^^{abstract object+kind+ <-- kinds: catalogue: abstract object}
+^^{kinds: catalogue: concept} ^^{concept+kind+ <-- kinds: catalogue: concept}
+
 The objects seen so far have almost all been physical, in one way or another, and have all belonged to the kinds `thing`, `room`, `region` or `direction`.
 
 But Inform also has a kind called `abstract object`. This can be used for something which does exist in the world, but has no spatial location. Rather than creating individual abstract objects, it's best to create kinds for them, to avoid what might be a very miscellaneous collection. One such kind exists already: `concept`. So, for example:
