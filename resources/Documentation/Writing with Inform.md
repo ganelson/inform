@@ -17677,18 +17677,6 @@ A third way to define an adjective, which should be used only if speed is except
 
 The escape `*1` is expanded to the value on which the adjective is being tested. (This is usually faster than calling a routine, but in case of side-effects, the `*1` should occur only once in the condition, just as with a C macro.) To repeat: if in doubt, use the I6 routine method above.
 
-## Naming Unicode characters
-
-^^{characters (letters): Unicode (arbitrary symbols): defining new names for} ^^{translates as...+assert+: Unicode characters} ^^{Unicode Character Names / Full Character Names+ext+} ^^{extensions: specific extensions: Unicode Character Names} ^^{extensions: specific extensions: Unicode Full Character Names}
-
-At one time Inform allowed names to be given to Unicode character values with
-
-sentences like so:
-
-	anticlockwise open circle arrow translates into Unicode as 8634. [ Fails to compile ]
-
-These sentences now throw problem messages, and instead Inform allows exactly those names in the Unicode standard.
-
 ## Overriding definitions in kits {PM_BadI6Inclusion} {PM_BeforeTheLibrary} {PM_WhenDefiningUnknown} {PM_IncludeInsteadOf}
 
 ^^{extensions: Inform 6 template layer} ^^{Inform 6 inclusions: Inform 6 template layer} ^^{templates, Inform 6 template layer}
