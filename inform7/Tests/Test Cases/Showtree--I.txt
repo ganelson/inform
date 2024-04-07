@@ -16,7 +16,7 @@
   You see nothing special about the red tree.
   
   >[3] showtree
-  (Compass object) (22)
+  (Compass object) (23)
     the north
     the northeast
     the northwest
@@ -29,10 +29,10 @@
     the down
     the inside
     the outside
-  (thedark object) (23)
-  (VPH_25) (24)
-  (VPH_3) (25)
-  Lab (39)
+  (thedark object) (24)
+  (VPH_26) (25)
+  (VPH_3) (26)
+  Lab (40)
     yourself
     a red tree
     a red envelope

@@ -168,20 +168,29 @@ Chapter 2 - Kinds for the Physical World
 
 Section 1 - Kind Definitions
 
-A room is a kind.
-A thing is a kind.
-A direction is a kind.
+A room is a kind of object.
+A thing is a kind of object.
+A direction is a kind of object.
 A door is a kind of thing.
 A container is a kind of thing.
 A supporter is a kind of thing.
 A backdrop is a kind of thing.
 The plural of person is people. The plural of person is persons.
 A person is a kind of thing.
-A region is a kind.
+A region is a kind of object.
+
+A concept is a kind of abstract object.
+
+A room can be privately-named or publicly-named. A room is usually publicly-named.
+A thing can be privately-named or publicly-named. A thing is usually publicly-named.
+A direction can be privately-named or publicly-named. A direction is usually
+publicly-named.
+A region can be privately-named or publicly-named. A region is usually publicly-named.
+A concept can be privately-named or publicly-named. A concept is usually publicly-named.
 
 @ At this point, then, the hierarchy looks like so:
 = (text)
-	kind
+	object
 	    room
 	    thing
 	        door
@@ -191,6 +200,8 @@ A region is a kind.
 	        person
 	    direction
 	    region
+	    abstract object
+	    	concept
 =
 This framework is the minimum kit needed in order for Inform to be able to
 manage the spatial relationships arising from its basic verbs. Room and thing
@@ -209,13 +220,8 @@ Although further kinds will be created later ("vehicle", for instance),
 those are merely design choices, and Inform would not be troubled by their
 absence.
 
-@
-
-=
-Section 1a - Concepts (for concepts language element only)
-
-A concept is a kind.
-A concept can be privately-named or publicly-named. A concept is usually publicly-named.
+In addition to the more physical kinds, "concept" is used by the dialogue system
+for ideas or subjects to think about.
 
 @h Rooms.
 We now detail each of the fundamental kinds in turn, in order of their
@@ -234,7 +240,6 @@ in IF as ambient environments in which interesting things happen, rather
 than being direct participants.
 
 =
-A room can be privately-named or publicly-named. A room is usually publicly-named.
 A room can be lighted or dark. A room is usually lighted.
 A room can be visited or unvisited. A room is usually unvisited.
 
@@ -273,8 +278,6 @@ though they cannot otherwise overlap. For instance, the room Place d'Italie
 might be inside the region 13th Arrondissement, which in turn is inside
 the region Paris. Regions are useful mainly when the world is a large one,
 and are optional."
-
-A region can be privately-named or publicly-named. A region is usually publicly-named.
 
 @h Things.
 Things are ubiquitous:
@@ -325,7 +328,6 @@ only short-term information and is used as workspace by the I6 library and
 also by some of the I7 template routines.)
 
 =
-A thing can be privately-named or publicly-named. A thing is usually publicly-named.
 A thing can be undescribed or described. A thing is usually described.
 A thing can be marked for listing or unmarked for listing. A thing is usually
 unmarked for listing.
@@ -379,8 +381,6 @@ The specification of direction is "Represents a direction of movement, such
 as northeast or down. They always occur in opposite, matched pairs: northeast
 and southwest, for instance; down and up."
 
-A direction can be privately-named or publicly-named. A direction is usually
-publicly-named.
 A direction can be marked for listing or unmarked for listing. A direction is
 usually unmarked for listing.
 A direction can be scenery. A direction is always scenery.

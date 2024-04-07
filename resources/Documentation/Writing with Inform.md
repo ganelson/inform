@@ -1382,7 +1382,7 @@ Making more specific kinds of existing ones is an excellent way to build out the
 
 isn't allowed. The numbers are fixed and all exist already; we can write a story where the world has no Bengal tigers, but not a story where the world has no number between 4 and 6. That doesn't mean numbers are all alike, of course, and we will later see that we can use words like `even` and `odd` to describe numbers, and even create new adjectives like `unlucky` or `perfect` for them. But these are not kinds. Saying that 2 is an even number does not create a new number, and saying that 3 is an even number makes no sense. So it is not possible in Inform to create a `kind of number`.
 
-But what we can do is to invent entirely new concepts, like so:
+But what we can do is to invent entirely new sorts of quantity, like so:
 
 	A distance is a kind of value.
 
@@ -1474,7 +1474,7 @@ We are allowed to define more than one `plural of` the same singular text, and f
 
 ^^{kinds: of value <-- |enumerated value} ^^{kinds: defining: kinds of value} ^^{defining: kinds of value} ^^{values: kinds of value} ^^{kinds: enumerated values} ^^{units of measure}
 
-So much for making new and more specialised kinds of `object` – for example, new kinds of `room`, or of `animal`. This allows us to describe the physical world in elegant ways, but what about concepts which aren't so physical?
+So much for making new and more specialised kinds of `object` – for example, new kinds of `room`, or of `animal`. This allows us to describe the physical world in elegant ways, but what about pieces of information which aren't so physical?
 
 To Inform, numbers like 1, 2, 3, ... and texts like `"Jackdaws love my big sphinx of quartz"` are not physical. They are values, but not objects, so they don't belong to the `object` kind. In fact, `number` and `text` are not kinds of any greater kind.
 
@@ -1523,6 +1523,41 @@ These are the two ways in which writers size up the world, so Inform provides bo
    And this, like `number`, has an enormous range of possible values.
 
    Quantitative kinds like this are sometimes called "units", because – as in this example – they're often units in the sense of measuring things. Many Inform projects never need units, but they can still be very useful, and they're described in detail in the chapter on [Numbers and Equations].
+
+## Abstract objects and concepts
+
+The objects seen so far have almost all been physical, in one way or another, and have all belonged to the kinds `thing`, `room`, `region` or `direction`.
+
+But Inform also has a kind called `abstract object`. This can be used for something which does exist in the world, but has no spatial location. Rather than creating individual abstract objects, it's best to create kinds for them, to avoid what might be a very miscellaneous collection. One such kind exists already: `concept`. So, for example:
+
+	The paranormal is a concept. Understand "supernatural" as the paranormal.
+
+produces:
+
+> `object` ▸ `abstract object` ▸ `concept` ▹ `paranormal`
+
+By default there are no concepts, and none are created automatically.
+
+Abstract objects have no physical existence, of course, so it throws a problem message to write something like:
+
+	The paranormal is a concept in the Dining Room.
+
+And this would produce a run-time problem:
+
+	After rubbing the lamp:
+		now the paranormal is in the Cave.
+
+Why do we need abstract objects? It's all very well to write something like:
+
+	An emotion is a kind of abstract object.
+	Hope, fear and chagrin are emotions.
+
+But we could just as well have written:
+
+	Emotion is a kind of value.
+	Hope, fear and chagrin are emotions.
+
+The answer is that for almost all purposes a kind of value works just as well or better. But there are occasionally times when we want a property or a variable to hold a value which could be either physical or abstract. For example, somebody might want to talk about the lamp, or might want to talk about chagrin. How could a single value represent either? The answer is that if `chagrin` is set up so that it is an `abstract object`, then an `object` variable could indeed hold either the value `lamp` or the value `chagrin`.
 
 ## Properties again {PM_ValueCantHaveProperties} {PM_ValueCantHaveVProperties}
 
@@ -5928,7 +5963,7 @@ Here `it` refers to the supporter in question. Note that there are now two colon
 
 ^^{phrases: deciding a value} ^^{to decide what/which (value)+assert+} ^^{Inform 6 equivalent: return value} ^^{type-checking: in phrases that decide values}
 
-A condition is a yes/no decision, but we can also take decisions where the result is a value. Suppose we want to create a concept of the "grand prize", which will have different values at different times in play. Each time the "grand prize" is referred to, Inform will have to decide what its value is, and the following tells Inform how to make that decision:
+A condition is a yes/no decision, but we can also take decisions where the result is a value. Suppose we want to create a "grand prize", which will have different values at different times in play. Each time the "grand prize" is referred to, Inform will have to decide what its value is, and the following tells Inform how to make that decision:
 
 	To decide which treasure is the grand prize:
 		if the Dark Room has been visited, decide on the silver bars;
@@ -6749,7 +6784,7 @@ In other words, does the effect apply only to particular people, things or place
 
 Rules like the one saying that photography is only possible if one holds the camera are, by convention, also counted as generic rules of play: they are not really special rules about the camera, but apply to all possible acts of photography anywhere, so are actually generic.
 
-Sometimes we can choose our own answer to this question, and go either way. Suppose we want a certain place to be muddy-floored, affecting things that happen there. One way would be to write exceptional rules applying to that one room. But we could alternatively create a general concept of muddiness (`A room can be clean or muddy. A room is usually clean.`) and then regard the new behaviour as being a set of generic rules applying in muddy rooms. We could then, of course, create a second muddy room with much greater ease, or transplant these rules to other works and have muddy rooms in those too.
+Sometimes we can choose our own answer to this question, and go either way. Suppose we want a certain place to be muddy-floored, affecting things that happen there. One way would be to write exceptional rules applying to that one room. But we could alternatively create a general definition of muddiness (`A room can be clean or muddy. A room is usually clean.`) and then regard the new behaviour as being a set of generic rules applying in muddy rooms. We could then, of course, create a second muddy room with much greater ease, or transplant these rules to other works and have muddy rooms in those too.
 
 **3. Particular situations: use Instead or After (or sometimes Before).**
 
@@ -7747,7 +7782,7 @@ Such a relation exists only in the current phrase, and is destroyed when the phr
 
 It is easy to say what verbs are for: they are to express relations. But what are relations for?
 
-Inform 7's focus on relations between objects is unusual as an approach to interactive fiction; the concept does not exist in most design systems, or rather, it does but is submerged. Traditional design systems do, after all, have the spatial relations of being inside, on top of, and so on. It could well be said that these are the only relationships that inanimate objects ever have. A stone can be on top of a table, and if so then that expresses their entire association.
+The ones we've seen so far are mostly about how things are arranged in space: things being inside or on top of each other, or one room being mapped north of another. In some ways these are the only relationships that inanimate objects ever have. A stone can be on top of a table, and if so then that expresses their entire association.
 
 This is because the stone, and the table, have no opinions, emotions, knowledge or memory. If the stone is taken away and then put back, nothing has changed. People, on the other hand, tend to remember having met each other before; they like being in some places, but not others; their behaviour depends on who, or what, is nearby. Being conscious, they have internal states, unlike the stone. Relations are a simple but powerful way to express and talk about such connections, and although they have numerous uses in physical contexts too, they are at their most powerful when helping to make the characters of interactive fiction come alive.
 
@@ -9015,7 +9050,7 @@ Fortunately the whole set is indeed available in a presentation box, and at no e
 
 ^^{units of measure: with multiple numeric components} ^^{units of measure: defining} ^^{defining: units of measure with parts} ^^{limits: of numeric values of units} ^^{numbers: limits of numeric values of units} ^^{Z-machine: numeric limits} ^^{Glulx: numeric limits} ^^{virtual machine: numeric limits} ^^{real numbers: limits of numeric values of units} ^^{punctuation: quotation marks: not usable in unit notations} ^^{|": not usable in unit notations}
 
-We've seen quite enough scientific notation for the time being. There are plenty of other notations used in natural language, for everyday concepts, where people don't use a tidy spread of powers of 10. Instead they use mixtures, with some sort of punctuation or text to divide them. For instance, the running time of a piece of music is easier to follow in minutes and seconds than in seconds alone: old-fashioned LP sleeves used to quote running times in the form 4'33.
+We've seen quite enough scientific notation for the time being. There are plenty of other notations used in natural language, for everyday talk, where people don't use a tidy spread of powers of 10. Instead they use mixtures, with some sort of punctuation or text to divide them. For instance, the running time of a piece of music is easier to follow in minutes and seconds than in seconds alone: old-fashioned LP sleeves used to quote running times in the form 4'33.
 
 	A running time is a kind of value. 3'59 specifies a running time.
 
@@ -10201,7 +10236,7 @@ We then supply lines of grammar (as they are called) for Inform to recognise, li
 	
 	Understand "photograph [an open door]" as photographing.
 
-The part in quotation marks after the word `Understand` looks like text — something which Inform can say, or can manipulate in various letter-by-letter ways. The square brackets even look like text substitutions. In fact, though, `"photograph [an open door]"` is _not_ a text value. It is a pattern used to match the words in a command. It will match the word ``PHOTOGRAPH`` followed by the name of an open door which is currently "in scope" (a concept we will come back to, but which roughly means nearby). It will not match any other wording.
+The part in quotation marks after the word `Understand` looks like text — something which Inform can say, or can manipulate in various letter-by-letter ways. The square brackets even look like text substitutions. In fact, though, `"photograph [an open door]"` is _not_ a text value. It is a pattern used to match the words in a command. It will match the word ``PHOTOGRAPH`` followed by the name of an open door which is currently "in scope" (an idea we will come back to, but which roughly means nearby). It will not match any other wording.
 
 For obvious reasons, this pattern of words needs to match the expectations of the action. Photographing applies to `one thing`, so these instructions are both a little odd: one supplies no things, and the other supplies two.
 
@@ -10346,7 +10381,7 @@ then we can define an action `applying to one state`, say, and then the token `"
 
 which would enable `"[a weight]"` to match ``27KG``, for example.
 
-The issue of "scope" does not arise for values which are not objects. Scope is all about where things are in the physical world, but the number 17, or for that matter the concept of being a gas, makes equal sense everywhere. So although it's quite legal to write `"[any number]"`, using the `any` to mean anywhere, the effect is exactly the same as writing just `"[a number]"`.
+The issue of "scope" does not arise for values which are not objects. Scope is all about where things are in the physical world, but the number 17, or for that matter the possibility of being a gas, makes equal sense everywhere. So although it's quite legal to write `"[any number]"`, using the `any` to mean anywhere, the effect is exactly the same as writing just `"[a number]"`.
 
 ## The text token {text_token}
 
@@ -10435,7 +10470,7 @@ This section can safely be skipped by most Inform authors, but for experts it pr
 
 ### When scope is used by Inform
 
-As we have seen, scope is a concept of nearby-ness which is used by the command parser to see which names to recognise in commands. The command ``TAKE HOLY GRAIL`` will be understood only if the Holy Grail is in scope, and so on. Scope roughly means "within sight or touch", but only roughly. It's a concept used in Inform in other places too:
+As we have seen, scope is an idea of nearby-ness which is used by the command parser to see which names to recognise in commands. The command ``TAKE HOLY GRAIL`` will be understood only if the Holy Grail is in scope, and so on. Scope roughly means "within sight or touch", but only roughly. It's used in Inform in other places too:
 
 * To define the `visibility relation`. `A` can see `B` if:
   - there is light where `A` is, _and_
@@ -15588,7 +15623,7 @@ Provided we declare the files in the right way, it is easy for one project to re
 
 But if we want more rapid communication, between two projects which are each playing at the same time, we need to be more careful. What if project A tries to read the file at the same moment that project B is writing it?
 
-To avoid this, we have a concept of files being "ready". A file is ready if it exists, and is completely written, and not in use elsewhere. We have already seen:
+To avoid this, we have a condition of files as _ready to read_ or not. A file is ready to read if it exists, and is completely written, and not in use elsewhere. We have already seen:
 
 	if the file of Invariants exists...
 
