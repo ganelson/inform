@@ -2686,7 +2686,15 @@ It should also be remembered that the player may not be able to type such charac
 	Understand "βράχος" as the rock.
 	Understand "παίρνω [things]" as taking.
 
-If the Z-machine setting is used, this definitely will not work.
+Or even, since emoji are now very widely supported:
+
+	Café Emoji is a room. A bagel is here. The bagel is edible.
+	
+	Understand "🥯" as the bagel. Understand "🍽️ [thing]" as eating.
+
+	Test me with "🍽️ 🥯".
+
+If the Z-machine setting is used, this _definitely_ will not work.
 
 (d) **Characters which might work in quoted text, or might not**. The Arabic and Hebrew alphabets are fairly likely to be available, but right-to-left support for them is another matter; miscellaneous symbols are sometimes legible to the player, sometimes not. Other alphabets are chancier still. (If a work of IF depends on these being visible, it may be necessary to instruct players to use specific interpreters, or to test that the effect looks right in multiple browsers on each of MacOS, Windows and Linux.)
 
