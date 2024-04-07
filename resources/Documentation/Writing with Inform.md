@@ -1849,7 +1849,7 @@ means that typing ``EXAMINE TREVOR`` produces the reply ``He is a dude.``
 
 ## Duplicates {PM_TooManyDuplicates}
 
-^^{duplicates <-- multiple copies of things} ^^{things+kind+: creating: multiple identical things with counts} ^^{defining: things: multiply with counts} ^^{use options: catalogue: |maximum things understood at once} ^^{maximum things understood at once+useopt+}
+^^{duplicates <-- multiple copies of things} ^^{things+kind+: creating: multiple identical things with counts} ^^{defining: things: multiply with counts} ^^{use options: catalogue: |maximum things understood at once} ^^{use options: catalogue: |no automatic plural synonyms} ^^{maximum things understood at once+useopt+} ^^{no automatic plural synonyms+useopt+}
 
 Although it is only useful to a limited extent, we can make any number of copies of something:
 
@@ -1892,6 +1892,27 @@ Four caveats:
    works fine, because now only one chemical can be called ``TEREPHTHALATE``, and that means they can be distinguished.
 
 4) Finally: numbers up to twelve may be written out in words in the source text, but larger ones must be written as numerals. So `twelve` or `12`, but `13` only.
+
+Whenever a kind of object is created, Inform allows the pluralised name of the kind to be used to refer to such objects in typed commands. That's why creating `A coin is a kind of thing.` enables commands like ``TAKE THREE COINS`` to work: Inform takes the name `coin` and pluralises it as ``COINS``.
+
+But some authors prefer not to have this feature, and to enable all plural nouns in commands by hand. For those authors, this use option is provided:
+
+	Use no automatic plural synonyms.
+
+Then, for example, in the following story:
+
+	Use no automatic plural synonyms.
+
+	A badger is a kind of animal. Understand "brocks" as a badger.
+	An acorn is a kind of thing.
+	
+	The Night Garden is a room. Two badgers and six acorns are in the Night Garden.
+	
+the player could type ``GET BADGERS`` (do _not_ try this in real life) but not ``GET ACORNS``.
+
+### See Also
+
+- [Plural assertions] for how to change Inform's guesses about plurals of nouns.
 
 ## Assemblies and body parts {PM_AssemblyLoop} {PM_AssemblyRegress} {PM_ComplexEvery}
 
