@@ -45,7 +45,7 @@ template path "inform7/Tests/Templates"
 template path "inform7/Internal/Templates"
 placeholder [INTERPRETERSCRIPTS] = " "
 interpreter "Quixe" "g"
-base64 "/Users/gnelson/Natural Inform/intest/Workspace/T0/Example.inform/Build/output.ulx" to "/Users/gnelson/Natural Inform/intest/Workspace/T0/Example.materials/Release/interpreter/story.gblorb.js"
+base64 "/Users/gnelson/Natural Inform/intest/Workspace/T0/Example.materials/Release/story.gblorb" to "/Users/gnelson/Natural Inform/intest/Workspace/T0/Example.materials/Release/interpreter/story.gblorb.js"
 
 ! Website instructions
 
@@ -56,5 +56,5 @@ template path "inform7/Internal/Templates"
 css
 website "Standard"
 status instruction ||&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a>||
-status alternative ||Using 'Release along with cover art', to provide something more distinctive than the default artwork above&nbsp;<a href=inform:/doc401.html><img border=0 src=inform:/doc_images/help.png></a>||
-status alternative ||Using 'Release along with a file of "Such-and-Such" called "whatever.pdf"', perhaps to add a manual, or a welcoming note&nbsp;<a href=inform:/doc399.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with cover art', to provide something more distinctive than the default artwork above&nbsp;<a href=inform:/wi_25_8.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with a file of "Such-and-Such" called "whatever.pdf"', perhaps to add a manual, or a welcoming note&nbsp;<a href=inform:/wi_25_6.html><img border=0 src=inform:/doc_images/help.png></a>||

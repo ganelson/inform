@@ -127,7 +127,7 @@
     </tr>
     <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            room [1]&nbsp;<a href=inform:/doc25.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K1_room><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            room [1]&nbsp;<a href=inform:/wi_3_2.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K1_room><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             Home&nbsp;
@@ -161,7 +161,7 @@
     </tr>
     <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            door [1]&nbsp;<a href=inform:/doc35.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K4_door><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            door [1]&nbsp;<a href=inform:/wi_3_12.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K4_door><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             Great Gates of Kiev&nbsp;
@@ -212,7 +212,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span class="indexgrey">vehicle</span>&nbsp;<a href=inform:/doc39.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K116_vehicle><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="indexgrey">vehicle</span>&nbsp;<a href=inform:/wi_3_16.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K116_vehicle><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             <span class="indexgrey">nothing</span>&nbsp;
@@ -229,7 +229,7 @@
     </tr>
     <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span class="indexgrey">player's holdall</span>&nbsp;<a href=inform:/doc44.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K117_player_s_holdall><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="indexgrey">player's holdall</span>&nbsp;<a href=inform:/wi_3_21.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K117_player_s_holdall><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             <span class="indexgrey">nothing</span>&nbsp;
@@ -263,7 +263,7 @@
     </tr>
     <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span class="indexgrey">backdrop</span>&nbsp;<a href=inform:/doc32.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K7_backdrop><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="indexgrey">backdrop</span>&nbsp;<a href=inform:/wi_3_9.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K7_backdrop><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             <span class="indexgrey">nothing</span>&nbsp;
@@ -280,7 +280,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            person [1]&nbsp;<a href=inform:/doc40.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K8_person><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            person [1]&nbsp;<a href=inform:/wi_3_17.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K8_person><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             yourself&nbsp;
@@ -348,7 +348,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span class="indexgrey">device</span>&nbsp;<a href=inform:/doc37.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K115_device><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="indexgrey">device</span>&nbsp;<a href=inform:/wi_3_14.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K115_device><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             <span class="indexgrey">nothing</span>&nbsp;
@@ -365,7 +365,7 @@
     </tr>
     <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            direction [12]&nbsp;<a href=inform:/doc49.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K3_direction><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            direction [12]&nbsp;<a href=inform:/wi_3_24.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K3_direction><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             north&nbsp;
@@ -382,7 +382,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span class="indexgrey">region</span>&nbsp;<a href=inform:/doc27.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K9_region><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="indexgrey">region</span>&nbsp;<a href=inform:/wi_3_4.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K9_region><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             <span class="indexgrey">nothing</span>&nbsp;
@@ -404,7 +404,7 @@
     </tr>
     <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            number&nbsp;<a href="Kinds.html?segment2"><img border=0 src=inform:/doc_images/calc1.png></a>&nbsp;<a href=inform:/doc225.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A27><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            number&nbsp;<a href="Kinds.html?segment2"><img border=0 src=inform:/doc_images/calc1.png></a>&nbsp;<a href=inform:/wi_15_2.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A27><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             0&nbsp;
@@ -421,7 +421,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            real number&nbsp;<a href="Kinds.html?segment2"><img border=0 src=inform:/doc_images/calc1.png></a>&nbsp;<a href=inform:/doc225.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A28><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            real number&nbsp;<a href="Kinds.html?segment2"><img border=0 src=inform:/doc_images/calc1.png></a>&nbsp;<a href=inform:/wi_15_3.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A28><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             0&nbsp;
@@ -438,7 +438,7 @@
     </tr>
     <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            time&nbsp;<a href="Kinds.html?segment2"><img border=0 src=inform:/doc_images/calc1.png></a>&nbsp;<a href=inform:/doc138.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A44><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            time&nbsp;<a href="Kinds.html?segment2"><img border=0 src=inform:/doc_images/calc1.png></a>&nbsp;<a href=inform:/wi_9_6.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A44><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             9:00 AM&nbsp;
@@ -455,7 +455,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            truth state&nbsp;<a href=inform:/doc161.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A29><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            truth state&nbsp;<a href=inform:/wi_11_5.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A29><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             false&nbsp;
@@ -489,7 +489,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            snippet&nbsp;<a href=inform:/doc317.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A31><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            snippet&nbsp;<a href=inform:/wi_18_33.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A31><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             <i>word 1 of command</i>&nbsp;
@@ -523,7 +523,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            action&nbsp;<a href=inform:/doc194.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A42><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            action&nbsp;<a href=inform:/wi_12_20.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A42><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             waiting&nbsp;
@@ -540,7 +540,7 @@
     </tr>
     <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            scene&nbsp;<a href=inform:/doc148.html><img border=0 src=inform:/doc_images/help.png></a> [1]&nbsp;<a href=#A26><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            scene&nbsp;<a href=inform:/wi_10_1.html><img border=0 src=inform:/doc_images/help.png></a> [1]&nbsp;<a href=#A26><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             Entire Game&nbsp;
@@ -625,7 +625,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            verb&nbsp;<a href=inform:/doc220.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A35><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            verb&nbsp;<a href=inform:/wi_14_9.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A35><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             verb be&nbsp;
@@ -642,7 +642,7 @@
     </tr>
     <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            table name&nbsp;<a href=inform:/doc258.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A36><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            table name&nbsp;<a href=inform:/wi_16_15.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A36><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             <i>a table with no rows or columns</i>&nbsp;
@@ -693,7 +693,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span class="indexgrey">external file&nbsp;<a href=inform:/doc382.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A39><img border=0 src=inform:/doc_images/Below.png></a></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="indexgrey">external file&nbsp;<a href=inform:/wi_23_12.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A39><img border=0 src=inform:/doc_images/Below.png></a></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             <span class="indexgrey"><i>a non-file</i></span>&nbsp;
@@ -727,7 +727,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            action name&nbsp;<a href=inform:/doc96.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A43><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            action name&nbsp;<a href=inform:/wi_7_1.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A43><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             waiting action&nbsp;
@@ -744,7 +744,7 @@
     </tr>
     <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            figure name&nbsp;<a href=inform:/doc374.html><img border=0 src=inform:/doc_images/help.png></a> [1]&nbsp;<a href=#A45><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            figure name&nbsp;<a href=inform:/wi_23_4.html><img border=0 src=inform:/doc_images/help.png></a> [1]&nbsp;<a href=#A45><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             Figure of cover&nbsp;
@@ -761,7 +761,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span class="indexgrey">sound name&nbsp;<a href=inform:/doc377.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A46><img border=0 src=inform:/doc_images/Below.png></a></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="indexgrey">sound name&nbsp;<a href=inform:/wi_23_7.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A46><img border=0 src=inform:/doc_images/Below.png></a></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             <span class="indexgrey"><i>a silent non-sound</i></span>&nbsp;
@@ -895,7 +895,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            list of K&nbsp;<a href=inform:/doc350.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A48><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            list of K&nbsp;<a href=inform:/wi_21_1.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A48><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top" colspan="4">
             { }
@@ -919,7 +919,7 @@
     </tr>
     <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span class="indexgrey">K based</span> rule<span class="indexgrey"> producing L</span>&nbsp;<a href=inform:/doc325.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A60><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="indexgrey">K based</span> rule<span class="indexgrey"> producing L</span>&nbsp;<a href=inform:/wi_19_1.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A60><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top" colspan="4">
             the little-used do nothing rule
@@ -927,7 +927,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span class="indexgrey">K based</span> rulebook<span class="indexgrey"> producing L</span>&nbsp;<a href=inform:/doc325.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A61><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="indexgrey">K based</span> rulebook<span class="indexgrey"> producing L</span>&nbsp;<a href=inform:/wi_19_1.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A61><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top" colspan="4">
             the action-processing rules
@@ -935,7 +935,7 @@
     </tr>
     <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span class="indexgrey"></span>activity<span class="indexgrey"> on K</span>&nbsp;<a href=inform:/doc285.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A62><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="indexgrey"></span>activity<span class="indexgrey"> on K</span>&nbsp;<a href=inform:/wi_18_1.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A62><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top" colspan="4">
             printing the name
@@ -943,7 +943,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            description of K&nbsp;<a href=inform:/doc362.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A63><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            description of K&nbsp;<a href=inform:/wi_22_2.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A63><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top" colspan="4">
             <i>matching nothing</i>
@@ -986,7 +986,7 @@ conceptual, like ideas, or are needed for internal book-keeping.<br>
 <p class="halftightin3"><a name=K111_concept></a><b>concept</b> (<i>plural</i> concepts)</p>
 <p class="tightin3"></p>
 <p class="tightin3"></p>
-<p class="halftightin2"><a name=K1_room></a><b>room</b> (<i>plural</i> rooms)&nbsp;<a href=inform:/doc25.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin2"><a name=K1_room></a><b>room</b> (<i>plural</i> rooms)&nbsp;<a href=inform:/wi_3_2.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin2">Represents geographical locations, both indoor
 and outdoor, which are not necessarily areas in a building. A player in one
 room is mostly unable to sense, or interact with, anything in a different room.
@@ -1005,7 +1005,7 @@ like the sound of birdsong or a shaft of sunlight.<br>
 <i>Can have</i> description (<i>text</i>), initial appearance (<i>text</i>), matching key (<i>object</i>).<br>
 </p>
 <p class="tightin2"></p>
-<p class="halftightin3"><a name=K4_door></a><b>door</b> (<i>plural</i> doors)&nbsp;<a href=inform:/doc35.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin3"><a name=K4_door></a><b>door</b> (<i>plural</i> doors)&nbsp;<a href=inform:/wi_3_12.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin3">Represents a conduit joining two rooms, most
 often a door or gate but sometimes a plank bridge, a slide or a hatchway.
 Usually visible and operable from both sides (for instance if you write
@@ -1032,7 +1032,7 @@ instead.<br>
 <i>Can have</i> carrying capacity (<i>number</i>).<br>
 </p>
 <p class="tightin3"></p>
-<p class="halftightin4"><a name=K116_vehicle></a><b>vehicle</b> (<i>plural</i> vehicles)&nbsp;<a href=inform:/doc39.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin4"><a name=K116_vehicle></a><b>vehicle</b> (<i>plural</i> vehicles)&nbsp;<a href=inform:/wi_3_16.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin4">Represents a container large enough for
 a person to enter, and which can then move between rooms at the driver's
 instruction. (If a supporter is needed instead, try the extension
@@ -1041,7 +1041,7 @@ Rideable Vehicles by Graham Nelson.)<br>
 <i>Usually</i> fixed in place <i>not</i> portable.<br>
 </p>
 <p class="tightin4"></p>
-<p class="halftightin4"><a name=K117_player_s_holdall></a><b>player's holdall</b> (<i>plural</i> player's holdalls)&nbsp;<a href=inform:/doc44.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin4"><a name=K117_player_s_holdall></a><b>player's holdall</b> (<i>plural</i> player's holdalls)&nbsp;<a href=inform:/wi_3_21.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin4">Represents a container which the
 player can carry around as a sort of rucksack, into which spare items are
 automatically stowed away.<br>
@@ -1058,7 +1058,7 @@ placed, such as a table.<br>
 <i>Can have</i> carrying capacity (<i>number</i>).<br>
 </p>
 <p class="tightin3"></p>
-<p class="halftightin3"><a name=K7_backdrop></a><b>backdrop</b> (<i>plural</i> backdrops)&nbsp;<a href=inform:/doc32.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin3"><a name=K7_backdrop></a><b>backdrop</b> (<i>plural</i> backdrops)&nbsp;<a href=inform:/wi_3_9.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin3">Represents an aspect of the landscape
 or architecture which extends across more than one room: for instance,
 a stream, the sky or a long carpet.<br>
@@ -1067,7 +1067,7 @@ a stream, the sky or a long carpet.<br>
 <i>Never</i> pushable between rooms.<br>
 </p>
 <p class="tightin3"></p>
-<p class="halftightin3"><a name=K8_person></a><b>person</b> (<i>plural</i> people)&nbsp;<a href=inform:/doc40.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin3"><a name=K8_person></a><b>person</b> (<i>plural</i> people)&nbsp;<a href=inform:/wi_3_17.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin3">Despite the name, not necessarily a human
 being, but anything animate enough to envisage having a conversation with, or
 bartering with.<br>
@@ -1095,13 +1095,13 @@ non-human living creature reasonably large and possible to interact with: a
 giant Venus fly-trap might qualify, but not a patch of lichen.<br>
 </p>
 <p class="tightin4"></p>
-<p class="halftightin3"><a name=K115_device></a><b>device</b> (<i>plural</i> devices)&nbsp;<a href=inform:/doc37.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin3"><a name=K115_device></a><b>device</b> (<i>plural</i> devices)&nbsp;<a href=inform:/wi_3_14.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin3">Represents a machine or contrivance of some
 kind which can be switched on or off.<br>
 <i>Usually</i> switched off <i>not</i> switched on.<br>
 </p>
 <p class="tightin3"></p>
-<p class="halftightin2"><a name=K3_direction></a><b>direction</b> (<i>plural</i> directions)&nbsp;<a href=inform:/doc49.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin2"><a name=K3_direction></a><b>direction</b> (<i>plural</i> directions)&nbsp;<a href=inform:/wi_3_24.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin2">Represents a direction of movement, such
 as northeast or down. They always occur in opposite, matched pairs: northeast
 and southwest, for instance; down and up.<br>
@@ -1120,7 +1120,7 @@ and southwest, for instance; down and up.<br>
     </table>
     </p>
 </div>
-<p class="halftightin2"><a name=K9_region></a><b>region</b> (<i>plural</i> regions)&nbsp;<a href=inform:/doc27.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin2"><a name=K9_region></a><b>region</b> (<i>plural</i> regions)&nbsp;<a href=inform:/wi_3_4.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin2">Represents a broader area than a single
 room, and allows rules to apply to a whole geographical territory. Each
 region can contain many rooms, and regions can even be inside each other,
@@ -1131,19 +1131,19 @@ and are optional.<br>
 </p>
 <p class="tightin2"></p>
 <hr>
-<p class="halftightin1"><a name=A27></a><b>number</b> (<i>plural</i> numbers)&nbsp;<a href=inform:/doc225.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A27></a><b>number</b> (<i>plural</i> numbers)&nbsp;<a href=inform:/wi_15_2.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, arithmetic value<br>
 Whole number in the range -32768, -32767, ..., -2, -1, 0, 1, 2, 3, ..., 32767: small numbers can be written textually as 'one', 'two', 'three', ..., 'ten', 'eleven', 'twelve'. (A much larger number range is allowed if we compile the source to Glulx rather than the Z-machine: see the Settings panel.)<br>
 </p>
-<p class="halftightin1"><a name=A28></a><b>real number</b> (<i>plural</i> real numbers)&nbsp;<a href=inform:/doc225.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A28></a><b>real number</b> (<i>plural</i> real numbers)&nbsp;<a href=inform:/wi_15_3.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, arithmetic value, real arithmetic value<br>
 A real, or 'floating-point' number: the difference between this and ordinary "number" is that real numbers can hold values like 3.141, which aren't whole numbers, and can also hold very large or very small quantities in an approximate way. (Use of real numbers is only allowed if we compile the source to Glulx rather than the Z-machine: see the Settings panel.)<br>
 </p>
-<p class="halftightin1"><a name=A44></a><b>time</b> (<i>plural</i> times)&nbsp;<a href=inform:/doc138.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A44></a><b>time</b> (<i>plural</i> times)&nbsp;<a href=inform:/wi_9_6.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, arithmetic value<br>
 A time of day, written in the form '2:34 AM' or '12:51 PM', or a length of time such as '10 minutes' or '3 hours 31 minutes', which must be between 0 minutes and 23 hours 59 minutes inclusive.<br>
 </p>
-<p class="halftightin1"><a name=A29></a><b>truth state</b> (<i>plural</i> truth states)&nbsp;<a href=inform:/doc161.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A29></a><b>truth state</b> (<i>plural</i> truth states)&nbsp;<a href=inform:/wi_11_5.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value<br>
 The state of whether something is 'true' or 'false'. (In other computing languages, this might be called 'boolean', after the 19th-century logician George Boole, who first realised this was a kind of value.)<br>
 </p>
@@ -1151,7 +1151,7 @@ The state of whether something is 'true' or 'false'. (In other computing languag
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 Some text in double quotation marks, perhaps with substitutions written in square brackets.<br>
 </p>
-<p class="halftightin1"><a name=A31></a><b>snippet</b> (<i>plural</i> snippets)&nbsp;<a href=inform:/doc317.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A31></a><b>snippet</b> (<i>plural</i> snippets)&nbsp;<a href=inform:/wi_18_33.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 A fragment of the player's most recent typed command, taking in a run of consecutive words.<br>
 </p>
@@ -1159,11 +1159,11 @@ A fragment of the player's most recent typed command, taking in a run of consecu
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 A single character - a letter or item of punctuation.<br>
 </p>
-<p class="halftightin1"><a name=A42></a><b>action</b> (<i>plural</i> actions)&nbsp;<a href=inform:/doc194.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A42></a><b>action</b> (<i>plural</i> actions)&nbsp;<a href=inform:/wi_12_20.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 A stored action, which can later be tried.<br>
 </p>
-<p class="halftightin1"><a name=A26></a><b>scene</b> (<i>plural</i> scenes)&nbsp;<a href=inform:/doc148.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A26></a><b>scene</b> (<i>plural</i> scenes)&nbsp;<a href=inform:/wi_10_1.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, enumerated value<br>
 Like a scene in a play: a period of time which is usually tied to events in the plot. Scenes are created by sentences like 'Midnight Arrival is a scene.'<br>
 <i>Usually</i> non-recurring <i>not</i> recurring.<br>
@@ -1196,11 +1196,11 @@ One of the optional ways to configure Inform, such as the 'authorial modesty opt
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 One of the standard responses issued by the Standard Rules or other extensions.<br>
 </p>
-<p class="halftightin1"><a name=A35></a><b>verb</b> (<i>plural</i> verbs)&nbsp;<a href=inform:/doc220.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A35></a><b>verb</b> (<i>plural</i> verbs)&nbsp;<a href=inform:/wi_14_9.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 One of the verbs which Inform knows how to conjugate.<br>
 </p>
-<p class="halftightin1"><a name=A36></a><b>table name</b> (<i>plural</i> table names)&nbsp;<a href=inform:/doc258.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A36></a><b>table name</b> (<i>plural</i> table names)&nbsp;<a href=inform:/wi_16_15.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 Like tables of information in a book or newspaper, tables in Inform hold values which have been organised into rows and columns. A table name is just a single value, identifying which table is meant - say, 'Table of US Presidents' might be a table name value.<br>
 </p>
@@ -1211,7 +1211,7 @@ Like formulae in a textbook or a scientific paper, equations in Inform are writt
 <p class="halftightin1"><a name=A38></a><b>rulebook outcome</b> (<i>plural</i> rulebook outcomes)</p>
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 </p>
-<p class="halftightin1"><a name=A39></a><b>external file</b> (<i>plural</i> external files)&nbsp;<a href=inform:/doc382.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A39></a><b>external file</b> (<i>plural</i> external files)&nbsp;<a href=inform:/wi_23_12.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, enumerated value<br>
 When made with the Glulx setting, an Inform project can make limited use of files stored on the computer which is operating the story at run-time. An external-file is just the name of one of these files (not the filename in the usual sense, but a name given to it in the Inform source text).<br>
 </p>
@@ -1219,16 +1219,16 @@ When made with the Glulx setting, an Inform project can make limited use of file
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, enumerated value<br>
 When made with the Glulx setting, an Inform project can make limited use of files held internally within the 'blorb' which makes up the story.<br>
 </p>
-<p class="halftightin1"><a name=A43></a><b>action name</b> (<i>plural</i> action names)&nbsp;<a href=inform:/doc96.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A43></a><b>action name</b> (<i>plural</i> action names)&nbsp;<a href=inform:/wi_7_1.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 An action is what happens when one of the people in the simulated world decides to do something. A full action would be something like 'dropping the box', but an action name is just the choice of which sort of thing is being done: here, it's 'the dropping action'. (Action names are always written with the word 'action' at the end, to make sure they aren't mistaken for full actions.)<br>
 </p>
-<p class="halftightin1"><a name=A45></a><b>figure name</b> (<i>plural</i> figure names)&nbsp;<a href=inform:/doc374.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A45></a><b>figure name</b> (<i>plural</i> figure names)&nbsp;<a href=inform:/wi_23_4.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, enumerated value<br>
 When made with the Glulx setting, an Inform project can include images as well as words, and these are called figures. A figure name is just the name of one of the figures in the current project.<br>
 <p class="tightin1"><span class="indexgrey">Figure of cover</span></p>
 </p>
-<p class="halftightin1"><a name=A46></a><b>sound name</b> (<i>plural</i> sound names)&nbsp;<a href=inform:/doc377.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A46></a><b>sound name</b> (<i>plural</i> sound names)&nbsp;<a href=inform:/wi_23_7.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, enumerated value<br>
 When made with the Glulx setting, an Inform project can include sound effects or pieces of music. A sound name is just the name of one of these sounds in the current project.<br>
 </p>
@@ -1254,7 +1254,7 @@ When made with the Glulx setting, an Inform project can include sound effects or
 <p class="tightin1"><span class="indexgrey">neuter gender</span>&nbsp;<a href='inform://Extensions/Documentation/Graham%20Nelson/English%20Language.html' title="English Language by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>, <span class="indexgrey">masculine gender</span>&nbsp;<a href='inform://Extensions/Documentation/Graham%20Nelson/English%20Language.html' title="English Language by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a>, <span class="indexgrey">feminine gender</span>&nbsp;<a href='inform://Extensions/Documentation/Graham%20Nelson/English%20Language.html' title="English Language by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a></p>
 </p>
 <hr>
-<p class="halftightin1"><a name=A48></a><b>list of K</b> (<i>plural</i> lists of K)&nbsp;<a href=inform:/doc350.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A48></a><b>list of K</b> (<i>plural</i> lists of K)&nbsp;<a href=inform:/wi_21_1.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>covariant&nbsp;<a href=#contra><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 A flexible-length list of values, where all of the items have to have the same kind of value as each other - for instance, a list of rooms, or a list of lists of numbers. The empty list, with no items yet, is written { }, and a list with items in is written with commas dividing them - say {2, 5, 9}.<br>
@@ -1267,22 +1267,22 @@ A flexible-length list of values, where all of the items have to have the same k
 <p class="tightin1"><i>covariant&nbsp;<a href=#contra><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 </p>
-<p class="halftightin1"><a name=A60></a><b><span class="indexgrey">K based</span> rule<span class="indexgrey"> producing L</span></b> (<i>plural</i> <span class="indexgrey">K based</span> rules<span class="indexgrey"> producing L</span>)&nbsp;<a href=inform:/doc325.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A60></a><b><span class="indexgrey">K based</span> rule<span class="indexgrey"> producing L</span></b> (<i>plural</i> <span class="indexgrey">K based</span> rules<span class="indexgrey"> producing L</span>)&nbsp;<a href=inform:/wi_19_1.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>contravariant in K, covariant in L&nbsp;<a href=#contra><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 One of many, many rules which determine what happens during play. Rules can be triggered by scenes beginning or ending, by certain actions, at certain times, or in the course of carrying out certain activities.<br>
 </p>
-<p class="halftightin1"><a name=A61></a><b><span class="indexgrey">K based</span> rulebook<span class="indexgrey"> producing L</span></b> (<i>plural</i> <span class="indexgrey">K based</span> rulebooks<span class="indexgrey"> producing L</span>)&nbsp;<a href=inform:/doc325.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A61></a><b><span class="indexgrey">K based</span> rulebook<span class="indexgrey"> producing L</span></b> (<i>plural</i> <span class="indexgrey">K based</span> rulebooks<span class="indexgrey"> producing L</span>)&nbsp;<a href=inform:/wi_19_1.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>contravariant in K, covariant in L&nbsp;<a href=#contra><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 A list of rules to follow, in sequence, to get something done. A rulebook is like a ring-binder, with the individual rules as sheets of paper. Inform normally sorts these into their 'natural' order, with the most specific rules first, but it's easy to shuffle the pages if you need to. When some task is carried out during play, Inform is normally working through a rulebook, turning the pages one by one.<br>
 </p>
-<p class="halftightin1"><a name=A62></a><b><span class="indexgrey"></span>activity<span class="indexgrey"> on K</span></b> (<i>plural</i> <span class="indexgrey"></span>activities<span class="indexgrey"> on K</span>)&nbsp;<a href=inform:/doc285.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A62></a><b><span class="indexgrey"></span>activity<span class="indexgrey"> on K</span></b> (<i>plural</i> <span class="indexgrey"></span>activities<span class="indexgrey"> on K</span>)&nbsp;<a href=inform:/wi_18_1.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>contravariant&nbsp;<a href=#contra><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
 <p class="tightin1"><i>Matches:</i> value<br>
 An activity is something which Inform does as part of the mechanics of play - for instance, printing the name of an object, which Inform often has to do. An activity can happen by itself ('printing the banner text', for instance) or can be applied to an object ('printing the name of something', say).<br>
 </p>
-<p class="halftightin1"><a name=A63></a><b>description of K</b> (<i>plural</i> descriptions of K)&nbsp;<a href=inform:/doc362.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A63></a><b>description of K</b> (<i>plural</i> descriptions of K)&nbsp;<a href=inform:/wi_22_2.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>covariant&nbsp;<a href=#contra><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
 <p class="tightin1"><i>Matches:</i> value<br>
 A description of a set of values, where all of the items have to have the same kind of value as each other - for instance, 'even numbers' or 'open doors which are in lighted rooms'.<br>

@@ -163,42 +163,15 @@ Use index figure thumbnails of at least 50 translates as a compiler feature.
 
 Use dynamic memory allocation of at least 8192.
 
-@ Some Inform 7 projects are rather heavy-duty by the expectations of the
-Inform 6 compiler (which it uses as a code-generator): I6 was written fifteen
-years earlier, when computers were unimaginably smaller and slower. So many
-of its default memory settings need to be raised to higher maxima.
+@ At one point many maxima were set via Inform 6 compiler options, but those
+became redundant with v6.36 of the I6 compiler, and we now require at least
+v6.42 anyway for other reasons; so those settings have now been removed.
 
-Note that the Z-machine cannot accommodate more than 255 verbs, so this is
-the highest |MAX_VERBS| setting we can safely make here.
-
-The |MAX_LOCAL_VARIABLES| setting is suppressed by I7 if we're compiling
-to the Z-machine, because it's only legal in I6 when compiling to Glulx.
-
-Most of these settings are unnecessary (and do nothing) if the version of
-the I6 compiler eventually used to compile this code is 6.36 or better: in
-modern times, the I6 compiler flexibly manages memory so that it doesn't have
-these maxima. If that's the case, these lines are simply ignored. For the 
-moment, they remain here just in case somebody is still using an early I6
-compiler for some reason.
+What remains is the maximum stack capacity on the Glulx virtual machine.
+I6 currently sets this by default to 4096, which the I6 source code says is
+"about enough for 90 nested function calls with 8 locals each". I7 by
+default asks 16 times that, and even then this is a use option, so that it
+can be raised by users if necessary.
 
 =
-Use Inform 6 compiler option "-s".
-Use Inform 6 compiler option "$ALLOC_CHUNK_SIZE=32000".
-Use Inform 6 compiler option "$MAX_ARRAYS=10000".
-Use Inform 6 compiler option "$MAX_CLASSES=200".
-Use Inform 6 compiler option "$MAX_VERBS=255".
-Use Inform 6 compiler option "$MAX_LABELS=10000".
-Use Inform 6 compiler option "$MAX_ZCODE_SIZE=1000000".
-Use Inform 6 compiler option "$MAX_STATIC_DATA=500000".
-Use Inform 6 compiler option "$MAX_NUM_STATIC_STRINGS=500000".
-Use Inform 6 compiler option "$MAX_PROP_TABLE_SIZE=200000".
-Use Inform 6 compiler option "$MAX_INDIV_PROP_TABLE_SIZE=20000".
 Use Inform 6 compiler option "$MAX_STACK_SIZE=65536".
-Use Inform 6 compiler option "$MAX_SYMBOLS=20000".
-Use Inform 6 compiler option "$MAX_EXPRESSION_NODES=256".
-Use Inform 6 compiler option "$MAX_LABELS=200000".
-Use Inform 6 compiler option "$MAX_LOCAL_VARIABLES=256".
-
-Chapter 1 - Glulx Preamble (for Glulx only)
-
-Use Inform 6 compiler option "$DICT_CHAR_SIZE=4".

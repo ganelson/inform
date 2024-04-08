@@ -17237,7 +17237,7 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <a href="#" onclick="showExtra('extra17', 'plus17'); return false;"><img border=0 id="plus17" src=inform:/doc_images/extra.png></a>&nbsp;<b>Longwall Street</b> - <i>room where play begins</i>&nbsp;<a href=inform:/doc133.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href="source:story.ni#line6"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra17" style="display: none;">
+            <a href="#" onclick="showExtra('extra17', 'plus17'); return false;"><img border=0 id="plus17" src=inform:/doc_images/extra.png></a>&nbsp;<b>Longwall Street</b> - <i>room where play begins</i>&nbsp;<a href=inform:/wi_9_1.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href="source:story.ni#line6"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra17" style="display: none;">
                 <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
                         <td>

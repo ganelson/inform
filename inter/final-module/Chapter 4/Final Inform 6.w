@@ -141,12 +141,14 @@ See the Inform 6 Technical Manual for more on these oddities.
 	CodeGen::deselect(gen, saved);
 	saved = CodeGen::select(gen, ICL_directives_I7CGS);
 	OUT = CodeGen::current(gen);
-	WRITE("!%% -Cu\n");
+	WRITE("!%% -Cus\n");
 	WRITE("!%% $ZCODE_LESS_DICT_DATA=1;\n");
 	WRITE("!%% $LONG_DICT_FLAG_BUG=0;\n");
 	WRITE("!%% $DICT_IMPLICIT_SINGULAR=1;\n");
 	WRITE("!%% $DICT_TRUNCATE_FLAG=1;\n");
 	if (omit_ur) WRITE("!%% $OMIT_UNUSED_ROUTINES=1;\n");
+	if (TargetVMs::is_16_bit(gen->for_VM) == FALSE)
+		WRITE("!%% $DICT_CHAR_SIZE=4;\n");
 	CodeGen::deselect(gen, saved);
 
 @ As noted above, I6 will add a veneer of code to what we compile. That veneer

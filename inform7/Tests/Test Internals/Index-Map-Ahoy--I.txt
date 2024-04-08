@@ -641,7 +641,7 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <a href="#" onclick="showExtra('extra0', 'plus0'); return false;"><img border=0 id="plus0" src=inform:/doc_images/extra.png></a>&nbsp;<b>Fish Room</b> - <i>room where play begins</i>&nbsp;<a href=inform:/doc133.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra0" style="display: none;">
+            <a href="#" onclick="showExtra('extra0', 'plus0'); return false;"><img border=0 id="plus0" src=inform:/doc_images/extra.png></a>&nbsp;<b>Fish Room</b> - <i>room where play begins</i>&nbsp;<a href=inform:/wi_9_1.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra0" style="display: none;">
                 <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
                         <td>

@@ -1,1 +1,2 @@
 /Users/gnelson/Natural Inform/intest/Workspace/T0/Example.materials/Release
+/Users/gnelson/Natural Inform/intest/Workspace/T0/Example.materials/Release/interpreter

@@ -99,26 +99,7 @@ Use index figure thumbnails of at least 50 translates as a compiler feature.
 
 Use dynamic memory allocation of at least 8192.
 
-Use Inform 6 compiler option "-s".
-Use Inform 6 compiler option "$ALLOC_CHUNK_SIZE=32000".
-Use Inform 6 compiler option "$MAX_ARRAYS=10000".
-Use Inform 6 compiler option "$MAX_CLASSES=200".
-Use Inform 6 compiler option "$MAX_VERBS=255".
-Use Inform 6 compiler option "$MAX_LABELS=10000".
-Use Inform 6 compiler option "$MAX_ZCODE_SIZE=1000000".
-Use Inform 6 compiler option "$MAX_STATIC_DATA=500000".
-Use Inform 6 compiler option "$MAX_NUM_STATIC_STRINGS=500000".
-Use Inform 6 compiler option "$MAX_PROP_TABLE_SIZE=200000".
-Use Inform 6 compiler option "$MAX_INDIV_PROP_TABLE_SIZE=20000".
 Use Inform 6 compiler option "$MAX_STACK_SIZE=65536".
-Use Inform 6 compiler option "$MAX_SYMBOLS=20000".
-Use Inform 6 compiler option "$MAX_EXPRESSION_NODES=256".
-Use Inform 6 compiler option "$MAX_LABELS=200000".
-Use Inform 6 compiler option "$MAX_LOCAL_VARIABLES=256".
-
-Chapter 1 - Glulx Preamble (for Glulx only)
-
-Use Inform 6 compiler option "$DICT_CHAR_SIZE=4".
 
 Part Two - Miscellaneous Definitions
 
