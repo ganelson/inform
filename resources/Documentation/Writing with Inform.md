@@ -2027,6 +2027,48 @@ So much for an informal description. Here is exactly what Inform does:
 
 5) If values rather than objects are created, rules (1) to (4) apply in the same way, but Inform tacks on a number if necessary to force each new name to be different from existing ones: e.g., "Daphne's colour 2", "Daphne's colour 3", ... (This is because, unlike objects, values must have unique names.)
 
+## Implications {PM_ImplicationCertain} {PM_ImplicationValueProperty}
+
+^^{properties: implications}
+
+Implications are a feature of Inform which may be best avoided unless the need really arises. They can be tricky, and can have unforeseen consequences. We should handle them with care.
+
+They are most useful when setting up kinds which have multiple properties, where those properties have overlapping duties in some slightly complicated way. As a result, they are more often used by Inform extensions than in the main source text of a story, but of course they're available to both.
+
+For example, consider Inform's built-in `locked` property. If a door is locked, then it cannot be opened, which seems fair enough. But a player who then tries to unlock the door might then be told:
+
+``` transcript
+That doesn't seem to be something you can unlock.
+```
+
+Which does not seem right. In real life, almost all locked items have outwardly exposed locks which it is perfectly sensible to try to unlock, given a key. The problem is that our door has the `locked` property, but not the `lockable` one.
+
+The Standard Rules (included automatically in all Inform stories) solve this problem with the following _implication_:
+
+	Something locked is usually lockable.
+
+And this ensures that any door said by the author only to be `locked` will be `lockable` as well, and adds a small but worthwhile touch of realism.
+
+This sentence has a form roughly like "if Condition A holds then probably Condition B does as well". Note that the two conditions must be quite simple ones, without relative clauses: they need to consist only of adjectives for either-or properties, possibly with the names of kinds added. Thus:
+
+	A room in the Open Desert is usually lighted.
+
+will not work because `a room in the Open Desert` is a more complicated grammatical construction than, say, `lighted` or `a lighted room`: it contains a relative clause. Inform can only deal with simple implications.
+
+Inform never overrides certainties with mere implications, and is cautious about allowing them to build overly long chains of argument. This is to prevent the following kind of difficulty:
+
+	An open door is usually closed. A closed door is usually open.
+
+Implications work just the same for values which aren't objects, so:
+
+	Colour is a kind of value. The colours are red, green and blue.
+	A colour can be zesty or flat. A colour can be bright or dull.
+	Red and blue are bright. Blue is flat.
+	
+	A bright colour is usually zesty.
+
+results in red being zesty, but blue and green being flat; blue because the source text explicitly says so (which trumps the `usually`), and green because this isn't a bright colour, so the implication doesn't arise.
+
 # Text
 
 ## Text with substitutions {PM_TSWithPunctuation}
@@ -17818,46 +17860,6 @@ Extension documentation can provide "paste" buttons, much like the examples in t
 		The coriander is a herb. Understand "cilantro" as the coriander.
 
 Note that the paste button, denoted "*:", pastes in the text following it, but only as far as the next paragraph of unindented documentation – here, the one beginning `If we...`. (But of course, an extension can have multiple paste buttons if desired.)
-
-## Implications {PM_ImplicationCertain} {PM_ImplicationValueProperty}
-
-^^{properties: implications}
-
-Extensions often need to define new kinds or properties, which we want to make as helpful as possible for the user. In particular, we want them not to require additional work for the author just to obtain the effect which seems only natural.
-
-For example, consider Inform's built-in `locked` property. If a door is locked, then it cannot be opened, which seems fair enough. But if the player tries to unlock the door, they might then find the following response:
-
-	That doesn't seem to be something you can unlock.
-
-Which does not seem right. In real life, almost all locked items have outwardly exposed locks which it is perfectly sensible to try to unlock, given a key. The problem is that our door has the `locked` property, but not the `lockable` one.
-
-The Standard Rules solve this problem by including the following line:
-
-	Something locked is usually lockable.
-
-This ensures that any door said by the author only to be `locked` will be `lockable` as well, and adds a small but worthwhile touch of realism.
-
-Such a sentence is called an "implication", as it is in the form "Condition A implies Condition B". Note that the two conditions must consist of either/or properties with or without kinds attached. Thus:
-
-	A room in the Open Desert is usually lighted.
-
-will not work because `a room in the Open Desert` is a more complicated grammatical construction than, say, `lighted` or `a lighted room`: it contains a relative clause. Inform can only deal with simple implications.
-
-Inform never overrides certainties with mere implications, and is cautious about allowing them to build overly long chains of argument. This is to prevent the following kind of difficulty:
-
-	An open door is usually closed. A closed door is usually open.
-
-Implications work just the same for values which aren't objects, so:
-
-	Colour is a kind of value. The colours are red, green and blue.
-	A colour can be zesty or flat. A colour can be bright or dull.
-	Red and blue are bright. Blue is flat.
-	
-	A bright colour is usually zesty.
-
-results in red being zesty, but blue and green being flat; blue because the source text explicitly says so (which trumps the `usually`), and green because this isn't a bright colour, so the implication doesn't arise.
-
-Implications have not been mentioned up to now since they are only really needed by extensions, but also because they can be tricky, with unforeseen consequences. We should handle them with care.
 
 ## Using Inform 6 within Inform 7
 
