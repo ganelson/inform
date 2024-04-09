@@ -1,0 +1,46 @@
+Example: ** Sun Nueng Song Sam
+Location: Unusual digits
+RecipeLocation: Mathematics
+Index: Thai numerals
+Description: Printing signed decimal numbers in traditional Thai numerals.
+For: Glulx
+
+There's not really a scenario here, but interested readers are referred to the hit television series นักเรียนพลังกิฟต์ (2018), _Students With Special Powers_.
+
+	{*}"Sun Nueng Song Sam"
+
+	Ritdha High School's Gifted Program is a room.
+
+	A Thai number is a kind of value.
+	<value> specifies a Thai number with parts value (digits "๐๑๒๓๔๕๖๗๘๙").
+
+Thai numerals use base 10, the digits being sun, nueng, song, sam, si, ha, hok, chet, paet, kao, sip.
+
+The tricky part is how to handle negative numbers. The Thai equivalent of the minus sign is "ลบ", so we can basically get a negative number by printing this and then printing the negation of the original. In the same way, we could print ``-354`` by printing ``-`` and then printing 0 minus -354, which of course is 354.
+
+But there's a wrinkle: because of the way numbers are stored internally, the number -2147483648 has to be a special case. The negation of that ought to be 2147483648, but no such `number` value exists. So we have to handle that one number differently.
+
+	{**}To say (N - -2147483648) in Thai digits:
+		say "ลบ";
+		say 214748364 in Thai digits;
+		say 8 in Thai digits;
+
+	To say (N - a negative number) in Thai digits:
+		say "ลบ";
+		say 0 minus N in Thai digits;
+
+	To say (N - a number) in Thai digits:
+		say the Thai number with value part N.
+
+	When play begins:
+		say "-17 = [-17 in Thai digits].";
+		say "-2147483648 = [-2147483648 in Thai digits].";
+		say "90125 = [90125 in Thai digits]."
+
+And this produces:
+
+``` transcript
+-17 = ลบ๑๗.
+-2147483648 = ลบ๒๑๔๗๔๘๓๖๔๘.
+90125 = ๙๐๑๒๕.
+```

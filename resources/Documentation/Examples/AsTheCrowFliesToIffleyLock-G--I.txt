@@ -1,0 +1,26 @@
+
+
+
+
+As The Crow Flies To Iffley Lock
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Radcliffe Camera
+
+>(Testing.)
+
+>[1] visit sp 51014 07322
+You walk 1.04702km to SP 51014 07322, but there's nothing much there, so you sidle a further 467.87283m over to St Hugh's College instead, at SP 50825 07750.
+
+St Hugh's College
+
+>[2] visit sp 51735 06319
+You walk 1.69584km to SP 51735 06319, which takes you neatly to...
+
+Queen's Lane Coffee House
+
+>[3] visit sp 51735 06319
+You're there already, near enough.
+
+>Are you sure you want to quit? 

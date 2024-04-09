@@ -1,0 +1,109 @@
+   Tonight Show Studio
+  The Game That Ties You Up In Knots
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Tonight Show Studio
+  It is May 3, 1966, and live from our studio in 30 Rock, Eva Gabor, star of the Hooterville-based farm sitcom Green Acres, is getting all chummy with America's hostest host, Johnny Carson.
+  
+  You can see Eva Gabor and Johnny Carson here.
+  
+  Eva Gabor is standing next to the Twister mat, eager to begin.
+  
+  Johnny Carson is standing next to the Twister mat, eager to begin.
+  
+> >   Tonight Show Studio
+  (Testing.)
+  
+  >[1] spin
+  "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
+  
+  "Okay, Eva Gabor, you have to put your left foot on a yellow disc."
+  
+  Eva Gabor has left foot on a yellow disc.
+  
+  >[2] spin
+  "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
+  
+  "Okay, Johnny Carson, you have to put your right hand on a green disc."
+  
+  Johnny Carson has right hand on a green disc.
+  
+  >[3] spin
+  "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
+  
+  "Okay, Eva Gabor, you have to put your left hand on a blue disc."
+  
+  Eva Gabor has left foot on a yellow disc and left hand on a blue disc.
+  
+  >[4] spin
+  "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
+  
+  "Okay, Johnny Carson, you have to put your right hand on a green disc."
+  
+  Johnny Carson has right hand on a green disc.
+  
+  >[5] spin
+  "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
+  
+  "Okay, Eva Gabor, you have to put your left foot on a green disc."
+  
+  Eva Gabor has left foot on a green disc and left hand on a blue disc.
+  
+  >[6] spin
+  "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
+  
+  "Okay, Johnny Carson, you have to put your left hand on a green disc."
+  
+  Johnny Carson has left hand on a green disc and right hand on a green disc.
+  
+  >[7] spin
+  "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
+  
+  "Okay, Eva Gabor, you have to put your left foot on a red disc."
+  
+  Eva Gabor has left foot on a red disc and left hand on a blue disc.
+  
+  >[8] spin
+  "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
+  
+  "Okay, Johnny Carson, you have to put your left foot on a blue disc."
+  
+  Johnny Carson has left foot on a blue disc, left hand on a green disc and right hand on a green disc.
+  
+  >[9] spin
+  "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
+  
+  "Okay, Eva Gabor, you have to put your left foot on a red disc."
+  
+  Eva Gabor has left foot on a red disc and left hand on a blue disc.
+  
+  >[10] spin
+  "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
+  
+  "Okay, Johnny Carson, you have to put your right hand on a green disc."
+  
+  Oh no, Johnny Carson falls and loses! The crowd goes wild, and the players step back for another bout, stretching ruefully.
+  
+  >[11] spin
+  "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
+  
+  "Okay, Eva Gabor, you have to put your left hand on a yellow disc."
+  
+  Eva Gabor has left hand on a yellow disc.
+  
+  >[12] spin
+  "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
+  
+  "Okay, Johnny Carson, you have to put your right foot on a red disc."
+  
+  Johnny Carson has right foot on a red disc.
+  
+  >[13] spin
+  "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
+  
+  "Okay, Eva Gabor, you have to put your right hand on a blue disc."
+  
+  Eva Gabor has left hand on a yellow disc and right hand on a blue disc.
+  
+> >

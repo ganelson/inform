@@ -1,0 +1,24 @@
+   Oval Office
+  America Stands Tall
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Oval Office
+  You can see Josh and Toby here.
+  
+> >   Oval Office
+  (Testing.)
+  
+  >[1] guess josh is 6 foot 3
+  No, Josh is shorter than that.
+  
+  >[2] guess josh is 5 foot 9
+  No, Josh is shorter than that.
+  
+  >[3] guess josh is 5 foot 3
+  No, Josh is taller than that.
+  
+  >[4] guess josh is 5 foot 8
+  Spot on!
+  
+> >

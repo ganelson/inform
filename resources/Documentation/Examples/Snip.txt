@@ -1,5 +1,5 @@
 Example: *** Snip
-Location: Understanding specified numbers
+Location: Notations with multiple parts
 RecipeLocation: Ropes
 Index: CUT and TIE for lengths of string
 Description: A string which can be cut into arbitrary lengths, and then tied back together.

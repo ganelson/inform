@@ -1,5 +1,5 @@
 Example: *** Zqlran Era 8
-Location: The parts of a number specification
+Location: The parts of a notation
 RecipeLocation: The Passage Of Time
 Index: Time expressed in units other than minutes
 Description: Creating an alternative system of time for our game, using new units.

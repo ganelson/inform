@@ -1,0 +1,24 @@
+Example: * America Stands Tall
+Location: Notations with multiple parts
+RecipeLocation: Volume, Height, Weight
+Index: Feet and inches
+Description: Describing height in feet and inches.
+For: Z-Machine
+
+	{*}"America Stands Tall"
+	
+	The Oval Office is a room. Josh and Toby are men in the Oval. A height is a kind of value. 5 foot 11 specifies a height. A person has a height. Josh is 5 foot 8. Toby is 5 foot 10.
+	
+	Height guessing is an action applying to one thing and one height. Understand "guess [someone] is [height]" as height guessing.
+	
+	Check height guessing:
+		if the noun is not a person, say "You can only guess the height of people." instead.
+		
+	Carry out height guessing:
+		let the guess be the height understood;
+		let the true answer be the height of the noun;
+		if the guess is the true answer, say "Spot on!";
+		if the true answer is greater than the guess, say "No, [the noun] is taller than that.";
+		if the true answer is less than the guess, say "No, [the noun] is shorter than that."
+	
+	Test me with "guess josh is 6 foot 3 / guess josh is 5 foot 9 / guess josh is 5 foot 3 / guess josh is 5 foot 8".

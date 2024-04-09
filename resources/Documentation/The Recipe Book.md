@@ -422,6 +422,8 @@ Out of doors, nature is seldom still. Clouds scull by at random, as in [Weatheri
 
 [Night and Day] and [Totality] each schedule celestial events to provide a changing display in the sky above, and this time running like clockwork rather than at random.
 
+[The Universe of Annie Jump Cannon] gives a somewhat more technical way of itemising the stars in the sky.
+
 ### See Also
 
 - [Scene Changes] for meteors and a moon-rise.
@@ -1688,6 +1690,8 @@ This section covers vehicles whose interior consists of at least one entire room
 
 On a very large, slowish craft such as a cruise liner, we are not so much travelling in a vehicle: it's more as if we are visiting a whole building, which becomes our world for the (probably long) duration of the journey. The liner steers around in long, slow curves, changing its orientation in the water, so that (if we think of "north" as a strictly magnetic matter, anyway) north is constantly rotating: something we don't notice on board because our own reference points, provided by the ship itself, stay fixed relative to ourselves. Because of this, some ships in IF are navigated using ``FORE``, ``AFT``, ``PORT`` and ``STARBOARD`` directions rather than ``NORTH``, ``EAST``, ``SOUTH`` and ``WEST``: see [Fore].
 
+Aviation can be handled in much the same way, but it does have a technical language all its own: see [Hello Shanwick] for the aviation alphabet and for giving tail numbers to planes.
+
 ### See Also
 
 - [Bicycles, Cars and Boats] for smaller conveyances.
@@ -1860,6 +1864,8 @@ Drawing cards from a shuffled pack is only one source of randomness. Games of ch
 	The die is carried by the player. After dropping the die: say "It lands with [a random number from 1 to 6] uppermost." Understand "roll [something]" as dropping.
 
 Quick, but not very good. Most dice games involve rolling more than one die at a time, to get a more interesting distribution of outcomes: they may also involve special rules applying to doubles, for instance. See [Do Pass Go].
+
+A different sort of randomness is used to play [The Game That Ties You Up In Knots], an implementation of Twister. Random moves are generated, with each move being a composite of a limb, such as "right leg", and a colour, such as "blue". This also demonstrates how to store quite a complicated set of information about whose limbs are currently where on the mat.
 
 ### See Also
 
@@ -2153,6 +2159,8 @@ It is uncommon, but not absolutely unheard-of, to need to do detailed mathematic
 [Number Study] demonstrates conditional relations between numbers.
 
 [Olympic Medals] shows a non-standard way to sort a table of data numerically.
+
+[Sun Nueng Song Sam] doesn't do anything calculational as such, but does show how to print numbers in non-Western ways.
 
 # Out Of World Actions and Effects
 

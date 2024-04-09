@@ -1,0 +1,90 @@
+Example: *** The Game That Ties You Up In Knots
+Location: Parts corresponding to kinds
+RecipeLocation: Dice and Playing Cards
+Index: Twister
+Description: A two-player game of Twister, in which each person has to place hands or feet on the coloured discs on a play-mat until one falls over.
+For: Z-Machine
+
+The evergreen children's game _Twister_ was devised in 1966 (when it was briefly called _Pretzel_) and became a hit following a memorable edition of the _Tonight Show_. Rather than a board, _Twister_ has a playmat on the floor, with sixteen discs arranged four by four, each row being a different colour. Each player in turn has to move one of their four limbs to some disc of a given colour: the first to fall over, or touch the mat, loses.
+
+We will use two kinds of value for `limb` and `colour` respectively: each one has four possible values. A `Twister turn` then combines these, so that there are altogether sixteen possible turns.
+
+	{*}"The Game That Ties You Up In Knots"
+
+	The Tonight Show Studio is a room. "It is May 3, 1966, and live from our studio in 30 Rock, Eva Gabor, star of the Hooterville-based farm sitcom Green Acres, is getting all chummy with America's hostest host, Johnny Carson."
+
+	Eva Gabor and Johnny Carson are people in the Tonight Show Studio.
+
+	A limb is a kind of value. The limbs are left foot, right foot, left hand, and right hand.
+	A colour is a kind of value. The colours are red, yellow, green, and blue.
+	A Twister turn is a kind of value. <moved limb>-<target colour> specifies a Twister turn with parts moved limb (values "LF, RF, LH, RH", corresponding to limb) and target colour (values "R, Y, G, B", corresponding to colour).
+
+Now, if we're going to play this game, we need some way to record the state of play. In this particular scenario there are only eight limbs, since Eva and Johnny have four apiece, but it seems neater to set things up so that we could easily add more players as required.
+
+So, then, each person has four limbs which can each be either unassigned, or touching a disc of a given colour. An assignment like this is neatly handled by a `relation of limbs to colours`. Eva's left hand, say, can be either not related to a colour, in which case her hand is free, or can be related to, say, `blue`, which means her hand is resting on a blue disc.
+
+However, there can't be just one relation: what's true of Eva's hand is not true of Johnny's. So the key idea is to give each person an independent relation of their own, and a property is perfect for this:
+
+	{**}A person has a relation of limbs to colours called predicament.
+
+So now `predicament of Eva` is the relation showing where her hands and feet are placed, and similarly for `predicament of Johnny`. These are entirely different relations, and changing one does not affect the other.
+
+So now we need some book-keeping. The phrase `clear the mat` will unassign everyone's limbs, that is, will simulate everyone getting up at the end of the game:
+
+	{**}To clear the mat:
+		repeat with L running through limbs:
+			repeat with C running through colours:
+				repeat with P running through people:
+					now the predicament of P does not relate L to C;
+
+And this enables us to `position the left hand of Eva on blue`:
+
+	{**}To position the (L - limb) of (P - person) on (new colour - colour):
+		repeat with old colour running through colours:
+			now the predicament of the next player does not relate L to the old colour;
+		now the predicament of P relates L to the new colour.
+
+Note that way we make sure Eva's hand is not on two colours at once.
+
+The following produces text like ``Johnny Carson has left foot on a green disc, right foot on a red disc and right hand on a blue disc.``, and thus reports the state of play.
+
+	{**}Instead of examining a person (called the contestant):
+		say "[The contestant] ";
+		let postures be a list of texts;
+		repeat with L running through limbs:
+			repeat with C running through colours:
+				if the predicament of the next player relates L to C:
+					add "[L] on a [C] disc" to postures;
+		if postures is empty:
+			say "is standing next to the Twister mat, eager to begin.";
+		otherwise:
+			say "has [postures].";
+
+	After looking:
+		try examining Eva;
+		try examining Johnny.
+
+And that just leaves the player as master of ceremonies, spinning the random selector for the moves they must each make in turn:
+
+	{**}The next player is initially Eva.
+
+	Spinning is an action applying to nothing. Understand "spin" as spinning.
+
+	Carry out spinning:
+		say "'SPIN!' the rapturous audience calls out. And so you spin the spinner. And when it stops...[paragraph break]";
+		let the move be a random Twister turn;
+		let L be the moved limb part of the move;
+		let C be the target colour part of the move;
+		say "'Okay, [next player], you have to put your [L] on a [C] disc.'[paragraph break]";
+		position the L of the next player on C;
+		if a random chance of 1 in 5 succeeds:
+			say "Oh no, [next player] falls and loses! The crowd goes wild, and the players step back for another bout, stretching ruefully.";
+			clear the mat;
+		otherwise:
+			try examining the next player;
+		if the next player is Eva:
+			now the next player is Johnny;
+		otherwise:
+			now the next player is Eva;
+
+	Test me with "spin / spin / spin / spin / spin / spin / spin / spin / spin / spin / spin / spin  / spin".

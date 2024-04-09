@@ -1,0 +1,35 @@
+
+
+
+
+stellar type: O00
+stellar type: O0Ia
+stellar type: K9Iab
+"class part of K9Iab" = temperature class: K-type
+"temperature part of K9Iab" = real number: 9.0
+"luminosity part of K9Iab" = luminosity class: intermediate-size luminous supergiant
+"stellar type with class part A-type temperature part 4.0 luminosity part subgiant" = stellar type: A4IV
+Annie Jump Cannon classifies Beta Aquilae as G8IV. "Hm, yes - subgiant."
+Annie Jump Cannon classifies Herschel's Garnet as M2Ia. "Hm, yes - luminous supergiant."
+
+The Universe of Annie Jump Cannon
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Yerkes Observatory
+
+>(Testing.)
+
+>[1] observe k9iab
+You observe a star of type K9Iab.
+
+>[2] observe o00
+You observe a star of type O00.
+
+>[3] observe m9vii
+You observe a star of type M9VII.
+
+>[4] observe f2ia
+You observe a star of type F2Ia.
+
+>Are you sure you want to quit? 

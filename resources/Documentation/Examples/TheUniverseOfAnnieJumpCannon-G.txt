@@ -1,0 +1,109 @@
+Example: *** The Universe of Annie Jump Cannon
+Location: Parts corresponding to kinds
+RecipeLocation: Passers-By, Weather and Astronomical Events
+Index: Harvard star classifications
+Description: Harvard star classifications such as A5Ib or G8IV.
+For: Glulx
+
+In 1866 the Italian priest Angelo Secchi, having determined for the first time that the Sun was indeed a star, found a way to sort stars by their spectra, that is, by the blend of colours of light with which they shone. He used:
+
+	A stellar type is a kind of value.
+	Secchi class <class> specifies a stellar type with parts
+		class (values "I, II, III, IV, V, VI, VII").
+
+At Harvard, Henry Draper and, more particularly, Edward Pickering carried out a larger survey and subdivided Secchi's classes so that there were now letters `A` to `Q`, with `A` to `D` being versions of `Secchi class I`, and so on. Exasperatingly, they omitted `J` but included `O`. Antonia Maury, the first woman to be credited as an astronomical observer, decided that `A` and `B` were the wrong way round, and moved back to Roman numbers, `I` to `XXII`.
+
+Annie Jump Cannon brokered a compromise between Maury and Pickering. She reverted to letters, but ordered them better by what was now understood to be surface temperature, and grouped them simply as `O` (hottest), `B`, `A`, `F`, `G`, `K`, `M` (coolest): the traditional mnemonic being "oh be a fine girl, kiss me". Each class was subdivided 0 to 9, so that `G2` was closer to `G` than `K`, while `G9` was very nearly K-type.
+
+In 1943 the action moved to Wisconsin, where the University of Chicago's Yerkes Observatory found a way to sort stars not by temperature but by luminosity: these classes were `0` (brightest), `Ia`, `Iab`, `Ib`, `II`, `III`, `IV`, `V`, `VI`, `VII` (dimmest).
+
+Modern stellar classification is a combination:
+
+	{*}"The Universe of Annie Jump Cannon"
+	
+	The Yerkes Observatory is a room.
+
+	A temperature class is a kind of value. The temperature classes are O-type,
+	B-type, A-type, F-type, G-type, K-type and M-type.
+
+	A luminosity class is a kind of value. The luminosity classes are hypergiant,
+	luminous supergiant, intermediate-size luminous supergiant, less luminous
+	supergiant, bright giant, giant, subgiant, main-sequence, subdwarf and white
+	dwarf.
+
+	A stellar type is a kind of value. <class><temperature><luminosity> specifies a
+	stellar type with parts
+		class (values "O, B, A, F, G, K, M", corresponding to temperature classes),
+		temperature (1 decimal digit, corresponding to a real number) and
+		luminosity (values "0, Ia, Iab, Ib, II, III, IV, V, VI, VII", corresponding
+			to luminosity classes).
+
+In fact this is still a simplification because people sometimes subdivide
+the number further or add "peculiarity" suffixes like `He wk`, or add extreme
+additional types for truly odd stars, but it'll do.
+
+Between 1910 and 1940 Annie Jump Cannon was to classify 350,000 stars by hand,
+reaching a speed of three spectra per minute, a feat unequalled before or since.
+Here's a smaller survey:
+
+	{**}A star is a kind of thing. A star has a stellar type. Some stars are defined
+	by the Table of Astral Survey Work.
+
+	Table of Astral Survey Work
+	name				stellar type
+	S Monocerotis		O7V
+	Rigel				B8Ia
+	Deneb				A2Ia
+	Zeta Leonis			F0III
+	Beta Aquilae		G8IV
+	Epsilon Eridani		K2V
+	Herschel's Garnet	M2Ia
+
+And stellar types, like other notations, can also be understood:
+
+	{**}Observing is an action applying to one stellar type.
+
+	Carry out observing: say "You observe a star of type [stellar type understood]."
+
+	Understand "observe [stellar type]" as observing.
+
+	Test me with "observe K9Iab / observe O00 / observe M9VII / observe F2Ia".
+
+And to give this system a further workout:
+
+	{**}To classify (star in question - a star):
+		say "Annie Jump Cannon classifies [star in question] as [stellar type
+		of the star in question]. 'Hm, yes - [luminosity part of stellar
+		type of the star in question].'"
+
+	When play begins:
+		showme O00;
+		showme O0Ia;
+		showme K9Iab;
+		showme the class part of K9Iab;
+		showme the temperature part of K9Iab;
+		showme the luminosity part of K9Iab;
+		showme the stellar type with class part A-type temperature part 4.0 luminosity part subgiant;
+		classify Beta Aquilae;
+		classify Herschel's Garnet.
+
+This all results in:
+
+``` transcript
+	stellar type: O00
+	stellar type: O0Ia
+	stellar type: K9Iab
+	"class part of K9Iab" = temperature class: K-type
+	"temperature part of K9Iab" = real number: 9.0
+	"luminosity part of K9Iab" = luminosity class: intermediate-size luminous supergiant
+	"stellar type with class part A-type temperature part 4.0 luminosity part subgiant" = stellar type: A4IV
+	Annie Jump Cannon classifies Beta Aquilae as G8IV. "Hm, yes - subgiant."
+	Annie Jump Cannon classifies Herschel's Garnet as M2Ia. "Hm, yes - luminous supergiant."
+
+	Yerkes Observatory
+	
+	> OBSERVE K9IAB
+	You observe a star of type K9Iab.
+```
+
+...and so on.

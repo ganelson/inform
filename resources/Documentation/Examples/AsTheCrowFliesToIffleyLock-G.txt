@@ -1,0 +1,93 @@
+Example: *** As The Crow Flies To Iffley Lock
+Location: Parts corresponding to kinds
+RecipeLocation: Continuous Spaces and The Outdoors
+Index: Grid references
+Description: Calculated walking distances based on grid references at start and end of a walk.
+For: Glulx
+
+The Ordnance Survey National Grid reference system (OSGB) was developed in 1936 for the great retriangulation, which led to the building of many concrete pillars on British hilltops and to today's maps. The full range of values is enormous, since OSGB can specify any point in the British Isles to an accuracy of 1m. Fortunately, we only want to use positions in the town of Oxford, which sits fully inside a modest rectangular portion of square `SP`. So:
+
+	{*}"As The Crow Flies To Iffley Lock"
+
+	Length is a kind of value.
+	1.0m specifies a length.
+	1.0km specifies a length scaled up by 1000.
+	Area is a kind of value.
+	1.0 sq m specifies an area.
+	A length times a length specifies an area.
+
+	Grid reference is a kind of value.
+	SP <easting> <northing> specifies a grid reference with parts
+		easting (45000 to 54999, corresponding to lengths) and
+		northing (5 digits, 3000 to 8999, corresponding to lengths).
+
+	A room has a grid reference called map position.
+
+	Radcliffe Camera is a room with map position SP 51495 06392.
+	Queen's Lane Coffee House is a room with map position SP 51735 06319.
+	Iffley Lock is a room with map position SP 52460 03628.
+	Wytham Woods is a room with map position SP 46227 08076.
+	St Hugh's College is a room with map position SP 50825 07750.
+
+In a reference like `SP 51495 06392`, the two five-digit numbers are called "easting" and "northing", and are in effect x- and y-coordinates measured in meters. (Note that these two parts of the notation are `corresponding to lengths`, and `length` uses real arithmetic, but the conversions are all automatic.) So we can perform some arithmetic:
+
+	{**}To decide what length is the grid distance from (GR1 - grid reference) to (GR2 - grid reference):
+		let 𝚫n be the northing part of GR1 minus the northing part of GR2;
+		let 𝚫e be the easting part of GR1 minus the easting part of GR2;
+		let D be the real square root of ((𝚫e times 𝚫e) plus (𝚫n times 𝚫n));
+		decide on D.
+
+	To decide what length is the distance as the crow flies from (R1 - room) to (R2 - room):
+		let GR1 be the map position of R1;
+		let GR2 be the map position of R2;
+		decide on the grid distance from GR1 to GR2.
+
+And now, for example, `northing part of SP 51014 07322` is the length `7.322km`, while `distance as the crow flies from the Radcliffe Camera to Queen's Lane Coffee House` is `250.85654m`.
+
+This accuracy is all a little spurious due to the curvature of the earth and the
+difficulty of deciding which table at the Queen's Lane Coffee House defines its
+position, and so on, but it's right to within, let's say, 5m.
+
+	{**}Visiting is an action applying to one grid reference.
+
+	Check visiting:
+		let X be the grid reference understood;
+		let D be the grid distance from the map position of the location of the player to X;
+		if D < 5m, say "You're there already, near enough." instead.
+
+	Carry out visiting:
+		let X be the grid reference understood;
+		let D be the grid distance from the map position of the location of the player to X;
+		say "You walk [D] to [X]";
+		let the closest room be a room;
+		let the closest approach be -1m;
+		repeat with R running through rooms which are not the location of the actor:
+			let D be the grid distance from the X to the map position of R;
+			if the closest approach < 0m or the closest approach > D:
+				now the closest approach is D;
+				now the closest room is R;
+		if the closest approach < 5m:
+			say ", which takes you neatly to...";
+		otherwise:
+			say ", but there's nothing much there, so you sidle a further [closest approach] over to [the closest room] instead, at [map position of the closest room].";
+		now the actor is in the closest room.
+
+	Understand "visit [grid reference]" as visiting.
+
+	Test me with "visit SP 51014 07322 / visit SP 51735 06319 / visit SP 51735 06319".
+
+Which produces:
+
+	> VISIT SP 51014 07322
+	You walk 7.40594km to SP 51014 07322, but there's nothing much there, so you
+	sidle a further 467.87283m over to St Hugh's College instead, at SP 50825 07750.
+
+	St Hugh's College
+
+	> VISIT SP 51735 06319
+	You walk 1.69584km to SP 51735 06319, which takes you neatly to...
+
+	Queen's Lane Coffee House
+
+	> VISIT SP 51735 06319
+	You're there already, near enough.

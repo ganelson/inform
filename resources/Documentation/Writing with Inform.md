@@ -1513,7 +1513,7 @@ These are the two ways in which writers size up the world, so Inform provides bo
 
    And this, like `number`, has an enormous range of possible values.
 
-   Quantitative kinds like this are sometimes called "units", because – as in this example – they're often units in the sense of measuring things. Many Inform projects never need units, but they can still be very useful, and they're described in detail in the chapter on [Numbers and Equations].
+   Quantitative kinds like this are sometimes called "units", because – as in this example – they're often units in the sense of measuring things. Many Inform projects never need units, but they can still be very useful, and they're described in detail in the chapter on [Quantities and Equations].
 
 ## Abstract objects and concepts
 
@@ -2241,11 +2241,11 @@ Sometimes it's good to pad numbers out so that they occupy a fixed number of dig
 
 > phrase: {phs_indigits} say "[(number) in (number) digit/digits]"
 >
-> This text substitution writes out the number in decimal, with leading zeroes as needed so that it will not be shorter than the given number of digits. Example:
+> This text substitution writes out the number in decimal, with leading zeros as needed so that it will not be shorter than the given number of digits. Example:
 >
 >     "'Do stop flirting, [agent number in 3 digits],' says M."
 >
-> might render the number `7` as ``007`` not ``7``; `1860`, a lesser agent despite the larger number, would come out as ``1860``; and `0` as ``000``. Note that the number is printed _unsigned_, since minus signs don't really make sense when padding with zeroes. So `-5` is printed, perhaps unexpectedly, as ``4294967281`` (if the Glulx setting is used, as it is by default).
+> might render the number `7` as ``007`` not ``7``; `1860`, a lesser agent despite the larger number, would come out as ``1860``; and `0` as ``000``. Note that the number is printed _unsigned_, since minus signs don't really make sense when padding with zeros. So `-5` is printed, perhaps unexpectedly, as ``4294967281`` (if the Glulx setting is used, as it is by default).
 
 ### See Also
 
@@ -6046,7 +6046,7 @@ A point which has come up several times in recent chapters is that enumerated ki
 
 	Colour is a kind of value. The colours are red, orange, yellow, green, blue, indigo and violet.
 
-...then we not only have seven possible values, we have put them into a sequence, in order of their naming. We can't perform arithmetic on colours, of course, but we can perform comparisons on them. Thus `red < yellow` is true, while `green >= violet` is not. (More on comparisons in the chapter on [Numbers and Equations], which also covers arithmetic.)
+...then we not only have seven possible values, we have put them into a sequence, in order of their naming. We can't perform arithmetic on colours, of course, but we can perform comparisons on them. Thus `red < yellow` is true, while `green >= violet` is not. (More on comparisons in the chapter on [Quantities and Equations], which also covers arithmetic.)
 
 It's also sometimes useful to get at the sequence directly. First, the two ends:
 
@@ -8412,7 +8412,7 @@ In practice we can't change these responses unless we know what they're called. 
 
 and so on. This lists all of the responses, rule by rule, along with their current texts.
 
-# Numbers and Equations
+# Quantities and Equations
 
 ## How do we measure things?
 
@@ -8481,7 +8481,7 @@ all produce `number` values, and are exactly equivalent to writing `5173548`, `9
 
 2) Numbers in binary, octal or hexadecimal are read as _unsigned_. So `hexadecimal FFFFFFFF` is allowed, but produces the same number as `-1`; `hexadecimal FFFFFFFE` is equivalent to `-2`; and so on. In hexadecimal notation, our extreme `number` values of -2147483648 and 2147483647 are `hexadecimal 80000000` and `hexadecimal 7FFFFFFF`, respectively. 
 
-3) Leading zeroes are allowed in binary, octal or hexadecimal, so that `hexadecimal 01FF` is legal, even though the same trick in decimal (`0004`, say) is not.
+3) Leading zeros are allowed in binary, octal or hexadecimal, so that `hexadecimal 01FF` is legal, even though the same trick in decimal (`0004`, say) is not.
 
 We can also print back numbers in other number bases:
 
@@ -8495,11 +8495,11 @@ We can also print back numbers in other number bases:
 >
 > If a project uses the Glulx setting, as is the default, then all numbers fit exactly into 8 hexadecimal digits, or 32 binary ones; with the Z-machine setting, numbers fit into 4 hexadecimal digits, or 16 binary ones.
 
-These too can be padded with zeroes:
+These too can be padded with zeros:
 
 > phrase: {phs_inbaseindigits} say "[(number) in (number) (base) digit/digits]"
 >
-> This text substitution writes out the number in the given number base, which must be between 2 and 36, padding with initial zeroes to ensure that the result is at least the given number of digits in length. The number is printed unsigned, whatever the number base.
+> This text substitution writes out the number in the given number base, which must be between 2 and 36, padding with initial zeros to ensure that the result is at least the given number of digits in length. The number is printed unsigned, whatever the number base.
 > 
 > For example, `"[232 in 4 decimal digits]."` produces ``0232`` and `"[232 in 4 hexadecimal digits]."` produces ``00E8``.
 
@@ -8507,7 +8507,7 @@ Lastly, for completeness, we also provide:
 
 > phrase: {phs_inunsigneddecimaldigits} say "[(number) in (number) unsigned decimal digit/digits]"
 >
-> This text substitution writes out the number in unsigned decimal, in such a way that numbers normally considered decimal appear large, padding with initial zeroes to ensure that the result is at least the given number of digits in length.
+> This text substitution writes out the number in unsigned decimal, in such a way that numbers normally considered decimal appear large, padding with initial zeros to ensure that the result is at least the given number of digits in length.
 
 To reiterate, though: all these different notations for typing in, and for saying back, whole numbers are all to do with a single kind, `number`. Unlike some programming languages, Inform has no kind for "unsigned integer", nor for "integer which should always be written in binary".
 
@@ -9150,96 +9150,9 @@ In addition we might want equivalents for the inch, the yard and the mile; and v
 
 Fortunately the whole set is indeed available in a presentation box, and at no extra charge.
 
-(a) The built-in extension `Metric Units by Graham Nelson` sets up a whole range of scientific units, with all the notations we are likely to want. Real numbers are used throughout, so large and small-scale calculations can be carried out quite accurately. Like the other built-in extensions, it has its own documentation and examples.
+(a) The extension `Metric Units by Graham Nelson` sets up a whole range of scientific units, with all the notations we are likely to want. Real numbers are used throughout, so large and small-scale calculations can be carried out quite accurately. Like the other built-in extensions, it has its own documentation and examples.
 
-(b) The built-in extension `Approximate Metric Units by Graham Nelson` does the same but using whole numbers, scaled about right for human situations. This won't be much use for extensive calculations, and won't be as accurate, but it will work reasonably well if real arithmetic isn't available.
-
-## Notations including more than one number {PM_LPWithoutElement} {PM_LPElementTooLarge} {PM_LPTooManyElements} {PM_LPTooComplicated} {PM_LPNotAllNamed}
-
-^^{units of measure: with multiple numeric components} ^^{units of measure: defining} ^^{defining: units of measure with parts} ^^{limits: of numeric values of units} ^^{numbers: limits of numeric values of units} ^^{Z-machine: numeric limits} ^^{Glulx: numeric limits} ^^{virtual machine: numeric limits} ^^{real numbers: limits of numeric values of units} ^^{punctuation: quotation marks: not usable in unit notations} ^^{|": not usable in unit notations}
-
-We've seen quite enough scientific notation for the time being. There are plenty of other notations used in natural language, for everyday talk, where people don't use a tidy spread of powers of 10. Instead they use mixtures, with some sort of punctuation or text to divide them. For instance, the running time of a piece of music is easier to follow in minutes and seconds than in seconds alone: old-fashioned LP sleeves used to quote running times in the form 4'33.
-
-	A running time is a kind of value. 3'59 specifies a running time.
-
-The choice of `3` here makes no difference, much as the choice of `10` in the weight examples was arbitrary. But the `59` is significant. Numbers after the first one are expected to range from 0 up to the value we quote – so in this case, the number of seconds can be anything from 0 to 59. Or, for instance:
-
-	A height is a kind of value. 5 foot 11 specifies a height.
-
-A specification can contain up to eight numbers like this, but once again we might need to worry about the maximum value which can be stored. For instance, using the 3'59 notation, we can only go up to 546'07 (if we're using the Z-machine format setting) – a little over 9 hours, so the new Tori Amos album will not be a problem, but some of the more punishing German operas might break the bank.
-
-In notations like this, only the first-appearing number part is allowed to be negative, and then only when declared with a minus sign:
-
-	A secret sign is a kind of value. -2x17 specifies a secret sign with parts mystery and enigma.
-
-Here, the mystery can be negative, but not the enigma.
-
-Notations must not contain double-quotation marks because, even though people did once use these to denote minutes of arc, they would simply confuse programs like Inform's user interface which have to keep track of what is quoted text and what is not. But other punctuation marks are fine *provided they occur between two digits*. For instance, in
-
-	A monetary value is a kind of value. $1.99 specifies a monetary value.
-
-the full stop between the 1 and the 99 is not interpreted as a division of two sentences; and similarly for colons in examples such as
-
-	An aspect ratio is a kind of value. 16:9 specifies an aspect ratio.
-
-## The parts of a number specification {PM_LPFirstOptional} {PM_LPMultipleOptional} {PM_BadLPPartOption} {PM_BadLPNameOption}
-
-^^{units of measure: with multiple numeric components} ^^{units of measure: defining} ^^{defining: units of measure with parts} ^^{text substitutions: units of measure} ^^{units of measure: displaying} ^^{(preamble optional), when defining units+sourcepart+} ^^{(without leading zeroes), when defining units+sourcepart+} ^^{(leading zeroes), when defining units+sourcepart+} ^^{(part of), for units with multiple components+sourcepart+}
-
-We often need to break up a number specification into its pieces. For instance, suppose we want to know the dollars part of $1.99? We can do this by naming the parts:
-
-	A monetary value is a kind of value. $1.99 specifies a monetary value with parts dollars and cents.
-
-We can now find the relevant parts like so. Suppose that `sum` is a monetary value. Then:
-
-	dollars part of sum
-	cents part of sum
-
-are both numbers, so for instance we can
-
-	say "Looks like around [dollars part of sum in words] dollar[s]."
-
-We can also go the other way:
-
-	monetary value with dollars part 4 cents part 72
-
-produces the monetary value $4.72. (Note the lack of commas or `and`s, and that the parts have to be given in the right order.) This is really intended to be useful when we manipulate such values in unusual ways:
-
-	An aspect ratio is a kind of value. 16:20 specifies an aspect ratio with parts width and height.
-	
-	To decide which aspect ratio is the wider version of (AR - an aspect ratio):
-		let W be the width part of AR multiplied by 2;
-		let H be the height part of AR;
-		let the wider ratio be the aspect ratio with width part W height part H;
-		decide on the wider ratio.
-
-Declaring the parts of a number specification individually also enables us to tack one or more options onto any of the parts:
-
-	A monetary value is a kind of value. $1.99 specifies a monetary value with parts dollars and cents (optional, preamble optional).
-
-This declares that the `cents` part is optional – it will be 0 if not specified – and that if omitted, the non-numeric "preamble" before it should also be omitted. Thus `$3` is now valid and equivalent to `$3.00`: indeed it will be the preferred form when Inform prints out a monetary value which is an exact number of dollars. If we had said that `cents` was optional, but not said that the preamble was optional, then `$3.` would have been the form – which is less satisfactory.
-
-There is only one other option: `without leading zeros`, as in the following.
-
-	An aspect ratio is a kind of value. 16:20 specifies an aspect ratio with parts width and height (without leading zeros).
-
-This ensures that when the ratio 4:3 is printed, it will be printed as `4:3` and not `4:03` as would otherwise happen.
-
-## Understanding specified numbers
-
-^^{units of measure: understanding} ^^{understanding: numbers with units}
-
-It may be worth noting in passing that number specifications, like all other kinds of value, can be understood in typed commands. (See the chapter on [Understanding] for more on what can go in such square brackets.) For instance:
-
-	{*}"America Stands Tall"
-	
-	The Oval Office is a room. Josh and Toby are men in the Oval. A height is a kind of value. 5 foot 11 specifies a height. A person has a height. Josh is 5 foot 8. Toby is 5 foot 10.
-	
-	Height guessing is an action applying to one thing and one height. Understand "guess [someone] is [height]" as height guessing.
-	
-	Check height guessing: if the noun is not a person, say "You can only guess the height of people." instead. Carry out height guessing: if the height of the noun is the height understood, say "Spot on!"; if the height of the noun is greater than the height understood, say "No, [the noun] is taller than that."; if the height of the noun is less than the height understood, say "No, [the noun] is shorter than that."
-	
-	Test me with "guess josh is 6 foot 3 / guess josh is 5 foot 9 / guess josh is 5 foot 3 / guess josh is 5 foot 8".
+(b) The extension `Approximate Metric Units by Graham Nelson` does the same but using whole numbers, scaled about right for human situations. This won't be much use for extensive calculations, and won't be as accurate, but it will work reasonably well if real arithmetic isn't available.
 
 ## Totals {PM_TotalEitherOr} {PM_TotalTableColumn}
 
@@ -9440,6 +9353,482 @@ which will turn up as:
 And having told Inform that lengths multiply to area, we could also divide an area by a length to get a length: no further instructions would be needed.
 
 The `Metric Units by Graham Nelson` extension includes all of the standard ways that physical quantities are multiplied, and a good way to see these is to try out one of the Metric Units examples and look at the Kinds index, which includes a table showing how all of this works.
+
+# Advanced Notations
+
+## Notations with multiple parts {PM_LPWithoutElement} {PM_LPElementTooLarge} {PM_LPTooManyElements} {PM_LPTooComplicated} {PM_LPNotAllNamed}
+
+^^{units of measure: with multiple numeric components} ^^{units of measure: defining} ^^{defining: units of measure with parts} ^^{limits: of numeric values of units} ^^{numbers: limits of numeric values of units} ^^{Z-machine: numeric limits} ^^{Glulx: numeric limits} ^^{virtual machine: numeric limits} ^^{real numbers: limits of numeric values of units} ^^{punctuation: quotation marks: not usable in unit notations} ^^{|": not usable in unit notations}
+^^{units of measure: understanding} ^^{understanding: numbers with units}
+
+The chapter on [Quantities and Equations] featured many variations on specifications like this one:
+
+	A weight is a kind of value. 1.0 kg specifies a weight.
+
+Such weights and measures were all ways to give _single_ values a new notation and significance. `12.5 kg` is not the same thing as `12.5` because it's not just an abstract number, it is a weight. All the same, the `weight` kind is really just a nice way to dress up what is basically a `real number` by giving it a particular purpose or meaning.
+
+In this chapter, we go into notations which combine _multiple_ values together. Natural language does quite a lot, using mixtures of numbers with wording or punctuation to divide them. For instance, the running time of a piece of music is easier to follow in minutes and seconds than in seconds alone: old-fashioned LP sleeves used to quote running times in the form 4'33.
+
+	A running time is a kind of value. 3'59 specifies a running time.
+
+The choice of `3` here makes no difference, much as the choice of `10` in the weight examples was arbitrary. But the `59` is significant. Numbers after the first one are expected to range from 0 up to the value we quote – so in this case, the number of seconds can be anything from 0 to 59. Or, for instance:
+
+	A height is a kind of value. 5 foot 11 specifies a height.
+
+Once again, kinds like `running time` and `height` can be written as constants:
+
+	let the clearance be 12 foot 6;
+	let Einstein On The Beach without an interval be 280'20;
+
+And they can be said:
+
+	say "I hope this truck will fit under a [clearance] bridge. [clearance plus 1 foot 4] to be on the safe side.";
+	say "Oh my, this opera runs [Einstein On The Beach without an interval].";
+
+And even understood in typed commands by the player:
+
+	Height guessing is an action applying to one thing and one height. Understand "guess [someone] is [height]" as height guessing.
+
+See the example [America Stands Tall] for a full working-out of this.
+
+The different number-like segments of a notation are called its _parts_. In the notation `1.0 kg`, there is just one part, but there are two in each of `3'59` and `5 foot 11`. In principle there can be as many as eight parts, though there are some practical limitations due to Inform's need to store the result efficiently during play. In practice, it's rare to need more than four.
+
+In notations like this, only the first-appearing number part is allowed to be negative, and then only if it was declared with a minus sign:
+
+	A secret sign is a kind of value. -2x17 specifies a secret sign with parts mystery and enigma.
+
+Note that the parts of a notation can optionally be given names, and that's what was done here. The `mystery` part can be negative, but not the `enigma` part.
+
+Notations must not contain double-quotation marks because, even though people did once use these to denote minutes of arc, they would simply confuse programs like Inform's user interface which have to keep track of what is quoted text and what is not. But other punctuation marks are fine *provided they occur between two digits*. For instance, in
+
+	A monetary value is a kind of value. $1.99 specifies a monetary value.
+
+the full stop between the 1 and the 99 is not interpreted as a division of two sentences; and similarly for colons in examples such as
+
+	An aspect ratio is a kind of value. 16:9 specifies an aspect ratio.
+
+It is also possible to specify a number base to use:
+
+	CSS colour is a kind of value.
+	#FF_FF_FF specifies a CSS colour in hexadecimal.
+
+The base can be `in binary`, `in octal`, `in decimal`, `in hexadecimal` or
+`in base B` for any value of `B` from 2 to 36. Note that when looking for
+"parts" in the specification, Inform then looks for digits of that number
+base. Hexadecimal numbers use the sixteen digits `0`, `1`, ..., `9`,
+`A`, `B`, `C`, `D`, `E`, `F`, and therefore `FF` is a two-digit number.
+So Inform reads the notation `#FF_FF_FF` as having three number parts.
+
+### See Also
+
+- [Numbers, ranges, overflows, and number bases] for dealing with regular
+`number` values in number bases other than 10.
+
+## The parts of a notation {PM_LPFirstOptional} {PM_LPMultipleOptional} {PM_BadLPPartOption} {PM_BadLPNameOption}
+
+^^{units of measure: with multiple numeric components} ^^{units of measure: defining} ^^{defining: units of measure with parts} ^^{text substitutions: units of measure} ^^{units of measure: displaying} ^^{(preamble optional), when defining units+sourcepart+} ^^{(without leading zeros), when defining units+sourcepart+} ^^{(leading zeros), when defining units+sourcepart+} ^^{(part of), for units with multiple components+sourcepart+}
+
+If a value has been constructed out of multiple parts, we will sometimes want to extract those parts. For instance, suppose we want to know the dollars part of `$1.99`? We can do this provided the parts have names:
+
+	A monetary value is a kind of value. $1.99 specifies a monetary value with parts dollars and cents.
+
+We can now find the relevant parts like so. Suppose that `sum` is a monetary value. Then:
+
+	dollars part of sum
+	cents part of sum
+
+are both numbers, so for instance we can
+
+	say "Looks like around [dollars part of sum in words] dollar[s]."
+
+We can also go the other way:
+
+	monetary value with dollars part 4 cents part 72
+
+produces the monetary value `$4.72`. (Note the lack of commas or `and`s, and that the parts have to be given in the right order.) This is really intended to be useful when we manipulate such values in unusual ways:
+
+	An aspect ratio is a kind of value. 16:20 specifies an aspect ratio with parts width and height.
+	
+	To decide which aspect ratio is the wider version of (AR - an aspect ratio):
+		let W be the width part of AR multiplied by 2;
+		let H be the height part of AR;
+		let the wider ratio be the aspect ratio with width part W height part H;
+		decide on the wider ratio.
+
+Naming the parts is also very useful when we want to apply _options_ to them, which go in brackets after their names. For example:
+
+	An American map reference is a kind of value. 50° N 100° W specifies an American map reference with parts latitude (7 to 85) and longitude (20 to 179).
+
+Here, the two parts are called `latitude` and `longitude`. The option `7 to 85` applied to `latitude` constrains it to lie in that range: so `6° N 100° W` would not be a valid `American map reference`, because 6 is not in the range 7 to 85 inclusive.
+
+A part can have multiple options, in which case they are listed with commas in between, or none. There's quite a range of these, and some will take a little explaining.
+
+Option | Summary | Documentation
+------ | ------- | -------------
+`optional` | set to 0 if omitted | see [Optional notation parts]
+`preamble optional` | allow preamble text to be omitted too | see [Optional notation parts]
+`with leading zeros` | write with zeros up front to pad out the digits | see [Range and number base of notation parts]
+`without leading zeros` | or not | see [Range and number base of notation parts]
+`in binary` | write in base 2 | see [Range and number base of notation parts]
+`in octal` | write in base 8 | see [Range and number base of notation parts]
+`in decimal` | write in base 10 | see [Range and number base of notation parts]
+`in hexadecimal` | write in base 16 | see [Range and number base of notation parts]
+`in base B` | write in base `B`, which must be 2 to 36 | see [Range and number base of notation parts]
+`N to M` | fix this part to lie in the range `N` to `M` inclusive | see [Range and number base of notation parts]
+`D digits` | require this to have exactly `D` digits, with leading zeros | see [Range and number base of notation parts]
+`D BASE digit/digits` | ditto, but in the given number base | see [Range and number base of notation parts]
+`up to D digit/digits` | require this to have up to `D` digits | see [Range and number base of notation parts]
+`up to D BASE digit/digits` | ditto, but in the given number base | see [Range and number base of notation parts]
+`digits "TEXT"` | use these special digit characters | see [Unusual digits]
+`values "TEXT"` | use these special values | see [Parts which do not look like numbers]
+`corresponding to KIND` | make this part a `KIND` | see [Parts corresponding to kinds]
+
+Most of the time none of these options need to be set, because they are all automatically set to something sensible. For example:
+
+	$1.99 specifies a monetary value with parts dollars and cents.
+
+is equivalent to:
+
+	$1.99 specifies a monetary value with parts
+		dollars (without leading zeros, in decimal, digits "0123456789") and
+		cents (0 to 99, with leading zeros, in decimal, digits "0123456789").
+
+## Optional notation parts
+
+If a part of a notation is specified as `optional` then it can be missed out, and the result will be as if 0 had been given. For example, if we want the pre-Euro currency of France:
+
+	French monetary value is a kind of value.
+	4F99 specifies a French monetary value with parts francs and centimes (optional).
+
+This allows both `12F50` and `14F` to be valid; `14F` is exactly like typing `14F00`. Both forms will be understood correctly in typed commands. Inform will take the hint and prefer the shorter form when printing them back.
+
+`preamble optional` further allows the non-numeric "preamble" to this part to omitted as well. For example:
+
+	A monetary value is a kind of value. $1.99 specifies a monetary value with parts dollars and cents (optional, preamble optional).
+
+This declares not only that the `cents` part is optional – it will be 0 if not specified – but also that if it is omitted, the `.` should be left out as well. Thus `$3` is now valid and equivalent to `$3.00`: indeed, it will be the preferred form when Inform prints out a monetary value which is an exact number of dollars.
+
+## Range and number base of notation parts
+
+The _range_ of a part is the set of values it can hold. For example:
+
+	$1.99 specifies a monetary value with parts dollars and cents.
+
+The `dollars` part can be 0, 1, 2, ... with no upper limit (except what will fit in the storage available for the data), but `cents` has the narrower range 0 to 99 inclusive.
+
+In this notation, `$2.09` is legal but `$02.09` and `$2.9` are not. This is because the `cents` part has to be written with leading zeros so that it occupies exactly two digits. By default, the first part of a notation appears without leading zeros, and all subsequent parts with, but this is controllable. For example:
+
+	An aspect ratio is a kind of value. 16:20 specifies an aspect ratio with parts width and height (without leading zeros).
+
+This ensures that `4:3` is a legal `aspect ratio`, and that `4:03` is not. The option `with leading zeros` is also provided, for completeness. 
+
+The option `N to M` overrides the default range for a part. The default is for the range to be unlimited on the first part and to be 0 up to whatever number is used to write the part, for the subsequent ones. In the `$1.99` notation, therefore, the `dollars` part is unlimited, but the `cents` part is `0 to 99`.
+
+`N` is required to be a whole number which is at least 0, and `M` is required to be a whole number which is greater than `N`. For example:
+
+	An American map reference is a kind of value. 50° N 100° W specifies an American map reference with parts latitude (7 to 85) and longitude (20 to 179).
+
+Note that with these options set, the `50` and `100` in the specification become unimportant — they are just example values now.
+
+An alternative way to give the range is to write `D digits` or `up to D digits`. These are really just convenient synonyms for options we already have. `up to 4 digits` is the same thing as `0 to 9999`, while `4 digits` is the same thing as `0 to 9999, with leading zeros`, so that the possible values are `0000` to `9999`.
+
+If a part uses both ways to give a range, e.g., `0 to 39, 2 digits`, then the explicit range, in this case 0 to 39, wins out. An impossible combination such as `0 to 199, 2 digits` is rejected with a problem message.
+
+The _number base_ of a part is ordinarily 10, that is, it is written in decimal. This can be set with the options `in binary`, `in octal`, `in decimal`, `in hexadecimal` or `in base B`, where `B` can be anything from 2 to 36. Note that only one part is affected: see [Notations including more than one number] for how to set a number base for all the parts at once. If the base is greater than 10 then digits 10 to 35 are recognised as either `a` to `z` or `A` to `Z`, but print back as `A` to `Z`. So `2af` and `2AF` are both valid hexadecimal numbers to Inform, and are equal, but would be printed back as ``2AF``.
+
+And we can combine the range and number base settings with the options `D BASE digit/digits` and `up to D BASE digit/digits`.
+
+For example:
+
+	A DIP switch setting is a kind of value. _<dip>_ specifies a DIP switch setting with parts bitmap (5 binary digits).
+
+is equivalent to:
+
+	A DIP switch setting is a kind of value. _<dip>_ specifies a DIP switch setting with parts bitmap (in binary, 0 to 31, with leading zeros).
+
+and means that, for example, `_01101_` is a valid `DIP switch setting`.
+
+## Angle-bracketed part names
+
+In all the notations so far, the "parts" have been written in something resembling numerical form. For example:
+
+	An American map reference is a kind of value.
+	50° N 100° W specifies an American map reference with parts latitude (7 to 85) and longitude (20 to 179).
+
+But this could also be written like so:
+
+	An American map reference is a kind of value.
+	<latitude>° N <longitude>° W specifies an American map reference with parts latitude (7 to 85) and longitude (20 to 179).
+
+This specification `<latitude>° N <longitude>° W` contains two parts, and Inform then requires the rest of the sentence to explain what they are.
+
+Angle brackets must _either_ contain a double-quoted piece of text to be taken literally, _or_ the name of one of the parts. For example:
+
+	An agent is a kind of value.
+	<"00">7 specifies an agent.
+
+allows constants like `007` and `0011` to be used and printed back, with
+the double-0 prefix having no numerical meaning but signalling that this is
+an agent, not a number.
+
+This makes it impossible to have a literal `"` character in a specification, but those are impossible for Inform to read anyway because they would be mistaken for text, so this is no loss. But literal angle brackets can be written, so that:
+
+	<"<">99<">">
+
+allows `<99>` to be a value. Similarly:
+
+	A monetary value is a kind of value. $<dollars><"."><cents> specifies a monetary value with parts dollars and cents (optional, preamble optional).
+
+Note that putting the full stop in quotation marks here prevents Inform from thinking that one sentence has ended and another one has begun.
+
+We can also use the angle-bracket syntax to have two parts of a specification jammed directly next to each other, with nothing in between:
+
+	CSS colour is a kind of value.
+	#<red level><green level><blue level> specifies a CSS colour with parts
+		red level (2 hexadecimal digits),
+		green level (2 hexadecimal digits) and
+		blue level (2 hexadecimal digits).
+
+This enables `CSS colour` to have values like `#4169E1`, royal blue.
+
+The part names in the angle-bracket escapes have to exactly match those given
+in the tail of the sentence, and in the same order: Inform will throw a problem message if not.
+
+## Unusual digits
+
+The parts option `digits "TEXT"` tells Inform to use the supplied digit characters in place of the regular ones.
+
+The text must contain exactly the number of characters which equals the number base (2 for binary, 8 for octal, and so on), must have no repeats, and must not use spaces or square brackets.
+
+For binary, the default is `digits "01"`, for decimal it is `digits "0123456789"`, for hexadecimal `digits "0123456789ABCDEF"` and so on.
+
+For example, suppose we want to print hexadecimal numbers as if they were constants in the programming language C, and using lower-case letters for the digits 10 to 15. This would do it:
+
+	A C-style hex number is a kind of value.
+	<"0x"><value> specifies a C-style hex number with parts value (in hexadecimal, digits "0123456789abcdef").
+
+	To say (N - a number) C-style:
+		say the C-style hex number with value part N.
+
+And then `"15786 = [15786 C-style]"` then substitutes to ``15786 = 0x3daa``.
+
+Note that if non-standard digit sets are used, then numbers must be written
+as unsigned, and are printed accordingly: but see the [Sun Nueng Song Sam] example for how to handle a signed form.
+
+Throwing in emoji or other symbols can make some intriguing textual effects:
+
+	A tomb wall pattern is a kind of value.
+	<pattern number> specifies a tomb wall pattern with parts pattern number
+	(4 base 4 digits, digits "▙▛▜▟").
+
+	When play begins:
+		repeat with S running from ▙▙▙▙ to ▟▟▟▟:
+			say "[S] ";
+		say ".... is the full set."
+
+prints all 256 possible wall carvings using a row of 4 shapes, each of which can be of 4 types.
+
+## Parts which do not look like numbers
+
+So far, all the parts of a specification have been basically numerical, if possibly with unusual digits. But we can break away from that completely with two more options supplied for parts.
+
+`values "TEXT"` gives a comma-separated list of the text to use for the values. For example, `values "LF, RF, LH, RH"`, where there are exactly 4 possible values, and this is how they are written. Internally, these will be stored as the numbers 1 to 4 respectively. The individual values must be all different from each other, and must not include spaces, double-quotation marks, square brackets, or commas. At least two values must be provided.
+   
+If the `values "TEXT"` option is used on a part, then the various other options to do with digits, leading zeros and ranges are all forbidden, since the list we've given already defines the range exactly.
+
+To see why this might be useful, let's work through a practical problem. In modern chess, the squares are written a1 to h8, where the letter represents
+the "file" (or column) and the number represents the "rank" (or row). For example, White's leftmost pawn begins on a2, and is called the a-pawn; and Black's king spends the early game hiding on the 8th rank.
+
+So, then, we will try to make an Inform kind whose values are exactly the 64 squares `a1` to `h8`. A devious option would be:
+
+	A chessboard square is a kind of value.
+	<file><rank> specifies a chessboard square with parts
+		file (1 octal digit, digits "abcdefgh") and
+		rank (1 to 8).
+
+But this is not ideal. We would find that `file part of a1` was 0, whereas `rank part of a1` was 1: it seems clumsy to number files from 0 and ranks from 1. The following would fix that, but hardly seems elegant:
+
+	A chessboard square is a kind of value.
+	<file><rank> specifies a chessboard square with parts
+		file (1 to 8, digits "0abcdefgh9") and
+		rank (1 to 8).
+
+where, of course, the digits `0` and `9` can never be needed for the file, because its range is constrained as `1 to 8`. But this is much clearer:
+
+	A chessboard square is a kind of value.
+	<file><rank> specifies a chessboard square with parts
+		file (values "a, b, c, d, e, f, g, h") and
+		rank (1 to 8).
+
+The file part is automatically constrained as 1 to 8 because there are 8
+notations in the text `"a, b, c, d, e, f, g, h"`.
+
+The following little game works with any of the three definitions above:
+
+	{*}"Chess Fundamentals"
+	
+	Capablanca's Dining Room is a room.
+
+	When play begins:
+		showme c4;
+		showme d7;
+		repeat with S running from a1 to h8:
+			say "[S] ";
+		say "...and that's all."
+
+	Square pressing is an action applying to one chessboard square.
+
+	Carry out square pressing: say "You press square [chessboard square understood]."
+
+	Understand "press [chessboard square]" as square pressing.
+
+	Test chess with "press a1 / press a0 / press h8 / press c3 / press i3".
+
+Which all works as expected:
+
+``` transcript
+chessboard square: c4
+chessboard square: d7
+a1 a2 a3 a4 a5 a6 a7 a8 b1 b2 b3 b4 b5 b6 b7 b8 c1 c2 c3 c4 c5 c6 c7 c8
+d1 d2 d3 d4 d5 d6 d7 d8 e1 e2 e3 e4 e5 e6 e7 e8 f1 f2 f3 f4 f5 f6 f7 f8
+g1 g2 g3 g4 g5 g6 g7 g8 h1 h2 h3 h4 h5 h6 h7 h8 ...and that's all.
+
+Capablanca's Dining Room
+> PRESS A1
+You press square a1.
+
+> PRESS A0
+You can't see any such thing.
+
+> PRESS H8
+You press square h8.
+
+> PRESS C3
+You press square c3.
+
+> PRESS I3
+You can't see any such thing.
+```
+
+The so-called English notation, which not even the English use any longer, would also be possible:
+
+	A chessboard square is a kind of value.
+	<file><rank> specifies a chessboard square with parts
+		file (values "QR, QN, QB, Q, K, KB, KN, KR") and
+		rank (1 to 8).
+
+The trouble with this is that the square which White calls KB2 is the square Black calls KB7, and we cannot know who is asking.
+
+## Parts corresponding to kinds
+
+One last option available for parts of a specification is `corresponding to KIND`, which says that the part contains a value of the given `KIND`, which must be either numerical or an enumeration, rather than a `number`.
+
+Let's return to chess notation. The best specification so far looks like this:
+
+	A chessboard square is a kind of value.
+	<file><rank> specifies a chessboard square with parts
+		file (values "a, b, c, d, e, f, g, h") and
+		rank (1 to 8).
+
+With this specification, the two parts of a `chessboard square` value are each numbers from 1 to 8. For example, `rank part of e7` evaluates to the number 5.
+
+That might be fine for performing calculations, but it's not the way chess players actually talk or write. Here is an alternative:
+
+	A chessboard file is a kind of value. The chessboard files are
+	the a-file, the b-file, the c-file, the d-file, the e-file, the f-file,
+	the g-file and the h-file.
+
+	A chessboard rank is a kind of value. The chessboard ranks are
+	the first rank, the second rank, the third rank, the fourth rank, 
+	the fifth rank, the sixth rank, the seventh rank, the eighth rank.
+
+	A chessboard square is a kind of value.
+	<file><rank> specifies a chessboard square with parts
+		file (values "a, b, c, d, e, f, g, h",
+		    corresponding to chessboard files) and
+		rank (1 to 8, corresponding to chessboard ranks).
+
+We now find that, for example:
+
+	"chessboard square with file part the d-file rank part the sixth rank" = chessboard square: d6
+	"rank part of e7" = chessboard rank: seventh rank
+
+What `corresponding to K`, where `K` is a kind, does is to tell Inform that
+the numerical value internally stored to represent the meaning of a part should
+be treated as a value of kind `K`. By default, `K` is `number`.
+
+`K` can be set to any numerical kind, or to any enumeration with the right number of instances. `chessboard rank` above has 8 instances, which matches the range of 8 possible values for `rank`: if these numbers had not matched, a problem message would have been issued.
+
+If `K` uses real arithmetic then automatic floating and rounding are used in order to convert from or to a whole-number part. Consider this example, which sneakily contains only a single part:
+
+	The GR10 is a room.
+
+	Distance is a kind of value. 1.0km specifies a distance.
+
+	A trail position is a kind of value. Kilometer 2000 specifies a trail position with parts depth (corresponding to distance).
+
+	When play begins:
+		showme Kilometer 230;
+		showme the depth part of Kilometer 230;
+		showme the trail position with depth part 67.51;
+
+This produces:
+
+``` transcript
+trail position: Kilometer 230
+"depth part of Kilometer 230" = distance: 230.0km
+"trail position with depth part 67.51km" = trail position: Kilometer 68
+```
+
+Note that `67.51km` was rounded here to the nearest `number` value, 68. 
+
+## Counting and repeating through specified values
+
+The final version of `chessboard square` which we reached was this:
+
+	A chessboard file is a kind of value. The chessboard files are
+	the a-file, the b-file, the c-file, the d-file, the e-file, the f-file,
+	the g-file and the h-file.
+
+	A chessboard rank is a kind of value. The chessboard ranks are
+	the first rank, the second rank, the third rank, the fourth rank, 
+	the fifth rank, the sixth rank, the seventh rank, the eighth rank.
+
+	A chessboard square is a kind of value.
+	<file><rank> specifies a chessboard square with parts
+		file (values "a, b, c, d, e, f, g, h",
+		    corresponding to chessboard files) and
+		rank (1 to 8, corresponding to chessboard ranks).
+
+Something interesting to note about `chessboard square` is that its range of possible values is not unlimited. With only 8 possible files and 8 possible ranks, there are just 64 possible values. This contrasts with a specification like:
+
+	A monetary value is a kind of value. $1.99 specifies a monetary value with parts dollars and cents.
+
+where the range is for practical purposes unlimited — well, in fact, `$21474836.47` is really the limit, but this is not an everyday amount to find in one's pocket. There are over two billion values, and it would be completely impractical to `repeat with M running through monetary values`. Inform will throw a problem message if we try.
+
+But Inform _will_ allow us to repeat through `chessboard square` values, count them, take random values, and so on. Thus:
+
+``` transcript
+"number of chessboard squares" = number: 64
+"list of chessboard squares" = list of chessboard squares: {a1, a2, a3, a4,
+a5, a6, a7, a8, b1, b2, b3, b4, b5, b6, b7, b8, c1, c2, c3, c4, c5, c6, c7,
+c8, d1, d2, d3, d4, d5, d6, d7, d8, e1, e2, e3, e4, e5, e6, e7, e8, f1, f2,
+f3, f4, f5, f6, f7, f8, g1, g2, g3, g4, g5, g6, g7, g8, h1, h2, h3, h4, h5,
+h6, h7, h8}
+"a random chessboard square" = chessboard square: c7
+```
+
+Loops such as `repeat with S running through chessboard squares` are now possible, as are implicit loops which involve searching through values to look for matches against conditions. For example, given:
+
+	Definition: a chessboard square is white rather than black:
+		let F be the file part of it;
+		let file parity be whether or not F is the a-file or F is the c-file or F is the e-file or F is the g-file;
+		let R be the rank part of it;
+		let rank parity be whether or not R is the first rank or R is the third rank or R is the fifth rank or R is the seventh rank;
+		if file parity is rank parity, no;
+		yes.
+
+...we can write, for example, `number of white chessboard squares`, which will of course calculate out to 32.
 
 # Tables
 
