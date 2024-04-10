@@ -720,6 +720,7 @@ The big one: |WriteListR| is the heart of the list-writer.
 [ WriteListR o depth from_start
 	partition_classes partition_class_sizes
 	cl memb index k2 l m no_classes q groups_to_do current_lt;
+	print "WriteListR^";
     if (o == nothing) return; ! An empty list: no output
 
     if (from_start) {
@@ -954,7 +955,7 @@ Constant LW_LOCKED = $$00100000;
         print ", ";
 	if (print_count < and_position) print " ";
       }
-      if (print_count == and_position) LW_Response('Z', o); ! " and "
+      if (print_count == and_position) LW_Response('C', o); ! " and "
       LW_Response(lwresponse, o);
       return 1;
     }
@@ -963,21 +964,18 @@ Constant LW_LOCKED = $$00100000;
 
 [ WriteAfterEntry o depth
     p recurse_flag parenth_flag eldest_child child_count print_count flags terms last_comma and_position bit_counter;
-
+    print "WriteAfterEntry^";
     inventory_stage = 2;
     if (c_style & PARTINV_BIT) {
+    print "partinv^";
     ! zero to three of: closed, empty, providing light;
     BeginActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o);
         if (ForActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o) == false) {
-!          terms = 0;
-!          if (o has light && location hasnt light) { flags = flags | LW_LIT; terms++; }
           if (o has light && location hasnt light) flags = flags | LW_LIT; 
           if (o has container) {
             if (o has open || o has transparent) {
-!              if (~~ObviouslyOccupied(o))  { flags = flags | LW_EMPTY; terms++; }
               if (~~ObviouslyOccupied(o)) flags = flags | LW_EMPTY;
             }
-!            if (o hasnt open) { flags = flags | LW_CLOSED; terms++; }
             if (o hasnt open) flags = flags | LW_CLOSED;
           }
           and_position = -1;
@@ -988,31 +986,11 @@ Constant LW_LOCKED = $$00100000;
             if (BasicInformKit`SERIAL_COMMA_CFGF) last_comma = terms;
             else last_comma = terms - 1;
           }
-          if (terms) {
+          if (terms > 0) {
             LW_Response('A'); ! " ("
-!            print_count = 0;
 	    print_count = print_count + WriteAfterEntryTerm(o, flags, LW_CLOSED, print_count, last_comma, and_position, 'E');
-!            if (flags & LW_CLOSED) {
-!              LW_Response('E', o); ! "closed"
-!              print_count++;
-!            }
 	    print_count = print_count + WriteAfterEntryTerm(o, flags, LW_EMPTY, print_count, last_comma, and_position, 'F');
-
-!if (flags & LW_EMPTY) {
-!              if (print_count && print_count < last_comma)  {
-!	        print ",";
-!		if (print_count < and_position) print " ";
-!             }
-!              if (print_count == and_position) LW_Response('Z', o);
-!              LW_Response('F', o); ! "empty"
-!              print_count++;
-!            }
 	    print_count = print_count + WriteAfterEntryTerm(o, flags, LW_LIT, print_count, last_comma, and_position, 'D');
-!            if (flags & LW_LIT) {
-!              if (print_count && print_count < last_comma)  { print ","; if (print_count < and_position) print " "; } 
-!              if (print_count == and_position) LW_Response('Z', o);
-!              LW_Response('D', o); ! "providing light";
-!            }
             LW_Response('B'); ! close bracket ")";
           }
         }
@@ -1022,52 +1000,30 @@ Constant LW_LOCKED = $$00100000;
     
 
       if (c_style & FULLINV_BIT) {
+      print "fullinv^";
         BeginActivity(PRINTING_INVENTORY_DETAILS_ACT, o);
         if (ForActivity(PRINTING_INVENTORY_DETAILS_ACT, o) == false) {
           ! setup
-!	  if (o has light) { flags = flags | LW_LIT; terms++; }
-!          if (o has worn) { flags = flags | LW_WORN; terms++; }
 	  if (o has light) flags = flags | LW_LIT;
           if (o has worn) flags = flags | LW_WORN;
           if (o has container) {
             if (o has openable) {
               if (o has open) {
                 flags = flags | LW_OPEN;
-                if (~~ObviouslyOccupied(o)) !{
-                  flags = flags | LW_EMPTY;
-		  !terms++;
-		!}
+                if (~~ObviouslyOccupied(o)) flags = flags | LW_EMPTY;
               }
               else {
                 flags = flags | LW_CLOSED;
                 if (o has locked) flags = flags | LW_LOCKED;
-                !if (o has locked) { flags = flags | LW_LOCKED; terms++; }
               }
-              !terms++; ! for one of 'open' or 'closed'
             }  
             else {
-              if (((o has transparent)) && (~~ObviouslyOccupied(o))) !{
-                flags = flags | LW_EMPTY;
-		!terms++;
-              !}
+              if (((o has transparent)) && (~~ObviouslyOccupied(o))) flags = flags | LW_EMPTY;
             }
           }
 	  terms = BitCount(flags);
-!	  bit_counter = flags;
-!	  do {
-!            if (~~(bit_counter % 2)) terms++;
-!	    bit_counter = bit_counter / 2;
-!	  } until (~~bit_counter);
-!	  print "original terms: ", terms;
-!	  terms = 0;
-!	  bit_counter = flags;
-!	  do {
-!            if (~~(bit_counter % 2)) terms++;
-!	    bit_counter = bit_counter / 2;
-!	  } until (~~bit_counter);
-!	  print "; bit counted terms: ", terms, "^";
           if (flags & (LW_OPEN | LW_EMPTY)) terms--;
-          if (terms) {
+          if (terms > 0) {
             print_count = 0;
             and_position = last_comma = -1;
             ! if there's more than one term, put an 'and' before term n
@@ -1078,18 +1034,7 @@ Constant LW_LOCKED = $$00100000;
             }
             LW_Response('A'); ! " ("
 	    print_count = print_count + WriteAfterEntryTerm(o, flags, LW_LIT, print_count, last_comma, and_position, 'D');
-!            if (flags & LW_LIT) {
-!              ! initial doesn't need and/comma check
-!              LW_Response('D', o); ! providing light
-!              print_count++;
-!            }
 	    print_count = print_count + WriteAfterEntryTerm(o, flags, LW_WORN, print_count, last_comma, and_position, 'L');
-!            if (flags & LW_WORN) {
-!              if (print_count && print_count < last_comma)  { print ","; if (print_count < and_position) print " "; }
-!              if (print_count == and_position) LW_Response('Z', o);
-!              LW_Response('L', o); ! being worn
-!              print_count++;
-!            }
             if (flags & LW_OPEN) {
               if (print_count && print_count < last_comma)  { print ","; if (print_count < and_position) print " "; }
               if (print_count == and_position) LW_Response('Z', o);
@@ -1098,27 +1043,8 @@ Constant LW_LOCKED = $$00100000;
               print_count++;
             }
             else print_count = print_count + WriteAfterEntryTerm(o, flags, LW_EMPTY, print_count, last_comma, and_position, 'F');
-
-!if (flags & LW_EMPTY) {
-!             if (print_count && print_count < last_comma)  { print ","; if (print_count < and_position) print " "; }
-!              if (print_count == and_position) LW_Response('Z', o);
-!              LW_Response('F', o); ! empty
-!              print_count++;
-!            }
              print_count = print_count + WriteAfterEntryTerm(o, flags, LW_CLOSED, print_count, last_comma, and_position, 'E');
-!            if (flags & LW_CLOSED) {
-!              if (print_count && print_count < last_comma)  { print ","; if (print_count < and_position) print " "; }
-!              if (print_count == and_position) LW_Response('Z', o);
-!              LW_Response('E', o); ! closed
-!              print_count++;
-!            }
              print_count = print_count + WriteAfterEntryTerm(o, flags, LW_LOCKED, print_count, last_comma, and_position, 'O');
-!            if (flags & LW_LOCKED) {
-!              if (print_count && print_count < last_comma)  { print ","; if (print_count < and_position) print " "; }
-!              if (print_count == and_position) LW_Response('Z', o);
-!              LW_Response('O', o); ! locked
-!              print_count++;
-!            }
             LW_Response('B'); ! close bracket ")"
             }
           }
