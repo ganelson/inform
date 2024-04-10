@@ -932,69 +932,198 @@ achieved by calling |WriteListR|, using the |ObjectTreeIterator| (whatever
 the iterator used at the top level) and increasing the depth by 1.
 
 =
+
+Constant LW_LIT    = $$00000001;
+Constant LW_CLOSED = $$00000010;
+Constant LW_EMPTY  = $$00000100;
+Constant LW_WORN   = $$00001000;
+Constant LW_OPEN   = $$00010000;
+Constant LW_LOCKED = $$00100000;
+
+[ BitCount flags result;
+  do {
+   if (flags % 2) result++;
+   flags = flags / 2;
+  } until (~~flags);
+  return result;
+];
+
+[ WriteAfterEntryTerm o flags thisflag print_count last_comma and_position lwresponse;
+    if (flags & thisflag) {
+      if (print_count && print_count < last_comma) {
+        print ", ";
+	if (print_count < and_position) print " ";
+      }
+      if (print_count == and_position) LW_Response('Z', o); ! " and "
+      LW_Response(lwresponse, o);
+      return 1;
+    }
+    return 0;
+];
+
 [ WriteAfterEntry o depth
-    p recurse_flag parenth_flag eldest_child child_count combo;
+    p recurse_flag parenth_flag eldest_child child_count print_count flags terms last_comma and_position bit_counter;
 
     inventory_stage = 2;
     if (c_style & PARTINV_BIT) {
-        BeginActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o);
+    ! zero to three of: closed, empty, providing light;
+    BeginActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o);
         if (ForActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o) == false) {
-			combo = 0;
-			if (o has light && location hasnt light) combo=combo+1;
-			if (o has container && o hasnt open)     combo=combo+2;
-			if ((o has container && (o has open || o has transparent))
-				&& (child(o)==0))                    combo=combo+4;
-			if (combo) LW_Response('A'); ! space and open bracket
-			switch (combo) {
-				1: LW_Response('D', o);
-				2: LW_Response('E', o);
-				3: LW_Response('H', o);
-				4: LW_Response('F', o);
-				5: LW_Response('I', o);
-				6: LW_Response('G', o);
-				7: LW_Response('J', o);
-			}
-			if (combo) LW_Response('B'); ! close bracket
-		}
+!          terms = 0;
+!          if (o has light && location hasnt light) { flags = flags | LW_LIT; terms++; }
+          if (o has light && location hasnt light) flags = flags | LW_LIT; 
+          if (o has container) {
+            if (o has open || o has transparent) {
+!              if (~~ObviouslyOccupied(o))  { flags = flags | LW_EMPTY; terms++; }
+              if (~~ObviouslyOccupied(o)) flags = flags | LW_EMPTY;
+            }
+!            if (o hasnt open) { flags = flags | LW_CLOSED; terms++; }
+            if (o hasnt open) flags = flags | LW_CLOSED;
+          }
+          and_position = -1;
+	  terms = BitCount(flags);
+          ! if there's more than one term, put an 'and' before term n
+          if (terms > 1) and_position = terms - 1;
+          if (terms > 2) {
+            if (BasicInformKit`SERIAL_COMMA_CFGF) last_comma = terms;
+            else last_comma = terms - 1;
+          }
+          if (terms) {
+            LW_Response('A'); ! " ("
+!            print_count = 0;
+	    print_count = print_count + WriteAfterEntryTerm(o, flags, LW_CLOSED, print_count, last_comma, and_position, 'E');
+!            if (flags & LW_CLOSED) {
+!              LW_Response('E', o); ! "closed"
+!              print_count++;
+!            }
+	    print_count = print_count + WriteAfterEntryTerm(o, flags, LW_EMPTY, print_count, last_comma, and_position, 'F');
+
+!if (flags & LW_EMPTY) {
+!              if (print_count && print_count < last_comma)  {
+!	        print ",";
+!		if (print_count < and_position) print " ";
+!             }
+!              if (print_count == and_position) LW_Response('Z', o);
+!              LW_Response('F', o); ! "empty"
+!              print_count++;
+!            }
+	    print_count = print_count + WriteAfterEntryTerm(o, flags, LW_LIT, print_count, last_comma, and_position, 'D');
+!            if (flags & LW_LIT) {
+!              if (print_count && print_count < last_comma)  { print ","; if (print_count < and_position) print " "; } 
+!              if (print_count == and_position) LW_Response('Z', o);
+!              LW_Response('D', o); ! "providing light";
+!            }
+            LW_Response('B'); ! close bracket ")";
+          }
+        }
         EndActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o);
     }   ! end of PARTINV_BIT processing
+    ! gets "empty" if (open & openable) || (!openable & transparent)
+    
 
-    if (c_style & FULLINV_BIT) {
+      if (c_style & FULLINV_BIT) {
         BeginActivity(PRINTING_INVENTORY_DETAILS_ACT, o);
         if (ForActivity(PRINTING_INVENTORY_DETAILS_ACT, o) == false) {
-			if (o has light && o has worn) { LW_Response('A'); LW_Response('K', o);  parenth_flag = true; }
-			else {
-				if (o has light)           { LW_Response('A'); LW_Response('D', o);  parenth_flag = true; }
-				if (o has worn)            { LW_Response('A'); LW_Response('L', o); parenth_flag = true; }
-			}
+          ! setup
+!	  if (o has light) { flags = flags | LW_LIT; terms++; }
+!          if (o has worn) { flags = flags | LW_WORN; terms++; }
+	  if (o has light) flags = flags | LW_LIT;
+          if (o has worn) flags = flags | LW_WORN;
+          if (o has container) {
+            if (o has openable) {
+              if (o has open) {
+                flags = flags | LW_OPEN;
+                if (~~ObviouslyOccupied(o)) !{
+                  flags = flags | LW_EMPTY;
+		  !terms++;
+		!}
+              }
+              else {
+                flags = flags | LW_CLOSED;
+                if (o has locked) flags = flags | LW_LOCKED;
+                !if (o has locked) { flags = flags | LW_LOCKED; terms++; }
+              }
+              !terms++; ! for one of 'open' or 'closed'
+            }  
+            else {
+              if (((o has transparent)) && (~~ObviouslyOccupied(o))) !{
+                flags = flags | LW_EMPTY;
+		!terms++;
+              !}
+            }
+          }
+	  terms = BitCount(flags);
+!	  bit_counter = flags;
+!	  do {
+!            if (~~(bit_counter % 2)) terms++;
+!	    bit_counter = bit_counter / 2;
+!	  } until (~~bit_counter);
+!	  print "original terms: ", terms;
+!	  terms = 0;
+!	  bit_counter = flags;
+!	  do {
+!            if (~~(bit_counter % 2)) terms++;
+!	    bit_counter = bit_counter / 2;
+!	  } until (~~bit_counter);
+!	  print "; bit counted terms: ", terms, "^";
+          if (flags & (LW_OPEN | LW_EMPTY)) terms--;
+          if (terms) {
+            print_count = 0;
+            and_position = last_comma = -1;
+            ! if there's more than one term, put an 'and' before term n
+            if (terms > 1) and_position = terms - 1;
+            if (terms > 2) {
+              if (BasicInformKit`SERIAL_COMMA_CFGF) last_comma = terms;
+              else last_comma = terms - 1;
+            }
+            LW_Response('A'); ! " ("
+	    print_count = print_count + WriteAfterEntryTerm(o, flags, LW_LIT, print_count, last_comma, and_position, 'D');
+!            if (flags & LW_LIT) {
+!              ! initial doesn't need and/comma check
+!              LW_Response('D', o); ! providing light
+!              print_count++;
+!            }
+	    print_count = print_count + WriteAfterEntryTerm(o, flags, LW_WORN, print_count, last_comma, and_position, 'L');
+!            if (flags & LW_WORN) {
+!              if (print_count && print_count < last_comma)  { print ","; if (print_count < and_position) print " "; }
+!              if (print_count == and_position) LW_Response('Z', o);
+!              LW_Response('L', o); ! being worn
+!              print_count++;
+!            }
+            if (flags & LW_OPEN) {
+              if (print_count && print_count < last_comma)  { print ","; if (print_count < and_position) print " "; }
+              if (print_count == and_position) LW_Response('Z', o);
+              if (flags & LW_EMPTY) LW_Response('N', o); ! open but empty
+              else LW_Response('M', o); ! open
+              print_count++;
+            }
+            else print_count = print_count + WriteAfterEntryTerm(o, flags, LW_EMPTY, print_count, last_comma, and_position, 'F');
 
-			if (o has container) {
-				if (o has openable) {
-					if (parenth_flag) {
-						if (BasicInformKit`SERIAL_COMMA_CFGF)
-							print ",";
-						LW_Response('C');
-					} else            LW_Response('A', o);
-					if (o has open) {
-						if (child(o)) LW_Response('M', o);
-						else          LW_Response('N', o);
-					} else {
-						if (o has lockable && o has locked) LW_Response('P', o);
-						else                                LW_Response('O', o);
-					}
-					parenth_flag = true;
-				}
-				else {
-					if (child(o)==0 && o has transparent) {
-						if (parenth_flag) { LW_Response('C'); LW_Response('F'); }
-						else              { LW_Response('A'); LW_Response('F'); LW_Response('B'); }
-					}
-				}
-			}
-			if (parenth_flag) LW_Response('B');
-		}
-        EndActivity(PRINTING_INVENTORY_DETAILS_ACT, o);
-    }   ! end of FULLINV_BIT processing
+!if (flags & LW_EMPTY) {
+!             if (print_count && print_count < last_comma)  { print ","; if (print_count < and_position) print " "; }
+!              if (print_count == and_position) LW_Response('Z', o);
+!              LW_Response('F', o); ! empty
+!              print_count++;
+!            }
+             print_count = print_count + WriteAfterEntryTerm(o, flags, LW_CLOSED, print_count, last_comma, and_position, 'E');
+!            if (flags & LW_CLOSED) {
+!              if (print_count && print_count < last_comma)  { print ","; if (print_count < and_position) print " "; }
+!              if (print_count == and_position) LW_Response('Z', o);
+!              LW_Response('E', o); ! closed
+!              print_count++;
+!            }
+             print_count = print_count + WriteAfterEntryTerm(o, flags, LW_LOCKED, print_count, last_comma, and_position, 'O');
+!            if (flags & LW_LOCKED) {
+!              if (print_count && print_count < last_comma)  { print ","; if (print_count < and_position) print " "; }
+!              if (print_count == and_position) LW_Response('Z', o);
+!              LW_Response('O', o); ! locked
+!              print_count++;
+!            }
+            LW_Response('B'); ! close bracket ")"
+            }
+          }
+          EndActivity(PRINTING_INVENTORY_DETAILS_ACT, o);
+        }   ! end of FULLINV_BIT processing
 
 	child_count = 0;
 	eldest_child = nothing;
