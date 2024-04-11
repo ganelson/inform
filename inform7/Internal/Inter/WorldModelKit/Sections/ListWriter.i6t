@@ -173,7 +173,7 @@ Global MarkedObjectLength = 0;
 		MarkedObjectArray = RequisitionStack(length);
 		MarkedObjectLength = length;
 		if (MarkedObjectArray == 0)
-			return IssueRTP("ListWriterRanOutOfMemory",	
+			return IssueRTP("ListWriterRanOutOfMemory",
     			"The list-writer has run out of memory.^", BasicInformKitRTPs);
 
 		if (common_parent) {
@@ -720,7 +720,7 @@ The big one: |WriteListR| is the heart of the list-writer.
 [ WriteListR o depth from_start
 	partition_classes partition_class_sizes
 	cl memb index k2 l m no_classes q groups_to_do current_lt;
-	print "WriteListR^";
+
     if (o == nothing) return; ! An empty list: no output
 
     if (from_start) {
@@ -743,7 +743,7 @@ The big one: |WriteListR| is the heart of the list-writer.
     partition_classes = RequisitionStack(index/WORDSIZE + 2);
     partition_class_sizes = RequisitionStack(index/WORDSIZE + 2);
     if ((partition_classes == 0) || (partition_class_sizes == 0))
-		return IssueRTP("ListWriterRanOutOfMemory",	
+		return IssueRTP("ListWriterRanOutOfMemory",
     		"The list-writer has run out of memory.^", BasicInformKitRTPs);
 
 	no_classes =
@@ -964,14 +964,13 @@ Constant LW_LOCKED = $$00100000;
 
 [ WriteAfterEntry o depth
     p recurse_flag parenth_flag eldest_child child_count print_count flags terms last_comma and_position bit_counter;
-    print "WriteAfterEntry^";
     inventory_stage = 2;
     if (c_style & PARTINV_BIT) {
     print "partinv^";
     ! zero to three of: closed, empty, providing light;
     BeginActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o);
         if (ForActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o) == false) {
-          if (o has light && location hasnt light) flags = flags | LW_LIT; 
+          if (o has light && location hasnt light) flags = flags | LW_LIT;
           if (o has container) {
             if (o has open || o has transparent) {
               if (~~ObviouslyOccupied(o)) flags = flags | LW_EMPTY;
@@ -996,8 +995,6 @@ Constant LW_LOCKED = $$00100000;
         }
         EndActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o);
     }   ! end of PARTINV_BIT processing
-    ! gets "empty" if (open & openable) || (!openable & transparent)
-    
 
       if (c_style & FULLINV_BIT) {
       print "fullinv^";
@@ -1016,7 +1013,7 @@ Constant LW_LOCKED = $$00100000;
                 flags = flags | LW_CLOSED;
                 if (o has locked) flags = flags | LW_LOCKED;
               }
-            }  
+            }
             else {
               if (((o has transparent)) && (~~ObviouslyOccupied(o))) flags = flags | LW_EMPTY;
             }
@@ -1037,7 +1034,7 @@ Constant LW_LOCKED = $$00100000;
 	    print_count = print_count + WriteAfterEntryTerm(o, flags, LW_WORN, print_count, last_comma, and_position, 'L');
             if (flags & LW_OPEN) {
               if (print_count && print_count < last_comma)  { print ","; if (print_count < and_position) print " "; }
-              if (print_count == and_position) LW_Response('Z', o);
+              if (print_count == and_position) LW_Response('C', o);
               if (flags & LW_EMPTY) LW_Response('N', o); ! open but empty
               else LW_Response('M', o); ! open
               print_count++;
