@@ -966,7 +966,6 @@ Constant LW_LOCKED = $$00100000;
     p recurse_flag parenth_flag eldest_child child_count print_count flags terms last_comma and_position bit_counter;
     inventory_stage = 2;
     if (c_style & PARTINV_BIT) {
-    print "partinv^";
     ! zero to three of: closed, empty, providing light;
     BeginActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o);
         if (ForActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o) == false) {
@@ -997,7 +996,6 @@ Constant LW_LOCKED = $$00100000;
     }   ! end of PARTINV_BIT processing
 
       if (c_style & FULLINV_BIT) {
-      print "fullinv^";
         BeginActivity(PRINTING_INVENTORY_DETAILS_ACT, o);
         if (ForActivity(PRINTING_INVENTORY_DETAILS_ACT, o) == false) {
           ! setup
@@ -1005,11 +1003,13 @@ Constant LW_LOCKED = $$00100000;
           if (o has worn) flags = flags | LW_WORN;
           if (o has container) {
             if (o has openable) {
-              if (o has open) {
-                flags = flags | LW_OPEN;
-                if (~~ObviouslyOccupied(o)) flags = flags | LW_EMPTY;
+              if ((o has open) || (o has transparent)) {
+                if (~~ObviouslyOccupied(o)) {
+		  flags = flags | LW_EMPTY;
+		  if (o has open) flags = flags | LW_OPEN;
+		}
               }
-              else {
+              else if (o hasnt open) {
                 flags = flags | LW_CLOSED;
                 if (o has locked) flags = flags | LW_LOCKED;
               }
