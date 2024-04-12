@@ -278,7 +278,7 @@ to document all of that.
     return key;
 ];
 
-Array UnicodeWhitespace --> 9 10 11 12 13 133 160 5760 8192 8193 8194 8195 8196 8197 8198 8199 8200 8201 8202 8232 8233 8239 8287 12288;
+Array UnicodeWhitespace --> 24 9 10 11 12 13 133 160 5760 8192 8193 8194 8195 8196 8197 8198 8199 8200 8201 8202 8232 8233 8239 8287 12288;
 
 [ VM_ReadKeyboard  a_buffer a_table done ix jy;
     if (gg_commandstr ~= 0 && gg_command_reading ~= false) {
@@ -321,10 +321,9 @@ Array UnicodeWhitespace --> 9 10 11 12 13 133 160 5760 8192 8193 8194 8195 8196 
         glk_put_char_stream(gg_commandstr, 10); ! newline
     }
   .KPContinue;
-
-    for ( ix = 0 : ix < a_buffer-->0 : ix++ )
-      for ( jy = 0 : jy < UnicodeWhitespace-->0 : jy++ )
-        if (a_buffer-->ix == UnicodeWhitespace-->jy) a_buffer-->ix = 32;
+    for ( ix = 1 : ix <= (a_buffer-->0) : ix++ ) {
+      for ( jy = 1 : jy <= (UnicodeWhitespace-->0) : jy++ )
+        if ((a_buffer-->ix) == (UnicodeWhitespace-->jy)) a_buffer-->ix = 32;
 
     VM_Tokenise(a_buffer,a_table);
     ! It's time to close any quote window we've got going.
