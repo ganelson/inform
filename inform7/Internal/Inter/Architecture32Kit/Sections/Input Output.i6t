@@ -327,6 +327,7 @@ Array UnicodeWhitespace --> 8 133 160 5760 8232 8233 8239 8287 12288;
       else
         for ( jy = 1 : jy <= (UnicodeWhitespace-->0) : jy++ )
           if ((a_buffer-->ix) == (UnicodeWhitespace-->jy)) a_buffer-->ix = 32;
+	  else if ((a_buffer-->ix) < (UnicodeWhitespace-->jy)) break;
     VM_Tokenise(a_buffer,a_table);
     ! It's time to close any quote window we've got going.
     if (gg_quotewin) {
