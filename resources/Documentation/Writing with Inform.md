@@ -17489,161 +17489,439 @@ So it's wise (if difficult) not to judge a story's success entirely by its immed
 
 # Extensions
 
-## The status of extensions {EXTENSIONS}
+## Developing extensions
 
-^^{extensions: licensing of use}
+The remaining chapters of this book are about building new extensions which can be shared with other story authors. The material in these final chapters will be steadily more technical as we engage with lower and lower-level parts of Inform. To develop a new kit, for example, calls for some traditional computer programming skills, and some experience of writing code in the Inform 6 language. But only very advanced extensions need to use a kit. Simple extensions are actually quite easy to make, and need no knowledge of Inform 6 at all. How to write that everyday sort of extension will be the subject of this first chapter.
 
-The range of simulation offered by Inform's model world is intentionally limited to a core of basic essentials. We could argue at the margins, and the choice of what's in and what's out is partly traditional, but most people find the model reasonable as far as it goes.
+In this chapter, we'll take on the role of Peter Drake, an Inform author who wants to package up the following minimal piece of design as an extension:
 
-Between 1993 and 2006, quite a range of "library extensions" for Inform's predecessor language (Inform 6) was written. Most of these extensions aimed to fill out the model by simulating other aspects of life, too: money, clothing, pourable liquids. None of these extensions was official and all of them were: it was a free-for-all, and in several cases different authors wrote rival extensions to model the same basic ideas. The development of Inform 7 was strongly influenced by this history and by the recognition that the base of rules and grammar inside a typical modern story are seldom written by a single author. They combine the standard Inform material with extensions by several third parties, together with anything specific to the story in question.
+	Ducking is an action applying to nothing. Understand "duck" as ducking.
+	
+	Report ducking: say "You duck!"
 
-Inform 7 has a more organised idea of extensions, as we shall see. But anyone is free to write an extension on any terms or for any reason. Writers may wish to use the techniques in this chapter to develop private extensions of their own, used in several projects, or to share them with associates but not more widely.
+Of course this is much too small to be worth making an extension of, but it will serve as an example. One way in which it _is_ typical of extensions, though, is that it adds something to the usual Inform stock of actions or phrases, but doesn't create any specific rooms or things. So it could in principle be included in all kinds of different stories, to give them a ducking action.
 
-But most writers of extensions do so to contribute to the Inform community, and for the satisfaction of solving a problem. Inform does not recognise anyone's approach to a particular need as "the official solution" – for instance, although this manual sometimes recommends `Locksmith by Emily Short`, that is not the "official" way to make automatically unlocking doors, and anyone is welcome to try a better one.
+As is typical of extension-writing, there are some definite rules about the title and author name, which Inform enforces, but there are also good-practice guidelines which are not enforced. In this chapter, we'll try to cover both. Extensions are designed to be shared, and community norms make that sharing more practical.
 
-However, the Inform project does recognise some extensions as "public". Public extensions are the ones archived on the Inform website for the free use of all Inform writers. Those who wish to contribute an extension as a public one are obliged to follow a number of guidelines, which are mostly stylistic points intended to make the range of extensions easier to work with. Extension writers are asked to join in the spirit of these rules and help make the whole cooperative enterprise work harmoniously. Extensions which do play by these rules are also accepted into the Public Library, which makes them easy for all Inform users everywhere to find and obtain them.
-
-Writers who wish to make their extensions public on the Inform website should also be clear that by doing so, they are donating their work to the community on the basis of the broadest form of Creative Commons licence: that is, they retain copyright and the right to be identified as the author (and as we shall see they are automatically credited in any work of IF which uses their extension), but are giving unlimited permission to use, circulate and republish their extensions in any form, even as part of commercial works (should that arise). To publish a public extension is a public-spirited act, done for only the reward of a modest acknowledgement.
-
-If the author of an extension has not made it public, or indicated in some other way that it is free to be used without the need for permission, then it would be both polite and prudent to check with the author before publishing something which incorporates their work.
-
-## The Standard Rules {SRULES}
+## Review of how extensions are used {EXTENSIONS} {SRULES}
 
 ^^{Standard Rules+ext+} ^^{extensions: specific extensions: Standard Rules}
+^^{Basic Inform+ext+} ^^{extensions: specific extensions: Basic Inform}
+^^{English Language+ext+} ^^{extensions: specific extensions: English Language}
+^^{extensions: installing} ^^{files (compiling): extensions} ^^{extensions: built-in extensions} ^^{extensions: project-installed extensions} ^^{materials folder: project-installed extensions} ^^{inform7.com+web+}
 
-When any source text is run through Inform, a secret first line is inserted, which reads:
+Extensions are identified by the combination of their title and author name, and sometimes by a version number as well. `Locksmith by Emily Short` is an extension; version 11 is one of the various versions it has had over the years.
 
-	Include the Standard Rules by Graham Nelson.
+An extension becomes part of a story by being _included_. Three extensions are usually included by Inform, in a silent and automatic sort of way:
 
-The "Standard Rules" file contains the definitions of the basic kinds, phrases, actions and grammar described in this documentation: for instance, it includes lines like
+- `Basic Inform by Graham Nelson`. This sets up the fundamentals of the Inform language, and defines phrases for dealing with data like text, lists and real numbers.
 
-	A container is a kind of thing.
+- `English Language by Graham Nelson`. This is needed for the story to use English as its language of story-telling with the player. If the story were to be in some other language, a different extension would be substituted.
 
-...without which Inform would be lost. Although including the Standard Rules is compulsory, it is treated internally as if it were any other "extension".
+- `Standard Rules by Graham Nelson`. This sets up the kinds and properties used in the world model for interactive fiction: rooms, doors, directions and so on. In so-called "basic projects", which do not have a command parser and are not games, the Standard Rules are not included.
 
-What happens when an `Include` sentence is reached is that the sentence is replaced with the whole text of the file in question, often many paragraphs long.
+Other extensions are included only because the source text calls for them:
 
-If the file has already been included, then the sentence is simply ignored. This is so that we can have two extensions, each of which needs the other: if A says to include B, and B says to include A, the result is that including one automatically includes the other, so we always get both which ever we ask for – not that there is a hideous infinite regress.
+	Include Locksmith by Emily Short.
 
-## Built-in, installed and project-specific extensions
+Note, though, that extensions contain source text too, and can also have `Include` instructions like this: so one extension can call for another one to be included as well. It's not an error to make multiple requests for the same extension, but that extension is then included only once. This means it is quite safe for extension A to ask to include extension B, and for extension B to ask to include extension A. This will not cause infinite regress: it will simply mean that both are included.
 
-^^{extensions: installing} ^^{files (compiling): extensions} ^^{extensions: built-in extensions} ^^{extensions: project-specific extensions} ^^{materials folder: project-specific extensions} ^^{inform7.com+web+}
+The one restriction here is that the same project cannot simultaneously include two different versions of the same extension. If Inform has both version 13 and version 15 of `Locksmith by Emily Short` available to it, it will make a choice of which to include, and will not include both. (Unless told otherwise, it will choose the one with the higher version number.)
 
-To recap: Inform builds projects from both the source text typed by the author and from Extensions; one of these, the Standard Rules, is always included; others are added as authors please. About 20 are "built-in" to Inform, meaning that they are stored inside the application and always available. Others must be "installed", and each Inform user will have a folder somewhere on their computer which contains these. Users typically obtain these from the Public Library feature in the Inform application, but can also download them directly from the extension writer's website and then use an Install Extension menu option in the application. Either way, the application then squirrels the file away, and it becomes available to any projects that that user may be working on.
+Where do these extensions live? Except for the three special cases above, Inform now always looks for them in the ```Extensions``` subdirectory of the project's "materials" folder. Extensions filed there are said to be _installed in the project_. Long-time Inform users might be expecting extensions to be installed in some cache stored elsewhere on the computer, but as of 2023 we no longer do that, and all extensions used by a story should be installed in the project. (A project can have extensions installed which it is not currently using, and can even have multiple versions of the same extension installed.)
 
-It is also possible to have extensions available to just one project. These must be stored in the Extensions subfolder of the project's `.materials` folder, but otherwise are arranged the same as installed extensions – there's an outer folder for each author's name, and extensions are named with a `.i7x` extension within. For example:
+Experienced users might also be expecting to see the extension as a single file with a filename like ```Locksmith-v15.i7x```. That's still supported, but now deprecated. Modern extensions occupy directories — the ```d``` at the end of ```Locksmith-v15.i7xd``` stands for "directory".
 
-```
-Mourning Hypercritical.inform
-Mourning Hypercritical.materials
-	Extensions
-		John Siracusa
-			Fixing The Finder.i7x
-```
+When distributed on the Internet, this may well be zipped up as `Locksmith.zip` or similar. The Inform app has the ability to download such a file, unzip it, identify its identity and version, and install it. But this can also be done by hand, of course.
 
-When Inform needs to find an extension, it looks here first, then in the installed area, then in its built-in area. That means that we can make our own revised or hacked version of an extension, put it in the `.materials` area, and then have it take precedence over the installed or built-in one. We could even have our own private version of the Standard Rules here.
+The Extensions tab in the Inform app displays details of all of the extensions installed in a project, and whether they are currently being used or not. It's accompanied by the Public Library tab, which allows other extensions to be downloaded directly from the Public Library into the project.
 
-(This has a number of possible uses – for example, to provide a convenient test-bed when working on an experimental version of an extension.)
-
-## Authorship
+## Title and authorship
 
 ^^{extensions: writing: author+biblio+} ^^{author+biblio+: of an extension}
 
-Extensions are identified by author and by name, so that a given author can produce their own range of extensions, and need only ensure that these are named differently from each other. If John Smith and Mary Brown each want to write an extension called `Following People`, there is no conflict.
+In this chapter, we'll take on the role of Peter Drake, an Inform author who wants to package up the following minimal piece of design as an extension:
 
-The name of an extension, and of an author, should be written in Sentence Capitalisation: that is, upper case for the first letter in each word. (Inform uses this to minimise problems on machines where filenames are read with case sensitivity.) It is permitted for author names to include upper-case letters within words, as with the "G" in "^{@Tara McGrew}". In general it is best to avoid accented or unusual letters in titles and author names, but the standard ISO Latin-1 characters should be allowed – for instance,
-
-	Étude Pour La Fênetre by Françoise Gauß begins here.
-
-The author name must not start with "The", nor contain the words "by", "and" or "version", or contain punctuation, as in "John X. Doe"; the title similarly, except that "and" is permitted. Name and author's name must each be no more than 50 characters long, including any spaces between words.
-
-Authors are asked to use real names rather than cryptic handles like "ifguy", and to use genteel, plausible pseudonyms like "^{@Emily Short}" rather than, say, "Drooling Zombie" or "Team Inform". Authors are also asked to use the same author's name for all their own extensions, and (it should go without saying) not to masquerade as anybody else.
-
-Sometimes authorship is complicated. What if Mary Brown finds some Inform 6 code written by John Smith in the mid-90s, and puts an I7 gloss on it to make an I7 extension, but then Pierre Dupont translates it into French: who's the author of the result? The rule is that the person making the current, latest version is the author listed in the titling line, so we end up with
-
-	... by Pierre Dupont begins here.
-
-But Mary and John deserve their credits too: see the next section for how to give them.
-
-## A simple example extension {PM_ExtMultipleBeginsHere} {PM_ExtBeginsAfterEndsHere} {PM_ExtMultipleEndsHere} {PM_ExtNoBeginsHere} {PM_ExtNoEndsHere}
-
-^^{extensions: writing: example} ^^{>VERSION}
-
-Extensions are plain text files, and can be created with any text editor. (It is sometimes said that "there is no such thing as plain text", there being so many ways to represent exotic characters: so to be precise, an extension is a text file with the Unicode UTF-8 encoding, either with or without a BOM marker, using any of the possible forms of line-ending (Unix, Windows, Macintosh, or Unicode line divider). This is a detail which will only matter if the extension contains accented letters or other exotica.)
-
-Extensions look very much like passages of Inform source, because except for a special introductory and concluding sentence, and one convention, that is all they are:
-
-	{*}The Ducking Action by Beatrix Potter begins here.
+	Ducking is an action applying to nothing. Understand "duck" as ducking.
 	
-	"An action for ducking one's head."
+	Report ducking: say "You duck!"
+
+Of course this is far too small to be worth making an extension of, but it will serve as an example. It's typical of extensions in that it adds something to the usual Inform stock of actions or phrases, but doesn't create any rooms or things. It could in principle be included in all kinds of different stories, to give them a ducking action.
+
+The first task is to work out a name for the extension, which is a combination of title and author name. Here are some considerations:
+
+1) The name of an extension, and of an author, should be written in using upper case on the first letter in each word. For example `Points Of View by Dino Di Maggio` is allowed, but note that it is `Of` not `of` and `Di` not `di`. (Having a definite rule about upper and lower case minimises problems on machines where filenames are read with case sensitivity.)
+
+2) However, author names can include upper-case letters within words, so for example `Scrooge McDuck` is a valid author name.
+
+3) Where possible, accented or unusual letters should be avoided in titles and author names, but they can in principle use any of the standard ISO Latin-1 characters. `Étude Pour La Fênetre by Françoise Gauß` is legal.
+
+4) The title must not start with `The`, nor contain the words `by` or `version`, nor contain punctuation. Thus `The Stock Market` is illegal, but `Stocks And Shares` is fine. The title must not exceed 50 characters in length, including any spaces between words.
+
+5) Titles should aim to give a straightforward description of the function of the extension, rather than cryptic allusions or puns. Because extensions are identified by title and author name in combination, there is no need to worry about making the title so distinctive that nobody else would ever use it. It causes no problems if John Smith and Mary Brown each write extensions called `Following People`, because one is `Following People by John Smith` and the other `Following People by Mary Brown`.
+
+6) The author name must not start with `The`, nor contain the words `by`, `and` or `version`, nor contain punctuation, and must not be the word `Reserved`. Thus, `John X. Doe` is illegal, but `John X Doe` is fine; `The Edge` is illegal, but `Megan Thee Stallion` is fine. The author name must not exceed 50 characters in length, including any spaces between words.
+
+7) Whenever possible, authors should use real names rather than cryptic handles like `Ifguy`, and to use genteel, plausible pseudonyms like `Emily Short` rather than, say, `Drooling Zombie`.
+
+8) Authors should try to use the same author's name for all their own extensions, and (it should go without saying) should not masquerade as anybody else.
+
+For our example extension, rule (5) suggests we should call it just "ducking action", since that's what it provides. Rule (1) says we should capitalise to `Ducking Action`, and that's clearly okay under rule (4), since it's much shorter than 50 characters and contains none of the forbidden words. The author name is easy too: `Peter Drake`. So the example extension will be called `Ducking Action by Peter Drake`.
+
+## Creating a new extension
+
+^^{extensions: writing: example}
+
+To create a new extension, it's first sensible to create a host project which can try it out. The nascent extension then stays installed in that host project until it's ready to ship out to the world.
+
+So, let's begin with a project like so:
+
+	"Ducking Test"
 	
-	Ducking is an action applying to nothing. Report ducking: say "You duck!" Understand "duck" as ducking.
+	[Include Ducking Action by Peter Drake.]
 	
-	The Ducking Action ends here.
-
-Not a useful or interesting extension, but those few words add a whole new action and everything needed to make it work. It is Inform's ability to mix up rooms, things, kinds, grammar, phrases and rules, in more or less any order, which makes it possible for extensions to work.
-
-The introductory sentence must be placed as the only content of line 1 of the file, which must not contain comments, and has to be written in exactly the correct form. Inform checks this very carefully when performing its census of installed extensions, on each translation of the text. (In case the extension's title is a plural, we are allowed to write `begin` and `end` instead of `begins` and `ends`. For instance, the last line of the standard rules is `The Standard Rules end here.`)
-
-The "one convention" mentioned above is that if a double-quoted text is placed immediately after the beginning sentence (and with no intervening comments), then it is taken to be a short description of the extension's content called the "rubric". Hence the line:
-
-	"An action for ducking one's head."
-
-Providing a rubric is helpful, because it enables Inform to give a meaningful listing even for an as-yet unused and unindexed extension, and because it helps the Inform website to produce better directories. Note the word "short": such text is likely to be truncated if it exceeds 500 characters.
-
-A second double-quoted text can also, optionally, be added in yet a third special starting paragraph. This is to provide additional credits to people who have contributed to this or earlier versions. For instance:
-
-	The Ducking Action by Beatrix Potter begins here.
+	The Village Pond is a room.
 	
-	"An action for ducking one's head."
-	
-	"based on original Inform 6 code by Marc Canard"
+	Test me with "duck".
 
-Note the typical style here: it's a phrase rather than a sentence, and neither starts with an upper-case letter nor ends with a full stop. (The additional credit is then used in documentation and also in the ``VERSION`` text of any Inform story file using the extension.)
+Note that the inclusion is commented out by the `[` and `]`, since there's not yet an extension to include. We save this as, say, ```Ducking Test.inform```, then run it, which ensures that ```Ducking Test.materials``` is created too. In fact, it already has some contents:
+
+``` code
+Ducking Test.inform
+Ducking Test.materials
+	Extensions
+		Reserved
+	Release
+```
+
+We then need to create three further subfolders (also known as subdirectories), so as to get to this layout:
+
+``` code
+Ducking Test.inform
+Ducking Test.materials
+	Extensions
+		Peter Drake
+			Ducking Action-v1.i7xd
+				Source
+		Reserved
+	Release
+```
+
+That is, we create an ```Extensions``` subfolder of the materials folder, then a ```Peter Drake``` subfolder of that, then a ```Ducking Action-v1.i7xd``` subfolder in turn, and finally, at the centre of these Russian dolls, a ```Source``` subfolder.
+
+So now we create a text file called ```Ducking Action.i7x```, which reads as follows:
+
+	Version 1 of Ducking Action by Peter Drake begins here.
+
+	Ducking is an action applying to nothing. Understand "duck" as ducking.
+
+	Report ducking: say "You duck!"
+
+	Ducking Action ends here.
+
+This should be a plain text file. It is sometimes said that "there is no such thing as plain text", there being so many ways to represent exotic characters: so to be precise, the source should be a text file with the Unicode UTF-8 encoding, either with or without a BOM marker, using any of the possible forms of line-ending (Unix, Windows, Macintosh, or Unicode line divider). But this is a detail which will only matter if the extension contains accented letters or other exotica. The default settings on any modern text editor will likely be fine.
+
+We save this file, and so now we have this setup:
+
+``` code
+Ducking Test.inform
+Ducking Test.materials
+	Extensions
+		Peter Drake
+			Ducking Action-v1.i7xd
+				Source
+					Ducking Action.i7x
+		Reserved
+	Release
+```
+
+We can now uncomment the `Include` line in the test project:
+
+	"Ducking Test"
+	
+	Include Ducking Action by Peter Drake.
+	
+	The Village Pond is a room.
+
+	Test me with "duck".
+
+When we run it again, the whole thing should now work:
+
+	> TEST ME
+	(Testing.)
+
+	>[1] DUCK
+	You duck!
+
+And that's it: a fully-functioning extension has been made.
+
+## JSON metadata
+
+Having got the `Ducking Action` extension working, in a minimal sort of way, we might now look again at the files being stored under the surface.
+
+``` code
+Ducking Test.inform
+Ducking Test.materials
+	Extensions
+		Peter Drake
+			Ducking Action-v1.i7xd
+				extension_metadata.json
+				Source
+					Ducking Action.i7x
+		Reserved
+	Release
+```
+
+This is as before except that a new file, ```extension_metadata.json```, has appeared out of nowhere. JSON is an interchange format for computer programs to use when sending information to each other. If we look at this file, it reads:
+
+``` code
+{
+	"is": {
+		"type": "extension",
+		"title": "Ducking Action",
+		"author": "Peter Drake",
+		"version": "1"
+	}
+}
+```
+
+In practice, extension authors can just forget that this file exists most of the time. Some low-level extensions will need to add various other pieces of information to it, but most extensions won't. If the extension title, author or version are changed, Inform will automatically correct ```extension_metadata.json``` to match the change.
+
+The commonest way that happens, in fact, is when the version number changes. Suppose we want to make an update to version 2. Suppose we correct the extension source so that it reads as follows:
+
+	Version 2 of Ducking Action by Peter Drake begins here.
+
+	Ducking is an action applying to nothing. Understand "duck" as ducking.
+
+	Report ducking: say "You duck! Twice!"
+
+	Ducking Action ends here.
+
+When we run the test project again, it once again works:
+
+	> TEST ME
+	(Testing.)
+
+	>[1] DUCK
+	You duck! Twice!
+
+But if we then look back at the files under the hood, we find that the folder previously called ```Ducking Action-v1.i7xd```, which held the extension, has now been renamed ```Ducking Action-v2.i7xd```, and also that the JSON metadata has become:
+
+``` code
+{
+	"is": {
+		"type": "extension",
+		"title": "Ducking Action",
+		"author": "Peter Drake",
+		"version": "2"
+	}
+}
+```
+
+So the upshot of this technical little section is... that we can basically forget about the JSON metadata for the moment, and let it do its own thing.
+
+## Begins here and ends here {PM_ExtMultipleBeginsHere} {PM_ExtBeginsAfterEndsHere} {PM_ExtMultipleEndsHere} {PM_ExtNoBeginsHere} {PM_ExtNoEndsHere}
+
+Here is where we've got to, then, with the extension source text:
+
+	Version 1 of Ducking Action by Peter Drake begins here.
+
+	Ducking is an action applying to nothing. Understand "duck" as ducking.
+
+	Report ducking: say "You duck!"
+
+	Ducking Action ends here.
+
+Note that the extension has to begin and end with special sentences. These act rather like headings (`Chapter 3`, say) in the main source text, but of course the `begins here` sentence contains important identifying information. Note that:
+
+1) The `begins here` sentence must be placed as the only content of line 1 of the file. It must not contain comments in square brackets, and it must not break across multiple lines. If the extension began like this, Inform would refuse to include it:
+
+   Version 1 of Ducking
+   Action by Peter Drake begins here.
+
+2) There must of course be exactly one `begins here` line, and exactly one `ends here` line.
+
+3) Until 2023, it was common for extensions to place documentation underneath the `ends here` line, after a conspicuous tear-off marker line `---- DOCUMENTATION ----`. There is now a much better system for documentation: see [Extension documentation].
+
+4) Other than this old style of documentation, which is now deprecated, no content is permitted below the `ends here` line. So it really should be at the end of the file.
+
+5) In case the extension's title is a plural, we are allowed to write `begin` and `end` instead of `begins` and `ends`. For instance, this is fine:
+
+       Version 2.34 of Projectile Rules by Jane Mallard begins here.
+       
+       Projectile Rules end here. 
+
+We have already seen that there are rules about the title and the author name, and we turn next to the version number.
 
 ## Version numbering {PM_ExtVersionTooLow}
 
 ^^{version number (of extension)} ^^{extensions: writing: version number} ^^{extensions: using specific versions} ^^{extensions: listing credits for} ^^{>VERSION} ^^{use options: catalogue: |authorial modesty} ^^{authorial modesty+useopt+}
 
-As we have seen, extensions are referred to by name and author, but they can also (optionally) be referred to by version. For instance:
+At this point, let's take a closer look at the opening words of our extension. The first line reads:
 
-	Include version 2 of the Ducking Action by Beatrix Potter.
+	Version 1 of Ducking Action by Peter Drake begins here.
+
+Inform used to be very relaxed about version-numbering of extensions, but that turned out not to be good idea in the long run. In particular:
+
+1) The version number is actually optional, so that it would be legal to just start with `Ducking Action by Peter Drake begins here.` This is now very much deprecated. Version numbers are our friends. Every extension on the Public Library is required to have a version number.
+
+2) Before 2022, extensions were sometimes given version numbers in the form `N/YYMMDD`, as in this example:
+
+       Version 6/040426 of Crossbow Bolts by Jane Mallard begins here.
+
+   The material after the slash '/' was expected to be a date, so that `040426` would mean 26 April 2004. In order to preserve compatibility with old extensions like this one, Inform continues to allow this notation, but treats it as equivalent to writing `N.0.YYMMDD`, though with any leading 0s trimmed. So the above sentence is equivalent to writing:
+
+       Version 6.0.40426 of Crossbow Bolts by Jane Mallard begins here.
+
+   This `N/YYMMDD` is now deprecated, and no new extension should use it.
+
+The reason for the version number, of course, is that most extensions exist for some years, and are improved or maintained from time to time. This means that multiple different states of the extension will have been circulated on the Internet. If these different states have different version numbers, it will be possible for people to tell which one they have, and whether they need to update.
+
+So any authors sharing an extension with the public has an obligation to keep good version-numbering habits. Here are the considerations to follow:
+
+1) Version numbers should consist of one to three whole numbers divided by dots, with no negative numbers allowed. Thus `5`, `3.3` and `2.1.71652` are all valid as version numbers, but `-4` and `3.1.2.5` are not. Any numbers not specified are taken to be 0: thus `3.3` means the same as `3.3.0`, and `5` means the same as `5.0.0`.
+
+2) A shared community policy on version numbering is a huge help to extension users, so it's helpful for us all to agree on what good version-numbering is. Because of that, the Inform project follows a widely-recognised Internet standard called _semantic version numbering_, or _semver_ for short. For full details see [semver.org](https://semver.org), but the notes given here should be enough for our fairly simple needs.
+
+   "Semantic" just means that version number changes should communicate something meaningful. So, whenever an extension author puts out a new version of an extension, the extension number should change in a way that signals how drastic the change will be.
+
+3) In this system, the three possible numbers `X.Y.Z` are called the _major_, _minor_ and _patch_ numbers. Traditional semver rules say that all three should always be given, but as noted, Inform allows patch and minor numbers to be omitted for brevity. Our extension `Ducking Action by Peter Drake` had version number just given as `1`, but this was an abbreviation for `1.0.0`.
+
+4) Every time an extension is changed and re-released, even just informally among friends but certainly if posted somewhere on the Internet, at least one of `X`, `Y` or `Z` should change — even if the amendment to the extension is something tiny and unimportant, like a typo fixed in its documentation. The rules are:
+
+   - If the extension has changed so much that Inform projects using it will need to be changed in order to keep on working – for example, if a `To...` phrase has been taken out, or the name of a kind changed – then X should be increased. Y and Z then usually go back to 0. This is a _major version_.
+
+   - If the extension provides new features but doesn't do anything to change the way its existing features are used, then X can stay the same but Y should increase, and Z then usually rolls around to 0. This is a _minor version_.
+
+   - If the extension has changed only to fix bugs, or make its existing features work more efficiently, or provide better documentation or examples, then X and Y can stay the same but Z should increase. This is a _patch version_.
+
+5) Because of the `(in place of ...)` feature covered later in [Extensions with different source text for different uses], any change of the names of the headings in the extension's source text — or movement of material between them — must be considered a major change. Creating new headings, however, is minor.
+
+6) The full semver standard allows "annotations" to be added after the numbers, with a `+` or `-` character thrown in: thus, `10.2.0-beta+6X42` is a legal semver. Extensions should not do this.
+
+What do we gain from these rules?
+
+Firstly, if a user has two different copies of the same extension, they can at the very least tell which one is later. `3.2.7` is later than `3.1`, for example.
+
+Secondly, a user who currently has version 3.2.7 knows that an update to 3.2.8 can be made without really investigating. That same user can even update to 3.3, 3.4, ... without any trouble, choosing either to use or ignore whatever new features they are presenting. But the user knows that moving up to version 4 might well require some work – a project using version 3.5.1 will likely need writing to adopt version 4.
+
+Thirdly, a single project can have multiple versions of the same extension installed. On any given run, it can only use of them, but it can have several to choose from. As the author of `Ducking Action`, Peter Drake might want to keep back versions around in his test project ```Ducking Test.inform```, like so:
+
+``` code
+Ducking Test.inform
+Ducking Test.materials
+	Extensions
+		Peter Drake
+			Ducking Action-v1.i7xd
+			Ducking Action-v1_1.i7xd
+			Ducking Action-v1_2.i7xd
+			Ducking Action-v2.i7xd
+			Ducking Action-v3.i7xd
+```
+
+That might make it easier to test in which version a newly-discovered bug had appeared, for example.
+
+Note that when Inform reads this in the source text of the test project:
+
+	Include Ducking Action by Peter Drake.
+
+...it will then have to choose which of the versions installed it should use. By default, it will choose the one with the highest version number, so it will use ```Ducking Action-v3.i7xd```. But that can be overridden:
+
+	Include version 1.1 of the Ducking Action by Peter Drake.
 	
-	Version 1.2.4 of the Ducking Action by Beatrix Potter begins here.
+This will only accept an extension if its version number is _compatible_ with 1.1, which means, if it is 1.1 _or later_, but still belongs to the same major version, 1. Perhaps surprisingly, then, this `Include` causes Inform to load ```Ducking Action-v1_2.i7xd```, because 1.2 is the highest version number available which is compatible with 1.1.
 
-Version numbers should consist of one to three whole numbers divided by dots, with no negative numbers allowed. Thus `5`, `3.3` and `2.1.71652` are all valid as version numbers, but `-4` and `3.1.2.5` are not. Any numbers not specified are taken to be 0: thus `3.3` means the same as `3.3.0`, and `5` means the same as `5.0.0`.
+## Extensions including other extensions
 
-In versions of Inform before 2022, versions of extensions were also allowed to be written in the form "N/YYMMDD, as in this example:
+^^{extensions: writing: including other extensions}
 
-	Version 6/040426 of the Ducking Action by Beatrix Potter begins here.
+Extensions can themselves contain `Include...` sentences asking for other extensions to be included.
 
-The material after the slash '/' was expected to be a date, so that 040426 would mean 26 April 2004. In order to preserve compatibility with old extensions, Inform continues to allow this notation, but treats it as equivalent to writing "N.0.YYMMDD, though with any leading 0s trimmed. So the above sentence is equivalent to writing:
+For example, suppose `Ducking Action` requires `Crossbow Bolts by Jane Mallard`. The obvious thing is to write:
 
-	Version 6.0.40426 of the Ducking Action by Beatrix Potter begins here.
+	Version 1 of Ducking Action by Peter Drake begins here.
 
-Extensions are usually intended to be shared and passed around between Inform users, and good use of version numbering can be a huge help to those users; and it's helpful if we can agree as a community on what good version-numbering is. Because of that, the Inform project tries to use a widely-recognised Internet standard called "semantic version numbering".
+	Include Crossbow Bolts by Jane Mallard.
+	
+	...
 
-For full details see [semver.org](https://semver.org), but for Inform purposes the following fairly simple rules should be enough. "Semantic" just means that version number changes should communicate something meaningful. So, whenever an extension author puts out a new version of an extension, the extension number should change in a way that signals how drastic the change will be.
+And indeed if we are very confident that `Ducking Action` can work with any version of `Crossbow Bolts` which has ever existed, or is likely to exist, then that is fine. But suppose `Ducking Action` will only work with version 8. Then it can begin like so:
 
-In this system, the three possible numbers X.Y.Z are called the "major", "minor" and "patch" numbers. Every time an extension is changed and re-released, even just informally among friends but certainly if posted somewhere on the Internet, X, Y or Z should change. The rules are:
+	Version 1 of Ducking Action by Peter Drake begins here.
 
-(X) If the extension has changed so much that Inform projects using it will need to be changed in order to keep on working – for example, if a `To...` phrase has been taken out, or the name of a kind changed – then X should be increased. Y and Z then usually go back to 0. This is a "major version".
+	Include version 8 of Crossbow Bolts by Jane Mallard.
+	
+	...
 
-(Y) If the extension provides new features but doesn't do anything to change the way its existing features are used, then X can stay the same but Y should increase, and Z then usually rolls around to 0. This is a "minor version".
+If an extension does include other extensions, it is good style to place the `Include...` sentence(s) as early as possible after the introductory sentence. The build manager inside Inform, a component called ```inbuild```, can spot such a requirement wherever it occurs, but human readers often fail to notice them if they're not at the top of the file.
 
-(Z) If the extension has changed only to fix bugs, or make its existing features work more efficiently, or provide better documentation or examples, then X and Y can stay the same but Z should increase. This is a "patch version".
+An inclusion like this is sometimes called a _dependency_, because `Ducking Action` now depends on `Crossbow Bolts` in order to work. Following the semantic versioning standard, Inform will then try to include any version of `Crossbow Bolts` which is _compatible_ with version 8: so it will accept version 8, or 8.0.3, or 8.1, and so on, but not version 9 or above.
 
-So, for example, a user who currently has version 3.2.7 can update to 3.2.8 without really investigating. That same user can update to 3.3, 3.4, ... without any trouble, choosing either to use or ignore whatever new features they are presenting. But the user knows that moving up to version 4 might well require some work – a project using version 3.Y.Z will likely need writing to adopt version 4.
+That seems rather strict, but it's a consequence of the semver rules. If Jane Mallard has bumped her major version number to 9, that's a signal that her extension has broken its existing compatibility by changing how things behave in an important way.
 
-Now let's turn to `Include` sentences. A request like:
+This underlines the moral that semver works best when everybody does it: if Jane has simply bumped 8 to 9 after a slight and unimportant change, she may be causing unnecessary work for other people. Peter Drake would have to change the above `Include` line, for example, in `Ducking Action`.
 
-	Include the Ducking Action by Beatrix Potter.
+It sometimes happens that the same project asks to `Include` the same extension multiple times. For example, if the project `Lily Pond` contains `Include` lines for both `Ducking Action` and `Crossbow Bolts`, and `Ducking Action` also requests `Crossbow Bolts`, that means it has been requested twice.
 
-will be happy with any version of the extension at all, whether numbered or not; but
+This is fine if the version numbers in the requests can be reconciled, but sometimes they can't. For example, this pair is compatible:
 
-	Include version 2.4 of the Ducking Action by Beatrix Potter.
+	Include Crossbow Bolts by Jane Mallard.
 
-will only accept the extension if its version number is "compatible" with 2.4, which means, if it is 2.4 or later, but still belongs to the same major version, "2". So if we write this inclusion sentence, but the version we have installed is version 3.1, Inform will give a problem message. The fix may well be as simple as changing the inclusion sentence to match – but it may not, because a change in major version number is a signal that things have changed a lot inside the extension (see above).
+	Include version 8 of Crossbow Bolts by Jane Mallard.
+
+And so is this:
+
+	Include version 8.2.4 of Crossbow Bolts by Jane Mallard.
+
+	Include version 8 of Crossbow Bolts by Jane Mallard.
+
+But this pair is not:
+
+	Include version 9.5 of Crossbow Bolts by Jane Mallard.
+
+	Include version 10.3 of Crossbow Bolts by Jane Mallard.
+
+because all versions compatible with 9.5 have major version number 9, and all versions compatible with 10.3 have major version number 10. So it is not possible to satisfy both, and Inform will produce a problem message.
+
+## Extension rubrics
+
+It's very helpful for an extension to be accompanied by a brief description of what it does, so that a user browsing through lists of extensions can see more than just the title. This is called a _rubric_.
+
+Every extension should give a rubric. It's written as a double-quoted text placed immediately after the beginning sentence, and with no intervening comments. For example:
+
+	Version 1 of Ducking Action by Peter Drake begins here.
+
+	"An action for ducking one's head, to avoid a projectile or pass under a low doorframe."
+
+	Ducking is an action applying to nothing. Understand "duck" as ducking.
+
+	Report ducking: say "You duck!"
+
+	Ducking Action ends here.
+
+A few considerations about rubrics:
+
+1) Rubrics are never printed in play, and they cannot make use of text substitutions in square brackets.
+
+2) A rubric should not exceed 500 characters at the outside, and should if possible be shorter than that. Most extensions can be summed up fairly in a sentence or two.
+
+3) The rubric is a good place to explain the title, if there's any ambiguity. For example, "ducking" might suggest skipping a class, or a meeting, or avoiding some task. The text "to avoid a projectile or pass under a low doorframe" above makes clear that we mean something more physical and in-the-moment.
+
+A second double-quoted text can also, optionally, be added in yet a third special starting paragraph. This is to provide additional credits to people who have contributed to this or earlier versions. For instance:
+
+	"based on original Inform 6 code by Marc Canard"
+
+Note the typical style here: it's a phrase rather than a sentence, and neither starts with an upper-case letter nor ends with a full stop. (The additional credit is then used in documentation and also in the ``VERSION`` text of any Inform story file using the extension.)
+
+## Licence
+
+^^{extensions: licencing of use} ^^{>VERSION}
+
+First, though, a word about sharing. Anyone is free to write an extension on any terms or for any reason, of course, and some writers develop private extensions of their own, to be used only in their own stories, or to be used by collaborators whom they know well.
+
+But most extensions are written to be shared with strangers — that is, they are made available to anybody who wants to download and use them. There are several online repositories of extensions written in this way, of which one is the Inform Public Library, accessed from the Inform app.
+
+Whenever one author copies or adapts programs or text by another author, copyright law comes into play. If we want to publish or sell a story which uses an extension by somebody else, we need their permission. The form that permission usually takes is a general _licence_ (or "license", in US English) where the extension author says, in effect: Anybody can use this provided ... and then gives some conditions.
 
 During play of any story compiled by Inform 7, typing ``VERSION`` lists various serial numbers of the pieces of software used to make it. The list concludes with names, authors and version numbers of any extensions used. So every author whose work contributes to a story automatically gets a modest credit within it. The same list can be printed, at the discretion of the designer, using the textual substitution:
 
@@ -17663,89 +17941,150 @@ A complete list, undiluted by modesty, can always be obtained using:
 >
 > This text substitution expands to one or more lines of text crediting each of the extensions used by the current source text, along with their version numbers and authors. Every extension is included, even those whose authors have opted for `use authorial modesty`.
 
-## Extensions and story file formats
+Sometimes authorship is complicated. What if Mary Brown finds some Inform 6 code written by John Smith in the mid-90s, and puts an I7 gloss on it to make an I7 extension, but then Pierre Dupont translates it into French: who's the author of the result? The rule is that the person making the current, latest version is the author listed in the titling line, so we end up with
+
+	... by Pierre Dupont begins here.
+
+But Mary and John deserve their credits too...
+
+_More to follow when IE-0036 is implemented._
+
+## Compatibility with story file formats
 
 ^^{extensions: writing: for a specific virtual machine} ^^{Glulx: extensions for Glulx only} ^^{Z-machine: extensions for Z-machine only} ^^{virtual machine: extensions for Z-machine / Glulx only} ^^{Basic Screen Effects+ext+} ^^{extensions: specific extensions: Basic Screen Effects}
 
-Inform compiles to several different story file formats, and in each case uses only a small part of their abilities – especially when it comes to fancy tricks with the keyboard or screen. So people may well want to write extensions which provide access to some of these tricks. Unfortunately, these tricks are very likely to fail to compile – or fail to work – on some of the possible story file formats, so the resulting extension would probably go wrong (and mysteriously wrong) for users who have chosen a different format.
+The Inform app gives each project a Settings panel, and the most consequential setting by far looks like this:
 
-Inform therefore provides a way for extensions to declare the formats they are compatible with. All that is required is to add a proviso in brackets after the title is declared:
+> __Story File Format__
+>
+> Inform translates the source text into a story file which can have either of two standard formats. You can change your mind about the format at any time, but some language features require Glulx to be used.
+>
+> - Z-Code version 8 (medium-sized textual projects: most portable)
+>
+> - Glulx (large and multimedia projects: most capable)
 
-	Version 2 of Basic Screen Effects (for Z-Machine version 8 only) by ^{@Emily Short} begins here.
+The default is Glulx, and that is what almost all users accept, but there are certainly still users creating small Z-machine story files. The setting matters a great deal because Z-code story files are not only small, they handle data in smaller chunks: it's a 16-bit virtual computer, not a 32-bit one like Glulx. This is why `number` values can be so much larger in Glulx. Glulx also offers the `real number` kind, which is not available with the Z-code setting, and so on. There are further differences to do with visual effects.
 
-Other examples might be `(for Glulx only)`, or `(for Z-machine only)`. If no such proviso is given, the extension is assumed to be compatible with every story file format.
+Though it is not offered as a setting in the Inform apps, there's a third platform too: command-line Inform tools can compile to a C program which can then be compiled as a binary program on almost any computer. C behaves very like Glulx as a platform for Inform, but there are a handful of differences.
 
-Extensions are also able to include material which is only used on some story file formats and not others – in principle, this might allow the same facilities to be provided to the author whatever story file format is used, but to achieve these effects differently depending on the current Settings. The convention here is exactly like `not for release`: if a heading or subheading in the source text contains a bracketed proviso, then the material under that heading (and under its dependent subheadings) will be ignored if the current story file format does not match. For example:
+So although an extension should ideally work fine on all platforms, some inevitably can't, and they need to signal that to Inform.
 
-	Section 2.3G (for Glulx only)
-	
-	To reveal the explosion:
-		[...the Glulx way...]
-	
-	Section 2.3Z (for Z-machine only)
-	
-	To reveal the explosion:
-		[...the Z-machine way...]
+So let's suppose that `Ducking Action` needs to compute the precise head velocity of the player in meters per second, and needs real arithmetic to do that. If so, it cannot run on the Z-machine, and the extension header ought to say so. To do that, it can optionally contain a _compatibility note_, like the one here:
 
-would ensure that `reveal the explosion` works nicely whichever story file format is used.
+	Version 1 of Ducking Action (not for Z-machine) by Peter Drake begins here.
 
-The terms `Glulx` and `Z-machine` above are used a little loosely, for historical reasons. They really mean to choose between a 32-bit architecture, as exemplified by the Glulx virtual machine for interactive fiction devised around 2000, and a 16-bit architecture, as exemplified by the Z-machine from around 1980. The difference is partly in the size of numbers which can be stored, but affects many other things as well, as all modern IF uses the default `Glulx` setting, that is, 32-bit.
+Historically, Inform only supported four compatibility notes:
 
-However, it is now possible to compile Inform projects to C programs too, in which case they will run as executables on whatever computer then compiles those C programs: they will not run in virtual machines but on actual ones. The C output option also uses 32-bit, and so when compiling to C, which can only be done using Inform as a command-line tool, headings `(for Glulx only)` are used and those `(for Z-machine only)` are not. Inform does also support `(for C only)` and `(not for C)`, but these should only be used if really necessary.
+	(not for Z-machine)
+	(not for Glulx)
+	(for Z-machine only)
+	(for Glulx only)
 
-## Extensions can include other extensions
+But it now supports quite a variety of compatibility notes. As noted above, there's now a third platform, `C`, so these are possible too:
 
-^^{extensions: writing: including other extensions}
+	(not for C)
+	(for C only)
 
-Extensions can themselves contain `Include...` sentences asking for other extensions to be included. An extension might, for example, start like this:
+Inform also accepts `16-bit` and `32-bit` to mean any platform where values occupy that many bits: the Z-machine is 16-bit and C and Glulx are 32-bit. Moreover, for backwards compatibility reasons, Inform in fact interprets the terms `Z-machine` and `Glulx` as synonyms for `16-bit` and `32-bit`, rather than as requiring these specific platforms. So these all have the same practical effect:
 
-	Version 1 of Basic Help Menu by Emily Short begins here.
-	
-	Include Menus by Emily Short.
-	
-	...
+	Version 1 of Ducking Action (not for Z-machine) by Peter Drake begins here.
+	Version 1 of Ducking Action (not for 16-bit) by Peter Drake begins here.
+	Version 1 of Ducking Action (for Glulx only) by Peter Drake begins here.
+	Version 1 of Ducking Action (for 32-bit only) by Peter Drake begins here.
 
-A project which asks to include `Basic Help Menu` will then also include `Menus`, even though the author might never even realise that. Indeed, the author could also have asked to include `Menus`, not realising that `Basic Help Menu` was going to ask for the same thing.
+If more platforms are added in future, it seems likely that this system will be made more flexible still. In general, good advice is to choose the simplest compatibility note possible. Here this seems clearest:
 
-So the same extension is often requested multiple times. This is fine if the version numbers in the requests are compatible, but they might not be. For instance, suppose the main source text asks to include version 2 of extension X, and also to include extension Y. Suppose further that Y contains a request to include version 4 of X. We now have two different requests for X, and they contradict each other – the major version of X cannot be both 2 and 4 at the same time. So Inform will produce a problem message in this case.
+	Version 1 of Ducking Action (not for 16-bit) by Peter Drake begins here.
 
-But in cases where it is possible for everyone to be satisfied, Inform will try to find a solution. If one extension asks for version 2.3 of X, and another asks just for X, and a third asks for version 2.7.2 of X, then Inform will work out that any version number in the range 2.7.2 up to (but not including) 3 will be fine. If it can in fact find such an extension, it will then use it. So if the user has version 2.8.17 installed, everything is fine.
+An alternative to restricting `Ducking Action` like this is for it to provide two different versions of its functionality, one which works on each platform — then anybody can use it. This is the feature we will explore next.
 
-If an extension does include other extensions, it is good style to place the `Include...` sentence(s) as early as possible after the introductory sentence, just so that human readers looking at the text of the extension can see these dependencies easily.
-
-## Extensions can interact with other extensions {PM_HeadingInPlaceOfUnincluded} {PM_HeadingInPlaceOfUnknown} {PM_UnequalHeadingInPlaceOf}
+## Extensions which vary with use {PM_HeadingInPlaceOfUnincluded} {PM_HeadingInPlaceOfUnknown} {PM_UnequalHeadingInPlaceOf}
 
 ^^{extensions: writing: including other extensions} ^^{extensions: writing: modifying other extensions} ^^{headings: in extensions}
 
-When one extension is being used, it's probably only one among several. A really general-purpose extension might want to behave differently depending on which other extensions are also present. This can be achieved using headings which are `for use with` (or `without`) other extensions. For instance:
+We have already seen that it is possible for headings in the source text to be marked `(for release only)` or `(not for release)`. This provides what, in other programming languages, is sometimes called "conditional compilation". The program can come out in two different ways, depending on whether the user is making a regular compilation, or a final release one. And the difference is whether the material under these headings is included in the program or not.
+
+`(for release only)` and `(not for release)` are not the only markers like this which can be placed on a heading. Suppose we write out our example extension like so:
+
+	Version 1 of Ducking Action by Peter Drake begins here.
+
+	Ducking is an action applying to nothing. Understand "duck" as ducking.
+
+	Section on reporting (for 32-bit only)
+
+	Velocity is a kind of value. 1.0 m/s specifies a velocity.
+
+	Report ducking:
+		let V be 0.04 m/s;
+		let R be a random number from 5 to 15;
+		say "You duck! Your head moves at [V times R]!"
+
+	Section on reporting (for 16-bit only)
+
+	Report ducking:
+		say "You duck!"
+
+	Ducking Action ends here.
+
+The practical effect is that on a 16-bit platform we get this content:
+
+	Ducking is an action applying to nothing. Understand "duck" as ducking.
+
+	Report ducking:
+		say "You duck!"
+
+Whereas on a 32-bit platform we get this:
+
+	Ducking is an action applying to nothing. Understand "duck" as ducking.
+
+	Velocity is a kind of value. 1.0 m/s specifies a velocity.
+
+	Report ducking:
+		let V be 0.04 m/s;
+		let R be a random number from 5 to 15;
+		say "You duck! Your head moves at [V times R]!"
+
+And therefore if we duck on Glulx, we see something like ``You duck! Your head moves at 0.32 m/s!``, whereas on Z, we just get ``You duck!``.
+
+Two further features like this are provided to recognise that extensions might need to interact with each other. When `Ducking Action` is included in a project, quite likely other extensions are included in it, too. We can't know in advance what all of those will be. But let's suppose that `Ducking Action` can't work in the same story as an extension that we know is popular. We could then make part of `Ducking Action` read differently in that situation. For instance:
 
 	Chapter 2a (for use with Locksmith by Emily Short)
 
-specifies that everything under this heading (and its subheadings, if any) will be ignored unless the extension Locksmith by Emily Short is included. Conversely,
+specifies that everything under this heading (and its subheadings, if any) will be ignored unless the extension `Locksmith by Emily Short` is included as well. Conversely,
 
 	Chapter 2b (for use without Locksmith by Emily Short)
 
-will be ignored unless it isn't included. This allows an extension to give two variations on the same material – one if Locksmith is present, the other if not.
+will be ignored unless `Locksmith` _isn't_ included. This allows an extension to give two variations on the same material – one if `Locksmith` is present, the other if not. This feature is probably best used in a positive way. For example, maybe `Ducking Action` can make ducking through doorways even more cool in projects which have `Locksmith` included too.
 
-Headings can also replace portions of extensions which have been included. For instance:
+The final way to use "conditional compilation" on headings is best avoided unless absolutely necessary. It's best explained by example:
 
 	Section 6 - Hacked locking (in place of Section 1 - Regular locking in Locksmith by Emily Short)
 
-places the source text under the new heading in the place of the old (which is thrown away). If there should be two or more headings of the same name in the given extension, the first is the one replaced; if two or more headings attempt to replace the same heading in the given extension, the final attempt in source text order is the one which succeeds; and finally, heading dependencies like the above are scanned in a top-down way. Thus, if we have:
+If `Ducking Action` contains this section heading, then the material underneath it is spliced in to `Locksmith` in place of whatever `Locksmith` had put under the heading `Section 1 - Regular locking`. Here are some disclaimers:
 
-	Chapter 2a (for use with Locksmith by Emily Short)
+1) Above all, this is a potentially treacherous feature. Authors need to be vigilant to each other's changes if this is used. (What if Emily Short renames her sections, or moves material around between sections?)
+
+2) If there should be two or more headings of the same name in the given extension, the first is the one replaced.
+
+3) If two or more headings attempt to replace the same heading in the given extension, the final attempt in source text order is the one which succeeds.
+
+4) Heading dependencies like the above are scanned in a top-down way. Thus, if we have:
+
+       Chapter 2a (for use with Locksmith by Emily Short)
 	
-	[...]
+       [...]
 	
-	Section 1 - Hacked marbles (in place of Section 4 in Marbles by Peter Wong)
+       Section 1 - Hacked marbles (in place of Section 4 in Marbles by Peter Wong)
 	
-	[...]
+       [...]
 
-and we don't include Locksmith, then the replacement of Section 4 of Marbles is not made, because Section 1 – Hacked marbles is subordinate to the Chapter 2a heading which we've told Inform to ignore.
+   and we don't include `Locksmith`, then the replacement of `Section 4` of `Marbles` is not made, because `Section 1 – Hacked marbles` is subordinate to the `Chapter 2a` heading which we've told Inform to ignore.
 
-If the name of the heading to replace contains the word `in`, it's a good idea to use quotation marks for clarity:
+5) If the name of the heading to replace contains the word `in`, it's a good idea to use quotation marks for clarity:
 
-	Section - Hacked questions (in place of "Section 4 - Phrase used to ask questions in closed mode" in Questions by Michael Callaghan)
+       Section - Hacked questions (in place of "Section 4 - Phrase used to ask questions in closed mode" in Questions by Michael Callaghan)
+
+6) It bears saying again: use this feature only when really necessary.
 
 ## Extensions in the Index
 
@@ -17753,113 +18092,1281 @@ If the name of the heading to replace contains the word `in`, it's a good idea t
 
 As soon as a project has successfully been translated, its Index is brought up to date: pages of the index record all the kinds and what they are for, all the phrases which can be used, and so on. Any kind or phrase created in an extension is automatically included. The extension's presence in the project is itself recorded – the Contents index for any project contains a brief list of all extensions used in that project, along with their authors and version numbers.
 
-The Kinds index aims to give the reader a brief note of what each kind is intended for. We can provide for this by writing a sentence like so:
+All of that is automatic, but there are two ways in which an extension can help matters by improving the way its contents are indexed.
 
-	The specification of player's holdall is "Represents a container which the player can carry around as a sort of rucksack, into which spare items are automatically stowed away."
+### Providing a specification for each kind
 
-There is no need to specify the properties which apply: that is all done automatically. `Specification` is a sort of pseudo-property used just for this: we can also give specifications to kinds of value and to actions, and these are similarly used in the Index pages.
+The Kinds index aims to give the reader a brief note of what each kind is intended for. For example, `text` is briefly explained as:
 
-Every extension has the right to its own set of headings and subheadings, independently of those used by the main source for the work or by any other extension which may be included. (So if the extension is divided into four sections and finishes on Section D, say, that doesn't mean that Section D will continue outside the extension as the main source of the story runs on.)
+> Some text in double quotation marks, perhaps with substitutions written in square brackets.
 
-Extensions should, of course, be written so that they never produce Problem messages, so at first sight it appears that these headings will never be outwardly visible. In fact, though, Problems do occasionally turn up in extensions, usually when the user has made a mistake, or when two inconsistent extensions are used in the same project. But more importantly, the headings in an extension are used when indexing phrases (and also actions) to group similar phrases together. For instance, the Standard Rules contain the heading:
+This is called the _specification_ of the kind. Inform allows any kind defined in the source text to be given a specification like this. For example:
 
-	Section SR4/7 - Searching and sorting tables
+	A low door is a kind of door.
+	
+	The specification of low door is "Represents a door which a person can normally only walk through while ducking."
 
-The half-dozen phrases defined in this section of the Standard Rules are then indexed under the subheading "Searching and sorting tables": Inform looks for a hyphen in the heading and then uses any text which follows the hyphen. (If there is no hyphen, the entire heading text is used.)
+`Specification` is a sort of pseudo-property, which does not really exist. Like the rubric to an extension (see [Extension rubrics]), this text never appears in the story as played, and is not in fact compiled. It is used only in the Index.
 
-If an extension contains no headings, its phrases (or actions) are indexed simply as "Miscellaneous".
+### Grouping phrases together under sensible heading names
 
-Finally, any phrase or variable defined immediately under a heading whose name ends in the word `unindexed` will be omitted from the Phrasebook or Contents index respectively. (That won't apply to definitions under subheadings of the heading.) This is intended so that technical apparatus used only inside the extensions can be concealed from the outside user's immediate view. Inform as it is presently constituted does not allow extensions to make fully private definitions, but this feature at least allows them to make unadvertised ones.
+Some extensions provide hardly any phrases, or none at all, but others provide many. (`Basic Inform` defines hundreds.) The Phrasebook in the Index will, by default, simply lump these all together, which isn't easy for users to browse.
 
-## Extension documentation
+However, if the phrases are defined under different headings, then those headings will be used in the index, too.
+
+	Section of phrases - Head motion
+	
+	[Some "To ..." phrases here]
+	
+	Section of phrases - Door clearance
+	
+	[Some more "To ..." phrases here]
+
+These batches of phrases would then be listed in the index under ``Head motion`` and ``Door clearance`` respectively.
+
+1) Inform looks for a hyphen in the heading and then uses any text which follows the hyphen.
+
+2) If there is no hyphen, the entire heading text is used.
+
+3) If an extension contains no headings, all its phrases are indexed simply as "Miscellaneous".
+
+If there are, say, only five or fewer phrases, then this is not worth the trouble, but otherwise it probably is.
+
+And the same is true for action definitions, and how they are listed in the Actions index; but once again, this is probably not worth the trouble if the extension contains only five actions or fewer.
+
+### Hiding material from the index
+
+Finally, any phrase or variable defined immediately under a heading whose name ends in the word `unindexed` will be omitted from the Phrasebook or Contents index respectively. (That _won't_ apply to definitions under subheadings of the heading.) For example:
+
+	Chapter 2 - Implementation - Unindexed
+	
+	To secretly adjust all the door heights:
+		...
+
+This is intended so that technical apparatus used only inside the extensions can be concealed from the outside user's immediate view. Inform as it is presently constituted does not allow extensions to make fully private definitions, but this feature at least allows them to make unadvertised ones.
+
+## Bundling other resources with an extension
+
+An extension directory can, optionally, contain a subdirectory called ```Materials```. If it does, this can then contain a wide variety of useful things, laid out almost exactly like the materials folder for a project. Because it's included in the extension, anybody downloading the extension gets all of these extras along with it.
+
+So, then:
+
+* Figures can be provided in ```Materials/Figures```.
+
+* Sound effects can be provided in ```Materials/Sounds```.
+
+* Data files can be provided in ```Materials/Data```.
+
+* Templates for websites or interpreters can be provided in ```Materials/Templates```. This means extensions can be wrappers for these, so that users of such templates do not even need to write their own release instructions - because those can be put in the extension's source text.
+
+* Kits can be provided in ```Materials/Inter```. They are private to this extension, and are linked into a project including the extension _if the extension metadata says so_. See [Kits].
+
+* Language bundles can be provided in ```Materials/Languages```. That goes beyond the scope of this manual, but language bundles enable stories to use natural languages other than English.
+
+But an important exception is that extensions may _not_ be provided in ```Materials/Extensions```. Extensions containing other extensions... is a regress too far.
+
+As an example, Inform supports figure and sound effect declarations like so:
+
+	Figure of dalmatian mascot is the file "dalmatian.jpg". Sound of gushing water is the file "gushing.ogg".
+
+If such sentences are found in the main source text, nothing changes about their meaning: the files, ```dalmatian.jpg``` and ```gushing.ogg```, are looked for in the project's materials folder, as before.
+
+But if such sentences are found in the source text for an extension directory, then Inform looks for the files first in the materials for the extension. If it doesn't find them there, it then turns to the project's materials folder.
+
+If Inform does find that the extension directory has provided the resource, it then just checks to see if the author has _overridden_ this. For example, suppose the author using `Red Fire Hydrants by Emily Short` doesn't like the dog picture, and wants to substitute a better one. That author can then supply this:
+
+``` code
+Hypothetical Project.materials/Figures/Red Fire Hydrants/dalmatian.jpg
+```
+
+Note that this is in a subdirectory of ```Figures```, with the same name as that of the extension. This means the author could replace ```dalmatian.jpg``` from multiple different extensions, while still having a quite unrelated ```dalmatian.jpg``` used by the project's main source text.
+
+## Run-time problems
+
+Run-time problems are the ones thrown by stories which hit some impossible demand while playing: perhaps they find that they need to divide a number by zero, or they try to make a physical person wear a concept, or put a room on top of a shelf, or something else which simply can't be done. All experienced Inform authors will have seen RTPs before, but in case not, running this will certainly do it:
+
+	The Cellar is a room. The wine crate is here.
+
+	When play begins:
+		now the wine crate is in the wine crate.
+
+Extensions can trigger RTPs of their own, too. For example, suppose `Ducking` detects a bad situation which it can't do anything about. It can then do something like this:
+
+	issue the run-time problem "OverDucked";
+	say "*** ", (the) ducker, " seems to be putting their head below their feet.";
+
+The RTP name, here `OverDucked`, must correspind exactly to the name of a Markdown file stored in an ```RTPs``` subdirectory of the extension:
+
+``` code
+Philately-v1.i7xd
+	extension_metadata.json
+	Source
+		Philately.i7x
+	RTPs
+		OverDucked.md
+```
+
+The file ```OverDucked.md``` should then give an explanation:
+
+``` code
+# A head can't be ducked below a person's feet
+
+It's a physical impossibility to duck your head through the ground.
+We're not allowing acrobatics or highly unlikely situations, such as
+standing just on the edge of a deep hole.
+```
+
+> phrase: {ph_issuertp} issue the run-time problem (text)
+>
+> Produces a run-time problem message with the given code-name. For example:
+>
+>     issue the run-time problem "CantDivideByZero";
+>
+> This phrase should be used only in extensions. The file ```CantDivideByZero.md``` must then exist in the extension's ```RTPs``` subdirectory, and must give an explanation.
+
+# Extension documentation and testing
+
+## Making a documentation set for an extension
 
 ^^{extensions: writing: documenting}
 
-A basic mechanism for documenting extensions is built into Inform. For many extensions, this will probably do instead of a manual; for more complex ones, it should still prove a useful supplement to one.
+Every extension intended to be used by anybody other than its author needs _documentation_. This is a brief manual explaining what it does, and how to use it. Some extensions are simple enough that a single page of notes is enough, but others benefit from examples.
 
-As described in the chapter on [Source Text] above, whenever an extension is installed, its documentation is made available to the user. Such text should be written concisely, while giving examples wherever appropriate. Stylistically, it should ideally follow the model of the main Inform documentation: just as an extension expands the standard rules, so its documentation expands this manual. "We need..." is preferred to "You need...", and so on: we're all in this together.
+In the previous chapter we followed the story of an extension called `Ducking Action by Peter Drake`, which was held in a directory called ```Ducking Action-v1.i7xd```. (That in turn sat installed into the ```.materials``` folder of a test project called ```Ducking Test.inform```.) Since there is only so much one can write about the act of ducking, this chapter will suppose that we are now documenting a larger and more capable extension for stamp collectors, called `Philately`.
 
-In order to be recognised as documentation, this text should appear at the foot of the extension file, *after* the compulsory end sentence. The first paragraph must have exactly the following form, with a skipped line before and after:
+So we start with the extension looking like so:
 
-	---- Documentation ----
+``` code
+Philately-v1.i7xd
+	extension_metadata.json
+	Source
+		Philately.i7x
+```
 
-For instance, the `Ducking Action` example might end:
+We now add a new subdirectory alongside ```Source```: ```Documentation```.
 
+``` code
+Philately-v1.i7xd
+	extension_metadata.json
+	Documentation
+		Documentation.md
+	Source
+		Philately.i7x
+```
+
+So in other words, we need to create a new subdirectory called ```Documentation``` and create a new text file inside it called ```Documentation.md```. That new directory is called a _documentation set_, and although it will start in a minimal way, with a single file and hardly any text, it can scale up considerably. The entire in-app documentation for Inform, with the two books _Writing with Inform_ and _The Recipe Book_, and all their examples and indexes, are constructed as a single documentation set. It's very unlikely that an extension will ever need so huge a manual, but it could if we wanted it to.
+
+Once again, ```Documentation.md``` is a plain text file encoded as UTF-8, just like ```Philately.i7x```: a text editor which can edit one can also edit the other. It can start like this:
+
+``` code
+## Introduction
+
+The "Philately" extension provides ways to manage stamp collections.
+Contact stampbuff1837@gmail.com with any bug reports.
+
+Individual stamps can be declared, and given prices:
+
+	The Harding Memorial 1923 Issue is a stamp.
+	"Note the black border of this US 2 cents issue."
+
+	The price of the Harding Memorial is $25.50.
+```
+
+As the filename ending ```.md``` will already have signalled to some readers, ```Documentation.md``` is written in a notation called _Markdown_. It is in fact a way to mark text _up_, but an easy, low-fuss one, at least compared to many other syntaxes which have been tried. The little file above contains two markings-up: the ```##``` marks the word ```Introduction``` as a section heading, and the fact that the ```The Harding Memorial ...``` line is indented by one tab step means that it is presented as a source text extract, syntax-coloured as Inform 7 source.
+
+Extension documentation is presented exactly like this manual: so, for example,
+
+> ### Introduction
+> 
+> The "Philately" extension provides ways to manage stamp collections.
+> Contact stampbuff1837@gmail.com with any bug reports.
+> 
+> Individual stamps can be declared, and given prices:
+> 
+>     The Harding Memorial 1923 Issue is a stamp.
+>     "Note the black border of this US 2 cents issue."
+>
+>     The price of the Harding Memorial is $25.50.
+
+Markdown is a widely-used Internet standard, so modern text editors often offer special facilities for editing Markdown content, and will for example syntax-colour it nicely.
+
+### Technical footnote
+
+There are many dialects of Markdown. The one Inform uses is called _Inform-flavored Markdown_, as follows:
+
+* All CommonMark features are supported, i.e.: emphasis, strong emphasis, backticked code snippets, links, images, web autolinks, email autolinks, block quotes, ordered lists, unordered lists, thematic breaks, indented code samples, fenced code samples with optional info strings, ATX headings (i.e. using ```#``` characters), setext underlined headings (i.e. using a second line of ```----``` characters), backslashed escapes, and HTML entities; *except that*
+
+* For security reasons, raw HTML blocks are not passed through as HTML,
+and similarly raw HTML tags are not allowed. So ```this is <b>bold</b>```
+does not place the word "bold" in boldface, and instead passes the angle-bracket
+notations through into the resulting text.
+
+* All GitHub-flavored Markdown's extensions to CommonMark are supported: strikethrough, tables, task list items and extended autolinks.
+
+* An extension syntax allows marking-up documentation for indexing: see [Indexing documentation].
+
+* And one further extension is made for compatibility with old-style headings: see [Headings and organisation].
+
+Inform's documentation engine passes the entire suite of validation tests for both CommonMark and Github-flavored Markdown, so it is fair to call this an extended but highly standard Markdown.
+
+### Historical footnote
+
+In releases of Inform before 2024, extension documentation was tacked on to the end of the extension source after a tear-off-slip like line reading `---- DOCUMENTATION ----`; and it was then written in its own non-standard markup notation, although this was very minimal. The results were not very appealing, and there was no proper syntax colouring.
+
+## Headings and organisation
+
+^^{headings: in extension documentation} 
+
+The Markdown notation for headings looks like so:
+
+``` code
+# Chapter Heading
+
+## Section heading
+
+### Subheading within a section
+```
+
+Technically there can be up to six ```#``` characters, for progressively less important headings, but for Inform documentation we stop at three.
+
+By default, Inform places each chapter on its own web page. Small extensions with little to document therefore often use only section headings, and then all of the documentation fits on a single page.
+
+By convention, the first section heading is an introduction, like so:
+
+``` code
+### Introduction
+
+The "Philately" extension provides ways to manage stamp collections.
+Contact stampbuff1837@gmail.com with any bug reports.
+
+_Compatibility_. Although "Philately" is compatible with either
+the Z-machine or Glulx settings, it can only display stamp images
+under Glulx.
+```
+
+Customarily, the introduction ends with a note on compatibility if there's anything like that which the user should know.
+
+Chapter and Section headings can also be written with "setext underlining", or in the traditional Inform extension notation. So the following are all equivalent:
+
+``` code
+# Perforations
+
+Perforations
+============
+
+Chapter: Perforations
+```
+
+And similarly:
+
+``` code
+## Embossing
+
+Embossing
+---------
+
+Section: Embossing
+```
+
+But as style guidance, we now prefer ```#``` and ```##```.
+
+A small technical caveat: Inform-flavoured Markdown does not allow level 1 (Chapter) or level 2 (Section) headings to be used inside block quotes or list items. This is because it seems madness to break the page at those positions; CommonMark does allow this, but it's hard to imagine why.
+
+## Textual effects and short code samples
+
+^^{italics: in extension documentation} 
+^^{bold: in extension documentation} 
+^^{strikethrough: in extension documentation} 
+^^{backticks: in extension documentation} 
+
+Three textual effects are available:
+
+Effect          | Example Markdown                      | Result
+--------------- | ------------------------------------- | ------
+Strong emphasis | ```This stamp is **unperforated**.``` | This stamp is **unperforated**.
+Weak emphasis   | ```All sales _subject to authentication_.``` | All sales _subject to authentication_.
+Strikethrough   | ```recently ~~went on sale~~ was sold for $712.30``` | recently ~~went on sale~~ was sold for $712.30
+
+People often think strong emphasis and weak emphasis means bold and italic respectively, and it usually does in practice, but there are many forms of display in the world. Something which often trips people up is that the strength comes from the doubling of the markers, not from the choice of marker. ```*This*``` produces *This*, whereas ```__This__``` produces __This__.
+
+Small samples of source text can be given by "backticking" them, like so:
+
+``` code
+The `real number` kind can hold a wide range of values.
+
+We want to recognise the command ``MOVE ROOK``.
+
+The reply is just ``You can't see any such thing.``
+
+In Markdown syntax, ```**this**``` produces strong emphasis.
+```
+
+The effect of which is like this:
+
+> The `real number` kind can hold a wide range of values.
+> 
+> We want to recognise the command ``MOVE ROOK``.
+>
+> The reply is just ``You can't see any such thing.``
+> 
+> In Markdown syntax, ```**this**``` produces strong emphasis.
+
+Note that there are three notations here — one, two, or three backticks on each side of the material being quoted — which, under normal Markdown rules, are completely synonymous. So most Markdown viewers would display all these program-like fragments of text indistinguishably. But Inform displays them differently, and somehow there are _four_ different looks.
+
+What is happening here is that all four are code samples, just as the Markdown rules say they should be, but Inform is using different colouring rules to paint them on screen. The convention we follow is this:
+
+- Single backtick means Inform 7 source text.
+
+- Double backtick placed around upper case letters and/or spaces means a command a player might type into the Inform command parser.
+
+- Double backtick around anything else means "transcript text", that is, text printed by an Inform story during play.
+
+- Triple backtick is for generic code samples which aren't Inform 7 source text.
+
+This may all seem pedantic, but it does make documentation clearer. For example, this:
+
+``` code
+`"He [bracket]Lord Astor[close bracket] would, wouldn't he?"`
+prints as ``He [Lord Astor] would, wouldn't he?``.
+```
+
+comes out as:
+
+> `"He [bracket]Lord Astor[close bracket] would, wouldn't he?"` prints as ``He [Lord Astor] would, wouldn't he?``.
+
+Which is easier to fathom than:
+
+> "He [bracket]Lord Astor[close bracket] would, wouldn't he?" prints as "He [Lord Astor] would, wouldn't he?".
+
+As a general piece of guidance, then, pieces of source text should be never be quoted in ordinary double-quotation marks. Those should be reserved for more human quotations. Markdown, like politics, is "the art of the possible".
+
+### Backslash escapes
+
+^^{backslash escapes: in extension documentation} 
+
+Markdown also supports so-called HTML entities, which provide a way to type certain unusual characters by name rather than literally. For example, ```&HilbertSpace;``` produces &HilbertSpace;, a mathematical symbol. Nowadays it's usually better just to type the character directly: ```ℋ``` also produces ℋ. But it does raise the question: how do we write \&HilbertSpace; without it coming out as &HilbertSpace;?
+
+The answer is that the backslash character ```\``` can be used to "escape" certain characters which would otherwise cause Markdown to apply formatting, or some layout effect. So for example ```\_underlining_``` produces \_underlining_, and ```\&HilbertSpace;``` produces \&HilbertSpace;. A literal backslash can always be obtained as ```\\```, like so: \\.
+
+Note that none of this applies inside code examples, where a backslash is just a backslash and has no special powers. Similarly, it's not possible to apply emphasis inside a code sample, because the underscore and asterisk characters do nothing active there either.
+
+## Longer code samples
+
+^^{code examples: in extension documentation} 
+^^{syntax colouring: in extension documentation} 
+
+Inform documentation tends to be broken up with examples of source text, and this can be done very simply, by indenting the material one tab stop from the margin. (Or, equivalently, by four spaces.)
+
+``` code
+Individual stamps can be declared, and given prices:
+
+	The Harding Memorial 1923 Issue is a stamp. "Issued less than a
+	month after President Warren H. Harding died in office on 2 August
+	1923, this US 2 cents issue featured an unusual black border."
+
+	The price of the Harding Memorial is $25.50.
+
+Note that the `monetary value` kind can hold prices of only up to around
+23 million dollars, but as of 2023 that should be enough. The highest
+sale price in history for a single stamp is $9480000, paid in 2014 for
+the only existing British Guiana 1c magenta, and it then depreciated
+to $8307000 when sold again in 2021.
+```
+
+This produces:
+
+> Individual stamps can be declared, and given prices:
+> 
+>     The Harding Memorial 1923 Issue is a stamp. "Issued less than a month after President Warren H. Harding died in office on 2 August 1923, this US 2 cents issue featured an unusual black border."
+> 
+>     The price of the Harding Memorial is $25.50.
+> 
+> Note that the `monetary value` kind can hold prices of only up to around 23 million dollars, but as of 2023 that should be enough. The highest sale price in history for a single stamp is $9480000, paid in 2014 for the only existing British Guiana 1c magenta, and it then depreciated to $8307000 when sold again in 2021.
+
+If the opening line of the quoted passage begins with a ```>``` character and then what looks like a command, Inform will guess that it's a transcript instead. And therefore this:
+
+``` code
+We want to penalise players not taking this seriously, so:
+
+	> LICK STAMP
+	You seriously degrade the value of this $174.90 Weimar republic issue.
+```
+
+comes out as:
+
+> We want to penalise players not taking this seriously, so:
+> 
+>     > LICK STAMP
+>     You seriously degrade the value of this $174.90 Weimar republic issue.
+
+An alternative Markdown syntax makes it possible to specify exactly what sort of syntax-colouring should be used, like so:
+
+`````` code
+This is some JSON:
+
+``` code
+{
+	"is": {
+		"type": "extension",
+		"title": "Philately",
+		"author": "Peter Drake",
+		"version": "1"
+	}
+}
+```
+``````
+
+Note the use of three backticks before and after the block of whatever the sample is, and the presence of the word ```code```. Inform also supports ```inform``` (meaning the same thing as ```inform7```), ```inform6```, ```transcript``` and ```plain``` (no colouring at all). For example, this is syntax-coloured as Inform 6 code:
+
+``` inform6
+[ DisplayStamp st perf_flag;
+	...
+];
+```
+
+When an Inform source text code sample is marked with the special notation ```{*}```, this is displayed with a "paste me into the app" button attached in place of these symbols. For example:
+
+``` code
+To set the scene:
+
+	{*}	"Definitely Unhinged"
+
+	Include Philately by Stanley Gibbons.
+
+	The British Museum Stamps Room is a room. The cabinet is a closed openable
+	container in the Stamps Room.
+
+And so on:
+
+	{**}The Saxony 1856 is a stamp in the cabinet. "A forgery by Jean de Spirati!
+	Priceless."
+```
+
+Here the ```{**}``` notation means that the sample continues the previous one, and that a single paste button in the ```{*}``` position collects all of this text together into a single run. So for example:
+
+> To set the scene:
+> 
+>     {*} "Definitely Unhinged"
+>     
+>     Include Philately by Stanley Gibbons.
+>     
+>     The British Museum Stamps Room is a room. The cabinet is a closed openable
+>     container in the Stamps Room.
+> 
+> And so on:
+> 
+>     {**}The Saxony 1856 is a stamp in the cabinet. "A forgery by Jean de Spirati! Priceless."
+
+## Block quotations and phrase boxes
+
+^^{quotations: in extension documentation} 
+
+"Block quotations" are suitable for quoting a piece of human writing, rather than code, and are introduced by ```>``` characters on the left margin:
+
+``` code
+Roger S. Brody notes:
+
+> Some Harding rotary press-printed stamps were perforated gauge 11 x 11
+> on the flat-plate equipment instead of the normal 10 x 10 rotary
+> perforating machine, producing an important twentieth century rarity.
+```
+
+The block continues for as long as the run of lines prefaced by ```>``` continues. Block quotations can themselves contain lists and other block quotations, and even code examples, though we need to type the number of spaces very carefully to ensure that those examples are exactly four spaces in from the point where ordinary text in the quotation would be:
+
+``` code
+This does seem rather an extreme position:
+
+> We want to penalise players not taking this seriously, so:
+> 
+>     > LICK STAMP
+>     You seriously degrade the value of this $174.90 Weimar republic issue.
+```
+
+Note that there are _five_ spaces between the ```>``` signs in the line with the ``LICK STAMP`` command. This is because the block material begins after ``> `` (one space) and then indents to reach the transcript text (four spaces). So the result is:
+
+> This does seem rather an extreme position:
+> 
+> > We want to penalise players not taking this seriously, so:
+> > 
+> >     > LICK STAMP
+> >     You seriously degrade the value of this $174.90 Weimar republic issue.
+
+Note that block quotes can contain multiple paragraphs, code samples (as in this
+example), and even lists and tables.
+
+One of the main uses of block quotations in Inform documentation is to provide the displayed boxes which give the specification of a "To..." phrase. For example, this:
+
+``` code
+>	phrase: set pronouns from (object)
+>   
+>	This phrase adjusts the meaning of pronouns like IT, HIM, HER and THEM in
+>   the command parser as if the object mentioned has become the subject of
+>   conversation. Example: `set pronouns from` here -
+>
+>		set pronouns from the key;
+>		set pronouns from Bunny;
+>
+>	might change IT to mean the silver key and HIM to mean Harry "Bunny" Manders,
+>   while leaving HER and THEM unaltered.
+```
+
+...is a completely normal block quotation from a Markdown point of view, but the Inform documentation engine displays it in a special way:
+
+>	phrase: set pronouns from (object)
+>   
+>	This phrase adjusts the meaning of pronouns like IT, HIM, HER and THEM in
+>   the command parser as if the object mentioned has become the subject of
+>   conversation. Example: `set pronouns from` here -
+>
+>		set pronouns from the key;
+>		set pronouns from Bunny;
+>
+>	might change IT to mean the silver key and HIM to mean Harry "Bunny" Manders,
+>   while leaving HER and THEM unaltered.
+
+## Tables
+
+^^{tables: in extension documentation} 
+
+A simple table looks like so, with pipe characters ```|``` dividing the columns; it will only become a table if there is a ruler line under the column headings.
+
+``` code
+Column 1 | Column 2 | Column 3
+-------- | -------- | --------
+A        | B        | C
+D        | E        | F
+G        | H        | I
+```
+
+which produces
+
+> Column 1 | Column 2 | Column 3
+> -------- | -------- | --------
+> A        | B        | C
+> D        | E        | F
+> G        | H        | I
+
+There's no actual need to be tidy about lining up the pipes.
+
+``` code
+Column 1 | Column 2 | Column 3
+-------- | -------- | --------
+A | B | C
+D             | E        |       F
+     G |    H          | I
+```
+
+produces exactly the same result.
+
+Table entries cannot contain other tables, or block code samples, or lists, or anything like that: but they can happily contain the simpler markup:
+
+`````` code
+Column 1  | Column 2    | Column 3
+--------- | ----------- | ---------
+**Alpha** | _Beta_      | ~~Gamma~~
+`Delta`   | ``EPSILON`` | ``Zeta``
+```Eta``` | Theta       | ι
+``````
+
+producing:
+
+> Column 1  | Column 2    | Column 3
+> --------- | ----------- | ---------
+> **Alpha** | _Beta_      | ~~Gamma~~
+> `Delta`   | ``EPSILON`` | ``Zeta``
+> ```Eta``` | Theta       | ι
+
+Table columns can be aligned leftwards or rightwards by adding colons ```:``` to the ruler line, as in this example:
+
+``` code
+| Stamp                                                 | Price   |
+| :---------------------------------------------------- | ------: |
+| GB 1883 SG183 10s Ultramarine                         | €614.72 |
+| GB 1862 SG77 3d Pale carmine-rose (Wmk. Emblems) Pl.2 | €234.18 |
+```
+
+producing:
+
+> | Stamp                                                 | Price   |
+> | :---------------------------------------------------- | ------: |
+> | GB 1883 SG183 10s Ultramarine                         | €614.72 |
+> | GB 1862 SG77 3d Pale carmine-rose (Wmk. Emblems) Pl.2 | €234.18 |
+
+## Lists and to-do items
+
+^^{lists: in extension documentation} 
+^^{to-do items: in extension documentation} 
+
+We have three sorts of list. Bulleted lists:
+
+``` code
+Notable German stamps include:
+
+- Baden 9 Kreuzer error: stamp printed on blue-green instead of pink paper
+
+- One kreuzer black: issued 1849 in Bavaria, first German postage stamp
+
+- Sachsen 3 Pfennige red: Saxony was the second German state to issue postage stamps
+
+- Vineta provisional: an unauthorized issue
+
+- Yacht issue: a common design of postage stamps for the German colonies
+```
+
+resulting in:
+
+> Notable German stamps include:
+> 
+> - Baden 9 Kreuzer error: stamp printed on blue-green instead of pink paper
+> 
+> - One kreuzer black: issued 1849 in Bavaria, first German postage stamp
+> 
+> - Sachsen 3 Pfennige red: Saxony was the second German state to issue postage stamps
+> 
+> - Vineta provisional: an unauthorized issue
+> 
+> - Yacht issue: a common design of postage stamps for the German colonies
+
+A list can alternatively be numbered, with this syntax:
+
+``` code
+Notable Jamaican stamps include:
+
+1) Jamaica 1 shilling inverted-frame stamp error
+
+2) Jamaica 6d abolition of slavery postage stamp
+
+3) Jamaica 1956-58 £1 chocolate and violet
+
+4) Jamaica 1968 human rights stamps
+```
+
+resulting in:
+
+> Notable Jamaican stamps include:
+> 
+> 1) Jamaica 1 shilling inverted-frame stamp error
+> 
+> 2) Jamaica 6d abolition of slavery postage stamp
+> 
+> 3) Jamaica 1956-58 £1 chocolate and violet
+> 
+> 4) Jamaica 1968 human rights stamps
+
+List entries can in fact be much longer, and can contain all manner of layout elements:
+
+``` code
+1) Here's a two-paragraph list entry.
+
+   With this being the second paragraph.
+
+2) And a list within a list. How about China this time?
+
+   - Red Revenues – 1897 provisionals, issued by the Qing dynasty
+
+   - The Whole Country is Red – 1968 design error stamp
+
+   - Golden Monkey stamp – 1980 Chinese zodiac stamp
+
+3) Indian stamp                                 | Notable for
+   -------------------------------------------- | -----------
+   Scinde Dawk                                  | First stamps in Asia
+   Inverted Head Four Annas                     | —
+   Indian 10 Rupee Mahatma Gandhi postage stamp | Overprinted "SERVICE"
+```
+
+producing:
+
+> 1) Here's a two-paragraph list entry.
+> 
+>    With this being the second paragraph.
+> 
+> 2) And a list within a list. How about China this time?
+>
+>    - Red Revenues – 1897 provisionals, issued by the Qing dynasty
+>
+>    - The Whole Country is Red – 1968 design error stamp
+>
+>    - Golden Monkey stamp – 1980 Chinese zodiac stamp
+> 
+> 3) Indian stamp                                 | Notable for
+>    -------------------------------------------- | -----------
+>    Scinde Dawk                                  | First stamps in Asia
+>    Inverted Head Four Annas                     | —
+>    Indian 10 Rupee Mahatma Gandhi postage stamp | Overprinted "SERVICE"
+
+And to-do lists are list entries with a sort of tickbox notation: ```[ ]``` or ```[x]```: see the example at the start of this section.
+
+Finally, note that if the items in a list are not divided by skipped lines, then the list is called "tight" (as opposed to "loose") and presented slightly differently:
+
+``` code
+1) Prices depend on condition and circumstances.
+2) Victorian issues vary widely in circulation. My collection includes:
+   - [ ] none of the 500 orange-red 1d Mauritius Post Office stamps (1847)
+   - [x] one of the roughly 21 billion Penny Red stamps (1841-79)
+```
+
+produces:
+
+> 1) Prices depend on condition and circumstances.
+> 2) Victorian issues vary widely in circulation. My collection includes:
+>    - [ ] none of the 500 orange-red 1d Mauritius Post Office stamps (1847)
+>    - [x] one of the roughly 21 billion Penny Red stamps (1841-79)
+
+For Inform documentation, we prefer loose lists, which are easier to read on screen.
+
+## Links and cross-references
+
+^^{links: in extension documentation} 
+
+The standard Markdown syntax ```[Label]``` or ```[this is a link][Label]``` makes a link where the destination is referred to by a label, rather than given explicitly. In traditional Markdown, that label can then be _defined_ like so:
+
+``` code
+See [CommonMark] for more on this.
+
+[CommonMark]: https://commonmark.org "The CommonMark specification"
+```
+
+And this would work fine in Inform's Markdown too, but it's not very helpful
+when what we want is to make an internal cross-reference. Suppose we want a
+link to Chapter 2 of the current document: we can't say what the URL for that
+is because we don't know exactly how Inform will choose to store the HTML.
+
+Because of that, the dictionary of labels for links is pre-populated by Inform
+so that it automatically contains the names of all Chapters and Sections in
+the current document, and also all Examples. So for example:
+
+``` code
+See [Perforations] and also [Embossing]. The example [The Red Mercury]
+shows how to implement Austrian rarities.
+```
+
+...would all work automatically provided that the extension documentation
+contains a chapter called "Perforations", a section called "Embossing" and
+an example "The Red Mercury".
+
+For accessibility reasons, we recommend that all links be written directly, that is, where the link text is the same as the destination label, like this:
+
+``` code
+See the example [The Red Mercury] for how to implement Austrian rarities.
+```
+
+rather than:
+
+``` code
+See the example [of rarities](The Red Mercury) for more on Austria.
+```
+
+because although this would work fine for sighted users, displaying "See the example of rarities for more on Austria" but with the words "of rarities" linked, screen-readers display such links in a confusing way.
+
+## Images in documentation
+
+Extension documentation should not use externally hosted images, i.e., images on some server which requires an Internet access to fetch. Instead, they should use only their own private images.
+
+Those images should be stored in an ```Images``` subdirectory of the ```Documentation``` directory. For example, suppose we have this setup:
+
+``` code
+Philately-v1.i7xd
+	extension_metadata.json
+	Documentation
+		Documentation.md
+		Images
+			InvertedJenny.jpg
+	Source
+		Philately.i7x
+```
+
+We can then display this picture using the standard Markdown notation for such things, the ```![...](...)``` notation, but using the _leafname alone_ as the image label. For example:
+
+``` code
+Only 100 of the following have ever existed:
+
+![1918 24c US stamp of a Curtiss JN-4 plane but printed upside-down](InvertedJenny.jpg)
+```
+
+producing:
+
+> Only 100 of the following have ever existed:
+> 
+> ![1918 24c US stamp of a Curtiss JN-4 plane but printed upside-down](doc_images/InvertedJenny.jpg)
+
+In fact, to display just the image, it would be enough to write:
+
+``` code
+Only 100 of the following have ever existed:
+
+![InvertedJenny.jpg]
+```
+
+but the full form is highly recommended since it provides alt-text for display
+by screen-readers for partially sighted users.
+
+## Examples for extensions
+
+^^{extensions: writing: giving examples}
+^^{examples: in extensions}
+
+All extension authors are strongly encouraged to provide examples. These are exactly like the ones in _Writing with Inform_, so hundreds of example examples can be found among the source code for Inform.
+
+Each example should have its own file, and those files are placed in the ```Examples``` subdirectory of the documentation set. For example, suppose we are going to provide two examples, called "Unhinged" and "Please Do Not Perforate". Then the files would look like so:
+
+``` code
+Philately-v1.i7xd
+	...
+	Documentation
+		Documentation.md
+		Examples
+			Unhinged.txt
+			PleaseDoNotPerforate.txt
+		Images
+			InvertedJenny.jpg
+```
+
+Note that:
+
+1) Example files like ```Unhinged.txt``` have filenames ending ```.txt```, not ```.md```. As we shall see, they are _almost_ Markdown files, but not quite.
+
+2) The filename should be the name of the example with spaces and any other non-alphanumeric characters removed, and with camel-casing. So "What's Up, Jenny?" would be ```WhatsUpJenny.txt```.
+
+An example file consists of a _head_, and then a skipped line, and then the _body_.
+
+The body is just Markdown documentation exactly like that described in the chapter so far, except that it mustn't use ```#``` or ```##``` headings. It doesn't need any title at the top, because Inform generates that automatically from the head.
+
+So, then, the head. This might look like so:
+
+``` code
+Example: *** Please Do Not Perforate
+Location: Actions for handling stamps
+Description: How to handle sheets of stamps being broken up along perforation lines.
+```
+
+Each line is of the form ```Key: Value```, that is, each line says what it specifies and then specifies it. The first line must begin ```Example:```, and then give 1 to 4 asterisks ```*```, ```**```, ```***``` or ```****```. These mean the same thing as they do in the main Inform documentation: they rate the example for simplicity, with fewer asterisks being simpler. A subsequent line must also give the `Description:`, though it doesn't actually have to be next.
+
+All other potential keys are optional, but the use of `Location` is strongly recommended. This should be the title of one of the sections of documentation. For example, if the extension's main documentation includes this:
+
+``` code
+## Actions for handling stamps
+
+Two actions are provided for...
+```
+...then an example marked ```Location: Actions for handling stamps``` is placed at the foot of the section.
+
+As a genuine example of an example, then, the following is a complete one taken directly from `Locksmith by Emily Short`. It's typical of small examples which don't need very much explanation, so the source text is not broken up with explanations: that's why there's a single paste marker ```{*}``` and no resume-paste markers ```{**}```.
+
+``` code
+Example: ** Rekeying
+Location: The passkey and keychain kinds
+Description: Modifying the way passkey descriptions work.
 	
-	[...]
-	The Ducking Action ends here.
+As a default, Locksmith describes what passkeys unlock only after printing their default description. Under some circumstances, however, we might want to override that behavior, like this:
+
+	{*}"Rekeying"
 	
-	---- DOCUMENTATION ----
+	Include Locksmith by Emily Short.
 	
-	This is a modest extension, with much to be modest about. It allows us to use a new action for ducking, as in ducking the player's head (not as in ducking a witch). Ducking will do nothing unless rules are added:
+	The player carries a passkey called the tin key. The tin key unlocks the tin box. The tin box is closed, openable, lockable, and locked. In the box is a single Cheerio.
 	
-		Instead of ducking in the Shooting Gallery, say "Too late!"
+	Cereality is a room. "The newly-opened 'cereal bar' allows you to mix and match cereal types at will." The box is in Cereality.
 	
-	[...]
+	The passkey description rule is not listed in any rulebook.
 
-We obtain indented code examples by beginning a line with a tab. A double indentation can be got with two tabs in a row, and so forth. (Beware: some text editors, or emailers, flatten tabs into a row of four or perhaps eight spaces each. Inform will not recognise such a line of spaces as a tab.)
+	The description of a passkey is usually "[if the item described unbolts something][The item described] unlocks [the list of things unbolted by the item described][otherwise]You have yet to discover what [the item described] unlocks[end if]."
 
-Note that text in square brackets should be avoided in the documentation, because that's taken as being comment matter on the extension, and omitted.
+	Test me with "i / x key / unlock box / i / x key".
+```
 
-Tables should be similarly indented, and should begin with the word `Table ...`: the top line is taken to be the name of the table, and subsequent lines are tab-divided columns. Inform will automatically group this into a table, like so:
+## Testing
 
-	Table of Exemplariness
-	stellar object	example
-	galaxy			"Andromeda Galaxy M31"
-	star			"Sirius"
-	planet			"Neptune"
-	moon			"Enceladus"
-	dwarf planet	"Ceres"
-	plutino			"38628 Huya"
-	cubewano		"Easterbunny"
+Like any software, extensions need to be tested. They should ideally be exercised on a variety of plausible use-cases, with each feature being tried out. The examples are often ideal for doing that. So, for example, any bug fix made in `Philately by Peter Drake` can be checked out for safety by making sure that its four existing examples run as they should.
 
-(Footnote: Since the first appearance of this book, Easterbunny has been renamed Makemake, the creator god in the mythology of the people of Easter Island.)
+Of course, this can be done by hand: by pasting in the example sources, running them in the Inform app, typing ``TEST ME``, and then looking over the resulting transcript of play to make sure it's all as it should be.
 
-## Examples and headings in extension documentation
+But automated testing makes this much easier. From the documentation page on an extension, as displayed in the app, there is a link to a sub-page called ```run its 2 test case(s)``` (or whatever number there are, of course). That page provides a menu of testing options: it's possible to test an individual example, or all of them at once. On each test, four options are provided:
 
-^^{extensions: writing: documenting} ^^{headings: in extension documentation} ^^{extensions: writing: giving examples}
+_Test_. Compile the paste-me-in source text, play its ``TEST ME`` script of commands, and check the transcript of the story which results against the correct or _blessed_ transcript. This test can fail either if the story won't compile because of Problem messages, or if the story then plays incorrectly, or if no blessed transcript is available to check against.
 
-Extensions with very large amounts of documentation can, if the author chooses, divide the material up using headings and/or subheadings. These must be written as paragraphs exactly like so:
+_Bless_. Compile the paste-me-in source text, play its ``TEST ME`` script of commands, and "bless" the transcript of the story which results as being the correct outcome.
 
-	Chapter: Avoiding Events
-	
-	Section: Ducking examinations and tests
+_Curse_. Remove the blessed transcript; there is then no officially correct version.
 
-Inform will then typeset them to stand out, will number them automatically, and will add a table of contents at the top of the page. (For most extensions, the documentation will be short and sweet, and this would just be clutter: headings and subheadings are best used only where the text would otherwise be difficult to read.)
+_Rebless_. Equivalent to _curse_ then _bless_. Effectively says that the new behaviour may be different to the old, but that that's intentional, and that the new way is good.
 
-Any extension's documentation can contain Examples, just as the main Inform documentation does: these are automatically labelled `A`, `B`, `C`, ... rather than given numbers, to ensure that they do not clash with the numbering used in the built-in chapters. (The labels may be helpful in writing an extension's documentation: we can write, for instance, a note such as "see Example C below".)
+If we do bless the transcript of play from the two examples from `Philately`, and look inside the extension again, we see this:
 
-Examples must be given last in the documentation, and there can be up to 26 of them, though most extensions will need one example at the most, and some will have none at all. Each example must begin with a paragraph exactly like so:
+``` code
+Philately-v1.i7xd
+	...
+	Documentation
+		Documentation.md
+		Examples
+			Unhinged.txt
+			Unhinged--I.txt
+			PleaseDoNotPerforate.txt
+			PleaseDoNotPerforate--I.txt
+		Images
+			InvertedJenny.jpg
+```
 
-	Example: ** We Must Perform a Quirkafleeg - Ducking to avoid arrows as one proceeds east across battlements.
+Two new files have appeared: ```Unhinged--I.txt``` and ```PleaseDoNotPerforate--I.txt```. These are the ideal transcripts of play from those examples.
 
-Again, there must be a skipped line before and after. The row of asterisks must be *, **, *** or ****, just as in the main documentation, which we should follow on all points of style. The rest of the line contains the title, a hyphen, and then the description. The title should be given with Each Word except Prepositions and Similar Things Capitalised, while the description should look like a sentence, and end with a full stop.
+## Test cases which are not examples
 
-The text of the example follows, of course, and continues until the end of the file, or the next `Example:` line, whichever comes first.
+Inform also allows test cases which are not examples from the documentation. Authors who are very much into "unit testing" will probably want to take advantage. For example, if `Philately` provides a high complicated phrase:
 
-Each example should (normally) contain one single, complete, story, long enough to demonstrate the use of the extension and to have a little flavour to it, but not so long that the reader gets lost. It should have a title, which should match the name of the example (in the case above, `We Must Perform a Quirkafleeg`). It should conclude with a paragraph defining a test:
+	To dismantle (album - a stamp album):
+		...
 
-	Test me with "east / duck / east / jump / east / duck / east / rescue esmerelda".
+then this may need testing with many different possible albums, to make sure everything works even in peculiar cases. (What if the album is empty? Or only contains many copies of the same stamp?) These oddball uses wouldn't make a good example.
 
-The idea is that typing one single command, ``TEST ME``, into the resulting story should show off what the extension does.
+So an extension can also contain one or more "test cases". These exist only for testing and never appear in the documentation, so although they are similar to examples, they are much simpler in structure. They occupy a ```Tests``` subdirectory rather than living in ```Examples```:
 
-When an extension contains more than one example, they should be given in order of asterisk rating, that is, starting with the \* examples, then the \*\* examples, and so on up.
+``` code
+Philately-v1.i7xd
+	...
+	Documentation
+		Documentation.md
+		Examples
+			Unhinged.txt
+			Unhinged--I.txt
+			PleaseDoNotPerforate.txt
+			PleaseDoNotPerforate--I.txt
+		Images
+			InvertedJenny.jpg
+		Tests
+			DismantleEmpty.txt
+			DismantleEmpty--I.txt
+			DismantleLarge-Z.txt
+			DismantleLarge-Z--I.txt
+			DismantleLarge-G.txt
+			DismantleLarge-G--I.txt
+```
 
-Extension documentation can provide "paste" buttons, much like the examples in this book. For example:
+There are three test cases here. Note that Peter Drake is prudently trying out one of them on both the Z-machine and Glulx settings, to make sure it works for both sorts of story. The convention (and it's only a convention) is to use the suffixes ```-Z``` and ```-G``` to distinguish these.
 
-	Here is a sample -
-	
-		*: "Coriander"
-	
-		Include Herbs by Charlotte Quirke.
-	
-		The Herb Marketing Centre is a room.
-	
-	If we want to add some content -
-	
-		The coriander is a herb. Understand "cilantro" as the coriander.
+The opening line of a test case takes the form ```Test: Title``` rather than ```Example: *** Title```. There's no row of asterisks. There's no meaningful ```Location:``` to give, nor ```Description:```, since those both relate to documentation. So the header for a test case is often just that one titling line. Also, once the header is finished, there is a skipped line and then an Inform source text - this is not indented and not surrounded by documentation.
 
-Note that the paste button, denoted "*:", pastes in the text following it, but only as far as the next paragraph of unindented documentation – here, the one beginning `If we...`. (But of course, an extension can have multiple paste buttons if desired.)
+Here is a sample test case:
+
+``` code
+Test: DismantleEmpty
+
+Include Philately by Peter Drake.
+
+...
+
+Test me with "get album / dismantle album".
+```
+
+For a few tests, notably those which involve restarting the story file or performing ``UNDO`` commands, the "script" of commands needs to be stored in another sidekick file to the test case, rather than in a `Test me with ...` line in the source text. That can be done by creating a file like this:
+
+``` code
+GET ALBUM
+DISMANTLE ALBUM
+UNDO
+PULL OUT PAGE 2
+DISMANTLE ALBUM
+```
+
+Such a file should then be filenamed with an ```-S``` (for "script") suffix: for example, ```DismantleTorn--S.txt```.
+
+## Full list of testing options
+
+As was mentioned earlier, the header for an example normally specifies ```Example:```, ```Location:``` and ```Description:```, while the header for a test case specifies ```Test:```.
+
+But further options are available. For example, the previous section suggested having two variants of the same test, one using the Z-machine and one Glulx. How is this to be done? The answer is that they are the same, but with different header options:
+
+``` code
+Test: DismantleLarge-Z
+For: Z-machine
+```
+
+versus
+
+``` code
+Test: DismantleLarge-G
+For: Glulx
+```
+
+The full list of legal options is given below, though users will rarely if ever need most of them.
+
+1) ```RecipeLocation: Heading```. This is ignored for examples in extensions, but is used by examples in the main Inform documentation, and indicate which section of _The Recipe Book_ they should be filed in. (Inform examples use an identical file format to extension examples, but are present in two books at once, so they need two different location indicators.)
+
+2) ```Index: Text```. Again, this is used for Inform documentation examples but ignored for extension examples. It gives a brief descriptive text to appear in the A-Z index of documentation examples.
+
+3) ```Description: Text```. This is the strap-line underneath an example title, usually giving a brief explanation of what is being demonstrated. While it is not strictly compulsory, an example should really provide this. It's ignored for test cases.
+
+4) ```Language: Basic` or `Language: Inform```. The default here is ```Language: Inform```, which means the example/test should be run using the normal Inform programming language. ```Language: Basic``` says that it is a Basic Inform example, that is, uses the pared-down version of the language with all interactive fiction features removed.
+
+5) ```CompatibleWith: Description```. This can be used to mark an example as being compatible only with certain platforms. Most examples work on any platform, so the default ```CompatibleWith: all``` is fine.
+
+6) ```For: Z-Machine``` or ```For: Glulx``` or ```For: C``` or ```For: Untestable```. Which platform the code should be compiled to when this example/test is tested. The default is ```For: Glulx``` provided that Glulx is compatible with the ```CompatibleWith``` description, and ```For: Z-Machine``` if it is not. If an even finer distinction is needed, ```For:``` can be set equal to any format text which Inform recognises: in fact, ```For: Glulx``` is a synonym for ```For: inform6/32```.
+
+   ```For: Untestable``` says that an example doesn't really contain code which can usefully be tested, and that Intest can therefore ignore this example; test cases are not allowed to say this, since a test case which cannot be tested is a contradiction in terms.
+
+7) ```CompileOnly: Yes``` or ```CompileOnly: No``` (the default is ```No```). This can specify that a test should be compiled but not played. The test is considered a success if no Problem messages are issued. Extension tests just might need to set this if an example is too complex to test fully, for example if it involves complicated screen effects.
+
+8) ```TestCompilerInternals: Yes``` or ```TestCompilerInternals: No``` (the default is ```No```). This is only used for unit tests internal to the ```inform7``` compiler. Switching this on makes it possible to use the otherwise forbidden ``Test ... (internal) with ...`` in source text, which makes the compiler reveal its innermost thoughts. Extension tests will not need this.
+
+9) ```TestReleaseMetadata: Yes``` or ```TestReleaseMetadata: No``` (the default is ```No```). This is only used for testing the Inform compiler, and specifically verifying the blurb and iFiction files it outputs on a release run. Extension tests will not need this.
+
+10) ```GenerateIndex: Yes``` or ```GenerateIndex: No``` (the default is ```No```). Tests of an example or a test case are carried out in a throwaway Inform project, so that there is usually no point rebuilding the Index at the end of compilation — nobody will ever see it. But if the point of the test is exactly to check that the Index has been written correctly, then of course we do need to generate it, and it's for those test cases that this option exists. Extension tests will not need this.
+
+11) ```GenerateDiagnostics: Yes``` or ```GenerateDiagnostics: No``` (the default is ```No```). Used only by one Inform compiler test case, and only to output certain files which show diagrams of internal data structures for use in the technical documentation on the website. Extension tests will not need this.
+
+## Providing an index
+
+### Basics of indexing
+
+The documentation for an extension can have an index much like the alphabetical index to _Writing with Inform_.
+
+This is done with an extension to Markdown provides for traditional TeX-style indexing markers: indexing in the sense of drawing up an index for a book. For example:
+
+``` code
+The ^{catalogue} of ^{@Roger S. Brody} lists three variants.^^{misprints}
+```
+
+The outward appearance of this line is exactly as if it had read:
+
+``` code
+The catalogue of Roger S. Brody lists three variants.
+```
+
+but it accumulates three entries in the alphabetical index for the documentation:
+
+- Brody, Roger S.
+- catalogue
+- misprints
+
+Material in braces normally comes through into the visible documentation, but if the caret ```^``` is doubled then it does not. The ```@``` marker is for names, and inverts them when indexing, so that ```^{@Alice Zephyr}``` reads as "Alice Zephyr" but indexes as "Zephyr, Alice".
+
+Note that indexing marks are not read in backticked code or code examples. So:
+
+``` code
+The `^{indexing}` notation is...
+```
+
+would not index anything, because the index markers occur inside a backticked piece of code. (This is a point of difference with the old ```indoc``` tool, which _did_ read index markers in example Inform source text.)
+
+### Subentries
+
+If an entry's text contains a colon (with substantive material either side), that's taken as a marker that something is a subentry. Thus:
+
+``` code
+^{reptiles: snakes}
+```
+
+indexes under the "snakes" subentry of the entry "reptiles", while coming through into the visible documentation only as "snakes". Thus:
+
+``` code
+"Why did it have to be ^{reptiles: snakes}?" mused Indy.
+```
+
+comes out as:
+
+``` code
+"Why did it have to be snakes?" mused Indy.
+```
+
+Sub-entries can be arbitrarily deep. There can be, but need not be, index entries for the super-entry (in this case "reptiles") elsewhere.
+
+### See...
+
+Indexes often provide multiple ways to look up the same thing: for example, they might contain an index entry reading "Superman, see Kent, Clark".
+
+``` code
+^^{Kent, Clark <-- Superman}
+^^{reptiles <-- crocodiles <-- alligators}
+```
+
+The second example here creates two such crossreferences: "crocodiles, see reptiles" and "alligators, see reptiles".
+
+### Alphabetization
+
+The index consists of "headwords", the terms being indexed (which may or may not be just one word), which are presented in alphabetical order in the index.
+
+These are alphabetized in a way which excludes initial "a", "an" or "the"; if the first word is a number from 1 to 12, it's replaced by the spelled version (thus "3 A.M." appears as if "three A.M."); other numbers are sorted numerically - thus "Zone 10" appears after "Zone 9", not after "Zone 1"; and any bracketed text is ignored for alphabetisation purposes - so "(leaf) tea" is alphabetised as if it were "tea".
+
+Alphabetization can be altered using the ```-->``` notation. For example:
+
+``` code
+The Anglo-Saxon measure of land was the ^{hundred --> 100}.
+```
+
+This creates the index entry "hundred", but also tells Inform that it should be alphabetised as if it were the number 100: it thus appears in a different place in the index, but still as the text "hundred". This only needs to be done once. Subsequent indexing markers ```^{hundred}``` will go into the same place.
+
+Note that writing either ```^{hundred --> 100}``` or ```^^{hundred --> 100}``` will create an index reference to "hundred", as well as changing where this headword appears in the A-Z. If you want to set the alphabetization without creating an index reference at all, you can use three carets:
+
+``` code
+^^^{hundred --> 100}
+```
+
+## Multiple-volume documentation and site maps
+
+An extension will hardly ever need this feature, but any documentation set can include two files of options:
+
+- ```contents.txt``` specifies the Markdown source files which make up one or more "volumes", and defines the notations used to index them.
+
+- ```sitemap.txt``` specifies the URLs for the HTML pages of the miniature website which the volumes are turned into.
+
+One file defines the _content_, while the other controls the _output_: thus the same content could generate different output for different purposes just by swapping out ```sitemap.txt```.
+
+### The contents file
+
+A documentation set can in principle contain multiple volumes; the main in-app documentation for Inform contains two, _Writing with Inform_ and _The Recipe Book_.
+
+If no ```contents.txt``` file is provided then there is a single volume only, whose source must be entirely contained in the file ```Documentation.md```, and whose only indexing notations used are the basic ones described in [Providing an index]. For almost all extensions, that will be completely fine, of course.
+
+If given, ```contents.txt``` is a list of commands, each on its own line. Blank lines are ignored, as are lines beginning with the comment character ```#```. Three commands are legal:
+
+(1) ```volume: "Full Title of Volume" or "LABEL"``` creates a volume, giving both a full title for it and also a convenient abbreviation, which should not contain white space and should be different from the label of any other volume in the same set. For example:
+
+``` code
+volume: "Writing with Inform" or "WWI"
+```
+
+(2) ```text: "Leafname.md"``` specifies that the current volume, that is, the one most recently declared, has this file as its next piece of content. A volume can have any number of content files; for example:
+
+``` code
+volume: "The Lord of the Rings" or "LOTR"
+text: "Fellowship.md"
+text: "Towers.md"
+text: "Return.md"
+```
+
+would establish that the Markdown source for the LOTR volume would consist of these three files concatenated in the order given.
+
+The wildcard character ```*``` may be used up to once in each text name. So:
+
+``` code
+text: "chapter*.md"
+```
+
+may match multiple files, and if so, will concatenate them in alphabetical order.
+
+Note that each ```text: ...``` command is required to match at least one file, and also that the ```contents.txt``` file as a whole is required to exactly account for all of the files in the documentation folder whose names end in ```.md```. It is thus impossible for loose Markdown files in this folder not to appear in at least one volume of the documentation.
+
+(3) ```index notation: NOTATION = MEANING``` allows the author to extend the set of indexing notations used in the volumes of this documentation set.
+
+Indexing notations are used to show what "category" a headword belongs in. By default, there are just two categories: ```standard``` and ```name```. It's as if the following commands are assumed:
+
+``` code
+index notation: ^{headword} = standard
+index notation: ^{@headword} = name (invert)
+```
+
+To reiterate, these commands need not be given, since they are in effect already, but they make simple examples of the syntax. The notation part on the left shows how to mark up the ```headword```, using special characters either to the left or the right or both, to indicate the category. In the case of ```standard```, nothing special appears on either side; in the case of ```name```, an ```@``` character has to appear on the left. More elaborately:
+
+``` code
+index notation: ^{XYZZY-headword-PLUGH} = magic
+```
+
+would set things up so that:
+
+``` code
+The ^{XYZZY-magic word-PLUGH} cannot always be used.
+```
+
+would be printed as:
+
+``` code
+The magic word cannot always be used.
+```
+
+but would make an index reference to the headword "magic word", of category ```magic```. Of course, that's not a very good notation, but _chacun à son goût_.
+
+Multiple notations for the same category are perfectly legal. So:
+
+``` code
+index notation: ^{name... headword} = name (invert)
+```
+
+would make typing ```^{name... Emily Short}``` equivalent to typing ```^{@Emily Short}```.
+
+Categories are shown in the index, and they can also affect the HTML styling, as defined by some CSS, of the headword in question.
+
+Note the option ```(invert)``` placed after the category name. Several options are available:
+
+* ```(invert)``` means "invert forenames and surname" and is what turns ```Emily Short```
+into the headword "Short, Emily".
+* ```(bracketed)``` means "use different CSS styling on any pieces of the
+headword which are in round brackets", the CSS style in question being
+```indexCATEGORYbracketed```, where ```CATEGORY``` is the category name.
+* ```(unbracketed)``` means the same, except that any such round brackets are
+also removed from the headword.
+* ```(under X)``` means: make every headword in this category a subentry of the
+headword ```X```.
+* ```(also under X)``` means the same, except that headwords in this category
+are in the index twice, once in their own right and once as a subentry of ```X```.
+* ```(prefix "TEXT")``` means to add the text ```TEXT``` in front of all headwords
+of this category.
+* ```(suffix "TEXT")``` means to add the text ```TEXT``` after all headwords
+of this category.
+* ```("TEXT")``` adds the gloss text ```TEXT``` to all headwords of this category.
+
+So for example:
+
+``` code
+index notation: ^{!headword} = monarch (suffix " (of Scotland)") (under monarchs)
+```
+
+would mean that ```^{!James VI}``` would lead the headword "James VI (of Scotland)" being filed as a subentry of the headword "monarchs".
+
+### ```sitemap.txt```
+
+If given, ```sitemap.txt``` is a list of commands, each on its own line. Blank lines are ignored, as are lines beginning with the comment character ```#```. The following commands are legal:
+
+```contents: STYLE to "PATH"```. The default is ```contents: standard to "index.html"```. There are only two possible styles: ```standard``` and ```duplex```, which is a special case forcing all the documentation into the customised look of the manuals inside the Inform app, where there are two volumes presented side by side on a special contents page. (An extension will never want to use ```duplex```.)
+
+```volume contents: VOLUME to "PATH"```. This is only needed to give individual volumes their own contents pages. ```VOLUME``` should be the quoted title or label of the volume in question, which must be one of those created by the ```contents.txt``` file. For example:
+
+``` code
+volume contents: "Writing with Inform" to "WI_index.html"
+```
+
+```pages: VOLUME to "PATH"``` or ```pages: VOLUME by BREAKING to "PATH"```. Specifies how the content in the named volume is to be turned into individual HTML files. Giving ```all``` in place of a volume name applies the command to everything in every volume, and in particular is sensible if there's only one volume because no ```contents.txt``` file was given. Optionally, material can be split up ```by sections``` or ```by chapters```, in which case the content will be divided up following the level 1 and 2 headings in the Markdown documentation. If it is not split up in this way, then there will be one HTML file output for each Markdown file of source material in the volume.
+
+Clearly this can all result in multiple HTML files being created, so the ```PATH``` needs some flexibility in expressing names for those files. It supports two special characters: ```#``` expands to the section and chapter number for split files, so for example ```5_16``` for section 16 of chapter 5; and ```*``` expands to the unexpanded leafname of the Markdown source file from which material was drawn.
+
+For example:
+
+``` code
+pages: "Writing with Inform" by sections to "WI_#.html"
+```
+
+The default, if no ```sitemap.txt``` file is supplied, is:
+
+``` code
+pages: all by chapters to "chapter#.html"
+```
+
+```example: LABELLING to "PATH"``` specifies how any examples in the documentation should be labelled — they can be ```numbered```, i.e., labelled 1, 2, 3, ..., or ```lettered```, labelled A, B, C, ... — and what files they should be written to. Again ```#``` is a special character meaning the label for the example. The default setting here is:
+
+``` code
+examples: lettered to "eg_#.html"
+```
+
+which produces the files ```eg_A.html```, ```eg_B.html``` and so on. (If there are more than 26 examples, it's clearly better to use numbers, but the lettering runs ```A```, ..., ```Z```, ```2A```, ```2B```, ..., ```2Z```, ```3A```, ... and so on, so letters do not actually run out.)
+
+```FORM index: "TITLE" to "PATH"``` specifies that a given index page should be generated, what title to give it, and where to put it. (These are indexes in the sense of book indexing, and not to do with the HTML sense of ```index.html``` pages.) For example, the built-in Inform documentation uses all four possible index pages:
+
+``` code
+alphabetical index: "Alphabetical Index of Examples" to "alphabetical_index.html"
+numerical index: "Examples in Numerical Order" to "numerical_index.html"
+thematic index: "Examples in Thematic Order" to "thematic_index.html"
+general index: "General Index" to "general_index.html"
+```
+
+The general index is the A-Z listing of index entries produced by the ```^{...}``` notations used throughout the volumes; the other three indexes are ways to catalogue the examples in the volumes. "Thematic" order in this sense means the order in which examples occur in the second rather than the first volume; it's not likely to be useful for any other documentation set.
+
+```cross-references: to "PATH"``` writes a set of cross-references generated from phrase descriptions and heading markers in the volumes into the named file, which is plain text rather than HTML. For example:
+
+``` code
+cross-references: to "xrefs.txt"
+```
+
+This is only likely to be helpful for the main Inform documentation, not for extension documentation.
+
+# Low-Level Programming
 
 ## Using Inform 6 within Inform 7
 

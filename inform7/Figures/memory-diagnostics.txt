@@ -1,6 +1,6 @@
-Total memory consumption was 139941K = 137 MB
+Total memory consumption was 139942K = 137 MB
 
- ---- was used for 2134752 objects, in 375915 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2134754 objects, in 375917 frames in 0 x 800K = 0K = 0 MB:
 
     30.1%  inter_tree_node_array                    60 x 8192 = 491520 objects, 43255680 bytes
     19.4%  text_stream_array                        4952 x 100 = 495200 objects, 27889664 bytes
@@ -52,7 +52,7 @@ Total memory consumption was 139941K = 137 MB
      ----  markdown_item_array                      1 x 1000 objects, 136032 bytes
      ----  inference                                1708 objects, 122976 bytes
      ----  pcalc_term_array                         3 x 1000 = 3000 objects, 120096 bytes
-     ----  documentation_ref                        1281 objects, 112728 bytes
+     ----  documentation_ref                        1283 objects, 112904 bytes
      ----  inter_schema                             1546 objects, 111312 bytes
      ----  imperative_defn                          1419 objects, 102168 bytes
      ----  noun_usage                               2421 objects, 96840 bytes
@@ -262,9 +262,9 @@ Total memory consumption was 139941K = 137 MB
      ----  loop_over_scope                          1 object, 40 bytes
      ----  i6_memory_setting                        1 object, 32 bytes
 
-99.9% was used for memory not allocated for objects:
+100.0% was used for memory not allocated for objects:
 
-    62.4%  text stream storage                      89500432 bytes in 515314 claims
+    62.4%  text stream storage                      89500764 bytes in 515316 claims
      3.8%  dictionary storage                       5505088 bytes in 7779 claims
      ----  sorting                                  2624 bytes in 531 claims
      5.0%  source text                              7200000 bytes in 3 claims
@@ -282,5 +282,5 @@ Total memory consumption was 139941K = 137 MB
      ----  code generation workspace for objects    3536 bytes in 19 claims
      0.2%  emitter array storage                    290048 bytes in 2074 claims
 
--136.-7% was overhead - -195996104 bytes = -191402K = -186 MB
+-136.-7% was overhead - -195996280 bytes = -191402K = -186 MB
 

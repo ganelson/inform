@@ -392,3 +392,4 @@ USAGE: ph_markfileready 0 0 0
 USAGE: ph_markfilenotready 0 0 0
 USAGE: phs_extcredits 0 0 0
 USAGE: phs_compextcredits 0 0 0
+USAGE: ph_issuertp 0 0 0
