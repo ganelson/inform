@@ -609,27 +609,22 @@ is implemented, which in turn hangs on the |parse_noun| properties compiled
 by Inform. But this seems to be sound.
 
 =
-[ ListEqual o1 o2 occ1 occ2;
+[ ListEqual o1 o2 f1 f2;
   if (o1.KD_Count ~= o2.KD_Count) rfalse;
   if ((o1.plural == 0) || (o2.plural == 0)) rfalse;
-  occ1 = ObviouslyOccupied(o1);
-  if (occ1 && WillRecurs(o1)) rfalse;
-  occ2 = ObviouslyOccupied(o2);
-  if (occ2 && WillRecurs(o2)) rfalse;
-  if (c_style) {
-    if (c_style & FULLINV_BIT) {
-      if ((o1 hasnt worn && o2 has worn) || (o2 hasnt worn && o1 has worn)) rfalse;
-      if ((o1 hasnt light && o2 has light) || (o2 hasnt light && o1 has light)) rfalse;
-      if ((o1 hasnt locked && o2 has locked) || (o2 hasnt locked && o1 has locked)) rfalse;
-    }
-    else if (c_style & PARTINV_BIT) {
-      if ((location hasnt light) && ((o1 hasnt light && o2 has light) || (o2 hasnt light && o1 has light))) rfalse;
-    }
-    if (c_style & (FULLINV_BIT + PARTINV_BIT)) {
-      if ((((o1 has openable) || o1 has transparent)) && ((o2 has openable) || o2 has transparent)) {
-        if ((o1 has open && o2 hasnt open) || (o2 has open && o1 hasnt open))) rfalse;
-        if (occ1 =~ occ2) rfalse;
-    }
+  if (c_style & FULLINV_BIT) {
+    f1 = DetailFlags(o1);
+    if ((f1 & LW_EMPTY) && WillRecurs(o1)) rfalse;
+    f2 = DetailFlags(o2);
+    if ((f2 & LW_EMPTY) && WillRecurs(o2)) rfalse;
+    if (f1 =~ f2) rfalse;
+   }
+   else if (c_style & PARTINV_BIT) {
+    f1 = DetailFlags(o1,1);
+    if ((f1 & LW_EMPTY) && WillRecurs(o1)) rfalse;
+    f2 = DetailFlags(o2,1);
+    if ((f2 & LW_EMPTY) && WillRecurs(o2)) rfalse;
+    if (f1 =~ f2) rfalse;
   }
   return Identical(o1, o2);
 ];
@@ -963,7 +958,7 @@ Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
   return result;
 ];
 
-[ WriteAfterEntryTerms o roomdesc flags terms current counter print_count last_index last_comma;
+[ DetailFlags o roomdesc flags;
    if (o has light && (~~(roomdesc && (location has light)))) flags = flags | LW_LIT;
    if (o has worn) flags = flags | LW_WORN;
    if (o has container) {
@@ -976,7 +971,12 @@ Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
        if ((o has locked) && (~~roomdesc)) flags = flags | LW_LOCKED;
      }
    }
-   if (flags) {
+  return flags;
+];
+
+[ WriteAfterEntryTerms o roomdesc flags terms current counter print_count last_index last_comma;
+  flags = DetailFlags(o, roomdesc);
+  if (flags) {
    terms = BitCount(flags);
    if ((flags & LW_OPEN) && (flags & LW_EMPTY)) {
      flags = flags & (~(LW_OPEN + LW_EMPTY));
