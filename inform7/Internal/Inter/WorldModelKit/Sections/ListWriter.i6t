@@ -616,13 +616,20 @@ by Inform. But this seems to be sound.
   if (occ1 && WillRecurs(o1)) rfalse;
   occ2 = ObviouslyOccupied(o2);
   if (occ2 && WillRecurs(o2)) rfalse;
-  if ((o1 hasnt open) && (o1 hasnt transparent)) occ1 = false;
-  if ((o2 hasnt open) && (o2 hasnt transparent)) occ2 = false;
-  if (occ1 =~ occ2) rfalse;
-  if (c_style & (FULLINV_BIT + PARTINV_BIT) ~= 0) {
-    if ((o1 hasnt worn && o2 has worn) || (o2 hasnt worn && o1 has worn)) rfalse;
-    if ((o1 hasnt light && o2 has light) || (o2 hasnt light && o1 has light)) rfalse;
-!    if ((o1 has open && o2 hasnt open) || (o2 has open && o1 hasnt open)) rfalse;
+  if (c_style) {
+    if (c_style & FULLINV_BIT) {
+      if ((o1 hasnt worn && o2 has worn) || (o2 hasnt worn && o1 has worn)) rfalse;
+      if ((o1 hasnt light && o2 has light) || (o2 hasnt light && o1 has light)) rfalse;
+      if ((o1 hasnt locked && o2 has locked) || (o2 hasnt locked && o1 has locked)) rfalse;
+    }
+    else if (c_style & PARTINV_BIT) {
+      if ((location hasnt light) && ((o1 hasnt light && o2 has light) || (o2 hasnt light && o1 has light))) rfalse;
+    }
+    if (c_style & (FULLINV_BIT + PARTINV_BIT)) {
+      if ((((o1 has openable) || o1 has transparent)) && ((o2 has openable) || o2 has transparent)) {
+        if ((o1 has open && o2 hasnt open) || (o2 has open && o1 hasnt open))) rfalse;
+        if (occ1 =~ occ2) rfalse;
+    }
   }
   return Identical(o1, o2);
 ];
@@ -956,35 +963,48 @@ Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
   return result;
 ];
 
-! test that at least one flag is set before calling 
-[ WriteAfterEntryTerms o flags terms current counter print_count last_index last_comma;
-    terms = BitCount(flags);
-    if ((flags & LW_OPEN) && (flags & LW_EMPTY)) {
-      flags = flags & (~(LW_OPEN + LW_EMPTY));
-      flags = flags | LW_OPEN_BUT_EMPTY;
-      terms--;
-    }
-    last_index = terms - 1; ! where "and" goes if terms > 1
-    current = LW_LIT; ! largest
-    if ((terms > 2) && BasicInformKit`SERIAL_COMMA_CFGF) last_comma = last_index;
-    else last_comma = last_index - 1;
-    LW_Response('A'); ! " ("
-    while (current > 0) {
-      if (flags & current) {
-         if (print_count) { 
-           if (print_count <= last_comma) {
-             print ",";
-             if ((print_count ~= last_index) || (~~(BasicInformKit`SERIAL_COMMA_CFGF))) print " ";
-           }
-           if (print_count == last_index) LW_Response('C', o); ! " and "
+[ WriteAfterEntryTerms o roomdesc flags terms current counter print_count last_index last_comma;
+   if (o has light && (~~(roomdesc && (location has light)))) flags = flags | LW_LIT;
+   if (o has worn) flags = flags | LW_WORN;
+   if (o has container) {
+     if ((o has open) || (o has transparent)) {
+       if (~~(ObviouslyOccupied(o))) flags = flags | LW_EMPTY; ! ObviouslyOccupied is always false for opaque/closed
+     }  
+     if (o has openable) {
+       if (o has open) flags = flags | LW_OPEN;
+       else flags = flags | LW_CLOSED;
+       if ((o has locked) && (~~roomdesc)) flags = flags | LW_LOCKED;
+     }
+   }
+   if (flags) {
+   terms = BitCount(flags);
+   if ((flags & LW_OPEN) && (flags & LW_EMPTY)) {
+     flags = flags & (~(LW_OPEN + LW_EMPTY));
+     flags = flags | LW_OPEN_BUT_EMPTY;
+     terms--;
+   }
+   last_index = terms - 1; ! where "and" goes if terms > 1
+   current = LW_LIT; ! largest
+   if ((terms > 2) && BasicInformKit`SERIAL_COMMA_CFGF) last_comma = last_index;
+   else last_comma = last_index - 1;
+   LW_Response('A'); ! " ("
+   while (current > 0) {
+     if (flags & current) {
+       if (print_count) { 
+         if (print_count <= last_comma) {
+           print ",";
+           if ((print_count ~= last_index) || (~~(BasicInformKit`SERIAL_COMMA_CFGF))) print " ";
          }
-         LW_Response(LW_Bit_To_Response->counter);
-         print_count++;
-      }
-      counter++;
-      current = current / 2;
-    }
-    LW_Response('B'); ! close bracket ")";
+         if (print_count == last_index) LW_Response('C', o); ! " and "
+       }
+       LW_Response(LW_Bit_To_Response->counter);
+       print_count++;
+     }
+     counter++;
+     current = current / 2;
+   }
+   LW_Response('B'); ! close bracket ")";
+   }
 ];
 
 [ WriteAfterEntry o depth
@@ -993,17 +1013,8 @@ Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
     if (c_style & PARTINV_BIT) {
       BeginActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o);
       if (ForActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o) == false) {
-        if (o has light && location hasnt light) flags = flags | LW_LIT;
-        if (o has container) {
-          if ((o has open) || (o has transparent)) {
-	    if (~~(ObviouslyOccupied(o))) flags = flags | LW_EMPTY; ! ObviouslyOccupied is always false for opaque/closed
-	  }  
-	  if (o has openable) {
-            if (o has open) flags = flags | LW_OPEN;
-            else flags = flags | LW_CLOSED;
-	  }
-	}
-        if (flags) WriteAfterEntryTerms(o, flags);
+      WriteAfterEntryTerms(o, 1);
+!        if (flags) WriteAfterEntryTerms(o, flags);
       }
       EndActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o);
     }   ! end of PARTINV_BIT processing
@@ -1011,19 +1022,7 @@ Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
     if (c_style & FULLINV_BIT) {
       BeginActivity(PRINTING_INVENTORY_DETAILS_ACT, o);
       if (ForActivity(PRINTING_INVENTORY_DETAILS_ACT, o) == false) {
-	if (o has light) flags = flags | LW_LIT;
-        if (o has worn) flags = flags | LW_WORN;
-        if (o has container) {
-          if ((o has open) || (o has transparent)) {
-	    if (~~(ObviouslyOccupied(o))) flags = flags | LW_EMPTY; ! ObviouslyOccupied is always false for opaque/closed
-	  }  
-	  if (o has openable) {
-            if (o has open) flags = flags | LW_OPEN;
-            else flags = flags | LW_CLOSED;
-	  }
-          if (o has locked) flags = flags | LW_LOCKED;
-	}
-        if (flags) WriteAfterEntryTerms(o, flags);
+        WriteAfterEntryTerms(o);
       }
       EndActivity(PRINTING_INVENTORY_DETAILS_ACT, o);
     }   ! end of FULLINV_BIT processing
