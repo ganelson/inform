@@ -951,7 +951,7 @@ Constant LW_OPEN_BUT_EMPTY = $$00000001; ! 'N'
 Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
 
 [ DetailFlags o invdesc flags;
-   if (o has light && (invdesc || (location has light))) flags = flags | LW_LIT;
+   if (o has light && (invdesc || (location hasnt light))) flags = flags | LW_LIT;
    if (o has worn) flags = flags | LW_WORN;
    if (o has container) {
      ! we can't know it's empty unless it's at least one of open or transparent
