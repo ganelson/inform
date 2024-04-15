@@ -318,10 +318,10 @@ very rapid anyway (because the player can only read very slowly).
     	START_ITF: return MarkedObjectArray-->0;
     	COALESCE_ITF: return MarkedListCoalesce();
     	SEEK_ITF, ADVANCE_ITF:
-			for (i=0: i<MarkedObjectLength: i++)
+			for (i=0: i<MarkedObjectLength: i++ )
 				if (MarkedObjectArray-->i == obj) {
 					if (function == ADVANCE_ITF) i++;
-					for (:i<MarkedObjectLength: i++) {
+					for (:i<MarkedObjectLength: i++ ) {
 						obj = MarkedObjectArray-->i;
 						if ((LT_Compare(required_lt, EMPTY_TEXT_VALUE) ~= 0) &&
 							(LT_Compare(obj.list_together, required_lt) ~= 0)) continue;
@@ -374,20 +374,20 @@ The return value is the new first entry in the raw list.
 
 =
 [ MarkedListCoalesce o i lt l swap m;
-	for (i=0: i<MarkedObjectLength: i++) {
+	for (i=0: i<MarkedObjectLength: i++ ) {
 		lt = (MarkedObjectArray-->i).list_together;
 		if (LT_Compare(lt, EMPTY_TEXT_VALUE) ~= 0) {
 			! Find first object in list after contiguous run with this list_together value:
 			for (i++: (i<MarkedObjectLength) &&
-				(LT_Compare((MarkedObjectArray-->i).list_together, lt) == 0): i++) ;
+				(LT_Compare((MarkedObjectArray-->i).list_together, lt) == 0): i++ ) ;
 			! If the contiguous run extends to end of list, the list is now perfect:
 			if (i == MarkedObjectLength) return MarkedObjectArray-->0;
 			! And otherwise we look to see if any future entries belong in the earlier run:
-			for (l=i+1: l<MarkedObjectLength: l++)
+			for (l=i+1: l<MarkedObjectLength: l++ )
 				if (LT_Compare((MarkedObjectArray-->l).list_together, lt) == 0) {
 					! Yes, they do: so we perform a rotation to insert it before element i:
 					swap = MarkedObjectArray-->l;
-					for (m=l: m>i: m--) MarkedObjectArray-->m = MarkedObjectArray-->(m-1);
+					for (m=l: m>i: m-- ) MarkedObjectArray-->m = MarkedObjectArray-->(m-1);
 					MarkedObjectArray-->i = swap;
 					! And now the run is longer:
 					i++;
@@ -562,7 +562,7 @@ Global DBLW_no_classes; Global DBLW_no_objs;
 [ DebugPartition partition_class_sizes partition_classes first depth i k o;
 	print "[Length of list is ", DBLW_no_objs, " with ", k, " plural.]^";
 	print "[Partitioned into ", DBLW_no_classes, " equivalence classes.]^";
-    for (i=1: i<=DBLW_no_classes : i++) {
+    for (i=1: i<=DBLW_no_classes : i++ ) {
     	print "Class ", i, " has size ", partition_class_sizes->i, "^";
 	}
 	for (k=0, o=first: k<DBLW_no_objs : k++, o = c_iterator(o, depth, lt_value, ADVANCE_ITF)) {
@@ -579,14 +579,14 @@ accordingly. We return $n$, the number of classes.
 =
 [ PartitionList first no_objs depth partition_classes partition_class_sizes
 	i k l n m;
-    for (i=0: i<no_objs: i++) partition_classes->i = 0;
+    for (i=0: i<no_objs: i++ ) partition_classes->i = 0;
     n = 1;
-    for (i=first, k=0: k<no_objs: i=c_iterator(i, depth, lt_value, ADVANCE_ITF), k++)
+    for (i=first, k=0: k<no_objs: i=c_iterator(i, depth, lt_value, ADVANCE_ITF), k++ )
         if (partition_classes->k == 0) {
             partition_classes->k = n; partition_class_sizes->n = 1;
             for (l=c_iterator(i, depth, lt_value, ADVANCE_ITF), m=k+1:
             	(l~=0) && (m<no_objs):
-            	l=c_iterator(l, depth, lt_value, ADVANCE_ITF), m++) {
+            	l=c_iterator(l, depth, lt_value, ADVANCE_ITF), m++ ) {
                 if ((partition_classes->m == 0) && (ListEqual(i, l))) {
                     if (partition_class_sizes->n < 255) (partition_class_sizes->n)++;
                     partition_classes->m = n;
@@ -613,18 +613,18 @@ by Inform. But this seems to be sound.
   if (o1.KD_Count ~= o2.KD_Count) rfalse;
   if ((o1.plural == 0) || (o2.plural == 0)) rfalse;
   if (c_style & FULLINV_BIT) {
-    f1 = DetailFlags(o1);
-    if ((f1 & LW_EMPTY) && WillRecurs(o1)) rfalse;
-    f2 = DetailFlags(o2);
-    if ((f2 & LW_EMPTY) && WillRecurs(o2)) rfalse;
-    if (f1 =~ f2) rfalse;
-   }
-   else if (c_style & PARTINV_BIT) {
     f1 = DetailFlags(o1,1);
     if ((f1 & LW_EMPTY) && WillRecurs(o1)) rfalse;
     f2 = DetailFlags(o2,1);
-    if ((f2 & LW_EMPTY) && WillRecurs(o2)) rfalse;
     if (f1 =~ f2) rfalse;
+    if ((f2 & LW_EMPTY) && WillRecurs(o2)) rfalse;
+   }
+   else if (c_style & PARTINV_BIT) {
+    f1 = DetailFlags(o1);
+    if ((f1 & LW_EMPTY) && WillRecurs(o1)) rfalse;
+    f2 = DetailFlags(o2);
+    if (f1 =~ f2) rfalse;
+    if ((f2 & LW_EMPTY) && WillRecurs(o2)) rfalse;
   }
   return Identical(o1, o2);
 ];
@@ -687,7 +687,7 @@ in the above sense.
 	current_lt = EMPTY_TEXT_VALUE;
 	lt = EMPTY_TEXT_VALUE;
 	no_groups = no_classes;
-    for (cl=1, memb=o, k=0: cl<=no_classes: cl++) {
+    for (cl=1, memb=o, k=0: cl<=no_classes: cl++ ) {
     	! Advance to first member of class number cl
         while (partition_classes->k ~= cl) {
             k++; memb = c_iterator(memb, depth, lt_value, ADVANCE_ITF);
@@ -759,7 +759,7 @@ The big one: |WriteListR| is the heart of the list-writer.
 	groups_to_do =
 		NumberOfGroupsInList(o, no_classes, depth, partition_classes, partition_class_sizes);
 
-    for (cl=1, memb=o, index=0, current_lt=EMPTY_TEXT_VALUE: groups_to_do>0: cl++) {
+    for (cl=1, memb=o, index=0, current_lt=EMPTY_TEXT_VALUE: groups_to_do>0: cl++ ) {
 		! Set memb to first object of partition class cl
         while (partition_classes->index ~= cl) {
         	index++; memb=c_iterator(memb, depth, lt_value, ADVANCE_ITF);
@@ -854,7 +854,7 @@ below, and {\it that} is where they are printed.
 		} else if (pv) {
 			! Set k2 to the number of objects covered by the group
 			k2 = 0;
-			for (l=0 : l<listing_size : l++) k2 = k2 + partition_class_sizes->(l+cl);
+			for (l=0 : l<listing_size : l++ ) k2 = k2 + partition_class_sizes->(l+cl);
 			EnglishNumber(k2); print " ";
 			print (TEXT_TY_Say) pv;
 			if (c_style & ENGLISH_BIT ~= 0) print " (";
@@ -950,45 +950,43 @@ Constant LW_OPEN_BUT_EMPTY = $$00000001; ! 'N'
 
 Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
 
-[ BitCount flags result;
-  do {
-   if (flags % 2) result++;
-   flags = flags / 2;
-  } until (~~flags);
-  return result;
-];
-
-[ DetailFlags o roomdesc flags;
-   if (o has light && (~~(roomdesc && (location has light)))) flags = flags | LW_LIT;
+[ DetailFlags o invdesc flags;
+   if (o has light && (invdesc || (location has light))) flags = flags | LW_LIT;
    if (o has worn) flags = flags | LW_WORN;
    if (o has container) {
-     if ((o has open) || (o has transparent)) {
-       if (~~(ObviouslyOccupied(o))) flags = flags | LW_EMPTY; ! ObviouslyOccupied is always false for opaque/closed
-     }  
+     ! we can't know it's empty unless it's at least one of open or transparent
+     if (((o has open) || (o has transparent)) && (~~(ObviouslyOccupied(o)))) flags = flags | LW_EMPTY; 
      if (o has openable) {
        if (o has open) flags = flags | LW_OPEN;
        else flags = flags | LW_CLOSED;
-       if ((o has locked) && (~~roomdesc)) flags = flags | LW_LOCKED;
+       if ((o has locked) && invdesc) flags = flags | LW_LOCKED;
      }
    }
   return flags;
 ];
 
-[ WriteAfterEntryTerms o roomdesc flags terms current counter print_count last_index last_comma;
-  flags = DetailFlags(o, roomdesc);
+[ WriteAfterEntryTerms o invdesc flags terms current counter print_count last_index last_comma;
+  flags = DetailFlags(o, invdesc);
   if (flags) {
-   terms = BitCount(flags);
    if ((flags & LW_OPEN) && (flags & LW_EMPTY)) {
      flags = flags & (~(LW_OPEN + LW_EMPTY));
      flags = flags | LW_OPEN_BUT_EMPTY;
-     terms--;
    }
+    current = LW_LIT; ! largest
+    while (current) { ! count bits by shifting right till we're at 0
+      if (flags & current) terms++;
+      #ifdef TARGET_ZCODE;
+      @log_shift current -1 -> current;
+      #ifnot;
+      @ushiftr current 1 current;
+      #endif;
+    }
    last_index = terms - 1; ! where "and" goes if terms > 1
    current = LW_LIT; ! largest
    if ((terms > 2) && BasicInformKit`SERIAL_COMMA_CFGF) last_comma = last_index;
    else last_comma = last_index - 1;
    LW_Response('A'); ! " ("
-   while (current > 0) {
+   while (current) {
      if (flags & current) {
        if (print_count) { 
          if (print_count <= last_comma) {
@@ -1001,10 +999,14 @@ Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
        print_count++;
      }
      counter++;
-     current = current / 2;
+      #ifdef TARGET_ZCODE;
+      @log_shift current -1 -> current;
+      #ifnot;
+      @ushiftr current 1 current;
+      #endif;
    }
    LW_Response('B'); ! close bracket ")";
-   }
+ }
 ];
 
 [ WriteAfterEntry o depth
@@ -1012,18 +1014,13 @@ Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
     inventory_stage = 2;
     if (c_style & PARTINV_BIT) {
       BeginActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o);
-      if (ForActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o) == false) {
-      WriteAfterEntryTerms(o, 1);
-!        if (flags) WriteAfterEntryTerms(o, flags);
-      }
+      if (ForActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o) == false) WriteAfterEntryTerms(o);
       EndActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o);
     }   ! end of PARTINV_BIT processing
 
     if (c_style & FULLINV_BIT) {
       BeginActivity(PRINTING_INVENTORY_DETAILS_ACT, o);
-      if (ForActivity(PRINTING_INVENTORY_DETAILS_ACT, o) == false) {
-        WriteAfterEntryTerms(o);
-      }
+      if (ForActivity(PRINTING_INVENTORY_DETAILS_ACT, o) == false) WriteAfterEntryTerms(o, 1);
       EndActivity(PRINTING_INVENTORY_DETAILS_ACT, o);
     }   ! end of FULLINV_BIT processing
 
