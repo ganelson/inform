@@ -968,7 +968,7 @@ with identical names in the same Inform 6 routine, which would fail to compile.
 internal error will halt Inform.)
 
 @<Inline command "counter-down"@> =
-	JumpLabels::read_counter(ist->operand, 0);
+	JumpLabels::read_counter(ist->operand, -1);
 	return;
 
 @ We can use counters for anything, not just to generate labels, and one

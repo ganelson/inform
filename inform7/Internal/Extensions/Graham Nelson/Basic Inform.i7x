@@ -373,7 +373,7 @@ To say one of -- beginning say_one_of (documented at phs_oneof): (-
 {-open-brace}
 		0: -).
 To say or -- continuing say_one_of (documented at phs_or):
-	(- @nop; {-segment-count}: -).
+	(- {-segment-count}: -).
 To say at random -- ending say_one_of with marker I7_SOO_RAN (documented at phs_random):
 	(- {-close-brace} -).
 To say purely at random -- ending say_one_of with marker I7_SOO_PAR (documented at phs_purelyrandom):
