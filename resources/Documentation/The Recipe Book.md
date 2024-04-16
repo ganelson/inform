@@ -1270,7 +1270,7 @@ and merely parse the remainder of the command. (That last command may be unlikel
 
 ## Alternatives To Standard Parsing
 
-^^{understanding: alternatives to standard parsing}^^{adverbs}^^{keyword-style parsing}
+^^{understanding: alternatives to standard parsing}^^{adverbs used in commands}^^{keyword-style parsing}
 Very occasionally, for out-of-the-ordinary games, we want to make major changes to the way that Inform ordinarily understands commands.
 
 [Cloves] shows how we might read adverbs in the player's command: adverbs are challenging because they can legitimately appear anywhere in a command structure, so must be found and accounted for before the rest of the command is understood.
@@ -1431,7 +1431,7 @@ Finally, if we want to be able to ``ASK`` and ``TELL`` an inanimate object – s
 
 ## Saying Complicated Things
 
-^^{dialogue: >ASK / TELL}^^{dialogue: menu-based dialogue}^^{dialogue: keyword-based dialogue}
+^^{dialogue: >ASK / TELL}^^{dialogue: based on menus}^^{dialogue: based on keyword recognition}
 As we saw in the overview, there are challenges in choosing the commands with which the player will communicate to the story. Two common approaches are ``ASK``/``TELL`` conversation, where the player can ask or tell characters about keywords, as in ``ASK JILL ABOUT JACK`` or ``TELL FARMER ABOUT CHICKEN COOP``, and menu-based conversation, where the player is offered a list of things to say and must pick one (often by number), as in
 
 ``` transcript
@@ -1873,7 +1873,7 @@ A different sort of randomness is used to play [The Game That Ties You Up In Kno
 
 ## Reading Matter
 
-^^{books (implementing)}^^{books (implementing): with pages}^^{books (implementing): consulting}^^^{examining+action+ <-- reading}^^{examining+action+: handling (READ) separately+commandpart+}^^{Inanimate Listeners+ext+} ^^{extensions: specific extensions: Inanimate Listeners}
+^^{books (implementing)}^^{books (implementing): with numbered pages}^^{books (implementing): consulting}^^^{examining+action+ <-- reading}^^{examining+action+: handling (READ) separately+commandpart+}^^{Inanimate Listeners+ext+} ^^{extensions: specific extensions: Inanimate Listeners}
 Many things can be read, from warning notices to encyclopaedias, and a range of techniques is needed to provide them because the quantity of text, and how it presents itself, can vary so much. With a small amount of very large type, the player should not need any command at all to read the text:
 
 	The road sign is in the Junction. The road sign is fixed in place. "A road sign points north: 'Weston on the Green - 6'."

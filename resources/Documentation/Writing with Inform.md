@@ -705,7 +705,7 @@ Inform makes guesses about the first sentence, and makes a two-way connection; b
 
 ## Regions and the index map {kind_region} {REGIONS} {PM_ExistingRegion} {PM_RegionInTwoRegions} {PM_RegionRelation}
 
-^^{kinds: catalogue: region} ^^{regions+kind+ <-- kinds: catalogue: region} ^^{rooms+kind+: grouping into regions} ^^{index map} ^^{Map page of Index panel+ui+} ^^{user interface: Index panel: Map page} ^^{Index panel+ui+: Map page}
+^^{kinds: catalogue: region} ^^{regions+kind+ <-- kinds: catalogue: region} ^^{rooms+kind+: grouping into regions} ^^{index map} ^^{Map page of Index panel+ui+} ^^{user interface: Index panel: Map page} ^^{Index panel+ui+: Map page} ^^{map region of (room)+prop+} ^^{map region of (room)+propcat+}
 
 Rooms represent individual places to which one can go, but we tend to think of the world around us in larger pieces: we think of a house and a garden, rather than each of the single rooms of the house and all corners of its garden. To Inform a collection of rooms is called a _region_, and we can create one like so:
 
@@ -1126,7 +1126,7 @@ During play, all three items will be able to be extracted from the purse with co
 
 ## Possessions and clothing
 
-^^{possessions} ^^{carrying+rel+} ^^{carrying+relcat+} ^^{wearing+rel+} ^^{wearing+relcat+}^^^{wearing+rel+ <-- clothing} ^^{wearable (thing)+prop+} ^^{wearable (thing)+propcat+} ^^{Inform 6 equivalent: |clothing} ^^{worn (thing)+adj+} ^^{carried (thing)+adj+} ^^{held (thing)+adj+}
+^^{possessions} ^^{carrying+rel+} ^^{carrying+relcat+} ^^{wearing+rel+} ^^{wearing+relcat+}^^^{wearing+rel+ <-- clothing: wearing relation} ^^{wearable (thing)+prop+} ^^{wearable (thing)+propcat+} ^^{Inform 6 equivalent: |clothing} ^^{worn (thing)+adj+} ^^{carried (thing)+adj+} ^^{held (thing)+adj+}
 
 We have seen how to place objects in rooms, and in containers or on supporters. But what about people? Perhaps it could be said that they "contain" the fillings in their teeth, or "support" a top hat, but this is not very natural. Inform therefore never speaks of things being `in` or `on` people. Instead, they have two sorts of possessions: the things they `carry`, and the things they `wear`. (Body parts, such as arms and legs, are different again: see [Parts of things] below for a clue to how to do these.) Thus:
 
@@ -3184,7 +3184,7 @@ And we can also test non-existence:
 
 ## A word about in
 
-^^{containment+rel+} ^^{containment+relcat+} ^^{regional-containment+rel+} ^^{regional-containment+relcat+} ^^{indirect containment} ^^{containment+rel+: indirect} ^^{regions+kind+: things in regions} ^^{regions+kind+: regional containment} ^^{rooms+kind+: grouping into regions}
+^^{containment+rel+} ^^{containment+relcat+} ^^{regional-containment+rel+} ^^{regional-containment+relcat+} ^^{indirect containment} ^^{containment+rel+: indirect} ^^{regions+kind+: things in regions} ^^{regions+kind+: regional containment} ^^{rooms+kind+: grouping into regions} ^^{map region of (room)+prop+}
 
 What does "in" mean? The literal answer is that it means containment, that is, `X is in Y` means that Y contains X. Containment is an idea which is itself a little complicated to unravel, though.
 
@@ -4606,7 +4606,7 @@ The `when play begins` rules are checked only at the start of a story, not when 
 
 ## Awarding points {var_score}
 
-^^{use options: catalogue: |scoring} ^^{scoring+useopt+} ^^{scoring <-- points <-- rankings} ^^{scoring: maximum score} ^^{scoring: enabling} ^^{scoring: reporting during story} ^^{score (- number)+glob+} ^^{maximum score (- number)+glob+} ^^{>NOTIFY ON/OFF} ^^{+to+increase (a stored value) by (value)}
+^^{use options: catalogue: |scoring} ^^{scoring+useopt+} ^^{scoring <-- points <-- rankings <-- full score} ^^{scoring: maximum score} ^^{scoring: enabling} ^^{scoring: reporting during story} ^^{score (- number)+glob+} ^^{maximum score (- number)+glob+} ^^{>NOTIFY ON/OFF} ^^{+to+increase (a stored value) by (value)}
 
 Traditionally-written stories award points throughout play, as an indication of progress. If we want to be traditional, we must first write:
 
@@ -12353,7 +12353,7 @@ The `` (providing light)`` (note initial space) was added by this activity.
 
 ## Printing the description of a dark room {act_darkdesc}
 
-^^{printing the description of a dark room+descactivity+} ^^{darkness: printing the description of a dark room+activity+} ^^{description of a dark room: printing the description of a dark room+activity+}
+^^{printing the description of a dark room+descactivity+} ^^{darkness: printing the description of a dark room+activity+} ^^{descriptions (displayed): dark room}
 
 **1. When it happens.** When looking in darkness.
 
@@ -12493,7 +12493,7 @@ It's best to avoid situations where an item has a locale priority which is highe
 
 ## Printing a locale paragraph about {act_plp}
 
-^^{printing a locale paragraph about something+descactivity+} ^^{locale paragraph: printing a locale paragraph about something+activity+} ^^{descriptions (displayed): room contents} ^^{rooms+kind+: printing the room contents} ^^{mentioned / unmentioned (thing)+prop+} ^^{unmentioned / mentioned (thing)+prop+} ^^{mentioned (thing)+propcat+} ^^{unmentioned (thing)+propcat+}
+^^{printing a locale paragraph about something+descactivity+} ^^{locale paragraph: printing a locale paragraph about something+activity+} ^^{descriptions (displayed): room contents} ^^{rooms+kind+: printing the room contents} ^^{mentioned / unmentioned (thing)+prop+} ^^{unmentioned / mentioned (thing)+prop+} ^^{mentioned (thing)+propcat+} ^^{unmentioned (thing)+propcat+} ^^{supporters+kind+: that don't list contents in room descriptions}
 
 **1. When it happens.** See `printing the locale description`. By this point, the locale description process has identified a number of items as candidates to be described, and worked out a priority order. This activity is then called for each candidate in turn, starting with the highest priority items and working downwards. It can either print some text or not, and can either mark the item as `mentioned` or not: if it does, then the item won't appear subsequently in the locale description. If the activity does nothing, the item becomes "nondescript" and falls through into the final ``You can also see...`` paragraph, unless another rule mentions it in the mean time.
 
