@@ -2201,7 +2201,7 @@ In many cases it may be preferable to use some subtler method to enforce random 
 
 ## Helping and Hinting
 
-^^{help systems}^^{hint systems}
+^^{hint systems <-- >HELP: help systems}
 IF is difficult to play: often harder than the writer ever suspects. Players are held up by what is "obvious", and they stumble into unforeseen combinations, or spend inordinate amounts of time working on the "wrong" problems. Too much of this and they give up, or post questions on online forums. Against this, many IF authors like to include in-story hints.
 
 There are many approaches, which differ on two main issues.
