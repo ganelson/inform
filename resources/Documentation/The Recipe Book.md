@@ -2346,7 +2346,7 @@ Old-school adventures expected their adventurers to die early and die often. [La
 
 ## Typography
 
-^^{proportional-spaced text}^^{monospaced text}^^{fonts: fixed-width / variable-width}^^{fonts: italic / bold / roman}^^{characters (letters): Unicode (arbitrary symbols)}^^{+to+say "[bold type]"} ^^{+tosay+"[bold type]"}^^{+to+say "[italic type]"} ^^{+tosay+"[italic type]"}^^{+to+say "[roman type]"} ^^{+tosay+"[roman type]"}^^{+to+say "[fixed letter spacing]"} ^^{+tosay+"[fixed letter spacing]"}^^{+to+say "[variable letter spacing]"} ^^{+tosay+"[variable letter spacing]"}
+^^{proportional-spaced text}^^{monospaced text}^^{fonts: fixed-width / variable-width}^^{fonts: italic / bold / roman <-- italics}^^{characters (letters): Unicode (arbitrary symbols)}^^{+to+say "[bold type]"} ^^{+tosay+"[bold type]"}^^{+to+say "[italic type]"} ^^{+tosay+"[italic type]"}^^{+to+say "[roman type]"} ^^{+tosay+"[roman type]"}^^{+to+say "[fixed letter spacing]"} ^^{+tosay+"[fixed letter spacing]"}^^{+to+say "[variable letter spacing]"} ^^{+tosay+"[variable letter spacing]"}
 Story files produced by Inform tend not to contain elaborate typographical effects. They would only distract. Like a novel, a classic work of IF is best presented in an elegant but unobtrusive font. Inform does, however, provide for italic and bold-face, and also for a typewriter-style fixed pitch of lettering:
 
 	"This is an [italic type]italicised[roman type] word."
