@@ -5,7 +5,7 @@ Index: INVENTORY wide and tall
 Description: Overview of all the phrase options associated with listing, and examples of how to change the inventory list into some other standard formats.
 For: Z-Machine
 
-^^{INVENTORY wide and tall OLDIX}
+^^{inventory: wide and tall}
 
 Most of the phrase options for listing items are relatively self-explanatory; a few are less so. Here is an overview:
 
