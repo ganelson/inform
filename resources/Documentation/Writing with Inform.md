@@ -20510,7 +20510,158 @@ In particular:
 
 ## About kits
 
-To follow.
+A _kit_ is a body of code written entirely in I6 syntax. It is compiled independently from the source text of a story which uses it, and the two are then merged together (or _linked_). Kits can be quite large: `BasicInformKit`, which sits inside the `Basic Inform` extension, runs to over 12,000 lines. Equally, they do not have to be. It's fine to write a kit containing just a single function or two.
+
+Kits sit inside extensions, and provide them with support services. An extension can contain multiple kits, but of course does not need to contain any. Kits increase the power of extensions in a number of ways. They can access memory directly, and are not constrained by the kind-safety rules which would apply to higher-level code. For example, all the code to build, sort and dismantle lists is done by functions in `BasicInformKit`. Kits can also create new fundamental kinds of value for Inform.
+
+This chapter is the most technical in the book. It's aimed at writers of extensions who need more power, and it assumes the reader is comfortable with the material in the [Extensions] and [Low-Level Programming] chapters, together with at least a passing knowledge of Inform 6 syntax, since that's essentially the same thing as writing I6.
+
+## Adding a kit to an extension
+
+Suppose the extension `Roots of Equations by Peter Drake` wants to perform some mathematical algorithms which will be coded in I6. We will do this by placing the I6 material in `RootsOfEquationsKit`, which will live inside the extension like so:
+
+``` code
+Ducking Action-v1.i7xd
+	extension_metadata.json
+	Materials
+		Inter
+			RootsOfEquationsKit
+				...
+	Source
+		Ducking Action.i7x
+```
+
+All kits have to have names ending in `Kit`, and by convention if an extension contains a single kit then its name is the extension title in camel-casing with the spaces removed and `Kit` suffixed. So `Roots of Equations` becomes `RootsOfEquationsKit`.
+
+Note that kits live inside the `Inter` subdirectory of the `Materials` directory private to the extension. See [Images and other resources] for more on `Materials`, which can also include all manner of other good things.
+
+`RootsOfEquationsKit` is itself a directory, which looks like this:
+
+``` code
+RootsOfEquationsKit
+	Contents.w
+	kit_metadata.json
+	Sections
+		Roots.w
+```
+
+The actual I6 source for the kit code is in the file `Roots.w`, but before we can get to that, we have to do some book-keeping.
+
+1) The `Contents.w` file doesn't look very interesting at first because there's only one source file, `Roots.w`, so this is currently like a contents page for a book with only one chapter:
+
+   ``` code
+   Title: RootsOfEquationsKit
+   Author: Peter Drake
+   Purpose: Some Newton-Raphson approximation functions.
+   Language: Inform 6
+
+   Sections
+       Roots
+   ```
+
+2) There must also be a `kit_metadata.json` file:
+
+   ``` code
+   {
+       "is": {
+           "type": "kit",
+           "title": "RootsOfEquationsKit",
+           "version": "1"
+       }
+   }
+   ```
+
+   This should look very similar to the `extension_metadata.json` file found in extensions, and indeed it has a great deal in common, though as we shall see it can be considerably extended.
+
+Why are there two files like this, not one, given that both are basically descriptions of what the kit is? One answer is that they actually serve different purposes: `Contents.w` describes the _source code_ for the kit, whereas `kit_metadata.json` describes the resulting compiled kit.
+
+The other is that kits are designed to be compatible with the ```inweb``` system for "literate programming". This is how it is that annotated forms of the source for `BasicInformKit` and `WorldModelKit`, for example, are hosted at the Inform source code website.
+
+So-called _section files_ also have a marked-up format suitable for ```inweb```. (The ```.w``` at the end of the two filenames ```Contents.w``` and ```Roots.w``` means "web".)
+
+Here is a minimal but legal form for ```Roots.w```:
+
+``` code
+Roots
+
+Some functions for finding roots of polynomials by Newton-Raphson approximation.
+
+@ Just one placeholder for now:
+
+=
+[ EvaluatePolynomial f x;
+	print "Not implemented yet.^";
+];
+```
+
+Web files begin with a line giving the title of the section — here, ```Root``` — then skip a line, and give a sentence or two describing the content in slightly more detail. After that, they are a sequence of "paragraphs". Each paragraph begins with an ```@``` character on the left margin. There's then space for some commentary about what is coming up: authors usually use this space to document calling conventions for functions, or say why they work they way they do.
+
+There is then a line with an ```=``` character on the left margin. After that, the rest of the paragraph is I6 code. So the actual content of the above section, once all the annotations are peeled off, is just this:
+
+``` code
+[ EvaluatePolynomial f x;
+	print "Not implemented yet.^";
+];
+```
+
+In other words, the kit — which is now complete — provides just a single function.
+
+We can now use it. As established, `RootsOfEquationsKit` is sitting inside the extension `Roots of Equations by Peter Drake`. We call this the _wrapper extension_ for the kit. That extension might now contain this phrase definition:
+
+	To decide which real number is the evaluation of (polynomial - list of real numbers) at (x - real number):
+		(- (EvaluatePolynomial({polynomial}, {x})) -).
+
+If we then run a test project which includes the extension, and if we are looking carefully, we might notice this message scroll by on the console:
+
+``` code
+(Building RootsOfEquationsKit for architecture 16)
+(Building RootsOfEquationsKit for architecture 16d)
+(Building RootsOfEquationsKit for architecture 32)
+(Building RootsOfEquationsKit for architecture 32d)
+```
+
+This is because Inform can only use `RootsOfEquationsKit` once it has been built (i.e., compiled): and since Inform could see the source code for the kit, it went ahead and built the thing. Inform builds kits only when necessary. If the timestamp on the source code files is later than that of the built form of the kit, then Inform assumes the source code has been changed since the last time the kit was built, so it rebuilds. Otherwise, if the kit source remains unchanged, Inform won't build the kit again.
+
+In fact, it builds the kit not once but four times, once for each possible architecture the kit will run on. (Once built, a kit is what is sometimes called a "fat binary", in that it contains multiple different compiled versions in one.) ```16``` and ```32``` refer to the 16-bit and 32-bit versions used on Z-machine and Glulx respectively, and ```16d``` and ```32d``` the same but with debugging features enabled — in effect, not-for-release features. By default, in the app, a project will use the ```32d``` architecture, and then when released, the ```32``` architecture. Inform handles all of this automatically.
+
+If we look back at the directory, we see that more files have appeared:
+
+``` code
+RootsOfEquationsKit
+	arch-16.interb
+	arch-16d.interb
+	arch-32.interb
+	arch-32d.interb
+	Contents.w
+	kit_metadata.json
+	Sections
+		Roots.w
+```
+
+The ```.interb``` filename endings mean "Inter binary code", and there's one for each architecture.
+
+Something else happened on that first run: the `extension_metadata.json` file for the wrapper extension was quietly rewritten. It now includes a _dependency_ of the extension on the kit:
+
+``` code
+{
+    "is": {
+        "type": "extension",
+        "title": "Roots of Equations",
+        "author": "Peter Drake",
+        "version": "1"
+    },
+    "needs": [ {
+        "need": {
+            "type": "kit",
+            "title": "RootsOfEquationsKit"
+        }
+    } ]
+}
+```
+
+This tracking goes on automatically and authors can usually just let it happen all by itself, but if we decided against the kit after all and removed it from the extension, then this dependency would have to be removed from `extension_metadata.json` before the extension would work again.
+
+The full set of features of ```inweb``` is extensive and this is not the place to go into that. In brief, though, kit section files like ```Roots.w``` can't use any of the interesting tangling features (such as ```@d```, or ```@< ... >@```); but they can use all the weaving features. Inform users don't need to have ```inweb``` in order to write or use kits, and don't need to understand what the last sentence said.
 
 ## Run-time representations of Inform constructs
 
