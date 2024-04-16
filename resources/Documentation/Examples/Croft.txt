@@ -5,6 +5,8 @@ Index: DROPPING into and onto things
 Description: Adding special reporting and handling for objects dropped when the player is on a supporter, and special entering rules for moving from one supporter to another.
 For: Z-Machine
 
+^^{dropping+action+: into and onto things}
+
 Suppose that we have a design in which the player spends lots of time on enterable supporters, and in which we want to report certain actions – dropping things onto those supporters, or leaping from one to another – in a new way. We might begin by adding some action variables to help us keep track of the situation:
 
 	{*}"Croft"

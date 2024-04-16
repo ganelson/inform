@@ -5,6 +5,8 @@ Index: People who do new things each time the player looks
 Description: Creating characters who change their behaviour from turn to turn, and a survey of other common uses for alternative texts.
 For: Z-Machine
 
+^^{People who do new things each time the player looks OLDIX}
+
 	{*}"Camp Bethel"
 	
 	Camp Bethel Kitchen is a room.

@@ -5,6 +5,8 @@ Index: Exits added to a room
 Description: A button that causes a previously non-existent exit to come into being.
 For: Z-Machine
 
+^^{connections between rooms: adding new connections}
+
 We can change the directions in the map in mid-game, though in practice this is rarely necessary. But suppose we do not want a door or any sign of a door to exist before the player takes some action, in this case pressing a button:
 
 	{*}"Prisoner's Dilemma"

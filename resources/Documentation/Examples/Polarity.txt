@@ -5,6 +5,8 @@ Index: GO BACK command
 Description: A "go back" command that keeps track of the direction from which the player came, and sends them back.
 For: Z-Machine
 
+^^{>GO: GO BACK command}
+
 The main trick of this is always to record where the player has gone when they have just moved.
 
 	{*}"Polarity"

@@ -5,6 +5,8 @@ Index: Clothing kinds
 Description: Using kinds of clothing to prevent the player from wearing several pairs of trousers at the same time.
 For: Z-Machine
 
+^^{clothing: kinds}
+
 Inform's default handling of wearable things does not make any rules about what can be worn together. Suppose, however, we have a game in which there are a large number of different garments, and we want to keep the player from wearing (say) more than one pair of pants at once:
 
 	{*}"Get Me to the Church on Time"

@@ -5,6 +5,8 @@ Index: GIVE command extended
 Description: A ``GIVE`` command that gets rid of Inform's default refusal message in favor of something a bit more sophisticated.
 For: Z-Machine
 
+^^{giving it to+action+}
+
 If we want to rewrite the functionality of a command that usually ends with a `block...` rule, we will have to begin by turning the blocking off.
 
 	{*}"Bribery"

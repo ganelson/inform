@@ -5,6 +5,8 @@ Index: Containers which have a breaking strain
 Description: To give every container a breaking strain, that is, a maximum weight of contents which it can bear - so that to put the lead pig into a paper bag invites disaster.
 For: Z-Machine
 
+^^{containers+kind+: which have a breaking strain}
+
 The following shows the kind of "realism" rules which could be introduced using weights. Not entirely realistic: we do not bother to rupture containers out of the player's sight.
 
 	{*}"Lead Cuts Paper"

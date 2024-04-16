@@ -5,6 +5,8 @@ Index: Backdrops which can only be examined
 Description: A backdrop which the player can examine, but cannot interact with in any other way.
 For: Z-Machine
 
+^^{backdrops+kind+: which can only be examined}
+
 It's tempting to handle the player's inability to interact with something with a simple instead rule:
 
 	{*}"Waterworld 1"

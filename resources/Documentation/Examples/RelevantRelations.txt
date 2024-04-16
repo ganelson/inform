@@ -5,6 +5,8 @@ Index: Describing relations using a random choice of verb
 Description: An example of how to create room descriptions that acknowledge particular relations using their assigned verbs, rather than by the heavily special-cased code used by the standard library.
 For: Z-Machine
 
+^^{descriptions (displayed): relations using a random choice of verb}
+
 Suppose that we wanted authors to be able to indicate which relations should or should not be included in room descriptions, and have the system dynamically honour that instruction.
 
 Inform already knows about verbs for describing supporting, containment, carrying, and wearing, so we could write a set of instructions to handle such cases. To do this, we're using the `writing a paragraph about` activity, which is described in the chapter on [Activities].

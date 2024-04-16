@@ -5,6 +5,8 @@ Index: Maze with randomised room links
 Description: A maze with directions between rooms randomised at the start of play.
 For: Z-Machine
 
+^^{mazes (implementing): with randomised room links}
+
 Mazes are a traditional element of interactive fiction, often consisting of apparently identical rooms with exits that do not work reciprocally and which cause confusion.
 
 The methods of mapping mazes are now fairly well understood and mazes themselves tend to be regarded as tiresome rather than enjoyable by a large portion of the playing audience. However, if we did want to ignore the common wisdom and create a maze, randomly generated at the start of play, here would be one way to go about it:

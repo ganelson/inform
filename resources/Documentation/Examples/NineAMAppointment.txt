@@ -5,6 +5,8 @@ Index: WAIT [number] MINUTES command
 Description: A ``WAIT [NUMBER] MINUTES`` command which advances through an arbitrary number of turns.
 For: Z-Machine
 
+^^{WAIT [number] MINUTES command OLDIX}
+
 If there's some reason the player needs to be at a specific place and time, we might want to allow him to wait a number of minutes at once.
 
 	{*}"Nine AM Appointment"

@@ -5,6 +5,8 @@ Index: Containers referred to by contents
 Description: A taco shell that can be referred to (when it contains things) in terms of its contents.
 For: Z-Machine
 
+^^{containers+kind+: referred to by contents}
+
 It's fairly common that we want to be able to refer to a container in terms of what it has in it: a bottle of wine, a salt shaker, a chicken sandwich. The player is free to remove the contents again, and the object will go back to using its usual name:
 
 	{*}"Cinco"

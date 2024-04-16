@@ -5,6 +5,8 @@ Index: Exits only listed in the status line
 Description: A status line that lists the available exits from the current location.
 For: Z-Machine
 
+^^{connections between rooms: listed in status line}
+
 A not-uncommon device in games with large maps is a list of available exits printed in the status bar. We might do this so:
 
 	{*}"Ways Out"

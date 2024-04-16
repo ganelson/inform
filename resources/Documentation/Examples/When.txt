@@ -5,6 +5,8 @@ Index: Door described differently depending on where it is
 Description: A door whose description says "...leads east" in one place and "...leads west" in the other.
 For: Z-Machine
 
+^^{doors+kind+: described differently depending on where it is}
+
 Very simple, but quite frequently useful:
 
 	{*}"When?"

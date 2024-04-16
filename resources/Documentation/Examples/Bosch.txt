@@ -5,6 +5,8 @@ Index: FULL SCORE using a list of stored actions
 Description: Creating a list of actions that will earn the player points, and using this both to change the score and to give ``FULL SCORE`` reports.
 For: Z-Machine
 
+^^{scoring: >FULL SCORE: using a list of stored actions}
+
 We could, if we wanted, make a table of stored actions all of which represent things that will earn points for the player. For instance:
 
 	{*}"Bosch"

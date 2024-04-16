@@ -5,6 +5,8 @@ Index: Scored items listed in a table
 Description: Recording a whole table of scores for specific treasures.
 For: Z-Machine
 
+^^{scoring: items listed in a table}
+
 Suppose we want to assign scores for a whole range of objects the player might pick up. One systematic way to do this would be with a table of point values for things:
 
 	{*}"No Place Like Home"

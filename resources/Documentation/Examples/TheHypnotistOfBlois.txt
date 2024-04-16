@@ -5,6 +5,8 @@ Index: People commanded to obey
 Description: A hypnotist who can make people obedient and then set them free again.
 For: Z-Machine
 
+^^{People commanded to obey OLDIX}
+
 	{*}"The Hypnotist of Blois"
 	
 	A person is either hypnotized or alert. A person is usually alert.

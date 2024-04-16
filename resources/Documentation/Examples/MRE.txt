@@ -5,6 +5,8 @@ Index: Hunger eventually killing the player
 Description: Hunger that eventually kills the player, and foodstuffs that can delay the inevitable by different amounts of time.
 For: Z-Machine
 
+^^{Hunger eventually killing the player OLDIX}
+
 Many older interactive fiction games required the player to find food and eat on a regular basis in order to avoid death. This effect was often unrealistic (since most people can survive much longer than a few hours without eating) and is often seen as an annoyance. However, for the sake of argument, suppose that we do want to construct a hunger-and-death system.
 
 To make things a little more interesting, we will postulate that different foods are differently filling, so that if the player manages to find something really caloric, they are off the hook on their hunger search for a while.

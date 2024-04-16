@@ -5,6 +5,8 @@ Index: Continuous space with distant objects visible
 Description: A simple open landscape where the player can see between rooms and will automatically move to touch things in distant rooms.
 For: Z-Machine
 
+^^{continuous space: with distant objects visible}
+
 A map of linked rooms works well for modeling enclosed or indoor space, and somewhat less well for modeling large open spaces, where a person should reasonably be able to see things which are much too far away to touch. With some modifications to scoping, though, we can create an environment where objects in nearby rooms are described and viewable, and where the player will automatically move towards distant items before interacting with them physically.
 
 	{*}"Rock Garden"

@@ -5,6 +5,8 @@ Index: Characters referred to when absent
 Description: When a character is not visible, responding to such commands as ``EXAMINE PETER`` and ``PETER, HELLO`` with a short note that the person in question is no longer visible.
 For: Z-Machine
 
+^^{characters (people): referred to when absent}
+
 By default, when something is not present, Inform does not allow a player to refer to it. But there are times when we might like to acknowledge that the thing mentioned in a command does exist somewhere in the game; it just happens not to be on hand right now.
 
 One way to do this is to make an object that appears everywhere and responds to the name of its owner only when the owner itself is not in view.

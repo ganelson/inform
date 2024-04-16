@@ -5,6 +5,8 @@ Index: BURN command, and flammable objects
 Description: A ``BURN`` command; flammable objects which light other items in their vicinity and can burn for different periods of time; the possibility of having parts or contents of a flaming item which survive being burnt.
 For: Z-Machine
 
+^^{burning+action+: flammable objects}
+
 	{*}"In Fire or in Flood"
 	
 	Part I - Rules for combustion

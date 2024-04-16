@@ -5,6 +5,8 @@ Index: Matches that set fires
 Description: Creating a class of matches that burn for a time and then go out, with elegant reporting when several matches go out at once.
 For: Z-Machine
 
+^^{Matches that set fires OLDIX}
+
 Here we create a class of matches that can be used to burn other objects. Our objectives are as follow:
 
 Burned objects other than matches should be removed from play instantly (just as edible objects are instantly eaten). We could give everything its own burning duration, but that complicates matters and allows for fire to spread from one object to another; for an example of how to do that, see the example [In Fire or in Flood].

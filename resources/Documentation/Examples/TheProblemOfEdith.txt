@@ -5,6 +5,8 @@ Index: Conversation where characters seek logical connection to foregoing topics
 Description: A conversation in which the main character tries to build logical connections between what the player is saying now and what went immediately before.
 For: Z-Machine
 
+^^{dialogue: where characters seek logical connection to foregoing topics}
+
 Suppose that we have a core set of issues we want to be able to bring up with all the characters, and we want characters to draw intelligent connections between different conversation topics. We will need some model of how things relate to one another, so:
 
 	{*}"The Problem of Edith"

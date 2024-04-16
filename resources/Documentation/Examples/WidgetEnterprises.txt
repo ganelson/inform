@@ -5,6 +5,8 @@ Index: Equation used for price curves
 Description: Allowing the player to set a price for a widget on sale, then determining the resulting sales based on consumer demand, and the resulting profit and loss.
 For: Z-Machine
 
+^^{equations, for values with units}
+
 Suppose the player is responsible for pricing at Widget Enterprises. Widget production entails a certain fixed cost as well as a cost per unit; and somewhere out in the world there are a number of customers interested in purchasing widgets, but the player starts without knowing what this distribution looks like.
 
 We can express the profits as an equation: the total made by selling widgets, minus the cost thereof.

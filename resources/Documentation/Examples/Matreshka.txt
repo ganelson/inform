@@ -5,6 +5,8 @@ Index: SEARCH [room] action that opens every visible unlocked container
 Description: A ``SEARCH [ROOM] ACTION`` that will open every container the player can see, stopping only when there don't remain any that are closed, unlocked, and openable.
 For: Z-Machine
 
+^^{SEARCH [room] action that opens every visible unlocked container OLDIX}
+
 	{*}"Matreshka"
 	
 	Ransacking is an action applying to one thing.
