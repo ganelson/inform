@@ -3456,7 +3456,7 @@ Lastly, note that the `the` in text like `two of the doors` matters: without it,
 
 ## Actions {ACTIONS} {kind_actionname} {PM_APWithNoParticiple} {PM_APUnknown} {PM_NonActionIn}
 
-^^{actions} ^^{success: for actions} ^^{failure: for actions} ^^{taking+action+} ^^{ACTIONS+testcmd+} ^^{testing commands: >ACTIONS}
+^^{actions} ^^{success: for actions} ^^{failure: for actions} ^^{taking+action+ <-- >GET} ^^{ACTIONS+testcmd+} ^^{testing commands: >ACTIONS}
 
 _Actions_ are what we get if we try to break down a narrative into its smallest moments. We might casually say that we are "going shopping", but this involves many smaller steps: going north, going east, entering the shop, examining a loaf of bread, taking it, giving money to the baker, and so on.
 
