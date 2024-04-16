@@ -33,7 +33,7 @@ even the 2020 restructuring of Inform's language design.
 =
 Section 2 - Boxed quotations
 
-To display the boxed quotation (Q - text)
+To display the/-- boxed quotation (Q - text)
 	(documented at ph_boxed):
 	(- DisplayBoxedQuotation({-box-quotation-text:Q}); -).
 
@@ -79,7 +79,7 @@ see "ListWriter.i6t". The following phrases control it:
 =
 Section 5 - Saying lists of things
 
-To list the contents of (O - an object),
+To list the/-- contents of (O - an object),
 	with newlines,
 	indented,
 	giving inventory information,
@@ -294,16 +294,16 @@ may be reimplemented using a verb "to require" at some future point.
 =
 Section 2 - Action requirements
 
-To decide whether the action requires a touchable noun
+To decide whether the action requires a/-- touchable noun
 	(documented at ph_requirestouch):
 	(- (NeedToTouchNoun()) -).
-To decide whether the action requires a touchable second noun
+To decide whether the action requires a/-- touchable second noun
 	(documented at ph_requirestouch2):
 	(- (NeedToTouchSecondNoun()) -).
-To decide whether the action requires a carried noun
+To decide whether the action requires a/-- carried noun
 	(documented at ph_requirescarried):
 	(- (NeedToCarryNoun()) -).
-To decide whether the action requires a carried second noun
+To decide whether the action requires a/-- carried second noun
 	(documented at ph_requirescarried2):
 	(- (NeedToCarrySecondNoun()) -).
 To decide whether the action requires light
@@ -344,10 +344,10 @@ prevents this.
 =
 Section 3 - Stop or continue
 
-To stop the action
+To stop the/-- action
 	(documented at ph_stopaction):
 	(- rtrue; -) - in to only.
-To continue the action
+To continue the/-- action
 	(documented at ph_continueaction):
 	(- rfalse; -) - in to only.
 
@@ -389,16 +389,16 @@ Chapter 4 - The Model World
 
 Section 1 - Ending the story
 
-To end the story
+To end the/-- story
 	(documented at ph_end):
 	(- deadflag=3; story_complete=false; -).
-To end the story finally
+To end the/-- story finally
 	(documented at ph_endfinally):
 	(- deadflag=3; story_complete=true; -).
-To end the story saying (finale - text)
+To end the/-- story saying (finale - text)
 	(documented at ph_endsaying):
 	(- deadflag={-by-reference:finale}; BlkValueIncRefCountPrimitive(deadflag); story_complete=false; -).
-To end the story finally saying (finale - text)
+To end the/-- story finally saying (finale - text)
 	(documented at ph_endfinallysaying):
 	(- deadflag={-by-reference:finale}; BlkValueIncRefCountPrimitive(deadflag); story_complete=true; -).
 To decide whether the story has ended
@@ -413,7 +413,7 @@ To decide whether the story has not ended
 To decide whether the story has not ended finally
 	(documented at ph_notfinallyended):
 	(- (story_complete==false) -).
-To resume the story
+To resume the/-- story
 	(documented at ph_resume):
 	(- resurrect_please = true; -).
 
@@ -661,7 +661,7 @@ To decide if (S - a snippet) does not include (T - a topic)
 =
 Section 3 - Changing the player's command
 
-To change the text of the player's command to (T - text)
+To change the text of the/-- player's command to (T - text)
 	(documented at ph_changecommand):
 	(- SetPlayersCommand({-by-reference:T}); -).
 To replace (S - a snippet) with (T - text)
@@ -670,7 +670,7 @@ To replace (S - a snippet) with (T - text)
 To cut (S - a snippet)
 	(documented at ph_cutsnippet):
 	(- SpliceSnippet({S}, 0); -).
-To reject the player's command
+To reject the/-- player's command
 	(documented at ph_rejectcommand):
 	(- RulebookFails(); rtrue; -) - in to only.
 
@@ -698,7 +698,7 @@ Section 5 - The multiple object list
 To decide what list of objects is the multiple object list
 	(documented at ph_multipleobjectlist):
 	(- LIST_OF_TY_Mol({-new:list of objects}) -).
-To alter the multiple object list to (L - list of objects)
+To alter the/-- multiple object list to (L - list of objects)
 	(documented at ph_altermultipleobjectlist):
 	(- LIST_OF_TY_Set_Mol({-by-reference:L}); -).
 

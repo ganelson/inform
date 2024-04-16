@@ -2815,7 +2815,7 @@ A feature of Inform now best avoided is that, in a limited way and only on a nar
 
 Text is normally printed in between the typed commands of the player, rolling upwards from the bottom of the screen, as if a dialogue is being typed by an old-fashioned teletype. But it can also be displayed in a bolder way, floating above the main text, and this is sometimes used to display quotations.
 
-> phrase: {ph_boxed} display the boxed quotation (text)
+> phrase: {ph_boxed} display the/-- boxed quotation (text)
 >
 > This phrase displays the given text on screen in an overlaid box. For reasons to do with the way such quotations are plotted onto the screen, their text is treated literally: no substitutions in square brackets are obeyed, and no non-Latin characters can be used in it. The quotation will only ever appear once, regardless of the number of times the `display the boxed quotation ...` phrase is reached. Rather than being shown immediately – and thus, probably, scrolling away before it can be seen – the display is held back until the next command prompt is shown to the player. Example:
 >
@@ -3562,7 +3562,7 @@ We have seen that instead rules automatically stop actions, whereas before rules
 
 It is also possible to be explicit about stopping the action:
 
-> phrase: {ph_stopaction} stop the action
+> phrase: {ph_stopaction} stop the/-- action
 >
 > This phrase stops the current rule, stops the rulebook being worked through, and finally stops the action being processed. Example:
 >
@@ -3572,7 +3572,7 @@ It is also possible to be explicit about stopping the action:
 
 Finally, we can prevent Inform from stopping the action when it otherwise might:
 
-> phrase: {ph_continueaction} continue the action
+> phrase: {ph_continueaction} continue the/-- action
 >
 > This phrase ends the current rule, but in a way which keeps its rulebook going, so that the action being processed will carry on rather than being stopped. Example:
 >
@@ -4668,21 +4668,21 @@ Short of something like a power cut, the story can only end when one of the two 
 
 In story-telling, there are many kinds of ending: happy, sad, decisive, bittersweet, surprise. Inform doesn't try to interfere in that kind of artistic choice, but it does need to know one thing about the ending: is it final, or not? Many authors like to make additional menu items available if the player has completed the story right through, but not if she has reached an early or wrong ending. (See the activity `amusing a victorious player`, for example.)
 
-> phrase: {ph_end} end the story
+> phrase: {ph_end} end the/-- story
 >
 > This phrase ends the story at the next opportunity (typically as soon as the current rule ends), with the closing message "The End." The end is not considered final.
 
-> phrase: {ph_endfinally} end the story finally
+> phrase: {ph_endfinally} end the/-- story finally
 >
 > This phrase ends the story at the next opportunity (typically as soon as the current rule ends), with the closing message "The End." The end is considered final, and any hidden menu options will be revealed.
 
-> phrase: {ph_endsaying} end the story saying (text)
+> phrase: {ph_endsaying} end the/-- story saying (text)
 >
 > This phrase ends the story at the next opportunity (typically as soon as the current rule ends), with the closing message given in the text. The end is not considered final. Example:
 >
 >     end the story saying "You have been stymied"
 
-> phrase: {ph_endfinallysaying} end the story finally saying (text)
+> phrase: {ph_endfinallysaying} end the/-- story finally saying (text)
 >
 > This phrase ends the story at the next opportunity (typically as soon as the current rule ends), with the closing message given in the text. The end is considered final, and any hidden menu options will be revealed. Example:
 >
@@ -4726,7 +4726,7 @@ appears. For example:
 
 Surprisingly, the end is not always the end:
 
-> phrase: {ph_resume} resume the story
+> phrase: {ph_resume} resume the/-- story
 >
 > This phrase causes an ended story to resume exactly as if no `end the story...` phrase had been used. Example:
 >
@@ -5924,7 +5924,7 @@ tests whether it is set; we can also test if it is not set using:
 
 A more substantial example from the Standard Rules is given by a phrase used mostly for internal, technical reasons:
 
-> phrase: {ph_listcontents} list the contents of (object)
+> phrase: {ph_listcontents} list the/-- contents of (object)
 >
 > This phrase produces a list of all things whose holder is the given object, according to Inform's traditional conventions for room descriptions and inventory listings. Example:
 >
@@ -6321,19 +6321,19 @@ The word `visible` here tells Inform that we do not need to be able to touch the
 
 Occasionally, when writing general rules about actions, it can be useful to find out what the current action's requirements are: the following conditions do what they suggest.
 
-> phrase: {ph_requirestouch} if action requires a touchable noun:
+> phrase: {ph_requirestouch} if action requires a/-- touchable noun:
 >
 > This condition is true if the action being processed is one whose (first) noun is an object which needs to be touchable by the actor. For example, it's true for `taking`, but false for `examining`.
 
-> phrase: {ph_requirestouch2} if action requires a touchable second noun:
+> phrase: {ph_requirestouch2} if action requires a/-- touchable second noun:
 >
 > This condition is true if the action being processed is one whose second noun is an object which needs to be touchable by the actor. For example, it's true for `putting the brick in the sack`, but false for `throwing the brick at the window`.
 
-> phrase: {ph_requirescarried} if action requires a carried noun:
+> phrase: {ph_requirescarried} if action requires a/-- carried noun:
 >
 > This condition is true if the action being processed is one whose (first) noun is an object which needs to be carried by the actor. For example, it's true for `dropping`, but false for `taking`.
 
-> phrase: {ph_requirescarried2} if action requires a carried second noun:
+> phrase: {ph_requirescarried2} if action requires a/-- carried second noun:
 >
 > This condition is true if the action being processed is one whose second noun is an object which needs to be carried by the actor.
 
@@ -8632,7 +8632,7 @@ In general we can't do the reverse, that is, we can't silently use a real number
 
 makes no sense. But we can explicitly convert them:
 
-> phrase: {ph_nearestwholenumber} (real number) to the nearest whole number ... number
+> phrase: {ph_nearestwholenumber} (real number) to the/-- nearest whole number ... number
 >
 > This phrase performs signed addition on the given values, whose kinds must agree, and produces the result. Examples:
 >
@@ -10298,20 +10298,20 @@ But the same method can't be used to put blanks back, since a blank is not a val
 
 These more destructive phrases need a steady hand:
 
-> phrase: {ph_blankoutrow} blank out the whole row
+> phrase: {ph_blankoutrow} blank out the/-- whole row
 >
 > This phrase replaces the currently chosen row with blanks, erasing any value previously stored under any of the columns. Example:
 >
 >     choose row 1 in the Table of Fish Habitats;
 >     blank out the whole row;
 
-> phrase: {ph_blankoutcol} blank out the whole (table column) column in (table)
+> phrase: {ph_blankoutcol} blank out the/-- whole (table column) column in (table)
 >
 > This phrase replaces the currently chosen column with blanks, erasing any value previously stored in any of the rows. Example:
 >
 >     blank out the whole salinity column in the Table of Fish Habitats;
 
-> phrase: {ph_blankouttable} blank out the whole of (table)
+> phrase: {ph_blankouttable} blank out the/-- whole of (table)
 >
 > This phrase replaces every row of the currently chosen table with blanks, erasing any value previously stored anywhere in it. Example:
 >
@@ -11590,7 +11590,7 @@ However, by adding rules to the `multiple action processing rulebook`, we can ta
 >
 > This phrase produces the current multiple object list as a value. The list will be the collection of objects found to match a plural noun like ``ALL`` in the most recent command typed by the player. If there is no multiple object, say if the command was ``TAKE PEAR``, the list will be empty: it won't be a list of size 1.
 
-> phrase: {ph_altermultipleobjectlist} alter the multiple object list to (list of objects)
+> phrase: {ph_altermultipleobjectlist} alter the/-- multiple object list to (list of objects)
 >
 > This phrase sets the multiple object list to the given value. The list is ordinarily the collection of objects found to match a plural noun like ``ALL`` in the most recent command typed by the player, but using this phrase at the right moment (before the `generate action rule` in the turn sequence rules takes effect).
 
@@ -12697,7 +12697,7 @@ To explain. Fragments of what the player has typed are called snippets: `the pla
 
 Lastly, we took drastic action with another new phrase:
 
-> phrase: {ph_rejectcommand} reject the player's command
+> phrase: {ph_rejectcommand} reject the/-- player's command
 >
 > This phrase should be used only in rules for the `reading a command` activity. It tells Inform not to bother analysing the text further, but to go back to the keyboard. (No time passes; no turn elapses; nothing happens in the simulated world.)
 
@@ -12735,7 +12735,7 @@ Note that `replace` and `cut` can only be used in `after reading a command` rule
 
 (e) Finally, we can make still more detailed alterations to the text of the command using the techniques presented in the chapter on [Advanced Text]. For instance:
 
-> phrase: {ph_changecommand} change the text of the player's command to (text)
+> phrase: {ph_changecommand} change the text of the/-- player's command to (text)
 >
 > This phrase should be used only in `after` rules for the `reading a command` activity; it replaces the current command text entirely. Example:
 >
@@ -14118,7 +14118,7 @@ Up to now, we have only been able to judge two texts by seeing if they are equal
 >
 > is always true.
 
-> phrase: {ph_exactlymatches} if (text) exactly matches the text (text):
+> phrase: {ph_exactlymatches} if (text) exactly matches the/-- text (text):
 >
 > This condition is true if the second text matches the first, starting at the beginning and finishing at the end. Both texts are read in substituted form.
 
@@ -14187,7 +14187,7 @@ Fortunately, such a notation already exists. This is the "regular expression" no
 
 As might be expected from the previous section, we simply have to describe the "find" text as `regular expression` rather than `text` and then the same facilities are available:
 
-> phrase: {ph_matchesre} if (text) matches the regular expression (text):
+> phrase: {ph_matchesre} if (text) matches the/-- regular expression (text):
 >
 > This condition is true if any contiguous part of the text can be matched against the given regular expression. Examples:
 >
@@ -14195,13 +14195,13 @@ As might be expected from the previous section, we simply have to describe the "
 >
 > is true, since this looks for a part of `"taramasalata"` which begins with `"a"`, continues with any number of characters, and finishes with `"l"`; so it matches `"aramasal"`. (Not `"asal"`, because it makes the leftmost match it can.) The option `case insensitively` causes lower and upper case letters to be treated as equivalent.
 
-> phrase: {ph_exactlymatchesre} if (text) exactly matches the regular expression (text):
+> phrase: {ph_exactlymatchesre} if (text) exactly matches the/-- regular expression (text):
 >
 > This condition is true if the whole text (starting from the beginning and finishing at the end) can be matched against the given regular expression. The option `case insensitively` causes lower and upper case letters to be treated as equivalent.
 
 And once again:
 
-> phrase: {ph_nummatchesre} number of times (text) matches the regular expression (text) ... number
+> phrase: {ph_nummatchesre} number of times (text) matches the/-- regular expression (text) ... number
 >
 > This produces the number of times that contiguous pieces of the text can be matched against the regular expression, without allowing them to overlap.
 
@@ -15168,7 +15168,7 @@ We can also write the equivalent phrases:
 >
 > empties it to `{ }`, the list with nothing in.
 
-> phrase: {ph_truncatefirst} truncate (list of values) to the first (number) entries/entry
+> phrase: {ph_truncatefirst} truncate (list of values) to the/-- first (number) entries/entry
 >
 > This phrase alters the given list so that it now consists only of the initial part of the list with the given length. Example:
 >
@@ -15176,7 +15176,7 @@ We can also write the equivalent phrases:
 >
 > turns `{1, 3, 5, 7, 9, 11}` to `{1, 3, 5, 7}`.
 
-> phrase: {ph_truncatelast} truncate (list of values) to the last (number) entries/entry
+> phrase: {ph_truncatelast} truncate (list of values) to the/-- last (number) entries/entry
 >
 > This phrase alters the given list so that it now consists only of the final part of the list with the given length. Example:
 >

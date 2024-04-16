@@ -1295,7 +1295,7 @@ To clear conversational subjects:
 	(- DirectorEmptyLiveSubjectList(); -).
 To decide what list of objects is the live conversational subject list:
 	(- DirectorLiveSubjectList({-new:list of objects}) -).
-To alter the live conversational subject list to (L - list of objects):
+To alter the/-- live conversational subject list to (L - list of objects):
 	(- DirectorAlterLiveSubjectList({-by-reference:L}); -).
 To decide what list of objects is the list of speakers required by (B - dialogue beat):
 	(- DirectorBeatRequiredList({-new:list of objects}, {B}) -).
