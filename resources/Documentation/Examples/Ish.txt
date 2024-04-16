@@ -5,7 +5,7 @@ Index: HELP with a simple menu
 Description: A (very) simple ``HELP`` command, using tokens to accept and interpret the player's  text whatever it might be.
 For: Z-Machine
 
-^^{HELP with a simple menu OLDIX}
+^^{>HELP: with a simple menu}
 
 	{*}"Ish."
 	
