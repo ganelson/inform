@@ -5,7 +5,7 @@ Index: Heat death
 Description: All objects in the game have a heat, but if not kept insulated they will tend toward room temperature (and at a somewhat exaggerated rate).
 For: Z-Machine
 
-^^{Heat death OLDIX}
+^^{heat: cooling off}
 
 	{*}"Entropy"
 	
