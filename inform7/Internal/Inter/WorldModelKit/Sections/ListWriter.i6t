@@ -965,7 +965,7 @@ Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
   return flags;
 ];
 
-[ WriteAfterEntryTerms o invdesc flags terms current counter print_count last_index last_comma;
+[ WriteAfterEntryTerms o invdesc flags terms current counter print_count last_index last_comma spare x;
   flags = DetailFlags(o, invdesc);
   if (flags) {
    if ((flags & LW_OPEN) && (flags & LW_EMPTY)) {
@@ -976,7 +976,9 @@ Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
     while (current) { ! count bits by shifting right till we're at 0
       if (flags & current) terms++;
       #ifdef TARGET_ZCODE;
-      @log_shift current -1 -> current;
+      x = -1; 
+      @log_shift current x -> current;
+!      current = spare;
       #ifnot;
       @ushiftr current 1 current;
       #endif;
@@ -1000,7 +1002,8 @@ Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
      }
      counter++;
       #ifdef TARGET_ZCODE;
-      @log_shift current -1 -> current;
+      @log_shift current x -> current;
+!      current = spare;
       #ifnot;
       @ushiftr current 1 current;
       #endif;
