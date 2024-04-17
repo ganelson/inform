@@ -5,7 +5,7 @@ Index: Port Royal 4. Character names
 Description: A cell window through which the player can see people who were in Port Royal in the current year of game-time.
 For: Z-Machine
 
-^^{characters (people): randomly named}
+^^{characters (people): randomly named and described}
 
 Our protagonist is imprisoned in Port Royal, waiting out their years, and sometimes through the window of the cell they are able to see someone.
 
