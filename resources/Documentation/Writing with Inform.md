@@ -6192,7 +6192,7 @@ So if the player types ``ALGY, TAKE SANDWICH``, the `person asked` would be Algy
 
 ## Persuasion {rules_per}
 
-^^{actions: instructing other characters: persuasion rules} ^^{persuasion+rb+} ^^{+toout+persuasion succeeds / fails (persuasion rules)} ^^{rules: persuasion rules for instructing characters} ^^{rules: for other characters} ^^{actions: rules for other characters} ^^{success: for persuasion} ^^{failure: for persuasion} ^^{paragraph breaks: for fooling persuasion refusal} ^^{instead of (action)+rb+: as failure of persuasion} ^^{rules: instead rules} ^^{characters (people): persuading}
+^^{actions: instructing other characters: persuasion rules} ^^{persuasion+rb+} ^^{+toout+persuasion succeeds / fails (persuasion rules)} ^^{rules: persuasion rules for instructing characters} ^^{rules: for other characters} ^^{actions: rules for other characters} ^^{success: for persuasion} ^^{failure: for persuasion} ^^{paragraph breaks: for fooling persuasion refusal} ^^{instead of (action)+rb+: as failure of persuasion} ^^{rules: instead rules} ^^{characters (people): obeying and refusing}
 
 `Asking ... to try ...` actions run through their Before and Instead rules like any other actions, but then (if no rule has intervened) something different happens: Inform has to decide whether the person asked consents to try the action or not. By default, the answer is always no, and text like the following will be printed:
 
