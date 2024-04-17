@@ -476,7 +476,7 @@ Newcomers will probably not need extensions for quite some while, let alone need
 
 ## Use options {PM_UONotNumerical} {PM_UnknownUseOption} {OPTIONS}
 
-^^{use options} ^^{use (options...)+assert+} ^^{punctuation: comma: displaying serial comma} ^^^{punctuation: comma <-- comma} ^^{|,: displaying serial comma} ^^{scoring: enabling} ^^{descriptions (displayed): full-length room descriptions / abbreviated room descriptions} ^^{rooms+kind+: descriptions} ^^{use options: catalogue: |American dialect} ^^{American dialect+useopt+} ^^{use options: catalogue: |the serial comma} ^^{serial comma+useopt+} ^^{use options: catalogue: |scoring} ^^{scoring+useopt+} ^^{use options: catalogue: |full-length room descriptions} ^^{full-length room descriptions+useopt+} ^^{use options: catalogue: |abbreviated room descriptions} ^^{abbreviated room descriptions+useopt+} ^^{use options: catalogue: |VERBOSE room descriptions} ^^{VERBOSE room descriptions+useopt+} ^^{use options: catalogue: |BRIEF room descriptions} ^^{BRIEF room descriptions+useopt+} ^^{use options: catalogue: |SUPERBRIEF room descriptions} ^^{SUPERBRIEF room descriptions+useopt+} ^^{use options: catalogue: |undo prevention} ^^{undo prevention+useopt+} ^^{>UNDO}
+^^{use options} ^^{use (options...)+assert+} ^^{punctuation: comma: displaying serial comma} ^^^{punctuation: comma <-- comma} ^^{|,: displaying serial comma} ^^{scoring: enabling} ^^{descriptions (displayed): full-length room descriptions / abbreviated room descriptions} ^^{rooms+kind+: descriptions <-- descriptions (displayed): room descriptions} ^^{use options: catalogue: |American dialect} ^^{American dialect+useopt+} ^^{use options: catalogue: |the serial comma} ^^{serial comma+useopt+} ^^{use options: catalogue: |scoring} ^^{scoring+useopt+} ^^{use options: catalogue: |full-length room descriptions} ^^{full-length room descriptions+useopt+} ^^{use options: catalogue: |abbreviated room descriptions} ^^{abbreviated room descriptions+useopt+} ^^{use options: catalogue: |VERBOSE room descriptions} ^^{VERBOSE room descriptions+useopt+} ^^{use options: catalogue: |BRIEF room descriptions} ^^{BRIEF room descriptions+useopt+} ^^{use options: catalogue: |SUPERBRIEF room descriptions} ^^{SUPERBRIEF room descriptions+useopt+} ^^{use options: catalogue: |undo prevention} ^^{undo prevention+useopt+} ^^{>UNDO}
 
 One more preliminary. Inform has a small number of optional settings which affect the result of translating the source. The sentence:
 
@@ -798,7 +798,7 @@ The cup, the pistol and the table are all allowed to have the `fixed in place` p
 
 ## Scenery
 
-^^{scenery (thing)+prop+} ^^{scenery (thing)+propcat+} ^^{immobile things: |scenery} ^^{things+kind+: immobile: |scenery} ^^{hiding things from room descriptions by making them scenery <-- concealment+rel+: in a room} ^^{descriptions (displayed): hiding things from room descriptions} ^^{supporters+kind+: mentioned because of supported things}
+^^{scenery (thing)+prop+} ^^{scenery (thing)+propcat+} ^^{immobile things: |scenery} ^^{things+kind+: immobile: |scenery} ^^{hiding things from room descriptions by making them scenery <-- concealment+rel+: in a room} ^^{descriptions (displayed): hiding things from room descriptions} ^^{rooms+kind+: printing the room contents: hiding things} ^^{supporters+kind+: mentioned because of supported things}
 
 As we have just seen, making something `fixed in place` will prevent it from being picked up or moved. But it remains substantial enough to be described in its own paragraph of text when the player visits its location. This can be unfortunate if it has also been described already in the body of the main description for that location. For instance, if we wrote:
 
@@ -2073,7 +2073,7 @@ results in red being zesty, but blue and green being flat; blue because the sour
 
 ## Text with substitutions {PM_TSWithPunctuation}
 
-^^{text <-- strings of characters} ^^{text: displaying} ^^{text substitutions: text} ^^{descriptions (displayed): room descriptions with substituted text} ^^{punctuation: square brackets: text substitutions} ^^{|[ ]: text substitutions} ^^{punctuation: quotation marks: defining texts} ^^{|": defining texts}
+^^{text <-- strings of characters} ^^{text: displaying} ^^{text substitutions: text} ^^{descriptions (displayed): with substituted text} ^^{rooms+kind+: descriptions: with substituted text} ^^{punctuation: square brackets: text substitutions} ^^{|[ ]: text substitutions} ^^{punctuation: quotation marks: defining texts} ^^{|": defining texts}
 
 In the previous chapter, [Kinds], we gave properties to certain kinds of things in order to change their appearance and behaviour, and saw brief glimpses of one of Inform's most useful devices: _text substitution_. The following gives a more complete example:
 
