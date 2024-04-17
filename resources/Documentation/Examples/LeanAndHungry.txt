@@ -5,7 +5,7 @@ Index: Person who picks up treasures
 Description: A thief who will identify and take any valuable thing lying around that he is able to touch.
 For: Z-Machine
 
-^^{Person who picks up treasures OLDIX}
+^^{characters (people): acting spontaneously: taking valuables}
 
 	{*}"Lean and Hungry"
 	

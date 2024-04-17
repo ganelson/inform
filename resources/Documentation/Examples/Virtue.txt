@@ -5,7 +5,7 @@ Index: People who reject categories of instruction
 Description: Defining certain kinds of behaviour as inappropriate, so that other characters will refuse indignantly to do any such thing.
 For: Z-Machine
 
-^^{characters (people): refusing to obey}
+^^{characters (people): obeying and refusing}
 
 	{*}"Virtue"
 	

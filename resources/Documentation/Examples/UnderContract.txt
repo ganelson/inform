@@ -5,7 +5,7 @@ Index: Person who obeys almost all instructions
 Description: Creating a person who accepts most instructions and reacts correctly when a request leads implicitly to inappropriate behaviour.
 For: Z-Machine
 
-^^{Person who obeys almost all instructions OLDIX}
+^^{characters (people): obeying and refusing}
 
 	{*}"Under Contract"
 	

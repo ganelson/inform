@@ -5,7 +5,7 @@ Index: Person who gets fed up after being asked to do many implausible things
 Description: A person who goes along with the player's instructions, but reluctantly, and will get annoyed after too many repetitions of the same kind of unsuccessful command.
 For: Z-Machine
 
-^^{Person who gets fed up after being asked to do many implausible things OLDIX}
+^^{characters (people): obeying and refusing}
 
 	{*}"Generation X"
 	
