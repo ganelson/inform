@@ -5,7 +5,7 @@ Index: Mirror remembering a room description from the past
 Description: The sorcerer's mirror can, when held up high, form an impression of its surroundings which it then preserves.
 For: Z-Machine
 
-^^{Mirror remembering a room description from the past OLDIX}
+^^{mirrors (implementing): remembering a room description from the past}
 
 	{*}"Mirror, Mirror"
 	
