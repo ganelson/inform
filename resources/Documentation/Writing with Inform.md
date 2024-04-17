@@ -4662,7 +4662,7 @@ Ordinarily we must explicitly ask to use the information presented in a table, b
 
 ## When play ends {rules_wpe}
 
-^^{when play ends+rb+} ^^{rules: run at end of story} ^^{end of story <-- story structure: ending} ^^{victory} ^^{death} ^^{winning the story} ^^{losing the game} ^^{(finally), ending the story+sourcepart+} ^^{>AMUSING} ^^{story structure: ending}
+^^{when play ends+rb+} ^^{rules: run at end of story} ^^{end of story <-- story structure: ending} ^^{victory} ^^{death} ^^{winning the story} ^^{losing the story} ^^{(finally), ending the story+sourcepart+} ^^{>AMUSING} ^^{story structure: ending}
 
 Short of something like a power cut, the story can only end when one of the two participants chooses to end it: either the player, by deciding that enough is enough, or us.
 
