@@ -5,7 +5,7 @@ Index: Matches that set fires
 Description: Creating a class of matches that burn for a time and then go out, with elegant reporting when several matches go out at once.
 For: Z-Machine
 
-^^{Matches that set fires OLDIX}
+^^{fire (implementing)}
 
 Here we create a class of matches that can be used to burn other objects. Our objectives are as follow:
 
