@@ -2721,7 +2721,7 @@ Whichever effect we use, we should be careful to ensure that we return to normal
 
 ## Accented letters
 
-^^{characters (letters): special / accented}^^^{characters (letters) <-- letters <-- accented letters}^^^{characters (letters) <-- symbols}
+^^{characters (letters): accented and exotic letters and symbols}^^^{characters (letters) <-- letters <-- accented letters}^^^{characters (letters) <-- symbols}
 
 Inform 7 is infused by the English language, so it's a challenge using it to write a work of IF in any other language. (With that said, extensions do exist which have made considerable progress on this problem: nil desperandum.) But even a book in English contains occasional quotations or words borrowed from other tongues, so we are going to need more than plain A to Z.
 
