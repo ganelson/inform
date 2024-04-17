@@ -5,7 +5,7 @@ Index: Lanista 1. Simple Randomised Combat
 Description: Very simple randomised combat in which characters hit one another for a randomised amount of damage.
 For: Z-Machine
 
-^^{Lanista 1. Simple Randomised Combat OLDIX}
+^^{combat}
 
 	{*}"Lanista, Part One"
 	
