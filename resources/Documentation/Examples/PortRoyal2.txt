@@ -5,7 +5,7 @@ Index: With one-way connections added
 Description: Another part of Port Royal, with less typical map connections.
 For: Z-Machine
 
-^^{With one-way connections added OLDIX}
+^^{connections between rooms: inconsistent directions}
 
 	{*}"1691"
 	

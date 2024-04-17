@@ -5,7 +5,7 @@ Index: A landscape from Jamaica, 1691
 Description: A partial implementation of Port Royal, Jamaica, set before the earthquake of 1692 demolished large portions of the city.
 For: Z-Machine
 
-^^{A landscape from Jamaica, 1691 OLDIX}
+^^{connections between rooms}
 
 	{*}"1691"
 	
