@@ -5,7 +5,7 @@ Index: Using lists as sieves
 Description: The haughty Eratosthenes of Cyrene will nevertheless consent to sieve prime numbers on request.
 For: Z-Machine
 
-^^{Using lists as sieves OLDIX}
+^^{lists: variations on use of lists}
 
 In the words of Wikipedia: "Eratosthenes of Cyrene (Greek Eρατοσθένης; 276 BC-194 BC) was a Greek mathematician, poet, athlete, geographer and astronomer." In the words of Tom Lehrer: "It's people like that who make you realise how little you've achieved in life."
 
