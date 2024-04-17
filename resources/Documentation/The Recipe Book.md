@@ -1312,7 +1312,7 @@ Finally, in some IF, the roles of characters may change from playing to playing.
 
 ## Liveliness
 
-^^{characters (people): acting spontaneously}^^{every turn+rb+}^^{rules: run every turn}
+^^{characters (people): acting spontaneously}^^{every turn+rb+}^^{rules: run every turn} ^^{actions: spontaneous by other people}
 A character who sits still in a chair and does nothing is much less convincingly alive than one who seems to be pursuing some sort of personal agenda. There are all sorts of ways to achieve this, but the least challenging is by introducing some random change to descriptions, and by giving a character some very simple routine behaviour to carry out.
 
 For instance, we'll often want the characters in a room to be described doing different things every time we look at them. [Camp Bethel] shows how this may be done.

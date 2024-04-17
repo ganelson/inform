@@ -5,7 +5,7 @@ Index: Child who asks if we're there yet
 Description: A child who after a certain period in the car starts asking annoying questions.
 For: Z-Machine
 
-^^{characters (people): acting spontaneously: asking questions}
+^^{characters (people): acting spontaneously: asking questions} ^^{actions: spontaneous by other people}
 
 	{*}"Annoyotron Jr"
 	
