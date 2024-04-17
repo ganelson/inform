@@ -5,7 +5,7 @@ Index: Containers and supporters given a common kind
 Description: Adding an enclosure kind that includes both containers and supporters in order to simplify text that would apply to both.
 For: Z-Machine
 
-^^{containers+kind+: and supporters given a common kind}
+^^{containers+kind+: given a common kind with supporters} ^^{supporters+kind+: given a common kind with containers}
 
 It may not be immediately obvious why we might want to create new intermediate categories of the kinds hierarchy. But there may be times, for instance, where we would like to make an action that applies in the same way to both containers and supporters, but to nothing else in the game. To avoid creating two nearly-identical rules, we would instead roll the two categories together into one, on the principle that duplicating source text is usually a sign of bad design.
 

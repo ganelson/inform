@@ -5,7 +5,7 @@ Index: Characters and objects with titles and special articles
 Description: You can see a bat, a bell, some woodworm, William Snelson, the sexton's wife, a bellringer and your local vicar here.
 For: Z-Machine
 
-^^{characters (people): with titles and special articles}
+^^{characters (people): with titles and special articles} ^^{things+kind+: with special articles}
 
 	{*}"Belfry"
 	
