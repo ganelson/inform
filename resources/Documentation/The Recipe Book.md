@@ -1576,7 +1576,7 @@ Antony opens the iron gate. He goes through.
 
 ## Obedient Characters
 
-^^{actions: instructing other people}^^{characters (people): giving instructions to other characters}^^{instructing other characters} ^^{ordering other characters}
+^^{actions: instructing other characters}^^{characters (people): giving instructions to other characters}^^{instructing other characters} ^^{ordering other characters}
 Other characters can perform all the same activities that the player can; this does not always mean that they're willing to obey the player's instructions. By default, characters will refuse to obey commands of the form ``JULIA, WEST`` or ``ANTONY, TAKE THE PINCUSHION``. Their objections can be overridden, however, and [The Hypnotist of Blois] implements a hypnotist who can make characters obedient at will.
 
 In [For Demonstration Purposes], the character is only capable of a few actions at the outset, but can be taught new ones if the player performs them first.
