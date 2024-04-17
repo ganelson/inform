@@ -5,7 +5,7 @@ Index: A room where the game cannot be saved
 Description: P. David Lebling's classic _Spellbreaker_ (1986) includes a room where the game cannot be saved: here is an Inform implementation.
 For: Untestable
 
-^^{A room where the game cannot be saved OLDIX}
+^^{saving the game: preventing saves}
 
 The answer is easy, but there is a trap:
 
