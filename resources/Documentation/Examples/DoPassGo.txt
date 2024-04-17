@@ -5,7 +5,7 @@ Index: Pair of dice for rolling
 Description: A pair of dice which can be rolled, and are described with their current total when not carried, and have individual scores when examined.
 For: Z-Machine
 
-^^{Pair of dice for rolling OLDIX}
+^^{games, dice and cards (implementing)}
 
 	{*}"Do Pass Go"
 	
