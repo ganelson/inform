@@ -5,7 +5,7 @@ Index: People perform errands and randomly spread disease
 Description: People who wander around the map performing various errands, and in the process spread a disease which only the player can eradicate.
 For: Glulx
 
-^^{People perform errands and randomly spread disease OLDIX}
+^^{characters (people): moving around}
 
 	{*}"Patient Zero"
 	
