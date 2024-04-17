@@ -5,7 +5,7 @@ Index: Liquids in mixtures, identified by recipe
 Description: Implementing liquids that can be mixed, and the components automatically recognised as matching one recipe or another.
 For: Z-Machine
 
-^^{Liquids in mixtures, identified by recipe OLDIX}
+^^{liquids (implementing): mixtures, identified by recipe}
 
 Our previous experiments into liquid have not dealt with the possibility of mixing components, but that is because for most games, tracking the details of mixture is overkill.
 

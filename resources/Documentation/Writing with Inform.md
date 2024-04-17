@@ -3682,7 +3682,7 @@ Games with a lot of conversation often involve great heaps of rules like the one
 
 ## The other four senses
 
-^^{senses} ^^{actions: involving senses} ^^{rules: for senses} ^^{rooms+kind+: listening to (with no object)} ^^{rooms+kind+: smelling (with no object)} ^^{listening to+action+} ^^{smelling+action+} ^^{touching+action+} ^^{tasting+action+}
+^^{senses} ^^{actions: involving senses} ^^{rules: for senses} ^^{rooms+kind+: listening to (with no object)} ^^{rooms+kind+: smelling (with no object)} ^^{listening to+action+} ^^{smelling+action+} ^^{touching+action+} ^^{tasting+action+} ^^{looking under+action+}
 
 The five senses are all simulated with actions. Sight is so informative that it is handled by a whole range of actions: `looking`, which describes the general scene; `examining something`, which takes a closer look at a specific thing; `looking under something`, and so on.
 

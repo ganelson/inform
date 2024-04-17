@@ -5,7 +5,7 @@ Index: LOOK UNDER shows nothing unless the player has a light
 Description: Visibility set so that looking under objects produces no result unless the player has a light source to shine there (regardless of the light level of the room).
 For: Z-Machine
 
-^^{LOOK UNDER shows nothing unless the player has a light OLDIX}
+^^{looking under+action+: shows nothing unless the player has a light}
 
 	{*}"Flashlight"
 	
