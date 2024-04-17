@@ -5,7 +5,7 @@ Index: Person who answers questions based on a common pool of knowledge
 Description: An expansion on the previous idea, only this time we store information and let characters answer depending on their expertise in a given area.
 For: Z-Machine
 
-^^{Person who answers questions based on a common pool of knowledge OLDIX}
+^^{dialogue: characters answering questions}
 
 	{*}"Questionable Revolutions"
 	

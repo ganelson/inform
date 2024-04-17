@@ -1523,7 +1523,7 @@ We end with a longer scenario, in which we track what the character knows about 
 
 ## Characters Following a Script
 
-^^{dialogue: scripted conversations}^^{characters (people): scripted conversations}^^{story structure: cut scenes}
+^^{dialogue: scripted conversations} ^^{story structure: cut scenes}
 So far we've seen characters who will answer questions whenever the player feels like asking, and characters who will use some reasoning procedure to direct the conversation. There is a third option, often useful in IF with a fast-paced narrative: the character follows a conversational script, making sure to cover a series of points before the scene ends.
 
 There are more and less tedious ways to implement this kind of scene. The worst case is one in which the player is not allowed to interrupt or ask any questions; they must merely wait until the character runs out of things to say. This can be useful and plausible in very small doses–say, two or three turns–but if the character has more information than that to impart, we may want to make the scene more interactive.

@@ -5,7 +5,7 @@ Index: Character who learns new actions by watching the player
 Description: A character who learns new actions by watching the player performing them.
 For: Z-Machine
 
-^^{characters (people): who learn new actions by watching the player}
+^^{characters (people): learning new actions by watching the player}
 
 Suppose we want to have a character who can dynamically learn new actions by observing the player performing them. We could do this by adding the actions to a list of things the character can do, but using a relation to express the same idea allows for tidier, easier-to-read code.
 
