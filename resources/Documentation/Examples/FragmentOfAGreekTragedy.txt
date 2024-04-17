@@ -5,7 +5,7 @@ Index: Keywords in place of ordinary commands
 Description: Responding to the player's input based on keywords only, and overriding the original parser entirely.
 For: Z-Machine
 
-^^{Keywords in place of ordinary commands OLDIX}
+^^{keyword-style parsing}
 
 Apologies to the shade of A. E. Housman.
 
