@@ -1689,7 +1689,7 @@ And while we're at it, let's give each `brightness` its own corresponding `tempe
 
 ## Conditions of things {PM_EitherOnThree}
 
-^^{kinds: defining: kinds of value} ^^{defining: kinds of value} ^^{values: kinds of value} ^^{kinds: enumerated values} ^^{properties: holding a new kind of value} ^^{properties: value properties: defining} ^^{value properties: defining} ^^{defining: value properties} ^^{(condition), naming properties+sourcepart+}
+^^{kinds: defining: kinds of value} ^^{defining: kinds of value} ^^{values: kinds of value} ^^{kinds: enumerated values} ^^{properties: holding a new kind of value} ^^{properties: value properties: defining} ^^{value properties: defining} ^^{defining: value properties} ^^{(condition), as name for value property+sourcepart+}
 
 Now for an even more abbreviated way to create a new kind of value, and at the same time create a property to hold it. Suppose we have something, say a wine cask, which we know is always in one of three different states. We can write:
 
