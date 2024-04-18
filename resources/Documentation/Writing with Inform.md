@@ -1419,7 +1419,7 @@ without knowing that `coffer` is a kind, it simply makes a thing called `open co
 
 ## Degrees of certainty
 
-^^{(always / never), in assertions+sourcepart+} ^^{(never / always), in assertions+sourcepart+} ^^{(usually / seldom), in assertions+sourcepart+} ^^{(seldom / usually), in assertions+sourcepart+} ^^{default properties of kinds} ^^{kinds: default properties}
+^^{(always / never), in assertions+sourcepart+} ^^{(never / always), in assertions+sourcepart+} ^^{(usually / seldom), in assertions+sourcepart+} ^^{(seldom / usually), in assertions+sourcepart+} ^^{default properties of kinds} ^^{kinds: default properties} ^^{properties: defaults for kind}
 
 When we write:
 
