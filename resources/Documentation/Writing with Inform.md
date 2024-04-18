@@ -381,7 +381,7 @@ Much of this can be seen, and seen more easily, in the World tab of the Index pa
 
 ## The TEST command {PM_TestMultiWord} {PM_TestDuplicate} {PM_TestBadRequirements} {PM_TestContainsUndo} {PM_TestCommandTooLong} {PM_TestDoubleWith} {PM_UnknownInternalTest}
 
-^^{TEST+testcmd+} ^^{testing commands: >TEST} ^^{transcripts: creating with the TEST command} ^^{test (test name) with (commands)+assert+} ^^{PURLOIN+testcmd+} ^^{testing commands: >PURLOIN}
+^^{TEST+testcmd+} ^^{testing commands: >TEST} ^^{transcripts: creating with the TEST command} ^^{test (test name) with (commands)+assert+} ^^{PURLOIN+testcmd+} ^^{testing commands: >PURLOIN} ^^{>AGAIN}
 
 The only way to thoroughly test a work of IF is to run a complete solution through it, and carefully check the resulting transcript of dialogue. But most works of interactive fiction contain occasional vignettes, either in terms of short scenes of narrative, or in the behaviour of particular things or rooms. The examples in the documentation are like this: in almost every example, typing ``TEST ME`` puts the story through its paces.
 
@@ -3485,6 +3485,8 @@ The testing command ``ACTIONS`` causes Inform to log every action as it happens,
 A good way to get a sense of the constant flow of actions is to use this command and then wander around an existing work, trying things out. ``ACTIONS`` can also give an insight into the web of rules governing play: there are more than ten different ways an attempt to take something can fail, for instance.
 
 ## Actions versus commands
+
+^^{>OOPS} ^^{>AGAIN}
 
 Actions and commands are not quite the same thing. Commands are the words typed in players: ``EXAMINE BLUEPRINT`` is an example of a command. When the player types this (and assuming there is a blueprint available), the action `examining the blueprint` is what then happens.
 
@@ -12652,7 +12654,7 @@ Note that, in order for our activity to succeed, we do need to supply a grammar 
 
 ## Reading a command {act_reading} {var_command} {kind_snippet}
 
-^^{understanding: special processing of keyboard input} ^^{Inform 6 equivalent: |BeforeParsing} ^^{snippets} ^^{player's command (- snippet)+glob+} ^^{matched text (- snippet)+glob+} ^^{punctuation: removing from player's command} ^^{regular expressions} ^^{text: regular expressions}
+^^{understanding: special processing of keyboard input} ^^{Inform 6 equivalent: |BeforeParsing} ^^{snippets} ^^{player's command (- snippet)+glob+} ^^{matched text (- snippet)+glob+} ^^{punctuation: removing from player's command} ^^{regular expressions} ^^{text: regular expressions} ^^{>OOPS}
 
 **1. When it happens.** When reading a command from the keyboard.
 
