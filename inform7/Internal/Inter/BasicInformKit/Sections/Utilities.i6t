@@ -329,7 +329,7 @@ This is not quite so efficient as Memcpy, but not terrible.
 ];
 
 [ VerbIsMeaningful vb;
-	if ((vb) && (BlkValueCompare(vb(CV_MEANING), MEANINGLESS_RR) ~= 0)) rtrue;
+	if ((vb) && (ComparePV(vb(CV_MEANING), MEANINGLESS_RR) ~= 0)) rtrue;
 	rfalse;
 ];
 

@@ -387,18 +387,18 @@ InternalFileReadChar(F, N) reads the data at position N in file F.
 [ InternalFileIO_Line txt file_id file_id pos tsize c;
 	TEXT_TY_Transmute(txt);
 	TEXT_TY_Empty(txt);
-	tsize = BlkValueLBCapacity(txt);
+	tsize = PVFieldCapacity(txt);
 	while (true) {
 		c = InternalFileReadChar(file_id, -1);
-		if (c == 10) { BlkValueWrite(txt, pos, 0); rtrue; }
+		if (c == 10) { WritePVField(txt, pos, 0); rtrue; }
 		if (c == -1) break;
 		if (pos+1 >= tsize) {
-			if (BlkValueSetLBCapacity(txt, 2*pos) == false) rfalse;
-			tsize = BlkValueLBCapacity(txt);
+			if (SetPVFieldCapacity(txt, 2*pos) == false) rfalse;
+			tsize = PVFieldCapacity(txt);
 		}
-		BlkValueWrite(txt, pos++, c);
+		WritePVField(txt, pos++, c);
 	}
-	BlkValueWrite(txt, pos, 0);
+	WritePVField(txt, pos, 0);
 	if (pos > 0) rtrue;
 	rfalse;
 ];

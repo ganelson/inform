@@ -73,7 +73,7 @@ Constant REQUIRING_DBMETADATA = 5;
 
 [ DirectorBeatRequiredList list db len i beatdata speaker;
 	if ((db <= 0) || (db > NO_DIALOGUE_BEATS)) return list;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) return 0;
 	len = 0;
 	beatdata = TableOfDialogueBeats-->db;
 	i = REQUIRING_DBMETADATA;

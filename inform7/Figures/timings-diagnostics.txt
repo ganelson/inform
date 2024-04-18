@@ -1,6 +1,6 @@
 100.0% in inform7 run
      67.3% in compilation to Inter
-         45.7% in //Sequence::undertake_queued_tasks//
+         46.1% in //Sequence::undertake_queued_tasks//
           4.2% in //MajorNodes::pre_pass//
           3.4% in //MajorNodes::pass_1//
           1.9% in //ImperativeDefinitions::assess_all//
@@ -13,17 +13,17 @@
           0.3% in //Sequence::undertake_queued_tasks//
           0.3% in //Sequence::undertake_queued_tasks//
           0.3% in //World::stage_V//
-          5.4% not specifically accounted for
+          5.0% not specifically accounted for
      28.0% in running Inter pipeline
           9.2% in step 14/15: generate inform6 -> auto.inf
           6.9% in step 5/15: load-binary-kits
-          5.7% in step 6/15: make-synoptic-module
+          6.1% in step 6/15: make-synoptic-module
           1.9% in step 9/15: make-identifiers-unique
           0.3% in step 11/15: eliminate-redundant-labels
           0.3% in step 12/15: eliminate-redundant-operations
           0.3% in step 4/15: compile-splats
           0.3% in step 7/15: shorten-wiring
           0.3% in step 8/15: detect-indirect-calls
-          2.3% not specifically accounted for
+          1.9% not specifically accounted for
       3.8% in supervisor
       0.8% not specifically accounted for

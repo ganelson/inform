@@ -27,14 +27,14 @@ routines.
 		MAKEMUTABLE_KOVS: return 1;
 		COPYKIND_KOVS:    return LIST_OF_TY_CopyKind(arg1, arg2);
 		COPYQUICK_KOVS:   return LIST_OF_TY_QuickCopy(arg1, arg2);
-		COPYSB_KOVS:	  BlkValueCopySB1(arg1, arg2);
+		COPYSB_KOVS:	  CopyPVShortBlockOfSize1(arg1, arg2);
 		KINDDATA_KOVS:    return LIST_OF_TY_KindData(arg1, arg2);
-		EXTENT_KOVS:      return BlkValueRead(arg1, LIST_LENGTH_F) + LIST_ITEM_BASE;
+		EXTENT_KOVS:      return PVField(arg1, LIST_LENGTH_F) + LIST_ITEM_BASE;
 		COPY_KOVS:        LIST_OF_TY_Copy(arg1, arg2, arg3);
 		COMPARE_KOVS:     return LIST_OF_TY_Compare(arg1, arg2);
 		HASH_KOVS:        return LIST_OF_TY_Hash(arg1);
 		DEBUG_KOVS:       print " = {", (LIST_OF_TY_Say) arg1, "} of kind ",
-                              BlkValueRead(arg1, LIST_ITEM_KOV_F);
+                              PVField(arg1, LIST_ITEM_KOV_F);
 	}
 	! We choose not to respond to: CAST_KOVS, READ_FILE_KOVS, WRITE_FILE_KOVS
 	rfalse;
@@ -47,13 +47,12 @@ are taken care of: 4 words are consumed by the header, then 2 more by the
 list metadata entries below.
 
 =
-[ LIST_OF_TY_Create skov sb list;
+[ LIST_OF_TY_Create skov short_block long_block;
 	skov = KindBaseTerm(skov, 0);
-	list = FlexAllocate(27*WORDSIZE, LIST_OF_TY, BLK_FLAG_MULTIPLE + BLK_FLAG_WORD);
-	BlkValueWrite(list, LIST_ITEM_KOV_F, skov, true);
-	BlkValueWrite(list, LIST_LENGTH_F, 0, true);
-	sb = BlkValueCreateSB1(sb, list);
-	return sb;
+	long_block = CreatePVLongBlockMultiple(27, LIST_OF_TY);
+	InitialisePVLongBlockField(long_block, LIST_ITEM_KOV_F, skov);
+	InitialisePVLongBlockField(long_block, LIST_LENGTH_F, 0);
+	return CreatePVShortBlockOfSize1(short_block, long_block);
 ];
 
 @h Destruction.
@@ -62,10 +61,11 @@ the list itself can be freed.
 
 =
 [ LIST_OF_TY_Destroy list no_items i k;
-	k = BlkValueRead(list, LIST_ITEM_KOV_F);
-	if (KOVIsBlockValue(k)) {
-		no_items = BlkValueRead(list, LIST_LENGTH_F);
-		for (i=0: i<no_items: i++) BlkValueFree(BlkValueRead(list, i+LIST_ITEM_BASE));
+	k = PVField(list, LIST_ITEM_KOV_F);
+	if (ConformsTo_POINTER_VALUE_TY(k)) {
+		no_items = PVField(list, LIST_LENGTH_F);
+		for (i=0: i<no_items: i++)
+			DestroyPV(PVField(list, i+LIST_ITEM_BASE));
 	}
 ];
 
@@ -82,34 +82,34 @@ things.)
 
 =
 [ LIST_OF_TY_CopyKind to from;
-	BlkValueWrite(to, LIST_ITEM_KOV_F, BlkValueRead(from, LIST_ITEM_KOV_F));
+	WritePVField(to, LIST_ITEM_KOV_F, PVField(from, LIST_ITEM_KOV_F));
 ];
 
 [ LIST_OF_TY_QuickCopy to from;
-	if (BlkValueRead(to, LIST_ITEM_KOV_F) ~= BlkValueRead(from, LIST_ITEM_KOV_F))
+	if (PVField(to, LIST_ITEM_KOV_F) ~= PVField(from, LIST_ITEM_KOV_F))
 		rfalse;
 	rtrue;
 ];
 
 [ LIST_OF_TY_KindData list dummy;
-	return BlkValueRead(list, LIST_ITEM_KOV_F);
+	return PVField(list, LIST_ITEM_KOV_F);
 ];
 
 [ LIST_OF_TY_Copy lto lfrom  precopied_list_kov no_items i nv bk val splk;
-	no_items = BlkValueRead(lfrom, LIST_LENGTH_F);
-	bk = BlkValueRead(lfrom, LIST_ITEM_KOV_F);
+	no_items = PVField(lfrom, LIST_LENGTH_F);
+	bk = PVField(lfrom, LIST_ITEM_KOV_F);
 	if (precopied_list_kov ~= 0 or UNKNOWN_TY)
-		BlkValueWrite(lto, LIST_ITEM_KOV_F, precopied_list_kov);
-	else BlkValueWrite(lto, LIST_ITEM_KOV_F, bk);
-	if (KOVIsBlockValue(bk)) {
+		WritePVField(lto, LIST_ITEM_KOV_F, precopied_list_kov);
+	else WritePVField(lto, LIST_ITEM_KOV_F, bk);
+	if (ConformsTo_POINTER_VALUE_TY(bk)) {
 		for (i=0: i<no_items: i++) {
-			val = BlkValueRead(lfrom, i+LIST_ITEM_BASE);
+			val = PVField(lfrom, i+LIST_ITEM_BASE);
 			if (precopied_list_kov ~= 0 or UNKNOWN_TY)
-				nv = BlkValueCreate(precopied_list_kov);
+				nv = CreatePV(precopied_list_kov);
 			else
-				nv = BlkValueCreate(bk);
-			BlkValueCopy(nv, val);
-			BlkValueWrite(lto, i+LIST_ITEM_BASE, nv);
+				nv = CreatePV(bk);
+			CopyPV(nv, val);
+			WritePVField(lto, i+LIST_ITEM_BASE, nv);
 		}
 	}
 ];
@@ -125,23 +125,23 @@ lists of equal size in lexicographic order.
 
 =
 [ LIST_OF_TY_Compare listleft listright delta no_items i cf;
-	delta = BlkValueRead(listleft, LIST_LENGTH_F) - BlkValueRead(listright, LIST_LENGTH_F);
+	delta = PVField(listleft, LIST_LENGTH_F) - PVField(listright, LIST_LENGTH_F);
 	if (delta) return delta;
-	no_items = BlkValueRead(listleft, LIST_LENGTH_F);
+	no_items = PVField(listleft, LIST_LENGTH_F);
 	if (no_items == 0) return 0;
-	delta = BlkValueRead(listleft, LIST_ITEM_KOV_F) - BlkValueRead(listright, LIST_ITEM_KOV_F);
+	delta = PVField(listleft, LIST_ITEM_KOV_F) - PVField(listright, LIST_ITEM_KOV_F);
 	if (delta) return delta;
 	cf = LIST_OF_TY_ComparisonFn(listleft);
 	if (cf == 0 or UnsignedCompare) {
 		for (i=0: i<no_items: i++) {
-			delta = BlkValueRead(listleft, i+LIST_ITEM_BASE) -
-				BlkValueRead(listright, i+LIST_ITEM_BASE);
+			delta = PVField(listleft, i+LIST_ITEM_BASE) -
+				PVField(listright, i+LIST_ITEM_BASE);
 			if (delta) return delta;
 		}
 	} else {
 		for (i=0: i<no_items: i++) {
-			delta = cf(BlkValueRead(listleft, i+LIST_ITEM_BASE),
-				BlkValueRead(listright, i+LIST_ITEM_BASE));
+			delta = cf(PVField(listleft, i+LIST_ITEM_BASE),
+				PVField(listright, i+LIST_ITEM_BASE));
 			if (delta) return delta;
 		}
 	}
@@ -149,8 +149,8 @@ lists of equal size in lexicographic order.
 ];
 
 [ LIST_OF_TY_ComparisonFn list;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
-	return KOVComparisonFunction(BlkValueRead(list, LIST_ITEM_KOV_F));
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) return 0;
+	return KOVComparisonFunction(PVField(list, LIST_ITEM_KOV_F));
 ];
 
 [ LIST_OF_TY_Distinguish txb1 txb2;
@@ -163,10 +163,10 @@ lists of equal size in lexicographic order.
 =
 [ LIST_OF_TY_Hash list  len kov rv i;
 	rv = 0;
-	len = BlkValueRead(list, LIST_LENGTH_F);
-	kov = BlkValueRead(list, LIST_ITEM_KOV_F);
+	len = PVField(list, LIST_LENGTH_F);
+	kov = PVField(list, LIST_ITEM_KOV_F);
 	for (i=0: i<len: i++)
-		rv = rv * 33 + GetHashValue(kov, BlkValueRead(list, i+LIST_ITEM_BASE));
+		rv = rv * 33 + GetHashValue(kov, PVField(list, i+LIST_ITEM_BASE));
 	return rv;
 ];
 
@@ -181,12 +181,12 @@ use the "listing contents of..." activity in any circumstances.
 
 =
 [ LIST_OF_TY_Say list format no_items v i bk;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return;
-	no_items = BlkValueRead(list, LIST_LENGTH_F);
-	bk = KindAtomic(BlkValueRead(list, LIST_ITEM_KOV_F));
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) return;
+	no_items = PVField(list, LIST_LENGTH_F);
+	bk = KindAtomic(PVField(list, LIST_ITEM_KOV_F));
 	if (format == 1) print "{";
 	for (i=0:i<no_items:i++) {
-		v = BlkValueRead(list, i+LIST_ITEM_BASE);
+		v = PVField(list, i+LIST_ITEM_BASE);
 		switch (format) {
 			2: print (the) v;
 			3: print (a) v;
@@ -225,21 +225,21 @@ then to transcribe them.
 
 =
 [ LIST_OF_TY_Desc list desc kov obj no_items ex len i;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return false;
-	ex = BlkValueLBCapacity(list);
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) return false;
+	ex = PVFieldCapacity(list);
 	len = desc(-3);
 	if (len+LIST_ITEM_BASE > ex) {
-		if (BlkValueSetLBCapacity(list, len+LIST_ITEM_BASE) == false)
+		if (SetPVFieldCapacity(list, len+LIST_ITEM_BASE) == false)
 			return 0;
 	}
-	if (kov) BlkValueWrite(list, LIST_ITEM_KOV_F, kov);
-	else BlkValueWrite(list, LIST_ITEM_KOV_F, OBJECT_TY);
-	BlkValueWrite(list, LIST_LENGTH_F, len);
+	if (kov) WritePVField(list, LIST_ITEM_KOV_F, kov);
+	else WritePVField(list, LIST_ITEM_KOV_F, OBJECT_TY);
+	WritePVField(list, LIST_LENGTH_F, len);
 	obj = 0;
 	for (i=0: i<len: i++) {
 		obj = desc(-2, obj, i);
 		! print "i = ", i, " and obj = ", obj, "^";
-		BlkValueWrite(list, i+LIST_ITEM_BASE, obj);
+		WritePVField(list, i+LIST_ITEM_BASE, obj);
 	}
 	return list;
 ];
@@ -252,15 +252,15 @@ performed. In other words, one copy of "Alert" is equal to another.
 
 =
 [ LIST_OF_TY_FindItem list v i no_items cf;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) rfalse;
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) rfalse;
 	cf = LIST_OF_TY_ComparisonFn(list);
-	no_items = BlkValueRead(list, LIST_LENGTH_F);
+	no_items = PVField(list, LIST_LENGTH_F);
 	if (cf == 0 or UnsignedCompare) {
 		for (i=0: i<no_items: i++)
-			if (v == BlkValueRead(list, i+LIST_ITEM_BASE)) rtrue;
+			if (v == PVField(list, i+LIST_ITEM_BASE)) rtrue;
 	} else {
 		for (i=0: i<no_items: i++)
-			if (cf(v, BlkValueRead(list, i+LIST_ITEM_BASE)) == 0) rtrue;
+			if (cf(v, PVField(list, i+LIST_ITEM_BASE)) == 0) rtrue;
 	}
 	rfalse;
 ];
@@ -282,11 +282,11 @@ where $N$ is the number of items in the list at present.
 
 =
 [ LIST_OF_TY_InsertItem list v posnflag posn nodups i no_items ex nv contents_kind;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return false;
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) return false;
 	if (nodups && (LIST_OF_TY_FindItem(list, v))) return list;
-	no_items = BlkValueRead(list, LIST_LENGTH_F);
-	BlkValueWrite(list, LIST_LENGTH_F, no_items); ! Forces the list to be mutable
-	contents_kind = BlkValueRead(list, LIST_ITEM_KOV_F);
+	no_items = PVField(list, LIST_LENGTH_F);
+	WritePVField(list, LIST_LENGTH_F, no_items); ! Forces the list to be mutable
+	contents_kind = PVField(list, LIST_ITEM_KOV_F);
 	if ((posnflag) && ((posn<1) || (posn > no_items+1))) {
 		IssueRTP("AccessedNonExistentListItem",	
     		"Attempt to use list item which does not exist.", BasicInformKitRTPs);
@@ -295,26 +295,26 @@ where $N$ is the number of items in the list at present.
 		print ", which has entries in the range 1 to ", no_items, " ***^";
 		rfalse;
 	}
-	ex = BlkValueLBCapacity(list);
+	ex = PVFieldCapacity(list);
 	if (no_items+LIST_ITEM_BASE+1 > ex) {
-		if (BlkValueSetLBCapacity(list, ex+16) == false) return 0;
+		if (SetPVFieldCapacity(list, ex+16) == false) return 0;
 	}
-	if (KOVIsBlockValue(contents_kind)) {
-		nv = BlkValueCreate(contents_kind);
-		BlkValueCopy(nv, v);
+	if (ConformsTo_POINTER_VALUE_TY(contents_kind)) {
+		nv = CreatePV(contents_kind);
+		CopyPV(nv, v);
 		v = nv;
 	}
 	if (posnflag) {
 		posn--;
 		for (i=no_items:i>posn:i--) {
-			BlkValueWrite(list, i+LIST_ITEM_BASE,
-				BlkValueRead(list, i-1+LIST_ITEM_BASE));
+			WritePVField(list, i+LIST_ITEM_BASE,
+				PVField(list, i-1+LIST_ITEM_BASE));
 		}
-		BlkValueWrite(list, posn+LIST_ITEM_BASE, v);
+		WritePVField(list, posn+LIST_ITEM_BASE, v);
 	} else {
-		BlkValueWrite(list, no_items+LIST_ITEM_BASE, v);
+		WritePVField(list, no_items+LIST_ITEM_BASE, v);
 	}
-	BlkValueWrite(list, LIST_LENGTH_F, no_items+1);
+	WritePVField(list, LIST_LENGTH_F, no_items+1);
 	return list;
 ];
 
@@ -327,10 +327,10 @@ value |v| to insert, the specification is the same as for
 
 =
 [ LIST_OF_TY_AppendList list more posnflag posn nodups v i j no_items msize ex nv;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return false;
-	if ((more==0) || (BlkValueWeakKind(more) ~= LIST_OF_TY)) return list;
-	no_items = BlkValueRead(list, LIST_LENGTH_F);
-	BlkValueWrite(list, LIST_LENGTH_F, no_items); ! Forces the list to be mutable
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) return false;
+	if (WeakKindOfPV(more) ~= LIST_OF_TY) return list;
+	no_items = PVField(list, LIST_LENGTH_F);
+	WritePVField(list, LIST_LENGTH_F, no_items); ! Forces the list to be mutable
 	if ((posnflag) && ((posn<1) || (posn > no_items+1))) {
 		IssueRTP("AccessedNonExistentListItem",	
     		"Attempt to use list item which does not exist.", BasicInformKitRTPs);
@@ -339,43 +339,43 @@ value |v| to insert, the specification is the same as for
 		print ", which has entries in the range 1 to ", no_items, " ***^";
 		rfalse;
 	}
-	msize = BlkValueRead(more, LIST_LENGTH_F);
-	ex = BlkValueLBCapacity(list);
+	msize = PVField(more, LIST_LENGTH_F);
+	ex = PVFieldCapacity(list);
 	if (no_items+msize+LIST_ITEM_BASE > ex) {
-		if (BlkValueSetLBCapacity(list, no_items+msize+LIST_ITEM_BASE+8) == false)
+		if (SetPVFieldCapacity(list, no_items+msize+LIST_ITEM_BASE+8) == false)
 			return 0;
 	}
 	if (posnflag) {
 		posn--;
 		for (i=no_items+msize:i>=posn+msize:i--) {
-			BlkValueWrite(list, i+LIST_ITEM_BASE,
-				BlkValueRead(list, i-msize+LIST_ITEM_BASE));
+			WritePVField(list, i+LIST_ITEM_BASE,
+				PVField(list, i-msize+LIST_ITEM_BASE));
 		}
-		! BlkValueWrite(list, posn, v);
+		! WritePVField(list, posn, v);
 		for (j=0: j<msize: j++) {
-			v = BlkValueRead(more, j+LIST_ITEM_BASE);
-			if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F))) {
-				nv = BlkValueCreate(BlkValueRead(list, LIST_ITEM_KOV_F));
-				BlkValueCopy(nv, v);
+			v = PVField(more, j+LIST_ITEM_BASE);
+			if (ConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F))) {
+				nv = CreatePV(PVField(list, LIST_ITEM_KOV_F));
+				CopyPV(nv, v);
 				v = nv;
 			}
-			BlkValueWrite(list, posn+j+LIST_ITEM_BASE, v);
+			WritePVField(list, posn+j+LIST_ITEM_BASE, v);
 		}
 	} else {
 		for (i=0, j=0: i<msize: i++) {
-			v = BlkValueRead(more, i+LIST_ITEM_BASE);
-			if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F))) {
-				nv = BlkValueCreate(BlkValueRead(list, LIST_ITEM_KOV_F));
-				BlkValueCopy(nv, v);
+			v = PVField(more, i+LIST_ITEM_BASE);
+			if (ConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F))) {
+				nv = CreatePV(PVField(list, LIST_ITEM_KOV_F));
+				CopyPV(nv, v);
 				v = nv;
 			}
 			if ((nodups == 0) || (LIST_OF_TY_FindItem(list, v) == false)) {
-				BlkValueWrite(list, no_items+j+LIST_ITEM_BASE, v);
+				WritePVField(list, no_items+j+LIST_ITEM_BASE, v);
 				j++;
 			}
 		}
 	}
-	BlkValueWrite(list, LIST_LENGTH_F, no_items+j);
+	WritePVField(list, LIST_LENGTH_F, no_items+j);
 	return list;
 ];
 
@@ -385,28 +385,28 @@ optional flag |forgive| is set, then we make no complaint if no value of
 |v| was present in the first place: otherwise, we issue a run-time problem.
 
 Note that if the list contains block-values then the value must be properly
-destroyed with |BlkValueFree| before being overwritten as the items shuffle down.
+destroyed with |DestroyPV| before being overwritten as the items shuffle down.
 
 =
 [ LIST_OF_TY_RemoveValue list v forgive i j no_items odsize f cf delendum;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) rfalse;
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) rfalse;
 	cf = LIST_OF_TY_ComparisonFn(list);
-	no_items = BlkValueRead(list, LIST_LENGTH_F); odsize = no_items;
-	BlkValueWrite(list, LIST_LENGTH_F, no_items); ! Forces the list to be mutable
+	no_items = PVField(list, LIST_LENGTH_F); odsize = no_items;
+	WritePVField(list, LIST_LENGTH_F, no_items); ! Forces the list to be mutable
 	for (i=0: i<no_items: i++) {
-		delendum = BlkValueRead(list, i+LIST_ITEM_BASE);
+		delendum = PVField(list, i+LIST_ITEM_BASE);
 		if (cf == 0 or UnsignedCompare)
 			f = (v == delendum);
 		else
 			f = (cf(v, delendum) == 0);
 		if (f) {
-			if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F)))
-				BlkValueFree(delendum);
+			if (ConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F)))
+				DestroyPV(delendum);
 			for (j=i+1: j<no_items: j++)
-				BlkValueWrite(list, j-1+LIST_ITEM_BASE,
-					BlkValueRead(list, j+LIST_ITEM_BASE));
+				WritePVField(list, j-1+LIST_ITEM_BASE,
+					PVField(list, j+LIST_ITEM_BASE));
 			no_items--; i--;
-			BlkValueWrite(list, LIST_LENGTH_F, no_items);
+			WritePVField(list, LIST_LENGTH_F, no_items);
 		}
 	}
 	if (odsize ~= no_items) rfalse;
@@ -414,7 +414,7 @@ destroyed with |BlkValueFree| before being overwritten as the items shuffle down
 	IssueRTP("AccessedNonExistentListItem",	
     	"Attempt to use list item which does not exist.", BasicInformKitRTPs);
 	print "*** Couldn't remove: the value ";
-	PrintKindValuePair(BlkValueRead(list, LIST_ITEM_KOV_F), v);
+	PrintKindValuePair(PVField(list, LIST_ITEM_KOV_F), v);
 	print " was not present in the list ";
 	LIST_OF_TY_Say(list, true);
 	print " ***^";
@@ -432,8 +432,8 @@ as the list shuffles down to fill the void.
 
 =
 [ LIST_OF_TY_RemoveItemRange list from to forgive i d no_items;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) rfalse;
-	no_items = BlkValueRead(list, LIST_LENGTH_F);
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) rfalse;
+	no_items = PVField(list, LIST_LENGTH_F);
 	if ((from > to) || (from <= 0) || (to > no_items)) {
 		if (forgive) {
 			if (from <= 0) from = 1;
@@ -450,13 +450,13 @@ as the list shuffles down to fill the void.
 	}
 	to--; from--;
 	d = to-from+1;
-	if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F)))
+	if (ConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F)))
 		for (i=0: i<d: i++)
-			BlkValueFree(BlkValueRead(list, from+i+LIST_ITEM_BASE));
+			DestroyPV(PVField(list, from+i+LIST_ITEM_BASE));
 	for (i=from: i<no_items-d: i++)
-		BlkValueWrite(list, i+LIST_ITEM_BASE,
-			BlkValueRead(list, i+d+LIST_ITEM_BASE));
-	BlkValueWrite(list, LIST_LENGTH_F, no_items-d);
+		WritePVField(list, i+LIST_ITEM_BASE,
+			PVField(list, i+d+LIST_ITEM_BASE));
+	WritePVField(list, LIST_LENGTH_F, no_items-d);
 	return list;
 ];
 
@@ -474,26 +474,26 @@ happened in this situation to be unhelpful.
 
 =
 [ LIST_OF_TY_Remove_List list rlist i j k v w no_items odsize rsize cf f;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) rfalse;
-	no_items = BlkValueRead(list, LIST_LENGTH_F); odsize = no_items;
-	rsize = BlkValueRead(rlist, LIST_LENGTH_F);
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) rfalse;
+	no_items = PVField(list, LIST_LENGTH_F); odsize = no_items;
+	rsize = PVField(rlist, LIST_LENGTH_F);
 	cf = LIST_OF_TY_ComparisonFn(list);
 	for (i=0: i<no_items: i++) {
-		v = BlkValueRead(list, i+LIST_ITEM_BASE);
+		v = PVField(list, i+LIST_ITEM_BASE);
 		for (k=0: k<rsize: k++) {
-			w = BlkValueRead(rlist, k+LIST_ITEM_BASE);
+			w = PVField(rlist, k+LIST_ITEM_BASE);
 			if (cf == 0 or UnsignedCompare)
 				f = (v == w);
 			else
 				f = (cf(v, w) == 0);
 			if (f) {
-				if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F)))
-					BlkValueFree(v);
+				if (ConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F)))
+					DestroyPV(v);
 				for (j=i+1: j<no_items: j++)
-					BlkValueWrite(list, j+LIST_ITEM_BASE-1,
-						BlkValueRead(list, j+LIST_ITEM_BASE));
+					WritePVField(list, j+LIST_ITEM_BASE-1,
+						PVField(list, j+LIST_ITEM_BASE));
 				no_items--; i--;
-				BlkValueWrite(list, LIST_LENGTH_F, no_items);
+				WritePVField(list, LIST_LENGTH_F, no_items);
 				break;
 			}
 		}
@@ -505,13 +505,13 @@ happened in this situation to be unhelpful.
 
 =
 [ LIST_OF_TY_GetLength list;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
-	return BlkValueRead(list, LIST_LENGTH_F);
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) return 0;
+	return PVField(list, LIST_LENGTH_F);
 ];
 
 [ LIST_OF_TY_Empty list;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) rfalse;
-	if (BlkValueRead(list, LIST_LENGTH_F) == 0) rtrue;
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) rfalse;
+	if (PVField(list, LIST_LENGTH_F) == 0) rtrue;
 	rfalse;
 ];
 
@@ -533,38 +533,38 @@ if |truncation_end| is 1, or from the start if it is $-1$.
 
 =
 [ LIST_OF_TY_SetLength list newsize this_way_only truncation_end no_items ex i dv;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) return 0;
 	if (newsize < 0) return IssueRTP("ResizedListToNegativeSize",	
     		"Attempt to resize list to negative size.", BasicInformKitRTPs);
 	BlkMakeMutable(list);
-	no_items = BlkValueRead(list, LIST_LENGTH_F);
+	no_items = PVField(list, LIST_LENGTH_F);
 	if (no_items < newsize) {
 		if (this_way_only == -1) return list;
-		ex = BlkValueLBCapacity(list);
+		ex = PVFieldCapacity(list);
 		if (newsize+LIST_ITEM_BASE > ex) {
-			if (BlkValueSetLBCapacity(list, newsize+LIST_ITEM_BASE) == false)
+			if (SetPVFieldCapacity(list, newsize+LIST_ITEM_BASE) == false)
 				return 0;
 		}
-		dv = DefaultValueOfKOV(BlkValueRead(list, LIST_ITEM_KOV_F));
+		dv = DefaultValueOfKOV(PVField(list, LIST_ITEM_KOV_F));
 		for (i=no_items: i<newsize: i++)
-			BlkValueWrite(list, LIST_ITEM_BASE+i, dv);
-		BlkValueWrite(list, LIST_LENGTH_F, newsize);
+			WritePVField(list, LIST_ITEM_BASE+i, dv);
+		WritePVField(list, LIST_LENGTH_F, newsize);
 	}
 	if (no_items > newsize) {
 		if (this_way_only == 1) return list;
 		if (truncation_end == -1) {
-			if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F)))
+			if (ConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F)))
 				for (i=0: i<no_items-newsize: i++)
-					BlkValueFree(BlkValueRead(list, LIST_ITEM_BASE+i));
+					DestroyPV(PVField(list, LIST_ITEM_BASE+i));
 			for (i=0: i<newsize: i++)
-				BlkValueWrite(list, LIST_ITEM_BASE+i,
-					BlkValueRead(list, LIST_ITEM_BASE+no_items-newsize+i));
+				WritePVField(list, LIST_ITEM_BASE+i,
+					PVField(list, LIST_ITEM_BASE+no_items-newsize+i));
 		} else {
-			if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F)))
+			if (ConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F)))
 				for (i=newsize: i<no_items: i++)
-					BlkValueFree(BlkValueRead(list, LIST_ITEM_BASE+i));
+					DestroyPV(PVField(list, LIST_ITEM_BASE+i));
 		}
-		BlkValueWrite(list, LIST_LENGTH_F, newsize);
+		WritePVField(list, LIST_LENGTH_F, newsize);
 	}
 	return list;
 ];
@@ -573,8 +573,8 @@ if |truncation_end| is 1, or from the start if it is $-1$.
 
 =
 [ LIST_OF_TY_GetItem list i forgive no_items;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return false;
-	no_items = BlkValueRead(list, LIST_LENGTH_F);
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) return false;
+	no_items = PVField(list, LIST_LENGTH_F);
 	if ((i<=0) || (i>no_items)) {
 		if (forgive) return false;
 		IssueRTP("AccessedNonExistentListItem",	
@@ -588,7 +588,7 @@ if |truncation_end| is 1, or from the start if it is $-1$.
 		if (no_items >= 1) i = 1;
 		else return false;
 	}
-	return BlkValueRead(list, LIST_ITEM_BASE+i-1);
+	return PVField(list, LIST_ITEM_BASE+i-1);
 ];
 
 @h Write Item.
@@ -598,8 +598,8 @@ to convert an rvalue such as |LIST_OF_TY_GetItem(L, 4)| is to prefix
 
 =
 [ WriteLIST_OF_TY_GetItem list i val no_items;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return false;
-	no_items = BlkValueRead(list, LIST_LENGTH_F);
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) return false;
+	no_items = PVField(list, LIST_LENGTH_F);
 	if ((i<=0) || (i>no_items)) {
 		IssueRTP("AccessedNonExistentListItem",	
     		"Attempt to use list item which does not exist.", BasicInformKitRTPs);
@@ -610,7 +610,7 @@ to convert an rvalue such as |LIST_OF_TY_GetItem(L, 4)| is to prefix
 			default: print " has entries numbered from 1 to ", no_items, " ***^";
 		}
 	} else {
-		BlkValueWrite(list, LIST_ITEM_BASE+i-1, val);
+		WritePVField(list, LIST_ITEM_BASE+i-1, val);
 	}
 ];
 
@@ -621,15 +621,15 @@ used instead.
 
 =
 [ LIST_OF_TY_PutItem list i v  no_items nv;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return false;
-	no_items = BlkValueRead(list, LIST_LENGTH_F);
-	if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F))) {
-		nv = BlkValueCreate(BlkValueRead(list, LIST_ITEM_KOV_F));
-		BlkValueCopy(nv, v);
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) return false;
+	no_items = PVField(list, LIST_LENGTH_F);
+	if (ConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F))) {
+		nv = CreatePV(PVField(list, LIST_ITEM_KOV_F));
+		CopyPV(nv, v);
 		v = nv;
 	}
 	if ((i<=0) || (i>no_items)) return false;
-	BlkValueWrite(list, LIST_ITEM_BASE+i-1, v);
+	WritePVField(list, LIST_ITEM_BASE+i-1, v);
 ];
 
 @h Reversing.
@@ -640,14 +640,14 @@ block-values and simply move them around like any other data.
 
 =
 [ LIST_OF_TY_Reverse list no_items i v;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
-	no_items = BlkValueRead(list, LIST_LENGTH_F);
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) return 0;
+	no_items = PVField(list, LIST_LENGTH_F);
 	if (no_items < 2) return list;
 	for (i=0:i*2<no_items:i++) {
-		v = BlkValueRead(list, LIST_ITEM_BASE+i);
-		BlkValueWrite(list, LIST_ITEM_BASE+i,
-			BlkValueRead(list, LIST_ITEM_BASE+no_items-1-i));
-		BlkValueWrite(list, LIST_ITEM_BASE+no_items-1-i, v);
+		v = PVField(list, LIST_ITEM_BASE+i);
+		WritePVField(list, LIST_ITEM_BASE+i,
+			PVField(list, LIST_ITEM_BASE+no_items-1-i));
+		WritePVField(list, LIST_ITEM_BASE+no_items-1-i, v);
 	}
 	return list;
 ];
@@ -658,21 +658,21 @@ end of the list, "backwards" means towards the start.
 
 =
 [ LIST_OF_TY_Rotate list backwards  no_items i v;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
-	no_items = BlkValueRead(list, LIST_LENGTH_F);
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) return 0;
+	no_items = PVField(list, LIST_LENGTH_F);
 	if (no_items < 2) return list;
 	if (backwards) {
-		v = BlkValueRead(list, LIST_ITEM_BASE);
+		v = PVField(list, LIST_ITEM_BASE);
 		for (i=0:i<no_items-1:i++)
-			BlkValueWrite(list, LIST_ITEM_BASE+i,
-				BlkValueRead(list, LIST_ITEM_BASE+i+1));
-		BlkValueWrite(list, no_items-1+LIST_ITEM_BASE, v);
+			WritePVField(list, LIST_ITEM_BASE+i,
+				PVField(list, LIST_ITEM_BASE+i+1));
+		WritePVField(list, no_items-1+LIST_ITEM_BASE, v);
 	} else {
-		v = BlkValueRead(list, no_items-1+LIST_ITEM_BASE);
+		v = PVField(list, no_items-1+LIST_ITEM_BASE);
 		for (i=no_items-1:i>0:i--)
-			BlkValueWrite(list, LIST_ITEM_BASE+i,
-				BlkValueRead(list, LIST_ITEM_BASE+i-1));
-		BlkValueWrite(list, LIST_ITEM_BASE, v);
+			WritePVField(list, LIST_ITEM_BASE+i,
+				PVField(list, LIST_ITEM_BASE+i-1));
+		WritePVField(list, LIST_ITEM_BASE, v);
 	}
 	return list;
 ];
@@ -701,14 +701,14 @@ Global LIST_OF_TY_Sort_cf;
 
 [ LIST_OF_TY_Sort list dir prop prop_is_bv cf  i j no_items v;
 	BlkMakeMutable(list);
-	no_items = BlkValueRead(list, LIST_LENGTH_F);
+	no_items = PVField(list, LIST_LENGTH_F);
 	if (dir == SORT_LIST_RANDOM) {
 		if (no_items < 2) return;
 		for (i=1:i<no_items:i++) {
 			j = random(i+1) - 1;
-			v = BlkValueRead(list, LIST_ITEM_BASE+i);
-			BlkValueWrite(list, LIST_ITEM_BASE+i, BlkValueRead(list, LIST_ITEM_BASE+j));
-			BlkValueWrite(list, LIST_ITEM_BASE+j, v);
+			v = PVField(list, LIST_ITEM_BASE+i);
+			WritePVField(list, LIST_ITEM_BASE+i, PVField(list, LIST_ITEM_BASE+j));
+			WritePVField(list, LIST_ITEM_BASE+j, v);
 		}
 		return;
 	}
@@ -718,7 +718,7 @@ Global LIST_OF_TY_Sort_cf;
 	}
 	else if (prop) {
 		if (prop_is_bv) {
-			LIST_OF_TY_Sort_cf = BlkValueCompare;
+			LIST_OF_TY_Sort_cf = ComparePV;
 		}
 		else {
 			LIST_OF_TY_Sort_cf = 0;
@@ -732,15 +732,15 @@ Global LIST_OF_TY_Sort_cf;
 
 [ ListSwapEntries list i j v;
 	if (i==j) return;
-	v = BlkValueRead(list, LIST_ITEM_BASE+i-1);
-	BlkValueWrite(list, LIST_ITEM_BASE+i-1, BlkValueRead(list, LIST_ITEM_BASE+j-1));
-	BlkValueWrite(list, LIST_ITEM_BASE+j-1, v);
+	v = PVField(list, LIST_ITEM_BASE+i-1);
+	WritePVField(list, LIST_ITEM_BASE+i-1, PVField(list, LIST_ITEM_BASE+j-1));
+	WritePVField(list, LIST_ITEM_BASE+j-1, v);
 ];
 
 [ ListCompareEntries list col i j d;
 	if (i==j) return 0;
-	i = BlkValueRead(list, LIST_ITEM_BASE+i-1);
-	j = BlkValueRead(list, LIST_ITEM_BASE+j-1);
+	i = PVField(list, LIST_ITEM_BASE+i-1);
+	j = PVField(list, LIST_ITEM_BASE+j-1);
 	if (I7S_Col) {
 		if (i provides I7S_Col) i=i.I7S_Col; else i=0;
 		if (j provides I7S_Col) j=j.I7S_Col; else j=0;

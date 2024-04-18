@@ -22,7 +22,7 @@ new base STORED_ACTION_TY {
 
 	distinguishing-routine: STORED_ACTION_TY_Distinguish
 	printing-routine: STORED_ACTION_TY_Say
-	comparison-routine: BlkValueCompare
+	comparison-routine: STORED_ACTION_TY_Compare
 
 	documentation-reference: kind_storedaction
 	index-default-value: waiting

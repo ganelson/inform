@@ -4213,9 +4213,9 @@ recognises an existing value: it doesn't parse a new one.
 [ TEXT_TY_ROGPRI txt
 	pos len wa wl wpos wach bdm ch own;
 	bdm = true; own = wn;
-	len = BlkValueLBCapacity(txt);
+	len = PVFieldCapacity(txt);
 	for (pos=0: pos<=len: pos++) {
-		if (pos == len) ch = 0; else ch = BlkValueRead(txt, pos);
+		if (pos == len) ch = 0; else ch = PVField(txt, pos);
 		if (ch == 32 or 9 or 10 or 0) {
 			if (bdm) continue;
 			bdm = true;
@@ -4279,11 +4279,11 @@ the heap.
 	if (len > INPUT_BUFFER_LEN-2) len = INPUT_BUFFER_LEN-2;
 	#Iftrue CHARSIZE == 1;
 	buffer->1 = len; at = 2;
-	for (i=0:i<len:i++) buffer->(i+at) = CharToCase(BlkValueRead(from_txt, i), 0);
+	for (i=0:i<len:i++) buffer->(i+at) = CharToCase(PVField(from_txt, i), 0);
 	for (:at+i<INPUT_BUFFER_LEN:i++) buffer->(at+i) = ' ';
 	#ifnot;
 	buffer-->0 = len; at = 1;
-	for (i=0:i<len:i++) buffer-->(i+at) = CharToCase(BlkValueRead(from_txt, i), 0);
+	for (i=0:i<len:i++) buffer-->(i+at) = CharToCase(PVField(from_txt, i), 0);
 	for (:at+i<INPUT_BUFFER_LEN:i++) buffer-->(at+i) = ' ';
 	#endif;
 	VM_Tokenise(buffer, parse);
@@ -4300,7 +4300,7 @@ the list. The following converts it to a list structure.
 
 =
 [ LIST_OF_TY_Mol list len i;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) return 0;
 	len = multiple_object-->0;
 	LIST_OF_TY_SetLength(list, len);
 	for (i=1: i<=len: i++)
@@ -4309,11 +4309,11 @@ the list. The following converts it to a list structure.
 ];
 
 [ LIST_OF_TY_Set_Mol list len i;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
-	len = BlkValueRead(list, LIST_LENGTH_F);
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) return 0;
+	len = PVField(list, LIST_LENGTH_F);
 	if (len > 63) len = 63;
 	multiple_object-->0 = len;
 	for (i=1: i<=len: i++)
-		multiple_object-->i = BlkValueRead(list, LIST_ITEM_BASE+i-1);
+		multiple_object-->i = PVField(list, LIST_ITEM_BASE+i-1);
 ];
 

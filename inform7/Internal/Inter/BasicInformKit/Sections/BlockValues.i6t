@@ -316,6 +316,36 @@ read it from the given long block directly. |BlkValueWrite| is similar.
 	print_ret "*** BlkValueWrite: writing to index out of range: ", pos, " in ", to, " ***";
 ];
 
+[ BlkValueWriteLB long_block pos val
+	chunk_size_in_bytes header_size_in_bytes flags entry_size_in_bytes seek_byte_position;
+	if (long_block == 0) rfalse;
+	flags = long_block->BLK_HEADER_FLAGS;
+	entry_size_in_bytes = 1;
+	if (flags & BLK_FLAG_16_BIT) entry_size_in_bytes = 2;
+	else if (flags & BLK_FLAG_WORD) entry_size_in_bytes = WORDSIZE;
+
+	if (flags & BLK_FLAG_MULTIPLE) header_size_in_bytes = BLK_DATA_MULTI_OFFSET;
+	else header_size_in_bytes = BLK_DATA_OFFSET;
+
+	seek_byte_position = pos*entry_size_in_bytes;
+	for (:long_block~=NULL:long_block=long_block-->BLK_NEXT) {
+		chunk_size_in_bytes = FlexSize(long_block) - header_size_in_bytes;
+		if ((seek_byte_position >= 0) && (seek_byte_position<chunk_size_in_bytes)) {
+			long_block = long_block + header_size_in_bytes + seek_byte_position;
+			switch(entry_size_in_bytes) {
+				1: long_block->0 = val;
+				2:	#Iftrue WORDSIZE == 2; long_block-->0 = val;
+					#ifnot; long_block->0 = (val/256)%256; long_block->1 = val%256;
+					#endif;
+				4: long_block-->0 = val;
+			}
+			return;
+		}
+		seek_byte_position = seek_byte_position - chunk_size_in_bytes;
+	}
+	print_ret "*** BlkValueWriteLB: writing to index out of range: ", pos, " in ", long_block, " ***";
+];
+
 @h First Zero Entry.
 This returns the entry index of the first zero entry in the long block's array,
 or -1 if it has no zeros.
@@ -579,6 +609,17 @@ we get its address from by adding the data offset to the block address.
 		short_block = FlexAllocate(2*WORDSIZE, 0, BLK_FLAG_WORD) + BLK_DATA_OFFSET;
 	short_block-->0 = val1; short_block-->1 = val2;
 	return short_block;
+];
+
+@h Long Block Allocation.
+
+=
+[ BlkValueCreateLB extent weak_id;
+	return FlexAllocate(extent*WORDSIZE, weak_id, BLK_FLAG_WORD);
+];
+
+[ BlkValueCreateMultipleLB extent weak_id;
+	return FlexAllocate(extent*WORDSIZE, weak_id, BLK_FLAG_MULTIPLE + BLK_FLAG_WORD);
 ];
 
 @h Block Values On Stack.
@@ -922,7 +963,7 @@ produce the same hash value.
 
 =
 [ GetHashValue kind value;
-	if (KOVIsBlockValue(kind)) return BlkValueHash(value);
+	if (ConformsTo_POINTER_VALUE_TY(kind)) return BlkValueHash(value);
 	return value;
 ];
 
@@ -1043,4 +1084,43 @@ in memory between builds invalidating this required output.
 [ BlkPrintHexDigit v;
 	v = v & $F;
 	if (v < 10) print v; else print (char) 'A' + v - 10;
+];
+
+@h The Pointer Value API.
+This sits on top of the BlkValue API, but whereas the latter can be used for
+many potential purposes, the PV functions are strictly for dealing with
+values of kinds conforming to POINTER_VALUE_TY.
+
+=
+Constant ConformsTo_POINTER_VALUE_TY = KOVIsBlockValue;
+
+Constant DestroyPV = BlkValueFree;
+Constant CreatePV = BlkValueCreate;
+Constant CopyPV = BlkValueCopy;
+Constant CastPV = BlkValueCast;
+Constant ComparePV = BlkValueCompare;
+Constant WeakKindOfPV = BlkValueWeakKind;
+Constant WritePVToFile = BlkValueWriteToFile;
+Constant PVFromFile = BlkValueReadFromFile;
+
+Constant PVField = BlkValueRead;
+Constant WritePVField = BlkValueWrite;
+Constant CreatePVLongBlock = BlkValueCreateLB;
+Constant CreatePVLongBlockMultiple = BlkValueCreateMultipleLB;
+Constant InitialisePVLongBlockField = BlkValueWriteLB;
+
+Constant CreatePVShortBlockOfSize1 = BlkValueCreateSB1;
+Constant CreatePVShortBlockOfSize2 = BlkValueCreateSB2;
+Constant CopyPVShortBlockOfSize1 = BlkValueCopySB1;
+Constant CopyPVShortBlockOfSize2 = BlkValueCopySB2;
+
+Constant PVFieldCapacity = BlkValueLBCapacity;
+Constant SetPVFieldCapacity = BlkValueSetLBCapacity;
+
+[ WritePVFieldsFromByteArray to_bv from_array no_entries_to_copy;
+	BlkValueMassCopyFromArray(to_bv, from_array, 1, no_entries_to_copy);
+];
+
+[ WritePVFieldsFromWordArray to_bv from_array no_entries_to_copy;
+	BlkValueMassCopyFromArray(to_bv, from_array, 4, no_entries_to_copy);
 ];

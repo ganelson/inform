@@ -814,8 +814,11 @@ Section 1 - Enumerations
 To decide which number is number of (S - description of values)
 	(documented at ph_numberof):
 	(- {-primitive-definition:number-of} -).
-To decide what number is the numerical value of (X - enumerated value): (- {X} -).
-To decide what number is the sequence number of (X - enumerated value of kind K):
+To decide what number is the numerical value of (X - enumerated value)
+	(documented at ph_numericalvalue):
+	(- {X} -).
+To decide what number is the sequence number of (X - enumerated value of kind K)
+	(documented at ph_sequencenumber):
 	(- {-indexing-routine:K}({X}) -).
 To decide which K is (name of kind of enumerated value K) after (X - K)
 	(documented at ph_enumafter):
