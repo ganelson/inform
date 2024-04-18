@@ -585,6 +585,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 	...... - a phrase |                                           ==> { VOID_IDTC, NULL }
 	...... - phrase |                                             ==> { VOID_IDTC, NULL }
 	...... - storage |                                            ==> @<Storage@>
+	...... - storage of <k-kind-prototype> |                      ==> @<Storage of kind@>
 	...... - a table-reference |                                  ==> @<Table ref@>
 	...... - table-reference |                                    ==> @<Table ref@>
 	...... - <s-phrase-token-type> |                              ==> { STANDARD_IDTC, RP[1] }
@@ -607,6 +608,9 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 
 @<Storage@> =
 	==> { STORAGE_IDTC, ParsingIDTypeData::match(K_value, GET_RW(<phrase-token-declaration>, 2)) }
+
+@<Storage of kind@> =
+	==> { STORAGE_IDTC, ParsingIDTypeData::match(RP[1], GET_RW(<phrase-token-declaration>, 2)) }
 
 @<Table ref@> =
 	==> { TABLE_REF_IDTC, ParsingIDTypeData::match(K_value, GET_RW(<phrase-token-declaration>, 2)) }

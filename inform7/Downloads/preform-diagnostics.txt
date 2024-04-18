@@ -7034,6 +7034,8 @@
           (hits 0/606) constraint DS = {19} extremes [3, infinity)
         {......} - storage 
           (hits 4/606) (matched: 's - storage') constraint DS = {19} extremes [3, infinity)
+        {......} - storage of <k-kind-prototype> 
+          (hits 0/197) constraint DS = {19} extremes [5, infinity)
         {......} - a table-reference 
           (hits 0/388) constraint DS = {19} extremes [4, infinity)
         {......} - table-reference 

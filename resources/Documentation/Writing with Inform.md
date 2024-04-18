@@ -15715,7 +15715,7 @@ On the other hand, there are also times when this is a needlessly complicated di
 
 ## Generic phrases
 
-^^{kinds: of kinds} ^^{values: kinds of kinds of value} ^^{|arithmetic value} ^^{|enumerated value} ^^{|sayable value} ^^{text substitutions: sayable values}
+^^{kinds: of kinds} ^^{values: kinds of kinds of value} ^^{|arithmetic value} ^^{|enumerated value} ^^{|sayable value} ^^{text substitutions: sayable values} ^^{generic phrases}
 
 The following looks quite innocent:
 
@@ -18147,7 +18147,7 @@ Finally, any phrase or variable defined immediately under a heading whose name e
 
 This is intended so that technical apparatus used only inside the extensions can be concealed from the outside user's immediate view. Inform as it is presently constituted does not allow extensions to make fully private definitions, but this feature at least allows them to make unadvertised ones.
 
-## Bundling other resources with an extension
+## Images and other resources
 
 An extension directory can, optionally, contain a subdirectory called ```Materials```. If it does, this can then contain a wide variety of useful things, laid out almost exactly like the materials folder for a project. Because it's included in the extension, anybody downloading the extension gets all of these extras along with it.
 
@@ -18182,6 +18182,100 @@ Hypothetical Project.materials/Figures/Red Fire Hydrants/dalmatian.jpg
 ```
 
 Note that this is in a subdirectory of ```Figures```, with the same name as that of the extension. This means the author could replace ```dalmatian.jpg``` from multiple different extensions, while still having a quite unrelated ```dalmatian.jpg``` used by the project's main source text.
+
+## Use options for extensions
+
+^^{use options: defining in extensions} ^^{use options: active / inactive+adj+} ^^{active / inactive (use option)+adj+} ^^{inactive / active (use option)+adj+} 
+
+Extensions should ideally cater for a range of possible uses, and one way to do that is to provide use options. We have seen many of these already, such as:
+
+	Use American dialect.
+	Use the serial comma.
+
+Extensions can also create use options. There are two sorts: "configuration flags", which are either set or not set; and "configuration values", which are numbers. The following creates one of each:
+
+	Use automatic low lintel ducking translates as a configuration flag.
+	Use duck depth translates as a configuration value.
+
+The user's story could then begin:
+
+	Include Ducking by Peter Drake. Use automatic low lintel ducking.
+	Use duck depth of 10.
+
+The distinction between these:
+
+	Use duck depth translates as a configuration value.
+	Use duck sway of 6 translates as a configuration value.
+
+is that `duck sway` has a default value of 6 (i.e., will be that if
+the source text never specifies anything), whereas `duck depth` has
+a default value of 0.
+
+If the user tries it, a problem message will reject this as a contradiction:
+
+	Use duck depth of 17.
+	Use duck depth of 22.
+
+If the idea is that a configuration value is some sort of maximum, which is often useful, then it can be defined as `at least` a value (which must be non-negative):
+
+	Use maximum actor height of at least 60 translates as a configuration value.
+
+Should the user then say both of these:
+
+	Use maximum actor height of at least 175.
+	Use maximum actor height of 200.
+
+there is then no contradiction, and the value comes out as 200, which satisfies both requirements. (Of course, it's unlikely that any user will type both sentences. But that user might type one sentence into the source text, and also include an extension which, perhaps without the user even knowing, is also trying to configure `Philately`.) This would still produce a Problem:
+
+	Use maximum actor height of at least 175.
+	Use maximum actor height of 160.
+
+Sneakily, we can also make what look to the user like several flags, but are actually mutually exclusive. For example, suppose we want the user to be able to select either of these, but not both:
+
+	Use bobbing ducks.
+	Use swivelling ducks.
+
+That can be done like so:
+
+	Use bobbing ducks translates as the configuration value DUCK_MOTION_TYPE = 1.
+	Use swivelling ducks translates as the configuration value DUCK_MOTION_TYPE = 2.
+
+As this suggests, under the hood a value called ```DUCK_MOTION_TYPE``` is being set. Attempting to set both options will now cause Inform to throw a problem message for a contradiction, as will a sentence like `Use bobbing ducks of 3`. (We know that these settings are numerical; the user does not.)
+
+So much for how we define these configuration flags or values, and how the user sets them: now for how to read back the settings which the user has made.
+
+1) The adjectives `active` and `inactive` apply to use options. A configuration flag is `active` if it has been used; a configuration value if it has been set to a non-zero value.
+
+2) The phrase `numerical value of U`, for any use option `U`, produces its current value. (For a flag, that will be 1 if it is active, 0 if it is inactive.)
+
+Note that `active` and `numerical value` are _not_ properties: they are set forever by the user, and cannot change at run-time. So `now U is active` and `now the numerical value of U is 10` do _not_ work.
+
+For example:
+
+	Before going through a low door when the automatic low lintel ducking option is active:
+		say "(first ducking your head)[line break]";
+		silently try ducking.
+
+To return to our two mutually exclusive options:
+
+	Use bobbing ducks translates as the configuration value DUCK_MOTION_TYPE = 1.
+	Use swivelling ducks translates as the configuration value DUCK_MOTION_TYPE = 2.
+
+...suppose the user has chosen neither. Then both are inactive, and both have a numerical value of 0. If the user has chosen to `Use swivelling ducks` then `swivelling ducks option` is `active` and has a numerical value of 2.
+
+In case helpful, here's a little diagnostic command called ``OPTIONS``:
+
+	{*}Showing use options is an action out of world, applying to nothing.
+
+	Understand "OPTIONS" as showing use options.
+
+	Carry out showing use options:
+		repeat with U running through active use options:
+			if the numerical value of U > 1:
+				say "[U] has been set to [numerical value of U].";
+			otherwise:
+				say "[U] is on.";
+		say "Inactive: [list of inactive use options].";
 
 ## Run-time problems
 
@@ -18226,7 +18320,265 @@ standing just on the edge of a deep hole.
 >
 > This phrase should be used only in extensions. The file ```CantDivideByZero.md``` must then exist in the extension's ```RTPs``` subdirectory, and must give an explanation.
 
-# Extension documentation and testing
+## Style and best practice guide
+
+_The following is not a comprehensive style guide, and these are very much guidelines, not rules. But they may be helpful when writing an extension which is to be shared with the world._
+
+### Use directory format for extensions, not single file format.
+
+The older single-file extension format is not described in this chapter, because it's much less capable and will eventually be deprecated. The Public Library will henceforth only accept directory-format extensions. Conversion is easy: in the Extensions panel for a project, a single-file extension will have a ```MODERNISE``` button next to it. Click this, and confirm.
+
+### Include enough material to make the extension worthwhile.
+
+If your feature is implemented in just one or two rules, which do not do anything very surprising, it's probably not substantial enough for an extension.
+
+### Avoid a miscellany of features.
+
+This doesn't mean "do only one thing". Many extensions usefully contain a bundle of related features. But they are best if those features naturally go together.
+
+It's better to build an extension around one sort of functionality than to build it around one sort of scenario or story. An extension for "everything you need to implement a shop" might be better broken down into two different extensions, one which implements money, change, and so on, and one which deals with managing the goods on sale.
+
+### Give your extension a descriptive name, avoiding comparatives.
+
+For example, `Rideable Vehicles` is preferable to `Better Vehicles`, because it says what it provides. Avoid stylish titles like `Locksmith`.
+
+For more on good titling practice, see [Title and authorship].
+
+### Give your extension a semantic version.
+
+Be strict about this. You can give an extension a version number on its opening line:
+
+	Version 9 of Locksmith by Emily Short begins here.
+
+See [Version numbering] for more.
+
+### Follow the semantic versioning convention.
+
+Under the hood, Inform tracks version numbers which follow the `MAJOR.MINOR.PATCH` semantic convention. If only one or two numbers are given, the others are implicitly 0: thus `9` means `9.0.0`, and `9.3` means `9.3.0`.
+
+If you release _any_ update of your extension, however minor the change, increase its version number. Semantic version numbers are a promise which you are making, so:
+
+- The `MAJOR` number must increase if there is any significant change to how the extension carries out its existing job.
+- Otherwise, increase just `MINOR` if you are adding new features, but not changing anything about existing ones.
+- Otherwise, increase just `PATCH` if you are fixing bugs, but making no change to the feature set.
+
+### Write a brief rubric text, describing what it does more fully.
+
+This is the short quoted text appearing just under the title in an extension's source text. Aim to write 30-50 words giving a fuller idea of what the extension does. For example:
+
+``` code
+"Provides more sophisticated listing options: the ability to impose special
+ordering instructions on a list, and also the ability to change the
+delimiters of the list to produce different styles and effects."
+```
+
+Do not include your name or the extension's title: they are described immediately above in any case.
+
+If the extension has been withdrawn, or is now deprecated, say so in the rubric.
+
+### Write documentation.
+
+An extension is really only useful if it comes with documentation, and there's a whole chapter of this book about how to write it: see [Extension Documentation and Testing].
+
+- Unless the extension works equally with both major compilation settings (Glulx or Z-machine), make a prominent compatibility note at the top of the documentation.
+
+- Similarly if the extension requires other extensions in order to work, or is incompatible with other popular extensions, or with modern versions of Inform.
+
+- If the extension _does_ work with Basic Inform alone, explicitly say so, because extensions usually don't.
+
+- Aim to be concise, but give as many examples as possible.
+
+- Every phrase which you document should be given a "box" giving its own specification, in the same style as the main Inform manual.
+
+- Documentation should include the names of any rules, rulebooks or activities which the user might want to customise or modify.
+
+### Provide examples.
+
+Examples are short Inform source texts, with a little commentary, demonstrating features of your extension. Try to write at least one for every non-obvious thing your extension can do, or every interesting use-case you've thought of which might not occur to other people. Imitate the style of the main Inform documentation examples.
+
+For each example, include within it a short test script which plays it out:
+
+	Test me with "get all / w / drop all / look / get all / w / drop all / look".
+
+### Provide test cases.
+
+For every example, include also the ideal textual output which it produces, so that your extension can be automatically tested. (Inform provides controls for the users to run these tests on an installed extension.)
+
+You can also provide test cases which are not part of the documentation, but verify the correct running of some part of your extension. For example, if you define an action, you can provide a test case which tries out every way a player, or a third party, might attempt the action, correctly or not.
+
+The better your test case coverage, the easier it is to keep the extension up to date when Inform changes, and the more confidence users will have with it.
+
+### Use rules, rulebooks, actions, and activities.
+
+Wherever possible, implement your features using rules: either as part of the Standard Rules rulebooks and activities, or as part of your own.
+
+Rules are good because they give the user great ability to customise how your extension operates, and also to understand what it's doing, since the `RULES` debugging command allows users to track this behaviour.
+
+There is no significant overhead to having multiple rules rather than just one, and wherever possible each rule should contribute one idea. For example, the Standard Rules implements the wearing action by first making three checks to see if it's sensibly possible for an actor to put on an article of clothing. But it breaks these out into three different rules, so that users can override just one and keep the other two, for example.
+
+### Name rules consistently.
+
+Every rule which affects an action, or does something which changes how the usual rulebooks or activities behave, or does something significant to provide your own functionality, should have a name.
+
+For action rules, follow the naming style used in the Standard Rules. For example, the wearing action is implemented with the following rules:
+
+	can't wear what's not clothing rule
+	can't wear what's not held rule
+	can't wear what's already worn rule
+	standard wearing rule
+	standard report wearing rule
+
+Here, the `check` rules have names beginning with "can't", because they each provide a single potential reason why an action cannot take place. Note that the names do not contain "you", i.e., these are _not_ named in the style:
+
+	you can't wear what's already worn rule
+
+The `standard wearing rule` is a carry out rule, and performs the actual action. What the word "standard" means here is that this is a single rule performing the change of world state which the action calls for, in what we consider the normal way. (Here, say, a hat object would become worn by the actor.)
+
+In general, actions are "atomic", in that you wouldn't want them to be only partly carried through. So a single carry out rule like this is appropriate even if the action does something complicated. But if it's very complicated, and you could imagine users wanting to tweak it, consider handling the actual change of game state with an activity.
+
+Similarly, the `standard report wearing rule` is a single rule providing a routine description of what happens. 
+
+### Use adaptive text.
+
+Adaptive text is the Inform feature which allows it to present the same basic sentences in different tenses, or agreeing with different nouns. A typical non-adaptive message would be:
+
+	"You're not holding that!"
+
+But this assumes the story is told with a second-person protagonist (called "you"), and that "that" is singular. The adaptive version would be:
+
+	"[We] [aren't] holding [regarding the noun][those]!"
+
+Verbs adapt, too, and if you need an unusual verb to do so, then go ahead and declare it: you won't tread on any other extensions by doing that. For example, once this declaration is made:
+
+	To hornswoggle is a verb.
+
+then you could write adaptive text like:
+
+	"[The actor] [hornswoggle] [the noun]."
+
+For many, many examples of adaptive text, see the action rules in the Standard Rules.
+
+### Use lettered responses.
+
+Rules for actions (and also for some activities) often print standard responses, and Inform provides features for users to modify or replace these. Your own rules can make that possible, too, by using response letters. For example:
+
+	Report an actor eating (this is the standard report eating rule):
+		if the action is not silent:
+			if the actor is the player:
+				say "[We] [eat] [the noun]. Not bad." (A);
+			otherwise:
+				say "[The actor] [eat] [the noun]." (B).
+
+This rule provides two responses, `A` and `B`. When you first define a rule, letter the different possible replies from `A` upwards. (If there are more than 26, you have too much going on for one rule: break it up.) When updating an extension to make a new release, _do not reletter these responses_: your users now expect `B` to be the one printing something like "The doctor eats the apple." So if you add a new response, make it `C`, even if it's higher up in the rule than `A`: that doesn't matter.
+
+### Naming of actions and activities
+
+Activities should be named in a way which concisely describes what they do:
+
+	issuing the response text activity
+	printing the locale description activity
+	
+Note the participles `issuing` and `printing`: do _not_ call these
+
+	issue the response text activity
+	print the locale description activity
+
+And similarly for actions:
+
+	climbing
+	tying it to
+
+### Make actions work for all actors.
+
+When Inform users are writing a story, it's quite common to write an action on the assumption that only the player will ever be the actor. If you're the author of the story, you can be sure that that will be true. But if you create an action in an extension, you don't know how it will be used, so don't make assumptions.
+
+In practice, this means writing the rules for the action to talk about `the actor`, not `the player`, and remembering that they may not be the same.
+
+For example, this is _not_ a good rule:
+
+	Check pushing something to (this is the can't push vertically rule):
+		if the second noun is up or the second noun is down:
+			say "[The noun] [cannot] be pushed up or down." (A);
+			stop the action.
+
+Firstly, it fires only if the actor is the player. Fix that like so:
+
+	Check an actor pushing something to (this is the can't push vertically rule):
+		if the second noun is up or the second noun is down:
+			say "[The noun] [cannot] be pushed up or down." (A);
+			stop the action.
+
+But even this version implicitly assumes the actor is the player, because it prints a complaint to the player if the action is impossible. The right way to do this is:
+
+	Check pushing something to (this is the can't push vertically rule):
+		if the second noun is up or the second noun is down:
+			if the actor is the player:
+				say "[The noun] [cannot] be pushed up or down." (A);
+			stop the action.
+
+This rule fires for any actor, and if the actor is trying to push an object upstairs or downstairs, the action will stop: but the complaint will be printed only if the player is the guilty party.
+
+### Make actions physically reasonable.
+
+Play nicely with the world-modelling conventions of the Standard Rules. Define your action in a way which limits its applicability to what is physically possible. For example:
+
+	Throwing it at is an action applying to one carried thing and one visible thing.
+
+### Write a specification for your action.
+
+Help users by providing some index documentation on your action. This doesn't need to be large or elaborate:
+
+	The specification of the inserting it into action is "By this action,
+	an actor puts something he is holding into a container: for instance,
+	putting a coin into a collection box."
+
+### Avoid global variables where possible.
+
+Try to avoid "global state" where possible, and minimise the use of sentences like:
+
+	The controller is a person that varies.
+
+For one thing, `controller` is a word which could easily cause clashes with nouns in your users' stories, but for another, do we need to store this at all?
+
+For example, an extension which automatically moves certain people around every turn, to simulate crowd behaviour, could be implemented using:
+
+	The wanderer list is a list of people that varies.
+
+And that might be the most efficient way to do it. But there are alternatives: for example, declaring an either/or property for whether a person is actively wandering or not.
+
+Similarly, if a variable is only needed to preserve state across multiple rules in the same action, rulebook or activity, make it a variable private to that action, rulebook or activity.
+
+### Either-or properties.
+
+If defining an either-or property, always give a name for its opposite too, and explicitly say what the usual state is.
+
+For example, instead of this:
+
+	A device can be switched on.
+
+Write this:
+
+	A device can be switched on or switched off. A device is usually switched off.
+
+### Move any substantial Inform 6 code into a kit.
+
+This will be the subject of the final chapter in this book, [Kits].
+
+"Substantial" here means that you need to define one or more Inform 6 functions or global variables. Old-fashioned extensions would generally do this with a so-called "inclusion", like so:
+
+	Include (-
+		[ FunctionName par1 par2;
+			...
+		];
+	-).
+
+While there is no plan to withdraw `Include ...` from the language, its use is now deprecated.
+
+Small kits are quite easy to construct, and can be included in an extension's directory so that the user never needs to know how all this is done.
+
+Give such a kit a name based on the extension's name: e.g. `Graphics Windows` might have a kit `GraphicsWindowsKit`.
+
+# Extension Documentation and Testing
 
 ## Making a documentation set for an extension
 
@@ -19370,91 +19722,693 @@ This is only likely to be helpful for the main Inform documentation, not for ext
 
 # Low-Level Programming
 
-## Using Inform 6 within Inform 7
+## The architecture of Inform
 
-^^{Inform 6} ^^{Inform 6 inclusions <-- defining: Inform 6 entities} ^^{extensions: Inform 6 code in extensions} ^^{Standard Rules+ext+} ^^{extensions: specific extensions: Standard Rules}
+^^{architecture of Inform} ^^{Inter code} ^^{I6 syntax} ^^{Inform 6} ^^{extensions: Inform 6 code in extensions}
 
-The current Inform, "Inform 7", had a low-level precursor unsurprisingly called Inform, which ran through versions 1 to 6. What made Inform 6 low-level was that its style of coding was much more like traditional programming: it reads as a simple form of C, or an elaborate form of assembly-language, but with some interactive fiction tweaks.
+Inside the Inform applications is a _compiler_, which turns source text which describes a story into a computer program which runs that story — or else, of course, refuses and issues Problem messages.
 
-That language is still used inside today's Inform project as a way to express very low-level operations. What happens to code like that is now very different (it is compiled into Inter, an intermediate-level representation used inside Inform, and no longer by the Inform 6 compiler). But the notation is the same, and the practical effect is that it is as if we are writing I6 code.
+Many programming languages are compiled. Inform is typical in that it does not perform the process in a single step. In fact it works in three main stages:
 
-The final sections of this chapter show how such I6 code can be mixed directly in with natural-language source text. The remaining pages will therefore make little or no sense to those who do not already know I6 notation, and in any case, such programming is really a last resort – it is always best to write regular source text than to resort to so-called "inclusions" of I6. Ideally, all I6 content would be confined to extensions (and this may be mandated in future releases of Inform), and even writers of extensions are asked to pare down their usage of I6 to the minimum necessary.
+1) Source text is compiled down to a so-called _intermediate language_, called Inter.
 
-The methods for incorporating I6 code into I7 have been designed with this in mind, that is, to encourage people to use I6 in as self-contained a way as possible: in particular to isolate the relatively few functions which need to be written in I6, and to give them natural language expression.
+2) Inter code is then _code-generated_ down to a low-level computer program written in some suitable _target language_.
 
-Finally, anyone hacking with I7 for a while is likely to become curious about the Basic Inform or Standard Rules extensions, and to look at the text which sets up the Inform language and world model. These extensions are, of course, no secret, but can be misleading to read. For one thing, they appear to have great freedom to set up the world model as it pleases, but in fact the I7 compiler may well crash unless certain things are done just so in the Standard Rules: they depend on each other.
+   - In the Inform app, this other language will be Inform 6, created in the 1990s for generating interactive fiction _story files_.
+   - For command-line users, it can instead be C, which can make an executable program for almost any computer old or new.
 
-Moreover, the Basic Inform and Standard Rules extensions use a number of syntaxes which are not documented in this chapter: these are constantly being altered, and it would not be safe to imitate them. Any I6-related syntax which is not documented in this chapter may be removed or changed in effect at any time without warning, for instance in an update of Inform to fix bugs.
+3) The relevant _back-end_ compiler, such as ```inform6``` or ```clang```, then turns that target program into the final product.
 
-## Defining phrases in Inform 6 {PM_UnendingI6} {PM_InlineTooLong} {PM_InlineRule} {PM_BadInlineExpansion} {PM_BadInlineTag}
+Inform, however, is unusual in allowing programmers quite a lot of access to what goes on at stage (2). In particular it's possible to
 
-^^{Inform 6 inclusions: phrases} ^^{phrases: defining in Inform 6} ^^{((- -)), for including Inform 6 code in Inform 7+sourcepart+} ^^{punctuation: curly braces: for including Inform 7 expressions in Inform 6+sourcepart+} ^^{|{ \}: for including Inform 7 expressions in Inform 6}
+- change details of how Inform generates Inter from source text at stage (1),
 
-The phrases described in this documentation, such as `end the story`, are all defined in the Standard Rules, and are for the most part defined not in terms of other I7 phrases but instead reduced to equivalents in I6. For instance:
+- teach Inform new ways to do this as part of phrase definitions, and
 
-	To end the story: (- deadflag=3; story_complete=false; -).
+- merge in Inter code which isn't generated from source text at all.
 
-The notation `(-` and `-)` indicates that what comes in between is I6 code. The minus sign is supposed to be a mnemonic for the decrease from 7 to 6: later we shall use `(+` and `+)` to go back up the other way, from 6 to 7.
+Although Inter code does have a textual form of a sort, it isn't the sort of thing any human would want to write directly. This is fairly typical:
 
-When a phrase is defined as containing only a single command, and that command is defined using I6 – as here – it is compiled in-line. This means that the phrase `end the story` will always be translated as ```deadflag=3; story_complete=false;```, rather than being translated into a call to a suitable function whose only statement is ```deadflag=3; story_complete=false;```.
+``` code
+typename K_number = int32
+typename K_func = function /main/K_number -> /main/K_number
+package (K_func) R_101 _code
+	local (/main/K_number) x
+	code
+		.begin
+		inv !if
+			inv !eq
+			val x
+			val 6
+			code
+				inv !return
+					val (/main/K_truth_state) 1
+		inv !return
+			val (/main/K_truth_state) 0
+```
 
-This is an easy case since the wording never varies. More typical examples would be:
+Inform therefore allows Inter to be produced not only from source text, but also from a second and much lower-level language. We will call this language "I6". We'll call it that because it looks very like Inform 6, though there are a handful of differences.
 
-	To say (something - number): (- print {something}; -).
+These two chapters will assume a rough familiarity with I6 syntax. Readers who have ever used a language like ```C``` will probably be able to pick this up as they go along. For example, the Inter code above corresponds roughly to a function of ```x``` written like so in I6:
+
+``` code
+[ R_101 x;
+	if (x == 6) return true;
+	return false;
+];
+```
+
+Failing guesswork, the documentation for the Inform 6 programming language is probably best: the _Inform Designer's Manual_, fourth edition (2001), the so-called "DM4", is the definitive book on that. This is open-access online: [Inform 6 Designer's Manual](https://inform-fiction.org/manual/html/). In 2001, Inform 7 did not exist, so "Inform" then meant "Inform 6".
+
+To reiterate, though, I6 material in an Inform source text is not fed in any direct way into the ```inform6``` compiler. It is translated into Inter code, which might or might not be code-generated to an Inform 6 program. Even if it is, the fragment which came from the I6 original will not look precisely the same.
+
+This is the first of two chapters about how to use I6 within Inform. In this chapter, we'll see how that can define powerful new phrases, among other things. These features will mostly benefit extension authors, but they can also be used directly in the source text for stories. In the next chapter, on [Kits], we'll go on to see how to create very much larger blocks of Inter which can provide the underpinning for powerful new features. Those can only usefully be created as parts of extensions.
+
+## Defining To phrases with I6 {PM_UnendingI6} {PM_InlineTooLong} {PM_InlineRule} {PM_BadInlineExpansion} {PM_BadInlineTag}
+
+^^{I6 syntax: phrases} ^^{phrases: defining in I6} ^^{((- -)), for writing I6 in source text+sourcepart+} ^^{punctuation: curly braces: used in I6 definitions of phrases+sourcepart+} ^^{|{ \}: used in I6 definitions of phrases}
+
+The phrases described in this book all have definitions given in the extensions automatically included with all projects — `Basic Inform`, the `Standard Rules` or, in a few cases, `English Language`. Those phrases are mostly, though not universally, defined using I6 notation, using the feature described below.
+
+For example, `Basic Inform` makes this definition:
+
+	To say (something - number) in words:
+		(- print (number) say__n=({something}); -).
+
+The minus sign in `(-` and `-)` is supposed to be a mnemonic for the decrease from 7 to 6: later we shall use `(+` and `+)` to go back up the other way, from 6 to 7.
+
+The use of the `(-` and `-)` notation, in place of an ordinary phrase body, tells Inform how to convert an _invocation_ of the phrase into Inter code. For example, `say 125;` would then be converted to the Inter resulting from this:
+
+``` code
+	print (number) say__n=(125);
+```
+
+whereas `say the capacity of the basket` might become:
+
+``` code
+	print (number) say__n=(I_basket_U1.A_capacity);
+```
+
+What has happened here, then, is that the _token_ `{something}` in the definition has been replaced by the value supplied to the `say` phrase.
+
+A few notes:
+
+1) The I6 code given can contain multiple statements, not just one, and can include loops, function calls and so on. In practice they seldom run to more than a line or two, but they absolutely can.
+
+2) These fragments of I6 will, once they become Inter code, eventually be translated to a target program. Even if that program is written in Inform 6, the original `say 125` and `say the capacity of the basket` would now come out differently again:
+
+   ``` inform6
+   LanguageNumber((say__n = 125));
+
+   @push self;
+   LanguageNumber((say__n = GProperty(OBJECT_TY, (self = I_basket_U1), A_capacity)));
+   @pull self;
+   ```
+
+   The details are unimportant. But it illustrates the point that writing I6 guides the compiler to create Inter: it doesn't compose literal Inform 6 material.
+
+3) Programmers may want to note the difference between this and a more regular definition:
+
+       To say (something - number) in words:
+           say "I don't know how to say [something] in words."
+
+   This second definition would create a _function_, and would call that function with the argument `125` or `I_basket_U1.A_capacity`. Phrases defined by `(-` and `-)` are more like what are called _macros_, though since they are type-checked they are more like the modern-day macros of languages like Swift or Rust than like the old-school macros of C.
+
+There can of course be more than one token in a phrase:
+
 	To sort (T - table name) in (TC - table column) order:
 		(- TableSort({T}, {TC}, 1); -).
 
-When the braced name of one of the variables in the phrase preamble appears, this is compiled to the corresponding I6 expression at the relevant position in the I6 code. So, for instance,
+When the braced name of a token appears in the I6 — for example, ```{TC}``` — this is compiled to the I6 expression for whatever was supplied in that token.
 
-	say the capacity of the basket
+Braces `{` are significant in I6, so this syntax rule might cause ambiguity. To obtain a real brace, it's enough to ensure that the character following it is a space.
 
-might be compiled to
-
-``` inform6
-print O17_basket.capacity;
-```
-
-because `{something}` is expanded to `capacity of the basket` (I7 code) and then translated to ```O17_basket.capacity``` (I6 code), which is then spliced into the original definition `"print {something};"`.
-
-Braces `{` are of course significant in I6. A real brace can be obtained by making the character following it a space, and then I7 will not attempt to read it as a request for substitution.
-
-It's also possible for the pair of characters `-)` to occur in I6 code, for example here:
+It's also possible for the pair of characters `-)` to occur in I6 code, particularly with ```for``` loops like this one:
 
 ``` inform6
 for (i=3 : i>0 : i--)
 ```
 
-and I7 will read the `-)` as terminating the I6; we can get around this with an extra space:
+We can prevent Inform from reading the `-)` as terminating the I6 by again adding an extra space:
 
 ``` inform6
 for (i=3 : i>0 : i-- )
 ```
 
-Warning: Inform 6 uses a restricted character set, allowing use of most of the accented characters in ISO Latin-1 (those found in a set called ZSCII) but little beyond that. It's therefore hazardous to use any exotic Unicode characters in an inclusion.
+## Defining To decide phrases with I6
 
-## Phrases to decide in Inform 6
+^^{I6 syntax: phrases to decide whether/if} ^^{I6 syntax: phrases to decide a value} ^^{phrases: defining in I6}
 
-^^{Inform 6 inclusions: phrases to decide whether/if} ^^{Inform 6 inclusions: phrases to decide a value} ^^{phrases: defining in Inform 6}
+The previous section showed how to define so-called _void phrases_ with I6: that is, those which do something, but produce no value or opinion as a result.
 
-There are basically three forms of phrase in I7: phrases which do something, but produce no value or opinion as a result; phrases to decide whether or not something is true; and phrases to decide on a value. We have already seen examples of writing the first form in I6:
-
-	To say (something - number): (- print {something}; -).
-
-Here the I6 form is required to be I6 routine code in void context, that is, it will normally be one or more statements each of which ends in a semicolon (unless there are braced code blocks present). In this case, we have just one I6 statement, ending in a semicolon.
+We can also define _to decide phrases_ with I6. There are two sorts of these: first, those which decide whether or not something is true.
 
 An example of a phrase to decide whether something is true would be:
 
-	To decide whether in darkness: (- (location==thedark) -).
+	To decide whether (N - a number) scares people:
+		(- ({N} % 10 == 4) -).
 
-Here the I6 code providing the definition must be a valid I6 condition, and be in round brackets, but there is no semicolon.
+This in fact tests whether the number ends in a "4", which is considered bad luck in some Pacific Rim countries. (We'll ignore negative numbers.)
 
-Lastly, an example of a phrase to decide on a value:
+A key difference between this definition and the ones in [Defining To phrases with I6] is that the content between `(-` and `-)` is not a series of statements ending in semicolons: it's an _expression_, which evaluates to a number. If that number is non-zero, the decision is yes; otherwise, the decision is no. 
+
+In I6, there's no real difference between a condition and an expression, so a phrase to decide on a value is basically the same:
 
 	To decide which number is the hours part of (t - time): (- ({t}/60) -).
 
-Again, this is a value in I6 as well: no semicolon. It is probably safest to place the value in round brackets.
+Again, this must be an I6 expression. It's conventional to write the value in round brackets, to emphasise that it is a value, and not a piece of imperative code.
 
-## Handling phrase options
+This is all very well when the kind of value needed can easily be expressed in I6. That's true enough for `number`, `real number`, `truth state`, and `time`. But values which need more elaborate storage, like `text` or `list of real numbers`, are not so simple. Beware that the I6 expression ```"rabbit"``` certainly looks like text, but it is _not_ a valid Inform `text` value.
+
+However, just as braces can be used to represent "tokens" (like `{t}` or `{N}` in the examples above), they can also do certain other things. A particularly useful one is `{-new:KIND}`, which produces a valid default value for the kind named. For example, `{-new:text}` makes a valid (albeit empty) text.
+
+The following decides on the list `{54, -18}`:
+
+	To decide which list of numbers is the magic list:
+		(- (LIST_OF_TY_InsertItem(LIST_OF_TY_InsertItem({-new:list of numbers}, 54), -18)) -).
+
+As examples like this suggest, it's not really possible to work with tricky kinds of value such as text, stored actions or lists without some knowledge of how they are implemented by `BasicInformKit`, which provides Inter-level support for them. That's where the `LIST_OF_TY_InsertItem` function can be found, for example.
+
+## By value and by reference
+
+Consider the following phrase definition, which reverses a list, so that `{1, 4, 9}` becomes `{9, 4, 1}`:
+
+	To reverse (L - a list of numbers):
+		(- LIST_OF_TY_Reverse({-lvalue-by-reference:L}); -).
+
+Clearly the actual work is done by the `LIST_OF_TY_Reverse` function from `BasicInformKit`: how it does that work needn't concern us. But why isn't the definition this instead?
+
+	To badly reverse (L - a list of numbers):
+		(- LIST_OF_TY_Reverse({L}); -).
+
+The answer is that one translates `L` _by reference_, and the other _by value_.
+
+* `{L}` makes a _copy_ of the list passed to it, but
+* `{-lvalue-by-reference:L}` makes a direct reference to the original.
+
+So for example:
+
+	When play begins:
+		let L be {1, 4, 9};
+		showme L;
+		reverse L;
+		showme L;
+		badly reverse L;
+		showme L;
+
+produces first `{9, 4, 1}` — as expected, the effect of `reverse L` — but then `{9, 4, 1}` again. That's because `badly reverse L` made a copy of `L`, as a result of which it had its own independent list, which happened also to contain the numbers 9, 4, and 1; it reversed that copy; and then, since the copy was no longer needed for anything, threw it away. The original `L` was untouched.
+
+In general, then, if a phrase wants to mutate a piece of existing data in some way, it should be defined using a reference like this.
+
+## Defining generic phrases in I6
+
+^^{generic phrases} ^^{kinds: kind variables} ^^{variables: kind variables} ^^{characters (letters): capital letters as kind variables}
+
+We have already seen so-called _generics_: see [Generic phrases] and [Kind variables] for details. But for example,
+
+	To decide what list of Ks is tripled-up (V - value of kind K):
+		let L be a list of Ks;
+		add V to L;
+		add V to L;
+		add V to L;
+		decide on L.
+
+	When play begins:
+		showme tripled-up 23;
+		showme tripled-up "fish";
+		showme tripled-up {3, 7, 9};
+
+This shows the lists:
+
+``` transcript
+"tripled-up 23" = list of numbers: {23, 23, 23}
+"tripled-up "fish"" = list of texts: {"fish", "fish", "fish"}
+"tripled-up { 3, 7, 9 }" = list of lists of numbers: {{3, 7, 9}, {3, 7, 9}, {3, 7, 9}}
+```
+
+How might we replicate this if we were defining the same phrase using I6? Like so:
+
+	To decide what list of Ks is tripled-up (V - value of kind K):
+		(- (LIST_OF_TY_InsertItem(
+				LIST_OF_TY_InsertItem(
+					LIST_OF_TY_InsertItem(
+						{-new:list of K},
+						{V}),
+					{V}),
+				{V})) -).
+
+And note that the kind variable `K` is available inside the I6 definition, where it is used in `{-new:list of K}`.
+
+## Repeat loops and their variables
+
+A special syntax is available for defining new forms of `repeat` loop. For example:
+
+	To repeat fivefold begin -- end loop:
+		(-	for ({-my:1} = 1: {-my:1} <= 5: {-my:1}++)
+				{-block}
+		-).
+
+Note the `begin -- end loop` suffix, which tells Inform that a "block" of further phrases hangs off of the loop. It is available _only_ for phrases which begin `repeat` or `while`, and since it's hard to imagine non-standard forms of `while`, it exists really to allow a range of interesting `repeat` loops to be created.
+
+The body of the loop expands into the token `{-block}` in its definition. For example, in the following:
+
+	repeat fivefold:
+		say "Bang!"
+
+`say "Bang!"` is the material which `{-block}` expands to.
+
+The other noteworthy thing in this definition is the repeated mention of `{-my:1}`. What this does is to allocate a temporary local variable, which in this case will be used as a loop counter. It can be used exclusively by the phrase for as long as the phrase is executing: we will never know its name. (It may already have been used by some other phrase before us, and may go on to further adventures afterwards.) Note that this:
+
+	repeat fivefold:
+		repeat fivefold:
+			say "Bang!"
+
+works as expected, saying ``Bang!`` twenty-five times. Two different local variables are active here: `{-my:1}` for the outer loop will be a different variable from `{-my:1}` for the inner loop.
+
+I6 phrase definitions can allocate up to nine locals, `{-my:1}` to `{-my:9}`. While they are mostly useful for `repeat` loops, they're not restricted to them and do have other applications.
+
+The slightly foolish example above conceals its "loop variable". It's more usual to have a loop variable with a name. For example, `Basic Inform` contains a definition like so:
+
+	To repeat with (loopvar - nonexisting K variable)
+		running from (v - arithmetic value of kind K) to (w - K) begin -- end loop:
+			(-  for ({loopvar}={v}: {loopvar}<={w}: {loopvar}++) 
+					{block}
+			-).
+
+...to tell Inform how to compile something like:
+
+	repeat with ticker running from 9:10 am to 10:51 am:
+		say "The ticker reads [ticker].";
+
+Here `9:10 am` is a `time` value, and that is indeed an `arithmetic value`, so `v` is set to `9:10 am` and `K` is set to `time`; and that fits with `w`, because `10:51 am` is also a `time`. So far, so good.
+
+But note the first token, which has a rather unusual wording. `nonexisting K variable` matches any name which is not already taken, and creates a local variable with that name, giving it the kind `K`. So in this case, it creates `ticker`, and gives it the kind `time`.
+
+The loop header is then expanded. In `for ({loopvar}={v}: {loopvar}<={w}: {loopvar}++)`, the token `{loopvar}` expands to whatever local `ticker` has been assigned to. In the body of the loop, meanwhile, `ticker` compiles to this same local. And when the loop completes, the variable will be given up again.
+
+Besides `nonexisting K variable`, Inform also supports `existing K variable`, which differs from it in the obvious way. Both can only refer to local variables, which are basically `let` values and `repeat` loop counters. But these are in fact special cases of a more general concept, _storage_: somewhere a value can be stored. For example, if we write:
+
+	A door has a number called street number.
+	
+	The red door is a door in the Old Street.
+
+	The postal delivery time is a time that varies.
+
+...then `postal delivery time` and `street number of the red door` are both examples of storage which would not match either `existing K variable` or `nonexisting K variable`.
+
+The phrase token `storage` matches any storage location; `storage of KIND` matches storage holding a given kind. For example:
+
+	To clear the (name of kind of value K) in (S - storage of K):
+		(- 	{-my:1} = {-new:K};
+			{-copy:S:1}
+		-).
+
+Note another tricksy bracing there: `{-copy:S:1}` makes a copy of the data in `{-my:1}` and puts it in the storage item `S`. This is needed because it really isn't as simple as `{S} = {-my:1}`: it can expand to rather more code than that, depending on what the nature of the storage is.
+
+## Invocation counters {PM_LabelNamespaceTooLong}
+
+As we have seen, I6 phrase definitions are able to create temporary values, sometimes with natural-language names, sometimes anonymously, which last for the duration of the phrase's execution but no longer.
+
+But they can also be given some persistent state: that is, some sort of value which is retained between one invocation and the next.
+
+This is managed using _invocation counters_. Here is a simple example:
+
+	To moan:
+		(- 	print "That's ", {-counter:MOANCOUNT}, ".^";
+			{-counter-up:MOANCOUNT};
+		-).
+
+If we then run `moan; moan; moan`, we get:
+
+``` transcript
+That's 0.
+That's 1.
+That's 2.
+```
+
+There is no variable called `MOANCOUNT`. This is only a label we're using so that we can have multiple different counters and still distinguish them from each other. The first time Inform invokes `moan;`, it expands the bracing `{-counter:MOANCOUNT}` to 0. It also expands `{-counter-up:MOANCOUNT}`, which produces no code in the final program, but internally adds 1 to the `MOANCOUNT` held in the compiler. And so on. `moan; moan; moan` therefore compiles to the equivalent of:
+
+	print "That's ", 0, ".^";
+	print "That's ", 1, ".^";
+	print "That's ", 2, ".^";
+
+Note that this is contrast with:
+
+	repeat with X running from 1 to 3:
+		moan;
+
+This would print:
+
+``` transcript
+That's 0.
+That's 0.
+That's 0.
+```
+
+The counter does not count the number of times the phrase is _executed_: it counts the number of times it is _invoked_, that is, compiled. The `repeat` loop above does something three times, but what it does uses the same invocation each time.
+
+That really only seems mildly useful, though. Where invocation counters come into their own is in managing storage. Here is another toy example:
+
+	To remember (N - number):
+		(-	{-counter-makes-array:MEMCOUNT}
+			{-counter-storage:MEMCOUNT}-->{-counter:MEMCOUNT} = {N};
+		-).
+
+	To decide which number is the remembered number:
+		(-	({-counter-makes-array:MEMCOUNT}
+			{-counter-storage:MEMCOUNT}-->{-counter:MEMCOUNT})
+		-).
+
+What happens here is that `{-counter-makes-array:MEMCOUNT}` says that Inform should reserve run-time storage in an array which has one entry for each possible value of the counter (in this case, `MEMCOUNT`). In this toy example, the counter is never actually incremented — there's no `{-counter-up}` — so in fact the array will contain only a single entry. Still, that's memory. The effect is that:
+
+	remember 267;
+	say "Oh yes, I was going to use [the remembered number] for something.";
+
+will output ``Oh yes, I was going to use 267 for something.`` Between the execution of the two phrases, the value 267 was stashed in the array entry `{-counter-storage:MEMCOUNT}-->0` (because `{-counter:MEMCOUNT}` was 0).
+
+It is also possible to move counters downwards, using `{-counter-down:MEMCOUNT}`. This must be done with great care, because they cannot be allowed to go below zero. Still:
+
+	To remember (N - number):
+		(-	{-counter-makes-array:MEMCOUNT}
+			{-counter-up:MEMCOUNT}
+			{-counter-storage:MEMCOUNT}-->{-counter:MEMCOUNT} = {N};
+		-).
+
+	To decide which number is the remembered number:
+		(-	({-counter-makes-array:MEMCOUNT}
+			{-counter-storage:MEMCOUNT}-->{-counter:MEMCOUNT}
+			{-counter-down:MEMCOUNT})
+		-).
+
+Provided the user is very careful, this allows the following to work:
+
+	remember 5;
+	remember 11;
+	showme the remembered number;
+	showme the remembered number;
+
+producing
+
+``` transcript
+"remembered number" = number: 11
+"remembered number" = number: 5
+```
+
+So here we've made a little stack. The outer invocations of `remember` and `remembered number` are using the entry `{-counter-storage:MEMCOUNT}-->0`, which holds 5, and the inner pair are using the entry `{-counter-storage:MEMCOUNT}-->1`, which holds 11.
+
+As a final spin on all of this, `{-counter-makes-array:MEMCOUNT:3}` would have told Inform to allocate three consecutive array entries per counter value of `MEMCOUNT`, rather than just one. So we can have more storage then just one value, if we need it.
+
+This is all a little fragile and contrived-looking, but it will come into its own when we make segmented say phrases, in the next section.
+
+Counters can also be used to make jump labels. For example,
+
+	To start screening (N - number):
+		(-	{-counter-up:SCREENCOUNT}
+			{-counter-makes-array:SCREENCOUNT}
+			{-counter-storage:SCREENCOUNT}-->{-counter:SCREENCOUNT} = {N};
+		-);
+
+	To screen out (M - number):
+		(-	if ({-counter-storage:SCREENCOUNT}-->{-counter:SCREENCOUNT} == {M})
+				jump {-label:SCREENCOUNT};
+		-);
+
+	To finish screening:
+		(- .{-label:SCREENCOUNT}; -).
+
+And then, for example:
+
+	start screening 20;
+	screen out 5;
+	say "Well, it wasn't 5.";
+	screen out 10;
+	say "Or 10.";
+	screen out 20;
+	say "Or 20.";
+	finish screening;
+	say "Done.";
+
+produces:
+
+``` transcript
+Well, it wasn't 5.
+Or 10.
+Done.
+```
+
+because `screen out 20` jumped to the `finish screening` point, but `screen out 5` and `screen out 10` did not.
+
+In practice, this is a very rickety way to define bizarre control structures, but if used with care then some surprising effects are possible.
+
+## Defining segmented text substitutions with I6
+
+^^{Inform 6 inclusions: phrase elements}
+
+A "segmented" text substitution is a syntax where text is placed between two or more different text substitutions. For example:
+
+	"Annie [one of]dances[or]sulks[or]hangs out at Remo's[at random]."
+
+Here there are four segments: `one of`, `or`, `or`, and `at random`.
+
+Implementing segmented substitutions will make great use of the invocation counters and storage feature already described (see [Invocation counters]), but it needs something else, too. We have to guard against the user accidentally writing this:
+
+	"The hotel [at random] is on fire."
+
+We want `at random` to be legal only when closing a `one of` construction. But if `at random` had been defined as just another text substitution, Inform would not have been able to detect that.
+
+Inform therefore allows us to mark text substitutions as being any of three special kinds: beginning, in the middle of, or ending a segmented substitution.
+
+- If the phrase prototype ends `-- beginning CONSTRUCT`, then this is a substitution beginning the segmented substitution code-named `CONSTRUCT`.
+- If it ends `-- continuing CONSTRUCT`, then it can appear only between a beginning phrase and an ending phrase for the same `CONSTRUCT`. Any number of continuing segments can appear, including none.
+- If it ends `-- ending CONSTRUCT`, then it brings this use to an end. This phrase has to follow a beginning phrase for the same `CONSTRUCT`.
+
+These code-names are just labels to tell the compiler to tie the phrase definitions together: they have no other significance.
+
+As a simple example, in this construct we have a beginning and an ending segment but no continuing ones in between:
+
+	To say emphasis on -- beginning say_emphasis_on: (- style underline; -).
+	To say emphasis off -- ending say_emphasis_on: (- style roman; -).
+
+This creates `"[emphasis on]"` and `"[emphasis off]"` such that they can only be used as a pair, like so:
+
+	"This is [emphasis on]quite sophisticated[emphasis off]."
+
+Here we used the code-name `say_emphasis_on` to tell Inform to relate these two definitions together. It seems a good idea to choose code-names which, like this one, consist of the construction's name but with underscores in place of spaces: that way, no unexpected name clashes between code-names are likely to occur.
+
+Note that Inform does _not_ allow the same segmented say construction to be nested in the same text, and this greatly simplifies things when defining them.
+
+### Worked example: say one of
+
+The `say one of` construction is immensely useful, and also extensible. It can't be implemented fully in stand-alone phrase definitions, because it needs some supporting I6 functions, perhaps stored in some kit. Even so, it requires no special compiler support.
+
+In particular, let's see how `"[one of]Alice[or]Bettina[or]Carol[cycling]"` works. This is supposed to print ``Alice`` the first time, then ``Bettina`` the second, then ``Carol``, then back to ``Alice`` and so on.
+
+Unsurprisingly the beginning segment does almost all of the work, because that's the part which chooses what to print. Here goes, in slightly simplified form:
+
+	To say one of -- beginning say_one_of: (-
+		{-counter-makes-array:say_one_of}
+		{-counter-storage:say_one_of}-->{-counter:say_one_of} = {-final-segment-marker}({-counter-storage:say_one_of}-->{-counter:say_one_of}, {-segment-count});
+		switch (({-counter-storage:say_one_of}-->{-counter:say_one_of}{-counter-up:say_one_of})%({-segment-count}+1)-1)
+	{-open-brace}
+			0: -).
+
+	To say or -- continuing say_one_of:
+		(- {-segment-count}: -).
+
+	To say cycling -- ending say_one_of with marker I7_SOO_CYC:
+		(- {-close-brace} -).
+
+What does this produce? Suppose this is the 7th invocation of the phrase in the story, and suppose Inform has chosen to put the storage into `some_array`. Then we get code like this:
+
+	some_array-->6 = I7_SOO_CYC(some_array-->6, 3);
+	switch ((some_array-->6) % 4 - 1) {
+		0: print "Alice";
+		1: print "Bettina";
+		2: print "Carol";
+	}
+
+Note that when expanding a beginning phrase, `{-segment-count}` expands to the number of segments used (not counting the ending) — here, that's 3. But when expanding a continuing phrase, it expands to a count of the segments so far. So in the first use of `"[or]"` it becomes 1, and in the second 2.
+
+The `4` in the line `switch ((some_array-->6) % 4 - 1` is initially a little mysterious. What are there four of? The answer is that we are allowing for a fourth possibility, which is to print nothing at all. In the `one of ... cycling` construction, that never happens. But in `one of ... stopping`, for example, it does. The idea, then, is that if `some_array-->6` contains 1, we print ``Alice``; for 2, we print ``Bettina``; for 3, ``Carol``; but for 0, we would print nothing.
+
+The other enigmatic thing here is the "marker", which seems to be the strange-looking `I7_SOO_CYC`. This is a way to allow the same construction to have multiple possible endings. For example:
+
+	To say stopping -- ending say_one_of with marker I7_SOO_STOP:
+		(- {-close-brace} -).
+
+The only difference between `"[stopping]"` and `"[cycling]"` is that they have different markers: `I7_SOO_STOP` and `I7_SOO_CYC`. These are in fact the names of functions which can be found in `BasicInformKit`. They look like so:
+
+	[ I7_SOO_CYC oldval count;
+		oldval++; if (oldval > count) oldval = 1;
+		return oldval;
+	];
+
+	[ I7_SOO_STOP oldval count;
+		oldval++; if (oldval > count) oldval = count;
+		return oldval;
+	];
+
+Each of these functions takes the original state of the counter, which will be `some_array-->6`, and the total number of segments, and returns a new state. Note that the initial state is always 0. `I7_SOO_CYC` takes this to 1, then 2, then 3, then 1, then 2, ...; whereas `I7_SOO_STOP` takes this to 1, then 2, then 3, then 4, then 4, then 4, ...: and this value causes printing not to occur. So that is how we get the cycling versus stopping behaviour.
+
+`Basic Inform` defines a number of other possible endings, each with its own marker function to perform the state change. Because `"[one of] ... [or] ..."` is such a useful construction – switching between alternative forms of text, which writers of IF very often do – the above implementation is intentionally left open for new endings to be added, and the examples below show how easily this can be done.
+
+Lastly: the weasel words about "slightly simplified form" above are because the description above leaves out some highly technical business to do with making sure that comparisons between two texts do not behave unexpectedly because one has been iterated during the comparison process. Essentially, we turn off the state changing during the time when a text comparison is being made. But this detail does not change the big picture.
+
+## Defining adjectives with I6
+
+^^{I6 inclusions: adjectives} ^^{adjectives: defining: with I6}
+
+There are three ways to specify that an adjective is defined at the I6 level. For example:
+
+	Definition: a number is prime rather than composite if Inter routine
+		"PRIMALITY_TEST" says so (it is greater than 1 and is divisible only by itself and 1).
+
+Inform now actually tests if a number N is prime by calling ```primality_test(N)```, and it assumes that we have also included such a routine in the output. The routine is expected to return true or false accordingly.
+
+The text in brackets does nothing functional, but is the text used in the Lexicon dictionary part of the Phrasebook index for the user's benefit; it should be a brief definition. Extension authors are asked to provide these little definitions, so that their users won't be confused by blank lexicon entries.
+
+The second way makes a more capable adjective, since it can not only be tested, but also made true or false using `now`. For example:
+
+	Definition: a scene is crucial if Inter routine "SceneCrucial" makes it so
+		(it is essential to winning).
+
+The difference here is `makes it so`, not `says so`, and as this implies, the routine has more power. `SceneCrucial` is called with two arguments: z
+`SceneCrucial(S, -1)` tests whether the scene is crucial or not and returns true or false; `SceneCrucial(S, true)` must make it true; and `SceneCrucial(S, false)` must make it false. Another useful difference is that if the kind of value is one which is stored in block form (e.g. for an adjective applying to text), the routine is given a pointer to the block, not a fresh copy.
+
+A third way to define an adjective, which should be used only if speed is exceptionally important, is to provide a "schema" – a sort of I6 macro, like those provided by the C preprocessor. For example:
+
+	Definition: a rulebook is exciting if I6 condition
+		"excitement_array-->(*1)==1" says so (it is really wild).
+
+The escape `*1` is expanded to the value on which the adjective is being tested. (This is usually faster than calling a routine, but in case of side-effects, the `*1` should occur only once in the condition, just as with a C macro.) To repeat: if in doubt, use the Inter routine method above.
+
+## Inform values from I6 {PM_TranslatesNonAction} {PM_TranslatesActionAlready} {PM_TranslatedTwice} {PM_TranslatedUnknownCategory} {PM_TranslatedToNonIdentifier} {PM_NonPropertyTranslated} {PM_NonQuantityTranslated} {PM_QuantityTranslatedAlready}
+
+^^{accessible to Inter as...+assert+} ^^{properties: making accessible to I6} ^^{actions: making accessible to I6} ^^{objects: making accessible to I6}  ^^{kinds: making accessible to I6} ^^{activities: making accessible to I6}  ^^{((+ +)), for including Inform 7 code in I6+sourcepart+}
+ 
+What if an I6-written definition needs to access something defined in the source text? For suppose, if the source text says:
+
+	The Maltese Falcon is on the mantelpiece.
+
+How can I6 code refer to the Falcon? Clearly, inside the Inter code for the story, there will be some constant whose value is the object number for the Falcon. But what is it? Probably something like `I_maltese_falcon_U1`, but only probably. The Inform compiler could have chosen anything it wanted. How can we find out? Here are three answers, with the best first.
+
+### By not finding out
+
+The flip answer is that there's almost certainly a better way to achieve whatever is needed by writing Inform source text in the ordinary way. For example, there's no need to write:
+
+	To decide whether clues are here:
+		(- (TestVisibility(player, I_maltese_falcon_U1)) -).
+
+since this works fine:
+
+	To decide whether clues are here:
+		decide whether or not the player can see the Maltese Falcon.
+
+### By making it accessible to Inter
+
+The next best option is to tell the Inform compiler to make the I6 value for the Falcon available by defining a constant which will refer to it. For example:
+
+	The Maltese Falcon object is accessible to Inter as "MALTESE_FALCON".
+
+	To decide whether clues are here:
+		(- (TestVisibility(player, MALTESE_FALCON)) -).
+
+Other constructs can also be made accessible in this way. Here is a rulebook:
+
+	The banana rules is a rulebook.
+
+	The banana rules is accessible to Inter as "BANANA_RULES".
+
+	A banana rule:
+		say "I am yellow!"
+
+	To exhibit the behaviour:
+		(- FollowRulebook(BANANA_RULES); -).
+
+And here is an activity:
+
+	Grimly testing something is an activity.
+
+	The grimly testing activity is accessible to Inter as "GRIM_ACT".
+
+	For grimly testing:
+		say "I am grimly testing."
+
+	To exhibit the behaviour:
+		(- CarryOutActivity(GRIM_ACT); -).
+
+An action:
+
+	Smashing is an action applying to one thing.
+
+	The smashing action is accessible to Inter as "Smash".
+
+	To go smash (target - a thing):
+		(- TryAction(false, player, ##Smash, {target}, nothing); -).
+
+A kind:
+
+	A fruit is a kind of thing.
+
+	The fruit kind is accessible to Inter as "K_fruit".
+
+A property:
+
+	A thing can be coveted or neglected.
+	
+	The coveted property is accessible to Inter as "coveted".
+
+Variables, however, cannot at present be made `accessible to Inter`.
+
+Note that none of these constructions — the `banana rules`, the `grimly testing something activity`, the `smashing action` and so on — are being created from raw Inter material. The Inform compiler is creating them, just as normal. All that is happening is that _names_ for them are being made available at the I6 level.
+
+### By using `(+` and `+)`
+
+This is very much a last resort. But for _some_ simple Inform values, it's possible to mix source text with I6 code like so:
+
+	To decide whether clues are here:
+		(- (TestVisibility(player, (+ Maltese Falcon +) )) -).
+
+Just as `(-` and `-)` is supposed to suggest stepping down from Inform 7 to I6, so `(+` and `+)` is supposed to suggest stepping up again.
+
+Two cautionary notes:
+
+1) It is likely that this feature will some day be removed from Inform. While it is not officially deprecated yet, it is troublesome for the compiler to support and is subject to restrictions which are difficult to remove or explain. If at all possible, we should already use `accessible to Inter` instead.
+
+2) On rare occasions, this notation can be triggered by accident. For example, this admittedly very strange definition looks as if it should work:
+
+       To count:
+           (- for (++{-my:1}; {-my:1}<10; {-my:1}++) print i, " "; -).
+
+   But in fact it doesn't, because it contains what Inform thinks is a matched pair of `(+` and `+)` either side of `+{-my:1}; {-my:1}<10; {-my:1}+`. That excerpt is obvious nonsense, of course, and it will throw a problem message. This could be fixed by inserting a space:
+
+       To count:
+           (- for ( ++{-my:1}; {-my:1}<10; {-my:1}++) print i, " "; -).
+
+   Note that `+)` is only significant where it follows a `(+`, and in this revised version it doesn't.
+
+## Use options from I6
+
+^^{use options: accessing from I6}
+
+A phrase with an I6 definition can access the settings of use options directly provided that they have been declared with a view to that. For example:
+
+	Use drifting lilypads translates as the configuration flag DRIFTING_LILYPADS.
+	Use horny skin translates as the configuration value SKIN_TYPE = 1.
+	Use scaly skin translates as the configuration value SKIN_TYPE = 2.
+	Use frog count of at least 10 translates as the configuration value FROG_COUNT.
+	Use maximum jump height of 6 translates as the configuration value JUMP_HEIGHT.
+
+See [Use options for extensions] for more on how to define these: the important point here is that, because the declarations supplied identifier names for the values, those values are now accessible from I6. For example:
+
+	To jump (H - height):
+		(-  if ({H} > JUMP_HEIGHT) print "Jumping ", JUMP_HEIGHT, " feet.^";
+			else print "Jumping ", {H}, " feet.^";
+		-).
+
+Note that `DRIFTING_LILYPADS`, `SKIN_TYPE`, `FROG_COUNT` and `JUMP_HEIGHT` are all constants, not variables.
+
+## Phrase options from I6
 
 ^^{Inform 6 inclusions: phrase options} ^^{phrases: defining in Inform 6}
 
@@ -19483,288 +20437,30 @@ This can be used by, say:
 
 `{phrase options}` is a special substitution: it is a bitmap which assigns the given options one bit each, starting with the least significant bit for the first-mentioned option (`with newlines` above) and going up to the most significant bit for the last (`with extra indentation`).
 
-## Making and testing use options
+## Inclusions of I6 code {PM_BadI6Inclusion} {PM_BeforeTheLibrary} {PM_WhenDefiningUnknown} {PM_IncludeInsteadOf}
 
-^^{Inform 6 inclusions: use options} ^^{use options: defining in Inform 6} ^^{use options: active / inactive+adj+} ^^{active / inactive (use option)+adj+} ^^{inactive / active (use option)+adj+} ^^{translates as...+assert+: use options}
+^^{I6 inclusions: long sections of code}
 
-Use options (see the chapter on [Source Text] above) manifest themselves in the I6 code generated by I7 as constants which are either defined, or not. For instance, the `use American dialect` option results in the constant ```DIALECT_US``` being defined, a constant which otherwise would not be. Some use options define the constant as a particular value, others simply define it (so that I6 gives this constant the value 0).
+With some reluctance, we now need to come to an entirely new sentence meaning: `Include (- ... -)`, which allows the user to insert whole I6 "directives" into a story. When defining phrases with `(-` and `-)`, we were only contributing small fragments of functions: but now we can write entire functions, variables and so forth.
 
-New use options can be created as in the following examples, which are found in the Standard Rules:
+Why the reluctance? The answer is that, where possible, it's always best to separate out Inform source text from any low-level I6 material. Any large quantities of I6 are much better placed in a kit: see the final chapter, [Kits]. So, for example, the source text for the `Standard Rules` and `Basic Inform` extensions do not make a single use of `Include (- ... -)`. Although they need a great deal of Inter code to back them up, all of that is in `BasicInformKit`, `WorldModelKit` and so on.
 
-	Use American dialect translates as (- Constant DIALECT_US; -).
-	Use full-length room descriptions translates as (- Constant I7_LOOKMODE = 2; -).
-
-Most Inform users will not need to test whether a use option is currently set: after all, they will know whether or not their own story uses American dialect. But an extension does not know what use options apply in the story which is using it. An extension which needs to print a list, using its own formatting, might want to know whether `use serial comma` is active. Or it might want to speak differently in American dialect.
-
-To test for American dialect, we should ideally not use I6 to look for the constant ```DIALECT_US``` using #ifdef: there is no guarantee that this constant will not be renamed at some point. Instead we can perform the test directly in I7:
-
-	if the American dialect option is active, ...
-
-and similarly for all other named use options. The adjectives `active` and `inactive` have the obvious meanings for use options. This means it's possible to describe the current options like so:
-
-	say "We're currently using: [list of active use options].";
-
-The result might be, say,
-
-``` transcript
-We're currently using: dynamic memory allocation option [8192], maximum text length option [1024], maximum things understood at once option [100], American dialect option and fast route-finding option.
-```
-
-This may be useful for testing purposes.
-
-Use options can also allow the writer to raise certain maximum values. If we write an extension which needs some I6 array, say, and therefore has some limitation – for instance a footnotes presenter which can handle at most 100 footnotes before its array space runs out – it would obviously be cleaner to allow this maximum to be raised. We can set this up like so:
-
-	Use maximum presented footnotes of at least 100 translates as (- Constant MAX_PRESENTED_FOOTNOTES = {N}; -).
-
-With such a definition, the number given is the default value, and the I6 source is included whether or not anybody uses the option: the default value being given if nobody does. The text `{N}` is replaced with the value. So the above definition normally results in this being defined:
-
-	Constant MAX_PRESENTED_FOOTNOTES = 100;
-
-but if the user writes
-
-	Use maximum presented footnotes of at least 350.
-
-then instead the I6 inclusion becomes:
-
-``` inform6
-Constant MAX_PRESENTED_FOOTNOTES = 350;
-```
-
-The I6 constant ```max_presented_footnotes``` can then be used as the size of an array, for instance.
-
-Finally, note that it is legal to define the same use option more than once, but only if it has exactly the same meaning each time it is defined. (This is allowed so that multiple extensions all needing the same definition can safely make it, and still be used together.)
-
-## Longer extracts of Inform 6 code
-
-^^{Inform 6 inclusions: long sections of code} ^^{((- -)), for including Inform 6 code in Inform 7+sourcepart+} ^^{((+ +)), for including Inform 7 code in Inform 6+sourcepart+}
-
-Whole routines, object and class definitions (or any other directives) can be pasted in wholesale using sentences like so:
+With that said, here for example is a directive which creates an I6 function:
 
 	Include (-
-	[ ExtraFunction a b; return a*b; ];
+		[ FauxMultiply a b;
+			return a*b;
+		];
 	-).
 
-Such inclusions are pasted into the final compiled code at the end of the file, after the I6 grammar has been declared.
+And that could then be used like so:
 
-In such extracts, we sometimes need to refer to objects, variables or values which can't be described using I6: or rather, which can be described, but we don't know how. To this end, any text in an inclusion written in `(+` and `+)` parentheses is treated as an I7 value, and compiled accordingly, with all type-checking waived for the occasion. For instance:
+	To decide which number is the faux multiplication of (X - number) and (Y - number):
+		(- (FauxMultiply({X}, {Y})) -).
 
-	Include (-
-	Global my_global = (+ the tartan rucksack +);
-	-).
+Inclusions like this can also use `(+` and `+)` — see [Inform values from I6] for those — but the use of these is strongly discouraged, and subject to a number of hazards.
 
-Here `the tartan rucksack` is translated into `O18_tartan_rucksack`, or something similar: the I6 object created to represent the rucksack. Thus the actual line of code produced is
-
-	Global my_global = O18_tartan_rucksack;
-
-The material between `(+` and `+)` is generally treated as a value, and thus compiles to the I6 form of that value. But it could also be a property name, which compiles to the I6 form in question, or a defined adjective, which compiles to the name of the routine to call which tests whether that adjective is true.
-
-**Three warnings.** The material in `(-` and `-)` is not quite treated as literal. Certain characters cause Inform to react:
-
-1. Beware of accidental `(+` usage – for instance,
-
-	Include (-
-	[ MyCleverLoop i; for (++i; i<10; i++) print i; ]; ! Will fail to compile
-	-).
-
-looks reasonable, but contains `(+` and `+)`. Spaces around the first `++` would have been enough to avoid this one; `+)` is only significant where it follows a `(+`.
-
-2. Beware of placing an `@` character in the first column, that is, immediately following a new line. (In template code this marks off paragraph divisions.) So for instance,
-
-	Include (-
-	[ Set_Stream ret;
-	@glk 67 ret; ! Will fail to compile
-	];
-	-).
-
-is tripped up by the Glulx assembly language opcode `@glk` because this occurs in column 1. Indenting it with a little space or a tab is enough to avoid the problem.
-
-3. Be careful if you're creating an I6 variable holding initialised I7 text. For example,
-
-	Include (-
-	Global saved_optional_prompt = (+ "!!>" +); ! Will fail to compile
-	-).
-
-looks as if it will work, but doesn't, for reference-counting reasons we needn't go into; instead you need
-
-	Include (-
-	Array sop_storage --> PACKED_TEXT_STORAGE "!!>";
-	Global saved_optional_prompt = sop_storage;
-	-).
-
-But it's far better to avoid initialising text variables from I6 entirely. The same problems arise with constant lists.
-
-It should also be noted that the I6 syntax recognised inside `Include (- ... -)` is slightly restricted compared to the full range recognised by the stand-alone Inform 6 compiler. In particular:
-
-1. Only new-style `for` loops with colons in the header are allowed, so that `for (i=0: i<10: i++ )` is okay but `for (i=0; i<10; i++ )` is not. Moreover, `for` loops cannot contain empty clauses.
-
-2. Local variable names are not allowed to be the same as an I6 statement keyword: for example, `style` and `spaces` are not allowed.
-
-3. The (undocumented) Inform 6 function `indirect()` is not supported. But since `indirect(A)` is equivalent to `A()`, which does work, this is no real loss. Similarly, the `glk()` function is not supported: function calls to BasicInformKit should be used instead.
-
-4. Conditional compilation cannot be placed around cases in a `switch` statement.
-
-5. Compile-time constant expression evaluation can be used with arithmetic operations, so `Constant foo = bar + 1;` is okay, but not with bitwise or logical operations, so `Constant foo = (bar | 1);` does not work.
-
-6. Calculated values cannot occur as assembly-language operands.
-
-7. Calculated values can be used for array extents, but need to be put in brackets. For example:
-
-	Include (-
-	Array unit_captured_text --> (UNIT_CAPTURE_BUFFER_LEN + 1);
-	-).
-
-## Primitive Inform 6 declarations of rules
-
-^^{Inform 6 inclusions: rules} ^^{translates as...+assert+: rules} ^^{rules: defining in Inform 6}
-
-By writing a sentence like this:
-
-	The underground rule translates into I6 as "UNDERGROUND_R".
-
-we create a new rule, the `underground rule`, and also notify Inform that it will have no definition as I7 source text: instead, it will be provided as an I6 routine called ```underground_r```. We can define this with an Include like so:
-
-	Include (-
-	[ UNDERGROUND_R;
-		if (real_location hasnt light) { RulebookSucceeds(); rtrue; }
-		rfalse;
-	];
-	-).
-
-The rule should return false if it wants to make no decision, but call either `RulebookSucceeds` or `RulebookFails` and return true if it does. These routines can optionally take an argument: which will be the return value from the rulebook.
-
-Note that ```underground_r``` itself has no arguments. In the case of an action based rulebook, the I6 variables noun, second and actor can be referred to, while for a value based rulebook the parameter is stored in the I6 global variable parameter_object (which is not necessarily an object, in spite of the name).
-
-We can put this rule into a rulebook in the same way that any named rule can be:
-
-	The underground rule is listed in the spot danger rules.
-
-## Inform 6 objects and classes {PM_BadObjectTranslation}
-
-^^{Inform 6 inclusions: properties} ^^{Inform 6 inclusions: objects} ^^{Inform 6 inclusions: classes} ^^{translates as...+assert+: properties} ^^{translates as...+assert+: things} ^^{translates as...+assert+: kinds} ^^{properties: defining properties in Inform 6} ^^{things+kind+: creating: in Inform 6} ^^{kinds: defining: in Inform 6} ^^{Inform 6 Designer's Manual+title+}
-
-As might be expected, I7 compiles an I6 class for each kind, and an I6 object for each of its own objects. We can meddle with its compilation process here using a further refinement of Include. For instance, suppose we want the I6 class definition for things to come out containing a property like this:
-
-``` inform6
-Class K2_thing ! [...]
-	with marmalade_jar_size 6,
-	! [...]
-```
-
-How to arrange this? One way is to create an ordinary I7 property, like so:
-
-	A thing has a number called marmalade jar size. The marmalade jar size of a thing is usually 6. The marmalade jar size property translates into I6 as "marmalade_jar_size".
-
-(Without that last sentence, the property won't get any familiar name.) But sometimes we need more, and want to actually write new material to go into the definition. This can be done like so:
-
-	Include (- with before [; Go: return 1; ], -) when defining a vehicle.
-
-This glues in a new property to the class compiled to represent the I7 kind `vehicle`. (See the DM4 for why. However, since the entire actions machinery is different in the I7 world, note that `after`, `react_before` and `react_after` no longer have any effect, and nor does `before` for rooms.)
-
-And similarly:
-
-	Include (- has my_funny_attribute, -) when defining the hot air balloon.
-
-If we need a particular I7 object or kind to end up with a particular I6 name, we can write:
-
-	The whatsit object translates into I6 as "whatsit".
-	The thingummy kind translates into I6 as "thingummy_class".
-
-**Warning:** The `Include (- ... -) when defining ...` usage still works for the moment (except in projects compiled to C at the command line, where it may fail), but it is deprecated and likely to be removed in later versions of Inform. Avoid it if at all possible.
-
-## Inform 6 variables, properties, actions, and attributes {PM_TranslatesNonAction} {PM_TranslatesActionAlready} {PM_TranslatedTwice} {PM_TranslatedUnknownCategory} {PM_TranslatedToNonIdentifier} {PM_NonPropertyTranslated} {PM_NonQuantityTranslated} {PM_QuantityTranslatedAlready}
-
-^^{Inform 6 inclusions: properties} ^^{Inform 6 inclusions: global variables} ^^{Inform 6 inclusions: actions} ^^{translates as...+assert+: properties} ^^{translates as...+assert+: global variables} ^^{translates as...+assert+: actions} ^^{properties: defining properties in Inform 6} ^^{variables: global: defining in Inform 6} ^^{actions: defining new actions in Inform 6}
-
-I7's variables are usually compiled as entries in an array rather than as I6 variables. However, we can instead tell Inform to use an existing I6 variable (either one that we declare ourselves, or one in the I6 template layer). For example:
-
-	Room description style is a kind of value. The room description styles are Brief, Verbose and Superbrief.
-	The current room description style is a room description style that varies.
-	The current room description style variable translates into I6 as "lookmode".
-
-This is a feature provided to help I7 source text to use variables internal to the I6 template code. It can, if really necessary, also be used to give I7 names to entirely new I6-level variables, created like so:
-
-	Include (- Global my_variable = 0; -).
-
-This style of hybrid coding is really not encouraged.
-
-I7's properties are compiled sometimes as I6 properties, sometimes as I6 attributes, sometimes as bits in a bitmap somewhere. However, we can override I7 by telling it that one of its property names is equivalent to an already-existing I6 property or attribute: if so then I7 will use that name and will not compile any directive to create it. For example:
-
-	The switched on property translates into I6 as "on".
-	The initial appearance property translates into I6 as "initial".
-
-We do not need to translate `switched off`, the opposite to `switched on`: I7 will now compile this to `~on`.
-
-Lastly, actions can also be translated (though it's usually better to translate their rules instead and invent new I7 actions covering them):
-
-	The unlocking it with action translates into I6 as "Unlock".
-
-## Inform 6 Understand tokens {PM_GrammarTranslatedAlready}
-
-^^{Inform 6 inclusions: understanding grammar} ^^{Inform 6 inclusions: grammar tokens} ^^{translates as...+assert+: understanding (grammar tokens)} ^^{understanding: with Inform 6 functions} ^^{grammar tokens: defining in Inform 6} ^^{Inform 6 Designer's Manual+title+}
-
-The parser which deciphers the player's typed commands is written in I6, and many of the basic tokens of Understand grammar are implemented as "general parsing routines" (GPRs), the specification of which is described fully in the [Inform 6 Designer's Manual](https://inform-fiction.org/manual/html/index.html). I7 translates much of the source text's Understand grammar into GPRs, and once again we can bypass this process and supply an Understand token directly as an I6 GPR. For example:
-
-	The Understand token squiggle translates into I6 as "SQUIGGLE_TOKEN".
-
-We then have to include a routine of that name into I7's output using the `Include` instruction, on which more later.
-
-This creates a token `"[squiggle]"`; so for instance if the source text contains:
-
-	Understand "copy [squiggle]" as ...
-
-then Inform would parse the command ``COPY FIGURE EIGHT`` by calling the ```squiggle_token``` routine as a GPR with the word marker at 2, that is, at the word ``FIGURE``.
-
-As always, this should be done only where there seems no better way, or where speed is very important. For any fairly simple range of possibilities, it's better to use the techniques in the Understand chapter, or to use unit specifications.
-
-## Inform 6 adjectives
-
-^^{Inform 6 inclusions: adjectives} ^^{adjectives: defining: with Inform 6}
-
-There are three ways to specify that an adjective is defined at the I6 level. For example:
-
-	Definition: a number is prime rather than composite if I6 routine
-		"PRIMALITY_TEST" says so (it is greater than 1 and is divisible only by itself and 1).
-
-Inform now actually tests if a number N is prime by calling ```primality_test(N)```, and it assumes that we have also included such a routine in the output. The routine is expected to return true or false accordingly.
-
-The text in brackets does nothing functional, but is the text used in the Lexicon dictionary part of the Phrasebook index for the user's benefit; it should be a brief definition. Extension authors are asked to provide these little definitions, so that their users won't be confused by blank lexicon entries.
-
-The second way makes a more capable adjective, since it can not only be tested, but also made true or false using `now`. For example:
-
-	Definition: a scene is crucial if I6 routine "SceneCrucial" makes it so
-		(it is essential to winning).
-
-The difference here is `makes it so`, not `says so`, and as this implies, the routine has more power. `SceneCrucial` is called with two arguments: z
-`SceneCrucial(S, -1)` tests whether the scene is crucial or not and returns true or false; `SceneCrucial(S, true)` must make it true; and `SceneCrucial(S, false)` must make it false. Another useful difference is that if the kind of value is one which is stored in block form (e.g. for an adjective applying to text), the routine is given a pointer to the block, not a fresh copy.
-
-A third way to define an adjective, which should be used only if speed is exceptionally important, is to provide a "schema" – a sort of I6 macro, like those provided by the C preprocessor. For example:
-
-	Definition: a rulebook is exciting if I6 condition
-		"excitement_array-->(*1)==1" says so (it is really wild).
-
-The escape `*1` is expanded to the value on which the adjective is being tested. (This is usually faster than calling a routine, but in case of side-effects, the `*1` should occur only once in the condition, just as with a C macro.) To repeat: if in doubt, use the I6 routine method above.
-
-## Overriding definitions in kits {PM_BadI6Inclusion} {PM_BeforeTheLibrary} {PM_WhenDefiningUnknown} {PM_IncludeInsteadOf}
-
-^^{extensions: Inform 6 template layer} ^^{Inform 6 inclusions: Inform 6 template layer} ^^{templates, Inform 6 template layer}
-
-When Go is clicked, Inform translates the I7 source text into a large body of so-called "Inter" code: "Inter" is short for "intermediate". Large as this program is, it could not survive on its own: it needs a large body of pre-compiled code, also written in Inter, to sustain it. This additional material is organised in blocks called "kits". Most Inform users never need to know about kits, but for example, a typical Inform project includes kits called BasicInformKit, WorldModelKit and CommandParserKit.
-
-These kits are compiled from what is (nearly) Inform 6-syntax source code, and for the details of that, see the documentation on the low-level tool "inter". While it's absolutely possible for Inform users to create and use their own kits, that's beyond the scope of this book. But what we will cover here is the ability to include just a little extra Inter code – perhaps only a few functions or constants.
-
-In fact, we have seen the necessary syntax already:
-
-	Include (- ... -).
-
-puts the given material `...` into the project. For example:
-
-	Include (-
-		[ ExtraFunction a b; return a*b; ];
-	-).
-
-adds just a single function called `ExtraFunction`.
-
-And this works fine, but if we tried the same trick to create a function called `SquareRoot`, for example, then the result would be a problem message – because BasicInformKit also defines a function of the same name. This problem message is useful, because it warns us about accidental name clashes.
+There was no problem creating a new function called `FauxMultiply`, but what if we tried to create, say, `SquareRoot`? We would then run into trouble because there is already a function of that name in `BasicInformKit`. So we would get a problem message about the name clash.
 
 But what if the name clash was not an accident at all, and what we actually wanted to give our own definition of `SquareRoot`, to be used instead of the one in BasicInformKit? This is also possible:
 
@@ -19776,7 +20472,9 @@ But what if the name clash was not an accident at all, and what we actually want
 
 And now whenever square roots are calculated, this snarky text will be printed, and the result will always be rather meaningless (since this I6 routine always returns 1). Unless one is very careful, the result of replacing kit definitions can be absolute chaos.
 
-An important historical note: between about 2010 and 2021, kits did not exist, and instead there were "template files" of Inform 6 code which served roughly then same purpose. These had names like `Relations.i6t` or `Mathematics.i6t` and were internally divided into named subsections; and Inform supported syntax like the following:
+### Historical note
+
+Between about 2010 and 2021, kits did not exist, but there were "template files" which served roughly then same purpose. These had names like `Relations.i6t` or `Mathematics.i6t` and were internally divided into named subsections; and Inform supported syntax like the following:
 
 	Include (- ... -) before "Relations.i6t".
 	Include (- ... -) instead of "Relations.i6t".
@@ -19786,153 +20484,333 @@ to allow new material to be placed at oddball positions in the final code. There
 
 The `instead of` option now cannot work at all, and throws a problem message. The new way to substitute a fresh definition of something built-in is to use the `replacing` notation described above.
 
-With the demise of the "template layer", as it was called, another form of so-called "template hacking" has gone with it – the special notation:
+## How I6 differs from Inform 6
 
-	Include (- {-segment:MyStuff.i6t} -).
+To recap: I6 is the notation we are using when writing low-level code inside `(-` and `-)` markers. It looks very like the programming language Inform 6, but there are a handful of differences.
 
-to allow a whole extra file of Inform 6 code called `MyStuff.i6t` to be pasted in. The new way to do that is to create a new kit, say MyStuffKit, to hold the material in question. This is not hard to do, but beyond the scope of this book. See the documentation on the low-level Inform tool "inter".
+In particular:
 
-## Translating the language of play
+1) Only new-style `for` loops with colons in the header are allowed, so that `for (i=0: i<10: i++ )` is okay but `for (i=0; i<10; i++ )` is not. Moreover, `for` loops cannot contain empty clauses.
 
-^^{Inform 6 Designer's Manual+title+}
+2) Local variable names are not allowed to be the same as an I6 statement keyword: for example, `style` and `spaces` are not allowed.
 
-The "language of play" is the natural language used to communicate with the player at run-time: this is normally English.
+3) The (undocumented) Inform 6 function `indirect()` is not supported. But since `indirect(A)` is equivalent to `A()`, which does work, this is no real loss. Similarly, the `glk()` function is not supported: function calls to BasicInformKit should be used instead.
 
-That means that it is difficult to write, say, Spanish-language IF using Inform 7, though heroic work by the Spanish IF community has overcome this. Inform 6 provided for translation by isolating its linguistic code in a part of the I6 library called the "language definition file", which was normally `English.h`. Translations were gradually made to most major European languages, resulting in alternative language definition files called `French.h`, `Italian.h` and so on. Full details on how to write a language definition file were given in the Translations chapter of the DM4, that is, the fourth edition of the [Inform 6 Designer's Manual](https://inform-fiction.org/manual/html/).
+4) Conditional compilation cannot be placed around cases in a `switch` statement.
 
-In I7 the system is different. We use the template, not a library. Instead of providing a language definition file such as `French.h`, a translator should create an extension called something like `French Language by Jacques Mensonge`. (The language should be named in English, so `French Language by ...`, not `Langue français by ...`) This extension should then contain broadly the same material as an I6 language definition file, but written in a mostly higher-level way. See the extension `English Language by Graham Nelson` supplied with I7, which is included automatically by default.
+5) Compile-time constant expression evaluation can be used with arithmetic operations, so `Constant foo = bar + 1;` is okay, but not with bitwise or logical operations, so `Constant foo = (bar | 1);` does not work.
 
-## Segmented substitutions
+6) Calculated values cannot occur as assembly-language operands.
 
-^^{Inform 6 inclusions: phrase elements}
+7) Calculated values can be used for array extents, but need to be put in brackets. For example:
 
-A "segmented" substitution is a syntax where text is placed between two or more different text substitutions. Examples include:
+	Include (-
+	Array unit_captured_text --> (UNIT_CAPTURE_BUFFER_LEN + 1);
+	-).
 
-	"This hotel is [if the player is female]just awful[otherwise]basic[end if]."
-	"Annie [one of]dances[or]sulks[or]hangs out at Remo's[at random]."
+# Kits
 
-To create such syntaxes, it is not enough just to define how each expands into I6 code: for one thing we may need to know about the later terms in order to expand the earlier ones, which is normally impossible, and for another thing, the individual text substitutions mean nothing in isolation. For instance, Inform produces a problem if the following is tried:
+## About kits
 
-	"The hotel [at random] is on fire."
+A _kit_ is a body of code written entirely in I6 syntax. It is compiled independently from the source text of a story which uses it, and the two are then merged together (or _linked_). Kits can be quite large: `BasicInformKit`, which sits inside the `Basic Inform` extension, runs to over 12,000 lines. Equally, they do not have to be. It's fine to write a kit containing just a single function or two.
 
-because `"[at random]"` is only legal when closing a `"[one of] ..."` construction. But if `"[at random]"` had been defined as just another text substitution, Inform would not have been able to detect such problems.
+Kits sit inside extensions, and provide them with support services. An extension can contain multiple kits, but of course does not need to contain any. Kits increase the power of extensions in a number of ways. They can access memory directly, and are not constrained by the kind-safety rules which would apply to higher-level code. For example, all the code to build, sort and dismantle lists is done by functions in `BasicInformKit`. Kits can also create new fundamental kinds of value for Inform.
 
-Inform therefore allows us to mark text substitutions as being any of three special kinds: beginning, in the middle of, or ending a segmented substitution. There can be any number of alternative forms for each of these three variants. The syntax policed is that
+This chapter is the most technical in the book. It's aimed at writers of extensions who need more power, and it assumes the reader is comfortable with the material in the [Extensions] and [Low-Level Programming] chapters, together with at least a passing knowledge of Inform 6 syntax, since that's essentially the same thing as writing I6.
 
-1. Any usage must lie entirely within a single say or piece of text.
-2. It must begin with exactly one of the substitutions marked as `beginning`.
-3. It can contain any number, including none, of the substitutions marked as `continuing` (if there are any).
-4. It must end with exactly one of the substitutions marked as `ending`.
+## Adding a kit to an extension
 
-A simple example:
+Suppose the extension `Roots of Equations by Peter Drake` wants to perform some mathematical algorithms which will be coded in I6. We will do this by placing the I6 material in `RootsOfEquationsKit`, which will live inside the extension like so:
 
-	To say emphasis on -- beginning say_emphasis_on: (- style underline; -).
-	To say emphasis off -- ending say_emphasis_on: (- style roman; -).
-
-This creates `"[emphasis on]"` and `"[emphasis off]"` such that they can only be used as a pair. The keyword `say_emphasis_on`, which must be a valid I6 identifier (and hence a single word), is never seen by the user: it is simply an ID token so that Inform can identify the construction to which these belong. (We recommend that anybody creating such constructions should choose an ID token which consists of the construction's name but with underscores in place of spaces: this means that the namespace for ID tokens will only clash if the primary definitions would have clashed in any case.)
-
-## Invocation labels, counters and storage {PM_LabelNamespaceTooLong}
-
-^^{Inform 6 inclusions: phrase elements}
-
-The process of expanding the I6 code which represents a phrase is called _invocation_. As we have seen, when a phrase is defined using a single piece of I6 code, invocation consists of copying out that I6 code, except that tokens in braces `{thus}` are replaced:
-
-	To say (something - number): (- print {something}; -).
-
-Ordinarily the only token names allowed are those matching up with names in the prototype, as here, but we have already seen one special syntax: `{phrase options}`, which expands as a bitmap of the options chosen. And in fact the invocation language is larger still, as a skim through the Standard Rules will show. The notes below deliberately cover only some of its features: those which are likely to remain part of the permanent design of Inform, and which are adaptable to many uses. **Please do not use any of the undocumented invocation syntaxes: they change frequently, without notice or even mention in the change log.**
-
-The first special syntaxes are textual tricks. {-delete} deletes the most recent character in the I6 expansion of the phrase so far. {-erase} erases the I6 expansion of the phrase so far. {-open-brace} and {-close-brace} produce literal `{` and `}` characters.
-
-The following:
-
-	{-counter:NAME}
-	
-	{-counter-up:NAME}
-	
-	{-zero-counter:NAME}
-	
-	{-counter-makes-array:NAME}
-
-create (if one does not already exist) a counter called ```NAME```. This is initially zero, and can be reset back to zero using `{-zero-counter:name}`, which expands into no text. The token `{-counter:name}` expands into the current value of the counter, as a literal decimal number. The token `{-counter-up:name}` does the same, but then also increases it by one. Finally, the token `{-counter-makes-array:name}` expands to nothing, but tells Inform to create an ```-->``` array called ```I7_st_name``` which includes entries from 0 up to the final value of the ```name``` counter.
-
-This allows each instance in the source text of a given phrase to have both (i) a unique ID number for that invocation, and (ii) its own word of run-time storage, which can allow it to have a state preserved in between times when it is executed. For example:
-
-	To say once only -- beginning say_once_only:
-		(- {-counter-makes-array:say_once_only}if (I7_ST_say_once_only-->{-counter:say_once_only} == false) {-open-brace} I7_ST_say_once_only-->{-counter-up:say_once_only} = true; -).
-	To say end once only -- ending say_once_only:
-		(- {-close-brace} -).
-
-To complete the tools available for defining a segmented substitution, we need a way for the definition of the head to know about the middle segments and the tail:
-
-When invoking either the head or the tail, {-segment-count} expands to the literal decimal number of pieces of text in between the two, which is always one more than the number of middle segments, since the text comes in between the segments. When invoking any middle segment, {-segment-count} expands to the number of pieces of text so far – thus it expands to 1 on the first middle segment invoked, 2 on the next, and so on.
-
-Lastly {-final-segment-marker} expands to the I6 identifier which marks the end segment, or to ```I6_null`` if the end segment has no marker. The idea of markers is to enable the head's definition to know which of a number of choices has been used for the tail, supposing that this is a construction with a variety of legal endings. For example:
-
-	To say emphasise -- beginning say_emphasise:
-		(- style {-final-segment-marker}; -).
-	To say with italics -- ending say_emphasise with marker underline:
-		(- style roman; -).
-	To say with fixed space type -- ending say_emphasise with marker fixed:
-		(- style roman; -).
-
-The markers used for the tails here are `underline` and `fixed`, and when the head is invoked, the marker for its tail is expanded into the argument of I6's `style` statement.
-
-The examples above are all to do with segmented substitutions, which is where they are most useful, but most of the syntaxes above work equally well for ordinary `To...` phrase definitions.
-
-## To say one of
-
-^^{Inform 6 inclusions: phrase elements}
-
-Many of the invocation syntaxes described in the previous section are used in the definition by the Standard Rules of the `"[one of] ... [or] ... [purely at random]"` construction, so it makes a good example of how they can be used.
-
-First, this is a segmented substitution with a single possible beginning (`"[one of]"`), a single possible middle (`"[or]"`) but a choice of many possible endings. Almost everything is compiled by the invocation of the beginning:
-
-``` inform6
-To say one of -- beginning say_one_of (documented at phs_oneof): (-
-	{-counter-makes-array:say_one_of}
-
-	{-counter-makes-array:say_one_flag}
-
-	if (I7_ST_say_one_flag-->{-counter:say_one_flag} == false) {
-		I7_ST_say_one_of-->{-counter:say_one_of} = {-final-segment-marker}(I7_ST_say_one_of-->{-counter:say_one_of},
-{-segment-count});
-		I7_ST_say_one_flag-->{-counter:say_one_flag} = true;
-	}
-
-	if (say__comp == false) I7_ST_say_one_flag-->{-counter:say_one_flag}{-counter-up:say_one_flag} =
-false;
-	switch ((I7_ST_say_one_of-->{-counter:say_one_of}{-counter-up:say_one_of})%({-segment-count}+1)-1)
-{-open-brace}
-
-		0: -).
-To say or -- continuing say_one_of (documented at phs_or):
-	(- @nop; {-segment-count}: -).
-To say purely at random -- ending say_one_of with marker I7_SOO_PAR (documented at phs_purelyrandom):
-	(- {-close-brace} -).
+``` code
+Ducking Action-v1.i7xd
+	extension_metadata.json
+	Materials
+		Inter
+			RootsOfEquationsKit
+				...
+	Source
+		Ducking Action.i7x
 ```
 
-The 3rd invocation of this (say) might compile the following:
+All kits have to have names ending in `Kit`, and by convention if an extension contains a single kit then its name is the extension title in camel-casing with the spaces removed and `Kit` suffixed. So `Roots of Equations` becomes `RootsOfEquationsKit`.
 
-``` inform6
-I7_ST_say_one_of-->2 = I7_SOO_PAR(I7_ST_say_one_of-->2, 4);
-switch((I7_ST_say_one_of-->2)%5 - 1) {
-	0: ... first text ...
-	1: ... second text ...
-	2: ... third text ...
-	3: ... fourth text ...
+Note that kits live inside the `Inter` subdirectory of the `Materials` directory private to the extension. See [Images and other resources] for more on `Materials`, which can also include all manner of other good things.
+
+`RootsOfEquationsKit` is itself a directory, which looks like this:
+
+``` code
+RootsOfEquationsKit
+	Contents.w
+	kit_metadata.json
+	Sections
+		Roots.w
+```
+
+The actual I6 source for the kit code is in the file `Roots.w`, but before we can get to that, we have to do some book-keeping.
+
+1) The `Contents.w` file doesn't look very interesting at first because there's only one source file, `Roots.w`, so this is currently like a contents page for a book with only one chapter:
+
+   ``` code
+   Title: RootsOfEquationsKit
+   Author: Peter Drake
+   Purpose: Some Newton-Raphson approximation functions.
+   Language: Inform 6
+
+   Sections
+       Roots
+   ```
+
+2) There must also be a `kit_metadata.json` file:
+
+   ``` code
+   {
+       "is": {
+           "type": "kit",
+           "title": "RootsOfEquationsKit",
+           "version": "1"
+       }
+   }
+   ```
+
+   This should look very similar to the `extension_metadata.json` file found in extensions, and indeed it has a great deal in common, though as we shall see it can be considerably extended.
+
+Why are there two files like this, not one, given that both are basically descriptions of what the kit is? One answer is that they actually serve different purposes: `Contents.w` describes the _source code_ for the kit, whereas `kit_metadata.json` describes the resulting compiled kit.
+
+The other is that kits are designed to be compatible with the ```inweb``` system for "literate programming". This is how it is that annotated forms of the source for `BasicInformKit` and `WorldModelKit`, for example, are hosted at the Inform source code website.
+
+So-called _section files_ also have a marked-up format suitable for ```inweb```. (The ```.w``` at the end of the two filenames ```Contents.w``` and ```Roots.w``` means "web".)
+
+Here is a minimal but legal form for ```Roots.w```:
+
+``` code
+Roots
+
+Some functions for finding roots of polynomials by Newton-Raphson approximation.
+
+@ Just one placeholder for now:
+
+=
+[ EvaluatePolynomial f x;
+	print "Not implemented yet.^";
+];
+```
+
+Web files begin with a line giving the title of the section — here, ```Root``` — then skip a line, and give a sentence or two describing the content in slightly more detail. After that, they are a sequence of "paragraphs". Each paragraph begins with an ```@``` character on the left margin. There's then space for some commentary about what is coming up: authors usually use this space to document calling conventions for functions, or say why they work they way they do.
+
+There is then a line with an ```=``` character on the left margin. After that, the rest of the paragraph is I6 code. So the actual content of the above section, once all the annotations are peeled off, is just this:
+
+``` code
+[ EvaluatePolynomial f x;
+	print "Not implemented yet.^";
+];
+```
+
+In other words, the kit — which is now complete — provides just a single function.
+
+We can now use it. As established, `RootsOfEquationsKit` is sitting inside the extension `Roots of Equations by Peter Drake`. We call this the _wrapper extension_ for the kit. That extension might now contain this phrase definition:
+
+	To decide which real number is the evaluation of (polynomial - list of real numbers) at (x - real number):
+		(- (EvaluatePolynomial({polynomial}, {x})) -).
+
+If we then run a test project which includes the extension, and if we are looking carefully, we might notice this message scroll by on the console:
+
+``` code
+(Building RootsOfEquationsKit for architecture 16)
+(Building RootsOfEquationsKit for architecture 16d)
+(Building RootsOfEquationsKit for architecture 32)
+(Building RootsOfEquationsKit for architecture 32d)
+```
+
+This is because Inform can only use `RootsOfEquationsKit` once it has been built (i.e., compiled): and since Inform could see the source code for the kit, it went ahead and built the thing. Inform builds kits only when necessary. If the timestamp on the source code files is later than that of the built form of the kit, then Inform assumes the source code has been changed since the last time the kit was built, so it rebuilds. Otherwise, if the kit source remains unchanged, Inform won't build the kit again.
+
+In fact, it builds the kit not once but four times, once for each possible architecture the kit will run on. (Once built, a kit is what is sometimes called a "fat binary", in that it contains multiple different compiled versions in one.) ```16``` and ```32``` refer to the 16-bit and 32-bit versions used on Z-machine and Glulx respectively, and ```16d``` and ```32d``` the same but with debugging features enabled — in effect, not-for-release features. By default, in the app, a project will use the ```32d``` architecture, and then when released, the ```32``` architecture. Inform handles all of this automatically.
+
+If we look back at the directory, we see that more files have appeared:
+
+``` code
+RootsOfEquationsKit
+	arch-16.interb
+	arch-16d.interb
+	arch-32.interb
+	arch-32d.interb
+	Contents.w
+	kit_metadata.json
+	Sections
+		Roots.w
+```
+
+The ```.interb``` filename endings mean "Inter binary code", and there's one for each architecture.
+
+Something else happened on that first run: the `extension_metadata.json` file for the wrapper extension was quietly rewritten. It now includes a _dependency_ of the extension on the kit:
+
+``` code
+{
+    "is": {
+        "type": "extension",
+        "title": "Roots of Equations",
+        "author": "Peter Drake",
+        "version": "1"
+    },
+    "needs": [ {
+        "need": {
+            "type": "kit",
+            "title": "RootsOfEquationsKit"
+        }
+    } ]
 }
 ```
 
-First, we notified Inform that it needs to allocate an array (```I7_st_say_one_of```) providing storage associated with the counter `say_one_of`. This we used to count off individual invocations of `"[one of]"`, so that each would have its own word of storage – for the 3rd invocation, ```I7_st_say_one_of-->2```. We then call a state-changing routine, in this case ```I7_soo_par```, which is allowed to know the previous state and also the number of options available, and which returns the new state. The state is supposed to be the option chosen last time, but that means that there are not 4, but 5 possibilities: 0 for "there was no last time", then 1 to 4 for the possible outcomes. We reduce the state mod 5 to obtain the decision this time, and subtract 1 because it happens to be convenient to make the switch statement run from 0 to 3 rather than 1 to 4. (The reason we reduce the state mod 5 is to allow the state-changer to squirrel away secret information in the upper bits of the state, if it wants to. Note that subtracting one means that the switch value might be -1, which results in no text being printed: thus if the state-changer chooses 0, it can decide on none of the above.)
+This tracking goes on automatically and authors can usually just let it happen all by itself, but if we decided against the kit after all and removed it from the extension, then this dependency would have to be removed from `extension_metadata.json` before the extension would work again.
 
-In this design, the marker attached to the choice of ending substitution is the name of the I6 state-changer: here it's the ```I7_soo_par``` routine.
+The full set of features of ```inweb``` is extensive and this is not the place to go into that. In brief, though, kit section files like ```Roots.w``` can't use any of the interesting tangling features (such as ```@d```, or ```@< ... >@```); but they can use all the weaving features. Inform users don't need to have ```inweb``` in order to write or use kits, and don't need to understand what the last sentence said.
 
-``` inform6
-[ I7_SOO_PAR oldval count; if (count <= 1) return count; return random(count); ];
-```
+## Run-time representations of Inform constructs
 
-As it happens, this ignores the old value: after all, it is meant to be purely at random, and nothing could be less pure than taking the last outcome into consideration when choosing the next.
+### Text constants
 
-Note that the counter `say_one_of` is advanced in invocation of the head. It might seem that the tidier design, somehow, would be to advance the counter in the invocation of the tails, but this is not a good idea. In general it is not safe to assume that the counter will have the same value when the tail is invoked that it had when the head was invoked, because segmented say constructions can legally be nested in Inform strings. Because of this, it is best to deal with a counter entirely in a single invocation, either of the beginning or the ending.
+Values of the Inform kind `text` are _not_ the same as text constants in the I6 sense. This function may look plausible, but it does not return a valid Inform `text`:
 
-Because `"[one of] ... [or] ..."` is such a useful construction – switching between alternative forms of text, which writers of IF very often do – the above implementation is intentionally left open for new endings to be added, and the examples below show how easily this can be done.
+	[ RedOrBlue N;
+		if (N % 2 == 0) return "Red";
+		return "Blue";
+	];
+
+This, however, does:
+
+	Array RED_TEXT --> PACKED_TEXT_STORAGE "Red";
+	Array BLUE_TEXT --> PACKED_TEXT_STORAGE "Blue";
+	[ RedOrBlue N;
+		if (N % 2 == 0) return RED_TEXT;
+		return BLUE_TEXT;
+	];
+
+`BasicInformKit` already defines `EMPTY_TEXT_VALUE`, which is a valid constant `text` holding no characters.
+
+These arrays are because `text` values are actually pointers to two-word blocks of memory, in which the first word defines one of a number of possible representations of the text, and the second gives details. See the source code for `BasicInformKit` for the gory details.
+
+### List constants, stored action constants, and more
+
+While it is possible to write similar array declarations to simulate constant lists, this is not recommended; their run-time representation may change in future. Similarly for other complex kinds: it is better to find a way to define constant values of those kinds in Inform source text (for example in an extension) and then pass those values down to the kit code for usage.
+
+### Variables
+
+^^{defined by Inter as...+assert+: variables} ^^{variables: defining in I6}
+
+We can create a valid Inform variable by providing an I6 global variable to store the contents. (Not all Inform variables are stored this way: some are stored in array entries, or on a stack. Those other ways, we cannot imitate.)
+
+The extension which wraps the kit will need to define a name:
+
+	The bounty on Spade is a number that varies.
+ 
+	The bounty on Spade variable is defined by Inter as "Spade_bounty".
+
+In effect, this makes a promise, and the kit has to keep the promise, which it can do very easily:
+
+	Global Spade_bounty = 0;
+
+Note that the kit has the responsibility of seeing that the value in this variable is always valid for the kind it is supposed to have — but in this case, that's `number`, which is easy enough.
+
+### Rules and responses
+
+^^{defined by Inter as...+assert+: rules} ^^{rules: defining in I6}
+
+At run-time, a rule is represented by a function which must do one of three things:
+
+- return `false` to make no decision;
+
+- call `RulebookSucceeds()` and then return `true` to succeed; or
+
+- call `RulebookFails()` and then return `true` to fail.
+
+If the rule is for a rulebook which produces a value then it must pass the outcome value as a parameter if it succeeds:
+
+- call `RulebookSucceeds(V)` and then return `true` to succeed with value `V`.
+
+We can create a rule from a kit by writing such a function, and by giving it a name, and perhaps filing it in a rulebook, in the extension which wraps the kit:
+
+	The blossom rule is defined by Inter as "BLOSSOM_R".
+
+	The blossom rule is listed in the horticulture rules.
+
+The rule function can then go into the kit:
+
+	[ BLOSSOM_R;
+		if (real_location hasnt light) { RulebookSucceeds(); rtrue; }
+		rfalse;
+	];
+
+And now `blossom rule` is a value of the kind `rule` in Inform source text, while `BLOSSOM_R` can validly refer to it from I6 code and, in particular, elsewhere in the kit.
+
+If the rule is going to print anything, it should ideally do so using Inform's system of responses. These responses must be defined in the wrapper extension:
+
+	The blossom rule is defined by Inter as "BLOSSOM_R" with
+		"The garden is in blossom." (A),
+		"The garden is gloomily barren." (B).
+
+What then happens is that the Inform compiler creates a function `BLOSSOM_RM` (i.e., with the same name as the rule but with `M` appended) which can print a response on demand:
+
+	[ BLOSSOM_R;
+		if (real_location hasnt light) {
+			BLOSSOM_RM('A');
+			RulebookSucceeds(); rtrue;
+		}
+		BLOSSOM_RM('B');
+		rfalse;
+	];
+
+If the rule is to be used in a rulebook based on a value, or more often an action, then it will need to be able to access that so-called "basis".
+
+- For action-based rules, it should look at the I6 global variables `actor`, `noun` and `second`.
+
+- For value-based rules, it should look at the I6 global variable `parameter_object`, which despite its name is not necessarily an object: it will be a value of whatever kind the rulebook is based on.
+
+### Rulebooks
+
+A rulebook is, like a rule, a function, and it has the same calling conventions. (In fact, a `rulebook` value is always a valid `rule` value at run-time.) Rulebooks can only be created by Inform source text: so if a kit needs a rulebook, it should be created in the wrapper extension.
+
+### Objects and kinds of object
+
+At runtime, an Inform object is represented by a value `ofclass Object` in the I6 sense, and the absence of an object is represented by the I6 constant `nothing`. A kind of object is represented by a value `ofclass Class`.
+
+However, not every value `ofclass Object` is valid as an `object` in Inform. `WorldModelKit` continues, for historical reasons, to define two pseudo-object values `thedark` and `compass`: these are `ofclass Object` in I6, but must not be stored in `object` variables in Inform.
+
+Objects and kinds of object can only be created by Inform source text: so if a kit needs these, they should be created in the wrapper extension. I6 code like this:
+
+	Object oddity "an oddity";
+
+simply creates another pseudo-object like `thedark`, which is not an `object` in the Inform 7 sense.
+
+### Properties
+
+Although it is possible for kits to define Inform properties, this is no longer recommended. It's better to define them in the wrapper extension, and then simply make their names available to the kit code using `accessible to Inter as`. See [Inform values from I6].
+
+### Actions
+
+Values of the kind `action`, such as `taking action` or `looking`, are represented in the natural way as I6 action values.
+
+Kits can create their own actions, and also give them the equivalent of `Understand` grammar. For example, `WorldModelKit` provides a handful of debugging commands this way:
+
+	Verb meta 'showheap'
+		*                                           -> ShowHeap;
+
+This creates an action out of world called `##ShowHeap`. `WorldModelKit` then provides a function called `ShowHeapSub` to implement the action. None of this is visible at the Inform 7 level. While kits _can_ do this, they probably shouldn't. It's better to define actions in the wrapper extension.
+
+I6 also has a concept of "fake actions". Inform 7 does not, and kits should create no further fake actions.
+
+### Command grammar tokens
+
+^^{defined by Inter as...+assert+: grammar tokens} ^^{grammar tokens: defining in I6}
+
+`Understand` tokens of command grammar are represented as functions which are, in the traditional Inform 6 sense, "general parsing routines" or GPRs. (Consult the DM4 for details.)
+
+To create one with a kit, the wrapper extension should give it a name:
+
+	The Understand token squiggle is defined by Inter as "SQUIGGLE_TOKEN".
+
+The kit should then define the necessary function:
+
+	[ SQUIGGLE_TOKEN;
+		if (NextWordStopped() == '$$') return GPR_PREPOSITION;
+		return GPR_FAIL;
+	];

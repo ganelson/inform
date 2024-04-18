@@ -21,8 +21,10 @@ options correspond to labels to jump to.
 typedef struct label_namespace {
 	struct text_stream *label_prefix;
 	int label_counter; /* next free ID number for this label namespace */
+	int max_label_counter; /* largest ever value of the label counter */
 	int allocate_storage; /* number of words of memory to reserve for each label */
 	struct inter_name *label_storage_iname; /* where that storage is */
+	int storage_requested;
 	int storage_compiled;
 	CLASS_DEFINITION
 } label_namespace;
@@ -105,8 +107,10 @@ label_namespace *JumpLabels::obtain_namespace(text_stream *name) {
 	lns->label_storage_iname =
 		Enclosures::new_iname(LABEL_STORAGES_HAP, LABEL_ASSOCIATED_STORAGE_HL);
 	lns->label_counter = 0;
+	lns->max_label_counter = 0;
 	lns->allocate_storage = 0;
 	lns->storage_compiled = FALSE;
+	lns->storage_requested = FALSE;
 	ADD_TO_LINKED_LIST(lns, label_namespace, namespaces);
 	return lns;
 }
@@ -128,6 +132,8 @@ int JumpLabels::read_counter(text_stream *namespace, int advance_by) {
 	label_namespace *lns = JumpLabels::obtain_namespace(namespace);
 	int c = lns->label_counter;
 	lns->label_counter += advance_by;
+	if (lns->max_label_counter < lns->label_counter)
+		lns->max_label_counter = lns->label_counter;
 	if (lns->label_counter < 0) internal_error("label counter negative");
 	return c;
 }
@@ -139,6 +145,7 @@ This will accumulate into an array, as follows.
 void JumpLabels::allocate_storage(text_stream *namespace, int multiplier) {
 	label_namespace *lns = JumpLabels::obtain_namespace(namespace);
 	if (multiplier > lns->allocate_storage) lns->allocate_storage = multiplier;
+	lns->storage_requested = TRUE;
 }
 
 inter_name *JumpLabels::storage_iname(text_stream *namespace) {
@@ -154,8 +161,8 @@ void JumpLabels::compile_necessary_storage(void) {
 	linked_list *namespaces = Functions::current_label_namespaces();
 	label_namespace *lns;
 	LOOP_OVER_LINKED_LIST(lns, label_namespace, namespaces)
-		if (lns->storage_compiled == FALSE) {
-			int N = (lns->allocate_storage)*(lns->label_counter);
+		if ((lns->storage_compiled == FALSE) && (lns->storage_requested)) {
+			int N = (lns->allocate_storage)*(lns->max_label_counter + 1);
 			if (N > 0) {
 				packaging_state save =
 					EmitArrays::begin_word(lns->label_storage_iname, K_value);

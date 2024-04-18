@@ -1,5 +1,5 @@
 Example: * Chanel Version 1
-Location: Segmented substitutions
+Location: Defining segmented text substitutions with I6
 RecipeLocation: Typography
 Index: HTML-style italic and boldface tags
 Description: Making paired italic and boldface tags like those used by HTML for web pages.
