@@ -6309,7 +6309,7 @@ Note that the text `try Will going west` involves the actor's name immediately p
 
 ## New actions {NEWACTIONS} {PM_MatchedAsTooLong} {PM_MultiwordPastParticiple} {PM_GrammarMismatchesAction} {PM_ActionAlreadyExists} {PM_ActionBothValues} {PM_ActionClauseUnknown} {PM_ActionMisapplied}
 
-^^{actions: defining new actions} ^^{defining: actions} ^^{Inform 6 equivalent: verbs} ^^{(applying to), in defining actions+sourcepart+} ^^{(requiring), in defining actions+sourcepart+} ^^{(visible thing), in defining actions+sourcepart+} ^^{touchability+rel+: requirement in defining actions} ^^{carrying+rel+: requirement in defining actions} ^^{light: requirement in defining actions} ^^{actions: referring to current action with (action)+sourcepart+} ^^{understand (verb) as (action)+assert+} ^^{understanding: verbs} ^^{Inform 6 equivalent: synonyms} ^^{synonyms} ^^{understanding: requirements for objects in actions}^^^{understanding <-- parsing}
+^^{actions: defining new actions} ^^{defining: actions} ^^{Inform 6 equivalent: verbs} ^^{(applying to), in defining actions+sourcepart+} ^^{(requiring), in defining actions+sourcepart+} ^^{(visible thing), in defining actions+sourcepart+} ^^{(touchable thing), in defining actions+sourcepart+} ^^{carrying+rel+: requirement in defining actions} ^^{light: requirement in defining actions} ^^{actions: referring to current action with (action)+sourcepart+} ^^{understand (verb) as (action)+assert+} ^^{understanding: verbs} ^^{Inform 6 equivalent: synonyms} ^^{synonyms} ^^{understanding: requirements for objects in actions}^^^{understanding <-- parsing}
 
 It is not often that we need to create new actions, but a large work of interactive fiction with no novelty actions is a flavourless dish. Here we shall create an action for photographing things.
 
@@ -6648,7 +6648,7 @@ Symmetrically, Inform also has `reaching outside` rules, used if the player is i
 
 ## Visible vs touchable vs carried
 
-^^{actions: requirements for actions} ^^{(requiring), in defining actions+sourcepart+} ^^{(visible thing), in defining actions+sourcepart+} ^^{touchability+rel+: requirement in defining actions} ^^{carrying+rel+: requirement in defining actions} ^^{light: requirement in defining actions} ^^{understanding: requirements for objects in actions} ^^{taking+action+: implicit taking} ^^{implicitly taking something+activity+} ^^{implicitly taking something+activitycat+}
+^^{actions: requirements for actions} ^^{(requiring), in defining actions+sourcepart+} ^^{(visible thing), in defining actions+sourcepart+} ^^{(touchable thing), in defining actions+sourcepart+} ^^{carrying+rel+: requirement in defining actions} ^^{light: requirement in defining actions} ^^{understanding: requirements for objects in actions} ^^{taking+action+: implicit taking} ^^{implicitly taking something+activity+} ^^{implicitly taking something+activitycat+}
 
 To recap, actions are created like so:
 
@@ -6680,7 +6680,7 @@ then trigger an action with the command ``WAVE MAGIC WAND AT BANYAN TREE``, the 
 
 ## Changing reachability {var_person_reaching}
 
-^^{rules: reaching inside / outside} ^^{rules: access to things referred to in actions} ^^{actions: reaching inside / outside rules} ^^{reaching inside / outside+rb+} ^^{actions: requirements for actions} ^^{touchability+rel+: requirement in defining actions} ^^{understanding: requirements for objects in actions} ^^{Inform 6 equivalent: scope rules} ^^{person reaching (- object)+glob+} ^^{container in question (- object)+glob+} ^^{supporter in question (- object)+glob+} ^^{+toout+deny access (reaching inside / outside)} ^^{+toout+allow access (reaching inside / outside)} ^^{+toout+access, deny / allow access (reaching inside / outside)}
+^^{rules: reaching inside / outside} ^^{rules: access to things referred to in actions} ^^{actions: reaching inside / outside rules} ^^{reaching inside / outside+rb+} ^^{actions: requirements for actions} ^^{(touchable thing), in defining actions+sourcepart+} ^^{understanding: requirements for objects in actions} ^^{Inform 6 equivalent: scope rules} ^^{person reaching (- object)+glob+} ^^{container in question (- object)+glob+} ^^{supporter in question (- object)+glob+} ^^{+toout+deny access (reaching inside / outside)} ^^{+toout+allow access (reaching inside / outside)} ^^{+toout+access, deny / allow access (reaching inside / outside)}
 
 The question of what the player can, and cannot, reach to touch is important in interactive fiction. It contains some of the subtlest ideas in the model world, though they often go unnoticed. For instance, if a key is on a shelf which is part of a closed box, can we reach for the key? This comes down to whether the shelf, described only as `part of` the box, is on the inside or the outside: and in fact, because it cannot know which is the case, Inform allows either. So in general it is best to regard `parts` as being exterior parts, but to avoid having parts on containers that might in the course of play be closed up with the player inside.
 
