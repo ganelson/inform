@@ -1315,7 +1315,7 @@ because they are too vague. Inform needs to know exactly where the fob watch and
 
 ## New kinds {NEWKINDS}
 
-^^{kinds <-- types} ^^{kinds: defining} ^^{defining: kinds} ^^{kinds: hierarchy of kinds} ^^{kinds: of value} ^^{kinds: of thing} ^^{kinds: defining: kinds of thing} ^^{defining: kinds of thing} ^^{things+kind+: kinds of} ^^{rooms+kind+} ^^{things+kind+} ^^{directions+kind+} ^^{regions+kind+} ^^{animals+kind+} ^^{man+kind+} ^^{woman+kind+} ^^{Inform 6 equivalent: classes} ^^{Kinds page of Index panel+ui+} ^^{user interface: Index panel: Kinds page} ^^{Index panel+ui+: Kinds page}
+^^{kinds <-- types} ^^{kinds: defining} ^^{defining: kinds} ^^{kinds: hierarchy of kinds} ^^{kinds: of value} ^^{kinds: of thing} ^^{kinds: defining: kinds of thing} ^^{defining: kinds of thing} ^^{things+kind+: kinds of} ^^{things+kind+: object kind, as distinct from thing} ^^{rooms+kind+} ^^{things+kind+} ^^{directions+kind+} ^^{regions+kind+} ^^{animals+kind+} ^^{man+kind+} ^^{woman+kind+} ^^{Inform 6 equivalent: classes} ^^{Kinds page of Index panel+ui+} ^^{user interface: Index panel: Kinds page} ^^{Index panel+ui+: Kinds page}
 
 Values in Inform are the nouns in its sentences. They represent numbers, times of day, pieces of text, places, people, doors, and so on. Because values have such an enormous variety, and because we often want to talk about what some of them have in common, we need a way to sort these values into categories, and those are called _kinds_. Some examples:
 
