@@ -4958,7 +4958,7 @@ The Scenes panel of the Index can be a useful way to see what events have been s
 
 ## Actions as conditions {PM_PTAPTooComplex}
 
-^^{actions: as conditions} ^^{rules: actions referred to in conditions} ^^{rules: past tense of conditions} ^^{past tense, of conditions in rules} ^^{tense: of conditions in rules} ^^{English: tense: of conditions in rules}
+^^{actions: as conditions} ^^{rules: actions referred to in conditions} ^^{rules: past tense of conditions} ^^{conditions: actions as conditions} ^^{past tense, of conditions in rules} ^^{tense: of conditions in rules} ^^{English: tense: of conditions in rules}
 
 There are two ways that descriptions of actions can be used as conditions. First, we can simply describe an action, and then the condition will be true if that is what the player is trying to do, and not otherwise:
 
