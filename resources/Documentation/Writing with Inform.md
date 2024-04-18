@@ -6309,7 +6309,7 @@ Note that the text `try Will going west` involves the actor's name immediately p
 
 ## New actions {NEWACTIONS} {PM_MatchedAsTooLong} {PM_MultiwordPastParticiple} {PM_GrammarMismatchesAction} {PM_ActionAlreadyExists} {PM_ActionBothValues} {PM_ActionClauseUnknown} {PM_ActionMisapplied}
 
-^^{actions: defining new actions} ^^{defining: actions} ^^{Inform 6 equivalent: verbs} ^^{(applying to), in defining actions+sourcepart+} ^^{(requiring), in defining actions+sourcepart+} ^^{visibility+rel+: requirement in defining actions} ^^{touchability+rel+: requirement in defining actions} ^^{carrying+rel+: requirement in defining actions} ^^{light: requirement in defining actions} ^^{actions: referring to current action with (action)+sourcepart+} ^^{understand (verb) as (action)+assert+} ^^{understanding: verbs} ^^{Inform 6 equivalent: synonyms} ^^{synonyms} ^^{understanding: requirements for objects in actions}^^^{understanding <-- parsing}
+^^{actions: defining new actions} ^^{defining: actions} ^^{Inform 6 equivalent: verbs} ^^{(applying to), in defining actions+sourcepart+} ^^{(requiring), in defining actions+sourcepart+} ^^{(visible thing), in defining actions+sourcepart+} ^^{touchability+rel+: requirement in defining actions} ^^{carrying+rel+: requirement in defining actions} ^^{light: requirement in defining actions} ^^{actions: referring to current action with (action)+sourcepart+} ^^{understand (verb) as (action)+assert+} ^^{understanding: verbs} ^^{Inform 6 equivalent: synonyms} ^^{synonyms} ^^{understanding: requirements for objects in actions}^^^{understanding <-- parsing}
 
 It is not often that we need to create new actions, but a large work of interactive fiction with no novelty actions is a flavourless dish. Here we shall create an action for photographing things.
 
@@ -6648,7 +6648,7 @@ Symmetrically, Inform also has `reaching outside` rules, used if the player is i
 
 ## Visible vs touchable vs carried
 
-^^{actions: requirements for actions} ^^{(requiring), in defining actions+sourcepart+} ^^{visibility+rel+: requirement in defining actions} ^^{touchability+rel+: requirement in defining actions} ^^{carrying+rel+: requirement in defining actions} ^^{light: requirement in defining actions} ^^{understanding: requirements for objects in actions} ^^{taking+action+: implicit taking} ^^{implicitly taking something+activity+} ^^{implicitly taking something+activitycat+}
+^^{actions: requirements for actions} ^^{(requiring), in defining actions+sourcepart+} ^^{(visible thing), in defining actions+sourcepart+} ^^{touchability+rel+: requirement in defining actions} ^^{carrying+rel+: requirement in defining actions} ^^{light: requirement in defining actions} ^^{understanding: requirements for objects in actions} ^^{taking+action+: implicit taking} ^^{implicitly taking something+activity+} ^^{implicitly taking something+activitycat+}
 
 To recap, actions are created like so:
 
