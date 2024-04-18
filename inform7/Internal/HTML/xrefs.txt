@@ -274,3 +274,4 @@ PM_BadInlineTag PM_BadInlineExpansion PM_InlineRule PM_InlineTooLong PM_Unending
 PM_LabelNamespaceTooLong _ WI_30_7 "30.7" "30.7. Invocation counters"
 PM_QuantityTranslatedAlready PM_NonQuantityTranslated PM_NonPropertyTranslated PM_TranslatedToNonIdentifier PM_TranslatedUnknownCategory PM_TranslatedTwice PM_TranslatesActionAlready PM_TranslatesNonAction _ WI_30_10 "30.10" "30.10. Inform values from I6"
 PM_IncludeInsteadOf PM_WhenDefiningUnknown PM_BeforeTheLibrary PM_BadI6Inclusion _ WI_30_13 "30.13" "30.13. Inclusions of I6 code"
+ph_numericalvalue ph_sequencenumber _ WI_31_7 "31.7" "31.7. Neptune and enumerative kinds"

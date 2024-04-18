@@ -19885,7 +19885,7 @@ The following decides on the list `{54, -18}`:
 	To decide which list of numbers is the magic list:
 		(- (LIST_OF_TY_InsertItem(LIST_OF_TY_InsertItem({-new:list of numbers}, 54), -18)) -).
 
-As examples like this suggest, it's not really possible to work with tricky kinds of value such as text, stored actions or lists without some knowledge of how they are implemented by `BasicInformKit`, which provides Inter-level support for them. That's where the `LIST_OF_TY_InsertItem` function can be found, for example.
+As examples like this suggest, it's not really possible to work with tricky kinds of value such as text, stored actions or lists without some knowledge of how they are implemented by ```BasicInformKit```, which provides Inter-level support for them. That's where the `LIST_OF_TY_InsertItem` function can be found, for example.
 
 ## By value and by reference
 
@@ -19894,7 +19894,7 @@ Consider the following phrase definition, which reverses a list, so that `{1, 4,
 	To reverse (L - a list of numbers):
 		(- LIST_OF_TY_Reverse({-lvalue-by-reference:L}); -).
 
-Clearly the actual work is done by the `LIST_OF_TY_Reverse` function from `BasicInformKit`: how it does that work needn't concern us. But why isn't the definition this instead?
+Clearly the actual work is done by the `LIST_OF_TY_Reverse` function from ```BasicInformKit```: how it does that work needn't concern us. But why isn't the definition this instead?
 
 	To badly reverse (L - a list of numbers):
 		(- LIST_OF_TY_Reverse({L}); -).
@@ -20234,7 +20234,7 @@ The other enigmatic thing here is the "marker", which seems to be the strange-lo
 	To say stopping -- ending say_one_of with marker I7_SOO_STOP:
 		(- {-close-brace} -).
 
-The only difference between `"[stopping]"` and `"[cycling]"` is that they have different markers: `I7_SOO_STOP` and `I7_SOO_CYC`. These are in fact the names of functions which can be found in `BasicInformKit`. They look like so:
+The only difference between `"[stopping]"` and `"[cycling]"` is that they have different markers: `I7_SOO_STOP` and `I7_SOO_CYC`. These are in fact the names of functions which can be found in ```BasicInformKit```. They look like so:
 
 	[ I7_SOO_CYC oldval count;
 		oldval++; if (oldval > count) oldval = 1;
@@ -20441,7 +20441,7 @@ This can be used by, say:
 
 With some reluctance, we now need to come to an entirely new sentence meaning: `Include (- ... -)`, which allows the user to insert whole I6 "directives" into a story. When defining phrases with `(-` and `-)`, we were only contributing small fragments of functions: but now we can write entire functions, variables and so forth.
 
-Why the reluctance? The answer is that, where possible, it's always best to separate out Inform source text from any low-level I6 material. Any large quantities of I6 are much better placed in a kit: see the final chapter, [Kits]. So, for example, the source text for the `Standard Rules` and `Basic Inform` extensions do not make a single use of `Include (- ... -)`. Although they need a great deal of Inter code to back them up, all of that is in `BasicInformKit`, `WorldModelKit` and so on.
+Why the reluctance? The answer is that, where possible, it's always best to separate out Inform source text from any low-level I6 material. Any large quantities of I6 are much better placed in a kit: see the final chapter, [Kits]. So, for example, the source text for the `Standard Rules` and `Basic Inform` extensions do not make a single use of `Include (- ... -)`. Although they need a great deal of Inter code to back them up, all of that is in ```BasicInformKit```, ```WorldModelKit``` and so on.
 
 With that said, here for example is a directive which creates an I6 function:
 
@@ -20458,7 +20458,7 @@ And that could then be used like so:
 
 Inclusions like this can also use `(+` and `+)` — see [Inform values from I6] for those — but the use of these is strongly discouraged, and subject to a number of hazards.
 
-There was no problem creating a new function called `FauxMultiply`, but what if we tried to create, say, `SquareRoot`? We would then run into trouble because there is already a function of that name in `BasicInformKit`. So we would get a problem message about the name clash.
+There was no problem creating a new function called `FauxMultiply`, but what if we tried to create, say, `SquareRoot`? We would then run into trouble because there is already a function of that name in ```BasicInformKit```. So we would get a problem message about the name clash.
 
 But what if the name clash was not an accident at all, and what we actually wanted to give our own definition of `SquareRoot`, to be used instead of the one in BasicInformKit? This is also possible:
 
@@ -20510,15 +20510,15 @@ In particular:
 
 ## About kits
 
-A _kit_ is a body of code written entirely in I6 syntax. It is compiled independently from the source text of a story which uses it, and the two are then merged together (or _linked_). Kits can be quite large: `BasicInformKit`, which sits inside the `Basic Inform` extension, runs to over 12,000 lines. Equally, they do not have to be. It's fine to write a kit containing just a single function or two.
+A _kit_ is a body of code written entirely in I6 syntax. It is compiled independently from the source text of a story which uses it, and the two are then merged together (or _linked_). Kits can be quite large: ```BasicInformKit```, which sits inside the `Basic Inform` extension, runs to over 12,000 lines. Equally, they do not have to be. It's fine to write a kit containing just a single function or two.
 
-Kits sit inside extensions, and provide them with support services. An extension can contain multiple kits, but of course does not need to contain any. Kits increase the power of extensions in a number of ways. They can access memory directly, and are not constrained by the kind-safety rules which would apply to higher-level code. For example, all the code to build, sort and dismantle lists is done by functions in `BasicInformKit`. Kits can also create new fundamental kinds of value for Inform.
+Kits sit inside extensions, and provide them with support services. An extension can contain multiple kits, but of course does not need to contain any. Kits increase the power of extensions in a number of ways. They can access memory directly, and are not constrained by the kind-safety rules which would apply to higher-level code. For example, all the code to build, sort and dismantle lists is done by functions in ```BasicInformKit```. Kits can also create new fundamental kinds of value for Inform.
 
 This chapter is the most technical in the book. It's aimed at writers of extensions who need more power, and it assumes the reader is comfortable with the material in the [Extensions] and [Low-Level Programming] chapters, together with at least a passing knowledge of Inform 6 syntax, since that's essentially the same thing as writing I6.
 
 ## Adding a kit to an extension
 
-Suppose the extension `Roots of Equations by Peter Drake` wants to perform some mathematical algorithms which will be coded in I6. We will do this by placing the I6 material in `RootsOfEquationsKit`, which will live inside the extension like so:
+Suppose the extension `Roots of Equations by Peter Drake` wants to perform some mathematical algorithms which will be coded in I6. We will do this by placing the I6 material in ```RootsOfEquationsKit```, which will live inside the extension like so:
 
 ``` code
 Ducking Action-v1.i7xd
@@ -20531,11 +20531,11 @@ Ducking Action-v1.i7xd
 		Ducking Action.i7x
 ```
 
-All kits have to have names ending in `Kit`, and by convention if an extension contains a single kit then its name is the extension title in camel-casing with the spaces removed and `Kit` suffixed. So `Roots of Equations` becomes `RootsOfEquationsKit`.
+All kits have to have names ending in `Kit`, and by convention if an extension contains a single kit then its name is the extension title in camel-casing with the spaces removed and `Kit` suffixed. So `Roots of Equations` becomes ```RootsOfEquationsKit```.
 
 Note that kits live inside the `Inter` subdirectory of the `Materials` directory private to the extension. See [Images and other resources] for more on `Materials`, which can also include all manner of other good things.
 
-`RootsOfEquationsKit` is itself a directory, which looks like this:
+```RootsOfEquationsKit``` is itself a directory, which looks like this:
 
 ``` code
 RootsOfEquationsKit
@@ -20565,17 +20565,18 @@ The actual I6 source for the kit code is in the file `Roots.w`, but before we ca
    {
        "is": {
            "type": "kit",
-           "title": "RootsOfEquationsKit",
-           "version": "1"
+           "title": "RootsOfEquationsKit"
        }
    }
    ```
 
    This should look very similar to the `extension_metadata.json` file found in extensions, and indeed it has a great deal in common, though as we shall see it can be considerably extended.
+   
+   Although it's legal for a kit's metadata to supply a `"version"`, there is no need. A kit which is being distributed inside an extension has a public-facing version of its own: its functionality is part of the extension's offer to the world, so it is all under the wrapper extension's version number.
 
 Why are there two files like this, not one, given that both are basically descriptions of what the kit is? One answer is that they actually serve different purposes: `Contents.w` describes the _source code_ for the kit, whereas `kit_metadata.json` describes the resulting compiled kit.
 
-The other is that kits are designed to be compatible with the ```inweb``` system for "literate programming". This is how it is that annotated forms of the source for `BasicInformKit` and `WorldModelKit`, for example, are hosted at the Inform source code website.
+The other is that kits are designed to be compatible with the ```inweb``` system for "literate programming". This is how it is that annotated forms of the source for ```BasicInformKit``` and ```WorldModelKit```, for example, are hosted at the Inform source code website.
 
 So-called _section files_ also have a marked-up format suitable for ```inweb```. (The ```.w``` at the end of the two filenames ```Contents.w``` and ```Roots.w``` means "web".)
 
@@ -20606,7 +20607,7 @@ There is then a line with an ```=``` character on the left margin. After that, t
 
 In other words, the kit — which is now complete — provides just a single function.
 
-We can now use it. As established, `RootsOfEquationsKit` is sitting inside the extension `Roots of Equations by Peter Drake`. We call this the _wrapper extension_ for the kit. That extension might now contain this phrase definition:
+We can now use it. As established, ```RootsOfEquationsKit``` is sitting inside the extension `Roots of Equations by Peter Drake`. We call this the _wrapper extension_ for the kit. That extension might now contain this phrase definition:
 
 	To decide which real number is the evaluation of (polynomial - list of real numbers) at (x - real number):
 		(- (EvaluatePolynomial({polynomial}, {x})) -).
@@ -20620,7 +20621,7 @@ If we then run a test project which includes the extension, and if we are lookin
 (Building RootsOfEquationsKit for architecture 32d)
 ```
 
-This is because Inform can only use `RootsOfEquationsKit` once it has been built (i.e., compiled): and since Inform could see the source code for the kit, it went ahead and built the thing. Inform builds kits only when necessary. If the timestamp on the source code files is later than that of the built form of the kit, then Inform assumes the source code has been changed since the last time the kit was built, so it rebuilds. Otherwise, if the kit source remains unchanged, Inform won't build the kit again.
+This is because Inform can only use ```RootsOfEquationsKit``` once it has been built (i.e., compiled): and since Inform could see the source code for the kit, it went ahead and built the thing. Inform builds kits only when necessary. If the timestamp on the source code files is later than that of the built form of the kit, then Inform assumes the source code has been changed since the last time the kit was built, so it rebuilds. Otherwise, if the kit source remains unchanged, Inform won't build the kit again.
 
 In fact, it builds the kit not once but four times, once for each possible architecture the kit will run on. (Once built, a kit is what is sometimes called a "fat binary", in that it contains multiple different compiled versions in one.) ```16``` and ```32``` refer to the 16-bit and 32-bit versions used on Z-machine and Glulx respectively, and ```16d``` and ```32d``` the same but with debugging features enabled — in effect, not-for-release features. By default, in the app, a project will use the ```32d``` architecture, and then when released, the ```32``` architecture. Inform handles all of this automatically.
 
@@ -20663,29 +20664,127 @@ This tracking goes on automatically and authors can usually just let it happen a
 
 The full set of features of ```inweb``` is extensive and this is not the place to go into that. In brief, though, kit section files like ```Roots.w``` can't use any of the interesting tangling features (such as ```@d```, or ```@< ... >@```); but they can use all the weaving features. Inform users don't need to have ```inweb``` in order to write or use kits, and don't need to understand what the last sentence said.
 
+## Compatibility of kits
+
+Since kits are mostly used to provide low-level support functions, they often need to work slightly differently on Glulx versus the Z-machine, or as we should really say, on the 32-bit versus the 16-bit architecture.
+
+### A one-architecture kit
+
+Suppose ```RootsOfEquationsKit``` can only be compiled for 32-bit architectures, which is not at all improbable if it wants to perform floating-point maths. It can be marked as such by editing its `kit_metadata.json` file as follows:
+
+``` code
+{
+	"is": {
+		"type": "kit",
+		"title": "RootsOfEquationsKit"
+	},
+	"compatibility": "for 32-bit only"
+}
+```
+
+When Inform builds the kit, it compiles only the `arch-32.interb` and `arch-32d.interb` binaries.
+
+So what happens if the `Roots of Equations` extension is then compiled in a project with the Z-machine setting, i.e., to a 16-bit story file? It will then be impossible for Inform to link in the `arch-16.interb` binary for ```RootsOfEquationsKit```, because there isn't one. Inform does not halt with a problem message: instead it simply carries on.
+
+The likely result is that linking errors will be produced with certain functions not being found. This can be made be more graceful, of course, by simply declaring the _extension_ in a restricted way:
+
+	Version 1 of Roots of Equations (for 32-bit only) by Peter Drake begins here.
+
+That way, any user trying to use the extension on the Z-machine will be told at once what the issue is, and no linking errors will ever be reached.
+
+### Two alternative kits
+
+Suppose, on the other hand, we are more ambitious and want `Roots of Equations` to run on all architectures, even though the 16-bit and 32-bit implementations are completely different.
+
+The trick then is to equip `Roots of Equations` with _two_ kits. One will be called `RootsOfEquations16Kit`, with this metadata:
+
+``` code
+{
+	"is": {
+		"type": "kit",
+		"title": "RootsOfEquations16Kit"
+	},
+	"compatibility": "for 16-bit only"
+}
+```
+
+and the other will be `RootsOfEquations32Kit`, with a similar set of metadata. The practical effect is that in any build including `Roots of Equations`, exactly one of `RootsOfEquations16Kit` and `RootsOfEquations32Kit` will be included.
+
+### Conditional compilation
+
+If in fact most of ```RootsOfEquationsKit``` should be the same on all architectures, but just one function would differ, conditional compilation can be used. This means using more or less the same ```#if...``` directives as would be used in Inform 6, but in I6 there are significant restrictions:
+
+- ```#ifdef``` and ```#ifndef``` can be used only on certain symbols:
+
+  - ```TARGET_ZCODE``` and ```TARGET_GLULX``` are defined only on 16-bit and only on 32-bit architectures, respectively. Their names are now a little misleading, but see below.
+
+  - ```DEBUG``` is defined only on the debugging architectures `16d` and `32d`. What this means in practice is that ```DEBUG``` is defined when using Inform in the apps, but not usually defined when making a release compilation.
+
+  - Otherwise, they can only be used on symbols defined (or not defined) higher up _in the same kit_. Because each kit is built independently of all others, I6 directives in one kit cannot know what symbols exist or do not exist in other kits.
+  
+- ```#iftrue``` and ```#iffalse``` can only be used on "fundamental constants", and then only to test them for equality against constant values. For example, ```#iftrue CHARSIZE == 1;``` is legal.
+
+We now usually prefer to write `#Iftrue (WORDSIZE == 2);` rather than the more traditional `#ifdef TARGET_ZCODE`, and similarly `#Iftrue (WORDSIZE == 4);` rather than `#ifdef TARGET_GLULX`. These more clearly express the idea of being on a 16-bit or 32-bit architecture, respectively.
+
+Here, for reference, are all of the fundamental constants except ```DEBUG``` (for which see above), and their normal values:
+  
+Symbol                    | 16-bit architectures | 32-bit architectures
+------------------------- | -------------------- | --------------------
+```CHARSIZE```            |                    1 | 4
+```WORDSIZE```            |                    2 | 4
+```NULL```                |                $ffff | $ffffffff
+```WORD_HIGHBIT```        |                $8000 | $80000000
+```WORD_NEXTTOHIGHBIT```  |                $4000 | $40000000
+```IMPROBABLE_VALUE```    |                $7fe3 | $deadce11
+```MAX_POSITIVE_NUMBER``` |                32767 | 2147483647
+```MIN_NEGATIVE_NUMBER``` |               -32768 | -2147483648
+```TARGET_ZCODE```        |                    1 | _undefined_
+```TARGET_GLULX```        |          _undefined_ | 1
+
+So, for example, this function is compiled very slightly differently according to whether ```DEBUG``` is in force or not:
+
+``` code
+[ ReleaseLine i;
+	print "Release ", VM_ReleaseNumber(), " / Serial number ";
+	serial = VM_SerialNumber();
+	for (i=0 : i<6 : i++) print (char) serial->i;
+	print " / Inform 7 v", (PrintI6Text) I7_VERSION_NUMBER;
+	#Ifdef DEBUG;
+	print " / D";
+	#Endif; ! DEBUG
+	new_line;
+];
+```
+
 ## Run-time representations of Inform constructs
+
+Functions in kits frequently receive values passed to them from Inform source text. Some of those values are straightforward to deal with: a `number` value in source text behaves exactly as integers do in I6, for example. But others are not so easy to understand. If Inform passes an I6 function a `text`, or a `rule`, for example, what are we getting, and how can we deal with it?
 
 ### Text constants
 
 Values of the Inform kind `text` are _not_ the same as text constants in the I6 sense. This function may look plausible, but it does not return a valid Inform `text`:
 
-	[ RedOrBlue N;
-		if (N % 2 == 0) return "Red";
-		return "Blue";
-	];
+``` code
+[ RedOrBlue N;
+	if (N % 2 == 0) return "Red";
+	return "Blue";
+];
+```
 
 This, however, does:
 
-	Array RED_TEXT --> PACKED_TEXT_STORAGE "Red";
-	Array BLUE_TEXT --> PACKED_TEXT_STORAGE "Blue";
-	[ RedOrBlue N;
-		if (N % 2 == 0) return RED_TEXT;
-		return BLUE_TEXT;
-	];
+``` code
+Array RED_TEXT --> PACKED_TEXT_STORAGE "Red";
+Array BLUE_TEXT --> PACKED_TEXT_STORAGE "Blue";
+[ RedOrBlue N;
+	if (N % 2 == 0) return RED_TEXT;
+	return BLUE_TEXT;
+];
+```
 
-`BasicInformKit` already defines `EMPTY_TEXT_VALUE`, which is a valid constant `text` holding no characters.
+```BasicInformKit``` already defines ```EMPTY_TEXT_VALUE```, which is a valid constant `text` holding no characters.
 
-These arrays are because `text` values are actually pointers to two-word blocks of memory, in which the first word defines one of a number of possible representations of the text, and the second gives details. See the source code for `BasicInformKit` for the gory details.
+These arrays are because `text` values are actually pointers to two-word blocks of memory, in which the first word defines one of a number of possible representations of the text, and the second gives details. See the source code for ```BasicInformKit``` for the gory details.
 
 ### List constants, stored action constants, and more
 
@@ -20705,7 +20804,9 @@ The extension which wraps the kit will need to define a name:
 
 In effect, this makes a promise, and the kit has to keep the promise, which it can do very easily:
 
-	Global Spade_bounty = 0;
+``` code
+Global Spade_bounty = 0;
+```
 
 Note that the kit has the responsibility of seeing that the value in this variable is always valid for the kind it is supposed to have — but in this case, that's `number`, which is easy enough.
 
@@ -20715,15 +20816,15 @@ Note that the kit has the responsibility of seeing that the value in this variab
 
 At run-time, a rule is represented by a function which must do one of three things:
 
-- return `false` to make no decision;
+- return ```false``` to make no decision;
 
-- call `RulebookSucceeds()` and then return `true` to succeed; or
+- call ```RulebookSucceeds()``` and then return ```true``` to succeed; or
 
-- call `RulebookFails()` and then return `true` to fail.
+- call ```RulebookFails()``` and then return ```true``` to fail.
 
 If the rule is for a rulebook which produces a value then it must pass the outcome value as a parameter if it succeeds:
 
-- call `RulebookSucceeds(V)` and then return `true` to succeed with value `V`.
+- call ```RulebookSucceeds(V)``` and then return ```true``` to succeed with value `V`.
 
 We can create a rule from a kit by writing such a function, and by giving it a name, and perhaps filing it in a rulebook, in the extension which wraps the kit:
 
@@ -20733,12 +20834,14 @@ We can create a rule from a kit by writing such a function, and by giving it a n
 
 The rule function can then go into the kit:
 
-	[ BLOSSOM_R;
-		if (real_location hasnt light) { RulebookSucceeds(); rtrue; }
-		rfalse;
-	];
+``` code
+[ BLOSSOM_R;
+	if (real_location hasnt light) { RulebookSucceeds(); rtrue; }
+	rfalse;
+];
+```
 
-And now `blossom rule` is a value of the kind `rule` in Inform source text, while `BLOSSOM_R` can validly refer to it from I6 code and, in particular, elsewhere in the kit.
+And now `blossom rule` is a value of the kind `rule` in Inform source text, while ```BLOSSOM_R``` can validly refer to it from I6 code and, in particular, elsewhere in the kit.
 
 If the rule is going to print anything, it should ideally do so using Inform's system of responses. These responses must be defined in the wrapper extension:
 
@@ -20746,22 +20849,24 @@ If the rule is going to print anything, it should ideally do so using Inform's s
 		"The garden is in blossom." (A),
 		"The garden is gloomily barren." (B).
 
-What then happens is that the Inform compiler creates a function `BLOSSOM_RM` (i.e., with the same name as the rule but with `M` appended) which can print a response on demand:
+What then happens is that the Inform compiler creates a function ```BLOSSOM_RM``` (i.e., with the same name as the rule but with ```M``` appended) which can print a response on demand:
 
-	[ BLOSSOM_R;
-		if (real_location hasnt light) {
-			BLOSSOM_RM('A');
-			RulebookSucceeds(); rtrue;
-		}
-		BLOSSOM_RM('B');
-		rfalse;
-	];
+``` code
+[ BLOSSOM_R;
+	if (real_location hasnt light) {
+		BLOSSOM_RM('A');
+		RulebookSucceeds(); rtrue;
+	}
+	BLOSSOM_RM('B');
+	rfalse;
+];
+```
 
 If the rule is to be used in a rulebook based on a value, or more often an action, then it will need to be able to access that so-called "basis".
 
-- For action-based rules, it should look at the I6 global variables `actor`, `noun` and `second`.
+- For action-based rules, it should look at the I6 global variables ```actor```, ```noun``` and ```second```.
 
-- For value-based rules, it should look at the I6 global variable `parameter_object`, which despite its name is not necessarily an object: it will be a value of whatever kind the rulebook is based on.
+- For value-based rules, it should look at the I6 global variable ```parameter_object```, which despite its name is not necessarily an object: it will be a value of whatever kind the rulebook is based on.
 
 ### Rulebooks
 
@@ -20769,15 +20874,17 @@ A rulebook is, like a rule, a function, and it has the same calling conventions.
 
 ### Objects and kinds of object
 
-At runtime, an Inform object is represented by a value `ofclass Object` in the I6 sense, and the absence of an object is represented by the I6 constant `nothing`. A kind of object is represented by a value `ofclass Class`.
+At runtime, an Inform object is represented by a value ```ofclass Object``` in the I6 sense, and the absence of an object is represented by the I6 constant ```nothing```. A kind of object is represented by a value ```ofclass Class```.
 
-However, not every value `ofclass Object` is valid as an `object` in Inform. `WorldModelKit` continues, for historical reasons, to define two pseudo-object values `thedark` and `compass`: these are `ofclass Object` in I6, but must not be stored in `object` variables in Inform.
+However, not every value ```ofclass Object``` is valid as an `object` in Inform. ```WorldModelKit``` continues, for historical reasons, to define two pseudo-object values ```thedark``` and ```compass```: these are ```ofclass Object``` in I6, but must not be stored in `object` variables in Inform.
 
 Objects and kinds of object can only be created by Inform source text: so if a kit needs these, they should be created in the wrapper extension. I6 code like this:
 
-	Object oddity "an oddity";
+``` code
+Object oddity "an oddity";
+```
 
-simply creates another pseudo-object like `thedark`, which is not an `object` in the Inform 7 sense.
+simply creates another pseudo-object like ```thedark```, which is not an `object` in the Inform 7 sense.
 
 ### Properties
 
@@ -20787,12 +20894,14 @@ Although it is possible for kits to define Inform properties, this is no longer 
 
 Values of the kind `action`, such as `taking action` or `looking`, are represented in the natural way as I6 action values.
 
-Kits can create their own actions, and also give them the equivalent of `Understand` grammar. For example, `WorldModelKit` provides a handful of debugging commands this way:
+Kits can create their own actions, and also give them the equivalent of `Understand` grammar. For example, ```WorldModelKit``` provides a handful of debugging commands this way:
 
-	Verb meta 'showheap'
-		*                                           -> ShowHeap;
+``` code
+Verb meta 'showheap'
+	*                                           -> ShowHeap;
+```
 
-This creates an action out of world called `##ShowHeap`. `WorldModelKit` then provides a function called `ShowHeapSub` to implement the action. None of this is visible at the Inform 7 level. While kits _can_ do this, they probably shouldn't. It's better to define actions in the wrapper extension.
+This creates an action out of world called ```##ShowHeap```. ```WorldModelKit``` then provides a function called ```ShowHeapSub``` to implement the action. None of this is visible at the Inform 7 level. While kits _can_ do this, they probably shouldn't. It's better to define actions in the wrapper extension.
 
 I6 also has a concept of "fake actions". Inform 7 does not, and kits should create no further fake actions.
 
@@ -20808,7 +20917,1400 @@ To create one with a kit, the wrapper extension should give it a name:
 
 The kit should then define the necessary function:
 
-	[ SQUIGGLE_TOKEN;
-		if (NextWordStopped() == '$$') return GPR_PREPOSITION;
-		return GPR_FAIL;
-	];
+``` code
+[ SQUIGGLE_TOKEN;
+	if (NextWordStopped() == '$$') return GPR_PREPOSITION;
+	return GPR_FAIL;
+];
+```
+
+## Assigning use options to kits
+
+Suppose we want to provide use options which affect the operation of ```AmphibianKit```. We have already seen ways to create such options:
+
+	Use drifting lilypads translates as the configuration flag DRIFTING_LILYPADS.
+	Use horny skin translates as the configuration value SKIN_TYPE = 1.
+	Use scaly skin translates as the configuration value SKIN_TYPE = 2.
+	Use frog count of at least 10 translates as the configuration value FROG_COUNT.
+	Use maximum jump height of 6 translates as the configuration value JUMP_HEIGHT.
+
+But these simply define the names ```DRIFTING_LILYPADS```, ```SKIN_TYPE``` and so on, without assigning them to any kit. So instead we tack ```in AmphibianKit``` onto the end of each declaration:
+
+	Use drifting lilypads translates as the configuration flag DRIFTING_LILYPADS in AmphibianKit.
+	Use horny skin translates as the configuration value SKIN_TYPE = 1 in AmphibianKit.
+	Use scaly skin translates as the configuration value SKIN_TYPE = 2 in AmphibianKit.
+	Use frog count of at least 10 translates as the configuration value FROG_COUNT in AmphibianKit.
+	Use maximum jump height of 6 translates as the configuration value JUMP_HEIGHT in AmphibianKit.
+
+When a configuration flag or value is tied to a kit, two things are different:
+
+* The constant name is moved into that kit's namespace, so, for example,
+we have ```AmphibianKit`DRIFTING_LILYPADS``` not ```DRIFTING_LILYPADS```.
+* As a result, if two different kits both have a configuration value called,
+say, ```MAX_CAPACITY```, both can be used without a conflict occurring, because
+one will be ```FirstKit`MAX_CAPACITY_CFGV``` and the other ```SecondKit`MAX_CAPACITY_CFGV```.
+* A problem message is thrown if the name is not one of those listed in the
+kit's metadata as being expected.
+
+As this last caveat implies, the ```kit_metadata.json``` file for ```AmphibianKit``` needs to be prepared to receive these options, like so:
+
+``` code
+{
+	"is": {
+		"type": "kit",
+		"title": "AmphibianKit"
+	},
+	"kit-details": {
+		"configuration-flags": [ "DRIFTING_LILYPADS" ],
+		"configuration-values": [ "SKIN_TYPE", "FROG_COUNT", "JUMP_HEIGHT" ]
+	}
+}
+```
+
+and then the above declarations would all work, but
+
+	Use mayflies translates as the configuration flag MAYFLIES_AVAILABLE in AmphibianKit.
+
+would be rejected because ```AmphibianKit``` does not support ```MAYFLIES_AVAILABLE```. Similarly, it's an error to use as a value what the kit declares as a flag (unless the value being stored is either 0 or 1).
+
+This raises the question of what happens if the JSON metadata asks for a configuration flag or value which no use option talks about. The answer is that Inform silently creates this, with the value 0, so that no link failure can occur. For example, if we had had
+
+``` code
+	"configuration-values": [ "SKIN_TYPE", "FROG_COUNT", "JUMP_HEIGHT", "SECRET_POND" ]
+```
+
+then whenever Inform compiled a project with ```AmphibianKit``` it would define the constant ```AmphibianKit`SECRET_POND_CFGV``` to 0. Should a knowledgeable user come along and write
+
+	Use secret pond of 10 translates to configuration value SECRET_POND in AmphibianKit.
+	Use secret pond of 7.
+
+...this would then take effect.
+
+Because it is not safe to use ```#ifdef```, ```#ifndef```, ```#iftrue``` or ```#iffalse``` on symbol names linked in from outside of a kit, Inform automatically throws an error on any attempt to use these directives with kit-linked configuration flags or values. Thus, for example, in a kit:
+
+``` code
+#ifdef AmphibianKit`DRIFTING_LILYPADS_CFGF;
+...
+#endif
+```
+
+would throw a problem message. Instead, the idea is to use the value, not the
+existence, of these symbols in the kit:
+
+``` code
+if (AmphibianKit`DRIFTING_LILYPADS_CFGF) {
+	....
+}
+```
+
+Note that there's no prohibition on one kit being able to see the configuration
+values of another: for example, ```WorldModelKit``` can test ```if (BasicInformKit`AMERICAN_DIALECT_CFGF)```.
+
+The following table, for what it is worth, shows how the main use options belonging to ```BasicInformKit```, ```WorldModelKit``` and ```CommandParserKit``` are set:
+
+Use option                        | Now sets
+--------------------------------- | --------------------------------
+no deprecated features            | ```BasicInformKit`NO_DEPRECATED_CFGF```
+dynamic memory allocation         | ```BasicInformKit`STACK_FRAME_CAPACITY_CFGV```
+maximum text length               | ```BasicInformKit`TEXT_BUFFER_SIZE_CFGV```
+maximum things understood at once | ```BasicInformKit`MULTI_OBJ_LIST_SIZE_CFGV```
+authorial modesty                 | ```BasicInformKit`AUTHORIAL_MODESTY_CFGF```
+numbered rules                    | ```BasicInformKit`NUMBERED_RULES_CFGF```
+predictable randomisation         | ```BasicInformKit`FIX_RNG_CFGF```
+command line echoing              | ```BasicInformKit`ECHO_COMMANDS_CFGF```
+memory economy                    | ```BasicInformKit`MEMORY_ECONOMY_CFGF```
+printed engineering notation      | ```BasicInformKit`PRINT_ENGINEER_EXPS_CFGF```
+American dialect                  | ```BasicInformKit`AMERICAN_DIALECT_CFGF```
+serial comma                      | ```WorldModelKit`SERIAL_COMMA_CFGF```
+no scoring                        | ```WorldModelKit`SCORING_CFGV``` = 0
+scoring                           | ```WorldModelKit`SCORING_CFGV``` = 1
+default route-finding             | ```WorldModelKit`ROUTE_FINDING_CFGV``` = 0
+fast route-finding                | ```WorldModelKit`ROUTE_FINDING_CFGV``` = 1
+slow route-finding                | ```WorldModelKit`ROUTE_FINDING_CFGV``` = 2
+full-length room descriptions     | ```WorldModelKit`ROOM_DESC_DETAIL_CFGV``` = 2
+abbreviated room descriptions     | ```WorldModelKit`ROOM_DESC_DETAIL_CFGV``` = 3
+VERBOSE room descriptions         | ```WorldModelKit`ROOM_DESC_DETAIL_CFGV``` = 2
+BRIEF room descriptions           | ```WorldModelKit`ROOM_DESC_DETAIL_CFGV``` = 1
+SUPERBRIEF room descriptions      | ```WorldModelKit`ROOM_DESC_DETAIL_CFGV``` = 3
+undo prevention                   | ```CommandParserKit`UNDO_PREVENTION_CFGF```
+manual pronouns                   | ```CommandParserKit`MANUAL_PRONOUNS_CFGF```
+unabbreviated object names        | ```CommandParserKit`UNABBREVIATED_NAMES_CFGF```
+
+## Controlling how kits are linked
+
+Towards the end of building an Inform project, any kits needed by its extensions are _linked_ into it. (They may need to be built first.)
+
+Because certain extensions are automatically present in projects, certain kits are always part of the linking. Specifically:
+
+Kit                      | Belongs to         | Included when
+------------------------ | ------------------ | -------------
+```BasicInformKit```     | `Basic Inform`     | Always
+```Architecture16Kit```  | `Basic Inform`     | If building for 16-bit architectures
+```Architecture32Kit```  | `Basic Inform`     | If building for 32-bit architectures
+```WorldModelKit```      | `Standard Rules`   | All non-basic projects
+```CommandParserKit```   | `Standard Rules`   | All non-basic projects
+```DialogueKit```        | `Standard Rules`   | Projects using dialogue features
+```EnglishLanguageKit``` | `English Language` | All projects communicating in English
+
+So it is safe to say that our kit will not be the only one in the project, and besides the kits, of course, there is also the "trunk" of Inter code coming from compilation of the source text.
+
+### Private and public names
+
+How do kits interact? For the most part, one kit can refer to functions, arrays and variables in another just by name. For example, ```RootsOfEquationsKit``` can call ```SquareRoot``` from ```BasicInformKit``` just as if it were one of its own functions. This is because ```SquareRoot``` is a _public_ function of ```BasicInformKit```. "Public" names are the ones which are visible to other kits.
+
+By default, all names are public. But this has a down side. We might want a tricky bit of memory manipulation to happen exactly right, and so would not want to let anybody else call a particularly delicate function from out of context. Or we might want just to hide names which aren't important, in order to avoid name-clashes. At present, if two kits both define a public function called ```SquareRoot```, and both are linked into a project, an error will halt linking.
+
+So perhaps kits ought to make only a limited and carefully chosen set of names public, and make the rest _private_. Here's how to make a private function:
+
+``` code
++private [ MyFunction;
+	"Only I can use this.";
+];
+```
+
+Note the _annotation_ ```+private```. This is an I6 syntax allowed only in kits, and is not strictly speaking part of the Inform 6 language. The practical result is that other code in ```RootsOfEquationsKit``` can call ```MyFunction()```, but other kits cannot. Indeed, another kit could have its own function also called ```MyFunction```, without any clash of names occurring.
+
+To prevent confusion, Inform throws a problem message if these markers are used redundantly - for example, if a function is marked ```+public``` in a context where it would have been public anyway.
+
+### Namespaces
+
+All code in a kit is considered as belonging to some _namespace_. Where none is declared, this will be ```main```, the global namespace.
+
+The annotation:
+
+``` code
++namespace(SomeName);
+```
+
+which must occur on its own (note the semicolon ```;``` rather than any directive following on from it) declares that the directives which follow all belong to the namespace ```SomeName``` This continues to the end of the kit, or to the next ```+namespace``` marker, whichever comes first.
+
+Within a namespace, all identifiers are implicitly prefixed with the namespace name and a backtick (except for `main`, where identifiers are as written). Thus:
+
+``` code
++namespace(Secret);
+[ Function x;
+	...
+];
+Constant z = 2;
++namespace(main);
+Constant z = 1;
+```
+
+creates the identifiers ```Secret`Function```, ```Secret`z```, and ```z```. The two definitions of what looks like ```z``` are therefore not contradictory, because they define two different things.
+
+Within a namespace other than ```main```, writing an unqualified identifier will implicitly mean "the definition in this namespace if there is one, and the definition in ```main``` if not". For example:
+
+``` code
++namespace(Secret);
+[ Example;
+	Hello(z);           ! Calls Hello in the namespace Secret with argument 2 
+	main`Example();     ! Calls Example in the namespace main
+];
+Constant z = 2;
+
+[ Hello x;
+	print "Hello to ", x, ".^";
+];
+
++namespace(main);
+Constant z = 7;
+[ Example;
+	Secret`Hello(z);    ! Calls Hello in the namespace Secret with argument 7
+	Hello(13);          ! An error: there is no Hello in the namespace main
+];
+```
+
+Namespaces cannot be nested and can be reopened at any point. If two different
+kits both use a namespace called ```SoundEffects```, then it's the same namespace.
+
+Optionally, ```+namespace``` can specify a default access. For example:
+
+``` code
++namespace(Secret, access private);
+```
+
+puts us in namespace ```Secret```, and says that until the next namespace marker, all definitions are by default private, as if they were all marked ```+private```. Similarly for ```access public```, though that is the default.
+
+Note that it's fine to write something like:
+
+``` code
++namespace(main, access public);
+
+[ MyAPIFunction;
+	MyImplementation(1745);
+];
+
++namespace(main, access private);
+
+[ MyImplementation undocumented_number;
+	...
+];
+```
+
+thus dividing a kit into a public half and a private half, but keeping all of the names in the default ```main``` namespace.
+
+The namespace ```replaced``` is reserved for the linker's own use, and attempting to create anything in it will throw an error.
+
+### Replacing public definitions from other kits
+
+When the linker joins blocks of Inter code together, it looks for clashes between names. A clash can only occur if both names are the same, are in the same namespace, and are both public.
+
+Even then, if exactly one of these definitions was annotated ```+replacing``` then there is no clash: the replacing definition wins. So, for example, if ```SomeNewKit``` includes:
+
+``` code
++replacing [ SquareRoot num;
+	"Nobody cares about square roots, son.";
+];
+```
+
+then both it and ```BasicInformKit``` define functions of the same name: but this definition wins, because it is marked ```+replacing```. And the practical effect is that ```SomeNewKit``` can therefore replace any public function it likes from ```BasicInformKit```, or ```WorldModelKit```.
+
+```+replacing``` means "let this definition triumph over any other". If the linker finds two definitions both marked as ```+replacing``` in this way, there's once again an error message, since they can't both win.
+
+Optionally, the annotation can be more specific:
+
+``` code
++replacing(from BasicInformKit) [ SquareRoot num;
+	...
+];
+```
+
+allows this definition to replace the one in ```BasicInformKit```, but continue
+to throw a linking error if an unexpected rival appears from elsewhere.
+
+Replacement is a more slippery idea than it first seems. Some things to bear
+in mind:
+
+* If no clash ever occurs, no error is produced. The ```+replacing``` definition
+may not in fact have replaced anything, but it's still the valid one. So
+it's possible to mark a definition as ```+replacing``` which would overlap a
+definition in some other kit which might or might not be being used.
+
+* It is not possible to use ```+replacing``` to override a ```+private``` definition in another kit. Private names really are private.
+
+* By default, the replaced definition is simply thrown away, but if ```+replacing(keeping)``` is used instead then the discarded definition is kept alongside the new one. It clearly cannot have the same name as before, so it is moved into the namespace ```replaced```.
+
+For example, this effectively says "double the value of ```REQUISITION_STACK_SIZE```, whatever that is":
+
+``` code
++replacing(keeping) Constant REQUISITION_STACK_SIZE = (2 * replaced`REQUISITION_STACK_SIZE);
+```
+
+Whereas this would produce an error:
+
+``` code
++replacing Constant REQUISITION_STACK_SIZE = (2 * replaced`REQUISITION_STACK_SIZE);
+```
+
+since then ```replaced`REQUISITION_STACK_SIZE``` would not exist: the old definition
+would have been destroyed, and so could not have been used.
+
+Or for another example, the following "corrects" the output of the existing definition of ```SquareRoot``` from ```BasicInformKit``` by rounding up to the nearest natural number, rather than down:
+
+``` code
++replacing(keeping) [ SquareRoot num x;
+	x = replaced`SquareRoot(num);
+	if (x*x < num) x++;
+	return x;
+];
+```
+
+so that `the square root of 17` will then evaluate to 5, not 4.
+
+Note that ```+replacing(keeping)``` can only be applied to global variables (```Global ...```), constants, arrays and functions: a problem message will be thrown for attempts to use it with any other constructs.
+
+## Neptune and enumerative kinds
+
+Inform already provides a range of ways to create new kinds of object, and new kinds of value in general, using source text alone. If a kit simply needs, say, a concept of "bottle", then its wrapper extension can include something like this:
+
+	A bottle is a kind of container. A bottle is usually openable.
+	A bottle is usually transparent.
+	
+	The bottle kind is accessible to Inter as "K_bottle".
+
+And then code in the kit can do this sort of thing:
+
+``` code
+	if (obj ofclass K_bottle) ...
+```
+
+But certain kinds cannot be made in source text. For example, no source text defines `time`, or the `list of K` kind (or properly speaking, kind constructor, since it is a way of making a new kind out of an old one). All kinds which are _not_ defined in source text are defined in _Neptune files_.
+
+Neptune is a simple mini-language whose sole task is to define kinds for Inform. It's named for the fountain in the Place Neptune in Carcassonne, not the gas giant. We'll first use this mini-language to define an enumerative kind of value with values which are not 1, 2, 3, ...
+
+A kit can only use Neptune files if its JSON metadata says so. So we'll amend ```kit_metadata.json``` to:
+
+``` code
+{
+	"is": {
+		"type": "kit",
+		"title": "InternationalTelephonyKit"
+	},
+	"kit-details": {
+		"provides-kinds": [ "CountryCodes.neptune" ]
+	}
+}
+```
+
+This simply says that it provides a Neptune file to declare one or more kinds. We will follow through on that by giving the kit a ```kinds``` directory, inside which we put ```CountryCodes.neptune```:
+
+``` code
+InternationalTelephonyKit
+	Contents.w
+	kinds
+		CountryCodes.neptune
+	kit_metadata.json
+	Sections
+		Dialling Codes.w
+```
+
+And this will be our Neptune file ```CountryCodes.neptune```:
+
+``` code
+new base COUNTRY_CODE_TY {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: country code
+	plural: country codes
+
+	instance: Saint Helena code  = ST_HELENA_CC     = 290
+	instance: New Caledonia code = NEW_CALEDONIA_CC = 687
+	instance: Montserrat code    = MONTSERRAT_CC    = 1664
+	instance: Svalbard code      = SVALBARD_CC      = 4779
+}
+```
+
+When this kit is linked into a project, any source text in that project can now use the kind `country code`. So for example, this rule:
+
+	When play begins:
+		showme the Saint Helena code;
+		showme the list of country codes;
+		showme a random country code;
+		showme the number of country codes.
+
+produces the text:
+
+``` transcript
+country code: Saint Helena code
+"list of country codes" = list of country codes: {Saint Helena code, New Caledonia code, Montserrat code, Svalbard code}
+"a random country code" = country code: New Caledonia code
+"number of country codes" = number: 4
+```
+
+On the face of it, that's not so interesting. We could just as easily have written:
+
+	Country code is a kind of value. The country codes are Saint Helena code, New Caledonia code, Montserrat code and Svalbard code.
+
+But if we had done _that_, then the values representing these codes at runtime would be 1, 2, 3 and 4; instead of which, they are 290, 687, 1664 and 4779. For example, suppose we define:
+
+	To dial (code - country code):
+		(- Dialup({code}); -).
+
+and then provide the necessary ```Dialup``` function in ```InternationalTelephonyKit```:
+
+``` code
+[ Dialup code;
+	print "You dial ", code, "^";
+	if (code == SVALBARD_CC) print "The phone does feel a little chilly.^";
+];
+```
+
+The result of the phrase `dial Svalbard code` is then to print:
+
+``` transcript
+You dial 4779
+The phone does feel a little chilly.
+```
+
+As this example function suggests, the constants
+```ST_HELENA_CC```, ```NEW_CALEDONIA_CC```, ```MONTSERRAT_CC```, and ```SVALBARD_CC``` are all now accessible to code in the kit.
+
+To get back to the Neptune file syntax, let's unpick what is going on. The basic shape of our file was like so:
+
+``` code
+new base COUNTRY_CODE_TY {
+	...
+}
+```
+
+It consisted of a single declaration, with all the details being inside the braces ```{``` and ```}```. The four main declarations are:
+
+* ```new base```. Makes a new base kind, on a par with `time` or `number`.
+
+* ```new constructor```. Makes a new constructor for kinds, on a par with `list of K` or `relation of K to L`.
+
+* ```builtin base```. Supplies details about a base kind which the compiler is expecting to be defined, like `time` or `number`.
+
+* ```builtin constructor```. Supplies details about a constructor for kinds which the compiler is expecting to be defined, like `time` or `number`.
+
+And for creating kinds which are not normally supplied with Inform, then, ```new base``` and ```new constructor``` are the ones which matter. `country code` is going to be a new base kind.
+
+Next after ```new base``` was the name ```COUNTRY_CODE_TY```. This is a defined constant accessible to I6, and its value is used inside kit-level code as the "kind ID" representing what kind this is. For example, the function call ```DefaultValueOfKOV(COUNTRY_CODE_TY)``` returns 290, the dialling code for the island of Saint Helena, and ```PrintKindValuePair(COUNTRY_CODE_TY, MONTSERRAT_CC)``` prints ``Montserrat``.
+
+By convention all kind IDs have names in ```ALL_CAPITALS_WITH_UNDERSCORES``` and ending in ```_TY```. This goes so far back into the early days of Inform that the letters "TY" here were short for "type", which we would now call "kind".
+
+Inside the braces, then, the Neptune file specifies some details about this new base kind `country code`, and begins like this:
+
+``` code
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: country code
+	plural: country codes
+```
+
+The ```singular``` and ```plural``` lines are easily explained: they are the source-text names for the kind. We know from the header line of the declaration that it is called ```COUNTRY_CODE_TY``` at the I6 end; at the Inform source text end, it is called `country code`.
+
+```conforms-to``` tells Inform that this kind behaves in the way you would expect from the _protocol_ ```ENUMERATED_VALUE_TY```, which is the I6 way to write `enumerated value`. A kind can conform to many protocols — for example, all kinds automatically conform to `value`, a.k.a. ```VALUE_TY```. Saying that `country code` conforms to `enumerated value` means that, for example, it would be valid to supply a country code when using the phrase:
+
+	To speculate about (N - an enumerated value): ...
+
+Being an enumerated value means that Inform allows us to count the instances with `number of...`, or repeat through them, and so on. But Inform would not allow us to add together two country codes: it would throw a problem message if the source text asked to do that. If, however, we added:
+
+``` code
+	conforms-to: ENUMERATED_VALUE_TY
+	conforms-to: ARITHMETIC_VALUE_TY
+	singular: country code
+	plural: country codes
+```
+
+then Inform would now allow us to add together the Saint Helena code and the Montserrat code, making 290 + 1664 = 1954. That isn't one of our four possible values, so this would quickly lead to disaster. In any case, it really doesn't mean anything to add together two phone numbers, so it's easy to see why we want `country code` to conform to `enumerated value` but not `arithmetic value`.
+
+All base kinds should conform to one or more of the following:
+
+Source text name        | I6-level name            | What conforms to this
+----------------------- | ------------------------ | ---------------------
+`value`                 | VALUE_TY                 | All kinds by definition
+_none_                  | STORED_VALUE_TY          | All kinds whose values can be stored in a variable or property
+`sayable value`         | SAYABLE_VALUE_TY         | All kinds whose values can sensibly be printed
+`understandable value`  | UNDERSTANDABLE_VALUE_TY  | All kinds whose values can be recognised in typed commands
+`arithmetic value`      | ARITHMETIC_VALUE_TY      | All kinds whose values can sensibly and safely be added, multiplied and so on
+`real arithmetic value` | REAL_ARITHMETIC_VALUE_TY | Ditto, but using real not integer arithmetic
+`enumerated value`      | ENUMERATED_VALUE_TY      | All kinds with a limited range
+_none_                  | POINTER_VALUE_TY         | All kinds with values represented by I6 pointers
+
+In practice, it's not necessary to give much of a list, though, because:
+
+* Saying that a kind conforms to ```REAL_ARITHMETIC_VALUE_TY``` automatically makes it conform to ```ARITHMETIC_VALUE_TY``` too.
+
+* Saying that a kind conforms to either ```ARITHMETIC_VALUE_TY``` or  ```ENUMERATED_VALUE_TY``` automatically makes it conform to ```UNDERSTANDABLE_VALUE_TY``` too.
+
+* Saying that a kind conforms to ```UNDERSTANDABLE_VALUE_TY``` automatically makes it conform to ```SAYABLE_VALUE_TY``` too.
+
+* Saying that a kind conforms to ```SAYABLE_VALUE_TY``` automatically makes it conform to ```STORED_VALUE_TY``` too.
+
+* All kinds always conform to ```VALUE_TY```.
+
+So although we only declared `country code` as conforming to ```ENUMERATED_VALUE_TY```, we picked up conformance to ```UNDERSTANDABLE_VALUE_TY```, ```SAYABLE_VALUE_TY```, ```STORED_VALUE_TY``` and ```VALUE_TY``` automatically.
+
+That is quite enough about conformance. The rest of the declaration is simply a list of the _instances_ of this kind: i.e., of what those specific values are.
+
+``` code
+	instance: Saint Helena code  = ST_HELENA_CC     = 290
+	instance: New Caledonia code = NEW_CALEDONIA_CC = 687
+	instance: Montserrat code    = MONTSERRAT_CC    = 1664
+	instance: Svalbard code      = SVALBARD_CC      = 4779
+```
+
+In an enumerated kind like this, at least one instance must be provided, and they must be given in strictly increasing value order.
+
+Values are actually optional. For example:
+
+``` code
+	instance: Fellowship of the Ring = FOTR_LOTR
+	instance: Two Towers = TT_LOTR
+	instance: Return of the King = ROTK_LOTR
+```
+
+would create a three-element enumeration with values 1, 2, 3. This:
+
+``` code
+	instance: cyan = CYAN_COL = 10
+	instance: blue = BLUE_COL
+	instance: grey = GREY_COL = 20
+	instance: pink = PINK_COL
+```
+
+creates the values as 10, 11, 20, 21.
+
+Values can alternatively be given in Inform 6 hexadecimal or binary notation:
+
+``` code
+	instance: JSR instruction = JSR_6502 = $20
+	instance: RTS instruction = RTS_6502 = $60
+	instance: STA instruction = STA_6502 = $85
+```
+
+Once enumerations are numbered other than in the obvious way 1, 2, 3, ..., it becomes convenient to have ways to distinguish their sequence position from their numerical value. So:
+
+> phrase: {ph_numericalvalue} numerical value of (V - enumerated value) ... number
+>
+> The value stored at run-time to represent `V`. For a typical enumeration, the first-created value of its kind is internally stored as the number 1, the second 2, and so on. But for some non-standard enumerations, this is not always true.
+
+> phrase: {ph_sequencenumber} sequence number of (V - enumerated value) ... number
+>
+> 1 if `V` is the first-created value of its kind, 2 if it is the second, and so on. For a typical enumeration, this the same thing as `numerical value of V`. But for some non-standard enumerations, this is not always true.
+
+For example, `numerical value of Svalbard code` is 4779, whereas `sequence number of Svalbard code` is 4.
+
+## Neptune and arithmetic kinds
+
+For our next trick, we'll create a new kind of arithmetic value. This will be `memory address`, and will hold locations in the virtual machine memory map. We will need three ingredients:
+
+First, the kit has to include some supporting code for the kind. Here's a section file for the kit:
+
+``` code
+Memory Address Support
+
+This section provides functions to support the kind "memory address".
+
+@ This function is used to say a value of memory address, which we
+do in hexadecimal, padding to the theoretical maximum width of addresses
+on the architecture.
+
+=
+[ MEMORY_ADDRESS_TY_SAY N;
+	print "$";
+	#iftrue (WORDSIZE == 2);
+	PrintInBase(N, 16, 4);
+	#ifnot;
+	PrintInBase(N, 16, 8);
+	#endif;
+];
+
+@ This dumps C bytes from address N onwards:
+
+=
+[ MEMORY_ADDRESS_TY_ShowBytes N C
+	i;
+	for (i=0: i<C: i++) {
+		if (i > 0) print " ";
+		PrintInBase(N->i, 16, 2);
+	}
+	print " ~";
+	for (i=0: i<C: i++) {
+		if ((N->i >= $20) && (N->i < $7f)) print (char) N->i; else print "?";
+	}
+	print "~";
+];
+
+@ And here we parse a word of the player's command to see if it could be an
+address in hexadecimal - up to 4 or 8 hex digits with a dollar sign in front.
+If it can't be that, we revert to trying the DECIMAL_TOKEN instead, which
+is what BasicInformKit uses to parse numbers in decimal.
+
+=
+[ MEMORY_ADDRESS_TY_TOKEN wa wl ch n digit;
+	wa = WordAddress(wn);
+	wl = WordLength(wn);
+	#Iftrue CHARSIZE == 1;
+	ch = wa->0;
+	if (wl > 5) return DECIMAL_TOKEN();
+	#Ifnot;
+	ch = wa-->0;
+	if (wl > 9) return DECIMAL_TOKEN();
+	#Endif; ! CHARSIZE
+	if (ch ~= '$') return DECIMAL_TOKEN();
+	wa = wa + CHARSIZE;
+	wl--;
+	n = 0;
+	while (wl > 0) {
+		#Iftrue CHARSIZE == 1;
+		ch = wa->0;
+		#Ifnot;
+		ch = wa-->0;
+		#Endif; ! CHARSIZE
+		if (ch >= 'a') digit = ch - 'a' + 10;
+		else if (ch >= 'A') digit = ch - 'A' + 10;
+		else digit = ch - '0';
+		if (digit >= 0 && digit < 16) n = 16*n + digit;
+		else return GPR_FAIL;
+		wl--;
+		wa = wa + CHARSIZE;
+	}
+	parsed_number = n; wn++;
+	return GPR_NUMBER;
+];
+```
+
+Second, the wrapper extension should provide some convenient phrases:
+
+	To decide which memory address is (N - number) in memory:
+		(- {N} -).
+
+	To decide which memory address is the address of the serial code:
+		(- (VM_SerialNumber()) -).
+
+	To say dump of (N - number) bytes at (address - memory address):
+		(-	MEMORY_ADDRESS_TY_SAY({address});
+			print ": ";
+			MEMORY_ADDRESS_TY_ShowBytes({address}, {N});
+		-);
+
+Because we don't want to get into difficulties with dimensional restrictions on arithmetic, which would not let us add numbers to addresses, we will imitate the (not always great) convention also used by the `time` kind, which is that a small number can represent both a time of day and also a duration in minutes. Here, `16 bytes` and `16 in memory` are both the same value under the hood. So:
+
+	To decide which memory address is (N - number) byte/bytes:
+		(- {N} -).
+
+	Section on dumping (not for release)
+
+	Dumping memory at is an action out of world applying to one memory address.
+
+	Carry out dumping memory at:
+		say dump of 32 bytes at the memory address understood;
+		say line break.
+
+	Understand "dump [memory address]" as dumping memory at.
+
+That just leaves the Neptune file needed to declare this kind. It starts very much like the declaration of `country code` above, but this time conforms to ```ARITHMETIC_VALUE_TY``` not ```ENUMERATED_VALUE_TY```.
+
+``` code
+new base MEMORY_ADDRESS_TY {
+	conforms-to: ARITHMETIC_VALUE_TY
+	singular: memory address
+	plural: memory addresses
+
+	default-value: 0
+	can-exchange: yes
+	constant-compilation-method: none
+
+	comparison-routine: UnsignedCompare
+	parsing-routine: MEMORY_ADDRESS_TY_TOKEN
+	printing-routine: MEMORY_ADDRESS_TY_SAY
+	printing-routine-for-debugging: MEMORY_ADDRESS_TY_SAY
+
+	index-priority: 2
+	index-default-value: 0
+	specification-text: An address within the virtual machine the story runs in.
+}
+```
+
+As can be seen, though, it defines no instances — only enumerated kinds can do that — and instead sets many more details. Let's start with these three settings, which affect how the kind is handled inside the Inform compiler:
+
+``` code
+	default-value: 0
+	can-exchange: yes
+	constant-compilation-method: none
+```
+
+* ```default-value``` gives an I6 expression for the default value for the kind. Here, that will be the address 0.
+
+* ```can-exchange``` being ```yes``` means that values of this kind, if printed out by one story and then read in by another story entirely, would still have the same meaning. For example, that's true of `number` because all Inform stories use the same bits to represent the number 17, say. But it is not true of `action name`, because one story may have an action for `swimming`, say, and the other story not; and even if both of them have, they may number it differently. The default for ```can-exchange``` is very much ```no```, but we're saying ```yes``` here. An address means the same in all stories, even though the data stored at that address may be different in each of them.
+
+* ```constant-compilation-method``` tells Inform how literal values of this kind are written in source text. The possible options are: ```none```, ```literal```, ```quantitative``` and ```special```, the default being ```none```:
+
+  - ```none``` means there are no literals of this kind.
+
+  - ```literal``` means there are literals of this kind, parsed using Inform's system of [Advanced Notations]. These, however, can't be used with kinds which are created in Neptune files.
+
+  - ```quantitative``` means there are named instances, as for enumerations. The word used here is now a little enigmatic, but relates to a time when instances of enumerated values were called "quantities" inside the compiler's source code.
+
+  - ```special``` means that the compiler contains special code to handle this. New kinds can't use this, of course.
+
+Next we have some settings for how values are handled at run-time:
+
+``` code
+	comparison-routine: UnsignedCompare
+	parsing-routine: MEMORY_ADDRESS_TY_TOKEN
+	printing-routine: MEMORY_ADDRESS_TY_SAY
+	printing-routine-for-debugging: MEMORY_ADDRESS_TY_SAY
+```
+
+Taking these four in turn:
+
+* ```comparison-routine``` is the name of a function ```f``` to compare two values of the kind, such that ```f(x, y)``` is 1 if ```x``` is greater than ```y```, 0 if they are equal, and -1 if ```x``` is less than ```y```. We want to compare memory addresses as unsigned numbers, so that addresses above the halfway point in the address space aren't misunderstood as negative numbers. The function ```UnsignedCompare``` is defined in ```BasicInformKit```, so we can just use that. (If we want regular signed comparison of numbers, the special value ```signed``` can also be used, which tells Inform not to make a function call but to use comparison operations on the virtual machine, which is a little faster.)
+
+* ```parsing-routine``` is the name of a function which can act as an `Understand` token for this kind: that is, it implements the grammar token `"[memory address]"`. This function has to comply with the calling conventions for general parsing routines (GPR) in the Inform 6 sense. ```MEMORY_ADDRESS_TY_TOKEN``` above is an example of that.
+
+* ```distinguishing-routine``` isn't specified for this kind, but it would be a function ```f``` such that ```f(x, y)``` is 1 if there is anything the player could type in a command which would distinguish the value ```x``` from ```y```. If ```parsing-routine``` is capable of understanding all possible values then the test performed by ```distinguishing-routine``` can just be to call the ```comparison-routine``` and return 1 if and only if it says that ```x``` and ```y``` are equal.
+
+* ```printing-routine``` is the name of a function to print a value of this kind.
+
+* ```printing-routine-for-debugging``` is the same, but used in the output from debugging commands. (For some kinds, this might for example print the address at which the data in a value is stored.)
+
+Finally, how the kind is presented in the Kinds part of the Index for a project which uses it:
+
+``` code
+	index-priority: 2
+	index-default-value: 0
+	specification-text: An address within the virtual machine the story runs in.
+```
+
+* ```index-priority``` controls how high up in the running order of the Index listing of kinds this comes. It really doesn't matter, but arithmetic kinds are usually given index priority 2.
+
+* ```index-default-value``` is just text: it's what the Index says the default value is.
+
+* ```specification-text``` is a brief verbal description.
+
+With all of this work in place, we can run, say:
+
+	When play begins:
+		let the header be 0 in memory;
+		showme the header;
+		showme the header plus 4 bytes;
+		showme the address of the serial code;
+		say "Looking inside, I see [dump of 64 bytes at the header].";
+		say "At the serial code, [dump of 6 bytes at the address of the serial code].";
+
+On the Z-machine, that might produce something like this:
+
+``` transcript
+"header" = memory address: $0000
+"header plus 4 bytes" = memory address: $0004
+"address of the serial code" = memory address: $0012
+Looking inside, I see $0000: 08 9D 00 01 9F 38 9F 39 92 67 01 0A 1B 1A 8B 02 00
+50 32 34 30 34 31 37 00 42 BC 04 A9 C4 03 5A 30 58 00 58 00 30 01 01 00 00 00 00
+09 02 8B 01 00 00 01 01 00 00 01 02 00 00 00 00 36 2E 34 33
+"?????8?9?g???????P240417?B?????Z0X?X?0??????????????????????6.43".
+At the serial code, $0012: 32 34 30 34 31 37 "240417".
+```
+
+And on Glulx, something broadly similar, but with different layout and longer addresses.
+
+## Neptune and other base kinds
+
+### Oddball kinds
+
+We have seen examples of new base kinds created which conform to ```ENUMERATED_VALUE_TY``` and ```ARITHMETIC_VALUE_TY```, but not everything does. If we have a kind which has a scatter of values, perhaps unlimited in extent, and where arithmetic makes no sense, then neither of these models would work. For example, `action name` is a kind which has a finite set of possible values, but those values are not predictable and can't exchange; and it makes no sense to add or subtract them.
+
+Such kinds should given one of the following conformances:
+
+- ```conforms-to: UNDERSTANDABLE_VALUE_TY``` if we can give them both a ```parsing-routine``` and a ```printing-routine```;
+
+- ```conforms-to: SAYABLE_VALUE_TY``` if we can give them a ```printing-routine``` but not a ```parsing-routine```;
+
+- ```conforms-to: STORED_VALUE_TY``` if not even that.
+
+For example, `action name`, which is defined by a Neptune file in ```WorldModelKit```, conforms to ```SAYABLE_VALUE_TY```. This is why action names can be said, but cannot be understood in players' commands.
+
+As it happens, `action name` is an example of a kind which, even though it doesn't conform to ```ENUMERATED_VALUE_TY```, _does_ have a finite range of values. We want Inform to be able to take advantage of this, because that means that `number of action names`, `list of action names` and so on can work. The Neptune file defining `action name` therefore contains this unlovely line:
+
+``` code
+loop-domain-schema: for (*2=0,*1=ActionNumberIndexed(*2): *2<AD_RECORDS: *2++,*1=ActionNumberIndexed(*2))
+```
+
+This is essentially a prototype of how to write a loop over all valid values of `action name`, written in what is nearly I6 notation, except that ```*1``` and ```*2``` represent two loop variables available to manage the iteration, with the actual value stored in ```*1```. What the above means is that Inform can access the valid values of `action name` as
+
+``` code
+ActionNumberIndexed(0)
+ActionNumberIndexed(2)
+ActionNumberIndexed(2)
+...
+ActionNumberIndexed(AD_RECORDS - 1)
+```
+
+where ```ActionNumberIndexed``` is a function (compiled as it happens by the Inform compiler directly), and ```AD_RECORDS``` is a constant. But the details are unimportant: the point is that any kind can be given its own mechanism for looping through values. For example,
+
+``` code
+loop-domain-schema: for (*2=1,*1=ArrayOfGadgetValues-->*2: *2<=ArrayOfGadgetValues-->0: *2++,*1=ArrayOfGadgetValues-->*2)
+```
+
+would go through the values stored in an I6 table array like this one:
+
+``` code
+Array ArrayOfGadgetValues --> 5 10 20 30 40 50;
+```
+
+But of course if the values were really so regular, then this would also do it:
+
+``` code
+loop-domain-schema: for (*1 = 10: *1 <= 50: *1 = *1 + 10)
+```
+
+### Kinds of object
+
+In general, Neptune cannot define kinds of object.
+
+But it does support one feature allowing those to be tweaked, though the feature is intentionally limited and should be used as little as possible. Suppose, for nefarious reasons of our own, we need to assign virtual machine attributes or properties — these do not quite correspond to Inform properties, but the concepts all overlap — to objects at run-time; but we don't want the Inform compiler to do this higher up, through assertions in the source text in the regular way. Inform used to have a crude feature which looked like this:
+
+	Include (-
+		has enterable supporter,
+		with max_capacity 10,
+	-) when defining a rideable animal.
+
+That is no longer allowed. All forms of `Include (- ... -)` are on the way out (kits are a better solution all round), but this one has already gone.
+
+But its functionality can be replicated by placing this declaration in a Neptune file in the kit in question:
+
+``` code
+properties of rideable animal {
+	attribute: enterable
+	attribute: supporter
+	property: max_capacity = 10
+}
+```
+
+Note that the kind named must be a valid kind of `object` (though it can be one with no instances), and can give the name either in the singular or the plural. Inside this declaration, only the following are allowed:
+
+``` code
+	attribute: ATTRIBUTENAME
+	attribute: ~ATTRIBUTENAME
+	property: PROPERTYNAME
+	property: PROPERTYNAME = NUMBER
+```
+
+The syntax ```~ATTRIBUTENAME``` means the attribute is set to ```false```, not ```true```; this is traditional Inform 6 notation. The short form ```property: PROPERTYNAME``` means ```property: PROPERTYNAME = 0```.
+
+## Pointer-value kinds
+
+A _word_ is the quantity of memory needed to store one ```-->``` array entry: two bytes on 16-bit architectures (because 2 bytes times 8 bits per byte is 16 bits), four bytes on 32-bit architectures. This is also the amount of data stored in a local or global variable, and in a property.
+
+So it would be both tidy and efficient if every kind could fit all its possible values into a single word. And for some kinds, this is exactly what does happen: `time`, for example, fits easily in a word, and `number` fits exactly in a word. But there is simply more potential data in a `text`, say, or a `list of texts`, than can possibly squeeze into 16 or 32 bits.
+
+Data like that is stored instead as a _pointer_, that is, as an address in memory. Whether a value is stored as a single word or as a pointer depends entirely on the kind. If the kind is declared as
+
+``` code
+	conforms-to: POINTER_VALUE_TY
+```
+
+...then all values of this kind are stored as pointers; and if not, all values of the kind are stored as words. Perhaps surprisingly, the values of all kinds of object are stored as single words, even though an object seems like a complicated mass of detail. Copying the value `brass samovar` (an instance of the kind `thing`, let's say) from one variable to another does not make a second samovar appear in the story. It simply means that both variables contain an ID number identifying which object is meant, and that both mean the one and only samovar. These ID numbers fit comfortably into a word. So ```OBJECT_TY``` does not conform to ```POINTER_VALUE_TY```.
+
+### The weak kind ID determines whether a kind uses pointer values
+
+Kinds also have IDs: in fact, two sorts of ID, a _weak kind ID_ and a _strong kind ID_. We'll only need to work with weak kind IDs here. Several have appeared already: the weak kind ID of `number` is ```NUMBER_TY```, and so on. All of the constants ending ```_TY``` mentioned in Neptune files are in fact weak IDs.
+
+What makes them weak is that they cannot always tell different kinds apart. For example, `room`, `thing` and `vehicle`, along with all other kinds of object, all have weak ID ```OBJECT_TY```. And `list of numbers`, `list of texts` and `list of lists of lists of times`, for example, all have weak ID ```LIST_OF_TY```. Strong kind IDs, by contrast, do distinguish these, which is what makes them strong.
+
+But weak kind IDs are nevertheless useful because the I6 code needed to handle values of a given kind generally depends only on its weak ID. All lists have weak ID ```LIST_OF_TY```, but then all lists are created, copied and destroyed by the same functions.
+
+In this section we will go through how pointer values are stored in memory, and lay out a set of functions from ```BasicInformKit``` which other kits can use when dealing with pointer values.
+
+> ---
+>
+> ```ConformsTo_POINTER_VALUE_TY(weak_kind_ID)```
+> 
+> Returns ```true``` if ```weak_kind_ID``` refers to a kind with pointer values, and ```false``` otherwise. Thus ```ConformsTo_POINTER_VALUE_TY(NUMBER_TY)```  is false, but ```ConformsTo_POINTER_VALUE_TY(TEXT_TY)``` is true.
+>
+> ---
+>
+> ```WeakKindOfPV(pv)```
+> 
+> Can only be called on a valid (i.e., created and not yet destroyed) pointer value: returns its weak kind ID.
+>
+> ---
+
+### Pointer values can be passed by reference
+
+We have already seen that these two potential phrase definitions are subtly different:
+
+	To decide what number is the number of entries in (L - a list of values):
+		(- LIST_OF_TY_GetLength({L}) -).
+
+	To decide what number is the number of entries in (L - a list of values):
+		(- LIST_OF_TY_GetLength({-by-reference:L}) -).
+
+In the first, ```LIST_OF_TY_GetLength``` is given a duplicate of `L`; in the second, it is passed `L` itself. Copying takes memory and time, so it should only be done when necessary. Here there's no need to duplicate, because the length is the same either way. So although both definitions work, the second is faster.
+
+In this case, though, _only_ the second potential definition works:
+
+	To sort (L - a list of values)
+		(- LIST_OF_TY_Sort({L}, SORT_ASCENDING); -).
+
+	To sort (L - a list of values)
+		(- LIST_OF_TY_Sort({-lvalue-by-reference:L}, SORT_ASCENDING); -).
+
+The issue here is that the first phrase duplicates the list, sorts the duplicate, and then throws it away as no longer needed. The second phrase sorts the original list, which is what we wanted to happen.
+
+In Inform, only pointer values can be passed by reference. It's not possible to pass a reference to the number 20, say: you can only pass 20.
+
+Moreover, once a pointer value has passed down into I6 code, all further function calls are always by reference. If ```LIST_OF_TY_Sort``` receives a list value ```L``` and then passes it on to some other function, it is only passing a reference (i.e., pointer) to the data, not the data itself.
+
+### Pointer values usually store data in fields
+
+Suppose, then, that the source text does this:
+
+	let L be { 4, 2, 71 };
+	sort L;
+
+so that the function call ```LIST_OF_TY_Sort(L)``` is performed. Now we're down at the I6 level, inside some kit. What can we do with ```L```?
+
+```L``` is the address in memory of a small ```-->``` array called the _short block_. These are truthfully named, usually having only 1 or 2 entries. In most cases, one of those entries is a further address, of a larger ```-->``` array called the _long block_.
+
+The exact configuration differs from kind to kind. For a `stored action`, for example, the short block has size 1, and contains only a pointer to the long block, which holds exactly 6 entries, called _fields_. For a `list of numbers`, on the other hand, the long block may need to be much larger, and may shrink or grow. ```BasicInformKit``` handles all of that automatically. 
+
+In some kinds, fields are single bytes, and in others words. 
+
+> ---
+>
+> ```PVFieldCapacity(pv)```
+>
+> Returns the number of fields of data in the long block of the PV. This is always positive. It may be larger than expected, because the memory manager tends to allocate memory up to powers of 2 in size.
+>
+> If this PV has no long block, then the capacity is 0.
+>
+> ---
+>
+> ```SetPVFieldCapacity(pv, new_capacity)```
+>
+> Resizes the PV so that it can now hold at least ```new_capacity``` fields. This must be a positive number. This can contract as well as expand PVs. Note that this does not properly destroy any data which might have been trimmed off: it is the caller's responsibility to see that that is done before calling. After this call, ```PVFieldCapacity(pv)``` will be at least ```new_capacity```, but may be a little greater, for the same reason mentioned above.
+>
+> If this PV has no long block, then the capacity cannot be set and remains 0.
+>
+> ---
+>
+> ```PVField(pv, field)```
+> 
+> Returns the current contents of the entry numbered ```field``` in the long block. If the PV has field capacity C, then fields are numbered 0 to C-1, so that ```PVField(pv, 0)``` is the first field. Calling this function with a ```field``` value out of range triggers an error.
+>
+> ---
+>
+> ```WritePVField(pv, field, value)```
+> 
+> Writes ```value``` to the entry numbered ```field``` in the long block. If the PV has field capacity C, then fields are numbered 0 to C-1, so that ```PVField(pv, 0)``` is the first field. Calling this function with a ```field``` value out of range triggers an error.
+>
+> ---
+>
+> ```WritePVFieldsFromByteArray(pv, array, extent)```
+> 
+> Copies the entries ```array->0``` to ```array->(extent-1)``` as the first ```extent``` fields of the PV, whose capacity is enlarged if necessary to make room. Should only be used if the PV stores byte-sized fields.
+>
+> ---
+>
+> ```WritePVFieldsFromWordArray(pv, array, extent)```
+> 
+> Copies the entries ```array-->0``` to ```array-->(extent-1)``` as the first ```extent``` fields of the PV, whose capacity is enlarged if necessary to make room. Should only be used if the PV stores word-sized fields.
+>
+> ---
+
+### Creation and destruction
+
+If we want to obtain a completely new PV value, we have to use:
+
+> ---
+>
+> ```CreatePV(weak_kind_ID)```
+> 
+> Returns a completely new value of the given kind. This must be a pointer value, of course, so ```CreatePV(TEXT_TY)``` creates a new text, but ```CreatePV(NUMBER_TY)``` is an error. The value is initially equal to the default value for the kind in question: an empty text, an empty list, and so on. 
+>
+> ---
+
+Note that Inform is _not_ a system with garbage collection, where unwanted objects linger for a while in memory and are then disposed of automatically. If we create a new value, we need to be certain that it will some day be destroyed.
+
+> ---
+>
+> ```DestroyPV(pv)```
+> 
+> Destroys the PV. If that in turn contained further PV data, those are automatically destroyed first. So destroying a list of texts causes all the texts to be destroyed, and then finally the list: only one call is needed. Once destroyed, a PV is gone, gone, gone: do not ever use the ```pv``` address again.
+>
+> ---
+
+### Copying and comparison
+
+Copying cannot be done as simply as with regular data. The following is an attempt to take a list as an argument, and return a shortened version:
+
+``` code
+[ ShortenedList list shorter_list;
+	shorter_list = list;
+	LIST_OF_TY_SetLength(shorter_list, 4);
+	return shorter_list;
+];
+```
+
+Unfortunately the statement ```shorter_list = list;``` does not make a duplicate copy of the data in the list: it only makes a duplicate copy of the pointer to the list. It leaves both ```shorter_list``` and ```list``` pointing to the same actual data. So although ```LIST_OF_TY_SetLength``` does indeed truncate that data, the effect is that the original list is also truncated.
+
+What's actually needed is this:
+
+``` code
+[ ShortenedList list shorter_list;
+	shorter_list = CreatePV(LIST_OF_TY);
+	CopyPV(shorter_list, list);
+	LIST_OF_TY_SetLength(shorter_list, 4);
+	return shorter_list;
+];
+```
+
+> ---
+>
+> ```CopyPV(to_pv, from_pv)```
+> 
+> Makes a duplicate copy of ```from_pv``` in ```to_pv```, both of which must already be valid PVs and with the same weak kind ID.
+>
+> ---
+
+The very fact that duplication is possible means that comparison is also tricky. For example, the ```if``` condition here:
+
+``` code
+	shorter_list = CreatePV(LIST_OF_TY);
+	CopyPV(shorter_list, list);
+	if (list == shorter_list) {
+		...
+	}
+```
+
+...would be false. ```shorter_list``` is a duplicate of ```list``` in terms of the contents they each have, but they are stored at different locations in memory, and all that ```list == shorter_list``` tests is whether the locations are equal. The correct way to do this is:
+
+``` code
+	shorter_list = CreatePV(LIST_OF_TY);
+	CopyPV(shorter_list, list);
+	if (ComparePV(list, shorter_list) == 0) {
+		...
+	}
+```
+
+> ---
+>
+> ```ComparePV(pv1, pv2)```
+> 
+> Tests to see if ```pv1``` is less than, equal to, or greater than ```pv2```, both of which must already be valid PVs and with the same weak kind ID. Returns 0 if they are equal, a positive number if ```pv1``` is the greater one, and a negative number if ```pv2``` is greater.
+>
+> ---
+
+This test is used not only to see if one pointer value `is` another one, but also when sorting lists or tables of pointer values.
+
+### Casting
+
+_Casting_ is taking a value from one kind and converting to a value of another kind. Inform does relatively little casting, but for example it can convert a `number` to a `real number`, or a `snippet` to a `text`.
+
+Here we're only concerned with the case where the target kind, i.e., the kind which the data ends up in, is a pointer-valued kind: so the `snippet` to `text` example would be done as the call ```CastPV(to_txt, SNIPPET_TY, snip)```.
+
+> ---
+>
+> ```CastPV(to_pv, original_weak_kind_ID, original_value)```
+> 
+> Should only be called where the caller is certain that the cast is possible. Takes the value ```original_value```, of the kind given in ```original_weak_kind_ID```, and converts it as faithfully as possible to become the new contents of ```to_pv```, which must already be a valid PV.
+>
+> ---
+
+### Serialising
+
+_Serialising_ is converting data to or from a text file which can be exchanged with another program. Two functions are provided for this, ```PVFromFile``` and ```WritePVToFile```, but their use is beyond the scope of these notes. See the source code of ```BasicInformKit``` for more. Pointer values rarely allow serialisation, in practice.
+
+## Neptune and kinds stored in multiple words of data
+
+In this section, we'll make a base kind which takes 5 words of data to store. It'll be a CMYK colour value, used by photographers and printers to specify colours in terms of the proportions of cyan, magenta, yellow and black ink needed, with each value a percentage ranging from 0 to 100; and then a name, in text form. For example, royal blue in CMYK is roughly 71, 53, 0, 12, `"royal blue"`.
+
+For this kind, we will make this Neptune declaration:
+
+``` code
+new base CMYK_COLOUR_TY {
+	conforms-to: POINTER_VALUE_TY
+	conforms-to: SAYABLE_VALUE_TY
+	singular: CMYK colour
+	plural: CMYK colours
+	
+	multiple-block: no
+	heap-size-estimate: 8
+	can-exchange: yes
+	constant-compilation-method: none
+	
+	printing-routine: CMYK_COLOUR_TY_Say
+	printing-routine-for-debugging: CMYK_COLOUR_TY_Say
+	comparison-routine: CMYK_COLOUR_TY_Compare
+
+	index-priority: 2
+	index-default-value: 0
+	specification-text: A cyan-magenta-yellow-black description of an ink colour.
+}
+```
+
+This is mostly as before, but ```multiple-block:``` and ```heap-size-estimate:``` need some explaining. A value of this kind will be represented by a pointer to a _short block_ of memory. In the case of this kind, it really will be short: a single word. And that word will store a pointer to a _long block_ of memory, which contains (among other things) the actual data content. Values of some kinds need only a fixed amount of space, so they can manage with just one long block. Others might balloon out to huge amounts of storage, occupying a chain of multiple long blocks. ```multiple-block:``` should be ```yes``` for those kinds, but ```no``` for kinds like `CMYK colour`, which needs only a fixed 5 words of data to represent a value.
+
+```heap-size-estimate:``` is compulsory for pointer-valued types: it makes a guess at the likely storage needs of a typical value of this kind, rounded up to the nearest power of two. Here all values of the kind need 5 words, so 8 is the next power of two.
+
+The two functions ```CMYK_COLOUR_TY_Say``` and ```CMYK_COLOUR_TY_Compare``` mentioned above are quite easy to write. The data occupies five words, or "fields", indexed 0 to 4: we use the function ```PVField```, from ```BasicInformKit```, to read the contents.
+
+``` code
+Constant CMYK_NAME_F = 0;    ! TEXT_TY value
+Constant CMYK_CYAN_F = 1;    ! NUMBER_TY value
+Constant CMYK_MAGENTA_F = 2; ! NUMBER_TY value
+Constant CMYK_YELLOW_F = 3;  ! NUMBER_TY value
+Constant CMYK_BLACK_F = 4;   ! NUMBER_TY value
+
+Constant CMYK_LONG_BLOCK_SIZE = 5;
+Constant CMYK_SHORT_BLOCK_SIZE = 1;
+
+[ CMYK_COLOUR_TY_Say cmyk;
+	TEXT_TY_Say(PVField(cmyk, CMYK_NAME_F));
+	print " ink = ";
+	print "C:", PVField(cmyk, CMYK_CYAN_F), "% ";
+	print "M:", PVField(cmyk, CMYK_MAGENTA_F), "% ";
+	print "Y:", PVField(cmyk, CMYK_YELLOW_F), "% ";
+	print "K:", PVField(cmyk, CMYK_BLACK_F), "%";
+];
+
+[ CMYK_COLOUR_TY_Compare cmyk1 cmyk2 i d;
+	d = TEXT_TY_Compare(
+		PVField(cmyk1, CMYK_NAME_F), PVField(cmyk2, CMYK_NAME_F));
+	if (d ~= 0) return d;
+	for (i=CMYK_CYAN_F: i<CMYK_LONG_BLOCK_SIZE: i++) {
+		d = PVField(cmyk1, i) - PVField(cmyk2, i);
+		if (d ~= 0) return d;
+	}
+	return 0;
+];
+```
+
+This, however, is not enough. Because we specified that this is a kind which conforms to ```POINTER_VALUE_TY```, we must also provide a function called ```CMYK_COLOUR_TY_Support```.
+
+``` code
+[ CMYK_COLOUR_TY_Support task arg1 arg2 arg3;
+	switch(task) {
+		CREATE_KOVS:      return CMYK_COLOUR_TY_Create(arg2);
+		
+		DESTROY_KOVS:     break;
+
+		COMPARE_KOVS:     return CMYK_COLOUR_TY_Compare(arg1, arg2);
+		HASH_KOVS:        break;
+
+		COPY_KOVS:        break;
+		COPYQUICK_KOVS:   return true;
+		COPYSB_KOVS:	  CopyPVShortBlockOfSize1(arg1, arg2);
+		EXTENT_KOVS:      return CMYK_LONG_BLOCK_SIZE;
+		COPYKIND_KOVS:    break;
+
+		CAST_KOVS:        break;
+
+		MAKEMUTABLE_KOVS: return CMYK_SHORT_BLOCK_SIZE;
+
+		KINDDATA_KOVS:    break;
+		
+		READ_FILE_KOVS:   break;
+		WRITE_FILE_KOVS:  break;
+
+		DEBUG_KOVS:       print " = ", (CMYK_COLOUR_TY_Say) arg1;
+	}
+	rfalse;
+];
+```
+
+This function is a Swiss Army knife for doing things with pointer-valued kinds. It passes a ```task```, which will always be one of the ```*_KOVS``` constants. (KOVS is an acronym for Kind Of Value Support.) There are quite a lot of these, but a kind doesn't have to perform every task: note how many cases in the above ```switch``` lead only to ```break;```.
+
+Some tasks ask for information, others ask us to change something: whether the return value is significant or not depends on the task.
+
+- ```CREATE_KOVS```. Must create a new value, which is initially equal to the default value for this kind. As it happens, we're going to make the default value a solid black ink, ``black ink = C:0% M:0% Y:0% K:100%``.
+
+  Creation functions take one optional argument, ```sb_address```. If this is omitted (i.e., is 0), memory space for the short block is allocated from the heap and an address there is used. If ```sb_address``` _is_ provided, it doesn't matter what data happens to be there at the moment: that data will be overwritten by a newly-created short block. So the caller's only obligation is that if ```sb_address``` is non-zero, then it needs to point to enough space to fit whatever size short block will be used.
+  
+  We don't need to worry about all that memory allocation business, though, because it's all taken care of in the final line of the function. Calling ```CreatePVShortBlockOfSize1(sb_address, long_block)``` returns the completed value. If we had wanted a size 2 short block, we could alternatively have called ```CreatePVShortBlockOfSize2```.
+  
+  Our real work, then, is to create this long block, by calling ```CreatePVLongBlock```. This function takes two arguments: how much storage we want to stash in the block — 5 words — and what kind of value owns the block — ```CMYK_COLOUR_TY```. Once this is called, we are free to put data into the five words now available, and this is done with the special function ```InitialisePVLongBlockField```. Note the ```LB```, for long block, at the end of this function name, and do not confuse this function with the usual ```WritePVField```.
+  
+  Note that in creation functions, it's essential to use ```InitialisePVLongBlockField``` and not ```WritePVField```. They are different because the first argument of ```InitialisePVLongBlockField``` is the address of the long block, _not_ a valid PV. We need that because, of course, we haven't finished creating the PV yet.
+  
+  If this kind used multiple long blocks, it would have been necessary to call ```CreatePVLongBlockMultiple``` instead of ```CreatePVLongBlock```, but otherwise the process would be exactly the same.
+
+  ``` code
+  Array CMYK_DEFAULT_NAME_TEXT --> PACKED_TEXT_STORAGE "black";
+
+  [ CMYK_COLOUR_TY_Create sb_address
+      long_block txt;
+      long_block = CreatePVLongBlock(CMYK_LONG_BLOCK_SIZE, CMYK_COLOUR_TY);
+      txt = PVCreate(TEXT_TY);
+      CopyPV(txt, CMYK_DEFAULT_NAME_TEXT);
+      TEXT_TY_Mutable(txt);
+      InitialisePVLongBlockField(long_block, CMYK_NAME_F, txt);
+      InitialisePVLongBlockField(long_block, CMYK_CYAN_F, 0);
+      InitialisePVLongBlockField(long_block, CMYK_MAGENTA_F, 0);
+      InitialisePVLongBlockField(long_block, CMYK_YELLOW_F, 0);
+      InitialisePVLongBlockField(long_block, CMYK_BLACK_F, 100);
+      return CreatePVShortBlockOfSize1(sb_address, long_block);
+  ];
+  ```
+
+  The interesting field of the five is ```CMYK_NAME_F```, of course, since it's a text value which itself needs creation. When created by ```PVCreate(TEXT_TY)```, the result will be a copy of the default text, which is the empty text `""`. We actually want to start with `"black"`, so we must _copy_ that constant value into our new text, but any use of packed text is always tricksy, and we make it mutable so that its value will sort correctly as against text. We don't simply execute ```InitialisePVLongBlockField(long_block, CMYK_NAME_F, CMYK_DEFAULT_NAME_TEXT);``` because values like text must always be copied in a way which keeps reference counts accurate.
+
+- ```DESTROY_KOVS```. This task is to call a destruction function. At this point, we know that a `CMYK colour` is being thrown away. Losing the four percentages is harmless enough, they were just numbers, but losing the ink name means we need to destroy the text value properly. If we don't, useless data will be left forever on the heap, causing a so-called memory leak. Any pointer-value can be humanely destroyed, so:
+
+  ``` code
+  [ CMYK_COLOUR_TY_Destroy cmyk;
+      DestroyPV(PVField(cmyk, CMYK_NAME_F));
+  ];
+  ```
+
+- ```COMPARE_KOVS```. For this, we just need to call our ```comparison-routine```, already set up above.
+
+- ```HASH_KOVS```. This optional feature enables us to provide a "hash code" which can be used to make a quick verification that two values are different. A hash code is a very approximately calculated value such that if `x` and `y` have different hash codes then we are certain that `x is not y`; but if they have equal hash codes then will have to use ```comparison-routine``` to find out whether or not they are equal, which is a slower process. Sorting of lists and tables, for example, is much faster if hash codes are used. Here is a suitable function:
+
+  ``` code
+  [ CMYK_COLOUR_TY_Hash cmyk hash_code;
+      hash_code = TEXT_TY_Hash(PVField(cmyk, CMYK_NAME_F));
+      hash_code = hash_code * 33 + PVField(cmyk, CMYK_CYAN_F);
+      hash_code = hash_code * 33 + PVField(cmyk, CMYK_MAGENTA_F);
+      hash_code = hash_code * 33 + PVField(cmyk, CMYK_YELLOW_F);
+      hash_code = hash_code * 33 + PVField(cmyk, CMYK_BLACK_F);
+      return hash_code;
+  ];
+  ```
+
+- ```MAKEMUTABLE_KOVS```. This has to do with constant values and reference-counting, and is tricky to explain. Basically, values can be "mutable" (able to be changed), or not. Constant values stored in memory are _not_ mutable. When given this task, we should either return the length of the short block in words, or, if the value is stored in some unusual way which doesn't involve quite the same usage of the short block, directly act to fix the situation. For complicated efficiency reasons, ```TEXT_TY``` acts directly, but most kinds will simply return the short block size and let Inform get on with things happily by itself.
+
+- ```COPY_KOVS```. What happens when Inform copies a pointer value is that it first transfers the raw data directly across, but then asks us to perform a proper copy on any fields of data which need it. The percentage numbers are raw data needing no special treatment, but the ink name field, once again, is different: that's a `text`, which is a pointer value, so we have to use ```CopyPV``` to make a deep copy of the contents.
+
+  ``` code
+  [ CMYK_COLOUR_TY_Copy cmykto cmykfrom inkfrom inkto;
+      inkfrom = PVField(cmykfrom, CMYK_NAME_F);
+      inkto = PVCreate(TEXT_TY);
+      CopyPV(inkto, inkfrom);
+      WritePVField(cmykto, CMYK_NAME_F, inkto);
+  ];
+  ```
+
+- ```COPYQUICK_KOVS```. A _quick copy_ is a more efficient form of copying which is permitted when safe. This task is called when a copy is about to happen: we can return ```false``` to refuse permission to make a quick copy, or ```true``` to permit it, perhaps after making some preparations first. We're fine with a quick copy, so we say yes.
+
+- ```COPYSB_KOVS```. Assuming a quick copy is allowed (which for us it always is), this task is called for, and we have to copy one short block into another. For the common case of a one-word short block containing a pointer to the long block, which is what we have here, ```BasicInformKit``` provides a function to do this for us, ```CopyPVShortBlockOfSize1(arg1, arg2)```. There's no meaningful return value.
+
+  For kinds with a short block of size 2, the alternative function ```CopyPVShortBlockOfSize2``` is provided.
+
+- ```EXTENT_KOVS```. Return the length of the data currently stored in the long block. For us, there are always exactly 5 words stored there.
+
+- ```CAST_KOVS```. _Casting_ is taking data of one kind and converting it to data of another. We certainly don't need that here, though we could imagine casting an `RGB colour` to a `CMYK colour`, perhaps. See ```TEXT_TY_Cast``` in ```BasicInformKit``` for an example of how this is done.
+
+- ```KINDDATA_KOVS```. Requests a kind ID for the data stored in the value. This is only really needed for constructors like `list of K`; for base kinds, it's fine just to return 0 and let Inform use its default behaviour.
+
+- ```COPYKIND_KOVS```. Copies over the kind metadata recorded in one value into the other. Again, base kinds can ignore this. It's needed only for constructors like `list of K`.
+
+- ```READ_FILE_KOVS```. Reading a serialised-to-text form of the data from a file. See ```TEXT_TY_Support``` in ```BasicInformKit``` for an example of this.
+
+- ```WRITE_FILE_KOVS```. Writing a serialised-to-text form of the data to a file. See ```TEXT_TY_Support``` in ```BasicInformKit``` for an example of this.
+
+- ```DEBUG_KOVS``` gives an opportunity to make the output from testing commands which show the contents of the memory heap look more understandable.
+
+Finally, and purely for convenience, we're going to provide a creation function which doesn't just make the default black:
+
+``` code
+[ CMYK_COLOUR_TY_New ink c m y k cmyk;
+	cmyk = PVCreate(CMYK_COLOUR_TY);
+	CopyPV(PVField(cmyk, CMYK_NAME_F), ink);
+	WritePVField(cmyk, CMYK_CYAN_F, c);
+	WritePVField(cmyk, CMYK_MAGENTA_F, m);
+	WritePVField(cmyk, CMYK_YELLOW_F, y);
+	WritePVField(cmyk, CMYK_BLACK_F, k);
+	return cmyk;
+];
+```
+
+We can then define this phrase in the wrapper extension:
+
+	To decide which CMYK colour is (T - text) ink C (C - number) M (M - number) Y (Y - number) K (K - number):
+		(- (CMYK_COLOUR_TY_New({T}, {C}, {M}, {Y}, {K})) -).
+
+And finally, then, a project which includes the wrapper extension could have:
+
+	When play begins:
+		let background be a CMYK colour;
+		showme background;
+		showme "lavender" ink C 8 M 8 Y 0 K 2;
+		let royal blue be "royal blue" ink C 71 M 53 Y 0 K 12;
+		showme royal blue;
+		showme whether or not royal blue is greater than background;
+		let L be a list of CMYK colours;
+		add royal blue to L;
+		add background to L;
+		add "taupe" ink C 0 M 19 Y 30 K 72 to L;
+		add "taupe" ink C 0 M 17 Y 31 K 72 to L;
+		say "Before sorting, L is [L].";
+		sort L;
+		say "After sorting, L is [L].";
+
+Which outputs:
+
+``` transcript
+"background" = cmyk colour: black ink = C:0% M:0% Y:0% K:100%
+""lavender" ink C 8 M 8 Y 0 K 2" = cmyk colour: lavender ink = C:8% M:8% Y:0% K:2%
+"royal blue" = cmyk colour: royal blue ink = C:71% M:53% Y:0% K:12%
+"whether or not royal blue is greater than background" = truth state: true
+Before sorting, L is royal blue ink = C:71% M:53% Y:0% K:12%, black ink = C:0%
+M:0% Y:0% K:100%, taupe ink = C:0% M:19% Y:30% K:72% and taupe ink = C:0% M:17%
+Y:31% K:72%.
+After sorting, L is black ink = C:0% M:0% Y:0% K:100%, royal blue ink = C:71%
+M:53% Y:0% K:12%, taupe ink = C:0% M:17% Y:31% K:72% and taupe ink = C:0% M:19%
+Y:30% K:72%.
+```
+
+Any C programmers reading this will appreciate that we have essentially imitated this sort of C type:
+
+``` code
+struct CMYK_colour {
+	text ink_colour;
+	int cyan;
+	int magenta;
+	int yellow;
+	int black;
+}
+```
+
+## Neptune and kind constructors
+
+_Kind constructors_ are ways to construct new kinds from existing ones: sometimes one existing kind, as in `list of K`, and sometimes two, as in `relation of K to L`.
+
+These of course can make an unlimited number of different kinds — consider `list of numbers`, `list of lists of numbers`, `list of lists of lists of numbers`, ..., for example. But the different possible kinds made out of the same constructor share a Neptune declaration.
+
+For example, here is the declaration for `list of K` in ```BasicInformKit``` (slightly shortened to remove the Index details, which work exactly as for base kinds):
+
+``` code
+builtin constructor LIST_OF_TY {
+	conforms-to: POINTER_VALUE_TY
+	singular: list of k
+	plural: lists of k
+	terms: covariant
+
+	default-value: 0
+	multiple-block: yes
+	heap-size-estimate: 256
+	can-exchange: yes
+	constant-compilation-method: special
+
+	comparison-routine: BlkValueCompare
+	distinguishing-routine: LIST_OF_TY_Distinguish
+	printing-routine: LIST_OF_TY_Say
+}
+```
+
+Much of this setup is as it was our `CMYK colour` example. The idea is that these settings are held in common by all kinds of the `list of K` shape. They all conform to ```POINTER_VALUE_TY```, and so on.
+
+```terms: covariant``` has to do with whether narrowing the kind parameter `K` also narrows `list of K`, which is covariance, or widens it, which would be contravariance. In practice, a good way to think about to consider that a door is a kind of thing, and see what happens if `K` is changed from `thing` to `door`. For example:
+
+- Is a list of doors also a list of things? Yes — because the door terms are also things. Is a list of things also a list of doors? No. Conceptually, `K1` < `K2` means `list of K1` < `list of K2`. So the `K` term in `list of K` must be _covariant_. 
+
+- Is an activity on doors also an activity on things? No — because the activity can't operate on things other than doors. Is an activity on things also an activity on doors? Yes — if it can act on all things, it can certainly act on doors. Conceptually, `K1` < `K2` means `activity on K1` > `activity on K2`. So the `K` term in `activity in K` must be _contravariant_.
+
+When a constructor takes two parameters, they can go in opposite directions. `K based rule producing L` is contravariant in `K`, but covariant in `L`. For that, we would write `terms: contravariant, covariant`.
+
+Terms can also be optional, and we can give multiple names. The declaration of `RULE_TY` in Neptune actually goes like so:
+
+``` code
+builtin constructor RULE_TY {
+	conforms-to: SAYABLE_VALUE_TY
+	compatible-with: RULEBOOK_TY
+	singular: rule | k based rule | rule producing l | k based rule producing l
+	plural: rules | k based rules | rules producing l | k based rules producing l
+	terms: contravariant optional, covariant optional
+	...
+}
+```
+
+Note the pipe characters ```|``` dividing the possible names.
+
+Beyond that, the definition is surprisingly similar to the way `CMYK colour` was handled in the previous section. There are two main differences: the amount of data can vary as the list lengthens or shortens, instead of being fixed at 5 words. So it need ```multiple-block: yes``` rather than ```no```. The ```heap-size-estimate``` is a good bit larger, too. Lists are often much smaller, but we want to guess on the high side.
+
+Just as `CMYK colour` did, so `list of K` provides a support function, called ```LIST_OF_TY_Support```. The full content can be found in ```BasicInformKit```, but a few key differences are worth showing here.
+
+Long blocks for lists consist of two header words — the kind ID for the contents, and the number of entries — followed by the entries themselves. So for the list `{ 2, 3, 5, 7 }`, the long block data would be six words in all: ```NUMBER_TY, 4, 2, 3, 5, 7```.
+
+As might be guessed, copying and destruction are easy if the kind being listed is stored in simple values. They become harder if not. For example:
+
+``` code
+Constant LIST_ITEM_KOV_F = 0; ! The kind of the items
+Constant LIST_LENGTH_F = 1;   ! The number of items
+Constant LIST_ITEM_BASE = 2;  ! List items begin at this entry
+
+[ LIST_OF_TY_Destroy list no_items i k;
+	k = PVField(list, LIST_ITEM_KOV_F);
+	if (ConformsTo_POINTER_VALUE_TY(k)) {
+		no_items = PVField(list, LIST_LENGTH_F);
+		for (i=0: i<no_items: i++)
+			DestroyPV(PVField(list, i + LIST_ITEM_BASE));
+	}
+];
+```
+
+And this ensures that if ```DestroyPV``` is called on `{ { "red", "blue" }, { "green" }, { "purple", "orange" } }`, which is a `list of lists of texts`, say, then the process will recurse so that the values are destroyed in this sequence:
+
+	"red"
+	"blue"
+	{ "red", "blue" }
+	"green"
+	{ "green" }
+	"purple"
+	"orange"
+	{ "purple", "orange" }
+	{ { "red", "blue" }, { "green" }, { "purple", "orange" } }
+
+Thus our single call to ```DestroyPV``` resulted in 8 other calls to it before the original call finished.
