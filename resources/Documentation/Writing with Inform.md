@@ -12654,7 +12654,7 @@ Note that, in order for our activity to succeed, we do need to supply a grammar 
 
 ## Reading a command {act_reading} {var_command} {kind_snippet}
 
-^^{understanding: special processing of keyboard input} ^^{Inform 6 equivalent: |BeforeParsing} ^^{snippets} ^^{player's command (- snippet)+glob+} ^^{matched text (- snippet)+glob+} ^^{punctuation: removing from player's command} ^^{regular expressions} ^^{text: regular expressions} ^^{>OOPS}
+^^{understanding: special processing of keyboard input} ^^{Inform 6 equivalent: |BeforeParsing} ^^{snippets} ^^{player's command (- snippet)+glob+} ^^{matched text (- snippet)+glob+} ^^{punctuation: removing from player's command} ^^{regular expressions} ^^{text: regular expressions} ^^{topics: matching snippets} ^^{>OOPS}
 
 **1. When it happens.** When reading a command from the keyboard.
 
