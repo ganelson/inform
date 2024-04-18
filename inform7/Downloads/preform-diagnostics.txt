@@ -33,17 +33,17 @@
         {......} _or {......} 
           (hits 0/9) constraint DS = {16} extremes [3, infinity)
 
-<documentation-symbol-tail> hits 483/3208 nti 18 constraint DS = {17, 18} extremes [6, infinity)
+<documentation-symbol-tail> hits 485/3208 nti 18 constraint DS = {17, 18} extremes [6, infinity)
     English:
         {...} ( <documentation-symbol> ) 
-          (hits 448/965) (matched long text) constraint DS = {17, 18} extremes [6, infinity)
+          (hits 450/965) (matched long text) constraint DS = {17, 18} extremes [6, infinity)
         {...} -- <documentation-symbol> -- 
-          (hits 35/517) (matched long text) constraint DS = {17, 18} extremes [6, infinity)
+          (hits 35/515) (matched long text) constraint DS = {17, 18} extremes [6, infinity)
 
-<documentation-symbol> hits 516/1266 nti 17 constraint DS = {17} extremes [3, 3]
+<documentation-symbol> hits 518/1270 nti 17 constraint DS = {17} extremes [3, 3]
     English:
         documented at {###} 
-          (hits 516/516) (matched: 'documented at ph_say') constraint DS = {17} extremes [3, 3]
+          (hits 518/518) (matched: 'documented at ph_say') constraint DS = {17} extremes [3, 3]
 
 <comparative-construction> nti 19 constraint DS = {19} extremes [2, infinity)
     English:
