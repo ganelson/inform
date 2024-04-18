@@ -609,31 +609,51 @@ is implemented, which in turn hangs on the |parse_noun| properties compiled
 by Inform. But this seems to be sound.
 
 =
-[ ListEqual o1 o2 f1 f2;
-  if (o1.KD_Count ~= o2.KD_Count) rfalse;
-  if ((o1.plural == 0) || (o2.plural == 0)) rfalse;
-  if (c_style & FULLINV_BIT) {
-    f1 = DetailFlags(o1,1);
-    if ((f1 & LW_EMPTY) && WillRecurs(o1)) rfalse;
-    f2 = DetailFlags(o2,1);
-    if (f1 =~ f2) rfalse;
-    if ((f2 & LW_EMPTY) && WillRecurs(o2)) rfalse;
-   }
-   else if (c_style & PARTINV_BIT) {
-    f1 = DetailFlags(o1);
-    if ((f1 & LW_EMPTY) && WillRecurs(o1)) rfalse;
-    f2 = DetailFlags(o2);
-    if (f1 =~ f2) rfalse;
-    if ((f2 & LW_EMPTY) && WillRecurs(o2)) rfalse;
-  }
-  return Identical(o1, o2);
+
+!#ifdef TARGET_GLULX;
+Array NBUF1 --> TEXT_TY_BufferSize;
+Array NBUF2 --> TEXT_TY_BufferSize;
+
+[ lstring str i;
+!print "len: ", str-->0, " ";
+#ifdef TARGET_GLULX;
+for (i = 1 : i <= str-->0 : i++ ) glk_put_char_uni(str-->i);
+#ifnot;
+for (i = WORDSIZE : i < ((str-->0) + WORDSIZE) : i++ ) print (char) str->i;
+#endif;
 ];
 
-[ WillRecurs o;
-    if (c_style & ALWAYS_BIT ~= 0) rtrue;
-    if (c_style & RECURSE_BIT == 0) rfalse;
-    if ((o has supporter) || ((o has container) && (o has open or transparent))) rtrue;
-    rfalse;
+[ StringEqualObjectNames o1 o2 i;
+  VM_PrintToBuffer(NBUF1, TEXT_TY_BufferSize, PSN__, o1);
+  VM_PrintToBuffer(NBUF2, TEXT_TY_BufferSize, PSN__, o2);
+#ifdef TARGET_GLULX;
+  for ( i = 0 : i <= NBUF1-->0 : i++ ) if (NBUF1-->i ~= NBUF2-->i) rfalse;
+#ifnot;
+  if (NBUF1-->0 ~= NBUF2-->0) rfalse;
+  for (i = WORDSIZE : i < ((NBUF1-->0) + WORDSIZE) : i++ ) if (NBUF1->i ~= NBUF2->i) rfalse;
+#endif;
+  rtrue;
+];
+
+[ ListEqual o1 o2 v1 v2;
+  if (o1.KD_Count ~= o2.KD_Count) rfalse;
+  if ((o1.plural == 0) || (o2.plural == 0)) rfalse;
+  ! only containers get labeled empty, so DetailFlags only calls ObviouslyOccupied for containers
+  ! so for supporter case we have to test here
+  if (o1 ofclass K6_supporter) {
+    v1 = ObviouslyOccupied(o1);
+    if (v1 && ((c_style & ALWAYS_BIT) || (~~(c_style & RECURSE_BIT)))) rfalse;
+    v2 = ObviouslyOccupied(o1);
+    if (v2 && ((c_style & ALWAYS_BIT) || (~~(c_style & RECURSE_BIT)))) rfalse;
+    if (v1 ~= v2) rfalse;
+  }
+  if ((c_style & FULLINV_BIT) && (DetailFlags(o1,1,1) ~= DetailFlags(o2,1,1))) rfalse;
+  else if ((c_style & PARTINV_BIT) && (DetailFlags(o1,0,1) ~= DetailFlags(o2,0,1))) rfalse;
+!#ifdef TARGET_GLULX;
+  return StringEqualObjectNames(o1, o2);
+!#ifnot;
+!  return Identical(o1, o2);
+!#endif;
 ];
 
 @h Grouping.
@@ -950,22 +970,23 @@ Constant LW_OPEN_BUT_EMPTY = $$00000001; ! 'N'
 
 Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
 
-[ DetailFlags o invdesc flags;
-   if (o has light && (invdesc || (location hasnt light))) flags = flags | LW_LIT;
+[ DetailFlags o invdesc empty_truth flags;
+   if (o has light && (invdesc || (location hasnt light))) flags = flags | LW_LIT; ! this is overly simplistic... it shouldn't be whether the location has light but whether the player would be in darkness without some lit object in the location that the player doesn't carry
    if (o has worn) flags = flags | LW_WORN;
    if (o has container) {
      ! we can't know it's empty unless it's at least one of open or transparent
-     if (((o has open) || (o has transparent)) && (~~(ObviouslyOccupied(o)))) flags = flags | LW_EMPTY; 
+     ! TODO but not unopenable closed transparent things
+     if ((((o has open) || (o has transparent)) && (~~(ObviouslyOccupied(o)))) && (~~((o hasnt open) && (o hasnt openable) && (~~empty_truth)))) flags = flags | LW_EMPTY;
+     if ((o has locked) && invdesc) flags = flags | LW_LOCKED;
      if (o has openable) {
        if (o has open) flags = flags | LW_OPEN;
        else flags = flags | LW_CLOSED;
-       if ((o has locked) && invdesc) flags = flags | LW_LOCKED;
      }
    }
   return flags;
 ];
 
-[ WriteAfterEntryTerms o invdesc flags terms current counter print_count last_index last_comma spare x;
+[ WriteAfterEntryTerms o invdesc flags terms current counter print_count last_index last_comma x;
   flags = DetailFlags(o, invdesc);
   if (flags) {
    if ((flags & LW_OPEN) && (flags & LW_EMPTY)) {
@@ -978,7 +999,6 @@ Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
       #ifdef TARGET_ZCODE;
       x = -1; 
       @log_shift current x -> current;
-!      current = spare;
       #ifnot;
       @ushiftr current 1 current;
       #endif;
@@ -1003,7 +1023,6 @@ Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
      counter++;
       #ifdef TARGET_ZCODE;
       @log_shift current x -> current;
-!      current = spare;
       #ifnot;
       @ushiftr current 1 current;
       #endif;
