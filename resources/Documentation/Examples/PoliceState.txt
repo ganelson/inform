@@ -5,7 +5,7 @@ Index: Disorderly conduct
 Description: Several friends who obey you; a policeman who doesn't (but who takes a dim view of certain kinds of antics).
 For: Z-Machine
 
-^^{Disorderly conduct OLDIX}
+^^{Disorderly conduct}
 
 	{*}"Police State"
 	

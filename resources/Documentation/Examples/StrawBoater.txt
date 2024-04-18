@@ -5,7 +5,7 @@ Index: Testing for empty properties
 Description: Using text properties that apply only to some things and are not defined for others.
 For: Z-Machine
 
-^^{Testing for empty properties OLDIX}
+^^{Testing for empty properties}
 
 Sometimes we like to give properties to kinds of thing, but not fill them in in all cases. For instance, we might have vehicles that optionally make noise, and those might have a `movement sound`.
 

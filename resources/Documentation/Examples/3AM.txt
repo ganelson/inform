@@ -5,7 +5,7 @@ Index: SHAKE command
 Description: A shake command which agitates soda and makes items thump around in boxes.
 For: Z-Machine
 
-^^{SHAKE command OLDIX}
+^^{SHAKE command}
 
 	{*}"3 AM"
 	

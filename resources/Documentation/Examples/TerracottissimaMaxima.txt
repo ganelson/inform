@@ -5,7 +5,7 @@ Index: Understanding text
 Description: Flowerpots with textual names that might change during play.
 For: Z-Machine
 
-^^{Understanding text OLDIX}
+^^{Understanding text}
 
 Inform can also understand text properties:
 

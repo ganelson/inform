@@ -5,7 +5,7 @@ Index: Postures for sitting, standing, and lying down
 Description: A system of postures allowing the player and other characters to sit, stand, or lie down explicitly or implicitly on a variety of enterable supporters or containers, or in location.
 For: Z-Machine
 
-^^{Postures for sitting, standing, and lying down OLDIX}
+^^{Postures for sitting, standing, and lying down}
 
 Suppose we want to let the player explicitly sit, stand, or lie down on different enterable objects. (Normally Inform treats all these actions as entering, but there may be cases where we want to distinguish between the player sitting on a chair and the player standing on it.)
 

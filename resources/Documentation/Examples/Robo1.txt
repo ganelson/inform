@@ -5,7 +5,7 @@ Index: Robo 1. Robot that stores only one program at a time
 Description: A robot which watches and records the player's actions, then tries to repeat them back in the same order when it is switched into play-back mode.
 For: Z-Machine
 
-^^{Robo 1. Robot that stores only one program at a time OLDIX}
+^^{Robo 1. Robot that stores only one program at a time}
 
 	{*}"Robo"
 	

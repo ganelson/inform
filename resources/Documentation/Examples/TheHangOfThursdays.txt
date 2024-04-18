@@ -5,7 +5,7 @@ Index: Turns take a quarter day each
 Description: Turns take a quarter day each, and the game rotates through the days of the week.
 For: Z-Machine
 
-^^{Turns take a quarter day each OLDIX}
+^^{Turns take a quarter day each}
 
 	{*}"The Hang of Thursdays"
 	

@@ -5,7 +5,7 @@ Index: Verbosity 2. Full-length descriptions mandatory
 Description: Making rooms give full descriptions each time we enter, even if we have visited before, and disallowing player use of ``BRIEF`` and ``SUPERBRIEF``.
 For: Z-Machine
 
-^^{Verbosity 2. Full-length descriptions mandatory OLDIX}
+^^{Verbosity 2. Full-length descriptions mandatory}
 
 Suppose that we want the player always to see full room descriptions, even if they try to reset the defaults – perhaps because there is vital information there which they will miss if they turn off full-length room descriptions.
 

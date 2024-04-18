@@ -5,7 +5,7 @@ Index: Signpost that can be turned
 Description: Signpost that points to various destinations, depending on how the player has turned it.
 For: Z-Machine
 
-^^{Signpost that can be turned OLDIX}
+^^{Signpost that can be turned}
 
 	{*}"Signs and Portents"
 	

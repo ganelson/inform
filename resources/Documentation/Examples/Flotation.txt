@@ -5,7 +5,7 @@ Index: Object-based rulebooks
 Description: Objects that can sink or float in a well, depending on their own properties and the state of the surrounding environment.
 For: Z-Machine
 
-^^{Object-based rulebooks OLDIX}
+^^{Object-based rulebooks}
 
 Here we want a rulebook to determine whether objects float or sink, so we create an object-based rulebook for the purpose. The more specific rules here, pertaining to corks and to inflated things, will be consulted first; then, as a default, the general flotation rule.
 

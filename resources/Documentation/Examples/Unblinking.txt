@@ -5,7 +5,7 @@ Index: Light-filled rooms as a route through a space
 Description: Finding a best route through light-filled rooms only, leaving aside any that might be dark.
 For: Z-Machine
 
-^^{Light-filled rooms as a route through a space OLDIX}
+^^{Light-filled rooms as a route through a space}
 
 Suppose we're simulating a situation where the player needs to travel through lit areas only, but we want to give them some hints about which way might be safe. Here we'll find our best route through light-filled rooms.
 

@@ -5,7 +5,7 @@ Index: All actions given different durations
 Description: Giving different actions a range of durations using a time allotment rulebook.
 For: Z-Machine
 
-^^{All actions given different durations OLDIX}
+^^{All actions given different durations}
 
 Here we move to a systematic way of giving different durations to different actions, including even variations on the same act – so that for instance climbing a steep hill might take several minutes more than other going actions. We do this by setting a number, `work duration`, to represent the number of minutes consumed by a given action, and then consulting a rulebook to find out how long the past turn's action should take. By default, an action will take 1 minute.
 

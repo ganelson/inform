@@ -5,7 +5,7 @@ Index: Campfire lit
 Description: A campfire added to the camp site, which can be lit using tinder.
 For: Z-Machine
 
-^^{Campfire lit OLDIX}
+^^{Campfire lit}
 
 	{*}"Thirst"
 	

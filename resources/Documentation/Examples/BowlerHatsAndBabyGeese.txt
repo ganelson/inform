@@ -5,7 +5,7 @@ Index: Scenes which restrict movement
 Description: Creating a category of scenes that restrict the player's behaviour.
 For: Z-Machine
 
-^^{Scenes which restrict movement OLDIX}
+^^{Scenes which restrict movement}
 
 Scenes can have properties – a fact that is very useful when it comes to writing a series of scenes that all need to act alike in some respect.
 

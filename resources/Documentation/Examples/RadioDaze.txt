@@ -5,7 +5,7 @@ Index: Radio producing cycling programming
 Description: A radio that produces a cycle of output using varying text.
 For: Z-Machine
 
-^^{Radio producing cycling programming OLDIX}
+^^{Radio producing cycling programming}
 
 	{*}"Radio Daze" by Jon Ingold
 	

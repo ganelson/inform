@@ -5,7 +5,7 @@ Index: PUSH something A DIRECTION modified
 Description: Allowing something like ``PUSH TELEVISION EAST`` to push the cart on which the television rests.
 For: Z-Machine
 
-^^{PUSH something A DIRECTION modified OLDIX}
+^^{PUSH something A DIRECTION modified}
 
 Suppose we have a series of items that might be stacked on top of one another – say a heavy television on a rolling cart, and we want the player to be able to move the cart with ``PUSH TELEVISION EAST`` just as well as with ``PUSH CART EAST``.
 

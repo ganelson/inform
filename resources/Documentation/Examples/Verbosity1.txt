@@ -5,7 +5,7 @@ Index: Verbosity 1. Brief descriptions by default
 Description: Making rooms give brief room descriptions when revisited.
 For: Z-Machine
 
-^^{Verbosity 1. Brief descriptions by default OLDIX}
+^^{Verbosity 1. Brief descriptions by default}
 
 By default, the description of a room is printed every time the player enters a room.
 

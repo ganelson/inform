@@ -5,7 +5,7 @@ Index: Restrictions preventing inappropriate behaviour
 Description: Our heroine, fallen among gentleman highwaymen, is restrained by her own modesty and seemliness.
 For: Z-Machine
 
-^^{Restrictions preventing inappropriate behaviour OLDIX}
+^^{Restrictions preventing inappropriate behaviour}
 
 The following example, indebted to the late Georgette Heyer, is suggestive:
 

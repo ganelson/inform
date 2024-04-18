@@ -5,7 +5,7 @@ Index: Implicit takes require time
 Description: Making implicit takes add a minute to the clock, just as though the player had typed ``TAKE THING`` explicitly.
 For: Z-Machine
 
-^^{Implicit takes require time OLDIX}
+^^{Implicit takes require time}
 
 Implicit takes are a convenience to players; in general, we would like to avoid asking players to type any more obvious commands than strictly necessary, while allowing the computer to guess as much as it safely can.
 

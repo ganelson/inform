@@ -5,7 +5,7 @@ Index: TALK TO command used with scenes
 Description: Scenes used to control the way a character reacts to conversation and comments, using a ``TALK TO`` command.
 For: Z-Machine
 
-^^{TALK TO command used with scenes OLDIX}
+^^{TALK TO command used with scenes}
 
 As we have seen, there are a number of different ways of controlling conversation in interactive fiction, and the best choice of way will depend quite a lot on what kind of work we're writing.
 

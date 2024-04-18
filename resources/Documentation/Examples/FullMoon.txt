@@ -5,7 +5,7 @@ Index: Scene with random atmospheric events
 Description: Random atmospheric events which last the duration of a scene.
 For: Z-Machine
 
-^^{Scene with random atmospheric events OLDIX}
+^^{Scene with random atmospheric events}
 
 	{*}"Full Moon"
 	

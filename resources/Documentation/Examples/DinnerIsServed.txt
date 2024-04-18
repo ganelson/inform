@@ -5,7 +5,7 @@ Index: Window connecting two rooms
 Description: A window between two locations. When the window is open, the player can reach through into the other location; when it isn't, access is barred.
 For: Z-Machine
 
-^^{Window connecting two rooms OLDIX}
+^^{Window connecting two rooms}
 
 	{*}"Dinner is Served"
 	

@@ -5,7 +5,7 @@ Index: READ command separate from EXAMINE
 Description: Making a ``READ`` command, distinct from ``EXAMINE``, for legible objects.
 For: Z-Machine
 
-^^{READ command separate from EXAMINE OLDIX}
+^^{READ command separate from EXAMINE}
 
 	{*}"The Trouble with Printing"
 	

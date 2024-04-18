@@ -5,7 +5,7 @@ Index: Modifying and re-parsing an entered command
 Description: Determining that the command the player typed is invalid, editing it, and re-examining it to see whether it now reads correctly.
 For: Z-Machine
 
-^^{Modifying and re-parsing an entered command OLDIX}
+^^{Modifying and re-parsing an entered command}
 
 Novice players of interactive fiction, unfamiliar with its conventions, will often try to add extra phrases to a command that the game cannot properly parse: ``HIT DOOR WITH FIST``, for instance, instead of ``HIT DOOR``.
 

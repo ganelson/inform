@@ -5,7 +5,7 @@ Index: Travel requiring a vehicle
 Description: A journey from one room to another that requires the player to be on a vehicle.
 For: Z-Machine
 
-^^{Travel requiring a vehicle OLDIX}
+^^{Travel requiring a vehicle}
 
 Let's say that our protagonist is about to flee. Obviously, they can't make the journey on foot; they need transportation.
 

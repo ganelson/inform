@@ -5,7 +5,7 @@ Index: Telephones reaching distant parties
 Description: A system of telephones on which the player can call distant persons and have conversations.
 For: Z-Machine
 
-^^{Telephones reaching distant parties OLDIX}
+^^{Telephones reaching distant parties}
 
 	{*}"Four Cheeses"
 	

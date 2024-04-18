@@ -5,7 +5,7 @@ Index: Wand which reveals a person's concealed possessions
 Description: A wand which, when waved, reveals the concealed items carried by people the player can see.
 For: Z-Machine
 
-^^{Wand which reveals a person's concealed possessions OLDIX}
+^^{Wand which reveals a person's concealed possessions}
 
 	{*}"Interrogation"
 	

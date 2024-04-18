@@ -5,7 +5,7 @@ Index: Single yellow onion in a sack
 Description: Calling an onion "a single yellow onion" when (and only when) it is being listed as the sole content of a room or container.
 For: Z-Machine
 
-^^{Single yellow onion in a sack OLDIX}
+^^{Single yellow onion in a sack}
 
 	{*}"Unpeeled"
 	

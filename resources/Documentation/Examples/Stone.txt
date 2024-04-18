@@ -5,7 +5,7 @@ Index: Food with ingredients affecting the player
 Description: A soup to which the player can add ingredients, which will have different effects when the player eats.
 For: Z-Machine
 
-^^{Food with ingredients affecting the player OLDIX}
+^^{Food with ingredients affecting the player}
 
 A thing can have a rule as a property, if we like. Here we are going to allow the player to make a soup whose effects will depend on its ingredients. Each ingredient will have its own `food effect` rule, to be followed when the food is eaten.
 

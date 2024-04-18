@@ -5,7 +5,7 @@ Index: Scenes with props lists and location properties
 Description: Organising the game by scenes, where each scene has a location and prop lists so that it can be set up automatically.
 For: Z-Machine
 
-^^{Scenes with props lists and location properties OLDIX}
+^^{Scenes with props lists and location properties}
 
 For some games, it makes sense to organise the entire game around scenes rather than around locations, moving the player when a new scene begins and laying out new props.
 

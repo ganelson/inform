@@ -5,7 +5,7 @@ Index: Clouds with random descriptions
 Description: The automatic weather station atop Mt. Pisgah shows randomly fluctuating temperature, pressure and cloud cover.
 For: Z-Machine
 
-^^{Clouds with random descriptions OLDIX}
+^^{Clouds with random descriptions}
 
 	{*}"Weathering"
 	

@@ -5,7 +5,7 @@ Index: TALK TO usage corrected
 Description: If the player tries to ``TALK TO`` a character, suggest alternative modes of conversation.
 For: Z-Machine
 
-^^{TALK TO usage corrected OLDIX}
+^^{TALK TO usage corrected}
 
 	{*}"Gorge at George"
 	

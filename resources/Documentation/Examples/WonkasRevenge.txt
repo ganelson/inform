@@ -5,7 +5,7 @@ Index: Shuffling the arrangement of items in a container
 Description: A lottery drum which redistributes the tickets inside whenever the player spins it.
 For: Z-Machine
 
-^^{Shuffling the arrangement of items in a container OLDIX}
+^^{Shuffling the arrangement of items in a container}
 
 	{*}"Wonka's Revenge"
 	

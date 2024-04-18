@@ -5,7 +5,7 @@ Index: Random variations within text
 Description: Three basic ways to inject random or not-so-random variations into text.
 For: Glulx
 
-^^{Random variations within text OLDIX}
+^^{Random variations within text}
 
 	{*}"M. Melmoth's Duel"
 	

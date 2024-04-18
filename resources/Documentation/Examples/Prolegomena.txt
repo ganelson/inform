@@ -5,7 +5,7 @@ Index: Exact numbers replaced with vague quantifiers
 Description: Replacing precise numbers with "some" or other quantifiers when too many objects are clustered together for the player to count at a glance.
 For: Z-Machine
 
-^^{Exact numbers replaced with vague quantifiers OLDIX}
+^^{Exact numbers replaced with vague quantifiers}
 
 Room descriptions often make the player character out to be a bit of a savant, able to count whole stacks of items at a glance: ``You see 27 paper clips here.``
 

@@ -5,7 +5,7 @@ Index: Feet and inches
 Description: Describing height in feet and inches.
 For: Z-Machine
 
-^^{Feet and inches OLDIX}
+^^{Feet and inches}
 
 	{*}"America Stands Tall"
 	

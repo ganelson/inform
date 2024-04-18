@@ -5,7 +5,7 @@ Index: Falling into a pit when going from darkness to darkness
 Description: Adapting the going action so that something special can happen when going from a dark room to another dark room.
 For: Z-Machine
 
-^^{Falling into a pit when going from darkness to darkness OLDIX}
+^^{Falling into a pit when going from darkness to darkness}
 
 Text in this example is drawn from Will Crowther's original 1976 FORTRAN implementation of ADVENTURE, the founding work of the genre, whose source code was rediscovered by Dennis G. Jerz in 2007. Note the capitals: the program ran on an early computer without lower case lettering. They look a little mimsy now, but picture them glowing green on an old-style cathode ray tube monitor in a darkened room late at night.
 

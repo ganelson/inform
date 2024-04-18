@@ -5,7 +5,7 @@ Index: Cyclical randomisation of named objects
 Description: A phrase that chooses and names the least-recently selected item from the collection given, allowing the text to cycle semi-randomly through a group of objects.
 For: Z-Machine
 
-^^{Cyclical randomisation of named objects OLDIX}
+^^{Cyclical randomisation of named objects}
 
 	{*}"Curare"
 	

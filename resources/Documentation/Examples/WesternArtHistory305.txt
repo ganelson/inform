@@ -5,7 +5,7 @@ Index: Allowing EXAMINE to see multiple objects with a single command
 Description: Allowing ``EXAMINE`` to see multiple objects with a single command.
 For: Z-Machine
 
-^^{Allowing EXAMINE to see multiple objects with a single command OLDIX}
+^^{Allowing EXAMINE to see multiple objects with a single command}
 
 In a gallery, there are many individual things to look at, but you can also get a general impression by just examining them as a collection.
 

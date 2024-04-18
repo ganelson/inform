@@ -5,7 +5,7 @@ Index: COMBINE action for connecting multiple objects into one
 Description: Building a fishing pole from several component parts that the player might put together in any order.
 For: Z-Machine
 
-^^{COMBINE action for connecting multiple objects into one OLDIX}
+^^{COMBINE action for connecting multiple objects into one}
 
 Suppose we want to let the player build a fishing pole out of three parts: a hook, a string, and a stick.
 

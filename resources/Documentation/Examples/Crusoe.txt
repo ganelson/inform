@@ -5,7 +5,7 @@ Index: Printing the description of something activity
 Description: Adding a "printing the description of something" activity.
 For: Z-Machine
 
-^^{Printing the description of something activity OLDIX}
+^^{Printing the description of something activity}
 
 Suppose we want to add rules so that any time we examine a charred object (and most of our objects can be charred), a line about the charring is appended to the end of the object description. We could use `after examining...`, but perhaps we would prefer for the sentence about the charring not to appear in its own paragraph.
 

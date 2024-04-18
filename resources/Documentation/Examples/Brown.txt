@@ -5,7 +5,7 @@ Index: Red sticky label
 Description: A red sticky label which can be attached to anything in the game, or removed again.
 For: Z-Machine
 
-^^{Red sticky label OLDIX}
+^^{Red sticky label}
 
 	{*}"Brown"
 	

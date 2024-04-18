@@ -5,7 +5,7 @@ Index: Safe with a multi-number combination
 Description: A safe with a multi-number combination, meant to be dialed over multiple turns, is implemented using a log of the last three numbers dialed. The log can then be compared to the safe's correct combination.
 For: Z-Machine
 
-^^{Safe with a multi-number combination OLDIX}
+^^{Safe with a multi-number combination}
 
 It is not difficult to implement a safe which can be set to a single number to open; but a more common scenario in the real world is for the safe to open on a sequence of numbers when they have been dialed in the right order.
 
