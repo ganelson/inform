@@ -649,11 +649,7 @@ for (i = WORDSIZE : i < ((str-->0) + WORDSIZE) : i++ ) print (char) str->i;
   }
   if ((c_style & FULLINV_BIT) && (DetailFlags(o1,1,1) ~= DetailFlags(o2,1,1))) rfalse;
   else if ((c_style & PARTINV_BIT) && (DetailFlags(o1,0,1) ~= DetailFlags(o2,0,1))) rfalse;
-!#ifdef TARGET_GLULX;
   return StringEqualObjectNames(o1, o2);
-!#ifnot;
-!  return Identical(o1, o2);
-!#endif;
 ];
 
 @h Grouping.
@@ -975,8 +971,8 @@ Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
    if (o has worn) flags = flags | LW_WORN;
    if (o has container) {
      ! we can't know it's empty unless it's at least one of open or transparent
-     ! TODO but not unopenable closed transparent things
-     if ((((o has open) || (o has transparent)) && (~~(ObviouslyOccupied(o)))) && (~~((o hasnt open) && (o hasnt openable) && (~~empty_truth)))) flags = flags | LW_EMPTY;
+     ! TODO but not unopenable closed transparent things ! && (~~((o hasnt open) && (o hasnt openable)) && (~~empty_truth))
+     if ((((o has open) || (o has transparent)) && (~~(ObviouslyOccupied(o)))) ) flags = flags | LW_EMPTY;
      if ((o has locked) && invdesc) flags = flags | LW_LOCKED;
      if (o has openable) {
        if (o has open) flags = flags | LW_OPEN;
