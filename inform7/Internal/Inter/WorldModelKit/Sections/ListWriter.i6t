@@ -979,10 +979,12 @@ Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
      flags = flags | LW_OPEN_BUT_EMPTY;
    }
     current = LW_LIT; ! largest
+    #ifdef TARGET_ZCODE;
+    x = -1;
+    #endif;
     while (current) { ! count bits by shifting right till we're at 0
       if (flags & current) terms++;
       #ifdef TARGET_ZCODE;
-      x = -1;
       @log_shift current x -> current;
       #ifnot;
       @ushiftr current 1 current;
