@@ -69,47 +69,6 @@ The printing room description details activity is accessible to Inter as "PRINTI
 Printing inventory details of something (hidden in RULES command) (documented at act_idetails) is an activity.
 The printing inventory details activity is accessible to Inter as "PRINTING_INVENTORY_DETAILS_ACT".
 
-[
-To say the deceitfully empty inventory details of (box - a container):
-  let inventory text printed be false;
-  if the box is lit begin;
-    if the box is worn, say text of list writer internal rule response (K); [ "providing light and being worn" ]
-    else say text of list writer internal rule response (D); [ "providing light" ]
-    now inventory text printed is true;
-  else if the box is worn;
-    say text of list writer internal rule response (L); [ "being worn" ]
-    now inventory text printed is true;
-  end if;
-  if the box is openable begin;
-    if inventory text printed is true begin;
-      if the serial comma option is active, say ",";
-      say text of list writer internal rule response (C); [ "and" ]
-    end if;
-    if the box is open begin;
-      say text of list writer internal rule response (N); [ "open but empty" ]
-    else; [ it's closed ]
-      if the box is locked, say text of list writer internal rule response (P); [ "closed and locked" ]
-      else say text of list writer internal rule response (O); [ "closed" ]
-      now inventory text printed is true;
-    end if;
-  else; [ it's not openable ]
-    if the box is transparent begin;
-      if inventory text printed is true, say text of list writer internal rule response (C); [ "and" ]
-      say text of list writer internal rule response (F); [ "empty" ]
-      now inventory text printed is true; [ not relevant unless code is added ]
-    end if;
-  end if;
-]
-[
-For printing inventory details of a container (called the box) when the box is falsely-unoccupied (this is the falsely-unoccupied container inventory details rule):
-    let the tag be "[the deceitfully empty inventory details of box]";
-    if tag is not empty begin;
-      say text of list writer internal rule response (A); [ "(" ]
-      say tag;
-      say text of list writer internal rule response (B); [ ")" ]
-    end if;
-]
-
 @ Names of things are often formed up into lists, in which they are sometimes
 grouped together:
 

@@ -586,7 +586,7 @@ accordingly. We return $n$, the number of classes.
             partition_classes->k = n; partition_class_sizes->n = 1;
             for (l=c_iterator(i, depth, lt_value, ADVANCE_ITF), m=k+1:
             	(l~=0) && (m<no_objs):
-            	l=c_iterator(l, depth, lt_value, ADVANCE_ITF), m++ ) {
+                l=c_iterator(l, depth, lt_value, ADVANCE_ITF), m++ ) {
                 if ((partition_classes->m == 0) && (ListEqual(i, l))) {
                     if (partition_class_sizes->n < 255) (partition_class_sizes->n)++;
                     partition_classes->m = n;
@@ -610,18 +610,8 @@ by Inform. But this seems to be sound.
 
 =
 
-!#ifdef TARGET_GLULX;
 Array NBUF1 --> TEXT_TY_BufferSize;
 Array NBUF2 --> TEXT_TY_BufferSize;
-
-[ lstring str i;
-!print "len: ", str-->0, " ";
-#ifdef TARGET_GLULX;
-for (i = 1 : i <= str-->0 : i++ ) glk_put_char_uni(str-->i);
-#ifnot;
-for (i = WORDSIZE : i < ((str-->0) + WORDSIZE) : i++ ) print (char) str->i;
-#endif;
-];
 
 [ StringEqualObjectNames o1 o2 i;
   VM_PrintToBuffer(NBUF1, TEXT_TY_BufferSize, PSN__, o1);
@@ -971,7 +961,6 @@ Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
    if (o has worn) flags = flags | LW_WORN;
    if (o has container) {
      ! we can't know it's empty unless it's at least one of open or transparent
-     ! TODO but not unopenable closed transparent things ! && (~~((o hasnt open) && (o hasnt openable)) && (~~empty_truth))
      if ((((o has open) || (o has transparent)) && (~~(ObviouslyOccupied(o)))) ) flags = flags | LW_EMPTY;
      if ((o has locked) && invdesc) flags = flags | LW_LOCKED;
      if (o has openable) {
@@ -993,7 +982,7 @@ Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
     while (current) { ! count bits by shifting right till we're at 0
       if (flags & current) terms++;
       #ifdef TARGET_ZCODE;
-      x = -1; 
+      x = -1;
       @log_shift current x -> current;
       #ifnot;
       @ushiftr current 1 current;
@@ -1006,7 +995,7 @@ Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
    LW_Response('A'); ! " ("
    while (current) {
      if (flags & current) {
-       if (print_count) { 
+       if (print_count) {
          if (print_count <= last_comma) {
            print ",";
            if ((print_count ~= last_index) || (~~(BasicInformKit`SERIAL_COMMA_CFGF))) print " ";
