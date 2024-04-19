@@ -543,6 +543,7 @@ Startup rule (this is the display banner rule):
 	say "[banner text]".
 
 Startup rule (this is the initial room description rule):
+	follow the adjust light rule;
 	try looking.
 
 @h The turn sequence.
