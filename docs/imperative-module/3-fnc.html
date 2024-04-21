@@ -230,7 +230,7 @@ allocated memory will safely be deallocated.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    public_name(t1, t2, ..., tn) {</span>
 <span class="plain-syntax">        ...allocate memory...</span>
-<span class="plain-syntax">        BlkValueCopy(BRV, kernel_name(t1, t2, ..., tn))</span>
+<span class="plain-syntax">        CopyPV(BRV, kernel_name(t1, t2, ..., tn))</span>
 <span class="plain-syntax">        ...deallocate...</span>
 <span class="plain-syntax">        return BRV</span>
 <span class="plain-syntax">    }</span>
@@ -346,7 +346,7 @@ after the call parameters, and is used only as a scratch variable.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">returns_block_value</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Hierarchy::find</span><span class="plain-syntax">(</span><span class="identifier-syntax">BLKVALUECOPY_HL</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Hierarchy::find</span><span class="plain-syntax">(</span><span class="identifier-syntax">COPYPV_HL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::call</span><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::val_symbol</span><span class="plain-syntax">(</span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">rv_symbol</span><span class="plain-syntax">);</span>

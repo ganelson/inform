@@ -6,7 +6,7 @@ new base EXTERNAL_FILE_TY {
 	default-value: 0
 	constant-compilation-method: quantitative
 
-	printing-routine: PrintExternalFileName
+	say-function: PrintExternalFileName
 
 	documentation-reference: kind_externalfile
 	index-priority: 6
@@ -22,7 +22,7 @@ new base INTERNAL_FILE_TY {
 	default-value: 0
 	constant-compilation-method: quantitative
 
-	printing-routine: PrintInternalFileName
+	say-function: PrintInternalFileName
 
 	index-priority: 6
 	index-default-value: <i>a non-file</i>

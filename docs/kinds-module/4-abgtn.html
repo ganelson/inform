@@ -145,8 +145,8 @@ might get "number understood is a number which varies". The legal wildcards are:
 <ul class="items"><li>&#9679; &lt;kind&gt;, expanding to the singular name of the kind.
 </li><li>&#9679; &lt;lower-case-kind&gt;, the same but always using lower case.
 </li><li>&#9679; &lt;kind-weak-ID&gt;, the weak ID number for the base kind.
-</li><li>&#9679; &lt;printing-routine&gt;, the identifier of its printing routine.
-</li><li>&#9679; &lt;comparison-routine&gt;, similarly.
+</li><li>&#9679; &lt;say-function&gt;, the identifier of its printing routine.
+</li><li>&#9679; &lt;compare-function&gt;, similarly.
 </li></ul>
 <p class="commentary">There are a few limitations on what template text can include. Firstly,
 nothing with angle brackets in, except where a wildcard appears. Secondly,
@@ -277,7 +277,7 @@ rather than in single words of memory, and in that case three more properies
 become meaningful: <span class="extract"><span class="extract-syntax">multiple-block</span></span> is either <span class="extract"><span class="extract-syntax">yes</span></span> or <span class="extract"><span class="extract-syntax">no</span></span> (default <span class="extract"><span class="extract-syntax">no</span></span>), and
 allows data to expand arbitrarily in size if necessary; <span class="extract"><span class="extract-syntax">heap-size-estimate</span></span>
 should be a power of 2, and gives an initial allocation size in words; and
-<span class="extract"><span class="extract-syntax">small-block-size</span></span> optionally allows a small block (in words) to point to the
+<span class="extract"><span class="extract-syntax">short-block-size</span></span> optionally allows a short block (in words) to point to the
 data (thus adding further indirection).
 </p>
 
@@ -291,25 +291,23 @@ duties related to the kind. Inform will simply assume such a routine is present;
 this will usually be defined in the same kit which is supplying the Neptune file.
 </p>
 
-<p class="commentary"><span class="extract"><span class="extract-syntax">comparison-routine</span></span> determines which of two values of the kind is greater.
+<p class="commentary"><span class="extract"><span class="extract-syntax">compare-function</span></span> determines which of two values of the kind is greater.
 The default is <span class="extract"><span class="extract-syntax">UnsignedCompare</span></span>. The special value <span class="extract"><span class="extract-syntax">signed</span></span> can be used to
 ask for signed comparison of the 2s-complement run-time values, which is a
 little quicker than calling a routine.
 </p>
 
-<p class="commentary"><span class="extract"><span class="extract-syntax">printing-routine</span></span> prints out a textual representation of a value of the given
-kind, and <span class="extract"><span class="extract-syntax">printing-routine-for-debugging</span></span> the same but for purposes of the
-debugging output called for by the ACTIONS command. These have no effect for
-kinds which do not conform to <span class="extract"><span class="extract-syntax">sayable value</span></span>.
+<p class="commentary"><span class="extract"><span class="extract-syntax">say-function</span></span> prints out a textual representation of a value of the given
+kind. These have no effect for kinds which do not conform to <span class="extract"><span class="extract-syntax">sayable value</span></span>.
 </p>
 
-<p class="commentary"><span class="extract"><span class="extract-syntax">parsing-routine</span></span> is a "general parsing routine", which assists the run-time
-command parser. <span class="extract"><span class="extract-syntax">distinguishing-routine</span></span>, similarly, determines whether two
+<p class="commentary"><span class="extract"><span class="extract-syntax">understand-function</span></span> is a "general parsing routine", which assists the run-time
+command parser. <span class="extract"><span class="extract-syntax">distinguish-function</span></span>, similarly, determines whether two
 things can be distinguished by textual commands. These have no effect in Basic
 Inform projects, or for kinds which do not conform to <span class="extract"><span class="extract-syntax">understandable value</span></span>.
 </p>
 
-<p class="commentary"><span class="extract"><span class="extract-syntax">recognition-routine</span></span> is a "recognition-only general parsing routine". Again
+<p class="commentary"><span class="extract"><span class="extract-syntax">recognise-function</span></span> is a "recognition-only general parsing routine". Again
 this has no effect in Basic Inform projects. It is only used for kinds which
 do not conform to <span class="extract"><span class="extract-syntax">understandable value</span></span>, but can nevertheless be used when
 the command parser allows things to be named by their property values, and

@@ -6,7 +6,7 @@ new base FIGURE_NAME_TY {
 	default-value: 1
 	constant-compilation-method: quantitative
 
-	printing-routine: PrintFigureName
+	say-function: PrintFigureName
 
 	documentation-reference: kind_figurename
 	index-priority: 6

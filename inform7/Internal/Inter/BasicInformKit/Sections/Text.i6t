@@ -35,10 +35,11 @@ Constant UNPACKED_TEXT_STORAGE            = BLK_BVBITMAP_TEXT + BLK_BVBITMAP_LON
 
 @h Extent Of Long Block.
 When there's a long block, we need enough of the entries to store the
-number of characters, plus one for the null terminator.
+number of characters, plus one for the null terminator. This is called only
+in the course of a deep copy, so, not very often.
 
 =
-[ TEXT_TY_Extent arg1 x;
+[ TEXT_TY_LongBlockSize arg1 x;
 	x = BlkValueSeekZeroEntry(arg1);
 	if (x < 0) return -1; ! should not happen, of course
 	return x+1;
@@ -66,33 +67,6 @@ Constant TEXT_TY_Storage_Flags = BLK_FLAG_MULTIPLE;
 Constant TEXT_TY_Storage_Flags = BLK_FLAG_MULTIPLE + BLK_FLAG_WORD;
 #Endif; ! CHARSIZE
 
-@h KOV Support.
-See the "BlockValues.i6t" segment for the specification of the following
-routines. Because no block values are ever stored in a text, they can
-freely be bitwise copied or forgotten, which is why we need do nothing
-special to copy or destroy a text.
-
-=
-[ TEXT_TY_Support task arg1 arg2 arg3;
-	switch(task) {
-		CREATE_KOVS:      return TEXT_TY_Create(arg2);
-		CAST_KOVS:        TEXT_TY_Cast(arg1, arg2, arg3);
-		MAKEMUTABLE_KOVS: return TEXT_TY_Mutable(arg1);
-		COPYQUICK_KOVS:   rtrue;
-		COPYSB_KOVS:	  TEXT_TY_CopySB(arg1, arg2);
-		KINDDATA_KOVS:    return 0;
-		EXTENT_KOVS:      return TEXT_TY_Extent(arg1);
-		COMPARE_KOVS:     return TEXT_TY_Compare(arg1, arg2);
-		READ_FILE_KOVS:   if (arg3 == -1) rtrue;
-			              return TEXT_TY_ReadFile(arg1, arg2, arg3);
-		WRITE_FILE_KOVS:  return TEXT_TY_WriteFile(arg1);
-		HASH_KOVS:        return TEXT_TY_Hash(arg1);
-		DEBUG_KOVS:       TEXT_TY_Debug(arg1);
-	}
-	! We choose not to respond to: DESTROY_KOVS, COPYKIND_KOVS, COPY_KOVS
-	rfalse;
-];
-
 @h Debugging.
 This shows the various forms a text's short block can take:
 
@@ -114,8 +88,19 @@ A newly created text is a two-word short block with no long block, like this:
 =
 
 =
-[ TEXT_TY_Create short_block x;
-	return CreatePVShortBlockOfSize2(short_block, PACKED_TEXT_STORAGE, EMPTY_TEXT_PACKED);
+[ TEXT_TY_Create kind_id sb_address
+	short_block;
+	short_block = CreatePVShortBlock(sb_address, 2);
+	short_block-->0 = PACKED_TEXT_STORAGE;
+	short_block-->1 = EMPTY_TEXT_PACKED;
+	return short_block;
+];
+
+@h Copy.
+
+=
+[ TEXT_TY_Copy to_bv from_bv kind recycling;
+	CopyPVRawData(to_bv, from_bv, kind, recycling);
 ];
 
 @h Copy Short Block.
@@ -123,8 +108,8 @@ When a short block for a constant is copied, the new copy isn't a constant
 any more.
 
 =
-[ TEXT_TY_CopySB to_bv from_bv;
-	CopyPVShortBlockOfSize2(to_bv, from_bv);
+[ TEXT_TY_CopyShortBlock to_bv from_bv;
+	CopyPVShortBlock(to_bv, from_bv, 2);
 	if (to_bv-->0 & BLK_BVBITMAP_CONSTANTMASK) to_bv-->0 = PACKED_TEXT_STORAGE;
 ];
 
@@ -170,9 +155,9 @@ constants are never created in unpacked form.)
 [ TEXT_TY_Mutable txt;
 	if (txt-->0 & BLK_BVBITMAP_LONGBLOCKMASK == 0) {
 		TEXT_TY_Transmute(txt);
-		return 0;
+		rfalse;
 	}
-	return 2; ! Tell BlockValue there's a long block pointer
+	rtrue; ! Tell BlockValue there's a long block pointer
 ];
 
 @h Casting.
@@ -187,7 +172,7 @@ cast here is that a snippet can be turned into a text.
 	} else if (from_kind == SNIPPET_TY) {
 		TEXT_TY_Transmute(to_txt);
 		TEXT_TY_CastPrimitive(to_txt, true, from_value);
-	} else BlkValueError("impossible cast to text");
+	}
 ];
 
 [ SNIPPET_TY_to_TEXT_TY to_txt snippet;
@@ -238,7 +223,6 @@ it's clearer to give two definitions, so:
 =
 #ifdef TARGET_ZCODE;
 [ TEXT_TY_CastPrimitive to_txt from_snippet from_value  len news buffer;
-	if (to_txt == 0) BlkValueError("no destination for cast");
 	SuspendRTP();
 	buffer = RawBufferAddress + TEXT_TY_CastPrimitiveNesting*TEXT_TY_BufferSize;
 	TEXT_TY_CastPrimitiveNesting++;
@@ -270,9 +254,6 @@ it's clearer to give two definitions, so:
 #ifnot; ! TARGET_ZCODE
 [ TEXT_TY_CastPrimitive to_txt from_snippet from_value
 	len i stream saved_stream news buffer buffer_size memory_to_free results;
-
-	if (to_txt == 0) BlkValueError("no destination for cast");
-
 	buffer_size = (TEXT_TY_BufferSize + 2)*WORDSIZE;
 
 	RawBufferSize = TEXT_TY_BufferSize;
@@ -442,7 +423,7 @@ of decimal character codes, ending with the null terminator, and followed by
 a semicolon: thus |S65,66,67,0;| is the serialised form of the text "ABC".
 
 =
-[ TEXT_TY_WriteFile txt len pos ch p cp;
+[ TEXT_TY_Serialise txt len pos ch p cp;
 	cp = txt-->0; p = TEXT_TY_Temporarily_Transmute(txt);
 	len = PVFieldCapacity(txt);
 	print "S";
@@ -463,7 +444,8 @@ characters from a file and reconstruct the text which gave rise to
 them.
 
 =
-[ TEXT_TY_ReadFile txt auxf ch i v dg pos tsize p;
+[ TEXT_TY_Unserialise txt auxf ch i v dg pos tsize p;
+	if (ch == -1) rtrue;
 	TEXT_TY_Transmute(txt);
 	tsize = PVFieldCapacity(txt);
 	while (ch ~= 32 or 9 or 10 or 13 or 0 or -1) {

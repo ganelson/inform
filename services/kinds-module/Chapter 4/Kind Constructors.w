@@ -67,13 +67,13 @@ typedef struct kind_constructor {
 	#ifdef CORE_MODULE
 	struct kind_constructor_compilation_data compilation_data;
 	#endif
-	int small_block_size; /* if stored as a block value, size in words of the SB */
+	int short_block_size; /* if stored as a block value, size in words of the SB */
 
 	/* I: storing values at run-time */
 	int multiple_block; /* TRUE for flexible-size values stored on the heap */
 	int heap_size_estimate; /* typical number of bytes used */
 	int can_exchange; /* with external files and therefore other story files */
-	struct text_stream *distinguishing_routine; /* Inter routine to see if values distinguishable */
+	struct text_stream *distinguish_function; /* Inter routine to see if values distinguishable */
 	struct kind_constructor_comparison_schema *first_comparison_schema; /* list of these */
 	struct text_stream *loop_domain_schema; /* how to compile a loop over the instances */
 	struct linked_list *instances; /* if enumerated explicitly in a Neptune file */
@@ -82,10 +82,23 @@ typedef struct kind_constructor {
 	struct text_stream *print_identifier; /* an Inter identifier used for compiling printing rules */
 	struct text_stream *ACTIONS_identifier; /* ditto but for ACTIONS testing command */
 	struct command_grammar *understand_as_values; /* used when parsing such values */
-	struct text_stream *explicit_GPR_identifier; /* routine name, when not compiled automatically */
-	struct text_stream *recognition_routine; /* for recognising an explicit value as preposition */
+	struct text_stream *understand_function; /* routine name, when not compiled automatically */
+	struct text_stream *recognise_function; /* for recognising an explicit value as preposition */
 
-	/* K: indexing and documentation */
+	/* K: pointer-value handling functions at run-time */
+	struct text_stream *create_function;
+	struct text_stream *cast_function;
+	struct text_stream *copy_function;
+	struct text_stream *copy_short_block_function;
+	struct text_stream *quick_copy_function;
+	struct text_stream *destroy_function;
+	struct text_stream *make_mutable_function;
+	struct text_stream *hash_function;
+	struct text_stream *long_block_size_function;
+	struct text_stream *serialise_function;
+	struct text_stream *unserialise_function;
+
+	/* L: indexing and documentation */
 	struct text_stream *specification_text; /* text for pseudo-property */
 	struct text_stream *index_default_value; /* and its description in the Kinds index */
 	struct text_stream *index_maximum_value; /* ditto */
@@ -262,11 +275,11 @@ we apply any defaults set in Neptune files.
 
 	/* I: storing values at run-time */
 	con->multiple_block = FALSE;
-	con->small_block_size = 1;
+	con->short_block_size = 1;
 	con->heap_size_estimate = 0;
 	con->can_exchange = FALSE;
 	con->first_comparison_schema = NULL;
-	con->distinguishing_routine = NULL;
+	con->distinguish_function = NULL;
 	con->loop_domain_schema = NULL;
 	con->instances = NEW_LINKED_LIST(kind_constructor_instance);
 
@@ -275,10 +288,23 @@ we apply any defaults set in Neptune files.
 	con->ACTIONS_identifier = Str::new();
 
 	con->understand_as_values = NULL;
-	con->explicit_GPR_identifier = NULL;
-	con->recognition_routine = NULL;
+	con->understand_function = NULL;
+	con->recognise_function = NULL;
 
-	/* K: indexing and documentation */
+	/* K: pointer-value handling functions at run-time */
+	con->create_function = NULL;
+	con->cast_function = NULL;
+	con->copy_function = NULL;
+	con->copy_short_block_function = NULL;
+	con->quick_copy_function = NULL;
+	con->destroy_function = NULL;
+	con->make_mutable_function = NULL;
+	con->hash_function = NULL;
+	con->long_block_size_function = NULL;
+	con->serialise_function = NULL;
+	con->unserialise_function = NULL;
+
+	/* L: indexing and documentation */
 	con->specification_text = NULL;
 	con->index_default_value = I"--";
 	con->index_maximum_value = I"--";
@@ -555,6 +581,64 @@ file creating it (if any were: by default this will be empty):
 linked_list *KindConstructors::instances(kind_constructor *kc) {
 	if (kc == NULL) return FALSE;
 	return kc->instances;
+}
+
+@h Tedious access functions.
+
+=
+text_stream *KindConstructors::get_create_fn_identifier(kind_constructor *kc) {
+	if (kc == NULL) return NULL;
+	return kc->create_function;
+}
+
+text_stream *KindConstructors::get_cast_fn_identifier(kind_constructor *kc) {
+	if (kc == NULL) return NULL;
+	return kc->cast_function;
+}
+
+text_stream *KindConstructors::get_copy_fn_identifier(kind_constructor *kc) {
+	if (kc == NULL) return NULL;
+	return kc->copy_function;
+}
+
+text_stream *KindConstructors::get_copy_short_block_fn_identifier(kind_constructor *kc) {
+	if (kc == NULL) return NULL;
+	return kc->copy_short_block_function;
+}
+
+text_stream *KindConstructors::get_quick_copy_fn_identifier(kind_constructor *kc) {
+	if (kc == NULL) return NULL;
+	return kc->quick_copy_function;
+}
+
+text_stream *KindConstructors::get_destroy_fn_identifier(kind_constructor *kc) {
+	if (kc == NULL) return NULL;
+	return kc->destroy_function;
+}
+
+text_stream *KindConstructors::get_make_mutable_fn_identifier(kind_constructor *kc) {
+	if (kc == NULL) return NULL;
+	return kc->make_mutable_function;
+}
+
+text_stream *KindConstructors::get_hash_fn_identifier(kind_constructor *kc) {
+	if (kc == NULL) return NULL;
+	return kc->hash_function;
+}
+
+text_stream *KindConstructors::get_long_block_size_fn_identifier(kind_constructor *kc) {
+	if (kc == NULL) return NULL;
+	return kc->long_block_size_function;
+}
+
+text_stream *KindConstructors::get_serialise_fn_identifier(kind_constructor *kc) {
+	if (kc == NULL) return NULL;
+	return kc->serialise_function;
+}
+
+text_stream *KindConstructors::get_unserialise_fn_identifier(kind_constructor *kc) {
+	if (kc == NULL) return NULL;
+	return kc->unserialise_function;
 }
 
 @h Compatibility.

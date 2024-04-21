@@ -19,6 +19,7 @@ Sections
 	Printing
 	Flex
 	BlockValues
+	Kinds
 	Text
 	Char
 	RegExp

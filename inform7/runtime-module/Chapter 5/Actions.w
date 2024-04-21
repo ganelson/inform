@@ -394,12 +394,14 @@ void RTActions::print_action_text_to(wording W, int start, OUTPUT_STREAM) {
 void RTActions::print_noun_or_second(action_name *an, int n, inter_symbol *n_s, inter_symbol *s_s) {
 	kind *K = (n == 0)?ActionSemantics::kind_of_noun(an):ActionSemantics::kind_of_second(an);
 	inter_symbol *var = (n == 0)?n_s:s_s;
-
-	if (Kinds::Behaviour::is_object(K) == FALSE)
+	inter_name *pfn = RTKindConstructors::printing_fn_iname(K);
+	if (Kinds::Behaviour::is_object(K))
+		pfn = Hierarchy::find(DA_NAME_HL);
+	else
 		var = InterNames::to_symbol(Hierarchy::find(PARSED_NUMBER_HL));
 	EmitCode::inv(INDIRECT1V_BIP);
 	EmitCode::down();
-		EmitCode::val_iname(K_value, RTKindConstructors::debug_print_fn_iname(K));
+		EmitCode::val_iname(K_value, pfn);
 		if ((K_understanding) && (Kinds::eq(K, K_understanding))) {
 			EmitCode::inv(PLUS_BIP);
 			EmitCode::down();

@@ -199,12 +199,12 @@ int Kinds::Behaviour::is_understandable(kind *K) {
 
 text_stream *Kinds::Behaviour::GPR_identifier(kind *K) {
 	if (K == NULL) return NULL;
-	return K->construct->explicit_GPR_identifier;
+	return K->construct->understand_function;
 }
 
 text_stream *Kinds::Behaviour::recognition_only_GPR_identifier(kind *K) {
 	if (K == NULL) return NULL;
-	return K->construct->recognition_routine;
+	return K->construct->recognise_function;
 }
 
 @h (C) Compatibility with other kinds.
@@ -348,9 +348,9 @@ int Kinds::Behaviour::uses_block_values(kind *K) {
 @ Exactly how large the small block is:
 
 =
-int Kinds::Behaviour::get_small_block_size(kind *K) {
+int Kinds::Behaviour::get_short_block_size(kind *K) {
 	if (K == NULL) return 0;
-	return K->construct->small_block_size;
+	return K->construct->short_block_size;
 }
 
 @ A reasonable estimate of how large the (larger!) heap block needs to be,
@@ -369,7 +369,7 @@ sufficient to apply |~=| to the values.
 =
 text_stream *Kinds::Behaviour::get_distinguisher(kind *K) {
 	if (K == NULL) return NULL;
-	return K->construct->distinguishing_routine;
+	return K->construct->distinguish_function;
 }
 
 @ Can values of this kind be serialised out to a file and read back in again
@@ -381,7 +381,65 @@ int Kinds::Behaviour::can_exchange(kind *K) {
 	return K->construct->can_exchange;
 }
 
-@h (K) Indexing and documentation.
+@h (K) Pointer-value support.
+
+=
+text_stream *Kinds::Behaviour::get_create_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_create_fn_identifier(K->construct);
+}
+
+text_stream *Kinds::Behaviour::get_cast_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_cast_fn_identifier(K->construct);
+}
+
+text_stream *Kinds::Behaviour::get_copy_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_copy_fn_identifier(K->construct);
+}
+
+text_stream *Kinds::Behaviour::get_copy_short_block_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_copy_short_block_fn_identifier(K->construct);
+}
+
+text_stream *Kinds::Behaviour::get_quick_copy_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_quick_copy_fn_identifier(K->construct);
+}
+
+text_stream *Kinds::Behaviour::get_destroy_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_destroy_fn_identifier(K->construct);
+}
+
+text_stream *Kinds::Behaviour::get_make_mutable_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_make_mutable_fn_identifier(K->construct);
+}
+
+text_stream *Kinds::Behaviour::get_hash_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_hash_fn_identifier(K->construct);
+}
+
+text_stream *Kinds::Behaviour::get_long_block_size_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_long_block_size_fn_identifier(K->construct);
+}
+
+text_stream *Kinds::Behaviour::get_serialise_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_serialise_fn_identifier(K->construct);
+}
+
+text_stream *Kinds::Behaviour::get_unserialise_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_unserialise_fn_identifier(K->construct);
+}
+
+@h (L) Indexing and documentation.
 
 =
 text_stream *Kinds::Behaviour::get_documentation_reference(kind *K) {

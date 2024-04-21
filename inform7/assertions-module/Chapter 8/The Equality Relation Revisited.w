@@ -256,7 +256,7 @@ lantern is bright".
 		case NOW_ATOM_FALSE_TASK:
 			break;
 		case NOW_ATOM_TRUE_TASK:
-			Calculus::Schemas::modify(asch->schema, "BlkValueCopy(ResponseTexts-->((*1)-1), *^2)");
+			Calculus::Schemas::modify(asch->schema, "CopyPV(ResponseTexts-->((*1)-1), *^2)");
 			return TRUE;
 	}
 	return FALSE;

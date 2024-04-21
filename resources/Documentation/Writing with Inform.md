@@ -21466,7 +21466,7 @@ do in hexadecimal, padding to the theoretical maximum width of addresses
 on the architecture.
 
 =
-[ MEMORY_ADDRESS_TY_SAY N;
+[ MEMORY_ADDRESS_TY_Say N;
 	print "$";
 	#iftrue (WORDSIZE == 2);
 	PrintInBase(N, 16, 4);
@@ -21497,7 +21497,7 @@ If it can't be that, we revert to trying the DECIMAL_TOKEN instead, which
 is what BasicInformKit uses to parse numbers in decimal.
 
 =
-[ MEMORY_ADDRESS_TY_TOKEN wa wl ch n digit;
+[ MEMORY_ADDRESS_TY_Understand wa wl ch n digit;
 	wa = WordAddress(wn);
 	wl = WordLength(wn);
 	#Iftrue CHARSIZE == 1;
@@ -21539,7 +21539,7 @@ Second, the wrapper extension should provide some convenient phrases:
 		(- (VM_SerialNumber()) -).
 
 	To say dump of (N - number) bytes at (address - memory address):
-		(-	MEMORY_ADDRESS_TY_SAY({address});
+		(-	MEMORY_ADDRESS_TY_Say({address});
 			print ": ";
 			MEMORY_ADDRESS_TY_ShowBytes({address}, {N});
 		-);
@@ -21571,10 +21571,9 @@ new base MEMORY_ADDRESS_TY {
 	can-exchange: yes
 	constant-compilation-method: none
 
-	comparison-routine: UnsignedCompare
-	parsing-routine: MEMORY_ADDRESS_TY_TOKEN
-	printing-routine: MEMORY_ADDRESS_TY_SAY
-	printing-routine-for-debugging: MEMORY_ADDRESS_TY_SAY
+	compare-function: UnsignedCompare
+	understand-function: MEMORY_ADDRESS_TY_Understand
+	say-function: MEMORY_ADDRESS_TY_Say
 
 	index-priority: 2
 	index-default-value: 0
@@ -21607,23 +21606,20 @@ As can be seen, though, it defines no instances — only enumerated kinds can do
 Next we have some settings for how values are handled at run-time:
 
 ``` code
-	comparison-routine: UnsignedCompare
-	parsing-routine: MEMORY_ADDRESS_TY_TOKEN
-	printing-routine: MEMORY_ADDRESS_TY_SAY
-	printing-routine-for-debugging: MEMORY_ADDRESS_TY_SAY
+	compare-function: UnsignedCompare
+	understand-function: MEMORY_ADDRESS_TY_Understand
+	say-function: MEMORY_ADDRESS_TY_Say
 ```
 
-Taking these four in turn:
+Taking these in turn:
 
-* ```comparison-routine``` is the name of a function ```f``` to compare two values of the kind, such that ```f(x, y)``` is 1 if ```x``` is greater than ```y```, 0 if they are equal, and -1 if ```x``` is less than ```y```. We want to compare memory addresses as unsigned numbers, so that addresses above the halfway point in the address space aren't misunderstood as negative numbers. The function ```UnsignedCompare``` is defined in ```BasicInformKit```, so we can just use that. (If we want regular signed comparison of numbers, the special value ```signed``` can also be used, which tells Inform not to make a function call but to use comparison operations on the virtual machine, which is a little faster.)
+* ```compare-function``` is the name of a function ```f``` to compare two values of the kind, such that ```f(x, y)``` is 1 if ```x``` is greater than ```y```, 0 if they are equal, and -1 if ```x``` is less than ```y```. We want to compare memory addresses as unsigned numbers, so that addresses above the halfway point in the address space aren't misunderstood as negative numbers. The function ```UnsignedCompare``` is defined in ```BasicInformKit```, so we can just use that. (If we want regular signed comparison of numbers, the special value ```signed``` can also be used, which tells Inform not to make a function call but to use comparison operations on the virtual machine, which is a little faster.)
 
-* ```parsing-routine``` is the name of a function which can act as an `Understand` token for this kind: that is, it implements the grammar token `"[memory address]"`. This function has to comply with the calling conventions for general parsing routines (GPR) in the Inform 6 sense. ```MEMORY_ADDRESS_TY_TOKEN``` above is an example of that.
+* ```understand-function``` is the name of a function which can act as an `Understand` token for this kind: that is, it implements the grammar token `"[memory address]"`. This function has to comply with the calling conventions for general parsing routines (GPR) in the Inform 6 sense. ```MEMORY_ADDRESS_TY_Understand``` above is an example of that.
 
-* ```distinguishing-routine``` isn't specified for this kind, but it would be a function ```f``` such that ```f(x, y)``` is 1 if there is anything the player could type in a command which would distinguish the value ```x``` from ```y```. If ```parsing-routine``` is capable of understanding all possible values then the test performed by ```distinguishing-routine``` can just be to call the ```comparison-routine``` and return 1 if and only if it says that ```x``` and ```y``` are equal.
+* ```distinguish-function``` isn't specified for this kind, but it would be a function ```f``` such that ```f(x, y)``` is 1 if there is anything the player could type in a command which would distinguish the value ```x``` from ```y```. If ```understand-function``` is capable of understanding all possible values then the test performed by ```distinguish-function``` can just be to call the ```compare-function``` and return 1 if and only if it says that ```x``` and ```y``` are equal.
 
-* ```printing-routine``` is the name of a function to print a value of this kind.
-
-* ```printing-routine-for-debugging``` is the same, but used in the output from debugging commands. (For some kinds, this might for example print the address at which the data in a value is stored.)
+* ```say-function``` is the name of a function to print a value of this kind.
 
 Finally, how the kind is presented in the Kinds part of the Index for a project which uses it:
 
@@ -21672,9 +21668,9 @@ We have seen examples of new base kinds created which conform to ```ENUMERATED_V
 
 Such kinds should given one of the following conformances:
 
-- ```conforms-to: UNDERSTANDABLE_VALUE_TY``` if we can give them both a ```parsing-routine``` and a ```printing-routine```;
+- ```conforms-to: UNDERSTANDABLE_VALUE_TY``` if we can give them both a ```understand-function``` and a ```say-function```;
 
-- ```conforms-to: SAYABLE_VALUE_TY``` if we can give them a ```printing-routine``` but not a ```parsing-routine```;
+- ```conforms-to: SAYABLE_VALUE_TY``` if we can give them a ```say-function``` but not a ```understand-function```;
 
 - ```conforms-to: STORED_VALUE_TY``` if not even that.
 
@@ -21774,9 +21770,9 @@ In this section we will go through how pointer values are stored in memory, and 
 
 > ---
 >
-> ```ConformsTo_POINTER_VALUE_TY(weak_kind_ID)```
+> ```KindConformsTo_POINTER_VALUE_TY(weak_kind_ID)```
 > 
-> Returns ```true``` if ```weak_kind_ID``` refers to a kind with pointer values, and ```false``` otherwise. Thus ```ConformsTo_POINTER_VALUE_TY(NUMBER_TY)```  is false, but ```ConformsTo_POINTER_VALUE_TY(TEXT_TY)``` is true.
+> Returns ```true``` if ```weak_kind_ID``` refers to a kind with pointer values, and ```false``` otherwise. Thus ```KindConformsTo_POINTER_VALUE_TY(NUMBER_TY)```  is false, but ```KindConformsTo_POINTER_VALUE_TY(TEXT_TY)``` is true.
 >
 > ---
 >
@@ -21808,7 +21804,9 @@ In this case, though, _only_ the second potential definition works:
 
 The issue here is that the first phrase duplicates the list, sorts the duplicate, and then throws it away as no longer needed. The second phrase sorts the original list, which is what we wanted to happen.
 
-In Inform, only pointer values can be passed by reference. It's not possible to pass a reference to the number 20, say: you can only pass 20.
+In Inform, only pointer values can be passed by reference. It's not possible to pass a reference to the number 20, say: you can only pass 20. There can be no
+pointers to local or global variables, because these do not exist in the
+memory map.
 
 Moreover, once a pointer value has passed down into I6 code, all further function calls are always by reference. If ```LIST_OF_TY_Sort``` receives a list value ```L``` and then passes it on to some other function, it is only passing a reference (i.e., pointer) to the data, not the data itself.
 
@@ -21986,36 +21984,108 @@ new base CMYK_COLOUR_TY {
 	plural: CMYK colours
 	
 	multiple-block: no
+	short-block-size: 1
+	long-block-size-function: CMYK_COLOUR_TY_LongBlockSize
 	heap-size-estimate: 8
+
+	create-function: CMYK_COLOUR_TY_Create
+	say-function: CMYK_COLOUR_TY_Say
+	compare-function: CMYK_COLOUR_TY_Compare
+	hash-function: CMYK_COLOUR_TY_Hash
+	copy-function: CMYK_COLOUR_TY_Copy
+	destroy-function: CMYK_COLOUR_TY_Destroy
+
 	can-exchange: yes
 	constant-compilation-method: none
 	
-	printing-routine: CMYK_COLOUR_TY_Say
-	printing-routine-for-debugging: CMYK_COLOUR_TY_Say
-	comparison-routine: CMYK_COLOUR_TY_Compare
-
 	index-priority: 2
 	index-default-value: 0
 	specification-text: A cyan-magenta-yellow-black description of an ink colour.
 }
 ```
 
-This is mostly as before, but ```multiple-block:``` and ```heap-size-estimate:``` need some explaining. A value of this kind will be represented by a pointer to a _short block_ of memory. In the case of this kind, it really will be short: a single word. And that word will store a pointer to a _long block_ of memory, which contains (among other things) the actual data content. Values of some kinds need only a fixed amount of space, so they can manage with just one long block. Others might balloon out to huge amounts of storage, occupying a chain of multiple long blocks. ```multiple-block:``` should be ```yes``` for those kinds, but ```no``` for kinds like `CMYK colour`, which needs only a fixed 5 words of data to represent a value.
-
-```heap-size-estimate:``` is compulsory for pointer-valued types: it makes a guess at the likely storage needs of a typical value of this kind, rounded up to the nearest power of two. Here all values of the kind need 5 words, so 8 is the next power of two.
-
-The two functions ```CMYK_COLOUR_TY_Say``` and ```CMYK_COLOUR_TY_Compare``` mentioned above are quite easy to write. The data occupies five words, or "fields", indexed 0 to 4: we use the function ```PVField```, from ```BasicInformKit```, to read the contents.
+Let's look first at the second set of settings, which describe how much memory a CMYK value will consume:
 
 ``` code
-Constant CMYK_NAME_F = 0;    ! TEXT_TY value
-Constant CMYK_CYAN_F = 1;    ! NUMBER_TY value
-Constant CMYK_MAGENTA_F = 2; ! NUMBER_TY value
-Constant CMYK_YELLOW_F = 3;  ! NUMBER_TY value
-Constant CMYK_BLACK_F = 4;   ! NUMBER_TY value
+	short-block-size: 1
+	long-block-size-function: CMYK_COLOUR_TY_LongBlockSize
+	multiple-block: no
+	heap-size-estimate: 8
+```
 
+Pointer values like this are represented by a pointer to a _short block_ of memory. Often, and always in the case of CMYK, this will contain a further pointer to a _long block_, where the real data is. Short blocks usually only contain 1 or 2 words of memory, so they're aptly named: this one has just 1 word, and consists only of the pointer to the long block.
+
+Long blocks can contain varying quantities of data (for example, lists and texts can expand or contract), so there's no constant ```long-block-size``` setting. Instead we have to provide a function which returns the current number of words being used...
+
+``` code
 Constant CMYK_LONG_BLOCK_SIZE = 5;
 Constant CMYK_SHORT_BLOCK_SIZE = 1;
 
+[ CMYK_COLOUR_TY_LongBlockSize cmyk;
+	return CMYK_LONG_BLOCK_SIZE;
+]
+```
+
+...but it won't be very interesting: the answer is always 5.
+
+Values of some kinds need only a fixed amount of space, so they can manage with just one long block. Others might balloon out to huge amounts of storage, occupying a chain of multiple long blocks. ```multiple-block:``` should be ```yes``` for those kinds, but ```no``` for kinds like `CMYK colour`, where our data storage needs never change.
+
+```heap-size-estimate:``` is compulsory for pointer-valued types: it makes a guess at the likely storage needs of a typical value of this kind, rounded up to the nearest power of two. Here all values of the kind need 5 words, so 8 is the next power of two.
+
+Next we come to a whole set of functions needed for `CMYK colour` to operate:
+
+``` code
+	create-function: CMYK_COLOUR_TY_Create
+	say-function: CMYK_COLOUR_TY_Say
+	compare-function: CMYK_COLOUR_TY_Compare
+	hash-function: CMYK_COLOUR_TY_Hash
+	copy-function: CMYK_COLOUR_TY_Copy
+	destroy-function: CMYK_COLOUR_TY_Destroy
+```
+
+To start with the creation function: this will be called as ```CMYK_COLOUR_TY_Create(kind_id, sb_address)```. The long block must be created first, and then the short block, which incorporates a pointer to it, always in the last word of the short block.
+
+``` code
+Constant CMYK_NAME_F = 0;
+Constant CMYK_CYAN_F = 1;
+Constant CMYK_MAGENTA_F = 2;
+Constant CMYK_YELLOW_F = 3;
+Constant CMYK_BLACK_F = 4;
+
+Array CMYK_DEFAULT_NAME_TEXT --> PACKED_TEXT_STORAGE "black";
+
+[ CMYK_COLOUR_TY_Create kind_id sb_address
+	short_block long_block txt;
+
+	long_block = CreatePVLongBlock(CMYK_LONG_BLOCK_SIZE, CMYK_COLOUR_TY);
+
+	txt = CreatePV(TEXT_TY);
+	CopyPV(txt, CMYK_DEFAULT_NAME_TEXT); TEXT_TY_Mutable(txt);
+
+	InitialisePVLongBlockField(long_block, CMYK_NAME_F, txt);
+	InitialisePVLongBlockField(long_block, CMYK_CYAN_F, 0);
+	InitialisePVLongBlockField(long_block, CMYK_MAGENTA_F, 0);
+	InitialisePVLongBlockField(long_block, CMYK_YELLOW_F, 0);
+	InitialisePVLongBlockField(long_block, CMYK_BLACK_F, 100);
+	
+	short_block = CreatePVShortBlock(sb_address, CMYK_SHORT_BLOCK_SIZE);
+	short_block-->0 = long_block;
+
+	return short_block;
+];
+```
+
+It is very important that the ```sb_address``` value is passed to ```CreatePVShortBlock```. The deal here is that if this is 0 then the short block is created somewhere in the heap, but if it is non-zero, then the short block is created at the given location (often on the stack). We don't need to care about any of that, but we do need to pass the address on.
+
+If this kind used multiple long blocks, it would have been necessary to call ```CreatePVLongBlockMultiple``` instead of ```CreatePVLongBlock```, but otherwise the process would be exactly the same.
+
+The words of actual data in the long block are called _fields_. They're indexed 0 to 4, since we're using just 5. We put initial contents into the five words with the special function ```InitialisePVLongBlockField```. Note the ```LB```, for long block, at the end of this function name, and do not confuse this function with the usual ```WritePVField```. ```InitialisePVLongBlockField``` should never be used except in create functions.
+
+The interesting field of the five is ```CMYK_NAME_F```, of course, since it's a text value which itself needs creation. When created by ```PVCreate(TEXT_TY)```, the result will be a copy of the default text, which is the empty text `""`. We actually want to start with `"black"`, so we must _copy_ that constant value into our new text, but any use of packed text is always tricksy, and we make it mutable so that its value will sort correctly as against text. We don't simply execute ```InitialisePVLongBlockField(long_block, CMYK_NAME_F, CMYK_DEFAULT_NAME_TEXT);``` because values like text must always be copied in a way which keeps reference counts accurate.
+
+So here's how to say a CMYK once we have one:
+
+``` code
 [ CMYK_COLOUR_TY_Say cmyk;
 	TEXT_TY_Say(PVField(cmyk, CMYK_NAME_F));
 	print " ink = ";
@@ -22024,7 +22094,11 @@ Constant CMYK_SHORT_BLOCK_SIZE = 1;
 	print "Y:", PVField(cmyk, CMYK_YELLOW_F), "% ";
 	print "K:", PVField(cmyk, CMYK_BLACK_F), "%";
 ];
+```
 
+And here's a comparison function. These follow just the same calling conventions that they do for non-pointer-valued kinds. We're going to compare first alphabetically on the ink name, and then, within the same name, use the cyan level as a tiebreaker, failing that the magenta, and so on.
+
+``` code
 [ CMYK_COLOUR_TY_Compare cmyk1 cmyk2 i d;
 	d = TEXT_TY_Compare(
 		PVField(cmyk1, CMYK_NAME_F), PVField(cmyk2, CMYK_NAME_F));
@@ -22037,132 +22111,45 @@ Constant CMYK_SHORT_BLOCK_SIZE = 1;
 ];
 ```
 
-This, however, is not enough. Because we specified that this is a kind which conforms to ```POINTER_VALUE_TY```, we must also provide a function called ```CMYK_COLOUR_TY_Support```.
+There is really no need to provide a hash function for this kind (and the data is so small that it would provide no real benefit), but we will anyway, for the sake of a demonstration. A _hash code_ for a value is a quick-to-compute number such that if two values are equal then they have the same hash code, but not necessarily vice versa. It's potentially slow to tell whether two texts are equal, but hash codes can often quickly spot that they are different. So:
 
 ``` code
-[ CMYK_COLOUR_TY_Support task arg1 arg2 arg3;
-	switch(task) {
-		CREATE_KOVS:      return CMYK_COLOUR_TY_Create(arg2);
-		
-		DESTROY_KOVS:     break;
-
-		COMPARE_KOVS:     return CMYK_COLOUR_TY_Compare(arg1, arg2);
-		HASH_KOVS:        break;
-
-		COPY_KOVS:        break;
-		COPYQUICK_KOVS:   return true;
-		COPYSB_KOVS:	  CopyPVShortBlockOfSize1(arg1, arg2);
-		EXTENT_KOVS:      return CMYK_LONG_BLOCK_SIZE;
-		COPYKIND_KOVS:    break;
-
-		CAST_KOVS:        break;
-
-		MAKEMUTABLE_KOVS: return CMYK_SHORT_BLOCK_SIZE;
-
-		KINDDATA_KOVS:    break;
-		
-		READ_FILE_KOVS:   break;
-		WRITE_FILE_KOVS:  break;
-
-		DEBUG_KOVS:       print " = ", (CMYK_COLOUR_TY_Say) arg1;
-	}
-	rfalse;
+[ CMYK_COLOUR_TY_Hash cmyk rv;
+	rv = HashKindValuePair(TEXT_TY, PVField(cmyk, CMYK_NAME_F));
+	rv = rv * 33 + PVField(cmyk, CMYK_CYAN_F);
+	rv = rv * 33 + PVField(cmyk, CMYK_MAGENTA_F);
+	rv = rv * 33 + PVField(cmyk, CMYK_YELLOW_F);
+	rv = rv * 33 + PVField(cmyk, CMYK_BLACK_F);
+	return rv;
 ];
 ```
 
-This function is a Swiss Army knife for doing things with pointer-valued kinds. It passes a ```task```, which will always be one of the ```*_KOVS``` constants. (KOVS is an acronym for Kind Of Value Support.) There are quite a lot of these, but a kind doesn't have to perform every task: note how many cases in the above ```switch``` lead only to ```break;```.
+Now we come to the trickiest operation: copying. The copy function for a kind copies the contents of the second argument into the first. Both must already exist and be valid: that is, they must have been created but not yet destroyed. The ```kind``` parameter passed to this function is the kind which |cmykto| is to have: that may seem pointless, indeed, it is pointless, for a simple kind like `CMYK colour`, but this becomes important when copying lists or other more complex data structures.
 
-Some tasks ask for information, others ask us to change something: whether the return value is significant or not depends on the task.
+The ```recycling``` parameter should be ignored, _except_ that the function is required to call ```CopyPVRawData(cmykto, cmykfrom, kind, recycling);``` at some point. This makes a simple-minded copy of fields 0 to 4. That's fine when copying numbers, but it is not fine when copying `text`, which is a pointer-valued kind. We must use ```CreatePV``` to make a new text, then properly copy over the text value into it, and write the result into field 0. We do _not_ need to worry about destroying whatever was in field 0 before: that has already been done.
 
-- ```CREATE_KOVS```. Must create a new value, which is initially equal to the default value for this kind. As it happens, we're going to make the default value a solid black ink, ``black ink = C:0% M:0% Y:0% K:100%``.
+``` code
+[ CMYK_COLOUR_TY_Copy cmykto cmykfrom kind recycling
+	inkfrom inkto;
+	CopyPVRawData(cmykto, cmykfrom, kind, recycling);
+	inkfrom = PVField(cmykfrom, CMYK_NAME_F);
+	inkto = CreatePV(TEXT_TY);
+	CopyPV(inkto, inkfrom);
+	WritePVField(cmykto, CMYK_NAME_F, inkto);
+];
+```
 
-  Creation functions take one optional argument, ```sb_address```. If this is omitted (i.e., is 0), memory space for the short block is allocated from the heap and an address there is used. If ```sb_address``` _is_ provided, it doesn't matter what data happens to be there at the moment: that data will be overwritten by a newly-created short block. So the caller's only obligation is that if ```sb_address``` is non-zero, then it needs to point to enough space to fit whatever size short block will be used.
-  
-  We don't need to worry about all that memory allocation business, though, because it's all taken care of in the final line of the function. Calling ```CreatePVShortBlockOfSize1(sb_address, long_block)``` returns the completed value. If we had wanted a size 2 short block, we could alternatively have called ```CreatePVShortBlockOfSize2```.
-  
-  Our real work, then, is to create this long block, by calling ```CreatePVLongBlock```. This function takes two arguments: how much storage we want to stash in the block — 5 words — and what kind of value owns the block — ```CMYK_COLOUR_TY```. Once this is called, we are free to put data into the five words now available, and this is done with the special function ```InitialisePVLongBlockField```. Note the ```LB```, for long block, at the end of this function name, and do not confuse this function with the usual ```WritePVField```.
-  
-  Note that in creation functions, it's essential to use ```InitialisePVLongBlockField``` and not ```WritePVField```. They are different because the first argument of ```InitialisePVLongBlockField``` is the address of the long block, _not_ a valid PV. We need that because, of course, we haven't finished creating the PV yet.
-  
-  If this kind used multiple long blocks, it would have been necessary to call ```CreatePVLongBlockMultiple``` instead of ```CreatePVLongBlock```, but otherwise the process would be exactly the same.
+And finally, of course, a `CMYK colour` will probably need to be thrown away. Losing the four percentages is harmless enough, they were just numbers, but losing the ink name means we need to destroy the text value properly. If we don't, useless data will be left forever on the heap, causing a so-called memory leak. Any pointer-value can be humanely destroyed, so:
 
-  ``` code
-  Array CMYK_DEFAULT_NAME_TEXT --> PACKED_TEXT_STORAGE "black";
+``` code
+[ CMYK_COLOUR_TY_Destroy cmyk;
+	DestroyPV(PVField(cmyk, CMYK_NAME_F));
+];
+```
 
-  [ CMYK_COLOUR_TY_Create sb_address
-      long_block txt;
-      long_block = CreatePVLongBlock(CMYK_LONG_BLOCK_SIZE, CMYK_COLOUR_TY);
-      txt = PVCreate(TEXT_TY);
-      CopyPV(txt, CMYK_DEFAULT_NAME_TEXT);
-      TEXT_TY_Mutable(txt);
-      InitialisePVLongBlockField(long_block, CMYK_NAME_F, txt);
-      InitialisePVLongBlockField(long_block, CMYK_CYAN_F, 0);
-      InitialisePVLongBlockField(long_block, CMYK_MAGENTA_F, 0);
-      InitialisePVLongBlockField(long_block, CMYK_YELLOW_F, 0);
-      InitialisePVLongBlockField(long_block, CMYK_BLACK_F, 100);
-      return CreatePVShortBlockOfSize1(sb_address, long_block);
-  ];
-  ```
+If the long block had contained only numbers, we would not even have needed to define a destroy function.
 
-  The interesting field of the five is ```CMYK_NAME_F```, of course, since it's a text value which itself needs creation. When created by ```PVCreate(TEXT_TY)```, the result will be a copy of the default text, which is the empty text `""`. We actually want to start with `"black"`, so we must _copy_ that constant value into our new text, but any use of packed text is always tricksy, and we make it mutable so that its value will sort correctly as against text. We don't simply execute ```InitialisePVLongBlockField(long_block, CMYK_NAME_F, CMYK_DEFAULT_NAME_TEXT);``` because values like text must always be copied in a way which keeps reference counts accurate.
-
-- ```DESTROY_KOVS```. This task is to call a destruction function. At this point, we know that a `CMYK colour` is being thrown away. Losing the four percentages is harmless enough, they were just numbers, but losing the ink name means we need to destroy the text value properly. If we don't, useless data will be left forever on the heap, causing a so-called memory leak. Any pointer-value can be humanely destroyed, so:
-
-  ``` code
-  [ CMYK_COLOUR_TY_Destroy cmyk;
-      DestroyPV(PVField(cmyk, CMYK_NAME_F));
-  ];
-  ```
-
-- ```COMPARE_KOVS```. For this, we just need to call our ```comparison-routine```, already set up above.
-
-- ```HASH_KOVS```. This optional feature enables us to provide a "hash code" which can be used to make a quick verification that two values are different. A hash code is a very approximately calculated value such that if `x` and `y` have different hash codes then we are certain that `x is not y`; but if they have equal hash codes then will have to use ```comparison-routine``` to find out whether or not they are equal, which is a slower process. Sorting of lists and tables, for example, is much faster if hash codes are used. Here is a suitable function:
-
-  ``` code
-  [ CMYK_COLOUR_TY_Hash cmyk hash_code;
-      hash_code = TEXT_TY_Hash(PVField(cmyk, CMYK_NAME_F));
-      hash_code = hash_code * 33 + PVField(cmyk, CMYK_CYAN_F);
-      hash_code = hash_code * 33 + PVField(cmyk, CMYK_MAGENTA_F);
-      hash_code = hash_code * 33 + PVField(cmyk, CMYK_YELLOW_F);
-      hash_code = hash_code * 33 + PVField(cmyk, CMYK_BLACK_F);
-      return hash_code;
-  ];
-  ```
-
-- ```MAKEMUTABLE_KOVS```. This has to do with constant values and reference-counting, and is tricky to explain. Basically, values can be "mutable" (able to be changed), or not. Constant values stored in memory are _not_ mutable. When given this task, we should either return the length of the short block in words, or, if the value is stored in some unusual way which doesn't involve quite the same usage of the short block, directly act to fix the situation. For complicated efficiency reasons, ```TEXT_TY``` acts directly, but most kinds will simply return the short block size and let Inform get on with things happily by itself.
-
-- ```COPY_KOVS```. What happens when Inform copies a pointer value is that it first transfers the raw data directly across, but then asks us to perform a proper copy on any fields of data which need it. The percentage numbers are raw data needing no special treatment, but the ink name field, once again, is different: that's a `text`, which is a pointer value, so we have to use ```CopyPV``` to make a deep copy of the contents.
-
-  ``` code
-  [ CMYK_COLOUR_TY_Copy cmykto cmykfrom inkfrom inkto;
-      inkfrom = PVField(cmykfrom, CMYK_NAME_F);
-      inkto = PVCreate(TEXT_TY);
-      CopyPV(inkto, inkfrom);
-      WritePVField(cmykto, CMYK_NAME_F, inkto);
-  ];
-  ```
-
-- ```COPYQUICK_KOVS```. A _quick copy_ is a more efficient form of copying which is permitted when safe. This task is called when a copy is about to happen: we can return ```false``` to refuse permission to make a quick copy, or ```true``` to permit it, perhaps after making some preparations first. We're fine with a quick copy, so we say yes.
-
-- ```COPYSB_KOVS```. Assuming a quick copy is allowed (which for us it always is), this task is called for, and we have to copy one short block into another. For the common case of a one-word short block containing a pointer to the long block, which is what we have here, ```BasicInformKit``` provides a function to do this for us, ```CopyPVShortBlockOfSize1(arg1, arg2)```. There's no meaningful return value.
-
-  For kinds with a short block of size 2, the alternative function ```CopyPVShortBlockOfSize2``` is provided.
-
-- ```EXTENT_KOVS```. Return the length of the data currently stored in the long block. For us, there are always exactly 5 words stored there.
-
-- ```CAST_KOVS```. _Casting_ is taking data of one kind and converting it to data of another. We certainly don't need that here, though we could imagine casting an `RGB colour` to a `CMYK colour`, perhaps. See ```TEXT_TY_Cast``` in ```BasicInformKit``` for an example of how this is done.
-
-- ```KINDDATA_KOVS```. Requests a kind ID for the data stored in the value. This is only really needed for constructors like `list of K`; for base kinds, it's fine just to return 0 and let Inform use its default behaviour.
-
-- ```COPYKIND_KOVS```. Copies over the kind metadata recorded in one value into the other. Again, base kinds can ignore this. It's needed only for constructors like `list of K`.
-
-- ```READ_FILE_KOVS```. Reading a serialised-to-text form of the data from a file. See ```TEXT_TY_Support``` in ```BasicInformKit``` for an example of this.
-
-- ```WRITE_FILE_KOVS```. Writing a serialised-to-text form of the data to a file. See ```TEXT_TY_Support``` in ```BasicInformKit``` for an example of this.
-
-- ```DEBUG_KOVS``` gives an opportunity to make the output from testing commands which show the contents of the memory heap look more understandable.
-
-Finally, and purely for convenience, we're going to provide a creation function which doesn't just make the default black:
+Purely for convenience, we're also going to provide a creation function which populates a CMYK colour with some actual values other than solid black:
 
 ``` code
 [ CMYK_COLOUR_TY_New ink c m y k cmyk;
@@ -22214,17 +22201,19 @@ M:53% Y:0% K:12%, taupe ink = C:0% M:17% Y:31% K:72% and taupe ink = C:0% M:19%
 Y:30% K:72%.
 ```
 
-Any C programmers reading this will appreciate that we have essentially imitated this sort of C type:
+A number of other functions can optionally be provided in Neptune declarations, too. `CMYK colour` did not need them, but more outré kinds might.
 
-``` code
-struct CMYK_colour {
-	text ink_colour;
-	int cyan;
-	int magenta;
-	int yellow;
-	int black;
-}
-```
+- ```make-mutable-function```. This has to do with constant values and reference-counting, and is tricky to explain. Only kinds which pull off the trick of sometimes having a long block, and sometimes not, will need this device, and at present only ```TEXT_TY``` does that. See the ```BasicInformKit``` source code (or, preferably, don't).
+
+- ```copy-short-block-function```. Similarly obscure, and also used only by ```TEXT_TY``` at present. If provided, this function makes a non-standard copy of one short block to another. But there is a lot to be said for the standard way.
+
+- ```quick-copy-function```. A _quick copy_ is a more efficient form of copying which is permitted when safe. This task is called when a copy is about to happen: we can return ```false``` to refuse permission to make a quick copy, or ```true``` to permit it, perhaps after making some preparations first.
+
+- ```cast-function```. _Casting_ is taking data of one kind and converting it to data of another. We certainly don't need that here, though we could imagine casting an `RGB colour` to a `CMYK colour`, perhaps. See ```TEXT_TY_Cast``` in ```BasicInformKit``` for an example of how this is done.
+
+- ```unserialise-function```. Reading a serialised-to-text form of the data from a file. See ```TEXT_TY_Unserialise``` in ```BasicInformKit``` for an example of this.
+
+- ```serialise-function```. Writing a serialised-to-text form of the data to a file. See ```TEXT_TY_Serialise``` in ```BasicInformKit``` for an example of this.
 
 ## Neptune and kind constructors
 
@@ -22243,13 +22232,20 @@ builtin constructor LIST_OF_TY {
 
 	default-value: 0
 	multiple-block: yes
+	short-block-size: 1
 	heap-size-estimate: 256
 	can-exchange: yes
 	constant-compilation-method: special
 
-	comparison-routine: BlkValueCompare
-	distinguishing-routine: LIST_OF_TY_Distinguish
-	printing-routine: LIST_OF_TY_Say
+	compare-function: LIST_OF_TY_Compare
+	distinguish-function: LIST_OF_TY_Distinguish
+	say-function: LIST_OF_TY_Say
+	create-function: LIST_OF_TY_Create
+	copy-function: LIST_OF_TY_Copy
+	quick-copy-function: LIST_OF_TY_QuickCopy
+	destroy-function: LIST_OF_TY_Destroy
+	hash-function: LIST_OF_TY_Hash
+	long-block-size-function: LIST_OF_TY_LongBlockSize
 }
 ```
 
@@ -22280,8 +22276,6 @@ Note the pipe characters ```|``` dividing the possible names.
 
 Beyond that, the definition is surprisingly similar to the way `CMYK colour` was handled in the previous section. There are two main differences: the amount of data can vary as the list lengthens or shortens, instead of being fixed at 5 words. So it need ```multiple-block: yes``` rather than ```no```. The ```heap-size-estimate``` is a good bit larger, too. Lists are often much smaller, but we want to guess on the high side.
 
-Just as `CMYK colour` did, so `list of K` provides a support function, called ```LIST_OF_TY_Support```. The full content can be found in ```BasicInformKit```, but a few key differences are worth showing here.
-
 Long blocks for lists consist of two header words — the kind ID for the contents, and the number of entries — followed by the entries themselves. So for the list `{ 2, 3, 5, 7 }`, the long block data would be six words in all: ```NUMBER_TY, 4, 2, 3, 5, 7```.
 
 As might be guessed, copying and destruction are easy if the kind being listed is stored in simple values. They become harder if not. For example:
@@ -22293,10 +22287,10 @@ Constant LIST_ITEM_BASE = 2;  ! List items begin at this entry
 
 [ LIST_OF_TY_Destroy list no_items i k;
 	k = PVField(list, LIST_ITEM_KOV_F);
-	if (ConformsTo_POINTER_VALUE_TY(k)) {
+	if (KindConformsTo_POINTER_VALUE_TY(k)) {
 		no_items = PVField(list, LIST_LENGTH_F);
 		for (i=0: i<no_items: i++)
-			DestroyPV(PVField(list, i + LIST_ITEM_BASE));
+			DestroyPV(PVField(list, i+LIST_ITEM_BASE));
 	}
 ];
 ```

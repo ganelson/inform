@@ -27,29 +27,6 @@ Constant RRV_USED			6;
 Constant RRV_FILLED			7;
 Constant RRV_DATA_BASE		8;
 
-@h KOV Support.
-See the "BlockValues.i6t" segment for the specification of the following
-routines.
-
-=
-[ RELATION_TY_Support task arg1 arg2 arg3;
-	switch(task) {
-		CREATE_KOVS:      return RELATION_TY_Create(arg1, 0, arg2);
-		DESTROY_KOVS:     RELATION_TY_Destroy(arg1);
-		MAKEMUTABLE_KOVS: return 1;
-		COPYQUICK_KOVS:   rtrue;
-		COPYSB_KOVS:	  CopyPVShortBlockOfSize1(arg1, arg2);
-		KINDDATA_KOVS:    return 0;
-		EXTENT_KOVS:      return -1;
-		COPY_KOVS:        RELATION_TY_Copy(arg1, arg2);
-		COMPARE_KOVS:     return RELATION_TY_Compare(arg1, arg2);
-		HASH_KOVS:        return arg1;
-		DEBUG_KOVS:       print " = ", (RELATION_TY_Say) arg1;
-	}
-	! We choose not to respond to: CAST_KOVS, COPYKIND_KOVS, READ_FILE_KOVS, WRITE_FILE_KOVS
-	rfalse;
-];
-
 @h Other Definitions.
 
 =
@@ -205,14 +182,14 @@ it with one of the heap relation handlers, which thus makes the relation a
 newly constructed data structure which can grow freely from here.
 
 =
-[ RELATION_TY_Create kov from short_block
-	long_block i skov handler;
+[ RELATION_TY_Create kind_id sb_address from
+	short_block long_block i handler;
 	long_block = CreatePVLongBlockMultiple(RRV_DATA_BASE + 3*RRP_MIN_SIZE, RELATION_TY);
-	if ((from == 0) && (kov ~= 0)) from = DefaultValueFinder(kov);
+	if ((from == 0) && (kind_id)) from = DefaultValueFinder(kind_id);
 	if (from) {
 		for (i=0: i<RRV_DATA_BASE: i++) InitialisePVLongBlockField(long_block, i, PVField(from, i));
 		if (PVField(from, RRV_HANDLER) == EmptyRelationHandler) {
-			handler = ChooseRelationHandler(PVField(long_block, RRV_KIND, true));
+			handler = ChooseRelationHandler(PVLongBlockField(long_block, RRV_KIND));
 			InitialisePVLongBlockField(long_block, RRV_NAME, "anonymous relation");
 			InitialisePVLongBlockField(long_block, RRV_PERMISSIONS,
 				RELS_TEST+RELS_ASSERT_TRUE+RELS_ASSERT_FALSE+RELS_SHOW);
@@ -223,19 +200,22 @@ newly constructed data structure which can grow freely from here.
 			InitialisePVLongBlockField(long_block, RRV_FILLED, 0);
 		}
 	} else {
-		handler = ChooseRelationHandler(kov);
+		handler = ChooseRelationHandler(kind_id);
 		InitialisePVLongBlockField(long_block, RRV_NAME, "anonymous relation");
 		InitialisePVLongBlockField(long_block, RRV_PERMISSIONS,
 			RELS_TEST+RELS_ASSERT_TRUE+RELS_ASSERT_FALSE+RELS_SHOW);
 		InitialisePVLongBlockField(long_block, RRV_STORAGE, RRP_MIN_SIZE-1);
-		InitialisePVLongBlockField(long_block, RRV_KIND, kov);
+		InitialisePVLongBlockField(long_block, RRV_KIND, kind_id);
 		InitialisePVLongBlockField(long_block, RRV_HANDLER, handler);
 		InitialisePVLongBlockField(long_block, RRV_DESCRIPTION, "an anonymous relation");
 		InitialisePVLongBlockField(long_block, RRV_USED, 0);
 		InitialisePVLongBlockField(long_block, RRV_FILLED, 0);
 	}
+	
+	short_block = CreatePVShortBlock(sb_address, 1);
+	short_block-->0 = long_block;
 
-	return CreatePVShortBlockOfSize1(short_block, long_block);
+	return short_block;
 ];
 
 @h Destruction.
@@ -253,7 +233,8 @@ Same as destruction: invoke the handler using a special value to tell it to perf
 deep copying.
 
 =
-[ RELATION_TY_Copy lto lfrom  handler;
+[ RELATION_TY_Copy lto lfrom kind recycling  handler;
+	CopyPVRawData(lto, lfrom, kind, recycling);
 	handler = PVField(lto, RRV_HANDLER);
 	handler(lto, RELS_COPY);
 ];
@@ -302,8 +283,8 @@ the kinds of value being related. Each handler also has a corresponding
 wrapper for symmetric relations.
 
 =
-[ ChooseRelationHandler kov sym;
-	if (ConformsTo_POINTER_VALUE_TY(KindBaseTerm(kov, 0))) {
+[ ChooseRelationHandler kind_id sym;
+	if (KindConformsTo_POINTER_VALUE_TY(KindConstructorTerm(kind_id, 0))) {
 		if (sym) return SymHashListRelationHandler;
 		return HashListRelationHandler;
 	}
@@ -325,14 +306,14 @@ allow the author to change the valency, but only if no entries have
 been added yet.
 
 =
-[ RELATION_TY_SetValency rel val  kov filled cur handler ext;
+[ RELATION_TY_SetValency rel val  kind_id filled cur handler ext;
 	filled = PVField(rel, RRV_FILLED);
 	if (filled) { IssueRTP("ChangedImmutableRelation",
 		"This change of the relation's nature is impossible in play.",
 		BasicInformKitRTPs); rfalse; }
-	kov = PVField(rel, RRV_KIND);
+	kind_id = PVField(rel, RRV_KIND);
 	if (val == RRVAL_EQUIV or RRVAL_SYM_V_TO_V or RRVAL_SYM_O_TO_O) {
-		if (KindBaseTerm(kov, 0) ~= KindBaseTerm(kov, 1)) {
+		if (KindConstructorTerm(kind_id, 0) ~= KindConstructorTerm(kind_id, 1)) {
 			IssueRTP("ChangedImmutableRelation",
 				"This change of the relation's nature is impossible in play.",
 				BasicInformKitRTPs); rfalse;
@@ -340,12 +321,12 @@ been added yet.
 	}
 	cur = PVField(rel, RRV_HANDLER);
 	switch (val) {
-		RRVAL_V_TO_V:		handler = ChooseRelationHandler(kov, false);
+		RRVAL_V_TO_V:		handler = ChooseRelationHandler(kind_id, false);
 		RRVAL_V_TO_O:		handler = HashTableRelationHandler;
 		RRVAL_O_TO_V:		handler = ReversedHashTableRelationHandler;
 		RRVAL_O_TO_O:		handler = TwoInOneHashTableRelationHandler;
 		RRVAL_EQUIV:		handler = EquivHashTableRelationHandler;
-		RRVAL_SYM_V_TO_V:	handler = ChooseRelationHandler(kov, true);
+		RRVAL_SYM_V_TO_V:	handler = ChooseRelationHandler(kind_id, true);
 		RRVAL_SYM_O_TO_O:	handler = Sym2in1HashTableRelationHandler;
 		default:			IssueRTP("ChangedImmutableRelation",
 								"This change of the relation's nature is impossible in play.",
@@ -392,14 +373,14 @@ dictionary has become too full after inserting a pair, and expands it
 if so.
 
 =
-[ DoubleHashSetRelationHandler rel task X Y sym  kov kx ky at tmp v;
-	kov = PVField(rel, RRV_KIND);
-	kx = KindBaseTerm(kov, 0); ky = KindBaseTerm(kov, 1);
+[ DoubleHashSetRelationHandler rel task X Y sym  kind_id kx ky at tmp v;
+	kind_id = PVField(rel, RRV_KIND);
+	kx = KindConstructorTerm(kind_id, 0); ky = KindConstructorTerm(kind_id, 1);
 	if (task == RELS_SET_VALENCY) {
 		return RELATION_TY_SetValency(rel, X);
 	} else if (task == RELS_DESTROY) {
 		! clear
-		kx = ConformsTo_POINTER_VALUE_TY(kx); ky = ConformsTo_POINTER_VALUE_TY(ky);
+		kx = KindConformsTo_POINTER_VALUE_TY(kx); ky = KindConformsTo_POINTER_VALUE_TY(ky);
 		if (~~(kx || ky)) return;
 		for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
 			tmp = PVField(rel, RRV_DATA_BASE + 3*at);
@@ -411,7 +392,7 @@ if so.
 		}
 		return;
 	} else if (task == RELS_COPY) {
-		X = ConformsTo_POINTER_VALUE_TY(kx); Y = ConformsTo_POINTER_VALUE_TY(ky);
+		X = KindConformsTo_POINTER_VALUE_TY(kx); Y = KindConformsTo_POINTER_VALUE_TY(ky);
 		if (~~(X || Y)) return;
 		at = PVField(rel, RRV_STORAGE);
 		while (at >= 0) {
@@ -434,19 +415,19 @@ if so.
 	} else if (task == RELS_SHOW) {
 		print (string) PVField(rel, RRV_DESCRIPTION), ":^";
 		if (sym) {
-			kov = KOVComparisonFunction(kx);
-			if (~~kov) kov = UnsignedCompare;
+			kind_id = KindComparisonFunction(kx);
+			if (~~kind_id) kind_id = UnsignedCompare;
 		}
 		for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
 			tmp = PVField(rel, RRV_DATA_BASE + 3*at);
 			if (tmp & RRF_USED) {
 				X = PVField(rel, RRV_DATA_BASE + 3*at + 1);
 				Y = PVField(rel, RRV_DATA_BASE + 3*at + 2);
-				if (sym && (kov(X, Y) > 0)) continue;
+				if (sym && (kind_id(X, Y) > 0)) continue;
 				print "  ";
-				PrintKindValuePair(kx, X);
+				SayKindValuePair(kx, X);
 				if (sym) print " <=> "; else print " >=> ";
-				PrintKindValuePair(ky, Y);
+				SayKindValuePair(ky, Y);
 				print "^";
 			}
 		}
@@ -472,7 +453,7 @@ if so.
 			if (PVField(rel, tmp) & RRF_USED) {
 				if (Y == RLANY_GET_X or RLANY_CAN_GET_X) {
 					v = PVField(rel, tmp + 2);
-					if (ConformsTo_POINTER_VALUE_TY(ky)) {
+					if (KindConformsTo_POINTER_VALUE_TY(ky)) {
 						if (ComparePV(v, X) ~= 0) continue;
 					} else {
 						if (v ~= X) continue;
@@ -481,7 +462,7 @@ if so.
 					return PVField(rel, tmp + 1);
 				} else {
 					v = PVField(rel, tmp + 1);
-					if (ConformsTo_POINTER_VALUE_TY(kx)) {
+					if (KindConformsTo_POINTER_VALUE_TY(kx)) {
 						if (ComparePV(v, X) ~= 0) continue;
 					} else {
 						if (v ~= X) continue;
@@ -501,7 +482,7 @@ if so.
 			tmp = RRV_DATA_BASE + 3*at;
 			if (PVField(rel, tmp) & RRF_USED) {
 				v = PVField(rel, tmp + 2);
-				if (ConformsTo_POINTER_VALUE_TY(ky)) {
+				if (KindConformsTo_POINTER_VALUE_TY(ky)) {
 					if (ComparePV(v, X) ~= 0) continue;
 				} else {
 					if (v ~= X) continue;
@@ -517,7 +498,7 @@ if so.
 			tmp = RRV_DATA_BASE + 3*at;
 			if (PVField(rel, tmp) & RRF_USED) {
 				v = PVField(rel, tmp + 1);
-				if (ConformsTo_POINTER_VALUE_TY(kx)) {
+				if (KindConformsTo_POINTER_VALUE_TY(kx)) {
 					if (ComparePV(v, X) ~= 0) continue;
 				} else {
 					if (v ~= X) continue;
@@ -545,7 +526,7 @@ if so.
 				! LIST_OF_TY_InsertItem will make a deep copy of the item,
 				! so we can reuse a single combination value here
 
-				Y = CreatePV(kov);
+				Y = CreatePV(kind_id);
 				for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
 					tmp = RRV_DATA_BASE + 3*at;
 					if (PVField(rel, tmp) & RRF_USED) {
@@ -575,8 +556,8 @@ if so.
 			if (PVField(rel, RRV_DATA_BASE + 3*at) == 0)
 				WritePVField(rel, RRV_FILLED, PVField(rel, RRV_FILLED) + 1);
 			WritePVField(rel, RRV_DATA_BASE + 3*at, RRF_USED+RRF_SINGLE);
-			if (ConformsTo_POINTER_VALUE_TY(kx)) { X = CopyPV(CreatePV(kx), X); }
-			if (ConformsTo_POINTER_VALUE_TY(ky)) { Y = CopyPV(CreatePV(ky), Y); }
+			if (KindConformsTo_POINTER_VALUE_TY(kx)) { X = CopyPV(CreatePV(kx), X); }
+			if (KindConformsTo_POINTER_VALUE_TY(ky)) { Y = CopyPV(CreatePV(ky), Y); }
 			WritePVField(rel, RRV_DATA_BASE + 3*at + 1, X);
 			WritePVField(rel, RRV_DATA_BASE + 3*at + 2, Y);
 			DoubleHashSetCheckResize(rel);
@@ -584,9 +565,9 @@ if so.
 		RELS_ASSERT_FALSE:
 			if (at < 0) rtrue;
 			WritePVField(rel, RRV_USED, PVField(rel, RRV_USED) - 1);
-			if (ConformsTo_POINTER_VALUE_TY(kx))
+			if (KindConformsTo_POINTER_VALUE_TY(kx))
 				DestroyPV(PVField(rel, RRV_DATA_BASE + 3*at + 1));
-			if (ConformsTo_POINTER_VALUE_TY(ky))
+			if (KindConformsTo_POINTER_VALUE_TY(ky))
 				DestroyPV(PVField(rel, RRV_DATA_BASE + 3*at + 2));
 			WritePVField(rel, RRV_DATA_BASE + 3*at, RRF_DELETED);
 			WritePVField(rel, RRV_DATA_BASE + 3*at + 1, 0);
@@ -597,7 +578,7 @@ if so.
 
 [ DoubleHashSetLookUp rel kx ky X Y  hashv i free mask perturb flags;
 	! calculate a hash value for the pair
-	hashv = GetHashValue(kx, X) + GetHashValue(ky, Y);
+	hashv = HashKindValuePair(kx, X) + HashKindValuePair(ky, Y);
 	! look in the first expected slot
 	mask = PVField(rel, RRV_STORAGE);
 	i = hashv & mask;
@@ -628,7 +609,7 @@ if so.
 	}
 ];
 
-[ DoubleHashSetCheckResize rel  filled ext newext temp i at kov kx ky F X Y;
+[ DoubleHashSetCheckResize rel  filled ext newext temp i at kind_id kx ky F X Y;
 	filled = PVField(rel, RRV_FILLED);
 	ext = PVField(rel, RRV_STORAGE) + 1;
 	if (filled >= (ext - filled) * RRP_CROWDED_IS) {
@@ -645,13 +626,13 @@ if so.
 		for (i=0: i<newext*3: i++)
 			WritePVField(rel, RRV_DATA_BASE+i, 0);
 		! copy entries back from temporary space
-		kov = PVField(rel, RRV_KIND);
-		kx = KindBaseTerm(kov, 0); ky = KindBaseTerm(kov, 1);
+		kind_id = PVField(rel, RRV_KIND);
+		kx = KindConstructorTerm(kind_id, 0); ky = KindConstructorTerm(kind_id, 1);
 		for (i=0: i<ext: i++) {
-			F = PVField(temp, 3*i, true);
+			F = PVLongBlockField(temp, 3*i);
 			if (F == 0 || (F & RRF_DELETED)) continue;
-			X = PVField(temp, 3*i + 1, true);
-			Y = PVField(temp, 3*i + 2, true);
+			X = PVLongBlockField(temp, 3*i + 1);
+			Y = PVLongBlockField(temp, 3*i + 2);
 			at = DoubleHashSetLookUp(rel, kx, ky, X, Y);
 			if (at >= 0) { print "*** Duplicate entry while resizing ***^"; rfalse; }
 			at = ~at;
@@ -666,13 +647,13 @@ if so.
 
 [ DoubleHashSetEntryMatches rel at kx ky X Y  cx cy;
 	cx = PVField(rel, RRV_DATA_BASE + 3*at + 1);
-	if (ConformsTo_POINTER_VALUE_TY(kx)) {
+	if (KindConformsTo_POINTER_VALUE_TY(kx)) {
 		if (ComparePV(cx, X) ~= 0) rfalse;
 	} else {
 		if (cx ~= X) rfalse;
 	}
 	cy = PVField(rel, RRV_DATA_BASE + 3*at + 2);
-	if (ConformsTo_POINTER_VALUE_TY(ky)) {
+	if (KindConformsTo_POINTER_VALUE_TY(ky)) {
 		if (ComparePV(cy, Y) ~= 0) rfalse;
 	} else {
 		if (cy ~= Y) rfalse;
@@ -694,9 +675,9 @@ above.
 which is shared with two other handlers below.
 
 =
-[ HashListRelationHandler rel task X Y  sym kov kx ky;
-	kov = PVField(rel, RRV_KIND);
-	kx = KindBaseTerm(kov, 0); ky = KindBaseTerm(kov, 1);
+[ HashListRelationHandler rel task X Y  sym kind_id kx ky;
+	kind_id = PVField(rel, RRV_KIND);
+	kx = KindConstructorTerm(kind_id, 0); ky = KindConstructorTerm(kind_id, 1);
 	return HashCoreRelationHandler(rel, task, kx, ky, X, Y, 1);
 ];
 
@@ -706,9 +687,9 @@ one value may be stored for each key. This implements various-to-one
 relations.
 
 =
-[ HashTableRelationHandler rel task X Y  kov kx ky;
-	kov = PVField(rel, RRV_KIND);
-	kx = KindBaseTerm(kov, 0); ky = KindBaseTerm(kov, 1);
+[ HashTableRelationHandler rel task X Y  kind_id kx ky;
+	kind_id = PVField(rel, RRV_KIND);
+	kx = KindConstructorTerm(kind_id, 0); ky = KindConstructorTerm(kind_id, 1);
 	return HashCoreRelationHandler(rel, task, kx, ky, X, Y, 0);
 ];
 
@@ -717,9 +698,9 @@ This is the same as the Hash Table Relation Handler except that the sides
 are reversed. This implements one-to-various relations.
 
 =
-[ ReversedHashTableRelationHandler rel task X Y  kov kx ky swap;
-	kov = PVField(rel, RRV_KIND);
-	kx = KindBaseTerm(kov, 0); ky = KindBaseTerm(kov, 1);
+[ ReversedHashTableRelationHandler rel task X Y  kind_id kx ky swap;
+	kind_id = PVField(rel, RRV_KIND);
+	kx = KindConstructorTerm(kind_id, 0); ky = KindConstructorTerm(kind_id, 1);
 	switch (task) {
 		RELS_SET_VALENCY:
 			return RELATION_TY_SetValency(rel, X);
@@ -798,7 +779,7 @@ the existing pair $(X, Y)$.
 		return RELATION_TY_SetValency(rel, X);
 	} else if (task == RELS_DESTROY) {
 		! clear
-		kx = ConformsTo_POINTER_VALUE_TY(kx); ky = ConformsTo_POINTER_VALUE_TY(ky);
+		kx = KindConformsTo_POINTER_VALUE_TY(kx); ky = KindConformsTo_POINTER_VALUE_TY(ky);
 		if (~~(kx || ky)) return;
 		at = PVField(rel, RRV_STORAGE);
 		while (at >= 0) {
@@ -812,7 +793,7 @@ the existing pair $(X, Y)$.
 		}
 		return;
 	} else if (task == RELS_COPY) {
-		X = ConformsTo_POINTER_VALUE_TY(kx); Y = ConformsTo_POINTER_VALUE_TY(ky);
+		X = KindConformsTo_POINTER_VALUE_TY(kx); Y = KindConformsTo_POINTER_VALUE_TY(ky);
 		if (~~(X || Y)) return;
 		at = PVField(rel, RRV_STORAGE);
 		while (at >= 0) {
@@ -838,7 +819,7 @@ the existing pair $(X, Y)$.
 		switch (RELATION_TY_GetValency(rel)) {
 			RRVAL_SYM_V_TO_V:
 				sym = 1;
-				tmp = KOVComparisonFunction(kx);
+				tmp = KindComparisonFunction(kx);
 				if (~~tmp) tmp = UnsignedCompare;
 			RRVAL_O_TO_V:
 				rev = 1;
@@ -851,22 +832,22 @@ the existing pair $(X, Y)$.
 				if (fl & RRF_SINGLE) {
 					if (sym && tmp(X, Y) > 0) continue;
 					print "  ";
-					if (rev) PrintKindValuePair(ky, Y);
-					else PrintKindValuePair(kx, X);
+					if (rev) SayKindValuePair(ky, Y);
+					else SayKindValuePair(kx, X);
 					if (sym) print " <=> "; else print " >=> ";
-					if (rev) PrintKindValuePair(kx, X);
-					else PrintKindValuePair(ky, Y);
+					if (rev) SayKindValuePair(kx, X);
+					else SayKindValuePair(ky, Y);
 					print "^";
 				} else {
 					for (mult=1: mult<=LIST_OF_TY_GetLength(Y): mult++) {
 						fl = LIST_OF_TY_GetItem(Y, mult);
 						if (sym && tmp(X, fl) > 0) continue;
 						print "  ";
-						if (rev) PrintKindValuePair(ky, fl);
-						else PrintKindValuePair(kx, X);
+						if (rev) SayKindValuePair(ky, fl);
+						else SayKindValuePair(kx, X);
 						if (sym) print " <=> "; else print " >=> ";
-						if (rev) PrintKindValuePair(kx, X);
-						else PrintKindValuePair(ky, fl);
+						if (rev) SayKindValuePair(kx, X);
+						else SayKindValuePair(ky, fl);
 						print "^";
 					}
 				}
@@ -906,7 +887,7 @@ the existing pair $(X, Y)$.
 				if (fl & RRF_USED) {
 					sym = PVField(rel, tmp + 2);
 					if (fl & RRF_SINGLE) {
-						if (ConformsTo_POINTER_VALUE_TY(ky)) {
+						if (KindConformsTo_POINTER_VALUE_TY(ky)) {
 							if (ComparePV(X, sym) ~= 0) continue;
 						} else {
 							if (X ~= sym) continue;
@@ -931,7 +912,7 @@ the existing pair $(X, Y)$.
 			if (fl & RRF_USED) {
 				sym = PVField(rel, tmp + 2);
 				if (fl & RRF_SINGLE) {
-					if (ConformsTo_POINTER_VALUE_TY(kx)) {
+					if (KindConformsTo_POINTER_VALUE_TY(kx)) {
 						if (ComparePV(X, sym) ~= 0) continue;
 					} else {
 						if (X ~= sym) continue;
@@ -1019,7 +1000,7 @@ the existing pair $(X, Y)$.
 			fl = PVField(rel, RRV_DATA_BASE + 3*at);
 			tmp = PVField(rel, RRV_DATA_BASE + 3*at + 2);
 			if (fl & RRF_SINGLE) {
-				if (ConformsTo_POINTER_VALUE_TY(ky)) {
+				if (KindConformsTo_POINTER_VALUE_TY(ky)) {
 					if (ComparePV(tmp, Y) == 0) rtrue;
 				} else {
 					if (tmp == Y) rtrue;
@@ -1036,8 +1017,8 @@ the existing pair $(X, Y)$.
 				if (PVField(rel, RRV_DATA_BASE + 3*at) == 0)
 					WritePVField(rel, RRV_FILLED, PVField(rel, RRV_FILLED) + 1);
 				WritePVField(rel, RRV_DATA_BASE + 3*at, RRF_USED+RRF_SINGLE);
-				if (ConformsTo_POINTER_VALUE_TY(kx)) { X = CopyPV(CreatePV(kx), X); }
-				if (ConformsTo_POINTER_VALUE_TY(ky)) { Y = CopyPV(CreatePV(ky), Y); }
+				if (KindConformsTo_POINTER_VALUE_TY(kx)) { X = CopyPV(CreatePV(kx), X); }
+				if (KindConformsTo_POINTER_VALUE_TY(ky)) { Y = CopyPV(CreatePV(ky), Y); }
 				WritePVField(rel, RRV_DATA_BASE + 3*at + 1, X);
 				WritePVField(rel, RRV_DATA_BASE + 3*at + 2, Y);
 				HashCoreCheckResize(rel);
@@ -1048,7 +1029,7 @@ the existing pair $(X, Y)$.
 			tmp = PVField(rel, RRV_DATA_BASE + 3*at + 2);	! value or list
 			if (fl & RRF_SINGLE) {
 				! if Y is the same as the stored key, we have nothing to do
-				if (ConformsTo_POINTER_VALUE_TY(ky)) {
+				if (KindConformsTo_POINTER_VALUE_TY(ky)) {
 					if (ComparePV(tmp, Y) == 0) rtrue;
 				} else {
 					if (tmp == Y) rtrue;
@@ -1064,7 +1045,7 @@ the existing pair $(X, Y)$.
 					WritePVField(rel, RRV_DATA_BASE + 3*at + 2, fl);
 					WritePVField(rel, RRV_DATA_BASE + 3*at, RRF_USED);
 				} else {
-					if (ConformsTo_POINTER_VALUE_TY(ky)) {
+					if (KindConformsTo_POINTER_VALUE_TY(ky)) {
 						DestroyPV(tmp);
 						Y = CopyPV(CreatePV(ky), Y);
 					}
@@ -1082,17 +1063,17 @@ the existing pair $(X, Y)$.
 			tmp = PVField(rel, RRV_DATA_BASE + 3*at + 2);	! value or list
 			if (fl & RRF_SINGLE) {
 				! if the stored key isn't Y, we have nothing to do
-				if (ConformsTo_POINTER_VALUE_TY(ky)) {
+				if (KindConformsTo_POINTER_VALUE_TY(ky)) {
 					if (ComparePV(tmp, Y) ~= 0) rtrue;
 				} else {
 					if (tmp ~= Y) rtrue;
 				}
 				! delete the entry
-				if (ConformsTo_POINTER_VALUE_TY(ky))
+				if (KindConformsTo_POINTER_VALUE_TY(ky))
 					DestroyPV(PVField(rel, RRV_DATA_BASE + 3*at + 2));
 				.DeleteEntryIgnoringY;
 				WritePVField(rel, RRV_USED, PVField(rel, RRV_USED) - 1);
-				if (ConformsTo_POINTER_VALUE_TY(kx))
+				if (KindConformsTo_POINTER_VALUE_TY(kx))
 					DestroyPV(PVField(rel, RRV_DATA_BASE + 3*at + 1));
 				WritePVField(rel, RRV_DATA_BASE + 3*at, RRF_DELETED);
 				WritePVField(rel, RRV_DATA_BASE + 3*at + 1, 0);
@@ -1113,7 +1094,7 @@ the existing pair $(X, Y)$.
 
 [ HashCoreLookUp rel kx X  hashv i free mask perturb flags;
 	! calculate a hash value for the key
-	hashv = GetHashValue(kx, X);
+	hashv = HashKindValuePair(kx, X);
 	! look in the first expected slot
 	mask = PVField(rel, RRV_STORAGE);
 	i = hashv & mask;
@@ -1149,7 +1130,7 @@ the existing pair $(X, Y)$.
 	}
 ];
 
-[ HashCoreCheckResize rel  filled ext newext temp i at kov kx F X Y;
+[ HashCoreCheckResize rel  filled ext newext temp i at kind_id kx F X Y;
 	filled = PVField(rel, RRV_FILLED);
 	ext = PVField(rel, RRV_STORAGE) + 1;
 	if (filled >= (ext - filled) * RRP_CROWDED_IS) {
@@ -1166,13 +1147,13 @@ the existing pair $(X, Y)$.
 		for (i=0: i<newext*3: i++)
 			WritePVField(rel, RRV_DATA_BASE+i, 0);
 		! copy entries back from temporary space
-		kov = PVField(rel, RRV_KIND);
-		kx = KindBaseTerm(kov, 1); ! Was 0
+		kind_id = PVField(rel, RRV_KIND);
+		kx = KindConstructorTerm(kind_id, 1); ! Was 0
 		for (i=0: i<ext: i++) {
-			F = PVField(temp, 3*i, true);
+			F = PVLongBlockField(temp, 3*i);
 			if (F == 0 || (F & RRF_DELETED)) continue;
-			X = PVField(temp, 3*i + 1, true);
-			Y = PVField(temp, 3*i + 2, true);
+			X = PVLongBlockField(temp, 3*i + 1);
+			Y = PVLongBlockField(temp, 3*i + 2);
 			at = HashCoreLookUp(rel, kx, X);
 			if (at >= 0) { print "*** Duplicate entry while resizing ***^"; rfalse; }
 			at = ~at;
@@ -1187,7 +1168,7 @@ the existing pair $(X, Y)$.
 
 [ HashCoreEntryMatches rel at kx X  cx cy;
 	cx = PVField(rel, RRV_DATA_BASE + 3*at + 1);
-	if (ConformsTo_POINTER_VALUE_TY(kx)) {
+	if (KindConformsTo_POINTER_VALUE_TY(kx)) {
 		if (ComparePV(cx, X) ~= 0) rfalse;
 	} else {
 		if (cx ~= X) rfalse;
@@ -1227,12 +1208,12 @@ This code uses the Hash Core utility functions defined above.
 
 =
 [ EquivHashTableRelationHandler rel task X Y  kx at at2 tmp fl i ext;
-	kx = KindBaseTerm(PVField(rel, RRV_KIND), 0);
+	kx = KindConstructorTerm(PVField(rel, RRV_KIND), 0);
 	if (task == RELS_SET_VALENCY) {
 		return RELATION_TY_SetValency(rel, X);
 	} else if (task == RELS_DESTROY) {
 		! clear
-		if (ConformsTo_POINTER_VALUE_TY(kx)) {
+		if (KindConformsTo_POINTER_VALUE_TY(kx)) {
 			at = PVField(rel, RRV_STORAGE);
 			while (at >= 0) {
 				fl = PVField(rel, RRV_DATA_BASE + 3*at);
@@ -1244,7 +1225,7 @@ This code uses the Hash Core utility functions defined above.
 		}
 		return;
 	} else if (task == RELS_COPY) {
-		if (ConformsTo_POINTER_VALUE_TY(kx)) {
+		if (KindConformsTo_POINTER_VALUE_TY(kx)) {
 			at = PVField(rel, RRV_STORAGE);
 			while (at >= 0) {
 				fl = PVField(rel, RRV_DATA_BASE + 3*at);
@@ -1281,11 +1262,11 @@ This code uses the Hash Core utility functions defined above.
 						if (~~i) {
 							! print the saved first member
 							print "  { ";
-							PrintKindValuePair(kx, tmp);
+							SayKindValuePair(kx, tmp);
 							i = 1;
 						}
 						print ", ";
-						PrintKindValuePair(kx, PVField(rel, Y + 1));
+						SayKindValuePair(kx, PVField(rel, Y + 1));
 					}
 				}
 				if (i) print " }^";
@@ -1328,7 +1309,7 @@ This code uses the Hash Core utility functions defined above.
 		RELS_TEST:
 			if (at < 0) {
 				! X is a loner, but could still be true if X == Y
-				if (ConformsTo_POINTER_VALUE_TY(kx)) {
+				if (KindConformsTo_POINTER_VALUE_TY(kx)) {
 					if (ComparePV(X, Y) == 0) rtrue;
 				} else {
 					if (X == Y) rtrue;
@@ -1342,7 +1323,7 @@ This code uses the Hash Core utility functions defined above.
 			rfalse;
 		RELS_ASSERT_TRUE:
 			! if X and Y are the same, we have nothing to do
-			if (ConformsTo_POINTER_VALUE_TY(kx)) {
+			if (KindConformsTo_POINTER_VALUE_TY(kx)) {
 				if (ComparePV(X, Y) == 0) rtrue;
 			} else {
 				if (X == Y) rtrue;
@@ -1363,7 +1344,7 @@ This code uses the Hash Core utility functions defined above.
 					WritePVField(rel, RRV_USED, PVField(rel, RRV_USED) + 2);
 					! add X entry
 					at = ~at;
-					if (ConformsTo_POINTER_VALUE_TY(kx)) { X = CopyPV(CreatePV(kx), X); }
+					if (KindConformsTo_POINTER_VALUE_TY(kx)) { X = CopyPV(CreatePV(kx), X); }
 					fl = PVField(rel, RRV_DATA_BASE + 3*at);
 					if (fl == 0)
 						WritePVField(rel, RRV_FILLED, PVField(rel, RRV_FILLED) + 1);
@@ -1372,7 +1353,7 @@ This code uses the Hash Core utility functions defined above.
 					WritePVField(rel, RRV_DATA_BASE + 3*at + 2, tmp);
 					! add Y entry. at2 might change if X and Y have the same hash code.
 					at2 = ~(HashCoreLookUp(rel, kx, Y));
-					if (ConformsTo_POINTER_VALUE_TY(kx)) { Y = CopyPV(CreatePV(kx), Y); }
+					if (KindConformsTo_POINTER_VALUE_TY(kx)) { Y = CopyPV(CreatePV(kx), Y); }
 					fl = PVField(rel, RRV_DATA_BASE + 3*at2);
 					if (fl == 0)
 						WritePVField(rel, RRV_FILLED, PVField(rel, RRV_FILLED) + 1);
@@ -1383,7 +1364,7 @@ This code uses the Hash Core utility functions defined above.
 				}
 				! X missing, Y present: add a new X entry
 				at = ~at;
-				if (ConformsTo_POINTER_VALUE_TY(kx)) { X = CopyPV(CreatePV(kx), X); }
+				if (KindConformsTo_POINTER_VALUE_TY(kx)) { X = CopyPV(CreatePV(kx), X); }
 				WritePVField(rel, RRV_USED, PVField(rel, RRV_USED) + 1);
 				fl = PVField(rel, RRV_DATA_BASE + 3*at);
 				if (fl == 0)
@@ -1397,7 +1378,7 @@ This code uses the Hash Core utility functions defined above.
 			if (at2 < 0) {
 				! X present, Y missing: add a new Y entry
 				at2 = ~at2;
-				if (ConformsTo_POINTER_VALUE_TY(kx)) { Y = CopyPV(CreatePV(kx), Y); }
+				if (KindConformsTo_POINTER_VALUE_TY(kx)) { Y = CopyPV(CreatePV(kx), Y); }
 				WritePVField(rel, RRV_USED, PVField(rel, RRV_USED) + 1);
 				fl = PVField(rel, RRV_DATA_BASE + 3*at2);
 				if (fl == 0)
@@ -1428,7 +1409,7 @@ This code uses the Hash Core utility functions defined above.
 			if (PVField(rel, RRV_DATA_BASE + 3*at2 + 2) ~= tmp) rtrue;
 			! delete the entry for X
 			WritePVField(rel, RRV_USED, PVField(rel, RRV_USED) - 1);
-			if (ConformsTo_POINTER_VALUE_TY(kx))
+			if (KindConformsTo_POINTER_VALUE_TY(kx))
 				DestroyPV(PVField(rel, RRV_DATA_BASE + 3*at + 1));
 			WritePVField(rel, RRV_DATA_BASE + 3*at, RRF_DELETED);
 			WritePVField(rel, RRV_DATA_BASE + 3*at + 1, 0);
@@ -1478,14 +1459,14 @@ either as deleted. (Such overlap is only possible when the domains of $X$
 and $Y$ are the same kind of value.)
 
 =
-[ TwoInOneHashTableRelationHandler rel task X Y sym  kov kx ky at at2 tmp fl;
-	kov = PVField(rel, RRV_KIND);
-	kx = KindBaseTerm(kov, 0); ky = KindBaseTerm(kov, 1);
+[ TwoInOneHashTableRelationHandler rel task X Y sym  kind_id kx ky at at2 tmp fl;
+	kind_id = PVField(rel, RRV_KIND);
+	kx = KindConstructorTerm(kind_id, 0); ky = KindConstructorTerm(kind_id, 1);
 	if (task == RELS_SET_VALENCY) {
 		return RELATION_TY_SetValency(rel, X);
 	} else if (task == RELS_DESTROY) {
 		! clear
-		kx = ConformsTo_POINTER_VALUE_TY(kx); ky = ConformsTo_POINTER_VALUE_TY(ky);
+		kx = KindConformsTo_POINTER_VALUE_TY(kx); ky = KindConformsTo_POINTER_VALUE_TY(ky);
 		if (~~(kx || ky)) return;
 		at = PVField(rel, RRV_STORAGE);
 		while (at >= 0) {
@@ -1498,7 +1479,7 @@ and $Y$ are the same kind of value.)
 		}
 		return;
 	} else if (task == RELS_COPY) {
-		X = ConformsTo_POINTER_VALUE_TY(kx); Y = ConformsTo_POINTER_VALUE_TY(ky);
+		X = KindConformsTo_POINTER_VALUE_TY(kx); Y = KindConformsTo_POINTER_VALUE_TY(ky);
 		if (~~(X || Y)) return;
 		at = PVField(rel, RRV_STORAGE);
 		while (at >= 0) {
@@ -1535,8 +1516,8 @@ and $Y$ are the same kind of value.)
 	} else if (task == RELS_SHOW) {
 		print (string) PVField(rel, RRV_DESCRIPTION), ":^";
 		if (sym) {
-			kov = KOVComparisonFunction(kx);
-			if (~~kov) kov = UnsignedCompare;
+			kind_id = KindComparisonFunction(kx);
+			if (~~kind_id) kind_id = UnsignedCompare;
 		}
 		for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
 			fl = PVField(rel, RRV_DATA_BASE + 4*at);
@@ -1544,11 +1525,11 @@ and $Y$ are the same kind of value.)
 				(RRF_USED+RRF_ENTKEYX+RRF_HASY)) {
 				X = PVField(rel, RRV_DATA_BASE + 4*at + 1);
 				Y = PVField(rel, RRV_DATA_BASE + 4*at + 3);
-				if (sym && kov(X, Y) > 0) continue;
+				if (sym && kind_id(X, Y) > 0) continue;
 				print "  ";
-				PrintKindValuePair(kx, X);
+				SayKindValuePair(kx, X);
 				if (sym) print " <=> "; else print " >=> ";
-				PrintKindValuePair(ky, Y);
+				SayKindValuePair(ky, Y);
 				print "^";
 			}
 		}
@@ -1624,7 +1605,7 @@ and $Y$ are the same kind of value.)
 				}
 			RLIST_ALL_PAIRS:
 				tmp = PVField(X, LIST_ITEM_KOV_F);
-				if (KindAtomic(tmp) ~= COMBINATION_TY) rfalse;
+				if (KindWeakID(tmp) ~= COMBINATION_TY) rfalse;
 				! LIST_OF_TY_InsertItem will make a deep copy of the item,
 				! so we can reuse a single combination value here
 				Y = CreatePV(tmp);
@@ -1652,7 +1633,7 @@ and $Y$ are the same kind of value.)
 			fl = PVField(rel, RRV_DATA_BASE + 4*at);
 			if (~~(fl & RRF_HASY)) rfalse;
 			tmp = PVField(rel, RRV_DATA_BASE + 4*at + 3);
-			if (ConformsTo_POINTER_VALUE_TY(ky)) {
+			if (KindConformsTo_POINTER_VALUE_TY(ky)) {
 				if (ComparePV(tmp, Y) == 0) rtrue;
 			} else {
 				if (tmp == Y) rtrue;
@@ -1667,10 +1648,10 @@ and $Y$ are the same kind of value.)
 				if (fl == 0)
 					WritePVField(rel, RRV_FILLED, PVField(rel, RRV_FILLED) + 1);
 				fl = RRF_USED+RRF_HASY+RRF_ENTKEYX;
-				if (kx == ky || ~~(ConformsTo_POINTER_VALUE_TY(kx) || ConformsTo_POINTER_VALUE_TY(ky)))
+				if (kx == ky || ~~(KindConformsTo_POINTER_VALUE_TY(kx) || KindConformsTo_POINTER_VALUE_TY(ky)))
 					fl = fl + RRF_ENTKEYY;
 				WritePVField(rel, RRV_DATA_BASE + 4*at, fl);
-				if (ConformsTo_POINTER_VALUE_TY(kx)) { X = CopyPV(CreatePV(kx), X); }
+				if (KindConformsTo_POINTER_VALUE_TY(kx)) { X = CopyPV(CreatePV(kx), X); }
 				WritePVField(rel, RRV_DATA_BASE + 4*at + 1, X);
 				WritePVField(rel, RRV_DATA_BASE + 4*at + 2, 0);
 			} else {
@@ -1678,7 +1659,7 @@ and $Y$ are the same kind of value.)
 				if (fl & RRF_HASY) {
 					! if the Y we're inserting is already there, we're done
 					tmp = PVField(rel, RRV_DATA_BASE + 4*at + 3);
-					if (ConformsTo_POINTER_VALUE_TY(ky)) {
+					if (KindConformsTo_POINTER_VALUE_TY(ky)) {
 						if (ComparePV(tmp, Y) == 0) rtrue;
 					} else {
 						if (tmp == Y) rtrue;
@@ -1694,7 +1675,7 @@ and $Y$ are the same kind of value.)
 			}
 			! use the existing copy of Y if there is one
 			at2 = TwoInOneLookUp(rel, ky, Y, RRF_ENTKEYY);
-			if (ConformsTo_POINTER_VALUE_TY(ky)) {
+			if (KindConformsTo_POINTER_VALUE_TY(ky)) {
 				if (at2 >= 0)
 					Y = PVField(rel, RRV_DATA_BASE + 4*at2 + 1);
 				else
@@ -1713,7 +1694,7 @@ and $Y$ are the same kind of value.)
 			if (fl == 0)
 				WritePVField(rel, RRV_FILLED, PVField(rel, RRV_FILLED) + 1);
 			fl = fl | (RRF_USED+RRF_HASX+RRF_ENTKEYY);
-			if (kx == ky || ~~(ConformsTo_POINTER_VALUE_TY(kx) || ConformsTo_POINTER_VALUE_TY(ky)))
+			if (kx == ky || ~~(KindConformsTo_POINTER_VALUE_TY(kx) || KindConformsTo_POINTER_VALUE_TY(ky)))
 				fl = fl | RRF_ENTKEYX;
 			WritePVField(rel, RRV_DATA_BASE + 4*at2, fl);
 			WritePVField(rel, RRV_DATA_BASE + 4*at2 + 1, Y);
@@ -1727,7 +1708,7 @@ and $Y$ are the same kind of value.)
 			fl = PVField(rel, RRV_DATA_BASE + 4*at);
 			if ((fl & RRF_HASY) == 0) rtrue;
 			tmp = PVField(rel, RRV_DATA_BASE + 4*at + 3);
-			if (ConformsTo_POINTER_VALUE_TY(ky)) {
+			if (KindConformsTo_POINTER_VALUE_TY(ky)) {
 				if (ComparePV(tmp, Y) ~= 0) rtrue;
 			} else {
 				if (tmp ~= Y) rtrue;
@@ -1771,8 +1752,8 @@ and $Y$ are the same kind of value.)
 	}
 	if ((fl & (RRF_HASX+RRF_HASY)) == 0) {
 		! entry is now empty, mark it deleted
-		if (((fl & RRF_ENTKEYX) && ConformsTo_POINTER_VALUE_TY(kx)) ||
-		    ((ky ~= kx) && (fl & RRF_ENTKEYY) && ConformsTo_POINTER_VALUE_TY(ky))) {
+		if (((fl & RRF_ENTKEYX) && KindConformsTo_POINTER_VALUE_TY(kx)) ||
+		    ((ky ~= kx) && (fl & RRF_ENTKEYY) && KindConformsTo_POINTER_VALUE_TY(ky))) {
 			DestroyPV(PVField(rel, RRV_DATA_BASE + 4*at + 1));
 		}
 		WritePVField(rel, RRV_DATA_BASE + 4*at, RRF_DELETED);
@@ -1788,7 +1769,7 @@ and $Y$ are the same kind of value.)
 [ TwoInOneLookUp rel ke E ekflag  hashv i free mask perturb flags;
 !print "[2in1LU rel=", rel, " ke=", ke, " E=", E, " ekf=", ekflag, ": ";
 	! calculate a hash value for the key
-	hashv = GetHashValue(ke, E);
+	hashv = HashKindValuePair(ke, E);
 	! look in the first expected slot
 	mask = PVField(rel, RRV_STORAGE);
 	i = hashv & mask;
@@ -1830,7 +1811,7 @@ and $Y$ are the same kind of value.)
 	}
 ];
 
-[ TwoInOneCheckResize rel  filled ext newext temp i at kov kx ky F E X Y;
+[ TwoInOneCheckResize rel  filled ext newext temp i at kind_id kx ky F E X Y;
 	filled = PVField(rel, RRV_FILLED);
 	ext = PVField(rel, RRV_STORAGE) + 1;
 	if (filled >= (ext - filled) * RRP_CROWDED_IS) {
@@ -1847,14 +1828,14 @@ and $Y$ are the same kind of value.)
 		for (i=0: i<newext*4: i++)
 			WritePVField(rel, RRV_DATA_BASE+i, 0);
 		! copy entries back from temporary space
-		kov = PVField(rel, RRV_KIND);
-		kx = KindBaseTerm(kov, 0); ky = KindBaseTerm(kov, 1);
+		kind_id = PVField(rel, RRV_KIND);
+		kx = KindConstructorTerm(kind_id, 0); ky = KindConstructorTerm(kind_id, 1);
 		for (i=0: i<ext: i++) {
-			F = PVField(temp, 4*i, true);
+			F = PVLongBlockField(temp, 4*i);
 			if (F == 0 || (F & RRF_DELETED)) continue;
-			E = PVField(temp, 4*i + 1, true);
-			X = PVField(temp, 4*i + 2, true);
-			Y = PVField(temp, 4*i + 3, true);
+			E = PVLongBlockField(temp, 4*i + 1);
+			X = PVLongBlockField(temp, 4*i + 2);
+			Y = PVLongBlockField(temp, 4*i + 3);
 			if (F & RRF_ENTKEYX) at = TwoInOneLookUp(rel, kx, E, RRF_ENTKEYX);
 			else at = TwoInOneLookUp(rel, ky, E, RRF_ENTKEYY);
 			if (at >= 0) { print "*** Duplicate entry while resizing ***^"; rfalse; }
@@ -1871,7 +1852,7 @@ and $Y$ are the same kind of value.)
 
 [ TwoInOneEntryMatches rel at ke E  ce;
 	ce = PVField(rel, RRV_DATA_BASE + 4*at + 1);
-	if (ConformsTo_POINTER_VALUE_TY(ke)) {
+	if (KindConformsTo_POINTER_VALUE_TY(ke)) {
 		if (ComparePV(ce, E) ~= 0) rfalse;
 	} else {
 		if (ce ~= E) rfalse;

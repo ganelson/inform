@@ -806,7 +806,7 @@ a whole action might produce "Henry taking the grapefruit".)
 [ SayActionName act; DB_Action(0, 0, act, 0, 0, 2); ];
 
 [ DA_Name n; if (n ofclass K3_direction) print (name) n; else print (the) n; ];
-[ DA_Topic x a b c d i cf cw;
+[ UNDERSTANDING_TY_Say x a b c d i cf cw;
 	cw = x%100; cf = x/100;
 	print "~";
 	for (a=cf:d<cw:d++,a++) {

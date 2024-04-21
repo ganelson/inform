@@ -53,20 +53,32 @@ void KindCommands::apply(single_kind_command stc, kind_constructor *con) {
 
 		SET_INTEGER_FIELD(heap_size_estimate)
 		SET_INTEGER_FIELD(index_priority)
-		SET_INTEGER_FIELD(small_block_size)
+		SET_INTEGER_FIELD(short_block_size)
 
 		SET_CCM_FIELD(constant_compilation_method)
 
 		SET_TEXTUAL_FIELD(default_value)
-		SET_TEXTUAL_FIELD(distinguishing_routine)
+		SET_TEXTUAL_FIELD(distinguish_function)
 		SET_TEXTUAL_FIELD(documentation_reference)
-		SET_TEXTUAL_FIELD(explicit_GPR_identifier)
+		SET_TEXTUAL_FIELD(understand_function)
 		SET_TEXTUAL_FIELD(index_default_value)
 		SET_TEXTUAL_FIELD(index_maximum_value)
 		SET_TEXTUAL_FIELD(index_minimum_value)
 		SET_TEXTUAL_FIELD(loop_domain_schema)
-		SET_TEXTUAL_FIELD(recognition_routine)
+		SET_TEXTUAL_FIELD(recognise_function)
 		SET_TEXTUAL_FIELD(specification_text)
+
+		SET_TEXTUAL_FIELD(create_function)    
+		SET_TEXTUAL_FIELD(cast_function)
+		SET_TEXTUAL_FIELD(copy_function)
+		SET_TEXTUAL_FIELD(copy_short_block_function)
+		SET_TEXTUAL_FIELD(quick_copy_function)
+		SET_TEXTUAL_FIELD(destroy_function)
+		SET_TEXTUAL_FIELD(make_mutable_function)
+		SET_TEXTUAL_FIELD(hash_function)
+		SET_TEXTUAL_FIELD(long_block_size_function)
+		SET_TEXTUAL_FIELD(serialise_function)
+		SET_TEXTUAL_FIELD(unserialise_function)
 	}
 
 @<A few kind commands contribute to linked lists in the constructor structure@> =
@@ -135,12 +147,12 @@ void KindCommands::apply(single_kind_command stc, kind_constructor *con) {
 		case terms_KCC:
 			@<Parse the constructor arity text@>;
 			return;
-		case comparison_routine_KCC:
+		case compare_function_KCC:
 			if (Str::len(stc.textual_argument) > 31)
 				NeptuneFiles::error(stc.textual_argument, I"overlong identifier", stc.origin);
 			else con->comparison_routine = Str::duplicate(stc.textual_argument);
 			return;
-		case printing_routine_KCC:
+		case say_function_KCC:
 			if (Str::len(stc.textual_argument) > 31) 
 				NeptuneFiles::error(stc.textual_argument, I"overlong identifier", stc.origin);
 			else con->print_identifier = Str::duplicate(stc.textual_argument);

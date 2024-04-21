@@ -15,31 +15,6 @@ Constant LIST_ITEM_KOV_F = 0; ! The kind of the items
 Constant LIST_LENGTH_F = 1;   ! The number of items
 Constant LIST_ITEM_BASE = 2;  ! List items begin at this entry
 
-@h KOV Support.
-See the "BlockValues.i6t" segment for the specification of the following
-routines.
-
-=
-[ LIST_OF_TY_Support task arg1 arg2 arg3;
-	switch(task) {
-		CREATE_KOVS:      return LIST_OF_TY_Create(arg1, arg2);
-		DESTROY_KOVS:     LIST_OF_TY_Destroy(arg1);
-		MAKEMUTABLE_KOVS: return 1;
-		COPYKIND_KOVS:    return LIST_OF_TY_CopyKind(arg1, arg2);
-		COPYQUICK_KOVS:   return LIST_OF_TY_QuickCopy(arg1, arg2);
-		COPYSB_KOVS:	  CopyPVShortBlockOfSize1(arg1, arg2);
-		KINDDATA_KOVS:    return LIST_OF_TY_KindData(arg1, arg2);
-		EXTENT_KOVS:      return PVField(arg1, LIST_LENGTH_F) + LIST_ITEM_BASE;
-		COPY_KOVS:        LIST_OF_TY_Copy(arg1, arg2, arg3);
-		COMPARE_KOVS:     return LIST_OF_TY_Compare(arg1, arg2);
-		HASH_KOVS:        return LIST_OF_TY_Hash(arg1);
-		DEBUG_KOVS:       print " = {", (LIST_OF_TY_Say) arg1, "} of kind ",
-                              PVField(arg1, LIST_ITEM_KOV_F);
-	}
-	! We choose not to respond to: CAST_KOVS, READ_FILE_KOVS, WRITE_FILE_KOVS
-	rfalse;
-];
-
 @h Creation.
 Lists are by default created empty but in a block-value with enough capacity
 to hold 25 items, this being what's left in a 32-word block once all overheads
@@ -47,12 +22,17 @@ are taken care of: 4 words are consumed by the header, then 2 more by the
 list metadata entries below.
 
 =
-[ LIST_OF_TY_Create skov short_block long_block;
-	skov = KindBaseTerm(skov, 0);
+[ LIST_OF_TY_Create kind_id sb_address
+	short_block long_block;
 	long_block = CreatePVLongBlockMultiple(27, LIST_OF_TY);
-	InitialisePVLongBlockField(long_block, LIST_ITEM_KOV_F, skov);
+	InitialisePVLongBlockField(long_block, LIST_ITEM_KOV_F,
+		KindConstructorTerm(kind_id, 0));
 	InitialisePVLongBlockField(long_block, LIST_LENGTH_F, 0);
-	return CreatePVShortBlockOfSize1(short_block, long_block);
+	
+	short_block = CreatePVShortBlock(sb_address, 1);
+	short_block-->0 = long_block;
+
+	return short_block;
 ];
 
 @h Destruction.
@@ -62,7 +42,7 @@ the list itself can be freed.
 =
 [ LIST_OF_TY_Destroy list no_items i k;
 	k = PVField(list, LIST_ITEM_KOV_F);
-	if (ConformsTo_POINTER_VALUE_TY(k)) {
+	if (KindConformsTo_POINTER_VALUE_TY(k)) {
 		no_items = PVField(list, LIST_LENGTH_F);
 		for (i=0: i<no_items: i++)
 			DestroyPV(PVField(list, i+LIST_ITEM_BASE));
@@ -91,17 +71,19 @@ things.)
 	rtrue;
 ];
 
-[ LIST_OF_TY_KindData list dummy;
-	return PVField(list, LIST_ITEM_KOV_F);
+[ LIST_OF_TY_LongBlockSize list;
+	return PVField(list, LIST_LENGTH_F) + LIST_ITEM_BASE;
 ];
 
-[ LIST_OF_TY_Copy lto lfrom  precopied_list_kov no_items i nv bk val splk;
+[ LIST_OF_TY_Copy lto lfrom kind recycling  precopied_list_kov no_items i nv bk val splk;
+	precopied_list_kov = PVField(lto, LIST_ITEM_KOV_F);
+	CopyPVRawData(lto, lfrom, kind, recycling);
 	no_items = PVField(lfrom, LIST_LENGTH_F);
 	bk = PVField(lfrom, LIST_ITEM_KOV_F);
 	if (precopied_list_kov ~= 0 or UNKNOWN_TY)
 		WritePVField(lto, LIST_ITEM_KOV_F, precopied_list_kov);
 	else WritePVField(lto, LIST_ITEM_KOV_F, bk);
-	if (ConformsTo_POINTER_VALUE_TY(bk)) {
+	if (KindConformsTo_POINTER_VALUE_TY(bk)) {
 		for (i=0: i<no_items: i++) {
 			val = PVField(lfrom, i+LIST_ITEM_BASE);
 			if (precopied_list_kov ~= 0 or UNKNOWN_TY)
@@ -150,7 +132,7 @@ lists of equal size in lexicographic order.
 
 [ LIST_OF_TY_ComparisonFn list;
 	if (WeakKindOfPV(list) ~= LIST_OF_TY) return 0;
-	return KOVComparisonFunction(PVField(list, LIST_ITEM_KOV_F));
+	return KindComparisonFunction(PVField(list, LIST_ITEM_KOV_F));
 ];
 
 [ LIST_OF_TY_Distinguish txb1 txb2;
@@ -166,7 +148,7 @@ lists of equal size in lexicographic order.
 	len = PVField(list, LIST_LENGTH_F);
 	kov = PVField(list, LIST_ITEM_KOV_F);
 	for (i=0: i<len: i++)
-		rv = rv * 33 + GetHashValue(kov, PVField(list, i+LIST_ITEM_BASE));
+		rv = rv * 33 + HashKindValuePair(kov, PVField(list, i+LIST_ITEM_BASE));
 	return rv;
 ];
 
@@ -183,7 +165,7 @@ use the "listing contents of..." activity in any circumstances.
 [ LIST_OF_TY_Say list format no_items v i bk;
 	if (WeakKindOfPV(list) ~= LIST_OF_TY) return;
 	no_items = PVField(list, LIST_LENGTH_F);
-	bk = KindAtomic(PVField(list, LIST_ITEM_KOV_F));
+	bk = KindWeakID(PVField(list, LIST_ITEM_KOV_F));
 	if (format == 1) print "{";
 	for (i=0:i<no_items:i++) {
 		v = PVField(list, i+LIST_ITEM_BASE);
@@ -193,9 +175,9 @@ use the "listing contents of..." activity in any circumstances.
 			default:
 				if (bk == LIST_OF_TY) LIST_OF_TY_Say(v, 1);
 				else if ((bk == TEXT_TY) && (format == 1)) {
-					print "~"; PrintKindValuePair(bk, v); print "~";
+					print "~"; SayKindValuePair(bk, v); print "~";
 				}
-				else PrintKindValuePair(bk, v);
+				else SayKindValuePair(bk, v);
 		}
 		if (i<no_items-2) print ", ";
 		if (i==no_items-2) {
@@ -299,7 +281,7 @@ where $N$ is the number of items in the list at present.
 	if (no_items+LIST_ITEM_BASE+1 > ex) {
 		if (SetPVFieldCapacity(list, ex+16) == false) return 0;
 	}
-	if (ConformsTo_POINTER_VALUE_TY(contents_kind)) {
+	if (KindConformsTo_POINTER_VALUE_TY(contents_kind)) {
 		nv = CreatePV(contents_kind);
 		CopyPV(nv, v);
 		v = nv;
@@ -354,7 +336,7 @@ value |v| to insert, the specification is the same as for
 		! WritePVField(list, posn, v);
 		for (j=0: j<msize: j++) {
 			v = PVField(more, j+LIST_ITEM_BASE);
-			if (ConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F))) {
+			if (KindConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F))) {
 				nv = CreatePV(PVField(list, LIST_ITEM_KOV_F));
 				CopyPV(nv, v);
 				v = nv;
@@ -364,7 +346,7 @@ value |v| to insert, the specification is the same as for
 	} else {
 		for (i=0, j=0: i<msize: i++) {
 			v = PVField(more, i+LIST_ITEM_BASE);
-			if (ConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F))) {
+			if (KindConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F))) {
 				nv = CreatePV(PVField(list, LIST_ITEM_KOV_F));
 				CopyPV(nv, v);
 				v = nv;
@@ -400,7 +382,7 @@ destroyed with |DestroyPV| before being overwritten as the items shuffle down.
 		else
 			f = (cf(v, delendum) == 0);
 		if (f) {
-			if (ConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F)))
+			if (KindConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F)))
 				DestroyPV(delendum);
 			for (j=i+1: j<no_items: j++)
 				WritePVField(list, j-1+LIST_ITEM_BASE,
@@ -414,7 +396,7 @@ destroyed with |DestroyPV| before being overwritten as the items shuffle down.
 	IssueRTP("AccessedNonExistentListItem",	
     	"Attempt to use list item which does not exist.", BasicInformKitRTPs);
 	print "*** Couldn't remove: the value ";
-	PrintKindValuePair(PVField(list, LIST_ITEM_KOV_F), v);
+	SayKindValuePair(PVField(list, LIST_ITEM_KOV_F), v);
 	print " was not present in the list ";
 	LIST_OF_TY_Say(list, true);
 	print " ***^";
@@ -450,7 +432,7 @@ as the list shuffles down to fill the void.
 	}
 	to--; from--;
 	d = to-from+1;
-	if (ConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F)))
+	if (KindConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F)))
 		for (i=0: i<d: i++)
 			DestroyPV(PVField(list, from+i+LIST_ITEM_BASE));
 	for (i=from: i<no_items-d: i++)
@@ -487,7 +469,7 @@ happened in this situation to be unhelpful.
 			else
 				f = (cf(v, w) == 0);
 			if (f) {
-				if (ConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F)))
+				if (KindConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F)))
 					DestroyPV(v);
 				for (j=i+1: j<no_items: j++)
 					WritePVField(list, j+LIST_ITEM_BASE-1,
@@ -545,7 +527,7 @@ if |truncation_end| is 1, or from the start if it is $-1$.
 			if (SetPVFieldCapacity(list, newsize+LIST_ITEM_BASE) == false)
 				return 0;
 		}
-		dv = DefaultValueOfKOV(PVField(list, LIST_ITEM_KOV_F));
+		dv = KindDefaultValue(PVField(list, LIST_ITEM_KOV_F));
 		for (i=no_items: i<newsize: i++)
 			WritePVField(list, LIST_ITEM_BASE+i, dv);
 		WritePVField(list, LIST_LENGTH_F, newsize);
@@ -553,14 +535,14 @@ if |truncation_end| is 1, or from the start if it is $-1$.
 	if (no_items > newsize) {
 		if (this_way_only == 1) return list;
 		if (truncation_end == -1) {
-			if (ConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F)))
+			if (KindConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F)))
 				for (i=0: i<no_items-newsize: i++)
 					DestroyPV(PVField(list, LIST_ITEM_BASE+i));
 			for (i=0: i<newsize: i++)
 				WritePVField(list, LIST_ITEM_BASE+i,
 					PVField(list, LIST_ITEM_BASE+no_items-newsize+i));
 		} else {
-			if (ConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F)))
+			if (KindConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F)))
 				for (i=newsize: i<no_items: i++)
 					DestroyPV(PVField(list, LIST_ITEM_BASE+i));
 		}
@@ -623,7 +605,7 @@ used instead.
 [ LIST_OF_TY_PutItem list i v  no_items nv;
 	if (WeakKindOfPV(list) ~= LIST_OF_TY) return false;
 	no_items = PVField(list, LIST_LENGTH_F);
-	if (ConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F))) {
+	if (KindConformsTo_POINTER_VALUE_TY(PVField(list, LIST_ITEM_KOV_F))) {
 		nv = CreatePV(PVField(list, LIST_ITEM_KOV_F));
 		CopyPV(nv, v);
 		v = nv;

@@ -6,11 +6,11 @@ by Inter or by the Inform 7 compiler.
 
 @ Suppose you are a tool like //inform7// or //inter// and you are generating
 a function, and in that function you want to access the variable |location| --
-which is defined in //WorldModelKit// -- or call the function |BlkValueCreate| --
+which is defined in //WorldModelKit// -- or call the function |TEXT_TY_Say| --
 which is in //BasicInformKit//. These have not yet been linked in to the Inter
 tree you're trying to build: so how do you describe them?
 
-The answer is that you call |HierarchyLocations::iname(I, BLKVALUECREATE_HL)|,
+The answer is that you call |HierarchyLocations::iname(I, TEXT_TY_SAY_HL)|,
 say, and it will return an |inter_name| which is exactly what you need. This is
 all done with plugs and sockets, but you don't care about that.
 
@@ -48,24 +48,21 @@ comprehensive list of what is there.)
 @e ARGUMENTTYPEFAILED_HL
 @e AUXF_MAGIC_VALUE_HL
 @e AUXF_STATUS_IS_CLOSED_HL
-@e BLKVALUECOPY_HL
-@e BLKVALUECOPYAZ_HL
-@e BLKVALUECREATE_HL
-@e BLKVALUECREATEONSTACK_HL
-@e BLKVALUEERROR_HL
-@e BLKVALUEFREE_HL
-@e BLKVALUEFREEONSTACK_HL
-@e BLKVALUEINCREFCOUNTPRIMITIVE_HL
-@e BLKVALUEWRITE_HL
 @e CHECKKINDRETURNED_HL
 @e CLEARPARAGRAPHING_HL
 @e CONSTANT_PACKED_TEXT_STORAGE_HL
 @e CONSTANT_PERISHABLE_TEXT_STORAGE_HL
+@e COPYPV_HL
+@e COPYPVIFEXISTS_HL
+@e CREATEPV_HL
+@e CREATEPVONSTACK_HL
 @e CUBEROOT_HL
 @e DB_RULE_HL
 @e DEBUG_RULES_HL
 @e DEBUGPROPERTY_HL
 @e DECIMALNUMBER_HL
+@e DESTROYPV_HL
+@e DESTROYPVFROMSTACK_HL
 @e DIGITTOVALUE_HL
 @e DIVIDEPARAGRAPHPOINT_HL
 @e DO_NOTHING_HL
@@ -99,7 +96,7 @@ comprehensive list of what is there.)
 @e INTEGERREMAINDER_HL
 @e ISSUECHANGEDRELATIONOUTSIDEDOMAIN_HL
 @e ISSUEUSEDABSTRACTRELATION_HL
-@e KINDATOMIC_HL
+@e KINDDEFAULTVALUE_HL
 @e LATEST_RULE_RESULT_HL
 @e LIST_ITEM_BASE_HL
 @e LIST_ITEM_KOV_F_HL
@@ -189,30 +186,29 @@ comprehensive list of what is there.)
 @e UNICODE_TEMP_HL
 @e VTOORELROUTETO_HL
 @e VTOVRELROUTETO_HL
+@e WRITEPVFIELD_HL
 
 @<Establish resources offered by BasicInformKit@> =
 	KIT_PROVIDED(ADJUSTPARAGRAPHPOINT_HL,             I"AdjustParagraphPoint")
 	KIT_PROVIDED(ARGUMENTTYPEFAILED_HL,               I"IssueTypecheckingRTP")
 	KIT_PROVIDED(AUXF_MAGIC_VALUE_HL,                 I"AUXF_MAGIC_VALUE")
 	KIT_PROVIDED(AUXF_STATUS_IS_CLOSED_HL,            I"AUXF_STATUS_IS_CLOSED")
-	KIT_PROVIDED(BLKVALUECOPY_HL,                     I"BlkValueCopy")
-	KIT_PROVIDED(BLKVALUECOPYAZ_HL,                   I"BlkValueCopyAZ")
-	KIT_PROVIDED(BLKVALUECREATE_HL,                   I"BlkValueCreate")
-	KIT_PROVIDED(BLKVALUECREATEONSTACK_HL,            I"BlkValueCreateOnStack")
-	KIT_PROVIDED(BLKVALUEERROR_HL,                    I"BlkValueError")
-	KIT_PROVIDED(BLKVALUEFREE_HL,                     I"BlkValueFree")
-	KIT_PROVIDED(BLKVALUEFREEONSTACK_HL,              I"BlkValueFreeOnStack")
-	KIT_PROVIDED(BLKVALUEINCREFCOUNTPRIMITIVE_HL,     I"BlkValueIncRefCountPrimitive")
-	KIT_PROVIDED(BLKVALUEWRITE_HL,                    I"BlkValueWrite")
 	KIT_PROVIDED(CHECKKINDRETURNED_HL,                I"CheckKindReturned")
 	KIT_PROVIDED(CLEARPARAGRAPHING_HL,                I"ClearParagraphing")
 	KIT_PROVIDED(CONSTANT_PACKED_TEXT_STORAGE_HL,     I"CONSTANT_PACKED_TEXT_STORAGE")
 	KIT_PROVIDED(CONSTANT_PERISHABLE_TEXT_STORAGE_HL, I"CONSTANT_PERISHABLE_TEXT_STORAGE")
+	KIT_PROVIDED(COPYPV_HL,                           I"CopyPV")
+	KIT_PROVIDED(COPYPVIFEXISTS_HL,                   I"CopyPVIfExists")
+	KIT_PROVIDED(CREATEPV_HL,                         I"CreatePV")
+	KIT_PROVIDED(CREATEPVONSTACK_HL,                  I"CreatePVOnStack")
 	KIT_PROVIDED(CUBEROOT_HL,                         I"CubeRoot")
 	KIT_PROVIDED(DB_RULE_HL,                          I"DB_Rule")
 	KIT_PROVIDED(DEBUG_RULES_HL,                      I"debug_rules")
 	KIT_PROVIDED(DEBUGPROPERTY_HL,                    I"DebugProperty")
 	KIT_PROVIDED(DECIMALNUMBER_HL,                    I"DecimalNumber")
+	KIT_PROVIDED(DESTROYPV_HL,                        I"DestroyPV")
+	KIT_PROVIDED(DESTROYPVFROMSTACK_HL,               I"DestroyPVFromStack")
+	KIT_PROVIDED(DIGITTOVALUE_HL,                     I"DigitToValue")
 	KIT_PROVIDED(DIGITTOVALUE_HL,                     I"DigitToValue")
 	KIT_PROVIDED(DIVIDEPARAGRAPHPOINT_HL,             I"DivideParagraphPoint")
 	KIT_PROVIDED(DO_NOTHING_HL,                       I"DoNothing")
@@ -246,7 +242,7 @@ comprehensive list of what is there.)
 	KIT_PROVIDED(INTEGERREMAINDER_HL,                 I"IntegerRemainder")
 	KIT_PROVIDED(ISSUECHANGEDRELATIONOUTSIDEDOMAIN_HL, I"IssueChangedRelationRTP")
 	KIT_PROVIDED(ISSUEUSEDABSTRACTRELATION_HL,        I"IssueAbstractRelationRTP")
-	KIT_PROVIDED(KINDATOMIC_HL,                       I"KindAtomic")
+	KIT_PROVIDED(KINDDEFAULTVALUE_HL,                 I"KindDefaultValue")
 	KIT_PROVIDED(LATEST_RULE_RESULT_HL,               I"latest_rule_result")
 	KIT_PROVIDED(LIST_ITEM_BASE_HL,                   I"LIST_ITEM_BASE")
 	KIT_PROVIDED(LIST_ITEM_KOV_F_HL,                  I"LIST_ITEM_KOV_F")
@@ -269,7 +265,6 @@ comprehensive list of what is there.)
 	KIT_PROVIDED(PARACONTENT_HL,                      I"ParaContent")
 	KIT_PROVIDED(PARAMETER_VALUE_HL,                  I"parameter_value")
 	KIT_PROVIDED(PREV_ENUM_VAL_HL,                    I"PrevEnumVal");
-	KIT_PROVIDED(DIGITTOVALUE_HL,                     I"DigitToValue")
 	KIT_PROVIDED(PRINTINBASE_HL,                      I"PrintInBase")
 	KIT_PROVIDED(PRINTORRUN_HL,                       I"PrintOrRun")
 	KIT_PROVIDED(PRIOR_NAMED_LIST_GENDER_HL,          I"prior_named_list_gender")
@@ -337,6 +332,7 @@ comprehensive list of what is there.)
 	KIT_PROVIDED(UNICODE_TEMP_HL,                     I"unicode_temp")
 	KIT_PROVIDED(VTOORELROUTETO_HL,                   I"VtoORelRouteTo")
 	KIT_PROVIDED(VTOVRELROUTETO_HL,                   I"VtoVRelRouteTo")
+	KIT_PROVIDED(WRITEPVFIELD_HL,                     I"WritePVField")
 
 @h Offered by CommandParserKit.
 

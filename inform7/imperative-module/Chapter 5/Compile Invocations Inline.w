@@ -1166,7 +1166,7 @@ do exist, but which should still compile without errors even if they do not.
 
 	if (Kinds::Behaviour::uses_block_values(K)) {
 		if (CodeBlocks::inside_a_loop_body()) {
-			EmitCode::call(Hierarchy::find(BLKVALUECOPY_HL));
+			EmitCode::call(Hierarchy::find(COPYPV_HL));
 			EmitCode::down();
 				inter_symbol *lvar_s = LocalVariables::declare(lvar);
 				EmitCode::val_symbol(K_value, lvar_s);

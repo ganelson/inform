@@ -42,7 +42,6 @@ to the compiler.
 Constant BLK_HEADER_N = 0;
 Constant BLK_HEADER_FLAGS = 1;
 Constant BLK_FLAG_MULTIPLE = $$00000001;
-Constant BLK_FLAG_16_BIT   = $$00000010;
 Constant BLK_FLAG_WORD     = $$00000100;
 Constant BLK_FLAG_RESIDENT = $$00001000;
 Constant BLK_FLAG_TRUNCMULT = $$00010000;
@@ -389,7 +388,7 @@ $$ 10000000_2 - 00001000_2 = 01111000_2 $$
 		(free_block-->BLK_PREV)-->BLK_NEXT = free_block-->BLK_NEXT;
 		(free_block-->BLK_NEXT)-->BLK_PREV = free_block-->BLK_PREV;
 	}
-	free_block-->BLK_HEADER_KOV = KindAtomic(kov);
+	free_block-->BLK_HEADER_KOV = KindWeakID(kov);
 	free_block-->BLK_HEADER_RCOUNT = 1;
 	free_block->BLK_HEADER_FLAGS = flags;
 	if (flags & BLK_FLAG_MULTIPLE) {

@@ -1,0 +1,75 @@
+   Linda's Bunkhouse
+  Congratulations, you've arrived at Dutch Harbor! So far you have 0 points.
+  Now it's time to collect three stamps before going home.
+  
+  Chapter 7: Dutch Harbor
+  An Interactive Fiction by Emily Short
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Linda's Bunkhouse
+  NO WEARING BOOTS IN HOUSE -- LOVE, BLACK PETE, says a sign on the wall.
+  
+  You can also see a stack of discarded boots and a stool here.
+  
+> >   Linda's Bunkhouse
+  ** take boots
+  None of these boots belong to you. Black Pete might also frown upon boot-theft.
+  
+> >   Linda's Bunkhouse
+  ** take stoo
+  You can't see any such thing.
+  
+> >   Linda's Bunkhouse
+  ** take stool
+  That's fixed in place.
+  
+> >   Linda's Bunkhouse
+  ** sit on it
+  You get onto the stool.
+  
+> >   Linda's Bunkhouse
+  ** look under it
+  Very clean.
+  
+> >   Linda's Bunkhouse
+  ** get up
+  You get off the stool.
+  
+  Linda's Bunkhouse
+  NO WEARING BOOTS IN HOUSE -- LOVE, BLACK PETE, says a sign on the wall.
+  
+  You can also see a stack of discarded boots and a stool here.
+  
+> >   Linda's Bunkhouse
+  ** listen
+  You hear nothing unexpected.
+  
+> >   Linda's Bunkhouse
+  ** take all
+  sign: Taken.
+  stack of discarded boots: None of these boots belong to you. Black Pete might also frown upon boot-theft.
+  
+> >   Linda's Bunkhouse
+  ** x sign
+  You have the prickly sense of being watched...
+  
+  It is hand-written in black pen and there is attached a polaroid of Black Pete: he is large, he is bearded, he is smiling in a manner which discourages conversation. He is caucasian, so apparently the epithet is piratical.
+  
+> >   Linda's Bunkhouse
+  ** take sign
+  You already have that.
+  
+> >   Linda's Bunkhouse
+  ** liste
+  That's not a verb I recognise.
+  
+> >   Linda's Bunkhouse
+  ** listen
+  You hear nothing unexpected.
+  
+> >   Linda's Bunkhouse
+  ** u
+  
+  *** Run-time problem MemoryAllocationFailed: INTERNAL/Inter/BasicInformKit/RTPs
+  *** Memory allocation proved impossible.
+  *** Stack frame of 0 could not be created ***

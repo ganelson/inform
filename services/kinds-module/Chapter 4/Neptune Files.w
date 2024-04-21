@@ -61,3 +61,17 @@ void NeptuneFiles::error(text_stream *command, text_stream *error,
 	KindsModule::problem_handler(NeptuneError_KINDERROR, NULL, E, NULL, NULL);
 	DISCARD_TEXT(E)
 }
+
+void NeptuneFiles::warning(text_stream *command, text_stream *error,
+	text_file_position *tfp) {
+	TEMPORARY_TEXT(E)
+	if (tfp)
+		WRITE_TO(E,
+			"warning on Neptune file '%f', line %d ('%S'): %S",
+				tfp->text_file_filename, tfp->line_count, command, error);
+	else
+		WRITE_TO(E,
+			"warning on Neptune command execution: %S", error);
+	KindsModule::problem_handler(NeptuneError_KINDERROR, NULL, E, NULL, NULL);
+	DISCARD_TEXT(E)
+}

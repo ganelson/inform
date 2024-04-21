@@ -857,15 +857,14 @@ is called.
 	for (row=1:row<=k:row++) {
 		for (col=1:col<=tab-->0:col++) {
 			tc = ((tab-->col)-->1) & TB_COLUMN_NUMBER;
-			kov = KindAtomic(TC_KOV(tc));
+			kov = KindWeakID(TC_KOV(tc));
 			if (kov == UNKNOWN_TY) kov = NUMBER_TY;
 			v = (tab-->col)-->(row+COL_HSIZE);
 			if ((v == TABLE_NOVALUE) && (CheckTableEntryIsBlank(tab,col,row)))
-				print "-- ";
-			else {
-				if (WritePVToFile(v, kov) == false) print v;
-				print " ";
-			}
+				print "--";
+			else
+				SerialiseKindValuePair(kov, v);
+			print " ";
 		}
 		print "^";
 	}
@@ -883,12 +882,10 @@ And this is how we unserialise again. It makes sense only on Glulx.
 		    return IssueSavedUnstableTable(tab);
 	}
 	maxrow = TableRows(tab);
-	!print maxrow, " rows available.^";
 	for (row=1: row<=maxrow: row++) {
 		TableBlankOutRow(tab, row);
 	}
 	for (row=1: row<=maxrow: row++) {
-		!print "Reading row ", row, "^";
 		ch = FileIO_GetC(auxf);
 		if (ch == '!') {
 			while (ch ~= -1 or 10 or 13) ch = FileIO_GetC(auxf);
@@ -898,9 +895,8 @@ And this is how we unserialise again. It makes sense only on Glulx.
 			if (ch == -1) { row++; jump NoMore; }
 			if (ch == 10 or 13) break;
 			tc = ((tab-->col)-->1) & TB_COLUMN_NUMBER;
-			kov = KindAtomic(TC_KOV(tc));
+			kov = KindWeakID(TC_KOV(tc));
 			if (kov == UNKNOWN_TY) kov = NUMBER_TY;
-			!print "tc = ", tc, " kov = ", kov, "^";
 			sgn = 1;
 			if (ch == '-') {
 				ch = FileIO_GetC(auxf);
@@ -910,14 +906,12 @@ And this is how we unserialise again. It makes sense only on Glulx.
 			}
 			if (((tab-->col)-->1) & TB_COLUMN_ALLOCATED)
 				ForceTableEntryNonBlank(tab, col, row);
-			!print "A";
-			v = PVFromFile(0, 0, -1, kov);
+			v = UnserialiseKindValuePair(kov, 0, 0, -1);
 			if (v) {
 				if (((tab-->col)-->1) & TB_COLUMN_ALLOCATED)
-					v = PVFromFile(TableLookUpEntry(tab, col, row),
-						auxf, ch, kov);
+					v = UnserialiseKindValuePair(kov, TableLookUpEntry(tab, col, row), auxf, ch);
 				else
-					v = PVFromFile(0, auxf, ch, kov);
+					v = UnserialiseKindValuePair(kov, 0, auxf, ch);
 				ch = 32;
 			} else {
 				dg = ch - '0';
@@ -931,11 +925,9 @@ And this is how we unserialise again. It makes sense only on Glulx.
 				}
 				v = v*sgn;
 			}
-			!print "v=", v, " ";
 			if (((tab-->col)-->1) & TB_COLUMN_ALLOCATED == 0)
 				TableLookUpEntry(tab, col, row, true, v);
 			.EntryDone;
-			!print "First nd is ", ch, "^";
 			while (ch == 9 or 32) ch = FileIO_GetC(auxf);
 		}
 		while (ch ~= -1 or 10 or 13) {
@@ -984,7 +976,7 @@ Routines to print the state of a table, for debugging purposes only.
 		if ((v == TABLE_NOVALUE) && (CheckTableEntryIsBlank(tab,col,i)))
 			print "--";
 		else {
-			PrintKindValuePair(kov, v);
+			SayKindValuePair(kov, v);
 		}
 	}
 	say__p = 1;
@@ -1002,7 +994,7 @@ Routines to print the state of a table, for debugging purposes only.
 		if ((v == TABLE_NOVALUE) && (CheckTableEntryIsBlank(tab,col,i)))
 			print "-- ";
 		else {
-			PrintKindValuePair(kov, v);
+			SayKindValuePair(kov, v);
 			print " |";
 		}
 	}

@@ -87,14 +87,14 @@ runtime code to create the value:
 =
 void TheHeap::emit_allocation(heap_allocation ha) {
 	if (ha.stack_offset >= 0) {
-		inter_name *iname = Hierarchy::find(BLKVALUECREATEONSTACK_HL);
+		inter_name *iname = Hierarchy::find(CREATEPVONSTACK_HL);
 		EmitCode::call(iname);
 		EmitCode::down();
 		EmitCode::val_number((inter_ti) ha.stack_offset);
 		RTKindIDs::emit_strong_ID_as_val(ha.allocated_kind);
 		EmitCode::up();
 	} else {
-		inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
+		inter_name *iname = Hierarchy::find(CREATEPV_HL);
 		EmitCode::call(iname);
 		EmitCode::down();
 		RTKindIDs::emit_strong_ID_as_val(ha.allocated_kind);
@@ -112,7 +112,6 @@ These constants, and the logic below, must therefore match the understandings
 in //BasicInformKit: Flex//.
 
 @d BLK_FLAG_MULTIPLE  0x00000001
-@d BLK_FLAG_16_BIT    0x00000002
 @d BLK_FLAG_WORD      0x00000004
 @d BLK_FLAG_RESIDENT  0x00000008
 @d BLK_FLAG_TRUNCMULT 0x00000010

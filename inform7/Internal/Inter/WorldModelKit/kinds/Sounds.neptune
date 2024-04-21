@@ -6,7 +6,7 @@ new base SOUND_NAME_TY {
 	default-value: 0
 	constant-compilation-method: quantitative
 
-	printing-routine: PrintSoundName
+	say-function: PrintSoundName
 
 	documentation-reference: kind_soundname
 	index-priority: 6

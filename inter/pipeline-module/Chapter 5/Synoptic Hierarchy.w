@@ -162,35 +162,23 @@ The |/main/synoptic/instances| submodule.
 @h Kinds.
 The |/main/synoptic/kinds| submodule.
 
-@e DEFAULTVALUEOFKOV_HL
 @e DEFAULTVALUEFINDER_HL
-@e VALUESFINDER_HL
-@e PRINTKINDVALUEPAIR_HL
-@e KOVCOMPARISONFUNCTION_HL
-@e KOVDOMAINSIZE_HL
-@e KOVISBLOCKVALUE_HL
 @e I7_KIND_NAME_HL
-@e KOVSUPPORTFUNCTION_HL
 @e SHOWMEKINDDETAILS_HL
 @e BASE_KIND_HWM_HL
 @e RUCKSACK_CLASS_HL
 @e KINDHIERARCHY_HL
+@e KINDMETADATA_HL
 
 @<Resources for kinds@> =
 	SYN_SUBMD(I"kinds")
 		SYN_CONST(BASE_KIND_HWM_HL,               I"BASE_KIND_HWM")
-		SYN_FUNCT(DEFAULTVALUEOFKOV_HL,           I"defaultvalue_fn", I"DefaultValueOfKOV")
 		SYN_FUNCT(DEFAULTVALUEFINDER_HL,          I"defaultvaluefinder_fn", I"DefaultValueFinder")
-		SYN_FUNCT(VALUESFINDER_HL,                I"valuesfinder_fn", I"ValuesFinder")
-		SYN_FUNCT(PRINTKINDVALUEPAIR_HL,          I"printkindvaluepair_fn", I"PrintKindValuePair")
-		SYN_FUNCT(KOVCOMPARISONFUNCTION_HL,       I"comparison_fn", I"KOVComparisonFunction")
-		SYN_FUNCT(KOVDOMAINSIZE_HL,               I"domainsize_fn", I"KOVDomainSize")
-		SYN_FUNCT(KOVISBLOCKVALUE_HL,             I"blockvalue_fn", I"KOVIsBlockValue")
 		SYN_FUNCT(I7_KIND_NAME_HL,                I"printkindname_fn", I"I7_Kind_Name")
-		SYN_FUNCT(KOVSUPPORTFUNCTION_HL,          I"support_fn", I"KOVSupportFunction")
 		SYN_FUNCT(SHOWMEKINDDETAILS_HL,           I"showmekinddetails_fn", I"ShowMeKindDetails")
 		SYN_CONST(RUCKSACK_CLASS_HL,              I"RUCKSACK_CLASS")
 		SYN_CONST(KINDHIERARCHY_HL,               I"KindHierarchy")
+		SYN_CONST(KINDMETADATA_HL,                I"KindMetadata")
 
 @h Multimedia.
 The |/main/synoptic/multimedia| submodule.

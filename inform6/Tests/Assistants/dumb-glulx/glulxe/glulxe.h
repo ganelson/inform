@@ -312,16 +312,15 @@ extern glui32 find_id_for_schannel(schanid_t schan);
 extern void setup_profile(strid_t stream, char *filename);
 extern int init_profile(void);
 extern void profile_set_call_counts(int flag);
-#if VM_PROFILING
 extern glui32 profile_opcount;
 #define profile_tick() (profile_opcount++)
+#if VM_PROFILING
 extern int profile_profiling_active(void);
 extern void profile_in(glui32 addr, glui32 stackuse, int accel);
 extern void profile_out(glui32 stackuse);
 extern void profile_fail(char *reason);
 extern void profile_quit(void);
 #else /* VM_PROFILING */
-#define profile_tick()         (0)
 #define profile_profiling_active()         (0)
 #define profile_in(addr, stackuse, accel)  (0)
 #define profile_out(stackuse)  (0)

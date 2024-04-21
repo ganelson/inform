@@ -310,20 +310,20 @@ char *CompileLvalues::storage_schema(node_type_t storage_class, int kind_of_stor
 			return "";
 		case STORE_WORD_TO_POINTER:
 			switch(storage_class) {
-				case LOCAL_VARIABLE_NT: return "*=-BlkValueCast(*1, *#2, *2)";
-				case NONLOCAL_VARIABLE_NT: return "*=-BlkValueCast(*1, *#2, *2)";
-				case TABLE_ENTRY_NT: return "*=-BlkValueCast(*$1(*%1, 5), *#2, *2)";
-				case PROPERTY_VALUE_NT: return "*=-BlkValueCast(*+1, *#2, *2)";
-				case LIST_ENTRY_NT: return "*=-BlkValueCast(*1, *#2, *2)";
+				case LOCAL_VARIABLE_NT: return "*=-CastPV(*1, *#2, *2)";
+				case NONLOCAL_VARIABLE_NT: return "*=-CastPV(*1, *#2, *2)";
+				case TABLE_ENTRY_NT: return "*=-CastPV(*$1(*%1, 5), *#2, *2)";
+				case PROPERTY_VALUE_NT: return "*=-CastPV(*+1, *#2, *2)";
+				case LIST_ENTRY_NT: return "*=-CastPV(*1, *#2, *2)";
 			}
 			return "";
 		case STORE_POINTER_TO_POINTER:
 			switch(storage_class) {
-				case LOCAL_VARIABLE_NT: return "*=-BlkValueCopy(*1, *<2)";
-				case NONLOCAL_VARIABLE_NT: return "*=-BlkValueCopy(*1, *<2)";
-				case TABLE_ENTRY_NT: return "*=-BlkValueCopy(*$1(*%1, 5), *<2)";
-				case PROPERTY_VALUE_NT: return "*=-BlkValueCopy(*+1, *<2)";
-				case LIST_ENTRY_NT: return "*=-BlkValueCopy(*1, *<2)";
+				case LOCAL_VARIABLE_NT: return "*=-CopyPV(*1, *<2)";
+				case NONLOCAL_VARIABLE_NT: return "*=-CopyPV(*1, *<2)";
+				case TABLE_ENTRY_NT: return "*=-CopyPV(*$1(*%1, 5), *<2)";
+				case PROPERTY_VALUE_NT: return "*=-CopyPV(*+1, *<2)";
+				case LIST_ENTRY_NT: return "*=-CopyPV(*1, *<2)";
 			}
 			return "";
 		case INCREASE_BY_WORD:

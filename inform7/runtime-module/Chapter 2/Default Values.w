@@ -251,7 +251,7 @@ all zeros", and otherwise we look for a comma-separated list to fill it.
 	if (Kinds::Behaviour::uses_block_values(K)) {
 		inter_name *small_block = Enclosures::new_small_block_for_constant();
 		packaging_state save = EmitArrays::begin_unchecked(small_block);
-		int extent = Kinds::Behaviour::get_small_block_size(K);
+		int extent = Kinds::Behaviour::get_short_block_size(K);
 		TheHeap::emit_block_value_header(K, FALSE, extent);
 		if (Str::len(textual_description) == 0) {
 			for (int i=0; i<extent; i++)

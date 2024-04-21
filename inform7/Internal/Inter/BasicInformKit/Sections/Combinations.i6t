@@ -15,30 +15,6 @@ for each entry in the combination. Thus, a triple combination uses 4 words.
 Constant COMBINATION_KIND_F = 0;    ! Strong kind ID
 Constant COMBINATION_ITEM_BASE = 1; ! List items begin at this entry
 
-@h KOV Support.
-See the "BlockValues.i6t" segment for the specification of the following
-routines.
-
-=
-[ COMBINATION_TY_Support task arg1 arg2 arg3;
-	switch(task) {
-		CREATE_KOVS:      return COMBINATION_TY_Create(arg1, arg2);
-		DESTROY_KOVS:     COMBINATION_TY_Destroy(arg1);
-		MAKEMUTABLE_KOVS: return 1;
-		COPYKIND_KOVS:    return COMBINATION_TY_CopyKind(arg1, arg2);
-		COPYQUICK_KOVS:   rtrue;
-		COPYSB_KOVS:	  CopyPVShortBlockOfSize1(arg1, arg2);
-		KINDDATA_KOVS:    return COMBINATION_TY_KindData(arg1);
-		EXTENT_KOVS:      return -1;
-		COPY_KOVS:        COMBINATION_TY_Copy(arg1, arg2, arg3);
-		COMPARE_KOVS:     return COMBINATION_TY_Compare(arg1, arg2);
-		HASH_KOVS:        return COMBINATION_TY_Hash(arg1);
-		DEBUG_KOVS:       print " = ", (COMBINATION_TY_Say) arg1;
-	}
-	! We choose not to respond to: CAST_KOVS, READ_FILE_KOVS, WRITE_FILE_KOVS
-	rfalse;
-];
-
 @h Creation.
 A combination is like a list, but simpler; it has a fixed, usually short,
 size. On the other hand, its entries are not all of the same kind as each
@@ -50,17 +26,22 @@ memory, describing the kind. The subsequent blocks are the actual records.
 Thus, a triple $(x, y, z)$ uses 4 words.
 
 =
-[ COMBINATION_TY_Create kind sb long_block N i bk v;
-	N = KindBaseArity(kind);
+[ COMBINATION_TY_Create kind sb_address
+	short_block long_block N i bk v;
+	N = KindConstructorArity(kind);
 	long_block = CreatePVLongBlock(COMBINATION_ITEM_BASE+N, COMBINATION_TY);
 	InitialisePVLongBlockField(long_block, COMBINATION_KIND_F, kind);
 	for (i=0: i<N: i++) {
-		bk = KindBaseTerm(kind, i);
-		if (ConformsTo_POINTER_VALUE_TY(bk)) v = CreatePV(bk);
-		else v = DefaultValueOfKOV(bk);
+		bk = KindConstructorTerm(kind, i);
+		if (KindConformsTo_POINTER_VALUE_TY(bk)) v = CreatePV(bk);
+		else v = KindDefaultValue(bk);
 		InitialisePVLongBlockField(long_block, COMBINATION_ITEM_BASE+i, v);
 	}
-	return CreatePVShortBlockOfSize1(sb, long_block);
+
+	short_block = CreatePVShortBlock(sb_address, 1);
+	short_block-->0 = long_block;
+
+	return short_block;
 ];
 
 @h Destruction.
@@ -70,10 +51,10 @@ the comb itself can be freed.
 =
 [ COMBINATION_TY_Destroy comb kind no_items i bk;
 	kind = PVField(comb, COMBINATION_KIND_F);
-	no_items = KindBaseArity(kind);
+	no_items = KindConstructorArity(kind);
 	for (i=0: i<no_items: i++) {
-		bk = KindBaseTerm(kind, i);
-		if (ConformsTo_POINTER_VALUE_TY(bk))
+		bk = KindConstructorTerm(kind, i);
+		if (KindConformsTo_POINTER_VALUE_TY(bk))
 			DestroyPV(PVField(comb, i+COMBINATION_ITEM_BASE));
 	}
 ];
@@ -83,25 +64,15 @@ Again, if the comb contains block-values then they must be duplicated rather
 than bitwise copied as pointers.
 
 =
-[ COMBINATION_TY_CopyKind to from;
-	WritePVField(to, COMBINATION_KIND_F, PVField(from, COMBINATION_KIND_F));
-];
-
-[ COMBINATION_TY_CopySB to from;
-	CopyPVShortBlockOfSize1(to, from);
-];
-
-[ COMBINATION_TY_KindData comb;
-	return PVField(comb, COMBINATION_KIND_F);
-];
-
-[ COMBINATION_TY_Copy to_comb from_comb precopied_comb_kov  no_items i nv kind bk;
-	! kind = PVField(to_comb, COMBINATION_KIND_F);
-	no_items = KindBaseArity(precopied_comb_kov);
+[ COMBINATION_TY_Copy to_comb from_comb kind recycling
+	precopied_comb_kov no_items i nv kind bk;
+	precopied_comb_kov = PVField(to_comb, COMBINATION_KIND_F);
+	CopyPVRawData(to_comb, from_comb, kind, recycling);
+	no_items = KindConstructorArity(precopied_comb_kov);
 	WritePVField(to_comb, COMBINATION_KIND_F, precopied_comb_kov);
 	for (i=0: i<no_items: i++) {
-		bk = KindBaseTerm(kind, i);
-		if (ConformsTo_POINTER_VALUE_TY(bk)) {
+		bk = KindConstructorTerm(kind, i);
+		if (KindConformsTo_POINTER_VALUE_TY(bk)) {
 			nv = CreatePV(bk);
 			CopyPV(nv, PVField(from_comb, i+COMBINATION_ITEM_BASE));
 			WritePVField(to_comb, i+COMBINATION_ITEM_BASE, nv);
@@ -116,10 +87,10 @@ same kind.
 =
 [ COMBINATION_TY_Compare left_comb right_comb delta no_items i cf kind bk;
 	kind = PVField(left_comb, COMBINATION_KIND_F);
-	no_items = KindBaseArity(kind);
+	no_items = KindConstructorArity(kind);
 	for (i=0: i<no_items: i++) {
-		bk = KindBaseTerm(kind, i);
-		cf = KOVComparisonFunction(bk);
+		bk = KindConstructorTerm(kind, i);
+		cf = KindComparisonFunction(bk);
 		if (cf == 0 or UnsignedCompare) {
 			delta = PVField(left_comb, i+COMBINATION_ITEM_BASE) -
 				PVField(right_comb, i+COMBINATION_ITEM_BASE);
@@ -144,10 +115,10 @@ same kind.
 [ COMBINATION_TY_Hash comb  kind rv no_items i bk;
 	rv = 0;
 	kind = PVField(comb, COMBINATION_KIND_F);
-	no_items = KindBaseArity(kind);
+	no_items = KindConstructorArity(kind);
 	for (i=0: i<no_items: i++) {
-		bk = KindBaseTerm(kind, i);
-		rv = rv * 33 + GetHashValue(bk, PVField(comb, i+COMBINATION_ITEM_BASE));
+		bk = KindConstructorTerm(kind, i);
+		rv = rv * 33 + HashKindValuePair(bk, PVField(comb, i+COMBINATION_ITEM_BASE));
 	}
 	return rv;
 ];
@@ -158,14 +129,14 @@ same kind.
 [ COMBINATION_TY_Say comb format no_items v i kind bk;
 	if (WeakKindOfPV(comb) ~= COMBINATION_TY) return;
 	kind = PVField(comb, COMBINATION_KIND_F);
-	no_items = KindBaseArity(kind);
+	no_items = KindConstructorArity(kind);
 	print "(";
 	for (i=0: i<no_items: i++) {
 		if (i>0) print ", ";
-		bk = KindBaseTerm(kind, i);
+		bk = KindConstructorTerm(kind, i);
 		v = PVField(comb, i+COMBINATION_ITEM_BASE);
 		if (bk == LIST_OF_TY) LIST_OF_TY_Say(v, 1);
-		else PrintKindValuePair(bk, v);
+		else SayKindValuePair(bk, v);
 	}
 	print ")";
 ];
