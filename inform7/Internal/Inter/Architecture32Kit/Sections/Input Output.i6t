@@ -278,9 +278,10 @@ to document all of that.
     return key;
 ];
 
-Array UnicodeWhitespace --> 8 133 160 5760 8232 8233 8239 8287 12288;
+Array UnicodeWhitespace --> 133 160 5760 8232 8233 8239 8287 12288;
+Constant UnicodeWhitespaceLen = 8;
 
-[ VM_ReadKeyboard  a_buffer a_table done ix jy;
+[ VM_ReadKeyboard  a_buffer a_table done ix found uwl;
     if (gg_commandstr ~= 0 && gg_command_reading ~= false) {
         done = glk_get_line_stream_uni(gg_commandstr, a_buffer+WORDSIZE,
         	(INPUT_BUFFER_LEN-1)-1);
@@ -321,14 +322,24 @@ Array UnicodeWhitespace --> 8 133 160 5760 8232 8233 8239 8287 12288;
         glk_put_char_stream(gg_commandstr, 10); ! newline
     }
   .KPContinue;
+  
+    for ( ix = 1 : ix <= (a_buffer-->0) : ix++ ) { print (BlkPrintHexadecimal) a_buffer-->ix; print " "; }
+    print "--> ^";
+
+    uwl = UnicodeWhitespace + WORDSIZE;
     for ( ix = 1 : ix <= (a_buffer-->0) : ix++ )
       if (((a_buffer-->ix) < 32) || ((((a_buffer-->ix) >= 8192) && ((a_buffer-->ix) <= 8202))))
         a_buffer-->ix = 32;
-      else
-        for ( jy = 1 : jy <= (UnicodeWhitespace-->0) : jy++ )
-          if ((a_buffer-->ix) == (UnicodeWhitespace-->jy)) a_buffer-->ix = 32;
-	  else if ((a_buffer-->ix) < (UnicodeWhitespace-->jy)) break;
-    VM_Tokenise(a_buffer,a_table);
+      else {
+        found = a_buffer-->ix;
+        @binarysearch found WORDSIZE uwl WORDSIZE UnicodeWhitespaceLen 0 0 found;
+	if (found) a_buffer-->ix = 32;
+      }
+
+    for ( ix = 1 : ix <= (a_buffer-->0) : ix++ ) { print (BlkPrintHexadecimal) a_buffer-->ix; print " "; }
+    print "--> ^";
+
+VM_Tokenise(a_buffer,a_table);
     ! It's time to close any quote window we've got going.
     if (gg_quotewin) {
         glk_window_close(gg_quotewin, 0);
