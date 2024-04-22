@@ -64,7 +64,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">BasicInformKit</a></li><li><b>Kinds Template</b></li></ul></div>
 <p class="purpose">An API for handling values within the Inform 7 system of kinds.</p>
 
-<ul class="toc"><li><a href="S-knd.html#SP1">&#167;1. Strong and weak IDs</a></li><li><a href="S-knd.html#SP3">&#167;3. The kind metadata array</a></li><li><a href="S-knd.html#SP9">&#167;9. Non-standard enumerations</a></li><li><a href="S-knd.html#SP10">&#167;10. Kind-value pairs</a></li><li><a href="S-knd.html#SP13">&#167;13. The Pointer Value API</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-knd.html#SP1">&#167;1. Strong and weak IDs</a></li><li><a href="S-knd.html#SP3">&#167;3. The kind metadata array</a></li><li><a href="S-knd.html#SP9">&#167;9. Non-standard enumerations</a></li><li><a href="S-knd.html#SP10">&#167;10. Kind-value pairs</a></li><li><a href="S-knd.html#SP14">&#167;14. The Pointer Value API</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Strong and weak IDs. </b>Every kind has both a weak ID, like <span class="extract"><span class="extract-syntax">LIST_OF_TY</span></span>, and a strong ID, which is
 a pointer to a small data structure: for instance, a pointer to the three
@@ -253,7 +253,19 @@ it belongs to the kind <span class="extract"><span class="extract-syntax">K</spa
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">say_fn</span><span class="plain-syntax">) </span><span class="identifier-syntax">say_fn</span><span class="plain-syntax">(</span><span class="identifier-syntax">value</span><span class="plain-syntax">); </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Given a value of any kind, assign it a hash code which fits in a single
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>And here is a general comparison.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">[ </span><span class="identifier-syntax">CompareKindValuePairs</span><span class="plain-syntax"> </span><span class="identifier-syntax">k1</span><span class="plain-syntax"> </span><span class="identifier-syntax">v1</span><span class="plain-syntax"> </span><span class="identifier-syntax">k2</span><span class="plain-syntax"> </span><span class="identifier-syntax">v2</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">cmp_fn</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k1</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">k2</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">k1</span><span class="plain-syntax">-</span><span class="identifier-syntax">k2</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">cmp_fn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ReadKindMetadata</span><span class="plain-syntax">(</span><span class="identifier-syntax">k1</span><span class="plain-syntax">, </span><span class="identifier-syntax">COMPARE_FN_KMF</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cmp_fn</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">cmp_fn</span><span class="plain-syntax">(</span><span class="identifier-syntax">v1</span><span class="plain-syntax">, </span><span class="identifier-syntax">v2</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">v1</span><span class="plain-syntax">-</span><span class="identifier-syntax">v2</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Given a value of any kind, assign it a hash code which fits in a single
 virtual machine word, maximizing the chances that two different values
 will have different hash codes.
 </p>
@@ -284,7 +296,7 @@ different hash codes despite being equal.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Some values can be written to external files and shared with other projects:
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Some values can be written to external files and shared with other projects:
 others cannot. The following routines abstract that.
 </p>
 
@@ -325,7 +337,7 @@ whether it was able to write the data.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. The Pointer Value API. </b>This sits on top of the BlkValue API, but whereas the latter can be used for
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. The Pointer Value API. </b>This sits on top of the BlkValue API, but whereas the latter can be used for
 many potential purposes, the PV functions are strictly for dealing with
 values of kinds conforming to POINTER_VALUE_TY.
 </p>

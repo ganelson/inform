@@ -179,6 +179,17 @@ it belongs to the kind |K|.
 	if (say_fn) say_fn(value); else print value;
 ];
 
+@ And here is a general comparison.
+
+=
+[ CompareKindValuePairs k1 v1 k2 v2
+	cmp_fn;
+	if (k1 ~= k2) return k1-k2;
+	cmp_fn = ReadKindMetadata(k1, COMPARE_FN_KMF);
+	if (cmp_fn) return cmp_fn(v1, v2);
+	return v1-v2;
+];
+
 @ Given a value of any kind, assign it a hash code which fits in a single
 virtual machine word, maximizing the chances that two different values
 will have different hash codes.
