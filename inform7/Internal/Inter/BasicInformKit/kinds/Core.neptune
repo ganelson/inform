@@ -77,8 +77,8 @@ builtin base TEXT_TY {
 	plural: texts
 
 	default-value: 0
-	multiple-block: yes
-	heap-size-estimate: 256
+	flexible-long-block-size: 200
+	long-block-size-function: TEXT_TY_LongBlockSize
 	short-block-size: 2
 	can-exchange: yes
 	constant-compilation-method: special
@@ -95,7 +95,6 @@ builtin base TEXT_TY {
 	unserialise-function: TEXT_TY_Unserialise
 	copy-function: TEXT_TY_Copy
 	copy-short-block-function: TEXT_TY_CopyShortBlock
-	long-block-size-function: TEXT_TY_LongBlockSize
 
 	index-default-value: ""
 	specification-text: Some text in double quotation marks, perhaps with substitutions written in square brackets.
@@ -254,9 +253,8 @@ builtin constructor RELATION_TY {
 	terms: covariant, covariant
 
 	default-value: 0
-	multiple-block: yes
-	short-block-size: 1
-	heap-size-estimate: 8
+	flexible-long-block-size: 8
+	long-block-size-function: RELATION_TY_LongBlockSize
 	can-exchange: yes
 	constant-compilation-method: special
 
@@ -325,9 +323,8 @@ builtin constructor LIST_OF_TY {
 	terms: covariant
 
 	default-value: 0
-	multiple-block: yes
-	short-block-size: 1
-	heap-size-estimate: 256
+	flexible-long-block-size: 200
+	long-block-size-function: LIST_OF_TY_LongBlockSize
 	can-exchange: yes
 	constant-compilation-method: special
 
@@ -339,7 +336,6 @@ builtin constructor LIST_OF_TY {
 	quick-copy-function: LIST_OF_TY_QuickCopy
 	destroy-function: LIST_OF_TY_Destroy
 	hash-function: LIST_OF_TY_Hash
-	long-block-size-function: LIST_OF_TY_LongBlockSize
 
 	documentation-reference: kind_listof
 	index-default-value: { }
@@ -387,9 +383,7 @@ builtin constructor COMBINATION_TY {
 	terms: covariant list, covariant list
 
 	default-value: 0
-	multiple-block: yes
-	short-block-size: 1
-	heap-size-estimate: 256
+	flexible-long-block-size: 8
 	can-exchange: yes
 	constant-compilation-method: special
 

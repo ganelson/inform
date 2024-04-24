@@ -1,0 +1,19 @@
+
+
+
+
+"mom" = vector: (3,14,5)
+"ideal" = vector: (3,14,5)
+"mom" = vector: (2,-50,200)
+"ideal" = vector: (3,14,5)
+"aunt" = vector of texts: (fish,snake,duck)
+"perfect" = vector of texts: (fish,snake,duck)
+"aunt" = vector of texts: (bat,ball,stump)
+"perfect" = vector of texts: (fish,snake,duck)
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Reform Club
+
+>Are you sure you want to quit? 

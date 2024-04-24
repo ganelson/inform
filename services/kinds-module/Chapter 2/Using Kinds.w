@@ -345,21 +345,35 @@ int Kinds::Behaviour::uses_block_values(kind *K) {
 	return KindConstructors::uses_block_values(K->construct);
 }
 
-@ Exactly how large the small block is:
+@ Exactly how large the small block is. The addition of 2 here is to allow for
+the short block header size in a short-block-only pointer value, and must
+correspond to the constant ```SBONLYPV_FIELDS``` defined in
+```BasicInformKit```.
 
 =
 int Kinds::Behaviour::get_short_block_size(kind *K) {
 	if (K == NULL) return 0;
-	return K->construct->short_block_size;
+	int SB = K->construct->short_block_size;
+	if ((K->construct->long_block_size == 0) &&
+		(K->construct->flexible_long_block_size == 0)) SB += 2;
+	return SB;
 }
 
-@ A reasonable estimate of how large the (larger!) heap block needs to be,
-for a pointer-value kind, in bytes.
+@ A minimum field count for the long block:
 
 =
-int Kinds::Behaviour::get_heap_size_estimate(kind *K) {
+int Kinds::Behaviour::get_long_block_size(kind *K) {
 	if (K == NULL) return 0;
-	return K->construct->heap_size_estimate;
+	return K->construct->long_block_size;
+}
+
+@ 0 if the long block is not flexible in size, and otherwise its typical
+likely number of fields in practice.
+
+=
+int Kinds::Behaviour::get_flexible_long_block_size(kind *K) {
+	if (K == NULL) return 0;
+	return K->construct->flexible_long_block_size;
 }
 
 @ And the following returns the name of an I6 routine to determine if two

@@ -101,16 +101,20 @@ the long block.
 
 =
 Constant BLK_BVBITMAP           = $ff;
+Constant BLK_BVUSERBITMAP       = $0f;
 
 Constant BLK_BVBITMAP_LONGBLOCK = $10; ! Word 1 of SB is pointer to LB
 Constant BLK_BVBITMAP_TEXT      = $20; ! BV holds a TEXT_TY value
-Constant BLK_BVBITMAP_CONSTANT  = $40; ! BV holds a TEXT_TY value
+Constant BLK_BVBITMAP_CONSTANT  = $40; ! BV holds a constant value
+Constant BLK_BVBITMAP_SBONLY  = $80; ! No LB, and kind ID is in word 1 of SB
 
 #IFTRUE WORDSIZE == 4;
+Constant BLK_BVBITMAP_USERBITMAPMASK = $fffffff0;
 Constant BLK_BVBITMAP_LONGBLOCKMASK = $ffffff10;
 Constant BLK_BVBITMAP_TEXTMASK      = $ffffff20;
 Constant BLK_BVBITMAP_CONSTANTMASK  = $ffffff40;
 #IFNOT;
+Constant BLK_BVBITMAP_USERBITMAPMASK = $fff0;
 Constant BLK_BVBITMAP_LONGBLOCKMASK = $ff10;
 Constant BLK_BVBITMAP_TEXTMASK      = $ff20;
 Constant BLK_BVBITMAP_CONSTANTMASK  = $ff40;
@@ -145,6 +149,7 @@ which have no long block: we must use the bitmap instead.
 		if (o == 0) return bv-->(BLK_HEADER_KOV+1);
 		if (o & BLK_BVBITMAP == o) {
 			if (o & BLK_BVBITMAP_TEXT) return TEXT_TY;
+			if (o & BLK_BVBITMAP_SBONLY) return KindWeakID(bv-->1);
 			o = bv-->1;
 		}
 		return o-->BLK_HEADER_KOV;
@@ -190,12 +195,13 @@ go downwards that we have to worry about whether something happens.
 		}
 		return refc;
 	}
+	if ((bv-->0) & BLK_BVBITMAP_SBONLY) return 0;
 	return RC_INFINITY;
 ];
 
 @h Long Block Capacity.
 As we've seen, the long block has some metadata in a header, but otherwise
-it's organised as if it were an array, with entries 8, 16 or 32 bits wide.
+it's organised as if it were an array, with byte or word-sized entries.
 At any given time, the "capacity" of the LB is the number of entries in
 this array: that doesn't mean that the BV is using them all at any given moment.
 
@@ -687,8 +693,9 @@ here's where.
 	from_long_block = BlkValueGetLongBlock(from_bv);
 	if (from_long_block) {
 		if (recycling) BlkValueRecyclePrimitive(to_bv, kind);
-		extent_fn = ReadKindMetadata(kind, LONG_BLOCK_SIZE_FN_KMF);
-		if (extent_fn) no_entries_to_copy = extent_fn(from_bv);
+		extent_fn = ReadKindMetadata(kind, LONG_BLOCK_SIZE_KMF);
+		if (extent_fn ofclass Routine) no_entries_to_copy = extent_fn(from_bv);
+		else extent_fn = no_entries_to_copy;
 		if (no_entries_to_copy <= 0) no_entries_to_copy = BlkValueLBCapacity(from_bv);
 		BlkValueMassCopyEntries(to_bv, from_bv, no_entries_to_copy);
 	}
@@ -708,13 +715,14 @@ otherwise we go ahead and make one.
 	#ifdef LKTRACE_HEAP;
 	print "Copy: ", (BlkValueDebug) to_bv, " to equal ", (BlkValueDebug) from_bv, "^";
 	#endif;
-
 	to_kind = BlkValueWeakKind(to_bv);
 	from_kind = BlkValueWeakKind(from_bv);
 	if (to_kind ~= from_kind) BlkValueError("copy incompatible kinds");
 
 	quick_copy_fn = ReadKindMetadata(to_kind, QUICK_COPY_FN_KMF);
 	if ((quick_copy_fn) && (quick_copy_fn(to_bv, from_bv) == false))
+		BlkValueSlowCopyPrimitive(to_bv, from_bv, to_kind, true);
+	else if (to_bv-->0 & BLK_BVBITMAP_SBONLY)
 		BlkValueSlowCopyPrimitive(to_bv, from_bv, to_kind, true);
 	else
 		BlkValueQuickCopyPrimitive(to_bv, from_bv, to_kind);
@@ -861,7 +869,7 @@ work first time, so it turned out to be useful to have these routines on hand.
 			refc = BlkValueGetRefCountPrimitive(bv);
 			if (refc == RC_INFINITY) print " resident";
 			else { print " ", refc, " ref"; if (refc ~= 1) print "s"; }
-		}
+		} else if ((bv-->0) & BLK_BVBITMAP_SBONLY) print "SBO";
 		print " = "; SayKindValuePair(BlkValueWeakKind(bv), bv);
 		if (BlkValueWeakKind(bv) == TEXT_TY) TEXT_TY_Debug(bv);
 	}

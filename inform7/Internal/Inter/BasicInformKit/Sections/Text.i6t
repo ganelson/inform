@@ -90,7 +90,7 @@ A newly created text is a two-word short block with no long block, like this:
 =
 [ TEXT_TY_Create kind_id sb_address
 	short_block;
-	short_block = CreatePVShortBlock(sb_address, 2);
+	short_block = CreatePVShortBlock(sb_address, kind_id);
 	short_block-->0 = PACKED_TEXT_STORAGE;
 	short_block-->1 = EMPTY_TEXT_PACKED;
 	return short_block;

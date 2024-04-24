@@ -1,0 +1,21 @@
+Test: Vectors
+
+The Reform Club is a room.
+
+Include Vectors by Graham Nelson.
+
+When play begins:
+	let mom be vector x 3 y 14 z 5;
+	showme mom;
+	let ideal be the mom;
+	showme ideal;
+	now mom is vector x 2 y -50 z 200;
+	showme mom;
+	showme ideal;
+	let aunt be vector x "fish" y "snake" z "duck";
+	showme aunt;
+	let perfect be the aunt;
+	showme perfect;
+	now aunt is vector x "bat" y "ball" z "stump";
+	showme aunt;
+	showme perfect;

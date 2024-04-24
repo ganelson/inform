@@ -1204,6 +1204,7 @@ void Hierarchy::establish(void) {
 @e KIND_MAKE_MUTABLE_FN_MD_HL
 @e KIND_HASH_FN_MD_HL
 @e KIND_SHORT_BLOCK_SIZE_MD_HL
+@e KIND_LONG_BLOCK_SIZE_MD_HL
 @e KIND_LONG_BLOCK_SIZE_FN_MD_HL
 @e KIND_SERIALISE_FN_MD_HL
 @e KIND_UNSERIALISE_FN_MD_HL
@@ -1328,6 +1329,7 @@ void Hierarchy::establish(void) {
 			H_C_U(KIND_MAKE_MUTABLE_FN_MD_HL, I"^make_mutable_fn")
 			H_C_U(KIND_HASH_FN_MD_HL,         I"^hash_fn")
 			H_C_U(KIND_SHORT_BLOCK_SIZE_MD_HL, I"^short_block_size")
+			H_C_U(KIND_LONG_BLOCK_SIZE_MD_HL, I"^long_block_size")
 			H_C_U(KIND_LONG_BLOCK_SIZE_FN_MD_HL, I"^long_block_size_fn")
 			H_C_U(KIND_SERIALISE_FN_MD_HL,    I"^serialise_fn")
 			H_C_U(KIND_UNSERIALISE_FN_MD_HL,  I"^unserialise_fn")

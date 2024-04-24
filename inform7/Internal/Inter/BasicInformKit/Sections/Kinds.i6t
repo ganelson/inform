@@ -69,7 +69,7 @@ Constant DESTROY_FN_KMF = 12;
 Constant MAKE_MUTABLE_FN_KMF = 13;
 Constant HASH_FN_KMF = 14;
 Constant SHORT_BLOCK_SIZE_KMF = 15;
-Constant LONG_BLOCK_SIZE_FN_KMF = 16;
+Constant LONG_BLOCK_SIZE_KMF = 16;
 Constant SERIALISE_FN_KMF = 17;
 Constant UNSERIALISE_FN_KMF = 18;
 
@@ -278,12 +278,52 @@ Constant WeakKindOfPV = BlkValueWeakKind;
 Constant PVField = BlkValueReadSB;
 Constant WritePVField = BlkValueWriteSB;
 
-Constant CreatePVLongBlock = BlkValueCreateLB;
-Constant CreatePVLongBlockMultiple = BlkValueCreateMultipleLB;
 Constant InitialisePVLongBlockField = BlkValueWriteLB;
 Constant PVLongBlockField = BlkValueReadLB;
 
-Constant CreatePVShortBlock = BlkValueCreateSB;
+Constant SBONLYPV_FIELDS = 2;
+
+[ CreatePVShortBlock sb_address kind_id
+	short_block size;
+	size = ReadKindMetadata(kind_id, SHORT_BLOCK_SIZE_KMF);
+	short_block = BlkValueCreateSB(sb_address, size);
+	if (ReadKindMetadata(kind_id, LONG_BLOCK_SIZE_KMF) == 0) {
+		short_block-->0 = BLK_BVBITMAP_SBONLY;
+		short_block-->1 = kind_id;
+	}
+	return short_block;
+];
+
+[ CreatePVLongBlock kind_id size;
+	if (size <= 0) {
+		size = ReadKindMetadata(kind_id, LONG_BLOCK_SIZE_KMF);
+		if (size ofclass Routine) {
+			BlkValueError("CreatePVLongBlock needs a size");
+			size = 8;
+		}
+	}
+	return BlkValueCreateLB(size, kind_id);
+];
+
+[ CreatePVLongBlockFlexible kind_id size;
+	if (size <= 0) {
+		BlkValueError("CreatePVLongBlockFlexible needs a size");
+		size = 8;
+	}
+	return BlkValueCreateMultipleLB(size, kind_id);
+];
+
+[ KindOfShortBlockOnlyPV bv;
+	return bv-->1;
+];
+
+[ ShortBlockOnlyPVFlags bv;
+	return (bv-->0) & BLK_BVUSERBITMAP;
+];
+[ WriteShortBlockOnlyPVFlags bv flags;
+	bv-->0 = ((bv-->0) & BLK_BVBITMAP_USERBITMAPMASK) + (flags & BLK_BVUSERBITMAP);
+];
+
 Constant CopyPVShortBlock = BlkValueCopySB;
 Constant CopyPVRawData = BlkValueCopyRawLongBlock;
 
@@ -300,3 +340,4 @@ Constant SetPVFieldCapacity = BlkValueSetLBCapacity;
 
 Constant DestroyPVFromStack = BlkValueFreeOnStack;
 Constant CreatePVOnStack = BlkValueCreateOnStack;
+

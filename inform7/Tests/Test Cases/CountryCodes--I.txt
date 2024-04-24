@@ -1,0 +1,19 @@
+
+
+
+
+country code: Saint Helena code
+"list of country codes" = list of country codes: {Saint Helena code, New Caledonia code, Montserrat code, Svalbard code}
+"a random country code" = country code: New Caledonia code
+"number of country codes" = number: 4
+You dial 1664
+You dial 290
+You dial 4779
+The phone does feel a little chilly.
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Reform Club
+
+>Are you sure you want to quit? 

@@ -204,19 +204,22 @@ or higher is therefore that of a derived kind.
 	}
 
 @<Short block size field@> =
-	if (Metadata::read_optional_numeric(pack, I"^short_block_size") > 0) {
-		inter_ti SB = Metadata::read_numeric(pack, I"^short_block_size");
-		Synoptic::numeric_entry(SB);
-	} else {
-		Synoptic::numeric_entry(1);
-	}
+	inter_ti SB = 1;
+	if (Metadata::read_optional_numeric(pack, I"^short_block_size") > 0)
+		SB = Metadata::read_numeric(pack, I"^short_block_size");
+	Synoptic::numeric_entry(SB);
 
 @<Long block size function field@> =
 	if (Metadata::optional_symbol(pack, I"^long_block_size_fn")) {
 		inter_symbol *long_block_size_fn_s = Metadata::required_symbol(pack, I"^long_block_size_fn");
 		Synoptic::symbol_entry(long_block_size_fn_s);
 	} else {
-		Synoptic::numeric_entry(0);
+		if (Metadata::read_optional_numeric(pack, I"^long_block_size") > 0) {
+			inter_ti LB = Metadata::read_numeric(pack, I"^long_block_size");
+			Synoptic::numeric_entry(LB);
+		} else {
+			Synoptic::numeric_entry(0);
+		}
 	}
 
 @<Serialise function field@> =

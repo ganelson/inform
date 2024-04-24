@@ -1,0 +1,17 @@
+new base MEMORY_ADDRESS_TY {
+	conforms-to: ARITHMETIC_VALUE_TY
+	singular: memory address
+	plural: memory addresses
+
+	default-value: 0
+	can-exchange: yes
+	constant-compilation-method: none
+
+	compare-function: UnsignedCompare
+	understand-function: MEMORY_ADDRESS_TY_TOKEN
+	say-function: MEMORY_ADDRESS_TY_SAY
+
+	index-priority: 2
+	index-default-value: 0
+	specification-text: An address within the virtual machine the story runs in.
+}

@@ -897,6 +897,7 @@ or can come from the Neptune file creating a kind.
 		@<Apply make-mutable function metadata@>;
 		@<Apply hash function metadata@>;
 		@<Apply short-block-size metadata@>;
+		@<Apply long-block-size metadata@>;
 		@<Apply long-block-size function metadata@>;
 		@<Apply serialise function metadata@>;
 		@<Apply unserialise function metadata@>;
@@ -1315,6 +1316,11 @@ and |b| inclusive.
 	int SB = Kinds::Behaviour::get_short_block_size(K);
 	if (SB > 0) Hierarchy::apply_metadata_from_number(pack, KIND_SHORT_BLOCK_SIZE_MD_HL,
 		(inter_ti) SB);
+
+@<Apply long-block-size metadata@> =
+	int LB = Kinds::Behaviour::get_long_block_size(K);
+	if (LB > 0) Hierarchy::apply_metadata_from_number(pack, KIND_LONG_BLOCK_SIZE_MD_HL,
+		(inter_ti) LB);
 
 @<Apply long-block-size function metadata@> =
 	inter_name *iname = RTKindConstructors::long_block_size_fn_iname(K);

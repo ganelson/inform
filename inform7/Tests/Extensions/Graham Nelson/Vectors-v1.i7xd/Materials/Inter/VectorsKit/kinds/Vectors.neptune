@@ -1,0 +1,37 @@
+new base VECTOR_TY {
+	conforms-to: POINTER_VALUE_TY
+	conforms-to: SAYABLE_VALUE_TY
+	singular: vector
+	plural: vectors
+	
+	short-block-size: 3
+
+	say-function: VECTOR_TY_Say
+	compare-function: VECTOR_TY_Compare
+	create-function: VECTOR_TY_Create
+	copy-function: VECTOR_TY_Copy
+
+	index-priority: 2
+	index-default-value: 0
+	specification-text: A vector with three number-valued coordinates.
+}
+
+new constructor VECTOR_OF_TY {
+	conforms-to: POINTER_VALUE_TY
+	conforms-to: SAYABLE_VALUE_TY
+	singular: vector of k
+	plural: vectors of k
+	terms: covariant
+	
+	short-block-size: 3
+
+	say-function: VECTOR_OF_TY_Say
+	compare-function: VECTOR_OF_TY_Compare
+	create-function: VECTOR_OF_TY_Create
+	copy-function: VECTOR_OF_TY_Copy
+	destroy-function: VECTOR_OF_TY_Destroy
+
+	index-priority: 2
+	index-default-value: 0
+	specification-text: A vector with three coordinates having the kind K.
+}

@@ -118,9 +118,9 @@ which is then not stored on the stack.
 <span class="plain-syntax">} </span><span class="reserved-syntax">heap_allocation</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure heap_allocation is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Every kind of block value can give an estimate of its likely size needs &mdash; its
-exact size needs if it is fixed in size, and a reasonable overestimate of typical
-usage if it is flexible.
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>We want to make an estimate of the likely size needs of such a value if placed
+on the heap &mdash; its exact size needs if it is fixed in size, and a reasonable
+overestimate of typical usage if it is flexible.
 </p>
 
 <p class="commentary">The <span class="extract"><span class="extract-syntax">multiplier</span></span> is used when we need to calculate the size of, say, a list of
@@ -133,10 +133,14 @@ through to the returned record; we don't understand any of that here.
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stack_offset</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::Behaviour::uses_block_values</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"unable to allocate heap storage for this kind of value"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::Behaviour::get_heap_size_estimate</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">) == </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no heap storage estimate for this kind of value"</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">total_heap_allocation</span><span class="plain-syntax"> += (</span><span class="identifier-syntax">Kinds::Behaviour::get_heap_size_estimate</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">) + </span><span class="constant-syntax">8</span><span class="plain-syntax">)*</span><span class="identifier-syntax">multiplier</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">estimate</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax"> + </span><span class="identifier-syntax">Kinds::Behaviour::get_short_block_size</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::Behaviour::get_flexible_long_block_size</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">estimate</span><span class="plain-syntax"> += </span><span class="identifier-syntax">Kinds::Behaviour::get_flexible_long_block_size</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">estimate</span><span class="plain-syntax"> += </span><span class="identifier-syntax">Kinds::Behaviour::get_long_block_size</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
+
+<span class="plain-syntax">    </span><span class="identifier-syntax">total_heap_allocation</span><span class="plain-syntax"> += (</span><span class="identifier-syntax">estimate</span><span class="plain-syntax"> + </span><span class="constant-syntax">8</span><span class="plain-syntax">)*</span><span class="identifier-syntax">multiplier</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">heap_allocation</span><span class="plain-syntax"> </span><span class="identifier-syntax">ha</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ha</span><span class="plain-syntax">.</span><span class="element-syntax">allocated_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">K</span><span class="plain-syntax">;</span>

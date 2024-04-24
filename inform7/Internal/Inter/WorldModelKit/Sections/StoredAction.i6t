@@ -39,7 +39,7 @@ in which the player waits.
 =
 [ STORED_ACTION_TY_Create kind_id sb_address
 	short_block long_block;
-	long_block = CreatePVLongBlock(6, STORED_ACTION_TY);
+	long_block = CreatePVLongBlock(STORED_ACTION_TY);
 	InitialisePVLongBlockField(long_block, STORA_ACTION_F, ##Wait);
 	InitialisePVLongBlockField(long_block, STORA_NOUN_F, 0);
 	InitialisePVLongBlockField(long_block, STORA_SECOND_F, 0);
@@ -47,7 +47,7 @@ in which the player waits.
 	InitialisePVLongBlockField(long_block, STORA_REQUEST_F, false);
 	InitialisePVLongBlockField(long_block, STORA_COMMAND_TEXT_F, 0);
 	
-	short_block = CreatePVShortBlock(sb_address, 1);
+	short_block = CreatePVShortBlock(sb_address, kind_id);
 	short_block-->0 = long_block;
 
 	return short_block;

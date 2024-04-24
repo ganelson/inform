@@ -184,7 +184,7 @@ newly constructed data structure which can grow freely from here.
 =
 [ RELATION_TY_Create kind_id sb_address from
 	short_block long_block i handler;
-	long_block = CreatePVLongBlockMultiple(RRV_DATA_BASE + 3*RRP_MIN_SIZE, RELATION_TY);
+	long_block = CreatePVLongBlockFlexible(kind_id, RRV_DATA_BASE + 3*RRP_MIN_SIZE);
 	if ((from == 0) && (kind_id)) from = DefaultValueFinder(kind_id);
 	if (from) {
 		for (i=0: i<RRV_DATA_BASE: i++) InitialisePVLongBlockField(long_block, i, PVField(from, i));
@@ -212,10 +212,19 @@ newly constructed data structure which can grow freely from here.
 		InitialisePVLongBlockField(long_block, RRV_FILLED, 0);
 	}
 	
-	short_block = CreatePVShortBlock(sb_address, 1);
+	short_block = CreatePVShortBlock(sb_address, kind_id);
 	short_block-->0 = long_block;
 
 	return short_block;
+];
+
+@h Extent.
+We need to provide an explicit function for this, even though we only say the
+answer is "use the capacity".
+
+=
+[ RELATION_TY_LongBlockSize rel;
+	return 0;
 ];
 
 @h Destruction.

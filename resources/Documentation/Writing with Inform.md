@@ -21569,7 +21569,6 @@ new base MEMORY_ADDRESS_TY {
 
 	default-value: 0
 	can-exchange: yes
-	constant-compilation-method: none
 
 	compare-function: UnsignedCompare
 	understand-function: MEMORY_ADDRESS_TY_Understand
@@ -21581,27 +21580,16 @@ new base MEMORY_ADDRESS_TY {
 }
 ```
 
-As can be seen, though, it defines no instances — only enumerated kinds can do that — and instead sets many more details. Let's start with these three settings, which affect how the kind is handled inside the Inform compiler:
+As can be seen, though, it defines no instances — only enumerated kinds can do that — and instead sets many more details. Let's start with these settings, which affect how the kind is handled inside the Inform compiler:
 
 ``` code
 	default-value: 0
 	can-exchange: yes
-	constant-compilation-method: none
 ```
 
 * ```default-value``` gives an I6 expression for the default value for the kind. Here, that will be the address 0.
 
 * ```can-exchange``` being ```yes``` means that values of this kind, if printed out by one story and then read in by another story entirely, would still have the same meaning. For example, that's true of `number` because all Inform stories use the same bits to represent the number 17, say. But it is not true of `action name`, because one story may have an action for `swimming`, say, and the other story not; and even if both of them have, they may number it differently. The default for ```can-exchange``` is very much ```no```, but we're saying ```yes``` here. An address means the same in all stories, even though the data stored at that address may be different in each of them.
-
-* ```constant-compilation-method``` tells Inform how literal values of this kind are written in source text. The possible options are: ```none```, ```literal```, ```quantitative``` and ```special```, the default being ```none```:
-
-  - ```none``` means there are no literals of this kind.
-
-  - ```literal``` means there are literals of this kind, parsed using Inform's system of [Advanced Notations]. These, however, can't be used with kinds which are created in Neptune files.
-
-  - ```quantitative``` means there are named instances, as for enumerations. The word used here is now a little enigmatic, but relates to a time when instances of enumerated values were called "quantities" inside the compiler's source code.
-
-  - ```special``` means that the compiler contains special code to handle this. New kinds can't use this, of course.
 
 Next we have some settings for how values are handled at run-time:
 
@@ -21686,7 +21674,7 @@ This is essentially a prototype of how to write a loop over all valid values of 
 
 ``` code
 ActionNumberIndexed(0)
-ActionNumberIndexed(2)
+ActionNumberIndexed(1)
 ActionNumberIndexed(2)
 ...
 ActionNumberIndexed(AD_RECORDS - 1)
@@ -21983,10 +21971,7 @@ new base CMYK_COLOUR_TY {
 	singular: CMYK colour
 	plural: CMYK colours
 	
-	multiple-block: no
-	short-block-size: 1
-	long-block-size-function: CMYK_COLOUR_TY_LongBlockSize
-	heap-size-estimate: 8
+	long-block-size: 5
 
 	create-function: CMYK_COLOUR_TY_Create
 	say-function: CMYK_COLOUR_TY_Say
@@ -21994,9 +21979,6 @@ new base CMYK_COLOUR_TY {
 	hash-function: CMYK_COLOUR_TY_Hash
 	copy-function: CMYK_COLOUR_TY_Copy
 	destroy-function: CMYK_COLOUR_TY_Destroy
-
-	can-exchange: yes
-	constant-compilation-method: none
 	
 	index-priority: 2
 	index-default-value: 0
@@ -22004,33 +21986,15 @@ new base CMYK_COLOUR_TY {
 }
 ```
 
-Let's look first at the second set of settings, which describe how much memory a CMYK value will consume:
+Let's look first at the setting ```long-block-size: 5```. The memory used by a pointer value is normally split between a _short block_ and a _long block_. There are basically two and a half strategies for kinds to follow:
 
-``` code
-	short-block-size: 1
-	long-block-size-function: CMYK_COLOUR_TY_LongBlockSize
-	multiple-block: no
-	heap-size-estimate: 8
-```
+- Put all the data in the short block, and have no long block. We'll see examples of this later. To get this, set ```short-block-size``` to the number of fields of data needed, and do not set ```long-block-size```.
 
-Pointer values like this are represented by a pointer to a _short block_ of memory. Often, and always in the case of CMYK, this will contain a further pointer to a _long block_, where the real data is. Short blocks usually only contain 1 or 2 words of memory, so they're aptly named: this one has just 1 word, and consists only of the pointer to the long block.
+- Have a 1-word short block (they're not called short for nothing) which consists only of a pointer to a long block, where the data is. This is what `CMYK colour` will do. To get this, set ```long-block-size``` to the number of fields of data needed, and do not set ```short-block-size```. If the long block needs to be able to expand or contract during use, set ```flexible-long-block-size``` to an overestimate of what is usually needed, and do not set either of the other two settings.
 
-Long blocks can contain varying quantities of data (for example, lists and texts can expand or contract), so there's no constant ```long-block-size``` setting. Instead we have to provide a function which returns the current number of words being used...
+- Have a 2-word short block and sometimes but not always have a long block as well. The `text` kind is currently the only one to do this, and it's not recommended for anything else.
 
-``` code
-Constant CMYK_LONG_BLOCK_SIZE = 5;
-Constant CMYK_SHORT_BLOCK_SIZE = 1;
-
-[ CMYK_COLOUR_TY_LongBlockSize cmyk;
-	return CMYK_LONG_BLOCK_SIZE;
-]
-```
-
-...but it won't be very interesting: the answer is always 5.
-
-Values of some kinds need only a fixed amount of space, so they can manage with just one long block. Others might balloon out to huge amounts of storage, occupying a chain of multiple long blocks. ```multiple-block:``` should be ```yes``` for those kinds, but ```no``` for kinds like `CMYK colour`, where our data storage needs never change.
-
-```heap-size-estimate:``` is compulsory for pointer-valued types: it makes a guess at the likely storage needs of a typical value of this kind, rounded up to the nearest power of two. Here all values of the kind need 5 words, so 8 is the next power of two.
+Note that the ```long block size``` is measured in _fields_, and we will need 5 in all: name, cyan, magenta, yellow, black.
 
 Next we come to a whole set of functions needed for `CMYK colour` to operate:
 
@@ -22046,6 +22010,8 @@ Next we come to a whole set of functions needed for `CMYK colour` to operate:
 To start with the creation function: this will be called as ```CMYK_COLOUR_TY_Create(kind_id, sb_address)```. The long block must be created first, and then the short block, which incorporates a pointer to it, always in the last word of the short block.
 
 ``` code
+Constant CMYK_LONG_BLOCK_SIZE = 5;
+
 Constant CMYK_NAME_F = 0;
 Constant CMYK_CYAN_F = 1;
 Constant CMYK_MAGENTA_F = 2;
@@ -22057,7 +22023,7 @@ Array CMYK_DEFAULT_NAME_TEXT --> PACKED_TEXT_STORAGE "black";
 [ CMYK_COLOUR_TY_Create kind_id sb_address
 	short_block long_block txt;
 
-	long_block = CreatePVLongBlock(CMYK_LONG_BLOCK_SIZE, CMYK_COLOUR_TY);
+	long_block = CreatePVLongBlock(CMYK_COLOUR_TY);
 
 	txt = CreatePV(TEXT_TY);
 	CopyPV(txt, CMYK_DEFAULT_NAME_TEXT); TEXT_TY_Mutable(txt);
@@ -22068,20 +22034,18 @@ Array CMYK_DEFAULT_NAME_TEXT --> PACKED_TEXT_STORAGE "black";
 	InitialisePVLongBlockField(long_block, CMYK_YELLOW_F, 0);
 	InitialisePVLongBlockField(long_block, CMYK_BLACK_F, 100);
 	
-	short_block = CreatePVShortBlock(sb_address, CMYK_SHORT_BLOCK_SIZE);
+	short_block = CreatePVShortBlock(sb_address, kind_id);
 	short_block-->0 = long_block;
 
 	return short_block;
 ];
 ```
 
-It is very important that the ```sb_address``` value is passed to ```CreatePVShortBlock```. The deal here is that if this is 0 then the short block is created somewhere in the heap, but if it is non-zero, then the short block is created at the given location (often on the stack). We don't need to care about any of that, but we do need to pass the address on.
-
-If this kind used multiple long blocks, it would have been necessary to call ```CreatePVLongBlockMultiple``` instead of ```CreatePVLongBlock```, but otherwise the process would be exactly the same.
+It is very important that the ```sb_address``` value is passed through to ```CreatePVShortBlock```. The deal here is that if this is 0 then the short block is created somewhere in the heap, but if it is non-zero, then the short block is created at the given location (often on the stack). We don't need to care about any of that, but we do need to pass the address on.
 
 The words of actual data in the long block are called _fields_. They're indexed 0 to 4, since we're using just 5. We put initial contents into the five words with the special function ```InitialisePVLongBlockField```. Note the ```LB```, for long block, at the end of this function name, and do not confuse this function with the usual ```WritePVField```. ```InitialisePVLongBlockField``` should never be used except in create functions.
 
-The interesting field of the five is ```CMYK_NAME_F```, of course, since it's a text value which itself needs creation. When created by ```PVCreate(TEXT_TY)```, the result will be a copy of the default text, which is the empty text `""`. We actually want to start with `"black"`, so we must _copy_ that constant value into our new text, but any use of packed text is always tricksy, and we make it mutable so that its value will sort correctly as against text. We don't simply execute ```InitialisePVLongBlockField(long_block, CMYK_NAME_F, CMYK_DEFAULT_NAME_TEXT);``` because values like text must always be copied in a way which keeps reference counts accurate.
+The interesting field of the five is ```CMYK_NAME_F```, of course, since it's a text value which itself needs creation. When created by ```CreatePV(TEXT_TY)```, the result will be a copy of the default text, which is the empty text `""`. We actually want to start with `"black"`, so we must _copy_ that constant value into our new text, but any use of packed text is always tricksy, and we make it mutable so that its value will sort correctly as against text. We don't simply execute ```InitialisePVLongBlockField(long_block, CMYK_NAME_F, CMYK_DEFAULT_NAME_TEXT);``` because values like text must always be copied in a way which keeps reference counts accurate.
 
 So here's how to say a CMYK once we have one:
 
@@ -22152,8 +22116,7 @@ If the long block had contained only numbers, we would not even have needed to d
 Purely for convenience, we're also going to provide a creation function which populates a CMYK colour with some actual values other than solid black:
 
 ``` code
-[ CMYK_COLOUR_TY_New ink c m y k cmyk;
-	cmyk = PVCreate(CMYK_COLOUR_TY);
+[ CMYK_COLOUR_TY_New cmyk ink c m y k;
 	CopyPV(PVField(cmyk, CMYK_NAME_F), ink);
 	WritePVField(cmyk, CMYK_CYAN_F, c);
 	WritePVField(cmyk, CMYK_MAGENTA_F, m);
@@ -22163,10 +22126,10 @@ Purely for convenience, we're also going to provide a creation function which po
 ];
 ```
 
-We can then define this phrase in the wrapper extension:
+We can then define this phrase in the wrapper extension. Note that the value is actually created by `{-new:CMYK colour}` in the inline phrase definition: this is important, because it means that value will automatically be destroyed when it goes out of scope. (That would not be true if instead the ```CMYK_COLOUR_TY_New``` function had called ```CreatePV``` to make its own `CMYK colour`: that would cause a memory leak.)
 
 	To decide which CMYK colour is (T - text) ink C (C - number) M (M - number) Y (Y - number) K (K - number):
-		(- (CMYK_COLOUR_TY_New({T}, {C}, {M}, {Y}, {K})) -).
+		(- (CMYK_COLOUR_TY_New({-new:CMYK colour}, {T}, {C}, {M}, {Y}, {K})) -).
 
 And finally, then, a project which includes the wrapper extension could have:
 
@@ -22203,6 +22166,12 @@ Y:30% K:72%.
 
 A number of other functions can optionally be provided in Neptune declarations, too. `CMYK colour` did not need them, but more outré kinds might.
 
+- ```flexible-long-block-size```. Values of most kinds need only a fixed amount of space, but others can balloon out to huge amounts of storage. This may be stored internally as a chain of multiple long blocks, but all of that is hidden from us. Setting ```flexible-long-block-size: 200```, say, is an _alternative_ to setting ```long-block-size: 10```. _Do not set both._ Instead of saying that the LB will hold exactly 10 fields, we are saying that it can hold a potentially unlimited number, but that a reasonable overestimate in typical usage is about 200. (Inform uses such estimates in working out what size of memory heap a story needs.)
+
+  Flexible-long-block values need to be created slightly differently, by calling ```CreatePVLongBlockFlexible(kind_id, N)``` instead of ```CreatePVLongBlock(kind_id)```, but otherwise the process is exactly the same. Here ```N``` has to be the _initial_ field storage needed. The long block can later be resized as needed using ```SetPVFieldCapacity(value, N2)```.
+
+- ```long-block-size-function```. This can only be provided for flexible-LB kinds, and returns the current actual usage of fields in the long block. If it returns 0, or isn't given, then the current _capacity_ is taken as being the current usage, i.e., the long block is assumed to be fully used up. This is often not the case — for example, a list holding 20 values might be using a block with 200 spare fields — so a flexible LB kind will run faster if it provides this function.
+
 - ```make-mutable-function```. This has to do with constant values and reference-counting, and is tricky to explain. Only kinds which pull off the trick of sometimes having a long block, and sometimes not, will need this device, and at present only ```TEXT_TY``` does that. See the ```BasicInformKit``` source code (or, preferably, don't).
 
 - ```copy-short-block-function```. Similarly obscure, and also used only by ```TEXT_TY``` at present. If provided, this function makes a non-standard copy of one short block to another. But there is a lot to be said for the standard way.
@@ -22215,56 +22184,158 @@ A number of other functions can optionally be provided in Neptune declarations, 
 
 - ```serialise-function```. Writing a serialised-to-text form of the data to a file. See ```TEXT_TY_Serialise``` in ```BasicInformKit``` for an example of this.
 
+## Neptune and short-block-only values
+
+In this section we look at still another way to set up a base kind. Instead of having a short block which points to a long block, and putting all the data in the long block, we'll try for something a touch faster with less memory overhead: putting the data itself in the short block.
+
+This can only work where a small amount of data is all that's needed. (In fact, `CMYK colour` would have been a good candidate for this, but never mind.) Here we'll make something very minimal: a vector of three numbers, which we can think of as x-, y- and z-coordinates.
+
+``` code
+new base VECTOR_TY {
+	conforms-to: POINTER_VALUE_TY
+	conforms-to: SAYABLE_VALUE_TY
+	singular: vector
+	plural: vectors
+	
+	short-block-size: 5
+	long-block-size: 0
+	
+	say-function: VECTOR_TY_Say
+	compare-function: VECTOR_TY_Compare
+	create-function: VECTOR_TY_Create
+	copy-function: VECTOR_TY_Copy
+
+	index-priority: 2
+	index-default-value: 0
+	specification-text: A three-vector which holds number values in its x, y, z coordinates.
+}
+```
+
+The create function is a little different now:
+
+``` code
+Constant VECTOR_X_SF = 2;
+Constant VECTOR_Y_SF = 3;
+Constant VECTOR_Z_SF = 4;
+
+[ VECTOR_TY_Create kind_id sb_address
+	short_block;
+
+	short_block = CreatePVShortBlock(sb_address, kind_id);
+	short_block-->VECTOR_X_SF = 0;
+	short_block-->VECTOR_Y_SF = 0;
+	short_block-->VECTOR_Z_SF = 0;
+
+	return short_block;
+];
+```
+
+Note that the fields are read and written _directly_ from the short block, and not via the access functions ```PVField``` and ```WritePVField```. Those write data to a long block, and this kind has no long block. This is good: it's fast, for one thing.
+
+But the responsibility for writing only in range is now entirely on us, and we can use only words 2, 3 and 4: words 0 and 1 belong to the memory manager. That's why we defined
+
+``` code
+Constant VECTOR_X_SF = 2;
+Constant VECTOR_Y_SF = 3;
+Constant VECTOR_Z_SF = 4;
+```
+
+and not equating these to 0, 1, 2. In fact, we get slightly more storage than this: the memory manager leaves us 4 bits free in its own two words of the short block. See [Neptune and optionals] for how these can be used: we won't need them for `vector`.
+
+The say and compare functions are quite concise:
+
+``` code
+[ VECTOR_TY_Say vec;
+	print "(", vec-->VECTOR_X_SF, ",";
+	print vec-->VECTOR_Y_SF, ",";
+	print vec-->VECTOR_Z_SF, ")";
+];
+
+[ VECTOR_TY_Compare vec1 vec2 n1 n2 i j d;
+	d = vec1-->VECTOR_X_SF - vec2-->VECTOR_X_SF; if (d ~= 0) return d;
+	d = vec1-->VECTOR_Y_SF - vec2-->VECTOR_Y_SF; if (d ~= 0) return d;
+	d = vec1-->VECTOR_Z_SF - vec2-->VECTOR_Z_SF; if (d ~= 0) return d;
+	return 0;
+];
+```
+
+There's no need for a destroy function at all, since the data in a vector is only ordinary `number` values which need no destruction.
+
+The copy function is now simple:
+
+``` code
+[ VECTOR_TY_Copy vecto vecfrom;
+	vecto-->VECTOR_X_SF = vecfrom-->VECTOR_X_SF;
+	vecto-->VECTOR_Y_SF = vecfrom-->VECTOR_Y_SF;
+	vecto-->VECTOR_Z_SF = vecfrom-->VECTOR_Z_SF;
+	return false;
+];
+```
+
+And that's it. Still, we want a convenience initialiser too, as with `CMYK colour`, so:
+
+``` code
+[ VECTOR_TY_New vec x y z;
+	vec-->VECTOR_X_SF = x;
+	vec-->VECTOR_Y_SF = y;
+	vec-->VECTOR_Z_SF = z;
+	return vec;
+];
+```
+
+And we can then define this:
+
+	To decide which vector is vector x (X - number) y (Y - number) z (Z - number):
+		(- (VECTOR_TY_New({-new: vector}, {X}, {Y}, {Z})) -).
+
+After which `vector x 10 y 12 z 20`, for example, will be said back as ``(10,12,20)``. Of course, there are lots of functions we could define for useful things to do with vectors, but the kind itself now exists.
+
 ## Neptune and kind constructors
 
 _Kind constructors_ are ways to construct new kinds from existing ones: sometimes one existing kind, as in `list of K`, and sometimes two, as in `relation of K to L`.
 
 These of course can make an unlimited number of different kinds — consider `list of numbers`, `list of lists of numbers`, `list of lists of lists of numbers`, ..., for example. But the different possible kinds made out of the same constructor share a Neptune declaration.
 
-For example, here is the declaration for `list of K` in ```BasicInformKit``` (slightly shortened to remove the Index details, which work exactly as for base kinds):
+Suppose, for the sake of a concrete example, that we want to make a more general version of the `vector` kind created in the previous section. It will behave exactly as `vector` did, but will be able to hold triples of any kind, and not only of `number`. The declaration is surprisingly similar:
 
 ``` code
-builtin constructor LIST_OF_TY {
+new constructor VECTOR_OF_TY {
 	conforms-to: POINTER_VALUE_TY
-	singular: list of k
-	plural: lists of k
+	conforms-to: SAYABLE_VALUE_TY
+	singular: vector of k
+	plural: vectors of k
 	terms: covariant
+	
+	short-block-size: 5
+	long-block-size: 0
+	
+	say-function: VECTOR_OF_TY_Say
+	compare-function: VECTOR_OF_TY_Compare
+	create-function: VECTOR_OF_TY_Create
+	copy-function: VECTOR_OF_TY_Copy
+	destroy-function: VECTOR_OF_TY_Destroy
 
-	default-value: 0
-	multiple-block: yes
-	short-block-size: 1
-	heap-size-estimate: 256
-	can-exchange: yes
-	constant-compilation-method: special
-
-	compare-function: LIST_OF_TY_Compare
-	distinguish-function: LIST_OF_TY_Distinguish
-	say-function: LIST_OF_TY_Say
-	create-function: LIST_OF_TY_Create
-	copy-function: LIST_OF_TY_Copy
-	quick-copy-function: LIST_OF_TY_QuickCopy
-	destroy-function: LIST_OF_TY_Destroy
-	hash-function: LIST_OF_TY_Hash
-	long-block-size-function: LIST_OF_TY_LongBlockSize
+	index-priority: 2
+	index-default-value: 0
+	specification-text: A three-vector which can hold any kind of value in its x, y, z coordinates.
 }
 ```
 
-Much of this setup is as it was our `CMYK colour` example. The idea is that these settings are held in common by all kinds of the `list of K` shape. They all conform to ```POINTER_VALUE_TY```, and so on.
+These are settings held in common by all kinds of the `vector of K` shape. They all conform to ```POINTER_VALUE_TY```, and so on. Notice the use of ```k``` in the singular and plural names.
 
-```terms: covariant``` has to do with whether narrowing the kind parameter `K` also narrows `list of K`, which is covariance, or widens it, which would be contravariance. In practice, a good way to think about to consider that a door is a kind of thing, and see what happens if `K` is changed from `thing` to `door`. For example:
+```terms: covariant``` is also new. This has to do with whether narrowing the kind parameter `K` also narrows `vector of K`, which is covariance, or widens it, which would be contravariance. In practice, a good way to think about to consider that a door is a kind of thing, and see what happens if `K` is changed from `thing` to `door`. For example:
 
-- Is a list of doors also a list of things? Yes — because the door terms are also things. Is a list of things also a list of doors? No. Conceptually, `K1` < `K2` means `list of K1` < `list of K2`. So the `K` term in `list of K` must be _covariant_. 
+- Is a vector of doors also a vector of things? Yes — because the door terms are also things. Is a vector of things also a vector of doors? No — because not all things are doors. Conceptually, `K1` < `K2` means `vector of K1` < `vector of K2`. So the `K` term in `vector of K` must be _covariant_. 
 
 - Is an activity on doors also an activity on things? No — because the activity can't operate on things other than doors. Is an activity on things also an activity on doors? Yes — if it can act on all things, it can certainly act on doors. Conceptually, `K1` < `K2` means `activity on K1` > `activity on K2`. So the `K` term in `activity in K` must be _contravariant_.
 
-When a constructor takes two parameters, they can go in opposite directions. `K based rule producing L` is contravariant in `K`, but covariant in `L`. For that, we would write `terms: contravariant, covariant`.
+When a constructor takes two parameters, they can go in opposite directions. `K based rule producing L` is contravariant in `K`, but covariant in `L`. For that, we would write ```terms: contravariant, covariant```.
 
 Terms can also be optional, and we can give multiple names. The declaration of `RULE_TY` in Neptune actually goes like so:
 
 ``` code
 builtin constructor RULE_TY {
-	conforms-to: SAYABLE_VALUE_TY
-	compatible-with: RULEBOOK_TY
+	...
 	singular: rule | k based rule | rule producing l | k based rule producing l
 	plural: rules | k based rules | rules producing l | k based rules producing l
 	terms: contravariant optional, covariant optional
@@ -22274,28 +22345,115 @@ builtin constructor RULE_TY {
 
 Note the pipe characters ```|``` dividing the possible names.
 
-Beyond that, the definition is surprisingly similar to the way `CMYK colour` was handled in the previous section. There are two main differences: the amount of data can vary as the list lengthens or shortens, instead of being fixed at 5 words. So it need ```multiple-block: yes``` rather than ```no```. The ```heap-size-estimate``` is a good bit larger, too. Lists are often much smaller, but we want to guess on the high side.
+However, all of that is a digression: `vector of K` has only one possible name, and the `K` term is covariant.
 
-Long blocks for lists consist of two header words — the kind ID for the contents, and the number of entries — followed by the entries themselves. So for the list `{ 2, 3, 5, 7 }`, the long block data would be six words in all: ```NUMBER_TY, 4, 2, 3, 5, 7```.
-
-As might be guessed, copying and destruction are easy if the kind being listed is stored in simple values. They become harder if not. For example:
+In fact, `vector of K` is set up surprisingly similarly to plain `vector`. The layout in memory is the same: a five-word short block with no long block, and where the memory manager owns words 0 and 1, so that we can use words 2, 3 and 4 for the x, y and z coordinates. There are really just two complications. The first of these appears when we want to say a vector:
 
 ``` code
-Constant LIST_ITEM_KOV_F = 0; ! The kind of the items
-Constant LIST_LENGTH_F = 1;   ! The number of items
-Constant LIST_ITEM_BASE = 2;  ! List items begin at this entry
+[ VECTOR_OF_TY_Say vec scalar_kind_id;
+	scalar_kind_id = KindConstructorTerm(KindOfShortBlockOnlyPV(vec), 0);
+	print "(";
+	SayKindValuePair(scalar_kind_id, vec-->VECTOR_X_SF);
+	print ",";
+	SayKindValuePair(scalar_kind_id, vec-->VECTOR_Y_SF);
+	print ",";
+	SayKindValuePair(scalar_kind_id, vec-->VECTOR_Z_SF);
+	print ")";
+];
+```
 
-[ LIST_OF_TY_Destroy list no_items i k;
-	k = PVField(list, LIST_ITEM_KOV_F);
-	if (KindConformsTo_POINTER_VALUE_TY(k)) {
-		no_items = PVField(list, LIST_LENGTH_F);
-		for (i=0: i<no_items: i++)
-			DestroyPV(PVField(list, i+LIST_ITEM_BASE));
+Here an issue is that we can't say the coordinate values unless we know what kind they are: a `vector of numbers` must look different from a `vector of texts`. So we need to find out what the contents of ```vec``` are. For example, ```KindOfShortBlockOnlyPV``` returns something like `vector of real numbers`, and then ```KindConstructorTerm``` applied to that returns `real number`, so this is what goes into ```scalar_kind_id```. The function ```SayKindValuePair``` then takes care of saying the value according to that kind's conventions.
+
+Similarly for comparisons:
+
+``` code
+[ VECTOR_OF_TY_Compare vec1 vec2 n1 n2 i d scalar_kind_id;
+	scalar_kind_id = KindConstructorTerm(KindOfShortBlockOnlyPV(vec1), 0);
+	for (i=VECTOR_X_SF: i<=VECTOR_Z_SF: i++) {
+		d = CompareKindValuePairs(scalar_kind_id, vec1-->i, scalar_kind_id, vec2-->i);
+		if (d ~= 0) return d;
+	}
+	return 0;
+];
+```
+
+The other complication is that the scalar kind might be pointer-valued, which means it can't be thrown casually around, and has to be properly created, copied and in due course destroyed. So the create function for a vector has to split into two different procedures:
+
+``` code
+[ VECTOR_OF_TY_Create kind_id sb_address
+	short_block scalar_kind_id;
+	scalar_kind_id = KindConstructorTerm(kind_id, 0);
+
+	short_block = CreatePVShortBlock(sb_address, kind_id);
+	
+	if (KindConformsTo_POINTER_VALUE_TY(scalar_kind_id)) {
+		short_block-->VECTOR_X_SF = CreatePV(scalar_kind_id);
+		short_block-->VECTOR_Y_SF = CreatePV(scalar_kind_id);
+		short_block-->VECTOR_Z_SF = CreatePV(scalar_kind_id);
+	} else {
+		short_block-->VECTOR_X_SF = KindDefaultValue(scalar_kind_id);
+		short_block-->VECTOR_Y_SF = short_block-->VECTOR_X_SF;
+		short_block-->VECTOR_Z_SF = short_block-->VECTOR_X_SF;
+	}
+	
+	return short_block;
+];
+```
+
+We also now need a destroy function, which plain `vector` didn't need, in case we have created something which needs proper disposal:
+
+``` code
+[ VECTOR_OF_TY_Destroy vec scalar_kind_id;
+	scalar_kind_id = KindConstructorTerm(KindOfShortBlockOnlyPV(vec), 0);
+	if (KindConformsTo_POINTER_VALUE_TY(scalar_kind_id)) {
+		DestroyPV(vec-->VECTOR_X_SF);
+		DestroyPV(vec-->VECTOR_Y_SF);
+		DestroyPV(vec-->VECTOR_Z_SF);
 	}
 ];
 ```
 
-And this ensures that if ```DestroyPV``` is called on `{ { "red", "blue" }, { "green" }, { "purple", "orange" } }`, which is a `list of lists of texts`, say, then the process will recurse so that the values are destroyed in this sequence:
+The copy function is also similar to the one for `vector`, but also has to handle the coordinates more carefully:
+
+``` code
+[ VECTOR_OF_TY_Copy vecto vecfrom scalar_kind_id;
+	scalar_kind_id = KindConstructorTerm(KindOfShortBlockOnlyPV(vecto), 0);
+	if (KindConformsTo_POINTER_VALUE_TY(scalar_kind_id)) {
+		CopyPV(vecto-->VECTOR_X_SF, vecfrom-->VECTOR_X_SF);
+		CopyPV(vecto-->VECTOR_Y_SF, vecfrom-->VECTOR_Y_SF);
+		CopyPV(vecto-->VECTOR_Z_SF, vecfrom-->VECTOR_Z_SF);
+	} else {
+		vecto-->VECTOR_X_SF = vecfrom-->VECTOR_X_SF;
+		vecto-->VECTOR_Y_SF = vecfrom-->VECTOR_Y_SF;
+		vecto-->VECTOR_Z_SF = vecfrom-->VECTOR_Z_SF;
+	}
+	return false;
+];
+```
+
+And that's all the kit coding done: we just need an Inform phrase to create such vectors, which we'll do using a kind variable `K`:
+
+	To decide which vector of K is vector x (X - value of kind K) y (Y - K) z (Z - K):
+		(- (VECTOR_OF_TY_New({-new: vector of K}, {X}, {Y}, {Z})) -).
+
+And with this done, for example,
+
+	showme vector x "aleph" y "beth" z "gimel";
+	showme vector x -4.5 y 0.002 z 16.34;
+	showme vector x (vector x 1 y 2 z 3) y (vector x 4 y 5 z 6) z (vector x 7 y 8 z 9);
+
+produces:
+
+``` transcript
+	"vector x "aleph" y "beth" z "gimel"" = vector of texts: (aleph,beth,gimel)
+	"vector x -4.5 y 0.002 z 16.34" = vector of real numbers: (-4.5,0.002,16.34)
+	"vector x (vector x 1 y 2 z 3) y (vector x 4 y 5 z 6) z (vector x 7 y 8 z 9)" = vector of vectors of numbers: ((1,2,3),(4,5,6),(7,8,9))
+
+```
+
+So we have a fully-operational kind construction, `vector of K`, where `K` can be any kind. 
+
+Kind constructions can become quite elaborate, and all of the functions for copying and destroying their values have to operate recursively as a result. For example, when ```DestroyPV``` is applied to the list `{ { "red", "blue" }, { "green" }, { "purple", "orange" } }`, which is a `list of lists of texts`, say, then the process will recurse so that the values are destroyed in this sequence:
 
 	"red"
 	"blue"
@@ -22307,4 +22465,232 @@ And this ensures that if ```DestroyPV``` is called on `{ { "red", "blue" }, { "g
 	{ "purple", "orange" }
 	{ { "red", "blue" }, { "green" }, { "purple", "orange" } }
 
-Thus our single call to ```DestroyPV``` resulted in 8 other calls to it before the original call finished.
+Thus our single call to ```DestroyPV``` resulted in 8 other calls to it before the original call finished. But this process is automatic, or rather, is managed by ```BasicInformKit``` for us. The same will happen if we destroy, say, a `vector of vectors of vectors of lists of text`.
+
+## Neptune and optionals
+
+As a second worked example, the following implements `optional K`, a kind which can hold _either_ a value of the kind `K`, _or_ a special "no value" value. Using this, it's possible to design phrases which produce valid answers even when the task they perform is sometimes impossible.
+
+As usual, we start with the Neptune definition:
+
+``` code
+new constructor OPTIONAL_TY {
+	conforms-to: POINTER_VALUE_TY
+	conforms-to: SAYABLE_VALUE_TY
+	singular: optional k
+	plural: optional k
+	terms: covariant
+	
+	short-block-size: 3
+	long-block-size: 0
+
+	say-function: OPTIONAL_TY_Say
+	compare-function: OPTIONAL_TY_Compare
+	create-function: OPTIONAL_TY_Create
+	copy-function: OPTIONAL_TY_Copy
+	destroy-function: OPTIONAL_TY_Destroy
+
+	index-priority: 2
+	index-default-value: 0
+	specification-text: A way to hold either a value, or a "no value" alternative.
+}
+```
+
+These are very small: no long block, and the short block holds just one word of data. In fact, though, it also makes use of the memory manager's four bits of spare data in the short block header: or at least, it makes use of one of them.
+
+``` code
+Constant OPTIONAL_CONTENT_SF = 2;
+Constant OPTIONAL_TY_NO_VALUE_SBF = 1;
+
+[ OPTIONAL_TY_Say opt scalar_kind_id;
+	if (ShortBlockOnlyPVFlags(opt, 0) & OPTIONAL_TY_NO_VALUE_SBF) {
+		print "no value";
+	} else {
+		scalar_kind_id = KindConstructorTerm(KindOfShortBlockOnlyPV(opt), 0);
+		SayKindValuePair(scalar_kind_id, opt-->OPTIONAL_CONTENT_SF);
+	}
+];
+```
+
+As this may suggest, four bits are stored with every short block of a short-block-only kind, and they are free for us to use as we would like, with the following pair of functions:
+
+> ---
+>
+> ```ShortBlockOnlyPVFlags(pv)```
+> 
+> Returns the current state of the 4-bit bitmap for the short-block-only pointer value ```pv```. By definition, can only return a number from 0 to 15, i.e., binary 0000 to 1111, and for a newly created value it will be 0000. This call is potentially disastrous if ```pv``` is a pointer value which does have a long block, so use with care.
+>
+> ---
+>
+> ```WriteShortBlockOnlyPVFlags(pv, flags)```
+> 
+> Writes ```flags``` to become the current state of the 4-bit bitmap for the short-block-only pointer value ```pv```. ```flags``` must be between 0 and 15, i.e., binary 0000 to 1111. This call is potentially disastrous if ```pv``` is a pointer value which does have a long block, so use with care.
+>
+> ---
+
+We are going to use only the least significant bit of the four. When this is set, the optional will be "no value", and the content field will hold 0. When it is clear, the optional will have a value, stored in the content field.
+
+The following performs comparisons. "No value" is considered to be less than all existing values.
+
+``` code
+[ OPTIONAL_TY_Compare opt1 opt2 scalar_kind_id;
+	if (ShortBlockOnlyPVFlags(opt1, 0) & OPTIONAL_TY_NO_VALUE_SBF) {
+		if (ShortBlockOnlyPVFlags(opt2, 0) & OPTIONAL_TY_NO_VALUE_SBF) return 0;
+		return -1;
+	}
+	if (ShortBlockOnlyPVFlags(opt2, 0) & OPTIONAL_TY_NO_VALUE_SBF) return 1;
+	scalar_kind_id = KindConstructorTerm(KindOfShortBlockOnlyPV(opt1), 0);
+	return CompareKindValuePairs(
+		scalar_kind_id, opt1-->OPTIONAL_CONTENT_SF,
+		scalar_kind_id, opt2-->OPTIONAL_CONTENT_SF);
+];
+```
+
+We create an optional as having no value:
+
+``` code
+[ OPTIONAL_TY_Create kind_id sb_address
+	short_block scalar_kind_id;
+	scalar_kind_id = KindConstructorTerm(kind_id, 0);
+
+	short_block = CreatePVShortBlock(sb_address, kind_id);
+	WriteShortBlockOnlyPVFlags(short_block, OPTIONAL_TY_NO_VALUE_SBF);
+	short_block-->OPTIONAL_CONTENT_SF = 0;
+	
+	return short_block;
+];
+```
+
+Destruction is instant except in the one case where the optional does hold a
+value, and it's of a kind which needs to be destroyed:
+
+``` code
+[ OPTIONAL_TY_Destroy opt scalar_kind_id;
+	if (ShortBlockOnlyPVFlags(opt, 0) & OPTIONAL_TY_NO_VALUE_SBF) return;
+	scalar_kind_id = KindConstructorTerm(KindOfShortBlockOnlyPV(opt), 0);
+	if (KindConformsTo_POINTER_VALUE_TY(scalar_kind_id))
+		DestroyPV(opt-->OPTIONAL_CONTENT_SF);
+];
+```
+
+The copy mechanism is the most laborious, because it may mean destruction if
+no value is copied into an optional with a value, or creation if the other
+way around:
+
+``` code
+[ OPTIONAL_TY_Copy optto optfrom scalar_kind_id;
+	if (ShortBlockOnlyPVFlags(optfrom, 0) & OPTIONAL_TY_NO_VALUE_SBF) {
+		if (ShortBlockOnlyPVFlags(optto, 0) & OPTIONAL_TY_NO_VALUE_SBF == 0) {
+			scalar_kind_id = KindConstructorTerm(KindOfShortBlockOnlyPV(optto), 0);
+			if (KindConformsTo_POINTER_VALUE_TY(scalar_kind_id))
+				DestroyPV(optto-->OPTIONAL_CONTENT_SF);
+			optto-->OPTIONAL_CONTENT_SF = 0;
+			WriteShortBlockOnlyPVFlags(optto, OPTIONAL_TY_NO_VALUE_SBF);
+		}
+	} else {
+		scalar_kind_id = KindConstructorTerm(KindOfShortBlockOnlyPV(optto), 0);
+		if (KindConformsTo_POINTER_VALUE_TY(scalar_kind_id)) {
+			if (ShortBlockOnlyPVFlags(optto, 0) & OPTIONAL_TY_NO_VALUE_SBF)
+				optto-->OPTIONAL_CONTENT_SF = CreatePV(scalar_kind_id);
+			CopyPV(optto-->OPTIONAL_CONTENT_SF, optfrom-->OPTIONAL_CONTENT_SF);
+		} else {
+			optto-->OPTIONAL_CONTENT_SF = optfrom-->OPTIONAL_CONTENT_SF;
+		}
+		WriteShortBlockOnlyPVFlags(optto, 0);
+	}
+	return false;
+];
+```
+
+That sets up the kind. We want to perform three basic operations on it: wrapping a value as an optional, unwrapping an optional into a value, and detecting whether an optional does or doesn't have a value.
+
+``` code
+[ OPTIONAL_TY_Wrap opt x scalar_kind_id;
+	scalar_kind_id = KindConstructorTerm(KindOfShortBlockOnlyPV(opt), 0);
+	WriteShortBlockOnlyPVFlags(opt, 0);
+	if (KindConformsTo_POINTER_VALUE_TY(scalar_kind_id)) {
+		if (opt-->OPTIONAL_CONTENT_SF == 0)
+			opt-->OPTIONAL_CONTENT_SF = CreatePV(scalar_kind_id);
+		CopyPV(opt-->OPTIONAL_CONTENT_SF, x);
+	} else {
+		opt-->OPTIONAL_CONTENT_SF = x;
+	}
+	return opt;
+];
+
+[ OPTIONAL_TY_Unwrap val opt scalar_kind_id;
+	scalar_kind_id = KindConstructorTerm(KindOfShortBlockOnlyPV(opt), 0);
+	if (ShortBlockOnlyPVFlags(opt, 0) & OPTIONAL_TY_NO_VALUE_SBF) {
+		BlkValueError("unwrapped an optional value with no value");
+		val = KindDefaultValue(scalar_kind_id);
+	}
+	if (KindConformsTo_POINTER_VALUE_TY(scalar_kind_id)) {
+		CopyPV(val, opt-->OPTIONAL_CONTENT_SF);
+	} else {
+		val = opt-->OPTIONAL_CONTENT_SF;
+	}
+	return val;
+];
+
+[ OPTIONAL_TY_Exists opt;
+	if (ShortBlockOnlyPVFlags(opt, 0) & OPTIONAL_TY_NO_VALUE_SBF)
+		rfalse;
+	rtrue;
+];
+```
+
+And finally we need some phrases:
+
+	To decide which optional K is (X - value of kind K) as optional:
+		(- (OPTIONAL_TY_Wrap({-new: optional K}, {X})) -).
+
+	To decide if (X - optional value) exists:
+		(- (OPTIONAL_TY_Exists({-by-reference:X})) -).
+
+	To decide which K is (X - optional value of kind K) as value:
+		(- (OPTIONAL_TY_Unwrap({-new: K}, {-by-reference:X})) -).
+
+With all of that done:
+
+	showme "Pie!" as optional;
+	let Q be an optional real number;
+	showme Q;
+	showme whether or not Q exists;
+	let Q be pi as optional;
+	showme Q;
+	showme whether or not Q exists;
+	showme Q as value;
+	showme e as optional as value;
+
+produces:
+
+``` transcript
+""Pie!" as optional" = optional texts: Pie!
+"Q" = optional real numbers: no value
+"whether or not Q exists" = truth state: false
+"Q" = optional real numbers: 3.14159
+"whether or not Q exists" = truth state: true
+"Q as value" = real number: 3.14159
+"e as optional as value" = real number: 2.71828
+```
+
+So here is how `optional K` might be used to make a phrase "type-safe" even though it sometimes has no good answer:
+
+	To decide which optional K is the first entry of (L - list of values of kind K):
+		repeat with entry running through L:
+			decide on the entry as optional;
+		let the non-entry be an optional K;
+		decide on the non-entry;
+
+and then:
+
+	showme the first entry of { "alpha", "beta", "gamma" };
+	let L be a list of numbers;
+	showme the first entry of L;
+
+produces:
+
+``` transcript
+"first entry of { "alpha", "beta", "gamma" }" = optional texts: alpha
+"first entry of L" = optional numbers: no value
+```

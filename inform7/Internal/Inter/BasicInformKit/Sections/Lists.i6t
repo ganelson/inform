@@ -24,12 +24,12 @@ list metadata entries below.
 =
 [ LIST_OF_TY_Create kind_id sb_address
 	short_block long_block;
-	long_block = CreatePVLongBlockMultiple(27, LIST_OF_TY);
+	long_block = CreatePVLongBlockFlexible(kind_id, 27);
 	InitialisePVLongBlockField(long_block, LIST_ITEM_KOV_F,
 		KindConstructorTerm(kind_id, 0));
 	InitialisePVLongBlockField(long_block, LIST_LENGTH_F, 0);
 	
-	short_block = CreatePVShortBlock(sb_address, 1);
+	short_block = CreatePVShortBlock(sb_address, kind_id);
 	short_block-->0 = long_block;
 
 	return short_block;

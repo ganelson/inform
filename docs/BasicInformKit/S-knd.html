@@ -137,7 +137,7 @@ does not conform to <span class="extract"><span class="extract-syntax">POINTER_V
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">MAKE_MUTABLE_FN_KMF</span><span class="plain-syntax"> = </span><span class="constant-syntax">13</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">HASH_FN_KMF</span><span class="plain-syntax"> = </span><span class="constant-syntax">14</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">SHORT_BLOCK_SIZE_KMF</span><span class="plain-syntax"> = </span><span class="constant-syntax">15</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">LONG_BLOCK_SIZE_FN_KMF</span><span class="plain-syntax"> = </span><span class="constant-syntax">16</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">LONG_BLOCK_SIZE_KMF</span><span class="plain-syntax"> = </span><span class="constant-syntax">16</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">SERIALISE_FN_KMF</span><span class="plain-syntax"> = </span><span class="constant-syntax">17</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">UNSERIALISE_FN_KMF</span><span class="plain-syntax"> = </span><span class="constant-syntax">18</span><span class="plain-syntax">;</span>
 </pre>
@@ -359,12 +359,52 @@ values of kinds conforming to POINTER_VALUE_TY.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PVField</span><span class="plain-syntax"> = </span><span class="identifier-syntax">BlkValueReadSB</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">WritePVField</span><span class="plain-syntax"> = </span><span class="identifier-syntax">BlkValueWriteSB</span><span class="plain-syntax">;</span>
 
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CreatePVLongBlock</span><span class="plain-syntax"> = </span><span class="identifier-syntax">BlkValueCreateLB</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CreatePVLongBlockMultiple</span><span class="plain-syntax"> = </span><span class="identifier-syntax">BlkValueCreateMultipleLB</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">InitialisePVLongBlockField</span><span class="plain-syntax"> = </span><span class="identifier-syntax">BlkValueWriteLB</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PVLongBlockField</span><span class="plain-syntax"> = </span><span class="identifier-syntax">BlkValueReadLB</span><span class="plain-syntax">;</span>
 
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CreatePVShortBlock</span><span class="plain-syntax"> = </span><span class="identifier-syntax">BlkValueCreateSB</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">SBONLYPV_FIELDS</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">CreatePVShortBlock</span><span class="plain-syntax"> </span><span class="identifier-syntax">sb_address</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind_id</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">short_block</span><span class="plain-syntax"> </span><span class="identifier-syntax">size</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">size</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ReadKindMetadata</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_id</span><span class="plain-syntax">, </span><span class="identifier-syntax">SHORT_BLOCK_SIZE_KMF</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">short_block</span><span class="plain-syntax"> = </span><span class="identifier-syntax">BlkValueCreateSB</span><span class="plain-syntax">(</span><span class="identifier-syntax">sb_address</span><span class="plain-syntax">, </span><span class="identifier-syntax">size</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ReadKindMetadata</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_id</span><span class="plain-syntax">, </span><span class="identifier-syntax">LONG_BLOCK_SIZE_KMF</span><span class="plain-syntax">) == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">short_block</span><span class="plain-syntax">--&gt;0 = </span><span class="identifier-syntax">BLK_BVBITMAP_SBONLY</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">short_block</span><span class="plain-syntax">--&gt;1 = </span><span class="identifier-syntax">kind_id</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">short_block</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">CreatePVLongBlock</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind_id</span><span class="plain-syntax"> </span><span class="identifier-syntax">size</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">size</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">size</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ReadKindMetadata</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind_id</span><span class="plain-syntax">, </span><span class="identifier-syntax">LONG_BLOCK_SIZE_KMF</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">size</span><span class="plain-syntax"> </span><span class="reserved-syntax">ofclass</span><span class="plain-syntax"> </span><span class="identifier-syntax">Routine</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">BlkValueError</span><span class="plain-syntax">(</span><span class="string-syntax">"CreatePVLongBlock needs a size"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">size</span><span class="plain-syntax"> = </span><span class="constant-syntax">8</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">BlkValueCreateLB</span><span class="plain-syntax">(</span><span class="identifier-syntax">size</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind_id</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">CreatePVLongBlockFlexible</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind_id</span><span class="plain-syntax"> </span><span class="identifier-syntax">size</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">size</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">BlkValueError</span><span class="plain-syntax">(</span><span class="string-syntax">"CreatePVLongBlockFlexible needs a size"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">size</span><span class="plain-syntax"> = </span><span class="constant-syntax">8</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">BlkValueCreateMultipleLB</span><span class="plain-syntax">(</span><span class="identifier-syntax">size</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind_id</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">KindOfShortBlockOnlyPV</span><span class="plain-syntax"> </span><span class="identifier-syntax">bv</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">bv</span><span class="plain-syntax">--&gt;1;</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">ShortBlockOnlyPVFlags</span><span class="plain-syntax"> </span><span class="identifier-syntax">bv</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="identifier-syntax">bv</span><span class="plain-syntax">--&gt;0) &amp; </span><span class="identifier-syntax">BLK_BVUSERBITMAP</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">WriteShortBlockOnlyPVFlags</span><span class="plain-syntax"> </span><span class="identifier-syntax">bv</span><span class="plain-syntax"> </span><span class="identifier-syntax">flags</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">bv</span><span class="plain-syntax">--&gt;0 = ((</span><span class="identifier-syntax">bv</span><span class="plain-syntax">--&gt;0) &amp; </span><span class="identifier-syntax">BLK_BVBITMAP_USERBITMAPMASK</span><span class="plain-syntax">) + (</span><span class="identifier-syntax">flags</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">BLK_BVUSERBITMAP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">];</span>
+
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CopyPVShortBlock</span><span class="plain-syntax"> = </span><span class="identifier-syntax">BlkValueCopySB</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CopyPVRawData</span><span class="plain-syntax"> = </span><span class="identifier-syntax">BlkValueCopyRawLongBlock</span><span class="plain-syntax">;</span>
 

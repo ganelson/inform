@@ -29,7 +29,7 @@ Thus, a triple $(x, y, z)$ uses 4 words.
 [ COMBINATION_TY_Create kind sb_address
 	short_block long_block N i bk v;
 	N = KindConstructorArity(kind);
-	long_block = CreatePVLongBlock(COMBINATION_ITEM_BASE+N, COMBINATION_TY);
+	long_block = CreatePVLongBlockFlexible(COMBINATION_TY, COMBINATION_ITEM_BASE + N);
 	InitialisePVLongBlockField(long_block, COMBINATION_KIND_F, kind);
 	for (i=0: i<N: i++) {
 		bk = KindConstructorTerm(kind, i);
@@ -38,7 +38,7 @@ Thus, a triple $(x, y, z)$ uses 4 words.
 		InitialisePVLongBlockField(long_block, COMBINATION_ITEM_BASE+i, v);
 	}
 
-	short_block = CreatePVShortBlock(sb_address, 1);
+	short_block = CreatePVShortBlock(sb_address, kind);
 	short_block-->0 = long_block;
 
 	return short_block;

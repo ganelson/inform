@@ -48,12 +48,12 @@ void KindCommands::apply(single_kind_command stc, kind_constructor *con) {
 		SET_BOOLEAN_FIELD(can_exchange)
 		SET_BOOLEAN_FIELD(indexed_grey_if_empty)
 		SET_BOOLEAN_FIELD(is_incompletely_defined)
-		SET_BOOLEAN_FIELD(multiple_block)
 		SET_BOOLEAN_FIELD(forbid_assertion_creation)
 
-		SET_INTEGER_FIELD(heap_size_estimate)
 		SET_INTEGER_FIELD(index_priority)
 		SET_INTEGER_FIELD(short_block_size)
+		SET_INTEGER_FIELD(long_block_size)
+		SET_INTEGER_FIELD(flexible_long_block_size)
 
 		SET_CCM_FIELD(constant_compilation_method)
 

@@ -57,9 +57,9 @@ typedef struct heap_allocation {
 	int stack_offset;
 } heap_allocation;
 
-@ Every kind of block value can give an estimate of its likely size needs -- its
-exact size needs if it is fixed in size, and a reasonable overestimate of typical
-usage if it is flexible.
+@ We want to make an estimate of the likely size needs of such a value if placed
+on the heap -- its exact size needs if it is fixed in size, and a reasonable
+overestimate of typical usage if it is flexible.
 
 The |multiplier| is used when we need to calculate the size of, say, a list of
 20 texts; it would then, of course, be 20. Any |stack_offset| is simply passed
@@ -70,10 +70,14 @@ heap_allocation TheHeap::make_allocation(kind *K, int multiplier,
 	int stack_offset) {
 	if (Kinds::Behaviour::uses_block_values(K) == FALSE)
 		internal_error("unable to allocate heap storage for this kind of value");
-	if (Kinds::Behaviour::get_heap_size_estimate(K) == 0)
-		internal_error("no heap storage estimate for this kind of value");
 
-	total_heap_allocation += (Kinds::Behaviour::get_heap_size_estimate(K) + 8)*multiplier;
+	int estimate = 2 + Kinds::Behaviour::get_short_block_size(K);
+	if (Kinds::Behaviour::get_flexible_long_block_size(K) > 0)
+		estimate += Kinds::Behaviour::get_flexible_long_block_size(K);
+	else
+		estimate += Kinds::Behaviour::get_long_block_size(K);
+
+	total_heap_allocation += (estimate + 8)*multiplier;
 
 	heap_allocation ha;
 	ha.allocated_kind = K;

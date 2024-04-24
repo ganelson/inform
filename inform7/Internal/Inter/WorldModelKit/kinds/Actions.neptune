@@ -15,9 +15,7 @@ new base STORED_ACTION_TY {
 	plural: actions
 
 	comparison-schema: DESCRIPTION_OF_ACTION_TY>>>*=-((STORED_ACTION_TY_Adopt(*1), (SAT_Tmp-->0=(*2)), STORED_ACTION_TY_Unadopt()))
-	multiple-block: no
-	short-block-size: 1
-	heap-size-estimate: 16
+	long-block-size: 6
 	can-exchange: yes
 	constant-compilation-method: special
 
@@ -26,7 +24,7 @@ new base STORED_ACTION_TY {
 	compare-function: STORED_ACTION_TY_Compare
 	create-function: STORED_ACTION_TY_Create
 	copy-function: STORED_ACTION_TY_Copy
-	long-block-size-function: STORED_ACTION_TY_LongBlockSize
+!	long-block-size-function: STORED_ACTION_TY_LongBlockSize
 	destroy-function: STORED_ACTION_TY_Destroy
 	hash-function: STORED_ACTION_TY_Hash
 

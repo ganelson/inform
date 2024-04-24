@@ -40,7 +40,6 @@ typedef struct kind_command_definition {
 @e documentation_reference_KCC
 @e understand_function_KCC
 @e forbid_assertion_creation_KCC
-@e heap_size_estimate_KCC
 @e printing_routine_for_debugging_KCC
 @e say_function_KCC
 @e index_default_value_KCC
@@ -52,7 +51,8 @@ typedef struct kind_command_definition {
 @e is_incompletely_defined_KCC
 @e loop_domain_schema_KCC
 @e modifying_adjective_KCC
-@e multiple_block_KCC
+@e long_block_size_KCC
+@e flexible_long_block_size_KCC
 @e plural_KCC
 @e recognise_function_KCC
 @e singular_KCC
@@ -79,7 +79,10 @@ kind_command_definition table_of_kind_commands[] = {
 	{ "can-exchange",                   can_exchange_KCC,                   BOOLEAN_KCA, NULL },
 	{ "indexed-grey-if-empty",          indexed_grey_if_empty_KCC,          BOOLEAN_KCA, NULL },
 	{ "is-incompletely-defined",        is_incompletely_defined_KCC,        BOOLEAN_KCA, NULL },
-	{ "multiple-block",                 multiple_block_KCC,                 BOOLEAN_KCA, NULL },
+	{ "multiple-block",                 -1,                                 BOOLEAN_KCA,
+	  "'multiple-block: no' can be omitted; 'multiple-block: yes' should now be 'flexible-long-block-size: N' for some typical field count N" },
+	{ "long-block-size",                long_block_size_KCC,                NUMERIC_KCA, NULL },
+	{ "flexible-long-block-size",       flexible_long_block_size_KCC,       NUMERIC_KCA, NULL },
 	{ "forbid-assertion-creation",      forbid_assertion_creation_KCC,      BOOLEAN_KCA, NULL },
 
 	{ "constant-compilation-method",    constant_compilation_method_KCC,    CCM_KCA, NULL },
@@ -129,7 +132,6 @@ kind_command_definition table_of_kind_commands[] = {
 	{ "singular",                       singular_KCC,                       VOCABULARY_KCA, NULL },
 
 	{ "terms",                          terms_KCC,                          TEXT_KCA, NULL },
-	{ "heap-size-estimate",             heap_size_estimate_KCC,             NUMERIC_KCA, NULL },
 	{ "index-priority",                 index_priority_KCC,                 NUMERIC_KCA, NULL },
 	{ "small-block-size",               short_block_size_KCC,               NUMERIC_KCA,
 	  "this command has been renamed 'short-block-size'" },

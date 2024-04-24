@@ -67,11 +67,11 @@ typedef struct kind_constructor {
 	#ifdef CORE_MODULE
 	struct kind_constructor_compilation_data compilation_data;
 	#endif
-	int short_block_size; /* if stored as a block value, size in words of the SB */
 
 	/* I: storing values at run-time */
-	int multiple_block; /* TRUE for flexible-size values stored on the heap */
-	int heap_size_estimate; /* typical number of bytes used */
+	int short_block_size; /* if stored as a block value, size in words of the SB */
+	int long_block_size; /* if stored as a block value, minimum number of LB fields */
+	int flexible_long_block_size; /* if stored as a block value, typical number of LB fields */
 	int can_exchange; /* with external files and therefore other story files */
 	struct text_stream *distinguish_function; /* Inter routine to see if values distinguishable */
 	struct kind_constructor_comparison_schema *first_comparison_schema; /* list of these */
@@ -274,9 +274,9 @@ we apply any defaults set in Neptune files.
 	con->class_number = 0;
 
 	/* I: storing values at run-time */
-	con->multiple_block = FALSE;
+	con->long_block_size = 0;
+	con->flexible_long_block_size = 0;
 	con->short_block_size = 1;
-	con->heap_size_estimate = 0;
 	con->can_exchange = FALSE;
 	con->first_comparison_schema = NULL;
 	con->distinguish_function = NULL;
