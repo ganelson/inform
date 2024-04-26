@@ -257,7 +257,7 @@ void EquationSolver::compile_enode(equation *eqn, equation_node *tok) {
 		KX = K_real_number; KY = K_real_number;
 	}
 
-	Kinds::Compile::perform_arithmetic_emit(tok->eqn_operation, eqn,
+	CompileArithmetic::perform_arithmetic_emit(tok->eqn_operation, eqn,
 		NULL, X, KX, NULL, Y, KY);
 
 @ =
