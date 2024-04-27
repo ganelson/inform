@@ -160,6 +160,7 @@ typedef struct inline_details {
 
 	int let_phrase; /* one of the |*_LET_PHRASE| values below */
 	int assignment_phrase; /* |TRUE| if this has to be typechecked as an assignment */
+	int offset_assignment_phrase; /* |TRUE| if similarly, but as an increase/decrease */
 	int arithmetical_operation; /* |-1|, or one of the |*_OPERATION| constants */
 
 	int block_follows; /* for inline phrases only: followed by a begin... end block? */
@@ -600,6 +601,7 @@ inline_details IDTypeData::new_inline_details(void) {
 	id.block_follows = NO_BLOCK_FOLLOWS;
 	id.only_in_loop = NULL;
 	id.assignment_phrase = FALSE;
+	id.offset_assignment_phrase = FALSE;
 	id.arithmetical_operation = -1;
 	return id;
 }
@@ -607,9 +609,11 @@ inline_details IDTypeData::new_inline_details(void) {
 @ =
 int no_lets_made = 0;
 
-void IDTypeData::make_id(inline_details *id, int op, int assgn, int let, int blk, int only_in) {
+void IDTypeData::make_id(inline_details *id, int op, int assgn, int offset,
+	int let, int blk, int only_in) {
 	id->arithmetical_operation = op;
 	id->assignment_phrase = assgn;
+	id->offset_assignment_phrase = offset;
 	if ((let == ASSIGNMENT_LET_PHRASE) && (no_lets_made++ >= 3)) let = NOT_A_LET_PHRASE;
 	id->let_phrase = let;
 	id->block_follows = blk;
@@ -673,6 +677,11 @@ int IDTypeData::is_arithmetic_phrase(id_body *idb) {
 int IDTypeData::is_assignment_phrase(id_body *idb) {
 	if (idb == NULL) return FALSE;
 	return idb->type_data.as_inline.assignment_phrase;
+}
+
+int IDTypeData::is_offset_assignment_phrase(id_body *idb) {
+	if (idb == NULL) return FALSE;
+	return idb->type_data.as_inline.offset_assignment_phrase;
 }
 
 inchar32_t *IDTypeData::only_in(id_body *idb) {

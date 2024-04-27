@@ -1,9 +1,15 @@
-Inform 7 build 6L26 has started.
+Inform 7 v10.2.0 has started.
 I've now read your source text, which is 7 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read version 2 of Basic Inform by Graham Nelson, which is 8479 words long.
+I've also read version 2 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 7 of Standard Rules by Graham Nelson, which is 35062 words long.
 Problem__ PM_LPNotKOV
   >--> You wrote '16:9 specifies 100' (source text, line 3): but you can only
     specify ways to write kinds of value, as created with sentences like 'A
     weight is a kind of value.'
-Inform 7 has finished: 16 centiseconds used.
+Problem__ PM_LPBuiltInKOV
+  >--> You wrote '16:9 specifies 100' (source text, line 3): but you can only
+    specify ways to write new kinds of value, as created with sentences like 'A
+    weight is a kind of value.', and not the built-in ones like 'number' or
+    'time'.
+Inform 7 has finished.

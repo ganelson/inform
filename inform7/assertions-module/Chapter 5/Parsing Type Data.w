@@ -176,6 +176,7 @@ the syntax below.)
 <to-preamble> ::=
 	<to-preamble> ( arithmetic operation <cardinal-number> ) | ==> { R[1], -, <<operation>> = R[2] }
 	<to-preamble> ( assignment operation ) |        ==> { R[1], -, <<assign>> = TRUE }
+	<to-preamble> ( offset assignment operation ) | ==> { R[1], -, <<offset>> = TRUE, <<assign>> = TRUE }
 	{let ... be given by ...} |                     ==> { LET_ANN, -, <<eqn>> = TRUE }
 	{let ...} |                                     ==> { LET_ANN, -, <<eqn>> = FALSE }
 	... -- end |                                    ==> { BLOCK_ANN, - }
@@ -213,7 +214,8 @@ the end off the wording given.
 
 =
 wording ParsingIDTypeData::phtd_parse_doodads(id_type_data *idtd, wording W, int *say_flag) {
-	<<operation>> = -1; <<assign>> = FALSE; <<deprecated>> = FALSE; <<run-on>> = FALSE;
+	<<operation>> = -1; <<assign>> = FALSE; <<offset>> = FALSE;
+	<<deprecated>> = FALSE; <<run-on>> = FALSE;
 	<phrase-preamble>(W); /* guaranteed to match any non-empty text */
 	if (<<r>> == SAY_ANN) W = GET_RW(<say-preamble>, 1);
 	else W = GET_RW(<to-preamble>, 1);
@@ -232,7 +234,8 @@ wording ParsingIDTypeData::phtd_parse_doodads(id_type_data *idtd, wording W, int
 		case LOOP_ANN:			blk = LOOP_BODY_BLOCK_FOLLOWS; break;
 		case SAY_ANN: 			@<We seem to be parsing a "say" phrase@>; break;
 	}
-	IDTypeData::make_id(&(idtd->as_inline), <<operation>>, <<assign>>, let, blk, only_in);
+	IDTypeData::make_id(&(idtd->as_inline), <<operation>>, <<assign>>, <<offset>>,
+		let, blk, only_in);
 
 	@<Vet the phrase for an unfortunate prepositional collision@>;
 	return W;

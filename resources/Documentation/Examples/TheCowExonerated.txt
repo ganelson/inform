@@ -68,7 +68,7 @@ The word ``MATCHES`` is used by Inform to compare snippets of text (see [Reading
 
 	{**}A strikable-match is a kind of thing. The plural of strikable-match is s-matches.
 	
-	A strikable-match has a number called duration. The duration of a strikable-match is usually 3.
+	A strikable-match has a number called burn time. The burn time of a strikable-match is usually 3.
 	
 	Rule for printing the name of a strikable-match: say "match".
 	Rule for printing the plural name of a strikable-match: say "matches".
@@ -146,8 +146,8 @@ The word ``MATCHES`` is used by Inform to compare snippets of text (see [Reading
 	Every turn:
 		let N be 0; [here we track how many matches are being put out during this turn, so that we don't have to mention each match individually if several go out during the same move]
 		repeat with item running through flaming s-matches:
-			decrement the duration of the item;
-			if the duration of the item is 0:
+			decrement the burn time of the item;
+			if the burn time of the item is 0:
 				now the item is burnt;
 				now the item is unlit;
 				if the item is visible, increment N;

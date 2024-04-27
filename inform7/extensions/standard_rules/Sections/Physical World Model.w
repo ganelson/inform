@@ -1032,3 +1032,9 @@ The description property is defined by Inter as "description".
 The initial appearance property is defined by Inter as "initial".
 The map region property is defined by Inter as "map_region".
 The matching key property is defined by Inter as "with_key".
+
+@ Section 17 - Time
+
+=
+A time minus a time specifies a duration.
+

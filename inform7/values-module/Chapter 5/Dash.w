@@ -1645,6 +1645,8 @@ literal can mean are too generous.)
 		default: Problems::quote_text(6, "a stored value holding"); break;
 	}
 	kind_wanted = Specifications::to_kind(target);
+	if (IDTypeData::is_assignment_phrase(idb))
+		kind_wanted = Kinds::Dimensions::relative_kind(kind_wanted);
 	kind_found = Specifications::to_kind(new_value);
 
 	parse_node *new_invl = new_value->down;

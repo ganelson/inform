@@ -1,12 +1,12 @@
 Inform 7 v10.2.0 has started.
 I've now read your source text, which is 15 words long.
-I've also read version 2 of Basic Inform by Graham Nelson, which is 8473 words long.
+I've also read version 2 of Basic Inform by Graham Nelson, which is 8479 words long.
 I've also read version 2 of English Language by Graham Nelson, which is 2330 words long.
-I've also read version 7 of Standard Rules by Graham Nelson, which is 35036 words long.
+I've also read version 7 of Standard Rules by Graham Nelson, which is 35062 words long.
 Problem__ PM_VariableContradiction
   >--> You wrote 'The command prompt is "What do you want to do? >"' (source
     text, line 3), but in another sentence 'The command prompt is ">"' (the
-    Standard Rules, line 494): but this looks like a contradiction, because the
+    Standard Rules, line 497): but this looks like a contradiction, because the
     initial value of this variable seems to be being set in each of these
     sentences, but with a different outcome.
 Inform 7 has finished.

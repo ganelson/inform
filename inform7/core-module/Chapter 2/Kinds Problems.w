@@ -22,6 +22,11 @@ void KindsProblems::kinds_problem_handler(int err_no, parse_node *pn, text_strea
 				"multiplication rules can only involve simple kinds of value",
 				"rather than complicated ones such as lists of other values.");
 			break;
+		case ImproperSubtraction_KINDERROR:
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ImproperSubtractionKOV),
+				"we can only specify the result of one kind minus itself",
+				"and moreover it has to be a dimensionless kind.");
+			break;
 		case NonDimensional_KINDERROR:
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NonDimensional),
 				"multiplication rules can only be given between kinds of "
