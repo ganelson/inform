@@ -327,7 +327,6 @@ are above 32K. This only rarely happens, but it can.
 	for (:at+i<INPUT_BUFFER_LEN:i++) buffer-->(at+i) = ' ';
 	#endif;
 	TokeniseInput(buffer, parse);
-!	players_command = 100 + WordCount();
 	buffer2-->0 = saved;
 	@pull say__pc; @pull say__p;
 ];
@@ -731,7 +730,6 @@ Get the input, do OOPS and AGAIN.
     ! Re-tokenise:
     TokeniseInput(buffer,parse);
 
-    ! num_words = WordCount(); players_command = 100 + num_words;
     token_filter = 0;
     allow_plurals = true; ResetDescriptors();
 
@@ -812,7 +810,6 @@ Get the input, do OOPS and AGAIN.
         for (i=0 : i<INPUT_BUFFER_LEN : i++) buffer-->i = buffer3-->i;
         #Endif;
         TokeniseInput(buffer,parse);
-!        num_words = WordCount(); players_command = 100 + num_words;
         jump ReParse;
     }
 
@@ -2521,7 +2518,6 @@ because we want to allow duplicates).
     LanguageToInformese();
     ! Re-tokenise:
     TokeniseInput(buffer,parse);
-!	num_words = WordCount(); players_command = 100 + num_words;
     actors_location = ScopeCeiling(player);
 	FollowRulebook(Activity_after_rulebooks-->READING_A_COMMAND_ACT);
 
@@ -4298,7 +4294,6 @@ the heap.
 	for (:at+i<INPUT_BUFFER_LEN:i++) buffer-->(at+i) = ' ';
 	#endif;
 	TokeniseInput(buffer, parse);
-!	players_command = 100 + WordCount(); ! The snippet variable "player's command"
 	TEXT_TY_Untransmute(from_txt, p, cp);
 ];
 
