@@ -325,7 +325,7 @@ Constant UnicodeWhitespaceLen = 8;
 
     uwl = UnicodeWhitespace + WORDSIZE;
     for ( ix = 1 : ix <= (a_buffer-->0) : ix++ )
-      if (((a_buffer-->ix) < 32) || ((((a_buffer-->ix) >= 8192) && ((a_buffer-->ix) <= 8202))))
+      if (((a_buffer-->ix) <= 32) || ((((a_buffer-->ix) >= 8192) && ((a_buffer-->ix) <= 8202))))
         a_buffer-->ix = 32;
       else {
         found = a_buffer-->ix;
