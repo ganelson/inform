@@ -1,0 +1,21 @@
+Test: CMYKColours
+
+The Reform Club is a room.
+
+Include CMYK Colours by Graham Nelson.
+
+When play begins:
+	let background be a CMYK colour;
+	showme background;
+	showme "lavender" ink C 8 M 8 Y 0 K 2;
+	let royal blue be "royal blue" ink C 71 M 53 Y 0 K 12;
+	showme royal blue;
+	showme whether or not royal blue is greater than background;
+	let L be a list of CMYK colours;
+	add royal blue to L;
+	add background to L;
+	add "taupe" ink C 0 M 19 Y 30 K 72 to L;
+	add "taupe" ink C 0 M 17 Y 31 K 72 to L;
+	say "Before sorting, L is [L].";
+	sort L;
+	say "After sorting, L is [L].";

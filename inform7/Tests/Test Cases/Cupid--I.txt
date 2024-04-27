@@ -1,33 +1,33 @@
    Temple of Cupid
   Emily will be given chocolates and flowers on 14 February.
-  (BV###-->L### 2**4 resident = {chocolates and flowers} of kind 30)
+  (BV###-->L### 2**4 resident = chocolates and flowers)
   Kate will be given chocolates and flowers on 14 February.
-  (BV###-->L### 2**4 resident = {chocolates and flowers} of kind 30)
+  (BV###-->L### 2**4 resident = chocolates and flowers)
   Helen will be given chocolates and flowers on 14 February.
-  (BV###-->L### 2**4 resident = {chocolates and flowers} of kind 30)
+  (BV###-->L### 2**4 resident = chocolates and flowers)
   Emily will be given chocolates, flowers and a sports car on 14 February.
-  (BV###-->L### 2**6 1 ref = {chocolates, flowers and a sports car} of kind 30)
+  (BV###-->L### 2**6 1 ref = chocolates, flowers and a sports car)
   Kate will be given chocolates and flowers on 14 February.
-  (BV###-->L### 2**4 resident = {chocolates and flowers} of kind 30)
+  (BV###-->L### 2**4 resident = chocolates and flowers)
   Helen will be given chocolates and flowers on 14 February.
-  (BV###-->L### 2**4 resident = {chocolates and flowers} of kind 30)
+  (BV###-->L### 2**4 resident = chocolates and flowers)
   "Q" = list of texts: {"chocolates", "flowers", "a sports car"}
-  (BV###-->L### 2**6 2 refs = {chocolates, flowers and a sports car} of kind 30)
+  (BV###-->L### 2**6 2 refs = chocolates, flowers and a sports car)
   
   "X" = text: Emily's apple
-  (BV### = p"Emily's apple")
+  (BV### = Emily's apple = p"Emily's apple")
   "Y" = text: Emily's apple
-  (BV### = p"Emily's apple")
+  (BV### = Emily's apple = p"Emily's apple")
   "X" = text: Emily's peach
-  (BV###-->L### 2**6 1 ref = "Emily's peach")
+  (BV###-->L### 2**6 1 ref = Emily's peach = "Emily's peach")
   "Y" = text: Emily's apple
-  (BV### = p"Emily's apple")
+  (BV### = Emily's apple = p"Emily's apple")
   "Y" = text: Emily's peach
-  (BV###-->L### 2**6 2 refs = "Emily's peach")
+  (BV###-->L### 2**6 2 refs = Emily's peach = "Emily's peach")
   "X" = text: Kate's banana
-  (BV### = p"Kate's banana")
+  (BV### = Kate's banana = p"Kate's banana")
   "Y" = text: Emily's peach
-  (BV###-->L### 2**6 1 ref = "Emily's peach")
+  (BV###-->L### 2**6 1 ref = Emily's peach = "Emily's peach")
   Welcome
   An Interactive Fiction
   Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D

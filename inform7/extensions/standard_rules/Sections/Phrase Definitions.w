@@ -203,22 +203,22 @@ To group (OS - description of objects) together
 	(documented at ph_group): (-
 		objectloop({-my:1} provides list_together)
 			if ({-matches-description:1:OS})
-				BlkValueCopy({-my:1}.list_together, {-list-together:unarticled});
+				CopyPV({-my:1}.list_together, {-list-together:unarticled});
 	-).
 To group (OS - description of objects) together giving articles
 	(documented at ph_groupart): (-
 		objectloop({-my:1} provides list_together)
 			if ({-matches-description:1:OS})
-				BlkValueCopy({-my:1}.list_together, {-list-together:articled});
+				CopyPV({-my:1}.list_together, {-list-together:articled});
 	-).
 To group (OS - description of objects) together as (T - text)
 	(documented at ph_grouptext): (-
-		{-my:2} = BlkValueCreate(TEXT_TY);
+		{-my:2} = CreatePV(TEXT_TY);
 		{-my:2} = TEXT_TY_SubstitutedForm({-my:2}, {-by-reference:T});
 		objectloop({-my:1} provides list_together)
 			if ({-matches-description:1:OS})
-				BlkValueCopy({-my:1}.list_together, {-my:2});
-		BlkValueFree({-my:2});
+				CopyPV({-my:1}.list_together, {-my:2});
+		DestroyPV({-my:2});
 	-).
 To omit contents in listing
 	(documented at ph_omit):

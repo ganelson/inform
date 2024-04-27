@@ -1,0 +1,20 @@
+
+
+
+
+""Pie!" as optional" = optional texts: Pie!
+"Q" = optional real numbers: no value
+"whether or not Q exists" = truth state: false
+"Q" = optional real numbers: 3.14159
+"whether or not Q exists" = truth state: true
+"Q as value" = real number: 3.14159
+"e as optional as value" = real number: 2.71828
+"first entry of { "alpha", "beta", "gamma" }" = optional texts: alpha
+"first entry of L" = optional numbers: no value
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Reform Club
+
+>Are you sure you want to quit? 

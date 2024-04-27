@@ -1,0 +1,24 @@
+
+
+
+
+"P" = vector: (3,14,5)
+"Q" = vector: (3,14,5)
+"P" = vector: (2,-50,200)
+"Q" = vector: (3,14,5)
+"R" = vector of texts: (fish,snake,duck)
+"S" = vector of texts: (fish,snake,duck)
+"R" = vector of texts: (bat,ball,stump)
+"S" = vector of texts: (fish,snake,duck)
+"P + Q" = vector: (1,1,0)
+"P - Q" = vector: (1,-1,0)
+"P * Q" = vector: (0,0,1)
+"6 * P" = vector: (6,0,0)
+"Q * -2" = vector: (0,-2,0)
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Reform Club
+
+>Are you sure you want to quit? 

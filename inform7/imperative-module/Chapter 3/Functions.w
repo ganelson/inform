@@ -154,7 +154,7 @@ A slight variation is needed if the kernel returns a block value, as follows:
 = (text)
     public_name(t1, t2, ..., tn) {
         ...allocate memory...
-        BlkValueCopy(BRV, kernel_name(t1, t2, ..., tn))
+        CopyPV(BRV, kernel_name(t1, t2, ..., tn))
         ...deallocate...
         return BRV
     }
@@ -252,7 +252,7 @@ after the call parameters, and is used only as a scratch variable.
 
 @<Compile a call to the kernel@> =
 	if (returns_block_value) {
-		inter_name *iname = Hierarchy::find(BLKVALUECOPY_HL);
+		inter_name *iname = Hierarchy::find(COPYPV_HL);
 		EmitCode::call(iname);
 		EmitCode::down();
 			EmitCode::val_symbol(K_number, rv_symbol);

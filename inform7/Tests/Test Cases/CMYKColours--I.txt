@@ -1,0 +1,18 @@
+
+
+
+
+"background" = cmyk colour: black ink = C:0% M:0% Y:0% K:100%
+""lavender" ink C 8 M 8 Y 0 K 2" = cmyk colour: lavender ink = C:8% M:8% Y:0% K:2%
+"royal blue" = cmyk colour: royal blue ink = C:71% M:53% Y:0% K:12%
+"whether or not royal blue is greater than background" = truth state: true
+Before sorting, L is royal blue ink = C:71% M:53% Y:0% K:12%, black ink = C:0% M:0% Y:0% K:100%, taupe ink = C:0% M:19% Y:30% K:72% and taupe ink = C:0% M:17% Y:31% K:72%.
+After sorting, L is black ink = C:0% M:0% Y:0% K:100%, royal blue ink = C:71% M:53% Y:0% K:12%, taupe ink = C:0% M:17% Y:31% K:72% and taupe ink = C:0% M:19% Y:30% K:72%.
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Reform Club
+
+>Are you sure you want to quit? 

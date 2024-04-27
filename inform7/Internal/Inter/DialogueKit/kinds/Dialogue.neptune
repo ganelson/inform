@@ -7,7 +7,7 @@ new base DIALOGUE_BEAT_TY {
 	constant-compilation-method: quantitative
 	forbid-assertion-creation: yes
 
-	printing-routine: PrintDialogueBeatName
+	say-function: PrintDialogueBeatName
 
 	specification-text: A beat of dialogue occurring in a section of dialogue.
 }
@@ -21,7 +21,7 @@ new base DIALOGUE_LINE_TY {
 	constant-compilation-method: quantitative
 	forbid-assertion-creation: yes
 
-	printing-routine: PrintDialogueLineName
+	say-function: PrintDialogueLineName
 
 	specification-text: A line of dialogue occurring in a section of dialogue.
 }
@@ -35,7 +35,7 @@ new base DIALOGUE_CHOICE_TY {
 	constant-compilation-method: quantitative
 	forbid-assertion-creation: yes
 
-	printing-routine: PrintDialogueChoiceName
+	say-function: PrintDialogueChoiceName
 
 	specification-text: A line of dialogue occurring in a section of dialogue.
 }
@@ -48,7 +48,7 @@ new base PERFORMANCE_STYLE_TY {
 	default-value: 1
 	constant-compilation-method: quantitative
 
-	printing-routine: PrintPerformanceStyleName
+	say-function: PrintPerformanceStyleName
 
 	specification-text: A way to perform a given dialogue line.
 }

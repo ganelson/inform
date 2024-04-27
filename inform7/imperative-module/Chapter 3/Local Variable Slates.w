@@ -380,7 +380,7 @@ void LocalVariableSlates::end_scope(int s) {
 			(lvar->allocated) && (lvar->current_usage.block_scope >= s)) {
 			LOGIF(LOCAL_VARIABLES, "De-allocating $k at end of block\n", lvar);
 			if (lvar->current_usage.free_at_end_of_scope) {
-				inter_name *iname = Hierarchy::find(BLKVALUEFREE_HL);
+				inter_name *iname = Hierarchy::find(DESTROYPV_HL);
 				inter_symbol *LN = LocalVariables::declare(lvar);
 				EmitCode::call(iname);
 				EmitCode::down();

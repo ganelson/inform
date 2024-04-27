@@ -139,7 +139,7 @@ void CompileValues::to_holster(value_holster *VH, parse_node *value, int how) {
 
 @ This implements "fresh" mode. For regular values like numbers there's no
 difference, but if our value is a block value such as a list then we evaluate to
-a copy of it, not to the original. Making that copy means calling |BlkValueCopy|
+a copy of it, not to the original. Making that copy means calling |CopyPV|
 at runtime, so it cannot be done in a data holster (i.e., when |VH| is an
 |INTER_DATA_VHMODE| holster).
 
@@ -153,7 +153,7 @@ at runtime, so it cannot be done in a data holster (i.e., when |VH| is an
 			internal_error("must compile by reference in INTER_DATA_VHMODE"); 
 		kind *K = Specifications::to_kind(value);
 		if ((K) && (Kinds::Behaviour::uses_block_values(K))) {
-			EmitCode::call(Hierarchy::find(BLKVALUECOPY_HL));
+			EmitCode::call(Hierarchy::find(COPYPV_HL));
 			EmitCode::down();
 				Frames::emit_new_local_value(K);
 			made_fresh = TRUE;

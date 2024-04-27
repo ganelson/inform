@@ -265,7 +265,7 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 	LocalVariables::new_internal_commented_as_symbol(I"i", I"loop counter");
 	LocalVariables::new_internal_commented_as_symbol(I"rel", I"new relation");
 
-	EmitCode::call(Hierarchy::find(BLKVALUECREATE_HL));
+	EmitCode::call(Hierarchy::find(CREATEPV_HL));
 	EmitCode::down();
 		RTKindIDs::emit_strong_ID_as_val(BinaryPredicates::kind(bp));
 		EmitCode::val_iname(K_value, RTRelations::iname(bp));
@@ -969,7 +969,7 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 	else {
 		EmitCode::inv(RETURN_BIP);
 		EmitCode::down();
-			EmitCode::call(Hierarchy::find(DEFAULTVALUEOFKOV_HL));
+			EmitCode::call(Hierarchy::find(KINDDEFAULTVALUE_HL));
 			EmitCode::down();
 				RTKindIDs::emit_strong_ID_as_val(K);
 			EmitCode::up();

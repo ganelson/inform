@@ -4,14 +4,16 @@ new base TIME_TY {
 	plural: times
 
 	default-value: 540
-	comparison-routine: signed
+	compare-function: signed
 	can-exchange: yes
 	loop-domain-schema: for (*1=0: *1<TWENTY_FOUR_HOURS: *1++)
 	constant-compilation-method: literal
 
-	parsing-routine: TIME_TOKEN
-	printing-routine: PrintTimeOfDay
-	printing-routine-for-debugging: PrintTimeOfDay
+	understand-function: TIME_TOKEN
+	say-function: PrintTimeOfDay
+	
+	arithmetic-modulus: 1440
+	dimensionless: no
 
 	documentation-reference: kind_time
 	index-default-value: 9:00 AM

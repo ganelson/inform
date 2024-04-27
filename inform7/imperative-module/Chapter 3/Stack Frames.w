@@ -341,7 +341,7 @@ local_block_value *Frames::new_lbv(kind *K, local_block_value *last) {
 	if (last == NULL) bv->offset_index = 0;
 	else bv->offset_index = last->offset_past;
 	bv->allocation = TheHeap::make_allocation(K, 0, bv->offset_index);
-	bv->offset_past = bv->offset_index + Kinds::Behaviour::get_small_block_size(K);
+	bv->offset_past = bv->offset_index + Kinds::Behaviour::get_short_block_size(K);
 	TEMPORARY_TEXT(ref)
 	if (bv->offset_index == 0) {
 		WRITE_TO(ref, "I7SFRAME");
@@ -387,7 +387,7 @@ value we pushed earlier.
 void Frames::compile_lbv_teardown(stack_frame *frame) {
 	local_block_value *lbv;
 	LOOP_OVER_LINKED_LIST(lbv, local_block_value, frame->local_block_values) {
-		inter_name *iname = Hierarchy::find(BLKVALUEFREEONSTACK_HL);
+		inter_name *iname = Hierarchy::find(DESTROYPVFROMSTACK_HL);
 		EmitCode::call(iname);
 		EmitCode::down();
 			EmitCode::val_number((inter_ti) lbv->offset_index);

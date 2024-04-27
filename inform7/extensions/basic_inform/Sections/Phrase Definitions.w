@@ -372,7 +372,7 @@ To say one of -- beginning say_one_of (documented at phs_oneof): (-
 {-open-brace}
 		0: -).
 To say or -- continuing say_one_of (documented at phs_or):
-	(- @nop; {-segment-count}: -).
+	(- {-segment-count}: -).
 To say at random -- ending say_one_of with marker I7_SOO_RAN (documented at phs_random):
 	(- {-close-brace} -).
 To say purely at random -- ending say_one_of with marker I7_SOO_PAR (documented at phs_purelyrandom):
@@ -981,8 +981,11 @@ Section 1 - Enumerations
 To decide which number is number of (S - description of values)
 	(documented at ph_numberof):
 	(- {-primitive-definition:number-of} -).
-To decide what number is the numerical value of (X - enumerated value): (- {X} -).
-To decide what number is the sequence number of (X - enumerated value of kind K):
+To decide what number is the numerical value of (X - enumerated value)
+	(documented at ph_numericalvalue):
+	(- {X} -).
+To decide what number is the sequence number of (X - enumerated value of kind K)
+	(documented at ph_sequencenumber):
 	(- {-indexing-routine:K}({X}) -).
 To decide which K is (name of kind of enumerated value K) after (X - K)
 	(documented at ph_enumafter):

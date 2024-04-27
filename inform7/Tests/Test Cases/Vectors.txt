@@ -1,0 +1,30 @@
+Test: Vectors
+
+The Reform Club is a room.
+
+Include Vectors by Graham Nelson.
+
+When play begins:
+	let P be vector x 3 y 14 z 5;
+	showme P;
+	let Q be the P;
+	showme Q;
+	now P is vector x 2 y -50 z 200;
+	showme P;
+	showme Q;
+	let R be vector x "fish" y "snake" z "duck";
+	showme R;
+	let S be the R;
+	showme S;
+	now R is vector x "bat" y "ball" z "stump";
+	showme R;
+	showme S;
+
+When play begins:
+	let P be vector x 1 y 0 z 0;
+	let Q be vector x 0 y 1 z 0;
+	showme P + Q;
+	showme P - Q;
+	showme P * Q;
+	showme 6 * P;
+	showme Q * -2;

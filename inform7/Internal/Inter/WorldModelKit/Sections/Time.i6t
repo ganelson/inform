@@ -6,9 +6,7 @@ Support for parsing and printing times of day.
 
 =
 [ NUMBER_TY_to_TIME_TY n;
-	n = n%1440;
-	if (n < 0) return n + 1440;
-	return n;
+	return CongruenceClass(n, 1440);
 ];
 
 @h Digital Printing.

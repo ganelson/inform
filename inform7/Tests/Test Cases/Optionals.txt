@@ -1,0 +1,24 @@
+Test: Optional
+
+The Reform Club is a room.
+
+Include Optionals by Graham Nelson.
+
+To decide which optional K is the first entry of (L - list of values of kind K):
+	repeat with entry running through L:
+		decide on the entry as optional;
+	let the non-entry be an optional K;
+	decide on the non-entry;
+
+When play begins:
+	showme "Pie!" as optional;
+	let Q be an optional real number;
+	showme Q;
+	showme whether or not Q exists;
+	let Q be pi as optional;
+	showme Q;
+	showme whether or not Q exists;
+	showme Q as value;
+	showme e as optional as value;
+	showme the first entry of { "alpha", "beta", "gamma" };	let L be a list of numbers;
+	showme the first entry of L;

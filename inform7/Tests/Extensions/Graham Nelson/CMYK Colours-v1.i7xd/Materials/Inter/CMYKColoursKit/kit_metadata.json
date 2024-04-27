@@ -1,0 +1,10 @@
+{
+    "is": {
+        "type": "kit",
+        "title": "CMYKColoursKit",
+        "version": "1"
+    },
+	"kit-details": {
+		"provides-kinds": [ "CMYKColours.neptune" ]
+	}
+}

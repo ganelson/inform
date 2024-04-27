@@ -25,7 +25,7 @@ macro #NEW {
 	is-incompletely-defined: yes
 	can-exchange: yes
 	can-coincide-with-property: yes
-	comparison-routine: signed
+	compare-function: signed
 }
 
 ! When the source text specifies either a named constant value, or a literal
@@ -55,6 +55,7 @@ macro #UNIT {
 	index-default-value: <0-in-literal-pattern>
 	index-priority: 2
 	constant-compilation-method: literal
+	dimensionless: no
 }
 
 ! #REAL is applied immediately after #UNIT if the kind needs to use real

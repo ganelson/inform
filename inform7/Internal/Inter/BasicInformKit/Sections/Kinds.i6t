@@ -1,0 +1,343 @@
+Kinds Template.
+
+An API for handling values within the Inform 7 system of kinds.
+
+@h Strong and weak IDs.
+Every kind has both a weak ID, like |LIST_OF_TY|, and a strong ID, which is
+a pointer to a small data structure: for instance, a pointer to the three
+words |LIST_OF_TY 1 NUMBER_TY| is the strong ID for "list of numbers".
+
+This converts strong to weak, while preserving weak IDs as they are:
+
+=
+[ KindWeakID strong_kind_id;
+	if ((strong_kind_id >= 0) && (strong_kind_id < BASE_KIND_HWM)) return strong_kind_id;
+	return strong_kind_id-->0;
+];
+
+@ These can only work with a strong ID: the call |KindConstructorArity(LIST_OF_TY)|
+does not return 2.
+
+=
+[ KindConstructorArity strong_kind_id;
+	if ((strong_kind_id >= 0) && (strong_kind_id < BASE_KIND_HWM)) return 0;
+	return strong_kind_id-->1;
+];
+
+[ KindConstructorTerm strong_kind_id n;
+	if ((strong_kind_id >= 0) && (strong_kind_id < BASE_KIND_HWM)) return UNKNOWN_TY;
+	return strong_kind_id-->(2+n);
+];
+
+@h The kind metadata array.
+Weak IDs are used to read method functions and other details out of the 
+|KindMetadata| array.
+
+If |w| is a weak ID, then the metadata on the kind is stored at
+|KindMetadata-->(KindMetadata-->w)| and consecutive words.
+
+=
+[ ReadKindMetadata kind_id field x;
+	if ((kind_id < 0) || (kind_id >= BASE_KIND_HWM)) kind_id = kind_id-->0;
+	x = KindMetadata-->kind_id;
+	if (x ~= 0) return KindMetadata-->(x+field);
+	return x;
+];
+
+@ The fields in this array are numbered as follows. Note that kinds which do
+not take pointer values provide only the first set of fields below; do not
+look up |CREATE_FN_KMF| and so on with |ReadKindMetadata| for any kind which
+does not conform to |POINTER_VALUE_TY|.
+
+=
+! Always present
+Constant WEAK_KIND_ID_KMF = 0;
+Constant SAY_FN_KMF = 1;
+Constant COMPARE_FN_KMF = 2;
+Constant MAKE_DEFAULT_FN_KMF = 3;
+Constant ENUMERATION_ARRAY_KMF = 4;
+Constant DOMAIN_SIZE_KMF = 5;
+Constant CONFORMANCE_KMF = 6;
+
+! Present only for pointer-valued kinds
+Constant CREATE_FN_KMF = 7;
+Constant CAST_FN_KMF = 8;
+Constant COPY_FN_KMF = 9;
+Constant COPY_SHORT_BLOCK_FN_KMF = 10;
+Constant QUICK_COPY_FN_KMF = 11;
+Constant DESTROY_FN_KMF = 12;
+Constant MAKE_MUTABLE_FN_KMF = 13;
+Constant HASH_FN_KMF = 14;
+Constant SHORT_BLOCK_SIZE_KMF = 15;
+Constant LONG_BLOCK_SIZE_KMF = 16;
+Constant SERIALISE_FN_KMF = 17;
+Constant UNSERIALISE_FN_KMF = 18;
+
+@ |KindComparisonFunction(K)| returns either the address of a function to
+perform a comparison between two values, or else 0 to signal that no
+special sort of comparison is needed. (In which case signed numerical
+comparison should be used.) The function |F| may be used in a sorting algorithm,
+so it must have no side-effects. |F(x,y)| should return 1 if $x>y$,
+0 if $x=y$ and $-1$ if $x<y$. Note that it is not permitted to return 0
+unless the two values are genuinely equal.
+
+=
+[ KindComparisonFunction kind_id fail s;
+	return ReadKindMetadata(kind_id, COMPARE_FN_KMF);
+];
+
+@ For kinds which are essentially infinite, the following returns 0.
+
+=
+[ KindDomainSize kind_id fail s;
+	return ReadKindMetadata(kind_id, DOMAIN_SIZE_KMF);
+];
+
+[ KindEnumerationArray kind_id;
+	return ReadKindMetadata(kind_id, ENUMERATION_ARRAY_KMF);
+];
+
+@ |KindDefaultValue(K)| returns the default value for kind |K|: it's needed,
+for instance, when increasing the size of a list of $K$ to include new entries,
+which have to be given some type-safe value to start out at.
+
+=
+[ KindDefaultValue strong_kind_id mkdef_fn;
+	mkdef_fn = ReadKindMetadata(strong_kind_id, MAKE_DEFAULT_FN_KMF);
+	if (mkdef_fn) return mkdef_fn(strong_kind_id);
+	return 0;
+];
+
+@ True if and only if |kid| is the (strong or weak) ID of a kind for which
+values are pointers to blocks of data on the stack or heap.
+
+=
+[ KindConformsTo_POINTER_VALUE_TY kind_id;
+	return (ReadKindMetadata(kind_id, CONFORMANCE_KMF));
+];
+
+@h Non-standard enumerations.
+This is for enumerations whose values are scattered: say, for a kind where
+the valid runtime values are 3, 15 and 421. Next after 3 is 15; previous
+is 421, and so on.
+
+The |instances| array supplied has the extent in word 0, which is in effect
+the number of valid instances. This is guaranteed to be at least 1.
+
+=
+[ NextEnumVal inst instances i count;
+	count = instances-->0;
+	for (i=1: i<=count: i++)
+		if (instances-->i == inst)
+			return instances-->(i%count + 1);
+	return instances-->1; ! Should not ever happen
+];
+
+[ PrevEnumVal inst instances i count;
+	count = instances-->0;
+	for (i=1: i<=count: i++)
+		if (instances-->i == inst)
+			return instances-->((i+count-2)%count + 1);
+	return instances-->1; ! Should not ever happen
+];
+
+[ RandomEnumVal instances a b count a_index b_index c;
+	count = instances-->0;
+	if (a == b) {
+		if (a == 0) return instances-->(random(count));
+		return a;
+	}
+	for (c = 1: c <= count: c++) {
+		if (instances-->c == a)
+			a_index = c;
+		if (instances-->c == b)
+			b_index = c;
+	}
+	if (a_index > b_index) { c = a_index; a_index = b_index; b_index = c; }
+	return instances-->(a_index + random(b_index - a_index + 1) - 1);
+];
+
+[ IndexOfEnumVal instances a count c;
+	count = instances-->0;
+	for (c = 1: c <= count: c++)
+		if (instances-->c == a)
+			return c;
+	return 0;
+];
+
+@h Kind-value pairs.
+Just a few functions can be performed on any value of any kind, but the
+functions in question have to be told the kind, since (unless the value is
+a pointer) there will be no way to deduce this.
+
+|SayKindValuePair(K, V)| prints out the value |V| on the assumption that
+it belongs to the kind |K|.
+
+=
+[ SayKindValuePair kind_id value say_fn;
+	say_fn = ReadKindMetadata(kind_id, SAY_FN_KMF);
+	if (say_fn) say_fn(value); else print value;
+];
+
+@ And here is a general comparison.
+
+=
+[ CompareKindValuePairs k1 v1 k2 v2
+	cmp_fn;
+	if (k1 ~= k2) return k1-k2;
+	cmp_fn = ReadKindMetadata(k1, COMPARE_FN_KMF);
+	if (cmp_fn) return cmp_fn(v1, v2);
+	return v1-v2;
+];
+
+@ Given a value of any kind, assign it a hash code which fits in a single
+virtual machine word, maximizing the chances that two different values
+will have different hash codes.
+
+If the value can be stored in a single word already, it can be its own hash
+code. Otherwise, we ask its hash function to return one for us. Whatever this
+does, it must at minimum have the property that two equivalent values (for which
+the kind's comparison function returns 0) produce the same hash.
+
+Note that if a pointer-valued kind provides no hash function, all of its values
+are given the hash code 0. This will force pairs of such values to be compared
+the hard way, but we have nothing better to offer. To return |value| would be
+an error, since it would mean that a value and its duplicate would have
+different hash codes despite being equal.
+
+=
+[ HashKindValuePair kind_id value
+	hash_function;
+	if (KindConformsTo_POINTER_VALUE_TY(kind_id)) {
+		if (value) {
+			hash_function = ReadKindMetadata(kind_id, HASH_FN_KMF);
+			if (hash_function) return hash_function(value);
+		}
+		return 0;
+	}
+	return value;
+];
+
+@ Some values can be written to external files and shared with other projects:
+others cannot. The following routines abstract that.
+
+If |ch| is $-1$, then the unserialise function returns |true| or |false|
+according to whether it is possible to read data from an auxiliary file |auxf|
+into the block value |bv|. If |ch| is any other value, then the routine should
+do exactly that, taking |ch| to be the first character of the text read from the
+file which makes up the serialised form of the data.
+
+Serialising is simpler because, strictly speaking, it doesn't write to a file at
+all: it simply prints a serialised form of the data in |bv| to the output
+stream. Since it is called only when that output stream has been redirected to
+an auxiliary file, and since the serialised form would often be illegible on
+screen, it seems reasonable to call it a file input-output function just the
+same. The serialise function should return |true| or |false| according to
+whether it was able to write the data.
+
+=
+[ SerialiseKindValuePair kind_id value
+	serialise_function;
+	if (KindConformsTo_POINTER_VALUE_TY(kind_id)) {
+		serialise_function = ReadKindMetadata(kind_id, SERIALISE_FN_KMF);
+		if (serialise_function) serialise_function(value);
+		else print value;
+	} else {
+		print value;
+	}
+];
+
+[ UnserialiseKindValuePair kind_id value auxf ch
+	unserialise_function;
+	if (KindConformsTo_POINTER_VALUE_TY(kind_id)) {
+		unserialise_function = ReadKindMetadata(kind_id, UNSERIALISE_FN_KMF);
+		if (unserialise_function) return unserialise_function(value, auxf, ch);	
+	}
+	rfalse;
+];
+
+@h The Pointer Value API.
+This sits on top of the BlkValue API, but whereas the latter can be used for
+many potential purposes, the PV functions are strictly for dealing with
+values of kinds conforming to POINTER_VALUE_TY.
+
+=
+Constant DestroyPV = BlkValueFree;
+Constant CreatePV = BlkValueCreate;
+Constant CopyPV = BlkValueCopy;
+
+[ CopyPVIfExists to_bv from_bv;
+	if (from_bv) return BlkValueCopy(to_bv, from_bv);
+	return to_bv;
+];
+
+Constant CastPV = BlkValueCast;
+Constant ComparePV = BlkValueCompare;
+Constant WeakKindOfPV = BlkValueWeakKind;
+
+Constant PVField = BlkValueReadSB;
+Constant WritePVField = BlkValueWriteSB;
+
+Constant InitialisePVLongBlockField = BlkValueWriteLB;
+Constant PVLongBlockField = BlkValueReadLB;
+
+Constant SBONLYPV_FIELDS = 2;
+
+[ CreatePVShortBlock sb_address kind_id
+	short_block size;
+	size = ReadKindMetadata(kind_id, SHORT_BLOCK_SIZE_KMF);
+	short_block = BlkValueCreateSB(sb_address, size);
+	if (ReadKindMetadata(kind_id, LONG_BLOCK_SIZE_KMF) == 0) {
+		short_block-->0 = BLK_BVBITMAP_SBONLY;
+		short_block-->1 = kind_id;
+	}
+	return short_block;
+];
+
+[ CreatePVLongBlock kind_id size;
+	if (size <= 0) {
+		size = ReadKindMetadata(kind_id, LONG_BLOCK_SIZE_KMF);
+		if (size ofclass Routine) {
+			BlkValueError("CreatePVLongBlock needs a size");
+			size = 8;
+		}
+	}
+	return BlkValueCreateLB(size, kind_id);
+];
+
+[ CreatePVLongBlockFlexible kind_id size;
+	if (size <= 0) {
+		BlkValueError("CreatePVLongBlockFlexible needs a size");
+		size = 8;
+	}
+	return BlkValueCreateMultipleLB(size, kind_id);
+];
+
+[ KindOfShortBlockOnlyPV bv;
+	return bv-->1;
+];
+
+[ ShortBlockOnlyPVFlags bv;
+	return (bv-->0) & BLK_BVUSERBITMAP;
+];
+[ WriteShortBlockOnlyPVFlags bv flags;
+	bv-->0 = ((bv-->0) & BLK_BVBITMAP_USERBITMAPMASK) + (flags & BLK_BVUSERBITMAP);
+];
+
+Constant CopyPVShortBlock = BlkValueCopySB;
+Constant CopyPVRawData = BlkValueCopyRawLongBlock;
+
+Constant PVFieldCapacity = BlkValueLBCapacity;
+Constant SetPVFieldCapacity = BlkValueSetLBCapacity;
+
+[ WritePVFieldsFromByteArray to_bv from_array no_entries_to_copy;
+	BlkValueMassCopyFromArray(to_bv, from_array, 1, no_entries_to_copy);
+];
+
+[ WritePVFieldsFromWordArray to_bv from_array no_entries_to_copy;
+	BlkValueMassCopyFromArray(to_bv, from_array, 4, no_entries_to_copy);
+];
+
+Constant DestroyPVFromStack = BlkValueFreeOnStack;
+Constant CreatePVOnStack = BlkValueCreateOnStack;
+

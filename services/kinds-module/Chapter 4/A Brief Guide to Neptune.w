@@ -77,8 +77,8 @@ might get "number understood is a number which varies". The legal wildcards are:
 (*) <kind>, expanding to the singular name of the kind.
 (*) <lower-case-kind>, the same but always using lower case.
 (*) <kind-weak-ID>, the weak ID number for the base kind.
-(*) <printing-routine>, the identifier of its printing routine.
-(*) <comparison-routine>, similarly.
+(*) <say-function>, the identifier of its printing routine.
+(*) <compare-function>, similarly.
 
 There are a few limitations on what template text can include. Firstly,
 nothing with angle brackets in, except where a wildcard appears. Secondly,
@@ -189,7 +189,7 @@ rather than in single words of memory, and in that case three more properies
 become meaningful: |multiple-block| is either |yes| or |no| (default |no|), and 
 allows data to expand arbitrarily in size if necessary; |heap-size-estimate|
 should be a power of 2, and gives an initial allocation size in words; and
-|small-block-size| optionally allows a small block (in words) to point to the
+|short-block-size| optionally allows a short block (in words) to point to the
 data (thus adding further indirection).
 
 |is-incompletely-defined| is either |yes| or |no| (default |no|), and is a
@@ -200,22 +200,20 @@ turned into units or enumerations.
 duties related to the kind. Inform will simply assume such a routine is present;
 this will usually be defined in the same kit which is supplying the Neptune file.
 
-|comparison-routine| determines which of two values of the kind is greater.
+|compare-function| determines which of two values of the kind is greater.
 The default is |UnsignedCompare|. The special value |signed| can be used to
 ask for signed comparison of the 2s-complement run-time values, which is a
 little quicker than calling a routine.
 
-|printing-routine| prints out a textual representation of a value of the given
-kind, and |printing-routine-for-debugging| the same but for purposes of the
-debugging output called for by the ACTIONS command. These have no effect for
-kinds which do not conform to |sayable value|.
+|say-function| prints out a textual representation of a value of the given
+kind. These have no effect for kinds which do not conform to |sayable value|.
 
-|parsing-routine| is a "general parsing routine", which assists the run-time
-command parser. |distinguishing-routine|, similarly, determines whether two
+|understand-function| is a "general parsing routine", which assists the run-time
+command parser. |distinguish-function|, similarly, determines whether two
 things can be distinguished by textual commands. These have no effect in Basic
 Inform projects, or for kinds which do not conform to |understandable value|.
 
-|recognition-routine| is a "recognition-only general parsing routine". Again
+|recognise-function| is a "recognition-only general parsing routine". Again
 this has no effect in Basic Inform projects. It is only used for kinds which
 do not conform to |understandable value|, but can nevertheless be used when
 the command parser allows things to be named by their property values, and

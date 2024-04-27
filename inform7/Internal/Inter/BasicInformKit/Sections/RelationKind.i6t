@@ -12,7 +12,7 @@ something the customer needn't know about.
 
 The low-level routines in "Relations.i6t" access this metadata by direct use
 of |-->|, for speed, and they use the offset constants |RR_NAME| and so on;
-but we will use the |BlkValueRead| and |BlkValueWrite| routines in this
+but we will use the |PVField| and |WritePVField| routines in this
 section, which need offsets in the form |RRV_NAME|. (The discrepancy of 5 is
 to allow for the five-word block header.)
 
@@ -26,29 +26,6 @@ Constant RRV_DESCRIPTION	RR_DESCRIPTION-5; ! Packed string, e.g. "contains"
 Constant RRV_USED			6;
 Constant RRV_FILLED			7;
 Constant RRV_DATA_BASE		8;
-
-@h KOV Support.
-See the "BlockValues.i6t" segment for the specification of the following
-routines.
-
-=
-[ RELATION_TY_Support task arg1 arg2 arg3;
-	switch(task) {
-		CREATE_KOVS:      return RELATION_TY_Create(arg1, 0, arg2);
-		DESTROY_KOVS:     RELATION_TY_Destroy(arg1);
-		MAKEMUTABLE_KOVS: return 1;
-		COPYQUICK_KOVS:   rtrue;
-		COPYSB_KOVS:	  BlkValueCopySB1(arg1, arg2);
-		KINDDATA_KOVS:    return 0;
-		EXTENT_KOVS:      return -1;
-		COPY_KOVS:        RELATION_TY_Copy(arg1, arg2);
-		COMPARE_KOVS:     return RELATION_TY_Compare(arg1, arg2);
-		HASH_KOVS:        return arg1;
-		DEBUG_KOVS:       print " = ", (RELATION_TY_Say) arg1;
-	}
-	! We choose not to respond to: CAST_KOVS, COPYKIND_KOVS, READ_FILE_KOVS, WRITE_FILE_KOVS
-	rfalse;
-];
 
 @h Other Definitions.
 
@@ -205,37 +182,49 @@ it with one of the heap relation handlers, which thus makes the relation a
 newly constructed data structure which can grow freely from here.
 
 =
-[ RELATION_TY_Create kov from sb rel i skov handler;
-	rel = FlexAllocate((RRV_DATA_BASE + 3*RRP_MIN_SIZE)*WORDSIZE,
-		RELATION_TY, BLK_FLAG_WORD+BLK_FLAG_MULTIPLE);
-	if ((from == 0) && (kov ~= 0)) from = DefaultValueFinder(kov);
+[ RELATION_TY_Create kind_id sb_address from
+	short_block long_block i handler;
+	long_block = CreatePVLongBlockFlexible(kind_id, RRV_DATA_BASE + 3*RRP_MIN_SIZE);
+	if ((from == 0) && (kind_id)) from = DefaultValueFinder(kind_id);
 	if (from) {
-		for (i=0: i<RRV_DATA_BASE: i++) BlkValueWrite(rel, i, BlkValueRead(from, i), true);
-		if (BlkValueRead(from, RRV_HANDLER) == EmptyRelationHandler) {
-			handler = ChooseRelationHandler(BlkValueRead(rel, RRV_KIND, true));
-			BlkValueWrite(rel, RRV_NAME, "anonymous relation", true);
-			BlkValueWrite(rel, RRV_PERMISSIONS,
-				RELS_TEST+RELS_ASSERT_TRUE+RELS_ASSERT_FALSE+RELS_SHOW, true);
-			BlkValueWrite(rel, RRV_HANDLER, handler, true);
-			BlkValueWrite(rel, RRV_STORAGE, RRP_MIN_SIZE-1, true);
-			BlkValueWrite(rel, RRV_DESCRIPTION, "an anonymous relation", true);
-			BlkValueWrite(rel, RRV_USED, 0, true);
-			BlkValueWrite(rel, RRV_FILLED, 0, true);
+		for (i=0: i<RRV_DATA_BASE: i++) InitialisePVLongBlockField(long_block, i, PVField(from, i));
+		if (PVField(from, RRV_HANDLER) == EmptyRelationHandler) {
+			handler = ChooseRelationHandler(PVLongBlockField(long_block, RRV_KIND));
+			InitialisePVLongBlockField(long_block, RRV_NAME, "anonymous relation");
+			InitialisePVLongBlockField(long_block, RRV_PERMISSIONS,
+				RELS_TEST+RELS_ASSERT_TRUE+RELS_ASSERT_FALSE+RELS_SHOW);
+			InitialisePVLongBlockField(long_block, RRV_HANDLER, handler);
+			InitialisePVLongBlockField(long_block, RRV_STORAGE, RRP_MIN_SIZE-1);
+			InitialisePVLongBlockField(long_block, RRV_DESCRIPTION, "an anonymous relation");
+			InitialisePVLongBlockField(long_block, RRV_USED, 0);
+			InitialisePVLongBlockField(long_block, RRV_FILLED, 0);
 		}
 	} else {
-		handler = ChooseRelationHandler(kov);
-		BlkValueWrite(rel, RRV_NAME, "anonymous relation", true);
-		BlkValueWrite(rel, RRV_PERMISSIONS,
-			RELS_TEST+RELS_ASSERT_TRUE+RELS_ASSERT_FALSE+RELS_SHOW, true);
-		BlkValueWrite(rel, RRV_STORAGE, RRP_MIN_SIZE-1, true);
-		BlkValueWrite(rel, RRV_KIND, kov, true);
-		BlkValueWrite(rel, RRV_HANDLER, handler, true);
-		BlkValueWrite(rel, RRV_DESCRIPTION, "an anonymous relation", true);
-		BlkValueWrite(rel, RRV_USED, 0, true);
-		BlkValueWrite(rel, RRV_FILLED, 0, true);
+		handler = ChooseRelationHandler(kind_id);
+		InitialisePVLongBlockField(long_block, RRV_NAME, "anonymous relation");
+		InitialisePVLongBlockField(long_block, RRV_PERMISSIONS,
+			RELS_TEST+RELS_ASSERT_TRUE+RELS_ASSERT_FALSE+RELS_SHOW);
+		InitialisePVLongBlockField(long_block, RRV_STORAGE, RRP_MIN_SIZE-1);
+		InitialisePVLongBlockField(long_block, RRV_KIND, kind_id);
+		InitialisePVLongBlockField(long_block, RRV_HANDLER, handler);
+		InitialisePVLongBlockField(long_block, RRV_DESCRIPTION, "an anonymous relation");
+		InitialisePVLongBlockField(long_block, RRV_USED, 0);
+		InitialisePVLongBlockField(long_block, RRV_FILLED, 0);
 	}
+	
+	short_block = CreatePVShortBlock(sb_address, kind_id);
+	short_block-->0 = long_block;
 
-	return BlkValueCreateSB1(sb, rel);
+	return short_block;
+];
+
+@h Extent.
+We need to provide an explicit function for this, even though we only say the
+answer is "use the capacity".
+
+=
+[ RELATION_TY_LongBlockSize rel;
+	return 0;
 ];
 
 @h Destruction.
@@ -244,7 +233,7 @@ value to free the memory associated with them.
 
 =
 [ RELATION_TY_Destroy rel  handler;
-	handler = BlkValueRead(rel, RRV_HANDLER);
+	handler = PVField(rel, RRV_HANDLER);
 	handler(rel, RELS_DESTROY);
 ];
 
@@ -253,8 +242,9 @@ Same as destruction: invoke the handler using a special value to tell it to perf
 deep copying.
 
 =
-[ RELATION_TY_Copy lto lfrom  handler;
-	handler = BlkValueRead(lto, RRV_HANDLER);
+[ RELATION_TY_Copy lto lfrom kind recycling  handler;
+	CopyPVRawData(lto, lfrom, kind, recycling);
+	handler = PVField(lto, RRV_HANDLER);
 	handler(lto, RELS_COPY);
 ];
 
@@ -265,8 +255,8 @@ would be very slow and might be impossible.
 
 =
 [ RELATION_TY_Compare rleft rright ind1 ind2;
-	ind1 = BlkValueRead(rleft, RRV_HANDLER);
-	ind2 = BlkValueRead(rright, RRV_HANDLER);
+	ind1 = PVField(rleft, RRV_HANDLER);
+	ind2 = PVField(rright, RRV_HANDLER);
 	if (ind1 ~= ind2) return ind1 - ind2;
 	if (IsMutableRelationHandler(ind1) == false) return 0;
 	return rleft - rright;
@@ -290,8 +280,8 @@ would be very slow and might be impossible.
 =
 [ RELATION_TY_Name rel txt;
 	if (rel) {
-		BlkValueWrite(rel, RRV_NAME, txt);
-		BlkValueWrite(rel, RRV_DESCRIPTION, txt);
+		WritePVField(rel, RRV_NAME, txt);
+		WritePVField(rel, RRV_DESCRIPTION, txt);
 	}
 ];
 
@@ -302,8 +292,8 @@ the kinds of value being related. Each handler also has a corresponding
 wrapper for symmetric relations.
 
 =
-[ ChooseRelationHandler kov sym;
-	if (KOVIsBlockValue(KindBaseTerm(kov, 0))) {
+[ ChooseRelationHandler kind_id sym;
+	if (KindConformsTo_POINTER_VALUE_TY(KindConstructorTerm(kind_id, 0))) {
 		if (sym) return SymHashListRelationHandler;
 		return HashListRelationHandler;
 	}
@@ -325,27 +315,27 @@ allow the author to change the valency, but only if no entries have
 been added yet.
 
 =
-[ RELATION_TY_SetValency rel val  kov filled cur handler ext;
-	filled = BlkValueRead(rel, RRV_FILLED);
+[ RELATION_TY_SetValency rel val  kind_id filled cur handler ext;
+	filled = PVField(rel, RRV_FILLED);
 	if (filled) { IssueRTP("ChangedImmutableRelation",
 		"This change of the relation's nature is impossible in play.",
 		BasicInformKitRTPs); rfalse; }
-	kov = BlkValueRead(rel, RRV_KIND);
+	kind_id = PVField(rel, RRV_KIND);
 	if (val == RRVAL_EQUIV or RRVAL_SYM_V_TO_V or RRVAL_SYM_O_TO_O) {
-		if (KindBaseTerm(kov, 0) ~= KindBaseTerm(kov, 1)) {
+		if (KindConstructorTerm(kind_id, 0) ~= KindConstructorTerm(kind_id, 1)) {
 			IssueRTP("ChangedImmutableRelation",
 				"This change of the relation's nature is impossible in play.",
 				BasicInformKitRTPs); rfalse;
 		}
 	}
-	cur = BlkValueRead(rel, RRV_HANDLER);
+	cur = PVField(rel, RRV_HANDLER);
 	switch (val) {
-		RRVAL_V_TO_V:		handler = ChooseRelationHandler(kov, false);
+		RRVAL_V_TO_V:		handler = ChooseRelationHandler(kind_id, false);
 		RRVAL_V_TO_O:		handler = HashTableRelationHandler;
 		RRVAL_O_TO_V:		handler = ReversedHashTableRelationHandler;
 		RRVAL_O_TO_O:		handler = TwoInOneHashTableRelationHandler;
 		RRVAL_EQUIV:		handler = EquivHashTableRelationHandler;
-		RRVAL_SYM_V_TO_V:	handler = ChooseRelationHandler(kov, true);
+		RRVAL_SYM_V_TO_V:	handler = ChooseRelationHandler(kind_id, true);
 		RRVAL_SYM_O_TO_O:	handler = Sym2in1HashTableRelationHandler;
 		default:			IssueRTP("ChangedImmutableRelation",
 								"This change of the relation's nature is impossible in play.",
@@ -354,17 +344,17 @@ been added yet.
 	if (cur == handler) rtrue;
 	! adjust size when going to or from 2-in-1
 	if (cur == TwoInOneHashTableRelationHandler) {
-		ext = BlkValueRead(rel, RRV_STORAGE) + 1;
-		BlkValueSetLBCapacity(rel, RRV_DATA_BASE + 3*ext);
+		ext = PVField(rel, RRV_STORAGE) + 1;
+		SetPVFieldCapacity(rel, RRV_DATA_BASE + 3*ext);
 	} else if (handler == TwoInOneHashTableRelationHandler) {
-		ext = BlkValueRead(rel, RRV_STORAGE) + 1;
-		BlkValueSetLBCapacity(rel, RRV_DATA_BASE + 4*ext);
+		ext = PVField(rel, RRV_STORAGE) + 1;
+		SetPVFieldCapacity(rel, RRV_DATA_BASE + 4*ext);
 	}
-	BlkValueWrite(rel, RRV_HANDLER, handler);
+	WritePVField(rel, RRV_HANDLER, handler);
 ];
 
 [ RELATION_TY_GetValency rel  handler;
-	return BlkValueRead(rel, RRV_PERMISSIONS) & VALENCY_MASK;
+	return PVField(rel, RRV_PERMISSIONS) & VALENCY_MASK;
 ];
 
 @h Double Hash Set Relation Handler.
@@ -392,102 +382,102 @@ dictionary has become too full after inserting a pair, and expands it
 if so.
 
 =
-[ DoubleHashSetRelationHandler rel task X Y sym  kov kx ky at tmp v;
-	kov = BlkValueRead(rel, RRV_KIND);
-	kx = KindBaseTerm(kov, 0); ky = KindBaseTerm(kov, 1);
+[ DoubleHashSetRelationHandler rel task X Y sym  kind_id kx ky at tmp v;
+	kind_id = PVField(rel, RRV_KIND);
+	kx = KindConstructorTerm(kind_id, 0); ky = KindConstructorTerm(kind_id, 1);
 	if (task == RELS_SET_VALENCY) {
 		return RELATION_TY_SetValency(rel, X);
 	} else if (task == RELS_DESTROY) {
 		! clear
-		kx = KOVIsBlockValue(kx); ky = KOVIsBlockValue(ky);
+		kx = KindConformsTo_POINTER_VALUE_TY(kx); ky = KindConformsTo_POINTER_VALUE_TY(ky);
 		if (~~(kx || ky)) return;
-		for (at = BlkValueRead(rel, RRV_STORAGE): at >= 0: at--) {
-			tmp = BlkValueRead(rel, RRV_DATA_BASE + 3*at);
+		for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
+			tmp = PVField(rel, RRV_DATA_BASE + 3*at);
 			if (tmp & RRF_USED) {
-				if (kx) BlkValueFree(BlkValueRead(rel, RRV_DATA_BASE + 3*at + 1));
-				if (ky) BlkValueFree(BlkValueRead(rel, RRV_DATA_BASE + 3*at + 2));
+				if (kx) DestroyPV(PVField(rel, RRV_DATA_BASE + 3*at + 1));
+				if (ky) DestroyPV(PVField(rel, RRV_DATA_BASE + 3*at + 2));
 			}
 			at--;
 		}
 		return;
 	} else if (task == RELS_COPY) {
-		X = KOVIsBlockValue(kx); Y = KOVIsBlockValue(ky);
+		X = KindConformsTo_POINTER_VALUE_TY(kx); Y = KindConformsTo_POINTER_VALUE_TY(ky);
 		if (~~(X || Y)) return;
-		at = BlkValueRead(rel, RRV_STORAGE);
+		at = PVField(rel, RRV_STORAGE);
 		while (at >= 0) {
-			tmp = BlkValueRead(rel, RRV_DATA_BASE + 3*at);
+			tmp = PVField(rel, RRV_DATA_BASE + 3*at);
 			if (tmp & RRF_USED) {
 				if (X) {
-					tmp = BlkValueRead(rel, RRV_DATA_BASE + 3*at + 1);
-					tmp = BlkValueCopy(BlkValueCreate(kx), tmp);
-					BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 1, tmp);
+					tmp = PVField(rel, RRV_DATA_BASE + 3*at + 1);
+					tmp = CopyPV(CreatePV(kx), tmp);
+					WritePVField(rel, RRV_DATA_BASE + 3*at + 1, tmp);
 				}
 				if (Y) {
-					tmp = BlkValueRead(rel, RRV_DATA_BASE + 3*at + 2);
-					tmp = BlkValueCopy(BlkValueCreate(ky), tmp);
-					BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 2, tmp);
+					tmp = PVField(rel, RRV_DATA_BASE + 3*at + 2);
+					tmp = CopyPV(CreatePV(ky), tmp);
+					WritePVField(rel, RRV_DATA_BASE + 3*at + 2, tmp);
 				}
 			}
 			at--;
 		}
 		return;
 	} else if (task == RELS_SHOW) {
-		print (string) BlkValueRead(rel, RRV_DESCRIPTION), ":^";
+		print (string) PVField(rel, RRV_DESCRIPTION), ":^";
 		if (sym) {
-			kov = KOVComparisonFunction(kx);
-			if (~~kov) kov = UnsignedCompare;
+			kind_id = KindComparisonFunction(kx);
+			if (~~kind_id) kind_id = UnsignedCompare;
 		}
-		for (at = BlkValueRead(rel, RRV_STORAGE): at >= 0: at--) {
-			tmp = BlkValueRead(rel, RRV_DATA_BASE + 3*at);
+		for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
+			tmp = PVField(rel, RRV_DATA_BASE + 3*at);
 			if (tmp & RRF_USED) {
-				X = BlkValueRead(rel, RRV_DATA_BASE + 3*at + 1);
-				Y = BlkValueRead(rel, RRV_DATA_BASE + 3*at + 2);
-				if (sym && (kov(X, Y) > 0)) continue;
+				X = PVField(rel, RRV_DATA_BASE + 3*at + 1);
+				Y = PVField(rel, RRV_DATA_BASE + 3*at + 2);
+				if (sym && (kind_id(X, Y) > 0)) continue;
 				print "  ";
-				PrintKindValuePair(kx, X);
+				SayKindValuePair(kx, X);
 				if (sym) print " <=> "; else print " >=> ";
-				PrintKindValuePair(ky, Y);
+				SayKindValuePair(ky, Y);
 				print "^";
 			}
 		}
 		return;
 	} else if (task == RELS_EMPTY) {
-		if (BlkValueRead(rel, RRV_USED) == 0) rtrue;
+		if (PVField(rel, RRV_USED) == 0) rtrue;
 		if (X == 1) {
 			DoubleHashSetRelationHandler(rel, RELS_DESTROY);
-			for (at = BlkValueRead(rel, RRV_STORAGE): at >= 0: at--) {
+			for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
 				tmp = RRV_DATA_BASE + 3*at;
-				BlkValueWrite(rel, tmp, 0);
-				BlkValueWrite(rel, tmp + 1, 0);
-				BlkValueWrite(rel, tmp + 2, 0);
+				WritePVField(rel, tmp, 0);
+				WritePVField(rel, tmp + 1, 0);
+				WritePVField(rel, tmp + 2, 0);
 			}
-			BlkValueWrite(rel, RRV_USED, 0);
-			BlkValueWrite(rel, RRV_FILLED, 0);
+			WritePVField(rel, RRV_USED, 0);
+			WritePVField(rel, RRV_FILLED, 0);
 			rtrue;
 		}
 		rfalse;
 	} else if (task == RELS_LOOKUP_ANY) {
-		for (at = BlkValueRead(rel, RRV_STORAGE): at >= 0: at--) {
+		for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
 			tmp = RRV_DATA_BASE + 3*at;
-			if (BlkValueRead(rel, tmp) & RRF_USED) {
+			if (PVField(rel, tmp) & RRF_USED) {
 				if (Y == RLANY_GET_X or RLANY_CAN_GET_X) {
-					v = BlkValueRead(rel, tmp + 2);
-					if (KOVIsBlockValue(ky)) {
-						if (BlkValueCompare(v, X) ~= 0) continue;
+					v = PVField(rel, tmp + 2);
+					if (KindConformsTo_POINTER_VALUE_TY(ky)) {
+						if (ComparePV(v, X) ~= 0) continue;
 					} else {
 						if (v ~= X) continue;
 					}
 					if (Y == RLANY_CAN_GET_X) rtrue;
-					return BlkValueRead(rel, tmp + 1);
+					return PVField(rel, tmp + 1);
 				} else {
-					v = BlkValueRead(rel, tmp + 1);
-					if (KOVIsBlockValue(kx)) {
-						if (BlkValueCompare(v, X) ~= 0) continue;
+					v = PVField(rel, tmp + 1);
+					if (KindConformsTo_POINTER_VALUE_TY(kx)) {
+						if (ComparePV(v, X) ~= 0) continue;
 					} else {
 						if (v ~= X) continue;
 					}
 					if (Y == RLANY_CAN_GET_Y) rtrue;
-					return BlkValueRead(rel, tmp + 2);
+					return PVField(rel, tmp + 2);
 				}
 			}
 		}
@@ -495,48 +485,48 @@ if so.
 			print "*** Lookup failed: value not found ***^";
 		rfalse;
 	} else if (task == RELS_LOOKUP_ALL_X) {
-		if (BlkValueWeakKind(Y) ~= LIST_OF_TY) rfalse;
+		if (WeakKindOfPV(Y) ~= LIST_OF_TY) rfalse;
 		LIST_OF_TY_SetLength(Y, 0);
-		for (at = BlkValueRead(rel, RRV_STORAGE): at >= 0: at--) {
+		for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
 			tmp = RRV_DATA_BASE + 3*at;
-			if (BlkValueRead(rel, tmp) & RRF_USED) {
-				v = BlkValueRead(rel, tmp + 2);
-				if (KOVIsBlockValue(ky)) {
-					if (BlkValueCompare(v, X) ~= 0) continue;
+			if (PVField(rel, tmp) & RRF_USED) {
+				v = PVField(rel, tmp + 2);
+				if (KindConformsTo_POINTER_VALUE_TY(ky)) {
+					if (ComparePV(v, X) ~= 0) continue;
 				} else {
 					if (v ~= X) continue;
 				}
-				LIST_OF_TY_InsertItem(Y, BlkValueRead(rel, tmp + 1));
+				LIST_OF_TY_InsertItem(Y, PVField(rel, tmp + 1));
 			}
 		}
 		return Y;
 	} else if (task == RELS_LOOKUP_ALL_Y) {
-		if (BlkValueWeakKind(Y) ~= LIST_OF_TY) rfalse;
+		if (WeakKindOfPV(Y) ~= LIST_OF_TY) rfalse;
 		LIST_OF_TY_SetLength(Y, 0);
-		for (at = BlkValueRead(rel, RRV_STORAGE): at >= 0: at--) {
+		for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
 			tmp = RRV_DATA_BASE + 3*at;
-			if (BlkValueRead(rel, tmp) & RRF_USED) {
-				v = BlkValueRead(rel, tmp + 1);
-				if (KOVIsBlockValue(kx)) {
-					if (BlkValueCompare(v, X) ~= 0) continue;
+			if (PVField(rel, tmp) & RRF_USED) {
+				v = PVField(rel, tmp + 1);
+				if (KindConformsTo_POINTER_VALUE_TY(kx)) {
+					if (ComparePV(v, X) ~= 0) continue;
 				} else {
 					if (v ~= X) continue;
 				}
-				LIST_OF_TY_InsertItem(Y, BlkValueRead(rel, tmp + 2));
+				LIST_OF_TY_InsertItem(Y, PVField(rel, tmp + 2));
 			}
 		}
 		return Y;
 	} else if (task == RELS_LIST) {
-		if (X == 0 || BlkValueWeakKind(X) ~= LIST_OF_TY) rfalse;
+		if (X == 0 || WeakKindOfPV(X) ~= LIST_OF_TY) rfalse;
 		LIST_OF_TY_SetLength(X, 0);
 		switch (Y) {
 			RLIST_ALL_X, RLIST_ALL_Y:
-				for (at = BlkValueRead(rel, RRV_STORAGE): at >= 0: at--) {
+				for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
 					tmp = RRV_DATA_BASE + 3*at;
-					if (BlkValueRead(rel, tmp) & RRF_USED) {
+					if (PVField(rel, tmp) & RRF_USED) {
 						tmp++;
 						if (Y == RLIST_ALL_Y) tmp++;
-						v = BlkValueRead(rel, tmp);
+						v = PVField(rel, tmp);
 						LIST_OF_TY_InsertItem(X, v, false, 0, true);
 					}
 				}
@@ -545,20 +535,20 @@ if so.
 				! LIST_OF_TY_InsertItem will make a deep copy of the item,
 				! so we can reuse a single combination value here
 
-				Y = BlkValueCreate(kov);
-				for (at = BlkValueRead(rel, RRV_STORAGE): at >= 0: at--) {
+				Y = CreatePV(kind_id);
+				for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
 					tmp = RRV_DATA_BASE + 3*at;
-					if (BlkValueRead(rel, tmp) & RRF_USED) {
-						v = BlkValueRead(rel, tmp + 1);
-						BlkValueWrite(Y, COMBINATION_ITEM_BASE, v);
-						v = BlkValueRead(rel, tmp + 2);
-						BlkValueWrite(Y, COMBINATION_ITEM_BASE + 1, v);
+					if (PVField(rel, tmp) & RRF_USED) {
+						v = PVField(rel, tmp + 1);
+						WritePVField(Y, COMBINATION_ITEM_BASE, v);
+						v = PVField(rel, tmp + 2);
+						WritePVField(Y, COMBINATION_ITEM_BASE + 1, v);
 						LIST_OF_TY_InsertItem(X, Y);
 					}
 				}
-				BlkValueWrite(Y, COMBINATION_ITEM_BASE, 0);
-				BlkValueWrite(Y, COMBINATION_ITEM_BASE + 1, 0);
-				BlkValueFree(Y);
+				WritePVField(Y, COMBINATION_ITEM_BASE, 0);
+				WritePVField(Y, COMBINATION_ITEM_BASE + 1, 0);
+				DestroyPV(Y);
 				return X;
 		}
 		rfalse;
@@ -571,37 +561,37 @@ if so.
 		RELS_ASSERT_TRUE:
 			if (at >= 0) rtrue;
 			at = ~at;
-			BlkValueWrite(rel, RRV_USED, BlkValueRead(rel, RRV_USED) + 1);
-			if (BlkValueRead(rel, RRV_DATA_BASE + 3*at) == 0)
-				BlkValueWrite(rel, RRV_FILLED, BlkValueRead(rel, RRV_FILLED) + 1);
-			BlkValueWrite(rel, RRV_DATA_BASE + 3*at, RRF_USED+RRF_SINGLE);
-			if (KOVIsBlockValue(kx)) { X = BlkValueCopy(BlkValueCreate(kx), X); }
-			if (KOVIsBlockValue(ky)) { Y = BlkValueCopy(BlkValueCreate(ky), Y); }
-			BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 1, X);
-			BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 2, Y);
+			WritePVField(rel, RRV_USED, PVField(rel, RRV_USED) + 1);
+			if (PVField(rel, RRV_DATA_BASE + 3*at) == 0)
+				WritePVField(rel, RRV_FILLED, PVField(rel, RRV_FILLED) + 1);
+			WritePVField(rel, RRV_DATA_BASE + 3*at, RRF_USED+RRF_SINGLE);
+			if (KindConformsTo_POINTER_VALUE_TY(kx)) { X = CopyPV(CreatePV(kx), X); }
+			if (KindConformsTo_POINTER_VALUE_TY(ky)) { Y = CopyPV(CreatePV(ky), Y); }
+			WritePVField(rel, RRV_DATA_BASE + 3*at + 1, X);
+			WritePVField(rel, RRV_DATA_BASE + 3*at + 2, Y);
 			DoubleHashSetCheckResize(rel);
 			rtrue;
 		RELS_ASSERT_FALSE:
 			if (at < 0) rtrue;
-			BlkValueWrite(rel, RRV_USED, BlkValueRead(rel, RRV_USED) - 1);
-			if (KOVIsBlockValue(kx))
-				BlkValueFree(BlkValueRead(rel, RRV_DATA_BASE + 3*at + 1));
-			if (KOVIsBlockValue(ky))
-				BlkValueFree(BlkValueRead(rel, RRV_DATA_BASE + 3*at + 2));
-			BlkValueWrite(rel, RRV_DATA_BASE + 3*at, RRF_DELETED);
-			BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 1, 0);
-			BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 2, 0);
+			WritePVField(rel, RRV_USED, PVField(rel, RRV_USED) - 1);
+			if (KindConformsTo_POINTER_VALUE_TY(kx))
+				DestroyPV(PVField(rel, RRV_DATA_BASE + 3*at + 1));
+			if (KindConformsTo_POINTER_VALUE_TY(ky))
+				DestroyPV(PVField(rel, RRV_DATA_BASE + 3*at + 2));
+			WritePVField(rel, RRV_DATA_BASE + 3*at, RRF_DELETED);
+			WritePVField(rel, RRV_DATA_BASE + 3*at + 1, 0);
+			WritePVField(rel, RRV_DATA_BASE + 3*at + 2, 0);
 			rtrue;
 	}
 ];
 
 [ DoubleHashSetLookUp rel kx ky X Y  hashv i free mask perturb flags;
 	! calculate a hash value for the pair
-	hashv = GetHashValue(kx, X) + GetHashValue(ky, Y);
+	hashv = HashKindValuePair(kx, X) + HashKindValuePair(ky, Y);
 	! look in the first expected slot
-	mask = BlkValueRead(rel, RRV_STORAGE);
+	mask = PVField(rel, RRV_STORAGE);
 	i = hashv & mask;
-	flags = BlkValueRead(rel, RRV_DATA_BASE + 3*i);
+	flags = PVField(rel, RRV_DATA_BASE + 3*i);
 	if (flags == 0) return ~i;
 	if (DoubleHashSetEntryMatches(rel, i, kx, ky, X, Y)) return i;
 	! not here, keep looking in sequence
@@ -612,7 +602,7 @@ if so.
 	for (::) {
 		hashv = hashv*5 + perturb + 1;
 		i = hashv & mask;
-		flags = BlkValueRead(rel, RRV_DATA_BASE + 3*i);
+		flags = PVField(rel, RRV_DATA_BASE + 3*i);
 		if (flags == 0) {
 			if (free >= 0) return ~free;
 			return ~i;
@@ -628,36 +618,36 @@ if so.
 	}
 ];
 
-[ DoubleHashSetCheckResize rel  filled ext newext temp i at kov kx ky F X Y;
-	filled = BlkValueRead(rel, RRV_FILLED);
-	ext = BlkValueRead(rel, RRV_STORAGE) + 1;
+[ DoubleHashSetCheckResize rel  filled ext newext temp i at kind_id kx ky F X Y;
+	filled = PVField(rel, RRV_FILLED);
+	ext = PVField(rel, RRV_STORAGE) + 1;
 	if (filled >= (ext - filled) * RRP_CROWDED_IS) {
 		! copy entries to temporary space
 		temp = FlexAllocate(ext * (3*WORDSIZE), TEXT_TY, BLK_FLAG_WORD+BLK_FLAG_MULTIPLE);
 		for (i=0: i<ext*3: i++)
-			BlkValueWrite(temp, i, BlkValueRead(rel, RRV_DATA_BASE+i), true);
+			InitialisePVLongBlockField(temp, i, PVField(rel, RRV_DATA_BASE+i));
 		! resize and clear our data
 		if (ext >= RRP_LARGE_IS) newext = ext * RRP_RESIZE_LARGE;
 		else newext = ext * RRP_RESIZE_SMALL;
-		BlkValueSetLBCapacity(rel, RRV_DATA_BASE + newext*3);
-		BlkValueWrite(rel, RRV_STORAGE, newext - 1);
-		BlkValueWrite(rel, RRV_FILLED, BlkValueRead(rel, RRV_USED));
+		SetPVFieldCapacity(rel, RRV_DATA_BASE + newext*3);
+		WritePVField(rel, RRV_STORAGE, newext - 1);
+		WritePVField(rel, RRV_FILLED, PVField(rel, RRV_USED));
 		for (i=0: i<newext*3: i++)
-			BlkValueWrite(rel, RRV_DATA_BASE+i, 0);
+			WritePVField(rel, RRV_DATA_BASE+i, 0);
 		! copy entries back from temporary space
-		kov = BlkValueRead(rel, RRV_KIND);
-		kx = KindBaseTerm(kov, 0); ky = KindBaseTerm(kov, 1);
+		kind_id = PVField(rel, RRV_KIND);
+		kx = KindConstructorTerm(kind_id, 0); ky = KindConstructorTerm(kind_id, 1);
 		for (i=0: i<ext: i++) {
-			F = BlkValueRead(temp, 3*i, true);
+			F = PVLongBlockField(temp, 3*i);
 			if (F == 0 || (F & RRF_DELETED)) continue;
-			X = BlkValueRead(temp, 3*i + 1, true);
-			Y = BlkValueRead(temp, 3*i + 2, true);
+			X = PVLongBlockField(temp, 3*i + 1);
+			Y = PVLongBlockField(temp, 3*i + 2);
 			at = DoubleHashSetLookUp(rel, kx, ky, X, Y);
 			if (at >= 0) { print "*** Duplicate entry while resizing ***^"; rfalse; }
 			at = ~at;
-			BlkValueWrite(rel, RRV_DATA_BASE + 3*at, F);
-			BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 1, X);
-			BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 2, Y);
+			WritePVField(rel, RRV_DATA_BASE + 3*at, F);
+			WritePVField(rel, RRV_DATA_BASE + 3*at + 1, X);
+			WritePVField(rel, RRV_DATA_BASE + 3*at + 2, Y);
 		}
 		! done with temporary space
 		FlexFree(temp);
@@ -665,15 +655,15 @@ if so.
 ];
 
 [ DoubleHashSetEntryMatches rel at kx ky X Y  cx cy;
-	cx = BlkValueRead(rel, RRV_DATA_BASE + 3*at + 1);
-	if (KOVIsBlockValue(kx)) {
-		if (BlkValueCompare(cx, X) ~= 0) rfalse;
+	cx = PVField(rel, RRV_DATA_BASE + 3*at + 1);
+	if (KindConformsTo_POINTER_VALUE_TY(kx)) {
+		if (ComparePV(cx, X) ~= 0) rfalse;
 	} else {
 		if (cx ~= X) rfalse;
 	}
-	cy = BlkValueRead(rel, RRV_DATA_BASE + 3*at + 2);
-	if (KOVIsBlockValue(ky)) {
-		if (BlkValueCompare(cy, Y) ~= 0) rfalse;
+	cy = PVField(rel, RRV_DATA_BASE + 3*at + 2);
+	if (KindConformsTo_POINTER_VALUE_TY(ky)) {
+		if (ComparePV(cy, Y) ~= 0) rfalse;
 	} else {
 		if (cy ~= Y) rfalse;
 	}
@@ -694,9 +684,9 @@ above.
 which is shared with two other handlers below.
 
 =
-[ HashListRelationHandler rel task X Y  sym kov kx ky;
-	kov = BlkValueRead(rel, RRV_KIND);
-	kx = KindBaseTerm(kov, 0); ky = KindBaseTerm(kov, 1);
+[ HashListRelationHandler rel task X Y  sym kind_id kx ky;
+	kind_id = PVField(rel, RRV_KIND);
+	kx = KindConstructorTerm(kind_id, 0); ky = KindConstructorTerm(kind_id, 1);
 	return HashCoreRelationHandler(rel, task, kx, ky, X, Y, 1);
 ];
 
@@ -706,9 +696,9 @@ one value may be stored for each key. This implements various-to-one
 relations.
 
 =
-[ HashTableRelationHandler rel task X Y  kov kx ky;
-	kov = BlkValueRead(rel, RRV_KIND);
-	kx = KindBaseTerm(kov, 0); ky = KindBaseTerm(kov, 1);
+[ HashTableRelationHandler rel task X Y  kind_id kx ky;
+	kind_id = PVField(rel, RRV_KIND);
+	kx = KindConstructorTerm(kind_id, 0); ky = KindConstructorTerm(kind_id, 1);
 	return HashCoreRelationHandler(rel, task, kx, ky, X, Y, 0);
 ];
 
@@ -717,9 +707,9 @@ This is the same as the Hash Table Relation Handler except that the sides
 are reversed. This implements one-to-various relations.
 
 =
-[ ReversedHashTableRelationHandler rel task X Y  kov kx ky swap;
-	kov = BlkValueRead(rel, RRV_KIND);
-	kx = KindBaseTerm(kov, 0); ky = KindBaseTerm(kov, 1);
+[ ReversedHashTableRelationHandler rel task X Y  kind_id kx ky swap;
+	kind_id = PVField(rel, RRV_KIND);
+	kx = KindConstructorTerm(kind_id, 0); ky = KindConstructorTerm(kind_id, 1);
 	switch (task) {
 		RELS_SET_VALENCY:
 			return RELATION_TY_SetValency(rel, X);
@@ -798,75 +788,75 @@ the existing pair $(X, Y)$.
 		return RELATION_TY_SetValency(rel, X);
 	} else if (task == RELS_DESTROY) {
 		! clear
-		kx = KOVIsBlockValue(kx); ky = KOVIsBlockValue(ky);
+		kx = KindConformsTo_POINTER_VALUE_TY(kx); ky = KindConformsTo_POINTER_VALUE_TY(ky);
 		if (~~(kx || ky)) return;
-		at = BlkValueRead(rel, RRV_STORAGE);
+		at = PVField(rel, RRV_STORAGE);
 		while (at >= 0) {
-			fl = BlkValueRead(rel, RRV_DATA_BASE + 3*at);
+			fl = PVField(rel, RRV_DATA_BASE + 3*at);
 			if (fl & RRF_USED) {
-				if (kx) BlkValueFree(BlkValueRead(rel, RRV_DATA_BASE + 3*at + 1));
+				if (kx) DestroyPV(PVField(rel, RRV_DATA_BASE + 3*at + 1));
 				if (ky || ~~(fl & RRF_SINGLE))
-					BlkValueFree(BlkValueRead(rel, RRV_DATA_BASE + 3*at + 2));
+					DestroyPV(PVField(rel, RRV_DATA_BASE + 3*at + 2));
 			}
 			at--;
 		}
 		return;
 	} else if (task == RELS_COPY) {
-		X = KOVIsBlockValue(kx); Y = KOVIsBlockValue(ky);
+		X = KindConformsTo_POINTER_VALUE_TY(kx); Y = KindConformsTo_POINTER_VALUE_TY(ky);
 		if (~~(X || Y)) return;
-		at = BlkValueRead(rel, RRV_STORAGE);
+		at = PVField(rel, RRV_STORAGE);
 		while (at >= 0) {
-			fl = BlkValueRead(rel, RRV_DATA_BASE + 3*at);
+			fl = PVField(rel, RRV_DATA_BASE + 3*at);
 			if (fl & RRF_USED) {
 				if (X) {
-					tmp = BlkValueRead(rel, RRV_DATA_BASE + 3*at + 1);
-					tmp = BlkValueCopy(BlkValueCreate(kx), tmp);
-					BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 1, tmp);
+					tmp = PVField(rel, RRV_DATA_BASE + 3*at + 1);
+					tmp = CopyPV(CreatePV(kx), tmp);
+					WritePVField(rel, RRV_DATA_BASE + 3*at + 1, tmp);
 				}
 				if (Y || ~~(fl & RRF_SINGLE)) {
-					tmp = BlkValueRead(rel, RRV_DATA_BASE + 3*at + 2);
-					tmp = BlkValueCopy(BlkValueCreate(BlkValueWeakKind(tmp)), tmp);
-					BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 2, tmp);
+					tmp = PVField(rel, RRV_DATA_BASE + 3*at + 2);
+					tmp = CopyPV(CreatePV(WeakKindOfPV(tmp)), tmp);
+					WritePVField(rel, RRV_DATA_BASE + 3*at + 2, tmp);
 				}
 			}
 			at--;
 		}
 		return;
 	} else if (task == RELS_SHOW) {
-		print (string) BlkValueRead(rel, RRV_DESCRIPTION), ":^";
+		print (string) PVField(rel, RRV_DESCRIPTION), ":^";
 		! Z-machine doesn't have the room to let us pass sym/rev as parameters
 		switch (RELATION_TY_GetValency(rel)) {
 			RRVAL_SYM_V_TO_V:
 				sym = 1;
-				tmp = KOVComparisonFunction(kx);
+				tmp = KindComparisonFunction(kx);
 				if (~~tmp) tmp = UnsignedCompare;
 			RRVAL_O_TO_V:
 				rev = 1;
 		}
-		for (at = BlkValueRead(rel, RRV_STORAGE): at >= 0: at--) {
-			fl = BlkValueRead(rel, RRV_DATA_BASE + 3*at);
+		for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
+			fl = PVField(rel, RRV_DATA_BASE + 3*at);
 			if (fl & RRF_USED) {
-				X = BlkValueRead(rel, RRV_DATA_BASE + 3*at + 1);
-				Y = BlkValueRead(rel, RRV_DATA_BASE + 3*at + 2);
+				X = PVField(rel, RRV_DATA_BASE + 3*at + 1);
+				Y = PVField(rel, RRV_DATA_BASE + 3*at + 2);
 				if (fl & RRF_SINGLE) {
 					if (sym && tmp(X, Y) > 0) continue;
 					print "  ";
-					if (rev) PrintKindValuePair(ky, Y);
-					else PrintKindValuePair(kx, X);
+					if (rev) SayKindValuePair(ky, Y);
+					else SayKindValuePair(kx, X);
 					if (sym) print " <=> "; else print " >=> ";
-					if (rev) PrintKindValuePair(kx, X);
-					else PrintKindValuePair(ky, Y);
+					if (rev) SayKindValuePair(kx, X);
+					else SayKindValuePair(ky, Y);
 					print "^";
 				} else {
 					for (mult=1: mult<=LIST_OF_TY_GetLength(Y): mult++) {
 						fl = LIST_OF_TY_GetItem(Y, mult);
 						if (sym && tmp(X, fl) > 0) continue;
 						print "  ";
-						if (rev) PrintKindValuePair(ky, fl);
-						else PrintKindValuePair(kx, X);
+						if (rev) SayKindValuePair(ky, fl);
+						else SayKindValuePair(kx, X);
 						if (sym) print " <=> "; else print " >=> ";
-						if (rev) PrintKindValuePair(kx, X);
-						else PrintKindValuePair(ky, fl);
+						if (rev) SayKindValuePair(kx, X);
+						else SayKindValuePair(ky, fl);
 						print "^";
 					}
 				}
@@ -874,17 +864,17 @@ the existing pair $(X, Y)$.
 		}
 		return;
 	} else if (task == RELS_EMPTY) {
-		if (BlkValueRead(rel, RRV_USED) == 0) rtrue;
+		if (PVField(rel, RRV_USED) == 0) rtrue;
 		if (X == 1) {
 			HashCoreRelationHandler(rel, RELS_DESTROY);
-			for (at = BlkValueRead(rel, RRV_STORAGE): at >= 0: at--) {
+			for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
 				tmp = RRV_DATA_BASE + 3*at;
-				BlkValueWrite(rel, tmp, 0);
-				BlkValueWrite(rel, tmp + 1, 0);
-				BlkValueWrite(rel, tmp + 2, 0);
+				WritePVField(rel, tmp, 0);
+				WritePVField(rel, tmp + 1, 0);
+				WritePVField(rel, tmp + 2, 0);
 			}
-			BlkValueWrite(rel, RRV_USED, 0);
-			BlkValueWrite(rel, RRV_FILLED, 0);
+			WritePVField(rel, RRV_USED, 0);
+			WritePVField(rel, RRV_FILLED, 0);
 			rtrue;
 		}
 		rfalse;
@@ -894,20 +884,20 @@ the existing pair $(X, Y)$.
 			if (at >= 0) {
 				if (Y == RLANY_CAN_GET_Y) rtrue;
 				tmp = RRV_DATA_BASE + 3*at;
-				fl = BlkValueRead(rel, tmp);
-				tmp = BlkValueRead(rel, tmp + 2);
+				fl = PVField(rel, tmp);
+				tmp = PVField(rel, tmp + 2);
 				if (fl & RRF_SINGLE) return tmp;
 				return LIST_OF_TY_GetItem(tmp, 1);
 			}
 		} else {
-			for (at = BlkValueRead(rel, RRV_STORAGE): at >= 0: at--) {
+			for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
 				tmp = RRV_DATA_BASE + 3*at;
-				fl = BlkValueRead(rel, tmp);
+				fl = PVField(rel, tmp);
 				if (fl & RRF_USED) {
-					sym = BlkValueRead(rel, tmp + 2);
+					sym = PVField(rel, tmp + 2);
 					if (fl & RRF_SINGLE) {
-						if (KOVIsBlockValue(ky)) {
-							if (BlkValueCompare(X, sym) ~= 0) continue;
+						if (KindConformsTo_POINTER_VALUE_TY(ky)) {
+							if (ComparePV(X, sym) ~= 0) continue;
 						} else {
 							if (X ~= sym) continue;
 						}
@@ -915,7 +905,7 @@ the existing pair $(X, Y)$.
 						if (LIST_OF_TY_FindItem(sym, X) == 0) continue;
 					}
 					if (Y == RLANY_CAN_GET_X) rtrue;
-					return BlkValueRead(rel, tmp + 1);
+					return PVField(rel, tmp + 1);
 				}
 			}
 		}
@@ -923,34 +913,34 @@ the existing pair $(X, Y)$.
 			print "*** Lookup failed: value not found ***^";
 		rfalse;
 	} else if (task == RELS_LOOKUP_ALL_X) {
-		if (BlkValueWeakKind(Y) ~= LIST_OF_TY) rfalse;
+		if (WeakKindOfPV(Y) ~= LIST_OF_TY) rfalse;
 		LIST_OF_TY_SetLength(Y, 0);
-		for (at = BlkValueRead(rel, RRV_STORAGE): at >= 0: at--) {
+		for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
 			tmp = RRV_DATA_BASE + 3*at;
-			fl = BlkValueRead(rel, tmp);
+			fl = PVField(rel, tmp);
 			if (fl & RRF_USED) {
-				sym = BlkValueRead(rel, tmp + 2);
+				sym = PVField(rel, tmp + 2);
 				if (fl & RRF_SINGLE) {
-					if (KOVIsBlockValue(kx)) {
-						if (BlkValueCompare(X, sym) ~= 0) continue;
+					if (KindConformsTo_POINTER_VALUE_TY(kx)) {
+						if (ComparePV(X, sym) ~= 0) continue;
 					} else {
 						if (X ~= sym) continue;
 					}
 				} else {
 					if (LIST_OF_TY_FindItem(sym, X) == 0) continue;
 				}
-				LIST_OF_TY_InsertItem(Y, BlkValueRead(rel, tmp + 1));
+				LIST_OF_TY_InsertItem(Y, PVField(rel, tmp + 1));
 			}
 		}
 		return Y;
 	} else if (task == RELS_LOOKUP_ALL_Y) {
-		if (BlkValueWeakKind(Y) ~= LIST_OF_TY) rfalse;
+		if (WeakKindOfPV(Y) ~= LIST_OF_TY) rfalse;
 		LIST_OF_TY_SetLength(Y, 0);
 		at = HashCoreLookUp(rel, kx, X);
 		if (at >= 0) {
 			tmp = RRV_DATA_BASE + 3*at;
-			fl = BlkValueRead(rel, tmp);
-			tmp = BlkValueRead(rel, tmp + 2);
+			fl = PVField(rel, tmp);
+			tmp = PVField(rel, tmp + 2);
 			if (fl & RRF_SINGLE)
 				LIST_OF_TY_InsertItem(Y, tmp);
 			else
@@ -958,23 +948,23 @@ the existing pair $(X, Y)$.
 		}
 		return Y;
 	} else if (task == RELS_LIST) {
-		if (BlkValueWeakKind(X) ~= LIST_OF_TY) rfalse;
+		if (WeakKindOfPV(X) ~= LIST_OF_TY) rfalse;
 		LIST_OF_TY_SetLength(X, 0);
 		switch (Y) {
 			RLIST_ALL_X:
-				for (at = BlkValueRead(rel, RRV_STORAGE): at >= 0: at--) {
+				for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
 					tmp = RRV_DATA_BASE + 3*at;
-					fl = BlkValueRead(rel, tmp);
+					fl = PVField(rel, tmp);
 					if (fl & RRF_USED)
-						LIST_OF_TY_InsertItem(X, BlkValueRead(rel, tmp + 1));
+						LIST_OF_TY_InsertItem(X, PVField(rel, tmp + 1));
 				}
 				return X;
 			RLIST_ALL_Y:
-				for (at = BlkValueRead(rel, RRV_STORAGE): at >= 0: at--) {
+				for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
 					tmp = RRV_DATA_BASE + 3*at;
-					fl = BlkValueRead(rel, tmp);
+					fl = PVField(rel, tmp);
 					if (fl & RRF_USED) {
-						tmp = BlkValueRead(rel, tmp + 2);
+						tmp = PVField(rel, tmp + 2);
 						if (fl & RRF_SINGLE)
 							LIST_OF_TY_InsertItem(X, tmp, false, 0, true);
 						else
@@ -986,28 +976,28 @@ the existing pair $(X, Y)$.
 				if (RELATION_TY_GetValency(rel) == RRVAL_O_TO_V) rev = 1;
 				! LIST_OF_TY_InsertItem will make a deep copy of the item,
 				! so we can reuse a single combination value here
-				Y = BlkValueCreate(COMBINATION_TY, tmp);
-				for (at = BlkValueRead(rel, RRV_STORAGE): at >= 0: at--) {
+				Y = CreatePV(COMBINATION_TY, tmp);
+				for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
 					tmp = RRV_DATA_BASE + 3*at;
-					fl = BlkValueRead(rel, tmp);
+					fl = PVField(rel, tmp);
 					if (fl & RRF_USED) {
-						BlkValueWrite(Y, COMBINATION_ITEM_BASE + rev, BlkValueRead(rel, tmp + 1));
-						tmp = BlkValueRead(rel, tmp + 2);
+						WritePVField(Y, COMBINATION_ITEM_BASE + rev, PVField(rel, tmp + 1));
+						tmp = PVField(rel, tmp + 2);
 						if (fl & RRF_SINGLE) {
-							BlkValueWrite(Y, COMBINATION_ITEM_BASE + 1 - rev, tmp);
+							WritePVField(Y, COMBINATION_ITEM_BASE + 1 - rev, tmp);
 							LIST_OF_TY_InsertItem(X, Y);
 						} else {
 							for (mult = LIST_OF_TY_GetLength(tmp): mult > 0: mult--) {
-								BlkValueWrite(Y, COMBINATION_ITEM_BASE + 1 - rev,
+								WritePVField(Y, COMBINATION_ITEM_BASE + 1 - rev,
 									LIST_OF_TY_GetItem(tmp, mult));
 								LIST_OF_TY_InsertItem(X, Y);
 							}
 						}
 					}
 				}
-				BlkValueWrite(Y, COMBINATION_ITEM_BASE, 0);
-				BlkValueWrite(Y, COMBINATION_ITEM_BASE + 1, 0);
-				BlkValueFree(Y);
+				WritePVField(Y, COMBINATION_ITEM_BASE, 0);
+				WritePVField(Y, COMBINATION_ITEM_BASE + 1, 0);
+				DestroyPV(Y);
 				return X;
 		}
 		rfalse;
@@ -1016,11 +1006,11 @@ the existing pair $(X, Y)$.
 	switch(task) {
 		RELS_TEST:
 			if (at < 0) rfalse;
-			fl = BlkValueRead(rel, RRV_DATA_BASE + 3*at);
-			tmp = BlkValueRead(rel, RRV_DATA_BASE + 3*at + 2);
+			fl = PVField(rel, RRV_DATA_BASE + 3*at);
+			tmp = PVField(rel, RRV_DATA_BASE + 3*at + 2);
 			if (fl & RRF_SINGLE) {
-				if (KOVIsBlockValue(ky)) {
-					if (BlkValueCompare(tmp, Y) == 0) rtrue;
+				if (KindConformsTo_POINTER_VALUE_TY(ky)) {
+					if (ComparePV(tmp, Y) == 0) rtrue;
 				} else {
 					if (tmp == Y) rtrue;
 				}
@@ -1032,43 +1022,43 @@ the existing pair $(X, Y)$.
 			if (at < 0) {
 				! no entry exists for this key, just add one
 				at = ~at;
-				BlkValueWrite(rel, RRV_USED, BlkValueRead(rel, RRV_USED) + 1);
-				if (BlkValueRead(rel, RRV_DATA_BASE + 3*at) == 0)
-					BlkValueWrite(rel, RRV_FILLED, BlkValueRead(rel, RRV_FILLED) + 1);
-				BlkValueWrite(rel, RRV_DATA_BASE + 3*at, RRF_USED+RRF_SINGLE);
-				if (KOVIsBlockValue(kx)) { X = BlkValueCopy(BlkValueCreate(kx), X); }
-				if (KOVIsBlockValue(ky)) { Y = BlkValueCopy(BlkValueCreate(ky), Y); }
-				BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 1, X);
-				BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 2, Y);
+				WritePVField(rel, RRV_USED, PVField(rel, RRV_USED) + 1);
+				if (PVField(rel, RRV_DATA_BASE + 3*at) == 0)
+					WritePVField(rel, RRV_FILLED, PVField(rel, RRV_FILLED) + 1);
+				WritePVField(rel, RRV_DATA_BASE + 3*at, RRF_USED+RRF_SINGLE);
+				if (KindConformsTo_POINTER_VALUE_TY(kx)) { X = CopyPV(CreatePV(kx), X); }
+				if (KindConformsTo_POINTER_VALUE_TY(ky)) { Y = CopyPV(CreatePV(ky), Y); }
+				WritePVField(rel, RRV_DATA_BASE + 3*at + 1, X);
+				WritePVField(rel, RRV_DATA_BASE + 3*at + 2, Y);
 				HashCoreCheckResize(rel);
 				break;
 			}
 			! an entry exists: could be a list or a single value
-			fl = BlkValueRead(rel, RRV_DATA_BASE + 3*at);		! flags
-			tmp = BlkValueRead(rel, RRV_DATA_BASE + 3*at + 2);	! value or list
+			fl = PVField(rel, RRV_DATA_BASE + 3*at);		! flags
+			tmp = PVField(rel, RRV_DATA_BASE + 3*at + 2);	! value or list
 			if (fl & RRF_SINGLE) {
 				! if Y is the same as the stored key, we have nothing to do
-				if (KOVIsBlockValue(ky)) {
-					if (BlkValueCompare(tmp, Y) == 0) rtrue;
+				if (KindConformsTo_POINTER_VALUE_TY(ky)) {
+					if (ComparePV(tmp, Y) == 0) rtrue;
 				} else {
 					if (tmp == Y) rtrue;
 				}
 				! it's different: either replace it or expand into a list,
 				! depending on the value of mult
 				if (mult) {
-					fl = BlkValueCreate(LIST_OF_TY);	! new list
-					BlkValueWrite(fl, LIST_ITEM_KOV_F, ky);
+					fl = CreatePV(LIST_OF_TY);	! new list
+					WritePVField(fl, LIST_ITEM_KOV_F, ky);
 					LIST_OF_TY_SetLength(fl, 2);
-					BlkValueWrite(fl, LIST_ITEM_BASE, tmp);	! do not copy
+					WritePVField(fl, LIST_ITEM_BASE, tmp);	! do not copy
 					LIST_OF_TY_PutItem(fl, 2, Y);		! copy if needed
-					BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 2, fl);
-					BlkValueWrite(rel, RRV_DATA_BASE + 3*at, RRF_USED);
+					WritePVField(rel, RRV_DATA_BASE + 3*at + 2, fl);
+					WritePVField(rel, RRV_DATA_BASE + 3*at, RRF_USED);
 				} else {
-					if (KOVIsBlockValue(ky)) {
-						BlkValueFree(tmp);
-						Y = BlkValueCopy(BlkValueCreate(ky), Y);
+					if (KindConformsTo_POINTER_VALUE_TY(ky)) {
+						DestroyPV(tmp);
+						Y = CopyPV(CreatePV(ky), Y);
 					}
-					BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 2, Y);
+					WritePVField(rel, RRV_DATA_BASE + 3*at + 2, Y);
 				}
 			} else {
 				! if Y is present already, do nothing. otherwise add it.
@@ -1078,31 +1068,31 @@ the existing pair $(X, Y)$.
 		RELS_ASSERT_FALSE:
 			if (at < 0) rtrue;
 			! an entry exists: could be a list or a single value
-			fl = BlkValueRead(rel, RRV_DATA_BASE + 3*at);		! flags
-			tmp = BlkValueRead(rel, RRV_DATA_BASE + 3*at + 2);	! value or list
+			fl = PVField(rel, RRV_DATA_BASE + 3*at);		! flags
+			tmp = PVField(rel, RRV_DATA_BASE + 3*at + 2);	! value or list
 			if (fl & RRF_SINGLE) {
 				! if the stored key isn't Y, we have nothing to do
-				if (KOVIsBlockValue(ky)) {
-					if (BlkValueCompare(tmp, Y) ~= 0) rtrue;
+				if (KindConformsTo_POINTER_VALUE_TY(ky)) {
+					if (ComparePV(tmp, Y) ~= 0) rtrue;
 				} else {
 					if (tmp ~= Y) rtrue;
 				}
 				! delete the entry
-				if (KOVIsBlockValue(ky))
-					BlkValueFree(BlkValueRead(rel, RRV_DATA_BASE + 3*at + 2));
+				if (KindConformsTo_POINTER_VALUE_TY(ky))
+					DestroyPV(PVField(rel, RRV_DATA_BASE + 3*at + 2));
 				.DeleteEntryIgnoringY;
-				BlkValueWrite(rel, RRV_USED, BlkValueRead(rel, RRV_USED) - 1);
-				if (KOVIsBlockValue(kx))
-					BlkValueFree(BlkValueRead(rel, RRV_DATA_BASE + 3*at + 1));
-				BlkValueWrite(rel, RRV_DATA_BASE + 3*at, RRF_DELETED);
-				BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 1, 0);
-				BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 2, 0);
+				WritePVField(rel, RRV_USED, PVField(rel, RRV_USED) - 1);
+				if (KindConformsTo_POINTER_VALUE_TY(kx))
+					DestroyPV(PVField(rel, RRV_DATA_BASE + 3*at + 1));
+				WritePVField(rel, RRV_DATA_BASE + 3*at, RRF_DELETED);
+				WritePVField(rel, RRV_DATA_BASE + 3*at + 1, 0);
+				WritePVField(rel, RRV_DATA_BASE + 3*at + 2, 0);
 			} else {
 				! remove Y from the list if present
 				LIST_OF_TY_RemoveValue(tmp, Y, 1);
 				! if the list is now empty, delete the whole entry
 				if (LIST_OF_TY_GetLength(tmp) == 0) {
-					BlkValueFree(tmp);
+					DestroyPV(tmp);
 					jump DeleteEntryIgnoringY;
 				}
 			}
@@ -1113,11 +1103,11 @@ the existing pair $(X, Y)$.
 
 [ HashCoreLookUp rel kx X  hashv i free mask perturb flags;
 	! calculate a hash value for the key
-	hashv = GetHashValue(kx, X);
+	hashv = HashKindValuePair(kx, X);
 	! look in the first expected slot
-	mask = BlkValueRead(rel, RRV_STORAGE);
+	mask = PVField(rel, RRV_STORAGE);
 	i = hashv & mask;
-	flags = BlkValueRead(rel, RRV_DATA_BASE + 3*i);
+	flags = PVField(rel, RRV_DATA_BASE + 3*i);
 	if (flags == 0) {
 		return ~i;
 	}
@@ -1132,7 +1122,7 @@ the existing pair $(X, Y)$.
 	for (::) {
 		hashv = hashv*5 + perturb + 1;
 		i = hashv & mask;
-		flags = BlkValueRead(rel, RRV_DATA_BASE + 3*i);
+		flags = PVField(rel, RRV_DATA_BASE + 3*i);
 		if (flags == 0) {
 			if (free >= 0) return ~free;
 			return ~i;
@@ -1149,36 +1139,36 @@ the existing pair $(X, Y)$.
 	}
 ];
 
-[ HashCoreCheckResize rel  filled ext newext temp i at kov kx F X Y;
-	filled = BlkValueRead(rel, RRV_FILLED);
-	ext = BlkValueRead(rel, RRV_STORAGE) + 1;
+[ HashCoreCheckResize rel  filled ext newext temp i at kind_id kx F X Y;
+	filled = PVField(rel, RRV_FILLED);
+	ext = PVField(rel, RRV_STORAGE) + 1;
 	if (filled >= (ext - filled) * RRP_CROWDED_IS) {
 		! copy entries to temporary space
 		temp = FlexAllocate(ext * (3*WORDSIZE), TEXT_TY, BLK_FLAG_WORD+BLK_FLAG_MULTIPLE);
 		for (i=0: i<ext*3: i++)
-			BlkValueWrite(temp, i, BlkValueRead(rel, RRV_DATA_BASE+i), true);
+			InitialisePVLongBlockField(temp, i, PVField(rel, RRV_DATA_BASE+i));
 		! resize and clear our data
 		if (ext >= RRP_LARGE_IS) newext = ext * RRP_RESIZE_LARGE;
 		else newext = ext * RRP_RESIZE_SMALL;
-		BlkValueSetLBCapacity(rel, RRV_DATA_BASE + newext*3);
-		BlkValueWrite(rel, RRV_STORAGE, newext - 1);
-		BlkValueWrite(rel, RRV_FILLED, BlkValueRead(rel, RRV_USED));
+		SetPVFieldCapacity(rel, RRV_DATA_BASE + newext*3);
+		WritePVField(rel, RRV_STORAGE, newext - 1);
+		WritePVField(rel, RRV_FILLED, PVField(rel, RRV_USED));
 		for (i=0: i<newext*3: i++)
-			BlkValueWrite(rel, RRV_DATA_BASE+i, 0);
+			WritePVField(rel, RRV_DATA_BASE+i, 0);
 		! copy entries back from temporary space
-		kov = BlkValueRead(rel, RRV_KIND);
-		kx = KindBaseTerm(kov, 1); ! Was 0
+		kind_id = PVField(rel, RRV_KIND);
+		kx = KindConstructorTerm(kind_id, 1); ! Was 0
 		for (i=0: i<ext: i++) {
-			F = BlkValueRead(temp, 3*i, true);
+			F = PVLongBlockField(temp, 3*i);
 			if (F == 0 || (F & RRF_DELETED)) continue;
-			X = BlkValueRead(temp, 3*i + 1, true);
-			Y = BlkValueRead(temp, 3*i + 2, true);
+			X = PVLongBlockField(temp, 3*i + 1);
+			Y = PVLongBlockField(temp, 3*i + 2);
 			at = HashCoreLookUp(rel, kx, X);
 			if (at >= 0) { print "*** Duplicate entry while resizing ***^"; rfalse; }
 			at = ~at;
-			BlkValueWrite(rel, RRV_DATA_BASE + 3*at, F);
-			BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 1, X);
-			BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 2, Y);
+			WritePVField(rel, RRV_DATA_BASE + 3*at, F);
+			WritePVField(rel, RRV_DATA_BASE + 3*at + 1, X);
+			WritePVField(rel, RRV_DATA_BASE + 3*at + 2, Y);
 		}
 		! done with temporary space
 		FlexFree(temp);
@@ -1186,9 +1176,9 @@ the existing pair $(X, Y)$.
 ];
 
 [ HashCoreEntryMatches rel at kx X  cx cy;
-	cx = BlkValueRead(rel, RRV_DATA_BASE + 3*at + 1);
-	if (KOVIsBlockValue(kx)) {
-		if (BlkValueCompare(cx, X) ~= 0) rfalse;
+	cx = PVField(rel, RRV_DATA_BASE + 3*at + 1);
+	if (KindConformsTo_POINTER_VALUE_TY(kx)) {
+		if (ComparePV(cx, X) ~= 0) rfalse;
 	} else {
 		if (cx ~= X) rfalse;
 	}
@@ -1227,65 +1217,65 @@ This code uses the Hash Core utility functions defined above.
 
 =
 [ EquivHashTableRelationHandler rel task X Y  kx at at2 tmp fl i ext;
-	kx = KindBaseTerm(BlkValueRead(rel, RRV_KIND), 0);
+	kx = KindConstructorTerm(PVField(rel, RRV_KIND), 0);
 	if (task == RELS_SET_VALENCY) {
 		return RELATION_TY_SetValency(rel, X);
 	} else if (task == RELS_DESTROY) {
 		! clear
-		if (KOVIsBlockValue(kx)) {
-			at = BlkValueRead(rel, RRV_STORAGE);
+		if (KindConformsTo_POINTER_VALUE_TY(kx)) {
+			at = PVField(rel, RRV_STORAGE);
 			while (at >= 0) {
-				fl = BlkValueRead(rel, RRV_DATA_BASE + 3*at);
+				fl = PVField(rel, RRV_DATA_BASE + 3*at);
 				if (fl & RRF_USED) {
-					BlkValueFree(BlkValueRead(rel, RRV_DATA_BASE + 3*at + 1));
+					DestroyPV(PVField(rel, RRV_DATA_BASE + 3*at + 1));
 				}
 				at--;
 			}
 		}
 		return;
 	} else if (task == RELS_COPY) {
-		if (KOVIsBlockValue(kx)) {
-			at = BlkValueRead(rel, RRV_STORAGE);
+		if (KindConformsTo_POINTER_VALUE_TY(kx)) {
+			at = PVField(rel, RRV_STORAGE);
 			while (at >= 0) {
-				fl = BlkValueRead(rel, RRV_DATA_BASE + 3*at);
+				fl = PVField(rel, RRV_DATA_BASE + 3*at);
 				if (fl & RRF_USED) {
-					tmp = BlkValueRead(rel, RRV_DATA_BASE + 3*at + 1);
-					tmp = BlkValueCopy(BlkValueCreate(kx), tmp);
-					BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 1);
+					tmp = PVField(rel, RRV_DATA_BASE + 3*at + 1);
+					tmp = CopyPV(CreatePV(kx), tmp);
+					WritePVField(rel, RRV_DATA_BASE + 3*at + 1);
 				}
 				at--;
 			}
 		}
 		return;
 	} else if (task == RELS_SHOW) {
-		print (string) BlkValueRead(rel, RRV_DESCRIPTION), ":^";
-		ext = BlkValueRead(rel, RRV_STORAGE);
+		print (string) PVField(rel, RRV_DESCRIPTION), ":^";
+		ext = PVField(rel, RRV_STORAGE);
 		! flag all items by negating their group numbers
 		for (at=0, X=RRV_DATA_BASE: at<=ext: at++, X=X+3)
-			if (BlkValueRead(rel, X) & RRF_USED)
-				BlkValueWrite(rel, X + 2, -(BlkValueRead(rel, X + 2)));
+			if (PVField(rel, X) & RRF_USED)
+				WritePVField(rel, X + 2, -(PVField(rel, X + 2)));
 		! display groups, unflagging them as we go
 		for (at=0, X=RRV_DATA_BASE, fl=0: at<=ext: at++, X=X+3, fl=0) {
-			if (BlkValueRead(rel, X) & RRF_USED) {
-				fl = BlkValueRead(rel, X + 2);
+			if (PVField(rel, X) & RRF_USED) {
+				fl = PVField(rel, X + 2);
 				if (fl > 0) continue;		! already visited
-				BlkValueWrite(rel, X + 2, -fl);	! unflag it
+				WritePVField(rel, X + 2, -fl);	! unflag it
 				! display the group starting with this member, but only
 				! if there are more members in the group
-				tmp = BlkValueRead(rel, X + 1);
+				tmp = PVField(rel, X + 1);
 				i = 0;
 				for (at2=at+1, Y=RRV_DATA_BASE+3*at2: at2<=ext: at2++, Y=Y+3) {
-					if (BlkValueRead(rel, Y) & RRF_USED) {
-						if (BlkValueRead(rel, Y + 2) ~= fl) continue;
-						BlkValueWrite(rel, Y + 2, -fl);
+					if (PVField(rel, Y) & RRF_USED) {
+						if (PVField(rel, Y + 2) ~= fl) continue;
+						WritePVField(rel, Y + 2, -fl);
 						if (~~i) {
 							! print the saved first member
 							print "  { ";
-							PrintKindValuePair(kx, tmp);
+							SayKindValuePair(kx, tmp);
 							i = 1;
 						}
 						print ", ";
-						PrintKindValuePair(kx, BlkValueRead(rel, Y + 1));
+						SayKindValuePair(kx, PVField(rel, Y + 1));
 					}
 				}
 				if (i) print " }^";
@@ -1300,20 +1290,20 @@ This code uses the Hash Core utility functions defined above.
 		if (Y == RLANY_CAN_GET_X or RLANY_CAN_GET_Y) rtrue;
 		return X;
 	} else if (task == RELS_LOOKUP_ALL_X or RELS_LOOKUP_ALL_Y) {
-		if (BlkValueWeakKind(Y) ~= LIST_OF_TY) rfalse;
+		if (WeakKindOfPV(Y) ~= LIST_OF_TY) rfalse;
 		LIST_OF_TY_SetLength(Y, 0);
-		BlkValueWrite(Y, LIST_ITEM_KOV_F, kx);
+		WritePVField(Y, LIST_ITEM_KOV_F, kx);
 		at = HashCoreLookUp(rel, kx, X);
 		if (at < 0) {
 			LIST_OF_TY_InsertItem(Y, X);
 		} else {
-			X = BlkValueRead(rel, RRV_DATA_BASE + 3*at + 2);
-			for (at = BlkValueRead(rel, RRV_STORAGE): at >= 0: at--) {
+			X = PVField(rel, RRV_DATA_BASE + 3*at + 2);
+			for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
 				tmp = RRV_DATA_BASE + 3*at;
-				fl = BlkValueRead(rel, tmp);
+				fl = PVField(rel, tmp);
 				if (fl & RRF_USED) {
-					if (BlkValueRead(rel, tmp + 2) ~= X) continue;
-					LIST_OF_TY_InsertItem(Y, BlkValueRead(rel, tmp + 1));
+					if (PVField(rel, tmp + 2) ~= X) continue;
+					LIST_OF_TY_InsertItem(Y, PVField(rel, tmp + 1));
 				}
 			}
 		}
@@ -1328,8 +1318,8 @@ This code uses the Hash Core utility functions defined above.
 		RELS_TEST:
 			if (at < 0) {
 				! X is a loner, but could still be true if X == Y
-				if (KOVIsBlockValue(kx)) {
-					if (BlkValueCompare(X, Y) == 0) rtrue;
+				if (KindConformsTo_POINTER_VALUE_TY(kx)) {
+					if (ComparePV(X, Y) == 0) rtrue;
 				} else {
 					if (X == Y) rtrue;
 				}
@@ -1337,13 +1327,13 @@ This code uses the Hash Core utility functions defined above.
 			}
 			if (at2 < 0) rfalse;
 			if (at == at2) rtrue;
-			tmp = BlkValueRead(rel, RRV_DATA_BASE + 3*at + 2);
-			if (BlkValueRead(rel, RRV_DATA_BASE + 3*at2 + 2) == tmp) rtrue;
+			tmp = PVField(rel, RRV_DATA_BASE + 3*at + 2);
+			if (PVField(rel, RRV_DATA_BASE + 3*at2 + 2) == tmp) rtrue;
 			rfalse;
 		RELS_ASSERT_TRUE:
 			! if X and Y are the same, we have nothing to do
-			if (KOVIsBlockValue(kx)) {
-				if (BlkValueCompare(X, Y) == 0) rtrue;
+			if (KindConformsTo_POINTER_VALUE_TY(kx)) {
+				if (ComparePV(X, Y) == 0) rtrue;
 			} else {
 				if (X == Y) rtrue;
 			}
@@ -1351,72 +1341,72 @@ This code uses the Hash Core utility functions defined above.
 				if (at2 < 0) {
 					! X and Y both missing: find a new group number and add both entries
 					tmp = 0;		! candidate group number
-					ext = BlkValueRead(rel, RRV_STORAGE);
+					ext = PVField(rel, RRV_STORAGE);
 					for (i=0: i<=ext: i++) {
-						fl = BlkValueRead(rel, RRV_DATA_BASE + 3*i);
+						fl = PVField(rel, RRV_DATA_BASE + 3*i);
 						if (fl & RRF_USED) {
-							fl = BlkValueRead(rel, RRV_DATA_BASE + 3*i + 2);
+							fl = PVField(rel, RRV_DATA_BASE + 3*i + 2);
 							if (fl > tmp) tmp = fl;
 						}
 					}
 					tmp++;			! new group number
-					BlkValueWrite(rel, RRV_USED, BlkValueRead(rel, RRV_USED) + 2);
+					WritePVField(rel, RRV_USED, PVField(rel, RRV_USED) + 2);
 					! add X entry
 					at = ~at;
-					if (KOVIsBlockValue(kx)) { X = BlkValueCopy(BlkValueCreate(kx), X); }
-					fl = BlkValueRead(rel, RRV_DATA_BASE + 3*at);
+					if (KindConformsTo_POINTER_VALUE_TY(kx)) { X = CopyPV(CreatePV(kx), X); }
+					fl = PVField(rel, RRV_DATA_BASE + 3*at);
 					if (fl == 0)
-						BlkValueWrite(rel, RRV_FILLED, BlkValueRead(rel, RRV_FILLED) + 1);
-					BlkValueWrite(rel, RRV_DATA_BASE + 3*at, RRF_USED+RRF_SINGLE);
-					BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 1, X);
-					BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 2, tmp);
+						WritePVField(rel, RRV_FILLED, PVField(rel, RRV_FILLED) + 1);
+					WritePVField(rel, RRV_DATA_BASE + 3*at, RRF_USED+RRF_SINGLE);
+					WritePVField(rel, RRV_DATA_BASE + 3*at + 1, X);
+					WritePVField(rel, RRV_DATA_BASE + 3*at + 2, tmp);
 					! add Y entry. at2 might change if X and Y have the same hash code.
 					at2 = ~(HashCoreLookUp(rel, kx, Y));
-					if (KOVIsBlockValue(kx)) { Y = BlkValueCopy(BlkValueCreate(kx), Y); }
-					fl = BlkValueRead(rel, RRV_DATA_BASE + 3*at2);
+					if (KindConformsTo_POINTER_VALUE_TY(kx)) { Y = CopyPV(CreatePV(kx), Y); }
+					fl = PVField(rel, RRV_DATA_BASE + 3*at2);
 					if (fl == 0)
-						BlkValueWrite(rel, RRV_FILLED, BlkValueRead(rel, RRV_FILLED) + 1);
-					BlkValueWrite(rel, RRV_DATA_BASE + 3*at2, RRF_USED+RRF_SINGLE);
-					BlkValueWrite(rel, RRV_DATA_BASE + 3*at2 + 1, Y);
-					BlkValueWrite(rel, RRV_DATA_BASE + 3*at2 + 2, tmp);
+						WritePVField(rel, RRV_FILLED, PVField(rel, RRV_FILLED) + 1);
+					WritePVField(rel, RRV_DATA_BASE + 3*at2, RRF_USED+RRF_SINGLE);
+					WritePVField(rel, RRV_DATA_BASE + 3*at2 + 1, Y);
+					WritePVField(rel, RRV_DATA_BASE + 3*at2 + 2, tmp);
 					jump CheckResize;
 				}
 				! X missing, Y present: add a new X entry
 				at = ~at;
-				if (KOVIsBlockValue(kx)) { X = BlkValueCopy(BlkValueCreate(kx), X); }
-				BlkValueWrite(rel, RRV_USED, BlkValueRead(rel, RRV_USED) + 1);
-				fl = BlkValueRead(rel, RRV_DATA_BASE + 3*at);
+				if (KindConformsTo_POINTER_VALUE_TY(kx)) { X = CopyPV(CreatePV(kx), X); }
+				WritePVField(rel, RRV_USED, PVField(rel, RRV_USED) + 1);
+				fl = PVField(rel, RRV_DATA_BASE + 3*at);
 				if (fl == 0)
-					BlkValueWrite(rel, RRV_FILLED, BlkValueRead(rel, RRV_FILLED) + 1);
-				BlkValueWrite(rel, RRV_DATA_BASE + 3*at, RRF_USED+RRF_SINGLE);
-				BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 1, X);
-				tmp = BlkValueRead(rel, RRV_DATA_BASE + 3*at2 + 2);
-				BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 2, tmp);
+					WritePVField(rel, RRV_FILLED, PVField(rel, RRV_FILLED) + 1);
+				WritePVField(rel, RRV_DATA_BASE + 3*at, RRF_USED+RRF_SINGLE);
+				WritePVField(rel, RRV_DATA_BASE + 3*at + 1, X);
+				tmp = PVField(rel, RRV_DATA_BASE + 3*at2 + 2);
+				WritePVField(rel, RRV_DATA_BASE + 3*at + 2, tmp);
 				jump CheckResize;
 			}
 			if (at2 < 0) {
 				! X present, Y missing: add a new Y entry
 				at2 = ~at2;
-				if (KOVIsBlockValue(kx)) { Y = BlkValueCopy(BlkValueCreate(kx), Y); }
-				BlkValueWrite(rel, RRV_USED, BlkValueRead(rel, RRV_USED) + 1);
-				fl = BlkValueRead(rel, RRV_DATA_BASE + 3*at2);
+				if (KindConformsTo_POINTER_VALUE_TY(kx)) { Y = CopyPV(CreatePV(kx), Y); }
+				WritePVField(rel, RRV_USED, PVField(rel, RRV_USED) + 1);
+				fl = PVField(rel, RRV_DATA_BASE + 3*at2);
 				if (fl == 0)
-					BlkValueWrite(rel, RRV_FILLED, BlkValueRead(rel, RRV_FILLED) + 1);
-				BlkValueWrite(rel, RRV_DATA_BASE + 3*at2, RRF_USED+RRF_SINGLE);
-				BlkValueWrite(rel, RRV_DATA_BASE + 3*at2 + 1, Y);
-				tmp = BlkValueRead(rel, RRV_DATA_BASE + 3*at + 2);
-				BlkValueWrite(rel, RRV_DATA_BASE + 3*at2 + 2, tmp);
+					WritePVField(rel, RRV_FILLED, PVField(rel, RRV_FILLED) + 1);
+				WritePVField(rel, RRV_DATA_BASE + 3*at2, RRF_USED+RRF_SINGLE);
+				WritePVField(rel, RRV_DATA_BASE + 3*at2 + 1, Y);
+				tmp = PVField(rel, RRV_DATA_BASE + 3*at + 2);
+				WritePVField(rel, RRV_DATA_BASE + 3*at2 + 2, tmp);
 				jump CheckResize;
 			}
 			! X and Y both present: merge higher group into lower group
-			tmp = BlkValueRead(rel, RRV_DATA_BASE + 3*at + 2);	! higher group
-			fl = BlkValueRead(rel, RRV_DATA_BASE + 3*at2 + 2);	! lower group
+			tmp = PVField(rel, RRV_DATA_BASE + 3*at + 2);	! higher group
+			fl = PVField(rel, RRV_DATA_BASE + 3*at2 + 2);	! lower group
 			if (tmp < fl) { i = tmp; tmp = fl; fl = i; }
-			ext = BlkValueRead(rel, RRV_STORAGE);
+			ext = PVField(rel, RRV_STORAGE);
 			for (at=0: at<=ext: at++) {
 				i = RRV_DATA_BASE + 3*at + 2;
-				if (BlkValueRead(rel, i) == tmp)
-					BlkValueWrite(rel, i, fl);
+				if (PVField(rel, i) == tmp)
+					WritePVField(rel, i, fl);
 			}
 			.CheckResize;
 			HashCoreCheckResize(rel);
@@ -1424,15 +1414,15 @@ This code uses the Hash Core utility functions defined above.
 		RELS_ASSERT_FALSE:
 			! if X and Y are already in different groups, we have nothing to do
 			if (at < 0 || at2 < 0) rtrue;
-			tmp = BlkValueRead(rel, RRV_DATA_BASE + 3*at + 2);
-			if (BlkValueRead(rel, RRV_DATA_BASE + 3*at2 + 2) ~= tmp) rtrue;
+			tmp = PVField(rel, RRV_DATA_BASE + 3*at + 2);
+			if (PVField(rel, RRV_DATA_BASE + 3*at2 + 2) ~= tmp) rtrue;
 			! delete the entry for X
-			BlkValueWrite(rel, RRV_USED, BlkValueRead(rel, RRV_USED) - 1);
-			if (KOVIsBlockValue(kx))
-				BlkValueFree(BlkValueRead(rel, RRV_DATA_BASE + 3*at + 1));
-			BlkValueWrite(rel, RRV_DATA_BASE + 3*at, RRF_DELETED);
-			BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 1, 0);
-			BlkValueWrite(rel, RRV_DATA_BASE + 3*at + 2, 0);
+			WritePVField(rel, RRV_USED, PVField(rel, RRV_USED) - 1);
+			if (KindConformsTo_POINTER_VALUE_TY(kx))
+				DestroyPV(PVField(rel, RRV_DATA_BASE + 3*at + 1));
+			WritePVField(rel, RRV_DATA_BASE + 3*at, RRF_DELETED);
+			WritePVField(rel, RRV_DATA_BASE + 3*at + 1, 0);
+			WritePVField(rel, RRV_DATA_BASE + 3*at + 2, 0);
 			rtrue;
 	}
 ];
@@ -1478,54 +1468,54 @@ either as deleted. (Such overlap is only possible when the domains of $X$
 and $Y$ are the same kind of value.)
 
 =
-[ TwoInOneHashTableRelationHandler rel task X Y sym  kov kx ky at at2 tmp fl;
-	kov = BlkValueRead(rel, RRV_KIND);
-	kx = KindBaseTerm(kov, 0); ky = KindBaseTerm(kov, 1);
+[ TwoInOneHashTableRelationHandler rel task X Y sym  kind_id kx ky at at2 tmp fl;
+	kind_id = PVField(rel, RRV_KIND);
+	kx = KindConstructorTerm(kind_id, 0); ky = KindConstructorTerm(kind_id, 1);
 	if (task == RELS_SET_VALENCY) {
 		return RELATION_TY_SetValency(rel, X);
 	} else if (task == RELS_DESTROY) {
 		! clear
-		kx = KOVIsBlockValue(kx); ky = KOVIsBlockValue(ky);
+		kx = KindConformsTo_POINTER_VALUE_TY(kx); ky = KindConformsTo_POINTER_VALUE_TY(ky);
 		if (~~(kx || ky)) return;
-		at = BlkValueRead(rel, RRV_STORAGE);
+		at = PVField(rel, RRV_STORAGE);
 		while (at >= 0) {
-			fl = BlkValueRead(rel, RRV_DATA_BASE + 4*at);
+			fl = PVField(rel, RRV_DATA_BASE + 4*at);
 			if (fl & RRF_USED)
 				if ((kx && (fl & RRF_ENTKEYX)) || (ky && (fl & RRF_ENTKEYY))) {
-					BlkValueFree(BlkValueRead(rel, RRV_DATA_BASE + 4*at + 1));
+					DestroyPV(PVField(rel, RRV_DATA_BASE + 4*at + 1));
 				}
 			at--;
 		}
 		return;
 	} else if (task == RELS_COPY) {
-		X = KOVIsBlockValue(kx); Y = KOVIsBlockValue(ky);
+		X = KindConformsTo_POINTER_VALUE_TY(kx); Y = KindConformsTo_POINTER_VALUE_TY(ky);
 		if (~~(X || Y)) return;
-		at = BlkValueRead(rel, RRV_STORAGE);
+		at = PVField(rel, RRV_STORAGE);
 		while (at >= 0) {
-			fl = BlkValueRead(rel, RRV_DATA_BASE + 4*at);
+			fl = PVField(rel, RRV_DATA_BASE + 4*at);
 			if (fl & RRF_USED) {
 				if ((X && (fl & RRF_ENTKEYX)) || (Y && (fl & RRF_ENTKEYY))) {
 					! copy the entry key
-					tmp = BlkValueRead(rel, RRV_DATA_BASE + 4*at + 1);
+					tmp = PVField(rel, RRV_DATA_BASE + 4*at + 1);
 					if (fl & RRF_ENTKEYX)
-						tmp = BlkValueCopy(BlkValueCreate(kx), tmp);
+						tmp = CopyPV(CreatePV(kx), tmp);
 					else
-						tmp = BlkValueCopy(BlkValueCreate(ky), tmp);
-					BlkValueWrite(rel, RRV_DATA_BASE + 4*at + 1, tmp);
+						tmp = CopyPV(CreatePV(ky), tmp);
+					WritePVField(rel, RRV_DATA_BASE + 4*at + 1, tmp);
 					! update references in X/Y fields pointing here
 					if (fl & RRF_HASX) {
 						at2 = TwoInOneLookUp(rel, kx,
-							BlkValueRead(rel, RRV_DATA_BASE + 4*at + 2),
+							PVField(rel, RRV_DATA_BASE + 4*at + 2),
 							RRF_ENTKEYX);
 						if (at2 >= 0)
-							BlkValueWrite(rel, RRV_DATA_BASE + 4*at2 + 3, tmp);
+							WritePVField(rel, RRV_DATA_BASE + 4*at2 + 3, tmp);
 					}
 					if (fl & RRF_HASY) {
 						at2 = TwoInOneLookUp(rel, ky,
-							BlkValueRead(rel, RRV_DATA_BASE + 4*at + 3),
+							PVField(rel, RRV_DATA_BASE + 4*at + 3),
 							RRF_ENTKEYY);
 						if (at2 >= 0)
-							BlkValueWrite(rel, RRV_DATA_BASE + 4*at2 + 2, tmp);
+							WritePVField(rel, RRV_DATA_BASE + 4*at2 + 2, tmp);
 					}
 				}
 			}
@@ -1533,39 +1523,39 @@ and $Y$ are the same kind of value.)
 		}
 		return;
 	} else if (task == RELS_SHOW) {
-		print (string) BlkValueRead(rel, RRV_DESCRIPTION), ":^";
+		print (string) PVField(rel, RRV_DESCRIPTION), ":^";
 		if (sym) {
-			kov = KOVComparisonFunction(kx);
-			if (~~kov) kov = UnsignedCompare;
+			kind_id = KindComparisonFunction(kx);
+			if (~~kind_id) kind_id = UnsignedCompare;
 		}
-		for (at = BlkValueRead(rel, RRV_STORAGE): at >= 0: at--) {
-			fl = BlkValueRead(rel, RRV_DATA_BASE + 4*at);
+		for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
+			fl = PVField(rel, RRV_DATA_BASE + 4*at);
 			if ((fl & (RRF_USED+RRF_ENTKEYX+RRF_HASY)) ==
 				(RRF_USED+RRF_ENTKEYX+RRF_HASY)) {
-				X = BlkValueRead(rel, RRV_DATA_BASE + 4*at + 1);
-				Y = BlkValueRead(rel, RRV_DATA_BASE + 4*at + 3);
-				if (sym && kov(X, Y) > 0) continue;
+				X = PVField(rel, RRV_DATA_BASE + 4*at + 1);
+				Y = PVField(rel, RRV_DATA_BASE + 4*at + 3);
+				if (sym && kind_id(X, Y) > 0) continue;
 				print "  ";
-				PrintKindValuePair(kx, X);
+				SayKindValuePair(kx, X);
 				if (sym) print " <=> "; else print " >=> ";
-				PrintKindValuePair(ky, Y);
+				SayKindValuePair(ky, Y);
 				print "^";
 			}
 		}
 		return;
 	} else if (task == RELS_EMPTY) {
-		if (BlkValueRead(rel, RRV_USED) == 0) rtrue;
+		if (PVField(rel, RRV_USED) == 0) rtrue;
 		if (X == 1) {
 			TwoInOneHashTableRelationHandler(rel, RELS_DESTROY);
-			for (at = BlkValueRead(rel, RRV_STORAGE): at >= 0: at--) {
+			for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
 				tmp = RRV_DATA_BASE + 4*at;
-				BlkValueWrite(rel, tmp, 0);
-				BlkValueWrite(rel, tmp + 1, 0);
-				BlkValueWrite(rel, tmp + 2, 0);
-				BlkValueWrite(rel, tmp + 3, 0);
+				WritePVField(rel, tmp, 0);
+				WritePVField(rel, tmp + 1, 0);
+				WritePVField(rel, tmp + 2, 0);
+				WritePVField(rel, tmp + 3, 0);
 			}
-			BlkValueWrite(rel, RRV_USED, 0);
-			BlkValueWrite(rel, RRV_FILLED, 0);
+			WritePVField(rel, RRV_USED, 0);
+			WritePVField(rel, RRV_FILLED, 0);
 			rtrue;
 		}
 		rfalse;
@@ -1575,18 +1565,18 @@ and $Y$ are the same kind of value.)
 				at = TwoInOneLookUp(rel, ky, X, RRF_ENTKEYY);
 				if (at >= 0) {
 					tmp = RRV_DATA_BASE + 4*at;
-					if (BlkValueRead(rel, tmp) & RRF_HASX) {
+					if (PVField(rel, tmp) & RRF_HASX) {
 						if (Y == RLANY_CAN_GET_X) rtrue;
-						return BlkValueRead(rel, tmp + 2);
+						return PVField(rel, tmp + 2);
 					}
 				}
 			RLANY_GET_Y, RLANY_CAN_GET_Y:
 				at = TwoInOneLookUp(rel, kx, X, RRF_ENTKEYX);
 				if (at >= 0) {
 					tmp = RRV_DATA_BASE + 4*at;
-					if (BlkValueRead(rel, tmp) & RRF_HASY) {
+					if (PVField(rel, tmp) & RRF_HASY) {
 						if (Y == RLANY_CAN_GET_Y) rtrue;
-						return BlkValueRead(rel, tmp + 3);
+						return PVField(rel, tmp + 3);
 					}
 				}
 		}
@@ -1597,16 +1587,16 @@ and $Y$ are the same kind of value.)
 		at = TwoInOneLookUp(rel, ky, X, RRF_ENTKEYY);
 		if (at >= 0) {
 			tmp = RRV_DATA_BASE + 4*at;
-			if (BlkValueRead(rel, tmp) & RRF_HASX)
-				LIST_OF_TY_InsertItem(Y, BlkValueRead(rel, tmp + 2));
+			if (PVField(rel, tmp) & RRF_HASX)
+				LIST_OF_TY_InsertItem(Y, PVField(rel, tmp + 2));
 		}
 		return Y;
 	} else if (task == RELS_LOOKUP_ALL_Y) {
 		at = TwoInOneLookUp(rel, kx, X, RRF_ENTKEYX);
 		if (at >= 0) {
 			tmp = RRV_DATA_BASE + 4*at;
-			if (BlkValueRead(rel, tmp) & RRF_HASY)
-				LIST_OF_TY_InsertItem(Y, BlkValueRead(rel, tmp + 3));
+			if (PVField(rel, tmp) & RRF_HASY)
+				LIST_OF_TY_InsertItem(Y, PVField(rel, tmp + 3));
 		}
 		return Y;
 	} else if (task == RELS_LIST) {
@@ -1617,30 +1607,30 @@ and $Y$ are the same kind of value.)
 			RLIST_ALL_Y:
 				fl = RRF_USED+RRF_ENTKEYY+RRF_HASX;
 				.ListEntryKeys;
-				for (at = BlkValueRead(rel, RRV_STORAGE): at >= 0: at--) {
+				for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
 					tmp = RRV_DATA_BASE + 4*at;
-					if ((BlkValueRead(rel, tmp) & fl) == fl)
-						LIST_OF_TY_InsertItem(X, BlkValueRead(rel, tmp + 1), false, 0, true);
+					if ((PVField(rel, tmp) & fl) == fl)
+						LIST_OF_TY_InsertItem(X, PVField(rel, tmp + 1), false, 0, true);
 				}
 			RLIST_ALL_PAIRS:
-				tmp = BlkValueRead(X, LIST_ITEM_KOV_F);
-				if (KindAtomic(tmp) ~= COMBINATION_TY) rfalse;
+				tmp = PVField(X, LIST_ITEM_KOV_F);
+				if (KindWeakID(tmp) ~= COMBINATION_TY) rfalse;
 				! LIST_OF_TY_InsertItem will make a deep copy of the item,
 				! so we can reuse a single combination value here
-				Y = BlkValueCreate(tmp);
-				for (at = BlkValueRead(rel, RRV_STORAGE): at >= 0: at--) {
+				Y = CreatePV(tmp);
+				for (at = PVField(rel, RRV_STORAGE): at >= 0: at--) {
 					tmp = RRV_DATA_BASE + 4*at;
-					fl = BlkValueRead(rel, tmp);
+					fl = PVField(rel, tmp);
 					if ((fl & (RRF_USED+RRF_ENTKEYX+RRF_HASY)) ==
 						(RRF_USED+RRF_ENTKEYX+RRF_HASY)) {
-						BlkValueWrite(Y, COMBINATION_ITEM_BASE, BlkValueRead(rel, tmp + 1));
-						BlkValueWrite(Y, COMBINATION_ITEM_BASE + 1, BlkValueRead(rel, tmp + 3));
+						WritePVField(Y, COMBINATION_ITEM_BASE, PVField(rel, tmp + 1));
+						WritePVField(Y, COMBINATION_ITEM_BASE + 1, PVField(rel, tmp + 3));
 						LIST_OF_TY_InsertItem(X, Y);
 					}
 				}
-				BlkValueWrite(Y, COMBINATION_ITEM_BASE, 0);
-				BlkValueWrite(Y, COMBINATION_ITEM_BASE + 1, 0);
-				BlkValueFree(Y);
+				WritePVField(Y, COMBINATION_ITEM_BASE, 0);
+				WritePVField(Y, COMBINATION_ITEM_BASE + 1, 0);
+				DestroyPV(Y);
 				return X;
 		}
 		return X;
@@ -1649,11 +1639,11 @@ and $Y$ are the same kind of value.)
 	switch(task) {
 		RELS_TEST:
 			if (at < 0) rfalse;
-			fl = BlkValueRead(rel, RRV_DATA_BASE + 4*at);
+			fl = PVField(rel, RRV_DATA_BASE + 4*at);
 			if (~~(fl & RRF_HASY)) rfalse;
-			tmp = BlkValueRead(rel, RRV_DATA_BASE + 4*at + 3);
-			if (KOVIsBlockValue(ky)) {
-				if (BlkValueCompare(tmp, Y) == 0) rtrue;
+			tmp = PVField(rel, RRV_DATA_BASE + 4*at + 3);
+			if (KindConformsTo_POINTER_VALUE_TY(ky)) {
+				if (ComparePV(tmp, Y) == 0) rtrue;
 			} else {
 				if (tmp == Y) rtrue;
 			}
@@ -1662,24 +1652,24 @@ and $Y$ are the same kind of value.)
 			if (at < 0) {
 				! create a new forward entry
 				at = ~at;
-				BlkValueWrite(rel, RRV_USED, BlkValueRead(rel, RRV_USED) + 1);
-				fl = BlkValueRead(rel, RRV_DATA_BASE + 4*at);
+				WritePVField(rel, RRV_USED, PVField(rel, RRV_USED) + 1);
+				fl = PVField(rel, RRV_DATA_BASE + 4*at);
 				if (fl == 0)
-					BlkValueWrite(rel, RRV_FILLED, BlkValueRead(rel, RRV_FILLED) + 1);
+					WritePVField(rel, RRV_FILLED, PVField(rel, RRV_FILLED) + 1);
 				fl = RRF_USED+RRF_HASY+RRF_ENTKEYX;
-				if (kx == ky || ~~(KOVIsBlockValue(kx) || KOVIsBlockValue(ky)))
+				if (kx == ky || ~~(KindConformsTo_POINTER_VALUE_TY(kx) || KindConformsTo_POINTER_VALUE_TY(ky)))
 					fl = fl + RRF_ENTKEYY;
-				BlkValueWrite(rel, RRV_DATA_BASE + 4*at, fl);
-				if (KOVIsBlockValue(kx)) { X = BlkValueCopy(BlkValueCreate(kx), X); }
-				BlkValueWrite(rel, RRV_DATA_BASE + 4*at + 1, X);
-				BlkValueWrite(rel, RRV_DATA_BASE + 4*at + 2, 0);
+				WritePVField(rel, RRV_DATA_BASE + 4*at, fl);
+				if (KindConformsTo_POINTER_VALUE_TY(kx)) { X = CopyPV(CreatePV(kx), X); }
+				WritePVField(rel, RRV_DATA_BASE + 4*at + 1, X);
+				WritePVField(rel, RRV_DATA_BASE + 4*at + 2, 0);
 			} else {
-				fl = BlkValueRead(rel, RRV_DATA_BASE + 4*at);
+				fl = PVField(rel, RRV_DATA_BASE + 4*at);
 				if (fl & RRF_HASY) {
 					! if the Y we're inserting is already there, we're done
-					tmp = BlkValueRead(rel, RRV_DATA_BASE + 4*at + 3);
-					if (KOVIsBlockValue(ky)) {
-						if (BlkValueCompare(tmp, Y) == 0) rtrue;
+					tmp = PVField(rel, RRV_DATA_BASE + 4*at + 3);
+					if (KindConformsTo_POINTER_VALUE_TY(ky)) {
+						if (ComparePV(tmp, Y) == 0) rtrue;
 					} else {
 						if (tmp == Y) rtrue;
 					}
@@ -1687,20 +1677,20 @@ and $Y$ are the same kind of value.)
 					at2 = TwoInOneLookUp(rel, ky, tmp, RRF_ENTKEYY);
 					if (at2 >= 0) TwoInOneDelete(rel, at2, kx, ky, RRF_ENTKEYY);
 				} else {
-					BlkValueWrite(rel, RRV_DATA_BASE + 4*at, fl + RRF_HASY);
+					WritePVField(rel, RRV_DATA_BASE + 4*at, fl + RRF_HASY);
 				}
 				! use the existing copy of X
-				X = BlkValueRead(rel, RRV_DATA_BASE + 4*at + 1);
+				X = PVField(rel, RRV_DATA_BASE + 4*at + 1);
 			}
 			! use the existing copy of Y if there is one
 			at2 = TwoInOneLookUp(rel, ky, Y, RRF_ENTKEYY);
-			if (KOVIsBlockValue(ky)) {
+			if (KindConformsTo_POINTER_VALUE_TY(ky)) {
 				if (at2 >= 0)
-					Y = BlkValueRead(rel, RRV_DATA_BASE + 4*at2 + 1);
+					Y = PVField(rel, RRV_DATA_BASE + 4*at2 + 1);
 				else
-					Y = BlkValueCopy(BlkValueCreate(ky), Y);
+					Y = CopyPV(CreatePV(ky), Y);
 			}
-			BlkValueWrite(rel, RRV_DATA_BASE + 4*at + 3, Y);
+			WritePVField(rel, RRV_DATA_BASE + 4*at + 3, Y);
 			if (at2 >= 0) {
 				! delete existing reverse entry (and its own forward entry)
 				TwoInOneDelete(rel, at2, kx, ky, RRF_ENTKEYY, 1);
@@ -1708,27 +1698,27 @@ and $Y$ are the same kind of value.)
 				at2 = ~at2;
 			}
 			! create reverse entry
-			BlkValueWrite(rel, RRV_USED, BlkValueRead(rel, RRV_USED) + 1);
-			fl = BlkValueRead(rel, RRV_DATA_BASE + 4*at2);
+			WritePVField(rel, RRV_USED, PVField(rel, RRV_USED) + 1);
+			fl = PVField(rel, RRV_DATA_BASE + 4*at2);
 			if (fl == 0)
-				BlkValueWrite(rel, RRV_FILLED, BlkValueRead(rel, RRV_FILLED) + 1);
+				WritePVField(rel, RRV_FILLED, PVField(rel, RRV_FILLED) + 1);
 			fl = fl | (RRF_USED+RRF_HASX+RRF_ENTKEYY);
-			if (kx == ky || ~~(KOVIsBlockValue(kx) || KOVIsBlockValue(ky)))
+			if (kx == ky || ~~(KindConformsTo_POINTER_VALUE_TY(kx) || KindConformsTo_POINTER_VALUE_TY(ky)))
 				fl = fl | RRF_ENTKEYX;
-			BlkValueWrite(rel, RRV_DATA_BASE + 4*at2, fl);
-			BlkValueWrite(rel, RRV_DATA_BASE + 4*at2 + 1, Y);
-			BlkValueWrite(rel, RRV_DATA_BASE + 4*at2 + 2, X);
+			WritePVField(rel, RRV_DATA_BASE + 4*at2, fl);
+			WritePVField(rel, RRV_DATA_BASE + 4*at2 + 1, Y);
+			WritePVField(rel, RRV_DATA_BASE + 4*at2 + 2, X);
 			TwoInOneCheckResize(rel);
 			rtrue;
 		RELS_ASSERT_FALSE:
 			! we only have work to do if the entry exists and has a Y which
 			! matches the Y we're deleting
 			if (at < 0) rtrue;
-			fl = BlkValueRead(rel, RRV_DATA_BASE + 4*at);
+			fl = PVField(rel, RRV_DATA_BASE + 4*at);
 			if ((fl & RRF_HASY) == 0) rtrue;
-			tmp = BlkValueRead(rel, RRV_DATA_BASE + 4*at + 3);
-			if (KOVIsBlockValue(ky)) {
-				if (BlkValueCompare(tmp, Y) ~= 0) rtrue;
+			tmp = PVField(rel, RRV_DATA_BASE + 4*at + 3);
+			if (KindConformsTo_POINTER_VALUE_TY(ky)) {
+				if (ComparePV(tmp, Y) ~= 0) rtrue;
 			} else {
 				if (tmp ~= Y) rtrue;
 			}
@@ -1738,32 +1728,32 @@ and $Y$ are the same kind of value.)
 ];
 
 [ TwoInOneDelete rel at kx ky ekflag both  fl at2 E i;
-!print "[2in1DEL at=", at, " (E=", BlkValueRead(rel, RRV_DATA_BASE + 4*at + 1), ") ekflag=", ekflag, " both=", both, "]^";
-	fl = BlkValueRead(rel, RRV_DATA_BASE + 4*at);
+!print "[2in1DEL at=", at, " (E=", PVField(rel, RRV_DATA_BASE + 4*at + 1), ") ekflag=", ekflag, " both=", both, "]^";
+	fl = PVField(rel, RRV_DATA_BASE + 4*at);
 	if (ekflag == RRF_ENTKEYX) {
 		if (fl & RRF_HASY) {
 			i = RRV_DATA_BASE + 4*at + 3;
-			if (both) E = BlkValueRead(rel, i);
-			BlkValueWrite(rel, i, 0);
+			if (both) E = PVField(rel, i);
+			WritePVField(rel, i, 0);
 			! delete matching Y<-X entry if needed
 			if (both) {
 				at2 = TwoInOneLookUp(rel, ky, E, RRF_ENTKEYY);
 				if (at2 >= 0) TwoInOneDelete(rel, at2, kx, ky, RRF_ENTKEYY);
-				if (at2 == at) fl = BlkValueRead(rel, RRV_DATA_BASE + 4*at);
+				if (at2 == at) fl = PVField(rel, RRV_DATA_BASE + 4*at);
 			}
 			fl = fl & ~RRF_HASY;
 		}
 	} else {
 		if (fl & RRF_HASX) {
 			i = RRV_DATA_BASE + 4*at + 2;
-			if (both) E = BlkValueRead(rel, i);
-			BlkValueWrite(rel, i, 0);
+			if (both) E = PVField(rel, i);
+			WritePVField(rel, i, 0);
 			! delete matching X->Y entry if needed
 			if (both) {
 				at2 = TwoInOneLookUp(rel, kx, E, RRF_ENTKEYX);
 				if (at2 >= 0) {
 					TwoInOneDelete(rel, at2, kx, ky, RRF_ENTKEYX);
-					if (at2 == at) fl = BlkValueRead(rel, RRV_DATA_BASE + 4*at);
+					if (at2 == at) fl = PVField(rel, RRV_DATA_BASE + 4*at);
 				}
 			}
 			fl = fl & ~RRF_HASX;
@@ -1771,29 +1761,29 @@ and $Y$ are the same kind of value.)
 	}
 	if ((fl & (RRF_HASX+RRF_HASY)) == 0) {
 		! entry is now empty, mark it deleted
-		if (((fl & RRF_ENTKEYX) && KOVIsBlockValue(kx)) ||
-		    ((ky ~= kx) && (fl & RRF_ENTKEYY) && KOVIsBlockValue(ky))) {
-			BlkValueFree(BlkValueRead(rel, RRV_DATA_BASE + 4*at + 1));
+		if (((fl & RRF_ENTKEYX) && KindConformsTo_POINTER_VALUE_TY(kx)) ||
+		    ((ky ~= kx) && (fl & RRF_ENTKEYY) && KindConformsTo_POINTER_VALUE_TY(ky))) {
+			DestroyPV(PVField(rel, RRV_DATA_BASE + 4*at + 1));
 		}
-		BlkValueWrite(rel, RRV_DATA_BASE + 4*at, RRF_DELETED);
-		BlkValueWrite(rel, RRV_DATA_BASE + 4*at + 1, 0);
-		BlkValueWrite(rel, RRV_DATA_BASE + 4*at + 2, 0);
-		BlkValueWrite(rel, RRV_DATA_BASE + 4*at + 3, 0);
-		BlkValueWrite(rel, RRV_USED, BlkValueRead(rel, RRV_USED) - 1);
+		WritePVField(rel, RRV_DATA_BASE + 4*at, RRF_DELETED);
+		WritePVField(rel, RRV_DATA_BASE + 4*at + 1, 0);
+		WritePVField(rel, RRV_DATA_BASE + 4*at + 2, 0);
+		WritePVField(rel, RRV_DATA_BASE + 4*at + 3, 0);
+		WritePVField(rel, RRV_USED, PVField(rel, RRV_USED) - 1);
 	} else {
-		BlkValueWrite(rel, RRV_DATA_BASE + 4*at, fl);
+		WritePVField(rel, RRV_DATA_BASE + 4*at, fl);
 	}
 ];
 
 [ TwoInOneLookUp rel ke E ekflag  hashv i free mask perturb flags;
 !print "[2in1LU rel=", rel, " ke=", ke, " E=", E, " ekf=", ekflag, ": ";
 	! calculate a hash value for the key
-	hashv = GetHashValue(ke, E);
+	hashv = HashKindValuePair(ke, E);
 	! look in the first expected slot
-	mask = BlkValueRead(rel, RRV_STORAGE);
+	mask = PVField(rel, RRV_STORAGE);
 	i = hashv & mask;
 !print "hv=", hashv, ", trying ", i;
-	flags = BlkValueRead(rel, RRV_DATA_BASE + 4*i);
+	flags = PVField(rel, RRV_DATA_BASE + 4*i);
 	if (flags == 0) {
 !print " - not found]^";
 		return ~i;
@@ -1811,7 +1801,7 @@ and $Y$ are the same kind of value.)
 		hashv = hashv*5 + perturb + 1;
 		i = hashv & mask;
 !print ", ", i;
-		flags = BlkValueRead(rel, RRV_DATA_BASE + 4*i);
+		flags = PVField(rel, RRV_DATA_BASE + 4*i);
 		if (flags == 0) {
 !print " - not found]^";
 			if (free >= 0) return ~free;
@@ -1830,39 +1820,39 @@ and $Y$ are the same kind of value.)
 	}
 ];
 
-[ TwoInOneCheckResize rel  filled ext newext temp i at kov kx ky F E X Y;
-	filled = BlkValueRead(rel, RRV_FILLED);
-	ext = BlkValueRead(rel, RRV_STORAGE) + 1;
+[ TwoInOneCheckResize rel  filled ext newext temp i at kind_id kx ky F E X Y;
+	filled = PVField(rel, RRV_FILLED);
+	ext = PVField(rel, RRV_STORAGE) + 1;
 	if (filled >= (ext - filled) * RRP_CROWDED_IS) {
 		! copy entries to temporary space
 		temp = FlexAllocate(ext * (4*WORDSIZE), TEXT_TY, BLK_FLAG_WORD+BLK_FLAG_MULTIPLE);
 		for (i=0: i<ext*4: i++)
-			BlkValueWrite(temp, i, BlkValueRead(rel, RRV_DATA_BASE+i), true);
+			InitialisePVLongBlockField(temp, i, PVField(rel, RRV_DATA_BASE+i));
 		! resize and clear our data
 		if (ext >= RRP_LARGE_IS) newext = ext * RRP_RESIZE_LARGE;
 		else newext = ext * RRP_RESIZE_SMALL;
-		BlkValueSetLBCapacity(rel, RRV_DATA_BASE + newext*4);
-		BlkValueWrite(rel, RRV_STORAGE, newext - 1);
-		BlkValueWrite(rel, RRV_FILLED, BlkValueRead(rel, RRV_USED));
+		SetPVFieldCapacity(rel, RRV_DATA_BASE + newext*4);
+		WritePVField(rel, RRV_STORAGE, newext - 1);
+		WritePVField(rel, RRV_FILLED, PVField(rel, RRV_USED));
 		for (i=0: i<newext*4: i++)
-			BlkValueWrite(rel, RRV_DATA_BASE+i, 0);
+			WritePVField(rel, RRV_DATA_BASE+i, 0);
 		! copy entries back from temporary space
-		kov = BlkValueRead(rel, RRV_KIND);
-		kx = KindBaseTerm(kov, 0); ky = KindBaseTerm(kov, 1);
+		kind_id = PVField(rel, RRV_KIND);
+		kx = KindConstructorTerm(kind_id, 0); ky = KindConstructorTerm(kind_id, 1);
 		for (i=0: i<ext: i++) {
-			F = BlkValueRead(temp, 4*i, true);
+			F = PVLongBlockField(temp, 4*i);
 			if (F == 0 || (F & RRF_DELETED)) continue;
-			E = BlkValueRead(temp, 4*i + 1, true);
-			X = BlkValueRead(temp, 4*i + 2, true);
-			Y = BlkValueRead(temp, 4*i + 3, true);
+			E = PVLongBlockField(temp, 4*i + 1);
+			X = PVLongBlockField(temp, 4*i + 2);
+			Y = PVLongBlockField(temp, 4*i + 3);
 			if (F & RRF_ENTKEYX) at = TwoInOneLookUp(rel, kx, E, RRF_ENTKEYX);
 			else at = TwoInOneLookUp(rel, ky, E, RRF_ENTKEYY);
 			if (at >= 0) { print "*** Duplicate entry while resizing ***^"; rfalse; }
 			at = ~at;
-			BlkValueWrite(rel, RRV_DATA_BASE + 4*at, F);
-			BlkValueWrite(rel, RRV_DATA_BASE + 4*at + 1, E);
-			BlkValueWrite(rel, RRV_DATA_BASE + 4*at + 2, X);
-			BlkValueWrite(rel, RRV_DATA_BASE + 4*at + 3, Y);
+			WritePVField(rel, RRV_DATA_BASE + 4*at, F);
+			WritePVField(rel, RRV_DATA_BASE + 4*at + 1, E);
+			WritePVField(rel, RRV_DATA_BASE + 4*at + 2, X);
+			WritePVField(rel, RRV_DATA_BASE + 4*at + 3, Y);
 		}
 		! done with temporary space
 		FlexFree(temp);
@@ -1870,9 +1860,9 @@ and $Y$ are the same kind of value.)
 ];
 
 [ TwoInOneEntryMatches rel at ke E  ce;
-	ce = BlkValueRead(rel, RRV_DATA_BASE + 4*at + 1);
-	if (KOVIsBlockValue(ke)) {
-		if (BlkValueCompare(ce, E) ~= 0) rfalse;
+	ce = PVField(rel, RRV_DATA_BASE + 4*at + 1);
+	if (KindConformsTo_POINTER_VALUE_TY(ke)) {
+		if (ComparePV(ce, E) ~= 0) rfalse;
 	} else {
 		if (ce ~= E) rfalse;
 	}

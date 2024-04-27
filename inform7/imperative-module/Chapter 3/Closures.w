@@ -160,7 +160,7 @@ void Closures::compilation_agent(compilation_subtask *t) {
 		EmitCode::down();
 
 		if (Kinds::Behaviour::uses_block_values(result)) {
-			inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
+			inter_name *iname = Hierarchy::find(CREATEPV_HL);
 			EmitCode::call(iname);
 			EmitCode::down();
 			RTKindIDs::emit_strong_ID_as_val(result);

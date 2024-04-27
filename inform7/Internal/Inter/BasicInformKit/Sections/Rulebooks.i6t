@@ -28,10 +28,10 @@ Array latest_rule_result --> 3;
 
 [ RecordRuleOutcome usage strong_kind val;
 	if ((latest_rule_result-->0 == RS_SUCCEEDS or RS_FAILS) &&
-		(KOVIsBlockValue(latest_rule_result-->1)))
-		BlkValueFree(latest_rule_result-->2);
-	if ((usage == RS_SUCCEEDS or RS_FAILS) && (KOVIsBlockValue(strong_kind)))
-		val = BlkValueCopy(BlkValueCreate(strong_kind), val);
+		(KindConformsTo_POINTER_VALUE_TY(latest_rule_result-->1)))
+		DestroyPV(latest_rule_result-->2);
+	if ((usage == RS_SUCCEEDS or RS_FAILS) && (KindConformsTo_POINTER_VALUE_TY(strong_kind)))
+		val = CopyPV(CreatePV(strong_kind), val);
 	latest_rule_result-->0 = usage;
 	latest_rule_result-->1 = strong_kind;
 	latest_rule_result-->2 = val;
@@ -203,7 +203,7 @@ And here is how to tell what the results were.
 		a = latest_rule_result-->1;
 		if (a) return latest_rule_result-->2;
 	}
-	if (K) return DefaultValueOfKOV(K);
+	if (K) return KindDefaultValue(K);
 	return 0;
 ];
 

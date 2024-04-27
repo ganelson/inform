@@ -1,0 +1,12 @@
+Test: MemoryAddresses
+
+The Reform Club is a room.
+
+Include Memory Addresses by Graham Nelson.
+
+When play begins:
+	let the header be 0 in memory;
+	showme the header;
+	showme the header plus 4 bytes;
+	showme the address of the serial code;
+	say "At the serial code, [dump of 6 bytes at the address of the serial code].";

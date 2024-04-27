@@ -518,7 +518,7 @@ variables detailing the current list-writing process, and begin.
 			say__p = 1;
 		} else {
 			objectloop (ol provides list_together)
-				BlkValueCopy(ol.list_together, EMPTY_TEXT_VALUE);
+				CopyPV(ol.list_together, EMPTY_TEXT_VALUE);
 			CarryOutActivity(LISTING_CONTENTS_ACT, parent(first));
 		}
 	}
@@ -710,7 +710,7 @@ in the above sense.
 	if (TEXT_TY_IsSubstituted(lt2) == false) {
 		return -1;
 	}
-	return BlkValueCompare(lt1, lt2);
+	return ComparePV(lt1, lt2);
 ];
 
 @h Write List Recursively.

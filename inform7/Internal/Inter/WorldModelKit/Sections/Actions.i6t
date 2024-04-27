@@ -150,17 +150,17 @@ This is method (ii) in the summary above.
 		else { inp2 = 1; parsed_number = s; }
 		if (((ActionData-->(by+AD_NOUN_KOV) == UNDERSTANDING_TY) ||
 			(ActionData-->(by+AD_SECOND_KOV) == UNDERSTANDING_TY)) && (tbits)) {
-			saved_command = BlkValueCreate(TEXT_TY);
-			BlkValueCast(saved_command, SNIPPET_TY, players_command);
-			text_of_command = BlkValueCreate(TEXT_TY);
-			BlkValueCopy(text_of_command, parsed_number);
+			saved_command = CreatePV(TEXT_TY);
+			SNIPPET_TY_to_TEXT_TY(saved_command, players_command);
+			text_of_command = CreatePV(TEXT_TY);
+			CopyPV(text_of_command, parsed_number);
 			SetPlayersCommand(text_of_command);
 			if (tbits == 16) {
 				n = players_command; inp1 = 1; parsed_number = players_command;
 			} else {
 				s = players_command; inp2 = 1; parsed_number = players_command;
 			}
-			BlkValueFree(text_of_command);
+			DestroyPV(text_of_command);
 			@push consult_from; @push consult_words;
 			consult_from = 1; consult_words = parsed_number - 100;
 		}
@@ -171,7 +171,7 @@ This is method (ii) in the summary above.
 	if (saved_command) {
 		@pull consult_words; @pull consult_from;
 		SetPlayersCommand(saved_command);
-		BlkValueFree(saved_command);
+		DestroyPV(saved_command);
 	}
 
 	meta = smeta; @pull parsed_number;
@@ -806,7 +806,7 @@ a whole action might produce "Henry taking the grapefruit".)
 [ SayActionName act; DB_Action(0, 0, act, 0, 0, 2); ];
 
 [ DA_Name n; if (n ofclass K3_direction) print (name) n; else print (the) n; ];
-[ DA_Topic x a b c d i cf cw;
+[ UNDERSTANDING_TY_Say x a b c d i cf cw;
 	cw = x%100; cf = x/100;
 	print "~";
 	for (a=cf:d<cw:d++,a++) {

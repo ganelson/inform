@@ -10,6 +10,7 @@ typedef struct kind_command_definition {
 	char *text_of_command;
 	int opcode_number; /* one of the |*_KCC| values below */
 	int operand_type; /* one of the |*_KCA| values below */
+	char *warning_if_used;
 } kind_command_definition;
 
 @ The operands have different types, and the possibilities are given here:
@@ -23,6 +24,7 @@ typedef struct kind_command_definition {
 @e CONSTRUCTOR_KCA /* any valid kind number, such as "number" */
 @e TEMPLATE_KCA    /* the name of a template whose definition is given in the file */
 @e MACRO_KCA       /* the name of a macro whose definition is given in the file */
+@e SCHEMA_KCA      /* an I6 compilation schema */
 
 @ And, to cut to the chase, here is the complete table of commands:
 
@@ -31,17 +33,16 @@ typedef struct kind_command_definition {
 @e can_coincide_with_property_KCC
 @e can_exchange_KCC
 @e compatible_with_KCC
-@e comparison_routine_KCC
+@e compare_function_KCC
 @e comparison_schema_KCC
 @e constant_compilation_method_KCC
 @e default_value_KCC
-@e distinguishing_routine_KCC
+@e distinguish_function_KCC
 @e documentation_reference_KCC
-@e explicit_GPR_identifier_KCC
+@e understand_function_KCC
 @e forbid_assertion_creation_KCC
-@e heap_size_estimate_KCC
 @e printing_routine_for_debugging_KCC
-@e printing_routine_KCC
+@e say_function_KCC
 @e index_default_value_KCC
 @e index_maximum_value_KCC
 @e index_minimum_value_KCC
@@ -51,59 +52,125 @@ typedef struct kind_command_definition {
 @e is_incompletely_defined_KCC
 @e loop_domain_schema_KCC
 @e modifying_adjective_KCC
-@e multiple_block_KCC
+@e long_block_size_KCC
+@e flexible_long_block_size_KCC
 @e plural_KCC
-@e recognition_routine_KCC
+@e recognise_function_KCC
 @e singular_KCC
 @e specification_text_KCC
-@e small_block_size_KCC
+@e short_block_size_KCC
 @e terms_KCC
 @e instance_KCC
 
+@e plus_schema_KCC		
+@e minus_schema_KCC		
+@e times_schema_KCC		
+@e divide_schema_KCC		
+@e remainder_schema_KCC	
+@e approximate_schema_KCC	
+@e negate_schema_KCC		
+@e root_schema_KCC		
+@e cuberoot_schema_KCC	
+@e power_schema_KCC
+@e arithmetic_modulus_KCC
+@e dimensionless_KCC
+
+@e create_function_KCC
+@e cast_function_KCC
+@e copy_function_KCC
+@e copy_short_block_function_KCC
+@e quick_copy_function_KCC
+@e destroy_function_KCC
+@e make_mutable_function_KCC
+@e hash_function_KCC
+@e long_block_size_function_KCC
+@e serialise_function_KCC
+@e unserialise_function_KCC
+
 =
 kind_command_definition table_of_kind_commands[] = {
-	{ "can-coincide-with-property",     can_coincide_with_property_KCC,     BOOLEAN_KCA },
-	{ "can-exchange",                   can_exchange_KCC,                   BOOLEAN_KCA },
-	{ "indexed-grey-if-empty",          indexed_grey_if_empty_KCC,          BOOLEAN_KCA },
-	{ "is-incompletely-defined",        is_incompletely_defined_KCC,        BOOLEAN_KCA },
-	{ "multiple-block",                 multiple_block_KCC,                 BOOLEAN_KCA },
-	{ "forbid-assertion-creation",      forbid_assertion_creation_KCC,      BOOLEAN_KCA },
+	{ "can-coincide-with-property",     can_coincide_with_property_KCC,     BOOLEAN_KCA, NULL },
+	{ "can-exchange",                   can_exchange_KCC,                   BOOLEAN_KCA, NULL },
+	{ "indexed-grey-if-empty",          indexed_grey_if_empty_KCC,          BOOLEAN_KCA, NULL },
+	{ "is-incompletely-defined",        is_incompletely_defined_KCC,        BOOLEAN_KCA, NULL },
+	{ "multiple-block",                 -1,                                 BOOLEAN_KCA,
+	  "'multiple-block: no' can be omitted; 'multiple-block: yes' should now be 'flexible-long-block-size: N' for some typical field count N" },
+	{ "long-block-size",                long_block_size_KCC,                NUMERIC_KCA, NULL },
+	{ "flexible-long-block-size",       flexible_long_block_size_KCC,       NUMERIC_KCA, NULL },
+	{ "forbid-assertion-creation",      forbid_assertion_creation_KCC,      BOOLEAN_KCA, NULL },
 
-	{ "constant-compilation-method",    constant_compilation_method_KCC,    CCM_KCA },
+	{ "constant-compilation-method",    constant_compilation_method_KCC,    CCM_KCA, NULL },
 
-	{ "comparison-routine",             comparison_routine_KCC,             TEXT_KCA },
-	{ "default-value",                  default_value_KCC,                  TEXT_KCA },
-	{ "distinguishing-routine",         distinguishing_routine_KCC,         TEXT_KCA },
-	{ "documentation-reference",        documentation_reference_KCC,        TEXT_KCA },
-	{ "parsing-routine",                explicit_GPR_identifier_KCC,        TEXT_KCA },
-	{ "printing-routine",               printing_routine_KCC,               TEXT_KCA },
-	{ "printing-routine-for-debugging", printing_routine_for_debugging_KCC, TEXT_KCA },
-	{ "index-default-value",            index_default_value_KCC,            TEXT_KCA },
-	{ "index-maximum-value",            index_maximum_value_KCC,            TEXT_KCA },
-	{ "index-minimum-value",            index_minimum_value_KCC,            TEXT_KCA },
-	{ "loop-domain-schema",             loop_domain_schema_KCC,             TEXT_KCA },
-	{ "recognition-routine",            recognition_routine_KCC,            TEXT_KCA },
-	{ "specification-text",             specification_text_KCC,             TEXT_KCA },
+	{ "comparison-routine",             compare_function_KCC,               TEXT_KCA,
+	  "this command has been renamed 'compare-function'" },
+	{ "compare-function",               compare_function_KCC,               TEXT_KCA, NULL },
+	{ "default-value",                  default_value_KCC,                  TEXT_KCA, NULL },
+	{ "distinguishing-routine",         distinguish_function_KCC,           TEXT_KCA,
+	  "this command has been renamed 'distinguish-function'" },
+	{ "distinguish-function",           distinguish_function_KCC,           TEXT_KCA, NULL },
+	{ "documentation-reference",        documentation_reference_KCC,        TEXT_KCA, NULL },
+	{ "parsing-routine",                understand_function_KCC,            TEXT_KCA,
+	  "this command has been renamed 'understand-function'" },
+	{ "understand-function",            understand_function_KCC,            TEXT_KCA, NULL },
+	{ "printing-routine",               say_function_KCC,                   TEXT_KCA,
+	  "this command has been renamed 'say-function'" },
+	{ "say-function",                   say_function_KCC,                   TEXT_KCA, NULL },
+	{ "printing-routine-for-debugging", -1,                                 TEXT_KCA,
+	  "this command has been withdrawn" },
+	{ "index-default-value",            index_default_value_KCC,            TEXT_KCA, NULL },
+	{ "index-maximum-value",            index_maximum_value_KCC,            TEXT_KCA, NULL },
+	{ "index-minimum-value",            index_minimum_value_KCC,            TEXT_KCA, NULL },
+	{ "loop-domain-schema",             loop_domain_schema_KCC,             TEXT_KCA, NULL },
+	{ "recognition-routine",            recognise_function_KCC,             TEXT_KCA,
+	  "this command has been renamed 'recognise-function'" },
+	{ "recognise-function",             recognise_function_KCC,             TEXT_KCA, NULL },
+	{ "specification-text",             specification_text_KCC,             TEXT_KCA, NULL },
 
-	{ "comparison-schema",              comparison_schema_KCC,              CONSTRUCTOR_KCA },
-	{ "compatible-with",                compatible_with_KCC,                CONSTRUCTOR_KCA },
-	{ "conforms-to",                    conforms_to_KCC,                    CONSTRUCTOR_KCA },
+	{ "create-function",                create_function_KCC,                TEXT_KCA, NULL },
+	{ "cast-function",                  cast_function_KCC,                  TEXT_KCA, NULL },
+	{ "copy-function",                  copy_function_KCC,                  TEXT_KCA, NULL },
+	{ "copy-short-block-function",      copy_short_block_function_KCC,      TEXT_KCA, NULL },
+	{ "quick-copy-function",            quick_copy_function_KCC,            TEXT_KCA, NULL },
+	{ "destroy-function",               destroy_function_KCC,               TEXT_KCA, NULL },
+	{ "make-mutable-function",          make_mutable_function_KCC,          TEXT_KCA, NULL },
+	{ "hash-function",                  hash_function_KCC,                  TEXT_KCA, NULL },
+	{ "long-block-size-function",       long_block_size_function_KCC,       TEXT_KCA, NULL },
+	{ "serialise-function",             serialise_function_KCC,             TEXT_KCA, NULL },
+	{ "unserialise-function",           unserialise_function_KCC,           TEXT_KCA, NULL },
 
-	{ "plural",                         plural_KCC,                         VOCABULARY_KCA },
-	{ "singular",                       singular_KCC,                       VOCABULARY_KCA },
+	{ "comparison-schema",              comparison_schema_KCC,              SCHEMA_KCA, NULL },
+	{ "compatible-with",                compatible_with_KCC,                CONSTRUCTOR_KCA, NULL },
+	{ "conforms-to",                    conforms_to_KCC,                    CONSTRUCTOR_KCA, NULL },
 
-	{ "terms",                          terms_KCC,                          TEXT_KCA },
-	{ "heap-size-estimate",             heap_size_estimate_KCC,             NUMERIC_KCA },
-	{ "index-priority",                 index_priority_KCC,                 NUMERIC_KCA },
-	{ "small-block-size",               small_block_size_KCC,               NUMERIC_KCA },
+	{ "plus-schema",	 				plus_schema_KCC,					SCHEMA_KCA, NULL }, 
+	{ "minus-schema",					minus_schema_KCC,					SCHEMA_KCA, NULL },
+	{ "times-schema",					times_schema_KCC,					SCHEMA_KCA, NULL },
+	{ "divide-schema",					divide_schema_KCC,					SCHEMA_KCA, NULL },
+	{ "remainder-schema",				remainder_schema_KCC,				SCHEMA_KCA, NULL },
+	{ "approximate-schema",				approximate_schema_KCC,				SCHEMA_KCA, NULL },
+	{ "negate-schema",					negate_schema_KCC,					SCHEMA_KCA, NULL },
+	{ "root-schema",					root_schema_KCC,					SCHEMA_KCA, NULL }, 
+	{ "cuberoot-schema",				cuberoot_schema_KCC,				SCHEMA_KCA, NULL },
+	{ "power-schema",					power_schema_KCC,					SCHEMA_KCA, NULL },
+	{ "arithmetic-modulus",				arithmetic_modulus_KCC,				NUMERIC_KCA, NULL },
+	{ "dimensionless",		 			dimensionless_KCC,					BOOLEAN_KCA, NULL },
 
-	{ "invent-source-text",             invent_source_text_KCC,             TEMPLATE_KCA },
+	{ "plural",                         plural_KCC,                         VOCABULARY_KCA, NULL },
+	{ "singular",                       singular_KCC,                       VOCABULARY_KCA, NULL },
 
-	{ "instance",                       instance_KCC, 			            TEXT_KCA },
+	{ "terms",                          terms_KCC,                          TEXT_KCA, NULL },
+	{ "index-priority",                 index_priority_KCC,                 NUMERIC_KCA, NULL },
+	{ "small-block-size",               short_block_size_KCC,               NUMERIC_KCA,
+	  "this command has been renamed 'short-block-size'" },
+	{ "short-block-size",               short_block_size_KCC,               NUMERIC_KCA, NULL },
 
-	{ "apply-macro",                    apply_macro_KCC,                    MACRO_KCA },
+	{ "invent-source-text",             invent_source_text_KCC,             TEMPLATE_KCA, NULL },
 
-	{ NULL, -1, NO_KCA }
+	{ "instance",                       instance_KCC, 			            TEXT_KCA, NULL },
+
+	{ "apply-macro",                    apply_macro_KCC,                    MACRO_KCA, NULL },
+
+	{ NULL, -1, NO_KCA, NULL }
 };
 
 @ When processing a command, we parse it into one of the following structures:
@@ -315,6 +382,7 @@ begin with those characters, but that doesn't matter for the things we need.
 		case NUMERIC_KCA: @<Parse a numeric argument for a kind command@>; break;
 		case TEMPLATE_KCA: @<Parse a template name argument for a kind command@>; break;
 		case TEXT_KCA: @<Parse a textual argument for a kind command@>; break;
+		case SCHEMA_KCA: @<Parse a schema argument for a kind command@>; break;
 		case VOCABULARY_KCA: @<Parse a vocabulary argument for a kind command@>; break;
 	}
 
@@ -332,6 +400,23 @@ so we neglect it.
 	if (stc.which_kind_command == NULL) {
 		NeptuneFiles::error(command, I"no such kind command", tfp);
 		stc.completed = TRUE; return stc;
+	}
+
+	if (stc.which_kind_command->opcode_number == -1) {
+		TEMPORARY_TEXT(err)
+		WRITE_TO(err, "%s: %s",
+			stc.which_kind_command->text_of_command, stc.which_kind_command->warning_if_used);
+		NeptuneFiles::error(command, err, tfp);
+		stc.completed = TRUE;
+		DISCARD_TEXT(err)
+		return stc;
+	}
+	if (stc.which_kind_command->warning_if_used) {
+		TEMPORARY_TEXT(err)
+		WRITE_TO(err, "%s: %s",
+			stc.which_kind_command->text_of_command, stc.which_kind_command->warning_if_used);
+		NeptuneFiles::warning(command, err, tfp);
+		DISCARD_TEXT(err)
 	}
 
 @<Parse a boolean argument for a kind command@> =
@@ -353,6 +438,16 @@ so we neglect it.
 @<Parse a textual argument for a kind command@> =
 	Str::copy(stc.textual_argument, argument);
 
+@<Parse a schema argument for a kind command@> =
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, argument, U"(%c*?)>>>(%c+)")) {
+		Str::copy(stc.constructor_argument, mr.exp[0]);
+		Str::copy(stc.textual_argument, mr.exp[1]);
+	} else {
+		Str::copy(stc.textual_argument, argument);
+	}
+	Regexp::dispose_of(&mr);
+
 @<Parse a vocabulary argument for a kind command@> =
 	stc.vocabulary_argument = WordAssemblages::lit_0();
 	feed_t id = Feeds::begin();
@@ -368,12 +463,6 @@ so we neglect it.
 	stc.numeric_argument = Str::atoi(argument, 0);
 
 @<Parse a constructor-name argument for a kind command@> =
-	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, argument, U"(%c*?)>>>(%c+)")) {
-		Str::copy(argument, mr.exp[0]);
-		Str::copy(stc.textual_argument, mr.exp[1]);
-		Regexp::dispose_of(&mr);
-	}
 	stc.constructor_argument = Str::duplicate(argument);
 
 @<Parse a template name argument for a kind command@> =
