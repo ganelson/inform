@@ -658,8 +658,15 @@ int IDTypeData::arithmetic_operation(id_body *idb) {
 }
 
 int IDTypeData::is_arithmetic_phrase(id_body *idb) {
-	if ((IDTypeData::arithmetic_operation(idb) >= 0) &&
-		(IDTypeData::arithmetic_operation(idb) < NO_OPERATIONS)) return TRUE;
+	if (IDTypeData::arithmetic_operation(idb) == PLUS_OPERATION) return TRUE;
+	if (IDTypeData::arithmetic_operation(idb) == MINUS_OPERATION) return TRUE;
+	if (IDTypeData::arithmetic_operation(idb) == TIMES_OPERATION) return TRUE;
+	if (IDTypeData::arithmetic_operation(idb) == DIVIDE_OPERATION) return TRUE;
+	if (IDTypeData::arithmetic_operation(idb) == REMAINDER_OPERATION) return TRUE;
+	if (IDTypeData::arithmetic_operation(idb) == APPROXIMATE_OPERATION) return TRUE;
+	if (IDTypeData::arithmetic_operation(idb) == ROOT_OPERATION) return TRUE;
+	if (IDTypeData::arithmetic_operation(idb) == REALROOT_OPERATION) return TRUE;
+	if (IDTypeData::arithmetic_operation(idb) == CUBEROOT_OPERATION) return TRUE;
 	return FALSE;
 }
 

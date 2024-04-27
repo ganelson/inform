@@ -1,0 +1,10 @@
+{
+    "is": {
+        "type": "kit",
+        "title": "MemoryAddressesKit",
+        "version": "1"
+    },
+	"kit-details": {
+		"provides-kinds": [ "MemoryAddresses.neptune" ]
+	}
+}

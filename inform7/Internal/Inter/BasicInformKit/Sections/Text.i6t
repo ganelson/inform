@@ -35,10 +35,11 @@ Constant UNPACKED_TEXT_STORAGE            = BLK_BVBITMAP_TEXT + BLK_BVBITMAP_LON
 
 @h Extent Of Long Block.
 When there's a long block, we need enough of the entries to store the
-number of characters, plus one for the null terminator.
+number of characters, plus one for the null terminator. This is called only
+in the course of a deep copy, so, not very often.
 
 =
-[ TEXT_TY_Extent arg1 x;
+[ TEXT_TY_LongBlockSize arg1 x;
 	x = BlkValueSeekZeroEntry(arg1);
 	if (x < 0) return -1; ! should not happen, of course
 	return x+1;
@@ -66,33 +67,6 @@ Constant TEXT_TY_Storage_Flags = BLK_FLAG_MULTIPLE;
 Constant TEXT_TY_Storage_Flags = BLK_FLAG_MULTIPLE + BLK_FLAG_WORD;
 #Endif; ! CHARSIZE
 
-@h KOV Support.
-See the "BlockValues.i6t" segment for the specification of the following
-routines. Because no block values are ever stored in a text, they can
-freely be bitwise copied or forgotten, which is why we need do nothing
-special to copy or destroy a text.
-
-=
-[ TEXT_TY_Support task arg1 arg2 arg3;
-	switch(task) {
-		CREATE_KOVS:      return TEXT_TY_Create(arg2);
-		CAST_KOVS:        TEXT_TY_Cast(arg1, arg2, arg3);
-		MAKEMUTABLE_KOVS: return TEXT_TY_Mutable(arg1);
-		COPYQUICK_KOVS:   rtrue;
-		COPYSB_KOVS:	  TEXT_TY_CopySB(arg1, arg2);
-		KINDDATA_KOVS:    return 0;
-		EXTENT_KOVS:      return TEXT_TY_Extent(arg1);
-		COMPARE_KOVS:     return TEXT_TY_Compare(arg1, arg2);
-		READ_FILE_KOVS:   if (arg3 == -1) rtrue;
-			              return TEXT_TY_ReadFile(arg1, arg2, arg3);
-		WRITE_FILE_KOVS:  return TEXT_TY_WriteFile(arg1);
-		HASH_KOVS:        return TEXT_TY_Hash(arg1);
-		DEBUG_KOVS:       TEXT_TY_Debug(arg1);
-	}
-	! We choose not to respond to: DESTROY_KOVS, COPYKIND_KOVS, COPY_KOVS
-	rfalse;
-];
-
 @h Debugging.
 This shows the various forms a text's short block can take:
 
@@ -114,8 +88,19 @@ A newly created text is a two-word short block with no long block, like this:
 =
 
 =
-[ TEXT_TY_Create short_block x;
-	return BlkValueCreateSB2(short_block, PACKED_TEXT_STORAGE, EMPTY_TEXT_PACKED);
+[ TEXT_TY_Create kind_id sb_address
+	short_block;
+	short_block = CreatePVShortBlock(sb_address, kind_id);
+	short_block-->0 = PACKED_TEXT_STORAGE;
+	short_block-->1 = EMPTY_TEXT_PACKED;
+	return short_block;
+];
+
+@h Copy.
+
+=
+[ TEXT_TY_Copy to_bv from_bv kind recycling;
+	CopyPVRawData(to_bv, from_bv, kind, recycling);
 ];
 
 @h Copy Short Block.
@@ -123,8 +108,8 @@ When a short block for a constant is copied, the new copy isn't a constant
 any more.
 
 =
-[ TEXT_TY_CopySB to_bv from_bv;
-	BlkValueCopySB2(to_bv, from_bv);
+[ TEXT_TY_CopyShortBlock to_bv from_bv;
+	CopyPVShortBlock(to_bv, from_bv, 2);
 	if (to_bv-->0 & BLK_BVBITMAP_CONSTANTMASK) to_bv-->0 = PACKED_TEXT_STORAGE;
 ];
 
@@ -170,9 +155,9 @@ constants are never created in unpacked form.)
 [ TEXT_TY_Mutable txt;
 	if (txt-->0 & BLK_BVBITMAP_LONGBLOCKMASK == 0) {
 		TEXT_TY_Transmute(txt);
-		return 0;
+		rfalse;
 	}
-	return 2; ! Tell BlockValue there's a long block pointer
+	rtrue; ! Tell BlockValue there's a long block pointer
 ];
 
 @h Casting.
@@ -183,15 +168,15 @@ cast here is that a snippet can be turned into a text.
 =
 [ TEXT_TY_Cast to_txt from_kind from_value;
 	if (from_kind == TEXT_TY) {
-		BlkValueCopy(to_txt, from_value);
+		CopyPV(to_txt, from_value);
 	} else if (from_kind == SNIPPET_TY) {
 		TEXT_TY_Transmute(to_txt);
 		TEXT_TY_CastPrimitive(to_txt, true, from_value);
-	} else BlkValueError("impossible cast to text");
+	}
 ];
 
 [ SNIPPET_TY_to_TEXT_TY to_txt snippet;
-	return BlkValueCast(to_txt, SNIPPET_TY, snippet);
+	return CastPV(to_txt, SNIPPET_TY, snippet);
 ];
 
 @h Data Conversion.
@@ -238,7 +223,6 @@ it's clearer to give two definitions, so:
 =
 #ifdef TARGET_ZCODE;
 [ TEXT_TY_CastPrimitive to_txt from_snippet from_value  len news buffer;
-	if (to_txt == 0) BlkValueError("no destination for cast");
 	SuspendRTP();
 	buffer = RawBufferAddress + TEXT_TY_CastPrimitiveNesting*TEXT_TY_BufferSize;
 	TEXT_TY_CastPrimitiveNesting++;
@@ -261,7 +245,7 @@ it's clearer to give two definitions, so:
 	buffer->(len+2) = 0;
 
 	TEXT_TY_CastPrimitiveNesting--;
-	BlkValueMassCopyFromArray(to_txt, buffer+2, 1, len+1);
+	WritePVFieldsFromByteArray(to_txt, buffer+2, len+1);
 ];
 
 @h Glulx Version.
@@ -270,9 +254,6 @@ it's clearer to give two definitions, so:
 #ifnot; ! TARGET_ZCODE
 [ TEXT_TY_CastPrimitive to_txt from_snippet from_value
 	len i stream saved_stream news buffer buffer_size memory_to_free results;
-
-	if (to_txt == 0) BlkValueError("no destination for cast");
-
 	buffer_size = (TEXT_TY_BufferSize + 2)*WORDSIZE;
 
 	RawBufferSize = TEXT_TY_BufferSize;
@@ -322,7 +303,7 @@ it's clearer to give two definitions, so:
 	buffer-->(len) = 0;
 
 	TEXT_TY_CastPrimitiveNesting--;
-	BlkValueMassCopyFromArray(to_txt, buffer, 4, len+1);
+	WritePVFieldsFromWordArray(to_txt, buffer, len+1);
 	if (memory_to_free) VM_FreeMemory(memory_to_free);
 ];
 #endif;
@@ -368,11 +349,11 @@ and "17" can be equal as texts if X is 17.
 		TEXT_TY_Untransmute(right_txt, cr, cpr);
 		return pos;
 	}
-	capacity_left = BlkValueLBCapacity(left_txt);
-	capacity_right = BlkValueLBCapacity(right_txt);
+	capacity_left = PVFieldCapacity(left_txt);
+	capacity_right = PVFieldCapacity(right_txt);
 	for (pos=0:(pos<capacity_left) && (pos<capacity_right):pos++) {
-		ch1 = BlkValueRead(left_txt, pos);
-		ch2 = BlkValueRead(right_txt, pos);
+		ch1 = PVField(left_txt, pos);
+		ch2 = PVField(right_txt, pos);
 		if (ch1 ~= ch2) return ch1-ch2;
 		if (ch1 == 0) return 0;
 	}
@@ -392,9 +373,9 @@ This calculates a hash value for the string, using Bernstein's algorithm.
 [ TEXT_TY_Hash txt  rv len i p cp;
 	cp = txt-->0; p = TEXT_TY_Temporarily_Transmute(txt);
 	rv = 0;
-	len = BlkValueLBCapacity(txt);
+	len = PVFieldCapacity(txt);
 	for (i=0: i<len: i++)
-		rv = rv * 33 + BlkValueRead(txt, i);
+		rv = rv * 33 + PVField(txt, i);
 	TEXT_TY_Untransmute(txt, p, cp);
 	return rv;
 ];
@@ -405,9 +386,9 @@ This calculates a hash value for the string, using Bernstein's algorithm.
 [ TEXT_TY_Say txt  ch i dsize;
 	if (txt==0) rfalse;
 	if (txt-->0 & BLK_BVBITMAP_LONGBLOCKMASK == 0) return PrintI6Text(txt-->1);
-	dsize = BlkValueLBCapacity(txt);
+	dsize = PVFieldCapacity(txt);
 	for (i=0: i<dsize: i++) {
-		ch = BlkValueRead(txt, i);
+		ch = PVField(txt, i);
 		if (ch == 0) break;
 		print (char) ch;
 	}
@@ -420,15 +401,15 @@ It turns out to be useful to have a variation on this:
 
 =
 [ TEXT_TY_Say_Capitalised txt mod rc;
-	mod = BlkValueCreate(TEXT_TY);
+	mod = CreatePV(TEXT_TY);
 	TEXT_TY_SubstitutedForm(mod, txt);
 	if (TEXT_TY_CharacterLength(mod) > 0) {
-		BlkValueWrite(mod, 0, CharToCase(BlkValueRead(mod, 0), 1));
+		WritePVField(mod, 0, CharToCase(PVField(mod, 0), 1));
 		TEXT_TY_Say(mod);
 		rc = true;
 		say__p = 1;
 	}
-	BlkValueFree(mod);
+	DestroyPV(mod);
 	return rc;
 ];
 
@@ -442,12 +423,12 @@ of decimal character codes, ending with the null terminator, and followed by
 a semicolon: thus |S65,66,67,0;| is the serialised form of the text "ABC".
 
 =
-[ TEXT_TY_WriteFile txt len pos ch p cp;
+[ TEXT_TY_Serialise txt len pos ch p cp;
 	cp = txt-->0; p = TEXT_TY_Temporarily_Transmute(txt);
-	len = BlkValueLBCapacity(txt);
+	len = PVFieldCapacity(txt);
 	print "S";
 	for (pos=0: pos<=len: pos++) {
-		if (pos == len) ch = 0; else ch = BlkValueRead(txt, pos);
+		if (pos == len) ch = 0; else ch = PVField(txt, pos);
 		if (ch == 0) {
 			print "0;"; break;
 		} else {
@@ -463,17 +444,18 @@ characters from a file and reconstruct the text which gave rise to
 them.
 
 =
-[ TEXT_TY_ReadFile txt auxf ch i v dg pos tsize p;
+[ TEXT_TY_Unserialise txt auxf ch i v dg pos tsize p;
+	if (ch == -1) rtrue;
 	TEXT_TY_Transmute(txt);
-	tsize = BlkValueLBCapacity(txt);
+	tsize = PVFieldCapacity(txt);
 	while (ch ~= 32 or 9 or 10 or 13 or 0 or -1) {
 		ch = FileIO_GetC(auxf);
 		if (ch == ',' or ';') {
 			if (pos+1 >= tsize) {
-				if (BlkValueSetLBCapacity(txt, 2*pos) == false) break;
-				tsize = BlkValueLBCapacity(txt);
+				if (SetPVFieldCapacity(txt, 2*pos) == false) break;
+				tsize = PVFieldCapacity(txt);
 			}
-			BlkValueWrite(txt, pos++, v);
+			WritePVField(txt, pos++, v);
 			v = 0;
 			if (ch == ';') break;
 		} else {
@@ -481,7 +463,7 @@ them.
 			v = v*10 + dg;
 		}
 	}
-	BlkValueWrite(txt, pos, 0);
+	WritePVField(txt, pos, 0);
 	return txt;
 ];
 
@@ -490,7 +472,7 @@ them.
 =
 [ TEXT_TY_SubstitutedForm to txt;
 	if (txt) {
-		BlkValueCopy(to, txt);
+		CopyPV(to, txt);
 		TEXT_TY_Transmute(to);
 	}
 	return to;
@@ -575,23 +557,23 @@ Constant ACCEPTEDPN_BRM = 6;
 ];
 [ TEXT_TY_BlobAccessI txt blobtype ctxt wanted rtxt
 	brm oldbrm ch i dsize blobcount gp cl j;
-	dsize = BlkValueLBCapacity(txt);
+	dsize = PVFieldCapacity(txt);
 	if ((rtxt) && (ctxt == 0)) "*** rtxt without ctxt ***";
 	brm = WS_BRM;
 	for (i=0:i<dsize:i++) {
-		ch = BlkValueRead(txt, i);
+		ch = PVField(txt, i);
 		if (ch == 0) break;
 		oldbrm = brm;
 		if (ch == 10 or 13 or 32 or 9) {
 			if (oldbrm ~= WS_BRM) {
 				gp = 0;
 				for (j=i:j<dsize:j++) {
-					ch = BlkValueRead(txt, j);
+					ch = PVField(txt, j);
 					if (ch == 0) { brm = WS_BRM; break; }
 					if (ch == 10 or 13) { gp++; continue; }
 					if (ch ~= 32 or 9) break;
 				}
-				ch = BlkValueRead(txt, i);
+				ch = PVField(txt, i);
 				if (j == dsize) brm = WS_BRM;
 				switch (blobtype) {
 					PARA_BLOB: if (gp >= 2) brm = WS_BRM;
@@ -630,7 +612,7 @@ Constant ACCEPTEDPN_BRM = 6;
 					if (blobtype == PWORD_BLOB) {
 						if (gp == false) brm = ACCEPTED_BRM;
 						else {
-							if ((ch == BlkValueRead(txt, i-1)) &&
+							if ((ch == PVField(txt, i-1)) &&
 								(ch == '-' or '.')) blobcount--;
 							blobcount++;
 						}
@@ -646,7 +628,7 @@ Constant ACCEPTEDPN_BRM = 6;
 					if (blobtype == PWORD_BLOB) {
 						if (gp == false) brm = ACCEPTED_BRM;
 						else {
-							if ((ch == BlkValueRead(txt, i-1)) &&
+							if ((ch == PVField(txt, i-1)) &&
 								(ch == '-' or '.')) blobcount--;
 							blobcount++;
 						}
@@ -657,42 +639,42 @@ Constant ACCEPTEDPN_BRM = 6;
 			if (oldbrm ~= brm) blobcount++;
 			if ((ctxt) && (blobcount == wanted)) {
 				if (rtxt) {
-					if (cl+1 >= BlkValueLBCapacity(ctxt)) {
-						if (BlkValueSetLBCapacity(ctxt, 2*cl) == false) break;
+					if (cl+1 >= PVFieldCapacity(ctxt)) {
+						if (SetPVFieldCapacity(ctxt, 2*cl) == false) break;
 					}
-					BlkValueWrite(ctxt, cl, 0);
+					WritePVField(ctxt, cl, 0);
 					TEXT_TY_Concatenate(ctxt, rtxt, CHR_BLOB);
 					cl = TEXT_TY_CharacterLength(ctxt);
 					if (brm == ACCEPTED_BRM) brm = ACCEPTEDN_BRM;
 					if (brm == ACCEPTEDP_BRM) brm = ACCEPTEDPN_BRM;
 				} else {
-					if (cl+1 >= BlkValueLBCapacity(ctxt)) {
-						if (BlkValueSetLBCapacity(ctxt, 2*cl) == false) break;
+					if (cl+1 >= PVFieldCapacity(ctxt)) {
+						if (SetPVFieldCapacity(ctxt, 2*cl) == false) break;
 					}
-					BlkValueWrite(ctxt, cl++, ch);
+					WritePVField(ctxt, cl++, ch);
 				}
 			} else {
 				if (rtxt) {
-					if (cl+1 >= BlkValueLBCapacity(ctxt)) {
-						if (BlkValueSetLBCapacity(ctxt, 2*cl) == false) break;
+					if (cl+1 >= PVFieldCapacity(ctxt)) {
+						if (SetPVFieldCapacity(ctxt, 2*cl) == false) break;
 					}
-					BlkValueWrite(ctxt, cl++, ch);
+					WritePVField(ctxt, cl++, ch);
 				}
 			}
 		} else {
 			if ((rtxt) && (brm ~= ACCEPTEDN_BRM or ACCEPTEDPN_BRM)) {
-				if (cl+1 >= BlkValueLBCapacity(ctxt)) {
-					if (BlkValueSetLBCapacity(ctxt, 2*cl) == false) break;
+				if (cl+1 >= PVFieldCapacity(ctxt)) {
+					if (SetPVFieldCapacity(ctxt, 2*cl) == false) break;
 				}
-				BlkValueWrite(ctxt, cl++, ch);
+				WritePVField(ctxt, cl++, ch);
 			}
 		}
 	}
 	if (ctxt) {
-		if (cl+1 >= BlkValueLBCapacity(ctxt)) {
-			BlkValueSetLBCapacity(ctxt, 2*cl);
+		if (cl+1 >= PVFieldCapacity(ctxt)) {
+			SetPVFieldCapacity(ctxt, 2*cl);
 		}
-		BlkValueWrite(ctxt, cl++, 0);
+		WritePVField(ctxt, cl++, 0);
 	}
 	return blobcount;
 ];
@@ -723,28 +705,28 @@ characters are handled directly to avoid incurring all that overhead.)
 		wanted--;
 		if ((wanted >= 0) && (wanted<ilen)) {
 			if (rlen == 1) {
-				BlkValueWrite(txt, wanted, BlkValueRead(rtxt, 0));
+				WritePVField(txt, wanted, PVField(rtxt, 0));
 			} else {
-				ctxt = BlkValueCreate(TEXT_TY);
+				ctxt = CreatePV(TEXT_TY);
 				TEXT_TY_Transmute(ctxt);
-				if (BlkValueSetLBCapacity(ctxt, ilen+rlen+1)) {
+				if (SetPVFieldCapacity(ctxt, ilen+rlen+1)) {
 					for (i=0:i<wanted:i++)
-						BlkValueWrite(ctxt, i, BlkValueRead(txt, i));
+						WritePVField(ctxt, i, PVField(txt, i));
 					for (i=0:i<rlen:i++)
-						BlkValueWrite(ctxt, wanted+i, BlkValueRead(rtxt, i));
+						WritePVField(ctxt, wanted+i, PVField(rtxt, i));
 					for (i=wanted+1:i<ilen:i++)
-						BlkValueWrite(ctxt, rlen+i-1, BlkValueRead(txt, i));
-					BlkValueWrite(ctxt, rlen+ilen, 0);
-					BlkValueCopy(txt, ctxt);
+						WritePVField(ctxt, rlen+i-1, PVField(txt, i));
+					WritePVField(ctxt, rlen+ilen, 0);
+					CopyPV(txt, ctxt);
 				}
-				BlkValueFree(ctxt);
+				DestroyPV(ctxt);
 			}
 		}
 	} else {
-		ctxt = BlkValueCreate(TEXT_TY);
+		ctxt = CreatePV(TEXT_TY);
 		TEXT_TY_BlobAccess(txt, blobtype, ctxt, wanted, rtxt);
-		BlkValueCopy(txt, ctxt);
-		BlkValueFree(ctxt);
+		CopyPV(txt, ctxt);
+		DestroyPV(ctxt);
 	}
 	TEXT_TY_Untransmute(rtxt, p, cp);
 ];
@@ -779,16 +761,16 @@ than something literal to find: see "RegExp.i6t" for what happens next.
 
 	ilen = TEXT_TY_CharacterLength(txt);
 	flen = TEXT_TY_CharacterLength(ftxt);
-	ctxt = BlkValueCreate(TEXT_TY);
+	ctxt = CreatePV(TEXT_TY);
 	TEXT_TY_Transmute(ctxt);
-	csize = BlkValueLBCapacity(ctxt);
+	csize = PVFieldCapacity(ctxt);
 	mpos = 0;
 
 	whitespace = true; punctuation = false;
 	for (i=0:i<=ilen:i++) {
-		ch = BlkValueRead(txt, i);
+		ch = PVField(txt, i);
 		.MoreMatching;
-		chm = BlkValueRead(ftxt, mpos++);
+		chm = PVField(ftxt, mpos++);
 		if (mpos == 1) {
 			switch (blobtype) {
 				WORD_BLOB:
@@ -807,7 +789,7 @@ than something literal to find: see "RegExp.i6t" for what happens next.
 		if (ch == chm) {
 			if (mpos == flen) {
 				if (i == ilen) chm = 0;
-				else chm = BlkValueRead(txt, i+1);
+				else chm = PVField(txt, i+1);
 				if ((blobtype == CHR_BLOB) ||
 					(chm == 0 or 10 or 13 or 32 or 9) ||
 					(chm == '.' or ',' or '!' or '?'
@@ -815,9 +797,9 @@ than something literal to find: see "RegExp.i6t" for what happens next.
 						or '(' or ')' or '[' or ']' or '{' or '}')) {
 					mpos = 0;
 					cl = cl - (flen-1);
-					BlkValueWrite(ctxt, cl, 0);
+					WritePVField(ctxt, cl, 0);
 					TEXT_TY_Concatenate(ctxt, rtxt, CHR_BLOB);
-					csize = BlkValueLBCapacity(ctxt);
+					csize = PVFieldCapacity(ctxt);
 					cl = TEXT_TY_CharacterLength(ctxt);
 					continue;
 				}
@@ -826,13 +808,13 @@ than something literal to find: see "RegExp.i6t" for what happens next.
 			mpos = 0;
 		}
 		if (cl+1 >= csize) {
-			if (BlkValueSetLBCapacity(ctxt, 2*cl) == false) break;
-			csize = BlkValueLBCapacity(ctxt);
+			if (SetPVFieldCapacity(ctxt, 2*cl) == false) break;
+			csize = PVFieldCapacity(ctxt);
 		}
-		BlkValueWrite(ctxt, cl++, ch);
+		WritePVField(ctxt, cl++, ch);
 	}
-	BlkValueCopy(txt, ctxt);
-	BlkValueFree(ctxt);
+	CopyPV(txt, ctxt);
+	DestroyPV(ctxt);
 ];
 
 @h Character Length.
@@ -843,9 +825,9 @@ and we needn't go through any finite state machine palaver.
 [ TEXT_TY_CharacterLength txt ch i dsize p cp r;
 	if (txt==0) return 0;
 	cp = txt-->0; p = TEXT_TY_Temporarily_Transmute(txt);
-	dsize = BlkValueLBCapacity(txt); r = dsize;
+	dsize = PVFieldCapacity(txt); r = dsize;
 	for (i=0:i<dsize:i++) {
-		ch = BlkValueRead(txt, i);
+		ch = PVField(txt, i);
 		if (ch == 0) { r = i; break; }
 	}
 	TEXT_TY_Untransmute(txt, p, cp);
@@ -873,9 +855,9 @@ block-value, which counts from 0.
 	cp = txt-->0; p = TEXT_TY_Temporarily_Transmute(txt);
 	TEXT_TY_Transmute(ctxt);
 	if ((i<=0) || (i>TEXT_TY_CharacterLength(txt))) ch = 0;
-	else ch = BlkValueRead(txt, i-1);
-	BlkValueWrite(ctxt, 0, ch);
-	BlkValueWrite(ctxt, 1, 0);
+	else ch = PVField(txt, i-1);
+	WritePVField(ctxt, 0, ch);
+	WritePVField(ctxt, 1, 0);
 	TEXT_TY_Untransmute(txt, p, cp);
 	return ctxt;
 ];
@@ -901,7 +883,7 @@ long.
 	len = TEXT_TY_CharacterLength(txt);
 	r = true;
 	for (i=0:i<len:i++) {
-		ch = BlkValueRead(txt, i);
+		ch = PVField(txt, i);
 		if ((ch) && (CharIsOfCase(ch, case) == false)) { r = false; break; }
 	}
 	TEXT_TY_Untransmute(txt, p, cp);
@@ -920,14 +902,14 @@ are as specified in the ZSCII and Unicode standards.
 	cp = txt-->0; pk = TEXT_TY_Temporarily_Transmute(txt);
 	TEXT_TY_Transmute(ctxt);
 	len = TEXT_TY_CharacterLength(txt);
-	if (BlkValueSetLBCapacity(ctxt, len+1)) {
+	if (SetPVFieldCapacity(ctxt, len+1)) {
 		bnd = 1;
 		for (i=0:i<len:i++) {
-			ch = BlkValueRead(txt, i);
+			ch = PVField(txt, i);
 			if (case < 2) {
-				BlkValueWrite(ctxt, i, CharToCase(ch, case));
+				WritePVField(ctxt, i, CharToCase(ch, case));
 			} else {
-				BlkValueWrite(ctxt, i, CharToCase(ch, bnd));
+				WritePVField(ctxt, i, CharToCase(ch, bnd));
 				if (case == 2) {
 					bnd = 0;
 					if (ch == 0 or 10 or 13 or 32 or 9
@@ -945,7 +927,7 @@ are as specified in the ZSCII and Unicode standards.
 				}
 			}
 		}
-		BlkValueWrite(ctxt, len, 0);
+		WritePVField(ctxt, len, 0);
 	}
 	TEXT_TY_Untransmute(txt, pk, cp);
 	return ctxt;
@@ -979,12 +961,12 @@ expression search-and-replace is going on: see "RegExp.i6t".
 		CHR_BLOB, 0:
 			pos = TEXT_TY_CharacterLength(to_txt);
 			len = TEXT_TY_CharacterLength(from_txt);
-			if (BlkValueSetLBCapacity(to_txt, pos+len+1) == false) return to_txt;
+			if (SetPVFieldCapacity(to_txt, pos+len+1) == false) return to_txt;
 			for (i=0:i<len:i++) {
-				ch = BlkValueRead(from_txt, i);
-				BlkValueWrite(to_txt, i+pos, ch);
+				ch = PVField(from_txt, i);
+				WritePVField(to_txt, i+pos, ch);
 			}
-			BlkValueWrite(to_txt, len+pos, 0);
+			WritePVField(to_txt, len+pos, 0);
 			return to_txt;
 		REGEXP_BLOB:
 			return TEXT_TY_RE_Concatenate(to_txt, from_txt, blobtype, ref_txt);

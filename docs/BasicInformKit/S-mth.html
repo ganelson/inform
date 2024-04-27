@@ -64,9 +64,23 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">BasicInformKit</a></li><li><b>Mathematics Template</b></li></ul></div>
 <p class="purpose">Mathematical functions which involve integers.</p>
 
-<ul class="toc"><li><a href="S-mth.html#SP1">&#167;1. Square Root</a></li><li><a href="S-mth.html#SP2">&#167;2. Cube Root</a></li><li><a href="S-mth.html#SP3">&#167;3. Absolute value</a></li><li><a href="S-mth.html#SP4">&#167;4. IntegerDivide</a></li><li><a href="S-mth.html#SP5">&#167;5. IntegerRemainder</a></li><li><a href="S-mth.html#SP6">&#167;6. SignedCompare</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-mth.html#SP1">&#167;1. Modular arithmetic</a></li><li><a href="S-mth.html#SP2">&#167;2. Square Root</a></li><li><a href="S-mth.html#SP3">&#167;3. Cube Root</a></li><li><a href="S-mth.html#SP4">&#167;4. Absolute value</a></li><li><a href="S-mth.html#SP5">&#167;5. IntegerDivide</a></li><li><a href="S-mth.html#SP6">&#167;6. IntegerRemainder</a></li><li><a href="S-mth.html#SP7">&#167;7. SignedCompare</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Square Root. </b>We only calculate by hand if we have to.
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Modular arithmetic. </b>For every integer n there is a unique congruence class 0, 1, ..., m-1 modulo m
+to which that integer belongs, and this function returns it. Note that the
+normal I6 operation % is signed, which is why we need this function.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">[ </span><span class="identifier-syntax">CongruenceClass</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> </span><span class="identifier-syntax">modulus</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">modulus</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">n</span><span class="plain-syntax">%</span><span class="identifier-syntax">modulus</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> + </span><span class="identifier-syntax">modulus</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Square Root. </b>We only calculate by hand if we have to.
 </p>
 
 <p class="commentary">The slower integer method is an old algorithm for extracting binary square
@@ -106,7 +120,7 @@ number which cannot be negated in 32-bit twos complement arithmetic.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">res</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Cube Root. </b>Again, the technique here is a fallback measure. It's an iterative scheme for
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Cube Root. </b>Again, the technique here is a fallback measure. It's an iterative scheme for
 finding cube roots by Newton-Raphson approximation, not a great method but which,
 on the narrow ranges of integers we deal with, just about good enough. The square
 root is used only as a sighting shot.
@@ -121,13 +135,13 @@ root is used only as a sighting shot.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Absolute value. </b>Of an integer:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Absolute value. </b>Of an integer:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">NUMBER_TY_Abs</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">; </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">x</span><span class="plain-syntax">&lt;0) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -</span><span class="identifier-syntax">x</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. IntegerDivide. </b>We can't simply use I6's <span class="extract"><span class="extract-syntax">/</span></span> operator, as that translates directly into a
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. IntegerDivide. </b>We can't simply use I6's <span class="extract"><span class="extract-syntax">/</span></span> operator, as that translates directly into a
 virtual machine opcode which crashes on divide by zero.
 </p>
 
@@ -137,7 +151,7 @@ virtual machine opcode which crashes on divide by zero.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax">/</span><span class="identifier-syntax">B</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. IntegerRemainder. </b>Similarly.
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. IntegerRemainder. </b>Similarly.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -146,7 +160,7 @@ virtual machine opcode which crashes on divide by zero.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax">%</span><span class="identifier-syntax">B</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. SignedCompare. </b>This routine is hardly ever needed; it wraps up ordinary comparisons.
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. SignedCompare. </b>This routine is hardly ever needed; it wraps up ordinary comparisons.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -157,7 +171,7 @@ virtual machine opcode which crashes on divide by zero.
 <span class="plain-syntax">];</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="S-prg.html">&#10094;</a></li><li class="progresssection"><a href="S-dfn.html">dfn</a></li><li class="progresssection"><a href="S-str.html">str</a></li><li class="progresssection"><a href="S-utl.html">utl</a></li><li class="progresssection"><a href="S-prg.html">prg</a></li><li class="progresscurrent">mth</li><li class="progresssection"><a href="S-srt.html">srt</a></li><li class="progresssection"><a href="S-tbl.html">tbl</a></li><li class="progresssection"><a href="S-mst.html">mst</a></li><li class="progresssection"><a href="S-rlb.html">rlb</a></li><li class="progresssection"><a href="S-act.html">act</a></li><li class="progresssection"><a href="S-prn.html">prn</a></li><li class="progresssection"><a href="S-flx.html">flx</a></li><li class="progresssection"><a href="S-blc.html">blc</a></li><li class="progresssection"><a href="S-txt.html">txt</a></li><li class="progresssection"><a href="S-chr.html">chr</a></li><li class="progresssection"><a href="S-rgx.html">rgx</a></li><li class="progresssection"><a href="S-lst.html">lst</a></li><li class="progresssection"><a href="S-cmb.html">cmb</a></li><li class="progresssection"><a href="S-rlt.html">rlt</a></li><li class="progresssection"><a href="S-rlt2.html">rlt2</a></li><li class="progresssection"><a href="S-prp.html">prp</a></li><li class="progresssection"><a href="S-rtp.html">rtp</a></li><li class="progressnext"><a href="S-srt.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="S-prg.html">&#10094;</a></li><li class="progresssection"><a href="S-dfn.html">dfn</a></li><li class="progresssection"><a href="S-str.html">str</a></li><li class="progresssection"><a href="S-utl.html">utl</a></li><li class="progresssection"><a href="S-prg.html">prg</a></li><li class="progresscurrent">mth</li><li class="progresssection"><a href="S-srt.html">srt</a></li><li class="progresssection"><a href="S-tbl.html">tbl</a></li><li class="progresssection"><a href="S-mst.html">mst</a></li><li class="progresssection"><a href="S-rlb.html">rlb</a></li><li class="progresssection"><a href="S-act.html">act</a></li><li class="progresssection"><a href="S-prn.html">prn</a></li><li class="progresssection"><a href="S-flx.html">flx</a></li><li class="progresssection"><a href="S-blc.html">blc</a></li><li class="progresssection"><a href="S-knd.html">knd</a></li><li class="progresssection"><a href="S-txt.html">txt</a></li><li class="progresssection"><a href="S-chr.html">chr</a></li><li class="progresssection"><a href="S-rgx.html">rgx</a></li><li class="progresssection"><a href="S-lst.html">lst</a></li><li class="progresssection"><a href="S-cmb.html">cmb</a></li><li class="progresssection"><a href="S-rlt.html">rlt</a></li><li class="progresssection"><a href="S-rlt2.html">rlt2</a></li><li class="progresssection"><a href="S-prp.html">prp</a></li><li class="progresssection"><a href="S-rtp.html">rtp</a></li><li class="progressnext"><a href="S-srt.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

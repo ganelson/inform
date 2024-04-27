@@ -86,6 +86,9 @@ glui32 do_gestalt(glui32 val, glui32 val2)
     return 0; /* Neither float nor double opcodes are compiled in. */
 #endif /* FLOAT_SUPPORT */
 
+  case gestulx_CPUTick:
+    return profile_opcount; /* Added by GN */
+
 #ifdef GLULX_EXTEND_GESTALT
   GLULX_EXTEND_GESTALT
 #endif /* GLULX_EXTEND_GESTALT */

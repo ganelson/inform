@@ -129,7 +129,7 @@ int Relations::Universal::schema(bp_family *self, int task, binary_predicate *bp
 	if (bp == R_meaning) {
 		switch(task) {
 			case TEST_ATOM_TASK:
-				Calculus::Schemas::modify(asch->schema, "*=-(BlkValueCompare(*1(CV_MEANING), *2)==0)");
+				Calculus::Schemas::modify(asch->schema, "*=-(ComparePV(*1(CV_MEANING), *2)==0)");
 				return TRUE;
 		}
 	} else {

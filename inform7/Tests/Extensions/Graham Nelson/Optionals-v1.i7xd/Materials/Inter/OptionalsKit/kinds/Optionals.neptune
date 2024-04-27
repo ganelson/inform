@@ -1,0 +1,19 @@
+new constructor OPTIONAL_TY {
+	conforms-to: POINTER_VALUE_TY
+	conforms-to: SAYABLE_VALUE_TY
+	singular: optional k
+	plural: optional k
+	terms: covariant
+	
+	short-block-size: 1
+
+	say-function: OPTIONAL_TY_Say
+	compare-function: OPTIONAL_TY_Compare
+	create-function: OPTIONAL_TY_Create
+	copy-function: OPTIONAL_TY_Copy
+	destroy-function: OPTIONAL_TY_Destroy
+
+	index-priority: 2
+	index-default-value: 0
+	specification-text: A way to hold either a value, or a "no value" alternative.
+}

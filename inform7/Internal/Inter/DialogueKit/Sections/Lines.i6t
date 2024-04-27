@@ -83,7 +83,7 @@ Constant PLAYER_CONVERSATIONALIST = 1;
 [ DirectorLineContent dl text linedata;
 	if ((dl == 0) || (dl > NO_DIALOGUE_LINES)) return text;
 	linedata = TableOfDialogueLines-->dl;
-	BlkValueCopy(text, linedata-->SPEECH_DLMETADATA);
+	CopyPV(text, linedata-->SPEECH_DLMETADATA);
 	return text;
 ];
 
@@ -133,8 +133,8 @@ Global director_speaker_list;
 	if (metaclass(val) == Object) return val;
 	if (metaclass(val) == Routine) {
 		if (director_speaker_list == 0) {
-			director_speaker_list = BlkValueCreate(LIST_OF_TY);
-			BlkValueWrite(director_speaker_list, LIST_ITEM_KOV_F, OBJECT_TY);
+			director_speaker_list = CreatePV(LIST_OF_TY);
+			WritePVField(director_speaker_list, LIST_ITEM_KOV_F, OBJECT_TY);
 		} else {
 			LIST_OF_TY_SetLength(director_speaker_list, 0);
 		}

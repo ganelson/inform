@@ -1,0 +1,235 @@
+
+
+
+
+Chapter 6: Return of the Fussy Table
+An Interactive Fiction by Emily Short
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Kitchen
+A quiet homelike room heated by a ferocious Aga.
+
+You can see Alison, ten plates and a stove (on which are three pots (empty)) here.
+
+>** z
+Time passes.
+
+Your puppy bounds joyously into the room, coming down from the Attic!
+
+The house shudders ominously as something passes through the walls.
+Something moans one room away.
+
+"Help! Get me a coaster!" screams the table from the Dining Room.
+
+The table looks jealously at the blue suede armchair. "Some people have such an easy life."
+
+You sense some resentment from the fussy table.
+
+Alison puts a cookie on one of the plates.
+
+[Your score has just gone up by three points.]
+
+>** z
+Time passes.
+
+The Spirit of Furniture Past drifts down into the room from the Attic to haunt you.
+
+"Help! Get me a coaster!" screams the table from the Dining Room.
+
+The table looks jealously at the blue suede armchair. "Some people have such an easy life."
+
+You sense some resentment from the fussy table.
+
+Alison puts a cookie on one of the plates.
+
+>** z
+Time passes.
+
+"Help! Get me a coaster!" screams the table from the Dining Room.
+
+The table looks jealously at the blue suede armchair. "Some people have such an easy life."
+
+You sense some resentment from the fussy table.
+
+Alison beams happily on the plate arrangement.
+
+Alison says, "I do so love having enough plates to go around."
+
+Alison puts a cookie on a plate.
+
+>** z
+Time passes.
+
+"Help! Get me a coaster!" screams the table from the Dining Room.
+
+The table looks jealously at the blue suede armchair. "Some people have such an easy life."
+
+You sense some resentment from the fussy table.
+
+Alison says, "I do so love having enough plates to go around."
+
+Alison puts a cookie on a plate.
+
+>** z
+Time passes.
+
+"Help! Get me a coaster!" screams the table from the Dining Room.
+
+The table looks jealously at the blue suede armchair. "Some people have such an easy life."
+
+You sense some resentment from the fussy table.
+
+Alison puts a cookie on a plate.
+
+>** out
+But you aren't in anything at the moment.
+
+"Help! Get me a coaster!" screams the table from the Dining Room.
+
+The table looks jealously at the blue suede armchair. "Some people have such an easy life."
+
+You sense some resentment from the fussy table.
+
+Alison puts a cookie on a plate.
+
+>** n
+
+Dining Room
+A room of handsome proportions, with an octagonal dining table on a fine parquet floor. The original set of chairs has been taken away, leaving only a red velvet dining chair and a blue suede armchair.
+
+On the fussy table is a drippy cold glass of ice water.
+
+You can also see a blue suede armchair, a red velvet dining chair and a cold ceramic tile here.
+
+Your puppy bounds joyously into the room, coming north from the Kitchen!
+
+The Spirit of Furniture Past drifts north into the room from the Kitchen to haunt you.
+
+The parquet floor mutters about the things people wear to walk on parquet floors these days.
+
+"Help! Get me a coaster!" screams the table, its veneer squirming under the drippy cold glass of ice water.
+
+The table looks jealously at the blue suede armchair. "Some people have such an easy life."
+
+Alison hollers, "Perhaps I should put something on this scalding platter."
+
+You can hear Alison moving around in the Kitchen.
+
+The fussy table seems especially worried just now.
+
+The cleated left shoe growls at the velvet chair, which winces and whimpers.
+
+Humming to herself, Alison brings in a hot platter and sets it down smack on the red velvet dining chair, then goes back out.
+
+You sense some resentment from the fussy table and the red velvet dining chair.
+
+[Your score has just gone down by one point.]
+
+>** i
+You are carrying:
+  a cleated left shoe (being worn)
+  a cleated right shoe (being worn)
+  a skeleton key
+
+The parquet floor mutters about the things people wear to walk on parquet floors these days.
+
+"Help! Get me a coaster!" screams the table, its veneer squirming under the drippy cold glass of ice water.
+
+The table looks jealously at the scalding platter. "Some people have such an easy life."
+
+Alison hollers, "Perhaps I should put something on this plate."
+
+You can hear Alison moving around in the Kitchen.
+
+You almost burn yourself on the scalding platter by accident.
+
+The glass of ice water looks nervously at the scalding platter.
+
+The cleated left shoe growls at the velvet chair, which winces and whimpers.
+
+You sense some resentment from the fussy table and the red velvet dining chair.
+
+>** take the water
+Taken.
+
+The parquet floor mutters about the things people wear to walk on parquet floors these days.
+
+Alison hollers, "Perhaps I should put something on this plate."
+
+You can hear Alison moving around in the Kitchen.
+
+The red velvet dining chair seems especially worried just now.
+
+You almost burn yourself on the scalding platter by accident.
+
+The glass of ice water looks nervously at the scalding platter.
+
+The cleated left shoe growls at the velvet chair, which winces and whimpers.
+
+Just then the kettle boils in the kitchen. Whistling chirpily, Alison brings it in and sets it down smack on the fussy table, then goes back out.
+
+You sense some resentment from the fussy table and the red velvet dining chair.
+
+>** put the water on the platter
+The drippy cold glass of ice water meets the scalding platter; both shriek in pain. But the necessary heat transfer occurs.
+
+"Hey!" protests the table, practically smoking at the scalding kettle. "Heard of a trivet?"
+
+The parquet floor mutters about the things people wear to walk on parquet floors these days.
+
+The table looks jealously at the platter. "Some people have such an easy life."
+
+Alison hollers, "Perhaps I should put something on this plate."
+
+You can hear Alison moving around in the Kitchen.
+
+The fussy table seems especially worried just now.
+
+You almost burn yourself on the scalding kettle by accident.
+
+The cleated left shoe growls at the velvet chair, which winces and whimpers.
+
+You sense some resentment from the fussy table.
+
+[Your score has just gone up by one point.]
+
+>** take the kettle
+Taken.
+
+The parquet floor mutters about the things people wear to walk on parquet floors these days.
+
+Alison hollers, "Perhaps I should put something on this plate."
+
+You can hear Alison moving around in the Kitchen.
+
+The cleated left shoe growls at the velvet chair, which winces and whimpers.
+
+[Your score has just gone up by one point.]
+
+>** put the kettle on the tile
+The scalding kettle meets the cold ceramic tile; both shriek in pain. But the necessary heat transfer occurs.
+
+The parquet floor mutters about the things people wear to walk on parquet floors these days.
+
+Alison hollers, "Perhaps I should put something on this plate."
+
+You can hear Alison moving around in the Kitchen.
+
+The cleated left shoe growls at the velvet chair, which winces and whimpers.
+
+>** sit on velvet chair
+There is no more room on the red velvet dining chair.
+
+The parquet floor mutters about the things people wear to walk on parquet floors these days.
+
+Alison hollers, "Perhaps I should put something on this plate."
+
+You can hear Alison moving around in the Kitchen.
+
+The cleated left shoe growls at the velvet chair, which winces and whimpers.
+
+>**  
+I beg your pardon?
+
+>
+<end of input>

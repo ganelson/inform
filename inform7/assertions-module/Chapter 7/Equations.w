@@ -715,7 +715,7 @@ void Equations::log_equation_node_inner(equation_node *tok, int d) {
 			case REALROOT_OPERATION: LOG("<real square root>"); break;
 			case CUBEROOT_OPERATION: LOG("<cube root>"); break;
 			case POWER_OPERATION: LOG("<to the power>"); break;
-			case UNARY_MINUS_OPERATION: LOG("<unary subtraction>"); break;
+			case NEGATE_OPERATION: LOG("<unary subtraction>"); break;
 			default: LOG("<op-%d>", tok->eqn_operation); break;
 		}
 	} else if (tok->eqn_type == SYMBOL_EQN) LOG("<symbol-%W>", tok->leaf_symbol->name);
@@ -881,7 +881,7 @@ capacity; and so is the number 0 itself.
 			if ((previous_token == NULL) ||
 				(previous_token->eqn_type == OPERATION_EQN) ||
 				(previous_token->eqn_type == OPEN_BRACKET_EQN))
-				token = Equations::enode_new_op(UNARY_MINUS_OPERATION);
+				token = Equations::enode_new_op(NEGATE_OPERATION);
 			else
 				token = Equations::enode_new_op(MINUS_OPERATION);
 			break;
@@ -1166,7 +1166,7 @@ int Equations::f_function(equation_node *tok) {
 				case IMPLICIT_TIMES_OPERATION: return 8;
 				case POWER_OPERATION: return 9;
 				case IMPLICIT_APPLICATION_OPERATION: return 5;
-				case UNARY_MINUS_OPERATION: return 1;
+				case NEGATE_OPERATION: return 1;
 			}
 			internal_error("unknown operator precedence");
 		case OPEN_BRACKET_EQN: return 0;
@@ -1190,7 +1190,7 @@ int Equations::g_function(equation_node *tok) {
 				case IMPLICIT_TIMES_OPERATION: return 7;
 				case POWER_OPERATION: return 10;
 				case IMPLICIT_APPLICATION_OPERATION: return 14;
-				case UNARY_MINUS_OPERATION: return 12;
+				case NEGATE_OPERATION: return 12;
 			}
 			internal_error("unknown operator precedence");
 		case OPEN_BRACKET_EQN: return 15;
@@ -1478,7 +1478,7 @@ section:
 	Problems::quote_kind(4,
 		Kinds::FloatingPoint::underlying(tok->enode_operands[0]->gK_after));
 	switch(tok->eqn_operation) {
-		case UNARY_MINUS_OPERATION:
+		case NEGATE_OPERATION:
 			Problems::quote_text(6, "negating");
 			break;
 		case ROOT_OPERATION:
@@ -1802,7 +1802,7 @@ the other side; thus $-V = R$ becomes $V=-R$, and |v| again rises.
 @<Rearrange to move v upwards through this unary operator@> =
 	int op = old_LHS->eqn_operation;
 	switch (op) {
-		case UNARY_MINUS_OPERATION:
+		case NEGATE_OPERATION:
 			eqn->parsed_equation->enode_operands[0] = old_LHS->enode_operands[0];
 			eqn->parsed_equation->enode_operands[1] = old_LHS;
 			old_LHS->enode_operands[0] = old_RHS;

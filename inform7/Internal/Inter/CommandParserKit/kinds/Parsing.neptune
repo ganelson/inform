@@ -7,7 +7,7 @@ builtin base UNDERSTANDING_TY {
 	default-value: DefaultTopic
 	constant-compilation-method: special
 
-	printing-routine-for-debugging: DA_Topic
+	say-function: UNDERSTANDING_TY_Say
 
 	index-priority: 0
 }

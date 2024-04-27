@@ -1,0 +1,16 @@
+
+
+
+
+"header" = memory address: $00000000
+"header plus 4 bytes" = memory address: $00000004
+"address of the serial code" = memory address: $00000036
+At the serial code, $00000036: 31 36 30 34 32 38 "160428".
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Reform Club
+
+>Are you sure you want to quit? 

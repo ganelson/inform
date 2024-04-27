@@ -212,8 +212,10 @@ int EqualityDetails::schema(bp_family *self, int task, binary_predicate *bp, ann
 				asch->schema = NULL;
 			} else {
 				@<Exceptional case of setting the "player" global variable@>;
-				Calculus::Schemas::modify(asch->schema, "%s",
-					CompileLvalues::interpret_store(storage_class, st[0], st[1], 0));
+				TEMPORARY_TEXT(prototype)
+				CompileLvalues::interpret_store(prototype, storage_class, st[0], st[1], 0);
+				Calculus::Schemas::modify(asch->schema, "%S", prototype);
+				DISCARD_TEXT(prototype)
 				@<Add kind-checking code for run-time checking@>;
 			}
 			return TRUE;
@@ -256,7 +258,7 @@ lantern is bright".
 		case NOW_ATOM_FALSE_TASK:
 			break;
 		case NOW_ATOM_TRUE_TASK:
-			Calculus::Schemas::modify(asch->schema, "BlkValueCopy(ResponseTexts-->((*1)-1), *^2)");
+			Calculus::Schemas::modify(asch->schema, "CopyPV(ResponseTexts-->((*1)-1), *^2)");
 			return TRUE;
 	}
 	return FALSE;

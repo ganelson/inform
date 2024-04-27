@@ -1,0 +1,10 @@
+new base COUNTRY_CODE_TY {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: country code
+	plural: country codes
+
+	instance: Saint Helena code  = ST_HELENA_CC     = 290
+	instance: New Caledonia code = NEW_CALEDONIA_CC = 687
+	instance: Montserrat code    = MONTSERRAT_CC    = 1664
+	instance: Svalbard code      = SVALBARD_CC      = 4779
+}

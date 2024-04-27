@@ -80,6 +80,10 @@ by the entire program; its max_depth is zero.
 #include "glk.h"
 #include "glulxe.h"
 
+/* This counter is globally visible, because the profile_tick() macro
+   increments it. */
+glui32 profile_opcount = 0;
+
 #if VM_PROFILING
 
 #include <stdio.h>
@@ -134,10 +138,6 @@ typedef struct frame_struct {
 
 static function_t **functions = NULL;
 static frame_t *current_frame = NULL;
-
-/* This counter is globally visible, because the profile_tick() macro
-   increments it. */
-glui32 profile_opcount = 0;
 
 /* This is called from the setup code -- glkunix_startup_code(), for the
    Unix version. If called, the interpreter will keep profiling information,

@@ -15,12 +15,17 @@ in several different ways.
 =
 void CompileSchemas::from_terms_in_void_context(i6_schema *sch,
 	pcalc_term *pt1, pcalc_term *pt2) {
-	CompileSchemas::sch_emit_inner(sch, pt1, pt2, TRUE);
+	CompileSchemas::sch_emit_inner(sch, pt1, pt2, NULL, NULL, NULL, TRUE);
 }
 
 void CompileSchemas::from_terms_in_val_context(i6_schema *sch,
 	pcalc_term *pt1, pcalc_term *pt2) {
-	CompileSchemas::sch_emit_inner(sch, pt1, pt2, FALSE);
+	CompileSchemas::sch_emit_inner(sch, pt1, pt2, NULL, NULL, NULL, FALSE);
+}
+
+void CompileSchemas::with_callbacks_in_val_context(i6_schema *sch,
+	void *opaque1, void *opaque2, void (*f)(void *opaque)) {
+	CompileSchemas::sch_emit_inner(sch, NULL, NULL, opaque1, opaque2, f, FALSE);
 }
 
 void CompileSchemas::from_local_variables_in_void_context(i6_schema *sch,
@@ -64,11 +69,13 @@ as above), we fill in its kind.
 =
 typedef struct i6s_emission_state {
 	struct pcalc_term *ops_termwise[2];
+	void *ops_termwise_opaque[2];
+	void (*opaque_term_compiler)(void *opaque);
 	int by_ref;
 } i6s_emission_state;
 
 void CompileSchemas::sch_emit_inner(i6_schema *sch, pcalc_term *pt1, pcalc_term *pt2,
-	int void_context) {
+	void *opaque1, void *opaque2, void (*f)(void *opaque), int void_context) {
 	i6s_emission_state ems;
 	if ((pt1) && (pt1->constant) && (pt1->term_checked_as_kind == NULL))
 		pt1->term_checked_as_kind = Specifications::to_kind(pt1->constant);
@@ -76,6 +83,9 @@ void CompileSchemas::sch_emit_inner(i6_schema *sch, pcalc_term *pt1, pcalc_term 
 		pt2->term_checked_as_kind = Specifications::to_kind(pt2->constant);
 	ems.ops_termwise[0] = pt1;
 	ems.ops_termwise[1] = pt2;
+	ems.ops_termwise_opaque[0] = opaque1;
+	ems.ops_termwise_opaque[1] = opaque2;
+	ems.opaque_term_compiler = f;
 	ems.by_ref = sch->compiled->dereference_mode;
 
 	value_holster VH = Holsters::new(void_context?INTER_VOID_VHMODE:INTER_VAL_VHMODE);
@@ -117,14 +127,18 @@ Here |this| is the term in question, and |other| the other of the two.
 	pcalc_term *this = ems->ops_termwise[N], *other = ems->ops_termwise[1-N];
 	rule *R = rule_to_which_this_is_a_response;
 	int M = response_marker_within_that_rule;
-	if ((m & ADOPT_LOCAL_STACK_FRAME_ISSBM) &&
+	if ((other) &&
+		(m & ADOPT_LOCAL_STACK_FRAME_ISSBM) &&
 		(Rvalues::is_CONSTANT_of_kind(other->constant, K_response))) {
 		rule_to_which_this_is_a_response = Rvalues::to_rule(other->constant);
 		response_marker_within_that_rule = Rvalues::to_response_marker(other->constant);
 	}
 	kind *K = NULL;
-	if (m & CAST_TO_KIND_OF_OTHER_TERM_ISSBM) K = other->term_checked_as_kind;
-	CompileSchemas::compile_term_of_token(this, m, K, by_reference);
+	if ((other) && (m & CAST_TO_KIND_OF_OTHER_TERM_ISSBM)) K = other->term_checked_as_kind;
+	if (ems->opaque_term_compiler)
+		(*(ems->opaque_term_compiler))(ems->ops_termwise_opaque[N]);
+	else
+		CompileSchemas::compile_term_of_token(this, m, K, by_reference);
 	rule_to_which_this_is_a_response = R;
 	response_marker_within_that_rule = M;
 
@@ -133,6 +147,7 @@ If that is a combination of two values then we unpack those and compile them
 both, one after the other. 
 
 @<Perform combine@> =
+	if (ems->opaque_term_compiler) internal_error("'*&' can't be compiled opaquely");
 	int emit_without_combination = TRUE;
 	pcalc_term *pt0 = ems->ops_termwise[0], *pt1 = ems->ops_termwise[1];
 	if ((pt0) && (pt1)) {

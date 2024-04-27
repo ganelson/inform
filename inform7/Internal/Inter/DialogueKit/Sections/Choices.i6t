@@ -85,7 +85,7 @@ Constant OR_DSEL = 19;                   ! -- or
 [ DirectorChoiceTextContent dc text chdata;
 	if ((dc <= 0) || (dc > NO_DIALOGUE_CHOICES)) return text;
 	chdata = TableOfDialogueChoices-->dc;
-	BlkValueCopy(text, chdata-->CONTENT_DCMETADATA);
+	CopyPV(text, chdata-->CONTENT_DCMETADATA);
 	return text;
 ];
 

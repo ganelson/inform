@@ -75,7 +75,7 @@ void RTSharedVariables::compile_creator_fn(shared_variable_set *set, inter_name 
 		nonlocal_variable *q = SharedVariables::get_variable(shv);
 		kind *K = NonlocalVariables::kind(q);
 		if (Kinds::Behaviour::uses_block_values(K)) {
-			EmitCode::call(Hierarchy::find(BLKVALUEFREE_HL));
+			EmitCode::call(Hierarchy::find(DESTROYPV_HL));
 			EmitCode::down();
 				EmitCode::inv(LOOKUP_BIP);
 				EmitCode::down();

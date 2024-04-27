@@ -64,7 +64,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">BasicInformKit</a></li><li><b>Utilities Template</b></li></ul></div>
 <p class="purpose">Miscellaneous utility routines for some fundamental I6 needs.</p>
 
-<ul class="toc"><li><a href="S-utl.html#SP1">&#167;1. Miscellany</a></li><li><a href="S-utl.html#SP2">&#167;2. Final Code Dependencies</a></li><li><a href="S-utl.html#SP3">&#167;3. Firebreak</a></li><li><a href="S-utl.html#SP4">&#167;4. Print Decimal Number</a></li><li><a href="S-utl.html#SP5">&#167;5. Print Text</a></li><li><a href="S-utl.html#SP6">&#167;6. Print Or Run</a></li><li><a href="S-utl.html#SP7">&#167;7. Saying Phrases</a></li><li><a href="S-utl.html#SP8">&#167;8. Kinds</a></li><li><a href="S-utl.html#SP9">&#167;9. Non-standard enumerations</a></li><li><a href="S-utl.html#SP10">&#167;10. GenerateRandomNumber</a></li><li><a href="S-utl.html#SP11">&#167;11. PrintSpaces</a></li><li><a href="S-utl.html#SP12">&#167;12. SwapWorkflags</a></li><li><a href="S-utl.html#SP13">&#167;13. TestUseOption</a></li><li><a href="S-utl.html#SP14">&#167;14. ZRegion</a></li><li><a href="S-utl.html#SP15">&#167;15. Arrcpy</a></li><li><a href="S-utl.html#SP16">&#167;16. Verbs as Values</a></li><li><a href="S-utl.html#SP17">&#167;17. Regarding</a></li><li><a href="S-utl.html#SP18">&#167;18. Say One Of</a></li><li><a href="S-utl.html#SP19">&#167;19. Rounding</a></li><li><a href="S-utl.html#SP20">&#167;20. Doing nothing</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-utl.html#SP1">&#167;1. Miscellany</a></li><li><a href="S-utl.html#SP2">&#167;2. Final Code Dependencies</a></li><li><a href="S-utl.html#SP3">&#167;3. Firebreak</a></li><li><a href="S-utl.html#SP4">&#167;4. Print Decimal Number</a></li><li><a href="S-utl.html#SP5">&#167;5. Print Text</a></li><li><a href="S-utl.html#SP6">&#167;6. Print Or Run</a></li><li><a href="S-utl.html#SP7">&#167;7. Saying Phrases</a></li><li><a href="S-utl.html#SP8">&#167;8. GenerateRandomNumber</a></li><li><a href="S-utl.html#SP9">&#167;9. PrintSpaces</a></li><li><a href="S-utl.html#SP10">&#167;10. SwapWorkflags</a></li><li><a href="S-utl.html#SP11">&#167;11. TestUseOption</a></li><li><a href="S-utl.html#SP12">&#167;12. ZRegion</a></li><li><a href="S-utl.html#SP13">&#167;13. Arrcpy</a></li><li><a href="S-utl.html#SP14">&#167;14. Verbs as Values</a></li><li><a href="S-utl.html#SP15">&#167;15. Regarding</a></li><li><a href="S-utl.html#SP16">&#167;16. Say One Of</a></li><li><a href="S-utl.html#SP17">&#167;17. Rounding</a></li><li><a href="S-utl.html#SP18">&#167;18. Doing nothing</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Miscellany. </b></p>
 
@@ -217,75 +217,7 @@ allows us to divide the paragraph or not accordingly.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="reserved-syntax">string</span><span class="plain-syntax">) </span><span class="identifier-syntax">closure</span><span class="plain-syntax">--&gt;2;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Kinds. </b></p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">KindAtomic</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">BASE_KIND_HWM</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax">--&gt;0;</span>
-<span class="plain-syntax">];</span>
-
-<span class="plain-syntax">[ </span><span class="identifier-syntax">KindBaseArity</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">BASE_KIND_HWM</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax">--&gt;1;</span>
-<span class="plain-syntax">];</span>
-
-<span class="plain-syntax">[ </span><span class="identifier-syntax">KindBaseTerm</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">BASE_KIND_HWM</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">UNKNOWN_TY</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax">--&gt;(2+</span><span class="identifier-syntax">n</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">];</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Non-standard enumerations. </b>This is for enumerations whose values are scattered: say, for a kind where
-the valid runtime values are 3, 15 and 421. Next after 3 is 15; previous
-is 421, and so on.
-</p>
-
-<p class="commentary">The instances array supplied has the extent in word 0, which is in effect
-the number of valid instances. This is guaranteed to be at least 1.
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">NextEnumVal</span><span class="plain-syntax"> </span><span class="identifier-syntax">inst</span><span class="plain-syntax"> </span><span class="identifier-syntax">instances</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">count</span><span class="plain-syntax"> = </span><span class="identifier-syntax">instances</span><span class="plain-syntax">--&gt;0;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=1: </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;=</span><span class="identifier-syntax">count</span><span class="plain-syntax">: </span><span class="identifier-syntax">i</span><span class="plain-syntax">++)</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">instances</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">i</span><span class="plain-syntax"> == </span><span class="identifier-syntax">inst</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">instances</span><span class="plain-syntax">--&gt;(</span><span class="identifier-syntax">i</span><span class="plain-syntax">%</span><span class="identifier-syntax">count</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">instances</span><span class="plain-syntax">--&gt;1; </span><span class="comment-syntax">Should not ever happen</span>
-<span class="plain-syntax">];</span>
-
-<span class="plain-syntax">[ </span><span class="identifier-syntax">PrevEnumVal</span><span class="plain-syntax"> </span><span class="identifier-syntax">inst</span><span class="plain-syntax"> </span><span class="identifier-syntax">instances</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">count</span><span class="plain-syntax"> = </span><span class="identifier-syntax">instances</span><span class="plain-syntax">--&gt;0;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=1: </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;=</span><span class="identifier-syntax">count</span><span class="plain-syntax">: </span><span class="identifier-syntax">i</span><span class="plain-syntax">++)</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">instances</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">i</span><span class="plain-syntax"> == </span><span class="identifier-syntax">inst</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">instances</span><span class="plain-syntax">--&gt;((</span><span class="identifier-syntax">i</span><span class="plain-syntax">+</span><span class="identifier-syntax">count</span><span class="plain-syntax">-2)%</span><span class="identifier-syntax">count</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">instances</span><span class="plain-syntax">--&gt;1; </span><span class="comment-syntax">Should not ever happen</span>
-<span class="plain-syntax">];</span>
-
-<span class="plain-syntax">[ </span><span class="identifier-syntax">RandomEnumVal</span><span class="plain-syntax"> </span><span class="identifier-syntax">instances</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">b</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax"> </span><span class="identifier-syntax">a_index</span><span class="plain-syntax"> </span><span class="identifier-syntax">b_index</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">count</span><span class="plain-syntax"> = </span><span class="identifier-syntax">instances</span><span class="plain-syntax">--&gt;0;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">a</span><span class="plain-syntax"> == </span><span class="identifier-syntax">b</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">a</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">instances</span><span class="plain-syntax">--&gt;(</span><span class="reserved-syntax">random</span><span class="plain-syntax">(</span><span class="identifier-syntax">count</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">: </span><span class="identifier-syntax">c</span><span class="plain-syntax"> &lt;= </span><span class="identifier-syntax">count</span><span class="plain-syntax">: </span><span class="identifier-syntax">c</span><span class="plain-syntax">++) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">instances</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="identifier-syntax">a</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">a_index</span><span class="plain-syntax"> = </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">instances</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="identifier-syntax">b</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">b_index</span><span class="plain-syntax"> = </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">a_index</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">b_index</span><span class="plain-syntax">) { </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="identifier-syntax">a_index</span><span class="plain-syntax">; </span><span class="identifier-syntax">a_index</span><span class="plain-syntax"> = </span><span class="identifier-syntax">b_index</span><span class="plain-syntax">; </span><span class="identifier-syntax">b_index</span><span class="plain-syntax"> = </span><span class="identifier-syntax">c</span><span class="plain-syntax">; }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">instances</span><span class="plain-syntax">--&gt;(</span><span class="identifier-syntax">a_index</span><span class="plain-syntax"> + </span><span class="reserved-syntax">random</span><span class="plain-syntax">(</span><span class="identifier-syntax">b_index</span><span class="plain-syntax"> - </span><span class="identifier-syntax">a_index</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">) - </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">];</span>
-
-<span class="plain-syntax">[ </span><span class="identifier-syntax">IndexOfEnumVal</span><span class="plain-syntax"> </span><span class="identifier-syntax">instances</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">count</span><span class="plain-syntax"> = </span><span class="identifier-syntax">instances</span><span class="plain-syntax">--&gt;0;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">: </span><span class="identifier-syntax">c</span><span class="plain-syntax"> &lt;= </span><span class="identifier-syntax">count</span><span class="plain-syntax">: </span><span class="identifier-syntax">c</span><span class="plain-syntax">++)</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">instances</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="identifier-syntax">a</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">];</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. GenerateRandomNumber. </b>The following uses the virtual machine's RNG (via the I6 built-in function
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. GenerateRandomNumber. </b>The following uses the virtual machine's RNG (via the I6 built-in function
 <span class="extract"><span class="extract-syntax">random</span></span>) to produce a uniformly random integer in the range \(n\) to \(m\)
 inclusive, where \(n\) and \(m\) are allowed to be either way around; so that
 a random number between 17 and 4 is the same thing as a random number
@@ -323,7 +255,7 @@ to be biased in a really unlucky way for us.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">R_DecimalNumber</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GenerateRandomNumber</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">R_PrintTimeOfDay</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GenerateRandomNumber</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. PrintSpaces. </b>Which prints a row of \(n\) spaces, for \(n\geq 0\).
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. PrintSpaces. </b>Which prints a row of \(n\) spaces, for \(n\geq 0\).
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -334,7 +266,7 @@ to be biased in a really unlucky way for us.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. SwapWorkflags. </b>Recall that we have two general-purpose temporary attributes for each object:
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. SwapWorkflags. </b>Recall that we have two general-purpose temporary attributes for each object:
 <span class="extract"><span class="extract-syntax">workflag</span></span> and <span class="extract"><span class="extract-syntax">workflag2</span></span>. The following swaps their values over for every
 object at once.
 </p>
@@ -351,12 +283,12 @@ object at once.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. TestUseOption. </b>This routine, compiled by Inform, returns <span class="extract"><span class="extract-syntax">true</span></span> if the supplied argument is the
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. TestUseOption. </b>This routine, compiled by Inform, returns <span class="extract"><span class="extract-syntax">true</span></span> if the supplied argument is the
 number of a use option in force for the current run of Inform, and <span class="extract"><span class="extract-syntax">false</span></span>
 otherwise.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. ZRegion. </b>I7 contains many relics from I6, but here's a relic from I5: a routine which
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. ZRegion. </b>I7 contains many relics from I6, but here's a relic from I5: a routine which
 used to determine the metaclass of a value, before that concept was given a
 name. In I6 code, it can be implemented simply using <span class="extract"><span class="extract-syntax">metaclass</span></span>, as the
 following shows. (The name is from "region of the Z-machine".)
@@ -372,7 +304,7 @@ following shows. (The name is from "region of the Z-machine".)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Arrcpy. </b>This is not quite so efficient as Memcpy, but not terrible.
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Arrcpy. </b>This is not quite so efficient as Memcpy, but not terrible.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -388,7 +320,7 @@ following shows. (The name is from "region of the Z-machine".)
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="string-syntax">"*** Arrcpy doesn't support this ***"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Verbs as Values. </b></p>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Verbs as Values. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">PrintVerbAsValue</span><span class="plain-syntax"> </span><span class="identifier-syntax">vb</span><span class="plain-syntax">;</span>
@@ -397,7 +329,7 @@ following shows. (The name is from "region of the Z-machine".)
 <span class="plain-syntax">];</span>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">VerbIsMeaningful</span><span class="plain-syntax"> </span><span class="identifier-syntax">vb</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">vb</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">BlkValueCompare</span><span class="plain-syntax">(</span><span class="identifier-syntax">vb</span><span class="plain-syntax">(</span><span class="identifier-syntax">CV_MEANING</span><span class="plain-syntax">), </span><span class="identifier-syntax">MEANINGLESS_RR</span><span class="plain-syntax">) ~= </span><span class="constant-syntax">0</span><span class="plain-syntax">)) </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">vb</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">ComparePV</span><span class="plain-syntax">(</span><span class="identifier-syntax">vb</span><span class="plain-syntax">(</span><span class="identifier-syntax">CV_MEANING</span><span class="plain-syntax">), </span><span class="identifier-syntax">MEANINGLESS_RR</span><span class="plain-syntax">) ~= </span><span class="constant-syntax">0</span><span class="plain-syntax">)) </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 
@@ -406,7 +338,7 @@ following shows. (The name is from "region of the Z-machine".)
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Regarding. </b>These are used with adaptive text.
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Regarding. </b>These are used with adaptive text.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -422,7 +354,7 @@ following shows. (The name is from "region of the Z-machine".)
 <span class="plain-syntax">    </span><span class="identifier-syntax">prior_named_noun</span><span class="plain-syntax"> = </span><span class="reserved-syntax">nothing</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Say One Of. </b>These routines are described in the Extensions chapter of the Inform
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Say One Of. </b>These routines are described in the Extensions chapter of the Inform
 documentation.
 </p>
 
@@ -468,7 +400,7 @@ documentation.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">v</span><span class="plain-syntax"> + </span><span class="identifier-syntax">ct</span><span class="plain-syntax">*</span><span class="identifier-syntax">base</span><span class="plain-syntax"> + </span><span class="identifier-syntax">ssd</span><span class="plain-syntax">*</span><span class="identifier-syntax">base</span><span class="plain-syntax">*</span><span class="identifier-syntax">base</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Rounding. </b>The following rounds a numerical value <span class="extract"><span class="extract-syntax">t1</span></span> to the nearest unit of <span class="extract"><span class="extract-syntax">t2</span></span>;
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Rounding. </b>The following rounds a numerical value <span class="extract"><span class="extract-syntax">t1</span></span> to the nearest unit of <span class="extract"><span class="extract-syntax">t2</span></span>;
 for instance, if <span class="extract"><span class="extract-syntax">t2</span></span> is 5 then it rounds to the nearest 5. The name is an
 anachronism, as it's used for all kinds of value.
 </p>
@@ -479,7 +411,7 @@ anachronism, as it's used for all kinds of value.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -((-</span><span class="identifier-syntax">t1</span><span class="plain-syntax">+</span><span class="identifier-syntax">t2</span><span class="plain-syntax">/2)/</span><span class="identifier-syntax">t2</span><span class="plain-syntax">)*</span><span class="identifier-syntax">t2</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Doing nothing. </b>Surprisingly, this function has a use.
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Doing nothing. </b>Surprisingly, this function has a use.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -488,7 +420,7 @@ anachronism, as it's used for all kinds of value.
 <span class="plain-syntax">];</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="S-str.html">&#10094;</a></li><li class="progresssection"><a href="S-dfn.html">dfn</a></li><li class="progresssection"><a href="S-str.html">str</a></li><li class="progresscurrent">utl</li><li class="progresssection"><a href="S-prg.html">prg</a></li><li class="progresssection"><a href="S-mth.html">mth</a></li><li class="progresssection"><a href="S-srt.html">srt</a></li><li class="progresssection"><a href="S-tbl.html">tbl</a></li><li class="progresssection"><a href="S-mst.html">mst</a></li><li class="progresssection"><a href="S-rlb.html">rlb</a></li><li class="progresssection"><a href="S-act.html">act</a></li><li class="progresssection"><a href="S-prn.html">prn</a></li><li class="progresssection"><a href="S-flx.html">flx</a></li><li class="progresssection"><a href="S-blc.html">blc</a></li><li class="progresssection"><a href="S-txt.html">txt</a></li><li class="progresssection"><a href="S-chr.html">chr</a></li><li class="progresssection"><a href="S-rgx.html">rgx</a></li><li class="progresssection"><a href="S-lst.html">lst</a></li><li class="progresssection"><a href="S-cmb.html">cmb</a></li><li class="progresssection"><a href="S-rlt.html">rlt</a></li><li class="progresssection"><a href="S-rlt2.html">rlt2</a></li><li class="progresssection"><a href="S-prp.html">prp</a></li><li class="progresssection"><a href="S-rtp.html">rtp</a></li><li class="progressnext"><a href="S-prg.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="S-str.html">&#10094;</a></li><li class="progresssection"><a href="S-dfn.html">dfn</a></li><li class="progresssection"><a href="S-str.html">str</a></li><li class="progresscurrent">utl</li><li class="progresssection"><a href="S-prg.html">prg</a></li><li class="progresssection"><a href="S-mth.html">mth</a></li><li class="progresssection"><a href="S-srt.html">srt</a></li><li class="progresssection"><a href="S-tbl.html">tbl</a></li><li class="progresssection"><a href="S-mst.html">mst</a></li><li class="progresssection"><a href="S-rlb.html">rlb</a></li><li class="progresssection"><a href="S-act.html">act</a></li><li class="progresssection"><a href="S-prn.html">prn</a></li><li class="progresssection"><a href="S-flx.html">flx</a></li><li class="progresssection"><a href="S-blc.html">blc</a></li><li class="progresssection"><a href="S-knd.html">knd</a></li><li class="progresssection"><a href="S-txt.html">txt</a></li><li class="progresssection"><a href="S-chr.html">chr</a></li><li class="progresssection"><a href="S-rgx.html">rgx</a></li><li class="progresssection"><a href="S-lst.html">lst</a></li><li class="progresssection"><a href="S-cmb.html">cmb</a></li><li class="progresssection"><a href="S-rlt.html">rlt</a></li><li class="progresssection"><a href="S-rlt2.html">rlt2</a></li><li class="progresssection"><a href="S-prp.html">prp</a></li><li class="progresssection"><a href="S-rtp.html">rtp</a></li><li class="progressnext"><a href="S-prg.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

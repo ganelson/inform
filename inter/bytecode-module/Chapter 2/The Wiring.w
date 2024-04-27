@@ -181,20 +181,20 @@ text_stream *Wiring::wired_to_name(inter_symbol *S) {
 Now suppose a symbol in package |X| wants to refer to a meaning which
 does not yet exist, and will in fact never exist in the current tree. (It will
 be linked in from another tree later on.) For example, perhaps Inform 7 is
-compiling a function body which needs to refer to |BlkValueCreate|, a function
+compiling a function body which needs to refer to |CreatePV|, a function
 in BasicInformKit.
 
-This is done by having |BlkValueCreate| in |X| wire to a special symbol called
+This is done by having |CreatePV| in |X| wire to a special symbol called
 a "plug" in a special package of the tree at |/main/connectors|.
 (See //building: Large-Scale Structure// for more on this package.) That plug
-is left dangling, in the sense that it is wired to the name |"BlkValueCreate"|,
+is left dangling, in the sense that it is wired to the name |"CreatePV"|,
 but that this name is unresolved.
 = (text)
 	MAIN TREE
     +-----------------+      +--------------------------+
     | Package X       |      | Package /main/connectors |
     |                 |      |                          |
-    | BlkValueCreate ~~~~~~~~~> _plug_BlkValueCreate ~~~~~~~> "BlkValueCreate"
+    | CreatePV ~~~~~~~~~~~~~~~> _plug_BlkValueCreate ~~~~~~~> "CreatePV"
     +-----------------+      +--------------------------+
 =
 
@@ -204,18 +204,18 @@ Meanwhile, suppose a second tree holds //BasicInformKit//. This looks like so:
     +-------------------+      +--------------------------+
     | Package Y         |      | Package /main/connectors |
     |                   |      |                          |   
-    | BlkValueCreate <~~~~~~~~~~ BlkValueCreate <~~~~~~~~~~~~ "BlkValueCreate"
+    | CreatePV <~~~~~~~~~~~~~~~~ CreatePV <~~~~~~~~~~~~~~~~~~ "CreatePV"
     | .....             |      +--------------------------+
     | function defn     |
-    | of BlkValueCreate |
+    | of CreatePV       |
     | function defn     |
     | of SecretFunction |
     +-------------------+
 =
-Package |Y| in this tree holds two function definitions, let's say: |BlkValueCreate|
+Package |Y| in this tree holds two function definitions, let's say: |CreatePV|
 and |SecretFunction|. The latter is private to BasicInformKit, in that the linking
 process in //pipeline// does not allow symbols in other trees to be wired to it.
-But |BlkValueCreate| is available. That is because the BasicInformKit provides
+But |CreatePV| is available. That is because the BasicInformKit provides
 a "socket" to it.
 
 Sockets, like plugs, live only in the |/main/connectors| package of a tree.
@@ -226,25 +226,25 @@ and no socket names do.
 @ The point of this is that after //Transmigration// there will be a single
 tree like so, which has merged the connectors from the two original trees,
 and which now contains both |X| and |Y|. We can npw connect the plug
-|_plug_BlkValueCreate| with the socket |BlkValueCreate|:
+|_plug_BlkValueCreate| with the socket |CreatePV|:
 = (text)
 .. MERGED TREE ................................................
 .  +-----------------+      +--------------------------+      .
 .  | Package X       |      | Package /main/connectors |      .
 .  |                 |      |                          |      .
-.  | BlkValueCreate ~~~~~~~~~> _plug_BlkValueCreate ~~~~~\    .
+.  | CreatePV ~~~~~~~~~~~~~~> _plug_BlkValueCreate ~~~~~~~\   .
 .  +-----------------+      |                          |   \  .
 .                           |                          |    | .
 .  +-----------------+      |                          |    | .
 .  | Package Y       |      |                          |    | .
 .  |                 |      |                          |   /  .
-.  | BlkValueCreate <~~~~~~~~~ BlkValueCreate <~~~~~~~~~~~/   .
+.  | CreatePV <~~~~~~~~~~~~~~~ CreatePV <~~~~~~~~~~~~~~~~~/   .
 .  | .....           |      +--------------------------+      .
 .  | function defn   |                                        .
 .  +-----------------+                                        .
 ...............................................................                                                         
 =
-The cable end from |BlkValueCreate| in |X| is indeed the definition in |Y|,
+The cable end from |CreatePV| in |X| is indeed the definition in |Y|,
 and all is well.
 
 Some sockets may never be used -- that would be a situation where one tree
@@ -256,7 +256,7 @@ up the offer. The only essential thing is that all plugs must find a socket.
 (*) Every socket is always wired.
 (*) Every plug is either wired to a socket, or to a name, in the hope that
 it will one day be wired to a socket of that name.
-(*) All uses of, say, |BlkValueCreate| in the main tree are wired to a single
+(*) All uses of, say, |CreatePV| in the main tree are wired to a single
 plug in its |/main/connectors| package.
 (*) By looking at the incoming count of a plug or socket, we can see if it is
 still needed -- if the count falls to 0, it is not.

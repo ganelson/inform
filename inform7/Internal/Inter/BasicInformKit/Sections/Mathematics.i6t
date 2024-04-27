@@ -2,6 +2,20 @@ Mathematics Template.
 
 Mathematical functions which involve integers.
 
+@h Modular arithmetic.
+For every integer n there is a unique congruence class 0, 1, ..., m-1 modulo m
+to which that integer belongs, and this function returns it. Note that the
+normal I6 operation % is signed, which is why we need this function.
+
+=
+[ CongruenceClass n modulus;
+	if (modulus > 0) {
+		n = n%modulus;
+		if (n < 0) return n + modulus;
+	}
+	return n;
+];
+
 @h Square Root.
 We only calculate by hand if we have to.
 

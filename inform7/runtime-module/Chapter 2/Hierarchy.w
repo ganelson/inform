@@ -1047,7 +1047,7 @@ void Hierarchy::establish(void) {
 			H_C_U(INSTANCE_INTERNAL_FILE_FORMAT_MD_HL,      I"^internal_file_format")
 			H_C_U(INSTANCE_INTERNAL_FILE_ID_MD_HL,          I"^resource_id")
 			H_C_U(INSTANCE_FILE_IS_BINARY_MD_HL,            I"^is_binary")
-			H_C_U(INSTANCE_LEAFNAME_MD_HL,                  I"^filename")
+			H_C_U(INSTANCE_LEAFNAME_MD_HL,                  I"^leafname")
 			H_C_U(INSTANCE_IS_FIGURE_MD_HL,                 I"^is_figure")
 			H_C_U(INSTANCE_FIGURE_FILENAME_MD_HL,           I"^filename")
 			H_C_U(INSTANCE_FIGURE_ID_MD_HL,                 I"^resource_id")
@@ -1195,7 +1195,19 @@ void Hierarchy::establish(void) {
 @e KIND_STRONG_ID_MD_HL
 @e KIND_PRINT_FN_MD_HL
 @e KIND_CMP_FN_MD_HL
-@e KIND_SUPPORT_FN_MD_HL
+@e KIND_CREATE_FN_MD_HL
+@e KIND_CAST_FN_MD_HL
+@e KIND_COPY_FN_MD_HL
+@e KIND_COPY_SHORT_BLOCK_FN_MD_HL
+@e KIND_QUICK_COPY_FN_MD_HL
+@e KIND_DESTROY_FN_MD_HL
+@e KIND_MAKE_MUTABLE_FN_MD_HL
+@e KIND_HASH_FN_MD_HL
+@e KIND_SHORT_BLOCK_SIZE_MD_HL
+@e KIND_LONG_BLOCK_SIZE_MD_HL
+@e KIND_LONG_BLOCK_SIZE_FN_MD_HL
+@e KIND_SERIALISE_FN_MD_HL
+@e KIND_UNSERIALISE_FN_MD_HL
 @e KIND_MKDEF_FN_MD_HL
 @e KIND_DSIZE_MD_HL
 @e KIND_DOCUMENTATION_MD_HL
@@ -1308,7 +1320,19 @@ void Hierarchy::establish(void) {
 			H_C_U(KIND_STRONG_ID_MD_HL,       I"^strong_id")
 			H_C_U(KIND_CMP_FN_MD_HL,          I"^cmp_fn")
 			H_C_U(KIND_PRINT_FN_MD_HL,        I"^print_fn")
-			H_C_U(KIND_SUPPORT_FN_MD_HL,      I"^support_fn")
+			H_C_U(KIND_CREATE_FN_MD_HL,       I"^create_fn")
+			H_C_U(KIND_CAST_FN_MD_HL,         I"^cast_fn")
+			H_C_U(KIND_COPY_FN_MD_HL,         I"^copy_fn")
+			H_C_U(KIND_COPY_SHORT_BLOCK_FN_MD_HL, I"^copy_short_block_fn")
+			H_C_U(KIND_QUICK_COPY_FN_MD_HL,   I"^quick_copy_fn")
+			H_C_U(KIND_DESTROY_FN_MD_HL,      I"^destroy_fn")
+			H_C_U(KIND_MAKE_MUTABLE_FN_MD_HL, I"^make_mutable_fn")
+			H_C_U(KIND_HASH_FN_MD_HL,         I"^hash_fn")
+			H_C_U(KIND_SHORT_BLOCK_SIZE_MD_HL, I"^short_block_size")
+			H_C_U(KIND_LONG_BLOCK_SIZE_MD_HL, I"^long_block_size")
+			H_C_U(KIND_LONG_BLOCK_SIZE_FN_MD_HL, I"^long_block_size_fn")
+			H_C_U(KIND_SERIALISE_FN_MD_HL,    I"^serialise_fn")
+			H_C_U(KIND_UNSERIALISE_FN_MD_HL,  I"^unserialise_fn")
 			H_C_U(KIND_MKDEF_FN_MD_HL,        I"^mkdef_fn")
 			H_C_U(KIND_DSIZE_MD_HL,           I"^domain_size")
 			H_C_U(RUCKSACK_CLASS_MD_HL,       I"^rucksack_class")

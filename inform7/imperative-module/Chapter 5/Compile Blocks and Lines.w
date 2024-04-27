@@ -403,7 +403,7 @@ one is the "non-pointery" case.
 	}
 =	
 We begin by ensuring that the function has a scratch local variable called |sw_v|,
-and store the switch value in it. We need not use |BlkValueCopy| to make an
+and store the switch value in it. We need not use |CopyPV| to make an
 independent copy, since |sw_v| will be read-only: we can just copy the address of
 the data into |sw_v| with a single |STORE_BIP| instruction, which is much faster.
 

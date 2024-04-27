@@ -150,7 +150,7 @@ of the property relation.
 
 [ Relation_Now1to1V obj1 obj2 KOV relation_property ol N; ! Assert 1-1 true
 	if (obj2) {
-		N = KOVDomainSize(KOV);
+		N = KindDomainSize(KOV);
 		for (ol=1: ol<=N: ol++)
 			if (GProperty(KOV, ol, relation_property) == obj2)
 				WriteGProperty(KOV, ol, relation_property, 0);
@@ -353,7 +353,7 @@ $f(O)$.
 		little = GProperty(KOV, obj1, relation_property);
 		big = GProperty(KOV, obj2, relation_property);
 	}
-	n = KOVDomainSize(KOV);
+	n = KindDomainSize(KOV);
 	for (i=1: i<=n: i++)
 		if (GProperty(KOV, i, relation_property) == big)
 			WriteGProperty(KOV, i, relation_property, little);
@@ -364,7 +364,7 @@ $f(O)$.
 	new = GProperty(KOV, obj2, relation_property);
 	if (old ~= new) return;
 	new = 0;
-	n = KOVDomainSize(KOV);
+	n = KindDomainSize(KOV);
 	for (i=1: i<=n: i++)
 		if (GProperty(KOV, i, relation_property) > new)
 			new = GProperty(KOV, i, relation_property);
@@ -438,8 +438,8 @@ implements the RELATIONS testing command. Speed is unimportant here.
 =
 [ Relation_ShowOtoO relation sym x relation_property t tr N obj1 obj2;
 	relation_property = RlnGetF(relation, RR_STORAGE);
-	t = KindBaseTerm(RlnGetF(relation, RR_KIND), 0); ! Kind of left term
-	tr = KindBaseTerm(RlnGetF(relation, RR_KIND), 1); ! Kind of right term
+	t = KindConstructorTerm(RlnGetF(relation, RR_KIND), 0); ! Kind of left term
+	tr = KindConstructorTerm(RlnGetF(relation, RR_KIND), 1); ! Kind of right term
 	if (t == OBJECT_TY) {
 		objectloop (obj1 provides relation_property) {
 			obj2 = obj1.relation_property;
@@ -448,20 +448,20 @@ implements the RELATIONS testing command. Speed is unimportant here.
 			if (x == 0) { print (string) RlnGetF(relation, RR_DESCRIPTION), ":^"; x=1; }
 			print "  ", (The) obj1;
 			if (sym) print "  ==  "; else print "  >=>  ";
-			PrintKindValuePair(tr, obj2);
+			SayKindValuePair(tr, obj2);
 			print "^";
 		}
 	} else {
-		N = KOVDomainSize(t);
+		N = KindDomainSize(t);
 		for (obj1=1: obj1<=N: obj1++) {
 			obj2 = GProperty(t, obj1, relation_property);
 			if (sym && obj2 < obj1) continue;
 			if (obj2 == 0) continue;
 			if (x == 0) { print (string) RlnGetF(relation, RR_DESCRIPTION), ":^"; x=1; }
 			print "  ";
-			PrintKindValuePair(t, obj1);
+			SayKindValuePair(t, obj1);
 			if (sym) print "  ==  "; else print "  >=>  ";
-			PrintKindValuePair(tr, obj2);
+			SayKindValuePair(tr, obj2);
 			print "^";
 		}
 	}
@@ -476,8 +476,8 @@ form of the same code in which left and right are exchanged: this is it.
 =
 [ Relation_RShowOtoO relation sym x relation_property obj1 obj2 t1 t2 N1 N2;
 	relation_property = RlnGetF(relation, RR_STORAGE);
-	t1 = KindBaseTerm(RlnGetF(relation, RR_KIND), 0); ! Kind of left term
-	t2 = KindBaseTerm(RlnGetF(relation, RR_KIND), 1); ! Kind of right term
+	t1 = KindConstructorTerm(RlnGetF(relation, RR_KIND), 0); ! Kind of left term
+	t2 = KindConstructorTerm(RlnGetF(relation, RR_KIND), 1); ! Kind of right term
 	if (t2 == OBJECT_TY) {
 		if (t1 == OBJECT_TY) {
 			objectloop (obj1) {
@@ -490,19 +490,19 @@ form of the same code in which left and right are exchanged: this is it.
 				}
 			}
 		} else {
-			N1 = KOVDomainSize(t1);
+			N1 = KindDomainSize(t1);
 			for (obj1=1: obj1<=N1: obj1++) {
 				objectloop (obj2 provides relation_property) {
 					if (obj2.relation_property ~= obj1) continue;
 					if (x == 0) { print (string) RlnGetF(relation, RR_DESCRIPTION), ":^"; x=1; }
-					print "  "; PrintKindValuePair(t1, obj1);
+					print "  "; SayKindValuePair(t1, obj1);
 					print "  >=>  ";
 					print (the) obj2, "^";
 				}
 			}
 		}
 	} else {
-		N2 = KOVDomainSize(t2);
+		N2 = KindDomainSize(t2);
 		if (t1 == OBJECT_TY) {
 			objectloop (obj1) {
 				for (obj2=1: obj2<=N2: obj2++) {
@@ -510,20 +510,20 @@ form of the same code in which left and right are exchanged: this is it.
 					if (x == 0) { print (string) RlnGetF(relation, RR_DESCRIPTION), ":^"; x=1; }
 					print "  ", (The) obj1;
 					print "  >=>  ";
-					PrintKindValuePair(t2, obj2);
+					SayKindValuePair(t2, obj2);
 					print "^";
 				}
 			}
 		} else {
-			N1 = KOVDomainSize(t1);
+			N1 = KindDomainSize(t1);
 			for (obj1=1: obj1<=N1: obj1++) {
 				for (obj2=1: obj2<=N2: obj2++) {
 					if (GProperty(t2, obj2, relation_property) ~= obj1) continue;
 					if (x == 0) { print (string) RlnGetF(relation, RR_DESCRIPTION), ":^"; x=1; }
 					print "  ";
-					PrintKindValuePair(t1, obj1);
+					SayKindValuePair(t1, obj1);
 					print "  >=>  ";
-					PrintKindValuePair(t2, obj2);
+					SayKindValuePair(t2, obj2);
 					print "^";
 				}
 			}
@@ -544,8 +544,8 @@ form of the same code in which left and right are exchanged: this is it.
 [ Relation_ShowEquiv relation relation_property obj1 obj2 v c d somegroups t N x;
 	print (string) RlnGetF(relation, RR_DESCRIPTION), ":^";
 	relation_property = RlnGetF(relation, RR_STORAGE);
-	t = KindBaseTerm(RlnGetF(relation, RR_KIND), 0); ! Kind of left term
-	N = KOVDomainSize(t);
+	t = KindConstructorTerm(RlnGetF(relation, RR_KIND), 0); ! Kind of left term
+	N = KindDomainSize(t);
 	if (t == OBJECT_TY) {
 		objectloop (obj1 provides relation_property)
 			obj1.relation_property = -(obj1.relation_property);
@@ -599,7 +599,7 @@ form of the same code in which left and right are exchanged: this is it.
 					d = 0;
 					for (obj2 = 1: obj2 <= N: obj2++) {
 						if (GProperty(t, obj2, relation_property) == v) {
-							print " "; PrintKindValuePair(t, obj2);
+							print " "; SayKindValuePair(t, obj2);
 							if (d < c-1) print ","; print " ";
 							RSE_Flip(t, obj2, relation_property);
 							d++;
@@ -635,8 +635,8 @@ whether the relation is empty at the end of the call. For relations in groups,
 =
 [ Relation_EmptyOtoO relation sym clear relation_property obj1 obj2 t1 t2 N1 N2;
 	relation_property = RlnGetF(relation, RR_STORAGE);
-	t1 = KindBaseTerm(RlnGetF(relation, RR_KIND), 0); ! Kind of left term
-	t2 = KindBaseTerm(RlnGetF(relation, RR_KIND), 1); ! Kind of right term
+	t1 = KindConstructorTerm(RlnGetF(relation, RR_KIND), 0); ! Kind of left term
+	t2 = KindConstructorTerm(RlnGetF(relation, RR_KIND), 1); ! Kind of right term
 	if (t2 == OBJECT_TY) {
 		objectloop (obj2 provides relation_property) {
 			obj1 = obj2.relation_property;
@@ -678,8 +678,8 @@ whether the relation is empty at the end of the call. For relations in groups,
 [ Relation_EmptyEquiv relation sym clear
 	relation_property obj1 obj2 t N v;
 	relation_property = RlnGetF(relation, RR_STORAGE);
-	t = KindBaseTerm(RlnGetF(relation, RR_KIND), 0); ! Kind of left term
-	N = KOVDomainSize(t);
+	t = KindConstructorTerm(RlnGetF(relation, RR_KIND), 0); ! Kind of left term
+	N = KindDomainSize(t);
 	if (clear) {
 		v = 1;
 		if (t == OBJECT_TY) {

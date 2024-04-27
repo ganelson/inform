@@ -1194,7 +1194,7 @@ L and R are more definite.
 				case TIMES_OPERATION: Problems::quote_text(6, "multiplying"); Problems::quote_text(7, "by"); break;
 				case DIVIDE_OPERATION:
 				case REMAINDER_OPERATION: Problems::quote_text(6, "dividing"); Problems::quote_text(7, "by"); break;
-				case APPROXIMATION_OPERATION: Problems::quote_text(6, "rounding"); Problems::quote_text(7, "to"); break;
+				case APPROXIMATE_OPERATION: Problems::quote_text(6, "rounding"); Problems::quote_text(7, "to"); break;
 			}
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadArithmetic));
 			Problems::issue_problem_segment(

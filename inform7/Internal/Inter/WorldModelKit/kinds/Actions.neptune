@@ -15,14 +15,18 @@ new base STORED_ACTION_TY {
 	plural: actions
 
 	comparison-schema: DESCRIPTION_OF_ACTION_TY>>>*=-((STORED_ACTION_TY_Adopt(*1), (SAT_Tmp-->0=(*2)), STORED_ACTION_TY_Unadopt()))
-	multiple-block: no
-	heap-size-estimate: 16
+	long-block-size: 6
 	can-exchange: yes
 	constant-compilation-method: special
 
-	distinguishing-routine: STORED_ACTION_TY_Distinguish
-	printing-routine: STORED_ACTION_TY_Say
-	comparison-routine: BlkValueCompare
+	distinguish-function: STORED_ACTION_TY_Distinguish
+	say-function: STORED_ACTION_TY_Say
+	compare-function: STORED_ACTION_TY_Compare
+	create-function: STORED_ACTION_TY_Create
+	copy-function: STORED_ACTION_TY_Copy
+!	long-block-size-function: STORED_ACTION_TY_LongBlockSize
+	destroy-function: STORED_ACTION_TY_Destroy
+	hash-function: STORED_ACTION_TY_Hash
 
 	documentation-reference: kind_storedaction
 	index-default-value: waiting
@@ -38,7 +42,7 @@ new base ACTION_NAME_TY {
 	loop-domain-schema: for (*2=0,*1=ActionNumberIndexed(*2): *2<AD_RECORDS: *2++,*1=ActionNumberIndexed(*2))
 	constant-compilation-method: special
 
-	printing-routine: SayActionName
+	say-function: SayActionName
 
 	documentation-reference: kind_actionname
 	index-priority: 6

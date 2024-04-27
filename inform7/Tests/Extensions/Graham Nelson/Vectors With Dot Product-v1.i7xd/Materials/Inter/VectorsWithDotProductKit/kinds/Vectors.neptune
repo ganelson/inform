@@ -1,0 +1,31 @@
+new base VECTOR_TY {
+	conforms-to: POINTER_VALUE_TY
+	conforms-to: SAYABLE_VALUE_TY
+	conforms-to: ARITHMETIC_VALUE_TY
+	singular: vector
+	plural: vectors
+	
+	short-block-size: 3
+
+	say-function: VECTOR_TY_Say
+	compare-function: VECTOR_TY_Compare
+	create-function: VECTOR_TY_Create
+	copy-function: VECTOR_TY_Copy
+
+	plus-schema: VECTOR_TY_Plus(*1, *2)
+	minus-schema: VECTOR_TY_Minus(*1, *2)
+	times-schema: VECTOR_TY, NUMBER_TY: VECTOR_TY_Scale(*1, *2)
+	times-schema: NUMBER_TY, VECTOR_TY: VECTOR_TY_Scale(*2, *1)
+	times-schema: VECTOR_TY, VECTOR_TY: VECTOR_TY_DotProduct(*1, *2)
+	divide-schema: none
+	remainder-schema: none
+	approximate-schema: none
+	negate-schema: VECTOR_TY_Negate(*1)
+	root-schema: none
+	cuberoot-schema: none
+	power-schema: none
+
+	index-priority: 2
+	index-default-value: 0
+	specification-text: A vector with three number-valued coordinates.
+}

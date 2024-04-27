@@ -1,0 +1,14 @@
+{
+    "is": {
+        "type": "extension",
+        "title": "Vectors",
+        "author": "Graham Nelson",
+        "version": "1"
+    },
+    "needs": [ {
+        "need": {
+            "type": "kit",
+            "title": "VectorsKit"
+        }
+    } ]
+}

@@ -48,25 +48,39 @@ void KindCommands::apply(single_kind_command stc, kind_constructor *con) {
 		SET_BOOLEAN_FIELD(can_exchange)
 		SET_BOOLEAN_FIELD(indexed_grey_if_empty)
 		SET_BOOLEAN_FIELD(is_incompletely_defined)
-		SET_BOOLEAN_FIELD(multiple_block)
 		SET_BOOLEAN_FIELD(forbid_assertion_creation)
+		SET_BOOLEAN_FIELD(dimensionless)
 
-		SET_INTEGER_FIELD(heap_size_estimate)
 		SET_INTEGER_FIELD(index_priority)
-		SET_INTEGER_FIELD(small_block_size)
+		SET_INTEGER_FIELD(short_block_size)
+		SET_INTEGER_FIELD(long_block_size)
+		SET_INTEGER_FIELD(flexible_long_block_size)
+		SET_INTEGER_FIELD(arithmetic_modulus)
 
 		SET_CCM_FIELD(constant_compilation_method)
 
 		SET_TEXTUAL_FIELD(default_value)
-		SET_TEXTUAL_FIELD(distinguishing_routine)
+		SET_TEXTUAL_FIELD(distinguish_function)
 		SET_TEXTUAL_FIELD(documentation_reference)
-		SET_TEXTUAL_FIELD(explicit_GPR_identifier)
+		SET_TEXTUAL_FIELD(understand_function)
 		SET_TEXTUAL_FIELD(index_default_value)
 		SET_TEXTUAL_FIELD(index_maximum_value)
 		SET_TEXTUAL_FIELD(index_minimum_value)
 		SET_TEXTUAL_FIELD(loop_domain_schema)
-		SET_TEXTUAL_FIELD(recognition_routine)
+		SET_TEXTUAL_FIELD(recognise_function)
 		SET_TEXTUAL_FIELD(specification_text)
+
+		SET_TEXTUAL_FIELD(create_function)    
+		SET_TEXTUAL_FIELD(cast_function)
+		SET_TEXTUAL_FIELD(copy_function)
+		SET_TEXTUAL_FIELD(copy_short_block_function)
+		SET_TEXTUAL_FIELD(quick_copy_function)
+		SET_TEXTUAL_FIELD(destroy_function)
+		SET_TEXTUAL_FIELD(make_mutable_function)
+		SET_TEXTUAL_FIELD(hash_function)
+		SET_TEXTUAL_FIELD(long_block_size_function)
+		SET_TEXTUAL_FIELD(serialise_function)
+		SET_TEXTUAL_FIELD(unserialise_function)
 	}
 
 @<A few kind commands contribute to linked lists in the constructor structure@> =
@@ -135,12 +149,12 @@ void KindCommands::apply(single_kind_command stc, kind_constructor *con) {
 		case terms_KCC:
 			@<Parse the constructor arity text@>;
 			return;
-		case comparison_routine_KCC:
+		case compare_function_KCC:
 			if (Str::len(stc.textual_argument) > 31)
 				NeptuneFiles::error(stc.textual_argument, I"overlong identifier", stc.origin);
 			else con->comparison_routine = Str::duplicate(stc.textual_argument);
 			return;
-		case printing_routine_KCC:
+		case say_function_KCC:
 			if (Str::len(stc.textual_argument) > 31) 
 				NeptuneFiles::error(stc.textual_argument, I"overlong identifier", stc.origin);
 			else con->print_identifier = Str::duplicate(stc.textual_argument);
@@ -190,6 +204,16 @@ void KindCommands::apply(single_kind_command stc, kind_constructor *con) {
 			}
 			return;
 		}
+		case plus_schema_KCC:        { int op = PLUS_OPERATION; @<Arithmetic schema@>; return; }
+		case minus_schema_KCC:       { int op = MINUS_OPERATION; @<Arithmetic schema@>; return; }
+		case times_schema_KCC:       { int op = TIMES_OPERATION; @<Arithmetic schema@>; return; }
+		case divide_schema_KCC:      { int op = DIVIDE_OPERATION; @<Arithmetic schema@>; return; }
+		case remainder_schema_KCC:   { int op = REMAINDER_OPERATION; @<Arithmetic schema@>; return; }
+		case approximate_schema_KCC: { int op = APPROXIMATE_OPERATION; @<Arithmetic schema@>; return; }
+		case negate_schema_KCC:      { int op = NEGATE_OPERATION; @<Arithmetic schema@>; return; }
+		case root_schema_KCC:        { int op = ROOT_OPERATION; @<Arithmetic schema@>; return; }
+		case cuberoot_schema_KCC:    { int op = CUBEROOT_OPERATION; @<Arithmetic schema@>; return; }
+		case power_schema_KCC:       { int op = POWER_OPERATION; @<Arithmetic schema@>; return; }
 	}
 
 @<Parse the constructor arity text@> =
@@ -215,6 +239,23 @@ void KindCommands::apply(single_kind_command stc, kind_constructor *con) {
 		DISCARD_TEXT(wd)
 	}
 	con->constructor_arity = c+1;
+
+@<Arithmetic schema@> =
+	arithmetic_schema *ars = CREATE(arithmetic_schema);
+	ars->operands[0] = NULL;
+	ars->operands[1] = NULL;
+	ars->operands_unparsed[0] = NULL;
+	ars->operands_unparsed[1] = NULL;
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, stc.textual_argument, U"(%C+), *(%C+): *(%c+)")) {
+		ars->operands_unparsed[0] = Str::duplicate(mr.exp[0]);
+		ars->operands_unparsed[1] = Str::duplicate(mr.exp[1]);
+		ars->schema = Str::duplicate(mr.exp[2]);
+	} else {
+		ars->schema = Str::duplicate(stc.textual_argument);
+	}
+	Regexp::dispose_of(&mr);
+	ADD_TO_LINKED_LIST(ars, arithmetic_schema, con->arithmetic_schemas[op]);
 
 @ This is used for parsing the values of enumeration members in |instance|
 commands:
