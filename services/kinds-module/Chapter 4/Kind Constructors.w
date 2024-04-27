@@ -57,6 +57,7 @@ typedef struct kind_constructor {
 
 	/* G: performing arithmetic */
 	struct text_stream *comparison_routine; /* for instance, when sorting table or list entries */
+	int dimensionless;
 	struct dimensional_rules dim_rules; /* how arithmetic operations work here */
 	struct unit_sequence dimensional_form; /* dimensions of this kind */
 	int dimensional_form_fixed; /* whether they are derived */
@@ -97,6 +98,8 @@ typedef struct kind_constructor {
 	struct text_stream *long_block_size_function;
 	struct text_stream *serialise_function;
 	struct text_stream *unserialise_function;
+	struct linked_list *arithmetic_schemas[NO_DEFINED_OPERATION_VALUES]; /* of |arithmetic_schema| */
+	int arithmetic_modulus;
 
 	/* L: indexing and documentation */
 	struct text_stream *specification_text; /* text for pseudo-property */
@@ -171,6 +174,16 @@ of object) here:
 
 = (early code)
 kind *latest_base_kind_of_value = NULL;
+
+@ Arithmetic schemas record:
+
+=
+typedef struct arithmetic_schema {
+	struct text_stream *operands_unparsed[2];
+	struct kind_constructor *operands[2];
+	struct text_stream *schema;
+	CLASS_DEFINITION
+} arithmetic_schema;
 
 @h Creation.
 Constructors come from two sources. Built-in ones like |number| or
@@ -256,6 +269,7 @@ we apply any defaults set in Neptune files.
 	con->coinciding_property = NULL;
 
 	/* G: performing arithmetic */
+	con->dimensionless = TRUE;
 	con->comparison_routine = Str::new();
 	WRITE_TO(con->comparison_routine, "UnsignedCompare");
 	if ((con == CON_KIND_VARIABLE) || (con == CON_INTERMEDIATE) ||
@@ -303,6 +317,9 @@ we apply any defaults set in Neptune files.
 	con->long_block_size_function = NULL;
 	con->serialise_function = NULL;
 	con->unserialise_function = NULL;
+	for (int op=0; op<NO_DEFINED_OPERATION_VALUES; op++)
+		con->arithmetic_schemas[op] = NEW_LINKED_LIST(arithmetic_schema);
+	con->arithmetic_modulus = 0;
 
 	/* L: indexing and documentation */
 	con->specification_text = NULL;
@@ -639,6 +656,45 @@ text_stream *KindConstructors::get_serialise_fn_identifier(kind_constructor *kc)
 text_stream *KindConstructors::get_unserialise_fn_identifier(kind_constructor *kc) {
 	if (kc == NULL) return NULL;
 	return kc->unserialise_function;
+}
+
+text_stream *KindConstructors::get_arithmetic_schema(int op,
+	kind_constructor *kc1, kind_constructor *kc2) {
+	if ((op < 0) || (op >= NO_DEFINED_OPERATION_VALUES)) return NULL;
+	text_stream *candidate;
+	candidate = KindConstructors::get_arithmetic_schema_from(kc1, op, kc1, kc2);
+	if (Str::len(candidate) > 0) return candidate;
+	candidate = KindConstructors::get_arithmetic_schema_from(kc2, op, kc1, kc2);
+	if (Str::len(candidate) > 0) return candidate;
+	return NULL;
+}
+
+text_stream *KindConstructors::get_arithmetic_schema_from(kind_constructor *from,
+	int op, kind_constructor *kc1, kind_constructor *kc2) {
+	if (from == NULL) return NULL;
+	arithmetic_schema *ars;
+	LOOP_OVER_LINKED_LIST(ars, arithmetic_schema, from->arithmetic_schemas[op]) {
+		for (int i=0; i<2; i++) {
+			if (Str::len(ars->operands_unparsed[i]) > 0) {
+				ars->operands[i] = KindConstructors::parse(ars->operands_unparsed[i]);
+				Str::clear(ars->operands_unparsed[i]);
+			}
+		}
+		if (((kc1 == ars->operands[0]) || ((kc1 == from) && (ars->operands[0] == NULL))) &&
+			((kc2 == ars->operands[1]) || ((kc2 == from) && (ars->operands[1] == NULL))))
+			return ars->schema;
+	}
+	return NULL;
+}
+
+int KindConstructors::get_arithmetic_modulus(kind_constructor *kc) {
+	if (kc == NULL) return 0;
+	return kc->arithmetic_modulus;
+}
+
+int KindConstructors::is_dimensionless(kind_constructor *kc) {
+	if (kc == NULL) return TRUE;
+	return kc->dimensionless;
 }
 
 @h Compatibility.

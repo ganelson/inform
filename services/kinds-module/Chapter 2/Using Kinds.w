@@ -453,6 +453,17 @@ text_stream *Kinds::Behaviour::get_unserialise_function(kind *K) {
 	return KindConstructors::get_unserialise_fn_identifier(K->construct);
 }
 
+text_stream *Kinds::Behaviour::get_arithmetic_schema(int op, kind *K1, kind *K2) {
+	kind_constructor *kc1 = (K1)?(K1->construct):NULL;
+	kind_constructor *kc2 = (K2)?(K2->construct):NULL;
+	return KindConstructors::get_arithmetic_schema(op, kc1, kc2);
+}
+
+int Kinds::Behaviour::get_arithmetic_modulus(kind *K) {
+	if (K == NULL) return 0;
+	return KindConstructors::get_arithmetic_modulus(K->construct);
+}
+
 @h (L) Indexing and documentation.
 
 =

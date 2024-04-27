@@ -107,10 +107,10 @@ it as a real.
 		case TIMES_OPERATION:
 		case DIVIDE_OPERATION:
 		case REMAINDER_OPERATION:
-		case APPROXIMATION_OPERATION:
+		case APPROXIMATE_OPERATION:
 		case ROOT_OPERATION:
 		case CUBEROOT_OPERATION:
-		case UNARY_MINUS_OPERATION:
+		case NEGATE_OPERATION:
 			CompileArithmetic::compile_by_schema(op, &oed_X, &oed_Y);
 			break;
 		case REALROOT_OPERATION:
@@ -211,6 +211,11 @@ void CompileArithmetic::compile_by_schema(int op,
 
 void CompileArithmetic::compile_operand(void *oed_v) {
 	operand_emission_data *oed = (operand_emission_data *) oed_v;
+	if (Kinds::Behaviour::uses_block_values(oed->KX)) {
+		EmitCode::call(Hierarchy::find(COPYPV_HL));
+		EmitCode::down();
+			Frames::emit_new_local_value(oed->KX);
+	}
 	if (oed->promote_me) Kinds::FloatingPoint::begin_flotation_emit(oed->KX);
 	
 	if (oed->rescale_divide_K) Kinds::Scalings::rescale_division_emit_op(oed->KX, oed->rescale_divide_K);
@@ -223,6 +228,9 @@ void CompileArithmetic::compile_operand(void *oed_v) {
 	else if (oed->rescale_root) Kinds::Scalings::rescale_root_emit_factor(oed->KX, oed->rescale_root);
 
 	if (oed->promote_me) Kinds::FloatingPoint::end_flotation_emit(oed->KX);
+	if (Kinds::Behaviour::uses_block_values(oed->KX)) {
+		EmitCode::up();
+	}
 }
 
 @
@@ -235,73 +243,68 @@ void CompileArithmetic::schema(OUTPUT_STREAM, kind *KX, kind *KY,
 	kind *KT = TimesOfDay::kind();
 	if ((KT) && (Kinds::eq(KX, KT))) reducing_modulo_1440 = TRUE;
 	#endif
-	if (reducing_modulo_1440) WRITE("NUMBER_TY_to_TIME_TY(");
+	int modulus = Kinds::Behaviour::get_arithmetic_modulus(KX);
+	if (modulus > 0) WRITE("CongruenceClass(");
+
+	text_stream *defn = Kinds::Behaviour::get_arithmetic_schema(operation, KX, KY);
+	if (Str::eq(defn, I"none")) @<Throw problem message and return@>;
+	if (Str::len(defn) == 0) {
+		if (Kinds::FloatingPoint::uses_floating_point(KX))
+			defn = Kinds::Behaviour::get_arithmetic_schema(operation, K_real_number, K_real_number);
+		else
+			defn = Kinds::Behaviour::get_arithmetic_schema(operation, K_number, K_number);
+	}
+	if ((Str::len(defn) == 0) || (Str::eq(defn, I"none")))
+		@<Throw problem message and return@>;
+	WRITE("%S", defn);
+	if (modulus > 0) WRITE(", %d)", modulus);
+}
+
+@<Throw problem message and return@> =
+	WRITE("0");
+	Problems::quote_source(1, current_sentence);
+	Problems::quote_kind(2, KX);
+	Problems::quote_kind(3, KY);
+	StandardProblems::handmade_problem(Task::syntax_tree(),
+		_p_(PM_ArithmeticImpossible));
 	switch (operation) {
 		case PLUS_OPERATION:
-			if (Kinds::FloatingPoint::uses_floating_point(KX))
-				WRITE("REAL_NUMBER_TY_Plus(%S, %S)", X, Y);
-			else
-				WRITE("%S + %S", X, Y);
+			Problems::issue_problem_segment(
+				"In '%1', I can't add %2 and %3.");
 			break;
 		case MINUS_OPERATION:
-			if (Kinds::FloatingPoint::uses_floating_point(KX))
-				WRITE("REAL_NUMBER_TY_Minus(%S, %S)", X, Y);
-			else
-				WRITE("%S - %S", X, Y);
+			Problems::issue_problem_segment(
+				"In '%1', I can't subtract %2 from %3.");
 			break;
 		case TIMES_OPERATION:
-			if (Kinds::FloatingPoint::uses_floating_point(KX))
-				WRITE("REAL_NUMBER_TY_Times(%S, %S)", X, Y);
-			else
-				WRITE("%S ** %S", X, Y);
+			Problems::issue_problem_segment(
+				"In '%1', I can't multiply %2 and %3.");
 			break;
 		case DIVIDE_OPERATION:
-			if (Kinds::FloatingPoint::uses_floating_point(KX))
-				WRITE("REAL_NUMBER_TY_Divide(%S, %S)", X, Y);
-			else
-				WRITE("IntegerDivide(%S, %S)", X, Y);
-			break;
 		case REMAINDER_OPERATION:
-			if (Kinds::FloatingPoint::uses_floating_point(KX))
-				WRITE("REAL_NUMBER_TY_Remainder(%S, %S)", X, Y);
-			else
-				WRITE("IntegerRemainder(%S, %S)", X, Y);
+			Problems::issue_problem_segment(
+				"In '%1', I can't divide %2 by %3.");
 			break;
-		case APPROXIMATION_OPERATION:
-			if (Kinds::FloatingPoint::uses_floating_point(KX))
-				WRITE("REAL_NUMBER_TY_Approximate(%S, %S)", X, Y);
-			else
-				WRITE("RoundOffValue(%S, %S)", X, Y);
-			break;
-		case UNARY_MINUS_OPERATION:
-			if (Kinds::FloatingPoint::uses_floating_point(KX))
-				WRITE("REAL_NUMBER_TY_Negate(%S)", X);
-			else
-				WRITE("(-(%S))", X);
-			break;
-		case REALROOT_OPERATION:
-			WRITE("REAL_NUMBER_TY_Root(%S)", X);
+		case APPROXIMATE_OPERATION:
+			Problems::issue_problem_segment(
+				"In '%1', I can't approximate %2 to %3.");
 			break;
 		case ROOT_OPERATION:
-			if (Kinds::FloatingPoint::uses_floating_point(KX))
-				WRITE("REAL_NUMBER_TY_Root(%S)", X);
-			else
-				WRITE("SquareRoot(%S)", X);
+			Problems::issue_problem_segment(
+				"In '%1', I can't take a square root of %2.");
 			break;
 		case CUBEROOT_OPERATION:
-			if (Kinds::FloatingPoint::uses_floating_point(KX))
-				WRITE("REAL_NUMBER_TY_CubeRoot(%S)", X);
-			else
-				WRITE("CubeRoot(%S)", X);
+			Problems::issue_problem_segment(
+				"In '%1', I can't take a cube root of %2.");
 			break;
-		case POWER_OPERATION:
-			if (Kinds::FloatingPoint::uses_floating_point(KX))
-				WRITE("REAL_NUMBER_TY_Pow(%S, %S)", X, Y);
-			else
-				internal_error("no integer power function exists");
+		case NEGATE_OPERATION:
+			Problems::issue_problem_segment(
+				"In '%1', I can't negate %2.");
 			break;
 		default:
-			internal_error("no schema can be provided for this operation");
+			Problems::issue_problem_segment(
+				"In '%1', I can't perform this arithmetic operation on %2 and %3.");
+			break;
 	}
-	if (reducing_modulo_1440) WRITE(")");
-}
+	Problems::issue_problem_end();
+	return;

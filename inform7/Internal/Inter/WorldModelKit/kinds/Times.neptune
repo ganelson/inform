@@ -11,6 +11,9 @@ new base TIME_TY {
 
 	understand-function: TIME_TOKEN
 	say-function: PrintTimeOfDay
+	
+	arithmetic-modulus: 1440
+	dimensionless: no
 
 	documentation-reference: kind_time
 	index-default-value: 9:00 AM

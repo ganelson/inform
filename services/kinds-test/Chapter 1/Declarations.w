@@ -205,7 +205,7 @@ typedef struct kind_relationship {
 	@<Perform arithmetic@>;
 
 @<Perform approx@> =
-	int op = APPROXIMATION_OPERATION;
+	int op = APPROXIMATE_OPERATION;
 	@<Perform arithmetic@>;
 
 @<Perform arithmetic@> =
@@ -214,7 +214,7 @@ typedef struct kind_relationship {
 	==> { - , Kinds::Dimensions::arithmetic_on_kinds(K1, K2, op) }
 
 @<Perform unary minus@> =
- 	int op = UNARY_MINUS_OPERATION;
+ 	int op = NEGATE_OPERATION;
 	@<Perform unary arithmetic@>;
 
 @<Perform square root@> =

@@ -24,6 +24,7 @@ typedef struct kind_command_definition {
 @e CONSTRUCTOR_KCA /* any valid kind number, such as "number" */
 @e TEMPLATE_KCA    /* the name of a template whose definition is given in the file */
 @e MACRO_KCA       /* the name of a macro whose definition is given in the file */
+@e SCHEMA_KCA      /* an I6 compilation schema */
 
 @ And, to cut to the chase, here is the complete table of commands:
 
@@ -60,6 +61,19 @@ typedef struct kind_command_definition {
 @e short_block_size_KCC
 @e terms_KCC
 @e instance_KCC
+
+@e plus_schema_KCC		
+@e minus_schema_KCC		
+@e times_schema_KCC		
+@e divide_schema_KCC		
+@e remainder_schema_KCC	
+@e approximate_schema_KCC	
+@e negate_schema_KCC		
+@e root_schema_KCC		
+@e cuberoot_schema_KCC	
+@e power_schema_KCC
+@e arithmetic_modulus_KCC
+@e dimensionless_KCC
 
 @e create_function_KCC
 @e cast_function_KCC
@@ -124,9 +138,22 @@ kind_command_definition table_of_kind_commands[] = {
 	{ "serialise-function",             serialise_function_KCC,             TEXT_KCA, NULL },
 	{ "unserialise-function",           unserialise_function_KCC,           TEXT_KCA, NULL },
 
-	{ "comparison-schema",              comparison_schema_KCC,              CONSTRUCTOR_KCA, NULL },
+	{ "comparison-schema",              comparison_schema_KCC,              SCHEMA_KCA, NULL },
 	{ "compatible-with",                compatible_with_KCC,                CONSTRUCTOR_KCA, NULL },
 	{ "conforms-to",                    conforms_to_KCC,                    CONSTRUCTOR_KCA, NULL },
+
+	{ "plus-schema",	 				plus_schema_KCC,					SCHEMA_KCA, NULL }, 
+	{ "minus-schema",					minus_schema_KCC,					SCHEMA_KCA, NULL },
+	{ "times-schema",					times_schema_KCC,					SCHEMA_KCA, NULL },
+	{ "divide-schema",					divide_schema_KCC,					SCHEMA_KCA, NULL },
+	{ "remainder-schema",				remainder_schema_KCC,				SCHEMA_KCA, NULL },
+	{ "approximate-schema",				approximate_schema_KCC,				SCHEMA_KCA, NULL },
+	{ "negate-schema",					negate_schema_KCC,					SCHEMA_KCA, NULL },
+	{ "root-schema",					root_schema_KCC,					SCHEMA_KCA, NULL }, 
+	{ "cuberoot-schema",				cuberoot_schema_KCC,				SCHEMA_KCA, NULL },
+	{ "power-schema",					power_schema_KCC,					SCHEMA_KCA, NULL },
+	{ "arithmetic-modulus",				arithmetic_modulus_KCC,				NUMERIC_KCA, NULL },
+	{ "dimensionless",		 			dimensionless_KCC,					BOOLEAN_KCA, NULL },
 
 	{ "plural",                         plural_KCC,                         VOCABULARY_KCA, NULL },
 	{ "singular",                       singular_KCC,                       VOCABULARY_KCA, NULL },
@@ -355,6 +382,7 @@ begin with those characters, but that doesn't matter for the things we need.
 		case NUMERIC_KCA: @<Parse a numeric argument for a kind command@>; break;
 		case TEMPLATE_KCA: @<Parse a template name argument for a kind command@>; break;
 		case TEXT_KCA: @<Parse a textual argument for a kind command@>; break;
+		case SCHEMA_KCA: @<Parse a schema argument for a kind command@>; break;
 		case VOCABULARY_KCA: @<Parse a vocabulary argument for a kind command@>; break;
 	}
 
@@ -410,6 +438,16 @@ so we neglect it.
 @<Parse a textual argument for a kind command@> =
 	Str::copy(stc.textual_argument, argument);
 
+@<Parse a schema argument for a kind command@> =
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, argument, U"(%c*?)>>>(%c+)")) {
+		Str::copy(stc.constructor_argument, mr.exp[0]);
+		Str::copy(stc.textual_argument, mr.exp[1]);
+	} else {
+		Str::copy(stc.textual_argument, argument);
+	}
+	Regexp::dispose_of(&mr);
+
 @<Parse a vocabulary argument for a kind command@> =
 	stc.vocabulary_argument = WordAssemblages::lit_0();
 	feed_t id = Feeds::begin();
@@ -425,12 +463,6 @@ so we neglect it.
 	stc.numeric_argument = Str::atoi(argument, 0);
 
 @<Parse a constructor-name argument for a kind command@> =
-	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, argument, U"(%c*?)>>>(%c+)")) {
-		Str::copy(argument, mr.exp[0]);
-		Str::copy(stc.textual_argument, mr.exp[1]);
-		Regexp::dispose_of(&mr);
-	}
 	stc.constructor_argument = Str::duplicate(argument);
 
 @<Parse a template name argument for a kind command@> =

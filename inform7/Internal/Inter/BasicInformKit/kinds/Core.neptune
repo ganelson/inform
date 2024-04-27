@@ -26,6 +26,16 @@ builtin base NUMBER_TY {
 	understand-function: DECIMAL_TOKEN
 	say-function: DecimalNumber
 
+	plus-schema: *1 + *2
+	minus-schema: *1 - *2
+	times-schema: *1 ** *2
+	divide-schema: IntegerDivide(*1, *2)
+	remainder-schema: IntegerRemainder(*1, *2)
+	approximate-schema: RoundOffValue(*1, *2)
+	negate-schema: (-(*1))
+	root-schema: SquareRoot(*1)
+	cuberoot-schema: CubeRoot(*1)
+
 	documentation-reference: kind_number
 	index-priority: 2
 	index-default-value: 0
@@ -45,6 +55,17 @@ builtin base REAL_NUMBER_TY {
 	compare-function: REAL_NUMBER_TY_Compare
 	understand-function: FLOAT_TOKEN
 	say-function: REAL_NUMBER_TY_Say
+
+	plus-schema: REAL_NUMBER_TY_Plus(*1, *2)
+	minus-schema: REAL_NUMBER_TY_Minus(*1, *2)
+	times-schema: REAL_NUMBER_TY_Times(*1, *2)
+	divide-schema: REAL_NUMBER_TY_Divide(*1, *2)
+	remainder-schema: REAL_NUMBER_TY_Remainder(*1, *2)
+	approximate-schema: REAL_NUMBER_TY_Approximate(*1, *2)
+	negate-schema: REAL_NUMBER_TY_Negate(*1)
+	root-schema: REAL_NUMBER_TY_Root(*1)
+	cuberoot-schema: REAL_NUMBER_TY_CubeRoot(*1)
+	power-schema: REAL_NUMBER_TY_Pow(*1, *2)
 
 	documentation-reference: kind_real_number
 	index-priority: 2

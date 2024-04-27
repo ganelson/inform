@@ -76,16 +76,9 @@ Constant VECTOR_Z_SF = SBONLYPV_FIELDS + 2;
 	return vec;
 ];
 
-[ VECTOR_TY_CrossProduct vec1 vec2 x y z;
-	x = (vec1-->VECTOR_Y_SF) * (vec2-->VECTOR_Z_SF) -
-		(vec1-->VECTOR_Z_SF) * (vec2-->VECTOR_Y_SF);
-	y = (vec1-->VECTOR_Z_SF) * (vec2-->VECTOR_X_SF) -
-		(vec1-->VECTOR_X_SF) * (vec2-->VECTOR_Z_SF);
-	z = (vec1-->VECTOR_X_SF) * (vec2-->VECTOR_Y_SF) -
-		(vec1-->VECTOR_Y_SF) * (vec2-->VECTOR_X_SF);
-	vec1-->VECTOR_X_SF = x;
-	vec1-->VECTOR_Y_SF = y;
-	vec1-->VECTOR_Z_SF = z;
-	return vec1;
+[ VECTOR_TY_DotProduct vec1 vec2;
+	return
+		(vec1-->VECTOR_X_SF) * (vec2-->VECTOR_X_SF) +
+		(vec1-->VECTOR_Y_SF) * (vec2-->VECTOR_Y_SF) +
+		(vec1-->VECTOR_Z_SF) * (vec2-->VECTOR_Z_SF);
 ];
-

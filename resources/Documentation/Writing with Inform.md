@@ -22694,3 +22694,158 @@ produces:
 "first entry of { "alpha", "beta", "gamma" }" = optional texts: alpha
 "first entry of L" = optional numbers: no value
 ```
+
+## Neptune and arithmetic
+
+Let's revisit `vector`, the example kind which held three numbers, and add the following to its Neptune declaration:
+
+``` code
+	conforms-to: ARITHMETIC_VALUE_TY
+
+	plus-schema: VECTOR_TY_Plus(*1, *2)
+	minus-schema: VECTOR_TY_Minus(*1, *2)
+	times-schema: VECTOR_TY, NUMBER_TY: VECTOR_TY_Scale(*1, *2)
+	times-schema: NUMBER_TY, VECTOR_TY: VECTOR_TY_Scale(*2, *1)
+	times-schema: VECTOR_TY, VECTOR_TY: VECTOR_TY_CrossProduct(*1, *2)
+	divide-schema: none
+	remainder-schema: none
+	approximate-schema: none
+	negate-schema: VECTOR_TY_Negate(*1)
+	root-schema: none
+	cuberoot-schema: none
+	power-schema: none
+```
+
+Once a kind conforms to ```ARITHMETIC_VALUE_TY```, it matches phrase definitions involving `arithmetic values`, and sooner or later Inform will need to know how to perform that arithmetic. If no schemas are provided for this, Inform will fall back on its usual way to perform `number` arithmetic. That would be disastrous for `vector`, since it would add together two addresses in memory of short blocks. Instead, we'll give custom definitions.
+
+```plus-schema: VECTOR_TY_Plus(*1, *2)``` is a schema telling Inform what code to generate in order to add two `vector` values.
+
+- The values to add are written as ```*1``` and ```*2```, each of which should appear only once.
+
+- If we need an actual asterisk, it can be written ```**```.
+
+- If `vector` weren't a pointer value, the schema could be something more general — any I6 expression evaluating to the answer. For example, the ```plus-schema``` for `number` is just ```*1 + *2```.
+
+- But because `vector` is a pointer value, it should be a function call like this one, which should (i) _change_ its first argument to become the result of the operation, and also (ii) return that first argument.
+
+For example, this function changes ```vec1``` to the vector sum of ```vec1``` and ```vec2```, and returns ```vec1```:
+
+``` code
+[ VECTOR_TY_Plus vec1 vec2;
+	vec1-->VECTOR_X_SF = vec1-->VECTOR_X_SF + vec2-->VECTOR_X_SF;
+	vec1-->VECTOR_Y_SF = vec1-->VECTOR_Y_SF + vec2-->VECTOR_Y_SF;
+	vec1-->VECTOR_Z_SF = vec1-->VECTOR_Z_SF + vec2-->VECTOR_Z_SF;
+	return vec1;
+];
+```
+
+Note that this function does not create or destroy anything: the Inform compiler looks after all of that for us.
+
+In this example the ```times-schema```, which looks after multiplication, splits into three. With all of the binary operations, i.e., forms of arithmetic acting on two values — plus, minus, times, divide, remainder — we can optionally specify a pair of kinds, at least one of which has to be the kind being declared. This lets us distinguish three different sorts of multiplication on vectors:
+
+``` code
+	times-schema: VECTOR_TY, NUMBER_TY: VECTOR_TY_Scale(*1, *2)
+	times-schema: NUMBER_TY, VECTOR_TY: VECTOR_TY_Scale(*2, *1)
+	times-schema: VECTOR_TY, VECTOR_TY: VECTOR_TY_CrossProduct(*1, *2)
+```
+
+The algebra we need is like so:
+
+``` code
+[ VECTOR_TY_Scale vec scalar;
+	vec-->VECTOR_X_SF = scalar*vec-->VECTOR_X_SF;
+	vec-->VECTOR_Y_SF = scalar*vec-->VECTOR_Y_SF;
+	vec-->VECTOR_Z_SF = scalar*vec-->VECTOR_Z_SF;
+	return vec;
+];
+
+[ VECTOR_TY_CrossProduct vec1 vec2 x y z;
+	x = (vec1-->VECTOR_Y_SF) * (vec2-->VECTOR_Z_SF) -
+		(vec1-->VECTOR_Z_SF) * (vec2-->VECTOR_Y_SF);
+	y = (vec1-->VECTOR_Z_SF) * (vec2-->VECTOR_X_SF) -
+		(vec1-->VECTOR_X_SF) * (vec2-->VECTOR_Z_SF);
+	z = (vec1-->VECTOR_X_SF) * (vec2-->VECTOR_Y_SF) -
+		(vec1-->VECTOR_Y_SF) * (vec2-->VECTOR_X_SF);
+	vec1-->VECTOR_X_SF = x;
+	vec1-->VECTOR_Y_SF = y;
+	vec1-->VECTOR_Z_SF = z;
+	return vec1;
+];
+```
+
+We also set several of these schemas to ```none```. There's an important difference here:
+
+- Not giving a schema tells Inform to use the schema for `number` instead (or, if the kind conforms to ```REAL_ARITHMETIC_VALUE```, for `real number`).
+- Giving the schema ```none``` tells Inform to throw a problem message if the operation is ever attempted. For example:
+
+  > **Problem**. In 'showme P / Q', I can't divide a vector by a vector.
+
+### Arithmetic modulus
+
+The ```WorldModelKit``` declaration for ```TIME_TY```, that is, for the kind `time`, doesn't give any schemas. Instead it has:
+
+``` code
+	arithmetic-modulus: 1440
+```
+
+This tells Inform that although ordinary `number` arithmetic is used on values of `time`, the result is always reduced modulo 1440, that is, we take the remainder after dividing by 1440, in such a way that the result always falls in the range 0 to 1439. (1440 is the number of minutes in a day.)
+
+### Dimensionlessness
+
+When declared via Neptune, arithmetic kinds are by default dimensionless. That is, they don't represent physical measurements, and shouldn't be subject to Inform's automatic rules for how kinds are to be combined.
+
+This can be overridden, and indeed ```TIME_TY``` does this, too:
+
+``` code
+	dimensionless: no
+```
+
+But the default is ```yes```. This is why `vector` is dimensionless.
+
+In the absence of any instructions to the contrary, values of a dimensionless kind `K` add and multiply quite simply:
+
+* Two `K` values add to a `K` value.
+* Two `K` values multiply to a `K` value.
+* A `K` value times a `number` is a `K`.
+* A `number` value times a `K` is a `K`.
+
+And this is why Inform thinks that a vector times a vector ought to be another vector. For our cross product operation, that happened to be right. So for example we find:
+
+``` transcript
+"P" = vector: (1,0,0)
+"Q" = vector: (0,1,0)
+"P + Q" = vector: (1,1,0)
+"P - Q" = vector: (1,-1,0)
+"P * Q" = vector: (0,0,1)
+```
+
+But suppose we wanted dot product, not cross product? Then we would have to add a sentence to the wrapper extension:
+
+	A vector times a vector specifies a number.
+
+The Neptune file needs to change too:
+
+``` code
+	times-schema: VECTOR_TY, VECTOR_TY: VECTOR_TY_DotProduct(*1, *2)
+```
+
+And the kit has to provide the function:
+
+``` code
+[ VECTOR_TY_DotProduct vec1 vec2;
+	return
+		(vec1-->VECTOR_X_SF) * (vec2-->VECTOR_X_SF) +
+		(vec1-->VECTOR_Y_SF) * (vec2-->VECTOR_Y_SF) +
+		(vec1-->VECTOR_Z_SF) * (vec2-->VECTOR_Z_SF);
+];
+```
+
+Note that because the result is a regular value, not a pointer value, we do not alter the vector ```vec1```: we simply return the answer. And now:
+
+``` transcript
+"P" = vector: (1,0,0)
+"Q" = vector: (0,1,0)
+"P + Q" = vector: (1,1,0)
+"P - Q" = vector: (1,-1,0)
+"P * Q" = number: 0
+```

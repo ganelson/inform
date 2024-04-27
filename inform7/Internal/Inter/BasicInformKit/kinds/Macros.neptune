@@ -55,6 +55,7 @@ macro #UNIT {
 	index-default-value: <0-in-literal-pattern>
 	index-priority: 2
 	constant-compilation-method: literal
+	dimensionless: no
 }
 
 ! #REAL is applied immediately after #UNIT if the kind needs to use real
