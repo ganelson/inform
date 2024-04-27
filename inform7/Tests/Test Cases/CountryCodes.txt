@@ -1,0 +1,24 @@
+Test: CountryCodes
+
+The Reform Club is a room.
+
+Include Country Codes by Graham Nelson.
+
+When play begins:
+	showme the Saint Helena code;
+	showme the list of country codes;
+	showme a random country code;
+	showme the number of country codes;
+	dial the Montserrat code;
+	dial the Saint Helena code;
+	dial the Svalbard code.
+
+To dial (code - country code):
+	(- Dialup({code}); -).
+
+Include (-
+[ Dialup code;
+	print "You dial ", code, "^";
+	if (code == SVALBARD_CC) print "The phone does feel a little chilly.^";
+];
+-).

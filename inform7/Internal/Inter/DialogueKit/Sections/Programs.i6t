@@ -232,8 +232,8 @@ still produce an empty list in a typesafe way.
 [ DirectorCurrentChoiceList i L;
 	if (director_sp == 0) {
 		if (DirectorStackChoices-->0 == 0) {
-			DirectorStackChoices-->0 = BlkValueCreate(LIST_OF_TY);
-			BlkValueWrite(DirectorStackChoices-->0, LIST_ITEM_KOV_F, DIALOGUE_CHOICE_TY);
+			DirectorStackChoices-->0 = CreatePV(LIST_OF_TY);
+			WritePVField(DirectorStackChoices-->0, LIST_ITEM_KOV_F, DIALOGUE_CHOICE_TY);
 		}
 		return DirectorStackChoices-->0;
 	}
@@ -299,8 +299,8 @@ dialogue tree, or any well-formed subtree of it.
 	DirectorStackLastSpeaker-->director_sp = nothing;
 	DirectorStackLastInterlocutor-->director_sp = nothing;
 	if (DirectorStackChoices-->director_sp == 0) {
-		DirectorStackChoices-->director_sp = BlkValueCreate(LIST_OF_TY);
-		BlkValueWrite(DirectorStackChoices-->director_sp, LIST_ITEM_KOV_F, DIALOGUE_CHOICE_TY);
+		DirectorStackChoices-->director_sp = CreatePV(LIST_OF_TY);
+		WritePVField(DirectorStackChoices-->director_sp, LIST_ITEM_KOV_F, DIALOGUE_CHOICE_TY);
 	} else {
 		LIST_OF_TY_SetLength(DirectorStackChoices-->director_sp, 0);
 	}

@@ -58,10 +58,12 @@ void Extensions::scan(inbuild_copy *C) {
 	if (Works::is_standard_rules(C->edition->work)) E->standard = TRUE;
 	if (C->location_if_path) {
 		text_stream *force_JSON_write = NULL;
+		linked_list *missing_kits = NEW_LINKED_LIST(text_stream);
 		TEMPORARY_TEXT(JSON_author_name)
 		TEMPORARY_TEXT(JSON_title)
 		@<Scan the metadata file, if there is one@>;
 		@<Check that the JSON metadata agrees@>;
+		@<Look for kits included in the extension@>;
 		if (force_JSON_write) @<Write a corrected JSON metadata file@>;
 		DISCARD_TEXT(JSON_author_name)
 		DISCARD_TEXT(JSON_title)
@@ -494,6 +496,39 @@ need to detect that and either flag an error, or force a repair.
 		}
 	}
 
+@<Look for kits included in the extension@> =
+	if (repair_mode) {
+		pathname *P = C->location_if_path;
+		P = Pathnames::down(P, I"Materials");
+		if (Directories::exists(P)) {
+			P = Pathnames::down(P, I"Inter");
+			if (Directories::exists(P)) {
+				linked_list *L = Directories::listing(P);
+				text_stream *entry;
+				LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+					if (Platform::is_folder_separator(Str::get_last_char(entry))) {
+						Str::delete_last_character(entry);
+						if (Str::ends_with(entry, I"Kit")) {
+							text_stream *kit_title = entry;
+							inbuild_work *work = Works::new(kit_genre, kit_title, NULL);
+							inbuild_requirement *req;
+							int found = FALSE;
+							LOOP_OVER_LINKED_LIST(req, inbuild_requirement, E->kits)
+								if (Str::eq_insensitive(req->work->title, kit_title))
+									found = TRUE;
+							if (found == FALSE) {
+								inbuild_requirement *req = Requirements::any_version_of(work);
+								ADD_TO_LINKED_LIST(req, inbuild_requirement, E->kits);
+								force_JSON_write = I"the JSON file omits one or more included kit(s)";
+								ADD_TO_LINKED_LIST(kit_title, text_stream, missing_kits);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 @ This is where incorrect or missing JSON metadata is repaired. If there was metadata
 at all, we rewrite it with the correct author, title and version. If not, we create it
 in a minimal sort of way, with just an |is| object.
@@ -506,6 +541,8 @@ in a minimal sort of way, with just an |is| object.
 	JSON_value *is_object = NULL;
 	@<Find or create the is-object@>;
 	@<Populate the is-object with correct values@>;
+	if (LinkedLists::len(missing_kits) > 0)
+		@<Add any missing kits to the needs-object@>;
 	@<Write the JSON metadata back to the filing system@>;
 
 @<Find or create the is-object@> =
@@ -524,6 +561,25 @@ in a minimal sort of way, with just an |is| object.
 	WRITE_TO(v, "%v", &(C->edition->version));
 	JSON::change_object(is_object, I"version", JSON::new_string(v));
 	DISCARD_TEXT(v)
+
+@<Add any missing kits to the needs-object@> =
+	JSON_value *needs_array = NULL;
+	if (C->metadata_record) needs_array = JSON::look_up_object(C->metadata_record, I"needs");
+	if (needs_array == NULL) {	
+		needs_array = JSON::new_array();
+		JSON::add_to_object(C->metadata_record, I"needs", needs_array);
+	}
+	text_stream *kit_title;
+	LOOP_OVER_LINKED_LIST(kit_title, text_stream, missing_kits) {
+		JSON_value *need_object = JSON::new_object();
+		JSON_value *type_string = JSON::new_string(I"kit");
+		JSON::add_to_object(need_object, I"type", type_string);
+		JSON_value *title_string = JSON::new_string(kit_title);
+		JSON::add_to_object(need_object, I"title", title_string);
+		JSON_value *dep_object = JSON::new_object();
+		JSON::add_to_object(dep_object, I"need", need_object);
+		JSON::add_to_array(needs_array, dep_object);
+	}
 
 @<Write the JSON metadata back to the filing system@> =
 	filename *F = Filenames::in(C->location_if_path, I"extension_metadata.json");

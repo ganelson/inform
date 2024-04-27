@@ -7,7 +7,7 @@ new base SCENE_TY {
 	loop-domain-schema: for (*1=1: *1<=NUMBER_SCENES_CREATED: *1++)
 	constant-compilation-method: quantitative
 
-	printing-routine: PrintSceneName
+	say-function: PrintSceneName
 
 	documentation-reference: kind_scene
 	index-priority: 4

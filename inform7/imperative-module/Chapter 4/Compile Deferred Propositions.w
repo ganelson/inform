@@ -1031,7 +1031,7 @@ In the next case, we want to form the list of all $x$ for which $\phi(x)$
 is true. The local |list| holds the list so far, and already exists.
 
 @<Initialisation before LIST search@> =
-	EmitCode::call(Hierarchy::find(BLKVALUEWRITE_HL));
+	EmitCode::call(Hierarchy::find(WRITEPVFIELD_HL));
 	EmitCode::down();
 		EmitCode::val_symbol(K_value, list_s);
 		EmitCode::val_iname(K_value, Hierarchy::find(LIST_ITEM_KOV_F_HL));
@@ -1099,7 +1099,7 @@ syntax to break or continue a loop other than the innermost one.
 		EmitCode::up();
 	EmitCode::up();
 
-	EmitCode::call(Hierarchy::find(BLKVALUEWRITE_HL));
+	EmitCode::call(Hierarchy::find(WRITEPVFIELD_HL));
 	EmitCode::down();
 		EmitCode::val_symbol(K_value, list_s);
 		EmitCode::inv(MINUS_BIP);

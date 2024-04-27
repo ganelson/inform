@@ -21,5 +21,7 @@
 #define gestulx_ExtUndo (12)
 #define gestulx_Double (13)
 
+#define gestulx_CPUTick (100) /* Added by GN */
+
 #endif /* _GESTALT_H */
 

@@ -54,16 +54,10 @@ void i7_write_string(i7process_t *proc, i7word_t S, char *A);
 = (text to inform7_clib.c)
 i7word_t i7_fn_TEXT_TY_Transmute(i7process_t *proc, i7word_t i7_mgl_local_txt);
 i7word_t i7_fn_BlkValueRead(i7process_t *proc, i7word_t i7_mgl_local_from,
-	i7word_t i7_mgl_local_pos, i7word_t i7_mgl_local_do_not_indirect,
-	i7word_t i7_mgl_local_long_block, i7word_t i7_mgl_local_chunk_size_in_bytes,
-	i7word_t i7_mgl_local_header_size_in_bytes, i7word_t i7_mgl_local_flags,
-	i7word_t i7_mgl_local_entry_size_in_bytes, i7word_t i7_mgl_local_seek_byte_position);
+	i7word_t i7_mgl_local_pos, i7word_t i7_mgl_local_do_not_indirect);
 i7word_t i7_fn_BlkValueWrite(i7process_t *proc, i7word_t i7_mgl_local_to,
 	i7word_t i7_mgl_local_pos, i7word_t i7_mgl_local_val,
-	i7word_t i7_mgl_local_do_not_indirect, i7word_t i7_mgl_local_long_block,
-	i7word_t i7_mgl_local_chunk_size_in_bytes, i7word_t i7_mgl_local_header_size_in_bytes,
-	i7word_t i7_mgl_local_flags, i7word_t i7_mgl_local_entry_size_in_bytes,
-	i7word_t i7_mgl_local_seek_byte_position);
+	i7word_t i7_mgl_local_do_not_indirect);
 i7word_t i7_fn_TEXT_TY_CharacterLength(i7process_t *proc,
 	i7word_t i7_mgl_local_txt, i7word_t i7_mgl_local_ch, i7word_t i7_mgl_local_i,
 	i7word_t i7_mgl_local_dsize, i7word_t i7_mgl_local_p, i7word_t i7_mgl_local_cp,
@@ -78,7 +72,7 @@ char *i7_read_string(i7process_t *proc, i7word_t S) {
 		fprintf(stderr, "Out of memory\n"); i7_fatal_exit(proc);
 	}
 	for (int i=0; i<L; i++)
-		A[i] = i7_fn_BlkValueRead(proc, S, i, 0, 0, 0, 0, 0, 0, 0);
+		A[i] = i7_fn_BlkValueRead(proc, S, i, 0);
 	A[L] = 0;
 	return A;
 	#endif
@@ -90,11 +84,11 @@ char *i7_read_string(i7process_t *proc, i7word_t S) {
 void i7_write_string(i7process_t *proc, i7word_t S, char *A) {
 	#ifdef i7_mgl_BASICINFORMKIT
 	i7_fn_TEXT_TY_Transmute(proc, S);
-	i7_fn_BlkValueWrite(proc, S, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+	i7_fn_BlkValueWrite(proc, S, 0, 0, 0);
 	if (A) {
 		int L = strlen(A);
 		for (int i=0; i<L; i++)
-			i7_fn_BlkValueWrite(proc, S, i, A[i], 0, 0, 0, 0, 0, 0, 0);
+			i7_fn_BlkValueWrite(proc, S, i, A[i], 0);
 	}
 	#endif
 }

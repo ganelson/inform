@@ -1,5 +1,5 @@
 Example: * Corner of No and Where
-Location: Longer extracts of Inform 6 code
+Location: Inclusions of I6 code
 RecipeLocation: The Status Line
 Index: Status line with centered text, the hard way
 Description: A status line which has only the name of the location, centered.
@@ -41,5 +41,5 @@ Note that this example _only_ works if the Settings for it are set to the Z-mach
 	
 	Test me with "w / e".
 
-In fact, as we've already seen, many extra modifications to the display behaviour are possible using Basic Screen Effects.
+More such modifications to the display behaviour are possible using an extension called `Basic Screen Effects`.
 

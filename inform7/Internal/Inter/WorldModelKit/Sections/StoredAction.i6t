@@ -28,30 +28,7 @@ Constant STORA_NOUN_F = 1;
 Constant STORA_SECOND_F = 2;
 Constant STORA_ACTOR_F = 3;
 Constant STORA_REQUEST_F = 4;
-Constant STORA_COMMAND_TEXT_F = 5;
-
-@h KOV Support.
-See the "BlockValues.i6t" segment for the specification of the following
-routines.
-
-=
-[ STORED_ACTION_TY_Support task arg1 arg2 arg3;
-	switch(task) {
-		CREATE_KOVS:      return STORED_ACTION_TY_Create(arg2);
-		DESTROY_KOVS:     STORED_ACTION_TY_Destroy(arg1);
-		MAKEMUTABLE_KOVS: return 1;
-		COPYQUICK_KOVS:   rtrue;
-		COPYSB_KOVS:	  BlkValueCopySB1(arg1, arg2);
-		KINDDATA_KOVS:    return 0;
-		EXTENT_KOVS:      return 6;
-		COPY_KOVS:        STORED_ACTION_TY_Copy(arg1, arg2);
-		COMPARE_KOVS:     return STORED_ACTION_TY_Compare(arg1, arg2);
-		HASH_KOVS:        return STORED_ACTION_TY_Hash(arg1);
-		DEBUG_KOVS:       print " = ", (STORED_ACTION_TY_Say) arg1;
-	}
-	! We choose not to respond to: CAST_KOVS, COPYKIND_KOVS, READ_FILE_KOVS, WRITE_FILE_KOVS
-	rfalse;
-];
+Constant STORA_COMMAND_TEXT_F = 5; ! text of command if necessary, 0 if not
 
 @h Creation.
 A stored action block has fixed size, so this is a single-block KOV: its
@@ -60,15 +37,20 @@ Note that it initialises to the default value for this KOV, an action
 in which the player waits.
 
 =
-[ STORED_ACTION_TY_Create sb stora;
-	stora = FlexAllocate(6*WORDSIZE, STORED_ACTION_TY, BLK_FLAG_WORD);
-	BlkValueWrite(stora, STORA_ACTION_F, ##Wait, true); ! action
-	BlkValueWrite(stora, STORA_NOUN_F, 0, true); ! noun
-	BlkValueWrite(stora, STORA_SECOND_F, 0, true); ! second
-	BlkValueWrite(stora, STORA_ACTOR_F, player, true); ! actor
-	BlkValueWrite(stora, STORA_REQUEST_F, false, true); ! whether a request
-	BlkValueWrite(stora, STORA_COMMAND_TEXT_F, 0, true); ! text of command if necessary, 0 if not
-	return BlkValueCreateSB1(sb, stora);
+[ STORED_ACTION_TY_Create kind_id sb_address
+	short_block long_block;
+	long_block = CreatePVLongBlock(STORED_ACTION_TY);
+	InitialisePVLongBlockField(long_block, STORA_ACTION_F, ##Wait);
+	InitialisePVLongBlockField(long_block, STORA_NOUN_F, 0);
+	InitialisePVLongBlockField(long_block, STORA_SECOND_F, 0);
+	InitialisePVLongBlockField(long_block, STORA_ACTOR_F, player);
+	InitialisePVLongBlockField(long_block, STORA_REQUEST_F, false);
+	InitialisePVLongBlockField(long_block, STORA_COMMAND_TEXT_F, 0);
+	
+	short_block = CreatePVShortBlock(sb_address, kind_id);
+	short_block-->0 = long_block;
+
+	return short_block;
 ];
 
 @h Setting Up.
@@ -78,13 +60,13 @@ all one at a time, so the following is provided as a shorthand form.
 
 =
 [ STORED_ACTION_TY_New a n s ac req  stora;
-	if (stora == 0) stora = BlkValueCreate(STORED_ACTION_TY);
-	BlkValueWrite(stora, STORA_ACTION_F, a);
-	BlkValueWrite(stora, STORA_NOUN_F, n);
-	BlkValueWrite(stora, STORA_SECOND_F, s);
-	BlkValueWrite(stora, STORA_ACTOR_F, ac);
-	BlkValueWrite(stora, STORA_REQUEST_F, req);
-	BlkValueWrite(stora, STORA_COMMAND_TEXT_F, 0);
+	if (stora == 0) stora = CreatePV(STORED_ACTION_TY);
+	WritePVField(stora, STORA_ACTION_F, a);
+	WritePVField(stora, STORA_NOUN_F, n);
+	WritePVField(stora, STORA_SECOND_F, s);
+	WritePVField(stora, STORA_ACTOR_F, ac);
+	WritePVField(stora, STORA_REQUEST_F, req);
+	WritePVField(stora, STORA_COMMAND_TEXT_F, 0);
 	return stora;
 ];
 
@@ -94,8 +76,8 @@ requires destruction.
 
 =
 [ STORED_ACTION_TY_Destroy stora toc;
-	toc = BlkValueRead(stora, STORA_COMMAND_TEXT_F);
-	if (toc) BlkValueFree(toc);
+	toc = PVField(stora, STORA_COMMAND_TEXT_F);
+	if (toc) DestroyPV(toc);
 ];
 
 @h Copying.
@@ -104,12 +86,18 @@ the source, then we need to create a new text block to hold a duplicate
 copy of the text.
 
 =
-[ STORED_ACTION_TY_Copy storato storafrom tocfrom tocto;
-	tocfrom = BlkValueRead(storafrom, STORA_COMMAND_TEXT_F);
+[ STORED_ACTION_TY_Copy storato storafrom kind recycling
+	tocfrom tocto;
+	CopyPVRawData(storato, storafrom, kind, recycling);
+	tocfrom = PVField(storafrom, STORA_COMMAND_TEXT_F);
 	if (tocfrom == 0) return;
-	tocto = BlkValueCreate(TEXT_TY);
-	BlkValueCopy(tocto, tocfrom);
-	BlkValueWrite(storato, STORA_COMMAND_TEXT_F, tocto);
+	tocto = CreatePV(TEXT_TY);
+	CopyPV(tocto, tocfrom);
+	WritePVField(storato, STORA_COMMAND_TEXT_F, tocto);
+];
+
+[ STORED_ACTION_TY_LongBlockSize stora;
+	return 6;
 ];
 
 @h Comparison.
@@ -119,20 +107,19 @@ are or are not different.
 
 =
 [ STORED_ACTION_TY_Compare storaleft storaright delta itleft itright;
-	delta = BlkValueRead(storaleft, STORA_ACTION_F) - BlkValueRead(storaright, STORA_ACTION_F);
+	delta = PVField(storaleft, STORA_ACTION_F) - PVField(storaright, STORA_ACTION_F);
 	if (delta) return delta;
-	delta = BlkValueRead(storaleft, STORA_NOUN_F) - BlkValueRead(storaright, STORA_NOUN_F);
+	delta = PVField(storaleft, STORA_NOUN_F) - PVField(storaright, STORA_NOUN_F);
 	if (delta) return delta;
-	delta = BlkValueRead(storaleft, STORA_SECOND_F) - BlkValueRead(storaright, STORA_SECOND_F);
+	delta = PVField(storaleft, STORA_SECOND_F) - PVField(storaright, STORA_SECOND_F);
 	if (delta) return delta;
-	delta = BlkValueRead(storaleft, STORA_ACTOR_F) - BlkValueRead(storaright, STORA_ACTOR_F);
+	delta = PVField(storaleft, STORA_ACTOR_F) - PVField(storaright, STORA_ACTOR_F);
 	if (delta) return delta;
-	delta = BlkValueRead(storaleft, STORA_REQUEST_F) - BlkValueRead(storaright, STORA_REQUEST_F);
+	delta = PVField(storaleft, STORA_REQUEST_F) - PVField(storaright, STORA_REQUEST_F);
 	if (delta) return delta;
-	itleft = BlkValueRead(storaleft, STORA_COMMAND_TEXT_F);
-	itright = BlkValueRead(storaright, STORA_COMMAND_TEXT_F);
-	if ((itleft ~= 0) && (itright ~= 0))
-		return TEXT_TY_Support(COMPARE_KOVS, itleft, itright);
+	itleft = PVField(storaleft, STORA_COMMAND_TEXT_F);
+	itright = PVField(storaright, STORA_COMMAND_TEXT_F);
+	if ((itleft) && (itright)) return TEXT_TY_Compare(itleft, itright);
 	return itleft - itright;
 ];
 
@@ -144,15 +131,14 @@ are or are not different.
 @h Hashing.
 
 =
-[ STORED_ACTION_TY_Hash stora  rv it;
-	rv = BlkValueRead(stora, STORA_ACTION_F);
-	rv = rv * 33 + BlkValueRead(stora, STORA_NOUN_F);
-	rv = rv * 33 + BlkValueRead(stora, STORA_SECOND_F);
-	rv = rv * 33 + BlkValueRead(stora, STORA_ACTOR_F);
-	rv = rv * 33 + BlkValueRead(stora, STORA_REQUEST_F);
-	it = BlkValueRead(stora, STORA_COMMAND_TEXT_F);
-	if (it ~= 0)
-		rv = rv * 33 + TEXT_TY_Support(HASH_KOVS, it);
+[ STORED_ACTION_TY_Hash stora  rv txt;
+	rv = PVField(stora, STORA_ACTION_F);
+	rv = rv * 33 + PVField(stora, STORA_NOUN_F);
+	rv = rv * 33 + PVField(stora, STORA_SECOND_F);
+	rv = rv * 33 + PVField(stora, STORA_ACTOR_F);
+	rv = rv * 33 + PVField(stora, STORA_REQUEST_F);
+	txt = PVField(stora, STORA_COMMAND_TEXT_F);
+	if (txt) rv = rv * 33 + TEXT_TY_Hash(txt);
 	return rv;
 ];
 
@@ -167,54 +153,55 @@ command, and we do that by creating a text for the duration.
 
 =
 [ STORED_ACTION_TY_Say stora text_of_command saved_command saved_pn saved_action K1 K2 at cf cw;
-	if ((stora==0) || (BlkValueWeakKind(stora) ~= STORED_ACTION_TY)) return;
-	text_of_command = BlkValueRead(stora, STORA_COMMAND_TEXT_F);
+	if (WeakKindOfPV(stora) ~= STORED_ACTION_TY) return;
+	text_of_command = PVField(stora, STORA_COMMAND_TEXT_F);
 	if (text_of_command) {
-		saved_command = BlkValueCreate(TEXT_TY);
-		BlkValueCast(saved_command, SNIPPET_TY, players_command);
+		saved_command = CreatePV(TEXT_TY);
+		SNIPPET_TY_to_TEXT_TY(saved_command, players_command);
 		SetPlayersCommand(text_of_command);
 	}
 	saved_pn = parsed_number; saved_action = action;
-	action = BlkValueRead(stora, STORA_ACTION_F);
+	action = PVField(stora, STORA_ACTION_F);
 	cf = consult_from; cw = consult_words;
 	at = FindAction(-1);
 	K1 = ActionData-->(at+AD_NOUN_KOV);
 	K2 = ActionData-->(at+AD_SECOND_KOV);
 	if (K1 ~= OBJECT_TY) {
-		parsed_number = BlkValueRead(stora, STORA_NOUN_F);
+		parsed_number = PVField(stora, STORA_NOUN_F);
 		if ((K1 == UNDERSTANDING_TY) && (text_of_command == 0)) {
-			if (saved_command == 0) saved_command = BlkValueCreate(TEXT_TY);
-			BlkValueCast(saved_command, SNIPPET_TY, players_command);
-			text_of_command = BlkValueCreate(TEXT_TY);
-			BlkValueCopy(text_of_command, parsed_number);
+			if (saved_command == 0) saved_command = CreatePV(TEXT_TY);
+			SNIPPET_TY_to_TEXT_TY(saved_command, players_command);
+			text_of_command = CreatePV(TEXT_TY);
+			CopyPV(text_of_command, parsed_number);
 			SetPlayersCommand(text_of_command);
 			parsed_number = players_command;
 			consult_from = parsed_number/100; consult_words = parsed_number%100;
 		}
 	}
 	if (K2 ~= OBJECT_TY) {
-		parsed_number = BlkValueRead(stora, STORA_SECOND_F);
+		parsed_number = PVField(stora, STORA_SECOND_F);
 		if ((K2 == UNDERSTANDING_TY) && (text_of_command == 0)) {
-			if (saved_command == 0) saved_command = BlkValueCreate(TEXT_TY);
-			BlkValueCast(saved_command, SNIPPET_TY, players_command);
-			text_of_command = BlkValueCreate(TEXT_TY);
-			BlkValueCopy(text_of_command, parsed_number);
+			if (saved_command == 0) saved_command = CreatePV(TEXT_TY);
+			SNIPPET_TY_to_TEXT_TY(saved_command, players_command);
+			text_of_command = CreatePV(TEXT_TY);
+			CopyPV(text_of_command, parsed_number);
 			SetPlayersCommand(text_of_command);
 			parsed_number = players_command;
 			consult_from = parsed_number/100; consult_words = parsed_number%100;
 		}
 	}
 	DB_Action(
-		BlkValueRead(stora, STORA_ACTOR_F),
-		BlkValueRead(stora, STORA_REQUEST_F),
-		BlkValueRead(stora, STORA_ACTION_F),
-		BlkValueRead(stora, STORA_NOUN_F),
-		BlkValueRead(stora, STORA_SECOND_F), true);
+		PVField(stora, STORA_ACTOR_F),
+		PVField(stora, STORA_REQUEST_F),
+		PVField(stora, STORA_ACTION_F),
+		PVField(stora, STORA_NOUN_F),
+		PVField(stora, STORA_SECOND_F),
+		true);
 	parsed_number = saved_pn; action = saved_action;
 	consult_from = cf; consult_words = cw;
 	if (text_of_command) {
 		SetPlayersCommand(saved_command);
-		BlkValueFree(saved_command);
+		DestroyPV(saved_command);
 	}
 ];
 
@@ -228,14 +215,14 @@ or second noun.
 
 =
 [ STORED_ACTION_TY_Involves stora item at;
-	at = FindAction(BlkValueRead(stora, STORA_ACTION_F));
+	at = FindAction(PVField(stora, STORA_ACTION_F));
 	if (at) {
 		if ((ActionData-->(at+AD_NOUN_KOV) == OBJECT_TY) &&
-			(BlkValueRead(stora, STORA_NOUN_F) == item)) rtrue;
+			(PVField(stora, STORA_NOUN_F) == item)) rtrue;
 		if ((ActionData-->(at+AD_SECOND_KOV) == OBJECT_TY) &&
-			(BlkValueRead(stora, STORA_SECOND_F) == item)) rtrue;
+			(PVField(stora, STORA_SECOND_F) == item)) rtrue;
 	}
-	if (BlkValueRead(stora, STORA_ACTOR_F) == item) rtrue;
+	if (PVField(stora, STORA_ACTOR_F) == item) rtrue;
 	rfalse;
 ];
 
@@ -250,11 +237,11 @@ noun for such an action.
 [ STORED_ACTION_TY_Part stora ind at ado;
 	if (ind == STORA_NOUN_F or STORA_SECOND_F) {
 		if (ind == STORA_NOUN_F) ado = AD_NOUN_KOV; else ado = AD_SECOND_KOV;
-		at = FindAction(BlkValueRead(stora, STORA_ACTION_F));
-		if ((at) && (ActionData-->(at+ado) == OBJECT_TY)) return BlkValueRead(stora, ind);
+		at = FindAction(PVField(stora, STORA_ACTION_F));
+		if ((at) && (ActionData-->(at+ado) == OBJECT_TY)) return PVField(stora, ind);
 		return nothing;
 	}
-	return BlkValueRead(stora, ind);
+	return PVField(stora, ind);
 ];
 
 @h Pattern Matching.
@@ -281,22 +268,22 @@ Array SAT_Tmp-->7;
 	SAT_Tmp-->4 = actor;
 	SAT_Tmp-->5 = act_requester;
 	SAT_Tmp-->6 = parsed_number;
-	action = BlkValueRead(stora, STORA_ACTION_F);
+	action = PVField(stora, STORA_ACTION_F);
 	at = FindAction(-1);
 	if (ActionData-->(at+AD_NOUN_KOV) == OBJECT_TY)
-		noun = BlkValueRead(stora, STORA_NOUN_F);
+		noun = PVField(stora, STORA_NOUN_F);
 	else {
-		parsed_number = BlkValueRead(stora, STORA_NOUN_F);
+		parsed_number = PVField(stora, STORA_NOUN_F);
 		noun = nothing;
 	}
 	if (ActionData-->(at+AD_SECOND_KOV) == OBJECT_TY)
-		second = BlkValueRead(stora, STORA_SECOND_F);
+		second = PVField(stora, STORA_SECOND_F);
 	else {
-		parsed_number = BlkValueRead(stora, STORA_SECOND_F);
+		parsed_number = PVField(stora, STORA_SECOND_F);
 		second = nothing;
 	}
-	actor = BlkValueRead(stora, STORA_ACTOR_F);
-	if (BlkValueRead(stora, STORA_REQUEST_F)) act_requester = player; else act_requester = nothing;
+	actor = PVField(stora, STORA_ACTOR_F);
+	if (PVField(stora, STORA_REQUEST_F)) act_requester = player; else act_requester = nothing;
 ];
 
 [ STORED_ACTION_TY_Unadopt;
@@ -323,31 +310,31 @@ command into a text block-value in entry 5.
 
 =
 [ STORED_ACTION_TY_Current stora at text_of_command;
-	if ((stora==0) || (BlkValueWeakKind(stora) ~= STORED_ACTION_TY)) return 0;
-	BlkValueWrite(stora, STORA_ACTION_F, action);
+	if (WeakKindOfPV(stora) ~= STORED_ACTION_TY) return 0;
+	WritePVField(stora, STORA_ACTION_F, action);
 	at = FindAction(-1);
 
 	if (ActionData-->(at+AD_NOUN_KOV) == OBJECT_TY)
-		BlkValueWrite(stora, STORA_NOUN_F, noun);
+		WritePVField(stora, STORA_NOUN_F, noun);
 	else
-		BlkValueWrite(stora, STORA_NOUN_F, parsed_number);
+		WritePVField(stora, STORA_NOUN_F, parsed_number);
 	if (ActionData-->(at+AD_SECOND_KOV) == OBJECT_TY)
-		BlkValueWrite(stora, STORA_SECOND_F, second);
+		WritePVField(stora, STORA_SECOND_F, second);
 	else
-		BlkValueWrite(stora, STORA_SECOND_F, parsed_number);
-	BlkValueWrite(stora, STORA_ACTOR_F, actor);
-	if (act_requester) BlkValueWrite(stora, STORA_REQUEST_F, true);
-	else BlkValueWrite(stora, STORA_REQUEST_F, false);
+		WritePVField(stora, STORA_SECOND_F, parsed_number);
+	WritePVField(stora, STORA_ACTOR_F, actor);
+	if (act_requester) WritePVField(stora, STORA_REQUEST_F, true);
+	else WritePVField(stora, STORA_REQUEST_F, false);
 
 	if ((at) && ((ActionData-->(at+AD_NOUN_KOV) == UNDERSTANDING_TY) ||
 			(ActionData-->(at+AD_SECOND_KOV) == UNDERSTANDING_TY))) {
-		text_of_command = BlkValueRead(stora, STORA_COMMAND_TEXT_F);
+		text_of_command = PVField(stora, STORA_COMMAND_TEXT_F);
 		if (text_of_command == 0) {
-			text_of_command = BlkValueCreate(TEXT_TY);
-			BlkValueWrite(stora, STORA_COMMAND_TEXT_F, text_of_command);
+			text_of_command = CreatePV(TEXT_TY);
+			WritePVField(stora, STORA_COMMAND_TEXT_F, text_of_command);
 		}
-		BlkValueCast(text_of_command, SNIPPET_TY, players_command);
-	} else BlkValueWrite(stora, STORA_COMMAND_TEXT_F, 0);
+		SNIPPET_TY_to_TEXT_TY(text_of_command, players_command);
+	} else WritePVField(stora, STORA_COMMAND_TEXT_F, 0);
 
 	return stora;
 ];
@@ -358,23 +345,23 @@ either silently or not.
 
 =
 [ STORED_ACTION_TY_Try stora ks  text_of_command saved_command;
-	if ((stora==0) || (BlkValueWeakKind(stora) ~= STORED_ACTION_TY)) return;
+	if (WeakKindOfPV(stora) ~= STORED_ACTION_TY) return;
 	if (ks) { @push keep_silent; keep_silent=1; }
-	text_of_command = BlkValueRead(stora, STORA_COMMAND_TEXT_F);
+	text_of_command = PVField(stora, STORA_COMMAND_TEXT_F);
 	if (text_of_command) {
-		saved_command = BlkValueCreate(TEXT_TY);
-		BlkValueCast(saved_command, SNIPPET_TY, players_command);
+		saved_command = CreatePV(TEXT_TY);
+		SNIPPET_TY_to_TEXT_TY(saved_command, players_command);
 		SetPlayersCommand(text_of_command);
 	}
 	TryAction(
-		BlkValueRead(stora, STORA_REQUEST_F),
-		BlkValueRead(stora, STORA_ACTOR_F),
-		BlkValueRead(stora, STORA_ACTION_F),
-		BlkValueRead(stora, STORA_NOUN_F),
-		BlkValueRead(stora, STORA_SECOND_F));
+		PVField(stora, STORA_REQUEST_F),
+		PVField(stora, STORA_ACTOR_F),
+		PVField(stora, STORA_ACTION_F),
+		PVField(stora, STORA_NOUN_F),
+		PVField(stora, STORA_SECOND_F));
 	if (text_of_command) {
 		SetPlayersCommand(saved_command);
-		BlkValueFree(saved_command);
+		DestroyPV(saved_command);
 	}
 	if (ks) { @pull keep_silent; }
 ];

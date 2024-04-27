@@ -1,7 +1,7 @@
 [IdentifierFinders::] Identifier Finders.
 
-Suppose we have an identifier name, say BlkValueCreate, which we think
-refers to some symbol in an Inter tree. Where do we look for it?
+Suppose we have an identifier name which we think refers to some symbol in an
+Inter tree. Where do we look for it?
 
 @ The answer must depend on context, so the question really has to be "with
 the conventions given by this |identifier_finder|, what |inter_symbol|

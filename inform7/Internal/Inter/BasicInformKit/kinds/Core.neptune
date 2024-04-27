@@ -6,8 +6,7 @@ builtin base OBJECT_TY {
 	default-value: 0
 	constant-compilation-method: special
 
-	printing-routine: PrintShortName
-	printing-routine-for-debugging: DA_Name
+	say-function: PrintShortName
 
 	index-priority: 1
 	index-default-value: nothing
@@ -23,10 +22,19 @@ builtin base NUMBER_TY {
 	can-exchange: yes
 	constant-compilation-method: literal
 
-	comparison-routine: signed
-	parsing-routine: DECIMAL_TOKEN
-	printing-routine: DecimalNumber
-	printing-routine-for-debugging: DA_Number
+	compare-function: signed
+	understand-function: DECIMAL_TOKEN
+	say-function: DecimalNumber
+
+	plus-schema: *1 + *2
+	minus-schema: *1 - *2
+	times-schema: *1 ** *2
+	divide-schema: IntegerDivide(*1, *2)
+	remainder-schema: IntegerRemainder(*1, *2)
+	approximate-schema: RoundOffValue(*1, *2)
+	negate-schema: (-(*1))
+	root-schema: SquareRoot(*1)
+	cuberoot-schema: CubeRoot(*1)
 
 	documentation-reference: kind_number
 	index-priority: 2
@@ -44,10 +52,20 @@ builtin base REAL_NUMBER_TY {
 	can-exchange: yes
 	constant-compilation-method: literal
 
-	comparison-routine: REAL_NUMBER_TY_Compare
-	parsing-routine: FLOAT_TOKEN
-	printing-routine: REAL_NUMBER_TY_Say
-	printing-routine-for-debugging: REAL_NUMBER_TY_Say
+	compare-function: REAL_NUMBER_TY_Compare
+	understand-function: FLOAT_TOKEN
+	say-function: REAL_NUMBER_TY_Say
+
+	plus-schema: REAL_NUMBER_TY_Plus(*1, *2)
+	minus-schema: REAL_NUMBER_TY_Minus(*1, *2)
+	times-schema: REAL_NUMBER_TY_Times(*1, *2)
+	divide-schema: REAL_NUMBER_TY_Divide(*1, *2)
+	remainder-schema: REAL_NUMBER_TY_Remainder(*1, *2)
+	approximate-schema: REAL_NUMBER_TY_Approximate(*1, *2)
+	negate-schema: REAL_NUMBER_TY_Negate(*1)
+	root-schema: REAL_NUMBER_TY_Root(*1)
+	cuberoot-schema: REAL_NUMBER_TY_CubeRoot(*1)
+	power-schema: REAL_NUMBER_TY_Pow(*1, *2)
 
 	documentation-reference: kind_real_number
 	index-priority: 2
@@ -65,9 +83,8 @@ builtin base TRUTH_STATE_TY {
 	loop-domain-schema: for (*1=0: *1<=1: *1++)
 	constant-compilation-method: literal
 
-	parsing-routine: TRUTH_STATE_TOKEN
-	printing-routine: DA_TruthState
-	printing-routine-for-debugging: DA_TruthState
+	understand-function: TRUTH_STATE_TOKEN
+	say-function: DA_TruthState
 
 	documentation-reference: kind_truthstate
 	index-default-value: false
@@ -81,16 +98,24 @@ builtin base TEXT_TY {
 	plural: texts
 
 	default-value: 0
-	multiple-block: yes
-	heap-size-estimate: 256
-	small-block-size: 2
+	flexible-long-block-size: 200
+	long-block-size-function: TEXT_TY_LongBlockSize
+	short-block-size: 2
 	can-exchange: yes
 	constant-compilation-method: special
 
-	comparison-routine: BlkValueCompare
-	distinguishing-routine: TEXT_TY_Distinguish
-	printing-routine: TEXT_TY_Say
-	recognition-routine: TEXT_TY_ROGPR
+	compare-function: TEXT_TY_Compare
+	distinguish-function: TEXT_TY_Distinguish
+	say-function: TEXT_TY_Say
+	recognise-function: TEXT_TY_ROGPR
+	create-function: TEXT_TY_Create
+	make-mutable-function: TEXT_TY_Mutable
+	hash-function: TEXT_TY_Hash
+	cast-function: TEXT_TY_Cast
+	serialise-function: TEXT_TY_Serialise
+	unserialise-function: TEXT_TY_Unserialise
+	copy-function: TEXT_TY_Copy
+	copy-short-block-function: TEXT_TY_CopyShortBlock
 
 	index-default-value: ""
 	specification-text: Some text in double quotation marks, perhaps with substitutions written in square brackets.
@@ -104,7 +129,7 @@ builtin base SNIPPET_TY {
 	default-value: 101
 	constant-compilation-method: none
 
-	printing-routine: PrintSnippet
+	say-function: PrintSnippet
 
 	documentation-reference: kind_snippet
 	index-default-value: <i>word 1 of command</i>
@@ -132,7 +157,7 @@ builtin base USE_OPTION_TY {
 	loop-domain-schema: for (*1=0: *1<NO_USE_OPTIONS: *1++)
 	constant-compilation-method: special
 
-	printing-routine: PrintUseOption
+	say-function: PrintUseOption
 
 	index-priority: 6
 	index-default-value: the ineffectual option
@@ -148,7 +173,7 @@ builtin base RESPONSE_TY {
 	loop-domain-schema: for (*1=1: *1<=NO_RESPONSES: *1++)
 	constant-compilation-method: special
 
-	printing-routine: PrintResponse
+	say-function: PrintResponse
 
 	index-priority: 6
 	index-default-value: ?
@@ -164,7 +189,7 @@ builtin base VERB_TY {
 	loop-domain-schema: for (*2=0, *1=TableOfVerbs-->*2: *1: *2++, *1=TableOfVerbs-->*2)
 	constant-compilation-method: special
 
-	printing-routine: PrintVerbAsValue
+	say-function: PrintVerbAsValue
 
 	documentation-reference: kind_verb
 	index-priority: 6
@@ -181,7 +206,7 @@ builtin base TABLE_TY {
 	loop-domain-schema: for (*2=0, *1=TableOfTables-->*2: *1: *2++, *1=TableOfTables-->*2)
 	constant-compilation-method: special
 
-	printing-routine: PrintTableName
+	say-function: PrintTableName
 
 	documentation-reference: kind_tablename
 	index-priority: 6
@@ -198,7 +223,7 @@ builtin base EQUATION_TY {
 	default-value: 0
 	constant-compilation-method: special
 
-	printing-routine: DA_Number
+	say-function: DA_Number
 
 	index-priority: 6
 	index-default-value: <i>an equation doing nothing</i>
@@ -213,7 +238,7 @@ builtin base RULEBOOK_OUTCOME_TY {
 
 	constant-compilation-method: special
 
-	printing-routine: RulebookOutcomePrintingRule
+	say-function: RulebookOutcomePrintingRule
 
 	index-default-value: allow access
 	index-priority: 6
@@ -227,7 +252,7 @@ builtin constructor PHRASE_TY {
 
 	constant-compilation-method: special
 
-	printing-routine: SayPhraseName
+	say-function: SayPhraseName
 
 	index-default-value: <i>always the default value of L</i>
 }
@@ -249,14 +274,17 @@ builtin constructor RELATION_TY {
 	terms: covariant, covariant
 
 	default-value: 0
-	multiple-block: yes
-	heap-size-estimate: 8
+	flexible-long-block-size: 8
+	long-block-size-function: RELATION_TY_LongBlockSize
 	can-exchange: yes
 	constant-compilation-method: special
 
-	comparison-routine: BlkValueCompare
-	distinguishing-routine: RELATION_TY_Distinguish
-	printing-routine: RELATION_TY_Say
+	compare-function: RELATION_TY_Compare
+	distinguish-function: RELATION_TY_Distinguish
+	say-function: RELATION_TY_Say
+	create-function: RELATION_TY_Create
+	copy-function: RELATION_TY_Copy
+	destroy-function: RELATION_TY_Destroy
 
 	index-default-value: <i>a relation never holding</i>
 }
@@ -271,7 +299,7 @@ builtin constructor RULE_TY {
 	default-value: LITTLE_USED_DO_NOTHING_R
 	constant-compilation-method: special
 
-	printing-routine: RulePrintingRule
+	say-function: RulePrintingRule
 
 	documentation-reference: kind_rule
 	index-default-value: the little-used do nothing rule
@@ -288,7 +316,7 @@ builtin constructor RULEBOOK_TY {
 	default-value: 0
 	constant-compilation-method: special
 
-	printing-routine: RulePrintingRule
+	say-function: RulePrintingRule
 
 	documentation-reference: kind_rulebook
 	index-default-value: the action-processing rules
@@ -316,14 +344,19 @@ builtin constructor LIST_OF_TY {
 	terms: covariant
 
 	default-value: 0
-	multiple-block: yes
-	heap-size-estimate: 256
+	flexible-long-block-size: 200
+	long-block-size-function: LIST_OF_TY_LongBlockSize
 	can-exchange: yes
 	constant-compilation-method: special
 
-	comparison-routine: BlkValueCompare
-	distinguishing-routine: LIST_OF_TY_Distinguish
-	printing-routine: LIST_OF_TY_Say
+	compare-function: LIST_OF_TY_Compare
+	distinguish-function: LIST_OF_TY_Distinguish
+	say-function: LIST_OF_TY_Say
+	create-function: LIST_OF_TY_Create
+	copy-function: LIST_OF_TY_Copy
+	quick-copy-function: LIST_OF_TY_QuickCopy
+	destroy-function: LIST_OF_TY_Destroy
+	hash-function: LIST_OF_TY_Hash
 
 	documentation-reference: kind_listof
 	index-default-value: { }
@@ -352,7 +385,7 @@ builtin constructor PROPERTY_TY {
 
 	constant-compilation-method: special
 
-	printing-routine: PROPERTY_TY_Say
+	say-function: PROPERTY_TY_Say
 }
 
 builtin constructor TABLE_COLUMN_TY {
@@ -371,14 +404,17 @@ builtin constructor COMBINATION_TY {
 	terms: covariant list, covariant list
 
 	default-value: 0
-	multiple-block: yes
-	heap-size-estimate: 256
+	flexible-long-block-size: 8
 	can-exchange: yes
 	constant-compilation-method: special
 
-	comparison-routine: BlkValueCompare
-	distinguishing-routine: COMBINATION_TY_Distinguish
-	printing-routine: COMBINATION_TY_Say
+	compare-function: COMBINATION_TY_Compare
+	distinguish-function: COMBINATION_TY_Distinguish
+	say-function: COMBINATION_TY_Say
+	create-function: COMBINATION_TY_Create
+	copy-function: COMBINATION_TY_Copy
+	destroy-function: COMBINATION_TY_Destroy
+	hash-function: COMBINATION_TY_Hash
 
 	documentation-reference: kind_listof
 	index-priority: 0

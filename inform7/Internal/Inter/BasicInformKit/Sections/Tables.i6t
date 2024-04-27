@@ -185,7 +185,7 @@ also setting the relevant bit in the blanks bitmap, if there is one.
 
 We need to be careful if the column holds a kind of value where values are
 pointers to blocks of allocated memory, because if so then overwriting such
-a value might lead to a memory leak. So in such cases we call |BlkValueFree|
+a value might lead to a memory leak. So in such cases we call |DestroyPV|
 to free the memory block. (Note that each memory block is pointed to by one
 and only one I7 value at any given time: we are using them as values, not
 pointers to values. So if this reference is deleted, it's by definition the
@@ -200,7 +200,7 @@ block allocated yet".)
 	flags = (tab-->col)-->1;
 	oldv = (tab-->col)-->(row+COL_HSIZE);
 	if ((flags & TB_COLUMN_ALLOCATED) && (oldv ~= 0 or TABLE_NOVALUE))
-		BlkValueFree(oldv);
+		DestroyPV(oldv);
 	(tab-->col)-->(row+COL_HSIZE) = TABLE_NOVALUE;
 	if (flags & TB_COLUMN_NOBLANKBITS) return;
 	row--;
@@ -231,7 +231,7 @@ memory block for the KOV in question, and set the entry to that.
 		tc = ((tab-->col)-->1) & TB_COLUMN_NUMBER;
 		kov = TC_KOV(tc);
 		if (kov ~= UNKNOWN_TY) {
-			(tab-->col)-->(row+COL_HSIZE) = BlkValueCreate(kov);
+			(tab-->col)-->(row+COL_HSIZE) = CreatePV(kov);
 		}
 	}
 	row--;
@@ -332,7 +332,7 @@ general parsing routine.
 			v = lookup_col-->(i+COL_HSIZE);
 			if ((v == TABLE_NOVALUE) &&
 				(CheckTableEntryIsBlank(tab,col,i))) continue;
-			if (BlkValueCompare(v, lookup_value) == 0)
+			if (ComparePV(v, lookup_value) == 0)
 				return i;
 		}
 	} else {
@@ -365,7 +365,7 @@ general parsing routine.
 		if ((v == TABLE_NOVALUE) && (CheckTableEntryIsBlank(tab,col,i))) continue;
 		switch (f) {
 			1: if ((v)(entry/100, entry%100) ~= GPR_FAIL) return i;
-			2: if (BlkValueCompare(v, entry) == 0) return i;
+			2: if (ComparePV(v, entry) == 0) return i;
 			default: if (v == entry) return i;
 		}
 	}
@@ -397,7 +397,7 @@ value in |C1|.
 
 		if ((v == TABLE_NOVALUE) && (CheckTableEntryIsBlank(tab,col2,i-COL_HSIZE))) continue;
 		if (f == 1) {
-			if (BlkValueCompare(v, lookup_value) ~= 0) continue;
+			if (ComparePV(v, lookup_value) ~= 0) continue;
 		} else if (f == 2) {
 			if ((v)(lookup_value/100, lookup_value%100) == GPR_FAIL) continue;
 		} else {
@@ -435,7 +435,7 @@ value in |C1|.
 		if ((cola1-->i == TABLE_NOVALUE) &&
 			(CheckTableEntryIsBlank(tab,col1,i-COL_HSIZE))) continue;
 		if (f == 1) {
-			if (BlkValueCompare(cola2-->i, lookup_value) ~= 0) continue;
+			if (ComparePV(cola2-->i, lookup_value) ~= 0) continue;
 		} else if (f == 2) {
 			if ((cola2-->i)(lookup_value/100, lookup_value%100) == GPR_FAIL) continue;
 		} else {
@@ -644,7 +644,7 @@ where other entries are not.
 	if (bl2) return -1*dir;
 	f = ((tab-->col)-->1);
 	if (f & TB_COLUMN_ALLOCATED) {
-		if (BlkValueCompare(val2, val1) < 0) return 1;
+		if (ComparePV(val2, val1) < 0) return 1;
 		return -1;
 	} else if (f & TB_COLUMN_REAL) {
 		if (REAL_NUMBER_TY_Compare(val1, val2) > 0) return 1;
@@ -748,9 +748,9 @@ will perform a loop of valid row numbers in order of column |C|.
 		    	continue;
 		    if (blk) {
 		    	dv = v;
-				if (row == 0) z = 1; else z = BlkValueCompare(v, val);
+				if (row == 0) z = 1; else z = ComparePV(v, val);
 				f = (((z > 0) || ((z == 0) && (i > row))) &&
-					((min_at == 0) || (BlkValueCompare(v, min_dv) < 0)));
+					((min_at == 0) || (ComparePV(v, min_dv) < 0)));
 		    } else {
 				dv = dir*v;
 				if (signed_arithmetic)
@@ -769,9 +769,9 @@ will perform a loop of valid row numbers in order of column |C|.
 		    	continue;
 		    if (blk) {
 		    	dv = v;
-		    	if (row == 0) z = -1; else z = BlkValueCompare(v, val);
+		    	if (row == 0) z = -1; else z = ComparePV(v, val);
 				f = (((z < 0) || ((z == 0) && (i < row))) &&
-					((min_at == 0) || (BlkValueCompare(v, min_dv) > 0)));
+					((min_at == 0) || (ComparePV(v, min_dv) > 0)));
 		    } else {
 				dv = dir*v;
 				if (signed_arithmetic)
@@ -857,15 +857,14 @@ is called.
 	for (row=1:row<=k:row++) {
 		for (col=1:col<=tab-->0:col++) {
 			tc = ((tab-->col)-->1) & TB_COLUMN_NUMBER;
-			kov = KindAtomic(TC_KOV(tc));
+			kov = KindWeakID(TC_KOV(tc));
 			if (kov == UNKNOWN_TY) kov = NUMBER_TY;
 			v = (tab-->col)-->(row+COL_HSIZE);
 			if ((v == TABLE_NOVALUE) && (CheckTableEntryIsBlank(tab,col,row)))
-				print "-- ";
-			else {
-				if (BlkValueWriteToFile(v, kov) == false) print v;
-				print " ";
-			}
+				print "--";
+			else
+				SerialiseKindValuePair(kov, v);
+			print " ";
 		}
 		print "^";
 	}
@@ -883,12 +882,10 @@ And this is how we unserialise again. It makes sense only on Glulx.
 		    return IssueSavedUnstableTable(tab);
 	}
 	maxrow = TableRows(tab);
-	!print maxrow, " rows available.^";
 	for (row=1: row<=maxrow: row++) {
 		TableBlankOutRow(tab, row);
 	}
 	for (row=1: row<=maxrow: row++) {
-		!print "Reading row ", row, "^";
 		ch = FileIO_GetC(auxf);
 		if (ch == '!') {
 			while (ch ~= -1 or 10 or 13) ch = FileIO_GetC(auxf);
@@ -898,9 +895,8 @@ And this is how we unserialise again. It makes sense only on Glulx.
 			if (ch == -1) { row++; jump NoMore; }
 			if (ch == 10 or 13) break;
 			tc = ((tab-->col)-->1) & TB_COLUMN_NUMBER;
-			kov = KindAtomic(TC_KOV(tc));
+			kov = KindWeakID(TC_KOV(tc));
 			if (kov == UNKNOWN_TY) kov = NUMBER_TY;
-			!print "tc = ", tc, " kov = ", kov, "^";
 			sgn = 1;
 			if (ch == '-') {
 				ch = FileIO_GetC(auxf);
@@ -910,14 +906,12 @@ And this is how we unserialise again. It makes sense only on Glulx.
 			}
 			if (((tab-->col)-->1) & TB_COLUMN_ALLOCATED)
 				ForceTableEntryNonBlank(tab, col, row);
-			!print "A";
-			v = BlkValueReadFromFile(0, 0, -1, kov);
+			v = UnserialiseKindValuePair(kov, 0, 0, -1);
 			if (v) {
 				if (((tab-->col)-->1) & TB_COLUMN_ALLOCATED)
-					v = BlkValueReadFromFile(TableLookUpEntry(tab, col, row),
-						auxf, ch, kov);
+					v = UnserialiseKindValuePair(kov, TableLookUpEntry(tab, col, row), auxf, ch);
 				else
-					v = BlkValueReadFromFile(0, auxf, ch, kov);
+					v = UnserialiseKindValuePair(kov, 0, auxf, ch);
 				ch = 32;
 			} else {
 				dg = ch - '0';
@@ -931,11 +925,9 @@ And this is how we unserialise again. It makes sense only on Glulx.
 				}
 				v = v*sgn;
 			}
-			!print "v=", v, " ";
 			if (((tab-->col)-->1) & TB_COLUMN_ALLOCATED == 0)
 				TableLookUpEntry(tab, col, row, true, v);
 			.EntryDone;
-			!print "First nd is ", ch, "^";
 			while (ch == 9 or 32) ch = FileIO_GetC(auxf);
 		}
 		while (ch ~= -1 or 10 or 13) {
@@ -984,7 +976,7 @@ Routines to print the state of a table, for debugging purposes only.
 		if ((v == TABLE_NOVALUE) && (CheckTableEntryIsBlank(tab,col,i)))
 			print "--";
 		else {
-			PrintKindValuePair(kov, v);
+			SayKindValuePair(kov, v);
 		}
 	}
 	say__p = 1;
@@ -1002,7 +994,7 @@ Routines to print the state of a table, for debugging purposes only.
 		if ((v == TABLE_NOVALUE) && (CheckTableEntryIsBlank(tab,col,i)))
 			print "-- ";
 		else {
-			PrintKindValuePair(kov, v);
+			SayKindValuePair(kov, v);
 			print " |";
 		}
 	}

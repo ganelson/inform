@@ -1,5 +1,5 @@
 Example: * Blink
-Location: To say one of
+Location: Defining segmented text substitutions with I6
 RecipeLocation: Varying What Is Written
 Index: Creating our own text variations rules
 Description: Making a `by atmosphere` token, allowing us to design our own text variations such as `"[one of]normal[or]gloomy[or]scary[by atmosphere]"`.

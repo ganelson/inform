@@ -201,7 +201,7 @@ Global match0_idx2; ! for plain text match, index of final character match
 		print "Subexp ", offset-->RE_PAR1,
 			" = [", offset-->RE_DATA1, ",", offset-->RE_DATA2, "] = ";
 		for (i=offset-->RE_DATA1:i<offset-->RE_DATA2:i++)
-			print (char) BlkValueRead(txt, i);
+			print (char) PVField(txt, i);
 		print "^";
 	}
 ];
@@ -210,21 +210,21 @@ Global match0_idx2; ! for plain text match, index of final character match
 	offset n i ch ctxt cl csize;
 	for (n=0:(n<RE_Subexpressions-->10) && (n<10): n++) {
 		offset = RE_Subexpressions-->n;
-		if (Allocated_Match_Vars-->n) BlkValueFree(Allocated_Match_Vars-->n);
-		Allocated_Match_Vars-->n = BlkValueCreate(TEXT_TY);
+		if (Allocated_Match_Vars-->n) DestroyPV(Allocated_Match_Vars-->n);
+		Allocated_Match_Vars-->n = CreatePV(TEXT_TY);
 		TEXT_TY_Transmute(Allocated_Match_Vars-->n);
 		ctxt = Allocated_Match_Vars-->n;
-		csize = BlkValueLBCapacity(ctxt);
+		csize = PVFieldCapacity(ctxt);
 		cl = 0;
 		for (i=offset-->RE_DATA1:i<offset-->RE_DATA2:i++) {
-			ch = BlkValueRead(txt, i);
+			ch = PVField(txt, i);
 			if (cl+1 >= csize) {
-				if (BlkValueSetLBCapacity(ctxt, 2*cl) == false) break;
-				csize = BlkValueLBCapacity(ctxt);
+				if (SetPVFieldCapacity(ctxt, 2*cl) == false) break;
+				csize = PVFieldCapacity(ctxt);
 			}
-			BlkValueWrite(ctxt, cl++, ch);
+			WritePVField(ctxt, cl++, ch);
 		}
-		BlkValueWrite(ctxt, cl, 0);
+		WritePVField(ctxt, cl, 0);
 	}
 ];
 
@@ -232,7 +232,7 @@ Global match0_idx2; ! for plain text match, index of final character match
 	n;
 	for (n=0:((n<RE_Subexpressions-->10) && (n<10)): n++)
 		if (Allocated_Match_Vars-->n ~= 0)
-			BlkValueWrite(Allocated_Match_Vars-->n, 0, 0);
+			WritePVField(Allocated_Match_Vars-->n, 0, 0);
 ];
 
 [ TEXT_TY_RE_GetMatchVar vn
@@ -339,7 +339,7 @@ but it is relatively compact and we keep it just in case.
 		NOTHING_RE_CC: print "NOTHING";
 		RANGE_RE_CC: print "RANGE"; if (par3 == true) print " (negated)";
 			print " ";
-			for (i=par1:i<par2:i++) print (char) BlkValueRead(ftxt, i);
+			for (i=par1:i<par2:i++) print (char) PVField(ftxt, i);
 		VARIABLE_RE_CC: print "VARIABLE ", par1;
 		SUBEXP_RE_CC:
 			if (par1 == 0) print "EXP";
@@ -365,7 +365,7 @@ but it is relatively compact and we keep it just in case.
 			if (par3) print " (lazy)"; else print " (greedy)";
 		LITERAL_RE_CC: print "LITERAL";
 			print " ";
-			for (i=par1:i<par2:i++) print (char) BlkValueRead(ftxt, i);
+			for (i=par1:i<par2:i++) print (char) PVField(ftxt, i);
 		DISJUNCTION_RE_CC: print "DISJUNCTION of ", par1, " choices";
 		CHOICE_RE_CC: print "CHOICE no ", par1;
 		SENSITIVITY_RE_CC: print "SENSITIVITY";
@@ -445,10 +445,10 @@ Array Subexp_Posns --> 20;
 	quantifiable = false; blevel = 0;
 
 	for (ffrom = 0: ffrom < fto: ) {
-		cc = BlkValueRead(ftxt, ffrom++); par1 = 0; par2 = 0; par3 = 0;
+		cc = PVField(ftxt, ffrom++); par1 = 0; par2 = 0; par3 = 0;
 		if (cc == '\') {
 			if (ffrom == fto) return "Search pattern not terminated";
-			cc = BlkValueRead(ftxt, ffrom++);
+			cc = PVField(ftxt, ffrom++);
 			switch (cc) {
 				'b': cc = BOUNDARY_RE_CC;
 				'B': cc = NONBOUNDARY_RE_CC;
@@ -481,21 +481,21 @@ Array Subexp_Posns --> 20;
 		} else {
 			switch (cc) {
 				'(': par2 = 0;
-					!if (BlkValueRead(ftxt, ffrom) == ')') return "empty subexpression";
-					if (BlkValueRead(ftxt, ffrom) == '?') {
+					!if (PVField(ftxt, ffrom) == ')') return "empty subexpression";
+					if (PVField(ftxt, ffrom) == '?') {
 						ffrom++;
 						bits = true;
-						if (BlkValueRead(ftxt, ffrom) == '-') { ffrom++; bits = false; }
-						else if (BlkValueRead(ftxt, ffrom) == '<') { ffrom++; bits = false; }
-						switch (cc = BlkValueRead(ftxt, ffrom++)) {
-							'#': while (BlkValueRead(ftxt, ffrom++) ~= 0 or ')') ;
-								if (BlkValueRead(ftxt, ffrom-1) == 0)
+						if (PVField(ftxt, ffrom) == '-') { ffrom++; bits = false; }
+						else if (PVField(ftxt, ffrom) == '<') { ffrom++; bits = false; }
+						switch (cc = PVField(ftxt, ffrom++)) {
+							'#': while (PVField(ftxt, ffrom++) ~= 0 or ')') ;
+								if (PVField(ftxt, ffrom-1) == 0)
 									return "comment never ends";
 								continue;
-							'(': cc = BlkValueRead(ftxt, ffrom);
+							'(': cc = PVField(ftxt, ffrom);
 								if ((cc == '1' or '2' or '3' or '4' or
 									'5' or '6' or '7' or '8' or '9') &&
-									(BlkValueRead(ftxt, ffrom+1) ==')')) {
+									(PVField(ftxt, ffrom+1) ==')')) {
 									ffrom = ffrom + 2;
 									par1 = cc - '0';
 								} else ffrom--;
@@ -511,13 +511,13 @@ Array Subexp_Posns --> 20;
 							':': par2 = 3; ! (?:...) uncollecting subexpression
 							'>': par2 = 4; ! (?>...) possessive
 							default:
-								if (BlkValueRead(ftxt, ffrom) == ')') {
+								if (PVField(ftxt, ffrom) == ')') {
 									if (cc == 'i') {
 										cc = SENSITIVITY_RE_CC; par1 = bits; ffrom++;
 										jump CClassKnown;
 									}
 								}
-								if (BlkValueRead(ftxt, ffrom) == ':') {
+								if (PVField(ftxt, ffrom) == ':') {
 									if (cc == 'i') {
 										par1 = bits; par2 = 3; par3 = bits+1; ffrom++;
 										jump AllowForm;
@@ -549,7 +549,7 @@ Array Subexp_Posns --> 20;
 				'$': cc = END_RE_CC; quantifiable = false;
 				'{': if (quantifiable == false) return "quantifier misplaced";
 					par1 = 0; par2 = -1; bits = 1;
-					while ((cc=BlkValueRead(ftxt, ffrom++)) ~= 0 or '}') {
+					while ((cc=PVField(ftxt, ffrom++)) ~= 0 or '}') {
 						if (cc == ',') {
 							bits++;
 							if (bits >= 3) return "too many colons in ?{...}";
@@ -572,25 +572,25 @@ Array Subexp_Posns --> 20;
 						else par2 = par1;
 					}
 					if (par1 > par2) return "{x,y} with x greater than y";
-					if (BlkValueRead(ftxt, ffrom) == '?') { ffrom++; par3 = true; }
+					if (PVField(ftxt, ffrom) == '?') { ffrom++; par3 = true; }
 					quantifiable = false;
 				'<', '[': par3 = false; if (cc == '<') bits = '>'; else bits = ']';
-					if (BlkValueRead(ftxt, ffrom) == '^') { ffrom++; par3 = true; }
+					if (PVField(ftxt, ffrom) == '^') { ffrom++; par3 = true; }
 					par1 = ffrom;
-					if (BlkValueRead(ftxt, ffrom) == bits) { ffrom++; }
+					if (PVField(ftxt, ffrom) == bits) { ffrom++; }
 					while (cc ~= bits or 0) {
-						cc = BlkValueRead(ftxt, ffrom++);
+						cc = PVField(ftxt, ffrom++);
 						if (cc == '\') {
-							cc = BlkValueRead(ftxt, ffrom++);
-							if (cc ~= 0) cc = BlkValueRead(ftxt, ffrom++);
+							cc = PVField(ftxt, ffrom++);
+							if (cc ~= 0) cc = PVField(ftxt, ffrom++);
 						}
 					}
 					if (cc == 0) return "Character range never ends";
 					par2 = ffrom-1;
 					if ((par2 > par1 + 1) &&
-						(BlkValueRead(ftxt, par1) == ':') &&
-						(BlkValueRead(ftxt, par2-1) == ':') &&
-						(BlkValueRead(ftxt, par2-2) ~= '\'))
+						(PVField(ftxt, par1) == ':') &&
+						(PVField(ftxt, par2-1) == ':') &&
+						(PVField(ftxt, par2-2) ~= '\'))
 						return "POSIX named character classes unsupported";
 					bits = TEXT_TY_RE_RangeSyntaxCorrect(ftxt, par1, par2);
 					if (bits) return bits;
@@ -600,17 +600,17 @@ Array Subexp_Posns --> 20;
 				'*': if (quantifiable == false) return "quantifier misplaced";
 					cc = QUANTIFIER_RE_CC;
 					par1 = 0; par2 = 30000;
-					if (BlkValueRead(ftxt, ffrom) == '?') { ffrom++; par3 = true; }
+					if (PVField(ftxt, ffrom) == '?') { ffrom++; par3 = true; }
 					quantifiable = false;
 				'+': if (quantifiable == false) return "quantifier misplaced";
 					cc = QUANTIFIER_RE_CC;
 					par1 = 1; par2 = 30000;
-					if (BlkValueRead(ftxt, ffrom) == '?') { ffrom++; par3 = true; }
+					if (PVField(ftxt, ffrom) == '?') { ffrom++; par3 = true; }
 					quantifiable = false;
 				'?': if (quantifiable == false) return "quantifier misplaced";
 					cc = QUANTIFIER_RE_CC;
 					par1 = 0; par2 = 1;
-					if (BlkValueRead(ftxt, ffrom) == '?') { ffrom++; par3 = true; }
+					if (PVField(ftxt, ffrom) == '?') { ffrom++; par3 = true; }
 					quantifiable = false;
 			}
 		}
@@ -620,7 +620,7 @@ Array Subexp_Posns --> 20;
 		if (cc >= 0) {
 			quantifiable = true;
 			if ((attach_to-->RE_CCLASS == LITERAL_RE_CC) &&
-				(BlkValueRead(ftxt, ffrom) ~= '*' or '+' or '?' or '{')) {
+				(PVField(ftxt, ffrom) ~= '*' or '+' or '?' or '{')) {
 				(attach_to-->RE_PAR2)++;
 				if (TEXT_TY_RE_Trace == 2) {
 					print "Extending literal by ", cc, "=", (char) cc, "^";
@@ -729,9 +729,9 @@ Array Subexp_Posns --> 20;
 [ TEXT_TY_RE_RangeSyntaxCorrect ftxt rf rt
 	i chm;
 	for (i=rf: i<rt: i++) {
-		chm = BlkValueRead(ftxt, i);
+		chm = PVField(ftxt, i);
 		if ((chm == '\') && (i+1<rt)) {
-			chm = BlkValueRead(ftxt, ++i);
+			chm = PVField(ftxt, ++i);
 			if (((chm >= 'a') && (chm <= 'z')) ||
 				((chm >= 'A') && (chm <= 'Z'))) {
 				if (chm ~= 's' or 'S' or 'p' or 'P' or 'w' or 'W' or 'd'
@@ -739,8 +739,8 @@ Array Subexp_Posns --> 20;
 					return "Invalid escape in {} range";
 			}
 		}
-		if ((i+2<rt) && (BlkValueRead(ftxt, i+1) == '-')) {
-			if (chm > BlkValueRead(ftxt, i+2)) return "Invalid {} range";
+		if ((i+2<rt) && (PVField(ftxt, i+1) == '-')) {
+			if (chm > PVField(ftxt, i+2)) return "Invalid {} range";
 			i=i+2;
 		}
 	}
@@ -1004,7 +1004,7 @@ but mostly in order to match against a |LITERAL_RE_CC| node.
 			TEXT_TY_RE_DebugNode(token, ftxt, true);
 		}
 
-		if (ipos<ito) ch = BlkValueRead(txt, ipos); else ch = 0;
+		if (ipos<ito) ch = PVField(txt, ipos); else ch = 0;
 
 		token-->RE_MODES = mode_flags; ! Save in case of backtrack
 
@@ -1030,15 +1030,15 @@ but mostly in order to match against a |LITERAL_RE_CC| node.
 			START_RE_CC:
 				if (ipos == 0) outcome = true;
 			END_RE_CC:
-				if (BlkValueRead(txt, ipos) == 0) outcome = true;
+				if (PVField(txt, ipos) == 0) outcome = true;
 			BOUNDARY_RE_CC:
 				rv = 0;
-				if (BlkValueRead(txt, ipos) == 0 or 10 or 13 or 32 or 9
+				if (PVField(txt, ipos) == 0 or 10 or 13 or 32 or 9
 					or '.' or ',' or '!' or '?'
 					or '-' or '/' or '"' or ':' or ';'
 					or '(' or ')' or '[' or ']' or '{' or '}') rv++;
 				if (ipos == 0) ch = 0;
-				else ch = BlkValueRead(txt, ipos-1);
+				else ch = PVField(txt, ipos-1);
 				if (ch == 0 or 10 or 13 or 32 or 9
 					or '.' or ',' or '!' or '?'
 					or '-' or '/' or '"' or ':' or ';'
@@ -1046,12 +1046,12 @@ but mostly in order to match against a |LITERAL_RE_CC| node.
 				if (rv == 1) outcome = true;
 			NONBOUNDARY_RE_CC:
 				rv = 0;
-				if (BlkValueRead(txt, ipos) == 0 or 10 or 13 or 32 or 9
+				if (PVField(txt, ipos) == 0 or 10 or 13 or 32 or 9
 					or '.' or ',' or '!' or '?'
 					or '-' or '/' or '"' or ':' or ';'
 					or '(' or ')' or '[' or ']' or '{' or '}') rv++;
 				if (ipos == 0) ch = 0;
-				else ch = BlkValueRead(txt, ipos-1);
+				else ch = PVField(txt, ipos-1);
 				if (ch == 0 or 10 or 13 or 32 or 9
 					or '.' or ',' or '!' or '?'
 					or '-' or '/' or '"' or ':' or ';'
@@ -1513,13 +1513,13 @@ position |ipos| in the source text |txt|.
 	if (mfrom < 0) return 0;
 	if (insens)
 		for (i=mfrom:i<mto:i++) {
-			ch = BlkValueRead(mtxt, i);
-			if (BlkValueRead(txt, ipos++) ~= ch or TEXT_TY_RevCase(ch))
+			ch = PVField(mtxt, i);
+			if (PVField(txt, ipos++) ~= ch or TEXT_TY_RevCase(ch))
 				return -1;
 		}
 	else
 		for (i=mfrom:i<mto:i++)
-			if (BlkValueRead(txt, ipos++) ~= BlkValueRead(mtxt, i))
+			if (PVField(txt, ipos++) ~= PVField(mtxt, i))
 				return -1;
 	return mto-mfrom;
 ];
@@ -1540,9 +1540,9 @@ case insensitively if |insens| is set.
 		rtrue;
 	}
 	for (i=rf: i<rt: i++) {
-		chm = BlkValueRead(ftxt, i);
+		chm = PVField(ftxt, i);
 		if ((chm == '\') && (i+1<rt)) {
-			chm = BlkValueRead(ftxt, ++i);
+			chm = PVField(ftxt, ++i);
 			switch (chm) {
 				's':
 					if (ch == 10 or 13 or 32 or 9) rtrue;
@@ -1580,8 +1580,8 @@ case insensitively if |insens| is set.
 				't': if (ch == 9) rtrue;
 			}
 		} else {
-			if ((i+2<rt) && (BlkValueRead(ftxt, i+1) == '-')) {
-				upper = BlkValueRead(ftxt, i+2);
+			if ((i+2<rt) && (PVField(ftxt, i+1) == '-')) {
+				upper = PVField(ftxt, i+2);
 				if ((ch >= chm) && (ch <= upper)) rtrue;
 				if (insens) {
 					crev = TEXT_TY_RevCase(ch);
@@ -1621,9 +1621,6 @@ For an explanation of the use of the word "blob", see "Text.i6t".
 =
 [ TEXT_TY_Replace_RE ftxtype txt ftxt rtxt insens exactly
 	r p p1 p2 cp cp1 cp2;
-	!print "Find: "; BlkValueDebug(ftxt); print "^";
-	!print "Rep: "; BlkValueDebug(rtxt); print "^";
-	!print "In: "; BlkValueDebug(txt); print "^";
 	if (rtxt == 0 or 1) { cp = txt-->0; p = TEXT_TY_Temporarily_Transmute(txt); }
 	else TEXT_TY_Transmute(txt);
 	cp1 = ftxt-->0; p1 = TEXT_TY_Temporarily_Transmute(ftxt);
@@ -1674,7 +1671,7 @@ For an explanation of the use of the word "blob", see "Text.i6t".
 				print "<empty>";
 			}
 			for (i=RE_PACKET_space-->RE_DATA1:i<RE_PACKET_space-->RE_DATA2:i++) {
-				print (char) BlkValueRead(txt, i);
+				print (char) PVField(txt, i);
 			}
 			print " ***^";
 		}
@@ -1686,23 +1683,23 @@ For an explanation of the use of the word "blob", see "Text.i6t".
 
 		if (rtxt ~= 0 or 1) {
 			if (chm == 1) {
-				ctxt = BlkValueCreate(TEXT_TY);
+				ctxt = CreatePV(TEXT_TY);
 				TEXT_TY_Transmute(ctxt);
-				csize = BlkValueLBCapacity(ctxt);
+				csize = PVFieldCapacity(ctxt);
 			}
 
 			for (i=cpos:i<RE_PACKET_space-->RE_DATA1:i++) {
-				ch = BlkValueRead(txt, i);
+				ch = PVField(txt, i);
 				if (cl+1 >= csize) {
-					if (BlkValueSetLBCapacity(ctxt, 2*cl) == false) break;
-					csize = BlkValueLBCapacity(ctxt);
+					if (SetPVFieldCapacity(ctxt, 2*cl) == false) break;
+					csize = PVFieldCapacity(ctxt);
 				}
-				BlkValueWrite(ctxt, cl++, ch);
+				WritePVField(ctxt, cl++, ch);
 			}
-			BlkValueWrite(ctxt, cl, 0);
+			WritePVField(ctxt, cl, 0);
 
 			TEXT_TY_Concatenate(ctxt, rtxt, ftxtype, txt);
-			csize = BlkValueLBCapacity(ctxt);
+			csize = PVFieldCapacity(ctxt);
 			cl = TEXT_TY_CharacterLength(ctxt);
 		}
 
@@ -1719,12 +1716,12 @@ For an explanation of the use of the word "blob", see "Text.i6t".
 	if (chm > 0) {
 		if (rtxt ~= 0 or 1) {
 			for (i=cpos:i<ilen:i++) {
-				ch = BlkValueRead(txt, i);
+				ch = PVField(txt, i);
 				if (cl+1 >= csize) {
-					if (BlkValueSetLBCapacity(ctxt, 2*cl) == false) break;
-					csize = BlkValueLBCapacity(ctxt);
+					if (SetPVFieldCapacity(ctxt, 2*cl) == false) break;
+					csize = PVFieldCapacity(ctxt);
 				}
-				BlkValueWrite(ctxt, cl++, ch);
+				WritePVField(ctxt, cl++, ch);
 			}
 		}
 
@@ -1735,9 +1732,9 @@ For an explanation of the use of the word "blob", see "Text.i6t".
 		}
 
 		if (rtxt ~= 0 or 1) {
-			BlkValueWrite(ctxt, cl, 0);
-			BlkValueCopy(txt, ctxt);
-			BlkValueFree(ctxt);
+			WritePVField(ctxt, cl, 0);
+			CopyPV(txt, ctxt);
+			DestroyPV(ctxt);
 		}
 	}
 	return chm;
@@ -1750,21 +1747,21 @@ which handles the special syntaxes used in search-and-replace.
 =
 [ TEXT_TY_RE_Concatenate txt_to txt_from blobtype txt_ref
 	pos len ch i tosize x y case;
-	if ((txt_to==0) || (BlkValueWeakKind(txt_to) ~= TEXT_TY)) rfalse;
-	if ((txt_from==0) || (BlkValueWeakKind(txt_from) ~= TEXT_TY)) return txt_to;
+	if (WeakKindOfPV(txt_to) ~= TEXT_TY) rfalse;
+	if (WeakKindOfPV(txt_from) ~= TEXT_TY) return txt_to;
 	pos = TEXT_TY_CharacterLength(txt_to);
-	tosize = BlkValueLBCapacity(txt_to);
+	tosize = PVFieldCapacity(txt_to);
 	len = TEXT_TY_CharacterLength(txt_from);
 	for (i=0:i<len:i++) {
-		ch = BlkValueRead(txt_from, i);
+		ch = PVField(txt_from, i);
 		if ((ch == '\') && (i < len-1)) {
-			ch = BlkValueRead(txt_from, ++i);
+			ch = PVField(txt_from, ++i);
 			if (ch == 'n') ch = 10;
 			if (ch == 't') ch = 9;
 			case = -1;
 			if (ch == 'l') case = 0;
 			if (ch == 'u') case = 1;
-			if (case >= 0) ch = BlkValueRead(txt_from, ++i);
+			if (case >= 0) ch = PVField(txt_from, ++i);
 			if ((ch >= '0') && (ch <= '9')) {
 				ch = ch - '0';
 				if (ch < RE_Subexpressions-->10) {
@@ -1772,15 +1769,15 @@ which handles the special syntaxes used in search-and-replace.
 					y = (RE_Subexpressions-->ch)-->RE_DATA2;
 					if (x >= 0) {
 						for (:x<y:x++) {
-							ch = BlkValueRead(txt_ref, x);
+							ch = PVField(txt_ref, x);
 							if (pos+1 >= tosize) {
-								if (BlkValueSetLBCapacity(txt_to, 2*tosize) == false) break;
-								tosize = BlkValueLBCapacity(txt_to);
+								if (SetPVFieldCapacity(txt_to, 2*tosize) == false) break;
+								tosize = PVFieldCapacity(txt_to);
 							}
 							if (case >= 0)
-								BlkValueWrite(txt_to, pos++, CharToCase(ch, case));
+								WritePVField(txt_to, pos++, CharToCase(ch, case));
 							else
-								BlkValueWrite(txt_to, pos++, ch);
+								WritePVField(txt_to, pos++, ch);
 						}
 					}
 				}
@@ -1789,11 +1786,11 @@ which handles the special syntaxes used in search-and-replace.
 
 		}
 		if (pos+1 >= tosize) {
-			if (BlkValueSetLBCapacity(txt_to, 2*tosize) == false) break;
-			tosize = BlkValueLBCapacity(txt_to);
+			if (SetPVFieldCapacity(txt_to, 2*tosize) == false) break;
+			tosize = PVFieldCapacity(txt_to);
 		}
-		BlkValueWrite(txt_to, pos++, ch);
+		WritePVField(txt_to, pos++, ch);
 	}
-	BlkValueWrite(txt_to, pos, 0);
+	WritePVField(txt_to, pos, 0);
 	return txt_to;
 ];

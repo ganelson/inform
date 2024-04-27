@@ -24,7 +24,6 @@ typedef struct kind_constructor_compilation_data {
 	struct inter_name *default_value_fn_iname;
 	struct inter_name *random_value_fn_iname;
 	struct inter_name *comparison_fn_iname;
-	struct inter_name *support_fn_iname;
 
 	struct inter_name *print_fn_iname;
 	struct inter_name *debug_print_fn_iname;
@@ -59,7 +58,6 @@ kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_
 	kccd.default_value_fn_iname = NULL;
 	kccd.random_value_fn_iname = NULL;
 	kccd.comparison_fn_iname = NULL;
-	kccd.support_fn_iname = NULL;
 
 	kccd.print_fn_iname = NULL;
 	kccd.debug_print_fn_iname = NULL;
@@ -210,31 +208,58 @@ inter_name *RTKindConstructors::comparison_fn_iname(kind *K) {
 			Kinds::Behaviour::get_comparison_routine(K)))
 }
 
-@ And similarly for a support function, which can carry out a range of useful
-tasks to do with block values (creating values, copying values and so on).
-This too exists only if a kit provides it, but (anomalously) the kit does not
-need to specify its name in a Neptune file: instead the name is that of the
-kind's weak ID plus |_Support|. For example, |TEXT_TY_Support|.
+@ And now for some more tediously passed-through functions from the Neptune
+declarations of pointer-valued kinds.
+
+@d PASS_KC_FUNCTION(name)
+	if (Str::len(Kinds::Behaviour::get_##name##_function(K)) > 0)
+		return HierarchyLocations::find_by_name(Emit::tree(),
+			Kinds::Behaviour::get_##name##_function(K));
+	return NULL;
 
 =
-int RTKindConstructors::support_function_provided_by_kit(kind *K) {
-	if (K == NULL) return FALSE;
-	if (RTKindConstructors::support_fn_iname(K)) return TRUE;
-	return FALSE;
+inter_name *RTKindConstructors::create_fn_iname(kind *K) {
+	PASS_KC_FUNCTION(create)
 }
 
-inter_name *RTKindConstructors::support_fn_iname(kind *K) {
-	kind_constructor *kc = Kinds::get_construct(K);
-	RETURN_INAME_IN(kc, support_fn_iname,
-		RTKindConstructors::create_support_fn_iname(kc))
+inter_name *RTKindConstructors::cast_fn_iname(kind *K) {
+	PASS_KC_FUNCTION(cast)
 }
 
-inter_name *RTKindConstructors::create_support_fn_iname(kind_constructor *kc) {
-	TEMPORARY_TEXT(N)
-	WRITE_TO(N, "%S_Support", kc->explicit_identifier);
-	inter_name *iname = HierarchyLocations::find_by_name(Emit::tree(), N);
-	DISCARD_TEXT(N)
-	return iname;
+inter_name *RTKindConstructors::copy_fn_iname(kind *K) {
+	PASS_KC_FUNCTION(copy)
+}
+
+inter_name *RTKindConstructors::quick_copy_fn_iname(kind *K) {
+	PASS_KC_FUNCTION(quick_copy)
+}
+
+inter_name *RTKindConstructors::copy_short_block_fn_iname(kind *K) {
+	PASS_KC_FUNCTION(copy_short_block)
+}
+
+inter_name *RTKindConstructors::destroy_fn_iname(kind *K) {
+	PASS_KC_FUNCTION(destroy)
+}
+
+inter_name *RTKindConstructors::make_mutable_fn_iname(kind *K) {
+	PASS_KC_FUNCTION(make_mutable)
+}
+
+inter_name *RTKindConstructors::hash_fn_iname(kind *K) {
+	PASS_KC_FUNCTION(hash)
+}
+
+inter_name *RTKindConstructors::long_block_size_fn_iname(kind *K) {
+	PASS_KC_FUNCTION(long_block_size)
+}
+
+inter_name *RTKindConstructors::serialise_fn_iname(kind *K) {
+	PASS_KC_FUNCTION(serialise)
+}
+
+inter_name *RTKindConstructors::unserialise_fn_iname(kind *K) {
+	PASS_KC_FUNCTION(unserialise)
 }
 
 @h Inames to do with enumerative kinds.
@@ -863,7 +888,19 @@ or can come from the Neptune file creating a kind.
 		@<Compile random-value function for this kind@>;
 	}
 	if (KindConstructors::uses_block_values(kc)) {
-		@<Apply support function metadata@>;
+		@<Apply create function metadata@>;
+		@<Apply cast function metadata@>;
+		@<Apply copy function metadata@>;
+		@<Apply copy-short-block function metadata@>;
+		@<Apply quick-copy function metadata@>;
+		@<Apply destroy function metadata@>;
+		@<Apply make-mutable function metadata@>;
+		@<Apply hash function metadata@>;
+		@<Apply short-block-size metadata@>;
+		@<Apply long-block-size metadata@>;
+		@<Apply long-block-size function metadata@>;
+		@<Apply serialise function metadata@>;
+		@<Apply unserialise function metadata@>;
 	}
 	if ((RTKindConstructors::is_subkind_of_object(kc) == FALSE) &&
 		(KindConstructors::is_definite(kc)) &&
@@ -1241,10 +1278,61 @@ and |b| inclusive.
 	}
 	Functions::end(save);
 
-@<Apply support function metadata@> =
-	inter_name *iname = RTKindConstructors::support_fn_iname(K);
-	if (iname) Hierarchy::apply_metadata_from_iname(pack, KIND_SUPPORT_FN_MD_HL, iname);
-	else internal_error("kind with block values but no support function");
+@<Apply create function metadata@> =
+	inter_name *iname = RTKindConstructors::create_fn_iname(K);
+	if (iname) Hierarchy::apply_metadata_from_iname(pack, KIND_CREATE_FN_MD_HL, iname);
+	else internal_error("kind with block values but no create function");
+
+@<Apply cast function metadata@> =
+	inter_name *iname = RTKindConstructors::cast_fn_iname(K);
+	if (iname) Hierarchy::apply_metadata_from_iname(pack, KIND_CAST_FN_MD_HL, iname);
+
+@<Apply copy function metadata@> =
+	inter_name *iname = RTKindConstructors::copy_fn_iname(K);
+	if (iname) Hierarchy::apply_metadata_from_iname(pack, KIND_COPY_FN_MD_HL, iname);
+
+@<Apply copy-short-block function metadata@> =
+	inter_name *iname = RTKindConstructors::copy_short_block_fn_iname(K);
+	if (iname) Hierarchy::apply_metadata_from_iname(pack,
+		KIND_COPY_SHORT_BLOCK_FN_MD_HL, iname);
+
+@<Apply quick-copy function metadata@> =
+	inter_name *iname = RTKindConstructors::quick_copy_fn_iname(K);
+	if (iname) Hierarchy::apply_metadata_from_iname(pack, KIND_QUICK_COPY_FN_MD_HL, iname);
+
+@<Apply destroy function metadata@> =
+	inter_name *iname = RTKindConstructors::destroy_fn_iname(K);
+	if (iname) Hierarchy::apply_metadata_from_iname(pack, KIND_DESTROY_FN_MD_HL, iname);
+
+@<Apply make-mutable function metadata@> =
+	inter_name *iname = RTKindConstructors::make_mutable_fn_iname(K);
+	if (iname) Hierarchy::apply_metadata_from_iname(pack, KIND_MAKE_MUTABLE_FN_MD_HL, iname);
+
+@<Apply hash function metadata@> =
+	inter_name *iname = RTKindConstructors::hash_fn_iname(K);
+	if (iname) Hierarchy::apply_metadata_from_iname(pack, KIND_HASH_FN_MD_HL, iname);
+
+@<Apply short-block-size metadata@> =
+	int SB = Kinds::Behaviour::get_short_block_size(K);
+	if (SB > 0) Hierarchy::apply_metadata_from_number(pack, KIND_SHORT_BLOCK_SIZE_MD_HL,
+		(inter_ti) SB);
+
+@<Apply long-block-size metadata@> =
+	int LB = Kinds::Behaviour::get_long_block_size(K);
+	if (LB > 0) Hierarchy::apply_metadata_from_number(pack, KIND_LONG_BLOCK_SIZE_MD_HL,
+		(inter_ti) LB);
+
+@<Apply long-block-size function metadata@> =
+	inter_name *iname = RTKindConstructors::long_block_size_fn_iname(K);
+	if (iname) Hierarchy::apply_metadata_from_iname(pack, KIND_LONG_BLOCK_SIZE_FN_MD_HL, iname);
+
+@<Apply serialise function metadata@> =
+	inter_name *iname = RTKindConstructors::serialise_fn_iname(K);
+	if (iname) Hierarchy::apply_metadata_from_iname(pack, KIND_SERIALISE_FN_MD_HL, iname);
+
+@<Apply unserialise function metadata@> =
+	inter_name *iname = RTKindConstructors::unserialise_fn_iname(K);
+	if (iname) Hierarchy::apply_metadata_from_iname(pack, KIND_UNSERIALISE_FN_MD_HL, iname);
 
 @<Apply comparison function metadata@> =
 	inter_name *iname = RTKindConstructors::comparison_fn_iname(K);
@@ -1262,7 +1350,7 @@ and |b| inclusive.
 	EmitCode::inv(RETURN_BIP);
 	EmitCode::down();
 		if (KindConstructors::uses_block_values(kc)) {
-			inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
+			inter_name *iname = Hierarchy::find(CREATEPV_HL);
 			EmitCode::call(iname);
 			EmitCode::down();
 				EmitCode::val_symbol(K_value, sk_s);

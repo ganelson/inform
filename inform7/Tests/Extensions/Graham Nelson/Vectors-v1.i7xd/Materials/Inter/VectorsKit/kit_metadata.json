@@ -1,0 +1,10 @@
+{
+    "is": {
+        "type": "kit",
+        "title": "VectorsKit",
+        "version": "1"
+    },
+	"kit-details": {
+		"provides-kinds": [ "Vectors.neptune" ]
+	}
+}

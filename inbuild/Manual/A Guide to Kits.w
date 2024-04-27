@@ -43,8 +43,8 @@ line, with the optional |-basic| switch forcing us into the second case. As a
 first step, then, let us see why these are the defaults.
 
 @ BasicInformKit is absolutely obligatory. No Inform project can ever compile
-without it: it contains essential functions such as |BlkValueCreate| or |IntegerDivide|.
-Inbuild therefore makes every Inform project have BasicInformKit as a dependency.
+without it. Inbuild therefore makes every Inform project have BasicInformKit
+as a dependency.
 
 Inbuild also makes each project dependent on the language kit for whatever language
 bundle it is using. So if French is the language of play, the default configurations

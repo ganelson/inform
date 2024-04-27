@@ -49,7 +49,7 @@ text_stream *EqualitySchemas::interpret_equality(kind *left, kind *right) {
 			local_block_value *pall =
 				Frames::allocate_local_block_value(Kinds::base_construction(L));
 			text_stream *promotion = Str::new();
-			WRITE_TO(promotion, "*=-BlkValueCompare(*1, BlkValueCast(%S, *#2, *2))==0",
+			WRITE_TO(promotion, "*=-ComparePV(*1, CastPV(%S, *#2, *2))==0",
 				pall->to_refer->prototype);
 			return promotion;
 		}

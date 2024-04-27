@@ -60,7 +60,7 @@ virtue of Inform lists, that is, their flexible size.
 
 =
 [ DirectorLiveSubjectList list len i;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) return 0;
 	len = 0;
 	while (DialogueTopicPool-->len) len++;
 	LIST_OF_TY_SetLength(list, len);
@@ -70,11 +70,11 @@ virtue of Inform lists, that is, their flexible size.
 ];
 
 [ DirectorAlterLiveSubjectList list len i;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
-	len = BlkValueRead(list, LIST_LENGTH_F);
+	if (WeakKindOfPV(list) ~= LIST_OF_TY) return 0;
+	len = PVField(list, LIST_LENGTH_F);
 	if (len > DIALOGUE_MAX_LIVE_SUBJECTS) len = DIALOGUE_MAX_LIVE_SUBJECTS;
 	for (i=0: i<len: i++)
-		DialogueTopicPool-->i = BlkValueRead(list, LIST_ITEM_BASE+i);
+		DialogueTopicPool-->i = PVField(list, LIST_ITEM_BASE+i);
 	DialogueTopicPool-->len = 0;
 	DialogueTopicPool-->DIALOGUE_MAX_LIVE_SUBJECTS = 0;
 ];

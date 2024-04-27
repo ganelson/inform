@@ -164,6 +164,8 @@ and the second and third pieces used as headings and subheadings respectively.
 		HW = GET_RW(<heading-name-hyphenated>, 3);
 	} else if (<<r>> == 2) {
 		HW = GET_RW(<heading-name-hyphenated>, 2);
+	} else if (<<r>> == 1) {
+		HW = GET_RW(<heading-name-hyphenated>, 1);
 	}
 
 @ We see where |idb| is in a run of phrases which share a common documentation
@@ -221,7 +223,10 @@ void RTPhrasebook::index_definition_area(OUTPUT_STREAM, wording W, int show_if_u
 	<heading-name-hyphenated>(W);
 	if ((<<r>> == 1) && (show_if_unhyphenated == FALSE)) return;
 	switch (<<r>>) {
-		case 1: WRITE("%+W", W); break;
+		case 1: {
+			wording C = GET_RW(<heading-name-hyphenated>, 1);
+			WRITE("%+W", C); break;
+		}
 		case 2: {
 			wording C = GET_RW(<heading-name-hyphenated>, 2);
 			WRITE("%+W", C); break;

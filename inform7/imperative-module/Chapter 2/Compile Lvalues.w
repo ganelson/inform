@@ -251,19 +251,14 @@ change if arbitrary-precision integers are ever added to Inform, for instance.
 @ Here we supply advice on whether shallow or deep copies are needed.
 
 =
-char *CompileLvalues::interpret_store(node_type_t storage_class, kind *left, kind *right, int inc) {
+void CompileLvalues::interpret_store(OUTPUT_STREAM, node_type_t storage_class,
+	kind *left, kind *right, int inc) {
 	LOGIF(KIND_CHECKING, "Interpreting assignment of kinds %u, %u\n", left, right);
 	kind_constructor *L = NULL, *R = NULL;
 	if ((left) && (right)) { L = left->construct; R = right->construct; }
 	int form = STORE_WORD_TO_WORD;
-	if (inc > 0) {
-		form = INCREASE_BY_WORD;
-		if (Kinds::FloatingPoint::uses_floating_point(left)) form = INCREASE_BY_REAL;
-	}
-	if (inc < 0) {
-		form = DECREASE_BY_WORD;
-		if (Kinds::FloatingPoint::uses_floating_point(left)) form = DECREASE_BY_REAL;
-	}
+	if (inc > 0) form = INCREASE_BY_WORD;
+	if (inc < 0) form = DECREASE_BY_WORD;
 	if (KindConstructors::uses_block_values(L)) {
 		if (KindConstructors::allow_word_as_pointer(L, R)) {
 			form = STORE_WORD_TO_POINTER;
@@ -275,12 +270,7 @@ char *CompileLvalues::interpret_store(node_type_t storage_class, kind *left, kin
 			if (inc < 0) form = DECREASE_BY_POINTER;
 		}
 	}
-	int reduce = FALSE;
-	#ifdef IF_MODULE
-	kind *KT = TimesOfDay::kind();
-	if ((KT) && (Kinds::eq(left, KT))) reduce = TRUE;
-	#endif
-	return CompileLvalues::storage_schema(storage_class, form, reduce);
+	CompileLvalues::storage_schema(OUT, storage_class, form, left);
 }
 
 @ Which uses:
@@ -289,105 +279,62 @@ char *CompileLvalues::interpret_store(node_type_t storage_class, kind *left, kin
 @d STORE_WORD_TO_POINTER 2
 @d STORE_POINTER_TO_POINTER 3
 @d INCREASE_BY_WORD 4
-@d INCREASE_BY_REAL 5
-@d INCREASE_BY_POINTER 6
-@d DECREASE_BY_WORD 7
-@d DECREASE_BY_REAL 8
-@d DECREASE_BY_POINTER 9
+@d INCREASE_BY_POINTER 5
+@d DECREASE_BY_WORD 6
+@d DECREASE_BY_POINTER 7
 
 =
-char *CompileLvalues::storage_schema(node_type_t storage_class, int kind_of_store,
-	int reducing_modulo_1440) {
+void CompileLvalues::storage_schema(OUTPUT_STREAM, node_type_t storage_class,
+	int kind_of_store, kind *K) {
 	switch(kind_of_store) {
 		case STORE_WORD_TO_WORD:
 			switch(storage_class) {
-				case LOCAL_VARIABLE_NT: return "*=-*1 = *<2";
-				case NONLOCAL_VARIABLE_NT: return "*=-*1 = *<2";
-				case TABLE_ENTRY_NT: return "*=-*$1(*%1,1,*<2)";
-				case PROPERTY_VALUE_NT: return "*=-WriteGProperty(*|1,*<2)";
-				case LIST_ENTRY_NT: return "*=-WriteLIST_OF_TY_GetItem(*%1,*<2)";
+				case LOCAL_VARIABLE_NT: WRITE("%s", "*=-*1 = *<2"); break;
+				case NONLOCAL_VARIABLE_NT: WRITE("%s", "*=-*1 = *<2"); break;
+				case TABLE_ENTRY_NT: WRITE("%s", "*=-*$1(*%1,1,*<2)"); break;
+				case PROPERTY_VALUE_NT: WRITE("%s", "*=-WriteGProperty(*|1,*<2)"); break;
+				case LIST_ENTRY_NT: WRITE("%s", "*=-WriteLIST_OF_TY_GetItem(*%1,*<2)"); break;
 			}
-			return "";
+			break;
 		case STORE_WORD_TO_POINTER:
 			switch(storage_class) {
-				case LOCAL_VARIABLE_NT: return "*=-BlkValueCast(*1, *#2, *2)";
-				case NONLOCAL_VARIABLE_NT: return "*=-BlkValueCast(*1, *#2, *2)";
-				case TABLE_ENTRY_NT: return "*=-BlkValueCast(*$1(*%1, 5), *#2, *2)";
-				case PROPERTY_VALUE_NT: return "*=-BlkValueCast(*+1, *#2, *2)";
-				case LIST_ENTRY_NT: return "*=-BlkValueCast(*1, *#2, *2)";
+				case LOCAL_VARIABLE_NT: WRITE("%s", "*=-CastPV(*1, *#2, *2)"); break;
+				case NONLOCAL_VARIABLE_NT: WRITE("%s", "*=-CastPV(*1, *#2, *2)"); break;
+				case TABLE_ENTRY_NT: WRITE("%s", "*=-CastPV(*$1(*%1, 5), *#2, *2)"); break;
+				case PROPERTY_VALUE_NT: WRITE("%s", "*=-CastPV(*+1, *#2, *2)"); break;
+				case LIST_ENTRY_NT: WRITE("%s", "*=-CastPV(*1, *#2, *2)"); break;
 			}
-			return "";
+			break;
 		case STORE_POINTER_TO_POINTER:
 			switch(storage_class) {
-				case LOCAL_VARIABLE_NT: return "*=-BlkValueCopy(*1, *<2)";
-				case NONLOCAL_VARIABLE_NT: return "*=-BlkValueCopy(*1, *<2)";
-				case TABLE_ENTRY_NT: return "*=-BlkValueCopy(*$1(*%1, 5), *<2)";
-				case PROPERTY_VALUE_NT: return "*=-BlkValueCopy(*+1, *<2)";
-				case LIST_ENTRY_NT: return "*=-BlkValueCopy(*1, *<2)";
+				case LOCAL_VARIABLE_NT: WRITE("%s", "*=-CopyPV(*1, *<2)"); break;
+				case NONLOCAL_VARIABLE_NT: WRITE("%s", "*=-CopyPV(*1, *<2)"); break;
+				case TABLE_ENTRY_NT: WRITE("%s", "*=-CopyPV(*$1(*%1, 5), *<2)"); break;
+				case PROPERTY_VALUE_NT: WRITE("%s", "*=-CopyPV(*+1, *<2)"); break;
+				case LIST_ENTRY_NT: WRITE("%s", "*=-CopyPV(*1, *<2)"); break;
 			}
-			return "";
+			break;
 		case INCREASE_BY_WORD:
-			if (reducing_modulo_1440) {
-				switch(storage_class) {
-					case LOCAL_VARIABLE_NT: return "*=-*1 = NUMBER_TY_to_TIME_TY(*1 + *<2)";
-					case NONLOCAL_VARIABLE_NT: return "*=-*1 = NUMBER_TY_to_TIME_TY(*1 + *<2)";
-					case TABLE_ENTRY_NT: return "*=-*$1(*%1,1,NUMBER_TY_to_TIME_TY(*1 + *<2))";
-					case PROPERTY_VALUE_NT: return "*=-WriteGProperty(*|1,NUMBER_TY_to_TIME_TY(*+1 + *<2))";
-					case LIST_ENTRY_NT: return "*=-WriteLIST_OF_TY_GetItem(*%1,NUMBER_TY_to_TIME_TY(*1 + *<2))";
-				}
-			} else {
-				switch(storage_class) {
-					case LOCAL_VARIABLE_NT: return "*=-*1 = *1 + *<2";
-					case NONLOCAL_VARIABLE_NT: return "*=-*1 = *1 + *<2";
-					case TABLE_ENTRY_NT: return "*=-*$1(*%1, 1, *1 + *<2)";
-					case PROPERTY_VALUE_NT: return "*=-WriteGProperty(*|1,*+1 + *<2)";
-					case LIST_ENTRY_NT: return "*=-WriteLIST_OF_TY_GetItem(*%1,*1 + *<2)";
-				}
-			}
-			return "";
-		case INCREASE_BY_REAL:
+		case DECREASE_BY_WORD: {
+			int close = FALSE;
 			switch(storage_class) {
-				case LOCAL_VARIABLE_NT: return "*=-*1 = REAL_NUMBER_TY_Plus(*1, *<2)";
-				case NONLOCAL_VARIABLE_NT: return "*=-*1 = REAL_NUMBER_TY_Plus(*1, *<2)";
-				case TABLE_ENTRY_NT: return "*=-*$1(*%1,1,REAL_NUMBER_TY_Plus(*1, *<2))";
-				case PROPERTY_VALUE_NT: return "*=-WriteGProperty(*|1,REAL_NUMBER_TY_Plus(*+1, *<2))";
-				case LIST_ENTRY_NT: return "*=-WriteLIST_OF_TY_GetItem(*%1,REAL_NUMBER_TY_Plus(*1, *<2))";
+				case LOCAL_VARIABLE_NT: WRITE("%s", "*=-*1 = "); break;
+				case NONLOCAL_VARIABLE_NT: WRITE("%s", "*=-*1 = "); break;
+				case TABLE_ENTRY_NT: WRITE("%s", "*=-*$1(*%1,1,"); close = TRUE; break;
+				case PROPERTY_VALUE_NT: WRITE("%s", "*=-WriteGProperty(*|1,"); close = TRUE; break;
+				case LIST_ENTRY_NT: WRITE("%s", "*=-WriteLIST_OF_TY_GetItem(*%1,"); close = TRUE; break;
 			}
-			return "";
+			int operation = PLUS_OPERATION;
+			if (kind_of_store == DECREASE_BY_WORD) operation = MINUS_OPERATION;			
+			CompileArithmetic::schema(OUT, K, K, operation, I"*1", I"*<2");
+			if (close) WRITE(")");
+			break;
+		}
 		case INCREASE_BY_POINTER:
 			internal_error("pointer value increments not implemented");
-			return "";
-		case DECREASE_BY_WORD:
-			if (reducing_modulo_1440) {
-				switch(storage_class) {
-					case LOCAL_VARIABLE_NT: return "*=-*1 = NUMBER_TY_to_TIME_TY(*1 - *<2)";
-					case NONLOCAL_VARIABLE_NT: return "*=-*1 = NUMBER_TY_to_TIME_TY(*1 - *<2)";
-					case TABLE_ENTRY_NT: return "*=-*$1(*%1,1,NUMBER_TY_to_TIME_TY(*1 - *<2))";
-					case PROPERTY_VALUE_NT: return "*=-WriteGProperty(*|1,NUMBER_TY_to_TIME_TY(*+1 - *<2))";
-					case LIST_ENTRY_NT: return "*=-WriteLIST_OF_TY_GetItem(*%1,NUMBER_TY_to_TIME_TY(*1 - *<2))";
-				}
-			} else {
-				switch(storage_class) {
-					case LOCAL_VARIABLE_NT: return "*=-*1 = *1 - *<2";
-					case NONLOCAL_VARIABLE_NT: return "*=-*1 = *1 - *<2";
-					case TABLE_ENTRY_NT: return "*=-*$1(*%1,1,*1 - *<2)";
-					case PROPERTY_VALUE_NT: return "*=-WriteGProperty(*|1,*+1 - *<2)";
-					case LIST_ENTRY_NT: return "*=-WriteLIST_OF_TY_GetItem(*%1,*1 - *<2)";
-				}
-			}
-			return "";
-		case DECREASE_BY_REAL:
-			switch(storage_class) {
-				case LOCAL_VARIABLE_NT: return "*=-*1 = REAL_NUMBER_TY_Minus(*1, *<2)";
-				case NONLOCAL_VARIABLE_NT: return "*=-*1 = REAL_NUMBER_TY_Minus(*1, *<2)";
-				case TABLE_ENTRY_NT: return "*=-*$1(*%1,1,REAL_NUMBER_TY_Minus(*1, *<2))";
-				case PROPERTY_VALUE_NT: return "*=-WriteGProperty(*|1,REAL_NUMBER_TY_Minus(*+1, *<2))";
-				case LIST_ENTRY_NT: return "*=-WriteLIST_OF_TY_GetItem(*%1,REAL_NUMBER_TY_Minus(*1, *<2))";
-			}
-			return "";
+			break;
 		case DECREASE_BY_POINTER:
 			internal_error("pointer value decrements not implemented");
-			return "";
+			break;
 	}
-	return "";
 }

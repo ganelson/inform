@@ -255,14 +255,14 @@ made.
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Plugs and sockets. </b>Now suppose a symbol in package <span class="extract"><span class="extract-syntax">X</span></span> wants to refer to a meaning which
 does not yet exist, and will in fact never exist in the current tree. (It will
 be linked in from another tree later on.) For example, perhaps Inform 7 is
-compiling a function body which needs to refer to <span class="extract"><span class="extract-syntax">BlkValueCreate</span></span>, a function
+compiling a function body which needs to refer to <span class="extract"><span class="extract-syntax">CreatePV</span></span>, a function
 in BasicInformKit.
 </p>
 
-<p class="commentary">This is done by having <span class="extract"><span class="extract-syntax">BlkValueCreate</span></span> in <span class="extract"><span class="extract-syntax">X</span></span> wire to a special symbol called
+<p class="commentary">This is done by having <span class="extract"><span class="extract-syntax">CreatePV</span></span> in <span class="extract"><span class="extract-syntax">X</span></span> wire to a special symbol called
 a "plug" in a special package of the tree at <span class="extract"><span class="extract-syntax">/main/connectors</span></span>.
 (See <a href="../building-module/1-ls.html" class="internal">Large-Scale Structure (in building)</a> for more on this package.) That plug
-is left dangling, in the sense that it is wired to the name <span class="extract"><span class="extract-syntax">"BlkValueCreate"</span></span>,
+is left dangling, in the sense that it is wired to the name <span class="extract"><span class="extract-syntax">"CreatePV"</span></span>,
 but that this name is unresolved.
 </p>
 
@@ -271,7 +271,7 @@ but that this name is unresolved.
 <span class="plain-syntax">    +-----------------+      +--------------------------+</span>
 <span class="plain-syntax">    | Package X       |      | Package /main/connectors |</span>
 <span class="plain-syntax">    |                 |      |                          |</span>
-<span class="plain-syntax">    | BlkValueCreate ~~~~~~~~~&gt; _plug_BlkValueCreate ~~~~~~~&gt; "BlkValueCreate"</span>
+<span class="plain-syntax">    | CreatePV ~~~~~~~~~~~~~~~&gt; _plug_BlkValueCreate ~~~~~~~&gt; "CreatePV"</span>
 <span class="plain-syntax">    +-----------------+      +--------------------------+</span>
 </pre>
 <p class="commentary">Meanwhile, suppose a second tree holds <a href="../BasicInformKit/index.html" class="internal">BasicInformKit</a>. This looks like so:
@@ -282,18 +282,18 @@ but that this name is unresolved.
 <span class="plain-syntax">    +-------------------+      +--------------------------+</span>
 <span class="plain-syntax">    | Package Y         |      | Package /main/connectors |</span>
 <span class="plain-syntax">    |                   |      |                          |</span>
-<span class="plain-syntax">    | BlkValueCreate &lt;~~~~~~~~~~ BlkValueCreate &lt;~~~~~~~~~~~~ "BlkValueCreate"</span>
+<span class="plain-syntax">    | CreatePV &lt;~~~~~~~~~~~~~~~~ CreatePV &lt;~~~~~~~~~~~~~~~~~~ "CreatePV"</span>
 <span class="plain-syntax">    | .....             |      +--------------------------+</span>
 <span class="plain-syntax">    | function defn     |</span>
-<span class="plain-syntax">    | of BlkValueCreate |</span>
+<span class="plain-syntax">    | of CreatePV       |</span>
 <span class="plain-syntax">    | function defn     |</span>
 <span class="plain-syntax">    | of SecretFunction |</span>
 <span class="plain-syntax">    +-------------------+</span>
 </pre>
-<p class="commentary">Package <span class="extract"><span class="extract-syntax">Y</span></span> in this tree holds two function definitions, let's say: <span class="extract"><span class="extract-syntax">BlkValueCreate</span></span>
+<p class="commentary">Package <span class="extract"><span class="extract-syntax">Y</span></span> in this tree holds two function definitions, let's say: <span class="extract"><span class="extract-syntax">CreatePV</span></span>
 and <span class="extract"><span class="extract-syntax">SecretFunction</span></span>. The latter is private to BasicInformKit, in that the linking
 process in <a href="../pipeline-module/index.html" class="internal">pipeline</a> does not allow symbols in other trees to be wired to it.
-But <span class="extract"><span class="extract-syntax">BlkValueCreate</span></span> is available. That is because the BasicInformKit provides
+But <span class="extract"><span class="extract-syntax">CreatePV</span></span> is available. That is because the BasicInformKit provides
 a "socket" to it.
 </p>
 
@@ -306,7 +306,7 @@ and no socket names do.
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>The point of this is that after <a href="2-trn.html" class="internal">Transmigration</a> there will be a single
 tree like so, which has merged the connectors from the two original trees,
 and which now contains both <span class="extract"><span class="extract-syntax">X</span></span> and <span class="extract"><span class="extract-syntax">Y</span></span>. We can npw connect the plug
-<span class="extract"><span class="extract-syntax">_plug_BlkValueCreate</span></span> with the socket <span class="extract"><span class="extract-syntax">BlkValueCreate</span></span>:
+<span class="extract"><span class="extract-syntax">_plug_BlkValueCreate</span></span> with the socket <span class="extract"><span class="extract-syntax">CreatePV</span></span>:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -314,19 +314,19 @@ and which now contains both <span class="extract"><span class="extract-syntax">X
 <span class="plain-syntax">.  +-----------------+      +--------------------------+      .</span>
 <span class="plain-syntax">.  | Package X       |      | Package /main/connectors |      .</span>
 <span class="plain-syntax">.  |                 |      |                          |      .</span>
-<span class="plain-syntax">.  | BlkValueCreate ~~~~~~~~~&gt; _plug_BlkValueCreate ~~~~~\    .</span>
+<span class="plain-syntax">.  | CreatePV ~~~~~~~~~~~~~~&gt; _plug_BlkValueCreate ~~~~~~~\   .</span>
 <span class="plain-syntax">.  +-----------------+      |                          |   \  .</span>
 <span class="plain-syntax">.                           |                          |    | .</span>
 <span class="plain-syntax">.  +-----------------+      |                          |    | .</span>
 <span class="plain-syntax">.  | Package Y       |      |                          |    | .</span>
 <span class="plain-syntax">.  |                 |      |                          |   /  .</span>
-<span class="plain-syntax">.  | BlkValueCreate &lt;~~~~~~~~~ BlkValueCreate &lt;~~~~~~~~~~~/   .</span>
+<span class="plain-syntax">.  | CreatePV &lt;~~~~~~~~~~~~~~~ CreatePV &lt;~~~~~~~~~~~~~~~~~/   .</span>
 <span class="plain-syntax">.  | .....           |      +--------------------------+      .</span>
 <span class="plain-syntax">.  | function defn   |                                        .</span>
 <span class="plain-syntax">.  +-----------------+                                        .</span>
 <span class="plain-syntax">...............................................................</span>
 </pre>
-<p class="commentary">The cable end from <span class="extract"><span class="extract-syntax">BlkValueCreate</span></span> in <span class="extract"><span class="extract-syntax">X</span></span> is indeed the definition in <span class="extract"><span class="extract-syntax">Y</span></span>,
+<p class="commentary">The cable end from <span class="extract"><span class="extract-syntax">CreatePV</span></span> in <span class="extract"><span class="extract-syntax">X</span></span> is indeed the definition in <span class="extract"><span class="extract-syntax">Y</span></span>,
 and all is well.
 </p>
 
@@ -341,7 +341,7 @@ up the offer. The only essential thing is that all plugs must find a socket.
 <ul class="items"><li>&#9679; Every socket is always wired.
 </li><li>&#9679; Every plug is either wired to a socket, or to a name, in the hope that
 it will one day be wired to a socket of that name.
-</li><li>&#9679; All uses of, say, <span class="extract"><span class="extract-syntax">BlkValueCreate</span></span> in the main tree are wired to a single
+</li><li>&#9679; All uses of, say, <span class="extract"><span class="extract-syntax">CreatePV</span></span> in the main tree are wired to a single
 plug in its <span class="extract"><span class="extract-syntax">/main/connectors</span></span> package.
 </li><li>&#9679; By looking at the incoming count of a plug or socket, we can see if it is
 still needed &mdash; if the count falls to 0, it is not.

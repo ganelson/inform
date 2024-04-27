@@ -1,0 +1,22 @@
+new base CMYK_COLOUR_TY {
+	conforms-to: POINTER_VALUE_TY
+	conforms-to: SAYABLE_VALUE_TY
+	singular: CMYK colour
+	plural: CMYK colours
+	
+	long-block-size: 5
+
+	can-exchange: yes
+	constant-compilation-method: none
+	
+	say-function: CMYK_COLOUR_TY_Say
+	compare-function: CMYK_COLOUR_TY_Compare
+	create-function: CMYK_COLOUR_TY_Create
+	copy-function: CMYK_COLOUR_TY_Copy
+	destroy-function: CMYK_COLOUR_TY_Destroy
+	hash-function: CMYK_COLOUR_TY_Hash
+
+	index-priority: 2
+	index-default-value: 0
+	specification-text: A cyan-magenta-yellow-black description of an ink colour.
+}

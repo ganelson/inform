@@ -199,12 +199,12 @@ int Kinds::Behaviour::is_understandable(kind *K) {
 
 text_stream *Kinds::Behaviour::GPR_identifier(kind *K) {
 	if (K == NULL) return NULL;
-	return K->construct->explicit_GPR_identifier;
+	return K->construct->understand_function;
 }
 
 text_stream *Kinds::Behaviour::recognition_only_GPR_identifier(kind *K) {
 	if (K == NULL) return NULL;
-	return K->construct->recognition_routine;
+	return K->construct->recognise_function;
 }
 
 @h (C) Compatibility with other kinds.
@@ -345,21 +345,35 @@ int Kinds::Behaviour::uses_block_values(kind *K) {
 	return KindConstructors::uses_block_values(K->construct);
 }
 
-@ Exactly how large the small block is:
+@ Exactly how large the small block is. The addition of 2 here is to allow for
+the short block header size in a short-block-only pointer value, and must
+correspond to the constant ```SBONLYPV_FIELDS``` defined in
+```BasicInformKit```.
 
 =
-int Kinds::Behaviour::get_small_block_size(kind *K) {
+int Kinds::Behaviour::get_short_block_size(kind *K) {
 	if (K == NULL) return 0;
-	return K->construct->small_block_size;
+	int SB = K->construct->short_block_size;
+	if ((K->construct->long_block_size == 0) &&
+		(K->construct->flexible_long_block_size == 0)) SB += 2;
+	return SB;
 }
 
-@ A reasonable estimate of how large the (larger!) heap block needs to be,
-for a pointer-value kind, in bytes.
+@ A minimum field count for the long block:
 
 =
-int Kinds::Behaviour::get_heap_size_estimate(kind *K) {
+int Kinds::Behaviour::get_long_block_size(kind *K) {
 	if (K == NULL) return 0;
-	return K->construct->heap_size_estimate;
+	return K->construct->long_block_size;
+}
+
+@ 0 if the long block is not flexible in size, and otherwise its typical
+likely number of fields in practice.
+
+=
+int Kinds::Behaviour::get_flexible_long_block_size(kind *K) {
+	if (K == NULL) return 0;
+	return K->construct->flexible_long_block_size;
 }
 
 @ And the following returns the name of an I6 routine to determine if two
@@ -369,7 +383,7 @@ sufficient to apply |~=| to the values.
 =
 text_stream *Kinds::Behaviour::get_distinguisher(kind *K) {
 	if (K == NULL) return NULL;
-	return K->construct->distinguishing_routine;
+	return K->construct->distinguish_function;
 }
 
 @ Can values of this kind be serialised out to a file and read back in again
@@ -381,7 +395,76 @@ int Kinds::Behaviour::can_exchange(kind *K) {
 	return K->construct->can_exchange;
 }
 
-@h (K) Indexing and documentation.
+@h (K) Pointer-value support.
+
+=
+text_stream *Kinds::Behaviour::get_create_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_create_fn_identifier(K->construct);
+}
+
+text_stream *Kinds::Behaviour::get_cast_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_cast_fn_identifier(K->construct);
+}
+
+text_stream *Kinds::Behaviour::get_copy_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_copy_fn_identifier(K->construct);
+}
+
+text_stream *Kinds::Behaviour::get_copy_short_block_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_copy_short_block_fn_identifier(K->construct);
+}
+
+text_stream *Kinds::Behaviour::get_quick_copy_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_quick_copy_fn_identifier(K->construct);
+}
+
+text_stream *Kinds::Behaviour::get_destroy_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_destroy_fn_identifier(K->construct);
+}
+
+text_stream *Kinds::Behaviour::get_make_mutable_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_make_mutable_fn_identifier(K->construct);
+}
+
+text_stream *Kinds::Behaviour::get_hash_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_hash_fn_identifier(K->construct);
+}
+
+text_stream *Kinds::Behaviour::get_long_block_size_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_long_block_size_fn_identifier(K->construct);
+}
+
+text_stream *Kinds::Behaviour::get_serialise_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_serialise_fn_identifier(K->construct);
+}
+
+text_stream *Kinds::Behaviour::get_unserialise_function(kind *K) {
+	if (K == NULL) return NULL;
+	return KindConstructors::get_unserialise_fn_identifier(K->construct);
+}
+
+text_stream *Kinds::Behaviour::get_arithmetic_schema(int op, kind *K1, kind *K2) {
+	kind_constructor *kc1 = (K1)?(K1->construct):NULL;
+	kind_constructor *kc2 = (K2)?(K2->construct):NULL;
+	return KindConstructors::get_arithmetic_schema(op, kc1, kc2);
+}
+
+int Kinds::Behaviour::get_arithmetic_modulus(kind *K) {
+	if (K == NULL) return 0;
+	return KindConstructors::get_arithmetic_modulus(K->construct);
+}
+
+@h (L) Indexing and documentation.
 
 =
 text_stream *Kinds::Behaviour::get_documentation_reference(kind *K) {

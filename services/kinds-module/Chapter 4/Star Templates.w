@@ -164,9 +164,9 @@ not matter, since such things never come into kind definitions.
 		@<Transcribe the kind's name@>
 	else if (Str::eq_wide_string(template_wildcard_buffer, U"lower-case-kind"))
 		@<Transcribe the kind's name in lower case@>
-	else if (Str::eq_wide_string(template_wildcard_buffer, U"printing-routine"))
+	else if (Str::eq_wide_string(template_wildcard_buffer, U"say-function"))
 		@<Transcribe the kind's I6 printing routine@>
-	else if (Str::eq_wide_string(template_wildcard_buffer, U"comparison-routine"))
+	else if (Str::eq_wide_string(template_wildcard_buffer, U"compare-function"))
 		@<Transcribe the kind's I6 comparison routine@>
 	else
 		NeptuneFiles::error(template_wildcard_buffer,

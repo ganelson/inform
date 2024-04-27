@@ -66,8 +66,7 @@ regular users: it would be quite slow to read in.
 	inter_architecture *A = PipelineModule::get_architecture();
 	if (A == NULL) Errors::fatal("no -architecture given");
 	filename *arch_file = Architectures::canonical_binary(req->location, A);
-	if (TextFiles::exists(arch_file) == FALSE)
-		internal_error("no arch file for requirement");
+	if (TextFiles::exists(arch_file) == FALSE) continue;
 	if (BinaryInter::test_file(arch_file)) BinaryInter::read(sidecar, arch_file);
 	else TextualInter::read(sidecar, arch_file);		
 

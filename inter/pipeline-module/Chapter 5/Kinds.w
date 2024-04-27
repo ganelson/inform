@@ -11,16 +11,10 @@ void SynopticKinds::compile(inter_tree *I, pipeline_step *step, tree_inventory *
 	if (InterNodeList::array_len(inv->kind_nodes) > 0) @<Assign unique strong ID numbers@>;
 	if (InterNodeList::array_len(inv->derived_kind_nodes) > 0)
 		InterNodeList::array_sort(inv->derived_kind_nodes, MakeSynopticModuleStage::module_order);
-	@<Define BASE_KIND_HWM@>;	
+	@<Define BASE_KIND_HWM@>;
+	@<Define KINDMETADATA array@>;	
 	@<Define DEFAULTVALUEFINDER function@>;
-	@<Define VALUESFINDER function@>;
-	@<Define DEFAULTVALUEOFKOV function@>;
-	@<Define PRINTKINDVALUEPAIR function@>;
-	@<Define KOVCOMPARISONFUNCTION function@>;
-	@<Define KOVDOMAINSIZE function@>;
-	@<Define KOVISBLOCKVALUE function@>;
 	@<Define I7_KIND_NAME function@>;
-	@<Define KOVSUPPORTFUNCTION function@>;
 	@<Define SHOWMEKINDDETAILS function@>;
 	@<Define RUCKSACK_CLASS constant@>;
 	@<Define KINDHIERARCHY array@>;
@@ -46,10 +40,204 @@ are addresses of small arrays.
 or higher is therefore that of a derived kind.
 
 @<Define BASE_KIND_HWM@> =
+	int hwm = InterNodeList::array_len(inv->kind_nodes) + 2;
 	inter_name *iname = HierarchyLocations::iname(I, BASE_KIND_HWM_HL);
-	Produce::numeric_constant(I, iname, K_value,
-		(inter_ti) (InterNodeList::array_len(inv->kind_nodes) + 2));
+	Produce::numeric_constant(I, iname, K_value, (inter_ti) hwm);
 
+@<Define KINDMETADATA array@> =
+	inter_name *iname = HierarchyLocations::iname(I, KINDMETADATA_HL);
+	Synoptic::begin_array(I, step, iname);
+	inter_ti pos = (inter_ti) InterNodeList::array_len(inv->kind_nodes) + 2;
+	for (int dummy_entries = 1; dummy_entries <= 2; dummy_entries++) {
+		Synoptic::numeric_entry(0);
+	}
+	for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
+		inter_package *pack =
+			PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
+		Synoptic::numeric_entry(pos);
+		pos += 7;
+		if (Metadata::read_optional_numeric(pack, I"^has_block_values")) pos += 12;
+	}
+	for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
+		inter_package *pack =
+			PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
+
+		@<ID field@>;
+		@<Say function field@>;
+		@<Compare function field@>;
+		@<Make default function field@>;
+		@<Enumeration array field@>;
+		@<Domain size field@>;
+		@<Conformance field@>;
+			
+		if (Metadata::read_optional_numeric(pack, I"^has_block_values")) {
+			@<Create function field@>;
+			@<Cast function field@>;
+			@<Copy function field@>;
+			@<Copy short block function field@>;
+			@<Quick-copy function field@>;
+			@<Destroy function field@>;
+			@<Make-mutable function field@>;
+			@<Hash function field@>;
+			@<Short block size field@>;
+			@<Long block size function field@>;
+			@<Serialise function field@>;
+			@<Unserialise function field@>;
+		}
+	}
+	Synoptic::end_array(I);
+
+@<ID field@> =
+	inter_symbol *id_s = Metadata::required_symbol(pack, I"^strong_id");
+	Synoptic::symbol_entry(id_s);
+
+@<Say function field@> =
+	if ((Metadata::optional_symbol(pack, I"^print_fn")) &&
+		(Metadata::read_optional_numeric(pack, I"^is_subkind_of_object") == FALSE)) {
+		inter_symbol *print_fn_s = Metadata::required_symbol(pack, I"^print_fn");
+		Synoptic::symbol_entry(print_fn_s);
+	} else {
+		Synoptic::numeric_entry(0);
+	}
+
+@<Compare function field@> =
+	if (Metadata::optional_symbol(pack, I"^cmp_fn")) {
+		inter_symbol *cmp_fn_s = Metadata::required_symbol(pack, I"^cmp_fn");
+		Synoptic::symbol_entry(cmp_fn_s);
+	} else {
+		Synoptic::numeric_entry(0);
+	}
+
+@<Make default function field@> =
+	if (Metadata::optional_symbol(pack, I"^mkdef_fn")) {
+		inter_symbol *mkdef_fn_s = Metadata::required_symbol(pack, I"^mkdef_fn");
+		Synoptic::symbol_entry(mkdef_fn_s);
+	} else {
+		Synoptic::numeric_entry(0);
+	}
+
+@<Enumeration array field@> =
+	inter_symbol *ea_s = Metadata::optional_symbol(pack, I"^enumeration_array");
+	if (ea_s) {
+		Synoptic::symbol_entry(ea_s);
+	} else {
+		Synoptic::numeric_entry(0);
+	}
+
+@<Domain size field@> =
+	if (Metadata::read_optional_numeric(pack, I"^domain_size")) {
+		inter_ti domain_size = Metadata::read_numeric(pack, I"^domain_size");
+		Synoptic::numeric_entry(domain_size);
+	} else {
+		Synoptic::numeric_entry(0);
+	}
+
+@<Conformance field@> =
+	if (Metadata::read_optional_numeric(pack, I"^has_block_values")) {
+		Synoptic::numeric_entry(1);
+	} else {
+		Synoptic::numeric_entry(0);
+	}
+
+@<Create function field@> =
+	if (Metadata::optional_symbol(pack, I"^create_fn")) {
+		inter_symbol *create_fn_s = Metadata::required_symbol(pack, I"^create_fn");
+		Synoptic::symbol_entry(create_fn_s);
+	} else {
+		Synoptic::numeric_entry(0);
+	}
+
+@<Cast function field@> =
+	if (Metadata::optional_symbol(pack, I"^cast_fn")) {
+		inter_symbol *cast_fn_s = Metadata::required_symbol(pack, I"^cast_fn");
+		Synoptic::symbol_entry(cast_fn_s);
+	} else {
+		Synoptic::numeric_entry(0);
+	}
+
+@<Copy function field@> =
+	if (Metadata::optional_symbol(pack, I"^copy_fn")) {
+		inter_symbol *copy_fn_s = Metadata::required_symbol(pack, I"^copy_fn");
+		Synoptic::symbol_entry(copy_fn_s);
+	} else {
+		Synoptic::numeric_entry(0);
+	}
+
+@<Copy short block function field@> =
+	if (Metadata::optional_symbol(pack, I"^copy_short_block_fn")) {
+		inter_symbol *copy_fn_s = Metadata::required_symbol(pack, I"^copy_short_block_fn");
+		Synoptic::symbol_entry(copy_fn_s);
+	} else {
+		Synoptic::numeric_entry(0);
+	}
+
+@<Quick-copy function field@> =
+	if (Metadata::optional_symbol(pack, I"^quick_copy_fn")) {
+		inter_symbol *quick_copy_fn_s = Metadata::required_symbol(pack, I"^quick_copy_fn");
+		Synoptic::symbol_entry(quick_copy_fn_s);
+	} else {
+		Synoptic::numeric_entry(0);
+	}
+
+@<Destroy function field@> =
+	if (Metadata::optional_symbol(pack, I"^destroy_fn")) {
+		inter_symbol *destroy_fn_s = Metadata::required_symbol(pack, I"^destroy_fn");
+		Synoptic::symbol_entry(destroy_fn_s);
+	} else {
+		Synoptic::numeric_entry(0);
+	}
+
+@<Make-mutable function field@> =
+	if (Metadata::optional_symbol(pack, I"^make_mutable_fn")) {
+		inter_symbol *make_mutable_fn_s = Metadata::required_symbol(pack, I"^make_mutable_fn");
+		Synoptic::symbol_entry(make_mutable_fn_s);
+	} else {
+		Synoptic::numeric_entry(0);
+	}
+
+@<Hash function field@> =
+	if (Metadata::optional_symbol(pack, I"^hash_fn")) {
+		inter_symbol *hash_fn_s = Metadata::required_symbol(pack, I"^hash_fn");
+		Synoptic::symbol_entry(hash_fn_s);
+	} else {
+		Synoptic::numeric_entry(0);
+	}
+
+@<Short block size field@> =
+	inter_ti SB = 1;
+	if (Metadata::read_optional_numeric(pack, I"^short_block_size") > 0)
+		SB = Metadata::read_numeric(pack, I"^short_block_size");
+	Synoptic::numeric_entry(SB);
+
+@<Long block size function field@> =
+	if (Metadata::optional_symbol(pack, I"^long_block_size_fn")) {
+		inter_symbol *long_block_size_fn_s = Metadata::required_symbol(pack, I"^long_block_size_fn");
+		Synoptic::symbol_entry(long_block_size_fn_s);
+	} else {
+		if (Metadata::read_optional_numeric(pack, I"^long_block_size") > 0) {
+			inter_ti LB = Metadata::read_numeric(pack, I"^long_block_size");
+			Synoptic::numeric_entry(LB);
+		} else {
+			Synoptic::numeric_entry(0);
+		}
+	}
+
+@<Serialise function field@> =
+	if (Metadata::optional_symbol(pack, I"^serialise_fn")) {
+		inter_symbol *serialise_fn_s = Metadata::required_symbol(pack, I"^serialise_fn");
+		Synoptic::symbol_entry(serialise_fn_s);
+	} else {
+		Synoptic::numeric_entry(0);
+	}
+
+@<Unserialise function field@> =
+	if (Metadata::optional_symbol(pack, I"^unserialise_fn")) {
+		inter_symbol *unserialise_fn_s = Metadata::required_symbol(pack, I"^unserialise_fn");
+		Synoptic::symbol_entry(unserialise_fn_s);
+	} else {
+		Synoptic::numeric_entry(0);
+	}
+		
 @<Define DEFAULTVALUEFINDER function@> =
 	inter_name *iname = HierarchyLocations::iname(I, DEFAULTVALUEFINDER_HL);
 	Synoptic::begin_function(I, iname);
@@ -80,266 +268,6 @@ or higher is therefore that of a derived kind.
 	Produce::rfalse(I);
 	Synoptic::end_function(I, step, iname);
 
-@<Define VALUESFINDER function@> =
-	inter_name *iname = HierarchyLocations::iname(I, VALUESFINDER_HL);
-	Synoptic::begin_function(I, iname);
-	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
-	for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
-		inter_package *pack =
-			PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
-		inter_symbol *ea_s = Metadata::optional_symbol(pack, I"^enumeration_array");
-		if (ea_s) {
-			inter_symbol *id_s = Metadata::required_symbol(pack, I"^strong_id");
-			Produce::inv_primitive(I, IF_BIP);
-			Produce::down(I);
-				Produce::inv_primitive(I, EQ_BIP);
-				Produce::down(I);
-					Produce::val_symbol(I, K_value, k_s);
-					Produce::val_symbol(I, K_value, id_s);
-				Produce::up(I);
-				Produce::code(I);
-				Produce::down(I);
-					Produce::inv_primitive(I, RETURN_BIP);
-					Produce::down(I);
-						Produce::val_symbol(I, K_value, ea_s);
-					Produce::up(I);
-				Produce::up(I);
-			Produce::up(I);
-		}
-	}
-	Produce::rfalse(I);
-	Synoptic::end_function(I, step, iname);
-
-@ |DefaultValueOfKOV(K)| returns the default value for kind |K|: it's needed,
-for instance, when increasing the size of a list of $K$ to include new entries,
-which have to be given some type-safe value to start out at.
-
-@<Define DEFAULTVALUEOFKOV function@> =
-	inter_name *iname = HierarchyLocations::iname(I, DEFAULTVALUEOFKOV_HL);
-	Synoptic::begin_function(I, iname);
-	inter_symbol *sk_s = Synoptic::local(I, I"sk", NULL);
-	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
-	Produce::inv_primitive(I, STORE_BIP);
-	Produce::down(I);
-		Produce::ref_symbol(I, K_value, k_s);
-		Produce::inv_call_iname(I, HierarchyLocations::iname(I, KINDATOMIC_HL));
-		Produce::down(I);
-			Produce::val_symbol(I, K_value, sk_s);
-		Produce::up(I);
-	Produce::up(I);
-	Produce::inv_primitive(I, SWITCH_BIP);
-	Produce::down(I);
-		Produce::val_symbol(I, K_value, k_s);
-		Produce::code(I);
-		Produce::down(I);
-		for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
-			inter_package *pack = PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
-			if (Metadata::optional_symbol(pack, I"^mkdef_fn")) {
-				inter_symbol *id_s = Metadata::required_symbol(pack, I"^strong_id");
-				inter_symbol *mkdef_fn_s = Metadata::required_symbol(pack, I"^mkdef_fn");
-				Produce::inv_primitive(I, CASE_BIP);
-				Produce::down(I);
-					Produce::val_symbol(I, K_value, id_s);
-					Produce::code(I);
-					Produce::down(I);
-						Produce::inv_primitive(I, RETURN_BIP);
-						Produce::down(I);
-							Produce::inv_call_symbol(I, mkdef_fn_s);
-							Produce::down(I);
-								Produce::val_symbol(I, K_value, sk_s);
-							Produce::up(I);
-						Produce::up(I);
-					Produce::up(I);
-				Produce::up(I);
-			}
-		}
-		Produce::up(I);
-	Produce::up(I);
-	Produce::rfalse(I);
-	Synoptic::end_function(I, step, iname);
-
-@ |PrintKindValuePair(K, V)| prints out the value |V|, declaring its kind to be |K|.
-
-@<Define PRINTKINDVALUEPAIR function@> =
-	inter_name *iname = HierarchyLocations::iname(I, PRINTKINDVALUEPAIR_HL);
-	Synoptic::begin_function(I, iname);
-	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
-	inter_symbol *v_s = Synoptic::local(I, I"v", NULL);
-	Produce::inv_primitive(I, STORE_BIP);
-	Produce::down(I);
-		Produce::ref_symbol(I, K_value, k_s);
-		Produce::inv_call_iname(I, HierarchyLocations::iname(I, KINDATOMIC_HL));
-		Produce::down(I);
-			Produce::val_symbol(I, K_value, k_s);
-		Produce::up(I);
-	Produce::up(I);
-	Produce::inv_primitive(I, SWITCH_BIP);
-	Produce::down(I);
-		Produce::val_symbol(I, K_value, k_s);
-		Produce::code(I);
-		Produce::down(I);
-		for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
-			inter_package *pack = PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
-			if ((Metadata::optional_symbol(pack, I"^print_fn")) &&
-				(Metadata::read_optional_numeric(pack, I"^is_subkind_of_object") == FALSE)) {
-				inter_symbol *id_s = Metadata::required_symbol(pack, I"^strong_id");
-				inter_symbol *print_fn_s = Metadata::required_symbol(pack, I"^print_fn");
-				Produce::inv_primitive(I, CASE_BIP);
-				Produce::down(I);
-					Produce::val_symbol(I, K_value, id_s);
-					Produce::code(I);
-					Produce::down(I);
-						Produce::inv_call_symbol(I, print_fn_s);
-						Produce::down(I);
-							Produce::val_symbol(I, K_value, v_s);
-						Produce::up(I);
-					Produce::up(I);
-				Produce::up(I);
-			}
-		}
-			Produce::inv_primitive(I, DEFAULT_BIP);
-			Produce::down(I);
-				Produce::code(I);
-				Produce::down(I);
-					Produce::inv_primitive(I, PRINTNUMBER_BIP);
-					Produce::down(I);
-						Produce::val_symbol(I, K_value, v_s);
-					Produce::up(I);
-				Produce::up(I);
-			Produce::up(I);
-		Produce::up(I);
-	Produce::up(I);
-	Synoptic::end_function(I, step, iname);
-
-@ |KOVComparisonFunction(K)| returns either the address of a function to
-perform a comparison between two values, or else 0 to signal that no
-special sort of comparison is needed. (In which case signed numerical
-comparison will be used.) The function |F| may be used in a sorting algorithm,
-so it must have no side-effects. |F(x,y)| should return 1 if $x>y$,
-0 if $x=y$ and $-1$ if $x<y$. Note that it is not permitted to return 0
-unless the two values are genuinely equal.
-
-@<Define KOVCOMPARISONFUNCTION function@> =
-	inter_name *iname = HierarchyLocations::iname(I, KOVCOMPARISONFUNCTION_HL);
-	Synoptic::begin_function(I, iname);
-	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
-	Produce::inv_primitive(I, STORE_BIP);
-	Produce::down(I);
-		Produce::ref_symbol(I, K_value, k_s);
-		Produce::inv_call_iname(I, HierarchyLocations::iname(I, KINDATOMIC_HL));
-		Produce::down(I);
-			Produce::val_symbol(I, K_value, k_s);
-		Produce::up(I);
-	Produce::up(I);
-	Produce::inv_primitive(I, SWITCH_BIP);
-	Produce::down(I);
-		Produce::val_symbol(I, K_value, k_s);
-		Produce::code(I);
-		Produce::down(I);
-		for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
-			inter_package *pack = PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
-			if (Metadata::optional_symbol(pack, I"^cmp_fn")) {
-				inter_symbol *id_s = Metadata::required_symbol(pack, I"^strong_id");
-				inter_symbol *cmp_fn_s = Metadata::required_symbol(pack, I"^cmp_fn");
-				Produce::inv_primitive(I, CASE_BIP);
-				Produce::down(I);
-					Produce::val_symbol(I, K_value, id_s);
-					Produce::code(I);
-					Produce::down(I);
-						Produce::inv_primitive(I, RETURN_BIP);
-						Produce::down(I);
-							Produce::val_symbol(I, K_value, cmp_fn_s);
-						Produce::up(I);
-					Produce::up(I);
-				Produce::up(I);
-			}
-		}
-		Produce::up(I);
-	Produce::up(I);
-	Produce::rfalse(I);
-	Synoptic::end_function(I, step, iname);
-
-@<Define KOVDOMAINSIZE function@> =
-	inter_name *iname = HierarchyLocations::iname(I, KOVDOMAINSIZE_HL);
-	Synoptic::begin_function(I, iname);
-	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
-	Produce::inv_primitive(I, STORE_BIP);
-	Produce::down(I);
-		Produce::ref_symbol(I, K_value, k_s);
-		Produce::inv_call_iname(I, HierarchyLocations::iname(I, KINDATOMIC_HL));
-		Produce::down(I);
-			Produce::val_symbol(I, K_value, k_s);
-		Produce::up(I);
-	Produce::up(I);
-	Produce::inv_primitive(I, SWITCH_BIP);
-	Produce::down(I);
-		Produce::val_symbol(I, K_value, k_s);
-		Produce::code(I);
-		Produce::down(I);
-		for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
-			inter_package *pack = PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
-			if (Metadata::read_optional_numeric(pack, I"^domain_size")) {
-				inter_symbol *id_s = Metadata::required_symbol(pack, I"^strong_id");
-				inter_ti domain_size = Metadata::read_numeric(pack, I"^domain_size");
-				Produce::inv_primitive(I, CASE_BIP);
-				Produce::down(I);
-					Produce::val_symbol(I, K_value, id_s);
-					Produce::code(I);
-					Produce::down(I);
-						Produce::inv_primitive(I, RETURN_BIP);
-						Produce::down(I);
-							Produce::val(I, K_value, InterValuePairs::number(domain_size));
-						Produce::up(I);
-					Produce::up(I);
-				Produce::up(I);
-			}
-		}
-		Produce::up(I);
-	Produce::up(I);
-	Produce::rfalse(I);
-	Synoptic::end_function(I, step, iname);
-
-@ |KOVIsBlockValue(k)| is true if and only if |k| is the (strong or weak) ID of
-a kind storing pointers to blocks of data.
-
-@<Define KOVISBLOCKVALUE function@> =
-	inter_name *iname = HierarchyLocations::iname(I, KOVISBLOCKVALUE_HL);
-	Synoptic::begin_function(I, iname);
-	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
-
-	Produce::inv_primitive(I, STORE_BIP);
-	Produce::down(I);
-		Produce::ref_symbol(I, K_value, k_s);
-		Produce::inv_call_iname(I, HierarchyLocations::iname(I, KINDATOMIC_HL));
-		Produce::down(I);
-			Produce::val_symbol(I, K_value, k_s);
-		Produce::up(I);
-	Produce::up(I);
-
-	Produce::inv_primitive(I, SWITCH_BIP);
-	Produce::down(I);
-		Produce::val_symbol(I, K_value, k_s);
-		Produce::code(I);
-		Produce::down(I);
-		for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
-			inter_package *pack = PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
-			if (Metadata::read_optional_numeric(pack, I"^has_block_values")) {
-				inter_symbol *id_s = Metadata::required_symbol(pack, I"^strong_id");
-				Produce::inv_primitive(I, CASE_BIP);
-				Produce::down(I);
-					Produce::val_symbol(I, K_value, id_s);
-					Produce::code(I);
-					Produce::down(I);
-						Produce::rtrue(I);
-					Produce::up(I);
-				Produce::up(I);
-			}
-		}
-		Produce::up(I);
-	Produce::up(I);
-	Produce::rfalse(I);
-	Synoptic::end_function(I, step, iname);
-
 @<Define I7_KIND_NAME function@> =
 	inter_name *iname = HierarchyLocations::iname(I, I7_KIND_NAME_HL);
 	Synoptic::begin_function(I, iname);
@@ -366,66 +294,6 @@ a kind storing pointers to blocks of data.
 			Produce::up(I);
 		}
 	}
-	Synoptic::end_function(I, step, iname);
-
-@ |KOVSupportFunction(K)| returns the address of the specific support function
-for a pointer-value kind |K|, or returns 0 if |K| is not such a kind. For what
-such a function does, see "BlockValues.i6t".
-
-@<Define KOVSUPPORTFUNCTION function@> =
-	inter_name *iname = HierarchyLocations::iname(I, KOVSUPPORTFUNCTION_HL);
-	Synoptic::begin_function(I, iname);
-	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
-	inter_symbol *fail_s = Synoptic::local(I, I"fail", NULL);
-
-	Produce::inv_primitive(I, STORE_BIP);
-	Produce::down(I);
-		Produce::ref_symbol(I, K_value, k_s);
-		Produce::inv_call_iname(I, HierarchyLocations::iname(I, KINDATOMIC_HL));
-		Produce::down(I);
-			Produce::val_symbol(I, K_value, k_s);
-		Produce::up(I);
-	Produce::up(I);
-
-	Produce::inv_primitive(I, SWITCH_BIP);
-	Produce::down(I);
-		Produce::val_symbol(I, K_value, k_s);
-		Produce::code(I);
-		Produce::down(I);
-		for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
-			inter_package *pack = PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
-			if (Metadata::read_optional_numeric(pack, I"^has_block_values")) {
-				inter_symbol *id_s = Metadata::required_symbol(pack, I"^strong_id");
-				inter_symbol *support_s = Metadata::required_symbol(pack, I"^support_fn");
-				Produce::inv_primitive(I, CASE_BIP);
-				Produce::down(I);
-					Produce::val_symbol(I, K_value, id_s);
-					Produce::code(I);
-					Produce::down(I);
-						Produce::inv_primitive(I, RETURN_BIP);
-						Produce::down(I);
-							Produce::val_symbol(I, K_value, support_s);
-						Produce::up(I);
-					Produce::up(I);
-				Produce::up(I);
-			}
-		}
-		Produce::up(I);
-	Produce::up(I);
-
-	Produce::inv_primitive(I, IF_BIP);
-	Produce::down(I);
-		Produce::val_symbol(I, K_value, fail_s);
-		Produce::code(I);
-		Produce::down(I);
-			Produce::inv_call_iname(I, HierarchyLocations::iname(I, BLKVALUEERROR_HL));
-			Produce::down(I);
-				Produce::val_symbol(I, K_value, fail_s);
-			Produce::up(I);
-		Produce::up(I);
-	Produce::up(I);
-
-	Produce::rfalse(I);
 	Synoptic::end_function(I, step, iname);
 
 @<Define SHOWMEKINDDETAILS function@> =

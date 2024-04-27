@@ -968,7 +968,7 @@ with identical names in the same Inform 6 routine, which would fail to compile.
 internal error will halt Inform.)
 
 @<Inline command "counter-down"@> =
-	JumpLabels::read_counter(ist->operand, 0);
+	JumpLabels::read_counter(ist->operand, -1);
 	return;
 
 @ We can use counters for anything, not just to generate labels, and one
@@ -1166,7 +1166,7 @@ do exist, but which should still compile without errors even if they do not.
 
 	if (Kinds::Behaviour::uses_block_values(K)) {
 		if (CodeBlocks::inside_a_loop_body()) {
-			EmitCode::call(Hierarchy::find(BLKVALUECOPY_HL));
+			EmitCode::call(Hierarchy::find(COPYPV_HL));
 			EmitCode::down();
 				inter_symbol *lvar_s = LocalVariables::declare(lvar);
 				EmitCode::val_symbol(K_value, lvar_s);
@@ -1222,10 +1222,12 @@ and deallocation of dynamic lists, since Y is a block value. The point of the
 	kind *K2 = Specifications::to_kind(from);
 	node_type_t storage_class = Lvalues::get_storage_form(to);
 	if (copy_form != 0) @<Check that increment or decrement make sense@>;
-	char *prototype = CompileLvalues::interpret_store(storage_class, K1, K2, copy_form);
-	i6_schema *sch = Calculus::Schemas::new("%s;", prototype);
-	LOGIF(KIND_CHECKING, "Inline copy: %s\n", prototype);
+	TEMPORARY_TEXT(prototype)
+	CompileLvalues::interpret_store(prototype, storage_class, K1, K2, copy_form);
+	i6_schema *sch = Calculus::Schemas::new("%S;", prototype);
+	LOGIF(KIND_CHECKING, "Inline copy: %S\n", prototype);
 	CompileSchemas::from_terms_in_val_context(sch, &pt1, &pt2);
+	DISCARD_TEXT(prototype)
 	return;
 
 @ If the |from| part is prefaced with a plus sign |+|, the new value is added
@@ -1344,7 +1346,7 @@ variable matches the given description.
 	parse_node *X = NULL, *Y = NULL;
 	kind *KX = NULL, *KY = NULL;
 	@<Read the operands and their kinds@>;
-	Kinds::Compile::perform_arithmetic_emit(op, NULL, X, NULL, KX, Y, NULL, KY);
+	CompileArithmetic::perform_arithmetic_emit(op, NULL, X, NULL, KX, Y, NULL, KY);
 	return;
 
 @<Read the operands and their kinds@> =

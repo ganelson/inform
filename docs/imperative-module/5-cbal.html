@@ -524,7 +524,7 @@ one is the "non-pointery" case.
 <span class="plain-syntax">    }</span>
 </pre>
 <p class="commentary">We begin by ensuring that the function has a scratch local variable called <span class="extract"><span class="extract-syntax">sw_v</span></span>,
-and store the switch value in it. We need not use <span class="extract"><span class="extract-syntax">BlkValueCopy</span></span> to make an
+and store the switch value in it. We need not use <span class="extract"><span class="extract-syntax">CopyPV</span></span> to make an
 independent copy, since <span class="extract"><span class="extract-syntax">sw_v</span></span> will be read-only: we can just copy the address of
 the data into <span class="extract"><span class="extract-syntax">sw_v</span></span> with a single <span class="extract"><span class="extract-syntax">STORE_BIP</span></span> instruction, which is much faster.
 </p>

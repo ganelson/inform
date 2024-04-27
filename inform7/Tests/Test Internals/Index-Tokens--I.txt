@@ -7,18 +7,18 @@
 	(which roughly means: within sight), but writing "any" lifts this restriction.
 	So "[any person]" allows every name of a person, wherever they happen to be,
 	even if they are out of play and not found in any room.</p>
-<p class="tightin1">"[anybody]"&nbsp;<a href=inform:/wi_17_1.html><img border=0 src=inform:/doc_images/help.png></a> - same as "[any person]"</p>
-<p class="tightin1">"[anyone]"&nbsp;<a href=inform:/wi_17_1.html><img border=0 src=inform:/doc_images/help.png></a> - same as "[any person]"</p>
-<p class="tightin1">"[anything]"&nbsp;<a href=inform:/wi_17_4.html><img border=0 src=inform:/doc_images/help.png></a> - same as "[any thing]"</p>
-<p class="tightin1">"[other things]"&nbsp;<a href=inform:/wi_17_4.html><img border=0 src=inform:/doc_images/help.png></a></p>
-<p class="tightin1">"[somebody]"&nbsp;<a href=inform:/wi_17_1.html><img border=0 src=inform:/doc_images/help.png></a> - same as "[someone]"</p>
-<p class="tightin1">"[someone]"&nbsp;<a href=inform:/wi_17_1.html><img border=0 src=inform:/doc_images/help.png></a></p>
-<p class="tightin1">"[something]"&nbsp;<a href=inform:/wi_17_4.html><img border=0 src=inform:/doc_images/help.png></a> - an object which is in scope, which is almost always a thing but does not have to be</p>
-<p class="tightin1">"[something preferably held]"&nbsp;<a href=inform:/wi_17_4.html><img border=0 src=inform:/doc_images/help.png></a></p>
-<p class="tightin1">"[text]"&nbsp;<a href=inform:/wi_17_6.html><img border=0 src=inform:/doc_images/help.png></a></p>
-<p class="tightin1">"[things]"&nbsp;<a href=inform:/wi_17_4.html><img border=0 src=inform:/doc_images/help.png></a></p>
-<p class="tightin1">"[things inside]"&nbsp;<a href=inform:/wi_17_4.html><img border=0 src=inform:/doc_images/help.png></a></p>
-<p class="tightin1">"[things preferably held]"&nbsp;<a href=inform:/wi_17_4.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="tightin1">"[anybody]"&nbsp;<a href=inform:/wi_18_1.html><img border=0 src=inform:/doc_images/help.png></a> - same as "[any person]"</p>
+<p class="tightin1">"[anyone]"&nbsp;<a href=inform:/wi_18_1.html><img border=0 src=inform:/doc_images/help.png></a> - same as "[any person]"</p>
+<p class="tightin1">"[anything]"&nbsp;<a href=inform:/wi_18_4.html><img border=0 src=inform:/doc_images/help.png></a> - same as "[any thing]"</p>
+<p class="tightin1">"[other things]"&nbsp;<a href=inform:/wi_18_4.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="tightin1">"[somebody]"&nbsp;<a href=inform:/wi_18_1.html><img border=0 src=inform:/doc_images/help.png></a> - same as "[someone]"</p>
+<p class="tightin1">"[someone]"&nbsp;<a href=inform:/wi_18_1.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="tightin1">"[something]"&nbsp;<a href=inform:/wi_18_4.html><img border=0 src=inform:/doc_images/help.png></a> - an object which is in scope, which is almost always a thing but does not have to be</p>
+<p class="tightin1">"[something preferably held]"&nbsp;<a href=inform:/wi_18_4.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="tightin1">"[text]"&nbsp;<a href=inform:/wi_18_6.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="tightin1">"[things]"&nbsp;<a href=inform:/wi_18_4.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="tightin1">"[things inside]"&nbsp;<a href=inform:/wi_18_4.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="tightin1">"[things preferably held]"&nbsp;<a href=inform:/wi_18_4.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1">"[wobbly]"&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
 <p class="hangingin2">= &quot;that darned [container]&quot;&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
 <p class="hangingin2">or &quot;my [container]&quot;&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>

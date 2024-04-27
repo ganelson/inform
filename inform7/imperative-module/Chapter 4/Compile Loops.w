@@ -306,12 +306,12 @@ void CompileLoops::through_list(parse_node *spec, local_variable *val_var) {
 						EmitCode::inv(STORE_BIP);
 						EmitCode::down();
 							EmitCode::ref_symbol(K_value, val_var_s);
-							EmitCode::call(Hierarchy::find(BLKVALUECREATE_HL));
+							EmitCode::call(Hierarchy::find(CREATEPV_HL));
 							EmitCode::down();
 								RTKindIDs::emit_strong_ID_as_val(CK);
 							EmitCode::up();
 						EmitCode::up();
-						EmitCode::call(Hierarchy::find(BLKVALUECOPYAZ_HL));
+						EmitCode::call(Hierarchy::find(COPYPVIFEXISTS_HL));
 						EmitCode::down();
 							EmitCode::val_symbol(K_value, val_var_s);
 							EmitCode::call(Hierarchy::find(LIST_OF_TY_GETITEM_HL));
@@ -353,7 +353,7 @@ void CompileLoops::through_list(parse_node *spec, local_variable *val_var) {
 				EmitCode::ref_symbol(K_value, index_var_s);
 			EmitCode::up();
 			if (pointery) {
-				EmitCode::call(Hierarchy::find(BLKVALUECOPYAZ_HL));
+				EmitCode::call(Hierarchy::find(COPYPVIFEXISTS_HL));
 				EmitCode::down();
 					EmitCode::val_symbol(K_value, val_var_s);
 					EmitCode::call(Hierarchy::find(LIST_OF_TY_GETITEM_HL));
