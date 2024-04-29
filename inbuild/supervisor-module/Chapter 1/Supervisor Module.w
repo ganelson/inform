@@ -32,6 +32,7 @@ which use this module:
 @e inbuild_copy_CLASS
 @e inbuild_edition_CLASS
 @e inbuild_genre_CLASS
+@e inbuild_licence_CLASS
 @e inbuild_nest_CLASS
 @e inbuild_registry_CLASS
 @e inbuild_requirement_CLASS
@@ -75,6 +76,7 @@ DECLARE_CLASS(heading)
 DECLARE_CLASS(inbuild_copy)
 DECLARE_CLASS(inbuild_edition)
 DECLARE_CLASS(inbuild_genre)
+DECLARE_CLASS(inbuild_licence)
 DECLARE_CLASS(inbuild_nest)
 DECLARE_CLASS(inbuild_registry)
 DECLARE_CLASS(inbuild_requirement)

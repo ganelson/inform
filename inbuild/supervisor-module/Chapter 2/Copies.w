@@ -28,6 +28,7 @@ typedef struct inbuild_copy {
 	struct inbuild_requirement *found_by; /* if this was claimed in a search */
 	struct linked_list *errors_reading_source_text; /* of |copy_error| */
 	int last_scanned;
+	struct inbuild_licence *licence; /* optional licence declaration which seems to apply */
 	CLASS_DEFINITION
 } inbuild_copy;
 
@@ -50,6 +51,7 @@ inbuild_copy *Copies::new_p(inbuild_edition *edition) {
 	copy->found_by = NULL;
 	copy->errors_reading_source_text = NEW_LINKED_LIST(copy_error);
 	copy->last_scanned = 0;
+	copy->licence = Licences::new(copy);
 	return copy;
 }
 

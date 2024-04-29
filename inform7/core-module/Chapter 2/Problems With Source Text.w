@@ -70,6 +70,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 				Problems::issue_problem_end();
 				break;
 			case METADATA_MALFORMED_CE:
+			case MALFORMED_LICENCE_CE:
 				if (CE->copy->found_by) {
 					Problems::quote_work(1, CE->copy->found_by->work);
 					Problems::quote_stream(2, CE->details);

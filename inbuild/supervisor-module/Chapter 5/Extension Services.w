@@ -538,11 +538,16 @@ in a minimal sort of way, with just an |is| object.
 		internal_error("should not try to write JSON except in repair mode");
 	if (C->location_if_path == NULL)
 		internal_error("should not try to write JSON except for a directory extension");
+	int write_legal = FALSE;
+	if ((C->metadata_record) && (JSON::look_up_object(C->metadata_record, I"rights")))
+		write_legal = TRUE;
 	JSON_value *is_object = NULL;
 	@<Find or create the is-object@>;
 	@<Populate the is-object with correct values@>;
 	if (LinkedLists::len(missing_kits) > 0)
 		@<Add any missing kits to the needs-object@>;
+	if (write_legal)
+		JSON::add_to_object(C->metadata_record, I"rights", Licences::to_JSON(C->licence));
 	@<Write the JSON metadata back to the filing system@>;
 
 @<Find or create the is-object@> =

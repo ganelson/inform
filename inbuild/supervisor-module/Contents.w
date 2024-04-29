@@ -21,6 +21,7 @@ Chapter 2: Conceptual Framework
 	Nests
 	Registries
 	JSON Metadata
+	Licences
 
 Chapter 3: Incremental Builds
 	Build Graphs

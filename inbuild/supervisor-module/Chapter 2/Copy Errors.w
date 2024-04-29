@@ -14,6 +14,7 @@ fields are blank.
 
 @e OPEN_FAILED_CE from 1
 @e METADATA_MALFORMED_CE
+@e MALFORMED_LICENCE_CE
 @e EXT_MISWORDED_CE
 @e EXT_BAD_DIRNAME_CE
 @e EXT_BAD_FILENAME_CE
@@ -138,6 +139,8 @@ void CopyErrors::write(OUTPUT_STREAM, copy_error *CE) {
 		case EXT_RANEOUS_CE: WRITE("extraneous content: %S", CE->details); break;
 		case PROJECT_MALFORMED_CE: WRITE("project malformed: %S", CE->details); break;
 		case METADATA_MALFORMED_CE: WRITE("%S has incorrect metadata: %S",
+			CE->copy->edition->work->genre->genre_name, CE->details); break;
+		case MALFORMED_LICENCE_CE: WRITE("%S has incorrect 'legal-metadata': %S",
 			CE->copy->edition->work->genre->genre_name, CE->details); break;
 		case EXT_TITLE_TOO_LONG_CE: WRITE("title too long: %d characters (max is %d)",
 			CE->details_N, MAX_EXTENSION_TITLE_LENGTH); break;
