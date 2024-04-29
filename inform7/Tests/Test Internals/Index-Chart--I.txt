@@ -455,7 +455,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            duration&nbsp;<a href="Kinds.html?segment2"><img border=0 src=inform:/doc_images/calc1.png></a>&nbsp;<a href=inform:/wi_9_6.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A45><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            time period&nbsp;<a href="Kinds.html?segment2"><img border=0 src=inform:/doc_images/calc1.png></a>&nbsp;<a href=inform:/wi_9_6.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A45><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             0 minutes&nbsp;
@@ -1160,7 +1160,7 @@ A real, or 'floating-point' number: the difference between this and ordinary "nu
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, arithmetic value<br>
 A time of day, written in the form '2:34 AM' or '12:51 PM', or a length of time such as '10 minutes' or '3 hours 31 minutes', which must be between 0 minutes and 23 hours 59 minutes inclusive.<br>
 </p>
-<p class="halftightin1"><a name=A45></a><b>duration</b> (<i>plural</i> durations)&nbsp;<a href=inform:/wi_9_6.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A45></a><b>time period</b> (<i>plural</i> time periods)&nbsp;<a href=inform:/wi_9_6.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, arithmetic value<br>
 A length of time such as '10 minutes' or '3 hours 31 minutes'.<br>
 </p>

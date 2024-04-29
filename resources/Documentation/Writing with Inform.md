@@ -4530,6 +4530,7 @@ produces, as it suggests, a random number drawn from the choices 2, 3, 4 or 5, e
 >
 >     a random number from 10 to 99
 >     a random time from 2:31 PM to 2:57 PM
+>     a random time period from 6 minutes to 1 hour 25 minutes
 >
 > If we make a new kind of value:
 >
@@ -4771,7 +4772,7 @@ A sentence like the following allows the initial time to be set up as something 
 
 	The time of day is 3:13 PM.
 
-Here, `3:13 PM` is a constant value of a kind not seen before: it's a kind of value called `time`, and the value `time of day` is a time that varies. After one turn it will be 3:14 PM, then 3:15 PM and so on.
+Here, `3:13 PM` is a constant value of a kind called simply `time`, and the value `time of day` is a time that varies. After one turn it will be 3:14 PM, then 3:15 PM and so on.
 
 Note that the sentence above is an assertion (a statement about the initial state of affairs), not an instruction which can be part of a rule. It would be equivalent to write:
 
@@ -4817,6 +4818,8 @@ Clocks and watches vary considerably in how much detail they show, and we tend n
 
 The phrase `... to the nearest ...` rounds off the given time, just as it sounds; as we'll see later, it can actually round off any arithmetic values, not just times. For instance, `9:58 PM to the nearest ten minutes` is 10:00 PM.
 
+Note that `ten minutes` here is also a value, and it's a value of a kind called `time period`, which is not quite the same as `time`. A `time period` can be positive or negative, and can be enormous: `360 hours 12 minutes` is a valid `time period` constant.
+
 In talking about lengths of time, rather than times of day, it's useful to have these:
 
 > phrase: {ph_durationmins} (number) minutes ... time
@@ -4851,7 +4854,7 @@ Carrying out easy calculations with times is straightforward:
 
 Here we are using two phrases:
 
-> phrase: {ph_shiftbefore} (time) before (time) ... time
+> phrase: {ph_shiftbefore} (time period) before (time) ... time
 >
 > This phrase produces a time earlier by the amount given, keeping within the 24 hour clock. Example:
 >
@@ -4859,7 +4862,7 @@ Here we are using two phrases:
 >
 > produces 10:30 PM.
 
-> phrase: {ph_shiftafter} (time) after (time) ... time
+> phrase: {ph_shiftafter} (time period) after (time) ... time
 >
 > This phrase produces a time later by the amount given, keeping within the 24 hour clock. Example:
 >
@@ -4877,11 +4880,32 @@ Similarly, we have conditions:
 >
 > This condition is true if the first time occurs later in the day than the second. In recognition of the fact that very few stories begin before 4 AM, whereas many run on past midnight, the start of the day is taken to be 4 AM: thus 3:59 AM is after 11:10 PM, but 4:04 AM is before it.
 
+These phrases are really just verbal conveniences, though, because we can do the same thing with everyday arithmetic. `10 minutes before 9:00 AM` is the same thing as calculating `9:00 AM minus 10 minutes`.
+
 ## Calculating times
 
 ^^{time: calculations} ^^{calculation: with time} ^^{numbers: converting to times}
 
-We will occasionally need to perform more complex calculations with time, and in order to do that, we have a way to convert the time of day to numbers. Thus the phrase `the minutes part of ...` takes a time and produces a number from 0 to 59; similarly `the hours part of ...` extracts a number from 0 to 23, using the twenty-four hour clock.
+The ordinary arithmetic for numbers doesn't quite work for times. What would it even mean to add `1:00 PM` to `3:10 PM`, or, worse still, to multiply or divide them, or to take the square root of `9:00 AM`? But we _can_ subtract them: `3:10 PM minus 1:00 PM` does mean something — it produces `2 hours 10 minutes`, which is a value of the kind `time period`. And similarly we can add a time period to a time, to get a changed time: `9:00 AM plus 75 minutes` is `10:15 AM`, and `9:00 AM plus 24 hours` is just `9:00 AM` again.
+
+So, for example:
+
+	{*}The Horological Chamber is a room.
+	
+	The clock error is a time period that varies.
+	
+	The broken grandfather clock is in the Chamber. "An erratic grandfather clock seems to say it is [the time of day plus the clock error]."
+	
+	To thump the mechanism:
+		now the clock error is a random time period from -10 minutes to 10 minutes.
+	
+	When play begins, thump the mechanism.
+	
+	Instead of attacking the broken clock:
+		thump the mechanism;
+		say "You thump the clock, which now reads [the time of day plus the clock error].".
+
+We will occasionally need to perform more complex calculations with time, and in order to do that, it's a convenience to have a way to convert the time of day to numbers. Thus the phrase `the minutes part of ...` takes a time and produces a number from 0 to 59; similarly `the hours part of ...` extracts a number from 0 to 23, using the twenty-four hour clock.
 
 > phrase: {ph_minspart} minutes part of (time) ... number
 >
@@ -4899,15 +4923,11 @@ We will occasionally need to perform more complex calculations with time, and in
 >
 > produces 8.
 
-To go the other way, we can convert any number to a duration by writing `minutes` or `hours` after it. For instance:
+If we need to convert a time period to a number of minutes, a nifty way to do this is to divide it by `1 minute`:
 
-	{*}The clock error is a number that varies. To thump the mechanism: now the clock error is a random number from -10 to 10.
-	
-	The broken grandfather clock is in the Chamber. "An erratic grandfather clock seems to say it is [clock error minutes after the time of day]."
-	
-	When play begins, thump the mechanism. Instead of attacking the broken clock: thump the mechanism; say "You thump the clock, which now reads [clock error minutes after the time of day].".
+	14 minutes divided by 1 minute
 
-Note that `clock error` is a number, but `clock error minutes` is a time.
+The result being the number 14. And to go the other way, we can convert any number to a `time period` by writing `minutes` or `hours` after it.
 
 ## Future events {PM_AtWithoutTime} {PM_UnusedTimedEvent} {TIMEDEVENTS}
 
@@ -4926,7 +4946,7 @@ We often want to arrange for something to happen at some point in the future. He
 
 The event here is called `the egg-timer clucks`, but this event name could have been anything we chose: as it happens, the event involves the egg-timer, but it doesn't need to have `egg-timer` in the name. Events like this happen only when instructed to happen, using one of the following phrases:
 
-> phrase: {ph_timefromnow} (rule) in (time) from now
+> phrase: {ph_timefromnow} (rule) in (time period) from now
 >
 > This phrase causes the given rule to be run at a given time offset from the current time of day. Example:
 >
@@ -5152,13 +5172,13 @@ The Scenes page of the index is intended to help with this. The Plot section sho
 
 Note the useful value `time since Train Stop began`:
 
-> phrase: {ph_scenetimesincebegan} time since (scene) began ... time
+> phrase: {ph_scenetimesincebegan} time since (scene) began ... time period
 >
 > This phrase produces the time since the named scene began, which only makes sense, of course, if it has indeed begun. Example:
 >
 >     time since Entire Game began
 
-> phrase: {ph_scenetimesinceended} time since (scene) ended ... time
+> phrase: {ph_scenetimesinceended} time since (scene) ended ... time period
 >
 > This phrase produces the time since the named scene ended, which only makes sense, of course, if it has indeed ended. Example:
 >
@@ -8731,6 +8751,7 @@ Brackets can be used to clarify: `2 minus 3 minus 1` produces `2 minus (3 minus 
 >
 >     200 - 1 = 199
 >     10:04 AM - two minutes = 10:02 AM
+>     10:04 AM - 10:02 AM = two minutes
 
 > phrase: {ph_times} (arithmetic value) \* (arithmetic value) ... value & (arithmetic value) times (arithmetic value) ... value & (arithmetic value) multiplied by (arithmetic value) ... value
 >
@@ -9376,9 +9397,9 @@ A blackboard propped against one wall reads: "122 / 10 is 12 remainder 2; but 12
 
 Whereas we are not allowed to divide 122 by 10kg: that would make no sense, since 122 is a number and not made up of kilograms. Inform will produce a problem message if we try. Similarly, Inform won't normally allow us to multiply two weights together – but see the next section.
 
-## Multiplication of units {PM_DimensionRedundant} {PM_DimensionNotBaseKOV} {PM_NonDimensional} {PM_UnitSequenceOverflow} {PM_DimensionsInconsistent} {PM_BadLPEquivalent} {PM_BadLPOffset} {PM_MultiplyingNonKOVs} {PM_BadArithmetic} {ARITHMETIC}
+## Multiplication and subtraction of units {PM_DimensionRedundant} {PM_DimensionNotBaseKOV} {PM_NonDimensional} {PM_UnitSequenceOverflow} {PM_DimensionsInconsistent} {PM_BadLPEquivalent} {PM_BadLPOffset} {PM_MultiplyingNonKOVs} {PM_BadArithmetic} {ARITHMETIC}
 
-^^{units of measure: multiplication of units} ^^{calculation: arithmetic with units} ^^{type-checking: of units of measure} ^^{units of measure: Metric Units+ext+} ^^{Metric Units+ext+} ^^{extensions: specific extensions: Metric Units}
+^^{units of measure: multiplication of units} ^^{units of measure: subtraction of units} ^^{units of measure: relative units} ^^{calculation: arithmetic with units} ^^{type-checking: of units of measure} ^^{units of measure: Metric Units+ext+} ^^{Metric Units+ext+} ^^{extensions: specific extensions: Metric Units}
 
 To recap, then, it is forbidden to multiply 122kg and 10kg, not because it could never make sense (a scientist might occasionally multiply two weights) but because the result is – what? Not a number, and not a weight any more. But we are allowed to tell Inform what the result ought to be, and once we have done so, the multiplication will be allowed:
 
@@ -9392,9 +9413,24 @@ which will turn up as:
 
 	The balance platform is 10m by 8m, giving it an area of 80 sq m.
 
-And having told Inform that lengths multiply to area, we could also divide an area by a length to get a length: no further instructions would be needed.
+And having told Inform that lengths multiply to area, we could also divide an area by a length to get a length: no further instructions would be needed. The `Metric Units by Graham Nelson` extension includes all of the standard ways that physical quantities are multiplied, and a good way to see these is to try out one of the Metric Units examples and look at the Kinds index, which includes a table showing how all of this works.
 
-The `Metric Units by Graham Nelson` extension includes all of the standard ways that physical quantities are multiplied, and a good way to see these is to try out one of the Metric Units examples and look at the Kinds index, which includes a table showing how all of this works.
+An alternative way to set things up is for one kind to represent values along some scale, but where arithmetic as such doesn't entirely make sense, and then a _second_ kind to represent relative values on that scale, where it does.
+
+The classic example of this is that it makes no good sense to talk about, say, doubling `2:15 PM`, or dividing it by `1:00 AM`, but where time differences do make sense. The Standard Rules therefore includes the sentence:
+
+	A time minus a time specifies a time period.
+
+And this establishes that, for example,
+
+``` transcript
+"4:31 pm minus 11:20 am" = time period: 5 hours 11 minutes
+"5:12 pm to the nearest 20 minutes" = time: 5:20 pm
+"4:31 pm plus 75 minutes" = time: 5:46 pm
+"5 minutes plus 6 minutes" = time period: 11 minutes
+"2 times 10 minutes" = time period: 20 minutes
+"20 minutes divided by 4 minutes" = number: 5
+```
 
 # Advanced Notations
 
@@ -11178,11 +11214,12 @@ In particular, any newly created kind of value can always be understood. We make
 
 Note the way we can refer to the limb mentioned by the player as the `limb understood`. Similarly, we could talk about the `number understood` if the value parsed had been a number, and so on.
 
-One of the built-in kinds of value is worth special note: time. A time can hold either a specific time of day, such as 10:23 PM, or a duration of something, such as 21 minutes. The `"[a time]"` token matches times of day, such as ``10:15 AM`` or ``MIDNIGHT``. But ``10 minutes`` wouldn't be recognised by `"[a time]"` since it isn't a specific moment in the day. To get around this, an alternative version called `"[a time period]"` is available. So:
+When commands need to talk about time, we need to remember that `"[a time]"` matches a value of the `time` kind — times of day, such as ``10:15 AM`` or ``MIDNIGHT``. By contrast, `"[a time period]"` matches a value of `time period`, such as ``10 MINUTES`` or ``AN HOUR``. So we would likely want:
 
+	Understand "wait until [a time]" as ...
 	Understand "wait for [a time period]" as ...
 
-would match ``WAIT FOR AN HOUR`` or ``WAIT FOR TWO HOURS 12 MINUTES``.
+in order to recognise ``WAIT UNTIL 10:20 AM`` and ``WAIT FOR TEN MINUTES``, respectively.
 
 ## Commands consisting only of nouns
 
@@ -22788,7 +22825,7 @@ The ```WorldModelKit``` declaration for ```TIME_TY```, that is, for the kind `ti
 	arithmetic-modulus: 1440
 ```
 
-This tells Inform that although ordinary `number` arithmetic is used on values of `time`, the result is always reduced modulo 1440, that is, we take the remainder after dividing by 1440, in such a way that the result always falls in the range 0 to 1439. (1440 is the number of minutes in a day.)
+This tells Inform that although ordinary `number` arithmetic is used on values of `time`, the result is always reduced modulo 1440, that is, we take the remainder after dividing by 1440, in such a way that the result always falls in the range 0 to 1439. (1440 is the number of minutes in a day.) `time period`, on the other hand, has no modulus set, so it can be signed and can range up to about five thousand years forward or back.
 
 ### Dimensionlessness
 

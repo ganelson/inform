@@ -233,12 +233,6 @@ Understand "nouns" or "pronouns" as requesting the pronoun meanings.
 Understand "notify" or "notify on" as switching score notification on.
 Understand "notify off" as switching score notification off.
 
-@ The following provides for the token "[a time period]", which is not in
-fact used in the default grammar above, but is available for authors.
-
-=
-The understand token a time period is defined by Inter as "RELATIVE_TIME_TOKEN".
-
 @
 
 =

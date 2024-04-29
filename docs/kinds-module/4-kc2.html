@@ -121,6 +121,7 @@ set by commands in Neptune files, others set by calls from Inform.
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">dimensional_rules</span><span class="plain-syntax"> </span><span class="identifier-syntax">dim_rules</span><span class="plain-syntax">; </span><span class="comment-syntax"> how arithmetic operations work here</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">unit_sequence</span><span class="plain-syntax"> </span><span class="identifier-syntax">dimensional_form</span><span class="plain-syntax">; </span><span class="comment-syntax"> dimensions of this kind</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">dimensional_form_fixed</span><span class="plain-syntax">; </span><span class="comment-syntax"> whether they are derived</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">kind_constructor</span><span class="plain-syntax"> *</span><span class="identifier-syntax">relative_kind</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax"> H: representing this kind at run-time</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">explicit_identifier</span><span class="plain-syntax">; </span><span class="comment-syntax"> to become an Inter identifier</span>
@@ -174,7 +175,7 @@ set by commands in Neptune files, others set by calls from Inform.
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">kind_constructor</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure kind_constructor is accessed in 2/tlok, 2/dk, 2/uk, 4/mcr, 4/st, 4/kc and here.</li></ul>
+<ul class="endnotetexts"><li>The structure kind_constructor is accessed in 2/tlok, 2/dk, 2/uk, 3/dmn, 4/mcr, 4/st, 4/kc and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>A few of the settings connect pairs of kinds together, so structures like
 the following are also needed.
 </p>
@@ -366,6 +367,7 @@ we apply any defaults set in Neptune files.
 <span class="plain-syntax">            </span><a href="3-dmn.html#SP19" class="function-link"><span class="function-syntax">Kinds::Dimensions::fundamental_unit_sequence</span></a><span class="plain-syntax">(</span><a href="2-knd.html#SP6" class="function-link"><span class="function-syntax">Kinds::base_construction</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">con</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">con</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">dimensional_form_fixed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="3-dmn.html#SP12" class="function-link"><span class="function-syntax">Kinds::Dimensions::dim_initialise</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">con</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">dim_rules</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">con</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">relative_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax"> H: representing this kind at run-time</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">con</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">explicit_identifier</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::new</span><span class="plain-syntax">();</span>

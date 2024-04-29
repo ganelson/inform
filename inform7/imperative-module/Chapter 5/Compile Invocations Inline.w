@@ -835,8 +835,8 @@ proposition.
 @<Inline command "ranger-routine"@> =
 	kind *K = CSIInline::parse_bracing_operand_as_kind(ist->operand,
 		Node::get_kind_variable_declarations(inv));
-	if ((Kinds::eq(K, K_number)) ||
-		(Kinds::eq(K, K_time)))
+	if ((Kinds::Behaviour::is_built_in(K)) &&
+		(Kinds::Behaviour::is_quasinumerical(K)))
 		EmitCode::val_iname(K_value, Hierarchy::find(GENERATERANDOMNUMBER_HL));
 	else if (K) EmitCode::val_iname(K_value, RTKindConstructors::random_value_fn_iname(K));
 	else @<Issue an inline no-such-kind problem@>;

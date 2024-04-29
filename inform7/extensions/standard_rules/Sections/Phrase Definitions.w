@@ -447,10 +447,10 @@ To decide if (t - time) is before (t2 - time)
 To decide if (t - time) is after (t2 - time)
 	(documented at ph_timeafter):
 	(- ((({t}+20*ONE_HOUR)%(TWENTY_FOUR_HOURS))>(({t2}+20*ONE_HOUR)%(TWENTY_FOUR_HOURS))) -).
-To decide which time is (t - duration) before (t2 - time)
+To decide which time is (t - time period) before (t2 - time)
 	(documented at ph_shiftbefore):
 	(- (({t2}-{t}+TWENTY_FOUR_HOURS)%(TWENTY_FOUR_HOURS)) -).
-To decide which time is (t - duration) after (t2 - time)
+To decide which time is (t - time period) after (t2 - time)
 	(documented at ph_shiftafter):
 	(- (({t2}+{t}+TWENTY_FOUR_HOURS)%(TWENTY_FOUR_HOURS)) -).
 
@@ -459,13 +459,13 @@ To decide which time is (t - duration) after (t2 - time)
 =
 Section 3 - Durations
 
-To decide which duration is (n - number) minutes
+To decide which time period is (n - number) minutes
 	(documented at ph_durationmins):
 	(- ({n}) -).
-To decide which duration is (n - number) hours
+To decide which time period is (n - number) hours
 	(documented at ph_durationhours):
 	(- ({n}*ONE_HOUR) -).
-To decide which duration is (n - number) hours (m - number) minutes
+To decide which time period is (n - number) hours (m - number) minutes
 	(documented at ph_durationhours):
 	(- ({n}*ONE_HOUR + {m}) -).
 
@@ -480,7 +480,7 @@ To (R - rule) in (t - number) turn/turns from now
 To (R - rule) at (t - time)
 	(documented at ph_attime):
 	(- SetTimedEvent({-mark-event-used:R}, {t}, 1); -).
-To (R - rule) in (t - duration) from now
+To (R - rule) in (t - time period) from now
 	(documented at ph_timefromnow):
 	(- SetTimedEvent({-mark-event-used:R}, (the_time+{t})%(TWENTY_FOUR_HOURS), 1); -).
 
@@ -507,13 +507,13 @@ To decide if (sc - scene) has not ended
 =
 Section 6 - Timing of scenes
 
-To decide which duration is the time since (sc - scene) began
+To decide which time period is the time since (sc - scene) began
 	(documented at ph_scenetimesincebegan):
 	(- (SceneUtility({sc}, 1)) -).
 To decide which time is the time when (sc - scene) began
 	(documented at ph_scenetimewhenbegan):
 	(- (SceneUtility({sc}, 2)) -).
-To decide which duration is the time since (sc - scene) ended
+To decide which time period is the time since (sc - scene) ended
 	(documented at ph_scenetimesinceended):
 	(- (SceneUtility({sc}, 3)) -).
 To decide which time is the time when (sc - scene) ended

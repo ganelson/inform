@@ -1036,5 +1036,5 @@ The matching key property is defined by Inter as "with_key".
 @ Section 17 - Time
 
 =
-A time minus a time specifies a duration.
+A time minus a time specifies a time period.
 

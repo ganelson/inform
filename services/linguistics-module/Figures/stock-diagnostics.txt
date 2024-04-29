@@ -1,12 +1,12 @@
 adjective: 142 items
 article: 2 items
-noun: 2396 items
+noun: 2398 items
 pronoun: 8 items
 preposition: 274 items
 determiner: 22 items
 verb: 109 items
 verb_form: 388 items
-total in all categories: 3341
+total in all categories: 3343
 
 adjective: 'even'
 adjective: 'odd'
@@ -190,6 +190,7 @@ noun: common: 'described action'
 noun: common: 'action'
 noun: common: 'action name'
 noun: common: 'time'
+noun: common: 'time period'
 noun: common: 'scene'
 noun: common: 'figure name'
 noun: common: 'sound name'
@@ -2503,6 +2504,7 @@ noun: proper: 'truth state understood'
 noun: proper: 'external file understood'
 noun: proper: 'internal file understood'
 noun: proper: 'time understood'
+noun: proper: 'time period understood'
 noun: proper: 'scene understood'
 noun: proper: 'figure name understood'
 noun: proper: 'sound name understood'

@@ -23,10 +23,10 @@ new base TIME_TY {
 	specification-text: A time of day, written in the form '2:34 AM' or '12:51 PM', or a length of time such as '10 minutes' or '3 hours 31 minutes', which must be between 0 minutes and 23 hours 59 minutes inclusive.
 }
 
-new base DURATION_TY {
+new base TIME_PERIOD_TY {
 	conforms-to: ARITHMETIC_VALUE_TY
-	singular: duration
-	plural: durations
+	singular: time period
+	plural: time periods
 
 	default-value: 0
 	compare-function: signed

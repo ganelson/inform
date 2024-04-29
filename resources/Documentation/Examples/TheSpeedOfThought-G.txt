@@ -1,5 +1,5 @@
 Example: ** The Speed of Thought
-Location: Multiplication of units
+Location: Multiplication and subtraction of units
 RecipeLocation: Volume, Height, Weight
 Index: Unit conversions
 Description: Describing scientifically-measured objects in units more familiar to the casual audience.

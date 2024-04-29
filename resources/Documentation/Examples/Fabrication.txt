@@ -1,5 +1,5 @@
 Example: ** Fabrication
-Location: Multiplication of units
+Location: Multiplication and subtraction of units
 RecipeLocation: Money
 Index: Clothes made of priced fabrics
 Description: A system of assembling clothing from a pattern and materials; both the pattern and the different fabrics have associated prices.

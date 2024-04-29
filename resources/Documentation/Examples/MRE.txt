@@ -25,7 +25,7 @@ First, a little scene-setting:
 
 Now we define our food, and add some special instructions for what happens to our hunger counters when the food is eaten:
 
-	{**}Food is a kind of thing. Food is usually edible. Food has a duration called the satisfaction period. The satisfaction period of a food is usually 5 minutes.
+	{**}Food is a kind of thing. Food is usually edible. Food has a time period called the satisfaction period. The satisfaction period of a food is usually 5 minutes.
 	
 	A person can be hungry or replete. The player is hungry.
 	

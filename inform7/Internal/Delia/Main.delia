@@ -287,12 +287,12 @@ else
 ! an interpreter.
 
 	if: $FOR Glulx
-		default: $I6OPTIONS		= -E2SDwGx
+		default: $I6OPTIONS		= -E2SDwG
 		default: $INTERPRETER	= $GINT
 		default: $INTOPTIONS	= -u -q
 		set: $EXT               = ulx
 	else
-		default: $I6OPTIONS		= -E2SDwv8x
+		default: $I6OPTIONS		= -E2SDwv8
 		default: $INTERPRETER	= $ZINT
 		default: $INTOPTIONS	= -w 1000
 		set: $EXT               = z8

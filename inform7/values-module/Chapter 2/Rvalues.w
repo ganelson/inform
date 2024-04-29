@@ -267,9 +267,9 @@ parse_node *Rvalues::from_time(int minutes_since_midnight, wording W) {
 	return spec;
 }
 
-parse_node *Rvalues::from_duration(int minutes, wording W) {
+parse_node *Rvalues::from_time_period(int minutes, wording W) {
 	parse_node *spec = Node::new_with_words(CONSTANT_NT, W);
-	Node::set_kind_of_value(spec, TimesOfDay::duration());
+	Node::set_kind_of_value(spec, TimesOfDay::time_period());
 	Annotations::write_int(spec, explicit_literal_ANNOT, TRUE);
 	Annotations::write_int(spec, constant_number_ANNOT, minutes);
 	return spec;
@@ -281,8 +281,8 @@ int Rvalues::to_time(parse_node *spec) {
 	return 0;
 }
 
-int Rvalues::to_duration(parse_node *spec) {
-	if (Rvalues::is_CONSTANT_of_kind(spec, TimesOfDay::duration()))
+int Rvalues::to_time_period(parse_node *spec) {
+	if (Rvalues::is_CONSTANT_of_kind(spec, TimesOfDay::time_period()))
 		return Annotations::read_int(spec, constant_number_ANNOT);
 	return 0;
 }

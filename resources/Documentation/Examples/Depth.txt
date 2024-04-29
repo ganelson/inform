@@ -1,5 +1,5 @@
 Example: * Depth
-Location: Multiplication of units
+Location: Multiplication and subtraction of units
 RecipeLocation: Volume, Height, Weight
 Index: Containers that calculate internal volume and available room
 Description: Receptacles that calculate internal volume and the amount of room available, and  cannot be overfilled.
