@@ -50,7 +50,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">WorldModelKit</a></li><li><b>State Template</b></li></ul></div>
 <p class="purpose">To implement out of world actions relating to the program state.</p>
 
-<ul class="toc"><li><a href="S-stt.html#SP1">&#167;1. Quit The Game Rule</a></li><li><a href="S-stt.html#SP2">&#167;2. Restart The Game Rule</a></li><li><a href="S-stt.html#SP3">&#167;3. Restore The Game Rule</a></li><li><a href="S-stt.html#SP4">&#167;4. Save The Game Rule</a></li><li><a href="S-stt.html#SP5">&#167;5. Perform Undo</a></li><li><a href="S-stt.html#SP6">&#167;6. Verify The Story File Rule</a></li><li><a href="S-stt.html#SP7">&#167;7. Switch Transcript On Rule</a></li><li><a href="S-stt.html#SP8">&#167;8. Switch Transcript Off Rule</a></li><li><a href="S-stt.html#SP9">&#167;9. Announce Story File Version Rule</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-stt.html#SP1">&#167;1. Quit The Game Rule</a></li><li><a href="S-stt.html#SP2">&#167;2. Restart The Game Rule</a></li><li><a href="S-stt.html#SP3">&#167;3. Restore The Game Rule</a></li><li><a href="S-stt.html#SP4">&#167;4. Save The Game Rule</a></li><li><a href="S-stt.html#SP5">&#167;5. Perform Undo</a></li><li><a href="S-stt.html#SP6">&#167;6. Verify The Story File Rule</a></li><li><a href="S-stt.html#SP7">&#167;7. Switch Transcript On Rule</a></li><li><a href="S-stt.html#SP8">&#167;8. Switch Transcript Off Rule</a></li><li><a href="S-stt.html#SP9">&#167;9. Announce Story File Version Rule</a></li><li><a href="S-stt.html#SP10">&#167;10. Announce the Copyright Licences Rule</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Quit The Game Rule. </b></p>
 
@@ -164,6 +164,19 @@ could not properly be read.
 <span class="plain-syntax">    </span><span class="identifier-syntax">VM_ReportOnInterpreter</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ShowExtensionVersions</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">say__p</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">DivideParagraphPoint</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">ANNOUNCE_COPYRIGHT_LICENCES_R</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">];</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Announce the Copyright Licences Rule. </b></p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">[ </span><span class="identifier-syntax">ANNOUNCE_COPYRIGHT_LICENCES_R</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">actor</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">player</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">COPYRIGHT_LICENCE_TEXT</span><span class="plain-syntax"> </span><span class="reserved-syntax">ofclass</span><span class="plain-syntax"> </span><span class="identifier-syntax">String</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="reserved-syntax">string</span><span class="plain-syntax">) </span><span class="identifier-syntax">COPYRIGHT_LICENCE_TEXT</span><span class="plain-syntax">, </span><span class="string-syntax">"^"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">say__p</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">

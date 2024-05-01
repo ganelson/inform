@@ -223,6 +223,7 @@ Understand "restart" as restarting the game.
 Understand "restore" as restoring the game.
 Understand "verify" as verifying the story file.
 Understand "version" as requesting the story file version.
+Understand "copyright" as requesting copyright licences.
 Understand "script" or "script on" or "transcript" or "transcript on" as switching the story
 	transcript on.
 Understand "script off" or "transcript off" as switching the story transcript off.

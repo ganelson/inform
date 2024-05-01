@@ -3098,6 +3098,17 @@ The announce the story file version rule is listed in the carry out requesting t
 	file version rulebook.
 The announce the story file version rule is defined by Inter as "ANNOUNCE_STORY_FILE_VERSION_R".
 
+
+@ And similarly for COPYRIGHT.
+
+=
+Requesting copyright licences is an action out of world and applying to nothing.
+The requesting copyright licences action is accessible to Inter as "Copyright".
+
+The announce the copyright licences rule is listed in the carry out requesting
+	copyright licences rulebook.
+The announce the copyright licences rule is defined by Inter as "ANNOUNCE_COPYRIGHT_LICENCES_R".
+
 @ There's really no very good reason why we provide the out-of-world command
 SCORE but not (say) TIME, or any one of dozens of other traditional what's-my-status
 commands: DIAGNOSE, say, or PLACES. But we are conservative on this; it's easy

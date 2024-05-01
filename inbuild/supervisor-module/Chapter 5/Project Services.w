@@ -102,6 +102,19 @@ void Projects::scan(inbuild_copy *C) {
 			}
 		}
 	} else {
+		JSON_value *is_object = JSON::new_object();
+		JSON::change_object(is_object, I"type", JSON::new_string(I"project"));
+		JSON::change_object(is_object, I"title", JSON::new_string(C->edition->work->title));
+		JSON::change_object(is_object, I"author", JSON::new_string(C->edition->work->author_name));
+		if (VersionNumbers::is_null(C->edition->version) == FALSE) {
+			TEMPORARY_TEXT(v)
+			WRITE_TO(v, "%v", &(C->edition->version));
+			JSON::change_object(is_object, I"version", JSON::new_string(v));
+			DISCARD_TEXT(v)
+		}
+
+		C->metadata_record = JSON::new_object();
+		JSON::add_to_object(C->metadata_record, I"is", is_object);
 		SVEXPLAIN(2, "(no JSON metadata file found at %f)\n", F);
 	}
 }
@@ -181,6 +194,34 @@ pathname *Projects::materialise_pathname(pathname *in, text_stream *leaf) {
 	pathname *materials = Pathnames::down(in, mf);
 	DISCARD_TEXT(mf)
 	return materials;
+}
+
+@ Rewrites (or creates) the JSON metadata for a project, optionally including
+licence details:
+
+=
+void Projects::update_metadata(inform_project *proj, int write_legal,
+	text_stream *force_JSON_write) {
+	inbuild_copy *C = proj->as_copy;
+	if (write_legal)
+		JSON::change_object(C->metadata_record, I"rights", Licences::to_JSON(C->licence));
+	filename *F = Filenames::in(Projects::materials_path(proj), I"project_metadata.json");
+	if (TextFiles::exists(F)) {
+		text_stream JSONF_struct;
+		text_stream *OUT = &JSONF_struct;
+		if (STREAM_OPEN_TO_FILE(OUT, F, UTF8_ENC) == FALSE) {
+			TEMPORARY_TEXT(error_text)
+			WRITE_TO(error_text, "extension metadata file 'project_metadata.json' was missing "
+				"or incorrect, and I was unable to write a better one");
+			Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, error_text));
+			DISCARD_TEXT(error_text)
+		} else {
+			JSON::encode(OUT, C->metadata_record);
+			STREAM_CLOSE(OUT);
+			WRITE_TO(STDERR, "(Writing JSON metadata file to %f, because %S)\n",
+				F, force_JSON_write);
+		}
+	}
 }
 
 @ Returns |TRUE| for a project arising from a single file, |FALSE| for a

@@ -294,7 +294,7 @@ placeholder.
 <p class="commentary">The answer in fact depends on genre. For pipelines, languages and website
 templates, there are no dependencies, so there's nothing to build. For kits,
 extensions and projects, the task is performed by <a href="5-ks.html#SP14" class="internal">Kits::construct_graph</a>,
-<a href="5-es.html#SP9" class="internal">Extensions::construct_graph</a> and <a href="5-ps2.html#SP33" class="internal">Projects::construct_graph</a>. Kits are
+<a href="5-es.html#SP10" class="internal">Extensions::construct_graph</a> and <a href="5-ps2.html#SP34" class="internal">Projects::construct_graph</a>. Kits are
 graphed when the Supervisor "goes operational", because
 <a href="1-ic.html#SP12" class="internal">Supervisor::go_operational</a> calls <a href="2-cps.html#SP8" class="internal">Copies::construct_graph</a> for
 every extant copy.
@@ -322,8 +322,8 @@ at most once, and is cached so that a second read produces the same result
 as the first.
 </p>
 
-<p class="commentary">Reading is performed by <a href="5-ps2.html#SP36" class="internal">Projects::read_source_text_for</a> and
-<a href="5-es.html#SP10" class="internal">Extensions::read_source_text_for</a>. For extensions this involves reading
+<p class="commentary">Reading is performed by <a href="5-ps2.html#SP37" class="internal">Projects::read_source_text_for</a> and
+<a href="5-es.html#SP11" class="internal">Extensions::read_source_text_for</a>. For extensions this involves reading
 only a single file, but for projects it can involve multiple files. Each
 such is read by a call to <a href="6-st.html#SP3" class="internal">SourceText::read_file</a>, which then sends out
 to the <a href="../words-module/index.html" class="internal">words</a> module to break the text file into a stream of words:
@@ -407,7 +407,7 @@ the inclusion and there's no dependency; and similarly:
     <p>Section 1 - Figures (for figures language element only)</p>
 </blockquote>
 
-<p class="commentary">Because of this, we make sure to call <a href="5-ps2.html#SP24" class="internal">Projects::activate_elements</a> before
+<p class="commentary">Because of this, we make sure to call <a href="5-ps2.html#SP25" class="internal">Projects::activate_elements</a> before
 looking for inclusion sentences, in order to know whether or not, e.g., the
 figures language element is present.
 </p>
@@ -479,7 +479,7 @@ dependencies on other extensions. If we were reading an extension, we now have
 its complete graph made, because it can only be dependent on other extensions.
 But a project also depends on kits of Inter codes, on a language definition,
 and so forth: and also on the files it draws its source text from. See
-<a href="5-ps2.html#SP33" class="internal">Projects::construct_graph</a> for the details.
+<a href="5-ps2.html#SP34" class="internal">Projects::construct_graph</a> for the details.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Incremental builds. </b>So, then, at this point we can determine the complete build graph for any copy.

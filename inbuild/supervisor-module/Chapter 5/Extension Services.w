@@ -547,7 +547,7 @@ in a minimal sort of way, with just an |is| object.
 	if (LinkedLists::len(missing_kits) > 0)
 		@<Add any missing kits to the needs-object@>;
 	if (write_legal)
-		JSON::add_to_object(C->metadata_record, I"rights", Licences::to_JSON(C->licence));
+		JSON::change_object(C->metadata_record, I"rights", Licences::to_JSON(C->licence));
 	@<Write the JSON metadata back to the filing system@>;
 
 @<Find or create the is-object@> =
@@ -601,6 +601,17 @@ in a minimal sort of way, with just an |is| object.
 		STREAM_CLOSE(OUT);
 		WRITE_TO(STDERR, "(Writing JSON metadata file to %f, because %S)\n", F, force_JSON_write);
 	}
+
+@ Update extension metadata:
+
+=
+void Extensions::update_metadata(inform_extension *E, int write_legal,
+	text_stream *force_JSON_write) {
+	inbuild_copy *C = E->as_copy;
+	if (write_legal)
+		JSON::change_object(C->metadata_record, I"rights", Licences::to_JSON(C->licence));
+	@<Write the JSON metadata back to the filing system@>;
+}
 
 @ Language elements can be activated or deactivated:
 

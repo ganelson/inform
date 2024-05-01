@@ -1,12 +1,12 @@
 adjective: 142 items
 article: 2 items
-noun: 2398 items
+noun: 2409 items
 pronoun: 8 items
 preposition: 274 items
 determiner: 22 items
 verb: 109 items
 verb_form: 388 items
-total in all categories: 3343
+total in all categories: 3354
 
 adjective: 'even'
 adjective: 'odd'
@@ -2119,6 +2119,17 @@ noun: proper: 'report requesting the story file version'
 noun: proper: 'report requesting the story file version rules'
 noun: proper: 'report requesting the story file version rulebook'
 noun: proper: 'announce the story file version rule'
+noun: proper: 'requesting copyright licences action'
+noun: proper: 'check requesting copyright licences'
+noun: proper: 'check requesting copyright licences rules'
+noun: proper: 'check requesting copyright licences rulebook'
+noun: proper: 'carry out requesting copyright licences'
+noun: proper: 'carry out requesting copyright licences rules'
+noun: proper: 'carry out requesting copyright licences rulebook'
+noun: proper: 'report requesting copyright licences'
+noun: proper: 'report requesting copyright licences rules'
+noun: proper: 'report requesting copyright licences rulebook'
+noun: proper: 'announce the copyright licences rule'
 noun: proper: 'requesting the score action'
 noun: proper: 'check requesting the score'
 noun: proper: 'check requesting the score rules'

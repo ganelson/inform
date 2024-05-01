@@ -214,6 +214,7 @@ void Hierarchy::establish(void) {
 @e LANGUAGE_ELEMENTS_NOT_USED_MD_HL
 @e MEMORY_ECONOMY_MD_HL
 @e MAX_INDEXED_FIGURES_HL
+@e COPYRIGHT_LICENCES_HL
 @e NO_TEST_SCENARIOS_HL
 @e MEMORY_HEAP_SIZE_HL
 @e LOCALPARKING_HL
@@ -255,6 +256,7 @@ void Hierarchy::establish(void) {
 		H_C_T(LOCALPARKING_HL,                I"LocalParking")
 		H_C_T(RNG_SEED_AT_START_OF_PLAY_HL,   I"RNG_SEED_AT_START_OF_PLAY")
 		H_C_T(MAX_INDEXED_FIGURES_HL,         I"^max_indexed_figures")
+		H_C_T(COPYRIGHT_LICENCES_HL,          I"COPYRIGHT_LICENCE_TEXT")
 		H_C_T(MAX_FRAME_SIZE_NEEDED_HL,       I"MAX_FRAME_SIZE_NEEDED")
 		H_F_T(SUBMAIN_HL,                     I"Submain_fn", I"Submain")
 		H_C_T(AFTER_ACTION_HOOK_HL,           I"AfterActionHook")

@@ -106,6 +106,7 @@ be a single word, and are hyphenated.
 	SpecialMeanings::declare(UseOptions::use_SMF, I"use", 4);
 	SpecialMeanings::declare(Sentences::DLRs::include_in_SMF, I"include-in", 4);
 	SpecialMeanings::declare(Sentences::DLRs::omit_from_SMF, I"omit-from", 4);
+	SpecialMeanings::declare(LicenceDeclaration::licence_SMF, I"declares-licence", 4);
 
 	PluginCalls::make_special_meanings();
 

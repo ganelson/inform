@@ -148,6 +148,7 @@ so on. Those absolute basics are made here.
 		-1, debugging, sequence_timer);
 	BENCH(MajorNodes::pass_2)
 	BENCH(DialogueBeats::decide_cue_topics)
+	BENCH(LicenceDeclaration::check_licences)
 
 @<Make the model world@> =
 	Task::advance_stage_to(MODEL_CSEQ, I"Making the model world",

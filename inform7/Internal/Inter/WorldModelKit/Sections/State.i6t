@@ -114,4 +114,17 @@ could not properly be read.
 	VM_ReportOnInterpreter();
 	ShowExtensionVersions();
 	say__p = 1;
+	DivideParagraphPoint();
+	ANNOUNCE_COPYRIGHT_LICENCES_R();
+];
+
+@h Announce the Copyright Licences Rule.
+
+=
+[ ANNOUNCE_COPYRIGHT_LICENCES_R;
+	if (actor ~= player) rfalse;
+	if (COPYRIGHT_LICENCE_TEXT ofclass String) {
+		print (string) COPYRIGHT_LICENCE_TEXT, "^";
+		say__p = 1;
+	}
 ];

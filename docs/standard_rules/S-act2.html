@@ -3261,7 +3261,18 @@ different formats being compiled to.
 <span class="plain-syntax">    </span><span class="identifier-syntax">file</span><span class="plain-syntax"> </span><span class="identifier-syntax">version</span><span class="plain-syntax"> </span><span class="identifier-syntax">rulebook</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">announce</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">story</span><span class="plain-syntax"> </span><span class="identifier-syntax">file</span><span class="plain-syntax"> </span><span class="identifier-syntax">version</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">defined</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"ANNOUNCE_STORY_FILE_VERSION_R"</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP177" class="paragraph-anchor"></a><b>&#167;177.  </b>There's really no very good reason why we provide the out-of-world command
+<p class="commentary firstcommentary"><a id="SP177" class="paragraph-anchor"></a><b>&#167;177.  </b>And similarly for COPYRIGHT.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">Requesting</span><span class="plain-syntax"> </span><span class="identifier-syntax">copyright</span><span class="plain-syntax"> </span><span class="identifier-syntax">licences</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax"> </span><span class="identifier-syntax">out</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">world</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">applying</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">nothing</span><span class="plain-syntax">.</span>
+<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">requesting</span><span class="plain-syntax"> </span><span class="identifier-syntax">copyright</span><span class="plain-syntax"> </span><span class="identifier-syntax">licences</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">accessible</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"Copyright"</span><span class="plain-syntax">.</span>
+
+<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">announce</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">copyright</span><span class="plain-syntax"> </span><span class="identifier-syntax">licences</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">listed</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">carry</span><span class="plain-syntax"> </span><span class="identifier-syntax">out</span><span class="plain-syntax"> </span><span class="identifier-syntax">requesting</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">copyright</span><span class="plain-syntax"> </span><span class="identifier-syntax">licences</span><span class="plain-syntax"> </span><span class="identifier-syntax">rulebook</span><span class="plain-syntax">.</span>
+<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">announce</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">copyright</span><span class="plain-syntax"> </span><span class="identifier-syntax">licences</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">defined</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"ANNOUNCE_COPYRIGHT_LICENCES_R"</span><span class="plain-syntax">.</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP178" class="paragraph-anchor"></a><b>&#167;178.  </b>There's really no very good reason why we provide the out-of-world command
 SCORE but not (say) TIME, or any one of dozens of other traditional what's-my-status
 commands: DIAGNOSE, say, or PLACES. But we are conservative on this; it's easy
 for users or extensions to provide these verbs if they want them, and they are
@@ -3284,7 +3295,7 @@ removal would be a gesture too far.
 <span class="plain-syntax">    </span><span class="string-syntax">"[bracket]Your score has just gone down by </span><span class="comment-syntax">umber understood in words</span>
 <span class="string-syntax">        point[s].[close bracket]"</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E</span><span class="plain-syntax">).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP178" class="paragraph-anchor"></a><b>&#167;178.  </b>It's perhaps clumsy to have three actions for switching the style of room
+<p class="commentary firstcommentary"><a id="SP179" class="paragraph-anchor"></a><b>&#167;179.  </b>It's perhaps clumsy to have three actions for switching the style of room
 description, but this accords with I6 custom (and Infocom's, for that matter),
 and does no harm.
 </p>
@@ -3334,7 +3345,7 @@ and does no harm.
 <span class="plain-syntax">    </span><span class="string-syntax">" is now in its 'brief' printing mode, which gives long descriptions</span>
 <span class="string-syntax">    of places never before visited and short descriptions otherwise."</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax">).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP179" class="paragraph-anchor"></a><b>&#167;179.  </b>Similarly, two different actions handle "notify" and "notify off".
+<p class="commentary firstcommentary"><a id="SP180" class="paragraph-anchor"></a><b>&#167;180.  </b>Similarly, two different actions handle "notify" and "notify off".
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3362,7 +3373,7 @@ and does no harm.
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">standard</span><span class="plain-syntax"> </span><span class="identifier-syntax">report</span><span class="plain-syntax"> </span><span class="identifier-syntax">switching</span><span class="plain-syntax"> </span><span class="identifier-syntax">score</span><span class="plain-syntax"> </span><span class="identifier-syntax">notification</span><span class="plain-syntax"> </span><span class="identifier-syntax">off</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">defined</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"REP_SWITCH_NOTIFY_OFF_R"</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="string-syntax">"Score notification off."</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax">).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP180" class="paragraph-anchor"></a><b>&#167;180.  </b>Lastly, the "pronouns" verb, which is perhaps more often used by people
+<p class="commentary firstcommentary"><a id="SP181" class="paragraph-anchor"></a><b>&#167;181.  </b>Lastly, the "pronouns" verb, which is perhaps more often used by people
 debugging the I6 parser than by actual players.
 </p>
 
@@ -3378,7 +3389,7 @@ debugging the I6 parser than by actual players.
 <span class="plain-syntax">    </span><span class="string-syntax">"is unset"</span><span class="plain-syntax"> (</span><span class="identifier-syntax">C</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">    </span><span class="string-syntax">"no pronouns are known to the game."</span><span class="plain-syntax"> (</span><span class="identifier-syntax">D</span><span class="plain-syntax">).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP181" class="paragraph-anchor"></a><b>&#167;181.  </b>The dialogue system offers an action "talking about", but not "talking to X about":
+<p class="commentary firstcommentary"><a id="SP182" class="paragraph-anchor"></a><b>&#167;182.  </b>The dialogue system offers an action "talking about", but not "talking to X about":
 this is a model of conversation which is aimed at simulating multi-person encounters,
 where lines are spoken more into the room than at any one person.
 </p>

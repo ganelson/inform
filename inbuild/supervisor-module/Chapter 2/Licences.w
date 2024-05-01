@@ -16,6 +16,9 @@ typedef struct inbuild_licence {
 	int revision_year;
 	struct text_stream *origin_URL;
 	struct text_stream *rights_history;
+	int read_from_JSON;
+	int discussed_in_source;
+	int modified;
 	CLASS_DEFINITION
 } inbuild_licence;
 
@@ -27,10 +30,13 @@ inbuild_licence *Licences::new(inbuild_copy *copy) {
 	licence->standard_licence = NULL;
 	licence->on_copy = copy;
 	licence->rights_owner = I"Unknown";
-	licence->copyright_year = 1980;
+	licence->copyright_year = 1970;
 	licence->revision_year = 0;
 	licence->origin_URL = NULL;
 	licence->rights_history = NULL;
+	licence->read_from_JSON = FALSE;
+	licence->discussed_in_source = FALSE;
+	licence->modified = FALSE;
 	return licence;
 }
 
@@ -48,6 +54,8 @@ void Licences::from_JSON(inbuild_licence *licence, JSON_value *legal_metadata) {
 	JSON_value *rights = JSON::look_up_object(legal_metadata, I"rights-history");
 
 	if ((id == NULL) || (owner == NULL) || (date == NULL)) return;
+
+	licence->read_from_JSON = TRUE;
 
 	inbuild_copy *C = licence->on_copy;
 
@@ -77,13 +85,13 @@ void Licences::from_JSON(inbuild_licence *licence, JSON_value *legal_metadata) {
 			MALFORMED_LICENCE_CE, -1, I"the rights owner must be non-empty"));
 
 	licence->copyright_year = date->if_integer;
-	if ((licence->copyright_year < 1980) || (licence->copyright_year >= 10000)) {
+	if ((licence->copyright_year < 1970) || (licence->copyright_year >= 10000)) {
 		TEMPORARY_TEXT(error_text)
 		WRITE_TO(error_text,
-			"the date '%d' needs to be a four-digit year after 1980", date->if_integer);
+			"the date '%d' needs to be a four-digit year after 1970", date->if_integer);
 		Copies::attach_error(C, CopyErrors::new_T(MALFORMED_LICENCE_CE, -1, error_text));
 		DISCARD_TEXT(error_text)
-		licence->copyright_year = 1980;
+		licence->copyright_year = 1970;
 	}
 
 	licence->revision_year = 0;
@@ -106,6 +114,8 @@ void Licences::from_JSON(inbuild_licence *licence, JSON_value *legal_metadata) {
 
 	if (rights) licence->rights_history = Str::duplicate(rights->if_string);
 	else licence->rights_history = NULL;
+
+	licence->modified = FALSE;
 }
 
 @h Data to a JSON object.
@@ -142,3 +152,50 @@ JSON_value *Licences::to_JSON(inbuild_licence *licence) {
 
 	return licence_object;
 }
+
+@h Alteration.
+
+=
+void Licences::set_licence(inbuild_licence *licence, open_source_licence *osl) {
+	if (licence->standard_licence != osl) {
+		licence->standard_licence = osl;
+		licence->modified = TRUE;
+	}
+}
+
+void Licences::set_owner(inbuild_licence *licence, text_stream *owner) {
+	if (Str::ne(licence->rights_owner, owner)) {
+		licence->rights_owner = Str::duplicate(owner);
+		licence->modified = TRUE;
+	}
+}
+
+void Licences::set_date(inbuild_licence *licence, int date) {
+	if (licence->copyright_year != date) {
+		licence->copyright_year = date;
+		licence->modified = TRUE;
+	}
+}
+
+void Licences::set_revision_date(inbuild_licence *licence, int date) {
+	if (licence->revision_year != date) {
+		licence->revision_year = date;
+		licence->modified = TRUE;
+	}
+}
+
+void Licences::set_origin_URL(inbuild_licence *licence, text_stream *URL) {
+	if (Str::ne(licence->origin_URL, URL)) {
+		licence->origin_URL = Str::duplicate(URL);
+		licence->modified = TRUE;
+	}
+}
+
+void Licences::set_rights_history(inbuild_licence *licence, text_stream *rights_history) {
+	if (Str::ne(licence->rights_history, rights_history)) {
+		licence->rights_history = Str::duplicate(rights_history);
+		licence->modified = TRUE;
+	}
+}
+
+
