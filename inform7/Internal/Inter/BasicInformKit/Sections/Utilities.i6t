@@ -29,11 +29,6 @@ Global property_to_be_totalled; ! used to implement "total P of..."
 Global property_loop_sign; ! $+1$ for increasing order, $-1$ for decreasing
 Global suppress_scope_loops;
 Global temporary_value; ! can be used anywhere side-effects can't occur
-Global clr_fg = 1; ! foreground colour
-Global clr_bg = 1; ! background colour
-Global clr_fgstatus = 1; ! foreground colour of statusline
-Global clr_bgstatus = 1; ! background colour of statusline
-Global clr_on; ! has colour been enabled by the player?
 Global statuswin_current; ! if writing to top window
 Global suppress_text_substitution = false;
 Global deadflag = 0;
