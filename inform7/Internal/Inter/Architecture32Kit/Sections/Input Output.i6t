@@ -708,82 +708,35 @@ make little sense there.
 ];
 
 [ VM_ScreenWidth  id;
-    id=gg_mainwin;
-    if (gg_statuswin && statuswin_current) id = gg_statuswin;
-    glk_window_get_size(id, gg_arguments, 0);
-    return gg_arguments-->0;
+	id = gg_mainwin;
+	if (gg_statuswin) {
+		id = gg_statuswin
+	}
+	glk_window_get_size(id, gg_arguments, 0);
+	return gg_arguments-->0;
 ];
 
-[ VM_ScreenHeight;
-    glk_window_get_size(gg_mainwin, 0, gg_arguments);
-    return gg_arguments-->0;
+[ VM_ScreenHeight  height;
+	glk_window_get_size(gg_mainwin, 0, gg_arguments);
+	height = gg_arguments-->0;
+	if (gg_statuswin) {
+		glk_window_get_size(gg_statuswin, 0, gg_arguments);
+		height = height + gg_arguments-->0;
+	}
+	return height;
 ];
 
 @h Window Colours.
-Our generic screen model is that the screen is made up of windows, each of
-which can have its own foreground and background colours.
-
-The colour of individual letters or words of type is not controllable in
-Glulx, to the frustration of many, and so the template layer of I7 has no
-framework for handling this (even though it is controllable on the Z-machine,
-which is greatly superior in this respect).
+We can now change foreground and background colours in both Z-Machine and Glulx
+(through a widely implement extension.) Inform does not keep track of which
+colours have been set.
 
 =
-[ VM_SetWindowColours f b window doclear  i fwd bwd swin;
-    if (clr_on && f && b) {
-        if (window) swin = 5-window; ! 4 for TextGrid, 3 for TextBuffer
-
-        fwd = MakeColourWord(f);
-        bwd = MakeColourWord(b);
-        for (i=0 : i<style_NUMSTYLES: i++) {
-            if (f == CLR_DEFAULT || b == CLR_DEFAULT) {  ! remove style hints
-                glk_stylehint_clear(swin, i, stylehint_TextColor);
-                glk_stylehint_clear(swin, i, stylehint_BackColor);
-            } else {
-                glk_stylehint_set(swin, i, stylehint_TextColor, fwd);
-                glk_stylehint_set(swin, i, stylehint_BackColor, bwd);
-            }
-        }
-
-        ! Now re-open the windows to apply the hints
-        if (gg_statuswin) glk_window_close(gg_statuswin, 0);
-        gg_statuswin = 0;
-
-        if (doclear || ( window ~= 1 && (clr_fg ~= f || clr_bg ~= b) ) ) {
-            glk_window_close(gg_mainwin, 0);
-            gg_mainwin = glk_window_open(0, 0, 0, wintype_TextBuffer, GG_MAINWIN_ROCK);
-            if (gg_scriptstr ~= 0)
-                glk_window_set_echo_stream(gg_mainwin, gg_scriptstr);
-        }
-
-        gg_statuswin =
-        	glk_window_open(gg_mainwin, winmethod_Fixed + winmethod_Above,
-        		statuswin_cursize, wintype_TextGrid, GG_STATUSWIN_ROCK);
-        if (statuswin_current && gg_statuswin) VM_MoveCursorInStatusLine(); else VM_MainWindow();
-
-        if (window ~= 2) {
-            clr_fgstatus = f;
-            clr_bgstatus = b;
-        }
-        if (window ~= 1) {
-            clr_fg = f;
-            clr_bg = b;
-        }
-    }
-];
-
-[ VM_RestoreWindowColours; ! used after UNDO: compare I6 patch L61007
-    if (clr_on) { ! check colour has been used
-        VM_SetWindowColours(clr_fg, clr_bg, 2); ! make sure both sets of variables are restored
-        VM_SetWindowColours(clr_fgstatus, clr_bgstatus, 1, true);
-        VM_ClearScreen();
-    }
-];
-
-[ MakeColourWord c;
-    if (c > 9) return c;
-    c = c-2;
-    return $ff0000*(c&1) + $ff00*(c&2 ~= 0) + $ff*(c&4 ~= 0);
+[ VM_SetWindowColours fg bg;
+	! TODO: once Glk foundations are merged, check the cached gestalt
+	if (glk_gestalt($1100, 0)) {
+		garglk_set_zcolors(fg, bg);
+	}
 ];
 
 @h Main Window.
@@ -811,9 +764,9 @@ of type. (The width of the status line is always the width of the whole
 screen, and the position is always at the top, so the height is the only
 controllable aspect.) The $n=0$ case makes the status line disappear.
 
-|VM_MoveCursorInStatusLine(x, y)| switches printing to the status line,
+|VM_MoveCursorInStatusLine(line, column)| switches printing to the status line,
 positioning the "cursor" -- the position at which printing will begin --
-at the given character grid position $(x, y)$. Line 1 represents the top
+at the given character grid position $(line, column)$. Line 1 represents the top
 line; line 2 is underneath, and so on; columns are similarly numbered from
 1 at the left.
 

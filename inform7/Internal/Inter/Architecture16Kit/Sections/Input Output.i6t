@@ -285,41 +285,13 @@ in order to keep it accurate.
 [ VM_ScreenHeight; return (HDR_SCREENHLINES->0); ];
 
 @h Window Colours.
-Each window can have its own foreground and background colours.
-
-The colour of individual letters or words of type is not controllable in
-Glulx, to the frustration of many, and so the template layer of I7 has no
-framework for handling this (even though it is controllable on the Z-machine,
-which is greatly superior in this respect).
+We can now change foreground and background colours in both Z-Machine and Glulx
+(through a widely implement extension.) Inform does not keep track of which
+colours have been set.
 
 =
-[ VM_SetWindowColours f b window;
-    if (clr_on && f && b) {
-        if (window == 0) {  ! if setting both together, set reverse
-            clr_fgstatus = b;
-            clr_bgstatus = f;
-            }
-        if (window == 1) {
-            clr_fgstatus = f;
-            clr_bgstatus = b;
-        }
-        if (window == 0 or 2) {
-            clr_fg = f;
-            clr_bg = b;
-        }
-        if (statuswin_current)
-            @set_colour clr_fgstatus clr_bgstatus;
-        else
-            @set_colour clr_fg clr_bg;
-    }
-];
-
-[ VM_RestoreWindowColours; ! compare I6 library patch L61007
-    if (clr_on) { ! check colour has been used
-        VM_SetWindowColours(clr_fg, clr_bg, 2); ! make sure both sets of variables are restored
-        VM_SetWindowColours(clr_fgstatus, clr_bgstatus, 1, true);
-        VM_ClearScreen();
-    }
+[ VM_SetWindowColours fg bg;
+	@set_colour fg bg;
 ];
 
 @h Main Window.
@@ -333,8 +305,7 @@ emulates the Glulx model of window rather than text colours.
 =
 [ VM_MainWindow;
     if (statuswin_current) {
-        if (clr_on && clr_bgstatus > 1) @set_colour clr_fg clr_bg;
-        else style roman;
+        style roman;
         @set_window 0;
     }
     statuswin_current = false;
@@ -352,9 +323,9 @@ of type. (The width of the status line is always the width of the whole
 screen, and the position is always at the top, so the height is the only
 controllable aspect.) The $n=0$ case makes the status line disappear.
 
-|VM_MoveCursorInStatusLine(x, y)| switches printing to the status line,
+|VM_MoveCursorInStatusLine(line, column)| switches printing to the status line,
 positioning the "cursor" -- the position at which printing will begin --
-at the given character grid position $(x, y)$. Line 1 represents the top
+at the given character grid position $(line, column)$. Line 1 represents the top
 line; line 2 is underneath, and so on; columns are similarly numbered from
 1 at the left.
 
@@ -362,8 +333,7 @@ line; line 2 is underneath, and so on; columns are similarly numbered from
 [ VM_MoveCursorInStatusLine line column; ! 1-based position on text grid
     if (~~statuswin_current) {
          @set_window 1;
-         if (clr_on && clr_bgstatus > 1) @set_colour clr_fgstatus clr_bgstatus;
-         else                            style reverse;
+         style reverse;
     }
     if (line == 0) {
         line = 1;

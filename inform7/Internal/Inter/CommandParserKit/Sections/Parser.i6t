@@ -621,7 +621,6 @@ The return value is the number of words typed.
 ];
 
 [ DealWithUndo;
-	VM_RestoreWindowColours();
 	VM_Style(SUBHEADER_VMSTY);
 	SL_Location(); print "^";
 	VM_Style(NORMAL_VMSTY);
