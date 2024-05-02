@@ -354,6 +354,7 @@ void ReleaseInstructions::write_ifiction_and_blurb(void) {
 	}
 	if (problem_count == 0) {
 		@<Write iFiction record@>;
+		@<Write licenses file@>;
 		@<Write release blurb@>;
 		@<Write manifest file@>;
 	}
@@ -367,6 +368,18 @@ void ReleaseInstructions::write_ifiction_and_blurb(void) {
 		Problems::fatal_on_file("Can't open metadata file", F);
 	iFiction::write_ifiction_record(xf, rel);
 	STREAM_CLOSE(xf);
+
+@<Write licenses file@> =
+	if (LicenceDeclaration::anything_to_declare()) {
+		text_stream xf_struct; text_stream *xf = &xf_struct;
+		filename *F = Task::licenses_file(my_instructions->release_website);
+		if (STREAM_OPEN_TO_FILE(xf, F, UTF8_ENC) == FALSE)
+			Problems::fatal_on_file("Can't open metadata file", F);
+		int format = PLAIN_LICENSESFORMAT;
+		if (my_instructions->release_website) format = HTML_LICENSESFORMAT;
+		LicenceDeclaration::describe(xf, format);
+		STREAM_CLOSE(xf);
+	}
 
 @<Write release blurb@> =
 	filename *F = Task::blurb_file();

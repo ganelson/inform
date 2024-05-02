@@ -153,7 +153,7 @@ void LicenceDeclaration::set(int extension, int detail, text_stream *val, int wn
 
 @<Issue PM_AntiquatedCopyright@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(),
-		_p_(PM_NoSuchLicence),
+		_p_(PM_EarlyCopyrightDate),
 		"has too early a copyright date",
 		"which should be at least 1971.");
 	return;
@@ -249,28 +249,62 @@ void LicenceDeclaration::check_licences(void) {
 @
 
 =
-void LicenceDeclaration::describe(OUTPUT_STREAM) {
+int LicenceDeclaration::anything_to_declare(void) {
+	inform_project *proj = Task::project();
+	inbuild_licence *L = proj->as_copy->licence;
+	if ((L->read_from_JSON) || (L->discussed_in_source)) return TRUE;
+	inform_extension *E;
+	LOOP_OVER_LINKED_LIST(E, inform_extension, proj->extensions_included) {
+		L = E->as_copy->licence;
+		if ((L->read_from_JSON) || (L->discussed_in_source)) return TRUE;
+	}
+	return FALSE;
+}
+
+@
+
+@e I6_TEXT_LICENSESFORMAT from 1
+@e PLAIN_LICENSESFORMAT
+@e HTML_LICENSESFORMAT
+
+=
+void LicenceDeclaration::describe(OUTPUT_STREAM, int format) {
 	inform_project *proj = Task::project();
 	inbuild_licence *L = proj->as_copy->licence;
 	text_stream *mention = NULL;
 	int licences_cited = FALSE;
+	
+	if (format == HTML_LICENSESFORMAT) {
+		WRITE("<html><body>\n");
+		WRITE("<h1>Copyright notice</h1>\n");
+	}
+
 	if ((L->read_from_JSON) || (L->discussed_in_source)) {
+		@<Open paragraph@>;
 		WRITE("Story ");
 		@<Describe L@>;
+		@<Close paragraph@>;
 	}
 	inform_extension *E;
 	LOOP_OVER_LINKED_LIST(E, inform_extension, proj->extensions_included) {
 		L = E->as_copy->licence;
 		if ((L->read_from_JSON) || (L->discussed_in_source)) {
+			@<Open paragraph@>;
 			WRITE("%X v%v is ",
 				L->on_copy->edition->work, &(L->on_copy->edition->version));
 			mention = I", included";
 			@<Describe L@>;
+			@<Close paragraph@>;
 		}
 	}
-	if (licences_cited)
-		WRITE("^For information about and links to full text of licences, "
-			"see: https://spdx.org/licenses/\n");
+	if (licences_cited) {
+		@<Open paragraph@>;
+		WRITE("For information about and links to full text of licences, see: ");
+		LicenceDeclaration::link(OUT, I"https://spdx.org/licenses/", format);
+		@<Close paragraph@>;
+	}
+	
+	if (format == HTML_LICENSESFORMAT) WRITE("</body></html>\n");
 }
 
 @<Describe L@> =
@@ -282,5 +316,23 @@ void LicenceDeclaration::describe(OUTPUT_STREAM) {
 	}
 	WRITE(".");
 	if (Str::len(L->rights_history) > 0) WRITE(" %S", L->rights_history);
-	if (Str::len(L->origin_URL) > 0) WRITE(" See: %S", L->origin_URL);
-	WRITE("^\n");
+	if (Str::len(L->origin_URL) > 0) {
+		WRITE(" See: ");
+		LicenceDeclaration::link(OUT, L->origin_URL, format);
+	}
+
+@<Open paragraph@> =
+	if (format == HTML_LICENSESFORMAT) WRITE("<p>");
+
+@<Close paragraph@> =
+	if (format == HTML_LICENSESFORMAT) WRITE("</p>");
+	if (format == I6_TEXT_LICENSESFORMAT) WRITE("^");
+	WRITE("\n");
+
+@
+
+=
+void LicenceDeclaration::link(OUTPUT_STREAM, text_stream *URL, int format) {
+	if (format == HTML_LICENSESFORMAT) WRITE("<a href=\"%S\">%S</a>", URL, URL);
+	else WRITE("%S", URL);
+}

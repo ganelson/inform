@@ -80,6 +80,38 @@
             <span class="librarycardother"><span class="typewritten"><b>In Miss Austen's new interactive novella, Miss Henrietta Pollifax is adopted by the tempestuous landowner Sir Tankerley Mordant, and must make a new life for herself on the rugged moors.</b></span></span>
         </td>
     </tr>
+    <tr>
+        <td style="white-space:nowrap;" align="left" valign="top" height="20">
+            <span class="librarycardother"><span class="typewritten">Licence</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <span class="librarycardother"><span class="typewritten"><b>Unspecified</b></span></span>
+        </td>
+    </tr>
+    <tr>
+        <td style="white-space:nowrap;" align="left" valign="top" height="20">
+            <span class="librarycardother"><span class="typewritten">Copyright</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <span class="librarycardother"><span class="typewritten"><b>2016</b></span></span>
+        </td>
+    </tr>
+    <tr>
+        <td style="white-space:nowrap;" align="left" valign="top" height="20">
+            <span class="librarycardother"><span class="typewritten">Origin URL</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <span class="librarycardother"><span class="typewritten"><b></b></span></span>
+        </td>
+    </tr>
+    <tr>
+        <td style="white-space:nowrap;" align="left" valign="top" height="20">
+            <span class="librarycardother"><span class="typewritten">Rights history</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <span class="librarycardother"><span class="typewritten"><b></b></span></span>
+        </td>
+    </tr>
 </table>
 </p>
 

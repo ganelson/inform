@@ -59,7 +59,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../inform7n.html">Inform7</a></li><li><a href="index.html">if</a></li><li><a href="index.html#2">Chapter 2: Bibliographic Data</a></li><li><b>Bibliographic Data</b></li></ul></div>
 <p class="purpose">To manage the special variables providing bibliographic data on the work of IF being generated (title, author's name and so forth), and to write the Library Card in the index.</p>
 
-<ul class="toc"><li><a href="2-bd.html#SP1">&#167;1. Enter the feature</a></li><li><a href="2-bd.html#SP3">&#167;3. Episode sentences</a></li><li><a href="2-bd.html#SP5">&#167;5. Bibliographic variables</a></li><li><a href="2-bd.html#SP8">&#167;8. The opening sentence</a></li><li><a href="2-bd.html#SP10">&#167;10. The IFID</a></li><li><a href="2-bd.html#SP11">&#167;11. Bibliographic text</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="2-bd.html#SP1">&#167;1. Enter the feature</a></li><li><a href="2-bd.html#SP3">&#167;3. Episode sentences</a></li><li><a href="2-bd.html#SP5">&#167;5. Bibliographic variables</a></li><li><a href="2-bd.html#SP8">&#167;8. The opening sentence</a></li><li><a href="2-bd.html#SP10">&#167;10. Licence information</a></li><li><a href="2-bd.html#SP11">&#167;11. The IFID</a></li><li><a href="2-bd.html#SP12">&#167;12. Bibliographic text</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Enter the feature. </b>This chapter defines the "bibliographic data" feature, whose activation
 function follows.
@@ -179,7 +179,7 @@ which must match:
 <span class="plain-syntax">    ==&gt; { -1, - };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Bibliographic variables. </b>Most of the bibliographic data on a story is kept global variables, however,
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Bibliographic variables. </b>Most of the bibliographic data on a story is kept in global variables, however,
 which are used to build the iFiction record and the releasing blurb at the end
 of a successful compilation. They are:
 </p>
@@ -192,6 +192,10 @@ of a successful compilation. They are:
 <span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">story_description_VAR</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">story_creation_year_VAR</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">story_release_number_VAR</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">story_licence_VAR</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">story_copyright_VAR</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">story_origin_URL_VAR</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">story_rights_history_VAR</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>As usual, Inform uses these English wordings to detect the creation of the
 variables in the Standard Rules, which are in English: so there's no point
@@ -205,6 +209,10 @@ in translating this nonterminal to other languages.
 <span class="definition-keyword">define</span> <span class="constant-syntax">STORY_DESCRIPTION_BIBV</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">STORY_CREATION_YEAR_BIBV</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">RELEASE_NUMBER_BIBV</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">STORY_LICENCE_BIBV</span><span class="plain-syntax"> </span><span class="constant-syntax">7</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">STORY_COPYRIGHT_BIBV</span><span class="plain-syntax"> </span><span class="constant-syntax">8</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">STORY_ORIGIN_URL_BIBV</span><span class="plain-syntax"> </span><span class="constant-syntax">9</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">STORY_RIGHTS_HISTORY_BIBV</span><span class="plain-syntax"> </span><span class="constant-syntax">10</span>
 </pre>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;notable-bibliographic-variables&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
@@ -214,7 +222,11 @@ in translating this nonterminal to other languages.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">story</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">genre</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">story</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">description</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">story</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">creation</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">year</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">release</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">number</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">release</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">number</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">story</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">licence</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">story</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">copyright</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">story</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">origin</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">url</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">story</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">rights</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">history</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>And we read them here:
@@ -244,6 +256,10 @@ in translating this nonterminal to other languages.
 <span class="plain-syntax">                    </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">save</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                }</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">STORY_LICENCE_BIBV:</span><span class="plain-syntax"> </span><span class="identifier-syntax">story_licence_VAR</span><span class="plain-syntax"> = </span><span class="identifier-syntax">q</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">STORY_COPYRIGHT_BIBV:</span><span class="plain-syntax"> </span><span class="identifier-syntax">story_copyright_VAR</span><span class="plain-syntax"> = </span><span class="identifier-syntax">q</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">STORY_ORIGIN_URL_BIBV:</span><span class="plain-syntax"> </span><span class="identifier-syntax">story_origin_URL_VAR</span><span class="plain-syntax"> = </span><span class="identifier-syntax">q</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">STORY_RIGHTS_HISTORY_BIBV:</span><span class="plain-syntax"> </span><span class="identifier-syntax">story_rights_history_VAR</span><span class="plain-syntax"> = </span><span class="identifier-syntax">q</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">NonlocalVariables::make_constant</span><span class="plain-syntax">(</span><span class="identifier-syntax">q</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
@@ -307,7 +323,7 @@ person as the author of the main work.
 <span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">w1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="2-bd.html#SP11" class="function-link"><span class="function-syntax">BibliographicData::compile_bibliographic_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">, </span><span class="identifier-syntax">Lexer::word_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">w1</span><span class="plain-syntax">), </span><span class="constant-syntax">HTML_BIBTEXT_MODE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="2-bd.html#SP12" class="function-link"><span class="function-syntax">BibliographicData::compile_bibliographic_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">, </span><span class="identifier-syntax">Lexer::word_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">w1</span><span class="plain-syntax">), </span><span class="constant-syntax">HTML_BIBTEXT_MODE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">)) </span><span class="identifier-syntax">result</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">result</span><span class="plain-syntax">;</span>
@@ -315,7 +331,58 @@ person as the author of the main work.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. The IFID. </b>The Interactive Fiction ID number for an Inform 7-compiled work is the same
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Licence information. </b></p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">BibliographicData::fill_licence_variables</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proj</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Task::project</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inbuild_licence</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">proj</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">as_copy</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">licence</span><span class="plain-syntax">;</span>
+
+<span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">var</span><span class="plain-syntax">;</span>
+
+<span class="plain-syntax">    </span><span class="identifier-syntax">var</span><span class="plain-syntax"> = </span><span class="identifier-syntax">story_licence_VAR</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">standard_licence</span><span class="plain-syntax">) </span><span class="identifier-syntax">val</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">standard_licence</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">SPDX_id</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"Unspecified"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP10_1" class="named-paragraph-link"><span class="named-paragraph">Set var to val</span><span class="named-paragraph-number">10.1</span></a></span><span class="plain-syntax">;</span>
+
+<span class="plain-syntax">    </span><span class="identifier-syntax">var</span><span class="plain-syntax"> = </span><span class="identifier-syntax">story_copyright_VAR</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">val</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::new</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="string-syntax">"%S %d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">rights_owner</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">copyright_year</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">revision_year</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">copyright_year</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="string-syntax">"-%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">revision_year</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP10_1" class="named-paragraph-link"><span class="named-paragraph">Set var to val</span><span class="named-paragraph-number">10.1</span></a></span><span class="plain-syntax">;</span>
+
+<span class="plain-syntax">    </span><span class="identifier-syntax">var</span><span class="plain-syntax"> = </span><span class="identifier-syntax">story_origin_URL_VAR</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">val</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">origin_URL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP10_1" class="named-paragraph-link"><span class="named-paragraph">Set var to val</span><span class="named-paragraph-number">10.1</span></a></span><span class="plain-syntax">;</span>
+
+<span class="plain-syntax">    </span><span class="identifier-syntax">var</span><span class="plain-syntax"> = </span><span class="identifier-syntax">story_rights_history_VAR</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">val</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">rights_history</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP10_1" class="named-paragraph-link"><span class="named-paragraph">Set var to val</span><span class="named-paragraph-number">10.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set var to val</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">var</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">val_t</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">PUT_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">val_t</span><span class="plain-syntax">, </span><span class="character-syntax">'"'</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_THROUGH_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="identifier-syntax">val</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::get</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) == </span><span class="character-syntax">'"'</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">PUT_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">val_t</span><span class="plain-syntax">, </span><span class="character-syntax">'\''</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">else</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">PUT_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">val_t</span><span class="plain-syntax">, </span><span class="identifier-syntax">Str::get</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">PUT_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">val_t</span><span class="plain-syntax">, </span><span class="character-syntax">'"'</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">TW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Feeds::feed_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">val_t</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">constant_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Rvalues::from_unescaped_wording</span><span class="plain-syntax">(</span><span class="identifier-syntax">TW</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Assertions::PropertyKnowledge::initialise_global_variable</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">var</span><span class="plain-syntax">, </span><span class="identifier-syntax">constant_text</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">val_t</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    }</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP10">&#167;10</a> (four times).</li></ul>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. The IFID. </b>The Interactive Fiction ID number for an Inform 7-compiled work is the same
 as the UUID unique ID generated by the Inform 7 application.
 </p>
 
@@ -347,7 +414,7 @@ cases the UUID is empty.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">uuid_text</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Bibliographic text. </b>"Bibliographic text" is text used in bibliographic data about the work
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Bibliographic text. </b>"Bibliographic text" is text used in bibliographic data about the work
 of IF compiled: for instance, in the iFiction record, or in the Library
 Card section of the HTML index. Note that the exact output format depends
 on global variables, which allow the bibliographic text writing code to
@@ -364,21 +431,21 @@ therefore splits into one of three independent methods.
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">BibliographicData::compile_bibliographic_text</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">BibliographicData::compile_bibliographic_text</span></span>:<br/><a href="2-bd.html#SP9">&#167;9</a><br/>The iFiction Record - <a href="2-tir.html#SP2">&#167;2</a><br/>The Blurb File - <a href="2-tbf.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">inchar32_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">mode</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">mode</span><span class="plain-syntax"> == </span><span class="constant-syntax">XML_BIBTEXT_MODE</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP11_1" class="named-paragraph-link"><span class="named-paragraph">Compile bibliographic text as XML respecting Treaty of Babel rules</span><span class="named-paragraph-number">11.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP12_1" class="named-paragraph-link"><span class="named-paragraph">Compile bibliographic text as XML respecting Treaty of Babel rules</span><span class="named-paragraph-number">12.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">mode</span><span class="plain-syntax"> == </span><span class="constant-syntax">TRUNCATE_BIBTEXT_MODE</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP11_4" class="named-paragraph-link"><span class="named-paragraph">Compile bibliographic text as a truncated filename</span><span class="named-paragraph-number">11.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP12_4" class="named-paragraph-link"><span class="named-paragraph">Compile bibliographic text as a truncated filename</span><span class="named-paragraph-number">12.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">RTBibliographicData::in_bibliographic_mode</span><span class="plain-syntax">()) || (</span><span class="identifier-syntax">mode</span><span class="plain-syntax"> == </span><span class="constant-syntax">I6_BIBTEXT_MODE</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP11_3" class="named-paragraph-link"><span class="named-paragraph">Compile bibliographic text as an I6 string</span><span class="named-paragraph-number">11.3</span></a></span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP11_2" class="named-paragraph-link"><span class="named-paragraph">Compile bibliographic text as HTML</span><span class="named-paragraph-number">11.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP12_3" class="named-paragraph-link"><span class="named-paragraph">Compile bibliographic text as an I6 string</span><span class="named-paragraph-number">12.3</span></a></span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP12_2" class="named-paragraph-link"><span class="named-paragraph">Compile bibliographic text as HTML</span><span class="named-paragraph-number">12.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11_1" class="paragraph-anchor"></a><b>&#167;11.1.  </b>This looks like a standard routine for converting ISO Latin-1 to UTF-8
+<p class="commentary firstcommentary"><a id="SP12_1" class="paragraph-anchor"></a><b>&#167;12.1.  </b>This looks like a standard routine for converting ISO Latin-1 to UTF-8
 with XML escapes, but there are a few conventions on whitespace, too, in order
 to comply with a strict reading of the Treaty of Babel. (This is intended
 for fields in iFiction records.)
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile bibliographic text as XML respecting Treaty of Babel rules</span><span class="named-paragraph-number">11.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile bibliographic text as XML respecting Treaty of Babel rules</span><span class="named-paragraph-number">12.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -422,12 +489,12 @@ for fields in iFiction records.)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_2" class="paragraph-anchor"></a><b>&#167;11.2.  </b>In the HTML version, we want to respect the forcing of newlines, and
+<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP12">&#167;12</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP12_2" class="paragraph-anchor"></a><b>&#167;12.2.  </b>In the HTML version, we want to respect the forcing of newlines, and
 also the <span class="extract"><span class="extract-syntax">[']</span></span> escape to obtain a literal single quotation mark.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile bibliographic text as HTML</span><span class="named-paragraph-number">11.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile bibliographic text as HTML</span><span class="named-paragraph-number">12.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -463,12 +530,12 @@ also the <span class="extract"><span class="extract-syntax">[']</span></span> es
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_3" class="paragraph-anchor"></a><b>&#167;11.3.  </b>In the Inform 6 string version, we suppress the forcing of newlines, but
+<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP12">&#167;12</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP12_3" class="paragraph-anchor"></a><b>&#167;12.3.  </b>In the Inform 6 string version, we suppress the forcing of newlines, but
 otherwise it's much the same.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile bibliographic text as an I6 string</span><span class="named-paragraph-number">11.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile bibliographic text as an I6 string</span><span class="named-paragraph-number">12.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -494,8 +561,8 @@ otherwise it's much the same.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_4" class="paragraph-anchor"></a><b>&#167;11.4.  </b>This code is used to work out a good filename for something given a name
+<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP12">&#167;12</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP12_4" class="paragraph-anchor"></a><b>&#167;12.4.  </b>This code is used to work out a good filename for something given a name
 inside Inform. For instance, if a project is called
 </p>
 
@@ -531,7 +598,7 @@ German eszet will be barbarously shortened to a single "s", but life is
 just too short to care overmuch about this.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile bibliographic text as a truncated filename</span><span class="named-paragraph-number">11.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile bibliographic text as a truncated filename</span><span class="named-paragraph-number">12.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -563,7 +630,7 @@ just too short to care overmuch about this.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">black_chars_written</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"story"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP11">&#167;11</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP12">&#167;12</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="1-im.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresscurrent">bd</li><li class="progresssection"><a href="2-ri.html">ri</a></li><li class="progresssection"><a href="2-tir.html">tir</a></li><li class="progresssection"><a href="2-tbf.html">tbf</a></li><li class="progresschapter"><a href="3-sm.html">3</a></li><li class="progresschapter"><a href="4-ap.html">4</a></li><li class="progresschapter"><a href="5-pp.html">5</a></li><li class="progresschapter"><a href="6-dlg.html">6</a></li><li class="progressnext"><a href="2-ri.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

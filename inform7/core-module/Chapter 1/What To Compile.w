@@ -316,6 +316,11 @@ filename *Task::ifiction_record_file(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	return Filenames::in(inform7_task->path, I"Metadata.iFiction");
 }
+filename *Task::licenses_file(int as_HTML) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	if (as_HTML) return Filenames::in(inform7_task->path, I"Licenses.html");
+	return Filenames::in(inform7_task->path, I"Licenses.txt");
+}
 filename *Task::manifest_file(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	return Filenames::in(inform7_task->path, I"manifest.plist");

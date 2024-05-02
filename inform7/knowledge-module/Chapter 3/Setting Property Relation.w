@@ -233,19 +233,19 @@ be caught later on Inform's run.
 				"that tries to set the value of an unknown property to %4.");
 		else {
 			Problems::quote_property(6, prn);
+			char *msg;
 			if (((Kinds::eq(K1, K_time)) && (Kinds::eq(K2, K_time_period))) ||
 				((Kinds::eq(K2, K_time)) && (Kinds::eq(K1, K_time_period))))
-				StandardProblems::tcp_problem(_p_(PM_PropertyType), tck,
-					"that tries to set the value of the '%6' property to %4 - which "
+				msg = "that tries to set the value of the '%6' property to %4 - which "
 					"must be wrong because this property has to be %5. Note that "
 					"'time period', introduced in Inform in 2024, holds values like "
 					"'10 minutes', and is not the same kind as 'time', which is for "
 					"times of day like '6:12 PM'. (Before 2024, the same kind was "
-					"used for both.)");
+					"used for both.)";
 			else
-				StandardProblems::tcp_problem(_p_(PM_PropertyType), tck,
-					"that tries to set the value of the '%6' property to %4 - which "
-					"must be wrong because this property has to be %5.");
+				msg = "that tries to set the value of the '%6' property to %4 - which "
+					"must be wrong because this property has to be %5.";
+			StandardProblems::tcp_problem(_p_(PM_PropertyType), tck, msg);
 		}
 		return NEVER_MATCH;
 	}

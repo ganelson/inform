@@ -438,8 +438,9 @@ of writing the same thing.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">problem_count</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-ri.html#SP9_1" class="named-paragraph-link"><span class="named-paragraph">Write iFiction record</span><span class="named-paragraph-number">9.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-ri.html#SP9_2" class="named-paragraph-link"><span class="named-paragraph">Write release blurb</span><span class="named-paragraph-number">9.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-ri.html#SP9_3" class="named-paragraph-link"><span class="named-paragraph">Write manifest file</span><span class="named-paragraph-number">9.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-ri.html#SP9_2" class="named-paragraph-link"><span class="named-paragraph">Write licenses file</span><span class="named-paragraph-number">9.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-ri.html#SP9_3" class="named-paragraph-link"><span class="named-paragraph">Write release blurb</span><span class="named-paragraph-number">9.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-ri.html#SP9_4" class="named-paragraph-link"><span class="named-paragraph">Write manifest file</span><span class="named-paragraph-number">9.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -456,7 +457,23 @@ of writing the same thing.
 <span class="plain-syntax">    </span><span class="identifier-syntax">STREAM_CLOSE</span><span class="plain-syntax">(</span><span class="identifier-syntax">xf</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ri.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_2" class="paragraph-anchor"></a><b>&#167;9.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write release blurb</span><span class="named-paragraph-number">9.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_2" class="paragraph-anchor"></a><b>&#167;9.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write licenses file</span><span class="named-paragraph-number">9.2</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">LicenceDeclaration::anything_to_declare</span><span class="plain-syntax">()) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> </span><span class="identifier-syntax">xf_struct</span><span class="plain-syntax">; </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">xf</span><span class="plain-syntax"> = &amp;</span><span class="identifier-syntax">xf_struct</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Task::licenses_file</span><span class="plain-syntax">(</span><span class="identifier-syntax">my_instructions</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">release_website</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">STREAM_OPEN_TO_FILE</span><span class="plain-syntax">(</span><span class="identifier-syntax">xf</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">UTF8_ENC</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::fatal_on_file</span><span class="plain-syntax">(</span><span class="string-syntax">"Can't open metadata file"</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">format</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PLAIN_LICENSESFORMAT</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">my_instructions</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">release_website</span><span class="plain-syntax">) </span><span class="identifier-syntax">format</span><span class="plain-syntax"> = </span><span class="identifier-syntax">HTML_LICENSESFORMAT</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LicenceDeclaration::describe</span><span class="plain-syntax">(</span><span class="identifier-syntax">xf</span><span class="plain-syntax">, </span><span class="identifier-syntax">format</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">STREAM_CLOSE</span><span class="plain-syntax">(</span><span class="identifier-syntax">xf</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="2-ri.html#SP9">&#167;9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP9_3" class="paragraph-anchor"></a><b>&#167;9.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write release blurb</span><span class="named-paragraph-number">9.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -468,7 +485,7 @@ of writing the same thing.
 <span class="plain-syntax">    </span><span class="identifier-syntax">STREAM_CLOSE</span><span class="plain-syntax">(</span><span class="identifier-syntax">xf</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ri.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_3" class="paragraph-anchor"></a><b>&#167;9.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write manifest file</span><span class="named-paragraph-number">9.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_4" class="paragraph-anchor"></a><b>&#167;9.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write manifest file</span><span class="named-paragraph-number">9.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

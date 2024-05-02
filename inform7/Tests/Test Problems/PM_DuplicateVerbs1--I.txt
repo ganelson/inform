@@ -1,8 +1,8 @@
 Inform 7 v10.2.0 has started.
 I've now read your source text, which is 82 words long.
-I've also read Basic Inform by Graham Nelson, which is 7719 words long.
-I've also read English Language by Graham Nelson, which is 2330 words long.
-I've also read Standard Rules by Graham Nelson, which is 33683 words long.
+I've also read version 2 of Basic Inform by Graham Nelson, which is 8488 words long.
+I've also read version 2 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 7 of Standard Rules by Graham Nelson, which is 35135 words long.
 Problem__ PM_DuplicateVerbs1
   >--> You wrote 'The verb to frob (he frobs, they frob, he frobbed, it is
     frobbed, he is frobbing) implies the mopping relation' (source text, line 13),
@@ -13,6 +13,6 @@ Problem__ PM_DuplicateVerbs1
 Problem__ PM_DuplicateVerbs1
   >--> You wrote 'The verb to be means the enclosure relation' (source text, line 16),
     but in another sentence 'The verb to be means the equality relation' (Basic
-    Inform, line 24): again, this gives us two definitions of what appears to
+    Inform, line 25): again, this gives us two definitions of what appears to
     be the same verb.
 Inform 7 has finished.

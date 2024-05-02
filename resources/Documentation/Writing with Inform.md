@@ -16651,6 +16651,13 @@ If the bibliographic named values are not set by the source text, Inform will st
 	Story genre: Fiction
 	Release number: 1
 
+It is also possible to provide copyright and licencing details for a project. This follows the same syntax and conventions as for extensions, except that the word `story` is used instead of `extension`. See [Licence] for more.
+
+	The licence for this story is "CC-BY-4.0".
+	The copyright for this story is "Bartholomew Hendricks 2006-2024".
+	The origin for this story is "https://www.loosecannonif.com/bh".
+	The rights history for this story is "Adapted by permission from Jennifer Pond's novel 'The Transfinite Kitten' (2003)."
+
 ## Genres
 
 ^^{genre+biblio+}
@@ -17958,13 +17965,13 @@ First, though, a word about sharing. Anyone is free to write an extension on any
 
 But most extensions are written to be shared with strangers — that is, they are made available to anybody who wants to download and use them. There are several online repositories of extensions written in this way, of which one is the Inform Public Library, accessed from the Inform app.
 
-Whenever one author copies or adapts programs or text by another author, copyright law comes into play. If we want to publish or sell a story which uses an extension by somebody else, we need their permission. The form that permission usually takes is a general _licence_ (or "license", in US English) where the extension author says, in effect: Anybody can use this provided ... and then gives some conditions.
+### Credits for extensions
 
-During play of any story compiled by Inform 7, typing ``VERSION`` lists various serial numbers of the pieces of software used to make it. The list concludes with names, authors and version numbers of any extensions used. So every author whose work contributes to a story automatically gets a modest credit within it. The same list can be printed, at the discretion of the designer, using the textual substitution:
+During play of any story compiled by Inform 7, typing ``VERSION`` (or ``COPYRIGHT``) lists various serial numbers of the pieces of software used to make it. The list concludes with names, authors and version numbers of any extensions used. So every author whose work contributes to a story automatically gets a modest credit within it. The licencing terms for those extensions are also given. The same list can be printed, at the discretion of the designer, using the textual substitution:
 
 > phrase: {phs_extcredits} say "[the/-- list of extension credits]"
 >
-> This text substitution expands to one or more lines of text crediting each of the extensions used by the current source text, along with their version numbers and authors. Extensions whose authors have chosen the `use authorial modesty` option are missed out.
+> This text substitution expands to one or more lines of text crediting each of the extensions used by the current source text, along with their version numbers and authors. Extensions whose authors have chosen the `use authorial modesty` option are missed out (unless they declare a licence, in which case that licence is still mentioned, since it may be a legal necessity).
 
 If we want our extension to go uncredited – perhaps if it is a low-level enabling sort of thing, for instance – we can place the following sentence inside the definition of the extension:
 
@@ -17978,13 +17985,67 @@ A complete list, undiluted by modesty, can always be obtained using:
 >
 > This text substitution expands to one or more lines of text crediting each of the extensions used by the current source text, along with their version numbers and authors. Every extension is included, even those whose authors have opted for `use authorial modesty`.
 
-Sometimes authorship is complicated. What if Mary Brown finds some Inform 6 code written by John Smith in the mid-90s, and puts an I7 gloss on it to make an I7 extension, but then Pierre Dupont translates it into French: who's the author of the result? The rule is that the person making the current, latest version is the author listed in the titling line, so we end up with
+Whenever one author copies or adapts programs or text by another author, copyright law comes into play. If we want to publish or sell a story which uses an extension by somebody else, we need their permission. The form that permission usually takes is a general _licence_ (or "license", in US English) where the extension author says, in effect: Anybody can use this provided ... and then gives some conditions.
 
-	... by Pierre Dupont begins here.
+### Open-source licences for extensions
 
-But Mary and John deserve their credits too...
+The source text for an extension can contain special sentences which specify its licence, that is, the terms on which other Inform authors can use it. For example:
 
-_More to follow when IE-0036 is implemented._
+	The licence for this extension is "CC-BY-4.0".
+	The copyright for this extension is "Emily Short 2006-2024".
+	The origin for this extension is "https://www.emshort.com/inform".
+	The rights history for this extension is "Adapted by permission from sample code by Adam Cadre in 2006."
+
+Those are the only four things which can be set — `licence` (or the spelling `license` is also allowed), `copyright`, `origin` and `rights history`. All four are optional.
+
+- The `licence` must be _either_ `"Unspecified"` _or_ one of the standard SPDX machine-readable licence codes listed at: [https://spdx.org/licenses/](https://spdx.org/licenses/) — see below for notes on what to choose. Inform will throw a problem message if the licence is now deprecated by SPDX, usually because it has been found to be legally problematic in practice, and better versions are now available. Note that the SPDX list contains only open-source licences: if we don't want to open the source of an extension we should leave the `licence` at the default setting `"Unspecified"`.
+
+- The `copyright` declaration must take the form `"Owner's Name YYYY"`, where `YYYY` is a year after 1970, or else `"Owner's Name YYYY-ZZZZ"`, to indicate that it was created in year `YYYY` and most recently refreshed or rewritten in year `ZZZZ`. Note that it must not contain a `©` symbol, or text like `(c)` or `(C)` or `Copyright`: that's added later automatically. It should just give the owner's name and a date. Both a name and a year are required: Inform rejects `"2020"` or `"Emily Short"` with problem messages because of this.
+
+- The `origin` is the URL for the home web page of the extension, if there is one. Note that some popular licences, such as `CC-BY-4.0`, require users of the software under licence to reproduce the URL of its home page. If this URL is given, then Inform takes care of that requirement automatically.
+
+- The `rights history` should be one or more complete sentences explaining any other _legal_ notes necessary. Less is more here, but if, for example, we are making a new version of some old code by somebody else (and if their licence allows that, of course), then we should credit that. The `rights history` should not be used for miscellaneous acknowledgements, just for what's legally required.
+
+If one of the other four settings is made, but no `licence`, it defaults to `"Unspecified"`. If one of the other four settings is made, but no `copyright`, it defaults to the name of the author (given in the extension title, or the title sentence for a story) and the current year of compilation. `origin` and `rights history` are both blank by default.
+
+### Licences accepted by the Inform Public Library
+
+The best way to share an Inform extension with the world may be to submit it to the Inform Public Library. This is a curated collection, rather than being a service anyone can publish on, and the curators are looking for generally useful extensions whose subject matter will be suitable for users of all ages, and will not run into legal difficulties. Inform is widely used in education, so the Public Library may be being browsed in classrooms by young children.
+
+The Public Library also aims to host extensions which users can grab and make use of without legal worries, so it can only accept licenced extensions, and for policy reasons it will only accept a short list of simple, easily understood, popular and highly permissive licences — currently, 5 are allowed.
+
+This is many fewer than the full SPDX list, which currently includes some 617 non-deprecated open-source licences. But many of those are obscure enough that there's no case law on them, or else they are trying to achieve particular policy goals: the `BSD-3-Clause-No-Nuclear-Warranty`, for example. Not all are certified as "free" or "open" by the two bodies usually considered authoritative, the Free Software Foundation and the Open Source Initiative. And even those which are rated both "free" and "open", which are reasonably popular, and which have no obvious axe to grind, may not be sufficiently free for all of our users' needs.
+
+First, we suggest the following as alternative ways to, essentially, put an extension into what is vaguely called "the public domain" — meaning, loosely speaking, "do what you like with this". It's not as easy to make that offer in a legally foolproof way in worldwide jurisdictions as non-lawyers expect, but here are three reliable ways:
+
+Licence code  | Full name
+------------- | ---------
+`"CC0-1.0"`   | Creative Commons Zero v1.0 Universal
+`"Unlicense"` | The Unlicense
+`"MIT-0"`     | MIT No Attribution
+
+Second, these two licences are allowed as ways to make usage _almost_ completely free, but where there's still a requirement to acknowledge the original author, and not to remove the original author's name:
+
+Licence code     | Full name
+---------------- | ---------
+`"CC-BY-4.0"`    | Creative Commons Attribution 4.0 International
+`"Artistic-2.0"` | Artistic License 2.0
+
+Extensions licenced on these terms can safely be used since Inform automatically complies with the need to acknowledge in its handling of the ``COPYRIGHT`` and ``LICENCE`` commands, and also when releasing a project. For example, if it releases a story to a website, that website will include a page of copyright acknowledgements.
+
+The source code to Inform itself is under `Artistic-2.0`, in fact, so the built-in Inform extensions — the Standard Rules, Basic Inform and English Language — are covered by that automatically. But there's no need for anyone else to make this choice. `CC-BY-4.0` is better known and more widely used, but some people feel it's better suited to pictures and text than to software, where the three "zero" licences above may be better choices.
+
+The down side of choosing `CC0-1.0`, `Unlicense` or `MIT-0` is that these do not even require the user to acknowledge our contribution: they can even remove our names and claim to have written the extension themselves. But of course it's not ethical to do that. Inform automatically acknowledges all extension contributors, even if the licence does not require it, and the Public Library will not host an extension if the curators think the author has been dishonest. So this concern is not much of a concern. The up side of choosing a "zero" licence is that it makes the legal position clear in a much more likely scenario — a situation where, twenty years from now, somebody wants to take over as the maintainer of the extension, and to rewrite it, but can't contact us to ask permission. A "zero" licence makes clear that this is completely legal.
+
+Note that the Public Library will _not_ accept `CC-BY-NC-4.0`, `CC-BY-NC-ND-4.0` and so on, and will not accept `GPL-2.0`, `GPL-3.0` or similar. We have made this policy choice because:
+
+- We want Public Library users to feel completely free to publish commercial games. This is why we do not allow `-NC`, "no commercial use", licences.
+
+- Similarly, clauses intended to force users of an extension to share the results impose a restriction on the author of a story which we want to avoid. Authors should be free to publish stories without having to publish the source text if they want to. So, no `-SA`, "share-alike", restrictions, and no form of the GPL.
+
+- Any story using an extension could, at a stretch, be considered a derivative work, and we don't want the legal safety of an extension to come down to delicate questions of law. So, no `-ND`, "no derivative works", clauses.
+
+Extension authors are completely free to licence their extensions however they would like to, of course. This shortlist of five licences is simply a hosting-policy choice made by the Inform Public Library. Users are free to choose other licences and circulate extensions elsewhere.
 
 ## Compatibility with story file formats
 

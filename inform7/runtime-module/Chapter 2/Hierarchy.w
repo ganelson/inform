@@ -547,6 +547,10 @@ void Hierarchy::establish(void) {
 @e SERIAL_MD_HL
 @e LANGUAGE_MD_HL
 @e DESCRIPTION_MD_HL
+@e LICENCE_MD_HL
+@e COPYRIGHT_MD_HL
+@e ORIGIN_URL_MD_HL
+@e RIGHTS_HISTORY_MD_HL
 @e EPISODE_NUMBER_MD_HL
 @e SERIES_NAME_MD_HL
 @e YEAR_MD_HL
@@ -571,6 +575,10 @@ void Hierarchy::establish(void) {
 		H_C_T(SERIAL_MD_HL,                   I"^serial")
 		H_C_T(LANGUAGE_MD_HL,                 I"^language")
 		H_C_T(DESCRIPTION_MD_HL,              I"^description")
+		H_C_T(LICENCE_MD_HL,                  I"^licence")
+		H_C_T(COPYRIGHT_MD_HL,                I"^copyright")
+		H_C_T(ORIGIN_URL_MD_HL,               I"^origin")
+		H_C_T(RIGHTS_HISTORY_MD_HL,           I"^rights")
 		H_C_T(EPISODE_NUMBER_MD_HL,           I"^episode")
 		H_C_T(SERIES_NAME_MD_HL,              I"^series")
 		H_C_T(YEAR_MD_HL,                     I"^year")

@@ -1,8 +1,8 @@
 Inform 7 v10.2.0 has started.
 I've now read your source text, which is 84 words long.
-I've also read Basic Inform by Graham Nelson, which is 7719 words long.
-I've also read English Language by Graham Nelson, which is 2330 words long.
-I've also read Standard Rules by Graham Nelson, which is 33683 words long.
+I've also read version 2 of Basic Inform by Graham Nelson, which is 8488 words long.
+I've also read version 2 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 7 of Standard Rules by Graham Nelson, which is 35135 words long.
 Problem__ PM_MasksRelation
   >--> I don't want you to define a phrase with the wording you've used in in
     'To decide whether (X - testval) is beyond (Y - testval)' (source text, line 7)
@@ -17,5 +17,5 @@ Problem__ PM_MasksRelation
     means for something to be 'less than' something else, so this phrase
     definition would look too much like testing whether 'X is less than Y'.
     ('The verb to be less than means the numerically-less-than relation' (Basic
-    Inform, line 59).)
+    Inform, line 60).)
 Inform 7 has finished.

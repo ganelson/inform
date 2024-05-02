@@ -107,6 +107,8 @@ inbuild_copy *ProjectBundleManager::claim_folder_as_copy(pathname *P) {
 		} else {
 			if (Str::eq_insensitive(entry, I"manifest.plist")) continue;
 			if (Str::eq_insensitive(entry, I"Metadata.iFiction")) continue;
+			if (Str::eq_insensitive(entry, I"Licenses.txt")) continue;
+			if (Str::eq_insensitive(entry, I"Licenses.html")) continue;
 			if (Str::eq_insensitive(entry, I"notes.rtf")) continue;
 			if (Str::eq_insensitive(entry, I"Release.blurb")) continue;
 			if (Str::eq_insensitive(entry, I"Settings.plist")) continue;

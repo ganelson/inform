@@ -198,6 +198,11 @@ own credits.
 		WRITE("placeholder [OTHERCREDITS] = \"The postcard was written by Andrew Plotkin "
 			"and designed by Lea Albaugh.\"\n");
 	}
+	if (LicenceDeclaration::anything_to_declare()) {		
+		WRITE("auxiliary \"%f\" \"%S\" \"--\"\n",
+			Task::licenses_file(rel->release_website),
+			I"Copyright");
+	}
 
 @ Facilities for a Javascript interpreter to play a base64-encoded story
 file online.

@@ -1,5 +1,5 @@
-Test: ValueDomainList
-For: Z-Machine
+Test: ValueDomainList-G
+For: Glulx
 
 Stanford is a room.
 
