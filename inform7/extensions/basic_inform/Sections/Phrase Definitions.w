@@ -1802,7 +1802,7 @@ To say variable letter spacing -- running on
 	(documented at phs_varspacing):
 	(- font on; -).
 
-@ Basic colours are supported in both architectures, but CSS colours are only
+@ Basic colours are supported in both architectures, but RGB colours are only
 supported in Glulx.
 
 =
@@ -1817,21 +1817,21 @@ To say (C - basic colour) letters:
 To set the background colour/color/-- to (C - basic colour):
 	(- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).
 
-Section 3 - CSS Colours (for Glulx only)
+Section 3 - RGB Colours (for Glulx only)
 
-CSS colour is a kind of value.
-#<red level><green level><blue level> specifies a CSS colour with parts
+RGB colour is a kind of value.
+#<red level><green level><blue level> specifies a RGB colour with parts
 	red level (2 hexadecimal digits),
 	green level (2 hexadecimal digits) and
 	blue level (2 hexadecimal digits).
 
-To set the foreground/-- colour/color/-- to (C - CSS colour):
+To set the foreground/-- colour/color/-- to (C - RGB colour):
 	(- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).
 
-To say (C - CSS colour) letters:
+To say (C - RGB colour) letters:
 	(- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).
 
-To set the background colour/color/-- to (C - CSS colour):
+To set the background colour/color/-- to (C - RGB colour):
 	(- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).
 
 @ Some basic window phrases, which are supported by both the Z-Machine and Glulx.
@@ -1872,15 +1872,28 @@ To redraw the/-- status bar/line/window:
 
 Table of Default Status
 left (text)	central (text)	right (text)
-with 0 blank rows
+with 1 blank row
 
-[To fill the/-- status bar/line/window with (status table - a table-name):]
+The left table column translates into Inter as "STATUS_COL_LEFT".
+The central table column translates into Inter as "STATUS_COL_CENTRAL".
+The right table column translates into Inter as "STATUS_COL_RIGHT".
+
+The status window table is a table-name that varies.
+The status window table variable translates into Inter as "status_window_table".
+The status window table is the Table of Default Status.
+
+To fill/redraw the/-- status bar/line/window with (new status table - a table-name), once only:
+	let old status window table be the status window table;
+	now the status window table is new status table;
+	redraw the status window;
+	if once only:
+		now the status window table is the old status window table;
 
 To move the status bar/line/window cursor to row (row - number) column (col - number):
 	(- VM_MoveCursorInStatusLine({row}, {col}); -).
 
 @h External Files.
-Inform has a quirky level of support for file-handling, which comes out what
+Inform has a quirky level of support for file-handling, which comes out of what
 the Glulx virtual machine will support.
 
 See test case |BIP-Files-G|, which has no Z-machine counterpart.

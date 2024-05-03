@@ -146,6 +146,58 @@ allows us to divide the paragraph or not accordingly.
 	else print (string) closure-->2;
 ];
 
+@h Redrawing the Status Window.
+
+These functions handle the default behaviour of redrawing the status window.
+
+Status line printing happens on the upper screen window, and outside of the
+paragraph control system.
+
+=
+[ DrawStatusLine width posb;
+	@push say__p; @push say__pc;
+	CarryOutActivity(CONSTRUCTING_STATUS_LINE_ACT);
+	@pull say__pc; @pull say__p;
+];
+
+[ REDRAW_STATUS_WINDOW_R  chars col_num_left col_num_central col_num_right rows row value width;
+	rows = TableRows(status_window_table);
+	VM_StatusLineHeight(rows);
+	if (rows == 0) {
+		rtrue;
+	}
+	VM_ClearScreen(1);
+	! Cache the column numbers in case we have a lot of rows
+	col_num_left = TableFindCol(status_window_table, STATUS_COL_LEFT);
+	col_num_central = TableFindCol(status_window_table, STATUS_COL_CENTRAL);
+	col_num_right = TableFindCol(status_window_table, STATUS_COL_RIGHT);
+	width = VM_ScreenWidth();
+	for (row = 1: row <= rows: row++) {
+		if (TableRowIsBlank(status_window_table, row)) {
+			continue;
+		}
+		! We know these rows only have texts, so it's safe to access them directly
+		value = (status_window_table-->col_num_left)-->(row + COL_HSIZE);
+		if (value ~= TABLE_NOVALUE) {
+			VM_MoveCursorInStatusLine(row, 2);
+			TEXT_TY_Say(value);
+		}
+		value = (status_window_table-->col_num_right)-->(row + COL_HSIZE);
+		if (value ~= TABLE_NOVALUE) {
+			chars = TEXT_TY_BlobAccess(value, CHR_BLOB);
+			VM_MoveCursorInStatusLine(row, width - chars - 1);
+			TEXT_TY_Say(value);
+		}
+		value = (status_window_table-->col_num_central)-->(row + COL_HSIZE);
+		if (value ~= TABLE_NOVALUE) {
+			chars = TEXT_TY_BlobAccess(value, CHR_BLOB);
+			VM_MoveCursorInStatusLine(row, ((width - chars) / 2) + 1);
+			TEXT_TY_Say(value);
+		}
+	}
+	rtrue;
+];
+
 @h GenerateRandomNumber.
 The following uses the virtual machine's RNG (via the I6 built-in function
 |random|) to produce a uniformly random integer in the range $n$ to $m$

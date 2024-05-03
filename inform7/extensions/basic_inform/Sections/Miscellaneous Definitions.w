@@ -76,9 +76,8 @@ The Standard Rules (for interactive fiction) create a wealth of rulebooks
 and activities in order to model a fictional world. Here we are much more
 sparing: a Basic Inform project begins with a very minimal number of rules.
 
-The startup and shutdown rulebooks, and the "starting the virtual machine"
-activity, are not normally used in Basic Inform, but need to be defined here
-for technical reasons.
+The startup and shutdown rulebooks and the "starting the virtual machine"
+activity perform essential work before a Basic Inform project can begin.
 
 Be wary modifying these: rulebooks and activities must be defined in exactly
 the right order, matching definitions both in the Inform 7 compiler and in the
@@ -168,11 +167,18 @@ The open built in windows rule translates into Inter as "OPEN_BUILT_IN_WINDOWS_R
 The display captured startup text rule is listed in the for starting the virtual machine rules.
 The display captured startup text rule translates into Inter as "END_CAPTURE_STARTUP_TEXT_R".
 
-@ However, the two activities for printing names of objects are indeed
+@h Activities.
+However, there are a small number of printing related activities which are also
 functional in Basic Inform.
 
 =
 Chapter - Printing activities
+
+Constructing the status line (documented at act_csl) is an activity.
+The constructing the status line activity is accessible to Inter as "CONSTRUCTING_STATUS_LINE_ACT".
+
+The standard status window rule is listed in the for constructing the status line rules.
+The standard status window rule translates into Inter as "REDRAW_STATUS_WINDOW_R".
 
 Printing the name of something (hidden in RULES command) (documented at act_pn) is an activity.
 The printing the name activity is accessible to Inter as "PRINTING_THE_NAME_ACT".
