@@ -10,4 +10,5 @@ Sections
 	Preamble
 	Miscellaneous Definitions
 	Phrase Definitions
+	Glulx and Glk
 	Adjectival Definitions

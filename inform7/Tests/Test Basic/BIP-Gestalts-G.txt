@@ -1,0 +1,39 @@
+Test: BIP-Gestalts-G
+Language: Basic
+For: Glulx
+
+To begin:
+	say "Glk version: [glk version number in hexadecimal][line break]";
+	say "Graphics window mouse input: [whether or not graphics window mouse input is supported][line break]";
+	say "Grid window mouse input: [whether or not grid window mouse input is supported][line break]";
+	say "Timers: [whether or not timers are supported][line break]";
+	say "Glk graphics: [whether or not glk graphics are supported][line break]";
+	say "Buffer window images: [whether or not buffer window graphics are supported][line break]";
+	say "Graphics window images: [whether or not graphics window graphics are supported][line break]";
+	say "Basic sounds: [whether or not basic sounds are supported][line break]";
+	say "Sound volume: [whether or not sound volume are supported][line break]";
+	say "Sound notifications: [whether or not sound notifications are supported][line break]";
+	say "Hyperlinks: [whether or not hyperlinks are supported][line break]";
+	say "Buffer window hyperlinks: [whether or not buffer window hyperlinks are supported][line break]";
+	say "Grid window hyperlinks: [whether or not grid window hyperlinks are supported][line break]";
+	say "MOD sounds: [whether or not MOD sounds are supported][line break]";
+	say "PNG transparency: [whether or not PNG transparency are supported][line break]";
+	say "Glk unicode: [whether or not glk unicode is supported][line break]";
+	say "Unicode normalization: [whether or not unicode normalization is supported][line break]";
+	say "Line input echo suppression: [whether or not line input echo suppression is supported][line break]";
+	say "Line input terminators: [whether or not line input terminators are supported][line break]";
+	say "System clock: [whether or not system clock is supported][line break]";
+	say "Extended sounds: [whether or not extended sounds are supported][line break]";
+	say "Resource streams: [whether or not resource streams are supported][line break]";
+	say "Graphics window character input: [whether or not graphics window character input is supported][line break]";
+	say "Text formatting: [whether or not text formatting are supported][line break]";
+	say "Glulx version: [glulx version number in hexadecimal][line break]";
+	say "Interpreter version: [interpreter version number in hexadecimal][line break]";
+	say "Memory resizing: [whether or not memory resizing is supported][line break]";
+	say "Undo: [whether or not undo is supported][line break]";
+	say "Glulx unicode: [whether or not glulx unicode is supported][line break]";
+	say "Memory copying: [whether or not memory copying is supported][line break]";
+	say "Glulx acceleration: [whether or not glulx acceleration is supported][line break]";
+	say "Real numbers: [whether or not real numbers is supported][line break]";
+	say "Extended undo: [whether or not extended undo is supported][line break]";
+	say "Double precision real numbers: [whether or not double precision real numbers is supported][line break]";

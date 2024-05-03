@@ -35,15 +35,11 @@ floating-point operations if available (with code contributed by Andrew
 Plotkin): this is fast and remains accurate up to about 16 million.
 
 =
-[ VM_SquareRoot num n x;
-    @gestalt 11 0 n;
-    if (n) {
-        @numtof num x;
-        @sqrt x x;
-        @ftonumz x num;
-        return num;
-    }
-	return 0;
+[ VM_SquareRoot num x;
+	@numtof num x;
+	@sqrt x x;
+	@ftonumz x num;
+	return num;
 ];
 
 @h Integer cube root.
@@ -52,22 +48,18 @@ this is fast and gives good accuracy for smallish numbers, but limited
 precision begins to tell at around 2000000.
 
 =
-[ VM_CubeRoot num n x neg;
-    @gestalt 11 0 n;
-    if (n) {
-        if (num < 0) {
-            neg = true;
-            num = -num;
-        }
-        @numtof num x;
-        @pow x 1051372203 x; ! pow(x, 0.3333)
-        @ftonumz x num;
-        if (neg)
-            return -num;
-        else
-            return num;
-    }
-	return 0;
+[ VM_CubeRoot num x neg;
+	if (num < 0) {
+		neg = true;
+		num = -num;
+	}
+	@numtof num x;
+	@pow x 1051372203 x; ! pow(x, 0.3333)
+	@ftonumz x num;
+	if (neg)
+		return -num;
+	else
+		return num;
 ];
 
 @h Printing reals.

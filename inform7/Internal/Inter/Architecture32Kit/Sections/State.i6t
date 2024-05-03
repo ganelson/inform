@@ -9,10 +9,10 @@ but it's traditional.
 
 =
 [ VM_ReportOnInterpreter ix;
-	@gestalt 1 0 ix;
+	@gestalt GLULX_GESTALT_TerpVersion 0 ix;
 	print "Interpreter version ", ix / $10000, ".", (ix & $FF00) / $100,
 	".", ix & $FF, " / ";
-	@gestalt 0 0 ix;
+	@gestalt GLULX_GESTALT_GlulxVersion 0 ix;
 	print "VM ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, "^";
 ];
 
