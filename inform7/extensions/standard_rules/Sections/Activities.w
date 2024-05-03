@@ -170,13 +170,10 @@ announcement of light.
 This is the look around once light available rule:
 	try looking.
 
-@ Two special forms of printing: the status line at the top of the screen,
-refreshed every turn during play, and the banner which appears at or close
+@ One special forms of printing: the banner which appears at or close
 to the start of play:
 
 =
-Constructing the status line (documented at act_csl) is an activity.
-The constructing the status line activity is accessible to Inter as "CONSTRUCTING_STATUS_LINE_ACT".
 Printing the banner text (documented at act_banner) is an activity.
 The printing the banner text activity is accessible to Inter as "PRINTING_BANNER_TEXT_ACT".
 
