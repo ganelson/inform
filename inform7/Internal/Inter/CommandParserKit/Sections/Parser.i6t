@@ -3619,7 +3619,7 @@ mechanism.
 =
 [ DoScopeAction item;
 
-    if (item has concealed) return;
+    if ((item has concealed) && (item ~= player)) return;
 
     #Ifdef DEBUG;
     if (parser_trace >= 6)
