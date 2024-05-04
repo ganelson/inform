@@ -352,6 +352,16 @@ void Instances::make_instances_from_Neptune(void) {
 		kind_constructor_instance *kci;
 		inter_ti current_val = 0;
 		inter_ti highest_val = 0;
+		// First loop to determine the highest specified value
+		LOOP_OVER_LINKED_LIST(kci, kind_constructor_instance, L) {
+			if (kci->value_specified) {
+				current_val = (inter_ti) kci->value;
+				if (current_val > highest_val) {
+					highest_val = current_val;
+				}
+			}
+		}
+		// Then loop to add the values and work out the non-specified ones
 		LOOP_OVER_LINKED_LIST(kci, kind_constructor_instance, L) {
 			wording W = Feeds::feed_text(kci->natural_language_name);
 			kind *K = Kinds::base_construction(kc);
@@ -360,9 +370,6 @@ void Instances::make_instances_from_Neptune(void) {
 			instance *I = Instances::latest();
 			if (kci->value_specified) {
 				current_val = (inter_ti) kci->value;
-				if (current_val > highest_val) {
-					highest_val = current_val;
-				}
 			}
 			else {
 				highest_val++;
