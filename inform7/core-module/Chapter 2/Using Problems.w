@@ -42,7 +42,7 @@ void UsingProblems::end_problems_report(OUTPUT_STREAM) {
 void UsingProblems::final_report(int disaster_struck, int problems_count) {
 	int total_words = 0;
 
-	if (problem_count > 0) {
+	if (problems_count > 0) {
 		if (problems_file_active) ProblemBuffer::redirect_problem_stream(problems_file);
 		Problems::issue_problem_begin(Task::syntax_tree(), "*");
 		if (disaster_struck) @<Issue problem summary for an internal error@>
