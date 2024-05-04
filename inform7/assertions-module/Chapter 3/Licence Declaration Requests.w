@@ -272,7 +272,7 @@ void LicenceDeclaration::describe(OUTPUT_STREAM, int format) {
 	inform_project *proj = Task::project();
 	inbuild_licence *L = proj->as_copy->licence;
 	text_stream *mention = NULL;
-	int licences_cited = FALSE;
+	int licences_cited = FALSE, include_MIT = FALSE, include_MIT_0 = FALSE;
 	
 	if (format == HTML_LICENSESFORMAT) {
 		WRITE("<html><body>\n");
@@ -303,12 +303,26 @@ void LicenceDeclaration::describe(OUTPUT_STREAM, int format) {
 		LicenceDeclaration::link(OUT, I"https://spdx.org/licenses/", format);
 		@<Close paragraph@>;
 	}
-	
+	if (format == HTML_LICENSESFORMAT) {
+		if (include_MIT)
+			TextFiles::write_file_contents(OUT, InstalledFiles::filename(MIT_LICENSE_IRES));
+		if (include_MIT_0)
+			TextFiles::write_file_contents(OUT, InstalledFiles::filename(MIT_0_LICENSE_IRES));
+	}
 	if (format == HTML_LICENSESFORMAT) WRITE("</body></html>\n");
 }
 
 @<Describe L@> =
-	WRITE("(c) %S %d", L->rights_owner, L->copyright_year);
+	text_stream *id = NULL;
+	if (L->standard_licence) id = L->standard_licence->SPDX_id;
+	if (Str::eq(id, I"MIT")) include_MIT = TRUE;
+	if (Str::eq(id, I"MIT-0")) include_MIT_0 = TRUE;
+	if ((Str::eq(id, I"Unlicense")) || (Str::eq(id, I"CC0-1.0"))) {
+		WRITE("placed in the public domain by ");
+	} else {
+		WRITE("(c) ");
+	}
+	WRITE("%S %d", L->rights_owner, L->copyright_year);
 	if (L->revision_year >= L->copyright_year) WRITE("-%d", L->revision_year);
 	if (L->standard_licence) {
 		WRITE("%S under licence %S", mention, L->standard_licence->SPDX_id);

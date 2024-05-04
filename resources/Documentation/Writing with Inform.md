@@ -18012,30 +18012,33 @@ If one of the other four settings is made, but no `licence`, it defaults to `"Un
 
 The best way to share an Inform extension with the world may be to submit it to the Inform Public Library. This is a curated collection, rather than being a service anyone can publish on, and the curators are looking for generally useful extensions whose subject matter will be suitable for users of all ages, and will not run into legal difficulties. Inform is widely used in education, so the Public Library may be being browsed in classrooms by young children.
 
-The Public Library also aims to host extensions which users can grab and make use of without legal worries, so it can only accept licenced extensions, and for policy reasons it will only accept a short list of simple, easily understood, popular and highly permissive licences — currently, 5 are allowed.
+The Public Library also aims to host extensions which users can grab and make use of without legal worries, so it can only accept licenced extensions, and for policy reasons it will only accept a short list of simple, easily understood, popular and highly permissive licences — currently, six are allowed.
 
 This is many fewer than the full SPDX list, which currently includes some 617 non-deprecated open-source licences. But many of those are obscure enough that there's no case law on them, or else they are trying to achieve particular policy goals: the `BSD-3-Clause-No-Nuclear-Warranty`, for example. Not all are certified as "free" or "open" by the two bodies usually considered authoritative, the Free Software Foundation and the Open Source Initiative. And even those which are rated both "free" and "open", which are reasonably popular, and which have no obvious axe to grind, may not be sufficiently free for all of our users' needs.
 
-First, we suggest the following as alternative ways to, essentially, put an extension into what is vaguely called "the public domain" — meaning, loosely speaking, "do what you like with this". It's not as easy to make that offer in a legally foolproof way in worldwide jurisdictions as non-lawyers expect, but here are three reliable ways:
-
-Licence code  | Full name
-------------- | ---------
-`"CC0-1.0"`   | Creative Commons Zero v1.0 Universal
-`"Unlicense"` | The Unlicense
-`"MIT-0"`     | MIT No Attribution
-
-Second, these two licences are allowed as ways to make usage _almost_ completely free, but where there's still a requirement to acknowledge the original author, and not to remove the original author's name:
+If we want to open-source an extension, leave users almost completely free to use it, but still keep the copyright and require users to acknowledge that, then the following can be used:
 
 Licence code     | Full name
 ---------------- | ---------
+`"MIT"`          | MIT License
 `"CC-BY-4.0"`    | Creative Commons Attribution 4.0 International
 `"Artistic-2.0"` | Artistic License 2.0
 
-Extensions licenced on these terms can safely be used since Inform automatically complies with the need to acknowledge in its handling of the ``COPYRIGHT`` and ``LICENCE`` commands, and also when releasing a project. For example, if it releases a story to a website, that website will include a page of copyright acknowledgements.
+Extensions licenced on these terms can safely be used since Inform automatically complies with the need to acknowledge in its handling of the ``COPYRIGHT`` and ``LICENCE`` commands, and also when releasing a project. For example, if it releases a story to a website, that website will include a page of copyright acknowledgements. If the `MIT` licence is used, the text of that licence is included on this website page, which satisfies its only other requirement.
 
-The source code to Inform itself is under `Artistic-2.0`, in fact, so the built-in Inform extensions — the Standard Rules, Basic Inform and English Language — are covered by that automatically. But there's no need for anyone else to make this choice. `CC-BY-4.0` is better known and more widely used, but some people feel it's better suited to pictures and text than to software, where the three "zero" licences above may be better choices.
+`Artistic-2.0` only makes this list because it is the licence used for the source code to Inform itself, and so the built-in Inform extensions — the Standard Rules, Basic Inform and English Language — are covered by that automatically. It was designed for large pieces of software with a range of uses (it began as the licence for the Perl programming language), and is not a good fit for stand-alone extensions, since it has a relatively long and convoluted legal text. `CC-BY-4.0` is better known and more widely used, but some people feel it's better suited to pictures and text than to software, where `MIT` is much more widely used.
 
-The down side of choosing `CC0-1.0`, `Unlicense` or `MIT-0` is that these do not even require the user to acknowledge our contribution: they can even remove our names and claim to have written the extension themselves. But of course it's not ethical to do that. Inform automatically acknowledges all extension contributors, even if the licence does not require it, and the Public Library will not host an extension if the curators think the author has been dishonest. So this concern is not much of a concern. The up side of choosing a "zero" licence is that it makes the legal position clear in a much more likely scenario — a situation where, twenty years from now, somebody wants to take over as the maintainer of the extension, and to rewrite it, but can't contact us to ask permission. A "zero" licence makes clear that this is completely legal.
+The above all require attribution, and retain copyright. If we want to go further, the following are also available:
+
+Licence code  | Full name
+------------- | ---------
+`"MIT-0"`     | MIT No Attribution
+`"CC0-1.0"`   | Creative Commons Zero v1.0 Universal
+`"Unlicense"` | The Unlicense
+
+Here `MIT-0` is a halfway-house: the author does still retain copyright, but the user doesn't have to acknowledge that. This would be a good fit for a `Use authorial modesty.` sort of extension. (As with `MIT`, Inform auto-includes a copy of this licence as part of any website release, since that is still required.) Under `CC0-1.0` and `Unlicense`, even copyright is donated to the public domain: this will affect how Inform prints the rights details — Inform will say ``Placed in the public domain by ...`` rather than ``(c) ...`` — but won't very much affect the freedom of users, which is almost complete for any of these licences. For real zealots, `CC0-1.0` is thought to relinquish all conceivable patent claims too, and has had more legal attention than the `Unlicense`, but both have their adherents.
+
+Some no-attribution licences are so free that users can even remove our names, fraudlently claim to be the author themselves, and so on. They certainly don't need to give us any credit. But just because this is legally allowed does not mean it's ethical, and Inform automatically acknowledges all extension contributors, even if the licence does not require it. The Public Library will not host an extension if the curators think the author has been dishonest. So this concern is not much of a concern. A more likely scenario to think about is: what if it's twenty years from now, and somebody wants to take over this extension as the new maintainer, but we're not around to be asked? The more free the licence, the more clear the position will be for that new maintainer.
 
 Note that the Public Library will _not_ accept `CC-BY-NC-4.0`, `CC-BY-NC-ND-4.0` and so on, and will not accept `GPL-2.0`, `GPL-3.0` or similar. We have made this policy choice because:
 
@@ -18045,7 +18048,7 @@ Note that the Public Library will _not_ accept `CC-BY-NC-4.0`, `CC-BY-NC-ND-4.0`
 
 - Any story using an extension could, at a stretch, be considered a derivative work, and we don't want the legal safety of an extension to come down to delicate questions of law. So, no `-ND`, "no derivative works", clauses.
 
-Extension authors are completely free to licence their extensions however they would like to, of course. This shortlist of five licences is simply a hosting-policy choice made by the Inform Public Library. Users are free to choose other licences and circulate extensions elsewhere.
+Extension authors are completely free to licence their extensions however they would like to, of course. Our shortlist of six licences is simply a hosting-policy choice made by the Inform Public Library. Users are free to choose other licences and circulate extensions elsewhere.
 
 ## Compatibility with story file formats
 
