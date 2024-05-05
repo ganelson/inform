@@ -1,10 +1,10 @@
    Editor's Office
   Prolegomena
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Editor's Office
-  You can see a desk (on which are red pencils in nearly-sufficient quantity and various correspondence) here.
+  You can see a desk (on which are red pencils in nearly-sufficient quantity and some correspondence) here.
   
 > >   Editor's Office
   (Testing.)
@@ -36,7 +36,7 @@
   
   >[8] look
   Editor's Office
-  You can see a desk (on which are various red pencils and some correspondence) here.
+  You can see a desk (on which are various red pencils and an assortment of correspondence) here.
   
   >[9] i
   You are carrying:
@@ -65,7 +65,7 @@
   
   >[11] i
   You are carrying:
-    an assortment of correspondence
+    some correspondence
     red pencils in nearly-sufficient quantity
   
 > >

@@ -1,7 +1,7 @@
    Kitchen                                                                                                                                                                                                                0/1
   Copper River
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Kitchen
   Your Aunt Fiona's kitchen looks as though it has been at the eye of a glitter storm. Fine, sparkling grit dusts every surface. The appliances are slightly askew, too, as though they hadn't quite settled after a vigorous earthquake.
@@ -21,6 +21,8 @@
   
   On the shelf is a tin of deflating powder.
   
+  Aunt Fiona's eyes follow you, wide and desperate, but it doesn't look like she's able to do anything.
+  
   >[2] get powder
   Taken.
   
@@ -38,12 +40,8 @@
   >[5] look in cabinet
   There's nothing very useful here, only assorted dull items.
   
-  Aunt Fiona's eyes follow you, wide and desperate, but it doesn't look like she's able to do anything.
-  
   >[6] get powder
   Taken.
-  
-  Aunt Fiona is still looking reproachful.
   
   >[7] put powder on fiona
   You toss some of the powder in Aunt Fiona's direction, and with a sudden gaseous HUFF! she returns to her usual shape and size.

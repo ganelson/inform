@@ -1,7 +1,7 @@
    Library of the Dead
   In Fire or in Flood
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Library of the Dead
   This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
@@ -96,13 +96,15 @@
   >[15] light trapdoor
   You light the trapdoor with the flaming torch.
   
+  A spark from the flaming trapdoor catches the box!
+  
   >[16] look
   Library of the Dead
   This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
   
   A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
   
-  You can also see a box (empty) here.
+  You can also see a flaming box (empty) here.
   
   >[17] g
   Library of the Dead
@@ -110,7 +112,7 @@
   
   A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
   
-  You can also see a box (empty) here.
+  You can also see a flaming box (empty) here.
   
   >[18] g
   Library of the Dead
@@ -118,7 +120,7 @@
   
   A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
   
-  You can also see a box (empty) here.
+  You can also see a flaming box (empty) here.
   
   >[19] g
   Library of the Dead
@@ -126,9 +128,7 @@
   
   A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
   
-  You can also see a box (empty) here.
-  
-  A spark from the flaming trapdoor catches the box!
+  You can also see a flaming box (empty) here.
   
   >[20] g
   Library of the Dead
@@ -146,13 +146,15 @@
   
   You can also see a flaming box (empty) here.
   
+  The flaming box burns away, leaving a metal hinge behind.
+  
   >[22] g
   Library of the Dead
   This room -- little, dank, stone -- is filling with some miasma you do not quite dare breathe. It is imperative that you get out.
   
   A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
   
-  You can also see a flaming box (empty) here.
+  You can also see a metal hinge here.
   
   >[23] g
   Library of the Dead
@@ -160,7 +162,7 @@
   
   A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
   
-  You can also see a flaming box (empty) here.
+  You can also see a metal hinge here.
   
   >[24] g
   Library of the Dead
@@ -168,7 +170,7 @@
   
   A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
   
-  You can also see a flaming box (empty) here.
+  You can also see a metal hinge here.
   
   >[25] g
   Library of the Dead
@@ -176,9 +178,7 @@
   
   A trapdoor in the ceiling is your only hope of escape. Fortunately, it is rapidly burning through.
   
-  You can also see a flaming box (empty) here.
-  
-  The flaming box burns away, leaving a metal hinge behind.
+  You can also see a metal hinge here.
   
   >[26] g
   Library of the Dead

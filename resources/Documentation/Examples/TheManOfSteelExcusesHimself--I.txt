@@ -22,7 +22,7 @@
   Daily Planet Newsroom
   Clark looks a bit ill.
   
-  Muttering about thinking he smells smoke, Clark heads east.
+  With a particularly weak excuse about thinking he smells smoke, Clark heads west.
   
   >[4] close box
   You close the lead-lined box.
@@ -30,7 +30,6 @@
   >[5] east
   
   Supply Closet
-  Clark is here, frowning as he revises his latest article.
   
   >[6] west
   
@@ -47,6 +46,8 @@
   >[9] west
   
   Perry White's Office
-  You can see a desk and a poster of Elvis here.
+  Clark is here, frowning as he revises his latest article.
+  
+  You can also see a desk and a poster of Elvis here.
   
 > >

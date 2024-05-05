@@ -152,15 +152,40 @@ of the current time of day, which is unlikely to repeat or show any pattern
 in real-world use. However, early Z-machine interpreters often did this quite
 badly, starting with poor seed values which meant that the first few random
 numbers always had something in common (being fairly small in their range,
-for instance). To obviate this we extract and throw away 100 random numbers
-to get the generator going, shaking out more obvious early patterns, but
-that cannot really help much if the VM interpreter's RNG is badly written.
-"Anyone who considers arithmetical methods of producing random digits is,
+for instance).
+</p>
+
+<p class="commentary">More recently, many Glulx interpreters also had
+[a major flaw](<a href="https://intfiction.org/t/lack-of-randomness-sometimes-when-compiling-for-glulx/64533" class="external">https://intfiction.org/t/lack-of-randomness-sometimes-when-compiling-for-glulx/64533</a>)
+in which repeatedly calling `random(N)` when `N` was a power of 2 resulted in
+there only being `N` distinct sequences. Even worse, the first number of each
+sequence might be the same! This would mean that, for example, if a mystery
+game randomly selected the murderer from five candidates the results might
+appear random, but if there were only four candidates then the same one would
+be chosen *every* playthrough.
+</p>
+
+<p class="commentary">To attempt to partially mitigate these problems, we extract and throw away a
+number of random numbers to get the generator going, shaking out more obvious
+early patterns. Because of the particular nature of the flaw in those Glulx
+interpreters, we do this a random number of times.
+</p>
+
+<p class="commentary">Most interpreters have been updated recently to improve their random algorithms,
+but if we're running in something really old, there's only so much we can do
+to account for it. Story files which rely on quality randomness may need to
+use an extension to use a new algorithm instead of the one provided by the
+interpreter. Extensions are also needed if you want a random algorithm that is
+consistent across interpreters (for example, to be able to share a seed that
+generates the same dungeon in an procedurally-generated RPG.)
+</p>
+
+<p class="commentary">"Anyone who considers arithmetical methods of producing random digits is,
 of course, in a state of sin" (von Neumann).
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">SEED_RANDOM_NUMBER_GENERATOR_R</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">SEED_RANDOM_NUMBER_GENERATOR_R</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">BasicInformKit</span><span class="plain-syntax">`</span><span class="identifier-syntax">FIX_RNG_CFGF</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        #</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_GLULX</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            @</span><span class="reserved-syntax">random</span><span class="plain-syntax"> </span><span class="constant-syntax">10000</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
@@ -173,7 +198,8 @@ of course, in a state of sin" (von Neumann).
 <span class="plain-syntax">        #</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">RNG_SEED_AT_START_OF_PLAY</span><span class="plain-syntax">) </span><span class="identifier-syntax">VM_Seed_RNG</span><span class="plain-syntax">(</span><span class="identifier-syntax">RNG_SEED_AT_START_OF_PLAY</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=1: </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;=100: </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="reserved-syntax">random</span><span class="plain-syntax">(</span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">count</span><span class="plain-syntax"> = </span><span class="reserved-syntax">random</span><span class="plain-syntax">(97);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">: </span><span class="identifier-syntax">i</span><span class="plain-syntax"> &lt;= </span><span class="identifier-syntax">count</span><span class="plain-syntax">: </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="reserved-syntax">random</span><span class="plain-syntax">(</span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>

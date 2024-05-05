@@ -1,7 +1,7 @@
    Lab
   Variety
   An Interactive Fiction
-  Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Lab
   You can see a table (on which are a bat and a ball) here.
@@ -10,10 +10,10 @@
   (Testing.)
   
   >[1] get ball
-  You take the ball.
+  You get the ball.
   
   >[2] drop ball
-  You put down the ball.
+  You discard the ball.
   
   >[3] get bat
   You acquire the bat.
@@ -22,6 +22,6 @@
   You put down the bat.
   
   >[5] smell ball
-  You sniff the ball.
+  You smell the ball.
   
 > >

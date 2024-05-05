@@ -1,56 +1,56 @@
    Foo
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Foo
-  This is Foo, the leading haberdashery in the Kidlington area.
+  This is Foo, the leading pet shop in the Kidlington area.
   
 > >   Foo
   (Testing.)
   
   >[1] z
-  hearts - diamonds - clubs - spades - are trumps.
+  spades - diamonds - hearts - clubs - are trumps.
   
   You flip the coin. Heads.
   The phone rings.
   You turn the light switch off. Nothing happens.
-  The newspaper headline is: Terrorists Lose Out.
-  The light changes randomly again; now it's green.
-  George Bush reads a Tom Clancy book.
-  Trumps are spades.
+  The newspaper headline is: Terrorists Continue To Expand.
+  The light changes randomly again; now it's red.
+  George Bush inappropriately touches a monarch.
+  Trumps are clubs.
   
   >[2] z
-  spades - diamonds - hearts - clubs - are trumps.
+  spades - hearts - clubs - diamonds - are trumps.
   
-  You flip the coin. Heads.
+  You flip the coin. Tails.
   The phone rings a second time.
   You turn the light switch on. Nothing happens.
-  The newspaper headline is: Terrorists Lose Out.
-  The light changes randomly again; now it's amber.
-  George Bush reads a Tom Clancy book.
+  The newspaper headline is: Terrorists Continue To Expand.
+  The light changes randomly again; now it's green.
+  George Bush bombs somebody.
   Trumps are hearts.
   
   >[3] z
   clubs - spades - hearts - diamonds - are trumps.
   
-  You flip the coin. Tails.
+  You flip the coin. Heads.
   The phone rings again.
   You turn the light switch off. Nothing happens.
-  The newspaper headline is: Terrorists Lose Out.
+  The newspaper headline is: Terrorists Continue To Expand.
   The light changes randomly again; now it's red.
-  George Bush scratches.
-  Trumps are clubs.
+  George Bush yawns.
+  Trumps are spades.
   
   >[4] z
-  spades - clubs - hearts - diamonds - are trumps.
+  clubs - diamonds - spades - hearts - are trumps.
   
   You flip the coin. Tails.
   The phone rings again.
   You turn the light switch on. Nothing happens.
-  The newspaper headline is: Terrorists Lose Out.
-  The light changes randomly again; now it's green.
-  George Bush reads a Dr Seuss book.
+  The newspaper headline is: Terrorists Continue To Expand.
+  The light changes randomly again; now it's amber.
+  George Bush scratches.
   Trumps are diamonds.
   
   >[5] z
@@ -59,174 +59,174 @@
   You flip the coin. Tails.
   The phone rings again.
   You turn the light switch off. Nothing happens.
-  The newspaper headline is: Terrorists Lose Out.
-  The light changes randomly again; now it's amber.
-  George Bush reads a Dr Seuss book.
-  Trumps are hearts.
-  
-  >[6] z
-  diamonds - hearts - clubs - spades - are trumps.
-  
-  You flip the coin. Tails.
-  The phone rings again.
-  You turn the light switch on. Nothing happens.
-  The newspaper headline is: Terrorists Lose Out.
-  The light changes randomly again; now it's green.
-  George Bush bombs somebody.
-  Trumps are clubs.
-  
-  >[7] z
-  spades - diamonds - hearts - clubs - are trumps.
-  
-  You flip the coin. Heads.
-  The phone rings again.
-  You turn the light switch off. Nothing happens.
-  The newspaper headline is: Terrorists Lose Out.
-  The light changes randomly again; now it's amber.
+  The newspaper headline is: Terrorists Continue To Expand.
+  The light changes randomly again; now it's red.
   George Bush yawns.
   Trumps are diamonds.
   
-  >[8] z
-  diamonds - clubs - hearts - spades - are trumps.
-  
-  You flip the coin. Heads.
-  The phone rings again.
-  You turn the light switch on. Nothing happens.
-  The newspaper headline is: Terrorists Lose Out.
-  The light changes randomly again; now it's red.
-  George Bush scratches.
-  Trumps are spades.
-  
-  >[9] z
-  diamonds - spades - hearts - clubs - are trumps.
-  
-  You flip the coin. Heads.
-  The phone rings again.
-  You turn the light switch off. Nothing happens.
-  The newspaper headline is: Terrorists Lose Out.
-  The light changes randomly again; now it's amber.
-  George Bush yawns.
-  Trumps are spades.
-  
-  >[10] z
+  >[6] z
   spades - clubs - hearts - diamonds - are trumps.
   
   You flip the coin. Heads.
   The phone rings again.
   You turn the light switch on. Nothing happens.
-  The newspaper headline is: Terrorists Lose Out.
-  The light changes randomly again; now it's green.
+  The newspaper headline is: Terrorists Continue To Expand.
+  The light changes randomly again; now it's amber.
   George Bush reads a Tom Clancy book.
   Trumps are hearts.
   
-  >[11] z
-  hearts - spades - diamonds - clubs - are trumps.
+  >[7] z
+  clubs - hearts - spades - diamonds - are trumps.
   
-  You flip the coin. Tails.
+  You flip the coin. Heads.
   The phone rings again.
   You turn the light switch off. Nothing happens.
-  The newspaper headline is: Terrorists Lose Out.
+  The newspaper headline is: Terrorists Continue To Expand.
   The light changes randomly again; now it's red.
-  George Bush reads a Dr Seuss book.
+  George Bush eats fried chicken.
   Trumps are clubs.
   
-  >[12] z
-  hearts - clubs - diamonds - spades - are trumps.
-  
-  You flip the coin. Heads.
-  The phone rings again.
-  You turn the light switch on. Nothing happens.
-  The newspaper headline is: Terrorists Lose Out.
-  The light changes randomly again; now it's amber.
-  George Bush inappropriately touches a monarch.
-  Trumps are diamonds.
-  
-  >[13] z
-  diamonds - clubs - hearts - spades - are trumps.
-  
-  You flip the coin. Tails.
-  The phone rings again.
-  You turn the light switch off. Nothing happens.
-  The newspaper headline is: Terrorists Lose Out.
-  The light changes randomly again; now it's green.
-  George Bush yawns.
-  Trumps are hearts.
-  
-  >[14] z
-  diamonds - spades - hearts - clubs - are trumps.
-  
-  You flip the coin. Tails.
-  The phone rings again.
-  You turn the light switch on. Nothing happens.
-  The newspaper headline is: Terrorists Lose Out.
-  The light changes randomly again; now it's amber.
-  George Bush bombs somebody.
-  Trumps are spades.
-  
-  >[15] z
-  diamonds - clubs - hearts - spades - are trumps.
-  
-  You flip the coin. Heads.
-  The phone rings again.
-  You turn the light switch off. Nothing happens.
-  The newspaper headline is: Terrorists Lose Out.
-  The light changes randomly again; now it's green.
-  George Bush scratches.
-  Trumps are diamonds.
-  
-  >[16] z
-  diamonds - spades - hearts - clubs - are trumps.
-  
-  You flip the coin. Heads.
-  The phone rings again.
-  You turn the light switch on. Nothing happens.
-  The newspaper headline is: Terrorists Lose Out.
-  The light changes randomly again; now it's amber.
-  George Bush reads a Tom Clancy book.
-  Trumps are clubs.
-  
-  >[17] z
+  >[8] z
   hearts - diamonds - clubs - spades - are trumps.
   
   You flip the coin. Tails.
   The phone rings again.
-  You turn the light switch off. Nothing happens.
-  The newspaper headline is: Terrorists Lose Out.
+  You turn the light switch on. Nothing happens.
+  The newspaper headline is: Terrorists Continue To Expand.
   The light changes randomly again; now it's green.
-  George Bush bombs somebody.
-  Trumps are clubs.
+  George Bush yawns.
+  Trumps are spades.
   
-  >[18] z
+  >[9] z
   hearts - spades - diamonds - clubs - are trumps.
   
   You flip the coin. Heads.
   The phone rings again.
-  You turn the light switch on. Nothing happens.
-  The newspaper headline is: Terrorists Lose Out.
+  You turn the light switch off. Nothing happens.
+  The newspaper headline is: Terrorists Continue To Expand.
   The light changes randomly again; now it's amber.
+  George Bush scratches.
+  Trumps are hearts.
+  
+  >[10] z
+  spades - clubs - hearts - diamonds - are trumps.
+  
+  You flip the coin. Tails.
+  The phone rings again.
+  You turn the light switch on. Nothing happens.
+  The newspaper headline is: Terrorists Continue To Expand.
+  The light changes randomly again; now it's red.
   George Bush reads a Dr Seuss book.
   Trumps are diamonds.
   
-  >[19] z
+  >[11] z
+  hearts - diamonds - clubs - spades - are trumps.
+  
+  You flip the coin. Heads.
+  The phone rings again.
+  You turn the light switch off. Nothing happens.
+  The newspaper headline is: Terrorists Continue To Expand.
+  The light changes randomly again; now it's green.
+  George Bush reads a Jean-Paul Sartre book.
+  Trumps are clubs.
+  
+  >[12] z
   clubs - spades - hearts - diamonds - are trumps.
   
   You flip the coin. Heads.
   The phone rings again.
-  You turn the light switch off. Nothing happens.
-  The newspaper headline is: Terrorists Lose Out.
-  The light changes randomly again; now it's red.
-  George Bush bombs somebody.
+  You turn the light switch on. Nothing happens.
+  The newspaper headline is: Terrorists Continue To Expand.
+  The light changes randomly again; now it's amber.
+  George Bush scratches.
   Trumps are spades.
   
-  >[20] z
+  >[13] z
+  clubs - hearts - spades - diamonds - are trumps.
+  
+  You flip the coin. Tails.
+  The phone rings again.
+  You turn the light switch off. Nothing happens.
+  The newspaper headline is: Terrorists Continue To Expand.
+  The light changes randomly again; now it's green.
+  George Bush scratches.
+  Trumps are clubs.
+  
+  >[14] z
+  diamonds - clubs - hearts - spades - are trumps.
+  
+  You flip the coin. Tails.
+  The phone rings again.
+  You turn the light switch on. Nothing happens.
+  The newspaper headline is: Terrorists Continue To Expand.
+  The light changes randomly again; now it's amber.
+  George Bush bombs somebody.
+  Trumps are hearts.
+  
+  >[15] z
+  clubs - spades - hearts - diamonds - are trumps.
+  
+  You flip the coin. Tails.
+  The phone rings again.
+  You turn the light switch off. Nothing happens.
+  The newspaper headline is: Terrorists Continue To Expand.
+  The light changes randomly again; now it's green.
+  George Bush eats fried chicken.
+  Trumps are spades.
+  
+  >[16] z
+  diamonds - clubs - hearts - spades - are trumps.
+  
+  You flip the coin. Tails.
+  The phone rings again.
+  You turn the light switch on. Nothing happens.
+  The newspaper headline is: Terrorists Continue To Expand.
+  The light changes randomly again; now it's red.
+  George Bush reads a Dr Seuss book.
+  Trumps are diamonds.
+  
+  >[17] z
+  hearts - clubs - diamonds - spades - are trumps.
+  
+  You flip the coin. Heads.
+  The phone rings again.
+  You turn the light switch off. Nothing happens.
+  The newspaper headline is: Terrorists Continue To Expand.
+  The light changes randomly again; now it's amber.
+  George Bush inappropriately touches a monarch.
+  Trumps are diamonds.
+  
+  >[18] z
   hearts - diamonds - clubs - spades - are trumps.
   
   You flip the coin. Tails.
   The phone rings again.
   You turn the light switch on. Nothing happens.
-  The newspaper headline is: Terrorists Lose Out.
+  The newspaper headline is: Terrorists Continue To Expand.
+  The light changes randomly again; now it's red.
+  George Bush yawns.
+  Trumps are clubs.
+  
+  >[19] z
+  spades - clubs - hearts - diamonds - are trumps.
+  
+  You flip the coin. Heads.
+  The phone rings again.
+  You turn the light switch off. Nothing happens.
+  The newspaper headline is: Terrorists Continue To Expand.
   The light changes randomly again; now it's green.
-  George Bush scratches.
+  George Bush bombs somebody.
   Trumps are hearts.
+  
+  >[20] z
+  diamonds - hearts - clubs - spades - are trumps.
+  
+  You flip the coin. Tails.
+  The phone rings again.
+  You turn the light switch on. Nothing happens.
+  The newspaper headline is: Terrorists Continue To Expand.
+  The light changes randomly again; now it's amber.
+  George Bush bombs somebody.
+  Trumps are spades.
   
 > >

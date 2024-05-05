@@ -486,11 +486,11 @@
   (row 208)  | --
   (row 209)  | --
   Table of Selected Numbers
-  (row 1)  | 27 | twenty-seven |
-  (row 2)  | 154 | one hundred and fifty-four |
-  (row 3)  | 9 | nine |
-  (row 4)  | 3 | three |
-  (row 5)  | 4 | four |
+  (row 1)  | 9 | nine |
+  (row 2)  | 3 | three |
+  (row 3)  | 154 | one hundred and fifty-four |
+  (row 4)  | 4 | four |
+  (row 5)  | 27 | twenty-seven |
   (row 6)  | --  --
   (row 7)  | --  --
   (row 8)  | --  --

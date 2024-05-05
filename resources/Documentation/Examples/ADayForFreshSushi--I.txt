@@ -7,7 +7,7 @@
   
   A Day For Fresh Sushi
   Your basic surreal gay fish romance by Emily Short
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Studio
   This is Britney's studio. You haven't been around here for a while, because of how busy you've been with work, and she's made a few changes -- the aquarium in the corner, for instance. But it still brings back a certain emotional sweetness from the days when you had just met for the first time... when you used to spend hours on the sofa...
@@ -30,38 +30,38 @@
   
   The fish glares at you, as though to underline this point.
   
-  The evil fish darts to the bottom of the tank and moves the gravel around with his nose.
+  "Hey, nice SKIN TONE," shouts the evil fish. His words reach you in a spitting gurgle of aquarium water. "You gone over to a pure eggplant diet these days?"
   
   >[2] g
   Even if you had had no prior experience with him, you would be able to see at a glance that this is an evil fish. From his sharkish nose to his razor fins, every inch of his compact body exudes hatred and danger.
   
   "If you're looking for signs of malnutrition," says the fish, "LOOK NO FURTHER!!" And it sucks in its gills until you can see its ribcage.
   
-  The evil fish is swimming around the tank in lazy circles.
+  The evil fish darts to the bottom of the tank and moves the gravel around with his nose.
   
   >[3] kiss fish
   You're saving all your lovin for someone a lot cuddlier.
   
-  The evil fish is floating belly up! ...oh, curse. He was toying with you. As soon as he sees you looking, he goes back to swimming around.
+  The evil fish darts to the bottom of the tank and moves the gravel around with his nose.
   
   >[4] x aquarium
   A very roomy aquarium, large enough to hold quite a variety of colorful sealife -- if any yet survived.
   
-  The evil fish begins to butt his pointy nose against the glass walls of the tank.
+  The evil fish is swimming around the tank in lazy circles.
   
   >[5] x gravel
   A lot of very small grey rocks.
   
   The fish notices your gaze; makes a pathetic mime of trying to find little flakes of remaining food amongst the gravel.
   
-  The evil fish is floating belly up! ...oh, curse. He was toying with you. As soon as he sees you looking, he goes back to swimming around.
+  The evil fish is swimming around the tank in lazy circles.
   
   >[6] x seaweed
   Fake plastic seaweed of the kind generally bought in stores for exactly this purpose.
   
   "Nice, hunh?" blubs the fish, taking a stabbing bite out of one just by way of demonstration. "Look so good I could eat it."
   
-  The evil fish is swimming around the tank in lazy circles.
+  The evil fish darts to the bottom of the tank and moves the gravel around with his nose.
   
   >[7] i
   You are carrying:
@@ -70,21 +70,21 @@
     a lingerie bag
     a chef hat (being worn)
   
-  The evil fish is floating belly up! ...oh, curse. He was toying with you. As soon as he sees you looking, he goes back to swimming around.
+  The evil fish darts to the bottom of the tank and moves the gravel around with his nose.
   
   >[8] x telegram
   A telegram, apparently. And dated three days ago. TRIUMPH OURS STOP BACK SOON STOP BE SURE TO FEED FISH STOP
   
   "So," blubs the evil fish. "How about it? Little food over here?"
   
-  The evil fish darts to the bottom of the tank and moves the gravel around with his nose.
+  "Hey, nice SKIN TONE," shouts the evil fish. His words reach you in a spitting gurgle of aquarium water. "You gone over to a pure eggplant diet these days?"
   
   >[9] x bouquet
   Okay, so it's silly and sentimental and no doubt a waste of money, of which there is never really enough, but: you miss her. You've missed her since ten seconds after she stepped aboard the shuttle to Luna Prime, and when you saw these -- her favorites, pure golden tulips like springtime -- you had to have them.
   
   "Oh, you shouldn't have," says the fish. "For me??" You just respond with a livid glare.
   
-  The evil fish is floating belly up! ...oh, curse. He was toying with you. As soon as he sees you looking, he goes back to swimming around.
+  "Hey, nice SKIN TONE," shouts the evil fish. His words reach you in a spitting gurgle of aquarium water. "You gone over to a pure eggplant diet these days?"
   
   >[10] smell bouquet
   "Mmm-mm," says the fish. "Damn, I sure wish I had olfactory abilities. Hey, if I did, I might be even better at noticing the presence or absence of FOOD."
@@ -98,14 +98,14 @@
   
   "It's NOT take-out." You stare the fish down and for once he actually backstrokes a stroke or two. "It's PRIVATE."
   
-  The evil fish begins to butt his pointy nose against the glass walls of the tank.
+  The evil fish is swimming around the tank in lazy circles.
   
   >[12] g
   You grant yourself the satisfaction of a little peek inside. You went with a pale, silky ivory this time -- it has that kind of sophisticated innocence, and it goes well with the purple of your skin. A small smirk of anticipation crosses your lips.
   
   "If it's not take-out, I don't see the relevance!" shouts the fish. "Food is what you want in this situation. Food for MEEEE."
   
-  The evil fish is swimming around the tank in lazy circles.
+  The evil fish darts to the bottom of the tank and moves the gravel around with his nose.
   
   >[13] x hat
   A big white chef hat of the kind worn by chefs. In this case, you. Just goes to show what a hurry you were in on the way out of the restaurant.
@@ -115,12 +115,12 @@
   >[14] x window
   Through the windows, you get a lovely view of the street outside -- the little fountain on the corner, the slightly dilapidated but nonetheless magnificent Jugendstil architecture of the facing building. The glass itself is shut, however.
   
-  The evil fish darts to the bottom of the tank and moves the gravel around with his nose.
+  "Hey, nice SKIN TONE," shouts the evil fish. His words reach you in a spitting gurgle of aquarium water. "You gone over to a pure eggplant diet these days?"
   
   >[15] open window
   "Thank god some air," says the fish. "Man, it was getting hard to breathe in here." Two beats pass. "Oh wait."
   
-  The evil fish begins to butt his pointy nose against the glass walls of the tank.
+  "Hey, nice SKIN TONE," shouts the evil fish. His words reach you in a spitting gurgle of aquarium water. "You gone over to a pure eggplant diet these days?"
   
   >[16] x painting
   A ferocious banging from the aquarium attracts your attention as you go to look at the painting. "Hey!" screams the fish. "She doesn't like strangers looking at her paintings before they're DOONNNE!"
@@ -141,7 +141,7 @@
   
   "Yeah? Man. I never knew my mother. Eggs, that's the way to go."
   
-  The evil fish is floating belly up! ...oh, curse. He was toying with you. As soon as he sees you looking, he goes back to swimming around.
+  The evil fish darts to the bottom of the tank and moves the gravel around with his nose.
   
   >[17] g
   Once is really enough. It's pretty much embedded in your consciousness now.
@@ -151,7 +151,7 @@
   >[18] x cabinet
   Large, and with a bit of an Art Nouveau theme going on in the shape of the doors.
   
-  The evil fish begins to butt his pointy nose against the glass walls of the tank.
+  The evil fish darts to the bottom of the tank and moves the gravel around with his nose.
   
   >[19] open cabinet
   "There ya go," says the fish. "The girl is getting WARMER."
@@ -163,12 +163,12 @@
   
   "Whatcha looking at? I can't see through the doors, you know."
   
-  "Hey, nice SKIN TONE," shouts the evil fish. His words reach you in a spitting gurgle of aquarium water. "You gone over to a pure eggplant diet these days?"
+  The evil fish darts to the bottom of the tank and moves the gravel around with his nose.
   
   >[21] search cloths
   Poking around the cloths reveals -- ha HA! -- a vehemently orange can of fish food.
   
-  "Hey, nice SKIN TONE," shouts the evil fish. His words reach you in a spitting gurgle of aquarium water. "You gone over to a pure eggplant diet these days?"
+  The evil fish begins to butt his pointy nose against the glass walls of the tank.
   
   >[22] open food
   "Oh, for--!" The evil fish breaks out in exasperation and hives. "Screw the screwing around with the screwtop. SHE never has to do that."

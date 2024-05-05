@@ -1,7 +1,7 @@
    Lab                                                                                                                                                                                                                    0/1
   Quiz Show
   An Interactive Fiction by Mike Tarbert
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Lab
   You can see Sam here.
@@ -15,7 +15,7 @@
   >[2] z
   Time passes.
   
-  Sam asks you, "In what year was Delaware admitted into the Union?"
+  Sam asks you, "In what year was Hawaii admitted into the Union?"
   
   >[3] z
   (ignoring the question)
@@ -27,28 +27,26 @@
   >[4] 1787
   Correct! (December 7th, to be exact!)
   
-  Sam asks you, "In what year was Florida admitted into the Union?"
-  
   [Your score has just gone up by one point.]
   
   >[5] 1792
-  Wrong!
-  
-  Sam asks you, "In what year was Delaware admitted into the Union?"
+  I didn't understand that sentence.
   
   >[6] z
-  (ignoring the question)
-  
   Time passes.
+  
+  Sam asks you, "In what year was Hawaii admitted into the Union?"
+  
+  >[7] 1845
+  Wrong!
   
   Sam asks you, "In what year was Florida admitted into the Union?"
   
-  >[7] 1845
+  >[8] g
   Correct! (March 3rd, to be exact!)
   
-  [Your score has just gone up by one point.]
+  Sam asks you, "In what year was Hawaii admitted into the Union?"
   
-  >[8] g
-  I didn't understand that sentence.
+  [Your score has just gone up by one point.]
   
 > >

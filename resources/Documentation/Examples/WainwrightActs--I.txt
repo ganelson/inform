@@ -1,7 +1,7 @@
    Waiting Room
   Wainwright Acts
   An Interactive Fiction
-  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Waiting Room
   The waiting room door stands open.
@@ -12,17 +12,17 @@
   >[1] z
   Time passes.
   
-  Through the waiting room door, you overhear Sir Humphrey discussing your wife's infidelity.
+  Through the waiting room door, you overhear Sir Humphrey discussing your halitosis.
   
   >[2] z
   Time passes.
   
-  Through the waiting room door, you overhear Sir Humphrey discussing his hopes for your imminent resignation.
+  Through the waiting room door, you overhear Sir Humphrey discussing ways to avoid attending your birthday party.
   
   >[3] z
   Time passes.
   
-  Through the waiting room door, you overhear Sir Humphrey discussing his hopes for your imminent resignation.
+  Through the waiting room door, you overhear Sir Humphrey discussing ways to avoid attending your birthday party.
   
   >[4] w
   
@@ -39,7 +39,7 @@
   Waiting Room
   The waiting room door stands open.
   
-  Through the waiting room door, you overhear Sir Humphrey discussing your financially straitened circumstances.
+  Through the waiting room door, you overhear Sir Humphrey discussing his hopes for your imminent resignation.
   
   >[7] close door
   You close the waiting room door.

@@ -1,7 +1,7 @@
    Library
   Pages
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Library
   
@@ -9,18 +9,18 @@
   (Testing.)
   
   >[1] read from the sinister book
-  You flip the pages randomly and arrive at page 48:
+  You flip the pages randomly and arrive at page 36:
   
-  Page 48 appears to be blank.
+  Page 36 appears to be blank.
   
   >[2] read the book
-  You flip the pages randomly and arrive at page 24:
+  You flip the pages randomly and arrive at page 33:
   
-  Page 24 appears to be blank.
+  Page 33 appears to be blank.
   
   >[3] read the next page
   (in the sinister book)
-  Page 25 appears to be blank.
+  Page 34 appears to be blank.
   
   >[4] read page 2
   (in the sinister book)

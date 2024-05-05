@@ -490,10 +490,10 @@ Table of Zoggle
 (row 3)  | 3.5 |
 (row 4)  | 4.4 |
 Table of Selected Numbers
-(row 1)  | 154 | one hundred and fifty-four |
-(row 2)  | 3 | three |
+(row 1)  | 3 | three |
+(row 2)  | 27 | twenty-seven |
 (row 3)  | 4 | four |
-(row 4)  | 27 | twenty-seven |
+(row 4)  | 154 | one hundred and fifty-four |
 (row 5)  | 9 | nine |
 (row 6)  | --  -- 
 (row 7)  | --  -- 

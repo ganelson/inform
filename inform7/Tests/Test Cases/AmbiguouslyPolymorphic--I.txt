@@ -1,18 +1,18 @@
    room
-  Thing.
-  Thing.
-  Person.
-  Thing.
   Person.
   Person.
   Person.
   Thing.
+  Thing.
+  Person.
+  Person.
+  Person.
   Person.
   Person.
   
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   room
   

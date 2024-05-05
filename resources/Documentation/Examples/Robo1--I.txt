@@ -14,12 +14,12 @@
   (Testing.)
   
   >[1] z
-  Robo watches you waiting impassively.
+  Robo watches you waiting, its brushed-copper handlebar moustaches twitching.
   
   Time passes.
   
   >[2] take cylinder
-  Robo watches you taking the blue cylinder, its brushed-copper handlebar moustaches twitching.
+  Robo watches you taking the blue cylinder, its yellow eyes lamp-like and observant.
   
   Taken.
   
@@ -29,27 +29,27 @@
   Taken.
   
   >[4] put cylinder on counter
-  Robo watches you putting the blue cylinder on the counter, its brushed-copper handlebar moustaches twitching.
+  Robo watches you putting the blue cylinder on the counter, its yellow eyes lamp-like and observant.
   
   You put the blue cylinder on the counter.
   
   >[5] put block on counter
-  Robo watches you putting the red block on the counter, its yellow eyes lamp-like and observant.
+  Robo watches you putting the red block on the counter. In its metal head, gears whirr.
   
   You put the red block on the counter.
   
   >[6] x robo
   You see nothing special about Robo.
   
-  Robo watches you examining Robo, its brushed-copper handlebar moustaches twitching.
+  Robo watches you examining Robo impassively.
   
   >[7] x me
   As good-looking as ever.
   
-  Robo watches you examining yourself, its yellow eyes lamp-like and observant.
+  Robo watches you examining yourself, its brushed-copper handlebar moustaches twitching.
   
   >[8] get block
-  Robo watches you taking the red block, its brushed-copper handlebar moustaches twitching.
+  Robo watches you taking the red block impassively.
   
   Taken.
   

@@ -1,6 +1,6 @@
-Total memory consumption was 143647K = 140 MB
+Total memory consumption was 143648K = 140 MB
 
- ---- was used for 2172557 objects, in 383509 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2172558 objects, in 383510 frames in 0 x 800K = 0K = 0 MB:
 
     29.4%  inter_tree_node_array                    60 x 8192 = 491520 objects, 43255680 bytes
     19.9%  text_stream_array                        5208 x 100 = 520800 objects, 29331456 bytes
@@ -35,7 +35,7 @@ Total memory consumption was 143647K = 140 MB
      0.4%  unary_predicate_array                    17 x 1000 = 17000 objects, 680544 bytes
      0.3%  local_variable_array                     49 x 100 = 4900 objects, 471968 bytes
      0.2%  verb_usage                               1148 objects, 394912 bytes
-     0.2%  dictionary                               7830 objects, 375840 bytes
+     0.2%  dictionary                               7831 objects, 375888 bytes
      0.2%  rule                                     479 objects, 375536 bytes
      0.2%  verb_form                                388 objects, 350752 bytes
      0.1%  noun                                     2413 objects, 289560 bytes
@@ -267,8 +267,8 @@ Total memory consumption was 143647K = 140 MB
 
 100.0% was used for memory not allocated for objects:
 
-    63.1%  text stream storage                      92832184 bytes in 541303 claims
-     3.9%  dictionary storage                       5776960 bytes in 7830 claims
+    63.1%  text stream storage                      92832792 bytes in 541309 claims
+     3.9%  dictionary storage                       5777472 bytes in 7831 claims
      ----  sorting                                  6416 bytes in 1489 claims
      4.8%  source text                              7200000 bytes in 3 claims
      7.3%  source text details                      10800000 bytes in 2 claims
@@ -285,5 +285,5 @@ Total memory consumption was 143647K = 140 MB
      ----  code generation workspace for objects    3552 bytes in 19 claims
      0.1%  emitter array storage                    290688 bytes in 2079 claims
 
--139.-5% was overhead - -205318296 bytes = -200506K = -195 MB
+-139.-5% was overhead - -205318344 bytes = -200506K = -195 MB
 

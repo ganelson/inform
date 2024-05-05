@@ -1,7 +1,7 @@
    Masochism Deli
   Masochism Deli
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Masochism Deli
   Recent restructurings of corporate policy restrict the "lunch hour" to exactly thirty-two minutes, which means that no one has time to go out. Instead, you and your coworkers eat here, in the company's very own themed lunch room.
@@ -11,8 +11,8 @@
   
   >[1] inventory
   You are carrying:
-    two cold potatoes
     a hot potato
+    two cold potatoes
   
   >[2] drop potato
   (the hot potato)

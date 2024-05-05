@@ -73,22 +73,22 @@
   The server: "One."
   
   >[22] talk about mojito
-  The server: "Two."
+  The server: "One."
   
   >[23] g
-  The server: "Three."
+  The server: "Two."
   
   >[24] g
-  The server: "One."
+  The server: "Three."
   
   >[25] g
   The server: "Two."
   
   >[26] g
-  The server: "Three."
+  The server: "One."
   
   >[27] g
-  The server: "One."
+  The server: "Three."
   
   >[28] g
   The server: "Three."
@@ -100,36 +100,36 @@
   The server: "Two."
   
   >[31] g
-  The server: "One."
+  The server: "Three."
   
   >[32] talk about gimlet
-  The server: "Two."
+  The server: "Three."
   
   >[33] g
   The server: "Three."
   
   >[34] g
-  The server: "Three."
+  The server: "One."
   
   >[35] g
-  The server: "Two."
+  The server: "One."
   
   >[36] g
-  The server: "Three."
+  The server: "One."
   
   >[37] g
   The server: "One."
   
   >[38] g
-  The server: "Two."
+  The server: "Three."
   
   >[39] g
-  The server: "Two."
+  The server: "One."
   
   >[40] g
   The server: "One."
   
   >[41] g
-  The server: "Two."
+  The server: "Three."
   
 > >

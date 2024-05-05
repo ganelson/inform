@@ -11,8 +11,6 @@ This is Summer.
 This is Autumn.
 This is Winter.
 This is Spring.
-This is a scorching hot day.
-This is a sunny day.
 This is a sunny day.
 This is a rainy day.
 This is a rainy day.
@@ -30,10 +28,8 @@ This is a rainy day.
 This is a cloudy day.
 This is a cloudy day.
 This is a cloudy day.
-Clearly it's Level Five.
-Clearly it's Starless.
-Clearly it's Fracture.
-Clearly it's Epitaph.
+This is a cloudy day.
+This is a scorching hot day.
 Clearly it's Nuages.
 Clearly it's Lizard.
 Clearly it's Level Five.
@@ -48,25 +44,29 @@ Clearly it's Fracture.
 Clearly it's Epitaph.
 Clearly it's Nuages.
 Clearly it's Lizard.
-The digit is 4.
-The digit is 5.
+Clearly it's Level Five.
+Clearly it's Starless.
+Clearly it's Fracture.
+Clearly it's Epitaph.
+The digit is 1.
 The digit is 3.
 The digit is 2.
-The digit is 1.
 The digit is 5.
+The digit is 4.
 The digit is 2.
 The digit is 4.
-The digit is 3.
+The digit is 5.
 The digit is 1.
-The letter is E.
-The letter is E.
-The letter is E.
-The letter is E.
-The light changes randomly again; now it's red.
+The digit is 3.
+The letter is B.
+The letter is B.
+The letter is B.
+The letter is B.
 The light changes randomly again; now it's green.
 The light changes randomly again; now it's amber.
 The light changes randomly again; now it's red.
 The light changes randomly again; now it's green.
+The light changes randomly again; now it's amber.
 The coin comes up tails.
 The coin comes up heads.
 The coin comes up tails.
@@ -76,8 +76,6 @@ The coin comes up heads.
 Maybe the murderer is Colonel Mustard.
 Maybe the murderer is Professor Plum.
 Maybe the murderer is Cardinal Cerise.
-Maybe the murderer is Professor Plum.
-Maybe the murderer is Cardinal Cerise.
 Maybe the murderer is Colonel Mustard.
 Maybe the murderer is Professor Plum.
 Maybe the murderer is Cardinal Cerise.
@@ -85,11 +83,8 @@ Maybe the murderer is Colonel Mustard.
 Maybe the murderer is Professor Plum.
 Maybe the murderer is Cardinal Cerise.
 Maybe the murderer is Colonel Mustard.
-Maybe the victim is Colonel Mustard.
-Maybe the victim is Professor Plum.
-Maybe the victim is Cardinal Cerise.
-Maybe the victim is Professor Plum.
-Maybe the victim is Cardinal Cerise.
+Maybe the murderer is Professor Plum.
+Maybe the murderer is Cardinal Cerise.
 Maybe the victim is Colonel Mustard.
 Maybe the victim is Professor Plum.
 Maybe the victim is Cardinal Cerise.
@@ -97,6 +92,11 @@ Maybe the victim is Colonel Mustard.
 Maybe the victim is Professor Plum.
 Maybe the victim is Cardinal Cerise.
 Maybe the victim is Colonel Mustard.
+Maybe the victim is Professor Plum.
+Maybe the victim is Cardinal Cerise.
+Maybe the victim is Colonel Mustard.
+Maybe the victim is Professor Plum.
+Maybe the victim is Cardinal Cerise.
 The screen door squeaks surprisingly loudly.
 The screen door squeaks loudly.
 The screen door squeaks loudly.

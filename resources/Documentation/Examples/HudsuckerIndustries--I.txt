@@ -1,7 +1,7 @@
    Mailroom
   Hudsucker Industries
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Mailroom
   Usually a thrumming hive of bee-like workers, but you got in early to get a jump on the day's work.
@@ -17,20 +17,20 @@
       seven letters (all unread, at the moment)
   
   >[2] examine letter
-  On inspection, it turns out to be quite polite.
+  On inspection, it turns out to be quite flamingly rude.
   
   >[3] get letter
   Taken.
   
   >[4] i
   You are carrying:
-    a polite letter
+    a flamingly rude letter
     a satchel
       six letters (all unread, at the moment)
   
   >[5] put letter in ceo box
-  (the polite letter in the CEO box)
-  You put the polite letter into the CEO box.
+  (the flamingly rude letter in the CEO box)
+  You put the flamingly rude letter into the CEO box.
   
   >[6] inventory
   You are carrying:
@@ -61,7 +61,7 @@
   
   >[12] x letter
   (the random letter)
-  On inspection, it turns out to be quite flamingly rude.
+  On inspection, it turns out to be quite polite.
   
   >[13] g
   (the random letter)
@@ -90,7 +90,7 @@
   Taken.
   
   >[19] g
-  (the flamingly rude random letter)
+  (the polite letter)
   Taken.
   
   >[20] i

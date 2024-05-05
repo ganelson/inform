@@ -3,7 +3,7 @@
   
   Chapter 15: Port Royal
   An Interactive Fiction by Emily Short
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Fort James
   The enclosure of Fort James is a large, roughly hexagonal court walled with heavy stone.  The walls face the entrance to Port Royal Harbor, and the battery of guns is prepared to destroy any enemy ship arriving.
@@ -571,7 +571,7 @@
   
 > >   Fort Carlisle                                                                                                                                                                                                          8/100
   ** x ships
-  Nearby you catch the frigate belonging to Captain Hardue, which holds forty men and carries one guns. (Random output.)
+  Nearby you catch the frigate belonging to Captain James, which holds seventy men and carries three guns. (Random output.)
   
 > >   Fort Carlisle                                                                                                                                                                                                          8/101
   ** x dock
@@ -604,7 +604,7 @@
   
 > >   Fort Carlisle                                                                                                                                                                                                          8/106
   ** x ships
-  Nearby you catch the barque belonging to Captain Blewfield, which holds fifty men and carries three guns. (Random output.)
+  Nearby you catch the frigate belonging to Captain Hardue, which holds forty men and carries one guns. (Random output.)
   
 > >   Fort Carlisle                                                                                                                                                                                                          8/107
   ** x dock

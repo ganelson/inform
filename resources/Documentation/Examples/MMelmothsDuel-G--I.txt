@@ -7,7 +7,7 @@ An Interactive Fiction
 Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
 
 Saint-Germain-des-Prés
-Haunt of artists, of the coffee-drinking sort, and of cafés, of the artist-haunted sort, you once again find yourself outside M. Melmoth's hotel. Today the recently-fallen rain runs down the gutters of the 6th, and you long to be indoors.
+Haunt of artists, of the coffee-drinking sort, and of cafés, of the artist-haunted sort, you once again find yourself outside M. Melmoth's hotel. Today crowds of vulgar children play chase around the lampposts, and you long to be indoors.
 
 >(Testing.)
 
@@ -16,27 +16,27 @@ Haunt of artists, of the coffee-drinking sort, and of cafés, of the artist-haun
 Hôtel d'Alsace
 Typical. Oscar writes you a letter announcing his own imminent demise - "My wallpaper and I are fighting a duel to the death. One or other of us has got to go." - and then you get there and he's out, no doubt procuring paint the colour of absinthe, if he isn't procuring the painter.
 
-In this light, the wallpaper has a distinctly green wash. 
+In this light, the wallpaper has a distinctly darkish purple wash. You particularly dislike purple.
 
 >[2] out
 You leave, shaking your head. But within twenty-four hours, you are back, as you always knew you would be.
 
 >[3] look
 Saint-Germain-des-Prés
-Haunt of artists, of the coffee-drinking sort, and of cafés, of the artist-haunted sort, you once again find yourself outside M. Melmoth's hotel. Today crowds of vulgar children play chase around the lampposts, and you long to be indoors.
+Haunt of artists, of the coffee-drinking sort, and of cafés, of the artist-haunted sort, you once again find yourself outside M. Melmoth's hotel. Today the recently-fallen rain runs down the gutters of the 6th, and you long to be indoors.
 
 >[4] in
 
 Hôtel d'Alsace
 Typical. Oscar writes you a letter announcing his own imminent demise - "My wallpaper and I are fighting a duel to the death. One or other of us has got to go." - and then you get there and he's out, no doubt procuring paint the colour of absinthe, if he isn't procuring the painter.
 
-In this light, the wallpaper has a distinctly aquamarine wash. 
+In this light, the wallpaper has a distinctly green wash. 
 
 >[5] out
 You leave, shaking your head. But within twenty-four hours, you are back, as you always knew you would be.
 
 >[6] look
 Saint-Germain-des-Prés
-Haunt of artists, of the coffee-drinking sort, and of cafés, of the artist-haunted sort, you once again find yourself outside M. Melmoth's hotel. Today the recently-fallen rain runs down the gutters of the 6th, and you long to be indoors.
+Haunt of artists, of the coffee-drinking sort, and of cafés, of the artist-haunted sort, you once again find yourself outside M. Melmoth's hotel. Today crowds of vulgar children play chase around the lampposts, and you long to be indoors.
 
 >Are you sure you want to quit? 

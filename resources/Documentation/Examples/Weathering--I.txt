@@ -1,24 +1,24 @@
    Mount Pisgah Station
   Weathering
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Mount Pisgah Station
-  The rocky peak of Mt. Pisgah (altitude 872m) is graced only by an automatic weather station. The clouds, close enough almost to touch, are nimbus. Temperature: 10 degrees, barometric pressure: 964 millibars.
+  The rocky peak of Mt. Pisgah (altitude 872m) is graced only by an automatic weather station. The clouds, close enough almost to touch, are altocumulus. Temperature: 13 degrees, barometric pressure: 958 millibars.
   
 > >   Mount Pisgah Station
   (Testing.)
   
   >[1] look
   Mount Pisgah Station
-  The rocky peak of Mt. Pisgah (altitude 872m) is graced only by an automatic weather station. The clouds, close enough almost to touch, are stratus. Temperature: 10 degrees, barometric pressure: 960 millibars.
+  The rocky peak of Mt. Pisgah (altitude 872m) is graced only by an automatic weather station. The clouds, close enough almost to touch, are nimbus. Temperature: 15 degrees, barometric pressure: 955 millibars.
   
   >[2] look
   Mount Pisgah Station
-  The rocky peak of Mt. Pisgah (altitude 872m) is graced only by an automatic weather station. The clouds, close enough almost to touch, are nimbus. Temperature: 13 degrees, barometric pressure: 952 millibars.
+  The rocky peak of Mt. Pisgah (altitude 872m) is graced only by an automatic weather station. The clouds, close enough almost to touch, are cumulonimbus. Temperature: 14 degrees, barometric pressure: 960 millibars.
   
   >[3] look
   Mount Pisgah Station
-  The rocky peak of Mt. Pisgah (altitude 872m) is graced only by an automatic weather station. The clouds, close enough almost to touch, are stratus. Temperature: 8 degrees, barometric pressure: 960 millibars.
+  The rocky peak of Mt. Pisgah (altitude 872m) is graced only by an automatic weather station. The clouds, close enough almost to touch, are nimbus. Temperature: 10 degrees, barometric pressure: 951 millibars.
   
 > >

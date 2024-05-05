@@ -1,7 +1,7 @@
    Graduate Lounge
   Bibliophilia
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Graduate Lounge
   Shabby sofas; plastic cups remaining from the afternoon's pre-lecture espresso; a collection of Xena and Hercules figurines posed for ironic effect. It's somewhat depressing at this hour, when everyone has gone home.
@@ -18,10 +18,10 @@
   A hefty reference with short articles on everything from Greek meter to ancient cosmetics.
   
   >[3] examine books
-  You scan the shelves and notice, among others, a volume entitled Oxford Classical Dictionary.
+  You scan the shelves and notice, among others, a volume entitled Reading Greek Death.
   
   >[4] examine books
-  You scan the shelves and notice, among others, a volume entitled Collected Dialogues of Plato.
+  You scan the shelves and notice, among others, a volume entitled Oxford Classical Dictionary.
   
   >[5] examine plato
   All the Platonic dialogues -- some, admittedly, in rather tired translations -- but still a useful single volume, ed. Edith Hamilton and Huntington Cairns.

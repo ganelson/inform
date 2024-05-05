@@ -1,7 +1,7 @@
    Empty Room
   Tilt
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Empty Room
   Nothing to see here.
@@ -12,19 +12,19 @@
   (Testing.)
   
   >[1] draw
-  You draw a three of hearts.
+  You draw a three of clubs.
   
   >[2] g
-  You draw a five of hearts.
+  You draw a deuce of clubs.
   
   >[3] g
-  You draw a ten of spades.
+  You draw a seven of clubs.
   
   >[4] g
-  You draw a queen of diamonds.
+  You draw a deuce of spades.
   
   >[5] g
-  You draw a seven of diamonds.
+  You draw a ten of clubs.
   
   >[6] force hand
   You are carrying:
@@ -36,7 +36,7 @@
   
   >[8] g
   You are carrying:
-    four of a kind (eight of spades, eight of diamonds, eight of clubs, eight of hearts, three of clubs)
+    four of a kind (eight of hearts, eight of spades, eight of clubs, eight of diamonds, three of clubs)
   
   >[9] g
   You are carrying:

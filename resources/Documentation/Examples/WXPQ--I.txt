@@ -1,7 +1,7 @@
    WXPQ Studio
   WXPQ
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   WXPQ Studio
   After about 2 AM, no one is listening anyway, so you can more or less make up whatever you like to fill the airwaves.
@@ -10,13 +10,13 @@
   (Testing.)
   
   >[1] discuss elvis
-  You babble for a while about your hatred of Elvis.
+  You babble for a while about your mother's secret love affair with Elvis.
   
   >[2] discuss kennedy
-  You babble for a while about your interest in John F Kennedy.
+  You babble for a while about your conspiracy theory concerning John F Kennedy.
   
   >[3] discuss chocolate
-  You babble for a while about your interest in single-origin chocolate.
+  You babble for a while about your conspiracy theory concerning single-origin chocolate.
   
   >[4] discuss narratology vs ludology debate
   For once, you're at a loss for anything to say.

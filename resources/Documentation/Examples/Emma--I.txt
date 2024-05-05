@@ -1,56 +1,48 @@
    a cluster by the banquet table
   Emma
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
-  Miss Bates is giggling about the weather. This does not seem to compel the interest of Emma Woodhouse.
+  Frank Churchill is talking with great animation and slightly more than becoming warmth to Jane Fairfax, while Mr Elton look on with varying degrees of amusement or irritation.
   
-  Elsewhere in the room, you can see a lone person at the corner, a group next to the doorway and a couple by the window.
+  Elsewhere in the room, you can see a couple at the corner, a cluster next to the doorway and a cluster by the window.
   
-> >   a cluster by the banquet table
+> >   a lone person by the banquet table
   (Testing.)
   
   >[1] z
   Time passes.
   
-  Mrs Bates wanders over.
-  
-  Miss Bates makes excuses and drifts off to join a couple next to the doorway.
-  
-  Emma Woodhouse makes excuses and drifts off to join a couple next to the doorway.
-  
-  Jane Fairfax wanders over.
+  Mr Elton makes excuses and drifts off to join a cluster by the window.
   
   >[2] z
   Time passes.
-  
-  Frank Churchill wanders over.
   
   >[3] z
   Time passes.
   
   >[4] look
-  Frank Churchill is talking with great animation and slightly more than becoming warmth to Jane Fairfax, while Mrs Bates look on with varying degrees of amusement or irritation.
+  Frank Churchill is talking with great animation and slightly more than becoming warmth to Jane Fairfax.
   
   Elsewhere in the room, you can see a couple at the corner, a cluster next to the doorway and a cluster by the window.
   
-  Mrs Bates makes excuses and drifts off to join a couple at the corner.
-  
   >[5] x corner
-  In that direction you see Mrs Bates, Mr Knightley and Mr Woodhouse.
+  In that direction you see Mrs Bates and Mr Woodhouse.
+  
+  Frank Churchill makes excuses and drifts off to join a lone person at the corner.
+  
+  Jane Fairfax makes excuses and drifts off to join a lone person at the corner.
   
   >[6] x doorway
-  In that direction you see Harriet Smith, Mrs Weston, Mr Knightley, Mr Elton, Mr Weston, Emma Woodhouse and Miss Bates.
+  In that direction you see Harriet Smith, Mrs Weston, Mr Elton, Mr Weston, Emma Woodhouse and Mr Knightley.
   
   >[7] x window
-  In that direction you see Mr Woodhouse.
+  In that direction you see Mrs Bates, Mr Woodhouse and Miss Bates.
   
   >[8] x table
-  In that direction you see Frank Churchill and Jane Fairfax.
+  In that direction you see nothing.
   
   >[9] go to the table
-  Frank Churchill is talking with great animation and slightly more than becoming warmth to Jane Fairfax.
-  
-  Elsewhere in the room, you can see a vacancy at the corner, a group next to the doorway and a lone person by the window.
+  Elsewhere in the room, you can see a couple at the corner, a group next to the doorway and a cluster by the window.
   
 > >

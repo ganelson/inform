@@ -1,7 +1,7 @@
    Lab
   History Lab
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Lab
   You can see a box (in which is a newspaper) and Clark here.
@@ -21,7 +21,7 @@
   
   >[4] look
   Lab
-  You can see the box you examined (in which is the newspaper you looked at) and Clark here.
+  You can see the box you looked at (in which is the newspaper you looked at) and Clark here.
   
   >[5] clark, x newspaper
   Clark looks closely at the newspaper.
@@ -34,7 +34,7 @@
   
   >[8] look
   Lab
-  You can see the box Clark dropped (in which is the newspaper Clark examined) and Clark here.
+  You can see the box Clark dropped (in which is the newspaper Clark looked at) and Clark here.
   
   >[9] take box
   Taken.
@@ -42,7 +42,7 @@
   >[10] i
   You are carrying:
     the box you took
-      the newspaper Clark looked at
+      the newspaper Clark examined
   
   >[11] smell box
   You smell nothing unexpected.

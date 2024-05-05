@@ -1,7 +1,7 @@
    Deck of the Helene Marie
   Don Pedro's Revenge
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Deck of the Helene Marie
   The two crews are embattled all around you, but your attention is reserved for your particular enemy: Don Pedro.
@@ -25,7 +25,7 @@
   
   You can't move backward or parry very successfully from this position.
   
-  Perched up here with the advantage of height (but little mobility), you attempt to [5] jump
+  Able to slice at your attackers but not to advance or retreat, you choose to [5] jump
   
   You leap down from your position, into the middle of the deck.
   
@@ -33,11 +33,11 @@
   
   You protect yourself, but end up wedged in between two barrels.
   
-  So securely boxed-in that you can really only parry or thrust, you try to [7] retreat
+  Trapped between your barrels, you decide to [7] retreat
   
   You protect yourself, but end up wedged in between two barrels.
   
-  Trapped between your barrels, you decide to [8] advance
+  So securely boxed-in that you can really only parry or thrust, you try to [8] advance
   
   You push forward aggressively, making your way to the open deck.
   

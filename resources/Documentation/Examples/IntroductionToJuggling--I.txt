@@ -1,14 +1,14 @@
    Backstage, feeling incompetent                                                                                                                                                                                         Budget: $60.00
   Introduction to Juggling
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Backstage
   A muffled black room with felt on the floors and walls. A glowing sign over the stage door says SHOW IN PROGRESS.
   
   You can see a Juggling Equipment Catalog here.
   
-> >   Backstage, feeling moderately skilled                                                                                                                                                                                  Budget: $9.00
+> >   Backstage, feeling highly skilled                                                                                                                                                                                      Budget: $9.00
   (Testing.)
   
   >[1] read catalog
@@ -68,6 +68,6 @@
   You order a fireball set, which is delivered instantly.
   
   >[15] juggle fireball
-  You're not quite ready to juggle something like the fireball set. Better to start with an easier toy.
+  You juggle the fireballs rapidly, careful never to hold any of them a moment longer than necessary.
   
 > >

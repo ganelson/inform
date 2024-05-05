@@ -5,7 +5,7 @@ Table of Neptune's Moons
 (row 4)  | --  -- 
 The surface of Triton is cryovolcanic ridges.
 We seem to find (row 3)  | Proteus | highly irregular and sooty |.
-The surface of Triton is cryovolcanic ridges.
+The surface of Proteus is highly irregular and sooty.
 "whether or not the sought value is a surface listed in the Table of Neptune's Moons" = truth state: true
 "moon entry" = text: Nereid
 "surface entry" = text: utterly unknown

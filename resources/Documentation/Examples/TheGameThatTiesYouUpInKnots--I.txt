@@ -25,85 +25,85 @@
   >[2] spin
   "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
   
-  "Okay, Johnny Carson, you have to put your right hand on a green disc."
+  "Okay, Johnny Carson, you have to put your left hand on a red disc."
   
-  Johnny Carson has right hand on a green disc.
+  Johnny Carson has left hand on a red disc.
   
   >[3] spin
   "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
   
-  "Okay, Eva Gabor, you have to put your left hand on a blue disc."
+  "Okay, Eva Gabor, you have to put your left foot on a red disc."
   
-  Eva Gabor has left foot on a yellow disc and left hand on a blue disc.
+  Eva Gabor has left foot on a red disc.
   
   >[4] spin
   "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
   
-  "Okay, Johnny Carson, you have to put your right hand on a green disc."
+  "Okay, Johnny Carson, you have to put your left hand on a blue disc."
   
-  Johnny Carson has right hand on a green disc.
+  Oh no, Johnny Carson falls and loses! The crowd goes wild, and the players step back for another bout, stretching ruefully.
   
   >[5] spin
   "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
   
-  "Okay, Eva Gabor, you have to put your left foot on a green disc."
+  "Okay, Eva Gabor, you have to put your left hand on a green disc."
   
-  Eva Gabor has left foot on a green disc and left hand on a blue disc.
+  Eva Gabor has left hand on a green disc.
   
   >[6] spin
   "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
   
-  "Okay, Johnny Carson, you have to put your left hand on a green disc."
+  "Okay, Johnny Carson, you have to put your right hand on a red disc."
   
-  Johnny Carson has left hand on a green disc and right hand on a green disc.
+  Johnny Carson has right hand on a red disc.
   
   >[7] spin
   "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
   
   "Okay, Eva Gabor, you have to put your left foot on a red disc."
   
-  Eva Gabor has left foot on a red disc and left hand on a blue disc.
+  Oh no, Eva Gabor falls and loses! The crowd goes wild, and the players step back for another bout, stretching ruefully.
   
   >[8] spin
   "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
   
-  "Okay, Johnny Carson, you have to put your left foot on a blue disc."
+  "Okay, Johnny Carson, you have to put your right hand on a red disc."
   
-  Johnny Carson has left foot on a blue disc, left hand on a green disc and right hand on a green disc.
+  Johnny Carson has right hand on a red disc.
   
   >[9] spin
   "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
   
-  "Okay, Eva Gabor, you have to put your left foot on a red disc."
+  "Okay, Eva Gabor, you have to put your right hand on a yellow disc."
   
-  Eva Gabor has left foot on a red disc and left hand on a blue disc.
+  Eva Gabor has right hand on a yellow disc.
   
   >[10] spin
   "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
   
-  "Okay, Johnny Carson, you have to put your right hand on a green disc."
+  "Okay, Johnny Carson, you have to put your right foot on a green disc."
   
-  Oh no, Johnny Carson falls and loses! The crowd goes wild, and the players step back for another bout, stretching ruefully.
+  Johnny Carson has right foot on a green disc and right hand on a red disc.
   
   >[11] spin
   "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
   
-  "Okay, Eva Gabor, you have to put your left hand on a yellow disc."
+  "Okay, Eva Gabor, you have to put your left hand on a red disc."
   
-  Eva Gabor has left hand on a yellow disc.
+  Eva Gabor has left hand on a red disc and right hand on a yellow disc.
   
   >[12] spin
   "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
   
-  "Okay, Johnny Carson, you have to put your right foot on a red disc."
+  "Okay, Johnny Carson, you have to put your right hand on a red disc."
   
-  Johnny Carson has right foot on a red disc.
+  Johnny Carson has right foot on a green disc and right hand on a red disc.
   
   >[13] spin
   "SPIN!" the rapturous audience calls out. And so you spin the spinner. And when it stops...
   
-  "Okay, Eva Gabor, you have to put your right hand on a blue disc."
+  "Okay, Eva Gabor, you have to put your left hand on a yellow disc."
   
-  Eva Gabor has left hand on a yellow disc and right hand on a blue disc.
+  Eva Gabor has left hand on a yellow disc and right hand on a yellow disc.
   
 > >

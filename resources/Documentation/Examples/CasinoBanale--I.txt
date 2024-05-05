@@ -1,12 +1,12 @@
    Casino
   Casino Banale
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Casino
   Penny grimaces at you-- Penny is the same woman who stepped on your toe in the buffet line. The third time, she blurted, "You have big shoes, don't you?"
   
-  Frince and Tim are following the spin of the roulette.
+  Frince and Tim are chattering.
   
 > >   Casino
   (Testing.)
@@ -30,6 +30,6 @@
   Casino
   You avoid Frince's eye. You need some time to adjust to the image of him making out with Penny in a storage closet before you can talk to him without appalled giggling.
   
-  Tim and Penny are watching the croupier breathlessly.
+  Tim and Penny are following the spin of the roulette breathlessly.
   
 > >

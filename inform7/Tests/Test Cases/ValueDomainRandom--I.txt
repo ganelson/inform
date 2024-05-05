@@ -6,21 +6,21 @@
   
   External files:  File of Glaciers
   
-  Times:  6:34 pm
+  Times:  9:43 am
   
-  Tables:  (the empty table)
+  Tables:  Table of Final Question Options
   
-  Truth states:  false
+  Truth states:  true
   
   Colours:  green
   
-  LSD Experience is a random scene.
+  Bach Cantata Concert is a random scene.
   Entire Game is a random good scene.
   LSD Experience is a random bad scene.
   
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Stanford
   
