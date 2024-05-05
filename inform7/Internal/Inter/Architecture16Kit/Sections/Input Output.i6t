@@ -138,8 +138,10 @@ to document all of that.
 ];
 [ VM_KeyDelay_Interrupt; rtrue; ];
 
-[ VM_ReadKeyboard a_buffer a_table;
+[ VM_ReadKeyboard a_buffer a_table ix;
 	read a_buffer a_table;
+	for ( ix = 2 : ix <= (a_buffer->1) + 1 : ix++ )
+		if (((a_buffer->ix) < 32) || ((a_buffer->ix) == 160)) a_buffer->ix = 32;
 ];
 
 @h Buffer Functions.
