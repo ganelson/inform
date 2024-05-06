@@ -5,6 +5,8 @@ Index: Waterskin being depleted
 Description: A waterskin that is depleted as the player drinks from it.
 For: Z-Machine
 
+^^{Waterskin being depleted}
+
 	{*}"Thirst"
 	
 	The player carries a waterskin. The waterskin can be full, partly drained, or empty. The waterskin is full. Understand "water" as the waterskin.

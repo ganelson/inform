@@ -5,6 +5,8 @@ Index: Window connecting two rooms
 Description: A window between two locations. When the window is open, the player can reach through into the other location; when it isn't, access is barred.
 For: Z-Machine
 
+^^{Window connecting two rooms}
+
 	{*}"Dinner is Served"
 	
 	Street in Kolonaki is a room. "There is a single round table out on the street here, and a window more or less at knee level looks down into the Olive Tree Gyro Shop, which is partly basement."

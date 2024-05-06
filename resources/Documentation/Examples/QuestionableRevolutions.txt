@@ -5,6 +5,8 @@ Index: Person who answers questions based on a common pool of knowledge
 Description: An expansion on the previous idea, only this time we store information and let characters answer depending on their expertise in a given area.
 For: Z-Machine
 
+^^{dialogue: characters answering questions}
+
 	{*}"Questionable Revolutions"
 	
 	Interrogative is a kind of value. The interrogatives are who, what, when, where, how, and why.

@@ -5,6 +5,8 @@ Index: Altering response text programmatically
 Description: Parser messages that are delivered with a speech impediment.
 For: Z-Machine
 
+^^{Altering response text programmatically}
+
 If we want to change individual responses to player action, then the best thing to do is to use the response facility to modify those selections, as shown in the chapter on [Responses].
 
 However, suppose what we want is to give the parser a speech impediment that slightly alters all of the responses it issues. For this purpose, we might need to do a bit of text replacement...

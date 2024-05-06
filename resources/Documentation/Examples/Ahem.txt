@@ -5,6 +5,8 @@ Index: Phrase to repeat a rule
 Description: Writing a phrase, with several variant forms, whose function is to follow a rule several times.
 For: Z-Machine
 
+^^{Phrase to repeat a rule}
+
 As we see in the example here, it is possible to use slashed variations in more than one place in a phrase, and to offer a number of separate forms. The main rule of thumb to remember is that value inputs for the phrase should always be separated by some text; so
 
 	To do/follow (chosen rule - a rule) exactly/precisely/just/-- (N - a number) time/times:

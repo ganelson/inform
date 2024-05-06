@@ -5,6 +5,8 @@ Index: CUT and TIE for lengths of string
 Description: A string which can be cut into arbitrary lengths, and then tied back together.
 For: Z-Machine
 
+^^{CUT and TIE for lengths of string}
+
 	{*}"Snip!"
 	
 	Length is a kind of value. 30 inch specifies a length. 20 in specifies a length. 50 inches specifies a length.

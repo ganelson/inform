@@ -5,6 +5,8 @@ Index: Lanista 2. Randomised Combat with Weapons
 Description: Randomised combat in which the damage done depends on what weapons the characters are wielding, and in which an ``ATTACK IT WITH`` action is created to replace regular attacking. Also folds a new ``DIAGNOSE`` command into the system.
 For: Z-Machine
 
+^^{combat: with weapons}
+
 In [Lanista 1], we explored a way to create a randomised combat system. That system didn't allow for multiple weapons, though. Here we explore how to create an ``ATTACK IT WITH`` action that will let the player choose between weapons with different maximum powers.
 
 We're also going to rewrite that original `instead of attacking:` rule into an attacking it with action that can be performed equally by the player or by any of the player's enemies.

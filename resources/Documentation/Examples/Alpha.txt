@@ -5,6 +5,8 @@ Index: Testing command
 Description: Creating a beta-testing command that matches any line starting with punctuation.
 For: Z-Machine
 
+^^{Testing command}
+
 Sometimes we want to let testers of a game insert their own comments during a transcript, without those comments wasting turns of the game or producing lengthy or inappropriate parser errors. Many testers have a habit of prefacing comments with a punctuation mark, so let's say that we'd like to catch any command that starts with any punctuation at all:
 
 	{*}"Alpha"

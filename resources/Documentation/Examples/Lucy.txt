@@ -5,6 +5,8 @@ Index: ASKing about a conversation topic other than the one the player typed
 Description: Redirecting a question about one topic to ask about another.
 For: Z-Machine
 
+^^{asking (actor) about+action+: a conversation topic other than the one the player typed}
+
 Occasionally we will want to replace the player's question topic with another of our own devising. We can do this in the simplest possible case like so:
 
 	{*}"Lucy"

@@ -5,6 +5,8 @@ Index: Time told in 24-hour military style
 Description: Printing the time of day in 24-hour time, as in military situations.
 For: Z-Machine
 
+^^{Time told in 24-hour military style}
+
 Though Inform normally prints times in AM/PM terms, it stores the hours and minutes as 24-hour time; so, if we like, we can easily extract that information again thus:
 
 	{*}"Situation Room"

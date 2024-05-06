@@ -5,6 +5,8 @@ Index: Smart window
 Description: An electrochromic window that becomes transparent or opaque depending on whether it is currently turned on.
 For: Z-Machine
 
+^^{Smart window}
+
 	{*}"Vitrine"
 	
 	Plaza View is a room. "Your uncle's apartment, on loan to you for viewing the parade and celebrations today. This would be more of a sacrifice on his part if he weren't currently yachting around Corfu."

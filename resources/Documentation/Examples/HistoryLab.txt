@@ -5,6 +5,8 @@ Index: Identifying nouns by the last thing done to them
 Description: We create phrases such as "the box we took" and "the newspaper Clark looked at" based on what has already happened in the story.
 For: Z-Machine
 
+^^{Identifying nouns by the last thing done to them}
+
 The examples [Variety] and [Narrative Register] show how verbs can be associated with particular actions. Here, we use the same principle so that we can report to the player what was last done to a particular object, either by the player or by someone else.
 
 To do this, we need to use the idea of [stored actions] from the [Advanced Actions] chapter.

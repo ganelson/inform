@@ -5,6 +5,8 @@ Index: Relations and their uses
 Description: A number of sleuths (the player among them) find themselves aboard the Orient Express, where a murder has taken place, and one of them is apparently the culprit. Naturally they do not agree on whom, but there is physical evidence which may change their minds...
 For: Z-Machine
 
+^^{Relations and their uses}
+
 The following example creates two new relations, and two new verbs, in order to set up a tangled web of intrigue.
 
 	{*}"Murder on the Orient Express"

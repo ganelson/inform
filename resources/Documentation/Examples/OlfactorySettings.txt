@@ -5,6 +5,8 @@ Index: An example bouquet of flowers
 Description: Some adaptive text for smelling the flowers, or indeed, anything else.
 For: Z-Machine
 
+^^{An example bouquet of flowers}
+
 While this isn't very interesting as IF, it runs through most of the adaptive-text tricks.
 
 	{*}"Olfactory Settings"

@@ -5,6 +5,8 @@ Index: GOing an invalid direction produces a list of valid exits
 Description: Offering the player a list of valid directions if they try to go in a direction that leads nowhere.
 For: Z-Machine
 
+^^{>GO: invalid direction produces a list of valid exits}
+
 	{*}"Bumping into Walls"
 
 First we add an instruction to determine which ways lead to other rooms.

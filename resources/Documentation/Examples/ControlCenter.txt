@@ -5,6 +5,8 @@ Index: Describing objects with parts
 Description: Objects which automatically include a description of their component parts whenever they are examined.
 For: Z-Machine
 
+^^{descriptions (displayed): objects with parts}
+
 It is straightforward to make a rule that anything with parts must mention all those parts during an ``EXAMINE`` command:
 
 	{*}"Control Center"

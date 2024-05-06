@@ -5,6 +5,8 @@ Index: Deck of cards
 Description: A deck of cards which can be shuffled and dealt from.
 For: Z-Machine
 
+^^{Deck of cards}
+
 Suppose we want a deck of cards which the player can shuffle and draw from. Our first (rather tedious) task is merely to set up the deck as a table:
 
 	{*}"Jokers Wild"

@@ -5,6 +5,8 @@ Index: Pine 3. Flashback scenes described to the Princess
 Description: Pine: Allowing the player to visit aspects of the past in memory and describe these events to the princess, as a break from the marriage-proposal scene.
 For: Z-Machine
 
+^^{Pine 3. Flashback scenes described to the Princess}
+
 	{*}"Pine"
 	
 	Part 1 - The Set-up

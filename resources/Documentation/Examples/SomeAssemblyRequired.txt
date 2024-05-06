@@ -5,6 +5,8 @@ Index: Shirts constructed from component parts
 Description: Building different styles of shirt from component sleeves and collars.
 For: Z-Machine
 
+^^{Shirts constructed from component parts}
+
 We now have the mechanisms in place to do some fairly sophisticated renaming of objects. For instance:
 
 	{*}"Some Assembly Required"

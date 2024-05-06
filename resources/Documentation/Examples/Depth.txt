@@ -5,6 +5,8 @@ Index: Containers that calculate internal volume and available room
 Description: Receptacles that calculate internal volume and the amount of room available, and  cannot be overfilled.
 For: Z-Machine
 
+^^{containers+kind+: that calculate internal volume and available room}
+
 In the following, we pretend that every item has a cuboidal shape. Every thing has a length, width and depth, while a `measured container` also has interior dimensions. (Thus a 10x10x10 container with 1cm-thick sides might have interior dimensions 9x9x9.)
 
 	{*}"Depth"

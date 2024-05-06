@@ -5,6 +5,8 @@ Index: HELP command is recommended if the player seems lost
 Description: Noticing when the player seems to be at a loss, and recommending the use of hints.
 For: Z-Machine
 
+^^{>HELP: command recommended if the player seems lost}
+
 Suppose we'd like to watch for signs that the player is floundering, and if we see such signs, recommend that they try the hints. There are probably more sophisticated diagnostics, but as a first cut, let's assume that a player who repeatedly reviews descriptions of objects they've already seen, looks around the room, and takes inventory, is at a loss for more productive activities. So then...
 
 	{*}"Y ask Y?"

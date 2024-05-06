@@ -5,6 +5,8 @@ Index: Pushing a box between named internal positions in a room
 Description: The young William Wordsworth, pushing a box about in his room, must struggle to achieve a Romantic point of view.
 For: Z-Machine
 
+^^{Pushing a box between named internal positions in a room}
+
 We begin with the location and its fittings, and we create a kind of value which names the different internal positions we will allow.
 
 	{*}"Further Reasons Why All Poets Are Liars"

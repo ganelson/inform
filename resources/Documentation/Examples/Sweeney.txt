@@ -5,6 +5,8 @@ Index: Conversation with multiple options for each conversation topic
 Description: A conversation where each topic may have multiple questions and answers associated with it, and where a given exchange can lead to new additions to the list.
 For: Z-Machine
 
+^^{dialogue: with multiple options for each conversation topic}
+
 	{*}"Sweeney"
 	
 	A subject is a kind of thing. Some subjects are defined by the Table of Conversation Subjects.

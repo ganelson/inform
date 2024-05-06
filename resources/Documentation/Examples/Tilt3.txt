@@ -5,6 +5,8 @@ Index: Tilt 3. Playing cards with coloured unicode suits
 Description: Displaying the card suits from our deck of cards with red and black coloured unicode symbols.
 For: Z-Machine
 
+^^{Tilt 3. Playing cards with coloured unicode suits}
+
 Books and articles about card-playing traditionally abbreviate card names into a simple two-symbol notation: a number or letter representing the card rank, followed by a symbol indicating the card suit. Suppose that we want to emulate this notation when taking inventory in our poker game.
 
 The trick here is that coloured output is done in different ways by the Z-Machine and by Glulx, so we'll need two different versions of the same section in order to produce this output. The relevant source is right at the beginning:

@@ -5,6 +5,8 @@ Index: Verbosity 1. Brief descriptions by default
 Description: Making rooms give brief room descriptions when revisited.
 For: Z-Machine
 
+^^{Verbosity 1. Brief descriptions by default}
+
 By default, the description of a room is printed every time the player enters a room.
 
 On a device with very limited screen space, however, we might wish to supplant that behaviour with `brief` descriptions. In Brief mode, Inform prints room descriptions only when the player enters that room for the first time. Afterwards, the text is skipped, for brevity, though the player can see it again at any time by typing ``LOOK``.

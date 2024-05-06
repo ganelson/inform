@@ -5,6 +5,8 @@ Index: Keywords in place of ordinary commands
 Description: Responding to the player's input based on keywords only, and overriding the original parser entirely.
 For: Z-Machine
 
+^^{keyword-style parsing}
+
 Apologies to the shade of A. E. Housman.
 
 	{*}"Fragment of a Greek Tragedy"

@@ -5,6 +5,8 @@ Index: HELP menu from extension, with added content
 Description: Using a menu system from an extension, but adding our own material to it for this game.
 For: Z-Machine
 
+^^{>HELP: menu from extension, with added content}
+
 `Basic Help Menu` is an extension that uses tables to provide a menu of instructions. Suppose we wanted to include this menu in our own game, but add a few custom menu items of our own:
 
 	{*}"Food Network Interactive"

@@ -5,6 +5,8 @@ Index: Exits and rooms listed in the status line
 Description: A status line that lists the available exits from the current location, changing the names of these exits depending on whether the room has been visited or not.
 For: Z-Machine
 
+^^{connections between rooms: listed in status line}
+
 It may sometimes be helpful to prompt the player with a list of exits printed up in the status line. For instance, here is a status line that will print the names of nearby rooms, as well as all the doors the player can see:
 
 	{*}"Guided Tour"

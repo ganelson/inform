@@ -5,6 +5,8 @@ Index: People changing their titles during play
 Description: The peers of the English realm come in six flavours - Baron, Viscount, Earl, Marquess, Duke and Prince - and must always be addressed properly. While a peerage is for life, it may at the royal pleasure be promoted.
 For: Z-Machine
 
+^^{characters (people): with titles and special articles}
+
 Almost all of this example is the flummery of pomp and circumstance: only the first two paragraphs really do anything.
 
 	{*}"Peers" by Elizabeth II R

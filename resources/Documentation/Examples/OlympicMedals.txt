@@ -5,6 +5,8 @@ Index: Table sorted in different ways
 Description: Sort the table of Olympic Medals in two different ways.
 For: Z-Machine
 
+^^{Table sorted in different ways}
+
 Let's start with results from the 2020 Summer Olympic Games:
 
 	{*}"Olympic Medals"

@@ -5,6 +5,8 @@ Index: Questions asked of the player
 Description: In this example by Mike Tarbert, the player can occasionally be quizzed on random data from a table; the potential answers will only be understood if a question has just been asked.
 For: Z-Machine
 
+^^{Questions asked of the player}
+
 	{*}"Quiz Show" by Mike Tarbert
 	
 	Use scoring.

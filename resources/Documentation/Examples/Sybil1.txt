@@ -5,6 +5,8 @@ Index: Sybil 1. ASK, TELL, and ANSWER conflated
 Description: Direct all ``ASK``, ``TELL``, and ``ANSWER`` commands to ``ASK``, and accept multiple words for certain cases.
 For: Z-Machine
 
+^^{Sybil 1. ASK, TELL, and ANSWER conflated}
+
 Sometimes we do not particularly want to deal with all the variations on asking, telling, or answering someone something, but want to direct everything to a single conversational command:
 
 	{*}"Consulting the Oracle"

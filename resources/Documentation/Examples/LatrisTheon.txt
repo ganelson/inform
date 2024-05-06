@@ -5,6 +5,8 @@ Index: Person who finds a path to a destination specified by player
 Description: A person who can accept instructions to go to new destinations and move towards them according to the most reasonable path.
 For: Z-Machine
 
+^^{characters (people): moving around: player-given destination} ^^{characters (people): obeying and refusing}
+
 To begin with, we create an action for going to a named place. All that this action will do is to change that person's hoped-for destination: the actual moving around comes later.
 
 	{*}"Latris Theon"

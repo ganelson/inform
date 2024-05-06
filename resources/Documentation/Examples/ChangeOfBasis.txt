@@ -5,6 +5,8 @@ Index: Sleep and waking
 Description: Implementing sleeping and wakeful states.
 For: Z-Machine
 
+^^{Sleep and waking}
+
 Suppose we want to allow the player to go to sleep some of the time:
 
 	{*}"Change of Basis"

@@ -5,6 +5,8 @@ Index: Heat death
 Description: All objects in the game have a heat, but if not kept insulated they will tend toward room temperature (and at a somewhat exaggerated rate).
 For: Z-Machine
 
+^^{heat: cooling off}
+
 	{*}"Entropy"
 	
 	Heat is a kind of value. The heats are frosty, cold, cool, room temperature, warm, hot, and scalding. Everything has a heat. The heat of a thing is usually room temperature.

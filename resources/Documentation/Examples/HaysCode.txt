@@ -5,6 +5,8 @@ Index: Concealing clothing for other characters
 Description: Clark Gable in a pin-striped suit and a pink thong.
 For: Z-Machine
 
+^^{concealed possessions: clothing for other characters}
+
 The following burlesque was considered too much for the tender readers of the [Things] chapter, since it involved explicit use of listing and persuasion:
 
 	{*}"Hays Code"

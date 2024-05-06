@@ -5,6 +5,8 @@ Index: Multiple-object actions given modified descriptions
 Description: Replacing the usual response to ``TAKE ALL`` so that instead of output such as "grapes: Taken. orange: Taken.", Inform produces variable responses in place of "grapes:".
 For: Z-Machine
 
+^^{Multiple-object actions given modified descriptions}
+
 	{*}"Escape from the Seraglio"
 	
 	Section 1 - Special Announcement Rules

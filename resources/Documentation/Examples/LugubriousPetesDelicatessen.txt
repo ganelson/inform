@@ -5,6 +5,8 @@ Index: Using lists as queues
 Description: In this evocation of supermarket deli counter life, a list is used as a queue to keep track of who is waiting to be served.
 For: Z-Machine
 
+^^{lists: variations on use of lists}
+
 First, to set the scene:
 
 	{*}"Lugubrious Pete's Delicatessen"

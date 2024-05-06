@@ -5,6 +5,8 @@ Index: Letters described as a group
 Description: Letters which are described differently as a group, depending on whether the player has read none, some, or all of them, and on whether they are alike or unlike.
 For: Z-Machine
 
+^^{Letters described as a group}
+
 In this scenario, the player starts with a bag full of unsorted letters. These can be polite or rude, but they won't know which until they have examined them. What's more, they are allowed to sort the letters, in which case a group of letters will be shown as (for instance) "two polite letters"; but a group of mixed letters, even if they have all been read, will be called `unsorted letters`.
 
 Further, the player should be allowed to refer to sorted letters by tone, but not unsorted letters.

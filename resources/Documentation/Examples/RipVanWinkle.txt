@@ -5,6 +5,8 @@ Index: Incorporating changeable objects into the body of the room description
 Description: A simple way to allow objects in certain places to be described in the room description body text rather than in paragraphs following the room description.
 For: Z-Machine
 
+^^{Incorporating changeable objects into the body of the room description}
+
 There are times when, for greater elegance of prose, we'd like to mention an object in the main body text of a room. For instance:
 
 	Here is a lovely, secluded fold in the mountains, far from civilization: as though to prove it, Rip Van Winkle is sleeping under a tree.

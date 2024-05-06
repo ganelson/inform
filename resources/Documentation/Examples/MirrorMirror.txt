@@ -5,6 +5,8 @@ Index: Mirror remembering a room description from the past
 Description: The sorcerer's mirror can, when held up high, form an impression of its surroundings which it then preserves.
 For: Z-Machine
 
+^^{mirrors (implementing): remembering a room description from the past}
+
 	{*}"Mirror, Mirror"
 	
 	The Sorcerer's Workshop is a room. "The sorcerer's den is a dusty, whispering place. A grandfather clock with skeletal hands reads [the time of day in words]. The floorboards are stained where that porridge just wouldn't come out."

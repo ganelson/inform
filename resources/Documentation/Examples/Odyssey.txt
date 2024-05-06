@@ -5,6 +5,8 @@ Index: Person who moves on a pre-determined path
 Description: A person who follows a path predetermined and stored in a table, and who can be delayed if the player tries to interact with her.
 For: Z-Machine
 
+^^{characters (people): moving around: predetermined path}
+
 	{*}"Odyssey"
 	
 	Corinth is a room. Athens is east of Corinth. Epidaurus is southeast of Corinth and east of Mycenae. Mycenae is south of Corinth. Olympia is west of Mycenae. Argos is south of Mycenae. Thebes is northwest of Athens. Pylos is south of Olympia. Sparta is east of Pylos and south of Argos. Delphi is northwest of Thebes.

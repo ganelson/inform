@@ -5,6 +5,8 @@ Index: Disenchantment Bay 4. Descriptions of things
 Description: Disenchantment Bay: fleshing out the descriptions of things on the boat.
 For: Z-Machine
 
+^^{Disenchantment Bay 4. Descriptions of things}
+
 Currently we have provided objects for most of what is on the boat, but it's not very interesting to look at. We might want to give some more description to these things.
 
 	{*}"Disenchantment Bay"

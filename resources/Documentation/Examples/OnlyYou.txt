@@ -5,6 +5,8 @@ Index: Smoke which spreads, not tracking concentration
 Description: Smoke which spreads through the rooms of the map, but only every other turn.
 For: Z-Machine
 
+^^{Smoke which spreads, not tracking concentration}
+
 Suppose we want to have smoke that spreads from room to room, gradually filling the entire map with a clogging smoke. Having it spread every single turn would make for a pretty rapid diffusion, so we temper this by having it spread only on even-numbered turns, instead. Conveniently, Inform by default already knows about even and odd numbers, so we can write:
 
 	{*}"Only You..."

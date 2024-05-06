@@ -5,6 +5,8 @@ Index: TAKE scenery producing a custom response
 Description: Changing the response when the player tries to take something that is scenery.
 For: Z-Machine
 
+^^{TAKE scenery producing a custom response}
+
 By default, ``TAKE OAK`` in the example above will produce the response ``That's hardly portable.`` This is fine under many circumstances, but also a bit generic, so we might want to override it for a specific game.
 
 	{*}"Replanting"

@@ -5,6 +5,8 @@ Index: Scene which plays through a series of events in order, then ends
 Description: A scene which plays through a series of events in order, then ends when the list of events is exhausted.
 For: Z-Machine
 
+^^{Scene which plays through a series of events in order, then ends}
+
 	{*}"Day One"
 	
 	Lecture is a scene. Lecture begins when play begins.

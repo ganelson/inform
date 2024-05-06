@@ -5,6 +5,8 @@ Index: Travel to a room described
 Description: Adding a short message as the player approaches a room, before the room description itself appears.
 For: Z-Machine
 
+^^{Travel to a room described}
+
 Sometimes when a player moves from one room to another, we want to imply that a considerable amount of time elapses, or that something interesting occurs on the way. In that case, we might want to print more than just the room description itself. Here is how we might define a couple of rooms that are far apart:
 
 	{*}"Up and Up"

@@ -5,6 +5,8 @@ Index: Disenchantment Bay 8. Pushable chest of ice
 Description: Disenchantment Bay: a pushable chest of ice for the boat.
 For: Untestable
 
+^^{Disenchantment Bay 8. Pushable chest of ice}
+
 We probably do not need a vehicle to ride around our boat, but there might be a heavy ice chest that can only be pushed from room to room:
 
 	{*}The ice chest is a closed openable container in the Deck. "A very heavy ice chest sits on the ground." It is fixed in place and pushable between rooms. A quantity of ice is in the chest. The description is "Ready and waiting just in case there's any fish needing to be kept cool."

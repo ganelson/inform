@@ -5,6 +5,8 @@ Index: Levels of lighting
 Description: An object that is only visible and manipulable when a bright light fixture is on.
 For: Z-Machine
 
+^^{Levels of lighting}
+
 Suppose we want a different treatment of lighting than the usual: the room isn't totally dark, but there's something we can't see unless we turn on a bright light.
 
 	{*}"Low Light"

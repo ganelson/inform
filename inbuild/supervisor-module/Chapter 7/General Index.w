@@ -590,6 +590,7 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 	for (int i=0; i<NL; i++) {
 		index_lemma *il = lemma_list[i];
 		if ((just_examples) && (il->example_index_status == 0)) continue;
+		if ((!just_examples) && (il->example_index_status == 2)) continue;
 		inchar32_t incipit = Str::get_first_char(il->sorting_key);
 		if (Characters::isalpha(incipit)) incipit = Characters::toupper(incipit);
 		else incipit = '#';

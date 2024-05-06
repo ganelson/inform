@@ -5,6 +5,8 @@ Index: Supporters that don't list contents in room descriptions
 Description: A systematic way to allow objects in certain places to be described in the room description body text rather than in paragraphs following the room description, and to control whether supporters list their contents or not.
 For: Z-Machine
 
+^^{supporters+kind+: that don't list contents in room descriptions}
+
 	{*}"The Eye of the Idol"
 	
 	Section 1 - Reusable Material

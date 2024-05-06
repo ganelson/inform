@@ -5,6 +5,8 @@ Index: WAIT UNTIL [time] command
 Description: A ``WAIT UNTIL [time]`` command which advances until the game clock reaches the correct hour.
 For: Z-Machine
 
+^^{WAIT UNTIL [time] command}
+
 	{*}"Delayed Gratification"
 	
 	Hanging around until is an action applying to one time.

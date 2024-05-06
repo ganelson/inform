@@ -5,6 +5,8 @@ Index: Rooms with visible exteriors
 Description: Creating a booth that can be seen from the outside, opened and closed, and entered as a separate room.
 For: Z-Machine
 
+^^{rooms+kind+: with visible exterior}
+
 Sometimes we may want a room to be visible from the outside in one location, but treated as a separate location when we are inside. The simplest way to do this is to make the exterior form of the object into a door object, and to describe it differently from different vantage points. (Doors in general are described more fully in the [Doors] section of the [Things] chapter.)
 
 	{*}"Starry Void"

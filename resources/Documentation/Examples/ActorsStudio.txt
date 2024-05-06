@@ -5,6 +5,8 @@ Index: Video camera that records all actions
 Description: A video camera that records actions performed in its presence, and plays them back with time-stamps.
 For: Z-Machine
 
+^^{Video camera that records all actions}
+
 Here we construct a video camera to track and play back actions:
 
 	{*}"The Actor's Studio"

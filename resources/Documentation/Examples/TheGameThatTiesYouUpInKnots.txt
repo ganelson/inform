@@ -5,6 +5,8 @@ Index: Twister
 Description: A two-player game of Twister, in which each person has to place hands or feet on the coloured discs on a play-mat until one falls over.
 For: Z-Machine
 
+^^{Twister}
+
 The evergreen children's game _Twister_ was devised in 1966 (when it was briefly called _Pretzel_) and became a hit following a memorable edition of the _Tonight Show_. Rather than a board, _Twister_ has a playmat on the floor, with sixteen discs arranged four by four, each row being a different colour. Each player in turn has to move one of their four limbs to some disc of a given colour: the first to fall over, or touch the mat, loses.
 
 We will use two kinds of value for `limb` and `colour` respectively: each one has four possible values. A `Twister turn` then combines these, so that there are altogether sixteen possible turns.

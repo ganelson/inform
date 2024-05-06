@@ -5,6 +5,8 @@ Index: Pocket added to every jacket
 Description: A kind for jackets, which always includes a container called a pocket.
 For: Z-Machine
 
+^^{Pocket added to every jacket}
+
 	{*}"Being Prepared"
 	
 	A jacket is a kind of thing. A jacket is always wearable.

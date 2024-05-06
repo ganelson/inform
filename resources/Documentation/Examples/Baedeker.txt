@@ -5,6 +5,8 @@ Index: Producing an EPS floorplan
 Description: Creating a floorplan of the cathedral using the locations from previous examples.
 For: Z-Machine
 
+^^{Producing an EPS floorplan}
+
 If our map is largely or entirely set inside a single building, we might want to produce something that resembles a floorplan. It's possible to do this with a little tweaking, like so:
 
 	{*}"Baedeker"

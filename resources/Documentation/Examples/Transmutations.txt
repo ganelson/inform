@@ -5,6 +5,8 @@ Index: Machine that transmutes objects
 Description: A machine that turns objects into other, similar objects.
 For: Z-Machine
 
+^^{machines (implementing): that transmute objects}
+
 Suppose we want to have a machine in our game that can transmute one item into another, similar object with different properties: a bag of jelly beans into a bag of jewels, for instance. Thus each item will be associated with some number of equivalents – the other objects it can turn into. This is a handy use for group relations:
 
 	{*}"Transmutations"

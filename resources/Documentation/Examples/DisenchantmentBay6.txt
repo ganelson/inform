@@ -5,6 +5,8 @@ Index: Disenchantment Bay 6. Locked-up fishing rods
 Description: Disenchantment Bay: locking up the charter boat's fishing rods.
 For: Untestable
 
+^^{Disenchantment Bay 6. Locked-up fishing rods}
+
 It stands to reason that the captain wouldn't let just anyone meddle with his fishing equipment; maybe he keeps that case locked. We could replace the case description with this one, instead:
 
 	{*}The Cabin contains a glass case. In the glass case is a collection of fishing rods. The case is closed, transparent, openable, lockable, and locked. The case is scenery. The small silver key unlocks the case.

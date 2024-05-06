@@ -5,6 +5,8 @@ Index: DROP applies even to objects the player carries indirectly
 Description: Using the enclosure relation to let the player drop things which they only indirectly carry.
 For: Z-Machine
 
+^^{dropping+action+: even objects the player carries indirectly}
+
 By default, Inform only lets the player drop those things which they are carrying – that is, those directly in their possession. Things inside satchels or on portable trays have to be taken first.
 
 If we want to change this behaviour, we might add a dropping rule that distinguishes between carrying and mere enclosure (introduced back in "The location of something" in the chapter on [Things]):

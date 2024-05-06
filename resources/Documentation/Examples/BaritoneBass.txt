@@ -5,6 +5,8 @@ Index: Allowing the player to describe the main character before starting play
 Description: Letting the player pick a vocal range (or perhaps other characteristics) before starting play.
 For: Z-Machine
 
+^^{Allowing the player to describe the main character before starting play}
+
 The `reading a command` activity is rather advanced; for the moment, what we need to understand is that we're intervening in commands at the start of play and insisting that the player's first instruction to the game consist of a choice of vocal range. After that point, it will be set and play will proceed as normal.
 
 	{*}"Baritone, Bass"

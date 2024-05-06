@@ -5,6 +5,8 @@ Index: Fish of ambiguous species
 Description: Letting the player guess types for an unidentifiable fish.
 For: Z-Machine
 
+^^{Fish of ambiguous species}
+
 Suppose we have an unhappily mutated fish that the player can refer to by any of a number of species names, or any word followed by -fish. We want to reject these commands, but preserve a memory of what the player last tried to call the thing:
 
 	{*}"Mr. Burns' Repast"

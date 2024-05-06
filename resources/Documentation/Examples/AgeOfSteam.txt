@@ -5,6 +5,8 @@ Index: Scene which starts and finishes
 Description: The railway-station examples so far put together into a short game called "Age of Steam".
 For: Z-Machine
 
+^^{Scene which starts and finishes}
+
 The following source is very short and simple, yet it already feels surprisingly interesting in play, because something is going on which the player does not control but must observe. The single scene both starts and finishes.
 
 	{*}"Age of Steam"

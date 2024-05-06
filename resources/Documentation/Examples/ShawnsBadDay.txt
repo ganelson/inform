@@ -5,6 +5,8 @@ Index: EXAMINE multiple things at once
 Description: Allowing the player to ``EXAMINE ALL``.
 For: Z-Machine
 
+^^{examining+action+: multiple things at once}
+
 We can add the handling of multiple objects to an existing action simply by adding in a line of grammar using `"[things]"`. In response, Inform will consider every object accepted by the token, and perform the action once for each of those objects. Thus:
 
 	{*}"Shawn's Bad Day"

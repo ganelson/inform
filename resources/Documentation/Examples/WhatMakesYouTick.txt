@@ -5,6 +5,8 @@ Index: COMBINE action for connecting multiple objects into one
 Description: Building a fishing pole from several component parts that the player might put together in any order.
 For: Z-Machine
 
+^^{COMBINE action for connecting multiple objects into one}
+
 Suppose we want to let the player build a fishing pole out of three parts: a hook, a string, and a stick.
 
 There are several things we must account for here. One is that our combination verb should be insensitive to ordering: it shouldn't matter whether the player types ``COMBINE STICK WITH STRING`` or ``COMBINE STRING WITH STICK``.

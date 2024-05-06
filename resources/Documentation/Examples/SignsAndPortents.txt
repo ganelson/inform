@@ -5,6 +5,8 @@ Index: Signpost that can be turned
 Description: Signpost that points to various destinations, depending on how the player has turned it.
 For: Z-Machine
 
+^^{Signpost that can be turned}
+
 	{*}"Signs and Portents"
 	
 	Seven Dials is a room. The description of Seven Dials is "There is a signpost, on which seven hands swivel and swing, freely as weathercocks. They make your present road now London, now Abingdon; now Weston-super-Mare, or now Hell."

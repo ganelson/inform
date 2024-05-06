@@ -5,6 +5,8 @@ Index: Reordering multiple objects for dramatic effect
 Description: Reordering multiple objects for dramatic effect.
 For: Z-Machine
 
+^^{Reordering multiple objects for dramatic effect}
+
 If a single command asks to do many things, some dull and some exciting, we may want to save the good ones for the end.
 
 	{*}"The Best Till Last"

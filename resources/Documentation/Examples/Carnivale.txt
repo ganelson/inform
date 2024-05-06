@@ -5,6 +5,8 @@ Index: Scope for large objects visible far away
 Description: An alternative to backdrops when we want something to be visible from a distance but only touchable from one room.
 For: Z-Machine
 
+^^{Scope for large objects visible far away}
+
 Suppose we want to make an object that (unlike a backdrop) is definitely located in one room, but can be seen from far off. We want to allow the player to interact with it from a distance, but only using those actions that require visibility. Other actions should be denied:
 
 	{*}"Carnivale"

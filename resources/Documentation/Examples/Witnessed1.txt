@@ -5,6 +5,8 @@ Index: Witnessed 1. Batteries, swappable between devices
 Description: A kind of battery which can be put into different devices, and which will lose power after extended use.
 For: Z-Machine
 
+^^{Witnessed 1. Batteries, swappable between devices}
+
 The following example makes fairly ample use of material that we haven't seen yet, but gives some idea of the flexibility of every turn rules. Suppose we want to have a number of electrical devices, all of which may be powered by a set of batteries. The batteries will all need to be discharged as they are used (regardless of what device they happen to be controlling at the moment). So:
 
 	{*}"Witnessed"

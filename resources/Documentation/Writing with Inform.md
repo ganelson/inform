@@ -381,7 +381,7 @@ Much of this can be seen, and seen more easily, in the World tab of the Index pa
 
 ## The TEST command {PM_TestMultiWord} {PM_TestDuplicate} {PM_TestBadRequirements} {PM_TestContainsUndo} {PM_TestCommandTooLong} {PM_TestDoubleWith} {PM_UnknownInternalTest}
 
-^^{TEST+testcmd+} ^^{testing commands: >TEST} ^^{transcripts: creating with the TEST command} ^^{test (test name) with (commands)+assert+} ^^{PURLOIN+testcmd+} ^^{testing commands: >PURLOIN}
+^^{TEST+testcmd+} ^^{testing commands: >TEST} ^^{transcripts: creating with the TEST command} ^^{test (test name) with (commands)+assert+} ^^{PURLOIN+testcmd+} ^^{testing commands: >PURLOIN} ^^{>AGAIN}
 
 The only way to thoroughly test a work of IF is to run a complete solution through it, and carefully check the resulting transcript of dialogue. But most works of interactive fiction contain occasional vignettes, either in terms of short scenes of narrative, or in the behaviour of particular things or rooms. The examples in the documentation are like this: in almost every example, typing ``TEST ME`` puts the story through its paces.
 
@@ -476,7 +476,7 @@ Newcomers will probably not need extensions for quite some while, let alone need
 
 ## Use options {PM_UONotNumerical} {PM_UnknownUseOption} {OPTIONS}
 
-^^{use options} ^^{use (options...)+assert+} ^^{punctuation: comma: displaying serial comma} ^^^{punctuation: comma <-- comma} ^^{|,: displaying serial comma} ^^{scoring: enabling} ^^{descriptions (displayed): full-length room descriptions / abbreviated room descriptions} ^^{rooms+kind+: descriptions} ^^{use options: catalogue: |American dialect} ^^{American dialect+useopt+} ^^{use options: catalogue: |the serial comma} ^^{serial comma+useopt+} ^^{use options: catalogue: |scoring} ^^{scoring+useopt+} ^^{use options: catalogue: |full-length room descriptions} ^^{full-length room descriptions+useopt+} ^^{use options: catalogue: |abbreviated room descriptions} ^^{abbreviated room descriptions+useopt+} ^^{use options: catalogue: |VERBOSE room descriptions} ^^{VERBOSE room descriptions+useopt+} ^^{use options: catalogue: |BRIEF room descriptions} ^^{BRIEF room descriptions+useopt+} ^^{use options: catalogue: |SUPERBRIEF room descriptions} ^^{SUPERBRIEF room descriptions+useopt+} ^^{use options: catalogue: |undo prevention} ^^{undo prevention+useopt+} ^^{>UNDO}
+^^{use options} ^^{use (options...)+assert+} ^^{punctuation: comma: displaying serial comma} ^^^{punctuation: comma <-- comma} ^^{|,: displaying serial comma} ^^{scoring: enabling} ^^{descriptions (displayed): full-length room descriptions / abbreviated room descriptions} ^^{rooms+kind+: descriptions <-- descriptions (displayed): room descriptions} ^^{use options: catalogue: |American dialect} ^^{American dialect+useopt+} ^^{use options: catalogue: |the serial comma} ^^{serial comma+useopt+} ^^{use options: catalogue: |scoring} ^^{scoring+useopt+} ^^{use options: catalogue: |full-length room descriptions} ^^{full-length room descriptions+useopt+} ^^{use options: catalogue: |abbreviated room descriptions} ^^{abbreviated room descriptions+useopt+} ^^{use options: catalogue: |VERBOSE room descriptions} ^^{VERBOSE room descriptions+useopt+} ^^{use options: catalogue: |BRIEF room descriptions} ^^{BRIEF room descriptions+useopt+} ^^{use options: catalogue: |SUPERBRIEF room descriptions} ^^{SUPERBRIEF room descriptions+useopt+} ^^{use options: catalogue: |undo prevention} ^^{undo prevention+useopt+} ^^{>UNDO}
 
 One more preliminary. Inform has a small number of optional settings which affect the result of translating the source. The sentence:
 
@@ -636,7 +636,7 @@ then the first room to be created will actually be the Y2 Rock Room, so that's w
 
 ## Rooms and the map {kind_room} {MAP} {PM_SameKindEquated} {PM_DescriptionsEquated}
 
-^^{rooms+kind+: connections between rooms} ^^{connections between rooms <-- exits} ^^{index map <-- map} ^^{directions+kind+ <-- compass directions} ^^{|called: in creating rooms} ^^{|from: inside / outside from} ^^{|inside from} ^^{|outside from} ^^{use options: catalogue: |unabbreviated object names} ^^{unabbreviated object names+useopt+} ^^{abbreviations: object names}
+^^{rooms+kind+: connections between rooms} ^^{connections between rooms <-- exits <-- map: designing} ^^{index map <-- map: in Index panel} ^^{directions+kind+ <-- compass directions} ^^{|called: in creating rooms} ^^{|from: inside / outside from} ^^{|inside from} ^^{|outside from} ^^{use options: catalogue: |unabbreviated object names} ^^{unabbreviated object names+useopt+} ^^{abbreviations: object names}
 
 Rooms are joined together at their edges by "map connections", most of which are pathways in one of the eight cardinal compass directions: north, northeast (written without a hyphen), east, southeast, south, southwest, west, northwest. We also have up and down, suitable for staircases or ladders. In real life, people are seldom conscious of their compass bearing when walking around buildings, but it makes a concise and unconfusing way for the player to say where to go next, so is generally accepted as a convention of the genre.
 
@@ -705,7 +705,7 @@ Inform makes guesses about the first sentence, and makes a two-way connection; b
 
 ## Regions and the index map {kind_region} {REGIONS} {PM_ExistingRegion} {PM_RegionInTwoRegions} {PM_RegionRelation}
 
-^^{kinds: catalogue: region} ^^{regions+kind+ <-- kinds: catalogue: region} ^^{rooms+kind+: grouping into regions} ^^{index map} ^^{Map page of Index panel+ui+} ^^{user interface: Index panel: Map page} ^^{Index panel+ui+: Map page}
+^^{kinds: catalogue: region} ^^{regions+kind+ <-- kinds: catalogue: region} ^^{rooms+kind+: grouping into regions} ^^{index map} ^^{Map page of Index panel+ui+} ^^{user interface: Index panel: Map page} ^^{Index panel+ui+: Map page} ^^{map region of (room)+prop+} ^^{map region of (room)+propcat+}
 
 Rooms represent individual places to which one can go, but we tend to think of the world around us in larger pieces: we think of a house and a garden, rather than each of the single rooms of the house and all corners of its garden. To Inform a collection of rooms is called a _region_, and we can create one like so:
 
@@ -798,7 +798,7 @@ The cup, the pistol and the table are all allowed to have the `fixed in place` p
 
 ## Scenery
 
-^^{scenery (thing)+prop+} ^^{scenery (thing)+propcat+} ^^{immobile things: |scenery} ^^{things+kind+: immobile: |scenery} ^^{hiding things from room descriptions by making them scenery <-- concealment+rel+: in a room} ^^{descriptions (displayed): hiding things from room descriptions} ^^{supporters+kind+: mentioned because of supported things}
+^^{scenery (thing)+prop+} ^^{scenery (thing)+propcat+} ^^{immobile things: |scenery} ^^{things+kind+: immobile: |scenery} ^^{hiding things from room descriptions by making them scenery <-- concealment+rel+: in a room} ^^{descriptions (displayed): hiding things from room descriptions} ^^{rooms+kind+: printing the room contents: hiding things} ^^{supporters+kind+: mentioned because of supported things}
 
 As we have just seen, making something `fixed in place` will prevent it from being picked up or moved. But it remains substantial enough to be described in its own paragraph of text when the player visits its location. This can be unfortunate if it has also been described already in the body of the main description for that location. For instance, if we wrote:
 
@@ -1126,7 +1126,7 @@ During play, all three items will be able to be extracted from the purse with co
 
 ## Possessions and clothing
 
-^^{possessions} ^^{carrying+rel+} ^^{carrying+relcat+} ^^{wearing+rel+} ^^{wearing+relcat+}^^^{wearing+rel+ <-- clothing} ^^{wearable (thing)+prop+} ^^{wearable (thing)+propcat+} ^^{Inform 6 equivalent: |clothing} ^^{worn (thing)+adj+} ^^{carried (thing)+adj+} ^^{held (thing)+adj+}
+^^{possessions} ^^{carrying+rel+} ^^{carrying+relcat+} ^^{wearing+rel+} ^^{wearing+relcat+}^^^{wearing+rel+ <-- clothing: wearing relation} ^^{wearable (thing)+prop+} ^^{wearable (thing)+propcat+} ^^{Inform 6 equivalent: |clothing} ^^{worn (thing)+adj+} ^^{carried (thing)+adj+} ^^{held (thing)+adj+}
 
 We have seen how to place objects in rooms, and in containers or on supporters. But what about people? Perhaps it could be said that they "contain" the fillings in their teeth, or "support" a top hat, but this is not very natural. Inform therefore never speaks of things being `in` or `on` people. Instead, they have two sorts of possessions: the things they `carry`, and the things they `wear`. (Body parts, such as arms and legs, are different again: see [Parts of things] below for a clue to how to do these.) Thus:
 
@@ -1315,7 +1315,7 @@ because they are too vague. Inform needs to know exactly where the fob watch and
 
 ## New kinds {NEWKINDS}
 
-^^{kinds <-- types} ^^{kinds: defining} ^^{defining: kinds} ^^{kinds: hierarchy of kinds} ^^{kinds: of value} ^^{kinds: of thing} ^^{kinds: defining: kinds of thing} ^^{defining: kinds of thing} ^^{things+kind+: kinds of} ^^{rooms+kind+} ^^{things+kind+} ^^{directions+kind+} ^^{regions+kind+} ^^{animals+kind+} ^^{man+kind+} ^^{woman+kind+} ^^{Inform 6 equivalent: classes} ^^{Kinds page of Index panel+ui+} ^^{user interface: Index panel: Kinds page} ^^{Index panel+ui+: Kinds page}
+^^{kinds <-- types} ^^{kinds: defining} ^^{defining: kinds} ^^{kinds: hierarchy of kinds} ^^{kinds: of value} ^^{kinds: of thing} ^^{kinds: defining: kinds of thing} ^^{defining: kinds of thing} ^^{things+kind+: kinds of} ^^{things+kind+: object kind, as distinct from thing} ^^{rooms+kind+} ^^{things+kind+} ^^{directions+kind+} ^^{regions+kind+} ^^{animals+kind+} ^^{man+kind+} ^^{woman+kind+} ^^{Inform 6 equivalent: classes} ^^{Kinds page of Index panel+ui+} ^^{user interface: Index panel: Kinds page} ^^{Index panel+ui+: Kinds page}
 
 Values in Inform are the nouns in its sentences. They represent numbers, times of day, pieces of text, places, people, doors, and so on. Because values have such an enormous variety, and because we often want to talk about what some of them have in common, we need a way to sort these values into categories, and those are called _kinds_. Some examples:
 
@@ -1419,7 +1419,7 @@ without knowing that `coffer` is a kind, it simply makes a thing called `open co
 
 ## Degrees of certainty
 
-^^{(always / never), in assertions+sourcepart+} ^^{(never / always), in assertions+sourcepart+} ^^{(usually / seldom), in assertions+sourcepart+} ^^{(seldom / usually), in assertions+sourcepart+} ^^{default properties of kinds} ^^{kinds: default properties}
+^^{(always / never), in assertions+sourcepart+} ^^{(never / always), in assertions+sourcepart+} ^^{(usually / seldom), in assertions+sourcepart+} ^^{(seldom / usually), in assertions+sourcepart+} ^^{default properties of kinds} ^^{kinds: default properties} ^^{properties: defaults for kind}
 
 When we write:
 
@@ -1689,7 +1689,7 @@ And while we're at it, let's give each `brightness` its own corresponding `tempe
 
 ## Conditions of things {PM_EitherOnThree}
 
-^^{kinds: defining: kinds of value} ^^{defining: kinds of value} ^^{values: kinds of value} ^^{kinds: enumerated values} ^^{properties: holding a new kind of value} ^^{properties: value properties: defining} ^^{value properties: defining} ^^{defining: value properties} ^^{(condition), naming properties+sourcepart+}
+^^{kinds: defining: kinds of value} ^^{defining: kinds of value} ^^{values: kinds of value} ^^{kinds: enumerated values} ^^{properties: holding a new kind of value} ^^{properties: value properties: defining} ^^{value properties: defining} ^^{defining: value properties} ^^{(condition), as name for value property+sourcepart+}
 
 Now for an even more abbreviated way to create a new kind of value, and at the same time create a property to hold it. Suppose we have something, say a wine cask, which we know is always in one of three different states. We can write:
 
@@ -2073,7 +2073,7 @@ results in red being zesty, but blue and green being flat; blue because the sour
 
 ## Text with substitutions {PM_TSWithPunctuation}
 
-^^{text <-- strings of characters} ^^{text: displaying} ^^{text substitutions: text} ^^{descriptions (displayed): room descriptions with substituted text} ^^{punctuation: square brackets: text substitutions} ^^{|[ ]: text substitutions} ^^{punctuation: quotation marks: defining texts} ^^{|": defining texts}
+^^{text <-- strings of characters} ^^{text: displaying} ^^{text substitutions: text} ^^{descriptions (displayed): with substituted text} ^^{rooms+kind+: descriptions: with substituted text} ^^{punctuation: square brackets: text substitutions} ^^{|[ ]: text substitutions} ^^{punctuation: quotation marks: defining texts} ^^{|": defining texts}
 
 In the previous chapter, [Kinds], we gave properties to certain kinds of things in order to change their appearance and behaviour, and saw brief glimpses of one of Inform's most useful devices: _text substitution_. The following gives a more complete example:
 
@@ -2721,7 +2721,7 @@ Whichever effect we use, we should be careful to ensure that we return to normal
 
 ## Accented letters
 
-^^{characters (letters): special / accented}^^^{characters (letters) <-- letters <-- accented letters}^^^{characters (letters) <-- symbols}
+^^{characters (letters): accented and exotic letters and symbols}^^^{characters (letters) <-- letters <-- accented letters}^^^{characters (letters) <-- symbols}
 
 Inform 7 is infused by the English language, so it's a challenge using it to write a work of IF in any other language. (With that said, extensions do exist which have made considerable progress on this problem: nil desperandum.) But even a book in English contains occasional quotations or words borrowed from other tongues, so we are going to need more than plain A to Z.
 
@@ -3184,7 +3184,7 @@ And we can also test non-existence:
 
 ## A word about in
 
-^^{containment+rel+} ^^{containment+relcat+} ^^{regional-containment+rel+} ^^{regional-containment+relcat+} ^^{indirect containment} ^^{containment+rel+: indirect} ^^{regions+kind+: things in regions} ^^{regions+kind+: regional containment} ^^{rooms+kind+: grouping into regions}
+^^{containment+rel+} ^^{containment+relcat+} ^^{regional-containment+rel+} ^^{regional-containment+relcat+} ^^{indirect containment} ^^{containment+rel+: indirect} ^^{regions+kind+: things in regions} ^^{regions+kind+: regional containment} ^^{rooms+kind+: grouping into regions} ^^{map region of (room)+prop+}
 
 What does "in" mean? The literal answer is that it means containment, that is, `X is in Y` means that Y contains X. Containment is an idea which is itself a little complicated to unravel, though.
 
@@ -3456,7 +3456,7 @@ Lastly, note that the `the` in text like `two of the doors` matters: without it,
 
 ## Actions {ACTIONS} {kind_actionname} {PM_APWithNoParticiple} {PM_APUnknown} {PM_NonActionIn}
 
-^^{actions} ^^{success: for actions} ^^{failure: for actions} ^^{taking+action+} ^^{ACTIONS+testcmd+} ^^{testing commands: >ACTIONS}
+^^{actions} ^^{success: for actions} ^^{failure: for actions} ^^{taking+action+ <-- >GET} ^^{ACTIONS+testcmd+} ^^{testing commands: >ACTIONS}
 
 _Actions_ are what we get if we try to break down a narrative into its smallest moments. We might casually say that we are "going shopping", but this involves many smaller steps: going north, going east, entering the shop, examining a loaf of bread, taking it, giving money to the baker, and so on.
 
@@ -3485,6 +3485,8 @@ The testing command ``ACTIONS`` causes Inform to log every action as it happens,
 A good way to get a sense of the constant flow of actions is to use this command and then wander around an existing work, trying things out. ``ACTIONS`` can also give an insight into the web of rules governing play: there are more than ten different ways an attempt to take something can fail, for instance.
 
 ## Actions versus commands
+
+^^{>OOPS} ^^{>AGAIN}
 
 Actions and commands are not quite the same thing. Commands are the words typed in players: ``EXAMINE BLUEPRINT`` is an example of a command. When the player types this (and assuming there is a blueprint available), the action `examining the blueprint` is what then happens.
 
@@ -3682,7 +3684,7 @@ Games with a lot of conversation often involve great heaps of rules like the one
 
 ## The other four senses
 
-^^{senses} ^^{actions: involving senses} ^^{rules: for senses} ^^{rooms+kind+: listening to (with no object)} ^^{rooms+kind+: smelling (with no object)} ^^{listening to+action+} ^^{smelling+action+} ^^{touching+action+} ^^{tasting+action+}
+^^{senses} ^^{actions: involving senses} ^^{rules: for senses} ^^{rooms+kind+: listening to (with no object)} ^^{rooms+kind+: smelling (with no object)} ^^{listening to+action+} ^^{smelling+action+} ^^{touching+action+} ^^{tasting+action+} ^^{looking under+action+}
 
 The five senses are all simulated with actions. Sight is so informative that it is handled by a whole range of actions: `looking`, which describes the general scene; `examining something`, which takes a closer look at a specific thing; `looking under something`, and so on.
 
@@ -4607,7 +4609,7 @@ The `when play begins` rules are checked only at the start of a story, not when 
 
 ## Awarding points {var_score}
 
-^^{use options: catalogue: |scoring} ^^{scoring+useopt+} ^^{scoring <-- points <-- rankings} ^^{scoring: maximum score} ^^{scoring: enabling} ^^{scoring: reporting during story} ^^{score (- number)+glob+} ^^{maximum score (- number)+glob+} ^^{>NOTIFY ON/OFF} ^^{+to+increase (a stored value) by (value)}
+^^{use options: catalogue: |scoring} ^^{scoring+useopt+} ^^{scoring <-- points <-- rankings <-- full score} ^^{scoring: maximum score} ^^{scoring: enabling} ^^{scoring: reporting during story} ^^{score (- number)+glob+} ^^{maximum score (- number)+glob+} ^^{>NOTIFY ON/OFF} ^^{+to+increase (a stored value) by (value)}
 
 Traditionally-written stories award points throughout play, as an indication of progress. If we want to be traditional, we must first write:
 
@@ -4663,7 +4665,7 @@ Ordinarily we must explicitly ask to use the information presented in a table, b
 
 ## When play ends {rules_wpe}
 
-^^{when play ends+rb+} ^^{rules: run at end of story} ^^{end of story <-- story structure: ending} ^^{victory} ^^{death} ^^{winning the story} ^^{losing the game} ^^{(finally), ending the story+sourcepart+} ^^{>AMUSING} ^^{story structure: ending}
+^^{when play ends+rb+} ^^{rules: run at end of story} ^^{end of story <-- story structure: ending} ^^{victory} ^^{death} ^^{winning the story} ^^{losing the story} ^^{(finally), ending the story+sourcepart+} ^^{>AMUSING} ^^{story structure: ending}
 
 Short of something like a power cut, the story can only end when one of the two participants chooses to end it: either the player, by deciding that enough is enough, or us.
 
@@ -4976,7 +4978,7 @@ The Scenes panel of the Index can be a useful way to see what events have been s
 
 ## Actions as conditions {PM_PTAPTooComplex}
 
-^^{actions: as conditions} ^^{rules: actions referred to in conditions} ^^{rules: past tense of conditions} ^^{past tense, of conditions in rules} ^^{tense: of conditions in rules} ^^{English: tense: of conditions in rules}
+^^{actions: as conditions} ^^{rules: actions referred to in conditions} ^^{rules: past tense of conditions} ^^{conditions: actions as conditions} ^^{past tense, of conditions in rules} ^^{tense: of conditions in rules} ^^{English: tense: of conditions in rules}
 
 There are two ways that descriptions of actions can be used as conditions. First, we can simply describe an action, and then the condition will be true if that is what the player is trying to do, and not otherwise:
 
@@ -6189,7 +6191,7 @@ Action-processing may be the single most important thing Inform does, so the sys
 
 ## Giving instructions to other people {var_person_asked}
 
-^^{actions: instructing other people}^^^{characters (people) <-- actors <-- other people}^^^{characters (people) <-- NPC <-- people}^^^{characters (people) <-- person+kind+: characters} ^^{characters (people): giving instructions to other characters} ^^{instructing other characters} ^^{ordering other characters} ^^{asking (actor) to try+action+ <-- +to+try (action): in (asking) action+sourcepart+} ^^{person asked (- object)+glob+} ^^{actor (- person)+actvar+} ^^{player: as opposed to the actor}
+^^{actions: instructing other characters}^^^{characters (people) <-- actors <-- other people}^^^{characters (people) <-- NPC <-- people}^^^{characters (people) <-- person+kind+: characters} ^^{characters (people): giving instructions to other characters} ^^{instructing other characters} ^^{ordering other characters} ^^{asking (actor) to try+action+ <-- +to+try (action): in (asking) action+sourcepart+} ^^{person asked (- object)+glob+} ^^{actor (- person)+actvar+} ^^{player: as opposed to the actor}
 
 So far, all actions have been carried out by the player: which is fine for exploring the passive world of an empty warehouse, but less good for a drama in which other characters have to be contended with. In fact, an action can be carried out by anybody – by any instance of the `person` kind, that is, which includes all the men, women and animals in the story, and not only the player.
 
@@ -6212,7 +6214,7 @@ So if the player types ``ALGY, TAKE SANDWICH``, the `person asked` would be Algy
 
 ## Persuasion {rules_per}
 
-^^{actions: instructing other characters: persuasion rules} ^^{persuasion+rb+} ^^{+toout+persuasion succeeds / fails (persuasion rules)} ^^{rules: persuasion rules for instructing characters} ^^{rules: for other characters} ^^{actions: rules for other characters} ^^{success: for persuasion} ^^{failure: for persuasion} ^^{paragraph breaks: for fooling persuasion refusal} ^^{instead of (action)+rb+: as failure of persuasion} ^^{rules: instead rules} ^^{characters (people): persuading}
+^^{actions: instructing other characters: persuasion rules} ^^{persuasion+rb+} ^^{+toout+persuasion succeeds / fails (persuasion rules)} ^^{rules: persuasion rules for instructing characters} ^^{rules: for other characters} ^^{actions: rules for other characters} ^^{success: for persuasion} ^^{failure: for persuasion} ^^{paragraph breaks: for fooling persuasion refusal} ^^{instead of (action)+rb+: as failure of persuasion} ^^{rules: instead rules} ^^{characters (people): obeying and refusing}
 
 `Asking ... to try ...` actions run through their Before and Instead rules like any other actions, but then (if no rule has intervened) something different happens: Inform has to decide whether the person asked consents to try the action or not. By default, the answer is always no, and text like the following will be printed:
 
@@ -6327,7 +6329,7 @@ Note that the text `try Will going west` involves the actor's name immediately p
 
 ## New actions {NEWACTIONS} {PM_MatchedAsTooLong} {PM_MultiwordPastParticiple} {PM_GrammarMismatchesAction} {PM_ActionAlreadyExists} {PM_ActionBothValues} {PM_ActionClauseUnknown} {PM_ActionMisapplied}
 
-^^{actions: defining new actions} ^^{defining: actions} ^^{Inform 6 equivalent: verbs} ^^{(applying to), in defining actions+sourcepart+} ^^{(requiring), in defining actions+sourcepart+} ^^{visibility+rel+: requirement in defining actions} ^^{touchability+rel+: requirement in defining actions} ^^{carrying+rel+: requirement in defining actions} ^^{light: requirement in defining actions} ^^{actions: referring to current action with (action)+sourcepart+} ^^{understand (verb) as (action)+assert+} ^^{understanding: verbs} ^^{Inform 6 equivalent: synonyms} ^^{synonyms} ^^{understanding: requirements for objects in actions}^^^{understanding <-- parsing}
+^^{actions: defining new actions} ^^{defining: actions} ^^{Inform 6 equivalent: verbs} ^^{(applying to), in defining actions+sourcepart+} ^^{(requiring), in defining actions+sourcepart+} ^^{(visible thing), in defining actions+sourcepart+} ^^{(touchable thing), in defining actions+sourcepart+} ^^{(carried thing), in defining actions+sourcepart+} ^^{light: requirement in defining actions} ^^{actions: referring to current action with (action)+sourcepart+} ^^{understand (verb) as (action)+assert+} ^^{understanding: verbs} ^^{Inform 6 equivalent: synonyms} ^^{synonyms} ^^{understanding: requirements for objects in actions}^^^{understanding <-- parsing}
 
 It is not often that we need to create new actions, but a large work of interactive fiction with no novelty actions is a flavourless dish. Here we shall create an action for photographing things.
 
@@ -6666,7 +6668,7 @@ Symmetrically, Inform also has `reaching outside` rules, used if the player is i
 
 ## Visible vs touchable vs carried
 
-^^{actions: requirements for actions} ^^{(requiring), in defining actions+sourcepart+} ^^{visibility+rel+: requirement in defining actions} ^^{touchability+rel+: requirement in defining actions} ^^{carrying+rel+: requirement in defining actions} ^^{light: requirement in defining actions} ^^{understanding: requirements for objects in actions} ^^{taking+action+: implicit taking} ^^{implicitly taking something+activity+} ^^{implicitly taking something+activitycat+}
+^^{actions: requirements for actions} ^^{(requiring), in defining actions+sourcepart+} ^^{(visible thing), in defining actions+sourcepart+} ^^{(touchable thing), in defining actions+sourcepart+} ^^{(carried thing), in defining actions+sourcepart+} ^^{light: requirement in defining actions} ^^{understanding: requirements for objects in actions} ^^{taking+action+: implicit taking} ^^{implicitly taking something+activity+} ^^{implicitly taking something+activitycat+}
 
 To recap, actions are created like so:
 
@@ -6698,7 +6700,7 @@ then trigger an action with the command ``WAVE MAGIC WAND AT BANYAN TREE``, the 
 
 ## Changing reachability {var_person_reaching}
 
-^^{rules: reaching inside / outside} ^^{rules: access to things referred to in actions} ^^{actions: reaching inside / outside rules} ^^{reaching inside / outside+rb+} ^^{actions: requirements for actions} ^^{touchability+rel+: requirement in defining actions} ^^{understanding: requirements for objects in actions} ^^{Inform 6 equivalent: scope rules} ^^{person reaching (- object)+glob+} ^^{container in question (- object)+glob+} ^^{supporter in question (- object)+glob+} ^^{+toout+deny access (reaching inside / outside)} ^^{+toout+allow access (reaching inside / outside)} ^^{+toout+access, deny / allow access (reaching inside / outside)}
+^^{rules: reaching inside / outside} ^^{rules: access to things referred to in actions} ^^{actions: reaching inside / outside rules} ^^{reaching inside / outside+rb+} ^^{actions: requirements for actions} ^^{(touchable thing), in defining actions+sourcepart+} ^^{understanding: requirements for objects in actions} ^^{Inform 6 equivalent: scope rules} ^^{person reaching (- object)+glob+} ^^{container in question (- object)+glob+} ^^{supporter in question (- object)+glob+} ^^{+toout+deny access (reaching inside / outside)} ^^{+toout+allow access (reaching inside / outside)} ^^{+toout+access, deny / allow access (reaching inside / outside)}
 
 The question of what the player can, and cannot, reach to touch is important in interactive fiction. It contains some of the subtlest ideas in the model world, though they often go unnoticed. For instance, if a key is on a shelf which is part of a closed box, can we reach for the key? This comes down to whether the shelf, described only as `part of` the box, is on the inside or the outside: and in fact, because it cannot know which is the case, Inform allows either. So in general it is best to regard `parts` as being exterior parts, but to avoid having parts on containers that might in the course of play be closed up with the player inside.
 
@@ -12390,7 +12392,7 @@ The `` (providing light)`` (note initial space) was added by this activity.
 
 ## Printing the description of a dark room {act_darkdesc}
 
-^^{printing the description of a dark room+descactivity+} ^^{darkness: printing the description of a dark room+activity+} ^^{description of a dark room: printing the description of a dark room+activity+}
+^^{printing the description of a dark room+descactivity+} ^^{darkness: printing the description of a dark room+activity+} ^^{descriptions (displayed): dark room}
 
 **1. When it happens.** When looking in darkness.
 
@@ -12530,7 +12532,7 @@ It's best to avoid situations where an item has a locale priority which is highe
 
 ## Printing a locale paragraph about {act_plp}
 
-^^{printing a locale paragraph about something+descactivity+} ^^{locale paragraph: printing a locale paragraph about something+activity+} ^^{descriptions (displayed): room contents} ^^{rooms+kind+: printing the room contents} ^^{mentioned / unmentioned (thing)+prop+} ^^{unmentioned / mentioned (thing)+prop+} ^^{mentioned (thing)+propcat+} ^^{unmentioned (thing)+propcat+}
+^^{printing a locale paragraph about something+descactivity+} ^^{locale paragraph: printing a locale paragraph about something+activity+} ^^{descriptions (displayed): room contents} ^^{rooms+kind+: printing the room contents} ^^{mentioned / unmentioned (thing)+prop+} ^^{unmentioned / mentioned (thing)+prop+} ^^{mentioned (thing)+propcat+} ^^{unmentioned (thing)+propcat+} ^^{supporters+kind+: that don't list contents in room descriptions}
 
 **1. When it happens.** See `printing the locale description`. By this point, the locale description process has identified a number of items as candidates to be described, and worked out a priority order. This activity is then called for each candidate in turn, starting with the highest priority items and working downwards. It can either print some text or not, and can either mark the item as `mentioned` or not: if it does, then the item won't appear subsequently in the locale description. If the activity does nothing, the item becomes "nondescript" and falls through into the final ``You can also see...`` paragraph, unless another rule mentions it in the mean time.
 
@@ -12689,7 +12691,7 @@ Note that, in order for our activity to succeed, we do need to supply a grammar 
 
 ## Reading a command {act_reading} {var_command} {kind_snippet}
 
-^^{understanding: special processing of keyboard input} ^^{Inform 6 equivalent: |BeforeParsing} ^^{snippets} ^^{player's command (- snippet)+glob+} ^^{matched text (- snippet)+glob+} ^^{punctuation: removing from player's command} ^^{regular expressions} ^^{text: regular expressions}
+^^{understanding: special processing of keyboard input} ^^{Inform 6 equivalent: |BeforeParsing} ^^{snippets} ^^{player's command (- snippet)+glob+} ^^{matched text (- snippet)+glob+} ^^{punctuation: removing from player's command} ^^{regular expressions} ^^{text: regular expressions} ^^{topics: matching snippets} ^^{>OOPS}
 
 **1. When it happens.** When reading a command from the keyboard.
 

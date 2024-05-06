@@ -5,6 +5,8 @@ Index: Scene that ends as soon as the player has embarrassed himself
 Description: A scene in which the player is allowed to explore as much as they like, but another character strolls in as soon as they have gotten into an awkward or embarrassing situation.
 For: Z-Machine
 
+^^{Scene that ends as soon as the player has embarrassed himself}
+
 The power of scenes lies in their ability to watch for general conditions and move the narrative along whenever these are fulfilled. Instead of waiting for the player to do one specific thing, the game waits for the world to be in a certain condition, before moving to the next stage of the plot.
 
 For instance, suppose we have a story in which the player has been captured for doing something inappropriate at court and is brought in to await a meeting with a palace official. We want to give the player a few minutes to stew, and we want the scene to end with them doing something mildly peculiar or embarrassing, and the official catching them in the act. So we tempt them into trying any of a number of different kooky activities, and just wait until they fall into the trap...

@@ -5,6 +5,8 @@ Index: Capitalised status line
 Description: To arrange that the location information normally given on the left-hand side of the status line appears in block capitals.
 For: Z-Machine
 
+^^{Capitalised status line}
+
 Not much is needed for this. The only noteworthy point is that it doesn't work by changing the left hand status line to `"[the player's surroundings in upper case]"`: it cannot do this because "the player's surroundings" is not a value. Instead, `"[the player's surroundings]"` is a text substitution sometimes printing the name of a room, sometimes printing "Darkness", and so on. We must therefore load it into a text first, and then apply "...in upper case".
 
 	{*}"Capital City"

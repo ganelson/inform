@@ -5,6 +5,8 @@ Index: Radio producing cycling programming
 Description: A radio that produces a cycle of output using varying text.
 For: Z-Machine
 
+^^{Radio producing cycling programming}
+
 	{*}"Radio Daze" by Jon Ingold
 	
 	The Living Room is a room. "A long couch, set up so you can see your wireless set. Not that you need to see it, of course."

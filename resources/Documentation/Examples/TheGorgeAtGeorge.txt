@@ -5,6 +5,8 @@ Index: TALK TO usage corrected
 Description: If the player tries to ``TALK TO`` a character, suggest alternative modes of conversation.
 For: Z-Machine
 
+^^{TALK TO usage corrected}
+
 	{*}"Gorge at George"
 	
 	The Dusty Lot is a room. "A few miles up the road from the concert venue, but at least it's cheap to park here."

@@ -5,6 +5,8 @@ Index: Setting pronouns to respond to sudden changes
 Description: Responding sensibly to a pot of petunias falling from the sky.
 For: Z-Machine
 
+^^{Setting pronouns to respond to sudden changes}
+
 Suppose we have an object that makes a dramatic entrance on the scene, like so:
 
 	{*}"Pot of Petunias"

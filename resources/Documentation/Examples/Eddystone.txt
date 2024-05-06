@@ -5,6 +5,8 @@ Index: Understanding new commands involving compass directions
 Description: Creating new commands involving the standard compass directions.
 For: Z-Machine
 
+^^{Understanding new commands involving compass directions}
+
 Using the compass directions in commands is a little bit finicky because directions are forbidden to figure in any interactions involving touch. (Really, directions are more a concept than an object; this is a compromise situation.) In any case, if we want to write a new command involving these, we need to be sure to specify that the direction is a visible thing. For instance:
 
 	"Eddystone"

@@ -5,6 +5,8 @@ Index: HELP command with specific set of topics
 Description: Table amendment to adjust ``HELP`` commands provided for the player.
 For: Z-Machine
 
+^^{>HELP: command with specific set of topics}
+
 Suppose we are using an extension in which another author has defined some help topics for the player, and we want to amend them for our game.
 
 We'll start with the portion of the text that we have inherited from the extension:

@@ -5,6 +5,8 @@ Index: Clothing with layering and regions of the body
 Description: A general-purpose clothing system that handles a variety of different clothing items layered in different combinations over different areas of the body.
 For: Z-Machine
 
+^^{clothing: layering and regions of the body}
+
 	{*}"What Not To Wear"
 	
 	Section 1 - Overlying and Underlying

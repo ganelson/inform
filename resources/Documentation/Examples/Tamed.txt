@@ -5,6 +5,8 @@ Index: Enterable objects
 Description: Examples of a container and a supporter that can be entered, as well as nested rooms.
 For: Z-Machine
 
+^^{enterable (container)+prop+}
+
 Within a room, we might have containers and supporters that a player can enter. A chair, stool, table, dais, or pedestal would be an enterable supporter (anything we would describe a person as being `on`); a cage, hammock, or booth would be an enterable container (because we would describe the person as being `inside`).
 
 When the player is in or on something, they are able to see the rest of the contents of the room, but a note such as ``(in the hammock)`` or ``(on the poster bed)`` is added to the room title when they look around.

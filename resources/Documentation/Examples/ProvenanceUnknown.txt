@@ -5,6 +5,8 @@ Index: PUSH something A DIRECTION modified
 Description: Allowing something like ``PUSH TELEVISION EAST`` to push the cart on which the television rests.
 For: Z-Machine
 
+^^{PUSH something A DIRECTION modified}
+
 Suppose we have a series of items that might be stacked on top of one another – say a heavy television on a rolling cart, and we want the player to be able to move the cart with ``PUSH TELEVISION EAST`` just as well as with ``PUSH CART EAST``.
 
 This takes a little redirection, using a setting action variables rule. This is not a kind of rule we've encountered yet, and in fact we won't meet it until the [Advanced Actions] chapter; it is included here for the convenience of authors who want to modify the effect of pushing without reading that far ahead:

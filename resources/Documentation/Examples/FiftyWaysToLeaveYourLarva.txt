@@ -5,6 +5,8 @@ Index: Substituting insults and boasts
 Description: Using text substitution to make characters reply differently under the same circumstances.
 For: Z-Machine
 
+^^{Substituting insults and boasts}
+
 We can use these substitutions to put together fairly complicated variations within a single piece of text:
 
 	{*}"Fifty Ways to Leave Your Larva"

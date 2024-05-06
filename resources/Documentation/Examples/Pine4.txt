@@ -5,6 +5,8 @@ Index: Pine 4. Flashback with multiple endings
 Description: Pine: Adding a flashback scene that, instead of repeating endlessly, repeats only until the Princess has understood the point.
 For: Z-Machine
 
+^^{Pine 4. Flashback with multiple endings}
+
 Suppose in addition to our pathetic little family history, we have another secret to convey to the Princess, this one a little more peculiar. She either gets it or she doesn't; once she gets it, we do not revisit that flashback, though it is still possible to keep visiting the poverty flashback.
 
 	{*}"Pine"

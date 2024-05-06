@@ -5,6 +5,8 @@ Index: Bookshelf with numerous books
 Description: A bookshelf with a number of books, where the player's command to examine something will be interpreted as an attempt to look up titles if the bookshelf is present, but otherwise given the usual response.
 For: Z-Machine
 
+^^{books (implementing): bookshelf with numerous books}
+
 Suppose we want a bookshelf with a very large number of books on it. They aren't to be taken or carried around in the game, but they should be mentioned, and the player should be allowed to look them up by name. Furthermore, the player's attempts to examine something unrecognised should be understood as an attempt to look up a title – but only when the player is in the presence of the books. The rest of the time such requests should be rejected in the usual way.
 
 	{*}"Bibliophilia"

@@ -5,6 +5,8 @@ Index: People who move around a party on their own
 Description: Social dynamics in which groups of people form and circulate during a party.
 For: Z-Machine
 
+^^{characters (people): moving around: randomly} ^^{characters (people): groups of people}
+
 To start with, let's understand "room" to mean "a group of people talking". These groups can grow and shrink as people come and go, so we'll want to name and rename them; and we're also going to need some rules to motivate people moving around, and a description to narrate how they behave when we're with them.
 
 	{*}"Emma"

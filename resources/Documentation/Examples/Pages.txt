@@ -5,6 +5,8 @@ Index: Book with numbered pages
 Description: A book with pages that can be read by number (as in "READ PAGE 3 IN...") and which accepts relative page references as well (such as "read the last page of...", "read the next page", and so on).
 For: Z-Machine
 
+^^{books (implementing): with numbered pages}
+
 Suppose we have a book that the player must consult page-by-page, and we want to be able to accept all of the following input:
 
 - ``READ BOOK`` [to choose a random page and read it]

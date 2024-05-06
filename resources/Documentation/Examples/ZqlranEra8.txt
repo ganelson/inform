@@ -5,6 +5,8 @@ Index: Time expressed in units other than minutes
 Description: Creating an alternative system of time for our game, using new units.
 For: Z-Machine
 
+^^{Time expressed in units other than minutes}
+
 Suppose that our game takes place on an alien planet that does not follow Earth time. On this planet, we want to track time with different units. We also want time to advance in those units, and we want to be able to set a schedule of timed events.
 
 	{*}"Zqlran Era 8"

@@ -5,6 +5,8 @@ Index: Saying a number in round numbers
 Description: A new `to say` definition which allows the author to say `"[a number in round numbers]"` and get verbal descriptions like ``a couple of`` or ``a few`` as a result.
 For: Z-Machine
 
+^^{Saying a number in round numbers}
+
 Sometimes it is more sensible to describe numbers roughly than in exact terms. For instance, we might want to have our player perceive ``many people`` rather than ``forty-two people`` on entering a room. To achieve this, we might write our own `to say` phrase.
 
 	{*}"Ballpark"

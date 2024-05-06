@@ -5,6 +5,8 @@ Index: All actions given different durations
 Description: Giving different actions a range of durations using a time allotment rulebook.
 For: Z-Machine
 
+^^{All actions given different durations}
+
 Here we move to a systematic way of giving different durations to different actions, including even variations on the same act – so that for instance climbing a steep hill might take several minutes more than other going actions. We do this by setting a number, `work duration`, to represent the number of minutes consumed by a given action, and then consulting a rulebook to find out how long the past turn's action should take. By default, an action will take 1 minute.
 
 We'll start by emulating the behaviour of [Uptempo]: each turn we'll set the clock forward most of the way, then check to see what has changed since the last turn, print any relevant events, and only then set the clock forward the final minute. The exception is when an action is set to take no time at all; in that case, we'll skip the rest of the turn sequence rules entirely.

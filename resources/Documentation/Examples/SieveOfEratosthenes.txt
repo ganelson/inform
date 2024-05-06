@@ -5,6 +5,8 @@ Index: Using lists as sieves
 Description: The haughty Eratosthenes of Cyrene will nevertheless consent to sieve prime numbers on request.
 For: Z-Machine
 
+^^{lists: variations on use of lists}
+
 In the words of Wikipedia: "Eratosthenes of Cyrene (Greek Eρατοσθένης; 276 BC-194 BC) was a Greek mathematician, poet, athlete, geographer and astronomer." In the words of Tom Lehrer: "It's people like that who make you realise how little you've achieved in life."
 
 A prime number is a number greater than 1 which is not a multiple of anything, so we can find the primes by starting with all the numbers and sieving out all the multiples of 2, then all the multiples of 3, and so on. Here we make our sieve of the unacceptable numbers (the "composite" or non-prime ones) first, then form a list of all the numbers, then sieve out the composites: what are left must be the primes.

@@ -5,6 +5,8 @@ Index: FIND command
 Description: A ``FIND`` command that allows the player to find a lost object anywhere
 For: Z-Machine
 
+^^{>FIND}
+
 Suppose that, contrary to the usual rules of interactive fiction, we want to allow the player to discover the locations of things they haven't actually seen yet:
 
 	{*}"One of Those Mornings"

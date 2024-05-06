@@ -5,6 +5,8 @@ Index: Broken and unbroken flowerpots
 Description: The flowerpots once again, but this time arranged so that after the first breakage all undamaged pots are said to be `unbroken`, to distinguish them from the others.
 For: Z-Machine
 
+^^{Broken and unbroken flowerpots}
+
 This easiest way to do this uses the `printing the name of` activity, which will come up in the following chapter:
 
 	{*}"Terracottissima"

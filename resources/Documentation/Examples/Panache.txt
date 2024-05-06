@@ -5,6 +5,8 @@ Index: Plot summary in place of a score
 Description: Replacing the score with a plot summary that records the events of the plot, scene by scene.
 For: Z-Machine
 
+^^{Plot summary in place of a score}
+
 If we have a plot that branches and has multiple kinds of outcome, we might well want to assemble these into a plot summary in place of the more traditional score. One way to approach this is to build the scene information into a table, adding information when each scene ends.
 
 We begin with a bit of setup:

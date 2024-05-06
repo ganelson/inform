@@ -5,6 +5,8 @@ Index: People listed as a group, with their possessions afterward
 Description: Listing visible characters as a group, then giving some followup details in the same paragraph about specific ones.
 For: Z-Machine
 
+^^{characters (people): groups of people}
+
 Often it is best to have an entire paragraph about the characters present in a room, but suppose we're narrating a large party with a lot of people moving around. In that case, it might be better to list everyone together, then add a few salient details by way of follow-up, like this:
 
 	{*}"Happy Hour"

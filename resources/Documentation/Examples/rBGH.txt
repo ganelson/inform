@@ -5,6 +5,8 @@ Index: Player's height randomised at the start of play
 Description: The player character's height is selected randomly at the start of play.
 For: Z-Machine
 
+^^{Player's height randomised at the start of play}
+
 As with ordinary numbers, we can choose random units when this is useful:
 
 	{*}"rBGH"

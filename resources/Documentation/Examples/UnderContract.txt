@@ -5,6 +5,8 @@ Index: Person who obeys almost all instructions
 Description: Creating a person who accepts most instructions and reacts correctly when a request leads implicitly to inappropriate behaviour.
 For: Z-Machine
 
+^^{characters (people): obeying and refusing}
+
 	{*}"Under Contract"
 	
 	The Sound Stage is a room. The description is "A somewhat creaky and unconvincing reproduction of the docks of San Francisco."

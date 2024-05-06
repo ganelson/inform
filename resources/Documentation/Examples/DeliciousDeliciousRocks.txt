@@ -5,6 +5,8 @@ Index: Sanity-check stage before the Before rules
 Description: Adding a sanity-check stage to decide whether an action makes any sense, which occurs before any before rules, implicit taking, or check rules.
 For: Z-Machine
 
+^^{Sanity-check stage before the Before rules}
+
 In some cases, we may want to add new stages to action processing. One possibility is a stage where we check the sanity of what the player is trying to do before executing any of the other commands; so that we avoid, for instance
 
 	> EAT ROCK

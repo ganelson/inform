@@ -5,6 +5,8 @@ Index: Paragraphs of flexible descriptions
 Description: Uses `writing a paragraph about` to make person and object descriptions that vary considerably depending on what else is going on in the room, including some randomised NPC interactions with objects or with each other.
 For: Z-Machine
 
+^^{Paragraphs of flexible descriptions}
+
 	{*}"Air Conditioning is Standard"
 	
 	Section 1 - The Garage

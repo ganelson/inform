@@ -5,6 +5,8 @@ Index: Standard IF demonstration
 Description: Implementation of "Cloak of Darkness", a simple example game that for years has been used to demonstrate the features of IF languages.
 For: Z-Machine
 
+^^{Standard IF demonstration}
+
 _Cloak of Darkness_ is a brief example game that has been implemented in nearly every IF system currently used. It hasn't got much claim to complexity or richness, but it does exemplify many of the standard things one might want an IF language to be able to do: define descriptions and the results of actions, assign synonyms to nouns, create new verbs, handle darkness, track repeated acts, and so on.
 
 Here is what the game looks like in Inform:

@@ -5,6 +5,8 @@ Index: INVENTORY listing with separate carried and worn items
 Description: Separate the player's inventory listing into two parts, so that it says "you are carrying..." and then (if the player is wearing anything) "You are also wearing...".
 For: Z-Machine
 
+^^{inventory: separate carried and worn items}
+
 If we wanted, we might replace the rule for taking inventory as follows:
 
 	{*}"Persephone"

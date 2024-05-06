@@ -5,6 +5,8 @@ Index: Liquids in mixtures, identified by recipe
 Description: Implementing liquids that can be mixed, and the components automatically recognised as matching one recipe or another.
 For: Z-Machine
 
+^^{liquids (implementing): mixtures, identified by recipe}
+
 Our previous experiments into liquid have not dealt with the possibility of mixing components, but that is because for most games, tracking the details of mixture is overkill.
 
 But let's suppose that this time we do want to have mixed liquids; moreover, we want a way to describe the mixtures to the player inventively, so that if they hit specific combinations those combinations are recognised: calling the result a martini, say, rather than just ``a mixture of vodka and vermouth``.

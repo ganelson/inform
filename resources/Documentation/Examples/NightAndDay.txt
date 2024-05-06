@@ -5,6 +5,8 @@ Index: Cycle of day and night scenes
 Description: Cycling through a sequence of scenes to represent day and night following one another during a game.
 For: Z-Machine
 
+^^{Cycle of day and night scenes}
+
 Suppose we want to have a sequence of nights and days in our game, with one scene to govern each daylight condition.
 
 	{*}"Night and Day"

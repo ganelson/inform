@@ -5,6 +5,8 @@ Index: Disenchantment Bay 2. Scenery
 Description: Disenchantment Bay: creating some of the objects in the cabin's description.
 For: Z-Machine
 
+^^{Disenchantment Bay 2. Scenery}
+
 If we compile our last version of the cabin, we get a room where the glass case and the bench are listed separately from the room description, even though they have already been mentioned once. We can prevent this by making the already-mentioned things scenery:
 
 	{*}"Disenchantment Bay"

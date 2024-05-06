@@ -5,6 +5,8 @@ Index: Conversation based on keyword recognition
 Description: A character who responds to keywords in the player's instructions and remarks, even if there are other words included.
 For: Z-Machine
 
+^^{dialogue: based on keyword recognition}
+
 The `reading a command` activity is not the only point at which we can interact with snippets, as it happens; it is merely the most useful. `The player's command` can be consulted at other points, however, as in this example of your somewhat deaf (or distracted, or simply cussed) Aunt:
 
 	{*}"Complimentary Peanuts"

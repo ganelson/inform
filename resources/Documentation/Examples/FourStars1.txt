@@ -5,6 +5,8 @@ Index: Four Stars 1. Dark room which relies on other senses when light is off
 Description: An elaboration of the idea that when light is absent, the player should be given a description of what they can smell and hear, instead.
 For: Z-Machine
 
+^^{Four Stars 1. Dark room which relies on other senses when light is off}
+
 	{*}"Four Stars"
 	
 	A thing has some text called sound. The sound of a thing is usually "silence".

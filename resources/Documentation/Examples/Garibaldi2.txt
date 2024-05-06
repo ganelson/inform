@@ -5,6 +5,8 @@ Index: Garibaldi 2. Coloured text styles
 Description: Adding coloured text to the example of door-status readouts.
 For: Z-Machine
 
+^^{Garibaldi 2. Coloured text styles}
+
 The extension `Basic Screen Effects by Emily Short` provides a few more type styles, in the form of coloured lettering. The colours available are red, yellow, green, blue, white, magenta, and cyan, as well as the usual black; and to restore the player's default screen colour, we say `"[default letters]"`.
 
 Note that this example _only_ works if the Settings for it are set to the Z-machine story file format: it does not work on the default Glulx setting, which has a different screen arrangement.

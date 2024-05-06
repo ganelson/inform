@@ -5,6 +5,8 @@ Index: Relations applying to multiple values of the same kind
 Description: A case in which relations give characters multiple values of the same kind.
 For: Z-Machine
 
+^^{Relations applying to multiple values of the same kind}
+
 We have already seen that we can give things value properties – a lamp has a brightness, for instance. Relations give us additional flexibility: since we may relate various things to various values, it is possible to describe a thing as having more than one value at the same time.
 
 To demonstrate:

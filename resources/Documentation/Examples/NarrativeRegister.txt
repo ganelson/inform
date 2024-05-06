@@ -5,6 +5,8 @@ Index: Describing action outcomes using an adaptive random choice of verb
 Description: Suppose we want all of our action responses to vary depending on some alterable quality of the narrator, so that sometimes they're slangy, sometimes pompous or archaic.
 For: Z-Machine
 
+^^{descriptions (displayed): action outcomes using a random choice of verb}
+
 As we saw in [Variety], we can associate verbs with particular actions and call them up as needed. If we do that, though, we can also store additional information about those verbs and use that information to select the ideal verb to use in a particular situation.
 
 In this example, we create a table of verbs and their meanings, together with some connotative information. Each time we report an action, we then score all the available verbs to decide which is the most suitable to use at the moment.  This allows us to change the narrator's diction change mid-game and have the action descriptions change as well.

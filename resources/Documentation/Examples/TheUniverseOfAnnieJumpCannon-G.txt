@@ -5,6 +5,8 @@ Index: Harvard star classifications
 Description: Harvard star classifications such as A5Ib or G8IV.
 For: Glulx
 
+^^{kinds: of value}
+
 In 1866 the Italian priest Angelo Secchi, having determined for the first time that the Sun was indeed a star, found a way to sort stars by their spectra, that is, by the blend of colours of light with which they shone. He used:
 
 	A stellar type is a kind of value.

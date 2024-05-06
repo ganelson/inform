@@ -5,6 +5,8 @@ Index: Map region listed in status line
 Description: Have the status line indicate the current region of the map.
 For: Z-Machine
 
+^^{map region of (room)+prop+: listed in status line}
+
 Suppose a game with a large map entirely subdivided into regions. We could define:
 
 	{*}"Politics as Usual"

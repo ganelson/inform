@@ -5,6 +5,8 @@ Index: Child who asks if we're there yet
 Description: A child who after a certain period in the car starts asking annoying questions.
 For: Z-Machine
 
+^^{characters (people): acting spontaneously: asking questions} ^^{actions: spontaneous by other people}
+
 	{*}"Annoyotron Jr"
 	
 	The Minivan is a room. The Open Road is outside from the Minivan. Pete is a man in the Minivan. "Pete [if the player has been in the Minivan for 3 turns]is starting to look bored[otherwise]is playing with his travel activity book[end if]."

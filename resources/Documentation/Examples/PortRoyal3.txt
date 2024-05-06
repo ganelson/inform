@@ -5,6 +5,8 @@ Index: Divided into regions
 Description: Division of Port Royal into regions.
 For: Z-Machine
 
+^^{regions}
+
 We should go ahead and do all our room definitions first...
 
 	{*}"1691"

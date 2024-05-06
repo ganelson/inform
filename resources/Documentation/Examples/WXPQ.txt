@@ -5,6 +5,8 @@ Index: Parser errors involving the any token
 Description: Creating a more sensible parser error than "that noun did not make sense in this context".
 For: Z-Machine
 
+^^{Parser errors involving the any token}
+
 The parser error "That noun did not make sense in this context" arises instead of "You can't see any such thing" when the player uses a command that could apply to any item in the game – that is, a command such as
 
 	Understand "go to [any room]" as going directly to.

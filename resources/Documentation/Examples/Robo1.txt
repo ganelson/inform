@@ -5,6 +5,8 @@ Index: Robo 1. Robot that stores only one program at a time
 Description: A robot which watches and records the player's actions, then tries to repeat them back in the same order when it is switched into play-back mode.
 For: Z-Machine
 
+^^{Robo 1. Robot that stores only one program at a time}
+
 	{*}"Robo"
 	
 	The Experimentation Chamber is a room. Robo is a person in the Experimentation Chamber. "Robo, your prototype tin companion, stands awkwardly beside you. In the middle of its chest is a red enamel button[if the red button is switched on], currently depressed[otherwise], currently un-depressed[end if]."

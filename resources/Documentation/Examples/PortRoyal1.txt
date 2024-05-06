@@ -5,6 +5,8 @@ Index: A landscape from Jamaica, 1691
 Description: A partial implementation of Port Royal, Jamaica, set before the earthquake of 1692 demolished large portions of the city.
 For: Z-Machine
 
+^^{connections between rooms}
+
 	{*}"1691"
 	
 	Fort James is a room. "The enclosure of Fort James is a large, roughly hexagonal court walled with heavy stone.  The walls face the entrance to Port Royal Harbour, and the battery of guns is prepared to destroy any enemy ship arriving."

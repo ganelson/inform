@@ -5,6 +5,8 @@ Index: Past tense conditions
 Description: An overview of all the variations of past and present tenses, and how they might be used.
 For: Z-Machine
 
+^^{past tense, of conditions in rules}
+
 Here we have a box that prints out its current state and its history each time we open and close it:
 
 	{*}"Tense Boxing"

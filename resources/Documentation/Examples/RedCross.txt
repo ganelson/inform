@@ -5,6 +5,8 @@ Index: DIAGNOSE command
 Description: A ``DIAGNOSE`` command which allows the player to check on the health of someone.
 For: Z-Machine
 
+^^{DIAGNOSE command}
+
 	{*}"Red Cross"
 	
 	Diagnosing is an action applying to one visible thing. Understand "diagnose [something]" as diagnosing.

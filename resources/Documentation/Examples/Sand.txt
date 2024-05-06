@@ -5,6 +5,8 @@ Index: PUT and INSERT multiple objects with one command
 Description: Extend ``PUT`` and ``INSERT`` handling to cases where multiple objects are intended at once.
 For: Z-Machine
 
+^^{PUT and INSERT multiple objects with one command}
+
 The player is not ordinarily allowed to ``PUT`` or ``INSERT`` multiple items in the same command, but this is easily changed with a couple of `Understand` instructions borrowed from many chapters later.
 
 	{*}"Sand"

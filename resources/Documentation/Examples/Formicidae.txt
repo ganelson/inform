@@ -5,6 +5,8 @@ Index: Controlling the order in which multiple-object actions occur
 Description: Manipulating the order in which items are handled after ``TAKE ALL``.
 For: Z-Machine
 
+^^{Controlling the order in which multiple-object actions occur}
+
 Suppose we have an item that produces an interesting result the first time the player lifts it – a rock with dangerous ants revealed underneath. The effect of the surprise is a little weakened, though, if the player sees that response as the result of a ``TAKE ALL``, when it might be printed like this:
 
 	> GET ALL

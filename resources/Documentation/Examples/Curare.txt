@@ -5,6 +5,8 @@ Index: Cyclical randomisation of named objects
 Description: A phrase that chooses and names the least-recently selected item from the collection given, allowing the text to cycle semi-randomly through a group of objects.
 For: Z-Machine
 
+^^{Cyclical randomisation of named objects}
+
 	{*}"Curare"
 	
 	A thing has a number called the last use. The last use of a thing is usually 0.

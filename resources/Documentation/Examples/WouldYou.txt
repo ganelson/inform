@@ -5,6 +5,8 @@ Index: Properties, checking for
 Description: Adding new properties to objects, and checking for their presence.
 For: Z-Machine
 
+^^{Properties, checking for}
+
 For instance, if we want to give some objects a flavour:
 
 	{*}"Would you...?"

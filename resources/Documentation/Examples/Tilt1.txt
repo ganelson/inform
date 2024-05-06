@@ -5,6 +5,8 @@ Index: Tilt 1. Deck of cards that can be referred to by name
 Description: A deck of cards with fully implemented individual cards, which can be separately drawn and discarded, and referred to by name.
 For: Z-Machine
 
+^^{Tilt 1. Deck of cards that can be referred to by name}
+
 We've simulated a deck of cards before, but only as entries in a table. This time we're going to do it more completely, with card objects that can be drawn and discarded, and referred to by name. The tedious way to do this would be to make 52 objects by hand and laboriously write out their names and understand rules.
 
 A more sensible way is to make 52 identical card objects, assign them ranks and suits, and allow Inform to generate and parse their names automatically.

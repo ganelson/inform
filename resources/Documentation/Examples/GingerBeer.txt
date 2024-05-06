@@ -5,6 +5,8 @@ Index: Telescope allowing view of another room
 Description: A portable magic telescope which allows the player to view items in another room of their choice.
 For: Z-Machine
 
+^^{Telescope allowing view of another room}
+
 Suppose we want to have a pair of linked lenses so that the player can look into one of them and see things which occur in room containing the other lense.
 
 We begin simply with a bit of environment for the player to wander around:

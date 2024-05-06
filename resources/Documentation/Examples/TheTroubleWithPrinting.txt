@@ -5,6 +5,8 @@ Index: READ command separate from EXAMINE
 Description: Making a ``READ`` command, distinct from ``EXAMINE``, for legible objects.
 For: Z-Machine
 
+^^{READ command separate from EXAMINE}
+
 	{*}"The Trouble with Printing"
 	
 	A thing has some text called printing. The printing of a thing is usually "blank".

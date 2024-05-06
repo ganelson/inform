@@ -5,6 +5,8 @@ Index: Robo 2. Robot able to store and perform fifteen named scripts
 Description: A robot which watches and records the player's actions, then tries to repeat them back in the same order when it is switched into play-back mode.
 For: Z-Machine
 
+^^{Robo 2. Robot able to store and perform fifteen named scripts}
+
 We have seen how we can make a robot that watches the player, then plays back the same actions again. A slightly more adventurous implementation would be to let the player create a whole series of named scripts which the robot will run on command.
 
 To do this, we'll need each program to have a command that sets it off (stored as text, since this is the best way to capture and preserve arbitrary text entered by the player) and then the script of actions that must result:

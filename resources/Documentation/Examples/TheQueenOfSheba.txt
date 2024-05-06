@@ -5,6 +5,8 @@ Index: Person who answers what, where, and when questions differently
 Description: Allowing the player to use question words, and using that information to modify the response given by the other character.
 For: Z-Machine
 
+^^{dialogue: characters answering questions}
+
 Suppose we want the player to ask questions of slightly more complexity–we might want to build in a system that understood ``WHO``, ``WHAT``, ``WHERE``, and ``WHEN``, for instance. We could use a topic table for this, too:
 
 	{*}"The Queen of Sheba"

@@ -5,6 +5,8 @@ Index: Horribly heavy box described differently after being taken
 Description: A box which called "horribly heavy box" after the player has tried to take it the first time.
 For: Z-Machine
 
+^^{Horribly heavy box described differently after being taken}
+
 The names of objects might want to change also:
 
 	{*}"Zero"

@@ -5,6 +5,8 @@ Index: AMUSING menu shown at the endgame
 Description: Offering the player a menu of things to read after winning the game.
 For: Z-Machine
 
+^^{AMUSING menu shown at the endgame}
+
 Building a menu is moderately tedious, so we will rely on the standard menu extensions provided. Thus:
 
 	{*}"Xerxes"

@@ -5,6 +5,8 @@ Index: SEARCHing for an item which moves into play
 Description: An item that the player can't interact with until they have found it by searching the scenery.
 For: Z-Machine
 
+^^{SEARCHing for an item which moves into play}
+
 Suppose we have our player, a detective, searching for evidence; we don't want them to be able to use this evidence until they have performed the action that reveals it, but after that it should be visible in the room when they look.
 
 A simple way to do this is to start the object – an envelope, in this scenario – out of play, and only move it into the location when the player looks for it:

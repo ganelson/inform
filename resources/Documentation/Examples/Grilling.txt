@@ -5,6 +5,8 @@ Index: Supporter from which the player cannot take things
 Description: A grill, from which the player is not allowed to take anything lest they're burned.
 For: Z-Machine
 
+^^{supporters+kind+: from which the player cannot take things}
+
 Descriptions of objects can be used in `Instead` rules: we can not only say `Instead of taking the steak`, but also `Instead of taking something` or `Instead of taking something which is on the grill`.
 
 That last rule is useful if, for example, we want to prevent the player from interacting with anything on a specific supporter:

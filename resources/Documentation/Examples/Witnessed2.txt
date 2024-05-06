@@ -5,6 +5,8 @@ Index: Witnessed 2. EMF Meter
 Description: A piece of ghost-hunting equipment that responds depending on whether or not the meter is on and a ghost is visible or touchable from the current location.
 For: Z-Machine
 
+^^{Witnessed 2. EMF Meter}
+
 	{*}"Witnessed"
 	
 	The player carries a device called a Trifield Natural EMF Meter. The description of the Meter is "This cost a pretty penny off the internet, but it's worth it: according to the website it has been programmed by PhD physicists to ignore manmade sources of fields and to respond only to paranormal EMF changes.

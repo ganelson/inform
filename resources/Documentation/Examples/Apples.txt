@@ -5,6 +5,8 @@ Index: Disambiguation question giving items more explicit names
 Description: Prompting the player on how to disambiguate otherwise similar objects.
 For: Z-Machine
 
+^^{Disambiguation question giving items more explicit names}
+
 Inform by default detects whether two objects can be disambiguated by any vocabulary available to the player. If so, it asks a question; if not, it picks one of the identical objects at random.
 
 Generally this produces good behaviour. Occasionally, though, two objects have some distinguishing characteristic that doesn't appear in the object name. For instance, suppose we've created a class of apples that can be told apart depending on whether they've been bitten or not:

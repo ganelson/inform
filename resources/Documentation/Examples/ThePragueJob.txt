@@ -5,6 +5,8 @@ Index: Scenes which change as the player explores their inventory
 Description: Scenes used to provide pacing while the player goes through their possessions.
 For: Z-Machine
 
+^^{Scenes which change as the player explores their inventory}
+
 Suppose we want to remind the player that they don't have all the time in the world, by starting to nag them when they're nearly, but not entirely, done going over their inventory in preparation for a job.
 
 	{*}"The Prague Job"

@@ -5,6 +5,8 @@ Index: To say rules for insults and boasts
 Description: Writing your own rules for how to carry out substitutions.
 For: Z-Machine
 
+^^{To say rules for insults and boasts}
+
 There is only so much we can cram into a text property, so being able to swap in properties is useful but limited. Fortunately, we can also, if we want, create new phrases for how to say things in brackets:
 
 	{*}"Fifty Times Fifty Ways"

@@ -5,6 +5,8 @@ Index: LOOK [direction] command
 Description: A ``LOOK`` [direction] command which allows the player to see descriptions of the nearby landscape.
 For: Z-Machine
 
+^^{looking+action+: in a direction}
+
 Suppose a game in which the player is wandering an open landscape with long vistas, allowing them to ``LOOK`` in some direction, or even look at an adjacent location.
 
 	{*}"A View of Green Hills"

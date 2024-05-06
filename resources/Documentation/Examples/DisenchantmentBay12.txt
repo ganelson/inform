@@ -5,6 +5,8 @@ Index: Complete playable scenario
 Description: A final trip to Disenchantment Bay: the scenario turned into a somewhat fuller scene, with various features that have not yet been explained.
 For: Z-Machine
 
+^^{Complete playable scenario}
+
 	{*}"Disenchantment Bay"
 	
 	Include Locksmith by Emily Short.

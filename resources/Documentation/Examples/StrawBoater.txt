@@ -5,6 +5,8 @@ Index: Testing for empty properties
 Description: Using text properties that apply only to some things and are not defined for others.
 For: Z-Machine
 
+^^{Testing for empty properties}
+
 Sometimes we like to give properties to kinds of thing, but not fill them in in all cases. For instance, we might have vehicles that optionally make noise, and those might have a `movement sound`.
 
 All properties have a default value, which we can find by looking in the Kinds tab of the index. This is what the property will be set to automatically, if we do not change it ourselves. In the case of a text property, that is `""`; so for instance we might use our `movement sound` thus:

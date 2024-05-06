@@ -5,6 +5,8 @@ Index: Phrases applying to specific things
 Description: Using the same phrase to produce different results with different characters.
 For: Z-Machine
 
+^^{Phrases applying to specific things}
+
 Here we use phrases that match individual items where possible, and the general kind otherwise:
 
 	{*}"Ferragamo Again"

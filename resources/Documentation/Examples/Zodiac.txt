@@ -5,6 +5,8 @@ Index: Actions prohibited in the presence of a dangerous character
 Description: Several variations on "doing something other than...", demonstrating different degrees of restriction.
 For: Z-Machine
 
+^^{actions: prohibited in the presence of a dangerous character}
+
 Notice that the following two scenarios do not have the same effect:
 
 	{*}"Zodiac"

@@ -5,6 +5,8 @@ Index: USE action which divines rational behaviour for a wide range of possible 
 Description: A generic ``USE`` action which behaves sensibly with a range of different objects.
 For: Z-Machine
 
+^^{USE action which divines rational behaviour for a wide range of possible nouns}
+
 This example takes the ordering of grammar lines to its logical extreme, sorting the player's input into different categories depending on the kind and condition of the objects mentioned.
 
 	{*}"Alpaca Farm"

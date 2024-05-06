@@ -5,6 +5,8 @@ Index: Tilt 2. Identifying poker hands
 Description: A deck of cards with fully implemented individual cards; when the player has a full poker hand, the inventory listing describes the resulting hand accordingly.
 For: Z-Machine
 
+^^{Tilt 2. Identifying poker hands}
+
 In our previous implementations of playing cards, we've gotten as far as creating decks of individual cards that the player can draw and discard. But in a poker game, one doesn't just have a collection of cards: one has a hand of a specific kind.
 
 Here we take on the job of writing an inventory listing for a poker hand that will reflect the real value of what the player has drawn. To do this, we create a rulebook to sort and assess the cards in the player's hand; its possible return values are limited to the kinds of poker hands that exist, from "high card" to "royal flush".

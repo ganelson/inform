@@ -5,6 +5,8 @@ Index: Marble chute toy
 Description: Building a marble chute track in which a dropped marble will automatically roll downhill.
 For: Z-Machine
 
+^^{Marble chute toy}
+
 Suppose we have marbles that roll downhill across our map, in a life-size version of one of those marble-chute toys. We might now want to keep track of both compass relationships and which-room-slopes-into-which, so we make a new relation:
 
 	{*}"Swerve left? Swerve right? Or think about it and die?"

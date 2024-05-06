@@ -5,6 +5,8 @@ Index: Train that makes station stops
 Description: A train which follows a schedule, stopping at a number of different locations.
 For: Z-Machine
 
+^^{Train that makes station stops}
+
 Suppose we want to have a train which, at fixed times, arrives at and leaves stations. It should be possible for the player to get on and off the train when it is stopped, but not while the train is in motion.
 
 	{*}"Empire"

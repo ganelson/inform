@@ -5,6 +5,8 @@ Index: TAKE prints a description
 Description: When the player picks something up which they haven't already examined, the object is described.
 For: Z-Machine
 
+^^{TAKE prints a description}
+
 Suppose we want to make the player's life slightly easier by examining everything they pick up, if they haven't already examined it.
 
 	{*}"Morning After"

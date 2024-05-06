@@ -5,6 +5,8 @@ Index: Light levels variable depending on the number of candles the player has l
 Description: Light levels vary depending on the number of candles the player has lit, and this determines whether or not they are able to examine detailed objects successfully.
 For: Z-Machine
 
+^^{Light levels variable depending on the number of candles the player has lit}
+
 	{*}"Zorn of Zorna"
 	
 	Visibility rule:

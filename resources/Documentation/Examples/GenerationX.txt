@@ -5,6 +5,8 @@ Index: Person who gets fed up after being asked to do many implausible things
 Description: A person who goes along with the player's instructions, but reluctantly, and will get annoyed after too many repetitions of the same kind of unsuccessful command.
 For: Z-Machine
 
+^^{characters (people): obeying and refusing}
+
 	{*}"Generation X"
 	
 	The Volunteer Center is a room. "A fairly spartan office, though there are a few attractive posters from advertising campaigns of the past, and an ominous map charting the deforestation of Brazil."
