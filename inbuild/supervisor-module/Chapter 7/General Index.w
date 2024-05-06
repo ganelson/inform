@@ -194,6 +194,7 @@ void Indexes::scan_r(compiled_documentation *cd, markdown_item *md, markdown_ite
 				Indexes::mark_index_term(cd, term, *volume_number, *latest, NULL, EG, NULL, NULL, 2);
 			}
 			DISCARD_TEXT(term)
+			E = EG;
 		}
 	}
 	for (markdown_item *ch = md->down; ch; ch=ch->next)
