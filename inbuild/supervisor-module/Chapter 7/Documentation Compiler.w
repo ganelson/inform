@@ -500,8 +500,6 @@ void DocumentationCompiler::read_contents_helper(text_stream *cl, text_file_posi
 	match_results mr2 = Regexp::create_mr();
 	if (Regexp::match(&mr2, tweak, U"^{(%C*)headword(%C*)} = (%C+) *(%c*)")) {
 		Indexes::add_indexing_notation(cd, mr2.exp[0], mr2.exp[1], mr2.exp[2], mr2.exp[3]);
-	} else if (Regexp::match(&mr2, tweak, U"{(%C+?)} = (%C+) *(%c*)")) {
-		Indexes::add_indexing_notation_for_symbols(cd, mr2.exp[0], mr2.exp[1], mr2.exp[2]);
 	} else if (Regexp::match(&mr2, tweak, U"definition = (%C+) *(%c*)")) {
 		Indexes::add_indexing_notation_for_definitions(cd, mr2.exp[0], mr2.exp[1], NULL);
 	} else if (Regexp::match(&mr2, tweak, U"(%C+)-definition = (%C+) *(%c*)")) {

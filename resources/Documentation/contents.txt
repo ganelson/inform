@@ -149,13 +149,6 @@ index notation: ^{headword+descactivity+} = descactivity (under {descriptions (d
 # index listing.)
 index notation: ^{headword+token+} = token ("grammar token") (bracketed) (prefix "[") (suffix "]")
 
-# Auto-generated entries for each activity.
-index notation: {act_} = activity ("activity")
-
-# Another auto-generated entry for activities, auto-filed into
-# "activities: catalogue".
-index notation: {act_} = activitycat (under {activities: catalogue})
-
 index notation: definition = phrase ("phrase") (bracketed)
 index notation: if-definition = ifphrase ("if phrase") (bracketed)
 index notation: say-definition = sayphrase ("say phrase") (bracketed)

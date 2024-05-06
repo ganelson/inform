@@ -51,7 +51,7 @@ which use this module:
 @e kit_configuration_CLASS
 @e kit_dependency_CLASS
 @e satellite_test_case_CLASS
-@e span_notation_CLASS
+@e index_markup_notation_CLASS
 
 =
 DECLARE_CLASS(build_methodology)
@@ -95,7 +95,7 @@ DECLARE_CLASS(inform_template)
 DECLARE_CLASS(kit_configuration)
 DECLARE_CLASS(kit_dependency)
 DECLARE_CLASS(satellite_test_case)
-DECLARE_CLASS(span_notation)
+DECLARE_CLASS(index_markup_notation)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

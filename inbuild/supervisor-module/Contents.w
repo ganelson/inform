@@ -69,6 +69,7 @@ Chapter 7: Extension Management
 	Documentation Renderer
 	In-App Manuals
 	Making RTP Pages
+	Index Markup Notations
 	Indexing Utilities
 	General Index
 	Examples Index

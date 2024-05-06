@@ -6,19 +6,14 @@ To produce a general index, for HTML output only.
 These allow markup such as |this is ^{nifty}| to mark headwords in the source
 documentation for indexing.
 
-Only two of the four ways to add indexing notation actually create a new
+Only one of the three ways to add indexing notation actually create a new
 notation as such: the other two instead piggyback on built-in, i.e., already
-defined, ones. But in all four cases a new "category" is made, corresponding
+defined, ones. But in all cases a new "category" is made, corresponding
 roughly to a CSS class used in the final output.
 
 =
 void Indexes::add_indexing_notation(compiled_documentation *cd, text_stream *L, text_stream *R, text_stream *style, text_stream *options) {
-	IndexUtilities::add_span_notation(cd, L, R, style, INDEX_TEXT_SPP);
-	Indexes::add_category(cd, style, options, NULL);
-}
-
-void Indexes::add_indexing_notation_for_symbols(compiled_documentation *cd, text_stream *L, text_stream *style, text_stream *options) {
-	IndexUtilities::add_span_notation(cd, L, NULL, style, INDEX_SYMBOLS_SPP);
+	IndexMarkupNotations::add(cd, L, R, style);
 	Indexes::add_category(cd, style, options, NULL);
 }
 
@@ -37,7 +32,7 @@ void Indexes::add_indexing_notation_for_examples(compiled_documentation *cd, tex
 
 typedef struct cd_indexing_data {
 	int present_with_index;
-	struct linked_list *notations; /* of |span_notation| */
+	struct linked_list *notations; /* of |index_markup_notation| */
 	struct dictionary *categories_by_name; /* to |indexing_category| */
 	struct dictionary *categories_redirect; /* to text */
 	struct dictionary *lemmas; /* to |index_lemma| */
@@ -47,7 +42,7 @@ typedef struct cd_indexing_data {
 cd_indexing_data Indexes::new_indexing_data(void) {
 	cd_indexing_data id;
 	id.present_with_index = FALSE;
-	id.notations = NEW_LINKED_LIST(span_notation);
+	id.notations = NEW_LINKED_LIST(index_markup_notation);
 	id.categories_by_name = Dictionaries::new(25, FALSE);
 	id.categories_redirect = Dictionaries::new(25, TRUE);
 	id.lemmas = Dictionaries::new(100, FALSE);
@@ -271,46 +266,23 @@ void Indexes::extract_from_indexable_matter(OUTPUT_STREAM, compiled_documentatio
 		Regexp::dispose_of(&mr);
 		return;
 	}
+	Regexp::dispose_of(&mr);
 	TEMPORARY_TEXT(trimmed)
 	Str::copy(trimmed, text);
 	Str::trim_white_space(trimmed);
-	int claimed = FALSE;
-	span_notation *SN;
-	LOOP_OVER_LINKED_LIST(SN, span_notation, cd->id.notations)
-		if (SN->sp_purpose == INDEX_TEXT_SPP)
-			if (Str::begins_with_wide_string(trimmed, SN->sp_left))
-				if (Str::ends_with_wide_string(trimmed, SN->sp_right)) {
-					for (int j=SN->sp_left_len, L=Str::len(trimmed); j<L-SN->sp_right_len; j++)
-						PUT(Str::get_at(trimmed, j));
-					WRITE("=___=%S", SN->sp_style);
-					if ((plain_md) && (plain_md->type == PLAIN_MIT)) {
-						plain_md->from += SN->sp_left_len;
-						plain_md->to -= SN->sp_right_len;
-					}
-					claimed = TRUE; break;
-				}
-	DISCARD_TEXT(trimmed)
-	Regexp::dispose_of(&mr);
-	if (claimed == FALSE) {
-		WRITE("%S=___=standard", text); /* last resort */
-	}
-}
-
-@ =
-void Indexes::index_notify_of_symbol(compiled_documentation *cd, text_stream *symbol, int V, markdown_item *S) {
-	span_notation *SN;
-	LOOP_OVER_LINKED_LIST(SN, span_notation, cd->id.notations)
-		if (SN->sp_purpose == INDEX_SYMBOLS_SPP) {
-			if (Str::begins_with_wide_string(symbol, SN->sp_left)) {
-				TEMPORARY_TEXT(term)
-				Str::copy(term, S->stashed);
-				LOOP_THROUGH_TEXT(pos, term)
-					Str::put(pos, Characters::tolower(Str::get(pos)));
-				WRITE_TO(term, "=___=%S", SN->sp_style);
-				Indexes::mark_index_term(cd, term, V, S, NULL, NULL, NULL, NULL, FALSE);
-				DISCARD_TEXT(term)
-			}
+	index_markup_notation *imn = IndexMarkupNotations::match(cd, trimmed);
+	if (imn) {
+		int L = IndexMarkupNotations::left_width(imn), R = IndexMarkupNotations::right_width(imn);
+		for (int j=L; j < Str::len(text) - R; j++) PUT(Str::get_at(text, j));
+		WRITE("=___=%S", IndexMarkupNotations::style_name(imn));
+		if ((plain_md) && (plain_md->type == PLAIN_MIT)) {
+			plain_md->from += L;
+			plain_md->to -= R;
 		}
+	} else {
+		WRITE("%S=___=standard", trimmed);
+	}
+	DISCARD_TEXT(trimmed)
 }
 
 @ =

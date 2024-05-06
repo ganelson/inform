@@ -49,43 +49,6 @@ void IndexUtilities::escape_HTML_characters_in(text_stream *text) {
 	DISCARD_TEXT(modified)
 }
 
-@ Span notations allow markup such as |this is *dreadful*| to represent
-emphasis; and are also used to mark headwords for indexing, as in
-|this is ^{nifty}|.
-
-@d MAX_PATTERN_LENGTH 1024
-
-@d MARKUP_SPP 1
-@d INDEX_TEXT_SPP 2
-@d INDEX_SYMBOLS_SPP 3
-
-@d WRAPPER_none 1
-@d WRAPPER_epub 2
-@d WRAPPER_zip 3
-
-=
-typedef struct span_notation {
-	int sp_purpose;							/* one of the |*_SPP| constants */
-	inchar32_t sp_left[MAX_PATTERN_LENGTH]; 	/* wide C string: the start pattern */
-	int sp_left_len;
-	inchar32_t sp_right[MAX_PATTERN_LENGTH];	/* wide C string: and end pattern */
-	int sp_right_len;
-	struct text_stream *sp_style;
-	CLASS_DEFINITION
-} span_notation;
-
-void IndexUtilities::add_span_notation(compiled_documentation *cd,
-	text_stream *L, text_stream *R, text_stream *style, int purpose) {
-	span_notation *SN = CREATE(span_notation);
-	SN->sp_style = Str::duplicate(style);
-	Str::copy_to_wide_string(SN->sp_left, L, MAX_PATTERN_LENGTH);
-	Str::copy_to_wide_string(SN->sp_right, R, MAX_PATTERN_LENGTH);
-	SN->sp_left_len = Str::len(L);
-	SN->sp_right_len = Str::len(R);
-	SN->sp_purpose = purpose;
-	ADD_TO_LINKED_LIST(SN, span_notation, cd->id.notations);
-}
-
 @h Alphabetisation.
 We flatten the casing and remove the singular articles; we count small
 numbers as words, so that "3 Wise Monkeys" is filed as if it were "Three
