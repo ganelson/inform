@@ -181,13 +181,13 @@ void Manuals::all_extras_link(OUTPUT_STREAM, text_stream *from) {
 =
 void Manuals::mc_link_A(OUTPUT_STREAM, text_stream *to, text_stream *text) {
 	HTML_OPEN_WITH("p", "class=\"midnightcontentsA\"");
-	IndexUtilities::general_link(OUT, I"standardlink", to, text);
+	Indexes::general_link(OUT, I"standardlink", to, text);
 	HTML_CLOSE("p");
 }
 
 void Manuals::mc_link_B(OUTPUT_STREAM, text_stream *to, text_stream *text) {
 	HTML_OPEN_WITH("p", "class=\"midnightcontentsB\"");
-	IndexUtilities::general_link(OUT, I"standardlink", to, text);
+	Indexes::general_link(OUT, I"standardlink", to, text);
 	HTML_CLOSE("p");
 }
 
@@ -229,7 +229,7 @@ void Manuals::midnight_banner(OUTPUT_STREAM, compiled_documentation *cd, text_st
 	if (Str::len(linkleft) > 0) {
 		TEMPORARY_TEXT(img)
 		Manuals::image_with_id(img, I"Hookleft.png", I"hookleft");
-		IndexUtilities::general_link(OUT, I"standardlink", linkleft, img);
+		Indexes::general_link(OUT, I"standardlink", linkleft, img);
 		DISCARD_TEXT(img)
 	}
 	HTML_CLOSE("td");
@@ -243,12 +243,12 @@ void Manuals::midnight_banner(OUTPUT_STREAM, compiled_documentation *cd, text_st
 	HTML_OPEN_WITH("td", "class=\"midnightbannerrightcell\"");
 	TEMPORARY_TEXT(img)
 	Manuals::image_with_id(img, I"Hookup.png", I"hookup");
-	IndexUtilities::general_link(OUT, I"standardlink", url, img);
+	Indexes::general_link(OUT, I"standardlink", url, img);
 	DISCARD_TEXT(img)
 	if (Str::len(linkright) > 0) {
 		TEMPORARY_TEXT(img)
 		Manuals::image_with_id(img, I"Hookright.png", I"hookright");
-		IndexUtilities::general_link(OUT, I"standardlink", linkright, img);
+		Indexes::general_link(OUT, I"standardlink", linkright, img);
 		DISCARD_TEXT(img)
 	}
 	HTML_CLOSE("td");

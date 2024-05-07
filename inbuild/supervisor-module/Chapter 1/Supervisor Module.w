@@ -40,6 +40,7 @@ which use this module:
 @e inbuild_work_CLASS
 @e index_lemma_CLASS
 @e index_reference_CLASS
+@e index_cross_reference_CLASS
 @e indexing_category_CLASS
 @e inform_extension_CLASS
 @e inform_kit_CLASS
@@ -84,6 +85,7 @@ DECLARE_CLASS(inbuild_search_result)
 DECLARE_CLASS(inbuild_work)
 DECLARE_CLASS(index_lemma)
 DECLARE_CLASS(index_reference)
+DECLARE_CLASS(index_cross_reference)
 DECLARE_CLASS(indexing_category)
 DECLARE_CLASS(inform_extension)
 DECLARE_CLASS(inform_kit_ittt)

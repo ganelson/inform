@@ -14,19 +14,20 @@ typedef struct index_markup_notation {
 	int left_width;
 	inchar32_t right_pattern[MAX_PATTERN_LENGTH]; /* null-terminated wide C string */
 	int right_width;
-	struct text_stream *style_name;
+	struct indexing_category *category;
 	CLASS_DEFINITION
 } index_markup_notation;
 
-void IndexMarkupNotations::add(compiled_documentation *cd,
-	text_stream *L, text_stream *R, text_stream *style) {
+index_markup_notation *IndexMarkupNotations::add(compiled_documentation *cd,
+	text_stream *L, text_stream *R, indexing_category *category) {
 	index_markup_notation *imn = CREATE(index_markup_notation);
-	imn->style_name = Str::duplicate(style);
+	imn->category = category;
 	Str::copy_to_wide_string(imn->left_pattern, L, MAX_PATTERN_LENGTH);
 	Str::copy_to_wide_string(imn->right_pattern, R, MAX_PATTERN_LENGTH);
 	imn->left_width = Str::len(L);
 	imn->right_width = Str::len(R);
 	ADD_TO_LINKED_LIST(imn, index_markup_notation, cd->id.notations);
+	return imn;
 }
 
 int IndexMarkupNotations::left_width(index_markup_notation *imn) {
@@ -39,8 +40,8 @@ int IndexMarkupNotations::right_width(index_markup_notation *imn) {
 	return imn->right_width;
 }
 
-text_stream *IndexMarkupNotations::style_name(index_markup_notation *imn) {
-	return imn->style_name;
+indexing_category *IndexMarkupNotations::category(index_markup_notation *imn) {
+	return imn->category;
 }
 
 index_markup_notation *IndexMarkupNotations::match(compiled_documentation *cd,

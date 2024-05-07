@@ -321,8 +321,7 @@ compiled_documentation *DocumentationCompiler::new_cd(pathname *P,
 		@<Read the contents and sitemap files, if they exist@>;
 		DocumentationCompiler::add_images(cd, Pathnames::down(P, I"Images"), cd->images_URL);
 	}
-	Indexes::add_indexing_notation(cd, NULL, NULL, I"standard", NULL);
-	Indexes::add_indexing_notation(cd, I"@", NULL, I"name", I"(invert)");
+	IndexingData::add_default_categories(cd);
 	if (LinkedLists::len(cd->volumes) == 0) {
 		cd_volume *implied = DocumentationCompiler::add_volume(cd, cd->title, NULL, I"index.html");
 		ADD_TO_LINKED_LIST(I"Documentation.md", text_stream, implied->source_files);
@@ -355,7 +354,7 @@ compiled_documentation *DocumentationCompiler::new_cd(pathname *P,
 	cd->empty = FALSE;
 	cd->examples = NEW_LINKED_LIST(IFM_example);
 	cd->cases = NEW_LINKED_LIST(satellite_test_case);
-	cd->id = Indexes::new_indexing_data();
+	cd->id = IndexingData::new_indexing_data();
 	cd->examples_lettered = TRUE;
 	cd->example_URL_pattern = I"eg_#.html";
 	cd->contents_URL_pattern = I"index.html";
@@ -496,20 +495,8 @@ void DocumentationCompiler::read_contents_helper(text_stream *cl, text_file_posi
 	DISCARD_TEXT(src)
 
 @<Act on an indexing notation@> =
-	text_stream *tweak = mr.exp[0];
-	match_results mr2 = Regexp::create_mr();
-	if (Regexp::match(&mr2, tweak, U"^{(%C*)headword(%C*)} = (%C+) *(%c*)")) {
-		Indexes::add_indexing_notation(cd, mr2.exp[0], mr2.exp[1], mr2.exp[2], mr2.exp[3]);
-	} else if (Regexp::match(&mr2, tweak, U"definition = (%C+) *(%c*)")) {
-		Indexes::add_indexing_notation_for_definitions(cd, mr2.exp[0], mr2.exp[1], NULL);
-	} else if (Regexp::match(&mr2, tweak, U"(%C+)-definition = (%C+) *(%c*)")) {
-		Indexes::add_indexing_notation_for_definitions(cd, mr2.exp[1], mr2.exp[2], mr2.exp[0]);
-	} else if (Regexp::match(&mr2, tweak, U"example = (%C+) *(%c*)")) {
-		Indexes::add_indexing_notation_for_examples(cd, mr2.exp[0], mr2.exp[1]);
-	} else {
+	if (IndexingData::parse_category_command(cd, mr.exp[0]) == FALSE)
 		DocumentationCompiler::layout_error(cd, I"bad indexing notation", cl, tfp);
-	}
-	Regexp::dispose_of(&mr2);
 
 @
 
@@ -1003,8 +990,8 @@ void DocumentationCompiler::compile_inner(compiled_documentation *cd) {
 		cd->link_references, InformFlavouredMarkdown::variation());
 
 	/* Indexing */
-	Indexes::scan(cd);
-	if (Indexes::indexing_occurred(cd)) cd->include_index[GENERAL_INDEX] = TRUE;
+	IndexLemmas::scan_documentation(cd);
+	if (IndexingData::indexing_occurred(cd)) cd->include_index[GENERAL_INDEX] = TRUE;
 	if (LinkedLists::len(cd->examples) >= 10) cd->include_index[NUMERICAL_EG_INDEX] = TRUE;
 	if (LinkedLists::len(cd->examples) >= 20) cd->include_index[ALPHABETICAL_EG_INDEX] = TRUE;
 	DocumentationCompiler::watch_image_use(NULL);
