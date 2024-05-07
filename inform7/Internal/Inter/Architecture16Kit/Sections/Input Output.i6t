@@ -120,7 +120,7 @@ character chosen as a ZSCII character.
 (b) |VM_KeyDelay(N)| waits up to $N/10$ seconds for a key to be pressed,
 returning the ZSCII character if so, or 0 if not.
 (c) |VM_ReadKeyboard(b, t)| reads a whole newline-terminated command
-into the buffer |b|, then parses it into a word stream in the table |t|.
+into the buffer |b|. If the |t| parser table is specified then it also parses it.
 
 There are elaborations to due with mouse clicks, but this isn't the place
 to document all of that.
@@ -144,6 +144,35 @@ to document all of that.
 		if (((a_buffer->ix) < 32) || ((a_buffer->ix) == 160)) a_buffer->ix = 32;
 ];
 
+@h Pausing.
+We provide two functions for pausing, which check for various characters.
+
+(a) |VM_KeyPause()| excludes up/down/pageup/pagedown
+(b) |VM_PauseForSpace()| waits for the space bar or enter key
+
+=
+[ VM_KeyPause key;
+	while (1) {
+		@read_char 1 -> key;
+		! 63 = ? which may be used for unknown characters, exclude it just to be safe
+		! 129, 130 = up/down
+		! 148, 154 = pageup/pagedown (technically keypad 3/9)
+		if (key == 63 or 129 or 130 or 148 or 154) {
+			continue;
+		}
+		rfalse;
+	}
+];
+
+[ VM_PauseForSpace key;
+	while (1) {
+		@read_char 1 -> key;
+		if (key == 13 or 32) {
+			rfalse;
+		}
+	}
+];
+
 @h Buffer Functions.
 A "buffer", in this sense, is an array containing a stream of characters
 typed from the keyboard; a "parse buffer" is an array which resolves this
@@ -155,6 +184,10 @@ needed by the rest of the template as routines for each VM.
 The Z-machine buffer and parse buffer formats are documented in the DM4.
 
 |VM_CopyBuffer(to, from)| copies one buffer into another.
+
+|VM_PrintBuffer(buf)| prints a buffer.
+
+|VM_PrintToBuffer(buf, len, a, b, c)| prints something into a buffer.
 
 |VM_Tokenise(buff, parse_buff)| takes the text in the buffer |buff| and
 produces the corresponding data in the parse buffer |parse_buff| -- this is
@@ -169,6 +202,13 @@ languages of play.
 =
 [ VM_CopyBuffer bto bfrom i;
     for (i=0: i<INPUT_BUFFER_LEN: i++) bto->i = bfrom->i;
+];
+
+[ VM_PrintBuffer buf  len i;
+	len = (buf-->0) + WORDSIZE;
+	for (i = WORDSIZE: i < len: i++) {
+		print (char) buf->i;
+	}
 ];
 
 [ VM_PrintToBuffer buf len a b c;

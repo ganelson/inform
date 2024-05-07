@@ -5,14 +5,16 @@ new base BASIC_COLOUR_TY {
 
 	specification-text: A basic text colour.
 
+	!instance: current = BASIC_COLOUR_CURRENT = $FFFFFFFE
+	!instance: default = BASIC_COLOUR_DEFAULT = $FFFFFFFF
+	instance: current = BASIC_COLOUR_CURRENT
+	instance: default = BASIC_COLOUR_DEFAULT
 	instance: black   = BASIC_COLOUR_BLACK   = $00000000
-	instance: blue    = BASIC_COLOUR_BLUE    = $00006B84
-	instance: green   = BASIC_COLOUR_GREEN   = $0000D600
-	instance: cyan    = BASIC_COLOUR_CYAN    = $0000EFEF
 	instance: red     = BASIC_COLOUR_RED     = $00EF0000
+	instance: green   = BASIC_COLOUR_GREEN   = $0000D600
 	instance: yellow  = BASIC_COLOUR_YELLOW  = $00EFEF00
+	instance: blue    = BASIC_COLOUR_BLUE    = $00006B84
 	instance: magenta = BASIC_COLOUR_MAGENTA = $00FF00FF
+	instance: cyan    = BASIC_COLOUR_CYAN    = $0000EFEF
 	instance: white   = BASIC_COLOUR_WHITE   = $00FFFFFF
-	instance: current = BASIC_COLOUR_CURRENT = $FFFFFFFE
-	instance: default = BASIC_COLOUR_DEFAULT = $FFFFFFFF
 }
