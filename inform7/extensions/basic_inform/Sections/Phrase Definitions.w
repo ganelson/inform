@@ -1147,6 +1147,25 @@ To decide what number is the length of text match
 	(documented at ph_textlength):
 	(- (match0_idx2 - match0_idx) -).
 
+@ Some phrases for text to number conversions.
+
+=
+Section 3 - Text to number conversions
+
+To decide if (T - text) is a valid number:
+	(- TEXT_TY_Check_Valid_Number({-lvalue-by-reference:T}, 0) -).
+
+To decide what number is (T - text) as a number:
+	(- TEXT_TY_To_Number({-lvalue-by-reference:T}) -).
+
+Section 4 - Text to real number conversions (not for Z-machine)
+
+To decide if (T - text) is a valid real number:
+	(- TEXT_TY_Check_Valid_Number({-lvalue-by-reference:T}, 1) -).
+
+To decide what real number is (T - text) as a real number:
+	(- TEXT_TY_To_RealNumber({-lvalue-by-reference:T}) -).
+
 @ ...and for regular expressions, though here we also have access to the
 exact text which matched (not interesting in the plain text case since it's
 the same as the search text, up to case at least), and the values of matched
@@ -1155,7 +1174,7 @@ subexpressions (which the plain text case doesn't have).
 See test case |BIP-RegExp|.
 
 =
-Section 3 - Regular Expressions
+Section 5 - Regular Expressions
 
 To decide if (T - text) exactly matches the/-- regular expression (find - text),
 	case insensitively
@@ -1195,7 +1214,7 @@ To replace the regular expression (find - text) in (T - text) with
 See test case |BIP-TextCasing|.
 
 =
-Section 4 - Casing of Text
+Section 6 - Casing of Text
 
 To decide what text is (T - text) in lower case
 	(documented at ph_lowercase):
@@ -1221,7 +1240,7 @@ To decide if (T - text) is in upper case
 See test case |BIP-AdaptiveText|.
 
 =
-Section 5 - Adaptive Text
+Section 7 - Adaptive Text
 
 To say infinitive of (V - a verb)
 	(documented at phs_infinitive):
