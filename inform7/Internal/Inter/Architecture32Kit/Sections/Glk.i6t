@@ -888,6 +888,12 @@ Constant wintype_TextGrid = 4;
 	return 0;
 ];
 
+[ garglk_set_reversevideo _vararg_count;
+	! garglk_set_reversevideo( reverse )
+	@glk $1102 _vararg_count 0;
+	return 0;
+];
+
 @ |GGRecoverObjects| handles recovering the Glk objects after restarting or restoring.
 
 =
