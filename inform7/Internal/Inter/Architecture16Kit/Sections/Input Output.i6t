@@ -334,6 +334,15 @@ colours have been set.
 	@set_colour fg bg;
 ];
 
+[ VM_SetReverseMode val;
+	if (val) {
+		@set_text_style 1;
+	}
+	else {
+		@set_text_style 0;
+	}
+];
+
 @h Main Window.
 The part of the screen on which commands and responses are printed, which
 ordinarily occupies almost all of the screen area.

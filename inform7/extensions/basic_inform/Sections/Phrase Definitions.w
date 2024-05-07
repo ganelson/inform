@@ -1802,6 +1802,11 @@ To say variable letter spacing -- running on
 	(documented at phs_varspacing):
 	(- font on; -).
 
+To say reverse mode -- running on:
+	(- VM_SetReverseMode(1); -).
+To say reverse mode off -- running on:
+	(- VM_SetReverseMode(0); -).
+
 @ Basic colours are supported in both architectures, but RGB colours are only
 supported in Glulx.
 

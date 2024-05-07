@@ -778,6 +778,13 @@ colours have been set.
 	}
 ];
 
+[ VM_SetReverseMode val;
+	! TODO: once Glk foundations are merged, check the cached gestalt
+	if (glk_gestalt($1100, 0)) {
+		garglk_set_reversevideo(val);
+	}
+];
+
 @h Main Window.
 The part of the screen on which commands and responses are printed, which
 ordinarily occupies almost all of the screen area.
