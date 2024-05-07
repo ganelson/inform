@@ -80,6 +80,28 @@ not to use these now dated conventions.
 	".";
 ];
 
+@h Status Line.
+The default status line rule is a little bit more efficient than the table-based
+system from Basic Inform.
+
+=
+[ DEFAULT_STATUS_LINE_R width posb;
+	VM_StatusLineHeight(1);
+	VM_MoveCursorInStatusLine(1, 1);
+	if (statuswin_current) {
+		width = VM_ScreenWidth();
+		posb = width - 15;
+		spaces width;
+		ClearParagraphing(17);
+		VM_MoveCursorInStatusLine(1, 2);
+		TEXT_TY_Say(left_hand_status_line);
+		VM_MoveCursorInStatusLine(1, posb);
+		TEXT_TY_Say(right_hand_status_line);
+		VM_MoveCursorInStatusLine(1, 1);
+	}
+	rtrue;
+];
+
 @h Status Line Utilities.
 Two convenient routines for the default values of |right_hand_status_line|
 and |left_hand_status_line| respectively. |SL_Location| also implements the

@@ -1817,6 +1817,12 @@ To say (C - basic colour) letters:
 To set the background colour/color/-- to (C - basic colour):
 	(- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).
 
+To reset the screen/window colours/colors:
+	(- VM_SetWindowColours(BASIC_COLOUR_DEFAULT, BASIC_COLOUR_DEFAULT); -).
+
+To say default colours/colors:
+	(- VM_SetWindowColours(BASIC_COLOUR_DEFAULT, BASIC_COLOUR_DEFAULT); -).
+
 Section 3 - RGB Colours (for Glulx only)
 
 RGB colour is a kind of value.
@@ -1838,15 +1844,15 @@ To set the background colour/color/-- to (C - RGB colour):
 (See the Glk Foundations for Glk-specific phrases.)
 
 =
-Section ? - Basic Window Effects
+Section 4 - Basic Window Effects
 
 To clear the/-- screen:
 	(- VM_ClearScreen(0); -).
 
-To clear only the/-- main screen:
+To clear only/-- the/-- main screen:
 	(- VM_ClearScreen(2); -).
 
-To clear only the/-- status line:
+To clear only/-- the/-- status line:
 	(- VM_ClearScreen(1); -).
 
 To decide what number is the/-- screen height:
@@ -1855,32 +1861,60 @@ To decide what number is the/-- screen height:
 To decide what number is the/-- screen width:
 	(- VM_ScreenWidth() -).
 
+@ Pausing the game.
+
+=
+Section 5 - Pausing the game
+
+To wait for any key:
+	(- VM_KeyPause(); -).
+
+To wait for the/-- SPACE key/bar:
+	(- VM_PauseForSpace(); -).
+
+To pause the game/story:
+	say "[paragraph break]Please press SPACE to continue.";
+	wait for the space key;
+	clear the screen;
+
+To stop the game/story abruptly:
+	(- quit; -).
+
+To show the/-- current quotation:
+	(- ClearBoxedText(); -).
+
 @ Keyboard input phrases.
 
 =
-Section ? - Keyboard Input
+Section 6 - Keyboard Input
 
+To decide what number is the code of the next pressed key:
+	(- VM_KeyChar() -).
 
+To prompt the player to enter a line of text:
+	(- VM_ReadKeyboard(buffer2); -).
+
+To say the/-- player's text input:
+	(- VM_PrintBuffer(buffer2); -).
 
 @ Customising the status line.
 
 =
-Section ? - The Status Window
+Section 7 - The Status Window
 
 To redraw the/-- status bar/line/window:
 	(- DrawStatusLine(); -).
 
-Table of Default Status
-left (text)	central (text)	right (text)
+Table of Status Window Column Definitions
+left (text)	middle (text)	right (text)
 with 1 blank row
 
-The left table column translates into Inter as "STATUS_COL_LEFT".
-The central table column translates into Inter as "STATUS_COL_CENTRAL".
-The right table column translates into Inter as "STATUS_COL_RIGHT".
+[The left table column translates into Inter as "STATUS_COL_LEFT".
+The middle table column translates into Inter as "STATUS_COL_MIDDLE".
+The right table column translates into Inter as "STATUS_COL_RIGHT".]
 
 The status window table is a table-name that varies.
 The status window table variable translates into Inter as "status_window_table".
-The status window table is the Table of Default Status.
 
 To fill/redraw the/-- status bar/line/window with (new status table - a table-name), once only:
 	let old status window table be the status window table;

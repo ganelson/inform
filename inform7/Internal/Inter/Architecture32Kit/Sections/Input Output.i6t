@@ -170,7 +170,7 @@ character chosen as a ZSCII character.
 (b) |VM_KeyDelay(N)| waits up to $N/10$ seconds for a key to be pressed,
 returning the ZSCII character if so, or 0 if not.
 (c) |VM_ReadKeyboard(b, t)| reads a whole newline-terminated command
-into the buffer |b|, then parses it into a word stream in the table |t|.
+into the buffer |b|. If the |t| parser table is specified then it also parses it.
 
 There are elaborations to do with mouse clicks, but this isn't the place
 to document all of that.
@@ -327,12 +327,40 @@ Constant UnicodeWhitespaceLen = 8;
 	if (chr) a_buffer-->ix = 32;
       }
     }      
-    VM_Tokenise(a_buffer,a_table);
+	if (a_table) {
+		VM_Tokenise(a_buffer, a_table);
+	}
     ! It's time to close any quote window we've got going.
     if (gg_quotewin) {
         glk_window_close(gg_quotewin, 0);
         gg_quotewin = 0;
     }
+];
+
+@h Pausing.
+We provide two functions for pausing, which check for various characters.
+
+(a) |VM_KeyPause()| excludes up/down/pageup/pagedown
+(b) |VM_PauseForSpace()| waits for the space bar or enter key
+
+=
+[ VM_KeyPause key;
+	while (1) {
+		key = VM_KeyChar();
+		if (key == keycode_Up or keycode_Down or keycode_PageUp or keycode_PageDown) {
+			continue;
+		}
+		rfalse;
+	}
+];
+
+[ VM_PauseForSpace key;
+	while (1) {
+		key = VM_KeyChar();
+		if (key == 32 or keycode_Return) {
+			rfalse;
+		}
+	}
 ];
 
 @h Buffer Functions.
@@ -344,6 +372,10 @@ to mention the dictionary), we have to provide some standard operations
 needed by the rest of the template as routines for each VM.
 
 |VM_CopyBuffer(to, from)| copies one buffer into another.
+
+|VM_PrintBuffer(buf)| prints a buffer.
+
+|VM_PrintToBuffer(buf, len, a, b, c)| prints something into a buffer.
 
 |VM_Tokenise(buff, parse_buff)| takes the text in the buffer |buff| and
 produces the corresponding data in the parse buffer |parse_buff| -- this is
@@ -358,6 +390,13 @@ languages of play, and is not called in the template.
 =
 [ VM_CopyBuffer bto bfrom i;
     for (i=0: i<INPUT_BUFFER_LEN: i++) bto-->i = bfrom-->i;
+];
+
+[ VM_PrintBuffer buf  buf_inner len i;
+	len = (buf-->0) + 1;
+	for (i = 1: i < len: i++) {
+		print (char) buf-->i;
+	}
 ];
 
 [ VM_PrintToBuffer buf len a b c;

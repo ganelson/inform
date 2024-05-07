@@ -177,8 +177,8 @@ Chapter - Printing activities
 Constructing the status line (documented at act_csl) is an activity.
 The constructing the status line activity is accessible to Inter as "CONSTRUCTING_STATUS_LINE_ACT".
 
-The standard status window rule is listed in the for constructing the status line rules.
-The standard status window rule translates into Inter as "REDRAW_STATUS_WINDOW_R".
+The standard redraw the status window from a table rule is listed in the for constructing the status line rules.
+The standard redraw the status window from a table rule is defined by Inter as "REDRAW_STATUS_WINDOW_R".
 
 Printing the name of something (hidden in RULES command) (documented at act_pn) is an activity.
 The printing the name activity is accessible to Inter as "PRINTING_THE_NAME_ACT".

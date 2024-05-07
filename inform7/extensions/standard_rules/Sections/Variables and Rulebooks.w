@@ -132,9 +132,8 @@ The right hand status line is a text that varies.
 The left hand status line variable is defined by Inter as "left_hand_status_line".
 The right hand status line variable is defined by Inter as "right_hand_status_line".
 
-Table of Default Status (continued)
-left	central	right
-"[left hand status line]"	""	"[right hand status line]"
+The default status line rule is listed in the for constructing the status line rules.
+The default status line rule is defined by Inter as "DEFAULT_STATUS_LINE_R".
 
 The listing group size is a number that varies.
 The listing group size variable is defined by Inter as "listing_size".
