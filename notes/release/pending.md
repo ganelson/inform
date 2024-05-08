@@ -36,12 +36,18 @@ and now poses a moral rather than gender-based question.
 
 ## Bug fixes
 
+- Fix for Jira bug [I7-2470](https://inform7.atlassian.net/browse/I7-2470)
+	"Removing an entry from a list of text in a deciding phrase corrupts the original list"
+	([commit 570d703](https://github.com/ganelson/inform/commit/570d703a8c78d628f883d1ab6559b64cdbc730d3))
 - Fix for Jira bug [I7-2460](https://inform7.atlassian.net/browse/I7-2460)
 	"Standard 'deciding whether all include' rules don't apply to an actor."
 	([PR#138](https://github.com/ganelson/inform/pull/138))
 - Fix for Jira bug [I7-2458](https://inform7.atlassian.net/browse/I7-2458)
 	"The uuid.txt file should be whitespace-stripped before use"
 	(see [Inweb commit 4557cc1](https://github.com/ganelson/inform/commit/4557cc1925aebd7f1d075ea458b76f6970df3d57))
+- Fix for Jira bug [I7-2440](https://inform7.atlassian.net/browse/I7-2440)
+	"Returning a list of text and then removing from it makes everything explode"
+	([commit 570d703](https://github.com/ganelson/inform/commit/570d703a8c78d628f883d1ab6559b64cdbc730d3))
 - Fix for Jira bug [I7-2416](https://inform7.atlassian.net/browse/I7-2416)
 	"Hyperbolic sinh and cosh each have the implementation the other needs"
 	([PR#126](https://github.com/ganelson/inform/pull/126))
@@ -57,6 +63,9 @@ and now poses a moral rather than gender-based question.
 - Fix for Jira bug [I7-2355](https://inform7.atlassian.net/browse/I7-2355)
 	to do with how to handle symlinks or broken directory entries
 	(see [Inweb PR#28](https://github.com/ganelson/inweb/pull/28))
+- Fix for Jira bug [I7-2353](https://inform7.atlassian.net/browse/I7-2353)
+	"Setting room description heading rule response (A) causes Array index out of bounds"
+	([commit 6778a15](https://github.com/ganelson/inform/commit/6778a15ff6004e4dc8760975851fb478b0eef419))
 - Fix for Jira bug [I7-2349](https://inform7.atlassian.net/browse/I7-2349)
 	"example 399, "Solitude", has a bug"
 	([PR#115](https://github.com/ganelson/inform/pull/115))
