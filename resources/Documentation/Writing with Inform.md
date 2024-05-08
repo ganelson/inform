@@ -20459,6 +20459,17 @@ A property:
 	
 	The coveted property is accessible to Inter as "coveted".
 
+A table and column:
+
+	Table of Fizzy Drinks
+	name	niceness
+	"coke zero"	1
+	"sprite"	0
+
+	The Table of Fizzy Drinks is accessible to Inter as "TABLE_FIZZ".
+
+	The niceness column table column is accessible to Inter as "NICENESS_COLUMN".
+
 Variables, however, cannot at present be made `accessible to Inter`.
 
 Note that none of these constructions — the `banana rules`, the `grimly testing something activity`, the `smashing action` and so on — are being created from raw Inter material. The Inform compiler is creating them, just as normal. All that is happening is that _names_ for them are being made available at the I6 level.
