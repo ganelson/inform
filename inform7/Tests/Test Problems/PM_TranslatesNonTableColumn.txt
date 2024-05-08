@@ -1,0 +1,10 @@
+Problem: PM_TranslatesNonTableColumn
+
+Lab is a room.
+
+Table of Fizzy Drinks
+name	niceness
+"coke zero"	1
+"sprite"	0
+
+The 71 table column is accessible to Inter as "NICENESS_COL".

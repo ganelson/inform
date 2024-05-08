@@ -1,0 +1,10 @@
+Problem: PM_TranslatesNonTable
+
+Lab is a room.
+
+Table of Fizzy Drinks
+name	niceness
+"coke zero"	1
+"sprite"	0
+
+The table 71 is accessible to Inter as "FIZZY_DRINKS".

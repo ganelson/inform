@@ -12,6 +12,9 @@ typedef struct table_compilation_data {
 	struct inter_name *table_identifier;
 	struct wording name_for_metadata;
 	struct parse_node *where_created;
+	int translated;
+	struct text_stream *translated_name;
+	struct inter_name *translated_iname;
 } table_compilation_data;
 
 table_compilation_data RTTables::new_table(parse_node *PN, table *t, wording W) {
@@ -20,6 +23,9 @@ table_compilation_data RTTables::new_table(parse_node *PN, table *t, wording W) 
 	tcd.table_identifier = NULL;
 	tcd.name_for_metadata = W;
 	tcd.where_created = PN;
+	tcd.translated = FALSE;
+	tcd.translated_name = NULL;
+	tcd.translated_iname = NULL;
 	return tcd;
 }
 
@@ -35,6 +41,29 @@ inter_name *RTTables::identifier(table *t) {
 		t->compilation_data.table_identifier =
 			Hierarchy::make_iname_in(TABLE_DATA_HL, RTTables::package(t));
 	return t->compilation_data.table_identifier;
+}
+
+inter_name *RTTables::id_translated(table *t) {
+	if (Str::len(t->compilation_data.translated_name) == 0) return NULL;
+	if (t->compilation_data.translated_iname == NULL) {
+		t->compilation_data.translated_iname = InterNames::explicitly_named(
+			t->compilation_data.translated_name, RTTables::package(t));
+		Hierarchy::make_available(t->compilation_data.translated_iname);
+	}
+	return t->compilation_data.translated_iname;
+}
+
+void RTTables::translate(table *t, wording W) {
+	if (t->compilation_data.translated) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_TranslatesTableAlready),
+			"this table has already been translated",
+			"so there must be some duplication somewhere.");
+		return;
+	}
+	t->compilation_data.translated = TRUE;
+	t->compilation_data.translated_name = Str::new();
+	WRITE_TO(t->compilation_data.translated_name, "%N", Wordings::first_wn(W));
 }
 
 @h Compilation of tables.
@@ -61,6 +90,8 @@ void RTTables::compilation_agent(compilation_subtask *ct) {
 		RTTables::identifier(t));
 	if (t == TheScore::ranking_table())
 		Hierarchy::apply_metadata_from_number(RTTables::package(t), RANKING_TABLE_MD_HL, 1);
+	inter_name *translated = RTTables::id_translated(t);
+	if (translated) Emit::iname_constant(translated, K_value, RTTables::identifier(t));
 }
 
 @<Compile the run-time storage for the table@> =

@@ -6006,6 +6006,10 @@
           (hits 156/156) (matched: 'switching the story transcript on action') constraint DS = {30} extremes [2, infinity)
         understand token {...} 
           constraint DS = {30} extremes [3, infinity)
+        {table ...} 
+          constraint DS = {30} extremes [2, infinity)
+        {...} table column 
+          constraint DS = {30} extremes [3, infinity)
         {...} 
           constraint (none) extremes [1, infinity)
 
@@ -7883,13 +7887,13 @@
         <s-miscellaneous-proper-noun> 
           (hits 449/8902) (matched: 'printing the name of a dark room') constraint (none) extremes [1, infinity)
         <s-rulebook-outcome-name> outcome 
-          (hits 0/3078) constraint DS = {30} extremes [2, infinity)
+          (hits 0/3086) constraint DS = {30} extremes [2, infinity)
         <s-use-option-name> option 
-          (hits 28/3078) (matched: 'serial comma option') constraint DS = {30} extremes [2, infinity)
+          (hits 28/3086) (matched: 'serial comma option') constraint DS = {30} extremes [2, infinity)
         verb <instance-of-verb> 
-          (hits 1/3050) (matched: 'verb are') constraint DS = {30} extremes [2, infinity)
+          (hits 1/3058) (matched: 'verb are') constraint DS = {30} extremes [2, infinity)
         verb <instance-of-infinitive-form> 
-          (hits 0/3049) constraint DS = {30} extremes [2, infinity)
+          (hits 0/3057) constraint DS = {30} extremes [2, infinity)
         <s-rule-name> response ( <response-letter> ) 
           (hits 34/761) (matched: 'list writer internal rule response ( k )') constraint DS = {30} extremes [5, infinity)
 
@@ -8175,7 +8179,7 @@
         <s-purely-physical-description> 
           (hits 116/9492) (matched: 'a supporter ( called the chaise )') constraint (none) extremes [1, infinity)
         <s-table-reference> 
-          (hits 0/3210) constraint DS = {30} extremes [2, infinity)
+          (hits 0/3218) constraint DS = {30} extremes [2, infinity)
         member/members of <s-description> 
           (hits 0/1905) constraint DS = {6} extremes [3, infinity)
         member/members of <s-local-variable> 
@@ -8242,10 +8246,10 @@
 
 <s-value-phrase> internal hits 496/18748 nti 20 constraint (none) extremes [1, infinity)
 
-<s-table-reference> hits 139/6420 nti 30 constraint DS = {30} extremes [2, infinity)
+<s-table-reference> hits 139/6436 nti 30 constraint DS = {30} extremes [2, infinity)
     English:
         <s-table-column-name> entry 
-          (hits 135/3210) (matched: 'the locale description priority entry') constraint DS = {30} extremes [2, infinity)
+          (hits 135/3218) (matched: 'the locale description priority entry') constraint DS = {30} extremes [2, infinity)
         <s-table-column-name> in row <s-value-uncached> in/of/from <s-value-uncached> 
           (hits 0/433) constraint DS = {30} extremes [6, infinity)
         <s-table-column-name> listed in <s-value-uncached> 
