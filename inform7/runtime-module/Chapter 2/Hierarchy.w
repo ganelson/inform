@@ -1777,6 +1777,8 @@ void Hierarchy::establish(void) {
 @e MARKER_MD_HL
 @e INDEX_TEXT_MD_HL
 @e GROUP_HL
+@e DEFERRED_RESPONSES_HAP
+@e DEF_RESPONSE_ID_HL
 @e RULE_APPLICABILITY_CONDITIONS_HAP
 @e AC_TEXT_MD_HL
 @e AC_AT_MD_HL
@@ -1811,6 +1813,9 @@ void Hierarchy::establish(void) {
 				H_C_U(AS_BLOCK_CONSTANT_HL,   I"as_block_constant")
 				H_C_U(PARKING_ARRAY_HL,       I"response_local_parking")
 				H_F_U(LAUNCHER_HL,            I"launcher")
+			H_END
+			H_BEGIN_AP(DEFERRED_RESPONSES_HAP, I"deferred_response", I"_deferred_response")
+				H_C_U(DEF_RESPONSE_ID_HL,     I"deferred_response_id")
 			H_END
 			H_BEGIN_AP(RULE_APPLICABILITY_CONDITIONS_HAP, I"applicability_condition", I"_applicability_condition")
 				H_C_U(AC_TEXT_MD_HL,          I"^text")

@@ -197,6 +197,7 @@ DECLARE_CLASS(local_parking_lot)
 @e backdrops_data_CLASS
 @e box_quotation_CLASS
 @e compilation_unit_CLASS
+@e deferred_response_iname_CLASS
 @e definition_CLASS
 @e door_dir_notice_CLASS
 @e door_to_notice_CLASS
@@ -217,6 +218,7 @@ DECLARE_CLASS(backdrops_data)
 DECLARE_CLASS(box_quotation)
 DECLARE_CLASS(compilation_unit)
 DECLARE_CLASS(definition)
+DECLARE_CLASS(deferred_response_iname)
 DECLARE_CLASS(door_dir_notice)
 DECLARE_CLASS(door_to_notice)
 DECLARE_CLASS(internal_test)

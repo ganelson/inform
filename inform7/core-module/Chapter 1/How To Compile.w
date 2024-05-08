@@ -253,6 +253,7 @@ here, which only happens when special runs are made for compiler testing.
 	BENCH(Sequence::allow_no_further_queued_tasks)
 	BENCH(TheHeap::compile_configuration)
 	BENCH(Rules::check_response_usages)
+	BENCH(Responses::declare_deferred_inames)
 	BENCH(LocalParking::compile_array)
 	BENCH(RTBibliographicData::IFID_text)
 	BENCH(Sequence::lint_inter)

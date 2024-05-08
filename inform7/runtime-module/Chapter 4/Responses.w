@@ -114,6 +114,39 @@ inter_name *Responses::response_constant_iname(rule *R, int marker) {
 	return resp->constant_iname;
 }
 
+typedef struct deferred_response_iname {
+	struct rule *R;
+	int marker;
+	struct inter_name *deferred_iname;
+	CLASS_DEFINITION
+} deferred_response_iname;
+
+inter_name *Responses::future_constant_iname(rule *R, int marker) {
+	inter_name *iname = Responses::response_constant_iname(R, marker);
+	if (iname) return iname;
+	package_request *PR =
+		Hierarchy::package_within(DEFERRED_RESPONSES_HAP, RTRules::package(R));
+	iname = Hierarchy::make_iname_in(DEF_RESPONSE_ID_HL, PR);
+	deferred_response_iname *def;
+	LOOP_OVER(def, deferred_response_iname)
+		if ((R == def->R) && (marker == def->marker))
+			return def->deferred_iname;
+	def = CREATE(deferred_response_iname);
+	def->R = R; def->marker = marker;
+	def->deferred_iname = iname;
+	return iname;
+}
+
+void Responses::declare_deferred_inames(void) {
+	deferred_response_iname *def;
+	LOOP_OVER(def, deferred_response_iname) {
+		inter_name *true_iname = Responses::response_constant_iname(def->R, def->marker);
+		if (true_iname) {
+			Emit::iname_constant(def->deferred_iname, K_value, true_iname);
+		}
+	}
+}
+
 local_parking_lot *Responses::enable_private_parking(rule *R, int marker) {
 	response_message *resp = Rules::get_response(R, marker);
 	if (resp) {
