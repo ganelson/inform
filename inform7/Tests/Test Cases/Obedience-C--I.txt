@@ -261,9 +261,7 @@ Taken.
 [asking Clark Gable to try taking the swagger stick - succeeded]
 
 >** take the microphon
-[taking the boom microphone]
-That's hardly portable.
-[taking the boom microphone - failed the can't take scenery rule]
+You can't see any such thing.
 
 >** take the microphone
 [taking the boom microphone]

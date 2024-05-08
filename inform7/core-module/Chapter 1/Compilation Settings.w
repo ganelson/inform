@@ -84,7 +84,7 @@ void CompilationSettings::initialise_gcs(void) {
 	global_compilation_settings.scoring_option_set = NOT_APPLICABLE;
 	global_compilation_settings.use_exact_parsing_option = FALSE;
        	global_compilation_settings.no_auto_plural_names = FALSE;
-	int N = 9;
+	int N = 14;
 	if (TargetVMs::is_16_bit(Task::vm())) N = 6;
 	global_compilation_settings.dictionary_resolution = N;
 	global_compilation_settings.fast_route_finding = FALSE;

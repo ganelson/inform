@@ -433,5 +433,37 @@ void Generators::compile_literal_text(code_generation *gen, text_stream *S, int 
 	VOID_METHOD_CALL(gen->generator, COMPILE_LITERAL_TEXT_MTID, gen, S, escape_mode);
 }
 void Generators::compile_dictionary_word(code_generation *gen, text_stream *S, int pluralise) {
+	if ((Str::len(S) > gen->dictionary_resolution) && (gen->dictionary_resolution >= 9)) {
+		TEMPORARY_TEXT(truncation)
+		WRITE_TO(truncation, "%S", S);
+		Str::truncate(truncation, gen->dictionary_resolution);
+		if (Dictionaries::find(gen->long_words, truncation) == NULL) {
+			Dictionaries::create(gen->long_words, truncation);
+			WRITE_TO(Dictionaries::get_text(gen->long_words, truncation), "%S", S);
+		} else {
+			text_stream *previous = Dictionaries::get_text(gen->long_words, truncation);
+			#ifdef CORE_MODULE
+			if (Str::ne_insensitive(previous, S)) {
+				if (Dictionaries::find(gen->warned_about_words, S) == NULL) {
+					Dictionaries::create(gen->warned_about_words, S);
+					Problems::quote_stream(1, S);
+					Problems::quote_stream(2, previous);
+					Problems::quote_number(3, &(gen->dictionary_resolution));
+					StandardProblems::handmade_warning(Task::syntax_tree(), _p_(WM_LongWords));
+					Problems::issue_problem_segment(
+						"This project places two words '%1' and '%2' into the dictionary "
+						"used for reading player commands. But because they differ only "
+						"after %3 characters, which is the current setting for "
+						"'Use dictionary resolution', this might cause confusion.");
+					Problems::issue_warning_end();
+				}
+			}
+			#endif
+			#ifndef CORE_MODULE
+			LOG("%S could be mixed up with %S\n", S, previous);
+			#endif
+		}
+		DISCARD_TEXT(truncation)
+	}
 	VOID_METHOD_CALL(gen->generator, COMPILE_DICTIONARY_WORD_MTID, gen, S, pluralise);
 }

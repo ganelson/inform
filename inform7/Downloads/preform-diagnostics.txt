@@ -6656,7 +6656,7 @@
         <subject-pronoun> is/are {...} 
           (hits 2/2) (matched: 'it is concealed') constraint DS = {15} extremes [3, infinity)
         <subject-pronoun> {...} 
-          (hits 3/3) (matched: 'he conceals') constraint (none) extremes [2, infinity)
+          (hits 3/3) (matched: 'she conceals') constraint (none) extremes [2, infinity)
 
 <participle-like> hits 1/4 nti 28 constraint (none) extremes [1, infinity)
     English:
@@ -6961,7 +6961,7 @@
 <phrase-preamble> hits 550/1100 nti 19 constraint (none) extremes [1, infinity)
     English:
         <phrase-preamble> ( deprecated ) 
-          (hits 1/459) (matched long text) constraint DS = {19} extremes [4, infinity)
+          (hits 1/457) (matched long text) constraint DS = {19} extremes [4, infinity)
         <say-preamble> 
           (hits 152/512) (matched long text) constraint DS = {17} extremes [2, infinity)
         <to-preamble> 
@@ -7023,13 +7023,13 @@
 <phrase-definition-word-or-token> hits 2401/4802 nti 22 constraint (none) extremes [1, infinity)
     English:
         ( ) {***} 
-          (hits 0/1844) constraint DS = {22} extremes [2, infinity)
+          (hits 0/1829) constraint DS = {22} extremes [2, infinity)
         ( <phrase-token-declaration> ) {***} 
-          (hits 621/1820) (matched long text) constraint DS = {22} extremes [3, infinity)
+          (hits 621/1807) (matched long text) constraint DS = {22} extremes [3, infinity)
         ( {***} 
-          (hits 0/1233) constraint DS = {22} extremes [1, infinity)
+          (hits 0/1218) constraint DS = {22} extremes [1, infinity)
         ) {***} 
-          (hits 0/1233) constraint DS = {22} extremes [1, infinity)
+          (hits 0/1218) constraint DS = {22} extremes [1, infinity)
         {###} {***} 
           (hits 1780/1780) (matched long text) constraint (none) extremes [1, infinity)
 

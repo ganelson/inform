@@ -111,5 +111,9 @@ text_stream *sigil_of_latest_unlinked_problem = NULL;
 	WRITE_TO(sigil_of_latest_problem, "%s", sigil);
 	if (Str::eq(sigil_of_required_problem, sigil_of_latest_problem))
 		sigil_of_required_problem_found = TRUE;
-	if (echo_problem_message_sigils)
-		WRITE_TO(STDERR, "Problem__ %S\n", sigil_of_latest_problem);
+	if (echo_problem_message_sigils) {
+		if (Str::get_first_char(sigil_of_latest_problem) == 'W')
+			WRITE_TO(STDERR, "Warning__ %S\n", sigil_of_latest_problem);
+		else
+			WRITE_TO(STDERR, "Problem__ %S\n", sigil_of_latest_problem);
+	}
