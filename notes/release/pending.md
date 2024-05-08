@@ -27,12 +27,20 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 	command parser, in a debug build (such as in the app). See
 	Jira bug [I7-2398](https://inform7.atlassian.net/browse/I7-2398).
 
-## Documentation
+## Gender neutrality
 
 "Writing with Inform" and "The Recipe Book" benefit from a revision throughout to
 remove unnecessary gender-binary language, mostly to do with pronouns attached
 to "the player", or similar. The example `Blue or Pink` has become `Good or Evil`,
 and now poses a moral rather than gender-based question.
+
+The little-used rule:
+
+	player aware of his own actions rule
+
+has been renamed:
+
+	player aware of their own actions rule
 
 ## Bug fixes
 

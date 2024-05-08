@@ -981,7 +981,7 @@ positively succeeds then he is, and otherwise not.
 
 =
 A player's action awareness rule
-	(this is the player aware of his own actions rule):
+	(this is the player aware of their own actions rule):
 	if the player is the actor, rule succeeds.
 A player's action awareness rule
 	(this is the player aware of actions by visible actors rule):
