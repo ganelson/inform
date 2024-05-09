@@ -83,7 +83,7 @@ void InterTypes::initialise_constructors(void) {
 	InterTypes::init_con(INT2_ITCONC,        I"int2",                  0,          1, FALSE,  TRUE, 0);
 	InterTypes::init_con(REAL_ITCONC,        I"real",        -2147483648, 2147483647, FALSE,  TRUE, 0);
 	InterTypes::init_con(TEXT_ITCONC,        I"text",        -2147483648, 2147483647, FALSE,  TRUE, 0);
-	InterTypes::init_con(ENUM_ITCONC,        I"enum",                  0, 2147483647,  TRUE,  TRUE, 0);
+	InterTypes::init_con(ENUM_ITCONC,        I"enum",        -2147483648, 2147483647,  TRUE,  TRUE, 0);
 	InterTypes::init_con(LIST_ITCONC,        I"list",        -2147483648, 2147483647, FALSE, FALSE, 1);
 	InterTypes::init_con(ACTIVITY_ITCONC,    I"activity",    -2147483648, 2147483647, FALSE, FALSE, 1);
 	InterTypes::init_con(COLUMN_ITCONC,      I"column",      -2147483648, 2147483647, FALSE, FALSE, 1);

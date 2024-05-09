@@ -3,9 +3,9 @@
 
 
 country code: Saint Helena code
-"list of country codes" = list of country codes: {Saint Helena code, New Caledonia code, Montserrat code, Svalbard code}
-"a random country code" = country code: Saint Helena code
-"number of country codes" = number: 4
+"list of country codes" = list of country codes: {Saint Helena code, New Caledonia code, Montserrat code, Svalbard code, Neverland code, Cloud Nine code}
+"a random country code" = country code: Montserrat code
+"number of country codes" = number: 6
 You dial 1664
 You dial 290
 You dial 4779
