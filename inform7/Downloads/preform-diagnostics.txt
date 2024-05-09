@@ -7744,6 +7744,8 @@
           (hits 100/367) (matched: 'false') constraint CS = {13} extremes [1, 1]
         <s-literal-list> 
           (hits 0/3225) constraint DS = {15} extremes [2, infinity)
+        unicode ( <s-unicode-character> ) 
+          (hits 0/1576) constraint DS = {19} extremes [4, infinity)
         unicode <s-unicode-character> 
           (hits 0/3654) constraint DS = {19} extremes [2, infinity)
         <s-literal-time> 

@@ -21,6 +21,8 @@
           (hits 100/367) (matched: 'false') constraint CS = {13} extremes [1, 1]
         <s-literal-list>=1 
           (hits 0/3225) constraint DS = {15} extremes [2, infinity)
+        (@1)unicode (@2)( <s-unicode-character>=1 (@-1)) 
+          (hits 0/1576) constraint DS = {19} extremes [4, infinity)
         (@1)unicode <s-unicode-character>=1 
           (hits 0/3654) constraint DS = {19} extremes [2, infinity)
         <s-literal-time>=1 
