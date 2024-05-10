@@ -178,34 +178,38 @@ Global status_window_table;
 		rtrue;
 	}
 	VM_ClearScreen(1);
-	! Stop here until column names into Inter works
-	rtrue;
 	! Cache the column numbers in case we have a lot of rows
-	!col_num_left = TableFindCol(status_window_table, STATUS_COL_LEFT);
-	!col_num_middle = TableFindCol(status_window_table, STATUS_COL_MIDDLE);
-	!col_num_right = TableFindCol(status_window_table, STATUS_COL_RIGHT);
+	col_num_left = TableFindCol(status_window_table, STATUS_COL_LEFT);
+	col_num_middle = TableFindCol(status_window_table, STATUS_COL_MIDDLE);
+	col_num_right = TableFindCol(status_window_table, STATUS_COL_RIGHT);
 	width = VM_ScreenWidth();
 	for (row = 1: row <= rows: row++) {
 		if (TableRowIsBlank(status_window_table, row)) {
 			continue;
 		}
 		! We know these rows only have texts, so it's safe to access them directly
-		value = (status_window_table-->col_num_left)-->(row + COL_HSIZE);
-		if (value ~= TABLE_NOVALUE) {
-			VM_MoveCursorInStatusLine(row, 2);
-			TEXT_TY_Say(value);
+		if (col_num_left) {
+			value = (status_window_table-->col_num_left)-->(row + COL_HSIZE);
+			if (value ~= TABLE_NOVALUE) {
+				VM_MoveCursorInStatusLine(row, 2);
+				TEXT_TY_Say(value);
+			}
 		}
-		value = (status_window_table-->col_num_right)-->(row + COL_HSIZE);
-		if (value ~= TABLE_NOVALUE) {
-			chars = TEXT_TY_BlobAccess(value, CHR_BLOB);
-			VM_MoveCursorInStatusLine(row, width - chars - 1);
-			TEXT_TY_Say(value);
+		if (col_num_right) {
+			value = (status_window_table-->col_num_right)-->(row + COL_HSIZE);
+			if (value ~= TABLE_NOVALUE) {
+				chars = TEXT_TY_BlobAccess(value, CHR_BLOB);
+				VM_MoveCursorInStatusLine(row, width - chars - 1);
+				TEXT_TY_Say(value);
+			}
 		}
-		value = (status_window_table-->col_num_middle)-->(row + COL_HSIZE);
-		if (value ~= TABLE_NOVALUE) {
-			chars = TEXT_TY_BlobAccess(value, CHR_BLOB);
-			VM_MoveCursorInStatusLine(row, ((width - chars) / 2) + 1);
-			TEXT_TY_Say(value);
+		if (col_num_middle) {
+			value = (status_window_table-->col_num_middle)-->(row + COL_HSIZE);
+			if (value ~= TABLE_NOVALUE) {
+				chars = TEXT_TY_BlobAccess(value, CHR_BLOB);
+				VM_MoveCursorInStatusLine(row, ((width - chars) / 2) + 1);
+				TEXT_TY_Say(value);
+			}
 		}
 	}
 	rtrue;
