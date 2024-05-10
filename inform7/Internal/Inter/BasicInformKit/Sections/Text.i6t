@@ -1044,9 +1044,9 @@ Some functions for converting a text to a number.
 	return res;
 ];
 
-Array realbuf --> 50;
 
 #Iftrue WORDSIZE > 2;
+Array realbuf --> 50;
 [ TEXT_TY_To_RealNumber txt  len;
 	len = Glulx_PrintAnyToArrayUni(realbuf, 50, TEXT_TY_Say, txt);
 	return FloatParse(realbuf, len, 1);
