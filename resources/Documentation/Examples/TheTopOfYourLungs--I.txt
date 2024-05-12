@@ -1,0 +1,24 @@
+
+
+
+
+The Top of Your Lungs
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Subway Platform
+You can see a busker here.
+
+>(Testing.)
+
+>[1] talk about busker
+You: "Where did you learn to play the saxophone?"
+
+The busker: "Juilliard."
+
+>[2] yell at busker
+You: "CAN YOU PLEASE HUSH THAT RACKET!?"
+
+The busker: "I HAVE A LICENSE!"
+
+>Are you sure you want to quit? 
