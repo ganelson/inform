@@ -1,0 +1,50 @@
+
+
+
+
+German Chocolate
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Parlour
+You can see Louisa here.
+
+Louisa: "I am so hungry."
+
+>(Testing.)
+
+>[1] z
+Time passes.
+
+Louisa: "I could really go for something sweet."
+
+>[2] talk about lunch
+You: "I missed lunch, but it's no big deal."
+
+Louisa: "You're so brave."
+
+Louisa: "Gosh, I could really go for something to eat!"
+
+>[3] talk about money
+You: "I'm broke this month. I've got to keep my expenses down until next month's paycheck comes in."
+
+Louisa: "Things are difficult all over, I think. It's a shame, really. Though... it could be worse. Some countries are in much worse economic condition than we are."
+
+>[4] z
+Time passes.
+
+Louisa: "I saw a documentary about the cocoa industry just recently. It really makes you think, you know, about where we get our chocolate from."
+
+>[5] z
+Time passes.
+
+Louisa: "Are you eating the leftover chocolate cake? Because if you're not, I mean, if you don't want it... it's only that I'm starving."
+
+
+
+    *** She got to the point in the end. ***
+
+
+
+Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> 
