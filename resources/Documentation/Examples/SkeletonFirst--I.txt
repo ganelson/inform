@@ -1,0 +1,58 @@
+
+
+
+
+Skeleton First
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Village Square
+This is the center of the village where you live. Sidekick frequently spends time with you here.
+
+Sidekick: "Let's talk about our daily reality. It's going along in a pretty stable fashion, wouldn't you say? Are we happy or not?"
+
+(1) Happy, I think?
+(2) No, I'm miserable
+
+>Happy, I think?
+
+You: "I'd say happy. We have an okay life."
+
+Sidekick: "Yeah!"
+
+You: "I do have a thing I'm already trying to achieve. That shows I'm not a passive character. It's going all right at the moment, but it could be going even better."
+
+Sidekick: "Oh good point! Remind me what values motivate your activity?"
+
+(1) I have an artist driven by my muse
+(2) I am in love and I want to get together with my beloved
+
+>I am in love and I want to get together with my beloved
+
+You: "I'm madly in love..."
+
+Sidekick: "Oh THIS activity. Right. I've already heard all about that. You can't really stop talking about it."
+
+Sidekick: "To be clear, I also am totally trying to achieve a thing."
+
+(1) Take an interest in Sidekick's thing
+(2) Keep talking about my thing
+
+>Keep talking about my thing
+
+You: "Concerning my own problem, here's what I'm working on..."
+
+Sidekick: "I am very sympathetic. I may also have some practical advice to offer you."
+
+You: "Thank you so much."
+
+Sidekick: "We are having a fantastic time together, enjoying our friendship. I really mean a lot to you. Remember that when something bad happens to me later."
+
+You: "I will definitely do that. Would you like to give me some kind of small physical token of our connection? I feel like I might want it later for symbolic purposes."
+
+Sidekick gives the symbolic token to you.
+
+Sidekick: "Good thinking there. Don't lose it, okay?"
+
+>
+<end of input>
