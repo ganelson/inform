@@ -2777,13 +2777,15 @@ As we have seen, Inform allows us to type a wide range of characters into the so
 
 Unicode characters can be named (or numbered) directly in text. For example:
 
-	"[unicode 321]odz Churchyard"
+	"[unicode U+0141]odz Churchyard"
 
-produces a Polish slashed L. Characters can also be named as well as numbered:
+produces a Polish slashed L, that is, prints as ``Łodz Churchyard``. The notation `unicode U+0141` uses hexadecimal digits, and actually refers to the character whose number is 321, because 321 in base 16 is 141. (Inform would also have accepted `unicode 321` in decimal, but it's far more usual for Unicode to be quoted in hexadecimal.)
+
+Characters can also be named as well as numbered:
 
 	"[unicode Latin capital letter L with stroke]odz Churchyard"
 
-The Unicode standard assigns character numbers to essentially every marking used in text from any human language: its full range is enormous. (Note that Inform writes these numbers in decimal: many reference charts show them in hexadecimal, or base 16, which can cause confusion.)
+The Unicode standard assigns character numbers to essentially every marking used in text from any human language: its full range is enormous.
 
 This means, for instance, that we can write text such as:
 
@@ -2802,11 +2804,17 @@ This can be avoided by using brackets around the name, to make clear how the sen
 
 	The secret sign is initially unicode (Latin capital letter L with stroke).
 
-Inform can "only" handle codes in the range 32 to 131071, and note that if the project Settings are to compile to the Z-machine, this range stops at 65535: thus many emoji characters – say, `"[unicode fish cake with swirl design]"` – can only be used if the story will compile to Glulx or another modern target. But by default, stories are compiled the modern way, so this should not be a problem in practice.
+Inform can "only" handle codes in the range `unicode U+20` to `unicode U+1FFFF`, that is, 32 to 131071 in decimal, and note that if the project Settings are to compile to the Z-machine, this range stops at `unicode U+FFFF`: thus many emoji characters – say, `unicode fish cake with swirl design` – can only be used if the story will compile to Glulx or another modern target. But by default, stories are compiled the modern way, so this should not be a problem in practice.
 
 There are far too many possible names to list here: formally, any character name in the Basic Multilingual Plane or the Supplementary Multilingual Plane of version 15.0.0 of the Unicode standard can be used.
 
-But before getting carried away, we should remember the hazards: Inform allows us to type, say, `"[unicode Saturn]"` (an astrological sign) but it appears only as a black square if the resulting story is played by an interpreter using a font which lacks the relevant sign. For instance, Zoom for OS X uses the Lucida Grande and Apple Symbol fonts by default, and this combination does contain the Saturn sign: but Windows Frotz tends to use the Tahoma font by default, which does not. (Another issue is that the fixed letter spacing font, such as used in the status line, may not contain all the characters that the font of the main text contains.) To write something with truly outré characters is therefore a little chancy: users would have to be told quite carefully what interpreter and font to use to play it.
+Still another alternative is to write `unicode "C"`: this is no use inside a text substitution because the double-quotation marks can't be used there, but something like:
+
+	The secret sign is initially unicode "☣".
+
+...will work fine. `unicode "☣"`, `unicode U+2623`, `unicode 9763` and `unicode Biohazard Sign` are all ways to write the same value, which has the kind `unicode character`.
+
+But before getting carried away, we should remember the hazards: Inform allows us to type, say, `unicode Saturn` (an astrological sign) but it appears only as a black square if the resulting story is played using a font which lacks the relevant sign. (Another issue is that the fixed letter spacing font, such as used in the status line, may not contain all the characters that the font of the main text contains.) To write something with truly outré characters is therefore a little chancy.
 
 At one time, Inform could only use named Unicode values in a story which had first included an extension:
 

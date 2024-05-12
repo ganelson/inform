@@ -106,3 +106,11 @@ Not actually used: simply for testing the tables.
 		print "^";
 	}
 ];
+
+@h Unicode.
+
+=
+[ UNICODE_CHARACTER_TY_Say c;
+	print "unicode U+";
+	PrintInBase(c, 16, 4);
+];

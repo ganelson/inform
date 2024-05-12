@@ -56,5 +56,5 @@ template path "inform7/Internal/Templates"
 css
 website "Standard"
 status instruction ||&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a>||
-status alternative ||Using 'Release along with cover art', to provide something more distinctive than the default artwork above&nbsp;<a href=inform:/wi_26_8.html><img border=0 src=inform:/doc_images/help.png></a>||
-status alternative ||Using 'Release along with a file of "Such-and-Such" called "whatever.pdf"', perhaps to add a manual, or a welcoming note&nbsp;<a href=inform:/wi_26_6.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with cover art', to provide something more distinctive than the default artwork above&nbsp;<a href=inform:/wi_27_8.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with a file of "Such-and-Such" called "whatever.pdf"', perhaps to add a manual, or a welcoming note&nbsp;<a href=inform:/wi_27_6.html><img border=0 src=inform:/doc_images/help.png></a>||
