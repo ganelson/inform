@@ -1,5 +1,5 @@
 Example: **** Introductory Lavori Studies
-Location: Exactly when beats are performed
+Location: When the director is active
 RecipeLocation: Helping and Hinting
 Index: Dialogue implementation of a tutorial; magical connection of related objects.
 Description: Teaching the player multiple new commands via an instructor character who comments on the player's progress and reacts to actions taken out of order.

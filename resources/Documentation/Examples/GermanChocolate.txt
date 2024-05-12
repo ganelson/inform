@@ -1,5 +1,5 @@
 Example: ** German Chocolate
-Location: Exactly when beats are performed
+Location: When the director is active
 RecipeLocation: Goal-Seeking Characters
 Index: Goal-seeking dialogue
 Description: Allowing a character to doggedly pursue a particular subject of conversation.

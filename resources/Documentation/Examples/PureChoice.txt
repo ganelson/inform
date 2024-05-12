@@ -1,5 +1,5 @@
 Example: * Pure Choice
-Location: Exactly when beats are performed
+Location: When the director is passive
 RecipeLocation: Alternatives To Standard Parsing
 Index: Branching choices
 Description: Using the dialogue system to write a branching text with no world model to speak of.

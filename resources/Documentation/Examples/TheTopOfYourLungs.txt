@@ -1,5 +1,5 @@
 Example: ** The Top of Your Lungs
-Location: Dialogue beats and their cues
+Location: When the director is passive
 RecipeLocation: Character Emotion
 Index: Speaking in a raised voice
 Description: Adding a ``YELL AT`` verb that selects only yelled dialogue beats.

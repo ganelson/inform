@@ -1,5 +1,5 @@
 Example: ** Skeleton First
-Location: Exactly when beats are performed
+Location: When the director is active
 RecipeLocation: The Flow of Conversation
 Index: Dialogue inviting the player on a quest
 Description: A sequence of dialogue scenes that introduces the player's life and invites them on a quest.

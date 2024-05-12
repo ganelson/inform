@@ -5774,7 +5774,7 @@ Out of the box, dialogue beats come with the following either-or properties alre
 than once in the same play-through?
 
 - `voluntary` or `involuntary`. This affects only beats for which the
-player is the first speaker, and only when the director is in active mode. (See [Exactly when beats are performed] for what this means.) Can such a beat be triggered just because it seems relevant?
+player is the first speaker, and only when the director is in active mode. (See [When the director is active] for what this means.) Can such a beat be triggered just because it seems relevant?
 
 - `spontaneous` or `unspontaneous`. Only has an effect when the director
 is in active mode. Can the director bring this beat up out of nowhere to
@@ -5793,27 +5793,11 @@ As a special case, a beat can also be described as `fully recurring`. This makes
 	
 	Bridget: "Are we nearly there yet?"
 
-## Exactly when beats are performed
+## When the director is passive
 
-Dialogue is managed during play by a component of Inform called the _director_, which we think of as being like the director of a play. At any given time the director is in one of two states:
+Dialogue is managed during play by a component of Inform called the _director_, which we think of as being like the director of a play. It sometimes has to manage quite a complex situation, so the testing command ``DIALOGUE`` causes the director to explain itself as it goes along; and ``DIALOGUE ALL`` even more so.
 
-- _Passive_, also known as _inactive_. This is the default. Dialogue beats are performed only when the story text explicitly says that they must be: everything is under the control of the author, who is micro-managing what is said.
-
-- _Active_. In active mode, the director can also fill conversational lulls by trying to find relevant things to talk about, and people to talk about them. To do this, the director tracks a list of "live conversational subjects" which it might be interesting to talk about. The idea is that if somebody has just mentioned visiting Barcelona, then Barcelona might become a live subject. If conversation then lapses, the director will try to keep it going by finding something which somebody present can say about Barcelona.
-
-The mode can be switched with these phrases:
-
-> phrase: {ph_directoractive} make the dialogue/dialog director active
->
-> Switches the dialogue director to active mode.
-
-> phrase: {ph_directorpassive} make the dialogue/dialog director passive/inactive
->
-> Switches the dialogue director to passive mode.
-
-The director sometimes has to manage quite a complex situation, especially if dialogue beats are causing each other to be performed. The testing command ``DIALOGUE`` causes the director to print out explanation of what it is doing; ``DIALOGUE ALL`` produces even fuller ones.
-
-### About passive mode
+At any given time the director is either _passive_ or _active_. Passive means that the director performs dialogue as it's asked to do so, but not otherwise. The director is always passive at the start of play and becomes active only if we explicitly ask it to: see [When the director is active].
 
 When the director is passive, beats are performed only as follows:
 
@@ -5840,11 +5824,25 @@ beat to be performed with a flow marker. (See [Flow Markers] for more.)
 
   Note that `talking about` is just one way to nudge the dialogue director into action. A rule like `Instead of talking about romance` would block attempts to do this which arose from the `talking about` action, but would not block such dialogue arising from some other cause.
 
-### About active mode
+## When the director is active
 
-In active mode, all of the above is still true, but now the dialogue director can _also_ perform beats on its own initiative.
+The director remains in passive mode until and unless we say so, using:
 
-It will do this only if there is a lull in conversation, i.e., if no other dialogue has been performed during the turn, and only if it can find a suitable beat to perform. (This is done by the `dialogue direction rule` in the `turn sequence rulebook`.) "Suitable" means that:
+> phrase: {ph_directoractive} make the dialogue/dialog director active
+>
+> Switches the dialogue director to active mode.
+
+Which can be undone again:
+
+> phrase: {ph_directorpassive} make the dialogue/dialog director passive/inactive
+>
+> Switches the dialogue director to passive mode.
+
+All of the ways dialogue can begin in passive mode are still true for active mode (see [When the director is passive]). But in active mode, the director can also fill conversational lulls by trying to find relevant things to talk about, and people to talk about them.
+
+To do this, the director tracks a list of "live conversational subjects" which it might be interesting to talk about. The idea is that if somebody has just mentioned visiting Barcelona, then Barcelona might become a live subject. If conversation then lapses, the director will try to keep it going by finding something which somebody present can say about Barcelona.
+
+A lull in conversation is a turn in which no other dialogue has been performed, and the business of filling this dead air is carried out by the `dialogue direction rule` in the `turn sequence rulebook`. What happens is that the director looks for a suitable beat to perform, where "suitable" means that:
 
 - the beat either has not been performed before or has the `recurring` property, _and_
 
@@ -5854,15 +5852,13 @@ It will do this only if there is a lull in conversation, i.e., if no other dialo
 
 - any `after`, `before`, `later`, `next`, and `immediately after` conditions in the cue are met.
 
-That quite likely still leaves many possible beats to choose from, so the director makes a selection based on its _list of live conversational subjects_:
+That quite likely still leaves multiple beats to choose from, so the director makes a selection based on its _list of live conversational subjects_:
 
 1) The director first tries to choose a suitable beat which is `about` a live conversational subject, except that it will not choose a beat for which the player is the first speaker unless that beat has the `involuntary` property.
 
 2) Failing that, the director tries to find a suitable beat marked as having the `spontaneous` property.
 
-3) And failing even that, the director will give up.
-
-### The list of live conversational subjects
+3) Failing even that, the director will give up, and the story will continue in silence for another turn.
 
 The list of live conversational subjects is best thought of as pretty ephemeral, and with a rapid turnover:
 

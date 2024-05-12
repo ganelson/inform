@@ -1,5 +1,5 @@
 Example: * Sweeney Revisited
-Location: If again this apparition come...
+Location: When the director is passive
 RecipeLocation: Saying Complicated Things
 Index: Conversation topics that evolve over time
 Description: An innocent conversation about the meat products on sale in Bell Yard, London, in 1847.

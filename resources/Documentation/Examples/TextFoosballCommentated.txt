@@ -1,5 +1,5 @@
 Example: **** Text Foosball Commentated
-Location: Exactly when beats are performed
+Location: When the director is active
 RecipeLocation: The Flow of Conversation
 Index: Foosball game
 Description: A foosball game where the other character not only plays against us but reacts to the state of gameplay and riffs on previously-mentioned topics.
