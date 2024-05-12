@@ -1,0 +1,34 @@
+
+
+
+
+Do you like Mr Spruce? 
+
+Proposal Revisited
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Conservatory
+You are in a room full of plants.
+
+Mr Spruce is on his knees before you.
+
+Mr Spruce: "My darling, I beg you to become my lawfully wedded wife."
+
+>(Testing.)
+
+>[1] z
+Mr Spruce sighs heavily, seeing that you don't intend to reply. "Never mind, my dear, I'll ask later. Perhaps I should have spoken to your Papa first... yes, a gently-bred female... no wonder...
+
+>[2] yes
+You are silent with delight for a moment before you say yes, yes!
+
+
+
+    *** How Genevieve Stubbs will cry! ***
+
+
+
+Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> 
+<end of input>

@@ -1,6 +1,6 @@
-Total memory consumption was 143672K = 140 MB
+Total memory consumption was 143675K = 140 MB
 
- ---- was used for 2172658 objects, in 383610 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2172784 objects, in 383637 frames in 0 x 800K = 0K = 0 MB:
 
     29.4%  inter_tree_node_array                    60 x 8192 = 491520 objects, 43255680 bytes
     19.9%  text_stream_array                        5208 x 100 = 520800 objects, 29331456 bytes
@@ -17,7 +17,7 @@ Total memory consumption was 143672K = 140 MB
      1.4%  inter_schema_token                       14234 objects, 2163568 bytes
      1.4%  inter_name_generator_array               52 x 1000 = 52000 objects, 2081664 bytes
      1.2%  package_request                          21506 objects, 1892528 bytes
-     1.2%  vocabulary_entry_array                   164 x 100 = 16400 objects, 1842048 bytes
+     1.2%  vocabulary_entry_array                   165 x 100 = 16500 objects, 1853280 bytes
      1.1%  dict_entry_array                         530 x 100 = 53000 objects, 1712960 bytes
      1.0%  inter_symbols_table                      27126 objects, 1519056 bytes
      1.0%  match_trie_array                         11 x 1000 = 11000 objects, 1496352 bytes
@@ -28,8 +28,8 @@ Total memory consumption was 143672K = 140 MB
      0.7%  adjective_meaning                        210 objects, 1039920 bytes
      0.6%  inter_schema_node                        9102 objects, 1019424 bytes
      0.6%  excerpt_meaning                          3220 objects, 1004640 bytes
-     0.6%  production                               4019 objects, 932408 bytes
-     0.6%  ptoken                                   8764 objects, 911456 bytes
+     0.6%  production                               4020 objects, 932640 bytes
+     0.6%  ptoken                                   8766 objects, 911664 bytes
      0.5%  grammatical_usage                        3668 objects, 880320 bytes
      0.5%  individual_form                          2603 objects, 874608 bytes
      0.4%  unary_predicate_array                    17 x 1000 = 17000 objects, 680544 bytes
@@ -52,7 +52,7 @@ Total memory consumption was 143672K = 140 MB
      ----  markdown_item_array                      1 x 1000 objects, 136032 bytes
      ----  inference                                1712 objects, 123264 bytes
      ----  pcalc_term_array                         3 x 1000 = 3000 objects, 120096 bytes
-     ----  documentation_ref                        1282 objects, 112816 bytes
+     ----  documentation_ref                        1305 objects, 114840 bytes
      ----  inter_schema                             1552 objects, 111744 bytes
      ----  imperative_defn                          1420 objects, 102240 bytes
      ----  noun_usage                               2439 objects, 97560 bytes
@@ -267,7 +267,7 @@ Total memory consumption was 143672K = 140 MB
 
 100.0% was used for memory not allocated for objects:
 
-    63.1%  text stream storage                      92839156 bytes in 541349 claims
+    63.1%  text stream storage                      92842680 bytes in 541372 claims
      3.9%  dictionary storage                       5795776 bytes in 7837 claims
      ----  sorting                                  6424 bytes in 1489 claims
      4.8%  source text                              7200000 bytes in 3 claims
@@ -285,5 +285,5 @@ Total memory consumption was 143672K = 140 MB
      ----  code generation workspace for objects    3552 bytes in 19 claims
      0.1%  emitter array storage                    290688 bytes in 2079 claims
 
--139.-5% was overhead - -205338120 bytes = -200525K = -195 MB
+-139.-5% was overhead - -205351816 bytes = -200538K = -195 MB
 

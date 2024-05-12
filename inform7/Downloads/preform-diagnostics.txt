@@ -1,6 +1,6 @@
 <preform-nonterminal> internal nti 30 constraint (none) extremes [1, 1]
 
-<if-start-of-paragraph> internal hits 1370/8896 nti 6 constraint (none) extremes [0, 0]
+<if-start-of-paragraph> internal hits 1371/8896 nti 6 constraint (none) extremes [0, 0]
 
 <if-not-cap> internal hits 4082/8324 nti 7 constraint (none) extremes [0, 0]
 
@@ -5453,26 +5453,26 @@
         <extension-end-marker-sentence> 
           (hits 8/4107) (matched long text) constraint DS = {13} extremes [3, infinity)
 
-<heading> hits 204/2712 nti 12 constraint DS = {12} extremes [2, infinity)
+<heading> hits 204/2714 nti 12 constraint DS = {12} extremes [2, infinity)
     English:
         volume {...} 
-          (hits 6/1356) (matched long text) constraint DS = {12} extremes [2, infinity)
+          (hits 6/1357) (matched long text) constraint DS = {12} extremes [2, infinity)
         book {...} 
-          (hits 0/1350) constraint DS = {12} extremes [2, infinity)
+          (hits 0/1351) constraint DS = {12} extremes [2, infinity)
         part {...} 
-          (hits 14/1350) (matched: 'part two - the physical world model') constraint DS = {12} extremes [2, infinity)
+          (hits 14/1351) (matched: 'part two - the physical world model') constraint DS = {12} extremes [2, infinity)
         chapter {...} 
-          (hits 23/1336) (matched long text) constraint DS = {12} extremes [2, infinity)
+          (hits 23/1337) (matched long text) constraint DS = {12} extremes [2, infinity)
         section {...} ( dialog ) 
-          (hits 0/1198) constraint DS = {12} extremes [5, infinity)
+          (hits 0/1199) constraint DS = {12} extremes [5, infinity)
         section {...} ( dialogue ) 
-          (hits 0/1198) constraint DS = {12} extremes [5, infinity)
+          (hits 0/1199) constraint DS = {12} extremes [5, infinity)
         section {...} ( dialog during {...} ) 
-          (hits 0/1017) constraint DS = {12} extremes [7, infinity)
+          (hits 0/1020) constraint DS = {12} extremes [7, infinity)
         section {...} ( dialogue during {...} ) 
-          (hits 0/1017) constraint DS = {12} extremes [7, infinity)
+          (hits 0/1020) constraint DS = {12} extremes [7, infinity)
         section {...} 
-          (hits 161/1313) (matched long text) constraint DS = {12} extremes [2, infinity)
+          (hits 161/1314) (matched long text) constraint DS = {12} extremes [2, infinity)
 
 <extension-end-marker-sentence> hits 8/8214 nti 13 constraint DS = {13} extremes [3, infinity)
     English:
@@ -9974,6 +9974,8 @@
           constraint CS = {7} extremes [1, 1]
         next 
           constraint CS = {7} extremes [1, 1]
+        fully recurring 
+          constraint CS = {7} extremes [2, 2]
         {...} 
           constraint (none) extremes [1, infinity)
 

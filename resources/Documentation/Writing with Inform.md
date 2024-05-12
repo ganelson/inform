@@ -6557,7 +6557,7 @@ So to sum up:
 
 3) `-- after (an action)` is only selected when the player successfully types a command which generates this action, _and_ it gets through "before" and "check" rules, _and_ it actually takes place.
 
-4) `-- otherwise` is selected only if none of the other choices were selected. There can only be one of these, and it must be the last choice in the run.
+4) `-- otherwise` is selected only if none of the other choices were selected. There can only be one of these, and it must be the last choice in the run. It is always automatically `recurring`, so that it won't mysteriously fail to be chosen on a second run through the same decision.
 
 Note that there doesn't have to be an `-- otherwise` option. There usually is, as a catch-all, but if not, and none of the choices match, then the decision is left hanging for another turn and reconsidered then.
 

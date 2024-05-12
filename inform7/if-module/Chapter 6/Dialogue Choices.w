@@ -323,6 +323,9 @@ void DialogueChoices::decide_choice_performs(void) {
 				}
 			}
 		}
+		if (dc->selection_type == OTHERWISE_DSEL) {
+			DialogueChoices::apply_property(dc, P_recurring);
+		}
 	}
 }
 
