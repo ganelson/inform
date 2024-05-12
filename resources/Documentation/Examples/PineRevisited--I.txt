@@ -1,0 +1,55 @@
+
+
+
+
+Pine Revisited
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Spinning Tower
+A remote corner of the old castle, reserved for spinning and weaving tasks.
+
+Sleeping Beauty lies here, oblivious to your presence.
+
+>(Testing.)
+
+>[1] talk about sleep
+You won't get much of a reply.
+
+>[2] pour water on beauty
+You pour out the jug of water on Sleeping Beauty. Sleeping Beauty wakes, shuddering. "Agh! I had a terrible dream about drowning and then-- Hey!"
+
+Throughout the palace you can hear the other sounds of stirring and movement as the spell of centuries is broken.
+
+"Ghastly nightmares," she remarks. You nod politely.
+
+>[3] talk about sleep
+"Sleep well?" you ask solicitously.
+
+"Not really," she replies, edging away from you. So much for that angle.
+
+>[4] z
+Time passes.
+
+"I, er," she says. "I hope I'm not supposed to marry you or something."
+
+>[5] talk about marriage
+"I was told I was going to marry you and inherit the kingdom," you say, apologetically. "Would that be very bad?"
+
+"Oh, it's not you -- I'm seeing someone," she says, smiling quickly.
+
+>[6] talk about time delay
+"You've been up here for a hundred years," you say. An unpleasant thought occurs to you. "Was your young man in the castle somewhere?"
+
+She shakes her head mutely.
+
+She goes to the window and looks out at the now-fading thicket of briar. "That took a while to grow," she observes. "I was asleep longer than I thought."
+
+
+
+    *** This is going to take some explaining. ***
+
+
+
+Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> 
