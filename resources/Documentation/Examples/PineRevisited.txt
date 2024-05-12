@@ -1,6 +1,6 @@
 Example: *** Pine Revisited
 Location: Exactly when beats are performed
-RecipeLocation: Characters following a script
+RecipeLocation: Characters Following a Script
 Index: Dialogue, with certain topics that need to be covered in a scene
 Description: The Pine 2 example rewritten using the dialogue system, allowing for a scene that ends when critical information has been communicated, regardless of how the conversation flows to that point.
 

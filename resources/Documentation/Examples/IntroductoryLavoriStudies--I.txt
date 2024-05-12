@@ -1,0 +1,93 @@
+
+
+
+
+Introductory Lavori Studies
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Practice Chamber
+A fire burns merrily in the grate. Otherwise, the practice chamber is largely empty, the better to prevent anything from affecting your education in magical skills.
+
+Your instructor lurks here, watching your every move.
+
+The instructor: "Welcome. Let's start out with a little light mayhem before we try doing anything more advanced. You'll find you've been issued a couple of standard items with fairly obvious physical properties. I'd like to see you damage both of them through ordinary means."
+
+(1) Cooperate
+(2) Complain that I'm here to learn magic
+(3) Complain that in fact I already know how to link things
+
+>Cooperate
+
+You: "You're the boss."
+
+The instructor: "Well, sort of."
+
+>You are carrying:
+  a sensitive document
+  a pane of glass
+
+The instructor: "Sometimes it's worth EXAMINING something you're carrying to see what's going on."
+
+>It's rectangular and about the size of the document. It's also translucent white, making it roughly the color of the document.
+
+The instructor: "Generally one does not go around carrying loose panes of glass, but for now let's pretend that you might."
+
+>You shatter the pane of glass.
+
+The instructor: "We make progress. May I draw your attention to the inherent possibilities of burning a thing?"
+
+>You set fire to the sensitive document and are quickly rid of it.
+
+The instructor: "Fantastic! We make progress."
+
+The instructor fishes around for additional supplies. When she's done, you've got roughly the same inventory you had to start with.
+
+The instructor: "Now we have a new skill to learn. Try LINKing together two items that are similar."
+
+>You are carrying:
+  a sensitive document
+  a pane of glass
+
+The instructor: "You may notice that there is a similarity between the two items you are carrying. Try checking out the document you're carrying."
+
+>With all those pages, it's about as thick as the pane of glass.
+
+The instructor: "It's highly classified material. For safety, we have refrained from implementing a READ verb in this scenario. If you try, you'll just get a standard description of what a thing looks like, no more than you'd get from EXAMINE."
+
+>You build a mutually-effective link between the pane of glass and the sensitive document.
+
+The instructor: "Now you've got them linked, you only need to damage one to damage both."
+
+>The pane of glass shatters. The sensitive document shatters.
+
+The instructor fishes around for additional supplies. When she's done, you've got roughly the same inventory you had to start with.
+
+The instructor: "Now, there is another form of link that shares strengths between items, rather than weaknesses."
+
+The instructor: "This is the reverse link. REVERSE LINK thing TO thing will make both of them impervious to fire or breakage or so on."
+
+>(first unlinking the sensitive document)
+
+You build a mutually-effective, and protective, link between the pane of glass and the sensitive document. Both are now resistant to fire and casual smashing.
+
+The instructor: "Good. Now let's see the effect of that in action - try destroying one of them and see what happens."
+
+>The sensitive document resists flame, thanks to its link with the pane of glass.
+
+The instructor: "Last step! You now have two things that are linked together. If you no longer want that to be true, you can UNLINK them."
+
+>Now the pane of glass is linked with nothing.
+
+The instructor: "And it seems we are done here."
+
+That seems to be everything!
+
+
+
+    *** You have now proven yourself ***
+
+
+
+Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> 
