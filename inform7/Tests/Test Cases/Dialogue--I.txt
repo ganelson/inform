@@ -63,14 +63,14 @@
   gouda choice is unperformed; non-recurring; offered.
   white seedless choice is unperformed; non-recurring; offered.
   red choice is unperformed; non-recurring; offered.
-  flow-8 is unperformed; non-recurring; flowing.
+  flow-8 is unperformed; recurring; flowing.
   rioja choice is unperformed; non-recurring; offered.
   shiraz choice is unperformed; non-recurring; offered.
   camembert choice is performed; non-recurring; offered.
   white seeded choice is performed; non-recurring; offered.
   black choice is unperformed; non-recurring; offered.
   poison choice is unperformed; non-recurring; offered.
-  flow-15 is unperformed; non-recurring; flowing; story-ending.
+  flow-15 is unperformed; recurring; flowing; story-ending.
   
   
 > >   Laboratory

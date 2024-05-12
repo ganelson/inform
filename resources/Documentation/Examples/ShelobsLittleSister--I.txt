@@ -1,0 +1,54 @@
+
+
+
+
+Shelob's Little Sister
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+You are doing battle with a ferocious arachnid. Its eyes gleam at you menacingly.
+
+(1) Attack the spider (odds: 0%, but you might learn something)
+(2) Run away (odds: 100%)
+
+>Attack the spider (odds: 0%, but you might learn something)
+
+You attack the spider, and fail to pierce its exoskeleton. It wounds you in return.
+
+Despite your pain, you are increasingly determined to win.
+
+(1) Attack the spider (odds: 0%, but you might learn something)
+(2) Walk away (odds: 90%)
+
+>Attack the spider (odds: 0%, but you might learn something)
+
+You attack the spider, and fail to pierce its exoskeleton. It wounds you in return.
+
+Despite your pain, you are increasingly determined to win.
+
+(1) Attack the spider (odds: 8%)
+(2) Limp away (odds: 83%)
+
+>Attack the spider (odds: 8%)
+
+You attack the spider, and fail to pierce its exoskeleton. It wounds you in return.
+
+Despite your pain, you are increasingly determined to win.
+
+(1) Attack the spider (odds: 15%)
+(2) Crawl away (odds: 76%)
+
+>Attack the spider (odds: 15%)
+
+You attack the spider, and fail to pierce its exoskeleton. It wounds you in return.
+
+Despite your pain, you are increasingly determined to win.
+
+(1) Attack the spider (odds: 21%)
+(2) Crawl away (odds: 71%)
+
+>Attack the spider (odds: 21%)
+
+You attack the spider and defeat it!
+
+>Are you sure you want to quit? 

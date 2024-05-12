@@ -6715,11 +6715,13 @@ than once in the same play-through?
 
 Flow markers are written `<-` or `->`, and cause the dialogue director to interrupt its normal performance of a beat. `<-` generally makes a backwards jump in the same beat, while `->` leads out to another beat.
 
-Flow markers actually have much in common with choices, and can accept exactly the same bracketed notes as choices have: they can be named, they can be conditional, and they can be given the either-or properties `performed` and `recurring`. For example,
+Flow markers actually have much in common with choices, and can accept exactly the same bracketed notes as choices have: they can be named and they can be conditional. For example,
 
 	<- (unless Polonius is in Elsinore)
 
 	-> (if Hamlet is not in the Graveyard) stop
+
+All flow markers are always `recurring`, without any need to say this.
 
 ### Flow back
 

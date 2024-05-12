@@ -1,0 +1,82 @@
+Example: ** Shelob's Little Sister
+Location: Flow markers
+RecipeLocation: Combat and Death
+Index: Branching choices
+Description: Using the dialogue system to write a combat scene where the player's success depends on their stats.
+
+The dialogue system can be used to quickly mock up all sorts of behaviour flows, even ones that don't really have anything to do with conversation.
+
+For instance, if we wanted to mock up some very simple combat, we could express that within a single dialogue beat, which we then re-enter again and again until the combat is concluded. This is marked `fully recurring` to ensure that its options remain available no matter how many times they are encountered.
+
+Here we've handled player interaction as an explicit choice system. It would be equally possible to associate these choices with parser-based actions if we wanted to. The use of explicit choices, however, also lets us signal to the player what their odds of success are currently. The more practice they have against the spider, the more likely they are to succeed in an attack; the more wounded they become, the harder it will be to escape her lair.
+
+	{*}"Shelob's Little Sister"
+
+	Section 1 - Immediate context
+	
+	Stage Set is a room.
+	
+	Instead of looking: do nothing instead.
+		
+	When play begins:
+		now the left hand status line is "Ferocity: [ferocity of the player]";
+		now the right hand status line is "Wounds: [damage of the player]"
+		
+	Section 2 - Stats
+	
+	A person has a number called ferocity. The ferocity of the player is 10.
+	A person has a number called damage. The damage of the player is 0.
+	
+	To decide whether we pass a ferocity check of (target - a number):
+		let roll be a random number between 1 and the ferocity of the player;
+		unless roll is greater than target:
+			decide no;
+		decide yes.
+		
+	To say ferocity odds on (N - a number):
+		let high be 100 * (ferocity of the player - N);
+		let percentage be high / ferocity of the player;
+		say "[italic type](odds: [unless the ferocity of the player is greater than N]0%, but you might learn something[else][percentage]%[end if])[roman type]"
+		 
+	To say escape verb:
+		if damage of the player is:
+			-- 0:
+				say "Run";
+			-- 1:
+				say "Walk";
+			-- 2:
+				say "Limp";
+			-- otherwise:
+				say "Crawl".
+	
+	Section 3 - Combat! (dialogue)
+	
+	(This is the starting beat. Fully recurring.)
+	
+	Narration: "You are doing battle with a ferocious arachnid. Its eyes gleam at you menacingly."
+	
+		-- "Attack the spider [ferocity odds on 11]"
+	
+			Narration (if we pass a ferocity check of 11): "You attack the spider and defeat it!"
+				
+				-> stop
+			
+			Narration (now the damage of the player is the damage of the player plus 1): "You attack the spider, and fail to pierce its exoskeleton. It wounds you in return."
+				
+				Narration (if the damage of the player is greater than 7): "Alas, your body is unable to tolerate any more harm."				
+	
+					-> end the story saying "You have expired in the spider's lair"
+			
+			Narration (now the ferocity of the player is the ferocity of the player plus 1): "Despite your pain, you are increasingly determined to win."
+				
+			<-
+		
+		-- (recurring) "[escape verb] away [ferocity odds on damage of the player]"
+	
+			Narration (if we pass a ferocity check of damage of the player): "You make a run for it, and get away!"
+				
+				-> stop
+			
+			Narration: "You try to dodge the spider and entirely fail. At least you don't take any damage."
+			
+			<-

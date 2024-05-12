@@ -212,15 +212,15 @@ We only want the `Joey remarks failure beat` to occur if the action system speci
 	
 		Player (mentioning telekinesis): "You give him a funny look. 'Yeah, I moved it with the telekinetic powers of my mind.'"
 	
-		-> (recurring) stop
+		-> stop
 		
 	Joey (if the ball is still): "'Aw, come on!' He glares at the table."
 		
-		-> (recurring) stop
+		-> stop
 	
 	Joey (if the ball is still; without speaking; recurring): "[one of]Joey is scowling. It obviously doesn't go well for his pride when he's failing to make contact with a completely still ball.[or]Joey mutters about the failure.[cycling]"
 		
-		-> (recurring) stop
+		-> stop
 	
 	Joey (recurring): "[one of]'Just got by me,' Joey remarks, as though you couldn't see that for yourself.[or]'Aw, too fast,' says Joey.[or]'Missed!' says Joey.[stopping]"
 	
