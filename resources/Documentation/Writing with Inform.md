@@ -5785,6 +5785,12 @@ By default, at the start of play, all beats are `unperformed`, `non-recurring`, 
 
 	(Spontaneous; recurring.)
 	
+	Bridget (recurring): "Are we nearly there yet?"
+
+As a special case, a beat can also be described as `fully recurring`. This makes not only the beat `recurring`, but also all the lines and choices which belong to it. For example:
+
+	(Spontaneous; fully recurring.)
+	
 	Bridget: "Are we nearly there yet?"
 
 ## Exactly when beats are performed
@@ -5980,13 +5986,6 @@ Which enables beats to be tagged in arbitrary ways:
 	(Testing only.)
 	
 	Bernardo: "Sorry to break the fourth wall, but will this program ever work?"
-
-Note that a `recurring` beat does not automatically make the lines (or choices) within it `recurring` in turn: in fact, the default is that they will not be. If that convention annoys, the following rule will reverse that:
-
-	When play begins:
-		repeat with L running through dialogue lines:
-			if L is in a recurring dialogue beat:
-				now L is recurring.
 
 In addition, the following adjectives can be tested at run-time:
 
@@ -6730,11 +6729,11 @@ same beat, or (if there hasn't been a decision) to the start of the beat.
 As with control mechanisms in all programming languages, that makes it
 possible to get into endless loops:
 
-	(This is the ill-advised beat.)
+	(This is the ill-advised beat; fully recurring)
 	
-	Fatboy Slim (recurring): "Right about now, the funk soul brother."
+	Fatboy Slim: "Right about now, the funk soul brother."
 	
-	Fatboy Slim (recurring): "Check it out now, the funk soul brother."
+	Fatboy Slim: "Check it out now, the funk soul brother."
 
 	<-
 
@@ -6767,9 +6766,9 @@ beat _continues where it left off_. That nesting can go up to 20 beats deep.
 
 This too can be dangerous if wrongly handled:
 
-	(This is the equally ill-advised beat.)
+	(This is the equally ill-advised beat; fully recurring.)
 	
-	Fatboy Slim (recurring): "Right here, right now."
+	Fatboy Slim: "Right here, right now."
 	
 	-> perform the equally ill-advised beat
 

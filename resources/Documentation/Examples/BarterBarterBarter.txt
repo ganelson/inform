@@ -112,66 +112,66 @@ So here is the dialogue, where we make good use of action-based choices and flow
 
 	{**}Section 3 - Details (dialogue)
 	
-	(This is the item purchasing beat. Recurring.)
+	(This is the item purchasing beat. Fully recurring.)
 	
-	Player (recurring): "'I'd like to buy [the noun],' you say."
+	Player: "'I'd like to buy [the noun],' you say."
 	
-	Barterer (recurring): "'What will you give me for it?' asks [the holder of the noun]." 
+	Barterer: "'What will you give me for it?' asks [the holder of the noun]." 
 	
-		-> (recurring) perform the offering beat
+		-> perform the offering beat
 		
 	
-	(This is the offering beat. Recurring.)
+	(This is the offering beat. Fully recurring.)
 	
-	-- (recurring; if the number of entries in the offer list is greater than 0) "Offer [the entry 1 in the offer list]"
+	-- (if the number of entries in the offer list is greater than 0) "Offer [the entry 1 in the offer list]"
 	
-		Player (recurring; before the barterer thinking; now the gift is entry 1 in the offer list): "'Can I offer you [the entry 1 in the offer list]?' you suggest."
+		Player (before the barterer thinking; now the gift is entry 1 in the offer list): "'Can I offer you [the entry 1 in the offer list]?' you suggest."
 	
-		-> (recurring) perform the assessing beat
+		-> perform the assessing beat
 		
-		-> (recurring) stop
+		-> stop
 	
-	-- (recurring; if the number of entries in the offer list is greater than 1) "Offer [the entry 2 in the offer list]"
+	-- (if the number of entries in the offer list is greater than 1) "Offer [the entry 2 in the offer list]"
 	
-		Player (recurring; before the barterer thinking; now the gift is entry 2 in the offer list): "'How about [the entry 2 in the offer list]?' you ask."
+		Player (before the barterer thinking; now the gift is entry 2 in the offer list): "'How about [the entry 2 in the offer list]?' you ask."
 	
-		-> (recurring) perform the assessing beat
+		-> perform the assessing beat
 		
-		-> (recurring) stop
+		-> stop
 	
-	-- (recurring; if the number of entries in the offer list is greater than 2) "Offer [the entry 3 in the offer list]"
+	-- (if the number of entries in the offer list is greater than 2) "Offer [the entry 3 in the offer list]"
 	
-		Player (recurring; before the barterer thinking; now the gift is entry 3 in the offer list): "'I do have [the entry 3 in the offer list], if you want that.' you suggest."
+		Player (before the barterer thinking; now the gift is entry 3 in the offer list): "'I do have [the entry 3 in the offer list], if you want that.' you suggest."
 	
-		-> (recurring) perform the assessing beat
+		-> perform the assessing beat
 		
-		-> (recurring) stop
+		-> stop
 		
-	-- (recurring) "Give up"
+	-- "Give up"
 	
-		Player (recurring): "'I guess I don't have what you need,' you say."
+		Player: "'I guess I don't have what you need,' you say."
 		
-		Barterer (recurring): "'Apparently not,' says [the barterer] cheerfully. '[if the number of entries in the acceptance list is greater than 0]I guess you can hold on to [the acceptance list] for now, but[else]Feel[end if] feel free to come back later.'"
+		Barterer: "'Apparently not,' says [the barterer] cheerfully. '[if the number of entries in the acceptance list is greater than 0]I guess you can hold on to [the acceptance list] for now, but[else]Feel[end if] feel free to come back later.'"
 		
-		-> (recurring) stop
+		-> stop
 			
 	
-	(This is the assessing beat. Recurring.)
+	(This is the assessing beat. Fully recurring.)
 	
-	Barterer (recurring; if the barterer dislikes the gift; after refusing gift): "'No thanks,' says [the Barterer]. 'Got anything else good?'"
+	Barterer (if the barterer dislikes the gift; after refusing gift): "'No thanks,' says [the Barterer]. 'Got anything else good?'"
 	
-		-> (recurring) perform the offering beat
+		-> perform the offering beat
 		
-		-> (recurring) stop
+		-> stop
 	
-	Barterer (recurring; if the total offer satisfies; before accepting the gift): "'Sold!' says [the barterer]."
+	Barterer (if the total offer satisfies; before accepting the gift): "'Sold!' says [the barterer]."
 		
-		Player (recurring; after the barterer giving the goal item to the player): "'Why, thank you,' you say."
+		Player (after the barterer giving the goal item to the player): "'Why, thank you,' you say."
 		
-		-> (recurring) stop
+		-> stop
 	
-	Barterer (recurring; after partially accepting gift): "'I'll take that in partial payment, but [the gift] isn't worth as much to me as [the goal item]. Got anything else good?'"
+	Barterer (after partially accepting gift): "'I'll take that in partial payment, but [the gift] isn't worth as much to me as [the goal item]. Got anything else good?'"
 	
-		-> (recurring) perform the offering beat
+		-> perform the offering beat
 		
-		-> (recurring) stop
+		-> stop

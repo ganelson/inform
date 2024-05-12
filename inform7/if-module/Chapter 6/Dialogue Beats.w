@@ -146,6 +146,7 @@ We annotate each clause with the answer. Thus we might have:
 @e REQUIRING_DBC
 @e LATER_DBC
 @e NEXT_DBC
+@e FULLY_RECURRING_DBC
 @e PROPERTY_DBC
 
 @<Parse the clauses just enough to classify them@> =
@@ -173,6 +174,7 @@ We annotate each clause with the answer. Thus we might have:
 	requiring ... |             ==> { REQUIRING_DBC, - }
 	later |                     ==> { LATER_DBC, - }
 	next |                      ==> { NEXT_DBC, - }
+	fully recurring |           ==> { FULLY_RECURRING_DBC, - }
 	...                         ==> { PROPERTY_DBC, - }
 
 <dialogue-beat-starting-name> ::=
@@ -195,6 +197,7 @@ void DialogueBeats::write_dbc(OUTPUT_STREAM, int c) {
 		case REQUIRING_NOTHING_DBC: WRITE("REQUIRING_NOTHING"); break;
 		case LATER_DBC: WRITE("LATER"); break;
 		case NEXT_DBC: WRITE("NEXT"); break;
+		case FULLY_RECURRING_DBC: WRITE("FULLY RECURRING"); break;
 		case PROPERTY_DBC: WRITE("PROPERTY"); break;
 		default: WRITE("?"); break;
 	}
@@ -524,6 +527,9 @@ void DialogueBeats::decide_cue_topics(void) {
 					DialogueBeats::parse_property(db, AL);
 					break;
 				}
+				case FULLY_RECURRING_DBC:
+					DialogueBeats::make_fully_recurring(db);
+					break;
 			}
 		}
 	}
@@ -594,19 +600,18 @@ void DialogueBeats::parse_property(dialogue_beat *db, parse_node *AL) {
 		DialogueBeats::parse_property(db, AL->down);
 		DialogueBeats::parse_property(db, AL->down->next);
 	} else if (Node::is(AL, UNPARSED_NOUN_NT)) {
-		inference_subject *subj = Instances::as_subject(db->as_instance);
 		wording A = Node::get_text(AL);
 		if (<s-value-uncached>(A)) {
 			parse_node *val = <<rp>>;
 			if (Rvalues::is_CONSTANT_construction(val, CON_property)) {
 				property *prn = Rvalues::to_property(val);
 				if (Properties::is_either_or(prn)) {
-					@<Assert that the beat has this property@>;
+					DialogueBeats::apply_property(db, prn);
 					return;
 				}
 			}
 			if ((Specifications::is_description(val)) || (Node::is(val, TEST_VALUE_NT))) {
-				@<Assert that the beat has this property value@>;
+				DialogueBeats::apply_property_value(db, val);
 				return;
 			}
 			LOG("Unexpected prop: $T\n", val);
@@ -632,21 +637,42 @@ messages because |x| would be assumed as an |object|.
 Basically, though, this asserts the property in the same way that assertion
 sentences would do, and using all of the same machinery.
 
-@<Assert that the beat has this property@> =
+=
+void DialogueBeats::apply_property(dialogue_beat *db, property *prn) {
+	inference_subject *subj = Instances::as_subject(db->as_instance);
 	pcalc_prop *prop = AdjectivalPredicates::new_atom_on_x(
 		EitherOrProperties::as_adjective(prn), FALSE);
 	prop = Propositions::concatenate(
 		Propositions::Abstract::prop_to_set_kind(K_dialogue_beat), prop);
 	Assert::true_about(prop, subj, CERTAIN_CE);
+}
 
-@<Assert that the beat has this property value@> =
+void DialogueBeats::apply_property_value(dialogue_beat *db, parse_node *val) {
+	inference_subject *subj = Instances::as_subject(db->as_instance);
 	pcalc_prop *prop = Descriptions::to_proposition(val);
 	if (prop) {
 		prop = Propositions::concatenate(
 			Propositions::Abstract::prop_to_set_kind(K_dialogue_beat), prop);
 		Assert::true_about(prop, subj, CERTAIN_CE);
-		return;
 	}
+}
+
+@ Making a beat fully recurring propagates its `recurring` property down through
+all of the lines and choices within:
+
+=
+void DialogueBeats::make_fully_recurring(dialogue_beat *db) {
+	DialogueBeats::apply_property(db, P_recurring);
+	DialogueBeats::make_fully_recurring_r(db->root);
+}
+
+void DialogueBeats::make_fully_recurring_r(dialogue_node *node) {
+	for (; node; node = node->next_node) {
+		if (node->if_line) DialogueLines::apply_property(node->if_line, P_recurring);
+		if (node->if_choice) DialogueChoices::apply_property(node->if_choice, P_recurring);
+		if (node->child_node) DialogueBeats::make_fully_recurring_r(node->child_node);
+	}
+}					
 
 @ So what remains to be done? Only the parsing of |IF| and |UNLESS| clauses,
 which take arbitrary conditions. There's no need to do that here: we can do

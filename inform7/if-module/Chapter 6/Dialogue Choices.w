@@ -331,19 +331,18 @@ void DialogueChoices::parse_property(dialogue_choice *dc, parse_node *AL) {
 		DialogueChoices::parse_property(dc, AL->down);
 		DialogueChoices::parse_property(dc, AL->down->next);
 	} else if (Node::is(AL, UNPARSED_NOUN_NT)) {
-		inference_subject *subj = Instances::as_subject(dc->as_instance);
 		wording A = Node::get_text(AL);
 		if (<s-value-uncached>(A)) {
 			parse_node *val = <<rp>>;
 			if (Rvalues::is_CONSTANT_construction(val, CON_property)) {
 				property *prn = Rvalues::to_property(val);
 				if (Properties::is_either_or(prn)) {
-					@<Assert that the choice has this property@>;
+					DialogueChoices::apply_property(dc, prn);
 					return;
 				}
 			}
 			if ((Specifications::is_description(val)) || (Node::is(val, TEST_VALUE_NT))) {
-				@<Assert that the choice has this property value@>;
+				DialogueChoices::apply_property_value(dc, val);
 				return;
 			}
 			LOG("Unexpected prop: $T\n", val);
@@ -361,21 +360,25 @@ void DialogueChoices::parse_property(dialogue_choice *dc, parse_node *AL) {
 	}
 }
 
-@<Assert that the choice has this property@> =
+@ =
+void DialogueChoices::apply_property(dialogue_choice *dc, property *prn) {
+	inference_subject *subj = Instances::as_subject(dc->as_instance);
 	pcalc_prop *prop = AdjectivalPredicates::new_atom_on_x(
 		EitherOrProperties::as_adjective(prn), FALSE);
 	prop = Propositions::concatenate(
 		Propositions::Abstract::prop_to_set_kind(K_dialogue_choice), prop);
 	Assert::true_about(prop, subj, CERTAIN_CE);
+}
 
-@<Assert that the choice has this property value@> =
+void DialogueChoices::apply_property_value(dialogue_choice *dc, parse_node *val) {
+	inference_subject *subj = Instances::as_subject(dc->as_instance);
 	pcalc_prop *prop = Descriptions::to_proposition(val);
 	if (prop) {
 		prop = Propositions::concatenate(
 			Propositions::Abstract::prop_to_set_kind(K_dialogue_choice), prop);
 		Assert::true_about(prop, subj, CERTAIN_CE);
-		return;
 	}
+}
 
 @ So what remains to be done? Everything is done except for code to be compiled
 at runtime. See //runtime: Dialogue Choice Instances//.
