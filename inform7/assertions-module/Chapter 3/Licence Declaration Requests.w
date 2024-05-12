@@ -226,7 +226,6 @@ void LicenceDeclaration::set(int extension, int detail, text_stream *val, int wn
 
 =
 void LicenceDeclaration::check_licences(void) {
-	LOG("check_licences\n");
 	inform_project *proj = Task::project();
 	inbuild_licence *L;
 	L = proj->as_copy->licence;

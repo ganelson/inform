@@ -39,6 +39,8 @@ retrospective/*/ni
 retrospective/*/*.o
 retrospective/makefile
 
+inform7/Tests/Special Cases/Bug.txt
+inform7/Tests/Special Cases/Temp.txt
 inform7/Tests/Test Cases/temp.txt
 inform7/Tests/Test Cases/temp-G.txt
 inform7/Figures/*-diagnostics.txt

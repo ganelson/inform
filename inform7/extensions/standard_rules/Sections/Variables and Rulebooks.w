@@ -1290,17 +1290,24 @@ The spontaneous property is accessible to Inter as "spontaneous".
 The voluntary property is accessible to Inter as "voluntary".
 The recurring property is accessible to Inter as "recurring".
 
-To make (T - an object) a live conversational subject:
+To make (T - an object) a live conversational subject
+	(documented at ph_makelive):
 	(- DirectorAddLiveSubjectList({T}); -).
-To make (T - an object) a dead conversational subject:
+To make (T - an object) a dead conversational subject
+	(documented at ph_makedead):
 	(- DirectorRemoveLiveSubjectList({T}); -).
-To clear conversational subjects:
+To clear conversational subjects
+	(documented at ph_clearsubjects):
 	(- DirectorEmptyLiveSubjectList(); -).
-To decide what list of objects is the live conversational subject list:
+To decide what list of objects is the/-- live conversational subject list
+	(documented at ph_getlivelist):
 	(- DirectorLiveSubjectList({-new:list of objects}) -).
-To alter the/-- live conversational subject list to (L - list of objects):
+To alter the/-- live conversational subject list to (L - list of objects)
+	(documented at ph_setlivelist):
 	(- DirectorAlterLiveSubjectList({-by-reference:L}); -).
-To decide what list of objects is the list of speakers required by (B - dialogue beat):
+
+To decide what list of objects is the list of speakers required by (B - dialogue beat)
+	(documented at ph_listofspeakers):
 	(- DirectorBeatRequiredList({-new:list of objects}, {B}) -).
 To decide what dialogue line is the opening line of (B - dialogue beat):
 	(- DirectorBeatOpeningLine({B}) -).
@@ -1322,7 +1329,8 @@ To decide what number is the chosen dialogue number up to (N - number):
 To decide what number is the dialogue line performance count:
 	(- line_performance_count -).
 
-To perform (B - a dialogue beat):
+To perform (B - a dialogue beat)
+	(documented at ph_performbeat):
 	(- DirectorPerformBeat({B}); -).
 
 Topicality relates a dialogue beat (called B) to an object (called S) when about B matches S.
@@ -1339,15 +1347,20 @@ To decide if about (B - dialogue beat) matches (S - object):
 To decide if (S - object) can have (B - dialogue beat) performed:
 	(- (DirectorBeatAccessible({B}, {S})) -).
 
-To decide which object is the first speaker of (B - dialogue beat):
+To decide which object is the first speaker of (B - dialogue beat)
+	(documented at ph_firstspeaker):
 	(- (DirectorBeatFirstSpeaker({B})) -).
 
-To decide whether dialogue/dialog about (O - an object) intervenes:
+To decide whether dialogue/dialog about (O - an object) intervenes
+	(documented at ph_dialogueintervenes):
 	(- DirectorIntervenes({O}, nothing) -).
-To decide whether dialogue/dialog about (O - an object) led by (P - an object) intervenes:
+To decide whether dialogue/dialog about (O - an object) led by (P - an object) intervenes
+	(documented at ph_dialogueintervenesled):
 	(- DirectorIntervenes({O}, {P}) -).
 
-To showme the beat structure of (B - dialogue beat): (- DirectorDisassemble({B}); -).
+To showme the beat structure of (B - dialogue beat)
+	(documented at ph_showmebeat):
+	(- DirectorDisassemble({B}); -).
 
 Definition: A dialogue beat is available rather than unavailable if Inter routine
 	"DirectorBeatAvailable" says so (it meets all its after or before, if and unless conditions).
@@ -1382,13 +1395,16 @@ To abide by dialogue instead action choices:
 To abide by dialogue after action choices:
 	(- if (DirectorAfterAction()) rtrue; -).
 
-To decide what list of dialogue choices is the current choice list:
+To decide what list of dialogue choices is the current choice list
+	(documented at ph_dialoguechoices):
 	(- DirectorCurrentChoiceList() -).
 
-To make the dialogue/dialog director active:
+To make the dialogue/dialog director active
+	(documented at ph_directoractive):
 	(- DirectorActivate(); -).
 
-To make the dialogue/dialog director passive/inactive:
+To make the dialogue/dialog director passive/inactive
+	(documented at ph_directorpassive):
 	(- DirectorDeactivate(); -).
 
 The dialogue direction rule is listed in the turn sequence rulebook.
