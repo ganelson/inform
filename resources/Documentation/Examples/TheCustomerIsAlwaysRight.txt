@@ -1,0 +1,118 @@
+Example: ** The Customer Is Always Right
+Location: Flow markers
+RecipeLocation: Character emotion
+Index: Dialogue, with responses depending on emotional state
+Description: A character who changes her responses to dialogue gambits depending on her emotional state.
+
+When it's performing beats, the dialogue system will play the first line of dialogue it can, and it will continue performing lines until it reaches the end of the beat, a decision to take, or a flow marker using `->` or `<-`.
+
+That means that, if we like, we can pack in quite a bit of conditional logic about how a character responds to our input.
+
+In this example, we use that functionality to write a scene about asking a character for a job. We set the `help wanted beat` to `fully recurring` — meaning that the player can go through this beat multiple times. Then we set up the character's response so that she will first check whether she has already formed a positive or negative impression about us. If she has, she'll give a definite answer, ending the interaction. If she hasn't made up her mind, she'll instead put off answering the question, and the scene will continue.
+
+	{*}"The Customer Is Always Right"
+	
+	Chapter 1 - Setting and Character
+	
+	Section 1 - Basics
+	
+	Ye Olde Stationery Shoppe is a room. "A sign propped in the window reads 'Help wanted', which is why you are here. The inside of the Shoppe does not really speak of active trade: dusty piles of carbon paper, manual cash register, ink ribbons for a type of printer not sold since 1982. But perhaps they take the Olde seriously."
+	
+	Cratchett is a woman in Ye Olde Stationery Shoppe. "At the back of the Shoppe is a woman in a polyester apron and a name badge that just reads 'Cratchett'."
+	
+	Some piles of carbon paper, a manual cash register, and some ink ribbons are scenery in the Shoppe.
+	
+	The description of the dusty piles is "Handy if you need to write something in triplicate on a typewriter. You do not own a typewriter."
+	
+	The description of the cash register is "It goes 'ping!' every time someone opens the cash drawer."
+	
+	The description of the ink ribbons is "Quaint relics of the dot matrix era."
+	
+	Report someone rubbing something:
+		say "[The actor] runs a dustcloth over the surface of [the noun]. This has clearly not happened in quite some time." instead.
+	
+	Section 2 - Emotions
+	
+	An emotion is a kind of value. The emotions are annoyed, pleased, and calm. A person has an emotion. A person is usually calm.
+	
+	A person has some text called the emotional rationalisation.
+	
+	Chapter 2 - Dialogue
+	
+	Section 1 - Concepts
+	
+	Employment is a concept. Understand "work" or "job" or "help" or "help wanted" or "sign" as employment. The printed name of employment is "employment".
+	
+	A concept can be used or unused. A concept is usually unused.
+	
+	Carry out talking about a concept:
+		now the noun is used.
+	
+	Test me with "talk about employment / yes / yes / talk about employment".
+	
+	Section 2 - Flow
+	
+	Every turn when the help wanted beat is performed:
+		make the dialogue director active.
+	
+	Section 3 - Queries and answers (dialogue)
+	
+	(About employment. Fully recurring. This is the help wanted beat.)
+	
+	Player: "[one of]'Say, are you hiring?' you ask, as casually as you can manage.[or]'So about the job,' you try again.[or]You bring the conversation laboriously back around to the question of whether there's any work available for you.[stopping]"
+	
+	Cratchett (if Cratchett is pleased): "'[emotional rationalisation of Cratchett] So we'll see how it goes. Three months probation,' she adds."
+	
+		-> end the story finally saying "Success, after a fashion"
+	
+	Cratchett (if Cratchett is annoyed): "'I'm not hiring you,' she snaps. '[emotional rationalisation of Cratchett]'"
+	
+		-> end the story saying "No great loss, if the hourly rates around here are also from 1982"
+	
+	Cratchett: "[one of]'Hm,' she says. 'Let's talk a bit more and then I'll decide.'[or]'I don't know yet,' she says.[or]'I'm not done with this interview,' she remarks.[or]She indicates she still hasn't learned everything she wants to know about you.[stopping]"
+	
+	
+	(About employment.)
+	
+	Cratchett (after rubbing a random scenery thing): "'Have you done much retail work before?' she asks."
+	
+		-- instead of saying yes
+			
+			Player: "'As a matter of fact, I have. My résumé does mention–'"
+		
+			Cratchett: "'Probably some low-traffic luxury boutique,' she grumbles, though you didn't specify."
+	
+		-- instead of saying no
+		
+			Player: "'No, this is an exciting new growth opportunity for me,' you say gamely."
+	
+		-- otherwise
+		
+			Player (without speaking): "Your lack of response tips off Cratchett that you are a stranger to the retail arts."
+	
+	Cratchett (after examining the player): "'It's not easy, making sure the customer always gets what they want. Or that they always think they're getting what they want. 
+	
+	'That's what we strive for here. The customer thinks we think they're always right. Even when they're not right and we don't think they're right and we're not actually giving them what they want. I trust that's clear.'"
+	
+		-- instead of saying yes
+			
+			Player: "'Crystal,' you say."
+			
+			Cratchett (without speaking; now Cratchett is pleased; now the emotional rationalisation of Cratchett is "You're not entirely stupid."): "Her expression says she was hoping that was too difficult a concept for you to follow, but she feels some grudging respect."
+		
+		-- instead of saying no
+			
+			Player: "'...not really,' you admit."
+			
+			-> perform the disappointed Cratchett beat
+		
+		-- otherwise
+		
+			Player (without speaking): "You don't commit yourself either way on whether Cratchett is clear."
+			
+			-> perform the disappointed Cratchett beat
+			
+		
+	(This is the disappointed Cratchett beat.)
+	
+	Cratchett (now Cratchett is annoyed; now the emotional rationalisation of Cratchett is "You can't follow a simple explanation, and what am I supposed to do with someone like that?"): "'Run over it a few times in your head,' she says. 'Maybe you'll get there in the end.'"
