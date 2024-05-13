@@ -5748,7 +5748,7 @@ The effect here is that we'd see
 
 Consider this beat:
 
-	(about the Zeppelin)
+	(About the Zeppelin.)
 	
 	Hans: "See our prodigious rate of climb, Ludwig!"
 	
@@ -5762,7 +5762,7 @@ Because of that, each beat has a list of _required speakers_. If the source text
 
 But if that is not what the author wants, the cue can be more explicit:
 
-	(about the Zeppelin; requiring Hans)
+	(About the Zeppelin; requiring Hans.)
 	
 	Hans: "What a prodigious rate of climb!"
 	
@@ -5872,7 +5872,7 @@ The list of live conversational subjects is best thought of as pretty ephemeral,
 
 - A subject becomes live whenever a line of dialogue `mentioning` it is performed. For example, if Bernardo says this line:
 
-      Bernardo (mentioning Denmark): This bodes some strange eruption to our state.
+      Bernardo (mentioning Denmark): "This bodes some strange eruption to our state."
 
   then `Denmark` becomes a live conversational subject.
 

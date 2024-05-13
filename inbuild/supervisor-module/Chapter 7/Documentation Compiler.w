@@ -888,7 +888,8 @@ void DocumentationCompiler::place_example_heading_items(compiled_documentation *
 				}
 			} else {
 				if (md->next) md = md->next;
-				while ((md) && (md->next) && (md->next->type != HEADING_MIT)) md = md->next;
+				while ((md) && (DocumentationCompiler::skippable_item(md->next, eg)))
+					md = md->next;
 				eg_header->next = md->next; md->next = eg_header;
 			}
 			
@@ -898,7 +899,8 @@ void DocumentationCompiler::place_example_heading_items(compiled_documentation *
 				eg_header->user_state = STORE_POINTER_IFM_example(eg);
 				markdown_item *md = stc->secondary_placement;
 				if (md->next) md = md->next;
-				while ((md) && (md->next) && (md->next->type != HEADING_MIT)) md = md->next;
+				while ((md) && (DocumentationCompiler::skippable_item(md->next, eg)))
+					md = md->next;
 				eg_header->next = md->next; md->next = eg_header;
 			}
 
@@ -907,6 +909,21 @@ void DocumentationCompiler::place_example_heading_items(compiled_documentation *
 				Markdown::add_to(E, cd->markdown_content);
 		}
 	}
+}
+
+int DocumentationCompiler::skippable_item(markdown_item *md, IFM_example *by) {
+	if (md == NULL) return FALSE;
+	if (md->type == HEADING_MIT) {
+		if (Markdown::get_heading_level(md) == 1) return FALSE;
+		if (Markdown::get_heading_level(md) == 2) return FALSE;
+	}
+	if (md->type == INFORM_EXAMPLE_HEADING_MIT) {
+		IFM_example *already = RETRIEVE_POINTER_IFM_example(md->user_state);
+		if (already->star_count > by->star_count) return FALSE;
+		if (already->star_count < by->star_count) return TRUE;
+		if (Str::cmp(already->name, by->name) > 0) return FALSE;
+	}
+	return TRUE;
 }
 
 @ And lastly, we can number the examples. This is done as a third stage of

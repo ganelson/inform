@@ -9,3 +9,32 @@ String Literal: "\""
 # a spurious comment betraying Inweb's involvement in the process -
 
 Suppress Disclaimer: true
+
+colouring {
+	runs of unquoted {
+		matches of /\aSection .*?\z/ {
+			=> !heading
+		}
+		matches of /\aChapter .*?\z/ {
+			=> !heading
+		}
+		matches of /\aVolume .*?\z/ {
+			=> !heading
+		}
+		matches of /\aBook .*?\z/ {
+			=> !heading
+		}
+		matches of /\aPart .*?\z/ {
+			=> !heading
+		}
+		matches of /\a\s*->.*?\z/ {
+			=> !function
+		}
+		matches of /\a\s*<-.*?\z/ {
+			=> !function
+		}
+		matches of /\a\(.*?\.\) *\z/ {
+			=> !function
+		}
+	}
+}
