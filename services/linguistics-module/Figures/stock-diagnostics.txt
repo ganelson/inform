@@ -1,12 +1,12 @@
 adjective: 142 items
 article: 2 items
-noun: 2413 items
+noun: 2414 items
 pronoun: 8 items
 preposition: 274 items
 determiner: 22 items
 verb: 109 items
 verb_form: 388 items
-total in all categories: 3358
+total in all categories: 3359
 
 adjective: 'even'
 adjective: 'odd'
@@ -1061,6 +1061,7 @@ noun: proper: 'darkness name internal rule'
 noun: proper: 'parser command internal rule'
 noun: proper: 'parser clarification internal rule'
 noun: proper: 'yes or no question internal rule'
+noun: proper: 'pick a number internal rule'
 noun: proper: 'print protagonist internal rule'
 noun: proper: 'issuing the response text'
 noun: proper: 'issuing the response text activity'

@@ -121,6 +121,7 @@ USAGE: ph_hasended 0 0 0
 USAGE: ph_hasnotended 0 0 0
 USAGE: ph_directoractive 0 0 0
 USAGE: ph_directorpassive 0 0 0
+USAGE: ph_dialoguethisturn 0 0 0
 USAGE: ph_performbeat 0 0 0
 USAGE: ph_dialogueintervenes 0 0 0
 USAGE: ph_dialogueintervenesled 0 0 0
@@ -201,6 +202,7 @@ USAGE: phs_inunsigneddecimal 0 0 0
 USAGE: phs_inbase 0 0 0
 USAGE: phs_inbaseindigits 0 0 0
 USAGE: phs_inunsigneddecimaldigits 0 0 0
+USAGE: ph_numberchosen 0 0 0
 USAGE: ph_nearestwholenumber 0 0 0
 USAGE: phs_realplaces 0 0 0
 USAGE: phs_decimal 0 0 0

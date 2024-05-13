@@ -5850,7 +5850,13 @@ All of the ways dialogue can begin in passive mode are still true for active mod
 
 To do this, the director tracks a list of "live conversational subjects" which it might be interesting to talk about. The idea is that if somebody has just mentioned visiting Barcelona, then Barcelona might become a live subject. If conversation then lapses, the director will try to keep it going by finding something which somebody present can say about Barcelona.
 
-A lull in conversation is a turn in which no other dialogue has been performed, and the business of filling this dead air is carried out by the `dialogue direction rule` in the `turn sequence rulebook`. What happens is that the director looks for a suitable beat to perform, where "suitable" means that:
+A lull in conversation is a turn in which no other dialogue has been performed. It's sometimes useful to know whether or not that's the case, so a simple phrase is provided:
+
+> phrase: {ph_dialoguethisturn} if dialogue has been performed this turn:
+>
+> This means exactly as it reads.
+
+The business of filling this dead air is then carried out by the `dialogue direction rule` in the `turn sequence rulebook`. What happens is that the director looks for a suitable beat to perform, where "suitable" means that:
 
 - the beat either has not been performed before or has the `recurring` property, _and_
 
@@ -6148,7 +6154,7 @@ Or one might, for example, create a `discrediting` relation from concepts to peo
 
 	(About any concept which discredits Gordon.)
 	
-	Douglas (to Carolyn): And you say the marriage wasn't a success?
+	Douglas (to Carolyn): "And you say the marriage wasn't a success?"
 
 Vague descriptions like this will match the current live subject list, for purposes of choosing relevant beats, but will not add to the live list when the beat is performed. For example:
 
@@ -6735,7 +6741,7 @@ same beat, or (if there hasn't been a decision) to the start of the beat.
 As with control mechanisms in all programming languages, that makes it
 possible to get into endless loops:
 
-	(This is the ill-advised beat; fully recurring)
+	(This is the ill-advised beat; fully recurring.)
 	
 	Fatboy Slim: "Right about now, the funk soul brother."
 	
@@ -6888,12 +6894,16 @@ Because of that, Inform routes this business through an _activity_. See the chap
 
 	For offering a list of dialogue choices (called L)
 		(this is the default offering dialogue choices rule):
-		let N be 1;
+		let N be 0;
 		repeat with C running through L:
+			increase N by 1;
 			say "([N]) [textual content of C][line break]";
-			increase N by 1.
+		say conditional paragraph break;
+		let M be a number chosen by the player from 1 to N;
+		set the dialogue selection value to M;
+		say "[bold type][textual content of entry M of L][roman type][paragraph break]".
 
-which produces a simple numbered list.
+This produces a simple numbered list, then asks the player to type one of those numbers (insisting and asking again if they type something else), and then prints back the chosen option in bold face.
 
 # Phrases
 
@@ -10114,6 +10124,12 @@ Lastly, for completeness, we also provide:
 > phrase: {phs_inunsigneddecimaldigits} say "[(number) in (number) unsigned decimal digit/digits]"
 >
 > This text substitution writes out the number in unsigned decimal, in such a way that numbers normally considered decimal appear large, padding with initial zeros to ensure that the result is at least the given number of digits in length.
+
+One more phrase about `number` values is occasionally handy:
+
+> phrase: {ph_numberchosen} a/-- number chosen by the player from 1 to (number) ... number
+>
+> This prints an `>` prompt and then waits for the player to type a number (and press RETURN), and keeps asking until the player enters something in the range allowed. If the maximum value supplied is negative or zero, the phrase does not ask for player input, and simply returns 1.
 
 To reiterate, though: all these different notations for typing in, and for saying back, whole numbers are all to do with a single kind, `number`. Unlike some programming languages, Inform has no kind for "unsigned integer", nor for "integer which should always be written in binary".
 
@@ -14164,12 +14180,16 @@ See [Managing dialogue lines] for more.
 
 **2. The default behaviour.** Performance is carried out by the `default offering dialogue choices rule`, which reads like so:
 
-	For offering a list of dialogue choices (called L)
+	Last for offering a list of dialogue choices (called L)
 		(this is the default offering dialogue choices rule):
-		let N be 1;
+		let N be 0;
 		repeat with C running through L:
+			increase N by 1;
 			say "([N]) [textual content of C][line break]";
-			increase N by 1.
+		say conditional paragraph break;
+		let M be a number chosen by the player from 1 to N;
+		set the dialogue selection value to M;
+		say "[bold type][textual content of entry M of L][roman type][paragraph break]".
 
 **3. Examples.** (a) We could reformat this as a sentence rather than an itemised list like so:
 
@@ -14181,6 +14201,10 @@ See [Managing dialogue lines] for more.
 			say "([N]) [textual content of C]";
 			increase N by 1;
 		say ".[line break]";
+		say conditional paragraph break;
+		let M be a number chosen by the player from 1 to N;
+		set the dialogue selection value to M;
+		say "[bold type][textual content of entry M of L][roman type][paragraph break]".
 
 See [Managing dialogue choices] for more.
 

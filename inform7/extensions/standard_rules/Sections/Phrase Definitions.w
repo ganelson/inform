@@ -640,6 +640,10 @@ To decide whether player consents
 	(documented at ph_consents):
 		(- YesOrNo() -).
 
+To decide what number is a/-- number chosen by the player from 1 to (N - number)
+	(documented at ph_numberchosen):
+		(- NumberChosenByPlayer({N}) -).
+
 @ Support for snippets, which are substrings of the player's command. This
 is a kind of value which doesn't exist in Basic Inform.
 

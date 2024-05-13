@@ -28,8 +28,8 @@ ROOT_NT
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
             UNPARSED_NOUN_NT'asking for information'
             UNPARSED_NOUN_NT'out of world'
-        IMPERATIVE_NT'carry out asking for information' {unit: 3} {imperative definition: 840}
-        IMPERATIVE_NT'when play begins' {unit: 3} {imperative definition: 841}
+        IMPERATIVE_NT'carry out asking for information' {unit: 3} {imperative definition: 841}
+        IMPERATIVE_NT'when play begins' {unit: 3} {imperative definition: 842}
         HEADING_NT'section 1 - errands' {heading 5} {under: H5'section 1 - errands'} {unit: 3}
             SENTENCE_NT'the current actor is a person which varies' {unit: 3} {classified}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
@@ -39,8 +39,8 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'current owner' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: NONLOCAL_VARIABLE_NT'current owner' {nonlocal: 'current owner'(var)person}} {created here}
                 COMMON_NOUN_NT'person which varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: << kind=people variable-pointer(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 842}
             IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 843}
+            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 844}
             SENTENCE_NT'a person can be active or passive' {unit: 3} {classified}
                 VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}
                 COMMON_NOUN_NT'a person' {refined} {refers: infs'person'} {creation: << kind=person(x) >>} {eval: TEST_VALUE_NT}
@@ -56,34 +56,34 @@ ROOT_NT
                 VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}
                 PROPER_NOUN_NT'character movement rules' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT {kind: rulebook} {rulebook: character movement}} {created here}
                 COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values based rulebook producing values'-k} {creation: << kind=rulebook(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'the first character movement rule' {unit: 3} {imperative definition: 844}
-            IMPERATIVE_NT'a character movement rule' {unit: 3} {imperative definition: 845}
+            IMPERATIVE_NT'the first character movement rule' {unit: 3} {imperative definition: 845}
             IMPERATIVE_NT'a character movement rule' {unit: 3} {imperative definition: 846}
-            IMPERATIVE_NT'to decide whether movement has not yet occurred' {unit: 3} {imperative definition: 847}
-            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 848}
+            IMPERATIVE_NT'a character movement rule' {unit: 3} {imperative definition: 847}
+            IMPERATIVE_NT'to decide whether movement has not yet occurred' {unit: 3} {imperative definition: 848}
             IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 849}
+            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 850}
             SENTENCE_NT'the shopowner rules is a rulebook' {unit: 3} {classified} {clears pronouns}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shopowner rules' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT {kind: rulebook} {rulebook: shopowner}} {created here}
                 COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values based rulebook producing values'-k} {creation: << kind=rulebook(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'a shopowner rule' {unit: 3} {imperative definition: 850}
-            IMPERATIVE_NT'report someone closing a door when the person asked owns the' {unit: 3} {imperative definition: 851}
-            IMPERATIVE_NT'report vanessa closing the metal door when the metal door is' {unit: 3} {imperative definition: 852}
-            IMPERATIVE_NT'a shopowner rule' {unit: 3} {imperative definition: 853}
+            IMPERATIVE_NT'a shopowner rule' {unit: 3} {imperative definition: 851}
+            IMPERATIVE_NT'report someone closing a door when the person asked owns the' {unit: 3} {imperative definition: 852}
+            IMPERATIVE_NT'report vanessa closing the metal door when the metal door is' {unit: 3} {imperative definition: 853}
+            IMPERATIVE_NT'a shopowner rule' {unit: 3} {imperative definition: 854}
             SENTENCE_NT'filing is an action applying to one thing' {unit: 3} {classified}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'filing'
                 UNPARSED_NOUN_NT'applying to one thing'
-            IMPERATIVE_NT'before someone filing something which is not carried by the ' {unit: 3} {imperative definition: 854}
-            IMPERATIVE_NT'carry out someone filing' {unit: 3} {imperative definition: 855}
-            IMPERATIVE_NT'report someone filing' {unit: 3} {imperative definition: 856}
+            IMPERATIVE_NT'before someone filing something which is not carried by the ' {unit: 3} {imperative definition: 855}
+            IMPERATIVE_NT'carry out someone filing' {unit: 3} {imperative definition: 856}
+            IMPERATIVE_NT'report someone filing' {unit: 3} {imperative definition: 857}
             SENTENCE_NT'the shopper rules is a rulebook' {unit: 3} {classified} {clears pronouns}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shopper rules' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT {kind: rulebook} {rulebook: shopper}} {created here}
                 COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values based rulebook producing values'-k} {creation: << kind=rulebook(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'a shopper rule' {unit: 3} {imperative definition: 857}
             IMPERATIVE_NT'a shopper rule' {unit: 3} {imperative definition: 858}
-            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 859}
+            IMPERATIVE_NT'a shopper rule' {unit: 3} {imperative definition: 859}
+            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 860}
             DEFN_CONT_NT'a room is air-conditioned' {unit: 3}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
@@ -141,8 +141,8 @@ ROOT_NT
                 COMMON_NOUN_NT'artwork' {indefinite 'an' n/m/f nom/acc s} {refined} {creation: << kind=artwork(x) >>} {refers: infs'artwork'} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of thing' {refined} {refers: infs'thing'}
                     COMMON_NOUN_NT'thing' {refined} {refers: infs'thing'} {creation: << kind=thing(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before printing the name of an artwork' {unit: 3} {imperative definition: 860}
-            IMPERATIVE_NT'after printing the name of an artwork' {unit: 3} {imperative definition: 861}
+            IMPERATIVE_NT'before printing the name of an artwork' {unit: 3} {imperative definition: 861}
+            IMPERATIVE_NT'after printing the name of an artwork' {unit: 3} {imperative definition: 862}
             SENTENCE_NT'an artwork can be submitted or reserved' {unit: 3} {classified}
                 VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}
                 COMMON_NOUN_NT'an artwork' {refined} {refers: infs'artwork'} {creation: << kind=artwork(x) >>} {eval: TEST_VALUE_NT}
@@ -155,49 +155,49 @@ ROOT_NT
                 COMMON_NOUN_NT'book' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: << kind=book(x) >>} {refers: infs'book'} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of artwork' {refined} {refers: infs'artwork'}
                     COMMON_NOUN_NT'artwork' {refined} {refers: infs'artwork'} {creation: << kind=artwork(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before someone resolving a book when the person asked is not' {unit: 3} {imperative definition: 862}
-            IMPERATIVE_NT'carry out someone resolving a book' {unit: 3} {imperative definition: 863}
-            IMPERATIVE_NT'report someone resolving a book' {unit: 3} {imperative definition: 864}
-            IMPERATIVE_NT'before listing contents' {unit: 3} {imperative definition: 865}
-            IMPERATIVE_NT'before grouping together books' {unit: 3} {imperative definition: 866}
+            IMPERATIVE_NT'before someone resolving a book when the person asked is not' {unit: 3} {imperative definition: 863}
+            IMPERATIVE_NT'carry out someone resolving a book' {unit: 3} {imperative definition: 864}
+            IMPERATIVE_NT'report someone resolving a book' {unit: 3} {imperative definition: 865}
+            IMPERATIVE_NT'before listing contents' {unit: 3} {imperative definition: 866}
+            IMPERATIVE_NT'before grouping together books' {unit: 3} {imperative definition: 867}
             SENTENCE_NT'a stamped envelope is a kind of thing' {unit: 3} {classified} {interpretation of subject: infs'book'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'stamped envelope' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: << kind=stamped envelope(x) >>} {refers: infs'stamped envelope'} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of thing' {refined} {refers: infs'thing'}
                     COMMON_NOUN_NT'thing' {refined} {refers: infs'thing'} {creation: << kind=thing(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before someone resolving a stamped envelope when the person ' {unit: 3} {imperative definition: 867}
-            IMPERATIVE_NT'carry out someone resolving a stamped envelope' {unit: 3} {imperative definition: 868}
-            IMPERATIVE_NT'report someone resolving a stamped envelope' {unit: 3} {imperative definition: 869}
-            IMPERATIVE_NT'instead of someone resolving a stamped envelope when the per' {unit: 3} {imperative definition: 870}
+            IMPERATIVE_NT'before someone resolving a stamped envelope when the person ' {unit: 3} {imperative definition: 868}
+            IMPERATIVE_NT'carry out someone resolving a stamped envelope' {unit: 3} {imperative definition: 869}
+            IMPERATIVE_NT'report someone resolving a stamped envelope' {unit: 3} {imperative definition: 870}
+            IMPERATIVE_NT'instead of someone resolving a stamped envelope when the per' {unit: 3} {imperative definition: 871}
             SENTENCE_NT'a dvd is a kind of artwork' {unit: 3} {classified} {interpretation of subject: infs'stamped envelope'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'dvd' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: << kind=dvd(x) >>} {refers: infs'dvd'} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of artwork' {refined} {refers: infs'artwork'}
                     COMMON_NOUN_NT'artwork' {refined} {refers: infs'artwork'} {creation: << kind=artwork(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before someone resolving a dvd when the person asked is not ' {unit: 3} {imperative definition: 871}
-            IMPERATIVE_NT'carry out someone resolving a dvd' {unit: 3} {imperative definition: 872}
-            IMPERATIVE_NT'report someone resolving a dvd' {unit: 3} {imperative definition: 873}
-            IMPERATIVE_NT'instead of someone resolving a dvd when the person asked car' {unit: 3} {imperative definition: 874}
-            IMPERATIVE_NT'before listing contents' {unit: 3} {imperative definition: 875}
-            IMPERATIVE_NT'before grouping together dvds' {unit: 3} {imperative definition: 876}
+            IMPERATIVE_NT'before someone resolving a dvd when the person asked is not ' {unit: 3} {imperative definition: 872}
+            IMPERATIVE_NT'carry out someone resolving a dvd' {unit: 3} {imperative definition: 873}
+            IMPERATIVE_NT'report someone resolving a dvd' {unit: 3} {imperative definition: 874}
+            IMPERATIVE_NT'instead of someone resolving a dvd when the person asked car' {unit: 3} {imperative definition: 875}
+            IMPERATIVE_NT'before listing contents' {unit: 3} {imperative definition: 876}
+            IMPERATIVE_NT'before grouping together dvds' {unit: 3} {imperative definition: 877}
             SENTENCE_NT'approaching is an action applying to one thing' {unit: 3} {classified}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'approaching'
                 UNPARSED_NOUN_NT'applying to one thing'
-            IMPERATIVE_NT'carry out someone approaching' {unit: 3} {imperative definition: 877}
+            IMPERATIVE_NT'carry out someone approaching' {unit: 3} {imperative definition: 878}
             SENTENCE_NT'a coupon is a kind of thing' {unit: 3} {classified} {interpretation of subject: infs'dvd'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'coupon' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: << kind=coupon(x) >>} {refers: infs'coupon'} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of thing' {refined} {refers: infs'thing'}
                     COMMON_NOUN_NT'thing' {refined} {refers: infs'thing'} {creation: << kind=thing(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'carry out someone resolving a coupon' {unit: 3} {imperative definition: 878}
+            IMPERATIVE_NT'carry out someone resolving a coupon' {unit: 3} {imperative definition: 879}
             SENTENCE_NT'the block giving rule is not listed in any rulebook' {unit: 3} {classified}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {rule placement sense: negative} {special meaning: rule-listed-in}
                 UNPARSED_NOUN_NT'the block giving rule'
                 UNPARSED_NOUN_NT'in any rulebook'
-            IMPERATIVE_NT'check giving something to someone ( this is the block player' {unit: 3} {imperative definition: 879}
-            IMPERATIVE_NT'before someone resolving a coupon when the person asked is n' {unit: 3} {imperative definition: 880}
-            IMPERATIVE_NT'after someone giving a coupon to vanessa' {unit: 3} {imperative definition: 881}
+            IMPERATIVE_NT'check giving something to someone ( this is the block player' {unit: 3} {imperative definition: 880}
+            IMPERATIVE_NT'before someone resolving a coupon when the person asked is n' {unit: 3} {imperative definition: 881}
+            IMPERATIVE_NT'after someone giving a coupon to vanessa' {unit: 3} {imperative definition: 882}
             SENTENCE_NT'infection color is a kind of value' {unit: 3} {classified} {interpretation of subject: infs'coupon'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'infection color' {refined} {creation: << kind=infection color(x) >>} {refers: infs'object'-k} {eval: TEST_VALUE_NT} {created here}
@@ -257,7 +257,7 @@ ROOT_NT
                                                                                                                 AND_NT',' {refined}
                                                                                                                     PROPER_NOUN_NT'saffron silk' {refined} {refers: infs'saffron silk'} {eval: CONSTANT_NT'saffron silk' {kind: infection color} {instance: I81'saffron silk'[infection color]} {enumeration: 25}} {created here}
                                                                                                                     PROPER_NOUN_NT'cookie dough cream' {refined} {refers: infs'cookie dough cream'} {eval: CONSTANT_NT'cookie dough cream' {kind: infection color} {instance: I82'cookie dough cream'[infection color]} {enumeration: 26}} {created here}
-            IMPERATIVE_NT'to say list of flavors' {unit: 3} {imperative definition: 882}
+            IMPERATIVE_NT'to say list of flavors' {unit: 3} {imperative definition: 883}
             SENTENCE_NT'understand "ask vanessa for [flavored ice cream]" as buying ' {unit: 3} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"ask vanessa for [flavored ice cream]"'
@@ -270,8 +270,8 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'buying the flavor'
                 UNPARSED_NOUN_NT'applying to one infection color'
-            IMPERATIVE_NT'check buying the flavor' {unit: 3} {imperative definition: 883}
-            IMPERATIVE_NT'carry out buying the flavor' {unit: 3} {imperative definition: 884}
+            IMPERATIVE_NT'check buying the flavor' {unit: 3} {imperative definition: 884}
+            IMPERATIVE_NT'carry out buying the flavor' {unit: 3} {imperative definition: 885}
             SENTENCE_NT'understand "ice cream" or "cream" or "ice" or "sherbet" or "' {unit: 3} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"ice cream" or "cream" or "ice" or "sherbet" or "sorbet"'
@@ -305,12 +305,12 @@ ROOT_NT
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'the infection color property'
                 UNPARSED_NOUN_NT'referring to an ice cream cone'
-            IMPERATIVE_NT'carry out someone resolving an ice cream cone' {unit: 3} {imperative definition: 885}
-            IMPERATIVE_NT'instead of someone eating a fresh ice cream cone' {unit: 3} {imperative definition: 886}
-            IMPERATIVE_NT'report someone eating an ice cream cone' {unit: 3} {imperative definition: 887}
-            IMPERATIVE_NT'before printing the name of an ice cream cone' {unit: 3} {imperative definition: 888}
+            IMPERATIVE_NT'carry out someone resolving an ice cream cone' {unit: 3} {imperative definition: 886}
+            IMPERATIVE_NT'instead of someone eating a fresh ice cream cone' {unit: 3} {imperative definition: 887}
+            IMPERATIVE_NT'report someone eating an ice cream cone' {unit: 3} {imperative definition: 888}
+            IMPERATIVE_NT'before printing the name of an ice cream cone' {unit: 3} {imperative definition: 889}
         HEADING_NT'section 2 - infection rules' {heading 5} {under: H5'section 2 - infection rules'} {unit: 3}
-            IMPERATIVE_NT'this is the infection rule' {unit: 3} {imperative definition: 889}
+            IMPERATIVE_NT'this is the infection rule' {unit: 3} {imperative definition: 890}
             SENTENCE_NT'a person can be infected or clean' {unit: 3} {classified}
                 VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}
                 COMMON_NOUN_NT'a person' {refined} {refers: infs'person'} {creation: << kind=person(x) >>} {eval: TEST_VALUE_NT}
@@ -323,11 +323,11 @@ ROOT_NT
                 COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'person'} {creation: << kind=person(x) >>} {eval: TEST_VALUE_NT}
                 ALLOWED_NT'has' {refined}
                     UNPARSED_NOUN_NT'infection color' {indefinite 'an' n/m/f nom/acc s} {refined}
-            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 890}
-            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 891}
+            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 891}
             IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 892}
-            IMPERATIVE_NT'when play begins' {unit: 3} {imperative definition: 893}
-            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 894}
+            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 893}
+            IMPERATIVE_NT'when play begins' {unit: 3} {imperative definition: 894}
+            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 895}
             SENTENCE_NT'understand "sneeze on [something]" as sneezing on' {unit: 3} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"sneeze on [something]"'
@@ -336,11 +336,11 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'sneezing on'
                 UNPARSED_NOUN_NT'applying to one thing'
-            IMPERATIVE_NT'check sneezing on' {unit: 3} {imperative definition: 895}
-            IMPERATIVE_NT'carry out sneezing on' {unit: 3} {imperative definition: 896}
-            IMPERATIVE_NT'carry out someone sneezing on' {unit: 3} {imperative definition: 897}
-            IMPERATIVE_NT'report sneezing on' {unit: 3} {imperative definition: 898}
-            IMPERATIVE_NT'report someone sneezing on' {unit: 3} {imperative definition: 899}
+            IMPERATIVE_NT'check sneezing on' {unit: 3} {imperative definition: 896}
+            IMPERATIVE_NT'carry out sneezing on' {unit: 3} {imperative definition: 897}
+            IMPERATIVE_NT'carry out someone sneezing on' {unit: 3} {imperative definition: 898}
+            IMPERATIVE_NT'report sneezing on' {unit: 3} {imperative definition: 899}
+            IMPERATIVE_NT'report someone sneezing on' {unit: 3} {imperative definition: 900}
             SENTENCE_NT'understand "inject [someone] with [something]" as injecting ' {unit: 3} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"inject [someone] with [something]"'
@@ -361,10 +361,10 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'injecting it with'
                 UNPARSED_NOUN_NT'applying to two things'
-            IMPERATIVE_NT'check injecting it with' {unit: 3} {imperative definition: 900}
-            IMPERATIVE_NT'carry out injecting it with' {unit: 3} {imperative definition: 901}
-            IMPERATIVE_NT'after injecting the player with something' {unit: 3} {imperative definition: 902}
-            IMPERATIVE_NT'report injecting it with' {unit: 3} {imperative definition: 903}
+            IMPERATIVE_NT'check injecting it with' {unit: 3} {imperative definition: 901}
+            IMPERATIVE_NT'carry out injecting it with' {unit: 3} {imperative definition: 902}
+            IMPERATIVE_NT'after injecting the player with something' {unit: 3} {imperative definition: 903}
+            IMPERATIVE_NT'report injecting it with' {unit: 3} {imperative definition: 904}
         HEADING_NT'section 3 - geography' {heading 5} {under: H5'section 3 - geography'} {unit: 3}
             INCLUSION_NT'include locksmith by emily short' {unit: 3}
                 HEADING_NT'version 14 of locksmith by emily short begins here' {heading 0} {under: H0'version 14 of locksmith by emily short begins here'} {includes: Locksmith by Emily Short v14 } {unit: 3}
@@ -389,9 +389,9 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'going toward'
                 UNPARSED_NOUN_NT'applying to one thing'
-            IMPERATIVE_NT'check going toward' {unit: 3} {imperative definition: 941}
-            IMPERATIVE_NT'carry out going toward' {unit: 3} {imperative definition: 942}
-            IMPERATIVE_NT'instead of waiting when the destination of the player is not' {unit: 3} {imperative definition: 943}
+            IMPERATIVE_NT'check going toward' {unit: 3} {imperative definition: 942}
+            IMPERATIVE_NT'carry out going toward' {unit: 3} {imperative definition: 943}
+            IMPERATIVE_NT'instead of waiting when the destination of the player is not' {unit: 3} {imperative definition: 944}
             SENTENCE_NT'understand "stop" or "cease" as stopping' {unit: 3} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"stop" or "cease"'
@@ -400,11 +400,11 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'stopping'
                 UNPARSED_NOUN_NT'applying to nothing'
-            IMPERATIVE_NT'carry out stopping' {unit: 3} {imperative definition: 944}
-            IMPERATIVE_NT'report stopping' {unit: 3} {imperative definition: 945}
-            IMPERATIVE_NT'after going to an air-conditioned room' {unit: 3} {imperative definition: 946}
-            IMPERATIVE_NT'after going from an air-conditioned room' {unit: 3} {imperative definition: 947}
-            IMPERATIVE_NT'instead of listening to an air-conditioned room' {unit: 3} {imperative definition: 948}
+            IMPERATIVE_NT'carry out stopping' {unit: 3} {imperative definition: 945}
+            IMPERATIVE_NT'report stopping' {unit: 3} {imperative definition: 946}
+            IMPERATIVE_NT'after going to an air-conditioned room' {unit: 3} {imperative definition: 947}
+            IMPERATIVE_NT'after going from an air-conditioned room' {unit: 3} {imperative definition: 948}
+            IMPERATIVE_NT'instead of listening to an air-conditioned room' {unit: 3} {imperative definition: 949}
             SENTENCE_NT'the alfred cralle pool hall is a room' {unit: 3} {classified} {interpretation of subject: infs'person'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'alfred cralle pool hall' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'alfred cralle pool hall'} {eval: CONSTANT_NT'alfred cralle pool hall' {kind: object} {instance: I83'alfred cralle pool hall'} {enumeration: 0}} {created here}
@@ -446,7 +446,7 @@ ROOT_NT
                     PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'felt door'} {eval: CONSTANT_NT'felt door' {kind: door} {instance: I85'felt door'} {enumeration: 0}}
                     PROPER_NOUN_NT'description' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'description'=text}}
                 PROPER_NOUN_NT'"It has a prominent lock, designed for an old-fashioned key.' {refined} {eval: CONSTANT_NT'"It has a prominent lock, designed for an old-fashioned key.' {kind: text}}
-            IMPERATIVE_NT'after locking a door with something in the presence of an ot' {unit: 3} {imperative definition: 949}
+            IMPERATIVE_NT'after locking a door with something in the presence of an ot' {unit: 3} {imperative definition: 950}
             SENTENCE_NT'nancy johnson memorial square is west of the felt door' {unit: 3} {classified} {interpretation of subject: infs'key to the city'}
                 VERB_NT'is west of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: west of}
                 PROPER_NOUN_NT'nancy johnson memorial square' {refined} {refers: infs'nancy johnson memorial square'} {eval: CONSTANT_NT'nancy johnson memorial square' {kind: object} {instance: I87'nancy johnson memorial square'} {enumeration: 0}} {created here}
@@ -508,8 +508,8 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'slot' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'slot'} {eval: CONSTANT_NT'slot' {kind: object} {instance: I92'slot'} {enumeration: 0}}
                 COMMON_NOUN_NT'container' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'container'} {creation: << kind=container(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'carry out inserting something into the slot' {unit: 3} {imperative definition: 950}
-            IMPERATIVE_NT'report inserting something into the slot' {unit: 3} {imperative definition: 951}
+            IMPERATIVE_NT'carry out inserting something into the slot' {unit: 3} {imperative definition: 951}
+            IMPERATIVE_NT'report inserting something into the slot' {unit: 3} {imperative definition: 952}
             SENTENCE_NT'hamwi street is northeast of an iron gate' {unit: 3} {classified} {interpretation of subject: infs'slot'}
                 VERB_NT'is northeast of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: northeast of}
                 PROPER_NOUN_NT'hamwi street' {refined} {refers: infs'hamwi street'} {eval: CONSTANT_NT'hamwi street' {kind: object} {instance: I93'hamwi street'} {enumeration: 0}} {created here}
@@ -533,7 +533,7 @@ ROOT_NT
                 AND_NT'and' {refined}
                     ADJECTIVE_NT'lockable' {refined} {predicate: lockable} {creation: << lockable(x) ^ lockable(x) >>}
                     ADJECTIVE_NT'unlocked' {refined} {predicate: unlocked} {creation: << unlocked(x) ^ unlocked(x) >>}
-            IMPERATIVE_NT'before printing the name of the iron gate while not opening ' {unit: 3} {imperative definition: 952}
+            IMPERATIVE_NT'before printing the name of the iron gate while not opening ' {unit: 3} {imperative definition: 953}
             SENTENCE_NT'cold comfort ice cream is north of a metal door' {unit: 3} {classified} {interpretation of subject: infs'iron gate'}
                 VERB_NT'is north of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: north of}
                 PROPER_NOUN_NT'cold comfort ice cream' {refined} {refers: infs'cold comfort ice cream'} {eval: CONSTANT_NT'cold comfort ice cream' {kind: object} {instance: I95'cold comfort ice cream'} {enumeration: 0}} {created here}
@@ -639,8 +639,8 @@ ROOT_NT
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"glass"'
                 UNPARSED_NOUN_NT'the box'
-            IMPERATIVE_NT'instead of attacking the closed emergency box' {unit: 3} {imperative definition: 953}
-            IMPERATIVE_NT'instead of attacking the open emergency box' {unit: 3} {imperative definition: 954}
+            IMPERATIVE_NT'instead of attacking the closed emergency box' {unit: 3} {imperative definition: 954}
+            IMPERATIVE_NT'instead of attacking the open emergency box' {unit: 3} {imperative definition: 955}
             SENTENCE_NT'the syringe is in the emergency box' {unit: 3} {classified} {interpretation of subject: infs'emergency box'}
                 VERB_NT'is in' {verb 'be' 3p s act IS_TENSE +ve} {prep1: in}
                 PROPER_NOUN_NT'syringe' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'syringe'} {eval: CONSTANT_NT'syringe' {kind: object} {instance: I104'syringe'} {enumeration: 0}} {created here}
@@ -743,8 +743,8 @@ ROOT_NT
             SENTENCE_NT'use full-length room descriptions' {unit: 3} {classified}
                 VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}
                 UNPARSED_NOUN_NT'full-length room descriptions'
-            IMPERATIVE_NT'after looking in an outdoors room' {unit: 3} {imperative definition: 955}
-            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 956}
+            IMPERATIVE_NT'after looking in an outdoors room' {unit: 3} {imperative definition: 956}
+            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 957}
             DEFN_CONT_NT'a door is proximate' {unit: 3}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
@@ -765,7 +765,7 @@ ROOT_NT
                                 INVOCATION_NT'yes' {phrase invoked: <no-inter-name>}
                     INVOCATION_LIST_NT'no' {unit: 3}
                         INVOCATION_NT'no' {phrase invoked: <no-inter-name>}
-            IMPERATIVE_NT'before exiting when the player is in an indoors room' {unit: 3} {imperative definition: 957}
+            IMPERATIVE_NT'before exiting when the player is in an indoors room' {unit: 3} {imperative definition: 958}
             SENTENCE_NT'blank is a room' {unit: 3} {classified} {interpretation of subject: infs'key to the city'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'blank' {refined} {refers: infs'blank'} {eval: CONSTANT_NT'blank' {kind: object} {instance: I108'blank'} {enumeration: 0}} {created here}
@@ -991,15 +991,15 @@ ROOT_NT
                 PROPER_NOUN_NT'ned' {refined} {refers: infs'ned'} {eval: CONSTANT_NT'ned' {kind: man} {instance: I161'ned'} {enumeration: 0}}
                 RELATIONSHIP_NT'owns' {meaning: ownership-r} {refined}
                     PROPER_NOUN_NT'movie rental' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'movie rental store'} {eval: CONSTANT_NT'movie rental store' {kind: object} {instance: I99'movie rental store'} {enumeration: 0}}
-            IMPERATIVE_NT'after printing the name of someone ( called target ) while l' {unit: 3} {imperative definition: 958}
+            IMPERATIVE_NT'after printing the name of someone ( called target ) while l' {unit: 3} {imperative definition: 959}
             SENTENCE_NT'the description of a person is usually "[The noun] [if the n' {unit: 3} {classified} {interpretation of subject: infs'ned'}
                 VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of a person' {definite 'the' n/m/f s/p nom/acc} {refined}
                     COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'person'} {creation: << kind=person(x) >>} {eval: TEST_VALUE_NT}
                     PROPER_NOUN_NT'description' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'description'=text}}
                 PROPER_NOUN_NT'"[The noun] [if the noun is clean]looks healthy[otherwise]is' {refined} {eval: CONSTANT_NT'"[The noun] [if the noun is clean]looks healthy[otherwise]is' {kind: text}}
-            IMPERATIVE_NT'after examining another person who is carrying something' {unit: 3} {imperative definition: 959}
-            IMPERATIVE_NT'when play begins' {unit: 3} {imperative definition: 960}
+            IMPERATIVE_NT'after examining another person who is carrying something' {unit: 3} {imperative definition: 960}
+            IMPERATIVE_NT'when play begins' {unit: 3} {imperative definition: 961}
         HEADING_NT'section 5 - conversation' {heading 5} {under: H5'section 5 - conversation'} {unit: 3}
             SENTENCE_NT'a person has a table name called conversation' {unit: 3} {classified}
                 VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
@@ -1008,8 +1008,8 @@ ROOT_NT
                     PROPERTYCALLED_NT'called'
                         UNPARSED_NOUN_NT'table name' {indefinite 'a' n/m/f nom/acc s}
                         UNPARSED_NOUN_NT'conversation'
-            IMPERATIVE_NT'instead of asking someone about something' {unit: 3} {imperative definition: 961}
-            IMPERATIVE_NT'instead of telling someone about something' {unit: 3} {imperative definition: 962}
+            IMPERATIVE_NT'instead of asking someone about something' {unit: 3} {imperative definition: 962}
+            IMPERATIVE_NT'instead of telling someone about something' {unit: 3} {imperative definition: 963}
             SENTENCE_NT'understand "recap" or "recall" or "review" as recalling conv' {unit: 3} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"recap" or "recall" or "review"'
@@ -1018,7 +1018,7 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'recalling conversations'
                 UNPARSED_NOUN_NT'applying to nothing'
-            IMPERATIVE_NT'carry out recalling conversations' {unit: 3} {imperative definition: 963}
+            IMPERATIVE_NT'carry out recalling conversations' {unit: 3} {imperative definition: 964}
             SENTENCE_NT'the conversation of a person is usually table of general chi' {unit: 3} {classified} {interpretation of subject: infs'person'}
                 VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'conversation of a person' {definite 'the' n/m/f s/p nom/acc} {refined}
@@ -1033,7 +1033,7 @@ ROOT_NT
                     PROPER_NOUN_NT'conversation' {refined} {eval: CONSTANT_NT {kind: table names valued property} {property: 'conversation'=table name}}
                 PROPER_NOUN_NT'table of vanessa chatter' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT'table of vanessa chatter' {kind: table name} {table: table_data} {meaning: {table of vanessa chatter = TABLE_MC}}}
             TABLE_NT'table of vanessa chatter topic reply summary turn stamp char' {unit: 3}
-            IMPERATIVE_NT'after reading a command' {unit: 3} {imperative definition: 964}
+            IMPERATIVE_NT'after reading a command' {unit: 3} {imperative definition: 965}
         HEADING_NT'section 6 - movement description' {heading 5} {under: H5'section 6 - movement description'} {unit: 3}
             SENTENCE_NT'a person has some text called walk style' {unit: 3} {classified}
                 VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
@@ -1080,8 +1080,8 @@ ROOT_NT
                 PROPER_NOUN_NT'"sashay"' {refined} {eval: CONSTANT_NT'"sashay"' {kind: text}}
             TABLE_NT'table of visible exits character second third heading chosen' {unit: 3}
             TABLE_NT'table of visible entrances character second third heading ch' {unit: 3}
-            IMPERATIVE_NT'to clear ( current table - a table name )' {unit: 3} {imperative definition: 965}
-            IMPERATIVE_NT'to tidy departures of ( current table - a table name )' {unit: 3} {imperative definition: 966}
+            IMPERATIVE_NT'to clear ( current table - a table name )' {unit: 3} {imperative definition: 966}
+            IMPERATIVE_NT'to tidy departures of ( current table - a table name )' {unit: 3} {imperative definition: 967}
             SENTENCE_NT'a door has a person called last opener' {unit: 3} {classified} {interpretation of subject: infs'person'}
                 VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'door'} {creation: << kind=door(x) >>} {eval: TEST_VALUE_NT}
@@ -1089,21 +1089,21 @@ ROOT_NT
                     PROPERTYCALLED_NT'called'
                         UNPARSED_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s}
                         UNPARSED_NOUN_NT'last opener'
-            IMPERATIVE_NT'report someone opening a door' {unit: 3} {imperative definition: 967}
-            IMPERATIVE_NT'report someone going through a door ( called route )' {unit: 3} {imperative definition: 968}
+            IMPERATIVE_NT'report someone opening a door' {unit: 3} {imperative definition: 968}
+            IMPERATIVE_NT'report someone going through a door ( called route )' {unit: 3} {imperative definition: 969}
             SENTENCE_NT'the last thing named is a thing that varies' {unit: 3} {classified} {interpretation of subject: infs'door'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'last thing named' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: NONLOCAL_VARIABLE_NT'last thing named' {nonlocal: 'last thing named'(var)thing}} {created here}
                 COMMON_NOUN_NT'thing that varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: << kind=things variable-pointer(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before printing the name of something ( called target ) whic' {unit: 3} {imperative definition: 969}
-            IMPERATIVE_NT'report someone going a direction' {unit: 3} {imperative definition: 970}
-            IMPERATIVE_NT'this is the movement reporting rule' {unit: 3} {imperative definition: 971}
-            IMPERATIVE_NT'to generate descriptions from ( current table - a table name' {unit: 3} {imperative definition: 972}
+            IMPERATIVE_NT'before printing the name of something ( called target ) whic' {unit: 3} {imperative definition: 970}
+            IMPERATIVE_NT'report someone going a direction' {unit: 3} {imperative definition: 971}
+            IMPERATIVE_NT'this is the movement reporting rule' {unit: 3} {imperative definition: 972}
+            IMPERATIVE_NT'to generate descriptions from ( current table - a table name' {unit: 3} {imperative definition: 973}
             SENTENCE_NT'the last person named is a person that varies' {unit: 3} {classified} {interpretation of subject: infs'door'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'last person named' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: NONLOCAL_VARIABLE_NT'last person named' {nonlocal: 'last person named'(var)person}} {created here}
                 COMMON_NOUN_NT'person that varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: << kind=people variable-pointer(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before printing the name of a person ( called target )' {unit: 3} {imperative definition: 973}
+            IMPERATIVE_NT'before printing the name of a person ( called target )' {unit: 3} {imperative definition: 974}
             SENTENCE_NT'group size is a number that varies' {unit: 3} {classified} {interpretation of subject: infs'door'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'group size' {refined} {eval: NONLOCAL_VARIABLE_NT'group size' {nonlocal: 'group size'(var)number}} {created here}
@@ -1112,19 +1112,19 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'group size' {refined} {eval: NONLOCAL_VARIABLE_NT'group size' {nonlocal: 'group size'(var)number} {meaning: {group size = VARIABLE_MC}}}
                 PROPER_NOUN_NT'1' {refined} {eval: CONSTANT_NT'1' {kind: number} {explicit literal} {number: 1}}
-            IMPERATIVE_NT'to clear marked people' {unit: 3} {imperative definition: 974}
-            IMPERATIVE_NT'before listing nondescript items' {unit: 3} {imperative definition: 975}
-            IMPERATIVE_NT'to describe patients' {unit: 3} {imperative definition: 976}
-            IMPERATIVE_NT'to say ( named character - a man ) as pronoun' {unit: 3} {imperative definition: 977}
-            IMPERATIVE_NT'to say ( named character - a woman ) as pronoun' {unit: 3} {imperative definition: 978}
-            IMPERATIVE_NT'to say looks as though dipped in for ( index - a number )' {unit: 3} {imperative definition: 979}
+            IMPERATIVE_NT'to clear marked people' {unit: 3} {imperative definition: 975}
+            IMPERATIVE_NT'before listing nondescript items' {unit: 3} {imperative definition: 976}
+            IMPERATIVE_NT'to describe patients' {unit: 3} {imperative definition: 977}
+            IMPERATIVE_NT'to say ( named character - a man ) as pronoun' {unit: 3} {imperative definition: 978}
+            IMPERATIVE_NT'to say ( named character - a woman ) as pronoun' {unit: 3} {imperative definition: 979}
+            IMPERATIVE_NT'to say looks as though dipped in for ( index - a number )' {unit: 3} {imperative definition: 980}
             TABLE_NT'table of dipping phrases dipping "looks as though dipped in"' {unit: 3}
             SENTENCE_NT'a door is usually scenery' {unit: 3} {classified} {interpretation of subject: infs'door'}
                 VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'door'} {creation: << kind=door(x) >>} {eval: TEST_VALUE_NT}
                 ADJECTIVE_NT'scenery' {refined} {predicate: scenery} {creation: << scenery(x) ^ scenery(x) >>}
-            IMPERATIVE_NT'to make delimiter ( index - a number ) of ( count - a number' {unit: 3} {imperative definition: 980}
-            IMPERATIVE_NT'to say optional comma' {unit: 3} {imperative definition: 981}
+            IMPERATIVE_NT'to make delimiter ( index - a number ) of ( count - a number' {unit: 3} {imperative definition: 981}
+            IMPERATIVE_NT'to say optional comma' {unit: 3} {imperative definition: 982}
             SENTENCE_NT'test me with go to cold comfort / z / z / z / z / ask vaness' {unit: 3} {classified}
                 VERB_NT'test' {verb 'test' 3p p act IS_TENSE +ve} {prep2: with} {special meaning: test-with}
                 UNPARSED_NOUN_NT'me'

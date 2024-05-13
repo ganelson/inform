@@ -51,7 +51,7 @@ Here is our rewrite:
 				increase X by 1;
 				say "([X]). [textual content of opening line of B][line break]";
 			say "[conditional paragraph break]";
-			let Y be the chosen dialogue number up to X; 
+			let Y be a number chosen by the player from 1 to X;
 			perform entry Y of the leading beats;
 			stop the action;
 		if the other beats is not empty:

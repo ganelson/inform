@@ -1,0 +1,93 @@
+Example: *** Testing Pure Choice
+Location: Managing dialogue choices
+RecipeLocation: Alternatives To Standard Parsing
+Index: Branching choices
+Description: Modifying the offering activity so that it follows a test script rather than stopping to ask for player input.
+
+Most Inform examples contain a `Test me with "..."` sentence, giving a sequence of commands which can be automatically typed in for testing purposes.
+
+And that works fine for dialogue-heavy stories too, _provided_ there is a first turn on which the player can type ``TEST ME``. In a story where dialogue takes over the entire narrative, and no regular commands are ever accepted, that's impossible.
+
+So the following use of the `offering ...` activity neatly gets around that. It's just like the standard version of the activity, except that if there are numbers in the `testing choices list`, it pulls them out one by one and enters them rather than ask the player.
+
+	{*}"Testing Pure Choice"
+	
+	Section 1 - The testing mechanism
+
+	The testing choices list is a list of numbers that varies.
+
+	For offering a list of dialogue choices (called L)
+		(this is the niftier offering dialogue choices rule):
+		let N be 0;
+		repeat with C running through L:
+			increase N by 1;
+			say "([N]) [textual content of C][line break]";
+		say conditional paragraph break;
+		let M be a number;
+		if the testing choices list is non-empty:
+			now M is entry 1 of the testing choices list;
+			remove entry 1 from the testing choices list;
+			say "(automatically choosing option [M] for test purposes)[line break]";
+		otherwise:
+			now M is a number chosen by the player from 1 to N;
+		set the dialogue selection value to M;
+		say "[bold type][textual content of entry M of L][roman type][paragraph break]".
+
+So we just need to set the list up. We want to make a test-run of "Pure Choice" in which the player selects 1, then 2, then 1, so:
+
+	{**}When play begins:
+		say "Howdy!";
+		now the testing choices list is { 1, 2, 1 }.
+
+Everything else here is the same as for the "Pure Choice" example:
+	
+	{**}Section 2 - The set, actors and props
+	 
+	The Stage Set is a room.
+	
+	Instead of looking: do nothing instead. 
+	
+	Section 3 - The play (dialogue)
+	
+	(This is the starting beat.)
+	
+	Narration: "Here we might place our opening narration.
+	
+	We could go on for several paragraphs, if we like. There's no need to make them separate lines of narration if we do not want to."
+	
+		-- "I get the general idea."
+		
+			Narration: "Good." 
+	
+		-- "Cool. Now show me something else."
+		
+			Narration: "This text is only shown because of the choice you just made. But in a moment, we'll rejoin the same storyline as though you'd made the opposite decision. Right about... NOW." 
+
+	Narration: "Speaking of choices, the following two won't make any difference at all. The player's decision will immediately rejoin, leaving them only with the recollection of having made a choice in the first place."
+	
+		-- "I will remember this."
+		
+		-- "I will forget this almost immediately."
+	
+	Narration: "Here, by contrast..."
+	
+		-- "This branch is actually significant."
+		
+			-> perform the lefthand beat
+		
+		-- "As is this one."
+		
+			-> perform the righthand beat
+			
+	(This is the lefthand beat.)
+	
+	Narration: "You have passed through the left door."
+	
+	-> end the story finally
+	
+	(This is the righthand beat.)
+	
+	Narration: "You have passed through the right door. The narrative has branched, and it will not rejoin; your decision was permanent."
+	
+	-> end the story finally
+ 
