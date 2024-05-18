@@ -482,12 +482,6 @@ Global dialogue_selection_value = 0;
 			n = dialogue_selection_value;
 			dc = LIST_OF_TY_GetItem(list, n);
 			LIST_OF_TY_SetLength(list, 0);
-!			style bold;
-!			TEXT_TY_Say(DirectorChoiceRawContent(dc));
-!			style roman;
-!			print "^";
-!			say__p = 1;
-!			DivideParagraphPoint();
 			DirectorExerciseChoice(dc);
 		PARSED_COMMAND_DCODEDT:
 			director_is_paused_for_command = true;
