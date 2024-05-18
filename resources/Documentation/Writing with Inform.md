@@ -5373,9 +5373,11 @@ Since scenes are, in the end, only a convenient way to organise rules, and do no
 
 ## If again this apparition come...
 
-Most Inform source text looks like running prose — there's a mix of sentences setting out the situation, and then rules saying how that might change, but it's all set out in paragraphs like the text of a novel, or a non-fiction book.
+Some stories are all about exploration: lone travellers going places and discovering things. But other stories are more intimate, and conversational. They involve characters talking to each other about what is happening. And sometimes the talking _is_ what's happening: the story might be a romance, or a political intrigue, or a detective mystery. "Dialogue" is what we'll call the sort of to-and-fro when characters get into a conversation — not necessarily a long talk, but where the story will only work for the player if the speakers seem to be making sense, and not repeating themselves endlessly, or making oblique comments out of nowhere.
 
-Dialogue sections, by contrast, are like the script of a play or movie: what printers call "playtext". Regular sections cannot contain playtext, while dialogue sections cannot contain anything else. For example, this little vignette is a moment from Act I, Scene 1 of _Hamlet_, where let's say that the player is Horatio, who has climbed to the castle battlements with his friend Marcellus to question Bernardo, a guard, about the recent sighting of a ghost.
+That means writing something closer to a script than to a rulebook. But that script can still be richly interactive and flexible. In Inform, this is set out in special _dialogue sections_ of the source text. Instead of being set out in sentences and paragraphs like a novel, or a non-fiction book, dialogue sections look like the script for a play or movie: what printers call "playtext". Regular sections cannot contain playtext, while dialogue sections cannot contain anything else.
+
+In this section, we'll get a taste for Inform's dialogue features by playing out parts of Act I, Scene 1 of _Hamlet_. Let's say that the player is Horatio, who has climbed to the castle battlements with his friend Marcellus to question Bernardo, a guard, about the recent sighting of a ghost.
 
 	Section 1 - Elsinore
 
