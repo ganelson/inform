@@ -151,19 +151,12 @@ int Languages::supports(inform_language *L, int S) {
 }
 
 @h Kit.
-Each language needs its own kit of Inter code, if it is going to be used as
-a language of play. The following is called only when `L` is the language of
-play for `project`:
+At one time, the language of play added a kit dependency here. That's now
+handled differently, in that the kit in question (`FrenchLanguageKit`, say)
+should now be included in the `French Language` extension.
 
 =
 void Languages::add_kit_dependencies_to_project(inform_language *L, inform_project *project) {
-	if (L == NULL) internal_error("no language");
-	TEMPORARY_TEXT(kitname)
-	WRITE_TO(kitname, "%SLanguageKit", L->as_copy->edition->work->title);
-	inbuild_work *work = Works::new_raw(kit_genre, kitname, I"");
-	inbuild_requirement *req = Requirements::any_version_of(work);
-	Projects::add_kit_dependency(project, kitname, L, NULL, req, NULL);
-	DISCARD_TEXT(kitname)
 }
 
 @h Finding by name.

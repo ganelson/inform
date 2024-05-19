@@ -42,5 +42,5 @@ Internal/Inter/Architecture32Kit/*.interb
 Internal/Inter/BasicInformKit/*.interb
 Internal/Inter/CommandParserKit/*.interb
 Internal/Inter/DialogueKit/*.interb
-Internal/Inter/EnglishLanguageKit/*.interb
+Internal/Extensions/Graham Nelson/English*/Materials/Inter/EnglishLanguageKit/*.interb
 Internal/Inter/WorldModelKit/*.interb

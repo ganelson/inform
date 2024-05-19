@@ -152,7 +152,7 @@ INFORM6WEB = inform6
 {component type: web symbol: ARCHITECTURE32KIT    webname: Architecture32Kit    path: inform7/Internal/Inter/Architecture32Kit    set: kits}
 {component type: web symbol: WORLDMODELKIT        webname: WorldModelKit        path: inform7/Internal/Inter/WorldModelKit        set: kits}
 {component type: web symbol: COMMANDPARSERKIT     webname: CommandParserKit     path: inform7/Internal/Inter/CommandParserKit     set: kits}
-{component type: web symbol: ENGLISHLANGUAGEKIT   webname: EnglishLanguageKit   path: inform7/Internal/Inter/EnglishLanguageKit   set: kits}
+{component type: web symbol: ENGLISHLANGUAGEKIT   webname: EnglishLanguageKit   path: inform7/Internal/Extensions/Graham Nelson/English Language-v10_2_0.i7xd/Materials/Inter/EnglishLanguageKit   set: kits}
 {component type: web symbol: DIALOGUEKIT          webname: DialogueKit          path: inform7/Internal/Inter/DialogueKit          set: kits}
 
 {component type: web symbol: STANDARDRULES        webname: standard_rules       path: inform7/extensions/standard_rules           set: extensions}
@@ -371,6 +371,7 @@ check:
 commit:
 	$(INWEBX) -advance-build-file build.txt
 	$(INPOLICYX) -sync-kit-versions
+	$(INPOLICYX) -sync-extension-versions
 	{update-readme}
 	git commit -a
 
@@ -677,8 +678,6 @@ forcetransferpreform:
 # -----------------------------------------------------------------------------
 # Copying the indexing structure and localisation files into the app
 
-{set name: LOCALISEDINDEXES value: English}
-
 .PHONY: transferindext
 transferindext: forcetransferindext
 
@@ -687,10 +686,8 @@ forcetransferindext:
 	mkdir -p "$(INTERNAL)/Miscellany"
 	cp -f "$(INFORM7WEB)/Internal/Miscellany/Standard.indext" "$(INTERNAL)/Miscellany/Standard.indext"
 	cp -f "$(INFORM7WEB)/Internal/Miscellany/Basic.indext"    "$(INTERNAL)/Miscellany/Basic.indext"
-	{repeat with: LANGUAGE in: {LOCALISEDINDEXES}}
-	mkdir -p "$(INTERNAL)/Languages/{LANGUAGE}"
-	cp -f "$(INFORM7WEB)/Internal/Languages/{LANGUAGE}/Index.txt" "$(INTERNAL)/Languages/{LANGUAGE}/Index.txt"
-	{end-repeat}
+	mkdir -p "$(INTERNAL)/Languages/English"
+	cp -f "$(INFORM7WEB)/Internal/Languages/English/Index.txt" "$(INTERNAL)/Languages/English/Index.txt"
 
 # -----------------------------------------------------------------------------
 # Copying kits (and Inter pipelines) into the app

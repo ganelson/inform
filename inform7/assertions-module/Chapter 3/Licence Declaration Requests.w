@@ -251,11 +251,21 @@ void LicenceDeclaration::check_licences(void) {
 int LicenceDeclaration::anything_to_declare(void) {
 	inform_project *proj = Task::project();
 	inbuild_licence *L = proj->as_copy->licence;
-	if ((L->read_from_JSON) || (L->discussed_in_source)) return TRUE;
+	if (LicenceDeclaration::to_be_declared(L)) return TRUE;
 	inform_extension *E;
 	LOOP_OVER_LINKED_LIST(E, inform_extension, proj->extensions_included) {
 		L = E->as_copy->licence;
-		if ((L->read_from_JSON) || (L->discussed_in_source)) return TRUE;
+		if (LicenceDeclaration::to_be_declared(L)) return TRUE;
+	}
+	return FALSE;
+}
+
+int LicenceDeclaration::to_be_declared(inbuild_licence *L) {
+	if ((L->read_from_JSON) || (L->discussed_in_source)) {
+		if (Str::eq(L->rights_history,
+			I"This extension is basic to Inform and requires no acknowledgement."))
+			return FALSE;
+		return TRUE;
 	}
 	return FALSE;
 }

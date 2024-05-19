@@ -554,12 +554,6 @@ command, to be re-entered later on when actions are processed.
 <span class="plain-syntax">            </span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="identifier-syntax">dialogue_selection_value</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">dc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">LIST_OF_TY_GetItem</span><span class="plain-syntax">(</span><span class="identifier-syntax">list</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">LIST_OF_TY_SetLength</span><span class="plain-syntax">(</span><span class="identifier-syntax">list</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
-<span class="comment-syntax">		style bold;</span>
-<span class="comment-syntax">		TEXT_TY_Say(DirectorChoiceRawContent(dc));</span>
-<span class="comment-syntax">		style roman;</span>
-<span class="comment-syntax">		print "^";</span>
-<span class="comment-syntax">		say__p = 1;</span>
-<span class="comment-syntax">		DivideParagraphPoint();</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">DirectorExerciseChoice</span><span class="plain-syntax">(</span><span class="identifier-syntax">dc</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">PARSED_COMMAND_DCODEDT</span><span class="plain-syntax">:</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">director_is_paused_for_command</span><span class="plain-syntax"> = </span><span class="reserved-syntax">true</span><span class="plain-syntax">;</span>
