@@ -9871,10 +9871,10 @@ produces:
 
 ``` transcript
 "meaning of the verb contain" = relation of objects: containment relation
-"meaning of the verb provoke" = relation of objects: equality relation
+"meaning of the verb provoke" = relation of objects: never-holding relation
 ```
 
-As this demonstrates, if a verb has no meaning, or its meaning doesn't relate to objects, we get just the equality relation.
+As this demonstrates, if a verb has no meaning, or its meaning doesn't relate to objects, we get just the `never-holding relation`. This is a relation which, as the name suggests, never holds, and can't be made to hold, between any two values.
 
 In fact, Inform even defines a verb `to mean`: it's meaningful, and its meaning is the meaning relation. Thus:
 
