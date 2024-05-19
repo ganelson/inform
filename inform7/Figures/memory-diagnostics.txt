@@ -1,10 +1,10 @@
-Total memory consumption was 144453K = 141 MB
+Total memory consumption was 144475K = 141 MB
 
- ---- was used for 2179635 objects, in 384350 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2179833 objects, in 384350 frames in 0 x 800K = 0K = 0 MB:
 
     29.2%  inter_tree_node_array                    60 x 8192 = 491520 objects, 43255680 bytes
-    20.0%  text_stream_array                        5259 x 100 = 525900 objects, 29618688 bytes
-    18.1%  linked_list                              47998 objects, 26878880 bytes
+    20.0%  text_stream_array                        5261 x 100 = 526100 objects, 29629952 bytes
+    18.1%  linked_list                              47999 objects, 26879440 bytes
      9.7%  inter_symbol_array                       136 x 1024 = 139264 objects, 14487808 bytes
      9.4%  inter_error_stash_array                  107 x 1024 = 109568 objects, 14028128 bytes
      7.4%  scan_directory                           2671 objects, 11025888 bytes
@@ -64,7 +64,7 @@ Total memory consumption was 144453K = 141 MB
      ----  lexical_cluster                          2556 objects, 81792 bytes
      ----  kind_variable_declaration                1662 objects, 79776 bytes
      ----  rulebook                                 410 objects, 78720 bytes
-     ----  filename                                 1748 objects, 69920 bytes
+     ----  filename                                 1740 objects, 69600 bytes
      ----  pathname                                 1697 objects, 67880 bytes
      ----  spatial_data                             688 objects, 66048 bytes
      ----  linked_list_item_array                   4 x 1000 = 4000 objects, 64128 bytes
@@ -99,7 +99,7 @@ Total memory consumption was 144453K = 141 MB
      ----  action_pattern_array                     7 x 100 = 700 objects, 28224 bytes
      ----  open_source_licence                      648 objects, 25920 bytes
      ----  shared_variable_set_array                6 x 100 = 600 objects, 24192 bytes
-     ----  JSON_value                               265 objects, 23320 bytes
+     ----  JSON_value                               266 objects, 23408 bytes
      ----  property                                 150 objects, 22800 bytes
      ----  backdrops_data                           688 objects, 22016 bytes
      ----  nonlocal_variable                        99 objects, 21384 bytes
@@ -153,14 +153,14 @@ Total memory consumption was 144453K = 141 MB
      ----  property_setting_bp_data                 88 objects, 3520 bytes
      ----  submodule_request                        86 objects, 3440 bytes
      ----  parsed_use_option_setting                47 objects, 3384 bytes
-     ----  JSON_type                                46 objects, 3312 bytes
-     ----  arithmetic_schema_array                  1 x 50 objects, 3232 bytes
+     ----  JSON_type                                47 objects, 3384 bytes
      ----  kind_constructor_comparison_schema_array 1 x 100 objects, 3232 bytes
-     ----  JSON_single_requirement                  63 objects, 3024 bytes
+     ----  arithmetic_schema_array                  1 x 50 objects, 3232 bytes
+     ----  JSON_single_requirement                  64 objects, 3072 bytes
      ----  target_vm                                21 objects, 3024 bytes
      ----  local_parking_lot                        64 objects, 2560 bytes
-     ----  part_of_inference_data                   79 objects, 2528 bytes
      ----  parentage_inference_data                 79 objects, 2528 bytes
+     ----  part_of_inference_data                   79 objects, 2528 bytes
      ----  kind_constructor_instance_rule_array     1 x 100 objects, 2432 bytes
      ----  kind_constructor_casting_rule_array      1 x 100 objects, 2432 bytes
      ----  equation_symbol                          30 objects, 2400 bytes
@@ -170,8 +170,8 @@ Total memory consumption was 144453K = 141 MB
      ----  pronoun_usage                            42 objects, 1680 bytes
      ----  compiler_feature                         30 objects, 1680 bytes
      ----  table_column                             16 objects, 1664 bytes
+     ----  JSON_requirement                         51 objects, 1632 bytes
      ----  table_contribution_array                 1 x 100 objects, 1632 bytes
-     ----  JSON_requirement                         50 objects, 1600 bytes
      ----  markdown_feature                         33 objects, 1584 bytes
      ----  inform_pipeline                          24 objects, 1536 bytes
      ----  special_meaning_holder                   36 objects, 1440 bytes
@@ -181,8 +181,8 @@ Total memory consumption was 144453K = 141 MB
      ----  constant_phrase                          20 objects, 1280 bytes
      ----  invocation_options_array                 1 x 100 objects, 1224 bytes
      ----  direction_inference_data                 30 objects, 1200 bytes
+     ----  JSON_pair_requirement                    37 objects, 1184 bytes
      ----  inbuild_search_result                    29 objects, 1160 bytes
-     ----  JSON_pair_requirement                    36 objects, 1152 bytes
      ----  tree_inventory_item                      28 objects, 1120 bytes
      ----  submodule_identity                       34 objects, 1088 bytes
      ----  runtime_kind_structure                   13 objects, 1040 bytes
@@ -265,9 +265,9 @@ Total memory consumption was 144453K = 141 MB
      ----  kind_template_definition                 1 object, 40 bytes
      ----  i6_memory_setting                        1 object, 32 bytes
 
-99.9% was used for memory not allocated for objects:
+100.0% was used for memory not allocated for objects:
 
-    63.2%  text stream storage                      93498680 bytes in 546415 claims
+    63.2%  text stream storage                      93520440 bytes in 546656 claims
      4.0%  dictionary storage                       5932480 bytes in 7849 claims
      ----  sorting                                  6648 bytes in 1611 claims
      4.8%  source text                              7200000 bytes in 3 claims
@@ -276,7 +276,7 @@ Total memory consumption was 144453K = 141 MB
      ----  linguistic stock array                   81920 bytes in 2 claims
      ----  small word set array                     105600 bytes in 22 claims
      3.2%  inter symbols storage                    4736736 bytes in 28513 claims
-    11.3%  inter bytecode storage                   16758780 bytes in 15 claims
+    11.3%  inter bytecode storage                   16759588 bytes in 15 claims
      4.2%  inter links storage                      6222976 bytes in 11 claims
      0.1%  inter tree location list storage         191232 bytes in 32 claims
      1.2%  instance-of-kind counting                1790244 bytes in 1 claim
@@ -285,5 +285,5 @@ Total memory consumption was 144453K = 141 MB
      ----  code generation workspace for objects    3560 bytes in 19 claims
      0.1%  emitter array storage                    290944 bytes in 2081 claims
 
--139.-3% was overhead - -206173984 bytes = -201341K = -196 MB
+-139.-3% was overhead - -206185760 bytes = -201353K = -196 MB
 

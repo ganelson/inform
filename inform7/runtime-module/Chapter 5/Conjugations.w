@@ -131,9 +131,8 @@ void RTVerbs::show_meaning(OUTPUT_STREAM, verb_conjugation *vc) {
 		if (vu->vu_lex_entry == vc) {
 			if (vu->where_vu_created)
 				IndexUtilities::link(OUT, Wordings::first_wn(Node::get_text(vu->where_vu_created)));
-			binary_predicate *bp =
-				VerbMeanings::get_regular_meaning_of_form(Verbs::base_form(VerbUsages::get_verb(vu)));
-			if (bp) RTVerbs::show_relation(OUT, bp);
+			verb_form *vf = Verbs::base_form(VerbUsages::get_verb(vu));
+			RTVerbs::show_relation(OUT, vf);
 			return;
 		}
 	preposition *prep;
@@ -141,21 +140,25 @@ void RTVerbs::show_meaning(OUTPUT_STREAM, verb_conjugation *vc) {
 		if (prep->prep_lex_entry == vc) {
 			if (prep->where_prep_created)
 				IndexUtilities::link(OUT, Wordings::first_wn(Node::get_text(prep->where_prep_created)));
-			binary_predicate *bp =
-				VerbMeanings::get_regular_meaning_of_form(Verbs::find_form(copular_verb, prep, NULL));
-			if (bp) RTVerbs::show_relation(OUT, bp);
+			verb_form *vf = Verbs::find_form(copular_verb, prep, NULL);
+			RTVerbs::show_relation(OUT, vf);
 			return;
 		}
+	WRITE("(for saying only)");
 }
 
-void RTVerbs::show_relation(OUTPUT_STREAM, binary_predicate *bp) {
-	if (bp == NULL) WRITE("(a meaning internal to Inform)");
-	else {
+void RTVerbs::show_relation(OUTPUT_STREAM, verb_form *vf) {
+	binary_predicate *bp = VerbMeanings::get_regular_meaning_of_form(vf);
+	if (bp) {
 		if (bp->right_way_round == FALSE) {
 			bp = bp->reversal;
 			WRITE("reversed ");
 		}
 		WordAssemblages::index(OUT, &(bp->relation_name));
+	} else if (Verbs::has_special_meanings(vf)) {
+		WRITE(" (a meaning internal to Inform)");
+	} else {
+		WRITE(" (for saying only)");
 	}
 }
 
