@@ -27,7 +27,8 @@
 	"translated-name": string,
 	"iso-639-1-code": string,
 	"supports": [ ( "played" | "written" | "indexed" | "reported" )* ],
-	?"translated-syntax-cue": string
+	?"translated-syntax-cue": string,
+	?"flag": string
 }
 
 <legal-metadata> ::= {
