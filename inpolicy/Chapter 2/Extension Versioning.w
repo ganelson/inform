@@ -136,7 +136,9 @@ then encode the object out as a new version of the file:
 	STREAM_CLOSE(OUT);
 	V = set_to;
 
-@
+@ Note that the following currently does nothing, which is intentional. It's
+more practical for the built-in extensions not to have version numbers in their
+directory names, since that makes make-files more stable.
 
 @<If necessary impose the new version in directory name@> =
 	TEMPORARY_TEXT(correct_name)
@@ -147,7 +149,7 @@ then encode the object out as a new version of the file:
 			Str::put(pos, '_');
 	WRITE_TO(correct_name, "%S-v%S.i7xd", name, flattened);
 	DISCARD_TEXT(flattened)
-	if (Str::ne(Pathnames::directory_name(X), correct_name)) {
+	if ((FALSE) && (Str::ne(Pathnames::directory_name(X), correct_name))) {
 		pathname *XC = Pathnames::down(Pathnames::up(X), correct_name);
 		Pathnames::move_directory(X, XC);
 		X = XC;

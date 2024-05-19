@@ -90,13 +90,15 @@ inbuild_copy *ExtensionBundleManager::new_copy(text_stream *name, pathname *P,
 		Dictionaries::create(eb_copy_cache, key);
 		Dictionaries::write_value(eb_copy_cache, key, C);
 		if (VersionNumbers::is_null(apparent_V)) {
-			TEMPORARY_TEXT(error_text)
-			WRITE_TO(error_text,
-				"an extension in directory format must have a directory name ending "
-				"'-vN.i7xd', giving the version number: for example, "
-				"'Advanced Algebra-v2_3_6.i7xd'");
-			Copies::attach_error(C, CopyErrors::new_T(EXT_BAD_DIRNAME_CE, -1, error_text));
-			DISCARD_TEXT(error_text)
+			if (Nests::get_tag(N) != INTERNAL_NEST_TAG) {
+				TEMPORARY_TEXT(error_text)
+				WRITE_TO(error_text,
+					"an extension in directory format must have a directory name ending "
+					"'-vN.i7xd', giving the version number: for example, "
+					"'Advanced Algebra-v2_3_6.i7xd'");
+				Copies::attach_error(C, CopyErrors::new_T(EXT_BAD_DIRNAME_CE, -1, error_text));
+				DISCARD_TEXT(error_text)
+			}
 		} else if (VersionNumbers::ne(apparent_V, C->edition->version)) {
 			TEMPORARY_TEXT(error_text)
 			WRITE_TO(error_text,
