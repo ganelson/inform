@@ -1912,7 +1912,7 @@ To show the/-- current quotation:
 =
 Section 6 - Keyboard Input
 
-To decide what number is the code of the next pressed key:
+To decide what unicode character is the code of the next pressed key:
 	(- VM_KeyChar() -).
 
 To prompt the player to enter a line of text:
@@ -1920,6 +1920,40 @@ To prompt the player to enter a line of text:
 
 To say the/-- player's text input:
 	(- VM_PrintBuffer(buffer2); -).
+
+
+@ Function keys.
+Keyboard function keys are defined as unicode character constants. A mix of
+actual control codes, unicode characters which colour represent the keys, and
+private use area codes.
+
+=
+
+The delete key is always unicode U+0008. [Both the Z-Machine and Glulx standards call it the delete key, even though backspace is perhaps more accurate.]
+The down key is always unicode U+2193.
+The end key is always unicode U+21F2.
+The escape key is always unicode U+001B.
+The f1 key is always unicode U+EF01.
+The f2 key is always unicode U+EF02.
+The f3 key is always unicode U+EF03.
+The f4 key is always unicode U+EF04.
+The f5 key is always unicode U+EF05.
+The f6 key is always unicode U+EF06.
+The f7 key is always unicode U+EF07.
+The f8 key is always unicode U+EF08.
+The f9 key is always unicode U+EF09.
+The f10 key is always unicode U+EF0A.
+The f11 key is always unicode U+EF0B.
+The f12 key is always unicode U+EF0C.
+The home key is always unicode U+21F1.
+The left key is always unicode U+2190.
+The page down key is always unicode U+21DF.
+The page up key is always unicode U+21DE.
+The return key is always unicode U+000A.
+The right key is always unicode U+2192.
+The tab key is always unicode U+0009.
+The unknown key is always unicode U+FFFD.
+The up key is always unicode U+2191.
 
 @ Customising the status line.
 

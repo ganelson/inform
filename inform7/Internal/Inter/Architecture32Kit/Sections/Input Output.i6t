@@ -166,9 +166,10 @@ only for debugging output, so the false positives here really do not matter.
 The VM must provide three routines for keyboard input:
 
 (a) |VM_KeyChar()| waits for a key to be pressed and then returns the
-character chosen as a ZSCII character.
+character chosen as a unicode character. Function keys are mapped to unicode
+characters so that Z-Machine and Glulxe key input can be handled the same.
 (b) |VM_KeyDelay(N)| waits up to $N/10$ seconds for a key to be pressed,
-returning the ZSCII character if so, or 0 if not.
+returning the unicode character if so, or 0 if not.
 (c) |VM_ReadKeyboard(b, t)| reads a whole newline-terminated command
 into the buffer |b|. If the |t| parser table is specified then it also parses it.
 
@@ -251,6 +252,33 @@ to document all of that.
         glk_put_char_stream(gg_commandstr, 10); ! newline
     }
   .KCPContinue;
+	switch (res) {
+		keycode_Delete: res = KEY_DELETE;
+		keycode_Down: res = KEY_DOWN;
+		keycode_End: res = KEY_END;
+		keycode_Escape: res = KEY_ESCAPE;
+		keycode_Func1: res = KEY_F1;
+		keycode_Func2: res = KEY_F2;
+		keycode_Func3: res = KEY_F3;
+		keycode_Func4: res = KEY_F4;
+		keycode_Func5: res = KEY_F5;
+		keycode_Func6: res = KEY_F6;
+		keycode_Func7: res = KEY_F7;
+		keycode_Func8: res = KEY_F8;
+		keycode_Func9: res = KEY_F9;
+		keycode_Func10: res = KEY_F10;
+		keycode_Func11: res = KEY_F11;
+		keycode_Func12: res = KEY_F12;
+		keycode_Home: res = KEY_HOME;
+		keycode_Left: res = KEY_LEFT;
+		keycode_PageDown: res = KEY_PAGE_DOWN;
+		keycode_PageUp: res = KEY_PAGE_UP;
+		keycode_Return: res = KEY_RETURN;
+		keycode_Right: res = KEY_RIGHT;
+		keycode_Tab: res = KEY_TAB;
+		keycode_Unknown: res = KEY_UNKNOWN;
+		keycode_Up: res = KEY_UP;
+	}
     return res;
 ];
 
