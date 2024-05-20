@@ -719,7 +719,7 @@ forcetransferkits:
 {define: transfer-extensions}
 	mkdir -p $(INTERNAL)
 	mkdir -p "$(INTERNAL)/Extensions/Graham Nelson"
-	rm -f $(INTERNAL)/Extensions/Graham\ Nelson/*
+	rm -rf $(INTERNAL)/Extensions/Graham\ Nelson/*
 	cp -R -f $(INFORM7WEB)/Internal/Extensions $(INTERNAL)/Extensions/..
 	mkdir -p "$(INTERNAL)/HTML"
 	cp -f $(INFORM7WEB)/Internal/HTML/xrefs.txt "$(INTERNAL)/HTML"
