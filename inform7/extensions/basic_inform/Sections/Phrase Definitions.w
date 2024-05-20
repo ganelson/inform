@@ -1985,14 +1985,6 @@ Section 7 - The Status Window
 To redraw the/-- status bar/line/window:
 	(- DrawStatusLine(); -).
 
-Table of Status Window Column Definitions
-left (text)	middle (text)	right (text)
-with 1 blank row
-
-The left table column translates into Inter as "STATUS_COL_LEFT".
-The middle table column translates into Inter as "STATUS_COL_MIDDLE".
-The right table column translates into Inter as "STATUS_COL_RIGHT".
-
 The status window table is a table-name that varies.
 The status window table variable translates into Inter as "status_window_table".
 
