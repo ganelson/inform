@@ -116,7 +116,8 @@ the dictionary table, but mid-word) really do not matter.
 The VM must provide three routines for keyboard input:
 
 (a) |VM_KeyChar()| waits for a key to be pressed and then returns the
-character chosen as a ZSCII character.
+character chosen as a ZSCII character. Function keys are mapped to unicode
+characters so that Z-Machine and Glulxe key input can be handled the same.
 (b) |VM_KeyDelay(N)| waits up to $N/10$ seconds for a key to be pressed,
 returning the ZSCII character if so, or 0 if not.
 (c) |VM_ReadKeyboard(b, t)| reads a whole newline-terminated command
@@ -127,9 +128,34 @@ to document all of that.
 
 =
 [ VM_KeyChar win  key;
-    if (win) @set_window win;
-    @read_char 1 -> key;
-    return key;
+	if (win) @set_window win;
+	@read_char 1 -> key;
+	switch (key) {
+		8: key = KEY_DELETE;
+		13: key = KEY_RETURN;
+		27: key = KEY_ESCAPE;
+		129, 153: key = KEY_UP;
+		130, 147: key = KEY_DOWN;
+		131, 149: key = KEY_LEFT;
+		132, 151: key = KEY_RIGHT;
+		133: key = KEY_F1;
+		134: key = KEY_F2;
+		135: key = KEY_F3;
+		136: key = KEY_F4;
+		137: key = KEY_F5;
+		138: key = KEY_F6;
+		139: key = KEY_F7;
+		140: key = KEY_F8;
+		141: key = KEY_F9;
+		142: key = KEY_F10;
+		143: key = KEY_F11;
+		144: key = KEY_F12;
+		146: key = KEY_END;
+		148: key = KEY_PAGE_DOWN;
+		152: key = KEY_HOME;
+		154: key = KEY_PAGE_UP;
+	}
+	return key;
 ];
 
 [ VM_KeyDelay tenths  key;
