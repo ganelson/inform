@@ -5,6 +5,8 @@ Index: Assigning attributes randomly at the start of play
 Description: One of several identical candies chosen at the start of play to be poisonous.
 For: Z-Machine
 
+^^{Assigning attributes randomly at the start of play}
+
 Suppose we want to give the player a bag of candies, of which a random one is poisonous. We can pick which one should be poisoned at the start of play, like this:
 
 	{*}"Candy"

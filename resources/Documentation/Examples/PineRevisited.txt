@@ -1,0 +1,122 @@
+Example: *** Pine Revisited
+Location: When the director is active
+RecipeLocation: Characters Following a Script
+Index: Dialogue, with certain topics that need to be covered in a scene
+Description: The Pine 2 example rewritten using the dialogue system, allowing for a scene that ends when critical information has been communicated, regardless of how the conversation flows to that point.
+
+A very common scenario in dialogue-heavy games is that we have scenes in which we want the player and other characters to discuss a certain set of topics, regardless of how that happens.
+
+The older "Pine 2" example gives a somewhat laborious implementation of that idea, but it becomes easier to express if we use the dialogue system to let characters move freely between different conversation topics and just set our scene to end when the critical information has been transmitted – however that happens.
+
+	{*}"Pine Revisited"
+	
+	Section 1 - Waking
+	
+	A person can be asleep or awake. A person can be active or passive.
+	
+	The Spinning Tower is a room. "A remote corner of the old castle, reserved for spinning and weaving tasks."
+	
+	Sleeping Beauty is an asleep woman in the Spinning Tower. "[if asleep]Sleeping Beauty lies here, oblivious to your presence[otherwise]Sleeping Beauty stands beside you, looking a little confused[end if]."
+	
+	The description is "She is even more magnificent than the rumors suggested." Understand "woman" or "girl" or "princess" or "lady" as Sleeping Beauty.
+	
+	Discovery is a scene. Discovery begins when play begins. Discovery ends when Sleeping Beauty is awake. Marriage Proposal is a scene. Marriage Proposal begins when Discovery ends.
+	
+	When Discovery ends: say "Throughout the palace you can hear the other sounds of stirring and movement as the spell of centuries is broken."
+	
+	Instead of waking an awake person: say "Redundant."
+	
+	Instead of waking an asleep person: say "Yes, but how?"
+	
+	[Note that this can't be 'talking about something' because we talk about concepts, which are, from inform's perspective, not things.]
+	Before talking about an object in the presence of an asleep person:
+		say "You won't get much of a reply." instead.
+	
+	Instead of attacking an asleep person: 
+		now the noun is awake; 
+		make the dialogue director active;
+		say "[The noun] sits bolt upright. 'Hey! Ow!' So much for that true love's kiss nonsense."
+	
+	Instead of kissing an asleep person: 
+		now the noun is awake; 
+		make the dialogue director active;
+		say "[The noun] slowly stirs to wakefulness!"
+		
+	Instead of throwing water at an asleep person: 
+		now the second noun is awake; 
+		now the noun is nowhere; 
+		make the dialogue director active;
+		say "You pour out [the noun] on [the second noun].
+	[The second noun] wakes, shuddering. 'Agh! I had a terrible dream about drowning and then-- Hey!'"
+	
+	The player carries a jug of water. Understand "pour [something] on [something]" or "splash [something] at/on [something]" as throwing it at.
+	
+	Marriage proposal ends when time delay is used. When marriage proposal ends: end the story finally saying "This is going to take some explaining."
+	
+	Test me with "talk about sleep / pour water on beauty / talk about sleep / z / talk about marriage / talk about time delay".
+	
+	Section 2 - Concepts
+	
+	Dreams are a concept. Understand "dream/dreams/nightmare/nightmares/sleep" as dreams.
+	
+	Marriage is a concept. Understand "marriage/love/wedding" as marriage.
+	
+	Beloved is a concept. Understand "boyfriend/beau/lover" as beloved.
+	
+	Time delay is a concept. Understand "time" or "hundred years" or "century" as time delay.
+	
+	A concept can be used or unused. A concept is usually unused.
+	
+	After performing a dialogue line:
+		repeat with item running through the live conversational subject list:
+			now item is used.
+			
+	Section 3 - Discussion (dialogue)
+	
+	(About dreams.)
+	
+	Player: "'Sleep well?' you ask solicitously."
+	
+	Beauty: "'Not really,' she replies, edging away from you. So much for that angle."
+	
+	(Spontaneous. About dreams.)
+	
+	Beauty (mentioning dreams): "'Ghastly nightmares,' she remarks. You nod politely."
+	
+	(About marriage. If marriage is not listed in the live conversational subject list.)
+	
+	Player: "'So,' you say. 'This is a little weird since we just met, but, um. Would you like to get married?'"
+	
+	Beauty: "She looks at you nervously. 'Do I have to?'"
+	
+	(Spontaneous. About marriage. If marriage is not listed in the live conversational subject list.)
+	
+	Beauty (mentioning marriage): "'I, er,' she says. 'I hope I'm not supposed to marry you or something.'"
+	
+	(About marriage. If marriage is listed in the live conversational subject list and beloved is not listed in the live conversational subject list.)
+	
+	Player: "'I was told I was going to marry you and inherit the kingdom,' you say, apologetically. 'Would that be very bad?'"
+	
+	Beauty (mentioning beloved): "'Oh, it's not you -- I'm seeing someone,' she says, smiling quickly."
+	
+	(Later. About beloved.)
+	
+	Player: "'Er, right. There's something you should know. About your someone.'"
+	
+	Beauty: "She looks at you sideways. 'Don't tell me he's taken up with the princess in the next kingdom,' she says. 'I've heard the rumours, but it is all a misunderstanding. I know him better than that.'"
+		
+	-> perform the time passed beat
+	
+	(About time delay. This is the time passed beat.)
+	
+	Player : "'You've been up here for a hundred years,' you say[if beloved is listed in live conversational subject list]. An unpleasant thought occurs to you. 'Was your young man in the castle somewhere?'[else].[end if]"
+	
+	Beauty (without speaking): "She shakes her head mutely."
+	
+		-> perform the glance outward beat
+	
+	(Spontaneous. About time delay. This is the glance outward beat.)
+	
+	Beauty (mentioning time delay): "She goes to the window and looks out at the now-fading thicket of briar. 'That took a while to grow,' she observes. 'I was asleep longer than I thought.'"
+	
+	Beauty (if beloved is not listed in live conversational subject list; mentioning beloved): "She turns to you. 'What happened to my beloved?'"

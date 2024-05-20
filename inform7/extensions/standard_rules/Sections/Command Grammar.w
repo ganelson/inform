@@ -223,6 +223,7 @@ Understand "restart" as restarting the game.
 Understand "restore" as restoring the game.
 Understand "verify" as verifying the story file.
 Understand "version" as requesting the story file version.
+Understand "copyright" as requesting copyright licences.
 Understand "script" or "script on" or "transcript" or "transcript on" as switching the story
 	transcript on.
 Understand "script off" or "transcript off" as switching the story transcript off.
@@ -232,12 +233,6 @@ Understand "brief" or "normal" as preferring sometimes abbreviated room descript
 Understand "nouns" or "pronouns" as requesting the pronoun meanings.
 Understand "notify" or "notify on" as switching score notification on.
 Understand "notify off" as switching score notification off.
-
-@ The following provides for the token "[a time period]", which is not in
-fact used in the default grammar above, but is available for authors.
-
-=
-The understand token a time period is defined by Inter as "RELATIVE_TIME_TOKEN".
 
 @
 

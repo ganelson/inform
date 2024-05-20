@@ -5,6 +5,8 @@ Index: Lethal Concentration 1. Gas diffusion from a source through adjacent room
 Description: A poisonous gas that spreads from room to room, incapacitating or killing the player when it reaches sufficient levels.
 For: Z-Machine
 
+^^{Lethal Concentration 1. Gas diffusion from a source through adjacent rooms}
+
 	{*}"Lethal Concentration"
 	
 	A concentration is a kind of value. 200.9ppm specifies concentration. 200.9 ppm specifies concentration.

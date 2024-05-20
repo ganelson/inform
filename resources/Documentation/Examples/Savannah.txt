@@ -5,6 +5,8 @@ Index: POUR that pours liquid on a fire
 Description: Using the liquid implementation demonstrated in Lemonade for putting out fires.
 For: Z-Machine
 
+^^{POUR that pours liquid on a fire}
+
 Here we build very slightly on the existing liquid implementation to add a puzzle where the player puts out a fire with a bucket of water. Most of the liquid implementation remains the same as before, but now we understand the names of containers according to the liquids they contain.
 
 The new material, pertaining to extinguishing fires, is at the bottom in section 2.

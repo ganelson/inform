@@ -5,6 +5,8 @@ Index: Understanding units as part of the name of a thing
 Description: Understanding aspect ratios (a unit) in the names of televisions.
 For: Z-Machine
 
+^^{Understanding units as part of the name of a thing}
+
 Named properties are not the only kind that Inform is able to understand referring to an object. We can also use unit and number properties to distinguish things from one another, as here, where televisions have aspect ratios:
 
 	{*}"Aspect"

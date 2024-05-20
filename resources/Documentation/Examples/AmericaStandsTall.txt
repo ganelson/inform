@@ -5,6 +5,8 @@ Index: Feet and inches
 Description: Describing height in feet and inches.
 For: Z-Machine
 
+^^{Feet and inches}
+
 	{*}"America Stands Tall"
 	
 	The Oval Office is a room. Josh and Toby are men in the Oval. A height is a kind of value. 5 foot 11 specifies a height. A person has a height. Josh is 5 foot 8. Toby is 5 foot 10.

@@ -5,6 +5,8 @@ Index: Rooms with sounds of nearby water, illuminated by flickering light
 Description: Flickering lantern-light effects added to the Undertomb.
 For: Z-Machine
 
+^^{rooms+kind+: descriptions: changing based on properties}
+
 	{*}"Undertomb 2"
 	
 	Section 1 - Procedure

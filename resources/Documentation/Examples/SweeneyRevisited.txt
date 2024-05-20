@@ -1,0 +1,61 @@
+Example: * Sweeney Revisited
+Location: When the director is passive
+RecipeLocation: Saying Complicated Things
+Index: Conversation topics that evolve over time
+Description: An innocent conversation about the meat products on sale in Bell Yard, London, in 1847.
+
+Dialogue beats about things are performed in response to the player typing ``TALK ABOUT`` commands, and this short if not sweet example demonstrates that even a very small amount of dialogue can add bustle and character to a location.
+
+	{*}"Sweeney Revisited"
+	
+	Chapter 1 - Setting and Character
+	
+	Mrs Lovett's Meat Pies is a room. Mrs Lovett is a woman in Meat Pies.
+	
+	Chapter 2 - Dialogue
+	
+	Section 1 - Concepts
+	
+	Some meat-pies are a concept. Understand "meat" or "food" or "pies" as meat-pies. The printed name of meat-pies is "pies".
+	Employment is a concept. Understand "work" or "job" as employment. The printed name of employment is "employment".
+	
+	A concept can be used or unused. A concept is usually unused.
+	
+	Carry out talking about a concept:
+		now the noun is used.
+	
+	Test me with "talk about pies / talk about employment / g / g / talk about pies / g".
+
+In this story, then, the dialogue is all going to be produced in response to the player asking to ``TALK ABOUT EMPLOYMENT`` and then ``TALK ABOUT PIES``. Here's the necessary dialogue:
+	
+	{**}Section 2 - Queries and answers (dialogue)
+	
+	(About employment.)
+	
+	Player: "'Say, are you hiring?' you ask, as casually as you can manage."
+	
+	Mrs Lovett: "She looks you over dubiously. 'I might be hiring someone, but I can't say it would necessarily be you.'"
+	
+	(About employment.)
+	
+	Player: "'Tell me, didn't you used to have a young assistant working here?' you ask."
+	
+	Mrs Lovett: "She shrugs. 'Young men these days are so unstable. He left-- who knows where he's gone? I haven't seen hair or fingernail of him for weeks.'"
+
+Surprisingly, Tobias Ragg is at this point in a madhouse rather than some baked pastry, but that only leaves open the question:
+
+	{**}(About meat-pies.)
+	
+	Player: "'What pies do you have in today, Mrs Lovett?' you ask."
+	
+	Mrs Lovett: "She starts, then smiles. 'Meat pies, of course.'"
+	
+	(Later. About meat-pies.)
+	
+	Player: "'What kind of meat goes into these pies, Mrs Lovett?' you ask pressingly."
+	
+	Mrs Lovett: "She looks shifty. 'Whatever the butcher brings this week,' she says. 'With the price of meat what it is, when you get it, you have to be glad of what you can get. If you get it.'"
+	
+	(About any used concept. Recurring.)
+	
+	Player (without speaking; recurring): "You try to think of further questions about [noun], but nothing really comes to you."

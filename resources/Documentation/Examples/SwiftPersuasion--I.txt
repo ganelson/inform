@@ -1,0 +1,60 @@
+
+
+
+
+Swift Persuasion
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Backstage
+You can see Taylor here.
+
+>(Testing.)
+
+>[1] taylor, sing
+You ask Taylor to sing your favorite song, the one that was unaccountably left off tonight's set list. Just one verse would do.
+
+Taylor: "I'll consider your request, but only if you sing something first."
+
+You: "You can't be serious."
+
+Taylor: "I absolutely am. I want to see what you've got."
+
+(1) Okay.
+(2) Definitely not.
+
+>[2] 1
+Okay.
+
+You nod anxiously, aware of all the other VIP ticket holders standing around and poised to judge you.
+
+You sing a rousing rendition of Yankee Doodle Dandy. For some reason it's the only song whose lyrics you can fully remember right now.
+
+Taylor: "Little shaky on the intro, but not bad. I'd say you've earned your piece. Wouldn't you?"
+
+She turns to the other fans expectantly, and they cheer.
+
+Taylor launches into "Electric Touch."
+
+>[3] taylor, sing
+You ask Taylor to sing your favorite song, the one that was unaccountably left off tonight's set list. Just one verse would do.
+
+Taylor: "I'll consider your request, but only if you sing something first."
+
+You: "You can't be serious."
+
+Taylor: "I absolutely am. I want to see what you've got."
+
+(1) Okay.
+(2) Definitely not.
+
+>[4] 2
+Definitely not.
+
+You: "No, the deal is off."
+
+Taylor: "Then I can't help you."
+
+So much for that.
+
+>Are you sure you want to quit? 

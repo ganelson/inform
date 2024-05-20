@@ -1,0 +1,45 @@
+   Jade Temple of Shi
+  More Idol Talk
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Jade Temple of Shi
+  The legendary green idol sits on a simple plinth.
+  
+  You can also see Louisiana Smith here.
+  
+> >   Jade Temple of Shi
+  (Testing.)
+  
+  >[1] talk about idol
+  Choose...
+  
+  (1). Is that idol genuine jade?
+  (2). That looks... far too easy to steal.
+  (3). Exactly why was this ugly little thing sacred to the Shi-Xioafang peoples of the Delta?
+  
+  >[2] 2
+  You: "That looks... far too easy to steal."
+  
+  Louisiana Smith: "You're learning."
+  
+  >[3] talk about idol
+  Choose...
+  
+  (1). Is that idol genuine jade?
+  (2). Exactly why was this ugly little thing sacred to the Shi-Xioafang peoples of the Delta?
+  
+  >[4] 1
+  You: "Is that idol genuine jade?"
+  
+  Louisiana Smith: "It's genuinely old, kid. That's what counts."
+  
+  >[5] talk about idol
+  You: "Exactly why was this ugly little thing sacred to the Shi-Xioafang peoples of the Delta?"
+  
+  Louisiana Smith: "It opens the portal to the Kingdom of the Clouds. If you believe that sort of thing."
+  
+  >[6] talk about idol
+  There is no reply.
+  
+> >

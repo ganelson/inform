@@ -1,0 +1,177 @@
+Example: ** Barter Barter Barter
+Location: Flow markers
+RecipeLocation: The Flow of Conversation
+Index: Dialogue, sequences expanding on an existing verb
+Description: Using the dialogue system to create reusable dialogue sequences in which the player can negotiate a complex trade.
+
+In this expansion of Barter Barter, we use the dialogue system to provide the player with a menu-based way to trade objects with characters, including bargains that depend on characters' particular preferences and the relative value of the items offered.
+
+	{*}"Barter Barter Barter"
+	
+	Chapter 1 - Setting
+	
+	The Trading Post is a room.
+	
+	Meriwether Lewis is a man in the Trading Post. He carries a fluffy handmade quilt and a bag of beans. The beans are edible.
+	
+	William Clark is a man in the Trading Post. He carries leather slippers, a journal, and a loaf of bread. The bread is edible. The slippers are wearable.
+	
+	The player carries an edible thing called a sandwich. The player carries a wearable thing called a hat. The player carries a wearable thing called a silver bracelet.
+	
+	Instead of examining someone: 
+		say "[The noun] is carrying [the list of things carried by the noun]."
+		
+	Distaste relates one person to various things. The verb to dislike means the distaste relation.
+	
+	Clark dislikes the beans and the hat. Lewis dislikes the bread and the sandwich.
+	
+	Test me with "buy quilt / 1 / 1 / buy journal / 1".
+
+We want to make the existing, but normally blocked, `thinking` and `giving` actions more substantial:
+
+	{**}Chapter 2 - Idling moves
+	
+	The block thinking rule is not listed in any rulebook.
+	The block giving rule is not listed in any rulebook.
+	
+	Report Lewis thinking:
+		say "[Lewis] [one of]thinks for a minute[or]strokes his chin[or]mulls it over[at random]." instead.
+	
+Now for some actions which will handle the buying process.
+
+	{**}Chapter 3 - Content
+
+	Section 1 - Bartering basics
+	
+	Offer list is a list of things that varies.
+	Acceptance list is a list of things that varies.
+	The gift is a thing that varies.
+	The goal item is a thing that varies.
+	
+	The barterer is a person that varies;
+	
+	Instead of buying something which is carried by someone:
+		now the offer list is { };
+		now the acceptance list is { };
+		repeat with item running through things carried by the player:
+			add item to offer list, if absent;
+		now the barterer is the holder of the noun;
+		now the goal item is the noun;
+		perform the item purchasing beat instead.
+		
+	Refusing is an action applying to one thing.
+	
+	Carry out an actor refusing something:
+		remove the noun from the offer list, if present.
+		
+	Partially accepting is an action applying to one thing.
+	
+	Carry out an actor partially accepting something:
+		add the noun to the acceptance list, if absent;
+		remove the noun from the offer list, if present.
+		
+	Accepting is an action applying to one thing.
+	
+	Carry out an actor accepting something:
+		add the noun to the acceptance list, if absent;
+		remove the noun from the offer list, if present;
+		repeat with item running through the acceptance list:
+			now the actor carries the item;
+	
+	Report an actor accepting something:
+		say "You hand [the actor] [the acceptance list with definite articles].";
+		now the acceptance list is { } instead.
+
+To keep matters simple, we'll say that food items can be exchanged for one thing but that everything else is worth two things. In the wilderness, it's a seller's market. But if the barterer positively dislikes the item on sale, he'll let it go at any price.
+
+	{**}Section 2 - Pricing
+	
+	To decide whether the total offer satisfies:
+		if the barterer dislikes the goal item:
+			yes;
+		let proposed value be 0;
+		repeat with item running through acceptance list:
+			if item is edible:
+				increase proposed value by 1;
+			else:
+				increase proposed value by 2;
+		if gift is edible:
+			increase proposed value by 1;
+		else:
+			increase proposed value by 2;
+		let proposed cost be 0;
+		if the goal item is edible:
+			now proposed cost is 1;
+		else:
+			now proposed cost is 2;
+		if proposed value is less than proposed cost:
+			no;
+		yes.
+
+So here is the dialogue, where we make good use of action-based choices and flow markers. Note that the `offering beat` can flow into the `assessing beat` _and vice versa_, so we ought to be a little worried about the possibility of an endless regress. But it seems very unlikely that the barterers will get 20 deep in their negotiations. We could keep a count to prevent further wrangling at that point, but for the sake of simplicity this example doesn't do that.
+
+	{**}Section 3 - Details (dialogue)
+	
+	(This is the item purchasing beat. Fully recurring.)
+	
+	Player: "'I'd like to buy [the noun],' you say."
+	
+	Barterer: "'What will you give me for it?' asks [the holder of the noun]." 
+	
+		-> perform the offering beat
+		
+	
+	(This is the offering beat. Fully recurring.)
+	
+	-- (if the number of entries in the offer list is greater than 0) "Offer [the entry 1 in the offer list]"
+	
+		Player (before the barterer thinking; now the gift is entry 1 in the offer list): "'Can I offer you [the entry 1 in the offer list]?' you suggest."
+	
+		-> perform the assessing beat
+		
+		-> stop
+	
+	-- (if the number of entries in the offer list is greater than 1) "Offer [the entry 2 in the offer list]"
+	
+		Player (before the barterer thinking; now the gift is entry 2 in the offer list): "'How about [the entry 2 in the offer list]?' you ask."
+	
+		-> perform the assessing beat
+		
+		-> stop
+	
+	-- (if the number of entries in the offer list is greater than 2) "Offer [the entry 3 in the offer list]"
+	
+		Player (before the barterer thinking; now the gift is entry 3 in the offer list): "'I do have [the entry 3 in the offer list], if you want that.' you suggest."
+	
+		-> perform the assessing beat
+		
+		-> stop
+		
+	-- "Give up"
+	
+		Player: "'I guess I don't have what you need,' you say."
+		
+		Barterer: "'Apparently not,' says [the barterer] cheerfully. '[if the number of entries in the acceptance list is greater than 0]I guess you can hold on to [the acceptance list] for now, but[else]Feel[end if] feel free to come back later.'"
+		
+		-> stop
+			
+	
+	(This is the assessing beat. Fully recurring.)
+	
+	Barterer (if the barterer dislikes the gift; after refusing gift): "'No thanks,' says [the Barterer]. 'Got anything else good?'"
+	
+		-> perform the offering beat
+		
+		-> stop
+	
+	Barterer (if the total offer satisfies; before accepting the gift): "'Sold!' says [the barterer]."
+		
+		Player (after the barterer giving the goal item to the player): "'Why, thank you,' you say."
+		
+		-> stop
+	
+	Barterer (after partially accepting gift): "'I'll take that in partial payment, but [the gift] isn't worth as much to me as [the goal item]. Got anything else good?'"
+	
+		-> perform the offering beat
+		
+		-> stop

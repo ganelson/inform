@@ -5,6 +5,8 @@ Index: Recorder that records sounds made by player and non-player actions
 Description: A sound recording device that records the noises made by player and non-player actions, then plays them back on demand.
 For: Z-Machine
 
+^^{Recorder that records sounds made by player and non-player actions}
+
 We start out by giving ourselves a capacious recording device:
 
 	{*}"If It Hadn't Been For..."

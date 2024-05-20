@@ -5,7 +5,7 @@
   
   MRE
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Base Camp Larder
   This room has been reinforced after each incident -- and there have been dozens in the last two months -- so that it now rivals Fort Knox. Only your new skill and speed enabled you to dodge the motion sensors, knock out the computerized security system, fool the retinal scanner, and punch a hole in the steel containment grating. But you're inside now.
@@ -52,12 +52,12 @@
   >[11] z
   Time passes.
   
-  You find yourself staring at the large plate of pasta and wondering how it would taste.
+  The world seems to slow down and everything becomes sharper and brighter. You are a hunter, a hunter of foodstuffs.
   
   >[12] z
   Time passes.
   
-  The world seems to slow down and everything becomes sharper and brighter. You are a hunter, a hunter of foodstuffs.
+  Gosh, you're starving.
   
   >[13] z
   Time passes.

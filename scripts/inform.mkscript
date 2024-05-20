@@ -152,7 +152,7 @@ INFORM6WEB = inform6
 {component type: web symbol: ARCHITECTURE32KIT    webname: Architecture32Kit    path: inform7/Internal/Inter/Architecture32Kit    set: kits}
 {component type: web symbol: WORLDMODELKIT        webname: WorldModelKit        path: inform7/Internal/Inter/WorldModelKit        set: kits}
 {component type: web symbol: COMMANDPARSERKIT     webname: CommandParserKit     path: inform7/Internal/Inter/CommandParserKit     set: kits}
-{component type: web symbol: ENGLISHLANGUAGEKIT   webname: EnglishLanguageKit   path: inform7/Internal/Inter/EnglishLanguageKit   set: kits}
+{component type: web symbol: ENGLISHLANGUAGEKIT   webname: EnglishLanguageKit   path: inform7/Internal/Extensions/Graham Nelson/English Language.i7xd/Materials/Inter/EnglishLanguageKit   set: kits}
 {component type: web symbol: DIALOGUEKIT          webname: DialogueKit          path: inform7/Internal/Inter/DialogueKit          set: kits}
 
 {component type: web symbol: STANDARDRULES        webname: standard_rules       path: inform7/extensions/standard_rules           set: extensions}
@@ -185,9 +185,12 @@ force: forcetools forcekits forceextensions localintegration
 # side-files tangled from the Inform 7 code base out of the inform7 web and
 # into the places elsewhere in the repository where they are actually needed:
 
+ENGLISHPATH = $(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/English\ Language.i7xd/Materials/Languages/English
+SENGLISHPATH = $(INFORM7WEB)/Internal/Extensions/Graham Nelson/English Language.i7xd/Materials/Languages/English
+
 .PHONY: localintegration
 localintegration: \
-	$(INFORM7WEB)/Internal/Languages/English/Syntax.preform \
+	$(ENGLISHPATH)/Syntax.preform \
 	$(INFORM7WEB)/Internal/Miscellany/inform7_clib.h \
 	$(INFORM7WEB)/Internal/Miscellany/inform7_clib.c
 
@@ -195,8 +198,8 @@ localintegration: \
 # but it makes three side files as well: Syntax.preform, a grammar file, and
 # a small C library used when compiling Inform projects to C.
 
-$(INFORM7WEB)/Internal/Languages/English/Syntax.preform: $(INFORM7WEB)/Tangled/Syntax.preform
-	cp -f "$(INFORM7WEB)/Tangled/Syntax.preform" "$(INFORM7WEB)/Internal/Languages/English/Syntax.preform"
+$(ENGLISHPATH)/Syntax.preform: $(INFORM7WEB)/Tangled/Syntax.preform
+	cp -f "$(INFORM7WEB)/Tangled/Syntax.preform" "$(SENGLISHPATH)/Syntax.preform"
 
 $(INFORM7WEB)/Internal/Miscellany/inform7_clib.h: $(INFORM7WEB)/Tangled/inform7_clib.h
 	cp -f "$(INFORM7WEB)/Tangled/inform7_clib.h" "$(INFORM7WEB)/Internal/Miscellany/inform7_clib.h"
@@ -371,6 +374,7 @@ check:
 commit:
 	$(INWEBX) -advance-build-file build.txt
 	$(INPOLICYX) -sync-kit-versions
+	$(INPOLICYX) -sync-extension-versions
 	{update-readme}
 	git commit -a
 
@@ -668,16 +672,16 @@ forcetransfertools:
 .PHONY: transferpreform
 transferpreform: forcetransferpreform
 
+INTERNALENGLISHPATH = $(INTERNAL)/Extensions/Graham\ Nelson/English\ Language.i7xd/Materials/Languages/English
+SINTERNALENGLISHPATH = $(INTERNAL)/Extensions/Graham Nelson/English Language.i7xd/Materials/Languages/English
+
 .PHONY: forcetransferpreform
 forcetransferpreform:
-	mkdir -p "$(INTERNAL)/Languages"
-	mkdir -p "$(INTERNAL)/Languages/English"
-	cp -f "$(INFORM7WEB)/Tangled/Syntax.preform" "$(INTERNAL)/Languages/English/Syntax.preform"
+	mkdir -p "$(SINTERNALENGLISHPATH)"
+	cp -f "$(INFORM7WEB)/Tangled/Syntax.preform" "$(SINTERNALENGLISHPATH)/Syntax.preform"
 
 # -----------------------------------------------------------------------------
 # Copying the indexing structure and localisation files into the app
-
-{set name: LOCALISEDINDEXES value: English}
 
 .PHONY: transferindext
 transferindext: forcetransferindext
@@ -687,10 +691,8 @@ forcetransferindext:
 	mkdir -p "$(INTERNAL)/Miscellany"
 	cp -f "$(INFORM7WEB)/Internal/Miscellany/Standard.indext" "$(INTERNAL)/Miscellany/Standard.indext"
 	cp -f "$(INFORM7WEB)/Internal/Miscellany/Basic.indext"    "$(INTERNAL)/Miscellany/Basic.indext"
-	{repeat with: LANGUAGE in: {LOCALISEDINDEXES}}
-	mkdir -p "$(INTERNAL)/Languages/{LANGUAGE}"
-	cp -f "$(INFORM7WEB)/Internal/Languages/{LANGUAGE}/Index.txt" "$(INTERNAL)/Languages/{LANGUAGE}/Index.txt"
-	{end-repeat}
+	mkdir -p "$(SINTERNALENGLISHPATH)"
+	cp -f "$(SENGLISHPATH)/Index.txt" "$(SINTERNALENGLISHPATH)/Index.txt"
 
 # -----------------------------------------------------------------------------
 # Copying kits (and Inter pipelines) into the app

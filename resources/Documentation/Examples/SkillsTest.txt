@@ -1,0 +1,203 @@
+Example: *** Skills Test
+Location: Managing dialogue beats
+RecipeLocation: Reactive Characters
+Index: Character commenting on actions
+Description: The judges of Masterchef comment on the player's attempt to cook John Dory.
+
+	{*}"Skills Test" by Previous Me
+	
+	Section 1 - The Environs
+	
+	Masterchef Kitchen is a room. Marcus and Greg are men in the Kitchen. Monica is a woman in the Kitchen.
+	
+	Rule for writing a paragraph about Monica:
+		say "[Monica] is presiding over this competition. Her arms are folded and she looks ferocious. [Marcus] and [Greg] are merely her audience."
+	
+	The Kitchen contains a worktop. A stove is part of the worktop. On the stove are a skillet and a pot. The pot is a container. The skillet is a container. The stove can be switched on or switched off.
+	
+	On the worktop is a quantity of parsley, a knob of butter, a head of garlic, a shallot, some cream, and a whole John Dory.
+	
+	A foodstuff is a kind of thing. A foodstuff can be choppable. The parsley, the head of garlic, and the whole shallot are choppable foodstuffs. A foodstuff has a thing called the output. The butter and cream are foodstuffs. A foodstuff is edible.
+	
+	The garlicky mince, the diced shallot, and the parsley are foodstuffs.
+	
+	On the worktop is a knife block. A chef's knife is in the knife block. The knife block and the worktop and the stove are fixed in place.
+	
+	The description of the John Dory is "A flat fish with very large and searching eyes. This one is staring at you. The flesh is white and unassuming. Plainly, you are meant to detach and cook this flesh. The John Dory is still staring at you."
+	
+	The miserable fillets are a thing. The description of the miserable fillets is "These are the shreds of meat you have managed to slash off the body of the deceased John Dory. They are jaggedly cut and inelegant."
+	
+	The description of the knob of butter is "An obscene quantity of high-fat European butter."
+	
+	The description of the whole shallot is "They did not mention shallots in the instructions. Is this meant to entrap you? It must be here for a reason. The only part of the dish that could contain a shallot, plainly, is the garlic cream. But they did not say to make a garlic and shallot cream. Questions abound." The output of the whole shallot is the diced shallot.
+	
+	The description of the garlic is "It is plentiful and wincingly pungent." The output of the garlic is the garlicky mince.
+	
+	The garlicky mince is a thing. The description is "Once this was a whole head of fresh garlic. Now it is something approaching a paste."
+	
+	The diced shallot is a thing. The description is "One shallot, finely diced."
+	
+	The garnish is a thing. The description is "It's parsley cut fine enough to serve as a garnish, but would you really call it a puree?"
+	
+	The description of the parsley is "It's the flat variety. Is that French parsley or Italian parsley? No, it hardly matters, does it? They said puree, which means it needs to be whirred up." The output of the parsley is the garnish.
+	
+	Instead of smelling the parsley:
+		say "It smells mild but well-meaning."
+	
+	Sampling is a thing. Knife skills are a thing. The contest is a thing.
+	
+	Section 2 - Interacting with the Foodstuffs
+	
+	Instead of doing something to something:
+		make the noun a live conversational subject;
+		continue the action.
+		
+	Report eating a foodstuff:
+		say "You gulp down [the noun]. One less ingredient to worry about.";
+		make the parsley a live conversational subject; [slightly tripped here that 'now foo is a live...' doesn't work]
+		make sampling a live conversational subject;
+		stop the action.
+		
+	Report tasting a foodstuff:
+		say "You taste a bit of [the noun]. It's... [noun]like.";
+		make the parsley a live conversational subject; [slightly tripped here that 'now foo is a live...' doesn't work]
+		make sampling a live conversational subject;
+		stop the action.
+	
+	Instead eating or tasting the dory:
+		say "The fish is not cooked yet. It's not even filleted.";
+		make the dory a live conversational subject;
+		make sampling a live conversational subject.
+		
+	Instead of cutting a choppable foodstuff:
+		if the player does not carry the chef's knife:
+			say "You are unarmed against [the noun]." instead;
+		remove the noun from play;
+		now the output of the noun is on the worktop;
+		say "You reduce [the noun] to [an output of the noun].";
+		make knife skills a live conversational subject.
+		
+	Instead of cutting the dory:
+		if the player does not carry the chef's knife:
+			say "You are unarmed against the reproachful creature." instead;
+		remove the dory from play;
+		now the miserable fillets are on the worktop;
+		say "You briskly transform the side of the John Dory into three miserable and ragged fillets of fish.";
+		make knife skills a live conversational subject;
+		make miserable fillets a live conversational subject.
+		
+	When play begins:
+		perform the Introductory conversational beat;
+		make the dialogue director active.
+	
+	Test me with "x parsley / taste parsley / x dory / z / x butter / take chef's knife / cut dory / x fillets".
+	
+The dialogue director will be active throughout, and the following beats will be performed as and when the various culinary actions cause their subjects to be live conversational subjects.
+
+	{**}Section 3 - Skills Test (dialogue)
+	
+	(This is the Introductory conversational beat.)
+	
+	Monica: "Welcome to the skills test!"
+	
+	Marcus: "You have twenty minutes to fillet this John Dory and prepare it with a parsley puree and garlic cream."
+	
+	Monica: "I did this myself, and it came out delicious."
+	
+	Monica: "No pressure."
+	
+	Marcus: "None."
+	
+	(About sampling and the contest.)
+	
+	Marcus: "It's always a good sign when they taste the food."
+	
+	(About knife skills and the contest.)
+	
+	Marcus: "We do like to see proficient knife skills."
+	
+	(About the contest.)
+	
+	Greg: "I think we've seen better from the other contestants."
+	
+	Monica: "You're not supposed to say that in front of them."
+	
+	Greg: "We can take it out in editing."
+	
+	(About the knife block.)
+	
+	Marcus: "The knives in this kitchen are top quality."
+	
+	Greg: "No product placement, remember."
+	
+	Marcus: "I wasn't going to mention the brand."
+	
+	(About the John Dory.)
+	
+	Marcus: "The John Dory is such a beautiful fish."
+	
+	Monica: "It would be a tragedy to waste any of the flesh."
+	
+	(About the John Dory and the miserable fillets.)
+	
+	Monica (if the John Dory is visible): "Come on, you're going to need to cut that up sooner or later."
+	
+	(About the miserable fillets.)
+	
+	Monica (after examining the fillets): "Ooh, what did I say about wasting any of the John Dory meat?"
+	
+	Marcus: "You didn't like the idea."
+	
+	Greg: "It's such a noble fish."
+	
+	Marcus: "I think you mean it was a noble fish."
+	
+	(About the John Dory.)
+	
+	Marcus: "Monica, do you know why the John Dory was named that?"
+	
+	Monica: "No, why?"
+	
+	Marcus: "I was asking you."
+	
+	(About the parsley.)
+	
+	Marcus: "The trick here is to –"
+	
+	Monica: "Shush." 
+	
+	(About the parsley.)
+	
+	Marcus: "Really, the thing to do with the parsley is–"
+	
+	Monica: "Marcus, do I kibbitz when you set the skills tests?"
+	
+	Marcus: "No, but I make mine a reasonable difficulty."
+	
+	Monica: "This test is reasonable."
+	
+	Greg: "I'm just here for the tears."
+	
+	(About the chef's knife.)
+	
+	Monica: "It's filleting time."
+	
+	(About the butter.)
+	
+	Marcus: "Don't use too much of the butter. My doctor doesn't think judging this show is very good for me."
+	
+	-- after eating or tasting the butter
+		
+		Marcus (after examining Monica): "I'm not sure that makes things better."
+	
+		<-
+	
+	-- otherwise
+	
+	Monica: "I bet long hours at the hospital aren't good for your doctor, either."
+		
+	Marcus: "I'll mention that to him next time we meet." 
+		
+	Greg: "Medical advice is just a suggestion anyway."
+
+Nobody in fact knows why the fish John Dory is so called. Its Latin species name is _Zeus faber_, though, which seems kind of appropriate for an interactive fiction author.

@@ -1,0 +1,15 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 11 words long.
+I've also read version 2 of Basic Inform by Graham Nelson, which is 8488 words long.
+I've also read version 2 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 7 of Standard Rules by Graham Nelson, which is 35138 words long.
+Warning__ WM_LongWords
+  >--> This project places two words 'abcdefghijklmnopqrstuvwxyzzz' and
+    'abcdefghijklmnopqrstuvwxyz' into the dictionary used for reading player
+    commands. But because they differ only after 14 characters, which is the
+    current setting for 'Use dictionary resolution', this might cause
+    confusion.
+
+  The 11-word source text has successfully been translated. There were 1 room
+    and 3 things.
+Inform 7 has finished.

@@ -5,6 +5,8 @@ Index: Novice mode offers suggestions before each prompt
 Description: Novice mode that prefaces every prompt with a list of possible commands the player could try, and highlights every important word used, to alert players to interactive items in the scenery.
 For: Z-Machine
 
+^^{Novice mode offers suggestions before each prompt}
+
 Observation of novice IF players suggests that they often have a hard time figuring out how to get started, especially if they are encountering the game in a context where they don't have time to settle in and read instructions. Here we provide some training wheels to help them learn to communicate.
 
 This is divided into several parts. The first part is the system of rules for general guidance, which could be excerpted and used anywhere. The second part is a scenario using these rules.

@@ -5,6 +5,8 @@ Index: LOOK mentions only currently useful objects
 Description: Manipulating room descriptions so that only interesting items are mentioned, while objects that are present but not currently useful to the player are ignored.
 For: Z-Machine
 
+^^{looking+action+: mentioning only currently useful objects}
+
 In a very dense environment, we might want to offer the player room descriptions in which only the currently-interesting items are mentioned, while other objects are suppressed even if they are present. In effect, this takes the idea of scenery and makes it more flexible: different things might become background objects or foreground objects at different times during play.
 
 There are a wide range of possible reasons to do this – to shift the narrative emphasis, to change the mood of the game by highlighting different parts of the environment, to show the game from the perspective of different viewpoint characters – but in the following example, our goal is to show the player only the objects that are currently useful for puzzles.

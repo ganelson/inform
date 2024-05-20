@@ -149,6 +149,8 @@ of alternatives each of which matches the following:
 	... ( {<lp-group-list>} ) |                      ==> { pass 1 }
 	<k-kind-articled> times <k-kind-articled> |      ==> @<Store left and right kinds@>
 	<s-type-expression> times <s-type-expression> |  ==> @<Issue PM_MultiplyingNonKOVs problem@>
+	<k-kind-articled> minus <k-kind-articled> |      ==> @<Subtract left and right kinds@>
+	<s-type-expression> minus <s-type-expression> |  ==> @<Issue PM_MultiplyingNonKOVs problem@>
 	... ==> { 0, NULL }
 
 <lp-group-list> ::=
@@ -170,10 +172,14 @@ of alternatives each of which matches the following:
 	Kinds::Dimensions::dim_set_multiplication(RP[1], RP[2], glps.kind_specified);
 	==> { ABANDON_LPN, - };
 
+@<Subtract left and right kinds@> =
+	Kinds::Dimensions::dim_set_subtraction(RP[1], RP[2], glps.kind_specified);
+	==> { ABANDON_LPN, - };
+
 @<Issue PM_MultiplyingNonKOVs problem@> =
 	if (preform_lookahead_mode == FALSE)
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MultiplyingNonKOVs),
-			"only kinds of value can be multiplied here",
+			"only kinds of value can be multiplied or subtracted here",
 			"and only in a sentence like 'A length times a length specifies an area.'");
 	==> { ABANDON_LPN, NULL }
 

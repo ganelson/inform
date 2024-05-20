@@ -5,6 +5,8 @@ Index: WRITE IN command that will open a free-text mode
 Description: An expansion on the notebook, allowing the player somewhat more room in which to type their recorded remark.
 For: Glulx
 
+^^{WRITE IN command that will open a free-text mode}
+
 The implementation here is much like that of the previous example, except that we allow the player to write their notebook input as a separate command, leading to an exchange such as
 
 	> WRITE IN MY NOTEBOOK

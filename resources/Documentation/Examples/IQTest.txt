@@ -5,6 +5,8 @@ Index: Person who opens a container before trying to get something from it
 Description: Introducing Ogg, a person who will unlock and open a container when the player tells him to get something inside.
 For: Z-Machine
 
+^^{characters (people): acting spontaneously: opening containers} ^^{actions: spontaneous by other people}
+
 We have already seen how Before... rules can generate implicit actions for the player, so that the player will, for instance, open doors before trying to walk through them. The same can be done for characters other than the player; so for instance:
 
 	{*}"IQ Test"

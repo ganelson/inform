@@ -1,0 +1,66 @@
+Example: * Pure Choice
+Location: When the director is passive
+RecipeLocation: Alternatives To Standard Parsing
+Index: Branching choices
+Description: Using the dialogue system to write a branching text with no world model to speak of.
+
+It's quite possible to implement a choice-based story entirely within the dialogue system, so that no commands are ever typed in.
+
+And it's then almost possible to have the source text consist only of a great big dialogue section, but not quite. We still need a room for the player to be in, which we'll call `Stage Set` here. And if there were other actors who spoke in the story, they'd also need to be created as `people` and put in this same room.
+
+In this example, though, we'll make things look even less like traditional interactive fiction by suppressing the standard room description entirely. And as nobody speaks except the narrator, we don't need any `people` either.
+	
+	{*}"Pure Choice"
+	
+	Section 1 - The set, actors and props
+	 
+	The Stage Set is a room.
+	
+	Instead of looking: do nothing instead. 
+
+Literally everything else is dialogue:
+	
+	{**}Section 2 - The play (dialogue)
+	
+	(This is the starting beat.)
+	
+	Narration: "Here we might place our opening narration.
+	
+	We could go on for several paragraphs, if we like. There's no need to make them separate lines of narration if we do not want to."
+	
+		-- "I get the general idea."
+		
+			Narration: "Good." 
+	
+		-- "Cool. Now show me something else."
+		
+			Narration: "This text is only shown because of the choice you just made. But in a moment, we'll rejoin the same storyline as though you'd made the opposite decision. Right about... NOW." 
+
+	Narration: "Speaking of choices, the following two won't make any difference at all. The player's decision will immediately rejoin, leaving them only with the recollection of having made a choice in the first place."
+	
+		-- "I will remember this."
+		
+		-- "I will forget this almost immediately."
+	
+	Narration: "Here, by contrast..."
+	
+		-- "This branch is actually significant."
+		
+			-> perform the lefthand beat
+		
+		-- "As is this one."
+		
+			-> perform the righthand beat
+			
+	(This is the lefthand beat.)
+	
+	Narration: "You have passed through the left door."
+	
+	-> end the story finally
+	
+	(This is the righthand beat.)
+	
+	Narration: "You have passed through the right door. The narrative has branched, and it will not rejoin; your decision was permanent."
+	
+	-> end the story finally
+ 

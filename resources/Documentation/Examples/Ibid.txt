@@ -5,6 +5,8 @@ Index: Footnote system
 Description: A system which allows the author to assign footnotes to descriptions, and permits the player to retrieve them again by number, using `the number understood`. Footnotes will automatically number themselves, according to the order in which the player discovers them.
 For: Z-Machine
 
+^^{footnotes (implementing)}
+
 [Hitchhiker's Guide to the Galaxy](https://ifdb.org/viewgame?id=ouv80gvsl32xlion) introduced the idea of footnoted descriptions, and various IF games since have toyed with the idea. The recommended implementation in Inform 6 involved keeping an assortment of footnote objects around, but in Inform 7 the table is a much tidier way of handling the same problem.
 
 	{*}`Ibid.`

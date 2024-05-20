@@ -326,8 +326,7 @@ are above 32K. This only rarely happens, but it can.
 	buffer-->0 = at+i;
 	for (:at+i<INPUT_BUFFER_LEN:i++) buffer-->(at+i) = ' ';
 	#endif;
-	VM_Tokenise(buffer, parse);
-	players_command = 100 + WordCount();
+	TokeniseInput(buffer, parse);
 	buffer2-->0 = saved;
 	@pull say__pc; @pull say__p;
 ];
@@ -549,7 +548,7 @@ The return value is the number of words typed.
 			#Ifnot;
 			for (i=0 : i<64 : i++) a_buffer-->i = oops_workspace-->i;
 			#Endif;
-			VM_Tokenise(a_buffer,a_table);
+			TokeniseInput(a_buffer,a_table);
 
 			! Work out the position in the buffer of the word to be corrected:
 			#Iftrue CHARSIZE == 1;
@@ -592,7 +591,7 @@ The return value is the number of words typed.
 			for (i=0 : i<x2 : i++) a_buffer-->(i+w) = buffer2-->(i+x1);
 			#Endif;
 
-			VM_Tokenise(a_buffer, a_table);
+			TokeniseInput(a_buffer, a_table);
 			#Iftrue CHARSIZE == 1;
 			nw = a_table->1;
 			#Ifnot;
@@ -627,6 +626,12 @@ The return value is the number of words typed.
 	SL_Location(); print "^";
 	VM_Style(NORMAL_VMSTY);
 	IMMEDIATELY_UNDO_RM('E'); new_line;
+];
+
+[ TokeniseInput buf tab;
+  VM_Tokenise(buf, tab);
+  num_words = WordCount();
+  players_command = 100 + num_words;
 ];
 
 @h Parser Proper.
@@ -695,7 +700,7 @@ Get the input, do OOPS and AGAIN.
             #Endif;
         }
 
-        VM_Tokenise(buffer, parse);
+        TokeniseInput(buffer, parse);
         jump ReParse;
     }
 
@@ -714,14 +719,14 @@ Get the input, do OOPS and AGAIN.
     ! Initially assume the command is aimed at the player, and the verb
     ! is the first word
 
-    num_words = WordCount(); players_command = 100 + num_words;
+    ! num_words = WordCount(); players_command = 100 + num_words;
     wn = 1; inferred_go = false;
 
     LanguageToInformese();
     ! Re-tokenise:
-    VM_Tokenise(buffer,parse);
+    TokeniseInput(buffer,parse);
 
-    num_words = WordCount(); players_command = 100 + num_words; token_filter = 0;
+    token_filter = 0;
     allow_plurals = true; ResetDescriptors();
 
     k=0;
@@ -800,8 +805,7 @@ Get the input, do OOPS and AGAIN.
         #Ifnot;
         for (i=0 : i<INPUT_BUFFER_LEN : i++) buffer-->i = buffer3-->i;
         #Endif;
-        VM_Tokenise(buffer,parse);
-        num_words = WordCount(); players_command = 100 + num_words;
+        TokeniseInput(buffer,parse);
         jump ReParse;
     }
 
@@ -2509,8 +2513,7 @@ because we want to allow duplicates).
     wn = 1;
     LanguageToInformese();
     ! Re-tokenise:
-    VM_Tokenise(buffer,parse);
-	num_words = WordCount(); players_command = 100 + num_words;
+    TokeniseInput(buffer,parse);
     actors_location = ScopeCeiling(player);
 	FollowRulebook(Activity_after_rulebooks-->READING_A_COMMAND_ACT);
 
@@ -4004,6 +4007,85 @@ Manual}, 4th edition.
 
 [ YES_OR_NO_QUESTION_INTERNAL_R; ];
 
+@h Numerical Choices.
+This crude function prompts the player for a number from 1 to |max|, waits for
+this to be typed at the keyboard, then returns the choice made.
+
+=
+[ NumberChosenByPlayer max i j wa wl sign base digit_count n digit ch;
+	if (max <= 0) return 1;
+    for (::) {
+    	print ">";
+        if (location == nothing || parent(player) == nothing) KeyboardPrimitive(buffer2, parse2);
+        else KeyboardPrimitive(buffer2, parse2, DrawStatusLine);
+        #Iftrue CHARSIZE == 1;
+        j = parse2->1;
+		wa = buffer2 + parse2->5;
+		wl = parse2->4;
+        #Ifnot;
+        j = parse2-->0;
+ 		wa = buffer2 + WORDSIZE * parse2-->3;
+		wl = parse2-->2;
+        #Endif;
+        if (j) { ! at least one word entered
+            sign = 1; base = 10; digit_count = 0;
+			#Iftrue CHARSIZE == 1;
+			ch = wa->0;
+			#Ifnot;
+			ch = wa-->0;
+			#Endif; ! CHARSIZE
+			if (ch ~= '0' or '1' or '2' or '3' or '4' or '5' or '6' or '7' or '8' or '9')
+				jump Retry;
+			n = 0;
+			while (wl > 0) {
+				digit = ch - '0';
+				digit_count++;
+				switch (base) {
+					2:  if (digit_count == 17) jump Retry;
+					10:
+						#Iftrue WORDSIZE == 2;
+						if (digit_count == 6) jump Retry;
+						if (digit_count == 5) {
+							if (n > 3276) jump Retry;
+							if (n == 3276) {
+								if (sign == 1 && digit > 7) jump Retry;
+								if (sign == -1 && digit > 8) jump Retry;
+							}
+						}
+						#Ifnot; ! i.e., if (WORDSIZE == 4)
+						if (digit_count == 11) jump Retry;
+						if (digit_count == 10) {
+							if (n > 214748364) jump Retry;
+							if (n == 214748364) {
+								if (sign == 1 && digit > 7) jump Retry;
+								if (sign == -1 && digit > 8) jump Retry;
+							}
+						}
+						#Endif;
+					16: if (digit_count == 5) jump Retry;
+				}
+				if (digit >= 0 && digit < base) n = base*n + digit;
+				else jump Retry;
+				wl--;
+				#Iftrue CHARSIZE == 1;
+				wa++;
+				#Ifnot;
+				wa = wa + WORDSIZE;
+				#Endif; ! CHARSIZE
+			}
+			n = n*sign;
+			if ((n < 1) || (n > max)) jump Retry;
+			return n;
+        }
+		.Retry;
+		n = parsed_number; parsed_number = max;
+		PICK_A_NUMBER_INTERNAL_RM('A', max); print "^^";
+		parsed_number = n;
+    }
+];
+
+[ PICK_A_NUMBER_INTERNAL_R; ];
+
 @h Number Words.
 Not much of a parsing routine: we look through an array of pairs of number
 words (single words) and their numeric equivalents.
@@ -4286,8 +4368,7 @@ the heap.
 	for (i=0:i<len:i++) buffer-->(i+at) = CharToCase(PVField(from_txt, i), 0);
 	for (:at+i<INPUT_BUFFER_LEN:i++) buffer-->(at+i) = ' ';
 	#endif;
-	VM_Tokenise(buffer, parse);
-	players_command = 100 + WordCount(); ! The snippet variable "player's command"
+	TokeniseInput(buffer, parse);
 	TEXT_TY_Untransmute(from_txt, p, cp);
 ];
 

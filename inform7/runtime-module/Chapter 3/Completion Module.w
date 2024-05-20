@@ -16,6 +16,7 @@ void CompletionModule::compile(void) {
 	@<Headings@>;
 	@<Kit relative paths@>;
 	@<Debugging log aspects@>;
+	@<Copyright licences@>;
 }
 
 @ So, for example, these might be |10.1.0| and |10.1.0-alpha.1+6R84| respectively.
@@ -120,6 +121,14 @@ void CompletionModule::compile(void) {
 		}
 	}
 
+@<Copyright licences@> =
+	inter_name *iname = Hierarchy::find(COPYRIGHT_LICENCES_HL);
+	TEMPORARY_TEXT(licences)
+	LicenceDeclaration::describe(licences, I6_TEXT_LICENSESFORMAT);
+	if (Str::len(licences) > 0) Emit::text_constant(iname, licences);
+	else Emit::numeric_constant(iname, 0);
+	Hierarchy::make_available(iname);
+	
 @ =
 void CompletionModule::write_RTP_path(OUTPUT_STREAM, pathname *P) {
 	inform_project *proj = Task::project();

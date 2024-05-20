@@ -28,16 +28,39 @@ void KitVersioning::sync_versions(void) {
 
 =
 void KitVersioning::iterate(semantic_version_number set_to) {
-	KitVersioning::show_version(I"WorldModelKit", set_to);
-	KitVersioning::show_version(I"EnglishLanguageKit", set_to);
-	KitVersioning::show_version(I"CommandParserKit", set_to);
-	KitVersioning::show_version(I"BasicInformKit", set_to);
-	KitVersioning::show_version(I"Architecture16Kit", set_to);
-	KitVersioning::show_version(I"Architecture32Kit", set_to);
+	pathname *P = Pathnames::from_text(I"inform7/Internal/Inter");
+	KitVersioning::show_version(P, I"WorldModelKit", set_to);
+	KitVersioning::show_version(P, I"CommandParserKit", set_to);
+	KitVersioning::show_version(P, I"BasicInformKit", set_to);
+	KitVersioning::show_version(P, I"DialogueKit", set_to);
+	KitVersioning::show_version(P, I"Architecture16Kit", set_to);
+	KitVersioning::show_version(P, I"Architecture32Kit", set_to);
+	pathname *X = Pathnames::from_text(I"inform7/Internal/Extensions/Graham Nelson");
+	KitVersioning::iterate_through(X, set_to);
 }
 
-void KitVersioning::show_version(text_stream *name, semantic_version_number set_to) {
-	pathname *P = Pathnames::from_text(I"inform7/Internal/Inter");
+void KitVersioning::iterate_through(pathname *P, semantic_version_number set_to) {
+	linked_list *L = Directories::listing(P);
+	text_stream *entry;
+	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+		if (Platform::is_folder_separator(Str::get_last_char(entry))) {
+			Str::delete_last_character(entry);
+			pathname *X = Pathnames::down(P, entry);
+			X = Pathnames::down(X, I"Materials");
+			X = Pathnames::down(X, I"Inter");
+			linked_list *L2 = Directories::listing(X);
+			text_stream *kit;
+			LOOP_OVER_LINKED_LIST(kit, text_stream, L2) {
+				if (Platform::is_folder_separator(Str::get_last_char(kit))) {
+					Str::delete_last_character(kit);
+					KitVersioning::show_version(X, kit, set_to);
+				}
+			}
+		}
+	}
+}
+
+void KitVersioning::show_version(pathname *P, text_stream *name, semantic_version_number set_to) {
 	P = Pathnames::down(P, name);
 	semantic_version_number V = KitVersioning::read_version(P, set_to);
 	PRINT("Kit %S has version %v\n", name, &V);

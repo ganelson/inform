@@ -5,6 +5,8 @@ Index: Staircase kind of door, always open and unopenable
 Description: A staircase always open and never openable.
 For: Z-Machine
 
+^^{Staircase kind of door, always open and unopenable}
+
 In a game with many staircases, we might want:
 
 	A staircase is a kind of door. A staircase is always open. A staircase is never openable.

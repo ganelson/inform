@@ -5,6 +5,8 @@ Index: Clouds with random descriptions
 Description: The automatic weather station atop Mt. Pisgah shows randomly fluctuating temperature, pressure and cloud cover.
 For: Z-Machine
 
+^^{Clouds with random descriptions}
+
 	{*}"Weathering"
 	
 	A cloud pattern is a kind of value. The cloud patterns are cumulus, altocumulus, cumulonimbus, stratus, cirrus, nimbus, nimbostratus.

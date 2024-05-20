@@ -5,6 +5,8 @@ Index: Using lists as arrays
 Description: The modest Leonardo Fibonacci of Pisa will be only too happy to construct his sequence on request, using an array.
 For: Z-Machine
 
+^^{lists: variations on use of lists}
+
 Fibonacci (a posthumous nickname) spread Arabic mathematical learning across Europe in the 13th century, and it's curious that his name lives on only for a single sequence.
 
 	{*}"The Fibonacci Sequence"

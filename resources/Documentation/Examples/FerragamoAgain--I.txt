@@ -1,7 +1,7 @@
    Break Room
   Ferragamo Again
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Break Room
   You can see Vanessa, Tina, Lisa, Mark and Holman here.
@@ -16,15 +16,15 @@
   You chat for a while about Assyrian vowel sounds.
   
   >[3] g
-  Lisa sighs heavily. Maybe you should let this one go.
+  Vanessa takes off her glasses and polishes them on her sleeve. Maybe you should let this one go.
   
   >[4] talk about handbags
   You chat for a while about designer handbags.
   
   >[5] talk about prada
-  Mark sighs heavily. Maybe you should let this one go.
+  Lisa sighs heavily. Maybe you should let this one go.
   
   >[6] talk about tods
-  Tina sighs heavily. Maybe you should let this one go.
+  Lisa sighs heavily. Maybe you should let this one go.
   
 > >

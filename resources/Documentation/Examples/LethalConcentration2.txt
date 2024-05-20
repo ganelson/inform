@@ -5,6 +5,8 @@ Index: Lethal Concentration 2. Gas diffusion in which gas is heavier than air
 Description: Poisonous gas again, only this time it sinks.
 For: Z-Machine
 
+^^{Lethal Concentration 2. Gas diffusion in which gas is heavier than air}
+
 This is a slight variation on the previous gas diffusion example: the main difference is that gas preferentially moves towards lower rooms, and will gradually settle in the bottom floor. We do this by calculating the probability of movement separately for each pair of rooms.
 
 	{*}"Lethal Concentration"

@@ -3,7 +3,7 @@
   
   Full Moon
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Dark Forest
   You are mostly aware that you are not as alone here as you would like, and that the ground is uneven.
@@ -14,7 +14,7 @@
   >[1] z
   Time passes.
   
-  The wind howls in your ears.
+  A twig snaps behind you!
   
   >[2] z
   Time passes.
@@ -29,6 +29,6 @@
   >[4] z
   Time passes.
   
-  A twig snaps behind you!
+  You feel chilly.
   
 > >

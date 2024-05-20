@@ -5,6 +5,8 @@ Index: Near-infinite supply of pizza
 Description: Providing a pizza buffet from which the player can take as many pieces as they want.
 For: Z-Machine
 
+^^{Near-infinite supply of pizza}
+
 Suppose we want the player to have a pizza buffet from which they can take a number of slices. But we don't want to actually put the slices there in front of them, because ``you can see 17 slices of pizza here`` is not the descriptive effect we want, and because we want to pretend, at least, that the pizza supply is nearly infinite. In fact, we're going to replenish the supply by allowing eaten slices to return to the buffet table (safer in IF than in real life).
 
 To do this, we create one object to stand in for the pizza supply, but whenever the player tries to take it, we give them a different `pizza slice` object instead. Thus:

@@ -4,7 +4,7 @@ For: Z-Machine
 The arena is a room.
 
 Weird time is a time that varies.
-Weird time is 8 hours 3 minutes.
+Weird time is 8:03 am.
 
 Instead of looking:
 	say "[hours part of weird time] hours and [minutes part of weird time] minutes."

@@ -1,0 +1,96 @@
+Example: ** The Top of Your Lungs
+Location: When the director is passive
+RecipeLocation: Character Emotion
+Index: Speaking in a raised voice
+Description: Adding a ``YELL AT`` verb that selects only yelled dialogue beats.
+
+Some stories may want to offer dialogue interactions beyond the standard ``TALK TO`` or ``TALK ABOUT`` options. Perhaps we want to let the player express emotions or tone of voice; perhaps we want them to use alternate communication styles such as gestures; or perhaps we want to implement higher-level concepts such as ``COMPLIMENT`` or ``INSULT``.
+
+One way to keep our implementation consistent is to apply a property to the relevant dialogue beats so that we can then use an action system to select exclusively for those that match the player's intent. 
+
+All the other rules and conditions of the dialogue system will continue to apply, so that we can write dialogue that is only accessible to the player in the right locations or when talking to the right characters.
+
+	{*}"The Top of Your Lungs"
+
+	Chapter 1 - Setting
+	
+	The Subway Platform is a room. The busker is a man in the Subway Platform.
+	
+	Test me with "talk about busker / yell at busker".
+	
+	Chapter 2 - Conversation
+	
+	Section 1 - Yelling
+	
+	A dialogue beat can be yelled or unyelled. A dialogue beat is usually unyelled.
+	
+	Yelling at is an action applying to one thing.
+	
+	Understand "yell" as yelling at.
+	Understand "yell at [something]" as yelling at.
+	
+	The yelling at action has a list of dialogue beats called the yelling beats.
+	 
+	Rule for supplying a missing noun when Yelling at:
+		now the noun is the player.
+		
+	Check yelling at something:
+		if the noun is not a person:
+			say "[The noun] would be unlikely to hold a compelling conversation." instead.
+	
+	Before yelling at someone:
+		repeat with B running through player-available dialogue beats: 
+			if the first speaker of B is the player:
+				if B is yelled:
+					if the noun is the player or the noun is listed in the list of speakers required by B or (the number of entries in the list of speakers required by B is 1 and the player is listed in the list of speakers required by B):
+						add B to the yelling beats;
+							
+	Check yelling at:
+		if the number of entries in the yelling beats is 0:
+			say "No suitable invective comes to mind." instead.
+	
+	First carry out yelling at:  
+		let N be the number of entries in the yelling beats;
+		if the number of entries in the yelling beats is 1:
+			perform entry 1 in the yelling beats;
+			stop the action;
+		say "Several possibilities come to mind.";
+		say "[conditional paragraph break]";
+		let X be 0;
+		repeat with B running through the yelling beats:
+			increase X by 1;
+			say "([X]). [textual content of opening line of B][line break]";
+		if X > 0:
+			increase X by 1;
+			say "([X]). Say nothing.";
+		say "[conditional paragraph break]";
+		let Y be a number chosen by the player from 1 to X;
+		if Y is X:
+			try waiting instead; 
+		let chosen beat be entry Y of the yelling beats;
+		perform chosen beat;
+		stop the action.
+	
+	Definition: a dialogue beat is player-available:
+		if it is not available:
+			no;
+		if it is not performable to the player:
+			no;
+		else:
+			yes. 
+			
+	
+	Section 2 - Busker Discussion (dialogue)
+	
+	(About the busker.)
+	
+	Player: "Where did you learn to play the saxophone?"
+	
+	Busker: "Juilliard."
+	
+	
+	(About the busker. Yelled.)
+	
+	Player: "CAN YOU PLEASE HUSH THAT RACKET!?"
+	
+	Busker: "I HAVE A LICENSE!"

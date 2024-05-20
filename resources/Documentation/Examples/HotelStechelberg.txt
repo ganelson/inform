@@ -5,6 +5,8 @@ Index: Signposts to distant rooms
 Description: Signposts such as those provided on hiking paths in the Swiss Alps, which show the correct direction and hiking time to all other locations.
 For: Z-Machine
 
+^^{Signposts to distant rooms}
+
 The following rule appends a paragraph to every room description. We need not worry about doors (despite the pass in the Bernese Oberland known figuratively as the "Little Door").
 
 	{*}"Hotel Stechelberg"

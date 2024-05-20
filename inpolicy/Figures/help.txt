@@ -2,16 +2,18 @@ A lint-like tool to check up on various policies used in Inform source code.
 
 usage: inpolicy [options]
 
--check-problems         check problem test case coverage
--kit-versions           show version numbers of the built-in kits
--silence                print nothing unless there's something wrong (default is -no-silence)
--sync-kit-versions      fix version numbers of the built-in kits to match core inform7 version
--verbose                explain what inpolicy is doing (default is -no-verbose)
+-check-problems               check problem test case coverage
+-extension-versions           show version numbers of the built-in extensions
+-kit-versions                 show version numbers of the built-in kits
+-silence                      print nothing unless there's something wrong (default is -no-silence)
+-sync-extension-versions      fix version numbers of the built-in extensions to match core inform7 version
+-sync-kit-versions            fix version numbers of the built-in kits to match core inform7 version
+-verbose                      explain what inpolicy is doing (default is -no-verbose)
 
--at X                   specify that this tool is installed at X
--crash                  intentionally crash on internal errors, for backtracing (default is -no-crash)
--fixtime                pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)
--help                   print this help information
--locale X               set locales as 'L=E', L being shell or console, E platform, utf-8 or iso-latin1
--log X                  write the debugging log to include diagnostics on X
--version                print out version number
+-at X                         specify that this tool is installed at X
+-crash                        intentionally crash on internal errors, for backtracing (default is -no-crash)
+-fixtime                      pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)
+-help                         print this help information
+-locale X                     set locales as 'L=E', L being shell or console, E platform, utf-8 or iso-latin1
+-log X                        write the debugging log to include diagnostics on X
+-version                      print out version number

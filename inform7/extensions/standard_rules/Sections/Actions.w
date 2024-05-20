@@ -337,7 +337,7 @@ Putting it on is an action applying to two things.
 The putting it on action is accessible to Inter as "PutOn".
 
 The specification of the putting it on action is "By this action, an actor puts
-something he is holding on top of a supporter: for instance, putting an apple
+something they are holding on top of a supporter: for instance, putting an apple
 on a table."
 
 @ Check.
@@ -412,7 +412,7 @@ Inserting it into is an action applying to two things.
 The inserting it into action is accessible to Inter as "Insert".
 
 The specification of the inserting it into action is "By this action, an actor puts
-something he is holding into a container: for instance, putting a coin into a
+something they are holding into a container: for instance, putting a coin into a
 collection box."
 
 @ Check.
@@ -1237,8 +1237,8 @@ model does not have a concept of things being under other things, so this
 action is only minimally provided by the Standard Rules, but it exists here
 for traditional reasons (and because, after all, LOOK UNDER TABLE is the
 sort of command which ought to be recognised even if it does nothing useful).
-The action ordinarily either tells the player he finds nothing of interest,
-or reports that somebody else has looked under something.
+The action ordinarily either tells the player that they find nothing of
+interest, or reports that somebody else has looked under something.
 
 The usual way to make this action do something useful is to write a rule
 like 'Instead of looking under the cabinet for the first time: now the
@@ -1972,11 +1972,11 @@ Waking is an action applying to one thing.
 The waking action is accessible to Inter as "WakeOther".
 
 The specification of the waking action is "This is the act of jostling
-a sleeping person to wake him or her up, and it finds its way into the
-Standard Rules only for historical reasons. Inform does not by default
-provide any model for people being asleep or awake, so this action does
-not do anything in the standard implementation: instead, it is always
-stopped by the block waking rule."
+a sleeping person to wake them up, and it finds its way into the Standard
+Rules only for historical reasons. Inform does not by default provide
+any model for people being asleep or awake, so this action doesnot do
+anything in the standard implementation: instead, it is always stopped by
+the block waking rule."
 
 @ Check.
 
@@ -2046,7 +2046,7 @@ The attacking action is accessible to Inter as "Attack".
 The specification of the attacking action is "Violence is seldom the answer,
 and attempts to attack another person are normally blocked as being unrealistic
 or not seriously meant. (I might find a shop assistant annoying, but IF is
-not Grand Theft Auto, and responding by killing him is not really one of
+not Grand Theft Auto, and responding by killing them is not really one of
 my options.) So the Standard Rules simply block attempts to fight people,
 but the action exists for rules to make exceptions."
 
@@ -3098,6 +3098,17 @@ The announce the story file version rule is listed in the carry out requesting t
 	file version rulebook.
 The announce the story file version rule is defined by Inter as "ANNOUNCE_STORY_FILE_VERSION_R".
 
+
+@ And similarly for COPYRIGHT.
+
+=
+Requesting copyright licences is an action out of world and applying to nothing.
+The requesting copyright licences action is accessible to Inter as "Copyright".
+
+The announce the copyright licences rule is listed in the carry out requesting
+	copyright licences rulebook.
+The announce the copyright licences rule is defined by Inter as "ANNOUNCE_COPYRIGHT_LICENCES_R".
+
 @ There's really no very good reason why we provide the out-of-world command
 SCORE but not (say) TIME, or any one of dozens of other traditional what's-my-status
 commands: DIAGNOSE, say, or PLACES. But we are conservative on this; it's easy
@@ -3210,42 +3221,3 @@ The announce the pronoun meanings rule is defined by Inter as "ANNOUNCE_PRONOUN_
 	"means " (B),
 	"is unset" (C),
 	"no pronouns are known to the game." (D).
-
-@ The dialogue system offers an action "talking about", but not "talking to X about":
-this is a model of conversation which is aimed at simulating multi-person encounters,
-where lines are spoken more into the room than at any one person.
-
-=
-Section 10 - Dialogue-related actions (for dialogue language element only)
-
-Talking about is an action applying to one object.
-
-The talking about action has a list of dialogue beats called the leading beats.
-
-The talking about action has a list of dialogue beats called the other beats.
-
-Before an actor talking about an object (called T):
-	repeat with B running through available dialogue beats about T:
-		if B is performable to the actor:
-			if the first speaker of B is the actor:
-				add B to the leading beats;
-			otherwise:
-				add B to the other beats;
-
-Carry out an actor talking about an object (called T)
-	(this is the first-declared beat rule):
-	if the leading beats is not empty:
-		perform entry 1 of the leading beats;
-		if the dialogue line performance count is greater than zero:
-			continue the action;
-	if the other beats is not empty:
-		perform entry 1 of the other beats;
-		if the dialogue line performance count is greater than zero:
-			continue the action;
-	if the player is the actor:
-		say "There is no reply." (A);
-		stop the action;
-	otherwise:
-		if the player can hear the actor:
-			say "[The actor] [talk] about [T]." (B);
-		stop the action.

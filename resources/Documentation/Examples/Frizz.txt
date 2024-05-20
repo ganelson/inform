@@ -5,6 +5,8 @@ Index: Contact with objects detected
 Description: Liquid flows within containers and soaks objects that are not waterproof; any contact with a wet object can dampen our gloves.
 For: Z-Machine
 
+^^{Contact with objects detected}
+
 Suppose we have some items that get wet in contact with other damp things; in particular, if we touch anything wet while wearing a pair of gloves, the gloves too get damp. This requires that we be systematic about detecting all cases where contact occurs. So:
 
 	{*}"Frizz"

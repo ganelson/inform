@@ -482,6 +482,18 @@ well in case we suspect bugs in future.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>This is useful for indexing:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Verbs::has_special_meanings</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb_form</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vf</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">vf</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">verb_sense</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vs</span><span class="plain-syntax"> = </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">list_of_senses</span><span class="plain-syntax">; </span><span class="identifier-syntax">vs</span><span class="plain-syntax">; </span><span class="identifier-syntax">vs</span><span class="plain-syntax"> = </span><span class="identifier-syntax">vs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_sense</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-vm.html#SP10" class="function-link"><span class="function-syntax">VerbMeanings::get_special_meaning</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">vs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">vm</span><span class="plain-syntax">)))</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="2-prn.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-lm.html">1</a></li><li class="progresschapter"><a href="2-adj.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresscurrent">vrb</li><li class="progresssection"><a href="3-vm.html">vm</a></li><li class="progresssection"><a href="3-sm.html">sm</a></li><li class="progresssection"><a href="3-vu.html">vu</a></li><li class="progresssection"><a href="3-prp.html">prp</a></li><li class="progresssection"><a href="3-aoc.html">aoc</a></li><li class="progresssection"><a href="3-apoo.html">apoo</a></li><li class="progresschapter"><a href="4-np.html">4</a></li><li class="progressnext"><a href="3-vm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

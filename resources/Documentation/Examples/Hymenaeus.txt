@@ -5,6 +5,8 @@ Index: Torch understood as flaming or extinguished
 Description: Understanding "flaming torch" and "extinguished torch" to refer to torches when lit and unlit.
 For: Z-Machine
 
+^^{Torch understood as flaming or extinguished}
+
 	{*}"Hymenaeus"
 	
 	A torch is kind of thing. Understand the lit property as describing a torch. Understand "lighted" or "flaming" or "burning" as lit. Understand "extinguished" as unlit. A torch is usually lit.

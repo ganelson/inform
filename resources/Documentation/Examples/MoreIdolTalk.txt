@@ -1,0 +1,133 @@
+Example: *** More Idol Talk
+Location: Managing dialogue beats
+RecipeLocation: Saying Complicated Things
+Description: Modifying the ``TALK ABOUT`` command so that it offers a choice of conversational gambits.
+For: Z-Machine
+
+This example involves rewriting the `talking about` action, which powers the ``TALK ABOUT`` and ``ASK ABOUT`` commands, to give the player more choice over what is said. To do that, we'll first need to understand how the action normally works. It's an action which first sets up two private-to-it variables:
+
+- `leading beats` is a list of dialogue beats which could in principle be performed and for which the actor is the first speaker;
+
+- `other beats` is a list of dialogue beats which could in principle be performed but for which the actor is not the first speaker.
+
+The actual talking is then done by the following rule:
+
+	Carry out an actor talking about an object (called T)
+		(this is the first-declared beat rule):
+		if the leading beats is not empty:
+			perform entry 1 of the leading beats;
+			continue the action;
+		if the other beats is not empty:
+			perform entry 1 of the other beats;
+			continue the action;
+		if the player is the actor:
+			say "There is no reply.";
+			stop the action;
+		otherwise:
+			say "[The actor] [talk] about [T].";
+			stop the action.
+
+As we can see, if multiple beats all seem performable, the first leading beat is chosen, and failing that the first other beat. But the player is not consulted.
+
+Here is our rewrite:
+
+	{*}"More Idol Talk"
+
+	Section 1 - Talking About Action
+
+	First carry out an actor talking about an object (called T):
+		if the leading beats is not empty:
+			let N be the number of entries in the leading beats;
+			if the actor is not the player:
+				perform entry 1 of the leading beats;
+				continue the action;
+			if N is 1:
+				perform entry 1 of the leading beats;
+				continue the action;
+			say "Choose...";
+			say "[conditional paragraph break]";
+			let X be 0;
+			repeat with B running through the leading beats:
+				increase X by 1;
+				say "([X]). [textual content of opening line of B][line break]";
+			say "[conditional paragraph break]";
+			let Y be a number chosen by the player from 1 to X;
+			perform entry Y of the leading beats;
+			stop the action;
+		if the other beats is not empty:
+			let N be the number of entries in the other beats;
+			let R be a random number from 1 to N;
+			perform entry R of the other beats;
+			stop the action;
+		continue the action.
+
+This rule only falls through into the existing `first-declared beat rule` if there's nothing performable. A couple of points to note here:
+
+- This won't work well if there are beats whose opening line is spoken by the player but `to` an unknown interlocutor who is then mentioned in the course of a text substitution in the line. That's quite unlikely, but still.
+
+- `chosen dialogue number up to X` uses a phrase which we've borrowed from the ordinary dialogue system. It just requires the player to type a number from 1 to `X` inclusive.
+
+For the sake of testing this:
+
+	{**}Section 2 - Shi-Xioafang Temple
+
+	The Jade Temple of Shi is a room. A green idol is here. "The legendary green idol sits on a simple plinth."
+
+	Louisiana Smith is a man in the Jade Temple.
+
+	Test me with "talk about idol / 2 / talk about idol / 1 / talk about idol / talk about idol".
+
+	Section 3 conversation (dialogue)
+
+	(About the green idol.)
+
+	Player: "Is that idol genuine jade?"
+
+	Louisiana: "It's genuinely old, kid. That's what counts."
+
+	(About the green idol.)
+
+	Player: "That looks... far too easy to steal."
+
+	Louisiana: "You're learning."
+
+	(About the green idol.)
+
+	Player: "Exactly why was this ugly little thing sacred to the Shi-Xioafang peoples of the Delta?"
+
+	Louisiana: "It opens the portal to the Kingdom of the Clouds. If you believe that sort of thing."
+
+And this is the result:
+
+``` transcript
+> TALK ABOUT IDOL
+Choose...
+
+(1). Is that idol genuine jade?
+(2). That looks... far too easy to steal.
+(3). Exactly why was this ugly little thing sacred to the Shi-Xioafang peoples of the Delta?
+
+> 2
+You: "That looks... far too easy to steal."
+
+Louisiana Smith: "You're learning."
+
+> TALK ABOUT IDOL
+Choose...
+
+(1). Is that idol genuine jade?
+(2). Exactly why was this ugly little thing sacred to the Shi-Xioafang peoples of the Delta?
+
+> 1
+You: "Is that idol genuine jade?"
+
+Louisiana Smith: "It's genuinely old, kid. That's what counts."
+
+> TALK ABOUT IDOL
+You: "Exactly why was this ugly little thing sacred to the Shi-Xioafang peoples of the Delta?"
+
+Louisiana Smith: "It opens the portal to the Kingdom of the Clouds. If you believe that sort of thing."
+
+> TALK ABOUT IDOL
+There is no reply.
+```

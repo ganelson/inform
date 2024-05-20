@@ -159,10 +159,10 @@ void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd,
 							Indexes::write_general_index(OUT, cd);
 							break;
 						case NUMERICAL_EG_INDEX:
-							Indexes::render_eg_index(OUT, (primary)?(primary->volume_item):NULL);
+							DocumentationRenderer::render_eg_index(OUT, (primary)?(primary->volume_item):NULL);
 							break;
 						case THEMATIC_EG_INDEX:
-							Indexes::render_eg_index(OUT, (secondary)?(secondary->volume_item):NULL);
+							DocumentationRenderer::render_eg_index(OUT, (secondary)?(secondary->volume_item):NULL);
 							break;
 						case ALPHABETICAL_EG_INDEX:
 							Indexes::write_example_index(OUT, cd);
@@ -203,6 +203,38 @@ void DocumentationRenderer::as_HTML(pathname *P, compiled_documentation *cd,
 				BinaryFiles::copy(cdim->source, T, TRUE);
 			}
 	}
+}
+
+@
+
+=
+void DocumentationRenderer::render_eg_index(OUTPUT_STREAM, markdown_item *md) {
+	markdown_item *pending_chapter = NULL, *pending_section = NULL;
+	if (md) DocumentationRenderer::render_eg_index_r(OUT, md, &pending_chapter, &pending_section);
+}
+
+void DocumentationRenderer::render_eg_index_r(OUTPUT_STREAM, markdown_item *md,
+	markdown_item **pending_chapter, markdown_item **pending_section) {
+	if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) == 1)) {
+		*pending_chapter = md;
+		*pending_section = NULL;
+	}
+	if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) == 2)) {
+		*pending_section = md;
+	}
+	if (md->type == INFORM_EXAMPLE_HEADING_MIT) {
+		if (*pending_chapter) {
+			Markdown::render_extended(OUT, *pending_chapter, InformFlavouredMarkdown::variation());
+			*pending_chapter = NULL;
+		}
+		if (*pending_section) {
+			Markdown::render_extended(OUT, *pending_section, InformFlavouredMarkdown::variation());
+			*pending_section = NULL;
+		}
+		Markdown::render_extended(OUT, md, InformFlavouredMarkdown::variation());
+	}
+	for (markdown_item *ch = md->down; ch; ch = ch->next)
+		DocumentationRenderer::render_eg_index_r(OUT, ch, pending_chapter, pending_section);
 }
 
 @ =

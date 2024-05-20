@@ -1,0 +1,13 @@
+1
+i
+x glass
+break glass
+burn document
+i
+read document
+link glass to document
+break glass
+reverse link glass to document
+burn document
+unlink glass
+quit

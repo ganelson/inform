@@ -5,6 +5,8 @@ Index: Kinds given new singular and plural synonyms
 Description: Adding synonyms to an entire kind of thing.
 For: Z-Machine
 
+^^{kinds: understanding names for} ^^{understanding: kinds of things}
+
 The [Understanding] chapter lays out ways to change how the player can refer to objects, but we may not want to wait that long for some of the basic features. Here, for instance, is how to add synonyms that the player can use to refer to an entire kind of object:
 
 	{*}"Vouvray"

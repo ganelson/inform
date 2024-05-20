@@ -1,10 +1,10 @@
    Lab
   Fun with Participles
   An Interactive Fiction
-  Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Lab
-  Clark is here, standing about.
+  Clark is here, looking bored.
   
   You can also see a fedora here.
   
@@ -13,7 +13,7 @@
   
   >[1] look
   Lab
-  Clark is here, standing about.
+  Clark is here, wasting time.
   
   You can also see a fedora here.
   

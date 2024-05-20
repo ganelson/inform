@@ -1,0 +1,12 @@
+Problem: PM_TranslatesTableAlready
+
+Lab is a room.
+
+Table of Fizzy Drinks
+name	niceness
+"coke zero"	1
+"sprite"	0
+
+The Table of Fizzy Drinks is accessible to Inter as "TABLE_FIZZ".
+
+The Table of Fizzy Drinks is accessible to Inter as "TAB_FIZZ".

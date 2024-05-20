@@ -5,6 +5,8 @@ Index: Examining everything at once
 Description: Making the ``SEARCH`` command examine all the scenery in the current location.
 For: Z-Machine
 
+^^{examining+action+: everything at once}
+
 We have to create a suitable action and say what it does, and to repeat what we do through all the scenery items. That needs material from subsequent chapters, but is quite ordinary Inform all the same:
 
 	{*}"Beekeeper's Apprentice"

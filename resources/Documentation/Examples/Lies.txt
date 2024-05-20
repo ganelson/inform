@@ -5,6 +5,8 @@ Index: Variety of postures
 Description: Commands to allow the player to lie down in three different ways.
 For: Z-Machine
 
+^^{Variety of postures}
+
 To set the scene, and make new actions to provide for two of these ways:
 
 	{*}"Lies"

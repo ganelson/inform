@@ -1,7 +1,7 @@
 Test: GenericDescriptions
 For: Z-Machine
 
-To decide which time is the time since (D - a description of scenes) began:
+To decide which time period is the time since (D - a description of scenes) began:
 	let max T be 0 minutes;
 	repeat with Scn running through D:
 		let T be the time since Scn began;

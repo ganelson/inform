@@ -45,9 +45,18 @@ void CalculusProblems::issue_problem(int err_no, parse_node *spec, wording W,
 		case ComparisonFailed_CALCERROR:
 			Problems::quote_kind(4, K1);
 			Problems::quote_kind(5, K2);
-			StandardProblems::tcp_problem(_p_(PM_ComparisonFailed), tck,
-				"that would mean comparing two kinds of value which cannot mix - "
-				"%4 and %5 - so this must be incorrect.");
+			char *msg;
+			if (((Kinds::eq(K1, K_time)) && (Kinds::eq(K2, K_time_period))) ||
+				((Kinds::eq(K2, K_time)) && (Kinds::eq(K1, K_time_period))))
+				msg = "that would mean comparing two kinds of value which cannot mix - "
+					"%4 and %5 - so this must be incorrect. Note that 'time period', "
+					"introduced in Inform in 2024, holds values like '10 minutes', "
+					"and is not the same kind as 'time', which is for times of day "
+					"like '6:12 PM'. (Before 2024, the same kind was used for both.)";
+			else
+				msg = "that would mean comparing two kinds of value which cannot mix - "
+					"%4 and %5 - so this must be incorrect.";
+			StandardProblems::tcp_problem(_p_(PM_ComparisonFailed), tck, msg);					
 			break;
 		case BadUniversal1_CALCERROR:
 			Problems::quote_kind(4, K1);

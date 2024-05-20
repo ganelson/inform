@@ -82,10 +82,14 @@ Before offering a list of dialogue choices (called L):
 	say "(Okay, select from [L] here.)"
 
 First rule for offering a list of dialogue choices (called L):
-	let N be 1;
+	let N be 0;
 	repeat with C running through L:
+		increase N by 1;
 		say "(Option [N]) [textual content of C][line break]";
-		increase N by 1.
+	say conditional paragraph break;
+	let M be a number chosen by the player from 1 to N;
+	set the dialogue selection value to M;
+	say "[bold type][textual content of entry M of L][roman type][paragraph break]".
 
 Spoken angrily and spoken softly are performance styles.
 

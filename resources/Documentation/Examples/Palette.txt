@@ -5,6 +5,8 @@ Index: Colour names for exotic pigments
 Description: An artist's workshop in which the canvas can be painted in any colour, and where painterly names for pigments ("cerulean") are accepted alongside everyday ones ("blue").
 For: Z-Machine
 
+^^{Colour names for exotic pigments}
+
 There are hundreds of traditional pigments, from lampblack to burnt sienna, so we will confine ourselves to just two:
 
 	{*}"Palette"

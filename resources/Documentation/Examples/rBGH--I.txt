@@ -1,30 +1,30 @@
-   Pharmaceutical Testing Facility                                                                                                                                                                                        5 feet 10 inches
+   Pharmaceutical Testing Facility                                                                                                                                                                                        5 feet 3 inches
   rBGH
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Pharmaceutical Testing Facility
-  A white space with sterile counters and a stool. There is also a mirror, behind which someone must be watching you. But you can't see through to that.
+  A large white space with sterile counters and a stool. There is also a mirror, behind which someone must be watching you. But you can't see through to that.
   
   On the counter is a plate (on which are two growth pills).
   
-> >   Pharmaceutical Testing Facility                                                                                                                                                                                        6 feet 10 inches
+> >   Pharmaceutical Testing Facility                                                                                                                                                                                        6 feet 3 inches
   (Testing.)
   
   >[1] examine me
-  You, Test Subject, are 5 feet 10 inches tall.
+  You, Test Subject, are 5 feet 3 inches tall.
   
   >[2] eat pill
   (first taking the growth pill)
   Your spine does something frightening and painful, and you find yourself looking down on the room from a wholly new angle.
   
   Pharmaceutical Testing Facility
-  A cramped white space with sterile counters and an uncomfortable little stool. There is also a mirror, behind which someone must be watching you. But you can't see through to that.
+  A white space with sterile counters and a stool. There is also a mirror, behind which someone must be watching you. But you can't see through to that.
   
   On the counter is a plate (on which is a growth pill).
   
   >[3] examine me
-  You, Test Subject, are 6 feet 4 inches tall.
+  You, Test Subject, are 5 feet 9 inches tall.
   
   >[4] eat pill
   (first taking the growth pill)
@@ -36,6 +36,6 @@
   On the counter is a plate.
   
   >[5] examine me
-  You, Test Subject, are 6 feet 10 inches tall.
+  You, Test Subject, are 6 feet 3 inches tall.
   
 > >

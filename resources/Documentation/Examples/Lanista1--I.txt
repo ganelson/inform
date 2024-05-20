@@ -1,20 +1,20 @@
    You: 35                                                                                                                                                                                                                Gladiator: 25
   Lanista, Part One
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Arena
   Sand, blood, iron. These festivals are normally held on hot days, but the sun has gone behind a cloud and fat drops of rain now and then spatter the arena floor.
   
   A bare-chested Scythian gladiator faces you, wielding a trident.
   
-> >   You: 9                                                                                                                                                                                                                 Gladiator: 6
+> >   You: 2                                                                                                                                                                                                                 Gladiator: 9
   (Testing.)
   
   >[1] hit gladiator
-  You attack the gladiator, causing 6 points of damage!
+  You attack the gladiator, causing 2 points of damage!
   
-  The gladiator attacks you, causing 3 points of damage!
+  The gladiator attacks you, causing 10 points of damage!
   
   >[2] g
   You attack the gladiator, causing 7 points of damage!
@@ -22,13 +22,13 @@
   The gladiator attacks you, causing 9 points of damage!
   
   >[3] g
-  You attack the gladiator, causing 2 points of damage!
+  You attack the gladiator, causing 3 points of damage!
   
-  The gladiator attacks you, causing 8 points of damage!
+  The gladiator attacks you, causing 4 points of damage!
   
   >[4] g
   You attack the gladiator, causing 4 points of damage!
   
-  The gladiator attacks you, causing 6 points of damage!
+  The gladiator attacks you, causing 10 points of damage!
   
 > >

@@ -1,0 +1,3 @@
+Problem: PM_DeprecatedLicence
+
+The licence for this story is "GPL-1.0".

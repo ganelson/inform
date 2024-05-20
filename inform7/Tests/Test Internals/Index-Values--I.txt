@@ -17,18 +17,18 @@ darkness witnessed - <i>truth state</i><br>
 <p><b>Current action</b><br>
 noun&nbsp;<a href=inform:/wi_7_11.html><img border=0 src=inform:/doc_images/help.png></a> - <i>object</i><br>
 second noun - <i>object</i><br>
-person asked&nbsp;<a href=inform:/wi_12_3.html><img border=0 src=inform:/doc_images/help.png></a> - <i>object</i><br>
-reason the action failed&nbsp;<a href=inform:/wi_12_5.html><img border=0 src=inform:/doc_images/help.png></a> - <i>rule</i><br>
+person asked&nbsp;<a href=inform:/wi_13_3.html><img border=0 src=inform:/doc_images/help.png></a> - <i>object</i><br>
+reason the action failed&nbsp;<a href=inform:/wi_13_5.html><img border=0 src=inform:/doc_images/help.png></a> - <i>rule</i><br>
 item described - <i>object</i><br>
 </p>
 <p><b>Used when ruling on accessibility</b><br>
-person reaching&nbsp;<a href=inform:/wi_12_18.html><img border=0 src=inform:/doc_images/help.png></a> - <i>object</i><br>
+person reaching&nbsp;<a href=inform:/wi_13_18.html><img border=0 src=inform:/doc_images/help.png></a> - <i>object</i><br>
 container in question - <i>object</i><br>
 supporter in question - <i>object</i><br>
-particular possession&nbsp;<a href=inform:/wi_19_9.html><img border=0 src=inform:/doc_images/help.png></a> - <i>thing</i><br>
+particular possession&nbsp;<a href=inform:/wi_20_9.html><img border=0 src=inform:/doc_images/help.png></a> - <i>thing</i><br>
 </p>
 <p><b>Used when understanding typed commands</b><br>
-player's command&nbsp;<a href=inform:/wi_19_33.html><img border=0 src=inform:/doc_images/help.png></a> - <i>snippet</i><br>
+player's command&nbsp;<a href=inform:/wi_20_35.html><img border=0 src=inform:/doc_images/help.png></a> - <i>snippet</i><br>
 matched text - <i>snippet</i><br>
 <i>kind</i> understood - <i>value</i><br>
 current item from the multiple object list - <i>object</i><br>
@@ -52,7 +52,7 @@ story viewpoint&nbsp;<a href='inform://Extensions/Documentation/Graham%20Nelson/
 <p><b></b><br>
 royal family&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a> - <i>dynasty</i><br>
 </p>
-<p><b>List of Named or Numbered Equations</b> (<i>About equations&nbsp;&nbsp;<a href=inform:/wi_15_16.html><img border=0 src=inform:/doc_images/help.png></a></i>)</p>
+<p><b>List of Named or Numbered Equations</b> (<i>About equations&nbsp;&nbsp;<a href=inform:/wi_16_16.html><img border=0 src=inform:/doc_images/help.png></a></i>)</p>
 <p>Equation - Newton's Second Law&nbsp;<a href="source:story.ni#line8"><img border=0 src=inform:/doc_images/Reveal.png></a> (F=ma)<br>
 </p>
 

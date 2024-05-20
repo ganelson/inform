@@ -5,6 +5,8 @@ Index: Encyclopedia set
 Description: An Encyclopedia set which treats volumes in the same place as a single object, but can also be split up.
 For: Z-Machine
 
+^^{Encyclopedia set}
+
 Suppose we have a complete Encyclopedia in our game. The player is allowed to pick up the whole set (there must not be too many volumes), but also to do things with individual volumes, and indeed to scatter these volumes all over the place. Putting a volume back in the same place as the rest of the Encyclopedia should, however, restore it to the collective. We will start out by defining general rules for collectives like this:
 
 	{*}"AARP-Gnosis"

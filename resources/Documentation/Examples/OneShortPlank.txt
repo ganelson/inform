@@ -5,6 +5,8 @@ Index: Plank bridge breaks on being crossed when the player is carrying somethin
 Description: A plank bridge which breaks if the player is carrying something when they cross it. Pushing anything over the bridge is forbidden outright.
 For: Z-Machine
 
+^^{Plank bridge breaks on being crossed when the player is carrying something}
+
 	{*}"One Short Plank"
 	
 	The East Jungle is a room. The plank bridge is west of the East Jungle and east of the West Jungle. The plank is an open unopenable door. "A precarious plank bridge extends [if the location is West Jungle]east[otherwise]west[end if] across the chasm." The description of the plank is "Extremely fragile and precarious."

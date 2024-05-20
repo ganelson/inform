@@ -30,7 +30,7 @@ resources/Documentation/Examples/_Results_Actual/
 */_Results_Actual/
 
 inform7/Internal/Extensions/Graham Nelson/Standard Rules.i7x
-inform7/Internal/Languages/English/Syntax.preform
+inform7/Internal/Extensions/Graham Nelson/English Language.i7xd/Materials/Languages/English/Syntax.preform
 inform7/Internal/Miscellany/definitions.html
 inform7/Internal/Inter/*.interb
 
@@ -39,6 +39,8 @@ retrospective/*/ni
 retrospective/*/*.o
 retrospective/makefile
 
+inform7/Tests/Special Cases/Bug.txt
+inform7/Tests/Special Cases/Temp.txt
 inform7/Tests/Test Cases/temp.txt
 inform7/Tests/Test Cases/temp-G.txt
 inform7/Figures/*-diagnostics.txt

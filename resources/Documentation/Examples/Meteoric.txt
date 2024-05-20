@@ -5,6 +5,8 @@ Index: Moving a backdrop during play
 Description: A meteor in the night sky which is visible from many rooms, so needs to be a backdrop, but which does not appear until 11:31 PM.
 For: Z-Machine
 
+^^{Moving a backdrop during play}
+
 The game below begins at half past eleven, and one turn later, it's meteor time:
 
 	{*}"Meteoric I"

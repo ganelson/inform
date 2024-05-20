@@ -71,12 +71,13 @@ the Blorb-file's filename won't be too long for the file system.
 	WRITE("\n! Other material to release\n\n");
 	@<Give instructions about source text, solution and library card@>;
 	@<Give instructions about auxiliary files@>;
+	int templates_declared = FALSE;
 	if (rel->release_interpreter) @<Give instructions to release with an interpreter for Web play@>;
 	if (rel->release_website) @<Give instructions to construct a website around the release@>;
 	@<Give hints to Inblorb for its HTML status page@>;
 
 @<Tell Inblorb where to write its report to@> =
-	WRITE("status \"%f\" \"%f\"\n\n",
+	WRITE("status \"%f\" \"%f\"\n",
 		InstalledFiles::filename(CBLORB_REPORT_MODEL_IRES),
 		Task::cblorb_report_file());
 
@@ -198,12 +199,17 @@ own credits.
 		WRITE("placeholder [OTHERCREDITS] = \"The postcard was written by Andrew Plotkin "
 			"and designed by Lea Albaugh.\"\n");
 	}
+	if (LicenceDeclaration::anything_to_declare()) {		
+		WRITE("auxiliary \"%f\" \"%S\" \"--\"\n",
+			Task::licenses_file(rel->release_website),
+			I"Copyright");
+	}
 
 @ Facilities for a Javascript interpreter to play a base64-encoded story
 file online.
 
 @<Give instructions to release with an interpreter for Web play@> =
-	WRITE("\n! Website instructions\n\n");
+	WRITE("\n! Interpreter instructions\n\n");
 	WRITE("placeholder [ENCODEDSTORYFILE] = \"");
 	STREAM_COPY(OUT, TEMP);
 	WRITE(".js\"\n");
@@ -255,18 +261,40 @@ a project, then the |Templates| directory in the materials for extensions
 included by the project, and then the external area, and finally the internal.
 
 @<Tell Inblorb where to find the website templates@> =
-	inbuild_nest *N;
-	linked_list *L = Projects::nest_list(Task::project());
-	LOOP_OVER_LINKED_LIST(N, inbuild_nest, L) {
-		WRITE("template path \"%p\"\n", TemplateManager::path_within_nest(N));
-		if (Nests::get_tag(N) == MATERIALS_NEST_TAG) {
-			inform_extension *E;
-			LOOP_OVER_LINKED_LIST(E, inform_extension, Task::project()->extensions_included) {
-				pathname *P = Extensions::materials_path(E);
-				if (P) {
-					WRITE("template path \"%p\"\n", TemplateManager::path_within_nest(Nests::new(P)));
+	if (templates_declared == FALSE) {
+		inbuild_nest *N;
+		linked_list *L = Projects::nest_list(Task::project());
+		linked_list *declared = NEW_LINKED_LIST(text_stream);
+		LOOP_OVER_LINKED_LIST(N, inbuild_nest, L) {
+			inbuild_nest *M = N;
+			@<Declare one template path@>;
+			if (Nests::get_tag(N) == MATERIALS_NEST_TAG) {
+				inform_extension *E;
+				LOOP_OVER_LINKED_LIST(E, inform_extension, Task::project()->extensions_included) {
+					pathname *P = Extensions::materials_path(E);
+					if (P) {
+						M = Nests::new(P);
+						@<Declare one template path@>;
+					}
 				}
 			}
+		}
+		templates_declared = TRUE;
+	}
+
+@<Declare one template path@> =
+	pathname *TP = TemplateManager::path_within_nest(M);
+	if (Directories::exists(TP)) {
+		text_stream *declaration = Str::new();
+		WRITE_TO(declaration, "template path \"%p\"\n", TP);
+		int already = FALSE;
+		text_stream *done;
+		LOOP_OVER_LINKED_LIST(done, text_stream, declared)
+			if (Str::eq(done, declaration))
+				already = TRUE;
+		if (already == FALSE) {
+			WRITE("%S", declaration);
+			ADD_TO_LINKED_LIST(declaration, text_stream, declared);
 		}
 	}
 

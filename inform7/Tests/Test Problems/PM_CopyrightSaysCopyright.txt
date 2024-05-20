@@ -1,0 +1,3 @@
+Problem: PM_CopyrightSaysCopyright
+
+The copyright for this story is "(c) Emily Short 1983".

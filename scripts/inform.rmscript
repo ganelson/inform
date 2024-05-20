@@ -146,17 +146,9 @@ The following webs are the source for the two most important extensions shipped 
 {set name: PATH value: inform7/Internal/Extensions/{AUTHOR}/{TITLE}.i7x}
 * [{TITLE} by {AUTHOR}](inform7/extensions/{WEB}) - __v{bibliographic datum: Version Number of: {PATH}}__ - [{WEBICON}&nbsp;Web]({GITHUBPAGESLINK}/{WEB}/index.html)
 {end-define}
-{define: extension author: AUTHOR title: TITLE}
-{set name: PATH value: inform7/Internal/Extensions/{AUTHOR}/{TITLE}.i7x}
-* [{TITLE} by {AUTHOR}](<{PATH}>) - __v{bibliographic datum: Version Number of: {PATH}}__
-{end-define}
 
 {extension-web web: basic_inform   author: Graham Nelson title: Basic Inform}
 {extension-web web: standard_rules author: Graham Nelson title: Standard Rules}
-
-Other extensions shipped with Inform are not presented as webs, but as single files:
-
-{extension author: Graham Nelson title: English Language}
 
 ### Website templates and interpreters shipped with Inform
 

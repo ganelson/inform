@@ -5,6 +5,8 @@ Index: Testing the locale description order
 Description: A debugging rule useful for checking the priorities of objects about to be listed.
 For: Z-Machine
 
+^^{Testing the locale description order}
+
 When it comes time to start manipulating the priorities of items, it is useful to be able to check the table for debugging purposes; the problem is that printing the names of the objects can itself affect the way the room description is generated, foiling our debugging efforts.
 
 What follows is a rule to help with debugging safely, and a sample of how priorities work:

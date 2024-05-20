@@ -27,21 +27,35 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 	command parser, in a debug build (such as in the app). See
 	Jira bug [I7-2398](https://inform7.atlassian.net/browse/I7-2398).
 
-## Documentation
+## Gender neutrality
 
 "Writing with Inform" and "The Recipe Book" benefit from a revision throughout to
 remove unnecessary gender-binary language, mostly to do with pronouns attached
 to "the player", or similar. The example `Blue or Pink` has become `Good or Evil`,
 and now poses a moral rather than gender-based question.
 
+The little-used rule:
+
+	player aware of his own actions rule
+
+has been renamed:
+
+	player aware of their own actions rule
+
 ## Bug fixes
 
+- Fix for Jira bug [I7-2470](https://inform7.atlassian.net/browse/I7-2470)
+	"Removing an entry from a list of text in a deciding phrase corrupts the original list"
+	([commit 570d703](https://github.com/ganelson/inform/commit/570d703a8c78d628f883d1ab6559b64cdbc730d3))
 - Fix for Jira bug [I7-2460](https://inform7.atlassian.net/browse/I7-2460)
 	"Standard 'deciding whether all include' rules don't apply to an actor."
 	([PR#138](https://github.com/ganelson/inform/pull/138))
 - Fix for Jira bug [I7-2458](https://inform7.atlassian.net/browse/I7-2458)
 	"The uuid.txt file should be whitespace-stripped before use"
 	(see [Inweb commit 4557cc1](https://github.com/ganelson/inform/commit/4557cc1925aebd7f1d075ea458b76f6970df3d57))
+- Fix for Jira bug [I7-2440](https://inform7.atlassian.net/browse/I7-2440)
+	"Returning a list of text and then removing from it makes everything explode"
+	([commit 570d703](https://github.com/ganelson/inform/commit/570d703a8c78d628f883d1ab6559b64cdbc730d3))
 - Fix for Jira bug [I7-2416](https://inform7.atlassian.net/browse/I7-2416)
 	"Hyperbolic sinh and cosh each have the implementation the other needs"
 	([PR#126](https://github.com/ganelson/inform/pull/126))
@@ -57,6 +71,9 @@ and now poses a moral rather than gender-based question.
 - Fix for Jira bug [I7-2355](https://inform7.atlassian.net/browse/I7-2355)
 	to do with how to handle symlinks or broken directory entries
 	(see [Inweb PR#28](https://github.com/ganelson/inweb/pull/28))
+- Fix for Jira bug [I7-2353](https://inform7.atlassian.net/browse/I7-2353)
+	"Setting room description heading rule response (A) causes Array index out of bounds"
+	([commit 6778a15](https://github.com/ganelson/inform/commit/6778a15ff6004e4dc8760975851fb478b0eef419))
 - Fix for Jira bug [I7-2349](https://inform7.atlassian.net/browse/I7-2349)
 	"example 399, "Solitude", has a bug"
 	([PR#115](https://github.com/ganelson/inform/pull/115))
@@ -173,7 +190,7 @@ and now poses a moral rather than gender-based question.
 	"Standard 'deciding whether all include' rules don't apply to an actor."
 	([PR#113](https://github.com/ganelson/inform/pull/113))
 
-- Cosmetic fixes not worth linking to (I7-2480, I7-2473, I7-2350, I7-2348, I7-2319, I7-2316, I7-2315, I7-2311, I7-2299, I7-2293, I7-2270, I7-2268, I7-2221, I7-2214, I7-2210, I7-2120)
+- Cosmetic fixes not worth linking to (I7-2480, I7-2478, I7-2473, I7-2350, I7-2348, I7-2319, I7-2316, I7-2315, I7-2311, I7-2299, I7-2293, I7-2270, I7-2268, I7-2221, I7-2214, I7-2210, I7-2120)
 
 ## Bugs fixed but not from tracked reports
 

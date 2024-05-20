@@ -5,6 +5,8 @@ Index: Status line with centered text, the easy way
 Description: Replacing the two-part status line with one that centers only the room name at the top of the screen.
 For: Z-Machine
 
+^^{Status line with centered text, the easy way}
+
 If we want to lay out the status line in some other way than with left-hand and right-hand entries, it is possible to do this as well. Later we will learn about the `rule for constructing the status line`, but here is a basic effect using this rule and an Inform extension called Basic Screen Effects.
 
 	{*}"Centered"

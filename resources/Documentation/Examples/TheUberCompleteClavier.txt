@@ -5,6 +5,8 @@ Index: Accented and exotic letters and symbols
 Description: This example provides a fairly stringent test of exotic lettering.
 For: Z-Machine
 
+^^{characters (letters): accented and exotic letters and symbols}
+
 The following example puts Inform's support for exotic lettering through its paces. It was useful in testing Inform but is not a very instructive read: still, it does provide a test story file for interpreters, so we are including the source here as an example.
 
 	{*}"The Über-complète clavier"

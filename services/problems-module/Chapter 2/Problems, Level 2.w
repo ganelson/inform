@@ -72,11 +72,12 @@ the two possibilities.
 
 =
 int	do_not_locate_problems = FALSE;
+int warning_count = 0;
 
 void Problems::show_problem_location(parse_node_tree *T) {
 	parse_node *problem_headings[NO_HEADING_LEVELS];
 	int i, f = FALSE;
-	if (problem_count == 0) {
+	if (problem_count + warning_count == 0) {
 		#ifdef FIRST_PROBLEMS_CALLBACK
 		FIRST_PROBLEMS_CALLBACK(problems_file);
 		#endif
@@ -315,8 +316,6 @@ Warnings are almost identically handled. Inform traditionally avoided warnings,
 but we're finally giving way on that.
 
 =
-int warning_count = 0;
-
 int Problems::warnings_occurred(void) {
 	return (warning_count > 0)?TRUE:FALSE;
 }

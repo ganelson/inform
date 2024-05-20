@@ -5,6 +5,8 @@ Index: Deadbolted door unlockable without a key on one side
 Description: A locked door that can be locked or unlocked without a key from one side, but not from the other.
 For: Z-Machine
 
+^^{Deadbolted door unlockable without a key on one side}
+
 Suppose we want a locked door that can be opened with a key, but is also openable by hand without a key from one side only. We start by defining an ordinary lockable door and the key that controls it:
 
 	{*}"Neighbourhood Watch"

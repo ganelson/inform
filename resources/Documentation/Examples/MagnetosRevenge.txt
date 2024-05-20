@@ -5,6 +5,8 @@ Index: Person capable of reaching through solid objects
 Description: Kitty Pryde of the X-Men is able to reach through solid objects, so we might implement her with special powers that the player does not have...
 For: Z-Machine
 
+^^{characters (people): with abilities the player lacks} ^^{reaching inside / outside+rb+}
+
 	{*}"Magneto's Revenge"
 	
 	The School for Gifted Youngsters is a room. Kitty Pryde is a woman in the School for Gifted Youngsters. "Kitty Pryde waits for you to say why you summoned her out of class." The description is "You see nothing special about Kitty Pryde. But that is only because she has learned to conceal her mutant powers: in fact she has the alternative name Shadowcat, and the ability to phase through solid objects."

@@ -5,6 +5,8 @@ Index: Grid references
 Description: Calculated walking distances based on grid references at start and end of a walk.
 For: Glulx
 
+^^{Grid references}
+
 The Ordnance Survey National Grid reference system (OSGB) was developed in 1936 for the great retriangulation, which led to the building of many concrete pillars on British hilltops and to today's maps. The full range of values is enormous, since OSGB can specify any point in the British Isles to an accuracy of 1m. Fortunately, we only want to use positions in the town of Oxford, which sits fully inside a modest rectangular portion of square `SP`. So:
 
 	{*}"As The Crow Flies To Iffley Lock"

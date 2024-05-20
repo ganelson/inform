@@ -281,6 +281,8 @@ int Translations::accessible_to_Inter_as_SMF(int task, parse_node *V, wording *N
 @d VARIABLE_I6TR 5      /* "The sludge count variable translates into I6 as "sldgc". */
 @d ACTION_I6TR 6        /* "The taking action translates into I6 as "Take". */
 @d GRAMMAR_TOKEN_I6TR 7 /* "The grammar token "[whatever]" translates into I6 as "WHATEVER". */
+@d TABLE_I6TR 8
+@d TABLE_COLUMN_I6TR 9
 
 =
 <translates-into-i6-sentence-subject> ::=
@@ -292,6 +294,8 @@ int Translations::accessible_to_Inter_as_SMF(int task, parse_node *V, wording *N
 	... variable |          ==> { VARIABLE_I6TR, - }
 	... action |            ==> { ACTION_I6TR, - }
 	understand token ... |  ==> { GRAMMAR_TOKEN_I6TR, - }
+	{table ...} |           ==> { TABLE_I6TR, - }
+	... table column |      ==> { TABLE_COLUMN_I6TR, - }
 	...                     ==> @<Issue PM_TranslatedUnknownCategory problem@>
 
 @<Issue PM_TranslatedUnknownCategory problem@> =
@@ -406,6 +410,18 @@ will be required to pass |<extra-response>|.
 				translates_into_verb = TRANSLATION_DEFINED_BY_FORM;
 			@<Require the defined-by form@>;
 			if (global_pass_state.pass == 2) CommandGrammars::new_translated_token(W, p2);
+			break;
+		case TABLE_I6TR:
+			if (translates_into_verb == TRANSLATION_DEPRECATED_FORM)
+				translates_into_verb = TRANSLATION_ACCESSIBLE_TO_FORM;
+			@<Require the accessible-to form@>;
+			if (global_pass_state.pass == 2) Tables::translates(W, p2);
+			break;
+		case TABLE_COLUMN_I6TR:
+			if (translates_into_verb == TRANSLATION_DEPRECATED_FORM)
+				translates_into_verb = TRANSLATION_ACCESSIBLE_TO_FORM;
+			@<Require the accessible-to form@>;
+			if (global_pass_state.pass == 2) Tables::Columns::translates(W, p2);
 			break;
 	}
 

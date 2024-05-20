@@ -5,6 +5,8 @@ Index: Description from inside a vehicle
 Description: Letting the player see a modified room description when they're viewing the place from inside a vehicle.
 For: Z-Machine
 
+^^{descriptions (displayed): modified when inside a vehicle}
+
 Suppose we want the player to see a modified room description when he's viewing the place from inside a vehicle. There are several conceivable ways of doing this; the example here shows a rather advanced way, but is very flexible and will let us write all sorts of special cases.
 
 	{*}"Hover"

@@ -5,6 +5,8 @@ Index: Lanista 1. Simple Randomised Combat
 Description: Very simple randomised combat in which characters hit one another for a randomised amount of damage.
 For: Z-Machine
 
+^^{combat}
+
 	{*}"Lanista, Part One"
 	
 	The Arena is a room. "Sand, blood, iron. These festivals are normally held on hot days, but the sun has gone behind a cloud and fat drops of rain now and then spatter the arena floor." The gladiator is a man in the Arena. "A bare-chested Scythian gladiator faces you, wielding a trident."

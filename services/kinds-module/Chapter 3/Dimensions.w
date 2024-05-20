@@ -312,6 +312,27 @@ void Kinds::Dimensions::dim_set_multiplication(kind *left, kind *right,
 	Kinds::Dimensions::make_unit_derivation(left, right, outcome);
 }
 
+void Kinds::Dimensions::dim_set_subtraction(kind *left, kind *right,
+	kind *outcome) {
+	if ((Kinds::is_proper_constructor(left)) ||
+		(Kinds::is_proper_constructor(right)) ||
+		(Kinds::is_proper_constructor(outcome))) {
+		KindsModule::problem_handler(DimensionNotBaseKOV_KINDERROR, NULL, NULL, NULL, NULL);
+		return;
+	}
+	if ((Kinds::Behaviour::is_quasinumerical(left) == FALSE) ||
+		(Kinds::Behaviour::is_quasinumerical(right) == FALSE) ||
+		(Kinds::Behaviour::is_quasinumerical(outcome) == FALSE)) {
+		KindsModule::problem_handler(NonDimensional_KINDERROR, NULL, NULL, NULL, NULL);
+		return;
+	}
+	if (Kinds::ne(left, right))
+		KindsModule::problem_handler(ImproperSubtraction_KINDERROR, NULL, NULL, NULL, NULL);
+	if (Kinds::Dimensions::dimensionless(left) == FALSE)
+		left->construct->dimensionless = TRUE;
+	left->construct->relative_kind = outcome->construct;
+}
+
 @h Unary operations.
 All we need to know is which ones are unary, in fact, and:
 
@@ -864,6 +885,16 @@ want Inform to say the result is number -- we want $2\theta$ to be
 another angle. So we make an exception.
 
 @<Handle calculations entirely between dimensionless units more delicately@> =
+	if ((K1->construct->relative_kind) &&
+		(K2) && (K2->construct == K1->construct->relative_kind) &&
+		((op == PLUS_OPERATION) || (op == MINUS_OPERATION) || (op == APPROXIMATE_OPERATION)))
+		return K1;
+	if ((K1->construct->relative_kind) &&
+		(Kinds::eq(K1, K2)) &&
+		(op == MINUS_OPERATION))
+		return Kinds::base_construction(K1->construct->relative_kind);
+	if (K1->construct->relative_kind) return NULL;
+	if ((K2) && (K2->construct->relative_kind)) return NULL;
 	if (Kinds::Dimensions::arithmetic_op_is_unary(op)) {
 		if ((op == REALROOT_OPERATION) && (Kinds::eq(K1, K_number)))
 			return K_real_number;
@@ -871,13 +902,15 @@ another angle. So we make an exception.
 	} else {
 		if ((Kinds::Dimensions::dimensionless(K1)) &&
 			(Kinds::Dimensions::dimensionless(K2))) {
+			if (op == TIMES_OPERATION) {
+				dimensional_rules *dimrs = Kinds::Behaviour::get_dim_rules(K1);			
+				for (dimensional_rule *dimr = (dimrs)?(dimrs->multiplications):NULL;
+					dimr; dimr = dimr->next)
+					if (Kinds::eq(K2, dimr->right))
+						return dimr->outcome;
+			}
 			if (Kinds::eq(K2, K_number)) return K1;
 			if (Kinds::eq(K1, K_number)) return K2;
-			dimensional_rules *dimrs = Kinds::Behaviour::get_dim_rules(K1);			
-			for (dimensional_rule *dimr = (dimrs)?(dimrs->multiplications):NULL;
-				dimr; dimr = dimr->next)
-				if (Kinds::eq(K2, dimr->right))
-					return dimr->outcome;
 			if (Kinds::eq(K1, K2)) return K1;
 		}
 	}
@@ -938,3 +971,12 @@ the physics but on the arithmetic method being used.
 @<And otherwise create a kind as the intermediate result of a calculation@> =
 	result.scaling_factor = Kinds::Dimensions::lcm(Kinds::Behaviour::scale_factor(K1), Kinds::Behaviour::scale_factor(K2));
 	return Kinds::intermediate_construction(&result);
+
+@ And this is needed for typechecking:
+
+=
+kind *Kinds::Dimensions::relative_kind(kind *K1) {
+	if (K1->construct->relative_kind)
+		return Kinds::base_construction(K1->construct->relative_kind);
+	return K1;
+}

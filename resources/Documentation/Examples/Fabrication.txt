@@ -1,9 +1,11 @@
 Example: ** Fabrication
-Location: Multiplication of units
+Location: Multiplication and subtraction of units
 RecipeLocation: Money
 Index: Clothes made of priced fabrics
 Description: A system of assembling clothing from a pattern and materials; both the pattern and the different fabrics have associated prices.
 For: Z-Machine
+
+^^{Clothes made of priced fabrics}
 
 When we make a new kind of value, the new named values can themselves have properties. That is convenient because, for instance, we might want to associate a material (itself the property of an object) with certain features, such as price.
 

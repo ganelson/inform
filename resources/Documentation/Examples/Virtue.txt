@@ -5,6 +5,8 @@ Index: People who reject categories of instruction
 Description: Defining certain kinds of behaviour as inappropriate, so that other characters will refuse indignantly to do any such thing.
 For: Z-Machine
 
+^^{characters (people): obeying and refusing}
+
 	{*}"Virtue"
 	
 	The Cloister is a room. Lady Teresa is a woman in the Cloister. Mother Margaret is a woman in the Cloister.

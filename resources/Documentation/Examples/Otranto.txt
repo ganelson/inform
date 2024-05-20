@@ -5,6 +5,8 @@ Index: Rope, able to be tied to things and dragged betwixt rooms
 Description: A kind of rope which can be tied to objects and used to anchor the player or drag items from room to room.
 For: Z-Machine
 
+^^{Rope, able to be tied to things and dragged betwixt rooms}
+
 The range of things one might want to do with a rope in a work of interactive fiction is fairly overwhelming. One might, in theory, swing from ropes; use them to tie containers shut; cut them up into smaller ropes; tie them together into longer ropes; employ them as fuses; bind other characters with them, or the player character.
 
 Our rope implementation is, by these lights, reasonably simple, but it does account for the possibility of tying and untying both ends; using ropes to descend into lower rooms; pulling objects tied to the far end of the rope; and dragging objects from place to place.

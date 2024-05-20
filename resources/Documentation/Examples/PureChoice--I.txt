@@ -1,0 +1,45 @@
+
+
+
+
+Pure Choice
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Here we might place our opening narration.
+
+We could go on for several paragraphs, if we like. There's no need to make them separate lines of narration if we do not want to.
+
+(1) I get the general idea.
+(2) Cool. Now show me something else.
+
+>I get the general idea.
+
+Good.
+
+Speaking of choices, the following two won't make any difference at all. The player's decision will immediately rejoin, leaving them only with the recollection of having made a choice in the first place.
+
+(1) I will remember this.
+(2) I will forget this almost immediately.
+
+>I will forget this almost immediately.
+
+Here, by contrast...
+
+(1) This branch is actually significant.
+(2) As is this one.
+
+>This branch is actually significant.
+
+You have passed through the left door.
+
+
+
+    *** The End ***
+
+
+
+
+Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> 
+<end of input>

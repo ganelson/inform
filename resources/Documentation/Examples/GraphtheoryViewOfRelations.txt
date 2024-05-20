@@ -5,6 +5,8 @@ Index: Graph-theory view of relations
 Description: Some notes on relations from the point of view of graph theory.
 For: Untestable
 
+^^{Graph-theory view of relations}
+
 One way to look at a relation is to regard it as a directed graph: that is, a collection of things ("vertices") with arrows drawn between them ("edges"). We write our items A, B, C, ... on a piece of paper: then, if A relates to B, we draw an arrow pointing from A to B, and so on. If we made this drawing for the adjacency relation, we would more or less have reconstructed the map (or at least a simplified one which does not care about precise directions, like the famous diagram of the London Underground). But the drawing can be made for any relation. If we define:
 
 	Suspecting relates various people to one person.

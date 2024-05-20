@@ -5,6 +5,8 @@ Index: Person who picks up treasures
 Description: A thief who will identify and take any valuable thing lying around that he is able to touch.
 For: Z-Machine
 
+^^{characters (people): acting spontaneously: taking valuables} ^^{actions: spontaneous by other people}
+
 	{*}"Lean and Hungry"
 	
 	Substance is a kind of value. The substances are silver, gold, and lead. Everything has a substance. A thing is usually lead.

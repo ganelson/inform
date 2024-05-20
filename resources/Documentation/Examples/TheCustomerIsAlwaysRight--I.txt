@@ -1,0 +1,53 @@
+
+
+
+
+The Customer Is Always Right
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Ye Olde Stationery Shoppe
+A sign propped in the window reads "Help wanted", which is why you are here. The inside of the Shoppe does not really speak of active trade: dusty piles of carbon paper, manual cash register, ink ribbons for a type of printer not sold since 1982. But perhaps they take the Olde seriously.
+
+At the back of the Shoppe is a woman in a polyester apron and a name badge that just reads "Cratchett".
+
+>(Testing.)
+
+>[1] talk about employment
+"Say, are you hiring?" you ask, as casually as you can manage.
+
+"Hm," she says. "Let's talk a bit more and then I'll decide."
+
+Cratchett runs a dustcloth over the surface of the ink ribbons. This has clearly not happened in quite some time.
+
+"Have you done much retail work before?" she asks.
+
+>[2] yes
+"As a matter of fact, I have. My résumé does mention-"
+
+"Probably some low-traffic luxury boutique," she grumbles, though you didn't specify.
+
+Cratchett looks closely at yourself.
+
+"It's not easy, making sure the customer always gets what they want. Or that they always think they're getting what they want.
+
+"That's what we strive for here. The customer thinks we think they're always right. Even when they're not right and we don't think they're right and we're not actually giving them what they want. I trust that's clear."
+
+>[3] yes
+"Crystal," you say.
+
+Her expression says she was hoping that was too difficult a concept for you to follow, but she feels some grudging respect.
+
+>[4] talk about employment
+"So about the job," you try again.
+
+"You're not entirely stupid. So we'll see how it goes. Three months probation," she adds.
+
+
+
+    *** Success, after a fashion ***
+
+
+
+Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+> 

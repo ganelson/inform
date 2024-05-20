@@ -1,0 +1,243 @@
+Example: **** Text Foosball Commentated
+Location: When the director is active
+RecipeLocation: The Flow of Conversation
+Index: Foosball game
+Description: A foosball game where the other character not only plays against us but reacts to the state of gameplay and riffs on previously-mentioned topics.
+
+In some stories, the player is mostly talking to another character, and their interactions with the environment are largely incidental. In others, the environmental interaction is the main thing – or at least an important priority – but we want the other character to keep up a bit of small talk that feels responsive to world state.
+
+This example explores the latter situation. As in "Text Foosball", we have a fairly randomised foosball game we can play against our opponent Joey; in this case, however, he can use the dialogue system to react to his own mistakes, comment on the state of play generally, riff on prior discussion, or (inevitably) hit up the player for a loan.
+
+	{*}"Text Foosball Commentated"
+	
+	Chapter 1 - Distraction
+	
+	Section 1 - The Game
+	
+	Use scoring.
+	
+	The Lounge is a room. "The Lounge is appointed with everything necessary to rest and relaxation: a vending machine, a potted palm, a stack of Entertainment Weekly issues from 1993, and -- your pride and joy -- a foosball game."
+	
+	The foosball game is scenery in the Lounge. Understand "table" or "football" or "foozball" or "fussball" or "soccer" as the foosball game. The game is a supporter. On the game is a small white ball. The ball can be still, approaching, receding, or unreachable. The description of the ball is "Currently [small white ball condition]."
+	
+	After printing the name of the small white ball, say " ([small white ball condition])".
+	
+	When play begins:
+		now left hand status line is "You: [score]";
+		now right hand status line is "Joey: [Joey's score]".
+	
+	Some tiny men on sticks are part of the game. Understand "handles" as the tiny men. The description is "Okay, a couple of the tiny men have had their feet broken off, and the table surface itself is a bit warped, and the ball resembles a quail egg in respect of shape and color. This makes for a game of unusual randomness, but skill is overrated."
+	
+	Instead of attacking or pulling or pushing the game when the ball is unreachable:
+		say "You give the table a good shove, and the ball moves ever-so-slightly.";
+		now the ball is still.
+	
+	Instead of taking the white ball:
+		say "You'd forfeit the game if you did that."
+	
+	Instead of turning the tiny men when the ball is unreachable:
+		say "The ball has somehow gotten to a mystical point on the table where it cannot be reached, no matter what. Close inspection reveals that this point has been marked in chalk with a tiny X. Not that that does any good."
+	
+	Instead of turning the tiny men when the ball is approaching:
+		if a random chance of 2 in 3 succeeds:
+			if a random chance of 1 in 2 succeeds, now the ball is receding;
+			otherwise now the ball is still;
+			say "[if the ball is still]Thunk. [otherwise]Thwack! [end if]You keep the ball from reaching its goal! Now it is [small white ball condition].";
+		otherwise:
+			let Joey score.
+	
+	To let Joey score:
+		now the ball is still;
+		now Joey's score is Joey's score + 1;
+		say "The ball rolls neatly into your goal, despite your efforts. ";
+		if Joey's score < score, say "You put the ball back in the center with a snap. No reason to worry yet; you're still ahead. Joey looks determined, though.";
+		otherwise say "After allowing a moment or two for Joey's gloating to pass, you replace it at the center."
+	
+	Instead of turning the tiny men when a random chance of 1 in 13 succeeds:
+		if the ball is unreachable, continue the action;
+		now the ball is unreachable;	
+		say "You hit the ball off-center and it rolls sluggishly into a little dip in the surface of the foosball table. ";
+		if Joey's score > 7, say "'You did that on purpose!' Joey exclaims indignantly.";
+		otherwise say "You and Joey exchange glances. This is never good."
+		
+	Instead of turning the tiny men:
+		say "You madly rotate the tiny men on sticks! ";
+		if a random chance of 1 in 2 succeeds:
+			say "Hoorah! You hit the ball!";
+			now the ball is receding;
+		otherwise:	
+			say "Somehow you fail to bring your monopodal player into contact with the ball."
+	
+	Joey is a man in the Lounge. "Joey is hunkered over the foosball handles on his side of the table." Joey can be active or inactive.
+	
+	Joey's score is a number that varies.
+	
+	Every turn: now Joey is active.
+	
+	Every turn when the ball is approaching and Joey is active:
+		let total be Joey's score + score;
+		if total > 9, make no decision;
+		now Joey is inactive;
+		let Joey score;
+		rule succeeds.
+	
+	Every turn when the ball is unreachable and Joey is active:
+		let total be Joey's score + score;
+		if total > 9, make no decision;
+		now Joey is inactive;
+		say "Joey glares angrily at the stuck ball."
+	
+	Every turn when the ball is receding and Joey is active:
+		let total be Joey's score + score;
+		if total > 9, make no decision;
+		if the ball is unreachable, make no decision;
+		now Joey is inactive;
+		if a random chance of 1 in 2 succeeds:
+			if a random chance of 1 in 2 succeeds, now the ball is still;
+			otherwise now the ball is approaching;
+			say "Joey connects with your shot. Now the ball is [small white ball condition]!";
+		otherwise:
+			now the ball is still;
+			say "Joey tries to block, but misses! Back it goes in the center, where it is [small white ball condition].";
+			increment the score.
+	
+	Every turn when the ball is still and Joey is active:
+		let total be Joey's score + score;
+		if total > 9, make no decision;
+		if the ball is unreachable, make no decision;
+		now Joey is inactive;
+		if a random chance of 1 in 2 succeeds:
+			now the ball is approaching;
+			say "Joey hits the ball solidly down towards your goal. Now it is [small white ball condition].";
+		otherwise:
+			say "Joey fails to hit the ball in your direction. It remains [small white ball condition].";
+			perform the joey remarks failure beat.
+	
+	Every turn:
+		let total be Joey's score + score;
+		if total > 9:
+			if Joey's score > score, end the story saying "Rats! Joey wins!";
+			if Joey's score < score, end the story finally saying "Victory is yours!";
+			if Joey's score is score, end the story saying "A perfect tie."
+	
+	To decide whether Joey is winning:
+		if Joey's score > score and Joey's score > 0:
+			yes;
+		no.
+		
+	To decide whether match is scoreless:
+		if Joey's score is 0 and score is 0:
+			yes;
+		no.
+
+And now for the plot, which is almost entirely in the hands of an active dialogue director.
+
+	{**}Chapter 2 - Plot
+	
+	Section 1 - Concepts
+	
+	Money is a concept. The match is a concept. Shannon is a concept. Telekinesis is a concept.
+	
+	When play begins:
+		make the dialogue director active.
+		
+	Test me with "turn handles / no / turn handles / z"
+	
+	Section 2 - The Request (dialogue)
+	
+	(About money. Spontaneous. If score > 0.)
+	
+	Joey: "'Hey, can I borrow fifty bucks?' He asks like the idea just occurred to him, like it's got something to do with foosball."
+	
+	-- instead of saying no
+	
+		Player: "'Don't you already owe me–' you start. Seven hundred and twenty-two dollars. That's how much Joey owes you. You've got it written down in a log book that he never looks at."
+		
+		Joey: "'I mean yeah,' he says. 'But that's the beauty of it. If I borrow money from someone else then that's two people I've got wanting it back.'"
+		
+	-- instead of saying yes
+	
+		Player: "'...okay, sure.'"
+		
+		Joey: "'...or like a hundred?' Evidently you made it too easy."
+		
+	-- (recurring) after doing something
+	
+		Joey: "He gives you a frustrated look when you don't answer. 'I could really use the help.'"
+		
+			<-
+			
+		Joey: "'Fine, forget I asked,' he says."
+		
+	
+	Section 2 - Game commentary (dialogue)
+	
+	(About match. If small white ball is unreachable. Spontaneous.)
+	
+	Joey: "He gives you a helpless look. 'You've got to do the thing you do where you hit the table and it gets unstuck.' ([small white ball condition])"
+	
+	Player (without speaking): "You point out that he could hit the table."
+	
+	Joey: "'Yeah, but it's never as good when I do it. I think it gives me bad luck afterwards.' Which is not a great reason why you should be the one to hit the table."
+	
+	(About match. If Joey is winning and the small white ball is not unreachable. Spontaneous.)
+	
+	Joey: "'Pure skill,' says Joey."
+	
+	(About match. Unless Joey is winning. Spontaneous.)
+	
+	Joey: "'What happened to the ball that was actually round?' Joey asks."
+	
+	Player: "'You ate it. Remember?' The ball was eventually retrieved but not in a reusable condition."
+	
+	Joey (mentioning Shannon): "'Oh yeah. To impress that girl Shannon. And now she never comes around any more.' You don't ask why he thought Shannon wanted to see him eat a foosball. There are some things it's better not to know."
+	
+	(About match. If small white ball is receding. Spontaneous.)
+	
+	Joey: "'Oh no you don't.'"
+	
+	(About match. If small white ball is approaching.)
+	
+	Joey: "'Come on, come on, come on...' Joey bends down to view the table as though he can will the ball into the goal. "
+	
+	(About match. If the match is scoreless and turn count is greater than four. Spontaneous.)
+	
+	Joey: "'This could take a while,' he says."
+
+We only want the `Joey remarks failure beat` to occur if the action system specifically calls on it. If we marked this as `about match`, then Joey might choose to say one of these lines through the actions of the dialogue director even when he hasn't just missed a shot. So we don't mark it as `about` anything.
+	
+	{**}(This is the Joey remarks failure beat. Recurring.)
+	
+	Joey (if the ball is still): "'I'm pretty sure the ball moved out of the way. Is that possible?'"
+	
+		Player (mentioning telekinesis): "You give him a funny look. 'Yeah, I moved it with the telekinetic powers of my mind.'"
+	
+		-> stop
+		
+	Joey (if the ball is still): "'Aw, come on!' He glares at the table."
+		
+		-> stop
+	
+	Joey (if the ball is still; without speaking; recurring): "[one of]Joey is scowling. It obviously doesn't go well for his pride when he's failing to make contact with a completely still ball.[or]Joey mutters about the failure.[cycling]"
+		
+		-> stop
+	
+	Joey (recurring): "[one of]'Just got by me,' Joey remarks, as though you couldn't see that for yourself.[or]'Aw, too fast,' says Joey.[or]'Missed!' says Joey.[stopping]"
+	
+	Section 3 - Other local colour (dialogue)
+	
+	(About telekinesis.)
+	
+	Joey: "He straightens up. 'Is telekinesis that thing where you can electrocute people through the telephone line? Like you call them up and they answer and zzzap?''"
+	
+	Player: "'Nnnno. There is no power to do that,' you say. 'Telekinesis is when you can think about something moving and then it moves without you touching it.'"
+	
+	Joey: "'There's no power to do that either.' He taps the side of his forehead."
+	
+	(About Shannon.)
+	
+	Joey: "'You know, I should give Shannon another call.' A reminiscent gleam comes into his eye. He's probably forgotten what happened the last time he saw her."
+	
+	Player: "'So she can dump another plate of ravioli in your lap?' You had to go there. You couldn't let it go."
+	
+	Joey: "He looks puzzled while that memory circles and circles and finally comes in for a landing. 'It might not... oh yeah.'"

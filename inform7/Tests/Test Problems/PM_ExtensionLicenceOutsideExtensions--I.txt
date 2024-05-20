@@ -1,0 +1,11 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 9 words long.
+I've also read version 2 of Basic Inform by Graham Nelson, which is 8488 words long.
+I've also read version 2 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 7 of Standard Rules by Graham Nelson, which is 35135 words long.
+Problem__ PM_ExtensionLicenceOutsideExtensions
+  >--> You wrote 'The copyright for this extension is "Emily Short 2024"' (source
+    text, line 1): but tries to set the licence for an extension but the main
+    source text, which is not allowed - an extension's licence must be set in
+    the extension itself.
+Inform 7 has finished.

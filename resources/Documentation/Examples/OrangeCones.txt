@@ -5,6 +5,8 @@ Index: Backdrops that move conditionally
 Description: Creating a traffic backdrop that appears in all road rooms except the one in which the player has laid down orange cones.
 For: Z-Machine
 
+^^{backdrops+kind+: that move conditionally}
+
 Because we can invent our own adjectives (see the chapter on [Phrases]), we can make the conditions for a backdrop as simple or as complicated as we like.
 
 In this scenario, we want the player to be able to take, move, and drop orange traffic cones to seal off one street or another. So we create our own `accessible` adjective as follows:

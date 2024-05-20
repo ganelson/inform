@@ -21,6 +21,7 @@ Chapter 2: Conceptual Framework
 	Nests
 	Registries
 	JSON Metadata
+	Licences
 
 Chapter 3: Incremental Builds
 	Build Graphs
@@ -68,6 +69,9 @@ Chapter 7: Extension Management
 	Documentation Renderer
 	In-App Manuals
 	Making RTP Pages
-	Indexing Utilities
+	Indexing Data
+	Index Terms
+	Index Lemmas
+	Index Markup Notations
 	General Index
 	Examples Index

@@ -5,6 +5,8 @@ Index: Baking soda which has a different name when next to a smelly thing
 Description: A box of baking soda whose name changes to "completely ineffective baking soda" when it is in a container with something that smells funny.
 For: Z-Machine
 
+^^{Baking soda which has a different name when next to a smelly thing}
+
 First to lay some groundwork:
 
 	{*}"Shipping Trunk"

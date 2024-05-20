@@ -1,16 +1,16 @@
    Camp Bethel Kitchen
   Camp Bethel
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Camp Bethel Kitchen
   You've never been into the kitchen before, though you've spent many an hour in the dining lodge. The place is larger than you would have expected, and it has none of the fake rustic touches of the rest of the camp.
   
   Jeremy stands at his station, peeling white onions.
   
-  Fluffy is staring out the window.
+  Fluffy is chasing its tail.
   
-  A large housefly flies around noisily.
+  A large housefly circles Jeremy's chef hat.
   
 > >   Camp Bethel Kitchen
   (Testing.)
@@ -23,7 +23,7 @@
   
   Fluffy is rubbing itself against your leg.
   
-  A large housefly lands on a countertop.
+  A large housefly flies around noisily.
   
   >[2] g
   Camp Bethel Kitchen
@@ -31,7 +31,7 @@
   
   Jeremy stands at his station, chopping celery.
   
-  Fluffy is chasing its tail.
+  Fluffy is staring out the window.
   
   A large housefly circles Jeremy's chef hat.
   
@@ -41,7 +41,7 @@
   
   Jeremy stands at his station, peeling carrots.
   
-  Fluffy is staring out the window.
+  Fluffy is rubbing itself against your leg.
   
   A large housefly lands on a countertop.
   
@@ -51,15 +51,15 @@
   
   Jeremy stands at his station, tying fresh herbs together with string.
   
-  Fluffy is staring out the window.
+  Fluffy is rubbing itself against your leg.
   
   A large housefly circles Jeremy's chef hat.
   
   >[5] ask jeremy about his feelings for me
-  "Hm, you've got me there," Jeremy exclaims huskily.
+  "Hm, I don't know much about that," Jeremy exclaims in a deep manly voice.
   
   >[6] ask jeremy about his amnesia
-  "I'm afraid I don't know much about that," Jeremy drawls in a deep manly voice.
+  "Sorry, I haven't the faintest," Jeremy comments throatily.
   
   >[7] tell jeremy about my unborn child
   Jeremy looks nonplussed. "You don't say!"

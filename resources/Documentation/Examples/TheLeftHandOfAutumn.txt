@@ -5,6 +5,8 @@ Index: EXAMINE produces special results for a group of objects
 Description: The possibility of using a [things] token opens up some interesting complications, because we may want actions on multiple items to be reported differently from actions on just one. Here we look at how to make a multiple examination command that describes groups in special ways.
 For: Z-Machine
 
+^^{examining+action+: special results for a group of objects}
+
 Suppose that we have a game in which groups of objects can have meaning apart from their individual significance – perhaps there are spells that can only be cast by collecting just the right items in the same place.
 
 In this case, one of the things the player might like to be able to do is look at several items together and get a special response, different from looking at the items individually.

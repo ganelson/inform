@@ -5,6 +5,8 @@ Index: Pine 2. Chatting with the Princess
 Description: Pine: Adding a conversation with the princess, in which a basic set of facts must be covered before the scene is allowed to end.
 For: Z-Machine
 
+^^{Pine 2. Chatting with the Princess}
+
 	{*}"Pine"
 	
 	A person can be asleep or awake. A person can be active or passive.

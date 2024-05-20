@@ -1,7 +1,7 @@
    Go
   Do Pass Go
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Go
   A giant square area, where you and your other pewter ornament friends gather before setting out to purchase London.
@@ -14,16 +14,16 @@
     a pair of dice
   
   >[2] roll dice
-  You roll double 2.
+  You roll 4 and 3.
   
   >[3] look
   Go
   A giant square area, where you and your other pewter ornament friends gather before setting out to purchase London.
   
-  You can see a pair of dice showing 4 here.
+  You can see a pair of dice showing 7 here.
   
   >[4] x dice
-  The pair of dice are showing double 2.
+  The pair of dice are showing 4 and 3.
   
   >[5] get dice
   Taken.
@@ -32,30 +32,30 @@
   The pair of dice are itching to be rolled.
   
   >[7] roll dice
-  You roll 3 and 5.
+  You roll 3 and 2.
   
   >[8] roll dice
-  (first taking the pair of dice showing 8)
-  You roll 4 and 1.
+  (first taking the pair of dice showing 5)
+  You roll 5 and 6.
   
   >[9] roll dice
-  (first taking the pair of dice showing 5)
-  You roll 3 and 5.
+  (first taking the pair of dice showing 11)
+  You roll 6 and 3.
   
   >[10] roll dice
-  (first taking the pair of dice showing 8)
-  You roll 3 and 1.
+  (first taking the pair of dice showing 9)
+  You roll 1 and 6.
   
   >[11] roll dice
-  (first taking the pair of dice showing 4)
-  You roll 5 and 3.
+  (first taking the pair of dice showing 7)
+  You roll 3 and 6.
   
   >[12] roll dice
-  (first taking the pair of dice showing 8)
-  You roll 3 and 2.
+  (first taking the pair of dice showing 9)
+  You roll 1 and 4.
   
   >[13] roll dice
   (first taking the pair of dice showing 5)
-  You roll 6 and 4.
+  You roll double 1.
   
 > >

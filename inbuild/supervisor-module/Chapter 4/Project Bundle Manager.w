@@ -100,13 +100,15 @@ inbuild_copy *ProjectBundleManager::claim_folder_as_copy(pathname *P) {
 					"the project directory '%S' contains a subdirectory called '%S', "
 					"which I don't recognise",
 					Pathnames::directory_name(P), subdir);
-				Copies::attach_error(C, CopyErrors::new_T(PROJECT_MALFORMED_CE, -1, error_text));
+				Copies::attach_warning(C, CopyErrors::new_T(PROJECT_EXTRANEOUS_CE, -1, error_text));
 				DISCARD_TEXT(error_text)				
 			}
 			DISCARD_TEXT(subdir)
 		} else {
 			if (Str::eq_insensitive(entry, I"manifest.plist")) continue;
 			if (Str::eq_insensitive(entry, I"Metadata.iFiction")) continue;
+			if (Str::eq_insensitive(entry, I"Licenses.txt")) continue;
+			if (Str::eq_insensitive(entry, I"Licenses.html")) continue;
 			if (Str::eq_insensitive(entry, I"notes.rtf")) continue;
 			if (Str::eq_insensitive(entry, I"Release.blurb")) continue;
 			if (Str::eq_insensitive(entry, I"Settings.plist")) continue;
@@ -117,7 +119,7 @@ inbuild_copy *ProjectBundleManager::claim_folder_as_copy(pathname *P) {
 				"the project directory '%S' contains a file called '%S', "
 				"which I don't recognise",
 				Pathnames::directory_name(P), entry);
-			Copies::attach_error(C, CopyErrors::new_T(PROJECT_MALFORMED_CE, -1, error_text));
+			Copies::attach_warning(C, CopyErrors::new_T(PROJECT_EXTRANEOUS_CE, -1, error_text));
 			DISCARD_TEXT(error_text)				
 		}
 	}
@@ -153,7 +155,7 @@ inbuild_copy *ProjectBundleManager::claim_folder_as_copy(pathname *P) {
 				"the 'Source' subdirectory of the project directory '%S' contains a "
 				"further subdirectory called '%S', but should not have further subdirectories",
 				Pathnames::directory_name(P), subdir);
-			Copies::attach_error(C, CopyErrors::new_T(PROJECT_MALFORMED_CE, -1, error_text));
+			Copies::attach_warning(C, CopyErrors::new_T(PROJECT_EXTRANEOUS_CE, -1, error_text));
 			DISCARD_TEXT(error_text)
 			DISCARD_TEXT(subdir)
 		} else {
@@ -163,7 +165,7 @@ inbuild_copy *ProjectBundleManager::claim_folder_as_copy(pathname *P) {
 				"the 'Source' subdirectory of the project directory '%S' contains a "
 				"file called '%S', but should only contain the source text file 'story.ni'",
 				Pathnames::directory_name(P), entry);
-			Copies::attach_error(C, CopyErrors::new_T(PROJECT_MALFORMED_CE, -1, error_text));
+			Copies::attach_warning(C, CopyErrors::new_T(PROJECT_EXTRANEOUS_CE, -1, error_text));
 			DISCARD_TEXT(error_text)				
 		}
 	}
@@ -183,7 +185,7 @@ inbuild_copy *ProjectBundleManager::claim_folder_as_copy(pathname *P) {
 					"the 'Build' subdirectory of the project directory '%S' contains a "
 					"further subdirectory called '%S', but should not have further subdirectories",
 					Pathnames::directory_name(P), subdir);
-				Copies::attach_error(C, CopyErrors::new_T(PROJECT_MALFORMED_CE, -1, error_text));
+				Copies::attach_warning(C, CopyErrors::new_T(PROJECT_EXTRANEOUS_CE, -1, error_text));
 				DISCARD_TEXT(error_text)
 			}
 			DISCARD_TEXT(subdir)
@@ -208,7 +210,7 @@ inbuild_copy *ProjectBundleManager::claim_folder_as_copy(pathname *P) {
 					"the 'Index' subdirectory of the project directory '%S' contains a "
 					"further subdirectory called '%S', but can only have one, 'Details'",
 					Pathnames::directory_name(P), subdir);
-				Copies::attach_error(C, CopyErrors::new_T(PROJECT_MALFORMED_CE, -1, error_text));
+				Copies::attach_warning(C, CopyErrors::new_T(PROJECT_EXTRANEOUS_CE, -1, error_text));
 				DISCARD_TEXT(error_text)
 			}
 			DISCARD_TEXT(subdir)
@@ -230,7 +232,7 @@ inbuild_copy *ProjectBundleManager::claim_folder_as_copy(pathname *P) {
 					"the 'Index' subdirectory of the project directory '%S' contains a "
 					"file called '%S', but can only contain HTML and XML files",
 					Pathnames::directory_name(P), entry);
-				Copies::attach_error(C, CopyErrors::new_T(PROJECT_MALFORMED_CE, -1, error_text));
+				Copies::attach_warning(C, CopyErrors::new_T(PROJECT_EXTRANEOUS_CE, -1, error_text));
 				DISCARD_TEXT(error_text)
 			}
 		}

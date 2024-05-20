@@ -16,7 +16,7 @@
   -- Performing beat-1
   The server rearranges items on her platter for balance.
   
-  The server: "Should I take the mai tai away?"
+  The server: "Shall I take the mai tai away?"
   
   [(1) Loretta giving the mai tai to the server]
   Loretta gives the mai tai to the server.

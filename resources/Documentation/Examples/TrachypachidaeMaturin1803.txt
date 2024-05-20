@@ -5,6 +5,8 @@ Index: Bottles with removable stoppers
 Description: Bottles with removable stoppers: when the stopper is in the bottle, the bottle is functionally closed, but the stopper can also be removed and used elsewhere. Descriptions of the bottle reflect its state intelligently.
 For: Z-Machine
 
+^^{Bottles with removable stoppers}
+
 	{*}"Trachypachidae Maturin 1803"
 	
 	A bottle is a kind of container. Bottles are usually openable, transparent, and closed. A cork is a kind of thing. A cork is in every bottle.

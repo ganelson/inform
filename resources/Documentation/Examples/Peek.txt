@@ -1,0 +1,48 @@
+Example: ** Peek
+Location: Multiplication and subtraction of units
+RecipeLocation: Testing
+Index: Examining the contents of memory
+Description: A debugging command for examining the contents of memory.
+For: Z-Machine
+
+```PEEK``` was an endearingly-named keyword in microcomputer implementations of the BASIC programming language, which let users access memory directly — provided they knew what location to look at. Positions in memory were labelled by _addresses_, from 0 to, usually, something like 65535, although they were often written in hexadecimal instead, and thus ran ```0000``` to ```FFFF```.
+
+We want to distinguish addresses from numbers of bytes — i.e., the position of an area of memory and the size of an area of memory are different concepts, and we want two different kinds for them:
+
+	{*}"Peek"
+	
+	A memory address is a kind of value.
+	$<hex> specifies a memory address with parts hex (up to 8 hexadecimal digits).
+
+	A memory extent is a kind of value. 10 bytes specifies a memory extent.
+
+	A memory address minus a memory address specifies a memory extent.
+
+And the rest then involves grubby, but routine, low-level hacking to look at the actual contents of memory:
+
+	{**}Dumping memory at is an action out of world applying to one memory address.
+
+	Carry out dumping memory at:
+		say "[memory address understood]: [dump of 32 bytes at the memory address understood]";
+		say line break.
+
+	To say dump of (N - number) bytes at (address - memory address):
+		(- DumpMemory({address}, {N}); -);
+
+	Include (-
+		[ DumpMemory N C i;
+			for (i=0: i<C: i++) {
+				if (i > 0) print " ";
+				PrintInBase(N->i, 16, 2);
+			}
+			print " ~";
+			for (i=0: i<C: i++)
+				if ((N->i >= $20) && (N->i < $7f))
+					print (char) N->i; else print "?";
+			print "~";
+		];
+	-).
+
+	Understand "dump [memory address]" as dumping memory at.
+
+	The Memory Palace is a room.

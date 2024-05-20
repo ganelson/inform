@@ -5,6 +5,8 @@ Index: GET DOWN and DOWN understood as EXIT
 Description: By default, Inform understands ``GET OFF``, ``GET UP``, or ``GET OUT`` when the player is sitting or standing on an enterable object. We might also want to add ``GET DOWN`` and ``DOWN`` as exit commands, though.
 For: Z-Machine
 
+^^{>GET: GET DOWN and DOWN understood as EXIT}
+
 With ``GET DOWN``, we can replace the whole command, which will not interfere with the normal function of the ``TAKE`` verb, or allow the player to attempt to ``GET`` any other directions:
 
 	{*}"Anchorite"

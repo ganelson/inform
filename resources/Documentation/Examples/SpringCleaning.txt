@@ -5,6 +5,8 @@ Index: Person who laments broken objects
 Description: A character who sulks over objects that the player has broken (and which are now off-stage).
 For: Z-Machine
 
+^^{characters (people): commenting on the player's actions}
+
 Here we have a destruction action that allows the player to break any fragile items. Once destroyed, these things are removed from play, but we can still refer to them: they are now off-stage. This makes it easy for our sulking character to list the ones that have been destroyed:
 
 	{*}"Spring Cleaning"

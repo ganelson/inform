@@ -31,7 +31,7 @@ description of values <= value, stored value
 property <= value, stored value
 table column <= value, stored value
 combination value and value <= value, stored value, sayable value, pointer value
-nothing <= value, stored value, sayable value, understandable value, arithmetic value, real arithmetic value, enumerated value, pointer value, object, number, real number, truth state, text, snippet, unicode character, use option, response, verb, table name, equation name, rulebook outcome, phrase value -> value, values variable-pointer, relation of values, values based rule producing values, values based rulebook producing values, activity on values, list of nothing, description of values, property, table column, combination value and value, , nothing, value, value, external file, internal file, described action, action, action name, time, scene, figure name, sound name, topic, abstract object, natural language, grammatical tense, narrative viewpoint, grammatical case, grammatical gender, room, thing, direction, door, container, supporter, backdrop, person, region, concept, man, woman, animal, device, vehicle, player's holdall, command parser error
+nothing <= value, stored value, sayable value, understandable value, arithmetic value, real arithmetic value, enumerated value, pointer value, object, number, real number, truth state, text, snippet, unicode character, use option, response, verb, table name, equation name, rulebook outcome, phrase value -> value, values variable-pointer, relation of values, values based rule producing values, values based rulebook producing values, activity on values, list of nothing, description of values, property, table column, combination value and value, , nothing, value, value, external file, internal file, described action, action, action name, time, time period, scene, figure name, sound name, topic, abstract object, natural language, grammatical tense, narrative viewpoint, grammatical case, grammatical gender, room, thing, direction, door, container, supporter, backdrop, person, region, concept, man, woman, animal, device, vehicle, player's holdall, command parser error
  <= value
 nothing <= value
 value, value <= value
@@ -41,6 +41,7 @@ described action <= value, stored value
 action <= value, stored value, sayable value, pointer value
 action name <= value, stored value, sayable value
 time <= value, stored value, sayable value, understandable value, arithmetic value
+time period <= value, stored value, sayable value, understandable value, arithmetic value
 scene <= value, stored value, sayable value, understandable value, enumerated value
 figure name <= value, stored value, sayable value, understandable value, enumerated value
 sound name <= value, stored value, sayable value, understandable value, enumerated value
@@ -120,6 +121,7 @@ described action -> stored value -> value ->
 action -> pointer value -> sayable value -> stored value -> value -> 
 action name -> sayable value -> stored value -> value -> 
 time -> arithmetic value -> understandable value -> sayable value -> stored value -> value -> 
+time period -> arithmetic value -> understandable value -> sayable value -> stored value -> value -> 
 scene -> enumerated value -> understandable value -> sayable value -> stored value -> value -> 
 figure name -> enumerated value -> understandable value -> sayable value -> stored value -> value -> 
 sound name -> enumerated value -> understandable value -> sayable value -> stored value -> value -> 

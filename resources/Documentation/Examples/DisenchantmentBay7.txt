@@ -5,6 +5,8 @@ Index: Disenchantment Bay 7. Radar and instruments
 Description: Disenchantment Bay: making the radar and instruments switch on and off.
 For: Untestable
 
+^^{Disenchantment Bay 7. Radar and instruments}
+
 If we would like the player to be able to turn instrumentation on and off, we could add a line to this effect:
 
 	{*}The radar, the instruments, and the radios are devices.

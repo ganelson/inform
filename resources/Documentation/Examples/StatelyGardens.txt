@@ -5,6 +5,8 @@ Index: Continuous space with distant objects visible and automatic room descript
 Description: An open landscape where the player can see landmarks in nearby areas, with somewhat more complex room descriptions than the previous example, and in which we also account for size differences between things seen at a distance.
 For: Z-Machine
 
+^^{continuous space: with distant objects visible and automatic room description}
+
 This time we're going to assume that the player can see into any room that is on a line of sight within one or two steps of travel.
 
 	{*}"Stately Gardens"

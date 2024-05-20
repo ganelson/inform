@@ -5,6 +5,8 @@ Index: Banner printing at appropriate times
 Description: Delaying the banner for later.
 For: Z-Machine
 
+^^{banner text}
+
 	{*}"Bikini Atoll" by Edward Teller
 	
 	The Hut and the Tropical Beach are rooms.

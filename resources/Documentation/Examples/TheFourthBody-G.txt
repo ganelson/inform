@@ -5,6 +5,8 @@ Index: WRITE text IN command that will store text
 Description: Notebooks in which the player can record assorted notes throughout play.
 For: Glulx
 
+^^{WRITE text IN command that will store text}
+
 Some mystery games supply the player with an in-game system for taking notes, in case they don't want to rely on scraps of paper next to the computer. One way of doing this is to write out all the player's notes and observations into a notebook file, whose contents can be retrieved during play (or, indeed, after it).
 
 We'll first invent a general system for writing text into notebooks, by creating a new kind called jotter. Each individual jotter will have its own disc file, and there will be basically three things which can be done with jotters: erasing, reading and writing.

@@ -10,6 +10,7 @@ Sections
 	Preamble
 	Physical World Model
 	Variables and Rulebooks
+	Dialogue
 	Activities
 	Actions
 	Command Grammar

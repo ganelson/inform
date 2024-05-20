@@ -5,6 +5,8 @@ Index: Disenchantment Bay 10. Clothing and possessions
 Description: Disenchantment Bay: things for the player and the characters to wear and carry.
 For: Untestable
 
+^^{Disenchantment Bay 10. Clothing and possessions}
+
 At this point we can dress both the Captain and the player with some appropriate props:
 
 	{*}The captain wears a baseball cap. The description of the cap is "It says, THE WORST DAY FISHING IS BETTER THAN THE BEST DAY WORKING."

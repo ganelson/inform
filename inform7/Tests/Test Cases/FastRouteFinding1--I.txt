@@ -33,79 +33,93 @@
   Encircled Plateau
   You can see an unexpected door here.
   
-  Larry hikes from Barn to Road in 3 moves.
+  Larry arrives from the west.
   
-  Curly hikes from Barn to Rolling Foothills in 3 moves.
+  Larry goes east.
   
-  Moe hikes from Barn to Narrow Crevice in 6 moves.
+  Larry hikes from Barn to Temple in 11 moves.
+  
+  Curly hikes from Barn to Graveyard in 5 moves.
+  
+  Moe arrives from the west.
+  
+  Moe goes north.
+  
+  Moe hikes from Barn to Divine Palace in 11 moves.
   
   George arrives from the west.
   
-  George goes north.
+  George goes east.
   
-  George hikes from Barn to Vista Over Clouds in 11 moves.
+  George hikes from Barn to Landing in 10 moves.
   
-  Mike hikes from Barn to Village Outskirts in 3 moves.
+  Mike arrives from the west.
   
-  Bob hikes from Barn to Wilderness in 4 moves.
+  Mike goes east.
   
-  Jayson hikes from Barn to Narrow Crevice in 6 moves.
+  Mike hikes from Barn to Crack in 8 moves.
+  
+  Bob hikes from Barn to Slippery Chute in 8 moves.
+  
+  Jayson arrives from the west.
+  
+  Jayson goes east.
+  
+  Jayson hikes from Barn to Egg Polishing Grounds in 11 moves.
   
   Crito arrives from the west.
   
   Crito goes north.
   
-  Crito hikes from Barn to Divine Palace in 11 moves.
+  Crito hikes from Barn to Perilous Peak in 9 moves.
   
-  Pheidippides arrives from the west.
-  
-  Pheidippides goes east.
-  
-  Pheidippides hikes from Barn to Sacred Chamber in 12 moves.
+  Pheidippides hikes from Barn to Town in 2 moves.
   
   Lisa arrives from the east.
   
-  Lisa goes west.
+  Lisa goes north.
   
-  Lisa hikes from Shell Dump to Frightening Narrowness in 11 moves.
+  Lisa hikes from Shell Dump to Forecourt of the Gods in 8 moves.
   
-  Tina arrives from the east.
-  
-  Tina goes north.
-  
-  Tina hikes from Shell Dump to Vista Over Clouds in 9 moves.
+  Tina hikes from Shell Dump to Shell Dump in 0 moves.
   
   Maria arrives from the east.
   
   Maria goes west.
   
-  Maria hikes from Shell Dump to Wilderness in 12 moves.
+  Maria hikes from Shell Dump to Road in 13 moves.
   
   Benita hikes from Shell Dump to Rookery in 2 moves.
   
   Sasha arrives from the east.
   
-  Sasha hikes from Shell Dump to Encircled Plateau in 5 moves.
+  Sasha goes north.
+  
+  Sasha hikes from Shell Dump to Cottage of Lesser Deities in 10 moves.
   
   Marita arrives from the east.
   
   Marita goes west.
   
-  Marita hikes from Shell Dump to Scrubland in 11 moves.
+  Marita hikes from Shell Dump to City in 13 moves.
   
   Queenie arrives from the east.
   
   Queenie goes west.
   
-  Queenie hikes from Shell Dump to Farm in 11 moves.
+  Queenie hikes from Shell Dump to Graveyard in 12 moves.
   
-  Elspeth hikes from Shell Dump to Crack in 4 moves.
+  Elspeth arrives from the east.
+  
+  Elspeth goes west.
+  
+  Elspeth hikes from Shell Dump to Mine Entrance in 9 moves.
   
   Lampito arrives from the east.
   
   Lampito goes west.
   
-  Lampito hikes from Shell Dump to Scrubland in 11 moves.
+  Lampito hikes from Shell Dump to Open Plain in 10 moves.
   
   Arwen arrives from the east.
   
@@ -115,840 +129,834 @@
   
   Felicia arrives from the east.
   
-  Felicia goes west.
+  Felicia goes north.
   
-  Felicia hikes from Shell Dump to Barn in 12 moves.
+  Felicia hikes from Shell Dump to Slippery Chute in 10 moves.
   
   >[2] z
   Time passes.
   
-  Larry arrives from the west.
-  
-  Larry goes east.
-  
-  Larry hikes from Road to Temple in 12 moves.
+  Larry hikes from Temple to Rookery in 2 moves.
   
   Curly arrives from the west.
   
   Curly goes east.
   
-  Curly hikes from Rolling Foothills to Landing in 7 moves.
+  Curly hikes from Graveyard to Landing in 10 moves.
   
-  Moe arrives from the west.
+  Moe hikes from Divine Palace to Dungbeetle Feeding Station in 3 moves.
   
-  Moe goes east.
+  George arrives from the east.
   
-  Moe hikes from Narrow Crevice to Shell Dump in 6 moves.
+  George goes north.
   
-  George hikes from Vista Over Clouds to Slippery Chute in 3 moves.
+  George hikes from Landing to Feather Heap in 10 moves.
   
-  Mike arrives from the west.
+  Mike hikes from Crack to Dangerous Descent in 1 move.
   
-  Mike hikes from Village Outskirts to Encircled Plateau in 6 moves.
+  Bob hikes from Slippery Chute to Road in 5 moves.
   
-  Bob hikes from Wilderness to Dungbeetle Harnessing Station in 6 moves.
+  Jayson arrives from the east.
   
-  Jayson arrives from the west.
+  Jayson goes west.
   
-  Jayson goes east.
-  
-  Jayson hikes from Narrow Crevice to Landing in 4 moves.
+  Jayson hikes from Egg Polishing Grounds to Rolling Foothills in 8 moves.
   
   Crito arrives from the north.
   
-  Crito goes east.
+  Crito goes west.
   
-  Crito hikes from Divine Palace to Rookery in 8 moves.
+  Crito hikes from Perilous Peak to Narrow Crevice in 3 moves.
   
-  Pheidippides arrives from the east.
+  Pheidippides hikes from Town to Vista Over Clouds in 9 moves.
   
-  Pheidippides goes north.
+  Lisa hikes from Forecourt of the Gods to Village Outskirts in 8 moves.
   
-  Pheidippides hikes from Sacred Chamber to Forecourt of the Gods in 8 moves.
+  Tina arrives from the east.
   
-  Lisa hikes from Frightening Narrowness to Neighboring Farmland in 3 moves.
+  Tina goes west.
   
-  Tina hikes from Vista Over Clouds to Town in 9 moves.
+  Tina hikes from Shell Dump to Wilderness in 12 moves.
   
-  Maria hikes from Wilderness to City in 2 moves.
+  Maria hikes from Road to Narrow Crevice in 7 moves.
   
   Benita arrives from the east.
   
   Benita goes north.
   
-  Benita hikes from Rookery to Vista Over Clouds in 8 moves.
+  Benita hikes from Rookery to Divine Palace in 8 moves.
   
-  Sasha goes north.
+  Sasha arrives from the north.
   
-  Sasha hikes from Encircled Plateau to Forecourt of the Gods in 3 moves.
+  Sasha goes east.
   
-  Marita arrives from the west.
+  Sasha hikes from Cottage of Lesser Deities to Sacred Chamber in 10 moves.
   
-  Marita goes east.
+  Marita hikes from City to Frightening Narrowness in 6 moves.
   
-  Marita hikes from Scrubland to Crack in 7 moves.
+  Queenie hikes from Graveyard to Vista Over Clouds in 6 moves.
   
-  Queenie hikes from Farm to Rolling Foothills in 2 moves.
+  Elspeth hikes from Mine Entrance to Wilderness in 3 moves.
   
-  Elspeth arrives from the east.
+  Lampito arrives from the west.
   
-  Elspeth goes west.
+  Lampito goes east.
   
-  Elspeth hikes from Crack to Cathedral in 8 moves.
+  Lampito hikes from Open Plain to Rookery in 9 moves.
   
-  Lampito hikes from Scrubland to Mountain Ascent in 4 moves.
+  Arwen arrives from the north.
   
-  Arwen hikes from Long Ride to Frightening Narrowness in 7 moves.
+  Arwen hikes from Long Ride to Encircled Plateau in 6 moves.
   
-  Felicia hikes from Barn to Feather Heap in 6 moves.
+  Felicia hikes from Slippery Chute to Scrubland in 4 moves.
   
   >[3] z
   Time passes.
   
   Larry arrives from the east.
   
-  Larry hikes from Temple to Encircled Plateau in 4 moves.
+  Larry goes west.
   
-  Curly arrives from the east.
+  Larry hikes from Rookery to Farm in 10 moves.
   
-  Curly goes west.
+  Curly hikes from Landing to Crack in 2 moves.
   
-  Curly hikes from Landing to Steep Hills in 6 moves.
+  Moe hikes from Dungbeetle Feeding Station to Scrubland in 6 moves.
   
-  Moe arrives from the east.
+  George hikes from Feather Heap to Long Ride in 1 move.
   
-  Moe goes west.
-  
-  Moe hikes from Shell Dump to Barn in 12 moves.
-  
-  George arrives from the north.
-  
-  George goes west.
-  
-  George hikes from Slippery Chute to Narrow Crevice in 6 moves.
+  Mike arrives from the east.
   
   Mike goes west.
   
-  Mike hikes from Encircled Plateau to Village Outskirts in 6 moves.
-  
-  Bob arrives from the north.
-  
-  Bob goes east.
-  
-  Bob hikes from Dungbeetle Harnessing Station to Temple in 8 moves.
-  
-  Jayson arrives from the east.
-  
-  Jayson goes west.
-  
-  Jayson hikes from Landing to Farm in 9 moves.
-  
-  Crito arrives from the east.
-   Barn
-  Crito goes west.
-  
-  Crito hikes from Rookery to Cathedral in 11 moves.
-  
-  Pheidippides arrives from the north.
-  
-  Pheidippides goes west.
-  
-  Pheidippides hikes from Forecourt of the Gods to Diamond Seam in 9 moves.
-  
-  Lisa hikes from Neighboring Farmland to Scrubland in 1 move.
-  
-  Tina arrives from the west.
-  
-  Tina goes east.
-  
-  Tina hikes from Town to Egg Polishing Grounds in 11 moves.
-  
-  Maria arrives from the west.
-  
-  Maria goes east.
-  
-  Maria hikes from City to Rookery in 12 moves.
-  
-  Benita arrives from the north.
-  
-  Benita goes west.
-  
-  Benita hikes from Vista Over Clouds to Mine Entrance in 8 moves.
-  
-  Sasha arrives from the north.
-  
-  Sasha goes west.
-  
-  Sasha hikes from Forecourt of the Gods to Mine Depth in 8 moves.
-  
-  Marita arrives from the east.
-  
-  Marita goes north.
-  
-  Marita hikes from Crack to Dungbeetle Harnessing Station in 5 moves.
-  
-  Queenie arrives from the west.
-  
-  Queenie goes east.
-  
-  Queenie hikes from Rolling Foothills to Dangerous Descent in 6 moves.
-  
-  Elspeth arrives from the west.
-  
-  Elspeth goes east.
-  
-  Elspeth hikes from Cathedral to Temple in 11 moves.
-  
-  Lampito arrives from the west.
-  
-  Lampito goes east.
-  
-  Lampito hikes from Mountain Ascent to Egg Polishing Grounds in 6 moves.
-  
-  Arwen hikes from Frightening Narrowness to Feather Heap in 6 moves.
-  
-  Felicia arrives from the north.
-  
-  Felicia hikes from Feather Heap to Encircled Plateau in 7 moves.
-  
-  >[4] z
-  Time passes.
-  
-  Larry goes west.
-  
-  Larry hikes from Encircled Plateau to Village Outskirts in 6 moves.
-  
-  Curly hikes from Steep Hills to Feather Heap in 5 moves.
-  
-  Moe hikes from Barn to Dungbeetle Harnessing Station in 9 moves.
-  
-  George arrives from the west.
-  
-  George goes east.
-  
-  George hikes from Narrow Crevice to Rookery in 5 moves.
-  
-  Mike arrives from the west.
-  
-  Mike goes north.
-  
-  Mike hikes from Village Outskirts to Perilous Peak in 8 moves.
-  
-  Bob arrives from the east.
-  
-  Bob goes north.
-  
-  Bob hikes from Temple to Dungbeetle Harnessing Station in 8 moves.
-  
-  Jayson arrives from the west.
-  
-  Jayson goes north.
-  
-  Jayson hikes from Farm to Perilous Peak in 8 moves.
-  
-  Crito hikes from Cathedral to Farm in 3 moves.
-  
-  Pheidippides arrives from the west.
-  
-  Pheidippides goes east.
-  
-  Pheidippides hikes from Diamond Seam to Temple in 10 moves.
-  
-  Lisa hikes from Scrubland to Diamond Seam in 4 moves.
-  
-  Tina arrives from the east.
-  
-  Tina goes north.
-  
-  Tina hikes from Egg Polishing Grounds to Perilous Peak in 6 moves.
-  
-  Maria arrives from the east.
-  
-  Maria goes north.
-  
-  Maria hikes from Rookery to Slippery Chute in 9 moves.
-  
-  Benita hikes from Mine Entrance to Neighboring Farmland in 1 move.
-  
-  Sasha hikes from Mine Depth to Open Plain in 4 moves.
-  
-  Marita arrives from the north.
-  
-  Marita goes east.
-  
-  Marita hikes from Dungbeetle Harnessing Station to Dangerous Descent in 6 moves.
-  
-  Queenie arrives from the east.
-  
-  Queenie goes west.
-  
-  Queenie hikes from Dangerous Descent to Mine Entrance in 6 moves.
-  
-  Elspeth arrives from the east.
-  
-  Elspeth goes west.
-  
-  Elspeth hikes from Temple to Mine Depth in 9 moves.
-  
-  Lampito arrives from the east.
-  
-  Lampito goes west.
-  
-  Lampito hikes from Egg Polishing Grounds to Road in 12 moves.
-  
-  Arwen hikes from Feather Heap to Road in 3 moves.
-  
-  Felicia goes north.
-  
-  Felicia hikes from Encircled Plateau to Feather Heap in 7 moves.
-  
-  >[5] z
-  Time passes.
-  
-  Larry hikes from Village Outskirts to Cathedral in 2 moves.
-  
-  Curly hikes from Feather Heap to Dungbeetle Feeding Station in 4 moves.
-  
-  Moe hikes from Dungbeetle Harnessing Station to Dungbeetle Harnessing Station in 0 moves.
-  
-  George arrives from the east.
-  
-  George goes north.
-  
-  George hikes from Rookery to Vista Over Clouds in 8 moves.
-  
-  Mike hikes from Perilous Peak to Feather Heap in 5 moves.
-  
-  Bob hikes from Dungbeetle Harnessing Station to Open Plain in 8 moves.
-  
-  Jayson hikes from Perilous Peak to Long Ride in 4 moves.
-  
-  Crito hikes from Farm to Barn in 1 move.
-  
-  Pheidippides arrives from the east.
-  
-  Pheidippides goes west.
-  
-  Pheidippides hikes from Temple to Frightening Narrowness in 10 moves.
-  
-  Lisa hikes from Diamond Seam to Steep Hills in 3 moves.
-  
-  Tina hikes from Perilous Peak to Slippery Chute in 3 moves.
-  
-  Maria hikes from Slippery Chute to Steep Hills in 7 moves.
-  
-  Benita arrives from the west.
-  
-  Benita goes east.
-  
-  Benita hikes from Neighboring Farmland to Egg Polishing Grounds in 9 moves.
-  
-  Sasha arrives from the west.
-  
-  Sasha goes east.
-  
-  Sasha hikes from Open Plain to Egg Polishing Grounds in 9 moves.
-  
-  Marita hikes from Dangerous Descent to Landing in 1 move.
-  
-  Queenie hikes from Mine Entrance to Slippery Chute in 6 moves.
-  
-  Elspeth hikes from Mine Depth to Cathedral in 4 moves.
-  
-  Lampito arrives from the west.
-  
-  Lampito goes east.
-  
-  Lampito hikes from Road to Landing in 11 moves.
-  
-  Arwen arrives from the west.
-  
-  Arwen goes east.
-  
-  Arwen hikes from Road to Dangerous Descent in 10 moves.
-  
-  Felicia hikes from Feather Heap to Dungbeetle Feeding Station in 4 moves.
-  
-  >[6] open door
-  That's already open.
-  
-  Larry hikes from Cathedral to Perilous Peak in 7 moves.
-  
-  Curly arrives from the north.
-  
-  Curly goes east.
-  
-  Curly hikes from Dungbeetle Feeding Station to Dangerous Descent in 7 moves.
-  
-  Moe hikes from Dungbeetle Harnessing Station to Divine Palace in 2 moves.
-   Barn
-  George hikes from Vista Over Clouds to Scrubland in 7 moves.
-  
-  Mike hikes from Feather Heap to Wilderness in 3 moves.
+  Mike hikes from Dangerous Descent to Barn in 9 moves.
   
   Bob arrives from the west.
   
   Bob goes east.
   
-  Bob hikes from Open Plain to Shell Dump in 10 moves.
-  
-  Jayson hikes from Long Ride to Village Outskirts in 5 moves.
-  
-  Crito hikes from Barn to Mine Depth in 6 moves.
-  
-  Pheidippides arrives from the west.
-  
-  Pheidippides goes east.
-  
-  Pheidippides hikes from Frightening Narrowness to Dangerous Descent in 8 moves.
-  
-  Lisa arrives from the west.
-  
-  Lisa goes east.
-  
-  Lisa hikes from Steep Hills to Landing in 6 moves.
-  
-  Tina arrives from the north.
-  
-  Tina goes east.
-  
-  Tina hikes from Slippery Chute to Sacred Chamber in 10 moves.
-  
-  Maria hikes from Steep Hills to Mine Depth in 2 moves.
-  
-  Benita arrives from the east.
-  
-  Benita goes west.
-  
-  Benita hikes from Egg Polishing Grounds to Village Outskirts in 10 moves.
-  
-  Sasha arrives from the east.
-  
-  Sasha goes west.
-  
-  Sasha hikes from Egg Polishing Grounds to Mine Depth in 9 moves.
-  
-  Marita hikes from Landing to Landing in 0 moves.
-  
-  Queenie arrives from the north.
-  
-  Queenie goes east.
-  
-  Queenie hikes from Slippery Chute to Egg Polishing Grounds in 9 moves.
-  
-  Elspeth hikes from Cathedral to Narrow Crevice in 6 moves.
-  
-  Lampito arrives from the east.
-  
-  Lampito goes west.
-  
-  Lampito hikes from Landing to Road in 11 moves.
-  
-  Arwen hikes from Dangerous Descent to Sacred Chamber in 3 moves.
-  
-  Felicia hikes from Dungbeetle Feeding Station to Vista Over Clouds in 3 moves.
-  
-  >[7] z
-  Time passes.
-  
-  Larry arrives from the north.
-  
-  Larry goes east.
-  
-  Larry hikes from Perilous Peak to Egg Polishing Grounds in 6 moves.
-  
-  Curly arrives from the east.
-  
-  Curly goes west.
-  
-  Curly hikes from Dangerous Descent to City in 10 moves.
-  
-  Moe hikes from Divine Palace to Vista Over Clouds in 2 moves.
-  
-  George arrives from the west.
-  
-  George hikes from Scrubland to Encircled Plateau in 6 moves.
-  
-  Mike arrives from the west.
-  
-  Mike goes east.
-  
-  Mike hikes from Wilderness to Landing in 10 moves.
-  
-  Bob arrives from the east.
-  
-  Bob goes west.
-  
-  Bob hikes from Shell Dump to Farm in 11 moves.
+  Bob hikes from Road to Temple in 12 moves.
   
   Jayson arrives from the west.
   
   Jayson goes east.
   
-  Jayson hikes from Village Outskirts to Dangerous Descent in 8 moves.
+  Jayson hikes from Rolling Foothills to Landing in 7 moves.
   
-  Crito hikes from Mine Depth to Steep Hills in 2 moves.
+  Crito arrives from the west.
+   Barn
+  Crito goes east.
   
-  Pheidippides arrives from the east.
+  Crito hikes from Narrow Crevice to Shell Dump in 6 moves.
   
-  Pheidippides goes north.
+  Pheidippides hikes from Vista Over Clouds to Slippery Chute in 3 moves.
   
-  Pheidippides hikes from Dangerous Descent to Perilous Peak in 4 moves.
+  Lisa arrives from the west.
   
-  Lisa hikes from Landing to Egg Polishing Grounds in 1 move.
+  Lisa hikes from Village Outskirts to Encircled Plateau in 6 moves.
   
-  Tina arrives from the east.
+  Tina hikes from Wilderness to Dungbeetle Harnessing Station in 6 moves.
   
-  Tina goes west.
+  Maria arrives from the west.
   
-  Tina hikes from Sacred Chamber to Barn in 12 moves.
+  Maria goes east.
   
-  Maria hikes from Mine Depth to Rolling Foothills in 3 moves.
+  Maria hikes from Narrow Crevice to Landing in 4 moves.
   
-  Benita hikes from Village Outskirts to Mine Depth in 3 moves.
+  Benita arrives from the north.
   
-  Sasha arrives from the west.
+  Benita goes east.
   
-  Sasha goes east.
+  Benita hikes from Divine Palace to Rookery in 8 moves.
   
-  Sasha hikes from Mine Depth to Shell Dump in 10 moves.
+  Sasha arrives from the east.
   
-  Marita arrives from the east.
+  Sasha goes north.
   
-  Marita goes west.
+  Sasha hikes from Sacred Chamber to Forecourt of the Gods in 8 moves.
   
-  Marita hikes from Landing to City in 11 moves.
+  Marita hikes from Frightening Narrowness to Neighboring Farmland in 3 moves.
   
-  Queenie arrives from the east.
+  Queenie hikes from Vista Over Clouds to Town in 9 moves.
   
-  Queenie goes west.
+  Elspeth hikes from Wilderness to City in 2 moves.
   
-  Queenie hikes from Egg Polishing Grounds to Barn in 11 moves.
+  Lampito arrives from the east.
   
-  Elspeth arrives from the west.
+  Lampito goes north.
   
-  Elspeth goes north.
-  
-  Elspeth hikes from Narrow Crevice to Dungbeetle Harnessing Station in 5 moves.
-  
-  Lampito hikes from Road to Dungbeetle Harnessing Station in 6 moves.
-  
-  Arwen arrives from the east.
+  Lampito hikes from Rookery to Vista Over Clouds in 8 moves.
   
   Arwen goes north.
   
-  Arwen hikes from Sacred Chamber to Divine Palace in 9 moves.
+  Arwen hikes from Encircled Plateau to Forecourt of the Gods in 3 moves.
   
-  Felicia arrives from the north.
+  Felicia arrives from the west.
   
-  Felicia goes west.
+  Felicia goes east.
   
-  Felicia hikes from Vista Over Clouds to Open Plain in 9 moves.
+  Felicia hikes from Scrubland to Crack in 7 moves.
   
-  >[8] z
+  >[4] z
   Time passes.
   
-  Larry arrives from the east.
+  Larry hikes from Farm to Rolling Foothills in 2 moves.
   
-  Larry goes west.
+  Curly arrives from the east.
   
-  Larry hikes from Egg Polishing Grounds to Village Outskirts in 10 moves.
+  Curly goes west.
   
-  Curly hikes from City to Rolling Foothills in 4 moves.
+  Curly hikes from Crack to Cathedral in 8 moves.
   
-  Moe hikes from Vista Over Clouds to Neighboring Farmland in 8 moves.
+  Moe hikes from Scrubland to Mountain Ascent in 4 moves.
   
-  George goes west.
+  George hikes from Long Ride to Frightening Narrowness in 7 moves.
   
-  George hikes from Encircled Plateau to Village Outskirts in 6 moves.
+  Mike hikes from Barn to Feather Heap in 6 moves.
   
-  Mike arrives from the east.
+  Bob arrives from the east.
   
-  Mike goes north.
-  
-  Mike hikes from Landing to Feather Heap in 10 moves.
-  
-  Bob hikes from Farm to Road in 2 moves.
+  Bob hikes from Temple to Encircled Plateau in 4 moves.
   
   Jayson arrives from the east.
   
   Jayson goes west.
   
-  Jayson hikes from Dangerous Descent to Cathedral in 9 moves.
+  Jayson hikes from Landing to Steep Hills in 6 moves.
   
-  Crito hikes from Steep Hills to Graveyard in 4 moves.
+  Crito arrives from the east.
   
-  Pheidippides hikes from Perilous Peak to Scrubland in 7 moves.
+  Crito goes west.
   
-  Lisa arrives from the east.
+  Crito hikes from Shell Dump to Barn in 12 moves.
   
-  Lisa goes north.
+  Pheidippides arrives from the north.
   
-  Lisa hikes from Egg Polishing Grounds to Slippery Chute in 9 moves.
+  Pheidippides goes west.
   
-  Tina hikes from Barn to Mine Entrance in 5 moves.
+  Pheidippides hikes from Slippery Chute to Narrow Crevice in 6 moves.
   
-  Maria hikes from Rolling Foothills to Barn in 3 moves.
+  Lisa goes west.
   
-  Benita hikes from Mine Depth to Dungbeetle Feeding Station in 9 moves.
+  Lisa hikes from Encircled Plateau to Village Outskirts in 6 moves.
   
-  Sasha hikes from Shell Dump to Shell Dump in 0 moves.
+  Tina arrives from the north.
   
-  Marita hikes from City to Mountain Ascent in 6 moves.
+  Tina goes east.
+  
+  Tina hikes from Dungbeetle Harnessing Station to Temple in 8 moves.
+  
+  Maria arrives from the east.
+  
+  Maria goes west.
+  
+  Maria hikes from Landing to Farm in 9 moves.
+  
+  Benita arrives from the east.
+  
+  Benita goes west.
+  
+  Benita hikes from Rookery to Cathedral in 11 moves.
+  
+  Sasha arrives from the north.
+  
+  Sasha goes west.
+  
+  Sasha hikes from Forecourt of the Gods to Diamond Seam in 9 moves.
+  
+  Marita hikes from Neighboring Farmland to Scrubland in 1 move.
   
   Queenie arrives from the west.
   
   Queenie goes east.
   
-  Queenie hikes from Barn to Sacred Chamber in 12 moves.
+  Queenie hikes from Town to Egg Polishing Grounds in 11 moves.
   
-  Elspeth hikes from Dungbeetle Harnessing Station to Perilous Peak in 2 moves.
+  Elspeth arrives from the west.
   
-  Lampito hikes from Dungbeetle Harnessing Station to Farm in 8 moves.
+  Elspeth goes east.
   
-  Arwen hikes from Divine Palace to Road in 8 moves.
+  Elspeth hikes from City to Rookery in 12 moves.
   
-  Felicia hikes from Open Plain to Mountain Ascent in 3 moves.
+  Lampito arrives from the north.
   
-  >[9] z
+  Lampito goes west.
+  
+  Lampito hikes from Vista Over Clouds to Mine Entrance in 8 moves.
+  
+  Arwen arrives from the north.
+  
+  Arwen goes west.
+  
+  Arwen hikes from Forecourt of the Gods to Mine Depth in 8 moves.
+  
+  Felicia arrives from the east.
+  
+  Felicia goes north.
+  
+  Felicia hikes from Crack to Dungbeetle Harnessing Station in 5 moves.
+  
+  >[5] z
   Time passes.
   
   Larry arrives from the west.
   
   Larry goes east.
   
-  Larry hikes from Village Outskirts to Egg Polishing Grounds in 10 moves.
+  Larry hikes from Rolling Foothills to Dangerous Descent in 6 moves.
   
   Curly arrives from the west.
-   Encircled Plateau
+  
   Curly goes east.
   
-  Curly hikes from Rolling Foothills to Egg Polishing Grounds in 8 moves.
+  Curly hikes from Cathedral to Temple in 11 moves.
   
   Moe arrives from the west.
   
   Moe goes east.
   
-  Moe hikes from Neighboring Farmland to Shell Dump in 10 moves.
+  Moe hikes from Mountain Ascent to Egg Polishing Grounds in 6 moves.
   
-  George hikes from Village Outskirts to Narrow Crevice in 5 moves.
+  George hikes from Frightening Narrowness to Feather Heap in 6 moves.
   
-  Mike hikes from Feather Heap to Feather Heap in 0 moves.
+  Mike arrives from the north.
   
-  Bob hikes from Road to Graveyard in 2 moves.
+  Mike hikes from Feather Heap to Encircled Plateau in 7 moves.
   
-  Jayson hikes from Cathedral to City in 1 move.
+  Bob goes west.
   
-  Crito hikes from Graveyard to Slippery Chute in 3 moves.
+  Bob hikes from Encircled Plateau to Village Outskirts in 6 moves.
   
-  Pheidippides hikes from Scrubland to Dungbeetle Harnessing Station in 5 moves.
+  Jayson hikes from Steep Hills to Feather Heap in 5 moves.
   
-  Lisa hikes from Slippery Chute to Barn in 8 moves.
+  Crito hikes from Barn to Dungbeetle Harnessing Station in 9 moves.
+  
+  Pheidippides arrives from the west.
+  
+  Pheidippides goes east.
+  
+  Pheidippides hikes from Narrow Crevice to Rookery in 5 moves.
+  
+  Lisa arrives from the west.
+  
+  Lisa goes north.
+  
+  Lisa hikes from Village Outskirts to Perilous Peak in 8 moves.
+  
+  Tina arrives from the east.
+  
+  Tina goes north.
+  
+  Tina hikes from Temple to Dungbeetle Harnessing Station in 8 moves.
+  
+  Maria arrives from the west.
+  
+  Maria goes north.
+  
+  Maria hikes from Farm to Perilous Peak in 8 moves.
+  
+  Benita hikes from Cathedral to Farm in 3 moves.
+  
+  Sasha arrives from the west.
+  
+  Sasha goes east.
+  
+  Sasha hikes from Diamond Seam to Temple in 10 moves.
+  
+  Marita hikes from Scrubland to Diamond Seam in 4 moves.
+  
+  Queenie arrives from the east.
+  
+  Queenie goes north.
+  
+  Queenie hikes from Egg Polishing Grounds to Perilous Peak in 6 moves.
+  
+  Elspeth arrives from the east.
+  
+  Elspeth goes north.
+  
+  Elspeth hikes from Rookery to Slippery Chute in 9 moves.
+  
+  Lampito hikes from Mine Entrance to Neighboring Farmland in 1 move.
+  
+  Arwen hikes from Mine Depth to Open Plain in 4 moves.
+  
+  Felicia arrives from the north.
+   Barn
+  Felicia goes east.
+  
+  Felicia hikes from Dungbeetle Harnessing Station to Dangerous Descent in 6 moves.
+  
+  >[6] open door
+  That's already open.
+  
+  Larry arrives from the east.
+  
+  Larry goes west.
+  
+  Larry hikes from Dangerous Descent to Mine Entrance in 6 moves.
+  
+  Curly arrives from the east.
+  
+  Curly goes west.
+  
+  Curly hikes from Temple to Mine Depth in 9 moves.
+  
+  Moe arrives from the east.
+  
+  Moe goes west.
+  
+  Moe hikes from Egg Polishing Grounds to Road in 12 moves.
+  
+  George hikes from Feather Heap to Road in 3 moves.
+  
+  Mike goes north.
+  
+  Mike hikes from Encircled Plateau to Feather Heap in 7 moves.
+  
+  Bob hikes from Village Outskirts to Cathedral in 2 moves.
+  
+  Jayson hikes from Feather Heap to Dungbeetle Feeding Station in 4 moves.
+  
+  Crito hikes from Dungbeetle Harnessing Station to Dungbeetle Harnessing Station in 0 moves.
+  
+  Pheidippides arrives from the east.
+  
+  Pheidippides goes north.
+  
+  Pheidippides hikes from Rookery to Vista Over Clouds in 8 moves.
+  
+  Lisa hikes from Perilous Peak to Feather Heap in 5 moves.
+  
+  Tina hikes from Dungbeetle Harnessing Station to Open Plain in 8 moves.
+  
+  Maria hikes from Perilous Peak to Long Ride in 4 moves.
+  
+  Benita hikes from Farm to Barn in 1 move.
+  
+  Sasha arrives from the east.
+  
+  Sasha goes west.
+  
+  Sasha hikes from Temple to Frightening Narrowness in 10 moves.
+  
+  Marita hikes from Diamond Seam to Steep Hills in 3 moves.
+  
+  Queenie hikes from Perilous Peak to Slippery Chute in 3 moves.
+  
+  Elspeth hikes from Slippery Chute to Steep Hills in 7 moves.
+  
+  Lampito arrives from the west.
+  
+  Lampito goes east.
+  
+  Lampito hikes from Neighboring Farmland to Egg Polishing Grounds in 9 moves.
+  
+  Arwen arrives from the west.
+  
+  Arwen goes east.
+  
+  Arwen hikes from Open Plain to Egg Polishing Grounds in 9 moves.
+  
+  Felicia hikes from Dangerous Descent to Landing in 1 move.
+  
+  >[7] z
+  Time passes.
+  
+  Larry hikes from Mine Entrance to Slippery Chute in 6 moves.
+  
+  Curly hikes from Mine Depth to Cathedral in 4 moves.
+  
+  Moe arrives from the west.
+  
+  Moe goes east.
+  
+  Moe hikes from Road to Landing in 11 moves.
+  
+  George arrives from the west.
+  
+  George goes east.
+  
+  George hikes from Road to Dangerous Descent in 10 moves.
+  
+  Mike hikes from Feather Heap to Dungbeetle Feeding Station in 4 moves.
+  
+  Bob hikes from Cathedral to Perilous Peak in 7 moves.
+  
+  Jayson arrives from the north.
+  
+  Jayson goes east.
+  
+  Jayson hikes from Dungbeetle Feeding Station to Dangerous Descent in 7 moves.
+  
+  Crito hikes from Dungbeetle Harnessing Station to Divine Palace in 2 moves.
+  
+  Pheidippides hikes from Vista Over Clouds to Scrubland in 7 moves.
+  
+  Lisa hikes from Feather Heap to Wilderness in 3 moves.
   
   Tina arrives from the west.
   
   Tina goes east.
   
-  Tina hikes from Mine Entrance to Crack in 5 moves.
+  Tina hikes from Open Plain to Shell Dump in 10 moves.
   
-  Maria hikes from Barn to Road in 3 moves.
+  Maria hikes from Long Ride to Village Outskirts in 5 moves.
   
-  Benita hikes from Dungbeetle Feeding Station to Long Ride in 3 moves.
+  Benita hikes from Barn to Mine Depth in 6 moves.
+  
+  Sasha arrives from the west.
+  
+  Sasha goes east.
+  
+  Sasha hikes from Frightening Narrowness to Dangerous Descent in 8 moves.
+  
+  Marita arrives from the west.
+  
+  Marita goes east.
+  
+  Marita hikes from Steep Hills to Landing in 6 moves.
+  
+  Queenie arrives from the north.
+  
+  Queenie goes east.
+  
+  Queenie hikes from Slippery Chute to Sacred Chamber in 10 moves.
+  
+  Elspeth hikes from Steep Hills to Mine Depth in 2 moves.
+  
+  Lampito arrives from the east.
+  
+  Lampito goes west.
+  
+  Lampito hikes from Egg Polishing Grounds to Village Outskirts in 10 moves.
+  
+  Arwen arrives from the east.
+  
+  Arwen goes west.
+  
+  Arwen hikes from Egg Polishing Grounds to Mine Depth in 9 moves.
+  
+  Felicia hikes from Landing to Landing in 0 moves.
+  
+  >[8] z
+  Time passes.
+  
+  Larry arrives from the north.
+  
+  Larry goes east.
+  
+  Larry hikes from Slippery Chute to Egg Polishing Grounds in 9 moves.
+  
+  Curly hikes from Cathedral to Narrow Crevice in 6 moves.
+  
+  Moe arrives from the east.
+  
+  Moe goes west.
+  
+  Moe hikes from Landing to Road in 11 moves.
+  
+  George hikes from Dangerous Descent to Sacred Chamber in 3 moves.
+  
+  Mike hikes from Dungbeetle Feeding Station to Vista Over Clouds in 3 moves.
+  
+  Bob arrives from the north.
+  
+  Bob goes east.
+  
+  Bob hikes from Perilous Peak to Egg Polishing Grounds in 6 moves.
+  
+  Jayson arrives from the east.
+  
+  Jayson goes west.
+  
+  Jayson hikes from Dangerous Descent to City in 10 moves.
+  
+  Crito hikes from Divine Palace to Vista Over Clouds in 2 moves.
+  
+  Pheidippides arrives from the west.
+  
+  Pheidippides hikes from Scrubland to Encircled Plateau in 6 moves.
+  
+  Lisa arrives from the west.
+  
+  Lisa goes east.
+  
+  Lisa hikes from Wilderness to Landing in 10 moves.
+  
+  Tina arrives from the east.
+  
+  Tina goes west.
+  
+  Tina hikes from Shell Dump to Farm in 11 moves.
+  
+  Maria arrives from the west.
+  
+  Maria goes east.
+  
+  Maria hikes from Village Outskirts to Dangerous Descent in 8 moves.
+  
+  Benita hikes from Mine Depth to Steep Hills in 2 moves.
   
   Sasha arrives from the east.
   
   Sasha goes north.
   
-  Sasha hikes from Shell Dump to Long Ride in 11 moves.
+  Sasha hikes from Dangerous Descent to Perilous Peak in 4 moves.
   
-  Marita arrives from the west.
-  
-  Marita hikes from Mountain Ascent to Encircled Plateau in 2 moves.
+  Marita hikes from Landing to Egg Polishing Grounds in 1 move.
   
   Queenie arrives from the east.
   
   Queenie goes west.
   
-  Queenie hikes from Sacred Chamber to Graveyard in 12 moves.
+  Queenie hikes from Sacred Chamber to Barn in 12 moves.
   
-  Elspeth hikes from Perilous Peak to Dungbeetle Harnessing Station in 2 moves.
+  Elspeth hikes from Mine Depth to Rolling Foothills in 3 moves.
   
-  Lampito arrives from the west.
+  Lampito hikes from Village Outskirts to Mine Depth in 3 moves.
   
-  Lampito goes north.
+  Arwen arrives from the west.
   
-  Lampito hikes from Farm to Ridge Climb in 7 moves.
+  Arwen goes east.
+   Barn
+  Arwen hikes from Mine Depth to Shell Dump in 10 moves.
   
-  Arwen hikes from Road to City in 1 move.
+  Felicia arrives from the east.
   
-  Felicia arrives from the west.
+  Felicia goes west.
   
-  Felicia goes north.
+  Felicia hikes from Landing to City in 11 moves.
   
-  Felicia hikes from Mountain Ascent to Divine Palace in 6 moves.
-  
-  >[10] z
+  >[9] z
   Time passes.
   
   Larry arrives from the east.
   
   Larry goes west.
   
-  Larry hikes from Egg Polishing Grounds to Diamond Seam in 10 moves.
+  Larry hikes from Egg Polishing Grounds to Barn in 11 moves.
   
-  Curly arrives from the east.
+  Curly arrives from the west.
   
-  Curly goes west.
+  Curly goes north.
   
-  Curly hikes from Egg Polishing Grounds to City in 12 moves.
+  Curly hikes from Narrow Crevice to Dungbeetle Harnessing Station in 5 moves.
   
-  Moe arrives from the east.
+  Moe hikes from Road to Dungbeetle Harnessing Station in 6 moves.
   
-  Moe goes west.
+  George arrives from the east.
   
-  Moe hikes from Shell Dump to Barn in 12 moves.
+  George goes north.
   
-  George hikes from Narrow Crevice to Open Plain in 4 moves.
+  George hikes from Sacred Chamber to Divine Palace in 9 moves.
   
-  Mike hikes from Feather Heap to Road in 3 moves.
+  Mike arrives from the north.
   
-  Bob hikes from Graveyard to Open Plain in 4 moves.
+  Mike goes west.
+  
+  Mike hikes from Vista Over Clouds to Open Plain in 9 moves.
+  
+  Bob arrives from the east.
+  
+  Bob goes west.
+  
+  Bob hikes from Egg Polishing Grounds to Village Outskirts in 10 moves.
+  
+  Jayson hikes from City to Rolling Foothills in 4 moves.
+  
+  Crito hikes from Vista Over Clouds to Neighboring Farmland in 8 moves.
+  
+  Pheidippides goes west.
+  
+  Pheidippides hikes from Encircled Plateau to Village Outskirts in 6 moves.
+  
+  Lisa arrives from the east.
+  
+  Lisa goes north.
+  
+  Lisa hikes from Landing to Feather Heap in 10 moves.
+  
+  Tina hikes from Farm to Road in 2 moves.
+  
+  Maria arrives from the east.
+  
+  Maria goes west.
+  
+  Maria hikes from Dangerous Descent to Cathedral in 9 moves.
+  
+  Benita hikes from Steep Hills to Graveyard in 4 moves.
+  
+  Sasha hikes from Perilous Peak to Scrubland in 7 moves.
+  
+  Marita arrives from the east.
+  
+  Marita goes north.
+  
+  Marita hikes from Egg Polishing Grounds to Slippery Chute in 9 moves.
+  
+  Queenie hikes from Barn to Mine Entrance in 5 moves.
+  
+  Elspeth hikes from Rolling Foothills to Barn in 3 moves.
+  
+  Lampito hikes from Mine Depth to Dungbeetle Feeding Station in 9 moves.
+  
+  Arwen hikes from Shell Dump to Shell Dump in 0 moves.
+  
+  Felicia hikes from City to Mountain Ascent in 6 moves.
+  
+  >[10] z
+  Time passes.
+  
+  Larry arrives from the west.
+  
+  Larry goes east.
+  
+  Larry hikes from Barn to Sacred Chamber in 12 moves.
+  
+  Curly hikes from Dungbeetle Harnessing Station to Perilous Peak in 2 moves.
+  
+  Moe hikes from Dungbeetle Harnessing Station to Farm in 8 moves.
+  
+  George hikes from Divine Palace to Road in 8 moves.
+  
+  Mike hikes from Open Plain to Mountain Ascent in 3 moves.
+  
+  Bob arrives from the west.
+  
+  Bob goes east.
+  
+  Bob hikes from Village Outskirts to Egg Polishing Grounds in 10 moves.
   
   Jayson arrives from the west.
   
   Jayson goes east.
   
-  Jayson hikes from City to Landing in 11 moves.
+  Jayson hikes from Rolling Foothills to Egg Polishing Grounds in 8 moves.
   
-  Crito hikes from Slippery Chute to Town in 6 moves.
+  Crito arrives from the west.
   
-  Pheidippides hikes from Dungbeetle Harnessing Station to Dungbeetle Harnessing Station in 0 moves.
+  Crito goes east.
   
-  Lisa hikes from Barn to Dungbeetle Feeding Station in 10 moves.
+  Crito hikes from Neighboring Farmland to Shell Dump in 10 moves.
   
-  Tina arrives from the east.
+  Pheidippides hikes from Village Outskirts to Narrow Crevice in 5 moves.
   
-  Tina goes north.
+  Lisa hikes from Feather Heap to Feather Heap in 0 moves.
   
-  Tina hikes from Crack to Long Ride in 7 moves.
+  Tina hikes from Road to Graveyard in 2 moves.
   
-  Maria hikes from Road to Diamond Seam in 6 moves.
+  Maria hikes from Cathedral to City in 1 move.
   
-  Benita arrives from the north.
+  Benita hikes from Graveyard to Slippery Chute in 3 moves.
   
-  Benita goes east.
+  Sasha hikes from Scrubland to Dungbeetle Harnessing Station in 5 moves.
   
-  Benita hikes from Long Ride to Sacred Chamber in 11 moves.
+  Marita hikes from Slippery Chute to Barn in 8 moves.
   
-  Sasha arrives from the north.
+  Queenie arrives from the west.
   
-  Sasha goes east.
+  Queenie goes east.
   
-  Sasha hikes from Long Ride to Dangerous Descent in 8 moves.
+  Queenie hikes from Mine Entrance to Crack in 5 moves.
   
-  Marita goes west.
+  Elspeth hikes from Barn to Road in 3 moves.
   
-  Marita hikes from Encircled Plateau to Rolling Foothills in 4 moves.
+  Lampito hikes from Dungbeetle Feeding Station to Long Ride in 3 moves.
   
-  Queenie hikes from Graveyard to Feather Heap in 1 move.
+  Arwen arrives from the east.
   
-  Elspeth arrives from the north.
+  Arwen goes north.
   
-  Elspeth goes east.
+  Arwen hikes from Shell Dump to Long Ride in 11 moves.
   
-  Elspeth hikes from Dungbeetle Harnessing Station to Sacred Chamber in 9 moves.
+  Felicia arrives from the west.
   
-  Lampito arrives from the north.
-  
-  Lampito goes west.
-  
-  Lampito hikes from Ridge Climb to Road in 9 moves.
-  
-  Arwen hikes from City to Feather Heap in 3 moves.
-  
-  Felicia hikes from Divine Palace to Dungbeetle Harnessing Station in 2 moves.
+  Felicia hikes from Mountain Ascent to Encircled Plateau in 2 moves.
   
   >[11] z
   Time passes.
   
-  Larry hikes from Diamond Seam to Wilderness in 5 moves.
+  Larry arrives from the east.
   
-  Curly hikes from City to Scrubland in 2 moves.
+  Larry goes west.
+  
+  Larry hikes from Sacred Chamber to Graveyard in 12 moves.
+  
+  Curly hikes from Perilous Peak to Dungbeetle Harnessing Station in 2 moves.
   
   Moe arrives from the west.
   
-  Moe goes east.
+  Moe goes north.
   
-  Moe hikes from Barn to Temple in 11 moves.
+  Moe hikes from Farm to Ridge Climb in 7 moves.
   
-  George hikes from Open Plain to Open Plain in 0 moves.
+  George hikes from Road to City in 1 move.
   
   Mike arrives from the west.
   
-  Mike goes east.
+  Mike goes north.
   
-  Mike hikes from Road to Rookery in 12 moves.
+  Mike hikes from Mountain Ascent to Divine Palace in 6 moves.
   
-  Bob arrives from the west.
+  Bob arrives from the east.
   
-  Bob goes north.
+  Bob goes west.
   
-  Bob hikes from Open Plain to Perilous Peak in 7 moves.
+  Bob hikes from Egg Polishing Grounds to Diamond Seam in 10 moves.
   
   Jayson arrives from the east.
   
-  Jayson goes north.
+  Jayson goes west.
   
-  Jayson hikes from Landing to Dungbeetle Feeding Station in 8 moves.
+  Jayson hikes from Egg Polishing Grounds to City in 12 moves.
   
-  Crito hikes from Town to Long Ride in 5 moves.
+  Crito arrives from the east.
   
-  Pheidippides hikes from Dungbeetle Harnessing Station to Scrubland in 5 moves.
+  Crito goes west.
   
-  Lisa arrives from the north.
+  Crito hikes from Shell Dump to Barn in 12 moves.
   
-  Lisa goes east.
+  Pheidippides hikes from Narrow Crevice to Open Plain in 4 moves.
   
-  Lisa hikes from Dungbeetle Feeding Station to Egg Polishing Grounds in 9 moves.
+  Lisa hikes from Feather Heap to Road in 3 moves.
   
-  Tina hikes from Long Ride to Wilderness in 4 moves.
+  Tina hikes from Graveyard to Open Plain in 4 moves.
   
   Maria arrives from the west.
   
   Maria goes east.
   
-  Maria hikes from Diamond Seam to Shell Dump in 11 moves.
+  Maria hikes from City to Landing in 11 moves.
   
-  Benita arrives from the east.
+  Benita hikes from Slippery Chute to Town in 6 moves.
   
-  Benita goes north.
+  Sasha hikes from Dungbeetle Harnessing Station to Dungbeetle Harnessing Station in 0 moves.
   
-  Benita hikes from Sacred Chamber to Forecourt of the Gods in 8 moves.
+  Marita hikes from Barn to Dungbeetle Feeding Station in 10 moves.
   
-  Sasha arrives from the east.
+  Queenie arrives from the east.
   
-  Sasha goes west.
+  Queenie goes north.
   
-  Sasha hikes from Dangerous Descent to Frightening Narrowness in 8 moves.
+  Queenie hikes from Crack to Long Ride in 7 moves.
   
-  Marita hikes from Rolling Foothills to Wilderness in 3 moves.
+  Elspeth hikes from Road to Diamond Seam in 6 moves.
   
-  Queenie hikes from Feather Heap to Feather Heap in 0 moves.
+  Lampito arrives from the north.
   
-  Elspeth arrives from the east.
+  Lampito goes east.
   
-  Elspeth goes north.
+  Lampito hikes from Long Ride to Sacred Chamber in 11 moves.
   
-  Elspeth hikes from Sacred Chamber to Cottage of Lesser Deities in 10 moves.
+  Arwen arrives from the north.
   
-  Lampito hikes from Road to Feather Heap in 3 moves.
+  Arwen goes east.
   
-  Arwen hikes from Feather Heap to Long Ride in 1 move.
+  Arwen hikes from Long Ride to Dangerous Descent in 8 moves.
   
-  Felicia arrives from the north.
+  Felicia goes west.
   
-  Felicia goes east.
-  
-  Felicia hikes from Dungbeetle Harnessing Station to Sacred Chamber in 9 moves.
-  
+  Felicia hikes from Encircled Plateau to Rolling Foothills in 4 moves.
+   Encircled Plateau
 > >

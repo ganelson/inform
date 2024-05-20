@@ -1,0 +1,72 @@
+Example: ** Proposal Revisited
+Location: Decision points
+RecipeLocation: Saying Simple Things
+Index: A proposal of marriage using dialogue system
+Description: Mr Spruce proposes again, this time using the dialogue system.
+
+	{*}"Proposal Revisited"
+	
+	Section 1 - The Environs
+	
+	When play begins: 
+	    say "Do you like Mr Spruce? "; 
+	    if player consents, now Spruce is handsome; 
+	    otherwise now Spruce is ugly; 
+	    say paragraph break.
+	
+	The Conservatory is a room. "You are in a room full of plants."
+	
+	Mr Spruce is a man in the Conservatory. Mr Spruce can be apprehensive or calm. Mr Spruce is apprehensive. Mr Spruce can be handsome or ugly. "Mr Spruce is on his knees before you."
+	
+	After doing something when the turn count is greater than one:
+		make the dialogue director active.
+		
+	Instead of answering Mr Spruce that "no", try saying no.
+	Instead of answering Mr Spruce that "yes", try saying yes.
+	Instead of asking Mr Spruce to try saying yes, try saying yes.
+	Instead of asking Mr Spruce to try saying no, try saying no.
+	Instead of saying sorry, try saying no.
+	Instead of asking Mr Spruce to try saying sorry, try saying no.
+	Instead of answering Mr Spruce that "sorry", try saying no.
+
+	Test me with "z / yes".
+	
+	Section 2 - Proposal (dialogue)
+	
+	(This is the starting beat.)
+	 
+	Mr Spruce: "My darling, I beg you to become my lawfully wedded wife."
+	
+	-- instead of saying yes when Mr Spruce is ugly
+			
+		Narration (if Mr Spruce is ugly): "Remembering what your mother said to you about the stock exchange and Dear Papa, you close your eyes and accept Mr Spruce."
+			
+		-> end the story saying "Alas for your maiden hopes."
+		
+	-- instead of saying yes when Mr Spruce is handsome
+		
+		Narration (if Mr Spruce is handsome): "You are silent with delight for a moment before you say yes, yes!"
+			
+		-> end the story saying "How Genevieve Stubbs will cry!"
+		
+	-- instead of saying no when Mr Spruce is ugly
+		
+		Narration (if Mr Spruce is ugly): "Gently you inform Mr Spruce that it is impossible. He seems less deflated than you had expected."
+			
+		-> end the story saying "Odd, that..."
+		
+	-- instead of saying no when Mr Spruce is handsome
+		
+		Narration (if Mr Spruce is handsome): "You lower your eyes and refuse petulantly, hoping to stir him to a more ardent repetition of these same requests. But then -- alack! -- he says 'I see how it is!' in a strangled voice, and strides from the room!" 
+			
+		-> end the story saying "A fatal error!"
+			
+	-- otherwise
+			
+		Narration (if Mr Spruce is calm): "Mr Spruce takes his leave of you." 
+				
+			-> end the story saying "Well, that is over..."
+		
+		Narration (if Mr Spruce is apprehensive; now Mr Spruce is calm): "Mr Spruce sighs heavily, seeing that you don't intend to reply. 'Never mind, my dear, I'll ask later. Perhaps I should have spoken to your Papa first... yes, a gently-bred female... no wonder..." 
+			
+		<-

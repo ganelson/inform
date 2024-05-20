@@ -217,10 +217,12 @@ be caught later on Inform's run.
 	}
 
 	if (safe == FALSE) {
-		LOG("Property value given as %u not %u\n", kinds_of_terms[1], val_kind);
-		Problems::quote_kind(4, kinds_of_terms[1]);
-		Problems::quote_kind(5, val_kind);
-		if (Kinds::get_construct(kinds_of_terms[1]) == CON_property)
+		kind *K1 = kinds_of_terms[1];
+		kind *K2 = val_kind;
+		LOG("Property value given as %u not %u\n", K1, K2);
+		Problems::quote_kind(4, K1);
+		Problems::quote_kind(5, K2);
+		if (Kinds::get_construct(K1) == CON_property)
 			StandardProblems::tcp_problem(_p_(PM_PropertiesEquated), tck,
 				"that seems to say that two different properties are the same - "
 				"like saying 'The indefinite article is the printed name': that "
@@ -231,9 +233,19 @@ be caught later on Inform's run.
 				"that tries to set the value of an unknown property to %4.");
 		else {
 			Problems::quote_property(6, prn);
-			StandardProblems::tcp_problem(_p_(PM_PropertyType), tck,
-				"that tries to set the value of the '%6' property to %4 - which "
-				"must be wrong because this property has to be %5.");
+			char *msg;
+			if (((Kinds::eq(K1, K_time)) && (Kinds::eq(K2, K_time_period))) ||
+				((Kinds::eq(K2, K_time)) && (Kinds::eq(K1, K_time_period))))
+				msg = "that tries to set the value of the '%6' property to %4 - which "
+					"must be wrong because this property has to be %5. Note that "
+					"'time period', introduced in Inform in 2024, holds values like "
+					"'10 minutes', and is not the same kind as 'time', which is for "
+					"times of day like '6:12 PM'. (Before 2024, the same kind was "
+					"used for both.)";
+			else
+				msg = "that tries to set the value of the '%6' property to %4 - which "
+					"must be wrong because this property has to be %5.";
+			StandardProblems::tcp_problem(_p_(PM_PropertyType), tck, msg);
 		}
 		return NEVER_MATCH;
 	}

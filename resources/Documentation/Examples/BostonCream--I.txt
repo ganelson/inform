@@ -1,7 +1,7 @@
    Donut Shop                                                                                                                                                                                                             0/1
   Boston Cream
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Donut Shop
   Vibrantly decorated in donut colors: pink, brown, and cream.
@@ -32,12 +32,12 @@
   >[4] open case
   You open the case.
   
-  Ogg acquires the jelly donuts with a look of tender affection.
+  Ogg acquires the cake donuts with a look of tender affection.
   
   >[5] enter case
   You climb inside the case, folding yourself up uncomfortably.
   
-  Ogg chows down on the jelly donuts, scattering crumbs in all directions.
+  Ogg chows down on the cake donuts, scattering crumbs in all directions.
   
   >[6] close case
   You close the case.
@@ -51,7 +51,7 @@
   >[8] wait
   Time passes.
   
-  Ogg eyes the cake donuts with obvious intent.
+  Ogg eyes the jelly donuts with obvious intent.
   
   >[9] wait
   Time passes.

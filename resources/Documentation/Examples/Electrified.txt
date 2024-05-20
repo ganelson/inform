@@ -5,6 +5,8 @@ Index: Dangerous objects not to be touched
 Description: Adding a rule before the basic accessibility rule that will prevent the player from touching electrified objects under the wrong circumstances.
 For: Z-Machine
 
+^^{Dangerous objects not to be touched}
+
 Suppose we want to prevent the player from touching anything electrified – not just as a response to ``TOUCH OBJECT``, but at any time when the action would require contact with the object in question.
 
 	{*}"Electrified"

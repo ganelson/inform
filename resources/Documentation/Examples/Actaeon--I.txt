@@ -1,41 +1,41 @@
    Corinth
   Actaeon
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Corinth
   You can see Artemis here.
   
-> >   Olympia
+> >   Mycenae
   (Testing.)
   
   >[1] wait
   Time passes.
   
-  Artemis heads to Epidaurus.
+  Artemis heads to Athens.
   
   >[2] follow artemis
-  (heading southeast)
+  (heading east)
   
-  Epidaurus
+  Athens
   You can see Artemis here.
   
-  Artemis heads to Mycenae.
+  Artemis heads to Corinth.
   
   >[3] follow artemis
   (heading west)
   
-  Mycenae
-  You can see Artemis here.
-  
-  Artemis heads to Olympia.
-  
-  >[4] follow artemis
-  (heading west)
-  
-  Olympia
+  Corinth
   You can see Artemis here.
   
   Artemis heads to Mycenae.
+  
+  >[4] follow artemis
+  (heading south)
+  
+  Mycenae
+  You can see Artemis here.
+  
+  Artemis heads to Argos.
   
 > >

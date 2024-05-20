@@ -5,6 +5,8 @@ Index: GIVE extended to multiple objects at once
 Description: Creating a variant ``GIVE`` action that lets the player give multiple objects simultaneously with commands like ``GIVE ALL TO ATTENDANT`` or ``GIVE THREE DOLLARS TO ATTENDANT`` or ``GIVE PIE AND HAT TO ATTENDANT``. The attendant accepts the gifts only if their total combined value matches some minimum amount.
 For: Z-Machine
 
+^^{giving it to+action+: multiple objects at once}
+
 Occasionally it happens that we want to process an action on multiple items differently than we would if the player had just typed each of the individual actions separately. In this example, the reason is that we can only successfully ``GIVE`` items when their combined value passes a certain threshold amount; otherwise the recipient will reject them.
 
 This works as an implementation of money, if we give value only to cash objects (though several other implementations of cash are available, most of which are simpler and more efficient). We could also imagine a mechanic like this being used for a bargaining or auction game as well, given a society that deals in objects rather than credits.

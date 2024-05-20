@@ -5,6 +5,8 @@ Index: The Crane's Leg 2. Descriptions based on player-character's observation a
 Description: A description text generated based on the propensities of the player-character, following different rulebooks for different characters.
 For: Z-Machine
 
+^^{The Crane's Leg 2. Descriptions based on player-character's observation abilities}
+
 Names of rules can be listed in tables. This is convenient if, for instance, we decide that we'd like to swap the rules we use for a specific purpose, as in this continuation of our earlier example of automated description:
 
 	{*}"The Crane's Leg, Grown Longer"

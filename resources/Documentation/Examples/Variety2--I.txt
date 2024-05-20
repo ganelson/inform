@@ -1,7 +1,7 @@
    Lab
   Variety 2
   An Interactive Fiction
-  Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Lab
   You can see a fedora here.
@@ -11,15 +11,15 @@
   
   >[1] wear the fedora
   (first taking the fedora)
-  You take the fedora.
+  You acquire the fedora.
   
   You are now wearing the fedora.
   
   >[2] take off the fedora
-  You doff the fedora.
+  You are now carrying the fedora.
   
   >[3] wear fedora
-  You are now wearing the fedora.
+  You don the fedora.
   
   >[4] take off fedora
   You are now carrying the fedora.

@@ -5,6 +5,8 @@ Index: Every turn an opponent plays
 Description: A game of foosball which relies heavily on every-turn rules.
 For: Z-Machine
 
+^^{every turn+rb+}
+
 Suppose we want a game of foosball in which our opponent acts every turn, but does different things depending on where the ball currently lies. We can put together a sequence of every-turn rules to account for this, as follows:
 
 	{*}"Text Foosball"

@@ -90,6 +90,7 @@ which use this module:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inbuild_copy_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inbuild_edition_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inbuild_genre_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">inbuild_licence_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inbuild_nest_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inbuild_registry_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inbuild_requirement_CLASS</span>
@@ -97,6 +98,7 @@ which use this module:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inbuild_work_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">index_lemma_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">index_reference_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">index_cross_reference_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">indexing_category_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inform_extension_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inform_kit_CLASS</span>
@@ -108,7 +110,7 @@ which use this module:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">kit_configuration_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">kit_dependency_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">satellite_test_case_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">span_notation_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">index_markup_notation_CLASS</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">build_methodology</span><span class="plain-syntax">)</span>
@@ -133,6 +135,7 @@ which use this module:
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inbuild_copy</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inbuild_edition</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inbuild_genre</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inbuild_licence</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inbuild_nest</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inbuild_registry</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inbuild_requirement</span><span class="plain-syntax">)</span>
@@ -140,6 +143,7 @@ which use this module:
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inbuild_work</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">index_lemma</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">index_reference</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">index_cross_reference</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">indexing_category</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inform_extension</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inform_kit_ittt</span><span class="plain-syntax">)</span>
@@ -151,7 +155,7 @@ which use this module:
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">kit_configuration</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">kit_dependency</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">satellite_test_case</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">span_notation</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">index_markup_notation</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Like all modules, this one must define a <span class="extract"><span class="extract-syntax">start</span></span> and <span class="extract"><span class="extract-syntax">end</span></span> function:
 </p>

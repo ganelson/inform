@@ -5,6 +5,8 @@ Index: PUT and INSERT automatically TAKE first
 Description: Making something happen automatically before an item is put into a box.
 For: Z-Machine
 
+^^{PUT and INSERT automatically TAKE first}
+
 `stop the action` is most useful when we need to write rules that will have to stop the action some of the time but at other times let it pass. For example, let's create a polling station, where the idea is to ``TAKE BALLOT``, ``VOTE``, and then ``PUT BALLOT IN MACHINE``:
 
 	{*}"Democratic Process"

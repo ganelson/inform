@@ -5,6 +5,8 @@ Index: Printed names for complex-named objects
 Description: Some general advice about creating objects with unusual or awkward names, and a discussion of the use of printed names.
 For: Z-Machine
 
+^^{Printed names for complex-named objects}
+
 Occasionally it is useful to give something a printed name because we want to call it something extremely long-winded; give one thing a name that is the subset of the name of something else; or use words such as `with` or `and` that are likely to confuse Inform into thinking that the object name ends before it actually does.
 
 Often it is enough to preface these ambiguously-titled things with `a thing called...` or `a supporter called...` or the like, as here:

@@ -1,7 +1,7 @@
    Banquet Hall
   Happy Hour
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Banquet Hall
   A large cheery banner over the door (which, incidentally, vanishes when you approach it) reads: HELLO NEW INDUCTEES! WELCOME TO THE AFTERLIFE!
@@ -14,13 +14,13 @@
   >[1] z
   Time passes.
   
-  George goes west.
+  Matilda goes west.
   
   >[2] look
   Banquet Hall
   A large cheery banner over the door (which, incidentally, vanishes when you approach it) reads: HELLO NEW INDUCTEES! WELCOME TO THE AFTERLIFE!
   
-  You can see Fred, Larry, Matilda and Louise here. Fred has a dry martini and Larry has a cream puff.
+  You can see Fred, George, Larry and Louise here. Fred has a dry martini and Larry has a cream puff.
   
   Larry goes west.
   
@@ -28,24 +28,24 @@
   Banquet Hall
   A large cheery banner over the door (which, incidentally, vanishes when you approach it) reads: HELLO NEW INDUCTEES! WELCOME TO THE AFTERLIFE!
   
-  You can see Fred, Matilda and Louise here. Fred has a dry martini.
+  You can see Fred, George and Louise here. Fred has a dry martini.
   
-  Matilda goes west.
+  Louise goes west.
   
   >[4] g
   Banquet Hall
   A large cheery banner over the door (which, incidentally, vanishes when you approach it) reads: HELLO NEW INDUCTEES! WELCOME TO THE AFTERLIFE!
   
-  You can see Fred and Louise here. Fred has a dry martini.
+  You can see Fred and George here. Fred has a dry martini.
   
-  Larry arrives from the west.
+  Vanessa arrives from the west.
   
   >[5] g
   Banquet Hall
   A large cheery banner over the door (which, incidentally, vanishes when you approach it) reads: HELLO NEW INDUCTEES! WELCOME TO THE AFTERLIFE!
   
-  You can see Larry, Fred and Louise here. Fred has a dry martini and Larry has a cream puff.
+  You can see Vanessa, Fred and George here. Fred has a dry martini and Vanessa has a tray.
   
-  Larry goes west.
+  Fred goes west.
   
 > >

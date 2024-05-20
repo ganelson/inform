@@ -5,6 +5,8 @@ Index: North-northwest and similar directions
 Description: Creating additional compass directions between those that already exist (for instance, ``NNW``) -- and dealing with an awkwardness that arises when the player tries to type ``NORTH-NORTHWEST``. The example demonstrates a way around the default nine-character limit on parsed words.
 For: Z-Machine
 
+^^{North-northwest and similar directions}
+
 Suppose we wanted to add intermediate compass directions such as north-northwest to our game. Because of the limitations of the index map, we won't be able to view these connections on the world map, but we can certainly create them, and use them in route-finding, just like other directions.
 
 Here's how we'd set up such a thing:

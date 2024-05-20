@@ -7,4 +7,7 @@ new base COUNTRY_CODE_TY {
 	instance: New Caledonia code = NEW_CALEDONIA_CC = 687
 	instance: Montserrat code    = MONTSERRAT_CC    = 1664
 	instance: Svalbard code      = SVALBARD_CC      = 4779
+
+	instance: Neverland code     = NEVERLAND_CC     = -7
+	instance: Cloud Nine code    = CLOUD_NINE_CC    = $fffffffe
 }

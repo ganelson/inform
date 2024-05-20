@@ -5,6 +5,8 @@ Index: Four Stars 2. Scope for listening different from scope for seeing
 Description: Using "deciding the scope" to change the content of lists such as "the list of audible things which can be touched by the player".
 For: Z-Machine
 
+^^{Four Stars 2. Scope for listening different from scope for seeing}
+
 As we have seen, a well-written understand rule will often solve the problem of allowing the player to apply specific actions to objects not normally in scope. When we need to adjust scope for some other reason than reading the player's command, though, `deciding the scope of...` may come in handy.
 
 For instance, suppose we wanted to extend [Four Stars 1] to add a tomcat on the balcony that will be heard whenever the player listens from the next room, as in:

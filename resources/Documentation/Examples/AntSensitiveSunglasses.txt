@@ -5,6 +5,8 @@ Index: Varying room description text
 Description: What are activities good for? Controlling output when we want the same action to be able to produce very flexible text depending on the state of the world -- in this case, making highly variable room description and object description text.
 For: Z-Machine
 
+^^{Varying room description text}
+
 Suppose we want to create an object – or maybe even a series of objects – that warp the player's perception of every room description and object around them.
 
 We've already seen some ways to create variations in text. For instance, we could make a room description with if substitutions in it, like so:

@@ -1,0 +1,50 @@
+
+
+
+
+Text Foosball Commentated
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Lounge
+The Lounge is appointed with everything necessary to rest and relaxation: a vending machine, a potted palm, a stack of Entertainment Weekly issues from 1993, and -- your pride and joy -- a foosball game.
+
+On the foosball game is a small white ball (still).
+
+Joey is hunkered over the foosball handles on his side of the table.
+
+>(Testing.)
+
+>[1] turn handles
+You madly rotate the tiny men on sticks! Hoorah! You hit the ball!
+
+"What happened to the ball that was actually round?" Joey asks.
+
+"You ate it. Remember?" The ball was eventually retrieved but not in a reusable condition.
+
+"Oh yeah. To impress that girl Shannon. And now she never comes around any more." You don't ask why he thought Shannon wanted to see him eat a foosball. There are some things it's better not to know.
+
+>[2] no
+That was a rhetorical question.
+
+Joey connects with your shot. Now the ball is approaching!
+
+"Come on, come on, come on..." Joey bends down to view the table as though he can will the ball into the goal. 
+
+>[3] turn handles
+Thunk. You keep the ball from reaching its goal! Now it is still.
+
+Joey fails to hit the ball in your direction. It remains still.
+
+"I'm pretty sure the ball moved out of the way. Is that possible?"
+
+You give him a funny look. "Yeah, I moved it with the telekinetic powers of my mind."
+
+>[4] z
+Time passes.
+
+Joey hits the ball solidly down towards your goal. Now it is approaching.
+
+"This could take a while," he says.
+
+>Are you sure you want to quit? 

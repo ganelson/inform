@@ -5,6 +5,8 @@ Index: A room where the game cannot be saved
 Description: P. David Lebling's classic _Spellbreaker_ (1986) includes a room where the game cannot be saved: here is an Inform implementation.
 For: Untestable
 
+^^{saving the game: preventing saves}
+
 The answer is easy, but there is a trap:
 
 	Check saving the game when the location is the Vault: say "That spell does not work here." instead.

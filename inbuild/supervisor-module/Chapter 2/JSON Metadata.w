@@ -32,6 +32,8 @@ void JSONMetadata::read_metadata_file(inbuild_copy *C, filename *F,
 	@<Police the "needs"@>;
 	JSON_value *compatibility = JSON::look_up_object(obj, I"compatibility");
 	if (compatibility) @<Extract compatibility@>;
+	JSON_value *rights = JSON::look_up_object(C->metadata_record, I"rights");
+	if (rights) Licences::from_JSON(C->licence, rights);
 }
 
 void JSONMetadata::read_metadata_file_helper(text_stream *text, text_file_position *tfp,

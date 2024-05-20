@@ -1,0 +1,12 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 10 words long.
+I've also read version 2 of Basic Inform by Graham Nelson, which is 8488 words long.
+I've also read version 2 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 7 of Standard Rules by Graham Nelson, which is 35135 words long.
+Problem__ PM_CopyrightSaysCopyright
+  >--> You wrote 'The copyright for this story is "(c) Emily Short 1983"' (source
+    text, line 1): but contains the word 'copyright' or a symbol or
+    abbreviation to that effect, which it shouldn't, because Inform adds that
+    automatically. So '"Emily Short 2024"' is allowed, but not '"(c) Emily
+    Short 2024"'.
+Inform 7 has finished.

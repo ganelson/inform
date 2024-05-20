@@ -5,6 +5,8 @@ Index: Furniture, resentment of
 Description: A small game about resentful furniture and inconvenient objects.
 For: Z-Machine
 
+^^{Furniture, resentment of}
+
 This example does include a number of features that we haven't met yet, particularly [Rulebooks]. Nonetheless, the basic idea should be relatively clear. Our premise is that the player is faced with a series of disgruntled furnishings, none of which want to be responsible for supporting the cold, hot, drippy, or spiky objects lying around the room.
 
 	{*}"Revenge of the Fussy Table"

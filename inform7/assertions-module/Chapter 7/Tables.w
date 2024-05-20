@@ -190,6 +190,25 @@ parse_node *Tables::get_headline(table *t) {
 	return t->headline_fragment;
 }
 
+@ The author can demand with a "translates as" sentence that a given
+table should have an identifier given to it which is accessible to Inter:
+
+=
+void Tables::translates(wording W, parse_node *p2) {
+	if (<s-constant-value>(W)) {
+		table *T = Rvalues::to_table(<<rp>>);
+		if (T) {
+			RTTables::translate(T, Node::get_text(p2));
+			return;
+		}
+	}
+	LOG("Tried %W\n", W);
+	StandardProblems::sentence_problem(Task::syntax_tree(),
+		_p_(PM_TranslatesNonTable),
+		"this is not the name of a table",
+		"so cannot be translated.");
+}
+
 @h Table creation.
 Tables can be new, when they appear in the source, or can be related to
 already-existing ones with the same name:

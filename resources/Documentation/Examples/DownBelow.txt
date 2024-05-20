@@ -5,6 +5,8 @@ Index: Basic switchable light for a room
 Description: A light switch which makes the room it is in dark or light.
 For: Z-Machine
 
+^^{Basic switchable light for a room}
+
 Suppose we want to have a room with a light switch. Turning the switch off makes the room go dark; turning it on restores the light. This kind of switch is an obvious candidate as a device.
 
 	{*}"Down Below"

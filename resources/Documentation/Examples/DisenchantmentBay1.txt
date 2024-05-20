@@ -5,6 +5,8 @@ Index: The charter boat
 Description: A running example in this chapter, Disenchantment Bay, involves chartering a boat. This is the first step: creating the cabin.
 For: Z-Machine
 
+^^{The charter boat}
+
 To begin with the title:
 
 	{*}"Disenchantment Bay"

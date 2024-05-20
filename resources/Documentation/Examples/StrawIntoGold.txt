@@ -5,6 +5,8 @@ Index: Names of objects change with player's diction
 Description: Creating a Rumpelstiltskin character who is always referred to as "dwarf", "guy", "dude", or "man" -- depending on which the player last used -- until the first time the player refers to him as "Rumpelstiltskin".
 For: Z-Machine
 
+^^{Names of objects change with player's diction}
+
 	{*}"Straw Into Gold"
 	
 	The Cell is a room. Rumpelstiltskin is an improper-named man in the Cell.  Rumpelstiltskin can be identified or unidentified. Rumpelstiltskin is unidentified.

@@ -5,6 +5,8 @@ Index: An elevator operated simply by walking in and out
 Description: A simple elevator connecting two floors which is operated simply by walking in and out, and has no buttons or fancy doors.
 For: Z-Machine
 
+^^{elevators (implementing): operated simply by walking in and out}
+
 This is very simple. The interior of the elevator is a single room, but which is mapped east of both of its termini. The reverse map connection, west from the elevator, can only go to a single room, and that's what determines which floor the elevator is on.
 
 	{*}"The Unbuttoned Elevator Affair"

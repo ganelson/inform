@@ -1,7 +1,7 @@
    Downhill Splitter
   Swerve left? Swerve right? Or think about it and die?
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Downhill Splitter
   The green plastic chute runs downhill towards a Y-junction, forcing incoming marbles right or left.
@@ -24,66 +24,50 @@
   
   You keep sliding...
   
-  Long Yellow Slide
-  You can see a blue cloudy marble here.
-  
-  The blue cloudy marble rolls out of the room toward the Blue Funnel.
+  Purple Snaking Passage
   
   >[4] z
   Time passes.
   
   You keep sliding...
   
-  Blue Funnel
-  You can see a blue cloudy marble here.
-  
-  The blue cloudy marble rolls out of the room toward the Ski-jump.
+  Landing Bowl
   
   >[5] stand up
   You get to your feet.
   
+  The blue cloudy marble rolls into the room from the Ski-jump.
+  
   >[6] drop agate
   Dropped.
   
-  The agate marble rolls out of the room toward the Ski-jump.
+  The agate marble rolls out of the room toward the Snake Run.
+  The blue cloudy marble rolls out of the room toward the Snake Run.
   
   >[7] sit
   You sit, ready to slide wherever fate takes you.
   
   You keep sliding...
   
-  Ski-jump
-  You can see an agate marble here.
+  Snake Run
+  You can see a blue cloudy marble and an agate marble here.
   
-  The agate marble rolls out of the room toward the Landing Bowl.
+  The agate marble rolls out of the room toward the Goal.
+  The blue cloudy marble rolls out of the room toward the Goal.
   
   >[8] z
   Time passes.
   
   You keep sliding...
   
-  Landing Bowl
-  You can see an agate marble here.
-  
-  The agate marble rolls out of the room toward the Snake Run.
+  Goal
+  You can see a blue cloudy marble, an agate marble and a red marble here.
   
   >[9] z
   Time passes.
   
-  You keep sliding...
-  
-  Snake Run
-  You can see an agate marble here.
-  
-  The agate marble rolls out of the room toward the Goal.
-  
   >[10] z
   Time passes.
-  
-  You keep sliding...
-  
-  Goal
-  You can see an agate marble, a blue cloudy marble and a red marble here.
   
   >[11] z
   Time passes.

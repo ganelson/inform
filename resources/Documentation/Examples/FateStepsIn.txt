@@ -5,6 +5,8 @@ Index: Story driven by internal rules
 Description: Fate entity which attempts to make things happen, by hook or by crook, including taking preliminary actions to set the player up a bit.
 For: Z-Machine
 
+^^{Story driven by internal rules}
+
 One of the nice things about before rules for actions is that they allow us to express some planning for characters other than the player: we've already seen how this works, a bit. But we could also use before rules to write plans for an abstract story-driving entity, rather than for other individual characters. This story-driver could be in charge of all the non-player characters, as well as spontaneous or natural changes in the environment, shaping the narrative around the player's behaviour.
 
 The following example is a very simple one, but the same concept could be worked out in a great deal more complexity, with all sorts of alternative procedures available to our story-manager:

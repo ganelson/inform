@@ -1,0 +1,75 @@
+
+
+
+
+Barter Barter Barter
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Trading Post
+You can see Meriwether Lewis and William Clark here.
+
+>(Testing.)
+
+>[1] buy quilt
+"I'd like to buy the fluffy handmade quilt," you say.
+
+"What will you give me for it?" asks Meriwether Lewis.
+
+(1) Offer the sandwich
+(2) Offer the hat
+(3) Offer the silver bracelet
+(4) Give up
+
+>[2] 1
+Offer the sandwich
+
+"Can I offer you the sandwich?" you suggest.
+
+Meriwether Lewis mulls it over.
+
+"No thanks," says Meriwether Lewis. "Got anything else good?"
+
+(1) Offer the hat
+(2) Offer the silver bracelet
+(3) Give up
+
+>[3] 1
+Offer the hat
+
+"Can I offer you the hat?" you suggest.
+
+Meriwether Lewis thinks for a minute.
+
+"Sold!" says Meriwether Lewis.
+
+You hand Meriwether Lewis the hat.
+
+Meriwether Lewis gives the fluffy handmade quilt to you.
+
+"Why, thank you," you say.
+
+>[4] buy journal
+"I'd like to buy the journal," you say.
+
+"What will you give me for it?" asks William Clark.
+
+(1) Offer the fluffy handmade quilt
+(2) Offer the sandwich
+(3) Offer the silver bracelet
+(4) Give up
+
+>[5] 1
+Offer the fluffy handmade quilt
+
+"Can I offer you the fluffy handmade quilt?" you suggest.
+
+"Sold!" says William Clark.
+
+You hand William Clark the fluffy handmade quilt.
+
+William Clark gives the journal to you.
+
+"Why, thank you," you say.
+
+>Are you sure you want to quit? 

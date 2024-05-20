@@ -5,6 +5,8 @@ Index: LOOK UNDER shows nothing unless the player has a light
 Description: Visibility set so that looking under objects produces no result unless the player has a light source to shine there (regardless of the light level of the room).
 For: Z-Machine
 
+^^{looking under+action+: shows nothing unless the player has a light}
+
 	{*}"Flashlight"
 	
 	The Schoolhouse is a room. "Though normally comfortable, the room is dark and menacing during the storm; rain sheets on the windows, and you can barely see the flash of the lighthouse only a few miles away."

@@ -140,11 +140,12 @@ the two possibilities.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">do_not_locate_problems</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">warning_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Problems::show_problem_location</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Problems::show_problem_location</span></span>:<br/><a href="2-pl2.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">problem_headings</span><span class="plain-syntax">[</span><span class="constant-syntax">NO_HEADING_LEVELS</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">f</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">problem_count</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">problem_count</span><span class="plain-syntax"> + </span><span class="identifier-syntax">warning_count</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">FIRST_PROBLEMS_CALLBACK</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">FIRST_PROBLEMS_CALLBACK</span><span class="plain-syntax">(</span><span class="identifier-syntax">problems_file</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        #</span><span class="identifier-syntax">endif</span>
@@ -392,8 +393,6 @@ but we're finally giving way on that.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">warning_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Problems::warnings_occurred</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="identifier-syntax">warning_count</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)?</span><span class="identifier-syntax">TRUE:FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>

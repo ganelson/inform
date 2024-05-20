@@ -5,6 +5,8 @@ Index: INVENTORY revised for other characters
 Description: Replacing the inventory reporting rule with another which does something slightly different.
 For: Z-Machine
 
+^^{inventory: revised for other characters}
+
 Inform has built-in commands for other people, and sometimes we may want to adjust the way these work without completely disabling and replacing the command. Suppose, for instance, that instead of
 
 	Kermit the Frog looks through his possessions.

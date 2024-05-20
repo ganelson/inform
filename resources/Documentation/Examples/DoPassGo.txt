@@ -5,6 +5,8 @@ Index: Pair of dice for rolling
 Description: A pair of dice which can be rolled, and are described with their current total when not carried, and have individual scores when examined.
 For: Z-Machine
 
+^^{games, dice and cards (implementing)}
+
 	{*}"Do Pass Go"
 	
 	Go is a room. "A giant square area, where you and your other pewter ornament friends gather before setting out to purchase London."

@@ -5,6 +5,8 @@ Index: The Crane's Leg 1. Descriptions based on how objects compare with player'
 Description: A description text that automatically highlights the ways in which the object differs from a standard member of its kind.
 For: Z-Machine
 
+^^{The Crane's Leg 1. Descriptions based on how objects compare with player's expectations}
+
 > When you see a long object, you don't have to think that it is too long if being long is the property given by the nature. It is proved by the fact that a duckling, having short legs, will cry if you try to draw them out by force, and that a crane, having long legs, will protest you with tears if you try to cut them with a knife. — Zhuangzi
 
 Suppose we have an extremely detailed world model in which every object is characterised by many features – in this example, material and height, though one could add more. Suppose further that we would like to generate descriptions of these things automatically for the most part, drawing the player's attention only to those aspects of the object that are particularly interesting.

@@ -2,7 +2,6 @@
 
 status "inform7/Internal/HTML/CblorbModel.html" "/Users/gnelson/Natural Inform/intest/Workspace/T0/Example.inform/Build/StatusCblorb.html"
 
-
 ! Identification
 
 project folder "/Users/gnelson/Natural Inform/intest/Workspace/T0/Example.inform"
@@ -36,12 +35,9 @@ auxiliary "inform7/Internal/Miscellany/IntroductionToIF.pdf" "Introduction to IF
 auxiliary "inform7/Internal/Miscellany/Postcard.pdf" "IF Postcard" "--"
 placeholder [OTHERCREDITS] = "The postcard was written by Andrew Plotkin and designed by Lea Albaugh."
 
-! Website instructions
+! Interpreter instructions
 
 placeholder [ENCODEDSTORYFILE] = "story.gblorb.js"
-template path "/Users/gnelson/Natural Inform/intest/Workspace/T0/Example.materials/Templates"
-template path "/Users/gnelson/Natural Inform/intest/Workspace/T0/Example.materials/Templates"
-template path "inform7/Tests/Templates"
 template path "inform7/Internal/Templates"
 placeholder [INTERPRETERSCRIPTS] = " "
 interpreter "Quixe" "g"
@@ -49,12 +45,8 @@ base64 "/Users/gnelson/Natural Inform/intest/Workspace/T0/Example.materials/Rele
 
 ! Website instructions
 
-template path "/Users/gnelson/Natural Inform/intest/Workspace/T0/Example.materials/Templates"
-template path "/Users/gnelson/Natural Inform/intest/Workspace/T0/Example.materials/Templates"
-template path "inform7/Tests/Templates"
-template path "inform7/Internal/Templates"
 css
 website "Standard"
 status instruction ||&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a>||
-status alternative ||Using 'Release along with cover art', to provide something more distinctive than the default artwork above&nbsp;<a href=inform:/wi_26_8.html><img border=0 src=inform:/doc_images/help.png></a>||
-status alternative ||Using 'Release along with a file of "Such-and-Such" called "whatever.pdf"', perhaps to add a manual, or a welcoming note&nbsp;<a href=inform:/wi_26_6.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with cover art', to provide something more distinctive than the default artwork above&nbsp;<a href=inform:/wi_27_8.html><img border=0 src=inform:/doc_images/help.png></a>||
+status alternative ||Using 'Release along with a file of "Such-and-Such" called "whatever.pdf"', perhaps to add a manual, or a welcoming note&nbsp;<a href=inform:/wi_27_6.html><img border=0 src=inform:/doc_images/help.png></a>||

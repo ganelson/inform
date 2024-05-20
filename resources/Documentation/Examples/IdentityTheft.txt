@@ -5,6 +5,8 @@ Index: Name of player character selected at start of play
 Description: Allowing the player to enter a name to be used for the player character during the game.
 For: Z-Machine
 
+^^{Name of player character selected at start of play}
+
 Let's say we want to allow the player to enter any name they like for their character. Moreover, we want to reject very long names (which are likely to be mistakes anyway), and we want to extract the player's chosen first name from the rest.
 
 	{*}"Identity Theft"

@@ -5,6 +5,8 @@ Index: Sybil 2. YES and NO directed to people
 Description: Making the character understand ``YES``, ``SAY YES TO CHARACTER``, ``TELL CHARACTER YES``, ``ANSWER YES``, and ``CHARACTER, YES``.
 For: Z-Machine
 
+^^{Sybil 2. YES and NO directed to people}
+
 Inform already understands ``YES``, ``NO``, and ``SORRY`` as commands in their own right, which can make things a little sticky when we want a character to ask a question of the player. The most important thing is not to cover some of the possible phrasings while ignoring others.
 
 	{*}"Replies"

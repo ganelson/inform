@@ -5,6 +5,8 @@ Index: A point for never saving the game
 Description: In some of the late 1970s cave-crawl adventure games, an elaborate scoring system might still leave the player perplexed as to why an apparently perfect play-through resulted in a score which was still one point short of the supposed maximum. Why only 349 out of 350? The answer varied, but sometimes the last point was earned by never saving the game - in other words by playing it right through with nothing to guard against mistakes (except perhaps ``UNDO`` for the last command), and in one long session.
 For: Untestable
 
+^^{saving the game: reward for never saving}
+
 Here is one way to score this point with Inform:
 
 	Check saving the game for the first time: decrement the score.

@@ -5,6 +5,8 @@ Index: Turns take 15 minutes each
 Description: Adjust time advancement so the game clock moves fifteen minutes each turn.
 For: Z-Machine
 
+^^{Turns take 15 minutes each}
+
 Suppose a game in which all actions take a very long time. Here's a simple implementation:
 
 	{*}"Uptempo"

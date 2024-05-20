@@ -538,11 +538,16 @@ in a minimal sort of way, with just an |is| object.
 		internal_error("should not try to write JSON except in repair mode");
 	if (C->location_if_path == NULL)
 		internal_error("should not try to write JSON except for a directory extension");
+	int write_legal = FALSE;
+	if ((C->metadata_record) && (JSON::look_up_object(C->metadata_record, I"rights")))
+		write_legal = TRUE;
 	JSON_value *is_object = NULL;
 	@<Find or create the is-object@>;
 	@<Populate the is-object with correct values@>;
 	if (LinkedLists::len(missing_kits) > 0)
 		@<Add any missing kits to the needs-object@>;
+	if (write_legal)
+		JSON::change_object(C->metadata_record, I"rights", Licences::to_JSON(C->licence));
 	@<Write the JSON metadata back to the filing system@>;
 
 @<Find or create the is-object@> =
@@ -596,6 +601,17 @@ in a minimal sort of way, with just an |is| object.
 		STREAM_CLOSE(OUT);
 		WRITE_TO(STDERR, "(Writing JSON metadata file to %f, because %S)\n", F, force_JSON_write);
 	}
+
+@ Update extension metadata:
+
+=
+void Extensions::update_metadata(inform_extension *E, int write_legal,
+	text_stream *force_JSON_write) {
+	inbuild_copy *C = E->as_copy;
+	if (write_legal)
+		JSON::change_object(C->metadata_record, I"rights", Licences::to_JSON(C->licence));
+	@<Write the JSON metadata back to the filing system@>;
+}
 
 @ Language elements can be activated or deactivated:
 

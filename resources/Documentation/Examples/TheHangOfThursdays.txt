@@ -5,19 +5,21 @@ Index: Turns take a quarter day each
 Description: Turns take a quarter day each, and the game rotates through the days of the week.
 For: Z-Machine
 
+^^{Turns take a quarter day each}
+
 	{*}"The Hang of Thursdays"
 	
-	The Stage is a room. Rule for printing the name of the stage: say "[current weekday] [current time period]" instead.
+	The Stage is a room. Rule for printing the name of the stage: say "[current weekday] [current day period]" instead.
 	
 	A weekday is a kind of value. The weekdays are Saturday, Sunday, Monday, Tuesday, Wednesday, Thursday, Friday. The current weekday is a weekday that varies. The current weekday is Saturday.
 	
-	A time period is a kind of value. The time periods are morning, afternoon, evening, night. The current time period is a time period that varies. The current time period is afternoon.
+	A day period is a kind of value. The day periods are morning, afternoon, evening, night. The current day period is a day period that varies. The current day period is afternoon.
 	
 	This is the new advance time rule:
-		if the current time period is less than night:
-			now the current time period is the time period after the current time period;
+		if the current day period is less than night:
+			now the current day period is the day period after the current day period;
 		otherwise:
-			now the current time period is morning;
+			now the current day period is morning;
 			now the current weekday is the weekday after the current weekday.
 
 Now we need to borrow from a later chapter to make these instructions apply to the passage of time:

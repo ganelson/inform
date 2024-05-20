@@ -1,7 +1,7 @@
    Daily Planet Newsroom
   The Man of Steel
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Daily Planet Newsroom
   Clark is here, frowning as he revises his latest article.
@@ -22,7 +22,7 @@
   Daily Planet Newsroom
   Clark looks a bit ill.
   
-  Clark Kent goes east.
+  Clark Kent goes west.
   
   >[4] close box
   You close the lead-lined box.
@@ -30,7 +30,6 @@
   >[5] east
   
   Supply Closet
-  Clark is here, frowning as he revises his latest article.
   
   >[6] west
   
@@ -47,6 +46,8 @@
   >[9] west
   
   Perry White's Office
-  You can see a desk and a poster of Elvis here.
+  Clark is here, frowning as he revises his latest article.
+  
+  You can also see a desk and a poster of Elvis here.
   
 > >

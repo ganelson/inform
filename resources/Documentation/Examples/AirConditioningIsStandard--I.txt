@@ -1,16 +1,16 @@
    Garage
   Air Conditioning is Standard
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Garage
   Above the street door is a spectacular art nouveau fanlight, wherein a stained-glass Spirit of Progress bestows the gift of Transportation on mankind.
   
   The sun, gleaming through the hair of Progress, throws amber curls on the macadam floor.
   
-  The machinist is making some adjustments to the horn with his wrench. He is wearing a grimy pair of overalls and carrying a screwdriver.
+  The machinist is making some adjustments to the steering wheel with his screwdriver. He is wearing a grimy pair of overalls and carrying a wrench.
   
-  The Victorian Car is here. It also features, in addition to the horn, a cast-iron steering wheel, a leather bucket seat and a combustion engine.
+  The Victorian Car is here. It also features, in addition to the cast-iron steering wheel, a leather bucket seat, a horn and a combustion engine.
   
 > >   Garage
   (Testing.)
@@ -24,9 +24,9 @@
   
   The sun, gleaming through the hair of Progress, throws amber curls on the macadam floor.
   
-  The machinist is making some adjustments to the horn with his wrench. He is wearing a grimy pair of overalls and carrying a screwdriver.
+  The machinist is making some adjustments to the combustion engine with his wrench. He is wearing a grimy pair of overalls and carrying a screwdriver.
   
-  The Victorian Car is here. It also features, in addition to the horn, a cast-iron steering wheel, a leather bucket seat and a combustion engine.
+  The Victorian Car is here. It also features, in addition to the combustion engine, a cast-iron steering wheel, a leather bucket seat and a horn.
   
   >[3] look
   Garage
@@ -34,9 +34,9 @@
   
   The sun, gleaming through the hair of Progress, throws amber curls on the macadam floor.
   
-  The machinist is making some adjustments to the horn with his wrench. He is wearing a grimy pair of overalls and carrying a screwdriver.
+  The machinist is making some adjustments to the steering wheel with his screwdriver. He is wearing a grimy pair of overalls and carrying a wrench.
   
-  The Victorian Car is here. It also features, in addition to the horn, a cast-iron steering wheel, a leather bucket seat and a combustion engine.
+  The Victorian Car is here. It also features, in addition to the cast-iron steering wheel, a leather bucket seat, a horn and a combustion engine.
   
   >[4] z
   Time passes.
@@ -47,9 +47,9 @@
   
   The sun, gleaming through the hair of Progress, throws amber curls on the macadam floor.
   
-  The machinist is making some adjustments to the combustion engine with his screwdriver. He is wearing a grimy pair of overalls and carrying a wrench.
+  The machinist is making some adjustments to the steering wheel with his wrench. He is wearing a grimy pair of overalls and carrying a screwdriver.
   
-  The Victorian Car is here. It also features, in addition to the combustion engine, a cast-iron steering wheel, a leather bucket seat and a horn.
+  The Victorian Car is here. It also features, in addition to the cast-iron steering wheel, a leather bucket seat, a horn and a combustion engine.
   
   The machinist wanders into the Office to get some paperwork.
   
@@ -93,7 +93,7 @@
   
   The sun, gleaming through the hair of Progress, throws amber curls on the macadam floor.
   
-  The machinist is chatting with the bemused young lady. He seems to be demonstrating the various features of the Victorian Car, including the combustion engine. He is wearing a grimy pair of overalls.
+  The machinist is chatting with the bemused young lady. He seems to be demonstrating the various features of the Victorian Car, including the horn. He is wearing a grimy pair of overalls.
   
   >[12] z
   Time passes.

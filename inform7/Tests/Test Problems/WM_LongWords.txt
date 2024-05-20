@@ -1,0 +1,5 @@
+Warning: WM_LongWords
+
+Lab is a room.
+
+An abcdefghijklmnopqrstuvwxyz and an abcdefghijklmnopqrstuvwxyzzz are here.

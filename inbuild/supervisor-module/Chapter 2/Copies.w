@@ -27,7 +27,9 @@ typedef struct inbuild_copy {
 	struct wording source_text; /* the source text we read, if so */
 	struct inbuild_requirement *found_by; /* if this was claimed in a search */
 	struct linked_list *errors_reading_source_text; /* of |copy_error| */
+	struct linked_list *warnings; /* of |copy_error| */
 	int last_scanned;
+	struct inbuild_licence *licence; /* optional licence declaration which seems to apply */
 	CLASS_DEFINITION
 } inbuild_copy;
 
@@ -49,7 +51,9 @@ inbuild_copy *Copies::new_p(inbuild_edition *edition) {
 	copy->source_text = EMPTY_WORDING;
 	copy->found_by = NULL;
 	copy->errors_reading_source_text = NEW_LINKED_LIST(copy_error);
+	copy->warnings = NEW_LINKED_LIST(copy_error);
 	copy->last_scanned = 0;
+	copy->licence = Licences::new(copy);
 	return copy;
 }
 
@@ -98,11 +102,26 @@ void Copies::attach_error(inbuild_copy *C, copy_error *CE) {
 	ADD_TO_LINKED_LIST(CE, copy_error, C->errors_reading_source_text);
 }
 
+void Copies::attach_warning(inbuild_copy *C, copy_error *CE) {
+	if (C == NULL) internal_error("no copy to attach to");
+	CopyErrors::supply_attached_copy(CE, C);
+	ADD_TO_LINKED_LIST(CE, copy_error, C->warnings);
+}
+
 void Copies::list_attached_errors(OUTPUT_STREAM, inbuild_copy *C) {
 	if (C == NULL) return;
 	copy_error *CE;
 	int c = 1;
 	LOOP_OVER_LINKED_LIST(CE, copy_error, C->errors_reading_source_text) {
+		WRITE("%d. ", c++); CopyErrors::write(OUT, CE); WRITE("\n");
+	}
+}
+
+void Copies::list_attached_warnings(OUTPUT_STREAM, inbuild_copy *C) {
+	if (C == NULL) return;
+	copy_error *CE;
+	int c = 1;
+	LOOP_OVER_LINKED_LIST(CE, copy_error, C->warnings) {
 		WRITE("%d. ", c++); CopyErrors::write(OUT, CE); WRITE("\n");
 	}
 }
@@ -272,6 +291,15 @@ void Copies::inspect(OUTPUT_STREAM, JSON_value *obj, inbuild_copy *C) {
 		int N = LinkedLists::len(C->errors_reading_source_text);
 		if (N > 0) {
 			WRITE(" - %d error", N);
+			if (N > 1) WRITE("s");
+		}
+		WRITE("\n");
+		if (N > 0) {
+			INDENT; Copies::list_attached_errors(OUT, C); OUTDENT;
+		}
+		N = LinkedLists::len(C->warnings);
+		if (N > 0) {
+			WRITE(" - %d warning", N);
 			if (N > 1) WRITE("s");
 		}
 		WRITE("\n");

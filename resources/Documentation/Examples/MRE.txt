@@ -5,6 +5,8 @@ Index: Hunger eventually killing the player
 Description: Hunger that eventually kills the player, and foodstuffs that can delay the inevitable by different amounts of time.
 For: Z-Machine
 
+^^{Hunger eventually killing the player}
+
 Many older interactive fiction games required the player to find food and eat on a regular basis in order to avoid death. This effect was often unrealistic (since most people can survive much longer than a few hours without eating) and is often seen as an annoyance. However, for the sake of argument, suppose that we do want to construct a hunger-and-death system.
 
 To make things a little more interesting, we will postulate that different foods are differently filling, so that if the player manages to find something really caloric, they are off the hook on their hunger search for a while.
@@ -25,7 +27,7 @@ First, a little scene-setting:
 
 Now we define our food, and add some special instructions for what happens to our hunger counters when the food is eaten:
 
-	{**}Food is a kind of thing. Food is usually edible. Food has a time called the satisfaction period. The satisfaction period of a food is usually 5 minutes.
+	{**}Food is a kind of thing. Food is usually edible. Food has a time period called the satisfaction period. The satisfaction period of a food is usually 5 minutes.
 	
 	A person can be hungry or replete. The player is hungry.
 	

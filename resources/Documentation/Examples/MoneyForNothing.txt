@@ -5,6 +5,8 @@ Index: OFFER price FOR command allowing player to bargain
 Description: An ``OFFER PRICE FOR`` command, allowing the player to bargain with a flexible seller.
 For: Z-Machine
 
+^^{OFFER price FOR command allowing player to bargain}
+
 	{*}"Money for Nothing"
 	
 	Section 1 - Prices and Bargaining

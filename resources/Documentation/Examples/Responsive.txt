@@ -5,6 +5,8 @@ Index: Inventory standard response changed
 Description: Altering the standard inventory text for when the player is carrying nothing.
 For: Z-Machine
 
+^^{inventory: standard response changed}
+
 The most straightforward way to alter the response text for something in the standard rules is to select the Index tab, then select Actions, then pick the particular action whose text we'd like to alter. Under action details, there will be icons that look like speech bubbles.
 
 Clicking on the speech bubble will show what the current response text is, and give us an option called "set".

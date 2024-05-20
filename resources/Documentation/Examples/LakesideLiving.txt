@@ -5,6 +5,8 @@ Index: Liquid model with large bodies of liquid added
 Description: Similar to "Lemonade", but with bodies of liquid that can never be depleted, and some adjustments to the "fill" command so that it will automatically attempt to fill from a large liquid source if possible.
 For: Z-Machine
 
+^^{liquids (implementing): large bodies of liquid}
+
 Much of what follows is identical to [Lemonade] earlier; the new material begins at Part 2.
 
 	{*}"Lakeside Living"

@@ -5,6 +5,8 @@ Index: Light-filled rooms as a route through a space
 Description: Finding a best route through light-filled rooms only, leaving aside any that might be dark.
 For: Z-Machine
 
+^^{Light-filled rooms as a route through a space}
+
 Suppose we're simulating a situation where the player needs to travel through lit areas only, but we want to give them some hints about which way might be safe. Here we'll find our best route through light-filled rooms.
 
 The slightly tricky part is that it's not necessarily easy to tell whether a room has a lamp in it. We may say `if the Crypt is lighted`, but that only tells us whether it has been declared to be inherently lighted or dark, not whether it happens to contain a light source that the player would be able to see if they went in.

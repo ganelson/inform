@@ -1,7 +1,7 @@
    Kitchen
   Ant-Sensitive Sunglasses
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Kitchen
   A small kitchen tucked into a corner of the vacation house. There is storage space for five or six cups, a sink, a two-ring stove; nothing else to speak of.
@@ -42,7 +42,7 @@
   The walls look like they're covered with ants. Just a coincidence, I'm sure.
   
   >[9] x apple
-  The apple is ant-legged.
+  The apple is ant-colored.
   
   >[10] n
   

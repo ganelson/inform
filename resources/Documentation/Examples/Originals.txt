@@ -5,6 +5,8 @@ Index: Model objects referred to by the thing modeled
 Description: Allowing the player to create models of anything in the game world; parsing the name "model [thing]" or even just "[thing]" to refer to these newly-created models; asking "which do you mean, the model [thing] or the actual [thing]" when there is ambiguity.
 For: Z-Machine
 
+^^{Model objects referred to by the thing modeled}
+
 We rely here on the understanding-by-relations rules we've already learned, but there is an additional trick: we want to make sure that if the player types ``ORIGINAL`` or ``ACTUAL``, this word will not be taken to refer to the thing modeled:
 
 	{*}"Originals"

@@ -146,6 +146,10 @@ not compile to any data in the object code:
 	} else {
 		Emit::text_constant(Hierarchy::find(YEAR_MD_HL), I"(This year)");
 	}
+	Emit::initial_value_as_raw_text(Hierarchy::find(LICENCE_MD_HL), story_licence_VAR);
+	Emit::initial_value_as_raw_text(Hierarchy::find(COPYRIGHT_MD_HL), story_copyright_VAR);
+	Emit::initial_value_as_raw_text(Hierarchy::find(ORIGIN_URL_MD_HL), story_origin_URL_VAR);
+	Emit::initial_value_as_raw_text(Hierarchy::find(RIGHTS_HISTORY_MD_HL), story_rights_history_VAR);
 
 @ The IFID is written into the compiled story file, too, both in order
 that it can be printed by the VERSION command and to brand the file so

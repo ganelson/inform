@@ -5,6 +5,8 @@ Index: Room description changes after first visit
 Description: A room whose description changes slightly after our first visit there.
 For: Z-Machine
 
+^^{rooms+kind+: descriptions: changing over time}
+
 A fairly common effect in interactive fiction is a room which is described differently on the first visit than on subsequent visits. We can produce this effect as follows:
 
 	{*}"Slightly Wrong"

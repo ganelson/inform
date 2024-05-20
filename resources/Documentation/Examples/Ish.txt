@@ -5,6 +5,8 @@ Index: HELP with a simple menu
 Description: A (very) simple ``HELP`` command, using tokens to accept and interpret the player's  text whatever it might be.
 For: Z-Machine
 
+^^{>HELP: with a simple menu}
+
 	{*}"Ish."
 	
 	Ichiro's Dubious Sushi Hut is a room.  "Despite the allure of the dusty plastic sushi models in the window, you're beginning to have second thoughts about the selection of this particular restaurant for your rendezvous with Agent Fowler.  There are no other patrons, for one thing. Afternoon sunlight filters lazily through the window and illuminates a number of empty glass-topped tables, at each of which is a chopstick dispenser (in form of cute ceramic cat) and a pitcher of soy sauce (sticky).

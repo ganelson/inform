@@ -1,7 +1,7 @@
    Hotel Alpina
   Assaying S = {Rolf, Matthieu and the Bergfuehrer}.
   N(S) is 3.
-  R(S) is Matthieu.
+  R(S) is Rolf.
   Total carrying capacity of S is 217.
   Total weight of S is 170kg.
   The heftiest member of S is the Bergfuehrer.
@@ -11,7 +11,7 @@
   
   Assaying by hand: {Rolf, Matthieu and the Bergfuehrer}.
   N(men) is 3.
-  R(men) is Matthieu.
+  R(men) is a Bergfuehrer.
   TCC(men) is 217.
   TW(men) is 170kg.
   Heftiest(men) is Bergfuehrer.
@@ -29,7 +29,7 @@
   
   Assaying S = {Rolf and Matthieu}.
   N(S) is 2.
-  R(S) is Rolf.
+  R(S) is Matthieu.
   Total carrying capacity of S is 117.
   Total weight of S is 120kg.
   The heftiest member of S is Matthieu.
@@ -60,7 +60,7 @@
   
   Kandersteg
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Hotel Alpina
   You can see Rolf and Matthieu here.

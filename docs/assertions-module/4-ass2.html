@@ -114,7 +114,7 @@ generalisations which apply to it.
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">generalisation</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure generalisation is accessed in 2/ptmn, 2/cs, 2/ps, 2/is, 3/dlr, 3/pr, 3/tr, 3/nuor, 3/uor, 3/tr2, 3/dbtr, 3/rpr, 3/nar, 3/nlpr, 3/nrr, 3/npr, 3/nvr, 3/nar2, 4/rpt, 4/tc, 4/ass, 4/npa, 4/rk, 4/imp, 5/id, 5/adf, 5/rcd, 6/rlb, 6/act, 7/tbl, 7/eqt, 8/tcp, 8/abp, 8/cu and here.</li></ul>
+<ul class="endnotetexts"><li>The structure generalisation is accessed in 2/ptmn, 2/cs, 2/ps, 2/is, 3/dlr, 3/pr, 3/tr, 3/nuor, 3/uor, 3/tr2, 3/dbtr, 3/rpr, 3/nar, 3/nlpr, 3/nrr, 3/npr, 3/nvr, 3/nar2, 3/ldr, 4/rpt, 4/tc, 4/ass, 4/npa, 4/rk, 4/imp, 5/id, 5/adf, 5/rcd, 6/rlb, 6/act, 7/tbl, 7/eqt, 8/tcp, 8/abp, 8/cu and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>For reasons to do with timing, each object needs to keep track of which
 generalisations have and have not yet applied to it. In practice, this is
 a list of pairs \((K, g)\) where \(K\) is a kind and \(g\) is the most recent one
@@ -128,7 +128,7 @@ applied from \(K\)'s list.
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">application</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">application</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure application is accessed in 2/ptmn, 2/cs, 2/ps, 2/is, 3/dlr, 3/pr, 3/tr, 3/nuor, 3/uor, 3/tr2, 3/dbtr, 3/rpr, 3/nar, 3/nlpr, 3/nrr, 3/npr, 3/nvr, 3/nar2, 4/rpt, 4/tc, 4/ass, 4/npa, 4/rk, 4/imp, 5/id, 5/adf, 5/rcd, 6/rlb, 6/act, 7/tbl, 7/eqt, 8/tcp, 8/abp, 8/cu and here.</li></ul>
+<ul class="endnotetexts"><li>The structure application is accessed in 2/ptmn, 2/cs, 2/ps, 2/is, 3/dlr, 3/pr, 3/tr, 3/nuor, 3/uor, 3/tr2, 3/dbtr, 3/rpr, 3/nar, 3/nlpr, 3/nrr, 3/npr, 3/nvr, 3/nar2, 3/ldr, 4/rpt, 4/tc, 4/ass, 4/npa, 4/rk, 4/imp, 5/id, 5/adf, 5/rcd, 6/rlb, 6/act, 7/tbl, 7/eqt, 8/tcp, 8/abp, 8/cu and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>These structures are combined in the following packet of data attached to
 each inference subject:
 </p>

@@ -5,6 +5,8 @@ Index: Telephones with standard American-length phone numbers
 Description: A telephone with phone numbers of the standard American seven-digit length.
 For: Glulx
 
+^^{Telephones with standard American-length phone numbers}
+
 Seven-digit telephone numbers are too long for Inform to handle when compiling to the Z-Machine, but they will work under Glulx. To have this example succeed, make sure that you have selected the Glulx option in your settings menu.
 
 	{*}"Alias"

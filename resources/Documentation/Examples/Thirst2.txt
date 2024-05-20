@@ -5,6 +5,8 @@ Index: Campfire lit
 Description: A campfire added to the camp site, which can be lit using tinder.
 For: Z-Machine
 
+^^{Campfire lit}
+
 	{*}"Thirst"
 	
 	The player carries a waterskin. The waterskin can be full, partly drained, or empty. The waterskin is full. Understand "water" as the waterskin.

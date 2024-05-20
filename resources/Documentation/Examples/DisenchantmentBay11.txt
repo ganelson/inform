@@ -5,6 +5,8 @@ Index: Disenchantment Bay 11. The player's backpack
 Description: Disenchantment Bay: making a holdall of the backpack.
 For: Untestable
 
+^^{Disenchantment Bay 11. The player's backpack}
+
 If we wanted, we could make the player's backpack infinitely capacious, so:
 
 	{*}The backpack is a player's holdall.

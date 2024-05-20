@@ -32,7 +32,7 @@ chessboard square: d7
 a1 a2 a3 a4 a5 a6 a7 a8 b1 b2 b3 b4 b5 b6 b7 b8 c1 c2 c3 c4 c5 c6 c7 c8 d1 d2 d3 d4 d5 d6 d7 d8 e1 e2 e3 e4 e5 e6 e7 e8 f1 f2 f3 f4 f5 f6 f7 f8 g1 g2 g3 g4 g5 g6 g7 g8 h1 h2 h3 h4 h5 h6 h7 h8 ...and that's all.
 a1 a2 a3 a4 a5 a6 a7 a8 b1 b2 b3 b4 b5 b6 b7 b8 c1 c2 c3 c4 c5 c6 c7 c8 d1 d2 d3 d4 d5 d6 d7 d8 e1 e2 e3 e4 e5 e6 e7 e8 f1 f2 f3 f4 f5 f6 f7 f8 g1 g2 g3 g4 g5 g6 g7 g8 h1 h2 h3 h4 h5 h6 h7 h8 ...and that's also all.
 "list of white chessboard squares" = list of chessboard squares: {a2, a4, a6, a8, b1, b3, b5, b7, c2, c4, c6, c8, d1, d3, d5, d7, e2, e4, e6, e8, f1, f3, f5, f7, g2, g4, g6, g8, h1, h3, h5, h7}
-"a random chessboard square" = chessboard square: h2
+"a random chessboard square" = chessboard square: f5
 
 Stellar type test...
 stellar type: O00
@@ -45,16 +45,16 @@ stellar type: K9Iab
 Annie Jump Cannon classifies Beta Aquilae as G8IV. "Hm, yes - subgiant."
 Annie Jump Cannon classifies Herschel's Garnet as M2Ia. "Hm, yes - luminous supergiant."
 "number of stellar types" = number: 700
-"a random stellar type" = stellar type: B4V
-"a random stellar type" = stellar type: O3VI
-"a random stellar type" = stellar type: B0V
-"a random stellar type" = stellar type: A6VII
-"a random stellar type" = stellar type: M5II
-"a random stellar type" = stellar type: K20
-"a random stellar type" = stellar type: F8Ia
-"a random stellar type" = stellar type: K2Ib
-"a random stellar type" = stellar type: M8III
-"a random stellar type" = stellar type: K2VII
+"a random stellar type" = stellar type: K2II
+"a random stellar type" = stellar type: B1II
+"a random stellar type" = stellar type: F9V
+"a random stellar type" = stellar type: M4Ia
+"a random stellar type" = stellar type: O0Ia
+"a random stellar type" = stellar type: G0Ia
+"a random stellar type" = stellar type: G1IV
+"a random stellar type" = stellar type: M7VII
+"a random stellar type" = stellar type: F60
+"a random stellar type" = stellar type: K8VI
 
 Tomb wall test...
 "number of tomb wall patterns" = number: 256

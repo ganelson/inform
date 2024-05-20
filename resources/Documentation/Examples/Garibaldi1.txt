@@ -5,6 +5,8 @@ Index: Garibaldi 1. Readout of all doors in the game
 Description: Providing a security readout device by which the player can check on the status of all doors in the game.
 For: Z-Machine
 
+^^{Garibaldi 1. Readout of all doors in the game}
+
 Suppose we would like to allow the player to view the status of all the doors functioning in the game; and we want to identify those doors by mentioning which two rooms they connect. The following uses some techniques that will be covered in later chapters, but the basic idea may be obvious:
 
 	{*}"Garibaldi"

@@ -5,6 +5,8 @@ Index: Table of juggling equipment
 Description: Assortment of equipment defined with price and description, in a table.
 For: Z-Machine
 
+^^{Table of juggling equipment}
+
 Suppose we have a whole catalog-full of equipment that the player might want to purchase and use. We'll start by defining our purchasing rules:
 
 	{*}"Introduction to Juggling"

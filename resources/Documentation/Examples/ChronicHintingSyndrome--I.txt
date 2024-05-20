@@ -5,7 +5,7 @@
   
   Chronic Hinting Syndrome
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Sickbay
   A place arranged for Nathan's comfort, since his sickness has been prolonged and because he becomes so irritating when not comfortable.
@@ -49,7 +49,7 @@
   >[8] think
   You recall that thus far you have not followed up with questions about the mental wave generator and the gift.
   
-  Nathan chuckles under his breath. "Man, I hadn't thought about the gift in ages."
+  "I don't know why I brought up the mental wave generator just now," Nathan comments. "Don't mention it to anyone, if you don't mind."
   
   >[9] ask him about generator
   "They're kind of expensive but I can save up. I really need one, though, because of my dreams," says Nathan.

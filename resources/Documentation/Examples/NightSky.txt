@@ -5,6 +5,8 @@ Index: Room description changes after note is read
 Description: A room which changes its description depending on whether an object has been examined.
 For: Z-Machine
 
+^^{rooms+kind+: descriptions: changing over time}
+
 Sometimes a nice effect is to change the way things are described depending on the information the player has gained in the course of play. We could for instance write this:
 
 	{*}"Night Sky"

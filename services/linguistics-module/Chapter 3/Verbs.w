@@ -378,3 +378,14 @@ verb_meaning *Verbs::first_unspecial_meaning_of_verb_form(verb_form *vf) {
 	}
 	return NULL;
 }
+
+@ This is useful for indexing:
+
+=
+int Verbs::has_special_meanings(verb_form *vf) {
+	if (vf)
+		for (verb_sense *vs = vf->list_of_senses; vs; vs = vs->next_sense)
+			if (VerbMeanings::get_special_meaning(&(vs->vm)))
+				return TRUE;
+	return FALSE;
+}

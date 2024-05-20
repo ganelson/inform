@@ -5,6 +5,8 @@ Index: An RSS reader connecting to the Internet
 Description: Using external files, together with a simple Unix script running in the background, to provide live news headlines inside a story file.
 For: Glulx
 
+^^{An RSS reader connecting to the Internet}
+
 This example can only work if we have a separate program running in the background while the story file is being played, and as such it will only work if we set things up in a special way. Exactly how to do this will vary from platform to platform.
 
 First, the source text for the Inform end of the communication line:

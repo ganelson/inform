@@ -5,6 +5,8 @@ Index: Chest with a supporting lid
 Description: A "chest" kind which consists of a container which has a lid as a supporter.
 For: Z-Machine
 
+^^{Chest with a supporting lid}
+
 Suppose we want to write a game in which there are a number of chests. Each of these chests will be a `container`, but have a lid which is a `supporter`.
 
 	{*}"U-Stor-It"

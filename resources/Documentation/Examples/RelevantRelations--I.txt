@@ -1,14 +1,14 @@
    Space Elevator
   Relevant Relations
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Space Elevator
   Mercifully, there aren't any windows. The ability to see how far up you are would almost certainly make you ill.
   
-  You can see a luggage rack here. It holds up a suitcase and a bouquet.
+  You can see a luggage rack here. It supports a suitcase and a bouquet.
   
-  Clark is here. He wears a t-shirt. Clark carries a box of cupcakes.
+  Clark is here. He sports a t-shirt. Clark carries a box of cupcakes.
   
 > >   Space Elevator
   (Testing.)
@@ -22,7 +22,7 @@
   
   There is a box of cupcakes here.
   
-  You can see a luggage rack here. It holds up a suitcase and a bouquet.
+  You can see a luggage rack here. It supports a suitcase and a bouquet.
   
   You can see Clark here. He wears a t-shirt.
   
@@ -35,7 +35,7 @@
   
   There is a box of cupcakes here.
   
-  You can see a luggage rack here. It holds up a bouquet.
+  You can see a luggage rack here. It supports a bouquet.
   
   Clark is here. He sports a t-shirt. Clark carries a suitcase.
   

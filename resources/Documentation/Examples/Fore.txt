@@ -5,6 +5,8 @@ Index: Shipboard directions
 Description: Understand "fore", "aft", "port", and "starboard", but only when the player is on a vessel.
 For: Z-Machine
 
+^^{Shipboard directions}
+
 Suppose we want to understand shipboard directions, but only when the player is aboard a vessel.
 
 	{*}"Fore"

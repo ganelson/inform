@@ -5,6 +5,8 @@ Index: First look text added for a newly entered room
 Description: Adding a first look rule that comments on locations when we visit them for the first time, inserting text after objects are listed but before any "every turn" rules might occur.
 For: Z-Machine
 
+^^{First look text added for a newly entered room}
+
 A not-infrequent desire in IF is to provide a few lines of comment when the player first enters a new room, after the objects are described but before anything else (such as an every turn rule) can fire. The cleanest, most systematic solution is to add a rule to the carry out looking rulebook, so:
 
 	{*}"Saint Eligius"

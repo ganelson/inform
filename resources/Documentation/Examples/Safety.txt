@@ -5,6 +5,8 @@ Index: Safe that can be opened with a combination
 Description: A safe whose dial can be turned with ``SPIN SAFE TO`` 1131, and which will open only with the correct combination.
 For: Z-Machine
 
+^^{Safe that can be opened with a combination}
+
 	{*}"Safety"
 	
 	The Vault is a room. "Snug yet paranoid, this represents the state of the art in cheerless security." The Safe is here. "A mammoth safe, with a dial which can spin to any number, has pride of place. It must weigh about the same as a small car, so don't get any ideas." Instead of opening the safe, say "The safe opens only when turned to the correct combination."

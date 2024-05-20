@@ -5,6 +5,8 @@ Index: SHOOT command, and ray gun disintegrating objects
 Description: A ray gun which destroys objects, leaving their component parts behind.
 For: Z-Machine
 
+^^{SHOOT command, and ray gun disintegrating objects}
+
 	{*}"Technological Terror"
 	
 	The Decomposition Ray Gun is a thing carried by the player.

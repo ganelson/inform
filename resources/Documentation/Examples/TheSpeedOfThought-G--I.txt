@@ -14,19 +14,19 @@ Currently you have to report on the International Space Station. Your story coul
 >(Testing.)
 
 >[1] report experiment module
-You turn to the camera and speak: "The experiment module has a length of about 7.34211 bathtubs." 
+You turn to the camera and speak: "The experiment module has a length of roughly 7.34211 bathtubs." 
 
 >[2] report logistics
- "The logistics module has a length of approximately 2.76974 bathtubs." Right now the station will be cutting over to a visual of that.
+ "The logistics module has a length of around 2.76974 bathtubs." Right now the station will be cutting over to a visual of that.
 
 >[3] report height
-Turning to another camera angle, you add: "The station orbits at heights between around 627.53949 Empire State buildings and 1038.37476 Empire State buildings above the earth." 
+Turning to another camera angle, you add: "The station orbits at heights between about 627.53949 Empire State buildings and 1038.37476 Empire State buildings above the earth." 
 
 >[4] report array
- "The solar array has a length of approximately 1.16 Olympic swimming pools and an area of about 125.0 queen-sized mattresses." Pity the kids in audiovisual who have to scare that image together in a hurry.
+ "The solar array has a length of roughly 1.16 Olympic swimming pools and an area of approximately 125.0 queen-sized mattresses." Pity the kids in audiovisual who have to scare that image together in a hurry.
 
 >[5] report solar cell
- "The individual solar cell has an area of around 0.17391 credit cards." You smile brightly.
+ "The individual solar cell has an area of roughly 0.17391 credit cards." You smile brightly.
 
 And that's all! The channel cuts to weather.
 

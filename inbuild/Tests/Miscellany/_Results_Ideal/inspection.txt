@@ -3,6 +3,10 @@ extension: Damaged by Anonymous = file inbuild/Tests/Zoo/Extensions/Robert Fripp
     2. extension misworded: the titling line does not give both author and title
     3. extension misworded: the version number '3a' is malformed
     4. extension misworded: cannot read compatibility '(For Geeks Only)'
+
 extension: New Standard Tuning by Robert Fripp v3 (for Inform6/32/v3.1.2, Inform6/32d/v3.1.2, Binary/32/v1, Binary/32d/v1, Text/32/v1, Text/32d/v1, C/32/v1, C/32d/v1, Inventory/32/v1 or Inventory/32d/v1) = file inbuild/Tests/Zoo/Extensions/Robert Fripp/New Standard Tuning.i7x
+
 extension: New Standard Tuning by Robert Fripp v3.1-Alpha+6B34 (for Inform6/32/v3.1.2, Inform6/32d/v3.1.2, Binary/32/v1, Binary/32d/v1, Text/32/v1, Text/32d/v1, C/32/v1, C/32d/v1, Inventory/32/v1 or Inventory/32d/v1) = file inbuild/Tests/Zoo/Extensions/Robert Fripp/New Standard Tuning-v3_1-alpha+6B34.i7x
+
 kit: CastrovalvaKit v2.7.1 (not for Inform6/32/v3.1.2, Inform6/32d/v3.1.2, Binary/32/v1, Binary/32d/v1, Text/32/v1, Text/32d/v1, C/32/v1, C/32d/v1, Inventory/32/v1 or Inventory/32d/v1) = directory inbuild/Tests/Zoo/Inter/CastrovalvaKit
+

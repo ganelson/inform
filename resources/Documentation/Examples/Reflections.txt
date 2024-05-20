@@ -5,6 +5,8 @@ Index: Shiny items are described as reflecting torchlight
 Description: Emphasising the reflective quality of shiny objects whenever they are described in the presence of the torch.
 For: Z-Machine
 
+^^{Shiny items are described as reflecting torchlight}
+
 	{*}"Reflections"
 	
 	Behind the Waterfall is a room. "Though one wall of the cave is open to the waterfall, the quantity of water is so great that barely any light comes through from the outside." Behind the Waterfall is dark.

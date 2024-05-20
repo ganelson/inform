@@ -1,0 +1,10 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 9 words long.
+I've also read version 2 of Basic Inform by Graham Nelson, which is 8488 words long.
+I've also read version 2 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 7 of Standard Rules by Graham Nelson, which is 35135 words long.
+Problem__ PM_EarlyCopyrightDate
+  >--> You wrote 'The copyright for this story is "Emily Short 1967"' (source
+    text, line 1): but has too early a copyright date, which should be at least
+    1971.
+Inform 7 has finished.

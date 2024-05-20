@@ -1,9 +1,10 @@
-Inform 7 build 6L26 has started.
+Inform 7 v10.2.0 has started.
 I've now read your source text, which is 11 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read version 2 of Basic Inform by Graham Nelson, which is 8479 words long.
+I've also read version 2 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 7 of Standard Rules by Graham Nelson, which is 35054 words long.
 Problem__ PM_MultiplyingNonKOVs
   >--> You wrote 'A number times 4 specifies a time' (source text, line 3): but
-    only kinds of value can be multiplied here, and only in a sentence like 'A
-    length times a length specifies an area.'
-Inform 7 has finished: 16 centiseconds used.
+    only kinds of value can be multiplied or subtracted here, and only in a
+    sentence like 'A length times a length specifies an area.'
+Inform 7 has finished.

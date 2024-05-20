@@ -1,0 +1,304 @@
+Example: ** Skeleton First
+Location: When the director is active
+RecipeLocation: The Flow of Conversation
+Index: Dialogue inviting the player on a quest
+Description: A sequence of dialogue scenes that introduces the player's life and invites them on a quest.
+
+Sometimes we want a scene with a controlled flow of conversation in which the player has to answer questions in a precise order. At other times, we might want on that keeps moving at a steady pace to cover all the key story requirements of that scene, but where the player does have opportunities to stop and look around, change the subject, or even affect which characters are present in the room.
+
+This example shows both of those possibilities. In the first scene, the Sidekick takes the player through a constrained series of questions that we could, in theory, use for character creation. In the second, a Mentor character appears to tell the player about a dangerous quest, but the player has time to choose their own interactions. The third scene consists entirely of the player deciding whether to accept or reject that quest.
+
+The example also demonstrates one approach to managing the complexity of a large, dialogue heavy game. The dialogue here is obviously not meant to be final: rather, it's sketching in the function of what the characters need to say, without providing the substance. By starting with the structure of the plot, we can arrive very quickly at a working sequence of interactions – including identifying which pieces of a scene absolutely must be spoken for the goals of the scene to be achieved. 
+
+In essence, we've built an interactive outline. As a matter of narrative construction, it's always worthwhile to think explicitly about the function of each scene in the story. Is it here to tell the player something? To let them make an important choice or change their relationship to another character? To provide a pacing break between other events? 
+
+Afterwards, we could come back and replace the placeholder elements with something more compelling – but if we're always adding to a working skeleton, we're in much less danger of building the first few scenes of something that becomes impossible to finish.
+
+	{*}"Skeleton First"
+	
+	Chapter 1 - Physical Setting
+	
+	Section 1 - Setting
+	
+	The Village Square is a room. "This is the center of the village where you live. [Sidekick] frequently spends time with you here."
+	
+	The Ominous Tavern is a room. "A low fire burns in the massive fireplace. There are a few guttering candles on the table. In that dim lighting, you cannot see into all the shadowy corners. You are almost alone in here, except for [Sidekick], [Mentor], and the inevitable [Barmaid]."
+	
+	The Convenient Escape is west of the Ominous Tavern.
+	
+	Section 2 - Cast
+	
+	Sidekick is a man in the Village Square. The description is "About your age, but a little shorter and slightly less attractive. You've known one another forever."
+	
+	Barmaid is a woman in the Ominous Tavern. The description is "Determined to stay in the background. Is that because she's doing her job or is she listening in? And if she's listening in, is that important?"
+	
+	Mentor is a woman in the Ominous Tavern. The description is "A middle-aged woman in a brown robe. She doesn't look really young, but she's not definitely old yet either."
+	
+	Section 3 - Props
+	
+	The sidekick carries a symbolic token. The description of the token is "It might be a watch, or a locket, or a lucky stone. The point is, it reminds you of [Sidekick]. You would never willingly part with it."
+	
+	Instead of dropping the symbolic token:
+		say "You would never."
+	
+	The block giving rule does nothing.
+	
+	Chapter 2 - Plot Components
+	
+	Section 1 - Degree of Quest Involvement
+	
+	A person can be ignorant, in denial, or committed. A person is usually ignorant.
+	
+	Section 2 - Dialogue Features
+	
+	A dialogue beat can be extra or essential. A dialogue beat is usually extra. 
+	
+	When play begins: make the dialogue director active.
+	
+	Section 3 - Structural Concepts
+	
+	Existing relationships is a concept. Existing drives is a concept.
+	Stakes is a concept.
+	Risks is a concept.
+	Player's role is a concept.
+	The call choice is a concept. The basic task is a concept.
+	
+	Section 4 - Character Formation
+	
+	A person can be content or unhappy. The player is content.
+	
+	Section 5 - Scenes
+	
+	Everyday life is a scene. Everyday life begins when play begins. Everyday life ends when every essential available dialogue beat is performed.
+	
+	When Initial Exposition begins:
+		say "*** [paragraph break]";
+		say "A few days later, you are drinking with [sidekick] when you are accosted by a mysterious [mentor] in a brown robe.";
+		move the Sidekick to the Ominous Tavern;
+		now the player is in the Ominous Tavern;
+	
+	Initial exposition is a scene. Initial exposition begins when everyday life ends. Initial exposition ends when every essential available dialogue beat is performed.
+	
+	When call to adventure begins:
+		say "The fire burns lower. The moment of decision is approaching."
+	
+	The call to adventure is a scene. The call to adventure begins when initial exposition ends. The call to adventure ends when the player is committed.
+	
+	When call to adventure ends:
+		end the story saying "And you're off..."
+	
+	Chapter 3 - Interactions
+	
+	Section 1 - Once upon a time there was (dialogue during Everyday life)
+	
+	(This is the starting beat. Essential.)
+	
+	Sidekick: "Let's talk about our daily reality. It's going along in a pretty stable fashion, wouldn't you say? Are we happy or not?"
+	
+		-- "Happy, I think?"
+		
+			Player: "I'd say happy. We have an okay life."
+			
+			Sidekick: "Yeah!"
+				
+		-- "No, I'm miserable"
+		
+			Player (now the player is unhappy): "This existence is a torment."
+	
+			Sidekick: "Oh. Yeah. Stable torment. Not great."
+		
+	Player: "I do have a thing I'm already trying to achieve. That shows I'm not a passive character. It's going all right at the moment, but it could be going even better."
+	
+	Sidekick: "Oh good point! Remind me what values motivate your activity?"
+		
+		-- (if the player is unhappy) "My family's in a bad situation and I am trying to improve their lot"
+		
+			Player: "My family is really hungry. Almost starving."
+			
+			Sidekick: "Oof, that isn't great. This must be an unpleasant universe we're living in."
+			
+			Player: "Yeah, it seems like it might be on the darker side."
+	
+		-- "I have an artist driven by my muse"
+			
+			Player: "I am a great artist! I have a lot of artworks to complete."
+			
+			Sidekick: "I am definitely in awe of your talents. And not envious. Because a good sidekick doesn't have feelings like that."
+	
+			Player: "No, I know. That's the great thing about you."
+		
+		-- (if the player is content) "I am in love and I want to get together with my beloved"
+		
+			Player: "I'm madly in love..."
+			
+			Sidekick: "Oh THIS activity. Right. I've already heard all about that. You can't really stop talking about it."
+	
+	Sidekick: "To be clear, I also am totally trying to achieve a thing."
+	
+		-- "Take an interest in Sidekick's thing"
+		
+			Player: "Same thing or different thing?"
+	
+			Sidekick: "...I don't know, I'll work on that later."
+		
+		-- "Keep talking about my thing"
+			
+			Player: "Concerning my own problem, here's what I'm working on..."
+			
+			Sidekick: "I am very sympathetic. I may also have some practical advice to offer you."
+			
+			Player: "Thank you so much."
+			
+	Sidekick: "We are having a fantastic time together, enjoying our friendship. I really mean a lot to you. Remember that when something bad happens to me later."
+	
+	Player: "I will definitely do that. Would you like to give me some kind of small physical token of our connection? I feel like I might want it later for symbolic purposes."
+	
+	Sidekick (after giving the symbolic token to the player): "Good thinking there. Don't lose it, okay?"
+		
+	Section 2 -  Discussion Material (dialogue during initial exposition)
+	
+	(About the basic task. Spontaneous. Essential.)
+	
+	Mentor: "I've come to ask your help with this quest. Allow me to explain the basics of it. We need to do a thing to defeat a person so that a different bad thing does not occur."
+	
+		-- "Oh totally, I've been expecting you"
+			
+			Player: "I knew you'd turn up here sooner or later."
+			
+			Mentor: "I'm glad you aren't new to this."
+		
+		-- "This was foreshadowed ages ago"
+		
+			Player: "I have been expecting this to happen."
+			
+			Mentor: "As you should."
+		
+		-- "To be honest, I've forgotten the previous instalments in this story, could you refresh me on the lore?"
+		
+			Mentor: "I could! Where should I start... perhaps back at the formation of the earth at the mighty hand of Althos the Creator?"
+			
+			Player: "Possibly start from slightly more recently."
+			
+			Mentor: "...Okay, so a couple of years ago then."
+			
+			Narration: "[Mentor] spends quite a while filling you in on everything that happened previously."
+			
+	
+	(About the barmaid.)
+	
+	Player: "Is anyone worried that the barmaid might be listening in on this conversation?"
+	
+	Mentor: "So what if she is?"
+	
+	Player: "No, I mean, I just thought maybe you are imparting secret wisdom that must not fall into the hands of our enemies."
+	
+	Mentor: "I'm not."
+	
+	Barmaid: "I'm not listening."
+	
+	
+	(About the stakes. Spontaneous. Essential.)
+	
+	Mentor: "Let me tell you what's at stake here. If this doesn't work out, the following terrible results will occur."
+	
+		-- "Yikes, we'd better get started"
+		
+			Player: "Yikes, we'd better get started."
+			
+			Mentor: "I'm really glad to hear you say that."
+	
+		-- "That sounds like someone else's problem"
+		
+			Player: "That sounds like someone else's problem."
+			
+			Mentor: "I thought you might feel that way, but I can explain why, morally speaking, you really ought to care about it."
+	
+	
+	(About the stakes.)
+	
+	Sidekick: "Honestly I find all of this pretty worrying."
+	
+		-- "Reassure Sidekick"
+		
+			Player: "Don't be too concerned. You can hear all about the adventure and then decide to stay home at the end."
+			
+			Mentor: "Yeah, it's your decision whether you want to stick around or not."
+		
+		-- "Ignore the worries"
+			
+			Player (without speaking): "You ignore [Sidekick]. This story is about you, not them."
+	
+			Mentor: "It's natural to be concerned when there is so much at stake. Why don't you go buy us another round?"
+	
+			Sidekick (before going west): "Yes. I am... going to buy more beer. Right now. That's where I'm going. Don't expect me back in a hurry."
+	
+	
+	(About the risks. Spontaneous. Essential. Requiring Mentor.)
+	
+	Mentor: "I thought we might talk about the risks now. I really do need to be frank with you about those."
+	
+	Sidekick: "...that doesn't sound great. I have a quippy remark about how foolish it would be to dive right into this."
+	
+	Mentor: "It is dangerous, no question about that."
+	
+		-- "That's fine, I'm a risk-taker"
+		
+			Player: "No worries. I enjoy risk. You don't need to give me any further details."
+			
+			Mentor: "That does save me some time."
+		
+		-- "Please explain"
+		
+			Player: "I feel like you might have glossed over a couple points there. Could you please fill me in?"
+			
+			Mentor: "Sure. I have a lot to say about the physical risks. You could be killed, or you could be wounded in a way that would affect the rest of your life."
+			
+			Player: "That sounds bad."
+			
+			Mentor: "There may also be mental consequences. You may be traumatised. You could have nightmares. Socially, word of your deeds could get out, leading to stigma and ostracism. Your family might be harasssed. You may find it difficult to get work. Children may draw offensive images of you on the walls of the village."
+			
+			Player: "Aha. Okay, consider me filled in."
+			
+			Mentor: "I'm just getting started."
+	
+	
+	(About the player's role. Spontaneous. Essential. Requiring Mentor.)
+	
+	Mentor: "You may be wondering why I've come to you."
+	
+	Sidekick: "Of course you came to Hero. It's the natural thing to do."
+	
+	Mentor: "You're the only person in the world who can stop this."
+	
+	
+	Section 3 - The Call (dialogue during the call to adventure)
+	
+	(This is the call choice beat. Essential. Spontaneous. About the player's role. Requiring Mentor.)
+	
+	Mentor: "So what do you say? Are you with us?"
+	
+		-- "Count me in"
+			
+			Player (now the player is committed): "Count me in."
+			
+		-- "Not a chance"
+			
+			Player (now the player is in denial): "Not a chance."
+			
+			Mentor: "So you're just going to sit here and pretend this has nothing to do with you?"
+			
+			-- "Relent"
+				
+				Player (now the player is committed): "...Okay, you have a point."
+			
+			-- "Point out how foolish it is to get involved in other people's battles"
+		
+				Player: "For as long as humanly possible, yes. No good comes of trying to fight other people's battles for them. Especially when you don't really understand the situation or know what's at stake."
+				
+				-> end the story saying "The rest of the story went on without you"
+	
+	Mentor: "You won't regret it. Well, you might regret it, but you'll probably feel that you accomplished something... okay, honestly I can't promise even that. To be honest, we need you and I'm glad you're aboard. I have no idea what the repercussions will be for you personally."
+	
+	Sidekick: "I think you're going off-script a little."
+	
+	Mentor: "Yeah, this is just placeholder text. I'm just trying to pace the end of this scene gracefully, okay?"

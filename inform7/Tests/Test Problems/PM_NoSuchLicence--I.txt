@@ -1,0 +1,10 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 7 words long.
+I've also read version 2 of Basic Inform by Graham Nelson, which is 8488 words long.
+I've also read version 2 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 7 of Standard Rules by Graham Nelson, which is 35135 words long.
+Problem__ PM_NoSuchLicence
+  >--> You wrote 'The licence for this story is "XYZZY-11"' (source text, line 1):
+    but gives a licence unknown to Inform, and must be one of those in the SPDX
+    standard catalogue of licence IDs, like '"CC-BY-4.0"'. (See spdx.org.)
+Inform 7 has finished.

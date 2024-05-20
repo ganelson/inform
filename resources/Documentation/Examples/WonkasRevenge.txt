@@ -5,6 +5,8 @@ Index: Shuffling the arrangement of items in a container
 Description: A lottery drum which redistributes the tickets inside whenever the player spins it.
 For: Z-Machine
 
+^^{Shuffling the arrangement of items in a container}
+
 	{*}"Wonka's Revenge"
 	
 	The Caribou Lodge is a room. "Hundreds of expectant faces are turned your way from every table." A lottery drum is in the Lodge. "Before you is the lottery drum[if we have spun the drum], ready to disgorge a ticket[otherwise], waiting to be spun[end if]." In the drum are a red ticket, an orange ticket, a yellow ticket, a green ticket, a blue ticket, a purple ticket, and a ticket of pure gold. The drum is closed and openable.

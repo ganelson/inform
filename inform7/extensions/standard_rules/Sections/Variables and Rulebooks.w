@@ -172,6 +172,8 @@ Section 7 - Unindexed Standard Rules variables - Unindexed
 The story title, the story author, the story headline, the story genre
 and the story description are text variables. [*****]
 The release number and the story creation year are number variables. [**]
+The story licence, the story copyright, the story origin URL, and the
+story rights history are text variables. [****]
 
 The release number is usually 1.
 The story headline is usually "An Interactive Fiction".
@@ -272,7 +274,7 @@ way or another (though not necessarily in "death").
 Briefly, the startup phase takes us to the end of the room description
 after the banner is printed. The turn sequence covers a complete turn,
 and runs through from prompting the player for a command to notifying
-him of any change in score which occurred. The shutdown rules then go
+them of any change in score which occurred. The shutdown rules then go
 from printing the obituary text, through final score, to the question
 about quitting or restarting.
 
@@ -543,6 +545,7 @@ Startup rule (this is the display banner rule):
 	say "[banner text]".
 
 Startup rule (this is the initial room description rule):
+	surreptitiously reckon darkness;
 	try looking.
 
 @h The turn sequence.
@@ -654,8 +657,8 @@ and act accordingly if so.
 
 (-i) Gives the "handled" property to everything carried or worn by the player.
 (-ii) Changes the current player's holdall in use, if necessary. (That's to
-say: if the player has dropped his previous player's holdall, we try to find a
-new one to use from his remaining possessions.)
+say: if the player has dropped their previous player's holdall, we try to find a
+new one to use from their remaining possessions.)
 
 (k) The "notify score changes rule" tells the player if the score has changed
 during the turn, or rather, since the last time either this rule or the startup
@@ -973,12 +976,12 @@ The work out details of specific action rule is defined by Inter as
 
 @h Player's action awareness.
 This rulebook decides whether or not an action by somebody should be routinely
-reported to the player: is he aware of it having taken place? If the rulebook
-positively succeeds then he is, and otherwise not.
+reported to the player: are they aware of it having taken place? If the rulebook
+positively succeeds then they are, and otherwise not.
 
 =
 A player's action awareness rule
-	(this is the player aware of his own actions rule):
+	(this is the player aware of their own actions rule):
 	if the player is the actor, rule succeeds.
 A player's action awareness rule
 	(this is the player aware of actions by visible actors rule):
@@ -993,7 +996,7 @@ A player's action awareness rule
 @h Accessibility.
 The "accessibility" rulebook is not very visible to users: it's another
 behind-the-scenes rulebook for managing the decision as to whether the actor
-can touch any items which the intended action requires him to be able to
+can touch any items which the intended action requires them to be able to
 reach.
 
 In its default configuration, it contains only the "access through barriers"
@@ -1248,159 +1251,12 @@ The yes or no question internal rule is defined by Inter as
 	"YES_OR_NO_QUESTION_INTERNAL_R" with
 	"Please answer yes or no." (A).
 
+The pick a number internal rule is defined by Inter as
+	"PICK_A_NUMBER_INTERNAL_R" with
+	"(Please type an option in the range 1 to [number understood] and press return.)" (A).
+
 The print protagonist internal rule is defined by Inter as
 	"PRINT_PROTAGONIST_INTERNAL_R" with
 	"[We]" (A),
 	"[ourselves]" (B),
 	"[our] former self" (C).
-
-@h Dialogue support.
-
-=
-Section 10 - Dialogue (for dialogue language element only)
-
-There is a performance style called spoken normally.
-
-A dialogue beat can be performed or unperformed. A dialogue beat is usually
-unperformed.
-A dialogue beat can be recurring or non-recurring. A dialogue beat is usually
-non-recurring.
-A dialogue beat can be spontaneous or unspontaneous. A dialogue beat is usually
-unspontaneous.
-A dialogue beat can be voluntary or involuntary. A dialogue beat is usually
-voluntary.
-
-A dialogue line can be performed or unperformed. A dialogue line is usually
-unperformed.
-A dialogue line can be recurring or non-recurring. A dialogue line is usually
-non-recurring.
-A dialogue line can be elaborated or unelaborated. A dialogue line is usually
-unelaborated.
-
-A dialogue choice can be performed or unperformed. A dialogue choice is usually
-unperformed.
-A dialogue choice can be recurring or non-recurring. A dialogue choice is usually
-non-recurring.
-
-The performed property is accessible to Inter as "performed".
-The spontaneous property is accessible to Inter as "spontaneous".
-The voluntary property is accessible to Inter as "voluntary".
-The recurring property is accessible to Inter as "recurring".
-
-To make (T - an object) a live conversational subject:
-	(- DirectorAddLiveSubjectList({T}); -).
-To make (T - an object) a dead conversational subject:
-	(- DirectorRemoveLiveSubjectList({T}); -).
-To clear conversational subjects:
-	(- DirectorEmptyLiveSubjectList(); -).
-To decide what list of objects is the live conversational subject list:
-	(- DirectorLiveSubjectList({-new:list of objects}) -).
-To alter the live conversational subject list to (L - list of objects):
-	(- DirectorAlterLiveSubjectList({-by-reference:L}); -).
-To decide what list of objects is the list of speakers required by (B - dialogue beat):
-	(- DirectorBeatRequiredList({-new:list of objects}, {B}) -).
-To decide what dialogue line is the opening line of (B - dialogue beat):
-	(- DirectorBeatOpeningLine({B}) -).
-To decide what text is the textual content of (L - dialogue line):
-	(- DirectorLineContent({L}, {-new:text}) -).
-To decide what text is the textual content of (C - dialogue choice):
-	(- DirectorChoiceTextContent({C}, {-new:text}) -).
-
-To decide what object is the current dialogue line speaker:
-	(- DirectorCurrentLineSpeaker() -).
-To decide what object is the current dialogue line interlocutor:
-	(- DirectorCurrentLineInterlocutor() -).
-To decide what performance style is the current dialogue line style:
-	(- DirectorCurrentLineStyle() -).
-
-To decide what number is the chosen dialogue number up to (N - number):
-	(- DirectorPickANumber({N}) -).
-
-To decide what number is the dialogue line performance count:
-	(- line_performance_count -).
-
-To perform (B - a dialogue beat):
-	(- DirectorPerformBeat({B}); -).
-
-Topicality relates a dialogue beat (called B) to an object (called S) when about B matches S.
-
-Performability relates a dialogue beat (called B) to an object (called S) when S can have B performed.
-
-The verb to be about means the topicality relation.
-
-The verb to be performable to means the performability relation.
-
-To decide if about (B - dialogue beat) matches (S - object):
-	(- (DirectorBeatAbout({B}, {S})) -).
-
-To decide if (S - object) can have (B - dialogue beat) performed:
-	(- (DirectorBeatAccessible({B}, {S})) -).
-
-To decide which object is the first speaker of (B - dialogue beat):
-	(- (DirectorBeatFirstSpeaker({B})) -).
-
-To decide whether dialogue/dialog about (O - an object) intervenes:
-	(- DirectorIntervenes({O}, nothing) -).
-To decide whether dialogue/dialog about (O - an object) led by (P - an object) intervenes:
-	(- DirectorIntervenes({O}, {P}) -).
-
-To showme the beat structure of (B - dialogue beat): (- DirectorDisassemble({B}); -).
-
-Definition: A dialogue beat is available rather than unavailable if Inter routine
-	"DirectorBeatAvailable" says so (it meets all its after or before, if and unless conditions).
-
-Definition: A dialogue beat is relevant rather than irrelevant if Inter routine
-	"DirectorBeatRelevant" says so (one of the topics it is about is currently live).
-
-Definition: A dialogue line is available rather than unavailable if Inter routine
-	"DirectorLineAvailable" says so (it meets all its if and unless conditions).
-
-Definition: A dialogue line is narrated rather than unnarrated if Inter routine
-	"DirectorLineNarrated" says so (it is a Narration line rather than what somebody is saying).
-
-Definition: A dialogue line is non-verbal rather than verbal if Inter routine
-	"DirectorLineNonverbal" says so (it is a non-verbal communication, like a gesture).
-
-Definition: A dialogue choice is story-ending if Inter routine
-	"DirectorChoiceStoryEnding" says so (it is a flow marker to an end of the story).
-
-Definition: A dialogue beat is being performed if Inter routine
-	"DirectorBeatBeingPerformed" says so (it is currently having its lines performed).
-
-Definition: A dialogue choice is flowing rather than offered if Inter routine
-	"DirectorChoiceFlowing" says so (it is a flow-control point rather than an option).
-
-To abide by dialogue before action choices:
-	(- if (DirectorBeforeAction()) rtrue; -).
-
-To abide by dialogue instead action choices:
-	(- if (DirectorInsteadAction()) rtrue; -).
-
-To abide by dialogue after action choices:
-	(- if (DirectorAfterAction()) rtrue; -).
-
-To decide what list of dialogue choices is the current choice list:
-	(- DirectorCurrentChoiceList() -).
-
-To make the dialogue/dialog director active:
-	(- DirectorActivate(); -).
-
-To make the dialogue/dialog director passive/inactive:
-	(- DirectorDeactivate(); -).
-
-The dialogue direction rule is listed in the turn sequence rulebook.
-The dialogue direction rule is defined by Inter as "DIALOGUE_DIRECTION_R".
-
-The performing opening dialogue beat rule is listed in the startup rulebook.
-The performing opening dialogue beat rule is defined by Inter as "PERFORM_OPENING_BEAT_R".
-
-Section 10 - Dialogue Fallback (not for dialogue language element)
-
-To abide by dialogue before action choices:
-	do nothing.
-
-To abide by dialogue instead action choices:
-	do nothing.
-
-To abide by dialogue after action choices:
-	do nothing.

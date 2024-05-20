@@ -112,7 +112,7 @@ which must match:
 	==> { -1, - };
 
 @h Bibliographic variables.
-Most of the bibliographic data on a story is kept global variables, however,
+Most of the bibliographic data on a story is kept in global variables, however,
 which are used to build the iFiction record and the releasing blurb at the end
 of a successful compilation. They are:
 
@@ -124,6 +124,10 @@ nonlocal_variable *story_genre_VAR = NULL;
 nonlocal_variable *story_description_VAR = NULL;
 nonlocal_variable *story_creation_year_VAR = NULL;
 nonlocal_variable *story_release_number_VAR = NULL;
+nonlocal_variable *story_licence_VAR = NULL;
+nonlocal_variable *story_copyright_VAR = NULL;
+nonlocal_variable *story_origin_URL_VAR = NULL;
+nonlocal_variable *story_rights_history_VAR = NULL;
 
 @ As usual, Inform uses these English wordings to detect the creation of the
 variables in the Standard Rules, which are in English: so there's no point
@@ -136,6 +140,10 @@ in translating this nonterminal to other languages.
 @d STORY_DESCRIPTION_BIBV 4
 @d STORY_CREATION_YEAR_BIBV 5
 @d RELEASE_NUMBER_BIBV 6
+@d STORY_LICENCE_BIBV 7
+@d STORY_COPYRIGHT_BIBV 8
+@d STORY_ORIGIN_URL_BIBV 9
+@d STORY_RIGHTS_HISTORY_BIBV 10
 
 =
 <notable-bibliographic-variables> ::=
@@ -145,7 +153,11 @@ in translating this nonterminal to other languages.
 	story genre |
 	story description |
 	story creation year |
-	release number
+	release number |
+	story licence |
+	story copyright |
+	story origin url |
+	story rights history
 
 @ And we read them here:
 
@@ -173,6 +185,10 @@ int BibliographicData::bibliographic_new_variable_notify(nonlocal_variable *q) {
 					current_sentence = save;
 				}
 				break;
+			case STORY_LICENCE_BIBV: story_licence_VAR = q; break;
+			case STORY_COPYRIGHT_BIBV: story_copyright_VAR = q; break;
+			case STORY_ORIGIN_URL_BIBV: story_origin_URL_VAR = q; break;
+			case STORY_RIGHTS_HISTORY_BIBV: story_rights_history_VAR = q; break;
 		}
 		NonlocalVariables::make_constant(q, TRUE);
 	}
@@ -241,6 +257,53 @@ int BibliographicData::story_author_is(text_stream *p) {
 	}
 	return FALSE;
 }
+
+@h Licence information.
+
+=
+void BibliographicData::fill_licence_variables(void) {
+	inform_project *proj = Task::project();
+	inbuild_licence *L = proj->as_copy->licence;
+
+	text_stream *val;
+	nonlocal_variable *var;
+
+	var = story_licence_VAR;
+	if (L->standard_licence) val = L->standard_licence->SPDX_id;
+	else val = I"Unspecified";
+	@<Set var to val@>;
+	
+	var = story_copyright_VAR;
+	val = Str::new();
+	WRITE_TO(val, "%S %d", L->rights_owner, L->copyright_year);
+	if (L->revision_year > L->copyright_year) WRITE_TO(val, "-%d", L->revision_year);
+	@<Set var to val@>;
+	
+	var = story_origin_URL_VAR;
+	val = L->origin_URL;
+	@<Set var to val@>;
+	
+	var = story_rights_history_VAR;
+	val = L->rights_history;
+	@<Set var to val@>;
+}
+
+@<Set var to val@> =
+	if (var) {
+		TEMPORARY_TEXT(val_t)
+		PUT_TO(val_t, '"');
+		LOOP_THROUGH_TEXT(pos, val)
+			if (Str::get(pos) == '"')
+				PUT_TO(val_t, '\'');
+			else
+				PUT_TO(val_t, Str::get(pos));
+		PUT_TO(val_t, '"');
+		wording TW = Feeds::feed_text(val_t);
+		parse_node *constant_text = Rvalues::from_unescaped_wording(TW);
+		Assertions::PropertyKnowledge::initialise_global_variable(
+			var, constant_text);
+		DISCARD_TEXT(val_t)
+	}
 
 @h The IFID.
 The Interactive Fiction ID number for an Inform 7-compiled work is the same

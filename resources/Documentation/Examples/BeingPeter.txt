@@ -5,6 +5,8 @@ Index: Attitude rules
 Description: A set of rules determining the attitude a character will take when asked about certain topics.
 For: Z-Machine
 
+^^{Attitude rules}
+
 Let's say that we're implementing a particularly irrational and volatile character. Some of the time she remains composed; some of the time she reacts with unexpected vehemence for reasons only partly related to what was said.
 
 Moreover, her responses are divided between successful and failing outcomes, where success indicates that she's not too upset and failure means that she is distraught; we use this to determine how the rest of the room reacts.

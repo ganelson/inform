@@ -27,12 +27,23 @@
 	"translated-name": string,
 	"iso-639-1-code": string,
 	"supports": [ ( "played" | "written" | "indexed" | "reported" )* ],
-	?"translated-syntax-cue": string
+	?"translated-syntax-cue": string,
+	?"flag": string
+}
+
+<legal-metadata> ::= {
+	"licence": string,
+	"rights-owner": string,
+	"date": number,
+	?"revision-date": number,
+	?"origin-url": string,
+	?"rights-history": string
 }
 
 <resource-metadata> ::= {
 	"is": <resource>,
 	?"compatibility": string,
+	?"rights": <legal-metadata>,
 	?"activates": [ string* ],
 	?"deactivates": [ string* ],
 	?"needs": [ {

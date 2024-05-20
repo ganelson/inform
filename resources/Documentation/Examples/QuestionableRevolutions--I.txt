@@ -3,7 +3,7 @@
   
   Questionable Revolutions
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   First Class Cabin
   You can see Dr Tweedy, Ms Finch and Ms Clarion here.
@@ -15,21 +15,21 @@
   "Czechoslovakia," replies Dr Tweedy promptly.
   
   >[2] ms finch, when was the rose revolution
-  "1959?" guesses Ms Finch, with an air of diffidence.
+  "1933?" guesses Ms Finch, with an air of diffidence.
   
   >[3] ms finch, what was the rose revolution
   "A revolution in which President Eduard Shevardnadze was interrupted by protesters in the middle of his speech, and forced to flee."
   
   >[4] ms clarion, when was the spanish revolution
-  "I think 1934. About then. Close, anyway," replies Ms Clarion.
+  "I think 1937. About then. Close, anyway," replies Ms Clarion.
   
   >[5] g
   "I think 1932. About then. Close, anyway," replies Ms Clarion.
   
   >[6] g
-  "I think 1932. About then. Close, anyway," replies Ms Clarion.
+  "I think 1937. About then. Close, anyway," replies Ms Clarion.
   
   >[7] ms finch, when was the spanish revolution
-  "1955?" guesses Ms Finch, with an air of diffidence.
+  "1914?" guesses Ms Finch, with an air of diffidence.
   
 > >

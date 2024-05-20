@@ -1,7 +1,7 @@
 number: 7
 number: -6
 truth state: true
-unicode character: 1164
+unicode character: unicode U+048C
 use option: engineering notation option
 text: This is textual.
 list of numbers: {2, 3, 5, 8, 13}

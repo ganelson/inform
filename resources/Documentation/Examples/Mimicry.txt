@@ -5,6 +5,8 @@ Index: People who must be greeted before conversation
 Description: People who must be greeted before conversation can begin.
 For: Z-Machine
 
+^^{dialogue: where characters must be greeted first}
+
 Suppose we want to add a sense of some conversational flow, so that the player is forced to acknowledge the presence of people before beginning detailed conversations with them. We collect all speech actions into a single category:
 
 	{*}"Mimicry"

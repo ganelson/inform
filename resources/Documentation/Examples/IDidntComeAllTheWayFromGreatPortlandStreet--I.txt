@@ -3,7 +3,7 @@
   
   I Didn't Come All The Way From Great Portland Street
   An Interactive Fiction
-  Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Paris Theatre
   You can see a tuba, a xylophone, a triangle, a case (in which is a violin), a radish, a bust of Nicholas Parsons and a purple felt hat here.
@@ -19,14 +19,14 @@
   "Well, as it's your first time playing the game, and the audience was enjoying your contribution so much, I will disallow the challenge, you have 9 turns left on musical instruments, starting... now!
   
   >[2] wait
-  Bzzzzt! "And Peter Jones has challenged."
+  Bzzzzt! "And Kenneth Williams has challenged."
   
   "Hesitation!"
   
   "Well, as it's your first time playing the game, and the audience was enjoying your contribution so much, I will disallow the challenge, you have 8 turns left on musical instruments, starting... now!
   
   >[3] examine bust
-  Bzzzzt! "And Kenneth Williams has challenged."
+  Bzzzzt! "And Clement Freud has challenged."
   
   "Deviation!"
   

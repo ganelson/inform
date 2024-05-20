@@ -5,6 +5,8 @@ Index: Port Royal 5. Producing an EPS map
 Description: Port Royal scenario given instructions for an EPS map.
 For: Z-Machine
 
+^^{index map}
+
 	{*}"1691"
 	
 	Fort James is a room.

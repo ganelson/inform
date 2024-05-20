@@ -5,6 +5,8 @@ Index: Person who moves randomly
 Description: A person who moves randomly between rooms of the map.
 For: Z-Machine
 
+^^{characters (people): moving around: randomly}
+
 Suppose we want a restless sort of character always pacing from room to room. It is quite easy to use adjacency to achieve this effect:
 
 	{*}"Mistress of Animals"

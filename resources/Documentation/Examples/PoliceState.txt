@@ -5,6 +5,8 @@ Index: Disorderly conduct
 Description: Several friends who obey you; a policeman who doesn't (but who takes a dim view of certain kinds of antics).
 For: Z-Machine
 
+^^{Disorderly conduct}
+
 	{*}"Police State"
 	
 	Seventh Avenue is a room. "The bars are all closed now, and there aren't any good clubs to go to, so you're on your own for open-air entertainment."

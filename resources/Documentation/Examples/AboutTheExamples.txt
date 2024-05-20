@@ -5,6 +5,8 @@ Index: About the examples
 Description: An explanation of the examples in this documentation, and the asterisks attached to them. Click the heading of the example, or the example number, to reveal the text.
 For: Untestable
 
+^^{examples}
+
 This is the first of about 400 numbered examples. In a few cases, such as this one, they provide a little background information, but almost all demonstrate Inform source text. The techniques demonstrated tend to be included either because they are frequently asked for, or because they show how to achieve some interesting effect.
 
 The same examples are included in **both** of the books of documentation, but in a different order: in *Writing with Inform*, they appear near the techniques used to make them work; in *The Inform Recipe Book*, they are grouped by the effects they provide. For instance, an example called [Do Pass Go], about the throwing of a pair of dice, appears in the [Randomness] section of *Writing with Inform* and also in the [Dice and Playing Cards] section of *The Inform Recipe Book*. Clicking the italicised WI and RB buttons at the right-hand side of an example's heading switches between its position in each book.

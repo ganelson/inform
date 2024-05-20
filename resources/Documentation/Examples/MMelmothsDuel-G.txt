@@ -5,6 +5,8 @@ Index: Random variations within text
 Description: Three basic ways to inject random or not-so-random variations into text.
 For: Glulx
 
+^^{Random variations within text}
+
 	{*}"M. Melmoth's Duel"
 	
 	Saint-Germain-des-Prés is a room. "Haunt of artists, of the coffee-drinking sort, and of cafés, of the artist-haunted sort, you once again find yourself outside M. Melmoth's hotel. Today [one of]the recently-fallen rain runs down the gutters of the 6th[or]sunlight glints even off the blackened windows of the Abbey[or]crowds of vulgar children play chase around the lampposts[at random], and you long to be indoors."

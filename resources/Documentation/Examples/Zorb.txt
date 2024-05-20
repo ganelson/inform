@@ -5,6 +5,8 @@ Index: PUSH SOMETHING TO check rules modified
 Description: Replacing the message the player receives when attempting to push something that isn't pushable, and also to remove the restriction that objects cannot be pushed up or down.
 For: Z-Machine
 
+^^{PUSH SOMETHING TO check rules modified}
+
 There are two aspects of Inform's handling of pushable objects that are particularly prime for modification. One is that we may want to change the language used to refuse the pushing of unpushable objects.
 
 Second, Inform by default assumes that it is impossible to push objects in up or down directions. This makes lots of sense if the player is trying to push a wheelbarrow up a ladder; it makes less sense if instead we're pushing a ball up a slope.

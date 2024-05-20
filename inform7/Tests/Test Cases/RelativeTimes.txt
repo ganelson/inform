@@ -4,13 +4,13 @@ For: Z-Machine
 Stage is a room.
 
 Understand "wait for [a time period]" as waiting for. Waiting for is an
-action applying to one time.
+action applying to one time period.
 
 Understand "wait until [a time]" as waiting until. Waiting until is an
 action applying to one time.
 
 Carry out waiting for:
-       increase the time of day by the time understood;
+       increase the time of day by the time period understood;
        say "You wait around until [the time of day].";
        follow the turn sequence rules;
        try looking.

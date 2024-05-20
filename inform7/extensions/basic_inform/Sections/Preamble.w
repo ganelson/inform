@@ -41,6 +41,7 @@ The verb to be means the built-in new-figure meaning.
 The verb to be means the built-in new-sound meaning.
 The verb to be means the built-in new-file meaning.
 The verb to be means the built-in episode meaning.
+The verb to be means the built-in declares-licence meaning.
 The verb to be means the equality relation.
 
 @ We allow "imply" as a synonym for "mean".

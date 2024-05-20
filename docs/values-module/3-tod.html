@@ -101,8 +101,10 @@ support for times of day from the Inform language. If so, <span class="extract">
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_time</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_time_period</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The plugin intervenes only to notice the "time" kind when it appears.
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The plugin intervenes only to notice the "time" and "duration" kinds when they
+appear.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -114,11 +116,23 @@ support for times of day from the Inform language. If so, <span class="extract">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq_wide_string</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">U</span><span class="string-syntax">"TIME_TY"</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">K_time</span><span class="plain-syntax"> = </span><span class="identifier-syntax">new_base</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq_wide_string</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">U</span><span class="string-syntax">"TIME_PERIOD_TY"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">K_time_period</span><span class="plain-syntax"> = </span><span class="identifier-syntax">new_base</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
 <span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="function-syntax">TimesOfDay::kind</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">TimesOfDay::kind</span></span>:<br/>Rvalues - <a href="2-rvl.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_time</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+
+<span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="function-syntax">TimesOfDay::time_period</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">TimesOfDay::time_period</span></span>:<br/>Rvalues - <a href="2-rvl.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_time_period</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+
+<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">TimesOfDay::elapsed_time_rvalue</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">TimesOfDay::elapsed_time_rvalue</span></span>:<br/><a href="3-tod.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K_time_period</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="2-rvl.html#SP14" class="function-link"><span class="function-syntax">Rvalues::from_time_period</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="2-rvl.html#SP14" class="function-link"><span class="function-syntax">Rvalues::from_time</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Parsing. </b>Although they are eventually stored in variables of the same kind ("time"),
@@ -128,8 +142,8 @@ linguistically the same thing at all.
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;s-literal-time&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">minus</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;elapsed-time&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, Rvalues::from_time(-R[1], W) }</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;elapsed-time&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">        </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, Rvalues::from_time(R[1], W) }</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">minus</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;elapsed-time&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, TimesOfDay::elapsed_time_rvalue(-R[1], W) }</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;elapsed-time&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">        </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, TimesOfDay::elapsed_time_rvalue(R[1], W) }</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;clock-time&gt;</span><span class="Preform-plain-syntax">            </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, Rvalues::from_time(R[1], W) }</span>
 
 <span class="Preform-function-syntax">&lt;elapsed-time&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>

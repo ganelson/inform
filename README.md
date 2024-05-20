@@ -1,6 +1,6 @@
 # Inform 7
 
-[Version](notes/versioning.md): 10.2.0-beta+6X49 'Krypton' (27 April 2024)
+[Version](notes/versioning.md): 10.2.0-beta+6X63 'Krypton' (19 May 2024)
 
 ## About Inform
 
@@ -134,10 +134,6 @@ The following webs are the source for the two most important extensions shipped 
 
 * [Basic Inform by Graham Nelson](inform7/extensions/basic_inform) - __v2__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/basic_inform/index.html)
 * [Standard Rules by Graham Nelson](inform7/extensions/standard_rules) - __v7__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/standard_rules/index.html)
-
-Other extensions shipped with Inform are not presented as webs, but as single files:
-
-* [English Language by Graham Nelson](<inform7/Internal/Extensions/Graham Nelson/English Language.i7x>) - __v2__
 
 ### Website templates and interpreters shipped with Inform
 

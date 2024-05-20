@@ -1,7 +1,7 @@
    Supermarket
   Lugubrious Pete's Delicatessen
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Supermarket
   You can see Alice, Beth, Gemma, Delia and Eliza here.
@@ -12,14 +12,12 @@
   >[1] wait
   Time passes.
   
-  Delia walks into the Delicatessen.
+  Gemma walks into the Delicatessen.
   
   >[2] wait
   Time passes.
   
-  Eliza walks into the Delicatessen.
-  
-  Delia emerges cheerfully from the Delicatessen Counter, and goes about her regular shopping.
+  Alice walks into the Delicatessen.
   
   >[3] wait
   Time passes.
@@ -29,37 +27,35 @@
   Delicatessen Counter
   Lugubrious Pete, dolefully slicing meats and cheeses, serves at the counter.
   
-  You can also see Eliza here.
+  You can also see Alice and Gemma here.
+  
+  Eliza comes in from the Supermarket, and resignedly queues behind Gemma and Alice.
+  
+  >[5] wait
+  Time passes, for Gemma, Alice and Eliza quite as much as for yourself.
+  
+  Pete gives a droopy expression as he serves Gemma, who nevertheless brightens and leaves.
+  
+  >[6] wait
+  Time passes, for Alice and Eliza quite as much as for yourself.
+  
+  Gemma comes in from the Supermarket, and resignedly queues behind Alice and Eliza.
+  
+  Pete gives a droopy expression as he serves Alice, who nevertheless brightens and leaves.
+  
+  >[7] wait
+  Time passes, for Eliza and Gemma quite as much as for yourself.
   
   Pete gives a droopy expression as he serves Eliza, who nevertheless brightens and leaves.
   
-  >[5] wait
-  Time passes.
-  
-  Beth comes in from the Supermarket, and can't believe her luck. The counter is free!
-  
-  >[6] wait
-  Time passes, for Beth quite as much as for yourself.
-  
-  Gemma comes in from the Supermarket, and resignedly queues behind Beth.
-  
-  Pete gives a droopy expression as he serves Beth, who nevertheless brightens and leaves.
-  
-  >[7] wait
+  >[8] wait
   Time passes, for Gemma quite as much as for yourself.
   
   Alice comes in from the Supermarket, and resignedly queues behind Gemma.
   
-  Pete gives a droopy expression as he serves Gemma, who nevertheless brightens and leaves.
-  
-  >[8] wait
-  Time passes, for Alice quite as much as for yourself.
-  
-  Beth comes in from the Supermarket, and resignedly queues behind Alice.
-  
   >[9] wait
-  Time passes, for Alice and Beth quite as much as for yourself.
+  Time passes, for Gemma and Alice quite as much as for yourself.
   
-  Delia comes in from the Supermarket, and resignedly queues behind Alice and Beth.
+  Eliza comes in from the Supermarket, and resignedly queues behind Gemma and Alice.
   
 > >

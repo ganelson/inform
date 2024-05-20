@@ -5,6 +5,8 @@ Index: GIVE action for other characters
 Description: Allowing characters other than the player to give objects to one another, accounting for the possibility that some items may not be desired by the intended recipients.
 For: Z-Machine
 
+^^{giving it to+action+: for other characters}
+
 By default, if we make no modifications, telling one player to give something to another will fail, even if persuasion succeeds. This is because the default behaviour of the ``GIVE`` command is interrupted by the `block giving rule` – since in many cases we do not want people to exchange objects freely.
 
 However, suppose that we do want characters to be able to exchange articles freely: we allow persuasion to succeed and turn off the `block giving rule`.

@@ -1270,7 +1270,7 @@ and merely parse the remainder of the command. (That last command may be unlikel
 
 ## Alternatives To Standard Parsing
 
-^^{understanding: alternatives to standard parsing}^^{adverbs}^^{keyword-style parsing}
+^^{understanding: alternatives to standard parsing}^^{adverbs used in commands}^^{keyword-style parsing}
 Very occasionally, for out-of-the-ordinary games, we want to make major changes to the way that Inform ordinarily understands commands.
 
 [Cloves] shows how we might read adverbs in the player's command: adverbs are challenging because they can legitimately appear anywhere in a command structure, so must be found and accounted for before the rest of the command is understood.
@@ -1312,7 +1312,7 @@ Finally, in some IF, the roles of characters may change from playing to playing.
 
 ## Liveliness
 
-^^{characters (people): acting spontaneously}^^{every turn+rb+}^^{rules: run every turn}
+^^{characters (people): acting spontaneously}^^{every turn+rb+}^^{rules: run every turn} ^^{actions: spontaneous by other people}
 A character who sits still in a chair and does nothing is much less convincingly alive than one who seems to be pursuing some sort of personal agenda. There are all sorts of ways to achieve this, but the least challenging is by introducing some random change to descriptions, and by giving a character some very simple routine behaviour to carry out.
 
 For instance, we'll often want the characters in a room to be described doing different things every time we look at them. [Camp Bethel] shows how this may be done.
@@ -1431,7 +1431,7 @@ Finally, if we want to be able to ``ASK`` and ``TELL`` an inanimate object – s
 
 ## Saying Complicated Things
 
-^^{dialogue: >ASK / TELL}^^{dialogue: menu-based dialogue}^^{dialogue: keyword-based dialogue}
+^^{dialogue: >ASK / TELL}^^{dialogue: based on menus}^^{dialogue: based on keyword recognition}
 As we saw in the overview, there are challenges in choosing the commands with which the player will communicate to the story. Two common approaches are ``ASK``/``TELL`` conversation, where the player can ask or tell characters about keywords, as in ``ASK JILL ABOUT JACK`` or ``TELL FARMER ABOUT CHICKEN COOP``, and menu-based conversation, where the player is offered a list of things to say and must pick one (often by number), as in
 
 ``` transcript
@@ -1523,7 +1523,7 @@ We end with a longer scenario, in which we track what the character knows about 
 
 ## Characters Following a Script
 
-^^{dialogue: scripted conversations}^^{characters (people): scripted conversations}^^{story structure: cut scenes}
+^^{dialogue: scripted conversations} ^^{story structure: cut scenes}
 So far we've seen characters who will answer questions whenever the player feels like asking, and characters who will use some reasoning procedure to direct the conversation. There is a third option, often useful in IF with a fast-paced narrative: the character follows a conversational script, making sure to cover a series of points before the scene ends.
 
 There are more and less tedious ways to implement this kind of scene. The worst case is one in which the player is not allowed to interrupt or ask any questions; they must merely wait until the character runs out of things to say. This can be useful and plausible in very small doses–say, two or three turns–but if the character has more information than that to impart, we may want to make the scene more interactive.
@@ -1576,7 +1576,7 @@ Antony opens the iron gate. He goes through.
 
 ## Obedient Characters
 
-^^{actions: instructing other people}^^{characters (people): giving instructions to other characters}^^{instructing other characters} ^^{ordering other characters}
+^^{actions: instructing other characters}^^{characters (people): giving instructions to other characters}^^{instructing other characters} ^^{ordering other characters}
 Other characters can perform all the same activities that the player can; this does not always mean that they're willing to obey the player's instructions. By default, characters will refuse to obey commands of the form ``JULIA, WEST`` or ``ANTONY, TAKE THE PINCUSHION``. Their objections can be overridden, however, and [The Hypnotist of Blois] implements a hypnotist who can make characters obedient at will.
 
 In [For Demonstration Purposes], the character is only capable of a few actions at the outset, but can be taught new ones if the player performs them first.
@@ -1873,7 +1873,7 @@ A different sort of randomness is used to play [The Game That Ties You Up In Kno
 
 ## Reading Matter
 
-^^{books (implementing)}^^{books (implementing): with pages}^^{books (implementing): consulting}^^^{examining+action+ <-- reading}^^{examining+action+: handling (READ) separately+commandpart+}^^{Inanimate Listeners+ext+} ^^{extensions: specific extensions: Inanimate Listeners}
+^^{books (implementing)}^^{books (implementing): with numbered pages}^^{books (implementing): consulting}^^^{examining+action+ <-- reading}^^{examining+action+: handling (READ) separately+commandpart+}^^{Inanimate Listeners+ext+} ^^{extensions: specific extensions: Inanimate Listeners}
 Many things can be read, from warning notices to encyclopaedias, and a range of techniques is needed to provide them because the quantity of text, and how it presents itself, can vary so much. With a small amount of very large type, the player should not need any command at all to read the text:
 
 	The road sign is in the Junction. The road sign is fixed in place. "A road sign points north: 'Weston on the Green - 6'."
@@ -2201,7 +2201,7 @@ In many cases it may be preferable to use some subtler method to enforce random 
 
 ## Helping and Hinting
 
-^^{help systems}^^{hint systems}
+^^{hint systems <-- >HELP: help systems}
 IF is difficult to play: often harder than the writer ever suspects. Players are held up by what is "obvious", and they stumble into unforeseen combinations, or spend inordinate amounts of time working on the "wrong" problems. Too much of this and they give up, or post questions on online forums. Against this, many IF authors like to include in-story hints.
 
 There are many approaches, which differ on two main issues.
@@ -2346,7 +2346,7 @@ Old-school adventures expected their adventurers to die early and die often. [La
 
 ## Typography
 
-^^{proportional-spaced text}^^{monospaced text}^^{fonts: fixed-width / variable-width}^^{fonts: italic / bold / roman}^^{characters (letters): Unicode (arbitrary symbols)}^^{+to+say "[bold type]"} ^^{+tosay+"[bold type]"}^^{+to+say "[italic type]"} ^^{+tosay+"[italic type]"}^^{+to+say "[roman type]"} ^^{+tosay+"[roman type]"}^^{+to+say "[fixed letter spacing]"} ^^{+tosay+"[fixed letter spacing]"}^^{+to+say "[variable letter spacing]"} ^^{+tosay+"[variable letter spacing]"}
+^^{proportional-spaced text}^^{monospaced text}^^{fonts: fixed-width / variable-width}^^{fonts: italic / bold / roman <-- italics}^^{characters (letters): Unicode (arbitrary symbols)}^^{+to+say "[bold type]"} ^^{+tosay+"[bold type]"}^^{+to+say "[italic type]"} ^^{+tosay+"[italic type]"}^^{+to+say "[roman type]"} ^^{+tosay+"[roman type]"}^^{+to+say "[fixed letter spacing]"} ^^{+tosay+"[fixed letter spacing]"}^^{+to+say "[variable letter spacing]"} ^^{+tosay+"[variable letter spacing]"}
 Story files produced by Inform tend not to contain elaborate typographical effects. They would only distract. Like a novel, a classic work of IF is best presented in an elegant but unobtrusive font. Inform does, however, provide for italic and bold-face, and also for a typewriter-style fixed pitch of lettering:
 
 	"This is an [italic type]italicised[roman type] word."

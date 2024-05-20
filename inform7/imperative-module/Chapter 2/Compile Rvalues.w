@@ -185,9 +185,8 @@ kinds of value:
 	if (Kinds::eq(kind_of_constant, K_response)) {
 		rule *R = Rvalues::to_rule(value);
 		int c = Annotations::read_int(value, response_code_ANNOT);
-		inter_name *iname = Responses::response_constant_iname(R, c);
-		if (iname) Emit::holster_iname(VH, iname);
-		else Holsters::holster_pair(VH, InterValuePairs::number(0));
+		inter_name *iname = Responses::future_constant_iname(R, c);
+		Emit::holster_iname(VH, iname);
 		Rules::now_rule_needs_response(R, c, EMPTY_WORDING);
 		return;
 	}

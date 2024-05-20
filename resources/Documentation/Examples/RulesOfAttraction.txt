@@ -5,6 +5,8 @@ Index: Magnet which picks up nearby metal objects
 Description: A magnet which picks up nearby metal objects, and describes itself appropriately in room descriptions and inventory listings, but otherwise goes by its ordinary name.
 For: Z-Machine
 
+^^{magnets (implementing)}
+
 Often we have some salient features of an object that we want to make sure the player notices whenever looking at the item in a room or in inventory. At other times, we may prefer to allow the name of the item to be printed bare. So for instance:
 
 	{*}"Rules of Attraction"

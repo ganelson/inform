@@ -5,6 +5,8 @@ Index: ATTACK and DROP break fragile things
 Description: ``ATTACK`` or ``DROP`` break and remove fragile items from play.
 For: Z-Machine
 
+^^{ATTACK and DROP break fragile things}
+
 In emulation of a certain annoying aspect of the original Adventure, in which there is a Ming vase that cannot safely be dropped:
 
 	{*}"Ming Vase"

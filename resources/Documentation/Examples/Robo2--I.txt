@@ -32,7 +32,7 @@
   Taken.
   
   >[7] put all on counter
-  red block: Robo watches you putting the red block on the counter impassively.
+  red block: Robo watches you putting the red block on the counter, its brushed-copper handlebar moustaches twitching.
   
   Done.
   
@@ -74,7 +74,7 @@
   "Learning VANILLA," Robo replies.
   
   >[17] take all
-  blue cylinder: Robo watches you taking the blue cylinder, its brushed-copper handlebar moustaches twitching.
+  blue cylinder: Robo watches you taking the blue cylinder impassively.
   
   Taken.
   red block: That seems to belong to Robo.
@@ -83,18 +83,18 @@
   You are carrying:
     a blue cylinder
   
-  Robo watches you taking inventory impassively.
+  Robo watches you taking inventory, its yellow eyes lamp-like and observant.
   
   >[19] drop all
   (the blue cylinder)
-  Robo watches you dropping the blue cylinder, its brushed-copper handlebar moustaches twitching.
+  Robo watches you dropping the blue cylinder. In its metal head, gears whirr.
   
   Dropped.
   
   >[20] x robo
   You see nothing special about Robo.
   
-  Robo watches you examining Robo, its yellow eyes lamp-like and observant.
+  Robo watches you examining Robo impassively.
   
   >[21] x me
   As good-looking as ever.

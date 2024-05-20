@@ -5,6 +5,8 @@ Index: Relations syntax explored
 Description: A thorough exploration of all the kinds of relations established so far, with the syntax to set and unset them.
 For: Z-Machine
 
+^^{Relations syntax explored}
+
 Suppose we are modeling a complex society seething with interpersonal relations of every kind.
 
 	{*}"The Abolition of Love"

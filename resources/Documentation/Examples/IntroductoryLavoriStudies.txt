@@ -1,0 +1,707 @@
+Example: **** Introductory Lavori Studies
+Location: When the director is active
+RecipeLocation: Helping and Hinting
+Index: Dialogue implementation of a tutorial; magical connection of related objects.
+Description: Teaching the player multiple new commands via an instructor character who comments on the player's progress and reacts to actions taken out of order.
+
+Many games need to teach the player some new verbs that aren't common to other games. In this example, we borrow from the source text of Damnatio Memoriae, a game involving magical links between related objects, and we create an instructor NPC whose job is to teach the player how to use these links.
+
+To do this, we rely heavily on the dialogue system in combination with scenes. Each brief scene asks the player to demonstrate solving a particular task. It moves on when the player has shown the necessary skill, and the instructor also reacts if the player moves too quickly or attempts things that haven't yet been requested. In a real game, we might often want ways for the player to fast-forward through tutorialisation of skills they already understand.
+
+Another note: at a number of points, we use `perform...` to invoke a dialogue beat during action-handling. The instructor is able to see when the player succeeds or fails, and offer suggestions to correct their work. These dialogue beats act the same as any others would. We can tie them into dialogue flow or allow the player to follow up with response dialogue, for instance, and if a dialogue beat happens more than once, the system will follow the usual rules about repeating `recurring` and `non-recurring` lines.
+
+We don't want the instructor to randomly say these action-related dialogue beats on her own, though. To prevent that, we don't mark any of them as being "about" anything and we don't mark them as "spontaneous". Lines that are neither spontaneous nor tied to any existing conversational subject matter will not be selected by the dialogue director; they'll be reserved so that they fire only when we specifically call on them.
+
+	{*}"Introductory Lavori Studies"
+
+	Volume 1 - Setting
+	
+	Chapter 1 - Scenario
+	
+	The Practice Chamber is a room. "A fire burns merrily in the grate. Otherwise, the practice chamber is largely empty, the better to prevent anything from affecting your education in magical skills." 
+	
+	The fire is scenery in the Practice Chamber. The description of the fire is "It looks like an ordinary physical fire. No obvious magic at work there." Understand "grate" as the fire.
+	
+	The instructor is a woman in the Practice Chamber. "Your instructor lurks here, watching your every move." The description of the instructor is "[if worried]She watches you intently as though you were a venomous insect and she needed to prevent you getting too close.[else]She has an aura of bored patience, as though she has taken an uncountable number of students through this elementary exercise before.[end if]"
+	
+	Chapter 2 - Props
+	
+	Section 1 - Burning
+	
+	The block burning rule does nothing.
+	
+	A thing can be fireproof or flammable. A thing is usually flammable.
+	A thing can be fragile or sturdy. A thing is usually fragile.
+	
+	The player carries a sensitive document and a pane of glass. 
+	
+	The pane of glass is fragile and fireproof. The sensitive document is sturdy and flammable.
+	
+	Check burning a fireproof thing:
+		say "[The noun] won't catch." instead.
+		
+	Carry out burning something flammable which affects something important (called the linked item):
+		if the linked item is fireproof and the linked item protects the noun:
+			now reverse linking success is true;
+			say "[The noun] resists flame, thanks to its link with [the linked item]." instead;
+		if the linked item affects the noun:
+			say "[The noun] burns up. ";
+			destroy the noun;
+		if the linked item is visible, say "[The linked item] [fiery description of the linked item].";
+			now linking success is true;
+			destroy the linked item;
+		stop the action;
+	
+	Carry out burning something:
+		say "You set fire to [the noun] and are quickly rid of it.";
+		destroy the noun;
+		
+	Section 2 - Breaking
+	
+	The block attacking rule does nothing. 
+	
+	Understand "tear [something preferably held]" or "tear [something preferably held] up" or "tear up [something preferably held]" as attacking.
+		
+	Understand the command "rip" as "tear".
+	
+	Check attacking a sturdy thing:
+		say "[The noun] is too sturdy for you to damage it bare-handed." instead.
+	
+	Carry out attacking something fragile which affects something important (called the linked item):
+		if the linked item is sturdy and the linked item protects the noun:
+			now reverse linking success is true;
+			say "[The noun] resists shattering, thanks to its link with [the linked item]." instead;
+		if the linked item affects the noun:
+			say "[The noun] shatters. ";
+			destroy the noun;
+		if the linked item is visible, say "[The linked item] shatters[if the linked item is fragile] even though that shouldn't be possible[end if].";
+			now linking success is true;
+			destroy the linked item;
+		stop the action.
+	
+	Carry out attacking something:
+		say "You shatter [the noun].";
+		destroy the noun;
+	
+	After dropping something fragile which affects something important (called the linked item):
+		if the linked item is sturdy and the linked item protects the noun:
+			now reverse linking success is true;
+			say "[The noun] falls but doesn't shatter, thanks to its link with [the linked item]." instead;
+		if the linked item affects the noun:
+			say "[The noun] breaks on impact. ";
+			destroy the noun;
+		if the linked item is visible, say "[The linked item] shatters[if the linked item is fragile] even though that shouldn't be possible[end if].";
+			now linking success is true;
+			destroy the linked item;
+		stop the action.
+		
+	After dropping something fragile:
+		say "You drop [the noun] and it shatters on the ground.";
+		destroy the noun.
+			
+	A thing has some text called fiery description. The fiery description of a thing is usually "[if fireproof]catches impossible fire and turns into a cloud of thick, formed smoke before dissipating. The link too is gone, of course[otherwise]is consumed in phantom flames, and the link dies with it[end if]".
+	 
+		
+	Section 3 - Destruction 
+	
+	To destroy (item - a thing):
+		clear connections to the item;
+		obliterate the item.
+	
+	To destroy (item - a container):
+		clear connections to the item;
+		let context be the holder of the item;
+		if the item is visible and something is in the item:
+			say "[line break]Left behind [is-are list of things in the item].";
+		now every thing in the item is in the context;
+		obliterate the item.
+	
+	To destroy (item - a supporter):
+		clear connections to the item;
+		let context be the holder of the item;
+		if the item is visible and something is on the item:
+			say "[line break]Left behind [is-are list of things on the item].";
+		now every thing on the item is in the context;
+		obliterate the item.
+	
+	
+	A thing can be whole or ruined. A thing is always whole.
+	
+	To obliterate (item - a thing):
+		now the item is ruined;
+		remove the item from play.
+	
+	Volume 2 - Linkages
+	
+	Book 1 - Two Kinds of One-to-One Relationship
+	
+	Chapter 1 - Affecting
+	
+	The blank is a thing. A thing can be important or unimportant. A thing is usually important. The blank is unimportant.
+	
+	Affecting relates one thing to one thing.
+	
+	The verb to affect (he affects, they affect, he affected, it is affected, he is affecting) implies the affecting relation.
+	
+	Definition: a thing is linked if it affects something or something affects it.
+	
+	Definition: a thing is unlinked if it is not linked.
+	
+	Chapter 2 - Protecting
+	
+	Protection relates one thing to one thing.
+	
+	The verb to protect (he protects, they protect, he protected, it is protected, he is protecting) implies the protection relation.
+	
+	
+	Before burning something which is protected by an important fireproof thing (called the protector):
+		now reverse linking success is true;
+		say "[if the noun is the player]You barely feel anything, thanks to[otherwise][The noun] resists flame, thanks to its link with[end if] [the protector]." instead.
+	
+	Before attacking something which is protected by an important sturdy thing (called the protector):
+		if the noun is a person, continue the action;
+		now reverse linking success is true;
+		say "[The noun] fails to shatter, thanks to its link with [the protector]." instead.
+	
+	After printing the name of something (called slave) which is affected by something (called master) while taking inventory:
+		if slave affects the master, do nothing;
+		otherwise say " (enslaved)";
+	
+	After printing the name of something (called master) which affects something important (called slave) while taking inventory:
+		if slave affects the master, say " ([if the slave protects the master]reverse [end if]linked)";
+		otherwise say " (controlling)";
+	
+	Book 2 - Resembling, a Various-to-Various relation
+	
+	[Link checking already takes into account many ways for one thing to be like another thing, but this allows us to specify explicit resemblances which help override those rules.]
+	
+	Similarity relates various things to various things.
+	
+	The verb to resemble (he resembles, they resemble, he resembled, it is resembled) implies the similarity relation.
+	
+	The document resembles the pane of glass. The description of the document is "With all those pages, it's about as thick as the pane of glass." The description of the pane of glass is "It's rectangular and about the size of the document. It's also translucent white, making it roughly the color of the document."
+	
+	Book 3 - Link Actions
+	
+	Chapter 1 - Link
+	
+	Understand "link [something] to [something]" as linking it to.
+	
+	Linking it to is an action applying to two things.
+	
+	Carry out linking it to:
+		now the noun protects blank;
+		now the second noun protects blank;
+		now the noun affects the second noun;
+		now the second noun affects the noun;
+	
+	Report linking it to:
+		say "You build a mutually-effective link between [the noun] and [the second noun].".
+	
+	Linking something to something is labor.
+	
+	Chapter 2 - Reverse Link
+	
+	Understand "reverse link [something] to [something]" as reverse linking it to. Understand "reverse [something] to [something]" as reverse linking it to. Understand "reverse-link [something] to [something]" as reverse linking it to.
+	
+	Reverse linking it to is an action applying to two things.
+	
+	Carry out reverse linking it to:
+		now the noun affects the second noun;
+		now the second noun affects the noun;
+		now the noun protects the second noun;
+		now the second noun protects the noun.
+	
+	Report reverse linking it to:
+		say "You build a mutually-effective, and protective, link between [the noun] and [the second noun]";
+		if the noun is fireproof or the second noun is fireproof:
+			say ". Both are now resistant to fire";
+			if noun is sturdy or the second noun is sturdy:
+				say " and casual smashing.";
+			otherwise:
+				say ".";
+		otherwise:
+			if noun is sturdy or the second noun is sturdy:
+				say ". Both are now resistant to being smashed.";
+			otherwise:
+				say "."
+	
+	After reverse linking a person to a person:
+		say "You reverse link [the noun] to [the second noun]. While one of you lives, so does the other.";
+	
+	Reverse linking something to something is labor.
+	
+	
+	Chapter 3 - Unlinking
+	
+	Understand "unlink [something]" as unlinking.
+	
+	Unlinking is an action applying to one thing.
+	
+	Check unlinking:
+		if the noun affects an important thing:
+			continue the action;
+		if the noun is affected by an important thing:
+			continue the action;
+		say "[The noun] is already not linked to anything." instead.
+	
+	Carry out unlinking:
+		clear connections to the noun.
+	
+	Report unlinking:
+		now unlinking success is true;
+		say "Now [the noun] is linked with nothing."
+	
+	To clear connections to (item - a thing):
+		if the item affects something important (called the slave):
+			now the item affects blank;
+			now the slave affects blank;
+			clear connections to the slave;
+		if the item protects something (called the slave), now the item protects blank;
+		if something important (called the master) affects the item, clear connections to the master.
+		
+	
+	Book 4 - Checking Validity
+	
+	Chapter 1 - Linking sucess
+	
+	Linking success is a truth state that varies. Linking success is false.
+	Reverse linking success is a truth state that varies. Reverse linking success is false.
+	Unlinking success is a truth state that varies. Unlinking success is false.
+	
+	Chapter 2 - The Link Check Rules
+	
+	Before labor:
+		if text produced by the link check rules is "":
+			stop the action;
+		otherwise:
+			if unlinking, continue the action;
+			if reverse linking the noun to something which is affected by the noun:
+				clear connections to the noun;
+				clear connections to the second noun;
+				say "(building on the existing connection)[line break]";
+				continue the action;
+			if the noun affects something or something affects the noun:
+				say "(first unlinking [the noun])[line break]";
+				clear connections to the noun;
+			if the second noun affects something or something affects the second noun:
+				say "(first unlinking [the second noun])[line break]";
+				clear connections to the second noun.
+	
+	The link check rules are a rulebook producing text.
+	
+	A link check rule:
+		if the noun is the second noun:
+			say "There's no point linking something to itself.";
+			rule fails.
+	
+	A link check rule:
+		if the noun is a person and the second noun is a person:
+			say "The instructor raises her hand and the link dissipates before you can even finish shaping it.";
+			perform the no human links beat;
+			rule fails.
+	
+	A link check rule:
+		if the noun resembles the second noun or the second noun resembles the noun, rule succeeds with result "The inherent likeness of the two comes to your aid.".
+	
+	A link check rule:
+		if the noun is a person or the second noun is a person:
+			if the noun is a person and the second noun is a person, rule succeeds with result "You have always been good at people...";
+			if noun is not a person, say "This would work better if [the noun] were a person.";
+			otherwise say "This would work better if [the second noun] were a person.";
+			perform the no human attempts beat;
+			rule fails.
+	 
+	
+	A link check rule:
+		if the noun is a container and the second noun is a container:
+			rule succeeds with result "Both are container-shaped, which makes this simple.";
+		if the noun is a supporter and the second noun is a supporter:
+			rule succeeds with result "Both are supporters, which makes this easy.";
+	
+	[	if the noun is a paper and the second noun is a paper:
+			rule succeeds with result "Both are papyrus, which simplifies matters.";
+		if the noun is a book and the second noun is a book, rule succeeds with result "The linking of books is so familiar to you as to be second nature.". ]
+	
+	The last link check rule:
+		say "[The noun] is insufficiently similar to [the second noun] for the two to be linked.";
+		perform the failed linkage beat;
+		rule fails.
+		
+	Volume 3 - Instructional Guidance
+	
+	Chapter 1 - Components of Instruction
+	
+	Section 1 - The tutorials in order
+	
+	Destruction tutorial is a scene. 
+		Destruction tutorial begins when play begins. 
+		Destruction tutorial ends in normality when the document is off-stage and the glass is off-stage. 
+		Destruction tutorial ends in adeptness when linking success is true. 
+		Destruction tutorial ends in extreme adeptness when reverse linking success is true.
+		
+	When destruction tutorial ends in adeptness:
+		perform the showoff beat.
+		
+	When destruction tutorial ends in extreme adeptness:
+		perform the showoff beat.
+	
+	Linking tutorial is a scene. 
+		Linking tutorial begins when Destruction tutorial ends in normality. 
+		Linking tutorial ends in normality when linking success is true.
+		Linking tutorial ends in adeptness when reverse linking success is true.
+	
+	When linking tutorial begins:
+		perform the linking introduction beat.
+	
+	When linking tutorial ends in adeptness:
+		perform the showoff beat.
+		
+	Reverse linking tutorial is a scene. 
+		Reverse linking tutorial begins when Linking tutorial ends in normality.
+		Reverse linking tutorial begins when Destruction tutorial ends in adeptness.
+		Reverse linking tutorial ends when reverse linking success is true.
+	
+	When reverse linking tutorial begins:
+		perform the reverse linking introduction beat.
+		
+	Final review is a scene.
+		Final review begins when destruction tutorial ends in extreme adeptness.
+		Final review begins when linking tutorial ends in adeptness.
+		Final review begins when reverse linking tutorial ends.
+		Final review ends when unlinking success is true.
+	
+	When final review begins:
+		perform the final review beat.
+	
+	When final review ends:
+		perform the farewell beat;
+		say "That seems to be everything!";
+		end the story saying "You have now proven yourself"
+		
+	When play begins:
+		make the dialogue director active.
+	
+	Section 2 - Instructor noticing things
+	
+	Carry out examining something:
+		make the noun a live conversational subject.
+		
+	Section 3 - Restocking
+	
+	Restocking is an action applying to nothing.
+	
+	Carry out the instructor restocking:
+		now the player carries a pane of glass;
+		now the player carries a document;
+		now the pane of glass is whole;
+		now the document is whole;
+		clear connections to pane of glass;
+		clear connections to document.
+		
+	Report the instructor restocking:
+		say "The instructor fishes around for additional supplies. When she's done, you've got roughly the same inventory you had to start with."
+		
+	Section 4 - Instructor Assessment
+	
+	The instructor can be worried or calm. The instructor is calm.
+	
+	Chapter 2 - Text
+	
+	Section 1 - Teaching Core Elements (dialogue)
+	
+	(Spontaneous. If we have not taken inventory.)
+	
+	Instructor: "If you don't know what's available to you, try INVENTORY. It'll tell you what you're currently holding."
+	
+	(Spontaneous. If we have not examined the pane of glass and we have not examined the document.)
+	
+	Instructor: "Sometimes it's worth EXAMINING something you're carrying to see what's going on."
+	
+	(About the fire.)
+	
+	Instructor: "We go through a lot of firewood at this institution. If necessary, you can BURN something; there's no need to BURN it IN the fire, or to put anything in the fire. In fact it makes a mess, so please don't."
+	
+	(About the document.)
+	
+	Instructor: "It's highly classified material. For safety, we have refrained from implementing a READ verb in this scenario. If you try, you'll just get a standard description of what a thing looks like, no more than you'd get from EXAMINE."
+	
+	
+	(About the pane of glass.)
+	
+	Instructor: "Generally one does not go around carrying loose panes of glass, but for now let's pretend that you might."
+	
+	
+	(About the instructor. If the instructor is calm.)
+	
+	Instructor: "Teaching this basics class is part of my core responsibility, but it means that I'm allowed to do an advanced seminar of my own choosing. So that's worthwhile. I've been taking the second year graduate students through the historiography of the White Knife."
+	
+	
+	(This is the failed linkage beat.)
+	
+	Instructor (if the noun is fire or the second noun is fire): "That was ambitious, but no. Fires, liquids, bolts of lightning, rays of light... they're all too nebulously defined to cooperate with linkage."
+	
+		-> stop
+	
+	Instructor: "If a link fails, it's usually because there isn't a sufficient physical likeness between the things you're trying to link."
+	
+		-> stop
+		
+	Instructor: "Cute, but useless."
+		
+		-> stop
+	
+	
+	(This is the no human attempts beat.)
+	
+	Instructor: "Don't try linking things to people. It usually doesn't work, but if it does work, it's usually very very dangerous. Lose/lose."
+	
+		-> stop
+	
+	Instructor (recurring; without speaking): "She proses on some more on why one should never link things to people."
+	
+	
+	(This is the no human links beat.)
+	
+	Instructor (now the instructor is worried): "Don't do that. Don't ever do that."
+	
+	Instructor (without speaking): "She looks slightly shaken. At a guess, most people starting the course aren't able to even try what you just attempted. She doesn't look like she was expecting it, anyway."
+	
+	Instructor: "It's dangerous, it's illegal, and it's... well, frankly, it's incredibly rude."
+	
+		-> stop
+	
+	Instructor: "What did I tell you? This is your last warning. If you try that again, you're finished here."
+	
+	Instructor: "And by 'here', I don't mean this lesson. I mean this school. In fact, you're very possibly finished exercising the Lavori at all."
+	
+		-> stop
+	
+	Instructor: "Right. Okay. You've made your point."
+	
+		-> end the story saying "The next thing you know, you're in cuffs"
+		
+	
+	(This is the showoff beat.)
+	
+	Instructor: "Of course you're not going to do this in the order requested."
+		
+		-- "Reply defensively"
+		
+			Player: "I'm doing my best. I'm just very confused."
+			
+			Instructor: "You don't look that confused from here. We do have a reason for checking your skills in this way, so if you could follow instructions, that would be helpful."
+	
+		-- "Reply defiantly"
+			
+			Player: "Why should I follow your kindergarten lesson plan when it's only going to slow us down?"
+			
+			Instructor (now instructor is worried): "Because this isn't just about getting to the end. This is about seeing what kind of person you are. How you respond to authority. How you think about magical power. How you make use of the opportunity in front of you."
+		
+		Instructor: "If you're only seeing me as a barrier between yourself and the more exciting exercises you could be doing – or worse, you just want to humiliate me – then you're missing almost all the potential in front of you."
+		
+			-- "See her point and immediately apologise"
+				
+				Player: "A very valid lesson. I apologise."
+				
+				Instructor (now instructor is calm): "Let us continue."
+				
+				-> stop
+	
+			-- "React with curiosity"
+				
+				Player: "What's that, then?"	
+		
+				Instructor: "I have information. I have connections. I have the ability to pass you or fail you or put you in prison or recommend that you receive advanced coursework immediately."
+	
+					-- "Nod, because it doesn't look like she's going on with the lesson otherwise"
+				
+						-> stop
+				
+			-- "Continue being defiant"
+			
+				Player: "Trust me, I have missed absolutely none of your hidden potential. There really is nothing to miss."
+				
+				Instructor: "Ah."
+				
+				Instructor (without speaking): "She tilts her head, considering you."
+				
+				Instructor: "You think you're amazing because you have the genetic gifts to use the Lavori and you've picked up a smattering of instruction somewhere, enough so that you're entering this school a little ahead of some of our students. You assume that I probably arrived here less gifted than you did. You think our potential can be compared that way, like two numbers. One greater than the other. Yes?"
+				
+				-- "Point out that the existence of aristocratic magic pretty much proves that some people are better than others"
+				
+					Player: "As a matter of fact, I do. I suppose you're going to give me some trite nonsense about how we are all of equal worth. But I'd say that a magic like the Lavori pretty much proves that there is such a thing as aristocracy. That superior merit is written into the nature of the universe."
+		
+				-- "Stare rudely"
+				
+					Player (without speaking): "You don't bother gracing that with a reply."
+				
+				Instructor: "You've been practicing the Lavori and yet you don't understand the most basic, the most essential lesson they have to teach."
+				
+				Instructor (without speaking): "She does something, something so subtle you cannot see it, some link you can't even identify. When she speaks next, each word pounds in your head like the throb of a migraine."
+				
+				Instructor: "Our nature. Depends. On our connections."
+				
+				Instructor (without speaking): "She relinquishes that link again, whatever it was. You gasp for air."
+		
+				Instructor: "What you are and why you matter... it's not something you earned alone. It's not something inscribed in your genes, it's not something you learned at school. Sure, maybe you have some advantages that came to you that way. But almost all of your possibility is in your circumstances. Your community. Your friends. The institutions where you hold sway."
+				
+				Instructor: "No matter how good you are at the essentials of magic, you will never have real power until you understand those links."
+			
+					-- "Nod, because it doesn't look like she's going on with the lesson otherwise"
+				
+						-> stop
+	
+	Instructor: "Okay, you're a bit ahead of the tutorial, I see."
+	
+	
+	Section 2 - Teaching Destruction (dialogue during Destruction tutorial)
+	
+	(This is the starting beat.)
+	
+	Instructor: "Welcome. Let's start out with a little light mayhem before we try doing anything more advanced. You'll find you've been issued a couple of standard items with fairly obvious physical properties. I'd like to see you damage both of them through ordinary means."
+	
+		-- "Cooperate"
+		
+			Player: "You're the boss."
+			
+			Instructor: "Well, sort of."
+		
+		-- "Complain that I'm here to learn magic"
+		
+			Player: "I'm here to–"
+			
+			Instructor: "...learn to manipulate the physical properties of the universe by implanting new concepts in the mind of God. Before you start in on that, we'd like you to demonstrate a small amount of humility and a basic understanding of the damage you could do."
+			
+			-- instead of saying sorry
+				
+				Player: "Er. Sorry."
+				
+				Instructor: "Just get on with breaking some stuff."
+			
+			-- after doing something
+				
+				Instructor (without speaking): "The instructor watches you closely."
+		
+		-- "Complain that in fact I already know how to link things"
+		
+			Player: "I already know how to LINK one thing to another. Couldn't we move on?"
+			
+			Instructor: "Humor me."
+			 
+	
+	(Spontaneous. Later. If the pane of glass is on-stage and the document is on-stage.)
+	
+	Instructor: "On contemplation, you may recall that glass is infamously fragile and that things made of paper can generally burn."
+	
+	
+	(Spontaneous. If the pane of glass is off-stage.)
+	
+	Instructor: "We make progress. May I draw your attention to the inherent possibilities of burning a thing?"
+	
+	
+	(Spontaneous. If the document is off-stage.)
+	
+	Instructor: "Now you've got rid of the document, I suggest BREAK. Or ATTACK. They do the same thing."
+	
+	
+	(Spontaneous. If the pane affects the document or the document affects the pane.)
+	
+	Instructor (without speaking): "She can obviously see what you've done."
+	
+		-> perform the showoff beat
+	
+	
+	Section 4 - Teaching Links (dialogue during Linking tutorial)
+	
+	(This is the linking introduction beat.)
+	
+	Instructor: "Fantastic! We make progress."
+	
+	Instructor (after restocking): "Now we have a new skill to learn. Try LINKing together two items that are similar."
+	
+	
+	(Spontaneous. Recurring. If we have taken inventory and the pane does not affect the document and the pane is on-stage and the document is on-stage.)
+	
+	Instructor (if we have not examined the pane of glass): "You may notice that there is a similarity between the two items you are carrying. Examining the pane of glass might be suggestive."
+	
+		-> stop
+	
+	Instructor (if we have not examined the document): "You may notice that there is a similarity between the two items you are carrying. Try checking out the document you're carrying."
+	
+		-> stop
+		
+	Instructor: "LINK something TO something. That should do the trick."
+	
+		-> stop
+	
+	Instructor: "Like I said, I recommend linking something to something else. For instance, LINK GLASS TO DOCUMENT." 
+		
+		-> stop
+		
+	Instructor (recurring; without speaking): "The instructor once again suggests that you might want to try linking the two items that you are currently carrying, the document and the glass, which happen to have been selected for this exercise because of their similarity in size, shape, and coloration."
+	
+	
+	(Spontaneous. If the pane affects the document or the document affects the pane. Recurring.)
+	
+	Instructor: "Now you've got them linked, you only need to damage one to damage both."
+		
+		-> stop
+	
+	Instructor (recurring; without speaking): "The instructor once again hints that we might want to try breaking the glass or burning the document."
+	
+	
+	(Spontaneous. If (the document is off-stage and the pane of glass is on-stage) or (the document is on-stage and the pane of glass is off-stage). Recurring.)
+	
+	Instructor (after restocking): "We've moved on from the part of the exercise where we destroy unlinked things."
+		
+		-> stop
+	
+	Instructor (after restocking): "Link first this time."
+	
+		-> stop
+	
+	Instructor (after restocking; recurring): "LINK DOCUMENT TO PANE. Then destroy one of them. Do not do this in any other order."
+	
+		-> stop 
+	
+	
+	Section 5 - Teaching Reverse Links (dialogue during Reverse linking tutorial)
+	
+	(This is the reverse linking introduction beat.)
+	
+	Instructor (after restocking): "Now, there is another form of link that shares strengths between items, rather than weaknesses."
+	
+	Instructor: "This is the reverse link. REVERSE LINK thing TO thing will make both of them impervious to fire or breakage or so on."
+	
+	
+	(Spontaneous. If pane affects document and pane does not protect document. Recurring.)
+	
+	Instructor: "That's REVERSE LINK you need, not just a regular link."
+	
+		-> stop
+	
+	Instructor (recurring): "She again offers the suggestion of using REVERSE LINK to connect the two things."
+	
+	
+	(Spontaneous. If the pane protects the document. Recurring.)
+	
+	Instructor: "Good. Now let's see the effect of that in action – try destroying one of them and see what happens."
+	
+		-> stop
+		
+	Instructor (recurring): "She requests, again, that I try destroying one of the items while they're reverse-linked, so we can see the protective power of the reverse in action."
+	
+	
+	Section 6 - Teaching unlinking (dialogue during Final Review)
+	
+	(This is the final review beat.)
+	
+	Instructor: "Last step! You now have two things that are linked together. If you no longer want that to be true, you can UNLINK them."
+	
+	Instructor (if instructor is worried): "Once you've learned that, we'll be done here and you'll be someone else's problem."
+	
+	
+	(This is the farewell beat.)
+	
+	Instructor: "And it seems we are done here."

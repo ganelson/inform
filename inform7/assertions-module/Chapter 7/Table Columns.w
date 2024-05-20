@@ -70,6 +70,25 @@ table_column *Tables::Columns::new_table_column(wording W) {
 	return tc;
 }
 
+@ The author can demand with a "translates as" sentence that a given
+table should have an identifier given to it which is accessible to Inter:
+
+=
+void Tables::Columns::translates(wording W, parse_node *p2) {
+	if (<s-value>(W)) {
+		table_column *tc = Rvalues::to_table_column(<<rp>>);
+		if (tc) {
+			RTTableColumns::translate(tc, Node::get_text(p2));
+			return;
+		}
+	}
+	LOG("Tried %W\n", W);
+	StandardProblems::sentence_problem(Task::syntax_tree(),
+		_p_(PM_TranslatesNonTableColumn),
+		"this is not the name of a table column",
+		"so cannot be translated.");
+}
+
 @h Kind.
 Keeping track of the kind of the entries in a column is a little tricky.
 Columns are created early in Inform's run, before the full hierarchy of kinds

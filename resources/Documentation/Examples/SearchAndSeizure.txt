@@ -5,6 +5,8 @@ Index: Smuggler carrying hidden items
 Description: A smuggler who has items, some of which are hidden.
 For: Z-Machine
 
+^^{Smuggler carrying hidden items}
+
 Suppose we want a character who carries hidden objects, but only while they are wearing their jacket. If we deprive them of this, their other possessions become known. Furthermore, if we ever search them, their possessions also become known, and can thereafter be mentioned by us.
 
 	{*}"Search and Seizure"

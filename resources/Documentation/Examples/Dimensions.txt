@@ -5,6 +5,8 @@ Index: Weighbridge
 Description: This example draws together the previous snippets into a working implementation of the weighbridge.
 For: Z-Machine
 
+^^{Weighbridge}
+
 The following is not a very sophisticated approach, because it does not allow for weight to accumulate: if we put a gold ingot into a paper bag, then put the bag on the balance platform, only the bag's weight will register. But it will do for a first try.
 
 	{*}"Dimensions"

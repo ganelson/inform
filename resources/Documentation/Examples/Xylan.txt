@@ -5,6 +5,8 @@ Index: Command applying to an object added to the story
 Description: Creating a new command that does require an object to be named; and some comments about the choice of vocabulary, in general.
 For: Z-Machine
 
+^^{Command applying to an object added to the story}
+
 If we wanted to define a brand new verb that did affect a specific object, we might begin like this:
 
 	{*}"Xylan"

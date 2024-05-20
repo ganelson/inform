@@ -62,7 +62,7 @@ You feel itchy.
 >[6] ask vanessa for french vanilla
 "Do you have a coupon?" Vanessa demands. You admit you do not. "No french vanilla for you!"
 
-Antony trades in the coupon and receives a dark chocolate ice cream cone from Vanessa.
+Antony trades in the coupon and receives a rum raisin ice cream cone from Vanessa.
 
 You feel itchy.
 
@@ -87,7 +87,7 @@ You feel itchy.
 >[9] ask vanessa for chocolate chocolate chip
 "Do you have a coupon?" Vanessa demands. You admit you do not. "No chocolate chocolate chip for you!"
 
-Martin trades in the coupon and receives a white chocolate chip ice cream cone from Vanessa.
+Martin trades in the coupon and receives a whole-bean vanilla ice cream cone from Vanessa.
 
 You feel itchy.
 

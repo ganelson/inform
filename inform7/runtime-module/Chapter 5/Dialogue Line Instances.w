@@ -311,14 +311,12 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 				EmitCode::val_iname(K_value, RTInstances::value_iname(I));
 			EmitCode::up();
 		} else {
+			if (Node::is(desc, TEST_VALUE_NT)) desc = desc->down;
 			CompileLoops::through_matches(desc, obj);
-			EmitCode::code();
-			EmitCode::down();
 				EmitCode::call(Hierarchy::find(DIRECTOR_ADD_LIVE_SUBJECT_LIST_HL));
 				EmitCode::down();
 					EmitCode::val_symbol(K_value, obj_s);
 				EmitCode::up();
-			EmitCode::up();
 			EmitCode::up();
 		}	
 	}

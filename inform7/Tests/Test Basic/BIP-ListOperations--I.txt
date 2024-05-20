@@ -4,7 +4,7 @@
   L then reverses to {16, 11, 5, 3, 2, 0, -7, -7}.
   L then rotates to {-7, 16, 11, 5, 3, 2, 0, -7}.
   L then rotates backwards to {16, 11, 5, 3, 2, 0, -7, -7}.
-  L sorts randomly to {16, 5, 3, 0, 2, -7, -7, 11}.
+  L sorts randomly to {3, 11, 5, -7, 0, -7, 16, 2}.
   L sorts in reverse order to {16, 11, 5, 3, 2, 0, -7, -7}.
   L sorts with a custom comparison phrase to {-7, -7, 0, 2, 3, 5, 11, 16}.
   "F" = list of fruits: {apple, pear, orange}

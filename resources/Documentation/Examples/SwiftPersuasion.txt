@@ -1,0 +1,71 @@
+Example: ** Swift Persuasion
+Location: Decision points
+RecipeLocation: Obedient Characters
+Index: Dialogue that persuades characters to do things.
+Description: We combine persuasion rules with the dialogue system so that the character who is asked to do a task can require something of the player in turn.
+
+Sometimes characters are easily persuaded to do things and sometimes they aren't. But we might want sometimes to place conditions on their cooperation.
+
+In this example, we give the player a menu option choice that they have to resolve — and which in turn will determine whether the other character does as they're asked.
+
+	{*}"Swift Persuasion"
+
+	Section 1 - Scenario
+	
+	Backstage is a room. Taylor is a woman in Backstage.
+	
+	Singing is an action applying to nothing. Understand "sing" as singing.
+	
+	Report singing:
+		say "You sing a rousing rendition of Yankee Doodle Dandy. For some reason it's the only song whose lyrics you can fully remember right now."
+	
+	Report Taylor singing:
+		say "Taylor launches into 'Electric Touch.'"
+	
+	Bargaining success is a truth state that varies.
+	
+	Persuasion rule for asking someone to try singing:  
+		now bargaining success is false;
+		perform the suggestion beat;
+		if bargaining success is false:
+			say "So much for that.";
+			persuasion fails;
+		persuasion succeeds.
+		
+	Test me with "taylor, sing / 1 / taylor, sing / 2".
+	
+	Section 2 - Persuasion text (dialogue)
+	
+	(Fully recurring. This is the suggestion beat.)
+	
+	Player (to person asked; without speaking): "You ask Taylor to sing your favorite song, the one that was unaccountably left off tonight's set list. Just one verse would do."
+	
+	The person asked: "I'll consider your request, but only if you sing something first." 
+	
+	Player: "You can't be serious."
+	
+	The person asked: "I absolutely am. I want to see what you've got."
+	
+		-- "Okay."
+			
+			Player (without speaking; before singing; now bargaining success is true): "You nod anxiously, aware of all the other VIP ticket holders standing around and poised to judge you."
+			
+			Taylor: "Little shaky on the intro, but not bad. I'd say you've earned your piece. Wouldn't you?"
+			
+			Narration: "She turns to the other fans expectantly, and they cheer."
+		
+		-- "Definitely not."
+			
+			Player: "No, the deal is off."
+			
+			The person asked: "Then I can't help you." 
+
+Note that this method would not work if the choice relied on parsed input. We could imagine giving the player a choice like:
+	
+	The person asked: "I absolutely am. I want to see what you've got."
+	
+		-- instead of singing 
+		
+			...
+
+and allowing the player to type SING (or not) as their next turn. The problem there, however, is that the interaction stretches over multiple turns. The system will print Taylor's request to the player, but it will then return to the persuasion rule in progress (and conclude that the player didn't succeed at the bargain) before it ever has a chance to see whether we sang or not.

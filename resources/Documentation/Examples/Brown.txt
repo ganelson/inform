@@ -5,6 +5,8 @@ Index: Red sticky label
 Description: A red sticky label which can be attached to anything in the game, or removed again.
 For: Z-Machine
 
+^^{Red sticky label}
+
 	{*}"Brown"
 	
 	The Shipping Room is a room. The red sticky label is a thing carried by the player. The description of the red sticky label is "It reads: AIRMAIL[if the label is part of something (called the parent)]. It is stuck to [the parent][end if]."

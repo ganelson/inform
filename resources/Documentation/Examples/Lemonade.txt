@@ -5,6 +5,8 @@ Index: Liquid containers with measured contents
 Description: Containers for liquid which keep track of how much liquid they are holding and of what kind, and allow quantities to be moved from one container to another.
 For: Z-Machine
 
+^^{liquids (implementing): containers with measured contents}
+
 Liquids, and all substances that can be mixed or broken off in partial amounts, pose a challenge to model in interactive fiction. The following example is a simple one, but adequate for many scenarios.
 
 We start by assuming that all liquids in the game will always appear in containers. The player can pour liquids from one container to another, and the containers keep track of how full they are and describe themselves appropriately. The player can also refer to containers by content.

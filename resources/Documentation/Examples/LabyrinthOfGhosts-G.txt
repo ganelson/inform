@@ -5,6 +5,8 @@ Index: Histories of previous games saved to external file
 Description: Remembering the fates of all previous explorers of the labyrinth.
 For: Glulx
 
+^^{saving the game: remembering histories of previous games}
+
 A tradition among Nethack-like computer games of the old school is that a player's death in a given place leaves a ghost behind to haunt subsequent players. Information about past lives is sometimes stored in a "bones file", and in this example we do exactly that, for a grievously unfair little dungeon.
 
 To begin with, the labyrinth itself. We create a kind of value to remember possible means of death in these tunnels, and we assign a coordinate position in some grid to each location. (We do this because grid positions can safely be stored in tables saved out to external files, whereas room names cannot–they represent data which changes each time we amend the source.)

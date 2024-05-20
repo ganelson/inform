@@ -46,6 +46,14 @@ void CardElement::render(OUTPUT_STREAM, index_session *session) {
 	CardElement::Library_Card_entry(OUT, "Language of play", pack, I"^language", I"English");
 	CardElement::Library_Card_entry(OUT, "IFID number", pack, I"^IFID", NULL);
 	CardElement::Library_Card_entry(OUT, "Story description", pack, I"^description", I"None");
+	if (Metadata::optional_textual(pack, I"^licence"))
+		CardElement::Library_Card_entry(OUT, "Licence", pack, I"^licence", I"Unspecified");
+	if (Metadata::optional_textual(pack, I"^copyright"))
+		CardElement::Library_Card_entry(OUT, "Copyright", pack, I"^copyright", I"Unspecified");
+	if (Metadata::optional_textual(pack, I"^origin"))
+		CardElement::Library_Card_entry(OUT, "Origin URL", pack, I"^origin", I"Unspecified");
+	if (Metadata::optional_textual(pack, I"^rights"))
+		CardElement::Library_Card_entry(OUT, "Rights history", pack, I"^rights", I"Unspecified");
 	HTML::end_html_table(OUT);
 	HTML_CLOSE("p");
 }

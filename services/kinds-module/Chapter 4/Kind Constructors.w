@@ -61,6 +61,7 @@ typedef struct kind_constructor {
 	struct dimensional_rules dim_rules; /* how arithmetic operations work here */
 	struct unit_sequence dimensional_form; /* dimensions of this kind */
 	int dimensional_form_fixed; /* whether they are derived */
+	struct kind_constructor *relative_kind;
 
 	/* H: representing this kind at run-time */
 	struct text_stream *explicit_identifier; /* to become an Inter identifier */
@@ -282,6 +283,7 @@ we apply any defaults set in Neptune files.
 			Kinds::Dimensions::fundamental_unit_sequence(Kinds::base_construction(con));
 	con->dimensional_form_fixed = FALSE;
 	Kinds::Dimensions::dim_initialise(&(con->dim_rules));
+	con->relative_kind = NULL;
 
 	/* H: representing this kind at run-time */
 	con->explicit_identifier = Str::new();

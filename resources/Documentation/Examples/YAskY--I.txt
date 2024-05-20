@@ -1,7 +1,7 @@
    Yurt
   Y ask Y?
   or: Bad Author, No Biscuit
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Yurt
   You can see a yam, a dish of yakitori and a yapok here.
@@ -16,8 +16,6 @@
   
   >[2] x yam
   Well, at least it's not a dish of yakitori.
-  
-  Your eye is attracted by some kind of surreptitious movement from the yam.
   
   >[3] look
   Yurt
@@ -35,7 +33,7 @@
     a yukata (being worn)
     a yataghan
   
-  The yataghan tries to slip from your grasp.
+  Your eye is attracted by some kind of surreptitious movement from the yam.
   
   >[6] look
   Yurt

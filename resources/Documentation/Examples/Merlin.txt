@@ -5,6 +5,8 @@ Index: REMEMBER command keyed to topics
 Description: A ``REMEMBER`` command which accepts any text and looks up a response in a table of recollections.
 For: Z-Machine
 
+^^{REMEMBER command keyed to topics}
+
 	{*}"Merlin"
 	
 	Understand "remember [text]" as remembering.

@@ -371,10 +371,11 @@ destroyed with |DestroyPV| before being overwritten as the items shuffle down.
 
 =
 [ LIST_OF_TY_RemoveValue list v forgive i j no_items odsize f cf delendum;
-	if (WeakKindOfPV(list) ~= LIST_OF_TY) rfalse;
+	if ((list==0) || (WeakKindOfPV(list) ~= LIST_OF_TY)) rfalse;
+	BlkMakeMutable(list);
 	cf = LIST_OF_TY_ComparisonFn(list);
 	no_items = PVField(list, LIST_LENGTH_F); odsize = no_items;
-	WritePVField(list, LIST_LENGTH_F, no_items); ! Forces the list to be mutable
+	WritePVField(list, LIST_LENGTH_F, no_items);
 	for (i=0: i<no_items: i++) {
 		delendum = PVField(list, i+LIST_ITEM_BASE);
 		if (cf == 0 or UnsignedCompare)
@@ -414,7 +415,8 @@ as the list shuffles down to fill the void.
 
 =
 [ LIST_OF_TY_RemoveItemRange list from to forgive i d no_items;
-	if (WeakKindOfPV(list) ~= LIST_OF_TY) rfalse;
+	if ((list == 0) || (WeakKindOfPV(list) ~= LIST_OF_TY)) rfalse;
+	BlkMakeMutable(list);
 	no_items = PVField(list, LIST_LENGTH_F);
 	if ((from > to) || (from <= 0) || (to > no_items)) {
 		if (forgive) {
@@ -456,7 +458,8 @@ happened in this situation to be unhelpful.
 
 =
 [ LIST_OF_TY_Remove_List list rlist i j k v w no_items odsize rsize cf f;
-	if (WeakKindOfPV(list) ~= LIST_OF_TY) rfalse;
+	if ((list == 0) || (WeakKindOfPV(list) ~= LIST_OF_TY)) rfalse;
+	BlkMakeMutable(list);
 	no_items = PVField(list, LIST_LENGTH_F); odsize = no_items;
 	rsize = PVField(rlist, LIST_LENGTH_F);
 	cf = LIST_OF_TY_ComparisonFn(list);

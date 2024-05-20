@@ -5,6 +5,8 @@ Index: Producing an EPS map of Greece
 Description: Creating a map of Greece using the locations from previous examples.
 For: Z-Machine
 
+^^{Producing an EPS map of Greece}
+
 The map-maker can be used in quite versatile ways, in short; though the default is a schematic line-and-box affair, that is hardly the only option. While the EPS created is not always the result of our dreams, Inform usually can be made to do most of the hard and boring part, leaving the author to do only a bit of aesthetic touchup.
 
 In many previous examples, we have sent hapless deities wandering around a map of Greece; we might like to chart that for ourselves, in a semi-realistic fashion. So:

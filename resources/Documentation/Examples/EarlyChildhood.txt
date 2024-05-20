@@ -5,6 +5,8 @@ Index: Duplicated blue, red and green building blocks
 Description: A child's set of building blocks, which come in three different colours - red, green and blue - but which can be repainted during play.
 For: Z-Machine
 
+^^{Duplicated blue, red and green building blocks}
+
 This would be a one-star example if it were not for the repainting:
 
 	{*}"Early Childhood 1"

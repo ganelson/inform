@@ -319,10 +319,29 @@ specification data file. But after that everything runs quite swiftly.
 
 =
 int UnicodeLiterals::parse(text_stream *N) {
-	UnicodeLiterals::ensure_data();
-	if (Dictionaries::find(UnicodeData_lookup, N)) {
-		unicode_lookup_value *ulv = Dictionaries::read_value(UnicodeData_lookup, N);
-		return ulv->code_point;
+	if ((Str::get_at(N, 0) == 'U') && (Str::get_at(N, 1) == '+')) {
+		int pos = 2;
+		int t = 0;
+		while (Str::get_at(N, pos)) {
+			if (pos > 7) return -1;
+			inchar32_t c = Str::get_at(N, pos), d = 0;
+			if ((c >= '0') && (c <= '9')) d = c - '0';
+			else if ((c >= 'a') && (c <= 'f')) d = c - 'a' + 10;
+			else if ((c >= 'A') && (c <= 'F')) d = c - 'A' + 10;
+			else return -1;
+			if (d >= 16) return -1;
+			t = t*16 + (int) d;
+			pos++;
+		}
+		return t;
+	} else if ((Str::len(N) == 3) && (Str::get_at(N, 0) == '"') && (Str::get_at(N, 2) == '"')) {
+		return (int) Str::get_at(N, 1);
+	} else {
+		UnicodeLiterals::ensure_data();
+		if (Dictionaries::find(UnicodeData_lookup, N)) {
+			unicode_lookup_value *ulv = Dictionaries::read_value(UnicodeData_lookup, N);
+			return ulv->code_point;
+		}
 	}
 	return -1;
 }

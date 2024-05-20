@@ -5,6 +5,8 @@ Index: Appointments at future times
 Description: Allowing the player to make an appointment, which is then kept.
 For: Z-Machine
 
+^^{Appointments at future times}
+
 Here we allow the player to set the time at which some future event is going to happen, rather than letting the game decide. We'll need to borrow the syntax for defining new actions from a later chapter:
 
 	{*}"Hour of the Wren"

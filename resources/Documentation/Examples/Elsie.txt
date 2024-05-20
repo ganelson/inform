@@ -5,6 +5,8 @@ Index: An automatically closing door
 Description: A door that closes automatically one turn after the player opens it.
 For: Z-Machine
 
+^^{An automatically closing door}
+
 Suppose we want to create an automated door of the sort that closes when it isn't in use. A convenient way is to write a rule that fires "every turn when the sliding door was open". This will be true only if the door was open at the beginning of the turn: if the player just opened it this turn, it stays open, and if it was already closed, it stays closed. Thus:
 
 	{*}"Elsie"

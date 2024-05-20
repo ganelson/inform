@@ -5,6 +5,8 @@ Index: Scheduling an eclipse
 Description: To schedule an eclipse of the sun, which involves a number of related events.
 For: Z-Machine
 
+^^{Scheduling an eclipse}
+
 First we define the events, and then we create a phrase to schedule them:
 
 	{*}"Totality"

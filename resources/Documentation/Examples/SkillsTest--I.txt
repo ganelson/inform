@@ -1,0 +1,86 @@
+
+
+
+
+Monica: "Welcome to the skills test!"
+
+Marcus: "You have twenty minutes to fillet this John Dory and prepare it with a parsley puree and garlic cream."
+
+Monica: "I did this myself, and it came out delicious."
+
+Monica: "No pressure."
+
+Marcus: "None."
+
+Skills Test
+An Interactive Fiction by Previous Me
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Masterchef Kitchen
+Monica is presiding over this competition. Her arms are folded and she looks ferocious. Marcus and Greg are merely her audience.
+
+You can also see a worktop (on which are a quantity of parsley, a knob of butter, a head of garlic, a shallot, some cream, a whole John Dory and a knife block (in which is a chef's knife)) here.
+
+>(Testing.)
+
+>[1] x parsley
+It's the flat variety. Is that French parsley or Italian parsley? No, it hardly matters, does it? They said puree, which means it needs to be whirred up.
+
+Marcus: "The trick here is to -"
+
+Monica: "Shush."
+
+>[2] taste parsley
+You taste a bit of the quantity of parsley. It's... quantity of parsleylike.
+
+Marcus: "It's always a good sign when they taste the food."
+
+>[3] x dory
+A flat fish with very large and searching eyes. This one is staring at you. The flesh is white and unassuming. Plainly, you are meant to detach and cook this flesh. The John Dory is still staring at you.
+
+Marcus: "We do like to see proficient knife skills."
+
+>[4] z
+Time passes.
+
+Greg: "I think we've seen better from the other contestants."
+
+Monica: "You're not supposed to say that in front of them."
+
+Greg: "We can take it out in editing."
+
+>[5] x butter
+An obscene quantity of high-fat European butter.
+
+Marcus: "The John Dory is such a beautiful fish."
+
+Monica: "It would be a tragedy to waste any of the flesh."
+
+>[6] take chef's knife
+Taken.
+
+Monica: "Come on, you're going to need to cut that up sooner or later."
+
+>[7] cut dory
+You briskly transform the side of the John Dory into three miserable and ragged fillets of fish.
+
+Monica looks closely at the miserable fillets.
+
+Monica: "Ooh, what did I say about wasting any of the John Dory meat?"
+
+Marcus: "You didn't like the idea."
+
+Greg: "It's such a noble fish."
+
+Marcus: "I think you mean it was a noble fish."
+
+>[8] x fillets
+These are the shreds of meat you have managed to slash off the body of the deceased John Dory. They are jaggedly cut and inelegant.
+
+Marcus: "Monica, do you know why the John Dory was named that?"
+
+Monica: "No, why?"
+
+Marcus: "I was asking you."
+
+>Are you sure you want to quit? 

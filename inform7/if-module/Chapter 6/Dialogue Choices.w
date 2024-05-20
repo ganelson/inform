@@ -105,26 +105,10 @@ typedef struct dialogue_choice {
 
 @<Check the flow notation@> =
 	int left_arrow = FALSE, right_arrow = FALSE, dash = FALSE;
-	switch (dc->selection_type) {
-		case INSTEAD_OF_DSEL:
-		case AFTER_DSEL:
-		case BEFORE_DSEL:
-		case OTHERWISE_DSEL:
-		case TEXTUAL_DSEL:
-			dash = TRUE;
-			break;					
-		case AGAIN_DSEL:
-			left_arrow = TRUE;
-			break;
-		case PERFORM_DSEL:
-		case STOP_DSEL:
-		case ENDING_DSEL:
-		case ENDING_SAYING_DSEL:
-		case ENDING_FINALLY_DSEL:
-		case ENDING_FINALLY_SAYING_DSEL:
-		case ANOTHER_CHOICE_DSEL:
-			right_arrow = TRUE;
-			break;					
+	switch (DialogueChoices::flow_direction(dc)) {
+		case DIALOGUE_NOT_FLOWING: dash = TRUE; break;
+		case DIALOGUE_FLOWING_LEFT: left_arrow = TRUE; break;
+		case DIALOGUE_FLOWING_RIGHT: right_arrow = TRUE; break;
 	}
 	vocabulary_entry *symbol = Lexer::word(Wordings::first_wn(Node::get_text(PN)));
 	if ((dash) && (symbol != DOUBLEDASH_V)) {
@@ -220,7 +204,28 @@ void DialogueChoices::write_dcc(OUTPUT_STREAM, int c) {
 @e STEP_THROUGH_AND_STOP_DSEL       /* -- step through and stop */
 @e OR_DSEL                          /* -- or */
 
+@d DIALOGUE_NOT_FLOWING 0
+@d DIALOGUE_FLOWING_LEFT 1
+@d DIALOGUE_FLOWING_RIGHT 2
+
 =
+int DialogueChoices::flow_direction(dialogue_choice *dc) {
+	switch (dc->selection_type) {
+		case AGAIN_DSEL:
+			return DIALOGUE_FLOWING_LEFT;
+		case PERFORM_DSEL:
+		case STOP_DSEL:
+		case ENDING_DSEL:
+		case ENDING_SAYING_DSEL:
+		case ENDING_FINALLY_DSEL:
+		case ENDING_FINALLY_SAYING_DSEL:
+		case ANOTHER_CHOICE_DSEL:
+			return DIALOGUE_FLOWING_RIGHT;
+	}
+	return DIALOGUE_NOT_FLOWING;
+}
+
+@ =
 <dialogue-selection> ::=
 	<quoted-text> |                                   ==> { TEXTUAL_DSEL, - }
 	another choice |                                  ==> { ANOTHER_CHOICE_DSEL, - }
@@ -323,6 +328,9 @@ void DialogueChoices::decide_choice_performs(void) {
 				}
 			}
 		}
+		if ((dc->selection_type == OTHERWISE_DSEL) ||
+			(DialogueChoices::flow_direction(dc) != DIALOGUE_NOT_FLOWING))
+			DialogueChoices::apply_property(dc, P_recurring);
 	}
 }
 
@@ -331,19 +339,18 @@ void DialogueChoices::parse_property(dialogue_choice *dc, parse_node *AL) {
 		DialogueChoices::parse_property(dc, AL->down);
 		DialogueChoices::parse_property(dc, AL->down->next);
 	} else if (Node::is(AL, UNPARSED_NOUN_NT)) {
-		inference_subject *subj = Instances::as_subject(dc->as_instance);
 		wording A = Node::get_text(AL);
 		if (<s-value-uncached>(A)) {
 			parse_node *val = <<rp>>;
 			if (Rvalues::is_CONSTANT_construction(val, CON_property)) {
 				property *prn = Rvalues::to_property(val);
 				if (Properties::is_either_or(prn)) {
-					@<Assert that the choice has this property@>;
+					DialogueChoices::apply_property(dc, prn);
 					return;
 				}
 			}
 			if ((Specifications::is_description(val)) || (Node::is(val, TEST_VALUE_NT))) {
-				@<Assert that the choice has this property value@>;
+				DialogueChoices::apply_property_value(dc, val);
 				return;
 			}
 			LOG("Unexpected prop: $T\n", val);
@@ -361,21 +368,25 @@ void DialogueChoices::parse_property(dialogue_choice *dc, parse_node *AL) {
 	}
 }
 
-@<Assert that the choice has this property@> =
+@ =
+void DialogueChoices::apply_property(dialogue_choice *dc, property *prn) {
+	inference_subject *subj = Instances::as_subject(dc->as_instance);
 	pcalc_prop *prop = AdjectivalPredicates::new_atom_on_x(
 		EitherOrProperties::as_adjective(prn), FALSE);
 	prop = Propositions::concatenate(
 		Propositions::Abstract::prop_to_set_kind(K_dialogue_choice), prop);
 	Assert::true_about(prop, subj, CERTAIN_CE);
+}
 
-@<Assert that the choice has this property value@> =
+void DialogueChoices::apply_property_value(dialogue_choice *dc, parse_node *val) {
+	inference_subject *subj = Instances::as_subject(dc->as_instance);
 	pcalc_prop *prop = Descriptions::to_proposition(val);
 	if (prop) {
 		prop = Propositions::concatenate(
 			Propositions::Abstract::prop_to_set_kind(K_dialogue_choice), prop);
 		Assert::true_about(prop, subj, CERTAIN_CE);
-		return;
 	}
+}
 
 @ So what remains to be done? Everything is done except for code to be compiled
 at runtime. See //runtime: Dialogue Choice Instances//.

@@ -1,0 +1,97 @@
+Example: ** German Chocolate
+Location: When the director is active
+RecipeLocation: Goal-Seeking Characters
+Index: Goal-seeking dialogue
+Description: Allowing a character to doggedly pursue a particular subject of conversation.
+
+Sometimes instead of free-flowing dialogue we may want a character who is able to persistently go after a particular question. Here, we allow goal-seeking so that even if the player changes the topic, the character will keep looking for segues to the important point.
+
+	{*}"German Chocolate"
+	
+	Chapter 1 - Setting
+	 
+	Parlour is a room. Louisa is a person in Parlour.
+	
+	Before reading a command while the turn count is 1:
+		make the dialogue director active.
+		
+	Test me with "z / talk about lunch / talk about money / z / z".
+	
+	Chapter 2 - Content
+	
+	Section 1 - Concepts
+	
+	Suggestion relates various concepts to each other. The verb to suggest means the suggestion relation.
+	
+	Food is a concept. Food suggests breakfast, lunch, dinner, dessert, and beverages.
+	
+	Dessert suggests chocolate cake.
+	
+	The target concept is a concept that varies. The target concept is chocolate cake.
+	
+	Money is a concept. Money suggests economics. Economics suggests the cocoa industry. The cocoa industry suggests chocolate.
+	
+	Section 2 - Traversal
+	
+	Every turn:
+		let current concept be entry 1 in the live conversational subject list;
+		let proximate concept be the next step via the suggestion relation from current concept to the target concept;
+		clear conversational subjects;
+		try Louisa talking about the proximate concept;
+		if the proximate concept is the target concept:
+			end the story finally saying "She got to the point in the end."
+	
+	
+	Section 3 - Actual content (dialogue) 
+	
+	(This is the starting beat. About food.)
+	
+	Louisa: "I am so hungry."
+	
+	
+	(About food. Fully recurring.)
+	
+	Louisa: "[one of]Gosh, I could really go for something to eat![or]...okay, I know I'm getting annoying on this subject but I am still so hungry.[or]I get so feisty when my blood sugar drops.[or]Is there really nothing to eat around here?[stopping]"
+	
+	
+	(About lunch.)
+	
+	Player: "I missed lunch, but it's no big deal."
+	
+	Louisa: "You're so brave."
+	
+	
+	(About dessert.)
+	
+	Louisa: "I could really go for something sweet."
+	
+	
+	(About dessert. Fully recurring.)
+	
+	Louisa (without speaking): "Louisa comes back around to the subject of desserts."
+	
+	
+	(About chocolate cake.)
+	
+	Louisa: "Are you eating the leftover chocolate cake? Because if you're not, I mean, if you don't want it... it's only that I'm starving."
+	
+	
+	(About money.)
+	
+	Player: "I'm broke this month. I've got to keep my expenses down until next month's paycheck comes in."
+	
+	
+	(About economics.)
+	
+	Louisa: "Things are difficult all over, I think. It's a shame, really. Though... it could be worse. Some countries are in much worse economic condition than we are."
+	
+	
+	(About cocoa industry.)
+	
+	Louisa: "I saw a documentary about the cocoa industry just recently. It really makes you think, you know, about where we get our chocolate from."
+	
+	
+	(About the cocoa industry and economics. Fully recurring.)
+	
+	Louisa (without speaking): "Louisa revisits the topic of fair trade chocolate."
+	 

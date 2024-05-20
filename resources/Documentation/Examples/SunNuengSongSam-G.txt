@@ -5,6 +5,8 @@ Index: Thai numerals
 Description: Printing signed decimal numbers in traditional Thai numerals.
 For: Glulx
 
+^^{characters (letters): accented and exotic letters and symbols}
+
 There's not really a scenario here, but interested readers are referred to the hit television series นักเรียนพลังกิฟต์ (2018), _Students With Special Powers_.
 
 	{*}"Sun Nueng Song Sam"

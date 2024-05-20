@@ -5,6 +5,8 @@ Index: Numbers in relations
 Description: The parity and joint magnitude relations explored.
 For: Z-Machine
 
+^^{Numbers in relations}
+
 This is the same case given above, but expanded just slightly to demonstrate that the names of the relations can also be printed, if we like:
 
 	{*}"Number Study"

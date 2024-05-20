@@ -1,0 +1,10 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 37 words long.
+I've also read version 2 of Basic Inform by Graham Nelson, which is 8488 words long.
+I've also read version 2 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 7 of Standard Rules by Graham Nelson, which is 35138 words long.
+Problem__ PM_TranslatesTableColumnAlready
+  >--> You wrote 'The niceness column table column is accessible to Inter as
+    "NICENESS_COL"' (source text, line 10): but this table column has already
+    been translated, so there must be some duplication somewhere.
+Inform 7 has finished.

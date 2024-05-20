@@ -64,7 +64,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">BasicInformKit</a></li><li><b>Char Template</b></li></ul></div>
 <p class="purpose">To decide whether letters are upper or lower case, and convert between the two.</p>
 
-<ul class="toc"><li><a href="S-chr.html#SP1">&#167;1. Char Is Of Case</a></li><li><a href="S-chr.html#SP2">&#167;2. Char To Case</a></li><li><a href="S-chr.html#SP3">&#167;3. DigitToValue</a></li><li><a href="S-chr.html#SP4">&#167;4. Testing</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-chr.html#SP1">&#167;1. Char Is Of Case</a></li><li><a href="S-chr.html#SP2">&#167;2. Char To Case</a></li><li><a href="S-chr.html#SP3">&#167;3. DigitToValue</a></li><li><a href="S-chr.html#SP4">&#167;4. Testing</a></li><li><a href="S-chr.html#SP5">&#167;5. Unicode</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Char Is Of Case. </b>The following decides whether a character <span class="extract"><span class="extract-syntax">c</span></span> belongs to case <span class="extract"><span class="extract-syntax">case</span></span>, where
 0 means lower case and 1 means upper. <span class="extract"><span class="extract-syntax">c</span></span> is interpreted according to the
@@ -168,6 +168,14 @@ or returns \(-1\) if it isn't a digit.
 <span class="plain-syntax">        </span><span class="identifier-syntax">j</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CharToCase</span><span class="plain-syntax">(</span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">); </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">j</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">i</span><span class="plain-syntax">) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"  toupper: "</span><span class="plain-syntax">, (</span><span class="identifier-syntax">char</span><span class="plain-syntax">) </span><span class="identifier-syntax">j</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"^"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
+<span class="plain-syntax">];</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Unicode. </b></p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">[ </span><span class="identifier-syntax">UNICODE_CHARACTER_TY_Say</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"unicode U+"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PrintInBase</span><span class="plain-syntax">(</span><span class="identifier-syntax">c</span><span class="plain-syntax">, </span><span class="constant-syntax">16</span><span class="plain-syntax">, </span><span class="constant-syntax">4</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">

@@ -381,7 +381,7 @@ Much of this can be seen, and seen more easily, in the World tab of the Index pa
 
 ## The TEST command {PM_TestMultiWord} {PM_TestDuplicate} {PM_TestBadRequirements} {PM_TestContainsUndo} {PM_TestCommandTooLong} {PM_TestDoubleWith} {PM_UnknownInternalTest}
 
-^^{TEST+testcmd+} ^^{testing commands: >TEST} ^^{transcripts: creating with the TEST command} ^^{test (test name) with (commands)+assert+} ^^{PURLOIN+testcmd+} ^^{testing commands: >PURLOIN}
+^^{TEST+testcmd+} ^^{testing commands: >TEST} ^^{transcripts: creating with the TEST command} ^^{test (test name) with (commands)+assert+} ^^{PURLOIN+testcmd+} ^^{testing commands: >PURLOIN} ^^{>AGAIN}
 
 The only way to thoroughly test a work of IF is to run a complete solution through it, and carefully check the resulting transcript of dialogue. But most works of interactive fiction contain occasional vignettes, either in terms of short scenes of narrative, or in the behaviour of particular things or rooms. The examples in the documentation are like this: in almost every example, typing ``TEST ME`` puts the story through its paces.
 
@@ -476,7 +476,7 @@ Newcomers will probably not need extensions for quite some while, let alone need
 
 ## Use options {PM_UONotNumerical} {PM_UnknownUseOption} {OPTIONS}
 
-^^{use options} ^^{use (options...)+assert+} ^^{punctuation: comma: displaying serial comma} ^^^{punctuation: comma <-- comma} ^^{|,: displaying serial comma} ^^{scoring: enabling} ^^{descriptions (displayed): full-length room descriptions / abbreviated room descriptions} ^^{rooms+kind+: descriptions} ^^{use options: catalogue: |American dialect} ^^{American dialect+useopt+} ^^{use options: catalogue: |the serial comma} ^^{serial comma+useopt+} ^^{use options: catalogue: |scoring} ^^{scoring+useopt+} ^^{use options: catalogue: |full-length room descriptions} ^^{full-length room descriptions+useopt+} ^^{use options: catalogue: |abbreviated room descriptions} ^^{abbreviated room descriptions+useopt+} ^^{use options: catalogue: |VERBOSE room descriptions} ^^{VERBOSE room descriptions+useopt+} ^^{use options: catalogue: |BRIEF room descriptions} ^^{BRIEF room descriptions+useopt+} ^^{use options: catalogue: |SUPERBRIEF room descriptions} ^^{SUPERBRIEF room descriptions+useopt+} ^^{use options: catalogue: |undo prevention} ^^{undo prevention+useopt+} ^^{>UNDO}
+^^{use options} ^^{use (options...)+assert+} ^^{punctuation: comma: displaying serial comma} ^^^{punctuation: comma <-- comma} ^^{|,: displaying serial comma} ^^{scoring: enabling} ^^{descriptions (displayed): full-length room descriptions / abbreviated room descriptions} ^^{rooms+kind+: descriptions <-- descriptions (displayed): room descriptions} ^^{use options: catalogue: |American dialect} ^^{American dialect+useopt+} ^^{use options: catalogue: |the serial comma} ^^{serial comma+useopt+} ^^{use options: catalogue: |scoring} ^^{scoring+useopt+} ^^{use options: catalogue: |full-length room descriptions} ^^{full-length room descriptions+useopt+} ^^{use options: catalogue: |abbreviated room descriptions} ^^{abbreviated room descriptions+useopt+} ^^{use options: catalogue: |VERBOSE room descriptions} ^^{VERBOSE room descriptions+useopt+} ^^{use options: catalogue: |BRIEF room descriptions} ^^{BRIEF room descriptions+useopt+} ^^{use options: catalogue: |SUPERBRIEF room descriptions} ^^{SUPERBRIEF room descriptions+useopt+} ^^{use options: catalogue: |undo prevention} ^^{undo prevention+useopt+} ^^{>UNDO}
 
 One more preliminary. Inform has a small number of optional settings which affect the result of translating the source. The sentence:
 
@@ -636,7 +636,7 @@ then the first room to be created will actually be the Y2 Rock Room, so that's w
 
 ## Rooms and the map {kind_room} {MAP} {PM_SameKindEquated} {PM_DescriptionsEquated}
 
-^^{rooms+kind+: connections between rooms} ^^{connections between rooms <-- exits} ^^{index map <-- map} ^^{directions+kind+ <-- compass directions} ^^{|called: in creating rooms} ^^{|from: inside / outside from} ^^{|inside from} ^^{|outside from} ^^{use options: catalogue: |unabbreviated object names} ^^{unabbreviated object names+useopt+} ^^{abbreviations: object names}
+^^{rooms+kind+: connections between rooms} ^^{connections between rooms <-- exits <-- map: designing} ^^{index map <-- map: in Index panel} ^^{directions+kind+ <-- compass directions} ^^{|called: in creating rooms} ^^{|from: inside / outside from} ^^{|inside from} ^^{|outside from} ^^{use options: catalogue: |unabbreviated object names} ^^{unabbreviated object names+useopt+} ^^{abbreviations: object names}
 
 Rooms are joined together at their edges by "map connections", most of which are pathways in one of the eight cardinal compass directions: north, northeast (written without a hyphen), east, southeast, south, southwest, west, northwest. We also have up and down, suitable for staircases or ladders. In real life, people are seldom conscious of their compass bearing when walking around buildings, but it makes a concise and unconfusing way for the player to say where to go next, so is generally accepted as a convention of the genre.
 
@@ -705,7 +705,7 @@ Inform makes guesses about the first sentence, and makes a two-way connection; b
 
 ## Regions and the index map {kind_region} {REGIONS} {PM_ExistingRegion} {PM_RegionInTwoRegions} {PM_RegionRelation}
 
-^^{kinds: catalogue: region} ^^{regions+kind+ <-- kinds: catalogue: region} ^^{rooms+kind+: grouping into regions} ^^{index map} ^^{Map page of Index panel+ui+} ^^{user interface: Index panel: Map page} ^^{Index panel+ui+: Map page}
+^^{kinds: catalogue: region} ^^{regions+kind+ <-- kinds: catalogue: region} ^^{rooms+kind+: grouping into regions} ^^{index map} ^^{Map page of Index panel+ui+} ^^{user interface: Index panel: Map page} ^^{Index panel+ui+: Map page} ^^{map region of (room)+prop+} ^^{map region of (room)+propcat+}
 
 Rooms represent individual places to which one can go, but we tend to think of the world around us in larger pieces: we think of a house and a garden, rather than each of the single rooms of the house and all corners of its garden. To Inform a collection of rooms is called a _region_, and we can create one like so:
 
@@ -798,7 +798,7 @@ The cup, the pistol and the table are all allowed to have the `fixed in place` p
 
 ## Scenery
 
-^^{scenery (thing)+prop+} ^^{scenery (thing)+propcat+} ^^{immobile things: |scenery} ^^{things+kind+: immobile: |scenery} ^^{hiding things from room descriptions by making them scenery <-- concealment+rel+: in a room} ^^{descriptions (displayed): hiding things from room descriptions} ^^{supporters+kind+: mentioned because of supported things}
+^^{scenery (thing)+prop+} ^^{scenery (thing)+propcat+} ^^{immobile things: |scenery} ^^{things+kind+: immobile: |scenery} ^^{hiding things from room descriptions by making them scenery <-- concealment+rel+: in a room} ^^{descriptions (displayed): hiding things from room descriptions} ^^{rooms+kind+: printing the room contents: hiding things} ^^{supporters+kind+: mentioned because of supported things}
 
 As we have just seen, making something `fixed in place` will prevent it from being picked up or moved. But it remains substantial enough to be described in its own paragraph of text when the player visits its location. This can be unfortunate if it has also been described already in the body of the main description for that location. For instance, if we wrote:
 
@@ -1126,7 +1126,7 @@ During play, all three items will be able to be extracted from the purse with co
 
 ## Possessions and clothing
 
-^^{possessions} ^^{carrying+rel+} ^^{carrying+relcat+} ^^{wearing+rel+} ^^{wearing+relcat+}^^^{wearing+rel+ <-- clothing} ^^{wearable (thing)+prop+} ^^{wearable (thing)+propcat+} ^^{Inform 6 equivalent: |clothing} ^^{worn (thing)+adj+} ^^{carried (thing)+adj+} ^^{held (thing)+adj+}
+^^{possessions} ^^{carrying+rel+} ^^{carrying+relcat+} ^^{wearing+rel+} ^^{wearing+relcat+}^^^{wearing+rel+ <-- clothing: wearing relation} ^^{wearable (thing)+prop+} ^^{wearable (thing)+propcat+} ^^{Inform 6 equivalent: |clothing} ^^{worn (thing)+adj+} ^^{carried (thing)+adj+} ^^{held (thing)+adj+}
 
 We have seen how to place objects in rooms, and in containers or on supporters. But what about people? Perhaps it could be said that they "contain" the fillings in their teeth, or "support" a top hat, but this is not very natural. Inform therefore never speaks of things being `in` or `on` people. Instead, they have two sorts of possessions: the things they `carry`, and the things they `wear`. (Body parts, such as arms and legs, are different again: see [Parts of things] below for a clue to how to do these.) Thus:
 
@@ -1315,7 +1315,7 @@ because they are too vague. Inform needs to know exactly where the fob watch and
 
 ## New kinds {NEWKINDS}
 
-^^{kinds <-- types} ^^{kinds: defining} ^^{defining: kinds} ^^{kinds: hierarchy of kinds} ^^{kinds: of value} ^^{kinds: of thing} ^^{kinds: defining: kinds of thing} ^^{defining: kinds of thing} ^^{things+kind+: kinds of} ^^{rooms+kind+} ^^{things+kind+} ^^{directions+kind+} ^^{regions+kind+} ^^{animals+kind+} ^^{man+kind+} ^^{woman+kind+} ^^{Inform 6 equivalent: classes} ^^{Kinds page of Index panel+ui+} ^^{user interface: Index panel: Kinds page} ^^{Index panel+ui+: Kinds page}
+^^{kinds <-- types} ^^{kinds: defining} ^^{defining: kinds} ^^{kinds: hierarchy of kinds} ^^{kinds: of value} ^^{kinds: of thing} ^^{kinds: defining: kinds of thing} ^^{defining: kinds of thing} ^^{things+kind+: kinds of} ^^{things+kind+: object kind, as distinct from thing} ^^{rooms+kind+} ^^{things+kind+} ^^{directions+kind+} ^^{regions+kind+} ^^{animals+kind+} ^^{man+kind+} ^^{woman+kind+} ^^{Inform 6 equivalent: classes} ^^{Kinds page of Index panel+ui+} ^^{user interface: Index panel: Kinds page} ^^{Index panel+ui+: Kinds page}
 
 Values in Inform are the nouns in its sentences. They represent numbers, times of day, pieces of text, places, people, doors, and so on. Because values have such an enormous variety, and because we often want to talk about what some of them have in common, we need a way to sort these values into categories, and those are called _kinds_. Some examples:
 
@@ -1419,7 +1419,7 @@ without knowing that `coffer` is a kind, it simply makes a thing called `open co
 
 ## Degrees of certainty
 
-^^{(always / never), in assertions+sourcepart+} ^^{(never / always), in assertions+sourcepart+} ^^{(usually / seldom), in assertions+sourcepart+} ^^{(seldom / usually), in assertions+sourcepart+} ^^{default properties of kinds} ^^{kinds: default properties}
+^^{(always / never), in assertions+sourcepart+} ^^{(never / always), in assertions+sourcepart+} ^^{(usually / seldom), in assertions+sourcepart+} ^^{(seldom / usually), in assertions+sourcepart+} ^^{default properties of kinds} ^^{kinds: default properties} ^^{properties: defaults for kind}
 
 When we write:
 
@@ -1689,7 +1689,7 @@ And while we're at it, let's give each `brightness` its own corresponding `tempe
 
 ## Conditions of things {PM_EitherOnThree}
 
-^^{kinds: defining: kinds of value} ^^{defining: kinds of value} ^^{values: kinds of value} ^^{kinds: enumerated values} ^^{properties: holding a new kind of value} ^^{properties: value properties: defining} ^^{value properties: defining} ^^{defining: value properties} ^^{(condition), naming properties+sourcepart+}
+^^{kinds: defining: kinds of value} ^^{defining: kinds of value} ^^{values: kinds of value} ^^{kinds: enumerated values} ^^{properties: holding a new kind of value} ^^{properties: value properties: defining} ^^{value properties: defining} ^^{defining: value properties} ^^{(condition), as name for value property+sourcepart+}
 
 Now for an even more abbreviated way to create a new kind of value, and at the same time create a property to hold it. Suppose we have something, say a wine cask, which we know is always in one of three different states. We can write:
 
@@ -2073,7 +2073,7 @@ results in red being zesty, but blue and green being flat; blue because the sour
 
 ## Text with substitutions {PM_TSWithPunctuation}
 
-^^{text <-- strings of characters} ^^{text: displaying} ^^{text substitutions: text} ^^{descriptions (displayed): room descriptions with substituted text} ^^{punctuation: square brackets: text substitutions} ^^{|[ ]: text substitutions} ^^{punctuation: quotation marks: defining texts} ^^{|": defining texts}
+^^{text <-- strings of characters} ^^{text: displaying} ^^{text substitutions: text} ^^{descriptions (displayed): with substituted text} ^^{rooms+kind+: descriptions: with substituted text} ^^{punctuation: square brackets: text substitutions} ^^{|[ ]: text substitutions} ^^{punctuation: quotation marks: defining texts} ^^{|": defining texts}
 
 In the previous chapter, [Kinds], we gave properties to certain kinds of things in order to change their appearance and behaviour, and saw brief glimpses of one of Inform's most useful devices: _text substitution_. The following gives a more complete example:
 
@@ -2721,7 +2721,7 @@ Whichever effect we use, we should be careful to ensure that we return to normal
 
 ## Accented letters
 
-^^{characters (letters): special / accented}^^^{characters (letters) <-- letters <-- accented letters}^^^{characters (letters) <-- symbols}
+^^{characters (letters): accented and exotic letters and symbols}^^^{characters (letters) <-- letters <-- accented letters}^^^{characters (letters) <-- symbols}
 
 Inform 7 is infused by the English language, so it's a challenge using it to write a work of IF in any other language. (With that said, extensions do exist which have made considerable progress on this problem: nil desperandum.) But even a book in English contains occasional quotations or words borrowed from other tongues, so we are going to need more than plain A to Z.
 
@@ -2777,13 +2777,15 @@ As we have seen, Inform allows us to type a wide range of characters into the so
 
 Unicode characters can be named (or numbered) directly in text. For example:
 
-	"[unicode 321]odz Churchyard"
+	"[unicode U+0141]odz Churchyard"
 
-produces a Polish slashed L. Characters can also be named as well as numbered:
+produces a Polish slashed L, that is, prints as ``Łodz Churchyard``. The notation `unicode U+0141` uses hexadecimal digits, and actually refers to the character whose number is 321, because 321 in base 16 is 141. (Inform would also have accepted `unicode 321` in decimal, but it's far more usual for Unicode to be quoted in hexadecimal.)
+
+Characters can also be named as well as numbered:
 
 	"[unicode Latin capital letter L with stroke]odz Churchyard"
 
-The Unicode standard assigns character numbers to essentially every marking used in text from any human language: its full range is enormous. (Note that Inform writes these numbers in decimal: many reference charts show them in hexadecimal, or base 16, which can cause confusion.)
+The Unicode standard assigns character numbers to essentially every marking used in text from any human language: its full range is enormous.
 
 This means, for instance, that we can write text such as:
 
@@ -2794,11 +2796,25 @@ Admittedly, character names can get a little verbose:
 
 	"[unicode Greek small letter omega with psili and perispomeni and ypogegrammeni]"
 
-Inform can "only" handle codes in the range 32 to 131071, and note that if the project Settings are to compile to the Z-machine, this range stops at 65535: thus many emoji characters – say, `"[unicode fish cake with swirl design]"` – can only be used if the story will compile to Glulx or another modern target. But by default, stories are compiled the modern way, so this should not be a problem in practice.
+Occasionally, the presence of words like "with" in the names of Unicode characters can cause ambiguities — for example, in this sentence:
+
+	The secret sign is initially unicode Latin capital letter L with stroke.
+
+This can be avoided by using brackets around the name, to make clear how the sentence should be read:
+
+	The secret sign is initially unicode (Latin capital letter L with stroke).
+
+Inform can "only" handle codes in the range `unicode U+20` to `unicode U+1FFFF`, that is, 32 to 131071 in decimal, and note that if the project Settings are to compile to the Z-machine, this range stops at `unicode U+FFFF`: thus many emoji characters – say, `unicode fish cake with swirl design` – can only be used if the story will compile to Glulx or another modern target. But by default, stories are compiled the modern way, so this should not be a problem in practice.
 
 There are far too many possible names to list here: formally, any character name in the Basic Multilingual Plane or the Supplementary Multilingual Plane of version 15.0.0 of the Unicode standard can be used.
 
-But before getting carried away, we should remember the hazards: Inform allows us to type, say, `"[unicode Saturn]"` (an astrological sign) but it appears only as a black square if the resulting story is played by an interpreter using a font which lacks the relevant sign. For instance, Zoom for OS X uses the Lucida Grande and Apple Symbol fonts by default, and this combination does contain the Saturn sign: but Windows Frotz tends to use the Tahoma font by default, which does not. (Another issue is that the fixed letter spacing font, such as used in the status line, may not contain all the characters that the font of the main text contains.) To write something with truly outré characters is therefore a little chancy: users would have to be told quite carefully what interpreter and font to use to play it.
+Still another alternative is to write `unicode "C"`: this is no use inside a text substitution because the double-quotation marks can't be used there, but something like:
+
+	The secret sign is initially unicode "☣".
+
+...will work fine. `unicode "☣"`, `unicode U+2623`, `unicode 9763` and `unicode Biohazard Sign` are all ways to write the same value, which has the kind `unicode character`.
+
+But before getting carried away, we should remember the hazards: Inform allows us to type, say, `unicode Saturn` (an astrological sign) but it appears only as a black square if the resulting story is played using a font which lacks the relevant sign. (Another issue is that the fixed letter spacing font, such as used in the status line, may not contain all the characters that the font of the main text contains.) To write something with truly outré characters is therefore a little chancy.
 
 At one time, Inform could only use named Unicode values in a story which had first included an extension:
 
@@ -2815,7 +2831,7 @@ A feature of Inform now best avoided is that, in a limited way and only on a nar
 
 Text is normally printed in between the typed commands of the player, rolling upwards from the bottom of the screen, as if a dialogue is being typed by an old-fashioned teletype. But it can also be displayed in a bolder way, floating above the main text, and this is sometimes used to display quotations.
 
-> phrase: {ph_boxed} display the boxed quotation (text)
+> phrase: {ph_boxed} display the/-- boxed quotation (text)
 >
 > This phrase displays the given text on screen in an overlaid box. For reasons to do with the way such quotations are plotted onto the screen, their text is treated literally: no substitutions in square brackets are obeyed, and no non-Latin characters can be used in it. The quotation will only ever appear once, regardless of the number of times the `display the boxed quotation ...` phrase is reached. Rather than being shown immediately – and thus, probably, scrolling away before it can be seen – the display is held back until the next command prompt is shown to the player. Example:
 >
@@ -3184,7 +3200,7 @@ And we can also test non-existence:
 
 ## A word about in
 
-^^{containment+rel+} ^^{containment+relcat+} ^^{regional-containment+rel+} ^^{regional-containment+relcat+} ^^{indirect containment} ^^{containment+rel+: indirect} ^^{regions+kind+: things in regions} ^^{regions+kind+: regional containment} ^^{rooms+kind+: grouping into regions}
+^^{containment+rel+} ^^{containment+relcat+} ^^{regional-containment+rel+} ^^{regional-containment+relcat+} ^^{indirect containment} ^^{containment+rel+: indirect} ^^{regions+kind+: things in regions} ^^{regions+kind+: regional containment} ^^{rooms+kind+: grouping into regions} ^^{map region of (room)+prop+}
 
 What does "in" mean? The literal answer is that it means containment, that is, `X is in Y` means that Y contains X. Containment is an idea which is itself a little complicated to unravel, though.
 
@@ -3456,7 +3472,7 @@ Lastly, note that the `the` in text like `two of the doors` matters: without it,
 
 ## Actions {ACTIONS} {kind_actionname} {PM_APWithNoParticiple} {PM_APUnknown} {PM_NonActionIn}
 
-^^{actions} ^^{success: for actions} ^^{failure: for actions} ^^{taking+action+} ^^{ACTIONS+testcmd+} ^^{testing commands: >ACTIONS}
+^^{actions} ^^{success: for actions} ^^{failure: for actions} ^^{taking+action+ <-- >GET} ^^{ACTIONS+testcmd+} ^^{testing commands: >ACTIONS}
 
 _Actions_ are what we get if we try to break down a narrative into its smallest moments. We might casually say that we are "going shopping", but this involves many smaller steps: going north, going east, entering the shop, examining a loaf of bread, taking it, giving money to the baker, and so on.
 
@@ -3485,6 +3501,8 @@ The testing command ``ACTIONS`` causes Inform to log every action as it happens,
 A good way to get a sense of the constant flow of actions is to use this command and then wander around an existing work, trying things out. ``ACTIONS`` can also give an insight into the web of rules governing play: there are more than ten different ways an attempt to take something can fail, for instance.
 
 ## Actions versus commands
+
+^^{>OOPS} ^^{>AGAIN}
 
 Actions and commands are not quite the same thing. Commands are the words typed in players: ``EXAMINE BLUEPRINT`` is an example of a command. When the player types this (and assuming there is a blueprint available), the action `examining the blueprint` is what then happens.
 
@@ -3562,7 +3580,7 @@ We have seen that instead rules automatically stop actions, whereas before rules
 
 It is also possible to be explicit about stopping the action:
 
-> phrase: {ph_stopaction} stop the action
+> phrase: {ph_stopaction} stop the/-- action
 >
 > This phrase stops the current rule, stops the rulebook being worked through, and finally stops the action being processed. Example:
 >
@@ -3572,7 +3590,7 @@ It is also possible to be explicit about stopping the action:
 
 Finally, we can prevent Inform from stopping the action when it otherwise might:
 
-> phrase: {ph_continueaction} continue the action
+> phrase: {ph_continueaction} continue the/-- action
 >
 > This phrase ends the current rule, but in a way which keeps its rulebook going, so that the action being processed will carry on rather than being stopped. Example:
 >
@@ -3682,7 +3700,7 @@ Games with a lot of conversation often involve great heaps of rules like the one
 
 ## The other four senses
 
-^^{senses} ^^{actions: involving senses} ^^{rules: for senses} ^^{rooms+kind+: listening to (with no object)} ^^{rooms+kind+: smelling (with no object)} ^^{listening to+action+} ^^{smelling+action+} ^^{touching+action+} ^^{tasting+action+}
+^^{senses} ^^{actions: involving senses} ^^{rules: for senses} ^^{rooms+kind+: listening to (with no object)} ^^{rooms+kind+: smelling (with no object)} ^^{listening to+action+} ^^{smelling+action+} ^^{touching+action+} ^^{tasting+action+} ^^{looking under+action+}
 
 The five senses are all simulated with actions. Sight is so informative that it is handled by a whole range of actions: `looking`, which describes the general scene; `examining something`, which takes a closer look at a specific thing; `looking under something`, and so on.
 
@@ -4530,6 +4548,7 @@ produces, as it suggests, a random number drawn from the choices 2, 3, 4 or 5, e
 >
 >     a random number from 10 to 99
 >     a random time from 2:31 PM to 2:57 PM
+>     a random time period from 6 minutes to 1 hour 25 minutes
 >
 > If we make a new kind of value:
 >
@@ -4606,7 +4625,7 @@ The `when play begins` rules are checked only at the start of a story, not when 
 
 ## Awarding points {var_score}
 
-^^{use options: catalogue: |scoring} ^^{scoring+useopt+} ^^{scoring <-- points <-- rankings} ^^{scoring: maximum score} ^^{scoring: enabling} ^^{scoring: reporting during story} ^^{score (- number)+glob+} ^^{maximum score (- number)+glob+} ^^{>NOTIFY ON/OFF} ^^{+to+increase (a stored value) by (value)}
+^^{use options: catalogue: |scoring} ^^{scoring+useopt+} ^^{scoring <-- points <-- rankings <-- full score} ^^{scoring: maximum score} ^^{scoring: enabling} ^^{scoring: reporting during story} ^^{score (- number)+glob+} ^^{maximum score (- number)+glob+} ^^{>NOTIFY ON/OFF} ^^{+to+increase (a stored value) by (value)}
 
 Traditionally-written stories award points throughout play, as an indication of progress. If we want to be traditional, we must first write:
 
@@ -4662,27 +4681,27 @@ Ordinarily we must explicitly ask to use the information presented in a table, b
 
 ## When play ends {rules_wpe}
 
-^^{when play ends+rb+} ^^{rules: run at end of story} ^^{end of story <-- story structure: ending} ^^{victory} ^^{death} ^^{winning the story} ^^{losing the game} ^^{(finally), ending the story+sourcepart+} ^^{>AMUSING} ^^{story structure: ending}
+^^{when play ends+rb+} ^^{rules: run at end of story} ^^{end of story <-- story structure: ending} ^^{victory} ^^{death} ^^{winning the story} ^^{losing the story} ^^{(finally), ending the story+sourcepart+} ^^{>AMUSING} ^^{story structure: ending}
 
 Short of something like a power cut, the story can only end when one of the two participants chooses to end it: either the player, by deciding that enough is enough, or us.
 
 In story-telling, there are many kinds of ending: happy, sad, decisive, bittersweet, surprise. Inform doesn't try to interfere in that kind of artistic choice, but it does need to know one thing about the ending: is it final, or not? Many authors like to make additional menu items available if the player has completed the story right through, but not if she has reached an early or wrong ending. (See the activity `amusing a victorious player`, for example.)
 
-> phrase: {ph_end} end the story
+> phrase: {ph_end} end the/-- story
 >
 > This phrase ends the story at the next opportunity (typically as soon as the current rule ends), with the closing message "The End." The end is not considered final.
 
-> phrase: {ph_endfinally} end the story finally
+> phrase: {ph_endfinally} end the/-- story finally
 >
 > This phrase ends the story at the next opportunity (typically as soon as the current rule ends), with the closing message "The End." The end is considered final, and any hidden menu options will be revealed.
 
-> phrase: {ph_endsaying} end the story saying (text)
+> phrase: {ph_endsaying} end the/-- story saying (text)
 >
 > This phrase ends the story at the next opportunity (typically as soon as the current rule ends), with the closing message given in the text. The end is not considered final. Example:
 >
 >     end the story saying "You have been stymied"
 
-> phrase: {ph_endfinallysaying} end the story finally saying (text)
+> phrase: {ph_endfinallysaying} end the/-- story finally saying (text)
 >
 > This phrase ends the story at the next opportunity (typically as soon as the current rule ends), with the closing message given in the text. The end is considered final, and any hidden menu options will be revealed. Example:
 >
@@ -4726,7 +4745,7 @@ appears. For example:
 
 Surprisingly, the end is not always the end:
 
-> phrase: {ph_resume} resume the story
+> phrase: {ph_resume} resume the/-- story
 >
 > This phrase causes an ended story to resume exactly as if no `end the story...` phrase had been used. Example:
 >
@@ -4771,7 +4790,7 @@ A sentence like the following allows the initial time to be set up as something 
 
 	The time of day is 3:13 PM.
 
-Here, `3:13 PM` is a constant value of a kind not seen before: it's a kind of value called `time`, and the value `time of day` is a time that varies. After one turn it will be 3:14 PM, then 3:15 PM and so on.
+Here, `3:13 PM` is a constant value of a kind called simply `time`, and the value `time of day` is a time that varies. After one turn it will be 3:14 PM, then 3:15 PM and so on.
 
 Note that the sentence above is an assertion (a statement about the initial state of affairs), not an instruction which can be part of a rule. It would be equivalent to write:
 
@@ -4817,6 +4836,8 @@ Clocks and watches vary considerably in how much detail they show, and we tend n
 
 The phrase `... to the nearest ...` rounds off the given time, just as it sounds; as we'll see later, it can actually round off any arithmetic values, not just times. For instance, `9:58 PM to the nearest ten minutes` is 10:00 PM.
 
+Note that `ten minutes` here is also a value, and it's a value of a kind called `time period`, which is not quite the same as `time`. A `time period` can be positive or negative, and can be enormous: `360 hours 12 minutes` is a valid `time period` constant.
+
 In talking about lengths of time, rather than times of day, it's useful to have these:
 
 > phrase: {ph_durationmins} (number) minutes ... time
@@ -4851,7 +4872,7 @@ Carrying out easy calculations with times is straightforward:
 
 Here we are using two phrases:
 
-> phrase: {ph_shiftbefore} (time) before (time) ... time
+> phrase: {ph_shiftbefore} (time period) before (time) ... time
 >
 > This phrase produces a time earlier by the amount given, keeping within the 24 hour clock. Example:
 >
@@ -4859,7 +4880,7 @@ Here we are using two phrases:
 >
 > produces 10:30 PM.
 
-> phrase: {ph_shiftafter} (time) after (time) ... time
+> phrase: {ph_shiftafter} (time period) after (time) ... time
 >
 > This phrase produces a time later by the amount given, keeping within the 24 hour clock. Example:
 >
@@ -4877,11 +4898,32 @@ Similarly, we have conditions:
 >
 > This condition is true if the first time occurs later in the day than the second. In recognition of the fact that very few stories begin before 4 AM, whereas many run on past midnight, the start of the day is taken to be 4 AM: thus 3:59 AM is after 11:10 PM, but 4:04 AM is before it.
 
+These phrases are really just verbal conveniences, though, because we can do the same thing with everyday arithmetic. `10 minutes before 9:00 AM` is the same thing as calculating `9:00 AM minus 10 minutes`.
+
 ## Calculating times
 
 ^^{time: calculations} ^^{calculation: with time} ^^{numbers: converting to times}
 
-We will occasionally need to perform more complex calculations with time, and in order to do that, we have a way to convert the time of day to numbers. Thus the phrase `the minutes part of ...` takes a time and produces a number from 0 to 59; similarly `the hours part of ...` extracts a number from 0 to 23, using the twenty-four hour clock.
+The ordinary arithmetic for numbers doesn't quite work for times. What would it even mean to add `1:00 PM` to `3:10 PM`, or, worse still, to multiply or divide them, or to take the square root of `9:00 AM`? But we _can_ subtract them: `3:10 PM minus 1:00 PM` does mean something — it produces `2 hours 10 minutes`, which is a value of the kind `time period`. And similarly we can add a time period to a time, to get a changed time: `9:00 AM plus 75 minutes` is `10:15 AM`, and `9:00 AM plus 24 hours` is just `9:00 AM` again.
+
+So, for example:
+
+	{*}The Horological Chamber is a room.
+	
+	The clock error is a time period that varies.
+	
+	The broken grandfather clock is in the Chamber. "An erratic grandfather clock seems to say it is [the time of day plus the clock error]."
+	
+	To thump the mechanism:
+		now the clock error is a random time period from -10 minutes to 10 minutes.
+	
+	When play begins, thump the mechanism.
+	
+	Instead of attacking the broken clock:
+		thump the mechanism;
+		say "You thump the clock, which now reads [the time of day plus the clock error].".
+
+We will occasionally need to perform more complex calculations with time, and in order to do that, it's a convenience to have a way to convert the time of day to numbers. Thus the phrase `the minutes part of ...` takes a time and produces a number from 0 to 59; similarly `the hours part of ...` extracts a number from 0 to 23, using the twenty-four hour clock.
 
 > phrase: {ph_minspart} minutes part of (time) ... number
 >
@@ -4899,15 +4941,11 @@ We will occasionally need to perform more complex calculations with time, and in
 >
 > produces 8.
 
-To go the other way, we can convert any number to a duration by writing `minutes` or `hours` after it. For instance:
+If we need to convert a time period to a number of minutes, a nifty way to do this is to divide it by `1 minute`:
 
-	{*}The clock error is a number that varies. To thump the mechanism: now the clock error is a random number from -10 to 10.
-	
-	The broken grandfather clock is in the Chamber. "An erratic grandfather clock seems to say it is [clock error minutes after the time of day]."
-	
-	When play begins, thump the mechanism. Instead of attacking the broken clock: thump the mechanism; say "You thump the clock, which now reads [clock error minutes after the time of day].".
+	14 minutes divided by 1 minute
 
-Note that `clock error` is a number, but `clock error minutes` is a time.
+The result being the number 14. And to go the other way, we can convert any number to a `time period` by writing `minutes` or `hours` after it.
 
 ## Future events {PM_AtWithoutTime} {PM_UnusedTimedEvent} {TIMEDEVENTS}
 
@@ -4926,7 +4964,7 @@ We often want to arrange for something to happen at some point in the future. He
 
 The event here is called `the egg-timer clucks`, but this event name could have been anything we chose: as it happens, the event involves the egg-timer, but it doesn't need to have `egg-timer` in the name. Events like this happen only when instructed to happen, using one of the following phrases:
 
-> phrase: {ph_timefromnow} (rule) in (time) from now
+> phrase: {ph_timefromnow} (rule) in (time period) from now
 >
 > This phrase causes the given rule to be run at a given time offset from the current time of day. Example:
 >
@@ -4956,7 +4994,7 @@ The Scenes panel of the Index can be a useful way to see what events have been s
 
 ## Actions as conditions {PM_PTAPTooComplex}
 
-^^{actions: as conditions} ^^{rules: actions referred to in conditions} ^^{rules: past tense of conditions} ^^{past tense, of conditions in rules} ^^{tense: of conditions in rules} ^^{English: tense: of conditions in rules}
+^^{actions: as conditions} ^^{rules: actions referred to in conditions} ^^{rules: past tense of conditions} ^^{conditions: actions as conditions} ^^{past tense, of conditions in rules} ^^{tense: of conditions in rules} ^^{English: tense: of conditions in rules}
 
 There are two ways that descriptions of actions can be used as conditions. First, we can simply describe an action, and then the condition will be true if that is what the player is trying to do, and not otherwise:
 
@@ -5152,13 +5190,13 @@ The Scenes page of the index is intended to help with this. The Plot section sho
 
 Note the useful value `time since Train Stop began`:
 
-> phrase: {ph_scenetimesincebegan} time since (scene) began ... time
+> phrase: {ph_scenetimesincebegan} time since (scene) began ... time period
 >
 > This phrase produces the time since the named scene began, which only makes sense, of course, if it has indeed begun. Example:
 >
 >     time since Entire Game began
 
-> phrase: {ph_scenetimesinceended} time since (scene) ended ... time
+> phrase: {ph_scenetimesinceended} time since (scene) ended ... time period
 >
 > This phrase produces the time since the named scene ended, which only makes sense, of course, if it has indeed ended. Example:
 >
@@ -5330,6 +5368,1544 @@ Just as Inform uses a simple but practical design for the boundaries between roo
 Settings in IF where one revisits the same location but at a different time, or after a dramatic change, have historically been difficult to test properly and prone to mistakes. (The classic example would be where a character killed during Act I reappears unharmed in Act II.) The design of scenes is an attempt to encourage a style of writing which minimises the risk of these accidents.
 
 Since scenes are, in the end, only a convenient way to organise rules, and do nothing that cannot be done by other means, this simplified system of scene changing does not really restrict us.
+
+# Dialogue
+
+## If again this apparition come...
+
+Some stories are all about exploration: lone travellers going places and discovering things. But other stories are more intimate, and conversational. They involve characters talking to each other about what is happening. And sometimes the talking _is_ what's happening: the story might be a romance, or a political intrigue, or a detective mystery. "Dialogue" is what we'll call the sort of to-and-fro when characters get into a conversation — not necessarily a long talk, but where the story will only work for the player if the speakers seem to be making sense, and not repeating themselves endlessly, or making oblique comments out of nowhere.
+
+That means writing something closer to a script than to a rulebook. But that script can still be richly interactive and flexible. In Inform, this is set out in special _dialogue sections_ of the source text. Instead of being set out in sentences and paragraphs like a novel, or a non-fiction book, dialogue sections look like the script for a play or movie: what printers call "playtext". Regular sections cannot contain playtext, while dialogue sections cannot contain anything else.
+
+In this section, we'll get a taste for Inform's dialogue features by playing out parts of Act I, Scene 1 of _Hamlet_. Let's say that the player is Horatio, who has climbed to the castle battlements with his friend Marcellus to question Bernardo, a guard, about the recent sighting of a ghost.
+
+	Section 1 - Elsinore
+
+	The Battlements is a room. Marcellus and Bernardo are men in the Battlements. Fortinbras and the ghost are men.
+
+	Section 2 - On the Battlements (dialogue)
+
+	(This is the starting beat.)
+
+	Player: "What, has this thing appear'd again to-night?"
+
+	Bernardo: "I have seen nothing."
+
+	Marcellus: "Horatio says tis but our fantasy."
+
+So here `Section 1 - Elsinore` is a regular section of source text: it creates a single room with two people in it, and two who are off-stage (for now). `Section 2 - On the Battlements` is a dialogue section, because its title ends with the bracketed word `(dialogue)` — this is what marks it out as special. Only section headings can be marked as `(dialogue)`, not chapter, part, book, or volume headings. There can be any number of dialogue sections in a story.
+
+The resulting story starts like so:
+
+``` transcript
+Battlements
+You can see Marcellus and Bernardo here.
+
+You: "What, has this thing appear'd again to-night?"
+
+Bernardo: "I have seen nothing."
+
+Marcellus: "Horatio says tis but our fantasy."
+```
+
+That was the _performance_ of what is called a _beat_. Dialogue is divided up into _beats_ — small plot moments which usually consist of a few _lines_ of dialogue or narration. Each beat is opened by a _cue_ paragraph in brackets, followed by lines which occupy further paragraphs. So this dialogue section consists of a single beat, which contains three lines.
+
+The cue for the beat usually tells Inform when the beat should be performed. In this case, it's:
+
+	(This is the starting beat.)
+
+and this tells Inform to perform it right at the start of the whole story, before the player has had a chance to type a single command.
+
+That little beat wasn't interactive in any way, and the player had to watch passively as it played out. Unless we want to party like it's 1599, we had better rewrite to offer _choices_ to the player:
+
+	(This is the starting beat.)
+
+	Player: "What, has this thing appear'd again to-night?"
+
+	Bernardo: "I have seen nothing."
+
+	Marcellus: "Horatio says tis but our fantasy."
+
+	-- "Ask Bernardo what he saw."
+
+		Player: "Well, sit we down, and let us hear Bernardo speak of this."
+	
+		Marcellus (now the ghost is in the Battlements): "Peace, break thee off! Look where it comes again."
+
+		Bernardo: "In the same figure like the King that’s dead."
+
+	-- "Dismiss this nonsense."
+
+		Narration: "You sternly tell the guards to watch for Fortinbras, not their shadows."
+
+The beat now contains seven lines, but the action will split mid-way as the player decides, and so at least one of these lines will never be performed. The choice is between two alternatives marked `--`, and it leads to two alternative endings to the beat — note that these alternate paths are indented by one tab stop underneath the choices they continue from.
+
+So now play might run like so:
+
+``` transcript
+Battlements
+You can see Marcellus and Bernardo here.
+
+You: "What, has this thing appear'd again to-night?"
+
+Bernardo: "I have seen nothing."
+
+Marcellus: "Horatio says tis but our fantasy."
+
+(1) Ask Bernardo what he saw.
+(2) Dismiss this nonsense.
+
+> 1
+Ask Bernardo what he saw.
+
+You: "Well, sit we down, and let us hear Bernardo speak of this."
+
+Marcellus: "Peace, break thee off! Look where it comes again."
+
+Bernardo: "In the same figure like the King that's dead."
+
+> LOOK
+Battlements
+You can see a ghost, Marcellus and Bernardo here.
+```
+
+When it comes to the moment, then, the player is asked to choose which of two alternative courses of action to follow. Only ``1`` and ``2`` are accepted as answers to that choice prompt:
+
+``` transcript
+(1) Ask Bernardo what he saw.
+(2) Dismiss this nonsense.
+
+> EXAMINE BERNARDO
+(Please type an option in the range 1 to 2 and press return.)
+```
+
+Once the beat has finished, the story goes back to accepted commands in the normal way that Inform stories do — in the example above the player typed ``LOOK`` and a looking action took place. How much dialogue appears in a story, versus traditional command-and-action play, is entirely up to the author. At the two extremes, there might be no dialogue at all, or the entire story might consist of one long branching mass of dialogue beats, each running into another, until the tale finishes — in such a way that the player never types a traditional command at all.
+
+But even if no commands are being typed, the rest of Inform is still at work beneath the surface. There's still a model world, keeping track of space and time. An example of that is that Inform won't perform a line of dialogue by somebody who is not within earshot. Suppose the beat had been written like so:
+
+	(This is the starting beat.)
+
+	Player: "What, has this thing appear'd again to-night?"
+
+	Fortinbras: "Nope, it's just my army invading Denmark."
+
+Even though his line is in the script, the player would never see Fortinbras speak it because, at this moment, Fortinbras is still in Norway and not up on the Battlements — so that line is simply skipped over. Of course, if Fortinbras _had_ spoken this line, the others would certainly have reacted. We can have the script take care of that possibility too:
+
+	(This is the starting beat.)
+
+	Player: "What, has this thing appear'd again to-night?"
+
+	Fortinbras: "Nope, it's just my army invading Denmark."
+	
+		Marcellus: "Sound the tocsin! My lords, we are besieged!"
+
+Again, the line by Marcellus is performed only if Marcellus is present to speak it, but there's a further restriction even if he is: he speaks only if Fortinbras has just spoken. That's because this line is indented underneath Fortinbras's line. Like the `--` choices, this is a branching point in the story.
+
+Had the script dragged in an even more unlikely speaker:
+
+	Lady Bracknell: "A spectre?"
+
+then Inform would have complained. It allowed the line by Fortinbras to appear in the script because Fortinbras _is_ a character (that is, the story contains an object of the kind `person` whose name is `Fortinbras`); but Lady Bracknell must be from a different play altogether.
+
+So Inform is tracking who the speakers are, and where they are, and what has been said so far, in order to keep dialogue going realistically. We can also move people around to manage their entrances and exits. This isn't done with "Enter" and "Exit", the way Shakespeare would have done things. Instead we'll use Inform's much more flexible `now` phrase as a sort of stage direction:
+
+		Marcellus (now the ghost is in the Battlements): "Peace, break thee off! Look where it comes again."
+
+If this line is performed, the ghost moves to the Battlements, but only then. And we can even have actors carry out actions:
+
+	Bernardo (after taking the spyglass): "Sire, I must scan th' horizon."
+
+Here, _if_ the line is about to be performed, the action `Bernardo taking the spyglass` is tried: and if it succeeds, the line is indeed performed.
+
+Variety can enter the script even if the beat doesn't branch, because the lines performed in a beat are just like other text in Inform: they can contain "substitutions" in square brackets. So, for example:
+
+	Bernardo: "Who [one of]stands[or]watches[or]hides[at random] there, good Marcellus?"
+	
+	Marcellus: "I count only [list of people in the Battlements]."
+
+These variations are only a small taste of what Inform's dialogue system can handle, and the rest of this chapter goes into that in some detail, so this won't be a short chapter. But as always, the easy things which are needed most often are quite quick to pick up, and the rest can be skipped until necessary.
+
+If this section has a moral (other than the inadvisability of killing a king in his own castle), it's this: Dialogue sections in Inform may look a little different from other Inform material, but the system they are built on is still Inform. There are still rooms, and things, and people, and actions, and a whole simulated world to help guide the performance, and to be changed by it.
+
+## Dialogue sections
+
+To recap, then, all dialogue material must appear in special _dialogue sections_ in the source text. A section is a dialogue section if its titling line ends with `(dialogue)`. For example:
+
+	Section 2 - On the Battlements (dialogue)
+
+Dialogue sections can contain square-bracketed comments, just like regular sections, but otherwise they can only contain special dialogue material.
+
+### Each item is its own paragraph
+
+Dialogue sections are organised by paragraphs, not sentences. Jamming lines, cues, and so on together without paragraph breaks between them will not work. For example, this:
+
+	Julian: "I say, that's the swarthy fellow we saw at Brannigan's Rocks."
+	Anne: "Yes, and that's gelignite he's carrying in that old red blanket."
+
+should have read:
+
+	Julian: "I say, that's the swarthy fellow we saw at Brannigan's Rocks."
+
+	Anne: "Yes, and that's gelignite he's carrying in that old red blanket."
+
+So, then, a dialogue section is a series of _beats_, and each beat begins with a _cue_ paragraph in round brackets, and then contains one or more of the following items, each in its own paragraph:
+
+1) Lines spoken by a `person`, which can include the `Player`. Lines broadly have the syntax `Speaker: "Speech."`
+
+2) `Narration` lines, where action is described but is not written as the direct speech of any person. These look like `Narration: "What is happening."` (To avoid confusion, do not call a character `Narration`.)
+
+3) Choices, which are different options which the player might take at this point in the conversation. These are introduced with a double-dash `--`.
+
+4) Flow markers. These have yet to appear, but are written with arrows `->` or `<-`. They guide the flow of dialogue through beats.
+
+### Indentation by tabs shows how dialogue branches
+
+The other general feature of dialogue sections to watch out for is _indentation_, which is typed by using tab characters to move inwards from the left margin. When something is indented, it belongs to the thing above it which is indented by one tab stop less. Beat cues cannot be indented: they belong only to themselves. But lines, narration, choices and flow markers can all be indented.
+
+In general, indentation marks where a branch takes place: it's possible that the dialogue will flow down into this branch, but also possible that it won't. The general rule is that the branch is taken only if the item branched from is performed. For example:
+
+	-- "Confiscate the gold"
+	
+		Player: "I'll take that bullion, you foreign rascal."
+
+Here the player's line of dialogue lies on a branch which is only performed if the `-- "Confiscate the gold"` choice is exercised. Similarly:
+
+	Julian (to Dick): "Let's get some fresh eggs from Spiller's Farm."
+	
+		Dick: "Topping, and some cream and strawberries too."
+
+Here the branch containing Dick's line will be performed only if Julian's line is performed. (Because it's spoken `to Dick`, it requires both to be present.)
+
+In general, then, if one line is a direct reply to another one, and there is any uncertainty about who might or might not be present, indentation should be used:
+
+	Speaker One: "A speech."
+	
+		Speaker Two: "A reply."
+		
+			Speaker One: "A rebuttal."
+		
+				Speaker Three: "An intervention."
+
+				Speaker Two: "A cross response."
+
+Here, the cross response will only be performed if the speech _and_ the reply _and_ the rebuttal are all performed. But it makes no difference whether the intervention was made or not.
+
+Indentation can go down as well as up, and this allows branches to converge back together in what some other dialogue systems (such as Ink) call a "gather". For example:
+
+	Marcellus: "It's just Scotch mist, blown east from old Aberdeen."
+	
+	Bernardo: "Nay, sire, it's a ghoul!"
+	
+	-- (if the shortbread is carried) "Assuage his night terrors"
+	
+		Player (before Bernardo eating the shortbread): "Here, take this old Highlands cure."
+
+		Bernardo (now Bernardo is not scared): "Hoots mon, that's better."
+
+	-- "Reprimand Bernardo"
+
+		Player: "I don't care if it is haunted, guard the Battlements."
+	
+	Narration: "The bell tolls two of the morn."
+
+Here we have two lines of dialogue, and then a divide according to which option the player chooses. Note that the `Narration:` line is at the same indentation level as the two choices where the dialogue branches: so this is where the branches come together again. The practical effect is that every performance of the beat ends with the tolling of the bell.
+
+## Dialogue beats and their cues
+
+Each beat begins with a cue paragraph, which must be placed in round brackets. These usually contain a single sentence, but can have more, so long as it all remains a single paragraph. Such sentences must end with full stops, placed inside the brackets. So this is correct:
+
+	(About the paranormal.)
+
+But this is not:
+
+	(About the paranormal).
+
+As a more extensive, and valid, example:
+
+	(About the Ghost. After the haunting beat. If the Ghost is in Elsinore.
+	Recurring. This is the Marcellus gets anxious beat.)
+
+And semicolons can also be used instead of full stops, if we want to. This doesn't change the meaning. For example:
+
+	(After the haunting beat; about the paranormal; recurring.)
+
+As these example cues suggest, the cue can do a lot, but the main idea is to say under what circumstances the beat should be performed.
+
+### Naming a beat
+
+Inform has a built-in kind of value called `dialogue beat`, and each beat declared in the source text corresponds to a value of this kind. Beats are by default nameless, since authors mostly don't need to refer to them as values. But there are times when we do want that, so:
+
+	(This is the Marcellus gets anxious beat.)
+
+Here, the beat for which this is the cue will have the value `Marcellus gets anxious beat`. The name has to end with the word `beat`. As we shall see, this enables rules or phrases in regular sections of the source text to ask, say, `if the Marcellus gets anxious beat is unperformed`, or to say `perform the Marcellus gets anxious beat`.
+
+The name `starting beat` is reserved. If a beat is given this name, then
+it is performed at the start of play, as in the Elsinore haunting dialogue with which this chapter began. Names of beats have to be unique, so it follows that there can only be one starting beat.
+
+### Making a beat its own scene
+
+If a cue says that it is not just a beat, but also a scene, like so:
+
+	(This is the fire drill scene.)
+
+then _two_ values are created: a beat called `fire drill beat`, and also a scene called `fire drill scene`. These values have different kinds — `dialogue beat` and `scene` respectively — but their fates are tied together. The scene automatically starts and ends when the beat begins and ends its performance, and vice versa. That is, if some other condition causes the scene to end while the performance of the beat is still mid-way, then the performance stops right there.
+
+This enables Inform's powerful scene-plotting machinery to mesh well with its dialogue engine. For example, `When the fire drill scene begins: ...` rules can be written, which will fire when the performance of the beat begins.
+
+### Making a beat `about` something
+
+`About` clauses tell Inform what a beat is talking about. As we'll see in the next section, Inform is always tracking what people are discussing: it is maintaining a set of live conversational subjects. It can only do this if beats (and sometimes lines as well) are marked up to show what they are about. For example:
+
+	(About the ghost and the Battlements.)
+
+	Bernardo: "The battlements of Elsinore have been lately haunted, 'tis true."
+
+At its simplest, an about sentence is the word `about` followed by
+a list of one or more issues being discussed — in this example, two. These have to be descriptions of objects, so a beat cannot be `about 102`, for example, or `about 10:13 pm`, because numbers and times are not objects. On the other hand, they do not need to be specific names. For example:
+
+	(About any dark room.)
+
+	Bernardo: "Every dark place in this castle is filled with footsteps."
+
+### Restricting the availability of a beat
+
+`If` and `unless` conditions in the cue for a beat make it performable only when the given condition is met, or not met. For example:
+
+	(If Denmark is rotten.)
+
+	(Unless Hamlet has the skull.)
+
+Note that this imposes _extra_ conditions which the beat has to meet in order to be performed: it may still not be performed for other reasons. For example,
+
+	(About the Gravedigger; unless Hamlet has the skull.)
+
+introduces a beat which will only be performed if the Gravedigger is being discussed, _and_ Hamlet does not have the skull.
+
+### The after, before, later, next, and immediately after clauses for a cue
+
+These say that the new beat can be performed only when another beat has already
+been performed at some point in the past; or, has not. For example:
+
+	(After the Marcellus gets anxious beat.)
+
+This is equivalent, in fact, to writing the condition sentence:
+
+	(If the Marcellus gets anxious beat is performed.)
+
+...but is simpler to read and understand. Similarly:
+
+	(Before the Marcellus gets anxious beat.)
+
+The special one-word sentence `Later` can only be used on the second or subsequent beats in a dialogue section, and means the same as `after` applied to the previous beat in that section. Thus
+
+	(About fish.)
+	
+	...
+	
+	(Later; about chips.)
+	
+	...
+
+means the same thing as
+
+	(About fish. This is the fishmonger beat.)
+	
+	...
+	
+	(After the fishmonger beat; about chips.)
+	
+	...
+
+`Immediately after` is equivalent to `after`, except that it allows the beat to be performed only the very next turn after the named beat was performed. The one-word `Next` is the corresponding version of `Later`, applying `immediately after` to the previous beat. For example:
+
+	(About Pygmalion and mentioning Cyprus.)
+
+	Galatea: "I haven't seen him around since I left Cyprus."
+
+	(Next, about Cyprus.)
+
+	Player: "Do you think he's still there?"
+
+	Galatea: "Maybe! I don't yet have a good understanding of object permanence!"
+
+	(About Cyprus.)
+
+	Player: "Did you like Cyprus?"
+
+	Galatea: "Yes, it was great, if you don't mind the weather."
+
+The effect here is that we'd see
+
+	> ASK GALATEA ABOUT PYGMALION
+	Galatea: I haven't seen him around since I left Cyprus.
+
+	> ASK HER ABOUT CYPRUS
+	Player: Do you think he's still there?
+
+	Galatea: Maybe! I don't yet have a good understanding of object permanence!
+
+`Immediately before` is, of course, impossible to arrange, so Inform doesn't provide that syntax.
+
+### Who is required to be present for a beat
+
+Consider this beat:
+
+	(About the Zeppelin.)
+	
+	Hans: "See our prodigious rate of climb, Ludwig!"
+	
+	Ludwig: "Jawohl, Hans."
+
+There would not be much point in performing this beat unless Ludwig and Hans
+were within earshot of the player, because none of the lines could actually
+be spoken, and so it would complete silently.
+
+Because of that, each beat has a list of _required speakers_. If the source text explicitly says that the beat needs to be performed, then it will be performed whether or not the required speakers are present, but if Inform is making its own decision to perform the beat (or not), then it will always look to make sure the required speakers are at hand. (More exactly, if the player `can hear` them, a test performed with the `audibility relation`). By default, the required speakers are all those whose names explicitly appear as speakers of lines within the beat: so in the case of the beat above, that will be Hans and Ludwig.
+
+But if that is not what the author wants, the cue can be more explicit:
+
+	(About the Zeppelin; requiring Hans.)
+	
+	Hans: "What a prodigious rate of climb!"
+	
+		Ludwig: "Jawohl, Hans."
+
+Inform might now choose to perform this beat even if Ludwig is not there, though of course Hans would then receive no reply to his remark.
+
+### Giving a beat properties
+
+As was mentioned above, each beat is a value of the `dialogue beat` kind. That kind has several either-or properties. If the name of such a property is included in the cue, then the beat gets the property in question.
+
+Out of the box, dialogue beats come with the following either-or properties already defined:
+
+- `performed` or `unperformed`. Has this been performed yet?
+
+- `recurring` or `non-recurring`. Can the director choose this beat more
+than once in the same play-through?
+
+- `voluntary` or `involuntary`. This affects only beats for which the
+player is the first speaker, and only when the director is in active mode. (See [When the director is active] for what this means.) Can such a beat be triggered just because it seems relevant?
+
+- `spontaneous` or `unspontaneous`. Only has an effect when the director
+is in active mode. Can the director bring this beat up out of nowhere to
+fill a gap in the conversation, even though it has no relevance at the
+moment?
+
+By default, at the start of play, all beats are `unperformed`, `non-recurring`, `voluntary` and `unspontaneous`. But this is easy to change:
+
+	(Spontaneous; recurring.)
+	
+	Bridget (recurring): "Are we nearly there yet?"
+
+As a special case, a beat can also be described as `fully recurring`. This makes not only the beat `recurring`, but also all the lines and choices which belong to it. For example:
+
+	(Spontaneous; fully recurring.)
+	
+	Bridget: "Are we nearly there yet?"
+
+## When the director is passive
+
+Dialogue is managed during play by a component of Inform called the _director_, which we think of as being like the director of a play. It sometimes has to manage quite a complex situation, so the testing command ``DIALOGUE`` causes the director to explain itself as it goes along; and ``DIALOGUE ALL`` even more so.
+
+At any given time the director is either _passive_ or _active_. Passive means that the director performs dialogue as it's asked to do so, but not otherwise. The director is always passive at the start of play and becomes active only if we explicitly ask it to: see [When the director is active].
+
+When the director is passive, beats are performed only as follows:
+
+- If there is a beat called the `starting beat`, it is performed at the
+start of play, after the initial room description but before the player
+has been asked for a command. This is done by the `performing opening dialogue beat rule` in the `startup rulebook`.
+
+- In response to the phrase `perform B`, where `B` is a named beat.
+
+- In response to the phrase `if dialogue about X intervenes`, where `X` is
+a potential conversational subject.
+
+- When a beat which is already being performed calls explicitly for another
+beat to be performed with a flow marker. (See [Flow Markers] for more.)
+
+- When the action `talking about` is tried. This action represents somebody trying to raise a subject in conversation. For example:
+
+      Romance is a concept.
+
+      Instead of kissing the Princess:
+          try talking about romance.
+
+  If there's a suitable beat of dialogue available which is `about romance`, it will then be performed. The same will happen if the player types commands like ``ASK ABOUT ROMANCE`` or ``TALK ABOUT ROMANCE``, because those commands are understood as the action `talking about romance`.
+
+  Note that `talking about` is just one way to nudge the dialogue director into action. A rule like `Instead of talking about romance` would block attempts to do this which arose from the `talking about` action, but would not block such dialogue arising from some other cause.
+
+## When the director is active
+
+The director remains in passive mode until and unless we say so, using:
+
+> phrase: {ph_directoractive} make the dialogue/dialog director active
+>
+> Switches the dialogue director to active mode.
+
+Which can be undone again:
+
+> phrase: {ph_directorpassive} make the dialogue/dialog director passive/inactive
+>
+> Switches the dialogue director to passive mode.
+
+All of the ways dialogue can begin in passive mode are still true for active mode (see [When the director is passive]). But in active mode, the director can also fill conversational lulls by trying to find relevant things to talk about, and people to talk about them.
+
+To do this, the director tracks a list of "live conversational subjects" which it might be interesting to talk about. The idea is that if somebody has just mentioned visiting Barcelona, then Barcelona might become a live subject. If conversation then lapses, the director will try to keep it going by finding something which somebody present can say about Barcelona.
+
+A lull in conversation is a turn in which no other dialogue has been performed. It's sometimes useful to know whether or not that's the case, so a simple phrase is provided:
+
+> phrase: {ph_dialoguethisturn} if dialogue has been performed this turn:
+>
+> This means exactly as it reads.
+
+The business of filling this dead air is then carried out by the `dialogue direction rule` in the `turn sequence rulebook`. What happens is that the director looks for a suitable beat to perform, where "suitable" means that:
+
+- the beat either has not been performed before or has the `recurring` property, _and_
+
+- all required speakers for the beat are within earshot, _and_
+
+- any `if`/`unless` conditions in the cue are met, _and_
+
+- any `after`, `before`, `later`, `next`, and `immediately after` conditions in the cue are met.
+
+That quite likely still leaves multiple beats to choose from, so the director makes a selection based on its _list of live conversational subjects_:
+
+1) The director first tries to choose a suitable beat which is `about` a live conversational subject, except that it will not choose a beat for which the player is the first speaker unless that beat has the `involuntary` property.
+
+2) Failing that, the director tries to find a suitable beat marked as having the `spontaneous` property.
+
+3) Failing even that, the director will give up, and the story will continue in silence for another turn.
+
+The list of live conversational subjects is best thought of as pretty ephemeral, and with a rapid turnover:
+
+- A subject becomes live whenever a line of dialogue `mentioning` it is performed. For example, if Bernardo says this line:
+
+      Bernardo (mentioning Denmark): "This bodes some strange eruption to our state."
+
+  then `Denmark` becomes a live conversational subject.
+
+- Similarly, if a whole dialogue beat is `about` something, then that becomes a live conversational subject as soon as performance of the beat begins.
+
+- Newly raised subjects appear at the beginning of the list, and less fresh ones at the end.
+
+- The list is truncated so that at most 20 different subjects can be live, with the least fresh subjects discarded as having likely been forgotten about.
+
+- When the director (in active mode) is forced to perform a `spontaneous` dialogue beat — in effect, changing the subject entirely — the list is wiped altogether.
+
+Something to bear in mind is that the director tracks this list all of the time, even though it only uses it in active mode. So if it is switched into active mode having been passive up to now, it may be starting with some subjects already live.
+
+## Managing dialogue beats
+
+So, then, there are several ways to manage dialogue. It's possible to write an entire story made of nothing but dialogue, beginning with a starting beat being performed, and then more beats flowing from that until the story ends. Or it's also possible to put the dialogue director into active mode, and let the automatics do everything, so that conversation happens whenever appropriate in the course of play.
+
+If we don't want either of those, though, and want to manage all the dialogue by hand using rules, Inform provides an extensive set of phrases to help with that. For example:
+
+	"Just Idol Talk"
+
+	The Jade Temple is a room. A green idol is here.
+
+	Louisiana Smith is a man in the Jade Temple.
+
+	Instead of taking the idol:
+		perform the warning-off beat.
+
+	Section of conversation (dialogue)
+
+	(About the green idol. This is the warning-off beat.)
+
+	Louisiana: "Don't touch that thing, kid."
+
+The important point there was the `perform` phrase:
+
+> phrase: {ph_performbeat} perform (a dialogue beat)
+>
+> Immediately perform the given beat of dialogue, regardless of any restrictions placed on it by its cue paragraph, or whether it has been performed before.
+
+What's good about `perform` is that it's simple to predict: it does exactly what it's told to do. Unfortunately, that's often not really what we want. For example, what happens if the player tries taking the idol twice?
+
+``` transcript
+> GET IDOL
+Louisiana: "Don't touch that thing, kid."
+
+> GET IDOL
+
+>
+```
+
+This is very unsatisfactory. What happened here is that the warning-off beat was indeed performed a second time, but because its only line had been performed already, that line was skipped. So nothing was done at all, and yet the action stopped. We could in fact make Louisiana willing to repeat himself:
+
+	(About the green idol. This is the warning-off beat.)
+
+	Louisiana (recurring): "Don't touch that thing, kid."
+
+But is this very much better?
+
+``` transcript
+> GET IDOL
+Louisiana: "Don't touch that thing, kid."
+
+> GET IDOL
+Louisiana: "Don't touch that thing, kid."
+```
+
+So this is a more nuanced way to write it:
+
+	Check taking the idol:
+		if dialogue about the idol intervenes:
+			stop the action.
+
+The key phrase here is:
+
+> phrase: {ph_dialogueintervenes} if dialog/dialogue about (an object) intervenes
+>
+> Tries to perform dialogue about the given conversational subject, and has the result `true` if such a beat has successfully been performed, and `false` if no good beat could be found. All conditions on the beat must have been met, and it must either have been `unperformed` or else `recurring`.
+
+This is a sort of compromise between telling the director exactly what to do, and letting the director do as it pleases. We're giving it permission to try to start a conversation about a given subject — in this case, the idol — but on the understanding that it may well not find anything to say. That's why this is framed as an `if...` condition.
+
+A modest variation:
+
+> phrase: {ph_dialogueintervenesled} if dialog/dialogue about (an object) led by (an object) intervenes
+>
+> Tries to perform dialogue about the given conversational subject, and has the result `true` if such a beat has successfully been performed, and `false` if no suitable beat could be found. If there's a choice of beats available, the director will prefer one in which the first speaker is the person `led by`. But if no such beat can be found, it will still perform some other beat provided at least the subject can be matched.
+
+This, then, would give Louisiana first chance to react if multiple people might want to speak:
+
+	Check taking the idol:
+		if dialogue about the idol led by Louisiana intervenes:
+			stop the action.
+
+As has already been said, `dialogue beat` is a kind, and each different beat declared in the source text is a value of this kind: that's how `perform` works, applied to any `dialogue beat` value. We've also seen that dialogue beats have four either-or properties available to them:
+
+- `performed` or `unperformed`. By default, `unperformed`.
+
+- `recurring` or `non-recurring`. By default, `non-recurring`.
+
+- `voluntary` or `involuntary`. By default, `voluntary`.
+
+- `spontaneous` or `unspontaneous`. By default, `unspontaneous`.
+
+Being properties, these can all be changed during play:
+
+	When the conference scene begins:
+		now the fire alarm beat is spontaneous.
+
+New properties for dialogue beats can also be created:
+
+	A dialogue beat can be testing only or meant for production.
+
+Which enables beats to be tagged in arbitrary ways:
+
+	(Testing only.)
+	
+	Bernardo: "Sorry to break the fourth wall, but will this program ever work?"
+
+In addition, the following adjectives can be tested at run-time:
+
+- `available` rather than `unavailable` if the beat currently meets its
+preconditions for being performed — its `after` or `before`, `if` and `unless` conditions.
+
+- `relevant` rather than `irrelevant` if the beat is `about` a topic in the
+current list of live conversational subjects.
+
+- `being performed` if the beat is currently in mid-performance.
+
+The following phrases are available:
+
+> phrase: {ph_listofspeakers} list of speakers required by (a dialogue beat) ... list of objects
+> 
+> Results in the set of speakers required to be present for the beat to be performed.
+
+> phrase: {ph_firstspeaker} first speaker of (a dialogue beat) ... object
+>
+> The first specific person who speaks a line in the beat. Note that this may be `nothing`, if the beat contains only narration, or is vague about who speaks the lines.
+
+> phrase: {ph_showmebeat} showme the beat structure of (a dialogue beat)
+>
+> For debugging. In effect, beats are miniature programs, but can be quite intricate: this prints a listing.
+
+The following relations are also sometimes useful:
+
+- `B is about S` is true if `S` matches something in the `about` list for `B`.
+Note that this can be true for multiple values of `S`. This relation is called
+`topicality`.
+
+- `B is performable to S` is true if `B` is either `recurring` or `unperformed`,
+and if all of the speakers on the `requiring` list for `B` can be heard by `S`.
+This relation is called `performability`.
+
+So, for example, `the warning-off beat is about the green idol` throughout play of the little example above, whereas `the warning-off beat is performable to the player` only up to the point where is is first performed: since it's not a `recurring` beat, it then isn't performable again.
+
+Note that the command parser is able to recognise dialogue beat names, and of
+course actions can be set up for them. For example:
+
+	Performing is an action out of world applying to one dialogue beat.
+
+	Carry out performing:
+		say "[the dialogue beat understood] requires [list of speakers required by the dialogue beat understood].";
+		repeat with L running through dialogue lines:
+			if L is in the dialogue beat understood:
+				now L is unperformed;
+		perform the dialogue beat understood.
+
+	Understand "perform [dialogue beat]" as performing.
+
+So, for example, ``PERFORM WARNING-OFF BEAT`` would run through it as if for the first time.
+
+The above phrases all work in both passive and active mode. In active mode, much depends on the list of live conversational subjects, so Inform also provides some phrases for examining and tinkering with that list — though in practice its automatic management is often fine.
+
+> phrase: {ph_makelive} make (an object) a live conversational subject
+>
+> Add this to become the frontmost member of the list of live conversational subjects tracked by the dialogue director.
+
+> phrase: {ph_makedead} make (an object) a dead conversational subject
+>
+> Remove this from the list of live conversational subjects tracked by the dialogue director.
+
+> phrase: {ph_clearsubjects} clear conversational subjects
+>
+> Empty the list of live conversational subjects tracked by the dialogue director.
+
+> phrase: {ph_getlivelist} live conversational subject list ... list of objects
+>
+> Returns the dialogue director's list of live conversational subjects.
+
+> phrase: {ph_setlivelist} alter the live conversational subject list to (list of objects)
+>
+> Sets the dialogue director's list of live conversational subjects to an arbitrary collection.
+
+These phrases are useful when something sudden and unexpected happens, which would obviously grab everyone's attention:
+
+	At 11:10 pm:
+		now the elephant is in the Drawing Room;
+		say "An elephant crashes in through the French windows!";
+		clear conversational subjects;
+		make the elephant a live conversational subject.
+
+And these phrases can also be used to strengthen the automatic list management performed above. For example:
+
+	After printing the name of (T - an object) when performing a dialogue line:
+		make T a live conversational subject.
+
+With such a rule in force, performing this line:
+
+	Bernardo: "The castles in [Barcelona] are warmer at night."
+
+would automatically make Barcelona a live subject.
+
+Emptying the list regularly is one way to be especially sure that no residual
+topics linger impossibly long: say, if the story jumps from the night before to
+next morning. For example, we might want this:
+
+	When a scene begins:
+		clear conversational subjects.
+
+One way to watch how the list is managed in practice is to add a rule like so, just for testing purposes:
+
+	Every turn:
+		showme the live conversational subject list.
+
+## About about
+
+The whole idea of making the dialogue director "active" is that it enables conversation to develop naturally, in a way which dovetails with everything else that happens in the story. This works best if dialogue beats are marked up with what they are `about`, and if good use is made of marking lines as `mentioning` things.
+
+A beat can be `about` any object, but it's mostly sensible to have beats about things — interesting items in the story, or people — or else objects of the `concept` kind, which are used for more abstract ideas. We can freely create those, like so:
+
+	Denmark and Horatio's philosophy are concepts.
+
+And then dialogue sections can make use of them:
+
+	(About the ghost.)
+
+	Marcellus (mentioning Denmark): "Something is rotten in the state of Denmark."
+
+	(About Horatio's philosophy.)
+	
+	Hamlet (to Horatio): "There are more things in heaven and earth, Horatio, than are dreamt of in your philosophy."	
+
+Being `about X, Y and Z` means that it involves all of the subjects `X`, `Y` and `Z`. This plays in two directions:
+
+- The beat is suitable to be performed whenever _any_ of `X`, `Y` or `Z` are live conversational subjects.
+
+- If the beat does indeed begin performance, they _all_ become live.
+
+For example, the first beat below is `about Velma and the robbery`. As we begin, Velma is live, but the robbery is not. Performance of the first beat changes that, and makes the second beat suitable to be performed soon.
+
+	(about Velma and the robbery)
+
+	Fred: "Velma totally hasn't been the same since that bullion robbery."
+
+	(about the robbery)
+
+	Fred: "Velma used to work the Lufthansa cargo desk at Stuttgart, and..."
+
+`About` clauses only have to describe objects, not necessarily name them exactly. For example:
+
+	A concept can be frightening or safe.
+	The paranormal is a frightening concept.
+	Garden design is a safe concept.
+
+...then:
+
+	(About any frightening concept.)
+
+would make the beat suitable if the paranormal were in play, but not for garden design. Similarly:
+
+	(About any woman in the Dining Room.)
+
+Or one might, for example, create a `discrediting` relation from concepts to people, and then have:
+
+	(About any concept which discredits Gordon.)
+	
+	Douglas (to Carolyn): "And you say the marriage wasn't a success?"
+
+Vague descriptions like this will match the current live subject list, for purposes of choosing relevant beats, but will not add to the live list when the beat is performed. For example:
+
+	(About a dwarf.)
+	
+	Snow White: "I have eight? no, seven indentured miners right now. No point remembering their names, they die so quickly. I just go by appearances. The present lot are Doc, Grumpy, Happy, Sleepy, Bashful, Sneezy, and Dopey. Might let Sneezy go, actually, don't want a sudden cave-in to knock out all seven at once. You can only buy fresh dwarfs on Wednesdays, you see, so one bad sneeze on a Thursday and..."
+
+...would match any of the dwarfs for purposes of relevance, but not make any of them live topics when the beat is performed. Writing it this way, on the other hand, would:
+
+	(About Doc, Grumpy, Happy, Sleepy, Bashful, Sneezy, and Dopey.)
+
+And then, for example:
+
+	(About Bashful.)
+
+	Snow White: "He's a varmint like all the rest of them."
+
+If a beat is bringing up unexpected new information, which should not be matched for relevance purposes when the beat is being chosen, `mentioning` should instead be used on the dialogue itself. For example:
+
+	(About a dwarf.)
+
+	Snow White (mentioning diamonds): "He's a varmint like all the rest, but the diamonds are in these crazy low tunnels, and I can't afford to muss my hair. I'm still super-active on the pageanting circuit, you know."
+
+## Dialogue lines
+
+By this point many lines of dialogue have already appeared, some of them with cryptic notes in brackets. It's time now to look at the full range of possibilities.
+
+A dialogue line occupies a single complete paragraph, and takes one of these forms:
+
+	Speaker: "Line which is said."
+
+	Speaker (some performance details): "Line which is said."
+
+If given, the performance details are one or more clauses, divided by full stops
+or semicolons, and placed in round brackets after the speaker name.
+
+### The speaker
+
+The speaker is either the word `Narration`, which means that the line is not dialogue, but bridging narration in the story:
+
+	Narration: "Jojo walks over to the jeep."
+
+Or else it is a description of who speaks. Usually that will be a literal name of somebody, but it need not be. These are all potentially valid speakers:
+
+- `Marcellus:`
+
+- `A woman:`
+
+- `Somebody who is not Marcellus:`
+
+- `The tallest person in the Dining Room:`
+
+Such vague descriptions sometimes match multiple possible speakers, and if so, the dialogue director chooses them using the following criteria, with the most important first:
+
+- On-stage (i.e., enclosed by some room) rather than off-stage.
+
+- Audible to the plyer rather than not.
+
+- Being the interlocutor of the previous speech in the same beat rather than not.
+
+- Being a `person` rather than an inanimate object.
+
+- Not being the immediately previous speaker.
+
+If there are several equally good possibilities under these criteria, a random choice is made. If there are none, the line of dialogue is skipped and not performed at all (and therefore is not given the `performed` property).
+
+### The name
+
+Just as every beat is a value of the kind `dialogue beat`, so every line is a value of the kind `dialogue line`. These are usually nameless, but can be given names, which would allow the source text to manipulate them. For example:
+
+	Marcellus (this is the reluctant admission line): "Something is rotten."
+
+The name has to end with `line`, and has to be unique: two different lines cannot have the same name.
+
+Most lines never need naming, of course, but the occasional use of names allows for tricks like:
+
+	Bernardo (if the reluctant admission line is performed): "Look, we've got to face it. Marcellus was right, Denmark's in trouble."
+
+### The interlocutor
+
+Most lines are delivered to the whole room in general, but some are pointedly spoken _to_ somebody, even if others are listening. If so, that person is called the _interlocutor_. `to` plus a description of an object specifies who that person is.
+
+This is useful for lines which make sense only in the presence of somebody else. For example:
+
+	Marcellus (to Bernardo; if the Prince cannot hear Marcellus): "The Prince looks moody tonight, i'faith."
+
+The line will not be performed unless Marcellus can hear Bernardo. Being the interlocutor also makes somebody slightly more likely to be chosen as the next speaker: see above.
+
+### What is mentioned
+
+`mentioning ...` says that the line makes a conversation subject live
+when it is performed. For example:
+
+	Marcellus (mentioning the ghost): "I be mighty afear'd of the Ghost."
+
+A whole list of subjects can be given: `mentioning the Ghost and Denmark`
+would give two, for example. As usual, it's possible to be vague: `mentioning the people in the Dining Room`, for example. But the whole point of `mentioning` is to single out what's important, so it's unlikely to be a good idea to allow too many things to be caught at a time by such a description.
+
+### Making the line conditional
+
+`if` or `unless` plus any condition causes the line to be skipped (and not given the `performed` property) if this requirement fails.
+
+### Actions as stage directions
+
+The `before` and `after` clauses say that an Inform action should be tried along with the performance of the line. Note that `before` means the line is performed before the action, and `after` means it is performed after.
+
+Unless otherwise specified, the actor of the action is the speaker, so this is an exception to the general rule of Inform that the default actor is the player. For example:
+
+	Gravedigger (after taking the shovel): "Here goes another shallow one."
+
+would be performed as:
+
+``` transcript
+The gravedigger takes the shovel.
+	
+Gravedigger: "Here goes another shallow one."
+```
+
+In the case of `after`, the action must succeed, or else the line is not performed after all. For example, if some rule made it impossible for any person to take the shovel, the Gravedigger would not in fact get it, and therefore his line would make no sense: so it would not be performed.
+
+The actor need not be the speaker, but the action has to succeed whoever the actor may be:
+
+	Gravedigger (to Hamlet; after Hamlet silently taking the shovel):
+		"Hey, I saw you picking up that shovel! That's a union job, sweet Prince!"
+
+As with `try`, the keyword `silently` causes uninteresting text such as ``The gravedigger takes the shovel.`` to be left unsaid.
+
+### Now conditions as stage directions
+
+`now` plus a condition allows the world model to be changed immediately after
+the line is performed. For example:
+
+	Marcellus (now Marcellus is in the Banqueting Hall): "Oh my. I'm running for it!"
+
+It's legal to pile up multiple `after`, `before` and `now` clauses on the
+same line, at your own risk:
+
+	Marcellus (after taking the ghost detector; after examining the ghost; now Marcellus is in the Banqueting Hall; before jumping): "Marcellus grabs the equipment, takes a quick reading, and panics. 'Oh my. I'm running for it!' And he makes a running jump."
+
+The sequence is: `after` actions first, in declaration order; then actual
+performance of the line; then `now` effects; then `before` actions, in
+declaration order. If any of the `after` actions should fail, the process
+stops there.
+
+### Lines without speaking
+
+The performance note `without speaking` makes a line non-verbal: something like a gesture, which may not involve words but is still performed by somebody.
+
+	Marcellus (without speaking): "Marcellus throws up his hands, appalled."
+
+The difference between this and `Narration:` is that there is a speaker,
+`Marcellus`. Because this is non-verbal, he needs to be visible, not audible.
+Similarly there can be an interlocutor, who must be visible to the speaker
+rather than audible to him. For example:
+
+	Marcellus (without speaking, to Bernardo): "Marcellus points a horrified finger, and nudges Bernardo."
+
+Unlike regular dialogue lines, this won't be performed if it's dark, and needs both Marcellus and Bernardo to be present.
+
+### Performance styles
+
+Using just the name of a `performance style`, but with the word `spoken` removed, indicates that the line is performed this way. By default it is performed in the style `spoken normally`: that is,
+
+	Bernardo: "Well, good night."
+
+is equivalent to:
+
+	Bernardo (normally): "Well, good night."
+
+But if we have created a performance style called `spoken with asperity`, then:
+
+	Marcellus (with asperity): "I've had it with these goddam ghosts."
+
+...would perform it that way. See [Performance styles] for more.
+
+### Properties of lines
+
+`dialogue line` comes with the following either-or properties built in:
+
+- `narrated` or `unnarrated`. Is this a `Narration:` line?
+
+- `performed` or `unperformed`. Has this been performed yet?
+
+- `recurring` or `non-recurring`. Can the director perform this line more
+than once in the same play-through? (Note that this same property has the
+same name, and a similar meaning, for scenes and beats.) By default, no.
+
+- `elaborated` or `unelaborated`. Is the speech more than a simple piece
+of reported speech?
+
+By default, lines are `unperformed` and `non-recurring`. Whether they are `narrated` depends on whether they give the speaker as `Narration`, and whether they are `elaborated` depends on the text of the line. For example:
+
+	Katie: "I suppose."
+	
+	Katie: "Your daughter gives her most grown-up pout. 'Whatever.'"
+
+The first line there is `unelaborated`, the second `elaborated` - because it
+contains internal quotation marks, so it's read as being a mixture of
+narration and speech, rather than purely being speech. It affects only how
+the line is performed. An unelaborated line is printed as `Speaker: "Speech."`,
+whereas an elaborated line is printed exactly as written, the assumption
+being that it will contain its own indication of who's speaking and which
+words are actually said. So we see:
+
+``` transcript
+Katie: "I suppose."
+
+Your daughter gives her most grown-up pout. "Whatever."
+```
+
+To qualify as `elaborated`, a speech must have at least two quotation marks `'`
+at word boundaries. The source text can override this in either direction:
+
+	Katie (unelaborated): "You call this 'peanut butter' but it's really icky."
+
+In practice, the commonest property to specify is `recurring`:
+
+	Katie (recurring): "Have you seen my iPad cable?"
+
+This allows the line to be performed any number of times: otherwise it will be skipped on a second performance of the same beat.
+
+### The speech text for a line
+
+The performed line is an Inform text, in double-quotes.
+
+This can contain text substitutions in square brackets, in the usual way for
+Inform text, giving access to an enormous range of effects.
+
+When such text is printed, the activity variable `speaker` will exist for it,
+and will hold the identity of the speaker performing the line. (If the line
+is narration, it will still exist, but will be equal to `nothing`.) Similarly
+for `interlocutor` and `style`. So for example:
+
+	A person in the Lounge:
+		"[The speaker] self-importantly [declare]: 'The greatest TV show of all
+		time is [if the speaker is female]Gilmore Girls[if not]24[end if].'"
+
+might be performed as:
+
+``` transcript
+Henry self-importantly declared: "The greatest TV show of all time is 24."
+```
+
+## Managing dialogue lines
+
+This is where we meet two more kinds: `dialogue line` and `performance style`. Each different line of dialogue in the source text is a different `dialogue line` value. That's true even if the texts are the same, as in the famous dialogue between Laurence Olivier (Szell) and Dustin Hoffman (Babe) in _Marathon Man_ (1976):
+
+	Szell: "Is it safe?"
+
+	Babe: "Are you talking to me?"
+
+	Szell: "Is it safe?"
+
+	Babe: "Is what safe?"
+
+	Szell: "Is it safe?"
+
+	Babe: "I don't know what you mean."
+
+...and so on. The three times Szell asks "Is it safe?" are three different `dialogue line` values.
+
+Every line is spoken in a `performance style`. Out of the box, Inform comes with just one defined `performance style`, called `spoken normally`. (Performance styles should have names beginning with `spoken`.) But more can always be defined:
+
+	Spoken angrily and spoken softly are performance styles.
+
+And this enables:
+
+	Szell (softly): "Is it safe?"
+
+	Babe (angrily): "I don't know what you mean."
+
+Performance styles really exist as a hook for ambitious extensions of the Inform dialogue system which, for example, change character art or pose for speakers who become angry, or which apply emotional parameters to autogenerated voice performance, in the event the game is using a text-to-speech engine. See [Performing something].
+
+Inform will not allow the following words to be used after `spoken` in the names of instances of this kind: `and`, `or`, `if`, `unless`, `before`, `after`, `now`, `to`, `this`, `without`. So, for example, it will issue a problem message rather than define `spoken before thinking`. This avoids ambiguity when lines are declared.
+
+As has already been said, `dialogue line` is a kind supporting the following either-or properties:
+
+- `narrated` or `unnarrated`. By default, `narrated` for a `Narration:` line, and otherwise `unnarrated`.
+
+- `performed` or `unperformed`. By default, `unperformed`.
+
+- `recurring` or `non-recurring`. By default, `non-recurring`.
+
+- `elaborated` or `unelaborated`. By default, `elaborated` if the speech text includes two or more quotation marks at word boundaries, and otherwise `unelaborated`.
+
+In addition, the following adjectives can be applied to dialogue lines:
+
+- `available` rather than `unavailable` if the line currently meets its
+preconditions for being performed — its `if` and `unless` conditions.
+
+- `non-verbal` rather than `verbal` if it is a non-verbal communication,
+written as being performed `without speaking`.
+
+And note that `L is in B` can be used to test whether or not the dialogue line `L` belongs to the beat `B` — note that every line is always part of just one beat. This makes it possible to iterate over the contents of `B` (`repeat with L running through dialogue lines in B`), or extract, say, `the list of dialogue lines in B` or `the number of dialogue lines in B`.
+
+The performance of a line is carried out by a collection of rulebooks called an _activity_ called `performing`. See the chapter on [Activities], and its section [Performing something] for more, but the gist is that Inform performs `L` by delegating the job to whatever rules exist in the `for performing` rulebook, applied to `L`. Ordinarily this rulebook contains just one rule, the `default dialogue performance rule`, which looks like this:
+
+	For performing a dialogue line (called L)
+		(this is the default dialogue performance rule):
+		if L is narrated or L is elaborated or L is non-verbal:
+			say "[textual content of L][line break]";
+		otherwise:
+			say "[The speaker]";
+			if the interlocutor is something:
+				say " (to [the interlocutor])";
+			say ": '[textual content of L]'[line break]".
+
+But it's possible to create new rules which pre-empt this standard way of doing things. As a very simple example:
+
+	For performing a narrated dialogue line (called L):
+		say "[italic type][textual content of L][roman type][line break]".
+
+Something to note here is that _in performing rules like this_ there are special variables whose values can be used:
+
+- `speaker`. This will be `nothing` for a line which is `narrated`. Note that the alternative is for it to be `something`, rather than `somebody`, because inanimate objects like loudspeakers do sometimes speak.
+
+- `interlocutor`. This will be `nothing` unless a line is spoken `to` somebody. Again, it might be a `thing` rather than a `person`: a microphone, for instance.
+
+- `style`. This will be whatever `performance style` the line is delivered with, so by default it will be `spoken normally`.
+
+Note that these variables do not exist outside of the `performing` activity, and in the case of `speaker` and `interlocutor`, can't even always be known at any other time. Consider this line, for example:
+
+	A woman other than Katie (to an animal): "[The speaker] crouches down to look at [the interlocutor]. 'Do you need feeding now?'"
+
+Until the actual moment of performing this, we can't know who exactly will speak, or who is spoken to. For the same reason, we can't know the exact text of what will be said, because it depends on who those people turn out to be. So the following tempting phrase, useful though it may be, can only safely be used in rules attached to the `performing` activity:
+
+> phrase: {ph_textualcontent} textual content of (a dialogue line) ... text
+>
+> This produces the text of the speech made, but it's only really safe to use this phrase in a rule belonging to the `performing something` activity, because the text may make reference to the current `speaker` and `interlocutor` — which are variables existing only inside that activity.
+
+## Decision points
+
+A _decision point_ is reached when the director is performing a beat and comes to a run of _choices_. The idea is that the player selects one of these choices, and then dialogue continues down whichever branch is called for.
+
+### Textual choices
+
+So far, we have only seen one sort of decision: where the player is offered specific options as the choices, and has to type 1, 2, ..., to indicate which to take.
+
+	Border agent: "Business or pleasure?"
+	
+	-- "Business."
+	
+		Agent: "Then where is your C-34d section (xciii) visa exemption waiver proffer certificate D?"
+
+	-- "Pleasure."
+	
+		Agent: "Fill out the address of your hotel and the name of your vessel, like it's the 1930s still."
+
+Those are called _textual choices_, since they consist of text like `"Business."`. But there are also two other ways a decision can present itself.
+
+### Action choices
+
+_Action choices_ cause the dialogue director to halt (temporarily) and allow the player to type a command, which is then understood as causing an action in the normal way. For example:
+
+	Border agent: "Passport, please."
+	
+	-- before giving the passport to the agent
+	
+		Agent: "Enjoy your stay."
+
+	-- otherwise
+	
+		Agent: "Federal law forbids any suspicious activity here, Ma'am. You're going to have to go with these officers."
+
+So, for example,
+
+``` transcript
+Border agent: "Passport, please."
+
+> GIVE PASSPORT TO AGENT
+Border agent: "Enjoy your stay."
+```
+
+Notice the `before` in the `-- before giving the passport to the agent` branch. This means that dialogue intercepts the action, and it never actually takes place. (So the player retains the passport, and none of the normal rules which might prevent the action from taking place are consulted.) If `after` is used rather than `before`:
+
+	-- after jumping
+	
+		Agent: "Ma'am, it's a serious offence to jump on the spot in an airport."
+
+...then the action _does_ take place, and only then will the Agent speak.
+
+But now suppose the action is one which might conceivably fail: suppose the player is smuggling something in a briefcase, and we want to anticipate ``DROP BRIEFCASE``. The case, however, might be handcuffed to the player's wrist: and we don't know whether it will be or not when the dialogue takes place. Let's suppose that we have written this rule:
+
+	Check dropping the briefcase:
+		if the player is wearing the handcuff, say "It's chained to your wrist!" instead.
+
+If the dialogue writes the choice this way:
+
+	-- before dropping the briefcase
+	
+		Agent: "I saw you! Pick that case up at once!"
+
+then we've somehow implied that the player _has_ dropped the case, which would be unrealistic with the handcuff in use. But if we have:
+
+	-- after dropping the briefcase
+	
+		Agent: "I saw you! Pick that case up at once!"
+
+then the dropping action does actually take place, so that the briefcase is now on the ground. Somehow, what we want is for all the checking rules on the action to take place, but then for the action itself to be intercepted _if_ it turned out to make sense. And that's indeed possible:
+
+	-- instead of dropping the briefcase
+	
+		Agent: "I saw you! Pick that case up at once!"
+
+So to sum up:
+
+1) `-- before (an action)` is selected whenever the player successfully types a command which generates this action. No rules are run to check whether it makes sense, and the action itself is not carried out.
+
+2) `-- instead of (an action)` is selected whenever the player successfully types a command which generates this action _and_ the action makes it through the "before" and "check" stages, that is, the action isn't somehow stopped by a `check` or `before` rule. Nevertheless, even though this means that Inform thinks the action is a possible one to carry out, it isn't actually carried out.
+
+3) `-- after (an action)` is only selected when the player successfully types a command which generates this action, _and_ it gets through "before" and "check" rules, _and_ it actually takes place.
+
+4) `-- otherwise` is selected only if none of the other choices were selected. There can only be one of these, and it must be the last choice in the run. It is always automatically `recurring`, so that it won't mysteriously fail to be chosen on a second run through the same decision.
+
+Note that there doesn't have to be an `-- otherwise` option. There usually is, as a catch-all, but if not, and none of the choices match, then the decision is left hanging for another turn and reconsidered then.
+
+This seems a good point to give an advance preview of flow markers. The following, slightly less hostile, immigration experience obliges the player to keep typing commands until realising that ``GIVE PASSPORT TO AGENT`` is the sensible thing to do.
+
+	Border agent: "Passport, please."
+	
+	-- (recurring) before giving the passport to the agent
+	
+		Agent: "Enjoy your stay."
+
+	-- (recurring) otherwise
+	
+		Agent: "Just the passport, if you please, Ma'am."
+		
+		<-
+
+Note that the success branch simply runs out of things to say, and so the dialogue ends with the agent saying "Enjoy your stay." But the failure branch runs into the _flow marker_ `<-`. This tells the director to go back to the last decision and try again.
+
+``` transcript
+Border agent: "Passport, please."
+
+> DROP BRIEFCASE
+Border agent: "Just the passport, if you please, Ma'am."
+
+> GIVE PASSPORT TO AGENT
+Border agent: "Enjoy your stay."
+```
+
+### Automatic choices
+
+"Automatic" choices sounds like a contradiction in terms, but really what happens is that it's Inform itself which makes the choice, rather than the player. For example:
+
+	-- step through
+
+		Liza: "One."
+
+	-- or
+
+		Liza: "Two."
+	
+	-- or
+
+		Liza: "Three."
+
+In an automatic choice, the first choice explains how to make the decision, and
+the rest must all be just `-- or`. In this case, what `step through` means is
+that the first time this choice is encountered, the first option is chosen (so
+Liza says "One."); the second time, the second option; the third time, the third
+option; and on the fourth and subsequent times, nothing is done.
+
+An alternative is:
+
+	-- cycle through
+
+		Liza (recurring): "One."
+
+	-- or
+
+		Liza (recurring): "Two."
+	
+	-- or
+
+		Liza (recurring): "Three."
+
+This is like `step through` except that the fourth time, we go back to Liza
+saying "One.", and the fifth time she says "Two.", and so on, round and round.
+Note that the choices in an automatic choice are always recurring, but that
+any dialogue within them is not. This is why we have to mark Liza's lines as
+`recurring` here.
+
+There are altogether five of these automatic mechanisms:
+
+- `step through`: each in turn, but only once through, then do nothing
+
+- `step through and stop`: each in turn, but repeat the last one indefinitely
+
+- `cycle through`: each in turn, going back to the start after the last
+
+- `shuffle through`: a random permutation, and then another random
+permutation when that completes, and so on
+
+- `choose randomly`: make an entirely random choice every time
+
+## Dialogue choices
+
+As we've seen, then, a dialogue choice is written as a paragraph beginning with `--`. Much like dialogue lines, dialogue choices can have optional annotations given to them between round brackets. But if we forget about those, the possible ways to write a choice are:
+
+Syntax                      | What it's for
+--------------------------- | -------------
+`-- "Text"`                 | A textual choice.
+`-- before (an action)`     | An action choice.
+`-- instead of (an action)` | An action choice.
+`-- after (an action)`      | An action choice.
+`-- otherwise`              | Concluding a set of action choices.
+`-- step through`           | Beginning an automatic set of choices.
+`-- step through and stop`  | Beginning an automatic set of choices.
+`-- cycle through`          | Beginning an automatic set of choices.
+`-- shuffle through`        | Beginning an automatic set of choices.
+`-- choose randomly`        | Beginning an automatic set of choices.
+`-- or`                     | Concluding an automatic set of choices.
+
+All of these were covered in [Decision points], so that just leaves the optional details placed in brackets. The conventions are just like those for dialogue lines:
+
+### The name
+
+Just as every beat is a value of the kind `dialogue beat`, and every line is a value of the kind `dialogue line`, so every option is a value of the kind `dialogue choice`. These are usually nameless, but can be given names, which would allow the source text to manipulate them. For example:
+
+	-- (this is the desperate choice) "Run for it in blind hope"
+
+The name has to end with `choice`, and has to be unique: two different choices cannot have the same name.
+
+### Conditions on a choice
+
+`if` or `unless` plus any Inform condition imposes a condition for the choice to be available.
+
+It's sometimes worth bearing in mind that this just might make _all_ of the options unavailable. Consider this:
+
+	-- (if the player is in the Great Hall) "Duck!"
+
+		Narration: "You duck."
+
+	-- (if the player can see the Lake) "Swim for it!"
+
+		Narration: "You swim."
+
+What if the player is neither in the Great Hall, nor in sight of the Lake? The answer is that the decision vanishes entirely, and the player is not even aware that there might have been one.
+
+When placing conditions on choices, this can be a very useful phrase to know:
+
+> phrase: {ph_dialoguechoices} current choice list ... list of dialogue choices
+>
+> This phrase can only sensibly be used when testing conditions applied to dialogue choices: it produces the list of those available _so far_. That can be used to make later choices only available if earlier ones aren't, or similar effects.
+
+For example:
+
+	-- "Hurl myself at the window."
+
+	-- "Tunnel through the wall."
+
+	-- (if the current choice list is empty; recurring) "Admit to being out of ideas."
+
+The first time this decision is performed, two options will be available — the first two. The player will choose one. If the decision is performed again, the player will be offered the one not chosen earlier. Should the decision ever come up again, the new option `"Admit to being out of ideas."` will be offered instead.
+
+### Properties of a choice
+
+Exactly as for beats and lines, a `dialogue choice` can have these either-or properties:
+
+- `performed` or `unperformed`. Has this been chosen yet?
+
+- `recurring` or `non-recurring`. Can the director offer this choice more
+than once in the same play-through?
+
+## Flow markers
+
+Flow markers are written `<-` or `->`, and cause the dialogue director to interrupt its normal performance of a beat. `<-` generally makes a backwards jump in the same beat, while `->` leads out to another beat.
+
+Flow markers actually have much in common with choices, and can accept exactly the same bracketed notes as choices have: they can be named and they can be conditional. For example,
+
+	<- (unless Polonius is in Elsinore)
+
+	-> (if Hamlet is not in the Graveyard) stop
+
+All flow markers are always `recurring`, without any need to say this.
+
+### Flow back
+
+`<-` on its own goes back to either the most recent decision point in the
+same beat, or (if there hasn't been a decision) to the start of the beat.
+
+As with control mechanisms in all programming languages, that makes it
+possible to get into endless loops:
+
+	(This is the ill-advised beat; fully recurring.)
+	
+	Fatboy Slim: "Right about now, the funk soul brother."
+	
+	Fatboy Slim: "Check it out now, the funk soul brother."
+
+	<-
+
+But it is extremely useful for situations like this one:
+
+	-- "Option which turns out not to work."
+	
+		Recording angel: "That didn't work. Try again."
+		
+		<-
+
+	-- "Another option which turns out not to work."
+	
+		Recording angel: "No, try again."
+		
+		<-
+
+	-- "The one option which works."
+	
+		Recording angel: "Well done."
+
+In effect this repeats the decision up to three times until the player heads
+down the track we want. Because the options above are `non-recurring`, the choices dwindle with each wrong guess until the player can only choose `"The one option which works."`.
+
+### Flow through another beat
+
+`-> perform B`, where `B` is the name of a beat, causes the director to
+perform that beat at this point. Note that after `B` finishes, the original
+beat _continues where it left off_. That nesting can go up to 20 beats deep.
+
+This too can be dangerous if wrongly handled:
+
+	(This is the equally ill-advised beat; fully recurring.)
+	
+	Fatboy Slim: "Right here, right now."
+	
+	-> perform the equally ill-advised beat
+
+But `-> perform` is very useful as a way of incorporating what amounts to a complicated sub-scene which is only needed in some situations.
+
+	-- "Climb the chimney"
+	
+		Narration: "You get only a few feet, and covered in soot."
+		
+		<-
+		
+	-- "Get into the wardrobe."
+	
+		Narration: "Hmm, there seems no end to these fur coats."
+		
+		-> perform the Narnia visit beat
+
+		Narration: "Goodness, back at that wardrobe you only dimly remember."
+
+The beat to be performed can also be the name of a variable, as in `the redirected beat` in the following example:
+
+	The redirected beat is a dialogue beat that varies. The redirected beat is the Queensryche beat.
+
+	Section 1 - Specific chat (dialogue)
+
+	(This is the starting beat.)
+
+	Example Friend: "Shall we listen to some music?"
+
+	-> perform the redirected beat
+
+	(This is the Queensryche beat.)
+
+	Example Friend: "I so like Queensryche, even without the diacritic."
+
+### Flow to a stop
+
+`-> stop` causes the current beat to finish right here, and is convenient
+when a drastic choice short-circuits what might otherwise have been a
+lengthy conversation.
+
+	-- "Run for the Numidian desert and live off locusts and honey"
+	
+		-> stop
+
+	-- "Ask if the eternal fate of the soul is determined at death"
+	
+		Augustine: "The purgatorial fires purify only those who die in communion."
+		
+		-- "But ..."
+
+Note that `-> stop` stops only the current beat. If one beat is performing another one using `-> perform`, and the second one stops, the first one then resumes.
+
+### Flow to the end of the story
+
+There are four variants of this:
+
+	-> end the story          
+	-> end the story finally
+	-> end the story saying "TEXT"
+	-> end the story finally saying "TEXT"
+
+These correspond exactly to the Inform phrases which `end the story`. All beats are abandoned at this point, of course, so this is even more drastic than `-> stop`.
+
+### Flow to another choice
+
+Finally, and only seldom needed, `-> another choice` can be used to clarify that what look like lots of options for a single decision are in fact two decisions in a row. For example:
+
+	-- "Boxers."
+	
+		Narration (after wearing the boxer shorts): "You feel less naked."
+
+	-- "Briefs."
+	
+		Narration (after wearing the briefs): "You feel somewhat less naked."
+
+	-> another choice
+	
+	-- "White hat."
+	
+		Narration (after wearing the white hat): "You feel noble."
+
+	-- "Black hat."
+	
+		Narration (after wearing the black hat): "You feel ignoble."
+
+The reason for the `-> another choice` flow marker is simply that we want two sets of two options, not one set of four. If any dialogue had appeared in between the two decisions, there would have been no need for the `-> another choice`, but since it didn't, we need some marker to hold the decisions apart from each other. `-> another choice` has to be unconditional, and doesn't get a name or properties: it isn't really present in the story at all.
+
+## Managing dialogue choices
+
+As has been mentioned already, each different choice in the source text is a different `dialogue choice` value, and in fact so is each different flow marker: under the surface, a flow marker is really just a special sort of choice.
+
+A `dialogue choice` comes with two either-or properties already defined:
+
+- `performed` or `unperformed`. By default, `unperformed`.
+
+- `recurring` or `non-recurring`. By default, `non-recurring`.
+
+In addition, the following adjectives can be applied to choices:
+
+- `flowing` rather than `offered` if the choice is a `->` or `<-` flow
+control marker rather than a `--` option offered as part of a decision.
+
+- `story-ending` if the choice is a flow marker ending the story. All `story-ending` choices are `flowing`, but not vice versa.
+
+Just as was also true for dialogue lines, `C is in B` can be used to test whether or not the dialogue choice `C` belongs to the beat `B` — note that every choice is always part of just one beat. This makes it possible to iterate over the contents of `B` (`repeat with C running through dialogue choices in B`), or extract, say, `the list of unperformed dialogue choices in B`.
+
+When the dialogue director wants to offer a decision based on textual choices to the player, it usually does so with a simple numbered list of options, and then asks the player to type a number. This is a lowest-common-denominator sort of thing to do, but many other user interfaces could be imagined: an Inform story presented on a website might want clickable options, for example.
+
+Because of that, Inform routes this business through an _activity_. See the chapter on [Activities], and its section [Offering something] for more, but the gist is that Inform delegates the job to whatever rules exist in the `for offering` rulebook, applied to a list of choices. Ordinarily this rulebook contains just one rule, the `default offering dialogue choices rule`, which looks like this:
+
+	For offering a list of dialogue choices (called L)
+		(this is the default offering dialogue choices rule):
+		let N be 0;
+		repeat with C running through L:
+			increase N by 1;
+			say "([N]) [textual content of C][line break]";
+		say conditional paragraph break;
+		let M be a number chosen by the player from 1 to N;
+		set the dialogue selection value to M;
+		say "[bold type][textual content of entry M of L][roman type][paragraph break]".
+
+This produces a simple numbered list, then asks the player to type one of those numbers (insisting and asking again if they type something else), and then prints back the chosen option in bold face.
 
 # Phrases
 
@@ -5924,7 +7500,7 @@ tests whether it is set; we can also test if it is not set using:
 
 A more substantial example from the Standard Rules is given by a phrase used mostly for internal, technical reasons:
 
-> phrase: {ph_listcontents} list the contents of (object)
+> phrase: {ph_listcontents} list the/-- contents of (object)
 >
 > This phrase produces a list of all things whose holder is the given object, according to Inform's traditional conventions for room descriptions and inventory listings. Example:
 >
@@ -6169,7 +7745,7 @@ Action-processing may be the single most important thing Inform does, so the sys
 
 ## Giving instructions to other people {var_person_asked}
 
-^^{actions: instructing other people}^^^{characters (people) <-- actors <-- other people}^^^{characters (people) <-- NPC <-- people}^^^{characters (people) <-- person+kind+: characters} ^^{characters (people): giving instructions to other characters} ^^{instructing other characters} ^^{ordering other characters} ^^{asking (actor) to try+action+ <-- +to+try (action): in (asking) action+sourcepart+} ^^{person asked (- object)+glob+} ^^{actor (- person)+actvar+} ^^{player: as opposed to the actor}
+^^{actions: instructing other characters}^^^{characters (people) <-- actors <-- other people}^^^{characters (people) <-- NPC <-- people}^^^{characters (people) <-- person+kind+: characters} ^^{characters (people): giving instructions to other characters} ^^{instructing other characters} ^^{ordering other characters} ^^{asking (actor) to try+action+ <-- +to+try (action): in (asking) action+sourcepart+} ^^{person asked (- object)+glob+} ^^{actor (- person)+actvar+} ^^{player: as opposed to the actor}
 
 So far, all actions have been carried out by the player: which is fine for exploring the passive world of an empty warehouse, but less good for a drama in which other characters have to be contended with. In fact, an action can be carried out by anybody – by any instance of the `person` kind, that is, which includes all the men, women and animals in the story, and not only the player.
 
@@ -6192,7 +7768,7 @@ So if the player types ``ALGY, TAKE SANDWICH``, the `person asked` would be Algy
 
 ## Persuasion {rules_per}
 
-^^{actions: instructing other characters: persuasion rules} ^^{persuasion+rb+} ^^{+toout+persuasion succeeds / fails (persuasion rules)} ^^{rules: persuasion rules for instructing characters} ^^{rules: for other characters} ^^{actions: rules for other characters} ^^{success: for persuasion} ^^{failure: for persuasion} ^^{paragraph breaks: for fooling persuasion refusal} ^^{instead of (action)+rb+: as failure of persuasion} ^^{rules: instead rules} ^^{characters (people): persuading}
+^^{actions: instructing other characters: persuasion rules} ^^{persuasion+rb+} ^^{+toout+persuasion succeeds / fails (persuasion rules)} ^^{rules: persuasion rules for instructing characters} ^^{rules: for other characters} ^^{actions: rules for other characters} ^^{success: for persuasion} ^^{failure: for persuasion} ^^{paragraph breaks: for fooling persuasion refusal} ^^{instead of (action)+rb+: as failure of persuasion} ^^{rules: instead rules} ^^{characters (people): obeying and refusing}
 
 `Asking ... to try ...` actions run through their Before and Instead rules like any other actions, but then (if no rule has intervened) something different happens: Inform has to decide whether the person asked consents to try the action or not. By default, the answer is always no, and text like the following will be printed:
 
@@ -6307,7 +7883,7 @@ Note that the text `try Will going west` involves the actor's name immediately p
 
 ## New actions {NEWACTIONS} {PM_MatchedAsTooLong} {PM_MultiwordPastParticiple} {PM_GrammarMismatchesAction} {PM_ActionAlreadyExists} {PM_ActionBothValues} {PM_ActionClauseUnknown} {PM_ActionMisapplied}
 
-^^{actions: defining new actions} ^^{defining: actions} ^^{Inform 6 equivalent: verbs} ^^{(applying to), in defining actions+sourcepart+} ^^{(requiring), in defining actions+sourcepart+} ^^{visibility+rel+: requirement in defining actions} ^^{touchability+rel+: requirement in defining actions} ^^{carrying+rel+: requirement in defining actions} ^^{light: requirement in defining actions} ^^{actions: referring to current action with (action)+sourcepart+} ^^{understand (verb) as (action)+assert+} ^^{understanding: verbs} ^^{Inform 6 equivalent: synonyms} ^^{synonyms} ^^{understanding: requirements for objects in actions}^^^{understanding <-- parsing}
+^^{actions: defining new actions} ^^{defining: actions} ^^{Inform 6 equivalent: verbs} ^^{(applying to), in defining actions+sourcepart+} ^^{(requiring), in defining actions+sourcepart+} ^^{(visible thing), in defining actions+sourcepart+} ^^{(touchable thing), in defining actions+sourcepart+} ^^{(carried thing), in defining actions+sourcepart+} ^^{light: requirement in defining actions} ^^{actions: referring to current action with (action)+sourcepart+} ^^{understand (verb) as (action)+assert+} ^^{understanding: verbs} ^^{Inform 6 equivalent: synonyms} ^^{synonyms} ^^{understanding: requirements for objects in actions}^^^{understanding <-- parsing}
 
 It is not often that we need to create new actions, but a large work of interactive fiction with no novelty actions is a flavourless dish. Here we shall create an action for photographing things.
 
@@ -6321,19 +7897,19 @@ The word `visible` here tells Inform that we do not need to be able to touch the
 
 Occasionally, when writing general rules about actions, it can be useful to find out what the current action's requirements are: the following conditions do what they suggest.
 
-> phrase: {ph_requirestouch} if action requires a touchable noun:
+> phrase: {ph_requirestouch} if action requires a/-- touchable noun:
 >
 > This condition is true if the action being processed is one whose (first) noun is an object which needs to be touchable by the actor. For example, it's true for `taking`, but false for `examining`.
 
-> phrase: {ph_requirestouch2} if action requires a touchable second noun:
+> phrase: {ph_requirestouch2} if action requires a/-- touchable second noun:
 >
 > This condition is true if the action being processed is one whose second noun is an object which needs to be touchable by the actor. For example, it's true for `putting the brick in the sack`, but false for `throwing the brick at the window`.
 
-> phrase: {ph_requirescarried} if action requires a carried noun:
+> phrase: {ph_requirescarried} if action requires a/-- carried noun:
 >
 > This condition is true if the action being processed is one whose (first) noun is an object which needs to be carried by the actor. For example, it's true for `dropping`, but false for `taking`.
 
-> phrase: {ph_requirescarried2} if action requires a carried second noun:
+> phrase: {ph_requirescarried2} if action requires a/-- carried second noun:
 >
 > This condition is true if the action being processed is one whose second noun is an object which needs to be carried by the actor.
 
@@ -6646,7 +8222,7 @@ Symmetrically, Inform also has `reaching outside` rules, used if the player is i
 
 ## Visible vs touchable vs carried
 
-^^{actions: requirements for actions} ^^{(requiring), in defining actions+sourcepart+} ^^{visibility+rel+: requirement in defining actions} ^^{touchability+rel+: requirement in defining actions} ^^{carrying+rel+: requirement in defining actions} ^^{light: requirement in defining actions} ^^{understanding: requirements for objects in actions} ^^{taking+action+: implicit taking} ^^{implicitly taking something+activity+} ^^{implicitly taking something+activitycat+}
+^^{actions: requirements for actions} ^^{(requiring), in defining actions+sourcepart+} ^^{(visible thing), in defining actions+sourcepart+} ^^{(touchable thing), in defining actions+sourcepart+} ^^{(carried thing), in defining actions+sourcepart+} ^^{light: requirement in defining actions} ^^{understanding: requirements for objects in actions} ^^{taking+action+: implicit taking} ^^{implicitly taking something+activity+} ^^{implicitly taking something+activitycat+}
 
 To recap, actions are created like so:
 
@@ -6678,7 +8254,7 @@ then trigger an action with the command ``WAVE MAGIC WAND AT BANYAN TREE``, the 
 
 ## Changing reachability {var_person_reaching}
 
-^^{rules: reaching inside / outside} ^^{rules: access to things referred to in actions} ^^{actions: reaching inside / outside rules} ^^{reaching inside / outside+rb+} ^^{actions: requirements for actions} ^^{touchability+rel+: requirement in defining actions} ^^{understanding: requirements for objects in actions} ^^{Inform 6 equivalent: scope rules} ^^{person reaching (- object)+glob+} ^^{container in question (- object)+glob+} ^^{supporter in question (- object)+glob+} ^^{+toout+deny access (reaching inside / outside)} ^^{+toout+allow access (reaching inside / outside)} ^^{+toout+access, deny / allow access (reaching inside / outside)}
+^^{rules: reaching inside / outside} ^^{rules: access to things referred to in actions} ^^{actions: reaching inside / outside rules} ^^{reaching inside / outside+rb+} ^^{actions: requirements for actions} ^^{(touchable thing), in defining actions+sourcepart+} ^^{understanding: requirements for objects in actions} ^^{Inform 6 equivalent: scope rules} ^^{person reaching (- object)+glob+} ^^{container in question (- object)+glob+} ^^{supporter in question (- object)+glob+} ^^{+toout+deny access (reaching inside / outside)} ^^{+toout+allow access (reaching inside / outside)} ^^{+toout+access, deny / allow access (reaching inside / outside)}
 
 The question of what the player can, and cannot, reach to touch is important in interactive fiction. It contains some of the subtlest ideas in the model world, though they often go unnoticed. For instance, if a key is on a shelf which is part of a closed box, can we reach for the key? This comes down to whether the shelf, described only as `part of` the box, is on the inside or the outside: and in fact, because it cannot know which is the case, Inform allows either. So in general it is best to regard `parts` as being exterior parts, but to avoid having parts on containers that might in the course of play be closed up with the player inside.
 
@@ -8295,10 +9871,10 @@ produces:
 
 ``` transcript
 "meaning of the verb contain" = relation of objects: containment relation
-"meaning of the verb provoke" = relation of objects: equality relation
+"meaning of the verb provoke" = relation of objects: never-holding relation
 ```
 
-As this demonstrates, if a verb has no meaning, or its meaning doesn't relate to objects, we get just the equality relation.
+As this demonstrates, if a verb has no meaning, or its meaning doesn't relate to objects, we get just the `never-holding relation`. This is a relation which, as the name suggests, never holds, and can't be made to hold, between any two values.
 
 In fact, Inform even defines a verb `to mean`: it's meaningful, and its meaning is the meaning relation. Thus:
 
@@ -8551,6 +10127,12 @@ Lastly, for completeness, we also provide:
 >
 > This text substitution writes out the number in unsigned decimal, in such a way that numbers normally considered decimal appear large, padding with initial zeros to ensure that the result is at least the given number of digits in length.
 
+One more phrase about `number` values is occasionally handy:
+
+> phrase: {ph_numberchosen} a/-- number chosen by the player from 1 to (number) ... number
+>
+> This prints an `>` prompt and then waits for the player to type a number (and press RETURN), and keeps asking until the player enters something in the range allowed. If the maximum value supplied is negative or zero, the phrase does not ask for player input, and simply returns 1.
+
 To reiterate, though: all these different notations for typing in, and for saying back, whole numbers are all to do with a single kind, `number`. Unlike some programming languages, Inform has no kind for "unsigned integer", nor for "integer which should always be written in binary".
 
 But it does also provide a `real number` kind, and that's where we go next. Those are always written in a signed way, and always use decimal digits.
@@ -8632,7 +10214,7 @@ In general we can't do the reverse, that is, we can't silently use a real number
 
 makes no sense. But we can explicitly convert them:
 
-> phrase: {ph_nearestwholenumber} (real number) to the nearest whole number ... number
+> phrase: {ph_nearestwholenumber} (real number) to the/-- nearest whole number ... number
 >
 > This phrase performs signed addition on the given values, whose kinds must agree, and produces the result. Examples:
 >
@@ -8731,6 +10313,7 @@ Brackets can be used to clarify: `2 minus 3 minus 1` produces `2 minus (3 minus 
 >
 >     200 - 1 = 199
 >     10:04 AM - two minutes = 10:02 AM
+>     10:04 AM - 10:02 AM = two minutes
 
 > phrase: {ph_times} (arithmetic value) \* (arithmetic value) ... value & (arithmetic value) times (arithmetic value) ... value & (arithmetic value) multiplied by (arithmetic value) ... value
 >
@@ -9376,9 +10959,9 @@ A blackboard propped against one wall reads: "122 / 10 is 12 remainder 2; but 12
 
 Whereas we are not allowed to divide 122 by 10kg: that would make no sense, since 122 is a number and not made up of kilograms. Inform will produce a problem message if we try. Similarly, Inform won't normally allow us to multiply two weights together – but see the next section.
 
-## Multiplication of units {PM_DimensionRedundant} {PM_DimensionNotBaseKOV} {PM_NonDimensional} {PM_UnitSequenceOverflow} {PM_DimensionsInconsistent} {PM_BadLPEquivalent} {PM_BadLPOffset} {PM_MultiplyingNonKOVs} {PM_BadArithmetic} {ARITHMETIC}
+## Multiplication and subtraction of units {PM_DimensionRedundant} {PM_DimensionNotBaseKOV} {PM_NonDimensional} {PM_UnitSequenceOverflow} {PM_DimensionsInconsistent} {PM_BadLPEquivalent} {PM_BadLPOffset} {PM_MultiplyingNonKOVs} {PM_BadArithmetic} {ARITHMETIC}
 
-^^{units of measure: multiplication of units} ^^{calculation: arithmetic with units} ^^{type-checking: of units of measure} ^^{units of measure: Metric Units+ext+} ^^{Metric Units+ext+} ^^{extensions: specific extensions: Metric Units}
+^^{units of measure: multiplication of units} ^^{units of measure: subtraction of units} ^^{units of measure: relative units} ^^{calculation: arithmetic with units} ^^{type-checking: of units of measure} ^^{units of measure: Metric Units+ext+} ^^{Metric Units+ext+} ^^{extensions: specific extensions: Metric Units}
 
 To recap, then, it is forbidden to multiply 122kg and 10kg, not because it could never make sense (a scientist might occasionally multiply two weights) but because the result is – what? Not a number, and not a weight any more. But we are allowed to tell Inform what the result ought to be, and once we have done so, the multiplication will be allowed:
 
@@ -9392,9 +10975,24 @@ which will turn up as:
 
 	The balance platform is 10m by 8m, giving it an area of 80 sq m.
 
-And having told Inform that lengths multiply to area, we could also divide an area by a length to get a length: no further instructions would be needed.
+And having told Inform that lengths multiply to area, we could also divide an area by a length to get a length: no further instructions would be needed. The `Metric Units by Graham Nelson` extension includes all of the standard ways that physical quantities are multiplied, and a good way to see these is to try out one of the Metric Units examples and look at the Kinds index, which includes a table showing how all of this works.
 
-The `Metric Units by Graham Nelson` extension includes all of the standard ways that physical quantities are multiplied, and a good way to see these is to try out one of the Metric Units examples and look at the Kinds index, which includes a table showing how all of this works.
+An alternative way to set things up is for one kind to represent values along some scale, but where arithmetic as such doesn't entirely make sense, and then a _second_ kind to represent relative values on that scale, where it does.
+
+The classic example of this is that it makes no good sense to talk about, say, doubling `2:15 PM`, or dividing it by `1:00 AM`, but where time differences do make sense. The Standard Rules therefore includes the sentence:
+
+	A time minus a time specifies a time period.
+
+And this establishes that, for example,
+
+``` transcript
+"4:31 pm minus 11:20 am" = time period: 5 hours 11 minutes
+"5:12 pm to the nearest 20 minutes" = time: 5:20 pm
+"4:31 pm plus 75 minutes" = time: 5:46 pm
+"5 minutes plus 6 minutes" = time period: 11 minutes
+"2 times 10 minutes" = time period: 20 minutes
+"20 minutes divided by 4 minutes" = number: 5
+```
 
 # Advanced Notations
 
@@ -10298,20 +11896,20 @@ But the same method can't be used to put blanks back, since a blank is not a val
 
 These more destructive phrases need a steady hand:
 
-> phrase: {ph_blankoutrow} blank out the whole row
+> phrase: {ph_blankoutrow} blank out the/-- whole row
 >
 > This phrase replaces the currently chosen row with blanks, erasing any value previously stored under any of the columns. Example:
 >
 >     choose row 1 in the Table of Fish Habitats;
 >     blank out the whole row;
 
-> phrase: {ph_blankoutcol} blank out the whole (table column) column in (table)
+> phrase: {ph_blankoutcol} blank out the/-- whole (table column) column in (table)
 >
 > This phrase replaces the currently chosen column with blanks, erasing any value previously stored in any of the rows. Example:
 >
 >     blank out the whole salinity column in the Table of Fish Habitats;
 
-> phrase: {ph_blankouttable} blank out the whole of (table)
+> phrase: {ph_blankouttable} blank out the/-- whole of (table)
 >
 > This phrase replaces every row of the currently chosen table with blanks, erasing any value previously stored anywhere in it. Example:
 >
@@ -11178,11 +12776,12 @@ In particular, any newly created kind of value can always be understood. We make
 
 Note the way we can refer to the limb mentioned by the player as the `limb understood`. Similarly, we could talk about the `number understood` if the value parsed had been a number, and so on.
 
-One of the built-in kinds of value is worth special note: time. A time can hold either a specific time of day, such as 10:23 PM, or a duration of something, such as 21 minutes. The `"[a time]"` token matches times of day, such as ``10:15 AM`` or ``MIDNIGHT``. But ``10 minutes`` wouldn't be recognised by `"[a time]"` since it isn't a specific moment in the day. To get around this, an alternative version called `"[a time period]"` is available. So:
+When commands need to talk about time, we need to remember that `"[a time]"` matches a value of the `time` kind — times of day, such as ``10:15 AM`` or ``MIDNIGHT``. By contrast, `"[a time period]"` matches a value of `time period`, such as ``10 MINUTES`` or ``AN HOUR``. So we would likely want:
 
+	Understand "wait until [a time]" as ...
 	Understand "wait for [a time period]" as ...
 
-would match ``WAIT FOR AN HOUR`` or ``WAIT FOR TWO HOURS 12 MINUTES``.
+in order to recognise ``WAIT UNTIL 10:20 AM`` and ``WAIT FOR TEN MINUTES``, respectively.
 
 ## Commands consisting only of nouns
 
@@ -11590,7 +13189,7 @@ However, by adding rules to the `multiple action processing rulebook`, we can ta
 >
 > This phrase produces the current multiple object list as a value. The list will be the collection of objects found to match a plural noun like ``ALL`` in the most recent command typed by the player. If there is no multiple object, say if the command was ``TAKE PEAR``, the list will be empty: it won't be a list of size 1.
 
-> phrase: {ph_altermultipleobjectlist} alter the multiple object list to (list of objects)
+> phrase: {ph_altermultipleobjectlist} alter the/-- multiple object list to (list of objects)
 >
 > This phrase sets the multiple object list to the given value. The list is ordinarily the collection of objects found to match a plural noun like ``ALL`` in the most recent command typed by the player, but using this phrase at the right moment (before the `generate action rule` in the turn sequence rules takes effect).
 
@@ -12353,7 +13952,7 @@ The `` (providing light)`` (note initial space) was added by this activity.
 
 ## Printing the description of a dark room {act_darkdesc}
 
-^^{printing the description of a dark room+descactivity+} ^^{darkness: printing the description of a dark room+activity+} ^^{description of a dark room: printing the description of a dark room+activity+}
+^^{printing the description of a dark room+descactivity+} ^^{darkness: printing the description of a dark room+activity+} ^^{descriptions (displayed): dark room}
 
 **1. When it happens.** When looking in darkness.
 
@@ -12493,7 +14092,7 @@ It's best to avoid situations where an item has a locale priority which is highe
 
 ## Printing a locale paragraph about {act_plp}
 
-^^{printing a locale paragraph about something+descactivity+} ^^{locale paragraph: printing a locale paragraph about something+activity+} ^^{descriptions (displayed): room contents} ^^{rooms+kind+: printing the room contents} ^^{mentioned / unmentioned (thing)+prop+} ^^{unmentioned / mentioned (thing)+prop+} ^^{mentioned (thing)+propcat+} ^^{unmentioned (thing)+propcat+}
+^^{printing a locale paragraph about something+descactivity+} ^^{locale paragraph: printing a locale paragraph about something+activity+} ^^{descriptions (displayed): room contents} ^^{rooms+kind+: printing the room contents} ^^{mentioned / unmentioned (thing)+prop+} ^^{unmentioned / mentioned (thing)+prop+} ^^{mentioned (thing)+propcat+} ^^{unmentioned (thing)+propcat+} ^^{supporters+kind+: that don't list contents in room descriptions}
 
 **1. When it happens.** See `printing the locale description`. By this point, the locale description process has identified a number of items as candidates to be described, and worked out a priority order. This activity is then called for each candidate in turn, starting with the highest priority items and working downwards. It can either print some text or not, and can either mark the item as `mentioned` or not: if it does, then the item won't appear subsequently in the locale description. If the activity does nothing, the item becomes "nondescript" and falls through into the final ``You can also see...`` paragraph, unless another rule mentions it in the mean time.
 
@@ -12527,6 +14126,89 @@ It's best to avoid situations where an item has a locale priority which is highe
 (b) Here's how to abolish what may be the most contentious rule in the whole Standard Rules:
 
 	{*}The describe what's on scenery supporters in room descriptions rule is not listed in any rulebook.
+
+## Performing something {act_performing}
+
+^^{performing something+descactivity+} ^^{dialogue lines: performing something+activity+}
+
+**1. When it happens.** Whenever the dialogue director has definitely decided to perform a line of dialogue. The activity shouldn't be used to undo that decision (i.e., by not printing anything): to suppress dialogue, put conditions on it. The activity has three private variables:
+
+- `speaker`. A `thing`, except that it will be `nothing` for a line which is `narrated`.
+
+- `interlocutor`. A `thing`, except that it will be `nothing` for a line which is not delivered `to` something.
+
+- `style`. A `performance style`, and by default `spoken normally`.
+
+**2. The default behaviour.** Performance is carried out by the `default dialogue performance rule`, which reads like so:
+
+	For performing a dialogue line (called L)
+		(this is the default dialogue performance rule):
+		if L is narrated or L is elaborated or L is non-verbal:
+			say "[textual content of L][line break]";
+		otherwise:
+			say "[The speaker]";
+			if the interlocutor is something:
+				say " (to [the interlocutor])";
+			say ": '[textual content of L]'[line break]".
+
+**3. Examples.** (a) This rule puts all narration in italics:
+
+	For performing a narrated dialogue line (called L):
+		say "[italic type][textual content of L][roman type][line break]".
+
+(b) Here we give a different performance for lines with a non-standard performance style:
+
+	Spoken furiously is a performance style.
+
+	Before performing a dialogue line (called L):
+		if the style is spoken furiously, say "[bold type]".
+
+	After performing a dialogue line (called L) :
+		if the style is spoken furiously, say "[roman type]".
+
+And then, say:
+
+	Elizabeth: "We had to pay the ransom, you know."
+
+	James (spoken furiously): "Even I wouldn't pay fifty thousand pounds for me!"
+
+See [Managing dialogue lines] for more.
+
+## Offering something {act_offering}
+
+^^{offering something+descactivity+} ^^{dialogue choices: offering something+activity+}
+
+**1. When it happens.** Whenever the dialogue director has one or more textual choices to ask the player to select between. This activity applies to a list of dialogue choices, which will never be empty.
+
+**2. The default behaviour.** Performance is carried out by the `default offering dialogue choices rule`, which reads like so:
+
+	Last for offering a list of dialogue choices (called L)
+		(this is the default offering dialogue choices rule):
+		let N be 0;
+		repeat with C running through L:
+			increase N by 1;
+			say "([N]) [textual content of C][line break]";
+		say conditional paragraph break;
+		let M be a number chosen by the player from 1 to N;
+		set the dialogue selection value to M;
+		say "[bold type][textual content of entry M of L][roman type][paragraph break]".
+
+**3. Examples.** (a) We could reformat this as a sentence rather than an itemised list like so:
+
+	For offering a list of dialogue choices (called L):
+		say "Choose: ";
+		let N be 1;
+		repeat with C running through L:
+			if N > 1, say "; ";
+			say "([N]) [textual content of C]";
+			increase N by 1;
+		say ".[line break]";
+		say conditional paragraph break;
+		let M be a number chosen by the player from 1 to N;
+		set the dialogue selection value to M;
+		say "[bold type][textual content of entry M of L][roman type][paragraph break]".
+
+See [Managing dialogue choices] for more.
 
 ## Deciding the scope of something {act_ds}
 
@@ -12652,7 +14334,7 @@ Note that, in order for our activity to succeed, we do need to supply a grammar 
 
 ## Reading a command {act_reading} {var_command} {kind_snippet}
 
-^^{understanding: special processing of keyboard input} ^^{Inform 6 equivalent: |BeforeParsing} ^^{snippets} ^^{player's command (- snippet)+glob+} ^^{matched text (- snippet)+glob+} ^^{punctuation: removing from player's command} ^^{regular expressions} ^^{text: regular expressions}
+^^{understanding: special processing of keyboard input} ^^{Inform 6 equivalent: |BeforeParsing} ^^{snippets} ^^{player's command (- snippet)+glob+} ^^{matched text (- snippet)+glob+} ^^{punctuation: removing from player's command} ^^{regular expressions} ^^{text: regular expressions} ^^{topics: matching snippets} ^^{>OOPS}
 
 **1. When it happens.** When reading a command from the keyboard.
 
@@ -12697,7 +14379,7 @@ To explain. Fragments of what the player has typed are called snippets: `the pla
 
 Lastly, we took drastic action with another new phrase:
 
-> phrase: {ph_rejectcommand} reject the player's command
+> phrase: {ph_rejectcommand} reject the/-- player's command
 >
 > This phrase should be used only in rules for the `reading a command` activity. It tells Inform not to bother analysing the text further, but to go back to the keyboard. (No time passes; no turn elapses; nothing happens in the simulated world.)
 
@@ -12735,7 +14417,7 @@ Note that `replace` and `cut` can only be used in `after reading a command` rule
 
 (e) Finally, we can make still more detailed alterations to the text of the command using the techniques presented in the chapter on [Advanced Text]. For instance:
 
-> phrase: {ph_changecommand} change the text of the player's command to (text)
+> phrase: {ph_changecommand} change the text of the/-- player's command to (text)
 >
 > This phrase should be used only in `after` rules for the `reading a command` activity; it replaces the current command text entirely. Example:
 >
@@ -14118,7 +15800,7 @@ Up to now, we have only been able to judge two texts by seeing if they are equal
 >
 > is always true.
 
-> phrase: {ph_exactlymatches} if (text) exactly matches the text (text):
+> phrase: {ph_exactlymatches} if (text) exactly matches the/-- text (text):
 >
 > This condition is true if the second text matches the first, starting at the beginning and finishing at the end. Both texts are read in substituted form.
 
@@ -14187,7 +15869,7 @@ Fortunately, such a notation already exists. This is the "regular expression" no
 
 As might be expected from the previous section, we simply have to describe the "find" text as `regular expression` rather than `text` and then the same facilities are available:
 
-> phrase: {ph_matchesre} if (text) matches the regular expression (text):
+> phrase: {ph_matchesre} if (text) matches the/-- regular expression (text):
 >
 > This condition is true if any contiguous part of the text can be matched against the given regular expression. Examples:
 >
@@ -14195,13 +15877,13 @@ As might be expected from the previous section, we simply have to describe the "
 >
 > is true, since this looks for a part of `"taramasalata"` which begins with `"a"`, continues with any number of characters, and finishes with `"l"`; so it matches `"aramasal"`. (Not `"asal"`, because it makes the leftmost match it can.) The option `case insensitively` causes lower and upper case letters to be treated as equivalent.
 
-> phrase: {ph_exactlymatchesre} if (text) exactly matches the regular expression (text):
+> phrase: {ph_exactlymatchesre} if (text) exactly matches the/-- regular expression (text):
 >
 > This condition is true if the whole text (starting from the beginning and finishing at the end) can be matched against the given regular expression. The option `case insensitively` causes lower and upper case letters to be treated as equivalent.
 
 And once again:
 
-> phrase: {ph_nummatchesre} number of times (text) matches the regular expression (text) ... number
+> phrase: {ph_nummatchesre} number of times (text) matches the/-- regular expression (text) ... number
 >
 > This produces the number of times that contiguous pieces of the text can be matched against the regular expression, without allowing them to overlap.
 
@@ -15168,7 +16850,7 @@ We can also write the equivalent phrases:
 >
 > empties it to `{ }`, the list with nothing in.
 
-> phrase: {ph_truncatefirst} truncate (list of values) to the first (number) entries/entry
+> phrase: {ph_truncatefirst} truncate (list of values) to the/-- first (number) entries/entry
 >
 > This phrase alters the given list so that it now consists only of the initial part of the list with the given length. Example:
 >
@@ -15176,7 +16858,7 @@ We can also write the equivalent phrases:
 >
 > turns `{1, 3, 5, 7, 9, 11}` to `{1, 3, 5, 7}`.
 
-> phrase: {ph_truncatelast} truncate (list of values) to the last (number) entries/entry
+> phrase: {ph_truncatelast} truncate (list of values) to the/-- last (number) entries/entry
 >
 > This phrase alters the given list so that it now consists only of the final part of the list with the given length. Example:
 >
@@ -16614,6 +18296,13 @@ If the bibliographic named values are not set by the source text, Inform will st
 	Story genre: Fiction
 	Release number: 1
 
+It is also possible to provide copyright and licencing details for a project. This follows the same syntax and conventions as for extensions, except that the word `story` is used instead of `extension`. See [Licence] for more.
+
+	The licence for this story is "CC-BY-4.0".
+	The copyright for this story is "Bartholomew Hendricks 2006-2024".
+	The origin for this story is "https://www.loosecannonif.com/bh".
+	The rights history for this story is "Adapted by permission from Jennifer Pond's novel 'The Transfinite Kitten' (2003)."
+
 ## Genres
 
 ^^{genre+biblio+}
@@ -17921,13 +19610,13 @@ First, though, a word about sharing. Anyone is free to write an extension on any
 
 But most extensions are written to be shared with strangers — that is, they are made available to anybody who wants to download and use them. There are several online repositories of extensions written in this way, of which one is the Inform Public Library, accessed from the Inform app.
 
-Whenever one author copies or adapts programs or text by another author, copyright law comes into play. If we want to publish or sell a story which uses an extension by somebody else, we need their permission. The form that permission usually takes is a general _licence_ (or "license", in US English) where the extension author says, in effect: Anybody can use this provided ... and then gives some conditions.
+### Credits for extensions
 
-During play of any story compiled by Inform 7, typing ``VERSION`` lists various serial numbers of the pieces of software used to make it. The list concludes with names, authors and version numbers of any extensions used. So every author whose work contributes to a story automatically gets a modest credit within it. The same list can be printed, at the discretion of the designer, using the textual substitution:
+During play of any story compiled by Inform 7, typing ``VERSION`` (or ``COPYRIGHT``) lists various serial numbers of the pieces of software used to make it. The list concludes with names, authors and version numbers of any extensions used. So every author whose work contributes to a story automatically gets a modest credit within it. The licencing terms for those extensions are also given. The same list can be printed, at the discretion of the designer, using the textual substitution:
 
 > phrase: {phs_extcredits} say "[the/-- list of extension credits]"
 >
-> This text substitution expands to one or more lines of text crediting each of the extensions used by the current source text, along with their version numbers and authors. Extensions whose authors have chosen the `use authorial modesty` option are missed out.
+> This text substitution expands to one or more lines of text crediting each of the extensions used by the current source text, along with their version numbers and authors. Extensions whose authors have chosen the `use authorial modesty` option are missed out (unless they declare a licence, in which case that licence is still mentioned, since it may be a legal necessity).
 
 If we want our extension to go uncredited – perhaps if it is a low-level enabling sort of thing, for instance – we can place the following sentence inside the definition of the extension:
 
@@ -17941,13 +19630,70 @@ A complete list, undiluted by modesty, can always be obtained using:
 >
 > This text substitution expands to one or more lines of text crediting each of the extensions used by the current source text, along with their version numbers and authors. Every extension is included, even those whose authors have opted for `use authorial modesty`.
 
-Sometimes authorship is complicated. What if Mary Brown finds some Inform 6 code written by John Smith in the mid-90s, and puts an I7 gloss on it to make an I7 extension, but then Pierre Dupont translates it into French: who's the author of the result? The rule is that the person making the current, latest version is the author listed in the titling line, so we end up with
+Whenever one author copies or adapts programs or text by another author, copyright law comes into play. If we want to publish or sell a story which uses an extension by somebody else, we need their permission. The form that permission usually takes is a general _licence_ (or "license", in US English) where the extension author says, in effect: Anybody can use this provided ... and then gives some conditions.
 
-	... by Pierre Dupont begins here.
+### Open-source licences for extensions
 
-But Mary and John deserve their credits too...
+The source text for an extension can contain special sentences which specify its licence, that is, the terms on which other Inform authors can use it. For example:
 
-_More to follow when IE-0036 is implemented._
+	The licence for this extension is "CC-BY-4.0".
+	The copyright for this extension is "Emily Short 2006-2024".
+	The origin for this extension is "https://www.emshort.com/inform".
+	The rights history for this extension is "Adapted by permission from sample code by Adam Cadre in 2006."
+
+Those are the only four things which can be set — `licence` (or the spelling `license` is also allowed), `copyright`, `origin` and `rights history`. All four are optional.
+
+- The `licence` must be _either_ `"Unspecified"` _or_ one of the standard SPDX machine-readable licence codes listed at: [https://spdx.org/licenses/](https://spdx.org/licenses/) — see below for notes on what to choose. Inform will throw a problem message if the licence is now deprecated by SPDX, usually because it has been found to be legally problematic in practice, and better versions are now available. Note that the SPDX list contains only open-source licences: if we don't want to open the source of an extension we should leave the `licence` at the default setting `"Unspecified"`.
+
+- The `copyright` declaration must take the form `"Owner's Name YYYY"`, where `YYYY` is a year after 1970, or else `"Owner's Name YYYY-ZZZZ"`, to indicate that it was created in year `YYYY` and most recently refreshed or rewritten in year `ZZZZ`. Note that it must not contain a `©` symbol, or text like `(c)` or `(C)` or `Copyright`: that's added later automatically. It should just give the owner's name and a date. Both a name and a year are required: Inform rejects `"2020"` or `"Emily Short"` with problem messages because of this.
+
+- The `origin` is the URL for the home web page of the extension, if there is one. Note that some popular licences, such as `CC-BY-4.0`, require users of the software under licence to reproduce the URL of its home page. If this URL is given, then Inform takes care of that requirement automatically.
+
+- The `rights history` should be one or more complete sentences explaining any other _legal_ notes necessary. Less is more here, but if, for example, we are making a new version of some old code by somebody else (and if their licence allows that, of course), then we should credit that. The `rights history` should not be used for miscellaneous acknowledgements, just for what's legally required.
+
+If one of the other four settings is made, but no `licence`, it defaults to `"Unspecified"`. If one of the other four settings is made, but no `copyright`, it defaults to the name of the author (given in the extension title, or the title sentence for a story) and the current year of compilation. `origin` and `rights history` are both blank by default.
+
+### Licences accepted by the Inform Public Library
+
+The best way to share an Inform extension with the world may be to submit it to the Inform Public Library. This is a curated collection, rather than being a service anyone can publish on, and the curators are looking for generally useful extensions whose subject matter will be suitable for users of all ages, and will not run into legal difficulties. Inform is widely used in education, so the Public Library may be being browsed in classrooms by young children.
+
+The Public Library also aims to host extensions which users can grab and make use of without legal worries, so it can only accept licenced extensions, and for policy reasons it will only accept a short list of simple, easily understood, popular and highly permissive licences — currently, six are allowed.
+
+This is many fewer than the full SPDX list, which currently includes some 617 non-deprecated open-source licences. But many of those are obscure enough that there's no case law on them, or else they are trying to achieve particular policy goals: the `BSD-3-Clause-No-Nuclear-Warranty`, for example. Not all are certified as "free" or "open" by the two bodies usually considered authoritative, the Free Software Foundation and the Open Source Initiative. And even those which are rated both "free" and "open", which are reasonably popular, and which have no obvious axe to grind, may not be sufficiently free for all of our users' needs.
+
+If we want to open-source an extension, leave users almost completely free to use it, but still keep the copyright and require users to acknowledge that, then the following can be used:
+
+Licence code     | Full name
+---------------- | ---------
+`"MIT"`          | MIT License
+`"CC-BY-4.0"`    | Creative Commons Attribution 4.0 International
+`"Artistic-2.0"` | Artistic License 2.0
+
+Extensions licenced on these terms can safely be used since Inform automatically complies with the need to acknowledge in its handling of the ``COPYRIGHT`` and ``LICENCE`` commands, and also when releasing a project. For example, if it releases a story to a website, that website will include a page of copyright acknowledgements. If the `MIT` licence is used, the text of that licence is included on this website page, which satisfies its only other requirement.
+
+`Artistic-2.0` only makes this list because it is the licence used for the source code to Inform itself, and so the built-in Inform extensions — the Standard Rules, Basic Inform and English Language — are covered by that automatically. It was designed for large pieces of software with a range of uses (it began as the licence for the Perl programming language), and is not a good fit for stand-alone extensions, since it has a relatively long and convoluted legal text. `CC-BY-4.0` is better known and more widely used, but some people feel it's better suited to pictures and text than to software, where `MIT` is much more widely used.
+
+The above all require attribution, and retain copyright. If we want to go further, the following are also available:
+
+Licence code  | Full name
+------------- | ---------
+`"MIT-0"`     | MIT No Attribution
+`"CC0-1.0"`   | Creative Commons Zero v1.0 Universal
+`"Unlicense"` | The Unlicense
+
+Here `MIT-0` is a halfway-house: the author does still retain copyright, but the user doesn't have to acknowledge that. This would be a good fit for a `Use authorial modesty.` sort of extension. (As with `MIT`, Inform auto-includes a copy of this licence as part of any website release, since that is still required.) Under `CC0-1.0` and `Unlicense`, even copyright is donated to the public domain: this will affect how Inform prints the rights details — Inform will say ``Placed in the public domain by ...`` rather than ``(c) ...`` — but won't very much affect the freedom of users, which is almost complete for any of these licences. For real zealots, `CC0-1.0` is thought to relinquish all conceivable patent claims too, and has had more legal attention than the `Unlicense`, but both have their adherents.
+
+Some no-attribution licences are so free that users can even remove our names, fraudlently claim to be the author themselves, and so on. They certainly don't need to give us any credit. But just because this is legally allowed does not mean it's ethical, and Inform automatically acknowledges all extension contributors, even if the licence does not require it. The Public Library will not host an extension if the curators think the author has been dishonest. So this concern is not much of a concern. A more likely scenario to think about is: what if it's twenty years from now, and somebody wants to take over this extension as the new maintainer, but we're not around to be asked? The more free the licence, the more clear the position will be for that new maintainer.
+
+Note that the Public Library will _not_ accept `CC-BY-NC-4.0`, `CC-BY-NC-ND-4.0` and so on, and will not accept `GPL-2.0`, `GPL-3.0` or similar. We have made this policy choice because:
+
+- We want Public Library users to feel completely free to publish commercial games. This is why we do not allow `-NC`, "no commercial use", licences.
+
+- Similarly, clauses intended to force users of an extension to share the results impose a restriction on the author of a story which we want to avoid. Authors should be free to publish stories without having to publish the source text if they want to. So, no `-SA`, "share-alike", restrictions, and no form of the GPL.
+
+- Any story using an extension could, at a stretch, be considered a derivative work, and we don't want the legal safety of an extension to come down to delicate questions of law. So, no `-ND`, "no derivative works", clauses.
+
+Extension authors are completely free to licence their extensions however they would like to, of course. Our shortlist of six licences is simply a hosting-policy choice made by the Inform Public Library. Users are free to choose other licences and circulate extensions elsewhere.
 
 ## Compatibility with story file formats
 
@@ -20355,6 +22101,17 @@ A property:
 	A thing can be coveted or neglected.
 	
 	The coveted property is accessible to Inter as "coveted".
+
+A table and column:
+
+	Table of Fizzy Drinks
+	name	niceness
+	"coke zero"	1
+	"sprite"	0
+
+	The Table of Fizzy Drinks is accessible to Inter as "TABLE_FIZZ".
+
+	The niceness column table column is accessible to Inter as "NICENESS_COLUMN".
 
 Variables, however, cannot at present be made `accessible to Inter`.
 
@@ -22788,7 +24545,7 @@ The ```WorldModelKit``` declaration for ```TIME_TY```, that is, for the kind `ti
 	arithmetic-modulus: 1440
 ```
 
-This tells Inform that although ordinary `number` arithmetic is used on values of `time`, the result is always reduced modulo 1440, that is, we take the remainder after dividing by 1440, in such a way that the result always falls in the range 0 to 1439. (1440 is the number of minutes in a day.)
+This tells Inform that although ordinary `number` arithmetic is used on values of `time`, the result is always reduced modulo 1440, that is, we take the remainder after dividing by 1440, in such a way that the result always falls in the range 0 to 1439. (1440 is the number of minutes in a day.) `time period`, on the other hand, has no modulus set, so it can be signed and can range up to about five thousand years forward or back.
 
 ### Dimensionlessness
 

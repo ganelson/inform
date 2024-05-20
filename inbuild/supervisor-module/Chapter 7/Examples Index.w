@@ -28,12 +28,12 @@ also appear here. So we actually maintain an alphabetical index able to
 index examples under arbitrary, multiple descriptions.
 
 =
-void ExamplesIndex::add_to_alphabetic_examples_index(text_stream *given_rubric,
-	markdown_item *index_to_S, IFM_example *index_to_E, int bold_flag) {
+void ExamplesIndex::add_to_alphabetic_examples_index(compiled_documentation *cd,
+	text_stream *given_rubric, markdown_item *index_to_S, IFM_example *index_to_E, int bold_flag) {
 	TEMPORARY_TEXT(sort_key)
 	TEMPORARY_TEXT(subtitle)
 	Str::copy(sort_key, given_rubric);
-	IndexUtilities::improve_alphabetisation(sort_key);
+	IndexLemmas::improve_alphabetisation(cd, sort_key);
 
 	example_index_data *eid = CREATE(example_index_data);
 	eid->alpha_index_embolden = bold_flag;
@@ -55,7 +55,7 @@ void ExamplesIndex::add_to_alphabetic_examples_index(text_stream *given_rubric,
 void ExamplesIndex::write_alphabetical_examples_index(OUTPUT_STREAM, compiled_documentation *cd) {
 	@<Stock the alphabetical index@>;
 
-	IndexUtilities::alphabet_row(OUT, 1);
+	Indexes::alphabet_row(OUT, cd, 1);
 	HTML_OPEN_WITH("table", "class=\"indextable\"");
 
 	example_index_data **eid_list =
@@ -82,7 +82,7 @@ void ExamplesIndex::write_alphabetical_examples_index(OUTPUT_STREAM, compiled_do
 
 	HTML_CLOSE("table");
 	HTML_OPEN("p"); HTML_CLOSE("p");
-	IndexUtilities::alphabet_row(OUT, 2);
+	Indexes::alphabet_row(OUT, cd, 2);
 	Memory::I7_free(eid_list, ARRAY_SORTING_MREASON,
 		NUMBER_CREATED(example_index_data)*((int) sizeof(example_index_data *)));
 }
@@ -93,14 +93,14 @@ void ExamplesIndex::write_alphabetical_examples_index(OUTPUT_STREAM, compiled_do
 		if (Str::len(E->ex_subtitle) > 0) {
 			TEMPORARY_TEXT(index_as)
 			WRITE_TO(index_as, "%S: %S", E->name, E->ex_subtitle);
-			ExamplesIndex::add_to_alphabetic_examples_index(index_as, NULL, E, TRUE);
+			ExamplesIndex::add_to_alphabetic_examples_index(cd, index_as, NULL, E, TRUE);
 			DISCARD_TEXT(index_as)
 		} else if (Str::eq(E->ex_index, E->name)) {
-			ExamplesIndex::add_to_alphabetic_examples_index(E->ex_index, NULL, E, FALSE);
+			ExamplesIndex::add_to_alphabetic_examples_index(cd, E->ex_index, NULL, E, FALSE);
 		} else {
-			ExamplesIndex::add_to_alphabetic_examples_index(E->name, NULL, E, TRUE);
+			ExamplesIndex::add_to_alphabetic_examples_index(cd, E->name, NULL, E, TRUE);
 			if (Str::len(E->ex_index) > 0)
-				ExamplesIndex::add_to_alphabetic_examples_index(E->ex_index, NULL, E, FALSE);
+				ExamplesIndex::add_to_alphabetic_examples_index(cd, E->ex_index, NULL, E, FALSE);
 		}
 	}
 
@@ -119,8 +119,8 @@ void ExamplesIndex::write_alphabetical_examples_index(OUTPUT_STREAM, compiled_do
 	TEMPORARY_TEXT(inc)
 	PUT_TO(inc, uc_current_letter);
 	HTML::anchor(OUT, inc);
-	IndexUtilities::majuscule_heading(OUT, inc, TRUE);
-	IndexUtilities::note_letter(uc_current_letter);
+	Indexes::majuscule_heading(OUT, cd, inc, TRUE);
+	Indexes::note_letter(cd, uc_current_letter);
 	DISCARD_TEXT(inc)
 	HTML_CLOSE("td");
 	HTML_OPEN("td");
@@ -143,8 +143,8 @@ void ExamplesIndex::write_alphabetical_examples_index(OUTPUT_STREAM, compiled_do
 	if (eid->alpha_index_embolden == TRUE) { HTML_OPEN("b"); }
 	TEMPORARY_TEXT(link_text)
 	Str::copy(link_text, eid->alpha_index_rubric);
-	IndexUtilities::escape_HTML_characters_in(link_text);
-	IndexUtilities::general_link(OUT, I"standardlink", url, link_text);
+	Indexes::escape_HTML_characters_in(link_text);
+	Indexes::general_link(OUT, I"standardlink", url, link_text);
 	DISCARD_TEXT(link_text)
 
 	if (eid->alpha_index_embolden == TRUE) { HTML_CLOSE("b"); }

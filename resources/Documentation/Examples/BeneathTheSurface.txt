@@ -5,6 +5,8 @@ Index: Hiding things under other things
 Description: An "underlying" relation which adds to the world model the idea of objects hidden under other objects.
 For: Z-Machine
 
+^^{Hiding things under other things}
+
 The standard world model provides for the idea of containers and supporters, but this is not the only way that objects can relate to one another in the real world. Here we try adding the idea of concealment beneath another object:
 
 	{*}"Beneath the Surface"

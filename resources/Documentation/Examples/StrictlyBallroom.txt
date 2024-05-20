@@ -5,6 +5,8 @@ Index: People who interact with each other each turn
 Description: People who select partners for dance lessons each turn.
 For: Z-Machine
 
+^^{characters (people): acting spontaneously: selecting dance partners} ^^{actions: spontaneous by other people}
+
 Many simple repetitions can effectively be done with a `now` phrase: it is quicker to say
 
 	now every person is angry

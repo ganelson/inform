@@ -1,9 +1,11 @@
 Example: ** The Speed of Thought
-Location: Multiplication of units
+Location: Multiplication and subtraction of units
 RecipeLocation: Volume, Height, Weight
 Index: Unit conversions
 Description: Describing scientifically-measured objects in units more familiar to the casual audience.
 For: Glulx
+
+^^{Unit conversions}
 
 Suppose that we have a number of objects in the game that are sized in some conventional unit (such as meters), but which we would like to describe in slightly less formal terms. To do this, we will start with measurements as defined in the built-in extension Metric Units, so we don't have to recreate all these.
 

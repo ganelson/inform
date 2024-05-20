@@ -5,6 +5,8 @@ Index: Narration which changes as the player learns new facts
 Description: Creating room descriptions and object descriptions that change as the player learns new facts and pieces things together.
 For: Z-Machine
 
+^^{Narration which changes as the player learns new facts}
+
 In a work of interactive fiction that involves many new discoveries, we might want to change the way we narrate room descriptions and describe objects as the player learns new information.
 
 One approach to this is to create a model of the facts we want the player to find out, and attach some narrative text to each. When a fact becomes relevant to the story, that narrative text is shown to the player. So:

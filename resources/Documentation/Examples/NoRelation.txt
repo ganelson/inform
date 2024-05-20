@@ -5,6 +5,8 @@ Index: Car which can only be driven on roads
 Description: A car which must be turned on before it can be driven, and can only go to roads.
 For: Z-Machine
 
+^^{Car which can only be driven on roads}
+
 We need to designate certain rooms as roads. Since the status of being a road will not change during play, we do this with a kind:
 
 	{*}"No Relation"

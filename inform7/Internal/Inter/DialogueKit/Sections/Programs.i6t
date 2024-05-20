@@ -451,6 +451,8 @@ command, to be re-entered later on when actions are processed.
 This function is passed a state value, and must return it (even if unchanged).
 
 =
+Global dialogue_selection_value = 0;
+
 [ DirectorExecuteDecision decision state dc count n m spc list k;
 	if (director_sp == 0) return state;
 	list = DirectorStackChoices-->(director_sp-1);
@@ -467,6 +469,7 @@ This function is passed a state value, and must return it (even if unchanged).
 
 	switch (decision) {
 		TEXTUAL_DCODEDT: 
+			dialogue_selection_value = 1;
 			DivideParagraphPoint();
 			if (OFFERING_A_DIALOGUE_CHOICE == 0) "*** no activity ***";
 			else {
@@ -475,16 +478,10 @@ This function is passed a state value, and must return it (even if unchanged).
 					(RulebookFailed())) return state;
 				EndActivity(OFFERING_A_DIALOGUE_CHOICE, list);
 			}
-			DivideParagraphPoint();
-			n = DirectorPickANumber(count);
+			! DivideParagraphPoint();
+			n = dialogue_selection_value;
 			dc = LIST_OF_TY_GetItem(list, n);
 			LIST_OF_TY_SetLength(list, 0);
-			style bold;
-			TEXT_TY_Say(DirectorChoiceRawContent(dc));
-			style roman;
-			print "^";
-			say__p = 1;
-			DivideParagraphPoint();
 			DirectorExerciseChoice(dc);
 		PARSED_COMMAND_DCODEDT:
 			director_is_paused_for_command = true;
@@ -658,78 +655,4 @@ on the subtree underneath it:
 	spc = spc + 2;
 	DirectorPush(DirectorStackBeat-->(director_sp-1), (program-->pc) % 100 + 2, spc);
 	DirectorRun();
-];
-
-@h Numerical choice at the keyboard.
-This crude function prompts the player for a number from 1 to |max|, waits for
-this to be typed at the keyboard, then returns the choice made.
-
-=
-[ DirectorPickANumber max i j wa wl sign base digit_count n digit ch;
-    for (::) {
-    	print ">";
-        if (location == nothing || parent(player) == nothing) KeyboardPrimitive(buffer2, parse2);
-        else KeyboardPrimitive(buffer2, parse2, DrawStatusLine);
-        #Iftrue CHARSIZE == 1;
-        j = parse2->1;
-		wa = buffer2 + parse2->5;
-		wl = parse2->4;
-        #Ifnot;
-        j = parse2-->0;
- 		wa = buffer2 + WORDSIZE * parse2-->3;
-		wl = parse2-->2;
-        #Endif;
-        if (j) { ! at least one word entered
-            sign = 1; base = 10; digit_count = 0;
-			#Iftrue CHARSIZE == 1;
-			ch = wa->0;
-			#Ifnot;
-			ch = wa-->0;
-			#Endif; ! CHARSIZE
-			if (ch ~= '0' or '1' or '2' or '3' or '4' or '5' or '6' or '7' or '8' or '9')
-				jump Retry;
-			n = 0;
-			while (wl > 0) {
-				digit = ch - '0';
-				digit_count++;
-				switch (base) {
-					2:  if (digit_count == 17) jump Retry;
-					10:
-						#Iftrue WORDSIZE == 2;
-						if (digit_count == 6) jump Retry;
-						if (digit_count == 5) {
-							if (n > 3276) jump Retry;
-							if (n == 3276) {
-								if (sign == 1 && digit > 7) jump Retry;
-								if (sign == -1 && digit > 8) jump Retry;
-							}
-						}
-						#Ifnot; ! i.e., if (WORDSIZE == 4)
-						if (digit_count == 11) jump Retry;
-						if (digit_count == 10) {
-							if (n > 214748364) jump Retry;
-							if (n == 214748364) {
-								if (sign == 1 && digit > 7) jump Retry;
-								if (sign == -1 && digit > 8) jump Retry;
-							}
-						}
-						#Endif;
-					16: if (digit_count == 5) jump Retry;
-				}
-				if (digit >= 0 && digit < base) n = base*n + digit;
-				else jump Retry;
-				wl--;
-				#Iftrue CHARSIZE == 1;
-				wa++;
-				#Ifnot;
-				wa = wa + WORDSIZE;
-				#Endif; ! CHARSIZE
-			}
-			n = n*sign;
-			if ((n < 1) || (n > max)) jump Retry;
-			return n;
-        }
-		.Retry;
-		print "(Please type an option in the range 1 to ", max, " and press return.)^^";
-    }
 ];

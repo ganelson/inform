@@ -5,6 +5,8 @@ Index: INVENTORY wide and tall
 Description: Overview of all the phrase options associated with listing, and examples of how to change the inventory list into some other standard formats.
 For: Z-Machine
 
+^^{inventory: wide and tall}
+
 Most of the phrase options for listing items are relatively self-explanatory; a few are less so. Here is an overview:
 
 `With newlines` tells Inform to put a new line before each listed object. Indented tells it to indent contents of objects, when listing these.

@@ -5,6 +5,8 @@ Index: A hexagonal map grid for movement
 Description: Replacing the ordinary compass bearings with a set of six directions to impose a hexagonal rather than square grid on the landscape.
 For: Z-Machine
 
+^^{A hexagonal map grid for movement}
+
 Wargaming is an ancient pursuit, but its modern form began as a professional training exercise in 19th-century Prussian staff colleges; since at least as early as H. G. Wells's _Little Wars_ (1913) it has been a hobby of
 
 > boys from twelve years of age to one hundred and fifty and for that more intelligent sort of girl who likes boys' games and books.

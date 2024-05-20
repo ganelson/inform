@@ -5,6 +5,8 @@ Index: Random distribution at the start of play
 Description: It's tempting to use "now..." to distribute items randomly at the start of play, but we need to be a little cautious about how we do that.
 For: Z-Machine
 
+^^{Random distribution at the start of play}
+
 Suppose we want a game in which each scenario starts with the characters wearing hats – randomly passed out. We might be tempted to write our scenario like this:
 
 	{*}"Hatless"

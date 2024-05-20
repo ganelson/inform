@@ -5,6 +5,8 @@ Index: Redirecting all actions from one object to another
 Description: A system in which every character has a body, which is left behind when the person dies; attempts to do something to the body are redirected to the person while the person is alive.
 For: Z-Machine
 
+^^{Redirecting all actions from one object to another}
+
 Suppose we want to let the player kill characters, leaving behind corpses.
 
 	{*}"Puff of Orange Smoke"

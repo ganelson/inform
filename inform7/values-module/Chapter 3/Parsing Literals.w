@@ -22,6 +22,7 @@ Note also that ordinal numbers are not valid as literals: "2nd" is not a noun.
 	<s-literal-real-number> |              ==> { pass 1 }
 	<s-literal-truth-state> |              ==> { pass 1 }
 	<s-literal-list> |                     ==> { pass 1 }
+	unicode ( <s-unicode-character> ) |    ==> { pass 1 }
 	unicode <s-unicode-character> |        ==> { pass 1 }
 	<s-literal-time> |                     ==> { pass 1 }
 	<s-literal-unit-notation>              ==> { pass 1 }

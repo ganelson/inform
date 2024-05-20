@@ -33,8 +33,10 @@ support for times of day from the Inform language. If so, |K_time| remains null.
 
 = (early code)
 kind *K_time = NULL;
+kind *K_time_period = NULL;
 
-@ The plugin intervenes only to notice the "time" kind when it appears.
+@ The plugin intervenes only to notice the "time" and "duration" kinds when they
+appear.
 
 =
 void TimesOfDay::start(void) {
@@ -45,11 +47,23 @@ int TimesOfDay::times_new_base_kind_notify(kind *new_base, text_stream *name, wo
 	if (Str::eq_wide_string(name, U"TIME_TY")) {
 		K_time = new_base; return TRUE;
 	}
+	if (Str::eq_wide_string(name, U"TIME_PERIOD_TY")) {
+		K_time_period = new_base; return TRUE;
+	}
 	return FALSE;
 }
 
 kind *TimesOfDay::kind(void) {
 	return K_time;
+}
+
+kind *TimesOfDay::time_period(void) {
+	return K_time_period;
+}
+
+parse_node *TimesOfDay::elapsed_time_rvalue(int N, wording W) {
+	if (K_time_period) return Rvalues::from_time_period(N, W);
+	else return Rvalues::from_time(N, W);
 }
 
 @h Parsing.
@@ -59,8 +73,8 @@ linguistically the same thing at all.
 
 =
 <s-literal-time> ::=
-	minus <elapsed-time> |  ==> { -, Rvalues::from_time(-R[1], W) }
-	<elapsed-time> |        ==> { -, Rvalues::from_time(R[1], W) }
+	minus <elapsed-time> |  ==> { -, TimesOfDay::elapsed_time_rvalue(-R[1], W) }
+	<elapsed-time> |        ==> { -, TimesOfDay::elapsed_time_rvalue(R[1], W) }
 	<clock-time>            ==> { -, Rvalues::from_time(R[1], W) }
 
 <elapsed-time> ::=

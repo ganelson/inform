@@ -144,6 +144,8 @@ builtin base UNICODE_CHARACTER_TY {
 	default-value: 32
 	constant-compilation-method: literal
 
+	say-function: UNICODE_CHARACTER_TY_Say
+
 	index-default-value: unicode 32 (<i>a space</i>)
 	specification-text: A single character - a letter or item of punctuation.
 }

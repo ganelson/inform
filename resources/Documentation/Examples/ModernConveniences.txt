@@ -5,6 +5,8 @@ Index: Extension design advice
 Description: Exemplifying the kind of source we might use in writing extensions for kitchen and bathroom appliances.
 For: Z-Machine
 
+^^{extensions: writing: design advice}
+
 Suppose we want to write an extension or other portable code which defines a `kitchen` kind of room and a `bathroom` kind of room. All kitchen rooms we create in the future will automatically contain standard kitchen appliances: fridge, freezer, sink with taps, counters, cabinets, and a stovetop with built-in oven. Similarly, all bathrooms will have sinks, baths, cabinets, and toilets, and respond to some standard interactions.
 
 We would do this with a standard assembly:

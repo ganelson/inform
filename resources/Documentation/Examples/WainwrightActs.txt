@@ -5,6 +5,8 @@ Index: Doors as seen by NPCs
 Description: A technical note about checking the location of door objects when characters other than the player are interacting with them.
 For: Z-Machine
 
+^^{doors+kind+: as seen by NPCs}
+
 Suppose we wanted to write rules for a character who will interact with doors in other locations even when the player is not present. This poses a little challenge: doors are actually single objects, and – with the same shuffling of stage properties that applies to backdrops – they are moved as needed to represent the door object in whatever room contains the player.
 
 That means that it isn't safe to rely on a phrase like

@@ -5,6 +5,8 @@ Index: Electric light kind of device
 Description: An electric light kind of device which becomes lit when switched on and dark when switched off.
 For: Z-Machine
 
+^^{Electric light kind of device}
+
 This will be explored more in subsequent examples, but one of the things we can do with carry out rules is extend the function of existing commands so that they do more, or have special effects in specific situations. For instance, suppose we want to have a class of electric light:
 
 	{*}"The Dark Ages Revisited"

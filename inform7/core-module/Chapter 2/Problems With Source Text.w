@@ -62,14 +62,8 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 					"which I don't recognise (which is not fine). Specifically, %2.");
 				Problems::issue_problem_end();
 				break;
-			case PROJECT_MALFORMED_CE:
-				Problems::quote_stream(1, CE->details);
-				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
-				Problems::issue_problem_segment(
-					"This project seems to be malformed. Specifically, %1.");
-				Problems::issue_problem_end();
-				break;
 			case METADATA_MALFORMED_CE:
+			case MALFORMED_LICENCE_CE:
 				if (CE->copy->found_by) {
 					Problems::quote_work(1, CE->copy->found_by->work);
 					Problems::quote_stream(2, CE->details);
@@ -591,6 +585,18 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 			default: internal_error("an unknown error occurred");
 		}
 	}
+	LOOP_OVER_LINKED_LIST(CE, copy_error, C->warnings) {
+		switch (CE->error_category) {
+			case PROJECT_EXTRANEOUS_CE:
+				Problems::quote_stream(1, CE->details);
+				StandardProblems::handmade_warning(Task::syntax_tree(), _p_(Untestable));
+				Problems::issue_problem_segment(
+					"This project contains some unexpected files or directories. Specifically, %1.");
+				Problems::issue_warning_end();
+				break;
+		}
+	}
+	C->warnings = NULL;
 }
 
 void SourceProblems::quote_genre(int N, copy_error *CE) {
