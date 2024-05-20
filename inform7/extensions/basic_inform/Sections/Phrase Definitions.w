@@ -1890,11 +1890,33 @@ To decide what number is the/-- screen width:
 =
 Section 5 - Pausing the game
 
+[ Exclude navigation keys ]
 To wait for any key:
-	(- VM_KeyPause(); -).
+	while 1 is 1:
+		let code be the code of the next pressed key;
+		if code is:
+			-- the down key:
+				next;
+			-- the page down key:
+				next;
+			-- the page up key:
+				next;
+			-- the up key:
+				next;
+			-- unicode U+003F [?, which might be used for an unknown character]:
+				next;
+			-- otherwise:
+				break;
 
+[ Technically the space or return key ]
 To wait for the/-- SPACE key/bar:
-	(- VM_PauseForSpace(); -).
+	while 1 is 1:
+		let code be the code of the next pressed key;
+		if code is:
+			-- unicode U+0020 [space]:
+				break;
+			-- the return key:
+				break;
 
 To pause the game/story:
 	say "[paragraph break]Please press SPACE to continue.";
