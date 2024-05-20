@@ -170,35 +170,6 @@ to document all of that.
 		if (((a_buffer->ix) < 32) || ((a_buffer->ix) == 160)) a_buffer->ix = 32;
 ];
 
-@h Pausing.
-We provide two functions for pausing, which check for various characters.
-
-(a) |VM_KeyPause()| excludes up/down/pageup/pagedown
-(b) |VM_PauseForSpace()| waits for the space bar or enter key
-
-=
-[ VM_KeyPause key;
-	while (1) {
-		@read_char 1 -> key;
-		! 63 = ? which may be used for unknown characters, exclude it just to be safe
-		! 129, 130 = up/down
-		! 148, 154 = pageup/pagedown (technically keypad 3/9)
-		if (key == 63 or 129 or 130 or 148 or 154) {
-			continue;
-		}
-		rfalse;
-	}
-];
-
-[ VM_PauseForSpace key;
-	while (1) {
-		@read_char 1 -> key;
-		if (key == 13 or 32) {
-			rfalse;
-		}
-	}
-];
-
 @h Buffer Functions.
 A "buffer", in this sense, is an array containing a stream of characters
 typed from the keyboard; a "parse buffer" is an array which resolves this

@@ -365,32 +365,6 @@ Constant UnicodeWhitespaceLen = 8;
     }
 ];
 
-@h Pausing.
-We provide two functions for pausing, which check for various characters.
-
-(a) |VM_KeyPause()| excludes up/down/pageup/pagedown
-(b) |VM_PauseForSpace()| waits for the space bar or enter key
-
-=
-[ VM_KeyPause key;
-	while (1) {
-		key = VM_KeyChar();
-		if (key == keycode_Up or keycode_Down or keycode_PageUp or keycode_PageDown) {
-			continue;
-		}
-		rfalse;
-	}
-];
-
-[ VM_PauseForSpace key;
-	while (1) {
-		key = VM_KeyChar();
-		if (key == 32 or keycode_Return) {
-			rfalse;
-		}
-	}
-];
-
 @h Buffer Functions.
 A "buffer", in this sense, is an array containing a stream of characters
 typed from the keyboard; a "parse buffer" is an array which resolves this
