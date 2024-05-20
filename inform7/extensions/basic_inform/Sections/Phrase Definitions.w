@@ -1946,7 +1946,7 @@ To say the/-- player's text input:
 
 @ Function keys.
 Keyboard function keys are defined as unicode character constants. A mix of
-actual control codes, unicode characters which colour represent the keys, and
+actual control codes, unicode characters which kind of represent the keys, and
 private use area codes.
 
 =

@@ -177,6 +177,15 @@ There are elaborations to do with mouse clicks, but this isn't the place
 to document all of that.
 
 =
+Array FunctionKeyCodes --> $ffffffe4 $ffffffe5 $ffffffe6 $ffffffe7 $ffffffe8
+	$ffffffe9 $ffffffea $ffffffeb $ffffffec $ffffffed $ffffffee $ffffffef
+	$fffffff3 $fffffff4 $fffffff5 $fffffff6 $fffffff7 $fffffff8 $fffffff9
+	$fffffffa $fffffffb $fffffffc $fffffffd $fffffffe $ffffffff;
+Constant FunctionKeyCodesCount = 25;
+Array MappedFunctionKeyCodes --> $EF0C $EF0B $EF0A $EF09 $EF08 $EF07 $EF06
+	$EF05 $EF04 $EF03 $EF02 $EF01 $21F2 $21F1 $21DF $21DE $0009 $001B $0008
+	$000A $2193 $2191 $2192 $2190 $FFFD;
+
 [ VM_KeyChar win nostat done res ix jx ch;
     jx = ch; ! squash compiler warnings
     if (win == 0) win = gg_mainwin;
@@ -252,32 +261,9 @@ to document all of that.
         glk_put_char_stream(gg_commandstr, 10); ! newline
     }
   .KCPContinue;
-	switch (res) {
-		keycode_Delete: res = KEY_DELETE;
-		keycode_Down: res = KEY_DOWN;
-		keycode_End: res = KEY_END;
-		keycode_Escape: res = KEY_ESCAPE;
-		keycode_Func1: res = KEY_F1;
-		keycode_Func2: res = KEY_F2;
-		keycode_Func3: res = KEY_F3;
-		keycode_Func4: res = KEY_F4;
-		keycode_Func5: res = KEY_F5;
-		keycode_Func6: res = KEY_F6;
-		keycode_Func7: res = KEY_F7;
-		keycode_Func8: res = KEY_F8;
-		keycode_Func9: res = KEY_F9;
-		keycode_Func10: res = KEY_F10;
-		keycode_Func11: res = KEY_F11;
-		keycode_Func12: res = KEY_F12;
-		keycode_Home: res = KEY_HOME;
-		keycode_Left: res = KEY_LEFT;
-		keycode_PageDown: res = KEY_PAGE_DOWN;
-		keycode_PageUp: res = KEY_PAGE_UP;
-		keycode_Return: res = KEY_RETURN;
-		keycode_Right: res = KEY_RIGHT;
-		keycode_Tab: res = KEY_TAB;
-		keycode_Unknown: res = KEY_UNKNOWN;
-		keycode_Up: res = KEY_UP;
+	@binarysearch res WORDSIZE FunctionKeyCodes WORDSIZE FunctionKeyCodesCount 0 4 ix;
+	if (ix ~= -1) {
+		res = MappedFunctionKeyCodes-->ix;
 	}
     return res;
 ];
