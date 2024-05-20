@@ -1167,7 +1167,8 @@ The list writer internal rule is defined by Inter as
 	"[regarding list writer internals][are]" (V),
 	"[regarding list writer internals][are] nothing" (W),
 	"Nothing" (X),
-	"nothing" (Y).
+	"nothing" (Y),
+	" and " (Z).
 
 The action processing internal rule is defined by Inter as
 	"ACTION_PROCESSING_INTERNAL_R" with

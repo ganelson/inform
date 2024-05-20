@@ -1002,7 +1002,7 @@ Array LW_Bit_To_Response -> [ 'D'; 'L'; 'E'; 'O'; 'M'; 'F'; 'N' ];
            print ",";
            if ((print_count ~= last_index) || (~~(BasicInformKit`SERIAL_COMMA_CFGF))) print " ";
          }
-         if (print_count == last_index) LW_Response('C', o); ! " and "
+         if (print_count == last_index) LW_Response('Z', o); ! " and "
        }
        LW_Response(LW_Bit_To_Response->counter);
        print_count++;
