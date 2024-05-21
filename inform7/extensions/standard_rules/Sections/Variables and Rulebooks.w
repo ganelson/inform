@@ -602,16 +602,19 @@ the time of day, timed events, and so on -- except that no commands are
 read and no consequent actions generated.
 
 =
-A first turn sequence rule (this is the every turn stage rule):
-	follow the every turn rules. [5th.]
-A first turn sequence rule (this is the early scene changing stage rule):
-	follow the scene changing rules. [4th.]
-The generate action rule is listed first in the turn sequence rulebook. [3rd.]
+This is the early scene changing stage rule: follow the scene changing rules.
+
 This is the declare everything initially unmentioned rule:
 	repeat with item running through things:
 		now the item is not mentioned.
-The declare everything initially unmentioned rule is listed first in the turn sequence rulebook. [2nd.]
-The parse command rule is listed first in the turn sequence rulebook. [1st.]
+
+This is the every turn stage rule: follow the every turn rules.
+
+The parse command rule is listed last in the turn sequence rulebook. [1st.]
+The declare everything initially unmentioned rule is listed last in the turn sequence rulebook. [2nd.]
+The generate action rule is listed last in the turn sequence rulebook. [3rd.]
+The early scene changing stage rule is listed last in the turn sequence rulebook. [4th.]
+The every turn stage rule is listed last in the turn sequence rulebook. [5th]
 
 @ Three miscellaneous things then happen, all implemented by primitives
 in the template I6 layer:
@@ -632,13 +635,12 @@ What in fact happens is that Inform performs these measurements at "chronology
 points", which are strategic moments during play, and this is one of them.
 
 =
-The timed events rule is listed in the turn sequence rulebook.
-The advance time rule is listed in the turn sequence rulebook.
-The update chronological records rule is listed in the turn sequence rulebook.
+The timed events rule is listed last in the turn sequence rulebook. [6th]
+The advance time rule is listed last in the turn sequence rulebook. [7th]
+The update chronological records rule is listed last in the turn sequence rulebook. [8th]
 
-@ We now come to the rules anchored at the end, using "last". This part of
-the rulebook is reserved for book-keeping which has to happen positively
-at the end of the turn.
+@ This part of the rulebook is reserved for book-keeping which positively
+has to happen at the end of the turn.
 
 (h) First, we check for scene changes again. We did this only a short while
 ago, but scene changes might well have arisen as a result of rules which
@@ -667,8 +669,9 @@ of an out-of-world action, it would be notified a turn late, but of course
 out-of-world actions are not supposed to do that sort of thing.)
 
 =
-A last turn sequence rule (this is the late scene changing stage rule):
-	follow the scene changing rules. [3rd from last.]
+This is the late scene changing stage rule: follow the scene changing rules.
+
+The late scene changing stage rule is listed last in the turn sequence rulebook.
 The adjust light rule is listed last in the turn sequence rulebook. [2nd from last.]
 The note object acquisitions rule is listed last in the turn sequence rulebook. [Penultimate.]
 The notify score changes rule is listed last in the turn sequence rulebook. [Last.]
@@ -813,14 +816,15 @@ rules created by the user or by extensions will go.
 =
 Section 4 - Action processing
 
-The before stage rule is listed first in the action-processing rules. [3rd.]
-The set pronouns from items from multiple object lists rule is listed first in the
-	action-processing rules. [2nd.]
-The announce items from multiple object lists rule is listed first in the
+The announce items from multiple object lists rule is listed last in the
 	action-processing rules. [1st.]
-The basic visibility rule is listed in the action-processing rules.
-The basic accessibility rule is listed in the action-processing rules.
-The carrying requirements rule is listed in the action-processing rules.
+The set pronouns from items from multiple object lists rule is listed last in the
+	action-processing rules. [2nd.]
+The before stage rule is listed last in the action-processing rules. [3rd.]
+The basic visibility rule is listed last in the action-processing rules.
+The basic tangibility rule is listed last in the action-processing rules.
+The basic accessibility rule is listed last in the action-processing rules.
+The carrying requirements rule is listed last in the action-processing rules.
 The instead stage rule is listed last in the action-processing rules. [4th from last.]
 The requested actions require persuasion rule is listed last in the action-processing rules.
 The carry out requested actions rule is listed last in the action-processing rules.
@@ -895,6 +899,15 @@ instance, "check taking" is the specific check rulebook for the
 the names aren't so visible).
 
 =
+This is the basic tangibility rule:
+	if action requires a touchable noun and the noun is not a thing:
+		if an actor listening to a room or an actor smelling a room, continue the action;
+		if the actor is the player, say "You must name something more substantial than [the noun]." (A);
+		stop the action;
+	if action requires a touchable second noun and the second noun is not a thing:
+		if the actor is the player, say "You must name something more substantial than [the second noun]." (B);
+		stop the action.
+
 The basic accessibility rule is defined by Inter as "BASIC_ACCESSIBILITY_R" with
 	"You must name something more substantial." (A).
 The basic visibility rule is defined by Inter as "BASIC_VISIBILITY_R" with

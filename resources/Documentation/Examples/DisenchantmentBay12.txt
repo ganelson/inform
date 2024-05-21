@@ -76,14 +76,17 @@ For: Z-Machine
 	Heat is a kind of value. The heats are cold, cool, room temperature, and warm.
 	
 	A beverage is a kind of thing. A beverage can be open or closed. A beverage can be openable or unopenable. A beverage is always edible and openable. A beverage has a heat. A beverage is usually warm. The Coke is a beverage. The beer is a beverage. The beer is in the backpack.
+
+	Giving a beverage to the captain is beverage-sharing.
+	Showing a beverage to the captain is beverage-sharing.
 	
-	Instead of giving or showing a beer to the Captain:
+	Instead of beverage-sharing when the noun is the beer:
 		say "'I don't drink on the job, thanks,' he says. 'You can help yourself if you want it, though.'"
 	
-	Instead of giving or showing a Coke to the Captain:
+	Instead of beverage-sharing when the noun is a Coke:
 		say "'It needs chilling,' the Captain remarks, disgruntled."
 	
-	Instead of giving or showing a cold Coke to the Captain:
+		Instead of beverage-sharing when the noun is a cold Coke:
 		move the Coke to the Captain;
 		increase the score by 2;
 		say "'Ah, thank you,' he says. How he can drink an iced soda on a day like today is an open question, but Alaskans are special."

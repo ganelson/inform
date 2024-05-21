@@ -39,6 +39,7 @@
   [Rule "before stage rule" applies.]
   [Rule "basic visibility rule" applies.]
   [Rule "can't act in the dark rule" applies.]
+  [Rule "basic tangibility rule" applies.]
   [Rule "basic accessibility rule" applies.]
   [Rule "carrying requirements rule" applies.]
   [Rule "instead stage rule" applies.]
