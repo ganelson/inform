@@ -1075,26 +1075,27 @@ Carry out looking (this is the declare everything unmentioned rule):
 		now the item is not mentioned.
 
 Carry out looking (this is the room description heading rule):
-	say bold type;
-	if the visibility level count is 0:
-		begin the printing the name of a dark room activity;
-		if handling the printing the name of a dark room activity:
-			say "Darkness" (A);
-		end the printing the name of a dark room activity;
-	otherwise if the visibility ceiling is the location:
-		say "[visibility ceiling]";
-	otherwise:
-		say "[The visibility ceiling]";
-	say roman type;
-	let intermediate level be the visibility-holder of the actor;
-	repeat with intermediate level count running from 2 to the visibility level count:
-		if the intermediate level is a supporter or the intermediate level is an animal:
-			say " (on [the intermediate level])" (B);
+	if nameless room descriptions option is not active:
+		say bold type;
+		if the visibility level count is 0:
+			begin the printing the name of a dark room activity;
+			if handling the printing the name of a dark room activity:
+				say "Darkness" (A);
+			end the printing the name of a dark room activity;
+		otherwise if the visibility ceiling is the location:
+			say "[visibility ceiling]";
 		otherwise:
-			say " (in [the intermediate level])" (C);
-		let the intermediate level be the visibility-holder of the intermediate level;
-	say line break;
-	say run paragraph on with special look spacing.
+			say "[The visibility ceiling]";
+		say roman type;
+		let intermediate level be the visibility-holder of the actor;
+		repeat with intermediate level count running from 2 to the visibility level count:
+			if the intermediate level is a supporter or the intermediate level is an animal:
+				say " (on [the intermediate level])" (B);
+			otherwise:
+				say " (in [the intermediate level])" (C);
+			let the intermediate level be the visibility-holder of the intermediate level;
+		say line break;
+		say run paragraph on with special look spacing.
 
 Carry out looking (this is the room description body text rule):
 	if the visibility level count is 0:

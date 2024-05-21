@@ -190,7 +190,7 @@ has been renamed:
 	"Standard 'deciding whether all include' rules don't apply to an actor."
 	([PR#113](https://github.com/ganelson/inform/pull/113))
 
-- Cosmetic fixes not worth linking to (I7-2480, I7-2478, I7-2473, I7-2350, I7-2348, I7-2319, I7-2316, I7-2315, I7-2311, I7-2299, I7-2293, I7-2270, I7-2268, I7-2221, I7-2214, I7-2210, I7-2120)
+- Cosmetic fixes not worth linking to (I7-2481, I7-2480, I7-2478, I7-2473, I7-2350, I7-2348, I7-2319, I7-2316, I7-2315, I7-2311, I7-2299, I7-2293, I7-2270, I7-2268, I7-2221, I7-2214, I7-2210, I7-2120)
 
 ## Bugs fixed but not from tracked reports
 

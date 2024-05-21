@@ -70,7 +70,9 @@ The exception is the Settings panel, which contains some preference settings for
 
 Clicking the Go button translates the text in the Source panel into a computer program which enacts the interactive fiction, and automatically sets it going (in the Story panel, which opens as needed).
 
-If the Source is empty of text, Inform will be unable to create anything: it needs at least one name of a location where the drama can unfold. For reasons of tradition, such locations are normally called "rooms", though people have used them to represent anything from grassy fields to states of mind and other metaphorical places.
+All Inform stories take place in one or more "rooms". These need not be indoor locations, and can represent anything from grassy fields to states of mind. If we click Go when there's no text at all in the Source panel, Inform will perhaps surprisingly still make a story, though a very empty one. It will create a room for the story to take place in, and put the player in it, but nothing else will exist and there will be nothing to do or look at.
+
+So instead we'll supply a title and a name for the opening room:
 
 	{*}"Midsummer Day"
 	
@@ -476,7 +478,7 @@ Newcomers will probably not need extensions for quite some while, let alone need
 
 ## Use options {PM_UONotNumerical} {PM_UnknownUseOption} {OPTIONS}
 
-^^{use options} ^^{use (options...)+assert+} ^^{punctuation: comma: displaying serial comma} ^^^{punctuation: comma <-- comma} ^^{|,: displaying serial comma} ^^{scoring: enabling} ^^{descriptions (displayed): full-length room descriptions / abbreviated room descriptions} ^^{rooms+kind+: descriptions <-- descriptions (displayed): room descriptions} ^^{use options: catalogue: |American dialect} ^^{American dialect+useopt+} ^^{use options: catalogue: |the serial comma} ^^{serial comma+useopt+} ^^{use options: catalogue: |scoring} ^^{scoring+useopt+} ^^{use options: catalogue: |full-length room descriptions} ^^{full-length room descriptions+useopt+} ^^{use options: catalogue: |abbreviated room descriptions} ^^{abbreviated room descriptions+useopt+} ^^{use options: catalogue: |VERBOSE room descriptions} ^^{VERBOSE room descriptions+useopt+} ^^{use options: catalogue: |BRIEF room descriptions} ^^{BRIEF room descriptions+useopt+} ^^{use options: catalogue: |SUPERBRIEF room descriptions} ^^{SUPERBRIEF room descriptions+useopt+} ^^{use options: catalogue: |undo prevention} ^^{undo prevention+useopt+} ^^{>UNDO}
+^^{use options} ^^{use (options...)+assert+} ^^{punctuation: comma: displaying serial comma} ^^^{punctuation: comma <-- comma} ^^{|,: displaying serial comma} ^^{scoring: enabling} ^^{descriptions (displayed): full-length room descriptions / abbreviated room descriptions} ^^{rooms+kind+: descriptions <-- descriptions (displayed): room descriptions} ^^{use options: catalogue: |American dialect} ^^{American dialect+useopt+} ^^{use options: catalogue: |the serial comma} ^^{serial comma+useopt+} ^^{use options: catalogue: |scoring} ^^{scoring+useopt+} ^^{use options: catalogue: |full-length room descriptions} ^^{full-length room descriptions+useopt+} ^^{use options: catalogue: |abbreviated room descriptions} ^^{abbreviated room descriptions+useopt+} ^^{use options: catalogue: |VERBOSE room descriptions} ^^{VERBOSE room descriptions+useopt+} ^^{use options: catalogue: nameless room descriptions} ^^{use options: catalogue: |BRIEF room descriptions} ^^{BRIEF room descriptions+useopt+} ^^{use options: catalogue: |SUPERBRIEF room descriptions} ^^{SUPERBRIEF room descriptions+useopt+} ^^{use options: catalogue: |undo prevention} ^^{undo prevention+useopt+} ^^{>UNDO}
 
 One more preliminary. Inform has a small number of optional settings which affect the result of translating the source. The sentence:
 
@@ -501,7 +503,11 @@ change the normal way room descriptions are shown: normally they are given in fu
 	Use brief room descriptions.
 	Use superbrief room descriptions.
 
-The default is now ``VERBOSE``, but until 2010 it was ``BRIEF``.
+The default is ``VERBOSE``. Another option affecting room descriptions is:
+
+	Use nameless room descriptions.
+
+This suppresses the usual boldface printed name of a room which appears at the top of a description.
 
 Next we have:
 
@@ -5894,11 +5900,85 @@ The list of live conversational subjects is best thought of as pretty ephemeral,
 
 Something to bear in mind is that the director tracks this list all of the time, even though it only uses it in active mode. So if it is switched into active mode having been passive up to now, it may be starting with some subjects already live.
 
+## Entrances and exits
+
+It's possible to write an entire story made of nothing but dialogue, beginning with a starting beat being performed, and then more beats flowing from that until the story ends. In a story like that, there's no need even to create any rooms. For example:
+
+	"Not much to say"
+
+	Section of conversation (dialogue)
+
+	(This is the starting beat.)
+
+	Narration: "Welcome!"
+
+	-- "Hello!"
+
+		-> end the story saying "A world full of promise."
+
+	-- "Goodbye."
+
+		-> end the story saying "A missed opportunity."
+
+This is a complete story, though not much of one, of course. It does take place in a room, because Inform automatically creates a room called `Stage` where the above takes place, but this is never visible to the player since the `Use nameless room descriptions` option is automatically selected.
+
+Characters can be created and introduced by being moved to the `Stage` as needed. Here, `Raphael` is off-stage at the start of play, but is moved into play by the opening line of narration, thanks to the stage direction `now Raphael is on-stage`:
+
+	"Perugia 1508"
+
+	Raphael is a man.
+
+	Section of conversation (dialogue)
+
+	(This is the starting beat.)
+
+	Narration (now Raphael is on-stage): "Raffaello Sanzio da Urbino approaches from the Tiber bridge."
+
+	Raphael: "No, no, I really can't take on one more thing. The Holy Father wants another Madonna by Friday."
+
+	-- "And I want an Adoration of the Magi right now."
+
+		-> end the story saying "You somehow end up 852 ducats the poorer."
+
+	-- "Be reasonable, Raff."
+
+		Raphael: "You couldn't afford me, Primo."
+
+		-> end the story saying "You somehow end up with a chalk sketch of three indeterminate-aged women which is, nevertheless, another casual work of genius."
+
+If `Raphael` had not been moved to the `Stage`, he could not have spoken, because he wasn't in earshot. Multiple people can enter at the same moment:
+
+	Narration (now Raphael is on-stage; now Leonardo is on-stage): "Raffaello Sanzio da Urbino approaches from the Tiber bridge, arguing intensely with Leonardo di ser Piero da Vinci."
+
+Or indeed:
+
+	Narration (now everyone is on-stage): "Raffaello Sanzio da Urbino approaches from the Tiber bridge, flanked by a knot of his pupils and rivals."
+
+Similarly, `now X is off-stage` is equivalent to an exit for `X`.
+
+The timing here is a little important. This does not work as expected:
+
+	Michelangelo (now Michelangelo is on-stage): "Sorry, didn't mean to drip paint on you."
+
+The trouble is that Michelangelo can only perform the line if he is on-stage, but he only becomes on-stage through the line being performed: catch-22. He had better arrive in some earlier narration, or after somebody else has spoken. On the other hand, this does work:
+
+	Raphael (now Raphael is off-stage): "'I'm expected in Città di Castello,' Raff says, turning on his heel and striding away."
+
+Here the timing works in our favour, because Raphael performs the line and is then taken off-stage by the `now`.
+
+This way of marshalling our characters is probably best suited to single-room stories, or those which (as in the examples above) don't even specify a single room. If we have a world of multiple locations, it's better to say exactly where the characters go to and come from:
+
+	Raphael (now Raphael is in Saint Nicholas): "'I'm expected in Città di Castello,' Raff says, turning on his heel and striding away."
+
+And if we have joined multiple rooms together into a map, we can even have the actors walk around this map:
+
+	Raphael (before going northwest): "'I'm expected in Città di Castello,' Raff says, turning on his heel and striding away."
+
 ## Managing dialogue beats
 
-So, then, there are several ways to manage dialogue. It's possible to write an entire story made of nothing but dialogue, beginning with a starting beat being performed, and then more beats flowing from that until the story ends. Or it's also possible to put the dialogue director into active mode, and let the automatics do everything, so that conversation happens whenever appropriate in the course of play.
+There are many ways to manage dialogue. At one extreme we can put the dialogue director into active mode, and let the automatics do everything, so that conversation happens whenever appropriate in the course of play. Or we can keep it passive, but then run the entire story as one big script of dialogue.
 
-If we don't want either of those, though, and want to manage all the dialogue by hand using rules, Inform provides an extensive set of phrases to help with that. For example:
+If we don't want either of those, though, and want a turn-based story in which there's just occasional dialogue which we will control explicitly as the author, Inform provides an extensive set of phrases to help with that. For example:
 
 	"Just Idol Talk"
 

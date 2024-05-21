@@ -1,12 +1,12 @@
 adjective: 142 items
 article: 2 items
-noun: 2414 items
+noun: 2415 items
 pronoun: 8 items
 preposition: 274 items
 determiner: 22 items
 verb: 109 items
 verb_form: 388 items
-total in all categories: 3359
+total in all categories: 3360
 
 adjective: 'even'
 adjective: 'odd'
@@ -765,6 +765,7 @@ noun: proper: 'default route-finding'
 noun: proper: 'fast route-finding'
 noun: proper: 'slow route-finding'
 noun: proper: 'maximum things understood at once'
+noun: proper: 'nameless room descriptions'
 noun: proper: 'manual pronouns'
 noun: proper: 'undo prevention'
 noun: proper: 'unabbreviated object names'

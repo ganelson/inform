@@ -14,10 +14,6 @@ Here we've handled player interaction as an explicit choice system. It would be 
 
 	Section 1 - Immediate context
 	
-	Stage Set is a room.
-	
-	Instead of looking: do nothing instead.
-		
 	When play begins:
 		now the left hand status line is "Ferocity: [ferocity of the player]";
 		now the right hand status line is "Wounds: [damage of the player]"

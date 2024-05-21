@@ -41,13 +41,7 @@ So we just need to set the list up. We want to make a test-run of "Pure Choice" 
 
 Everything else here is the same as for the "Pure Choice" example:
 	
-	{**}Section 2 - The set, actors and props
-	 
-	The Stage Set is a room.
-	
-	Instead of looking: do nothing instead. 
-	
-	Section 3 - The play (dialogue)
+	{**}Section 2 - The play (dialogue)
 	
 	(This is the starting beat.)
 	

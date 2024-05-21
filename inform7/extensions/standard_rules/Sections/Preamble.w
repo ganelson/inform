@@ -71,6 +71,12 @@ as well as their parsing from text.
 Use maximum things understood at once of at least 100 translates as the
 	configuration value MULTI_OBJ_LIST_SIZE in WorldModelKit.
 
+@ This is used automatically in stories where no room is declared, and
+suppresses the boldface room name in room descriptions.
+
+=
+Use nameless room descriptions translates as a configuration flag.
+
 @ These are more straightforwardly ways to configure the command parser:
 
 =

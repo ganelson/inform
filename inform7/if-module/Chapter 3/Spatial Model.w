@@ -469,12 +469,57 @@ container, and we might need to look at other sentences -- say, establishing
 that Y is the destination of a map connection -- to see which.
 
 =
+instance *implied_Stage_room = NULL;
+
 int Spatial::spatial_stage_I(void) {
-	instance *I;
+	instance *I, *potential_stage_room = NULL;
+	kind *potential_stage_room_kind = K_thing;
+	parse_node *potential_stage_room_kind_at = NULL;
 	LOOP_OVER_INSTANCES(I, K_object)
 		@<Perform kind determination for this object@>;
+	int count = 0;
+	LOOP_OVER_INSTANCES(I, K_object)
+		if (Spatial::object_is_a_room(I))
+			count++;
+	if (count == 0) @<Create an implied room@>;
+	if (potential_stage_room) {
+		LOGIF(KIND_CHANGES, "Setting kind of potential implied room $O as %u\n",
+			potential_stage_room, potential_stage_room_kind);
+		Propositions::Abstract::assert_kind_of_instance(potential_stage_room, potential_stage_room_kind);
+	}
 	return FALSE;
 }
+
+@
+
+=
+<implied-room-name> ::=
+	stage
+
+@<Create an implied room@> =
+	if (potential_stage_room) {
+		if ((potential_stage_room_kind != K_container) &&
+			(potential_stage_room_kind != K_room)) {
+			current_sentence = potential_stage_room_kind_at;
+			StandardProblems::object_problem_at_sentence(_p_(PM_StageNotRoomable),
+				potential_stage_room,
+				"is called 'Stage' and is in a story with no declared rooms, "
+				"so I think it ought to be the room in which everything happens. "
+				"However, that seems to be contradicted by this sentence",
+				"which implies that 'Stage' definitely isn't a room.");
+		} else {
+			potential_stage_room_kind = K_room;
+			implied_Stage_room = potential_stage_room;
+		}
+	} else {
+		wording W = Feeds::feed_text(I"Stage");
+		pcalc_prop *prop = Propositions::Abstract::to_create_something(K_room, W);
+		Assert::true(prop, CERTAIN_CE);
+		implied_Stage_room = Instances::latest();
+	}
+	parsed_use_option_setting *puos =
+		UseOptions::force_setting(NAMELESS_ROOM_DESCRIPTIONS_UO);
+	if (puos) NewUseOptions::set(puos);
 
 @ Our main problem in what follows is caused by "in" being so ambiguous,
 or perhaps it might be said that the real problem is that we choose to
@@ -505,6 +550,14 @@ is the "geography choice" for its kind.
 
 	kind *designers_choice = NULL;
 	@<Determine the designer choice@>;
+	if ((<implied-room-name>(Instances::get_name(I, FALSE))) &&
+		(potential_stage_room == NULL)) {
+		potential_stage_room = I;
+		if (designers_choice) {
+			potential_stage_room_kind = designers_choice;
+			potential_stage_room_kind_at = Instances::get_kind_set_sentence(potential_stage_room);
+		}
+	}
 
 	kind *geography_choice = NULL;
 	inference *geography_inference = NULL;
@@ -515,7 +568,8 @@ is the "geography choice" for its kind.
 		(Kinds::eq(geography_choice, designers_choice) == FALSE))
 		@<Attempt to reconcile the two choices@>;
 
-	if (Kinds::eq(Instances::to_kind(I), K_object))
+	if ((I != potential_stage_room) &&
+		(Kinds::eq(Instances::to_kind(I), K_object)))
 		Propositions::Abstract::assert_kind_of_instance(I, K_thing);
 
 @ By this point, any explicit information is reflected in the hierarchy of
@@ -579,9 +633,16 @@ when it's legitimately a door.
 		@<Issue a problem message, since the choices are irreconcilable@>;
 
 @<Accept the geography choice, since it only refines what we already know@> =
-	LOGIF(KIND_CHANGES, "Accepting geography choice of kind of $O as %u\n",
-		I, geography_choice);
-	Propositions::Abstract::assert_kind_of_instance(I, geography_choice);
+	if (I == potential_stage_room) {
+		LOGIF(KIND_CHANGES, "Noting potential geography choice of kind of $O as %u\n",
+			I, geography_choice);
+		potential_stage_room_kind = geography_choice;
+		potential_stage_room_kind_at = Inferences::where_inferred(geography_inference);
+	} else {
+		LOGIF(KIND_CHANGES, "Accepting geography choice of kind of $O as %u\n",
+			I, geography_choice);
+		Propositions::Abstract::assert_kind_of_instance(I, geography_choice);
+	}
 
 @<Issue a problem message, since the choices are irreconcilable@> =
 	LOG("Choices: designer %u, geography %u.\n", designers_choice, geography_choice);
@@ -757,11 +818,13 @@ object under investigation.
 
 @<Find the whereabouts of something here@> =
 	if (Spatial::object_is_a_room(whereabouts) == FALSE) whereabouts = NULL;
+	if (whereabouts == NULL) whereabouts = implied_Stage_room;
 	if (whereabouts == NULL) {
 		parse_node *here_sentence =
 			Inferences::where_inferred(parent_setting_inference);
 		@<Set the whereabouts to the last discussed room prior to this inference being drawn@>;
 		if (whereabouts == NULL) {
+
 			current_sentence = here_sentence;
 			StandardProblems::object_problem_at_sentence(_p_(PM_NoHere),
 				I,
@@ -1068,9 +1131,7 @@ extensive maps.
 
 @<Assert room and thing indicator properties@> =
 	P_mark_as_room = EitherOrProperties::new_nameless(I"mark_as_room");
-//	RTProperties::recommend_storing_as_attribute(P_mark_as_room, TRUE);
 	P_mark_as_thing = EitherOrProperties::new_nameless(I"mark_as_thing");
-//	RTProperties::recommend_storing_as_attribute(P_mark_as_thing, TRUE);
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object) {
 		if (Instances::of_kind(I, K_room))
@@ -1083,9 +1144,7 @@ extensive maps.
 
 @<Assert container and supporter indicator properties@> =
 	P_container = EitherOrProperties::new_nameless(I"container");
-//	RTProperties::recommend_storing_as_attribute(P_container, TRUE);
 	P_supporter = EitherOrProperties::new_nameless(I"supporter");
-//	RTProperties::recommend_storing_as_attribute(P_supporter, TRUE);
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object) {
 		if (Instances::of_kind(I, K_container))
@@ -1172,6 +1231,7 @@ empty.
 =
 int Spatial::spatial_stage_IV(void) {
 	if (Task::wraps_existing_storyfile()) {
+		if (implied_Stage_room) return FALSE;
 		instance *I;
 		LOOP_OVER_INSTANCES(I, K_object)
 			if (Spatial::object_is_a_room(I)) {

@@ -186,7 +186,7 @@ of vehicle, and so on, but this would cause mayhem in the model world. So:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::object_is_a_room</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Spatial::object_is_a_room</span></span>:<br/><a href="3-sm.html#SP30_3_2">&#167;30.3.2</a>, <a href="3-sm.html#SP30_3_3">&#167;30.3.3</a>, <a href="3-sm.html#SP31">&#167;31</a>, <a href="3-sm.html#SP39">&#167;39</a><br/>The Player - <a href="3-tp.html#SP10_1">&#167;10.1</a>, <a href="3-tp.html#SP10_3">&#167;10.3</a><br/>Regions - <a href="3-rgn.html#SP7">&#167;7</a><br/>The Map - <a href="3-tm.html#SP33_1">&#167;33.1</a>, <a href="3-tm.html#SP33_2">&#167;33.2</a>, <a href="3-tm.html#SP33_4">&#167;33.4</a><br/>Mapping Hint Requests - <a href="3-mhr.html#SP10_2">&#167;10.2</a>, <a href="3-mhr.html#SP10_4_1">&#167;10.4.1</a>, <a href="3-mhr.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::object_is_a_room</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Spatial::object_is_a_room</span></span>:<br/><a href="3-sm.html#SP27">&#167;27</a>, <a href="3-sm.html#SP30_3_2">&#167;30.3.2</a>, <a href="3-sm.html#SP30_3_3">&#167;30.3.3</a>, <a href="3-sm.html#SP31">&#167;31</a>, <a href="3-sm.html#SP39">&#167;39</a><br/>The Player - <a href="3-tp.html#SP10_1">&#167;10.1</a>, <a href="3-tp.html#SP10_3">&#167;10.3</a><br/>Regions - <a href="3-rgn.html#SP7">&#167;7</a><br/>The Map - <a href="3-tm.html#SP33_1">&#167;33.1</a>, <a href="3-tm.html#SP33_2">&#167;33.2</a>, <a href="3-tm.html#SP33_4">&#167;33.4</a><br/>Mapping Hint Requests - <a href="3-mhr.html#SP10_2">&#167;10.2</a>, <a href="3-mhr.html#SP10_4_1">&#167;10.4.1</a>, <a href="3-mhr.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">K_room</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">I</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">Instances::of_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_room</span><span class="plain-syntax">))) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -568,14 +568,64 @@ that Y is the destination of a map connection &mdash; to see which.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">implied_Stage_room</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::spatial_stage_I</span><button class="popup" onclick="togglePopup('usagePopup17')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup17">Usage of <span class="code-font"><span class="function-syntax">Spatial::spatial_stage_I</span></span>:<br/><a href="3-sm.html#SP26">&#167;26</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, *</span><span class="identifier-syntax">potential_stage_room</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">potential_stage_room_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">K_thing</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">potential_stage_room_kind_at</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_INSTANCES</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_1" class="named-paragraph-link"><span class="named-paragraph">Perform kind determination for this object</span><span class="named-paragraph-number">27.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_3" class="named-paragraph-link"><span class="named-paragraph">Perform kind determination for this object</span><span class="named-paragraph-number">27.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_INSTANCES</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-sm.html#SP7" class="function-link"><span class="function-syntax">Spatial::object_is_a_room</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">count</span><span class="plain-syntax">++;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_2" class="named-paragraph-link"><span class="named-paragraph">Create an implied room</span><span class="named-paragraph-number">27.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">potential_stage_room</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">KIND_CHANGES</span><span class="plain-syntax">, </span><span class="string-syntax">"Setting kind of potential implied room $O as %u\n"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">potential_stage_room</span><span class="plain-syntax">, </span><span class="identifier-syntax">potential_stage_room_kind</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Propositions::Abstract::assert_kind_of_instance</span><span class="plain-syntax">(</span><span class="identifier-syntax">potential_stage_room</span><span class="plain-syntax">, </span><span class="identifier-syntax">potential_stage_room_kind</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27_1" class="paragraph-anchor"></a><b>&#167;27.1.  </b>Our main problem in what follows is caused by "in" being so ambiguous,
+<p class="commentary firstcommentary"><a id="SP27_1" class="paragraph-anchor"></a><b>&#167;27.1.  </b></p>
+
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;implied-room-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">stage</span>
+</pre>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<p class="commentary firstcommentary"><a id="SP27_2" class="paragraph-anchor"></a><b>&#167;27.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create an implied room</span><span class="named-paragraph-number">27.2</span></span><span class="Preform-comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">potential_stage_room</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">potential_stage_room_kind</span><span class="plain-syntax"> != </span><span class="identifier-syntax">K_container</span><span class="plain-syntax">) &amp;&amp;</span>
+<span class="plain-syntax">            (</span><span class="identifier-syntax">potential_stage_room_kind</span><span class="plain-syntax"> != </span><span class="identifier-syntax">K_room</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">potential_stage_room_kind_at</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">StandardProblems::object_problem_at_sentence</span><span class="plain-syntax">(</span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_StageNotRoomable</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">potential_stage_room</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"is called 'Stage' and is in a story with no declared rooms, "</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"so I think it ought to be the room in which everything happens. "</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"However, that seems to be contradicted by this sentence"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"which implies that 'Stage' definitely isn't a room."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">potential_stage_room_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">K_room</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">implied_Stage_room</span><span class="plain-syntax"> = </span><span class="identifier-syntax">potential_stage_room</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Feeds::feed_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"Stage"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Propositions::Abstract::to_create_something</span><span class="plain-syntax">(</span><span class="identifier-syntax">K_room</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Assert::true</span><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">CERTAIN_CE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">implied_Stage_room</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Instances::latest</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">parsed_use_option_setting</span><span class="plain-syntax"> *</span><span class="identifier-syntax">puos</span><span class="plain-syntax"> =</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">UseOptions::force_setting</span><span class="plain-syntax">(</span><span class="identifier-syntax">NAMELESS_ROOM_DESCRIPTIONS_UO</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">puos</span><span class="plain-syntax">) </span><span class="identifier-syntax">NewUseOptions::set</span><span class="plain-syntax">(</span><span class="identifier-syntax">puos</span><span class="plain-syntax">);</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27">&#167;27</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP27_3" class="paragraph-anchor"></a><b>&#167;27.3.  </b>Our main problem in what follows is caused by "in" being so ambiguous,
 or perhaps it might be said that the real problem is that we choose to
 distinguish between rooms and containers on a world-modelling level &mdash; when it
 could well be argued that they are linguistically the same thing.
@@ -609,35 +659,44 @@ like "in", and from the spatial context in which the object appears. This
 is the "geography choice" for its kind.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform kind determination for this object</span><span class="named-paragraph-number">27.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform kind determination for this object</span><span class="named-paragraph-number">27.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Instances::get_creating_sentence</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_1_1" class="named-paragraph-link"><span class="named-paragraph">Determine the designer choice</span><span class="named-paragraph-number">27.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_3_1" class="named-paragraph-link"><span class="named-paragraph">Determine the designer choice</span><span class="named-paragraph-number">27.3.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="function-syntax">&lt;implied-room-name&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">Instances::get_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">))) &amp;&amp;</span>
+<span class="plain-syntax">        (</span><span class="identifier-syntax">potential_stage_room</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">potential_stage_room</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">potential_stage_room_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">potential_stage_room_kind_at</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Instances::get_kind_set_sentence</span><span class="plain-syntax">(</span><span class="identifier-syntax">potential_stage_room</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">geography_choice</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inference</span><span class="plain-syntax"> *</span><span class="identifier-syntax">geography_inference</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">geography_certainty</span><span class="plain-syntax"> = </span><span class="identifier-syntax">UNKNOWN_CE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_1_2" class="named-paragraph-link"><span class="named-paragraph">Determine the geography choice</span><span class="named-paragraph-number">27.1.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_3_2" class="named-paragraph-link"><span class="named-paragraph">Determine the geography choice</span><span class="named-paragraph-number">27.3.2</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">geography_choice</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">geography_choice</span><span class="plain-syntax">, </span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_1_3" class="named-paragraph-link"><span class="named-paragraph">Attempt to reconcile the two choices</span><span class="named-paragraph-number">27.1.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_3_3" class="named-paragraph-link"><span class="named-paragraph">Attempt to reconcile the two choices</span><span class="named-paragraph-number">27.3.3</span></a></span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">Instances::to_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">I</span><span class="plain-syntax"> != </span><span class="identifier-syntax">potential_stage_room</span><span class="plain-syntax">) &amp;&amp;</span>
+<span class="plain-syntax">        (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">Instances::to_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">)))</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Propositions::Abstract::assert_kind_of_instance</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_thing</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27">&#167;27</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP27_1_1" class="paragraph-anchor"></a><b>&#167;27.1.1.  </b>By this point, any explicit information is reflected in the hierarchy of
+<p class="commentary firstcommentary"><a id="SP27_3_1" class="paragraph-anchor"></a><b>&#167;27.3.1.  </b>By this point, any explicit information is reflected in the hierarchy of
 kinds. We look out for four specialised kinds of thing, but failing that,
 we simply take its broadest kind &mdash; usually "thing", "room", "direction"
 or "region".
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine the designer choice</span><span class="named-paragraph-number">27.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine the designer choice</span><span class="named-paragraph-number">27.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -657,13 +716,13 @@ or "region".
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax"> = </span><span class="identifier-syntax">f</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_1">&#167;27.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP27_1_2" class="paragraph-anchor"></a><b>&#167;27.1.2.  </b>If there is any positive information that this is a room, that's the
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_3">&#167;27.3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP27_3_2" class="paragraph-anchor"></a><b>&#167;27.3.2.  </b>If there is any positive information that this is a room, that's the
 geography choice; otherwise it's whichever of room or container is more
 probably suggested by inferences.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine the geography choice</span><span class="named-paragraph-number">27.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine the geography choice</span><span class="named-paragraph-number">27.3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -682,8 +741,8 @@ probably suggested by inferences.
 <span class="plain-syntax">            </span><span class="identifier-syntax">geography_inference</span><span class="plain-syntax"> = </span><span class="identifier-syntax">inf</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_1">&#167;27.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP27_1_3" class="paragraph-anchor"></a><b>&#167;27.1.3.  </b>Since the designer choice is the one currently in force, we have basically
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_3">&#167;27.3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP27_3_3" class="paragraph-anchor"></a><b>&#167;27.3.3.  </b>Since the designer choice is the one currently in force, we have basically
 three choices here: impose the geography choice instead; do nothing; or issue
 a problem message. The case where we do nothing is if geography suggests
 something is a room, when it's actually a door: this is because sentences
@@ -691,7 +750,7 @@ like "East is the Marble Portal" can suggest the "Marble Portal" is a room
 when it's legitimately a door.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Attempt to reconcile the two choices</span><span class="named-paragraph-number">27.1.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Attempt to reconcile the two choices</span><span class="named-paragraph-number">27.3.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -699,23 +758,30 @@ when it's legitimately a door.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) ||</span>
 <span class="plain-syntax">        ((</span><span class="identifier-syntax">geography_certainty</span><span class="plain-syntax"> == </span><span class="identifier-syntax">CERTAIN_CE</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">            (</span><span class="identifier-syntax">Kinds::Behaviour::is_object_of_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">geography_choice</span><span class="plain-syntax">, </span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax">))))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_1_3_1" class="named-paragraph-link"><span class="named-paragraph">Accept the geography choice, since it only refines what we already know</span><span class="named-paragraph-number">27.1.3.1</span></a></span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_3_3_1" class="named-paragraph-link"><span class="named-paragraph">Accept the geography choice, since it only refines what we already know</span><span class="named-paragraph-number">27.3.3.1</span></a></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">geography_certainty</span><span class="plain-syntax"> == </span><span class="identifier-syntax">CERTAIN_CE</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">            (!((</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_door</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">                (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">geography_choice</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_room</span><span class="plain-syntax">)))))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_1_3_2" class="named-paragraph-link"><span class="named-paragraph">Issue a problem message, since the choices are irreconcilable</span><span class="named-paragraph-number">27.1.3.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_3_3_2" class="named-paragraph-link"><span class="named-paragraph">Issue a problem message, since the choices are irreconcilable</span><span class="named-paragraph-number">27.3.3.2</span></a></span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_1">&#167;27.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP27_1_3_1" class="paragraph-anchor"></a><b>&#167;27.1.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Accept the geography choice, since it only refines what we already know</span><span class="named-paragraph-number">27.1.3.1</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_3">&#167;27.3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP27_3_3_1" class="paragraph-anchor"></a><b>&#167;27.3.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Accept the geography choice, since it only refines what we already know</span><span class="named-paragraph-number">27.3.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">KIND_CHANGES</span><span class="plain-syntax">, </span><span class="string-syntax">"Accepting geography choice of kind of $O as %u\n"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">geography_choice</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Propositions::Abstract::assert_kind_of_instance</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">geography_choice</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">I</span><span class="plain-syntax"> == </span><span class="identifier-syntax">potential_stage_room</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">KIND_CHANGES</span><span class="plain-syntax">, </span><span class="string-syntax">"Noting potential geography choice of kind of $O as %u\n"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">geography_choice</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">potential_stage_room_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">geography_choice</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">potential_stage_room_kind_at</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inferences::where_inferred</span><span class="plain-syntax">(</span><span class="identifier-syntax">geography_inference</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">KIND_CHANGES</span><span class="plain-syntax">, </span><span class="string-syntax">"Accepting geography choice of kind of $O as %u\n"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">geography_choice</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Propositions::Abstract::assert_kind_of_instance</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">geography_choice</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_1_3">&#167;27.1.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP27_1_3_2" class="paragraph-anchor"></a><b>&#167;27.1.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message, since the choices are irreconcilable</span><span class="named-paragraph-number">27.1.3.2</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_3_3">&#167;27.3.3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP27_3_3_2" class="paragraph-anchor"></a><b>&#167;27.3.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message, since the choices are irreconcilable</span><span class="named-paragraph-number">27.3.3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -723,15 +789,15 @@ when it's legitimately a door.
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">decider</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Instances::get_creating_sentence</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">sentence_setting_kind</span><span class="plain-syntax">) </span><span class="identifier-syntax">decider</span><span class="plain-syntax"> = </span><span class="identifier-syntax">sentence_setting_kind</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_person</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_1_3_2_1" class="named-paragraph-link"><span class="named-paragraph">Issue a problem message for implied containment by a person</span><span class="named-paragraph-number">27.1.3.2.1</span></a></span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_3_3_2_1" class="named-paragraph-link"><span class="named-paragraph">Issue a problem message for implied containment by a person</span><span class="named-paragraph-number">27.3.3.2.1</span></a></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_supporter</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">                (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">geography_choice</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_container</span><span class="plain-syntax">)))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_1_3_2_2" class="named-paragraph-link"><span class="named-paragraph">Issue a problem message for simultaneous containment and support</span><span class="named-paragraph-number">27.1.3.2.2</span></a></span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_3_3_2_2" class="named-paragraph-link"><span class="named-paragraph">Issue a problem message for simultaneous containment and support</span><span class="named-paragraph-number">27.3.3.2.2</span></a></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_1_3_2_3" class="named-paragraph-link"><span class="named-paragraph">Issue a more generic problem message for irreconcilable kinds</span><span class="named-paragraph-number">27.1.3.2.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP27_3_3_2_3" class="named-paragraph-link"><span class="named-paragraph">Issue a more generic problem message for irreconcilable kinds</span><span class="named-paragraph-number">27.3.3.2.3</span></a></span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_1_3">&#167;27.1.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP27_1_3_2_1" class="paragraph-anchor"></a><b>&#167;27.1.3.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for implied containment by a person</span><span class="named-paragraph-number">27.1.3.2.1</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_3_3">&#167;27.3.3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP27_3_3_2_1" class="paragraph-anchor"></a><b>&#167;27.3.3.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for implied containment by a person</span><span class="named-paragraph-number">27.3.3.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -743,12 +809,12 @@ when it's legitimately a door.
 <span class="plain-syntax">        </span><span class="string-syntax">"so 'The briefcase is in Daphne.' is disallowed, but 'The briefcase is "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"carried by Daphne.' is fine, or indeed 'Daphne carries the briefcase.'"</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_1_3_2">&#167;27.1.3.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP27_1_3_2_2" class="paragraph-anchor"></a><b>&#167;27.1.3.2.2.  </b>A notorious problem message for a notorious limitation of the traditional
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_3_3_2">&#167;27.3.3.2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP27_3_3_2_2" class="paragraph-anchor"></a><b>&#167;27.3.3.2.2.  </b>A notorious problem message for a notorious limitation of the traditional
 Inform spatial model:
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for simultaneous containment and support</span><span class="named-paragraph-number">27.1.3.2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for simultaneous containment and support</span><span class="named-paragraph-number">27.3.3.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -761,8 +827,8 @@ Inform spatial model:
 <span class="plain-syntax">        </span><span class="string-syntax">"container called the drawer is part of the desk. In the drawer is a "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"stapler.'"</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_1_3_2">&#167;27.1.3.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP27_1_3_2_3" class="paragraph-anchor"></a><b>&#167;27.1.3.2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a more generic problem message for irreconcilable kinds</span><span class="named-paragraph-number">27.1.3.2.3</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_3_3_2">&#167;27.3.3.2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP27_3_3_2_3" class="paragraph-anchor"></a><b>&#167;27.3.3.2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a more generic problem message for irreconcilable kinds</span><span class="named-paragraph-number">27.3.3.2.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -773,7 +839,7 @@ Inform spatial model:
 <span class="plain-syntax">        </span><span class="string-syntax">"sentences true"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"and this is a contradiction."</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_1_3_2">&#167;27.1.3.2</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP27_3_3_2">&#167;27.3.3.2</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b>Stage II at last. Now the kinds are all known, and it's time to work out
 the spatial arrangements. Inform's spatial model assigns every instance object
 a unique "progenitor", which may be <span class="extract"><span class="extract-syntax">NULL</span></span>, representing the object which
@@ -934,11 +1000,13 @@ object under investigation.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-sm.html#SP7" class="function-link"><span class="function-syntax">Spatial::object_is_a_room</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">whereabouts</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) </span><span class="identifier-syntax">whereabouts</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">whereabouts</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">whereabouts</span><span class="plain-syntax"> = </span><span class="identifier-syntax">implied_Stage_room</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">whereabouts</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">here_sentence</span><span class="plain-syntax"> =</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Inferences::where_inferred</span><span class="plain-syntax">(</span><span class="identifier-syntax">parent_setting_inference</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP30_3_2_1" class="named-paragraph-link"><span class="named-paragraph">Set the whereabouts to the last discussed room prior to this inference being drawn</span><span class="named-paragraph-number">30.3.2.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">whereabouts</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
+
 <span class="plain-syntax">            </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">here_sentence</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">StandardProblems::object_problem_at_sentence</span><span class="plain-syntax">(</span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NoHere</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">I</span><span class="plain-syntax">,</span>
@@ -1310,9 +1378,7 @@ extensive maps.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">P_mark_as_room</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EitherOrProperties::new_nameless</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"mark_as_room"</span><span class="plain-syntax">);</span>
-<span class="comment-syntax">	RTProperties::recommend_storing_as_attribute(P_mark_as_room, TRUE);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">P_mark_as_thing</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EitherOrProperties::new_nameless</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"mark_as_thing"</span><span class="plain-syntax">);</span>
-<span class="comment-syntax">	RTProperties::recommend_storing_as_attribute(P_mark_as_thing, TRUE);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_INSTANCES</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Instances::of_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_room</span><span class="plain-syntax">))</span>
@@ -1329,9 +1395,7 @@ extensive maps.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">P_container</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EitherOrProperties::new_nameless</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"container"</span><span class="plain-syntax">);</span>
-<span class="comment-syntax">	RTProperties::recommend_storing_as_attribute(P_container, TRUE);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">P_supporter</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EitherOrProperties::new_nameless</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"supporter"</span><span class="plain-syntax">);</span>
-<span class="comment-syntax">	RTProperties::recommend_storing_as_attribute(P_supporter, TRUE);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_INSTANCES</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Instances::of_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_container</span><span class="plain-syntax">))</span>
@@ -1433,6 +1497,7 @@ empty.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Spatial::spatial_stage_IV</span><button class="popup" onclick="togglePopup('usagePopup29')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup29">Usage of <span class="code-font"><span class="function-syntax">Spatial::spatial_stage_IV</span></span>:<br/><a href="3-sm.html#SP26">&#167;26</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Task::wraps_existing_storyfile</span><span class="plain-syntax">()) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">implied_Stage_room</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER_INSTANCES</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-sm.html#SP7" class="function-link"><span class="function-syntax">Spatial::object_is_a_room</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)) {</span>

@@ -65,6 +65,14 @@ parsed_use_option_setting *UseOptions::new_puos(wording W) {
 	return puos;
 }
 
+parsed_use_option_setting *UseOptions::force_setting(int notable_code) {
+	use_option *uo = NewUseOptions::find_uo(notable_code);
+	if (uo == NULL) return NULL;
+	parsed_use_option_setting *puos = UseOptions::new_puos(EMPTY_WORDING);
+	puos->resolved_option = uo;
+	return puos;
+}
+
 parsed_use_option_setting *UseOptions::parse_setting(wording W) {
 	<use-setting>(W);
 	parsed_use_option_setting *puos = <<rp>>;

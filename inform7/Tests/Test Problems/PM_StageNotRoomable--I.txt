@@ -1,0 +1,12 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 6 words long.
+I've also read version 2 of Basic Inform by Graham Nelson, which is 8488 words long.
+I've also read version 10.2.0 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 7 of Standard Rules by Graham Nelson, which is 35330 words long.
+Problem__ PM_StageNotRoomable
+  >--> You wrote 'The player is on the Stage' (source text, line 1), but the
+    Stage is called 'Stage' and is in a story with no declared rooms, so I
+    think it ought to be the room in which everything happens. However, that
+    seems to be contradicted by this sentence, which implies that 'Stage'
+    definitely isn't a room.
+Inform 7 has finished.

@@ -303,6 +303,14 @@ use_option *NewUseOptions::parse_uo(wording OW) {
 	return NULL;
 }
 
+use_option *NewUseOptions::find_uo(int notable_code) {
+	use_option *uo;
+	LOOP_OVER(uo, use_option)
+		if (uo->notable_option_code == notable_code)
+			return uo;
+	return NULL;
+}
+
 @ The following sets an option.
 
 =

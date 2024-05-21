@@ -1,11 +1,11 @@
 Inform 7 v10.2.0 has started.
 I've now read your source text, which is 11 words long.
-I've also read version 2 of Basic Inform by Graham Nelson, which is 8538 words long.
-I've also read version 2 of English Language by Graham Nelson, which is 2330 words long.
-I've also read version 7 of Standard Rules by Graham Nelson, which is 34998 words long.
+I've also read version 2 of Basic Inform by Graham Nelson, which is 8488 words long.
+I've also read version 10.2.0 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 7 of Standard Rules by Graham Nelson, which is 35330 words long.
 Problem__ PM_KindUnalterable
   >--> You wrote 'A person is a kind of room' (source text, line 2), but that
-    seems to contradict 'A person is a kind of thing' (the Standard Rules, line 130),
+    seems to contradict 'A person is a kind of thing' (the Standard Rules, line 132),
     as a room and a thing are incompatible. (If a room were a kind of a thing
     or vice versa there'd be no problem, but they aren't.)
 Inform 7 has finished.

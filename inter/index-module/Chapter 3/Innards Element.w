@@ -177,7 +177,7 @@ void InnardsElement::index_options_in_force_from(OUTPUT_STREAM, tree_inventory *
 			break;
 		case OPTIONS_FILE_UO_ORIGIN:
 			Localisation::roman(OUT, LD, I"Index.Elements.In.SetAutomatically");
-			DocReferences::link(OUT, I"OPTIONSFILE"); break;
+			break;
 		case EXTENSION_UO_ORIGIN:
 			Localisation::roman_t(OUT, LD, I"Index.Elements.In.SetFrom",
 				Metadata::optional_textual(E, I"^credit"));

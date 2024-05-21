@@ -20,13 +20,19 @@ is so marked).
 heading *dialogue_section_being_scanned = NULL;
 dialogue_beat *previous_dialogue_beat = NULL;
 dialogue_beat *current_dialogue_beat = NULL;
+int dialogue_sections_are_present = FALSE;
 
 void DialogueBeats::note_heading(heading *h) {
 	if (h->holds_dialogue) dialogue_section_being_scanned = h;
 	else dialogue_section_being_scanned = NULL;
 	previous_dialogue_beat = NULL;
 	current_dialogue_beat = NULL;
+	dialogue_sections_are_present = TRUE;
 	DialogueNodes::clear_precursors(0);
+}
+
+int DialogueBeats::dialogue_exists(void) {
+	return dialogue_sections_are_present;
 }
 
 @h Beats.

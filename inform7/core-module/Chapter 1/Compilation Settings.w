@@ -26,6 +26,7 @@ meaningful only for works of IF and are inert for Basic Inform projects.
 @e SLOW_ROUTE_FINDING_UO
 @e DICTIONARY_RESOLUTION_UO
 @e NO_AUTO_PLURAL_NAMES_UO
+@e NAMELESS_ROOM_DESCRIPTIONS_UO
 
 @ Note that Inform recognises these by their English names, so there would be no
 need to translate this to other languages.
@@ -45,7 +46,8 @@ need to translate this to other languages.
 	index figure thumbnails |       ==> { INDEX_FIGURE_THUMBNAILS_UO, - }
 	fast route-finding |  			==> { FAST_ROUTE_FINDING_UO, - }
 	slow route-finding | 			==> { SLOW_ROUTE_FINDING_UO, - }
-	dictionary resolution           ==> { DICTIONARY_RESOLUTION_UO, - }
+	dictionary resolution |         ==> { DICTIONARY_RESOLUTION_UO, - }
+	nameless room descriptions      ==> { NAMELESS_ROOM_DESCRIPTIONS_UO, - }
 
 @ Some of the pragma-like settings are stored here:
 
