@@ -114,8 +114,6 @@ Understand "spy on [any thing]" as distance viewing.
 
 Distance viewing is an action applying to one visible thing.
 
-The basic tangibility rule does nothing when an actor distance viewing.
-
 Carry out distance viewing:
 	try examining the noun.
 

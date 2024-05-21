@@ -610,7 +610,7 @@ This is the declare everything initially unmentioned rule:
 
 This is the every turn stage rule: follow the every turn rules.
 
-The parse command rule is listed last in the turn sequence rulebook. [1st.]
+The parse command rule is listed in the turn sequence rulebook. [1st.]
 The declare everything initially unmentioned rule is listed last in the turn sequence rulebook. [2nd.]
 The generate action rule is listed last in the turn sequence rulebook. [3rd.]
 The early scene changing stage rule is listed last in the turn sequence rulebook. [4th.]
@@ -671,10 +671,10 @@ out-of-world actions are not supposed to do that sort of thing.)
 =
 This is the late scene changing stage rule: follow the scene changing rules.
 
-The late scene changing stage rule is listed last in the turn sequence rulebook.
-The adjust light rule is listed last in the turn sequence rulebook. [2nd from last.]
-The note object acquisitions rule is listed last in the turn sequence rulebook. [Penultimate.]
-The notify score changes rule is listed last in the turn sequence rulebook. [Last.]
+The late scene changing stage rule is listed last in the turn sequence rulebook. [9th]
+The adjust light rule is listed last in the turn sequence rulebook. [10th]
+The note object acquisitions rule is listed last in the turn sequence rulebook. [11th & Penultimate.]
+The notify score changes rule is listed last in the turn sequence rulebook. [12th & Last.]
 
 This is the notify score changes rule:
 	if the score is not the last notified score:
