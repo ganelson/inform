@@ -987,9 +987,13 @@ note that the following uses the raw text of the word.
 		Kinds::Scalings::value_to_quanta(v, lp->scaling, &v, &remainder);
 		literal_pattern_element *lpe = &(lp->lp_elements[ec]);
 		int m = lpe->element_range;
-		LiteralPatterns::write_val(OUT, m,
-			(v/(lpe->element_multiplier)) % m + lpe->element_offset,
-			lpe->number_base, lpe->print_with_leading_zeros);
+		if (m == 0)
+			LiteralPatterns::write_val(OUT, 0,
+				lpe->element_offset, lpe->number_base, lpe->print_with_leading_zeros);
+		else
+			LiteralPatterns::write_val(OUT, m,
+				(v/(lpe->element_multiplier)) % m + lpe->element_offset,
+				lpe->number_base, lpe->print_with_leading_zeros);
 		if (ec == 0) @<Index the fractional part of the value@>;
 	}
 	ec++;
